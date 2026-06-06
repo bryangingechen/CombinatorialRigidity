@@ -107,6 +107,26 @@ theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework k α β) {ends : �
         Submodule.subset_span ⟨(e, t₁, t₂), by rw [panelRow, hu, hv]⟩) (-r)
         ((Submodule.neg_mem_iff _).2 hr)
 
+/-- **A panel row whose edge links is a rigidity row** (B0 infra, `lem:rows-polynomial-in-normals`):
+if the edge `i.1` of a panel-row index `i` links its endpoint selector's bodies in `F.graph`
+(`hlink : F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2`), then `F.panelRow ends i` is a member of
+`F.rigidityRows`. The panel row `hingeRow (ends i.1).1 (ends i.1).2 (annihRow (C(p(i.1))) i.2.1
+i.2.2)` is witnessed by the link `hlink` and the annihilator-block membership `annihRow_apply_self`
+(`annihRow C` lies in the hinge-row block `(span {C})^⊥`). The named form of the inline membership
+the Case-I / Case-II/III row producers repeatedly discharge. -/
+theorem panelRow_mem_rigidityRows (F : BodyHingeFramework k α β) {ends : β → α × α}
+    {i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k}
+    (hlink : F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2) :
+    F.panelRow ends i ∈ F.rigidityRows := by
+  obtain ⟨e', t₁, t₂⟩ := i
+  exact ⟨e', (ends e').1, (ends e').2, hlink,
+    annihRow (F.supportExtensor e') t₁ t₂, by
+      rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+      intro x hx
+      rw [Submodule.mem_span_singleton] at hx
+      obtain ⟨ρ, rfl⟩ := hx
+      rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
+
 /-- **Leg-restricted: the panel rows of the *linking* edges span the rigidity-row space**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of `span_panelRow_eq_rigidityRows`;
 Katoh–Tanigawa 2011 §6.2, Phase 22). The form Case I's *proper-subgraph* legs need. For a leg

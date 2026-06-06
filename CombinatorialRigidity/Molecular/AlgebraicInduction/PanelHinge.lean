@@ -564,6 +564,24 @@ theorem withNormal_normal_of_ne (P : PanelHingeFramework k α β) (v : α) (n : 
     {w : α} (hw : w ≠ v) : (P.withNormal v n).normal w = P.normal w := by
   rw [withNormal_normal, Function.update_of_ne hw]
 
+/-- **Overriding the normal of one body in a free assignment is `withNormal`** (`def:panel-hinge-
+framework`, Case II infra): for the free-normal framework `ofNormals G ends q`, replacing every
+`v`-coordinate of the assignment `q` by `n` (the assignment `fun p ↦ if p.1 = v then n p.2 else
+q p`) produces exactly `(ofNormals G ends q).withNormal v n`. This is the curry/uncurry bridge
+between the *free-assignment* form `ofNormals` (which N7b-0 / the panel-row infra consume) and the
+*per-body override* form `withNormal` (whose null-space invariance `toBodyHinge_withNormal_…_eq`
+carries the inductive realization through the choice of the re-inserted body's panel). Both
+frameworks have the same graph and selector; the normals agree by cases on `a = v`. -/
+theorem ofNormals_update_eq_withNormal (G : Graph α β) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) (v : α) (n : Fin (k + 2) → ℝ) :
+    ofNormals (k := k) G ends (fun p => if p.1 = v then n p.2 else q p)
+      = (ofNormals (k := k) G ends q).withNormal v n := by
+  simp only [ofNormals, withNormal, PanelHingeFramework.mk.injEq, true_and, and_true]
+  funext a i
+  by_cases ha : a = v
+  · subst ha; simp
+  · rw [Function.update_of_ne ha]; simp [ha]
+
 /-- **The supporting extensor of a hinge away from the re-inserted body is unchanged**
 (`def:panel-hinge-framework`, Case II infra): if neither endpoint of edge `e` is the body `v`
 whose normal was overridden (`(P.ends e).1 ≠ v` and `(P.ends e).2 ≠ v`), then `withNormal v n`

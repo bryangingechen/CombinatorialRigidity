@@ -2294,4 +2294,241 @@ them and remain red — see `notes/Phase21b.md` *Hand-off*. The accounting iffs
 (`ofParam_rankHypothesis_iff_pinnedMotionsOn` and the nullity `RankHypothesis` chain) are retained
 above. -/
 
+/-- **Case III (= Case II at `k = 0`), stratum 1: the eq. (6.12) `+(D−1)` block-triangular
+placement** (`lem:case-II-realization-placement`, the first chunk of KT Lemma 6.10; Katoh–Tanigawa
+2011 §6.4.1, eqs. (6.12), (6.16), Phase 22c). The first of three difficulty strata of the
+conjecture's crux (the `theorem_55.hsplit` producer at `k = 0`): the *degenerate* 1-extension
+placement of the reducible degree-2 body `v` that re-inserts `v` into the split-off `Gᵥ = G_v^{ab}`
+and produces a linearly independent panel-row family of size `D(|V(G)|−1) − 1` — one row short
+of the `k = 0` full target `D(|V(G)|−1)`, the missing row being the Case-III content (strata 2–3,
+a later sub-phase). It is a **lower-bound brick** toward the (still red) `lem:case-II-realization`
+/ `lem:case-III`, *not* a `HasFullRankRealization`.
+
+Construction (KT eq. (6.12)). Take the inductive realization of `Gᵥ` at a seed `q` (rigid on
+`V(Gᵥ)`, transversal hinges) and **place `v`'s panel normal at `n_a + t·n_b`** (`n_a = q(a,·)`,
+`n_b = q(b,·)`, `t ≠ 0`): the shear identity `panelSupportExtensor_add_smul_right` makes `v`'s
+`b`-hinge `e_b = vb` reproduce the `e₀ = ab`-hinge of the inductive realization (the `vb`-row
+reproduces the `e₀`-row), while `panelSupportExtensor_add_smul_left` keeps `v`'s `a`-hinge a
+nondegenerate line `L ⊂ Π(a)` (the `t ≠ 0` candidate, KT's actual eq. (6.12) — not the degenerate
+`t = 0` placement `v = a`). The shared seed is `q₀ := fun p ↦ if p.1 = v then (n_a + t·n_b) p.2 else
+q p`; overriding only the fresh body `v` leaves the `Gᵥ`-block untouched (`v ∉ V(Gᵥ)`, so no
+`Gᵥ`-edge touches `v`: `ofNormals_update_eq_withNormal` +
+`toBodyHinge_withNormal_infinitesimalMotions_eq`), so the IH rigidity transports to `q₀`.
+
+Assembly (KT eq. (6.16), block-triangular). The `+(D−1)` *new* block is the `D − 1` panel rows of
+`v`'s `b`-edge `e_b` (`exists_independent_panelRow_subfamily_of_edge`, N7b-1), independent through
+`v`'s screw column (`linearIndependent_panelRow_comp_single_of_edge`, the `hnewpin` input). The
+`D(|V(Gᵥ)|−1)` *old* block is the rigid `Gᵥ`-realization's linking panel rows
+(`exists_independent_panelRow_subfamily_of_rigidOn_linking`, N7b-0), carried onto `G` along the
+`e₀`-dropping injection (`exists_independent_panelRow_transport`, N7b-2, with `hrow := rfl` since
+`panelRow` reads only `ends`/`q₀`, not the graph). The pin-a-body column split
+(`linearIndependent_sum_pinned_block`, N7b-3) joins them: the old rows vanish at `update 0 v x`
+(their edges avoid `v`), the new rows read `v`'s column. The count is
+`(D−1) + D(|V(Gᵥ)|−1) = D(|V(G)|−1) − 1` (using `|V(Gᵥ)| = |V(G)| − 1`). All members are rigidity
+rows of `ofNormals G ends q₀`, the input the device-row closure
+`isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` (N7a form (b)) consumes — but here
+the family is one short of `D(|V(G)|−1)`, so it certifies only `rank R(G,p₁) ≥ D(|V(G)|−1) − 1`. -/
+theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α] [Finite β]
+    (G Gv : Graph α β) (hGv : Gv ≤ G) (ends : β → α × α)
+    -- the split-off block and the re-inserted body `v`, with its two new hinges `e_a = va`,
+    -- `e_b = vb`. `e_a`'s `G`-link is crux-strata input, so stratum 1 needs only its selector.
+    {v a b : α} {e_a e_b : β} (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_eb : G.IsLink e_b v b) (hends_eb : ends e_b = (v, b))
+    (_hG_ea : G.IsLink e_a v a) (hends_ea : ends e_a = (v, a))
+    -- `|V(Gᵥ)| = |V(G)| − 1` (carried from `vertexSet_splitOff` downstream)
+    (hVcard : V(Gv).ncard = V(G).ncard - 1)
+    -- the inductive realization of `Gᵥ` at a seed `q`: rigid on `V(Gᵥ)`, transversal hinges, links
+    {q : α × Fin (k + 2) → ℝ}
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hrig : (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.IsInfinitesimallyRigidOn V(Gv))
+    -- the shear parameter `t ≠ 0` and the eq. (6.12) shared seed `q₀`
+    {t : ℝ} (ht : t ≠ 0)
+    (q₀ : α × Fin (k + 2) → ℝ)
+    (hq₀ : q₀ = fun p => if p.1 = v then
+        ((fun i => q (a, i)) + t • (fun i => q (b, i))) p.2 else q p)
+    -- the inductive realization's `e₀ = ab`-hinge is transversal (so the reproduced `vb`-row ≠ 0)
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))]) :
+    -- a `D(|V(G)|−1) − 1`-size independent panel-row family of `ofNormals G ends q₀`, all rigidity
+    -- rows — the eq. (6.12) `+(D−1)` lower bound `rank R(G,p₁) ≥ D(|V(G)|−1) − 1` — together with
+    -- `v`'s `a`-hinge nondegeneracy (the `va`-line `L ⊂ Π(a)`, KT's eq. (6.12) candidate, `t ≠ 0`).
+    (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e_a ≠ 0 ∧
+    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      screwDim k * (V(G).ncard - 1) - 1 ≤ Nat.card s ∧
+      (∀ i ∈ s, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i
+        ∈ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows) ∧
+      LinearIndependent ℝ (fun i : s =>
+        (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
+  set n_a : Fin (k + 2) → ℝ := fun i => q (a, i) with hn_a
+  set n_b : Fin (k + 2) → ℝ := fun i => q (b, i) with hn_b
+  -- (1) The shared seed is the IH seed with `v`'s normal overridden by `n_a + t • n_b`, so the IH
+  -- rigidity transports to `q₀` (overriding the fresh `v ∉ V(Gᵥ)` leaves the `Gᵥ`-block untouched).
+  have hqeq : (fun p => if p.1 = v then ((n_a + t • n_b) : Fin (k + 2) → ℝ) p.2 else q p) = q₀ := by
+    rw [hq₀]
+  have hwN : PanelHingeFramework.ofNormals Gv ends q₀
+      = (PanelHingeFramework.ofNormals Gv ends q).withNormal v (n_a + t • n_b) := by
+    rw [← hqeq]
+    exact PanelHingeFramework.ofNormals_update_eq_withNormal Gv ends q v (n_a + t • n_b)
+  -- No `Gᵥ`-edge touches `v` (its endpoints lie in `V(Gᵥ)`, and `v ∉ V(Gᵥ)`).
+  have hvedge : ∀ e u w, Gv.IsLink e u w → (ends e).1 ≠ v ∧ (ends e).2 ≠ v := by
+    intro e u w he
+    have hl := hends_Gv e u w he
+    exact ⟨fun h => hvVc (h ▸ hl.left_mem), fun h => hvVc (h ▸ hl.right_mem)⟩
+  -- The motion space is unchanged when overriding the unhinged `v`, so the IH rigidity transports.
+  have hZeq : (PanelHingeFramework.ofNormals Gv ends q₀).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.infinitesimalMotions := by
+    rw [hwN]
+    exact (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge_withNormal_infinitesimalMotions_eq
+      v (n_a + t • n_b) hvedge
+  have hrig₀ :
+      (PanelHingeFramework.ofNormals Gv ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gv) := by
+    intro S hS u hu w hw
+    refine hrig S ?_ u hu w hw
+    rw [← BodyHingeFramework.mem_infinitesimalMotions, ← hZeq,
+      BodyHingeFramework.mem_infinitesimalMotions] at *
+    exact hS
+  -- The `Gᵥ`-hinges stay transversal at `q₀` (endpoints avoid `v`, where `q₀` agrees with `q`).
+  have hne₀ : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q₀).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e he
+    obtain ⟨h₁, h₂⟩ := hvedge e _ _ he
+    rw [hwN, (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge_withNormal_supportExtensor_of_ne
+      v (n_a + t • n_b) e (by simpa using h₁) (by simpa using h₂)]
+    exact hne_Gv e he
+  -- (2) OLD block (N7b-0, `_linking`): the rigid `Gᵥ`-realization carries `D(|V(Gᵥ)|−1)`
+  -- independent linking panel rows of `ofNormals Gv ends q₀`.
+  have hVGvne : V(Gv).Nonempty := ⟨b, hbVc⟩
+  set FGv := (PanelHingeFramework.ofNormals Gv ends q₀).toBodyHinge with hFGv
+  obtain ⟨so, hso_link, hso_card, hso_indep⟩ :=
+    FGv.exists_independent_panelRow_subfamily_of_rigidOn_linking (ends := ends)
+      (by simpa [hFGv] using hends_Gv) (by simpa [hFGv] using hne₀) (by simpa [hFGv] using hVGvne)
+      (by simpa [hFGv] using hrig₀)
+  -- (3) Transport the old block onto `G` (N7b-2; `panelRow` reads only `ends`/`q₀`, not the graph,
+  -- so `hrow := rfl`).
+  have hso_indep_G : LinearIndependent ℝ (fun i : so =>
+      FG.panelRow ends (i : β × _ × _)) :=
+    PanelHingeFramework.exists_independent_panelRow_transport Gv G ends ends q₀ q₀
+      (f := id) Function.injective_id (fun i => rfl) hso_indep
+  -- The re-inserted body `v` and its neighbour `b` are distinct (`b ∈ V(Gᵥ)`, `v ∉ V(Gᵥ)`).
+  have hvb : v ≠ b := fun h => hvVc (h ▸ hbVc)
+  -- The shared seed reads `q₀(v,·) = n_a + t·n_b` and `q₀(b,·) = n_b`.
+  have hq₀v : (fun i => q₀ (v, i)) = n_a + t • n_b := by
+    funext i; rw [hq₀]; simp
+  have hq₀b : (fun i => q₀ (b, i)) = n_b := by
+    funext i; rw [hq₀, hn_b]; simp only [if_neg hvb.symm]
+  have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
+  have hq₀a : (fun i => q₀ (a, i)) = n_a := by
+    funext i; rw [hq₀, hn_a]; simp only [if_neg hva.symm]
+  -- The `va`-hinge `e_a` stays a nondegenerate line `L ⊂ Π(a)` (KT eq. (6.12), `t ≠ 0`).
+  have hane : FG.supportExtensor e_a ≠ 0 := by
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_ea]
+    simp only [hq₀v, hq₀a, panelSupportExtensor_add_smul_left]
+    exact smul_ne_zero (neg_ne_zero.mpr ht) ((panelSupportExtensor_ne_zero_iff n_a n_b).mpr hgab)
+  -- (4) NEW block (N7b-1): the reproduced `vb`-hinge `e_b` is transversal
+  -- (`panelSupportExtensor_add_smul_right` reproduces the transversal `e₀ = ab`-hinge), giving
+  -- `D − 1` independent new rows.
+  have hnewne : FG.supportExtensor e_b ≠ 0 := by
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_eb]
+    simp only [hq₀v, hq₀b, panelSupportExtensor_add_smul_right]
+    exact (panelSupportExtensor_ne_zero_iff n_a n_b).mpr hgab
+  have hev : (ends e_b).2 ≠ (ends e_b).1 := by rw [hends_eb]; exact hvb.symm
+  obtain ⟨sn, hsn_e, hsn_card, hsn_indep⟩ :=
+    FG.exists_independent_panelRow_subfamily_of_edge
+      (ends := ends) (e := e_b) (by rw [hends_eb]; exact hvb) hnewne
+  -- `hnewpin`: the new rows stay independent through `v = (ends e_b).1`'s screw column.
+  have hnewpin := FG.linearIndependent_panelRow_comp_single_of_edge
+    (ends := ends) (e := e_b) hev hsn_e hsn_indep
+  -- (5) The old rows vanish at `update 0 v x` (their `Gᵥ`-edges avoid `v`).
+  have hold : ∀ (j : so) (x : ScrewSpace k),
+      FG.panelRow ends (j : β × _ × _)
+        (Function.update (0 : α → ScrewSpace k) v x) = 0 := by
+    rintro ⟨i, hi⟩ x
+    have hlink := hso_link _ hi
+    have h₁ : (ends i.1).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
+    have h₂ : (ends i.1).2 ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
+    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      Function.update_of_ne h₁, Function.update_of_ne h₂, Pi.zero_apply, Pi.zero_apply, sub_zero,
+      map_zero]
+  -- (6) The two blocks are jointly independent (N7b-3, the pin-a-body split = KT eq. (6.16)).
+  have hunion : LinearIndependent ℝ (Sum.elim
+      (fun i : sn => FG.panelRow ends
+        (i : β × _ × _))
+      (fun i : so => FG.panelRow ends
+        (i : β × _ × _))) := by
+    have hpin : LinearIndependent ℝ (fun i : sn =>
+        (FG.panelRow ends (i : β × _ × _)).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+      have := hnewpin
+      rw [hends_eb] at this
+      exact this
+    exact BodyHingeFramework.linearIndependent_sum_pinned_block (v := v) hold hpin hso_indep_G
+  -- (7) Package the `Sum.elim` family as a single `Set`-indexed panel-row subfamily. The map
+  -- sending each block index to its underlying `(edge, ⋀^k-pair)` is injective: `sn`-indices use
+  -- the new edge `e_b ∉ E(Gᵥ)`, `so`-indices use `Gᵥ`-edges, so the two are disjoint.
+  -- No `so`-index uses the new edge `e_b`: else `e_b` would be a `Gᵥ`-edge with endpoint `v`.
+  have hso_ne_eb : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_b := by
+    intro i hi heq
+    have hl := hso_link i hi
+    rw [heq, hends_eb] at hl
+    exact hvVc hl.left_mem
+  set j : (sn ⊕ so) → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
+    Sum.elim (fun i => (i : β × _ × _)) (fun i => (i : β × _ × _)) with hj
+  have hjinj : Function.Injective j := by
+    rintro (⟨in₁, hin₁⟩ | ⟨io₁, hio₁⟩) (⟨in₂, hin₂⟩ | ⟨io₂, hio₂⟩) hab <;>
+      simp only [hj, Sum.elim_inl, Sum.elim_inr] at hab
+    · exact congrArg Sum.inl (Subtype.ext hab)
+    · have : (io₂ : β × _ × _).1 = e_b := by rw [← congrArg Prod.fst hab]; exact hsn_e _ hin₁
+      exact absurd this (hso_ne_eb _ hio₂)
+    · have : (io₁ : β × _ × _).1 = e_b := by rw [congrArg Prod.fst hab]; exact hsn_e _ hin₂
+      exact absurd this (hso_ne_eb _ hio₁)
+    · exact congrArg Sum.inr (Subtype.ext hab)
+  -- `s := range j`, the union index set; the panel-row family on it is the `Sum.elim` family
+  -- reindexed across `Equiv.ofInjective j`, hence independent and a rigidity-row family.
+  refine ⟨hane, Set.range j, ?_, ?_, ?_⟩
+  · -- Count: `(D−1) + D(|V(Gᵥ)|−1) = D(|V(G)|−1) − 1` (using `|V(Gᵥ)| = |V(G)| − 1`).
+    rw [Nat.card_range_of_injective hjinj, Nat.card_sum, hsn_card]
+    have hgraph : V((PanelHingeFramework.ofNormals Gv ends q₀).toBodyHinge.graph) = V(Gv) := rfl
+    rw [hgraph] at hso_card
+    rw [hso_card, hVcard]
+    have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 ⟨v, hG_eb.left_mem⟩
+    -- `D(m−1)−1 ≤ (D−1) + D(m−1−1)`; with `D(m−1) = D(m−2) + D` (for `m ≥ 1`) this is an equality.
+    obtain ⟨m, hm⟩ : ∃ m, V(G).ncard = m + 1 := ⟨V(G).ncard - 1, by omega⟩
+    rw [hm]
+    simp only [Nat.add_sub_cancel]
+    cases m with
+    | zero => simp
+    | succ m' =>
+      rw [Nat.add_sub_cancel, Nat.mul_succ]
+      omega
+  · -- Membership: each row's edge links in `G` (new edge `e_b`, or a `Gᵥ`-edge ≤ `G`).
+    rintro i ⟨(⟨ic, hic⟩ | ⟨ic, hic⟩), rfl⟩ <;>
+      refine FG.panelRow_mem_rigidityRows ?_
+    · change G.IsLink _ _ _
+      simp only [hj, Sum.elim_inl]; rw [hsn_e _ hic, hends_eb]; exact hG_eb
+    · change G.IsLink _ _ _
+      simp only [hj, Sum.elim_inr]
+      exact (Graph.IsSubgraph.isLink_iff hGv (hso_link _ hic).edge_mem).mp (hso_link _ hic)
+  · -- Independence: reindex the `Sum.elim` family across `Equiv.ofInjective j`.
+    have hreindex : (fun i : Set.range j =>
+        FG.panelRow ends (i : β × _ × _))
+        ∘ (Equiv.ofInjective j hjinj)
+      = Sum.elim
+        (fun i : sn => FG.panelRow ends
+          (i : β × _ × _))
+        (fun i : so => FG.panelRow ends
+          (i : β × _ × _)) := by
+      funext a
+      simp only [Function.comp_apply, Equiv.ofInjective_apply, hj]
+      cases a <;> rfl
+    set ej := Equiv.ofInjective j hjinj with hej
+    have h := hunion.comp ej.symm ej.symm.injective
+    rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
+    exact h
+
 end CombinatorialRigidity.Molecular

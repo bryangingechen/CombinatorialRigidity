@@ -92,6 +92,34 @@ housekeeping pass once their resolution is fully indexed.
   whole thing is `refine of_comp … ; have heq : dualMap ∘ WANT = panelRow := …; rw [heq]; exact hindep`.
 - **Status:** resolved (project helper `linearIndependent_panelRow_comp_single_of_edge`).
 
+### [resolved] The eq. (6.12) single-seed coupling: reconcile the IH's existential `ofNormals … q` seed with the one shared `q₀ = update q v (…)` via `ofNormals_update_eq_withNormal` + the `withNormal` null-space invariance
+- **Where it bit:** `case_II_placement_eq612` (`Molecular/AlgebraicInduction/CaseI.lean`, Phase 22c
+  stratum-1 producer), step (1). The N7b-0/2 bricks consume `ofNormals Gᵥ ends q₀` on the *shared*
+  seed `q₀`, but the IH (`exists_rigidOn_ofNormals_of_hasFullRankRealization`) delivers rigidity at
+  its *own* seed `q`; `q₀` overrides only `v`'s coordinates.
+- **Friction:** `ofNormals` takes a *free assignment* `q : α × Fin (k+2) → ℝ`, `withNormal` a
+  *per-body* override `n : Fin (k+2) → ℝ` — different shapes, no direct bridge. The seed `q₀ :=
+  fun p ↦ if p.1 = v then n p.2 else q p` (uncurried `update`) had to be shown equal to
+  `(ofNormals Gᵥ ends q).withNormal v n` before the null-space invariance lever applies.
+- **Fix:** new glue `ofNormals_update_eq_withNormal` (`PanelHinge.lean`, `mk.injEq` + a `by_cases a = v`
+  on the `normal` field). Then `toBodyHinge_withNormal_infinitesimalMotions_eq` (its `hv` holds
+  because `v ∉ V(Gᵥ)` ⟹ no `Gᵥ`-edge endpoint is `v`) gives equal `infinitesimalMotions`, and
+  `IsInfinitesimallyRigidOn` transports through `mem_infinitesimalMotions` (no congruence lemma —
+  the same round-trip as the line-167 entry below). `withNormal_supportExtensor_of_ne` likewise
+  transports the transversal-hinge hypothesis to `q₀`.
+- **Status:** resolved (project helper `ofNormals_update_eq_withNormal`).
+
+### [resolved] The repeated inline "a `panelRow` whose edge links is a rigidity row" membership — named as `panelRow_mem_rigidityRows`
+- **Where it bit:** the block-triangular Case-I composer (`hrow_mem`, `CaseI.lean:1764`) and
+  `case_II_placement_eq612`'s membership branch both discharge the same fact:
+  `F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows`.
+- **Friction:** a 6-line inline proof (`⟨e', …, annihRow …, hingeRowBlock_apply +
+  mem_dualAnnihilator + annihRow_apply_self⟩`) copy-pasted across producers — the API-gap signal.
+- **Fix:** named lemma `BodyHingeFramework.panelRow_mem_rigidityRows` in `Pinning.lean` (where
+  `panelRow` lives). The block-triangular composer's inline `hrow_mem` is a candidate to refactor
+  onto it in a later cleanup pass (left as-is this commit to keep the diff scoped).
+- **Status:** resolved (project helper `panelRow_mem_rigidityRows`).
+
 ### [resolved] A `(α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k)` defined by a `where`/`toFun` with an `if … then 0 else S a` body leaves the Pi-fiber `Module` stuck (and the `if` needs `Decidable` in the *statement* of any `_apply` lemma)
 - **Where it bit:** the block-triangular reframing's exterior-column projection `extProj`
   (`Molecular/AlgebraicInduction/`, Phase 22a §1.14, Piece B). Both the structure-`where` form

@@ -149,6 +149,45 @@ theorem normalsJoin_ne_zero_iff (n₁ n₂ : Fin (k + 2) → ℝ) :
   rw [← extensor_ne_zero_iff_linearIndependent (d := k + 1) ![n₁, n₂],
     ← normalsJoin_coe, ne_eq, ne_eq, ← ZeroMemClass.coe_eq_zero (x := normalsJoin n₁ n₂)]
 
+/-- **The grade-2 swap negates the join** (`def:panel-support-extensor`): `normalsJoin n₂ n₁ =
+-normalsJoin n₁ n₂`. The join is the alternating map `ιMulti ℝ 2 ![·, ·]`; swapping the two columns
+negates the wedge (`AlternatingMap.map_swap`). The join-level form of
+`panelSupportExtensor_swap`. -/
+theorem normalsJoin_swap (n₁ n₂ : Fin (k + 2) → ℝ) :
+    normalsJoin n₂ n₁ = -normalsJoin (k := k) n₁ n₂ := by
+  rw [normalsJoin, normalsJoin]
+  have hsw : (![n₁, n₂] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1 = ![n₂, n₁] := by
+    funext i; fin_cases i <;> simp
+  rw [← hsw, (exteriorPower.ιMulti ℝ 2).map_swap (v := ![n₁, n₂]) (Fin.zero_ne_one)]
+
+/-- **The join of two equal normals vanishes** (`def:panel-support-extensor`): `normalsJoin n n =
+0`. Two equal columns of the alternating `ιMulti ℝ 2` (`AlternatingMap.map_eq_zero_of_eq`). -/
+theorem normalsJoin_self (n : Fin (k + 2) → ℝ) : normalsJoin (k := k) n n = 0 := by
+  rw [normalsJoin]
+  exact (exteriorPower.ιMulti ℝ 2).map_eq_zero_of_eq ![n, n] (i := 0) (j := 1) rfl (by decide)
+
+/-- **Adding a multiple of the second normal to the first leaves the join unchanged**
+(`def:panel-support-extensor`, the eq. (6.12) shear identity; Katoh–Tanigawa 2011 §6.4.1).
+`normalsJoin (n₁ + t • n₂) n₂ = normalsJoin n₁ n₂`. The grade-2 join is the alternating map
+`ιMulti ℝ 2 ![·, ·]`, so adding `t • n₂` to the first column splits off (column-linearity,
+`AlternatingMap.map_update_add` / `map_update_smul`) the term `t • ιMulti ℝ 2 ![n₂, n₂]`, which
+vanishes because the two columns are equal (`map_update_self`). This is the algebraic content of
+Katoh–Tanigawa's degenerate eq. (6.12) placement of the re-inserted body `v`: placing `v`'s normal
+at `n_a + t • n_b` makes `v`'s `b`-hinge reproduce the `e₀ = ab`-hinge of the inductive
+realization, so the `vb`-row reproduces the `e₀`-row (`panelSupportExtensor_add_smul_right`). -/
+theorem normalsJoin_add_smul_right (n₁ n₂ : Fin (k + 2) → ℝ) (t : ℝ) :
+    normalsJoin (n₁ + t • n₂) n₂ = normalsJoin n₁ n₂ := by
+  -- First-column linearity, then the `t • normalsJoin n₂ n₂` term vanishes (equal columns).
+  have h1 : normalsJoin (n₁ + t • n₂) n₂ = normalsJoin n₁ n₂ + t • normalsJoin n₂ n₂ := by
+    rw [normalsJoin, normalsJoin, normalsJoin,
+      show (![n₁ + t • n₂, n₂] : Fin 2 → Fin (k + 2) → ℝ)
+        = Function.update ![n₁, n₂] 0 (n₁ + t • n₂) from by funext i; fin_cases i <;> simp,
+      show (n₁ + t • n₂ : Fin (k + 2) → ℝ) = ![n₁, n₂] 0 + t • ![n₂, n₂] 0 from by simp,
+      (exteriorPower.ιMulti ℝ 2).map_update_add, (exteriorPower.ιMulti ℝ 2).map_update_smul]
+    congr 2
+    all_goals (funext i; fin_cases i <;> simp)
+  rw [h1, normalsJoin_self, smul_zero, add_zero]
+
 /-- **The panel support extensor** of a hinge between two panels with normals `n₁, n₂`
 (`def:panel-support-extensor`): the supporting `k`-extensor `C(p(e)) ∈ ScrewSpace k` of the
 codimension-2 intersection `panel(u) ∩ panel(v)`, given as the Grassmann–Cayley meet of the
@@ -184,13 +223,45 @@ which is why an edge's two endpoints may be recorded in either order without aff
 space (`PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap`). -/
 theorem panelSupportExtensor_swap (n₁ n₂ : Fin (k + 2) → ℝ) :
     panelSupportExtensor n₂ n₁ = -panelSupportExtensor (k := k) n₁ n₂ := by
-  have hjoin : normalsJoin n₂ n₁ = -normalsJoin (k := k) n₁ n₂ := by
-    rw [normalsJoin, normalsJoin]
-    have hswap : (![n₁, n₂] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1 = ![n₂, n₁] := by
-      funext i; fin_cases i <;> simp
-    rw [← hswap, (exteriorPower.ιMulti ℝ 2).map_swap (v := ![n₁, n₂]) (Fin.zero_ne_one)]
-  rw [panelSupportExtensor, panelSupportExtensor, hjoin]
+  rw [panelSupportExtensor, panelSupportExtensor, normalsJoin_swap]
   exact map_neg _ _
+
+/-- **The `vb`-row reproduces the `e₀`-row at the eq. (6.12) placement**
+(`def:panel-support-extensor`, the eq. (6.12) reproduction; Katoh–Tanigawa 2011 §6.4.1):
+`panelSupportExtensor (n₁ + t • n₂) n₂ = panelSupportExtensor n₁ n₂`. The supporting extensor is
+the fixed linear image `complementIso` of the grade-2 join, so the shear identity
+`normalsJoin_add_smul_right` carries through. This is the row reproduction the degenerate placement
+of the re-inserted body `v` supplies: at `v`'s normal `n_a + t • n_b`, the `vb`-hinge support
+extensor equals the `ab`-hinge support extensor of the inductive realization, so the new `vb`-row
+reproduces the old `e₀ = ab`-row in the block-triangular placement (KT eq. (6.12)/(6.16)). -/
+theorem panelSupportExtensor_add_smul_right (n₁ n₂ : Fin (k + 2) → ℝ) (t : ℝ) :
+    panelSupportExtensor (n₁ + t • n₂) n₂ = panelSupportExtensor (k := k) n₁ n₂ := by
+  rw [panelSupportExtensor, panelSupportExtensor, normalsJoin_add_smul_right]
+
+/-- **The `va`-hinge stays nondegenerate at the eq. (6.12) placement when `t ≠ 0`**
+(`def:panel-support-extensor`, the eq. (6.12) `va`-line; Katoh–Tanigawa 2011 §6.4.1): for any `t`,
+`panelSupportExtensor (n₁ + t • n₂) n₁ = (-t) • panelSupportExtensor n₁ n₂`. The shear in the
+*first* column gives `normalsJoin (n₁ + t • n₂) n₁ = -t • normalsJoin n₁ n₂` (first-column
+linearity + the self-join vanishing `normalsJoin_self` + the antisymmetric swap `normalsJoin_swap`);
+the linear `complementIso` carries it through. With `panelSupportExtensor n₁ n₂ ≠ 0` (transversal
+`e₀`-hinge) and `t ≠ 0`, the `va`-hinge is a genuine line `L ⊂ Π(a)`, keeping KT's eq. (6.12)
+candidate nondegenerate (the `t = 0` placement `v` at `a` would zero the `va`-hinge, building a
+degenerate candidate; `t ≠ 0` matches KT's actual eq. (6.12) candidate). -/
+theorem panelSupportExtensor_add_smul_left (n₁ n₂ : Fin (k + 2) → ℝ) (t : ℝ) :
+    panelSupportExtensor (n₁ + t • n₂) n₁ = (-t) • panelSupportExtensor (k := k) n₁ n₂ := by
+  -- First-column linearity: `normalsJoin (n₁+t•n₂) n₁ = normalsJoin n₁ n₁ + t • normalsJoin n₂ n₁`.
+  have h1 : normalsJoin (n₁ + t • n₂) n₁ = normalsJoin n₁ n₁ + t • normalsJoin n₂ n₁ := by
+    rw [normalsJoin, normalsJoin, normalsJoin,
+      show (![n₁ + t • n₂, n₁] : Fin 2 → Fin (k + 2) → ℝ)
+        = Function.update ![n₁, n₁] 0 (n₁ + t • n₂) from by funext i; fin_cases i <;> simp,
+      show (n₁ + t • n₂ : Fin (k + 2) → ℝ) = ![n₁, n₁] 0 + t • ![n₂, n₁] 0 from by simp,
+      (exteriorPower.ιMulti ℝ 2).map_update_add, (exteriorPower.ιMulti ℝ 2).map_update_smul]
+    congr 2
+    all_goals (funext i; fin_cases i <;> simp)
+  have hjoin : normalsJoin (n₁ + t • n₂) n₁ = (-t) • normalsJoin (k := k) n₁ n₂ := by
+    rw [h1, normalsJoin_self, normalsJoin_swap]; module
+  rw [panelSupportExtensor, panelSupportExtensor, hjoin]
+  exact map_smul _ _ _
 
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the

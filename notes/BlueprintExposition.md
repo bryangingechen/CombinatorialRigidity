@@ -187,7 +187,15 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `R(G,p1)` block-triangular with the `vb`-row reproducing the `e₀`-row; a slight
   rotation (Lemma 5.2 semicontinuity) lifts to nonparallel. The motion-side route
   KT gestures at ("a motion constant on `V(G)∖{v}`") is unsound — a `G`-motion
-  need not be (`G−v` isn't rigid). Pointer: `notes/Phase21b.md` *Finding A*.
+  need not be (`G−v` isn't rigid). **Stratum-1 Lean refinement (Phase 22c):** the
+  reproduction is the *shear in one panel-normal slot* — placing `v`'s normal at
+  `n_a + t·n_b` makes the `vb`-extensor `=` the `ab`-extensor *for any `t`* (the
+  `n_b∧n_b=0` term, `panelSupportExtensor_add_smul_right`), while `t≠0` keeps the
+  `va`-extensor `= (-t)·` the `ab`-extensor `≠0` (`_left`) — so the `t=0` placement
+  `v=a` is the trap (zeros the `va`-line, a degenerate candidate), and KT's genuine
+  eq. (6.12) candidate needs `t≠0`. The `+(D−1)` lower bound is then the pin-a-body
+  `Sum.elim` of the new edge's `D−1` rows and the IH-transported old block.
+  Pointer: `notes/Phase21b.md` *Finding A*; `notes/Phase22c.md` (stratum 1).
 - **`lem:case-I-realization` realization mechanism — KT eq. (6.3) block-triangular
   rank-ADDITION** — [pending] **(c)** *(landed via a block-triangular reframe; the
   reroute that preceded it was project-side, see note)*. **Stable insight:** Case I's
