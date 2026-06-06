@@ -342,6 +342,78 @@ Both `comm` outputs should be empty. The first signals a typo or
 missing entry; the second signals a defined-but-unused entry —
 either cite it or remove it.
 
+**No live-route node references a superseded one (the supersession
+gate).** When a commit supersedes a route or argument — replaces a
+chain of `\uses`'d nodes with a different one — it **owns reconciling
+every node on the old route, both statement and proof, in the same
+commit**, not merely marking the dead *leaf* and updating the live
+node's statement. The failure mode this catches (Phase-22c calibration
+below) is a *live* node whose statement says "route X is superseded"
+while its **proof still routes through X**: self-inconsistent prose that
+falls through every other gate (the honesty gate fires only on `\leanok`
+additions; the per-commit re-read checks only what the commit changed,
+not downstream red nodes; "superseded" was free-text with no
+machine-readable status). The discipline:
+
+- **Mark superseded nodes with a greppable, standardized marker.** Put
+  the literal word `superseded` in the **environment title** — the
+  `[...]` of `\begin{lemma}[...]` (e.g. `[N7b-4 (superseded, row-side):
+  …]`, `[M3 (superseded, motion-side): …]`). The title is the one line a
+  one-environment-per-block `awk` can key on; restating it in the body
+  prose (*"Red, superseded"*) is good for the reader but the **title**
+  is what the check below greps. Keep the dead node (retain-with-marker)
+  for the audit trail rather than deleting it — but make it inert.
+- **A node still on a live route may not `\uses` (nor describe its live
+  proof through) a superseded node.** Reroute its `\uses` edges and its
+  prose onto the replacement in the *same* commit. A `\cref{}` *pointer*
+  to a superseded node in an explicit audit-trail aside ("the earlier
+  dead-ends, off the live route, are …") is fine; a `\uses` dependency
+  edge or a live-proof step is not.
+- **superseded-`\uses`-superseded is fine** — that is the internally
+  consistent audit trail (e.g. M3 `\uses` M2, both struck). The gate
+  flags only a *non-superseded* node reaching into a superseded one.
+
+The scriptable form (same documented-one-liner style as the
+resolution checks above): enumerate superseded labels (title contains
+`superseded`; the `\label{}` is on the next line, the project's
+invariant `\begin`/`\label` adjacency), then assert no non-superseded
+node's `\uses` targets one. Two small `awk` passes feed a `comm`:
+
+```sh
+# Stage 1 — superseded labels (title carries the marker; \label is the next line).
+awk 'BEGIN{IGNORECASE=1}
+ /\\begin\{(lemma|theorem|proposition|corollary|definition)\}\[/{e=1;s=($0~/superseded/)}
+ e&&/\\label\{/{if(s){match($0,/\\label\{[^}]+\}/);l=substr($0,RSTART,RLENGTH);
+   gsub(/\\label\{|\}/,"",l);print l} e=0;s=0}' chapter/**/*.tex chapter/*.tex \
+ | sort -u > /tmp/sup-labels.txt
+# Stage 2 — labels reached by a \uses of a NON-superseded env (statement or proof;
+# \uses bodies may wrap, so accumulate to the closing }). A \begin[...] resets the
+# live flag; a \begin{proof} (no [title]) inherits the preceding env's flag.
+awk 'BEGIN{IGNORECASE=1;live=1;u=0}
+ /\\begin\{(lemma|theorem|proposition|corollary|definition)\}\[/{live=($0!~/superseded/);u=0;b=""}
+ {ln=$0; if(u)b=b ln; else{i=index(ln,"\\uses{"); if(i>0){u=1;b=substr(ln,i+6)}}
+  if(u){j=index(b,"}"); if(j>0){body=substr(b,1,j-1);u=0;b="";
+   if(live){n=split(body,a,",");for(k=1;k<=n;k++){gsub(/[ \t\r\n]/,"",a[k]);
+     if(a[k]!="")print a[k]}}}}}' chapter/**/*.tex chapter/*.tex \
+ | sort -u > /tmp/live-uses.txt
+comm -12 /tmp/sup-labels.txt /tmp/live-uses.txt    # should be empty
+```
+
+Any output is a live node depending on a struck one — reconcile it
+before commit. (The current tree is reconciled, so this runs clean;
+if your shell lacks `**` globbing, list the chapter dirs explicitly.)
+
+**Calibration case (Phase 22c).** Opening 22c to build the Case-II/III
+stratum-1 nodes, the live `lem:case-II-realization` /
+`lem:case-II-realization-placement` *statements* said "M3 / N7b-4
+superseded" while their *proofs* still routed through them — rot that
+had survived since the eq. (6.12) understanding was settled phases
+earlier (KT, `../notes/Phase21b.md` *Finding A*), because the
+superseded prose lived in *red* nodes invisible to the `\leanok`-gated
+honesty gate. Commit `7ba0266` reconciled the prose; this gate + the
+phase-open red-node consistency gate (`../CLAUDE.md` *When this commit
+opens a phase*) keep it from recurring.
+
 **Every hypothesis of a `\leanok` node is discharged (the honesty
 gate).** The three checks above are name/label *resolution* checks —
 they are blind to hypothesis *content*, and `checkdecls` happily

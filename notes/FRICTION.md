@@ -2098,6 +2098,43 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 Tried-and-rejected approaches, deprecated patterns, and tactic
 limitations. Worth a once-over so future agents don't re-litigate.
 
+### [process][blueprint] Phase 22c open — superseded-route rot survived in *red* blueprint nodes (a live node's proof routing through a struck dead-end)
+- **Where it bit:** opening Phase 22c, the live target nodes
+  `lem:case-II-realization` / `lem:case-II-realization-placement`
+  (`blueprint/src/chapter/algebraic-induction/`) had **statements saying
+  "M3 / N7b-4 superseded"** while their **proofs still routed through
+  those dead-ends** (the motion-side M3
+  `lem:case-II-placement-motion-side-assembly` and the unbuildable
+  row-side N7b-4 `lem:case-II-placement-e0-recovery`). The corrected
+  eq. (6.12) understanding had been settled phases earlier (KT,
+  `Phase21b.md` *Finding A*), but the live-node prose never followed.
+  Commit `7ba0266` reconciled both nodes; this entry records why it
+  survived and the process fix.
+- **Root cause:** the superseded-route prose lived in **red (deferred)
+  nodes**, which fall through every gate. (1) The honesty gate fires
+  only on `\leanok` additions — red nodes are never checked. (2) The
+  per-commit blueprint re-read checks only what the commit changed, not
+  downstream red nodes; when the route was first corrected, the fix
+  updated the live node's *statement* and marked the dead *leaf*, but
+  nothing forced re-reading the live node's *proof*. (3) The phase-close
+  re-read targets formalization *asides* (changelog narration), not
+  superseded *routes*. (4) "superseded" was free-text with no
+  machine-readable status, so nothing flagged a live node pointing at a
+  dead one.
+- **Don't repeat:** a commit that supersedes a route OWNS reconciling
+  *every* node on the old route — statement **and** proof — in the same
+  commit, not just the dead leaf + the live statement. Superseded nodes
+  carry a greppable title marker (`[… (superseded, …): …]`); no
+  live-route node may `\uses` or describe its live proof through one.
+- **Status:** resolved (process fix landed this commit). **Lifted to:**
+  `blueprint/CLAUDE.md` *Static checks before commit → the supersession
+  gate* (the ownership rule + the standardized title marker + the
+  scriptable `awk`/`comm` check) and root `CLAUDE.md` *When this commit
+  opens a phase → the red-node consistency gate* (read target red nodes
+  end-to-end before scoping). Not lifted to `DESIGN.md`: the lesson is
+  blueprint-bookkeeping hygiene, not a cross-cutting math/modelling
+  decision — the gates belong in the operating manuals.
+
 ### [process] Phase 22a — the motion-space splice glue diverges from KT's block-triangular structure (read before the realization re-architecture)
 - **Where it bit:** the Case-I realization producer (`lem:case-I-realization` /
   `case_I_realization`), Phase 22a. Three consecutive coordinator-supervised passes

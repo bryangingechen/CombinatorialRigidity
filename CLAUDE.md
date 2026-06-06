@@ -216,6 +216,26 @@ checklists:
   in-progress). For the molecular program (Phases 17–26): sync
   `notes/MolecularConjecture.md` — its phase table, the per-phase
   detail block, and the *Opening the next phase* pointer.
+- **Read the target red/deferred nodes end-to-end for internal
+  consistency *before* scoping the build (the red-node consistency
+  gate).** When a phase opens to build specific already-stubbed
+  blueprint nodes (forward/structural-edit mode), read *those target
+  nodes* in full — not just their statements — and confirm each is
+  self-consistent: the **proof routes through the same argument the
+  statement claims**, and **no live-route reference (`\uses` or a
+  live-proof step) points at a superseded node** (`blueprint/CLAUDE.md`
+  *Static checks before commit → the supersession gate*). Red nodes
+  fall through the `\leanok`-gated honesty gate, so this is the only
+  point that forces a re-read of a deferred node's *proof* before work
+  builds on it. This dovetails with the design-pass-first discipline
+  (`DESIGN.md` *Constructibility recon before a producer build →
+  design the LAYER*): the recon already reads the target argument; this
+  adds "and confirm the live prose still describes it." *Calibration
+  case (Phase 22c):* the target `lem:case-II-realization` /
+  `lem:case-II-realization-placement` opened with statements saying "M3
+  / N7b-4 superseded" while their *proofs* still routed through those
+  dead-ends — rot that had survived since the route was corrected phases
+  earlier, caught only because the design recon re-read the proofs.
 
 ### When this commit closes a phase
 

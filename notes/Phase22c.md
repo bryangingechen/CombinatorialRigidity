@@ -284,12 +284,22 @@ toward them, not the full nodes.
 
 ## Blockers / open questions
 
-- **Blueprint divergence — RESOLVED** (this commit, §1.27): the live
+- **Blueprint divergence — RESOLVED** (commit 7ba0266, §1.27): the live
   `lem:case-II-realization` / `lem:case-II-realization-placement` prose no
   longer routes through the superseded M3 / N7b-4; both describe the
   eq. (6.12) row-side route consistently in statement+proof. This was the
   binding doc-blocker the design recon surfaced (corrected understanding
   was in the notes only).
+- **Recurrence prevention — DONE** (docs-only follow-up commit): the
+  *process* fix so superseded-route rot cannot survive into a phase
+  opening again. Three gates landed: a **supersession-ownership rule** +
+  a standardized greppable title marker (`[… (superseded, …): …]`,
+  applied to N7b-4 + M1/M2/M3) + a scriptable `awk`/`comm` check
+  (`blueprint/CLAUDE.md` *Static checks before commit → the supersession
+  gate*), and a **phase-open red-node consistency gate** (root
+  `CLAUDE.md` *When this commit opens a phase*). Incident + lesson:
+  `FRICTION.md` *[process][blueprint] Phase 22c open — superseded-route
+  rot …*. No Lean / `\leanok` / `\lean{}` changes.
 - **Sub-phase cut — SETTLED** (re-cut to first-chunk): 22c = Case III at
   `d=3` *stratum 1* (the eq. (6.12) `+(D−1)` placement) only; the
   D-candidate crux (strata 2–3) is a likely later sub-phase, the `d=3`
