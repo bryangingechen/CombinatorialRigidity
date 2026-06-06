@@ -2589,6 +2589,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `linearIndependent_sumElim_unit_iff` — appending one vector to an independent family stays LI iff the vector is fresh
+- **Where it bit:** Phase 22e N4 (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42)
+  row-space criterion). The `D`-functional family (`D−1` `va`-block rows plus the candidate
+  row `r̂`) is LI iff `r̂` is not in the block's span — the abstract criterion under the
+  Claim-6.12 full-rank-of-the-top-left-block fact.
+- **Friction:** mathlib's `LinearIndepOn.notMem_span_iff` is phrased for `insert a s`; the
+  project's block functionals come as `Sum.elim v (fun _ : Unit => x)` (new block + one
+  augmenting row), so the `insert` form needs reindex glue. The clean `Sum.elim`-of-a-`Unit`
+  shape has no direct mathlib lemma.
+- **Resolution:** mirrored `linearIndependent_sumElim_unit_iff` — `linearIndependent_sum`
+  (the iff splitting `ι ⊕ Unit` into the two sub-families + span-disjointness) with the
+  `inr`-singleton span `K ∙ x` (`Set.range_const`), disjointness collapsing to `x ∉ span`
+  by `Submodule.disjoint_span_singleton'`.
+- **Gotcha (cost a build cycle):** `LinearIndependent.of_subsingleton (i) (hi : v i ≠ 0)`
+  requires `[IsDomain R] [Module.IsTorsionFree R M]`; over a `DivisionRing` the instance is
+  `DivisionSemiring.to_moduleIsTorsionFree` in `Mathlib.Algebra.Module.Torsion.Field`, which
+  is **not** transitively imported by `LinearIndependent.Basic` + `Span.Basic` in module
+  mode — add it explicitly (a full-mathlib `lean_run_code` masks this; the mirror's narrow
+  import surface exposes it). **Lifted to:** TACTICS-QUIRKS § 40 (singleton-family LI import).
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (new; matches the
+  upstream home of `linearIndependent_sum`). N4 proper (`mem_hingeRowBlock_iff` +
+  `linearIndependent_sumElim_candidateRow_iff`) is project-internal, in `RigidityMatrix.lean`.
+
 ### [mirrored] `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` (+ helper `Submodule.finrank_map_mkQ`) — a finrank pigeonhole for a redundant family member
 - **Where it bit:** Phase 22d Gap 1, the KT Claim 6.11 / eq. (6.23) pigeonhole. Given a
   finite family `g : ι → V` (the `D−1` `ab`-rows) whose span, added to a subspace `W`

@@ -697,9 +697,12 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
 
 \begin{lemma}[Block full rank $\Leftrightarrow$ $\hat r \notin (\operatorname{span} C)^\perp$; KT (6.42) row-space criterion]
   \label{lem:case-III-claim612-block-iff-perp}
-  \uses{def:rigidity-matrix, lem:case-II-placement-new-rows}
-  Let the $D - 1$ rows of a candidate's hinge block span $(\operatorname{span} C)^\perp$ (the
-  $D-1$-dimensional orthogonal complement of the line $\operatorname{span} C$ supporting the
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sumElim_candidateRow_iff,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.mem_hingeRowBlock_iff}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block, lem:case-II-placement-new-rows}
+  Let the $D - 1$ rows of a candidate's hinge block span $(\operatorname{span} C)^\perp = r(p(e))$
+  (the $D-1$-dimensional orthogonal complement of the line $\operatorname{span} C$ supporting the
   candidate's $(d-2)$-affine subspace $L$; \cref{lem:case-II-placement-new-rows}), and let
   $\hat r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ be the candidate row. The augmented $D$-functional
   family ($D - 1$ block rows plus $\hat r$) is linearly independent iff
@@ -710,10 +713,15 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   the supporting extensor $C$.
 \end{lemma}
 \begin{proof}
-  The $D - 1$ block rows already span the hyperplane $(\operatorname{span} C)^\perp$; adding $\hat r$
-  raises the dimension to $D$ iff $\hat r \notin (\operatorname{span} C)^\perp$ (else the family stays
-  inside a $(D-1)$-dimensional space). By the dual-annihilator $\perp\!\perp$ correspondence
-  $\hat r \in (\operatorname{span} C)^\perp \Leftrightarrow \hat r(C) = 0$.
+  \leanok
+  The $D - 1$ block rows already span the hyperplane $(\operatorname{span} C)^\perp$; appending
+  $\hat r$ raises the dimension to $D$ iff $\hat r$ is fresh, i.e.\ $\hat r \notin
+  (\operatorname{span} C)^\perp$ --- the row-space criterion for extending an independent family by
+  one vector ($\mathrm{linearIndependent\_sumElim\_unit\_iff}$, else the family stays inside the
+  $(D-1)$-dimensional span). Freshness off the hinge-row block is exactly $\hat r(C) \ne 0$ by the
+  dual-annihilator $\perp\!\perp$ correspondence $\hat r \in (\operatorname{span} C)^\perp = r(p(e))
+  \Leftrightarrow \hat r(C) = 0$ ($\mathrm{mem\_hingeRowBlock\_iff}$, the annihilator evaluated at
+  the spanning $C$).
 \end{proof}
 
 \begin{lemma}[The common vector $r$ is nonzero; KT (6.42)]

@@ -4,9 +4,10 @@
 (eqs. (6.24)–(6.29)) landed green-modulo across 8 commits (`78f7eb4`…`3ab70cd`); the
 **Claim-6.12 design pass** decomposed KT §6.4.1 (eqs. (6.30)–(6.45)) into buildable
 red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq629-conditional`
-(single-candidate → the true 3-way disjunction). **N1, N2 are now green**
-(`span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`). Next: N4 (the mechanical
-block-full-rank ⟺ dual-annihilator leaf).
+(single-candidate → the true 3-way disjunction). **N1, N2, N4 are now green**
+(`span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`,
+`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`). Next: N5 (the mechanical
+`r ≠ 0` leaf), then N6 (medium), N3/N7 (research-shaped — recon-before-build), N8, capstone N9.
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -20,11 +21,19 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: build N4 (`lem:case-III-claim612-block-iff-perp`)** — the mechanical
-dual-annihilator leaf: the `D` functionals (`D−1` `va`-block rows spanning `(span C)^⊥` + candidate
-`r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Deps: `def:rigidity-matrix`,
-`lem:case-II-placement-new-rows` (both green). Then N5 (mechanical), N6 (medium), N3/N7
-(research-shaped, recon-before-build), N8 (medium), capstone N9.
+**Next concrete commit: build N5 (`lem:case-III-claim612-r-nonzero`)** — the mechanical leaf:
+the common vector `r := Σ_{1≤j≤5} λ_{(ab)j} rⱼ(q(ab))` is nonzero, because `λ_{(ab)i*}=1` (from the
+green redundant-decomposition, eq. (6.25)) and the `rⱼ(q(ab))` are LI (`lem:case-II-placement-new-rows`):
+a combination of an LI family with a unit coefficient is nonzero. Deps:
+`lem:case-III-redundant-decomposition`, `lem:case-II-placement-new-rows` (both green). Then N6 (medium),
+N3/N7 (research-shaped, recon-before-build), N8 (medium), capstone N9.
+
+**N4 green** (`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`,
+`RigidityMatrix.lean`, axiom-clean): the eq. (6.42) row-space criterion. The `D`-functional family
+(`D−1` `va`-block rows spanning `(span C)^⊥ = r(p(e))` + candidate `r̂`) is LI ⟺ `r̂(C) ≠ 0`. Built
+on a new upstream-eligible mirror `linearIndependent_sumElim_unit_iff` (appending one vector to an LI
+family stays LI ⟺ the vector is fresh) + the membership translation `mem_hingeRowBlock_iff`
+(`r̂ ∈ r(p(e)) ⟺ r̂(C) = 0`, the dual-annihilator evaluated at the spanning `C`).
 
 **N2 green** (`eq_zero_of_annihilates_span_top`, `RigidityMatrix.lean`, axiom-clean): a functional
 `r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with `span S = ⊤` is `0`, via
@@ -137,9 +146,11 @@ commit (no `\lean`/`\leanok`); build greens them.
   affinely-indep points with the `Π(a)/Π(b)/Π(c)` triple-intersection incidence pattern, every line
   `pᵢpⱼ` in `Π(a)∪Π(b)∪Π(c)`. Deps: `def:rigidity-matrix`. **RESEARCH-SHAPED** (general position;
   likely a new alg-independence use — see `notes/AlgebraicIndependence.md` risk #8). Recon-before-build.
-- [ ] **N4** `lem:case-III-claim612-block-iff-perp` — the D functionals (D−1 va-block rows spanning
-  `(span C)^⊥` + candidate `r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Deps:
-  `def:rigidity-matrix`, `lem:case-II-placement-new-rows`. **Mechanical** (dual-annihilator API).
+- [x] **N4** `lem:case-III-claim612-block-iff-perp` (`linearIndependent_sumElim_candidateRow_iff` +
+  `mem_hingeRowBlock_iff`, green, axiom-clean) — the D functionals (D−1 va-block rows spanning
+  `(span C)^⊥` + candidate `r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Built on new mirror
+  `linearIndependent_sumElim_unit_iff`. Deps: `def:rigidity-matrix`, `def:hinge-row-block`,
+  `lem:case-II-placement-new-rows`.
 - [ ] **N5** `lem:case-III-claim612-r-nonzero` — `r := Σⱼ λ_{(ab)j} rⱼ(q(ab)) ≠ 0` (`λ_{(ab)i*}=1`
   from the green redundant-decomposition). Deps: `lem:case-III-redundant-decomposition`,
   `lem:case-II-placement-new-rows`. **Mechanical.**
@@ -173,13 +184,14 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: build N4 (`lem:case-III-claim612-block-iff-perp`)** — the mechanical
-dual-annihilator leaf: the `D` functionals (`D−1` `va`-block rows spanning `(span C)^⊥` + candidate
-`r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Deps: `def:rigidity-matrix`,
-`lem:case-II-placement-new-rows` (both green). Then proceed up the N5–N9 list (*Lemma checklist*):
-N5 (mechanical), N6 (medium), N3/N7 (research-shaped — recon-before-build), N8 (medium), capstone
-N9 — which discharges the re-shaped `lem:case-III-eq629-conditional`, after which N10 flips
-`lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
+**Next concrete commit: build N5 (`lem:case-III-claim612-r-nonzero`)** — the mechanical leaf: the
+common vector `r := Σ_{1≤j≤5} λ_{(ab)j} rⱼ(q(ab))` is nonzero, since `λ_{(ab)i*}=1` (green
+redundant-decomposition, eq. (6.25)) and the `rⱼ(q(ab))` are LI (`lem:case-II-placement-new-rows`):
+a combination of an LI family with a unit coefficient is nonzero. Deps:
+`lem:case-III-redundant-decomposition`, `lem:case-II-placement-new-rows` (both green). Then proceed up
+the N6–N9 list (*Lemma checklist*): N6 (medium), N3/N7 (research-shaped — recon-before-build), N8
+(medium), capstone N9 — which discharges the re-shaped `lem:case-III-eq629-conditional`, after which
+N10 flips `lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
 
 **Recon-before-build the two research-shaped nodes.** N3 (`-claim612-points`, general position of the
 4 incidence points) and N7 (`-claim612-p3-placement`, the `Gᵥᵃᵇ ≅ Gₐᵛᶜ` transport — KT's most
@@ -201,6 +213,16 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N4 green — the eq. (6.42) row-space criterion as an abstract augment-iff
+  (2026-06-06).** `linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`
+  (`RigidityMatrix.lean`, axiom-clean): the `D`-functional family (`D−1` `va`-block rows spanning
+  `(span C)^⊥ = r(p(e))` + candidate `r̂`) is LI ⟺ `r̂(C) ≠ 0`. Factored into (i) a new
+  upstream-eligible mirror `linearIndependent_sumElim_unit_iff` (appending one vector to an LI family
+  stays LI ⟺ it is fresh — `linearIndependent_sum` + `disjoint_span_singleton'`), and (ii) the
+  membership translation `mem_hingeRowBlock_iff` (`r̂ ∈ dualAnnihilator (span {C}) ⟺ r̂(C) = 0`).
+  N4 is then a one-line `rw` chain. The lemma takes `rn`/`r̂` abstractly (no `columnOp` plumbing) —
+  it is the clean criterion the candidate-completion assembly's `hnewpinaug` recasts to. The mirror
+  + the `of_subsingleton` torsion-free import gotcha → FRICTION *Mirrored* + TACTICS-QUIRKS § 40.
 - **Claim-6.12 interface re-shape — the conditional is a 3-WAY disjunction, not single-candidate
   (2026-06-06; design-pass, this commit).** A recon against KT §6.4.1 (eqs. (6.30)–(6.45), verified
   against the .refs PDF pp. 689–691) found `lem:case-III-eq629-conditional` mis-shaped: it asserted

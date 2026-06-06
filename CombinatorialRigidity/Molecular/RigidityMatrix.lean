@@ -8,6 +8,7 @@ module
 public import Mathlib.Combinatorics.Graph.Basic
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Extensor
 
 /-!
@@ -904,6 +905,44 @@ theorem linearIndependent_sum_augment_candidateRow
     funext i; rcases i with (i | i) | j <;> rfl
   rw [hcomp] at hop
   exact (Φ.dualMap.toLinearMap.linearIndependent_iff hker).1 hop
+
+/-- **A row functional lies in the hinge-row block iff it annihilates the supporting extensor**
+(`lem:case-III-claim612-block-iff-perp`, the membership half of KT's eq.~(6.42) row-space criterion;
+Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The hinge-row block `r(p(e)) = (span C(p(e)))^⊥` is the
+dual annihilator of the line `span {C(p(e))}` (`hingeRowBlock`), so a candidate functional
+`r̂ : Module.Dual ℝ (ScrewSpace k)` lies in it iff it annihilates the supporting extensor itself:
+`r̂ ∈ r(p(e)) ⟺ r̂ (C(p(e))) = 0`. The forward direction evaluates the annihilator at
+`C ∈ span {C}`; the converse scales `r̂ (a • C) = a • r̂ C = 0` across the span singleton. This is
+the `(span C)^⊥` membership test the Claim-6.12 row-space criterion negates
+(`r̂ ∉ (span C)^⊥ ⟺ r̂(C) ≠ 0`). -/
+theorem mem_hingeRowBlock_iff (F : BodyHingeFramework k α β) (e : β)
+    (r : Module.Dual ℝ (ScrewSpace k)) :
+    r ∈ F.hingeRowBlock e ↔ r (F.supportExtensor e) = 0 := by
+  rw [hingeRowBlock, Submodule.mem_dualAnnihilator]
+  refine ⟨fun h => h _ (Submodule.mem_span_singleton_self _), fun h x hx => ?_⟩
+  obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hx
+  rw [map_smul, h, smul_zero]
+
+/-- **The Claim-6.12 row-space criterion: the candidate's top-left `D × D` block is full rank iff
+`r̂(C) ≠ 0`** (`lem:case-III-claim612-block-iff-perp`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1,
+Phase 22e). Given the `D − 1` rows `rn` of a candidate's hinge block at `e` — linearly independent
+and spanning the whole hinge-row block `r(p(e)) = (span C)^⊥` (the `(D−1)`-dimensional orthogonal
+complement of the supporting line; `lem:case-II-placement-new-rows` supplies them) — the augmented
+`D`-functional family (the `D − 1` block rows `rn` plus the candidate row `r̂`) is linearly
+independent **iff** `r̂` is not orthogonal to the supporting extensor:
+`r̂ ∉ (span C)^⊥ ⟺ r̂ (C(p(e))) ≠ 0`. The `D − 1` block rows already span the hyperplane
+`(span C)^⊥`; appending `r̂` raises the dimension to `D` iff `r̂` is fresh
+(`linearIndependent_sumElim_unit_iff`, the row-space criterion), and freshness off the hinge-row
+block is exactly `r̂ (C) ≠ 0` (`mem_hingeRowBlock_iff`). This is the conditional `hnewpinaug` of the
+candidate-completion assembly (`linearIndependent_sum_augment_candidateRow`) recast as a clean
+orthogonality test — the eq.~(6.42) full-rank-of-the-top-left-block fact the `D`-candidate
+disjunction (`lem:case-III-claim612`) discharges. -/
+theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework k α β) (e : β)
+    {ι : Type*} {rn : ι → Module.Dual ℝ (ScrewSpace k)} (hrn : LinearIndependent ℝ rn)
+    (hspan : Submodule.span ℝ (Set.range rn) = F.hingeRowBlock e)
+    (r : Module.Dual ℝ (ScrewSpace k)) :
+    LinearIndependent ℝ (Sum.elim rn (fun _ : Unit => r)) ↔ r (F.supportExtensor e) ≠ 0 := by
+  rw [linearIndependent_sumElim_unit_iff hrn, hspan, Ne, ← mem_hingeRowBlock_iff]
 
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body

@@ -1487,3 +1487,27 @@ applied to instance-diamond reconciliation rather than a basis-coordinate unfold
 `maxHeartbeats` bump is not the fix — it still times out.** Worked case:
 `BodyHingeFramework.screwDim_mul_numParts_sub_le_finrank_partitionMotions` (Phase 22d,
 `Molecular/AlgebraicInduction/PanelLayer.lean`, the `hub` dimension lower bound).
+
+## 40. Singleton-family LI (`LinearIndependent.of_subsingleton`) needs a torsion-free instance not transitively imported in module mode
+
+**Symptom.** Proving `LinearIndependent K (fun _ : Unit => x)` (or any subsingleton-indexed
+family) from `x ≠ 0` via `LinearIndependent.of_subsingleton (default) hx0` fails in a narrow-import
+file with *"failed to synthesize `Module.IsTorsionFree K M`"* — even though `K` is a `DivisionRing`
+/ `Field`, where the family obviously is independent. A full-mathlib scratch (`lean_run_code`,
+`#eval`) masks the gap: it imports the instance transitively, so the same `exact` succeeds there and
+only fails once dropped into the actual (mirror) file.
+
+**Cause.** `LinearIndependent.of_subsingleton (i) (hi : v i ≠ 0)` is stated over
+`[IsDomain R] [Module.IsTorsionFree R M]` (`Mathlib/LinearAlgebra/LinearIndependent/Defs.lean`). For
+a division-ring module the instance is `DivisionSemiring.to_moduleIsTorsionFree`, which lives in
+`Mathlib.Algebra.Module.Torsion.Field` — **not** reachable from
+`Mathlib.LinearAlgebra.LinearIndependent.Basic` + `Mathlib.LinearAlgebra.Span.Basic` alone.
+
+**Fix.** Add `public import Mathlib.Algebra.Module.Torsion.Field` (the smallest carrier of the
+instance). Alternatives that avoid the import but cost a line: `LinearIndependent.of_subsingleton'
+(i) (fun r hr => (smul_eq_zero.1 hr).resolve_right hx0)` — the zero-ring-safe variant taking
+`∀ r, r • v i = 0 → r = 0` directly, no torsion-free instance. **General rule:** when a mirror /
+narrow-import file fails to synthesize an "obvious" algebraic instance (`IsTorsionFree`,
+`NoZeroSMulDivisors`, …) that a full-mathlib scratch finds, the instance's *defining import* is
+missing — add it, don't reach for `set_option`. Worked case: `linearIndependent_sumElim_unit_iff`
+(Phase 22e N4, `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`).
