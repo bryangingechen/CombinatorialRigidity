@@ -1194,19 +1194,23 @@ pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
   body, leaving `D(|P|−1) − (D−1)·d_G(P) = partitionDef` independent screw freedoms in the null
   space beyond the `D` trivial motions; maximizing over `P` gives `def(G̃)` extra motions. This is
   genuine genericity-free content (no max-rank assumption — *every* realization has at least this
-  many motions), still to be bricked from the Phase-19 partition machinery; carried here as an
-  explicit hypothesis so the node is not blocked on it.
+  many motions); it is now **discharged** in-proof by
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (the `hub` lower bound, green from the
+  Phase-19 partition machinery), so the only inputs are the dimension fixing `n = k + 1` and the
+  genuine-hinge condition `C(e) ≠ 0` the partition cut needs.
 * *From Phase 21b (cited)* `hgen` (`rank R(G,p) ≥ D(|V|−1) − def(G̃)`, equivalently `dim Z(G,p) ≤ D
   + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55`) pushed from minimal
   `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning subgraph and
   observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`). The
   generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
   device. -/
-theorem rigidityMatrix_prop11 [Nonempty α] [Finite α]
-    (F : BodyHingeFramework k α β) (n : ℕ)
-    (hub : screwDim k + F.graph.deficiency n ≤ (Module.finrank ℝ F.infinitesimalMotions : ℤ))
+theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) (n : ℕ) (hn : n = k + 1)
+    (hC : ∀ e, F.supportExtensor e ≠ 0)
     (hgen : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
     F.RankHypothesis (F.graph.deficiency n) := by
+  subst hn
+  have hub := F.screwDim_add_deficiency_le_finrank_infinitesimalMotions hC
   rw [BodyHingeFramework.RankHypothesis]
   omega
 

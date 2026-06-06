@@ -131,13 +131,15 @@ whole induction.
   minimal $k$-dof-graphs to all multigraphs by deleting down to a minimal
   $k$-dof spanning subgraph and observing that re-adding edges only grows the
   rank (\cref{lem:motions-mono-of-graph-le}); the Claim~6.4 generic-rank
-  argument selects the point attaining it. \emph{Red:} it depends on
-  \cref{thm:theorem-55}, whose $V(G)$-relative motive
+  argument selects the point attaining it. The genericity-free upper bound
+  $\mathtt{hub}$ is now discharged from the partition machinery
+  (\cref{lem:trivial-motions-rank-bound}); the proposition's only inputs beyond
+  the generic max-rank bound are the dimension fixing $n = k+1$ and the
+  genuine-hinge condition $C(e) \neq 0$ the partition cut needs. \emph{Red:} it
+  still depends on \cref{thm:theorem-55}, whose $V(G)$-relative motive
   (\cref{def:rank-hypothesis}) it inherits (here $V(G) = V_\alpha$, since the
   proposition is applied to a spanning $G$, so the relative form coincides with
-  the absolute $\dim Z = D + \operatorname{def}$). The genericity-free upper
-  bound $\mathtt{hub}$ remains a distinct Phase-19-partition obligation, carried
-  as an explicit hypothesis.
+  the absolute $\dim Z = D + \operatorname{def}$).
 \end{proof}
 
 \subsection{The induction skeleton and base case}

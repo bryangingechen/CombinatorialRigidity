@@ -748,6 +748,19 @@ housekeeping pass once their resolution is fully indexed.
   General rescue: **parenthesize the leading `V(…)`-expression** (`(V(G).ncard - V(H).ncard) + 1`, or
   `1 + (…)`), which is what `lean_multi_attempt` confirmed in seconds vs. an edit-build cycle.
 
+### [resolved] `bodyBarDim (k+1) = screwDim k` won't close by `omega` after `Nat.choose_two_right`
+- **Where it bit:** `BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
+  (the `hub` maximize step, `AlgebraicInduction/PanelLayer.lean`), reconciling the screw-space `D =
+  screwDim k = (k+2).choose 2` with the body-bar `D = bodyBarDim (k+1) = (k+1)(k+2)/2`.
+- **Friction:** after `rw [Graph.bodyBarDim, screwDim, Nat.choose_two_right]` the goal is
+  `(k+1+1)*(k+1)/2 = (k+2)*(k+2-1)/2`; `omega` can't see through the `/2` integer division plus the
+  truncated `k+2-1`, and `ring` chokes on the truncated subtraction (ℕ).
+- **Fix:** normalize the two sides to syntactic equality first —
+  `rw [Graph.bodyBarDim, screwDim, Nat.choose_two_right, show k + 2 - 1 = k + 1 from rfl, Nat.mul_comm]`.
+  Confirmed in seconds via `lean_multi_attempt`.
+- **Status:** resolved (no lift — narrow; the two `D` conventions only meet at this one panel-layer
+  reconciliation. If a second callsite appears, promote to a named `bodyBarDim_succ_eq_screwDim` mirror).
+
 ### [resolved] `Set.ncard_iUnion_of_finite` returns a `finsum` (`∑ᶠ`), not a `Finset.sum` — bridge with `finsum_eq_sum_of_fintype`
 - **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction/`
   (the forest-packing descent's pigeonhole: `∑ i, (Fs i ∩ vfib).ncard = (B ∩ vfib).ncard`

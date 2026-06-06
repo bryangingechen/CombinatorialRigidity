@@ -1044,6 +1044,42 @@ theorem screwDim_mul_numParts_sub_le_finrank_partitionMotions [Finite α] [Finit
   zify at hfull hinf hWf
   omega
 
+/-- **`hub`: the genericity-free codimension lower bound `D + def(G̃) ≤ dim Z(G,p)`**
+(`lem:trivial-motions-rank-bound`; Katoh–Tanigawa 2011 Proposition 1.1, the lower-bound half;
+Jackson–Jordán 2009 Thm 6.1). Maximizing the dimension lower bound
+`D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)`
+(`screwDim_mul_numParts_sub_le_finrank_partitionMotions`) over partitions `P` of `V(G)`: at the
+`def`-attaining `f` (`exists_eq_ciSup_of_finite`, a finite supremum under `[Finite α]`) the left
+side reads `D + partitionDef(P) = D + def(G̃)` once `screwDim k = bodyBarDim (k+1)` reconciles the
+two `D` conventions (`(k+2 choose 2) = (k+1)(k+2)/2`), and the transfer
+`partitionMotions f ≤ infinitesimalMotions` carries the bound to `dim Z`. Every hinge is required
+genuine (`F.supportExtensor e ≠ 0`), the `C(e) ≠ 0` the per-crossing-edge cut needs. This is the
+explicit `hub` hypothesis of `rigidityMatrix_prop11` (at `n = k + 1`); discharging it removes the
+genericity-free lower bound from that node's premises. -/
+theorem screwDim_add_deficiency_le_finrank_infinitesimalMotions [Nonempty α] [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) (hC : ∀ e, F.supportExtensor e ≠ 0) :
+    (screwDim k : ℤ) + F.graph.deficiency (k + 1)
+      ≤ (Module.finrank ℝ F.infinitesimalMotions : ℤ) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  -- `D = screwDim k = bodyBarDim (k+1)` reconciles the screw-space and body-bar `D` conventions.
+  have hDcast : (Graph.bodyBarDim (k + 1) : ℤ) = (screwDim k : ℤ) := by
+    have : Graph.bodyBarDim (k + 1) = screwDim k := by
+      rw [Graph.bodyBarDim, screwDim, Nat.choose_two_right,
+        show k + 2 - 1 = k + 1 from rfl, Nat.mul_comm]
+    exact_mod_cast this
+  -- Pick a partition `f` of `V(G)` attaining `def(G̃)` (a finite supremum under `[Finite α]`).
+  obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := F.graph.partitionDef (k + 1))
+  rw [Graph.deficiency, ← hf]
+  -- The dimension lower bound at this `f`, and the transfer `partitionMotions f ≤ Z`.
+  have hlb := F.screwDim_mul_numParts_sub_le_finrank_partitionMotions f (fun e _ => hC e)
+  have hmono : Module.finrank ℝ (F.partitionMotions f)
+      ≤ Module.finrank ℝ F.infinitesimalMotions :=
+    Submodule.finrank_mono (F.partitionMotions_le_infinitesimalMotions f)
+  -- `D·|P| − (D−1)·d_G(P) = D + partitionDef(P)`, so the lower bound reads `D + def ≤ dim Z`.
+  rw [Graph.partitionDef, hDcast]
+  zify at hmono
+  linarith [hlb, hmono]
+
 /-- **The `def`-free floor of `hub`: `D ≤ dim Z(G,p)`** (`lem:trivial-motions-rank-bound`): every
 realization carries at least the `D = screwDim k` trivial motions, so `screwDim k ≤ finrank
 Z(G,p)`. This is the `partitionDef = 0` (trivial one-part partition) instance of the genericity-free

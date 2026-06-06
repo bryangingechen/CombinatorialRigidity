@@ -184,15 +184,20 @@ and the generic-rank argument are in hand.
     CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_eq_range_const,
     CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff,
     CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_trivialMotions,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_screwAssignment}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_screwAssignment,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions}
   \leanok
-  \uses{def:rigidity-matrix}
+  \uses{def:rigidity-matrix, def:D-deficiency}
   For $1 \le i \le D$ let $S^*_i$ be the constant screw assignment with
   $i$-th coordinate $1$ at every vertex. Each $S^*_i$ lies in $Z(G,p)$
   and is trivial, and $\{S^*_1, \dots, S^*_D\}$ is linearly independent
   and spans the space of trivial infinitesimal motions. Hence
   $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$, with equality iff
-  $(G,p)$ is infinitesimally rigid.
+  $(G,p)$ is infinitesimally rigid. More is true and genericity-free: a
+  partition $P$ of $V$ contributes its full part-constant freedoms, giving
+  the codimension bound $D + \operatorname{def}(\tilde G) \le \dim Z(G,p)$
+  on \emph{every} realization (the \texttt{hub} lower bound, the
+  lower-bound half of Proposition~1.1, \cref{prop:rigidity-matrix-prop11}).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -208,6 +213,19 @@ and the generic-rank argument are in hand.
   kernel has dimension exactly $D$ inside the $D|V|$-dimensional
   screw-assignment space. The $D$-dimensional trivial kernel therefore
   forces $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
+
+  For the genericity-free $\mathtt{hub}$ bound, fix a labeling $f$ whose
+  fibers are the parts of $P$, and consider the part-constant assignments
+  $W_f$ (one screw center per part), of dimension $D \cdot |P|$. Each of
+  the $d_G(P)$ edges crossing $P$ imposes one relative-screw constraint
+  $S(u) - S(v) \in \operatorname{span} C(e)$, cutting the part-constant
+  motions $W_f \cap Z(G,p)$ down by at most $D - 1$ per crossing edge (the
+  hinge is genuine, $C(e) \neq 0$); non-crossing edges impose nothing on a
+  part-constant assignment. Rank-nullity over $W_f$ thus gives
+  $\dim (W_f \cap Z) \ge D|P| - (D-1)\,d_G(P) = D + \operatorname{def}_{\tilde
+  G}(P)$. Maximizing over $P$ (a finite supremum) attains
+  $\operatorname{def}(\tilde G)$, and $W_f \cap Z \subseteq Z$ transfers the
+  bound to $\dim Z(G,p) \ge D + \operatorname{def}(\tilde G)$.
 \end{proof}
 
 \subsection{Rank lemmas}
