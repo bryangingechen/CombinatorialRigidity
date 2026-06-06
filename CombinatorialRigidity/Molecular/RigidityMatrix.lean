@@ -491,6 +491,34 @@ theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework k α β)
   refine ⟨fun i => hingeRow u v (c i), linearIndependent_hingeRow huv hc, fun i => ?_⟩
   exact ⟨e, u, v, hlink, c i, hmem i, rfl⟩
 
+/-- **A rigidity row that vanishes off body `v`'s column factors through that column** (the pure
+linear-algebra core of KT eq.~(6.28); Katoh–Tanigawa 2011 §6.4.1, Phase 22d). The candidate-%
+completion row operation of eq.~(6.24)–(6.28) reduces the $(vb)i^*$-row of $R(G, p_1)$ to a row
+whose $V \setminus \{v\}$ part is *all zero* — by definition, a functional `f` on the screw
+assignments `α → ScrewSpace k` that vanishes on every assignment supported off `v` (`S v = 0 ⟹
+f S = 0`). This lemma is the formal content of "such a row is determined by its `v`-column": writing
+`S = Pi.single v (S v) + (S - Pi.single v (S v))`, the second summand is supported off `v` so `f`
+kills it, leaving `f S = f (Pi.single v (S v)) = (f ∘ single v) (S v)`. Hence
+`f = (f ∘ₗ single v) ∘ₗ proj v` factors through body `v`'s screw column.
+
+This is exactly the structural input the candidate-completion's block-triangular rank lift needs:
+the row-operation output of eq.~(6.28) becomes a *pure `v`-column* row `(Σⱼ λ_{(ab)j} rⱼ(q(ab)), 0)`
+(eq.~(6.29)'s `(vb)i^*`-row), which then joins the $va$-block in the pin-a-body new block of
+`linearIndependent_sum_pinned_block` — lifting `v`'s column contribution from `D − 1` to `D`, the
+missing `+1` that takes the stratum-1 brick `D(|V|−1) − 1` to full `D(|V|−1)`. -/
+theorem dualMap_eq_comp_single_proj_of_vanish_off [DecidableEq α]
+    (f : Module.Dual ℝ (α → ScrewSpace k)) (v : α)
+    (hvanish : ∀ S : α → ScrewSpace k, S v = 0 → f S = 0) :
+    f = (f.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)).comp
+      (LinearMap.proj v) := by
+  refine LinearMap.ext fun S => ?_
+  rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.coe_single]
+  -- Split `S = (v-column part) + (off-`v` part)`; `f` kills the second by `hvanish`.
+  have hz : f (S - Pi.single v (S v)) = 0 :=
+    hvanish _ (by rw [Pi.sub_apply, Pi.single_eq_same, sub_self])
+  rw [map_sub, sub_eq_zero] at hz
+  exact hz
+
 /-- **The star independence bridge: rows from distinct hinges at a common body are jointly
 independent** (`def:rigidity-matrix`, the Case-I cross-hinge `hindep` step). Fix a body `v` and a
 family of distinct other endpoints `w : J → α` (`hw` injective, `hwv` each `w j ≠ v`) — a *star*

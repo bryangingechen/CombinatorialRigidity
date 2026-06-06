@@ -6,23 +6,35 @@ an axiomatized claim). Gap-2 leaf + Gap-3 combinatorial shell landed green 2026-
 footnote-6 recon (2026-06-06) settled the analytic kernel's shape; the kernel-route
 decision (2026-06-06, user) is to build the algebraic-independence route directly. The full
 Gap-1 chain — incl. the corank-gap discharge (eq. (6.23), node `lem:case-III-claim-6-11`) — is
-green as of 2026-06-06; Claim 6.11 (eq. (6.23)) is now fully proven. Recon detail lives in the
-design doc (§1.30/§1.31); this note carries the forward plan + a compressed verdict log.
+green as of 2026-06-06; Claim 6.11 (eq. (6.23)) is now fully proven. The **candidate-completion**
+(eqs. (6.24)–(6.29)) is now decomposing: its column-support LA core (eq. (6.28)) landed green; the
+row-op construction of the output row `w` is the open crux. Recon detail lives in the design doc
+(§1.30/§1.31/§1.26); this note carries the forward plan + a compressed verdict log.
 
 ## Current state
 
-**Next concrete commit:** **Candidate-completion — lift 22c's `case_II_placement_eq612`
-`≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate** (eq. (6.24)–(6.29) row-op), now that the redundant
-`ab`-row (Claim 6.11, eq. (6.23)) is green. The Gap-1 chain is complete: the corank-gap discharge
-`exists_redundant_panelRow_ab_of_finrank_eq` (`CaseI.lean`) takes KT's two rank attainments — eq.
-(6.18) `dim span(R(G_v^{ab},q)-rows) = D(m−1)` (seed-rank bridge at the `0`-dof `G_v^{ab}`) and eq.
-(6.22) `dim span(R(G_v,q)-rows) = D(m−1) − k'`, `k' ≤ D−2` (Gap 3) — and produces KT's redundant
-`ab`-row via the **row-set identity** + the abstract pigeonhole. The two finrank equations are the
-remaining wiring beyond this commit: they are the eq.-(6.18)/(6.22) outputs of the green
-`lem:case-III-seed-rank-bridge` / `lem:case-III-rank-attainment` converted through rank-nullity
-(`dim Z + dim span(rigidityRows) = D|α|`) — taken here as the lemma's hypotheses (the honest
-"(6.18) ∧ (6.22) ⟹ (6.23)" step), discharged when the candidate-completion assembly wires the actual
-rank attainments in.
+**Next concrete commit:** **Candidate-completion, next leaf — the row-op *construction* of the
+`v`-column output row `w` (KT eq. (6.24)→(6.27))** from the now-green redundant `ab`-row. This
+commit landed the *first* candidate-completion leaf: the **column-support LA core**
+`BodyHingeFramework.dualMap_eq_comp_single_proj_of_vanish_off` (`RigidityMatrix.lean`), KT eq. (6.28)
+— a rigidity row vanishing on every screw assignment supported off `v` (`S v = 0 ⟹ f S = 0`) factors
+as `f = (f ∘ₗ single v) ∘ₗ proj v`, i.e. is a *pure `v`-column* row. This is the structural fact that
+turns the eq. (6.24)→(6.27) row-op output (whose `V∖{v}` part is all zero) into a `v`-column row that
+then joins the `va`-block in the pin-a-body new block (`linearIndependent_sum_pinned_block`, already a
+`D`-row-capable split), lifting `v`'s column from `D−1` to `D` — the missing `+1` to full `D(|V|−1)`.
+
+**The remaining candidate-completion chain (the crux KT calls out, strata 2–3 / now decomposing).**
+The hard, research-shaped step is the eq. (6.24)→(6.27) row-op *construction*: the redundant
+`ab`-row gives `r i₀ ∈ W ⊔ span(r '' {j≠i₀})` (`W = span(R(G_v,q)-rows)`); lifting that combination to
+`R(G,p₁)` via `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` yields a row `w` of `span(R(G,p₁)-rows)` whose
+`V∖{v}` part vanishes, with `v`-part `Σⱼ λ(ab)j rⱼ(q(ab))` (eq. (6.28)). Then `w` extends the `va`-block
+to a `D`-row new block (`linearIndependent_sum_pinned_block`), giving the `D(|V|−1)`-family **iff** the
+top-left `D×D` block is full rank — KT's eq. (6.29) condition, which is exactly what the Claim-6.12
+`D`-candidate disjunction supplies (Lemma 2.1, green). The next leaf is constructing `w` and its two
+properties (`w ∈ span(R(G,p₁)-rows)`; `w` vanishes off `v` ⟹ feed the column-support core); the
+eq. (6.18)/(6.22) finrank hypotheses of `exists_redundant_panelRow_ab_of_finrank_eq` are wired from the
+green `lem:case-III-seed-rank-bridge`/`lem:case-III-rank-attainment` through rank-nullity
+(`dim Z + dim span(rigidityRows) = D|α|`) in that same assembly.
 
 **The Gap-1 corank-gap discharge is GREEN (this commit).** Two bricks:
 - **Row-set identity** `BodyHingeFramework.span_rigidityRows_eq_sup_span_panelRow_edge` (`Pinning.lean`):
@@ -199,12 +211,26 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
   frameworks agreeing on every `supportExtensor` whose links differ by exactly one edge `e₀`,
   `span(R(Fab)-rows) = span(R(Fv)-rows) ⊔ e₀-block`. The genuine geometric input KT's eq. (6.23) needs.
   Axiom-clean; no blueprint node (span bookkeeping, folded into the discharge node's prose).
-- [x] **Gap 1 — discharge the corank gap at `e = ab`** (this commit):
+- [x] **Gap 1 — discharge the corank gap at `e = ab`** (commit fc2ea7b):
   `BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq` (`CaseI.lean`) — feeds the row-set
   identity + eq. (6.18) (`dim span(R(Gab)-rows) = D(m−1)`) + eq. (6.22) (`= D(m−1) − k'`, `k' ≤ D−2`)
   into `exists_redundant_panelRow_of_edge_of_finrank_lt` ⟹ the redundant `ab`-row (eq. (6.23)). The
   two finrank equations are taken as hypotheses (the honest "(6.18) ∧ (6.22) ⟹ (6.23)" step). Green +
   axiom-clean. Node `lem:case-III-claim-6-11`.
+- [x] **Candidate-completion — column-support LA core** (this commit):
+  `BodyHingeFramework.dualMap_eq_comp_single_proj_of_vanish_off` (`RigidityMatrix.lean`, KT eq. (6.28))
+  — a rigidity row `f` vanishing on every screw assignment supported off `v` (`S v = 0 ⟹ f S = 0`)
+  factors as `f = (f ∘ₗ single v) ∘ₗ proj v`, i.e. is a pure `v`-column row. The structural fact that
+  turns the eq. (6.24)→(6.27) row-op output (`V∖{v}` part all zero) into a `v`-column row joining the
+  `va`-block in `linearIndependent_sum_pinned_block`'s `D`-row-capable pin-a-body split. Axiom-clean.
+  No blueprint node (internal LA infra, like `span_panelRow_edge_eq` / the row-set identity — folds
+  into the eventual candidate-completion discharge node's prose).
+- [ ] **Candidate-completion — the row-op construction of `w`** (next): lift the redundant `ab`-row to
+  `R(G,p₁)` via `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` ⟹ `w ∈ span(R(G,p₁)-rows)` vanishing off `v`
+  (eq. (6.24)→(6.27)). The crux KT calls out (p. 680); likely its own sub-phase.
+- [ ] **Candidate-completion — the conditional rank lift** (after `w`): `w` extends the `va`-block to a
+  `D`-row new block ⟹ `D(|V|−1)`-family conditional on the top-left `D×D` block full rank (eq. (6.29)),
+  discharged by the Claim-6.12 disjunction (Lemma 2.1, green).
 
 ## Deferred sub-phases (future work in the phase)
 
@@ -226,12 +252,17 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Blockers / open questions
 
-- **The full Gap-1 chain is green** (this commit closes it): seed-rank bridge (`def=0`, eq. (6.18)),
+- **The full Gap-1 chain is green** (closed commit fc2ea7b): seed-rank bridge (`def=0`, eq. (6.18)),
   upper bound `lem:case-III-seed-rank-upper` + rank-attainment packaging `lem:case-III-rank-attainment`
   (`def>0`, eq. (6.22)), the genericity-free `hub` lower bound (discharged), the abstract pigeonhole
   leaf + its per-edge instantiation, the row-set identity, and the corank-gap discharge
   (`exists_redundant_panelRow_ab_of_finrank_eq`, node `lem:case-III-claim-6-11`) are all green +
   axiom-clean. No open Gap-1 blocker remains.
+- **Candidate-completion — the row-op construction of `w` (eq. (6.24)→(6.27)) is the open crux.** Its
+  column-support LA core (eq. (6.28), `dualMap_eq_comp_single_proj_of_vanish_off`) is green (this
+  commit); the *construction* of `w` (lifting the redundant `ab`-row's combination to `R(G,p₁)` and
+  showing the `V∖{v}` part vanishes) is research-shaped — KT p. 680. The rank lift past it is then
+  conditional on the top-left `D×D` block (eq. (6.29)), discharged by Claim 6.12.
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -240,21 +271,28 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **Candidate-completion — lift 22c's `case_II_placement_eq612`
-`≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate** (KT eq. (6.24)–(6.29) row-op). The Gap-1 chain is
-fully green: the redundant `ab`-row `exists_redundant_panelRow_ab_of_finrank_eq` (node
-`lem:case-III-claim-6-11`) gives KT's eq. (6.23) — the `D−1` `ab`-rows of `R(G_v^{ab},q)` have one
-redundant modulo `span(R(G_v,q)-rows)` and the rest, taking eq. (6.18)/(6.22) as its two finrank
-hypotheses. Wiring this into `case_II_placement_eq612`'s `≥ D(|V|−1)−1` brick to recover the missing
-`+1` row (the candidate completion) is the next step; then the Claim-6.12 `D`-candidate disjunction
-(extensor-span contradiction via the green Lemma 2.1). `lem:case-III` stays red until that assembly
-lands. The wiring also has to convert the two green rank-attainment nodes' conclusions
-(rigidity / `RankHypothesis (def)`) into the `finrank (span rigidityRows)` equations
-`exists_redundant_panelRow_ab_of_finrank_eq` consumes, via the rank-nullity identity
+**Next concrete commit:** **Candidate-completion, the row-op construction of `w` (KT eq.
+(6.24)→(6.27)).** This commit landed the candidate-completion's first leaf, the column-support LA core
+`dualMap_eq_comp_single_proj_of_vanish_off` (`RigidityMatrix.lean`, KT eq. (6.28)): a rigidity row
+vanishing off `v`'s column is a pure `v`-column row `(f ∘ₗ single v) ∘ₗ proj v`. The next leaf builds
+the row-op output `w` itself — lift the redundant `ab`-row's combination
+(`exists_redundant_panelRow_ab_of_finrank_eq`, green) to `R(G,p₁)` via
+`R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)`, producing `w ∈ span(R(G,p₁)-rows)` vanishing off `v`; the
+column-support core then makes `w` a `v`-column row, which joins the `va`-block in the
+`D`-row-capable pin-a-body split (`linearIndependent_sum_pinned_block`), lifting `case_II_placement_eq612`'s
+`D(|V|−1)−1` to `D(|V|−1)` **conditional on** the top-left `D×D` block being full rank (eq. (6.29)).
+That conditional is then discharged by the Claim-6.12 `D`-candidate disjunction (extensor-span
+contradiction via the green Lemma 2.1). The assembly also converts the green
+`lem:case-III-seed-rank-bridge`/`lem:case-III-rank-attainment` conclusions (rigidity / `RankHypothesis
+(def)`) into the eq. (6.18)/(6.22) `finrank (span rigidityRows)` hypotheses
+`exists_redundant_panelRow_ab_of_finrank_eq` consumes, via rank-nullity
 `dim Z + dim span(rigidityRows) = D|α|` (already used in `finrank_..._le_of_rankPolynomial_...`).
+`lem:case-III` stays red until the assembly lands.
 
 After candidate-completion: the Claim-6.12 disjunction, the `d=3` assembly, and general-`d`
-(Phase 23).
+(Phase 23). The row-op construction of `w` is the crux KT calls out (p. 680); it likely earns its own
+dedicated sub-phase — name it when the construction's shape is clear (the same defer-the-finer-cut
+discipline as 22a→22b, 22c→22d).
 
 KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (Lemmas
 4.3(ii)/4.4/4.7/4.8). Recon detail: design doc §1.30 (footnote-6 kernel) + §1.31
@@ -267,7 +305,14 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **Gap-1 corank-gap discharge — eq. (6.23) (this commit).** Two bricks close the Gap-1 chain. (1)
+- **Candidate-completion column-support core — eq. (6.28) (this commit).**
+  `dualMap_eq_comp_single_proj_of_vanish_off` (`RigidityMatrix.lean`): a rigidity row `f` with
+  `S v = 0 ⟹ f S = 0` equals `(f ∘ₗ single v) ∘ₗ proj v` — split `S = single v (S v) + (S − single v
+  (S v))`, `f` kills the off-`v` summand. The first candidate-completion leaf: KT's eq. (6.24)→(6.27)
+  row-op output has `V∖{v}` part zero, so this makes it a pure `v`-column row that extends the `va`-block
+  to a `D`-row pin-a-body block (`linearIndependent_sum_pinned_block`). No blueprint node (internal LA
+  infra). Axiom-clean. No new friction (standard `Pi.single`/`map_sub` algebra).
+- **Gap-1 corank-gap discharge — eq. (6.23) (commit fc2ea7b).** Two bricks close the Gap-1 chain. (1)
   Row-set identity `span_rigidityRows_eq_sup_span_panelRow_edge` (`Pinning.lean`): two frameworks
   agreeing on every `supportExtensor` (the `ofNormals Gab/Gv ends q` case) with links differing by one
   edge `e₀` have `span(R(Fab)-rows) = span(R(Fv)-rows) ⊔ e₀-block` (the only extra `Fab`-rows are the
