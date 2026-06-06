@@ -77,8 +77,8 @@ Katoh–Tanigawa's **Case III** (phase 22 onward). The table below and
 |   22a | Case I realization (rigid-subgraph splice) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
 |   22b | KT Claim 6.4 (discharges the Case I obligation) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
 |   22c | Case III at `d=3`, stratum 1 (KT Lemma 6.10; the crux) | `Molecular/AlgebraicInduction/` | ✓ |
-|   22d | Case III at `d=3`, strata 2–3 (KT Claim 6.11, the missing `+1` row) | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ◷ |
-|   ⋯ | (deferred) `d=3` assembly: Prop 1.1 `hub` brick + Theorem 5.5 wiring | `Molecular/AlgebraicInduction/` | ◷ |
+|   22d | KT Claim 6.11 (the missing `+1` row) + its green-machinery prerequisites | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ✓ |
+|   ⋯ | (deferred) candidate-completion + Claim 6.12 + `d=3` assembly | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

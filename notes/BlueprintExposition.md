@@ -47,20 +47,19 @@ does not earn an entry. (Calibration: the Phase-21 panel-coplanarity re-scope is
 excluded — KT is clear the conjecture is the *hinge-coplanar* case; our first
 draft just hadn't encoded coplanarity.)
 
-**Codification status (updated 2026-06-05, after 22a).** The **capture/tracking
+**Codification status (updated 2026-06-06, after 22d).** The **capture/tracking
 side is now codified**: this ledger is referenced from the standing process docs
 — `notes/CLAUDE.md` (the directory file list), top-level `CLAUDE.md` *When this
 commit closes a phase* (the blueprint re-read step now also writes ledgered
 nodes), `blueprint/CLAUDE.md` *Proof verbosity* (the crux-node carve-out), and
 `notes/MolecularConjecture.md`. The format, the sharpened inclusion criterion
-(KT-math, not project-side setup), and the `(a)/(b)/(c)` flavors are stable
-across 16 captured entries (17–22a). **The write-stage codification is still
-deferred**, for the file's original reason: *no exposition has been written yet*
-(0 of 16 entries are `done`), so "post-`sorry`-free simplification may change
-what the clean account is" remains untested. Revisit the full *Proof verbosity*
-write-stage rule once the first exposition lands — the natural trigger is
-**22b-close**, when Case I goes fully green (Claim 6.4 discharged) and its
-ledgered nodes get their first write-up.
+(KT-math, not project-side setup), and the `(a)/(b)/(c)` flavors are stable.
+**The write stage has now begun:** the first expositions landed at 22b-close (the
+`lem:claim-6-4` three-brick assembly) and 22d-close (the `lem:case-III-claim-6-11`
+Gap-2→3→1 chain, this commit). The write-late timing held up — both were written
+once the argument was `sorry`-free, so the clean account was stable. The
+remaining `pending` entries write at their own phase-close (Lemma 2.1 + Prop 1.1
+when Case III completes; Phase-20 forest-surgery on its next touch).
 
 ## Format
 
@@ -180,27 +179,34 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   Lemma 6.10/6.13. Labelling by surface analogy ("degree-2 split ⇒ Case II") hid
   the single hardest sub-proof in KT. Pointer: `DESIGN.md` *Phase Case-naming
   must match KT's k-bookkeeping*; `notes/Phase21b.md` *Finding B*.
-- **`lem:case-III` Claim 6.11 / the missing `+1` row — where the real difficulty
-  sits (Gap-3 recon, Phase 22d)** — [pending] **(a)**. **Stable insight:** KT's
-  discharge of the redundant `ab`-row factors as (Gap 2) a matroid-base fact
-  (`ãb ⊄` some base of `M(G̃_v^{ab})`, green), (Gap 3) eq. (6.22) computing the
-  rank of the *specific* restricted realization `R(G_v, q|_{E_v})`, and (Gap 1) a
-  pigeonhole turning the matroid redundancy into a linear one. The
-  research-shaped **kernel is Gap 3's eq. (6.22), which bottoms on KT footnote 6**:
-  *one nonparallel realization attaining the rank ⟹ all generic ones do, and the
-  already-chosen seed `q` restricted to `E_v` inherits algebraic independence, so
-  it is itself generic and attains the rank.* This is a **rank-of-a-given-seed**
-  statement — a different object from the *existence* of a full-rank realization
-  (the form the project's IH motive `HasFullRankRealization` supplies), and the
-  Phase-21b genericity device runs the opposite direction (one-point independence
-  ⟹ existence of a good point). So Gaps 3+1 share one kernel — "the rigidity matrix
-  at the inductively-fixed seed attains the rank `M(G̃)` predicts" — which is the
-  genuinely-new analytic content. The `0`-dof rigidity core of this kernel
-  landed green as `lem:case-III-seed-rank-bridge` (Phase 22d,
-  `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`: rigid at one seed
-  ⟹ rigid at every alg-indep-over-ℚ seed); the `def>0` rank form + the pigeonhole
-  (Gap 1) remain. Pointer: `notes/Phase22d.md` *Gap 3 recon (2026-06-06)* +
-  *Hand-off*; KT pp. 684–685, eq. (6.22) + footnote 6.
+- **`lem:case-III-claim-6-11` / the redundant `ab`-row — where the real difficulty
+  sits (Gap-2→3→1, Phase 22d)** — [done (`case-iii.tex`, 22d-close)] **(a)**. **Stable
+  insight:** KT's discharge of the redundant `ab`-row factors as (Gap 2) a matroid-base
+  fact (`ãb ⊄` some base of `M(G̃_v^{ab})`), (Gap 3) eq. (6.22) computing the rank of the
+  *specific* restricted realization `R(G_v, q|_{E_v})`, and (Gap 1) a pigeonhole turning
+  the matroid redundancy into a linear one. The research-shaped **kernel is Gap 3's eq.
+  (6.22), which bottoms on KT footnote 6**: *one nonparallel realization attaining the
+  rank ⟹ all generic ones do, and the already-chosen seed `q` restricted to `E_v` inherits
+  algebraic independence, so it is itself generic and attains the rank.* This is a
+  **rank-of-a-given-seed** statement — a different object from the *existence* of a
+  full-rank realization (the form the project's IH motive `HasFullRankRealization`
+  supplies), and the Phase-21b genericity device runs the opposite direction (one-point
+  independence ⟹ existence of a good point) — which is why it forced the project's first
+  algebraic-independence use (footnote 6: "*this* seed", not "*∃* a seed"; tracker
+  `notes/AlgebraicIndependence.md`). So Gaps 3+1 share one kernel — "the rigidity matrix at
+  the inductively-fixed seed attains the rank `M(G̃)` predicts" — the genuinely-new
+  analytic content. **Whole chain green + axiom-clean at 22d-close:**
+  `lem:case-III-claim-6-11-base` (Gap 2), `lem:case-III-gap3-minimalKDof` (Gap 3
+  combinatorial), the seed-rank kernel (`lem:case-III-seed-rank-bridge` `def=0` rigidity
+  transfer + `-seed-rank-upper` `def>0` upper bound + `-rank-attainment` exact rank), and
+  the pigeonhole + row-set identity feeding `lem:case-III-claim-6-11` (Gap 1, the
+  eq.-(6.18)/(6.22)⟹(6.23) discharge). **Written** (22d-close, this commit): the
+  `case-iii.tex` proofs spell the Gap-2→3→1 argument out in full, including the
+  footnote-6 rational-`Q`/alg-indep-non-root step and the row-set identity that instantiates
+  the abstract pigeonhole at `G_v^{ab}` / `G_v`. What stays *open* (deferred successor) is
+  not Claim 6.11 but the **candidate-completion** that converts its redundant `ab`-row into
+  the missing `+1` full-rank row (eq. (6.24)→(6.29)) + the Claim-6.12 disjunction. Pointer:
+  `notes/Phase22d.md`; ROADMAP §22d; KT pp. 684–685, eq. (6.22) + footnote 6.
 - **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
   **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
