@@ -2339,6 +2339,21 @@ kernel" to "irreducible kernel = a *named* `non-root-from-alg-indep` brick"; it 
 later dedicated math-first sub-phase, carried-as-hypothesis. Full Q1–Q5 in
 `notes/Phase22d.md` *Footnote-6 kernel recon (2026-06-06)*.
 
+### 1.31 Phase 22d, kernel-route decision + the algebraic-independence relaxation tracker (2026-06-06)
+
+§1.30 named the kernel as genuinely-new content; its default was carry-as-hypothesis.
+**User decision (2026-06-06): build the algebraic-independence route DIRECTLY to fully
+green** (the certain path = KT's actual argument), NOT carry-as-hypothesis and NOT the
+unverified product-route shortcut — superseding §1.30's "carried-as-hypothesis" tail.
+The product-route shortcut (choose the seed at the Claim-6.11 composition as a non-root
+of the *finite product* of the nested IH rank polynomials, avoiding alg-independence at
+`d=3`) is captured as a deferred **relaxation TODO**, with a tracker of *every*
+molecular-program site that leans on algebraic independence (the genericity
+device/Claim 6.4 *avoided* it; the 22d kernel is the *first forced* site; Phase 23
+likely), in the standing note **`notes/AlgebraicIndependence.md`** (the single source —
+not duplicated here). Full decision + effect-on-plan: `notes/Phase22d.md` *Kernel-route
+decision (2026-06-06, user)*.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

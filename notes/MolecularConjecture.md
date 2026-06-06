@@ -832,6 +832,18 @@ Jackson–Jordán [13], conjecture-resolution to KT.
    panel-data analysis: `DESIGN.md` *Panel-hinge = hinge-coplanar
    body-hinge*. **Resolved:** the panel layer landed (Phase 21 + the
    Phase-21a meet substrate); Phases 21/21a/21b are complete.
+8. **Algebraic independence — relaxation TODO + usage tracker** (found
+   2026-06-06, Phase 22d). KT's "generic nonparallel" inductive realization
+   = algebraically-independent-over-ℚ coordinates; the project has **avoided**
+   it so far (existence/Zariski device + general position — incl. for Claim
+   6.4/6.9, 21b/22b), but the **Phase-22d Claim-6.11 kernel** (footnote 6,
+   eq. (6.22)) is the **first forced site** (needs "*this* seed attains the
+   rank", not "*∃* a seed"). Chosen path: build the alg-independence route to
+   green; a candidate **product-route relaxation** (stay in the existence
+   formulation at `d=3`) is deferred. **Standing instruction: whenever a new
+   alg-independence use is introduced (e.g. Phase 23 general-`d`), add a row to
+   the tracker `notes/AlgebraicIndependence.md`** — the single source for the
+   relaxation question + every site.
 
 ## Opening the next phase
 
