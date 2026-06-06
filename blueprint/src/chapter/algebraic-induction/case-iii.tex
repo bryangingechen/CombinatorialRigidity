@@ -669,30 +669,76 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   the zero functional on $S$, and $\operatorname{span} S = \R^D$, so $r = 0$.
 \end{proof}
 
+The contrapositive needs the union~(6.45) to span $\R^D$, and this in turn rests on
+\emph{two} facts that the single old node bundled but that the capstone consumes separately:
+(N3a) four \emph{affinely-independent} points $p_1, \dots, p_4$ realizing the
+$\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern --- so that Lemma~2.1
+(\cref{lem:case-III-claim612-extensor-span}) forces their six joins to span; and (N3b) the
+\emph{point-join $\leftrightarrow$ panel-meet duality}, which turns the capstone's hypothesis
+``$r \perp C(L)$ for every line $L$ in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$'' into ``$r$
+annihilates each spanning join $p_i \vee p_j$''. The first is a general-position
+(configuration non-degeneracy) fact; the second --- the genuinely new content --- is
+Grassmann--Cayley projective duality.
+
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
-  \label{lem:case-III-claim612-points}
-  \uses{def:rigidity-matrix}
-  Let $(G_v^{ab}, q)$ be a generic nonparallel framework at $d = 3$, with panel hyperplanes
-  $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$ at the three bodies $a, b, c$. Then there exist four
-  affinely-independent points realizing the triple-intersection incidence pattern
+  \label{lem:case-III-claim612-points-affineIndep}
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  Let $(G_v^{ab}, q)$ be a panel-hinge framework at $d = 3$ in general position
+  (\cref{def:panel-hinge-framework}: pairwise-independent panel normals $n_a, n_b, n_c$), with
+  panel hyperplanes $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$ at the three bodies $a, b, c$. Then
+  there exist four \emph{affinely-independent} points $p \colon \mathrm{Fin}\,4 \to \R^3$
+  realizing the triple-intersection incidence pattern
   \[
     p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c), \quad
     p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \quad
     p_3 \in \Pi(b) \cap \Pi(c) \setminus \Pi(a), \quad
     p_4 \in \Pi(c) \cap \Pi(a) \setminus \Pi(b),
   \]
-  and every line $p_i p_j$ ($1 \le i < j \le 4$) is contained in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$ ---
-  so each $2$-extensor $p_i \vee p_j$ supports a line in some $\Pi(u)$ and belongs to the
-  union~(6.45).
+  where membership is the panel-incidence relation $p_i \in \Pi(u) \Leftrightarrow
+  \langle \bar{p_i}, n_u \rangle = 0$ on the homogenization $\bar{p_i}$. The four points
+  span an affine $3$-simplex; this is the affine independence \cref{lem:case-III-claim612-extensor-span}
+  consumes (its six $2$-extensors $\bar{p_i} \vee \bar{p_j}$ then span $\R^D$).
 \end{lemma}
 \begin{proof}
-  Genericity / general position of the nonparallel framework: the three panel hyperplanes are in
-  general position, so their pairwise and triple intersections are an affine point, lines, and the
-  configuration can be chosen affinely independent (KT p.~691). Each pair $\{p_i, p_j\}$ shares at
-  least one of the three hyperplanes by the incidence pattern (any two of the four points lie in a
-  common $\Pi(u)$), so the line $p_i p_j$ lies in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$. This is a
-  general-position fact about the realization; cf.\ the algebraic-independence usage tracker
-  (\texttt{notes/AlgebraicIndependence.md}).
+  General position of the three panels suffices --- \emph{no} algebraic / transcendence assumption
+  on the seed. With $n_a, n_b, n_c$ pairwise independent the three hyperplanes
+  $\Pi(a), \Pi(b), \Pi(c)$ meet generically, so the triple intersection is a single affine point
+  ($p_1$), each pairwise intersection is a line, and a point can be chosen on each pairwise line
+  off the third panel ($p_2, p_3, p_4$); a determinant computation on the homogenized coordinates
+  shows the four are affinely independent (KT p.~691). The incidence pattern is read off the
+  three vanishing/non-vanishing conditions $\langle \bar{p_i}, n_u \rangle = 0$.
+\end{proof}
+
+\begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
+  \label{lem:case-III-claim612-line-in-panel-union}
+  \uses{def:join, def:meet, def:meet-complement-iso, def:panel-support-extensor,
+        lem:extensor-independence, lem:case-III-claim612-extensor-span}
+  At $d = 3$ ($D = 6$, $k = 2$, $\mathrm{ScrewSpace}\,2 = \bigwedge^2 \R^4$), let $p_i, p_j$ be two
+  of the points of \cref{lem:case-III-claim612-points-affineIndep} whose connecting line
+  $L = p_i p_j$ lies in a panel $\Pi(u)$ ($u \in \{a, b, c\}$). Then the point-join
+  $\bar{p_i} \vee \bar{p_j} \in \bigwedge^2 \R^4$ and the panel-meet supporting extensor
+  $C(L) = \mathrm{panelSupportExtensor}\ n_u\ (\cdot) = \mathrm{complementIso}(n_u \wedge \cdot)
+  \in \bigwedge^2 \R^4$ of the same line are \emph{scalar multiples} of one another (both are the
+  Pl\"ucker coordinate vector of the line $L$, up to the projective scale). Consequently a screw
+  functional $r \in \mathrm{Module.Dual}\ \R\ (\mathrm{ScrewSpace}\,2)$ that annihilates
+  \emph{every} panel-meet extensor $C(L)$ of lines $L \subset \Pi(a) \cup \Pi(b) \cup \Pi(c)$
+  also annihilates each spanning join: $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$.
+\end{lemma}
+\begin{proof}
+  Both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ are $2$-extensors in $\bigwedge^2 \R^4$
+  representing the same projective line $L$. The join $\bar{p_i} \vee \bar{p_j}$
+  (\cref{def:join}) is the line's supporting extensor written from \emph{two points on it}; the
+  meet $C(L)$ (\cref{def:meet}, the complement iso \cref{def:meet-complement-iso} of the
+  grade-$2$ join of two panel normals, \cref{def:panel-support-extensor}) is the same line's
+  supporting extensor written from \emph{two hyperplanes through it} --- and the Grassmann--Cayley
+  duality of \cref{sec:molecular-meet} makes these two presentations of a $1$-dimensional
+  projective subspace agree up to a nonzero scalar (both span the $1$-dimensional extensor line of
+  $L$ in $\bigwedge^2 \R^4$, which is nonzero precisely because $L$ is a genuine line). The
+  annihilation transfer is then immediate: $r(C(L)) = 0$ and $\bar{p_i} \vee \bar{p_j}
+  = \lambda\, C(L)$ give $r(\bar{p_i} \vee \bar{p_j}) = \lambda\, r(C(L)) = 0$. This is the
+  duality KT use implicitly when reading eq.~(6.45): the spanning family of
+  \cref{lem:case-III-claim612-extensor-span} (point-joins) and the annihilated family of the
+  contrapositive (panel-meets) are the \emph{same} extensors of the lines in the panel union.
 \end{proof}
 
 \begin{lemma}[Block full rank $\Leftrightarrow$ $\hat r \notin (\operatorname{span} C)^\perp$; KT (6.42) row-space criterion]
@@ -833,7 +879,8 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
 \begin{lemma}[Claim 6.12: at least one of $M_1, M_2, M_3$ has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
   \label{lem:case-III-claim612}
   \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish,
-        lem:case-III-claim612-points, lem:case-III-claim612-block-iff-perp,
+        lem:case-III-claim612-points-affineIndep, lem:case-III-claim612-line-in-panel-union,
+        lem:case-III-claim612-block-iff-perp,
         lem:case-III-claim612-r-nonzero, lem:case-III-claim612-p2-placement,
         lem:case-III-claim612-p3-placement, lem:case-III-claim612-eq644}
   At $d = 3$, for the three candidate placements $p_1, p_2, p_3$
@@ -852,14 +899,17 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   all $L' \subset \Pi(b)$. For $M_3$, eq.~(6.44) (\cref{lem:case-III-claim612-eq644}) makes its
   candidate row $\sum_j \lambda_{(ac)j}\, r_j(q(ac)) = -r$, so $M_3$ failing puts the \emph{same} $r$
   in $(\operatorname{span} C(L''))^\perp$ for all $L'' \subset \Pi(c)$. Hence $r$ is orthogonal to
-  every supporting extensor in the union~(6.45),
+  every panel-meet supporting extensor $C(L)$ in the union~(6.45),
   $\bigl(\bigcup_{L \subset \Pi(a)} C(L)\bigr) \cup \bigl(\bigcup_{L' \subset \Pi(b)} C(L')\bigr)
-  \cup \bigl(\bigcup_{L'' \subset \Pi(c)} C(L'')\bigr)$. Taking the four points
-  $p_1, p_2, p_3, p_4$ of \cref{lem:case-III-claim612-points} (whose connecting lines all lie in
-  $\Pi(a) \cup \Pi(b) \cup \Pi(c)$, so each $p_i \vee p_j$ is in the union~(6.45)), Lemma~2.1
-  forces their six $2$-extensors to span $\R^D$ (\cref{lem:case-III-claim612-extensor-span}). So $r$
-  annihilates a spanning set and $r = 0$ (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting
-  $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}). Therefore at least one block has full rank.
+  \cup \bigl(\bigcup_{L'' \subset \Pi(c)} C(L'')\bigr)$. Take the four affinely-independent points
+  $p_1, p_2, p_3, p_4$ of \cref{lem:case-III-claim612-points-affineIndep}: each connecting line
+  $p_i p_j$ lies in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$, so by the point-join $\leftrightarrow$
+  panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}) the join $p_i \vee p_j$ is a
+  scalar multiple of that line's panel-meet $C(L)$, hence $r$ annihilates each $p_i \vee p_j$ too.
+  But the six joins span $\R^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1 on the four
+  affinely-independent points). So $r$ annihilates a spanning set and $r = 0$
+  (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting $r \ne 0$
+  (\cref{lem:case-III-claim612-r-nonzero}). Therefore at least one block has full rank.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -905,9 +955,11 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   $a$ along $vc$ via $G_v^{ab} \cong G_a^{vc}$), and show at least one has a full-rank top-left
   block. The degree-2 condition forces all three to test the \emph{same} vector $r =
   \sum_j \lambda_{(ab)j}\, r_j(q(ab)) \in \R^D$ (eq.~(6.44),
-  \cref{lem:case-III-claim612-eq644}); if all failed, $r$ would annihilate the
-  $\binom{4}{2} = D$ panel-support extensors of four affinely-independent points
-  (\cref{lem:case-III-claim612-points}), which by the extensor-independence Lemma~2.1
+  \cref{lem:case-III-claim612-eq644}); if all failed, $r$ would annihilate every panel-meet
+  $C(L)$ of lines in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$, hence --- by the point-join $\leftrightarrow$
+  panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}) --- the
+  $\binom{4}{2} = D$ joins of four affinely-independent points
+  (\cref{lem:case-III-claim612-points-affineIndep}), which by the extensor-independence Lemma~2.1
   (\cref{lem:extensor-independence}, via \cref{lem:case-III-claim612-extensor-span}) span $\R^D$,
   forcing $r = 0$ --- contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}).
   \textbf{Deferred to Phases~22--23} ($d = 3$ first, then general $d$); stated

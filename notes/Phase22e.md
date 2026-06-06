@@ -9,8 +9,9 @@ red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq62
 `linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`, `candidateRow_ne_zero`).
 **N6 is now green** (`linearIndependent_sum_p2_candidateRow`, the symmetric `p₂` producer).
 **N8 is now green** (`candidateRow_ac_eq_neg` + the column-restriction leaves
-`hingeRow_comp_single_{tail,off}`, eq. (6.44)). Next: N3/N7 (research-shaped —
-recon-before-build), capstone N9.
+`hingeRow_comp_single_{tail,off}`, eq. (6.44)). N3 re-shaped this commit into N3a (points) + N3b
+(the point-join↔panel-meet duality bridge) and N7 de-risked. Next: build N7 (lowest-risk), then
+N3b, N3a, capstone N9, N10 flip.
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -24,13 +25,25 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: recon-before-build N3 or N7** (the two research-shaped leaves). N3
-(`lem:case-III-claim612-points`, general position of the 4 incidence points — likely a new
-alg-independence use, `notes/AlgebraicIndependence.md` risk #8) and N7
-(`lem:case-III-claim612-p3-placement`, the `Gᵥᵃᵇ ≅ Gₐᵛᶜ` transport, KT's most compressed step,
-`ofNormals` defeq-trap territory). Both need a recon pass first. The mechanical leaves (N2/N4/N5/N8)
-and the medium producer N6 are all green; only N3, N7, and the capstone N9 remain before N10 flips
-`lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
+**Next concrete commit: build N7 (`lem:case-III-claim612-p3-placement`)** — the lowest-risk
+remaining build, all inputs green. The N3 design pass (this commit) de-risked it: N7 follows N6's
+graph-free producer pattern — build `linearIndependent_sum_p3_candidateRow` as a thin call to the
+abstract assembly `linearIndependent_sum_augment_candidateRow` at the column op `columnOp hac` for
+edge `(a,c)`, with the green N8 `candidateRow_ac_eq_neg` rewrite routing M₃'s row onto the same
+common vector `r̂`. The `Gᵥᵃᵇ ≅ Gₐᵛᶜ` iso is handled **functionally by N8** (eq. (6.44) already
+collapses the M₃ combination onto `r̂`), so there is **no `ofNormals` graph-swap** and the recurring
+defeq trap (*Blockers*) does **not** bite — same as N6. After N7: N3b (the duality bridge, MEDIUM
+risk), N3a (general position, low risk), the capstone N9, then N10 flips `lem:case-II-realization`
++ the `d=3` half of `lem:case-III` green.
+
+**N3 re-shaped (this commit, design pass).** The old single N3 `lem:case-III-claim612-points`
+bundled what N9 actually consumes as two distinct facts; split into **N3a**
+(`lem:case-III-claim612-points-affineIndep`: 4 affinely-independent points, the span side for N1)
+and **N3b** (`lem:case-III-claim612-line-in-panel-union`: the point-join↔panel-meet duality bridge,
+the genuinely-missing content). General position is **not** an alg-independence use —
+`notes/AlgebraicIndependence.md` row #106 re-classified (general position direct from
+`IsGeneralPosition`, no transcendence). All red-node-consistency / supersession / reference gates
+clean; `verify.sh` green (no cycle).
 
 **N6 green** (`linearIndependent_sum_p2_candidateRow`, `RigidityMatrix.lean`, axiom-clean): the
 symmetric `p₂` candidate (`va ↔ vb`). The candidate-completion assembly
@@ -163,10 +176,19 @@ commit (no `\lean`/`\leanok`); build greens them.
   axiom-clean) — a functional `r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with
   `span S = ⊤` is `0`, via `LinearMap.ext_on`. Deps: N1. Dual-annihilator framing (not the
   inner-product `⟨r,r⟩=0` of the original prose) to match the `Module.Dual` candidate-row chain.
-- [ ] **N3** `lem:case-III-claim612-points` — from a generic nonparallel framework, 4
-  affinely-indep points with the `Π(a)/Π(b)/Π(c)` triple-intersection incidence pattern, every line
-  `pᵢpⱼ` in `Π(a)∪Π(b)∪Π(c)`. Deps: `def:rigidity-matrix`. **RESEARCH-SHAPED** (general position;
-  likely a new alg-independence use — see `notes/AlgebraicIndependence.md` risk #8). Recon-before-build.
+- [ ] **N3a** `lem:case-III-claim612-points-affineIndep` — from a general-position framework
+  (`IsGeneralPosition`: pairwise-indep panel normals `n_a,n_b,n_c`), 4 **affinely-independent**
+  points `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence pattern
+  (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. Deps: `def:rigidity-matrix`,
+  `def:panel-hinge-framework`. **LOW RISK** — general position direct from `IsGeneralPosition`, **NOT**
+  an alg-independence use (`notes/AlgebraicIndependence.md` row #106 re-classified).
+- [ ] **N3b** `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet duality
+  bridge: for a pair whose connecting line `L` lies in panel `Π(u)`, the join `pᵢ∨pⱼ` equals a
+  scalar multiple of the panel-meet extensor `C(L) = panelSupportExtensor n_u (·) =
+  complementIso(normalsJoin)`, so `r ⊥ all C(L⊂Π(u)) ⟹ r(pᵢ∨pⱼ)=0`. Grassmann–Cayley duality
+  (Meet.lean `complementIso`/`meet`). Deps: `def:join`, `def:meet`, `def:meet-complement-iso`,
+  `def:panel-support-extensor`, `lem:extensor-independence`, `lem:case-III-claim612-extensor-span`
+  (N1). **MEDIUM RISK** — the genuinely-new content (the duality the old N3 had buried).
 - [x] **N4** `lem:case-III-claim612-block-iff-perp` (`linearIndependent_sumElim_candidateRow_iff` +
   `mem_hingeRowBlock_iff`, green, axiom-clean) — the D functionals (D−1 va-block rows spanning
   `(span C)^⊥` + candidate `r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Built on new mirror
@@ -184,10 +206,15 @@ commit (no `\lean`/`\leanok`); build greens them.
   `lem:case-III-columnop`, `lem:case-III-claim612-block-iff-perp` (all green; **not**
   `lem:case-III-candidate-row` — that would close a dep-graph cycle through the green-modulo
   conditional, FRICTION `[blueprint]`).
-- [ ] **N7** `lem:case-III-claim612-p3-placement` — the p₃ third candidate via the `Gᵥᵃᵇ ≅ Gₐᵛᶜ`
-  isomorphism (degree-2-at-`a`), `columnOp` at `(v,c)`/`(a,c)`. Deps: `lem:case-II-realization-placement`,
-  `lem:case-III-columnop`, `lem:case-III-candidate-row`, N8. **HIGH RISK** (`ofNormals` graph-swap
-  defeq trap, *Blockers*; KT's most-compressed step, eqs. (6.31)–(6.41)). Recon-before-build.
+- [ ] **N7** `lem:case-III-claim612-p3-placement` — the p₃ third candidate (split at degree-2-`a`
+  along `vc`, `Gᵥᵃᵇ ≅ Gₐᵛᶜ`). **DE-RISKED** (N3 design pass, this commit): follows N6's graph-free
+  producer pattern — build `linearIndependent_sum_p3_candidateRow` as a thin call to the abstract
+  assembly `linearIndependent_sum_augment_candidateRow` at `columnOp hac` (edge `(a,c)`) + the green
+  N8 `candidateRow_ac_eq_neg` rewrite routing M₃'s row onto the same `r̂`. The `Gᵥᵃᵇ≅Gₐᵛᶜ` iso is
+  handled **functionally by N8** (no `ofNormals` swap), so the defeq trap (*Blockers*) does **not**
+  bite. Deps: `lem:case-II-realization-placement`, `lem:case-III-columnop`,
+  `lem:case-III-claim612-block-iff-perp`, `lem:case-III-claim612-eq644` (N8) — all green (**not**
+  `lem:case-III-candidate-row`: cycle, FRICTION `[blueprint]`). **LOWEST-RISK remaining build.**
 - [x] **N8** `lem:case-III-claim612-eq644` (`candidateRow_ac_eq_neg` + `hingeRow_comp_single_{tail,off}`,
   green, axiom-clean) — eq. (6.44) `Σⱼ λ_{(ac)j} rⱼ = −Σⱼ λ_{(ab)j} rⱼ`, routing M₃ onto the same `r̂`.
   Stated abstractly: the eq. (6.43) `a`-column combination `(ab-sum)+(ac-sum)+grest` with `grest`
@@ -196,8 +223,9 @@ commit (no `\lean`/`\leanok`); build greens them.
   `lem:case-III-redundant-decomposition` (both green).
 - [ ] **N9** `lem:case-III-claim612` (capstone) — at least one of `M₁/M₂/M₃` is LI; discharges
   `lem:case-III-eq629-conditional`. Contrapositive: all dependent ⟹ `r ⊥ C(L),C(L′),C(L″)` (N4×2 +
-  N8) ⟹ `r` annihilates the span (6.45) spanning set (N3 + N1) ⟹ `r=0` (N2), contradicting N5.
-  Deps: N1–N8. Wired into `lem:case-III`'s `\uses`.
+  N8) ⟹ (N3b duality) `r` annihilates each spanning join `pᵢ∨pⱼ` ⟹ `r` annihilates the span (6.45)
+  spanning set (N3a + N1) ⟹ `r=0` (N2), contradicting N5. Deps: N1, N2, N3a, N3b, N4, N5, N6, N7, N8.
+  Wired into `lem:case-III`'s `\uses`.
 - [ ] **N10 Flip** `lem:case-II-realization` (+ the `d=3` half of `lem:case-III`) green once N9
   discharges `lem:case-III-eq629-conditional`. Candidate-completion subsection nodes are all green
   (green-modulo the conditional N9 closes).
@@ -214,22 +242,22 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: recon-before-build N3 or N7** (the two remaining research-shaped leaves).
-The mechanical leaves (N2/N4/N5/N8) and the medium producer N6 are all green; only N3, N7, and the
-capstone N9 remain.
+**Next concrete commit: build N7 (`lem:case-III-claim612-p3-placement`)** — the lowest-risk
+remaining build, all inputs green. N7 follows N6's graph-free producer pattern: build
+`linearIndependent_sum_p3_candidateRow` as a thin call to the abstract assembly
+`linearIndependent_sum_augment_candidateRow` at `columnOp hac` (edge `(a,c)`) + the green N8
+`candidateRow_ac_eq_neg` rewrite routing M₃'s row onto the common `r̂`. The `Gᵥᵃᵇ≅Gₐᵛᶜ` iso is
+handled **functionally by N8**, so there is **no `ofNormals` graph-swap** and the defeq trap
+(*Blockers*) does **not** bite — same as N6 (the `p₂` producer). Deps all green (N8 = eq. (6.44),
+landed `candidateRow_ac_eq_neg`).
 
-- **N3** (`lem:case-III-claim612-points`) — from a generic nonparallel framework, 4 affinely-indep
-  points with the `Π(a)/Π(b)/Π(c)` triple-intersection incidence pattern (every line `pᵢpⱼ` in
-  `Π(a)∪Π(b)∪Π(c)`). Likely a new alg-independence use; recon against `notes/AlgebraicIndependence.md`
-  risk #8 (add a row if it introduces one).
-- **N7** (`lem:case-III-claim612-p3-placement`) — the `p₃` third candidate via the `Gᵥᵃᵇ ≅ Gₐᵛᶜ`
-  isomorphism (degree-2-at-`a`), `columnOp` at `(v,c)`/`(a,c)`. **HIGH RISK** (`ofNormals` graph-swap
-  defeq trap, *Blockers*; KT's most-compressed step, eqs. (6.31)–(6.41)). Now unblocked: its dep N8
-  (eq. (6.44)) is green, so N7 can consume `candidateRow_ac_eq_neg` to route the `M₃` row onto `r̂`.
-
-Then capstone N9 (`lem:case-III-claim612`, the 3-way disjunction) — which discharges the re-shaped
-`lem:case-III-eq629-conditional`, after which N10 flips `lem:case-II-realization` + the `d=3` half of
-`lem:case-III` green.
+Then, in order: **N3b** (`lem:case-III-claim612-line-in-panel-union`, the point-join↔panel-meet
+duality bridge — MEDIUM risk, the genuinely-new content; deps N1 + the Phase-21a Meet nodes), then
+**N3a** (`lem:case-III-claim612-points-affineIndep`, 4 affinely-indep points — LOW risk, general
+position direct from `IsGeneralPosition`, NOT alg-independence), then capstone **N9**
+(`lem:case-III-claim612`, the 3-way disjunction) — which discharges the re-shaped
+`lem:case-III-eq629-conditional` — after which **N10** flips `lem:case-II-realization` + the `d=3`
+half of `lem:case-III` green.
 
 **Note (the brick-block extraction is deferred to the `d=3` assembly, not 22e).** The assembly
 producer takes `rn`/`ro` as abstract block functionals; the consumer (the unlettered `d=3` assembly
@@ -240,12 +268,24 @@ augment with the real graph data — that is where the **recurring `ofNormals` d
 Downstream (still deferred, unlettered): the `d=3` assembly
 (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring);
 then general-`d` is **Phase 23**. KT math: `notes/Phase22d.md` *Hand-off*, KT §6.4.1
-(eqs. (6.24)–(6.45)); `notes/AlgebraicIndependence.md` (the alg-independence tracker,
-risk #8 — add a row if 22e introduces a new alg-independence use).
+(eqs. (6.24)–(6.45)); `notes/AlgebraicIndependence.md` row #106 (re-classified this commit:
+N3a/N3b are NOT alg-independence sites — general position direct from `IsGeneralPosition`).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3 re-shape — split into N3a (points) + N3b (the duality bridge); N7 de-risked (2026-06-06,
+  design pass, docs/blueprint only).** A recon found the old single N3 `lem:case-III-claim612-points`
+  mis-shaped for its N9 consumer: it promised KT's triple-intersection incidence *device* (the way KT
+  arranges the point choice), but N9 consumes two distinct facts. Split into **N3a**
+  (`lem:case-III-claim612-points-affineIndep`: 4 affinely-indep points, the span side N1 uses) and
+  **N3b** (`lem:case-III-claim612-line-in-panel-union`: the point-join↔panel-meet Grassmann–Cayley
+  duality — `pᵢ∨pⱼ` ∝ `C(L)=panelSupportExtensor=complementIso(normalsJoin)` — the genuinely-missing
+  content N9 needs to turn `r⊥C(L)` into `r(pᵢ∨pⱼ)=0`). Re-wired N9's `\uses` + the `lem:case-III`
+  prose off the old label (no dangling). **General position is NOT alg-independence** (row #106
+  re-classified — direct from `IsGeneralPosition`). **N7 de-risked**: follows N6's graph-free producer
+  pattern (assembly at `columnOp hac` + green N8 routing M₃ onto `r̂`; the iso is functional via N8,
+  no `ofNormals` swap, defeq trap does NOT bite). All gates clean; `verify.sh` green (no cycle).
 - **N8 green — eq. (6.44) is column-restriction regrouping + add-cancellation (2026-06-06).**
   `candidateRow_ac_eq_neg` (`RigidityMatrix.lean`, axiom-clean): the eq. (6.43) `a`-column combination,
   written abstractly as `(ab-sum) + (ac-sum) + grest` with `grest` vanishing off `a` (the
@@ -292,8 +332,9 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
   takes `ρ`/`rn`/`ro` abstractly (verified signature, `RigidityMatrix.lean:806`), so it stays green;
   only the consumer `lem:case-III` instantiates at the chosen candidate. Cut N1–N9 in a new
   `case-iii.tex` subsection (all red, no `\leanok`); N9 capstone wired into `lem:case-III`'s `\uses`.
-  N3/N7 flagged research-shaped (recon-before-build). BlueprintExposition: capture entries added this
-  commit (p₃ transport (a); eq. 6.44 (a); the span (6.45)+Lemma-2.1 step (c)).
+  (N3 later split + N7 de-risked — see the *N3 re-shape* entry above.) BlueprintExposition: capture
+  entries added (p₃ transport (a); eq. 6.44 (a); the span (6.45)+Lemma-2.1 step (c); + the
+  point-join↔panel-meet duality (c), this commit).
 - **Candidate-completion (eqs. (6.24)–(6.29)) — all landed green-modulo, now one-lined.** Eight green
   axiom-clean nodes (commits `78f7eb4`…`3ab70cd`), the candidate-row chain that converts 22d's
   redundant `ab`-row into the missing `+1`: the eqs.-(6.24)/(6.25) extraction
