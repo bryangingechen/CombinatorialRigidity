@@ -1,8 +1,10 @@
 # Molecular Conjecture — cross-phase program plan
 
 **Status:** IN PROGRESS. Phases 17–22d + 21a complete; the current frontier is
-Case III at `d=3` (KT §6.4.1), whose crux KT Claim 6.11 / eq. (6.23) (the
-redundant `ab`-row) landed green + axiom-clean at the close of Phase 22d. Phases
+**Phase 22e** (◷ in progress, opened 2026-06-06) — the candidate-completion +
+KT Claim 6.12 completing Case III at `d=3` (KT §6.4.1), the successor to 22d
+(whose crux KT Claim 6.11 / eq. (6.23), the redundant `ab`-row, landed green +
+axiom-clean at the close of Phase 22d). Phases
 17–20 + 21a delivered `M(G̃)`, deficiency, `k`-dof, the def = corank bridge, the
 Theorem-4.9 combinatorial induction, and the Grassmann–Cayley meet (see
 `notes/Phase19.md`, `notes/Phase20.md`, `notes/Phase21a.md`). Phase 21
@@ -280,7 +282,8 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22b ✓ | **KT Claim 6.4** (discharge the Case-I green-modulo obligation; closed 2026-06-05, `notes/Phase22b.md`). `lem:claim-6-4` (`case_I_realization`'s former `hclaim64`) is **fully discharged** (`\leanok`), so `lem:case-I-realization` is fully green. The reduction N-22b-1/2/3 cut Claim 6.4 to the single hypothesis `htransport`; the discharge then built the three composing bricks — **U3a** `hasGenericRealization_transport_relabel` (the contraction's generic IH transported to the relabel selector), **U3b** the genuine crux (the exterior-column projection loses zero rank on a rigid block, via `Z ⊔ range(extProj) = ⊤` whose one real-content input is the pin-count `finrank(pinnedMotionsOn t) = D(|Vᶜ|+1−|t|)`, plus the projected-subfamily extraction), **U2/U1** the collapse-relabel projected-row reproduction at KT eq. (6.7)'s degenerate placement — and the **route-(i)** motive strengthening (the link-recording conjunct discharging the U3a alignment + the `H`-leg `hswap`/`hne_ends`). The capstone **U4** producer `rigidContract_exterior_rank_transport_htransport` composes U3a ⊕ U3b ⊕ U2 to supply `htransport` from the contraction's generic IH, wired into `case_I_realization` (deleting its `hbundle`). All axiom-clean. The course-correction arc (the crux moved U2→U3, then U3a was found not a leaf; design doc §1.14–§1.24) is in `notes/Phase22b.md`. | §6.1 (Claim 6.4), §6.2, §5.1 | 5 |
 | 22c ✓ stratum 1 | **Case III at `d=3`, stratum 1** (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement; opened 2026-06-05 design-pass-first, stratum-1 producer landed 2026-06-05, crux split out to 22d, `notes/Phase22c.md`). The conjecture's crux: `theorem_55.hsplit` at `k=0`. **Multi-phase**; 22c claimed only stratum 1 — the eq. (6.12) degenerate placement giving `+(D−1)` (`rank ≥ D(\|V\|−1)−1`, green + axiom-clean as `case_II_placement_eq612`, from the green N7b infra). Nodes `lem:case-II-realization`, `lem:case-III` stay red. Opened on a **layer-level design recon, not a build** (`DESIGN.md` *Scale-up: design the LAYER*). | §6.4.1 | 5 |
 | 22d ✓ | **KT Claim 6.11** (the redundant `ab`-row, eq. (6.23)) + its green-machinery prerequisites (closed at the Claim 6.11 milestone; `notes/Phase22d.md`). Attacked the conjecture's hardest node — the *missing `+1` row* lifting 22c's `D(\|V\|−1)−1` brick toward full `D(\|V\|−1)` — **bottom-up**, building the prerequisite chain green + axiom-clean rather than axiomatizing the claim (user override of the opening axiomatize-as-hypothesis verdict). Delivered: the matroid-base 4.3(ii) form at `k=0` (`lem:case-III-claim-6-11-base`, Gap 2), the nested-IH shell `G−v` minimal `k'`-dof with `k' ≤ D−2` (`lem:case-III-gap3-minimalKDof`, Gap 3), the analytic seed-rank kernel (`lem:case-III-seed-rank-bridge` rigidity transfer + `lem:case-III-seed-rank-upper` + `lem:case-III-rank-attainment`), the full `hub` codimension bound (discharged on both consumers), and the redundant-row pigeonhole + row-set identity feeding the eq.-(6.18)/(6.22)⟹(6.23) discharge (`lem:case-III-claim-6-11-redundant-row` → **`lem:case-III-claim-6-11`**, green). The kernel forced the **project's first algebraic-independence use** (KT footnote 6: "*this* seed attains the rank", not "*∃* a seed"); tracker `notes/AlgebraicIndependence.md`. The candidate-completion + **Claim 6.12** disjunction (de-risked on green Lemma 2.1, eq. (6.44) "same `r`") and the `d=3` assembly are the deferred, unlettered successor; its first leaf (eq. (6.28) column-support) landed early under 22d's tail. Nodes `lem:case-II-realization`, `lem:case-III` stay red. | §6.4.1 | 5 |
-| ⋯ (deferred, unlettered) | **The `d=3` assembly** (the further cut, deferred until the crux's shape is clear — it gets a letter when its turn comes): `prop:rigidity-matrix-prop11` `hub` brick (Track-independent, Phase-19-partition) + `thm:theorem-55` flip + wiring the fully-green `case_I_realization` into `theorem_55_generic`'s Case-I branch. | §5.1, §6.4.1 | 5 |
+| 22e ◷ | **candidate-completion + KT Claim 6.12** (completing Case III at `d=3`, Lemma 6.10; opened 2026-06-06 design-pass-first, `notes/Phase22e.md`). Lifts 22c's stratum-1 `D(\|V\|−1)−1` brick to full `D(\|V\|−1)` by converting 22d's green redundant `ab`-row (eq. (6.23)) into the missing `+1` row — the eqs. (6.24)→(6.29) row-op construction of the `v`-column `w` (its eq. (6.28) column-support core already green, landed under 22d's tail = 22e's first leaf) — then the **Claim 6.12** `D`-candidate disjunction (de-risked on the green Lemma 2.1, eq. (6.44) "same `r`"). Flips `lem:case-II-realization` + the `d=3` half of `lem:case-III` green. Opened on a red-node consistency recon (target nodes self-consistent, supersession gate clean), not a build. | §6.4.1 | 5 |
+| ⋯ (deferred, unlettered) | **The `d=3` assembly** (the further cut after 22e — it gets a letter when its turn comes): `prop:rigidity-matrix-prop11` `hub` brick (Track-independent, Phase-19-partition) + `thm:theorem-55` flip + wiring the fully-green `case_I_realization` into `theorem_55_generic`'s Case-I branch. | §5.1, §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -383,13 +386,16 @@ not a build); **22d** = **KT Claim 6.11**
 (the redundant `ab`-row, eq. (6.23)) + its green-machinery prerequisites
 (`notes/Phase22d.md`, ✓ complete at the Claim 6.11 milestone, opened 2026-06-05
 design-pass-first — the conjecture's hardest single argument; the parked "22c+"
-placeholder split into 22c + 22d at 22c open, exactly as 22a→22b+, 22b→22c+). The
-candidate-completion + Claim 6.12 disjunction and the `d=3` assembly
-(`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip + the Case-I wiring) are the
-**deferred, UNLETTERED** successor cut (it gets a letter when its turn comes — the crux may
-itself split). Math for all worked out in
-`notes/Phase21b.md` *Finding A/B*; the green Phase-21b infra — device, count bridge,
-N7b row sub-nodes, splice/union glue — feeds them.
+placeholder split into 22c + 22d at 22c open, exactly as 22a→22b+, 22b→22c+); and
+**22e** = the candidate-completion + Claim 6.12 disjunction (◷ in progress, opened
+2026-06-06; `notes/Phase22e.md`), lifting 22c's `D(|V|−1)−1` brick to full rank and
+flipping `lem:case-II-realization` / the `d=3` half of `lem:case-III` green. The
+`d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip + the
+Case-I wiring) is the remaining **deferred, UNLETTERED** successor cut after 22e (it
+gets a letter when its turn comes — the crux may itself split). Math for all worked out
+in `notes/Phase21b.md` *Finding A/B* + `notes/Phase22d.md` *Hand-off*; the green
+Phase-21b infra — device, count bridge, N7b row sub-nodes, splice/union glue — feeds
+them.
 
 **Phase 22a — Case I realization (§6.2) — ✓ Complete.** Track A:
 the tractable entry point, full-rank, independent of Case III. The composer
@@ -674,32 +680,36 @@ Phases 17–22d + 21a are complete; **Phase 22 (the realization layer) is sub-le
 opened as a single Phase 22 on 2026-06-04, then split the same day into **22a** (Case I
 realization, ✓ complete; `notes/Phase22a.md`), **22b** (KT Claim 6.4, ✓ complete
 2026-06-05; `notes/Phase22b.md`), **22c** (Case III at `d=3`, stratum 1 = the eq. (6.12)
-`+(D−1)` placement, ✓ stratum-1 complete 2026-06-05; `notes/Phase22c.md`), and **22d**
+`+(D−1)` placement, ✓ stratum-1 complete 2026-06-05; `notes/Phase22c.md`), **22d**
 (KT Claim 6.11 + its green-machinery prerequisites, ✓ complete at the Claim 6.11
-milestone; `notes/Phase22d.md`). The candidate-completion + Claim 6.12 + the `d=3`
-assembly are the deferred, UNLETTERED successor cut. Sub-lettering keeps the integer phase
-numbers 23–26 stable.
+milestone; `notes/Phase22d.md`), and **22e** (the candidate-completion + KT Claim 6.12,
+◷ in progress, opened 2026-06-06; `notes/Phase22e.md`). The `d=3` assembly is the
+remaining deferred, UNLETTERED successor cut after 22e. Sub-lettering keeps the integer
+phase numbers 23–26 stable.
 
-**Next sub-phase (UNLETTERED until opened): the candidate-completion + Claim-6.12
-disjunction.** With KT Claim 6.11 / eq. (6.23) green (the redundant `ab`-row), the
-successor lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`) to full
-`D(|V|−1)`: the eq. (6.24)→(6.29) row-op construction of the `v`-column output row `w`
-from that redundant `ab`-row, then the **Claim-6.12** `D`-candidate extensor-span
-disjunction (de-risked — bottoms on the green Phase-17 Lemma 2.1; the degree-2 eq. (6.44)
-forces all candidates to test the same `r ∈ ℝ⁶`). **First leaf already landed under 22d's
-tail** (commit e8e7753): the eq. (6.28) column-support fact
-`dualMap_eq_comp_single_proj_of_vanish_off` (a rigidity row vanishing off `v`'s column is
-a pure `v`-column row) — fold it in when the successor opens. The open crux is the
-research-shaped row-op *construction* of `w` (KT p. 680, eq. (6.24)→(6.27)): lift the
-redundant `ab`-row's combination to `R(G,p₁)` via `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)`,
-producing `w ∈ span(R(G,p₁)-rows)` vanishing off `v`, then extend the `va`-block to a
-`D`-row new block (`linearIndependent_sum_pinned_block`), conditional on the top-left
-`D×D` block full rank (eq. (6.29)), discharged by Claim 6.12. KT math: `notes/Phase22d.md`
-*Hand-off*, KT §6.4.1 (eqs. (6.24)–(6.45)).
+**Current sub-phase (◷ in progress): Phase 22e — the candidate-completion + Claim-6.12
+disjunction** (opened 2026-06-06 design-pass-first; opening recon landed). With KT
+Claim 6.11 / eq. (6.23) green (the redundant `ab`-row), 22e lifts 22c's stratum-1
+`D(|V|−1)−1` brick (`case_II_placement_eq612`) to full `D(|V|−1)`: the eq. (6.24)→(6.29)
+row-op construction of the `v`-column output row `w` from that redundant `ab`-row, then
+the **Claim-6.12** `D`-candidate extensor-span disjunction (de-risked — bottoms on the
+green Phase-17 Lemma 2.1; the degree-2 eq. (6.44) forces all candidates to test the same
+`r ∈ ℝ⁶`). **First leaf already green** (commit e8e7753, under 22d's tail): the eq. (6.28)
+column-support fact `dualMap_eq_comp_single_proj_of_vanish_off` (a rigidity row vanishing
+off `v`'s column is a pure `v`-column row), folded into 22e as its first leaf (it still
+needs a blueprint node, which 22e adds). The open crux is the research-shaped row-op
+*construction* of `w` (KT p. 680, eq. (6.24)→(6.27)): lift the redundant `ab`-row's
+combination to `R(G,p₁)` via `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)`, producing
+`w ∈ span(R(G,p₁)-rows)` vanishing off `v`, then extend the `va`-block to a `D`-row new
+block (`linearIndependent_sum_pinned_block`), conditional on the top-left `D×D` block
+full rank (eq. (6.29)), discharged by Claim 6.12. The opening recon read the target red
+nodes (`lem:case-II-realization`, `lem:case-II-realization-placement`, `lem:case-III`)
+end-to-end and confirmed them self-consistent with the supersession gate clean. KT math:
+`notes/Phase22d.md` *Hand-off*, `notes/Phase22e.md`, KT §6.4.1 (eqs. (6.24)–(6.45)).
 
-**Also deferred, UNLETTERED: the `d=3` assembly** (`prop:rigidity-matrix-prop11` `hub`
+**Still deferred, UNLETTERED: the `d=3` assembly** (`prop:rigidity-matrix-prop11` `hub`
 partition brick, Track-independent, + the `thm:theorem-55` flip + the Case-I wiring),
-and **general-`d`** (Lemma 6.13, Phase 23). Each gets a letter when its turn comes (the
-crux may itself split). When opening the successor, follow the top-level `CLAUDE.md` *When
-this commit opens a phase* protocol and the red-node consistency gate over the
-candidate-completion / Claim-6.12 target nodes.
+the next cut after 22e; and **general-`d`** (Lemma 6.13, Phase 23). Each gets a letter
+when its turn comes. When opening the `d=3`-assembly successor, follow the top-level
+`CLAUDE.md` *When this commit opens a phase* protocol and the red-node consistency gate
+over its target nodes.
