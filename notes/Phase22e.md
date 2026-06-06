@@ -33,23 +33,20 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit (this commit, docs/blueprint): correct the N3a node to match KT — it IS a
-genericity (algebraic-independence) site, not "general position direct from `IsGeneralPosition`".**
-Re-reading KT against `.refs` (p. 691, and the explicit general-`d` form p. 698, eq. (6.67)) shows
-the four points' **affine independence uses genericity**: *"Since `(Gᵥᵃᵇ, q)` is a generic
-nonparallel framework, we can take such four points … affinely independent"* / *"the coefficients
-… expressing `Πᵢ` are algebraically independent over the rational field; therefore for any `j`
-hyperplanes their intersection forms a `(d−j)`-dim affine space."* Pairwise independence of the ℝ⁴
-normals does **not** suffice (parallel panels are pairwise-independent yet have no transversal
-triple point). The 2026-06-06 N3-design-pass re-classification of N3a to "not an alg-independence
-site" was wrong. Fixed the N3a node statement+proof (now `\uses{lem:genericity-device}`, still red)
-and `notes/AlgebraicIndependence.md` row #106 (re-corrected to a genericity site). No Lean touched.
-
-**Next build step after this: N3a via the genericity device** (the 4-point construction +
-affine-independence determinant, sourcing the alg-independence of the panel coefficients from
-`lem:genericity-device`, like the Phase-22d kernel route), **or** the N3b assembly (still the
-multi-commit Hodge-star piece below). N3a is no longer "LOW risk / config-only" — it needs the
-genericity hammer. Both remaining red leaves (N3a, the N3b assembly) are now correctly characterized.
+**Next concrete commit: the N3a-affineIndep determinant** (the genericity remainder of N3a) **or the
+N3b assembly** (the multi-commit Hodge-star piece below). This commit landed the **N3a *existence*
+sub-leaf** `lem:case-III-claim612-panel-point-exists` (`exists_ne_zero_dotProduct_eq_zero`,
+`RigidityMatrix.lean`, green, axiom-clean): `m < d+1` homogeneous incidence equations `⟨p̄, nᵢ⟩ = 0`
+always have a nonzero solution (the `m×(d+1)` system has more columns than rows; rank-nullity ⟹
+nontrivial kernel) — the genericity-free `j`-hyperplane intersection brick that supplies a
+homogeneous representative on every chosen panel (`p₁` on all three at `j=3`, `p₂/p₃/p₄` on each pair
+at `j=2`). N3a stays red: its **affine-independence determinant** (nonvanishing from the algebraic
+independence of the panel coefficients, `lem:genericity-device`) is the remaining genericity content,
+and that — pinning each intersection to its expected dimension — is the genericity hammer (like the
+Phase-22d kernel), the multi-commit piece. New green node `lem:case-III-claim612-panel-point-exists`
+in `case-iii.tex`; N3a's `\uses` + proof prose rewired to cite the existence half (green) and name
+the transversality/determinant half as the red remainder. `verify.sh` + uses/cref + supersession
+gates clean; `lake lint` clean. No new mirror, no FRICTION (clean rank-nullity).
 
 **The N3b assembly (still red, multi-commit).** The three N3b duality leaves are green; the assembly
 places both the point-join `pᵢ∨pⱼ` and the panel-meet `C(L) = complementIso(n_u∧n')` in `⋀²W` as an
@@ -204,12 +201,20 @@ commit (no `\lean`/`\leanok`); build greens them.
   (`lem:genericity-device`: the panel coefficients are algebraically independent over ℚ), 4
   **affinely-independent** points `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence
   pattern (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. Deps:
-  `def:rigidity-matrix`, `def:panel-hinge-framework`, `lem:genericity-device`. **IS an
-  alg-independence (genericity) site** — corrected this commit: KT p. 691/698 eq. (6.67) takes the
-  points affinely independent *because* `q` is generic; pairwise independence of the ℝ⁴ normals
-  does NOT suffice (parallel panels). `notes/AlgebraicIndependence.md` row #106 re-corrected. The
-  build route is the genericity hammer (like the Phase-22d kernel), **not** config-only — no longer
-  "LOW risk".
+  `def:rigidity-matrix`, `def:panel-hinge-framework`, `lem:genericity-device`,
+  `lem:case-III-claim612-panel-point-exists` (the existence sub-leaf, green this commit). **IS an
+  alg-independence (genericity) site** (KT p. 691/698 eq. (6.67): points affinely independent
+  *because* `q` is generic; pairwise independence of the ℝ⁴ normals does NOT suffice). Two halves:
+  - [x] **N3a-exists** `lem:case-III-claim612-panel-point-exists` (`exists_ne_zero_dotProduct_eq_zero`,
+    `RigidityMatrix.lean`, green, axiom-clean) — the **existence** half: `m < d+1` homogeneous
+    incidence equations `⟨p̄, nᵢ⟩ = 0` always have a nonzero solution (the `m×(d+1)` system has more
+    columns than rows; rank-nullity ⟹ nontrivial kernel). Genericity-free — a pure dimension count,
+    the `j`-hyperplane intersection brick (`p₁` on all three at `j=3`; `p₂/p₃/p₄` on each pair at
+    `j=2`). Deps: `def:panel-hinge-framework`.
+  - [ ] **N3a-affineIndep** (red remainder) — the **affine-independence determinant** nonvanishing
+    from the algebraic independence of the panel coefficients (`lem:genericity-device`), pinning each
+    intersection to its expected dimension. The genericity hammer (like the Phase-22d kernel); the
+    multi-commit content. This is what keeps N3a red.
 - [ ] **N3b** `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet duality
   bridge (still red, decomposed this commit). For a pair whose connecting line `L` lies in panel
   `Π(u)`, the join `pᵢ∨pⱼ` equals a scalar multiple of the panel-meet extensor `C(L) =
@@ -291,13 +296,13 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: build N3a via the genericity device** (`lem:case-III-claim612-points-affineIndep`)
-— the 4-point construction + affine-independence determinant, sourcing the algebraic independence of
-the panel coefficients from `lem:genericity-device` (the route the Phase-22d kernel already runs).
-This commit corrected N3a's *characterization* (it IS a genericity site, see *Current state* +
-*Decisions*); the build itself is the next step. The alternative, **the N3b assembly**, remains the
-multi-commit Hodge-star piece (below) — N3a is now the cheaper of the two red leaves, and the only
-one not blocked on missing exterior-power-of-submodule infrastructure.
+**Next concrete commit: the N3a-affineIndep determinant** (`lem:case-III-claim612-points-affineIndep`,
+the genericity remainder). The *existence* half (`lem:case-III-claim612-panel-point-exists`) is green
+this commit; what remains is the **affine-independence determinant** nonvanishing, sourced from the
+algebraic independence of the panel coefficients via `lem:genericity-device` (the route the Phase-22d
+kernel already runs) — the multi-commit genericity hammer that pins each panel intersection to its
+expected dimension. The alternative, **the N3b assembly**, remains the multi-commit Hodge-star piece
+(below); both remaining red leaves are now correctly characterized.
 
 **Why N3b's assembly is the hard remainder:** identifying `⋀²W` (the exterior square of the
 2-dim `W = {n_u,n'}^⊥`) with the image inside `⋀²ℝ⁴` where the two concrete extensors live needs the
@@ -328,6 +333,17 @@ N3b stays alg-independence-free, pure Grassmann–Cayley).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3a-exists green — the existence half is a genericity-free dimension count (2026-06-06).**
+  `exists_ne_zero_dotProduct_eq_zero` (`RigidityMatrix.lean`, axiom-clean): `m < d+1` homogeneous
+  incidence equations `⟨p̄, nᵢ⟩ = 0` always have a nonzero solution — the incidence map `ℝ^(d+1) →
+  ℝ^m` has source dim > target dim, so rank-nullity (`finrank_range_add_finrank_ker`) forces a
+  nontrivial kernel (`Submodule.finrank_eq_zero` / `nontrivial_iff_ne_bot` / `exists_ne`). The
+  `j`-hyperplane intersection brick: a homogeneous representative exists on every chosen panel
+  (`p₁` at `j=3`, `p₂/p₃/p₄` at `j=2`). N3a stays red — its affine-independence determinant
+  (genericity-pinned, `lem:genericity-device`) is the multi-commit remainder. New green node
+  `lem:case-III-claim612-panel-point-exists` in `case-iii.tex`; N3a's `\uses` + prose rewired to
+  split existence (green) from the transversality/determinant half (red). No new mirror, no FRICTION
+  (clean rank-nullity).
 - **N3a IS a genericity (algebraic-independence) site — consistency fix (2026-06-06, docs/blueprint
   only).** Re-reading KT against `.refs` overturned the same-day N3-design-pass claim that N3a's
   affine independence is "general position direct from `IsGeneralPosition`, NOT alg-independence."

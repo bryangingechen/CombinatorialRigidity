@@ -159,6 +159,43 @@ theorem eq_zero_of_annihilates_span_top {k : ℕ} {S : Set (ScrewSpace k)}
   -- `r` agrees with `0` on the spanning set `S`, hence everywhere (`LinearMap.ext_on`).
   LinearMap.ext_on hS (fun x hx => by simp [hr x hx])
 
+/-- **The intersection of `< d+1` panel hyperplanes in `ℝ^(d+1)` is nonempty as a projective
+locus** (`lem:case-III-claim612-points-affineIndep`, the existence half of KT eq. (6.45)'s point
+choice; the `j`-hyperplane intersection brick). Given a family `n : Fin m → (Fin (d+1) → ℝ)` of
+`m` panel normals with `m < d + 1`, the homogeneous incidence system `⟨p̄, n i⟩ = 0` for all `i`
+has a *nonzero* solution `p̄ : Fin (d+1) → ℝ`: the `m × (d+1)` coefficient matrix has strictly more
+columns than rows, so its null space is nontrivial. This is the geometric existence step behind
+KT's "for any `j` of the hyperplanes their intersection forms a `(d-j)`-dimensional affine space"
+(p. 698, eq. (6.67)): with `m = j` panels, the homogeneous (projective) solution set is a genuine
+`(d+1-j)`-dimensional subspace, hence nonempty, so a representative homogeneous point exists on
+every one of the chosen panels. (The *affine independence* of the four chosen points — that they
+span an affine `3`-simplex at `d = 3` — is the genericity content of the full
+`lem:case-III-claim612-points-affineIndep`, still red: it needs the affine-independence determinant
+nonvanishing from the algebraic independence of the panel coefficients, `lem:genericity-device`.) -/
+theorem exists_ne_zero_dotProduct_eq_zero {d m : ℕ} (hm : m < d + 1)
+    (n : Fin m → Fin (d + 1) → ℝ) :
+    ∃ p : Fin (d + 1) → ℝ, p ≠ 0 ∧ ∀ i, p ⬝ᵥ n i = 0 := by
+  classical
+  -- View the incidence system as the linear map `(Fin (d+1) → ℝ) → (Fin m → ℝ)`,
+  -- `p ↦ (i ↦ ⟨p, n i⟩)`; its source outranks its target, so the kernel is nontrivial.
+  set f : (Fin (d + 1) → ℝ) →ₗ[ℝ] (Fin m → ℝ) :=
+    { toFun := fun p i => p ⬝ᵥ n i
+      map_add' := fun p q => by ext i; simp [add_dotProduct]
+      map_smul' := fun c p => by ext i; simp [smul_dotProduct] } with hf
+  -- `finrank (ker f) = (d+1) - rank f ≥ (d+1) - m > 0`.
+  have hrange : Module.finrank ℝ (LinearMap.range f) ≤ m := by
+    refine le_trans (Submodule.finrank_le _) ?_
+    simp
+  have hker : 0 < Module.finrank ℝ (LinearMap.ker f) := by
+    have hrk := f.finrank_range_add_finrank_ker
+    rw [Module.finrank_pi, Fintype.card_fin] at hrk
+    omega
+  -- A positive-dimensional kernel is nontrivial, so it contains a nonzero vector.
+  have hne : LinearMap.ker f ≠ ⊥ := by rw [Ne, ← Submodule.finrank_eq_zero]; omega
+  obtain ⟨⟨p, hp⟩, hpne⟩ := @exists_ne _ (Submodule.nontrivial_iff_ne_bot.mpr hne) 0
+  refine ⟨p, fun h => hpne (Subtype.ext (by simpa using h)), fun i => ?_⟩
+  exact congrFun (LinearMap.mem_ker.mp hp) i
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

@@ -680,9 +680,32 @@ annihilates each spanning join $p_i \vee p_j$''. The first is a \emph{genericity
 (transversality of the panel arrangement at a generic seed) fact; the second --- the genuinely
 new content --- is Grassmann--Cayley projective duality.
 
+\begin{lemma}[The intersection of fewer than $d+1$ panels has a homogeneous representative; KT eq.\ (6.45), existence half]
+  \label{lem:case-III-claim612-panel-point-exists}
+  \lean{CombinatorialRigidity.Molecular.exists_ne_zero_dotProduct_eq_zero}
+  \leanok
+  \uses{def:panel-hinge-framework}
+  Given $m < d + 1$ panel normals $n \colon \mathrm{Fin}\,m \to \R^{d+1}$, the homogeneous incidence
+  system $\langle \bar p, n_i \rangle = 0$ ($1 \le i \le m$) has a \emph{nonzero} solution
+  $\bar p \in \R^{d+1}$: the $m \times (d+1)$ coefficient matrix has strictly more columns than rows,
+  so its null space is nontrivial. This is the existence half of KT's "for any $j$ of the
+  hyperplanes their intersection forms a $(d - j)$-dimensional affine space" (p.~698, eq.~(6.67)):
+  with $m = j$ chosen panels, the projective solution set is a genuine $(d + 1 - j)$-dimensional
+  subspace, hence carries a homogeneous representative incident to every chosen panel ($p_1$ on all
+  three at $j = 3$; $p_2, p_3, p_4$ on each pair at $j = 2$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  The incidence system is the linear map $\R^{d+1} \to \R^m$, $\bar p \mapsto (\langle \bar p, n_i
+  \rangle)_i$, whose source dimension $d + 1$ strictly exceeds its target dimension $m$. By
+  rank--nullity its kernel has dimension $\ge (d + 1) - m > 0$, so the kernel is nontrivial and
+  contains a nonzero vector --- a homogeneous point orthogonal to every $n_i$.
+\end{proof}
+
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
   \label{lem:case-III-claim612-points-affineIndep}
-  \uses{def:rigidity-matrix, def:panel-hinge-framework, lem:genericity-device}
+  \uses{def:rigidity-matrix, def:panel-hinge-framework, lem:genericity-device,
+        lem:case-III-claim612-panel-point-exists}
   Let $(G_v^{ab}, q)$ be a \emph{generic} nonparallel panel-hinge framework at $d = 3$
   (\cref{def:panel-hinge-framework}, \cref{lem:genericity-device}: the seed $q$ is generic, so the
   panel normals $n_a, n_b, n_c$ and the coefficients of their hyperplane equations are
@@ -710,10 +733,14 @@ new content --- is Grassmann--Cayley projective duality.
   \cref{lem:genericity-device}). Hence for any $j$ of the three hyperplanes their intersection is a
   $(3 - j)$-dimensional affine flat: the triple intersection $\Pi(a) \cap \Pi(b) \cap \Pi(c)$ is a
   single point ($p_1$), each pairwise intersection is a line, and a point can be chosen on each
-  pairwise line off the third panel ($p_2, p_3, p_4$). A determinant computation on the homogenized
-  coordinates --- nonvanishing again by the algebraic independence of the coefficients --- shows the
-  four are affinely independent. The incidence pattern is read off the three vanishing/non-vanishing
-  conditions $\langle \bar{p_i}, n_u \rangle = 0$.
+  pairwise line off the third panel ($p_2, p_3, p_4$). The \emph{existence} of a homogeneous
+  representative incident to every chosen panel is the pure dimension count
+  \cref{lem:case-III-claim612-panel-point-exists} (a system of $< d + 1$ homogeneous incidence
+  equations always has a nonzero solution), green; what genericity adds is the
+  \emph{transversality} pinning each intersection to its expected dimension. A determinant
+  computation on the homogenized coordinates --- nonvanishing again by the algebraic independence of
+  the coefficients --- shows the four are affinely independent. The incidence pattern is read off the
+  three vanishing/non-vanishing conditions $\langle \bar{p_i}, n_u \rangle = 0$.
 \end{proof}
 
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
