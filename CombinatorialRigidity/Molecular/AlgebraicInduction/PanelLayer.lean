@@ -8,6 +8,7 @@ import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery
 import CombinatorialRigidity.Mathlib.Data.Countable.Defs
 import Mathlib.Combinatorics.Graph.Subgraph
+import Mathlib.LinearAlgebra.Quotient.Pi
 
 /-!
 # The algebraic induction — the panel layer (`sec:molecular-algebraic-induction`)
@@ -844,6 +845,204 @@ theorem trivialMotions_le_partitionMotions (F : BodyHingeFramework k α β) (f :
     F.trivialMotions ≤ F.partitionMotions f :=
   fun _ hS => Submodule.mem_inf.mpr
     ⟨F.isInfinitesimalMotion_of_isTrivialMotion hS, fun u v _ => hS u v⟩
+
+/-! ### The per-crossing-edge cut — the `hub` dimension lower bound
+
+The full `hub` dimension lower bound `D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)` is
+proved by **rank-nullity over `W_f`**. The cut is the linear map `partitionCutMap` sending a
+part-constant screw assignment `S ∈ W_f` to the family of relative screw centers
+`(S u_e − S v_e) mod span C(e)` over the *crossing* edges `e ∈ crossingEdges G f` (each summand a
+quotient of `ScrewSpace k` by the hinge's `1`-dimensional supporting span). Its kernel inside
+`W_f` is exactly `partitionMotions f`: a part-constant `S` automatically satisfies the hinge
+constraint at every non-crossing edge (both endpoints in one part, so `S u − S v = 0`), so the
+only genuine constraints are at the `d_G(P) = |crossingEdges|` crossing edges. The codimension of
+this kernel is `≤ ∑_{crossing e} finrank (ScrewSpace ⧸ span C(e)) = (D−1)·d_G(P)` (each genuine
+hinge `C(e) ≠ 0` cuts down exactly `D−1`), so `finrank (partitionMotions f) ≥ finrank W_f −
+(D−1)·d_G(P) ≥ D·|P| − (D−1)·d_G(P)`. -/
+
+/-- The endpoint-and-distinct-labels witness carried by membership in `crossingEdges G f`
+(`lem:trivial-motions-rank-bound`): `e ∈ crossingEdges G f` unfolds to `e ∈ E(G)` together with
+`∃ x y, G.IsLink e x y ∧ f x ≠ f y`. Repackaged here for `Classical.choose` access in
+`crossingEndpoints`. -/
+theorem exists_isLink_of_mem_crossingEdges (G : Graph α β) (f : α → α)
+    (e : ↥(G.crossingEdges f)) : ∃ x y, G.IsLink (e : β) x y ∧ f x ≠ f y :=
+  e.2.2
+
+/-- The chosen oriented endpoint pair of a crossing edge `e ∈ crossingEdges G f`
+(`lem:trivial-motions-rank-bound`): `Classical.choose` picks an oriented endpoint pair
+`(u_e, v_e)` of `e` whose labels differ (`exists_isLink_of_mem_crossingEdges`). Used to define the
+per-crossing-edge cut `partitionCutMap`; the choice is independent of the screw assignment, so the
+cut stays linear. -/
+noncomputable def crossingEndpoints (G : Graph α β) (f : α → α)
+    (e : ↥(G.crossingEdges f)) : α × α :=
+  ((exists_isLink_of_mem_crossingEdges G f e).choose,
+    (exists_isLink_of_mem_crossingEdges G f e).choose_spec.choose)
+
+theorem crossingEndpoints_isLink (G : Graph α β) (f : α → α)
+    (e : ↥(G.crossingEdges f)) :
+    G.IsLink (e : β) (crossingEndpoints G f e).1 (crossingEndpoints G f e).2 :=
+  (exists_isLink_of_mem_crossingEdges G f e).choose_spec.choose_spec.1
+
+/-- The **crossing-span submodule** `N_f` (`lem:trivial-motions-rank-bound`): the submodule of
+families `g : crossingEdges G f → ScrewSpace k` with `g e ∈ span C(e)` for every crossing edge.
+The cut `partitionCutMap` reduces the relative-screw-center family modulo `N_f`; its complement —
+the codomain `(crossingEdges → ScrewSpace) ⧸ N_f` — is `(D−1)·d_G(P)`-dimensional when every
+crossing hinge is genuine. Carried as a *single* `Submodule.pi` quotient (rather than a pi of
+fiber quotients) so the codomain's `AddCommGroup` instance is the clean `Submodule.Quotient` one,
+keeping the rank-nullity lemmas off the heavy `ScrewSpace`-quotient defeq. -/
+noncomputable def crossingSpanPi (F : BodyHingeFramework k α β) (f : α → α) :
+    Submodule ℝ (↥(F.graph.crossingEdges f) → ScrewSpace k) :=
+  Submodule.pi Set.univ fun e => Submodule.span ℝ {F.supportExtensor (e : β)}
+
+/-- **The per-crossing-edge cut** `partitionCutMap` (`lem:trivial-motions-rank-bound`, the `hub`
+dimension lower bound): the linear map from the screw-assignment space `α → ScrewSpace k` to the
+quotient `(crossingEdges G f → ScrewSpace k) ⧸ N_f` sending `S` to the family of relative screw
+centers `(S u_e − S v_e)_e` over the crossing edges, reduced modulo `N_f = crossingSpanPi`. Its
+kernel intersected with the part-constant space `W_f` is exactly `partitionMotions f`
+(`partitionCutMap_ker_inf`); the codomain dimension `(D−1)·d_G(P)`
+(`finrank_partitionCutMap_codomain`) is the rank-nullity input behind the `hub` lower bound. -/
+noncomputable def partitionCutMap (F : BodyHingeFramework k α β) (f : α → α) :
+    (α → ScrewSpace k) →ₗ[ℝ] ((↥(F.graph.crossingEdges f) → ScrewSpace k) ⧸ F.crossingSpanPi f) :=
+  (F.crossingSpanPi f).mkQ ∘ₗ
+    LinearMap.pi fun e =>
+      LinearMap.proj (R := ℝ) (φ := fun _ : α => ScrewSpace k) (crossingEndpoints F.graph f e).1
+        - LinearMap.proj (R := ℝ) (φ := fun _ : α => ScrewSpace k) (crossingEndpoints F.graph f e).2
+
+theorem partitionCutMap_apply_eq_zero_iff (F : BodyHingeFramework k α β) (f : α → α)
+    (S : α → ScrewSpace k) :
+    F.partitionCutMap f S = 0 ↔
+      ∀ e : ↥(F.graph.crossingEdges f),
+        S (crossingEndpoints F.graph f e).1 - S (crossingEndpoints F.graph f e).2
+          ∈ Submodule.span ℝ {F.supportExtensor (e : β)} := by
+  rw [partitionCutMap, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero,
+    crossingSpanPi, Submodule.mem_pi]
+  refine forall_congr' fun e => ?_
+  simp only [Set.mem_univ, true_implies, LinearMap.pi_apply, LinearMap.sub_apply,
+    LinearMap.proj_apply]
+
+/-- **The kernel of the cut inside `W_f` is `partitionMotions f`**
+(`lem:trivial-motions-rank-bound`): a part-constant screw assignment `S ∈ W_f` lies in
+`ker partitionCutMap` exactly when it is an infinitesimal motion. Forward: vanishing modulo
+`span C(e)` at the chosen endpoints of every crossing edge plus `S u = S v` at every non-crossing
+edge (part-constancy) gives the hinge constraint at every link (the two links of an edge agree up
+to swap, and `span` is closed under negation). Reverse: a motion satisfies the constraint at the
+chosen crossing endpoints. -/
+theorem partitionCutMap_ker_inf (F : BodyHingeFramework k α β) (f : α → α) :
+    LinearMap.ker (F.partitionCutMap f) ⊓ partitionConstant f = F.partitionMotions f := by
+  rw [partitionMotions_eq]
+  apply le_antisymm
+  · rintro S ⟨hker, hconst⟩
+    refine Submodule.mem_inf.mpr ⟨?_, hconst⟩
+    rw [mem_infinitesimalMotions]
+    intro e u v he
+    rw [hingeConstraint]
+    by_cases hcross : e ∈ F.graph.crossingEdges f
+    · -- Crossing edge: read the constraint off the chosen endpoints, swap to `u v`.
+      have hk := (F.partitionCutMap_apply_eq_zero_iff f S).mp (LinearMap.mem_ker.mp hker)
+        ⟨e, hcross⟩
+      have hlink := crossingEndpoints_isLink F.graph f ⟨e, hcross⟩
+      obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := he.eq_and_eq_or_eq_and_eq hlink
+      · exact hk
+      · rw [← neg_sub]; exact Submodule.neg_mem _ hk
+    · -- Non-crossing edge: `f u = f v`, so `S u = S v` by part-constancy.
+      have hfuv : f u = f v := by
+        by_contra hne
+        exact hcross ⟨he.edge_mem, u, v, he, hne⟩
+      rw [hconst u v hfuv, sub_self]
+      exact Submodule.zero_mem _
+  · rintro S ⟨hmot, hconst⟩
+    refine Submodule.mem_inf.mpr ⟨?_, hconst⟩
+    rw [LinearMap.mem_ker, F.partitionCutMap_apply_eq_zero_iff f S]
+    exact fun e =>
+      (F.mem_infinitesimalMotions S).mp hmot _ _ _ (crossingEndpoints_isLink F.graph f e)
+
+/-- **The cut's codomain has dimension `(D−1)·d_G(P)`** (`lem:trivial-motions-rank-bound`): the
+crossing-edge family space `crossingEdges → ScrewSpace k` is `D·d_G(P)`-dimensional, and the
+crossing-span submodule `N_f` is `d_G(P)`-dimensional (each genuine hinge `C(e) ≠ 0` spans a line),
+so the quotient `(crossingEdges → ScrewSpace) ⧸ N_f` has dimension `(D−1)·d_G(P)`. This is the
+codimension count behind the `hub` lower bound. -/
+theorem finrank_partitionCutMap_codomain [Finite β]
+    (F : BodyHingeFramework k α β) (f : α → α)
+    (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
+    Module.finrank ℝ ((↥(F.graph.crossingEdges f) → ScrewSpace k) ⧸ F.crossingSpanPi f)
+      = (screwDim k - 1) * (F.graph.crossingEdges f).ncard := by
+  haveI : Fintype β := Fintype.ofFinite β
+  haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
+  classical
+  -- The single `Submodule.pi` quotient splits as the product of fiber quotients
+  -- `∀ e, ScrewSpace k ⧸ span C(e)`, each of dimension `D − 1` (genuine hinge `C(e) ≠ 0`).
+  have hsplit : Module.finrank ℝ ((↥(F.graph.crossingEdges f) → ScrewSpace k) ⧸ F.crossingSpanPi f)
+      = Module.finrank ℝ ((e : ↥(F.graph.crossingEdges f)) →
+          ScrewSpace k ⧸ Submodule.span ℝ {F.supportExtensor e}) :=
+    (Submodule.quotientPi (Ms := fun _ : ↥(F.graph.crossingEdges f) => ScrewSpace k)
+      (fun e => Submodule.span ℝ {F.supportExtensor (e : β)})).finrank_eq
+  rw [hsplit, Module.finrank_pi_fintype]
+  have hsumm : ∀ e : ↥(F.graph.crossingEdges f),
+      Module.finrank ℝ (ScrewSpace k ⧸ Submodule.span ℝ {F.supportExtensor (e : β)})
+        = screwDim k - 1 := by
+    intro e
+    have key := Submodule.finrank_quotient_add_finrank
+      (Submodule.span ℝ {F.supportExtensor (e : β)})
+    rw [finrank_span_singleton (hC e e.2), screwSpace_finrank] at key
+    omega
+  rw [Finset.sum_congr rfl fun e _ => hsumm e, Finset.sum_const, Finset.card_univ,
+    smul_eq_mul, ← Nat.card_eq_fintype_card, Nat.card_coe_set_eq, mul_comm]
+
+/-- **The `hub` dimension lower bound** (`lem:trivial-motions-rank-bound`): for any partition `P`
+of `V(G)` (encoded by `f : α → α`) whose every crossing hinge is genuine (`C(e) ≠ 0`), the
+partition-respecting motions carry at least `D·|P| − (D−1)·d_G(P)` dimensions,
+`D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)` (`ℤ`-form, matching `partitionDef`). Proved by
+rank-nullity over `W_f`: `finrank W_f = finrank (W_f ⧸ ker Φ) + finrank (partitionMotions f)` with
+the quotient injecting into the cut's codomain, so `finrank (partitionMotions f) ≥ finrank W_f −
+(D−1)·d_G(P) ≥ D·|P| − (D−1)·d_G(P)` (`partitionCutMap_ker_inf`, `finrank_partitionCutMap_codomain`,
+`mul_numParts_le_finrank_partitionConstant`). Maximizing over `P`
+and reconciling `screwDim k = bodyBarDim n` upgrades this to `hub` (`D + def(G̃) ≤ dim Z`), the
+explicit hypothesis of `rigidityMatrix_prop11`. -/
+theorem screwDim_mul_numParts_sub_le_finrank_partitionMotions [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) (f : α → α)
+    (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
+    (screwDim k : ℤ) * F.graph.numParts f
+        - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f).ncard
+      ≤ (Module.finrank ℝ (F.partitionMotions f) : ℤ) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
+  -- Work with the **full** cut `partitionCutMap f` on `α → ScrewSpace k` (a plain pi, light
+  -- instances), combining its rank-nullity with the `ker ⊓ W_f` dimension inequality.
+  -- Rank-nullity: `finrank (range) + finrank (ker) = finrank (α → ScrewSpace k) = D·|α|`.
+  have hfull : Module.finrank ℝ (LinearMap.range (F.partitionCutMap f))
+      + Module.finrank ℝ (LinearMap.ker (F.partitionCutMap f)) = screwDim k * Fintype.card α := by
+    rw [LinearMap.finrank_range_add_finrank_ker, finrank_screwAssignment]
+  -- `finrank (range) ≤ finrank codomain = (D−1)·d_G(P)`, distributed `D·d_G(P) − d_G(P)`
+  -- so its `D·d_G(P)` and `d_G(P)` atoms line up with the (ℤ-distributed) goal for `omega`.
+  have hrange : Module.finrank ℝ (LinearMap.range (F.partitionCutMap f))
+      ≤ screwDim k * (F.graph.crossingEdges f).ncard - (F.graph.crossingEdges f).ncard := by
+    have := (LinearMap.range (F.partitionCutMap f)).finrank_le.trans_eq
+      (F.finrank_partitionCutMap_codomain f hC)
+    rwa [Nat.sub_mul, one_mul] at this
+  -- `partitionMotions f = ker ⊓ W_f`, so by `finrank_sup_add_finrank_inf_eq` and
+  -- `finrank (ker ⊔ W_f) ≤ D·|α|`:
+  -- `finrank (partitionMotions) ≥ finrank (ker) + finrank W_f − D·|α|`.
+  have hinf : Module.finrank ℝ (LinearMap.ker (F.partitionCutMap f))
+        + Module.finrank ℝ (partitionConstant (k := k) f)
+      ≤ Module.finrank ℝ (F.partitionMotions f) + screwDim k * Fintype.card α := by
+    have hsup := Submodule.finrank_sup_add_finrank_inf_eq
+      (LinearMap.ker (F.partitionCutMap f)) (partitionConstant (k := k) f)
+    rw [partitionCutMap_ker_inf] at hsup
+    have hle : Module.finrank ℝ
+          (↥(LinearMap.ker (F.partitionCutMap f) ⊔ partitionConstant (k := k) f))
+        ≤ screwDim k * Fintype.card α := by
+      rw [← finrank_screwAssignment (α := α) (k := k)]
+      exact Submodule.finrank_le _
+    omega
+  -- `finrank W_f ≥ D·|P|`.
+  have hWf := mul_numParts_le_finrank_partitionConstant (k := k) F.graph f
+  have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+  have hdle : (F.graph.crossingEdges f).ncard ≤ screwDim k * (F.graph.crossingEdges f).ncard :=
+    Nat.le_mul_of_pos_left _ (by omega)
+  rw [sub_mul, one_mul]
+  zify [hdle] at hrange ⊢
+  zify at hfull hinf hWf
+  omega
 
 /-- **The `def`-free floor of `hub`: `D ≤ dim Z(G,p)`** (`lem:trivial-motions-rank-bound`): every
 realization carries at least the `D = screwDim k` trivial motions, so `screwDim k ≤ finrank

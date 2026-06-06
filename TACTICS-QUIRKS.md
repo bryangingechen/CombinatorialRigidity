@@ -1455,3 +1455,35 @@ proof, else the `unusedFintypeInType` linter fires on a `[Fintype ι]` binder).
 Worked case: `dualMap_matrix_entry_eq` (Phase 22d, `Molecular/AlgebraicInduction/CaseI.lean`) — the
 `extProj`-dual-map matrix entry feeding the projected rank polynomial's rationality (FRICTION
 *the `extProj`-dual-map matrix entry … is rational*).
+
+## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
+
+**Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or
+`g.quotKerEquivRange`, `Submodule.liftQ`, `(LinearMap.range g).finrank_le`, `Submodule.ker g` fed to
+a `[AddCommGroup]`-requiring lemma) where `g`'s domain or codomain is a *`Submodule`* (e.g.
+`↥(partitionConstant f)`) or a *`Submodule.Quotient`* (e.g. `(α → ScrewSpace k) ⧸ N`) over a heavy
+carrier (`ScrewSpace k = ⋀^k ℝ^(k+2)`) hits *"(deterministic) timeout at `whnf`/`isDefEq`"* — even
+at `maxHeartbeats 1600000`. `Submodule`/`Submodule.Quotient` each carry a `AddCommMonoid` instance
+*separate* from their `AddCommGroup` (`Mathlib/LinearAlgebra/Quotient/Defs.lean` declares both, and
+`Submodule` likewise); `LinearMap`/`mkQ` record the `AddCommMonoid`, while the rank-nullity lemma
+wants `AddCommGroup.toAddCommMonoid`. The two are defeq but only via a `whnf` that recursively
+reduces the heavy carrier — so the *normally trivial* monoid-vs-group reconciliation blows up.
+
+**Fix.** Run the rank-nullity on the map whose **domain and codomain are plain `Pi` function
+types** (`α → W`), never a `Submodule`/quotient. Concretely:
+- keep the cut as a *full* map `α → ScrewSpace k →ₗ codomain` (don't `.comp …subtype`-restrict to a
+  `Submodule` domain): `finrank_range_add_finrank_ker` on the `Pi` domain dodges the diamond;
+- make the codomain a *single* `Submodule.pi` quotient (`(ι → W) ⧸ N`), **not** a pi of fiber
+  quotients `∀ i, W ⧸ p i` — the single quotient is one `Submodule.Quotient` instance, light enough
+  for `finrank_range_add_finrank_ker`; split it to the fiber-quotient product *only* for the finrank
+  count, via `Submodule.quotientPi` + `Module.finrank_pi_fintype` (import
+  `Mathlib.LinearAlgebra.Quotient.Pi`);
+- recover the restricted statement (`finrank (partitionMotions = ker ⊓ W_f)`) with
+  `Submodule.finrank_sup_add_finrank_inf_eq` + `(ker ⊔ W_f).finrank_le ≤ finrank (full Pi)` — all on
+  `Submodule`s of the *Pi* type, no map-instance reconciliation.
+
+This is the same medicine as § 38 (the heavy carrier must stay out of the elaborator's `whnf`), here
+applied to instance-diamond reconciliation rather than a basis-coordinate unfold. **A
+`maxHeartbeats` bump is not the fix — it still times out.** Worked case:
+`BodyHingeFramework.screwDim_mul_numParts_sub_le_finrank_partitionMotions` (Phase 22d,
+`Molecular/AlgebraicInduction/PanelLayer.lean`, the `hub` dimension lower bound).

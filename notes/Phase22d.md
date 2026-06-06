@@ -10,28 +10,27 @@ compressed verdict log.
 
 ## Current state
 
-**Next concrete commit:** the **`hub` dimension lower bound's per-crossing-edge cut** —
-assemble `D·|P| − (D−1)·d_G(P) = D + partitionDef(f) ≤ finrank (partitionMotions f)` from
-the just-landed `W_f` count by the rank-nullity over `W_f`. The full `hub` (`D + def ≤
-dim Z`) is a multi-commit construction; its math-first decomposition (see *Hand-off* + the
-Gap-2→3→1 map below):
+**Next concrete commit:** **maximize the dimension lower bound into `hub`** — pick the
+`def`-attaining `f` (`deficiency` is an attained finite `iSup` under `[Finite α]` via
+`bddAbove_range_partitionDef` + `partitionDef_le_deficiency`), reconcile `screwDim k = bodyBarDim n`
+in the panel context, turning the just-landed `D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)`
+into `D + def ≤ dim Z` (= `hub`); discharge the `hub` hypothesis both `rigidityMatrix_prop11` and
+`rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` carry, flipping
+`lem:case-III-rank-attainment` / `prop:rigidity-matrix-prop11` toward green. The full `hub`
+(`D + def ≤ dim Z`) is a multi-commit construction; its math-first decomposition:
 
-1. **`partitionMotions` foundation + `W_f` count** (✓; foundation in commit 653f902, the
-   `W_f` count this commit) — the part-constant space `partitionConstant f = {S | constant on
-   f-fibers}` (a submodule, *without* the motion constraint) is `range (funLeft f')` along the
-   surjection `f' = rangeFactorization f`, so `finrank W_f = D·|range f|` and `D·|P| ≤
-   finrank W_f` (`numParts = |f''V(G)| ≤ |range f|`). `partitionMotions f = Z ⊓ W_f` (rewired to
-   the `⊓`), with `≤ Z`, `trivialMotions ≤ ·`, and the `def`-free floor `D ≤ dim Z`. `PanelLayer.lean`.
-2. **dimension lower bound** (next) — `D·|P| − (D−1)·d_G(P) ≤ finrank (Z ⊓ W_f)` by rank-nullity
-   over `W_f`: the motion constraint is automatic at non-crossing edges and cuts ≤ `D−1` coords
-   per crossing edge, so `finrank (Z ⊓ W_f) ≥ finrank W_f − (D−1)·d_G(P) ≥ D·|P| − (D−1)·d_G(P)`.
-   **The hard piece that remains** — a linear map `W_f → ⊕_{crossing e} (ScrewSpace/span C(e))`
-   whose kernel is `Z ⊓ W_f`, with `finrank (range) ≤ (D−1)·d_G(P)` (each summand `< D` needs
-   `C(e) ≠ 0` — the genuine-hinge/general-position input).
-3. **maximize into `hub`** — pick the `def`-attaining `f` (`deficiency` is an attained finite
-   `iSup` under `[Finite α]`), reconcile `screwDim k = bodyBarDim n` in the panel context, giving
-   `D + def ≤ dim Z`; wire into `rigidityMatrix_prop11` / `lem:case-III-rank-attainment`, flipping
-   both toward green.
+1. **`partitionMotions` foundation + `W_f` count** (✓; commit 653f902 + 75c8fcc) — the part-constant
+   space `partitionConstant f` (submodule, *no* motion constraint) is `range (funLeft f')`, so
+   `finrank W_f = D·|range f|`, `D·|P| ≤ finrank W_f`. `partitionMotions f = Z ⊓ W_f`. `PanelLayer.lean`.
+2. **dimension lower bound** (✓ this commit) — `D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)`
+   (`screwDim_mul_numParts_sub_le_finrank_partitionMotions`, ℤ-form). The per-crossing-edge cut
+   `partitionCutMap : (α→ScrewSpace) →ₗ ((crossing→ScrewSpace) ⧸ N_f)` (single `Submodule.pi`
+   quotient `crossingSpanPi`) has `ker ⊓ W_f = partitionMotions f` (`partitionCutMap_ker_inf`:
+   automatic at non-crossing edges via part-constancy, swap-to-chosen-endpoints at crossing) and
+   codomain dim `(D−1)·d_G(P)` (`finrank_partitionCutMap_codomain`, needs `C(e) ≠ 0`). Combined by
+   rank-nullity on the **full Pi** map + `finrank_sup_add_finrank_inf_eq` (NOT on the W_f-restricted
+   map — that hits a heavy-carrier instance-diamond timeout; QUIRKS § 39). Axiom-clean.
+3. **maximize into `hub`** (next) — see *Next concrete commit* above.
 
 After `hub`: the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows extracts the redundant
 row, lifting 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
@@ -165,11 +164,15 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
   (`finrank_partitionConstant`, via `funLeft_injective_of_surjective` + `finrank_screwAssignment`)
   and `D·|P| ≤ finrank W_f` (`mul_numParts_le_finrank_partitionConstant`, `numParts = |f''V(G)| ≤
   |range f|`). `partitionMotions` rewired to `Z ⊓ partitionConstant f`. Axiom-clean. No blueprint node.
-- [ ] **Gap 1 — the `hub` dimension lower bound** (next leaf): `D·|P| − (D−1)·d_G(P) ≤
-  finrank (partitionMotions f)` via rank-nullity over `W_f` — the per-crossing-edge constraint cut
-  (the hard piece that remains; a `W_f → ⊕_{crossing e} ScrewSpace/span C(e)` map with kernel
-  `Z ⊓ W_f` and `finrank range ≤ (D−1)·d_G(P)`, the `< D` per summand needing `C(e) ≠ 0`).
-- [ ] **Gap 1 — maximize into `hub`** (after): pick the `def`-attaining `f`, giving `D + def ≤
+- [x] **Gap 1 — the `hub` dimension lower bound** (this commit): `D·|P| − (D−1)·d_G(P) ≤
+  finrank (partitionMotions f)` (`screwDim_mul_numParts_sub_le_finrank_partitionMotions`,
+  `PanelLayer.lean`, ℤ-form, axiom-clean). The per-crossing-edge cut `partitionCutMap`
+  (`= crossingSpanPi.mkQ ∘ₗ` the relative-screw-center pi-map) has `ker ⊓ W_f = partitionMotions f`
+  (`partitionCutMap_ker_inf`) and codomain dim `(D−1)·d_G(P)` (`finrank_partitionCutMap_codomain`,
+  via `Submodule.quotientPi`, needs `C(e) ≠ 0`). Run rank-nullity on the **full Pi** map (not the
+  `W_f`-restricted one) + `finrank_sup_add_finrank_inf_eq` to dodge a heavy-carrier instance-diamond
+  `whnf` timeout. Promoted: QUIRKS § 39. No blueprint node (internal `hub` infra).
+- [ ] **Gap 1 — maximize into `hub`** (next leaf): pick the `def`-attaining `f`, giving `D + def ≤
   dim Z`; discharge the hypothesis both `rigidityMatrix_prop11` and the rank-attainment packaging
   carry, flipping `lem:case-III-rank-attainment` / `prop:rigidity-matrix-prop11` toward green.
 - [ ] **Gap 1 — the pigeonhole** (after `hub`): the `k' ≤ D−2 < D−1` corank over the `D−1` `ab`-rows
@@ -209,9 +212,9 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
   packaging `lem:case-III-rank-attainment` (assembles them into `RankHypothesis (def G̃)` via
   `rigidityMatrix_prop11`). Both the packaging and `rigidityMatrix_prop11` carry the genericity-free
   lower bound `hub` (`D + def ≤ dim Z`) as an explicit hypothesis — the codimension construction from
-  the Phase-19 partition machinery. Its `partitionMotions` foundation + `def`-free floor (`D ≤ dim Z`)
-  + the `W_f` count (`D·|P| ≤ finrank W_f`) landed; the remaining `def(G̃)` extra motions are the
-  per-crossing-edge rank-nullity cut + maximize steps (see *Current state*).
+  the Phase-19 partition machinery. Its `partitionMotions` foundation, `def`-free floor (`D ≤ dim Z`),
+  `W_f` count, and now the **dimension lower bound** `D·|P| − (D−1)·d_G(P) ≤ dim (partitionMotions f)`
+  all landed; `hub` is one **maximize-over-`f`** step from green (see *Current state*).
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -220,24 +223,22 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **Gap 1 — the `hub` dimension lower bound's per-crossing-edge cut.**
-The `W_f` count landed this commit (`partitionConstant f = range (funLeft f')`, `finrank W_f =
-D·|range f|`, `D·|P| ≤ finrank W_f`; `partitionMotions f = Z ⊓ W_f`). Now prove `D·|P| −
-(D−1)·d_G(P) ≤ finrank (partitionMotions f)` by rank-nullity over `W_f`: build a linear map
-`W_f → ⊕_{crossing e} (ScrewSpace k ⧸ span C(e))` sending `S ↦ (S u − S v mod span C(e))_e`
-whose **kernel is exactly `Z ⊓ W_f`** (the motion constraint is `S u − S v ∈ span C(e)` at every
-edge, automatic at non-crossing edges since `S u = S v` there), and bound `finrank (range) ≤
-∑_{crossing e} finrank (ScrewSpace/span C(e)) ≤ (D−1)·d_G(P)` (each summand `≤ D−1` needs the
-quotient by a *nonzero* `span C(e)`, i.e. a genuine hinge / the general-position input). Then
-`finrank (Z ⊓ W_f) = finrank W_f − finrank range ≥ D·|P| − (D−1)·d_G(P)`. Then **maximize**:
-`deficiency` is an attained finite `iSup` under `[Finite α]` (`partitionDef_le_deficiency` reversed
-via the attaining `f`); reconcile `screwDim k = bodyBarDim n` in the panel context, giving
-`D + def ≤ dim Z = hub`; wire into `rigidityMatrix_prop11` / `lem:case-III-rank-attainment`, both
-flip toward green. Then the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant
-row (eq. (6.23)), lifting 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three
-analytic prerequisites (i)/(ii)/(iii), the upper bound, the rank-attainment packaging, and both
-combinatorial factors (Gap-2/Gap-3) are green; `lem:case-III` stays red until the
-candidate-completion assembly lands.
+**Next concrete commit:** **Gap 1 — maximize the dimension lower bound into `hub`.** The dimension
+lower bound landed this commit: `D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)`
+(`screwDim_mul_numParts_sub_le_finrank_partitionMotions`, `PanelLayer.lean`). Now take the supremum
+over `f`: `deficiency` is an attained finite `iSup` under `[Finite α]` (the attaining `f` from
+`bddAbove_range_partitionDef`; the reverse `partitionDef_le_deficiency` gives the bound the other
+way), so the bound at the `def`-attaining `f` reads `D + def(G̃) ≤ dim Z` *modulo* reconciling
+`screwDim k = bodyBarDim n` in the panel context (`screwDim k = (k+2 choose 2) = bodyBarDim (k+1)`,
+and the panel layer fixes `n = k+1`). That `D + def ≤ dim Z` **is** the `hub` hypothesis both
+`rigidityMatrix_prop11` and `rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` carry
+— discharge it, flipping `prop:rigidity-matrix-prop11` / `lem:case-III-rank-attainment` toward
+green. Then the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row
+(eq. (6.23)), lifting 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three
+analytic prerequisites (i)/(ii)/(iii), the upper bound, the rank-attainment packaging, both
+combinatorial factors (Gap-2/Gap-3), and now the `hub` dimension lower bound are green; `hub` itself
+is one maximize step from green; `lem:case-III` stays red until the candidate-completion assembly
+lands.
 
 After Gap 1: the candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and
 general-`d` (Phase 23).
@@ -253,14 +254,21 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **Gap-1 `hub` `W_f` count landed (this commit).** `PanelLayer.lean`: `partitionConstant f`
-  (part-constant assignments, *no* motion constraint) `= range (funLeft ℝ (ScrewSpace k)
-  (rangeFactorization f))` (`partitionConstant_eq_range_funLeft`), so `funLeft_injective_of_surjective`
-  + `finrank_range_of_inj` + `finrank_screwAssignment` give `finrank W_f = D·|range f|`
-  (`finrank_partitionConstant`) and `D·|P| ≤ finrank W_f` (`mul_numParts_le_finrank_partitionConstant`,
-  `numParts = |f''V(G)| ≤ |range f|`). `partitionMotions` rewired to `Z ⊓ partitionConstant f`.
-  Axiom-clean, no friction (`numParts` is `Graph.numParts` — declared in `namespace Graph`, so the
-  `rw` qualifies it as such). Remaining `hub`: the per-crossing-edge rank-nullity cut + maximize.
+- **Gap-1 `hub` dimension lower bound landed (this commit).** `PanelLayer.lean`:
+  `screwDim_mul_numParts_sub_le_finrank_partitionMotions` (ℤ-form `D·|P| − (D−1)·d_G(P) ≤
+  dim (partitionMotions f)`, axiom-clean). The per-crossing-edge cut `partitionCutMap` (=
+  `crossingSpanPi.mkQ ∘ₗ` the relative-screw-center pi-map; codomain a **single** `Submodule.pi`
+  quotient) has `ker ⊓ W_f = partitionMotions f` (`partitionCutMap_ker_inf` — automatic at
+  non-crossing edges by part-constancy, `eq_and_eq_or_eq_and_eq` endpoint-swap at crossing) and
+  codomain dim `(D−1)·d_G(P)` (`finrank_partitionCutMap_codomain`, via `Submodule.quotientPi` split
+  + `finrank_span_singleton`, needs `C(e) ≠ 0`). **Route lesson:** run rank-nullity on the *full Pi*
+  map + `finrank_sup_add_finrank_inf_eq`, **not** the `W_f`-restricted map — the latter's
+  `Submodule`/`Submodule.Quotient` `AddCommMonoid`-vs-`AddCommGroup` reconciliation over `ScrewSpace`
+  `whnf`-times-out even at `maxHeartbeats 1.6M`. Promoted: QUIRKS § 39; new import
+  `Mathlib.LinearAlgebra.Quotient.Pi`. Remaining `hub`: maximize over `f` (one step).
+- **Gap-1 `hub` `W_f` count landed (commit 75c8fcc).** `partitionConstant f = range (funLeft f')`
+  (`partitionConstant_eq_range_funLeft`), `finrank W_f = D·|range f|`, `D·|P| ≤ finrank W_f`;
+  `partitionMotions` rewired to `Z ⊓ partitionConstant f`. Axiom-clean.
 - **Gap-1 `hub` foundation — `partitionMotions` landed (commit 653f902).** The subspace `Z ⊓ W_f`,
   `≤ Z`, `trivialMotions ≤ ·`, and the `def`-free floor `D ≤ dim Z`
   (`screwDim_le_finrank_infinitesimalMotions`, the `partitionDef = 0` instance of `hub`).
