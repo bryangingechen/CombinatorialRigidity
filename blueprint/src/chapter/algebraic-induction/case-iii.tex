@@ -176,11 +176,15 @@ The two rank attainments above (eq.~(6.18) for $G_v^{ab}$, eq.~(6.22) for $G_v =
 combine into KT's eq.~(6.23): the $D-1$ many $ab$-rows of $R(G_v^{ab}, q)$ raise the rank of
 $R(G_v, q)$ by only $k' \le D - 2 < D - 1$ (the smaller graph $G_v$ already realizes all but $k'$ of
 the full rank), so one of those $ab$-rows is a linear combination of the others together with the
-$R(G_v, q)$ rows. The pure linear-algebra core of that pigeonhole --- the geometric instantiation of
-the abstract finrank pigeonhole at a single transversal hinge's $D - 1$ rows --- is green here; what
-stays deferred is feeding it the eq.~(6.18)/(6.22) bridge identities at the specific graphs
-$G_v^{ab}$, $G_v$ (the row-set identity $R(G_v^{ab})\text{-rows} = R(G_v)\text{-rows} \cup
-ab\text{-rows}$).
+$R(G_v, q)$ rows. The pure linear-algebra core of that pigeonhole
+(\cref{lem:case-III-claim-6-11-redundant-row}) is instantiated at KT's two specific graphs by the
+\emph{row-set identity} $\operatorname{span}(R(G_v^{ab})\text{-rows}) =
+\operatorname{span}(R(G_v)\text{-rows}) + \operatorname{span}(ab\text{-block})$: since
+$G_v = G_v^{ab} - ab$ and both frameworks share the same seed $q$ and selector $\mathrm{ends}$ (so
+the same supporting extensors), the only rigidity rows of $R(G_v^{ab})$ not already in $R(G_v)$ are
+the $ab$-rows, which span exactly the $ab$-block. Feeding the two rank attainments through it
+discharges the corank gap and produces KT's redundant $ab$-row
+(\cref{lem:case-III-claim-6-11}).
 
 \begin{lemma}[Redundant $ab$-row from a small corank over the $ab$-block; KT Claim 6.11, eq.\ (6.23)]
   \label{lem:case-III-claim-6-11-redundant-row}
@@ -215,31 +219,60 @@ ab\text{-rows}$).
   That member is the redundant $ab$-row.
 \end{proof}
 
+\begin{lemma}[KT Claim 6.11, eq.\ (6.23): the deleted $ab$-edge has a redundant row]
+  \label{lem:case-III-claim-6-11}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq}
+  \leanok
+  \uses{lem:case-III-claim-6-11-redundant-row, lem:case-III-seed-rank-bridge,
+        lem:case-III-rank-attainment, lem:case-III-gap3-minimalKDof}
+  Let $G_{ab} = G_v^{ab}$ be the split-off graph and $G_v = G_v^{ab} - ab$ its single-edge deletion,
+  realized as $\mathrm{ofNormals}\,(\cdot)\,\mathrm{ends}\,q$ at the same inductively-fixed seed $q$
+  and selector $\mathrm{ends}$, with $e_0 = ab$ the deleted transversal hinge ($C(e_0) \ne 0$). Given
+  the two rank attainments --- eq.~(6.18) $\dim \operatorname{span}(R(G_{ab}, q)\text{-rows}) =
+  D(m-1)$ (the $0$-dof full rank, $m = |V(G_{ab})| = |V(G_v)|$) and eq.~(6.22)
+  $\dim \operatorname{span}(R(G_v, q)\text{-rows}) = D(m-1) - k'$ with $k' \le D - 2$ --- one of the
+  $D-1$ many $ab$-rows of $R(G_{ab}, q)$ is redundant modulo $\operatorname{span}(R(G_v, q)\text{-rows})$
+  and the other $ab$-rows: KT's eq.~(6.23). This is the $+1$ that the deferred candidate-completion
+  assembly converts into the missing full-rank row.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The two frameworks differ only by the $ab$-edge $e_0$ (their links agree off $e_0$, and they share
+  the same supporting extensors), so the row-set identity $\operatorname{span}(R(G_{ab})\text{-rows})
+  = \operatorname{span}(R(G_v)\text{-rows}) + \operatorname{span}(ab\text{-block})$ holds. Eq.~(6.18)
+  then reads $\dim\bigl(W + \operatorname{span}(ab\text{-block})\bigr) = D(m-1)$ with
+  $W = \operatorname{span}(R(G_v)\text{-rows})$, while eq.~(6.22) gives $\dim W = D(m-1) - k'$; so the
+  $ab$-block raises $\dim W$ by only $k' \le D - 2 < D - 1$, the corank gap the redundant-row
+  pigeonhole (\cref{lem:case-III-claim-6-11-redundant-row}) consumes to yield the redundant
+  $ab$-row.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
         lem:cycle-realization, lem:case-II-realization-placement,
         lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof,
         lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper,
-        lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row}
+        lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
+        lem:case-III-claim-6-11}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
   rank (the stratum-1 brick $D(|V|-1) - 1$ of
   \cref{lem:case-II-realization-placement}); the missing $+1$ row is KT
-  Claim~6.11, whose prerequisites --- the matroid-base 4.3(ii)
-  form (\cref{lem:case-III-claim-6-11-base}), the nested-IH reduction
+  Claim~6.11 (\cref{lem:case-III-claim-6-11}), now green: its matroid-base
+  4.3(ii) form (\cref{lem:case-III-claim-6-11-base}), the nested-IH reduction
   $G - v$ minimal $k'$-dof with $k' \le D - 2$
-  (\cref{lem:case-III-gap3-minimalKDof}), and the analytic
+  (\cref{lem:case-III-gap3-minimalKDof}), the analytic
   rank-at-the-fixed-seed attainment (\cref{lem:case-III-seed-rank-bridge} for
   $\operatorname{def} = 0$, its $\operatorname{def} > 0$ upper-bound half
   \cref{lem:case-III-seed-rank-upper}, and their packaging into the exact rank
-  \cref{lem:case-III-rank-attainment}) and the pure linear-algebra core of the
-  redundant-row pigeonhole (\cref{lem:case-III-claim-6-11-redundant-row}) ---
-  are green; what stays deferred is feeding that pigeonhole the
-  eq.~(6.18)/(6.22) bridge at the specific graphs $G_v^{ab}$, $G_v$, and the
-  Claim-6.11/6.12 candidate-completion assembly that converts the redundant
-  $ab$-row into the missing $+1$. KT then
+  \cref{lem:case-III-rank-attainment}), and the redundant-row pigeonhole
+  (\cref{lem:case-III-claim-6-11-redundant-row}) fed through the row-set
+  identity at the specific graphs $G_v^{ab}$, $G_v$ all assemble into the
+  redundant $ab$-row. What stays deferred is the
+  Claim-6.11/6.12 candidate-completion assembly that converts that redundant
+  $ab$-row into the missing $+1$, and the $D$-candidate disjunction. KT then
   build $D$ candidate realizations and show one is rigid; the
   degree-2 condition forces all candidates to test the same normal vector $r
   \in \mathbb{R}^D$, which by the extensor-independence Lemma~2.1

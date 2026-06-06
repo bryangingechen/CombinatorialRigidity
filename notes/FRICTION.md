@@ -76,6 +76,20 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] The orientation flip `hingeRow u v r = hingeRow v u (-r)` was an inline `LinearMap.ext fun S => by rw […]` in three rigidity-row span proofs — named as `hingeRow_swap`
+- **Where it bit:** `span_panelRow_eq_rigidityRows` + `span_panelRow_linking_eq_rigidityRows`
+  (`Pinning.lean`, Phase 22) and the new `span_rigidityRows_eq_sup_span_panelRow_edge` (`Pinning.lean`,
+  Phase 22d Gap-1). Each handles the swapped orientation of a generating rigidity row (endpoints match
+  a link only up to swap, `IsLink.eq_and_eq_or_eq_and_eq`) and inlines the *same*
+  `show hingeRow u v r = hingeRow v u (-r) from LinearMap.ext fun S => by rw [hingeRow_apply,
+  hingeRow_apply, LinearMap.neg_apply, ← map_neg, neg_sub]` proof term.
+- **Friction:** a 3-line `LinearMap.ext`-with-`rw`-chain for one mathematical fact (reversing an
+  oriented edge negates the block row), reproduced verbatim three times — the multi-rewrite-for-one-fact
+  smell.
+- **Fix:** named theorem `BodyHingeFramework.hingeRow_swap` in `RigidityMatrix.lean` (where `hingeRow`
+  lives), `hingeRow u v r = hingeRow v u (-r)`. All three callsites collapse to a `rw [hingeRow_swap]`.
+- **Status:** resolved (project helper `hingeRow_swap`).
+
 ### [resolved] The per-edge panel-row span finrank `= D − 1` computation (`span_panelRow_edge_eq` + `equivMapOfInjective.finrank_eq` + `finrank_hingeRowBlock`) appeared twice — named as `finrank_span_panelRow_edge`
 - **Where it bit:** `exists_independent_panelRow_subfamily_of_edge` (`Pinning.lean`, Phase 22c) and
   the new `exists_redundant_panelRow_of_edge_of_finrank_lt` (`CaseI.lean`, Phase 22d Gap-1). Both

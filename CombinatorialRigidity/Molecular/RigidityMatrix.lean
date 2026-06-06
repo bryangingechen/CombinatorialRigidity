@@ -279,6 +279,21 @@ theorem hingeRow_eq_dualMap (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
     hingeRow (k := k) (α := α) u v r = (screwDiff (k := k) (α := α) u v).dualMap r :=
   rfl
 
+/-- **The row functional flips orientation by negating the block row** (`def:rigidity-matrix`):
+`hingeRow u v r = hingeRow v u (-r)`. Reversing the oriented edge `e = uv → vu` negates the
+relative screw center `S u - S v = -(S v - S u)`, which the linear `r` carries to a sign on the
+row. This is the orientation-independence the unoriented graph `G` forces on `R(G,p)`'s block
+rows: a rigidity row from a link `uv` is, in the reverse orientation `vu`, the same functional up
+to the negated block row `-r ∈ r(p(e))` (the hinge-row block is a subspace, closed under negation).
+The named form of the `hingeRow u v r = hingeRow v u (-r)` rewrite the rigidity-row span identities
+(`span_panelRow_eq_rigidityRows`, `span_panelRow_linking_eq_rigidityRows`,
+`span_rigidityRows_eq_sup_span_panelRow_edge`) repeatedly perform when a generating row's endpoints
+match a link only up to swap (`IsLink.eq_and_eq_or_eq_and_eq`). -/
+theorem hingeRow_swap (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
+    hingeRow (k := k) (α := α) u v r = hingeRow v u (-r) :=
+  LinearMap.ext fun S => by rw [hingeRow_apply, hingeRow_apply, LinearMap.neg_apply, ← map_neg,
+    neg_sub]
+
 /-- **The independence bridge: independent hinge-row functionals stay independent as rigidity rows**
 (`def:rigidity-matrix`, the Case-I `hindep` brick). For a genuine edge `e = uv` with distinct
 endpoints, if a family `r : ι → Module.Dual ℝ (ScrewSpace k)` of hinge-row-block functionals is

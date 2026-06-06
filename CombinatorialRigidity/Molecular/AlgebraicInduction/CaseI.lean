@@ -2873,4 +2873,75 @@ theorem BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt
   rw [Fintype.card_fin, hrspan]
   exact hgap
 
+/-- **Claim 6.11, eq. (6.23): the deleted `ab`-edge has a redundant row**
+(`lem:case-III-claim-6-11`,
+the Gap-1 corank-gap discharge; Katoh–Tanigawa 2011 §6.4.1, eq. (6.23), Phase 22d). The geometric
+*instantiation* of the abstract redundant-row pigeonhole
+(`exists_redundant_panelRow_of_edge_of_finrank_lt`) at KT's two specific graphs: the split-off
+`Gab = G_v^{ab}` (`0`-dof) and its single-edge deletion `Gv = G_v^{ab} − ab` (minimal `k'`-dof,
+`k' ≤ D − 2`). Both frameworks are `ofNormals · ends q` at the *same* inductively-fixed seed `q` and
+selector `ends`, so they agree on every supporting extensor (`panelRow`/`supportExtensor` read only
+`ends`/`q`, not the graph), and their link sets differ by exactly the `ab`-edge `e₀` linking `a`,
+`b` (`he₀`, with `Gv`'s links a subset of `Gab`'s, `hle`, and every `Gab`-link a `Gv`-link or `e₀`,
+`hsplit`).
+
+KT's two rank inputs are the two `finrank` equations: eq. (6.18)
+`finrank (span R(Gab,q)-rows) = D(m−1)` (`h618`, the `0`-dof full rank, `m = |V(Gab)| = |V(Gv)|`,
+from the seed-rank bridge `lem:case-III-seed-rank-bridge` at the rigid `Gab`) and eq. (6.22)
+`finrank (span R(Gv,q)-rows) = D(m−1) − k'` with `k' ≤ D − 2` (`h622`/`hk'`, from the
+rank-attainment packaging `lem:case-III-rank-attainment` + Gap-3 `lem:case-III-gap3-minimalKDof`).
+The row-set identity `span R(Gab)-rows = W ⊔ ab-block`
+(`span_rigidityRows_eq_sup_span_panelRow_edge`,
+`W = span R(Gv)-rows`) turns eq. (6.18) into `finrank (W ⊔ ab-block) = D(m−1)`, so the `ab`-block
+raises `finrank W = D(m−1) − k'` by only `k' < D − 1` — exactly the corank gap `hgap` the
+pigeonhole needs. The conclusion is KT's eq. (6.23): the `D − 1` independent `ab`-rows have one
+member redundant
+modulo `W` and the rest, so dropping it does not lower the rank — the `+1` that (in the deferred
+candidate-completion assembly) lifts the stratum-1 brick `D(|V|−1) − 1` to full `D(|V|−1)`. -/
+theorem BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq
+    [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    {m k' : ℕ} (hk' : k' ≤ screwDim k - 2)
+    (h618 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1))
+    (h622 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1) - k') :
+    ∃ (r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k)),
+      LinearIndependent ℝ r ∧
+      Submodule.span ℝ (Set.range r) = Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, p.1, p.2))) ∧
+      ∃ i, r i ∈ Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows
+        ⊔ Submodule.span ℝ (r '' {j | j ≠ i}) := by
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
+  set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
+  set W := Submodule.span ℝ Fv.rigidityRows with hW
+  set Eblk := Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+    × Set.powersetCard (Fin (k + 2)) k => Fab.panelRow ends (e₀, p.1, p.2))) with hEblk
+  -- The two frameworks agree on every supporting extensor (graph-independent), so the row-set
+  -- identity `span R(Gab)-rows = W ⊔ ab-block` applies (the only difference is the `ab`-edge).
+  have hext : ∀ e, Fab.supportExtensor e = Fv.supportExtensor e := fun e => rfl
+  have hrow : Submodule.span ℝ Fab.rigidityRows = W ⊔ Eblk :=
+    Fab.span_rigidityRows_eq_sup_span_panelRow_edge Fv hext hne₀ he₀ hle hsplit
+  -- Eq. (6.18) `finrank (W ⊔ ab-block) = D(m−1)` and eq. (6.22) `finrank W = D(m−1) − k'`, with
+  -- `k' ≤ D − 2`, give the corank gap: the `ab`-block raises `finrank W` by `k' < D − 1`.
+  have hgap : Module.finrank ℝ (W ⊔ Eblk : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      < Module.finrank ℝ W + (screwDim k - 1) := by
+    have hWle : Module.finrank ℝ W
+        ≤ Module.finrank ℝ (W ⊔ Eblk : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))) :=
+      Submodule.finrank_mono le_sup_left
+    rw [← hrow, h618] at hWle ⊢
+    rw [hW, h622] at hWle ⊢
+    omega
+  exact Fab.exists_redundant_panelRow_of_edge_of_finrank_lt huv hne₀ W hgap
+
 end CombinatorialRigidity.Molecular
