@@ -726,10 +726,38 @@ new content --- is Grassmann--Cayley projective duality.
   independence of $p(q)$.
 \end{proof}
 
+\begin{lemma}[The affine-independence determinant of polynomial-valued candidate points is a polynomial in the seed; KT eq.\ (6.45), determinant-polynomial bridge]
+  \label{lem:case-III-claim612-detpoly}
+  \lean{CombinatorialRigidity.Molecular.exists_detPolynomial_of_pointPolynomial}
+  \leanok
+  \uses{lem:affine-indep-iff}
+  Suppose the four candidate points are built coordinate-by-coordinate as multivariate polynomials
+  in the panel-coordinate seed: a family $pp \colon \mathrm{Fin}\,4 \to \R^3[\sigma]$ of polynomial
+  entries, with the realized point $p(q)_i = (q \mapsto \mathrm{eval}_q(pp_i))$. Then their
+  affine-independence determinant --- the homogenization determinant $\det(\mathrm{homogenize} \circ
+  p(q))$ of \cref{lem:affine-indep-iff} --- is the evaluation at $q$ of a \emph{single} polynomial
+  $P \in \R[\sigma]$: the determinant of the $(d+1) \times (d+1)$ polynomial matrix whose rows are
+  the homogenized polynomial points $\mathrm{Fin.snoc}(pp_i, 1)$. This discharges the determinant
+  hypothesis ($\det(\overline{p(q)}) = P(q)$) of the closure producer
+  \cref{lem:case-III-claim612-points-affineIndep-producer}, isolating the
+  \emph{polynomial-in-the-seed} structure of the determinant from the genuinely genericity-bearing
+  fact that this polynomial is nonzero ($P \ne 0$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Take $P$ to be the determinant of the polynomial matrix with rows $\mathrm{Fin.snoc}(pp_i, 1)$.
+  Evaluation $\mathrm{eval}_q$ is a ring homomorphism, so it commutes with the determinant
+  ($\mathrm{RingHom.map\_det}$); and it commutes with $\mathrm{Fin.snoc}(\cdot, 1)$ entrywise (it
+  fixes the constant final coordinate $1$). Hence $\mathrm{eval}_q(P)$ equals the determinant of the
+  matrix whose rows are the homogenized evaluated points $\mathrm{homogenize}(p(q)_i)$, which is
+  exactly $\det(\overline{p(q)})$.
+\end{proof}
+
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
   \label{lem:case-III-claim612-points-affineIndep}
   \uses{def:rigidity-matrix, def:panel-hinge-framework, lem:genericity-device,
-        lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer}
+        lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer,
+        lem:case-III-claim612-detpoly}
   Let $(G_v^{ab}, q)$ be a \emph{generic} nonparallel panel-hinge framework at $d = 3$
   (\cref{def:panel-hinge-framework}, \cref{lem:genericity-device}: the seed $q$ is generic, so the
   panel normals $n_a, n_b, n_c$ and the coefficients of their hyperplane equations are
@@ -766,8 +794,11 @@ new content --- is Grassmann--Cayley projective duality.
   coordinates, nonvanishing at a generic seed, yielding the affine independence --- is the green
   product-route producer \cref{lem:case-III-claim612-points-affineIndep-producer}: built as
   functions of the seed $q$, the four points are affinely independent at any $q$ off the zero locus
-  of their homogenization determinant. The one red residual is its hypothesis: that this determinant,
-  read as a polynomial in $q$, is \emph{not the zero polynomial}. That nonvanishing-as-a-polynomial
+  of their homogenization determinant. When the points are built coordinate-by-coordinate as
+  polynomials in $q$, that homogenization determinant is itself the evaluation at $q$ of a single
+  polynomial $P$ (\cref{lem:case-III-claim612-detpoly}, green: evaluation commutes with the
+  determinant and with the homogenizing $\mathrm{Fin.snoc}(\cdot, 1)$). The one red residual is then
+  exactly that $P$ is \emph{not the zero polynomial}. That nonvanishing-as-a-polynomial
   is the irreducible genericity content (KT p.~691/698, \cref{lem:genericity-device}: the determinant
   is a polynomial in the panel coefficients, which are algebraically independent over $\Q$, so it
   cannot vanish identically) --- equivalently, foldable into the device's non-root product the way

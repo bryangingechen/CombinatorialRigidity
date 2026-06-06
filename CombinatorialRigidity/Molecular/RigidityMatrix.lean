@@ -224,6 +224,44 @@ theorem exists_affineIndependent_of_det_polynomial_ne_zero {d : ℕ} {σ : Type*
   -- At that seed the determinant is nonzero, so the points are affinely independent.
   exact ⟨q, (affineIndependent_fin_iff_det_homogenize (p q)).mpr (hdet q ▸ hq)⟩
 
+/-- **The affine-independence determinant of polynomial-valued candidate points is a polynomial in
+the seed** (`lem:case-III-claim612-points-affineIndep`, the determinant-polynomial bridge feeding
+the closure half). Suppose the `d + 1` candidate points are built coordinate-by-coordinate as
+multivariate polynomials in the panel-coordinate seed: a family `pp : Fin (d+1) → Fin d →
+MvPolynomial σ ℝ`, with the point `p q i := fun j => eval q (pp i j)`. Then their
+affine-independence determinant — the homogenization determinant
+`det (homogenize ∘ (p q)) : ℝ` of `affineIndependent_fin_iff_det_homogenize` — is the evaluation at
+`q` of a *single* polynomial `P : MvPolynomial σ ℝ`, namely the determinant of the
+`(d+1) × (d+1)` polynomial matrix whose rows are the homogenized polynomial points
+`Fin.snoc (pp i) 1`.
+
+This discharges the `hdet` hypothesis of the closure producer
+`exists_affineIndependent_of_det_polynomial_ne_zero`: the ring homomorphism `eval q` commutes with
+`det` (`RingHom.map_det`) and with `Fin.snoc · 1` (it sends the constant final coordinate `1` to
+`1`), so evaluating the polynomial determinant at `q` reproduces the real homogenization determinant
+of the evaluated points. It isolates the *polynomial-in-the-seed* structure of the determinant from
+the genuinely genericity-bearing fact that this polynomial is nonzero (`P ≠ 0`, the irreducible
+remainder of N3a, the genericity device `lem:genericity-device`), exactly as the existence half
+`exists_ne_zero_dotProduct_eq_zero` and the closure half
+`exists_affineIndependent_of_det_polynomial_ne_zero` isolate their own ingredients. -/
+theorem exists_detPolynomial_of_pointPolynomial {d : ℕ} {σ : Type*}
+    (pp : Fin (d + 1) → Fin d → MvPolynomial σ ℝ) :
+    ∃ P : MvPolynomial σ ℝ, ∀ q : σ → ℝ,
+      MvPolynomial.eval q P
+        = (Matrix.of fun i => homogenize (fun j => MvPolynomial.eval q (pp i j))).det := by
+  classical
+  -- `P` is the determinant of the polynomial matrix whose rows are the homogenized polynomial
+  -- points `Fin.snoc (pp i) 1`. Evaluation at `q` is a ring hom, so it commutes with `det`.
+  refine ⟨(Matrix.of fun i => Fin.snoc (pp i) 1).det, fun q => ?_⟩
+  rw [(MvPolynomial.eval q).map_det]
+  congr 1
+  -- The evaluated polynomial matrix is the homogenization matrix of the evaluated points:
+  -- `eval q` commutes with `Fin.snoc · 1` (it fixes the constant final coordinate `1`).
+  ext i j
+  refine Fin.lastCases ?_ (fun k => ?_) j
+  · simp [homogenize, Matrix.map_apply]
+  · simp [homogenize, Matrix.map_apply]
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

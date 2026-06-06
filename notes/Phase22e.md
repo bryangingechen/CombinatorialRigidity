@@ -33,30 +33,26 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: the N3a determinant-nonzero-as-polynomial residual** (the irreducible
-genericity content of N3a — show the four candidate points' homogenization determinant, built as a
-function of the seed `q`, is *not the zero polynomial*) **or the N3b assembly** (the multi-commit
-Hodge-star piece below). This commit landed the **N3a *closure* sub-leaf**
-`lem:case-III-claim612-points-affineIndep-producer`
-(`exists_affineIndependent_of_det_polynomial_ne_zero`, `RigidityMatrix.lean`, green, axiom-clean): if
-the four candidate points `p : (σ→ℝ) → Fin 4 → ℝ³` are built as functions of a seed `q` and their
-affine-independence determinant `det(homogenize ∘ p q)` is the evaluation of a *nonzero*
-`MvPolynomial σ ℝ` `P` in `q`, then `∃ q, AffineIndependent ℝ (p q)`. A 3-line composition of the
-device's foundational non-root brick `MvPolynomial.exists_eval_ne_zero` (over the infinite field ℝ, a
-nonzero poly does not vanish identically — the same brick Case I uses) with the green determinant
-characterization `affineIndependent_fin_iff_det_homogenize` (Phase 17 Lemma 2.1, top-extensor form).
-**This is the genericity-free closure** — parallel to the green existence half
-`exists_ne_zero_dotProduct_eq_zero`, it isolates the genuinely genericity-bearing fact (`P ≠ 0`) from
-the surrounding linear algebra. N3a stays red on exactly that residual `P ≠ 0` (the determinant is a
-polynomial in the panel coefficients, which are alg-indep over ℚ — `lem:genericity-device` — so it
-cannot vanish identically; foldable into the device's non-root product the way the Claim-6.11 kernel
-folds the subgraph rank polynomials, AlgebraicIndependence.md §2). New green node
-`lem:case-III-claim612-points-affineIndep-producer` in `case-iii.tex`; N3a's `\uses` + proof prose
-rewired to cite the closure half (green) and name the `P ≠ 0` polynomial-nonvanishing as the red
-remainder. Added the Funext mirror import to `RigidityMatrix.lean`. `verify.sh` + uses/cref +
-supersession gates clean; `lake build` warning-clean; `lake lint` clean. No new mirror (the producer
-is project-internal; the `MvPolynomial.exists_eval_ne_zero` mirror already existed), no FRICTION
-(clean 2-lemma composition).
+**Next concrete commit: the N3a `P ≠ 0` genericity residual** (the irreducible genericity content
+of N3a, now the *sole* red remainder of the points half) **or the N3b assembly** (the multi-commit
+Hodge-star piece below). This commit landed the **N3a determinant-polynomial bridge**
+`lem:case-III-claim612-detpoly` (`exists_detPolynomial_of_pointPolynomial`, `RigidityMatrix.lean`,
+green, axiom-clean): when the `d+1` candidate points are built coordinate-by-coordinate as
+`MvPolynomial σ ℝ` in the seed (`pp : Fin (d+1) → Fin d → MvPolynomial σ ℝ`, realized point
+`p q i j := eval q (pp i j)`), their affine-independence determinant `det(homogenize ∘ p q)` is the
+eval at `q` of a *single* polynomial `P` — the det of the polynomial matrix with rows
+`Fin.snoc (pp i) 1`. This **discharges the `hdet` hypothesis** of the green closure half
+`exists_affineIndependent_of_det_polynomial_ne_zero`, isolating the polynomial-in-the-seed structure
+of the determinant from the genericity-bearing `P ≠ 0`. 6-line proof: `eval q` is a ring hom, so it
+commutes with `det` (`RingHom.map_det`) and entrywise with `Fin.snoc · 1` (fixing the constant final
+`1`) — a `Fin.lastCases` split closing both branches by `simp [homogenize, Matrix.map_apply]`. New
+green node `lem:case-III-claim612-detpoly` in `case-iii.tex`; N3a's `\uses` + proof prose rewired to
+cite it (green) and name `P ≠ 0` as the now-sole red remainder of the points half. All three N3a
+ingredients are now isolated as green bricks (existence dimension count, closure non-root,
+determinant-polynomial structure); only `P ≠ 0` is red. `verify.sh` + uses/cref + supersession gates
+clean; `lake build` warning-clean; `lake lint` clean. No new mirror (project-internal,
+`RingHom.map_det`/`Fin.lastCases`/`Fin.snoc`-simp all upstream), no FRICTION (clean ring-hom
+composition).
 
 **The N3b assembly (still red, multi-commit).** The three N3b duality leaves are green; the assembly
 places both the point-join `pᵢ∨pⱼ` and the panel-meet `C(L) = complementIso(n_u∧n')` in `⋀²W` as an
@@ -167,20 +163,25 @@ commit (no `\lean`/`\leanok`); build greens them.
     the `j`-hyperplane intersection brick (`p₁` on all three at `j=3`; `p₂/p₃/p₄` on each pair at
     `j=2`). Deps: `def:panel-hinge-framework`.
   - [x] **N3a-closure** `lem:case-III-claim612-points-affineIndep-producer`
-    (`exists_affineIndependent_of_det_polynomial_ne_zero`, `RigidityMatrix.lean`, green, axiom-clean,
-    this commit) — the **genericity-to-realization closure** half: if the 4 points are built as
-    functions of the seed `q` and their homogenization determinant is the eval of a *nonzero*
-    `MvPolynomial σ ℝ` `P`, then `∃ q, AffineIndependent ℝ (p q)`. A 3-line composition of
-    `MvPolynomial.exists_eval_ne_zero` (the device non-root brick) with the green det characterization
-    `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1). Isolates the genericity-bearing `P ≠ 0`
-    from the LA glue, parallel to N3a-exists. Deps: `lem:affine-indep-iff`, `lem:genericity-device`.
-  - [ ] **N3a-affineIndep** (red remainder) — the residual hypothesis of the closure: that the
-    affine-independence determinant, read as a polynomial in the seed `q`, is **not the zero
-    polynomial** (`P ≠ 0`). The irreducible genericity content (`lem:genericity-device`: the det is a
-    poly in the alg-indep-over-ℚ panel coefficients, so cannot vanish identically). Needs the 4
-    candidate points constructed as functions of `q` (parametric solution of the incidence systems);
-    foldable into the device's non-root product (AlgebraicIndependence.md §2, the Claim-6.11-kernel
-    route). The multi-commit content; this is what keeps N3a red.
+    (`exists_affineIndependent_of_det_polynomial_ne_zero`, `RigidityMatrix.lean`, green, axiom-clean) —
+    the **genericity-to-realization closure** half: 4 points built as functions of `q` with
+    homogenization determinant = eval of a *nonzero* `P` ⟹ `∃ q, AffineIndependent ℝ (p q)`.
+    `MvPolynomial.exists_eval_ne_zero` ∘ `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1).
+    Deps: `lem:affine-indep-iff`, `lem:genericity-device`.
+  - [x] **N3a-detpoly** `lem:case-III-claim612-detpoly` (`exists_detPolynomial_of_pointPolynomial`,
+    `RigidityMatrix.lean`, green, axiom-clean, this commit) — the **determinant-polynomial bridge**:
+    points built coordinate-wise as `MvPolynomial` in `q` (`pp : Fin (d+1) → Fin d → MvPolynomial σ ℝ`)
+    ⟹ their homogenization determinant is eval at `q` of the single polynomial `det(of (Fin.snoc (pp i) 1))`.
+    Discharges the `hdet` hypothesis of N3a-closure. `eval q` (ring hom) commutes with `det` +
+    `Fin.snoc · 1` via a `Fin.lastCases` split. Deps: `lem:affine-indep-iff`.
+  - [ ] **N3a-affineIndep** (red remainder, now sole) — the residual hypothesis: that the
+    affine-independence determinant polynomial `P` (from N3a-detpoly) is **not the zero polynomial**
+    (`P ≠ 0`). The irreducible genericity content (`lem:genericity-device`: `P` is a poly in the
+    alg-indep-over-ℚ panel coefficients, so cannot vanish identically); foldable into the device's
+    non-root product (AlgebraicIndependence.md §2, the Claim-6.11-kernel route). The point-construction
+    plumbing (N3a-exists supplies one incidence point at a time; assembling into the `MvPolynomial`
+    family `pp` N3a-detpoly consumes) plus the `P ≠ 0` proof are the multi-commit content; this is what
+    keeps N3a red.
 - [ ] **N3b** `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet duality
   bridge (still red, decomposed this commit). For a pair whose connecting line `L` lies in panel
   `Π(u)`, the join `pᵢ∨pⱼ` equals a scalar multiple of the panel-meet extensor `C(L) =
@@ -262,20 +263,23 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: the N3a-affineIndep polynomial-nonvanishing residual**
-(`lem:case-III-claim612-points-affineIndep`, the genericity content that keeps N3a red). Both the
-*existence* half (`lem:case-III-claim612-panel-point-exists`) and the *closure* half
-(`lem:case-III-claim612-points-affineIndep-producer`, this commit) are green; what remains is the
-closure's hypothesis — that the four candidate points' homogenization determinant, read as a
-polynomial in the seed `q`, is **not the zero polynomial** (`P ≠ 0`). Two pieces: (1) construct the 4
-candidate points as functions of `q` (the parametric solution of the `Π(a)/Π(b)/Π(c)` incidence
-systems — the existence brick gives one point at a time; this needs them assembled into a
-`(σ→ℝ)→Fin 4→ℝ³` family with the determinant as a `MvPolynomial`), and (2) show that polynomial is
-nonzero via `lem:genericity-device` / the §2 product-route (fold the determinant into the device's
-non-root product, the way the Phase-22d Claim-6.11 kernel folds the subgraph rank polynomials —
-AlgebraicIndependence.md row #106, §2). That product-route is the multi-commit genericity hammer. The
-alternative, **the N3b assembly**, remains the multi-commit Hodge-star piece (below); both remaining
-red leaves are now correctly characterized, each reduced to a single irreducible residual.
+**Next concrete commit: the N3a-affineIndep `P ≠ 0` residual**
+(`lem:case-III-claim612-points-affineIndep`, the genericity content that keeps N3a red). All three
+N3a ingredients are now green and isolated: the *existence* dimension count
+(`lem:case-III-claim612-panel-point-exists`), the *closure* non-root step
+(`lem:case-III-claim612-points-affineIndep-producer`), and the *determinant-polynomial* bridge
+(`lem:case-III-claim612-detpoly`, this commit — the homogenization determinant of polynomial-valued
+points is itself `eval q` of a single polynomial `P`). What remains is the genericity-bearing
+hypothesis of the bridge+closure: that `P` is **not the zero polynomial** (`P ≠ 0`). Two pieces:
+(1) assemble the per-panel incidence points (N3a-exists gives one at a time) into the `MvPolynomial`
+family `pp : Fin 4 → Fin 3 → MvPolynomial σ ℝ` the N3a-detpoly bridge consumes (the parametric
+solution of the `Π(a)/Π(b)/Π(c)` incidence systems as polynomials in `q`), and (2) show that
+polynomial `P = det(of (Fin.snoc (pp i) 1))` is nonzero via `lem:genericity-device` / the §2
+product-route (fold `P` into the device's non-root product, the way the Phase-22d Claim-6.11 kernel
+folds the subgraph rank polynomials — AlgebraicIndependence.md row #106, §2). That product-route is
+the multi-commit genericity hammer. The alternative, **the N3b assembly**, remains the multi-commit
+Hodge-star piece (below); both remaining red leaves are now correctly characterized, each reduced to
+a single irreducible residual.
 
 **Why N3b's assembly is the hard remainder:** identifying `⋀²W` (the exterior square of the
 2-dim `W = {n_u,n'}^⊥`) with the image inside `⋀²ℝ⁴` where the two concrete extensors live needs the
@@ -307,16 +311,23 @@ Grassmann–Cayley).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3a-detpoly green — the affine-independence determinant of polynomial-valued points is `eval q P`
+  (2026-06-06).** `exists_detPolynomial_of_pointPolynomial` (`RigidityMatrix.lean`, axiom-clean):
+  candidate points built coordinate-wise as `MvPolynomial σ ℝ` (`pp : Fin (d+1) → Fin d → MvPolynomial σ ℝ`)
+  ⟹ `det(homogenize ∘ p q) = eval q (det(of (Fin.snoc (pp i) 1)))`. Discharges the `hdet` hypothesis
+  of N3a-closure, isolating the polynomial-in-the-seed structure from the genericity-bearing `P ≠ 0`.
+  6-line proof: `eval q` (ring hom) commutes with `det` (`RingHom.map_det`) + entrywise with `Fin.snoc · 1`
+  (fixing the final `1`), via a `Fin.lastCases` split closing on `simp [homogenize, Matrix.map_apply]`.
+  All three N3a ingredients (existence / closure / detpoly) now isolated as green bricks; only `P ≠ 0`
+  red. New green node `lem:case-III-claim612-detpoly` in `case-iii.tex`; N3a `\uses` + prose rewired.
+  No new mirror, no FRICTION (clean ring-hom composition).
 - **N3a-closure green — the product-route closure is a 2-lemma composition (2026-06-06).**
-  `exists_affineIndependent_of_det_polynomial_ne_zero` (`RigidityMatrix.lean`, axiom-clean): from 4
-  candidate points built as functions of a seed `q` whose homogenization determinant is the eval of a
-  nonzero `MvPolynomial σ ℝ`, produce a seed where they are affinely independent. 3 lines composing
-  the device non-root brick `MvPolynomial.exists_eval_ne_zero` with the green det characterization
-  `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1). Splits N3a into existence + closure (both
-  green) + the residual `P ≠ 0` (red, the genericity content). Parallels N3a-exists: isolates the
-  genericity-bearing fact from the LA glue. Added the Funext mirror import to `RigidityMatrix.lean`;
-  no new mirror, no FRICTION (clean composition). New green node
-  `lem:case-III-claim612-points-affineIndep-producer` in `case-iii.tex`; N3a `\uses` + prose rewired.
+  `exists_affineIndependent_of_det_polynomial_ne_zero` (`RigidityMatrix.lean`, axiom-clean): 4 points
+  built as functions of `q` with homogenization det = eval of a nonzero `P` ⟹ a seed where they are
+  affinely independent. `MvPolynomial.exists_eval_ne_zero` ∘ green det characterization
+  `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1). Splits N3a into existence + closure (green)
+  + residual `P ≠ 0` (red). Added the Funext mirror import. New green node
+  `lem:case-III-claim612-points-affineIndep-producer`; N3a `\uses` + prose rewired.
 - **N3a-exists green — the existence half is a genericity-free dimension count (2026-06-06).**
   `exists_ne_zero_dotProduct_eq_zero` (`RigidityMatrix.lean`, axiom-clean): `m < d+1` homogeneous
   incidence equations `⟨p̄, nᵢ⟩ = 0` always have a nonzero solution — the incidence map `ℝ^(d+1) →
