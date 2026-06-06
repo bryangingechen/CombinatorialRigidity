@@ -470,6 +470,43 @@ frameworks; the graph-swap is no longer part of the gap. -/
 theorem ofNormals_withGraph (G G' : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
     (ofNormals (k := k) G ends q).withGraph G' = ofNormals (k := k) G' ends q := rfl
 
+/-- **The seam identity: an edge's panel row depends only on the seed at its endpoints; KT
+eq.~(6.26)** (`lem:case-III-candidate-row` infra, the candidate-completion seam; Katoh–Tanigawa
+2011 §6.4.1, eq.~(6.26), Phase 22e). Two `ofNormals` realizations at seeds `q₀`, `q` that **agree at
+the two endpoints** of an edge `e` — `q₀ (ends e).1 = q (ends e).1` and `q₀ (ends e).2 = q (ends
+e).2` as panel normals — produce *identical* `e`-rows of their rigidity matrices: for every basis
+pair `(t₁, t₂)`,
+
+  `(ofNormals G ends q₀).toBodyHinge.panelRow ends (e, t₁, t₂)
+    = (ofNormals Gv ends q).toBodyHinge.panelRow ends (e, t₁, t₂)`,
+
+regardless of the two underlying graphs `G`, `Gv`. This is KT's seam identity
+`R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)` in per-row form: the panel row
+`hingeRow (ends e).1 (ends e).2 (annihRow (C(p(e))) t₁ t₂)` reads only the endpoint selector `ends`,
+the index `(t₁, t₂)`, and the supporting extensor `C(p(e)) = panelSupportExtensor (normal (ends
+e).1) (normal (ends e).2)` — and the extensor depends on the seed *only at the two endpoints*. The
+underlying graph never enters a `panelRow` (it carries `ends` and the normals, not `graph`).
+
+This is the only research-shaped piece of the candidate-completion (`lem:case-III-candidate-row`)
+that needs a fresh statement. At the eq.~(6.12) placement `p_1 = q₀` (`q₀ = q` off the re-inserted
+body `v`, KT eq.~(6.12)), every `G_v^{ab}`-edge avoids `v`, so its endpoints lie in `V \setminus
+\{v\}` where `q₀` agrees with `q` — supplying the hypotheses here verbatim, hence the `G_v^{ab}`-row
+block of `R(G, p_1)` reproduces `R(G_v^{ab}, q)`. The reproduced `vb`-row uses the shear identity
+`panelSupportExtensor_add_smul_right` to match the `ab`-extensor on top of this seam. Transporting
+the green redundant-`ab`-row combination (`exists_redundant_panelRow_ab_of_finrank_eq`, KT
+eq.~(6.23)) across the seam, the resulting row of `R(G, p_1)` vanishes off `v`'s column, which the
+eq.~(6.28) leaf `dualMap_eq_comp_single_proj_of_vanish_off` turns into the missing pure-`v`-column
+row `w`. -/
+theorem ofNormals_panelRow_eq_of_ends_seed_eq (G Gv : Graph α β) (ends : β → α × α)
+    (q₀ q : α × Fin (k + 2) → ℝ) (e : β)
+    (h₁ : (fun i => q₀ ((ends e).1, i)) = fun i => q ((ends e).1, i))
+    (h₂ : (fun i => q₀ ((ends e).2, i)) = fun i => q ((ends e).2, i))
+    (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    (ofNormals (k := k) G ends q₀).toBodyHinge.panelRow ends (e, t₁, t₂)
+      = (ofNormals (k := k) Gv ends q).toBodyHinge.panelRow ends (e, t₁, t₂) := by
+  simp only [BodyHingeFramework.panelRow, toBodyHinge_supportExtensor,
+    ofNormals_ends, ofNormals_normal, h₁, h₂]
+
 /-! ## Cycle realizations (`lem:cycle-realization`, KT Lemma 5.4 — panel content)
 
 Katoh–Tanigawa's Lemma 5.4 (the geometric content of Crapo–Whiteley 1982 Prop 3.4 / Whiteley

@@ -258,8 +258,9 @@ fundamental row operation: the redundant row's linear combination, transported
 from $R(G_v^{ab}, q)$ up to $R(G, p_1)$ across the seam
 $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$, produces a row
 $w$ of $R(G, p_1)$ whose $V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)).
-The pure-$v$-column characterization of such a row is the green leaf below; the
-row operation that produces $w$ is the open crux.
+The seam identity (green per-edge, \cref{lem:case-III-seam}) and the pure-$v$-column
+characterization of such a row (the green leaf below) are both in place; assembling
+the transported combination into $w$ is the open crux.
 
 \begin{lemma}[A rigidity row vanishing off $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
   \label{lem:case-III-vanish-off-column}
@@ -283,15 +284,42 @@ row operation that produces $w$ is the open crux.
   exactly $((f \circ \mathrm{single}_v) \circ \mathrm{proj}_v)\,S$.
 \end{proof}
 
+\begin{lemma}[The seam identity: an edge's row depends only on the seed at its endpoints; KT eq.\ (6.26)]
+  \label{lem:case-III-seam}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.ofNormals_panelRow_eq_of_ends_seed_eq}
+  \leanok
+  Two $\mathrm{ofNormals}$ realizations at seeds $q_0$, $q$ that \emph{agree at the
+  two endpoints} of an edge $e$ --- $q_0(\mathrm{ends}\,e)_1 = q(\mathrm{ends}\,e)_1$
+  and $q_0(\mathrm{ends}\,e)_2 = q(\mathrm{ends}\,e)_2$ as panel normals --- produce
+  identical $e$-rows of their rigidity matrices: for every basis pair $(t_1, t_2)$,
+  \[ R(G, q_0; e, t_1, t_2) = R(G_v^{ab}, q; e, t_1, t_2), \]
+  regardless of the two underlying graphs. This is KT's seam identity
+  $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$ in per-row form:
+  a panel row $\mathrm{hingeRow}\,(\mathrm{ends}\,e)_1\,(\mathrm{ends}\,e)_2\,
+  (\mathrm{annihRow}\,C(p(e))\,t_1\,t_2)$ reads only the endpoint selector, the index,
+  and the supporting extensor $C(p(e)) = \mathrm{panelSupportExtensor}\,(\mathrm{normal}\,
+  (\mathrm{ends}\,e)_1)\,(\mathrm{normal}\,(\mathrm{ends}\,e)_2)$, which depends on the
+  seed only at the two endpoints (the underlying graph never enters a panel row).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Both rows unfold to $\mathrm{hingeRow}\,(\mathrm{ends}\,e)_1\,(\mathrm{ends}\,e)_2\,
+  (\mathrm{annihRow}\,C\,t_1\,t_2)$ with $C = \mathrm{panelSupportExtensor}$ of the two
+  endpoint normals; the hypotheses $q_0 = q$ at $(\mathrm{ends}\,e)_1$, $(\mathrm{ends}
+  \,e)_2$ make the two normals equal, hence the extensors and the rows.
+\end{proof}
+
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
-  \uses{lem:case-III-claim-6-11, lem:case-III-vanish-off-column,
+  \uses{lem:case-III-claim-6-11, lem:case-III-vanish-off-column, lem:case-III-seam,
         lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}), so that $R(G, p_1)$'s rows restricted
   to the $V \setminus \{v\}$ columns and the edges $E \setminus \{vb\}$ reproduce the
   rows of $R(G_v^{ab}, q)$ (the seam identity
-  $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$, KT eq.~(6.26)).
+  $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$, KT eq.~(6.26),
+  now green per-edge as \cref{lem:case-III-seam}: at $p_1 = q_0$ every $G_v^{ab}$-edge
+  avoids $v$, so its endpoints lie in $V \setminus \{v\}$ where $q_0$ agrees with $q$).
   Apply the redundant-$ab$-row combination of \cref{lem:case-III-claim-6-11} ---
   the scalars $\lambda_{(ab)j}$ ($j \neq i^*$), $\lambda_{e_j}$ of eqs.~(6.24)--(6.25)
   with $\lambda_{(ab)i^*} = 1$ --- as the matching combination of $R(G, p_1)$-rows
@@ -308,16 +336,19 @@ row operation that produces $w$ is the open crux.
   with bottom-right $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V \setminus \{v\}| - 1)$.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-III-claim-6-11, lem:case-III-vanish-off-column}
-  \emph{The open crux, deferred within Phase~22.} The construction is the seam
-  identity $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$ (the
-  $(vb)j \leftrightarrow (ab)j$ and $e_j \leftrightarrow e_j$ row correspondence on
-  the $V \setminus \{v\}$ columns), which transports the green redundant-row
-  combination of \cref{lem:case-III-claim-6-11} to a combination of $R(G, p_1)$-rows
-  whose $V \setminus \{v\}$ part vanishes (eq.~(6.24) sums those rows to $0$). The
-  $v$-column part is read off from $R(G, p_1; E_v, v) = 0$ and
-  $R(G, p_1; (vb)j, v) = r_j(p_1(vb)) = r_j(q(ab))$; \cref{lem:case-III-vanish-off-column}
-  then certifies $w$ is a pure $v$-column row.
+  \uses{lem:case-III-claim-6-11, lem:case-III-vanish-off-column, lem:case-III-seam}
+  \emph{The open crux, deferred within Phase~22.} The seam identity
+  $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$ is now green
+  per-edge (\cref{lem:case-III-seam}): the $(vb)j \leftrightarrow (ab)j$ and
+  $e_j \leftrightarrow e_j$ row correspondence on the $V \setminus \{v\}$ columns
+  follows from $q_0 = q$ off $v$, with the $(vb)$-extensor matching the $(ab)$-extensor
+  by the shear identity $\mathrm{panelSupportExtensor\_add\_smul\_right}$ (KT eq.~(6.12)).
+  What stays open is assembling the combination: transport the green redundant-row
+  combination of \cref{lem:case-III-claim-6-11} across the seam to a combination of
+  $R(G, p_1)$-rows whose $V \setminus \{v\}$ part vanishes (eq.~(6.24) sums those rows
+  to $0$), read off the $v$-column part from $R(G, p_1; E_v, v) = 0$ and
+  $R(G, p_1; (vb)j, v) = r_j(p_1(vb)) = r_j(q(ab))$, and apply
+  \cref{lem:case-III-vanish-off-column} to certify $w$ is a pure $v$-column row.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -328,7 +359,7 @@ row operation that produces $w$ is the open crux.
         lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper,
         lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
         lem:case-III-claim-6-11, lem:case-III-candidate-row,
-        lem:case-III-vanish-off-column}
+        lem:case-III-vanish-off-column, lem:case-III-seam}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
@@ -348,10 +379,11 @@ row operation that produces $w$ is the open crux.
   (\cref{sec:molecular-algebraic-induction-candidate-completion}) converts that
   redundant $ab$-row into the missing $+1$: the row operation of eqs.~(6.24)--(6.28)
   (\cref{lem:case-III-candidate-row}) produces a pure $v$-column row $w$ (its
-  column characterization, \cref{lem:case-III-vanish-off-column}, green), block-%
-  triangularizing $R(G, p_1)$ as in eq.~(6.29). What stays deferred is the open row
-  operation itself (the seam identity $R(G, p_1; E \setminus \{vb\}, V \setminus
-  \{v\}) = R(G_v^{ab}, q)$) and the $D$-candidate disjunction of Claim~6.12. KT then
+  column characterization, \cref{lem:case-III-vanish-off-column}, and the seam
+  identity $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$,
+  \cref{lem:case-III-seam}, both green), block-triangularizing $R(G, p_1)$ as in
+  eq.~(6.29). What stays deferred is assembling the transported combination into the
+  row $w$ and the $D$-candidate disjunction of Claim~6.12. KT then
   build $D$ candidate realizations and show one is rigid; the
   degree-2 condition forces all candidates to test the same normal vector $r
   \in \mathbb{R}^D$, which by the extensor-independence Lemma~2.1

@@ -1,7 +1,8 @@
 # Phase 22e — candidate-completion + Claim 6.12 (KT §6.4.1, eqs. (6.24)–(6.45)) (work log)
 
 **Status:** in progress (opened 2026-06-06 design-pass-first; opening recon +
-eq.-(6.28) blueprint node + `w` constructibility recon + `w` node-cut landed).
+eq.-(6.28) blueprint node + `w` constructibility recon + `w` node-cut + the
+seam-identity build landed).
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -15,26 +16,34 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: build the seam identity for `w`** —
-`R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` (KT eq. (6.26)), the only research-shaped
-piece left in the `w` construction (`lem:case-III-candidate-row`). The
-constructibility recon (below) confirmed KT's eqs. (6.24)→(6.28) arithmetic closes
-against this seam, so the node is cut and scheduled; the seam Lean statement is the
-build.
+**Next concrete commit: the conditional `D`-row block (eq. (6.29)).** Now that the
+seam (eq. (6.26)) and the eq.-(6.28) leaf are both green, the next research-shaped
+Lean piece is assembling `w`: transport the green redundant-`ab`-row combination
+(`exists_redundant_panelRow_ab_of_finrank_eq`, KT eq. (6.23)) across the seam to a
+combination of `R(G,p₁)`-rows whose `V∖{v}` part vanishes, apply
+`dualMap_eq_comp_single_proj_of_vanish_off` to get the pure `v`-column row `w`, then
+extend the `va`-block to a `D`-row block (`linearIndependent_sum_pinned_block`),
+giving the conditional `D(|V|−1)`-family of eq. (6.29).
 
-**Landed this commit (docs-only, no Lean):**
-- The green eq. (6.28) column-support leaf
-  `BodyHingeFramework.dualMap_eq_comp_single_proj_of_vanish_off` (`RigidityMatrix.lean`,
-  e8e7753, axiom-clean) now has its blueprint node `lem:case-III-vanish-off-column`
-  (green, `\lean{}`+`\leanok`) under a new candidate-completion subsection in
-  `case-iii.tex`. A row vanishing off `v`'s column factors as `(f ∘ₗ single v) ∘ₗ proj v`.
-- The row-op `w` node `lem:case-III-candidate-row` is cut **red** (no `\lean{}` yet):
-  KT eqs. (6.24)→(6.28) — transport the green redundant-`ab`-row combination
-  (`exists_redundant_panelRow_ab_of_finrank_eq`) up to `R(G,p₁)` across the seam,
-  giving `w ∈ span(R(G,p₁)-rows)` vanishing off `v`, which the eq.-(6.28) leaf turns
-  into the pure `v`-column row `(Σⱼ λ_{(ab)j} rⱼ(q(ab)), 0)` of eq. (6.29).
-- `lem:case-III` rewired to `\uses` both new nodes; its deferred-remainder prose now
-  names the open piece precisely (the seam identity + the Claim-6.12 disjunction).
+**Landed this commit (the seam-identity build, KT eq. (6.26)):**
+- `PanelHingeFramework.ofNormals_panelRow_eq_of_ends_seed_eq` (`PanelHinge.lean`,
+  axiom-clean) — the seam in per-row form: two `ofNormals` realizations agreeing at an
+  edge `e`'s two endpoints produce identical `e`-rows, regardless of the underlying
+  graph. A `panelRow` reads only `ends`, the index, and `C(p(e)) =
+  panelSupportExtensor (normal endpoints)`; the graph never enters. At `p₁ = q₀`
+  (= `q` off `v`) every `G_v^{ab}`-edge avoids `v`, so its endpoints lie in `V∖{v}`,
+  supplying the hypotheses verbatim — hence `R(G,p₁)`'s `G_v^{ab}`-block reproduces
+  `R(G_v^{ab},q)`. Blueprint node `lem:case-III-seam` (green) added; the `vb`-extensor
+  matches the `ab`-extensor on top of this seam via `panelSupportExtensor_add_smul_right`.
+- `lem:case-III-candidate-row` rewired to `\uses{lem:case-III-seam}`; its proof + the
+  candidate-completion subsection preamble + `lem:case-III` deferred-remainder prose
+  updated — the seam is no longer the open piece, only assembling the transported
+  combination into `w` is.
+
+**Landed in the prior commit (9467fb4, docs-only):** the eq.-(6.28) column-support
+leaf node `lem:case-III-vanish-off-column` (green) + the row-op `w` node
+`lem:case-III-candidate-row` (red) under a new candidate-completion subsection in
+`case-iii.tex`; `lem:case-III` rewired.
 
 ## Constructibility recon — `w`'s row operation (KT eqs. (6.24)→(6.28))
 
@@ -119,13 +128,12 @@ hypothesis, no dead-end on the live route).
 - [x] Constructibility recon on `w`'s row operation (KT eqs. (6.24)→(6.28)) — done
   this commit; arithmetic closes (verdict above). Node `lem:case-III-candidate-row`
   cut red.
-- [ ] **The seam identity** `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` (KT eq. (6.26)) —
-  the next build, the only research-shaped Lean left in `w`'s construction. The
-  `(vb)j`↔`(ab)j` + `ej`↔`ej` row correspondence on the `V∖{v}` columns. Once green,
-  transport the redundant combination + apply the eq.-(6.28) leaf to land
-  `lem:case-III-candidate-row`. Its eq. (6.18)/(6.22) finrank hypotheses are wired
-  from the green seed-rank-bridge / rank-attainment via rank-nullity
-  `dim Z + dim span(rigidityRows) = D|α|`.
+- [x] **The seam identity** `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` (KT eq. (6.26)) —
+  done this commit as `PanelHingeFramework.ofNormals_panelRow_eq_of_ends_seed_eq`
+  (`PanelHinge.lean`, axiom-clean). Per-row form: two `ofNormals` agreeing at an edge's
+  endpoints produce identical `e`-rows (graph never enters a `panelRow`). Blueprint node
+  `lem:case-III-seam` (green). The `vb`↔`ab` extensor match is on top via
+  `panelSupportExtensor_add_smul_right`.
 - [ ] **The conditional `D`-row block** — `w` (now a pure `v`-column row by eq. (6.28))
   extends the `va`-block to a `D`-row new block (`linearIndependent_sum_pinned_block`),
   giving a `D(|V|−1)`-family **conditional** on the top-left `D×D` block being full
@@ -141,10 +149,10 @@ hypothesis, no dead-end on the live route).
 
 ## Blockers / open questions
 
-- The constructibility recon (above) is done; the row-op arithmetic closes and the one
-  research-shaped Lean piece is now isolated: the **seam identity**
-  `R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` (KT eq. (6.26)). Everything else (eq. (6.28)
-  leaf — green; the pin-a-body block; the Lemma-2.1 disjunction) is bounded.
+- The constructibility recon (above) is done and the seam identity (KT eq. (6.26)) is
+  now green (`ofNormals_panelRow_eq_of_ends_seed_eq`). The remaining `w`-construction
+  pieces (transport the redundant combination across the seam; the pin-a-body `D`-row
+  block; the Lemma-2.1 disjunction) are all bounded.
 - **Recurring Lean trap (carry from 22a–d, FRICTION):** heavy
   `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps can
   `isDefEq`-timeout — make the two frameworks *syntactically* equal before `convert`;
@@ -153,16 +161,21 @@ hypothesis, no dead-end on the live route).
 
 ## Hand-off / next phase
 
-**Next concrete commit: the seam-identity build.** State + prove in Lean (in
-`RigidityMatrix.lean`, next to the `panelRow`/`rigidityRows` API)
-`R(G,p₁;E∖{vb},V∖{v}) = R(G_v^{ab},q)` (KT eq. (6.26)): the `(vb)j`-row of `R(G,p₁)`
-restricted to the `V∖{v}` columns equals the `(ab)j`-row of `R(G_v^{ab},q)`, and the
-`ej`-rows (`e∈Ev`) correspond directly. This is the only research-shaped piece left in
-the `w` construction (recon verdict above). It feeds `lem:case-III-candidate-row` (red,
-cut this commit): once the seam is green, transport the green redundant-`ab`-row
-combination across it and apply the green eq.-(6.28) leaf to produce `w`, the pure
-`v`-column row. Watch the recurring `ofNormals`/`withGraph` defeq-timeout trap
-(Blockers, FRICTION) — `R(G,p₁)` vs `R(G_v^{ab},q)` is exactly that graph-swap shape.
+**Next concrete commit: assemble the transported row `w` (eqs. (6.24)→(6.28)) into
+`lem:case-III-candidate-row`.** With the seam (`ofNormals_panelRow_eq_of_ends_seed_eq`)
+and the eq.-(6.28) leaf (`dualMap_eq_comp_single_proj_of_vanish_off`) both green, the
+build is: take the green redundant-`ab`-row combination of
+`exists_redundant_panelRow_ab_of_finrank_eq` (KT eq. (6.23)), transport it to the
+matching combination of `R(G,p₁) = ofNormals G ends q₀`-rows via the seam (the `(vb)j`
+and `E_v` rows reproduce the `R(G_v^{ab},q)`-rows that the combination sums to `0` on
+the `V∖{v}` columns), so the resulting row vanishes off `v`; apply the eq.-(6.28) leaf
+to certify it is a pure `v`-column row `w = (Σⱼ λ_{(ab)j} rⱼ(q(ab)), 0)`. That lands
+`lem:case-III-candidate-row` green. The seam lemma sidesteps the recurring
+`ofNormals`/`withGraph` defeq-timeout trap (Blockers, FRICTION) by being a *per-row*
+functional equality, no framework-level `IsInfinitesimallyRigidOn` `convert`.
+
+The follow-on after the `w`-assembly: the conditional `D`-row block (eq. (6.29),
+extending `va` via `linearIndependent_sum_pinned_block`), then Claim 6.12.
 
 Downstream (still deferred, unlettered): the `d=3` assembly
 (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring);
@@ -181,6 +194,15 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
   subsection to `case-iii.tex`: `lem:case-III-vanish-off-column` (green, the eq.-(6.28)
   leaf) + `lem:case-III-candidate-row` (red, the eqs.-(6.24)→(6.28) row op). The
   constructibility recon (KT pp. 684–686) confirmed the arithmetic closes; the lone
-  open Lean is the seam identity (KT eq. (6.26)). `lem:case-III` rewired to `\uses` both
+  open Lean was the seam identity (KT eq. (6.26)). `lem:case-III` rewired to `\uses` both
   + its deferred-remainder prose sharpened to the seam + Claim 6.12. No new
   BlueprintExposition entry — planned scoping, not a KT-math reroute.
+- **Seam-identity build, per-row form (2026-06-06).** Landed KT eq. (6.26) as
+  `ofNormals_panelRow_eq_of_ends_seed_eq` (`PanelHinge.lean`, axiom-clean): two
+  `ofNormals` realizations agreeing at an edge's two endpoint seeds produce identical
+  `e`-rows. Chose the *per-row* form (not a framework-level matrix/`infinitesimalMotions`
+  equality) because a `panelRow` reads only `ends`, the index, and `C(p(e))` =
+  `panelSupportExtensor (normal endpoints)` — the graph never enters — so the seam is a
+  one-`simp only` unfold against `q₀ = q` at the endpoints, sidestepping the recurring
+  `ofNormals`/`withGraph` `IsInfinitesimallyRigidOn`-`convert` defeq-timeout. Blueprint
+  node `lem:case-III-seam` (green); `lem:case-III-candidate-row` rewired to `\uses` it.
