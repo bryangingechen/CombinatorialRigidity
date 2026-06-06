@@ -270,9 +270,13 @@ The per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse
 core algebra: each transported $(vb)j$-row minus the inductive $(ab)j$-row is the pure $(va)$-hinge
 row $\mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ \cdot)$ (same supporting extensor by the shear
 identity), and it packages the column-op composition certifying $w \circ \Phi$ pure $v$-column.
-What remains open in \cref{lem:case-III-candidate-row} is threading the eqs.~(6.24)--(6.25)
-span-membership combination through this per-row collapse and feeding the operated row to the
-eq.~(6.29) pin-block. The $a$-column-block vanishing
+The combination-level threading is itself now green
+(\cref{lem:case-III-candidate-row-construction}): the redundant row's common $G_v$-row element
+$w_{\mathrm{Gv}}$ is an $ab$-block element, so it is $\mathrm{hingeRow}\ a\ b\ \rho$ for some
+$\rho \in r(p(e_0))$, its transported $(vb)i^*$-row $\mathrm{hingeRow}\ v\ b\ \rho$ is a genuine
+rigidity row of $R(G, p_1)$, and the collapse yields the candidate row $\mathrm{hingeRow}\ v\ a\ \rho$.
+What remains open in \cref{lem:case-III-candidate-row} is feeding the operated row to the
+eq.~(6.29) pin-block (the full $D(|V|-1)$-family assembly). The $a$-column-block vanishing
 (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$ case), not the
 candidate-row input.
 
@@ -479,9 +483,43 @@ candidate-row input.
   \cref{lem:case-III-vanish-off-column} (a row vanishing off $v$ factors through $v$'s column).
 \end{proof}
 
+\begin{lemma}[The candidate row $w$ from the redundant row's common element; KT eqs.\ (6.24)--(6.28)]
+  \label{lem:case-III-candidate-row-construction}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_candidate_row_eq612}
+  \leanok
+  \uses{lem:case-III-redundant-decomposition, lem:case-III-transport-collapse}
+  The combination-level threading that produces the candidate row $w$ from KT's redundant-$ab$-row.
+  The input is the \emph{common} element $w_{\mathrm{Gv}}$ of the eqs.~(6.24)--(6.25) decomposition
+  (\cref{lem:case-III-redundant-decomposition}): the $G_v$-row part of the redundant $ab$-row, which
+  is itself an element of the $ab$-block $\operatorname{span}\{R(G_v^{ab}, q; (ab)\cdot)\}$
+  (it equals $r\,i^* - w_{\mathrm{Other}}$, both terms in the block). By the per-edge block identity
+  (\cref{lem:case-III-claim-6-11-redundant-row} infra) the $ab$-block is the
+  $\mathrm{hingeRow}\,a\,b$-image of the $(D-1)$-dimensional hinge-row block
+  $r(p(e_0)) = (\operatorname{span} C)^\perp$, so $w_{\mathrm{Gv}} = \mathrm{hingeRow}\,a\,b\,\rho$
+  for some $\rho \in r(p(e_0))$. At the eq.~(6.12) seed $p_1 = q_0$ the shear identity
+  $\mathrm{panelSupportExtensor}\,(n_a + t\,n_b)\,n_b = \mathrm{panelSupportExtensor}\,n_a\,n_b$
+  (KT eq.~(6.16)) makes $\rho$ a hinge-row-block functional of $R(G, p_1)$'s $e_b = vb$-hinge too,
+  so $\mathrm{hingeRow}\,v\,b\,\rho$ is the transported $(vb)i^*$-row, a genuine rigidity row of
+  $R(G, p_1)$. Its eq.~(6.27) collapse against the inductive $(ab)$-part is the pure $(va)$-hinge
+  candidate row $w$:
+  \[ \mathrm{hingeRow}\,v\,b\,\rho \;-\; w_{\mathrm{Gv}} \;=\; \mathrm{hingeRow}\,v\,a\,\rho \;=\; w, \]
+  by the hinge-difference collapse (\cref{lem:case-III-transport-collapse}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-III-transport-collapse}
+  The $ab$-block element $w_{\mathrm{Gv}}$ is $(\mathrm{screwDiff}\,a\,b)^\vee\,\rho =
+  \mathrm{hingeRow}\,a\,b\,\rho$ for some $\rho$ in the hinge-row block at $e_0$, by the block
+  identity $\operatorname{span}\{R(G_v^{ab}, q; (ab)\cdot)\} = \mathrm{hingeRow}\,a\,b\,[r(p(e_0))]$.
+  The same $\rho$ annihilates $C(p_1(e_b))$ because $C(p_1(e_b)) = C(q(e_0))$ by the shear identity,
+  so $\mathrm{hingeRow}\,v\,b\,\rho$ is a rigidity row at the $vb$-link $e_b$. The collapse is the
+  hinge-difference identity $(S_v - S_b) - (S_a - S_b) = S_v - S_a$.
+\end{proof}
+
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
+        lem:case-III-candidate-row-construction,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
         lem:case-III-transport-collapse,
         lem:case-III-conditional-block, lem:case-II-realization-placement}
@@ -502,29 +540,29 @@ candidate-row input.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
+        lem:case-III-candidate-row-construction,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
         lem:case-III-transport-collapse}
-  \emph{The open crux, deferred within Phase~22.} The eqs.~(6.24)--(6.25) decomposition
-  (\cref{lem:case-III-redundant-decomposition}), the per-edge seam identity
-  (\cref{lem:case-III-seam}), the column operation $\Phi$ (\cref{lem:case-III-columnop}), and the
-  per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse}) are green.
-  Substituting the eqs.~(6.24)--(6.25) decomposition with $g = w_{\mathrm{Gv}} +
-  w_{\mathrm{Other}} - r\,i^* = 0$, the transported row collapses to
-  $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ with $\rho_g = \sum_j \lambda_{(ab)j} r_j \neq 0$ ---
-  supported on \emph{both} columns $v$ and $a$, with $w(S) = \rho_g(S_v - S_a)$, which is
-  $-\rho_g(S_a) \neq 0$ on $S_v = 0$. The per-row collapse
-  $R(G, p_1; (vb)j) - R(G_v^{ab}, q; (ab)j) = \mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ \cdot)$
-  is \cref{lem:case-III-transport-collapse}; the $V \setminus \{v\}$-vanishing comes from the
+  \emph{The open crux, deferred within Phase~22.} The combination-level threading is now green:
+  \cref{lem:case-III-candidate-row-construction} takes the common element $w_{\mathrm{Gv}}$ of the
+  eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row
+  part of the redundant $ab$-row, which is itself an $ab$-block element --- writes it as
+  $w_{\mathrm{Gv}} = \mathrm{hingeRow}\ a\ b\ \rho$ for some $\rho \in r(p(e_0))$, certifies that the
+  transported $(vb)i^*$-row $\mathrm{hingeRow}\ v\ b\ \rho$ is a genuine rigidity row of $R(G, p_1)$
+  (the shear identity makes $\rho$ a hinge-row-block functional of the $e_b = vb$-hinge too), and
+  collapses it to the candidate row $w = \mathrm{hingeRow}\ v\ a\ \rho$
+  (\cref{lem:case-III-transport-collapse}). The row $w$ is supported on \emph{both} columns $v$ and
+  $a$, with $w(S) = \rho(S_v - S_a)$; the $V \setminus \{v\}$-vanishing comes from the
   eqs.~(6.14)--(6.15) \emph{column operation} $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$: by
   \cref{lem:case-III-columnop}, precomposing with $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$
-  gives $w(\Phi(S)) = \rho_g(S_v)$, so $w \circ \Phi$ vanishes off $v$ and is pure $v$-column by
+  gives $w(\Phi(S)) = \rho(S_v)$, so $w \circ \Phi$ vanishes off $v$ and is pure $v$-column by
   \cref{lem:case-III-vanish-off-column} (the composition packaged in
   \cref{lem:case-III-transport-collapse}) --- \emph{not} from KT eq.~(6.43), which is a Claim~6.12
   fact (\cref{lem:case-III-acolumn-zero} is $g$'s $a$-column $= 0$, trivially $g = 0$, consumed in
-  the $M_3$ case). What stays open is threading the eqs.~(6.24)--(6.25) span-membership combination
-  through the per-row transport (summing \cref{lem:case-III-transport-collapse} over the
-  $\lambda_{(ab)j}$-weights) and feeding the operated row $w \circ \Phi$ to the eq.~(6.29) pin-block
-  (\cref{lem:case-III-conditional-block}) with the count $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
+  the $M_3$ case). What stays open is feeding the operated row $w \circ \Phi$ to the eq.~(6.29)
+  pin-block (\cref{lem:case-III-conditional-block}), assembling it with the stratum-1 brick's
+  $va$-block and old block (\cref{lem:case-II-realization-placement}) for the count
+  $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -536,6 +574,7 @@ candidate-row input.
         lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
         lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
         lem:case-III-acolumn-zero, lem:case-III-candidate-row,
+        lem:case-III-candidate-row-construction,
         lem:case-III-transport-collapse,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no

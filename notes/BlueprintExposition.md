@@ -219,8 +219,13 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (`columnOp`): `w(Φ S) = ρ_g((S v + S a) − S a) = ρ_g(S v)`, pure `v`-column. eq. (6.43) (the
   `a`-block of the eq.-(6.24) vanishing combination is `0`) is a *Claim-6.12* (`M3`-case) fact, not
   this one — the project briefly wired it as the candidate-row input before the recon corrected it.
+  **Construction-core simplification (22e, `lem:case-III-candidate-row-construction`):** the
+  combination needs no per-row `λ`-expansion — the redundant row's *common* element `wGv`
+  (its `G_v`-row part `= r i* − wOther`) is a single `ab`-block element, hence `hingeRow a b ρ`
+  for one `ρ ∈ r(p(e₀))` (by `span_panelRow_edge_eq`); the whole transport collapses at that one `ρ`
+  to `w = hingeRow v a ρ`, with `hingeRow v b ρ` the genuine transported `(vb)i*` rigidity row.
   Pointer: `notes/Phase22e.md` *Decisions*; KT pp. 683–686 (eqs. 6.14–6.16); `lem:case-III-columnop`
-  + `lem:case-III-candidate-row` proof.
+  + `lem:case-III-candidate-row` proof + `lem:case-III-candidate-row-construction`.
 - **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
   **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new

@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [open] The eq.-(6.12) shear "support extensor at `q₀`'s `vb`-hinge = at `q`'s `ab`-hinge" is a 6-deep manual `rw` unfold chain in three Case-III producers
+- **Where it bit:** `case_II_placement_eq612` (`hnewne`/`hane`), `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,
+  and the new `exists_candidate_row_eq612` (`hCeq`), all `CaseI.lean`/`PanelHinge.lean` (Phase 22c–22e).
+  Each needs `supportExtensor(ofNormals G ends q₀)(e_b) = panelSupportExtensor n_a n_b`
+  (resp. `= supportExtensor(ofNormals Gab ends q)(e₀)`) at the eq.-(6.12) seed, where
+  `q₀(v,·) = n_a + t•n_b`, `q₀(b,·) = n_b`, via the shear `panelSupportExtensor_add_smul_right`.
+- **Friction:** the proof is a hand-rolled `rw [toBodyHinge_supportExtensor (×1–2), ofNormals_ends (×1–2),
+  ofNormals_normal (×2–4), hends_*, hq₀v, hq₀b, panelSupportExtensor_add_smul_right]` chain — ~6 distinct
+  unfold lemmas for one mathematical step (the panel support extensor reads the two endpoint normals; at
+  `q₀` the `vb`-pair shears to the `ab`-pair). Reproduced ~3× across the strata.
+- **Candidate fix:** a fused `ofNormals_toBodyHinge_supportExtensor` simp/rewrite lemma
+  (`supportExtensor (ofNormals G ends q).toBodyHinge e = panelSupportExtensor (q (ends e).1) (q (ends e).2)`,
+  the `def`-collapse) would let the chain become `simp only [ofNormals_toBodyHinge_supportExtensor,
+  hends_*, hq₀v, hq₀b]; rw [panelSupportExtensor_add_smul_right]`. Not mirrored this commit (only one new
+  callsite); file for the next Case-III producer that hits it.
+- **Status:** open (project-internal fused lemma in `PanelHinge.lean`, where `ofNormals` lives).
+
 ### [resolved] The orientation flip `hingeRow u v r = hingeRow v u (-r)` was an inline `LinearMap.ext fun S => by rw […]` in three rigidity-row span proofs — named as `hingeRow_swap`
 - **Where it bit:** `span_panelRow_eq_rigidityRows` + `span_panelRow_linking_eq_rigidityRows`
   (`Pinning.lean`, Phase 22) and the new `span_rigidityRows_eq_sup_span_panelRow_edge` (`Pinning.lean`,

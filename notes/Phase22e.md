@@ -18,34 +18,34 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: thread the eqs.-(6.24)/(6.25) span-membership combination through the
-per-row collapse, then feed the operated row to the eq.-(6.29) pin-block.** This commit landed the
-per-row transport collapse (eq. (6.27)) + the column-op pure-`v`-column packaging — the core algebra
-of `lem:case-III-candidate-row`. What remains for the candidate-row *producer* proper: at the
-eq.-(6.12) placement `p₁`, take the redundant-`ab`-row combination
-(`exists_redundant_panelRow_ab_decomposition`, `r i* = wGv + wOther`), expand each `wOther`/`r i*`
-term across `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va` (the `wGv` `E_v`-rows transport verbatim via
-the seam), sum the `λ_{(ab)j}`-weights to `w = hingeRow v a ρ_g`, operate by `columnOp`, and feed
-`comp_columnOp_eq_comp_single_proj`'s pure-`v`-column row to
-`linearIndependent_sum_pinned_block_augment` (count `((D−1)+1)+D(|V_v|−1)=D(|V|−1)`). **Recurring
-defeq-timeout trap (*Blockers*)** bites in the `ofNormals`/`withGraph` graph-swap of the transport.
-After that: Claim 6.12.
+**Next concrete commit: feed the operated candidate row to the eq.-(6.29) pin-block — the full
+`D(|V|−1)`-family assembly.** This commit landed the candidate-row *combination-level threading* core
+(`exists_candidate_row_eq612`, `CaseI.lean`): the genuine remaining content of
+`lem:case-III-candidate-row`'s row construction is now green. What remains for the full producer:
+assemble the operated row `w ∘ Φ` (pure-`v`-column, via `comp_columnOp_eq_comp_single_proj`) with the
+stratum-1 brick's `va`-block + old block (`case_II_placement_eq612`) into a `D(|V|−1)`-size independent
+rigidity-row family, via `linearIndependent_sum_pinned_block_augment` (count
+`((D−1)+1)+D(|V_v|−1)=D(|V|−1)`). The augment's `hnewpinaug` (the eq.-(6.29) top-left `D×D` full rank,
+the augmented pinned new block) is the **conditional** = part of Claim-6.12 territory; the assembly can
+pass it as a green-modulo hypothesis. **Recurring defeq-timeout trap (*Blockers*)** bites in the
+`ofNormals` graph-swap of the assembly (transport the old/new blocks onto `G`). After that: Claim 6.12,
+then flip `lem:case-II-realization`.
 
-**Landed this commit (the eq.-(6.27) per-row transport collapse + column-op packaging):**
-- `PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va` (`CaseI.lean`, axiom-clean): at the
-  eq.-(6.12) seed (`q₀(v,·)=n_a+t·n_b`, `q₀(b,·)=q(b,·)`), the transported `(vb)j`-row of `R(G,q₀)`
-  minus the inductive `(ab)j`-row of `R(Gᵥᵃᵇ,q)` equals `hingeRow v a (annihRow C t₁ t₂)` — both
-  read the *same* `C = panelSupportExtensor n_a n_b` (shear `panelSupportExtensor_add_smul_right`, KT
-  eq. (6.16)), so they are `hingeRow v b ρ` / `hingeRow a b ρ`, difference `hingeRow v a ρ`. (The
-  `ab`-row uses `q` at `a` directly, so no `hq₀a` hypothesis needed.)
-- Two `RigidityMatrix.lean` leaves (axiom-clean): `hingeRow_sub_hingeRow_eq` (the collapse algebra
-  `hingeRow u w ρ − hingeRow v w ρ = hingeRow u v ρ`, from `(S_u−S_w)−(S_v−S_w)=S_u−S_v`), and
-  `comp_columnOp_eq_comp_single_proj` (the operated row `(hingeRow v a ρ) ∘ₗ Φ` is its own pure-`v`-
-  column factorization — composes `hingeRow_comp_columnOp_vanish_off` into
-  `dualMap_eq_comp_single_proj_of_vanish_off`).
-- Blueprint node `lem:case-III-transport-collapse` (green; pins all three), wired into
-  `lem:case-III-candidate-row`'s + `lem:case-III`'s `\uses` (candidate-row stays red — what remains
-  is threading the span-membership combination through the per-row collapse + the pin-block feed).
+**Landed this commit (the candidate-row combination-level threading core):**
+- `PanelHingeFramework.exists_candidate_row_eq612` (`CaseI.lean`, axiom-clean): the combination-level
+  producer of the candidate row. Input = the redundant-`ab`-row decomposition's *common* element
+  `wGv` (the `G_v`-row part = `r i* − wOther`), which is an `ab`-block element. By
+  `span_panelRow_edge_eq` the `ab`-block is the `hingeRow a b`-image of the hinge-row block
+  `r(p(e₀)) = (span C)^⊥`, so `wGv = hingeRow a b ρ` for some `ρ ∈ r(p(e₀))`. The eq.-(6.12) shear
+  makes `ρ` a hinge-row-block functional of `R(G,q₀)`'s `e_b = vb`-hinge too, so `hingeRow v b ρ` (the
+  transported `(vb)i*`-row) is a genuine rigidity row of `R(G,q₀)`; its collapse
+  `hingeRow v b ρ − wGv = hingeRow v a ρ` (= the candidate row `w`, via `hingeRow_sub_hingeRow_eq`)
+  is the eq.-(6.27) transport at the combination level. No graph/rigidity defeq in the statement —
+  the row is pure functional algebra, sidestepping the `ofNormals` trap (*Blockers*).
+- Blueprint: new green leaf node `lem:case-III-candidate-row-construction` (pins the lemma); wired into
+  `lem:case-III-candidate-row`'s + `lem:case-III`'s `\uses`; the candidate-completion section prose +
+  the (still-red) `lem:case-III-candidate-row` proof updated — "what stays open" is now just feeding
+  the operated row to the eq.-(6.29) pin-block (the full `D(|V|−1)`-family assembly).
 
 ## Red-node consistency gate — recon verdict (2026-06-06, opening commit)
 
@@ -130,11 +130,16 @@ hypothesis, no dead-end on the live route).
   `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va` (`CaseI.lean`) + `hingeRow_sub_hingeRow_eq` /
   `comp_columnOp_eq_comp_single_proj` (`RigidityMatrix.lean`), all axiom-clean. Blueprint node
   `lem:case-III-transport-collapse` (green).
-- [ ] **The candidate-row producer proper** — thread the eqs.-(6.24)/(6.25) span-membership
-  combination through the per-row collapse (sum the `λ_{(ab)j}`-weights to `w = hingeRow v a ρ_g`;
-  `wGv` transports verbatim via the seam), operate by `columnOp`, feed the pure-`v`-column row to
-  `linearIndependent_sum_pinned_block_augment`. **Next concrete commit** (gives
-  `lem:case-III-candidate-row` its `\lean` pin + `\leanok`).
+- [x] **The candidate-row combination-level threading core** — `exists_candidate_row_eq612`
+  (`CaseI.lean`, axiom-clean): from the redundant-row decomposition's common `ab`-block element `wGv`,
+  produce `ρ` with `wGv = hingeRow a b ρ`, certify `hingeRow v b ρ ∈ rigidityRows R(G,q₀)`, and the
+  collapse `hingeRow v b ρ − wGv = hingeRow v a ρ` (= candidate row `w`). Blueprint node
+  `lem:case-III-candidate-row-construction` (green).
+- [ ] **The candidate-row producer proper / full block assembly** — feed the operated row `w ∘ Φ`
+  (`comp_columnOp_eq_comp_single_proj`) to `linearIndependent_sum_pinned_block_augment`, assembling
+  with `case_II_placement_eq612`'s `va`-block + old block into the `D(|V|−1)`-size family. Passes the
+  eq.-(6.29) `hnewpinaug` (top-left `D×D` full rank) as a Claim-6.12 conditional. **Next concrete
+  commit** (gives `lem:case-III-candidate-row` its `\lean` pin + `\leanok`).
 - [ ] **Claim 6.12** — the `D`-candidate extensor-span disjunction (de-risked: bottoms
   on the green Phase-17 Lemma 2.1 `omitTwoExtensor_linearIndependent`; the degree-2
   eq. (6.44) forces all candidates to test the same `r ∈ ℝ⁶`, which ⟂ all `d+1`
@@ -156,19 +161,19 @@ hypothesis, no dead-end on the live route).
 
 ## Hand-off / next phase
 
-**Next concrete commit: the candidate-row producer proper** — `lem:case-III-candidate-row`'s `\lean`
-pin + `\leanok`. Every algebraic leaf is now green, including the eq.-(6.27) per-row collapse
-(`panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`) and the column-op pure-`v`-column packaging
-(`comp_columnOp_eq_comp_single_proj`). What remains is the *combination-level* threading: at the
-eq.-(6.12) placement `p₁`, take the redundant-`ab`-row decomposition
-(`exists_redundant_panelRow_ab_decomposition`, `r i* = wGv + wOther`), expand each `wOther`/`r i*`
-`(ab)j`-term through `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va` (the `wGv` `E_v`-rows transport
-verbatim via the seam `ofNormals_panelRow_eq_of_ends_seed_eq`), sum the `λ_{(ab)j}`-weights to
-`w = hingeRow v a ρ_g`, operate by `columnOp`, and feed `comp_columnOp_eq_comp_single_proj`'s pure-`v`-
-column row to `linearIndependent_sum_pinned_block_augment` (count `((D−1)+1)+D(|V_v|−1)=D(|V|−1)`).
-**Recurring trap (Blockers):** the `ofNormals`/`withGraph` graph-swap in the transport — make the two
-frameworks syntactically equal before `convert`; transfer rigidity via a `mem_infinitesimalMotions`
-round-trip.
+**Next concrete commit: the candidate-row producer proper / full block assembly** —
+`lem:case-III-candidate-row`'s `\lean` pin + `\leanok`. The combination-level threading core is now
+green (`exists_candidate_row_eq612`): it produces the candidate row `w = hingeRow v a ρ` and certifies
+the transported `(vb)i*`-row `hingeRow v b ρ` is a rigidity row of `R(G,q₀)`. What remains is the
+*assembly*: operate `w` by `columnOp` to its pure-`v`-column form (`comp_columnOp_eq_comp_single_proj`),
+then feed it to `linearIndependent_sum_pinned_block_augment` alongside `case_II_placement_eq612`'s
+stratum-1 `va`-block (the N7b-1 new block) + old block, for the count
+`((D−1)+1)+D(|V_v|−1)=D(|V|−1)`. The augment's `hnewpinaug` (eq.-(6.29) top-left `D×D` full rank, the
+augmented pinned new block — `va`-block's `D−1` pinned rows + `w`'s `v`-column) is the **conditional**,
+Claim-6.12 territory; pass it as a green-modulo hypothesis (the assembly node stays green-modulo until
+6.12 discharges it). **Recurring trap (Blockers):** the `ofNormals`/`withGraph` graph-swap when
+transporting the old/new blocks onto `G` — make the two frameworks syntactically equal before
+`convert`; transfer rigidity via a `mem_infinitesimalMotions` round-trip.
 
 The follow-on: Claim 6.12, then flip `lem:case-II-realization` + the `d=3` half of `lem:case-III`
 green.
@@ -182,6 +187,17 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **The candidate-row combination-level threading core (2026-06-06).** Landed
+  `PanelHingeFramework.exists_candidate_row_eq612` (`CaseI.lean`, axiom-clean). Key simplification over
+  the planned route: the redundant-row decomposition's *common* element `wGv` (the `G_v`-row part
+  `= r i* − wOther`) is itself an `ab`-block element, so by `span_panelRow_edge_eq` it equals
+  `hingeRow a b ρ` for a *single* `ρ ∈ r(p(e₀))` — no need to expand the abstract `r`-family into
+  per-row `λ`-weighted sums. The transport then reduces to the per-row collapse at that one `ρ`:
+  `hingeRow v b ρ` (a rigidity row, since the shear makes `ρ ∈ hingeRowBlock(e_b at q₀)`) minus `wGv`
+  is `hingeRow v a ρ`. Pure functional algebra, no graph/rigidity defeq in the statement (sidesteps
+  the `ofNormals` trap). Blueprint: green leaf `lem:case-III-candidate-row-construction`; the full
+  block assembly (operate + pin-block) stays open. BlueprintExposition: folds into the `(c)`
+  candidate-row ledger entry at phase close.
 - **The eq. (6.27) per-row transport collapse + column-op packaging (2026-06-06).** Landed
   `PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va` (`CaseI.lean`) + two
   `RigidityMatrix.lean` leaves (`hingeRow_sub_hingeRow_eq`, `comp_columnOp_eq_comp_single_proj`), all

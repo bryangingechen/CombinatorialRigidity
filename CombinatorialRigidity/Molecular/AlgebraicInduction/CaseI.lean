@@ -3103,4 +3103,71 @@ theorem PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va
   -- difference is the pure `va`-hinge row (`(S_v − S_b) − (S_a − S_b) = S_v − S_a`).
   exact BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b _
 
+/-- **The candidate-completion row operation: the missing `+1` row `w`**
+(`lem:case-III-candidate-row`, the eqs. (6.24)–(6.28) producer; Katoh–Tanigawa 2011 §6.4.1,
+eqs. (6.24)–(6.28), Phase 22e). The combination-level threading that converts KT Claim 6.11's
+redundant `ab`-row (eq. (6.23)) into the missing full-rank row of eq. (6.29). The input is the
+*common* element `wGv` of the eq.-(6.24)/(6.25) decomposition: the `G_v`-row part of the redundant
+`ab`-row, which lies in the `ab`-block `span {R(G_v^{ab}, q; (ab)·)}` (`hwGv_ab`, since
+`wGv = r i^* − wOther` with both terms in the block).
+
+By the per-edge block identity (`span_panelRow_edge_eq`) the `ab`-block is the `hingeRow a b`-image
+of the `(D − 1)`-dimensional hinge-row block `r(p(e₀)) = (\mathrm{span}\,C)^\perp`
+(`C = \mathrm{panelSupportExtensor}\,n_a\,n_b`), so `wGv = \mathrm{hingeRow}\,a\,b\,ρ` for some
+`ρ ∈ r(p(e₀))`. The eq.-(6.12) seed reproduces the `ab`-extensor at `v`'s `b`-hinge `e_b`
+(`panelSupportExtensor_add_smul_right`, KT eq. (6.16)), so `ρ` is also a hinge-row-block functional
+of `R(G, q₀)`'s `e_b = vb`-hinge: `\mathrm{hingeRow}\,v\,b\,ρ` is the transported `(vb)i^*`-row,
+a genuine rigidity row of `R(G, q₀)`. Its eq.-(6.27) collapse against the inductive `(ab)`-part is
+the pure `(va)`-hinge candidate row `w`,
+\[ \mathrm{hingeRow}\,v\,b\,ρ \;-\; w_{\mathrm{Gv}} \;=\; \mathrm{hingeRow}\,v\,a\,ρ \;=\; w, \]
+since `wGv = \mathrm{hingeRow}\,a\,b\,ρ` and `(S_v − S_b) − (S_a − S_b) = S_v − S_a`
+(`hingeRow_sub_hingeRow_eq`). The companion `comp_columnOp_eq_comp_single_proj` then turns `w` into
+the pure-`v`-column row the eq.-(6.29) pin-block (`linearIndependent_sum_pinned_block_augment`)
+consumes: operating by `columnOp` (`col_a += col_v`, KT eqs. (6.14)–(6.15)) makes `w ∘ Φ` depend
+only on `v`'s screw column — the missing `+1` lifting the stratum-1 brick `D(|V|−1) − 1`
+(`case_II_placement_eq612`) to full `D(|V|−1)`. -/
+theorem PanelHingeFramework.exists_candidate_row_eq612 [Finite α]
+    (G Gab : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {e₀ e_b : β} {v a b : α} {t : ℝ}
+    (hends_e0 : ends e₀ = (a, b)) (hends_eb : ends e_b = (v, b))
+    (hG_eb : G.IsLink e_b v b)
+    (q₀ : α × Fin (k + 2) → ℝ)
+    (hq₀v : (fun i => q₀ (v, i)) = (fun i => q (a, i)) + t • (fun i => q (b, i)))
+    (hq₀b : (fun i => q₀ (b, i)) = fun i => q (b, i))
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    (hwGv_ab : wGv ∈ Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, p.1, p.2)))) :
+    ∃ ρ : Module.Dual ℝ (ScrewSpace k),
+      wGv = BodyHingeFramework.hingeRow a b ρ ∧
+      -- the transported `(vb)i^*`-row is a genuine rigidity row of `R(G, q₀)` (KT eq. (6.26))
+      BodyHingeFramework.hingeRow v b ρ
+        ∈ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows ∧
+      -- its eq.-(6.27) collapse against the inductive `(ab)`-part is the candidate row `va`-hinge
+      BodyHingeFramework.hingeRow v b ρ - wGv = BodyHingeFramework.hingeRow v a ρ := by
+  set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
+  set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
+  -- The `ab`-block is the `hingeRow a b`-image of the hinge-row block `(span C)^⊥` at `e₀`.
+  rw [Fab.span_panelRow_edge_eq e₀ hne₀, hends_e0] at hwGv_ab
+  obtain ⟨ρ, hρ_blk, hρ⟩ := hwGv_ab
+  -- `(screwDiff a b).dualMap ρ = hingeRow a b ρ` (definitional) recovers `wGv`.
+  rw [← BodyHingeFramework.hingeRow_eq_dualMap] at hρ
+  refine ⟨ρ, hρ.symm, ?_, ?_⟩
+  · -- `hingeRow v b ρ` is a rigidity row of `R(G, q₀)`: witness the link `e_b` and `ρ`'s block.
+    refine ⟨e_b, v, b, hG_eb, ρ, ?_, rfl⟩
+    -- `hingeRowBlock` reads only the support extensor; at `q₀` the `e_b`-extensor equals `C(e₀)`.
+    rw [BodyHingeFramework.hingeRowBlock_apply] at hρ_blk ⊢
+    have hCeq : FG.supportExtensor e_b = Fab.supportExtensor e₀ := by
+      rw [hFG, hFab, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_normal, hends_eb, hends_e0, hq₀v, hq₀b,
+        panelSupportExtensor_add_smul_right]
+    rw [hCeq]; exact hρ_blk
+  · -- The collapse: `hingeRow v b ρ − hingeRow a b ρ = hingeRow v a ρ`.
+    rw [← hρ]
+    exact BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b ρ
+
 end CombinatorialRigidity.Molecular
