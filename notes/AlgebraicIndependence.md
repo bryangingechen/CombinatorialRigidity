@@ -102,7 +102,7 @@ a proven strategy*, not a gamble.
 | Where | What alg-independence is (would be) used for | Status | Relaxable? |
 |---|---|---|---|
 | Genericity device / **Claim 6.4/6.9** (Phases 21b, 22a, 22b) | KT transports rank across the collapse/generic step via alg-independence | **AVOIDED** — formalized via the existence/Zariski device + GP; green. *Not a site — the precedent.* | already avoided |
-| **Phase 22d kernel** — KT Claim 6.11, eq. (6.22)/(6.18), footnote 6 (`lem:case-III-seed-rank-bridge`) | the inductively-fixed seed `q` attains the IH/matroid-predicted rank of nested subgraphs (`G_v^{ab}`, `G_v`) — so a redundant `ab`-row exists | **first forced site; being built** via the alg-independence route — leaf (i) `AlgebraicIndependent.aeval_ne_zero` ✓ landed (mirror); (ii) **SPLIT** (`Phase22d.md` *Kernel sub-phase (ii) recon*; §1.32) into (ii-a) seed-genericity motive conjunct + (ii-b) a **rationality bridge** (the device `Q : MvPolynomial σ ℝ` exhibited over ℚ so leaf (i) applies). (ii-b)'s descent pair (`eval_map_algebraMap` / `map_algebraMap_ne_zero_iff`) + the **consumed assembly** `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` ✓ landed; remaining (ii-b) input = the `complementIso`-rational-entries leaf (next), then (iii) the kernel bridge | **candidate: §2 product-route** (~70% at `d=3`) — finitely many subgraphs, `q` chosen at composition |
+| **Phase 22d kernel** — KT Claim 6.11, eq. (6.22)/(6.18), footnote 6 (`lem:case-III-seed-rank-bridge`) | the inductively-fixed seed `q` attains the IH/matroid-predicted rank of nested subgraphs (`G_v^{ab}`, `G_v`) — so a redundant `ab`-row exists | **first forced site; being built** via the alg-independence route — leaf (i) `AlgebraicIndependent.aeval_ne_zero` ✓ landed (mirror); (ii) **SPLIT** (`Phase22d.md` *Kernel sub-phase (ii) recon*; §1.32) into (ii-a) seed-genericity motive conjunct + (ii-b) a **rationality bridge**. (ii-b) ✓ green end to end (descent pair + consumed assembly + the `complementIso`-rational-entries leaf, wired into the device `Q`). (ii-a)'s **first sub-step ✓ settled** — the moment curve is NOT alg-indep over ℚ, so the alg-indep seed is the mirror `exists_injective_algebraicIndependent_real` (a finite injective alg-indep-over-ℚ `q : σ → ℝ` off a transcendence basis); remaining (ii-a) = motive-conjunct wiring. Then (iii) the kernel bridge | **candidate: §2 product-route** (~70% at `d=3`) — finitely many subgraphs, `q` chosen at composition |
 | **Phase 23** — KT Lemma 6.13, general `d` (the length-`d` chain) | same footnote-6 transfer along the chain `v₀…v_d` | future (planned) | **uncertain** — family may grow with `d` (§2 risk (c)); product-route may not suffice |
 
 (KT makes algebraic independence a single *global* inductive-seed choice, so the
@@ -115,12 +115,12 @@ surfacings the formalization must discharge, plus the avoided precedents.)
 - The alg-independence route is the **chosen path to green** (2026-06-06); this note
   does **not** block it.
 - The Phase-22d kernel sub-phase builds (i)+(ii)+(iii) directly. Leaf (i)
-  (`AlgebraicIndependent.aeval_ne_zero`, mirror) landed 2026-06-06; the (ii) opening recon
-  (2026-06-06) split (ii) into (ii-a) seed-genericity motive conjunct + (ii-b) a rationality
-  bridge. (ii-b)'s descent pair + the consumed assembly
-  (`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`) landed; next build = (ii-b)'s
-  `complementIso`-rational-entries leaf (certify the device `Q`'s coefficients are rational); (iii)
-  after (`notes/Phase22d.md` *Hand-off* + *Lemma checklist*).
+  (`AlgebraicIndependent.aeval_ne_zero`, mirror) and (ii-b) (the rationality bridge, wired into the
+  device `Q`) are green. (ii-a)'s **first sub-step — the moment-curve alg-independence question — is
+  settled**: the moment curve is NOT alg-indep over ℚ, so the seed is the mirror
+  `exists_injective_algebraicIndependent_real` (a finite injective alg-indep-over-ℚ `q : σ → ℝ` off a
+  transcendence basis). Next build = the (ii-a) motive-conjunct wiring; (iii) after
+  (`notes/Phase22d.md` *Hand-off* + *Lemma checklist*).
 - The **relaxation phase** (deferred, unlettered — minted when its turn comes) takes
   §2 as its starting hypothesis and §3 as its checklist of sites to revisit.
 - Keep §3 current: any new "this seed attains the rank" use is a new row.

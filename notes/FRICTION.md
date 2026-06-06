@@ -2496,6 +2496,36 @@ limitations. Worth a once-over so future agents don't re-litigate.
   directly below `MvPolynomial.aeval_map_algebraMap`; the assembly is project-glue
   over the pair + the alg-independent mirror + the mathlib descent.
 
+### [mirrored] `exists_injective_algebraicIndependent_real` (+ `infinite_index_of_transcendenceBasis_real`) — a finite algebraically independent family of reals over ℚ
+- **Where it bit:** Phase 22d KT-Claim-6.11 analytic-kernel seed-genericity sub-step
+  (ii-a). The kernel needs the realizing seed `q : σ → ℝ` (finite `σ`)
+  *algebraically independent over ℚ* so that leaf (i)
+  `AlgebraicIndependent.aeval_ne_zero` certifies it a non-root of every nonzero
+  rational rank polynomial (KT footnote 6). The project's general-position witness,
+  the moment curve `q (a, i) = (param a) ^ i`, is **not** alg-indep (its coordinates
+  satisfy rational relations: `q (a, 0) = 1`, `q (a, 2) = q (a, 1) ^ 2`), so the
+  alg-indep seed must come from a transcendence basis instead.
+- **Friction:** mathlib has the *necessary* direction (`AlgebraicIndependent.cardinalMk_le_trdeg`)
+  and the transcendence-basis existence (`exists_isTranscendenceBasis'`), but not the
+  finite-family existence (`#σ` finite ⟹ ∃ alg-indep `σ → ℝ`), nor the fact that a
+  transcendence basis of ℝ over ℚ is infinite.
+- **Resolution:** mirrored as
+  - `infinite_index_of_transcendenceBasis_real (hx : IsTranscendenceBasis ℚ x) :
+    Infinite ι` — were `ι` finite, ℝ would be algebraic over the countable
+    `ℚ[range x]` and hence countable (`Algebra.cardinalMk_adjoin_le` +
+    `Algebra.IsAlgebraic.cardinalMk_le_max`), contradicting `Uncountable ℝ`.
+  - `exists_injective_algebraicIndependent_real (σ) [Finite σ] : ∃ q : σ → ℝ,
+    Function.Injective q ∧ AlgebraicIndependent ℚ q` — restrict a transcendence
+    basis along an embedding `σ ↪ ι` (`ι` infinite), `AlgebraicIndependent.comp`.
+  The strengthening of `Countable.exists_injective_real` (injectivity only) below
+  to algebraic independence.
+- **Lifted to:** TACTICS-QUIRKS § 37 (cross-universe `Nonempty (α ↪ β)` ⟹
+  `Cardinal.lift_mk_le'`, *not* `Cardinal.le_def`).
+- **Status:** mirrored. Both axiom-clean; the `infinite_index` lemma is kept
+  ℝ/ℚ-specific (the general countable→uncountable form crosses universes in
+  `Algebra.cardinalMk_adjoin_le`, which is single-universe).
+- **Mirror file:** `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`.
+
 ### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`
 - **Where it bit:** Phase 21b Case-I realization producer
   (`Molecular/AlgebraicInduction/`,

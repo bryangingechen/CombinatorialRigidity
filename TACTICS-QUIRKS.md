@@ -1392,3 +1392,22 @@ dependent cardinality cast is tractable only after `subst`; make a helper whose 
 Worked case: `wedgePairing_ιMulti_family_mem_range_intCast` (Phase 22d, `Molecular/Meet.lean`) — the
 diagonal pairing value `screwAlgebraTopEquiv (e_S ∨ₑ e_Sᶜ)`; the helper is the mirrored
 `ExteriorAlgebra.ιMulti_family_congr` (FRICTION *[mirrored]*).
+
+## 37. `Nonempty (α ↪ β)` from a cardinality bound across *different universes* — use `Cardinal.lift_mk_le'`, not `le_def`
+
+**Symptom.** You have `α` finite (or `#α ≤ #β`) and want an embedding `Nonempty (α ↪ β)`, and reach
+for `Cardinal.le_def (α β) : #α ≤ #β ↔ Nonempty (α ↪ β)`. The `rw [← Cardinal.le_def]` fails with
+*"Did not find an occurrence of the pattern `Nonempty (Function.Embedding.{?u+1, ?u+1} ?α ?β)`"* —
+because `le_def` requires `α β : Type u` in the **same** universe, but here `α : Type u_1` and
+`β : Type` (e.g. `β = ι` the index of a transcendence basis, which mathlib hands you in `Type 0`).
+
+**Fix.** Use the cross-universe form `Cardinal.lift_mk_le' : lift.{v} #α ≤ lift.{u} #β ↔ Nonempty
+(α ↪ β)` (`{α : Type u} {β : Type v}`). `rw [← Cardinal.lift_mk_le']` then leaves a goal on lifted
+cardinals; close it with the `lift`-flavored cardinal lemmas (`Cardinal.lift_lt_aleph0`,
+`Cardinal.aleph0_le_lift`) rather than the un-lifted ones. General axis: *any cardinal comparison
+whose two sides live in different universes needs the `lift_*` companion lemma; the bare form is
+same-universe only.*
+
+Worked case: `exists_injective_algebraicIndependent_real` (Phase 22d,
+`Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`) — embedding a finite `σ` into the
+infinite transcendence-basis index `ι : Type` of ℝ over ℚ.
