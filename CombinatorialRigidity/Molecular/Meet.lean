@@ -567,6 +567,41 @@ theorem complementIso_toDual_extensor_eq_zero_of_shared_vector
   complementIso_toDual_eq_zero_of_wedgeProd_eq_zero (by omega) _ _
     (wedgeProd_extensor_eq_zero_of_shared_vector n c hshare)
 
+/-! ## Step (ii) of the point-join ↔ panel-meet duality: `⋀²W` is `1`-dimensional for a `2`-dim `W`
+(`lem:case-III-claim612-line-in-panel-union`)
+
+The second remaining leaf of the duality bridge. Step (i) put both the point-join `p̄ᵢ ∨ p̄ⱼ` and
+the panel-meet `C(L) = complementIso (n_u ∧ n')` in `⋀²W` for the `2`-dimensional
+`W = {n_u, n'}^⊥ = span{p̄ᵢ, p̄ⱼ}`. Step (ii) is the dimension count: `dim ⋀²W = (dim W).choose 2 =
+2.choose 2 = 1`, so the exterior square of a `2`-dimensional space is a *line*, and two nonzero
+members of a line are scalar multiples. This forces `p̄ᵢ ∨ p̄ⱼ = λ · C(L)` (the projective scale of
+the line), the proportionality on which the annihilation transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0`
+rests. The proportionality itself is the general `finrank_eq_one_iff_of_nonzero'`; the
+exterior-square dimension count is the genuinely new content here. -/
+
+/-- **Step (ii), the dimension count: `⋀²W` is `1`-dimensional for a `2`-dimensional `W`**
+(`lem:case-III-claim612-line-in-panel-union`). For a finite free `ℝ`-module `W` of dimension `2`,
+its exterior square `⋀²W` has dimension `(dim W).choose 2 = 2.choose 2 = 1` by
+`exteriorPower.finrank_eq`. Geometrically, the supporting extensors of a projective line — written
+either as the join of two points on it or as the meet of two hyperplanes through it — live in this
+`1`-dimensional exterior square, so any two nonzero ones are proportional
+(`exteriorPower_finrank_eq_one_proportional`). -/
+theorem finrank_exteriorPower_two_eq_one {W : Type*} [AddCommGroup W] [Module ℝ W]
+    [Module.Free ℝ W] [Module.Finite ℝ W] (hW : Module.finrank ℝ W = 2) :
+    Module.finrank ℝ (⋀[ℝ]^2 W) = 1 := by
+  rw [exteriorPower.finrank_eq, hW, Nat.choose_self]
+
+/-- **Step (ii), the proportionality: two nonzero members of `⋀²W` are scalar multiples**
+(`lem:case-III-claim612-line-in-panel-union`). For a `2`-dimensional `W`, `⋀²W` is a line
+(`finrank_exteriorPower_two_eq_one`), so any element `y` of it is a scalar multiple of a fixed
+nonzero `x` (`finrank_eq_one_iff_of_nonzero'`). This is the duality bridge's payoff: with both the
+point-join `p̄ᵢ ∨ p̄ⱼ` and the panel-meet `C(L)` placed in `⋀²W` by step (i), one is `λ` times the
+other, so a functional annihilating `C(L)` annihilates the join. -/
+theorem exteriorPower_finrank_eq_one_proportional {W : Type*} [AddCommGroup W] [Module ℝ W]
+    [Module.Free ℝ W] [Module.Finite ℝ W] (hW : Module.finrank ℝ W = 2)
+    {x : ⋀[ℝ]^2 W} (hx : x ≠ 0) (y : ⋀[ℝ]^2 W) : ∃ c : ℝ, c • x = y :=
+  (finrank_eq_one_iff_of_nonzero' x hx).mp (finrank_exteriorPower_two_eq_one hW) y
+
 /-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
 (ingredient (c), the rationality refinement of the signed-permutation matrix; B0
 rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),

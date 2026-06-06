@@ -187,6 +187,30 @@ consume them; projective invariance is Phase~25.
   vanishes by the alternating law (\cref{def:extensor}). The combined step (i) is the composition.
 \end{proof}
 
+\begin{lemma}[The exterior square of a $2$-dimensional space is a line (step (ii))]
+  \label{lem:complement-iso-line-one-dim}
+  \lean{CombinatorialRigidity.Molecular.finrank_exteriorPower_two_eq_one,
+        CombinatorialRigidity.Molecular.exteriorPower_finrank_eq_one_proportional}
+  \leanok
+  \uses{def:join, def:extensor}
+  Step (ii) of the point-join $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}): for a $2$-dimensional space $W$, the exterior
+  square $\bigwedge^{2} W$ is $1$-dimensional, $\dim \bigwedge^{2} W = \binom{\dim W}{2} =
+  \binom{2}{2} = 1$. Consequently any two members of $\bigwedge^{2} W$, one of them nonzero, are
+  scalar multiples of one another. With step (i)
+  (\cref{lem:complement-iso-decomposable-wedge-perp}) placing both the point-join
+  $\bar{p_i} \vee \bar{p_j}$ and the panel-meet $C(L) = \mathrm{complementIso}(n_u \wedge n')$ in the
+  line $\bigwedge^{2} W$ for $W = \{n_u, n'\}^{\perp}$, this forces $\bar{p_i} \vee \bar{p_j} =
+  \lambda\, C(L)$ --- the projective scale of the line --- on which the annihilation transfer
+  $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$ rests.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The dimension count is $\mathrm{exteriorPower.finrank\_eq}$ ($\dim \bigwedge^{n} W = \binom{\dim
+  W}{n}$) at $\dim W = 2$, $n = 2$: $\binom{2}{2} = 1$. A space of dimension $1$ with a fixed nonzero
+  vector $x$ has every vector a multiple of $x$ ($\mathrm{finrank\_eq\_one\_iff\_of\_nonzero}'$).
+\end{proof}
+
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
   \lean{CombinatorialRigidity.Molecular.meet}
