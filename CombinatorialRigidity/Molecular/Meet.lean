@@ -10,6 +10,7 @@ public import CombinatorialRigidity.Mathlib.Data.Finset.Card
 public import CombinatorialRigidity.Molecular.Extensor
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+public import Mathlib.Algebra.Algebra.Rat
 
 /-!
 # Grassmann–Cayley meet / projective-duality foundations (`sec:molecular-meet`)
@@ -480,5 +481,97 @@ noncomputable def meet {a b : ℕ} (ha : a ≤ k + 2) (hb : b ≤ k + 2) (hab : 
       (hB ▸ complementIso (k := k) (j := k + 2 - b) (by omega) B))
 
 @[inherit_doc] scoped infixl:70 " ∧ₑ " => meet
+
+/-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
+(ingredient (c), the rationality refinement of the signed-permutation matrix; B0
+rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),
+the pairing `wedgePairing k hj (e_S) (e_T) = screwAlgebraTopEquiv (e_S ∨ₑ e_T)` is `±1` when
+`S` and `T` are disjoint (hence complementary, `T = Sᶜ`, the diagonal) and `0` otherwise (the
+off-diagonal, `wedgePairing_ιMulti_family_eq_zero_of_ne_compl`) — in either case in the range
+of `Int.cast`. On the diagonal the underlying product is the standard-basis identity
+`ExteriorAlgebra.ιMulti_family_mul_of_disjoint`, a `permOfDisjoint`-signed reordering of the
+top basis vector, sent to its sign by `screwAlgebraTopEquiv` (`topEquiv_ιMulti_family_default`).
+
+This pins the *value* the existing nondegeneracy lemmas pin only up to nonvanishing
+(`wedgePairing_ιMulti_family_compl_ne_zero`); it is the input to
+`complementIso_repr_mem_range_algebraMap`, which certifies the `complementIso` change-of-basis
+matrix is rational — the leaf the genericity-device rank polynomial's coefficient-rationality
+bottoms on (Katoh–Tanigawa 2011 footnote 6). -/
+theorem wedgePairing_ιMulti_family_mem_range_intCast {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j) (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j)) :
+    wedgePairing k hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T)
+      ∈ Set.range ((↑) : ℤ → ℝ) := by
+  rw [wedgePairing_apply]
+  have hwp : (wedgeProd hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+      (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) :
+        ExteriorAlgebra ℝ (Fin (k + 2) → ℝ))
+      = (ExteriorAlgebra.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        * (ExteriorAlgebra.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) := by
+    rw [coe_wedgeProd]; rfl
+  by_cases hdisj : Disjoint (S : Finset (Fin (k + 2))) (T : Finset (Fin (k + 2)))
+  · -- Diagonal: the product is `sign • (top basis vector)`, so the pairing is `± 1`.
+    have hsub : wedgeProd hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T)
+        = ((Set.powersetCard.permOfDisjoint hdisj).sign : ℝ) •
+            (exteriorPower.ιMulti_family ℝ (k + 2) (Pi.basisFun ℝ (Fin (k + 2)))
+              (default : Set.powersetCard (Fin (k + 2)) (k + 2))) := by
+      apply Subtype.ext
+      rw [hwp, ExteriorAlgebra.ιMulti_family_mul_of_disjoint ℝ (Pi.basisFun ℝ (Fin (k + 2)))
+        S T hdisj, Submodule.coe_smul, exteriorPower.ιMulti_family_apply_coe]
+      refine congrArg _ (ExteriorAlgebra.ιMulti_family_congr (by omega) _ _ _ ?_)
+      rw [Set.powersetCard.coe_disjUnion]
+      apply Finset.eq_univ_of_card
+      rw [Finset.card_disjUnion, Set.powersetCard.card_eq, Set.powersetCard.card_eq,
+        Fintype.card_fin]
+      omega
+    rw [hsub, map_smul, screwAlgebraTopEquiv, exteriorPower.topEquiv_ιMulti_family_default,
+      smul_eq_mul, mul_one]
+    exact ⟨Equiv.Perm.sign (Set.powersetCard.permOfDisjoint hdisj), by norm_cast⟩
+  · -- Off-diagonal: a shared index makes the product vanish, so the pairing is `0`.
+    have h0 : wedgeProd hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) = 0 := by
+      apply Subtype.ext
+      rw [hwp]
+      exact ExteriorAlgebra.ιMulti_family_mul_of_not_disjoint ℝ (Pi.basisFun ℝ (Fin (k + 2)))
+        S T hdisj
+    rw [h0, map_zero]
+    exact ⟨0, by norm_cast⟩
+
+/-- **The `complementIso` change-of-basis matrix has integer entries** (`def:meet-complement-iso`,
+the B0 rationality bridge of Phase 22d). The `t`-coordinate (in the standard `⋀^(k+2−j)` basis) of
+`complementIso hj` applied to the standard `⋀ʲ` basis vector `e_S` is the wedge pairing
+`wedgePairing k hj (e_S) (e_t)`, by the dual-basis reading
+`Module.Basis.coord_toDualEquiv_symm_apply` of `complementIso = wedgePairing ≪≫ toDualEquiv.symm`.
+That pairing is an integer by `wedgePairing_ιMulti_family_mem_range_intCast`, so the whole
+`complementIso` matrix (in the standard exterior-power bases) is integer-valued — the precise
+rationality of the signed-permutation matrix that the nondegeneracy lemmas pin only up to
+nonvanishing. -/
+theorem complementIso_exteriorPower_repr_mem_range_intCast {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j) (t : Set.powersetCard (Fin (k + 2)) (k + 2 - j)) :
+    ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).repr
+        (complementIso hj ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j S)) t
+      ∈ Set.range ((↑) : ℤ → ℝ) := by
+  rw [← Module.Basis.coord_apply, complementIso, LinearEquiv.trans_apply,
+    Module.Basis.coord_toDualEquiv_symm_apply, Module.Basis.coord_apply,
+    Module.Basis.dualBasis_repr]
+  simp only [LinearMap.linearEquivOfInjective_apply]
+  rw [exteriorPower.basis_apply, exteriorPower.basis_apply]
+  exact wedgePairing_ιMulti_family_mem_range_intCast hj S t
+
+/-- **The `complementIso` change-of-basis matrix has rational entries** (`def:meet-complement-iso`,
+the B0 rationality bridge of Phase 22d). The `algebraMap ℚ ℝ`-range restatement of
+`complementIso_exteriorPower_repr_mem_range_intCast` (every integer is rational): the supplied
+coordinate is the `panelSupportPoly` constant `repr (complementIso (e_S)) t`, whose rationality is
+the hypothesis the genericity-device rank polynomial's coefficient-rationality descent
+(`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`, Katoh–Tanigawa 2011
+footnote 6) consumes. -/
+theorem complementIso_exteriorPower_repr_mem_range_algebraMap {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j) (t : Set.powersetCard (Fin (k + 2)) (k + 2 - j)) :
+    ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).repr
+        (complementIso hj ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j S)) t
+      ∈ Set.range (algebraMap ℚ ℝ) := by
+  obtain ⟨z, hz⟩ := complementIso_exteriorPower_repr_mem_range_intCast hj S t
+  exact ⟨(z : ℚ), by rw [← hz, map_intCast]⟩
 
 end CombinatorialRigidity.Molecular

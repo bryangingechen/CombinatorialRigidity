@@ -1368,3 +1368,27 @@ projection.*
 Worked case: `case_I_realization` in `Molecular/AlgebraicInduction/` (Phase 22a, N6-G3-G3c-iii-b)
 — first hit while drafting a `Graph.exists_ends_of_graph` helper (later dropped in favour of the
 pre-existing `Graph.endsOf`, which *is* in a `namespace Graph` block).
+
+## 36. Matching a value indexed by a *derived* cardinality (`m + n`, a `disjUnion`) against one at a *literal* cardinality
+
+**Symptom.** A lemma output is indexed at a glued cardinality — e.g.
+`ExteriorAlgebra.ιMulti_family_mul_of_disjoint` returns an `ιMulti_family` at `m + n`
+(`Set.powersetCard I (m + n)`, the `disjUnion` index) — and you must match it against the same
+construction at a *literal* cardinality `N` (here the top basis vector at `N = k + 2`). The two
+cardinalities are `omega`-equal but not syntactically; the index lives in a *cardinality-dependent
+type* (`Set.powersetCard I m`). A direct `rw [Nat.add_sub_cancel' …]` or `congr!` fails with
+*"motive is not type correct"* / *"typeclass … `Subsingleton ?m` stuck"*, because the term has
+*several* sub-terms carrying the exponent (`disjUnion`, `permOfDisjoint`, the `repr` basis), and the
+rewrite can't abstract them coherently.
+
+**Fix.** Do **not** rewrite the `Nat`-equality in place. Package a small helper lemma that takes the
+cardinality equality as a **`subst`-able hypothesis** `(hmn : m = n)` (a *bare local variable* on one
+side, so `subst hmn` actually fires and erases the cast), plus a *data* side-goal — the underlying
+finsets are equal, `(↑s : Finset I) = ↑t` — discharged by `Subtype.ext`. Once `subst hmn` runs, both
+indices live in the same `Set.powersetCard I n` and the data equality closes it. General axis: *a
+dependent cardinality cast is tractable only after `subst`; make a helper whose hypothesis is the raw
+`m = n` so `subst` is available, rather than fighting `rw`/`congr!` on the glued term.*
+
+Worked case: `wedgePairing_ιMulti_family_mem_range_intCast` (Phase 22d, `Molecular/Meet.lean`) — the
+diagonal pairing value `screwAlgebraTopEquiv (e_S ∨ₑ e_Sᶜ)`; the helper is the mirrored
+`ExteriorAlgebra.ιMulti_family_congr` (FRICTION *[mirrored]*).

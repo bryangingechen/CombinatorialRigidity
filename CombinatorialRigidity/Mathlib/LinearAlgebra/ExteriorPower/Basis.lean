@@ -104,6 +104,20 @@ theorem topEquiv_ιMulti_family_default :
   unfold topEquiv
   simp [LinearEquiv.funUnique, Basis.equivFun_apply]
 
+/-- Two `ExteriorAlgebra.ιMulti_family` wedges over the same family `v` agree whenever
+their cardinalities and their underlying finsets agree. The `m = n` cardinality cast
+(absent from the bare `ιMulti_family` API, whose index `s` lives in
+`Set.powersetCard I m`) packaged so a wedge of a `Set.powersetCard`-glued index — e.g.
+the `disjUnion` of two complementary subsets at cardinality `j + (n - j)` — can be
+identified with one at the literal cardinality `n`. -/
+theorem _root_.ExteriorAlgebra.ιMulti_family_congr {R M : Type*} [CommRing R]
+    [AddCommGroup M] [Module R M] {I : Type*} [LinearOrder I] {m n : ℕ} (hmn : m = n)
+    (v : I → M) (s : Set.powersetCard I m) (t : Set.powersetCard I n)
+    (hst : (s : Finset I) = (t : Finset I)) :
+    ExteriorAlgebra.ιMulti_family R m v s = ExteriorAlgebra.ιMulti_family R n v t := by
+  subst hmn
+  exact congrArg _ (Subtype.ext hst)
+
 section PairingDual
 
 open Module

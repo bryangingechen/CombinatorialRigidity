@@ -631,4 +631,79 @@ theorem annihRowPoly_totalDegree_le {α : Type*} (u v : α)
       · exact panelSupportPoly_totalDegree_le u v _
       · rw [MvPolynomial.totalDegree_zero]; omega
 
+/-! ## Rationality of the panel-coordinate polynomials (B0 rationality bridge, Phase 22d)
+
+The genericity device's rank polynomial `Q` (a `det` of a submatrix of `c = ± annihRowPoly`,
+`exists_polynomial_ne_zero_of_linearIndependent_at`) must be certified to have *rational*
+coefficients, so that the footnote-6 descent
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` turns its
+non-vanishing into non-vanishing at an inductive seed algebraically independent over `ℚ`. The
+coefficients bottom on the `panelSupportPoly` constants `repr (complementIso (e_S)) t`, which are
+rational by `complementIso_exteriorPower_repr_mem_range_algebraMap`; the `normalsJoinPoly` minors
+have `±1` (integer) coefficients. Propagating these up the `normalsJoinPoly → panelSupportPoly →
+annihRowPoly` chain is cleanest as membership in the **subring** `(map (algebraMap ℚ ℝ)).range`
+(the polynomials with rational coefficients), which `mem_range_map_iff_coeffs_subset` identifies
+with `coeffs ⊆ range (algebraMap ℚ ℝ)`. The device-level `c`/`Q` propagation (the `det` step) lives
+with the device. -/
+
+/-- The degree-2 minor `normalsJoinPoly` has rational (in fact `±1`) coefficients: it is a
+difference of products of `MvPolynomial.X` indeterminates, each in the rational-coefficient subring
+`(map (algebraMap ℚ ℝ)).range`. -/
+theorem normalsJoinPoly_mem_range_map {α : Type*} (u v : α)
+    (s : Set.powersetCard (Fin (k + 2)) 2) :
+    normalsJoinPoly u v s ∈
+      (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range := by
+  rw [normalsJoinPoly]
+  apply Subring.sub_mem <;> apply Subring.mul_mem <;>
+    exact ⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩
+
+/-- The panel-support coordinate polynomial `panelSupportPoly` has rational coefficients: a finite
+sum of `complementIso`-matrix constants (rational by
+`complementIso_exteriorPower_repr_mem_range_algebraMap`) times the integer-coefficient minors
+`normalsJoinPoly` (`normalsJoinPoly_mem_range_map`), all in the rational-coefficient subring. -/
+theorem panelSupportPoly_mem_range_map {α : Type*} (u v : α)
+    (t : Set.powersetCard (Fin (k + 2)) k) :
+    panelSupportPoly u v t ∈
+      (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range := by
+  rw [panelSupportPoly]
+  refine Subring.sum_mem _ fun s _ => Subring.mul_mem _ ?_ (normalsJoinPoly_mem_range_map u v s)
+  obtain ⟨q, hq⟩ := complementIso_exteriorPower_repr_mem_range_algebraMap (k := k) (j := 2)
+    (by omega) s t
+  exact ⟨MvPolynomial.C q, by rw [MvPolynomial.map_C]; exact congrArg MvPolynomial.C hq⟩
+
+/-- The panel-coordinatized annihilator polynomial `annihRowPoly` has rational coefficients: a
+difference of two `if`-guarded copies of `panelSupportPoly` (`panelSupportPoly_mem_range_map`),
+each branch (including the zero branch) in the rational-coefficient subring. This is the
+polynomial-level rationality the device's coordinate family `c` and rank polynomial `Q` inherit. -/
+theorem annihRowPoly_mem_range_map {α : Type*} (u v : α)
+    (t₁ t₂ s : Set.powersetCard (Fin (k + 2)) k) :
+    annihRowPoly u v t₁ t₂ s ∈
+      (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range := by
+  rw [annihRowPoly]
+  refine Subring.sub_mem _ ?_ ?_ <;> split
+  · exact panelSupportPoly_mem_range_map u v _
+  · exact Subring.zero_mem _
+  · exact panelSupportPoly_mem_range_map u v _
+  · exact Subring.zero_mem _
+
+/-- The genericity device's coordinate family `c` has rational coefficients: each member is the
+body-incidence sign `[u=a] − [v=a] ∈ {0, ±1}` (a rational scalar) times the panel polynomial
+`annihRowPoly` (`annihRowPoly_mem_range_map`), and `r • P = C r * P` keeps the rational-coefficient
+subring closed. This is the `c i j ∈ (map (algebraMap ℚ ℝ)).range` input that
+`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` consumes to certify the
+device's rank polynomial `Q` is rational (Phase-22d B0 rationality bridge, Katoh–Tanigawa 2011
+footnote 6). -/
+theorem annihRowPoly_smul_sign_mem_range_map {α : Type*} [DecidableEq α] (u v a : α)
+    (t₁ t₂ s : Set.powersetCard (Fin (k + 2)) k) :
+    (((if u = a then (1 : ℝ) else 0) - (if v = a then 1 else 0))
+        • annihRowPoly u v t₁ t₂ s)
+      ∈ (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range := by
+  rw [MvPolynomial.smul_eq_C_mul]
+  refine Subring.mul_mem _ ?_ (annihRowPoly_mem_range_map u v t₁ t₂ s)
+  refine ⟨MvPolynomial.C (((if u = a then (1 : ℚ) else 0) - (if v = a then 1 else 0))), ?_⟩
+  rw [MvPolynomial.map_C]
+  congr 1
+  push_cast
+  split_ifs <;> simp
+
 end CombinatorialRigidity.Molecular

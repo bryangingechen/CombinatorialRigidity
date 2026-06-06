@@ -12,6 +12,9 @@ public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.Algebra.Polynomial.Roots
+public import Mathlib.Algebra.Algebra.Rat
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Mathlib.Data.Real.Basic
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 
@@ -509,6 +512,71 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at
     rw [heval p₀]; convert he using 2
   · -- At any non-root `p`, the specialized minor is nonsingular, so the rows are LI.
     rw [hiff p]
+    refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+      (P.map (MvPolynomial.eval p)).row (RingHom.id ℝ) e ?_
+    rw [RingHom.id_apply, ← heval p]
+    exact hp
+
+/-- **The determinant of a matrix with entries in the range of a ring hom is in the range.** If
+every entry of `M : Matrix n n S` lies in `f.range` for a ring hom `f : R →+* S`, so does `M.det`:
+choose a preimage matrix `M₀ : Matrix n n R` (`M = M₀.map f`) and apply `RingHom.map_det`. The
+subring-closure step the genericity-device rank polynomial's coefficient-rationality bottoms on:
+`Q := det (submatrix of c)` inherits the rationality of its `c`-entries. -/
+theorem Matrix.det_mem_range_of_entries {R S : Type*} [CommRing R] [CommRing S] {n : Type*}
+    [Fintype n] [DecidableEq n] (f : R →+* S) (M : Matrix n n S)
+    (hM : ∀ i j, M i j ∈ f.range) : M.det ∈ f.range := by
+  classical
+  choose M₀ hM₀ using hM
+  refine ⟨(Matrix.of M₀).det, ?_⟩
+  rw [RingHom.map_det]
+  exact congrArg Matrix.det (Matrix.ext fun i j => hM₀ i j)
+
+/-- **Constructive rank-witnessing polynomial with rational coefficients** (Phase-22d B0 rationality
+bridge). The refinement of `exists_polynomial_ne_zero_of_linearIndependent_at` that additionally
+certifies the witnessing polynomial `Q` has coefficients in the range of `algebraMap ℚ ℝ` (i.e. `Q`
+is rational), provided the polynomial-coordinate family `c` already does (`hc`, each `c i j ∈
+(MvPolynomial.map (algebraMap ℚ ℝ)).range`). Since `Q := det (submatrix of c)`
+(`exists_polynomial_ne_zero_of_linearIndependent_at`'s explicit Gram-determinant minor), it is in
+the same subring by `Matrix.det_mem_range_of_entries`, hence `(Q.coeffs : Set ℝ) ⊆ Set.range
+(algebraMap ℚ ℝ)` via `MvPolynomial.mem_range_map_iff_coeffs_subset`. This is the form the
+genericity-device kernel fires: the rationality `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` is the
+hypothesis `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` consumes
+(Katoh–Tanigawa 2011 footnote 6). -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range
+    {ι W σ : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
+    (g : (σ → ℝ) → ι → W) (c : ι → Fin (Module.finrank ℝ W) → MvPolynomial σ ℝ)
+    (φ : W ≃ₗ[ℝ] (Fin (Module.finrank ℝ W) → ℝ))
+    (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
+    (hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range)
+    {p₀ : σ → ℝ} {s : Set ι}
+    (h : LinearIndependent ℝ (fun i : s => g p₀ i)) :
+    ∃ Q : MvPolynomial σ ℝ, MvPolynomial.eval p₀ Q ≠ 0 ∧
+      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+      ∀ p : σ → ℝ, MvPolynomial.eval p Q ≠ 0 → LinearIndependent ℝ (fun i : s => g p i) := by
+  classical
+  haveI : Fintype s := Fintype.ofFinite s
+  let P : Matrix s (Fin (Module.finrank ℝ W)) (MvPolynomial σ ℝ) :=
+    Matrix.of (fun i j => c (i : ι) j)
+  have hrow : ∀ p : σ → ℝ,
+      (P.map (MvPolynomial.eval p)).row = ⇑φ ∘ (fun i : s => g p i) := by
+    intro p; funext i j
+    change MvPolynomial.eval p (c (i : ι) j) = φ (g p i) j
+    rw [hg]
+  have hiff : ∀ p : σ → ℝ, LinearIndependent ℝ (fun i : s => g p i)
+      ↔ LinearIndependent ℝ (P.map (MvPolynomial.eval p)).row := by
+    intro p; rw [hrow p]
+    exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
+  obtain ⟨e, he⟩ :=
+    Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows ((hiff p₀).mp h)
+  have heval : ∀ p : σ → ℝ, MvPolynomial.eval p (Matrix.of (fun i j : s => P i (e j))).det
+      = (Matrix.of (fun i j : s => (P.map (MvPolynomial.eval p)).row i (e j))).det := by
+    intro p; rw [(MvPolynomial.eval p).map_det]; rfl
+  refine ⟨(Matrix.of (fun i j : s => P i (e j))).det, ?_, ?_, fun p hp => ?_⟩
+  · rw [heval p₀]; convert he using 2
+  · -- `Q = det (submatrix of c)` has rational coefficients, since each `c i j` does.
+    rw [← MvPolynomial.mem_range_map_iff_coeffs_subset]
+    exact Matrix.det_mem_range_of_entries _ _ fun i j => hc (i : ι) (e j)
+  · rw [hiff p]
     refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero
       (P.map (MvPolynomial.eval p)).row (RingHom.id ℝ) e ?_
     rw [RingHom.id_apply, ← heval p]

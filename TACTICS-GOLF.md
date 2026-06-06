@@ -898,3 +898,26 @@ form `(|Vᶜ| − |t|) + 1` reads `1` while the true value `|(V ∪ t)ᶜ|` is `
 and `omega` closes it from the partition facts. Rule of thumb: do the
 additions first so the single truncating `−` lands on a provably-large
 enough quantity.
+
+## 14. "Polynomial with coefficients in a subring `R₀ ⊆ S`" — carry as `(map (algebraMap R₀ S)).range` membership, not `coeffs ⊆ range`
+
+To prove a `MvPolynomial σ S` built from `+`/`−`/`*`/`C r`/`X`/`det` has all
+its coefficients in a subring `R₀ ⊆ S` (e.g. *rational coefficients*, `R₀ = ℚ`,
+`S = ℝ`), do **not** propagate the `coeffs ⊆ Set.range (algebraMap R₀ S)` form
+up the construction directly — that set is not closed under the ring
+operations in any usable API. Instead carry **membership in the subring**
+`(MvPolynomial.map (algebraMap R₀ S)).range : Subring (MvPolynomial σ S)`: it is
+a genuine `Subring`, so `Subring.add_mem` / `sub_mem` / `mul_mem` / `sum_mem` /
+`zero_mem` chain through every constructor, `C r ∈ range` reduces to `r ∈ range`
+(via `map_C`), `X a` is a fixed point (`map_X`), and the determinant is closed
+(`Matrix.det_mem_range_of_entries`, mirrored). Convert to the `coeffs ⊆ range`
+form *only at the boundary* — when feeding a consumer that wants it — via
+`MvPolynomial.mem_range_map_iff_coeffs_subset`.
+
+Concrete instance (`normalsJoinPoly`/`panelSupportPoly`/`annihRowPoly`
+`_mem_range_map`, `Molecular/AlgebraicInduction/PanelLayer.lean`, Phase 22d): the
+genericity-device rank polynomial's coefficient-rationality (footnote-6 bridge)
+propagates as `… ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range`, bottoming on the
+`complementIso` matrix entry's rationality and `X`'s integer coefficients;
+`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` does the
+final `det`-and-convert. (FRICTION *[mirrored]* `Matrix.det_mem_range_of_entries`.)

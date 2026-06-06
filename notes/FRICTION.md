@@ -2538,6 +2538,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits
   naturally alongside `Module.Basis.exteriorPower` and `finrank_eq`.
 
+### [mirrored] `ExteriorAlgebra.ιMulti_family_congr` — cardinality-cast congruence for `ιMulti_family`
+- **Where it bit:** Phase 22d `wedgePairing_ιMulti_family_mem_range_intCast`
+  (`Molecular/Meet.lean`): the diagonal wedge-pairing value uses
+  `ExteriorAlgebra.ιMulti_family_mul_of_disjoint`, whose output indexes the glued
+  `disjUnion` at cardinality `j + (k+2−j)`, which had to be matched against the top
+  basis vector at the literal cardinality `k+2`.
+- **Friction:** the cardinalities are `omega`-equal but not syntactically, and the
+  index `s : Set.powersetCard I m` lives in an `m`-dependent type, so a bare
+  `rw [Nat.add_sub_cancel' …]` / `congr!` fails with *motive is not type correct*
+  (the `disjUnion`/`permOfDisjoint` terms also carry the exponent). No mathlib lemma
+  identifies two `ιMulti_family` wedges across a cardinality cast.
+- **Resolution:** mirrored `ExteriorAlgebra.ιMulti_family_congr (hmn : m = n) (v) (s) (t)
+  (hst : (↑s : Finset I) = ↑t) : ιMulti_family R m v s = ιMulti_family R n v t` — `subst
+  hmn` (now `m` is a local variable, so the cast goes away) then `Subtype.ext hst`.
+- **General idiom (reusable):** to identify two values indexed by a *glued/derived*
+  cardinality (`m + n`, a `disjUnion`) with one at a *literal* cardinality, do **not**
+  `rw`/`congr!` the `Nat`-equality in place — package a helper lemma taking the
+  cardinality equality as a `subst`-able hypothesis `m = n` plus a data-equality side
+  goal. **Lifted to:** TACTICS-QUIRKS § 36.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits alongside
+  `topEquiv` and the exterior-power basis API.
+
 ### [mirrored] `exteriorPower.pairingDualEquiv` — the `pairingDual` iso `⋀ⁿ (M*) ≃ₗ (⋀ⁿ M)*` for finite free `M`
 - **Where it bit:** Phase 21a deliverable 2 (`Molecular/Meet.lean`,
   `screwAlgebraPairingDualEquiv`): the projective-duality dictionary entry
@@ -2685,6 +2708,32 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits with the multivariate
   `exists_…_polynomial` family; the partner that exposes the witnessing polynomial for
   cross-family coupling.
+
+### [mirrored] `Matrix.det_mem_range_of_entries` + `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` (rational rank-witnessing polynomial)
+- **Where it bit:** Phase 22d B0 rationality bridge: the genericity-device rank polynomial
+  `Q` (from `exists_polynomial_ne_zero_of_linearIndependent_at`) must be certified to have
+  *rational* coefficients (`Q.coeffs ⊆ range (algebraMap ℚ ℝ)`), the hypothesis the footnote-6
+  descent `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` consumes.
+- **Friction:** the existing constructive mirror only exposes `Q := det (submatrix of c)`; it
+  carries no rationality claim, and there is no mathlib lemma that the determinant of a matrix
+  whose entries lie in a ring hom's range is itself in the range.
+- **Resolution:** mirrored two lemmas:
+  - `Matrix.det_mem_range_of_entries (f : R →+* S) (M) (hM : ∀ i j, M i j ∈ f.range) : M.det ∈
+    f.range` — `choose` a preimage matrix `M₀` and apply `RingHom.map_det` (`M = M₀.map f`, so
+    `M.det = f M₀.det`).
+  - `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` — the rationality
+    refinement of the constructive lemma: under `hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap
+    ℚ ℝ)).range`, the witnessing `Q` additionally satisfies `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`,
+    since `Q = det (submatrix of c)` is in the same subring (`det_mem_range_of_entries`) and
+    `MvPolynomial.mem_range_map_iff_coeffs_subset` converts subring-membership to the coeffs form.
+- **General idiom (reusable):** "polynomial with coefficients in subring `R₀ ⊆ S`" is cleanest
+  carried as membership in `(MvPolynomial.map (algebraMap R₀ S)).range` (a `Subring`, closed under
+  `+`/`*`/`det`), converting to `coeffs ⊆ range` only at the boundary via
+  `mem_range_map_iff_coeffs_subset`. **Lifted to:** TACTICS-GOLF § 14.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits with
+  `exists_polynomial_ne_zero_of_linearIndependent_at`; `det_mem_range_of_entries` is a general
+  `Matrix`-namespaced fact alongside it.
 
 ### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
 - **Where it bit:** the union-half of `IsTightOn.union_inter`

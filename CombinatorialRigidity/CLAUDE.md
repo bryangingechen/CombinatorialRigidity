@@ -65,6 +65,8 @@ symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
 - *"Application type mismatch: x has type `Fin k → …`"* / *"numerals are data"* after `ext x` on a `Module.Dual ℝ (ScrewSpace k)` equation → § 32
 - *"rewrite … motive is not type correct"* on `rw [hsub]` (a `Submodule` eq) under `finrank ℝ ↥(…)` → § 33
 - *"Did not find … `?g (∑ …)`"* / *"AddMonoidHomClass (M ≃ₗ …)"* on `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate → § 34
+- *"Invalid field `foo`"* on `g.foo` where `Graph.foo` resolves by name but not by projection (file-local re-namespace) → § 35
+- *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
 
 ## Starting a Lean-touching session
 
