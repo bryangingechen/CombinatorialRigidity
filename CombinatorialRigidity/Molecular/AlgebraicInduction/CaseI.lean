@@ -2426,6 +2426,80 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndep
   exact PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero
     G ends hnev hends hcard hQ hq
 
+/-- **The eq. (6.22) rank upper bound transferred to every algebraically-independent seed**
+(`lem:case-III-seed-rank-bridge` infra, the `def > 0` half of KT Claim~6.11's nested-IH step;
+Katoh–Tanigawa 2011 §6.4.1, footnote 6, eq. (6.22), Phase 22d). The seed-rank bridge
+(`isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`) transfers *full* rigidity
+(`def = 0`, eq. (6.18)); KT eq. (6.22) needs the `def > 0` counterpart, the upper bound on the null
+space `dim Z(G_v, q) ≤ D|α| − (D(|V_v|−1) − k')` at the inductively-fixed
+(algebraically-independent) seed `q`, so that — paired with the genericity-free lower bound
+`D + def ≤ dim Z`
+(`rigidityMatrix_prop11`'s `hub`) — the nested-IH subgraph `G_v` attains exactly
+`RankHypothesis k'`. This lemma is that upper-bound brick, stated in the rank-polynomial-witness
+form: a rational rank polynomial `Q` (`hQrat`) whose non-roots witness an independent
+`panelRow`-subfamily `s` of `ofNormals G ends ·` (`hQ`), whose edges link in `G` (`hsupp`), bounds
+the null space of `ofNormals G ends q` at *any* algebraically-independent-over-`ℚ` seed `q`
+(`halg`) by `dim Z ≤ D|α| − #s`.
+
+The transfer is the green Phase-22d machinery: `Q` being rational and nonzero, an algebraically-
+independent seed is a non-root
+(`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`,
+footnote 6), so `hQ` gives the size-`#s` independent subfamily *at `q` itself*; the rank-nullity
+count (each panel row of `s` lies in the rigidity rows via `hsupp`, so `#s ≤ finrank (span
+rigidityRows) = D|α| − dim Z`) then bounds the null space. Honest per the producer-scrutiny gate:
+the input is the *polynomial witness* `Q` of an unrelated rigid seed's rank (the eq. (6.18)/(6.22)
+producer's output), not the rank concluded; the alg-independence of `q` is the genuine new content
+footnote 6 supplies. -/
+theorem PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    {Q : MvPolynomial (α × Fin (k + 2)) ℝ}
+    (hsupp : ∀ i ∈ s, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+      (ends (i : β × _ × _).1).2)
+    (hQrat : (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ))
+    (hQne : Q ≠ 0)
+    (hQ : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+      LinearIndependent ℝ
+        (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i))
+    {q : α × Fin (k + 2) → ℝ} (halg : AlgebraicIndependent ℚ q) :
+    Module.finrank ℝ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions
+      ≤ screwDim k * Nat.card α - Nat.card s := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  rw [Nat.card_eq_fintype_card]
+  set F := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  have hG : F.graph = G := rfl
+  -- Footnote 6: the alg-indep seed is a non-root of the nonzero rational `Q`, so `hQ` gives the
+  -- size-`#s` independent subfamily at `q` itself.
+  have hq : MvPolynomial.eval q Q ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQrat hQne
+  have hLI : LinearIndependent ℝ (fun i : s => F.panelRow ends i) := hQ q hq
+  haveI : Fintype s := Fintype.ofFinite s
+  -- Each panel row of `s` lies in the rigidity rows; the per-index link witness is `hsupp`.
+  have hsub : Submodule.span ℝ (Set.range (fun i : s => F.panelRow ends i))
+      ≤ Submodule.span ℝ F.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨⟨e', t₁, t₂⟩, hi⟩, rfl⟩
+    apply Submodule.subset_span
+    refine ⟨e', (ends e').1, (ends e').2, by rw [hG]; exact hsupp _ hi,
+      annihRow (F.supportExtensor e') t₁ t₂, ?_, rfl⟩
+    rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+    intro x hx
+    rw [Submodule.mem_span_singleton] at hx
+    obtain ⟨r, rfl⟩ := hx
+    rw [map_smul, annihRow_apply_self, smul_zero]
+  have hrows : Nat.card s ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+    rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hLI]
+    exact Submodule.finrank_mono hsub
+  -- Rank-nullity: `dim Z + finrank (span rigidityRows) = D|α|`, so `dim Z ≤ D|α| − #s`.
+  have hcompl : Module.finrank ℝ F.infinitesimalMotions
+      + Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+      = screwDim k * Fintype.card α := by
+    rw [F.infinitesimalMotions_eq_dualCoannihilator, Subspace.finrank_dualCoannihilator_eq,
+      add_comm, Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq,
+      BodyHingeFramework.finrank_screwAssignment]
+  omega
+
 /-- **Case III (= Case II at `k = 0`), stratum 1: the eq. (6.12) `+(D−1)` block-triangular
 placement** (`lem:case-II-realization-placement`, the first chunk of KT Lemma 6.10; Katoh–Tanigawa
 2011 §6.4.1, eqs. (6.12), (6.16), Phase 22c). The first of three difficulty strata of the

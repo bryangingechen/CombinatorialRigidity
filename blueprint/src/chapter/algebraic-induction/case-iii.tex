@@ -109,12 +109,43 @@ and the seed transfer below certifies the fixed seed is rigid for it too.
   consumer then reads infinitesimal rigidity at $q$ off that non-root.
 \end{proof}
 
+The seed-rank bridge above transfers \emph{full} rigidity (the $0$-dof case, eq.~(6.18)). The
+nested IH step (eq.~(6.22)) needs the $\operatorname{def} > 0$ counterpart: at the same
+inductively-fixed seed, the nested subgraph $G_v$ (minimal $k'$-dof, $k' = \operatorname{def}(\tilde
+G_v)$) attains rank $D(|V_v|-1) - k'$, equivalently $\dim Z(G_v, q) = D + k'$. Pairing the
+genericity-free \emph{lower} bound $D + \operatorname{def} \le \dim Z$ (the $\mathit{hub}$ input of
+the Proposition-1.1 reconciliation, \cref{prop:rigidity-matrix-prop11}) with the matching
+\emph{upper} bound below pins the equality. The upper bound is the brick green here.
+
+\begin{lemma}[Eq.~(6.22) rank upper bound at every algebraically-independent seed; KT footnote 6, eq.\ (6.22)]
+  \label{lem:case-III-seed-rank-upper}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent}
+  \leanok
+  \uses{lem:case-III-seed-rank-bridge, thm:def-eq-corank}
+  Let $\mathrm{ofNormals}\,G\,\mathit{ends}\,\cdot$ be the free-normal panel framework, and let
+  $Q$ be a nonzero \emph{rational} polynomial (coefficients in the image of $\mathbb{Q} \to
+  \mathbb{R}$) whose non-roots witness a linearly independent $\mathrm{panelRow}$-subfamily $s$
+  whose edges link in $G$. Then at \emph{any} seed $q$ algebraically independent over $\mathbb{Q}$,
+  \[
+    \dim Z(G, q) \;\le\; D\,|\alpha| - |s|.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  An algebraically-independent-over-$\mathbb{Q}$ seed is a non-root of the nonzero rational $Q$
+  (KT footnote~6, as in \cref{lem:case-III-seed-rank-bridge}), so the witnessed subfamily $s$ is
+  linearly independent at $q$ itself. Each panel row of $s$ lies in the rigidity rows (its edge
+  links in $G$), so $|s| \le \dim \operatorname{span}(\text{rigidity rows}) = D\,|\alpha| - \dim
+  Z(G, q)$ by rank--nullity (the rigidity-row span and the null space are dual-annihilator
+  complements). Rearranging gives the bound.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
         lem:cycle-realization, lem:case-II-realization-placement,
         lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof,
-        lem:case-III-seed-rank-bridge}
+        lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
@@ -124,7 +155,8 @@ and the seed transfer below certifies the fixed seed is rigid for it too.
   form (\cref{lem:case-III-claim-6-11-base}), the nested-IH reduction
   $G - v$ minimal $k'$-dof with $k' \le D - 2$
   (\cref{lem:case-III-gap3-minimalKDof}), and the analytic
-  rank-at-the-fixed-seed transfer (\cref{lem:case-III-seed-rank-bridge}) ---
+  rank-at-the-fixed-seed transfer (\cref{lem:case-III-seed-rank-bridge}, with its
+  $\operatorname{def} > 0$ upper-bound half \cref{lem:case-III-seed-rank-upper}) ---
   are green; what stays deferred is the Claim-6.11/6.12 candidate-completion
   assembly that converts the redundant $ab$-row into the missing $+1$. KT then
   build $D$ candidate realizations and show one is rigid; the

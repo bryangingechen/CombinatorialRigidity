@@ -10,49 +10,37 @@ compressed verdict log.
 
 ## Current state
 
-**The analytic kernel — the seed-rank bridge `lem:case-III-seed-rank-bridge` — is green this commit**
-(`PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`, `CaseI.lean`): a
-rigid `ofNormals G ends q₀` leg transfers its rigidity to *any* alg-indep-over-ℚ seed `q` (KT
-footnote 6, eq. (6.18)/(6.22) at the `0`-dof level), composing the rational rank polynomial
-`exists_rankPolynomial_of_rigidOn` → the footnote-6 non-root
-`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` → the device consumer
-`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`. Axiom-clean, no friction. Blueprint
-node green; `lem:case-III` `\uses` it. All three of Claim 6.11's analytic prerequisites — (i) the
-alg-indep leaf, (ii) the alg-indep-seed motive + rationality bridge, (iii) this seed-rank bridge —
-are now green.
+**Gap 1's eq. (6.22) rank *upper* bound at the fixed seed is green this commit**
+(`PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`,
+`CaseI.lean`, after the seed-rank bridge): given a nonzero *rational* rank polynomial `Q` whose
+non-roots witness an independent `panelRow`-subfamily `s` (edges linking in `G`), at any
+alg-indep-over-ℚ seed `q` the null space is bounded `dim Z(G,q) ≤ D|α| − |s|`. The footnote-6 non-root
+device (`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`) makes the alg-indep `q` a
+non-root, so `s` is independent *at `q` itself*; the rank-nullity core of
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (panel rows ⊆ rigidity rows,
+`dim Z + finrank(span rigidityRows) = D|α|`) then bounds `dim Z`. Built green first try, axiom-clean,
+no friction. This is the eq. (6.22) `def>0` *upper* half (the `def=0` full-rigidity transfer is the
+prior commit's seed-rank bridge); paired with the genericity-free *lower* bound
+`D + def ≤ dim Z` (`rigidityMatrix_prop11`'s `hub`) it pins `dim Z(G_v,q) = D + k'`, i.e.
+`RankHypothesis k'`. Blueprint node `lem:case-III-seed-rank-upper` green; `lem:case-III` `\uses` it.
 
 The two **combinatorial** factors of Claim 6.11 remain green + axiom-clean (`ForestSurgery.lean`):
-Gap-2 `Graph.splitOff_exists_base_inter_fiber_lt` (a base `B'` of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`)
-and Gap-3's shell `Graph.splitOff_removeVertex_minimalKDof` (`G_v` minimal `k'`-dof, `0 ≤ k' ≤ D−2`).
-Blueprint: `lem:case-III-claim-6-11-base`, `lem:case-III-gap3-minimalKDof`,
-`lem:case-III-seed-rank-bridge` green; `lem:case-III` / `lem:case-II-realization` red.
+Gap-2 `Graph.splitOff_exists_base_inter_fiber_lt` and Gap-3's shell
+`Graph.splitOff_removeVertex_minimalKDof` (`G_v` minimal `k'`-dof, `0 ≤ k' ≤ D−2`). All three analytic
+prerequisites (i)/(ii)/(iii) green; the seed-rank bridge + this upper bound are the analytic core of
+Gap 1. Blueprint: `lem:case-III-claim-6-11-base`, `lem:case-III-gap3-minimalKDof`,
+`lem:case-III-seed-rank-bridge`, `lem:case-III-seed-rank-upper` green; `lem:case-III` /
+`lem:case-II-realization` red.
 
-What remains for Claim 6.11 is **Gap 1** — the row bridge: at the fixed seed, eq. (6.18) gives full
-rank `D(|V∖v|−1)` of `R(G_v^{ab},q)` (the bridge applies directly, `G_v^{ab}` is `0`-dof) and eq.
-(6.22) gives `rank R(G_v,q) = D(|V∖v|−1) − k'` for the nested-IH subgraph; the `k' ≤ D−2 < D−1`
-pigeonhole over the `D−1` `ab`-rows then forces one redundant. The eq. (6.22) `def>0` rank
-(`RankHypothesis (def G̃_v)`) and the pigeonhole are the next leaf (Gap 1; see *Blockers*).
-
-**Next concrete commit:** the **Claim-6.11 candidate-completion assembly** (eqs. (6.23)–(6.29) row-op):
-with the seed-rank bridge in hand, certify both nested ranks at the fixed alg-indep seed — eq. (6.18)
-`rank R(G_v^{ab},q) = D(|V∖v|−1)` (`G_v^{ab}` is `0`-dof, so the bridge applies directly) and eq. (6.22)
-`rank R(G_v,q) = D(|V∖v|−1) − k'` for the nested-IH subgraph — then run the `k' ≤ D−2 < D−1`
-pigeonhole over the `D−1` `ab`-rows (Gap 1) to extract the redundant row, lifting 22c's
-`case_II_placement_eq612` `≥ D(|V|−1)−1` brick to `= D(|V|−1)`. The pigeonhole + redundant-row
-conversion is the next leaf; the eq. (6.22) `def>0` rank (`RankHypothesis (def G̃_v)`) composes the
-bridge-style rigidity transfer with `rigidityMatrix_prop11` + `rank_add_deficiency_eq` (deferred with
-Gap 1, likely the same node — see *Blockers*).
-
-**(iii) landed (this commit): the seed-rank bridge `lem:case-III-seed-rank-bridge`.**
-`PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent` (`CaseI.lean`, before
-`case_II_placement_eq612`): a rigid `ofNormals G ends q₀` leg transfers its rigidity to *any*
-alg-indep-over-ℚ seed `q` — KT footnote 6, eq. (6.18)/(6.22) at the `0`-dof level. Three-step
-composition over green leaves: `exists_rankPolynomial_of_rigidOn` (rational `Q`, nonzero at `q₀`) →
-`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (alg-indep `q` is a non-root, footnote 6)
-→ `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (rigidity at the non-root). Built
-green first try, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), no friction. Honest per the
-producer gate: `hrig` is rigidity at an *unrelated* seed `q₀`, not the target `q`. Blueprint node green
-(`case-iii.tex`); `lem:case-III` `\uses` it.
+**Next concrete commit:** the **eq. (6.22) `def>0` rank-attainment packaging** — assemble the just-landed
+upper bound with `rigidityMatrix_prop11`'s genericity-free lower bound `hub` (`D + def ≤ dim Z`) into
+the exact rank `dim Z(G_v,q) = D + k'` (`RankHypothesis (def G̃_v)`) for the nested-IH subgraph `G_v` at
+the fixed alg-indep seed. Inputs: the upper bound needs `G_v`'s rational rank polynomial `Q` (from
+`G_v`'s minimal-`k'`-dof IH realization via the device producer); the lower bound `hub` is the genericity-free
+codimension brick `rigidityMatrix_prop11` carries as a hypothesis (still to be bricked from the
+Phase-19 partition machinery — likely lands here or alongside). Then the `k' ≤ D−2 < D−1` pigeonhole
+over the `D−1` `ab`-rows (the rest of Gap 1) extracts the redundant row, lifting 22c's
+`case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -139,23 +127,30 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
   rigid `ofNormals G ends q₀` ⟹ rigid at any alg-indep-over-ℚ `q`, via (rational-`Q` producer) →
   (footnote-6 non-root) → (device consumer). This is the eq. (6.18)/(6.22) transfer **at the `0`-dof
   level** (rigidity); the `def>0` form (`RankHypothesis (def G̃_v)`) + Gap-1 pigeonhole are the next leaf.
-- [ ] **Gap 1 — the row bridge** (next leaf): eq. (6.22) `def>0` rank
-  (`RankHypothesis (def G̃_v)`, composing a bridge-style rigidity transfer with `rigidityMatrix_prop11` +
-  `rank_add_deficiency_eq`) + the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant
-  row (eq. (6.23)). Then lift 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
+- [x] **Gap 1 — eq. (6.22) rank *upper* bound** (this commit):
+  `PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`
+  (`CaseI.lean`) — a rational rank polynomial `Q` witnessing an independent `panelRow`-subfamily `s`
+  bounds `dim Z(G,q) ≤ D|α| − |s|` at any alg-indep-over-ℚ `q`. Green + axiom-clean. Node
+  `lem:case-III-seed-rank-upper`; `lem:case-III` `\uses` it.
+- [ ] **Gap 1 — eq. (6.22) rank-attainment + pigeonhole** (next leaf): assemble the upper bound with
+  `rigidityMatrix_prop11`'s genericity-free lower bound `hub` (`D + def ≤ dim Z`) into the exact
+  `RankHypothesis (def G̃_v)` for `G_v` at the fixed seed (needs `G_v`'s rational rank polynomial from
+  its minimal-`k'`-dof IH; `hub` still to be bricked from Phase-19 partition machinery), then the
+  `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)). Then lift
+  22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
 
 ## Deferred sub-phases (future work in the phase)
 
 Parked until the leaf's shape is clear; a sub-letter is minted when its turn comes.
 
-- **Gap 1 — the `M(G̃)`↔row bridge** (next leaf, see *Hand-off*). The analytic kernel's
-  rigidity-transfer core is green (seed-rank bridge `lem:case-III-seed-rank-bridge`, ✓; leaves
-  (i)/(ii-a)/(ii-b) all green). Remaining: the eq. (6.22) `def>0` rank
-  (`RankHypothesis (def G̃_v)`, composing the transfer with `rigidityMatrix_prop11` +
-  `rank_add_deficiency_eq`) + the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one
-  redundant row (eq. (6.23)). The product-route *relaxation* (pick `q` as a non-root of the finite
-  product of the nested IH rank polynomials, avoiding alg-independence at `d=3`; ~70% confidence) is
-  the deferred TODO in the tracker `notes/AlgebraicIndependence.md`.
+- **Gap 1 — eq. (6.22) rank-attainment + the `M(G̃)`↔row pigeonhole** (next leaf, see *Hand-off*).
+  The analytic core is green (seed-rank bridge `lem:case-III-seed-rank-bridge` = `def=0` transfer +
+  `lem:case-III-seed-rank-upper` = `def>0` upper bound, both ✓; leaves (i)/(ii-a)/(ii-b) all green).
+  Remaining: assemble the upper bound with `rigidityMatrix_prop11`'s `hub` lower bound into the exact
+  `RankHypothesis (def G̃_v)` for `G_v`, then the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows
+  ⟹ one redundant row (eq. (6.23)). The product-route *relaxation* (pick `q` as a non-root of the
+  finite product of the nested IH rank polynomials, avoiding alg-independence at `d=3`; ~70%
+  confidence) is the deferred TODO in the tracker `notes/AlgebraicIndependence.md`.
 - **Candidate-completion + Claim 6.12 disjunction.** With the redundant `ab`-row, lift
   22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate (eq.
   (6.24)–(6.29) row-op), then the Claim-6.12 extensor-span contradiction via the **green**
@@ -169,12 +164,13 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Blockers / open questions
 
-- **Do the Gap-3 kernel and Gap-1 row bridge merge into one node? — partly resolved.** The
-  rigidity-transfer core (seed-rank bridge, `0`-dof) is now ONE green node serving both: eq. (6.18)
-  (Gap 1's full-rank input) is its direct `0`-dof application, and the eq. (6.22) `def=0` core is the
-  same. What stays separate is the eq. (6.22) `def>0` rank statement (`RankHypothesis (def G̃_v)`,
-  composing the transfer with `rigidityMatrix_prop11` + `rank_add_deficiency_eq`) and the pigeonhole;
-  fold these into the Gap-1 node when it is scheduled.
+- **Do the Gap-3 kernel and Gap-1 row bridge merge into one node? — mostly resolved.** The
+  rigidity-transfer core is now TWO green nodes serving both: the seed-rank bridge (`def=0`, eq.
+  (6.18) is its direct application) and the upper bound `lem:case-III-seed-rank-upper` (the `def>0`
+  half of eq. (6.22)). What stays separate is the rank-*attainment* assembly (the upper bound + the
+  genericity-free lower bound `hub` of `rigidityMatrix_prop11`, giving `RankHypothesis (def G̃_v)`)
+  and the pigeonhole; these are the next leaf. The `hub` brick (codimension lower bound from the
+  Phase-19 partition machinery) is the one piece `rigidityMatrix_prop11` still carries as a hypothesis.
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -183,15 +179,19 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **Gap 1 — the row bridge.** With the seed-rank bridge green, eq. (6.18)
-(full rank `D(|V∖v|−1)` of `R(G_v^{ab},q)` at the fixed seed) is a direct application (the `0`-dof
-`G_v^{ab}` is rigid). The remaining content: the eq. (6.22) `def>0` rank
-(`RankHypothesis (def G̃_v)`, composing a bridge-style rigidity transfer at the nested-IH subgraph
-with `rigidityMatrix_prop11` + `rank_add_deficiency_eq`), then the `k' ≤ D−2 < D−1` pigeonhole over
-the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)). That lifts 22c's `case_II_placement_eq612`
-`≥ D(|V|−1)−1` to `= D(|V|−1)`. All three analytic prerequisites (i)/(ii)/(iii) and both
-combinatorial factors (Gap-2/Gap-3) are green; `lem:case-III` stays red until the candidate-completion
-assembly lands.
+**Next concrete commit:** **Gap 1 — the eq. (6.22) `def>0` rank-attainment packaging.** The two
+analytic halves are green (the `def=0` seed-rank bridge transfers full rigidity; the `def>0` upper
+bound `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent` bounds `dim Z ≤ D|α| −
+|s|` at the fixed alg-indep seed). The remaining content: assemble the upper bound with
+`rigidityMatrix_prop11`'s genericity-free lower bound `hub` (`D + def ≤ dim Z`) into the exact
+`RankHypothesis (def G̃_v)` for the nested-IH subgraph `G_v` at the fixed seed. The upper bound's input
+is `G_v`'s rational rank polynomial — obtained by running the device producer on `G_v`'s
+minimal-`k'`-dof IH realization; `hub` is the codimension lower bound `rigidityMatrix_prop11` still
+carries as a hypothesis, to be bricked from the Phase-19 partition machinery (likely lands here). Then
+the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)), lifting
+22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three analytic prerequisites
+(i)/(ii)/(iii) and both combinatorial factors (Gap-2/Gap-3) are green; `lem:case-III` stays red until
+the candidate-completion assembly lands.
 
 After Gap 1: the candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and
 general-`d` (Phase 23).
@@ -207,14 +207,21 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **(iii) seed-rank bridge landed (this commit).** `lem:case-III-seed-rank-bridge` =
-  `PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent` (`CaseI.lean`,
-  before `case_II_placement_eq612`): rigid `ofNormals G ends q₀` ⟹ rigid at any alg-indep-over-ℚ `q`.
-  Three-step composition over green leaves (`exists_rankPolynomial_of_rigidOn` → footnote-6
-  `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` → consumer
-  `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`). Green first try, axiom-clean, no
-  friction; honest (the hyp `hrig` is at an unrelated seed `q₀`, not the target `q`). This is the eq.
-  (6.18)/(6.22) transfer at the `0`-dof level; the `def>0` + pigeonhole (Gap 1) is the next leaf.
+- **Gap-1 eq. (6.22) rank *upper* bound landed (this commit).** `lem:case-III-seed-rank-upper` =
+  `PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`
+  (`CaseI.lean`, after the seed-rank bridge): a nonzero *rational* rank polynomial `Q` witnessing an
+  independent `panelRow`-subfamily `s` (edges linking in `G`) bounds `dim Z(G,q) ≤ D|α| − |s|` at any
+  alg-indep-over-ℚ `q`. The footnote-6 non-root device makes `q` a non-root (so `s` is LI at `q`); the
+  rank-nullity core of `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (panel rows ⊆
+  rigidity rows; `dim Z + finrank(span rigidityRows) = D|α|`) bounds `dim Z`. Green first try,
+  axiom-clean, no friction; honest (the input is `Q`, an unrelated rigid seed's rank witness, not the
+  rank concluded). The `def>0` upper half of eq. (6.22); pairs with `rigidityMatrix_prop11`'s `hub`
+  lower bound for the exact `RankHypothesis k'`. One statement wrinkle: `Fintype.card α` in a
+  `[Finite α]` statement needs `Nat.card α` + `rw [Nat.card_eq_fintype_card]` (standard project idiom).
+- **(iii) seed-rank bridge landed (commit 0d71f44).** `lem:case-III-seed-rank-bridge` =
+  `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`: rigid `ofNormals G ends q₀` ⟹ rigid at
+  any alg-indep-over-ℚ `q`, via `exists_rankPolynomial_of_rigidOn` → footnote-6 non-root → device
+  consumer. The eq. (6.18)/(6.22) transfer at the `0`-dof level. Green, axiom-clean, honest.
 - **(ii-a) motive-conjunct wiring landed (commit 9caa1a1).** `HasGenericFullRankRealization` gained a
   fifth conjunct `AlgebraicIndependent ℚ (fun p ↦ Q.normal p.1 p.2)` (paralleling GP/link-recording;
   `hasFullRankRealization_of_generic` forgets it). Every generic producer now picks the alg-indep seed
