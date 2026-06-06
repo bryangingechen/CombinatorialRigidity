@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–22b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green — by composing the exterior-projected rank-preservation crux, the collapse-relabel row reproduction, and a motive strengthening into a single assembly producer); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c (Case III at d=3, KT Lemma 6.10 — the conjecture's crux) in progress (opened design-pass-first), 22d (d=3 assembly) deferred; Phases 23–26 planned.**
+* **Phases 1–22b + 21a complete, and Phase 22c's stratum 1 landed (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c (Case III at d=3, stratum 1 = the eq. (6.12) `+(D−1)` placement) stratum-1 complete, 22d (the D-candidate crux, KT Lemma 6.10 strata 2–3 — the conjecture's hardest single argument) in progress (opened design-pass-first), the `d=3` assembly deferred and unlettered; Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -264,22 +264,29 @@ project; commit history is preserved with paths rewritten.
     its graph's links) discharges the selector alignment. An assembly producer composes
     these into the rank-transport witness from the contraction's generic induction
     hypothesis. See `notes/Phase22b.md`.
-  * **Phase 22c (in progress)** — Case III at `d=3`, first chunk (KT §6.4.1,
+  * **Phase 22c (stratum-1 complete)** — Case III at `d=3`, stratum 1 (KT §6.4.1,
     Lemma 6.10, the eq. (6.12) `+(D−1)` placement). The conjecture's crux and the
     single largest proof in KT: Theorem 5.5's `hsplit` branch at `k=0`. **Case III
-    at `d=3` is multi-phase**; 22c claims only the first of three difficulty
+    at `d=3` is multi-phase**; 22c claimed only the first of three difficulty
     strata — the degenerate placement giving one row short of full rank
-    (`+(D−1)`, buildable from the green Phase-21b row infra). The harder
-    D-candidate crux (the Lemma 6.10 `D`-candidate-frameworks argument: Claim 6.11's
-    combinatorial↔linear redundant row + Claim 6.12's extensor-span genericity,
-    bottoming on the Phase-17 Lemma 2.1) is a likely later sub-phase. **Opened
-    design-pass-first** — on a layer-level design recon, not a build (Case I burned
-    ~10 node-by-node commits before a layer pass surfaced the binding gap); recon
-    now settled. See `notes/Phase22c.md`.
-  * **Phase 22d (planning, deferred)** — the `d=3` assembly
-    (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + wiring the
-    fully-green `case_I_realization` into the Case-I branch); the likely further cut,
-    deferred until 22c's shape is clear. See `notes/MolecularConjecture.md`.
+    (`rank ≥ D(|V|−1)−1`, green + axiom-clean as `case_II_placement_eq612`, built
+    from the green Phase-21b row infra). **Opened design-pass-first** — on a
+    layer-level design recon (five passes), not a build. See `notes/Phase22c.md`.
+  * **Phase 22d (in progress)** — the **D-candidate crux** (KT §6.4.1, Lemma 6.10
+    strata 2–3), the conjecture's hardest single argument: the *missing `+1` row*
+    that lifts 22c's `D(|V|−1)−1` brick to full `D(|V|−1)`. Stratum 2 = **Claim
+    6.11**'s redundant `(ab)i*`-row (the combinatorial↔linear conversion wiring
+    `M(G̃_v^{ab})` to the row matroid of `R`, the single highest-risk node in Phases
+    22–23); stratum 3 = the candidate-normal-form + **Claim 6.12** extensor-span
+    contradiction (via the green Phase-17 Lemma 2.1). **Opened design-pass-first**;
+    the load-bearing opening verdict: Claim 6.11 takes the axiomatize-as-hypothesis
+    fallback (not buildable from the green `M(G̃)` machinery — no `M(G̃)`↔row-dependence
+    bridge, KT 4.3(ii) not in matroid-base form, a fresh nested-IH conversion),
+    while Claim 6.12 is de-risked on the green Lemma 2.1. See `notes/Phase22d.md`.
+  * **The `d=3` assembly (planning, deferred and unlettered)** —
+    `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + wiring the
+    fully-green `case_I_realization` into the Case-I branch; it gets a letter only
+    when its turn comes (the crux may itself split). See `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

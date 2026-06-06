@@ -119,8 +119,9 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22a. Case I realization | `Molecular/Deficiency.lean` + `Induction/` + `AlgebraicInduction/` (extends `algebraic-induction.tex`) | ✓ Complete (green-modulo-22b; see `notes/Phase22a.md`) — Track A only: the Theorem-5.5 **Case I** realization producer the Phase-21b genericity device feeds. The composer `lem:case-I-realization` (`PanelHingeFramework.case_I_realization`) is **green-modulo a single dischargeable hypothesis = KT Claim 6.4** (the new red node `lem:claim-6-4`, deferred to Phase 22b), delivered via the **block-triangular reframe** (KT eq. 6.3 rank-addition over one common framework `ofNormals G ends q₀`, routed through the device's independent-row count — H-block edges ⊔ surviving edges made independent by the exterior-column projection; no common-seed splice). The single deferred obligation is Claim 6.4 (`lem:claim-6-4` = the surviving block's exterior-projected rank at the generic placement). Cross-cutting lesson: a formalization must reproduce the source's argument **structure**, not just its conclusion (`DESIGN.md` *Match the source's argument structure …*). Per-node detail + the superseded hpinc→asymmetric→block-triangular→Qc-non-root design arc: `notes/Phase22a.md`. |
 | ⋮ Structure pass (pre-Phase-22b) | `Molecular/{AlgebraicInduction,Induction}/` splits + `algebraic-induction.tex` split | ✓ Complete (see `notes/Phase22-structure.md`) — split the two over-cap Molecular giants into subdirectories (no-hub; the aggregator imports the terminal leaf) and split the large algebraic-induction blueprint chapter, before opening 22b. Pure semantics-preserving moves (`\lean{…}` pins are by-name, so `checkdecls` is unaffected). Done: `AlgebraicInduction/` → 5 files (`PanelLayer`/`Pinning`/`PanelHinge`/`GenericityDevice`/`CaseI`); `algebraic-induction.tex` → thin parent + 5 `\input`s; `Induction/` → 5 files (`Operations`/`SplitOffDeficiency`/`ReducibleVertex`/`Contraction`/`ForestSurgery`). `PERFORMANCE.md` *Post-Phase-8 file-structure audit* records both executed splits; doc/reference surfaces swept to the subdir form. |
 | 22b. KT Claim 6.4 (discharge the Case-I green-modulo obligation) | `Molecular/AlgebraicInduction/CaseI.lean` (extends `algebraic-induction.tex`) | ✓ Complete (closed 2026-06-05; see `notes/Phase22b.md`) — KT **Claim 6.4** (`lem:claim-6-4`) **fully discharged** (`\leanok`), and the Case-I realization composer `case_I_realization` / `lem:case-I-realization` is **fully green** with no green-modulo bundle. The reduction N-22b-1/2/3 cut Claim 6.4 to its single analytic core `htransport`; the discharge then built the three composing bricks — **U3a** `hasGenericRealization_transport_relabel` (the contraction's generic IH transported to the relabel selector), **U3b** the genuine crux (the exterior-column projection loses zero rank on a rigid block, via `Z ⊔ range(extProj) = ⊤` whose one real-content input is the pin-count `finrank(pinnedMotionsOn t) = D(\|Vᶜ\|+1−\|t\|)`, plus the projected-subfamily extraction `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`), **U2/U1** `panelRow_collapseTo_comp_extProj_dualMap` at `degeneratePlacement` (the collapse-relabel projected-row reproduction at KT eq. (6.7)'s degenerate placement) — and the **route-(i)** motive strengthening (the link-recording conjunct on `HasGenericFullRankRealization`, discharging both the U3a alignment and the `H`-leg `hswap`/`hne_ends` against the canonical `G.endsOf`). The capstone **U4** producer `rigidContract_exterior_rank_transport_htransport` composes U3a ⊕ U3b ⊕ U2 to *supply* `htransport` from the contraction's strengthened generic IH, wired into `case_I_realization` (deleting its `hbundle` parameter). All axiom-clean. The course-correction discipline (the crux moved U2→U3, then U3a was found not a leaf) + design arc (`notes/Phase22-realization-design.md` §1.14–§1.24) are in `notes/Phase22b.md`. |
-| 22c. Case III at `d=3`, first chunk (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ◷ In progress (opened 2026-06-05, design-pass-first; recon settled + scope re-cut to first-chunk 2026-06-05; **stratum 1 LEAN-COMPLETE 2026-06-05**; see `notes/Phase22c.md`) — Track B at `d=3`, the conjecture's crux (KT §6.4.1, the single largest proof in KT, ~12 pp.): the `theorem_55.hsplit` producer at `k=0`. **Case III at `d=3` is multi-phase**; 22c claims only the FIRST of three difficulty strata — **stratum 1, the eq. (6.12) `+(D−1)` block-triangular placement** — now **green** as `PanelHingeFramework.case_II_placement_eq612` (axiom-clean): from the green Phase-21b N7b row infra + the new eq. (6.12) wedge lemmas (`panelSupportExtensor_add_smul_{right,left}`) + the `withNormal` single-seed coupling, it gives `rank R(G,p₁) ≥ D(|V|−1)−1` plus the `va`-line nondegeneracy. The **D-candidate crux** (stratum 2 = Claim 6.11's redundant `(ab)i*`-row, the highest-risk node; stratum 3 = the candidate-normal-form + Claim 6.12 extensor-span contradiction via the green Phase-17 Lemma 2.1, eq. (6.44) "same `r`") is a **likely later sub-phase**, named not scoped. Target nodes `lem:case-II-realization`, `lem:case-III` **stay red** — 22c lands the `+(D−1)` brick toward them. **Opened on a layer-level design recon, not a build** (Case I burned ~10 node-by-node commits before a layer pass surfaced the binding gap; `DESIGN.md` *Scale-up: design the LAYER, not just the node*); recon now settled (`notes/Phase22-realization-design.md` §1.25–§1.26). The `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip + the `case_I_realization`→`theorem_55_generic` wiring) is the **deferred 22d**. |
-| 22d+. (deferred) `d=3` assembly | `Molecular/AlgebraicInduction/` | ◷ Planning — the likely further cut of the parked territory, deferred until 22c's shape is clear: the genericity-free `hub` partition brick of `prop:rigidity-matrix-prop11` (Track-independent, Phase-19-partition, itself multi-commit), the `thm:theorem-55` flip, and wiring the fully-green `case_I_realization` into `theorem_55_generic`'s Case-I branch. |
+| 22c. Case III at `d=3`, stratum 1 (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ✓ Stratum-1 complete (the scoped deliverable landed; the crux split out to 22d, 2026-06-05; see `notes/Phase22c.md`) — Track B at `d=3`, the conjecture's crux (KT §6.4.1, the single largest proof in KT, ~12 pp.): the `theorem_55.hsplit` producer at `k=0`. **Case III at `d=3` is multi-phase**; 22c claimed only the FIRST of three difficulty strata — **stratum 1, the eq. (6.12) `+(D−1)` block-triangular placement** — now **green** as `PanelHingeFramework.case_II_placement_eq612` (axiom-clean): from the green Phase-21b N7b row infra + the new eq. (6.12) wedge lemmas (`panelSupportExtensor_add_smul_{right,left}`) + the `withNormal` single-seed coupling, it gives `rank R(G,p₁) ≥ D(|V|−1)−1` plus the `va`-line nondegeneracy. The **D-candidate crux** (stratum 2 = Claim 6.11's redundant `(ab)i*`-row, the highest-risk node; stratum 3 = the candidate-normal-form + Claim 6.12 extensor-span contradiction via the green Phase-17 Lemma 2.1, eq. (6.44) "same `r`") is **Phase 22d** (opened 2026-06-05). Target nodes `lem:case-II-realization`, `lem:case-III` **stay red** — 22c lands the `+(D−1)` brick toward them. **Opened on a layer-level design recon, not a build** (Case I burned ~10 node-by-node commits before a layer pass surfaced the binding gap; `DESIGN.md` *Scale-up: design the LAYER, not just the node*); recon settled (`notes/Phase22-realization-design.md` §1.25–§1.29). |
+| 22d. The D-candidate crux (KT Lemma 6.10 strata 2–3: Claim 6.11 + Claim 6.12) | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ◷ In progress (opened 2026-06-05, design-pass-first — docs-only opening recon, no Lean / `\leanok`; see `notes/Phase22d.md`) — the conjecture's hardest single argument: the *missing `+1` row* that lifts 22c's stratum-1 `D(|V|−1)−1` brick to full `D(|V|−1)`. Stratum 2 = **Claim 6.11**'s redundant `(ab)i*`-row (eq. (6.23), the combinatorial↔linear conversion wiring `M(G̃_v^{ab})` to the row matroid of `R`) — the **single highest-risk node in Phases 22–23**. Stratum 3 = the candidate-normal-form + **Claim 6.12** extensor-span contradiction (eq. (6.44) degree-2 "same `r`" + the green Phase-17 Lemma 2.1 `omitTwoExtensor_linearIndependent`). **Load-bearing opening verdict (reached before any node cut):** Claim 6.11 is **NOT buildable** from the green Phase-19 `M(G̃)`↔row-independence machinery (no `M(G̃)`↔row-dependence bridge exists; KT 4.3(ii) is not in matroid-base form; the conversion is a fresh nested-IH-at-restriction, not the green corank bridge) — so it takes the established **axiomatize-as-hypothesis** fallback (carry `h_redundant_row`, `\uses` a red `lem:case-III-claim-6-11`, discharge in a later sub-phase, the 21→21b / 22a→22b pattern). Claim 6.12 is **de-risked** (bottoms on the green Lemma 2.1). Candidate normal form: abstract one per-candidate lemma, instantiate ×3. Node cut deferred to next session. |
+| ⋯ (deferred, unlettered) `d=3` assembly | `Molecular/AlgebraicInduction/` | ◷ Planning — the parked territory downstream of the crux, deferred until the crux's shape is clear (it gets a letter only when its turn comes — the crux may itself split, as Case III at `d=3` did). The genericity-free `hub` partition brick of `prop:rigidity-matrix-prop11` (Track-independent, Phase-19-partition, itself multi-commit), the `thm:theorem-55` flip, and wiring the fully-green `case_I_realization` into `theorem_55_generic`'s Case-I branch. |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -718,16 +719,19 @@ hinge-coplanar body-hinge* + *Genericity device (Claim 6.4/6.9) is its own
 sub-phase (Phase 21b)*; program-level plan in `notes/MolecularConjecture.md`
 *Phase 21* / *Phase 21b*.
 
-### Phase 22 — Realization layer (sub-lettered: 22a + 22b + 22c+)
+### Phase 22 — Realization layer (sub-lettered: 22a + 22b + 22c + 22d + …)
 
 The realization layer re-scoped out of Phase 21b — the Theorem-5.5 case
 *producers* the genericity device feeds — was opened as a single Phase 22 on
 2026-06-04 and **split into sub-phases the same day** because it over-broadly
 bundled three independent bodies of work (Case I; Case III at `d=3`; the `d=3`
 assembly). Sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26
-stable. **Structural-edit phase:** no new blueprint chapter; the producer nodes
-extend `algebraic-induction.tex`, where they are already stubbed red. The KT math
-is worked out in `notes/Phase21b.md` *Finding A/B* — 22a/22b/22c+ formalize it.
+stable; sub-letters name *one distinct chunk each* and are minted only when the
+chunk's turn comes (Case III at `d=3` itself split: stratum 1 = 22c, the
+D-candidate crux strata 2–3 = 22d, the `d=3` assembly still unlettered).
+**Structural-edit phase:** no new blueprint chapter; the producer nodes extend
+`algebraic-induction.tex`, where they are already stubbed red. The KT math is
+worked out in `notes/Phase21b.md` *Finding A/B* — the sub-phases formalize it.
 
 #### Phase 22a — Case I realization (KT §6.2) — ✓ Complete (green-modulo-22b)
 
@@ -775,37 +779,67 @@ renumber of the parked Case-III/assembly territory from `22b+` to `22c+` (so eac
 sub-letter names one distinct sub-phase). Full target + path + KT grounding:
 `notes/Phase22b.md`; design doc §1.13–§1.16.
 
-#### Phase 22c — Case III at `d=3` (KT §6.4.1, Lemma 6.10) — ◷ In progress
+#### Phase 22c — Case III at `d=3`, stratum 1 (KT §6.4.1, Lemma 6.10, the eq. (6.12) `+(D−1)` placement) — ✓ Stratum-1 complete
 
-**Status (◷ In progress; opened 2026-06-05, design-pass-first; see
-`notes/Phase22c.md`).** Track B at `d=3`, the conjecture's crux — KT §6.4.1,
-Lemma 6.10, the single largest proof in KT (~12 pages). This is
-`theorem_55.hsplit` at `k=0`: a `2`-edge-connected minimal `0`-dof-graph with no
-proper rigid subgraph and a reducible degree-2 vertex `v`, target full rank
-`D(|V|−1)` (`D = 6` at `d=3`). The eq. (6.12) degenerate placement
-(`p₁(vb)=q(ab)`, the `vb`-row reproducing the `e₀=ab` row) gives a
-block-triangular `R(G,p₁)` with `R(G_v^{ab},q)` a submatrix, hence `+(D−1)` — one
-row short. The missing row comes from **Lemma 6.10**'s `D`-candidate-frameworks
-argument: KT build three candidates `(G,p₁),(G,p₂),(G,p₃)` and show one is full
-rank, via **Claim 6.11** (the redundant `(ab)i*`-row, off Lemma 4.3(ii) + the IH
-— the combinatorial↔linear bridge to `M(G̃_v^{ab})`) and **Claim 6.12**
-(extensor-span genericity: if all candidates fail, a nonzero `r ∈ ℝ⁶ ⟂` all
-extensors on `d+1` generic panels, which by the green Phase-17 Lemma 2.1 span
-`ℝ⁶` — contradiction; the degree-2 condition forces all to test the same `r`).
-Nodes `lem:case-II-realization` (KT's Case III), `lem:case-III`.
+**Status (✓ Stratum-1 complete; opened 2026-06-05 design-pass-first, stratum-1
+producer landed 2026-06-05, crux split out to 22d; see `notes/Phase22c.md`).**
+Track B at `d=3`, the conjecture's crux — KT §6.4.1, Lemma 6.10, the single
+largest proof in KT (~12 pages). This is `theorem_55.hsplit` at `k=0`: a
+`2`-edge-connected minimal `0`-dof-graph with no proper rigid subgraph and a
+reducible degree-2 vertex `v`, target full rank `D(|V|−1)` (`D = 6` at `d=3`).
+**Case III at `d=3` is multi-phase**; 22c claimed only **stratum 1** — the
+eq. (6.12) degenerate placement (`p₁(vb)=q(ab)`, the `vb`-row reproducing the
+`e₀=ab` row) giving a block-triangular `R(G,p₁)` with `R(G_v^{ab},q)` a
+submatrix, hence `rank ≥ D(|V|−1)−1`, **one row short** — green + axiom-clean as
+`PanelHingeFramework.case_II_placement_eq612`. The missing `+1` row (Lemma
+6.10's `D`-candidate-frameworks argument: Claims 6.11/6.12) is **Phase 22d**.
+Target nodes `lem:case-II-realization` (KT's Case III), `lem:case-III` **stay
+red** — 22c lands the `+(D−1)` brick toward them.
 
 **Opened on a layer-level design recon, not a build.** Case I (Track A) burned
 ~10 incremental node-by-node commits before a one-commit layer design pass
 surfaced the binding gap (a too-weak shared motive); Case III is more
-research-shaped and interlocking (three candidates sharing one candidate
-structure + Claim 6.11 + Claim 6.12), so per `DESIGN.md` *Scale-up: design the
-LAYER, not just the node* the phase opens with a docs-only design recon (read the
-whole Lemma-6.10 argument against the primary source + the green infra, decide
-what each piece needs from / supplies to the shared candidate structure) **before**
-cutting any Lean node. The `d=3` assembly (`prop:rigidity-matrix-prop11` `hub`
-brick + `thm:theorem-55` flip + wiring the fully-green `case_I_realization` into
-`theorem_55_generic`'s Case-I branch) is the **likely Phase 22d, deferred** until
-22c's shape is clear (same defer-the-finer-cut discipline as 22a→22b+, 22b→22c+).
+research-shaped and interlocking, so per `DESIGN.md` *Scale-up: design the LAYER,
+not just the node* the phase opened with a docs-only design recon (five passes)
+**before** cutting any Lean node. Full per-pass record + the stratum-1 brick
+inventory: `notes/Phase22c.md`; design doc §1.25–§1.29.
+
+#### Phase 22d — the D-candidate crux (KT §6.4.1, Lemma 6.10 strata 2–3) — ◷ In progress
+
+**Status (◷ In progress; opened 2026-06-05, design-pass-first — docs-only
+opening recon, no Lean / `\leanok`; see `notes/Phase22d.md`).** The conjecture's
+hardest single argument: the *missing `+1` row* that lifts 22c's stratum-1
+`D(|V|−1)−1` brick to full `D(|V|−1)`. **Stratum 2 = Claim 6.11** (the redundant
+`(ab)i*`-row, eq. (6.23): the combinatorial↔linear conversion wiring
+`M(G̃_v^{ab})` to the row matroid of `R`) — the **single highest-risk node in
+Phases 22–23**. **Stratum 3 = the candidate-normal-form + Claim 6.12** (the
+extensor-span contradiction: if all three candidates `(G,p₁),(G,p₂),(G,p₃)`
+fail, a nonzero `r ∈ ℝ⁶ ⟂` all extensors on `d+1` generic panels, which by the
+green Phase-17 Lemma 2.1 span `ℝ⁶` — contradiction; the degree-2 condition
+forces all to test the *same* `r`, eq. (6.44)).
+
+**Load-bearing opening verdict (reached before any node cut, read against KT
+pp. 683–691):** Claim 6.11 is **NOT buildable** from the green Phase-19 `M(G̃)`↔
+row-independence machinery (`matroidMG_indep_iff`, `thm:def-eq-corank`). Three
+gaps: (1) no `M(G̃)`↔row-dependence bridge exists in the project (Phase 19 built
+`M(G̃)` as a purely combinatorial object, never related to `panelRow`); (2) KT
+Lemma 4.3(ii) is not formalized in the matroid-base form Claim 6.11 needs (only
+the deficiency-count form landed, the matroid-base form recorded off the
+Theorem-4.9 critical path); (3) the conversion routes through a *fresh* IH
+application to a nested subgraph `G_v = G_v^{ab}−ab` at a restricted realization
+(KT eq. (6.22)), not the green corank bridge. So Claim 6.11 takes the
+established **axiomatize-as-hypothesis** fallback — carry `h_redundant_row`,
+`\uses` a red `lem:case-III-claim-6-11`, discharge in a later sub-phase (the
+21→21b / 22a→22b pattern). Claim 6.12 is **de-risked** (bottoms on the green
+Lemma 2.1). Candidate normal form: abstract one per-candidate lemma, instantiate
+×3 (`a↔b` swap + the `ρ` relabel). The Lean node cut is **deferred to the next
+session** (same discipline as 22a→22b, 22b→22c). Full recon + the verdict's
+evidence: `notes/Phase22d.md`.
+
+The **`d=3` assembly** (`prop:rigidity-matrix-prop11` `hub` brick +
+`thm:theorem-55` flip + wiring the fully-green `case_I_realization` into
+`theorem_55_generic`'s Case-I branch) is the **deferred, unlettered** planning
+note — it gets a letter only when its turn comes (the crux may itself split).
 General-`d` (Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 stays Phase 23. KT
 math: `notes/Phase21b.md` *Finding A/B*, `notes/Phase22-realization-design.md`
 §1.25, `notes/MolecularConjecture.md` *Phase 22* / *Phase 23*.

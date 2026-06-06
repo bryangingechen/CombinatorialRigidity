@@ -457,12 +457,18 @@ stay red (the placement node claims the full `D(|V|−1)`; this is the `−1`-sh
 bound toward it). What landed and how is recorded in *Current state* + the *Lemma
 checklist*; the pre-build recon (§1.26–§1.29) is above.
 
-**The next concrete commit OPENS THE NEXT SUB-PHASE — the D-candidate crux (Lemma
-6.10 strata 2–3), the conjecture's hardest single argument — design-pass-first, no
-build.** Per the user's standing direction ("very intricate; never dispatch a build
-before the plan is clear") and the same design-recon-first discipline 22c opened on,
-the first commit of the next sub-phase is a **docs-only layer recon**, NOT a Lean node.
-It must:
+**The next sub-phase — the D-candidate crux (Lemma 6.10 strata 2–3) — is now OPEN as
+Phase 22d** (`notes/Phase22d.md`, opened 2026-06-05 design-pass-first). Its opening
+recon reached the load-bearing verdict: **Claim 6.11 takes the axiomatize-as-hypothesis
+fallback** (NOT buildable from the green Phase-19 `M(G̃)`↔row-independence machinery —
+no `M(G̃)`↔row-dependence bridge, KT 4.3(ii) not in matroid-base form, a fresh
+nested-IH-at-restriction conversion), while **Claim 6.12 is de-risked** on the green
+Lemma 2.1. The Lean node cut is deferred to the next session. Below is the original
+hand-off (the recon brief Phase 22d's opening commit executed).
+
+Per the user's standing direction ("very intricate; never dispatch a build before the
+plan is clear") and the same design-recon-first discipline 22c opened on, the first
+commit of the next sub-phase was a **docs-only layer recon**, NOT a Lean node. It must:
 1. **Read Claim 6.11 end-to-end** against KT §6.4.1 (the redundant `(ab)i*`-row: removing
    it preserves `rank R(G_v^{ab},q)`, eq. (6.23), via KT Lemma 4.3(ii) + the IH). This is
    the **single highest-risk node in Phases 22–23** (the combinatorial↔linear conversion

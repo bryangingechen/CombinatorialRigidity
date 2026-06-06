@@ -42,10 +42,12 @@ KT~\S6.2/\S5.1: the exterior-column projection loses zero rank on a rigid block,
 collapse-relabel row reproduction carries the surviving independence back at a
 degenerate placement, and a motive strengthening discharges the selector alignment),
 so \cref{lem:case-I-realization} is now fully green; \textbf{Phase~22c} (Case~III at
-$d=3$, \emph{first chunk} --- KT~\S6.4.1, Lemma~6.10, the eq.~(6.12) $+(D-1)$
-placement; the conjecture's crux, which is itself multi-phase) is in progress, opened
-\emph{design-pass-first} (on a layer-level design recon, not a build); and
-\textbf{Phase~22d} (the $d=3$ assembly) is the deferred further cut.
+$d=3$, \emph{stratum~1} --- KT~\S6.4.1, Lemma~6.10, the eq.~(6.12) $+(D-1)$
+placement; the conjecture's crux, which is itself multi-phase) landed its stratum-1
+brick, opened \emph{design-pass-first}; \textbf{Phase~22d} (the \emph{D-candidate
+crux} --- KT~\S6.4.1, Lemma~6.10 strata~2--3, Claims~6.11/6.12, the conjecture's
+hardest single argument) is in progress, opened \emph{design-pass-first}; and the
+$d=3$ assembly is the deferred, unlettered further cut.
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
@@ -365,29 +367,38 @@ per-phase breakdown:
                 discharges the selector alignment; an assembly producer composes these
                 into the rank-transport witness from the contraction's generic
                 induction hypothesis.
-          \item \textbf{Phase~22c --- Case~III at $d=3$, first chunk}
-                (\emph{in progress};
+          \item \textbf{Phase~22c --- Case~III at $d=3$, stratum~1}
+                (\emph{stratum-1 complete};
                 Katoh--Tanigawa~\cite[\S6.4.1]{katohTanigawa2011}, Lemma~6.10 --- the
                 conjecture's crux and the single largest proof in KT): the
                 reducible-vertex producer at $d=3$ ($k=0$). Case~III at $d=3$ is
-                \emph{multi-phase}; Phase~22c claims only the first of three
+                \emph{multi-phase}; Phase~22c claimed only the first of three
                 difficulty strata --- the degenerate eq.~(6.12) placement on the
                 green row infrastructure, which is one row short of full rank
-                ($+(D-1)$, buildable). The harder $D$-candidate crux (the missing
-                row via Lemma~6.10's $D$-candidate-frameworks argument:
-                Claim~6.11 combinatorial$\leftrightarrow$linear redundant row
-                + Claim~6.12 extensor-span genericity via the extensor-independence
-                Lemma~2.1, \cref{lem:extensor-independence}) is a likely later
-                sub-phase --- \cref{lem:case-II-realization,lem:case-III} stay red.
-                Opened \emph{design-pass-first}: on a layer-level design recon, not a
-                build (Case~I burned $\sim$10 node-by-node commits before a layer pass
-                surfaced the binding gap); recon now settled.
-          \item \textbf{Phase~22d --- $d=3$ assembly} (\emph{planning}, deferred):
-                the genericity-free \texttt{hub} partition brick of
+                ($\mathrm{rank}\ge D(|V|-1)-1$, green + axiom-clean). Opened
+                \emph{design-pass-first}: on a layer-level design recon (five passes),
+                not a build. \cref{lem:case-II-realization,lem:case-III} stay red ---
+                Phase~22c lands the $+(D-1)$ brick toward them.
+          \item \textbf{Phase~22d --- the D-candidate crux}
+                (\emph{in progress}; KT~\cite[\S6.4.1]{katohTanigawa2011}, Lemma~6.10
+                strata~2--3 --- the conjecture's hardest single argument): the
+                \emph{missing $+1$ row} that lifts Phase~22c's $D(|V|-1)-1$ brick to
+                full $D(|V|-1)$. Stratum~2 is Claim~6.11's redundant $(ab)i^*$-row (the
+                combinatorial$\leftrightarrow$linear conversion wiring
+                $M(\tilde G_v^{ab})$ to the row matroid of $R$, the single
+                highest-risk node in Phases~22--23); stratum~3 is the
+                candidate-normal-form $+$ Claim~6.12 extensor-span contradiction via
+                the extensor-independence Lemma~2.1
+                (\cref{lem:extensor-independence}). Opened \emph{design-pass-first},
+                with the verdict that Claim~6.11 takes the axiomatize-as-hypothesis
+                fallback (not buildable from the green $M(\tilde G)$ machinery) while
+                Claim~6.12 is de-risked on the green Lemma~2.1.
+                \cref{lem:case-II-realization,lem:case-III} stay red.
+          \item \textbf{The $d=3$ assembly} (\emph{planning}, deferred and
+                \emph{unlettered}): the genericity-free \texttt{hub} partition brick of
                 \cref{prop:rigidity-matrix-prop11} (Track-independent) plus the
-                \cref{thm:theorem-55} flip and the Case-I wiring; the likely further
-                cut, deferred until Phase~22c's shape is clear (the parked
-                \texttt{22c+} placeholder split into 22c + 22d at 22c open).
+                \cref{thm:theorem-55} flip and the Case-I wiring; it gets a letter only
+                when its turn comes (the crux may itself split).
         \end{itemize}
         (File: \texttt{Molecular/\{Induction,AlgebraicInduction\}.lean}.)
 \end{enumerate}
@@ -474,13 +485,16 @@ zero rank on a rigid block, a collapse-relabel row reproduction carries the surv
 independence back at a degenerate placement (KT eq.~(6.7)), and a motive strengthening
 discharges the selector alignment, all composed into a rank-transport witness from the
 contraction's generic induction hypothesis --- so \cref{lem:case-I-realization} is now
-fully green. \textbf{Phase~22c} (in progress, opened design-pass-first, recon settled) is Case~III at
-$d=3$, first chunk (KT~\S6.4.1, Lemma~6.10, the eq.~(6.12) $+(D-1)$ placement, the
-conjecture's crux). Case~III at $d=3$ is multi-phase; Phase~22c claims only the first of
-three difficulty strata (the eq.~(6.12) placement, buildable from the green row infra),
-with the harder $D$-candidate crux a likely later sub-phase; the reducible-vertex
-producer nodes (\cref{lem:case-II-realization,lem:case-III}) stay red until that
-construction lands. \textbf{Phase~22d} (planning, deferred) is the $d=3$ assembly --- the
-genericity-free \texttt{hub} partition brick and the \cref{thm:theorem-55} flip. The
-\texttt{22c+} placeholder split into 22c + 22d at 22c open. Phases~23--26 remain to be
-opened.
+fully green. \textbf{Phase~22c} (stratum-1 complete, opened design-pass-first) is
+Case~III at $d=3$, stratum~1 (KT~\S6.4.1, Lemma~6.10, the eq.~(6.12) $+(D-1)$ placement,
+the conjecture's crux). Case~III at $d=3$ is multi-phase; Phase~22c claimed only the
+first of three difficulty strata (the eq.~(6.12) placement, green + axiom-clean from the
+green row infra). \textbf{Phase~22d} (in progress, opened design-pass-first) is the
+\emph{D-candidate crux} (KT~\S6.4.1, Lemma~6.10 strata~2--3, Claims~6.11/6.12) --- the
+missing $+1$ row that lifts Phase~22c's $D(|V|-1)-1$ brick to full $D(|V|-1)$; its
+verdict is that Claim~6.11 takes the axiomatize-as-hypothesis fallback while Claim~6.12
+is de-risked on the green Lemma~2.1. The reducible-vertex producer nodes
+(\cref{lem:case-II-realization,lem:case-III}) stay red until that construction lands.
+The $d=3$ assembly --- the genericity-free \texttt{hub} partition brick and the
+\cref{thm:theorem-55} flip --- is the deferred, unlettered further cut. Phases~23--26
+remain to be opened.
