@@ -76,6 +76,31 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [process] A red-node re-classification that *weakens* a hypothesis must re-verify against the source, not just the local dep-graph
+- **Where it bit:** Phase 22e N3a (`lem:case-III-claim612-points-affineIndep`, KT eq. (6.45) point
+  choice). The 2026-06-06 N3-design-pass split the old N3 into N3a (points) + N3b (duality) and, in
+  the same pass, *weakened* N3a's hypothesis from genericity to "general position direct from
+  `IsGeneralPosition`" (pairwise-independent normals), re-classifying `AlgebraicIndependence.md`
+  row #106 to "NOT an alg-independence site." Re-reading KT against `.refs` the next day overturned
+  it: KT p. 691 takes the four points affinely independent *because* `(Gᵥᵃᵇ,q)` is **generic**, and
+  the general-`d` form (p. 698, eq. (6.67)) is explicit — the panel coefficients are *algebraically
+  independent over ℚ*, which is what forces transversal intersections. Pairwise independence of the
+  ℝ⁴ normals does NOT suffice (parallel panels are pairwise-independent but have no transversal
+  triple point), so the weakened statement was simply **not a theorem**.
+- **Friction:** a docs-only re-scoping pass dropped a load-bearing genericity hypothesis without
+  re-checking the source argument; the local dep-graph stayed consistent (N3a was red, nothing
+  built on it), so no gate caught it — the only check is re-reading KT. Had a build been scheduled
+  off the weakened statement it would have failed the honesty gate (false producer) or wasted a
+  session chasing an unprovable goal.
+- **Lesson / fix:** when a red-node re-scope *removes or weakens* a hypothesis (vs. merely splitting
+  or rewiring), treat it like a new statement and re-run the red-node consistency check against the
+  primary source — the dep-graph being internally consistent is necessary but not sufficient. The
+  design-pass-first recon already reads the target argument; this adds "and confirm the hypothesis
+  you kept is the one the source actually uses." Corrected the N3a node + row #106 (now
+  `\uses{lem:genericity-device}`, KT p. 691/698 cited).
+- **Status:** open (lesson; the specific N3a node is fixed). Candidate to lift to CLAUDE.md
+  *red-node consistency gate* if a second hypothesis-weakening re-scope recurs.
+
 ### [open] The eq.-(6.12) shear "support extensor at `q₀`'s `vb`-hinge = at `q`'s `ab`-hinge" is a 6-deep manual `rw` unfold chain in three Case-III producers
 - **Where it bit:** `case_II_placement_eq612` (`hnewne`/`hane`), `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,
   and the new `exists_candidate_row_eq612` (`hCeq`), all `CaseI.lean`/`PanelHinge.lean` (Phase 22c–22e).

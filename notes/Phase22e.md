@@ -17,7 +17,9 @@ producer `linearIndependent_sum_p3_candidateRow`, the eq.-(6.44) `candidateRow_a
 three candidate producers (`p₁`/`p₂`/`p₃`) are all green; what remains is the contrapositive glue. The
 N3b duality bridge is multi-commit (needs the Hodge-star / regressive-duality-on-decomposables
 content to place both extensors in `⋀²W` as an honest submodule); its three leaves are green, leaving
-that assembly. Next: assemble N3b (or land N3a first), then capstone N9, N10 flip.
+that assembly. The remaining red leaves are N3a (the 4-point construction — corrected this commit to
+its true characterization: a genericity/alg-independence site per KT p. 691/698, not "config-only")
+and the N3b assembly. Next: build N3a via the genericity device, then capstone N9, N10 flip.
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -31,14 +33,31 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: assemble N3b** (`lem:case-III-claim612-line-in-panel-union`) — or land N3a
-first if the assembly stalls. The three N3b duality leaves are now green; the assembly places both
-the point-join `pᵢ∨pⱼ` and the panel-meet `C(L) = complementIso(n_u∧n')` in `⋀²W` as an honest
-submodule (via the incidence `⟨p̄, n⟩=0`, both panels) and applies the step-(ii) proportionality to
-extract `pᵢ∨pⱼ = λ·C(L)`, then the annihilation transfer `r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=λ·r(C(L))=0`. This
-needs the Hodge-star / regressive-duality-on-decomposables identification of `⋀²W` (as a submodule
-of `⋀²ℝ⁴`) with the join's extensor line — not yet in mathlib or the project (the multi-commit
-content the design recon flagged). If that proves heavy, build N3a (LOW risk) first and return.
+**Next concrete commit (this commit, docs/blueprint): correct the N3a node to match KT — it IS a
+genericity (algebraic-independence) site, not "general position direct from `IsGeneralPosition`".**
+Re-reading KT against `.refs` (p. 691, and the explicit general-`d` form p. 698, eq. (6.67)) shows
+the four points' **affine independence uses genericity**: *"Since `(Gᵥᵃᵇ, q)` is a generic
+nonparallel framework, we can take such four points … affinely independent"* / *"the coefficients
+… expressing `Πᵢ` are algebraically independent over the rational field; therefore for any `j`
+hyperplanes their intersection forms a `(d−j)`-dim affine space."* Pairwise independence of the ℝ⁴
+normals does **not** suffice (parallel panels are pairwise-independent yet have no transversal
+triple point). The 2026-06-06 N3-design-pass re-classification of N3a to "not an alg-independence
+site" was wrong. Fixed the N3a node statement+proof (now `\uses{lem:genericity-device}`, still red)
+and `notes/AlgebraicIndependence.md` row #106 (re-corrected to a genericity site). No Lean touched.
+
+**Next build step after this: N3a via the genericity device** (the 4-point construction +
+affine-independence determinant, sourcing the alg-independence of the panel coefficients from
+`lem:genericity-device`, like the Phase-22d kernel route), **or** the N3b assembly (still the
+multi-commit Hodge-star piece below). N3a is no longer "LOW risk / config-only" — it needs the
+genericity hammer. Both remaining red leaves (N3a, the N3b assembly) are now correctly characterized.
+
+**The N3b assembly (still red, multi-commit).** The three N3b duality leaves are green; the assembly
+places both the point-join `pᵢ∨pⱼ` and the panel-meet `C(L) = complementIso(n_u∧n')` in `⋀²W` as an
+honest submodule (via the incidence `⟨p̄, n⟩=0`, both panels) and applies the step-(ii)
+proportionality to extract `pᵢ∨pⱼ = λ·C(L)`, then the annihilation transfer `r(C(L))=0 ⟹
+r(pᵢ∨pⱼ)=λ·r(C(L))=0`. This needs the Hodge-star / regressive-duality-on-decomposables
+identification of `⋀²W` (as a submodule of `⋀²ℝ⁴`) with the join's extensor line — not yet in
+mathlib or the project (the multi-commit content the design recon flagged).
 
 **N3b step (ii) landed green (this commit)** (`Molecular/Meet.lean`, axiom-clean). The dimension
 count: `finrank_exteriorPower_two_eq_one` — for a 2-dim free `W`, `dim ⋀²W = (dim W).choose 2 =
@@ -181,12 +200,16 @@ commit (no `\lean`/`\leanok`); build greens them.
   axiom-clean) — a functional `r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with
   `span S = ⊤` is `0`, via `LinearMap.ext_on`. Deps: N1. Dual-annihilator framing (not the
   inner-product `⟨r,r⟩=0` of the original prose) to match the `Module.Dual` candidate-row chain.
-- [ ] **N3a** `lem:case-III-claim612-points-affineIndep` — from a general-position framework
-  (`IsGeneralPosition`: pairwise-indep panel normals `n_a,n_b,n_c`), 4 **affinely-independent**
-  points `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence pattern
-  (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. Deps: `def:rigidity-matrix`,
-  `def:panel-hinge-framework`. **LOW RISK** — general position direct from `IsGeneralPosition`, **NOT**
-  an alg-independence use (`notes/AlgebraicIndependence.md` row #106 re-classified).
+- [ ] **N3a** `lem:case-III-claim612-points-affineIndep` — from a **generic** nonparallel framework
+  (`lem:genericity-device`: the panel coefficients are algebraically independent over ℚ), 4
+  **affinely-independent** points `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence
+  pattern (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. Deps:
+  `def:rigidity-matrix`, `def:panel-hinge-framework`, `lem:genericity-device`. **IS an
+  alg-independence (genericity) site** — corrected this commit: KT p. 691/698 eq. (6.67) takes the
+  points affinely independent *because* `q` is generic; pairwise independence of the ℝ⁴ normals
+  does NOT suffice (parallel panels). `notes/AlgebraicIndependence.md` row #106 re-corrected. The
+  build route is the genericity hammer (like the Phase-22d kernel), **not** config-only — no longer
+  "LOW risk".
 - [ ] **N3b** `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet duality
   bridge (still red, decomposed this commit). For a pair whose connecting line `L` lies in panel
   `Π(u)`, the join `pᵢ∨pⱼ` equals a scalar multiple of the panel-meet extensor `C(L) =
@@ -268,26 +291,25 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: assemble N3b** (`lem:case-III-claim612-line-in-panel-union`) — or, if the
-assembly stalls on the Hodge-star content, land **N3a** first and return. All three N3b duality
-leaves are green: the dictionary `complementIso_toDual`, step (i) (`complementIso(n_u∧n') ∈ ⋀²W` in
-operational dual form), and step (ii) (`dim ⋀²W = 1`, two nonzero members proportional). The
-assembly places both `pᵢ∨pⱼ` and `C(L) = complementIso(n_u∧n')` in `⋀²W` *as an honest submodule of
-`⋀²ℝ⁴`* (via the incidence `⟨p̄,n⟩=0`, both panels), applies (ii) to extract `pᵢ∨pⱼ = λ·C(L)`, and
-finishes with the annihilation transfer `r(C(L))=0 ⟹ r(pᵢ∨pⱼ) = λ·r(C(L)) = 0`.
+**Next concrete commit: build N3a via the genericity device** (`lem:case-III-claim612-points-affineIndep`)
+— the 4-point construction + affine-independence determinant, sourcing the algebraic independence of
+the panel coefficients from `lem:genericity-device` (the route the Phase-22d kernel already runs).
+This commit corrected N3a's *characterization* (it IS a genericity site, see *Current state* +
+*Decisions*); the build itself is the next step. The alternative, **the N3b assembly**, remains the
+multi-commit Hodge-star piece (below) — N3a is now the cheaper of the two red leaves, and the only
+one not blocked on missing exterior-power-of-submodule infrastructure.
 
 **Why N3b's assembly is the hard remainder:** identifying `⋀²W` (the exterior square of the
 2-dim `W = {n_u,n'}^⊥`) with the image inside `⋀²ℝ⁴` where the two concrete extensors live needs the
 Hodge-star / regressive-duality-on-decomposables content — not in mathlib, not yet in-project — so it
-is multi-commit. The three operational leaves are green; the assembly is the remaining content,
-named above + in the checklist (the N3b-assembly `[ ]` item).
+is multi-commit. The three N3b operational leaves are green (dictionary `complementIso_toDual`,
+step (i) `complementIso(n_u∧n') ∈ ⋀²W` in operational dual form, step (ii) `dim ⋀²W = 1`); the
+assembly is the remaining content, named above + in the checklist (the N3b-assembly `[ ]` item).
 
-Then, in order: **N3a** (`lem:case-III-claim612-points-affineIndep`, 4 affinely-indep points — LOW
-risk, general position direct from `IsGeneralPosition`, NOT alg-independence), then capstone **N9**
-(`lem:case-III-claim612`, the 3-way disjunction) — which discharges the re-shaped
-`lem:case-III-eq629-conditional` — after which **N10** flips `lem:case-II-realization` + the `d=3`
-half of `lem:case-III` green. The three candidate producers (`p₁`/`p₂`/`p₃` = N6/N7 + the
-candidate-completion `lem:case-III-candidate-row`) are all green; N3b/N3a/N9 are the contrapositive
+Then capstone **N9** (`lem:case-III-claim612`, the 3-way disjunction) — which discharges the
+re-shaped `lem:case-III-eq629-conditional` — after which **N10** flips `lem:case-II-realization` +
+the `d=3` half of `lem:case-III` green. The three candidate producers (`p₁`/`p₂`/`p₃` = N6/N7 + the
+candidate-completion `lem:case-III-candidate-row`) are all green; N3a/N3b/N9 are the contrapositive
 glue (`r ⊥ all panel-meets ⟹ r ⊥ the spanning joins ⟹ r=0`).
 
 **Note (the brick-block extraction is deferred to the `d=3` assembly, not 22e).** The assembly
@@ -299,12 +321,26 @@ augment with the real graph data — that is where the **recurring `ofNormals` d
 Downstream (still deferred, unlettered): the `d=3` assembly
 (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring);
 then general-`d` is **Phase 23**. KT math: `notes/Phase22d.md` *Hand-off*, KT §6.4.1
-(eqs. (6.24)–(6.45)); `notes/AlgebraicIndependence.md` row #106 (re-classified this commit:
-N3a/N3b are NOT alg-independence sites — general position direct from `IsGeneralPosition`).
+(eqs. (6.24)–(6.45)); `notes/AlgebraicIndependence.md` row #106 (re-corrected this commit:
+N3a **IS** an alg-independence/genericity site per KT p. 691/698 — `\uses{lem:genericity-device}`;
+N3b stays alg-independence-free, pure Grassmann–Cayley).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3a IS a genericity (algebraic-independence) site — consistency fix (2026-06-06, docs/blueprint
+  only).** Re-reading KT against `.refs` overturned the same-day N3-design-pass claim that N3a's
+  affine independence is "general position direct from `IsGeneralPosition`, NOT alg-independence."
+  KT p. 691: *"Since `(Gᵥᵃᵇ,q)` is a **generic** nonparallel framework, we can take such four points
+  … affinely independent"*; general-`d` p. 698 eq. (6.67): *"the coefficients … expressing `Πᵢ` are
+  **algebraically independent over the rational field**; therefore for any `j` hyperplanes their
+  intersection forms a `(d−j)`-dim affine space."* Pairwise independence of the ℝ⁴ panel normals
+  does NOT suffice (parallel panels are pairwise-independent, no transversal triple point). Fixed the
+  N3a node (statement → *generic* framework; proof → KT's alg-independence argument;
+  `\uses{lem:genericity-device}`; still red) and `AlgebraicIndependence.md` row #106. The build route
+  is now the genericity hammer (like the Phase-22d kernel), not config-only. No Lean touched; all
+  blueprint gates clean. **Lesson** → FRICTION `[process]`: a red-node re-classification that *weakens*
+  a hypothesis must re-verify against the source, not just the local dep-graph.
 - **N3b step (ii) green — the exterior square of a 2-dim space is a line (2026-06-06).**
   `finrank_exteriorPower_two_eq_one` + `exteriorPower_finrank_eq_one_proportional` (`Meet.lean`,
   axiom-clean): `dim ⋀²W = (dim W).choose 2 = 2.choose 2 = 1` via `exteriorPower.finrank_eq`
@@ -344,8 +380,9 @@ N3a/N3b are NOT alg-independence sites — general position direct from `IsGener
   **N3b** (`lem:case-III-claim612-line-in-panel-union`: the point-join↔panel-meet Grassmann–Cayley
   duality — `pᵢ∨pⱼ` ∝ `C(L)=panelSupportExtensor=complementIso(normalsJoin)` — the genuinely-missing
   content N9 needs to turn `r⊥C(L)` into `r(pᵢ∨pⱼ)=0`). Re-wired N9's `\uses` + the `lem:case-III`
-  prose off the old label (no dangling). **General position is NOT alg-independence** (row #106
-  re-classified — direct from `IsGeneralPosition`). **N7 de-risked**: follows N6's graph-free producer
+  prose off the old label (no dangling). (The same-day claim here that N3a is "NOT alg-independence,
+  direct from `IsGeneralPosition`" was **overturned 2026-06-06** — see *N3a IS a genericity site*
+  below; N3a `\uses{lem:genericity-device}`.) **N7 de-risked**: follows N6's graph-free producer
   pattern (assembly at `columnOp hac` + green N8 routing M₃ onto `r̂`; the iso is functional via N8,
   no `ofNormals` swap, defeq trap does NOT bite). All gates clean; `verify.sh` green (no cycle).
 - **N7 green — the `p₃` candidate is the abstract assembly at the `va↔ac` role change (2026-06-06).**

@@ -676,18 +676,19 @@ $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern --- so that Lemma~2.1
 (\cref{lem:case-III-claim612-extensor-span}) forces their six joins to span; and (N3b) the
 \emph{point-join $\leftrightarrow$ panel-meet duality}, which turns the capstone's hypothesis
 ``$r \perp C(L)$ for every line $L$ in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$'' into ``$r$
-annihilates each spanning join $p_i \vee p_j$''. The first is a general-position
-(configuration non-degeneracy) fact; the second --- the genuinely new content --- is
-Grassmann--Cayley projective duality.
+annihilates each spanning join $p_i \vee p_j$''. The first is a \emph{genericity}
+(transversality of the panel arrangement at a generic seed) fact; the second --- the genuinely
+new content --- is Grassmann--Cayley projective duality.
 
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
   \label{lem:case-III-claim612-points-affineIndep}
-  \uses{def:rigidity-matrix, def:panel-hinge-framework}
-  Let $(G_v^{ab}, q)$ be a panel-hinge framework at $d = 3$ in general position
-  (\cref{def:panel-hinge-framework}: pairwise-independent panel normals $n_a, n_b, n_c$), with
-  panel hyperplanes $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$ at the three bodies $a, b, c$. Then
-  there exist four \emph{affinely-independent} points $p \colon \mathrm{Fin}\,4 \to \R^3$
-  realizing the triple-intersection incidence pattern
+  \uses{def:rigidity-matrix, def:panel-hinge-framework, lem:genericity-device}
+  Let $(G_v^{ab}, q)$ be a \emph{generic} nonparallel panel-hinge framework at $d = 3$
+  (\cref{def:panel-hinge-framework}, \cref{lem:genericity-device}: the seed $q$ is generic, so the
+  panel normals $n_a, n_b, n_c$ and the coefficients of their hyperplane equations are
+  algebraically independent over $\Q$), with panel hyperplanes $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$
+  at the three bodies $a, b, c$. Then there exist four \emph{affinely-independent} points
+  $p \colon \mathrm{Fin}\,4 \to \R^3$ realizing the triple-intersection incidence pattern
   \[
     p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c), \quad
     p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \quad
@@ -700,13 +701,19 @@ Grassmann--Cayley projective duality.
   consumes (its six $2$-extensors $\bar{p_i} \vee \bar{p_j}$ then span $\R^D$).
 \end{lemma}
 \begin{proof}
-  General position of the three panels suffices --- \emph{no} algebraic / transcendence assumption
-  on the seed. With $n_a, n_b, n_c$ pairwise independent the three hyperplanes
-  $\Pi(a), \Pi(b), \Pi(c)$ meet generically, so the triple intersection is a single affine point
-  ($p_1$), each pairwise intersection is a line, and a point can be chosen on each pairwise line
-  off the third panel ($p_2, p_3, p_4$); a determinant computation on the homogenized coordinates
-  shows the four are affinely independent (KT p.~691). The incidence pattern is read off the
-  three vanishing/non-vanishing conditions $\langle \bar{p_i}, n_u \rangle = 0$.
+  \emph{Genericity of the seed is genuinely used} --- this is \emph{not} a consequence of mere
+  pairwise independence of the panel normals (three pairwise-independent normals can still have
+  coplanar hyperplanes, e.g.\ parallel panels). KT's argument (p.~691, and explicitly the
+  general-$d$ form p.~698, eq.~(6.67)): since $(G_v^{ab}, q)$ is a \emph{generic} nonparallel
+  framework, the set of coefficients appearing in the equations expressing $\Pi(a), \Pi(b), \Pi(c)$
+  is \emph{algebraically independent over $\Q$} (the genericity device,
+  \cref{lem:genericity-device}). Hence for any $j$ of the three hyperplanes their intersection is a
+  $(3 - j)$-dimensional affine flat: the triple intersection $\Pi(a) \cap \Pi(b) \cap \Pi(c)$ is a
+  single point ($p_1$), each pairwise intersection is a line, and a point can be chosen on each
+  pairwise line off the third panel ($p_2, p_3, p_4$). A determinant computation on the homogenized
+  coordinates --- nonvanishing again by the algebraic independence of the coefficients --- shows the
+  four are affinely independent. The incidence pattern is read off the three vanishing/non-vanishing
+  conditions $\langle \bar{p_i}, n_u \rangle = 0$.
 \end{proof}
 
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
