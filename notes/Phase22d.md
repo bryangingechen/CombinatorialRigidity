@@ -73,8 +73,8 @@ the bound falls out of the surgery's degree-count `2h' + (D−h') = h ≤ 2(D−
 
 ## The re-scope (user override of the opening recon, 2026-06-05)
 
-The opening recon (commit 4e6a7bb, below under *Superseded opening verdict*)
-concluded Claim 6.11 should be **axiomatized as a hypothesis** (`h_redundant_row`
+The opening recon (commit 4e6a7bb) concluded Claim 6.11 should be
+**axiomatized as a hypothesis** (`h_redundant_row`
 + a red node) and the Claim 6.12 scaffold built downstream onto eq. (6.12). The
 user **overrode** that:
 
@@ -277,18 +277,12 @@ Small new sub-brick: a one-shot lemma `splitOff_removeVertex_minimalKDof` packag
 matroid theory, mirrors `splitOff_exists_base_inter_fiber_lt`'s shape; buildable.
 **This is the leaf-most buildable Gap-3 piece** (the node cut, below).
 
-### 2–3. The kernel — verdict SUPERSEDED by the *Footnote-6 kernel recon* below
+### 2–3. The kernel — superseded by the *Footnote-6 kernel recon* below
 
-Items 2–3 (the device-re-applies-but-wrong-shape analysis + the "eq. (6.22) is an
-irreducible kernel, not green-buildable" verdict) are **superseded by the sharper
-*Footnote-6 kernel recon (2026-06-06)*** below — it re-tested the same question against
-the actual 22b-strengthened motive and named the exact missing brick. Net (full Q1–Q5
-there): eq. (6.22)'s rank-at-a-given-seed is genuinely-new analytic content — the device
-runs the *existence* direction (`∃` a good point), footnote 6 needs *this*
-algebraically-independent seed to attain the rank; Gaps 3+1 share this one kernel ("the
-rigidity matrix at the inductively-fixed seed attains the rank `M(G̃)` predicts"). The
-device *consumer* `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` does run
-the given-point direction; what is missing is certifying the seed is a non-root of `Q`.
+The items-2–3 kernel analysis is **superseded**; the live verdict is the
+*Footnote-6 kernel recon (2026-06-06)* below (full Q1–Q5). Net: eq. (6.22)'s
+rank-at-a-given-seed is genuinely-new analytic content, bottoming on the
+`non-root-from-algebraic-independence` brick.
 
 ### 4. Split + node cut — the leaf-most-first Gap-3 first build
 
@@ -680,23 +674,3 @@ KT §4 (Lemmas 4.3(ii)/4.4/4.7/4.8, the matroid-base substrate); `notes/Phase20.
 (`splitOff_isMinimalKDof`, the `ãb`-base count); `notes/Phase21b.md` *Finding A/B*;
 `notes/Phase22-realization-design.md` §1.26 (Q1–Q4) + §3 *Track B*;
 `notes/Phase22c.md` *Sub-phase scope cut*.
-
----
-
-## Superseded opening verdict (2026-06-05, commit 4e6a7bb) — retained for the audit trail
-
-The opening recon concluded **AXIOMATIZE-AS-HYPOTHESIS** for Claim 6.11 (carry
-`h_redundant_row`, `\uses` a red `lem:case-III-claim-6-11`, build the Claim-6.12
-scaffold downstream, discharge in a later sub-phase — the 21→21b / 22a→22b
-pattern). It identified the three gaps (no `M(G̃)`↔row bridge; KT 4.3(ii) not in
-matroid-base form; the conversion is a fresh nested-IH-at-restriction) and judged
-the *whole* Claim 6.11 not buildable before the scaffold.
-
-**Superseded** by the user's bottom-up direction (above): rather than axiomatize
-the whole claim and push onto 6.12, 22d builds the leaf-most missing prerequisite
-(Gap 2, the matroid-base 4.3(ii) form), which the re-recon verified IS buildable
-from green Phase-20 infra. The three-gaps decomposition stands; what changed is
-that 22d now *attacks* the bottom gap rather than deferring the whole claim. The
-opening recon's Gap-2 "not formalized in matroid-base form" was literally true of
-the *standalone* lemma but understated that `splitOff_isMinimalKDof`'s proof
-already builds the count.
