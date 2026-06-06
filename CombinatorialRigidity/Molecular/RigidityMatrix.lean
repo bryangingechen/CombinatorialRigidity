@@ -519,6 +519,74 @@ theorem dualMap_eq_comp_single_proj_of_vanish_off [DecidableEq α]
   rw [map_sub, sub_eq_zero] at hz
   exact hz
 
+/-- **The candidate-completion column operation** `Φ = col_a += col_v` (Katoh–Tanigawa 2011
+§6.4.1, eqs.~(6.14)–(6.15); Phase 22e). The change-of-variables automorphism on the screw
+assignments `α → ScrewSpace k` that adds body `v`'s screw column to body `a`'s — modelled, since
+the rigidity rows read relative screws `S u − S w`, as its *dual* substitution on the assignment:
+`Φ S = Function.update S v (S v + S a)` (it is `col_a += col_v` acting on rows, equivalently
+`row_v += row_a` on the column-vector `S`). It is a linear automorphism with inverse
+`Φ⁻¹ S = Function.update S v (S v − S a)`; both directions need `v ≠ a` so that the update at `v`
+leaves the `a`-coordinate fixed. A rank is invariant under this change of variables (precomposition
+with a `≃ₗ`), so it certifies the candidate row's vanishing without changing any rank: it is the
+device that makes the transported `(vb)i^*`-row `hingeRow v a ρ` (supported on *both* columns `v`
+and `a`) into a pure `v`-column row in the operated frame — see `hingeRow_comp_columnOp_apply`. -/
+@[simps! apply]
+def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
+    (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k) where
+  toFun S := Function.update S v (S v + S a)
+  invFun S := Function.update S v (S v - S a)
+  map_add' S T := by
+    refine funext fun x => ?_
+    rcases eq_or_ne x v with rfl | hx
+    · simp only [Function.update_self, Pi.add_apply]; abel
+    · simp only [Function.update_of_ne hx, Pi.add_apply]
+  map_smul' c S := by
+    refine funext fun x => ?_
+    rcases eq_or_ne x v with rfl | hx
+    · simp only [Function.update_self, Pi.smul_apply, RingHom.id_apply, smul_add]
+    · simp only [Function.update_of_ne hx, Pi.smul_apply, RingHom.id_apply]
+  left_inv S := by
+    refine funext fun x => ?_
+    simp only
+    rcases eq_or_ne x v with rfl | hx
+    · rw [Function.update_self, Function.update_self, Function.update_of_ne hva.symm,
+        add_sub_cancel_right]
+    · rw [Function.update_of_ne hx, Function.update_of_ne hx]
+  right_inv S := by
+    refine funext fun x => ?_
+    simp only
+    rcases eq_or_ne x v with rfl | hx
+    · rw [Function.update_self, Function.update_self, Function.update_of_ne hva.symm,
+        sub_add_cancel]
+    · rw [Function.update_of_ne hx, Function.update_of_ne hx]
+
+/-- **The candidate row becomes pure `v`-column in the operated frame** (KT eqs.~(6.14)–(6.16),
+the eq.~(6.28) vanishing; Phase 22e). Precomposing the transported candidate row `hingeRow v a ρ`
+of `R(G, p_1)` — supported on *both* body `v`'s and body `a`'s screw columns, with
+`(hingeRow v a ρ) S = ρ(S v − S a)` — with the column operation `Φ = columnOp hva`
+(`col_a += col_v`) reads `Φ S` at `v` as `S v + S a` and at `a` as `S a` (since `v ≠ a`), so
+`(hingeRow v a ρ)(Φ S) = ρ((S v + S a) − S a) = ρ(S v)`: the `a`-column contribution cancels and
+the row depends only on `v`'s column. This is KT's mechanism for the candidate-completion
+vanishing — *not* the per-edge seam plus eq.~(6.43) — and is exactly the off-`v` vanishing
+hypothesis `dualMap_eq_comp_single_proj_of_vanish_off` consumes (`S v = 0 ⟹ ρ(S v) = 0`). -/
+theorem hingeRow_comp_columnOp_apply [DecidableEq α] {v a : α} (hva : v ≠ a)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) (S : α → ScrewSpace k) :
+    hingeRow (k := k) (α := α) v a ρ (columnOp (k := k) hva S) = ρ (S v) := by
+  rw [hingeRow_apply, columnOp_apply, columnOp_apply, Function.update_self,
+    Function.update_of_ne hva.symm, add_sub_cancel_right]
+
+/-- **The operated candidate row vanishes off `v`'s column** (KT eq.~(6.28); Phase 22e). Composing
+the candidate row `hingeRow v a ρ` with the column operation `Φ = columnOp hva` gives a functional
+on `α → ScrewSpace k` that kills every assignment supported off body `v`: by
+`hingeRow_comp_columnOp_apply`, `(hingeRow v a ρ ∘ₗ Φ) S = ρ(S v)`, which is `ρ 0 = 0` whenever
+`S v = 0`. Combined with `dualMap_eq_comp_single_proj_of_vanish_off`, this is the certificate that
+in the column-operated frame the candidate row is a *pure `v`-column* row — the formal content of
+KT eqs.~(6.27)–(6.28) and the missing structural input the candidate-completion needs. -/
+theorem hingeRow_comp_columnOp_vanish_off [DecidableEq α] {v a : α} (hva : v ≠ a)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) (S : α → ScrewSpace k) (hS : S v = 0) :
+    hingeRow (k := k) (α := α) v a ρ (columnOp (k := k) hva S) = 0 := by
+  rw [hingeRow_comp_columnOp_apply hva ρ S, hS, map_zero]
+
 /-- **The star independence bridge: rows from distinct hinges at a common body are jointly
 independent** (`def:rigidity-matrix`, the Case-I cross-hinge `hindep` step). Fix a body `v` and a
 family of distinct other endpoints `w : J → α` (`hw` injective, `hwv` each `w j ≠ v`) — a *star*

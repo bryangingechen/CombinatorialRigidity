@@ -2236,12 +2236,14 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Don't retry:** the seam-only / eq.-(6.43) route for the candidate-row vanishing. The fix is
   to model the column-operation automorphism `Φ` and restate the node (and the downstream
   pin-block + `lem:case-II-realization`) in the column-operated frame (rank is column-op-inv).
-- **Status:** BLOCKED; node re-scoped to the column-op reroute (`notes/Phase22e.md` *Current
-  state* / *Blockers* / *Hand-off*; `case-iii.tex` caveat + preamble corrected). Standing lesson:
-  reuse `DESIGN.md` *Constructibility recon before scheduling a producer build* (second half — the
-  arithmetic) plus this sharpening: **also confirm the geometric/linear-algebra *mechanism* the
-  source uses (e.g. a column op) is reproduced, not elided** — a count that closes over the wrong
-  mechanism is the same trap as Phase 22a's structure mismatch.
+- **Status:** RESOLVED. The column op is now modelled (`BodyHingeFramework.columnOp` +
+  `hingeRow_comp_columnOp_*`, `RigidityMatrix.lean`; blueprint `lem:case-III-columnop`, green); the
+  candidate-row node (`lem:case-III-candidate-row`) stays red over the remaining `w`-assembly, but
+  the vanishing mechanism is now correctly the column op (`notes/Phase22e.md` *Decisions*).
+  Standing lesson: reuse `DESIGN.md` *Constructibility recon before scheduling a producer build*
+  (second half — the arithmetic) plus this sharpening: **also confirm the geometric/linear-algebra
+  *mechanism* the source uses (e.g. a column op) is reproduced, not elided** — a count that closes
+  over the wrong mechanism is the same trap as Phase 22a's structure mismatch.
 
 ### [process][blueprint] Phase 22c open — superseded-route rot survived in *red* blueprint nodes (a live node's proof routing through a struck dead-end)
 - **Where it bit:** opening Phase 22c, the live target nodes

@@ -260,12 +260,15 @@ column-reduced (add column $v$ to column $a$), produces a row $w$ of $R(G, p_1)$
 $V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)). The eqs.~(6.24)--(6.25) decomposition
 of the redundant row (\cref{lem:case-III-redundant-decomposition}, green), the per-edge seam
 identity (\cref{lem:case-III-seam}, green), and the pure-$v$-column characterization of such a
-row (\cref{lem:case-III-vanish-off-column}, green) are in place; the eq.~(6.27)--(6.28) transport
-\emph{plus column operation} --- which a Phase~22e recon found load-bearing for the vanishing (the
-transported row $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ and
-$a$, so the column op, not the seam alone, is what makes its $V \setminus \{v\}$ part zero; see the
-caveat in \cref{lem:case-III-candidate-row}'s proof) --- remains the open crux. The $a$-column-block
-vanishing (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$ case), not the
+row (\cref{lem:case-III-vanish-off-column}, green) are in place, as is the column operation $\Phi$
+itself: a Phase~22e recon found it load-bearing for the vanishing --- the transported row
+$w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ and $a$, so the column
+op, not the seam alone, is what makes its $V \setminus \{v\}$ part zero --- and
+\cref{lem:case-III-columnop} now supplies $\Phi$ (the $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$
+change-of-variables automorphism) together with the fact that $w \circ \Phi$ is pure $v$-column.
+What remains open in \cref{lem:case-III-candidate-row} is assembling the transported combination
+into $w$ and threading the operated row to the eq.~(6.29) pin-block. The $a$-column-block vanishing
+(\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$ case), not the
 candidate-row input.
 
 \begin{lemma}[A rigidity row vanishing off $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
@@ -288,6 +291,39 @@ candidate-row input.
   summand reads $0$ at $v$, so $f$ kills it by hypothesis, leaving
   $f S = f(\mathrm{single}_v(S v)) = (f \circ \mathrm{single}_v)(S v)$, which is
   exactly $((f \circ \mathrm{single}_v) \circ \mathrm{proj}_v)\,S$.
+\end{proof}
+
+\begin{lemma}[The column operation $\Phi$: the candidate row is pure $v$-column in the operated frame; KT eqs.\ (6.14)--(6.16)]
+  \label{lem:case-III-columnop}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.columnOp,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_columnOp_apply,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_columnOp_vanish_off}
+  \leanok
+  \uses{lem:case-III-vanish-off-column}
+  KT's column operation $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ (eqs.~(6.14)--(6.15)), the
+  device that makes the transported candidate row vanish off $v$. Since the rigidity rows read
+  relative screws $S_u - S_w$, the operation is modelled by its dual substitution on the screw
+  assignment $\alpha \to \mathrm{ScrewSpace}\,k$:
+  $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$, a linear automorphism for $v \neq a$ (inverse
+  $\Phi^{-1}(S) = \mathrm{update}\ S\ v\ (S_v - S_a)$). It is rank-preserving (precomposition with a
+  linear equivalence), so it certifies the candidate row's vanishing without changing any rank. The
+  transported candidate row $w = \mathrm{hingeRow}\ v\ a\ \rho$ is supported on \emph{both} columns
+  $v$ and $a$, with $w(S) = \rho(S_v - S_a)$; precomposing with $\Phi$ reads $\Phi(S)$ as $S_v + S_a$
+  at $v$ and $S_a$ at $a$ (using $v \neq a$), so
+  \[ w(\Phi(S)) = \rho\bigl((S_v + S_a) - S_a\bigr) = \rho(S_v), \]
+  the $a$-column contribution cancels. In particular $w(\Phi(S)) = 0$ whenever $S_v = 0$, which is
+  exactly the off-$v$ vanishing hypothesis \cref{lem:case-III-vanish-off-column} consumes: $w \circ
+  \Phi$ is a pure $v$-column row. This --- KT's eqs.~(6.14)--(6.16) column reduction --- is the
+  vanishing mechanism, \emph{not} the per-edge seam plus eq.~(6.43).
+\end{lemma}
+\begin{proof}
+  \leanok
+  $\Phi$ is a linear equivalence by direct verification of additivity, homogeneity, and the two
+  inverse identities (each a case split on whether the coordinate is $v$; the off-$v$ coordinates are
+  untouched, the $v$-coordinate cancels by $(S_v + S_a) - S_a = S_v$ and $(S_v - S_a) + S_a = S_v$,
+  using $v \neq a$ so $\Phi(S)_a = S_a$). The evaluation $w(\Phi(S)) = \rho(S_v)$ is then immediate
+  from $\Phi(S)_v = S_v + S_a$, $\Phi(S)_a = S_a$, and the cancellation; the $S_v = 0$ case
+  substitutes $\rho(0) = 0$.
 \end{proof}
 
 \begin{lemma}[The seam identity: an edge's row depends only on the seed at its endpoints; KT eq.\ (6.26)]
@@ -372,7 +408,7 @@ candidate-row input.
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-vanish-off-column, lem:case-III-seam,
+        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
         lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
@@ -391,24 +427,22 @@ candidate-row input.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-vanish-off-column, lem:case-III-seam}
-  \emph{The open crux, deferred within Phase~22 (rerouted; see the caveat).} The eqs.~(6.24)--(6.25)
-  decomposition (\cref{lem:case-III-redundant-decomposition}) and the per-edge seam identity
-  (\cref{lem:case-III-seam}) are green. What stays open is the eq.~(6.27) transport and the proof
-  that the transported row's $V \setminus \{v\}$ part vanishes. \textbf{Structural caveat
-  (Phase 22e finding, corrected).} The vanishing is \emph{not} from the per-edge seam plus the
-  $a$-column-block fact (\cref{lem:case-III-acolumn-zero}): substituting the eqs.~(6.24)--(6.25)
-  decomposition with $g = w_{\mathrm{Gv}} + w_{\mathrm{Other}} - r\,i^* = 0$, the transported row
-  collapses to $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ with
-  $\rho_g = \sum_j \lambda_{(ab)j} r_j \neq 0$ --- supported on \emph{both} columns $v$ and $a$,
-  with $w(S) = \rho_g(S_v - S_a)$, which is $-\rho_g(S_a) \neq 0$ on $S_v = 0$. KT's
-  $V \setminus \{v\}$-vanishing comes from the eqs.~(6.14)--(6.15) \emph{column operation}
-  $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ --- precomposing with the automorphism
-  $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$ gives $w(\Phi(S)) = \rho_g(S_v)$, pure $v$-column ---
-  \emph{not} from KT eq.~(6.43), which is a Claim~6.12 fact (\cref{lem:case-III-acolumn-zero} is
-  $g$'s $a$-column $= 0$, trivially $g = 0$, consumed in the $M_3$ case). The remaining build is to
-  model $\Phi$ as a change of variables, restate this lemma in the column-operated frame, and apply
-  \cref{lem:case-III-vanish-off-column} to certify $w \circ \Phi$ is a pure $v$-column row.
+        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam}
+  \emph{The open crux, deferred within Phase~22.} The eqs.~(6.24)--(6.25) decomposition
+  (\cref{lem:case-III-redundant-decomposition}), the per-edge seam identity
+  (\cref{lem:case-III-seam}), and the column operation $\Phi$ (\cref{lem:case-III-columnop}) are
+  green. Substituting the eqs.~(6.24)--(6.25) decomposition with $g = w_{\mathrm{Gv}} +
+  w_{\mathrm{Other}} - r\,i^* = 0$, the transported row collapses to
+  $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ with $\rho_g = \sum_j \lambda_{(ab)j} r_j \neq 0$ ---
+  supported on \emph{both} columns $v$ and $a$, with $w(S) = \rho_g(S_v - S_a)$, which is
+  $-\rho_g(S_a) \neq 0$ on $S_v = 0$. The $V \setminus \{v\}$-vanishing comes from the
+  eqs.~(6.14)--(6.15) \emph{column operation} $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$: by
+  \cref{lem:case-III-columnop}, precomposing with $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$
+  gives $w(\Phi(S)) = \rho_g(S_v)$, so $w \circ \Phi$ vanishes off $v$ and is pure $v$-column by
+  \cref{lem:case-III-vanish-off-column} --- \emph{not} from KT eq.~(6.43), which is a Claim~6.12 fact
+  (\cref{lem:case-III-acolumn-zero} is $g$'s $a$-column $= 0$, trivially $g = 0$, consumed in the
+  $M_3$ case). What stays open is assembling the transported combination into $w$ (the eq.~(6.27)
+  transport) and threading the operated row $w \circ \Phi$ to the eq.~(6.29) pin-block.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -420,7 +454,7 @@ candidate-row input.
         lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
         lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
         lem:case-III-acolumn-zero, lem:case-III-candidate-row,
-        lem:case-III-vanish-off-column, lem:case-III-seam}
+        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
