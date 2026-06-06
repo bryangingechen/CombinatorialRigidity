@@ -780,6 +780,80 @@ theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn
     funext i; cases i <;> rfl
   rw [hfun]; exact hnewpinaug
 
+/-- **The candidate-completion full block assembly: the operated augment transports back to the
+original `D(|V|−1)`-size family** (`lem:case-III-candidate-row`, KT eqs.~(6.14)–(6.16), (6.29);
+Katoh–Tanigawa 2011 §6.4.1, the candidate-completion's column-operated block-triangular `+1`,
+Phase 22e). The producer that takes the stratum-1 brick's two blocks (`rn` the new `va`-block, `ro`
+the old split-off block) plus the candidate row `w = hingeRow v a ρ` (supported on *both* columns
+`v` and `a`) and assembles them into one linearly independent family
+`Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro` — the original (un-operated) rows of `R(G, p_1)`,
+the missing `+1` lifting the brick's `D(|V|−1) − 1` to full `D(|V|−1)`.
+
+The argument is KT's column operation `Φ = columnOp hva` (`col_a += col_v`, eqs.~(6.14)–(6.15)).
+Precomposing the whole family with `Φ` (a linear automorphism, hence preserving independence via the
+dual equivalence `Φ.dualMap`) turns it into the *operated* family
+`Sum.elim (Sum.elim (rn ·∘ₗ Φ) (w ∘ₗ Φ)) (ro ·∘ₗ Φ)`, in which the candidate row `w ∘ₗ Φ` is a
+**pure `v`-column** row (`hingeRow_comp_columnOp_vanish_off`, eq.~(6.28)): it joins the new block in
+the pin-a-body augment (`linearIndependent_sum_pinned_block_augment`) rather than needing the
+old-block vanishing. The old rows are unchanged by `Φ` *at the pin assignment* `update 0 v x` —
+since `Φ` only modifies column `v` and `Φ (update 0 v x) = update 0 v x` (using `v ≠ a`, so column
+`a` reads `0`), `(ro_j ∘ₗ Φ)(update 0 v x) = ro_j (update 0 v x) = 0` (`holdop` from `hold`); the
+new rows' `v`-column pins are unchanged. So the operated family meets the augment's hypotheses,
+with the eq.~(6.29) top-left `D × D` full rank `hnewpinaug` (the `va`-block's `D − 1` pinned rows
+plus the operated `w`'s `v`-column) the **conditional** = Claim~6.12 territory, passed through. The
+operated family's independence transports back through `Φ.dualMap` (injective) to give the original
+family's independence. -/
+theorem linearIndependent_sum_augment_candidateRow
+    [DecidableEq α] {v a : α} (hva : v ≠ a) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (hnewpinaug : LinearIndependent ℝ (Sum.elim
+      (fun i : ιn =>
+        ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      (fun _ : Unit =>
+        ((hingeRow (k := k) (α := α) v a ρ).comp (columnOp (k := k) hva).toLinearMap).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))))
+    (holdindep : LinearIndependent ℝ ro) :
+    LinearIndependent ℝ
+      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a ρ)) ro) := by
+  set Φ := columnOp (k := k) hva with hΦ
+  have hker : LinearMap.ker Φ.dualMap.toLinearMap = ⊥ :=
+    LinearMap.ker_eq_bot_of_injective Φ.dualMap.injective
+  -- The operated old rows vanish at the pin assignment: `Φ (update 0 v x) = update 0 v x` (it only
+  -- changes column `v`, to `x + 0 = x`, using `v ≠ a`), so `(ro_j ∘ Φ)(update 0 v x) = 0`.
+  have hΦpin : ∀ x : ScrewSpace k, Φ (Function.update (0 : α → ScrewSpace k) v x)
+      = Function.update (0 : α → ScrewSpace k) v x := by
+    intro x
+    funext y
+    rcases eq_or_ne y v with rfl | hy
+    · rw [hΦ, columnOp_apply, Function.update_self, Function.update_self,
+        Function.update_of_ne hva.symm, Pi.zero_apply, add_zero]
+    · rw [hΦ, columnOp_apply, Function.update_of_ne hy, Function.update_of_ne hy]
+  have holdop : ∀ (j : ιo) (x : ScrewSpace k),
+      ((ro j).comp Φ.toLinearMap) (Function.update (0 : α → ScrewSpace k) v x) = 0 := by
+    intro j x
+    rw [LinearMap.comp_apply, LinearEquiv.coe_coe, hΦpin x, hold j x]
+  -- Assemble the *operated* augment: `w ∘ Φ` is the pure-`v`-column row, joining the new block.
+  have hop : LinearIndependent ℝ (Sum.elim
+      (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
+        (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap))
+      (fun j : ιo => (ro j).comp Φ.toLinearMap)) :=
+    linearIndependent_sum_pinned_block_augment (v := v) holdop hnewpinaug
+      (holdindep.map' Φ.dualMap.toLinearMap hker)
+  -- The operated family is `Φ.dualMap ∘ (original family)`; transport independence back through the
+  -- injective dual equivalence `Φ.dualMap` (`g ↦ g ∘ₗ Φ`).
+  have hcomp : (Sum.elim (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
+        (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap))
+      (fun j : ιo => (ro j).comp Φ.toLinearMap))
+      = Φ.dualMap ∘
+        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a ρ)) ro) := by
+    funext i; rcases i with (i | i) | j <;> rfl
+  rw [hcomp] at hop
+  exact (Φ.dualMap.toLinearMap.linearIndependent_iff hker).1 hop
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,

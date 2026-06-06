@@ -678,7 +678,15 @@ housekeeping pass once their resolution is fully indexed.
   LinearIndependent R (e ∘ v) ↔ LinearIndependent R v` under
   `Mathlib/LinearAlgebra/LinearIndependent/`. Not mirrored this commit (single callsite;
   the two-line idiom is acceptable). If a 2nd callsite appears, mirror it.
-- **Status:** resolved (idiom recorded; mirror deferred to 2nd use).
+- **2nd callsite (Phase 22e, `linearIndependent_sum_augment_candidateRow`, dual side).** Same
+  shape on `Module.Dual`: the operated row family is `Φ.dualMap ∘ (original family)` for the
+  column-op `Φ : (α → ScrewSpace k) ≃ₗ …`. When `ker e = ⊥` is available *directly* (not just
+  `InjOn`), the cleaner one-liner is `e.toLinearMap.linearIndependent_iff hker` (mathlib's
+  `LinearMap.linearIndependent_iff`, `hker := ker_eq_bot_of_injective e.injective`) — no `InjOn`
+  detour. `LinearIndependent.map' e.toLinearMap hker` is the one-directional `→` companion. Still
+  deferring the `≃ₗ`-comp mirror (the `.toLinearMap … linearIndependent_iff hker` idiom is two
+  lines); the entry now has both the `InjOn` and the `ker = ⊥` forms.
+- **Status:** resolved (idiom recorded, both forms; mirror deferred — 2 callsites, both two-line).
 
 ### [resolved] `wedgeProd` of two `ιMulti_family` basis vectors → single `extensor`: `change` to surface the `extensor ∘ ofFinEmbEquiv.symm` form before `join_extensor`
 - **Where it bit:** `coe_wedgeProd_ιMulti_family` in `Molecular/Meet.lean` (Phase 21a

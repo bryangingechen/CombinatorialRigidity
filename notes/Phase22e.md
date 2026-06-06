@@ -4,7 +4,8 @@
 eq.-(6.28) blueprint node + `w` constructibility recon + `w` node-cut + the
 seam-identity build + the eqs.-(6.24)/(6.25) decomposition + the eq.-(6.43)
 `a`-block vanishing + the eqs.-(6.14)–(6.16) column-op device + the eq.-(6.29)
-conditional `D`-row block + the eq.-(6.27) per-row transport collapse landed).
+conditional `D`-row block + the eq.-(6.27) per-row transport collapse + the
+candidate-row combination-level threading + the full block-assembly producer landed).
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -18,34 +19,36 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: feed the operated candidate row to the eq.-(6.29) pin-block — the full
-`D(|V|−1)`-family assembly.** This commit landed the candidate-row *combination-level threading* core
-(`exists_candidate_row_eq612`, `CaseI.lean`): the genuine remaining content of
-`lem:case-III-candidate-row`'s row construction is now green. What remains for the full producer:
-assemble the operated row `w ∘ Φ` (pure-`v`-column, via `comp_columnOp_eq_comp_single_proj`) with the
-stratum-1 brick's `va`-block + old block (`case_II_placement_eq612`) into a `D(|V|−1)`-size independent
-rigidity-row family, via `linearIndependent_sum_pinned_block_augment` (count
-`((D−1)+1)+D(|V_v|−1)=D(|V|−1)`). The augment's `hnewpinaug` (the eq.-(6.29) top-left `D×D` full rank,
-the augmented pinned new block) is the **conditional** = part of Claim-6.12 territory; the assembly can
-pass it as a green-modulo hypothesis. **Recurring defeq-timeout trap (*Blockers*)** bites in the
-`ofNormals` graph-swap of the assembly (transport the old/new blocks onto `G`). After that: Claim 6.12,
-then flip `lem:case-II-realization`.
+**Next concrete commit: Claim 6.12 — the eq.-(6.29) `D × D` conditional discharge (the `D`-candidate
+extensor-span disjunction).** This commit landed the **full block-assembly producer**
+(`linearIndependent_sum_augment_candidateRow`, `RigidityMatrix.lean`): `lem:case-III-candidate-row` is
+now green-**modulo** the eq.-(6.29) top-left `D × D` full rank (`hnewpinaug`), tracked as the new red
+node `lem:case-III-eq629-conditional`. The candidate-completion section is therefore complete *modulo
+that one conditional*. What remains: **Claim 6.12** — build `D` candidate realizations, force them all
+to test the same `r ∈ ℝ⁶` (degree-2 eq. (6.44)), and discharge via the green Phase-17 Lemma 2.1
+(`omitTwoExtensor_linearIndependent`), choosing the candidate `ρ` for which the eq.-(6.29) block is
+full rank — exactly what `lem:case-III-eq629-conditional` needs. After that: flip
+`lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
 
-**Landed this commit (the candidate-row combination-level threading core):**
-- `PanelHingeFramework.exists_candidate_row_eq612` (`CaseI.lean`, axiom-clean): the combination-level
-  producer of the candidate row. Input = the redundant-`ab`-row decomposition's *common* element
-  `wGv` (the `G_v`-row part = `r i* − wOther`), which is an `ab`-block element. By
-  `span_panelRow_edge_eq` the `ab`-block is the `hingeRow a b`-image of the hinge-row block
-  `r(p(e₀)) = (span C)^⊥`, so `wGv = hingeRow a b ρ` for some `ρ ∈ r(p(e₀))`. The eq.-(6.12) shear
-  makes `ρ` a hinge-row-block functional of `R(G,q₀)`'s `e_b = vb`-hinge too, so `hingeRow v b ρ` (the
-  transported `(vb)i*`-row) is a genuine rigidity row of `R(G,q₀)`; its collapse
-  `hingeRow v b ρ − wGv = hingeRow v a ρ` (= the candidate row `w`, via `hingeRow_sub_hingeRow_eq`)
-  is the eq.-(6.27) transport at the combination level. No graph/rigidity defeq in the statement —
-  the row is pure functional algebra, sidestepping the `ofNormals` trap (*Blockers*).
-- Blueprint: new green leaf node `lem:case-III-candidate-row-construction` (pins the lemma); wired into
-  `lem:case-III-candidate-row`'s + `lem:case-III`'s `\uses`; the candidate-completion section prose +
-  the (still-red) `lem:case-III-candidate-row` proof updated — "what stays open" is now just feeding
-  the operated row to the eq.-(6.29) pin-block (the full `D(|V|−1)`-family assembly).
+**Landed this commit (the full block-assembly producer):**
+- `BodyHingeFramework.linearIndependent_sum_augment_candidateRow` (`RigidityMatrix.lean`,
+  axiom-clean): the candidate-completion assembly. Takes the stratum-1 brick's two blocks (`rn` the
+  `va`-block, `ro` the old split-off block, with `hold`/`holdindep`) + the candidate row
+  `w = hingeRow v a ρ`, and produces the original family `Sum.elim (Sum.elim rn (fun _ => w)) ro`
+  independent, *conditional on* `hnewpinaug` (eq. (6.29) top-left `D × D` full rank). **Key:**
+  precompose the whole family with the column-op `Φ` (the dual equivalence `Φ.dualMap`, preserving
+  LI) → the operated family, in which `w ∘ Φ` is pure-`v`-column and joins the new block in
+  `linearIndependent_sum_pinned_block_augment`; the old block is *unchanged at the pin* because
+  `Φ (update 0 v x) = update 0 v x` (only column `v` moves, `v ≠ a`), so `hold` transfers verbatim.
+  Then transport the operated independence back through `Φ.dualMap` (injective). **Sidesteps the
+  `ofNormals` defeq-timeout (*Blockers*) entirely** — abstract block functionals, no graph in the
+  statement; the brick-block extraction (`rn`/`ro` from `case_II_placement_eq612`) is the consumer's
+  job, deferred to the `d=3` assembly.
+- Blueprint: `lem:case-III-candidate-row` pinned (`\lean` + `\leanok`, green-modulo); new red node
+  `lem:case-III-eq629-conditional` (the eq.-(6.29) `D × D` conditional, Claim-6.12 territory) added
+  and `\uses`'d by both `lem:case-III-candidate-row` and `lem:case-III` (legitimate green-modulo,
+  honesty-gate case (b)). Candidate-completion section prose + `lem:case-III` prose updated: the
+  assembly is in place, only the eq.-(6.29) conditional + Claim 6.12 remain.
 
 ## Red-node consistency gate — recon verdict (2026-06-06, opening commit)
 
@@ -135,48 +138,52 @@ hypothesis, no dead-end on the live route).
   produce `ρ` with `wGv = hingeRow a b ρ`, certify `hingeRow v b ρ ∈ rigidityRows R(G,q₀)`, and the
   collapse `hingeRow v b ρ − wGv = hingeRow v a ρ` (= candidate row `w`). Blueprint node
   `lem:case-III-candidate-row-construction` (green).
-- [ ] **The candidate-row producer proper / full block assembly** — feed the operated row `w ∘ Φ`
-  (`comp_columnOp_eq_comp_single_proj`) to `linearIndependent_sum_pinned_block_augment`, assembling
-  with `case_II_placement_eq612`'s `va`-block + old block into the `D(|V|−1)`-size family. Passes the
-  eq.-(6.29) `hnewpinaug` (top-left `D×D` full rank) as a Claim-6.12 conditional. **Next concrete
-  commit** (gives `lem:case-III-candidate-row` its `\lean` pin + `\leanok`).
-- [ ] **Claim 6.12** — the `D`-candidate extensor-span disjunction (de-risked: bottoms
+- [x] **The candidate-row producer proper / full block assembly** —
+  `linearIndependent_sum_augment_candidateRow` (`RigidityMatrix.lean`, axiom-clean): the operated
+  row `w ∘ Φ` joins the augment, transported back through `Φ.dualMap`; `Sum.elim (Sum.elim rn w) ro`
+  independent of size `D(|V|−1)`, conditional on `hnewpinaug` (eq.-(6.29) `D×D`). **Blueprint node
+  `lem:case-III-candidate-row` pinned + `\leanok`** (green-modulo the new red
+  `lem:case-III-eq629-conditional`).
+- [ ] **Claim 6.12** — the `D`-candidate extensor-span disjunction; discharges
+  `lem:case-III-eq629-conditional` (the eq.-(6.29) `D×D` full rank). De-risked: bottoms
   on the green Phase-17 Lemma 2.1 `omitTwoExtensor_linearIndependent`; the degree-2
   eq. (6.44) forces all candidates to test the same `r ∈ ℝ⁶`, which ⟂ all `d+1`
-  generic-panel extensors must vanish — contradiction, picking the full-rank candidate).
+  generic-panel extensors must vanish — contradiction, picking the full-rank candidate.
+  **Next concrete commit.** (The disjunction blueprint node is still to add.)
 - [ ] **Flip** `lem:case-II-realization` (+ the `d=3` half of `lem:case-III`) green
-  once the candidate-row producer lands. Candidate-completion subsection nodes
-  (`lem:case-III-vanish-off-column`, `-columnop`, `-seam`, `-redundant-decomposition`,
-  `-acolumn-zero`, `-conditional-block`, `-transport-collapse` green;
-  `lem:case-III-candidate-row` red, needs the producer) are in `case-iii.tex`; the Claim-6.12
-  disjunction node is still to add.
+  once Claim 6.12 discharges `lem:case-III-eq629-conditional`. Candidate-completion subsection
+  nodes are all green (`lem:case-III-candidate-row` green-modulo the eq.-(6.29) conditional).
 
 ## Blockers / open questions
 
 - **Recurring Lean trap (carry from 22a–d, FRICTION):** heavy
   `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps can
   `isDefEq`-timeout — make the two frameworks *syntactically* equal before `convert`;
-  transfer rigidity via a `mem_infinitesimalMotions` round-trip. Bites in the
-  candidate-completion assembly.
+  transfer rigidity via a `mem_infinitesimalMotions` round-trip. The 22e producers
+  are all graph-free (abstract block functionals), so the trap does **not** bite 22e;
+  it bites the **`d=3` assembly** (the consumer that extracts `rn`/`ro` from
+  `case_II_placement_eq612` and wires the real graph data).
 
 ## Hand-off / next phase
 
-**Next concrete commit: the candidate-row producer proper / full block assembly** —
-`lem:case-III-candidate-row`'s `\lean` pin + `\leanok`. The combination-level threading core is now
-green (`exists_candidate_row_eq612`): it produces the candidate row `w = hingeRow v a ρ` and certifies
-the transported `(vb)i*`-row `hingeRow v b ρ` is a rigidity row of `R(G,q₀)`. What remains is the
-*assembly*: operate `w` by `columnOp` to its pure-`v`-column form (`comp_columnOp_eq_comp_single_proj`),
-then feed it to `linearIndependent_sum_pinned_block_augment` alongside `case_II_placement_eq612`'s
-stratum-1 `va`-block (the N7b-1 new block) + old block, for the count
-`((D−1)+1)+D(|V_v|−1)=D(|V|−1)`. The augment's `hnewpinaug` (eq.-(6.29) top-left `D×D` full rank, the
-augmented pinned new block — `va`-block's `D−1` pinned rows + `w`'s `v`-column) is the **conditional**,
-Claim-6.12 territory; pass it as a green-modulo hypothesis (the assembly node stays green-modulo until
-6.12 discharges it). **Recurring trap (Blockers):** the `ofNormals`/`withGraph` graph-swap when
-transporting the old/new blocks onto `G` — make the two frameworks syntactically equal before
-`convert`; transfer rigidity via a `mem_infinitesimalMotions` round-trip.
+**Next concrete commit: Claim 6.12 — discharge the eq.-(6.29) conditional
+(`lem:case-III-eq629-conditional`).** The candidate-completion is complete modulo this one node: the
+full assembly `linearIndependent_sum_augment_candidateRow` produces the `D(|V|−1)`-size family
+conditional on the eq.-(6.29) top-left `D × D` block being full rank (the `D−1` pinned `va`-rows +
+the operated `w`'s `v`-column, all LI on body `v`'s `ScrewSpace k`). Claim 6.12 builds `D` candidate
+realizations (one per choice of `ρ` / candidate normal); the degree-2 condition (eq. (6.44)) forces
+all candidates to test the *same* `r ∈ ℝ⁶`, which by Lemma 2.1 (`omitTwoExtensor_linearIndependent`,
+green Phase 17) must vanish if it ⟂ all `d+1` generic-panel extensors — contradiction, so some
+candidate's block is full rank. Add the disjunction blueprint node, formalize, then this discharges
+`lem:case-III-eq629-conditional`.
 
-The follow-on: Claim 6.12, then flip `lem:case-II-realization` + the `d=3` half of `lem:case-III`
-green.
+The follow-on: flip `lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
+
+**Note (the brick-block extraction is deferred to the `d=3` assembly, not 22e).** The assembly
+producer takes `rn`/`ro` as abstract block functionals; the consumer (the unlettered `d=3` assembly
+after 22e) extracts them from `case_II_placement_eq612` (which packages a `Set`-family) and wires the
+augment with the real graph data — that is where the **recurring `ofNormals` defeq-timeout trap
+(Blockers)** bites, *not* in 22e (the 22e producer is graph-free by design).
 
 Downstream (still deferred, unlettered): the `d=3` assembly
 (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring);
@@ -187,6 +194,16 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **The full block-assembly producer — column-op transport, not block re-derivation (2026-06-06).**
+  Landed `BodyHingeFramework.linearIndependent_sum_augment_candidateRow` (`RigidityMatrix.lean`,
+  axiom-clean) pinning `lem:case-III-candidate-row` (green-modulo). Key move: precompose the *whole*
+  family `rn⊔{w}⊔ro` with `Φ` via the dual equivalence `Φ.dualMap` (LI-preserving), run the augment
+  on the operated family (`w ∘ Φ` pure-`v`-column joins the new block), transport back through
+  `Φ.dualMap` (injective) — no operated-frame block re-derivation. `Φ` fixes the pin `update 0 v x`
+  (`v ≠ a`), so the brick's `hold` transfers verbatim; graph-free statement sidesteps the `ofNormals`
+  trap. `hnewpinaug` (eq.-(6.29) `D×D`) is the green-modulo conditional → new red node
+  `lem:case-III-eq629-conditional` (honesty-gate case (b)). BlueprintExposition: folds into the `(c)`
+  candidate-row ledger entry at phase close.
 - **The candidate-row combination-level threading core (2026-06-06).** Landed
   `PanelHingeFramework.exists_candidate_row_eq612` (`CaseI.lean`, axiom-clean). Key simplification over
   the planned route: the redundant-row decomposition's *common* element `wGv` (the `G_v`-row part
