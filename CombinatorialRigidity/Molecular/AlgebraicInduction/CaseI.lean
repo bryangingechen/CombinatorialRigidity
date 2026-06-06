@@ -2944,4 +2944,55 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq
     omega
   exact Fab.exists_redundant_panelRow_of_edge_of_finrank_lt huv hne₀ W hgap
 
+/-- **Claim 6.11, eqs. (6.24)–(6.25): the redundant `ab`-row as an explicit vanishing combination**
+(`lem:case-III-candidate-row` infra, the candidate-completion's eq. (6.24)/(6.25) extraction;
+Katoh–Tanigawa 2011 §6.4.1, eqs. (6.24)–(6.25), Phase 22e). The functional-identity form of KT
+Claim 6.11 (eq. (6.23)) that the candidate-completion row operation (eqs. (6.26)–(6.28)) consumes.
+Where `exists_redundant_panelRow_ab_of_finrank_eq` (eq. (6.23)) delivers the *membership*
+`r i^* ∈ span(R(G_v, q)-rows) ⊔ span(r '' {j ≠ i^*})` — the `(D − 1)` independent `ab`-rows `r`
+spanning the `ab`-block, one of them redundant modulo the `G_v`-rows and the rest — this lemma
+unwinds that membership (`Submodule.mem_sup`) into KT's eq. (6.24): the redundant `ab`-row `r i^*`
+*equals* a `G_v`-row element `wGv ∈ span(R(G_v, q)-rows)` plus an explicit combination
+`wOther ∈ span(r '' {j ≠ i^*})` of the *other* `ab`-rows. Rearranged, this is the vanishing
+combination
+\[ r\,i^* \;-\; w_{\mathrm{Other}} \;-\; w_{\mathrm{Gv}} \;=\; 0, \]
+i.e.\ eq. (6.24) `Σ_j λ_{(ab)j} R(G_v^{ab}, q; (ab)j) + Σ_{e, j} λ_{ej} R(G_v^{ab}, q; ej) = 0`
+with the `(ab)i^*`-coefficient `λ_{(ab)i^*} = 1` (eq. (6.25)) — the `r i^*` term carries coefficient
+`1`, `wOther` the other `ab`-coefficients `λ_{(ab)j}` (`j ≠ i^*`), and `wGv` the `E_v`-coefficients
+`λ_{ej}`. This decomposition (`r i^*` = `G_v`-part + other-`ab`-part) is the precise input KT
+transport from `R(G_v^{ab}, q)` up to `R(G, p_1)` across the seam (eqs. (6.26)–(6.27)) to build the
+pure-`v`-column row `w` of eq. (6.28); the transport + the eq. (6.43) `a`-block-vanishing of the
+combination remain the open crux of `lem:case-III-candidate-row`. -/
+theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition
+    [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    {m k' : ℕ} (hk' : k' ≤ screwDim k - 2)
+    (h618 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1))
+    (h622 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1) - k') :
+    ∃ (r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k)),
+      LinearIndependent ℝ r ∧
+      Submodule.span ℝ (Set.range r) = Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, p.1, p.2))) ∧
+      ∃ (i : Fin (screwDim k - 1))
+        (wGv wOther : Module.Dual ℝ (α → ScrewSpace k)),
+        wGv ∈ Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∧
+        wOther ∈ Submodule.span ℝ (r '' {j | j ≠ i}) ∧
+        r i = wGv + wOther := by
+  obtain ⟨r, hr, hrspan, i, hmem⟩ :=
+    BodyHingeFramework.exists_redundant_panelRow_ab_of_finrank_eq hD huv hne₀ he₀ hle hsplit hk'
+      h618 h622
+  obtain ⟨wGv, hwGv, wOther, hwOther, hsum⟩ := Submodule.mem_sup.1 hmem
+  exact ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum.symm⟩
+
 end CombinatorialRigidity.Molecular

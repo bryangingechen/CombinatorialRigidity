@@ -207,6 +207,17 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   not Claim 6.11 but the **candidate-completion** that converts its redundant `ab`-row into
   the missing `+1` full-rank row (eq. (6.24)→(6.29)) + the Claim-6.12 disjunction. Pointer:
   `notes/Phase22d.md`; ROADMAP §22d; KT pp. 684–685, eq. (6.22) + footnote 6.
+- **`lem:case-III-candidate-row` — the eq. (6.27) transport's off-`v` vanishing needs eq.
+  (6.43)** — [pending] **(a)** (Phase 22e capture). **Stable insight:** KT eq. (6.27)→(6.28)
+  claims the transported row `w`'s `V∖{v}` part vanishes "from the seam + eq. (6.24)", but the
+  per-edge seam (`lem:case-III-seam`, literal functional equality) only covers the `E_v`-rows
+  (endpoints avoid `v`). The `(vb)j`-row (`hingeRow v b r`) and the `(ab)j`-row (`hingeRow a b r`)
+  restricted to `V∖{v}` differ by the `a`-column block `r_j(·a)` — the `(vb)`-hinge is `0` in
+  column `a`. So `w`'s `V∖{v}` part is the eq.-(6.24) sum (= 0) *minus* `Σⱼ λ_{(ab)j} r_j(·a)`,
+  the `a`-block of eq. (6.24), which vanishes *only by* KT eq. (6.43) (the `a`-block of the
+  vanishing combination is itself `0`). The off-`v` vanishing is genuinely two facts, not one.
+  Pointer: `notes/Phase22e.md` *Decisions*; KT p. 686 (eq. 6.43); `lem:case-III-candidate-row`
+  proof caveat.
 - **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
   **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
