@@ -253,19 +253,20 @@ missing \texorpdfstring{$+1$}{+1} (KT eqs.\ (6.24)--(6.29))}
 
 Claim~6.11 (\cref{lem:case-III-claim-6-11}) gives a redundant $ab$-row of
 $R(G_v^{ab}, q)$; the candidate-completion turns it into the full-rank $D$-th row
-of the stratum-1 brick. KT's mechanism (eqs.~(6.24)--(6.29)) is a single
-fundamental row operation: the redundant row's linear combination, transported
-from $R(G_v^{ab}, q)$ up to $R(G, p_1)$ across the seam
-$R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$, produces a row
-$w$ of $R(G, p_1)$ whose $V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)).
-The eqs.~(6.24)--(6.25) decomposition of the redundant row
-(\cref{lem:case-III-redundant-decomposition}, green), its eq.~(6.43) $a$-column-block vanishing
-(\cref{lem:case-III-acolumn-zero}, green), the per-edge seam identity
-(\cref{lem:case-III-seam}, green), and the pure-$v$-column characterization of such a row
-(\cref{lem:case-III-vanish-off-column}, green) are all in place; the eq.~(6.27) transport of the
-combination across the seam --- assembling these into the row $w$ and reconciling the
-$(vb)j \leftrightarrow (ab)j$ correspondence via the eq.~(6.43) $a$-block-vanishing (see the caveat
-in \cref{lem:case-III-candidate-row}'s proof) --- remains the open crux.
+of the stratum-1 brick. KT's mechanism (eqs.~(6.24)--(6.29)) is a single fundamental
+row operation \emph{followed by the eqs.~(6.14)--(6.15) column operation}: the redundant
+row's linear combination, transported from $R(G_v^{ab}, q)$ up to $R(G, p_1)$ and then
+column-reduced (add column $v$ to column $a$), produces a row $w$ of $R(G, p_1)$ whose
+$V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)). The eqs.~(6.24)--(6.25) decomposition
+of the redundant row (\cref{lem:case-III-redundant-decomposition}, green), the per-edge seam
+identity (\cref{lem:case-III-seam}, green), and the pure-$v$-column characterization of such a
+row (\cref{lem:case-III-vanish-off-column}, green) are in place; the eq.~(6.27)--(6.28) transport
+\emph{plus column operation} --- which a Phase~22e recon found load-bearing for the vanishing (the
+transported row $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ and
+$a$, so the column op, not the seam alone, is what makes its $V \setminus \{v\}$ part zero; see the
+caveat in \cref{lem:case-III-candidate-row}'s proof) --- remains the open crux. The $a$-column-block
+vanishing (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$ case), not the
+candidate-row input.
 
 \begin{lemma}[A rigidity row vanishing off $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
   \label{lem:case-III-vanish-off-column}
@@ -371,42 +372,43 @@ in \cref{lem:case-III-candidate-row}'s proof) --- remains the open crux.
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-acolumn-zero, lem:case-III-vanish-off-column, lem:case-III-seam,
+        lem:case-III-vanish-off-column, lem:case-III-seam,
         lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
   decomposed by \cref{lem:case-III-redundant-decomposition} (eqs.~(6.24)--(6.25)) into a $G_v$-row
   part and an other-$ab$-row part with $\lambda_{(ab)i^*} = 1$, is transported up to $R(G, p_1)$
   by the eq.~(6.26) row correspondence: the $(ab)j$-rows of $R(G_v^{ab}, q)$ map to the $(vb)j$-rows
-  of $R(G, p_1)$ (KT eq.~(6.16)) and the $E_v$-rows correspond directly. The resulting row
+  of $R(G, p_1)$ (KT eq.~(6.16)) and the $E_v$-rows correspond directly. After the KT eqs.~(6.14)--(6.15)
+  \emph{column operation} (add column $v$ to column $a$), the resulting row
   $w = \sum_{1 \le j \le 5} \lambda_{(ab)j} R(G, p_1; (vb)j) + \sum_{e \in E_v, j}
-  \lambda_{e_j} R(G, p_1; e_j)$ (eq.~(6.27)) lies in $\operatorname{span}(R(G, p_1)\text{-rows})$ and
-  has its $V \setminus \{v\}$ part all zero. By \cref{lem:case-III-vanish-off-column}, $w$ is the pure
-  $v$-column row $w = \bigl(\sum_j \lambda_{(ab)j}\, r_j(q(ab)),\ 0\bigr)$ of
-  eq.~(6.28) (using $p_1(vb) = q(ab)$ and $R(G, p_1; E_v, v) = 0$). It is the new
-  $(vb)i^*$-row that, joining the $va$-block, lifts $v$'s column contribution from
-  $D - 1$ to $D$: the matrix $R(G, p_1)$ becomes block-triangular as in eq.~(6.29),
-  with bottom-right $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V \setminus \{v\}| - 1)$.
+  \lambda_{e_j} R(G, p_1; e_j)$ (eq.~(6.27)) has its $V \setminus \{v\}$ part all zero. By
+  \cref{lem:case-III-vanish-off-column}, $w$ is then the pure $v$-column row
+  $w = \bigl(\sum_j \lambda_{(ab)j}\, r_j(q(ab)),\ 0\bigr)$ of eq.~(6.28) (using $p_1(vb) = q(ab)$ and
+  $R(G, p_1; E_v, v) = 0$). It is the new $(vb)i^*$-row that, joining the $va$-block, lifts $v$'s
+  column contribution from $D - 1$ to $D$: the matrix $R(G, p_1)$ becomes block-triangular as in
+  eq.~(6.29), with bottom-right $R(G_v^{ab} \setminus (ab)i^*, q)$ of rank $D(|V \setminus \{v\}| - 1)$.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-acolumn-zero, lem:case-III-vanish-off-column, lem:case-III-seam}
-  \emph{The open crux, deferred within Phase~22.} The eqs.~(6.24)--(6.25) decomposition
-  (\cref{lem:case-III-redundant-decomposition}), its eq.~(6.43) $a$-column-block vanishing
-  (\cref{lem:case-III-acolumn-zero}), and the per-edge seam identity (\cref{lem:case-III-seam}) are
-  green. What stays open is the eq.~(6.27) transport of the combination from $R(G_v^{ab}, q)$ to
-  $R(G, p_1)$ and the proof that its $V \setminus \{v\}$ part vanishes. \textbf{Structural caveat
-  (Phase 22e finding).} The vanishing is \emph{not} immediate from the per-edge seam alone: the
-  $E_v$-rows transport as literal functional equalities (their endpoints avoid $v$, so $q_0 = q$
-  there, \cref{lem:case-III-seam}), but the $(vb)j$-row of $R(G, p_1)$ ($hingeRow\ v\ b\ r$) and the
-  $(ab)j$-row of $R(G_v^{ab}, q)$ ($hingeRow\ a\ b\ r$), restricted to $V \setminus \{v\}$, differ by
-  the $a$-column block $r_j(\cdot\,a)$ (the $(vb)$-hinge is $0$ in column $a$, the $(ab)$-hinge is
-  $r_j$ there). The transported combination's $V \setminus \{v\}$ part is therefore the eq.~(6.24)
-  sum (which is $0$) \emph{minus} $\sum_j \lambda_{(ab)j} r_j(\cdot\,a)$, the $a$-column block of
-  eq.~(6.24), killed by KT eq.~(6.43) (\cref{lem:case-III-acolumn-zero}, green) --- so the full
-  $V \setminus \{v\}$ part is $0$ after all. The remaining build is to read off the $v$-column part
-  from $R(G, p_1; E_v, v) = 0$ and $R(G, p_1; (vb)j, v) = r_j(p_1(vb)) = r_j(q(ab))$, and apply
-  \cref{lem:case-III-vanish-off-column} to certify $w$ is a pure $v$-column row.
+        lem:case-III-vanish-off-column, lem:case-III-seam}
+  \emph{The open crux, deferred within Phase~22 (rerouted; see the caveat).} The eqs.~(6.24)--(6.25)
+  decomposition (\cref{lem:case-III-redundant-decomposition}) and the per-edge seam identity
+  (\cref{lem:case-III-seam}) are green. What stays open is the eq.~(6.27) transport and the proof
+  that the transported row's $V \setminus \{v\}$ part vanishes. \textbf{Structural caveat
+  (Phase 22e finding, corrected).} The vanishing is \emph{not} from the per-edge seam plus the
+  $a$-column-block fact (\cref{lem:case-III-acolumn-zero}): substituting the eqs.~(6.24)--(6.25)
+  decomposition with $g = w_{\mathrm{Gv}} + w_{\mathrm{Other}} - r\,i^* = 0$, the transported row
+  collapses to $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ with
+  $\rho_g = \sum_j \lambda_{(ab)j} r_j \neq 0$ --- supported on \emph{both} columns $v$ and $a$,
+  with $w(S) = \rho_g(S_v - S_a)$, which is $-\rho_g(S_a) \neq 0$ on $S_v = 0$. KT's
+  $V \setminus \{v\}$-vanishing comes from the eqs.~(6.14)--(6.15) \emph{column operation}
+  $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$ --- precomposing with the automorphism
+  $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$ gives $w(\Phi(S)) = \rho_g(S_v)$, pure $v$-column ---
+  \emph{not} from KT eq.~(6.43), which is a Claim~6.12 fact (\cref{lem:case-III-acolumn-zero} is
+  $g$'s $a$-column $= 0$, trivially $g = 0$, consumed in the $M_3$ case). The remaining build is to
+  model $\Phi$ as a change of variables, restate this lemma in the column-operated frame, and apply
+  \cref{lem:case-III-vanish-off-column} to certify $w \circ \Phi$ is a pure $v$-column row.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]

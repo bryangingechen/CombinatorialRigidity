@@ -2216,6 +2216,33 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 Tried-and-rejected approaches, deprecated patterns, and tactic
 limitations. Worth a once-over so future agents don't re-litigate.
 
+### [process] Phase 22e — a constructibility recon must verify the *mechanism* of a claimed vanishing, not just the count (a column op was silently elided)
+- **Where it bit:** the candidate-completion `lem:case-III-candidate-row` (KT §6.4.1,
+  eqs. (6.24)–(6.28)), Phase 22e. The node had been cut red over four green leaves (seam,
+  decomposition, `…_acolumn_zero` = eq. (6.43), vanish-off-column) with a recon verdict
+  "arithmetic closes, only the transport open." Working the actual `w` showed the route is
+  **mathematically wrong about the vanishing mechanism**: the transported row collapses (via
+  `g = 0`) to `w = hingeRow v a ρ_g` (`ρ_g = Σ λ_{(ab)j} r_j ≠ 0`), supported on columns `v`
+  AND `a`, so `w S = ρ_g(S v − S a) ≠ 0` at `S v = 0`. KT's off-`v` vanishing is the eqs.
+  (6.14)–(6.15) **column operation** `col_a += col_v` (`Φ S = update S v (S v + S a)`,
+  `w(Φ S) = ρ_g(S v)`), silently elided in the project's per-edge-seam plan. eq. (6.43) was
+  mis-wired: it is a Claim-6.12 fact (`g`'s `a`-column = 0, trivially `g = 0`, used in the
+  `M3`-case extensor-orthogonality), NOT the candidate-row vanishing input.
+- **Root cause:** the prior recon checked that the named green leaves *exist* and that the
+  per-edge seam transports the `E_v`-rows, then assumed the `(vb)↔(ab)` reconciliation was a
+  bounded mechanical step. It never substituted `g = 0` into the explicit `w` to see what `w`
+  *is*. A claimed "row vanishes off `v`" must be checked by computing the row, not by chaining
+  "seam + a-block-fact" boxes — KT's argument runs a column op that the box-chain hides.
+- **Don't retry:** the seam-only / eq.-(6.43) route for the candidate-row vanishing. The fix is
+  to model the column-operation automorphism `Φ` and restate the node (and the downstream
+  pin-block + `lem:case-II-realization`) in the column-operated frame (rank is column-op-inv).
+- **Status:** BLOCKED; node re-scoped to the column-op reroute (`notes/Phase22e.md` *Current
+  state* / *Blockers* / *Hand-off*; `case-iii.tex` caveat + preamble corrected). Standing lesson:
+  reuse `DESIGN.md` *Constructibility recon before scheduling a producer build* (second half — the
+  arithmetic) plus this sharpening: **also confirm the geometric/linear-algebra *mechanism* the
+  source uses (e.g. a column op) is reproduced, not elided** — a count that closes over the wrong
+  mechanism is the same trap as Phase 22a's structure mismatch.
+
 ### [process][blueprint] Phase 22c open — superseded-route rot survived in *red* blueprint nodes (a live node's proof routing through a struck dead-end)
 - **Where it bit:** opening Phase 22c, the live target nodes
   `lem:case-II-realization` / `lem:case-II-realization-placement`
