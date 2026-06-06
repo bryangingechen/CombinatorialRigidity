@@ -39,9 +39,20 @@ just its conclusion* + *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-22c's **design recon is settled** (two docs-only passes), and a **third
-docs-only commit (this one) reconciled the blueprint** to the corrected
-understanding before any Lean build. The first recon pass read the whole
+22c's **design recon is settled** (two docs-only passes), the **third
+docs-only commit reconciled the blueprint** to the corrected understanding,
+and a **fourth docs-only commit (this one) signature-verified the stratum-1
+node cut** against the real Lean signatures of the green bricks it composes
+with (§1.28) — the user asked for one more design pass before any build, a
+node-level constructibility recon against actual signatures. **Outcome: the
+composition verifies CLEANLY, no mismatch.** The critical check (does N7b-2's
+`hrow` accept the eq. (6.12) reproduction?) passes — with one *labelling*
+refinement: the `p₁(vb)=q(ab)` reproduction is the **new-block** content (it
+lands the `vb`-row in `v`'s screw column for N7b-3's pin-a-body split), while
+N7b-2's `hrow` is the **old-block** `ends`/`q₀`-agreement `rfl`; the two were
+conflated in the prior *Hand-off*, corrected below (not a blocker — count +
+composition unchanged). The build agent now has a precise, signature-checked,
+leaf-most-first target. The first recon pass read the whole
 Case-III-at-`d=3` argument against the primary source; the second pinned
 the **shared candidate structure**, answered the **four open recon
 questions**, and **re-cut 22c's scope to the first tractable chunk** (the
@@ -256,24 +267,33 @@ The blueprint reconciliation lands this commit; the Lean node cut for
 *blueprint* nodes stay red — 22c lands the eq. (6.12) `+(D−1)` brick
 toward them, not the full nodes.
 
-- [x] **(this commit, docs+blueprint)** Reconcile `lem:case-II-realization`
+- [x] **(prior commit, docs+blueprint)** Reconcile `lem:case-II-realization`
   (`case-ii.tex`) + `lem:case-II-realization-placement`
   (`genericity-and-count.tex`) so statement+proof of each describe the
   eq. (6.12) row-side route; collapse M3 + N7b-4 out of the live route,
   retain-with-marker (§1.27).
+- [x] **(this commit, docs only)** Signature-level verification of the
+  stratum-1 cut against the real Lean signatures (§1.28): pulled the verbatim
+  heads of N7b-0/1/2/3 + N7a (two forms), traced the critical `hrow` check,
+  confirmed the composition + count close cleanly, and corrected the
+  `hrow`/eq.-(6.12)-reproduction conflation (the reproduction is new-block,
+  `hrow` is old-block `rfl`). No Lean / `\leanok` / blueprint flips.
 - [ ] **(22c, stratum 1)** eq. (6.12) `+(D−1)` block-triangular placement
   — the next Lean node, the new producer behind `lem:case-II-realization-placement`.
-  `buildable` from the green N7b row infra. Cut leaf-most-first (the
-  ordering, §1.27 / *Hand-off*): (a) a placement def `p₁` with the
-  `p₁(vb)=q(ab)` row-reproduction `hrow` (the one new geometric brick);
-  (b) feed N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, +(D−1)),
-  N7b-0 (`exists_independent_panelRow_subfamily_of_rigidOn`, D(|V|−2) old),
-  N7b-2 (`exists_independent_panelRow_transport`, the transport whose
-  `hrow` IS the eq. (6.12) reproduction), N7b-3
-  (`linearIndependent_sum_pinned_block`, joint independence = KT eq. (6.16));
-  (c) `hasFullRankRealization_of_independent_panelRow` (N7a) closure.
-  Count: `(D−1) + D(|V∖{v}|−1) = D(|V|−1)−1 = 6|V|−7` at `D=6`. A
-  lower-bound brick *toward* `lem:case-II-realization`, not the full node.
+  `buildable` + **signature-verified** from the green N7b row infra. Cut
+  leaf-most-first (the *exact* ordering, §1.28 / *Hand-off*): the **two** new
+  facts are (1) the shared-seed selector `q₀`/`ends` making the `vb`-hinge
+  reproduce the `e₀`-hinge extensor + agreeing on `G−v` edges, and (2)
+  `hnewpin` (N7b-1's `D−1` rows stay independent after `.comp (single … v)`);
+  then green: N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, `D−1`),
+  N7b-0 (`exists_independent_panelRow_subfamily_of_rigidOn`, `D(|V|−2)` old,
+  fed by `exists_rigidOn_ofNormals_of_hasFullRankRealization` from the IH),
+  N7b-2 (`exists_independent_panelRow_transport`, `hrow := rfl` from (1)),
+  N7b-3 (`linearIndependent_sum_pinned_block`, `Sum.elim` = KT eq. (6.16)),
+  N7a form (b) `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`
+  closure (takes the `Sum`-index directly). Count: `(D−1) + D(|V|−2) =
+  D(|V|−1)−1 = 6|V|−7` at `D=6`. A lower-bound brick *toward*
+  `lem:case-II-realization`, not the full node.
 - [ ] (later sub-phase) `lem:case-II-realization` (KT's Case III;
   `case-ii.tex`) + `lem:case-III` (`case-iii.tex`) — the D-candidate crux
   (Claim 6.11 redundant row + the candidate-normal-form / Claim-6.12
@@ -305,7 +325,19 @@ toward them, not the full nodes.
   D-candidate crux (strata 2–3) is a likely later sub-phase, the `d=3`
   assembly the deferred 22d — each deferred until the prior shape is clear.
 - **Design-recon — SETTLED**: the four open recon questions are answered
-  (§1.26); the layer is designed. The next commit cuts the first Lean node.
+  (§1.26); the layer is designed.
+- **Signature-level verification — DONE** (§1.28, this commit): the stratum-1
+  composition is verified against the *actual* current Lean signatures of all
+  five green bricks (N7b-0/1/2/3 + N7a). The critical `hrow` check passes (the
+  `panelRow` term depends only on `ends`+`q`, not the graph, so the old-block
+  `hrow` is `rfl`); the count `(D−1)+D(|V|−2)=D(|V|−1)−1` closes from the named
+  `Nat.card` bounds; the IH from `hsplit` feeds N7b-0 via
+  `exists_rigidOn_ofNormals_of_hasFullRankRealization`. **One labelling
+  refinement** (not a blocker): the eq. (6.12) `p₁(vb)=q(ab)` reproduction is
+  **new-block** content (feeds `hnewpin`/N7b-3's `v`-column), NOT N7b-2's
+  `hrow` (which is the old-block `ends`/`q₀`-agreement `rfl`). The two new
+  facts are the shared-seed selector + `hnewpin`; everything else is green.
+  The next commit cuts the first Lean node.
 - **Reuse-from-22b — ANSWERED** (the de-risking question, §1.27): stratum 1
   reuses the green **N7b row infra** (N7b-0/1/2/3 + N7a + `_transport`)
   near-wholesale — they were *built* for exactly this `1`-extension
@@ -326,58 +358,83 @@ toward them, not the full nodes.
 ## Hand-off / next phase
 
 The design recon is **settled** (four questions answered, first-chunk
-scope cut; §1.26) **and the blueprint is now reconciled to it** (§1.27,
-this commit) — so the next agent does not re-fight the divergence. **The
-next concrete commit is the FIRST LEAN NODE of stratum 1: the eq. (6.12)
-degenerate-placement producer behind `lem:case-II-realization-placement`.**
+scope cut; §1.26), **the blueprint is reconciled to it** (§1.27), **and the
+stratum-1 cut is now SIGNATURE-VERIFIED against the real Lean signatures**
+(§1.28, this commit) — so the next agent does not re-fight the divergence and
+does not hit a signature surprise. **The next concrete commit is the FIRST
+LEAN NODE of stratum 1: the eq. (6.12) degenerate-placement producer behind
+`lem:case-II-realization-placement`.** The full signature record (verbatim
+heads of all five green bricks + the per-obligation discharge) is §1.28;
+this is the build-agent summary.
 
 Precise target. A producer (working name
 `PanelHingeFramework.case_II_placement_eq612` / `…_independent_panelRow`)
-that, from the inductive realization of the split-off `G_v^{ab}` (rigid on
-`V(G)∖{v}` = the IH at full rank, since `k=0` ⟹ `G_v^{ab}` minimal 0-dof
-by KT Lemma 4.8(i)) and `v`'s reducible-degree-2 data (the two edges
-`e_a=va, e_b=vb`, their links, the degree-2 closure — already carried on
-`theorem_55.hsplit`), constructs a free normal assignment `q₀` for `G`
-**and** a linearly independent `panelRow ends q₀` subfamily of size
-`D(|V(G)|−1)`, i.e. `rank R(G,p₁) ≥ D(|V|−1)−1 = 6|V|−7` at `D=6`.
+that, from the inductive realization of the split-off `G_v^{ab}` and `v`'s
+reducible-degree-2 data (`e_a=va, e_b=vb`, links, degree-2 closure — carried
+on `theorem_55.hsplit`), constructs a shared free normal assignment `q₀` for
+`G` **and** a linearly independent `panelRow`-row family of size
+`D(|V(G)|−1)−1`, i.e. `rank R(G,p₁) ≥ D(|V|−1)−1 = 6|V|−7` at `D=6`. This is
+a **lower-bound brick** toward the red `lem:case-II-realization` — explicitly
+**not** `HasFullRankRealization` (one row short, the Case-III missing row).
 
-Leaf-most-first node order (each mapped to a green input; the only red
-leaf is the new placement+`hrow` brick):
-1. **placement `p₁` + the row reproduction `hrow`** (the one new brick):
-   `p₁` agrees with `q` on `G−v`, sets `p₁(va)=L⊂Π_q(a)` and `p₁(vb)=q(ab)`;
-   prove `R(G,p₁)`'s `vb`-row equals `R(G_v^{ab},q)`'s `e₀=ab` row (the
-   per-row match `hrow` that `exists_independent_panelRow_transport` (N7b-2)
-   takes). This is the eq. (6.12) content; recon-before-build the `hrow`
-   row-equality specifically (it is the structural-fidelity crux — see below).
-2. **new block** `exists_independent_panelRow_subfamily_of_edge` (N7b-1, green):
-   `v`'s two transversal hinges ⟹ `D−1` independent rows in `v`'s column block.
-3. **old block** `exists_independent_panelRow_subfamily_of_rigidOn` (N7b-0,
-   green): the IH rigidity ⟹ `D(|V|−2)` independent old rows; transport them
-   onto `G` through `G−v` by `exists_independent_panelRow_transport` (N7b-2,
-   green) using `hrow` from step 1.
-4. **joint independence** `linearIndependent_sum_pinned_block` (N7b-3, green,
-   in `RigidityMatrix.lean`): pin-a-body column split = the Lean form of KT
-   eq. (6.16); makes `Sum.elim new old` independent at the full count.
-5. **closure** `hasFullRankRealization_of_independent_panelRow` (N7a, green):
-   lift the witnessed corank to a generic realization rigid on `V(G)`.
+**Signature-verified input wiring (§1.28).** The IH from `theorem_55.hsplit`
+is `HasFullRankRealization k (G.splitOff v a b e₀)`;
+`exists_rigidOn_ofNormals_of_hasFullRankRealization` (`GenericityDevice.lean:1078`)
+repackages it to `∃ ends₁ q, (ofNormals G_v^{ab} ends₁ q).toBodyHinge.IsInfinitesimallyRigidOn V(G_v^{ab})`
+— exactly N7b-0's `hrig` input (put on the shared seed `q₀`). `|V(G_v^{ab})| =
+|V(G)|−1` (`vertexSet_splitOff`), so N7b-0 yields `D(|V|−2)` old rows. The
+**load-bearing structural fact** (the reason `hrow` is cheap): `panelRow` of
+`ofNormals G ends q` reads only `ends`+`q`, **not** `G`
+(`panelRow` ∘ `toBodyHinge_supportExtensor` ∘ `ofNormals_normal`, all `rfl`).
 
-Honesty-gate checks confirmed at recon (re-verify at the build's open):
-- **2nd half (count):** `(D−1) + D(|V∖{v}|−1) = (D−1) + D(|V|−2) =
-  D(|V|−1)−1`; at `D=6` that is `5 + 6(|V|−2) = 6|V|−7`. Closes from the
-  named green inputs (N7b-1 gives `D−1`; N7b-0 gives `D(|V|−2)` because the
-  `k=0` IH is *full* rank on `V(G_v^{ab})`). One short of `D(|V|−1)` — the
-  Case-III missing row, deferred to strata 2–3. ✓
-- **3rd half (structural fidelity — the trap that bit Case I):** KT's
-  eq. (6.16) **column operations making `R(G,p₁)` block-triangular with
-  `R(G_v^{ab},q)` a submatrix** is reproduced by the project's
-  `linearIndependent_sum_pinned_block` (pin-a-body, new rows in `v`'s screw
-  column, old rows off it) — NOT re-expressed as a different motion-space
-  obligation. The eq. (6.12) `p₁(vb)=q(ab)` *row reproduction* is exactly
-  the per-row match `hrow` of the N7b-2 transport. So the construction
-  matches KT's argument structure. (Contrast Case I, where a motion-space
-  splice glue silently swapped KT's block-triangular structure for a
-  common-seed one and accreted bridge hypotheses — `DESIGN.md` *Match the
-  source's argument structure*.)
+Leaf-most-first node order (the only red leaf is the new placement brick;
+steps 2–6 are green-brick applications):
+1. **shared seed `q₀` + two selectors `ends_G`, `ends₁`** (the one new brick,
+   eq. (6.12) geometric content): `q₀` chosen so `q₀(v,·)` places `panel(v)`
+   on the line `L⊂Π(a)` making the `vb`-hinge extensor
+   `panelSupportExtensor (q₀ v)(q₀ b)` reproduce the `e₀=ab`-hinge extensor
+   `panelSupportExtensor (q₀ a)(q₀ b)`; `ends_G`/`ends₁` record their links
+   (`hends`) **and agree on every `e₀`-free `G−v` edge** (so step 5's `hrow`
+   is `rfl`). This is the `p₁(vb)=q(ab)` **new-block** reproduction.
+2. **`hnewpin` (new-block column independence)** — the second small new fact:
+   from N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, green) `D−1`
+   raw-independent rows on `e_b`, show they stay independent after
+   `.comp (LinearMap.single ℝ _ v)` (the `hingeRow v w r ∘ single v = r`
+   pin-at-`v` identity; essentially `linearIndependent_hingeRow_star`
+   restricted to one edge). Feeds N7b-3's `hnewpin`.
+3. **new block** `exists_independent_panelRow_subfamily_of_edge` (N7b-1, green):
+   `v`'s transversal hinge ⟹ `D−1` independent new rows.
+4. **old block** `exists_independent_panelRow_subfamily_of_rigidOn` (N7b-0,
+   green): IH rigidity at `q₀` ⟹ `D(|V|−2)` independent old rows.
+5. **transport** `exists_independent_panelRow_transport` (N7b-2, green):
+   carry the old block onto `G` along the identity-on-common-edges injection
+   `f` (drops the `e₀` index); `hrow i := rfl` from step 1's `ends`/`q₀`
+   agreement (the **old-block** agreement, NOT the eq. (6.12) reproduction —
+   the labelling correction of §1.28).
+6. **joint independence** `linearIndependent_sum_pinned_block` (N7b-3, green,
+   `RigidityMatrix.lean:548`): `hold` (old rows vanish at `update 0 v x` — their
+   edges avoid `v`) + `hnewpin` (step 2) + `holdindep` (step 5) ⟹ `Sum.elim
+   rn ro` independent = the Lean form of KT eq. (6.16) block-triangular.
+7. **closure** `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`
+   (N7a form (b), `CaseI.lean:1631`, green): takes the `Sum.elim`-indexed family
+   directly (no `Set s` repackage) + `hmem : ∀ i, family i ∈ rigidityRows` +
+   the `D(|V|−1)−1` card bound. (Same closure path the green Case-I composer
+   uses, `CaseI.lean:1794–1831`.) Yields the lower-bound deliverable.
+
+Honesty-gate checks (signature-confirmed §1.28; re-verify at build's open):
+- **2nd half (count):** `(D−1) + D(|V∖{v}|−1) = D(|V|−1)−1`; at `D=6` that is
+  `5 + 6(|V|−2) = 6|V|−7`. Closes from the named green inputs (N7b-1 gives
+  `D−1`; N7b-0 gives `D(|V|−2)` because `|V(G_v^{ab})|=|V(G)|−1` and the `k=0`
+  IH is full rank). One short of `D(|V|−1)` — the Case-III missing row,
+  strata 2–3. ✓ (verified against the actual `Nat.card` bounds in each brick)
+- **3rd half (structural fidelity — the trap that bit Case I):** KT eq. (6.16)'s
+  **block-triangular column ops** are reproduced by `linearIndependent_sum_pinned_block`
+  (pin-a-body: new rows in `v`'s screw column via `hnewpin`, old rows off it via
+  `hold`), NOT re-expressed as a different motion-space obligation. The eq. (6.12)
+  `p₁(vb)=q(ab)` row reproduction is the **new-block** placement (step 1), feeding
+  the `v`-column. So the construction matches KT's argument structure. (Contrast
+  Case I, where a motion-space splice glue silently swapped the block-triangular
+  structure — `DESIGN.md` *Match the source's argument structure*.) ✓
 
 22c lands this `+(D−1)` brick *toward* `lem:case-II-realization` /
 `lem:case-III` — those nodes stay red; the D-candidate crux (strata 2–3) is

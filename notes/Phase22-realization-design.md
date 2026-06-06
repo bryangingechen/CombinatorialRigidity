@@ -2066,6 +2066,159 @@ behind `lem:case-II-realization-placement`, cut leaf-most-first per the node ord
 the `hrow` row-equality specifically at the build's open (it is the structural-fidelity crux). The
 D-candidate crux (strata 2–3) gets its math-first decomposition when its sub-phase opens.
 
+### 1.28 Phase 22c, fourth pass — SIGNATURE-LEVEL verification of the stratum-1 cut against the real Lean signatures, before any build (2026-06-05)
+
+Fourth docs-only commit (no Lean / `\leanok` / blueprint). The user asked for one more
+design pass *before* the stratum-1 build: a **signature-level** node-level constructibility
+recon (`DESIGN.md` *Constructibility recon … 2nd/3rd halves*) of the single genuinely-new
+brick (`p₁` + `hrow`) against the **actual current Lean signatures** of the green bricks it
+composes with — the one place a build surprise could hide. **Outcome: the composition
+verifies cleanly. No mismatch.** The critical check (does N7b-2's `hrow` accept the
+`p₁(vb)=q(ab)` degenerate-placement reproduction as its discharging term?) passes, for a
+structural reason pinned below. The recorded signatures + per-obligation discharge + the
+precise new-brick statement follow; the *Hand-off* in `notes/Phase22c.md` is the build
+agent's leaf-most-first target.
+
+**The five green bricks, exact current signatures (verbatim heads).**
+- **N7b-1** `Pinning.lean:265` `BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge`
+  `(F : BodyHingeFramework k α β) {ends} {e : β} (huv : (ends e).1 ≠ (ends e).2)
+  (he : F.supportExtensor e ≠ 0) : ∃ s, (∀ i ∈ s, i.1 = e) ∧ Nat.card s = screwDim k - 1 ∧
+  LinearIndependent ℝ (fun i : s => F.panelRow ends i)`. Gives `D−1` rows, all on edge `e`.
+- **N7b-0** `GenericityDevice.lean:476`
+  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn`
+  `(F) {ends} (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2) (hne : ∀ e, F.supportExtensor e ≠ 0)
+  (hnev : F.graph.vertexSet.Nonempty) (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
+  ∃ s, Nat.card s = screwDim k * (F.graph.vertexSet.ncard - 1) ∧ LinearIndependent ℝ (fun i : s => F.panelRow ends i)`.
+  Gives `D(|V|−1)` rows from rigidity *on its own vertex set*. NB: this is `D·(|V(G_v^{ab})|−1)`
+  — for the split-off graph `|V(G_v^{ab})| = |V(G)|−1`, so it supplies `D(|V(G)|−2)` = the old block. ✓
+- **N7b-2** `GenericityDevice.lean:354` `PanelHingeFramework.exists_independent_panelRow_transport`
+  `(G₁ G₂ : Graph α β) (ends₁ ends₂) (q₁ q₂) {s₁ s₂} (f : s₂ → s₁) (hf : Function.Injective f)
+  (hrow : ∀ i : s₂, (ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂ i
+      = (ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁ (f i))
+  (hindep : LinearIndependent ℝ (fun i : s₁ => (ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁ i)) :
+  LinearIndependent ℝ (fun i : s₂ => (ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂ i)`.
+- **N7b-3** `RigidityMatrix.lean:548` `linearIndependent_sum_pinned_block`
+  `[DecidableEq α] {v : α} {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → …}
+  (hold : ∀ (j : ιo) (x : ScrewSpace k), ro j (Function.update 0 v x) = 0)
+  (hnewpin : LinearIndependent ℝ (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+  (holdindep : LinearIndependent ℝ ro) : LinearIndependent ℝ (Sum.elim rn ro)`.
+- **N7a (closure)** — TWO usable forms. (a) `GenericityDevice.lean:313`
+  `PanelHingeFramework.hasFullRankRealization_of_independent_panelRow (G) (ends)
+  (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty) {q₀} {s}
+  (hindep : LinearIndependent ℝ (fun i : s => (ofNormals G ends q₀).toBodyHinge.panelRow ends i))
+  (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s) : HasFullRankRealization k G` — wants a `Set s`
+  index. (b) `CaseI.lean:1631`
+  `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows (F) {ι} [Finite ι]
+  {a : ι → Module.Dual ℝ …} (hLI : LinearIndependent ℝ a) (hmem : ∀ i, a i ∈ F.rigidityRows)
+  (hne) (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
+  F.IsInfinitesimallyRigidOn F.graph.vertexSet` — takes an **arbitrary** `ι`-indexed family (so a
+  `Sum`-index feeds it directly) + a `hmem`-membership-in-`rigidityRows` side-goal, then the device
+  lift is the final `hasFullRankRealization_of_independent_panelRow` step (no `Set s` repackage). **Form
+  (b) is the cleaner closure for stratum 1**, because N7b-3 hands back a `Sum.elim`-indexed family, not
+  a `Set s`. This is exactly the closure path the green Case-I composer uses (`CaseI.lean:1794–1831`).
+
+**THE CRITICAL CHECK — does N7b-2's `hrow` accept the `p₁(vb)=q(ab)` reproduction? YES.** `hrow i`
+is the *per-row equality* `panelRow` of `ofNormals G₂ ends₂ q₂` at `i` `=` `panelRow` of
+`ofNormals G₁ ends₁ q₁` at `f i`. The structural fact that discharges it (verified against the real
+defeq chain):
+- `panelRow F ends i = hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) i.2.1 i.2.2)`
+  (`Pinning.lean:46`), and
+- `(ofNormals G ends q).toBodyHinge.supportExtensor e
+  = panelSupportExtensor (q-as-normal (ends e).1) (q-as-normal (ends e).2)`
+  (`toBodyHinge_supportExtensor` `PanelHinge.lean:94` ∘ `ofNormals_normal` `PanelHinge.lean:267`,
+  both `rfl`).
+
+So **`panelRow` of `ofNormals G ends q` at `i` depends only on `ends` and `q` — NOT on `G`.** This is
+the load-bearing structural fact (the N7b-2 docstring states it: "the panel support extensor reads only
+`ends` and `q`, not the graph — `toBodyHinge_supportExtensor`"). Consequence for stratum 1: set
+`G₂ := G`, `G₁ := G_v^{ab}`, `q₂ := q₁ := q₀` (one shared seed), and pick `ends₂ = ends_G`,
+`ends₁ = ends_{G_v^{ab}}` to **agree on every common-subgraph edge** (the `e₀`-free edges of `G−v`);
+then for each old-block index `i` (whose edge is a `G−v` edge), `ends₂ i.1 = ends₁ (f i).1` and
+`q₂ = q₁`, so both sides of `hrow i` are the *same* `panelRow` term and `hrow i := rfl`. The
+`p₁(vb)=q(ab)` reproduction is **not** what N7b-2's `hrow` consumes — N7b-2 transports the **old block**
+(the `D(|V|−2)` `e₀`-free rows of `G−v`), and `hrow` there is the trivial `ends`/`q`-agreement `rfl`.
+**The `p₁(vb)=q(ab)` row reproduction is the NEW-block content, and it does not flow through N7b-2 at
+all** — it is what makes the `vb`-row of `R(G,p₁)` land in `v`'s screw column so N7b-3's pin-a-body
+split (`hold`/`hnewpin`) separates it from the old block. (See the corrected obligation statement below
+— this is a *refinement* of `notes/Phase22c.md` *Hand-off* step 1's "`hrow` IS the eq. (6.12)
+reproduction", which conflated the two roles; flagged + corrected here, not a blocker.)
+
+**The other compositions type-align (each checked).**
+- *N7b-1 count + index.* `Nat.card s = screwDim k - 1 = D−1`, all rows on the **new** edge(s) `va`/`vb`
+  (the `i.1 = e` conjunct). To feed N7b-3's `hnewpin` (independence *of the comp with `single … v`*),
+  the new rows must be independent **as functionals of `v`'s screw column** — N7b-1 gives raw `panelRow`
+  independence; the `.comp (single … v)` step is a *new* small obligation (see new-brick statement). The
+  `D−1` count matches KT eq. (6.12)'s `+(D−1)`. ✓
+- *N7b-0 count + rigidity input.* Needs `F.IsInfinitesimallyRigidOn F.graph.vertexSet` for
+  `F = (ofNormals G_v^{ab} ends₁ q₀).toBodyHinge`. The IH from `theorem_55.hsplit`'s premise is
+  `HasFullRankRealization k (G.splitOff v a b e₀)`; `exists_rigidOn_ofNormals_of_hasFullRankRealization`
+  (`GenericityDevice.lean:1078`) repackages it to *exactly* `∃ ends₁ q, (ofNormals G_v^{ab} ends₁ q).toBodyHinge.IsInfinitesimallyRigidOn V(G_v^{ab})`.
+  So the IH supplies N7b-0's `hrig` directly (modulo putting it on the **shared** seed `q₀` — the
+  single-seed coupling, below). At `k=0` the IH is full rank on `V(G_v^{ab})`, and `|V(G_v^{ab})| =
+  |V(G)|−1` (`vertexSet_splitOff` `Operations.lean:599`, `V = V(G)\{v}`), so N7b-0 yields `D·(|V(G)|−2)`
+  old rows. ✓
+- *N7b-3 block split.* `rn` := the `D−1` new rows, `ro` := the `D(|V|−2)` transported old rows.
+  `hold j x` (old rows vanish at `update 0 v x`): the old rows' edges avoid `v` (they are `G−v` edges, so
+  `hingeRow`'s two endpoints are both `≠ v`, and `hingeRow u w r (update 0 v x) = r(0−0) = 0`). `hnewpin`:
+  the new rows independent after `.comp (single … v)`. `holdindep`: N7b-2's output. Output: `Sum.elim rn ro`
+  independent. **This matches KT eq. (6.16)'s block-triangular column ops exactly** (new rows in `v`'s
+  column, old rows off it). ✓
+- *N7a closure.* Form (b) consumes `Sum.elim rn ro` (the `ι := ιn ⊕ ιo` family) + `hmem : ∀ i, family i ∈ rigidityRows`
+  (each row's edge links in `G` — new edges `va`/`vb` ∈ E(G), old edges are `G−v` ⊆ `G`) + the card bound
+  `D(|V(G)|−1)−1 ≤ Nat.card (ιn ⊕ ιo)`. **Count: `(D−1) + D(|V(G)|−2) = D(|V(G)|−1)−1`** — *one short* of
+  `D(|V(G)|−1)`, the Case-III missing row (strata 2–3). So stratum 1 cannot use the `≥ D(|V|−1)` form of
+  N7a; it produces a `rank ≥ D(|V|−1)−1` lower-bound brick, **not** `HasFullRankRealization`. This is the
+  honest deliverable (lower bound toward the red node), confirmed by the count. ✓
+
+**Reuse from 22b — re-confirmed NOT applicable (the prior recon stands).** 22b's `degeneratePlacement`
+(`CaseI.lean:868`), `extProj`, `panelRow_collapseTo_comp_extProj_dualMap` implement a **block collapse**
+of an entire rigid block `V(H)→r` with an exterior-column *projection*. Stratum 1 is a **single-vertex**
+placement (`p₁(vb)=q(ab)`) reproducing **one** row, with **no** projection — the block-triangularity is
+the pin-a-body split N7b-3, not a projected complement. §1.27's verdict is correct: not reused now.
+
+**THE NEW BRICK — precise proof obligation (signature-checked).** The single genuinely-new Lean content
+is the placement `p₁` + two row facts. State it as one producer (working name
+`PanelHingeFramework.case_II_placement_eq612` / `…_independent_panelRow`), built leaf-most:
+1. **The shared seed + selectors.** A free normal assignment `q₀ : α × Fin (k+2) → ℝ` and two endpoint
+   selectors `ends_G : β → α × α` (for `G`), `ends₁ : β → α × α` (for `G_v^{ab}`) that (i) record their
+   graph's links (`hends`), (ii) **agree on every `e₀`-free common edge** so N7b-2's `hrow` is `rfl`, and
+   (iii) place `v`'s `b`-edge `e_b`'s far endpoint reading at the `e₀=ab` hinge so the `vb`-row reproduces
+   the `e₀`-row. The eq. (6.12) data `p₁(va)=L⊂Π(a)`, `p₁(vb)=q(ab)` is encoded as the value of `q₀` at
+   `v`'s coordinates (`q₀(v,·)`) chosen so `supportExtensor e_b = panelSupportExtensor (q₀ v) (q₀ b)`
+   equals the `e₀`-hinge extensor `panelSupportExtensor (q₀ a) (q₀ b)` — i.e. `q₀ v` is placed on the line
+   `L ⊂ Π(a)` making `panel(v) = panel(a)` along the `b`-hinge. **This is the eq. (6.12) geometric
+   content** and the only genuinely-new construction.
+2. **`hnewpin` (the new-block column independence).** From N7b-1's `D−1` raw-independent new rows on
+   `e_b` (or `e_a`), show they remain independent after `.comp (LinearMap.single ℝ _ v)` — i.e. the new
+   rows are independent *as read through `v`'s screw column*. Since each new row is `hingeRow v (other) r`
+   and `hingeRow v w r ∘ single v = r ∘ (screwDiff v w ∘ single v) = r` (the `single v` puts the test
+   screw on `v`, the other endpoint reads `0`), this is essentially `linearIndependent_hingeRow_star`'s
+   pin-at-`v` argument restricted to the single new edge — a bounded, buildable step (N7b-1 + a
+   `hingeRow`-comp-`single` identity). **This is the second new fact** (small).
+3. **`hrow`-`rfl` for the old block.** Discharge N7b-2's `hrow i := rfl` from the `ends`/`q₀` agreement on
+   `G−v` edges (step 1.ii) — `panelRow` reads only `ends`/`q₀`, not the graph. The selector `f : s₂ → s₁`
+   is the identity-on-common-edges injection (drops the `e₀` index). **`rfl`, given the agreement.**
+4. **Assemble + close.** N7b-1 → `hnewpin` (step 2); N7b-0 (on the IH `hrig` at `q₀`) → N7b-2 (`hrow`
+   from step 3) → `holdindep`; N7b-3 → `Sum.elim` independence; N7a form (b) with the `hmem` membership +
+   the `D(|V|−1)−1` card bound → the lower-bound deliverable. The deliverable is a `rank R(G,p₁) ≥
+   D(|V(G)|−1)−1` brick (equivalently: an independent `panelRow` family of size `D(|V(G)|−1)−1` on the
+   shared seed `q₀`), explicitly **not** `HasFullRankRealization` (one row short).
+
+**Single design refinement flagged (conservative choice made, not a blocker).** `notes/Phase22c.md`
+*Hand-off* step 1 said "`hrow` IS the eq. (6.12) reproduction." The signature trace shows the eq. (6.12)
+`p₁(vb)=q(ab)` reproduction is the **new-block** content (it makes the `vb`-row reproduce the `e₀`-row so
+it lands in `v`'s screw column, feeding `hnewpin`/N7b-3), while N7b-2's `hrow` is the **old-block**
+`ends`/`q₀`-agreement `rfl`. Conservative correction: the two are distinct roles; the new brick owns the
+reproduction (step 1.iii + step 2), N7b-2's `hrow` is the trivial old-block agreement (step 3). The
+*Hand-off* in `notes/Phase22c.md` is updated to this split. No new node is needed — the count and the
+composition are unchanged; only the labelling of which obligation carries the reproduction is corrected.
+
+**Net.** The stratum-1 composition is signature-verified clean: N7b-0/1/2/3 + N7a form (b) compose with
+the new `p₁`+`hnewpin`+`hrow`-`rfl` brick; the count `(D−1)+D(|V|−2)=D(|V|−1)−1` closes from the named
+green inputs; the IH from `hsplit` feeds N7b-0 via `exists_rigidOn_ofNormals_of_hasFullRankRealization`.
+The one genuinely-new construction is the eq. (6.12) shared-seed selector (step 1), plus the bounded
+`hnewpin` column-independence (step 2); `hrow` is `rfl`. Ready to build leaf-most-first.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
