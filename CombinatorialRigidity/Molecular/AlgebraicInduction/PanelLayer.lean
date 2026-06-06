@@ -706,4 +706,86 @@ theorem annihRowPoly_smul_sign_mem_range_map {α : Type*} [DecidableEq α] (u v 
   push_cast
   split_ifs <;> simp
 
+/-! ## Partition-respecting motions — the `hub` foundation (`lem:trivial-motions-rank-bound`,
+`def:D-deficiency`)
+
+The genericity-free codimension lower bound `D + def(G̃) ≤ dim Z(G,p)` of Katoh–Tanigawa
+Proposition 1.1 (`rigidityMatrix_prop11`'s `hub`; Jackson–Jordán 2009 Thm 6.1) is built from a
+deficiency-attaining partition `P` of `V(G)`. The construction's foundation is the subspace of
+infinitesimal motions that are **constant on each part of `P`** — the *partition-respecting
+motions* `partitionMotions f` of a labeling `f : α → α` (whose fibers are the parts). A
+part-constant screw assignment automatically satisfies the hinge constraint at every
+*non-crossing* edge (both endpoints in the same part, so `S u − S v = 0`), so the only genuine
+constraints come from the `d_G(P) = |crossingEdges G f|` crossing edges, each cutting down `D − 1`
+of the `D` screw coordinates. The full count `finrank (partitionMotions f) ≥ D·|P| − (D−1)·d_G(P)
+= D + partitionDef(f)` (a later brick) then gives `hub` by maximizing over `P`.
+
+This file lands the foundation: the subspace, its membership characterization, its containment in
+`Z(G,p)`, the trivial-motion containment, and the `def`-free consequence `D ≤ dim Z(G,p)`. The
+dimension lower bound `D + partitionDef(f) ≤ finrank (partitionMotions f)` and the maximization
+into `hub` are the subsequent bricks. -/
+
+namespace BodyHingeFramework
+
+variable {α β : Type*}
+
+/-- A screw assignment `S : α → ScrewSpace k` is **constant on each part** of the partition of
+`V(G)` encoded by a labeling `f : α → α` when `S u = S v` whenever `u, v` carry the same label,
+`f u = f v` (`def:D-deficiency`). Such an assignment is determined by one screw center per part. -/
+def IsPartitionConstant (f : α → α) (S : α → ScrewSpace k) : Prop :=
+  ∀ u v, f u = f v → S u = S v
+
+/-- The **partition-respecting motions** of a labeling `f : α → α`
+(`lem:trivial-motions-rank-bound`, `def:D-deficiency`, the `hub` foundation): the infinitesimal
+motions of `F` that are additionally constant on each part of the partition `f` encodes, i.e.
+`partitionMotions f = infinitesimalMotions ⊓ {S | IsPartitionConstant f S}`. This is the
+intersection out of which the deficiency-attaining partition carves the `D + def(G̃)` motions
+witnessing the genericity-free lower bound `hub` of Katoh–Tanigawa Proposition 1.1. -/
+def partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
+    Submodule ℝ (α → ScrewSpace k) where
+  carrier := {S | F.IsInfinitesimalMotion S ∧ IsPartitionConstant f S}
+  add_mem' {S T} hS hT :=
+    ⟨(F.infinitesimalMotions.add_mem hS.1 hT.1),
+      fun u v huv => by rw [Pi.add_apply, Pi.add_apply, hS.2 u v huv, hT.2 u v huv]⟩
+  zero_mem' := ⟨F.infinitesimalMotions.zero_mem, fun _ _ _ => rfl⟩
+  smul_mem' c S hS :=
+    ⟨F.infinitesimalMotions.smul_mem c hS.1,
+      fun u v huv => by rw [Pi.smul_apply, Pi.smul_apply, hS.2 u v huv]⟩
+
+@[simp]
+theorem mem_partitionMotions (F : BodyHingeFramework k α β) (f : α → α) (S : α → ScrewSpace k) :
+    S ∈ F.partitionMotions f ↔ F.IsInfinitesimalMotion S ∧ IsPartitionConstant f S :=
+  Iff.rfl
+
+/-- The partition-respecting motions lie inside the null space `Z(G,p)`
+(`lem:trivial-motions-rank-bound`): `partitionMotions f ≤ infinitesimalMotions`, by definition the
+constraint "is a motion" is the first conjunct. -/
+theorem partitionMotions_le_infinitesimalMotions (F : BodyHingeFramework k α β) (f : α → α) :
+    F.partitionMotions f ≤ F.infinitesimalMotions :=
+  fun _ hS => hS.1
+
+/-- Every trivial motion respects every partition (`lem:trivial-motions-rank-bound`,
+`def:D-deficiency`): a constant screw assignment `S u = S v` for *all* `u, v` is in particular
+constant on each part, and is a motion (`isInfinitesimalMotion_of_isTrivialMotion`), so
+`trivialMotions ≤ partitionMotions f`. The `D` trivial motions are the part-independent floor of
+the partition motions — the `+D` in the `hub` bound `D + def(G̃) ≤ dim Z`. -/
+theorem trivialMotions_le_partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
+    F.trivialMotions ≤ F.partitionMotions f :=
+  fun _ hS => ⟨F.isInfinitesimalMotion_of_isTrivialMotion hS, fun u v _ => hS u v⟩
+
+/-- **The `def`-free floor of `hub`: `D ≤ dim Z(G,p)`** (`lem:trivial-motions-rank-bound`): every
+realization carries at least the `D = screwDim k` trivial motions, so `screwDim k ≤ finrank
+Z(G,p)`. This is the `partitionDef = 0` (trivial one-part partition) instance of the genericity-free
+codimension lower bound `hub` of Katoh–Tanigawa Proposition 1.1; the full bound `D + def(G̃) ≤
+dim Z` adds the `def(G̃)` extra motions a deficiency-attaining partition supplies (subsequent
+brick). -/
+theorem screwDim_le_finrank_infinitesimalMotions [Nonempty α] [Finite α]
+    (F : BodyHingeFramework k α β) :
+    screwDim k ≤ Module.finrank ℝ F.infinitesimalMotions := by
+  haveI : Fintype α := Fintype.ofFinite α
+  rw [← F.finrank_trivialMotions]
+  exact Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
+
+end BodyHingeFramework
+
 end CombinatorialRigidity.Molecular

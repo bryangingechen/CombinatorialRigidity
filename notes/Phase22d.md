@@ -10,14 +10,28 @@ compressed verdict log.
 
 ## Current state
 
-**Next concrete commit:** the **`hub` brick** — the genericity-free codimension lower bound
-`D + def ≤ dim Z` for *every* panel-hinge realization, bricked from the Phase-19 partition
-machinery (a vertex partition attaining `def(G̃)` contributes `def` independent motions beyond the
-`D` trivial ones). It is the one hypothesis both `rigidityMatrix_prop11` and the just-landed
-rank-attainment packaging carry undischarged; landing it flips `lem:case-III-rank-attainment` (and
-`prop:rigidity-matrix-prop11`) from red toward green and is the remaining input to the Gap-1
-pigeonhole. After `hub`: the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows extracts the
-redundant row, lifting 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
+**Next concrete commit:** the **`hub` dimension lower bound** —
+`D + partitionDef(f) ≤ finrank (partitionMotions f)`, the substantive count over the
+just-landed `partitionMotions` foundation. The full `hub` (`D + def ≤ dim Z`) is a
+multi-commit construction (design doc §4: "RED, multi-commit, Phase-19 partition count");
+its math-first decomposition is now fixed (see *Hand-off* + the Gap-2→3→1 map below):
+
+1. **`partitionMotions` foundation** (✓ this commit) — the subspace of motions constant on
+   each part of a labeling `f`, `partitionMotions f = Z ⊓ {S | constant on f-fibers}`, with
+   `≤ infinitesimalMotions`, `trivialMotions ≤ partitionMotions f`, and the `def`-free floor
+   `screwDim k ≤ dim Z`. `PanelLayer.lean` (first file seeing both `infinitesimalMotions` and
+   `deficiency`/`crossingEdges`/`numParts`).
+2. **dimension lower bound** (next) — `D·|P| − (D−1)·d_G(P) = D + partitionDef(f) ≤
+   finrank (partitionMotions f)`: within the part-constant space `W_f` (`finrank = D·|f''univ| ≥
+   D·|P|`) the motion constraint is automatic at non-crossing edges and cuts ≤ `D−1` coords per
+   crossing edge, so rank-nullity bounds `finrank (Z ⊓ W_f)` below. **The hard piece** — needs
+   `finrank W_f` and a per-crossing-edge constraint count.
+3. **maximize into `hub`** — pick the `def`-attaining `f` (`deficiency` is an attained finite
+   `iSup` under `[Finite α]`), giving `D + def ≤ dim Z`; wire into `rigidityMatrix_prop11` /
+   `lem:case-III-rank-attainment`, flipping both toward green.
+
+After `hub`: the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows extracts the redundant
+row, lifting 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
 
 **Gap 1's eq. (6.22) `def>0` rank-attainment packaging is green this commit (modulo the `hub`
 brick).** `PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`
@@ -136,11 +150,18 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
   split `D|V| = D(|V|−1) + D`, and `hub` into `RankHypothesis (def G̃)` (`dim Z = D + def`) at the fixed
   seed. Axiom-clean; carries `hub` undischarged ⟹ red node `lem:case-III-rank-attainment` (honest
   green-modulo per the honesty gate). The omega cast/product/truncation dance: QUIRKS § 2 (three-way variant).
-- [ ] **Gap 1 — the `hub` brick** (next leaf): the genericity-free lower bound `D + def ≤ dim Z` for
-  every realization, from the Phase-19 partition machinery (a `def`-attaining partition's `def` extra
-  motions beyond the `D` trivial ones). Discharges the hypothesis both `rigidityMatrix_prop11` and the
-  rank-attainment packaging carry, flipping `lem:case-III-rank-attainment` /
-  `prop:rigidity-matrix-prop11` toward green.
+- [x] **Gap 1 — the `hub` foundation** (this commit): `partitionMotions f` (`PanelLayer.lean`,
+  `BodyHingeFramework` namespace) — motions constant on each part of a labeling `f`,
+  `= Z ⊓ {S | IsPartitionConstant f S}`; `partitionMotions_le_infinitesimalMotions`,
+  `trivialMotions_le_partitionMotions`, and the `def`-free floor
+  `screwDim_le_finrank_infinitesimalMotions` (`D ≤ dim Z`, every realization). Axiom-clean. No
+  blueprint node (internal `hub`-construction infra; the node lands with the full `hub`).
+- [ ] **Gap 1 — the `hub` dimension lower bound** (next leaf): `D + partitionDef(f) ≤
+  finrank (partitionMotions f)` via rank-nullity over `W_f` (the hard piece — `finrank W_f =
+  D·|f''univ|` + per-crossing-edge constraint count).
+- [ ] **Gap 1 — maximize into `hub`** (after): pick the `def`-attaining `f`, giving `D + def ≤
+  dim Z`; discharge the hypothesis both `rigidityMatrix_prop11` and the rank-attainment packaging
+  carry, flipping `lem:case-III-rank-attainment` / `prop:rigidity-matrix-prop11` toward green.
 - [ ] **Gap 1 — the pigeonhole** (after `hub`): the `k' ≤ D−2 < D−1` corank over the `D−1` `ab`-rows
   ⟹ one redundant row (eq. (6.23)), then lift 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to
   `= D(|V|−1)`.
@@ -149,11 +170,12 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
 
 Parked until the leaf's shape is clear; a sub-letter is minted when its turn comes.
 
-- **Gap 1 — the `hub` brick + the `M(G̃)`↔row pigeonhole** (next leaves, see *Hand-off*).
-  The analytic core is green: seed-rank bridge `lem:case-III-seed-rank-bridge` (`def=0` transfer),
-  upper bound `lem:case-III-seed-rank-upper` (`def>0`), and the rank-attainment packaging
-  `lem:case-III-rank-attainment` (assembles them into `RankHypothesis (def)`, red-modulo `hub`).
-  Remaining: brick `hub` (`D + def ≤ dim Z`) from the Phase-19 partition machinery, then the
+- **Gap 1 — the `hub` dimension lower bound + maximize + the `M(G̃)`↔row pigeonhole** (next
+  leaves, see *Hand-off*). The analytic core is green: seed-rank bridge `lem:case-III-seed-rank-bridge`
+  (`def=0` transfer), upper bound `lem:case-III-seed-rank-upper` (`def>0`), and the rank-attainment
+  packaging `lem:case-III-rank-attainment` (assembles them into `RankHypothesis (def)`, red-modulo
+  `hub`). The `hub` `partitionMotions` foundation + `def`-free floor landed; remaining: the dimension
+  lower bound `D + partitionDef(f) ≤ finrank (partitionMotions f)` + maximize ⟹ `hub`, then the
   `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)). The
   product-route *relaxation* (pick `q` as a non-root of the finite product of the nested IH rank
   polynomials, avoiding alg-independence at `d=3`; ~70% confidence) is the deferred TODO in the
@@ -176,9 +198,10 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
   bound `lem:case-III-seed-rank-upper` (`def>0` half of eq. (6.22)), and the rank-attainment
   packaging `lem:case-III-rank-attainment` (assembles them into `RankHypothesis (def G̃)` via
   `rigidityMatrix_prop11`). Both the packaging and `rigidityMatrix_prop11` carry the genericity-free
-  lower bound `hub` (`D + def ≤ dim Z`) as an explicit hypothesis — the codimension brick from the
-  Phase-19 partition machinery, still to be built. It is the next leaf; landing it flips both nodes
-  toward green.
+  lower bound `hub` (`D + def ≤ dim Z`) as an explicit hypothesis — the codimension construction from
+  the Phase-19 partition machinery. Its `partitionMotions` foundation + `def`-free floor (`D ≤ dim Z`)
+  landed this commit; the remaining `def(G̃)` extra motions are the dimension lower bound + maximize
+  steps (see *Current state*).
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -187,16 +210,19 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **Gap 1 — the `hub` brick.** The rank-attainment packaging
-`lem:case-III-rank-attainment` (this commit) assembles the analytic chain into `RankHypothesis (def G̃)`
-but carries the genericity-free lower bound `hub` (`D + def ≤ dim Z`) as an explicit hypothesis — the
-same undischarged hypothesis `rigidityMatrix_prop11` carries, which is why both nodes are red. The
-brick is `hub` itself: a vertex partition `P` attaining `def(G̃)` contributes `def` independent motions
-beyond the `D` trivial ones (`lem:trivial-motions-rank-bound` + the Phase-19 deficiency partition
-count) — genericity-free, every realization. Build it as a node concluding `hub`, wire it into
-`rigidityMatrix_prop11` / `lem:case-III-rank-attainment`, and both flip toward green. Then the
-`k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)), lifting 22c's
-`case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three analytic prerequisites
+**Next concrete commit:** **Gap 1 — the `hub` dimension lower bound.** Over the
+`partitionMotions f` subspace landed this commit (motions constant on each part of a labeling
+`f`, `= Z ⊓ {S | constant on f-fibers}`, with `≤ Z`, `trivialMotions ≤ ·`, and the `def`-free
+floor `D ≤ dim Z`), prove `D + partitionDef(f) = D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions
+f)`. The argument is rank-nullity over the part-constant space `W_f`: `finrank W_f = D·|f''univ|
+≥ D·|P|`, and the motion constraint is automatic at non-crossing edges (`S u − S v = 0`) and
+imposes ≤ `D−1` conditions per crossing edge, so `finrank (Z ⊓ W_f) ≥ finrank W_f − (D−1)·d_G(P)`.
+This is the hard piece — needs `finrank W_f` (a `Pi`-over-fibers count) + the per-crossing-edge
+constraint bound. Then **maximize**: `deficiency` is an attained finite `iSup` under `[Finite α]`
+(`partitionDef_le_deficiency` reversed via the attaining `f`), giving `D + def ≤ dim Z = hub`; wire
+into `rigidityMatrix_prop11` / `lem:case-III-rank-attainment`, both flip toward green. Then the
+`k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)), lifting
+22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three analytic prerequisites
 (i)/(ii)/(iii), the upper bound, the rank-attainment packaging, and both combinatorial factors
 (Gap-2/Gap-3) are green; `lem:case-III` stays red until the candidate-completion assembly lands.
 
@@ -214,7 +240,17 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **Gap-1 rank-attainment packaging landed (this commit).** `lem:case-III-rank-attainment` =
+- **Gap-1 `hub` foundation — `partitionMotions` landed (this commit).** `PanelLayer.lean`
+  (`BodyHingeFramework` namespace, first file seeing both `infinitesimalMotions` and
+  `deficiency`/`crossingEdges`): `partitionMotions f = Z ⊓ {S | IsPartitionConstant f S}` (motions
+  constant on each part of labeling `f`), with `partitionMotions_le_infinitesimalMotions`,
+  `trivialMotions_le_partitionMotions`, and the `def`-free floor `screwDim_le_finrank_infinitesimalMotions`
+  (`D ≤ dim Z`, every realization — the `partitionDef = 0` instance of `hub`). Axiom-clean, no
+  friction (mirrored the `infinitesimalMotions` submodule structure; floor via `finrank_mono` +
+  `finrank_trivialMotions`). No blueprint node (internal `hub`-construction infra). The remaining
+  `hub` = the dimension lower bound `D + partitionDef(f) ≤ finrank (partitionMotions f)` (rank-nullity
+  over the part-constant `W_f`, the hard piece) + maximize over the `def`-attaining `f`.
+- **Gap-1 rank-attainment packaging landed (commit 9c58954).** `lem:case-III-rank-attainment` =
   `PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` (`CaseI.lean`):
   the upper bound's `dim Z ≤ D|α| − #s`, the matroid-predicted count `#s ≥ D(|V|−1) − def`, the
   spanning split `D|V| = D(|V|−1) + D`, and the `hub` lower bound assemble (via `rigidityMatrix_prop11`)
