@@ -7,6 +7,7 @@ module
 
 public import Mathlib.Combinatorics.Graph.Basic
 public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Extensor
@@ -195,6 +196,33 @@ theorem exists_ne_zero_dotProduct_eq_zero {d m : ℕ} (hm : m < d + 1)
   obtain ⟨⟨p, hp⟩, hpne⟩ := @exists_ne _ (Submodule.nontrivial_iff_ne_bot.mpr hne) 0
   refine ⟨p, fun h => hpne (Subtype.ext (by simpa using h)), fun i => ?_⟩
   exact congrFun (LinearMap.mem_ker.mp hp) i
+
+/-- **The product-route producer for generic affine independence**
+(`lem:case-III-claim612-points-affineIndep`, the genericity-to-realization closure half). Suppose
+the `d + 1` candidate points are built as functions `p : (σ → ℝ) → Fin (d+1) → Fin d → ℝ` of a
+panel-coordinate seed `q : σ → ℝ`, and their affine-independence determinant — the homogenization
+determinant `det (homogenize ∘ (p q)) : ℝ` of `affineIndependent_fin_iff_det_homogenize` — is the
+evaluation of a *nonzero* multivariate polynomial `P : MvPolynomial σ ℝ` in `q` (`hdet`). Then there
+is a seed `q` at which the points `p q` are **affinely independent**.
+
+This is the genericity-free *closure* step: it composes the device's foundational non-root brick
+`MvPolynomial.exists_eval_ne_zero` (over the infinite field `ℝ`, a nonzero polynomial does not
+vanish identically; the same brick Case I uses to pick a shared seed) with the determinant
+characterization `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1, top-extensor form). It
+carries the genericity *content* as the hypothesis `hdet` — that the affine-independence
+determinant, as a function of the seed, is a nonzero polynomial — which is the irreducible
+genericity remainder of N3a (KT p. 691/698, `lem:genericity-device`: the determinant is nonzero
+because the panel coefficients are algebraically independent over `ℚ`). Parallel to the existence
+half `exists_ne_zero_dotProduct_eq_zero`, this isolates the genuinely genericity-bearing fact
+(`P ≠ 0`) from the surrounding linear-algebra glue. -/
+theorem exists_affineIndependent_of_det_polynomial_ne_zero {d : ℕ} {σ : Type*}
+    (p : (σ → ℝ) → Fin (d + 1) → Fin d → ℝ) {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (hdet : ∀ q, MvPolynomial.eval q P = (Matrix.of fun i => homogenize (p q i)).det) :
+    ∃ q : σ → ℝ, AffineIndependent ℝ (p q) := by
+  -- A nonzero polynomial over the infinite field `ℝ` has a non-vanishing point.
+  obtain ⟨q, hq⟩ := MvPolynomial.exists_eval_ne_zero hP
+  -- At that seed the determinant is nonzero, so the points are affinely independent.
+  exact ⟨q, (affineIndependent_fin_iff_det_homogenize (p q)).mpr (hdet q ▸ hq)⟩
 
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting

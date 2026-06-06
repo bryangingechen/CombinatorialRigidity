@@ -702,10 +702,34 @@ new content --- is Grassmann--Cayley projective duality.
   contains a nonzero vector --- a homogeneous point orthogonal to every $n_i$.
 \end{proof}
 
+\begin{lemma}[A nonzero determinant polynomial in the seed yields an affinely-independent realization; KT eq.\ (6.45), product-route closure half]
+  \label{lem:case-III-claim612-points-affineIndep-producer}
+  \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_of_det_polynomial_ne_zero}
+  \leanok
+  \uses{lem:affine-indep-iff, lem:genericity-device}
+  Suppose the four candidate points are built as functions $p \colon (\sigma \to \R) \to
+  \mathrm{Fin}\,4 \to \R^3$ of a panel-coordinate seed $q \colon \sigma \to \R$, and their
+  affine-independence determinant --- the homogenization determinant
+  $\det(\overline{p(q)}) = \det(\mathrm{homogenize} \circ p(q))$ of \cref{lem:affine-indep-iff} ---
+  is the evaluation at $q$ of a \emph{nonzero} multivariate polynomial $P \in \R[\sigma]$. Then there
+  is a seed $q$ at which the four points $p(q)$ are affinely independent. This is the genericity-free
+  \emph{closure} half of \cref{lem:case-III-claim612-points-affineIndep}: it isolates the genuinely
+  genericity-bearing fact ($P \ne 0$) from the surrounding linear algebra, exactly as the existence
+  half \cref{lem:case-III-claim612-panel-point-exists} isolates the dimension count.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Over the infinite field $\R$ a nonzero polynomial does not vanish identically (the device's
+  foundational non-root brick $\mathrm{MvPolynomial.exists\_eval\_ne\_zero}$, the same one Case~I
+  uses to pick a shared seed), so $P$ has a non-root $q$; there $\det(\overline{p(q)}) = P(q) \ne 0$,
+  and the determinant characterization \cref{lem:affine-indep-iff} turns this into affine
+  independence of $p(q)$.
+\end{proof}
+
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
   \label{lem:case-III-claim612-points-affineIndep}
   \uses{def:rigidity-matrix, def:panel-hinge-framework, lem:genericity-device,
-        lem:case-III-claim612-panel-point-exists}
+        lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer}
   Let $(G_v^{ab}, q)$ be a \emph{generic} nonparallel panel-hinge framework at $d = 3$
   (\cref{def:panel-hinge-framework}, \cref{lem:genericity-device}: the seed $q$ is generic, so the
   panel normals $n_a, n_b, n_c$ and the coefficients of their hyperplane equations are
@@ -737,9 +761,17 @@ new content --- is Grassmann--Cayley projective duality.
   representative incident to every chosen panel is the pure dimension count
   \cref{lem:case-III-claim612-panel-point-exists} (a system of $< d + 1$ homogeneous incidence
   equations always has a nonzero solution), green; what genericity adds is the
-  \emph{transversality} pinning each intersection to its expected dimension. A determinant
-  computation on the homogenized coordinates --- nonvanishing again by the algebraic independence of
-  the coefficients --- shows the four are affinely independent. The incidence pattern is read off the
+  \emph{transversality} pinning each intersection to its expected dimension. The
+  genericity-to-realization \emph{closure} --- a determinant computation on the homogenized
+  coordinates, nonvanishing at a generic seed, yielding the affine independence --- is the green
+  product-route producer \cref{lem:case-III-claim612-points-affineIndep-producer}: built as
+  functions of the seed $q$, the four points are affinely independent at any $q$ off the zero locus
+  of their homogenization determinant. The one red residual is its hypothesis: that this determinant,
+  read as a polynomial in $q$, is \emph{not the zero polynomial}. That nonvanishing-as-a-polynomial
+  is the irreducible genericity content (KT p.~691/698, \cref{lem:genericity-device}: the determinant
+  is a polynomial in the panel coefficients, which are algebraically independent over $\Q$, so it
+  cannot vanish identically) --- equivalently, foldable into the device's non-root product the way
+  the Claim-6.11 kernel folds the subgraph rank polynomials. The incidence pattern is read off the
   three vanishing/non-vanishing conditions $\langle \bar{p_i}, n_u \rangle = 0$.
 \end{proof}
 
