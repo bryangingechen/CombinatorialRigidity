@@ -418,6 +418,25 @@ noncomputable def complementIso {j : ℕ} (hj : j ≤ k + 2) :
       (finrank_exteriorPower_eq_finrank_dual hj)) ≪≫ₗ
     ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDualEquiv.symm
 
+/-- **The defining wedge-pairing property of `complementIso`** (`def:meet-complement-iso`, the
+staging lemma for the point-join ↔ panel-meet duality `lem:case-III-claim612-line-in-panel-union`).
+Pairing `complementIso hj X` against any `B : ⋀^(N−j) V` through the standard exterior-power basis's
+`toDual` reproduces the wedge pairing of `X` with `B`:
+`(b.exteriorPower (N−j)).toDual (complementIso hj X) B = screwAlgebraTopEquiv (X ∨ₑ B)`, i.e. the
+volume of the join `X ∧ B`. This is the characterizing identity of the complement iso — by
+construction `complementIso = (wedgePairing as an equiv) ≪≫ toDualEquiv.symm`, so applying
+`toDualEquiv` undoes the second factor and leaves `wedgePairing X` (`LinearEquiv.apply_symm_apply` +
+`linearEquivOfInjective_apply`). It is the metric-free Grassmann–Cayley duality dictionary entry the
+duality bridge consumes: it turns membership/annihilation statements about the panel-meet
+`complementIso (n_u ∧ n')` into the volume form `vol((n_u ∧ n') ∧ B)`, the bilinear pairing on
+which the point-join ↔ panel-meet proportionality rests. -/
+theorem complementIso_toDual {j : ℕ} (hj : j ≤ k + 2)
+    (X : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual (complementIso hj X) B
+      = wedgePairing k hj X B := by
+  rw [complementIso, LinearEquiv.trans_apply, ← Module.Basis.toDualEquiv_apply,
+    LinearEquiv.apply_symm_apply, LinearMap.linearEquivOfInjective_apply]
+
 /-! ## The regressive product (meet) `⋀^(N−a) V × ⋀^(N−b) V → ⋀^(N−(a+b)) V` (`def:meet`)
 
 The Grassmann–Cayley **meet** (regressive product), the dual of the Phase-17 join.

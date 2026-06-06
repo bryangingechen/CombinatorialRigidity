@@ -130,6 +130,35 @@ consume them; projective invariance is Phase~25.
   deferred to where an oriented meet consumes it.
 \end{proof}
 
+\begin{lemma}[Defining wedge-pairing property of the complement iso]
+  \label{lem:complement-iso-toDual}
+  \lean{CombinatorialRigidity.Molecular.complementIso_toDual}
+  \leanok
+  \uses{def:meet-complement-iso, def:meet-top-equiv}
+  Pairing $\mathrm{complementIso}\,X \in \bigwedge^{N-j} V$ against any
+  $B \in \bigwedge^{N-j} V$ through the standard exterior-power basis's
+  $\mathrm{toDual}$ reproduces the wedge pairing of $X$ with $B$:
+  \[
+    \langle \mathrm{complementIso}\,X,\ B \rangle
+      = \mathrm{wedgePairing}(X, B)
+      = \mathrm{vol}\,(X \vee B),
+  \]
+  the volume form of the join $X \wedge B$. This is the characterizing identity
+  of the complement iso, the metric-free Grassmann--Cayley duality dictionary
+  entry: it converts annihilation statements about the panel-meet
+  $\mathrm{complementIso}(n_u \wedge n')$ into the bilinear volume pairing
+  $\mathrm{vol}((n_u \wedge n') \wedge B)$ on which the point-join
+  $\leftrightarrow$ panel-meet proportionality
+  (\cref{lem:case-III-claim612-line-in-panel-union}) rests.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By construction $\mathrm{complementIso} = (\mathrm{wedgePairing}\text{ as an
+  equiv}) \mathbin{\circ} \mathrm{toDualEquiv}^{-1}$; applying $\mathrm{toDualEquiv}$
+  undoes the second factor (\texttt{LinearEquiv.apply\_symm\_apply}) and leaves
+  $\mathrm{wedgePairing}\,X$.
+\end{proof}
+
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
   \lean{CombinatorialRigidity.Molecular.meet}

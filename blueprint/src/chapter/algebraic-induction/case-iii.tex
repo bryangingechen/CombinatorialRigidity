@@ -712,7 +712,8 @@ Grassmann--Cayley projective duality.
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
   \label{lem:case-III-claim612-line-in-panel-union}
   \uses{def:join, def:meet, def:meet-complement-iso, def:panel-support-extensor,
-        lem:extensor-independence, lem:case-III-claim612-extensor-span}
+        lem:extensor-independence, lem:case-III-claim612-extensor-span,
+        lem:complement-iso-toDual}
   At $d = 3$ ($D = 6$, $k = 2$, $\mathrm{ScrewSpace}\,2 = \bigwedge^2 \R^4$), let $p_i, p_j$ be two
   of the points of \cref{lem:case-III-claim612-points-affineIndep} whose connecting line
   $L = p_i p_j$ lies in a panel $\Pi(u)$ ($u \in \{a, b, c\}$). Then the point-join
@@ -730,12 +731,20 @@ Grassmann--Cayley projective duality.
   (\cref{def:join}) is the line's supporting extensor written from \emph{two points on it}; the
   meet $C(L)$ (\cref{def:meet}, the complement iso \cref{def:meet-complement-iso} of the
   grade-$2$ join of two panel normals, \cref{def:panel-support-extensor}) is the same line's
-  supporting extensor written from \emph{two hyperplanes through it} --- and the Grassmann--Cayley
+  supporting extensor written from \emph{two hyperplanes through it}, and the Grassmann--Cayley
   duality of \cref{sec:molecular-meet} makes these two presentations of a $1$-dimensional
-  projective subspace agree up to a nonzero scalar (both span the $1$-dimensional extensor line of
-  $L$ in $\bigwedge^2 \R^4$, which is nonzero precisely because $L$ is a genuine line). The
-  annihilation transfer is then immediate: $r(C(L)) = 0$ and $\bar{p_i} \vee \bar{p_j}
-  = \lambda\, C(L)$ give $r(\bar{p_i} \vee \bar{p_j}) = \lambda\, r(C(L)) = 0$. This is the
+  projective subspace agree up to a nonzero scalar. The duality runs through the metric-free
+  dictionary entry \cref{lem:complement-iso-toDual} (green): pairing $\mathrm{complementIso}$ of a
+  decomposable $n_u \wedge n'$ against a $2$-extensor reduces to the volume form
+  $\mathrm{vol}((n_u \wedge n') \wedge \cdot)$, so the incidence
+  $\langle \bar{p_i}, n_u \rangle = \langle \bar{p_i}, n' \rangle = 0$ (and likewise for $\bar{p_j}$)
+  puts both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ in the $1$-dimensional extensor line of $W = \{n_u,
+  n'\}^{\perp} = \mathrm{span}\{\bar{p_i}, \bar{p_j}\}$ (nonzero precisely because $L$ is a genuine
+  line). The remaining content beyond the dictionary entry is: (i) $\mathrm{complementIso}(n_u \wedge
+  n')$ lands in $\bigwedge^2 W$ (the decomposable-of-orthogonal-complement step), and (ii)
+  $\bigwedge^2 W$ is $1$-dimensional for a $2$-dimensional $W$, forcing the two nonzero members to be
+  scalar multiples $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then
+  immediate: $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda\, r(C(L)) = 0$. This is the
   duality KT use implicitly when reading eq.~(6.45): the spanning family of
   \cref{lem:case-III-claim612-extensor-span} (point-joins) and the annihilated family of the
   contrapositive (panel-meets) are the \emph{same} extensors of the lines in the panel union.
