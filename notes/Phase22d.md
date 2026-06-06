@@ -2,25 +2,49 @@
 
 **Status:** in progress (opened 2026-06-05 design-pass-first; re-scoped
 2026-06-05 per a fresh user direction; **Gap-2 leaf landed green 2026-06-06**;
-**Gap-3 design recon 2026-06-06, docs-only**). This sub-phase builds the
-**missing-green-machinery prerequisites of KT Claim 6.11**, bottom-up — not the
-candidate scaffold and not an axiomatized Claim 6.11.
+**Gap-3 design recon 2026-06-06, docs-only**; **footnote-6 kernel recon
+2026-06-06, docs-only** — the eq. (6.22)/(footnote-6) re-test against the *actual*
+`HasGenericFullRankRealization` motive + the device's real `_ofNormals`/`_ofParam`
+interface). This sub-phase builds the **missing-green-machinery prerequisites of KT
+Claim 6.11**, bottom-up — not the candidate scaffold and not an axiomatized Claim 6.11.
 
 ## Current state
 
-**This commit is the design-pass-first recon of Gap 3 (the nested
-IH-at-restriction), docs-only** — settling Gap-3's buildability + node cut before
-any build, the way the Gap-2 re-scope recon preceded the Gap-2 build. **Verdict
-(load-bearing): Gap 3 SPLITS.** Its combinatorial shell (`def(G̃_v) ≤ D−2` ⟹
-`G_v` minimal `k'`-dof) is green; its analytic core — the eq. (6.22) rank of the
-*specific restricted realization* `R(G_v, q|_{E_v})` — is the **irreducible
-research-shaped kernel** (NOT buildable from green machinery the way Gap 2 turned
-out to be), for a structural reason verified against the real signatures: the
-project's IH motive is **existence-only** and KT's eq. (6.22) + footnote 6 need a
-**rank-of-a-given-realization** statement the existence motive cannot deliver. The
-leaf-most buildable Gap-3 piece — the combinatorial shell `splitOff_removeVertex_minimalKDof`
-— is cut below; the kernel is isolated as a named carry-as-hypothesis red node. See
-*Gap 3 recon (2026-06-06)* below.
+**This commit is the design-pass-first "size the kernel" recon of KT eq. (6.22) /
+footnote 6, docs-only** — a re-test, against the *actual* green signatures (the
+22b-strengthened motive + the device's two-direction interface), of the hypothesis
+that eq. (6.22) re-exposes from green 21b/22b machinery rather than being genuinely
+new analytic content. **Verdict (load-bearing): the hypothesis is REFUTED on its
+bottom line, but two of its three structural claims are CONFIRMED.** Confirmed: (a)
+the matroid↔row link is *not* a separate matroid-isomorphism — it is the IH itself
+(`rank R = D(|V|−1) − def`, the abstract `rigidityMatrix_prop11` bridge, which takes
+the two rank bounds `hub`/`hgen` as *hypotheses*, green-modulo); (b) step ③
+(redundancy from the rank count) is pure linear algebra given (6.18)+(6.22).
+Refuted: eq. (6.22) does **NOT** re-expose, because the kernel it bottoms on —
+KT footnote 6's *"this particular algebraically-independent seed `q` attains the
+maximal/IH rank"* — is **genuinely absent from green machinery**, for a *sharpened*
+structural reason this recon pins exactly (the prior Gap-3 recon stated it
+loosely): the project has **no `AlgebraicIndependent`/transcendence machinery at
+all**, the device engine runs *only* the existence direction
+(`MvPolynomial.exists_eval_ne_zero` ⟹ *∃* a non-root), and `IsGeneralPosition` is
+*only* degree-1 pairwise-normal transversality — none of these certifies a *given*
+seed is a non-root of the rank polynomial `Q`. This **confirms and sharpens** the
+prior Gap-3 verdict (irreducible kernel); it does not overturn it the way the Gap-2
+recon overturned its opening verdict. The eq. (6.18) input is NOT separately in
+hand either — 22c's `case_II_placement_eq612` *is* the `≥ D(|V|−1)−1` lower-bound
+brick; the full `D(|V|−1)` (eq. (6.18)) is exactly the missing `+1` Claim 6.11
+supplies. See *Footnote-6 kernel recon (2026-06-06)* below. The leaf-most buildable
+Gap-3 piece — the combinatorial shell `splitOff_removeVertex_minimalKDof` — stays
+the next build (unchanged from the Gap-3 recon); the kernel stays a named
+carry-as-hypothesis red node.
+
+**Earlier (Gap-3 recon, 2026-06-06): Gap 3 SPLITS.** Its combinatorial shell
+(`def(G̃_v) ≤ D−2` ⟹ `G_v` minimal `k'`-dof) is green; its analytic core — the
+eq. (6.22) rank of the *specific restricted realization* `R(G_v, q|_{E_v})` — is the
+**irreducible research-shaped kernel** (NOT buildable from green machinery the way
+Gap 2 turned out to be). The leaf-most buildable Gap-3 piece — the combinatorial
+shell `splitOff_removeVertex_minimalKDof` — is cut below; the kernel is isolated as
+a named carry-as-hypothesis red node. See *Gap 3 recon (2026-06-06)* below.
 
 The Gap-2 leaf **landed green + axiom-clean** (prior commit) as
 `Graph.splitOff_exists_base_inter_fiber_lt` (`ForestSurgery.lean`), the
@@ -408,6 +432,179 @@ as 22a→22b, 22c→22d). The honesty-gate 3rd half (structural fidelity): the l
 KT's own eq. (6.22) step-1 (the `def(G̃_v) ≤ h` count + `subgraph_minimality`), not a
 re-expression; the kernel is KT's footnote 6, carried honest as a red obligation.
 
+## Footnote-6 kernel recon (2026-06-06) — "size the kernel" against the ACTUAL green signatures (design-pass-first, docs-only)
+
+A re-test of the prior Gap-3 verdict, prompted by the user's sharper hypothesis:
+that eq. (6.22) re-exposes from green 21b/**22b** machinery (NOT a separate
+matroid-iso), with the kernel collapsing to footnote 6 = "the Phase-21b genericity
+device run in the direction we haven't exposed." Verified against the **actual**
+current Lean signatures via lean-lsp/Read (the prior Gap-3 recon cited the *bare*
+`HasFullRankRealization`; the user pointed at the 22b-strengthened
+`HasGenericFullRankRealization`, so a re-read was warranted). Five sub-questions,
+each settled against a cited signature.
+
+### Q1 — the motive (existence vs. given-realization). REFUTES the re-expose hope.
+
+`PanelHingeFramework.HasGenericFullRankRealization` (`PanelHinge.lean:968`):
+```
+∃ Q : PanelHingeFramework k α β,
+  Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G) ∧
+  (the link-recording conjunct on Q.ends)
+```
+The 22b strengthening added **`Q.IsGeneralPosition`** + the **link-recording**
+conjunct (route (i)) — but it is **still `∃ Q`, an EXISTENCE statement**. It gives
+"*some* general-position rigid framework on `G`", **not** "the framework built from
+the *given*, inductively-fixed seed `q` attains full rank." `IsGeneralPosition`
+(`PanelHinge.lean:120`) is **only** `∀ a b, a ≠ b → LinearIndependent ![normal a,
+normal b]` — degree-1 *pairwise-normal transversality*, the per-hinge non-degeneracy
+the splice/row bricks consume. It does **not** control the high-degree
+Gram-determinant rank polynomial `Q`. So even with the 22b strengthening, the motive
+does not deliver footnote 6's payload. (The Gap-2 overturn worked because the green
+proof already *carried* the discarded content; here the strengthening is the wrong
+*kind* of content — pairwise transversality, not "this seed is a non-root of `Q`".)
+
+### Q2 — the device engine (existence-of-a-good-point vs. this-point-attains-max). The precise gap, pinned.
+
+The device has **two halves**, and the second half *is* a "given point attains the
+max rank" lemma — but only relative to a polynomial manufactured from a rigid seed:
+- **Producer** `exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}`
+  (`GenericityDevice.lean:1112/1201/1288`): from a **rigid seed `q₀`**, produces
+  `∃ Q, eval q₀ Q ≠ 0 ∧ ∀ q, eval q Q ≠ 0 → (the s-subfamily is LI at q)`. The
+  engine underneath is `exists_polynomial_ne_zero_of_linearIndependent_at`
+  (`Rank.lean:474`) — `Q` is a *Gram-determinant minor* selected at `q₀`.
+- **Consumer** `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero{,_linking,_linking_set}`
+  (`GenericityDevice.lean:1378/1442/1517`): **GIVEN `eval q Q ≠ 0` for a given `q`**,
+  concludes `(ofNormals G ends q)` rigid on `V(G)` (pure rank-nullity, **no GP at
+  `q` needed** — `:1367`). This *is* "this specific point attains the maximal rank."
+
+**So the engine CAN be re-pointed to a given point — but only if you can prove
+`eval q Q ≠ 0` for the SPECIFIC `Q` the producer built from `q₀`.** That is the
+entire gap. footnote 6 needs `eval q Q ≠ 0` to hold *because `q`'s coordinates are
+algebraically independent over ℚ* (an alg.-indep. point lies off every nonzero
+rational polynomial's zero locus). **The project has no such lemma — and no
+`AlgebraicIndependent`/transcendence machinery at all** (confirmed: grep for
+`AlgebraicIndependent`/`transcend`/`aeval_injective` over the whole tree returns
+*nothing*; the only `nonzero-at-a-point` brick is `MvPolynomial.exists_eval_ne_zero`,
+`Funext.lean:40`, which gives *∃ a* non-root, never certifies a *given* one). The
+`ofParam`/`withMomentNormals` constructions (`PanelHinge.lean:182/225`,
+`isGeneralPosition_ofParam`) give a *constructible* GP seed (moment curve, distinct
+params ⟹ pairwise-independent normals) — but GP-ness, again, is not non-root-ness of
+`Q`. **Precise gap:** the device exposes `(∃ Q, …) ∧ (∀ q non-root ⟹ rigid)`; footnote
+6 needs `q-the-given-seed is a non-root of THAT Q`, which requires
+`algebraically-independent ⟹ off the zero locus of any nonzero ℚ-polynomial` — a
+genuinely-new analytic brick.
+
+### Q3 — restriction-preserves-genericity. ELEMENTARY at the object level; vacuous for the kernel.
+
+"Restrict `q` to `E_v` ⟹ still GP/expressible" is elementary: the object
+`R(G_v, q|_{E_v})` is exactly `(ofNormals G_v^{ab} ends q).withGraph G_v`
+(`PanelHinge.lean` `withGraph`, `withGraph_normal` is `rfl` — same normals, smaller
+graph), and `IsGeneralPosition` reads only the normals, so it is inherited verbatim
+(`withNormal`/`withGraph` keep normals; same fact 22c's `case_II_placement_eq612`
+already uses, `CaseI.lean:2382`). **But this only preserves GP = pairwise
+transversality, which Q2 showed is not the kernel.** The thing footnote 6 needs to
+survive restriction is *algebraic independence of the coordinate family* — which the
+project never records in the first place (Q2), so there is nothing to restrict. So
+Q3 is "elementary but beside the point": the restriction is free; what it would need
+to carry (alg. independence) is absent.
+
+### Q4 — IH-application validity. VALID as a smaller instance; but routed through the WRONG branch + the existence shape.
+
+`minimal_kdof_reduction` (`ForestSurgery.lean:992`) is **strong induction on
+`V(G).ncard`** (`:1005`, `Nat.strong_induction_on`). `G_v = removeVertex v` drops
+`|V|` by one, so it **is** a strictly-smaller instance the induction *could* cover.
+Two caveats: (i) the eq. (6.22) subgraph arises in the **`hsplit` branch** (Case
+III/II, no proper rigid subgraph), whose IH (`:1000`) is handed on
+`G.splitOff v a b e₀` — *same* vertex count — not on the vertex-reduced
+`G_v = G − v`; so the IH at `G_v` is a *nested, second* IH-invocation KT makes
+inside the splitting-off case (KT's footnote-6 move), not the branch's own IH. (ii)
+even granting the nested invocation, the IH delivers only
+`HasFullRankRealization k G_v` = *∃ some* full-rank framework on `G_v` (Q1) — it does
+**not** hand you the realization *at the restriction of the already-fixed `q`*. So
+the IH is applicable to `G_v` as a smaller graph, but its output is the wrong shape
+for eq. (6.22) (which is about *the* restricted `q`, not *a* fresh witness).
+
+### Q5 — step ③ pure-LA + eq. (6.18) in hand. ③ CONFIRMED pure LA; (6.18) NOT separately in hand.
+
+- **Step ③ (redundancy from the count) is pure linear algebra given (6.18)+(6.22)**:
+  CONFIRMED. With `rank R(G_v^{ab},q) = D(|V|−1)` (6.18) and
+  `rank R(G_v, q|_{E_v}) = D(|V|−1) − k'` (6.22), and `R(G_v, q|_{E_v}) =
+  R(G_v^{ab},q)` minus the `D−1` `ab`-rows, the `k' ≤ D−2 < D−1` corank over `D−1`
+  rows forces (pigeonhole) one `ab`-row redundant. No genericity, no matroid — the
+  `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` rank-nullity
+  arithmetic (`GenericityDevice.lean:1411–1429`) is the template; this part is
+  buildable *given the two rank inputs*.
+- **eq. (6.18) (`rank R(G_v^{ab},q)` FULL) is NOT separately in hand.** 22c's
+  `case_II_placement_eq612` (`CaseI.lean:2331`) takes the inductive `Gv`-realization
+  as a *hypothesis* (`hrig`) and produces the `≥ D(|V|−1) − 1` lower bound — it is
+  *one row short*. The full `D(|V|−1)` (= eq. (6.18)) is **exactly** the `+1` that
+  Claim 6.11 supplies. So eq. (6.18) and the Claim-6.11 redundant row are the *same*
+  missing content; step ③ cannot run until that `+1` lands, and that `+1` is what
+  eq. (6.22)'s kernel is for. (The hypothesis's "(6.18) already in hand from 22c's
+  seed `q`" is **incorrect** — 22c gives the `−1` brick, not full rank.)
+
+### The matroid↔row link confirmation (the hypothesis's correct half)
+
+The hypothesis that "the matroid only enters combinatorially (`k' ≤ 4`); the
+rank↔M(G̃) link is the IH itself" is **CONFIRMED**: the only rank↔deficiency bridge
+is `rigidityMatrix_prop11` (`PanelHinge.lean:1176`), which is *abstract* — it takes
+the two rank bounds `hub` (`D + def ≤ dim Z`) and `hgen` (`dim Z ≤ D + def`) as
+**explicit hypotheses** and concludes `RankHypothesis (def)`. Its own doc-comment
+(`:1174`) says: *"the generic-rank argument (Claim 6.4) selects the point attaining
+this max; that is the Phase-21b device."* So the matroidal half (`def = corank
+M(G̃)`) is green (`rank_add_deficiency_eq`); the *analytic* "the seed attains the
+matroid-predicted rank" lives in the device — which runs existence-only. No file
+contains a `panelRow`↔`matroidMG` bridge lemma (re-confirmed: the files mentioning
+both do so only in *prose*, never as a theorem statement).
+
+### Net verdict (the deliverable)
+
+**eq. (6.22), hence Claim 6.11's analytic kernel, is NOT buildable as a modest
+re-exposure of green 21b/22b machinery.** It needs **genuinely-new analytic
+content**, isolated exactly:
+
+> **The new content = a `non-root-from-algebraic-independence` brick:** the
+> inductively-fixed seed `q` (whose panel coordinates are algebraically independent
+> over ℚ — KT's standing inductive choice, footnote 6) is a **non-root of the device's
+> rank polynomial `Q`** (`eval q Q ≠ 0`), hence the device *consumer*
+> `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero{_linking_set}`
+> certifies `(ofNormals G_v ends q|_{E_v})` rigid at the *given* `q`. The two halves
+> of this brick: **(i)** record/produce the seed `q` as algebraically independent
+> over ℚ (NEW: no `AlgebraicIndependent` machinery exists), and **(ii)**
+> `algebraically-independent point ⟹ off the zero locus of any nonzero rational
+> polynomial` (NEW: a transcendence-degree / `MvPolynomial.eval`-injectivity fact —
+> mathlib has `MvPolynomial` algebraic-independence API, so this half is *mirrorable*
+> from upstream, but it is still net-new to this project).
+
+This is the **same family** as the prior recon's diagnosis, but now *named to the
+exact missing lemma*. It is **not** "the device run backwards" in the loose sense:
+the device's *consumer half already runs the given-point direction* — what is
+missing is the bridge that proves the inductive seed satisfies the consumer's
+`eval q Q ≠ 0` hypothesis. The kernel does **not** get built here; it is carried as
+the named research-shaped red node (Gap-3 kernel, likely merged with Gap 1 — *both*
+need "the seed attains the matroid-predicted rank", and both bottom on the same
+`non-root-from-alg-indep` brick). **The build queue is unchanged** by this recon:
+the next build is still the Gap-3 *combinatorial shell* `splitOff_removeVertex_minimalKDof`.
+
+### Leaf-most-first node cut for the kernel sub-phase (when it opens; do NOT pre-commit the finer internal cut)
+
+When the kernel sub-phase opens, the leaf-most-first cut suggested by the above:
+- **(leaf, mirrorable) `MvPolynomial.eval_ne_zero_of_algebraicIndependent`** (working
+  name) — the upstream-flavored half (ii): an algebraically-independent
+  coordinate-tuple over ℚ is a non-root of every nonzero `MvPolynomial _ ℚ` (cast to
+  ℝ). Mirror under `Mathlib/Algebra/MvPolynomial/` if mathlib's
+  `AlgebraicIndependent` API gives it cheaply; pure algebra, no rigidity.
+- **(the seed) `…_seed_algebraicIndependent`** — record the inductive seed `q` as
+  alg.-indep. over ℚ (KT footnote 6's standing choice). NEW; the honest place this
+  enters the induction is a strengthened/threaded seed-genericity invariant — likely
+  its own recon at open (it interacts with the existence-only motive: the motive may
+  need a *third* form carrying "the witness is alg.-indep.", paralleling the 22b GP
+  + link-recording strengthenings).
+- **(the kernel) `lem:case-III-seed-rank-bridge`** — `corank R(ofNormals G_v ends
+  q|_{E_v}) = def(G̃_v)` at the seed, composing the two leaves with the device
+  consumer + `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. Stays red /
+  carry-as-hypothesis until the two leaves land.
+
 ## Where 22c left off (the stratum-1 brick this crux completes)
 
 Phase 22c landed **stratum 1** — the eq. (6.12) `+(D−1)` block-triangular
@@ -439,18 +636,24 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
   New green node `lem:case-III-gap3-minimalKDof`; `lem:case-III` /
   `lem:case-II-realization` stay red.
 - [ ] (deferred, **research-shaped kernel**) the eq. (6.22) generic-rank transfer —
-  `corank R(ofNormals G_v ends q) = def(G̃_v)` at the inductively-fixed seed `q` (KT
-  footnote 6: algebraically-independent seed ⟹ generic ⟹ attains the IH's maximal
-  rank). NOT green-buildable: the IH motive is existence-only, the device runs the
-  opposite direction (see recon item 3). Likely **merges with Gap 1** into one "seed
-  attains matroid-predicted rank" node. Carry-as-hypothesis red node
-  `lem:case-III-gap3-rank` / `lem:case-III-seed-rank-bridge`.
+  `corank R(ofNormals G_v ends q|_{E_v}) = def(G̃_v)` at the inductively-fixed seed
+  `q` (KT footnote 6). NOT green-buildable (re-confirmed + **sharpened** by the
+  footnote-6 kernel recon, 2026-06-06): the motive is existence-only even with the
+  22b `IsGeneralPosition`+link-recording strengthening (`IsGeneralPosition` is only
+  degree-1 pairwise transversality, not non-root-ness of the rank polynomial `Q`);
+  the device *consumer* `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`
+  DOES run the given-point direction, but needs `eval q Q ≠ 0`, and **the project has
+  no `AlgebraicIndependent` machinery** to certify the alg.-indep. seed is a non-root.
+  The genuinely-new brick, named exactly: `MvPolynomial.eval_ne_zero_of_algebraicIndependent`
+  (mirrorable upstream half) + the seed-alg-indep invariant. Likely **merges with
+  Gap 1**. Carry-as-hypothesis red node `lem:case-III-gap3-rank` /
+  `lem:case-III-seed-rank-bridge`. See *Footnote-6 kernel recon (2026-06-06)*.
 - [ ] (deferred) Gap 1 `M(G̃)`↔row bridge; the candidate-completion + Claim-6.12
   disjunction; the `d=3` assembly. Named, unlettered (below).
 
 ## Blockers / open questions
 
-- **Gap-3 verdict (this recon): Gap 3 SPLITS** — green combinatorial shell
+- **Gap-3 verdict (Gap-3 recon): Gap 3 SPLITS** — green combinatorial shell
   (`splitOff_removeVertex_minimalKDof`, the leaf) + an **irreducible
   research-shaped kernel** (eq. (6.22) generic-rank transfer). Unlike Gap 2 (whose
   green substrate the opening recon understated), Gap 3's kernel content is
@@ -458,11 +661,24 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
   opposite direction from KT footnote 6. So the kernel is carried-as-hypothesis (a
   red node), not built — the recommended Phase-21b escalation idiom. See *Gap 3
   recon (2026-06-06)* items 2–3.
-- **Open: do Gap 3's kernel and Gap 1 merge?** The recon's item-3 sharpening says
-  the eq. (6.22) generic-rank transfer and the Gap-1 `M(G̃)`↔row bridge share one
-  kernel ("the rigidity matrix at the fixed seed `q` attains the rank `M(G̃)`
-  predicts"). Confirm when the kernel sub-phase opens whether to cut them as one
-  node or two; do not pre-commit now.
+- **Footnote-6 kernel verdict (footnote-6 kernel recon, 2026-06-06): eq. (6.22) is
+  NOT a re-exposure of green machinery — CONFIRMS + SHARPENS the Gap-3 verdict.**
+  The hypothesis that the 22b-strengthened `HasGenericFullRankRealization` motive +
+  the device's `_ofNormals` consumer would re-expose eq. (6.22) is **refuted on the
+  bottom line** (the motive is still `∃ Q`, existence; `IsGeneralPosition` is only
+  pairwise transversality, not non-root-ness of `Q`) but **confirms two of its three
+  structural claims**: the matroid↔row link is the IH (`rigidityMatrix_prop11`,
+  green-modulo, takes the rank bounds as `hub`/`hgen` hypotheses), and step ③ is pure
+  LA given (6.18)+(6.22). The genuinely-new content is now named exactly: a
+  `non-root-from-algebraic-independence` brick (the project has **zero**
+  `AlgebraicIndependent` machinery). eq. (6.18) is NOT separately in hand — 22c gives
+  the `−1` brick, the full rank is the Claim-6.11 `+1`. See *Footnote-6 kernel recon
+  (2026-06-06)* Q1–Q5 + Net verdict.
+- **Open: do Gap 3's kernel and Gap 1 merge?** The recons' sharpenings say the
+  eq. (6.22) generic-rank transfer and the Gap-1 `M(G̃)`↔row bridge share one kernel
+  ("the rigidity matrix at the fixed seed `q` attains the rank `M(G̃)` predicts" —
+  both bottoming on the `non-root-from-alg-indep` brick). Confirm when the kernel
+  sub-phase opens whether to cut them as one node or two; do not pre-commit now.
 - **(Gap-2, resolved):** the sharp upper bound `|B'∩ãb| ≤ D−2` came from the
   strengthened `forest_surgery_count`'s degree-count, not a separate sub-leaf — see
   *Current state*. The open construction question closed.
@@ -476,29 +692,43 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
 
 ## Hand-off / next phase
 
-**This commit is the design-pass-first recon of Gap 3 (docs-only)** — the check
-the Gap-2 hand-off flagged. Verdict: **Gap 3 splits** into a green combinatorial
-shell + an irreducible research-shaped kernel (full reasoning + signature
-verification in *Gap 3 recon (2026-06-06)*). The shell is cut as the next build;
-the kernel is carried-as-hypothesis. `lem:case-III` / `lem:case-II-realization`
-stay red. No Lean, no build, no `\leanok`/`\lean{}` changes this commit.
+**This commit is the design-pass-first "size the kernel" recon of KT eq. (6.22) /
+footnote 6 (docs-only).** Verdict: eq. (6.22) is **NOT** a modest re-exposure of
+green 21b/22b machinery — it needs **genuinely-new analytic content**, now named to
+the exact missing lemma: a `non-root-from-algebraic-independence` brick (the seed's
+alg.-indep. panel coords ⟹ non-root of the device's rank polynomial `Q` ⟹ the
+green device consumer `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`
+certifies the *given* seed rigid). The project has **zero** `AlgebraicIndependent`
+machinery. This **confirms + sharpens** the prior Gap-3 verdict (does not overturn
+it). Two of the user's three structural claims confirmed (matroid↔row link = the IH;
+step ③ = pure LA); the bottom line refuted; eq. (6.18) is NOT separately in hand
+(22c gives the `−1`, Claim 6.11 supplies the `+1`). Full Q1–Q5 reasoning +
+signature citations in *Footnote-6 kernel recon (2026-06-06)*. `lem:case-III` /
+`lem:case-II-realization` stay red. No Lean, no build, no `\leanok`/`\lean{}`
+changes this commit.
 
-**The next concrete commit builds the Gap-3 leaf
+**The next concrete commit is UNCHANGED — the Gap-3 leaf
 `Graph.splitOff_removeVertex_minimalKDof`** (in `ForestSurgery.lean` next to the
 Gap-2 leaf): from the Gap-2 leaf's base `B'` + the green def-count chain
 (`subgraph_minimality`, `removeVertex_deficiency_ge`, `rank_add_deficiency_eq`,
 `matroidMG_restrict_mulTilde`, `mulTilde_removeVertex_le_splitOff`), prove
 `G_v = removeVertex v` is minimal `k'`-dof with `0 ≤ k' ≤ D−2`. Pure `M(G̃)`
-matroid theory, no rigidity matrix, **buildable** (count closes — recon item 4).
-New green node `lem:case-III-gap3-minimalKDof`.
+matroid theory, no rigidity matrix, **buildable**. New green node
+`lem:case-III-gap3-minimalKDof`. (This recon settles the *kernel's* shape; it does
+not change the build queue — the combinatorial shell is still leaf-most.)
 
 **After that, the research-shaped kernel** (eq. (6.22) generic-rank transfer) +
-**Gap 1** (`M(G̃)`↔row bridge) are the two remaining research-shaped nodes; the
-recon's item-3 sharpening argues they likely **merge into one** "the rigidity
-matrix at the inductively-fixed seed `q` attains the rank `M(G̃)` predicts" node
-(combinatorial corank = linear corank at `q`). They want their own dedicated
-math-first sub-phase, carried-as-hypothesis (red) until discharged. Do NOT
-pre-commit their internal cut now (defer-the-finer-cut, as 22a→22b, 22c→22d).
+**Gap 1** (`M(G̃)`↔row bridge) are the two remaining research-shaped nodes; they
+likely **merge into one** "the rigidity matrix at the inductively-fixed seed `q`
+attains the rank `M(G̃)` predicts" node, **both bottoming on the
+`non-root-from-algebraic-independence` brick** this recon named. Suggested
+leaf-most-first cut for that sub-phase: (i) the mirrorable
+`MvPolynomial.eval_ne_zero_of_algebraicIndependent` half, (ii) the seed-alg-indep
+invariant (interacts with the existence-only motive — may need a *third* motive
+form), (iii) the kernel `lem:case-III-seed-rank-bridge` composing them with the
+device consumer + `rigidityMatrix_prop11`. They want their own dedicated math-first
+sub-phase, carried-as-hypothesis (red) until discharged. Do NOT pre-commit their
+internal cut now (defer-the-finer-cut, as 22a→22b, 22c→22d).
 
 The remaining pieces (the candidate-completion + Claim-6.12 disjunction, the
 `d=3` assembly, general-`d` Phase 23) stay the **named, deferred, unlettered**

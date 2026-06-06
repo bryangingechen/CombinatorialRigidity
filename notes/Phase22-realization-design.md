@@ -2284,6 +2284,61 @@ seed (one `q₀`, one `F = ofNormals G ends q₀`), splits rows into two blocks,
 it; the second block is a single re-inserted vertex, so the `withNormal` 1-extension replaces Case I's
 contraction/`extProj` machinery (22b's `degeneratePlacement`/`extProj` confirmed not reused, §1.27/§1.28).
 
+### 1.30 Phase 22d, footnote-6 kernel recon — eq. (6.22) is NOT a green re-exposure; the genuinely-new content is a `non-root-from-algebraic-independence` brick (2026-06-06)
+
+A "size the kernel" re-test of the prior Gap-3 verdict (`notes/Phase22d.md` *Gap 3
+recon*), against the **actual** current signatures (the user flagged that the Gap-3
+recon cited the *bare* `HasFullRankRealization`, while 22b strengthened the
+generic-case motive). The hypothesis under test: eq. (6.22) re-exposes from green
+21b/22b machinery, the kernel collapsing to footnote 6 = "the Phase-21b device run
+in the direction we haven't exposed." **Verdict: refuted on the bottom line, but two
+of its three structural claims confirmed.** Verified by lean-lsp/Read against the
+real defs; no Lean / `\leanok` / blueprint edits (decision-support, like §1.4–§1.29).
+
+**The three structural claims.** (a) *matroid↔row link is the IH, not a separate
+iso* — **CONFIRMED**: the only bridge is `rigidityMatrix_prop11` (`PanelHinge.lean:1176`),
+abstract, taking the rank bounds `hub`/`hgen` as hypotheses; its doc-comment names
+the Phase-21b device as the thing selecting the max-attaining point. (b) *step ③
+(redundancy from the count) is pure LA given (6.18)+(6.22)* — **CONFIRMED**
+(pigeonhole over the `D−1` `ab`-rows with corank `k' ≤ D−2`; the rank-nullity
+template is `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`'s body).
+(c) *eq. (6.22) re-exposes from the device* — **REFUTED**.
+
+**Why (c) is refuted, pinned to signatures.** The 22b motive
+`HasGenericFullRankRealization` (`PanelHinge.lean:968`) added `Q.IsGeneralPosition`
++ link-recording but is **still `∃ Q`** (existence). `IsGeneralPosition`
+(`:120`) is **only** `∀ a≠b, LinearIndependent ![normal a, normal b]` — degree-1
+pairwise transversality, NOT non-root-ness of the rank polynomial. The device has
+*two* halves: the producer `exists_rankPolynomial_of_rigidOn{_linking_set}`
+(`GenericityDevice.lean:1112/1288`, from a rigid seed `q₀` ⟹ `∃ Q, eval q₀ Q ≠ 0 ∧
+∀ non-root ⟹ LI`) and the consumer
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero{_linking_set}`
+(`:1378/1517`, **given `eval q Q ≠ 0` ⟹ rigid at that `q`**, no GP needed). So the
+consumer *already runs the given-point direction* — the gap is proving `eval q Q ≠ 0`
+for the specific `Q`. footnote 6 supplies this from *algebraic independence of the
+seed over ℚ*, and **the project has zero `AlgebraicIndependent`/transcendence
+machinery** (grep-confirmed tree-wide; the only non-zero-at-a-point brick is
+`MvPolynomial.exists_eval_ne_zero`, which gives *∃ a* non-root, never a *given* one).
+
+**The genuinely-new content, named exactly.** A `non-root-from-algebraic-independence`
+brick = **(i)** mirrorable `MvPolynomial.eval_ne_zero_of_algebraicIndependent` (alg.-indep.
+tuple ⟹ off every nonzero ℚ-polynomial's zero locus; mathlib has `AlgebraicIndependent`
+API, so half is upstream-flavored) + **(ii)** a seed-alg-indep invariant threaded
+through the induction (NEW; may need a *third* motive form alongside the 22b GP +
+link-recording strengthenings). Then the kernel `lem:case-III-seed-rank-bridge`
+(`corank R(ofNormals G_v ends q|_{E_v}) = def(G̃_v)`) composes (i)+(ii) with the
+device consumer + `rigidityMatrix_prop11`. **eq. (6.18) (full rank of `R(G_v^{ab},q)`)
+is NOT separately in hand** — 22c's `case_II_placement_eq612` (`CaseI.lean:2331`) is
+the `≥ D(|V|−1)−1` lower-bound brick; the full `D(|V|−1)` *is* the Claim-6.11 `+1`.
+
+**Net (build queue unchanged).** This refines the prior verdict from "irreducible
+kernel" to "irreducible kernel = a *named* `non-root-from-alg-indep` brick"; it does
+**not** overturn it (unlike the Gap-2 overturn, the strengthening here is the wrong
+*kind* of content). The next build stays the Gap-3 combinatorial shell
+`splitOff_removeVertex_minimalKDof`; the kernel (likely merged with Gap 1) is a
+later dedicated math-first sub-phase, carried-as-hypothesis. Full Q1–Q5 in
+`notes/Phase22d.md` *Footnote-6 kernel recon (2026-06-06)*.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
