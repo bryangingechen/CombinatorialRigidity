@@ -1452,6 +1452,163 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α] [F
   let ⟨Q, hQg, hQgp, hQrig, _⟩ := hQ
   htransport Q hQg hQgp hQrig
 
+/-- **The contraction's vertex set meets the rigid block in exactly the representative body**
+(`lem:claim-6-4`, the U4 assembly infra; Katoh–Tanigawa 2011 §6.2, Phase 22b). For a proper rigid
+subgraph `H ≤ G` with `r ∈ V(H) ⊆ V(G)`, the contraction's vertex set
+`V(G.rigidContract H r) = collapseTo r V(H) '' V(G) = (V(G)∖V(H)) ∪ {r}` meets `V(H)` in exactly
+`{r}`: every surviving body of `V(G)∖V(H)` lies outside `V(H)`, and the only collapsed body present
+is the representative `r ∈ V(H)`. This is the `hinter` hypothesis the U3b projected-subfamily
+extraction `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` needs of the
+relabel-leg framework (whose graph is the contraction), proj `= V(H)`. -/
+theorem Graph.rigidContract_vertexSet_inter_eq_singleton {α β : Type*}
+    (G H : Graph α β) {r : α} (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(G)) :
+    V(G.rigidContract H r) ∩ V(H) = {r} := by
+  classical
+  rw [Graph.vertexSet_rigidContract]
+  apply Set.eq_singleton_iff_unique_mem.2
+  refine ⟨⟨⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr]⟩, hr⟩, ?_⟩
+  rintro x ⟨⟨y, _, rfl⟩, hxH⟩
+  unfold Graph.collapseTo at hxH ⊢
+  split_ifs with hyH
+  · rfl
+  · rw [if_neg hyH] at hxH; exact absurd hxH hyH
+
+/-- **KT Claim 6.4 discharged: the contraction's generic IH yields the exterior-projected
+surviving-row witness `htransport`** (`lem:claim-6-4`, the U4 assembly; Katoh–Tanigawa 2011 §6.2,
+eqs. (6.5)/(6.7)/(6.9), §5.1, Phase 22b route (i) Commit 5). The capstone of the Claim-6.4
+discharge: it *produces* the `htransport`-shaped witness `rigidContract_exterior_rank_transport`
+formerly took as an explicit hypothesis, by composing the three landed Case-I bricks U3a/U3b/U2 over
+the contraction's *strengthened* generic IH `hQcf : HasGenericFullRankRealization k
+(G.rigidContract H r)`. With this in hand the composer `case_I_realization` no longer carries any
+green-modulo bundle — Claim 6.4 is fully formal.
+
+The assembly (the three Claim-6.4 bricks, KT eq. (6.7)'s degenerate placement `p2` as witness):
+* **U3a** (`hasGenericRealization_transport_relabel`): from `hQcf` (= the IH for `Gc.map f`,
+  `f := collapseTo r V(H)`, `Gc := G ＼ E(H)`) produce a free-normal framework `F'` on the
+  *relabelled* contraction `Gc.map f = G.rigidContract H r` at the relabel selector
+  `endsᵐ e := (f (ends e).1, f (ends e).2)`, in general position and rigid on its whole vertex set —
+  the rigidity of the IH realization transported to the relabel selector via the strengthened
+  motive's link-recording conjunct.
+* **U3b** (`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`): from `F'` rigid on
+  its vertex set with `V(F'.graph) ∩ V(H) = {r}` (`rigidContract_vertexSet_inter_eq_singleton`),
+  extract a subfamily `t` of `Gc.map f`-links whose **exterior-projected collapsed** rows
+  `(extProj V(H)).dualMap ∘ F'.panelRow endsᵐ` are independent, of size `≥ D(|V(F'.graph)|−1) =
+  D(|sc|−1)` (the surviving rank, KT's bottom-right block — the genuine Claim-6.4 crux, the
+  exterior-column projection losing zero rank because `F'` is rigid).
+* **U2** (`panelRow_collapseTo_comp_extProj_dualMap`) at **U1** (`degeneratePlacement`): the witness
+  seed `q₀ := degeneratePlacement r V(H) nrm'` (KT's `p2`, the collapsed normal field) carries that
+  projected-*collapsed* independence per-edge back to the projected-*uncollapsed* rows of
+  `ofNormals Gc ends q₀` (both framings read the same support extensor `nrm ∘ f`, the projection
+  reconciling the differing endpoints).
+
+The support is translated from `Gc.map f`-links (at `endsᵐ`) to `Gc`-links (at the parent `ends`)
+through `Graph.map_isLink` (an edge linking in the relabel is a `Gc`-edge) and the parent selector's
+own link-recording `hends`; the count matches because `V(F'.graph) = V(G.rigidContract H r) =
+(V(G)∖V(H)) ∪ {r} = sc`. -/
+theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
+    [Finite α] [Finite β] (G H : Graph α β) (ends : β → α × α) {r : α}
+    (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(G)) (hcSimple : (G.rigidContract H r).Simple)
+    (hQcf : PanelHingeFramework.HasGenericFullRankRealization k (G.rigidContract H r))
+    (hends : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
+      (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2) :
+    ∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+      Q.IsGeneralPosition →
+      Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
+      ∃ q₀ : α × Fin (k + 2) → ℝ,
+        ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+          (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
+            (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
+          screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
+          LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+            ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
+              ends (i : β × _ × _))) := by
+  classical
+  intro _ _ _ _
+  -- Abbreviations: `Gc := G ＼ E(H)`, `f := collapseTo r V(H)`. `Gc.map f = G.rigidContract H r`.
+  set Gc := G.deleteEdges E(H) with hGc
+  set f := Graph.collapseTo r V(H) with hf
+  -- U3a: transport the contraction's generic IH to the relabel selector `endsᵐ := f ∘ ends`.
+  obtain ⟨nrm, hgp, hrig⟩ :=
+    PanelHingeFramework.hasGenericRealization_transport_relabel Gc f ends hQcf hends
+  set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
+  set F' := (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge with hF'
+  -- `F'.graph = Gc.map f = G.rigidContract H r`; its vertex set is the surviving body set `sc`.
+  have hF'g : F'.graph = G.rigidContract H r := by
+    rw [hF', PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; rfl
+  have hr' : r ∈ F'.graph.vertexSet := by
+    rw [hF'g, Graph.vertexSet_rigidContract]
+    exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr]⟩
+  have hinter : F'.graph.vertexSet ∩ V(H) = {r} := by
+    rw [hF'g]; exact Graph.rigidContract_vertexSet_inter_eq_singleton G H hr hHsub
+  have hnev : F'.graph.vertexSet.Nonempty := ⟨r, hr'⟩
+  -- The relabel selector records `F'.graph = Gc.map f`'s links (risk (c) brick); the per-hinge
+  -- transversality `hne` follows from the general position of the relabel framework's normals.
+  have hendsF' : ∀ e u v, F'.graph.IsLink e u v →
+      F'.graph.IsLink e (endsM e).1 (endsM e).2 := by
+    rw [hF'g, ← (show Gc.map f = G.rigidContract H r from rfl)]
+    intro e u v hlink
+    -- A `Gc.map f`-link is the `f`-image of a `Gc`-link `Gc.IsLink e x y`; `ends` records *that*
+    -- `Gc`-link (`hends`), and `f`-mapping it gives the relabel selector's recorded link.
+    rw [Graph.map_isLink] at hlink
+    obtain ⟨x, y, hxy, _, _⟩ := hlink
+    have := (hends e x y hxy).map f
+    rwa [hendsM]
+  have hne : ∀ e, F'.graph.IsLink e (endsM e).1 (endsM e).2 → F'.supportExtensor e ≠ 0 := by
+    intro e he
+    -- The linking edge has distinct endpoints: `F'.graph = G.rigidContract H r` is simple, so
+    -- loopless. General position then gives the support extensor nonzero.
+    haveI : (G.rigidContract H r).Loopless := hcSimple.toLoopless
+    rw [hF'g] at he
+    have hne' : (endsM e).1 ≠ (endsM e).2 := he.ne
+    refine (PanelHingeFramework.ofNormals (Gc.map f) endsM
+      nrm).supportExtensor_ne_zero_of_isGeneralPosition hgp ?_
+    rw [PanelHingeFramework.ofNormals_ends]; exact hne'
+  -- U3b: extract the projected-collapsed independent surviving subfamily of size `≥ D(|sc|−1)`.
+  obtain ⟨t, hsuppM, hcountM, hindepM⟩ :=
+    F'.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
+      (ends := endsM) (proj := V(H)) (r := r) hendsF' hne hnev hrig hr' hinter
+  -- The surviving body set: `V(F'.graph) = V(G.rigidContract H r) = (V(G)∖V(H)) ∪ {r} = sc`.
+  have hF'sc : F'.graph.vertexSet = (V(G) \ V(H)) ∪ {r} := by
+    rw [hF'g, Graph.vertexSet_rigidContract]
+    ext x
+    simp only [Set.mem_image, Set.mem_union, Set.mem_diff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      unfold Graph.collapseTo
+      split_ifs with hyH
+      · exact Or.inr rfl
+      · exact Or.inl ⟨hy, hyH⟩
+    · rintro (⟨hx, hxH⟩ | hxr)
+      · exact ⟨x, hx, by unfold Graph.collapseTo; rw [if_neg hxH]⟩
+      · exact ⟨r, hHsub hr, by unfold Graph.collapseTo; rw [if_pos hr, hxr]⟩
+  -- The witness seed `q₀ := degeneratePlacement r V(H) nrm'` (KT's `p2`), `nrm'` the body-curried
+  -- U3a placement. U2 carries the projected-collapsed independence back to the
+  -- projected-uncollapsed rows of `ofNormals Gc ends q₀`.
+  set nrm' : α → Fin (k + 2) → ℝ := fun a i => nrm (a, i) with hnrm'
+  -- `nrm = fun p => nrm' p.1 p.2` (product eta): makes the U2 RHS framework *syntactically* `F'`.
+  have hnrmeq : nrm = fun p : α × Fin (k + 2) => nrm' p.1 p.2 := by
+    funext p; rw [hnrm']
+  refine ⟨degeneratePlacement r V(H) nrm', t, ?_, ?_, ?_⟩
+  · -- Support: a `Gc.map f`-link is the `f`-image of a `Gc`-link, recorded by the parent `ends`.
+    intro i hi
+    have := hsuppM i hi
+    rw [hF'g, ← (show Gc.map f = G.rigidContract H r from rfl), Graph.map_isLink] at this
+    obtain ⟨x, y, hxy, _, _⟩ := this
+    exact hends i.1 x y hxy
+  · -- Count: `V(F'.graph).ncard = ((V(G)∖V(H)) ∪ {r}).ncard`.
+    rwa [hF'sc] at hcountM
+  · -- Independence: U2 equates each projected-uncollapsed row with the projected-collapsed
+    -- `F'`-row. The U2 RHS framework `ofNormals (Gc.map f) endsM (fun p => nrm' p.1 p.2)` is `F'`:
+    -- rewriting `nrm = fun p => nrm' p.1 p.2` (product eta) makes the two frameworks
+    -- *syntactically* equal.
+    have hrow : (fun i : t => (extProj (k := k) V(H)).dualMap
+        ((PanelHingeFramework.ofNormals Gc ends
+          (degeneratePlacement r V(H) nrm')).toBodyHinge.panelRow ends (i : β × _ × _)))
+        = (fun i : t => (extProj (k := k) V(H)).dualMap (F'.panelRow endsM (i : β × _ × _))) := by
+      funext i
+      rw [panelRow_collapseTo_comp_extProj_dualMap Gc H hr nrm' ends (i : β × _ × _), hF', hnrmeq]
+    rw [hrow]; exact hindepM
+
 /-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
 (`lem:case-I-realization`, the device-row-addition closure; Katoh–Tanigawa 2011 §6.2 eq. (6.3),
 Phase 22a). The block-triangular reframing's device-side closure (design doc §1.14): rather than
@@ -1702,15 +1859,17 @@ reframing that replaces the undischargeable common-seed splice of the prior asym
   `hcSimple` (`(G.rigidContract H r).Simple`; G2b makes this the positive `map`-simplicity
   criterion) — simple, so `hIH` supplies its *generic* realization. **The transport of that rank
   across the collapse map to the surviving edges `E(G) ∖ E(H)` is KT Claim 6.4 (eq. (6.5)/(6.9))**,
-  irreducibly research-shaped (the collapse redirects each surviving edge's endpoints, so no green
-  brick converts the relabelled-contraction rank into the surviving-edge rank — the G3a finding). It
-  is carried as the conjunct `hclaim64` of the explicit bundle `hbundle`, stated as a **rank
-  polynomial** `Qc ≠ 0` whose non-roots carry **exterior-column-projected row-independence**: at
-  every `Qc`-non-root seed (the Zariski-open generic locus of KT eq. (6.9), *not* every
-  general-position seed), the surviving rows are `≥ D(|sc|−1)` and independent after projecting away
-  the rigid-block columns `V(H)` (`(extProj V(H)).dualMap`) — KT's bottom-right block rank. The
-  `H`-leg's selector alignment `hswap`/`hne_ends` is the KT eq. (6.6) placement, the other bundle
-  conjunct.
+  the irreducibly research-shaped step (the collapse redirects each surviving edge's endpoints, so
+  no green brick converts the relabelled-contraction rank into the surviving-edge rank — the G3a
+  finding). It is now **fully discharged** (Phase 22b) by the U4 assembly
+  `rigidContract_exterior_rank_transport_htransport`, which *produces* — from the contraction's
+  generic IH — the rank-transport witness as a **rank polynomial** `Qc ≠ 0` whose non-roots carry
+  **exterior-column-projected row-independence**: at every `Qc`-non-root seed (the Zariski-open
+  generic locus of KT eq. (6.9), *not* every general-position seed), the surviving rows are
+  `≥ D(|sc|−1)` and independent after projecting away the rigid-block columns `V(H)`
+  (`(extProj V(H)).dualMap`) — KT's bottom-right block rank. The `H`-leg's selector alignment
+  `hswap`/`hne_ends` (the KT eq. (6.6) placement) is likewise discharged in-proof against the
+  canonical `G.endsOf` selector (route (i)'s strengthened-motive link-recording conjunct).
 
 The block-triangular coupling exhibits `D(|V(G)|−1)` independent rigidity rows of the *single*
 common framework `ofNormals G ends q₀` — the `H`-block rows (which vanish under the exterior-column
@@ -1720,14 +1879,12 @@ general position the strengthened motive holds. **This needs no common placement
 legs** (the §1.13 impasse the asymmetric coupling could not cross): the device counts independent
 *rows*, never rigidity of one framework on a leg at a shared seed.
 
-**Green-modulo the Claim-6.4 bundle** (`hbundle` + `hcSimple`, the Phase-21b green-modulo `h…`
-idiom, discharged by `lem:case-III` / 22b+): the only modulo-content is the single
-KT-eq. (6.5)/(6.9) exterior-projected row-independence, carried as the `Qc`-non-root form `hclaim64`
-(a contraction rank polynomial `Qc ≠ 0` whose non-roots carry the projected independence — KT
-eq. (6.9)'s generic locus), a contraction-leg-local row-count (not the undischargeable `∀`-GP-rigid
-`htransportGP` the asymmetric coupling needed, nor the over-quantified `∀`-GP-independent form §1.16
-flagged, nor a false pin-equality) — every step the composer itself performs is honest, not a
-`sorry`. -/
+**Fully green** (Phase 22b, route (i)): there is no longer any green-modulo bundle. KT Claim 6.4 —
+the only former modulo-content, the single KT-eq. (6.5)/(6.9) exterior-projected row-independence —
+is discharged by the three landed Case-I bricks U3a/U3b/U2 (assembled by the U4 producer
+`rigidContract_exterior_rank_transport_htransport`), and the `H`-leg selector alignment by the
+strengthened motive's link-recording conjunct. Every step the composer performs is honest, no
+`sorry`, no `axiom`, no explicit `h…` hypothesis. -/
 theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     (hD : 3 ≤ Graph.bodyBarDim n)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0)
@@ -1737,35 +1894,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
-        PanelHingeFramework.HasFullRankRealization k G')
-    -- The placement + Claim-6.4 transport bundle (KT eqs. (6.6), (6.5)/(6.9); design doc
-    -- §1.14/§1.16/§1.17), carried in the Phase-21b green-modulo `h…` idiom against the manufactured
-    -- parent selector `ends` and the chosen `H`/`r`. It supplies (a) the `H`-leg selector alignment
-    -- `hswap`/`hne_ends` that `hasGenericRealization_transport_ends` consumes (KT eq. (6.6)), and
-    -- (b) the contraction leg's **rank-transport** `htransport` — the irreducible analytic content
-    -- of KT Claim 6.4 / eq. (6.9) (the relabel-induced normal mismatch admits no green-brick
-    -- reduction; §1.7/§1.17). Given the contraction's generic IH `Q`, it yields **one** parent seed
-    -- `q₀` and a subfamily `t` of surviving-edge (`G ＼ E(H)`) links whose **exterior-projected**
-    -- rows `(extProj V(H)).dualMap ∘ panelRow ends` are independent at `q₀`, of size `≥ D(|sc|−1)`
-    -- (`sc = (V(G)∖V(H)) ∪ {r}`). The `Qc`-non-root packaging the block-triangular coupling
-    -- consumes is then *reconstructed in-proof* (N-22b-3) by the two Phase-22b bricks:
-    -- `rigidContract_exterior_rank_transport` (N-22b-1, this single-placement witness) →
-    -- `exists_rankPolynomial_of_rigidOn_linking_set_proj` (N-22b-2, the bounded `D∘panelRow`
-    -- producer). This is the single dischargeable Claim-6.4 obligation (design doc §1.16/§1.17),
-    -- the `∃`-one-placement core, *not* the undischargeable `∀`-GP-rigid form nor the
-    -- over-quantified `∀`-GP-independent one.
-    (hbundle : ∀ ends : β → α × α,
-      (∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
-        Q.IsGeneralPosition →
-        Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
-        ∃ q₀ : α × Fin (k + 2) → ℝ,
-          ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
-            (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
-              (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
-            screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
-            LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
-              ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
-                ends (i : β × _ × _))))) :
+        PanelHingeFramework.HasFullRankRealization k G') :
     PanelHingeFramework.HasGenericFullRankRealization k G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
@@ -1789,12 +1918,21 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   haveI : G.Loopless := hSimple.toLoopless
   have hne_ends : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2 :=
     fun e hlink => G.endsOf_fst_ne_snd hlink.edge_mem
-  have htransport := hbundle ends
   -- The geometric inputs of the coupling for legs `H` / `G ＼ E(H)` sharing `r` (G3b); the cover is
   -- against the *surviving-body* set `sc := (V(G)∖V(H)) ∪ {r}` (its `(V(G)∖V(H))` part alone
   -- complements `V(H)`).
   obtain ⟨hGH, hGc, _, _, _, _, _⟩ :=
     PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph hHprop hr
+  -- (Phase 22b route (i), Commit 5 = U4) The contraction leg's KT Claim 6.4 transport `htransport`
+  -- — formerly the explicit `hbundle` conjunct — is now *produced* from the contraction's generic
+  -- IH by the U4 assembly `rigidContract_exterior_rank_transport_htransport` (U3a alignment ⊕ U3b
+  -- exterior-projected rank ⊕ U2 collapse-relabel row reproduction at U1's degenerate placement).
+  -- The surviving-edge subgraph `G ＼ E(H) ≤ G`, so the parent selector `ends = G.endsOf` records
+  -- its links: a `(G ＼ E(H))`-link is a `G`-link with the same endpoints (`IsSubgraph.isLink_iff`).
+  have hendsGc : ∀ e u v, (G.deleteEdges E(H)).IsLink e u v →
+      (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2 := fun e u v hlink =>
+    (Graph.IsSubgraph.isLink_iff hGc hlink.edge_mem).mpr
+      (hends e u v ((Graph.IsSubgraph.isLink_iff hGc hlink.edge_mem).mp hlink))
   have hcover : V(G) ⊆ V(H) ∪ ((V(G) \ V(H)) ∪ {r}) := by
     intro x hx
     by_cases hxH : x ∈ V(H)
@@ -1817,9 +1955,10 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
       (fun e he => hne_ends e (he.of_le hle))
   -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller, simple minimal `0`-dof-graph (N4 +
   -- `hcSimple`), so `hIH` supplies its generic realization `Qcf`. KT Claim 6.4 (eqs. (6.5)/(6.9),
-  -- the bundle's `htransport`, N-22b-1) transports that rank across the collapse map to **one**
-  -- parent seed `q₀` and a subfamily `t` of surviving-edge links whose **exterior-projected** rows
-  -- are independent at `q₀` — KT's bottom-right block rank.
+  -- now *discharged* by the U4 assembly `rigidContract_exterior_rank_transport_htransport`)
+  -- transports that rank across the collapse map to **one** parent seed `q₀` and a subfamily `t` of
+  -- surviving-edge links whose **exterior-projected** rows are independent at `q₀` — KT's
+  -- bottom-right block rank.
   have hKmin : (G.rigidContract H r).IsMinimalKDof n 0 :=
     Graph.rigidContract_isMinimalKDof hG hHprop hr
   have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
@@ -1831,7 +1970,9 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   have hQcf : PanelHingeFramework.HasGenericFullRankRealization k (G.rigidContract H r) :=
     (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
   obtain ⟨q₀, t, hsupp, hcount, hindep⟩ :=
-    PanelHingeFramework.rigidContract_exterior_rank_transport (k := k) G H ends hQcf htransport
+    PanelHingeFramework.rigidContract_exterior_rank_transport (k := k) G H ends hQcf
+      (PanelHingeFramework.rigidContract_exterior_rank_transport_htransport G H ends hr hHsub
+        hcSimple hQcf hendsGc)
   -- The bounded `D∘panelRow` packaging (N-22b-2) lifts the single-placement witness `(q₀, t)` to
   -- the contraction **rank polynomial** `Qc ≠ 0` whose non-roots carry exterior-projected
   -- surviving-row independence (the Zariski-open generic locus of KT eq. (6.9), not every GP seed).

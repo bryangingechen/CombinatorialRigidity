@@ -491,6 +491,14 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved (no lift — refinement of TACTICS-QUIRKS § 25: prefer the
   pre-converted hypothesis shape when the up-to-defeq term is heartbeat-heavy, rather
   than relying on application-defeq or `rw`; sibling of the entry above).
+- **Recurred at Phase 22b U4** (`rigidContract_exterior_rank_transport_htransport`,
+  `CaseI.lean`): feeding the U2 per-edge row equality into the U3b independence via
+  `convert hindepM` left a goal equating `ofNormals Gc ends q₀`'s projected rows with
+  the U2 RHS framework `ofNormals (Gc.map f) endsᵐ (fun p ↦ nrm' p.1 p.2)`; `exact (the
+  U2 lemma)` `isDefEq`-timed-out on the `fun p ↦ nrm' p.1 p.2 = nrm` product-eta match
+  through the heavy framework type. Same fix family: a `have hnrmeq : nrm = fun p ↦
+  nrm' p.1 p.2 := by funext p; rfl` rewritten into the goal makes the two frameworks
+  *syntactically* equal, so the U2 lemma `exact`s with no defeq on the heavy term.
 
 ### [resolved] A `panelRow ends i` membership `rfl` whnf-times-out when `i` is left as the coerced subtype — `rintro ⟨⟨e', t₁, t₂⟩, hi⟩` to expose a bare triple
 - **Where it bit:** `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` in

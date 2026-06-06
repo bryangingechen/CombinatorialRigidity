@@ -23,18 +23,17 @@ math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* +
 **Phase 22 (the realization layer) is sub-lettered.** Opened as a single Phase 22
 on 2026-06-04, it was split the same day because it over-broadly bundled three
 independent bodies of work; sub-lettering (22a, 22b, …) keeps the integer phase
-numbers 23–26 stable. **Phase 22a is complete, green-modulo-22b** (Case I
+numbers 23–26 stable. **Phase 22a is complete** (Case I
 realization, KT §6.2; see `notes/Phase22a.md`): the composer
 `PanelHingeFramework.case_I_realization` (`lem:case-I-realization`) discharges
-`theorem_55`'s Case-I branch **green-modulo a single dischargeable hypothesis = KT
-Claim 6.4** (the new red node `lem:claim-6-4`, deferred to Phase 22b — the same
-green-modulo pattern as Phase 21 → 21b). It is delivered via the **block-triangular
+`theorem_55`'s Case-I branch, delivered via the **block-triangular
 reframe**: KT eq. (6.3)'s rank-addition over one common framework
 `ofNormals G ends q₀`, routed through the genericity device's independent-row count
 (the H-block edges ⊔ the surviving edges made independent by the exterior-column
-projection), not a common-seed splice. The single deferred obligation is Claim 6.4
-itself (the surviving block's exterior-projected rank at the generic placement, KT
-eqs. (6.5)/(6.9)). The phase's cross-cutting lesson — a formalization must reproduce
+projection), not a common-seed splice. It shipped green-modulo a single dischargeable
+hypothesis = KT **Claim 6.4** (`lem:claim-6-4`, the surviving block's exterior-projected
+rank at the generic placement, KT eqs. (6.5)/(6.9)), **fully discharged in Phase 22b**
+(so `lem:case-I-realization` is now fully green). The phase's cross-cutting lesson — a formalization must reproduce
 the source's argument **structure**, not just its conclusion — surfaced from the
 hpinc→asymmetric→block-triangular→Qc-non-root design arc (the common-seed splice
 type-checked but kept needing undischargeable bridge hypotheses) and is promoted to
@@ -42,17 +41,17 @@ type-checked but kept needing undischargeable bridge hypotheses) and is promoted
 full Case-I brick inventory (N4 contraction-minimality bridge via the Whitney-style
 sub-build N4a→N4b→N4c, the N5 splice/seed/rank-polynomial bricks, N6a/N6b/N6c, the
 two-motive split, the generic-motive induction G2a–c / G3a–c) + decision history
-live in `notes/Phase22a.md`. **Phase 22b is in progress, paused at the reduction checkpoint**
-(KT Claim 6.4 — the discharge of 22a's green-modulo obligation; the reduction N-22b-1/2/3
-landed 2026-06-05, so `lem:claim-6-4` is reduced to its single analytic core, but it stays red
-green-modulo the explicit hypothesis `htransport` = KT eq. (6.9)'s algebraic-independence
-rank-attainment across the collapse relabel. A 2026-06-05 validation pass (design doc §1.18)
-found discharging `htransport` is tractable and **stays Phase 22b**; U1 + U2 then landed (sound).
-A 2026-06-05 course-correction (design doc §1.20, after the U2-opening session forked under
-backgrounding) found the research-shaped crux was NOT retired by U2 but **relocated to U3b** — KT
-Claim 6.4 proper (the exterior-column projection drops the `r`-column yet preserves rank
-`D(|sc|−1)`; a pin-a-body fact, MISSING brick). Next: a math-first U3b recon; see
-`notes/Phase22b.md`);
+live in `notes/Phase22a.md`. **Phase 22b is complete** (closed 2026-06-05): KT Claim 6.4 — the discharge of 22a's
+green-modulo obligation — is **fully discharged** (`lem:claim-6-4` green), so
+`lem:case-I-realization` is fully green. The reduction N-22b-1/2/3 cut Claim 6.4 to the single
+hypothesis `htransport`; the discharge then built the three composing bricks (U3a the relabel-leg
+rigidity transport; **U3b** the genuine crux — the exterior-column projection loses zero rank on a
+rigid block, via `Z ⊔ range(extProj) = ⊤` whose one real-content input is the rigid-block pin-count;
+U2/U1 the collapse-relabel projected-row reproduction at KT eq. (6.7)'s degenerate placement) and the
+route-(i) motive strengthening (the link-recording conjunct, discharging the selector alignment),
+composed by the capstone U4 producer `rigidContract_exterior_rank_transport_htransport`. The
+course-correction discipline (the crux moved U2→U3, then U3a was found not a leaf) + design arc
+(`notes/Phase22-realization-design.md` §1.14–§1.24) are in `notes/Phase22b.md`.
 **Phase 22c+ is parked in planning** (renumbered `22b+`→`22c+`
 in the 22b opening recon: Case III at `d=3` + the `d=3` assembly; expected to split
 into multiple sub-phases once its shape is clearer, cut deferred until 22c opens).
@@ -260,7 +259,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 21 ✓ | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8), closing on the **genericity-free** content; **+ panel layer** (coplanar realizations). Genericity (Claim 6.4/6.9) enters as a cited black-box. | §5, §6.1–6.3 | 5 |
 | 21b ✓ | **Genericity device** (Claim 6.4/6.9) + genericity-free accounting iffs + `V(G)`-relative count bridges. The realization *producers* re-scoped to 22–23 (math-first pass: the k=0 split is KT Case III, one row short via eq. 6.12; Case I splice is full-rank). | §6.1 (Claim 6.4), §6.3 (Claim 6.9) | 5 |
 | 22a ✓ | **Case I realization** (§6.2 splice: full-rank, N4 contraction bridge + N6 composer). `lem:case-I-realization` green-modulo KT Claim 6.4 (`lem:claim-6-4`), via the **block-triangular reframe** (KT eq. 6.3 rank-addition over one common framework, routed through the device's independent-row count). | §6.2 | 5 |
-| 22b ◷ | **KT Claim 6.4** (discharge the Case-I green-modulo obligation; opened 2026-06-05, all three nodes N-22b-1/2/3 landed 2026-06-05, `notes/Phase22b.md`). `lem:claim-6-4` (`case_I_realization`'s former `hclaim64`) is formalized down to its single irreducible analytic core: the surviving block of `G ＼ E(H)` projected to `V(G)∖V(H)` attains independent rank `≥ D(|sc|−1)` at the generic locus (the `Qc`-non-root form; KT eqs. (6.5)/(6.9), §5.1), via two bricks — N-22b-2 (bounded `D∘panelRow` packaging `exists_rankPolynomial_of_rigidOn_linking_set_proj`) + N-22b-1 (rank-transport `rigidContract_exterior_rank_transport`) — composed by N-22b-3 (the wire-up, reshaping the composer's third conjunct to the narrower `htransport`). **Reduction landed; paused at the reduction checkpoint, not closed:** `lem:claim-6-4` stays red (the honesty gate; `htransport` = the algebraic-independence rank-attainment across the collapse relabel is undischarged), `lem:case-I-realization` stays green-modulo via case (b). A 2026-06-05 validation pass (design doc §1.18) found discharging `htransport` is tractable and **stays Phase 22b**; the follow-up T2b math-first re-recon (design doc §1.19) designed the layer — §1.18's planned lower-semicontinuity crux is already green inside N-22b-2, shrinking the cut to a **4-node cut (U1→U2→U3→U4)**. **U1 + U2 landed (sound); but a 2026-06-05 course-correction (design doc §1.20, after the U2-opening session forked under backgrounding) found the research-shaped crux was NOT retired by U2, only relocated to U3b** — KT Claim 6.4 proper (the exterior-column projection drops the `r`-column yet preserves rank `D(|sc|−1)`; pin-a-body, MISSING brick). Corrected cut U3a (alignment, bricked) + U3b (the crux) + U4; next is a math-first U3b recon. | §6.1 (Claim 6.4), §6.2, §5.1 | 4 |
+| 22b ✓ | **KT Claim 6.4** (discharge the Case-I green-modulo obligation; closed 2026-06-05, `notes/Phase22b.md`). `lem:claim-6-4` (`case_I_realization`'s former `hclaim64`) is **fully discharged** (`\leanok`), so `lem:case-I-realization` is fully green. The reduction N-22b-1/2/3 cut Claim 6.4 to the single hypothesis `htransport`; the discharge then built the three composing bricks — **U3a** `hasGenericRealization_transport_relabel` (the contraction's generic IH transported to the relabel selector), **U3b** the genuine crux (the exterior-column projection loses zero rank on a rigid block, via `Z ⊔ range(extProj) = ⊤` whose one real-content input is the pin-count `finrank(pinnedMotionsOn t) = D(|Vᶜ|+1−|t|)`, plus the projected-subfamily extraction), **U2/U1** the collapse-relabel projected-row reproduction at KT eq. (6.7)'s degenerate placement — and the **route-(i)** motive strengthening (the link-recording conjunct discharging the U3a alignment + the `H`-leg `hswap`/`hne_ends`). The capstone **U4** producer `rigidContract_exterior_rank_transport_htransport` composes U3a ⊕ U3b ⊕ U2 to supply `htransport` from the contraction's generic IH, wired into `case_I_realization` (deleting its `hbundle`). All axiom-clean. The course-correction arc (the crux moved U2→U3, then U3a was found not a leaf; design doc §1.14–§1.24) is in `notes/Phase22b.md`. | §6.1 (Claim 6.4), §6.2, §5.1 | 5 |
 | 22c+ ◷ | **(parked) Case III at `d=3` + `d=3` assembly** (planning; renumbered `22b+`→`22c+` in the 22b opening recon, so each sub-letter names one distinct sub-phase; expected to split — 22c = Case III / Track B, the `d=3` assembly its likely further cut, deferred until 22c opens). The Case II/III reducible-vertex producer (eq. 6.12 degenerate placement + the Case-III extra row), **Lemma 6.10** (Claim 6.11 combinatorial↔linear, Claim 6.12 extensor-span genericity, 3 candidates), + `prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip. | §6.3, §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
@@ -511,20 +510,21 @@ Opened as a single Phase 22 on 2026-06-04, then **split into sub-phases the same
 day** because it over-broadly bundled three independent bodies of work — Track A
 (Case I, ~90% green), Track B (Case III at `d=3`, the crux, entirely red), and the
 `d=3` assembly. Sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26
-stable. **22a** = Case I realization (`notes/Phase22a.md`, ✓ complete
-green-modulo-22b); **22b** = KT Claim 6.4 (the discharge of 22a's green-modulo
-obligation, `notes/Phase22b.md`, ◷ in progress — reduction N-22b-1/2/3 landed
-2026-06-05; the `htransport` discharge is a 4-node cut U1→U2→U3→U4 that stays 22b. U1
-+ U2 landed (sound); a 2026-06-05 course-correction (design doc §1.20) found the
-research-shaped crux was relocated from U2 to **U3b** (KT Claim 6.4 proper = the
-pin-the-`r`-column projected-rank brick, MISSING infra)); **22c+** = the parked Case III at `d=3` + the `d=3` assembly (◷ planning,
+stable. **22a** = Case I realization (`notes/Phase22a.md`, ✓ complete); **22b** =
+KT Claim 6.4 (the discharge of 22a's green-modulo obligation, `notes/Phase22b.md`,
+✓ complete 2026-06-05 — `lem:claim-6-4` fully discharged, so `lem:case-I-realization`
+is fully green; the reduction N-22b-1/2/3 cut Claim 6.4 to `htransport`, then the
+U1→U4 + route-(i) sequence built the three composing bricks — U3a relabel-leg
+transport, **U3b** the genuine crux (exterior projection loses zero rank on a rigid
+block), U2/U1 collapse-relabel row reproduction — and the U4 producer composing them);
+**22c+** = the parked Case III at `d=3` + the `d=3` assembly (◷ planning,
 renumbered `22b+`→`22c+` in the 22b opening recon, a single placeholder expected to
 split — 22c = Case III / Track B, the `d=3` assembly its likely further cut,
 deferred until 22c opens). Math for all worked out in `notes/Phase21b.md`
 *Finding A/B*; the green Phase-21b infra — device, count bridge, N7b row sub-nodes,
 splice/union glue — feeds them.
 
-**Phase 22a — Case I realization (§6.2) — ✓ Complete (green-modulo-22b).** Track A:
+**Phase 22a — Case I realization (§6.2) — ✓ Complete.** Track A:
 the tractable entry point, full-rank, independent of Case III. The composer
 `PanelHingeFramework.case_I_realization` (`lem:case-I-realization`) discharges
 `theorem_55`'s Case-I branch **green-modulo a single dischargeable hypothesis = KT
@@ -608,11 +608,13 @@ needing the generic IH (hard kernel: `G/E(H)` simplicity, `map_simple`,
 KT 6.3-vs-6.5). The composer assembly G3a–c then surfaced the structural divergence
 (above): the body-set splice's common-seed glue forced undischargeable bridge
 hypotheses, fixed by the **block-triangular reframe**, leaving KT Claim 6.4
-(`lem:claim-6-4`) as the one green-modulo obligation. **22b** (◷ in progress, opened
-2026-06-05, opening recon landed, `notes/Phase22b.md`): discharge KT Claim 6.4 — the
-recon-settled node cut is N-22b-2 (bounded `D∘panelRow` producer variant, *first
-buildable*) → N-22b-1 (research-shaped collapse-map rank-transport) → N-22b-3
-(wire-up/flip). **22c+** (parked behind 22a/22b, renumbered `22b+`→`22c+` in the 22b
+(`lem:claim-6-4`) as the one green-modulo obligation. **22b** (✓ complete 2026-06-05,
+`notes/Phase22b.md`): KT Claim 6.4 fully discharged — the reduction N-22b-2 → N-22b-1
+→ N-22b-3 cut it to `htransport`, then the U1→U4 + route-(i) sequence built the three
+composing bricks (U3a relabel-leg transport, **U3b** the genuine crux = the
+exterior-column projection loses zero rank on a rigid block, U2/U1 collapse-relabel row
+reproduction) and the U4 producer composing them into `htransport`; `lem:case-I-realization`
+is now fully green. **22c+** (parked behind 22a/22b, renumbered `22b+`→`22c+` in the 22b
 opening recon): Track B / Case III (above) and the `d=3` assembly — the
 `prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition count,
 Track-independent) + the `thm:theorem-55` flip.
@@ -735,41 +737,27 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–22a + 21a are complete; **Phase 22 (the realization layer) is open and
+Phases 17–22b + 21a are complete; **Phase 22 (the realization layer) is
 sub-lettered** — opened as a single Phase 22 on 2026-06-04, then split the same day
-into **22a** (Case I realization, ✓ complete green-modulo-22b; work log
-`notes/Phase22a.md`), **22b** (KT Claim 6.4, ◷ in progress; work log
-`notes/Phase22b.md`), and **22c+** (the parked Case III at `d=3` + the `d=3`
-assembly, ◷ planning, renumbered `22b+`→`22c+` in the 22b opening recon).
-Sub-lettering keeps the integer phase numbers 23–26 stable. **Phase 22a is complete
-green-modulo KT Claim 6.4** (`lem:claim-6-4`): the composer
-`PanelHingeFramework.case_I_realization` discharges `theorem_55`'s Case-I branch via
-the block-triangular reframe (KT eq. 6.3's rank-addition over one common framework,
-routed through the genericity device's independent-row count), with Claim 6.4 — the
-surviving block's exterior-projected rank at the generic placement — the single
-deferred obligation.
+into **22a** (Case I realization, ✓ complete; work log `notes/Phase22a.md`), **22b**
+(KT Claim 6.4, ✓ complete 2026-06-05; work log `notes/Phase22b.md`), and **22c+** (the
+parked Case III at `d=3` + the `d=3` assembly, ◷ planning, renumbered `22b+`→`22c+` in
+the 22b opening recon). Sub-lettering keeps the integer phase numbers 23–26 stable.
+**Phases 22a + 22b are complete and the Case-I realization producer
+`lem:case-I-realization` is fully green** (no green-modulo bundle): 22a's
+block-triangular composer + 22b's full discharge of KT Claim 6.4 (`lem:claim-6-4`, the
+surviving-block exterior-projected rank at the generic placement) together close the
+Case-I branch of `theorem_55`'s reduction.
 
-**Current sub-phase: 22b = KT Claim 6.4 — IN PROGRESS (opening recon landed
-2026-06-05).** The coordinator opened 22b on 2026-06-05 (the Close-C step; scaffold
-`notes/Phase22b.md`); the **opening recon** then settled the node cut and the
-renumber. The phase is **focused on Claim 6.4** (KT eq. 6.9 / eqs. 6.5–6.9): the
-algebraic-independence rank-transport that supplies `lem:case-I-realization`'s
-`lem:claim-6-4` obligation — the surviving-block exterior-projected row-independence
-at the generic placement. It is irreducible (the green linking-edge brick does not
-apply — the collapse redirects surviving-edge endpoints; the 21b genericity device
-does not discharge it either), and the residual is the **`Qc`-non-root
-row-independence form**, not a motion-space `∀`-GP-rigid hypothesis. The
-**recon-settled node cut** (verified discharge path, design doc §1.16; build order):
-**N-22b-2** (bounded, the *first buildable* — a `D∘panelRow` variant of
-`exists_rankPolynomial_of_rigidOn_linking_set`, feasibility re-verified against the
-generic engine `exists_polynomial_ne_zero_of_linearIndependent_at`) → **N-22b-1**
-(research-shaped — the rank-transport across the collapse map via algebraic
-independence) → **N-22b-3** (the wire-up that discharges `hclaim64` + the flip). The
-**next concrete commit is N-22b-2.** The KT math + grounding is gathered in
-`notes/Phase22b.md` (*The target* / *Discharge path* / *Opening recon*),
-`notes/Phase22a.md` *Hand-off* (*22b target — Claim 6.4*), and
-`notes/Phase22-realization-design.md` §1.7/§1.13–§1.16. **Next sub-phase after 22b:**
-22c+ — the Case-III + assembly territory (Track B, the `prop:rigidity-matrix-prop11`
-`hub`, the `thm:theorem-55` flip), parked behind 22a/22b; the finer 22c/22d cut is
-deferred until 22c opens. The KT math is in `notes/Phase21b.md` *Finding A/B* + the
-design doc — 22b/22c+ formalize it, they do not re-derive it.
+**Next sub-phase: 22c+ — Case III at `d=3` + the `d=3` assembly.** This is the parked
+territory behind 22a/22b: Track B (the Case II/III reducible-vertex producer at `d=3`,
+KT §6.3 + §6.4.1 — eq. (6.12) degenerate placement, one row short for `k=0`, completed
+by Lemma 6.10's redundant-edge row; nodes `lem:case-II-realization`, `lem:case-III`)
+and the `d=3` assembly (the genericity-free `hub` partition brick of
+`prop:rigidity-matrix-prop11`, Track-independent, + the `thm:theorem-55` flip). The
+green infra it builds on: the Case-I composer (now fully green and ready to wire into
+`theorem_55_generic`'s Case-I branch), the Phase-21b device + count bridge + N7b row
+sub-nodes + splice/union glue, and now Claim 6.4. The finer 22c/22d cut is deferred
+until 22c opens (design-pass-first, per `notes/Phase22a.md` *Deferred to 22b+*). The
+KT math is in `notes/Phase21b.md` *Finding A/B* + `notes/Phase22-realization-design.md`
+— 22c+ formalizes it, it does not re-derive it.

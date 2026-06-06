@@ -506,8 +506,8 @@
 
 \begin{lemma}[KT Claim 6.4: the contraction block attains its rank at the generic placement (eq.\ (6.9))]
   \label{lem:claim-6-4}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidContract_exterior_rank_transport,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidContract_exterior_rank_transport_htransport}
+  \leanok
   \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex,
         lem:contraction-minimality}
   Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
@@ -523,30 +523,52 @@
   exterior-column projection that kills the $V(H)$ columns (KT's bottom-right
   block, eq.\ (6.9); the row-count companion of the pin-a-body Lemma~5.1,
   \cref{lem:rank-delete-vertex}).
-
-  This is the rank-transport across the collapse map: the contraction's
-  inductive rank (\cref{lem:contraction-minimality}, on the relabelled
-  collapsed graph $G/E(H)$) is transported to the surviving-edge leg
-  $G \setminus E(H) \le G$ at the parent placement, the joint panel
-  coefficients being algebraically independent over $\Q$ (KT \S5.1 / Claim~6.4,
-  the deliberate genericity simplification).
-
-  Phase~22b formalizes the surrounding structure in two bricks: the
-  rank-transport \texttt{rigidContract\_exterior\_rank\_transport} (the
-  single-placement exterior-projected surviving-row witness) and its bounded
-  $D \circ \mathrm{panelRow}$ packaging
-  \texttt{exists\_rankPolynomial\_of\_rigidOn\_linking\_set\_proj} (the
-  $Q_c$-non-root form the block-triangular coupling consumes), composed inside
-  \cref{lem:case-I-realization}. \emph{Still red:} the irreducible analytic
-  core --- the algebraic-independence rank-attainment across the relabel, which
-  the collapse-induced normal mismatch admits no green-brick reduction for (KT
-  eq.\ (6.9)) --- is carried as the explicit hypothesis $\mathtt{htransport}$
-  of the transport brick, in the green-modulo $h\dots$ idiom (a single visible
-  assumption pinned to KT eq.\ (6.9), not a $\mathtt{sorry}$ or
-  $\mathtt{axiom}$). Discharging $\mathtt{htransport}$ itself --- an abstract
-  algebraic-independence rank-preservation argument plus the collapse-normal
-  bookkeeping --- is a separate, deeper undertaking left to a future pass.
 \end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-delete-vertex, lem:contraction-minimality}
+  This is the rank-transport across the collapse map: the contraction's
+  inductive rank (\cref{lem:contraction-minimality}, on the relabelled collapsed
+  graph $G/E(H)$) is transported to the surviving-edge leg $G \setminus E(H) \le
+  G$ at the parent placement. The formalization assembles it from three bricks
+  over the contraction's \emph{generic} induction hypothesis (a general-position
+  realization of the abstract relabelled graph $G/E(H)$, rigid on its whole
+  vertex set $s_c$):
+
+  \begin{itemize}
+    \item \textbf{Alignment (U3a).} The contraction's generic realization $Q$ is
+      transported to the \emph{relabel selector} $\mathrm{ends}^m(e) = (f\,
+      (\mathrm{ends}\,e)_1,\, f\,(\mathrm{ends}\,e)_2)$, $f = \mathrm{collapseTo}\,
+      r\,V(H)$ the collapse map, giving a free-normal panel framework $F'$ on
+      $G/E(H)$ in general position and rigid on $s_c$. The transport is the swap
+      brick: $Q$'s own endpoint selector and $\mathrm{ends}^m$ both record
+      $G/E(H)$'s links, so they agree up to swap and the motion spaces coincide.
+    \item \textbf{Exterior-projected rank (U3b, the genuine crux).} Because $F'$
+      is rigid on its vertex set $s_c$ and $s_c \cap V(H) = \{r\}$, the
+      exterior-column projection $(\mathrm{extProj}\,V(H))^*$ --- which drops
+      exactly the single $r$-column --- \emph{loses zero rank} on the
+      rigidity-row span: $Z \sqcup \mathrm{range}(\mathrm{extProj}\,V(H)) =
+      \top$ (whose one real-content input is the rigid-block pin-count
+      $\dim(F'.\mathrm{pinnedMotionsOn}\,V(H)) = D(|s_c^{\,c}| - |V(H)| + 1)$),
+      so the projected surviving rows stay independent of size $\ge D(|s_c|-1)$.
+      This is KT's bottom-right block, the pin-a-body content (Lemma~5.1,
+      \cref{lem:rank-delete-vertex}) at the row level.
+    \item \textbf{Collapse-relabel reproduction (U2 at U1).} The witness seed is
+      KT eq.\ (6.7)'s degenerate placement $p_2$ (the collapsed normal field
+      $\mathrm{nrm}\circ f$); a per-edge identity carries the projected
+      independence of the \emph{collapsed} rows of $F'$ back to the projected
+      \emph{uncollapsed} surviving rows of $G \setminus E(H)$ at $p_2$ --- both
+      framings read the same support extensor, the projection reconciling the
+      differing endpoints.
+  \end{itemize}
+
+  This discharges what KT \S5.1 / Claim~6.4 states under the deliberate
+  ``coefficients algebraically independent over $\Q$'' genericity
+  simplification; the project realizes that genericity as the contraction's
+  general-position inductive realization, the alignment as the
+  strengthened-motive link-recording, and the rank-preservation as the
+  zero-rank-loss of the exterior-column projection on a rigid block.
+\end{proof}
 
 \begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.3), (6.9)]
   \label{lem:case-I-realization}
@@ -595,14 +617,10 @@
   edges $E(G) \setminus E(H)$, on $s_c = (V(G) \setminus V(H)) \cup \{r\}$) are
   $D(|s_c|-1)$ in number and, after the exterior-column projection $D$ killing
   the $V(H)$ columns, independent --- this is KT Claim~6.4
-  (\cref{lem:claim-6-4}), reconstructed in-proof by composing its rank-transport
-  brick (the single-placement witness from the contraction's generic IH,
-  \cref{lem:rigidContract-isMinimalKDof}) with its bounded
-  $D \circ \mathrm{panelRow}$ packaging into the $Q_c$-non-root form, supplied at
-  the Zariski-open locus of a contraction rank polynomial's non-roots. The
-  single residual green-modulo hypothesis is the transport brick's
-  $\mathtt{htransport}$ (the irreducible algebraic-independence content of KT
-  eq.\ (6.9)). The
+  (\cref{lem:claim-6-4}, now fully discharged from the contraction's generic
+  induction hypothesis, \cref{lem:rigidContract-isMinimalKDof}), supplied at the
+  Zariski-open locus of a contraction rank polynomial's non-roots via its bounded
+  $D \circ \mathrm{panelRow}$ packaging into the $Q_c$-non-root form. The
   $H$-block rows vanish under $D$ (KT's top-right $0$), so $\operatorname{span}
   s_H \subseteq \ker D$ while $s_c$ is independent off $\ker D$; the two blocks
   are disjoint and their union gives the $D(|V(G)|-1)$ independent rows the

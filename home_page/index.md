@@ -21,7 +21,7 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–22a and the Grassmann–Cayley meet sub-phase 21a are complete and
+Phases 1–22b and the Grassmann–Cayley meet sub-phase 21a are complete and
 carry no `sorry`s; **Phase 21** settled the algebraic induction's accounting
 layer, and **Phase 21b (complete)** delivered the shared **genericity device**
 (Claim 6.4/6.9) — green and axiom-clean — together with the genericity-free
@@ -29,16 +29,17 @@ accounting and the `V(G)`-relative count bridges; a math-first feasibility pass
 then **re-scoped the realization *producers* of Theorem 5.5 to Phases 22–23**,
 where the reducible-vertex split is recognised as Katoh–Tanigawa's Case III and
 joins the deferred crux. **Phase 22 (the realization layer) is sub-lettered** —
-**22a (Case I realization) complete green-modulo KT Claim 6.4**, delivered via the
+**22a (Case I realization) complete**, delivered via the
 **block-triangular reframe** (KT eq. 6.3's rank-addition over one common framework,
 routed through the genericity device's independent-row count, not a common-seed
-splice) with the single deferred obligation — KT Claim 6.4, the surviving block's
-exterior-projected rank at the generic placement — handed to **22b, in progress,
-paused at the reduction checkpoint** (the reduction landed, reducing Claim 6.4 to one
-explicit hypothesis `htransport` = KT eq. (6.9)'s algebraic-independence rank-attainment
-across the collapse relabel; a validation pass found discharging it is tractable and stays
-22b, with a math-first re-recon designing a 4-node cut whose one research-shaped node is the
-collapse-relabel projected-row reproduction); **22c+ (Case III at d=3 + d=3 assembly) parked in planning**.
+splice), shipped green-modulo **KT Claim 6.4** (the surviving block's
+exterior-projected rank at the generic placement) — which **22b (complete)** then
+**fully discharged**, so the Case-I realization producer is now fully green: the
+exterior-column projection loses zero rank on a rigid block (so the surviving rank
+survives), a collapse-relabel row reproduction carries that independence back to the
+surviving rows at a degenerate placement, and a motive strengthening discharges the
+selector alignment, all composed into a single assembly producer from the
+contraction's generic induction hypothesis; **22c+ (Case III at d=3 + d=3 assembly) parked in planning**.
 **The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
@@ -226,19 +227,16 @@ joins the realization layer.
 **Phase 22 (the realization layer) is sub-lettered** — the Theorem-5.5 case
 *producers* the genericity device feeds, split into sub-phases because it
 over-broadly bundled three independent bodies of work (sub-lettering 22a, 22b, …
-keeps the integer phase numbers 23–26 stable). **Phase 22a (complete,
-green-modulo-22b)** is the Case I realization — the full-rank rigid-subgraph splice
-(Katoh–Tanigawa §6.2); the composer is green-modulo a single dischargeable
-hypothesis, KT Claim 6.4, delivered via the block-triangular reframe. **Phase 22b
-(in progress, paused at the reduction checkpoint)** reduces KT Claim 6.4 (the
-surviving block's exterior-projected rank at the generic placement, §6.2/§5.1) to
-its single analytic core — two landed bricks (a bounded `D∘panelRow`
-packaging producer + the collapse-map rank-transport) composed inside the Case-I
-producer — but the reduction does **not** close it: the algebraic-independence rank-attainment
-across the collapse relabel is carried as the explicit hypothesis `htransport` (KT eq.
-(6.9)). A validation pass found discharging it is tractable and stays Phase 22b, and a
-math-first re-recon designed a 4-node cut whose one research-shaped node is the
-collapse-relabel projected-row reproduction (KT eq. (6.7)); the phase is paused there.
+keeps the integer phase numbers 23–26 stable). **Phase 22a (complete)** is the
+Case I realization — the full-rank rigid-subgraph splice (Katoh–Tanigawa §6.2),
+delivered via the block-triangular reframe; it shipped green-modulo a single
+dischargeable hypothesis, KT Claim 6.4. **Phase 22b (complete)** **fully discharges**
+KT Claim 6.4 (the surviving block's exterior-projected rank at the generic placement,
+§6.2/§5.1), so the Case-I realization producer is now fully green: the exterior-column
+projection loses zero rank on a rigid block, a collapse-relabel row reproduction
+carries the resulting independence back to the surviving rows at a degenerate
+placement, and a motive strengthening discharges the selector alignment, all composed
+into a single assembly producer from the contraction's generic induction hypothesis.
 **Phase 22c+ (planning)** parks
 the rest behind 22a/22b
 (renumbered `22b+`→`22c+` in the 22b opening recon): Case III at `d=3` (the crux
@@ -277,8 +275,8 @@ existing files or refactor across several).
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction/` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction/` (+ `lem:genericity-device`) | ✓ |
-|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ (green-modulo-22b) |
-|   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ◷ |
+|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
+|   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
 |  22c+ | (parked) Case III at `d=3` + `d=3` assembly (renumbered `22b+`→`22c+` in the 22b opening recon) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

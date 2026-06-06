@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–22a + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete green-modulo-22b, 22b (KT Claim 6.4) in progress, paused at the reduction checkpoint (the reduction landed, reducing Claim 6.4 to one explicit hypothesis `htransport` = KT eq. (6.9); a validation pass found discharging it is tractable and stays 22b, with a math-first re-recon designing a 4-node cut whose one research-shaped node is the collapse-relabel projected-row reproduction), 22c+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
+* **Phases 1–22b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green — by composing the exterior-projected rank-preservation crux, the collapse-relabel row reproduction, and a motive strengthening into a single assembly producer); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -247,27 +247,23 @@ project; commit history is preserved with paths rewritten.
   into sub-phases because it over-broadly bundled three independent bodies of work;
   sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26 stable. A
   structural-edit phase extending `algebraic-induction.tex` (no new chapter).
-  * **Phase 22a (complete, green-modulo-22b)** — Case I realization (the full-rank
+  * **Phase 22a (complete)** — Case I realization (the full-rank
     rigid-subgraph splice, KT §6.2). The composer
-    `PanelHingeFramework.case_I_realization` discharges Theorem 5.5's Case-I branch
-    green-modulo a single dischargeable hypothesis (KT **Claim 6.4**, deferred to
-    Phase 22b — the same green-modulo pattern as Phase 21 → 21b), delivered via the
-    **block-triangular reframe** (KT eq. 6.3's rank-addition over one common
-    framework, routed through the genericity device's independent-row count, not a
-    common-seed splice). See `notes/Phase22a.md`.
-  * **Phase 22b (in progress, paused at the reduction checkpoint)** — KT **Claim 6.4**
-    (`lem:claim-6-4`, the single hypothesis 22a left green-modulo) is now **reduced** to
-    its single analytic core: the surviving block of `G ＼ E(H)`
-    projected to the surviving columns `V(G)∖V(H)` attaining independent rank at the
-    generic locus (KT §6.2/§5.1, eqs. (6.5)/(6.9)), delivered by two landed bricks (a
-    bounded `D∘panelRow` packaging producer + the collapse-map rank-transport) composed
-    inside the Case-I producer. The reduction does **not** close the phase: `lem:claim-6-4`
-    stays red, the algebraic-independence rank-attainment across the collapse relabel
-    carried as the explicit hypothesis `htransport` (KT eq. (6.9)). A validation pass
-    found discharging it is tractable and stays Phase 22b, and a math-first re-recon
-    designed a 4-node cut whose one research-shaped node is the collapse-relabel
-    projected-row reproduction (KT eq. (6.7)); the phase is paused there. See
-    `notes/Phase22b.md`.
+    `PanelHingeFramework.case_I_realization` discharges Theorem 5.5's Case-I branch,
+    delivered via the **block-triangular reframe** (KT eq. 6.3's rank-addition over one
+    common framework, routed through the genericity device's independent-row count, not
+    a common-seed splice). Shipped green-modulo KT **Claim 6.4**, discharged in Phase 22b.
+    See `notes/Phase22a.md`.
+  * **Phase 22b (complete)** — KT **Claim 6.4** (`lem:claim-6-4`, the single hypothesis
+    22a left green-modulo) is **fully discharged**, so the Case-I realization producer is
+    now fully green. The surviving block of `G ＼ E(H)` projected to the surviving columns
+    `V(G)∖V(H)` keeps its independent rank at the generic locus (KT §6.2/§5.1, eqs.
+    (6.5)/(6.9)) because the exterior-column projection loses zero rank on a rigid block;
+    a collapse-relabel row reproduction carries that independence back to the surviving
+    rows at a degenerate placement, and a motive strengthening (the realization records
+    its graph's links) discharges the selector alignment. An assembly producer composes
+    these into the rank-transport witness from the contraction's generic induction
+    hypothesis. See `notes/Phase22b.md`.
   * **Phase 22c+ (planning)** — the parked Case III at `d=3` (the crux Lemma 6.10,
     KT §6.3 + §6.4.1) plus the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` +
     `thm:theorem-55` flip), behind 22a/22b (renumbered `22b+`→`22c+` in the 22b

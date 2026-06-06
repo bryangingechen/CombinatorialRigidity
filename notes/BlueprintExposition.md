@@ -253,6 +253,20 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (rigidity propagates `S r = 0` over `V(F)`) ⇒ exact free count `D·|(V(F)∪t)ᶜ|` ⇒ incl.–excl. on
   `|V(F) ∩ t| = 1`. Pointer: §1.22; `Pinning.lean`
   `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`.
+  **Sharpened at U3a/route-(i) (§1.23–§1.24, 2026-06-05):** the rank-transport needs the
+  contraction's generic realization *rigid at the relabel selector* `endsᵐ = f ∘ ends`, but
+  the IH motive `HasGenericFullRankRealization` carries a *free* endpoint selector with no
+  link-recording invariant — so the rigidity does not transport to `endsᵐ` (the same gap is the
+  `H`-leg's `hswap`). **Stable insight:** a panel-hinge realization's hinge constraint reads
+  `supportExtensor e = panelSupportExtensor (normal (ends e))`, so the motion space *depends on
+  the selector*; transporting rigidity across a relabel needs both selectors to record the same
+  graph's links (then they agree up to swap and the motion spaces coincide). The honest fix is to
+  **strengthen the motive** to carry "the realization's `ends` records its own graph's links",
+  which then derives the relabel-leg transport *and* the `H`-leg alignment. **Written (22b-close,
+  this commit):** the `lem:claim-6-4` blueprint proof now spells out the three-brick assembly
+  (U3a alignment / U3b zero-rank-loss / U2-at-U1 collapse-relabel reproduction) — `done`. The first
+  exposition to land, so the *Proof verbosity* write-stage codification (lines 57–63) can now be
+  revisited.
 - **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
   body sets, `V′` and `V∖V′ ∪ {v∗}`** — [pending] **(a)** thought "pure green-brick
   assembly (`buildable`)" → reconned into G3c-i/ii/iii (2026-06-05). **Stable
