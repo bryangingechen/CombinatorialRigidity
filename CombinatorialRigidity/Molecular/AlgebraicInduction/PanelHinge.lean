@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.Pinning
+import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.Defs
 
 /-!
 # The algebraic induction — panel-hinge framework and Theorem 5.5
@@ -375,11 +376,12 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
     ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
       (∀ param : α → ℝ, Function.Injective param →
         MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
+      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
-  refine ⟨∏ p ∈ Finset.univ.offDiag, pairLeadingMinorPoly p.1 p.2, ?_, ?_⟩
+  refine ⟨∏ p ∈ Finset.univ.offDiag, pairLeadingMinorPoly p.1 p.2, ?_, ?_, ?_⟩
   · -- Nonzero at every moment-curve seed: each factor is the Vandermonde determinant.
     intro param hparam
     rw [map_prod]
@@ -391,6 +393,15 @@ theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : 
     simp only [momentCurve_apply, Fin.val_zero, pow_zero, pow_one, one_mul, mul_one]
     rw [sub_ne_zero]
     exact fun h => hne (hparam h.symm)
+  · -- Rational coefficients: each `pairLeadingMinorPoly` is a difference of products of `X`s (all
+    -- with rational — indeed integer — coefficients), and the rational-coefficient subring
+    -- `(map (algebraMap ℚ ℝ)).range` is closed under products.
+    rw [← MvPolynomial.mem_range_map_iff_coeffs_subset]
+    refine Subring.prod_mem (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range
+      fun p _ => ?_
+    rw [pairLeadingMinorPoly]
+    apply Subring.sub_mem <;> apply Subring.mul_mem <;>
+      exact ⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩
   · -- A non-root assignment is in general position: every pair's leading minor is nonzero.
     intro q hq a b hab
     rw [map_prod, Finset.prod_ne_zero_iff] at hq
@@ -964,12 +975,30 @@ link-recording selectors pin the same pair on every link and so agree up to swap
 builds `ofNormals G ends q₀` with a link-recording `ends` and supplies the conjunct for free
 (`ofNormals_recordsLinks_of_hends`); the composer manufactures the canonical link-recording
 `G.endsOf`. The bare motive `HasFullRankRealization` and `theorem_55` are untouched — the
-strengthening is generic-motive only (only the Case-I generic flow transports across `ends`). -/
+strengthening is generic-motive only (only the Case-I generic flow transports across `ends`).
+
+**Algebraic-independence conjunct (Phase 22d, kernel sub-phase (ii-a)).** The motive additionally
+records that the realizing framework's panel normals — flattened to a single seed
+`fun (a, i) ↦ Q.normal a i : α × Fin (k+2) → ℝ` — are *algebraically independent over `ℚ`*. This is
+KT's standing inductive choice (Katoh–Tanigawa 2011, footnote 6, p. 685): the inductive realization
+is taken with algebraically-independent coordinates, so the seed lies off the zero locus of *every*
+nonzero rational polynomial and is automatically a non-root of every subgraph's rank polynomial
+(`AlgebraicIndependent.aeval_ne_zero` composed with the rationality bridge
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`). This is the conjunct
+the Claim-6.11 kernel (`lem:case-III-seed-rank-bridge`) consumes to certify that the
+inductively-fixed seed attains the matroid-predicted rank of the nested subgraphs `G_v^{ab}`, `G_v`.
+The moment curve is *not* algebraically independent over `ℚ`, so the producers build at the
+transcendence-basis seed `exists_injective_algebraicIndependent_real` (an injective
+alg-indep-over-`ℚ` `q : α × Fin (k+2) → ℝ`), which is simultaneously a non-root of every rigid leg's
+*rational* rank polynomial — so the same seed lands rigidity, general position, and the
+alg-independence conjunct at once. The bare motive and `theorem_55` remain untouched (the
+strengthening is generic-motive only). -/
 def HasGenericFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β,
     Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G) ∧
-    ∀ e u v, G.IsLink e u v →
-      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u)
+    (∀ e u v, G.IsLink e u v →
+      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u)) ∧
+    AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => Q.normal p.1 p.2)
 
 /-- **The forgetful map: a general-position realization is a realization** (`thm:theorem-55`,
 two-motive split; Phase 22). Dropping the `Q.IsGeneralPosition` conjunct, the strengthened motive
@@ -979,7 +1008,7 @@ bridge that lets the simple Case-I cases (which produce a general-position reali
 bare motive ever having to carry general position. -/
 theorem hasFullRankRealization_of_generic {k : ℕ} {G : Graph α β}
     (h : HasGenericFullRankRealization k G) : HasFullRankRealization k G :=
-  let ⟨Q, hQg, _, hQrig, _⟩ := h
+  let ⟨Q, hQg, _, hQrig, _, _⟩ := h
   ⟨Q, hQg, hQrig⟩
 
 /-- **A free-normal panel realization with a link-recording selector records its own graph's links**

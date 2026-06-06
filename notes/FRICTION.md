@@ -76,6 +76,37 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] The `extProj`-dual-map matrix entry `M j l = φ (D (φ⁻¹ eₗ)) j` is rational — extract a *generic* `dualMap_matrix_entry_eq` helper; unfolding `φ` in place `whnf`/`isDefEq`-times-out on `Module.Dual ℝ (α → ScrewSpace k)`
+- **Where it bit:** `exists_rankPolynomial_of_rigidOn_linking_set_proj`'s rationality conjunct
+  (`Molecular/AlgebraicInduction/CaseI.lean`, Phase 22d (ii-a)). The projected coordinate
+  `cD i j = ∑ l, C(M j l) · c i l` is rational iff each matrix entry
+  `M j l = φ (D (φ⁻¹ (Pi.single l 1))) j` (`φ` the dual-standard basis iso, `D = (extProj proj).dualMap`)
+  is — and `extProj` is a `0`/`proj` projection, so `M j l ∈ {0,1}`.
+- **Friction:** unfolding `φ` (`hφ`) + `dualBasis_equivFun` + `dualMap_apply` *in place* inside the
+  178 KB file's giant proof context blows the 200 K-heartbeat budget at `isDefEq`/`whnf` on the
+  concrete `Module.Dual ℝ (α → ScrewSpace k)` — the same heavy-dual trap as the
+  `coord_linearMap_eq_matrix_mulVec` helper (and FRICTION *basis-coercion `map'` over `Module.Dual`*).
+- **Fix:** factor the entry computation into a **generic private lemma** stated over an abstract
+  `b : Basis ι R W` / `e : Fin n ≃ ι` / `f : W →ₗ[R] W` (no concrete dual):
+  `dualMap_matrix_entry_eq : φ (f.dualMap (φ⁻¹ (Pi.single l 1))) j = b.dualBasis (e l) (f (b (e j)))`,
+  `φ := b.dualBasis.equivFun.trans (funCongrLeft R R e)`. It elaborates in isolation; the call site
+  then only reasons about `b.dualBasis (e l) (extProj proj (B (e j)))` (a Kronecker `0`/`1`).
+  `equivFun`/`dualBasis` need `[Finite ι] [DecidableEq ι]` in the *statement* (`Fintype.ofFinite` in
+  the proof, else `unusedFintypeInType` fires). **Lifted to:** TACTICS-QUIRKS § 38.
+- **Status:** resolved (helper `dualMap_matrix_entry_eq`).
+
+### [resolved] `Subring.prod_mem _ …` / `Subring.foo _ …` with the subring left `_` leaves `CommRing ?m` stuck — name the subring explicitly
+- **Where it bit:** `exists_generalPosition_polynomial`'s rationality conjunct
+  (`Molecular/AlgebraicInduction/PanelHinge.lean`, Phase 22d (ii-a)): proving
+  `∏ pairLeadingMinorPoly ∈ (map (algebraMap ℚ ℝ)).range` by `Subring.prod_mem _`.
+- **Friction:** with the subring argument left `_`, the `CommRing` carrier of `Subring.prod_mem`
+  stays a metavariable and typeclass resolution gives up ("typeclass instance problem is stuck:
+  `CommRing ?m`") — the surrounding `mem (… .range)` goal does not pin it eagerly.
+- **Fix:** pass the subring explicitly:
+  `Subring.prod_mem (MvPolynomial.map (algebraMap ℚ ℝ) (σ := …)).range fun p _ => …`. (The leaf
+  `X ∈ range` is `⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩`, matching `normalsJoinPoly_mem_range_map`.)
+- **Status:** resolved.
+
 ### [resolved] Independence of the pin-a-body column family `panelRow ∘ₗ single v` (N7b-3's `hnewpin`) — strip the shared dual map via `of_comp`, don't fight `map'`
 - **Where it bit:** `linearIndependent_panelRow_comp_single_of_edge`
   (`Molecular/AlgebraicInduction/Pinning.lean`, Phase 22c stratum-1 leaf). N7b-1 gives panel rows

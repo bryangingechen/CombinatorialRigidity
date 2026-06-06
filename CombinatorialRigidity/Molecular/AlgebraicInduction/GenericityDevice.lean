@@ -871,6 +871,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {q₀ : α × Fin (k + 2) → ℝ}
     (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    (halg : AlgebraicIndependent ℚ q₀)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
     (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
@@ -878,12 +879,13 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
     PanelHingeFramework.HasGenericFullRankRealization k G :=
   -- The witness is the seed framework itself; rigidity on `V(G)` is the genericity-free splice glue
-  -- (no device round-trip, so general position of `q₀` survives), general position is `hgp`, and
-  -- the link-recording conjunct is the seed selector's link-recording (`hends`).
+  -- (no device round-trip, so general position of `q₀` survives), general position is `hgp`, the
+  -- link-recording conjunct is the seed selector's link-recording (`hends`), and the
+  -- algebraic-independence conjunct is `halg` (the seed's normals *are* `q₀`).
   ⟨PanelHingeFramework.ofNormals G ends q₀, PanelHingeFramework.ofNormals_graph G ends q₀, hgp,
     (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.isInfinitesimallyRigidOn_of_splice
       (GH := GH) (Gc := Gc) hGH hGc hcH hcc hcover hblock hcontract,
-    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends, halg⟩
 
 /-- **Case I splice producer, leg-native general-position-free form (the non-simple producer)**
 (`lem:case-I-splice-placement` / `lem:case-I-realization`, the bare-motive node N6a for the

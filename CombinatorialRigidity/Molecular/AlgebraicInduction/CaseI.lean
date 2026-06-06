@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
+import CombinatorialRigidity.Mathlib.RingTheory.MvPolynomial.Tower
+import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
 
 /-!
 # The algebraic induction — Case I realization (`lem:case-I-realization`)
@@ -99,7 +101,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
   -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
   -- position.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) The triple product is a nonzero polynomial (each factor nonzero), so it has a non-root.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
@@ -169,18 +171,20 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
     PanelHingeFramework.HasGenericFullRankRealization k G := by
   classical
-  -- Steps (i)–(iv) are identical to the bare coupling: a shared non-root `q₀` of the triple
-  -- product (each leg's leg-restricted rank polynomial × the general-position factor) at which
-  -- both legs are rigid and the parent normals are in general position.
+  -- Steps (i)–(iv): both leg rank polynomials and the general-position factor are *rational*
+  -- (`Q.coeffs ⊆ range (algebraMap ℚ ℝ)`), so the algebraically-independent-over-`ℚ` seed `q₀`
+  -- (`exists_injective_algebraicIndependent_real`) is a simultaneous non-root of all three — both
+  -- legs are rigid at `q₀`, the parent normals are in general position, *and* `q₀` carries the
+  -- motive's algebraic-independence conjunct.
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
-  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
+  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, hQHrat, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
-  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
+  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hQcrat, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
@@ -188,12 +192,13 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
     exact fun a b hab => hf (Nat.cast_injective hab)
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQHrat hQHne
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQcrat hQcne
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
   have hrigH₀ : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
       V(GH) :=
     PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
@@ -204,11 +209,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
       Gc ends hnevc hsuppc hcardc hLIc hq₀c
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- (v') The generic splice: realize at the GP seed `q₀` itself (bypassing the device), so general
-  -- position survives and the conclusion is the strengthened generic motive. The all-`β` `hends`
-  -- weakens to the edge-restricted link-recording form the splice producer needs.
+  -- (v') The generic splice: realize at the alg-indep GP seed `q₀` itself (bypassing the device),
+  -- so general position survives and the conclusion is the strengthened generic motive. The all-`β`
+  -- `hends` weakens to the edge-restricted link-recording form the splice producer needs.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals G ends
-    (fun e _ _ _ => hends e) hgp hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+    (fun e _ _ _ => hends e) hgp halg hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **Case I shared-seed coupling, *body-set* form: two legs rigid on per-leg body sets `sH`/`sc`
 give a full-rank realization** (`lem:case-I-realization`, the body-set coupling N6-G3-G3c-ii;
@@ -272,7 +277,7 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
   obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+  obtain ⟨Qgp, hQgp_ne, _, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
   -- (iii) The triple product has a shared non-root `q₀`.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
@@ -572,6 +577,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
     (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {q₀ : α × Fin (k + 2) → ℝ}
     (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    (halg : AlgebraicIndependent ℚ q₀)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH)
@@ -579,12 +585,13 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc) :
     PanelHingeFramework.HasGenericFullRankRealization k G :=
   -- The witness is the seed framework itself; rigidity on `V(G)` is the genericity-free body-set
-  -- splice glue (no device round-trip, so general position of `q₀` survives), GP is `hgp`, and the
-  -- link-recording conjunct is the seed selector's link-recording (`hends`).
+  -- splice glue (no device round-trip, so general position of `q₀` survives), GP is `hgp`, the
+  -- link-recording conjunct is the seed selector's link-recording (`hends`), and the
+  -- algebraic-independence conjunct is `halg`.
   ⟨PanelHingeFramework.ofNormals G ends q₀, PanelHingeFramework.ofNormals_graph G ends q₀, hgp,
     (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.isInfinitesimallyRigidOn_of_splice
       (GH := GH) (Gc := Gc) (sH := sH) (sc := sc) hGH hGc hcH hcc hcover hblock hcontract,
-    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends, halg⟩
 
 /-- **Case I shared-seed coupling, *generic* body-set form** (`lem:case-I-realization`, the body-set
 generic coupling N6-G3-G3c-iii; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), Phase 22a). The
@@ -638,27 +645,30 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mp h))
-  -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
+  -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed, with rational
+  -- coefficients (`hQHrat`/`hQcrat`).
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hQHrat, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
+  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hQcrat, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
-  -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+  -- (ii) The general-position factor (rational).
+  obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
-  -- (iii) The triple product has a shared non-root `q₀`.
+  -- (iii) All three polynomials are rational, so an algebraically-independent-over-`ℚ` seed `q₀` is
+  -- a simultaneous non-root, and carries the motive's algebraic-independence conjunct.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
     exact fun a b hab => hf (Nat.cast_injective hab)
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQHrat hQHne
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQcrat hQcne
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
   -- (iv) At `q₀` each leg is rigid *on its body set* (body-set consumer, carrying `hpinH`/`hpinc`),
   -- and the parent normals are general.
   have hrigH₀ :
@@ -671,10 +681,10 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
       Gc ends hnesc (hpinc q₀) hsuppc hcardc hLIc hq₀c
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  -- (v) The *generic* body-set splice: realize at the GP seed `q₀` itself (bypassing the device),
-  -- so general position survives and the conclusion is the strengthened generic motive.
+  -- (v) The *generic* body-set splice: realize at the alg-indep GP seed `q₀` itself (bypassing the
+  -- device), so general position survives and the conclusion is the strengthened generic motive.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hends hgp
-    hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+    halg hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **Case I shared-seed coupling, *asymmetric* body-set form** (`lem:case-I-realization`, the
 asymmetric coupling N6-G3-G3c-iii-b; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a).
@@ -733,22 +743,24 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
-  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
+  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed (rational).
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hQHrat, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+  -- (ii) The general-position factor (rational).
+  obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
-  -- (iii) The product `Q_H · Q_gp` has a shared non-root `q₀` (only the H-leg + GP factors now).
+  -- (iii) Both `Q_H` and `Q_gp` are rational, so an algebraically-independent-over-`ℚ` seed `q₀` is
+  -- a simultaneous non-root, and carries the motive's algebraic-independence conjunct.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
     exact fun a b hab => hf (Nat.cast_injective hab)
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQHne hQgpne)
-  rw [map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQHrat hQHne
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
   -- (iv) The parent normals are general at `q₀`.
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
@@ -762,9 +774,9 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
   have hrigc₀ :
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc :=
     hrigcGP q₀ hgp
-  -- (v) The generic body-set splice: realize at the GP seed `q₀` itself.
+  -- (v) The generic body-set splice: realize at the alg-indep GP seed `q₀` itself.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hends hgp
-    hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+    halg hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **The exterior-column projection** (`lem:case-I-realization` Piece B infra, the block-triangular
 core; Katoh–Tanigawa 2011 §6.2, eq. (6.3), Phase 22a). The linear map on screw assignments that
@@ -1210,7 +1222,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
       (PanelHingeFramework.ofNormals (Gc.map f)
         (fun e => (f (ends e).1, f (ends e).2)) nrm).toBodyHinge.IsInfinitesimallyRigidOn
         V(Gc.map f) := by
-  obtain ⟨Q, hQg, hQgp, hQrig, hQrec⟩ := Qcf
+  obtain ⟨Q, hQg, hQgp, hQrig, hQrec, _⟩ := Qcf
   set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
   set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
   -- General position transfers to `ofNormals … endsM …` verbatim (normals are `Q.normal`, unchanged
@@ -1270,6 +1282,37 @@ private theorem coord_linearMap_eq_matrix_mulVec {W : Type*} [AddCommGroup W] [M
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [map_smul, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
+/-- **The matrix entry of `f.dualMap` in the dual-standard basis is `(b.dualBasis (e l)) (f (b (e
+j)))`** (the linearity fact behind the N-22b-2 projected-coordinate rationality; standard linear
+algebra). For a finite basis `b : Basis ι R W`, an index equiv `e : Fin n ≃ ι`, the dual-standard
+basis identification `φ := b.dualBasis.equivFun ≪≫ₗ funCongrLeft R R e`, and any linear endomorphism
+`f : W →ₗ[R] W`, the `(j, l)` entry of the matrix of `φ ∘ f.dualMap ∘ φ⁻¹` reads as evaluating the
+dual basis functional `b.dualBasis (e l)` at `f (b (e j))`. Stated generically (not over the heavy
+`Module.Dual ℝ (α → ScrewSpace k)`), so the `φ`/`dualBasis` unfolding never triggers a
+`whnf`/`isDefEq` on the concrete dual type. For a `0`/`proj` projection `f = extProj proj` this
+entry is a Kronecker `0`/`1`, hence rational — the input the projected rank polynomial's
+rationality needs. -/
+private theorem dualMap_matrix_entry_eq {ι R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
+    {n : ℕ} (b : Module.Basis ι R W) [Finite ι] [DecidableEq ι] (e : Fin n ≃ ι)
+    (f : W →ₗ[R] W) (j l : Fin n) :
+    (b.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft R R e))
+        (f.dualMap ((b.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft R R e)).symm
+          (Pi.single l 1))) j
+      = b.dualBasis (e l) (f (b (e j))) := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  have hsymm : (b.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft R R e)).symm (Pi.single l 1)
+      = b.dualBasis (e l) := by
+    rw [LinearEquiv.trans_symm, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_symm,
+      LinearEquiv.funCongrLeft_apply, Module.Basis.equivFun_symm_apply, Finset.sum_eq_single (e l)]
+    · rw [LinearMap.funLeft_apply, Equiv.symm_apply_apply, Pi.single_eq_same, one_smul]
+    · intro b' _ hb'
+      rw [LinearMap.funLeft_apply,
+        Pi.single_eq_of_ne (by rw [ne_eq, e.symm_apply_eq]; exact hb'), zero_smul]
+    · exact fun h => absurd (Finset.mem_univ _) h
+  rw [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+    Module.Basis.dualBasis_equivFun, LinearMap.dualMap_apply, hsymm]
+
 /-- **The `D ∘ panelRow` rank polynomial: a projected-independent subfamily at one placement yields
 a nonzero rank polynomial witnessing exterior-projected row-independence at its generic locus**
 (`lem:claim-6-4` packaging brick N-22b-2; Katoh–Tanigawa 2011 §5.1, §6.2 eqs. (6.5)/(6.9), Phase
@@ -1302,6 +1345,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
     (hindep : LinearIndependent ℝ (fun i : t => (extProj (k := k) proj).dualMap
       ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
     ∃ Qc : MvPolynomial (α × Fin (k + 2)) ℝ, Qc ≠ 0 ∧
+      (Qc.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Qc ≠ 0 →
         ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
           (∀ i ∈ rsc, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
@@ -1370,17 +1414,57 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
   have hMrep : ∀ (w : Module.Dual ℝ (α → ScrewSpace k)) j,
       φ (D w) j = ∑ l, M j l * φ w l :=
     fun w j => by rw [hM_def]; exact coord_linearMap_eq_matrix_mulVec φ D w j
+  -- Each matrix entry `M j l` is `0` or `1` (`extProj` is a `0`/`proj` projection in the
+  -- dual-standard basis), hence rational. The entry reads
+  -- `M j l = (B.dualBasis (e l)) (extProj proj (B (e j)))`, and `extProj proj (B (e j))` is `0`
+  -- (when `(e j).1 ∈ proj`) or the standard basis vector `B (e j)` itself, on which the dual basis
+  -- is the Kronecker delta `0`/`1`.
+  have hMrat : ∀ j l, M j l ∈ Set.range (algebraMap ℚ ℝ) := by
+    intro j l
+    -- `M j l = B.dualBasis (e l) (extProj proj (B (e j)))` (the dual-map matrix entry, via the
+    -- generic helper that never `whnf`s the concrete dual type) — a Kronecker `0`/`1` against the
+    -- `0`/`proj` projection of a standard basis vector, hence rational.
+    have hval : M j l = B.dualBasis (e l) (extProj (k := k) proj (B (e j))) := by
+      rw [hM_def, hφ, hDdef]; exact dualMap_matrix_entry_eq B e (extProj proj) j l
+    rw [hval]
+    -- `extProj proj (B (e j))` is `0` (when `(e j).1 ∈ proj`) or `B (e j)` itself.
+    by_cases ha : (e j).1 ∈ proj
+    · have hz : extProj (k := k) proj (B (e j)) = 0 := by
+        funext b
+        rw [Pi.zero_apply]
+        by_cases hb : b ∈ proj
+        · exact extProj_apply_mem hb _
+        · rw [extProj_apply_not_mem hb, hB, Pi.basis_apply, Pi.single_eq_of_ne
+            (by rintro rfl; exact hb ha)]
+      rw [hz, map_zero]; exact ⟨0, map_zero _⟩
+    · have hid : extProj (k := k) proj (B (e j)) = B (e j) := by
+        funext b
+        by_cases hb : b ∈ proj
+        · rw [extProj_apply_mem hb, hB, Pi.basis_apply,
+            Pi.single_eq_of_ne (by rintro rfl; exact ha hb)]
+        · rw [extProj_apply_not_mem hb]
+      rw [hid, Module.Basis.dualBasis_apply_self]
+      exact ⟨if e j = e l then 1 else 0, by split_ifs <;> simp⟩
+  -- The projected coordinate `cD i j = ∑ l, C(M j l) · c i l` is rational: `M j l` rational
+  -- (above), `c i l` rational (the parent panel polynomial), `range` closed under `C(·)·`, sums.
+  have hcD : ∀ i j, cD i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ) (σ := α × Fin (k + 2))).range := by
+    intro i j
+    rw [hcD_def]
+    refine Subring.sum_mem _ fun l _ => Subring.mul_mem _ ?_ ?_
+    · obtain ⟨r, hr⟩ := hMrat j l
+      exact ⟨MvPolynomial.C r, by rw [MvPolynomial.map_C, hr]⟩
+    · rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
   -- The projected evaluation identity: each projected coordinate is the polynomial `cD`.
   have hgD : ∀ q i j, φ (gD q i) j = MvPolynomial.eval q (cD i j) := by
     intro q i j
     rw [hgD_def, hMrep, hcD_def, map_sum]
     refine Finset.sum_congr rfl fun l _ => ?_
     rw [map_mul, MvPolynomial.eval_C, hg]
-  -- Extract the witnessing rank polynomial via the engine on the projected family, re-phrase.
-  obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at gD cD φ hgD (p₀ := q₀) (s := t)
-      (by simpa only [hgD_def, hg_def, hDdef] using hindep)
-  refine ⟨Q, fun hQz => hQ₀ (by rw [hQz, map_zero]), fun q hq => ?_⟩
+  -- Extract the *rational* witnessing rank polynomial via the engine on the projected family.
+  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range gD cD φ hgD hcD
+      (p₀ := q₀) (s := t) (by simpa only [hgD_def, hg_def, hDdef] using hindep)
+  refine ⟨Q, fun hQz => hQ₀ (by rw [hQz, map_zero]), hQrat, fun q hq => ?_⟩
   exact ⟨t, hsupp, hcount, by simpa only [hgD_def, hg_def, hDdef] using hQ q hq⟩
 
 /-- **KT Claim 6.4 — the contraction leg's rank transports across the collapse map to a
@@ -1716,6 +1800,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     -- generic placement, a Zariski-open locus), threaded into the shared seed via the triple
     -- product `Q_H · Q_c · Q_gp`. Each row's edge links in `Gc`.
     (Qc : MvPolynomial (α × Fin (k + 2)) ℝ) (hQc_ne : Qc ≠ 0)
+    (hQc_rat : (Qc.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ))
     (hsc_proj_indep : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Qc ≠ 0 →
       ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
         (∀ i ∈ rsc, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
@@ -1731,26 +1816,29 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
-  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed `qH`. Each witnessed
-  -- index links in `GH` (`hsuppH`), so both its endpoints lie in `V(GH) ⊆ sH`.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
+  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed `qH` (rational). Each
+  -- witnessed index links in `GH` (`hsuppH`), so both its endpoints lie in `V(GH) ⊆ sH`.
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hQHrat, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  -- (ii) The general-position factor.
-  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+  -- (ii) The general-position factor (rational).
+  obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
-  -- (iii) The **triple** product `Q_H · Q_c · Q_gp` has a shared non-root `q₀` (H-block LI +
-  -- the contraction rank polynomial `Q_c`'s generic locus + general position).
+  -- (iii) All three of `Q_H`, `Q_c` (`hQc_rat`), `Q_gp` are rational, so an algebraically-
+  -- independent-over-`ℚ` seed `q₀` is a simultaneous non-root (H-block LI + the contraction rank
+  -- polynomial `Q_c`'s generic locus + general position), and carries the alg-independence
+  -- conjunct.
   have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
     exact fun a b hab => hf (Nat.cast_injective hab)
-  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
-    (mul_ne_zero (mul_ne_zero hQHne hQc_ne) hQgpne)
-  rw [map_mul, map_mul] at hq₀
-  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
-  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQHrat hQHne
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQc_rat hQc_ne
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
   -- Abbreviations: the parent framework at `q₀`, the exterior-column projection's dual map `D`.
@@ -1819,10 +1907,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
     omega
   -- (v) The device-row closure makes `F = ofNormals G ends q₀` rigid on `V(G)` at `q₀` itself; with
   -- `q₀` general position the strengthened generic motive holds. The witness is `F`; the
-  -- link-recording conjunct is the seed selector's link-recording (`hends`).
+  -- link-recording conjunct is the seed selector's link-recording (`hends`), and the
+  -- algebraic-independence conjunct is `halg` (the seed's normals *are* `q₀`).
   refine ⟨PanelHingeFramework.ofNormals G ends q₀,
     PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_,
-    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends, halg⟩
   have hFG : F.graph.vertexSet = V(G) := by
     rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows hunion hmem
@@ -1942,7 +2031,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   -- transversal on its *full* `V(H)`). The block-triangular coupling uses only the `H`-block *rows*
   -- (the `H`-leg rank polynomial), so no complement-isolation equality is needed for this leg.
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
-  obtain ⟨QH, hQHg, hQHgp, hQHrig, hQHrec⟩ :=
+  obtain ⟨QH, hQHg, hQHgp, hQHrig, hQHrec, _⟩ :=
     (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
   -- The `H`-leg `hswap` (U3a, route (i)): the IH realization `QH` records `H`'s links up to swap
   -- (`hQHrec`, the strengthened-motive conjunct), and `endsOf` records `G`'s — so the two selectors
@@ -1976,17 +2065,17 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   -- The bounded `D∘panelRow` packaging (N-22b-2) lifts the single-placement witness `(q₀, t)` to
   -- the contraction **rank polynomial** `Qc ≠ 0` whose non-roots carry exterior-projected
   -- surviving-row independence (the Zariski-open generic locus of KT eq. (6.9), not every GP seed).
-  obtain ⟨Qc, hQc_ne, hsc_proj_indep⟩ :=
+  obtain ⟨Qc, hQc_ne, hQc_rat, hsc_proj_indep⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj (k := k)
       (G.deleteEdges E(H)) ends V(H) hsupp hcount hindep
   -- (3) Feed both legs into the **block-triangular** body-set generic coupling (`sH := V(H)`,
   -- `sc := (V(G)∖V(H))∪{r}`): the `H`-block rows from the rank polynomial, the surviving-edge
   -- block from the Claim-6.4 exterior-projected row-independence at the `Qc`-non-root seed. The
   -- device-row closure reads rigidity on `V(G)` off the joint row count — no common placement
-  -- rigid on both legs.
+  -- rigid on both legs. `Qc` is rational (`hQc_rat`), so the shared seed can be taken alg-indep.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set
     G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
-    ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hsc_proj_indep
+    ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hQc_rat hsc_proj_indep
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)

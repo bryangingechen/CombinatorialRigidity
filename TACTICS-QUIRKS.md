@@ -1411,3 +1411,28 @@ same-universe only.*
 Worked case: `exists_injective_algebraicIndependent_real` (Phase 22d,
 `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`) — embedding a finite `σ` into the
 infinite transcendence-basis index `ι : Type` of ℝ over ℚ.
+
+## 38. Unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual`/exterior-power type `whnf`-times-out — extract a generic helper over an abstract basis
+
+**Symptom.** A proof step computes a coordinate or matrix entry of a linear map through a
+basis-coordinate iso `φ : W ≃ₗ[R] (Fin n → ℝ)` built from a *concrete, heavy* `W` (e.g.
+`Module.Dual ℝ (α → ScrewSpace k)`, an exterior-power dual), say
+`φ (f.dualMap (φ⁻¹ (Pi.single l 1))) j`. Unfolding `φ` (`dualBasis_equivFun`, `funCongrLeft_apply`,
+`dualMap_apply`, …) *in place* inside a large proof context hits *"(deterministic) timeout at
+`whnf`"* or *"at `isDefEq`, maximum number of heartbeats"* — the elaborator keeps reducing the heavy
+carrier type.
+
+**Fix.** Lift the coordinate/matrix-entry computation into a **standalone (`private`) lemma stated
+over an abstract `b : Basis ι R W`** (and `e : Fin n ≃ ι`, `f : W →ₗ[R] W`), with `φ` written
+`b.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft R R e)`. Proven against the *abstract* basis it
+elaborates in isolation with no `whnf` on the concrete type; the call site then `rw`s in its
+concrete `φ`/`f` and is left with a lightweight goal (e.g. `b.dualBasis (e l) (f (b (e j)))`, a
+Kronecker `0`/`1` for a projection `f`). This is the same medicine as § 32's
+`coord_linearMap_eq_matrix_mulVec` and the *basis-coercion `map'`* FRICTION entry: **the abstract
+restatement is the rescue, not a `set_option maxHeartbeats` bump.** Note `Basis.equivFun`/`dualBasis`
+need `[Finite ι] [DecidableEq ι]` in the lemma *statement* (`haveI := Fintype.ofFinite ι` in the
+proof, else the `unusedFintypeInType` linter fires on a `[Fintype ι]` binder).
+
+Worked case: `dualMap_matrix_entry_eq` (Phase 22d, `Molecular/AlgebraicInduction/CaseI.lean`) — the
+`extProj`-dual-map matrix entry feeding the projected rank polynomial's rationality (FRICTION
+*the `extProj`-dual-map matrix entry … is rational*).

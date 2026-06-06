@@ -33,29 +33,29 @@ polynomials (`PanelLayer.lean`: `normalsJoinPoly`/`panelSupportPoly`/`annihRowPo
 — exactly the open hypothesis the prior commit's assembly
 (`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`) consumes. All axiom-clean.
 
-**Next concrete commit:** **(ii-a) motive-conjunct wiring** — carry "realizing seed alg-indep over ℚ"
-as a third motive guarantee (22b-shaped, paralleling GP / link-recording) and have the producers build
-their `ofNormals G ends q₀` at the alg-indep seed. The seed itself now exists: **(ii-a)'s first sub-step
-— the moment-curve alg-independence question — is settled** (this commit). Then **(iii)**
-`lem:case-III-seed-rank-bridge` composes the now-rational device `Q` + the assembly with the device
-consumer (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
-`rank_add_deficiency_eq`. All built directly to green.
+**Next concrete commit:** **(iii) `lem:case-III-seed-rank-bridge`** — the kernel bridge. (ii-a) the
+motive-conjunct wiring landed this commit (below), so the *generic* realization motive now carries an
+alg-indep-over-ℚ seed; (iii) composes it + the rational device `Q` (`exists_rankPolynomial_of_rigidOn…`,
+all rational now) with the device consumer
+(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
+`rank_add_deficiency_eq`. Built directly to green.
 
-**Moment-curve question settled (this commit): NO — substitute a transcendental seed.** The
-moment-curve seed `withMomentNormals param` (`q (a,i) = (param a)^i`) is **not** alg-indep over ℚ — its
-coordinates satisfy rational relations (`q(a,0)=1`, `q(a,2)=q(a,1)²`). The substitute is the mirror
-`exists_injective_algebraicIndependent_real`: for finite `σ`, an injective alg-indep-over-ℚ `q : σ → ℝ`
-exists (restrict an ℝ/ℚ transcendence basis — infinite by `infinite_index_of_transcendenceBasis_real` —
-along `σ ↪ ι`). The moment curve stays the *general-position* witness; alg-independence is now a
-*separate* point. Both leaves axiom-clean.
-
-The three rank-polynomial producers now carry `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`: all of
-`PanelHingeFramework.exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}`
-(`GenericityDevice.lean`) route through
-`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, discharging `hc` from
-`annihRowPoly_smul_sign_mem_range_map` (the shared `c i j = ([u=a]−[v=a]) • annihRowPoly`). So
-whichever producer (iii) consumes hands it a rational `Q`, the open hypothesis of
-`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`.
+**(ii-a) landed (this commit): the alg-indep conjunct + producers build at the transcendental seed.**
+`HasGenericFullRankRealization` gained a fifth conjunct `AlgebraicIndependent ℚ (fun p ↦ Q.normal p.1
+p.2)` (paralleling GP / link-recording; `hasFullRankRealization_of_generic` still forgets it). Every
+producer now selects the alg-indep seed via the mirror `exists_injective_algebraicIndependent_real` (the
+moment curve is **not** alg-indep) instead of `MvPolynomial.exists_eval_ne_zero`, and discharges each
+rigid leg's *rational* rank-polynomial non-root via
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` — the same alg-indep seed
+simultaneously lands rigidity, general position, and the conjunct. This forced two rationality additions:
+`exists_generalPosition_polynomial` now carries `Qgp.coeffs ⊆ range (algebraMap ℚ ℝ)` (the leading-minor
+product is integer-coefficient), and — crucially — the `_proj` producer
+`exists_rankPolynomial_of_rigidOn_linking_set_proj` now carries `Qc.coeffs ⊆ range` (its
+`cD = ∑ C(M j l)·c i l` is rational because `extProj`'s dual-map matrix entry `M j l ∈ {0,1}`, via the
+new generic helper `dualMap_matrix_entry_eq`). So the block-triangular composer
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` takes `hQc_rat` and picks the
+alg-indep seed; `case_I_realization` discharges it from the now-rational `_proj` `Qc`. All green +
+axiom-clean (`propext`/`Classical.choice`/`Quot.sound`).
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -123,21 +123,25 @@ Claim 6.11 supplies the `+1` — the same missing content.
   (`GenericityDevice.lean`) route through
   `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, discharging `hc` from
   `annihRowPoly_smul_sign_mem_range_map`, so each produced `Q` carries
-  `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`. Axiom-clean; CaseI callers re-destructure with a `_` for the
-  new conjunct. (`exists_rankPolynomial_of_rigidOn_linking_set_proj`'s `Q` runs a projected family
-  `cD = ∑ C(M j l)·c i l` whose rationality additionally needs `M` rational — out of scope here, not
-  on the direct kernel route.)
-- [x] (ii-a) first sub-step — the moment-curve alg-independence question, **settled NO** (this
-  commit). Mirror `exists_injective_algebraicIndependent_real` (+ `infinite_index_of_transcendenceBasis_real`,
+  `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`. Axiom-clean. The `_proj` producer's rationality (deferred
+  here) landed with (ii-a) below.
+- [x] (ii-a) first sub-step — the moment-curve alg-independence question, **settled NO**. Mirror
+  `exists_injective_algebraicIndependent_real` (+ `infinite_index_of_transcendenceBasis_real`,
   `Mathlib/RingTheory/AlgebraicIndependent/TranscendenceBasis.lean`): a finite injective alg-indep-over-ℚ
   seed `q : σ → ℝ` from a transcendence basis. The moment curve was NOT alg-indep; alg-independence is
   now a separate point from general position. Axiom-clean. FRICTION *[mirrored]*; QUIRKS § 37.
-- [ ] (ii-a) motive-conjunct wiring (carry "realizing seed alg-indep over ℚ" as a third motive
-  guarantee; 22b-shaped) — producers build at the now-available alg-indep seed.
+- [x] (ii-a) motive-conjunct wiring (this commit) — `HasGenericFullRankRealization` carries a fifth
+  conjunct `AlgebraicIndependent ℚ (fun p ↦ Q.normal p.1 p.2)`; every generic producer selects the
+  alg-indep seed (`exists_injective_algebraicIndependent_real`) and discharges each rigid leg's rational
+  rank-poly non-root via `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`. Required:
+  `exists_generalPosition_polynomial` + `exists_rankPolynomial_of_rigidOn_linking_set_proj` now carry
+  `Q.coeffs ⊆ range` (the latter via the generic `dualMap_matrix_entry_eq`: `extProj`'s dual-map matrix
+  entry is `0`/`1`). `case_I_realization` discharges the block-triangular composer's `hQc_rat`. Green +
+  axiom-clean.
 - [ ] (iii) `lem:case-III-seed-rank-bridge` (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row
-  bridge) composing (i) ⊕ (ii-a) ⊕ (ii-b)'s rational `Q` with the device consumer
-  (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11`. Red;
-  built directly, not carried.
+  bridge) composing (i) ⊕ (ii-a)'s alg-indep-seed motive ⊕ (ii-b)'s rational `Q` with the device
+  consumer (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11`.
+  Red; built directly, not carried.
 
 ## Deferred sub-phases (future work in the phase)
 
@@ -153,17 +157,16 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
   (footnote 6). The project had **zero** `AlgebraicIndependent` machinery. Cut (refined by the
   (ii) opening recon, *Kernel sub-phase (ii) recon*; design doc §1.32): **(i)** [✓ landed]
   `AlgebraicIndependent.aeval_ne_zero` (alg.-indep. tuple ⟹ `aeval`-non-root of every nonzero
-  ℚ-poly; mirror); **(ii)** SPLITS — **(ii-a)** seed-genericity motive conjunct (carry "realizing
-  seed alg-indep over ℚ"; a third motive form paralleling 22b's GP / link-recording); its first
-  sub-step (the moment-curve alg-independence question) is **✓ settled** — moment curve is NOT
-  alg-indep, substitute the transcendental seed `exists_injective_algebraicIndependent_real`
-  (mirror); remaining (ii-a) work is the motive-conjunct wiring; **(ii-b)** [✓ landed + wired into the device `Q`] the
-  rationality bridge — the device's `Q : MvPolynomial σ ℝ` is rational (`Q.coeffs ⊆ range
-  (algebraMap ℚ ℝ)`), via the geometric `complementIso`-entry leaf + the panel-polynomial
-  propagation + the rational device lemma, now threaded through the three rank-polynomial producers
-  (see *Current state*); **(iii)** the kernel `lem:case-III-seed-rank-bridge` composing
-  (i) ⊕ (ii-a) ⊕ (ii-b)'s rational `Q` with the consumer + `rigidityMatrix_prop11` +
-  `rank_add_deficiency_eq`. **Route (user,
+  ℚ-poly; mirror); **(ii)** SPLITS — **(ii-a)** [✓ landed] seed-genericity motive conjunct: the fifth
+  `AlgebraicIndependent ℚ` conjunct on `HasGenericFullRankRealization`, producers build at the
+  transcendental seed `exists_injective_algebraicIndependent_real` (moment curve is NOT alg-indep) and
+  discharge rational rank-poly non-roots via the (ii-b) bridge — required the deferred `_proj`
+  rationality (`dualMap_matrix_entry_eq`: `extProj`'s dual-map matrix is `0`/`1`); **(ii-b)** [✓ landed]
+  the rationality bridge — the device's `Q : MvPolynomial σ ℝ` is rational (`Q.coeffs ⊆ range
+  (algebraMap ℚ ℝ)`), via the geometric `complementIso`-entry leaf + the panel-polynomial propagation +
+  the rational device lemma, threaded through all rank-polynomial producers; **(iii)** [red] the kernel
+  `lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b)'s rational `Q` with the consumer +
+  `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. **Route (user,
   2026-06-06, design doc §1.31): build this DIRECTLY to green**, not as a permanent
   hypothesis. The product-route *relaxation* candidate (pick `q` as a non-root of the
   finite product of the nested IH rank polynomials, avoiding alg-independence at `d=3`;
@@ -195,16 +198,15 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **(ii-a) motive-conjunct wiring.** (ii-a)'s first sub-step — settling the
-moment-curve alg-independence question — landed this commit: the moment curve is NOT alg-indep over ℚ,
-so the alg-indep seed comes from the mirror `exists_injective_algebraicIndependent_real` (a finite
-injective alg-indep-over-ℚ `q : σ → ℝ` off a transcendence basis). What remains for (ii-a) is the
-*wiring*: carry "realizing seed alg-indep over ℚ" as a third motive guarantee (22b-shaped, paralleling
-GP / link-recording) and have the producers build their `ofNormals G ends q₀` at that alg-indep seed.
-Then **(iii)** `lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b)'s rational `Q` with the
-device consumer (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11`
-+ `rank_add_deficiency_eq`. The two combinatorial Claim-6.11 factors (Gap-2 leaf + Gap-3 shell) and the
-(ii-b) rationality bridge are green; `lem:case-III` stays red until the kernel lands.
+**Next concrete commit:** **(iii) `lem:case-III-seed-rank-bridge`** — the kernel bridge. With (ii-a)
+landed (the generic motive now carries an alg-indep-over-ℚ seed and every producer builds at it), (iii)
+composes (i) `AlgebraicIndependent.aeval_ne_zero` ⊕ (ii-a)'s motive seed ⊕ (ii-b)'s rational device `Q`
+with the device consumer (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) +
+`rigidityMatrix_prop11` + `rank_add_deficiency_eq` to certify the inductively-fixed seed attains the
+matroid-predicted rank of `G_v^{ab}` (eq. (6.18)) and `G_v` (eq. (6.22)), then the redundant-`ab`-row
+conversion (eq. (6.23)). The two combinatorial Claim-6.11 factors (Gap-2 leaf + Gap-3 shell), the (ii-b)
+rationality bridge, and (ii-a) the alg-indep-seed motive are all green; `lem:case-III` stays red until
+(iii) lands.
 
 After the kernel: the candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and
 general-`d` (Phase 23).
@@ -220,13 +222,23 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **(ii-a) first sub-step — moment-curve alg-independence settled (this commit).** Verdict: the
-  moment curve is NOT alg-indep over ℚ (`q(a,0)=1`, `q(a,2)=q(a,1)²`); substitute the transcendental
-  seed `exists_injective_algebraicIndependent_real` (mirror, off an ℝ/ℚ transcendence basis, infinite
-  by `infinite_index_of_transcendenceBasis_real`). Alg-independence and general position are now
-  separate points. Axiom-clean; cross-universe embedding via `Cardinal.lift_mk_le'` (QUIRKS § 37). The
-  alg-independence tracker (`notes/AlgebraicIndependence.md`) updated: leaf (i)+(ii-b) green, (ii-a)
-  seed in hand.
+- **(ii-a) motive-conjunct wiring landed (this commit).** `HasGenericFullRankRealization` gained a
+  fifth conjunct `AlgebraicIndependent ℚ (fun p ↦ Q.normal p.1 p.2)` (paralleling GP/link-recording;
+  `hasFullRankRealization_of_generic` forgets it). Every generic producer now picks the alg-indep seed
+  `exists_injective_algebraicIndependent_real` over `MvPolynomial.exists_eval_ne_zero` and discharges
+  each rigid leg's rational rank-poly non-root via `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`
+  (the same seed lands rigidity+GP+conjunct). This forced the **`_proj` rationality** the (ii-b)
+  checklist had deferred: `exists_rankPolynomial_of_rigidOn_linking_set_proj` now carries
+  `Qc.coeffs ⊆ range` (its `cD = ∑ C(M j l)·c i l` rational because `extProj`'s dual-map matrix entry
+  `M j l ∈ {0,1}`), via the new generic `dualMap_matrix_entry_eq`; `exists_generalPosition_polynomial`
+  likewise gained `Qgp.coeffs ⊆ range`. The block-triangular composer takes `hQc_rat`;
+  `case_I_realization` supplies it. Promoted: QUIRKS § 38 (extract a generic helper to dodge the
+  heavy-dual `whnf`), FRICTION (`Subring.foo _` stuck `CommRing ?m`). Green + axiom-clean.
+- **(ii-a) first sub-step — moment-curve alg-independence settled.** Verdict: the moment curve is NOT
+  alg-indep over ℚ (`q(a,0)=1`, `q(a,2)=q(a,1)²`); substitute the transcendental seed
+  `exists_injective_algebraicIndependent_real` (mirror, off an ℝ/ℚ transcendence basis, infinite by
+  `infinite_index_of_transcendenceBasis_real`). Alg-independence and general position are now separate
+  points. Axiom-clean; cross-universe embedding via `Cardinal.lift_mk_le'` (QUIRKS § 37).
 - **Kernel (ii-b) wired into the device `Q` (this commit).** The three producers
   `exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}` (`GenericityDevice.lean`) now route
   through `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, with `hc`
