@@ -41,9 +41,10 @@ shipped green-modulo KT Claim~6.4 (\cref{lem:claim-6-4}); \textbf{Phase~22b}
 KT~\S6.2/\S5.1: the exterior-column projection loses zero rank on a rigid block, a
 collapse-relabel row reproduction carries the surviving independence back at a
 degenerate placement, and a motive strengthening discharges the selector alignment),
-so \cref{lem:case-I-realization} is now fully green; and \textbf{Phase~22c+} (the
-parked Case~III at $d=3$ plus the $d=3$ assembly, renumbered \texttt{22b+} to
-\texttt{22c+} in the Phase~22b opening recon) remains in planning.
+so \cref{lem:case-I-realization} is now fully green; \textbf{Phase~22c} (Case~III at
+$d=3$, KT~\S6.4.1, Lemma~6.10 --- the conjecture's crux) is in progress, opened
+\emph{design-pass-first} (on a layer-level design recon, not a build); and
+\textbf{Phase~22d} (the $d=3$ assembly) is the deferred further cut.
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
@@ -363,15 +364,25 @@ per-phase breakdown:
                 discharges the selector alignment; an assembly producer composes these
                 into the rank-transport witness from the contraction's generic
                 induction hypothesis.
-          \item \textbf{Phase~22c+ --- Case~III at $d=3$ + $d=3$ assembly}
-                (\emph{planning}; parked behind Phases~22a/22b, renumbered
-                \texttt{22b+} to \texttt{22c+} in the Phase~22b opening recon): the
-                Case~II/III reducible-vertex producer at $d=3$ (\S6.3, \S6.4.1: the
-                degenerate eq.~(6.12) placement on the green row infrastructure, one
-                row short for $k=0$, completed by the redundant-edge row of
-                Lemma~6.10 --- \cref{lem:case-II-realization,lem:case-III}) plus the
-                $d=3$ assembly (\cref{prop:rigidity-matrix-prop11,thm:theorem-55}),
-                expected to split into multiple sub-phases.
+          \item \textbf{Phase~22c --- Case~III at $d=3$} (\emph{in progress};
+                Katoh--Tanigawa~\cite[\S6.4.1]{katohTanigawa2011}, Lemma~6.10 --- the
+                conjecture's crux and the single largest proof in KT): the
+                reducible-vertex producer at $d=3$ ($k=0$), where the degenerate
+                eq.~(6.12) placement on the green row infrastructure is one row short
+                of full rank, and the missing row comes from Lemma~6.10's
+                $D$-candidate-frameworks argument (Claim~6.11 combinatorial$\leftrightarrow$linear
+                + Claim~6.12 extensor-span genericity via the extensor-independence
+                Lemma~2.1, \cref{lem:extensor-independence}) ---
+                \cref{lem:case-II-realization,lem:case-III}. Opened
+                \emph{design-pass-first}: on a layer-level design recon, not a build
+                (Case~I burned $\sim$10 node-by-node commits before a layer pass
+                surfaced the binding gap).
+          \item \textbf{Phase~22d --- $d=3$ assembly} (\emph{planning}, deferred):
+                the genericity-free \texttt{hub} partition brick of
+                \cref{prop:rigidity-matrix-prop11} (Track-independent) plus the
+                \cref{thm:theorem-55} flip and the Case-I wiring; the likely further
+                cut, deferred until Phase~22c's shape is clear (the parked
+                \texttt{22c+} placeholder split into 22c + 22d at 22c open).
         \end{itemize}
         (File: \texttt{Molecular/\{Induction,AlgebraicInduction\}.lean}.)
 \end{enumerate}
@@ -458,9 +469,10 @@ zero rank on a rigid block, a collapse-relabel row reproduction carries the surv
 independence back at a degenerate placement (KT eq.~(6.7)), and a motive strengthening
 discharges the selector alignment, all composed into a rank-transport witness from the
 contraction's generic induction hypothesis --- so \cref{lem:case-I-realization} is now
-fully green. \textbf{Phase~22c+}
-(planning, parked
-behind Phases~22a/22b, renumbered \texttt{22b+} to \texttt{22c+} in the Phase~22b
-opening recon) holds the Case~II/III reducible-vertex producer
-(\cref{lem:case-II-realization,lem:case-III}) and the $d=3$ assembly; these stay red
-until their constructions land. Phases~23--26 remain to be opened.
+fully green. \textbf{Phase~22c} (in progress, opened design-pass-first) is Case~III at
+$d=3$ (KT~\S6.4.1, Lemma~6.10, the conjecture's crux): the reducible-vertex producer
+(\cref{lem:case-II-realization,lem:case-III}), which stays red until its construction
+lands. \textbf{Phase~22d} (planning, deferred) is the $d=3$ assembly --- the
+genericity-free \texttt{hub} partition brick and the \cref{thm:theorem-55} flip. The
+\texttt{22c+} placeholder split into 22c + 22d at 22c open. Phases~23--26 remain to be
+opened.

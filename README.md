@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–22b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green — by composing the exterior-projected rank-preservation crux, the collapse-relabel row reproduction, and a motive strengthening into a single assembly producer); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
+* **Phases 1–22b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green — by composing the exterior-projected rank-preservation crux, the collapse-relabel row reproduction, and a motive strengthening into a single assembly producer); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c (Case III at d=3, KT Lemma 6.10 — the conjecture's crux) in progress (opened design-pass-first), 22d (d=3 assembly) deferred; Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -264,11 +264,18 @@ project; commit history is preserved with paths rewritten.
     its graph's links) discharges the selector alignment. An assembly producer composes
     these into the rank-transport witness from the contraction's generic induction
     hypothesis. See `notes/Phase22b.md`.
-  * **Phase 22c+ (planning)** — the parked Case III at `d=3` (the crux Lemma 6.10,
-    KT §6.3 + §6.4.1) plus the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` +
-    `thm:theorem-55` flip), behind 22a/22b (renumbered `22b+`→`22c+` in the 22b
-    opening recon; expected to split into multiple sub-phases once its shape is
-    clearer). See `notes/MolecularConjecture.md`.
+  * **Phase 22c (in progress)** — Case III at `d=3` (KT §6.4.1, Lemma 6.10), the
+    conjecture's crux and the single largest proof in KT. This is Theorem 5.5's
+    `hsplit` branch at `k=0`: a degenerate placement gives one row short of full rank,
+    and the missing row comes from Lemma 6.10's `D`-candidate-frameworks argument
+    (Claim 6.11 combinatorial↔linear redundant-row + Claim 6.12 extensor-span
+    genericity, bottoming on the Phase-17 Lemma 2.1). **Opened design-pass-first** — on
+    a layer-level design recon, not a build (Case I burned ~10 node-by-node commits
+    before a layer pass surfaced the binding gap). See `notes/Phase22c.md`.
+  * **Phase 22d (planning, deferred)** — the `d=3` assembly
+    (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + wiring the
+    fully-green `case_I_realization` into the Case-I branch); the likely further cut,
+    deferred until 22c's shape is clear. See `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

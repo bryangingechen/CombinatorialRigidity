@@ -39,7 +39,9 @@ exterior-column projection loses zero rank on a rigid block (so the surviving ra
 survives), a collapse-relabel row reproduction carries that independence back to the
 surviving rows at a degenerate placement, and a motive strengthening discharges the
 selector alignment, all composed into a single assembly producer from the
-contraction's generic induction hypothesis; **22c+ (Case III at d=3 + d=3 assembly) parked in planning**.
+contraction's generic induction hypothesis; **22c (Case III at d=3, KT Lemma 6.10 — the
+conjecture's crux) in progress**, opened design-pass-first (on a layer-level design recon,
+not a build), with **22d (the d=3 assembly) deferred** until 22c's shape is clear.
 **The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
@@ -237,11 +239,17 @@ projection loses zero rank on a rigid block, a collapse-relabel row reproduction
 carries the resulting independence back to the surviving rows at a degenerate
 placement, and a motive strengthening discharges the selector alignment, all composed
 into a single assembly producer from the contraction's generic induction hypothesis.
-**Phase 22c+ (planning)** parks
-the rest behind 22a/22b
-(renumbered `22b+`→`22c+` in the 22b opening recon): Case III at `d=3` (the crux
-Lemma 6.10, §6.3 + §6.4.1) plus the `d=3` assembly, expected to split into multiple
-sub-phases once its shape is clearer. A structural-edit phase extending the
+**Phase 22c (in progress)** is Case III at `d=3` (KT §6.4.1, Lemma 6.10), the
+conjecture's crux and the single largest proof in KT: Theorem 5.5's `hsplit` branch
+at `k=0`, where a degenerate placement is one row short of full rank and the missing
+row comes from the `D`-candidate-frameworks argument (Claim 6.11 combinatorial↔linear
++ Claim 6.12 extensor-span genericity via the Phase-17 Lemma 2.1). It is opened
+**design-pass-first** — on a layer-level design recon, not a build — since Case I
+burned ~10 node-by-node commits before a layer pass surfaced the binding gap.
+**Phase 22d (planning, deferred)** is the `d=3` assembly
+(`prop:rigidity-matrix-prop11` `hub` brick + the Theorem-5.5 flip + the Case-I wiring),
+the likely further cut deferred until 22c's shape is clear (the parked `22c+`
+placeholder split into 22c + 22d at 22c open). A structural-edit phase extending the
 algebraic-induction chapter rather than opening a new one.
 
 The development is divided into the phases below, with Lean source
@@ -277,7 +285,8 @@ existing files or refactor across several).
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction/` (+ `lem:genericity-device`) | ✓ |
 |   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
 |   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
-|  22c+ | (parked) Case III at `d=3` + `d=3` assembly (renumbered `22b+`→`22c+` in the 22b opening recon) | `Molecular/AlgebraicInduction/` | ◷ |
+|   22c | Case III at `d=3` (KT Lemma 6.10, the crux); opened design-pass-first | `Molecular/AlgebraicInduction/` | ◷ |
+|   22d | (deferred) `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

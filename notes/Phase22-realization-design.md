@@ -1847,6 +1847,45 @@ new KT-math insight (the KT crux is U3b, already bricked).
 
 ---
 
+### 1.25 Phase 22c opens — Case III at `d=3` (KT Lemma 6.10): the layer design recon, first pass (2026-06-05)
+
+22b closed (Claim 6.4 discharged; `lem:case-I-realization` fully green). **Phase 22c opens on Case III
+at `d=3` / Track B** — KT §6.4.1, Lemma 6.10, the `theorem_55.hsplit` branch at `k=0`, the
+conjecture's crux (the single largest proof in KT, ~12 pages). Per `DESIGN.md` *Scale-up: design the
+LAYER, not just the node* and the user's design-pass-first instruction, 22c opens with a **layer-level
+design recon, not a build** — Case I burned ~10 node-by-node commits before a layer pass surfaced the
+binding gap; Case III is more interlocking (three candidate frameworks sharing one candidate
+structure + Claim 6.11 wiring the row matroid to `M(G̃_v^{ab})` + Claim 6.12's extensor-span
+genericity), so the layer recon runs first. This is the **first recon pass** (docs-only, no Lean /
+`\leanok` / blueprint): read the whole Lemma-6.10 argument against the primary source + the green
+infra it bottoms on; the per-piece needs/supplies map + the open recon questions are recorded in
+`notes/Phase22c.md` (its *First design-recon pass* + *open recon questions*), the canonical 22c log.
+
+**Verified against the KT 2011 primary source (pdf pp. 34–45).** Lemma 6.10: `G` 2-edge-connected
+minimal 0-dof, `|V| ≥ 3`, no proper rigid subgraph, (6.1) holds ⟹ a *nonparallel* panel-hinge
+realization in 3-space at `rank R(G,p) = 6(|V|−1)` (`D = 6` at `d=3`). The one-row shortfall: a single
+eq. (6.12) degenerate placement `p₁` (`p₁(vb) = q(ab)`, the `vb`-row reproducing the `e₀=ab`-row) is
+block-triangular with `R(G_v^{ab},q)`, giving `rank ≥ (D−1) + D(|V∖{v}|−1) = D(|V|−1) − 1` — one
+short (KT printed p. 680). The `D`-candidate argument supplies the missing row: KT build three
+candidates `(G,p₁),(G,p₂),(G,p₃)` (pdf p. 37) and show one is full rank, via Claim 6.11 (the
+redundant `(ab)i*`-row, eq. 6.23 `rank R(G_v^{ab}∖(ab)i*,q) = rank R(G_v^{ab},q) = 6(|V∖{v}|−1)`, off
+Lemma 4.3(ii) + the IH — the combinatorial↔linear bridge to `M(G̃_v^{ab})`) and Claim 6.12 (if all
+candidates fail, a nonzero `r ∈ ℝ⁶ ⟂` all extensors on `d+1` generic panels, which by the green
+Phase-17 **Lemma 2.1** span `ℝ⁶` — contradiction; the degree-2 condition forces all candidates to
+test the *same* `r`, eq. 6.44). General-`d` (Lemma 6.13, pdf p. 46) stays Phase 23.
+
+**Scope cut settled** (`notes/Phase22c.md` *Sub-phase scope cut*): 22c = Case III at `d=3` (the crux);
+the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip + the
+`case_I_realization`→`theorem_55_generic` Case-I wiring) is the **likely 22d, deferred** until 22c's
+shape is clear (same defer-the-finer-cut discipline as 22a→22b+, 22b→22c+). **Next concrete commit:**
+continue the recon (still docs-only) — settle the four open recon questions (candidate normal form vs.
+three inlined copies; `d=3`-first; Claim 6.11's row-matroid bridge shape; Claim 6.12's "same `r`"
+packaging) — *before* cutting the first Lean node. No exposition-ledger entry yet: the captured Case-III
+ledger lines (`lem:case-II-realization`/eq. 6.12; Case III at large) already exist (`notes/BlueprintExposition.md`),
+status stays `pending` (write at 22c close, once `sorry`-free).
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.
