@@ -198,7 +198,12 @@ would otherwise:
 Run `lake build` once before the first MCP call (warms `lake
 serve`); skip if you've built recently this session. **Do not call
 `lean_leansearch`** — its endpoint has been down since late 2025;
-use `lean_loogle` / `lean_leanfinder` instead. Full decision tree,
+use `lean_loogle` / `lean_leanfinder` instead. **`lean_verify`'s
+axiom report can be stale** — it has reported a spurious `sorryAx`
+on a genuinely sorry-free decl (stale LSP cache); a **warning-clean
+`lake build` is authoritative** for "no `sorry`" (Lean always emits
+a `declaration uses 'sorry'` warning for a real one), as is `#print
+axioms` against the freshly-built olean. Full decision tree,
 cold-start details, and `lean_multi_attempt` payload shape in
 `../TACTICS-GOLF.md` § 7.
 
