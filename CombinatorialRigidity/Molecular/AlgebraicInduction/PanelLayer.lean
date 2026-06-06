@@ -735,34 +735,105 @@ variable {α β : Type*}
 def IsPartitionConstant (f : α → α) (S : α → ScrewSpace k) : Prop :=
   ∀ u v, f u = f v → S u = S v
 
+/-- The **part-constant screw-assignment space** `W_f` of a labeling `f : α → α`
+(`lem:trivial-motions-rank-bound`, `def:D-deficiency`, the `hub` dimension count): the submodule of
+screw assignments constant on each part of the partition `f` encodes (`IsPartitionConstant`),
+*without* the motion constraint. It is `D·|P|`-dimensional once empty parts are accounted for —
+`finrank = screwDim k · |range f|` (`finrank_partitionConstant`) — and the part-constant assignment
+of one screw center per part is the ambient space inside which the deficiency-attaining partition
+carves out the `D + def(G̃)` motions of `hub`: the rank-nullity count
+`finrank (partitionMotions f) ≥ finrank W_f − (D−1)·d_G(P)` runs against it. -/
+def partitionConstant (f : α → α) : Submodule ℝ (α → ScrewSpace k) where
+  carrier := {S | IsPartitionConstant f S}
+  add_mem' {S T} hS hT u v huv := by rw [Pi.add_apply, Pi.add_apply, hS u v huv, hT u v huv]
+  zero_mem' _ _ _ := rfl
+  smul_mem' c S hS u v huv := by rw [Pi.smul_apply, Pi.smul_apply, hS u v huv]
+
+@[simp]
+theorem mem_partitionConstant (f : α → α) (S : α → ScrewSpace k) :
+    S ∈ partitionConstant (k := k) f ↔ IsPartitionConstant f S :=
+  Iff.rfl
+
+/-- The part-constant space is the range of precomposition with the surjection `f' : α ↠ range f`
+(`lem:trivial-motions-rank-bound`): `partitionConstant f = range (funLeft ℝ (ScrewSpace k) f')`,
+where `f' = Set.rangeFactorization f`. A screw assignment is constant on each `f`-fiber exactly
+when it factors as `g ∘ f'` for some `g : range f → ScrewSpace k` (one screw center per part); the
+forward inclusion is the factoring, the reverse picks a preimage per part. This realizes `W_f` as
+the image of an *injective* (`f'` surjective) linear map out of `range f → ScrewSpace k`, giving
+its dimension `D·|range f|` (`finrank_partitionConstant`). -/
+theorem partitionConstant_eq_range_funLeft (f : α → α) :
+    partitionConstant (k := k) f =
+      LinearMap.range (LinearMap.funLeft ℝ (ScrewSpace k) (Set.rangeFactorization f)) := by
+  ext S
+  rw [mem_partitionConstant, LinearMap.mem_range]
+  constructor
+  · intro hS
+    refine ⟨fun b => S b.2.choose, funext fun a => ?_⟩
+    rw [LinearMap.funLeft_apply]
+    exact (hS _ a (Set.rangeFactorization f a).2.choose_spec)
+  · rintro ⟨g, rfl⟩ u v huv
+    rw [LinearMap.funLeft_apply, LinearMap.funLeft_apply]
+    congr 1
+    exact Subtype.ext huv
+
+/-- **The part-constant space has dimension `D·|range f|`** (`lem:trivial-motions-rank-bound`, the
+`hub` dimension count): `finrank ℝ (partitionConstant f) = screwDim k · |range f|`. The
+part-constant assignments are the image of the *injective* precomposition map
+`funLeft ℝ (ScrewSpace k) f'` along
+the surjection `f' : α ↠ range f` (`partitionConstant_eq_range_funLeft`,
+`LinearMap.funLeft_injective_of_surjective`), so they carry one independent screw center per part,
+`finrank (range f → ScrewSpace k) = D·|range f|` (`finrank_screwAssignment`). -/
+theorem finrank_partitionConstant [Finite α] (f : α → α) :
+    Module.finrank ℝ (partitionConstant (k := k) f) =
+      screwDim k * Nat.card (Set.range f) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype (Set.range f) := Fintype.ofFinite _
+  rw [partitionConstant_eq_range_funLeft,
+    LinearMap.finrank_range_of_inj
+      (LinearMap.funLeft_injective_of_surjective ℝ (ScrewSpace k) _
+        Set.rangeFactorization_surjective),
+    finrank_screwAssignment, Nat.card_eq_fintype_card]
+
+/-- **`D·|P| ≤ finrank W_f`** (`lem:trivial-motions-rank-bound`, the `hub` dimension count): the
+part-constant space `W_f = partitionConstant f` has dimension at least `D·|P|`, where
+`|P| = numParts G f = |f '' V(G)|` is the number of parts the partition `f` carves out of `V(G)`.
+Each part contributes one independent screw center; the bound is `≤` (not `=`) because `f` may carry
+extra labels on `α ∖ V(G)`, so `finrank W_f = D·|range f| ≥ D·|f '' V(G)| = D·|P|`
+(`finrank_partitionConstant`, `f '' V(G) ⊆ range f`). This is the `finrank W_f` half of the `hub`
+dimension lower bound `D·|P| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)`; the rank-nullity cut by
+the `d_G(P)` crossing edges is the subsequent brick. -/
+theorem mul_numParts_le_finrank_partitionConstant [Finite α] (G : Graph α β) (f : α → α) :
+    screwDim k * G.numParts f ≤ Module.finrank ℝ (partitionConstant (k := k) f) := by
+  rw [finrank_partitionConstant]
+  refine Nat.mul_le_mul_left _ ?_
+  rw [Graph.numParts, Nat.card_coe_set_eq, ← Set.image_univ]
+  exact Set.ncard_le_ncard (Set.image_mono (Set.subset_univ _)) (Set.toFinite _)
+
 /-- The **partition-respecting motions** of a labeling `f : α → α`
 (`lem:trivial-motions-rank-bound`, `def:D-deficiency`, the `hub` foundation): the infinitesimal
 motions of `F` that are additionally constant on each part of the partition `f` encodes, i.e.
-`partitionMotions f = infinitesimalMotions ⊓ {S | IsPartitionConstant f S}`. This is the
-intersection out of which the deficiency-attaining partition carves the `D + def(G̃)` motions
-witnessing the genericity-free lower bound `hub` of Katoh–Tanigawa Proposition 1.1. -/
+`partitionMotions f = infinitesimalMotions ⊓ partitionConstant f`. This is the intersection out of
+which the deficiency-attaining partition carves the `D + def(G̃)` motions witnessing the
+genericity-free lower bound `hub` of Katoh–Tanigawa Proposition 1.1. -/
 def partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
-    Submodule ℝ (α → ScrewSpace k) where
-  carrier := {S | F.IsInfinitesimalMotion S ∧ IsPartitionConstant f S}
-  add_mem' {S T} hS hT :=
-    ⟨(F.infinitesimalMotions.add_mem hS.1 hT.1),
-      fun u v huv => by rw [Pi.add_apply, Pi.add_apply, hS.2 u v huv, hT.2 u v huv]⟩
-  zero_mem' := ⟨F.infinitesimalMotions.zero_mem, fun _ _ _ => rfl⟩
-  smul_mem' c S hS :=
-    ⟨F.infinitesimalMotions.smul_mem c hS.1,
-      fun u v huv => by rw [Pi.smul_apply, Pi.smul_apply, hS.2 u v huv]⟩
+    Submodule ℝ (α → ScrewSpace k) :=
+  F.infinitesimalMotions ⊓ partitionConstant f
 
 @[simp]
 theorem mem_partitionMotions (F : BodyHingeFramework k α β) (f : α → α) (S : α → ScrewSpace k) :
     S ∈ F.partitionMotions f ↔ F.IsInfinitesimalMotion S ∧ IsPartitionConstant f S :=
-  Iff.rfl
+  Submodule.mem_inf
+
+theorem partitionMotions_eq (F : BodyHingeFramework k α β) (f : α → α) :
+    F.partitionMotions f = F.infinitesimalMotions ⊓ partitionConstant f :=
+  rfl
 
 /-- The partition-respecting motions lie inside the null space `Z(G,p)`
 (`lem:trivial-motions-rank-bound`): `partitionMotions f ≤ infinitesimalMotions`, by definition the
 constraint "is a motion" is the first conjunct. -/
 theorem partitionMotions_le_infinitesimalMotions (F : BodyHingeFramework k α β) (f : α → α) :
     F.partitionMotions f ≤ F.infinitesimalMotions :=
-  fun _ hS => hS.1
+  inf_le_left
 
 /-- Every trivial motion respects every partition (`lem:trivial-motions-rank-bound`,
 `def:D-deficiency`): a constant screw assignment `S u = S v` for *all* `u, v` is in particular
@@ -771,7 +842,8 @@ constant on each part, and is a motion (`isInfinitesimalMotion_of_isTrivialMotio
 the partition motions — the `+D` in the `hub` bound `D + def(G̃) ≤ dim Z`. -/
 theorem trivialMotions_le_partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
     F.trivialMotions ≤ F.partitionMotions f :=
-  fun _ hS => ⟨F.isInfinitesimalMotion_of_isTrivialMotion hS, fun u v _ => hS u v⟩
+  fun _ hS => Submodule.mem_inf.mpr
+    ⟨F.isInfinitesimalMotion_of_isTrivialMotion hS, fun u v _ => hS u v⟩
 
 /-- **The `def`-free floor of `hub`: `D ≤ dim Z(G,p)`** (`lem:trivial-motions-rank-bound`): every
 realization carries at least the `D = screwDim k` trivial motions, so `screwDim k ≤ finrank
