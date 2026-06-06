@@ -2383,6 +2383,49 @@ them and remain red — see `notes/Phase21b.md` *Hand-off*. The accounting iffs
 (`ofParam_rankHypothesis_iff_pinnedMotionsOn` and the nullity `RankHypothesis` chain) are retained
 above. -/
 
+/-- **The seed-rank bridge: rigidity at one seed transfers to every algebraically-independent
+seed** (`lem:case-III-seed-rank-bridge`, the analytic kernel of KT Claim~6.11; Katoh–Tanigawa 2011
+§6.4.1, footnote 6, eqs. (6.18)/(6.22), Phase 22d). If the free-normal panel framework
+`ofNormals G ends q₀` is infinitesimally rigid on `V(G)` at *some* seed `q₀` (transversal hinges
+`hne`, link-recording selector `hends`), then it is infinitesimally rigid on `V(G)` at *any* seed
+`q` that is algebraically independent over `ℚ` (`halg`).
+
+This is the kernel KT's footnote 6 supplies for the nested induction (eq. (6.22)): the inductively-
+fixed realization is taken with algebraically-independent coordinates, so the *given* seed —
+not merely *some* generic seed — attains the maximal (matroid-predicted) rank of the subgraph. At
+the `0`-dof level it is precisely eq. (6.18): the split-off graph `G_v^{ab}` is `0`-dof, so its
+generic realization is rigid, and this brick certifies the inductively-fixed seed is rigid for it
+too. The three-step composition is the green Phase-22d machinery: the rank polynomial of the rigid
+leg (`exists_rankPolynomial_of_rigidOn`) is rational (`Q.coeffs ⊆ range (algebraMap ℚ ℝ)`); the
+algebraically-independent seed `q` is a non-root of every nonzero rational polynomial
+(`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`, footnote 6); and the
+device consumer (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) reads rigidity off
+that non-root.
+
+It is honest per the producer-scrutiny gate: the hypothesis `hrig` is rigidity at an *unrelated*
+seed `q₀` (the existence of a rigid realization, KT's `0`-dof premise), not rigidity at the target
+seed `q` it concludes; the alg-independence of `q` is the genuine new content (footnote 6's standing
+inductive choice), and is the conjunct `HasGenericFullRankRealization` carries. -/
+theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hne : ∀ e, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
+    (hnev : V(G).Nonempty)
+    (hrig : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G))
+    {q : α × Fin (k + 2) → ℝ} (halg : AlgebraicIndependent ℚ q) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G) := by
+  -- (1) The rigid leg at `q₀` carries a rational rank polynomial `Q` (nonzero at `q₀`).
+  obtain ⟨s, Q, hcard, hQ₀, hQrat, hQ⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn G ends hends hne hnev hrig
+  have hQne : Q ≠ 0 := fun h => hQ₀ (by rw [h, map_zero])
+  -- (2) Footnote 6: an alg-indep-over-`ℚ` seed is a non-root of every nonzero rational polynomial.
+  have hq : MvPolynomial.eval q Q ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQrat hQne
+  -- (3) The device consumer reads rigidity off the non-root `q`.
+  exact PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero
+    G ends hnev hends hcard hQ hq
+
 /-- **Case III (= Case II at `k = 0`), stratum 1: the eq. (6.12) `+(D−1)` block-triangular
 placement** (`lem:case-II-realization-placement`, the first chunk of KT Lemma 6.10; Katoh–Tanigawa
 2011 §6.4.1, eqs. (6.12), (6.16), Phase 22c). The first of three difficulty strata of the

@@ -195,9 +195,12 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   Phase-21b genericity device runs the opposite direction (one-point independence
   ⟹ existence of a good point). So Gaps 3+1 share one kernel — "the rigidity matrix
   at the inductively-fixed seed attains the rank `M(G̃)` predicts" — which is the
-  genuinely-new analytic content (carried-as-hypothesis until a dedicated
-  sub-phase). Pointer: `notes/Phase22d.md` *Gap 3 recon (2026-06-06)*; KT
-  pp. 684–685, eq. (6.22) + footnote 6.
+  genuinely-new analytic content. The `0`-dof rigidity core of this kernel
+  landed green as `lem:case-III-seed-rank-bridge` (Phase 22d,
+  `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`: rigid at one seed
+  ⟹ rigid at every alg-indep-over-ℚ seed); the `def>0` rank form + the pigeonhole
+  (Gap 1) remain. Pointer: `notes/Phase22d.md` *Gap 3 recon (2026-06-06)* +
+  *Hand-off*; KT pp. 684–685, eq. (6.22) + footnote 6.
 - **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
   **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new

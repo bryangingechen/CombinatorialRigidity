@@ -79,21 +79,54 @@ inductively-fixed seed, KT eq.\ (6.22)) is the deferred crux.
   $k' \le D - 2$. The lower bound $0 \le k'$ is the nonnegativity of deficiency.
 \end{proof}
 
+The third factor is the \emph{analytic} kernel KT's footnote~6 supplies: the nested
+induction fixes the realizing seed with algebraically-independent coordinates, so the
+\emph{inductively-fixed} seed --- not merely \emph{some} generic seed --- attains the
+maximal (matroid-predicted) rank of each subgraph. At the $0$-dof level this is KT
+eq.~(6.18): the split-off $G_v^{ab}$ is $0$-dof, so its generic realization is rigid,
+and the seed transfer below certifies the fixed seed is rigid for it too.
+
+\begin{lemma}[Seed-rank bridge: rigidity transfers to every algebraically-independent seed; KT footnote 6, eqs.\ (6.18)/(6.22)]
+  \label{lem:case-III-seed-rank-bridge}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent}
+  \leanok
+  \uses{lem:genericity-device, def:rank-hypothesis}
+  Let $\mathrm{ofNormals}\,G\,\mathit{ends}\,q_0$ be a free-normal panel framework with a
+  link-recording selector and transversal hinges. If it is infinitesimally rigid on
+  $V(G)$ at \emph{some} seed $q_0$, then it is infinitesimally rigid on $V(G)$ at
+  \emph{any} seed $q$ that is algebraically independent over $\mathbb{Q}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The rigid leg at $q_0$ carries a nonzero rank polynomial
+  $Q : \mathrm{MvPolynomial}\,\sigma\,\mathbb{R}$ whose non-roots witness the full-size
+  independent panel-row subfamily (the genericity device's coordinatization,
+  \cref{lem:genericity-device}). $Q$'s coefficients are the structural change-of-basis
+  constants of the complement isomorphism, hence rational
+  ($Q.\mathrm{coeffs} \subseteq \mathrm{range}(\mathbb{Q} \to \mathbb{R})$). An
+  algebraically-independent-over-$\mathbb{Q}$ seed $q$ lies off the zero locus of every
+  nonzero rational polynomial (KT footnote~6), so $\mathrm{eval}\,q\,Q \ne 0$; the device
+  consumer then reads infinitesimal rigidity at $q$ off that non-root.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
         lem:cycle-realization, lem:case-II-realization-placement,
-        lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof}
+        lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof,
+        lem:case-III-seed-rank-bridge}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
   rank (the stratum-1 brick $D(|V|-1) - 1$ of
   \cref{lem:case-II-realization-placement}); the missing $+1$ row is KT
-  Claim~6.11, whose combinatorial prerequisites --- the matroid-base 4.3(ii)
-  form (\cref{lem:case-III-claim-6-11-base}) and the nested-IH reduction
+  Claim~6.11, whose prerequisites --- the matroid-base 4.3(ii)
+  form (\cref{lem:case-III-claim-6-11-base}), the nested-IH reduction
   $G - v$ minimal $k'$-dof with $k' \le D - 2$
-  (\cref{lem:case-III-gap3-minimalKDof}) --- are green; what stays deferred
-  is the analytic eq.\ (6.22) rank-at-the-fixed-seed transfer. KT then
+  (\cref{lem:case-III-gap3-minimalKDof}), and the analytic
+  rank-at-the-fixed-seed transfer (\cref{lem:case-III-seed-rank-bridge}) ---
+  are green; what stays deferred is the Claim-6.11/6.12 candidate-completion
+  assembly that converts the redundant $ab$-row into the missing $+1$. KT then
   build $D$ candidate realizations and show one is rigid; the
   degree-2 condition forces all candidates to test the same normal vector $r
   \in \mathbb{R}^D$, which by the extensor-independence Lemma~2.1
