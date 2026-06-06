@@ -66,6 +66,9 @@ symptom-indexed and lighter.
 15. **LI family of `finrank`-many vectors spans `⊤`** — `LinearIndependent`
     + `Fintype.card ι = finrank` ⟹ `span (range v) = ⊤`, via
     `basisOfLinearIndependentOfCardEqFinrank` + `coe_…` + `Basis.span_eq`.
+16. **`(∑ i, f i).comp g` — go pointwise** — no `LinearMap.sum_comp` exists and
+    `map_sum` won't fire on `· ∘ₗ g`; discharge a `∘ₗ`-outside-`Finset.sum`
+    identity with `LinearMap.ext` + `LinearMap.congr_fun` + `LinearMap.sum_apply`.
 
 ---
 
@@ -952,3 +955,23 @@ Concrete instance (`span_omitTwoExtensor_eq_top`,
 6 omit-two `2`-extensors of 4 affinely-independent points, LI by Lemma 2.1 in the
 ambient exterior algebra, lift into `ScrewSpace 2 = ⋀²ℝ⁴` (finrank `6 =
 binom(4,2)`) and span it.
+
+## 16. `(∑ i, f i).comp g` — go pointwise, there is no distributing simp lemma
+
+A `LinearMap` identity with a `∘ₗ` (or `.comp`) sitting *outside* a
+`Finset.sum` in the **left** argument — `(∑ i, c i • f i).comp g = ∑ i, c i • (f i).comp g`
+— does **not** fall to `simp [LinearMap.smul_comp, …]`: there is no
+`LinearMap.sum_comp`, and `map_sum` won't fire because `· ∘ₗ g` isn't recognized as
+the hom being mapped over the `∑`. Don't hunt for the distribution lemma.
+
+**Pattern.** Drop to pointwise evaluation: `LinearMap.ext fun x => ?_`, pull the
+hypothesis to `x` with `have hx := LinearMap.congr_fun h x`, then `simpa only
+[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply,
+<per-term restriction at x>, LinearMap.zero_apply] using hx`. The `sum_apply` pushes
+the `∑` inside, and each summand's `.comp single` collapses by a named restriction
+lemma evaluated at `x` (supply it as a `have e : ∀ j, … = … := fun j =>
+LinearMap.congr_fun (restriction_lemma …) x` if `simp` can't synthesize the
+endpoint side conditions). Concrete instance (`candidateRow_ac_eq_neg`,
+`Molecular/RigidityMatrix.lean`, Phase 22e — KT eq. (6.44)): the eq.-(6.43) column
+combination's `ab`/`ac`-sums collapse to their block-functional sums via
+`hingeRow_comp_single_tail` evaluated pointwise.

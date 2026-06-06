@@ -8,7 +8,9 @@ red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq62
 (`span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`,
 `linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`, `candidateRow_ne_zero`).
 **N6 is now green** (`linearIndependent_sum_p2_candidateRow`, the symmetric `p₂` producer).
-Next: N8 (medium), N3/N7 (research-shaped — recon-before-build), capstone N9.
+**N8 is now green** (`candidateRow_ac_eq_neg` + the column-restriction leaves
+`hingeRow_comp_single_{tail,off}`, eq. (6.44)). Next: N3/N7 (research-shaped —
+recon-before-build), capstone N9.
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -22,12 +24,13 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: build N8 (`lem:case-III-claim612-eq644`)** — eq. (6.44)
-`r = −Σⱼ λ_{(ac)j} rⱼ(q(ac))`, routing the `M₃` candidate row onto the *same* common vector `r` as
-`M₁/M₂`, from the green eq. (6.43) `a`-column vanishing (`exists_redundant_panelRow_ab_decomposition_acolumn_zero`)
-+ degree-2-at-`a` (only `ab`/`ac` incident to `a`). Deps: `lem:case-III-acolumn-zero`,
-`lem:case-III-redundant-decomposition` (both green). **Medium.** Then N3/N7 (research-shaped,
-recon-before-build), capstone N9.
+**Next concrete commit: recon-before-build N3 or N7** (the two research-shaped leaves). N3
+(`lem:case-III-claim612-points`, general position of the 4 incidence points — likely a new
+alg-independence use, `notes/AlgebraicIndependence.md` risk #8) and N7
+(`lem:case-III-claim612-p3-placement`, the `Gᵥᵃᵇ ≅ Gₐᵛᶜ` transport, KT's most compressed step,
+`ofNormals` defeq-trap territory). Both need a recon pass first. The mechanical leaves (N2/N4/N5/N8)
+and the medium producer N6 are all green; only N3, N7, and the capstone N9 remain before N10 flips
+`lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
 
 **N6 green** (`linearIndependent_sum_p2_candidateRow`, `RigidityMatrix.lean`, axiom-clean): the
 symmetric `p₂` candidate (`va ↔ vb`). The candidate-completion assembly
@@ -185,9 +188,12 @@ commit (no `\lean`/`\leanok`); build greens them.
   isomorphism (degree-2-at-`a`), `columnOp` at `(v,c)`/`(a,c)`. Deps: `lem:case-II-realization-placement`,
   `lem:case-III-columnop`, `lem:case-III-candidate-row`, N8. **HIGH RISK** (`ofNormals` graph-swap
   defeq trap, *Blockers*; KT's most-compressed step, eqs. (6.31)–(6.41)). Recon-before-build.
-- [ ] **N8** `lem:case-III-claim612-eq644` — eq. (6.44) `r = −Σⱼ λ_{(ac)j} rⱼ(q(ac))`, routing M₃
-  onto the same `r`, from the green eq. (6.43) + degree-2-at-`a` (only `ab`/`ac` incident to `a`).
-  Deps: `lem:case-III-acolumn-zero`, `lem:case-III-redundant-decomposition`. **Medium.**
+- [x] **N8** `lem:case-III-claim612-eq644` (`candidateRow_ac_eq_neg` + `hingeRow_comp_single_{tail,off}`,
+  green, axiom-clean) — eq. (6.44) `Σⱼ λ_{(ac)j} rⱼ = −Σⱼ λ_{(ab)j} rⱼ`, routing M₃ onto the same `r̂`.
+  Stated abstractly: the eq. (6.43) `a`-column combination `(ab-sum)+(ac-sum)+grest` with `grest`
+  vanishing off `a` (the degree-2-at-`a` content as hypothesis `hrest`) regroups, via the two new
+  column-restriction leaves, into `r̂ + rAC = 0`. Deps: `lem:case-III-acolumn-zero`,
+  `lem:case-III-redundant-decomposition` (both green).
 - [ ] **N9** `lem:case-III-claim612` (capstone) — at least one of `M₁/M₂/M₃` is LI; discharges
   `lem:case-III-eq629-conditional`. Contrapositive: all dependent ⟹ `r ⊥ C(L),C(L′),C(L″)` (N4×2 +
   N8) ⟹ `r` annihilates the span (6.45) spanning set (N3 + N1) ⟹ `r=0` (N2), contradicting N5.
@@ -208,22 +214,22 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: build N8 (`lem:case-III-claim612-eq644`)** — eq. (6.44)
-`r = −Σⱼ λ_{(ac)j} rⱼ(q(ac))`, routing the `M₃` candidate row onto the *same* common `r` as `M₁/M₂`.
-From the green eq. (6.43) `a`-column vanishing (`exists_redundant_panelRow_ab_decomposition_acolumn_zero`):
-in `G_v^{ab}` only `ab`/`ac` are incident to `a`, so the `a`-column restriction of the eq. (6.24)
-vanishing combination reads `0 = Σⱼ λ_{(ab)j} rⱼ(q(ab)) + Σⱼ λ_{(ac)j} rⱼ(q(ac))`; rearranging for
-`r = Σⱼ λ_{(ab)j} rⱼ(q(ab))` gives eq. (6.44). Deps: `lem:case-III-acolumn-zero`,
-`lem:case-III-redundant-decomposition` (both green). **Medium** — the algebra is light, but the
-"only `ab`/`ac` incident to `a`" step needs the degree-2-at-`a` graph fact. Then N3/N7
-(research-shaped — recon-before-build), capstone N9 — which discharges the re-shaped
+**Next concrete commit: recon-before-build N3 or N7** (the two remaining research-shaped leaves).
+The mechanical leaves (N2/N4/N5/N8) and the medium producer N6 are all green; only N3, N7, and the
+capstone N9 remain.
+
+- **N3** (`lem:case-III-claim612-points`) — from a generic nonparallel framework, 4 affinely-indep
+  points with the `Π(a)/Π(b)/Π(c)` triple-intersection incidence pattern (every line `pᵢpⱼ` in
+  `Π(a)∪Π(b)∪Π(c)`). Likely a new alg-independence use; recon against `notes/AlgebraicIndependence.md`
+  risk #8 (add a row if it introduces one).
+- **N7** (`lem:case-III-claim612-p3-placement`) — the `p₃` third candidate via the `Gᵥᵃᵇ ≅ Gₐᵛᶜ`
+  isomorphism (degree-2-at-`a`), `columnOp` at `(v,c)`/`(a,c)`. **HIGH RISK** (`ofNormals` graph-swap
+  defeq trap, *Blockers*; KT's most-compressed step, eqs. (6.31)–(6.41)). Now unblocked: its dep N8
+  (eq. (6.44)) is green, so N7 can consume `candidateRow_ac_eq_neg` to route the `M₃` row onto `r̂`.
+
+Then capstone N9 (`lem:case-III-claim612`, the 3-way disjunction) — which discharges the re-shaped
 `lem:case-III-eq629-conditional`, after which N10 flips `lem:case-II-realization` + the `d=3` half of
 `lem:case-III` green.
-
-**Recon-before-build the two research-shaped nodes.** N3 (`-claim612-points`, general position of the
-4 incidence points) and N7 (`-claim612-p3-placement`, the `Gᵥᵃᵇ ≅ Gₐᵛᶜ` transport — KT's most
-compressed step, the `ofNormals` defeq trap territory). The rest (N2/N4/N5/N8 mechanical, N6 medium)
-are routine; do them in dependency order so the capstone N9 has its inputs.
 
 **Note (the brick-block extraction is deferred to the `d=3` assembly, not 22e).** The assembly
 producer takes `rn`/`ro` as abstract block functionals; the consumer (the unlettered `d=3` assembly
@@ -240,6 +246,14 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N8 green — eq. (6.44) is column-restriction regrouping + add-cancellation (2026-06-06).**
+  `candidateRow_ac_eq_neg` (`RigidityMatrix.lean`, axiom-clean): the eq. (6.43) `a`-column combination,
+  written abstractly as `(ab-sum) + (ac-sum) + grest` with `grest` vanishing off `a` (the
+  degree-2-at-`a` content supplied as hypothesis `hrest` — the `d=3` assembly consumer discharges it
+  via the new leaf `hingeRow_comp_single_off`), regroups by the column-restriction leaf
+  `hingeRow_comp_single_tail` (`(hingeRow a b ρ)∘single a = ρ`) into `r̂ + rAC = 0`, so `rAC = −r̂`.
+  Graph-free like the rest of the chain; N7's `p₃` consumes it to route `M₃` onto `r̂`. Comp-over-sum
+  went pointwise (no `LinearMap.sum_comp`) → FRICTION *Mirrored* + TACTICS-GOLF § 16.
 - **N6 green — the `p₂` candidate is the abstract assembly at swapped roles (2026-06-06).**
   `linearIndependent_sum_p2_candidateRow` (`RigidityMatrix.lean`, axiom-clean): the candidate-completion
   producer `linearIndependent_sum_augment_candidateRow` takes `v`/endpoints/`ρ`/blocks abstractly, so

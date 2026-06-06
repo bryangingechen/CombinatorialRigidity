@@ -962,6 +962,37 @@ theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v 
     rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe,
       hingeRow_comp_columnOp_apply, LinearMap.single_apply, Pi.single_eq_same]
 
+/-- **A hinge row restricted to its tail body's screw column is the block functional** (the
+column-restriction leaf of KT eq.~(6.43)/(6.44); Katoh–Tanigawa 2011 §6.4.1, Phase 22e). For a
+hinge oriented out of body `a` (the tail) into a distinct body `b`, precomposing
+`hingeRow a b ρ` with body `a`'s screw-column injection `single a` recovers `ρ` exactly:
+`(hingeRow a b ρ)(single a x) = ρ((single a x) a − (single a x) b) = ρ(x − 0) = ρ x`, since
+`single a x` reads `x` at `a` and `0` at the distinct `b`. This is the "the `ab`-row contributes
+`ρ` to the `a`-column" half of the eq.~(6.43) `a`-column regrouping. -/
+theorem hingeRow_comp_single_tail [DecidableEq α] {a b : α} (hab : a ≠ b)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (hingeRow (k := k) (α := α) a b ρ).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = ρ :=
+  LinearMap.ext fun x => by
+    rw [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_same,
+      Pi.single_eq_of_ne (Ne.symm hab), sub_zero]
+
+/-- **A hinge row restricted to a body incident to neither endpoint is zero** (the
+column-restriction leaf of KT eq.~(6.43)/(6.44); Katoh–Tanigawa 2011 §6.4.1, Phase 22e). When body
+`a` is incident to neither endpoint of the hinge `uw` (`a ≠ u`, `a ≠ w`), precomposing
+`hingeRow u w ρ` with body `a`'s screw-column injection `single a` is `0`: `single a x` reads `0`
+at both `u` and `w`, so `(hingeRow u w ρ)(single a x) = ρ(0 − 0) = 0`. This is the
+"every other edge contributes `0` to the `a`-column" half of the eq.~(6.43)/(6.44) regrouping ---
+the degree-2-at-`a` fact that, in `G_v^{ab}`, only the `ab`- and `ac`-rows survive in body `a`'s
+column. -/
+theorem hingeRow_comp_single_off [DecidableEq α] {u w a : α} (hau : a ≠ u) (haw : a ≠ w)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (hingeRow (k := k) (α := α) u w ρ).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 :=
+  LinearMap.ext fun x => by
+    rw [LinearMap.comp_apply, hingeRow_apply, LinearMap.single_apply, Pi.single_eq_of_ne hau.symm,
+      Pi.single_eq_of_ne haw.symm, sub_zero, map_zero, LinearMap.zero_apply]
+
 /-- **The `p₂` candidate full block: the symmetric `va ↔ vb` candidate attains the full
 `D(|V|−1)`-size family when `ρ` is not orthogonal to the supporting extensor**
 (`lem:case-III-claim612-p2-placement`, KT eqs.~(6.19)/(6.30); Katoh–Tanigawa 2011 §6.4.1,
@@ -1017,6 +1048,58 @@ theorem candidateRow_ne_zero {ι : Type*} [Fintype ι] {r : ι → Module.Dual �
     (hr : LinearIndependent ℝ r) {lam : ι → ℝ} {i : ι} (hlam : lam i = 1) :
     ∑ j, lam j • r j ≠ 0 :=
   linearIndependent_sum_smul_ne_zero hr (i := i) (hlam ▸ one_ne_zero)
+
+/-- **Eq.~(6.44): the `M₃` candidate row equals `−r̂`, routing the third candidate onto the same
+common vector** (`lem:case-III-claim612-eq644`, KT eq.~(6.44); Katoh–Tanigawa 2011 §6.4.1,
+Phase 22e). The `a`-column block of the eq.~(6.24) vanishing combination `g` is `0`
+(`exists_redundant_panelRow_ab_decomposition_acolumn_zero`, eq.~(6.43)): `g.comp (single a) = 0`.
+KT's eq.~(6.44) is what that restriction *says* once the combination is regrouped by which edge
+each term sits on. In `G_v^{ab}` body `a` is a **degree-2** vertex --- only the `ab`- and `ac`-edges
+are incident to it --- so by the column-restriction leaves (`hingeRow_comp_single_tail` /
+`hingeRow_comp_single_off`) the only terms of `g` surviving in body `a`'s screw column are the
+`ab`-sum, whose `a`-column restriction is the common candidate row `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))`,
+and the `ac`-sum, with restriction `rAC := ∑_j λ_{(ac)j} r_j(q(ac))`. Hence
+`0 = g.comp (single a) = r̂ + rAC`, i.e.\ KT's eq.~(6.44)
+\[ r̂ \;=\; -\,\mathrm{rAC} \;=\; -\sum_j λ_{(ac)j}\, r_j(q(ac)). \]
+The `M₃` candidate's full-rank criterion is `rAC ∉ (\operatorname{span} C(L''))^\perp`
+(`lem:case-III-claim612-p3-placement`); eq.~(6.44) rewrites it as `r̂ ⊥ C(L'')` --- the same common
+vector `r̂` the `M₁/M₂` criteria use, which is exactly what lets the Claim-6.12 capstone
+(`lem:case-III-claim612`) force the *single* `r̂` orthogonal to all of `C(L), C(L'), C(L'')` and so
+to a spanning set, contradicting `r̂ ≠ 0`.
+
+Stated abstractly (graph-free, matching the candidate-completion chain): the `ab`-sum and `ac`-sum
+are explicit `hingeRow`-sums out of the common tail body `a` (into the distinct bodies `b`, `c`),
+and `grest` is the remaining edges' contribution, which the degree-2-at-`a` fact (`hrest`: every
+such edge is incident to neither endpoint at `a`) makes vanish on `a`'s column. The conclusion is
+the `M₃` row `rAC := ∑_j λac_j • rac_j` equal to `-r̂` with `r̂ := ∑_j λab_j • rab_j`. The `ab`/`ac`
+column restrictions are computed by `hingeRow_comp_single_tail`; the `grest` one by
+`hingeRow_comp_single_off`. -/
+theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    {a b c : α} (hab : a ≠ b) (hac : a ≠ c)
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
+    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (hcol : ((∑ j, lamAB j • hingeRow (k := k) (α := α) a b (rab j))
+        + (∑ j, lamAC j • hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
+    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0) :
+    ∑ j, lamAC j • rac j = -∑ j, lamAB j • rab j := by
+  refine eq_neg_of_add_eq_zero_right ?_
+  -- Strip the `grest` term (`hrest`) and read the equation column-wise: at each `x : ScrewSpace k`
+  -- the `ab`-sum and `ac`-sum restrict to their block-functional sums
+  -- (`hingeRow_comp_single_tail`), the `grest` term vanishes (`hrest`), so the eq. (6.43) `0`
+  -- reads `r̂ + rAC = 0` at `x`.
+  rw [LinearMap.add_comp, LinearMap.add_comp, hrest, add_zero] at hcol
+  refine LinearMap.ext fun x => ?_
+  have hx := LinearMap.congr_fun hcol x
+  have e1 : ∀ j, (hingeRow (k := k) (α := α) a b (rab j))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a x) = rab j x :=
+    fun j => LinearMap.congr_fun (hingeRow_comp_single_tail hab (rab j)) x
+  have e2 : ∀ j, (hingeRow (k := k) (α := α) a c (rac j))
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a x) = rac j x :=
+    fun j => LinearMap.congr_fun (hingeRow_comp_single_tail hac (rac j)) x
+  simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply,
+    LinearMap.smul_apply, e1, e2, LinearMap.zero_apply] using hx
 
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body

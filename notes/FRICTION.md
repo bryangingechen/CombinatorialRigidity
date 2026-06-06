@@ -127,6 +127,30 @@ housekeeping pass once their resolution is fully indexed.
   lives), `hingeRow u v r = hingeRow v u (-r)`. All three callsites collapse to a `rw [hingeRow_swap]`.
 - **Status:** resolved (project helper `hingeRow_swap`).
 
+### [resolved] A hinge row restricted to a body's screw column — named `hingeRow_comp_single_tail` / `_off`; and `(∑ f).comp g` has no distributing simp lemma (go pointwise)
+- **Where it bit:** the eq.-(6.44) node `candidateRow_ac_eq_neg` (`RigidityMatrix.lean`, Phase 22e N8).
+  It regroups the eq.-(6.43) vanishing combination by which edge each term sits on; the surviving
+  `a`-column terms are the `ab`/`ac`-rows (degree-2-at-`a`). The two restrictions are
+  `(hingeRow a b ρ).comp (single a) = ρ` (tail = body `a`) and `(hingeRow u w ρ).comp (single a) = 0`
+  (`a ∉ {u,w}`), each a `LinearMap.ext fun x => rw [comp_apply, hingeRow_apply, single_apply,
+  Pi.single_eq_same / Pi.single_eq_of_ne, …]` one-liner.
+- **Friction:** two distinct one-step facts (column restriction of a hinge row) + a tarpit closing
+  the cancellation: `(∑ j, c j • hingeRow a b (rab j)).comp (single a) = ∑ j, c j • rab j` does **not**
+  fall to `simp [LinearMap.smul_comp, …]` — there is no `LinearMap.sum_comp` (comp does not distribute
+  over a `Finset.sum` in its *left* argument via a named simp lemma), and `map_sum` won't fire on the
+  `∑` because `· ∘ₗ single` isn't recognized as the hom being mapped. Lost two `lean_multi_attempt`
+  rounds chasing the comp-over-sum rewrite.
+- **Fix:** named the two column-restriction leaves `hingeRow_comp_single_tail` / `hingeRow_comp_single_off`
+  (`RigidityMatrix.lean`, where `hingeRow` lives). For the cancellation, **go pointwise** —
+  `LinearMap.ext fun x => …; have := LinearMap.congr_fun hcol x; simpa only [add_apply, comp_apply,
+  sum_apply, smul_apply, <tail-restriction at x>, zero_apply] using this`. Pointwise sidesteps the
+  missing comp-over-sum lemma entirely.
+- **Lesson:** `(∑ i, f i).comp g` (or any LinearMap identity with a `∘ₗ` outside a `Finset.sum` in the
+  left slot) is best discharged pointwise via `LinearMap.ext` + `LinearMap.congr_fun` + `sum_apply`,
+  not by hunting a `sum_comp`-style distribution lemma. **Lifted to:** TACTICS-GOLF (comp-over-sum →
+  pointwise).
+- **Status:** resolved (helpers `hingeRow_comp_single_{tail,off}`; pointwise idiom).
+
 ### [resolved] The per-edge panel-row span finrank `= D − 1` computation (`span_panelRow_edge_eq` + `equivMapOfInjective.finrank_eq` + `finrank_hingeRowBlock`) appeared twice — named as `finrank_span_panelRow_edge`
 - **Where it bit:** `exists_independent_panelRow_subfamily_of_edge` (`Pinning.lean`, Phase 22c) and
   the new `exists_redundant_panelRow_of_edge_of_finrank_lt` (`CaseI.lean`, Phase 22d Gap-1). Both

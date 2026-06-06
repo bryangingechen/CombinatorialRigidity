@@ -801,6 +801,10 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
 
 \begin{lemma}[Eq.\ (6.44): the $M_3$ row equals $-r$, routing $M_3$ onto the same $r$; KT eq.\ (6.44)]
   \label{lem:case-III-claim612-eq644}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_tail,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_comp_single_off}
+  \leanok
   \uses{lem:case-III-acolumn-zero, lem:case-III-redundant-decomposition}
   In $G_v^{ab}$ only $ab$ and $ac$ are incident to the body $a$, so the $a$-column block of the
   eq.~(6.24) vanishing combination (\cref{lem:case-III-acolumn-zero}, eq.~(6.43)) reads
@@ -816,10 +820,13 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   third candidate's full-rank criterion onto the \emph{same} common vector $r$ as $M_1, M_2$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Eq.~(6.43) (\cref{lem:case-III-acolumn-zero}) is the $a$-column restriction of the eq.~(6.24)
   vanishing combination; since only the $ab$- and $ac$-edges are incident to $a$ in $G_v^{ab}$
-  (every other $R(G_v^{ab}, q; e_j, a) = 0$ by the rigidity-matrix definition), the surviving terms
-  are exactly the $ab$- and $ac$-sums. Rearranging $\sum_j \lambda_{(ab)j}\, r_j(q(ab)) + \sum_j
+  (every other $R(G_v^{ab}, q; e_j, a) = 0$ by the rigidity-matrix definition --- the
+  column-restriction leaves $\mathrm{hingeRow\_comp\_single\_tail}$ for the $ab$/$ac$-rows and
+  $\mathrm{hingeRow\_comp\_single\_off}$ for every other edge), the surviving terms are exactly
+  the $ab$- and $ac$-sums. Rearranging $\sum_j \lambda_{(ab)j}\, r_j(q(ab)) + \sum_j
   \lambda_{(ac)j}\, r_j(q(ac)) = 0$ for $r$ is eq.~(6.44).
 \end{proof}
 
