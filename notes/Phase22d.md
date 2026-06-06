@@ -1,28 +1,28 @@
 # Phase 22d — Claim 6.11's first green-machinery prerequisite (the matroid-base 4.3(ii) leaf) (work log)
 
 **Status:** in progress. Opened 2026-06-05 design-pass-first; re-scoped 2026-06-05 to
-attack KT Claim 6.11 **bottom-up** (build its leaf-most missing-green prerequisite, not
-an axiomatized claim). Gap-2 leaf landed green 2026-06-06; the Gap-3 + footnote-6 recons
-(2026-06-06) settled the analytic kernel's shape; the kernel-route decision (2026-06-06,
-user) is to build the algebraic-independence route directly. Recon detail lives in the
-design doc (§1.30/§1.31); this note carries the forward plan + a compressed verdict log.
+attack KT Claim 6.11 **bottom-up** (build its leaf-most missing-green prerequisites, not
+an axiomatized claim). Gap-2 leaf + Gap-3 combinatorial shell landed green 2026-06-06; the
+footnote-6 recon (2026-06-06) settled the analytic kernel's shape; the kernel-route
+decision (2026-06-06, user) is to build the algebraic-independence route directly. Recon
+detail lives in the design doc (§1.30/§1.31); this note carries the forward plan + a
+compressed verdict log.
 
 ## Current state
 
-Gap-2 landed green + axiom-clean: `Graph.splitOff_exists_base_inter_fiber_lt`
-(`ForestSurgery.lean`), the matroid-base form of **KT Lemma 4.3(ii) at `k=0`** — a base
-`B'` of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1` (a redundant `ãb`-copy exists). Blueprint
-node `lem:case-III-claim-6-11-base` green; `lem:case-III` / `lem:case-II-realization` red.
+Both **combinatorial** factors of Claim 6.11 are green + axiom-clean (`ForestSurgery.lean`):
+Gap-2 `Graph.splitOff_exists_base_inter_fiber_lt` (KT Lemma 4.3(ii) at `k=0` — a base `B'`
+of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`) and Gap-3's combinatorial shell
+`Graph.splitOff_removeVertex_minimalKDof` (`G_v = removeVertex v` is minimal `k'`-dof with
+`0 ≤ k' = def(G̃_v) ≤ D−2`, via `subgraph_minimality` + the Gap-2 base count). Blueprint
+nodes `lem:case-III-claim-6-11-base` + `lem:case-III-gap3-minimalKDof` green; `lem:case-III`
+/ `lem:case-II-realization` red.
 
-**Next concrete commit:** the **Gap-3 combinatorial shell**
-`Graph.splitOff_removeVertex_minimalKDof` — `G_v = removeVertex v` minimal `k'`-dof with
-`0 ≤ k' ≤ D−2`, from the Gap-2 base + the green def-count chain. Pure `M(G̃)` matroid
-theory, no rigidity matrix, **buildable** (inputs all green, in the checklist). New green
-node `lem:case-III-gap3-minimalKDof`.
-
-After that the work is the **analytic kernel** — content pinned by the recons, route
-fixed by the user (see *Deferred sub-phases*): genuinely-new
-(`non-root-from-algebraic-independence`), built directly, not carried as a hypothesis.
+**Next concrete commit:** the **analytic kernel** sub-phase (its own math-first recon at
+open) — content pinned by the recons, route fixed by the user (see *Deferred sub-phases*):
+the genuinely-new `non-root-from-algebraic-independence` brick (the (i)/(ii)/(iii) cut),
+built directly to green, not carried as a hypothesis. This is the Gap-3 *kernel* (eq. (6.22)
+rank-at-the-fixed-seed) ⊕ Gap-1 row bridge — likely one node.
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -35,9 +35,9 @@ KT's proof (pp. 684–685) factors, in dependency order:
 2. **Gap 3 — the nested IH-at-restriction.** `G_v := G_v^{ab} − ab = removeVertex v`;
    `B' ∖ ãb` independent in `M(G̃_v)` ⟹ `def(G̃_v) ≤ h ≤ D−2` ⟹ `G_v` minimal `k'`-dof.
    Apply the geometric IH (6.1) to `G_v` at the restricted seed `q|_{E_v}` ⟹
-   `rank R(G_v, q|_{E_v}) = D(|V∖v|−1) − k'` (eq. (6.22)). **SPLITS:** a green
-   combinatorial shell (the `minimal k'-dof` step, next build) + the analytic kernel
-   (the eq. (6.22) rank-at-the-given-seed).
+   `rank R(G_v, q|_{E_v}) = D(|V∖v|−1) − k'` (eq. (6.22)). **SPLIT (✓ shell):** the green
+   combinatorial shell `splitOff_removeVertex_minimalKDof` (the `minimal k'-dof` step)
+   landed; what remains is the analytic kernel (the eq. (6.22) rank-at-the-given-seed).
 3. **Gap 1 — the `M(G̃)`↔row bridge.** With `rank R(G_v^{ab},q) = D(|V∖v|−1)` (eq. (6.18))
    and Gap 3's eq. (6.22), the `k' ≤ D−2 < D−1` corank over the `D−1` `ab`-rows forces one
    redundant (pigeonhole). Step ③ is pure LA *given* (6.18)+(6.22).
@@ -54,14 +54,11 @@ Claim 6.11 supplies the `+1` — the same missing content.
   (KT Lemma 4.1's second conclusion). Caller `forest_surgery_split` re-destructures.
 - [x] `Graph.splitOff_exists_base_inter_fiber_lt` — Gap-2 leaf (above), green +
   axiom-clean. Node `lem:case-III-claim-6-11-base`.
-- [ ] **(next) `Graph.splitOff_removeVertex_minimalKDof`** — Gap-3 combinatorial shell:
-  `G_v = removeVertex v` minimal `k'`-dof, `0 ≤ k' ≤ D−2` (confirm exact statement shape
-  at build open). Inputs (all green, by signature): the Gap-2 leaf, `subgraph_minimality`
-  (`Deficiency.lean:400`), `removeVertex_le` (mathlib), `matroidMG_restrict_mulTilde`
-  (`Deficiency.lean:212`), `mulTilde_removeVertex_le_splitOff` (`ForestSurgery.lean:91`),
-  `rank_add_deficiency_eq` (`Deficiency.lean:994`), `removeVertex_deficiency_ge`
-  (`SplitOffDeficiency.lean:405`). Count: `def(G̃_v) = D(|V∖v|−1) − rank M(G̃_v) ≤ h ≤ D−2`.
-  Node `lem:case-III-gap3-minimalKDof`; `lem:case-III` stays red.
+- [x] `Graph.splitOff_removeVertex_minimalKDof` — Gap-3 combinatorial shell, green +
+  axiom-clean: `G_v = removeVertex v` minimal `k'`-dof with `0 ≤ k' = def(G̃_v) ≤ D−2`.
+  Minimality via `subgraph_minimality` (`G_v ≤ G`); bound via the Gap-2 base count
+  (`B'∖ãb` indep in `M(G̃_v) = M(G̃_v^{ab})↾E(G̃_v)`, `rank ≥ |B'|−h`, def=corank). Did
+  **not** need `removeVertex_deficiency_ge`. Node `lem:case-III-gap3-minimalKDof`.
 - [ ] (deferred, the kernel) the eq. (6.22) generic-rank transfer / Gap-1 row bridge — see
   *Deferred sub-phases*. Red; built directly, not carried.
 
@@ -112,14 +109,14 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the Gap-3 shell `Graph.splitOff_removeVertex_minimalKDof`
-(`ForestSurgery.lean`, beside the Gap-2 leaf) — statement + green inputs in the checklist.
-Pure matroid theory, buildable; `lem:case-III` stays red.
+**Next concrete commit:** open the **kernel sub-phase** (its own dedicated math-first recon
+at open) and build the `non-root-from-algebraic-independence` brick directly — the
+leaf-most-first cut is (i) the mirrorable `MvPolynomial.eval_ne_zero_of_algebraicIndependent`
+(the (i)/(ii)/(iii) cut under *Deferred sub-phases*). The two combinatorial Claim-6.11 factors
+(Gap-2 leaf + Gap-3 shell) are green; `lem:case-III` stays red until the kernel lands.
 
-After it, the **kernel sub-phase** (its own dedicated math-first recon at open): build the
-`non-root-from-algebraic-independence` brick directly (the (i)/(ii)/(iii) cut under
-*Deferred sub-phases*). Then the candidate-completion + Claim-6.12 disjunction, the `d=3`
-assembly, and general-`d` (Phase 23).
+After the kernel: the candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and
+general-`d` (Phase 23).
 
 KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (Lemmas
 4.3(ii)/4.4/4.7/4.8). Recon detail: design doc §1.30 (footnote-6 kernel) + §1.31
@@ -144,9 +141,14 @@ design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
   `k=0` base assembly (`def = 0` ⟹ a full-rank independent set is a base,
   `Indep.isBase_of_ncard`). KT 4.3(ii) is an **existence** statement (a base with `<D−1`),
   not "every base" — matching the Claim-6.11 use.
-- **Gap-3 recon (commit 0f7ef2a).** Gap 3 **splits**: green combinatorial shell (next build)
+- **Gap-3 recon (commit 0f7ef2a).** Gap 3 **splits**: green combinatorial shell
   + research-shaped analytic kernel; the combinatorial glue (`def(G̃_v) ≤ h` ⟹ `G_v`
   minimal `k'`-dof) is all green Phase-19/20.
+- **Gap-3 shell (this commit).** `splitOff_removeVertex_minimalKDof` green: minimality via
+  `subgraph_minimality` (`G_v ≤ G`), bound via the Gap-2 base (`B'∖ãb` indep in the
+  restriction `M(G̃_v) = M(G̃_v^{ab})↾E(G̃_v)`, so `rank ≥ |B'|−h`; def=corank at `def=0`
+  gives `def(G̃_v) ≤ h < D−1`). The route did **not** need `removeVertex_deficiency_ge` (the
+  splitting-off side carries the count). `isBase_vfiber_ncard_ge` was the structural template.
 - **Footnote-6 kernel recon (commit 892f44c; design doc §1.30).** eq. (6.22) is NOT a green
   re-exposure of 21b/22b machinery. Confirmed two of the user's three structural claims
   (matroid↔row link = the IH `rigidityMatrix_prop11`, green-modulo; step ③ pure LA);

@@ -1766,6 +1766,95 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
   haveI : (H.matroidMG n).Finite := Matroid.finite_of_finite (M := H.matroidMG n)
   exact hMindep.isBase_of_ncard hIcard
 
+/-! ### The Gap-3 combinatorial shell — `G − v` is a minimal `k'`-dof-graph with `k' ≤ D − 2`
+(`lem:case-III-gap3-minimalKDof`)
+
+The second factor of KT Claim 6.11's discharge (the `+1` redundant `ab`-row of §6.4.1;
+`notes/Phase22d.md`), the *combinatorial* half of Katoh–Tanigawa 2011's nested-IH step
+(KT p. 684–685, eq. (6.22) setup). With `G` a minimal `0`-dof-graph and `v` a degree-2
+vertex, the vertex-removal `G_v := G − v = G_v^{ab} − ab` is itself a **minimal `k'`-dof-graph**
+for `k' := def(G̃_v)`, and that deficiency is bounded by `0 ≤ k' ≤ D − 2`. The minimality is
+KT Lemma 3.3 (`subgraph_minimality`, `G_v ≤ G`); the bound is the new content here, read off
+the Gap-2 base.
+
+The `k' ≤ D − 2` bound runs KT's own count on the Gap-2 base `B'` of `M(G̃_v^{ab})` with
+`h := |ãb ∩ B'| < D − 1` (`splitOff_exists_base_inter_fiber_lt`): the surviving part
+`B' ∖ ãb` lands in `E(G̃_v)` (`edgeSet_mulTilde_splitOff_diff_fiber`) and is independent in
+`M(G̃_v) = M(G̃_v^{ab}) ↾ E(G̃_v)` (`matroidMG_restrict_mulTilde`, `G̃_v ≤ G̃_v^{ab}` via
+`mulTilde_removeVertex_le_splitOff`), so
+`rank M(G̃_v) ≥ |B' ∖ ãb| = |B'| − h`. At `k = 0` the splitting-off is itself `0`-dof
+(`splitOff_deficiency_le` + nonneg), so `|B'| = D(|V ∖ v| − 1)`; with the def\,=\,corank
+identity (`rank_add_deficiency_eq`, same vertex set `V(G) ∖ {v}`) this gives
+`def(G̃_v) = D(|V ∖ v| − 1) − rank M(G̃_v) ≤ h < D − 1`, i.e. `≤ D − 2`. The lower bound
+`0 ≤ def(G̃_v)` is `deficiency_nonneg` (`V(G_v)` is nonempty, containing `a`).
+
+This is the green combinatorial shell of Gap 3: pure `M(G̃)` matroid theory, no rigidity
+matrix. The eq. (6.22) *rank-at-the-fixed-seed* transfer it feeds — the genuinely-new analytic
+kernel — is the next, deferred sub-phase (`notes/Phase22d.md` *Deferred sub-phases*). -/
+theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G)) (hG : G.IsMinimalKDof n 0) :
+    (G.removeVertex v).IsMinimalKDof n ((G.removeVertex v).deficiency n) ∧
+      0 ≤ (G.removeVertex v).deficiency n ∧
+      (G.removeVertex v).deficiency n ≤ (bodyBarDim n : ℤ) - 2 := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have haV : a ∈ V(G) := hla.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
+  set Gv := G.removeVertex v with hGvdef
+  set H := G.splitOff v a b e₀ with hHdef
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  have hVvne : V(Gv).Nonempty := ⟨a, by rw [hGvdef, vertexSet_removeVertex]; exact ⟨haV, hav⟩⟩
+  have hVHne : V(H).Nonempty := ⟨a, by rw [hHdef, vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
+  -- Minimality: `G_v ≤ G` and `G` minimal `0`-dof, so `G_v` is minimal `def(G̃_v)`-dof.
+  have hminimal : Gv.IsMinimalKDof n (Gv.deficiency n) :=
+    subgraph_minimality (G.removeVertex_le v) hG rfl
+  refine ⟨hminimal, Gv.deficiency_nonneg n hVvne, ?_⟩
+  -- The Gap-2 base `B'` of `M(G̃_v^{ab})`: `|ãb ∩ B'| = h < D − 1`.
+  obtain ⟨B', hB', hfiblt⟩ :=
+    splitOff_exists_base_inter_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hG.1
+  -- `def(G̃_v^{ab}) = 0` at `k = 0`, so `|B'| = D(|V ∖ v| − 1)`.
+  have hdefH_zero : H.deficiency n = 0 := by
+    have hle : H.deficiency n ≤ G.deficiency n :=
+      splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
+    have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
+    rw [(hG.1 : G.deficiency n = 0)] at hle; omega
+  have hB'card := H.isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
+  rw [hdefH_zero, add_zero] at hB'card
+  -- `B' ∖ ãb ⊆ E(G̃_v)` (surviving fibers) and independent in `M(G̃_v)`.
+  have hdiffsub : B' \ edgeFiber e₀ n ⊆ E(Gv.mulTilde n) := by
+    rw [hGvdef, ← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
+    exact Set.diff_subset_diff_left hB'.subset_ground
+  have hdiffindepGv : (Gv.matroidMG n).Indep (B' \ edgeFiber e₀ n) := by
+    have hindepH : (H.matroidMG n).Indep (B' \ edgeFiber e₀ n) := hB'.indep.subset diff_subset
+    rw [hGvdef] at hdiffsub ⊢
+    rw [← matroidMG_restrict_mulTilde (G.removeVertex_le_splitOff he₀) n,
+      Matroid.restrict_indep_iff]
+    exact ⟨hindepH, hdiffsub⟩
+  have hdiffleZ : ((B' \ edgeFiber e₀ n).ncard : ℤ) ≤ ((Gv.matroidMG n).rank : ℤ) := by
+    exact_mod_cast hdiffindepGv.ncard_le_rank
+  -- `|B' ∖ ãb| = |B'| − |B' ∩ ãb|`.
+  have hsplit : (B' ∩ edgeFiber e₀ n).ncard + (B' \ edgeFiber e₀ n).ncard = B'.ncard :=
+    Set.ncard_inter_add_ncard_diff_eq_ncard B' _ (Set.toFinite _)
+  have hsplitZ : ((B' ∩ edgeFiber e₀ n).ncard : ℤ) + ((B' \ edgeFiber e₀ n).ncard : ℤ)
+      = (B'.ncard : ℤ) := by exact_mod_cast hsplit
+  -- The def = corank identity for `G̃_v`; `V(G_v) = V(H) = V(G) ∖ {v}`.
+  have hGvrank := Gv.rank_add_deficiency_eq n hD1 hVvne
+  have hVeq : (V(Gv).ncard : ℤ) = (V(H).ncard : ℤ) := by
+    rw [hGvdef, hHdef, vertexSet_removeVertex, vertexSet_splitOff]
+  -- `h < D − 1`, and `def(G̃_v) ≤ h`, so `def(G̃_v) ≤ D − 2`.
+  have hfibltZ : ((B' ∩ edgeFiber e₀ n).ncard : ℤ) < (bodyHingeMult n : ℤ) := by
+    exact_mod_cast hfiblt
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  -- `def(G̃_v) = D(|V∖v|−1) − rank ≤ D(|V∖v|−1) − (|B'| − h) = h < D − 1`.
+  rw [hVeq] at hGvrank
+  linarith [hdiffleZ, hsplitZ, hB'card, hGvrank, hfibltZ, hHM]
+
 /-- **The forest-surgery route to the KT-4.3 splitting-off deficiency bound**
 (`cor:forest-surgery-deficiency`; narrative bridge). The deficiency bound
 `def(G̃_v^{ab}) ≤ def(G̃)` that `dof_tracking` / Theorem 4.9 consume — landed on the

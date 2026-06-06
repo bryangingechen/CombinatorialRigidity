@@ -120,7 +120,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Structure pass (pre-Phase-22b) | `Molecular/{AlgebraicInduction,Induction}/` splits + `algebraic-induction.tex` split | ✓ Complete (see `notes/Phase22-structure.md`) |
 | 22b. KT Claim 6.4 (discharge the Case-I green-modulo obligation) | `Molecular/AlgebraicInduction/CaseI.lean` (extends `algebraic-induction.tex`) | ✓ Complete (closed 2026-06-05; see `notes/Phase22b.md`) |
 | 22c. Case III at `d=3`, stratum 1 (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ✓ Stratum-1 complete (crux split to 22d; see `notes/Phase22c.md`) |
-| 22d. Claim 6.11's first green-machinery prerequisite (the matroid-base 4.3(ii) leaf) | `Molecular/Induction/ForestSurgery.lean` (extends `molecular-induction.tex` + `algebraic-induction.tex`) | ◷ In progress — Gap-2 leaf green; building the alg-independence route for the Gap-3 kernel (see `notes/Phase22d.md`) |
+| 22d. Claim 6.11's green-machinery prerequisites (matroid-base 4.3(ii) + nested-IH shell) | `Molecular/Induction/ForestSurgery.lean` (extends `algebraic-induction.tex`) | ◷ In progress — Gap-2 leaf + Gap-3 combinatorial shell green; building the alg-independence route for the analytic kernel (see `notes/Phase22d.md`) |
 | ⋯ (deferred, unlettered) `d=3` assembly | `Molecular/AlgebraicInduction/` | ◷ Planning — parked downstream of the crux, deferred until its shape is clear (see `notes/Phase22d.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 

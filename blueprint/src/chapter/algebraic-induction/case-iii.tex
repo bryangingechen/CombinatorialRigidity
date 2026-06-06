@@ -39,19 +39,62 @@ $k = 0$, built here.
   That base $I'$ carries the fiber bound.
 \end{proof}
 
+The second factor of Claim~6.11 is KT's nested-induction step: the
+vertex-removal $G_v := G - v = G_v^{ab} - ab$ is itself a \emph{minimal}
+$k'$-dof-graph for $k' := \operatorname{def}(\tilde G_v)$, and that deficiency is
+small ($k' \le D - 2$). The combinatorial half --- minimality and the deficiency
+bound, both pure $M(\tilde G)$ matroid theory --- is green here; the
+\emph{analytic} half it feeds (applying the geometric IH to $G_v$ at the
+inductively-fixed seed, KT eq.\ (6.22)) is the deferred crux.
+
+\begin{lemma}[$G - v$ is minimal $k'$-dof with $k' \le D - 2$; KT Lemma~4.3(ii)/nested IH, Claim~6.11 prerequisite]
+  \label{lem:case-III-gap3-minimalKDof}
+  \lean{Graph.splitOff_removeVertex_minimalKDof}
+  \leanok
+  \uses{def:k-dof, def:graph-operations, lem:subgraph-minimality, thm:def-eq-corank,
+        lem:splitoff-deficiency, lem:case-III-claim-6-11-base}
+  Let $G$ be a minimal $0$-dof-graph with a degree-2 vertex $v$ (distinct
+  neighbours $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$
+  fresh). Then the vertex-removal $G_v := G - v$ is a minimal
+  $k'$-dof-graph for $k' = \operatorname{def}(\tilde G_v)$, with
+  \[
+    0 \;\le\; k' \;\le\; D - 2.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Minimality transports along $G_v \le G$ by \cref{lem:subgraph-minimality}: a
+  subgraph of a minimal $k$-dof-graph is minimal at its own deficiency. For the
+  bound, take the Gap-2 base $B'$ of $M(\widetilde{G_v^{ab}})$ with
+  $h := |\widetilde{ab} \cap B'| < D - 1$
+  (\cref{lem:case-III-claim-6-11-base}). Its surviving part $B' \setminus
+  \widetilde{ab}$ lands in $E(\tilde G_v)$ and is independent in $M(\tilde G_v) =
+  M(\widetilde{G_v^{ab}}) \restriction E(\tilde G_v)$ (matroid restriction along
+  $\tilde G_v \le \widetilde{G_v^{ab}}$), so $\operatorname{rank} M(\tilde G_v)
+  \ge |B'| - h$. At $k = 0$ the splitting off is $0$-dof
+  (\cref{lem:splitoff-deficiency}), so $|B'| = D(|V \setminus \{v\}| - 1)$; the
+  def\,$=$\,corank identity (\cref{thm:def-eq-corank}, same vertex set $V(G)
+  \setminus \{v\}$) then gives $\operatorname{def}(\tilde G_v) = D(|V \setminus
+  \{v\}| - 1) - \operatorname{rank} M(\tilde G_v) \le h < D - 1$, i.e.\
+  $k' \le D - 2$. The lower bound $0 \le k'$ is the nonnegativity of deficiency.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
         lem:cycle-realization, lem:case-II-realization-placement,
-        lem:case-III-claim-6-11-base}
+        lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
   rank (the stratum-1 brick $D(|V|-1) - 1$ of
   \cref{lem:case-II-realization-placement}); the missing $+1$ row is KT
-  Claim~6.11, whose leaf-most prerequisite ---
-  \cref{lem:case-III-claim-6-11-base}, the matroid-base 4.3(ii) form --- is
-  green. KT then build $D$ candidate realizations and show one is rigid; the
+  Claim~6.11, whose combinatorial prerequisites --- the matroid-base 4.3(ii)
+  form (\cref{lem:case-III-claim-6-11-base}) and the nested-IH reduction
+  $G - v$ minimal $k'$-dof with $k' \le D - 2$
+  (\cref{lem:case-III-gap3-minimalKDof}) --- are green; what stays deferred
+  is the analytic eq.\ (6.22) rank-at-the-fixed-seed transfer. KT then
+  build $D$ candidate realizations and show one is rigid; the
   degree-2 condition forces all candidates to test the same normal vector $r
   \in \mathbb{R}^D$, which by the extensor-independence Lemma~2.1
   (\cref{lem:extensor-independence}) must vanish --- contradiction.
