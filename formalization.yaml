@@ -1,0 +1,349 @@
+# formalization.yaml (v0.3): repo-root metadata for formalization projects.
+# Schema: https://github.com/mathlib-initiative/formalization.yaml
+# Requiredness/conformance:
+#   - Fields marked [required] should be present and filled.
+#   - Fields not marked [required] are examples/recommended metadata only; they may be omitted.
+#   - Projects may add extra YAML keys at any level. Readers should tolerate unknown keys.
+# This is a lightweight reporting schema, not a closed validation schema.
+
+version: "v0.3"
+
+# project - the formalization itself (not the source).
+project:
+  name: "CombinatorialRigidity"                                  # [required]
+  authors: ["Bryan Gin-ge Chen"]                                 # [required] who did the formalization
+  license: "Apache-2.0"                                          # [required]
+  repository: "https://github.com/bryangingechen/CombinatorialRigidity"
+  website: "https://bryangingechen.github.io/CombinatorialRigidity/"
+  blueprint: "https://bryangingechen.github.io/CombinatorialRigidity/blueprint/"
+
+# sources - what was formalized. List of papers/textbooks/blueprints/etc.
+sources:                                                          # [required] list of sources
+  - title: "On graphs and rigidity of plane skeletal structures"
+    authors: ["G. Laman"]
+    id: "doi:10.1007/BF01534980"
+    type: "journal article"
+    author_contacted: "n/a"                                      # classical (1970), author deceased
+
+  - title: "On generic rigidity in the plane"
+    authors: ["L. Lovász", "Y. Yemini"]
+    id: "doi:10.1137/0603009"
+    type: "journal article"
+    author_contacted: "n/a"
+
+  - title: "Pebble game algorithms and sparse graphs"
+    authors: ["A. Lee", "I. Streinu"]
+    id: "doi:10.1016/j.disc.2007.07.104"
+    type: "journal article"
+    author_contacted: "no"
+    prior_work: "Generalizes the original (2,3) pebble game of Jacobs-Hendrickson 1997, doi:10.1006/jcph.1997.5809"
+
+  - title: "On the problem of decomposing a graph into n connected factors"
+    authors: ["W. T. Tutte"]
+    id: "doi:10.1112/jlms/s1-36.1.221"
+    type: "journal article"
+    author_contacted: "n/a"
+
+  - title: "Edge-disjoint spanning trees of finite graphs"
+    authors: ["C. St. J. A. Nash-Williams"]
+    id: "doi:10.1112/jlms/s1-36.1.445"
+    type: "journal article"
+    author_contacted: "n/a"
+
+  - title: "The union of matroids and the rigidity of frameworks"
+    authors: ["W. Whiteley"]
+    id: "doi:10.1137/0401025"
+    type: "journal article"
+    author_contacted: "no"
+
+  - title: "Rigidity of multi-graphs. I. Linking rigid bodies in n-space"
+    authors: ["T.-S. Tay"]
+    id: "doi:10.1016/0095-8956(84)90016-9"
+    type: "journal article"
+    author_contacted: "no"
+
+  - title: "Linking (n-2)-dimensional panels in n-space II: (n-2,2)-frameworks and body and hinge structures"
+    authors: ["T.-S. Tay"]
+    id: "doi:10.1007/BF01788678"
+    type: "journal article"
+    author_contacted: "no"
+
+  - title: "The generic rank of body-bar-and-hinge frameworks"
+    authors: ["B. Jackson", "T. Jordán"]
+    id: "doi:10.1016/j.ejc.2009.03.030"
+    type: "journal article"
+    author_contacted: "no"
+    note: "Source of the def = corank bridge (Thm 6.1 / Cor 6.2)."
+
+  - title: "A proof of the molecular conjecture"
+    authors: ["N. Katoh", "S. Tanigawa"]
+    id: "doi:10.1007/s00454-011-9348-6"
+    type: "journal article"
+    author_contacted: "no"
+    note: "The longest-horizon target (phases 17-26); partially formalized, in progress."
+
+  - title: "Combinatorial Rigidity: Graphs and Matroids in the Theory of Rigid Frameworks"
+    authors: ["T. Jordán"]
+    id: "doi:10.2969/msjmemoirs/03401C020"
+    type: "survey (MSJ Memoirs 34)"
+    author_contacted: "n/a"
+    note: "Presentation followed and the project's cross-check for rigidity-theory attributions; not itself a formalized result."
+
+  - title: "Matroid Theory (2nd ed., Oxford Graduate Texts in Mathematics 21)"
+    authors: ["J. G. Oxley"]
+    id: "isbn:978-0-19-856694-6"
+    type: "textbook"
+    author_contacted: "n/a"
+    note: "Cross-check for abstract matroid-theory attributions (Edmonds 1965/1970, Nash-Williams 1966); presentation reference."
+
+# project status
+status:
+  scope: >-
+    A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, organized in
+    four arcs. (1) Laman's theorem (1970): for n >= 2, a graph is generically rigid in
+    the plane iff it contains a (2,3)-tight spanning subgraph; proved both directions via
+    the Henneberg construction. (2) The planar rigidity matroid (Lovász-Yemini, both the
+    combinatorial (2,3)-count form and the linear-matroid form) and an executable,
+    certificate-carrying (k,l)-sparsity decision procedure - the Lee-Streinu pebble game -
+    with Decidable instances for IsSparse / IsTight / IsLaman and a `lake exe pebble-game`
+    CLI emitting inline witnesses. (3) Abstract matroid-union / Edmonds-partition machinery
+    (ported locally from apnelson1/Matroid), Tutte-Nash-Williams tree-packing, the k-frame
+    matroid as a k-fold cycle-matroid union (Whiteley 1988), and Tay's body-bar theorem and
+    the body-hinge / panel-hinge Tay-Whiteley theorem, both in existence-of-realization form.
+    (4) In progress: Katoh-Tanigawa's 2011 proof of the molecular conjecture - the
+    Grassmann-Cayley extensor algebra (Lemma 2.1), the panel-hinge rigidity matrix R(G,p),
+    the deficiency matroid M(G~), the combinatorial induction (Theorem 4.9), and the
+    algebraic induction (Theorem 5.5). Arcs 1-3 (phases 1-16) are complete and sorry-free.
+    The molecular arc (phases 17-26) is partially complete: phases 17-21 are done (extensor
+    algebra, rigidity matrix, deficiency matroid, combinatorial induction, the algebraic
+    induction's accounting layer); the hardest case of the algebraic induction,
+    Katoh-Tanigawa's Case III, is in progress (phase 22+).
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]          # only Lean/mathlib standard axioms; no project-specific axioms
+  policy: >-
+    The project carries no `sorry` and no project-specific `axiom`. Incomplete obligations
+    on the in-progress molecular arc are pinned as explicit hypotheses on red blueprint
+    dep-graph nodes (never as `sorry` or `axiom`); `warn.sorry = true` in the lakefile is a
+    backstop. Every completed main result below was checked with `#print axioms` and uses
+    only the three standard axioms.
+  main_results:                                                  # the completed headline theorems (arcs 1-3)
+  - declaration: "SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le"
+    file: "CombinatorialRigidity/LamanTheorem.lean"
+    description: "Laman's theorem (1970): for n >= 2, G is generically rigid in the plane iff it contains a Laman (= (2,3)-tight) spanning subgraph."
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid"
+    file: "CombinatorialRigidity/LinearRigidityMatroid.lean"
+    description: "Lovász-Yemini, linear-matroid form: the generic-placement linear rigidity matroid (via Matroid.ofFun) equals the combinatorial (2,3)-count rigidity matroid."
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "SimpleGraph.countMatroid_indep_iff_runPebbleGame"
+    file: "CombinatorialRigidity/PebbleGame/Correctness.lean"
+    description: >-
+      Lee-Streinu pebble-game correctness: in the matroidal regime l < 2k, edge-set
+      independence in the (k,l)-count matroid is decided by the verdict-bearing pebble game.
+      Powers the executable decision procedure `SimpleGraph.instDecidableIsLaman` /
+      `instDecidableIsSparse` / `instDecidableIsTight` (PebbleGame/Exec.lean) and the
+      `lake exe pebble-game` CLI.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "Graph.tutte_nash_williams"
+    file: "CombinatorialRigidity/BodyBar/TreePacking.lean"
+    description: "Tutte-Nash-Williams tree-packing (1961): a multigraph is the edge-disjoint union of k forests iff it is (k,k)-sparse. Specialized from the local Edmonds matroid-partition machinery."
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "Graph.kFrameMatroid_eq_unionPow_cycleMatroid"
+    file: "CombinatorialRigidity/BodyBar/KFrame.lean"
+    description: "Whiteley 1988 Theorem 1: the generic k-frame matroid equals the k-fold union of the graphic (cycle) matroid, restricted to E(G)."
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "Graph.BodyBarFramework.tay_witness"
+    file: "CombinatorialRigidity/BodyBar/TayTheorem.lean"
+    description: >-
+      Tay's body-bar theorem (Tay 1984, Whiteley 1988 Thm 8), existence-of-realization form:
+      for d = n(n+1)/2, a multigraph carries an independent (resp. isostatic) body-bar
+      framework in R^n iff it is (d,d)-sparse (resp. (d,d)-tight).
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+  - declaration: "Graph.BodyHingeFramework.body_hinge_tay"
+    file: "CombinatorialRigidity/BodyBar/BodyHinge.lean"
+    description: >-
+      Body-hinge / panel-hinge Tay-Whiteley theorem (Tay 1989, Whiteley 1988),
+      existence-of-realization form: a graph carries an independent (resp. isostatic)
+      body-hinge framework in R^n iff its (d-1)-fold edge-multiplication is (d,d)-sparse
+      (resp. tight), equivalently a packing of d forests.
+    sorry_count: 0
+    axioms: ["propext", "Classical.choice", "Quot.sound"]
+    comparator_config: ""
+    literature_dependencies: []
+
+# how it was produced. Extra per-entry fields are allowed.
+automation:                                                      # [required]
+  methods:                                                       # one entry per distinct phase/run/tool
+    - method: "agent"                                            # [required] manual | copilot | agent | autonomous | other
+      models: ["claude-opus-4-7", "claude-opus-4-8", "claude-haiku-4-5-20251001"]   # opus-4-7 was the workhorse throughout; opus-4-8 entered in the later standalone era; haiku-4-5 for lighter/subagent tasks
+      framework: "Claude Code"
+      tool_setup: >-
+        Claude Code (CLI) at model `opus[1m]` (1M-token context) with `xhigh` reasoning
+        effort. Lean interaction via the lean-lsp MCP server (goal/diagnostic/axiom-check
+        tooling). A custom `coordinate-phase` orchestration skill (used ~81 times) dispatches
+        single-task subagents one at a time (Explore / general-purpose) for search and recon;
+        `/code-review` and `/simplify` skills run quality passes. The repository carries an
+        extensive agent operating manual - a root CLAUDE.md plus area-specific CLAUDE.md files
+        for the Lean sources, notes, and blueprint - that defines the per-session workflow,
+        the per-commit hand-off contract, the friction review, and a forward-mode blueprint
+        discipline in which the blueprint dependency graph doubles as the live to-do list.
+      cost:
+        wall_time: "~1 month of calendar time (2026-05-07 to 2026-06-07), ongoing"
+        spend_usd: "subscription-based usage (Claude Code); no metered API spend"
+        hardware: "API-only (Claude subscription); local machine runs only the CLI harness"
+      prompting_notes: >-
+        Agentic, phase-structured development. Work proceeds in numbered phases (26 planned,
+        16+ complete), each typically opened with a planning/recon pass and then advanced one
+        leaf-most blueprint dep-graph node per commit; phase boundaries get explicit cleanup
+        and performance passes. Per-commit discipline: keep ROADMAP.md + the active phase note
+        sufficient to identify the next concrete task, run a friction review, and re-check the
+        blueprint declaration references (checkdecls). The standalone-repo logs span ~200
+        sessions and ~30k assistant turns (2026-05-13 to 2026-06-07), with ~60 sessions using
+        subagents. The earliest phases (2026-05-07 to 2026-05-12) were developed inside a
+        mathlib4 fork (under Archive/CombinatorialRigidity/) before the 2026-05-13 lift to this
+        standalone repo; those logs are captured too and used claude-opus-4-7 with occasional
+        claude-haiku-4-5 for lighter tasks.
+  spend_usd: "subscription-based usage (Claude Code); no metered API spend"
+  notes: >-
+    Human-in-the-loop agentic formalization: the author directs phase scoping and reviews
+    output; Claude Code performs the bulk of the proof engineering, blueprint authoring, and
+    documentation. CI gates every push (full `lake build` green, blueprint web/PDF build,
+    checkdecls verifying every blueprint \lean{...} pointer, and an upstreaming dashboard).
+
+# fidelity
+fidelity:
+  divergences: >-
+    The body-bar (tay_witness) and body-hinge (body_hinge_tay) theorems are formalized in
+    existence-of-realization form with an explicit standard-basis witness (degenerate
+    realizations permitted): "there exists an independent/isostatic realization iff the count
+    holds." Whiteley's stronger "almost all realizations are rigid" (irreducible-variety)
+    statement is intentionally deferred. The (k,l)-count matroid and the pebble game are
+    developed in the matroidal regime l < 2k (which covers the (2,3) Laman case); the general
+    l >= 2k regime is out of scope. The k-frame / cycle-matroid-union identity holds after
+    restriction to E(G) (`|^ E(G)`), forced because the vendored Matroid.Union has ground set
+    `univ` and carries every non-edge as a loop. Many results are stated more generally than
+    their classical sources - over mathlib's multigraph `Graph alpha beta` and/or general
+    dimension - rather than for the specific graph/dimension in the original paper. The
+    matroid-union / Edmonds-partition subsystem under CombinatorialRigidity/Matroid/ is ported
+    from Peter Nelson's apnelson1/Matroid (Apache-2.0), rebased onto the package's live
+    FiniteCircuitMatroid constructor; it is formalized, not assumed. The def = corank bridge
+    is the project's in-repo framing of Jackson-Jordán 2009 Thm 6.1 / Cor 6.2, proved
+    axiom-free via weak duality plus an Edmonds-optimal reverse. The molecular conjecture
+    (Katoh-Tanigawa 2011) is NOT yet fully formalized: the extensor algebra (Lemma 2.1), the
+    rigidity matrix, the deficiency matroid, the combinatorial induction (Theorem 4.9), and
+    the algebraic induction's accounting layer are complete, but the algebraic induction's
+    Case III (and hence Theorem 5.5/5.6 and Conjecture 1.2) is in progress; its outstanding
+    obligations are pinned as explicit hypotheses on red blueprint nodes, never as sorry/axiom.
+
+# review status
+review:
+  status: "self-assessed"                                        # [required]
+  reviewers: ["Bryan Gin-ge Chen"]
+  notes: >-
+    No external human peer review. Confidence rests on: a fully green CI build on every push
+    (Lean compile, blueprint web/PDF, and checkdecls cross-checking every blueprint \lean{...}
+    pointer against the Lean environment); per-result `#print axioms` checks (all seven main
+    results use only propext / Classical.choice / Quot.sound); the lakefile's `warn.sorry`
+    backstop; and continuous AI-agent review (between-phase cleanup rounds auditing
+    Lean/blueprint divergence and long proofs, plus /code-review and friction-review passes),
+    overseen by the author.
+
+# alignment - how source statements map to formal declarations.
+alignment:
+  namespace: "(mixed) SimpleGraph, Graph, CombinatorialRigidity.Molecular, Matroid"
+  statements:
+    - source: "Laman 1970, main theorem"
+      lean: "SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le"
+      module: "CombinatorialRigidity/LamanTheorem.lean"
+      status: "proved"
+
+    - source: "Lovász-Yemini 1982 (rigidity matroid = (2,3)-count matroid), linear form"
+      lean: "SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid"
+      module: "CombinatorialRigidity/LinearRigidityMatroid.lean"
+      status: "proved"
+
+    - source: "Lee-Streinu 2008 pebble-game correctness (matroidal regime l < 2k)"
+      lean: "SimpleGraph.countMatroid_indep_iff_runPebbleGame, SimpleGraph.PartialOrientation.runPebbleGame_isAccept_iff, SimpleGraph.instDecidableIsLaman"
+      module: "CombinatorialRigidity/PebbleGame/Correctness.lean, CombinatorialRigidity/PebbleGame/Exec.lean"
+      status: "proved"
+
+    - source: "Edmonds 1965/1970, Nash-Williams 1966: matroid union & partition rank formula"
+      lean: "Matroid.Union, Matroid.matroid_partition'"
+      module: "CombinatorialRigidity/Matroid/Constructions/Union.lean"
+      status: "proved"
+      note: "Ported from apnelson1/Matroid (Apache-2.0)."
+
+    - source: "Tutte 1961 / Nash-Williams 1961 tree-packing"
+      lean: "Graph.tutte_nash_williams"
+      module: "CombinatorialRigidity/BodyBar/TreePacking.lean"
+      status: "proved"
+
+    - source: "Whiteley 1988 Thm 1: k-frame matroid = k-fold cycle-matroid union"
+      lean: "Graph.kFrameMatroid_eq_unionPow_cycleMatroid"
+      module: "CombinatorialRigidity/BodyBar/KFrame.lean"
+      status: "proved"
+
+    - source: "Tay 1984 / Whiteley 1988 Thm 8: body-bar Tay theorem (existence form)"
+      lean: "Graph.BodyBarFramework.tay_witness"
+      module: "CombinatorialRigidity/BodyBar/TayTheorem.lean"
+      status: "proved"
+
+    - source: "Tay 1989 / Whiteley 1988: body-hinge / panel-hinge Tay-Whiteley theorem (existence form)"
+      lean: "Graph.BodyHingeFramework.body_hinge_tay"
+      module: "CombinatorialRigidity/BodyBar/BodyHinge.lean"
+      status: "proved"
+
+    - source: "Katoh-Tanigawa 2011, Lemma 2.1 (Grassmann-Cayley extensor independence)"
+      lean: "CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent"
+      module: "CombinatorialRigidity/Molecular/Extensor.lean"
+      status: "proved"
+
+    - source: "Jackson-Jordán 2009 Thm 6.1 / Cor 6.2 (def = corank bridge)"
+      lean: "Graph.isBase_ncard_add_deficiency_eq, Graph.rank_add_deficiency_eq"
+      module: "CombinatorialRigidity/Molecular/Deficiency.lean"
+      status: "proved"
+
+    - source: "Katoh-Tanigawa 2011, Theorem 4.9 (combinatorial induction / minimal k-dof reduction)"
+      lean: "Graph.minimal_kdof_reduction"
+      module: "CombinatorialRigidity/Molecular/Induction/ForestSurgery.lean"
+      status: "proved"
+
+    - source: "Katoh-Tanigawa 2011, Case III of the algebraic induction (Lemma 6.10+), Theorem 5.5 / 5.6, Molecular Conjecture 1.2"
+      lean: ""
+      module: "CombinatorialRigidity/Molecular/AlgebraicInduction/"
+      status: "in-progress"
+      note: "Phase 22+. Outstanding obligations pinned as explicit hypotheses on red blueprint dep-graph nodes."
+
+# acknowledgements - optional credits for libraries, tools, discussions, etc.
+acknowledgements: >-
+  Built on Lean 4 and mathlib4 (leanprover-community). The matroid-union / Edmonds-partition
+  subsystem under CombinatorialRigidity/Matroid/ is ported from Peter Nelson's apnelson1/Matroid
+  package (Apache-2.0), which also supplies Matroid.ofFun and Graph.cycleMatroid; each vendored
+  file carries an upstream copyright header with a provenance + modifications note. Blueprint
+  built with leanblueprint / plastex; declaration cross-checking via PatrickMassot/checkdecls.
+  The formalization was carried out with Claude Code (Anthropic).
