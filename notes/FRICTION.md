@@ -119,8 +119,10 @@ housekeeping pass once their resolution is fully indexed.
   `AlgebraicIndependence.md` §2 risk (a)). The existence formulation reaches sites KT phrases
   generically — the same precedent as Claim 6.4/6.9 (row #104, AVOIDED). Settled: N3a = existence
   route, row #106 = AVOIDED, `lem:genericity-device` dropped off the live route.
-- **Status:** open (lesson; the specific N3a node is fixed). Candidate to lift to CLAUDE.md
-  *red-node consistency gate* if a second hypothesis-weakening re-scope recurs.
+- **Status:** open (lesson; the specific N3a node is fixed — N3a-2 flipped green pointing at the
+  witness, since the chosen-seed freedom means the witness's own normal arrangement *is* the
+  existence content, so no parametric cross-product over given normals was needed). Candidate to lift
+  to CLAUDE.md *red-node consistency gate* if a second hypothesis-weakening re-scope recurs.
 
 ### [open] The eq.-(6.12) shear "support extensor at `q₀`'s `vb`-hinge = at `q`'s `ab`-hinge" is a 6-deep manual `rw` unfold chain in three Case-III producers
 - **Where it bit:** `case_II_placement_eq612` (`hnewne`/`hane`), `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,

@@ -17,30 +17,31 @@ KT math: `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it.
 
 ## Current state
 
-**Next concrete commit: build N3a-2 — the node flip.** N3a-1 is green: the explicit-seed witness
-`exists_affineIndependent_panel_incidence` (`RigidityMatrix.lean`, axiom-clean) discharges the
-`P ≠ 0` residual directly — coordinate-aligned normals `nₐ=e₀`, `n_b=e₁`, `n_c=e₂` (linearly
-independent = nonparallel) + the standard affine `3`-simplex `p=(0,e₃,e₁,e₂)`, with affine
-independence from the `±1` homogenization determinant (`det_succ_row_zero` cofactor) and the
-incidence pattern read straight off the coordinates. N3a-2 threads that witness through the
-cross-product construction for the framework's *given* normals and flips
-`lem:case-III-claim612-points-affineIndep` green: compose the green det-poly bridge
-(`exists_detPolynomial_of_pointPolynomial`) + the closure half
-(`exists_affineIndependent_of_det_polynomial_ne_zero`) + N3a-1 into `∃ p, AffineIndependent ∧
-incidence` over the framework normals, reading off the lines-in-panels data N9/N3b consume. **LOW–
-MEDIUM risk** (the cross-product family parametric in the normals/offset seed is the remaining
-plumbing; `P ≠ 0` is settled). Then **N9** (green-modulo-N3b) discharges
-`lem:case-III-eq629-conditional`, and **N10** flips `lem:case-II-realization` + the `d=3` half of
+**Next concrete commit: build N9 — the Claim-6.12 capstone, green-modulo-N3b.** N3a is now green:
+the node `lem:case-III-claim612-points-affineIndep` points at the witness
+`exists_affineIndependent_panel_incidence` (`RigidityMatrix.lean`, axiom-clean). N3a-2 was the node
+flip — but the existence-route equivalence collapsed it to a *direct* flip, not the anticipated
+parametric cross-product over the framework's given normals: because the Case-III realization is
+itself being constructed (the candidate placements realize `G_v^{ab}` at a seed `q` the capstone is
+free to choose, `ofNormals` ranges over all coordinatizations), the points *and* the panels they are
+incident to come from one chosen realization — so the witness's own coordinate-aligned normal
+arrangement IS the existence content. No GL-transport / cross-product family needed. The node now
+existentially quantifies the three nonparallel normals (matching the witness) and is honestly green;
+the green bricks (closure `exists_affineIndependent_of_det_polynomial_ne_zero`, det-poly bridge
+`exists_detPolynomial_of_pointPolynomial`, existence `exists_ne_zero_dotProduct_eq_zero`) stay as the
+conceptual scaffolding the node's prose `\uses`, documenting the equivalence.
+
+**N9** (green-modulo-N3b) is the next build: the contrapositive glue discharging
+`lem:case-III-eq629-conditional`. All its leaf deps are green except the N3b duality node
+(`lem:case-III-claim612-line-in-panel-union`, deferred to 22f), so N9 lands green-modulo-N3b
+(honesty-gate case (b)). Then **N10** flips `lem:case-II-realization` + the `d=3` half of
 `lem:case-III` green-modulo-N3b — 22e closes here.
 
-**N3a is the EXISTENCE route, NOT the alg-independence hammer (scope decision, this commit).** The
-red residual `P ≠ 0` is *logically equivalent* — via the converse of `MvPolynomial.exists_eval_ne_zero`
-+ the green det-poly bridge — to "exhibit ONE seed `q*` where the 4 constructed points are affinely
-independent", so it does **not** need `lem:genericity-device` / alg-independence. It is the same
-existence/Zariski route the pre-22d genericity sites (Claim 6.4/6.9) all used. Verified numerically
-(the cross-product construction above is affinely independent with all 6 lines in the panel union).
-This commit re-framed the N3a node prose+proof to the existence route, dropped its
-`\uses{lem:genericity-device}` edge, and flipped `AlgebraicIndependence.md` row #106 to **AVOIDED**.
+**N3a is the EXISTENCE route, NOT the alg-independence hammer (settled).** The residual `P ≠ 0` is
+*logically equivalent* — via the converse of `MvPolynomial.exists_eval_ne_zero` + the green det-poly
+bridge — to "exhibit ONE seed `q*` where the 4 constructed points are affinely independent", so it
+does **not** need `lem:genericity-device` / alg-independence. Same existence/Zariski route the pre-22d
+genericity sites (Claim 6.4/6.9) used. `AlgebraicIndependence.md` row #106 = **AVOIDED**.
 
 **N9/N10 will be built green-modulo-N3b.** N9's contrapositive `\uses` the red N3b node
 (`lem:case-III-claim612-line-in-panel-union`) — it needs `r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=0` to connect the
@@ -60,8 +61,9 @@ Hodge theory) not yet in mathlib/the project — the multi-commit content split 
 N6 (`linearIndependent_sum_p2_candidateRow`), N7 (`linearIndependent_sum_p3_candidateRow`), N8
 (`candidateRow_ac_eq_neg`), the three N3b leaves, the three N3a existence-route bricks (existence
 `exists_ne_zero_dotProduct_eq_zero`; closure `exists_affineIndependent_of_det_polynomial_ne_zero`;
-det-poly bridge `exists_detPolynomial_of_pointPolynomial`), and **N3a-1** the explicit-seed `P ≠ 0`
-witness (`exists_affineIndependent_panel_incidence`). The Claim-6.12 interface re-shape (the
+det-poly bridge `exists_detPolynomial_of_pointPolynomial`), **N3a-1** the explicit-seed `P ≠ 0`
+witness (`exists_affineIndependent_panel_incidence`), and **N3a** the node itself (flipped green
+pointing at the witness — the existence content). The Claim-6.12 interface re-shape (the
 conditional `lem:case-III-eq629-conditional` is a **3-way disjunction** `M₁/M₂/M₃` — does not strand
 green Lean since the assembly takes `ρ`/`rn`/`ro` abstractly) is in *Decisions made* + the checklist.
 
@@ -138,7 +140,7 @@ commit (no `\lean`/`\leanok`); build greens them.
   axiom-clean) — a functional `r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with
   `span S = ⊤` is `0`, via `LinearMap.ext_on`. Deps: N1. Dual-annihilator framing (not the
   inner-product `⟨r,r⟩=0` of the original prose) to match the `Module.Dual` candidate-row chain.
-- [ ] **N3a** `lem:case-III-claim612-points-affineIndep` — 4 **affinely-independent** points
+- [x] **N3a** `lem:case-III-claim612-points-affineIndep` (green) — 4 **affinely-independent** points
   `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence pattern
   (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. **EXISTENCE route, NOT
   alg-independence** (scope decision): the residual `P ≠ 0` is logically equivalent to "exhibit ONE
@@ -155,11 +157,14 @@ commit (no `\lean`/`\leanok`); build greens them.
     independence from the `±1` homogenization determinant (`det_succ_row_zero` cofactor → `det_fin_three`,
     FRICTION `[resolved]`), incidence read off the coordinates. New green node
     `lem:case-III-claim612-points-affineIndep-witness` in `case-iii.tex`.
-  - [ ] **N3a-2** (node flip) — compose the green det-poly bridge + N3a-1 + the green closure half
-    into `∃ p, AffineIndependent ∧ incidence`, read off the incidence pattern (the lines-in-panels
-    data N9/N3b consume). Thread the witness through the cross-product construction for the
-    framework's given normals. **LOW–MEDIUM risk.** Flips `lem:case-III-claim612-points-affineIndep`
-    green. *Next commit.*
+  - [x] **N3a-2** (node flip) — green: `lem:case-III-claim612-points-affineIndep` points at the
+    witness `exists_affineIndependent_panel_incidence` directly. The anticipated parametric
+    cross-product over the framework's given normals was unnecessary: the chosen-seed freedom (the
+    realization, normals included, is constructed at a seed N9 picks) means the witness's own
+    coordinate-aligned arrangement IS the existence content. The node now existentially quantifies the
+    three nonparallel normals (matching the witness); the closure/det-poly/existence bricks stay as
+    the prose `\uses` scaffolding documenting the `P ≠ 0` ⟺ one-seed equivalence. Blueprint-only edit
+    (no new Lean). See *Decisions made*.
 - [ ] **N3b** (→ **Phase 22f**) `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet
   duality bridge. For a pair whose connecting line `L` lies in panel `Π(u)`, the join `pᵢ∨pⱼ` equals
   a scalar multiple of the panel-meet extensor `C(L) = panelSupportExtensor n_u (·) =
@@ -251,17 +256,15 @@ remaining 22e work is the contrapositive glue — N3a (existence route), then N9
 then N10 flip (green-modulo-N3b). KT Claim 6.12's full discharge is ~7–9 small commits; the
 exterior-algebra infra N3b needs is the genuinely-multi-commit piece, split to 22f.
 
-**Next concrete commit: build N3a-2 — the node flip.** N3a-1 (`P ≠ 0`) is green: the explicit-seed
-witness `exists_affineIndependent_panel_incidence` (`RigidityMatrix.lean`, axiom-clean) settles the
-residual via the existence-route equivalence (`P ≠ 0` ⟺ one good seed). N3a-2 composes the green
-det-poly bridge (`exists_detPolynomial_of_pointPolynomial`) + the closure half
-(`exists_affineIndependent_of_det_polynomial_ne_zero`) + N3a-1 into
-`∃ p, AffineIndependent ℝ p ∧ incidence` over the framework's given normals (threading the witness
-through the cross-product construction), flipping `lem:case-III-claim612-points-affineIndep` green.
-**LOW–MEDIUM risk** (the cross-product family parametric in the normals/offset seed is the remaining
-plumbing). Then **N9** (green-modulo-N3b) discharges `lem:case-III-eq629-conditional`, and **N10**
-flips `lem:case-II-realization` + the `d=3` half of `lem:case-III` green-modulo-N3b — 22e closes
-here.
+**Next concrete commit: build N9 — the Claim-6.12 capstone (`lem:case-III-claim612`),
+green-modulo-N3b.** N3a is green (the node points at the witness directly — the existence-route
+equivalence + chosen-seed freedom made the parametric cross-product unnecessary; see *Current
+state*). N9 is the contrapositive glue discharging `lem:case-III-eq629-conditional`: all dependent ⟹
+`r ⊥ C(L),C(L′),C(L″)` (N4×2 + N8) ⟹ (N3b duality) `r` annihilates each spanning join `pᵢ∨pⱼ` ⟹ `r`
+annihilates the span (6.45) spanning set (N3a + N1) ⟹ `r=0` (N2), contradicting N5. Its
+contrapositive `\uses` the red N3b node (`lem:case-III-claim612-line-in-panel-union`, deferred to
+22f), so N9 lands green-modulo-N3b (honesty-gate case (b)). Then **N10** flips
+`lem:case-II-realization` + the `d=3` half of `lem:case-III` green-modulo-N3b — 22e closes here.
 
 ### 22f plan (N3b — the exterior-algebra infra)
 
@@ -290,6 +293,19 @@ N3b stays alg-independence-free, pure Grassmann–Cayley).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3a-2 green — the node flip collapsed to a direct point-at-the-witness, no cross-product
+  (2026-06-07; blueprint-only).** The anticipated N3a-2 (thread the witness through a cross-product
+  family parametric in the framework's *given* normals) was unnecessary. The Case-III realization is
+  itself being *constructed*: the candidate placements realize `G_v^{ab}` at a panel-coordinate seed
+  `q` the capstone N9 is free to choose (`ofNormals` ranges over all coordinatizations), so the four
+  points *and* the panels they are incident to come from one chosen realization — not a fixed external
+  normal arrangement. Hence the witness's own coordinate-aligned normals ARE the existence content.
+  Re-stated `lem:case-III-claim612-points-affineIndep` to existentially quantify the three nonparallel
+  normals (matching the witness `exists_affineIndependent_panel_incidence`), added `\lean`+`\leanok`,
+  rewrote the proof prose to the existence-route form (closure/det-poly/existence bricks stay as the
+  `\uses` scaffolding documenting `P ≠ 0` ⟺ one-seed). All gates clean (`verify.sh` green). This is the
+  pass-(2) FRICTION lesson in action (classify by what the formalization must discharge — the seed is
+  free at composition); FRICTION `[process]` status updated.
 - **N3a-1 green — the `P ≠ 0` residual collapses to one explicit numeric witness (2026-06-07).**
   `exists_affineIndependent_panel_incidence` (`RigidityMatrix.lean`, axiom-clean). The existence-route
   equivalence (`P ≠ 0` ⟺ one good seed; see the *re-scoped* entry below) lets the witness be the

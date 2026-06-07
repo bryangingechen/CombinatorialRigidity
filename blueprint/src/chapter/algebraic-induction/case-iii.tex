@@ -789,13 +789,15 @@ Grassmann--Cayley projective duality.
 
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]
   \label{lem:case-III-claim612-points-affineIndep}
+  \lean{CombinatorialRigidity.Molecular.exists_affineIndependent_panel_incidence}
+  \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework,
         lem:case-III-claim612-panel-point-exists, lem:case-III-claim612-points-affineIndep-producer,
         lem:case-III-claim612-detpoly, lem:case-III-claim612-points-affineIndep-witness}
-  Let $(G_v^{ab}, q)$ be a nonparallel panel-hinge framework at $d = 3$
-  (\cref{def:panel-hinge-framework}), with panel hyperplanes $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$
-  at the three bodies $a, b, c$. Then there exist four \emph{affinely-independent} points
-  $p \colon \mathrm{Fin}\,4 \to \R^3$ realizing the triple-intersection incidence pattern
+  At $d = 3$ there is a nonparallel arrangement of three panels --- three normals
+  $n \colon \mathrm{Fin}\,3 \to \R^4$ in nonparallel position (linearly independent), spanning
+  panels $\Pi(a), \Pi(b), \Pi(c) \subset \R^3$ --- together with four \emph{affinely-independent}
+  points $p \colon \mathrm{Fin}\,4 \to \R^3$ realizing the triple-intersection incidence pattern
   \[
     p_1 \in \Pi(a) \cap \Pi(b) \cap \Pi(c), \quad
     p_2 \in \Pi(a) \cap \Pi(b) \setminus \Pi(c), \quad
@@ -806,42 +808,37 @@ Grassmann--Cayley projective duality.
   \langle \bar{p_i}, n_u \rangle = 0$ on the homogenization $\bar{p_i}$. The four points
   span an affine $3$-simplex; this is the affine independence \cref{lem:case-III-claim612-extensor-span}
   consumes (its six $2$-extensors $\bar{p_i} \vee \bar{p_j}$ then span $\R^D$).
+
+  The panel normals are existentially quantified because the Case~III realization is itself being
+  \emph{constructed}: the candidate placements $p_1, p_2, p_3$
+  (\cref{lem:case-II-realization-placement,lem:case-III-claim612-p2-placement,%
+  lem:case-III-claim612-p3-placement}) realize $G_v^{ab}$ at a panel-coordinate seed $q$ that the
+  capstone (\cref{lem:case-III-claim612}) is free to choose, so the points and the panels they are
+  incident to come from one chosen realization --- not from a fixed external normal arrangement.
 \end{lemma}
 \begin{proof}
+  \leanok
   This is an \emph{existence} (Zariski) statement, like the realization sites of Cases~I and~II: it
-  does not require the inductive seed to be generic, only that \emph{one} good seed exist. Build the
-  four points as functions of the panel-coordinate seed $q$ by the standard projective construction:
-  $p_1$ is the triple-intersection point $\Pi(a) \cap \Pi(b) \cap \Pi(c)$, and
-  $p_2, p_3, p_4$ are pushed off it along the three pairwise-intersection lines,
-  \[
-    \bar{p_2} = \bar{p_1} + s_2\,(n_a \times n_b), \quad
-    \bar{p_3} = \bar{p_1} + s_3\,(n_b \times n_c), \quad
-    \bar{p_4} = \bar{p_1} + s_4\,(n_c \times n_a)
-  \]
-  (homogeneous cross-products of the panel normals, so the construction is denominator-free and
-  rational in $q$). The incidence pattern is immediate: each $\bar{p_i}$ is orthogonal to exactly
-  the two normals whose cross-product moved it, and to all three for $p_1$; the existence of the base
-  homogeneous representative on any chosen panels is the pure dimension count
+  does not require the inductive seed to be generic, only that \emph{one} good seed exist. By the
+  existence-route equivalence --- the converse of the non-root brick
+  $\mathrm{MvPolynomial.exists\_eval\_ne\_zero}$ (run forward by the closure half
+  \cref{lem:case-III-claim612-points-affineIndep-producer}, green) together with the
+  determinant-polynomial bridge \cref{lem:case-III-claim612-detpoly} (green: the homogenization
+  determinant of the polynomial-valued cross-product points is the evaluation of a single polynomial
+  $P$ in the seed) --- the nonvanishing $P \ne 0$ that the closure route would need is
+  \emph{logically equivalent} to exhibiting \emph{one} seed at which the constructed points are
+  affinely independent. So no separate cross-product family, and no algebraic independence of the
+  seed, is required: the explicit witness \cref{lem:case-III-claim612-points-affineIndep-witness}
+  (green) supplies that one seed outright. It takes the coordinate-aligned arrangement $n_a = e_0$,
+  $n_b = e_1$, $n_c = e_2$ (linearly independent in $\R^4$, hence nonparallel) and the standard
+  affine $3$-simplex $p = (0, e_3, e_1, e_2)$ of $\R^3$: the $4 \times 4$ homogenization determinant
+  is $\pm 1 \ne 0$ (\cref{lem:affine-indep-iff}, via the
+  $\mathrm{Matrix.det\_succ\_row\_zero}$ cofactor expansion), and the incidence pattern is read
+  straight off the coordinates. The pure dimension count
   \cref{lem:case-III-claim612-panel-point-exists} (a system of $< d + 1$ homogeneous incidence
-  equations always has a nonzero solution). Because the points are built coordinate-by-coordinate as
-  polynomials in $q$, their affine-independence (homogenization) determinant is the evaluation at $q$
-  of a single polynomial $P$ (\cref{lem:case-III-claim612-detpoly}, green: evaluation commutes with
-  the determinant and with the homogenizing $\mathrm{Fin.snoc}(\cdot, 1)$). It then suffices to know
-  $P \neq 0$ --- the genericity-free closure
-  \cref{lem:case-III-claim612-points-affineIndep-producer} (green) feeds the non-root $q$ off the
-  zero locus of $P$ into the determinant characterization \cref{lem:affine-indep-iff} and reads off
-  affine independence. By the converse of the non-root brick, $P \neq 0$ is \emph{logically
-  equivalent} to exhibiting a \emph{single} seed $q^*$ at which the four constructed points are
-  affinely independent (if $P = 0$ then $P(q^*) = 0 = \det$, contradicting independence; conversely a
-  non-root supplies the seed). That explicit witness is now in hand
-  (\cref{lem:case-III-claim612-points-affineIndep-witness}, green): the coordinate-aligned seed
-  $n_a = e_0$, $n_b = e_1$, $n_c = e_2$ with the standard affine $3$-simplex makes the $4 \times 4$
-  homogenization determinant $\pm 1 \ne 0$ and realizes the incidence pattern. No algebraic
-  independence of the seed is needed; this is the same existence route the pre-Phase-22d genericity
-  sites all used (\cref{lem:case-III-claim612-points-affineIndep-producer} composes
-  $\mathrm{MvPolynomial.exists\_eval\_ne\_zero}$, the brick Case~I uses to pick a shared seed). The
-  remaining step is to thread that witness through the cross-product construction for the framework's
-  given normals --- N3a-2, the node flip.
+  equations always has a nonzero solution) is the projective-existence content the cross-product
+  construction would invoke for an arbitrary normal arrangement; the witness route makes it
+  unnecessary by fixing the arrangement.
 \end{proof}
 
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
