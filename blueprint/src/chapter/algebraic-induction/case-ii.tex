@@ -166,7 +166,8 @@
 \begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
   \label{lem:case-II-realization}
   \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
-        lem:case-II-realization-placement}
+        lem:case-II-realization-placement, lem:case-III-candidate-row,
+        lem:case-III-claim612, lem:case-III-claim612-line-in-panel-union}
   The realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
   $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
@@ -181,8 +182,10 @@
   $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
   a hypothesis, this node must \emph{construct} the panel normal $n$ for the
   re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
-  framework realizes its rank. \emph{Red --- re-scoped to Phases~22--23 as KT
-  Case~III.} The project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
+  framework realizes its rank. \emph{Red --- this producer \textbf{is} KT Case~III
+  ($k = 0$), now green-modulo-N3b in its $d = 3$ algebra, with the realization
+  assembly that wires it to the graph data the remaining deferred cut.} The
+  project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
   split, so by KT Lemma~4.8(i) $G_v^{ab}$ is minimal $0$-dof and the realization
   must reach \emph{full} rank $D(|V|-1)$. KT's actual construction (Lemma~6.8,
   eq.~(6.12)) is a \emph{degenerate} placement: $p_1(va)=L\subset\Pi_q(a)$ a
@@ -191,10 +194,18 @@
   $R(G_v^{ab},q)$); column ops make $R(G,p_1)$ block-triangular with
   $R(G_v^{ab},q)$ a submatrix, giving $\mathrm{rank}\,R(G,p_1)\ge (D-1) +
   D(|V|-2) = D(|V|-1)-1$ --- \emph{one row short}. For $k=0$ the missing row is
-  the Case~III redundant-edge row (KT Lemma~6.10/6.13), so this producer
-  \emph{is} Case~III, deferred with it to Phases~22--23. The reusable green row
+  the Case~III redundant-edge row (KT Lemma~6.10/6.13), now constructed
+  green-modulo-N3b: the candidate-completion
+  (\cref{lem:case-III-candidate-row}) turns 22d's redundant $ab$-row into the
+  missing $+1$, and the candidate it instantiates at is selected by Claim~6.12
+  (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)); the one surviving red
+  dependency of that $d = 3$ algebra is the point-join$\leftrightarrow$panel-meet
+  duality \cref{lem:case-III-claim612-line-in-panel-union} (N3b, Phase~22f).
+  What stays \emph{deferred} for this producer is the \emph{realization assembly}:
+  instantiating the graph-free candidate-completion at the actual $G$ to discharge
+  $\mathtt{hsplit}$ --- the deferred ``$d = 3$ assembly''. The reusable green row
   infra (the device-closure glue \cref{lem:realization-of-independent-rows} and
-  the sub-nodes N7b-0/1/2/3) feeds it there via the live route, the eq.~(6.12)
+  the sub-nodes N7b-0/1/2/3) feeds it via the live route, the eq.~(6.12)
   \emph{degenerate placement} \cref{lem:case-II-realization-placement}: the
   $e_0$-row is recovered by \emph{reproducing} it --- $p_1(vb)=q(ab)$ places $v$'s
   $b$-hinge at the very $e_0=ab$ hinge of $q$, so the $vb$-row equals the $e_0$-row

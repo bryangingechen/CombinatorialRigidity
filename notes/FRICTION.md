@@ -124,6 +124,30 @@ housekeeping pass once their resolution is fully indexed.
   existence content, so no parametric cross-product over given normals was needed). Candidate to lift
   to CLAUDE.md *red-node consistency gate* if a second hypothesis-weakening re-scope recurs.
 
+### [process] A phase-open "flip these nodes green-modulo-X" target is a hypothesis to re-verify against the actual dep-graph at build time — distinguish the deferred leaf the green-modulo *names* from *other* deferred deps
+- **Where it bit:** Phase 22e N10. The phase-open plan (echoed across ROADMAP §22e, `MolecularConjecture.md`,
+  the note's *Hand-off*) said N10 "flips `lem:case-II-realization` + the `d=3` half of `lem:case-III`
+  green-modulo-N3b." Once the candidate-completion build landed, the dep-graph showed this was not
+  honest: **(a)** both target nodes carry no `\lean` (project invariant: no `\leanok` without `\lean`
+  — verified, zero such nodes exist), so neither can go green at all; **(b)** their honest discharge
+  routes through the *deferred `d=3` realization assembly* (`lem:case-II-realization-placement`, red —
+  it promises the full `D(|V|−1)` family the graph-free candidate-completion supplies only once
+  instantiated at real graph data), **not** the N3b leaf the "green-modulo-N3b" names. Flipping them
+  would be dishonestly green (a live node `\uses`-ing a red node where the red dep is the wrong
+  deferred piece). N10 became a blueprint prose reconciliation instead (the conditional + candidate-row
+  green-modulo-N3b; the two targets stay red, remaining red work = N3b + the deferred assembly).
+- **Friction:** the plan, written at phase-open before the producers were built, baked in a green-flip
+  target that the realized dependency structure couldn't honestly support; following it literally would
+  have shipped a dishonestly-green node.
+- **Lesson / fix:** treat a phase-open "flip node N green-modulo-X" line as a *hypothesis*, not a
+  commitment — at the commit that would flip it, re-walk N's actual `\uses`/proof dependencies and
+  confirm every surviving red dep IS the named X (here N3b), not some *other* deferred node (here the
+  `d=3` assembly). And a producer node with no `\lean` cannot be green; "green-modulo-X" only applies
+  to a node that has a `\lean` and `\uses` the red X. The honesty gate (`blueprint/CLAUDE.md`) catches
+  this if run by eye at the flip; the trap is trusting the phase-open prose over the dep-graph.
+- **Status:** open (lesson). Candidate to lift to CLAUDE.md *When this commit closes a phase* if a
+  second phase-open green-flip target turns out unsupportable at close.
+
 ### [open] The eq.-(6.12) shear "support extensor at `q₀`'s `vb`-hinge = at `q`'s `ab`-hinge" is a 6-deep manual `rw` unfold chain in three Case-III producers
 - **Where it bit:** `case_II_placement_eq612` (`hnewne`/`hane`), `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,
   and the new `exists_candidate_row_eq612` (`hCeq`), all `CaseI.lean`/`PanelHinge.lean` (Phase 22c–22e).

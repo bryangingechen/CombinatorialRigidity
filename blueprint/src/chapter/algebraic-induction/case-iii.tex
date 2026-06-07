@@ -279,8 +279,12 @@ The full $D(|V|-1)$-family assembly is now in place (\cref{lem:case-III-candidat
 operated row $w \circ \Phi$ joins the stratum-1 brick's $va$-block and old block in the pin-a-body
 augment (\cref{lem:case-III-conditional-block}), and the operated independence transports back
 through the automorphism $\Phi$ to the original family of size $((D-1)+1)+D(|V_v|-1) = D(|V|-1)$.
-What remains is the one \emph{conditional} it passes through --- the eq.~(6.29) top-left $D \times D$
-full rank (\cref{lem:case-III-eq629-conditional}) --- which Claim~6.12 will discharge. The
+The one \emph{conditional} it passes through --- the eq.~(6.29) top-left $D \times D$
+full rank (\cref{lem:case-III-eq629-conditional}) --- is now discharged green-modulo-N3b by
+Claim~6.12 (\cref{lem:case-III-claim612},
+\cref{sec:molecular-algebraic-induction-claim612}), so the candidate-completion assembly is
+green-modulo-N3b: its sole surviving red dependency is the point-join$\leftrightarrow$panel-meet
+duality (\cref{lem:case-III-claim612-line-in-panel-union}, N3b, Phase~22f). The
 $a$-column-block vanishing (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$
 case), not the candidate-row input.
 
@@ -541,10 +545,17 @@ case), not the candidate-row input.
   \emph{at least one} candidate $\rho$ and choice of lines, that $D$-functional family is linearly
   independent (the top-left $D \times D$ block of the block-triangularized $R(G, p_i)$ is full rank).
   This is exactly what \cref{lem:case-III-candidate-row}'s assembly consumes --- it takes
-  $\rho$ / $\mathrm{rn}$ / $\mathrm{ro}$ abstractly, so the assembly itself stays green; only this
-  conditional (which candidate to instantiate it at) is deferred. It is the one load-bearing
-  hypothesis of the candidate-completion not yet discharged; the assembly is green \emph{modulo}
-  this node.
+  $\rho$ / $\mathrm{rn}$ / $\mathrm{ro}$ abstractly, so the assembly itself stays green; the
+  conditional supplies which candidate to instantiate it at.
+  \emph{This conditional is now discharged \textbf{green-modulo-N3b} by Claim~6.12}
+  (\cref{lem:case-III-claim612}): the row-space criterion
+  (\cref{lem:case-III-claim612-block-iff-perp}) turns ``the candidate's block is full rank'' into
+  ``$\hat r$ is not orthogonal to its supporting extensor $C$'', so the existential over the three
+  candidates \emph{is} Claim~6.12's disjunction
+  $\hat r(C_1) \ne 0 \vee \hat r(C_2) \ne 0 \vee \hat r(C_3) \ne 0$. The only red dependency that
+  survives is the point-join$\leftrightarrow$panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b), deferred to Phase~22f; once it lands, this
+  node --- and the candidate-completion assembly through it --- are fully green.
 \end{lemma}
 \begin{proof}
   The three-way disjunction is Claim~6.12 (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)):
@@ -587,8 +598,11 @@ case), not the candidate-row input.
         lem:case-III-vanish-off-column, lem:case-III-transport-collapse,
         lem:case-III-conditional-block, lem:case-III-eq629-conditional,
         lem:case-II-realization-placement}
-  \emph{Green modulo the eq.~(6.29) conditional (\cref{lem:case-III-eq629-conditional}, Claim~6.12
-  territory).} The combination-level threading is green:
+  \emph{Green modulo the eq.~(6.29) conditional (\cref{lem:case-III-eq629-conditional}), which
+  Claim~6.12 (\cref{lem:case-III-claim612}) now discharges green-modulo-N3b --- so the assembly is
+  green-modulo-N3b, the only surviving red dependency being the point-join$\leftrightarrow$panel-meet
+  duality (\cref{lem:case-III-claim612-line-in-panel-union}, N3b, Phase~22f).} The
+  combination-level threading is green:
   \cref{lem:case-III-candidate-row-construction} takes the common element $w_{\mathrm{Gv}}$ of the
   eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row
   part of the redundant $ab$-row, which is itself an $ab$-block element --- writes it as
@@ -1132,11 +1146,21 @@ Grassmann--Cayley projective duality.
   (\cref{lem:case-III-claim612-points-affineIndep}), which by the extensor-independence Lemma~2.1
   (\cref{lem:extensor-independence}, via \cref{lem:case-III-claim612-extensor-span}) span $\R^D$,
   forcing $r = 0$ --- contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}).
-  \textbf{Deferred to Phases~22--23} ($d = 3$ first, then general $d$); stated
-  here only to close the Theorem~5.5 dichotomy. The Claim~6.12 nodes
-  (\cref{sec:molecular-algebraic-induction-claim612}) are the $d = 3$ remainder, cut into
-  buildable leaves.
+  \textbf{The $d = 3$ argument is now green-modulo-N3b}: the candidate-completion
+  (\cref{sec:molecular-algebraic-induction-candidate-completion}) and Claim~6.12
+  (\cref{sec:molecular-algebraic-induction-claim612}) leaves are all green except the one
+  point-join$\leftrightarrow$panel-meet duality node
+  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b), whose bounded $\bigwedge^2 \R^4$
+  exterior-algebra assembly is \textbf{deferred to Phase~22f}. Two further pieces remain outside
+  Phase~22e and are unchanged by it: the \emph{realization assembly} that instantiates the (graph-free)
+  candidate-completion at the actual $d = 3$ graph data --- combining the stratum-1 brick
+  \cref{lem:case-II-realization-placement} with the Claim~6.12 candidate it selects to produce the full
+  $D(|V|-1)$ realization (the deferred ``$d = 3$ assembly''), and the general-$d$ argument
+  (\textbf{Phase~23}). This node stays red until those land; it is stated
+  here to close the Theorem~5.5 dichotomy.
 \end{lemma}
 \begin{proof}
-  Deferred to Phases~22--23. See \cite[\S6.4]{katohTanigawa2011}.
+  The $d = 3$ contrapositive above is green-modulo-N3b (Phases~22c--22e); the duality leaf N3b lands
+  in Phase~22f, the $d = 3$ realization assembly and general-$d$ are deferred. See
+  \cite[\S6.4]{katohTanigawa2011}.
 \end{proof}

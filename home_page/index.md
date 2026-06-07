@@ -78,7 +78,8 @@ Katoh–Tanigawa's **Case III** (phase 22 onward). The table below and
 |   22b | KT Claim 6.4 (discharges the Case I obligation) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
 |   22c | Case III at `d=3`, stratum 1 (KT Lemma 6.10; the crux) | `Molecular/AlgebraicInduction/` | ✓ |
 |   22d | KT Claim 6.11 (the missing `+1` row) + its green-machinery prerequisites | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ✓ |
-|   22e | candidate-completion + Claim 6.12 (completing Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ◷ |
+|   22e | candidate-completion + Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ |
+|   22f | point-join↔panel-meet duality (the exterior-algebra leaf completing Case III at `d=3`) | `Molecular/Meet.lean` | ◷ |
 |   ⋯ | (deferred) `d=3` assembly + general `d` (Lemma 6.13) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

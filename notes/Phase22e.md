@@ -1,12 +1,12 @@
 # Phase 22e — candidate-completion + Claim 6.12 (KT §6.4.1, eqs. (6.24)–(6.45)) (work log)
 
-**Status:** in progress (opened 2026-06-06 design-pass-first). **Re-scoped 2026-06-06 (steering):
+**Status:** ✓ complete (closed 2026-06-07, green-modulo-N3b). **Re-scoped 2026-06-06 (steering):
 22e lands N3a + N9 + N10, closing green-modulo-N3b; the N3b exterior-algebra infra splits to a
 future Phase 22f.** The candidate-completion (eqs. (6.24)–(6.29)) + Claim-6.12 leaves N1, N2, N4–N8
 are green; the three N3b operational leaves (dictionary `complementIso_toDual`, step (i), step (ii))
 are green, leaving the N3b *assembly* (the Hodge-star identification placing both members in `⋀²W`)
-red and deferred to 22f. The three candidate producers (`p₁`/`p₂`/`p₃`) are all green; what remains
-is the contrapositive glue (N3a + N3b + N9). Successor to 22d, the next chunk of Case III at `d=3`
+red and deferred to 22f. The three candidate producers (`p₁`/`p₂`/`p₃`) and the contrapositive
+glue (N3a + N9) are green-modulo-N3b; only the N3b assembly remains. Successor to 22d, the next chunk of Case III at `d=3`
 (KT §6.4.1, Lemma 6.10): lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`, green)
 to full `D(|V|−1)` by converting 22d's green redundant `ab`-row (`exists_redundant_panelRow_ab_of_finrank_eq`
 = KT eq. (6.23)) into the missing `+1`, then resolving the `D`-candidate disjunction (Claim 6.12).
@@ -17,52 +17,35 @@ KT math: `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it.
 
 ## Current state
 
-**Next concrete commit: N10 flip — `lem:case-II-realization` + the `d=3` half of `lem:case-III`
-green-modulo-N3b.** N9 is now green-modulo-N3b: the capstone `case_III_claim612`
-(`RigidityMatrix.lean`, axiom-clean) is the contrapositive disjunction
-`r(C₁) ≠ 0 ∨ r(C₂) ≠ 0 ∨ r(C₃) ≠ 0` given `r ≠ 0` (N5) and the N3b duality carried as the explicit
-hypothesis `hduality` (honesty-gate case (b): the N3b node `lem:case-III-claim612-line-in-panel-union`
-is `\uses`'d red, deferred to 22f). It uses N1 (`span_omitTwoExtensor_eq_top`), N2
-(`eq_zero_of_annihilates_span_top`), N3a (`exists_affineIndependent_panel_incidence`) greenly inside;
-the proof is the clean `by_contra` → the three orthogonalities → `hduality` annihilates every spanning
-join → N1 spans → N2 forces `r = 0`, contradicting `r ≠ 0`. The Lean abstracts away the row-space
-criterion (N4/N6/N7/N8): the disjunction takes the three orthogonalities directly, and the
-block-fails ⟺ `r(Cₘ)=0` connection lives in the producers the *consumer* wires — N4/N6/N7/N8 stay as
-the node's statement-level `\uses` scaffolding documenting which block is which.
+**✓ Phase complete (green-modulo-N3b).** N3a + N9 + N10 all landed. The candidate-completion
+(eqs. (6.24)–(6.29)) + Claim 6.12 (eqs. (6.30)–(6.45)) at `d=3` is complete green-modulo-N3b: the
+sole surviving red dependency of the whole candidate-completion chain is the one
+point-join↔panel-meet duality leaf `lem:case-III-claim612-line-in-panel-union` (N3b), whose bounded
+`⋀²ℝ⁴` exterior-algebra assembly is **Phase 22f** (*Hand-off / 22f plan* below). **N10 was a
+blueprint reconciliation, not a `\leanok` flip** (the honest scope correction — see *Decisions
+made* → N10): the two target nodes `lem:case-II-realization` / `lem:case-III` carry **no `\lean`**
+(project invariant: no `\leanok` without `\lean`), and their honest discharge depends on the
+*deferred `d=3` realization assembly* (`lem:case-II-realization-placement`, red — **not** N3b), so
+they stay red; N10 instead reconciled their prose (and the conditional `lem:case-III-eq629-conditional`
++ `lem:case-III-candidate-row`) to the post-N9 reality: the eq.-(6.29) conditional is **discharged
+green-modulo-N3b by N9**, so the candidate-completion is green-modulo-N3b, and the only remaining
+work toward fully-green Case III is (i) N3b → 22f and (ii) the deferred `d=3` assembly (unlettered).
 
-**N3a** is green: the node `lem:case-III-claim612-points-affineIndep` points at the witness
-`exists_affineIndependent_panel_incidence` (the existence-route equivalence + chosen-seed freedom
-collapsed the anticipated parametric cross-product to a direct point-at-the-witness flip).
-
-**N3a is the EXISTENCE route, NOT the alg-independence hammer (settled).** The residual `P ≠ 0` is
-*logically equivalent* — via the converse of `MvPolynomial.exists_eval_ne_zero` + the green det-poly
-bridge — to "exhibit ONE seed `q*` where the 4 constructed points are affinely independent", so it
-does **not** need `lem:genericity-device` / alg-independence. Same existence/Zariski route the pre-22d
-genericity sites (Claim 6.4/6.9) used. `AlgebraicIndependence.md` row #106 = **AVOIDED**.
-
-**N9/N10 will be built green-modulo-N3b.** N9's contrapositive `\uses` the red N3b node
-(`lem:case-III-claim612-line-in-panel-union`) — it needs `r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=0` to connect the
-block-failures (panel-meets) to N1's spanning family (point-joins). Since N3b is deferred to 22f, N9
-lands green-modulo-N3b (honesty-gate case (b), the established green-modulo pattern); N10 likewise.
-
-**The N3b assembly is deferred to Phase 22f (decomposition in *Hand-off / 22f plan* below).** The
-three N3b operational leaves are green; the assembly places both `pᵢ∨pⱼ` and `C(L) =
-complementIso(n_u∧n')` in `⋀²W` as an honest submodule and extracts `pᵢ∨pⱼ = λ·C(L)`, then the
-annihilation transfer. This needs the bounded/concrete `⋀²ℝ⁴` exterior-algebra infra (NOT general
-Hodge theory) not yet in mathlib/the project — the multi-commit content split out as 22f.
-
-**Landed green this phase (one-lined; full entries in *Decisions made*, math in `case-iii.tex` /
-`meet.tex`):** candidate-completion chain (eqs. (6.24)–(6.29), green-modulo conditional N9) + N1
-(`span_omitTwoExtensor_eq_top`), N2 (`eq_zero_of_annihilates_span_top`), N4
-(`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`), N5 (`candidateRow_ne_zero`),
-N6 (`linearIndependent_sum_p2_candidateRow`), N7 (`linearIndependent_sum_p3_candidateRow`), N8
-(`candidateRow_ac_eq_neg`), the three N3b leaves, the three N3a existence-route bricks (existence
-`exists_ne_zero_dotProduct_eq_zero`; closure `exists_affineIndependent_of_det_polynomial_ne_zero`;
-det-poly bridge `exists_detPolynomial_of_pointPolynomial`), **N3a-1** the explicit-seed `P ≠ 0`
-witness (`exists_affineIndependent_panel_incidence`), and **N3a** the node itself (flipped green
-pointing at the witness — the existence content). The Claim-6.12 interface re-shape (the
-conditional `lem:case-III-eq629-conditional` is a **3-way disjunction** `M₁/M₂/M₃` — does not strand
-green Lean since the assembly takes `ρ`/`rn`/`ro` abstractly) is in *Decisions made* + the checklist.
+**Landed green this phase (settled; full entries in *Decisions made*, math in `case-iii.tex` /
+`meet.tex`, axiom-clean):** the candidate-completion chain (eqs. (6.24)–(6.29)) + N1–N8 of the
+Claim-6.12 build list — N1 `span_omitTwoExtensor_eq_top`, N2 `eq_zero_of_annihilates_span_top`, N3a
+`exists_affineIndependent_panel_incidence` (+ its existence/closure/det-poly bricks; **existence/Zariski
+route, NOT alg-independence** — `AlgebraicIndependence.md` row #106 = AVOIDED), the three green N3b
+*operational* leaves (`Meet.lean`), N4 `linearIndependent_sumElim_candidateRow_iff`, N5
+`candidateRow_ne_zero`, N6 `linearIndependent_sum_p2_candidateRow`, N7
+`linearIndependent_sum_p3_candidateRow`, N8 `candidateRow_ac_eq_neg` — and **N9** the capstone
+`case_III_claim612` (`RigidityMatrix.lean`): the contrapositive disjunction
+`r(C₁) ≠ 0 ∨ r(C₂) ≠ 0 ∨ r(C₃) ≠ 0`, green-modulo-N3b (the N3b duality carried as the explicit
+hypothesis `hduality`, honesty-gate case (b)). N10 was the blueprint reconciliation closing the phase
+(see the new lead above + *Decisions made* → N10). The only red leaf left is the **N3b assembly**
+(→ Phase 22f): place both `pᵢ∨pⱼ` and `C(L) = complementIso(n_u∧n')` in `⋀²W` and extract
+`pᵢ∨pⱼ = λ·C(L)`, then transfer annihilation — the bounded/concrete `⋀²ℝ⁴` exterior-algebra infra
+(NOT general Hodge theory), the multi-commit content split out as 22f (*Hand-off / 22f plan* below).
 
 ## Red-node consistency gate — recon verdict (2026-06-06, opening commit)
 
@@ -233,10 +216,18 @@ commit (no `\lean`/`\leanok`); build greens them.
   `r=0`, contradicting N5 `r ≠ 0`. N1/N2/N3a used greenly inside; N4/N6/N7/N8 stay as statement-level
   `\uses` scaffolding (the block-fails ⟺ `r(Cₘ)=0` row-space connection lives in the producers the
   consumer wires). `\lean`+`\leanok` on `lem:case-III-claim612`; all gates clean.
-- [ ] **N10 Flip** `lem:case-II-realization` (+ the `d=3` half of `lem:case-III`) **green-modulo-N3b**
-  once N9 discharges `lem:case-III-eq629-conditional`. Candidate-completion subsection nodes are all
-  green (green-modulo the conditional N9, itself green-modulo-N3b). 22e closes here
-  (green-modulo-N3b); N3b lands in 22f.
+- [x] **N10 — blueprint reconciliation (NOT a `\leanok` flip), green-modulo-N3b** (commit this one).
+  The planned "flip `lem:case-II-realization` + `lem:case-III` green-modulo-N3b" was an
+  **honest-scope correction**: both target nodes carry no `\lean` (so cannot be `\leanok`-green per
+  the project invariant), and their honest discharge depends on the *deferred `d=3` realization
+  assembly* (`lem:case-II-realization-placement`, red — **not** N3b), so they stay red. N10 instead
+  reconciled the post-N9 prose across four nodes: the conditional `lem:case-III-eq629-conditional`
+  (now "discharged green-modulo-N3b by Claim 6.12" — the row-space criterion N4 turns the candidate
+  existential into N9's disjunction), `lem:case-III-candidate-row` ("green-modulo-N3b"), the
+  candidate-completion subsection preamble, and the two target nodes (the missing `+1` row is now
+  constructed green-modulo-N3b; only N3b + the deferred assembly remain). Added `\uses` edges
+  `case-III-candidate-row`/`claim612`/`line-in-panel-union` to `lem:case-II-realization`. All gates
+  clean (verify.sh, supersession, uses-resolution). 22e closes here (green-modulo-N3b); N3b → 22f.
 
 ## Blockers / open questions
 
@@ -250,19 +241,19 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Scope (re-scoped earlier): 22e = N3a + N9 + N10, closing green-modulo-N3b; N3b → Phase 22f.**
-N3a and N9 are green (green-modulo-N3b); only the N10 flip remains, then 22e closes
-(green-modulo-N3b). The exterior-algebra infra N3b needs is the genuinely-multi-commit piece, split
-to 22f.
+**✓ 22e closed green-modulo-N3b (N3a + N9 + N10 all landed).** The candidate-completion +
+Claim 6.12 at `d=3` is complete green-modulo-N3b; the sole surviving red dependency is N3b
+(`lem:case-III-claim612-line-in-panel-union`).
 
-**Next concrete commit: N10 flip — `lem:case-II-realization` + the `d=3` half of `lem:case-III`
-green-modulo-N3b.** N9 is green (the Claim-6.12 capstone `case_III_claim612` discharges
-`lem:case-III-eq629-conditional`; see *Current state* + the N9 checklist entry). The candidate-completion
-subsection nodes are all green (green-modulo the conditional, now itself green-modulo-N3b via N9), so
-N10 flips the two target nodes `lem:case-II-realization` and the `d=3` half of `lem:case-III` to
-green-modulo-N3b. Check that the producers' `\uses` of `lem:case-III-eq629-conditional` now route
-through the green N9; confirm the honesty gate (the only remaining red dependency is N3b). 22e closes
-here (green-modulo-N3b); N3b lands in 22f.
+**Next phase: open Phase 22f (N3b — the point-join↔panel-meet duality assembly).** Lift the *22f
+plan* below into `notes/Phase22f.md`. First concrete commit there: **N3b-1** — `exteriorPower.map 2
+W.subtype` injective for the 2-dim `W = {n_u,n'}^⊥` (spike mathlib first for an existing injectivity
+lemma). N3b-1/2/3 discharge the assembly, flipping `lem:case-III-claim612-line-in-panel-union` green
+and retiring the green-modulo-N3b on N9 (`case_III_claim612`) and the candidate-completion chain.
+After 22f the next deferred-unlettered cut is the
+`d=3` realization assembly (`prop:rigidity-matrix-prop11` hub + `thm:theorem-55` flip + Case-I
+wiring — where the `ofNormals` defeq-timeout trap bites, *Blockers*), which is what would finally
+take `lem:case-II-realization` / `lem:case-III` themselves green.
 
 ### 22f plan (N3b — the exterior-algebra infra)
 
@@ -278,7 +269,8 @@ at `⋀²ℝ⁴` (**NOT general Hodge theory**). Three leaves:
   step (i) (`complementIso_toDual_extensor_eq_zero_of_shared_vector`).
 - **N3b-3** — proportionality (green `exteriorPower_finrank_eq_one_proportional`, step (ii)) +
   annihilation transfer `r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=λ·r(C(L))=0`; flips N3b green, retiring the
-  green-modulo-N3b on N9/N10.
+  green-modulo-N3b on N9 + the candidate-completion chain (the two producer nodes
+  `lem:case-II-realization` / `lem:case-III` then await only the deferred `d=3` assembly).
 
 Downstream (still deferred, unlettered, after 22f): the `d=3` assembly
 (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring) — where the
@@ -291,6 +283,23 @@ N3b stays alg-independence-free, pure Grassmann–Cayley).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N10 — the planned "flip both target nodes green-modulo-N3b" was an honest-scope correction; it
+  became a blueprint reconciliation (2026-06-07; blueprint+docs only).** The phase plan (and ROADMAP
+  §22e / `MolecularConjecture.md`) said N10 flips `lem:case-II-realization` + the `d=3` half of
+  `lem:case-III` green-modulo-N3b. The build clarified the dependency the plan (written at
+  phase-open) could not: **(a)** neither node has a `\lean` declaration, and the project invariant is
+  no-`\leanok`-without-`\lean` (verified: zero such nodes exist); **(b)** their honest discharge
+  routes through the *deferred `d=3` realization assembly* — `lem:case-II-realization-placement`
+  (red) promises the full `D(|V|−1)` family, which the graph-free candidate-completion +
+  `case_II_placement_eq612` stratum-1 brick supply only once *instantiated at real graph data* (the
+  unlettered `d=3` assembly), **not** N3b. Flipping them green would be dishonestly green (a live
+  node `\uses`-ing a red node where the red dep is NOT the deferred-N3b leaf). So N10 reconciled the
+  prose of four nodes to the post-N9 reality instead (conditional discharged green-modulo-N3b by N9
+  via the N4 row-space criterion; candidate-completion green-modulo-N3b; the two targets' remaining
+  red work = N3b + deferred assembly). **Lesson** (the honesty gate over a phase-open plan): a
+  phase-open "flip these nodes green" target is a *hypothesis* to re-verify against the actual
+  dep-graph once the build lands — distinguish the deferred-leaf the green-modulo names (N3b) from
+  *other* deferred deps (the `d=3` assembly); a producer node with no `\lean` cannot go green at all.
 - **N3a-2 green — the node flip collapsed to a direct point-at-the-witness, no cross-product
   (2026-06-07; blueprint-only).** The anticipated N3a-2 (thread the witness through a cross-product
   family parametric in the framework's *given* normals) was unnecessary. The Case-III realization is
