@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] No `Matrix.det_fin_four`: explicit numeric `Fin 4` determinant via `det_succ_row_zero` + `det_fin_three`
+- **Where it bit:** Phase 22e N3a-1 `exists_affineIndependent_panel_incidence`
+  (`RigidityMatrix.lean`), proving the `4 × 4` homogenization determinant of the standard
+  affine `3`-simplex is `≠ 0`. mathlib ships `Matrix.det_fin_two`/`det_fin_three` but **no
+  `det_fin_four`**, so the explicit numeric det does not reduce by a single named lemma.
+- **Friction:** `decide` fails (`ℝ` is classical, not a concrete decision procedure); a bare
+  `norm_num [det_succ_row_zero, …]` leaves `Fin.succAbove 3 2`-style index residuals unreduced.
+- **Resolution (idiom):** rewrite the `Matrix.of (homogenize ∘ p)` to an explicit `!![…]`
+  literal (`ext i j; fin_cases i <;> fin_cases j <;> simp [homogenize, Fin.snoc]`), then
+  `rw [Matrix.det_succ_row_zero]; simp [Fin.sum_univ_succ, Matrix.det_fin_three, Fin.succAbove]`
+  — one cofactor expansion down to the `3 × 3` named lemma, with `Fin.succAbove` in the simp set
+  to clear the index arithmetic. Closes in one shot once the simp set is right.
+- **Status:** resolved (idiom). `Matrix.det_fin_four` would be upstream-eligible if the `Fin 4`
+  numeric-det pattern recurs; for one site the cofactor idiom is enough.
+
 ### [process] A red-node re-classification: re-verify against the source — but classify by what the *formalization* must prove, which can be weaker than the source's *stated* mechanism
 - **Where it bit:** Phase 22e N3a (`lem:case-III-claim612-points-affineIndep`, KT eq. (6.45) point
   choice), over three passes. (1) The 2026-06-06 N3-design-pass *weakened* N3a from genericity to

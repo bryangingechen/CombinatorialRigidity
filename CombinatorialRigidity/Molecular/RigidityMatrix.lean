@@ -262,6 +262,65 @@ theorem exists_detPolynomial_of_pointPolynomial {d : ℕ} {σ : Type*}
   · simp [homogenize, Matrix.map_apply]
   · simp [homogenize, Matrix.map_apply]
 
+/-- **The explicit good seed: four affinely-independent points realizing the
+`Π(a)/Π(b)/Π(c)` incidence pattern** (`lem:case-III-claim612-points-affineIndep`, the `P ≠ 0`
+existence witness; KT eq. (6.45) point choice). At `d = 3` there exist three panel normals
+`n : Fin 3 → ℝ⁴` in *nonparallel* position (`LinearIndependent`) and four **affinely-independent**
+points `p : Fin 4 → ℝ³` realizing the triple-intersection incidence pattern of KT eq. (6.45):
+`p 0 ∈ Π(a) ∩ Π(b) ∩ Π(c)`, `p 1 ∈ Π(a) ∩ Π(b) ∖ Π(c)`, `p 2 ∈ Π(b) ∩ Π(c) ∖ Π(a)`,
+`p 3 ∈ Π(c) ∩ Π(a) ∖ Π(b)`, where panel incidence `p i ∈ Π(u) ⟺ ⟨homogenize (p i), n u⟩ = 0`
+(the `⬝ᵥ` of the homogenization with the panel normal).
+
+This is the **existence-route residual** of `lem:case-III-claim612-points-affineIndep`: by the
+converse of `MvPolynomial.exists_eval_ne_zero` (the foundational non-root brick the closure half
+`exists_affineIndependent_of_det_polynomial_ne_zero` runs forward) and the determinant-polynomial
+bridge `exists_detPolynomial_of_pointPolynomial`, the residual `P ≠ 0` of the cross-product
+construction (the affine-independence determinant as a polynomial in the panel-coordinate seed) is
+*logically equivalent* to exhibiting **one** seed at which the constructed points are affinely
+independent — no algebraic independence of the seed is needed, exactly the existence/Zariski route
+the pre-Phase-22d genericity sites (Claim 6.4/6.9) used. Here the witness is the coordinate-aligned
+seed: panel normals `n_a = e₀`, `n_b = e₁`, `n_c = e₂` (the first three standard covectors of `ℝ⁴`,
+hence linearly independent — the nonparallel hypothesis the framework supplies) and the standard
+affine `3`-simplex `p = (0, e₃, e₁, e₂)` of `ℝ³` (origin plus three axis points). The incidence
+pattern is then immediate from the coordinates: `homogenize (p i)` is orthogonal to exactly the
+panel normals whose coordinate it vanishes at, and the `4 × 4` homogenization determinant is
+`±1 ≠ 0` (`affineIndependent_fin_iff_det_homogenize` via the explicit `Matrix.det_succ_row_zero`
+cofactor expansion). -/
+theorem exists_affineIndependent_panel_incidence :
+    ∃ (n : Fin 3 → Fin 4 → ℝ) (p : Fin 4 → Fin 3 → ℝ),
+      AffineIndependent ℝ p ∧ LinearIndependent ℝ n ∧
+      -- `p 0` lies on all three panels (the triple intersection)
+      (∀ u, homogenize (p 0) ⬝ᵥ n u = 0) ∧
+      -- `p 1 ∈ Π(a) ∩ Π(b) ∖ Π(c)`
+      (homogenize (p 1) ⬝ᵥ n 0 = 0 ∧ homogenize (p 1) ⬝ᵥ n 1 = 0 ∧ homogenize (p 1) ⬝ᵥ n 2 ≠ 0) ∧
+      -- `p 2 ∈ Π(b) ∩ Π(c) ∖ Π(a)`
+      (homogenize (p 2) ⬝ᵥ n 1 = 0 ∧ homogenize (p 2) ⬝ᵥ n 2 = 0 ∧ homogenize (p 2) ⬝ᵥ n 0 ≠ 0) ∧
+      -- `p 3 ∈ Π(c) ∩ Π(a) ∖ Π(b)`
+      (homogenize (p 3) ⬝ᵥ n 2 = 0 ∧ homogenize (p 3) ⬝ᵥ n 0 = 0 ∧
+        homogenize (p 3) ⬝ᵥ n 1 ≠ 0) := by
+  classical
+  refine ⟨![![1, 0, 0, 0], ![0, 1, 0, 0], ![0, 0, 1, 0]],
+    ![![0, 0, 0], ![0, 0, 1], ![1, 0, 0], ![0, 1, 0]], ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · -- Affine independence: the homogenization determinant of the standard simplex is `±1 ≠ 0`.
+    rw [affineIndependent_fin_iff_det_homogenize,
+      show (Matrix.of fun i => homogenize ((![![0, 0, 0], ![0, 0, 1], ![1, 0, 0], ![0, 1, 0]] :
+          Fin 4 → Fin 3 → ℝ) i)) = !![(0 : ℝ), 0, 0, 1; 0, 0, 1, 1; 1, 0, 0, 1; 0, 1, 0, 1] from by
+        ext i j; fin_cases i <;> fin_cases j <;> simp [homogenize, Fin.snoc]]
+    rw [Matrix.det_succ_row_zero]
+    simp [Fin.sum_univ_succ, Matrix.det_fin_three, Fin.succAbove]
+  · -- The three coordinate covectors are linearly independent.
+    rw [Fintype.linearIndependent_iff]
+    intro g hg i
+    have hg' := congrFun hg
+    fin_cases i
+    · simpa [Fin.sum_univ_succ] using hg' 0
+    · simpa [Fin.sum_univ_succ] using hg' 1
+    · simpa [Fin.sum_univ_succ] using hg' 2
+  · intro u; fin_cases u <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
+  · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space
