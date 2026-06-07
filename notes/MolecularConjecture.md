@@ -1,10 +1,11 @@
 # Molecular Conjecture — cross-phase program plan
 
 **Status:** IN PROGRESS. Phases 17–22f + 21a complete; the current frontier is the
-**deferred, unlettered `d=3` realization assembly** (`prop:rigidity-matrix-prop11` `hub` +
-`thm:theorem-55` flip + wiring `case_I_realization` into the Case-I branch — what finally
-takes the two producer nodes `lem:case-II-realization` / `lem:case-III` green), then
-**Phase 23** (general `d`). **Phase 22f** (✓ complete, closed 2026-06-07) landed N3b — the
+**deferred, unlettered `d=3` realization assembly** (design-reconned in
+`notes/Phase22-realization-design.md` §1.33 — corrected scope: `rigidityMatrix_prop11`'s `hub`
+is already green and `theorem_55` is a green conditional, so the real gap is the `d=3` `hsplit`
+producer taking `lem:case-II-realization` / `lem:case-III` green + the `thm:theorem-55`
+`d=3`-instance flip), then **Phase 23** (general `d`). **Phase 22f** (✓ complete, closed 2026-06-07) landed N3b — the
 point-join↔panel-meet duality `pᵢ∨pⱼ = λ·C(L)` (bounded `⋀²ℝ⁴` exterior-algebra,
 `complementIso_smul_eq_extensor_join` / `extensor_join_eq_zero_of_complementIso_eq_zero`) —
 discharging 22e's last red leaf, so KT Claim 6.12 and the candidate-completion chain are now
@@ -705,10 +706,15 @@ remaining successor cut. Sub-lettering keeps the integer phase numbers 23–26 s
 
 **Next cut (◷ planning, UNLETTERED): the `d=3` realization assembly.** With N3b green, Claim
 6.12 and the candidate-completion chain are fully green, but the two target producer nodes
-`lem:case-II-realization` / `lem:case-III` stay red: their discharge is the *realization
-assembly* — `prop:rigidity-matrix-prop11` `hub` partition brick (Track-independent,
-Phase-19-partition) + the `thm:theorem-55` flip + wiring the fully-green `case_I_realization`
-into `theorem_55_generic`'s Case-I branch (this is where the `ofNormals` defeq-timeout trap
-bites). Then **general-`d`** (Lemma 6.13) is **Phase 23**. Each gets a letter when its turn
-comes. When opening the `d=3`-assembly successor, follow the top-level `CLAUDE.md` *When this
-commit opens a phase* protocol and the red-node consistency gate over its target nodes.
+`lem:case-II-realization` / `lem:case-III` stay red. **Design-reconned 2026-06-07 —
+`notes/Phase22-realization-design.md` §1.33 (A)/(B) is the artifact to open against** (re-scoped
+from the older "hub + flip + wiring" framing): `rigidityMatrix_prop11`'s `hub` lower bound is
+already **green** (discharged in-proof) and `theorem_55` is a green *conditional*, so the one
+real gap is the **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕
+`case_III_claim612` into `linearIndependent_sum_augment_candidateRow` at real graph data (where
+the `ofNormals` defeq-timeout trap bites), then instantiate `theorem_55 (n:=2)`. **Two open items
+to resolve at phase-open** (§1.33 (B)): whether the Lean `theorem_55` path consumes the red
+`lem:cycle-realization` or dissolves short cycles into `hsplit`+`hbase` (B.1), and the
+`theorem_55` `d=3`-instance-vs-stays-red architecture (B.2). Then **general-`d`** (Lemma 6.13,
+reuse map in §1.33 (C)) is **Phase 23**. When opening, follow the top-level `CLAUDE.md` *When
+this commit opens a phase* protocol and the red-node consistency gate over its target nodes.

@@ -169,576 +169,168 @@ Verified route (i) (strengthen the motive with link-recording) buildable: scope 
 
 ---
 
-### 1.25 Phase 22c opens — Case III at `d=3` (KT Lemma 6.10): the layer design recon, first pass (2026-06-05)
+### 1.25 Phase 22c opens — Case III at `d=3` (KT Lemma 6.10), first layer recon (2026-06-05)
 
-22b closed (Claim 6.4 discharged; `lem:case-I-realization` fully green). **Phase 22c opens on Case III
-at `d=3` / Track B** — KT §6.4.1, Lemma 6.10, the `theorem_55.hsplit` branch at `k=0`, the
-conjecture's crux (the single largest proof in KT, ~12 pages). Per `DESIGN.md` *Scale-up: design the
-LAYER, not just the node* and the user's design-pass-first instruction, 22c opens with a **layer-level
-design recon, not a build** — Case I burned ~10 node-by-node commits before a layer pass surfaced the
-binding gap; Case III is more interlocking (three candidate frameworks sharing one candidate
-structure + Claim 6.11 wiring the row matroid to `M(G̃_v^{ab})` + Claim 6.12's extensor-span
-genericity), so the layer recon runs first. This is the **first recon pass** (docs-only, no Lean /
-`\leanok` / blueprint): read the whole Lemma-6.10 argument against the primary source + the green
-infra it bottoms on; the per-piece needs/supplies map + the open recon questions are recorded in
-`notes/Phase22c.md` (its *First design-recon pass* + *open recon questions*), the canonical 22c log.
+22b closed (Claim 6.4 green). Phase 22c opens Case III at `d=3` / Track B — the `theorem_55.hsplit` branch at `k=0`, the conjecture's crux (KT §6.4.1, ~12 pages) — design-pass-first (layer recon, not build). First pass read Lemma 6.10 against the primary source (pdf pp. 34–45): the eq. (6.12) degenerate placement `p₁(vb)=q(ab)` reproduces the `e₀=ab`-row, block-triangular with `R(G_v^{ab},q)` ⟹ `rank ≥ D(|V|−1)−1`, one short; the `D`-candidate argument (Claim 6.11 redundant-row + Claim 6.12 extensor-span on green Lemma 2.1) supplies the missing row. Scope cut: 22c = Case III at `d=3`, the `d=3` assembly deferred. Durable: `notes/Phase22c.md` *First design-recon pass*; four open questions → §1.26.
 
-**Verified against the KT 2011 primary source (pdf pp. 34–45).** Lemma 6.10: `G` 2-edge-connected
-minimal 0-dof, `|V| ≥ 3`, no proper rigid subgraph, (6.1) holds ⟹ a *nonparallel* panel-hinge
-realization in 3-space at `rank R(G,p) = 6(|V|−1)` (`D = 6` at `d=3`). The one-row shortfall: a single
-eq. (6.12) degenerate placement `p₁` (`p₁(vb) = q(ab)`, the `vb`-row reproducing the `e₀=ab`-row) is
-block-triangular with `R(G_v^{ab},q)`, giving `rank ≥ (D−1) + D(|V∖{v}|−1) = D(|V|−1) − 1` — one
-short (KT printed p. 680). The `D`-candidate argument supplies the missing row: KT build three
-candidates `(G,p₁),(G,p₂),(G,p₃)` (pdf p. 37) and show one is full rank, via Claim 6.11 (the
-redundant `(ab)i*`-row, eq. 6.23 `rank R(G_v^{ab}∖(ab)i*,q) = rank R(G_v^{ab},q) = 6(|V∖{v}|−1)`, off
-Lemma 4.3(ii) + the IH — the combinatorial↔linear bridge to `M(G̃_v^{ab})`) and Claim 6.12 (if all
-candidates fail, a nonzero `r ∈ ℝ⁶ ⟂` all extensors on `d+1` generic panels, which by the green
-Phase-17 **Lemma 2.1** span `ℝ⁶` — contradiction; the degree-2 condition forces all candidates to
-test the *same* `r`, eq. 6.44). General-`d` (Lemma 6.13, pdf p. 46) stays Phase 23.
+### 1.26 Phase 22c, second pass — the four questions + the three-strata scope cut (2026-06-05)
 
-**Scope cut settled** (`notes/Phase22c.md` *Sub-phase scope cut*): 22c = Case III at `d=3` (the crux);
-the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip + the
-`case_I_realization`→`theorem_55_generic` Case-I wiring) is the **likely 22d, deferred** until 22c's
-shape is clear (same defer-the-finer-cut discipline as 22a→22b+, 22b→22c+). **Next concrete commit:**
-continue the recon (still docs-only) — settle the four open recon questions (candidate normal form vs.
-three inlined copies; `d=3`-first; Claim 6.11's row-matroid bridge shape; Claim 6.12's "same `r`"
-packaging) — *before* cutting the first Lean node. No exposition-ledger entry yet: the captured Case-III
-ledger lines (`lem:case-II-realization`/eq. 6.12; Case III at large) already exist (`notes/BlueprintExposition.md`),
-status stays `pending` (write at 22c close, once `sorry`-free).
+Resolved the four open recon questions: (Q1) candidate normal form — state ONE per-candidate row-op lemma, instantiate ×3 (`p₁`/`p₂` symmetric `a↔b`, `p₃=p₁∘ρ`); (Q2) `d=3`-first YES (KT's own §6.4.1-then-§6.4.2 cut; general `d` → Phase 23); (Q3) Claim 6.11's row-matroid bridge = Lemma 4.3(ii)+IH, the genuinely-new redundant-row crux; (Q4) Claim 6.12's "same `r`" IS eq. (6.44) (degree-2 forcing), folds into the contradiction on green Lemma 2.1 — not a separate brick. Partitioned Lemma 6.10 into three difficulty strata — (1) eq. (6.12) `+(D−1)` placement [buildable, green N7b infra]; (2) Claim 6.11 redundant row [research crux]; (3) Claim 6.12 + candidate normal form [assembly] — and cut **22c = stratum 1**, strata 2–3 to later sub-phases (defer-the-finer-cut). Durable: `notes/Phase22c.md`.
 
-### 1.26 Phase 22c recon, second pass — the candidate structure, the four open questions resolved, and the FIRST-CHUNK scope cut (2026-06-05)
+### 1.27 Phase 22c, third pass — blueprint reconciliation to the eq. (6.12) row-side route (2026-06-05)
 
-Second (still docs-only, decision-support) recon pass, **re-read against the primary source**
-(KT 2011 §6.4.1, pdf pp. 34–37 [candidate construction + sketch], pp. 44–45 [Claims 6.11/6.12
-rigorous]). It (a) pins the shared candidate structure, (b) answers the four open recon questions
-from §1.25 / `notes/Phase22c.md`, and (c) — folding in the user's fresh direction that Case III at
-`d=3` *and* the `d=3` assembly may each need multiple phases — **re-cuts 22c's scope to the first
-tractable chunk**, not all of `lem:case-II-realization` + `lem:case-III`.
+Found a build-blocker: the live blueprint prose for the exact nodes 22c builds (`lem:case-II-realization`, `lem:case-II-realization-placement`) was self-inconsistent — statements said the motion-side M3 / row-side N7b-4 "superseded" while their proofs still routed through them. Reconciled both to the eq. (6.12) row-side degenerate placement; retain-with-marker struck M1/M2/M3 + N7b-4 (no live dependency edge). Confirmed 22b's `degeneratePlacement`/`extProj` block-collapse is NOT reused (stratum 1 is single-vertex; block-triangularity from the pin-a-body split N7b-3, not projection). The calibration case behind the supersession gate. Durable: `notes/Phase22c.md`; `blueprint/CLAUDE.md` *supersession gate*.
 
-**The shared candidate structure (verified, KT pp. 34–37).** No proper rigid subgraph + `d=3` ⟹
-(Lemma 4.6) two *adjacent* degree-2 vertices `v, a`, with `N_G(v) = {a,b}`, `N_G(a) = {v,c}`. Both
-`G_v^{ab}` and `G_a^{vc}` are minimal 0-dof (Lemma 4.8), and `G_a^{vc} ≅ G_v^{ab}` (the panel of `a`
-in `(G_v^{ab},q)` plays the role of the panel of `v` in `(G_a^{vc},q_ρ)`, Fig. 6(b)(f)(g)). The IH
-(6.1) supplies one generic nonparallel realization `(G_v^{ab}, q)` with `rank R = 6(|V∖{v}|−1)` (eq.
-6.18). **All three candidates share this one `q`**: `(G,p₁)`/`(G,p₂)` are built on `(G_v^{ab},q)`
-(eqs. (6.12)/(6.19), differing only in which of `va`/`vb` carries the degenerate `q(ab)` placement),
-`(G,p₃)` on `(G_a^{vc},q_ρ)` (eqs. (6.31)/(6.32)), where `q_ρ` is `q` transported across the iso. So
-the *shared data* parametrizing a candidate is `(q, the degenerate hinge choice, the free panel line
-L ⊂ Π(·))`; the three differ only in which panel (`Π(a)`, `Π(b)`, `Π(c)`) the free line lives on.
+### 1.28 Phase 22c, fourth pass — signature-level verification of the stratum-1 cut (2026-06-05)
 
-**Open question 1 — candidate normal form: ABSTRACT a single candidate lemma, instantiate ×3.**
-The three candidates are *not* three independent constructions: `p₁`/`p₂` are literally symmetric
-(`a ↔ b`, KT eq. (6.19) "symmetric to Claim 6.9"), and `p₃` is `p₁` precomposed with the iso `ρ`.
-Their row-ops are *identical* (KT performs them once for `p₁`, then says "the same analysis" for
-`p₂`/`p₃`, p. 35). So the formalization should state the per-candidate row-op + `+(D−1)` argument
-**once**, parametrized by `(degenerate hinge, free panel)`, and instantiate three times — KT's own
-structure. The Claim-6.12 contradiction then quantifies over the three instances' residual normals
-`r, r', r''` and uses the eq. (6.44) forcing (below) to identify them.
+Signature-level constructibility recon of the one new brick (`p₁`+`hrow`) against the five green bricks' actual signatures (N7b-0/1/2/3 + N7a form (b)) — composition verifies clean, no mismatch. Load-bearing structural fact: `panelRow (ofNormals G ends q)` reads only `ends`+`q`, NOT `G` (`toBodyHinge_supportExtensor` `rfl`), so N7b-2's old-block `hrow` is `rfl` on `ends`/`q` agreement. Corrected a `notes/Phase22c.md` *Hand-off* conflation: the eq. (6.12) `p₁(vb)=q(ab)` reproduction is the NEW-block content (feeds `hnewpin`/N7b-3), not N7b-2's `hrow`. Count `(D−1)+D(|V|−2)=D(|V|−1)−1` closes — a lower-bound brick, explicitly NOT `HasFullRankRealization`. Durable: `notes/Phase22c.md`.
 
-**Open question 2 — `d=3`-first: YES, build the `D=6`/3-candidate case concretely first.** KT itself
-does §6.4.1 (`d=3`, three candidates) then §6.4.2 (general `d`, Lemma 6.13, a length-`d` chain); the
-project follows that cut (general `d` stays Phase 23). The "candidate normal form" of question 1 is
-the right *internal* abstraction even within `d=3` (it is what Lemma 6.13 later re-instantiates along
-the chain), but the candidate *count* and the `(4 choose 2)=6` extensor span are concretely `d=3`.
+### 1.29 Phase 22c, fifth pass — single-seed coupling + placement geometry (2026-06-05)
 
-**Open question 3 — Claim 6.11's row-matroid bridge: it routes through KT Lemma 4.3(ii) + the IH,
-landing as a *redundant-row existence* fact `R(G_v^{ab}, q; (ab)i*, ·)` is a row-combination of the
-others.** KT's redundant row comes from: in `M(G̃_v^{ab})`, at least one `ãb` fiber edge is *not* in a
-base (Lemma 4.3(ii) — there are `D=6` parallel `ãb` copies but a base uses at most `D−1` of any single
-fiber when… [the IH `def`-count]); the IH then converts that combinatorial non-base edge to a linear
-row-dependency (eq. 6.24 / 6.43). The Lean bridge is the green Phase-19 `M(G̃)` ↔ row-independence
-machinery (`matroidMG_indep_iff`, the `def = corank` bridge `thm:def-eq-corank`), but the *conversion*
-"combinatorial non-base edge ⟹ a redundant rigidity row at the IH realization" is genuinely new analytic
-content — it is the IH applied at the rigidity matrix, the hardest non-extensor step (KT calls it out
-on p. 680). This is the **D-candidate crux**, not the first chunk.
+Resolved the piece §1.28 left at requirements level (the shared-seed selector geometry). (A) Single-seed coupling SOUND: `q₀ := Function.update q v (n_a+t·n_b)` leaves the old block untouched (IH rigidity quantifies over `V(G_v^{ab})=V∖{v}`, motions avoid `v`; lever `toBodyHinge_withNormal_infinitesimalMotions_eq`). (B) Placement `q₀(v,·):=n_a+t·n_b`, `t≠0`: reproduces the `ab`-row (`n_b∧n_b=0`) AND keeps the `va`-hinge a nondegenerate line `L⊂Π(a)` — the `t=0` trap zeros `va`; use `t≠0` for KT fidelity. (C) Sub-lemma cut bounded; `hnewpin` landed as `linearIndependent_panelRow_comp_single_of_edge`. PLAN CLEAR. Durable: `notes/Phase22c.md` (producer `case_II_placement_eq612`).
 
-**Open question 4 — Claim 6.12's "same `r`": it is eq. (6.44), and it FOLDS into the candidate normal
-form's contradiction step, NOT a separate brick.** The forcing is: `r := Σ_j λ_(ab)j r_j(q(ab))` is the
-residual normal of `M₁`/`M₂`; for `M₃` the residual is `Σ_j λ_(ac)j r_j(q(ac))`, and eq. (6.44) shows
-`r = −Σ_j λ_(ac)j r_j(q(ac))` **because `a` is degree-2 in `G_v^{ab}`** (only `ab, ac` incident to `a`,
-so the `a`-block of the row-dependency (6.43) has exactly two terms). So all three candidates'
-singularity puts the *same* `r` in the orthogonal complement of the extensors on `Π(a)`/`Π(b)`/`Π(c)`
-respectively; Claim 6.12 then takes four affinely-independent points `p₁ = Π(a)∩Π(b)∩Π(c)`, `p₂ ∈
-Π(a)∩Π(b)∖Π(c)`, etc., and **Lemma 2.1** (`omitTwoExtensor_linearIndependent`, green, the `(4 choose
-2)=6` 2-extensors of 4 aff.-indep. points span `ℝ⁶`) contradicts `r ≠ 0`. The extensor half maps onto
-Phase-17's Lemma 2.1 *directly*; the residual-normal bookkeeping (eq. 6.44, the degree-2 forcing) is
-the candidate-normal-form's shared `r`, so it does not need its own node — it is the glue between the
-three candidate instances and the Lemma-2.1 application.
+### 1.30 Phase 22d, footnote-6 kernel recon — the new content is a `non-root-from-algebraic-independence` brick (2026-06-06)
 
-**The first-tractable-chunk cut (the load-bearing scope decision, folding in the user's direction).**
-The recon partitions Lemma 6.10 into three strata of difficulty:
-1. **The eq. (6.12) `+(D−1)` block-triangular placement** — `buildable`. `p₁(va) = L ⊂ Π(a)`,
-   `p₁(vb) = q(ab)` reproduces the `e₀ = ab` row; column ops (KT eq. (6.16)) make `R(G,p₁)`
-   block-triangular with `R(G_v^{ab},q)` a submatrix ⟹ `rank ≥ 5 + 6(|V∖{v}|−1) = D(|V|−1)−1`. This is
-   the *direct* reuse of the green Phase-21b row infra (N7b-0/1/2/3 + `linearIndependent_sum_pinned_block`),
-   the same machinery the eq. (6.12) warm-up in §3 Track B already names. **This is the first chunk** —
-   it is the largest self-contained, green-infra-fed piece, and it produces the candidate scaffold the
-   crux then completes.
-2. **Claim 6.11 (the redundant `(ab)i*`-row)** — `research-shaped`, the **D-candidate crux**. The
-   combinatorial↔linear conversion (Lemma 4.3(ii) ⟹ a redundant rigidity row at the IH realization).
-   The single highest-risk node in Phases 22–23 (`notes/Phase22-realization-design.md` §4).
-3. **Claim 6.12 (the extensor-span contradiction) + the candidate normal form + eq. (6.44)** — the
-   assembly that turns "each candidate singular ⟹ `r ⟂` its panel extensors" + "same `r`" + Lemma 2.1
-   into "some candidate is full rank". Bottoms on the green Lemma 2.1, but needs all three candidates'
-   residual-normal data, so it composes *after* strata 1 and 2.
+"Size the kernel" re-test of the Gap-3 verdict against current signatures. Confirmed two structural claims — (a) the matroid↔row link IS `rigidityMatrix_prop11` (the IH, not a separate iso), (b) redundancy-from-count is pure LA pigeonhole — but **refuted** (c) "eq. (6.22) re-exposes from the device": the 22b motive is still `∃Q` existence + degree-1 GP, NOT rank-poly non-root-ness, and the project has ZERO `AlgebraicIndependent` machinery. Named the genuinely-new content: a `non-root-from-alg-independence` brick = (i) an `eval_ne_zero_of_algebraicIndependent` mirror + (ii) a seed-alg-indep motive invariant. Durable: `notes/Phase22d.md` *Footnote-6 kernel recon*; `notes/AlgebraicIndependence.md`.
 
-**Decision: 22c = stratum 1 (the eq. (6.12) `+(D−1)` placement) as the first sub-phase, with the
-candidate-framework scaffold it sets up.** Strata 2–3 (the redundant-row crux + the candidate-normal-form
-/ Claim-6.12 assembly) are **likely their own later sub-phase(s)** — name the *next* distinct sub-phase
-when stratum 1's shape is clear, do NOT pre-commit its internal node list now (the same defer-the-finer-cut
-discipline as 22a→22b+, 22b→22c+, and 22c→22d). 22c does **not** claim to land all of
-`lem:case-II-realization` + `lem:case-III` in one phase. This matches both the user's explicit direction
-("let's not try to cram too much into 22c") and the design-pass-first mandate: stratum 1 is the buildable
-warm-up that exercises the placement + row infra on the `k=0` target and exposes the candidate structure,
-*before* the genuinely-research-shaped crux is scheduled.
+### 1.31 Phase 22d, kernel-route decision + the alg-independence relaxation tracker (2026-06-06)
 
-**Why this is the right first cut and not, e.g., the crux first.** The crux (stratum 2) is research-shaped
-and its math-first decomposition is the natural target for a *dedicated* sub-phase (it is ~half of KT's
-~12-page proof and the single highest-risk node). Stratum 1 is `buildable` from green infra and is a
-*prerequisite scaffold* for strata 2–3 (the candidate frameworks, on which the residual-normal `r` and the
-missing row are defined, are exactly the eq. (6.12)/(6.19)/(6.32) placements). Building the scaffold first
-de-risks the crux's recon (it makes the candidate structure concrete in Lean) and gives a green, useful
-`+(D−1)` lower-bound brick even before the crux lands. This is the same staging as Track A's "N6a first,
-then the simple-case crux" and Track B's own "eq. (6.12) placement is the buildable warm-up; Lemma 6.10 is
-the crux and the natural decompose-math-first target for a dedicated sub-session" (§3 Track B build order).
+§1.30 named the kernel (default: carry-as-hypothesis). **User decision: build the algebraic-independence route DIRECTLY to green** (KT's actual argument) — not carry-as-hypothesis, not the unverified product-route shortcut. The product-route (choose the seed as a non-root of the finite product of nested-IH rank polynomials, avoiding alg-indep at `d=3`) → deferred relaxation TODO, with every alg-indep site tracked in the standing note **`notes/AlgebraicIndependence.md`** (the single source). Durable: `notes/Phase22d.md` *Kernel-route decision*; `notes/AlgebraicIndependence.md`.
 
-**Next concrete commit (post-this-recon).** With the four questions settled and the first-chunk cut made,
-the next commit is the *first Lean node* of stratum 1 — the eq. (6.12) degenerate placement producing the
-`+(D−1)` block-triangular lower bound, cut leaf-most-first against the green N7b-0/1/2/3 +
-`linearIndependent_sum_pinned_block` infra. Re-recon stratum 1's node order at that build's open (it is
-`buildable`, so a math-first decomposition is light, but confirm the count `5 + 6(|V∖{v}|−1) = D(|V|−1)−1`
-closes from the named green inputs before scheduling — the honesty gate's second half). The crux (strata
-2–3) gets its math-first decomposition when its sub-phase opens.
+### 1.32 Phase 22d, kernel sub-phase (ii) opening recon — (ii) SPLITS into a motive conjunct + a rationality bridge (2026-06-06)
 
-### 1.27 Phase 22c, third pass — reconcile the blueprint Case-II nodes to the eq. (6.12) row-side route, before any Lean build (2026-06-05)
+Math-first recon at the (ii) node's open. Found (ii) is NOT a single leaf and NOT pure motive-strengthening — it SPLITS: **(ii-a)** the seed-genericity motive conjunct [22b-shaped plumbing; producers build at an alg-indep seed — moment-curve candidate, confirm alg-indep over ℚ] + **(ii-b)** a rationality bridge [NEW, the §1.30 cut missed it]: leaf (i) needs the rank poly over ℚ but the device's `Q` is ℝ-typed (`complementIso`-`repr` constants, rational but not manifestly so), so it needs a descent `eval q Q = aeval q Q₀` via `MvPolynomial.map (algebraMap ℚ ℝ)` — zero such scaffolding in the tree. (b2) post-hoc coefficient-rational descent is the lighter cut (recommended); (b1) re-type the whole coordinate chain is the fallback. Durable: `notes/Phase22d.md` *Kernel sub-phase (ii) recon*; `notes/AlgebraicIndependence.md` row #105.
 
-Third docs-only commit (still decision-support; no Lean / `\leanok` / blueprint-`\lean{…}` flips). The
-user paused before the stratum-1 build to do **heavy up-front design**, and a review found a concrete
-build-blocker: the **live blueprint prose for the exact nodes 22c builds** still described two superseded
-dead-ends, while the corrected understanding (eq. (6.12) degenerate placement) lived only in the notes
-(`notes/Phase21b.md` *Finding A*, §1.25–§1.26 above). A node-by-node build against that prose would have
-re-derived the wrong route. This commit reconciles the blueprint and records the build-ready node cut.
+### 1.33 The `d=3`-assembly opening recon + the Phase-23 general-`d` reuse map (2026-06-07)
 
-**The divergence (verified against the files).** Two nodes, each self-inconsistent (statement said one
-thing, proof did another):
-- `lem:case-II-realization` (`case-ii.tex`): statement said the motion-side M3
-  (`lem:case-II-placement-motion-side-assembly`) "was NOT KT's argument … superseded," yet its **proof
-  still routed through M3** (re-insert `v`, pin via M2, conclude rigid-on-`V(G)`).
-- `lem:case-II-realization-placement` (`genericity-and-count.tex`): its body described an
-  N7b-0/1/2/3/4 plan with N7b-4 (`lem:case-II-placement-e0-recovery`) marked superseded/"geometrically
-  unbuildable" and re-routed to motion-side M3, yet its **proof still consumed N7b-4** (the
-  `$e_0$-free old block`), and the "rank-lift, motion-side" subsection still called the motion-side route
-  "The corrected … genuine geometric heart" and claimed it "supersedes" the row-side placement node.
+Produced after 22f closed (N3b green), to scope the two remaining cuts: the deferred
+**`d=3` realization assembly** (next, unlettered) and **Phase 23** (general `d`,
+KT Lemma 6.13). KT source re-read directly for this pass: §6.4.1 (Lemma 6.10, pp. 691)
+and **§6.4.2 (Lemma 6.13, pp. 692–698)** end-to-end. **No Lean / blueprint edits accompany
+this recon.** Verdict up front: **do the `d=3` assembly first, then Phase 23** — `d=3` is
+not a throwaway warm-up (the molecule application Cor 5.7, Phases 24–26, is itself `d=3`),
+and the assembly is mostly dimension-general plumbing that de-risks Phase 23's general-`d`
+assembly. Detail below; user confirmed this ordering 2026-06-07.
 
-**The corrected route (KT §6.3 Lemma 6.8 / eq. (6.12), the canonical record).** The live placement is the
-**row-side degenerate placement**: `p₁` agrees with the IH `q` on `G−v`, `p₁(va)=L⊂Π_q(a)` a `(d−2)`-hinge,
-and `p₁(vb)=q(ab)` placing `v`'s `b`-hinge at the very `e₀=ab` hinge of `q` so the `vb`-row **reproduces**
-the `e₀`-row of `R(G_v^{ab},q)`. Column ops (KT eq. (6.16)) make `R(G,p₁)` block-triangular with
-`R(G_v^{ab},q)` a submatrix ⟹ `rank ≥ (D−1) + D(|V∖{v}|−1) = D(|V|−1)−1`. The `e₀`-recovery the row-side
-recons sought (N7b-4) is real but is *not* an `e₀`-free block (none exists — `G−v` is not rigid); it is
-the reproduced `vb`-row. The motion-side M1/M2/M3 is *not* KT's argument: M3 assumes a `G''`-motion is
-constant on `V(G)∖{v}`, which the non-rigid `G−v` does not force (only `G_v^{ab}`, which has `e₀`, does).
+#### (A) The `d=3`-assembly obligation — RE-SCOPED narrower than the program map
 
-**What this commit edited (blueprint).** `lem:case-II-realization`: re-pointed statement+proof `\uses` from
-M3 to `lem:case-II-realization-placement`; proof now routes through the eq. (6.12) placement + N7a closure.
-`lem:case-II-realization-placement`: statement body + the enumerate decomposition + proof rewritten to the
-eq. (6.12) route (the per-row match `hrow` of N7b-2's transport IS the `p₁(vb)=q(ab)` reproduction; N7b-4
-dropped from the live `\uses`); the "rank-lift, motion-side" subsection relabelled an *audit-trail* of two
-superseded dead-ends. **Retain-with-marker** (the conservative choice flagged in the task as a deliberate
-design decision — delete-vs-retain has audit-trail value and the green sub-nodes N7b-0/1/2/3 still need to
-sit beside their history): N7b-4 (`lem:case-II-placement-e0-recovery`), M3
-(`lem:case-II-placement-motion-side-assembly`), and the helpers M1
-(`lem:case-II-placement-disjoint-line-meet`), M2 (`lem:case-II-placement-pin-vertex`) are **kept, struck,
-with explicit "superseded — not on the live route" markers**; no live node `\uses` them (M3 is now an
-orphan-off-the-live-route, correct). The green N7b-0/1/2/3 sub-nodes stay green (reused by Case I and by
-this route). All four target/Case nodes (`lem:case-II-realization`, `lem:case-III`) **stay red** — 22c
-lands the eq. (6.12) `+(D−1)` brick toward them.
+The program map / §3 *Assembly* stub list "`hub` brick + `theorem_55` flip + Case-I wiring."
+Reading the current Lean, two of those are already done; the real gap is one producer.
 
-**Reuse from Phase 22b — the de-risking question, answered.** The eq. (6.12) "place the `vb`-hinge at
-`q(ab)` to reproduce a row" is the *same* degenerate-placement-reproduces-a-row *idea* as 22b's U1/U2, but
-22b's concrete machinery is **not** reused for stratum 1, for a structural reason: 22b's
-`degeneratePlacement r t nrm = nrm ∘ collapseTo r t`, `extProj t`, and
-`panelRow_collapseTo_comp_extProj_dualMap` implement a **block collapse** of an entire rigid block `V(H)→r`
-(Case I's contraction `Gc.map (collapseTo r V(H))`), with an exterior-column projection peeling off the
-collapsed block. Stratum 1's `p₁(vb)=q(ab)` is a **single-vertex** placement reproducing **one** row, with
-**no** block collapse and **no** exterior projection — the block-triangularity comes from the pin-a-body
-column split, not from projecting away a rigid block. So stratum 1 reuses the **green N7b row infra**
-near-wholesale (N7b-0 `exists_independent_panelRow_subfamily_of_rigidOn`, N7b-1
-`exists_independent_panelRow_subfamily_of_edge`, N7b-2 `exists_independent_panelRow_transport`, N7b-3
-`linearIndependent_sum_pinned_block` in `RigidityMatrix.lean`, N7a
-`hasFullRankRealization_of_independent_panelRow`) — *these were built in Phase 21b for exactly this
-`1`-extension placement*. The **one genuinely-new Lean brick** is the placement `p₁` + the per-row
-reproduction `hrow` (the `vb`-row = `e₀`-row equality) that N7b-2's transport consumes. (If a future need
-for a block-collapse arises in strata 2–3, *then* 22b's `extProj` machinery is the reuse target — not now.)
+- **`hub` is GREEN (de-scope).** `rigidityMatrix_prop11` (`PanelHinge.lean`) discharges the
+  genericity-free lower bound `D + def ≤ dim Z` *in-proof* via the green
+  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (`subst; have hub := …; omega`).
+  Its only open input is `hgen` (the generic max-rank UPPER bound), which **is** Theorem 5.5.
+  So the §3 "construct `D(|P|−1)−(D−1)·d_G(P)` motions from a deficiency partition" stub is
+  **stale** — that motion lower bound was discharged in 22d ("the full `hub` … on both
+  consumers"). `rigidityMatrix_prop11` is a 3-line conditional, green-modulo `hgen`.
+- **`theorem_55` is a GREEN conditional.** `theorem_55` (`PanelHinge.lean`) takes the case
+  closures `hbase` / `hsplit` / `hcontract` as **hypotheses** and dispatches
+  `minimal_kdof_reduction`. `hbase` (`theorem_55_base`) and `hcontract` (Case I,
+  `case_I_realization`) are green; the only un-supplied premise is `hsplit` (KT Case III at
+  `k=0` — the misnamed `lem:case-II-realization` node). The "flip" = *supply `hsplit`*.
+- **The one real gap = the `hsplit` producer at `d=3`.** Bridge, at real graph data:
+  `case_II_placement_eq612` (green, the eq. (6.12) `D(|V|−1)−1` brick, output already over
+  `ofNormals G ends q₀`) ⊕ the candidate row ⊕ `case_III_claim612` (green, selects the
+  candidate making the top-left block full rank) → the abstract producer
+  `linearIndependent_sum_augment_candidateRow` (green, takes `rn`/`ro`/`ρ`/`hnewpinaug`
+  abstractly) → `HasFullRankRealization k (G.splitOff …)` ⟹ `… k G`, discharging `hsplit`.
+  This is the "extract `rn`/`ro`, instantiate the graph-free producer, select the winning
+  candidate" step the 22e candidate-completion was deliberately built graph-free to isolate.
+  **This is where the `ofNormals`/`withGraph` defeq-timeout trap bites** (22e *Blockers*,
+  FRICTION; TACTICS-QUIRKS §38) — the assembly is the first consumer wiring real graph data.
 
-**Honesty gate (2nd + 3rd halves) on the stratum-1 cut.** *2nd (count):* `(D−1) + D(|V∖{v}|−1) =
-D(|V|−1)−1 = 6|V|−7` at `D=6`, closing from N7b-1 (`D−1`) + N7b-0 (`D(|V|−2)`, full because the `k=0` IH is
-full rank on `V(G_v^{ab})` by KT Lemma 4.8(i)). One short of `D(|V|−1)` — the Case-III missing row, strata
-2–3. *3rd (structural fidelity):* KT eq. (6.16)'s **block-triangular column ops** are reproduced by
-`linearIndependent_sum_pinned_block` (pin-a-body: new rows in `v`'s screw column, old rows off it), and the
-eq. (6.12) `p₁(vb)=q(ab)` **row reproduction** is the per-row `hrow` of the N7b-2 transport — KT's argument
-*structure*, not a re-expression. This is the check Case I failed (a motion-space splice glue silently
-replaced KT's block-triangular structure, accreting bridge hypotheses; `DESIGN.md` *Match the source's
-argument structure*); stratum 1 passes it because the project's own N7b infra *is* the row-side
-block-triangular route, and the only new obligation is the honest eq. (6.12) row equality.
+So the assembly's spine is: build the `d=3` `hsplit` producer (the work) → instantiate
+`theorem_55 (n:=2) (k:=2)` with it + the green `hcontract`/`hbase` → feed that into
+`rigidityMatrix_prop11`'s `hgen` → (Thm 5.5→5.6 multigraph push via `lem:motions-mono-of-graph-le`)
+→ unblocks Cor 5.7 at `d=3`.
 
-**Next concrete commit (post-this-recon).** The **first Lean node of stratum 1** — the eq. (6.12) producer
-behind `lem:case-II-realization-placement`, cut leaf-most-first per the node order in `notes/Phase22c.md`
-*Hand-off* (the new red leaf is the placement `p₁` + `hrow`; everything else is green N7b infra). Re-recon
-the `hrow` row-equality specifically at the build's open (it is the structural-fidelity crux). The
-D-candidate crux (strata 2–3) gets its math-first decomposition when its sub-phase opens.
+#### (B) Open items the build commit must resolve FIRST (red-node consistency gate)
 
-### 1.28 Phase 22c, fourth pass — SIGNATURE-LEVEL verification of the stratum-1 cut against the real Lean signatures, before any build (2026-06-05)
+1. **[HIGHEST] Does the `d=3` assembly need `lem:cycle-realization` (KT Lemma 5.4)?**
+   `lem:cycle-realization` is **genuinely RED** and on `lem:case-III`'s live `\uses`. Its red
+   gap is the *cited Crapo–Whiteley projective input* (cycle of `m` panels rigid iff the `m`
+   hinge-lines are independent; KT cites [4] Prop 3.4 / [34] Prop 3) — **not** the genericity
+   device. The blueprint node text (`case-i.tex:149–151`) conflates the two and is **stale
+   post-22b** (it says Claim 6.4/6.9 is "cited rather than formalized"; Claim 6.4 went green in
+   22b). The scoping question: KT's Lemma 6.13 opens "by Lemma 4.6, `G` is a cycle of length
+   ≤ `d` (done by Lemma 5.4) **or** has a chain of length `d`"; Lemma 6.10/6.13 proper is the
+   *chain* case (assumes a reducible degree-2 vertex). But the **Lean `theorem_55` inducts via
+   `minimal_kdof_reduction` (no cycle branch)** — short cycles plausibly dissolve into repeated
+   `hsplit` + `hbase`. **Likely verdict: the Lean `hsplit`/`theorem_55` path does NOT consume
+   `lem:cycle-realization`**, and `lem:case-III`'s `\uses` of it is a blueprint↔Lean structural
+   divergence (KT-narrative dependency, not a Lean-load-bearing one) to reconcile — OR the
+   cited Lemma 5.4 stays a cited external input (risk #4 left it "formalize, its own sub-phase";
+   re-decide). **Must confirm before scoping**: trace whether `minimal_kdof_reduction`'s base
+   reaches the 2-vertex graph from a cycle without a separate realization input. If it genuinely
+   needs the short-cycle base, the deferred Lemma-5.4 sub-phase is a prerequisite.
+2. **`theorem_55` `d=3`-instance architecture.** `theorem_55` is general (`n k` free); the
+   `d=3` assembly supplies `hsplit` only at `k=2`. A blueprint node is green-or-red, so the
+   *general* `thm:theorem-55` stays red until Phase 23 supplies `hsplit` at all `k`. **Recommended:**
+   add a small `d=3`-instance node (`thm:theorem-55` instantiated at `n=2`/`k=2`, green) that the
+   molecule-app chapter (Cor 5.7) consumes, and keep the general node red-pending-Phase-23 with a
+   note. (Avoids duplicating the statement — it's `theorem_55 (n:=2)` applied to three green args.)
+   Confirm this is the cleanest framing vs. a standalone `theorem_55_dim3`.
+3. **Defeq-trap mitigation** is known (make the two frameworks syntactically equal before
+   `convert`; transfer rigidity via a `mem_infinitesimalMotions` round-trip; extract a generic
+   helper to dodge `whnf`/`isDefEq` timeout, TACTICS-QUIRKS §38). Budget for it; it is the main
+   engineering risk in the assembly, not a math risk.
 
-Fourth docs-only commit (no Lean / `\leanok` / blueprint). The user asked for one more
-design pass *before* the stratum-1 build: a **signature-level** node-level constructibility
-recon (`DESIGN.md` *Constructibility recon … 2nd/3rd halves*) of the single genuinely-new
-brick (`p₁` + `hrow`) against the **actual current Lean signatures** of the green bricks it
-composes with — the one place a build surprise could hide. **Outcome: the composition
-verifies cleanly. No mismatch.** The critical check (does N7b-2's `hrow` accept the
-`p₁(vb)=q(ab)` degenerate-placement reproduction as its discharging term?) passes, for a
-structural reason pinned below. The recorded signatures + per-obligation discharge + the
-precise new-brick statement follow; the *Hand-off* in `notes/Phase22c.md` is the build
-agent's leaf-most-first target.
+#### (C) KT §6.4.2 (Lemma 6.13) reuse map — what general `d` reuses, replaces, adds
 
-**The five green bricks, exact current signatures (verbatim heads).**
-- **N7b-1** `Pinning.lean:265` `BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge`
-  `(F : BodyHingeFramework k α β) {ends} {e : β} (huv : (ends e).1 ≠ (ends e).2)
-  (he : F.supportExtensor e ≠ 0) : ∃ s, (∀ i ∈ s, i.1 = e) ∧ Nat.card s = screwDim k - 1 ∧
-  LinearIndependent ℝ (fun i : s => F.panelRow ends i)`. Gives `D−1` rows, all on edge `e`.
-- **N7b-0** `GenericityDevice.lean:476`
-  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn`
-  `(F) {ends} (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2) (hne : ∀ e, F.supportExtensor e ≠ 0)
-  (hnev : F.graph.vertexSet.Nonempty) (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
-  ∃ s, Nat.card s = screwDim k * (F.graph.vertexSet.ncard - 1) ∧ LinearIndependent ℝ (fun i : s => F.panelRow ends i)`.
-  Gives `D(|V|−1)` rows from rigidity *on its own vertex set*. NB: this is `D·(|V(G_v^{ab})|−1)`
-  — for the split-off graph `|V(G_v^{ab})| = |V(G)|−1`, so it supplies `D(|V(G)|−2)` = the old block. ✓
-- **N7b-2** `GenericityDevice.lean:354` `PanelHingeFramework.exists_independent_panelRow_transport`
-  `(G₁ G₂ : Graph α β) (ends₁ ends₂) (q₁ q₂) {s₁ s₂} (f : s₂ → s₁) (hf : Function.Injective f)
-  (hrow : ∀ i : s₂, (ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂ i
-      = (ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁ (f i))
-  (hindep : LinearIndependent ℝ (fun i : s₁ => (ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁ i)) :
-  LinearIndependent ℝ (fun i : s₂ => (ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂ i)`.
-- **N7b-3** `RigidityMatrix.lean:548` `linearIndependent_sum_pinned_block`
-  `[DecidableEq α] {v : α} {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → …}
-  (hold : ∀ (j : ιo) (x : ScrewSpace k), ro j (Function.update 0 v x) = 0)
-  (hnewpin : LinearIndependent ℝ (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
-  (holdindep : LinearIndependent ℝ ro) : LinearIndependent ℝ (Sum.elim rn ro)`.
-- **N7a (closure)** — TWO usable forms. (a) `GenericityDevice.lean:313`
-  `PanelHingeFramework.hasFullRankRealization_of_independent_panelRow (G) (ends)
-  (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty) {q₀} {s}
-  (hindep : LinearIndependent ℝ (fun i : s => (ofNormals G ends q₀).toBodyHinge.panelRow ends i))
-  (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s) : HasFullRankRealization k G` — wants a `Set s`
-  index. (b) `CaseI.lean:1631`
-  `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows (F) {ι} [Finite ι]
-  {a : ι → Module.Dual ℝ …} (hLI : LinearIndependent ℝ a) (hmem : ∀ i, a i ∈ F.rigidityRows)
-  (hne) (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
-  F.IsInfinitesimallyRigidOn F.graph.vertexSet` — takes an **arbitrary** `ι`-indexed family (so a
-  `Sum`-index feeds it directly) + a `hmem`-membership-in-`rigidityRows` side-goal, then the device
-  lift is the final `hasFullRankRealization_of_independent_panelRow` step (no `Set s` repackage). **Form
-  (b) is the cleaner closure for stratum 1**, because N7b-3 hands back a `Sum.elim`-indexed family, not
-  a `Set s`. This is exactly the closure path the green Case-I composer uses (`CaseI.lean:1794–1831`).
+KT, p. 692: *"The proof strategy is exactly the same as `d = 3`."* General `d` runs a length-`d`
+chain `v₀…v_d` with `d` candidate frameworks `(G,p_i)` and isomorphisms `ρ_i` (eq. 6.54).
 
-**THE CRITICAL CHECK — does N7b-2's `hrow` accept the `p₁(vb)=q(ab)` reproduction? YES.** `hrow i`
-is the *per-row equality* `panelRow` of `ofNormals G₂ ends₂ q₂` at `i` `=` `panelRow` of
-`ofNormals G₁ ends₁ q₁` at `f i`. The structural fact that discharges it (verified against the real
-defeq chain):
-- `panelRow F ends i = hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) i.2.1 i.2.2)`
-  (`Pinning.lean:46`), and
-- `(ofNormals G ends q).toBodyHinge.supportExtensor e
-  = panelSupportExtensor (q-as-normal (ends e).1) (q-as-normal (ends e).2)`
-  (`toBodyHinge_supportExtensor` `PanelHinge.lean:94` ∘ `ofNormals_normal` `PanelHinge.lean:267`,
-  both `rfl`).
+| Ingredient | Status for Phase 23 | Note |
+|---|---|---|
+| **Claim 6.11** (redundant `ab`-row), `exists_redundant_panelRow_ab_of_finrank_eq` | **reused verbatim, already general & GREEN** | p. 693 "redundant edge always exists by Claim 6.11"; the single hardest combinatorial piece — done |
+| **Lemma 2.1** (extensor independence), `omitTwoExtensor_linearIndependent` | **reused verbatim, general & GREEN** | p. 698 "= `(d+1 choose d−1) = D` by Lemma 2.1"; only the `span_omitTwoExtensor_eq_top` *corollary* is `d=3`-stated (Fin 4 / `ScrewSpace 2`) — re-state at general grade |
+| `complementIso`, `complementIso_toDual`, step-(i)/(ii) generality lemmas, `topEquiv`/`pairingDualEquiv` mirrors | **general & GREEN** | dimension-parametric already |
+| genericity device, `prop:rigidity-matrix-prop11`, `theorem_55` skeleton, Cases I & II | **general & GREEN** (Case I) | the spine is `k`-free |
+| Candidate count + chain bookkeeping (eqs. 6.46–6.64) | **NEW** — `3` candidates → `d` along a chain; isos `ρ_i` | index-heavy but mechanical; the **graph-free** `linearIndependent_sum_augment_candidateRow` is reusable, so it's plumbing not research |
+| The **duality** (N3b analog) | **REPLACE** — `⋀²ℝ⁴` → **`⋀^{d−1}ℝ^{d+1}`** | a `(d−1)`-extensor ↔ panel-meet `C(L_i)`; the bespoke `⋀²ℝ⁴` count is `d=3`-only |
+| "same `r`" reduction | NEW but direct — eq. (6.44) → eq. (6.66) ("±`r`" chain) | the N8 `candidateRow_ac_eq_neg` analog along the chain |
+| Affinely-independent points (N3a analog) | **NEW** — `d+1` points, `j` hyperplanes meet in `(d−j)`-flats | KT uses **algebraic independence** here (p. 698); the hammer **already exists** (built 22d) |
+| **Lemma 4.6** (chain-or-cycle dichotomy) + **Lemma 4.8** (split-off along chain minimal 0-dof) | check Phase-20 status (no explicit node found; may be subsumed in `minimal_kdof_reduction`) | needed to enter the chain case |
+| **Lemma 5.4** (cycle base, length ≤ `d`) | the deferred sub-phase (risk #4); see (B.1) | genuinely needed at general `d` for the short-cycle base, even if `d=3` dodges it |
 
-So **`panelRow` of `ofNormals G ends q` at `i` depends only on `ends` and `q` — NOT on `G`.** This is
-the load-bearing structural fact (the N7b-2 docstring states it: "the panel support extensor reads only
-`ends` and `q`, not the graph — `toBodyHinge_supportExtensor`"). Consequence for stratum 1: set
-`G₂ := G`, `G₁ := G_v^{ab}`, `q₂ := q₁ := q₀` (one shared seed), and pick `ends₂ = ends_G`,
-`ends₁ = ends_{G_v^{ab}}` to **agree on every common-subgraph edge** (the `e₀`-free edges of `G−v`);
-then for each old-block index `i` (whose edge is a `G−v` edge), `ends₂ i.1 = ends₁ (f i).1` and
-`q₂ = q₁`, so both sides of `hrow i` are the *same* `panelRow` term and `hrow i := rfl`. The
-`p₁(vb)=q(ab)` reproduction is **not** what N7b-2's `hrow` consumes — N7b-2 transports the **old block**
-(the `D(|V|−2)` `e₀`-free rows of `G−v`), and `hrow` there is the trivial `ends`/`q`-agreement `rfl`.
-**The `p₁(vb)=q(ab)` row reproduction is the NEW-block content, and it does not flow through N7b-2 at
-all** — it is what makes the `vb`-row of `R(G,p₁)` land in `v`'s screw column so N7b-3's pin-a-body
-split (`hold`/`hnewpin`) separates it from the old block. (See the corrected obligation statement below
-— this is a *refinement* of `notes/Phase22c.md` *Hand-off* step 1's "`hrow` IS the eq. (6.12)
-reproduction", which conflated the two roles; flagged + corrected here, not a blocker.)
+#### (D) Grassmann–Cayley / exterior-duality API extent — build it LAZILY in Phase 23
 
-**The other compositions type-align (each checked).**
-- *N7b-1 count + index.* `Nat.card s = screwDim k - 1 = D−1`, all rows on the **new** edge(s) `va`/`vb`
-  (the `i.1 = e` conjunct). To feed N7b-3's `hnewpin` (independence *of the comp with `single … v`*),
-  the new rows must be independent **as functionals of `v`'s screw column** — N7b-1 gives raw `panelRow`
-  independence; the `.comp (single … v)` step is a *new* small obligation (see new-brick statement). The
-  `D−1` count matches KT eq. (6.12)'s `+(D−1)`. ✓
-- *N7b-0 count + rigidity input.* Needs `F.IsInfinitesimallyRigidOn F.graph.vertexSet` for
-  `F = (ofNormals G_v^{ab} ends₁ q₀).toBodyHinge`. The IH from `theorem_55.hsplit`'s premise is
-  `HasFullRankRealization k (G.splitOff v a b e₀)`; `exists_rigidOn_ofNormals_of_hasFullRankRealization`
-  (`GenericityDevice.lean:1078`) repackages it to *exactly* `∃ ends₁ q, (ofNormals G_v^{ab} ends₁ q).toBodyHinge.IsInfinitesimallyRigidOn V(G_v^{ab})`.
-  So the IH supplies N7b-0's `hrig` directly (modulo putting it on the **shared** seed `q₀` — the
-  single-seed coupling, below). At `k=0` the IH is full rank on `V(G_v^{ab})`, and `|V(G_v^{ab})| =
-  |V(G)|−1` (`vertexSet_splitOff` `Operations.lean:599`, `V = V(G)\{v}`), so N7b-0 yields `D·(|V(G)|−2)`
-  old rows. ✓
-- *N7b-3 block split.* `rn` := the `D−1` new rows, `ro` := the `D(|V|−2)` transported old rows.
-  `hold j x` (old rows vanish at `update 0 v x`): the old rows' edges avoid `v` (they are `G−v` edges, so
-  `hingeRow`'s two endpoints are both `≠ v`, and `hingeRow u w r (update 0 v x) = r(0−0) = 0`). `hnewpin`:
-  the new rows independent after `.comp (single … v)`. `holdindep`: N7b-2's output. Output: `Sum.elim rn ro`
-  independent. **This matches KT eq. (6.16)'s block-triangular column ops exactly** (new rows in `v`'s
-  column, old rows off it). ✓
-- *N7a closure.* Form (b) consumes `Sum.elim rn ro` (the `ι := ιn ⊕ ιo` family) + `hmem : ∀ i, family i ∈ rigidityRows`
-  (each row's edge links in `G` — new edges `va`/`vb` ∈ E(G), old edges are `G−v` ⊆ `G`) + the card bound
-  `D(|V(G)|−1)−1 ≤ Nat.card (ιn ⊕ ιo)`. **Count: `(D−1) + D(|V(G)|−2) = D(|V(G)|−1)−1`** — *one short* of
-  `D(|V(G)|−1)`, the Case-III missing row (strata 2–3). So stratum 1 cannot use the `≥ D(|V|−1)` form of
-  N7a; it produces a `rank ≥ D(|V|−1)−1` lower-bound brick, **not** `HasFullRankRealization`. This is the
-  honest deliverable (lower bound toward the red node), confirmed by the count. ✓
+User's instinct (build the API at need, not speculatively) is correct, with one nuance:
 
-**Reuse from 22b — re-confirmed NOT applicable (the prior recon stands).** 22b's `degeneratePlacement`
-(`CaseI.lean:868`), `extProj`, `panelRow_collapseTo_comp_extProj_dualMap` implement a **block collapse**
-of an entire rigid block `V(H)→r` with an exterior-column *projection*. Stratum 1 is a **single-vertex**
-placement (`p₁(vb)=q(ab)`) reproducing **one** row, with **no** projection — the block-triangularity is
-the pin-a-body split N7b-3, not a projected complement. §1.27's verdict is correct: not reused now.
+- **Do NOT build a general Hodge-star / regressive-product / star-operator API.** KT never needs
+  it. The whole duality is *"the join of `d−1` points spanning a `(d−2)`-flat = the meet of the
+  panels containing it, as the same Plücker line."* That is the **top-power-is-1-dimensional**
+  fact (`⋀^n W` is 1-dim when `dim W = n`), not a star operator.
+- **The bespoke `⋀²ℝ⁴` count is `d=3`-only; do not generalize it.** The landed N3b proof routed
+  via `Ω = dim 6 − 5` using `wedgeFixedLeft` / `inf_range_wedgeFixedLeft` / the `5 = 3+3−1`
+  inclusion–exclusion. That route does not generalize.
+- **The clean general route's infra is ALREADY PARTLY LANDED (the happy accident).** 22f also
+  built `extensor_mem_range_map_subtype_of_mem` + `exists_smul_eq_of_mem_range_map_subtype`
+  (place both members in `range(exteriorPower.map (d−1) W.subtype)`, which is 1-dim) and then
+  *didn't use them*. That "unused" route is the one that generalizes — it rests on
+  `exteriorPower.finrank_eq`, `exteriorPower.map_injective_field`, `map_apply_ιMulti` (all
+  mathlib) + the project's `topEquiv`/`pairingDualEquiv` mirrors. So the general duality needs
+  **modest, mostly-mathlib API**, deferred to Phase 23 where the grade is concrete.
+- **Alg-independence for the general-position points: the hammer already exists** (22d, for the
+  Claim-6.11 seed kernel), so the general-`d` N3a analog is "apply existing machinery," not
+  "build new." Re-examine `AlgebraicIndependence.md` risk (c) then (does the touched-subgraph
+  family grow with `d`?). Add the general-`d` site as a tracker row when Phase 23 opens.
 
-**THE NEW BRICK — precise proof obligation (signature-checked).** The single genuinely-new Lean content
-is the placement `p₁` + two row facts. State it as one producer (working name
-`PanelHingeFramework.case_II_placement_eq612` / `…_independent_panelRow`), built leaf-most:
-1. **The shared seed + selectors.** A free normal assignment `q₀ : α × Fin (k+2) → ℝ` and two endpoint
-   selectors `ends_G : β → α × α` (for `G`), `ends₁ : β → α × α` (for `G_v^{ab}`) that (i) record their
-   graph's links (`hends`), (ii) **agree on every `e₀`-free common edge** so N7b-2's `hrow` is `rfl`, and
-   (iii) place `v`'s `b`-edge `e_b`'s far endpoint reading at the `e₀=ab` hinge so the `vb`-row reproduces
-   the `e₀`-row. The eq. (6.12) data `p₁(va)=L⊂Π(a)`, `p₁(vb)=q(ab)` is encoded as the value of `q₀` at
-   `v`'s coordinates (`q₀(v,·)`) chosen so `supportExtensor e_b = panelSupportExtensor (q₀ v) (q₀ b)`
-   equals the `e₀`-hinge extensor `panelSupportExtensor (q₀ a) (q₀ b)` — i.e. `q₀ v` is placed on the line
-   `L ⊂ Π(a)` making `panel(v) = panel(a)` along the `b`-hinge. **This is the eq. (6.12) geometric
-   content** and the only genuinely-new construction.
-2. **`hnewpin` (the new-block column independence).** From N7b-1's `D−1` raw-independent new rows on
-   `e_b` (or `e_a`), show they remain independent after `.comp (LinearMap.single ℝ _ v)` — i.e. the new
-   rows are independent *as read through `v`'s screw column*. Since each new row is `hingeRow v (other) r`
-   and `hingeRow v w r ∘ single v = r ∘ (screwDiff v w ∘ single v) = r` (the `single v` puts the test
-   screw on `v`, the other endpoint reads `0`), this is essentially `linearIndependent_hingeRow_star`'s
-   pin-at-`v` argument restricted to the single new edge — a bounded, buildable step (N7b-1 + a
-   `hingeRow`-comp-`single` identity). **This is the second new fact** (small).
-3. **`hrow`-`rfl` for the old block.** Discharge N7b-2's `hrow i := rfl` from the `ends`/`q₀` agreement on
-   `G−v` edges (step 1.ii) — `panelRow` reads only `ends`/`q₀`, not the graph. The selector `f : s₂ → s₁`
-   is the identity-on-common-edges injection (drops the `e₀` index). **`rfl`, given the agreement.**
-4. **Assemble + close.** N7b-1 → `hnewpin` (step 2); N7b-0 (on the IH `hrig` at `q₀`) → N7b-2 (`hrow`
-   from step 3) → `holdindep`; N7b-3 → `Sum.elim` independence; N7a form (b) with the `hmem` membership +
-   the `D(|V|−1)−1` card bound → the lower-bound deliverable. The deliverable is a `rank R(G,p₁) ≥
-   D(|V(G)|−1)−1` brick (equivalently: an independent `panelRow` family of size `D(|V(G)|−1)−1` on the
-   shared seed `q₀`), explicitly **not** `HasFullRankRealization` (one row short).
+#### (E) Recommended sequence
 
-**Single design refinement flagged (conservative choice made, not a blocker).** `notes/Phase22c.md`
-*Hand-off* step 1 said "`hrow` IS the eq. (6.12) reproduction." The signature trace shows the eq. (6.12)
-`p₁(vb)=q(ab)` reproduction is the **new-block** content (it makes the `vb`-row reproduce the `e₀`-row so
-it lands in `v`'s screw column, feeding `hnewpin`/N7b-3), while N7b-2's `hrow` is the **old-block**
-`ends`/`q₀`-agreement `rfl`. Conservative correction: the two are distinct roles; the new brick owns the
-reproduction (step 1.iii + step 2), N7b-2's `hrow` is the trivial old-block agreement (step 3). The
-*Hand-off* in `notes/Phase22c.md` is updated to this split. No new node is needed — the count and the
-composition are unchanged; only the labelling of which obligation carries the reproduction is corrected.
-
-**Net.** The stratum-1 composition is signature-verified clean: N7b-0/1/2/3 + N7a form (b) compose with
-the new `p₁`+`hnewpin`+`hrow`-`rfl` brick; the count `(D−1)+D(|V|−2)=D(|V|−1)−1` closes from the named
-green inputs; the IH from `hsplit` feeds N7b-0 via `exists_rigidOn_ofNormals_of_hasFullRankRealization`.
-The one genuinely-new construction is the eq. (6.12) shared-seed selector (step 1), plus the bounded
-`hnewpin` column-independence (step 2); `hrow` is `rfl`. Ready to build leaf-most-first.
-
-### 1.29 Phase 22c, fifth pass — step-1 constructibility recon: the single-seed coupling RESOLVED + the placement geometry pinned (the planning gate before the build, 2026-06-05)
-
-Fifth docs-only commit (no Lean / `\leanok` / blueprint). The user's standing direction for Phase 22c
-— *"this is a very intricate part of the proof; never dispatch a build before the plan is clear"* —
-applied to the one piece §1.28 left at the *requirements* level, not the *construction* level: **step 1,
-the shared-seed selector geometry**, the "only genuinely-new construction." §1.28's N7b-0 bullet deferred
-reconciling the IH's *existential* seed with the *single* shared `q₀` to "the single-seed coupling,
-below" — and never wrote the "below." A focused read-only recon against the live defs resolves both that
-gap and the concrete placement; every signature below was re-verified at the cited line.
-**Verdict: PLAN CLEAR — no build surprise hidden in step 1.**
-
-**(A) The single-seed coupling — SOUND, via a green lemma (not hand-waved).** The IH from
-`theorem_55.hsplit` repackages (`exists_rigidOn_ofNormals_of_hasFullRankRealization`,
-`GenericityDevice.lean:1078`) to `∃ ends₁ q, (ofNormals G_v^{ab} ends₁ q).toBodyHinge.IsInfinitesimallyRigidOn V(G_v^{ab})`.
-Build the shared seed by overriding only the fresh vertex: `q₀ := Function.update q v (placement)`
-(`ofNormals` takes `q : α × Fin (k+2) → ℝ`, so `q₀(v,·) : Fin (k+2) → ℝ` is the curried slice). This
-leaves the **old block untouched**: the IH rigidity `IsInfinitesimallyRigidOn V(G_v^{ab})`
-(`RigidityMatrix.lean:752`) quantifies only over `V(G_v^{ab}) = V(G)\{v}` (`vertexSet_splitOff`,
-`Operations.lean:599`) and its motions read only `G_v^{ab}` edges — **all avoiding `v`** (splitting-off
-removes `v`). The Lean lever is the green `toBodyHinge_withNormal_infinitesimalMotions_eq`
-(`PanelHinge.lean:594`), whose `hv` hypothesis (`v` is an endpoint of no `P.graph` edge) holds **exactly
-because** `v ∉ V(G_v^{ab})`; `ofNormals_withGraph` (`PanelHinge.lean:459`, `rfl`) swaps `G_v^{ab}→G`. So
-the IH rigidity at `q₀` feeds N7b-0's `hrig` directly. N7b-3's `hold` (old rows vanish at `update 0 v x`)
-holds for the same reason — every old edge's `hingeRow` endpoints are `≠ v`.
-
-**(B) The placement of `q₀(v,·)` — `n_a + t·n_b` with `t ≠ 0` (NOT `q₀ v = q₀ a`).** Write `n_a := q(a,·)`,
-`n_b := q(b,·)`; set `q₀(v,·) := n_a + t·n_b`, `t ≠ 0` (concretely `t = 1`). With `panelSupportExtensor
-n₁ n₂ = complementIso (normalsJoin n₁ n₂)` (`PanelLayer.lean:161`) and `normalsJoin = ιMulti ℝ 2 ![·,·]`
-(`PanelLayer.lean:64`, alternating):
-- `normalsJoin (n_a + t·n_b) n_b = normalsJoin n_a n_b` (the `t·n_b` term wedges `n_b∧n_b = 0`), so
-  `panelSupportExtensor (q₀ v)(q₀ b) = panelSupportExtensor (q₀ a)(q₀ b)` — the **`vb`-row reproduces the
-  `e₀=ab`-row** (≠ 0: the IH's `e₀` hinge is transversal, `q a, q b` independent, `panelSupportExtensor_ne_zero_iff`
-  `PanelLayer.lean:172`). This is N7b-1's `he` input on `e_b`.
-- `normalsJoin (n_a + t·n_b) n_a = −t·normalsJoin n_a n_b`, so `panelSupportExtensor (q₀ v)(q₀ a) =
-  −t·panelSupportExtensor (q₀ a)(q₀ b) ≠ 0` for `t ≠ 0` — the **`va`-hinge stays a nondegenerate line**
-  `L ⊂ Π(a)` (KT eq. (6.12)).
-
-  **The `t = 0` trap.** `q₀(v,·) := q₀(a,·)` (= `n_a`) still gives the `vb`-reproduction (so stratum 1's
-  *count* would close — the `D−1` new rows come from `e_b` alone via N7b-1, and the form-(b) closure
-  needs only `hmem ∈ rigidityRows`), **but it zeros the `va`-hinge** (`panelSupportExtensor n_a n_a = 0`,
-  `extensor_eq_zero_of_eq`), building a *degenerate* candidate. Since stratum 1 is meant to **set up the
-  KT candidate scaffold the crux strata complete** (*Sub-phase scope cut*, `notes/Phase22c.md`), and `t≠0`
-  costs stratum 1 nothing (the `va` edge is not referenced in its count), use `t ≠ 0` for fidelity to KT's
-  actual eq. (6.12) candidate — `DESIGN.md` *Match the source's argument structure, not just its conclusion*.
-  (If a `t≠0` statement proves awkward, `t=0` is a sound fallback for the lower-bound brick *alone*,
-  deferring the `va`-line to the crux — flagged, not chosen.)
-
-**(C) Sub-lemma cut (all bounded).**
-1. The wedge-bilinearity placement lemma in `PanelLayer.lean`: `normalsJoin (n_a + t•n_b) n_b =
-   normalsJoin n_a n_b` (+ the two `panelSupportExtensor` (in)equalities). A few lines from
-   `AlternatingMap.map_update_add`/`map_smul` + `map_eq_zero_of_eq`; no fused panel-layer lemma exists yet.
-2. The `withNormal`/`withGraph` glue relating `ofNormals G ends q₀` to the `withNormal`-updated IH
-   framework (uncurry of `Function.update`) — definitional / `rfl`-adjacent.
-3. The producer `PanelHingeFramework.case_II_placement_eq612` (lands near N7b-1 in `Pinning.lean`),
-   assembling N7b-1 → `hnewpin` (LANDED, `linearIndependent_panelRow_comp_single_of_edge`) → N7b-0 →
-   N7b-2 (`hrow := rfl`) → N7b-3 (`linearIndependent_sum_pinned_block`) → N7a form (b), yielding the
-   `rank R(G,p₁) ≥ D(|V|−1)−1 = 6|V|−7` lower-bound brick (explicitly NOT `HasFullRankRealization` — one
-   row short, the Case-III missing row deferred to strata 2–3).
-
-**(D) Precedent.** The green Case-I composer (`CaseI.lean:1754–1831`) already builds the analogous shared
-seed (one `q₀`, one `F = ofNormals G ends q₀`), splits rows into two blocks, proves union independence via
-`Sum.elim` (`linearIndependent_sum_pinned_block`), supplies `hmem`, closes with form (b). Step 1 mirrors
-it; the second block is a single re-inserted vertex, so the `withNormal` 1-extension replaces Case I's
-contraction/`extProj` machinery (22b's `degeneratePlacement`/`extProj` confirmed not reused, §1.27/§1.28).
-
-### 1.30 Phase 22d, footnote-6 kernel recon — eq. (6.22) is NOT a green re-exposure; the genuinely-new content is a `non-root-from-algebraic-independence` brick (2026-06-06)
-
-A "size the kernel" re-test of the prior Gap-3 verdict (`notes/Phase22d.md` *Gap 3
-recon*), against the **actual** current signatures (the user flagged that the Gap-3
-recon cited the *bare* `HasFullRankRealization`, while 22b strengthened the
-generic-case motive). The hypothesis under test: eq. (6.22) re-exposes from green
-21b/22b machinery, the kernel collapsing to footnote 6 = "the Phase-21b device run
-in the direction we haven't exposed." **Verdict: refuted on the bottom line, but two
-of its three structural claims confirmed.** Verified by lean-lsp/Read against the
-real defs; no Lean / `\leanok` / blueprint edits (decision-support, like §1.4–§1.29).
-
-**The three structural claims.** (a) *matroid↔row link is the IH, not a separate
-iso* — **CONFIRMED**: the only bridge is `rigidityMatrix_prop11` (`PanelHinge.lean:1176`),
-abstract, taking the rank bounds `hub`/`hgen` as hypotheses; its doc-comment names
-the Phase-21b device as the thing selecting the max-attaining point. (b) *step ③
-(redundancy from the count) is pure LA given (6.18)+(6.22)* — **CONFIRMED**
-(pigeonhole over the `D−1` `ab`-rows with corank `k' ≤ D−2`; the rank-nullity
-template is `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`'s body).
-(c) *eq. (6.22) re-exposes from the device* — **REFUTED**.
-
-**Why (c) is refuted, pinned to signatures.** The 22b motive
-`HasGenericFullRankRealization` (`PanelHinge.lean:968`) added `Q.IsGeneralPosition`
-+ link-recording but is **still `∃ Q`** (existence). `IsGeneralPosition`
-(`:120`) is **only** `∀ a≠b, LinearIndependent ![normal a, normal b]` — degree-1
-pairwise transversality, NOT non-root-ness of the rank polynomial. The device has
-*two* halves: the producer `exists_rankPolynomial_of_rigidOn{_linking_set}`
-(`GenericityDevice.lean:1112/1288`, from a rigid seed `q₀` ⟹ `∃ Q, eval q₀ Q ≠ 0 ∧
-∀ non-root ⟹ LI`) and the consumer
-`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero{_linking_set}`
-(`:1378/1517`, **given `eval q Q ≠ 0` ⟹ rigid at that `q`**, no GP needed). So the
-consumer *already runs the given-point direction* — the gap is proving `eval q Q ≠ 0`
-for the specific `Q`. footnote 6 supplies this from *algebraic independence of the
-seed over ℚ*, and **the project has zero `AlgebraicIndependent`/transcendence
-machinery** (grep-confirmed tree-wide; the only non-zero-at-a-point brick is
-`MvPolynomial.exists_eval_ne_zero`, which gives *∃ a* non-root, never a *given* one).
-
-**The genuinely-new content, named exactly.** A `non-root-from-algebraic-independence`
-brick = **(i)** mirrorable `MvPolynomial.eval_ne_zero_of_algebraicIndependent` (alg.-indep.
-tuple ⟹ off every nonzero ℚ-polynomial's zero locus; mathlib has `AlgebraicIndependent`
-API, so half is upstream-flavored) + **(ii)** a seed-alg-indep invariant threaded
-through the induction (NEW; may need a *third* motive form alongside the 22b GP +
-link-recording strengthenings). Then the kernel `lem:case-III-seed-rank-bridge`
-(`corank R(ofNormals G_v ends q|_{E_v}) = def(G̃_v)`) composes (i)+(ii) with the
-device consumer + `rigidityMatrix_prop11`. **eq. (6.18) (full rank of `R(G_v^{ab},q)`)
-is NOT separately in hand** — 22c's `case_II_placement_eq612` (`CaseI.lean:2331`) is
-the `≥ D(|V|−1)−1` lower-bound brick; the full `D(|V|−1)` *is* the Claim-6.11 `+1`.
-
-**Net (build queue unchanged).** This refines the prior verdict from "irreducible
-kernel" to "irreducible kernel = a *named* `non-root-from-alg-indep` brick"; it does
-**not** overturn it (unlike the Gap-2 overturn, the strengthening here is the wrong
-*kind* of content). The next build stays the Gap-3 combinatorial shell
-`splitOff_removeVertex_minimalKDof`; the kernel (likely merged with Gap 1) is a
-later dedicated math-first sub-phase, carried-as-hypothesis. Full Q1–Q5 in
-`notes/Phase22d.md` *Footnote-6 kernel recon (2026-06-06)*.
-
-### 1.31 Phase 22d, kernel-route decision + the algebraic-independence relaxation tracker (2026-06-06)
-
-§1.30 named the kernel as genuinely-new content; its default was carry-as-hypothesis.
-**User decision (2026-06-06): build the algebraic-independence route DIRECTLY to fully
-green** (the certain path = KT's actual argument), NOT carry-as-hypothesis and NOT the
-unverified product-route shortcut — superseding §1.30's "carried-as-hypothesis" tail.
-The product-route shortcut (choose the seed at the Claim-6.11 composition as a non-root
-of the *finite product* of the nested IH rank polynomials, avoiding alg-independence at
-`d=3`) is captured as a deferred **relaxation TODO**, with a tracker of *every*
-molecular-program site that leans on algebraic independence (the genericity
-device/Claim 6.4 *avoided* it; the 22d kernel is the *first forced* site; Phase 23
-likely), in the standing note **`notes/AlgebraicIndependence.md`** (the single source —
-not duplicated here). Full decision + effect-on-plan: `notes/Phase22d.md` *Kernel-route
-decision (2026-06-06, user)*.
-
-### 1.32 Phase 22d, kernel sub-phase (ii) opening recon — the seed-genericity invariant SPLITS into a motive conjunct (ii-a) plus a *rationality bridge* (ii-b) the §1.30 cut missed (2026-06-06)
-
-The math-first recon mandated at the (ii) node's open (`notes/Phase22d.md`
-*Hand-off*: "confirm whether (ii) needs a third motive form … or threads onto the
-existing `HasGenericFullRankRealization`"). Read leaf (i)
-(`AlgebraicIndependent.aeval_ne_zero`) against the *actual* device producer/consumer
-signatures (`GenericityDevice.lean:1112`/`:1378`) and the polynomial-coordinate chain
-(`PanelLayer.lean` `annihRowPoly`/`panelSupportPoly`). Decision-support; no Lean /
-`\leanok` / blueprint edits (like §1.4–§1.31).
-
-**What (iii) must compose, traced through the real signatures.** The kernel
-`lem:case-III-seed-rank-bridge` fires the device *consumer*
-`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` at the **inductively-fixed
-seed `q`** — i.e. it needs `MvPolynomial.eval q Q ≠ 0` for the device producer's `Q`
-(`exists_rankPolynomial_of_rigidOn` gives `Q : MvPolynomial σ ℝ` with `eval q₀ Q ≠ 0` at
-the *producer's own* rigid seed `q₀`, plus the non-root ⟹ LI clause). Leaf (i) supplies
-`eval`-non-root-ness from `q`'s algebraic independence over ℚ — **but only for a polynomial
-over ℚ** (`aeval q : MvPolynomial σ ℚ → ℝ`). Two distinct impedances surface; (i) closes
-neither alone.
-
-**Verdict: (ii) is NOT a single leaf and NOT pure motive-strengthening — it SPLITS.**
-- **(ii-a) the seed-genericity motive conjunct** [the part §1.30 anticipated]. The
-  realizing seed `q` must be algebraically independent over ℚ at the composition point, so
-  the kernel has an alg-indep `q` in hand. This is a third motive guarantee, **paralleling
-  22b's GP / link-recording** strengthenings (an extra conjunct on
-  `HasGenericFullRankRealization`, or a third sibling motive). Producers must build their
-  `ofNormals G ends q₀` at an alg-indep seed and carry the conjunct; the moment-curve seed
-  (`withMomentNormals`, `GenericityDevice.lean:~1785`) is the natural candidate alg-indep
-  point — **confirm it is provably alg-indep over ℚ, or substitute a transcendental basis**
-  (open).
-- **(ii-b) the rationality bridge** [NEW — the §1.30 cut missed this]. Leaf (i) needs the
-  rank polynomial over **ℚ**, but the device's `Q` is typed over **ℝ**
-  (`exists_polynomial_ne_zero_of_linearIndependent_at`, `Mathlib/.../Rank.lean:474`, builds
-  `Q := det` of a submatrix of the coordinate family `c`). `c = ± annihRowPoly`, and
-  `annihRowPoly` bottoms on `panelSupportPoly` (`PanelLayer.lean:385`) whose coefficients are
-  `MvPolynomial.C r` with `r : ℝ` a `complementIso`-`repr` structural constant — **rational
-  (±1 / fixed change-of-basis entries) mathematically, but ℝ-typed and not manifestly
-  rational in the term.** So `eval q Q = aeval q Q₀` needs `Q = MvPolynomial.map (algebraMap
-  ℚ ℝ) Q₀` for some `Q₀ : MvPolynomial σ ℚ`, plus `Q ≠ 0 ⟺ Q₀ ≠ 0` (`map` along an injective
-  ring hom). **Grep-confirmed: the molecular tree has ZERO `algebraMap ℚ ℝ` / `MvPolynomial.map`
-  scaffolding** — this is a genuinely-new obligation, invisible to §1.30 (which named only
-  "(ii) = seed-alg-indep invariant").
-
-**Why (ii-b) is the load-bearing surprise.** The two cuts diverge on cost: a pure motive
-conjunct (ii-a alone) is 22b-shaped plumbing; (ii-b) forces either (b1) re-typing the whole
-device coordinate chain `panelSupportPoly → annihRowPoly → c → Q` over a base ring `R` with
-`algebraMap R ℝ` and instantiating `R = ℚ` (invasive — touches every producer), or (b2) a
-*post-hoc* "`Q`'s coefficients lie in `range (algebraMap ℚ ℝ)`" descent on the already-built
-ℝ-polynomial (`MvPolynomial.eval q Q = aeval q (Q.descend)` when every `coeff` is rational),
-needing a `complementIso`-entries-are-rational lemma (the structural-constant rationality KT
-takes for granted). **(b2) is the lighter cut** (no producer re-type; one descent lemma + the
-`complementIso`-rationality fact) and is the recommended first attempt; (b1) is the fallback
-if the descent's coefficient bookkeeping proves worse than a clean re-type.
-
-**Net effect on the build queue.** (ii) is re-cut into **(ii-a)** [motive conjunct, 22b-shaped]
-+ **(ii-b)** [rationality bridge: a `complementIso`-rational-entries leaf ⊕ the `Q`-descent
-mirror]. (iii) `lem:case-III-seed-rank-bridge` then composes (i) ⊕ (ii-a) ⊕ (ii-b) with the
-consumer + `rigidityMatrix_prop11`. The next *build* commit is the leaf-most of (ii-b): the
-descent mirror `MvPolynomial.eval = aeval ∘ descend` for a coefficient-rational ℝ-polynomial
-(or its `MvPolynomial.map` half), which is **upstream-eligible** and provable independent of
-all the molecular geometry — a true leaf, unlike (ii-a) which waits on the moment-curve
-alg-independence question. Full Q&A + the leaf order: `notes/Phase22d.md` *Kernel sub-phase
-(ii) recon*.
+1. **Next sub-phase (unlettered → minted on open): the `d=3` assembly.** Open on a build-free
+   red-node consistency recon resolving (B.1)–(B.2). Then build the `d=3` `hsplit` producer
+   (the spine in (A)), instantiate `theorem_55 (n:=2)`, feed `rigidityMatrix_prop11`'s `hgen`,
+   do the Thm 5.5→5.6 push. Milestone: the molecular conjecture proved at `d=3`, unblocking
+   Cor 5.7. Phases 24–25 (`d=3` bar-joint matroid, projective duality) can proceed in parallel —
+   they don't gate on the rank theorem until Cor 5.7 (Phase 26).
+2. **Phase 23 (general `d`, Lemma 6.13).** Scope with the (C) reuse map: reuse Claim 6.11 +
+   Lemma 2.1 verbatim; generalize the candidate chain on the graph-free assembly; build the
+   `⋀^{d−1}` duality via the top-power route ((D), the already-landed `map`-range infra);
+   apply the existing alg-independence machinery for the points; reuse the `d=3` assembly as
+   the template. Open with its own recon (read eqs. 6.46–6.67 against the `d=3` Lean) and add
+   the general-`d` alg-independence row to `AlgebraicIndependence.md`.
 
 ---
 
@@ -876,14 +468,23 @@ target. The missing row is the Case-III redundant-edge row.
 eq. (6.12) placement is the buildable warm-up; Lemma 6.10 is the crux and is the
 natural decompose-math-first target for a dedicated sub-session.
 
-### Assembly (may defer to Phase 23)
+### Assembly (the `d=3` cut — see §1.33 for the re-scoped recon)
 
-- **`prop:rigidity-matrix-prop11` `hub` brick** — `research-shaped (multi-commit)`,
-  Track-independent (Phase-19 partition count: construct `D(|P|−1)−(D−1)·d_G(P)`
-  motions from a deficiency-attaining partition). Decompose math-first before
-  scheduling.
-- **`thm:theorem-55` / `lem:case-III` flip green** once the producers land
-  (one-line, the recursion body is already assembled).
+> **Re-scoped 2026-06-07 (§1.33).** Two items below are now done; the real gap is
+> narrower than this stub. Read §1.33 (A)/(B) for the current breakdown + open items.
+
+- **`prop:rigidity-matrix-prop11` `hub` brick** — ~~research-shaped~~ **GREEN**: the
+  `D + def ≤ dim Z` lower bound (`screwDim_add_deficiency_le_finrank_infinitesimalMotions`)
+  is discharged in-proof; `rigidityMatrix_prop11` is green-modulo its `hgen` = Theorem 5.5.
+  This stub's deficiency-partition motion count was discharged in 22d.
+- **The `d=3` `hsplit` producer** (`lem:case-II-realization` at `k=0`) — **the real gap**:
+  wire `case_II_placement_eq612` ⊕ candidate-row ⊕ `case_III_claim612` into the graph-free
+  `linearIndependent_sum_augment_candidateRow` at real graph data (where the `ofNormals`
+  defeq trap bites). §1.33 (A).
+- **`thm:theorem-55` / `lem:case-III` flip green** — once the `hsplit` producer lands,
+  instantiate the green conditional `theorem_55 (n:=2)`; the *general* node stays red for
+  Phase 23 (architecture call in §1.33 (B.2)). Open item: whether `lem:cycle-realization`
+  is Lean-load-bearing for this path (§1.33 (B.1)).
 
 ---
 

@@ -219,12 +219,16 @@ build:
 **22f is complete.** N3b green ⟹ Claim 6.12 (N9) and the candidate-completion chain are fully green;
 the green-modulo-N3b language is retired across `case-iii.tex` / `case-ii.tex`.
 
-The next deferred-**unlettered** cut is the **`d=3` realization assembly** —
-`prop:rigidity-matrix-prop11` `hub` partition brick (Track-independent, Phase-19-partition) + the
-`thm:theorem-55` flip + wiring the fully-green `case_I_realization` into `theorem_55_generic`'s
-Case-I branch — which is what finally takes the two producer nodes `lem:case-II-realization` /
-`lem:case-III` themselves green (and where the `ofNormals` defeq-timeout trap bites). Then
-**general-`d`** (Lemma 6.13) is **Phase 23**. KT math: `notes/Phase22e.md` *Hand-off*,
+The next deferred-**unlettered** cut is the **`d=3` realization assembly**, **design-reconned
+2026-06-07 in `notes/Phase22-realization-design.md` §1.33** (read (A)/(B) before opening). The
+recon re-scoped it off the older "hub brick + flip + wiring" framing: `rigidityMatrix_prop11`'s
+`hub` is already **green** and `theorem_55` is a green *conditional*, so the real gap is the
+**`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕ `case_III_claim612`
+into `linearIndependent_sum_augment_candidateRow` at real graph data (where the `ofNormals`
+defeq-timeout trap bites), then instantiate `theorem_55 (n:=2)` — taking the two producer nodes
+`lem:case-II-realization` / `lem:case-III` green. Two open items at phase-open (§1.33 (B)): the
+red `lem:cycle-realization` dependency status (B.1) and the `theorem_55` `d=3`-instance
+architecture (B.2). Then **general-`d`** (Lemma 6.13, reuse map §1.33 (C)) is **Phase 23**. KT math: `notes/Phase22e.md` *Hand-off*,
 `notes/Phase22d.md` *Hand-off*, KT §6.4; `notes/AlgebraicIndependence.md` (N3b stayed
 alg-independence-free, pure Grassmann–Cayley).
 

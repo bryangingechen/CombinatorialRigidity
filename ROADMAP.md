@@ -123,7 +123,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22d. KT Claim 6.11 (eq. (6.23), the redundant `ab`-row) + its green-machinery prerequisites | `Molecular/Induction/ForestSurgery.lean` + `AlgebraicInduction/{CaseI,PanelLayer,PanelHinge}.lean` (extends `algebraic-induction.tex`) | ✓ Complete (see `notes/Phase22d.md`) |
 | 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ Complete (N3b discharged in 22f; see `notes/Phase22e.md`) |
 | 22f. N3b: point-join↔panel-meet duality (the exterior-algebra assembly completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` | ✓ Complete — discharged 22e's green-modulo-N3b (see `notes/Phase22f.md`) |
-| ⋯ (deferred, unlettered) `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip) | `Molecular/AlgebraicInduction/` | ◷ Planning — successor to 22e/22f (see `notes/Phase22e.md`) |
+| ⋯ (deferred, unlettered) `d=3` assembly (the `d=3` `hsplit` producer + `thm:theorem-55` `d=3`-instance flip) | `Molecular/AlgebraicInduction/` | ◷ Planning — design-reconned (`notes/Phase22-realization-design.md` §1.33); next-cut hand-off in `notes/Phase22f.md` |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
