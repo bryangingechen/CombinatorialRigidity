@@ -685,7 +685,7 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–22d + 21a are complete; **Phase 22 (the realization layer) is sub-lettered** —
+Phases 17–22e + 21a are complete; **Phase 22 (the realization layer) is sub-lettered** —
 opened as a single Phase 22 on 2026-06-04, then split the same day into **22a** (Case I
 realization, ✓ complete; `notes/Phase22a.md`), **22b** (KT Claim 6.4, ✓ complete
 2026-06-05; `notes/Phase22b.md`), **22c** (Case III at `d=3`, stratum 1 = the eq. (6.12)
