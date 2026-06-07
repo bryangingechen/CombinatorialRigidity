@@ -280,11 +280,10 @@ operated row $w \circ \Phi$ joins the stratum-1 brick's $va$-block and old block
 augment (\cref{lem:case-III-conditional-block}), and the operated independence transports back
 through the automorphism $\Phi$ to the original family of size $((D-1)+1)+D(|V_v|-1) = D(|V|-1)$.
 The one \emph{conditional} it passes through --- the eq.~(6.29) top-left $D \times D$
-full rank (\cref{lem:case-III-eq629-conditional}) --- is now discharged green-modulo-N3b by
+full rank (\cref{lem:case-III-eq629-conditional}) --- is discharged by
 Claim~6.12 (\cref{lem:case-III-claim612},
 \cref{sec:molecular-algebraic-induction-claim612}), so the candidate-completion assembly is
-green-modulo-N3b: its sole surviving red dependency is the point-join$\leftrightarrow$panel-meet
-duality (\cref{lem:case-III-claim612-line-in-panel-union}, N3b, Phase~22f). The
+green. The
 $a$-column-block vanishing (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$
 case), not the candidate-row input.
 
@@ -547,15 +546,14 @@ case), not the candidate-row input.
   This is exactly what \cref{lem:case-III-candidate-row}'s assembly consumes --- it takes
   $\rho$ / $\mathrm{rn}$ / $\mathrm{ro}$ abstractly, so the assembly itself stays green; the
   conditional supplies which candidate to instantiate it at.
-  \emph{This conditional is now discharged \textbf{green-modulo-N3b} by Claim~6.12}
+  \emph{This conditional is discharged by Claim~6.12}
   (\cref{lem:case-III-claim612}): the row-space criterion
   (\cref{lem:case-III-claim612-block-iff-perp}) turns ``the candidate's block is full rank'' into
   ``$\hat r$ is not orthogonal to its supporting extensor $C$'', so the existential over the three
   candidates \emph{is} Claim~6.12's disjunction
-  $\hat r(C_1) \ne 0 \vee \hat r(C_2) \ne 0 \vee \hat r(C_3) \ne 0$. The only red dependency that
-  survives is the point-join$\leftrightarrow$panel-meet duality
-  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b), deferred to Phase~22f; once it lands, this
-  node --- and the candidate-completion assembly through it --- are fully green.
+  $\hat r(C_1) \ne 0 \vee \hat r(C_2) \ne 0 \vee \hat r(C_3) \ne 0$, whose point-join
+  $\leftrightarrow$ panel-meet duality leaf (\cref{lem:case-III-claim612-line-in-panel-union}, N3b)
+  is now green.
 \end{lemma}
 \begin{proof}
   The three-way disjunction is Claim~6.12 (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)):
@@ -599,9 +597,7 @@ case), not the candidate-row input.
         lem:case-III-conditional-block, lem:case-III-eq629-conditional,
         lem:case-II-realization-placement}
   \emph{Green modulo the eq.~(6.29) conditional (\cref{lem:case-III-eq629-conditional}), which
-  Claim~6.12 (\cref{lem:case-III-claim612}) now discharges green-modulo-N3b --- so the assembly is
-  green-modulo-N3b, the only surviving red dependency being the point-join$\leftrightarrow$panel-meet
-  duality (\cref{lem:case-III-claim612-line-in-panel-union}, N3b, Phase~22f).} The
+  Claim~6.12 (\cref{lem:case-III-claim612}) discharges.} The
   combination-level threading is green:
   \cref{lem:case-III-candidate-row-construction} takes the common element $w_{\mathrm{Gv}}$ of the
   eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row
@@ -857,6 +853,9 @@ Grassmann--Cayley projective duality.
 
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
   \label{lem:case-III-claim612-line-in-panel-union}
+  \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,
+        CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero}
+  \leanok
   \uses{def:join, def:meet, def:meet-complement-iso, def:panel-support-extensor,
         lem:extensor-independence, lem:case-III-claim612-extensor-span,
         lem:complement-iso-toDual, lem:complement-iso-decomposable-wedge-perp,
@@ -873,6 +872,7 @@ Grassmann--Cayley projective duality.
   also annihilates each spanning join: $r(C(L)) = 0 \Rightarrow r(\bar{p_i} \vee \bar{p_j}) = 0$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ are $2$-extensors in $\bigwedge^2 \R^4$
   representing the same projective line $L$. The join $\bar{p_i} \vee \bar{p_j}$
   (\cref{def:join}) is the line's supporting extensor written from \emph{two points on it}; the
@@ -880,25 +880,37 @@ Grassmann--Cayley projective duality.
   grade-$2$ join of two panel normals, \cref{def:panel-support-extensor}) is the same line's
   supporting extensor written from \emph{two hyperplanes through it}, and the Grassmann--Cayley
   duality of \cref{sec:molecular-meet} makes these two presentations of a $1$-dimensional
-  projective subspace agree up to a nonzero scalar. The duality runs through the metric-free
-  dictionary entry \cref{lem:complement-iso-toDual} (green): pairing $\mathrm{complementIso}$ of a
-  decomposable $n_u \wedge n'$ against a $2$-extensor reduces to the volume form
-  $\mathrm{vol}((n_u \wedge n') \wedge \cdot)$, so the incidence
-  $\langle \bar{p_i}, n_u \rangle = \langle \bar{p_i}, n' \rangle = 0$ (and likewise for $\bar{p_j}$)
-  puts both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ in the $1$-dimensional extensor line of $W = \{n_u,
-  n'\}^{\perp} = \mathrm{span}\{\bar{p_i}, \bar{p_j}\}$ (nonzero precisely because $L$ is a genuine
-  line). Step (i) --- $\mathrm{complementIso}(n_u \wedge n')$ lands in $\bigwedge^2 W$, the
-  decomposable-of-orthogonal-complement step --- is now green
-  (\cref{lem:complement-iso-decomposable-wedge-perp}): through the dictionary entry, a wedge with a
-  shared factor has vanishing complement pairing, so $\mathrm{complementIso}(n_u \wedge n')$ is
-  annihilated by every $2$-extensor sharing a vector with $n_u \wedge n'$. Step (ii) ---
-  $\bigwedge^2 W$ is $1$-dimensional for a $2$-dimensional $W$, so any two nonzero members are scalar
-  multiples --- is now green (\cref{lem:complement-iso-line-one-dim}). The one remaining step is the
-  \emph{assembly}: placing both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ in $\bigwedge^2 W$ (via the
-  incidence $\langle \bar{p_i}, n_u\rangle = \langle \bar{p_i}, n'\rangle = 0$ and step (i)) and
-  applying step (ii) to extract the scalar $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$ --- the
-  regressive-duality-on-decomposables content (the Hodge-star identification of $\bigwedge^2 W$ with
-  the join's extensor line) not yet in the project. The annihilation transfer is then immediate:
+  projective subspace agree up to a nonzero scalar.
+
+  We realize that common line concretely as the $1$-dimensional space
+  \[
+    \Omega := \{\, Z \in \textstyle\bigwedge^2 \R^4 \;:\; \langle Z, \phi\rangle_b = 0
+      \text{ for all } \phi \in \widetilde\Phi \,\},
+    \qquad
+    \widetilde\Phi := (n_u \wedge \R^4) + (n' \wedge \R^4),
+  \]
+  the $\langle\cdot,\cdot\rangle_b$-orthogonal complement of the shared-direction span, where
+  $\langle\cdot,\cdot\rangle_b$ is the coordinate (perfect) pairing of $\bigwedge^2 \R^4$ induced by
+  the standard basis. The span $\widetilde\Phi$ is $5$-dimensional --- $\dim(n_u \wedge \R^4) +
+  \dim(n' \wedge \R^4) - \dim(n_u \wedge \R^4 \cap n' \wedge \R^4) = 3 + 3 - 1$ by
+  inclusion--exclusion, the intersection being the line $\mathrm{span}\{n_u \wedge n'\}$
+  (\cref{lem:complement-iso-line-one-dim} supplies the exterior-square dimensions; the decomposable
+  intersection is the genuinely new count). As $\langle\cdot,\cdot\rangle_b$ is a perfect pairing on
+  the $6$-dimensional $\bigwedge^2 \R^4$, $\dim \Omega = 6 - 5 = 1$.
+
+  Both extensors lie in $\Omega$. The panel-meet $C(L) = \mathrm{complementIso}(n_u \wedge n')$ does
+  by step (i) (\cref{lem:complement-iso-decomposable-wedge-perp}): through the dictionary entry
+  \cref{lem:complement-iso-toDual}, a wedge with a shared factor has vanishing complement pairing, so
+  $\mathrm{complementIso}(n_u \wedge n')$ is annihilated by every $2$-extensor sharing a vector with
+  $n_u \wedge n'$ --- in particular by each $n_u \wedge v$ (sharing $n_u$ directly) and each
+  $n' \wedge v$ (the appended family repeats $n'$), which together span $\widetilde\Phi$. The
+  point-join $\bar{p_i} \vee \bar{p_j}$ does too: under $\langle\cdot,\cdot\rangle_b$ the pairing
+  $\langle \bar{p_i} \vee \bar{p_j},\, n_u \wedge v\rangle_b$ is the Gram determinant of the dot
+  products $\langle \bar{p}, n_u\rangle$, $\langle \bar{p}, v\rangle$, whose row of incidences
+  $\langle \bar{p_i}, n_u\rangle = \langle \bar{p_j}, n_u\rangle = 0$ vanishes (likewise for $n'$).
+  Since $C(L) \ne 0$ precisely because $L$ is a genuine line ($\{n_u, n'\}$ independent), the two
+  members of the line $\Omega$ are scalar multiples: $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$
+  (\cref{lem:complement-iso-line-one-dim}). The annihilation transfer is then immediate:
   $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda\, r(C(L)) = 0$. This is the
   duality KT use implicitly when reading eq.~(6.45): the spanning family of
   \cref{lem:case-III-claim612-extensor-span} (point-joins) and the annihilated family of the
@@ -1073,9 +1085,6 @@ Grassmann--Cayley projective duality.
 \end{lemma}
 \begin{proof}
   \leanok
-  \emph{Green modulo the point-join $\leftrightarrow$ panel-meet duality
-  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b, deferred to Phase~22f), which is carried as
-  the hypothesis ``$r \perp C_1, C_2, C_3 \Rightarrow r$ annihilates every join $p_i \vee p_j$''.}
   Contrapositive. Suppose all three blocks fail to have full rank for \emph{every} choice of lines.
   By the row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}), $M_1$ failing places the
   common vector $r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ in $(\operatorname{span} C(L))^\perp$ for
@@ -1146,13 +1155,12 @@ Grassmann--Cayley projective duality.
   (\cref{lem:case-III-claim612-points-affineIndep}), which by the extensor-independence Lemma~2.1
   (\cref{lem:extensor-independence}, via \cref{lem:case-III-claim612-extensor-span}) span $\R^D$,
   forcing $r = 0$ --- contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}).
-  \textbf{The $d = 3$ argument is now green-modulo-N3b}: the candidate-completion
+  \textbf{The $d = 3$ contrapositive is now fully green}: the candidate-completion
   (\cref{sec:molecular-algebraic-induction-candidate-completion}) and Claim~6.12
-  (\cref{sec:molecular-algebraic-induction-claim612}) leaves are all green except the one
+  (\cref{sec:molecular-algebraic-induction-claim612}) leaves --- including the
   point-join$\leftrightarrow$panel-meet duality node
-  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b), whose bounded $\bigwedge^2 \R^4$
-  exterior-algebra assembly is \textbf{deferred to Phase~22f}. Two further pieces remain outside
-  Phase~22e and are unchanged by it: the \emph{realization assembly} that instantiates the (graph-free)
+  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b) --- are all green. Two further pieces
+  remain: the \emph{realization assembly} that instantiates the (graph-free)
   candidate-completion at the actual $d = 3$ graph data --- combining the stratum-1 brick
   \cref{lem:case-II-realization-placement} with the Claim~6.12 candidate it selects to produce the full
   $D(|V|-1)$ realization (the deferred ``$d = 3$ assembly''), and the general-$d$ argument
@@ -1160,7 +1168,6 @@ Grassmann--Cayley projective duality.
   here to close the Theorem~5.5 dichotomy.
 \end{lemma}
 \begin{proof}
-  The $d = 3$ contrapositive above is green-modulo-N3b (Phases~22c--22e); the duality leaf N3b lands
-  in Phase~22f, the $d = 3$ realization assembly and general-$d$ are deferred. See
-  \cite[\S6.4]{katohTanigawa2011}.
+  The $d = 3$ contrapositive above is fully green; the $d = 3$ realization assembly and general-$d$
+  are deferred. See \cite[\S6.4]{katohTanigawa2011}.
 \end{proof}

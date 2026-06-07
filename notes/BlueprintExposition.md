@@ -390,7 +390,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   rⱼ(q(ac)) = 0`, i.e. `M₃`'s row `= −r`. The degree-2-at-`a` hypothesis is doing real work here, not just
   enabling `p₃`. Pointer: KT p. 691, eqs. (6.43)–(6.44); `notes/Phase22e.md` *Lemma checklist* N8.
 - **`lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet duality bridge** —
-  [pending] **(c)** (Phase 22e capture, N3 design pass). **Stable insight:** the span-(6.45) finish
+  [done] **(c)** (Phase 22e capture, N3 design pass; landed Phase 22f, blueprint prose final).
+  **Stable insight:** the span-(6.45) finish
   silently uses Grassmann–Cayley *projective duality*, the genuinely-new content the original single
   N3 had buried. A projective line `L` in `⋀²ℝ⁴` has *two* extensor presentations of the same
   1-dimensional subspace: as a **point-join** `pᵢ∨pⱼ` of two points on it (the span side, what

@@ -678,6 +678,20 @@ housekeeping pass once their resolution is fully indexed.
   linear-algebra fact over an abstract field as a mirror lemma and apply it — the
   proof's `whnf` cost is paid once, opaquely, not re-paid at every use site.
 - **Status:** resolved — mirror lemma landed (see Mirrored).
+
+### [resolved] `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero (by omega) _ _ h` whnf-times-out unifying the `_ _` against `h` — supply `X`/`B` explicitly
+- **Where it bit:** the panel-meet `n'`-summand kill inside
+  `complementIso_smul_eq_extensor_join` (`Molecular/Meet.lean`, Phase 22f N3b capstone).
+- **Friction:** applying the dictionary half with both extensor arguments as `_` and the
+  `wedgeProd`-vanishing `h` as the trailing positional arg made elaboration whnf-time-out (200k)
+  trying to unify the two `⟨extensor …, …⟩ : ⋀²ℝ⁴` placeholders against `h`'s type.
+- **Fix:** pass `(k := 2) (j := 2) (by omega)` and **both** `⟨extensor …, _⟩` arguments explicitly;
+  then `h` checks against a fully-known goal with no inference.
+- **General lesson:** same heavy-carrier family as TACTICS-QUIRKS § 38 (exterior-power/`Module.Dual`
+  whnf blowup), but the remedy is lighter than § 38's extract-a-helper: a heavy carrier punishes
+  left-to-right unification of underscored *lemma-application* args, so just name them — no abstract
+  restatement needed when the timeout is at the *call site's* unification, not an in-place unfold.
+- **Status:** resolved — explicit args in the landed proof.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 
 ### [resolved] Iterating cyclic `+1` around `Fin m`: `(j : Fin m)` ascription / `NatCast` / `Fin.induction` all fail; use `Fin.ofNat`-based ℕ-induction

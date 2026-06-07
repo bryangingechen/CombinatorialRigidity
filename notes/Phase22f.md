@@ -1,78 +1,45 @@
 # Phase 22f — N3b: point-join ↔ panel-meet duality assembly (KT §6.4.1, eq. (6.45)) (work log)
 
-**Status:** in progress (opened 2026-06-07 design-pass-first; membership route settled — route
-A-corrected, the coordinate-pairing dualCoannihilator; pivot infra N3b-recon + facts 2 & 3 landed;
-node still red). Discharges
-Phase 22e's single green-modulo-N3b obligation — the one red leaf
-`lem:case-III-claim612-line-in-panel-union` (N3b, the point-join ↔ panel-meet duality assembly).
-**Research-shaped / structural-edit:** no new blueprint chapter — the target node is stubbed red in
-`blueprint/src/chapter/algebraic-induction/case-iii.tex`; the assembly's three operational sub-leaves
-(N3b-dict / step (i) / step (ii)) are already green in `Molecular/Meet.lean` (Phase 22e). 22f lands
-the *assembly* on top of those green leaves: the bounded/concrete `⋀²ℝ⁴` exterior-algebra infra
-(NOT general Hodge theory) placing both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` in a common `⋀²W` and extracting the
-scalar. KT math: `notes/Phase22e.md` *22f plan* + KT §6.4.1 (eq. (6.45)); 22f **formalizes** it.
+**Status:** ✓ Complete (closed 2026-06-07). The target red leaf
+`lem:case-III-claim612-line-in-panel-union` (N3b, the point-join ↔ panel-meet duality assembly) is
+green, discharging Phase 22e's single green-modulo-N3b obligation. **Research-shaped /
+structural-edit:** no new blueprint chapter — the target node was stubbed red in
+`blueprint/src/chapter/algebraic-induction/case-iii.tex`; 22f landed the *assembly* on top of the
+three green operational sub-leaves (N3b-dict / step (i) / step (ii), Phase 22e) using the
+bounded/concrete `⋀²ℝ⁴` exterior-algebra infra (NOT general Hodge theory). KT math:
+`notes/Phase22e.md` *22f plan* + KT §6.4.1 (eq. (6.45)).
 
 ## Current state
 
-**Facts 2 & 3 of route A-corrected LANDED this commit** (`Molecular/Meet.lean`), both riding on the
-prior-commit N3b-recon:
-- **Fact 2 (point-join Gram-det orthogonality)** — `extensor_toDual_extensor_eq_zero_of_perp`: for
-  `w, c : Fin 2 → ℝ⁴` with `∀ j, b.toDual (w j) (c i₀) = 0`, the point-join `extensor w` is
-  `b.toDual`-annihilated by `extensor c`. N3b-recon rewrites the pairing to the Gram det
-  `det (i j ↦ b.toDual (w j) (c i))` (`map_apply_ιMulti` + `pairingDual_ιMulti_ιMulti`); `hperp` zeros
-  row `i₀`, so `Matrix.det_eq_zero_of_row_eq_zero`. The point-join analogue of green step (i).
-- **Fact 3 (`dim Φ̃ = 5`, N3b-2b-β)** — `finrank_sup_range_wedgeFixedLeft`: `dim (a ∧ ℝ⁴ ⊔ b ∧ ℝ⁴)
-  = 5` for `{a,b}` independent, via `Submodule.finrank_sup_add_finrank_inf_eq` (`3 + 3 − 1`). The
-  genuine sub-content is the **decomposable intersection** `inf_range_wedgeFixedLeft`:
-  `a ∧ ℝ⁴ ⊓ b ∧ ℝ⁴ = span{a ∧ b}` — `⊇` via anticommutativity (`ι_add_mul_swap`), `⊆` by
-  left-multiplying `a ∧ v = b ∧ w` by `b` (`extensor ![b,a,v] = 0` ⟹ `v ∈ span{a,b}` via
-  `linearIndependent_finSnoc`), so `a ∧ v ∈ span{a ∧ b}`.
+**Phase complete.** The membership/duality capstone landed this commit (`Molecular/Meet.lean`),
+flipping `lem:case-III-claim612-line-in-panel-union` green and retiring the green-modulo-N3b
+language on the N9 / candidate-completion nodes.
 
-All three (the two new + N3b-recon) build warning-clean, `lake lint` clean, `#print axioms` = the
-three standard axioms.
+The capstone is two theorems (route A-corrected, coordinate-pairing annihilator):
+- `complementIso_smul_eq_extensor_join` — the **proportionality**: `∃ c, c • complementIso(n_u ∧ n')
+  = extensor ![pi, pj]` for `{n_u, n'}` independent and `pi, pj` `toDual`-orthogonal to both
+  normals. Both members lie in the **1-dim** `Ω = (dualAnnihilator Φ̃).comap b.toDualEquiv` (the
+  perfect-pairing transport of the annihilator of the 5-dim `Φ̃ = n_u ∧ ℝ⁴ + n' ∧ ℝ⁴`); the
+  point-join by fact 2 (Gram-det orthogonality, each `n_u ∧ v` / `n' ∧ v` summand), the panel-meet
+  by green step (i) (the `n'` summand via the appended-family shared `n'` and the general dictionary
+  half), the panel-meet nonzero by `{n_u, n'}` independent. Two members of a line, one nonzero, are
+  proportional (`Submodule.eq_of_le_of_finrank_eq` + `mem_span_singleton`, the
+  `exists_smul_eq_of_mem_range_map_subtype` pattern reused on `Ω`).
+- `extensor_join_eq_zero_of_complementIso_eq_zero` — the **annihilation transfer**: `r(C(L)) = 0 ⟹
+  r(p̄ᵢ ∨ p̄ⱼ) = 0`, the node's headline. One `map_smul` off the proportionality.
 
-**Next concrete commit: the membership** `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)`. All
-three load-bearing facts now landed (fact 1 = green step (i); facts 2 & 3 this commit) — assemble
-them: place `complementIso(n_u ∧ n')` (fact 1) and the point-join `w₀ ∧ w₁` (fact 2) in the 1-dim
-`Ω = dualCoannihilator Φ̃` (fact 3 gives `dim Ω = 6 − 5 = 1`), then `N3b-2b-line` makes them
-proportional. The membership *is* the proportionality, subsuming N3b-3. Route SETTLED (A-corrected);
-leaf sequence in *Hand-off*.
+`dim Ω = 1` is `6 − 5` via `Subspace.finrank_add_finrank_dualAnnihilator_eq` (fact 3,
+`finrank_sup_range_wedgeFixedLeft`, supplied `dim Φ̃ = 5`) and the perfect pairing
+`Submodule.comap_equiv_eq_map_symm` + `LinearEquiv.finrank_map_eq`. Build warning-clean, `lake lint`
+clean, `#print axioms` = the three standard axioms.
 
-**The settled route (a, corrected — coordinate-pairing dualCoannihilator).** The membership
-`complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` for `W = {n_u, n'}^⊥` is proved by placing both
-`complementIso(n_u ∧ n')` and a nonzero `range`-member (e.g. the point-join `w₀ ∧ w₁`, `w_i ∈ W`) in
-a common **1-dim** space and invoking N3b-2b-line. The common space is
-`Ω := {Z : ⋀²ℝ⁴ | ∀ c sharing a normal, (b.exteriorPower 2).toDual Z (extensor c) = 0}` — the
-`b.toDual`-orthogonal complement of the 5-dim shared-direction span `Φ̃ = n_u ∧ ℝ⁴ + n' ∧ ℝ⁴`. Three
-load-bearing facts; the pivot infra they all ride on (the reconciliation N3b-recon) is now **landed**:
-
-1. `complementIso(n_u ∧ n') ∈ Ω` — **green step (i)**
-   (`complementIso_toDual_extensor_eq_zero_of_shared_vector`), verbatim.
-2. `w₀ ∧ w₁ ∈ Ω` for `w_i ∈ W` — **landed** as `extensor_toDual_extensor_eq_zero_of_perp`. Via the
-   **Gram determinant**: N3b-recon rewrites `b.toDual (w₀ ∧ w₁) (extensor c) = det (i j ↦ b.toDual
-   (w j) (c i))`, and the incidence `b.toDual (w_i, c i₀) = 0` (`w_i ∈ W = {n_u,n'}^⊥`) makes **row
-   `i₀` vanish** (`det_eq_zero_of_row_eq_zero`). This is the `range ≤ Ω` inclusion the *prior* recon
-   got wrong (it asserted a false annihilation under the *volume* pairing) — resolved the right way:
-   `b.toDual` is the *coordinate* pairing, a Gram det, not the volume form.
-3. `dim Ω = 1` — **landed** as `finrank_sup_range_wedgeFixedLeft` (`dim Φ̃ = 5`, N3b-2b-β). `b.toDual`
-   is a perfect pairing (`Basis.toDual` is an iso in finite dim), so `dim Ω = 6 − dim Φ̃ = 1`.
-
-The membership, once landed, **subsumes N3b-3** (it *is* the proportionality, via N3b-2b-line).
-
-**N3b-2a landed** earlier (the point-join half): `extensor_mem_range_map_subtype_of_mem` in
-`Molecular/Meet.lean` — for `v : Fin 2 → ℝ⁴` with each `v i ∈ W`, the grade-2 extensor `extensor v`
-lies in `range (exteriorPower.map 2 W.subtype)`, via `exteriorPower.map_apply_ιMulti` +
-`exteriorPower.ιMulti_apply_coe`. The `extensor`/`ιMulti` coercion bridge the Blockers flagged was a
-single routine `Subtype.ext` + one coercion `rw` + `rfl` (under the one-bridge threshold, so no
-FRICTION entry). This places the point-join `p̄ᵢ ∨ p̄ⱼ` in the line `⋀²W` at `W = span{p̄ᵢ, p̄ⱼ}`.
-Pure Lean infra feeding N3b-3; no blueprint node flip (the target `lem:case-III-claim612-line-in-
-panel-union` stays red until N3b-3, and range-membership plumbing is below the blueprint
-include-bar). Build warning-clean, `lake lint` clean, `#print axioms` = the three standard axioms.
-
-**N3b-1 landed** earlier: `exteriorPower_map_subtype_injective` in `Molecular/Meet.lean` — the
-one-liner `exteriorPower.map_injective_field W.injective_subtype`, over a general
-`W : Submodule ℝ (Fin 4 → ℝ)`. Blueprint node `lem:complement-iso-exterior-map-injective` green in
-`chapter/meet.tex`.
+**The `range (map 2 W.subtype)` route was not needed.** The phase-open plan placed both members in
+`range (map 2 W.subtype)` (1-dim) via N3b-2a + N3b-2b-line; the landed proof routes the
+proportionality directly through `Ω` (the dual-annihilator line), which is cleaner — `Ω` is where
+both green step (i) and fact 2 already deposit their members. N3b-1 / N3b-2a / N3b-2b-line / the
+N3b-recon Gram-det reconciliation / facts 2 & 3 all remain landed, green Lean infra in `Meet.lean`
+(N3b-1 keeps its blueprint node `lem:complement-iso-exterior-map-injective`); fact 2 and the recon
+are the load-bearing inputs the final proof actually uses.
 
 **Nothing mid-stream.**
 
@@ -229,63 +196,54 @@ build:
   span{a ∧ b}` — `⊇` via `ι_add_mul_swap` (anticommutativity); `⊆` by left-multiplying `a ∧ v =
   b ∧ w` by `b` (`extensor ![b,a,v] = 0` ⟹ `v ∈ span{a,b}` via `linearIndependent_finSnoc`), so
   `a ∧ v ∈ span{a ∧ b}`. Pure Lean infra (no blueprint node — below the include-bar).
-- [ ] **The membership** (**next concrete commit**) `complementIso (n_u ∧ n') ∈ range (map 2
-  W.subtype)`. **Route SETTLED: A-corrected** (*Current state*); all three load-bearing facts now
-  landed: place both `complementIso(n_u ∧ n')` (fact 1, green step (i)) and the point-join `w₀ ∧ w₁`
-  (fact 2, `extensor_toDual_extensor_eq_zero_of_perp`) in the 1-dim `Ω = dualCoannihilator Φ̃` (fact
-  3, `finrank_sup_range_wedgeFixedLeft`), then N3b-2b-line. This membership *is* the proportionality,
-  so it **subsumes N3b-3**.
-- [ ] **N3b-3** (collapsed) — no separate proportionality work (it falls out of the membership); only
-  the annihilation transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0` (one `smul`-linearity step) + the final
-  node flip on `lem:case-III-claim612-line-in-panel-union`, retiring the green-modulo-N3b on N9
+- [x] **The membership / proportionality + transfer** (the capstone, this commit) — in
+  `Molecular/Meet.lean`: `complementIso_smul_eq_extensor_join` (`∃ c, c • complementIso(n_u ∧ n') =
+  extensor ![pi, pj]`) + `extensor_join_eq_zero_of_complementIso_eq_zero` (the `r(C)=0 ⟹ r(join)=0`
+  transfer). Both members in the 1-dim `Ω = (dualAnnihilator Φ̃).comap b.toDualEquiv` (the panel-meet
+  by green step (i), the point-join by fact 2); two members of a line, one nonzero, proportional.
+  **Routes through `Ω` directly, not `range (map 2 W.subtype)`** — cleaner than the phase-open plan
+  (which is why N3b-2a / N3b-2b-line, while still landed green infra, are not on the final route).
+  Flips `lem:case-III-claim612-line-in-panel-union` green; retires green-modulo-N3b on N9
   (`case_III_claim612`) and the candidate-completion chain.
 
 ## Blockers / open questions
 
-- **Membership route SETTLED (route A-corrected; *Current state*).** No longer open. All three
-  load-bearing facts landed (fact 1 = green step (i), Phase 22e; facts 2 & 3 this commit). The
-  residual build is the membership assembly: place both members in the 1-dim
-  `Ω = dualCoannihilator Φ̃`, then N3b-2b-line — then the annihilation transfer + node flip.
-- **The `ofNormals` defeq-timeout trap does NOT bite 22f** (carry from 22a–e, FRICTION). 22f is pure
+- **None — phase complete.** The N3b node is green; the only deferred dependent is the next-phase
+  `d=3` realization assembly (*Hand-off*), unchanged by 22f.
+- **The `ofNormals` defeq-timeout trap does NOT bite 22f** (carry from 22a–e, FRICTION). 22f was pure
   exterior-algebra / `Module.Dual` content with no graph-swap; the trap bites the *deferred `d=3`
   assembly* (the consumer that extracts `rn`/`ro` and wires real graph data), not N3b.
 
 ## Hand-off / next phase
 
-**N3b-recon landed this commit** (`exteriorPower_basis_toDual_eq_pairingDual_comp_map`), the single
-new infra. **Facts 2 & 3 of route A-corrected landed this commit**
-(`extensor_toDual_extensor_eq_zero_of_perp` = point-join Gram-det orthogonality;
-`finrank_sup_range_wedgeFixedLeft` + `inf_range_wedgeFixedLeft` = `dim Φ̃ = 5`). With fact 1 (green
-step (i)) these are all three load-bearing facts. The remaining leaf sequence to the node flip on
-`lem:case-III-claim612-line-in-panel-union`:
+**22f is complete.** N3b green ⟹ Claim 6.12 (N9) and the candidate-completion chain are fully green;
+the green-modulo-N3b language is retired across `case-iii.tex` / `case-ii.tex`.
 
-1. **The membership (next concrete commit)** `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)`:
-   build the 1-dim `Ω = dualCoannihilator Φ̃` (fact 3 gives `dim Ω = 6 − 5 = 1`), place both
-   `complementIso(n_u ∧ n')` (fact 1) and the point-join `w₀ ∧ w₁` (fact 2) in it, then N3b-2b-line
-   makes them proportional. This membership *is* the proportionality
-   `complementIso (n_u ∧ n') = λ·(p̄ᵢ ∨ p̄ⱼ)`, *subsuming* N3b-3. The genuinely-new wiring is forming
-   `Ω` (the `b.toDual`-orthogonal complement of `Φ̃`) and reading off `dim Ω = 1` from fact 3 via the
-   perfect-pairing duality of `b.exteriorPower.toDual`.
-2. **N3b-3 / node flip:** the `smul`-transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0` + the per-line duality
-   lemma (N3b-2a placing the join, the membership placing the meet, N3b-2b-line proportional) + flip
-   `lem:case-III-claim612-line-in-panel-union` green (retiring green-modulo-N3b on N9 + the
-   candidate-completion chain). Run `blueprint/verify.sh` on that flip.
+The next deferred-**unlettered** cut is the **`d=3` realization assembly** —
+`prop:rigidity-matrix-prop11` `hub` partition brick (Track-independent, Phase-19-partition) + the
+`thm:theorem-55` flip + wiring the fully-green `case_I_realization` into `theorem_55_generic`'s
+Case-I branch — which is what finally takes the two producer nodes `lem:case-II-realization` /
+`lem:case-III` themselves green (and where the `ofNormals` defeq-timeout trap bites). Then
+**general-`d`** (Lemma 6.13) is **Phase 23**. KT math: `notes/Phase22e.md` *Hand-off*,
+`notes/Phase22d.md` *Hand-off*, KT §6.4; `notes/AlgebraicIndependence.md` (N3b stayed
+alg-independence-free, pure Grassmann–Cayley).
 
 Route (B) — direct decomposability — stays rejected (no Hodge/decomposable API in mathlib;
 `complementIso` noncomputable → no `decide`).
 
-**After 22f closes** (N3b green → N9 + the candidate-completion chain fully green): the next
-deferred-**unlettered** cut is the **`d=3` realization assembly** — `prop:rigidity-matrix-prop11` `hub`
-partition brick (Track-independent, Phase-19-partition) + the `thm:theorem-55` flip + wiring the
-fully-green `case_I_realization` into `theorem_55_generic`'s Case-I branch — which is what finally takes
-the two producer nodes `lem:case-II-realization` / `lem:case-III` themselves green (and where the
-`ofNormals` defeq-timeout trap bites). Then **general-`d`** (Lemma 6.13) is **Phase 23**. KT math:
-`notes/Phase22e.md` *22f plan* / *Hand-off*, `notes/Phase22d.md` *Hand-off*, KT §6.4.1 (eq. (6.45));
-`notes/AlgebraicIndependence.md` (N3b stays alg-independence-free, pure Grassmann–Cayley).
-
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **The capstone routes through `Ω` directly, not `range (map 2 W.subtype)` (2026-06-07, close).**
+  `complementIso_smul_eq_extensor_join` places both members in the 1-dim
+  `Ω = (dualAnnihilator Φ̃).comap b.toDualEquiv` and proportionalizes there. `Ω` is where green
+  step (i) (panel-meet) and fact 2 (point-join) already deposit their members, so no `range`
+  framing or pull-back is needed. `dim Ω = 1` is `6 − 5` via
+  `Subspace.finrank_add_finrank_dualAnnihilator_eq` + the perfect pairing
+  (`comap_equiv_eq_map_symm` + `LinearEquiv.finrank_map_eq`); the `n'`-summand panel-meet kill uses
+  the general dictionary half `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` (explicit `X`/`B`
+  to dodge a `whnf` timeout) + a shared-`n'` `wedgeProd`-vanishing. N3b-1 / N3b-2a / N3b-2b-line /
+  the recon / facts 2 & 3 all stay landed green infra; fact 2 + the recon are the load-bearing ones.
 - **Fact 2 (point-join orthogonality) collapses to one `det_eq_zero_of_row_eq_zero` (2026-06-07).**
   `extensor_toDual_extensor_eq_zero_of_perp`: after the two `⟨extensor ·, _⟩ = ιMulti ·` coercion
   bridges (`Subtype.ext; rw [ιMulti_apply_coe]; rfl`, the N3b-2a idiom), N3b-recon + `map_apply_ιMulti`

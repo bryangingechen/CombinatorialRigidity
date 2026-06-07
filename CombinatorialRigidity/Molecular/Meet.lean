@@ -1040,4 +1040,144 @@ theorem finrank_sup_range_wedgeFixedLeft (a b : Fin 4 → ℝ) (hab : LinearInde
     finrank_range_wedgeFixedLeft ha, finrank_range_wedgeFixedLeft hb] at hsum
   omega
 
+/-! ## The point-join ↔ panel-meet duality (the membership assembly N3b, KT eq. (6.45))
+(`lem:case-III-claim612-line-in-panel-union`)
+
+The capstone of the duality bridge (Phase 22f): the point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]`
+and the panel-meet `C(L) = complementIso(n_u ∧ n')` of the *same* line `L = p̄ᵢ p̄ⱼ ⊂ Π(u)` are
+scalar multiples in `⋀²ℝ⁴`. The membership route (route A-corrected, *Decisions made*): both lie
+in the common `1`-dimensional space `Ω = dualAnnihilator Φ̃` transported across the perfect pairing
+`b.toDualEquiv : ⋀²ℝ⁴ ≃ₗ Dual(⋀²ℝ⁴)`, where `Φ̃ = n_u ∧ ℝ⁴ + n' ∧ ℝ⁴` is the `5`-dimensional
+shared-direction span (fact 3, `finrank_sup_range_wedgeFixedLeft`); `dim Ω = 6 − 5 = 1`. The
+point-join is in `Ω` by the Gram-determinant orthogonality (fact 2,
+`extensor_toDual_extensor_eq_zero_of_perp`, applied to each summand `n_u ∧ v` / `n' ∧ v`, since
+`p̄ᵢ, p̄ⱼ` are `toDual`-orthogonal to both `n_u` and `n'`); the panel-meet is in `Ω` by the
+dictionary half (fact 1 = green step (i), `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`, the
+`n_u ∧ v` summand sharing `n_u` directly, the `n' ∧ v` summand via the shared `n'` in the appended
+family). Two members of a line, the panel-meet nonzero (`{n_u, n'}` independent), are proportional.
+
+The annihilation transfer is then immediate: a screw functional `r` with `r(C(L)) = 0` has
+`r(p̄ᵢ ∨ p̄ⱼ) = c · r(C(L)) = 0` for the scale `c`. This is the duality KT use implicitly reading
+eq. (6.45): the spanning point-joins and the annihilated panel-meets are the *same* extensors of
+the lines in the panel union (KT §6.4.1). -/
+
+/-- **The point-join ↔ panel-meet proportionality** (`lem:case-III-claim612-line-in-panel-union`,
+N3b assembly). At `d = 3` (`⋀²ℝ⁴`), let `n_u, n'` be the two panel normals of a panel `Π(u)`
+(`{n_u, n'}` independent) and `pi, pj` two points whose connecting line `L = pi pj` lies in `Π(u)`
+(each `pi, pj` is `toDual`-orthogonal to both normals — the incidence `⟨p̄, n_u⟩ = ⟨p̄, n'⟩ = 0`).
+Then the point-join `extensor ![pi, pj]` is a scalar multiple of the panel-meet
+`complementIso (n_u ∧ n')`: `∃ c, c • complementIso(n_u ∧ n') = extensor ![pi, pj]`. Both are the
+Plücker vector of `L`, up to the projective scale. Membership route A-corrected: both lie in the
+`1`-dimensional `Ω = dualAnnihilator Φ̃` (fact 3) — the point-join by the Gram-determinant
+orthogonality (fact 2), the panel-meet by the dictionary half (green step (i)) — and the panel-meet
+is nonzero, so the two are proportional. -/
+theorem complementIso_smul_eq_extensor_join (n_u n' pi pj : Fin 4 → ℝ)
+    (hpair : LinearIndependent ℝ ![n_u, n'])
+    (hi_u : (Pi.basisFun ℝ (Fin 4)).toDual pi n_u = 0)
+    (hi_u' : (Pi.basisFun ℝ (Fin 4)).toDual pi n' = 0)
+    (hj_u : (Pi.basisFun ℝ (Fin 4)).toDual pj n_u = 0)
+    (hj_u' : (Pi.basisFun ℝ (Fin 4)).toDual pj n' = 0) :
+    ∃ c : ℝ, c • (complementIso (k := 2) (j := 2) (by omega)
+        ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩)
+      = (⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ : ⋀[ℝ]^2 (Fin 4 → ℝ)) := by
+  set b := Pi.basisFun ℝ (Fin 4) with hb
+  set Φ : Submodule ℝ (⋀[ℝ]^2 (Fin 4 → ℝ)) :=
+    LinearMap.range (wedgeFixedLeft n_u) ⊔ LinearMap.range (wedgeFixedLeft n') with hΦ
+  set Ω : Submodule ℝ (⋀[ℝ]^2 (Fin 4 → ℝ)) :=
+    Φ.dualAnnihilator.comap (b.exteriorPower 2).toDualEquiv.toLinearMap with hΩ
+  -- `dim Ω = 6 − dim Φ̃ = 6 − 5 = 1` (fact 3 + the perfect pairing's annihilator count).
+  have hdim : Module.finrank ℝ Ω = 1 := by
+    rw [hΩ, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]
+    have h6 : Module.finrank ℝ (⋀[ℝ]^2 (Fin 4 → ℝ)) = 6 := by
+      rw [exteriorPower.finrank_eq, Module.finrank_pi]; rfl
+    have hkey := Subspace.finrank_add_finrank_dualAnnihilator_eq Φ
+    have h5 : Module.finrank ℝ Φ = 5 := finrank_sup_range_wedgeFixedLeft n_u n' hpair
+    omega
+  -- A member that `toDual`-kills all of `Φ̃` lies in `Ω`.
+  have hmem : ∀ Z : ⋀[ℝ]^2 (Fin 4 → ℝ),
+      (∀ φ ∈ Φ, (b.exteriorPower 2).toDual Z φ = 0) → Z ∈ Ω := by
+    intro Z hZ
+    rw [hΩ, Submodule.mem_comap, Submodule.mem_dualAnnihilator]
+    intro φ hφ
+    rw [LinearEquiv.coe_coe, Module.Basis.toDualEquiv_apply]
+    exact hZ φ hφ
+  -- Killing both summand ranges `n_u ∧ ℝ⁴`, `n' ∧ ℝ⁴` kills all of `Φ̃`.
+  have hkills : ∀ Z : ⋀[ℝ]^2 (Fin 4 → ℝ),
+      (∀ v, (b.exteriorPower 2).toDual Z (wedgeFixedLeft n_u v) = 0) →
+      (∀ v, (b.exteriorPower 2).toDual Z (wedgeFixedLeft n' v) = 0) → Z ∈ Ω := by
+    intro Z hu hv'
+    refine hmem Z fun φ hφ => ?_
+    rw [hΦ, Submodule.mem_sup] at hφ
+    obtain ⟨x, ⟨vx, hx⟩, y, ⟨vy, hy⟩, rfl⟩ := hφ
+    rw [map_add, ← hx, ← hy, hu, hv', add_zero]
+  -- The point-join `extensor ![pi, pj] ∈ Ω`: fact 2 (Gram-det orthogonality) on each summand.
+  have hJ : (⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ : ⋀[ℝ]^2 (Fin 4 → ℝ)) ∈ Ω := by
+    refine hkills _ (fun v => ?_) (fun v => ?_)
+    · rw [show (wedgeFixedLeft n_u v) = (⟨extensor ![n_u, v], extensor_mem_exteriorPower _⟩ :
+          ⋀[ℝ]^2 (Fin 4 → ℝ)) from by apply Subtype.ext; rw [coe_wedgeFixedLeft]]
+      exact extensor_toDual_extensor_eq_zero_of_perp ![pi, pj] ![n_u, v] 0
+        (by intro j; fin_cases j <;> simp_all)
+    · rw [show (wedgeFixedLeft n' v) = (⟨extensor ![n', v], extensor_mem_exteriorPower _⟩ :
+          ⋀[ℝ]^2 (Fin 4 → ℝ)) from by apply Subtype.ext; rw [coe_wedgeFixedLeft]]
+      exact extensor_toDual_extensor_eq_zero_of_perp ![pi, pj] ![n', v] 0
+        (by intro j; fin_cases j <;> simp_all)
+  -- The panel-meet `complementIso (n_u ∧ n') ∈ Ω`: green step (i) on each summand (the `n'`
+  -- summand through the appended-family shared `n'`).
+  have hC : (complementIso (k := 2) (j := 2) (by omega)
+      ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) ∈ Ω := by
+    refine hkills _ (fun v => ?_) (fun v => ?_)
+    · rw [show (wedgeFixedLeft n_u v) = (⟨extensor ![n_u, v], extensor_mem_exteriorPower _⟩ :
+          ⋀[ℝ]^2 (Fin 4 → ℝ)) from by apply Subtype.ext; rw [coe_wedgeFixedLeft]]
+      exact complementIso_toDual_extensor_eq_zero_of_shared_vector ![n_u, n'] ![n_u, v] rfl
+    · have hwp : wedgeProd (k := 2) (j := 2) (by omega)
+          ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩
+          ⟨extensor ![n', v], extensor_mem_exteriorPower _⟩ = 0 := by
+        apply Subtype.ext
+        rw [coe_wedgeProd, ZeroMemClass.coe_zero]
+        change extensor ![n_u, n'] ∨ₑ extensor ![n', v] = 0
+        rw [join_extensor]
+        apply extensor_eq_zero_of_eq _ (a := Fin.castAdd 2 1) (b := Fin.natAdd 2 0)
+        · rw [Fin.append_left, Fin.append_right]; rfl
+        · decide
+      rw [show (wedgeFixedLeft n' v) = (⟨extensor ![n', v], extensor_mem_exteriorPower _⟩ :
+          ⋀[ℝ]^2 (Fin 4 → ℝ)) from by apply Subtype.ext; rw [coe_wedgeFixedLeft]]
+      exact complementIso_toDual_eq_zero_of_wedgeProd_eq_zero (k := 2) (j := 2) (by omega)
+        ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩
+        ⟨extensor ![n', v], extensor_mem_exteriorPower _⟩ hwp
+  -- The panel-meet is nonzero (`{n_u, n'}` independent), so the two members of the line `Ω` are
+  -- proportional.
+  have hXne : (⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩ : ⋀[ℝ]^2 (Fin 4 → ℝ)) ≠ 0 := by
+    rw [Ne, Subtype.ext_iff, ZeroMemClass.coe_zero]
+    exact (extensor_ne_zero_iff_linearIndependent ![n_u, n']).mpr hpair
+  have hCne := (LinearEquiv.map_ne_zero_iff (complementIso (k := 2) (j := 2) (by omega))).mpr hXne
+  have hspan : (ℝ ∙ (complementIso (k := 2) (j := 2) (by omega)
+      ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩)) = Ω :=
+    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 hC)
+      (by rw [finrank_span_singleton hCne, hdim])
+  rw [← Submodule.mem_span_singleton, hspan]
+  exact hJ
+
+/-- **Point-join ↔ panel-meet duality: the annihilation transfer**
+(`lem:case-III-claim612-line-in-panel-union`, N3b, KT eq. (6.45)). At `d = 3` (`⋀²ℝ⁴`), with the
+line incidence of `complementIso_smul_eq_extensor_join` (`{n_u, n'}` independent panel normals of
+`Π(u)`, the two points `pi, pj` of the line `L = pi pj ⊂ Π(u)` orthogonal to both normals), a screw
+functional `r : Dual(⋀²ℝ⁴)` annihilating the panel-meet `C(L) = complementIso (n_u ∧ n')` also
+annihilates the spanning point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]`. Immediate from the
+proportionality `extensor ![pi, pj] = c • complementIso (n_u ∧ n')`
+(`complementIso_smul_eq_extensor_join`): `r(extensor ![pi, pj]) = c · r(C(L)) = 0`. This is the
+contrapositive glue of the Claim 6.12 capstone: an `r` annihilating every panel-meet of lines in
+`Π(a) ∪ Π(b) ∪ Π(c)` annihilates each spanning join, forcing `r = 0`. -/
+theorem extensor_join_eq_zero_of_complementIso_eq_zero (n_u n' pi pj : Fin 4 → ℝ)
+    (hpair : LinearIndependent ℝ ![n_u, n'])
+    (hi_u : (Pi.basisFun ℝ (Fin 4)).toDual pi n_u = 0)
+    (hi_u' : (Pi.basisFun ℝ (Fin 4)).toDual pi n' = 0)
+    (hj_u : (Pi.basisFun ℝ (Fin 4)).toDual pj n_u = 0)
+    (hj_u' : (Pi.basisFun ℝ (Fin 4)).toDual pj n' = 0)
+    (r : Module.Dual ℝ (⋀[ℝ]^2 (Fin 4 → ℝ)))
+    (hr : r (complementIso (k := 2) (j := 2) (by omega)
+      ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0) :
+    r ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ = 0 := by
+  obtain ⟨c, hc⟩ := complementIso_smul_eq_extensor_join n_u n' pi pj hpair hi_u hi_u' hj_u hj_u'
+  rw [← hc, map_smul, hr, smul_zero]
+
 end CombinatorialRigidity.Molecular
