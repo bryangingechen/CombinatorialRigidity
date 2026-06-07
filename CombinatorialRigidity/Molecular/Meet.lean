@@ -630,6 +630,30 @@ theorem exteriorPower_map_subtype_injective (W : Submodule ℝ (Fin 4 → ℝ)) 
     Function.Injective (exteriorPower.map 2 W.subtype) :=
   exteriorPower.map_injective_field W.injective_subtype
 
+/-- **N3b-2, the point-join half: a `2`-extensor of vectors in `W` lies in `⋀²W ↪ ⋀²ℝ⁴`**
+(`lem:case-III-claim612-line-in-panel-union`). Second sub-leaf of the point-join ↔ panel-meet
+duality assembly (Phase 22f) on top of the injective pull-back N3b-1
+(`exteriorPower_map_subtype_injective`). If every vector of a family `v : Fin 2 → ℝ⁴` lies in a
+subspace `W`, the grade-2 extensor `extensor v` (as an element of `⋀²ℝ⁴`) lies in the range of the
+inclusion `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴` — it is the image of the abstract wedge
+`exteriorPower.ιMulti ℝ 2` of the family lifted into `W` (`fun i ↦ ⟨v i, hv i⟩`), by
+`exteriorPower.map_apply_ιMulti` (`map n f (ιMulti m) = ιMulti (f ∘ m)`) and the coercion
+`exteriorPower.ιMulti_apply_coe`. Applied
+to the point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]` at `W = span{p̄ᵢ, p̄ⱼ} = {n_u, n'}^⊥` (each
+`p̄ᵢ ∈ W` by the incidence `⟨p̄ᵢ, n_u⟩ = ⟨p̄ᵢ, n'⟩ = 0`), this places the join in the line `⋀²W`,
+the first of the two members N3b-3 pulls back to apply step (ii). The companion panel-meet
+membership (`C(L) = complementIso (n_u ∧ n') ∈ ⋀²W`, the range-membership upgrade of step (i))
+lands next. -/
+theorem extensor_mem_range_map_subtype_of_mem
+    (W : Submodule ℝ (Fin 4 → ℝ)) (v : Fin 2 → Fin 4 → ℝ) (hv : ∀ i, v i ∈ W) :
+    (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin 4 → ℝ))
+      ∈ LinearMap.range (exteriorPower.map 2 W.subtype) := by
+  refine ⟨exteriorPower.ιMulti ℝ 2 (fun i => ⟨v i, hv i⟩), ?_⟩
+  rw [exteriorPower.map_apply_ιMulti]
+  apply Subtype.ext
+  rw [exteriorPower.ιMulti_apply_coe]
+  rfl
+
 /-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
 (ingredient (c), the rationality refinement of the signed-permutation matrix; B0
 rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),

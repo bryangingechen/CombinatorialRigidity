@@ -12,21 +12,34 @@ scalar. KT math: `notes/Phase22e.md` *22f plan* + KT §6.4.1 (eq. (6.45)); 22f *
 
 ## Current state
 
-**Next concrete commit: N3b-2** — both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` lie in
-`range (exteriorPower.map 2 W.subtype)` for `W = {n_u, n'}^⊥`. `p̄ᵢ ∨ p̄ⱼ` from the incidence
-`⟨p̄ᵢ, n_u⟩ = ⟨p̄ᵢ, n'⟩ = 0` (each `p̄ᵢ ∈ W`); `C(L)` the non-operational range-membership upgrade of
-green step (i). Direct mathlib API: `exteriorPower.map_apply_ιMulti_family` (verified to resolve:
-`map n f (ιMulti_family v s) = ιMulti_family (f ∘ v) s`), `exteriorPower.ιMulti_family_span`. Watch
-the possible `extensor`/`ιMulti_family` coercion bridge (Blockers). N3b-3 (proportionality +
-annihilation transfer) then composes on top, flipping `lem:case-III-claim612-line-in-panel-union`
-green and retiring the green-modulo-N3b on N9 (`case_III_claim612`) and the candidate-completion
-chain (`lem:case-III-candidate-row`).
+**Next concrete commit: N3b-2b** — the panel-meet half: `C(L) = complementIso (n_u ∧ n') ∈
+range (exteriorPower.map 2 W.subtype)` for `W = {n_u, n'}^⊥`. This is the *non-operational*
+range-membership upgrade of green step (i)
+(`complementIso_toDual_extensor_eq_zero_of_shared_vector`, which gives only the *dual* reading —
+annihilated by every 2-extensor sharing a normal). Honest range membership is a perfect-pairing
+double-orthogonal argument: identify `range (map 2 W.subtype)` (the line `⋀²W`) with the
+`b.toDual`-annihilator of `span{2-extensors sharing a direction with span{n_u, n'}}`, then step (i)
+puts `complementIso (n_u ∧ n')` in that annihilator. This is genuinely heavier than the point-join
+half (it needs the orthogonal-of-`⋀²W` identification), so it is its own leaf — spike mathlib for a
+`Submodule.dualAnnihilator`/double-orthogonal exterior-power API before building. N3b-3
+(proportionality via step (ii) + annihilation transfer) then composes on top of N3b-2a + N3b-2b,
+flipping `lem:case-III-claim612-line-in-panel-union` green and retiring the green-modulo-N3b on N9
+(`case_III_claim612`) and the candidate-completion chain (`lem:case-III-candidate-row`).
 
-**N3b-1 landed** (this commit): `exteriorPower_map_subtype_injective` in `Molecular/Meet.lean` — the
-one-liner `exteriorPower.map_injective_field W.injective_subtype`, stated over a general
-`W : Submodule ℝ (Fin 4 → ℝ)` in the concrete `⋀²ℝ⁴` shape for N3b-2/3 to consume. Blueprint node
-`lem:complement-iso-exterior-map-injective` added green in `chapter/meet.tex` alongside steps (i)/(ii);
-`verify.sh` green, supersession + reference gates clean.
+**N3b-2a landed** (this commit, the point-join half): `extensor_mem_range_map_subtype_of_mem` in
+`Molecular/Meet.lean` — for `v : Fin 2 → ℝ⁴` with each `v i ∈ W`, the grade-2 extensor `extensor v`
+lies in `range (exteriorPower.map 2 W.subtype)`, via `exteriorPower.map_apply_ιMulti` +
+`exteriorPower.ιMulti_apply_coe`. The `extensor`/`ιMulti` coercion bridge the Blockers flagged was a
+single routine `Subtype.ext` + one coercion `rw` + `rfl` (under the one-bridge threshold, so no
+FRICTION entry). This places the point-join `p̄ᵢ ∨ p̄ⱼ` in the line `⋀²W` at `W = span{p̄ᵢ, p̄ⱼ}`.
+Pure Lean infra feeding N3b-3; no blueprint node flip (the target `lem:case-III-claim612-line-in-
+panel-union` stays red until N3b-3, and range-membership plumbing is below the blueprint
+include-bar). Build warning-clean, `lake lint` clean, `#print axioms` = the three standard axioms.
+
+**N3b-1 landed** earlier: `exteriorPower_map_subtype_injective` in `Molecular/Meet.lean` — the
+one-liner `exteriorPower.map_injective_field W.injective_subtype`, over a general
+`W : Submodule ℝ (Fin 4 → ℝ)`. Blueprint node `lem:complement-iso-exterior-map-injective` green in
+`chapter/meet.tex`.
 
 **Nothing mid-stream.**
 
@@ -130,9 +143,15 @@ build:
   2 W.subtype` injective for `W : Submodule ℝ (Fin 4 → ℝ)` (the general `⋀²ℝ⁴` shape, so N3b-2/3
   instantiate at `W = {n_u, n'}^⊥`). One-liner `exteriorPower.map_injective_field W.injective_subtype`
   as recon-predicted; no retraction. Blueprint `lem:complement-iso-exterior-map-injective` (green).
-- [ ] **N3b-2** — both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` lie in `range (exteriorPower.map 2 W.subtype)`. `p̄ᵢ ∨ p̄ⱼ`
-  from incidence `⟨p̄ᵢ, n_u⟩ = ⟨p̄ᵢ, n'⟩ = 0` (each `p̄ᵢ ∈ W`); `C(L)` the non-operational range-membership
-  upgrade of the green step (i). Direct mathlib API (`map_apply_ιMulti_family`, `ιMulti_family_span`).
+- [x] **N3b-2a** (point-join half) — `extensor_mem_range_map_subtype_of_mem`: for `v : Fin 2 → ℝ⁴`
+  with each `v i ∈ W`, `extensor v ∈ range (exteriorPower.map 2 W.subtype)`. Direct mathlib API
+  (`map_apply_ιMulti`, `ιMulti_apply_coe`); one routine `Subtype.ext` coercion bridge. Places the
+  point-join `p̄ᵢ ∨ p̄ⱼ` in `⋀²W`. Pure Lean infra (no blueprint node — below the include-bar).
+- [ ] **N3b-2b** (panel-meet half) — `C(L) = complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)`,
+  the non-operational range-membership upgrade of green step (i). Perfect-pairing double-orthogonal
+  argument (identify `range (map 2 W.subtype)` with the `b.toDual`-annihilator of the
+  shared-direction 2-extensors; step (i) lands `complementIso (n_u ∧ n')` in it). Heavier than
+  N3b-2a — spike mathlib for double-orthogonal / `dualAnnihilator` exterior-power API first.
 - [ ] **N3b-3** — proportionality via the green step (ii) `exteriorPower_finrank_eq_one_proportional`
   (pull back along the injective N3b-1 map into `⋀²W`, proportional there, push forward) + the
   annihilation transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0`. Flips
@@ -141,21 +160,24 @@ build:
 
 ## Blockers / open questions
 
-- **Possible N3b-2 coercion bridge (watch, not a blocker).** The project's `extensor`/`join` live in
-  `ExteriorAlgebra ℝ (Fin 4 → ℝ)` (graded into `⋀[ℝ]^2` via `extensor_mem_exteriorPower`), while
-  mathlib's range API is phrased via `ιMulti_family`. N3b-2 may need a `change`/`Subtype.ext`
-  coercion step to bridge the two presentations (cf. the green step (i)'s `change extensor n ∨ₑ
-  extensor c = 0`). If it grows past one routine bridge, lift to FRICTION.
+- **N3b-2a coercion bridge — resolved, one routine step (not FRICTION).** The project's
+  `extensor`/`join` live in `ExteriorAlgebra ℝ (Fin 4 → ℝ)` (graded into `⋀[ℝ]^2` via
+  `extensor_mem_exteriorPower`), while mathlib's range API is phrased via `ιMulti`. The point-join
+  half bridged the two with a single `Subtype.ext` + `rw [exteriorPower.ιMulti_apply_coe]` + `rfl` —
+  under the one-bridge threshold, so no FRICTION entry. The panel-meet half (N3b-2b) is not a
+  coercion question; it is the double-orthogonal argument (Current state).
 - **The `ofNormals` defeq-timeout trap does NOT bite 22f** (carry from 22a–e, FRICTION). 22f is pure
   exterior-algebra / `Module.Dual` content with no graph-swap; the trap bites the *deferred `d=3`
   assembly* (the consumer that extracts `rn`/`ro` and wires real graph data), not N3b.
 
 ## Hand-off / next phase
 
-**Next: land N3b-2** — both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` in `range (exteriorPower.map 2 W.subtype)` (see
-*Current state* for the mathlib API and the coercion-bridge watch), then N3b-3 to flip
-`lem:case-III-claim612-line-in-panel-union` green. Each leaf adds/flips its blueprint node in the same
-commit (forward-mode); run `blueprint/verify.sh` on any `\lean`/`\leanok` flip.
+**Next: land N3b-2b** — the panel-meet membership `C(L) = complementIso (n_u ∧ n') ∈
+range (exteriorPower.map 2 W.subtype)` (see *Current state* for the double-orthogonal route; spike
+the `dualAnnihilator`/double-orthogonal exterior-power API first), then N3b-3 (proportionality + the
+annihilation transfer) to flip `lem:case-III-claim612-line-in-panel-union` green. The point-join half
+N3b-2a is done. Both N3b-2b and N3b-3 are pure-Lean infra except N3b-3's final node flip; run
+`blueprint/verify.sh` on the N3b-3 `\lean`/`\leanok` flip.
 
 **After 22f closes** (N3b green → N9 + the candidate-completion chain fully green): the next
 deferred-**unlettered** cut is the **`d=3` realization assembly** — `prop:rigidity-matrix-prop11` `hub`
@@ -169,6 +191,15 @@ the two producer nodes `lem:case-II-realization` / `lem:case-III` themselves gre
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3b-2 split into a point-join half (2a) and a panel-meet half (2b) (2026-06-07).** The 22f open
+  scoped N3b-2 as one commit putting *both* `p̄ᵢ ∨ p̄ⱼ` and `C(L)` in `range (map 2 W.subtype)`.
+  Building it surfaced an asymmetry: the point-join (2a, `extensor_mem_range_map_subtype_of_mem`) is
+  a direct `map_apply_ιMulti` image (the recon-anticipated mathlib API + one coercion `Subtype.ext`),
+  but the panel-meet (2b) is *not* a direct image — step (i) gives only the dual reading (annihilated
+  by sharing-direction extensors), and the honest range membership is a perfect-pairing
+  double-orthogonal argument identifying `range (map 2 W.subtype) = ⋀²W` with the annihilator of the
+  shared-direction 2-extensors. That is genuinely heavier, so 2b is its own leaf. 2a is pure Lean
+  infra below the blueprint include-bar (no node).
 - **N3b-1 resolved to a mathlib one-liner at open — no retraction (2026-06-07, design recon).** The
   22e plan flagged N3b-1 as "concrete retraction; spike mathlib first." The spike found
   `exteriorPower.map_injective_field` (injectivity of `⋀ⁿ f` from injectivity of `f`, over a field),
