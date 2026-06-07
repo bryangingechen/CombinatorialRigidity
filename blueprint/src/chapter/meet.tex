@@ -211,6 +211,30 @@ consume them; projective invariance is Phase~25.
   vector $x$ has every vector a multiple of $x$ ($\mathrm{finrank\_eq\_one\_iff\_of\_nonzero}'$).
 \end{proof}
 
+\begin{lemma}[The exterior square of a subspace includes into $\bigwedge^{2} \R^4$ injectively (assembly N3b-1)]
+  \label{lem:complement-iso-exterior-map-injective}
+  \lean{CombinatorialRigidity.Molecular.exteriorPower_map_subtype_injective}
+  \leanok
+  \uses{def:meet-complement-iso}
+  First sub-leaf of the point-join $\leftrightarrow$ panel-meet duality \emph{assembly}
+  (\cref{lem:case-III-claim612-line-in-panel-union}) on top of steps (i)
+  (\cref{lem:complement-iso-decomposable-wedge-perp}) and (ii)
+  (\cref{lem:complement-iso-line-one-dim}). For a subspace $W \subseteq \R^4$, the exterior-power map
+  $\bigwedge^{2}(W.\mathrm{subtype}) : \bigwedge^{2} W \to \bigwedge^{2} \R^4$ induced by the
+  inclusion $W \hookrightarrow \R^4$ is injective. This is the pull-back map of the assembly: it
+  transports the two members of $\bigwedge^{2} \R^4$ --- the point-join $\bar{p_i} \vee \bar{p_j}$
+  and the panel-meet $C(L)$, both lying in the image $\bigwedge^{2} W$ --- back into the line
+  $\bigwedge^{2} W$, where step (ii) makes them proportional.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Over the field $\R$, an injective linear map induces an injective exterior power
+  ($\mathrm{exteriorPower.map\_injective\_field}$); the inclusion $W.\mathrm{subtype}$ is injective
+  ($\mathrm{Submodule.injective\_subtype}$). (No retraction is needed: the $\mathrm{CommRing}$-level
+  injectivity of $\bigwedge^{n} f$ requires an explicit left inverse of $f$, but over a field
+  injectivity of $f$ alone suffices.)
+\end{proof}
+
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
   \lean{CombinatorialRigidity.Molecular.meet}

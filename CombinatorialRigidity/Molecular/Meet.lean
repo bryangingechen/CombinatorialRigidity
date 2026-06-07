@@ -602,6 +602,34 @@ theorem exteriorPower_finrank_eq_one_proportional {W : Type*} [AddCommGroup W] [
     {x : ⋀[ℝ]^2 W} (hx : x ≠ 0) (y : ⋀[ℝ]^2 W) : ∃ c : ℝ, c • x = y :=
   (finrank_eq_one_iff_of_nonzero' x hx).mp (finrank_exteriorPower_two_eq_one hW) y
 
+/-! ## The point-join ↔ panel-meet duality assembly, N3b-1: the inclusion `⋀²W ↪ ⋀²ℝ⁴`
+(`lem:case-III-claim612-line-in-panel-union`)
+
+The first sub-leaf of the duality *assembly* (Phase 22f) on top of the green operational steps (i)
+(`complementIso_toDual_extensor_eq_zero_of_shared_vector`, placing the panel-meet in `⋀²W`) and (ii)
+(`exteriorPower_finrank_eq_one_proportional`, `⋀²W` is a line). The assembly places both the
+point-join `p̄ᵢ ∨ p̄ⱼ` and the panel-meet `C(L)` in a common `⋀²W` — for `W = {n_u, n'}^⊥` the
+2-dim space spanned by the two points — and extracts the proportionality scalar there. To pull the
+two members of `⋀²ℝ⁴` back into `⋀²W` (where step (ii) bites) one needs the inclusion
+`exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴` to be injective. Over the field `ℝ`, injectivity of
+the inclusion `⋀²W ↪ ⋀²ℝ⁴` follows from injectivity of `W.subtype` by the general
+`exteriorPower.map_injective_field` (no retraction needed — the `CommRing`-level
+`exteriorPower.map_injective` requiring an explicit retraction is the fallback, unused over a
+field). -/
+
+/-- **N3b-1 of the point-join ↔ panel-meet duality assembly: the inclusion `⋀²W ↪ ⋀²ℝ⁴` is
+injective** (`lem:case-III-claim612-line-in-panel-union`). For a submodule `W` of `ℝ⁴`, the
+exterior-power map
+`exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴` induced by the (injective) inclusion `W.subtype` is
+injective. Over the field `ℝ` this is immediate from injectivity of `W.subtype`
+(`Submodule.injective_subtype`) via `exteriorPower.map_injective_field`. This is the pull-back map
+of the assembly: it transports the two `⋀²ℝ⁴` members (the point-join `p̄ᵢ ∨ p̄ⱼ` and the panel-meet
+`C(L)`, both lying in the image `⋀²W` by N3b-2) back into the line `⋀²W`, where step (ii)
+(`exteriorPower_finrank_eq_one_proportional`) makes them proportional. -/
+theorem exteriorPower_map_subtype_injective (W : Submodule ℝ (Fin 4 → ℝ)) :
+    Function.Injective (exteriorPower.map 2 W.subtype) :=
+  exteriorPower.map_injective_field W.injective_subtype
+
 /-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
 (ingredient (c), the rationality refinement of the signed-permutation matrix; B0
 rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),

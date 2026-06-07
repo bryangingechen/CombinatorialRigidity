@@ -12,19 +12,23 @@ scalar. KT math: `notes/Phase22e.md` *22f plan* + KT §6.4.1 (eq. (6.45)); 22f *
 
 ## Current state
 
-**Next concrete commit: N3b-1** — `exteriorPower.map 2 W.subtype` injective for the 2-dim
-`W = {n_u, n'}^⊥`, in `Molecular/Meet.lean`. The opening design recon (below) found this is a
-**one-liner over mathlib**, not a hand-rolled retraction:
-`exteriorPower.map_injective_field W.injective_subtype` (both lemmas verified to resolve and compose
-in the Meet.lean environment via `lean_multi_attempt`, closing with no goals). N3b-2 (range
-membership) and N3b-3 (proportionality + annihilation transfer) then compose on top, all green
-operational leaves and direct mathlib API in place. Once N3b-1/2/3 land, the assembly flips
-`lem:case-III-claim612-line-in-panel-union` green, retiring the green-modulo-N3b on N9
-(`case_III_claim612`) and the whole candidate-completion chain (`lem:case-III-candidate-row`).
+**Next concrete commit: N3b-2** — both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` lie in
+`range (exteriorPower.map 2 W.subtype)` for `W = {n_u, n'}^⊥`. `p̄ᵢ ∨ p̄ⱼ` from the incidence
+`⟨p̄ᵢ, n_u⟩ = ⟨p̄ᵢ, n'⟩ = 0` (each `p̄ᵢ ∈ W`); `C(L)` the non-operational range-membership upgrade of
+green step (i). Direct mathlib API: `exteriorPower.map_apply_ιMulti_family` (verified to resolve:
+`map n f (ιMulti_family v s) = ιMulti_family (f ∘ v) s`), `exteriorPower.ιMulti_family_span`. Watch
+the possible `extensor`/`ιMulti_family` coercion bridge (Blockers). N3b-3 (proportionality +
+annihilation transfer) then composes on top, flipping `lem:case-III-claim612-line-in-panel-union`
+green and retiring the green-modulo-N3b on N9 (`case_III_claim612`) and the candidate-completion
+chain (`lem:case-III-candidate-row`).
 
-**Nothing mid-stream** — this is the phase-opening design-recon commit (docs/blueprint only, no Lean
-change; the only blueprint edit is a one-phrase staleness fix in `notes/MolecularConjecture.md`, no
-`\lean`/`\label`/`\uses` touched, so `verify.sh` was already green and is not re-run as a node flip).
+**N3b-1 landed** (this commit): `exteriorPower_map_subtype_injective` in `Molecular/Meet.lean` — the
+one-liner `exteriorPower.map_injective_field W.injective_subtype`, stated over a general
+`W : Submodule ℝ (Fin 4 → ℝ)` in the concrete `⋀²ℝ⁴` shape for N3b-2/3 to consume. Blueprint node
+`lem:complement-iso-exterior-map-injective` added green in `chapter/meet.tex` alongside steps (i)/(ii);
+`verify.sh` green, supersession + reference gates clean.
+
+**Nothing mid-stream.**
 
 ## Architectural choices made up front
 
@@ -122,10 +126,10 @@ The three green operational sub-leaves N3b builds on (Phase 22e, in `Molecular/M
 `finrank_exteriorPower_two_eq_one` + `exteriorPower_finrank_eq_one_proportional` (step (ii)). The 22f
 build:
 
-- [ ] **N3b-1** (the *first concrete BUILD commit*) — `exteriorPower.map 2 W.subtype` injective for
-  the 2-dim `W = {n_u, n'}^⊥`, in `Molecular/Meet.lean`. One-liner:
-  `exteriorPower.map_injective_field W.injective_subtype` (recon-verified, no goals). Likely a small
-  named wrapper lemma stating the injectivity in the project's `⋀²ℝ⁴` shape, for N3b-2/3 to consume.
+- [x] **N3b-1** — `exteriorPower_map_subtype_injective` in `Molecular/Meet.lean`: `exteriorPower.map
+  2 W.subtype` injective for `W : Submodule ℝ (Fin 4 → ℝ)` (the general `⋀²ℝ⁴` shape, so N3b-2/3
+  instantiate at `W = {n_u, n'}^⊥`). One-liner `exteriorPower.map_injective_field W.injective_subtype`
+  as recon-predicted; no retraction. Blueprint `lem:complement-iso-exterior-map-injective` (green).
 - [ ] **N3b-2** — both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` lie in `range (exteriorPower.map 2 W.subtype)`. `p̄ᵢ ∨ p̄ⱼ`
   from incidence `⟨p̄ᵢ, n_u⟩ = ⟨p̄ᵢ, n'⟩ = 0` (each `p̄ᵢ ∈ W`); `C(L)` the non-operational range-membership
   upgrade of the green step (i). Direct mathlib API (`map_apply_ιMulti_family`, `ιMulti_family_span`).
@@ -148,10 +152,10 @@ build:
 
 ## Hand-off / next phase
 
-**Open this phase by landing N3b-1** (`exteriorPower.map 2 W.subtype` injective; the one-liner above),
-then N3b-2, then N3b-3 to flip `lem:case-III-claim612-line-in-panel-union` green. Each leaf adds/flips
-its blueprint node in the same commit (forward-mode); run `blueprint/verify.sh` on any `\lean`/`\leanok`
-flip.
+**Next: land N3b-2** — both `p̄ᵢ ∨ p̄ⱼ` and `C(L)` in `range (exteriorPower.map 2 W.subtype)` (see
+*Current state* for the mathlib API and the coercion-bridge watch), then N3b-3 to flip
+`lem:case-III-claim612-line-in-panel-union` green. Each leaf adds/flips its blueprint node in the same
+commit (forward-mode); run `blueprint/verify.sh` on any `\lean`/`\leanok` flip.
 
 **After 22f closes** (N3b green → N9 + the candidate-completion chain fully green): the next
 deferred-**unlettered** cut is the **`d=3` realization assembly** — `prop:rigidity-matrix-prop11` `hub`
