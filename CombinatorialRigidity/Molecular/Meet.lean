@@ -890,4 +890,154 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
     simp only [Matrix.of_apply, hi₀]
     exact if_neg fun h => hxs ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem s x).1 ⟨j, h⟩)
 
+/-! ## Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor
+(`lem:case-III-claim612-line-in-panel-union`)
+
+The genuinely-new annihilation of the membership route (route A-corrected, Phase 22f). The
+point-join `w₀ ∧ w₁ = extensor w` of two vectors orthogonal to a shared panel normal `c i₀` is
+annihilated, under the standard exterior-power basis's coordinate pairing `toDual`, by every
+`2`-extensor `extensor c` through that normal. Through the reconciliation
+`b.toDual = pairingDual ∘ map b.toDual` (N3b-recon), the pairing
+`b.toDual (extensor w) (extensor c)` is the **Gram determinant**
+`det (Matrix.of fun i j => b.toDual (w j) (c i))` (`pairingDual_ιMulti_ιMulti`); the incidence
+hypothesis `b.toDual (w j) (c i₀) = 0` for every `j` makes row `i₀` vanish, so the determinant is
+`0` (`Matrix.det_eq_zero_of_row_eq_zero`).
+
+This is the companion of green step (i)
+(`complementIso_toDual_extensor_eq_zero_of_shared_vector`, the panel-meet's annihilation): step (i)
+puts `complementIso(n_u ∧ n')` in `Ω = dualCoannihilator Φ̃`, this fact puts the point-join
+`w₀ ∧ w₁` (`wᵢ ∈ W = {n_u, n'}^⊥`) there too. With `dim Ω = 1` (fact 3,
+`finrank_sup_range_wedgeFixedLeft`) the two members are proportional — the membership that subsumes
+N3b-3. Both `wᵢ` orthogonal to the shared normal is exactly the incidence `wᵢ ∈ W`; the prior
+commit's "Route A overturned" tested the volume/wedge pairing `vol(· ∧ ·)` here by mistake, where
+the point-join is *not* annihilated — under the coordinate pairing `b.toDual`, the Gram
+determinant, it is. -/
+
+/-- **Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor**
+(`lem:case-III-claim612-line-in-panel-union`). At `d = 3` (`⋀²ℝ⁴`), if every vector of
+`w : Fin 2 → ℝ⁴` is `toDual`-orthogonal to the shared vector `c i₀` of a second family
+`c : Fin 2 → ℝ⁴` (`hperp : ∀ j, (Pi.basisFun ℝ (Fin 4)).toDual (w j) (c i₀) = 0`), then the
+point-join `extensor w` is annihilated, through the standard exterior-power basis's `toDual`, by
+`extensor c`. Via N3b-recon (`exteriorPower_basis_toDual_eq_pairingDual_comp_map`) the pairing is
+the Gram determinant `det (Matrix.of fun i j => b.toDual (w j) (c i))`
+(`pairingDual_ιMulti_ιMulti`), whose row `i₀` vanishes by `hperp`, so it is `0`
+(`Matrix.det_eq_zero_of_row_eq_zero`). The point-join analogue of green step (i)'s panel-meet
+annihilation: both land in `Ω = dualCoannihilator Φ̃`, a line by fact 3, forcing the
+proportionality of meet and join. -/
+theorem extensor_toDual_extensor_eq_zero_of_perp (w c : Fin 2 → Fin 4 → ℝ) (i₀ : Fin 2)
+    (hperp : ∀ j, (Pi.basisFun ℝ (Fin 4)).toDual (w j) (c i₀) = 0) :
+    ((Pi.basisFun ℝ (Fin 4)).exteriorPower 2).toDual
+        ⟨extensor w, extensor_mem_exteriorPower w⟩
+        ⟨extensor c, extensor_mem_exteriorPower c⟩ = 0 := by
+  have hw : (⟨extensor w, extensor_mem_exteriorPower w⟩ : ⋀[ℝ]^2 (Fin 4 → ℝ))
+      = exteriorPower.ιMulti ℝ 2 w := by
+    apply Subtype.ext; rw [exteriorPower.ιMulti_apply_coe]; rfl
+  have hc : (⟨extensor c, extensor_mem_exteriorPower c⟩ : ⋀[ℝ]^2 (Fin 4 → ℝ))
+      = exteriorPower.ιMulti ℝ 2 c := by
+    apply Subtype.ext; rw [exteriorPower.ιMulti_apply_coe]; rfl
+  rw [hw, hc, exteriorPower_basis_toDual_eq_pairingDual_comp_map, LinearMap.comp_apply,
+    exteriorPower.map_apply_ιMulti, exteriorPower.pairingDual_ιMulti_ιMulti]
+  refine Matrix.det_eq_zero_of_row_eq_zero i₀ fun j => ?_
+  rw [Matrix.of_apply, Function.comp_apply]
+  exact hperp j
+
+/-! ## N3b-2b-β: the shared-direction span `Φ̃ = n_u ∧ ℝ⁴ + n' ∧ ℝ⁴` is `5`-dimensional
+(`lem:case-III-claim612-line-in-panel-union`)
+
+Fact 3 of the membership route (route A-corrected, Phase 22f): the count pinning the dual
+coannihilator `Ω = dualCoannihilator Φ̃` to a line. The shared-direction span
+`Φ̃ = n_u ∧ ℝ⁴ + n' ∧ ℝ⁴` (the join of the two wedge-with-a-fixed-normal ranges, each
+`3`-dimensional by `finrank_range_wedgeFixedLeft`) is `5`-dimensional by inclusion–exclusion
+(`3 + 3 − 1`, `Submodule.finrank_sup_add_finrank_inf_eq`); the genuine content is the
+**decomposable intersection** `n_u ∧ ℝ⁴ ⊓ n' ∧ ℝ⁴ = span{n_u ∧ n'}` (`inf_range_wedgeFixedLeft`,
+`finrank = 1`). With `b.toDual` a perfect pairing on the `6`-dimensional `⋀²ℝ⁴`, this gives
+`dim Ω = 6 − 5 = 1`, so the panel-meet (green step (i)) and the point-join (fact 2), both in `Ω`,
+are proportional. -/
+
+/-- **The decomposable intersection: `n_u ∧ ℝ⁴ ⊓ n' ∧ ℝ⁴ = span{n_u ∧ n'}`**
+(`lem:case-III-claim612-line-in-panel-union`). The genuine sub-content of the `5`-dim span count
+(fact 3 of the membership route). For two linearly-independent vectors `a, b ∈ ℝ⁴`, the wedge-with-a
+range `a ∧ ℝ⁴` (`range (wedgeFixedLeft a)`) and `b ∧ ℝ⁴` meet exactly in the line `span{a ∧ b}`.
+`⊇` is direct: `a ∧ b = wedgeFixedLeft a b` lies in `range (wedgeFixedLeft a)`, and `= b ∧ (−a) =
+wedgeFixedLeft b (−a)` (anticommutativity `ExteriorAlgebra.ι_add_mul_swap`) lies in
+`range (wedgeFixedLeft b)`. `⊆`: an element `a ∧ v = b ∧ w` in both ranges, left-multiplied by `b`,
+gives `b ∧ a ∧ v = b ∧ b ∧ w = 0` (repeated factor), so `extensor ![b, a, v] = 0`, i.e. `{b, a, v}`
+is dependent; with `{a, b}` independent (`linearIndependent_finSnoc`) this forces `v ∈ span{a, b}`,
+whence `a ∧ v = β · (a ∧ b) ∈ span{a ∧ b}` (`a ∧ a = 0`). -/
+theorem inf_range_wedgeFixedLeft (a b : Fin 4 → ℝ) (hab : LinearIndependent ℝ ![a, b]) :
+    LinearMap.range (wedgeFixedLeft a) ⊓ LinearMap.range (wedgeFixedLeft b)
+      = Submodule.span ℝ {wedgeFixedLeft a b} := by
+  apply le_antisymm
+  · rintro z ⟨⟨v, hv⟩, ⟨w, hw⟩⟩
+    -- `z = a ∧ v = b ∧ w`; left-multiplying by `b` gives `b ∧ a ∧ v = b ∧ b ∧ w = 0`,
+    -- so `{b, a, v}` is dependent, hence `v ∈ span{a, b}`.
+    have hbav : extensor (![b, a, v] : Fin 3 → Fin 4 → ℝ) = 0 := by
+      have key : extensor ![b] ∨ₑ extensor ![a, v] = extensor ![b] ∨ₑ extensor ![b, w] := by
+        rw [← Subtype.coe_inj, coe_wedgeFixedLeft] at hv hw; rw [hv, hw]
+      rw [join_extensor, join_extensor,
+        show Fin.append (![b] : Fin 1 → Fin 4 → ℝ) ![a, v] = ![b, a, v] by
+          ext i x; fin_cases i <;> rfl,
+        extensor_eq_zero_of_eq (Fin.append (![b] : Fin 1 → Fin 4 → ℝ) ![b, w])
+          (a := 0) (b := 1) rfl (by decide)] at key
+      exact key
+    have hba : LinearIndependent ℝ ![b, a] := by
+      rw [LinearIndependent.pair_iff] at hab ⊢
+      exact fun s t h => (hab t s (by rw [← h]; ring)).symm
+    have hvmem : v ∈ Submodule.span ℝ {a, b} := by
+      have hvn : v ∈ Submodule.span ℝ (Set.range (![b, a] : Fin 2 → Fin 4 → ℝ)) := by
+        by_contra hvn
+        refine (extensor_ne_zero_iff_linearIndependent _).mpr
+          ((linearIndependent_finSnoc (x := v)).mpr ⟨hba, hvn⟩) ?_
+        rw [show Fin.snoc ![b, a] v = (![b, a, v] : Fin 3 → Fin 4 → ℝ) by
+          ext i x; fin_cases i <;> rfl]
+        exact hbav
+      rwa [show (Set.range (![b, a] : Fin 2 → Fin 4 → ℝ)) = {a, b} by
+        rw [Matrix.range_cons, Matrix.range_cons, Matrix.range_empty, Set.union_empty,
+          Set.singleton_union, Set.pair_comm]] at hvn
+    -- `a ∧ v` for `v = α • a + β • b` is `β • (a ∧ b) ∈ span{a ∧ b}`.
+    obtain ⟨α, β, hαβ⟩ := Submodule.mem_span_pair.mp hvmem
+    rw [Submodule.mem_span_singleton, show z = wedgeFixedLeft a v from hv.symm, ← hαβ]
+    refine ⟨β, ?_⟩
+    rw [map_add, map_smul, map_smul]
+    have haa : wedgeFixedLeft a a = 0 := by
+      apply Subtype.ext
+      rw [coe_wedgeFixedLeft, ZeroMemClass.coe_zero]
+      exact extensor_eq_zero_of_eq _ (a := 0) (b := 1) rfl (by decide)
+    rw [haa, smul_zero, zero_add]
+  · rw [Submodule.span_singleton_le_iff_mem]
+    refine ⟨⟨b, rfl⟩, -a, ?_⟩
+    apply Subtype.ext
+    rw [coe_wedgeFixedLeft, coe_wedgeFixedLeft, extensor_apply, extensor_apply,
+      ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply]
+    simp only [List.ofFn_succ, List.ofFn_zero, Matrix.cons_val_zero, Matrix.cons_val_one,
+      List.prod_cons, List.prod_nil, mul_one, Fin.succ_zero_eq_one]
+    rw [map_neg, mul_neg]
+    exact (eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap a b)).symm
+
+/-- **N3b-2b-β: the shared-direction span `n_u ∧ ℝ⁴ + n' ∧ ℝ⁴` is `5`-dimensional**
+(`lem:case-III-claim612-line-in-panel-union`). Fact 3 of the membership route (route A-corrected,
+Phase 22f). For two linearly-independent `a, b ∈ ℝ⁴`, the join `a ∧ ℝ⁴ + b ∧ ℝ⁴` (the
+shared-direction span `Φ̃`) has dimension `5`. By inclusion–exclusion
+(`Submodule.finrank_sup_add_finrank_inf_eq`), `dim (a ∧ ℝ⁴ ⊔ b ∧ ℝ⁴) = dim (a ∧ ℝ⁴) + dim (b ∧ ℝ⁴) −
+dim (a ∧ ℝ⁴ ⊓ b ∧ ℝ⁴) = 3 + 3 − 1 = 5`, the two summand dimensions from
+`finrank_range_wedgeFixedLeft` and the intersection dimension `1` from the decomposable
+intersection `inf_range_wedgeFixedLeft` (with `a ∧ b ≠ 0` by independence). Since `b.toDual` is a
+perfect pairing on the `6`-dimensional `⋀²ℝ⁴`, this forces
+`dim Ω = dim (dualCoannihilator Φ̃) = 6 − 5 = 1` — the line into which fact 2 (the point-join) and
+green step (i) (the panel-meet) both fall, making them proportional. -/
+theorem finrank_sup_range_wedgeFixedLeft (a b : Fin 4 → ℝ) (hab : LinearIndependent ℝ ![a, b]) :
+    Module.finrank ℝ
+        ((LinearMap.range (wedgeFixedLeft a) ⊔ LinearMap.range (wedgeFixedLeft b) :
+          Submodule ℝ (⋀[ℝ]^2 (Fin 4 → ℝ)))) = 5 := by
+  have ha : a ≠ 0 := by simpa using hab.ne_zero 0
+  have hb : b ≠ 0 := by simpa using hab.ne_zero 1
+  have hne : wedgeFixedLeft a b ≠ 0 := fun h => by
+    refine (extensor_ne_zero_iff_linearIndependent ![a, b]).mpr hab ?_
+    rw [← coe_wedgeFixedLeft, h, ZeroMemClass.coe_zero]
+  have hsum := Submodule.finrank_sup_add_finrank_inf_eq
+    (LinearMap.range (wedgeFixedLeft a)) (LinearMap.range (wedgeFixedLeft b))
+  rw [inf_range_wedgeFixedLeft a b hab, finrank_span_singleton hne,
+    finrank_range_wedgeFixedLeft ha, finrank_range_wedgeFixedLeft hb] at hsum
+  omega
+
 end CombinatorialRigidity.Molecular

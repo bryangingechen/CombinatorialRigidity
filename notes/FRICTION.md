@@ -76,6 +76,19 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Swapping a wedge factor at the cost of a sign — `extensor ![a, b] = extensor ![b, -a]` — has no `extensor`/`ιMulti` lemma; go through `ExteriorAlgebra.ι_add_mul_swap`
+- **Where it bit:** Phase 22f `inf_range_wedgeFixedLeft` (`Meet.lean`), the `⊇` direction —
+  showing `a ∧ b = wedgeFixedLeft a b` also lies in `range (wedgeFixedLeft b)` by exhibiting it as
+  `wedgeFixedLeft b (−a)`, i.e. proving `extensor ![b, −a] = extensor ![a, b]`.
+- **Friction:** no `extensor`/`ιMulti`-level "swap two factors, negate" lemma; `ring` cannot reorder
+  (the exterior algebra is noncommutative). The `2`-extensors must be unfolded to bare products.
+- **Resolution (idiom):** `rw [coe_wedgeFixedLeft, coe_wedgeFixedLeft, extensor_apply, extensor_apply,
+  ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply]` + a `simp only [List.ofFn_succ, …,
+  Fin.succ_zero_eq_one]` to reduce the `![·] 1` index to bare products `ι b * ι (−a) = ι a * ι b`,
+  then close with `(eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap a b)).symm` (after
+  `map_neg, mul_neg`). The `ι_add_mul_swap : ι a * ι b + ι b * ι a = 0` is the only anticommutativity
+  fact needed; one-off, below the upstream-mirror bar.
+
 ### [resolved] No `Matrix.det_fin_four`: explicit numeric `Fin 4` determinant via `det_succ_row_zero` + `det_fin_three`
 - **Where it bit:** Phase 22e N3a-1 `exists_affineIndependent_panel_incidence`
   (`RigidityMatrix.lean`), proving the `4 × 4` homogenization determinant of the standard
