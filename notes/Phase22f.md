@@ -12,17 +12,21 @@ scalar. KT math: `notes/Phase22e.md` *22f plan* + KT §6.4.1 (eq. (6.45)); 22f *
 
 ## Current state
 
-**Next concrete commit: N3b-2b-α, the spanning leaf** (the irreducible new content). The 2026-06-07
-recon (design-pass below) confirmed N3b-2b is genuinely heavier than N3b-1/2a — not a one-bridge
-build — so this commit landed the design-pass only, no node flip. Verdict: the cleanest route is
-**Route A-finrank**, and it collapses N3b-2b + N3b-3 into one short tail once the single new leaf
-lands. The route, with the green leaves it reuses:
+**Next concrete commit: N3b-2b-α, the spanning leaf** (the irreducible new content). N3b-2b-line
+landed this commit (the proportionality engine `exists_smul_eq_of_mem_range_map_subtype` in
+`Molecular/Meet.lean`); only N3b-2b-α (which subsumes N3b-3) and the final node flip remain. The
+2026-06-07 recon (design-pass below) confirmed N3b-2b-α is genuinely heavier than N3b-1/2a/2b-line —
+not a one-bridge build. Verdict: the cleanest route is **Route A-finrank**, and it collapses N3b-2b-α
++ N3b-3 into one short tail once the single new spanning leaf lands. The route, with the green leaves
+it reuses:
 
-1. **N3b-2b-line (cheap, ≈N3b-2a-weight):** `range (map 2 W.subtype) = span{p̄ᵢ ∨ p̄ⱼ}` for
-   `W = {n_u, n'}^⊥ = span{p̄ᵢ, p̄ⱼ}`. `range (map 2 W.subtype)` is 1-dim
-   (`LinearMap.finrank_range_of_inj` on the injective N3b-1 map + `finrank_exteriorPower_two_eq_one`,
-   `dim W = 2`; both verified clean via `lean_multi_attempt`), and N3b-2a put the nonzero point-join in
-   it, so `eq_of_le_of_finrank_eq` (two 1-dim subspaces, `span ≤ range`) gives equality.
+1. **N3b-2b-line (landed, this commit):** `exists_smul_eq_of_mem_range_map_subtype` — for a 2-dim
+   `W ⊆ ℝ⁴`, `range (map 2 W.subtype)` is 1-dim (`LinearMap.finrank_range_of_inj` on the injective
+   N3b-1 map + `finrank_exteriorPower_two_eq_one`, `dim W = 2`), so any two members with one nonzero
+   are proportional (`Submodule.eq_of_le_of_finrank_eq` → `span{x} = range`, then
+   `mem_span_singleton`). **Realized in `⋀²ℝ⁴` directly** (not in the pulled-back `⋀²W`), so the
+   point-join (N3b-2a) and the panel-meet (N3b-2b-α) are made proportional *in place* — no pull-back/
+   push-forward. Pure clean composition (verified, no friction, three standard axioms).
 2. **N3b-2b-α (the new content):** `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)`. With step 1,
    this membership *is already* the proportionality `complementIso (n_u ∧ n') = λ·(p̄ᵢ ∨ p̄ⱼ)`, so
    **N3b-3 collapses into N3b-2b** — the old "step (ii) proportionality + push-forward" wiring is
@@ -202,9 +206,13 @@ build:
   with each `v i ∈ W`, `extensor v ∈ range (exteriorPower.map 2 W.subtype)`. Direct mathlib API
   (`map_apply_ιMulti`, `ιMulti_apply_coe`); one routine `Subtype.ext` coercion bridge. Places the
   point-join `p̄ᵢ ∨ p̄ⱼ` in `⋀²W`. Pure Lean infra (no blueprint node — below the include-bar).
-- [ ] **N3b-2b-line** (cheap) — `range (map 2 W.subtype) = span{p̄ᵢ ∨ p̄ⱼ}`: `range` is 1-dim
-  (`LinearMap.finrank_range_of_inj` ∘ N3b-1 + `finrank_exteriorPower_two_eq_one`), N3b-2a put the
-  point-join in it, `Submodule.eq_of_le_of_finrank_eq`. ≈N3b-2a weight (verified-clean skeleton).
+- [x] **N3b-2b-line** (landed) — `exists_smul_eq_of_mem_range_map_subtype`: for a 2-dim `W ⊆ ℝ⁴`,
+  any two members of `range (map 2 W.subtype)` with one nonzero are proportional (`∃ c, c • x = y`).
+  `range` is 1-dim (`LinearMap.finrank_range_of_inj` ∘ N3b-1 + `finrank_exteriorPower_two_eq_one`),
+  so `span{x} = range` (`Submodule.eq_of_le_of_finrank_eq`) and `mem_span_singleton` closes.
+  Stated as the proportionality producer **in `⋀²ℝ⁴`** (not the literal `= span{x}` form, nor a
+  pull-back to `⋀²W`), so it makes the point-join and panel-meet proportional in place — N3b-3's
+  push-forward wiring is gone. Pure Lean infra (no blueprint node — below the include-bar).
 - [ ] **N3b-2b-α** (the new content) — `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` via
   Route A-finrank: green step (i) vanishing read as `∈ dualCoannihilator Φ`, pin
   `finrank (dualCoannihilator Φ) = 1` from the **spanning fact `finrank Φ = 5`**, close with
@@ -238,13 +246,16 @@ build:
 ## Hand-off / next phase
 
 **Next: land N3b-2b-α, the spanning leaf** `finrank Φ = 5` (Blockers) — the one irreducible new fact.
-The design-pass (this commit, docs-only) settled the route: **Route A-finrank** (see *Current state* /
-*N3b-2b design recon*). Smallest concrete sub-commit: first land **N3b-2b-line** (cheap,
-`range (map 2 W.subtype) = span{p̄ᵢ ∨ p̄ⱼ}`, verified-clean skeleton), then **N3b-2b-α** (the spanning
-leaf + the `dualCoannihilator` finrank count, closing the membership and *subsuming* N3b-3's
-proportionality). Open at build: the exact generating set for `Φ` and whether it factors through an
-upstream-eligible `⋀²` perp fact (mirror) or stays project-internal in `Meet.lean` (Blockers). Then
-**N3b-3** is just the `smul`-transfer + the node flip on `lem:case-III-claim612-line-in-panel-union`;
+N3b-2b-line landed this commit (`exists_smul_eq_of_mem_range_map_subtype`, the proportionality engine
+in `⋀²ℝ⁴`); the route is settled — **Route A-finrank** (see *Current state* / *N3b-2b design recon*).
+Smallest concrete next sub-commit: **N3b-2b-α** — the membership `complementIso (n_u ∧ n') ∈
+range (map 2 W.subtype)` via the spanning leaf + the `dualCoannihilator` finrank count. With
+N3b-2b-line this membership *is* the proportionality `complementIso (n_u ∧ n') = λ · (p̄ᵢ ∨ p̄ⱼ)`,
+*subsuming* N3b-3's proportionality. Open at build: the exact generating set for `Φ` and whether it
+factors through an upstream-eligible `⋀²` perp fact (mirror) or stays project-internal in `Meet.lean`
+(Blockers). After N3b-2b-α, **N3b-3** is just the `smul`-transfer + assembling the per-line duality
+lemma (with N3b-2a placing the point-join in the range, N3b-2b-α placing the panel-meet, and
+N3b-2b-line making them proportional) + the node flip on `lem:case-III-claim612-line-in-panel-union`;
 run `blueprint/verify.sh` on that flip. Route (B) is rejected (no Hodge/decomposable API in mathlib;
 `complementIso` noncomputable → no `decide`).
 
@@ -268,11 +279,13 @@ the two producer nodes `lem:case-II-realization` / `lem:case-III` themselves gre
   (mathlib's `finrank_add_finrank_dualCoannihilator_eq` + `eq_of_le_of_finrank_eq`), reusing green
   step (i) for the membership-as-annihilation. The whole tail collapses to one new leaf — the spanning
   fact `finrank Φ = 5` — above two verified-clean reductions (Blockers / Current state).
-- **N3b-2b + N3b-3 collapse via the line identity (2026-06-07, design recon).** Once
-  `range (map 2 W.subtype) = span{p̄ᵢ ∨ p̄ⱼ}` (N3b-2b-line, both 1-dim), the membership
-  `complementIso (n_u ∧ n') ∈ range` *is* the proportionality N3b-3 was scoped to extract — so the
-  old "pull-back to `⋀²W` / step (ii) / push-forward" wiring (the phase-open N3b-3 plan) is
-  unnecessary; N3b-3 shrinks to the `smul`-transfer + node flip.
+- **N3b-2b + N3b-3 collapse via the line identity (2026-06-07).** N3b-2b-line landed as the
+  proportionality producer `exists_smul_eq_of_mem_range_map_subtype` (two members of the 1-dim
+  `range (map 2 W.subtype)`, one nonzero, are proportional) **in `⋀²ℝ⁴` directly** — not the literal
+  `range = span{x}` form, and not pulled back to `⋀²W`. So once the membership
+  `complementIso (n_u ∧ n') ∈ range` lands (N3b-2b-α), it *is* the proportionality N3b-3 was scoped to
+  extract — the phase-open "pull-back to `⋀²W` / step (ii) / push-forward" wiring is unnecessary;
+  N3b-3 shrinks to the `smul`-transfer + per-line duality assembly + node flip.
 - **N3b-2 split into a point-join half (2a) and a panel-meet half (2b) (2026-06-07).** The 22f open
   scoped N3b-2 as one commit putting *both* `p̄ᵢ ∨ p̄ⱼ` and `C(L)` in `range (map 2 W.subtype)`.
   Building it surfaced an asymmetry: the point-join (2a, `extensor_mem_range_map_subtype_of_mem`) is

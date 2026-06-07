@@ -654,6 +654,39 @@ theorem extensor_mem_range_map_subtype_of_mem
   rw [exteriorPower.ιMulti_apply_coe]
   rfl
 
+/-- **N3b-2b-line, the line identity: `range (⋀²W ↪ ⋀²ℝ⁴)` is the line `span{x}` of any nonzero
+member, so two of its members are proportional** (`lem:case-III-claim612-line-in-panel-union`).
+Third sub-leaf of the point-join ↔ panel-meet duality assembly (Phase 22f). For a `2`-dimensional
+`W ⊆ ℝ⁴`, the range of the injective inclusion `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴`
+(`exteriorPower_map_subtype_injective`, N3b-1) is `1`-dimensional: `finrank (range) = finrank ⋀²W =
+2.choose 2 = 1` (`LinearMap.finrank_range_of_inj` + `finrank_exteriorPower_two_eq_one`,
+step (ii)'s dimension count). Hence for any nonzero member `x` of the range, `span{x}` already
+exhausts it (`Submodule.eq_of_le_of_finrank_eq`, two `1`-dimensional subspaces with `span{x} ≤
+range`), so every other member `y` is a scalar multiple `c • x = y`
+(`Submodule.mem_span_singleton`).
+
+This is the proportionality engine of the assembly *in `⋀²ℝ⁴`*: with the point-join
+`p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]` placed in the range as the nonzero `x` (N3b-2a,
+`W = span{p̄ᵢ, p̄ⱼ}`), once the
+panel-meet `C(L) = complementIso (n_u ∧ n')` is also shown to be in the range (N3b-2b-α, the
+spanning leaf), this leaf yields the proportionality `complementIso (n_u ∧ n') = λ · (p̄ᵢ ∨ p̄ⱼ)`
+directly — subsuming the phase-open N3b-3 pull-back/push-forward wiring, since the proportionality
+lives in `⋀²ℝ⁴` itself rather than in the pulled-back `⋀²W`. -/
+theorem exists_smul_eq_of_mem_range_map_subtype
+    (W : Submodule ℝ (Fin 4 → ℝ)) (hW : Module.finrank ℝ W = 2)
+    {x y : ⋀[ℝ]^2 (Fin 4 → ℝ)}
+    (hx : x ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) (hxne : x ≠ 0)
+    (hy : y ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) :
+    ∃ c : ℝ, c • x = y := by
+  have hR : Module.finrank ℝ (LinearMap.range (exteriorPower.map 2 W.subtype)) = 1 := by
+    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective W),
+      finrank_exteriorPower_two_eq_one hW]
+  have hspan : (ℝ ∙ x) = LinearMap.range (exteriorPower.map 2 W.subtype) :=
+    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 hx)
+      (by rw [finrank_span_singleton hxne, hR])
+  rw [← Submodule.mem_span_singleton, hspan]
+  exact hy
+
 /-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
 (ingredient (c), the rationality refinement of the signed-permutation matrix; B0
 rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),
