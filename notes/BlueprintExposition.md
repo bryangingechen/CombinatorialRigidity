@@ -398,8 +398,14 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   = complementIso(n_u ∧ ·)` of two hyperplanes through it (the annihilated side, what the row-space
   criterion N4 tests). When `L ⊂ Π(u)` these agree up to a nonzero scalar, so `r⊥C(L) ⟹
   r(pᵢ∨pⱼ)=0` — the bridge that lets the contrapositive's annihilation (panel-meets) reach Lemma
-  2.1's spanning family (point-joins). Pointer: KT p. 691, eq. (6.45); `meet.tex`
-  `def:meet`/`def:meet-complement-iso`; `notes/Phase22e.md` *Lemma checklist* N3b.
+  2.1's spanning family (point-joins). *Phase-22f recon sharpening:* the "agree up to scalar" step is
+  exactly that both presentations live in the **1-dimensional** exterior square `⋀²W` of
+  `W = {n_u, n'}^⊥` — the join sits there by construction (vectors in `W`), the meet
+  `complementIso(n_u ∧ n')` by the orthogonal-complement (Hodge-star) fact that the complement of a
+  grade-2 decomposable lands in the exterior square of the normals' perp. That last fact is the one
+  irreducible new leaf (mathlib has no Hodge/decomposable-dual API); the exposition should spell out
+  why it forces the two extensors equal up to scale. Pointer: KT p. 691, eq. (6.45); `meet.tex`
+  `def:meet`/`def:meet-complement-iso`; `notes/Phase22f.md` *N3b-2b design recon* + *Lemma checklist*.
 - **`lem:case-III-claim612` / the span-(6.45) + Lemma-2.1 finish** — [pending] **(c)** (Phase 22e
   capture; load-bearing, expected to land as scoped). **Stable insight:** the disjunction's
   contrapositive closes on a clean dimension count: if all three blocks fail, `r ⊥` every supporting
