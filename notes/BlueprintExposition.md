@@ -398,14 +398,20 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   = complementIso(n_u ∧ ·)` of two hyperplanes through it (the annihilated side, what the row-space
   criterion N4 tests). When `L ⊂ Π(u)` these agree up to a nonzero scalar, so `r⊥C(L) ⟹
   r(pᵢ∨pⱼ)=0` — the bridge that lets the contrapositive's annihilation (panel-meets) reach Lemma
-  2.1's spanning family (point-joins). *Phase-22f recon sharpening:* the "agree up to scalar" step is
-  exactly that both presentations live in the **1-dimensional** exterior square `⋀²W` of
-  `W = {n_u, n'}^⊥` — the join sits there by construction (vectors in `W`), the meet
-  `complementIso(n_u ∧ n')` by the orthogonal-complement (Hodge-star) fact that the complement of a
-  grade-2 decomposable lands in the exterior square of the normals' perp. That last fact is the one
-  irreducible new leaf (mathlib has no Hodge/decomposable-dual API); the exposition should spell out
-  why it forces the two extensors equal up to scale. Pointer: KT p. 691, eq. (6.45); `meet.tex`
-  `def:meet`/`def:meet-complement-iso`; `notes/Phase22f.md` *N3b-2b design recon* + *Lemma checklist*.
+  2.1's spanning family (point-joins). *Phase-22f design-pass (route settled):* the "agree up to
+  scalar" step is exactly that both presentations live in the **1-dimensional** exterior square `⋀²W`
+  of `W = {n_u, n'}^⊥`. The clean realization avoids any Hodge-star API: both extensors lie in the
+  1-dim `Ω = ` the `b.toDual`-orthogonal complement (in `⋀²ℝ⁴`) of the 5-dim shared-direction span
+  `Φ̃ = n_u ∧ ℝ⁴ + n' ∧ ℝ⁴`. The meet `complementIso(n_u ∧ n') ∈ Ω` is the green step (i); the join
+  `w₀ ∧ w₁` (`w_i ∈ W`) is in `Ω` because the coordinate pairing `b.toDual(w₀ ∧ w₁)(n_u ∧ t)` expands
+  (reconciliation `b.toDual = pairingDual ∘ map toDual`) as the **Gram determinant**
+  `det [[w₀·n_u, w₀·t],[w₁·n_u, w₁·t]]`, vanishing by the column of zeros `w_i · n_u = 0`. The
+  exposition crux: `⋀²ℝ⁴` carries **two distinct bilinear forms** — the coordinate inner product
+  `b.toDual` (Kronecker / Gram-determinant) and the volume/wedge pairing `vol(· ∧ ·)` — coinciding
+  *only* through `complementIso`; the bridge runs on the coordinate one. Irreducible new infra: the
+  reconciliation lemma (no Hodge/decomposable-dual API). Pointer: KT p. 691, eq. (6.45); `meet.tex`
+  `def:meet`/`def:meet-complement-iso`; `notes/Phase22f.md` *Current state* + *Membership route —
+  settled verdict*.
 - **`lem:case-III-claim612` / the span-(6.45) + Lemma-2.1 finish** — [pending] **(c)** (Phase 22e
   capture; load-bearing, expected to land as scoped). **Stable insight:** the disjunction's
   contrapositive closes on a clean dimension count: if all three blocks fail, `r ⊥` every supporting
