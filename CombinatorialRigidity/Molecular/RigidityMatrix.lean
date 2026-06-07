@@ -1305,6 +1305,56 @@ theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιa
   simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply,
     LinearMap.smul_apply, e1, e2, LinearMap.zero_apply] using hx
 
+/-- **Claim 6.12 — at least one of `M₁, M₂, M₃` has full rank** (`lem:case-III-claim612`,
+Katoh–Tanigawa 2011 §6.4.1, Claim 6.12, eqs. (6.30)–(6.45); Phase 22e, **green-modulo-N3b**). The
+capstone of the `D`-candidate disjunction at `d = 3`. The candidate-completion
+(`linearIndependent_sum_augment_candidateRow`) lifts a single degenerate placement to full rank
+`D(|V|−1)` *provided* its top-left `D × D` block is full rank, equivalently (the row-space criterion
+`linearIndependent_sumElim_candidateRow_iff` at the candidate's hinge) the common candidate row
+`r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` is **not** orthogonal to that block's supporting extensor `Cₘ`. At
+`d = 3` a single placement may fail, so Claim 6.12 is the three-way disjunction: for the three
+candidates `p₁/p₂/p₃` (split at `v` along `va` / `vb`, and at the other degree-2 body `a` along
+`ac`, routed onto the *same* `r̂` by eq. (6.44), `candidateRow_ac_eq_neg`), at least one of
+`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` holds — exactly the conditional `hr` the three producers
+(`linearIndependent_sum_p2_candidateRow` for `M₂`, the analogous `M₃` form, and the
+candidate-completion assembly for `M₁`) consume, discharging the candidate-completion conditional
+`lem:case-III-eq629-conditional`.
+
+The argument is a clean contrapositive: if all three blocks fail, then `r̂(C₁) = r̂(C₂) = r̂(C₃)
+= 0`, so by the **point-join ↔ panel-meet duality** (`lem:case-III-claim612-line-in-panel-union`,
+N3b, deferred to Phase 22f) `r̂` annihilates each of the six panel-support `2`-extensors
+`pᵢ ∨ pⱼ = omitTwoExtensor (homogenize ∘ p)` of the four affinely-independent points
+`p` of KT eq. (6.45) (`exists_affineIndependent_panel_incidence`, N3a). But those six joins **span**
+`ScrewSpace 2 = ⋀²ℝ⁴` (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), so a functional
+annihilating them is `0` (`eq_zero_of_annihilates_span_top`, N2) — contradicting `r̂ ≠ 0`
+(`candidateRow_ne_zero`, N5).
+
+**Green-modulo-N3b** (honesty-gate case (b)): the N3b duality — the implication carried here as the
+hypothesis `hduality`, "if `r̂` is orthogonal to the three supporting extensors `C₁, C₂, C₃` then it
+annihilates every spanning join `pᵢ ∨ pⱼ`" — is the conclusion of the still-red N3b node
+(`lem:case-III-claim612-line-in-panel-union`), whose exterior-algebra assembly lands in Phase 22f.
+Its three operational leaves are green (`Meet.lean`); only the bounded `⋀²ℝ⁴` Hodge-star assembly
+placing both `pᵢ∨pⱼ` and `C(L)` in `⋀²W` remains. The remaining steps (N1, N2, N3a) are green and
+used here directly. -/
+theorem case_III_claim612
+    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
+    {C₁ C₂ C₃ : ScrewSpace 2}
+    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
+    (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
+      ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+        r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+          extensor_mem_exteriorPower _⟩ = 0) :
+    r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0 := by
+  -- Contrapositive: if `r` is orthogonal to all three supporting extensors, the N3b duality
+  -- annihilates each spanning join, the six joins span `ScrewSpace 2` (N1), so `r = 0` (N2),
+  -- contradicting `r ≠ 0` (N5).
+  by_contra h
+  push Not at h
+  obtain ⟨h₁, h₂, h₃⟩ := h
+  refine hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp) ?_)
+  rintro x ⟨q, rfl⟩
+  exact hduality h₁ h₂ h₃ q
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,

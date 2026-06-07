@@ -17,25 +17,22 @@ KT math: `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it.
 
 ## Current state
 
-**Next concrete commit: build N9 — the Claim-6.12 capstone, green-modulo-N3b.** N3a is now green:
-the node `lem:case-III-claim612-points-affineIndep` points at the witness
-`exists_affineIndependent_panel_incidence` (`RigidityMatrix.lean`, axiom-clean). N3a-2 was the node
-flip — but the existence-route equivalence collapsed it to a *direct* flip, not the anticipated
-parametric cross-product over the framework's given normals: because the Case-III realization is
-itself being constructed (the candidate placements realize `G_v^{ab}` at a seed `q` the capstone is
-free to choose, `ofNormals` ranges over all coordinatizations), the points *and* the panels they are
-incident to come from one chosen realization — so the witness's own coordinate-aligned normal
-arrangement IS the existence content. No GL-transport / cross-product family needed. The node now
-existentially quantifies the three nonparallel normals (matching the witness) and is honestly green;
-the green bricks (closure `exists_affineIndependent_of_det_polynomial_ne_zero`, det-poly bridge
-`exists_detPolynomial_of_pointPolynomial`, existence `exists_ne_zero_dotProduct_eq_zero`) stay as the
-conceptual scaffolding the node's prose `\uses`, documenting the equivalence.
+**Next concrete commit: N10 flip — `lem:case-II-realization` + the `d=3` half of `lem:case-III`
+green-modulo-N3b.** N9 is now green-modulo-N3b: the capstone `case_III_claim612`
+(`RigidityMatrix.lean`, axiom-clean) is the contrapositive disjunction
+`r(C₁) ≠ 0 ∨ r(C₂) ≠ 0 ∨ r(C₃) ≠ 0` given `r ≠ 0` (N5) and the N3b duality carried as the explicit
+hypothesis `hduality` (honesty-gate case (b): the N3b node `lem:case-III-claim612-line-in-panel-union`
+is `\uses`'d red, deferred to 22f). It uses N1 (`span_omitTwoExtensor_eq_top`), N2
+(`eq_zero_of_annihilates_span_top`), N3a (`exists_affineIndependent_panel_incidence`) greenly inside;
+the proof is the clean `by_contra` → the three orthogonalities → `hduality` annihilates every spanning
+join → N1 spans → N2 forces `r = 0`, contradicting `r ≠ 0`. The Lean abstracts away the row-space
+criterion (N4/N6/N7/N8): the disjunction takes the three orthogonalities directly, and the
+block-fails ⟺ `r(Cₘ)=0` connection lives in the producers the *consumer* wires — N4/N6/N7/N8 stay as
+the node's statement-level `\uses` scaffolding documenting which block is which.
 
-**N9** (green-modulo-N3b) is the next build: the contrapositive glue discharging
-`lem:case-III-eq629-conditional`. All its leaf deps are green except the N3b duality node
-(`lem:case-III-claim612-line-in-panel-union`, deferred to 22f), so N9 lands green-modulo-N3b
-(honesty-gate case (b)). Then **N10** flips `lem:case-II-realization` + the `d=3` half of
-`lem:case-III` green-modulo-N3b — 22e closes here.
+**N3a** is green: the node `lem:case-III-claim612-points-affineIndep` points at the witness
+`exists_affineIndependent_panel_incidence` (the existence-route equivalence + chosen-seed freedom
+collapsed the anticipated parametric cross-product to a direct point-at-the-witness flip).
 
 **N3a is the EXISTENCE route, NOT the alg-independence hammer (settled).** The residual `P ≠ 0` is
 *logically equivalent* — via the converse of `MvPolynomial.exists_eval_ne_zero` + the green det-poly
@@ -226,13 +223,16 @@ commit (no `\lean`/`\leanok`); build greens them.
   vanishing off `a` (the degree-2-at-`a` content as hypothesis `hrest`) regroups, via the two new
   column-restriction leaves, into `r̂ + rAC = 0`. Deps: `lem:case-III-acolumn-zero`,
   `lem:case-III-redundant-decomposition` (both green).
-- [ ] **N9** `lem:case-III-claim612` (capstone, **green-modulo-N3b**) — at least one of `M₁/M₂/M₃`
-  is LI; discharges `lem:case-III-eq629-conditional`. Contrapositive: all dependent ⟹
-  `r ⊥ C(L),C(L′),C(L″)` (N4×2 + N8) ⟹ (N3b duality) `r` annihilates each spanning join `pᵢ∨pⱼ` ⟹
-  `r` annihilates the span (6.45) spanning set (N3a + N1) ⟹ `r=0` (N2), contradicting N5. **Built
-  green-modulo-N3b** — its contrapositive `\uses` the red N3b node (`r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=0` is the
-  N3b duality), honesty-gate case (b). Deps: N1, N2, N3a, N3b, N4, N5, N6, N7, N8. Wired into
-  `lem:case-III`'s `\uses`.
+- [x] **N9** `lem:case-III-claim612` (capstone, **green-modulo-N3b**) — `case_III_claim612`
+  (`RigidityMatrix.lean`, axiom-clean): the contrapositive disjunction
+  `r(C₁) ≠ 0 ∨ r(C₂) ≠ 0 ∨ r(C₃) ≠ 0`, discharging `lem:case-III-eq629-conditional`. Built
+  green-modulo-N3b — the N3b duality (`r ⊥ C₁,C₂,C₃ ⟹ r` annihilates every spanning join `pᵢ∨pⱼ`)
+  is carried as the explicit hypothesis `hduality`, the conclusion of the red N3b node
+  (`lem:case-III-claim612-line-in-panel-union`, deferred to 22f), honesty-gate case (b). Proof:
+  `by_contra` → three orthogonalities → `hduality` annihilates each join → N1 spans (6.45) → N2 forces
+  `r=0`, contradicting N5 `r ≠ 0`. N1/N2/N3a used greenly inside; N4/N6/N7/N8 stay as statement-level
+  `\uses` scaffolding (the block-fails ⟺ `r(Cₘ)=0` row-space connection lives in the producers the
+  consumer wires). `\lean`+`\leanok` on `lem:case-III-claim612`; all gates clean.
 - [ ] **N10 Flip** `lem:case-II-realization` (+ the `d=3` half of `lem:case-III`) **green-modulo-N3b**
   once N9 discharges `lem:case-III-eq629-conditional`. Candidate-completion subsection nodes are all
   green (green-modulo the conditional N9, itself green-modulo-N3b). 22e closes here
@@ -250,21 +250,19 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Scope (re-scoped this commit): 22e = N3a + N9 + N10, closing green-modulo-N3b; N3b → Phase 22f.**
-The three candidate producers (`p₁`/`p₂`/`p₃` = N6/N7 + `lem:case-III-candidate-row`) are green; the
-remaining 22e work is the contrapositive glue — N3a (existence route), then N9 (green-modulo-N3b),
-then N10 flip (green-modulo-N3b). KT Claim 6.12's full discharge is ~7–9 small commits; the
-exterior-algebra infra N3b needs is the genuinely-multi-commit piece, split to 22f.
+**Scope (re-scoped earlier): 22e = N3a + N9 + N10, closing green-modulo-N3b; N3b → Phase 22f.**
+N3a and N9 are green (green-modulo-N3b); only the N10 flip remains, then 22e closes
+(green-modulo-N3b). The exterior-algebra infra N3b needs is the genuinely-multi-commit piece, split
+to 22f.
 
-**Next concrete commit: build N9 — the Claim-6.12 capstone (`lem:case-III-claim612`),
-green-modulo-N3b.** N3a is green (the node points at the witness directly — the existence-route
-equivalence + chosen-seed freedom made the parametric cross-product unnecessary; see *Current
-state*). N9 is the contrapositive glue discharging `lem:case-III-eq629-conditional`: all dependent ⟹
-`r ⊥ C(L),C(L′),C(L″)` (N4×2 + N8) ⟹ (N3b duality) `r` annihilates each spanning join `pᵢ∨pⱼ` ⟹ `r`
-annihilates the span (6.45) spanning set (N3a + N1) ⟹ `r=0` (N2), contradicting N5. Its
-contrapositive `\uses` the red N3b node (`lem:case-III-claim612-line-in-panel-union`, deferred to
-22f), so N9 lands green-modulo-N3b (honesty-gate case (b)). Then **N10** flips
-`lem:case-II-realization` + the `d=3` half of `lem:case-III` green-modulo-N3b — 22e closes here.
+**Next concrete commit: N10 flip — `lem:case-II-realization` + the `d=3` half of `lem:case-III`
+green-modulo-N3b.** N9 is green (the Claim-6.12 capstone `case_III_claim612` discharges
+`lem:case-III-eq629-conditional`; see *Current state* + the N9 checklist entry). The candidate-completion
+subsection nodes are all green (green-modulo the conditional, now itself green-modulo-N3b via N9), so
+N10 flips the two target nodes `lem:case-II-realization` and the `d=3` half of `lem:case-III` to
+green-modulo-N3b. Check that the producers' `\uses` of `lem:case-III-eq629-conditional` now route
+through the green N9; confirm the honesty gate (the only remaining red dependency is N3b). 22e closes
+here (green-modulo-N3b); N3b lands in 22f.
 
 ### 22f plan (N3b — the exterior-algebra infra)
 

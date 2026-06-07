@@ -1042,6 +1042,8 @@ Grassmann--Cayley projective duality.
 
 \begin{lemma}[Claim 6.12: at least one of $M_1, M_2, M_3$ has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
   \label{lem:case-III-claim612}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_claim612}
+  \leanok
   \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish,
         lem:case-III-claim612-points-affineIndep, lem:case-III-claim612-line-in-panel-union,
         lem:case-III-claim612-block-iff-perp,
@@ -1056,6 +1058,10 @@ Grassmann--Cayley projective duality.
   the candidate-completion conditional (\cref{lem:case-III-eq629-conditional}).
 \end{lemma}
 \begin{proof}
+  \leanok
+  \emph{Green modulo the point-join $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b, deferred to Phase~22f), which is carried as
+  the hypothesis ``$r \perp C_1, C_2, C_3 \Rightarrow r$ annihilates every join $p_i \vee p_j$''.}
   Contrapositive. Suppose all three blocks fail to have full rank for \emph{every} choice of lines.
   By the row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}), $M_1$ failing places the
   common vector $r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ in $(\operatorname{span} C(L))^\perp$ for
