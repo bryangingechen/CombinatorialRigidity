@@ -846,4 +846,48 @@ theorem complementIso_exteriorPower_repr_mem_range_algebraMap {j : ℕ} (hj : j 
   obtain ⟨z, hz⟩ := complementIso_exteriorPower_repr_mem_range_intCast hj S t
   exact ⟨(z : ℚ), by rw [← hz, map_intCast]⟩
 
+/-! ## N3b-recon: the coordinate `toDual` of `⋀ⁿℝ⁴` is the Gram-determinant pairing
+(`lem:case-III-claim612-line-in-panel-union`)
+
+The pivot infrastructure of the membership route (route A-corrected, Phase 22f): the `Module.Basis`
+coordinate pairing `(b.exteriorPower n).toDual` on `⋀ⁿℝ⁴` (an opaque Kronecker pairing of the
+exterior-power basis) is reconciled with the *computable* `exteriorPower.pairingDual` evaluated on
+dual coordinates — the latter expands, via `exteriorPower.pairingDual_ιMulti_ιMulti`, as a **Gram
+determinant** of dot products. This is what turns `b.toDual (w₀ ∧ w₁) (extensor c)` into
+`det [[w₀·c₀, w₀·c₁], [w₁·c₀, w₁·c₁]]`, so the incidence `wᵢ · c₀ = 0` (both in `{n_u,n'}^⊥`) zeros
+a column and kills the point-join — fact 2 of route A-corrected — and likewise pins
+`dim (dualCoannihilator Φ̃) = 6 − 5 = 1` (fact 3), since `b.toDual` is a perfect pairing.
+
+Both sides are linear maps `⋀ⁿℝ⁴ →ₗ Dual ⋀ⁿℝ⁴`; equality is by double `Module.Basis.ext` on the
+exterior-power basis, after which the coordinate pairing collapses to a Kronecker delta
+(`Module.Basis.toDual_apply`) and the `pairingDual`/`map` side collapses to the determinant of
+that same Kronecker matrix (`map_apply_ιMulti_family` + `pairingDual_ιMulti_ιMulti`). -/
+theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
+    ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).toDual =
+      (exteriorPower.pairingDual ℝ (Fin 4 → ℝ) n).comp
+        (exteriorPower.map n (Pi.basisFun ℝ (Fin 4)).toDual) := by
+  refine ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).ext fun s => ?_
+  refine ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).ext fun t => ?_
+  rw [Module.Basis.toDual_apply, LinearMap.comp_apply, exteriorPower.basis_apply,
+    exteriorPower.basis_apply, exteriorPower.map_apply_ιMulti_family, exteriorPower.ιMulti_family,
+    exteriorPower.ιMulti_family, exteriorPower.pairingDual_ιMulti_ιMulti]
+  simp only [Function.comp_apply, Module.Basis.toDual_apply]
+  split_ifs with hst
+  · -- Diagonal: `s = t`, the matrix is the identity (`σ_s` injective), determinant `1`.
+    subst hst
+    rw [show (Matrix.of fun i j => if (Set.powersetCard.ofFinEmbEquiv.symm s) j =
+        (Set.powersetCard.ofFinEmbEquiv.symm s) i then (1 : ℝ) else 0) = 1 from ?_, Matrix.det_one]
+    ext i j
+    simp only [Matrix.of_apply, Matrix.one_apply, EmbeddingLike.apply_eq_iff_eq, eq_comm]
+  · -- Off-diagonal: `s ≠ t`, equal cardinality forces an element of `t` outside `s`, a zero row.
+    obtain ⟨x, hxt, hxs⟩ : ∃ x, x ∈ (↑t : Finset (Fin 4)) ∧ x ∉ (↑s : Finset (Fin 4)) := by
+      refine Finset.not_subset.1 fun hsub => hst ?_
+      exact Subtype.ext (Finset.eq_of_subset_of_card_le hsub
+        (by rw [Set.powersetCard.card_eq, Set.powersetCard.card_eq])).symm
+    obtain ⟨i₀, hi₀⟩ : ∃ i₀, (Set.powersetCard.ofFinEmbEquiv.symm t) i₀ = x :=
+      (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem t x).2 hxt
+    refine (Matrix.det_eq_zero_of_row_eq_zero i₀ fun j => ?_).symm
+    simp only [Matrix.of_apply, hi₀]
+    exact if_neg fun h => hxs ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem s x).1 ⟨j, h⟩)
+
 end CombinatorialRigidity.Molecular
