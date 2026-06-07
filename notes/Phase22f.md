@@ -12,38 +12,49 @@ scalar. KT math: `notes/Phase22e.md` *22f plan* + KT §6.4.1 (eq. (6.45)); 22f *
 
 ## Current state
 
-**Next concrete commit: N3b-2b-α, the spanning leaf** (the irreducible new content). N3b-2b-line
-landed this commit (the proportionality engine `exists_smul_eq_of_mem_range_map_subtype` in
-`Molecular/Meet.lean`); only N3b-2b-α (which subsumes N3b-3) and the final node flip remain. The
-2026-06-07 recon (design-pass below) confirmed N3b-2b-α is genuinely heavier than N3b-1/2a/2b-line —
-not a one-bridge build. Verdict: the cleanest route is **Route A-finrank**, and it collapses N3b-2b-α
-+ N3b-3 into one short tail once the single new spanning leaf lands. The route, with the green leaves
-it reuses:
+**Next concrete commit: N3b-2b-β, the 5-dim span count** `finrank (n_u ∧ ℝ⁴ + n' ∧ ℝ⁴) = 5`. The
+N3b-2b-α *building block* landed this commit — `wedgeFixedLeft`/`coe_wedgeFixedLeft`/
+`ker_wedgeFixedLeft`/`finrank_range_wedgeFixedLeft` in `Molecular/Meet.lean`: the
+wedge-with-a-fixed-vector map `v ↦ a ∧ v : ℝ⁴ →ₗ ⋀²ℝ⁴`, with kernel the line `span{a}` (`a ∧ v = 0
+⟺ a, v` dependent ⟺ `v ∈ span{a}`, via `extensor_ne_zero_iff_linearIndependent` +
+`LinearIndependent.pair_iff'`) and so range `finrank = 4 − 1 = 3` (rank–nullity). This is the
+`a ∧ ℝ⁴` summand of the shared-direction span. Smallest next sub-commit: **N3b-2b-β** — assemble two
+such summands into `finrank (range (wedgeFixedLeft n_u) ⊔ range (wedgeFixedLeft n')) = 5` via
+`Submodule.finrank_sup_add_finrank_inf_eq` (`3 + 3 − 1`), with the intersection
+`= span{n_u ∧ n'}` (`finrank = 1`) the genuine sub-content (the decomposable-intersection fact:
+`a ∧ v = b ∧ w` with `{a, b}` independent forces the element into `span{a ∧ b}`).
 
-1. **N3b-2b-line (landed, this commit):** `exists_smul_eq_of_mem_range_map_subtype` — for a 2-dim
-   `W ⊆ ℝ⁴`, `range (map 2 W.subtype)` is 1-dim (`LinearMap.finrank_range_of_inj` on the injective
-   N3b-1 map + `finrank_exteriorPower_two_eq_one`, `dim W = 2`), so any two members with one nonzero
-   are proportional (`Submodule.eq_of_le_of_finrank_eq` → `span{x} = range`, then
-   `mem_span_singleton`). **Realized in `⋀²ℝ⁴` directly** (not in the pulled-back `⋀²W`), so the
-   point-join (N3b-2a) and the panel-meet (N3b-2b-α) are made proportional *in place* — no pull-back/
-   push-forward. Pure clean composition (verified, no friction, three standard axioms).
-2. **N3b-2b-α (the new content):** `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)`. With step 1,
-   this membership *is already* the proportionality `complementIso (n_u ∧ n') = λ·(p̄ᵢ ∨ p̄ⱼ)`, so
-   **N3b-3 collapses into N3b-2b** — the old "step (ii) proportionality + push-forward" wiring is
-   subsumed by the line identity. The honest membership is a **finrank count** off green step (i):
-   `complementIso (n_u ∧ n')` is `b.toDual`-annihilated by the shared-direction 2-extensors
-   (`complementIso_toDual_extensor_eq_zero_of_shared_vector`, green), so it lies in
-   `dualCoannihilator Φ` for `Φ = span{those toDual-images}`; that coannihilator is 1-dim **iff
-   `finrank Φ = 5`** (`Subspace.finrank_add_finrank_dualCoannihilator_eq` in the 6-dim `⋀²ℝ⁴`;
-   skeleton verified, `5 + 1 = 6 = (4 choose 2)`). The `range ≤ dualCoannihilator Φ` inclusion is the
-   green step-(i) vanishing read the other way; `range` and `dualCoannihilator Φ` are both 1-dim, so
-   `eq_of_le_of_finrank_eq` closes — **provided** the spanning fact `finrank Φ = 5` (the shared-
-   direction extensors' `toDual`-images span the wedge-perp hyperplane of the line `⋀²W`). That
-   spanning fact is the irreducible regressive-duality content; it is the one genuinely-new leaf.
+**Route caveat found this commit — the membership *assembly* (old N3b-2b-α / N3b-3) needs its route
+re-examined; the phase-open Route A-finrank as written does not close.** Re-reading green step (i)
+(`complementIso_toDual_extensor_eq_zero_of_shared_vector`): its `b.toDual M (extensor c) = 0` is the
+*wedge pairing* `vol(extensor n ∨ₑ extensor c)` (via `complementIso_toDual`, valid only because
+`M = complementIso(extensor n)`), **not** the coordinate dot product `b.toDual` gives on a generic
+pair. The phase-open `Φ = span{b.toDual(extensor c)}` route needs `Ψ = range (map 2 W.subtype) ≤
+dualCoannihilator Φ`, i.e. every point-join `J = extensor ![w₀,w₁]` (with `w₀,w₁ ∈ W`) annihilated by
+every shared-direction `extensor c`. Under **either** pairing this is false: `vol(J ∨ₑ extensor c) =
+vol(![w₀,w₁,c₀,c₁])` is nonzero for generic `c` sharing one normal (e.g. `c = ![n_u, t]`, `t`
+generic). So the shared-direction extensors are **not** a common annihilator of `J` and `M` — the
+"both lie in `dualCoannihilator Φ`, count to 1-dim" framing has a real gap. The *mathematics*
+(Hodge: `complementIso(n_u ∧ n') = λ·(w₀ ∧ w₁)` for `W = {n_u,n'}^⊥`) is true; what is wrong is the
+specific `Φ`-via-shared-extensors finrank route. **The 5-dim span count N3b-2b-β is route-independent
+and correct** (it is the honest dimension of `n_u ∧ ℝ⁴ + n' ∧ ℝ⁴`); the membership assembly above it
+must be re-derived — likely directly identifying `complementIso(n_u ∧ n')` with the wedge of a basis
+of `W` (the genuine Hodge-star content), or via a correct annihilator object. **Resolve the assembly
+route before the node flip** (see *Blockers*).
+
+The green leaves still reused once the assembly route is fixed:
+
+1. **N3b-2b-line (landed):** `exists_smul_eq_of_mem_range_map_subtype` — for a 2-dim `W ⊆ ℝ⁴`,
+   `range (map 2 W.subtype)` is 1-dim (`LinearMap.finrank_range_of_inj` on the injective N3b-1 map +
+   `finrank_exteriorPower_two_eq_one`), so any two members with one nonzero are proportional. Realized
+   in `⋀²ℝ⁴` directly, so once `complementIso(n_u ∧ n') ∈ range` lands it *is* the proportionality.
+2. **The membership** `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` (the re-routed
+   old N3b-2b-α): with step 1 this subsumes the old N3b-3 proportionality. Its honest derivation is
+   the open assembly above; the 5-dim span count N3b-2b-β is the route-independent leaf below it.
 
 N3b-3 then has no separate work beyond the final node flip on
 `lem:case-III-claim612-line-in-panel-union` (retiring the green-modulo-N3b on N9 `case_III_claim612`
-and the candidate-completion chain), since the proportionality fell out of step 2.
+and the candidate-completion chain), once the membership lands.
 
 **N3b-2a landed** (this commit, the point-join half): `extensor_mem_range_map_subtype_of_mem` in
 `Molecular/Meet.lean` — for `v : Fin 2 → ℝ⁴` with each `v i ∈ W`, the grade-2 extensor `extensor v`
@@ -123,45 +134,25 @@ already green); the residual content is the pull-back/push-forward bookkeeping. 
 range-membership step (N3b-2) needs a `change`/coercion bridge between the project's `extensor`
 presentation and mathlib's `ιMulti_family` (a possible FRICTION candidate — flag at build).
 
-## N3b-2b design recon — verdict (2026-06-07, this commit; docs-only, no node flip)
+## N3b-2b route — Route B rejected, Route A-finrank overturned at build (2026-06-07)
 
-Spiked mathlib (lean-lsp MCP: `lean_loogle`, `lean_leanfinder`, `lean_local_search`, plus
-`lean_multi_attempt` skeleton checks; grep over `.lake/packages/mathlib/.../ExteriorPower/`; NOT
-`lean_leansearch`) for the double-orthogonal / `dualAnnihilator` / decomposable-Hodge API the two
-candidate routes need. **Verdict: N3b-2b is genuinely heavier than N3b-1/2a (not a one-bridge build);
-land the design-pass, build next. Route A-finrank wins, and it collapses N3b-2b + N3b-3 to one short
-tail above a single new spanning leaf.** The route is in *Current state*; the route comparison:
-
-- **Route (B) — direct decomposability — REJECTED.** "`complementIso (n_u ∧ n')` *is* a decomposable
-  `w₁ ∧ w₂` with `w₁, w₂ ∈ W`, then apply N3b-2a." Mathlib has **no** Hodge-star / decomposable-dual
-  API (`ExteriorPower/` is exactly `{Basic, Basis, Pairing}.lean`; no `decomposable`/`Hodge` anywhere
-  in `LinearAlgebra/`), so the decomposability is *not* cheap — it needs the full development itself.
-  And the concrete-basis fallback is blocked: `complementIso` is `noncomputable`
-  (`linearEquivOfInjective` ≪≫ `toDualEquiv.symm`), so `decide` on a standard-basis `e_S` is a
-  non-starter (verified: `decide` fails to even synthesize); a manual route would compute the full
-  6×6 signed Hodge matrix via the `complementIso_exteriorPower_repr_mem_range_intCast` machinery and
-  then prove (non-bilinearly) that a general `n_u ∧ n'` maps to a `W`-decomposable. Heavier than (A),
-  and it does *not* collapse N3b-3. So (B) does **not** make N3b-2b near-trivial — its premise (cheap
+- **Route (B) — direct decomposability — REJECTED (stands).** "`complementIso (n_u ∧ n')` *is* a
+  decomposable `w₁ ∧ w₂`, `w₁,w₂ ∈ W`, then apply N3b-2a." Mathlib has **no** Hodge-star /
+  decomposable-dual API (`ExteriorPower/` is exactly `{Basic, Basis, Pairing}.lean`), so the
+  decomposability is not cheap; and `complementIso` is `noncomputable` (`linearEquivOfInjective` ≪≫
+  `toDualEquiv.symm`), so `decide` on a standard basis is a non-starter (verified). Its premise (cheap
   decomposability) is false in mathlib's current state.
-- **Route (A) — double-orthogonal / annihilator — ADOPTED, in finrank form.** The phase-open framing
-  ("identify `range (map 2 W.subtype)` with the `b.toDual`-annihilator … then step (i) lands it")
-  is right but realized as a **finrank count**, not a literal `dualAnnihilator_dualAnnihilator`
-  rewrite. mathlib's API is rich enough: `Submodule.dualCoannihilator` /
-  `Subspace.finrank_add_finrank_dualCoannihilator_eq` / `Subspace.dualCoannihilator_dualAnnihilator_eq`
-  give the perp-dimension arithmetic, and `Submodule.eq_of_le_of_finrank_eq` is the two-1-dim-subspaces
-  closer. The membership `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` follows from the
-  **green** step (i) vanishing (now read as a `dualCoannihilator` membership) once the perp is pinned
-  1-dim — which needs `finrank Φ = 5`.
-
-**The single irreducible new leaf is the spanning fact** `finrank Φ = 5` (the `b.toDual`-images of the
-shared-direction 2-extensors span the 5-dim wedge-perp hyperplane of the line `⋀²W` in the 6-dim
-`⋀²ℝ⁴`). Every route bottoms on this same orthogonal-complement-of-exterior-square fact — confirming
-the blueprint's "regressive-duality-on-decomposables / Hodge-star content not yet in the project."
-The two reductions above it (1-dim of `range (map 2 W.subtype)`, and the `5 + 1 = 6 = (4 choose 2)`
-coannihilator count) are verified-clean skeletons via `lean_multi_attempt`; the binomial reduces by
-`decide`/`norm_num`, not `omega`. **Possible new mirror:** the spanning leaf, if it factors through an
-upstream-eligible `⋀²` perp-pairing fact, is a `Mathlib/LinearAlgebra/ExteriorPower/`-mirror candidate
-(flag at build); otherwise it stays project-internal in `Meet.lean`.
+- **Route (A) — `Φ`-via-shared-extensors finrank count — OVERTURNED at build.** The recon adopted it,
+  but building N3b-2b surfaced that the `Ψ ≤ dualCoannihilator Φ` step is *false*: the shared-direction
+  extensors are not a common annihilator of the point-join and the panel-meet (green step (i)'s
+  vanishing is the wedge pairing `vol(extensor n ∨ₑ ·)`, valid only for the panel-meet, not the
+  coordinate dot product `b.toDual` gives generically — and `vol(J ∨ₑ extensor c) ≠ 0` for generic
+  shared-direction `c`). Full arc in *Blockers* / *Current state*. The recon's *true* residue: the two
+  grade-2 summands `n_u ∧ ℝ⁴`, `n' ∧ ℝ⁴` are each 3-dim (the landed building block), and their span is
+  the genuinely-new 5-dim content (N3b-2b-β) — that span count is route-independent and correct; what
+  the gap kills is only the *membership assembly via `Φ`*, which must be re-derived (likely the direct
+  Hodge-star identification, *Blockers* candidate (a)). The decomposable-intersection / Hodge-star
+  content is genuinely-new (no mathlib API), consistent with the blueprint's framing.
 
 ## Red-node consistency gate — recon verdict (2026-06-07, opening commit)
 
@@ -213,26 +204,50 @@ build:
   Stated as the proportionality producer **in `⋀²ℝ⁴`** (not the literal `= span{x}` form, nor a
   pull-back to `⋀²W`), so it makes the point-join and panel-meet proportional in place — N3b-3's
   push-forward wiring is gone. Pure Lean infra (no blueprint node — below the include-bar).
-- [ ] **N3b-2b-α** (the new content) — `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` via
-  Route A-finrank: green step (i) vanishing read as `∈ dualCoannihilator Φ`, pin
-  `finrank (dualCoannihilator Φ) = 1` from the **spanning fact `finrank Φ = 5`**, close with
-  `eq_of_le_of_finrank_eq`. The spanning fact (shared-direction 2-extensors' `toDual`-images span the
-  wedge-perp hyperplane of `⋀²W`) is the one irreducible regressive-duality leaf. With N3b-2b-line this
-  membership *is* the proportionality `complementIso (n_u ∧ n') = λ·(p̄ᵢ ∨ p̄ⱼ)`, so it **subsumes N3b-3**.
-- [ ] **N3b-3** (collapsed) — no separate proportionality work (it fell out of N3b-2b-α); only the
-  annihilation transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0` (one `smul`-linearity step) + the final node
-  flip on `lem:case-III-claim612-line-in-panel-union`, retiring the green-modulo-N3b on N9
+- [x] **N3b-2b-α building block** (landed) — `wedgeFixedLeft`/`coe_wedgeFixedLeft`/
+  `ker_wedgeFixedLeft`/`finrank_range_wedgeFixedLeft` in `Molecular/Meet.lean`: the
+  wedge-with-a-fixed-vector map `v ↦ a ∧ v : ℝ⁴ →ₗ ⋀²ℝ⁴` (`(mulLeft (ι a)).comp ι` corestricted to
+  `⋀²`), kernel `= span{a}` for `a ≠ 0`, hence range `finrank = 3` (rank–nullity). The `a ∧ ℝ⁴`
+  summand of the shared-direction span. Pure Lean infra (no blueprint node — below the include-bar).
+  Build warning-clean, `lake lint` clean, `#print axioms` = the three standard axioms.
+- [ ] **N3b-2b-β** (next) — the 5-dim span count `finrank (range (wedgeFixedLeft n_u) ⊔
+  range (wedgeFixedLeft n')) = 5` via `Submodule.finrank_sup_add_finrank_inf_eq` (`3 + 3 − 1`); the
+  genuine sub-content is `intersection = span{n_u ∧ n'}` (`finrank = 1`), the decomposable-intersection
+  fact. Route-independent and correct regardless of how the membership assembly is finally derived.
+- [ ] **The membership** `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` (re-routed) — the old
+  N3b-2b-α / N3b-3. **Route OPEN** (Current state / Blockers): the phase-open `Φ`-via-shared-extensors
+  finrank route does not close (the shared-direction extensors are not a common annihilator of the
+  point-join and the panel-meet). Re-derive — likely the direct Hodge-star identification
+  `complementIso(n_u ∧ n') = λ·(w₀ ∧ w₁)` for a basis `w₀,w₁` of `W`. With N3b-2b-line this membership
+  *is* the proportionality, so it still **subsumes N3b-3**.
+- [ ] **N3b-3** (collapsed) — no separate proportionality work (it falls out of the membership); only
+  the annihilation transfer `r(C(L)) = 0 ⟹ r(p̄ᵢ ∨ p̄ⱼ) = 0` (one `smul`-linearity step) + the final
+  node flip on `lem:case-III-claim612-line-in-panel-union`, retiring the green-modulo-N3b on N9
   (`case_III_claim612`) and the candidate-completion chain.
 
 ## Blockers / open questions
 
-- **N3b-2b-α spanning leaf — the one open math leaf.** `finrank Φ = 5` where `Φ` = the span of the
-  `b.toDual`-images of the shared-direction 2-extensors. Equivalent to: those extensors' images span
-  the wedge-perp hyperplane of the line `⋀²W` (5-dim of 6). Open question to resolve *at build*: does
-  this factor through a clean upstream `⋀²`-pairing perp fact (→ `Mathlib/.../ExteriorPower/` mirror),
-  or is the concrete `Fin 4` spanning computation (4 covectors → a 5-dim image) project-internal? The
-  recon did not pin the exact generating set; that is the first thing the build commit settles. No
-  decomposable / Hodge-star API exists in mathlib to lean on — this is the genuinely-new content.
+- **The membership assembly route is OPEN — phase-open Route A-finrank does not close** (found this
+  commit; full arc in *Current state*). The plan put the point-join `J` and the panel-meet
+  `M = complementIso(n_u ∧ n')` in a common 1-dim `dualCoannihilator Φ`, `Φ = span` of the
+  `b.toDual`-images of the shared-direction extensors. **But the shared-direction extensors are not a
+  common annihilator of `J` and `M`:** green step (i)'s vanishing is `vol(extensor n ∨ₑ extensor c)`
+  (a wedge pairing, valid only for `M`), and `vol(J ∨ₑ extensor c) = vol(![w₀,w₁,c₀,c₁])` is nonzero
+  for generic `c` sharing one normal — so `Ψ = range (map 2 W.subtype) ≤ dualCoannihilator Φ` is
+  false. The Hodge fact `complementIso(n_u ∧ n') = λ·(w₀ ∧ w₁)` (`W = {n_u,n'}^⊥`) is *true*; the
+  finrank-via-`Φ` *route to it* is wrong. **First task next: settle the correct assembly route** —
+  candidates: (a) directly identify `complementIso(n_u ∧ n')` with `w₀ ∧ w₁` up to scalar via the
+  wedge-pairing characterization `complementIso_toDual` (show both have the same `wedgePairing`-pairing
+  against a basis of `⋀²W`, then `eq_of_le_of_finrank_eq`); (b) build a correct annihilator object
+  (the *wedge*-perp of `W`'s extensor line, using the green step (i) reading consistently for both).
+- **N3b-2b-β span count — the one route-independent open math leaf.** `finrank (n_u ∧ ℝ⁴ + n' ∧ ℝ⁴)
+  = 5` (= the next concrete commit). Above the landed building block (`finrank_range_wedgeFixedLeft`,
+  each summand 3-dim) via `Submodule.finrank_sup_add_finrank_inf_eq` (`3 + 3 − 1`); the genuine
+  sub-content is the intersection `range (wedgeFixedLeft n_u) ⊓ range (wedgeFixedLeft n') =
+  span{n_u ∧ n'}` (`finrank = 1`) — the decomposable-intersection fact `a ∧ v = b ∧ w`, `{a,b}`
+  independent ⟹ element ∈ `span{a ∧ b}`. No decomposable / Hodge-star API in mathlib to lean on; this
+  is genuinely-new content. (Whether N3b-2b-β actually feeds the *final* membership depends on the
+  assembly route settled above — but the span count is correct and reusable either way.)
 - **N3b-2a coercion bridge — resolved, one routine step (not FRICTION).** The project's
   `extensor`/`join` live in `ExteriorAlgebra ℝ (Fin 4 → ℝ)` (graded into `⋀[ℝ]^2` via
   `extensor_mem_exteriorPower`), while mathlib's range API is phrased via `ιMulti`. The point-join
@@ -245,19 +260,24 @@ build:
 
 ## Hand-off / next phase
 
-**Next: land N3b-2b-α, the spanning leaf** `finrank Φ = 5` (Blockers) — the one irreducible new fact.
-N3b-2b-line landed this commit (`exists_smul_eq_of_mem_range_map_subtype`, the proportionality engine
-in `⋀²ℝ⁴`); the route is settled — **Route A-finrank** (see *Current state* / *N3b-2b design recon*).
-Smallest concrete next sub-commit: **N3b-2b-α** — the membership `complementIso (n_u ∧ n') ∈
-range (map 2 W.subtype)` via the spanning leaf + the `dualCoannihilator` finrank count. With
-N3b-2b-line this membership *is* the proportionality `complementIso (n_u ∧ n') = λ · (p̄ᵢ ∨ p̄ⱼ)`,
-*subsuming* N3b-3's proportionality. Open at build: the exact generating set for `Φ` and whether it
-factors through an upstream-eligible `⋀²` perp fact (mirror) or stays project-internal in `Meet.lean`
-(Blockers). After N3b-2b-α, **N3b-3** is just the `smul`-transfer + assembling the per-line duality
-lemma (with N3b-2a placing the point-join in the range, N3b-2b-α placing the panel-meet, and
+**Next concrete commit: N3b-2b-β, the 5-dim span count** `finrank (range (wedgeFixedLeft n_u) ⊔
+range (wedgeFixedLeft n')) = 5` (Blockers / Lemma checklist). The building block landed this commit
+(`wedgeFixedLeft` + kernel + `finrank_range_wedgeFixedLeft` = 3 per summand); N3b-2b-β assembles two
+summands via `Submodule.finrank_sup_add_finrank_inf_eq` (`3 + 3 − 1`), the genuine sub-content being
+the decomposable-intersection `range ⊓ range = span{n_u ∧ n'}` (`finrank = 1`). It is route-
+independent and correct.
+
+**But before flipping the node, settle the membership assembly route** — the phase-open Route
+A-finrank *does not close* (found this commit; the shared-direction extensors are not a common
+annihilator of the point-join and the panel-meet — *Blockers* / *Current state*). The Hodge fact is
+true; re-derive the membership `complementIso (n_u ∧ n') ∈ range (map 2 W.subtype)` correctly
+(candidate (a): identify it with `w₀ ∧ w₁` up to scalar via the `complementIso_toDual` wedge-pairing
+characterization against a basis of `⋀²W`). With N3b-2b-line that membership *is* the proportionality
+`complementIso (n_u ∧ n') = λ·(p̄ᵢ ∨ p̄ⱼ)`, *subsuming* N3b-3. Then **N3b-3** is the `smul`-transfer +
+the per-line duality lemma (N3b-2a placing the point-join, the membership placing the panel-meet,
 N3b-2b-line making them proportional) + the node flip on `lem:case-III-claim612-line-in-panel-union`;
-run `blueprint/verify.sh` on that flip. Route (B) is rejected (no Hodge/decomposable API in mathlib;
-`complementIso` noncomputable → no `decide`).
+run `blueprint/verify.sh` on that flip. Route (B) — direct decomposability — stays rejected (no
+Hodge/decomposable API in mathlib; `complementIso` noncomputable → no `decide`).
 
 **After 22f closes** (N3b green → N9 + the candidate-completion chain fully green): the next
 deferred-**unlettered** cut is the **`d=3` realization assembly** — `prop:rigidity-matrix-prop11` `hub`
@@ -271,21 +291,26 @@ the two producer nodes `lem:case-II-realization` / `lem:case-III` themselves gre
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- **N3b-2b route: Route A-finrank, not Route B (2026-06-07, design recon — full arc in *N3b-2b design
-  recon*).** Compared the two phase-open candidates. (B) direct decomposability is *rejected*: mathlib
-  has no Hodge/decomposable-dual API and `complementIso` is noncomputable (no `decide`), so its premise
-  (cheap decomposability) is false — it would need the heavy development itself and does not collapse
-  N3b-3. (A) double-orthogonal is *adopted*, realized as a `dualCoannihilator` **finrank count**
-  (mathlib's `finrank_add_finrank_dualCoannihilator_eq` + `eq_of_le_of_finrank_eq`), reusing green
-  step (i) for the membership-as-annihilation. The whole tail collapses to one new leaf — the spanning
-  fact `finrank Φ = 5` — above two verified-clean reductions (Blockers / Current state).
+- **N3b-2b building block: the wedge-with-fixed-vector map (2026-06-07).** Landed `wedgeFixedLeft`
+  (`v ↦ a ∧ v : ℝ⁴ →ₗ ⋀²ℝ⁴`, as `(mulLeft (ι a)).comp ι` corestricted to `⋀²`) with kernel
+  `= span{a}` for `a ≠ 0` (`extensor_ne_zero_iff_linearIndependent` + `LinearIndependent.pair_iff'`)
+  and range `finrank = 3` (rank–nullity). The `a ∧ ℝ⁴` summand of the shared-direction span; feeds the
+  route-independent 5-dim span count N3b-2b-β.
+- **N3b-2b route overturn: Route A-finrank does NOT close (2026-06-07, found at build — *N3b-2b route*
+  / *Blockers*).** Route (B) direct decomposability stays *rejected* (no Hodge API; `complementIso`
+  noncomputable → no `decide`). Route (A) `Φ`-via-shared-extensors finrank count was *adopted at recon*
+  but is *overturned*: its `Ψ = range (map 2 W.subtype) ≤ dualCoannihilator Φ` step is false — the
+  shared-direction extensors are not a common annihilator of the point-join and panel-meet (green
+  step (i)'s vanishing is the wedge pairing, valid only for the panel-meet). The Hodge fact
+  `complementIso(n_u ∧ n') = λ·(w₀ ∧ w₁)` is true; the membership *assembly* must be re-derived. The
+  recon's true residue (the two 3-dim summands → a 5-dim span) is route-independent and stands.
 - **N3b-2b + N3b-3 collapse via the line identity (2026-06-07).** N3b-2b-line landed as the
   proportionality producer `exists_smul_eq_of_mem_range_map_subtype` (two members of the 1-dim
   `range (map 2 W.subtype)`, one nonzero, are proportional) **in `⋀²ℝ⁴` directly** — not the literal
   `range = span{x}` form, and not pulled back to `⋀²W`. So once the membership
-  `complementIso (n_u ∧ n') ∈ range` lands (N3b-2b-α), it *is* the proportionality N3b-3 was scoped to
-  extract — the phase-open "pull-back to `⋀²W` / step (ii) / push-forward" wiring is unnecessary;
-  N3b-3 shrinks to the `smul`-transfer + per-line duality assembly + node flip.
+  `complementIso (n_u ∧ n') ∈ range` lands (the re-routed old N3b-2b-α), it *is* the proportionality
+  N3b-3 was scoped to extract — the phase-open "pull-back to `⋀²W` / step (ii) / push-forward" wiring
+  is unnecessary; N3b-3 shrinks to the `smul`-transfer + per-line duality assembly + node flip.
 - **N3b-2 split into a point-join half (2a) and a panel-meet half (2b) (2026-06-07).** The 22f open
   scoped N3b-2 as one commit putting *both* `p̄ᵢ ∨ p̄ⱼ` and `C(L)` in `range (map 2 W.subtype)`.
   Building it surfaced an asymmetry: the point-join (2a, `extensor_mem_range_map_subtype_of_mem`) is

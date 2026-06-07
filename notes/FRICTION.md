@@ -819,6 +819,21 @@ housekeeping pass once their resolution is fully indexed.
   defeq is project-local; `coe_wedgeProd_ιMulti_family` is itself the fused bridge so
   the `change` happens once).
 
+### [resolved] A grade-2 `extensor ![a, v]` packaged as `LinearMap.mulLeft ℝ (ι a) ∘ ι`: unfold `ιMulti ℝ 2 ![a,v] = ι a * ι v` by `simp [List.ofFn_succ]`
+- **Where it bit:** `wedgeFixedLeft` / `coe_wedgeFixedLeft` in `Molecular/Meet.lean`
+  (Phase 22f N3b-2b-α building block, the wedge-with-a-fixed-vector map `v ↦ a ∧ v`).
+- **Friction:** to package `v ↦ extensor ![a, v]` as a `→ₗ`, the cleanest carrier is
+  `(LinearMap.mulLeft ℝ (ι a)).comp (ι)` (codRestricted to `⋀²`), which needs
+  `extensor ![a, v] = ι a * ι v`. `extensor_apply` + `ExteriorAlgebra.ιMulti_apply`
+  reduces the LHS to `(List.ofFn fun i ↦ ι (![a,v] i)).prod`, but `List.ofFn` over
+  `Fin 2` doesn't compute by `rfl`.
+- **Fix:** one `simp [List.ofFn_succ]` (single lemma, found first try) unfolds the
+  2-element `List.ofFn` product to `ι a * (ι v * 1) = ι a * ι v`. Below the one-bridge
+  threshold; same `ιMulti ↦ ι-product` family as the `coe_wedgeProd_ιMulti_family` entry
+  above.
+- **Status:** resolved (no lift — `simp [List.ofFn_succ]` is the standard `ιMulti`
+  small-arity unfold; `coe_wedgeFixedLeft` is the fused `@[simp]` bridge so it happens once).
+
 ### [resolved] No mathlib `g ∘ Fin.append a b = Fin.append (g∘a) (g∘b)`; diagonal wedge-pairing nonzero via injective-append + LI, not via the permutation sign
 - **Where it bit:** `wedgePairing_ιMulti_family_compl_ne_zero` in `Molecular/Meet.lean`
   (Phase 21a ingredient (c), diagonal half): the value of the standard-basis wedge

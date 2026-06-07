@@ -687,6 +687,73 @@ theorem exists_smul_eq_of_mem_range_map_subtype
   rw [← Submodule.mem_span_singleton, hspan]
   exact hy
 
+/-! ## N3b-2b-α building block: wedge-with-a-fixed-vector `⋀²ℝ⁴` and its 3-dim range
+(`lem:case-III-claim612-line-in-panel-union`)
+
+The foundational sub-leaf of the panel-meet range membership N3b-2b-α (Phase 22f). The spanning
+fact the membership rests on — that the shared-direction 2-extensors of `n = ![n_u, n']` span a
+5-dimensional hyperplane of `⋀²ℝ⁴` — is, via inclusion–exclusion, built from the two grade-2
+subspaces `n_u ∧ ℝ⁴` and `n' ∧ ℝ⁴`, each the range of the *wedge-with-a-fixed-vector* map
+`v ↦ n_u ∧ v` (resp. `n' ∧ v`). This block builds that map `wedgeFixedLeft a : ℝ⁴ →ₗ ⋀²ℝ⁴`,
+identifies its kernel as the line `span{a}` (`a ∧ v = 0 ⟺ a, v` dependent ⟺ `v ∈ span{a}`, for
+`a ≠ 0`), and reads off `finrank (range) = 4 − 1 = 3` by rank–nullity. The full `5 = 3 + 3 − 1`
+span count (and the panel-meet membership it discharges) is the next sub-leaf above this. -/
+
+/-- **The wedge-with-a-fixed-vector map** `v ↦ a ∧ v : ℝ⁴ →ₗ ⋀²ℝ⁴`
+(`lem:case-III-claim612-line-in-panel-union`), the building block of the N3b-2b-α spanning fact.
+It is the left exterior multiplication `LinearMap.mulLeft ℝ (ι a)` by the homogeneous degree-1
+element `ι a`, postcomposed with `ι` and corestricted to the grade-2 piece `⋀²ℝ⁴` (the product
+`ι a * ι v` is grade `1 + 1 = 2`). On the underlying algebra it sends `v` to `extensor ![a, v]`
+(`coe_wedgeFixedLeft`); its kernel is the line `span{a}` (`ker_wedgeFixedLeft`) and its range is
+therefore `3`-dimensional (`finrank_range_wedgeFixedLeft`), the `a ∧ ℝ⁴` summand of the
+shared-direction span. -/
+noncomputable def wedgeFixedLeft (a : Fin 4 → ℝ) :
+    (Fin 4 → ℝ) →ₗ[ℝ] ⋀[ℝ]^2 (Fin 4 → ℝ) :=
+  LinearMap.codRestrict (⋀[ℝ]^2 (Fin 4 → ℝ))
+    ((LinearMap.mulLeft ℝ (ExteriorAlgebra.ι ℝ a)).comp (ExteriorAlgebra.ι ℝ)) fun v => by
+      have h : (LinearMap.mulLeft ℝ (ExteriorAlgebra.ι ℝ a)).comp (ExteriorAlgebra.ι ℝ) v
+          = extensor ![a, v] := by
+        rw [LinearMap.comp_apply, LinearMap.mulLeft_apply, extensor_apply,
+          ExteriorAlgebra.ιMulti_apply]
+        simp [List.ofFn_succ]
+      rw [h]; exact extensor_mem_exteriorPower _
+
+/-- The underlying exterior-algebra element of `wedgeFixedLeft a v` is the `2`-extensor
+`extensor ![a, v] = a ∧ v` (`lem:case-III-claim612-line-in-panel-union`). The bridge from the
+linear-map packaging to the `extensor` API on which the kernel computation runs. -/
+@[simp]
+theorem coe_wedgeFixedLeft (a v : Fin 4 → ℝ) :
+    (wedgeFixedLeft a v : ExteriorAlgebra ℝ (Fin 4 → ℝ)) = extensor ![a, v] := by
+  rw [wedgeFixedLeft, LinearMap.codRestrict_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply,
+    extensor_apply, ExteriorAlgebra.ιMulti_apply]
+  simp [List.ofFn_succ]
+
+/-- **The kernel of `wedgeFixedLeft a` is the line `span{a}`** for `a ≠ 0`
+(`lem:case-III-claim612-line-in-panel-union`). `a ∧ v = 0` exactly when `![a, v]` is linearly
+dependent (`extensor_ne_zero_iff_linearIndependent`), and for `a ≠ 0` a pair `![a, v]` is
+dependent iff `v` lies in `span{a}` (`LinearIndependent.pair_iff'` ↔
+`Submodule.mem_span_singleton`).
+The rank–nullity input pinning `finrank (range (wedgeFixedLeft a)) = 3`
+(`finrank_range_wedgeFixedLeft`). -/
+theorem ker_wedgeFixedLeft {a : Fin 4 → ℝ} (ha : a ≠ 0) :
+    LinearMap.ker (wedgeFixedLeft a) = Submodule.span ℝ {a} := by
+  ext v
+  rw [LinearMap.mem_ker, Submodule.mem_span_singleton, ← Subtype.coe_inj, ZeroMemClass.coe_zero,
+    coe_wedgeFixedLeft, ← not_iff_not, not_exists, ← ne_eq,
+    extensor_ne_zero_iff_linearIndependent, LinearIndependent.pair_iff' ha]
+
+/-- **The range of `wedgeFixedLeft a` is `3`-dimensional** for `a ≠ 0`
+(`lem:case-III-claim612-line-in-panel-union`). By rank–nullity
+(`LinearMap.finrank_range_add_finrank_ker`) on `wedgeFixedLeft a : ℝ⁴ →ₗ ⋀²ℝ⁴`, with the kernel
+the line `span{a}` (`ker_wedgeFixedLeft`, `finrank = 1` for `a ≠ 0`) and the domain `ℝ⁴`
+(`finrank = 4`), the range has `finrank = 4 − 1 = 3`. This is the `a ∧ ℝ⁴` summand of the
+shared-direction span `Φ`; the `5 = 3 + 3 − 1` count assembles two such summands. -/
+theorem finrank_range_wedgeFixedLeft {a : Fin 4 → ℝ} (ha : a ≠ 0) :
+    Module.finrank ℝ (LinearMap.range (wedgeFixedLeft a)) = 3 := by
+  have hrn := LinearMap.finrank_range_add_finrank_ker (wedgeFixedLeft a)
+  rw [ker_wedgeFixedLeft ha, finrank_span_singleton ha, Module.finrank_fin_fun] at hrn
+  omega
+
 /-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
 (ingredient (c), the rationality refinement of the signed-permutation matrix; B0
 rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),
