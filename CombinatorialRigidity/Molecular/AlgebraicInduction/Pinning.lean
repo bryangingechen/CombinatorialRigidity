@@ -125,6 +125,29 @@ theorem panelRow_mem_rigidityRows (F : BodyHingeFramework k α β) {ends : β �
       obtain ⟨ρ, rfl⟩ := hx
       rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
 
+/-- **L3 — the candidate row IS a panel row of the candidate placement** (`lem:case-II-realization`
+/ `lem:case-III`, the isolated framework-alignment leaf of the `d = 3` `hsplit` producer;
+Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The `d = 3` `hsplit` producer's three candidate families are
+`Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow u w ρ)) ro` (the candidate-completion assembly's
+`+1` over the eq.~(6.12) brick; `linearIndependent_sum_{augment,p2,p3}_candidateRow`), and the
+device closure consumes them packaged as panel-row subfamilies along an injective edge-index `j`
+(`hasFullRankRealization_of_independent_panelRow_index`). The `rn`/`ro` rows are already `panelRow`s
+(supplied by `case_III_old_new_blocks`); this leaf identifies the remaining `Unit`-summand candidate
+row `hingeRow u w ρ` with a `panelRow` at its own edge `e`, so it too lands at an `(edge, ⋀ᵏ-pair)`
+index of `j` — the panel-row indexed by `(e, t₁, t₂)` once the candidate functional `ρ` is realized
+as `annihRow (C(p(e))) t₁ t₂` (which it is: `ρ` lies in the hinge-row block `r(p(e)) = (span C)^⊥`,
+spanned by the `annihRow` family). The identity is `panelRow` unfolded at `ends e = (u, w)`: by
+`def panelRow`, `panelRow ends (e, t₁, t₂) = hingeRow (ends e).1 (ends e).2 (annihRow (C(p(e))) t₁
+t₂)`, and `ends e = (u, w)` rewrites the endpoints. It is graph-free (`panelRow` reads only `ends`
+and `supportExtensor`, never the carrier graph), so the recurring `ofNormals`/`withGraph` defeq trap
+(TACTICS-QUIRKS §38) does not bite — the candidate placement's framework needs no `whnf`. -/
+theorem panelRow_eq_hingeRow_annihRow_of_ends (F : BodyHingeFramework k α β) (ends : β → α × α)
+    {e : β} {u w : α} (hends : ends e = (u, w))
+    (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    F.panelRow ends (e, t₁, t₂)
+      = hingeRow u w (annihRow (F.supportExtensor e) t₁ t₂) := by
+  rw [panelRow, hends]
+
 /-- **Leg-restricted: the panel rows of the *linking* edges span the rigidity-row space**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of `span_panelRow_eq_rigidityRows`;
 Katoh–Tanigawa 2011 §6.2, Phase 22). The form Case I's *proper-subgraph* legs need. For a leg

@@ -7,26 +7,24 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: L2, the pinned-block span bridge** (`BodyHingeFramework.span_panelRow_comp_single_of_edge`,
-Pinning.lean). Supplies the FULL hinge-block span `hspan : span (range (rn ∘ₗ single v)) =
-F.hingeRowBlock e` the candidate producers (`linearIndependent_sum_p2/p3_candidateRow`,
-`…_sumElim_candidateRow_iff`) need on top of the pinned independence: for an independent panel-row
-subfamily of a transversal edge `e`, all using `e`, of full per-edge size `D−1`, the `v`-pinned span
-equals the hinge-row block. Each pinned row IS the bare annihilator `annihRow (C(e)) t₁ t₂ ∈ r(p(e))`
-(`single v` reads `v`, the distinct other endpoint `0`); `=` by equal `finrank D−1`
-(`linearIndependent_panelRow_comp_single_of_edge` + `finrank_hingeRowBlock`), an
-`eq_of_le_of_finrank_eq` leaf mirroring `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan`.
-The `comp Φ` the producers carry is identity at the pin (`columnOp hvb (single v x) = single v x`,
-`b ≠ v`), so this feeds them directly. Fully green, sorry-free (axioms = `propext`/`choice`/`Quot.sound`),
-warning-clean, lint clean.
+**Just landed: L3, the candidate-row-IS-a-panelRow leaf** (`BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends`,
+Pinning.lean). The candidate producers' `+1` `Unit`-summand row `hingeRow u w ρ` is identified with a
+`panelRow ends (e, t₁, t₂)` at its own edge `e` (where `ρ = annihRow (C(p(e))) t₁ t₂`), so it lands at
+an `(edge, ⋀ᵏ-pair)` index of L5's `j`. Proof = `rw [panelRow, hends]`: `panelRow ends (e,t₁,t₂)
+= hingeRow (ends e).1 (ends e).2 (annihRow (C(p(e))) t₁ t₂)` and `ends e = (u,w)` rewrites the
+endpoints. **The §38 `ofNormals`/`withGraph` defeq trap did NOT bite** — the leaf is graph-free
+(`panelRow` reads only `ends`/`supportExtensor`), so the general `BodyHingeFramework`-level form (no
+`ofNormals`) is the cleanest answer; the design's `panelRow_ofNormals_candidate_eq`
+`mem_infinitesimalMotions` round-trip was not needed. Fully green, sorry-free (axioms =
+`propext`/`choice`/`Quot.sound`), warning-clean, lint clean.
 
-**Next concrete step (smallest forward commit): L3 — the §38 defeq leaf, ISOLATED.** Align the
-candidate placement's framework with the assembly + reuse L1's `hane`/`hnewne` extensor-nonzero
-(`case_III_old_new_blocks`). Route through `…_index` WITHOUT a helper if the families are built directly
-as `panelRow (ofNormals G ends q₀)` subfamilies; extract `panelRow_ofNormals_candidate_eq` (§38
-`mem_infinitesimalMotions` round-trip) only if a `convert`/`rw` `whnf`-walls. The one engineering-risk
-leaf; L0's green-modulo state lets it wall in isolation. See §1.34 / the checklist below for L3–L5
-shapes; L4/L5 are green-brick plumbing.
+**Next concrete step (smallest forward commit): L4 — candidate-row `rigidityRows` membership.** The
+candidate row's edge `e_a` links `v a` in `G` (`hG_ea`, premise data), so `panelRow_mem_rigidityRows`
+gives the rigidityRows membership for the `+1` summand — the analog of `case_II_placement_eq612`'s
+membership step (CaseI.lean:2795), now for `e_a` (a direct `G`-link, not via `hGv`). Closes the F2 gap.
+Then L5 (the `j`/`Sum.elim` packaging + injectivity). Both are green-brick plumbing — L0's green-modulo
+state plus L3 having dodged the §38 trap leave no engineering risk in the remaining leaves. See §1.34 /
+the checklist below for L4/L5 shapes.
 
 (L0 spine, landed earlier this phase: `PanelHingeFramework.case_III_hsplit_producer` carries the
 candidate-selection data + each candidate's `panelRow`-packaging as explicit `h…` and composes
@@ -40,9 +38,9 @@ do the Thm 5.5→5.6 multigraph push (`lem:motions-mono-of-graph-le`). Milestone
 conjecture proved at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is
 **Phase 23** (reuse map: §1.33 (C)).
 
-**Spine + L1–L2 green; L3–L5 remain.** §1.34 cracked the producer core into L0–L5; L0 (the spine)
-is green-modulo, L1 (block extraction) + L2 (span bridge) green. The phase-open red-node +
-supersession + label-resolution gates ran clean at open.
+**Spine + L1–L3 green; L4–L5 remain.** §1.34 cracked the producer core into L0–L5; L0 (the spine)
+is green-modulo, L1 (block extraction) + L2 (span bridge) + L3 (candidate-row-as-panelRow) green. The
+phase-open red-node + supersession + label-resolution gates ran clean at open.
 
 ## Red-node consistency gate — recon verdict (2026-06-07, opening commit)
 
@@ -118,11 +116,12 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
     (`linearIndependent_panelRow_comp_single_of_edge` + `finrank_hingeRowBlock`). Small
     `eq_of_le_of_finrank_eq` leaf, mirrors `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan`.
     Green, sorry-free. (2026-06-07)
-  - [ ] **L3 — the §38 defeq leaf, ISOLATED.** Align the candidate placement's framework with the
-    assembly + reuse `case_II_placement_eq612`'s `hane`/`hnewne` extensor-nonzero. **Route through `…_index`
-    WITHOUT a helper if the families are built directly as `panelRow (ofNormals G ends q₀)` subfamilies;**
-    extract `panelRow_ofNormals_candidate_eq` (§38 `mem_infinitesimalMotions` round-trip) only if a
-    `convert`/`rw` `whnf`-walls. The one engineering-risk leaf; L0's green-modulo lets it wall in isolation.
+  - [x] **L3 — the candidate-row-IS-a-panelRow leaf** (`BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends`,
+    Pinning.lean). The `+1` `Unit`-summand candidate row `hingeRow u w ρ` = `panelRow ends (e,t₁,t₂)`
+    (where `ρ = annihRow (C(p(e))) t₁ t₂`, `ends e = (u,w)`), so it lands at an `(edge,⋀ᵏ-pair)` index
+    of L5's `j`. Proof = `rw [panelRow, hends]`. **§38 trap did NOT bite** — graph-free (`panelRow` reads
+    only `ends`/`supportExtensor`), so the general `BodyHingeFramework`-level form is the answer; the
+    design's `ofNormals` round-trip helper was not needed. Green, sorry-free. (2026-06-07)
   - [ ] **L4 — candidate-row membership.** `e_a` links `v a` in `G` (`hG_ea`) ⟹ `panelRow_mem_rigidityRows`
     for the `+1` summand (the F2 gap; analog of `case_II_placement_eq612`'s membership step for `e_a`).
   - [ ] **L5 — the `j`/`Sum.elim` packaging + injectivity.** `ι = (ιn ⊕ Unit) ⊕ ιo`; `j` places `ιn→e_b`,
@@ -135,11 +134,11 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 
 ## Blockers / open questions
 
-- **The `ofNormals`/`withGraph` defeq-timeout trap** is the standing engineering risk (TACTICS-QUIRKS
-  §38; carried from 22a–e *Blockers*) — now **confined to leaf L3** by the §1.34 cut. Mitigation:
-  build the candidate families directly as `panelRow (ofNormals G ends q₀)` subfamilies (then the
-  framework is one syntactic term and L3 needs no helper); else extract `panelRow_ofNormals_candidate_eq`
-  (the `mem_infinitesimalMotions` round-trip). Budget for L3; not a math risk, and isolated.
+- **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38; carried from 22a–e) was
+  the standing engineering risk, confined to L3 by the §1.34 cut — **and L3 dodged it entirely**: the
+  candidate-row-as-panelRow identity is graph-free (`panelRow` reads only `ends`/`supportExtensor`),
+  so the general `BodyHingeFramework`-level `rw [panelRow, hends]` form needs no `ofNormals` framework
+  to compute. No `panelRow_ofNormals_candidate_eq` round-trip. The trap is now off the `d=3` path.
 - **No math blockers.** (B.1)/(B.2) resolved; the `d=3` contrapositive (Claim 6.12 + candidate
   completion + N3b) is fully green; the producer is plumbing-on-green-bricks. Three structural facts
   de-risk the leaves (§1.34): F1 the candidate row IS a `panelRow` (so it places at an edge for `j`),
@@ -149,20 +148,18 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 
 ## Hand-off / next phase
 
-**Smallest next commit: build L3 — the §38 defeq leaf, ISOLATED.** L0–L2 are green: L1
+**Smallest next commit: build L4 — candidate-row `rigidityRows` membership.** L0–L3 are green: L1
 (`case_III_old_new_blocks`) gives the OLD/NEW blocks + `hane`/`hnewne`, L2
-(`span_panelRow_comp_single_of_edge`) gives the FULL hinge-block span the candidate producers need.
-L3 is the one place real graph data meets the `ofNormals`/`withGraph` `whnf`/`isDefEq` trap: align the
-candidate placement's framework with the assembly's `Sum.elim` output and reuse `case_II_placement_eq612`'s
-`hane`/`hnewne` extensor-nonzero (now exposed by L1). Decide proactively: route through `…_index`
-WITHOUT a bespoke helper if the candidate families are built directly as `panelRow (ofNormals G ends q₀)`
-subfamilies (then `j` is identity-on-edge-index and the framework is one syntactic term); extract
-`panelRow_ofNormals_candidate_eq` (the §38 `mem_infinitesimalMotions` round-trip) only if a single
-`convert`/`rw` `whnf`-walls. L0's green-modulo state lets L3 wall in isolation. Then L4 (candidate-row
-`rigidityRows` membership) + L5 (the `j`/`Sum.elim` packaging + injectivity), one green-brick-plumbing
-leaf per commit. Then the `theorem_55` instantiation (B.2 node), the `lem:case-II-realization` /
-`lem:case-III` flips, and the Thm 5.5→5.6 push. Full leaf shapes, the `j` bridge, and the three
-structural facts: `notes/Phase22-realization-design.md` §1.34.
+(`span_panelRow_comp_single_of_edge`) gives the FULL hinge-block span, L3
+(`panelRow_eq_hingeRow_annihRow_of_ends`) identifies the `+1` candidate row as a `panelRow`. L4: the
+candidate row's edge `e_a` links `v a` in `G` (`hG_ea`, premise data), so `panelRow_mem_rigidityRows`
+gives the rigidityRows membership for the `+1` summand — the analog of `case_II_placement_eq612`'s
+membership step (CaseI.lean:2795), now for `e_a` (a direct `G`-link, not via `hGv`). Closes the F2 gap.
+Then L5 (the `j`/`Sum.elim` packaging + injectivity, the candidate analog of `hjinj` with one extra
+summand). Both are green-brick plumbing — L0's green-modulo state plus L3 having dodged the §38 trap
+leave no engineering risk in the remaining leaves. Then the `theorem_55` instantiation (B.2 node), the
+`lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push. Full leaf shapes, the `j`
+bridge, and the three structural facts: `notes/Phase22-realization-design.md` §1.34.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -175,6 +172,16 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **L3 landed: the candidate-row-IS-a-panelRow leaf; the §38 trap dodged (2026-06-07).**
+  `BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends` (Pinning.lean, next to
+  `panelRow_mem_rigidityRows`): `panelRow ends (e,t₁,t₂) = hingeRow u w (annihRow (C(p(e))) t₁ t₂)`
+  when `ends e = (u,w)` (F1, the `+1` candidate row IS a `panelRow` at its own edge, so L5's `j` places
+  it). Proof = `rw [panelRow, hends]`. **Chose the general `BodyHingeFramework`-level form over the
+  design's `ofNormals`-specific `panelRow_ofNormals_candidate_eq`**: `panelRow` reads only
+  `ends`/`supportExtensor`, never the carrier graph, so the §38 `ofNormals`/`withGraph` `whnf` trap the
+  design budgeted for never arises — no `mem_infinitesimalMotions` round-trip needed, and the general
+  form is reusable. The §38 trap is now off the `d=3` producer path entirely (L4/L5 are graph-free
+  plumbing). No new FRICTION.
 - **L2 landed: the pinned-block span bridge, an `hrspan`-mirror leaf (2026-06-07).**
   `BodyHingeFramework.span_panelRow_comp_single_of_edge` (Pinning.lean, next to its independence
   companion `linearIndependent_panelRow_comp_single_of_edge`) gives the candidate producers' `hspan`:
@@ -203,7 +210,7 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
   The selection capstone was minted with one shared index `ιfam`; the three candidates genuinely differ
   (`M₁` is `(rn ⊕ Unit) ⊕ ro`), so it was generalized to `{ιfam₁ ιfam₂ ιfam₃}` — one-line signature edit,
   `.imp` proof unchanged. FRICTION `[resolved]`. Confirms the green-modulo-skeleton route below: the spine
-  is now plumbing-on-green-bricks, L1–L5 named, §38 trap confined to L3.
+  is now plumbing-on-green-bricks, L1–L5 named, §38 trap was confined to L3 (and L3 then dodged it).
 - **`hsplit` producer core cracked: green-modulo-skeleton-first, defeq trap isolated to one leaf
   (2026-06-07).** Decided the green-modulo-skeleton route (state the producer carrying the residual
   graph-data obligations as explicit `h…`, flip the spine first, discharge each as a leaf) over
