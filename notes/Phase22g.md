@@ -13,7 +13,9 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 pinned down once, verified against KT §6.4.1 eqs. (6.24)–(6.44) and the green Lean. §1.34's L-wire
 framing (route the candidate family through `hasFullRankRealization_of_independent_panelRow_index`,
 `hfamᵢ = panelRow ∘ jᵢ`) is **superseded** — see the three findings below; the corrected leaf
-sequence is C1–C5 (§1.35). **C1 + C2 + C3 have landed;** C4 is next.
+sequence is C1–C5 (§1.35). **C1 + C2 + C3 have landed**, plus the first C5 producer-discharge leaf
+(the `+1` `r̂`-row membership). C4 (the green instance node) is blocked on the rest of C5 — the
+ordering is corrected below.
 
 **Just landed: C3 — the L0 spine re-wired to the corrected route**
 (`PanelHingeFramework.case_III_hsplit_producer`, CaseI.lean). The producer's per-candidate
@@ -78,15 +80,25 @@ selector-shaped output (exactly the `hselᵢ` shape of `case_III_eq629_condition
 machinery stays in the already-green abstract lemmas and the §38 trap is confined to C1's carrier.
 Build + lint clean, warning-free, sorry-free.
 
-**Next concrete step (smallest forward commit): C4 — the `d=3`-instance `theorem_55` node** (B.2).
-Instantiate `theorem_55 (n:=2) (k:=2)` on the three green branch args (`hbase`/`hsplit`/`hcontract`)
-and add the small green blueprint node the molecule-app chapter (Cor 5.7) consumes — **not** a
-standalone `theorem_55_dim3` (the general `thm:theorem-55` stays honestly red-pending-Phase-23). The
-L0/C3 spine still carries the candidate-selection data (`hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`/`hmemᵢ`) as
-explicit green-modulo hypotheses; discharging those — `hr`/`hduality`/`Cᵢ` from
-`exists_redundant_panelRow_ab_decomposition` + N3b (`case_III_claim612`, green via 22f), `hselᵢ` from
-the producers, `hmemᵢ` from the L2 span bridge / L4 membership + the `r̂`-row `e_b`-panelRow
-decomposition — are the remaining leaves before the spine is fully green (C5). Full sequence: §1.35.
+**Next concrete step (smallest forward commit): more C5 producer-discharge leaves.** **The C4↔C5
+ordering is corrected:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot land before the
+C3 spine's carried candidate-selection data is discharged (C5) — the §1.35 verdict and B.2's "mint
+the node name when the producer lands" agree, the *Current state* "C4 next" ordering pre-dated that.
+So the live work is C5: discharge `case_III_hsplit_producer`'s carried `hr`/`hp`/`hduality`/`Cᵢ`
+(from `exists_redundant_panelRow_ab_decomposition` + N3b `case_III_claim612`, green via 22f),
+`hselᵢ` (the producers `linearIndependent_sum_{p2,p3,augment}_candidateRow`), and `hmemᵢ` (L2 span
+bridge / L4 membership for the OLD/NEW blocks + the `+1` `r̂`-row membership). C4 then folds in.
+
+**Just landed: the `+1` `r̂`-row membership leaf** (`BodyHingeFramework.hingeRow_mem_rigidityRows`,
+Pinning.lean). The general block-row form of `panelRow_mem_rigidityRows`: for a link `e = uv` and
+*any* `r ∈ F.hingeRowBlock e`, `hingeRow u v r ∈ F.rigidityRows` directly by `rigidityRows`'s
+definition (`⟨e, u, v, hlink, r, hr, rfl⟩`). Discharges the `hmemᵢ` ingredient for the
+candidate-completion's `+1` row (§1.35 finding (1)): the placed row is `hingeRow v b r̂` with
+`r̂ = ∑_j λ_{(ab)j} r_j(q(ab))`, each `r_j ∈ r(p(e_b))` a hinge-row block member; since
+`hingeRowBlock e_b` is a `Submodule`, `r̂ ∈ hingeRowBlock e_b`, so the row is *directly* a rigidity
+row (cleaner than the note's earlier "= ∑ λ_j hingeRow v b r_j" route — no sum decomposition needed).
+Graph-free (no §38), one-line term proof, axiom-clean. Off the panelRow specialization (`r̂` is not a
+single `annihRow`; `r̂(C(e_b)) ≠ 0`).
 
 After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -233,9 +245,17 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   `case_III_claim612`'s disjunction mapped through three `hasFullRankRealization_of_candidateSelector`
   (C2) calls — no device call in the spine. Green-modulo (the candidate-selection data stays carried
   as explicit hypotheses). Build + lint clean, sorry-free. (2026-06-07) §1.35.
-- [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — instantiate `theorem_55 (n:=2) (k:=2)` on the
-  three green branch args; add the small green blueprint node the molecule-app chapter consumes.
-- [ ] **C5 — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
+- [x] **C5-leaf — the `+1` `r̂`-row membership** (`BodyHingeFramework.hingeRow_mem_rigidityRows`,
+  Pinning.lean). General block-row form of `panelRow_mem_rigidityRows`: `r ∈ hingeRowBlock e` +
+  `IsLink e u v` ⟹ `hingeRow u v r ∈ rigidityRows` (`⟨e,u,v,hlink,r,hr,rfl⟩`). Discharges the
+  candidate `+1` row's `hmemᵢ` ingredient (§1.35 finding (1)). Graph-free, axiom-clean. (2026-06-07)
+- [ ] **C5 — discharge `case_III_hsplit_producer`'s carried data** — `hr`/`hp`/`hduality`/`Cᵢ`,
+  `hselᵢ`, and the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is now in hand). Wires
+  `exists_redundant_panelRow_ab_decomposition` ⊕ `case_III_claim612` ⊕ the producers at real
+  `ofNormals` graph data (§38 defeq trap). Takes the C3 spine fully green.
+- [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
+  `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
+- [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
 - [ ] **Thm 5.5→5.6 push + feed `rigidityMatrix_prop11`'s `hgen`** — unblocks Cor 5.7 at `d=3`.
 ## Blockers / open questions
 
@@ -251,20 +271,24 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   spine); the §38 trap re-enters only when the leaves that discharge `hmemᵢ` instantiate it.
 ## Hand-off / next phase
 
-**Smallest next commit: C4 — the `d=3`-instance `theorem_55` node** (B.2). Instantiate
-`theorem_55 (n:=2) (k:=2)` on the three green branch args (`hbase = theorem_55_base`,
-`hsplit = case_III_hsplit_producer` once its carried hypotheses are discharged, `hcontract =
-case_I_realization`) and add the small green blueprint node the molecule-app chapter (Cor 5.7)
-consumes — **not** a standalone `theorem_55_dim3` (the general `thm:theorem-55` stays honestly
-red-pending-Phase-23). The C3 spine is green-modulo: discharging its carried candidate-selection data
-is the remaining producer work — `hr`/`hduality`/`Cᵢ` from `exists_redundant_panelRow_ab_decomposition`
-+ the N3b duality (`case_III_claim612`, green via 22f); the `hselᵢ` from the producers
-(`linearIndependent_sum_{p2,p3,augment}_candidateRow`); the `hmemᵢ` from the L2 span bridge
-(`span_panelRow_comp_single_of_edge`) / L4 membership (`panelRow_mem_rigidityRows_of_link`) on the L1
-`so`/`sn` blocks, plus the `r̂`-row membership (`hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j ∈ span
-rigidityRows` via `span_annihRow_eq_dualAnnihilator` for the `r_j ∈ (span C(e_b))^⊥` block rows).
-Then C5 (the `lem:case-II-realization` / `lem:case-III` flips), the Thm 5.5→5.6 push. Full verified
-leaf sequence + the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35.
+**Smallest next commit: the next C5 producer-discharge leaf.** **C4 (a green `theorem_55`
+`d=3`-instance) is blocked on C5** — it can only be minted once `case_III_hsplit_producer`'s carried
+candidate-selection data is discharged ("mint the node name when the producer lands", B.2). C5 is the
+substantive producer work at real `ofNormals` graph data (§38 defeq trap): discharge the C3 spine's
+carried hypotheses —
+- `hr`/`hp`/`hduality`/`Cᵢ` from `exists_redundant_panelRow_ab_decomposition` (builds `r̂ = ∑
+  λ_{(ab)j} r_j`, nonzero by `λ_{(ab)i*} = 1`) + the N3b duality (`case_III_claim612`, green via 22f);
+- the `hselᵢ` from the producers `linearIndependent_sum_{p2,p3,augment}_candidateRow` (the
+  `r̂(Cᵢ) ≠ 0` direction, via the row-space criterion `linearIndependent_sumElim_candidateRow_iff`);
+- the `hmemᵢ`: the OLD/NEW `so`/`sn` blocks via L2 span bridge (`span_panelRow_comp_single_of_edge`)
+  / L4 membership (`panelRow_mem_rigidityRows_of_link`) on the L1 blocks, and the `+1` `r̂`-row via the
+  now-landed `hingeRow_mem_rigidityRows` (the placed `hingeRow v b r̂` with `r̂ ∈ hingeRowBlock e_b`).
+
+A good next leaf: the `hselᵢ` derivation, or the `hr`/`Cᵢ`/`hduality` Claim-6.12 data — each
+graph-free pieces are buildable before the §38-bearing final wiring. Then C4 (mint the green
+`theorem_55 (n:=2) (k:=2)` instance node, **not** a standalone `theorem_55_dim3`), the
+`lem:case-II-realization` / `lem:case-III` flips, the Thm 5.5→5.6 push. Full verified leaf sequence +
+the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -277,6 +301,20 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **The `+1` `r̂`-row membership landed as the general block-row form, not the sum decomposition
+  (2026-06-07).** `hingeRow_mem_rigidityRows` (Pinning.lean): `r ∈ hingeRowBlock e` + `IsLink e u v`
+  ⟹ `hingeRow u v r ∈ rigidityRows`, a one-line `⟨e,u,v,hlink,r,hr,rfl⟩` straight off `rigidityRows`'s
+  definition. The candidate `+1` row is `hingeRow v b r̂` with `r̂ = ∑_j λ_{(ab)j} r_j`, each
+  `r_j ∈ r(p(e_b)) = hingeRowBlock e_b` (a `Submodule`), so `r̂ ∈ hingeRowBlock e_b` and the row is
+  *directly* a rigidity row — no `= ∑ λ_j hingeRow v b r_j` decomposition / `span_annihRow_eq_…`
+  needed (the §1.35 hand-off's route was heavier than the fact). Generalizes
+  `panelRow_mem_rigidityRows` (drops the `r = annihRow C` forcing — `r̂(C(e_b)) ≠ 0`, off the panelRow
+  coset). Graph-free (no §38), axiom-clean. No friction.
+- **C4↔C5 ordering corrected (2026-06-07).** A green `d=3`-instance `theorem_55` node (C4) is blocked
+  on the producer discharge (C5) — confirmed against §1.35 + B.2 ("mint the node name when the
+  producer lands"); the prior *Current state* "C4 next" predated that. C5 (discharge
+  `case_III_hsplit_producer`'s carried `hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`/`hmemᵢ` at real `ofNormals`
+  data) is the live work; the `+1`-row `hmemᵢ` ingredient is now in hand.
 - **C3 re-wired the L0 spine to the corrected route — a clean signature edit + 6-line body
   (2026-06-07).** `case_III_hsplit_producer`'s per-candidate hypotheses dropped the superseded
   panelRow packaging (`jᵢ`/`hjᵢ`/`hfamᵢ`) for the C2 inputs (`q₀ᵢ`/`hmemᵢ`/`hcardᵢ`/`hselᵢ`); body now

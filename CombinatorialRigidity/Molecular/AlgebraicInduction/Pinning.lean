@@ -168,6 +168,31 @@ theorem panelRow_mem_rigidityRows_of_link (F : BodyHingeFramework k α β) (ends
     F.panelRow ends (e, t₁, t₂) ∈ F.rigidityRows :=
   F.panelRow_mem_rigidityRows (i := (e, t₁, t₂)) (by rw [hends]; exact hlink)
 
+/-- **A hinge row of *any* hinge-row-block functional at a linking edge is a rigidity row**
+(`lem:case-II-realization` / `lem:case-III`, the `+1` candidate-row membership leaf of the `d = 3`
+`hsplit` producer; Katoh–Tanigawa 2011 §6.4.1, eq. (6.28), Phase 22g). The general block-row form of
+`panelRow_mem_rigidityRows`: for a genuine link `e = uv` of `F.graph` and *any* functional
+`r ∈ F.hingeRowBlock e = r(p(e))` of the hinge-row block (not just an `annihRow` of a single
+`⋀ᵏ`-pair), the row `hingeRow u v r` is a member of `F.rigidityRows` directly by the definition of
+`rigidityRows` (`∃ e u v, IsLink e u v ∧ ∃ r ∈ hingeRowBlock e, φ = hingeRow u v r`), witnessed by
+`⟨e, u, v, hlink, r, hr, rfl⟩`.
+
+This is the membership the candidate-completion's `+1` row needs (§1.35 finding (1)): the placed row
+is `hingeRow v b r̂` with `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))`, where each `r_j ∈ r(p(e_b)) =
+F.hingeRowBlock e_b` (the `(D−1)`-dimensional hinge-row block at the `e_b = vb`-hinge). Since
+`hingeRowBlock e_b` is a `Submodule`, the combination `r̂` lies in it too, so this lemma puts
+`hingeRow v b r̂ ∈ rigidityRows` (hence `∈ span rigidityRows`) at the direct `G`-link `e_b`. Unlike
+`panelRow_mem_rigidityRows` it does **not** force `r = annihRow C` — `r̂` is a genuine combination,
+not a single `annihRow` (it is fresh off the hinge-row block, `r̂(C(e_b)) ≠ 0`), so the panelRow
+specialization does not apply. Graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only
+`graph`/`supportExtensor`), so the `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not
+bite. -/
+theorem hingeRow_mem_rigidityRows (F : BodyHingeFramework k α β)
+    {e : β} {u v : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : F.graph.IsLink e u v) (hr : r ∈ F.hingeRowBlock e) :
+    hingeRow u v r ∈ F.rigidityRows :=
+  ⟨e, u, v, hlink, r, hr, rfl⟩
+
 /-- **Leg-restricted: the panel rows of the *linking* edges span the rigidity-row space**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of `span_panelRow_eq_rigidityRows`;
 Katoh–Tanigawa 2011 §6.2, Phase 22). The form Case I's *proper-subgraph* legs need. For a leg
