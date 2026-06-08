@@ -7,24 +7,31 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: the graph-free candidate-selection capstone `case_III_eq629_conditional`**
-(`RigidityMatrix.lean`), discharging the red `lem:case-III-eq629-conditional` (now GREEN). It is the
-abstract selection step the `d=3` `hsplit` producer instantiates: given the three candidate full
-families `fam₁/fam₂/fam₃` as implications `r̂(Cᵢ)≠0 ⟹ LinearIndependent famᵢ` (the per-candidate
-producers `linearIndependent_sum_p2/p3_candidateRow` + the candidate-completion assembly route each
-through the row-space criterion, `M₃` onto the same `r̂` by eq. (6.44)) plus the four-point
-affine-indep + N3b duality, `case_III_claim612`'s disjunction `r̂(C₁)≠0 ∨ r̂(C₂)≠0 ∨ r̂(C₃)≠0` picks
-the winning candidate. Deliberately stated graph-free (no `ofNormals`) to stay clear of the §38
-defeq trap; 1-line term proof (`case_III_claim612 …).imp hsel₁ (Or.imp hsel₂ hsel₃)`. The
-candidate-completion (`linearIndependent_sum_augment_candidateRow`) was likewise built graph-free in
-22e, so all the abstract row machinery the producer composes is now green and selector-complete.
+**Just landed: the abstractly-indexed device-closure feed
+`hasFullRankRealization_of_independent_panelRow_index`** (`GenericityDevice.lean`), the `Set`-free
+repackaging of `hasFullRankRealization_of_independent_panelRow`. Where the device closure consumes a
+*set*-indexed panel-row subfamily `s`, this takes a finite type `ι`, an injective index map
+`j : ι → β × ⋀ᵏ-pair × ⋀ᵏ-pair`, the panel-row family `i ↦ panelRow ends (j i)` independent, and the
+count `D(|V|−1) ≤ |ι|`, and produces `HasFullRankRealization k G` — reindexing across
+`Equiv.ofInjective j` + transferring the count by `Nat.card_range_of_injective`. This is exactly the
+final packaging step `case_II_placement_eq612` performs inline (CaseI.lean:2757–2818), lifted out so
+the `d=3` `hsplit` producer can feed the device closure the **candidate-completion's `Sum`-indexed
+output** (`linearIndependent_sum_augment_candidateRow` yields `(rn ⊕ {w}) ⊕ ro`, a `Sum` type, not a
+`Set`) once each summand is identified with a `panelRow ends (j i)`. Fully green, no defeq trap (it
+is index-bookkeeping over the already-green closure). The candidate-selection capstone
+`case_III_eq629_conditional` (the previous commit, graph-free, `RigidityMatrix.lean`) discharges
+`lem:case-III-eq629-conditional`; both this feed and the selection capstone are now green, so the
+producer's two end-bricks (selection in, packaging out) are in place — what remains is the
+graph-data instantiation between them.
 
 **Next concrete step (smallest forward commit): build the `d=3` `hsplit` producer at real graph
 data.** Wire `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`, output over `ofNormals G ends q₀`)
 ⊕ the candidate row ⊕ the now-green `case_III_eq629_conditional` selection into
 `linearIndependent_sum_augment_candidateRow` **at the actual `G.splitOff …` framework** — extract
 `rn`/`ro`/`ρ` + supply the three per-candidate `hselᵢ` from the real candidate families, select the
-winning candidate, feed `hasFullRankRealization_of_independent_panelRow` — yielding
+winning candidate, feed the now-green `hasFullRankRealization_of_independent_panelRow_index` (the
+abstractly-indexed device-closure feed — it consumes the candidate-completion's `Sum`-indexed family
+directly via an injective `j` placing each summand at its `(edge, ⋀ᵏ-pair)`) — yielding
 `HasFullRankRealization k (G.splitOff …) ⟹ … k G`, discharging `theorem_55`'s `hsplit` premise at
 `k=2`. **`G.splitOff` is NOT `≤ G`** (edge-substitution: deletes `v`'s edges, adds fresh `e₀`); the
 transport routes through the common subgraph `G − v` (`removeVertex_le` / `removeVertex_le_splitOff`,
@@ -98,9 +105,14 @@ the Phase-23 cycle base).
 - [x] **`lem:case-III-eq629-conditional` candidate-selection capstone** — `case_III_eq629_conditional`
   (`RigidityMatrix.lean`), the graph-free selection routing `case_III_claim612`'s disjunction through
   the three per-candidate full-family implications. Node flipped GREEN. (2026-06-07)
+- [x] **Abstractly-indexed device-closure feed** — `hasFullRankRealization_of_independent_panelRow_index`
+  (`GenericityDevice.lean`), the `Set`-free repackaging of the device closure consuming a finite
+  `ι` + injective `j` (the shape of the candidate-completion's `Sum`-indexed output). The producer's
+  packaging-out end-brick. Fully green, no defeq trap; internal infra (no blueprint node). (2026-06-07)
 - [ ] **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕ the green
   `case_III_eq629_conditional` into `linearIndependent_sum_augment_candidateRow` at real graph data,
-  giving `HasFullRankRealization k (G.splitOff …) ⟹ … k G`. The work; defeq-trap engineering. §1.33 (A).
+  feeding the green `hasFullRankRealization_of_independent_panelRow_index`, giving
+  `HasFullRankRealization k (G.splitOff …) ⟹ … k G`. The work; defeq-trap engineering. §1.33 (A).
 - [ ] **`d=3`-instance `theorem_55` node** (B.2) — instantiate `theorem_55 (n:=2) (k:=2)` on the
   three green branch args; add the small green blueprint node the molecule-app chapter consumes.
 - [ ] **`lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -121,12 +133,19 @@ the Phase-23 cycle base).
 **Smallest next commit:** build the `d=3` `hsplit` producer (the spine in §1.33 (A)) — wire
 `case_II_placement_eq612` + the candidate row + the now-green selection capstone
 `case_III_eq629_conditional` into `linearIndependent_sum_augment_candidateRow` at real `G.splitOff`
-graph data and conclude `HasFullRankRealization k (G.splitOff …) ⟹ … k G`. All three abstract bricks
-are now green; the remaining content is the *graph-data instantiation* (extract `rn`/`ro`/`ρ` + the
-three `hselᵢ` from the real candidate families, transport the old block through the common subgraph
-`G − v` per N7b-2). Expect the `ofNormals`/`withGraph` defeq-trap engineering to dominate; if it
-walls, extract the generic helper per TACTICS-QUIRKS §38 first. Then the `theorem_55` instantiation
-(B.2 node), the `lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push.
+graph data, feed the now-green `hasFullRankRealization_of_independent_panelRow_index`, and conclude
+`HasFullRankRealization k (G.splitOff …) ⟹ … k G`. Both end-bricks (selection in,
+`…_index` packaging out) and the abstract candidate-completion are green; the remaining content is
+the *graph-data instantiation between them* — extract `rn`/`ro`/`ρ` + the three `hselᵢ` from the real
+candidate families, package the selected `Sum.elim` family with an injective `j` for `…_index`, and
+transport the old block through the common subgraph `G − v` per N7b-2. Likely **multi-session**: the
+`ofNormals`/`withGraph` defeq-trap engineering dominates *and* the three candidate families'
+graph-data construction (each `rn`/`ro`/span/pin) is itself non-trivial. A reasonable cut, if the
+whole producer walls: land the producer as a green-modulo lemma carrying the three candidate families
++ their `hselᵢ` + the duality/affine-indep as explicit hypotheses (the Phase-21b `h…` idiom), then
+discharge those sub-obligations one candidate at a time. If a single instantiation `whnf`-walls,
+extract the generic helper per TACTICS-QUIRKS §38 first. Then the `theorem_55` instantiation (B.2
+node), the `lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -139,6 +158,14 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **Device-closure feed lifted to an abstract index, decoupling the producer's packaging from
+  `case_II_placement_eq612` (2026-06-07).** `hasFullRankRealization_of_independent_panelRow_index`
+  repackages the `Set`-indexed device closure to consume a finite `ι` + injective `j` — the shape of
+  the candidate-completion's `Sum`-indexed output. Built green by reindexing across
+  `Equiv.ofInjective j` + `Nat.card_range_of_injective`, lifting the inline packaging out of
+  `case_II_placement_eq612` (CaseI.lean:2757–2818) so the candidate path reuses it. No defeq trap (it
+  is the already-green closure under an index bijection). Internal infra — no blueprint node (a
+  `Set`-free restatement of an already-blueprinted lemma; churn-prone glue, below the selection bar).
 - **Selection capstone built graph-free as the first producer brick (2026-06-07).**
   `case_III_eq629_conditional` discharges `lem:case-III-eq629-conditional` by composing
   `case_III_claim612`'s disjunction with three abstract per-candidate implications

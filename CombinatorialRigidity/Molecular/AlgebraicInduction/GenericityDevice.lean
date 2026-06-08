@@ -330,6 +330,51 @@ theorem PanelHingeFramework.hasFullRankRealization_of_independent_panelRow [Fini
   rw [hG] at hrig
   exact hrig
 
+/-- **Realization producer from an abstractly-indexed independent rigidity-row family**
+(`lem:case-II-realization` / `lem:case-III`, the device-closure feed in the form the candidate-
+completion assembly produces; Katoh–Tanigawa 2011 §5–6, Phase 22g). The `Set`-free repackaging of
+`hasFullRankRealization_of_independent_panelRow`: where that lemma consumes a *set*-indexed
+panel-row subfamily `s ⊆ β × ⋀ᵏ-pair × ⋀ᵏ-pair`, this one consumes an **abstractly-indexed**
+family — a finite type `ι`, an injective index map `j : ι → β × ⋀ᵏ-pair × ⋀ᵏ-pair`, the panel-row
+family `i ↦ panelRow ends (j i)` linearly independent (`hindep`), and the relative target count
+`D(|V(G)|−1) ≤ |ι|` (`hcard`). It produces a full-rank realization `HasFullRankRealization k G`.
+(The device closure reads only the *independence* of the family along `s = range j`, not a
+`rigidityRows` membership — the relative-count corank it witnesses is purely the rank lower bound;
+so no per-edge link hypothesis is needed here, unlike the `lem:case-II` accounting iff.)
+
+This is the shape the `d = 3` `hsplit` producer feeds the device closure: the candidate-completion
+assembly (`linearIndependent_sum_augment_candidateRow`) outputs a `Sum`-indexed family
+`(rn ⊕ {candidate row}) ⊕ ro`, not a `Set`-indexed one, so the producer carries an abstract index
+`ι` (a `Sum` type) with an injective realization `j` placing each block index at its
+`(edge, ⋀ᵏ-pair)` and concludes through this lemma. It re-packages to the `Set.range j` form
+`hasFullRankRealization_of_independent_panelRow` needs — reindexing independence across
+`Equiv.ofInjective j` and transferring the count by `Nat.card_range_of_injective` — exactly the
+final packaging step `case_II_placement_eq612` performs inline for the eq. (6.12) block, lifted
+out so the candidate-completion path can reuse it. It launders no deliverable: `hindep`/`hcard` is
+the witnessed-rank input the placement supplies, not the rank concluded. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_independent_panelRow_index
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    {ι : Type*} [Finite ι]
+    {j : ι → β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k}
+    (hj : Function.Injective j)
+    (hindep : LinearIndependent ℝ
+      (fun i : ι => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (j i)))
+    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card ι) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  set FG := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG
+  refine PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
+    (q₀ := q₀) (s := Set.range j) ?_ ?_
+  · -- Independence: reindex the `j`-family across `Equiv.ofInjective j`.
+    have hreindex : (fun i : Set.range j => FG.panelRow ends (i : β × _ × _))
+        ∘ (Equiv.ofInjective j hj) = (fun i : ι => FG.panelRow ends (j i)) := by
+      funext i; simp only [Function.comp_apply, Equiv.ofInjective_apply]
+    have h := hindep.comp _ (Equiv.ofInjective j hj).symm.injective
+    rwa [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
+  · -- Count: `|range j| = |ι|` by injectivity.
+    rwa [Nat.card_range_of_injective hj]
+
 /-- **N7b-2: the inductive rows transport through the common subgraph `G − v`**
 (`lem:case-II-placement-old-rows`; Katoh–Tanigawa 2011 §6.3, Lemma 6.8). The inductive realization
 of the splitting-off `G_v^{ab}` is rigid on `V(G) ∖ {v}`, hence carries `D(|V(G)|−2)` linearly
