@@ -7,63 +7,65 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: the L-wire columnOp bridge** — `BodyHingeFramework.columnOp_apply_single` +
-`comp_columnOp_comp_single` (RigidityMatrix.lean, next to `columnOp`). The §1.34-(L2) "comp `Φ` is the
-identity at the pin" fact: `columnOp hvb (single v x) = single v x` (`b ≠ v`), and its row corollary
-`(g ∘ₗ Φ) ∘ₗ single v = g ∘ₗ single v`. These convert the candidate producers' operated, `v`-pinned
-`hrnpin`/`hspan` inputs (stated with `columnOp`) to the bare `(panelRow ·) ∘ₗ single v` forms the L1
-`hnewpin` + L2 `span_panelRow_comp_single_of_edge` supply — the L-wire bridge from the L1/L2 leaves to
-the `linearIndependent_sum_p2/p3/augment_candidateRow` producers. Green, sorry-free
-(`propext`/`Classical.choice`/`Quot.sound`), warning-clean, lint clean.
+**Just landed: the eq.-(6.27) row-operation core** — `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap`
+(RigidityMatrix.lean, next to `linearIndependent_sum_pinned_block_augment`). The abstract
+rank-invariance-under-row-operations fact the candidate completion needs: if
+`Sum.elim (Sum.elim rn (Unit→ w)) ro` is independent and `w' − w ∈ span (range (Sum.elim rn ro))`
+(the candidate row differs from a target row by a combination of the *other* block rows), then
+`Sum.elim (Sum.elim rn (Unit→ w')) ro` is independent. Reassociate `(ιn ⊕ Unit) ⊕ ιo → (ιn ⊕ ιo) ⊕ Unit`
+(`linearIndependent_equiv`) so the candidate summand is last, then `linearIndependent_sumElim_unit_iff`
+reads independence as `w ∉ span (range base)`, transferred to `w'` by `hdiff`. Graph-/carrier-free
+(no §38). Green, sorry-free (`propext`/`Classical.choice`/`Quot.sound`), warning-clean, lint clean.
+This is the linear-algebra content of KT eq.-(6.27)'s collapse `hingeRow v b ρ − wGv = hingeRow v a ρ`
+(`wGv = hingeRow a b ρ` an old-block element).
 
-**KEY FINDING this commit (correcting the §1.34 F1 / L3 / L5-pack premise):** the candidate row is
-**NOT** `annihRow (C(e_a)) ta tb` when the Claim-6.12 selector `ρ(C(e_a)) ≠ 0` holds — those are
-contradictory (`annihRow (C(e_a)) ·` lies in `(span C(e_a))^⊥`, i.e. annihilates `C(e_a)`). The
-candidate producer (`linearIndependent_sum_p2_candidateRow F e`) puts the NEW block AND the candidate
-row at the SAME edge `e`, with criterion `ρ(C(e)) ≠ 0` — `ρ` lies *outside* `e`'s block. So the
-candidate row `hingeRow v a ρ` becomes a genuine `panelRow` of a *different* edge only through the
-eq.-(6.27) redundant-row collapse (`exists_candidate_row_eq612`: `hingeRow v b ρ − wGv = hingeRow v a ρ`
-with `ρ ∈ (span C(e_b))^⊥` an `e_b`-block functional, `wGv = hingeRow a b ρ`). **L3
-(`panelRow_eq_hingeRow_annihRow_of_ends`) and L5-pack's `hρ : ρ = annihRow (C(e_a)) ta tb` premise are
-therefore NOT how the candidate row gets placed for `j` — they only fire for an `annihRow`-shaped `ρ`,
-which the selected candidate's `ρ` is not.** The L5-pack family identity must instead route the
-`Unit`-summand row through `exists_candidate_row_eq612`'s `rigidityRows` membership (its second
-conjunct), placing it at the `e_b`-link witness, not via a naive `annihRow` `j`-index. This is the real
-candidate-geometry content L-wire must thread; it is not mechanical packaging.
+**SHARPENED FINDING (the live route's remaining gap, refining last commit's KEY FINDING):** the device
+feed (`hasFullRankRealization_of_independent_panelRow_index`) requires the independent family to be
+**literally** `fun i => panelRow ends (j i)` — every member a *single* `panelRow`. Two facts now block
+a one-shot single-candidate brick: **(g1)** the producer's candidate row `hingeRow v b r̂` (selector
+`r̂(C(e_b)) ≠ 0`) is not a panelRow at `e_b` (panelRows annihilate their edge's extensor; `r̂` does
+not); **(g2)** even the `exists_candidate_row_eq612` collapse row `hingeRow v b ρ` (`ρ ∈ (span C(e_b))^⊥`,
+a genuine `rigidityRows` member) is a *combination* of `e_b`-panelRows (since `ρ` is a span of `annihRow`s
+via `span_annihRow_eq_dualAnnihilator`), **not a single** panelRow. So the producer's `r̂`-family
+independence does not directly yield a panelRow *family*. The swap lemma (this commit) handles the
+row-operation half; the unresolved design question is **how to feed the device a family that is
+panelRows-plus-one-rigidity-row** — either (A) relax the device feed to accept an independent family in
+`span rigidityRows` (not literal panelRows), or (B) connect the producer's `r̂`-independence to a genuine
+single-panelRow family via the collapse. This is a real design fork, not mechanical packaging.
 
-**Next concrete step (smallest forward commit): build the single-candidate packaging brick CORRECTLY**
-— with the candidate row routed through `exists_candidate_row_eq612` (the `e_b`-block functional `ρ`
-collapsed to `hingeRow v a ρ`, a genuine rigidity row by the lemma's second conjunct) rather than the
-contradictory `annihRow(C(e_a))` framing. Stated over an **abstract `F : BodyHingeFramework`** (not
-`ofNormals`) — the `F.linearIndependent_sum_p2_candidateRow` call hits the §38 `isDefEq`/`whnf` timeout
-when `F` is the concrete `(ofNormals …).toBodyHinge` carrier (confirmed this commit: the abstract-`F`
-statement is mandatory, the producer instantiates `F` only at the end). The columnOp bridge (this
-commit) discharges the producer's `hrnpin`/`hspan`; the open work is the candidate-row placement +
-its `j`-index (membership at `e_b`, not `annihRow` at `e_a`). Then wire three such bricks into the L0
-spine + supply the Claim-6.12 selection data (`hr`/`hp`/`hduality`) from `exists_candidate_row_eq612`
-+ N3b.
+**Next concrete step (smallest forward commit): resolve the (g1)/(g2) device-feed fork.** Recommended
+route (A): build a `hasFullRankRealization_of_independent_rigidityRow` variant of
+`hasFullRankRealization_of_independent_panelRow[_index]` consuming an independent family `s ⊆ span rigidityRows`
+(the device closure `exists_relative_full_count_ofParam` needs only that the family's *span* sits inside
+`span rigidityRows` for the coannihilator `hcoord` — check whether the panelRow shape is load-bearing
+beyond `hcoord`/`hindep`, GenericityDevice.lean:234–252). If route (A) lands, the single-candidate brick
+is then: producer (`linearIndependent_sum_p2_candidateRow`, abstract `F` per §38) for the `r̂`-family
+independence, then the family's span ⊆ `span rigidityRows` (`rn`/`ro` panelRows + `hingeRow v b r̂` a
+rigidity row at link `e_b` — its block membership is `r̂ ∈ r(p(e_b))`? NO, `r̂(C(e_b)) ≠ 0`, so it is
+**not** a rigidity row at `e_b` either: re-examine — KT's actual placed row after eq.-(6.27) is
+`hingeRow v a ρ`, the swap output, which IS in `span rigidityRows` via the collapse). The swap lemma
+(this commit) is the bridge that replaces the producer's `r̂`-row by the collapse's `hingeRow v a ρ`
+once `hingeRow v b r̂ − hingeRow v a ρ ∈ span base` is established — that membership is the genuine
+geometry still to thread (it is KT's eq.-(6.24)/(6.27) decomposition, `exists_candidate_row_eq612` +
+`exists_redundant_panelRow_ab_decomposition`). Stated over abstract `F` (the `ofNormals` carrier §38-times-out
+the producer; confirmed prior commits).
 
 (L0 spine, landed earlier this phase: `PanelHingeFramework.case_III_hsplit_producer` carries the
 candidate-selection data + each candidate's `panelRow`-packaging as explicit `h…` and composes
-`case_III_eq629_conditional` → `…_index` per disjunct; `case_III_eq629_conditional` generalized to
-three index types — one-line signature edit, FRICTION `[resolved]`.)
+`case_III_eq629_conditional` → `…_index` per disjunct.)
 
-After L-wire builds the actual producer: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
+After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
 `rigidityMatrix_prop11`'s `hgen` (its `hub` lower bound is already green, discharged in-proof);
 do the Thm 5.5→5.6 multigraph push (`lem:motions-mono-of-graph-le`). Milestone: the molecular
 conjecture proved at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is
 **Phase 23** (reuse map: §1.33 (C)).
 
-**Leaves L0–L5 + the columnOp bridge green; L-wire remains (and is genuinely multi-commit, not
-mechanical).** §1.34 cracked the producer core into L0–L5 (all green); this commit added the
-columnOp→pin bridge. **But L-wire is NOT a clean packaging wire** — the §1.34 (F1)/L3/L5-pack framing
-(`ρ = annihRow(C(e_a))`, candidate row placed at `e_a` via L3) is self-inconsistent with the
-Claim-6.12 selector `ρ(C(e_a)) ≠ 0` (see *KEY FINDING* above): the candidate row is the `e_b`-block
-functional collapsed by `exists_candidate_row_eq612`, a genuine rigidity row by direct `e_b`-link, not
-an `annihRow`-`j`-index. L5-pack/L3 still hold *as lemmas* (for `annihRow`-shaped `ρ`) but are not the
-route the selected candidate takes. The phase-open red-node + supersession + label-resolution gates ran
-clean at open.
+**Leaves L0–L5 + the columnOp bridge + the row-swap core green; L-wire remains (genuinely multi-commit,
+not mechanical).** The §1.34 (F1)/L3/L5-pack framing (`ρ = annihRow(C(e_a))`, candidate row at `e_a`
+via L3) is **off the live route** — it fires only for an `annihRow`-shaped `ρ`, which the selected
+candidate's row is not. L5-pack/L3 still hold as lemmas. The phase-open red-node + supersession +
+label-resolution gates ran clean at open.
 
 ## Red-node consistency gate — recon verdict (2026-06-07, opening commit)
 
@@ -162,19 +164,24 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
     `ρ = annihRow (C(e_a)) ta tb` ((F1) resolved as stated — no device-feed restatement). Count
     `D(|V|−1) = ((D−1)+1)+D(m−2)`, `m ≥ 1`. `funext`/`rcases`/`rfl` identity (graph-free, no §38) +
     the `case_II_placement_eq612` count arithmetic. Green, sorry-free. (2026-06-07)
-- [x] **L-wire columnOp bridge** — `BodyHingeFramework.columnOp_apply_single` +
-  `comp_columnOp_comp_single` (RigidityMatrix.lean, next to `columnOp`). §1.34-(L2): `columnOp hvb`
-  is the identity on body `v`'s screw column, so the candidate producers' operated `hrnpin`/`hspan`
-  (with `comp Φ`) collapse to the bare `(panelRow ·) ∘ₗ single v` forms L1/L2 supply. Green,
-  sorry-free. (2026-06-07)
-- [ ] **L-wire single-candidate brick — build CORRECTLY** (the §1.34 L3/L5-pack `annihRow(C(e_a))`
-  route is WRONG, see *Current state* KEY FINDING). Over an **abstract `F`** (the concrete `ofNormals`
-  carrier §38-times-out the candidate producer). The candidate row is the `e_b`-block functional `ρ`
-  (from `exists_candidate_row_eq612`) collapsed to `hingeRow v a ρ` — a genuine rigidity row by its
-  direct `e_b`-link (second conjunct of `exists_candidate_row_eq612`), placed at `e_b` for `j`, NOT
-  via `annihRow(C(e_a))`/L3. The columnOp bridge (landed) gives `hrnpin`/`hspan`; the open work is the
-  candidate-row placement + `j`-index. Then wire three bricks into the L0 spine + supply the
-  Claim-6.12 selection data (`hr`/`hp`/`hduality`) from `exists_candidate_row_eq612` + N3b.
+- [x] **L-wire columnOp bridge** — `columnOp_apply_single` + `comp_columnOp_comp_single`
+  (RigidityMatrix.lean): `columnOp hvb` is the identity on body `v`'s screw column, converting the
+  producers' operated `hrnpin`/`hspan` to the bare L1/L2 forms. Green, sorry-free. (2026-06-07)
+- [x] **L-wire eq.-(6.27) row-swap core** — `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap`
+  (RigidityMatrix.lean). The rank-invariance-under-row-operations fact: swap the candidate summand
+  `w → w'` when `w' − w ∈ span (range (Sum.elim rn ro))`, independence preserved. Reassoc +
+  `linearIndependent_sumElim_unit_iff`. Graph-/carrier-free (no §38). Green, sorry-free. (2026-06-07)
+- [ ] **Device-feed fork (g1)/(g2) — the next smallest commit.** The producer's `r̂`-row and even the
+  collapse's `hingeRow v b ρ` are not *single* panelRows, but the device feed needs literal panelRows.
+  Recommended route (A): a `…_of_independent_rigidityRow` variant of
+  `hasFullRankRealization_of_independent_panelRow[_index]` consuming an independent family with span
+  ⊆ `span rigidityRows` (check the panelRow shape isn't load-bearing beyond `hcoord`/`hindep`,
+  GenericityDevice.lean:234–252). See *Current state* SHARPENED FINDING.
+- [ ] **L-wire single-candidate brick** — over **abstract `F`** (§38). Producer for `r̂`-independence,
+  the swap core (this commit) to replace the `r̂`-row by the collapse `hingeRow v a ρ` once
+  `hingeRow v b r̂ − hingeRow v a ρ ∈ span base` is threaded (KT eq.-(6.24)/(6.27),
+  `exists_candidate_row_eq612` + `exists_redundant_panelRow_ab_decomposition`), then route (A)'s feed.
+  Wire three bricks into the L0 spine + supply Claim-6.12 data from `exists_candidate_row_eq612` + N3b.
 - [ ] **`d=3`-instance `theorem_55` node** (B.2) — instantiate `theorem_55 (n:=2) (k:=2)` on the
   three green branch args; add the small green blueprint node the molecule-app chapter consumes.
 - [ ] **`lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -182,38 +189,37 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 
 ## Blockers / open questions
 
-- **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38; carried from 22a–e) **DOES
-  bite the candidate producer call** — confirmed this commit. `F.linearIndependent_sum_p2_candidateRow`
-  with `F := (ofNormals G ends q₀).toBodyHinge` (the concrete carrier) `isDefEq`/`whnf`-times-out when
-  unifying the `rn`/`ro` panel-row families. **Mitigation: state the single-candidate brick over an
-  abstract `F : BodyHingeFramework`** (the producer instantiates `F` only at the very end). The §1.34
-  claim that the trap is "off the `d=3` path" was over-optimistic — it is off the *leaf* L3, but the
-  *producer call* re-introduces it; the abstract-`F` statement is mandatory.
-- **The §1.34 (F1)/L3/L5-pack route for the candidate row is WRONG** (see *Current state* KEY FINDING):
-  `ρ = annihRow(C(e_a))` contradicts the selector `ρ(C(e_a)) ≠ 0`. The candidate row is the `e_b`-block
-  functional collapsed by `exists_candidate_row_eq612` (`hingeRow v b ρ − wGv = hingeRow v a ρ`,
-  `ρ ∈ (span C(e_b))^⊥`), a genuine rigidity row by direct `e_b`-link — placed at `e_b` for `j`, NOT at
-  `e_a` via L3. This is real candidate-geometry, not mechanical packaging.
-- **No math blockers** for the *result* (B.1)/(B.2) resolved; the `d=3` contrapositive is green. The
-  open work is correctly threading `exists_candidate_row_eq612` into the per-candidate brick.
+- **The (g1)/(g2) device-feed shape mismatch is the live blocker** (see *Current state* SHARPENED
+  FINDING). The device feed wants *single* panelRows; neither the producer's `hingeRow v b r̂` (g1) nor
+  the collapse's `hingeRow v b ρ` (g2, a span of `e_b`-panelRows) is one. Needs a design call (route (A)
+  relax the feed to span-⊆-`rigidityRows`; or (B) realize a single-panelRow family). Not a math blocker
+  on the *result* — the `d=3` contrapositive (Claim 6.12) is green; this is feed-shape plumbing + the
+  one genuine geometry step (the `hingeRow v b r̂ − hingeRow v a ρ ∈ span base` membership).
+- **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38; carried from 22a–e) **bites the
+  candidate producer call** when `F := (ofNormals …).toBodyHinge`. Mitigation: state the single-candidate
+  brick over an **abstract `F : BodyHingeFramework`** (instantiate `F` only at the very end).
+- **The §1.34 (F1)/L3/L5-pack `annihRow(C(e_a))` route is off the live route** — it fires only for an
+  `annihRow`-shaped `ρ`, which the selected candidate's row is not. L5-pack/L3 hold as lemmas.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the single-candidate packaging brick, built CORRECTLY.** Two corrections this
-commit forces onto the §1.34 plan: (1) state it over an **abstract `F : BodyHingeFramework`** — the
-concrete `ofNormals` carrier §38-times-out the `linearIndependent_sum_p2_candidateRow` call (the
-abstract statement, instantiating `F` at the end, is mandatory); (2) the candidate row is **not**
-`annihRow(C(e_a))`/L3 — it is the `e_b`-block functional `ρ` (from `exists_candidate_row_eq612`)
-collapsed to `hingeRow v a ρ`, a genuine rigidity row by its direct `e_b`-link (the lemma's second
-conjunct), placed at `e_b` for `j`. The columnOp bridge landed this commit
-(`comp_columnOp_comp_single`) discharges the producer's `hrnpin`/`hspan` from the L1 `hnewpin` + L2
-span. L5-inj (`candidateCompletion_index_injective`) still gives `j`'s injectivity (it needs the
-`hso_ne_ea` fact L1 doesn't emit — both `e_a`/`e_b` link the fresh `v ∉ V(Gᵥ)`). Then wire three
-bricks into the L0 spine + supply the Claim-6.12 selection data `hr`/`hp`/`hduality` from
+**Smallest next commit: resolve the (g1)/(g2) device-feed fork** (the *Current state* SHARPENED
+FINDING). Recommended route (A): a `hasFullRankRealization_of_independent_rigidityRow[_index]` variant
+of the existing panelRow feed (GenericityDevice.lean) that consumes an independent family whose *span*
+sits in `span rigidityRows` — verify first that the panelRow shape is not load-bearing beyond the
+coannihilator `hcoord` + the witnessed `hindep`/`hcard` (GenericityDevice.lean:234–252; the `hsub` span
+containment is the only place the panelRow form is used, and it only needs `⊆ rigidityRows`). With route
+(A) the single-candidate brick is: producer (`linearIndependent_sum_p2_candidateRow`, abstract `F`) for
+the `r̂`-family independence; the row-swap core (this commit,
+`linearIndependent_sumElim_candidateRow_swap`) to replace `hingeRow v b r̂` by the collapse
+`hingeRow v a ρ` once the difference is shown in `span base` (the one genuine geometry step, KT
+eq.-(6.24)/(6.27), `exists_candidate_row_eq612` + `exists_redundant_panelRow_ab_decomposition`); then
+route (A)'s feed on the resulting span-⊆-`rigidityRows` family. Wire three bricks into the L0 spine
+(`case_III_hsplit_producer`) + supply Claim-6.12 data `hr`/`hp`/`hduality` from
 `exists_candidate_row_eq612` + N3b. Then the `theorem_55` instantiation (B.2 node), the
-`lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push. Leaf shapes + the `j`
-bridge: `notes/Phase22-realization-design.md` §1.34 (read alongside this note's KEY FINDING — §1.34's
-F1/L5-pack `annihRow` framing is superseded by the `exists_candidate_row_eq612` route).
+`lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push. Leaf shapes:
+`notes/Phase22-realization-design.md` §1.34 (read alongside this note — §1.34's F1/L5-pack `annihRow`
+framing is off the live route).
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -226,26 +232,24 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
-- **L-wire columnOp bridge landed + two §1.34 corrections found (2026-06-07).**
-  `BodyHingeFramework.columnOp_apply_single` + `comp_columnOp_comp_single` (RigidityMatrix.lean): the
-  §1.34-(L2) "comp `Φ` identity at the pin" bridge converting the candidate producers' operated
-  `hrnpin`/`hspan` to the bare L1/L2 forms. Building the full single-candidate brick surfaced two real
-  corrections to the §1.34 plan: **(c1)** the candidate-producer call §38-times-out with the concrete
-  `ofNormals` carrier — the brick must be stated over an **abstract `F`** (instantiate at the end);
-  §1.34's "trap is off the `d=3` path" was wrong (off the leaf, not the producer call). **(c2)** the
-  candidate row is **not** `annihRow(C(e_a))` (that contradicts the selector `ρ(C(e_a))≠0`) — it is the
-  `e_b`-block functional from `exists_candidate_row_eq612` collapsed to `hingeRow v a ρ`, placed at
-  `e_b` for `j`; L3/L5-pack's `annihRow` framing is a real lemma but not the candidate's route. The
-  half-built brick was removed; only the green, design-mandated bridge + the corrected hand-off landed.
-- **L5-pack landed: the candidate-completion `panelRow ∘ j` family identity + count (2026-06-07).**
-  `PanelHingeFramework.candidateCompletion_panelRow_packaging` (CaseI.lean, next to L5-inj): ties an
-  abstract `Sum.elim (Sum.elim rn (Unit→hingeRow u w ρ)) ro` family to the `fun i => panelRow ends (j i)`
-  shape **for `annihRow`-shaped `ρ = annihRow (C(e_a)) ta tb`** (the `Unit` summand IS one `panelRow`
-  via L3), plus the count `D(|V|−1) = ((D−1)+1)+D(m−2)`. `funext`/`rcases`/`rfl` + the
-  `case_II_placement_eq612` arithmetic. **CAVEAT (this commit's KEY FINDING):** the *selected* candidate's
-  `ρ` is NOT `annihRow`-shaped (`ρ(C(e_a)) ≠ 0`), so L5-pack does not place the real candidate row — it
-  is a valid lemma but off the live route; the candidate row routes through `exists_candidate_row_eq612`
-  instead.
+- **eq.-(6.27) row-swap core landed + the (g1)/(g2) device-feed fork found (2026-06-07).**
+  `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap` (RigidityMatrix.lean): swap the
+  candidate summand `w → w'` when `w' − w ∈ span (range (Sum.elim rn ro))`, independence preserved
+  (reassoc + `linearIndependent_sumElim_unit_iff`); graph-/carrier-free, no §38. This is the
+  linear-algebra core of KT eq.-(6.27)'s collapse `hingeRow v b ρ − wGv = hingeRow v a ρ`. Building it
+  sharpened the candidate-placement gap: the device feed
+  (`hasFullRankRealization_of_independent_panelRow_index`) needs *single* panelRows, but **(g1)** the
+  producer's `hingeRow v b r̂` (`r̂(C(e_b)) ≠ 0`) is not a panelRow, and **(g2)** even the collapse's
+  `hingeRow v b ρ` (`ρ ∈ (span C(e_b))^⊥`) is a *span* of `e_b`-panelRows, not one. So the producer's
+  `r̂`-independence does not directly yield a panelRow family — a real design fork (route (A): relax the
+  feed to a span-⊆-`rigidityRows` family; route (B): single-panelRow realization). See *Current state*.
+- **Earlier this phase: columnOp bridge + L5-pack/L3 are off the live route (2026-06-07; one-line
+  record).** `columnOp_apply_single`/`comp_columnOp_comp_single` (RigidityMatrix.lean, the "comp `Φ`
+  identity at the pin" bridge) and `candidateCompletion_panelRow_packaging`/
+  `panelRow_eq_hingeRow_annihRow_of_ends` (the `annihRow`-shaped-`ρ` family identity) are green lemmas
+  but **not** how the selected candidate's row is placed (its `ρ` is not `annihRow`-shaped — the
+  selector forces `ρ(C(e_b)) ≠ 0`). They stand as reusable lemmas; the live route is the swap core +
+  `exists_candidate_row_eq612` collapse.
 - **Leaves L0–L5-inj landed earlier this phase (2026-06-07; one-line record, full detail in the Lean
   source + git):**
   - L0 `case_III_hsplit_producer` (CaseI.lean) — the green-modulo spine carrying `hselᵢ`/`hfamᵢ`/`hjᵢ`/

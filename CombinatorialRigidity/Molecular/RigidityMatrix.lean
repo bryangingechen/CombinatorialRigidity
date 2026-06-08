@@ -1028,6 +1028,59 @@ theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn
     funext i; cases i <;> rfl
   rw [hfun]; exact hnewpinaug
 
+/-- **Swapping the candidate row by an old/new-block combination preserves independence**
+(`lem:case-III-candidate-row`, the abstract row-operation core of KT eq.~(6.27); Katoh–Tanigawa 2011
+§6.4.1, Phase 22g). The candidate-completion family is
+`Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro`
+— the new block `rn`, the old block `ro`, and the single candidate row `w`. The genericity-device
+feed (`hasFullRankRealization_of_independent_panelRow_index`) needs every member of the independent
+family to be a genuine `panelRow` of the candidate placement, but the per-candidate producers
+(`linearIndependent_sum_{p2,p3,augment}_candidateRow`) deliver the candidate row in a `hingeRow`
+form `w` that is *not* itself a panel row. KT's eq.~(6.27) closes this by a **row operation**: the
+transported `(vb)i^*`-row `hingeRow v b ρ` (a genuine rigidity row, `exists_candidate_row_eq612`)
+minus its inductive `(ab)`-part `wGv = hingeRow a b ρ` — an element of the *old* block's span —
+collapses to the pure `(va)`-hinge candidate row `hingeRow v a ρ`. Adding a combination of the other
+rows to one row of a matrix never changes its rank, and this lemma is that fact for the candidate
+summand: if the family with candidate row `w` is linearly independent and `w'` differs from `w` by
+an element of the span of the *remaining* rows `Sum.elim rn ro` (`hdiff`), then the family with the
+swapped candidate row `w'` is again linearly independent.
+
+The proof reassociates the `(ιn ⊕ Unit) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ Unit` (the candidate summand
+last), so the row-space criterion `linearIndependent_sumElim_unit_iff` reads the independence as
+`w ∉ span (range (Sum.elim rn ro))`; since `w' − w` lies in that span, `w'` is fresh iff `w` is.
+Graph-free and carrier-free (pure linear algebra on the dual space), so the recurring
+`ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem linearIndependent_sumElim_candidateRow_swap {ιn ιo : Type*}
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {w w' : Module.Dual ℝ (α → ScrewSpace k)}
+    (hindep : LinearIndependent ℝ (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro))
+    (hdiff : w' - w ∈ Submodule.span ℝ (Set.range (Sum.elim rn ro))) :
+    LinearIndependent ℝ (Sum.elim (Sum.elim rn (fun _ : Unit => w')) ro) := by
+  -- Reassociate the `(ιn ⊕ Unit) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ Unit`, putting the candidate
+  -- summand last so the row-space criterion `linearIndependent_sumElim_unit_iff` applies.
+  set e : (ιn ⊕ Unit) ⊕ ιo ≃ (ιn ⊕ ιo) ⊕ Unit :=
+    ((Equiv.sumAssoc ιn Unit ιo).trans
+      ((Equiv.refl ιn).sumCongr (Equiv.sumComm Unit ιo))).trans
+      (Equiv.sumAssoc ιn ιo Unit).symm with he
+  -- The reassociated family with candidate row `x` is `Sum.elim (Sum.elim rn ro) (Unit → x) ∘ e`.
+  have hreassoc : ∀ x : Module.Dual ℝ (α → ScrewSpace k),
+      Sum.elim (Sum.elim rn (fun _ : Unit => x)) ro
+        = Sum.elim (Sum.elim rn ro) (fun _ : Unit => x) ∘ e := by
+    intro x; funext i; rcases i with (i | u) | j <;> rfl
+  -- Move `hindep` to the reassociated `Sum.elim base (Unit → w)` form.
+  rw [hreassoc w, linearIndependent_equiv] at hindep
+  -- The base block `Sum.elim rn ro` is independent (a sub-family of the augmented one).
+  have hbase : LinearIndependent ℝ (Sum.elim rn ro) := by
+    have := hindep.comp Sum.inl Sum.inl_injective
+    simpa using this
+  -- The row-space criterion: `w ∉ span (range base)`; `hdiff` transfers it to `w'`.
+  have hw : w ∉ Submodule.span ℝ (Set.range (Sum.elim rn ro)) :=
+    (linearIndependent_sumElim_unit_iff hbase w).1 hindep
+  have hw' : w' ∉ Submodule.span ℝ (Set.range (Sum.elim rn ro)) := fun h =>
+    hw (by simpa using sub_mem h hdiff)
+  rw [hreassoc w', linearIndependent_equiv]
+  exact (linearIndependent_sumElim_unit_iff hbase w').2 hw'
+
 /-- **The candidate-completion full block assembly: the operated augment transports back to the
 original `D(|V|−1)`-size family** (`lem:case-III-candidate-row`, KT eqs.~(6.14)–(6.16), (6.29);
 Katoh–Tanigawa 2011 §6.4.1, the candidate-completion's column-operated block-triangular `+1`,
