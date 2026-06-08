@@ -123,7 +123,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22d. KT Claim 6.11 (eq. (6.23), the redundant `ab`-row) + its green-machinery prerequisites | `Molecular/Induction/ForestSurgery.lean` + `AlgebraicInduction/{CaseI,PanelLayer,PanelHinge}.lean` (extends `algebraic-induction.tex`) | ✓ Complete (see `notes/Phase22d.md`) |
 | 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ Complete (N3b discharged in 22f; see `notes/Phase22e.md`) |
 | 22f. N3b: point-join↔panel-meet duality (the exterior-algebra assembly completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` | ✓ Complete — discharged 22e's green-modulo-N3b (see `notes/Phase22f.md`) |
-| ⋯ (deferred, unlettered) `d=3` assembly (the `d=3` `hsplit` producer + `thm:theorem-55` `d=3`-instance flip) | `Molecular/AlgebraicInduction/` | ◷ Planning — design-reconned (`notes/Phase22-realization-design.md` §1.33); next-cut hand-off in `notes/Phase22f.md` |
+| 22g. `d=3` realization assembly (the `d=3` `hsplit` producer + `thm:theorem-55` `d=3`-instance, flipping `lem:case-II-realization` / `lem:case-III` green) | `Molecular/AlgebraicInduction/` | ◷ In progress — opened on the red-node consistency recon (see `notes/Phase22g.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -868,29 +868,39 @@ candidate-completion at real graph data — `prop:rigidity-matrix-prop11` hub +
 general-`d` (Lemma 6.13) stays Phase 23. Per-lemma plan, the N10 honest-scope
 correction, and decisions in `notes/Phase22e.md`.
 
-#### Phase 22f — N3b: point-join ↔ panel-meet duality assembly (KT §6.4.1) — ◷ In progress
+#### Phase 22f — N3b: point-join ↔ panel-meet duality assembly (KT §6.4.1) — ✓ Complete
 
-**Status (◷ in progress; opened 2026-06-07 design-pass-first; opening recon landed; see
-`notes/Phase22f.md`).** Scope: *just* N3b — the one red leaf
-`lem:case-III-claim612-line-in-panel-union` that Phase 22e left green-modulo. It is the
-point-join ↔ panel-meet duality: at `d = 3` (`ScrewSpace 2 = ⋀²ℝ⁴`), the join `p̄ᵢ ∨ p̄ⱼ`
-of two points on a line `L ⊂ Π(u)` and the panel-meet supporting extensor
-`C(L) = complementIso(n_u ∧ n')` of the same line are scalar multiples (both the line's
-Plücker vector), so an `r` annihilating every `C(L)` annihilates each spanning join — the
-Grassmann–Cayley duality KT use implicitly in eq. (6.45). The assembly's three operational
-sub-leaves (the complement-iso dictionary entry, the decomposable-in-`⋀²W` step, the
-`dim ⋀²W = 1` line) are already green from Phase 22e; 22f lands the bounded `⋀²ℝ⁴`
-exterior-algebra assembly on top — placing both members in a common `⋀²W = ⋀²{n_u, n'}^⊥`
-via one injective `exteriorPower.map` and extracting the scalar. The **opening recon** spiked
-mathlib and found the load-bearing injectivity is a one-liner
-(`exteriorPower.map_injective_field` over `ℝ`, no hand-rolled retraction), confirming the
-three leaves N3b-1/2/3 are genuine buildable composites of mathlib API + the green leaves;
-the first concrete build commit is **N3b-1** (`exteriorPower.map 2 W.subtype` injective).
-N3b green retires 22e's green-modulo-N3b on `case_III_claim612` and the candidate-completion
-chain. The deferred `d=3` realization assembly (the next unlettered cut, taking
-`lem:case-II-realization` / `lem:case-III` themselves green) and general-`d` (Phase 23) stay
-separate. Forward-mode; dep-graph `algebraic-induction/case-iii.tex` +
-`meet.tex`. Per-leaf plan + the design + red-node recon verdicts: `notes/Phase22f.md`.
+**Status (✓ Complete, closed 2026-06-07; see `notes/Phase22f.md`).** Discharged Phase 22e's one
+green-modulo-N3b leaf, `lem:case-III-claim612-line-in-panel-union` — the point-join ↔ panel-meet
+duality at `d = 3` (`ScrewSpace 2 = ⋀²ℝ⁴`): the join `p̄ᵢ ∨ p̄ⱼ` of two points on a line
+`L ⊂ Π(u)` and the panel-meet supporting extensor `C(L) = complementIso(n_u ∧ n')` of the same
+line are scalar multiples (both the line's Plücker vector), so an `r` annihilating every `C(L)`
+annihilates each spanning join (the Grassmann–Cayley duality KT use implicitly in eq. (6.45)). The
+landed proof places both members in the 1-dim dual-annihilator line `Ω` (concrete at `⋀²ℝ⁴`, not
+general Hodge theory) — `complementIso_smul_eq_extensor_join` + the `r(C)=0 ⟹ r(join)=0` transfer
+in `Molecular/Meet.lean`. N3b green took Claim 6.12 (N9) and the candidate-completion chain fully
+green; the two producer nodes `lem:case-II-realization` / `lem:case-III` await only the `d=3`
+realization assembly (Phase 22g). Forward-mode; dep-graph `algebraic-induction/case-iii.tex` +
+`meet.tex`. Per-leaf detail + decisions: `notes/Phase22f.md`.
+
+#### Phase 22g — the `d=3` realization assembly (KT §6.4.1) — ◷ In progress
+
+**Status (◷ in progress; opened 2026-06-07 on a build-free red-node consistency recon; see
+`notes/Phase22g.md`).** The deferred-unlettered "`d=3` assembly" cut, now lettered 22g, takes the
+two producer nodes `lem:case-II-realization` / `lem:case-III` from red to green at `d = 3`. With the
+`d=3` Case-III contrapositive fully green through Phase 22f, the one real gap is the **`d=3` `hsplit`
+producer**: wire the green bricks `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`) ⊕ the
+candidate row ⊕ `case_III_claim612` into the graph-free `linearIndependent_sum_augment_candidateRow`
+at real graph data (where the `ofNormals`/`withGraph` defeq-timeout trap bites, TACTICS-QUIRKS §38),
+then instantiate `theorem_55 (n:=2) (k:=2)` on it + the green `hcontract`/`hbase` and feed
+`rigidityMatrix_prop11`'s `hgen` (whose `hub` lower bound is already green). The opening recon
+resolved its two flagged items: the path does **not** consume the red `lem:cycle-realization` (KT
+Lemma 5.4 is a KT-narrative dependency at the Phase-23 cycle base, not Lean-load-bearing — the
+`minimal_kdof_reduction` induction has no cycle branch), and a small `d=3`-instance `theorem_55` node
+(not a standalone restatement) is the chosen architecture for Cor 5.7. Milestone: the molecular
+conjecture proved at `d = 3` (unblocking Cor 5.7, Phases 24–26). General `d` (KT Lemma 6.13) is
+Phase 23. Recon verdict + build spine + the reuse map: `notes/Phase22g.md`,
+`notes/Phase22-realization-design.md` §1.33.
 
 ## Engineering conventions
 

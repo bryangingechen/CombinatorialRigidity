@@ -44,10 +44,13 @@ through the body-hinge Tay–Whiteley theorem. Within the
 molecular-conjecture program, the Grassmann–Cayley extensor algebra
 (Lemma 2.1), the panel-hinge rigidity matrix `R(G,p)`, the deficiency
 matroid `M(G̃)`, the combinatorial induction (Theorem 4.9), and the
-algebraic induction's accounting layer (phases 17–21) are complete; work
-is in progress on the algebraic induction's hardest case,
-Katoh–Tanigawa's **Case III** (phase 22 onward). The table below and
-`ROADMAP.md` carry the fine-grained, live status.
+algebraic induction realizing that reduction at the rigidity-matrix rank
+(phases 17–22) are built; the algebraic induction's hardest case,
+Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid subgraph), is now
+green at `d=3` through its exterior-algebra core. Work is in progress on
+the `d=3` realization assembly that flips Case III's two producer nodes
+green and proves the conjecture at `d=3` (then general `d`). The table
+below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
 |------:|-----------------------------|------------------------------------------------------------------|:------:|
@@ -80,7 +83,8 @@ Katoh–Tanigawa's **Case III** (phase 22 onward). The table below and
 |   22d | KT Claim 6.11 (the missing `+1` row) + its green-machinery prerequisites | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ✓ |
 |   22e | candidate-completion + Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ |
 |   22f | point-join↔panel-meet duality (the exterior-algebra leaf completing Case III at `d=3`) | `Molecular/Meet.lean` | ✓ |
-|   ⋯ | (deferred) `d=3` assembly + general `d` (Lemma 6.13) | `Molecular/AlgebraicInduction/` | ◷ |
+|   22g | `d=3` realization assembly (the `hsplit` producer + Theorem 5.5 at `d=3`) | `Molecular/AlgebraicInduction/` | ◷ |
+|   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

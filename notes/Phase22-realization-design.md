@@ -203,78 +203,13 @@ Math-first recon at the (ii) node's open. Found (ii) is NOT a single leaf and NO
 
 ### 1.33 The `d=3`-assembly opening recon + the Phase-23 general-`d` reuse map (2026-06-07)
 
-Produced after 22f closed (N3b green), to scope the two remaining cuts: the deferred
-**`d=3` realization assembly** (next, unlettered) and **Phase 23** (general `d`,
-KT Lemma 6.13). KT source re-read directly for this pass: §6.4.1 (Lemma 6.10, pp. 691)
-and **§6.4.2 (Lemma 6.13, pp. 692–698)** end-to-end. **No Lean / blueprint edits accompany
-this recon.** Verdict up front: **do the `d=3` assembly first, then Phase 23** — `d=3` is
-not a throwaway warm-up (the molecule application Cor 5.7, Phases 24–26, is itself `d=3`),
-and the assembly is mostly dimension-general plumbing that de-risks Phase 23's general-`d`
-assembly. Detail below; user confirmed this ordering 2026-06-07.
-
-#### (A) The `d=3`-assembly obligation — RE-SCOPED narrower than the program map
-
-The program map / §3 *Assembly* stub list "`hub` brick + `theorem_55` flip + Case-I wiring."
-Reading the current Lean, two of those are already done; the real gap is one producer.
-
-- **`hub` is GREEN (de-scope).** `rigidityMatrix_prop11` (`PanelHinge.lean`) discharges the
-  genericity-free lower bound `D + def ≤ dim Z` *in-proof* via the green
-  `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (`subst; have hub := …; omega`).
-  Its only open input is `hgen` (the generic max-rank UPPER bound), which **is** Theorem 5.5.
-  So the §3 "construct `D(|P|−1)−(D−1)·d_G(P)` motions from a deficiency partition" stub is
-  **stale** — that motion lower bound was discharged in 22d ("the full `hub` … on both
-  consumers"). `rigidityMatrix_prop11` is a 3-line conditional, green-modulo `hgen`.
-- **`theorem_55` is a GREEN conditional.** `theorem_55` (`PanelHinge.lean`) takes the case
-  closures `hbase` / `hsplit` / `hcontract` as **hypotheses** and dispatches
-  `minimal_kdof_reduction`. `hbase` (`theorem_55_base`) and `hcontract` (Case I,
-  `case_I_realization`) are green; the only un-supplied premise is `hsplit` (KT Case III at
-  `k=0` — the misnamed `lem:case-II-realization` node). The "flip" = *supply `hsplit`*.
-- **The one real gap = the `hsplit` producer at `d=3`.** Bridge, at real graph data:
-  `case_II_placement_eq612` (green, the eq. (6.12) `D(|V|−1)−1` brick, output already over
-  `ofNormals G ends q₀`) ⊕ the candidate row ⊕ `case_III_claim612` (green, selects the
-  candidate making the top-left block full rank) → the abstract producer
-  `linearIndependent_sum_augment_candidateRow` (green, takes `rn`/`ro`/`ρ`/`hnewpinaug`
-  abstractly) → `HasFullRankRealization k (G.splitOff …)` ⟹ `… k G`, discharging `hsplit`.
-  This is the "extract `rn`/`ro`, instantiate the graph-free producer, select the winning
-  candidate" step the 22e candidate-completion was deliberately built graph-free to isolate.
-  **This is where the `ofNormals`/`withGraph` defeq-timeout trap bites** (22e *Blockers*,
-  FRICTION; TACTICS-QUIRKS §38) — the assembly is the first consumer wiring real graph data.
-
-So the assembly's spine is: build the `d=3` `hsplit` producer (the work) → instantiate
-`theorem_55 (n:=2) (k:=2)` with it + the green `hcontract`/`hbase` → feed that into
-`rigidityMatrix_prop11`'s `hgen` → (Thm 5.5→5.6 multigraph push via `lem:motions-mono-of-graph-le`)
-→ unblocks Cor 5.7 at `d=3`.
-
-#### (B) Open items the build commit must resolve FIRST (red-node consistency gate)
-
-1. **[HIGHEST] Does the `d=3` assembly need `lem:cycle-realization` (KT Lemma 5.4)?**
-   `lem:cycle-realization` is **genuinely RED** and on `lem:case-III`'s live `\uses`. Its red
-   gap is the *cited Crapo–Whiteley projective input* (cycle of `m` panels rigid iff the `m`
-   hinge-lines are independent; KT cites [4] Prop 3.4 / [34] Prop 3) — **not** the genericity
-   device. The blueprint node text (`case-i.tex:149–151`) conflates the two and is **stale
-   post-22b** (it says Claim 6.4/6.9 is "cited rather than formalized"; Claim 6.4 went green in
-   22b). The scoping question: KT's Lemma 6.13 opens "by Lemma 4.6, `G` is a cycle of length
-   ≤ `d` (done by Lemma 5.4) **or** has a chain of length `d`"; Lemma 6.10/6.13 proper is the
-   *chain* case (assumes a reducible degree-2 vertex). But the **Lean `theorem_55` inducts via
-   `minimal_kdof_reduction` (no cycle branch)** — short cycles plausibly dissolve into repeated
-   `hsplit` + `hbase`. **Likely verdict: the Lean `hsplit`/`theorem_55` path does NOT consume
-   `lem:cycle-realization`**, and `lem:case-III`'s `\uses` of it is a blueprint↔Lean structural
-   divergence (KT-narrative dependency, not a Lean-load-bearing one) to reconcile — OR the
-   cited Lemma 5.4 stays a cited external input (risk #4 left it "formalize, its own sub-phase";
-   re-decide). **Must confirm before scoping**: trace whether `minimal_kdof_reduction`'s base
-   reaches the 2-vertex graph from a cycle without a separate realization input. If it genuinely
-   needs the short-cycle base, the deferred Lemma-5.4 sub-phase is a prerequisite.
-2. **`theorem_55` `d=3`-instance architecture.** `theorem_55` is general (`n k` free); the
-   `d=3` assembly supplies `hsplit` only at `k=2`. A blueprint node is green-or-red, so the
-   *general* `thm:theorem-55` stays red until Phase 23 supplies `hsplit` at all `k`. **Recommended:**
-   add a small `d=3`-instance node (`thm:theorem-55` instantiated at `n=2`/`k=2`, green) that the
-   molecule-app chapter (Cor 5.7) consumes, and keep the general node red-pending-Phase-23 with a
-   note. (Avoids duplicating the statement — it's `theorem_55 (n:=2)` applied to three green args.)
-   Confirm this is the cleanest framing vs. a standalone `theorem_55_dim3`.
-3. **Defeq-trap mitigation** is known (make the two frameworks syntactically equal before
-   `convert`; transfer rigidity via a `mem_infinitesimalMotions` round-trip; extract a generic
-   helper to dodge `whnf`/`isDefEq` timeout, TACTICS-QUIRKS §38). Budget for it; it is the main
-   engineering risk in the assembly, not a math risk.
+**(A)/(B) recon arc — verdict landed, canonical home is `notes/Phase22g.md`.** The `d=3`-assembly
+obligation re-scoped to one real gap (the `d=3` `hsplit` producer; `hub` green, `theorem_55` a
+green conditional); the two open items resolved at Phase-22g open — **(B.1)** the `hsplit`/
+`theorem_55` path does NOT consume `lem:cycle-realization` (KT Lemma 5.4 is a KT-narrative, not
+Lean-load-bearing, dependency; reconciled in the blueprint), **(B.2)** add a small `d=3`-instance
+`theorem_55` node. Full verdict + the build spine: `notes/Phase22g.md` *Red-node consistency gate*
++ *Current state*. (C)/(D)/(E) below stay live as Phase-23 design support.
 
 #### (C) KT §6.4.2 (Lemma 6.13) reuse map — what general `d` reuses, replaces, adds
 

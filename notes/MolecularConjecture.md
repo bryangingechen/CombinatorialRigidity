@@ -1,11 +1,13 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS. Phases 17–22f + 21a complete; the current frontier is the
-**deferred, unlettered `d=3` realization assembly** (design-reconned in
-`notes/Phase22-realization-design.md` §1.33 — corrected scope: `rigidityMatrix_prop11`'s `hub`
-is already green and `theorem_55` is a green conditional, so the real gap is the `d=3` `hsplit`
-producer taking `lem:case-II-realization` / `lem:case-III` green + the `thm:theorem-55`
-`d=3`-instance flip), then **Phase 23** (general `d`). **Phase 22f** (✓ complete, closed 2026-06-07) landed N3b — the
+**Status:** IN PROGRESS. Phases 17–22f + 21a complete; the current frontier is **Phase 22g, the
+`d=3` realization assembly** (opened 2026-06-07 on a build-free red-node consistency recon;
+`notes/Phase22g.md`). Corrected scope (recon `notes/Phase22-realization-design.md` §1.33 + the
+22g open): `rigidityMatrix_prop11`'s `hub` is already green and `theorem_55` is a green
+conditional, so the real gap is the `d=3` `hsplit` producer taking `lem:case-II-realization` /
+`lem:case-III` green, plus a small `d=3`-instance `theorem_55` node. The recon confirmed the path
+does NOT consume the red `lem:cycle-realization` (a Phase-23 cycle-base / KT-narrative dependency,
+not Lean-load-bearing). Then **Phase 23** (general `d`). **Phase 22f** (✓ complete, closed 2026-06-07) landed N3b — the
 point-join↔panel-meet duality `pᵢ∨pⱼ = λ·C(L)` (bounded `⋀²ℝ⁴` exterior-algebra,
 `complementIso_smul_eq_extensor_join` / `extensor_join_eq_zero_of_complementIso_eq_zero`) —
 discharging 22e's last red leaf, so KT Claim 6.12 and the candidate-completion chain are now
@@ -293,7 +295,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22d ✓ | **KT Claim 6.11** (the redundant `ab`-row, eq. (6.23)) + its green-machinery prerequisites (closed at the Claim 6.11 milestone; `notes/Phase22d.md`). Attacked the conjecture's hardest node — the *missing `+1` row* lifting 22c's `D(\|V\|−1)−1` brick toward full `D(\|V\|−1)` — **bottom-up**, building the prerequisite chain green + axiom-clean rather than axiomatizing the claim (user override of the opening axiomatize-as-hypothesis verdict). Delivered: the matroid-base 4.3(ii) form at `k=0` (`lem:case-III-claim-6-11-base`, Gap 2), the nested-IH shell `G−v` minimal `k'`-dof with `k' ≤ D−2` (`lem:case-III-gap3-minimalKDof`, Gap 3), the analytic seed-rank kernel (`lem:case-III-seed-rank-bridge` rigidity transfer + `lem:case-III-seed-rank-upper` + `lem:case-III-rank-attainment`), the full `hub` codimension bound (discharged on both consumers), and the redundant-row pigeonhole + row-set identity feeding the eq.-(6.18)/(6.22)⟹(6.23) discharge (`lem:case-III-claim-6-11-redundant-row` → **`lem:case-III-claim-6-11`**, green). The kernel forced the **project's first algebraic-independence use** (KT footnote 6: "*this* seed attains the rank", not "*∃* a seed"); tracker `notes/AlgebraicIndependence.md`. The candidate-completion + **Claim 6.12** disjunction (de-risked on green Lemma 2.1, eq. (6.44) "same `r`") and the `d=3` assembly are the deferred, unlettered successor; its first leaf (eq. (6.28) column-support) landed early under 22d's tail. Nodes `lem:case-II-realization`, `lem:case-III` stay red. | §6.4.1 | 5 |
 | 22e ✓ | **candidate-completion + KT Claim 6.12** (Case III at `d=3`, Lemma 6.10; closed 2026-06-07, `notes/Phase22e.md`). Lifts 22c's stratum-1 `D(\|V\|−1)−1` brick to full `D(\|V\|−1)` by converting 22d's green redundant `ab`-row (eq. (6.23)) into the missing `+1` row — the eqs. (6.24)→(6.29) row-op construction of the `v`-column `w` (its eq. (6.28) column-support core already green, landed under 22d's tail = 22e's first leaf) — then the **Claim 6.12** `D`-candidate disjunction (de-risked on the green Lemma 2.1, eq. (6.44) "same `r`"; N3a takes the existence/Zariski route, **not** alg-independence). Closed green-modulo a single N3b duality leaf at the time; that leaf landed in 22f, so the candidate-completion chain (`lem:case-III-candidate-row`) and Claim 6.12 are now fully green. The two target producer nodes `lem:case-II-realization` / `lem:case-III` **stay red** (N10 honest-scope correction: they carry no `\lean`, and their discharge needs the *deferred `d=3` realization assembly*). Opened on a red-node consistency recon (supersession gate clean), not a build. | §6.4.1 | 5 |
 | 22f ✓ | **N3b: the point-join↔panel-meet duality bridge** (`lem:case-III-claim612-line-in-panel-union`, completing Claim 6.12 / Lemma 6.10 at `d=3`; closed 2026-06-07, `notes/Phase22f.md`). `pᵢ∨pⱼ = λ·C(L)` for a line `L ⊂ Π(u)`: both the point-join and the panel-meet `C(L) = complementIso(n_u∧n')` lie in the **1-dim** dual-annihilator line `Ω = (dualAnnihilator Φ̃).comap b.toDualEquiv` (`Φ̃ = n_u∧ℝ⁴ + n'∧ℝ⁴`, `dim 5`), the point-join by a Gram-determinant orthogonality, the panel-meet by the green dictionary half — concrete at `⋀²ℝ⁴`, **not** general Hodge theory (`complementIso_smul_eq_extensor_join` + the `r(C)=0 ⟹ r(join)=0` transfer). Discharged 22e's green-modulo-N3b, taking Claim 6.12 (N9) and the candidate-completion chain fully green; the two producer nodes await only the deferred `d=3` realization assembly. | §6.4.1 | 5 |
-| ⋯ (deferred, unlettered) | **The `d=3` assembly** (the further cut after 22e/22f — it gets a letter when its turn comes): `prop:rigidity-matrix-prop11` `hub` brick (Track-independent, Phase-19-partition) + `thm:theorem-55` flip + wiring the fully-green `case_I_realization` into `theorem_55_generic`'s Case-I branch. | §5.1, §6.4.1 | 5 |
+| 22g ◷ | **The `d=3` realization assembly** (opened 2026-06-07 on a build-free red-node consistency recon, `notes/Phase22g.md`; the deferred-unlettered cut, now lettered). Takes `lem:case-II-realization` / `lem:case-III` green at `d=3`. The recon re-scoped it: `rigidityMatrix_prop11`'s `hub` is green and `theorem_55` is a green conditional, so the one real gap is the **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕ `case_III_claim612` into the graph-free `linearIndependent_sum_augment_candidateRow` at real graph data (the `ofNormals` defeq trap, TACTICS-QUIRKS §38), then instantiate `theorem_55 (n:=2) (k:=2)`. Two open items resolved at open: (B.1) the path does NOT consume the red `lem:cycle-realization` (KT-narrative dependency at the Phase-23 cycle base, not Lean-load-bearing — `minimal_kdof_reduction` has no cycle branch); (B.2) a small `d=3`-instance `theorem_55` node, not a standalone restatement. Milestone: conjecture at `d=3`, unblocking Cor 5.7. | §5.1, §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -693,28 +695,29 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–22f + 21a are complete; **Phase 22 (the realization layer) is sub-lettered** —
-opened as a single Phase 22 on 2026-06-04, then split the same day into **22a** (Case I
-realization, ✓ complete; `notes/Phase22a.md`), **22b** (KT Claim 6.4, ✓ complete
-2026-06-05; `notes/Phase22b.md`), **22c** (Case III at `d=3`, stratum 1 = the eq. (6.12)
-`+(D−1)` placement, ✓ stratum-1 complete 2026-06-05; `notes/Phase22c.md`), **22d**
-(KT Claim 6.11 + its green-machinery prerequisites, ✓ complete at the Claim 6.11
-milestone; `notes/Phase22d.md`), **22e** (the candidate-completion + KT Claim 6.12,
-✓ complete 2026-06-07; `notes/Phase22e.md`), and **22f** (N3b, the point-join↔panel-meet
-duality leaf, ✓ complete 2026-06-07; `notes/Phase22f.md`). The `d=3` assembly is the
-remaining successor cut. Sub-lettering keeps the integer phase numbers 23–26 stable.
+Phases 17–22f + 21a are complete and **Phase 22g is open** (◷ in progress); **Phase 22 (the
+realization layer) is sub-lettered** — opened as a single Phase 22 on 2026-06-04, then split the
+same day into **22a** (Case I realization, ✓; `notes/Phase22a.md`), **22b** (KT Claim 6.4, ✓
+2026-06-05; `notes/Phase22b.md`), **22c** (Case III at `d=3`, stratum 1 = the eq. (6.12) `+(D−1)`
+placement, ✓ stratum-1 2026-06-05; `notes/Phase22c.md`), **22d** (KT Claim 6.11 + its
+green-machinery prerequisites, ✓ at the Claim 6.11 milestone; `notes/Phase22d.md`), **22e** (the
+candidate-completion + KT Claim 6.12, ✓ 2026-06-07; `notes/Phase22e.md`), **22f** (N3b, the
+point-join↔panel-meet duality leaf, ✓ 2026-06-07; `notes/Phase22f.md`), and **22g** (the `d=3`
+realization assembly, ◷ opened 2026-06-07; `notes/Phase22g.md`). Sub-lettering keeps the integer
+phase numbers 23–26 stable.
 
-**Next cut (◷ planning, UNLETTERED): the `d=3` realization assembly.** With N3b green, Claim
+**Current cut (◷ in progress): Phase 22g, the `d=3` realization assembly.** With N3b green, Claim
 6.12 and the candidate-completion chain are fully green, but the two target producer nodes
-`lem:case-II-realization` / `lem:case-III` stay red. **Design-reconned 2026-06-07 —
-`notes/Phase22-realization-design.md` §1.33 (A)/(B) is the artifact to open against** (re-scoped
-from the older "hub + flip + wiring" framing): `rigidityMatrix_prop11`'s `hub` lower bound is
-already **green** (discharged in-proof) and `theorem_55` is a green *conditional*, so the one
-real gap is the **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕
-`case_III_claim612` into `linearIndependent_sum_augment_candidateRow` at real graph data (where
-the `ofNormals` defeq-timeout trap bites), then instantiate `theorem_55 (n:=2)`. **Two open items
-to resolve at phase-open** (§1.33 (B)): whether the Lean `theorem_55` path consumes the red
-`lem:cycle-realization` or dissolves short cycles into `hsplit`+`hbase` (B.1), and the
-`theorem_55` `d=3`-instance-vs-stays-red architecture (B.2). Then **general-`d`** (Lemma 6.13,
-reuse map in §1.33 (C)) is **Phase 23**. When opening, follow the top-level `CLAUDE.md` *When
-this commit opens a phase* protocol and the red-node consistency gate over its target nodes.
+`lem:case-II-realization` / `lem:case-III` stay red. Opened 2026-06-07 on a build-free red-node
+consistency recon (`notes/Phase22g.md`; design `notes/Phase22-realization-design.md` §1.33). The
+recon re-scoped it off the older "hub + flip + wiring" framing: `rigidityMatrix_prop11`'s `hub`
+lower bound is already **green** (discharged in-proof) and `theorem_55` is a green *conditional*,
+so the one real gap is the **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕
+candidate-row ⊕ `case_III_claim612` into `linearIndependent_sum_augment_candidateRow` at real
+graph data (where the `ofNormals` defeq-timeout trap bites), then instantiate `theorem_55 (n:=2)`.
+The two open items are resolved (`notes/Phase22g.md` *Red-node consistency gate*): (B.1) the path
+does NOT consume the red `lem:cycle-realization` (a KT-narrative dependency at the Phase-23 cycle
+base, not Lean-load-bearing — `minimal_kdof_reduction` has no cycle branch; reconciled in the
+blueprint), and (B.2) a small `d=3`-instance `theorem_55` node is the architecture. The smallest
+next commit is the `d=3` `hsplit` producer. Then **general-`d`** (Lemma 6.13, reuse map in
+§1.33 (C)) is **Phase 23**.

@@ -51,12 +51,14 @@ The development proceeds in four arcs (full plan in `ROADMAP.md`):
 Phases 1–16 are complete and carry no `sorry`s — the development is fully
 green through the body-hinge Tay–Whiteley theorem
 (`Graph.BodyHingeFramework.body_hinge_tay`). Within the
-molecular-conjecture program, phases 17–21 are complete (the extensor
-algebra, rigidity matrix, deficiency matroid, combinatorial induction, and
-the algebraic induction's accounting layer, including the genericity
-device of Claim 6.4/6.9); work is in progress on the algebraic induction's
-hardest case, Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid
-subgraph — phase 22 onward). The per-phase status table is on the
+molecular-conjecture program, phases 17–22 build the extensor algebra, the
+panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
+induction, and the algebraic induction realizing that reduction at the
+rigidity-matrix rank; the algebraic induction's hardest case, Katoh–Tanigawa's
+**Case III** (`k=0`, no proper rigid subgraph), is now green at `d=3` through
+its exterior-algebra core. Work is in progress on the `d=3` realization
+assembly that flips Case III's two producer nodes green and proves the
+conjecture at `d=3` (then general `d`). The per-phase status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 

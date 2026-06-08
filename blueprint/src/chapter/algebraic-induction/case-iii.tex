@@ -1166,6 +1166,17 @@ Grassmann--Cayley projective duality.
   $D(|V|-1)$ realization (the deferred ``$d = 3$ assembly''), and the general-$d$ argument
   (\textbf{Phase~23}). This node stays red until those land; it is stated
   here to close the Theorem~5.5 dichotomy.
+
+  The cycle-realization input (\cref{lem:cycle-realization}, KT Lemma~5.4) appears in the
+  \uses{} above as a KT-narrative dependency: KT's Lemma~6.13 opens by Lemma~4.6 with $G$ either a
+  short cycle (handled by Lemma~5.4) or carrying a length-$d$ chain. The \emph{Lean} reduction the
+  realization assembly instantiates --- \cref{thm:minimal-kdof-reduction}, run through
+  \texttt{theorem\_55} --- has \emph{no} cycle branch: its only base case is the two-vertex graph,
+  reached by descent through the splitting-off (Case~III) and rigid-subgraph-contraction (Case~I)
+  steps, so short cycles dissolve into repeated splits rather than bottoming on a separate
+  short-cycle realization. The $d = 3$ assembly path therefore does \emph{not} consume
+  \cref{lem:cycle-realization}; it remains a genuine general-$d$ input at the cycle base of
+  Phase~23 (and is already load-bearing for the $k > 0$ Case~II, \cref{lem:case-II}).
 \end{lemma}
 \begin{proof}
   The $d = 3$ contrapositive above is fully green; the $d = 3$ realization assembly and general-$d$
