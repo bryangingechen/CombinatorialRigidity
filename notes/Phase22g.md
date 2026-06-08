@@ -80,14 +80,29 @@ selector-shaped output (exactly the `hselᵢ` shape of `case_III_eq629_condition
 machinery stays in the already-green abstract lemmas and the §38 trap is confined to C1's carrier.
 Build + lint clean, warning-free, sorry-free.
 
-**Next concrete step (smallest forward commit): more C5 producer-discharge leaves.** **The C4↔C5
-ordering is corrected:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot land before the
-C3 spine's carried candidate-selection data is discharged (C5) — the §1.35 verdict and B.2's "mint
-the node name when the producer lands" agree, the *Current state* "C4 next" ordering pre-dated that.
-So the live work is C5: discharge `case_III_hsplit_producer`'s carried `hr`/`hp`/`hduality`/`Cᵢ`
-(from `exists_redundant_panelRow_ab_decomposition` + N3b `case_III_claim612`, green via 22f),
-`hselᵢ` (the producers `linearIndependent_sum_{p2,p3,augment}_candidateRow`), and `hmemᵢ` (L2 span
-bridge / L4 membership for the OLD/NEW blocks + the `+1` `r̂`-row membership). C4 then folds in.
+**Next concrete step (smallest forward commit): the next C5 producer-discharge leaf** — the `hsel₁`
+(`M₁`) selector recast (`linearIndependent_sum_augment_candidateRow` → `r(C(e)) ≠ 0 →
+LinearIndependent famᵢ`; it takes the operated full-block `hnewpinaug` rather than the row-space
+criterion, so its wrapper is slightly less trivial than the `p₂`/`p₃` ones now landed), **or** the
+`r̂`/`Cᵢ`/`hduality` Claim-6.12 data (`exists_redundant_panelRow_ab_decomposition` builds `r̂` and
+`candidateRow_ne_zero` its nonzero-ness; `case_III_claim612` is green via 22f). **The C4↔C5 ordering
+is corrected:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot land before the C3 spine's
+carried candidate-selection data is discharged (C5) — the §1.35 verdict and B.2's "mint the node name
+when the producer lands" agree. So the live work stays C5: discharge `case_III_hsplit_producer`'s
+carried `hr`/`hp`/`hduality`/`Cᵢ`, `hselᵢ` (the `hsel₂`/`hsel₃` selectors now landed; `hsel₁`
+remaining), and `hmemᵢ` (L2 span bridge / L4 membership for the OLD/NEW blocks + the `+1` `r̂`-row
+membership, now landed). C4 then folds in.
+
+**Just landed: the `hsel₂`/`hsel₃` selector recasts** (`linearIndependent_sum_p2_candidateRow_selector`
++ `linearIndependent_sum_p3_candidateRow_selector`, RigidityMatrix.lean). Package the `p₂`/`p₃`
+producers into the exact `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow ..
+r}) ro)` shape that `case_III_eq629_conditional` / `case_III_hsplit_producer` consume — by taking the
+candidate functional `ρ := r` and the supporting extensor `C := F.supportExtensor e`. Each is a
+one-line `fun hr => producer … hr` term proof (the producer's row-space criterion already does the
+work); graph-free over abstract `F` (no §38). Build + lint clean, warning-free, sorry-free. The `M₁`
+(`linearIndependent_sum_augment_candidateRow`) selector recast is the matching `hsel₁` leaf (it takes
+the operated full-block `hnewpinaug` rather than the row-space criterion, so it is the one remaining
+abstract selector before the §38-bearing final wiring).
 
 **Just landed: the `+1` `r̂`-row membership leaf** (`BodyHingeFramework.hingeRow_mem_rigidityRows`,
 Pinning.lean). The general block-row form of `panelRow_mem_rigidityRows`: for a link `e = uv` and
@@ -249,10 +264,16 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   Pinning.lean). General block-row form of `panelRow_mem_rigidityRows`: `r ∈ hingeRowBlock e` +
   `IsLink e u v` ⟹ `hingeRow u v r ∈ rigidityRows` (`⟨e,u,v,hlink,r,hr,rfl⟩`). Discharges the
   candidate `+1` row's `hmemᵢ` ingredient (§1.35 finding (1)). Graph-free, axiom-clean. (2026-06-07)
+- [x] **C5-leaf — the `hsel₂`/`hsel₃` selector recasts** (`linearIndependent_sum_p2_candidateRow_selector`
+  + `linearIndependent_sum_p3_candidateRow_selector`, RigidityMatrix.lean). Package the `p₂`/`p₃`
+  producers into the `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent famᵢ` shape (`ρ := r`,
+  `C := F.supportExtensor e`); one-line `fun hr => producer … hr` term proofs, graph-free (no §38).
+  (2026-06-07)
 - [ ] **C5 — discharge `case_III_hsplit_producer`'s carried data** — `hr`/`hp`/`hduality`/`Cᵢ`,
-  `hselᵢ`, and the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is now in hand). Wires
-  `exists_redundant_panelRow_ab_decomposition` ⊕ `case_III_claim612` ⊕ the producers at real
-  `ofNormals` graph data (§38 defeq trap). Takes the C3 spine fully green.
+  the `hsel₁` (`M₁`) selector recast (`hsel₂`/`hsel₃` now in hand), and the OLD/NEW-block `hmemᵢ`
+  (the `+1`-row `hmemᵢ` is now in hand). Wires `exists_redundant_panelRow_ab_decomposition` ⊕
+  `case_III_claim612` ⊕ the producers at real `ofNormals` graph data (§38 defeq trap). Takes the C3
+  spine fully green.
 - [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
 - [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -279,13 +300,15 @@ carried hypotheses —
 - `hr`/`hp`/`hduality`/`Cᵢ` from `exists_redundant_panelRow_ab_decomposition` (builds `r̂ = ∑
   λ_{(ab)j} r_j`, nonzero by `λ_{(ab)i*} = 1`) + the N3b duality (`case_III_claim612`, green via 22f);
 - the `hselᵢ` from the producers `linearIndependent_sum_{p2,p3,augment}_candidateRow` (the
-  `r̂(Cᵢ) ≠ 0` direction, via the row-space criterion `linearIndependent_sumElim_candidateRow_iff`);
+  `r̂(Cᵢ) ≠ 0` direction, via the row-space criterion `linearIndependent_sumElim_candidateRow_iff`) —
+  the `p₂`/`p₃` selector recasts are now landed (`linearIndependent_sum_p{2,3}_candidateRow_selector`);
+  only the `M₁` (`augment`) selector recast remains;
 - the `hmemᵢ`: the OLD/NEW `so`/`sn` blocks via L2 span bridge (`span_panelRow_comp_single_of_edge`)
   / L4 membership (`panelRow_mem_rigidityRows_of_link`) on the L1 blocks, and the `+1` `r̂`-row via the
   now-landed `hingeRow_mem_rigidityRows` (the placed `hingeRow v b r̂` with `r̂ ∈ hingeRowBlock e_b`).
 
-A good next leaf: the `hselᵢ` derivation, or the `hr`/`Cᵢ`/`hduality` Claim-6.12 data — each
-graph-free pieces are buildable before the §38-bearing final wiring. Then C4 (mint the green
+A good next leaf: the `hsel₁` (`M₁`) selector recast, or the `hr`/`Cᵢ`/`hduality` Claim-6.12 data —
+each graph-free pieces are buildable before the §38-bearing final wiring. Then C4 (mint the green
 `theorem_55 (n:=2) (k:=2)` instance node, **not** a standalone `theorem_55_dim3`), the
 `lem:case-II-realization` / `lem:case-III` flips, the Thm 5.5→5.6 push. Full verified leaf sequence +
 the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35.
@@ -301,6 +324,15 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **The `hsel₂`/`hsel₃` selectors are thin recasts of the `p₂`/`p₃` producers (2026-06-07).**
+  `linearIndependent_sum_p{2,3}_candidateRow_selector` (RigidityMatrix.lean): set the candidate
+  functional `ρ := r` and the supporting extensor `C := F.supportExtensor e`, and the producer *is*
+  the `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent famᵢ` shape `case_III_eq629_conditional` /
+  `case_III_hsplit_producer` want — a one-line `fun hr => producer … hr` term proof. Built as the
+  selector recast (not folded into the producer) so the producer keeps the cleaner `ρ(C(e)) ≠ 0`
+  statement and the selector matches the consumer's `r C ≠ 0` shape verbatim. Graph-free (no §38). No
+  friction. (The `M₁`/`augment` selector recast is a separate leaf — `augment` takes the operated
+  full-block `hnewpinaug`, not the row-space criterion.)
 - **The `+1` `r̂`-row membership landed as the general block-row form, not the sum decomposition
   (2026-06-07).** `hingeRow_mem_rigidityRows` (Pinning.lean): `r ∈ hingeRowBlock e` + `IsLink e u v`
   ⟹ `hingeRow u v r ∈ rigidityRows`, a one-line `⟨e,u,v,hlink,r,hr,rfl⟩` straight off `rigidityRows`'s

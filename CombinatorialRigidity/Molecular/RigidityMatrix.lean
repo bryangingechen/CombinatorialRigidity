@@ -1323,6 +1323,62 @@ theorem linearIndependent_sum_p3_candidateRow (F : BodyHingeFramework k α β) (
   rw [hingeRow_comp_columnOp_comp_single hac ρ]
   exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan ρ).2 hr
 
+/-- **The `p₂` candidate selector: the `M₂` block is full rank when the common candidate vector is
+not orthogonal to its supporting extensor** (`lem:case-III-claim612-p2-placement`, the selector
+recast of the `p₂` producer; Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The `case_III_claim612`
+disjunction (`lem:case-III-claim612`) selects a candidate by the orthogonality test
+`r̂(Cₘ) ≠ 0` on the *common* candidate vector `r̂`, where `Cₘ` is that block's supporting extensor
+`C(p(e)) = F.supportExtensor e`. This packages `linearIndependent_sum_p2_candidateRow` into exactly
+that selector shape `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v b r̂}) ro)`
+— the `hsel₂` ingredient `case_III_eq629_conditional` / the `d = 3` `hsplit` producer
+(`case_III_hsplit_producer`) consume — by taking the candidate functional `ρ := r̂` and the
+supporting extensor `C := F.supportExtensor e`. Graph-free (abstract `F`); the producer's row-space
+criterion already does all the work. -/
+theorem linearIndependent_sum_p2_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
+    [DecidableEq α] {v b : α} (hvb : v ≠ b) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {r : Module.Dual ℝ (ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (hrnpin : LinearIndependent ℝ (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e) :
+    r (F.supportExtensor e) ≠ 0 →
+      LinearIndependent ℝ
+        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v b r)) ro) :=
+  fun hr => linearIndependent_sum_p2_candidateRow F e hvb hold holdindep hrnpin hspan hr
+
+/-- **The `p₃` candidate selector: the `M₃` block is full rank when the common candidate vector is
+not orthogonal to its supporting extensor** (`lem:case-III-claim612-p3-placement`, the selector
+recast of the `p₃` producer; Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The third candidate is split at
+the other degree-2 body `a` along `ac`; its full-rank criterion is routed onto the *same* common
+vector `r̂` by eq.~(6.44) (`candidateRow_ac_eq_neg`), so the selector test is again `r̂(C(e)) ≠ 0`
+for the `ac`-hinge's supporting extensor `C = F.supportExtensor e`. This packages
+`linearIndependent_sum_p3_candidateRow` into the `hsel₃` selector shape
+`r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow a c r̂}) ro)`
+(`ρ := r̂`, `C := F.supportExtensor e`). Graph-free (abstract `F`). -/
+theorem linearIndependent_sum_p3_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
+    [DecidableEq α] {a c : α} (hac : a ≠ c) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {r : Module.Dual ℝ (ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) a x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (hrnpin : LinearIndependent ℝ (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)))
+    (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))) = F.hingeRowBlock e) :
+    r (F.supportExtensor e) ≠ 0 →
+      LinearIndependent ℝ
+        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c r)) ro) :=
+  fun hr => linearIndependent_sum_p3_candidateRow F e hac hold holdindep hrnpin hspan hr
+
 /-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
 (`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).
 The candidate row shared by all three
