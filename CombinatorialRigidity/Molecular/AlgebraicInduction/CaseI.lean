@@ -3393,6 +3393,67 @@ theorem PanelHingeFramework.candidateCompletion_index_injective
   -- `so` vs `so`: `Subtype.val` injective.
   · exact congrArg Sum.inr (Subtype.ext hab)
 
+/-- **L5-pack — the candidate-completion `panelRow ∘ j` family identity and count**
+(`lem:case-II-realization` / `lem:case-III`, the last packaging leaf of the `d = 3` `hsplit`
+producer; Katoh–Tanigawa 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
+(`linearIndependent_sum_{augment,p2,p3}_candidateRow`) outputs the family
+`Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow u w ρ)) ro` over `(sn ⊕ Unit) ⊕ so`, but the L0
+spine (`case_III_hsplit_producer`) carries `fam` in the shape the abstractly-indexed device feed
+(`hasFullRankRealization_of_independent_panelRow_index`) needs:
+`fam = fun i => F.panelRow ends (j i)` along an injective index `j`. This leaf supplies both halves
+of that packaging, once the three blocks are each a `panelRow`:
+
+* the **OLD/NEW blocks** are `panelRow`s of `F` directly — `rn i = F.panelRow ends i.val` for
+  `i : sn` and `ro i = F.panelRow ends i.val` for `i : so` (the L1 `case_III_old_new_blocks` output
+  is already in `panelRow` form);
+* the **`Unit`-summand candidate row** is the `panelRow` at the candidate edge `e_a` —
+  `hingeRow u w ρ = F.panelRow ends (e_a, ta, tb)`, with `ρ = annihRow (C(e_a)) ta tb` and
+  `ends e_a = (u, w)`, which is L3 (`panelRow_eq_hingeRow_annihRow_of_ends`). (This resolves the
+  §1.34 (F1) subtlety: the producer's `ρ` is realized as a single `annihRow` pair, so the `Unit`
+  summand IS one `panelRow`.)
+
+With those, the family is *definitionally* `F.panelRow ends ∘ j` for the L5-inj index map `j`
+(`Sum.elim`-of-`Sum.elim` against the matching `j`, closed by `funext`/`rcases`/`rfl`), so the
+identity needs no `whnf` of the carrier (graph-free, no TACTICS-QUIRKS §38 trap). The count
+`screwDim k * (V(G).ncard − 1) ≤ Nat.card ((sn ⊕ Unit) ⊕ so)` is the L1 block counts
+`Nat.card sn = D − 1`, `Nat.card so = D(|V(Gᵥ)|−1)` summed over the `+1` `Unit`, with
+`|V(Gᵥ)| = |V(G)| − 1`: `((D−1)+1) + D(m−2) = D(m−1)` for `m = |V(G)| ≥ 1` (the eq. (6.29)
+full count `D(|V|−1)`, the `+1` over the eq. (6.12) brick's `D(|V|−1)−1`). -/
+theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    {e_a : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} {u w : α}
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hends : ends e_a = (u, w)) (hρ : ρ = annihRow (F.supportExtensor e_a) ta tb)
+    {mV mVv : ℕ} (hsn_card : Nat.card sn = screwDim k - 1)
+    (hso_card : Nat.card so = screwDim k * (mVv - 1)) (hVcard : mVv = mV - 1) (hm : 1 ≤ mV) :
+    -- the `panelRow ∘ j` family identity (the device feed's shape)
+    (Sum.elim (Sum.elim (fun i : sn => F.panelRow ends (i : β × _ × _))
+        (fun _ : Unit => BodyHingeFramework.hingeRow (k := k) (α := α) u w ρ))
+      (fun i : so => F.panelRow ends (i : β × _ × _)) =
+      fun i => F.panelRow ends
+        (Sum.elim (Sum.elim (fun i : sn => (i : β × _ × _)) (fun _ : Unit => (e_a, ta, tb)))
+          (fun i : so => (i : β × _ × _)) i)) ∧
+    -- the eq. (6.29) full count `D(|V|−1) ≤ |(sn ⊕ Unit) ⊕ so|`
+    screwDim k * (mV - 1) ≤ Nat.card ((sn ⊕ Unit) ⊕ so) := by
+  refine ⟨?_, ?_⟩
+  · -- The `Unit` summand is the panel row at `e_a` (L3); the rest match `j`'s components by `rfl`.
+    have hcand : BodyHingeFramework.hingeRow (k := k) (α := α) u w ρ
+        = F.panelRow ends (e_a, ta, tb) := by
+      rw [F.panelRow_eq_hingeRow_annihRow_of_ends ends hends ta tb, hρ]
+    funext i; rcases i with (i | i) | i
+    · rfl
+    · simp only [Sum.elim_inl, Sum.elim_inr]; exact hcand
+    · rfl
+  · -- `((D−1)+1) + D(m−2) = D(m−1)` for `m ≥ 1`.
+    rw [Nat.card_sum, Nat.card_sum, Nat.card_unique (α := Unit), hsn_card, hso_card, hVcard]
+    have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+    obtain ⟨m, rfl⟩ : ∃ m, mV = m + 1 := ⟨mV - 1, by omega⟩
+    simp only [Nat.add_sub_cancel]
+    cases m with
+    | zero => simp
+    | succ m' => rw [Nat.add_sub_cancel, Nat.mul_succ]; omega
+
 /-- **L0 — the `d = 3` `hsplit` producer skeleton** (`lem:case-II-realization` / `lem:case-III`,
 the `theorem_55.hsplit` branch at `k = 2`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phase 22g). The
 spine of the conjecture's crux at `d = 3`: given a realization of the split-off `G_v^{ab}` it
