@@ -7,33 +7,32 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: L0, the `d=3` `hsplit` producer SKELETON, green-modulo**
-(`PanelHingeFramework.case_III_hsplit_producer`, CaseI.lean). The spine of the conjecture's crux at
-`d=3`: it matches the `theorem_55.hsplit` premise shape at `k=2` (`G v a b eₐ e_b e₀`, the links,
-degree-2 closure, `e₀ ∉ E(G)`, `HasFullRankRealization 2 (G.splitOff …)`) and concludes
-`HasFullRankRealization 2 G`, **carrying as explicit `h…` hypotheses** the residual graph-data
-obligations (L1–L5): the candidate-selection data of `case_III_eq629_conditional` (`hr`/`hp`/`hduality`
-+ the three `hselᵢ`) and, per candidate `i`, its `panelRow`-packaging (seed `q₀ᵢ`, finite index `ιᵢ`,
-injective `jᵢ`, the identification `hfamᵢ : famᵢ = fun t => panelRow ends (jᵢ t)`, count `hcardᵢ`).
-Body: `rcases` the Claim-6.12 disjunction (`BodyHingeFramework.case_III_eq629_conditional`), then feed
-the winning candidate's family to `hasFullRankRealization_of_independent_panelRow_index` in each
-branch — a 6-line term-shaped proof. Fully green, sorry-free (axioms = `propext`/`choice`/`Quot.sound`),
-warning-clean, lint clean. The blob is defeated: the spine is now green, L1–L5 are named, and the
-§38 defeq trap is confined to L3.
+**Just landed: L1, the IH → old/new panel-row block extraction** (`PanelHingeFramework.case_III_old_new_blocks`,
+CaseI.lean). Discharges the first of L0's carried obligations: from the inductively rigid split-off
+block `ofNormals Gv ends q` (rigid on `V(Gv) = V(G)∖{v}`, transversal hinges, `e₀=ab`-hinge
+transversal `hgab`), at the shared seed `q₀` overriding `v`'s normal by `n_a+t·n_b` (the eq.-(6.12)
+shear, `t≠0`), it produces the **two blocks** the three candidate producers consume: the OLD block
+`so` (`D(|V(Gv)|−1)` independent linking rows of `ofNormals G ends q₀`, transported off the rigid
+`Gv`-block, with `holdindep` + `hold` vanish-at-`v`'s-column + the `so`-uses-no-`e_b` disjointness fact
+for L5) and the NEW block `sn` (the `D−1` independent `e_b`-rows, `hsn_e`/`hsn_indep`, staying
+independent through `v`'s column `hnewpin`). Plus the two extensor-nonzero facts L3 reuses (`hane` the
+`va`-line, `hnewne` the reproduced `vb`-hinge). The proof is the front of `case_II_placement_eq612`
+exposing the two blocks separately instead of packaging them into one `D(|V|)−1`-size set. Fully green,
+sorry-free (axioms = `propext`/`choice`/`Quot.sound`), warning-clean, lint clean.
 
-One supporting edit landed alongside: `case_III_eq629_conditional` was minted with one shared index
-type `ιfam` for all three families; the three candidates genuinely differ (`M₁` is `(rn ⊕ Unit) ⊕ ro`),
-so it was generalized to `{ιfam₁ ιfam₂ ιfam₃}` (one-line signature change, no proof edit — the
-`.imp` proof is index-agnostic). FRICTION `[resolved]`.
+**Next concrete step (smallest forward commit): L2 — the pinned-block span bridge (F3).** L1's NEW
+block `sn` gives `hsn_indep` + `hnewpin` (the `comp single v` independence), but the candidate
+producers (`linearIndependent_sum_p2/p3_candidateRow`, `…_sumElim_candidateRow_iff`) additionally need
+the FULL hinge-block span `hspan : span (range (rn ∘ₗ Φ ∘ₗ single v)) = F.hingeRowBlock e_b`. Supply it
+from `span_panelRow_edge_eq` + `finrank_hingeRowBlock` (both green, Pinning.lean) via a small
+`Submodule.eq_of_le_of_finrank_eq` leaf — mirrors `exists_redundant_panelRow_of_edge_of_finrank_lt`'s
+`hrspan` (CaseI.lean:2865). See §1.34 / the checklist below for L2–L5 shapes. L3 is the lone defeq-risk
+leaf (deferrable); L2/L4/L5 are green-brick plumbing.
 
-**Next concrete step (smallest forward commit): L1 — IH → candidate `rn`/`ro`/`ρ` extraction.**
-From the IH-extracted rigid `ofNormals (splitOff) ends q` (rigid on `V(splitOff) = V(G)∖{v}`, via
-`exists_rigidOn_ofNormals_of_hasFullRankRealization`), produce the old block `ro` (N7b-0
-`exists_independent_panelRow_subfamily_of_rigidOn_linking`) and a new block `rn` (one of `v`'s edges),
-exactly as `case_II_placement_eq612` does internally — graph-free over `ofNormals`. Produces the
-`ιn`/`ιo` families + `hold`/`holdindep` the candidate assembly consumes. See §1.34 / the checklist
-below for L1–L5 shapes; each discharges one of L0's carried hypotheses. L3 is the lone defeq-risk
-leaf (deferrable); L1/L2/L4/L5 are green-brick plumbing.
+(L0 spine, landed earlier this phase: `PanelHingeFramework.case_III_hsplit_producer` carries the
+candidate-selection data + each candidate's `panelRow`-packaging as explicit `h…` and composes
+`case_III_eq629_conditional` → `…_index` per disjunct; `case_III_eq629_conditional` generalized to
+three index types — one-line signature edit, FRICTION `[resolved]`.)
 
 After all of L1–L5 discharge the carried hypotheses: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -109,9 +108,10 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
     + per-candidate `panelRow`-packaging (`q₀ᵢ`/`ιᵢ`/`jᵢ`/`hfamᵢ`/`hcardᵢ`) as explicit hypotheses; body
     `rcases`'s the Claim-6.12 disjunction (`BodyHingeFramework.case_III_eq629_conditional`) and feeds the
     winner to `…_index` per branch. Green-modulo, sorry-free. (2026-06-07)
-  - [ ] **L1 — IH → candidate `rn`/`ro`/`ρ` extraction.** Re-slice `case_II_placement_eq612`'s old/new
-    blocks from the IH-extracted rigid `ofNormals (splitOff) ends q` (rigid on `V(G)∖{v}`); produces
-    `ιn`/`ιo` + `hold`/`holdindep`. Graph-free over `ofNormals`.
+  - [x] **L1 — IH → old/new block extraction** (`PanelHingeFramework.case_III_old_new_blocks`,
+    CaseI.lean). The front of `case_II_placement_eq612` exposing the OLD block `so`
+    (`holdindep`/`hold`/count/`so`-avoids-`e_b`) and NEW block `sn` (`hsn_e`/`hsn_indep`/`hnewpin`)
+    separately + `hane`/`hnewne`. Graph-free over `ofNormals`. Green, sorry-free. (2026-06-07)
   - [ ] **L2 — pinned-block span bridge.** `rn`-pinned spans `F.hingeRowBlock e_b`
     (`span_panelRow_edge_eq` + `finrank_hingeRowBlock`, both green) ⟹ the `hspan` the candidate
     producers need. Small `eq_of_le_of_finrank_eq` leaf (mirrors `exists_redundant_panelRow_of_edge_of_finrank_lt`).
@@ -146,18 +146,16 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 
 ## Hand-off / next phase
 
-**Smallest next commit: build L1 — discharge L0's per-candidate `panelRow`-packaging from the IH.**
-L0 (the spine) is green; L1 begins replacing its carried `h…` hypotheses with the real construction.
-Extract the IH rigid `ofNormals (splitOff) ends q` locus
-(`exists_rigidOn_ofNormals_of_hasFullRankRealization`, rigid on `V(splitOff) = V(G)∖{v}`), then re-slice
-`case_II_placement_eq612`'s internals to produce the old block `ro` (N7b-0
-`exists_independent_panelRow_subfamily_of_rigidOn_linking`) and a new block `rn` (one of `v`'s edges) —
-graph-free over `ofNormals`. Output: the `ιn`/`ιo` families + `hold`/`holdindep` the candidate assembly
-consumes (one of L0's `hfamᵢ`/`hcardᵢ`/`hjᵢ` triples). Then L2→L5 one leaf per commit (checklist above;
-L1/L2/L4/L5 are green-brick plumbing, L3 is the lone defeq-risk leaf, deferrable). Then the
-`theorem_55` instantiation (B.2 node), the `lem:case-II-realization` / `lem:case-III` flips, and the
-Thm 5.5→5.6 push. Full leaf shapes, the `j` bridge, and the three structural facts:
-`notes/Phase22-realization-design.md` §1.34.
+**Smallest next commit: build L2 — the pinned-block span bridge (F3).** L1
+(`case_III_old_new_blocks`) is green; its NEW block `sn` gives `hsn_indep` + `hnewpin`, but the
+candidate producers also need the FULL hinge-block span `hspan : span (range (rn ∘ₗ Φ ∘ₗ single v)) =
+F.hingeRowBlock e_b` (an `=`, not just an independent subfamily). Supply it from `span_panelRow_edge_eq`
++ `finrank_hingeRowBlock` (both green, Pinning.lean) via a small `Submodule.eq_of_le_of_finrank_eq`
+leaf — mirror `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan` (CaseI.lean:2865). Then
+L3→L5 one leaf per commit (checklist above; L2/L4/L5 are green-brick plumbing, L3 is the lone
+defeq-risk leaf, deferrable). Then the `theorem_55` instantiation (B.2 node), the
+`lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push. Full leaf shapes, the `j`
+bridge, and the three structural facts: `notes/Phase22-realization-design.md` §1.34.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -170,6 +168,16 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **L1 landed: the IH → old/new block extraction, the front of `case_II_placement_eq612` re-exposed
+  (2026-06-07).** `PanelHingeFramework.case_III_old_new_blocks` (CaseI.lean) takes the same setup as
+  `case_II_placement_eq612` (IH-rigid `ofNormals Gv ends q`, the eq.-(6.12) shear seed `q₀`) but
+  outputs the OLD block `so` and NEW block `sn` *separately* — instead of packaging them into one
+  `D(|V|)−1`-size set — so each candidate placement appends its own `+1` row. Output shape matches the
+  candidate producers' inputs (`hold`/`holdindep` ← `so`; `hsn_e`/`hsn_indep`/`hnewpin` ← `sn`; the
+  `so`-avoids-`e_b` disjointness fact for L5's `j`; `hane`/`hnewne` for L3). The full hinge-block span
+  `hspan` the producers also need stays L2. Proof is `case_II_placement_eq612` lines 2649–2756 verbatim
+  (no new tactics); chose re-exposure over re-using `case_II_placement_eq612` directly since its packaged
+  set hides the two-block split the candidate `+1` augment needs.
 - **L0 landed: the `hsplit` producer spine green-modulo; `case_III_eq629_conditional` generalized to
   three index types (2026-06-07).** `PanelHingeFramework.case_III_hsplit_producer` (CaseI.lean) carries
   the candidate-selection data + each candidate's `panelRow`-packaging (`q₀ᵢ`/`ιᵢ`/`jᵢ`/`hfamᵢ`/`hcardᵢ`)
