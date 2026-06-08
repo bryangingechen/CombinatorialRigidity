@@ -269,6 +269,126 @@ User's instinct (build the API at need, not speculatively) is correct, with one 
 
 ---
 
+### 1.34 The `d=3` `hsplit` producer core — cracked into named leaves (2026-06-07)
+
+**Decision: green-modulo-skeleton-first (§1 question 1 = YES).** State the `hsplit` producer with
+its residual graph-data obligations as EXPLICIT hypotheses, flip the SKELETON green first, then
+discharge each as its own leaf. This forces the spine to land, converts the "multi-session blob"
+into named leaves, and — critically — **isolates the §38 defeq trap into one leaf (L3)** so the rest
+of the spine builds graph-free over already-green bricks. The decomposition reads the actual Lean:
+`case_II_placement_eq612` (CaseI.lean:2617, the eq.-(6.12) `+(D−1)` block at real graph data, GREEN),
+the candidate producers (`linearIndependent_sum_p2/p3_candidateRow` + the assembly
+`linearIndependent_sum_augment_candidateRow`, RigidityMatrix.lean, GREEN, graph-free), the selection
+capstone `case_III_eq629_conditional` (GREEN), and the packaging feed
+`hasFullRankRealization_of_independent_panelRow_index` (GenericityDevice.lean, GREEN).
+
+**Three load-bearing structural facts the recon established** (each de-risks a leaf):
+
+- **(F1) The candidate row IS a `panelRow`.** `panelRow ends (e, t₁, t₂)
+  = hingeRow (ends e).1 (ends e).2 (annihRow (C(e)) t₁ t₂)` (`Pinning.lean:46`, `def panelRow`). So
+  the candidate row `hingeRow v a ρ` consumed by `linearIndependent_sum_augment_candidateRow` is
+  literally `panelRow ends (e_a, t₁, t₂)` once `ρ := annihRow (C(e_a)) t₁ t₂` and `ends e_a = (v,a)`.
+  This is what lets the `+1` candidate summand be placed at an `(edge, ⋀ᵏ-pair)` by the index map `j`
+  (§2 below) — no laundering: the candidate row is a genuine rigidity row of the candidate placement.
+- **(F2) `splitOff ⊀ G`, but `case_II_placement_eq612` already only needs `Gv ≤ G` for ONE step.**
+  Its `hGv : Gv ≤ G` is used solely for the rigidityRows-*membership* step (CaseI.lean:2802,
+  `IsSubgraph.isLink_iff`); the old-block independence + transport run through `f := id`, `hrow :=
+  rfl` over the COMMON SUBGRAPH `G − v` (`exists_independent_panelRow_transport`, GenericityDevice.lean:399 —
+  graph-free, `panelRow` reads only `ends`/`q`). So the candidate path reuses N7b-2 VERBATIM; what is
+  new is supplying the membership for the candidate row's edge `e_a` (which DOES link `v a` in `G`,
+  `hG_ea`) — see L4. (§3 below.)
+- **(F3) The candidate producers need the FULL hinge-row block, not just an independent subfamily.**
+  `linearIndependent_sum_p2/p3_candidateRow` take `rn` with BOTH `hrnpin` (pinned independence) and
+  `hspan` (pinned span `= F.hingeRowBlock e`). `case_II_placement_eq612`'s new block came from
+  `exists_independent_panelRow_subfamily_of_edge` (an independent `D−1` subfamily — gives `hrnpin` via
+  `linearIndependent_panelRow_comp_single_of_edge`, but NOT the span equality). The span half is
+  `span_panelRow_edge_eq` + `finrank_hingeRowBlock` (both GREEN, Pinning.lean) packaged as a small
+  bridge leaf (L2). The assembly route `linearIndependent_sum_augment_candidateRow` (used for the
+  `M₁`/`p₁` candidate) needs only `hnewpinaug`, which `linearIndependent_sumElim_candidateRow_iff`
+  supplies from `hrnpin`+`hspan`+`hsel` — same inputs.
+
+**The leaf sequence (bottom-up, each a smallest-buildable commit):**
+
+- **L0 — `hsplit` skeleton (green-modulo, the spine).** State
+  `case_III_hsplit_producer` (CaseI.lean) over the `theorem_55.hsplit` premise data
+  (`G v a b eₐ e_b e₀`, the links, degree-2 closure, `e₀ ∉ E(G)`) plus
+  `HasFullRankRealization k (G.splitOff v a b e₀)`, carrying as EXPLICIT `h…` hypotheses: the three
+  candidate families + their `hselᵢ` (the row-space-criterion conditions `r̂(Cᵢ) ≠ 0 →`), the affine-
+  independence + N3b-duality at the real candidate data (`hp`/`hduality`/`hr` of
+  `case_III_eq629_conditional`), and the `j`-packaging (L5). Body: extract the IH `ofNormals` rigid
+  locus (`exists_rigidOn_ofNormals_of_hasFullRankRealization`), run `case_II_placement_eq612` for the
+  `D(|V|−1)−1` old+new blocks, select the winning candidate via `case_III_eq629_conditional`, feed
+  `hasFullRankRealization_of_independent_panelRow_index`. **Smallest first leaf** — flips the producer
+  green-modulo and names L1–L5. Defeats the blob.
+- **L1 — IH → candidate `rn`/`ro`/`ρ` extraction.** From the IH-extracted rigid `ofNormals (splitOff)
+  ends q` (the `Gv := splitOff` block, rigid on `V(splitOff) = V(G)∖{v}`), produce the old block `ro`
+  (N7b-0 `exists_independent_panelRow_subfamily_of_rigidOn_linking`, exactly as
+  `case_II_placement_eq612` does) and the new block `rn` (one of `v`'s edges). Mostly a re-slice of
+  `case_II_placement_eq612`'s internals; graph-free over `ofNormals`. Shape: produces the `ιn`/`ιo`
+  families + `hold`/`holdindep` the assembly consumes.
+- **L2 — the pinned-block span bridge (F3).** `rn` pinned through `v`'s column spans `F.hingeRowBlock
+  e_b`: `span_panelRow_edge_eq` + `finrank_hingeRowBlock` (GREEN) ⟹ `hspan`. A small `Submodule.eq_of_le_of_finrank_eq`
+  leaf (mirrors `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan`, CaseI.lean:2865).
+- **L3 — the §38 defeq leaf, ISOLATED.** The one place real graph data meets the `ofNormals`/`withGraph`
+  `whnf`/`isDefEq` trap: showing the seed `q₀`/selector `ends` of the candidate placement gives the
+  candidate row's supporting extensor `C(e_a) ≠ 0` (the `va`-line `L ⊂ Π(a)`, KT eq. (6.12), `t ≠ 0`)
+  AND that the `rn`-block is at the SAME framework as the assembly's `Sum.elim` output. `case_II_placement_eq612`
+  already discharges the `hane`/`hnewne` extensor-nonzero facts (CaseI.lean:2713/2721) — REUSE those;
+  the residual is aligning the candidate placement's framework with the assembly. **Decide PROACTIVELY
+  (§1 question 4): route through `…_index` WITHOUT a bespoke helper if the families are built directly
+  as `panelRow (ofNormals G ends q₀)` subfamilies (then `j` is identity-on-edge-index and the framework
+  is syntactically one term).** Extract a generic helper (`mem_infinitesimalMotions` round-trip per §38)
+  ONLY if a single `convert`/`rw` `whnf`-walls — name it `panelRow_ofNormals_candidate_eq` (the
+  `panelRow`-reads-only-`ends`/`q` `rfl`, à la `toBodyHinge_supportExtensor`). L0's green-modulo state
+  lets L3 wall in isolation without re-walling the spine.
+- **L4 — candidate-row membership.** The candidate row's edge `e_a` links `v a` in `G` (`hG_ea`,
+  premise data), so `panelRow_mem_rigidityRows` gives the rigidityRows membership for the `+1` summand
+  — the analog of `case_II_placement_eq612`'s membership step (CaseI.lean:2795), now for `e_a` instead
+  of via `hGv`. Closes the F2 gap.
+- **L5 — the `j` / `Sum.elim` packaging (§1 question 2).** See §2 below; whether `j`'s injectivity is
+  its own leaf — YES, it is the candidate analog of `case_II_placement_eq612`'s `hjinj`
+  (CaseI.lean:2768), one extra summand.
+
+#### §1 question 2 — the `j` / `Sum.elim` packaging bridge (concrete)
+
+The candidate-completion output (`linearIndependent_sum_augment_candidateRow`) is indexed by
+`ι := (ιn ⊕ Unit) ⊕ ιo` — the `Sum.elim (Sum.elim rn {candidate row}) ro` shape. The injective
+`j : ι → β × ⋀ᵏ-pair × ⋀ᵏ-pair` placing each summand at its `(edge, ⋀ᵏ-pair)`:
+
+- `ιn`-summands (the new-block rows `rn`) → their existing `(e_b, t₁, t₂)` indices (`rn` came from
+  `exists_independent_panelRow_subfamily_of_edge` on edge `e_b`, so each carries a `(e_b, ·)` index).
+- the `Unit`-summand (the candidate row `hingeRow v a ρ`) → `(e_a, t₁, t₂)` where `ρ = annihRow (C(e_a))
+  t₁ t₂` (F1); pick the `(t₁,t₂)` realizing `ρ` (the candidate functional is built FROM such a pair in
+  the placement, so the pair is in hand, not re-chosen).
+- `ιo`-summands (the old block `ro`) → their `Gv`-edge indices.
+
+`j`'s **injectivity IS a leaf (L5)** — the candidate analog of `hjinj` (CaseI.lean:2768): `ιn`/`Unit`
+use `e_a`/`e_b` (the two NEW edges through `v`, distinct since `eₐ ≠ e_b`), `ιo` uses `Gv`-edges (none
+equal to `eₐ`/`e_b`, since those link `v ∉ V(Gv)` — the `hso_ne_eb` argument, extended to also exclude
+`e_a`). Three pairwise-disjoint edge-supports ⟹ injective. `…_index` then closes: reindex independence
+across `Equiv.ofInjective j`, transfer count by `Nat.card_range_of_injective` — exactly what
+`case_II_placement_eq612` does inline and what `hasFullRankRealization_of_independent_panelRow_index`
+packages. The full target count is `D(|V|−1) = ((D−1)+1) + D(|V_v|−1)` (the `+1` over the eq.-(6.12)
+brick's `D(|V|−1)−1` is the `Unit` summand).
+
+#### §1 question 3 — transport through `G − v` (N7b-2): reusable VERBATIM
+
+`case_II_placement_eq612`'s old-block transport (`exists_independent_panelRow_transport Gv G ends ends
+q₀ q₀ (f := id) injective_id (fun i => rfl)`, CaseI.lean:2700) is reused **verbatim** by the candidate
+path: the old block `ro` is identical (the candidate placements `p₂`/`p₃` change only `v`'s normal /
+the column-op, never the `Gv`-block, which the IH rigidity quantifies over `V(Gv) = V(G)∖{v}`,
+motions avoiding `v`). What is NEW is only the `+1` candidate summand's membership (L4) — and that is
+NOT a transport (it is a direct `G`-link `hG_ea`), so N7b-2 needs no extension. The common-subgraph
+`G − v` machinery (`removeVertex_le` / `removeVertex_le_splitOff`) is not even invoked directly here —
+it is the *justification* that `f := id` is valid (both frameworks sit above `G − v`), already baked
+into the green N7b-2.
+
+**Verdict:** L0 (the green-modulo skeleton) is the smallest first commit; it converts the blob into
+L1–L5, isolates the §38 trap to L3, and reuses N7b-2 verbatim. No new generic helper is needed UNLESS
+L3 walls (then `panelRow_ofNormals_candidate_eq`, §38). Compress to a pointer in `notes/Phase22g.md`.
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.
