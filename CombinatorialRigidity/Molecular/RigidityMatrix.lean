@@ -789,6 +789,40 @@ def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
         sub_add_cancel]
     · rw [Function.update_of_ne hx, Function.update_of_ne hx]
 
+/-- **The column operation is the identity on body `v`'s screw column** (the `comp Φ`-is-identity-
+at-the-pin fact the candidate producers' `hrnpin`/`hspan` inputs need; Katoh–Tanigawa 2011
+§6.4.1, Phase 22g). Applying `Φ = columnOp hvb` (`col_b += col_v`) to a screw assignment supported
+only on body `v` (`single v x`) leaves it unchanged: at `v` it reads `(single v x) v + (single v x)
+b = x + 0 = x` (using `v ≠ b`, so the distinct `b`-coordinate is `0`), and at every other body it
+is `Function.update`-untouched. Hence precomposing the candidate producers' `(rn ·) ∘ₗ Φ ∘ₗ
+single v` with the column op collapses to `(rn ·) ∘ₗ single v` — the form the L1/L2 leaves
+(`linearIndependent_panelRow_comp_single_of_edge` / `span_panelRow_comp_single_of_edge`) supply
+directly, so the candidate path feeds them with no extra `Φ`-rewrite. -/
+theorem columnOp_apply_single [DecidableEq α] {v b : α} (hvb : v ≠ b) (x : ScrewSpace k) :
+    columnOp (k := k) hvb (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v x)
+      = LinearMap.single ℝ (fun _ : α => ScrewSpace k) v x := by
+  funext y
+  rcases eq_or_ne y v with rfl | hy
+  · rw [columnOp_apply, Function.update_self, LinearMap.coe_single, Pi.single_eq_same,
+      Pi.single_eq_of_ne hvb.symm, add_zero]
+  · rw [columnOp_apply, Function.update_of_ne hy]
+
+/-- **Operating then pinning to body `v` equals pinning directly** (the L1/L2 → candidate-producer
+bridge; Katoh–Tanigawa 2011 §6.4.1, Phase 22g). For any row functional `g`, the candidate
+producers' operated-and-pinned form `(g ∘ₗ Φ) ∘ₗ single v` (with `Φ = columnOp hvb`) equals the
+bare pinned form `g ∘ₗ single v`, since `Φ` is the identity on body `v`'s screw column
+(`columnOp_apply_single`). This lets the candidate producers' `hrnpin`/`hspan` inputs — stated on
+the operated form `(rn ·) ∘ₗ Φ ∘ₗ single v` — be discharged directly from the L1/L2 leaves, which
+supply the bare `(panelRow ·) ∘ₗ single v` form. -/
+theorem comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
+    (g : Module.Dual ℝ (α → ScrewSpace k)) :
+    (g.comp (columnOp (k := k) hvb).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)
+      = g.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) :=
+  LinearMap.ext fun x => by
+    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, columnOp_apply_single,
+      LinearMap.comp_apply]
+
 /-- **The candidate row becomes pure `v`-column in the operated frame** (KT eqs.~(6.14)–(6.16),
 the eq.~(6.28) vanishing; Phase 22e). Precomposing the transported candidate row `hingeRow v a ρ`
 of `R(G, p_1)` — supported on *both* body `v`'s and body `a`'s screw columns, with

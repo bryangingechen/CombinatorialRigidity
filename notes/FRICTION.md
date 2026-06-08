@@ -365,6 +365,20 @@ housekeeping pass once their resolution is fully indexed.
   whenever a `|>.`/`.field` must lead a wrapped continuation line.
 - **Status:** resolved (prefix-application rewrite).
 
+### [resolved] A `def`/`theorem` that "looks" top-level is actually under `namespace BodyHingeFramework` — referencing it bare from a sibling file fails "Unknown identifier"
+- **Where it bit:** wiring the L-wire columnOp bridge (Phase 22g). `columnOp` /
+  `comp_columnOp_comp_single` sit between `namespace BodyHingeFramework` (`RigidityMatrix.lean:348`)
+  and its `end`, so their full names are `BodyHingeFramework.columnOp` etc. — `columnOp (k := k) hva`
+  written in `CaseI.lean` (same `…Molecular` file namespace, but *not* inside `BodyHingeFramework`)
+  failed "Unknown identifier `columnOp`", while a theorem *mentioning* it elaborated fine (the name
+  is in the theorem's already-checked type, not looked up).
+- **Fix:** qualify (`BodyHingeFramework.columnOp`, `BodyHingeFramework.comp_columnOp_comp_single`),
+  or for a decl whose first explicit arg is the `F : BodyHingeFramework`, use dot notation
+  (`F.linearIndependent_sum_p2_candidateRow`). Same root lesson as the entry below + TACTICS-QUIRKS
+  §35: a build-error "Unknown identifier"/"Invalid field" on a sibling-file decl is almost always an
+  enclosing-namespace mismatch — check whether the def is inside a `namespace` block.
+- **Status:** resolved (qualified the references). **Lifted to:** TACTICS-QUIRKS § 35.
+
 ### [resolved] Dot notation `g.foo` doesn't find a `Graph.foo` lemma authored outside a `namespace Graph` block — it re-namespaces to `…Molecular.Graph.foo`, which projection can't reach
 - **Where it bit:** the Case-I composer `case_I_realization` (`Molecular/AlgebraicInduction/`,
   Phase 22a N6-G3-G3c-iii-b). A scratch `theorem Graph.exists_ends_of_graph` written under the file's
