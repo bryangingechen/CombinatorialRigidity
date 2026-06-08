@@ -13,7 +13,7 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 pinned down once, verified against KT §6.4.1 eqs. (6.24)–(6.44) and the green Lean. §1.34's L-wire
 framing (route the candidate family through `hasFullRankRealization_of_independent_panelRow_index`,
 `hfamᵢ = panelRow ∘ jᵢ`) is **superseded** — see the three findings below; the corrected leaf
-sequence is C1–C5 (§1.35). **C1 has landed (this commit);** C2 is next.
+sequence is C1–C5 (§1.35). **C1 + C2 have landed;** C3 is next.
 
 **Finding (1) — the placed row, final answer.** KT eq. (6.29)'s top-left full-rank block is the
 `va`-panelRows plus the single row `r̂ := ∑ λ_{(ab)j} r_j(q(ab))` at `(vb)i*`; the producers
@@ -56,11 +56,25 @@ span-containment core `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRow
 CaseI.lean (not GenericityDevice as §1.35 said — the import goes CaseI → GenericityDevice). Build +
 lint clean.
 
-**Next concrete step (smallest forward commit): C2 — the single-candidate brick** (abstract `F`,
-§38). Compose the `r̂`-family producer (`linearIndependent_sum_{p2,p3,augment}_candidateRow`, the
-`r̂(C(e)) ≠ 0` direction) + the `span-⊆-rigidityRows` fact for the assembled family + count
-`D(|V|−1)` + C1. Output: `r̂(Cᵢ) ≠ 0 → HasFullRankRealization`. Full leaf sequence C2–C5 + the
-verification: §1.35.
+**Just landed: C2 — the single-candidate brick**
+(`PanelHingeFramework.hasFullRankRealization_of_candidateSelector`, CaseI.lean). Turns one
+candidate's row-space selector `hsel : r̂(Cᵢ) ≠ 0 → LinearIndependent fam` + per-row membership
+`hmem : ∀ i, fam i ∈ span rigidityRows` + count `D(|V|−1) ≤ |κ|` into
+`r̂(Cᵢ) ≠ 0 → HasFullRankRealization k G`, by assembling the span containment from `hmem`
+(`span_le`/`range_subset_iff`) and feeding C1 at the fixed `ofNormals G ends q₀`. Generic over the
+assembled family `fam` and index `κ` — it does **not** call the producers itself; it consumes their
+selector-shaped output (exactly the `hselᵢ` shape of `case_III_eq629_conditional`), so the producer
+machinery stays in the already-green abstract lemmas and the §38 trap is confined to C1's carrier.
+Build + lint clean, warning-free, sorry-free.
+
+**Next concrete step (smallest forward commit): C3 — re-wire L0 + supply Claim-6.12 data.** Restate
+`case_III_hsplit_producer`'s per-candidate hypotheses from `hfamᵢ = panelRow ∘ jᵢ` (the superseded
+panelRow contract) to the C2 inputs (per-candidate `hselᵢ` + `hmemᵢ` + count); body =
+`case_III_eq629_conditional`'s disjunction mapped through three `hasFullRankRealization_of_candidateSelector`
+calls (no device call in the spine — C2 already concludes the realization). Supply `hr`/`hp`/`hduality`/`Cᵢ`
+from `exists_redundant_panelRow_ab_decomposition` + the N3b duality (`case_III_claim612`, green via 22f);
+the `hselᵢ` from the producers; the `hmemᵢ` from L2 span bridge / L4 membership. Full leaf
+sequence C3–C5 + verification: §1.35.
 
 After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -193,12 +207,14 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   form as a thin wrapper; C1 wraps the core into the `HasFullRankRealization` existential at the fixed
   `ofNormals` placement. Abstract `F₀`, graph-free except the final `ofNormals` carrier. Green,
   sorry-free, build + lint clean. (2026-06-07)
-- [ ] **C2 — the single-candidate brick** (abstract `F`, §38). Compose the `r̂`-family producer
-  (`linearIndependent_sum_{p2,p3,augment}_candidateRow`, the `r̂(C(e)) ≠ 0` direction) + the
-  `span-⊆-rigidityRows` fact (`hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j ∈ span rigidityRows`, via
-  `span_annihRow_eq_dualAnnihilator` for the `r_j ∈ (span C(e_b))^⊥` block rows) + count `D(|V|−1)` +
-  C1. Output: `r̂(Cᵢ) ≠ 0 → HasFullRankRealization`. Consumes L1 `so`/`sn`, L2 span bridge, L4
-  membership verbatim. §1.35.
+- [x] **C2 — the single-candidate brick**
+  (`PanelHingeFramework.hasFullRankRealization_of_candidateSelector`, CaseI.lean). Turns a
+  per-candidate selector `hsel : r̂(Cᵢ) ≠ 0 → LinearIndependent fam` + per-row membership
+  `hmem : ∀ i, fam i ∈ span rigidityRows` + count `D(|V|−1) ≤ |κ|` into
+  `r̂(Cᵢ) ≠ 0 → HasFullRankRealization k G` (assemble span containment from `hmem`, feed C1 at the
+  fixed `ofNormals G ends q₀`). Generic over `fam`/`κ`; consumes the producers' selector-shaped
+  output rather than calling them, so the §38 trap is confined to C1's carrier. Build + lint clean,
+  sorry-free. (2026-06-07)
 - [ ] **C3 — re-wire L0 + supply Claim-6.12 data.** Restate `case_III_hsplit_producer`'s per-candidate
   hypotheses from `hfamᵢ = panelRow ∘ jᵢ` to the C2 conclusion (`r̂(Cᵢ) ≠ 0 → HasFullRankRealization`),
   body = `case_III_eq629_conditional`'s disjunction mapped through the three C2 bricks (no device call
@@ -223,19 +239,22 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   on a not-yet-consumed skeleton, not a re-proof.
 ## Hand-off / next phase
 
-**Smallest next commit: C2 — the single-candidate brick** (abstract `F`, §38). Compose, over abstract
-`F`: the `r̂`-family producer (`linearIndependent_sum_{p2,p3,augment}_candidateRow`, the
-`hr : r̂(C(e)) ≠ 0` direction) + the `span-⊆-rigidityRows` fact for the assembled family
-(`rn`/`ro` panelRows are rigidity rows; `hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j ∈ span rigidityRows`
-via `span_annihRow_eq_dualAnnihilator` for the `r_j ∈ (span C(e_b))^⊥` block rows) + count `D(|V|−1)`
-+ **C1** (now green, `hasFullRankRealization_of_independent_rigidityRow` in CaseI.lean — feed the
-assembled `Sum`-indexed family directly, no `Set.range j` repackaging needed since C1 takes an
-abstract `ι`). Output: each candidate `r̂(Cᵢ) ≠ 0 → HasFullRankRealization`. Consumes L1 `so`/`sn`,
-L2 span bridge, L4 membership verbatim. Then C3 (re-wire L0 + Claim-6.12 data), C4 (`theorem_55`
-instance node), C5 (the `lem:case-II-realization` / `lem:case-III` flips), the Thm 5.5→5.6 push. Full
-verified leaf sequence + the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35 (read
-alongside this note — §1.34's panelRow-feed framing is superseded; its L0–L5 row-block bricks survive
-as the infra C2 consumes).
+**Smallest next commit: C3 — re-wire L0 + supply Claim-6.12 data.** Restate
+`case_III_hsplit_producer`'s per-candidate hypotheses from the superseded panelRow contract
+(`hfamᵢ = panelRow ∘ jᵢ`/`hjᵢ`/`hcardᵢ`) to the C2 inputs (per-candidate `hselᵢ`/`hmemᵢ`/count); body
+= `case_III_eq629_conditional`'s disjunction mapped through three
+`PanelHingeFramework.hasFullRankRealization_of_candidateSelector` (C2, now green) calls — no device
+call in the spine, C2 already concludes the realization. Supply `hr`/`hp`/`hduality`/`Cᵢ` from
+`exists_redundant_panelRow_ab_decomposition` + the N3b duality (`case_III_claim612`, green via 22f);
+the `hselᵢ` from the producers (`linearIndependent_sum_{p2,p3,augment}_candidateRow`); the `hmemᵢ`
+from the L2 span bridge (`span_panelRow_comp_single_of_edge`) / L4 membership
+(`panelRow_mem_rigidityRows_of_link`) on the L1 `so`/`sn` blocks, plus the `r̂`-row membership
+(`hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j ∈ span rigidityRows` via `span_annihRow_eq_dualAnnihilator`
+for the `r_j ∈ (span C(e_b))^⊥` block rows). Then C4 (`theorem_55` instance node), C5 (the
+`lem:case-II-realization` / `lem:case-III` flips), the Thm 5.5→5.6 push. Full verified leaf sequence
++ the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35 (read alongside this note —
+§1.34's panelRow-feed framing is superseded; its L0–L5 row-block bricks survive as the infra C3
+consumes).
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -248,6 +267,15 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **C2 stated generic over the assembled family, consuming the producers' selector output rather
+  than calling them (2026-06-07).** `hasFullRankRealization_of_candidateSelector` takes the
+  selector-shaped `hsel : r̂(Cᵢ) ≠ 0 → LinearIndependent fam` (the exact `hselᵢ` shape of
+  `case_III_eq629_conditional`) + pointwise membership `hmem` + count, and feeds C1 — a 4-line
+  composition (`span_le`/`range_subset_iff` to lift `hmem` to the span containment). Keeping it
+  generic over `fam`/`κ` (not calling `linearIndependent_sum_{p2,p3,augment}_candidateRow` inside)
+  leaves the producer machinery in the green abstract lemmas and confines the §38 carrier trap to C1.
+  C1's implicit `q₀` needed `(q₀ := q₀)` passed explicitly (pinned only by the later `hsub` arg);
+  routine elaboration-order, no FRICTION.
 - **C1 landed by factoring the existing rigidity-on-`V(G)` closure, not duplicating it (2026-06-07).**
   The rigidity-on-`V(G)` step C1 needs already existed as
   `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`, which used its pointwise `hmem`

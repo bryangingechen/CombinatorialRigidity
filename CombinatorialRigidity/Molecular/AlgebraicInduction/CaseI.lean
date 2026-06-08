@@ -2181,6 +2181,42 @@ theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
   rw [hG] at hrig
   exact hrig
 
+/-- **C2 — the single-candidate brick** (`lem:case-III` / `lem:case-II-realization`, the
+per-candidate selector → realization step of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011
+§6.4.1 eqs. (6.27)–(6.44), Phase 22g). Turns one candidate's *row-space selector* — the conditional
+`r̂(C(e)) ≠ 0 → LinearIndependent fam` that the candidate-completion producers
+(`linearIndependent_sum_{p2,p3,augment}_candidateRow`) supply — plus per-row membership in the fixed
+realization's rigidity rows and the relative-full count `D(|V(G)|−1) ≤ |κ|` into the realization
+conclusion `r̂(C(e)) ≠ 0 → HasFullRankRealization k G`, by feeding C1
+(`hasFullRankRealization_of_independent_rigidityRow`) at the fixed placement `ofNormals G ends q₀`.
+
+This is the corrected device feed (`notes/Phase22-realization-design.md` §1.35): the candidate's
+`+1` row `hingeRow v b r̂` is provably **not** a single `panelRow` (it has `r̂(C(e_b)) ≠ 0`, while
+every panelRow annihilates its edge's extensor), so the panelRow-shaped genericity feed
+(`hasFullRankRealization_of_independent_panelRow_index`) does not apply; but the row IS a
+combination of `e_b`-panelRows, hence in `span rigidityRows`, exactly the `hmem`/C1 shape. The span
+containment C1 needs is assembled from the pointwise membership `hmem` (`Submodule.span_le` over
+`Set.range`), so the consumer (C3) supplies only the per-summand `rigidityRows` membership — the
+OLD/NEW panel-row blocks via `panelRow_mem_rigidityRows`/L4, the `r̂`-row via its `e_b`-panelRow
+decomposition. The selector `hsel` is consumed unchanged from `case_III_eq629_conditional`'s
+disjuncts; the brick is graph-free except the concrete `ofNormals` carrier C1 fixes (TACTICS-QUIRKS
+§38). -/
+theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ} {κ : Type*} [Finite κ]
+    {fam : κ → Module.Dual ℝ (α → ScrewSpace k)}
+    {r : Module.Dual ℝ (ScrewSpace k)} {C : ScrewSpace k}
+    (hsel : r C ≠ 0 → LinearIndependent ℝ fam)
+    (hmem : ∀ i, fam i ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
+    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card κ) :
+    r C ≠ 0 → PanelHingeFramework.HasFullRankRealization k G := by
+  intro hr
+  refine PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow G ends hne
+    (q₀ := q₀) (hsel hr) ?_ hcard
+  rw [Submodule.span_le, Set.range_subset_iff]
+  exact fun i => hmem i
+
 /-- **Case I `hglue` from a single panel realization** (`lem:case-I`, the route-(a) capstone;
 Katoh–Tanigawa 2011 §6.1 Claim 6.4). The genuinely-consumer-facing form of the genericity device
 for Case I: given a single body-hinge realization `F₀`, a finite family `a` of functionals
