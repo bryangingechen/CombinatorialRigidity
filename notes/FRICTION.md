@@ -88,6 +88,20 @@ housekeeping pass once their resolution is fully indexed.
   constraint was gratuitous; one-line signature change, no proof edit. Project-internal (about the
   capstone), below the upstream-mirror bar.
 
+### [resolved] An inline `by`-tactic-block passed as the `hcoord` higher-order argument of `exists_good_realization` left the goal an unresolved metavariable (`?m x✝`) — hoist it to a typed `have`
+- **Where it bit:** Phase 22g C1, weakening `exists_good_realization_const`'s `hspanrows` from `=`
+  to `≤` (`CaseI.lean`) — the `hcoord` leg became `dualCoannihilator_anti hspanrows` after a `rw`,
+  so it could no longer be the original `le_of_eq (by …)` *term*.
+- **Friction:** writing `hcoord` inline as `(fun _ => by rw […]; exact …)` failed — the engine's
+  `hcoord` parameter is `∀ p : σ → ℝ, …`, and with the constant family `F := fun _ => F₀`, the
+  `by`-block's expected type was an unresolved metavariable `?m.117 x✝` (the implicit `F`/`g`/`p`
+  not yet unified at elaboration of the inline argument), so `rw [F₀.infinitesimalMotions_…]` had no
+  pattern.
+- **Resolution:** hoisted `hcoord` into a named `have hcoord : ∀ _ : Unit → ℝ, … := fun _ => by …`
+  (binder type the `σ → ℝ = Unit → ℝ` the engine wants, **not** `Unit`), then passed it positionally.
+  Standard "hoist a higher-order proof-arg to a typed `have`" pattern; one build cycle. Below the bar
+  for a TACTICS lift (the idiom is already pervasive in the codebase).
+
 ### [resolved] Swapping a wedge factor at the cost of a sign — `extensor ![a, b] = extensor ![b, -a]` — has no `extensor`/`ιMulti` lemma; go through `ExteriorAlgebra.ι_add_mul_swap`
 - **Where it bit:** Phase 22f `inf_range_wedgeFixedLeft` (`Meet.lean`), the `⊇` direction —
   showing `a ∧ b = wedgeFixedLeft a b` also lies in `range (wedgeFixedLeft b)` by exhibiting it as

@@ -1693,37 +1693,42 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport_htransport
       rw [panelRow_collapseTo_comp_extProj_dualMap Gc H hr nrm' ends (i : β × _ × _), hF', hnrmeq]
     rw [hrow]; exact hindepM
 
-/-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
-(`lem:case-I-realization`, the device-row-addition closure; Katoh–Tanigawa 2011 §6.2 eq. (6.3),
-Phase 22a). The block-triangular reframing's device-side closure (design doc §1.14): rather than
-gluing two legs at a *common seed* (the motion-space splice `isInfinitesimallyRigidOn_of_splice`,
-which demands one placement rigid on both legs), exhibit enough **independent rigidity rows** of the
-single common framework `F` and read rigidity off the row count. From any linearly independent
-family `a : ι → Module.Dual ℝ (α → ScrewSpace k)` of `F`'s rigidity rows (each
-`a i ∈ rigidityRows F`, `hmem`) with `Nat.card ι ≥ D(|V(G)|−1)` (`hcard`), the rank-nullity identity
+/-- **An independent family whose span lies in the rigidity rows, of size `≥ D(|V(G)|−1)`, forces
+rigidity on `V(G)`** (`lem:case-I-realization` / `lem:case-III`, the device-row-addition closure,
+span-containment core; Katoh–Tanigawa 2011 §6.2 eq. (6.3), Phases 22a/22g). The block-triangular
+reframing's device-side closure (design doc §1.14): rather than gluing two legs at a *common seed*
+(the motion-space splice `isInfinitesimallyRigidOn_of_splice`, which demands one placement rigid on
+both legs), exhibit enough **independent rows spanning into the rigidity rows** of the single common
+framework `F` and read rigidity off the row count. From any linearly independent family
+`a : ι → Module.Dual ℝ (α → ScrewSpace k)` with `span (range a) ≤ span F.rigidityRows` (`hsub`) and
+`Nat.card ι ≥ D(|V(G)|−1)` (`hcard`), the rank-nullity identity
 `dim Z(F) = D|V| − finrank (span rigidityRows) ≤ D|V| − D(|V|−1) = D` upgrades, via the
 relative-count adapter N3 (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`), to infinitesimal
 rigidity on `V(G)`.
 
+The span-containment hypothesis `hsub` (rather than pointwise membership `a i ∈ rigidityRows`) is
+what the `d = 3` candidate-completion path needs: its `+1` candidate row `hingeRow v b r̂` is a
+*combination* `∑ λ_j hingeRow v b r_j` of `e_b`-panel rows, a member of `span rigidityRows` but not
+of the bare set `rigidityRows` (KT §6.4.1 eqs. (6.27)/(6.29); design doc §1.35). The pointwise
+wrapper `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` recovers the `hmem` form
+for the block-triangular Case-I `Sum.elim` of `H`-block and surviving-edge rows.
+
 This is the same rank-nullity argument the rank-polynomial consumer
 `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking` runs, but over an *arbitrary*
-finite index family rather than a `Set`-subfamily, so the **block-triangular union** of the
-`H`-block and surviving-edge rows (`Sum.elim`, Piece B) feeds it directly. Crucially it concludes
-rigidity of `F` *itself* (at its own seed), so when `F = ofNormals G ends q₀` with `q₀` general
-position the conclusion lifts to the *generic* motive — no device round-trip, general position
-survives. -/
-theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows
+finite index family rather than a `Set`-subfamily. Crucially it concludes rigidity of `F` *itself*
+(at its own seed), so when `F = ofNormals G ends q₀` with `q₀` general position the conclusion lifts
+to the *generic* motive — no device round-trip, general position survives. -/
+theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows
     [Finite α] (F : BodyHingeFramework k α β) {ι : Type*} [Finite ι]
     {a : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ a)
-    (hmem : ∀ i, a i ∈ F.rigidityRows) (hne : F.graph.vertexSet.Nonempty)
+    (hsub : Submodule.span ℝ (Set.range a) ≤ Submodule.span ℝ F.rigidityRows)
+    (hne : F.graph.vertexSet.Nonempty)
     (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
     F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   haveI : Fintype ι := Fintype.ofFinite ι
   -- The independent family spans a subspace of the rigidity-row span of dimension `Nat.card ι`.
-  have hsub : Submodule.span ℝ (Set.range a) ≤ Submodule.span ℝ F.rigidityRows :=
-    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ Submodule.subset_span (hmem i))
   have hrows : Nat.card ι ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
     rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hLI]
     exact Submodule.finrank_mono hsub
@@ -1742,6 +1747,23 @@ theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rig
   refine F.isInfinitesimallyRigidOn_vertexSet_of_finrank_le hne ?_
   rw [Nat.mul_succ]
   omega
+
+/-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
+(`lem:case-I-realization`, the device-row-addition closure, pointwise-membership form;
+Katoh–Tanigawa 2011 §6.2 eq. (6.3), Phase 22a). The pointwise wrapper of
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`: when every row of the independent
+family is *literally* a rigidity row (`hmem : ∀ i, a i ∈ F.rigidityRows`), the span containment is
+`Submodule.span_le.2`. Block-triangular Case-I assembly (`Sum.elim` of the `H`-block and
+surviving-edge rows) feeds this; the candidate-completion path (whose `+1` row is a *combination* of
+panel rows, not a single rigidity row) feeds the span-containment core instead. -/
+theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows
+    [Finite α] (F : BodyHingeFramework k α β) {ι : Type*} [Finite ι]
+    {a : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ a)
+    (hmem : ∀ i, a i ∈ F.rigidityRows) (hne : F.graph.vertexSet.Nonempty)
+    (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
+    F.IsInfinitesimallyRigidOn F.graph.vertexSet :=
+  F.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hLI
+    (Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ Submodule.subset_span (hmem i))) hne hcard
 
 /-- **Case I shared-seed coupling, *block-triangular* body-set form** (`lem:case-I-realization`, the
 block-triangular reframing N6-G3-G3c-iii-b; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.5), (6.6),
@@ -2083,23 +2105,25 @@ resolution the hand-off flagged: the witness realization Case I needs is *constr
 the exterior-algebra existence lemma `exists_independent_panelSupportExtensor` (a basis choice on
 `⋀²`, Phase 21/17), not found by perturbing along a path through panel-coordinate space. So the
 multivariate family the device consumes can be the **constant** family `F p = F₀`, with `g p = a`
-any family **spanning** the rigidity rows of the single good realization `F₀` (`hspanrows`); the
-bilinearity obstruction (the panel rows are quadratic along a real line through normal-space) never
-bites, because no path is traversed — the device reads off the corank `#s` at the one hand-built
-realization, which is all Case I's block-triangular gluing needs.
+any family whose span lies **inside** the rigidity rows of the single good realization `F₀`
+(`hspanrows`, a `≤`); the bilinearity obstruction (the panel rows are quadratic along a real line
+through normal-space) never bites, because no path is traversed — the device reads off the corank
+`#s` at the one hand-built realization, which is all Case I's block-triangular gluing needs.
 
 This packages the constant family into the multivariate `exists_good_realization`: the
 panel-coordinate variables `σ := Unit` are vacuous (the framework does not vary), the polynomial
 coordinates are the constants `c i j = C (φ (a i) j)` (so `hg` is `eval_C`), and the
-coordinatization `hcoord` is the per-framework `infinitesimalMotions_eq_dualCoannihilator` rewritten
-under `hspanrows`. The basis identification `φ` is taken from any finite basis of the
+coordinatization `hcoord` is the per-framework `infinitesimalMotions_eq_dualCoannihilator` composed
+with the coannihilator anti-monotonicity `dualCoannihilator_anti hspanrows` — which is why
+`hspanrows` only needs the `≤` containment, not equality. The basis identification `φ` is taken from
+any finite basis of the
 finite-dimensional dual `α → ScrewSpace k` (`Module.finBasis … |>.equivFun`). The output is the
 unquantified codimension bound `#s + dim Z(F₀) ≤ D|V|` at `F₀` itself — the form
 `hglue_of_realization` consumes. The independent subfamily `s` (the engine's `hindep`) is supplied
 by `exists_independent_panelSupportExtensor` through the hinge-row block. -/
 theorem exists_good_realization_const [Fintype α] {ι : Type*} [Finite ι]
     (F₀ : BodyHingeFramework k α β) (a : ι → Module.Dual ℝ (α → ScrewSpace k))
-    (hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows)
+    (hspanrows : Submodule.span ℝ (Set.range a) ≤ Submodule.span ℝ F₀.rigidityRows)
     {s : Set ι} (hindep : LinearIndependent ℝ (fun i : s => a i)) :
     Nat.card s + Module.finrank ℝ F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α := by
   classical
@@ -2108,12 +2132,54 @@ theorem exists_good_realization_const [Fintype α] {ι : Type*} [Finite ι]
   let φ : Module.Dual ℝ (α → ScrewSpace k) ≃ₗ[ℝ] (Fin n → ℝ) :=
     (Module.finBasis ℝ (Module.Dual ℝ (α → ScrewSpace k))).equivFun
   -- The constant family: `F p = F₀`, rows `g p = a`, polynomial coords the constants `φ (a i) j`.
+  -- The `hcoord` leg needs only `span (range a) ⊆ span rigidityRows`: anti-monotonicity of the
+  -- coannihilator (`dualCoannihilator_anti`) reverses it onto `infinitesimalMotions` rewritten as
+  -- `(span rigidityRows).dualCoannihilator`, so the spanning hypothesis can be a `≤`.
+  have hcoord : ∀ _ : Unit → ℝ, F₀.infinitesimalMotions
+      ≤ (Submodule.span ℝ (Set.range a)).dualCoannihilator := fun _ => by
+    rw [F₀.infinitesimalMotions_eq_dualCoannihilator]
+    exact Submodule.dualCoannihilator_anti hspanrows
   obtain ⟨p, hp⟩ := exists_good_realization (σ := Unit) (s := s) (p₀ := fun _ => 0)
     (fun _ => F₀) (fun _ => a) (fun i j => MvPolynomial.C (φ (a i) j)) φ
-    (fun _ i j => by rw [MvPolynomial.eval_C])
-    (fun _ => le_of_eq (by rw [F₀.infinitesimalMotions_eq_dualCoannihilator, hspanrows]))
-    hindep
+    (fun _ i j => by rw [MvPolynomial.eval_C]) hcoord hindep
   exact hp
+
+/-- **Realization producer from a fixed-framework independent rigidity-row-span family** (C1;
+`lem:case-III` / `lem:case-II-realization`, the genericity-free device-feed variant; Katoh–Tanigawa
+2011 §6.4.1 eqs. (6.24)–(6.44), Phase 22g). The fixed-framework analog of
+`hasFullRankRealization_of_independent_panelRow` for a *non-panelRow* family: given the concrete
+free-normal framework `F₀ = ofNormals G ends q₀` over a nonempty body set `V(G)` (`hne`), an
+independent family `f : ι → Module.Dual` whose span lies inside
+the rigidity rows of `F₀` (`hsub`, weaker than panelRow membership) and that meets the relative
+target count `D(|V(G)|−1) ≤ |ι|` (`hcard`), then `G` has a full-rank panel realization
+`HasFullRankRealization k G` — witnessed by `F₀` **itself**, no genericity round-trip.
+
+The realization motive `HasFullRankRealization k G := ∃ Q, Q.graph = G ∧ …IsInfinitesimallyRigidOn
+V(G)` asks for *some* rigid framework, not a generic one, so the candidate completion uses the fixed
+placement `F₀` directly. The proof reads rigidity off the span-containment core
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` (the rank-nullity argument: the
+independent span-into-rigidity-rows family of count `≥ D(|V|−1)` caps the null space at the
+relative full dimension, N3), so unlike the panelRow feed it needs **no** `annihRowPoly`
+coordinatization of the rows — the candidate `d = 3` `+1` row `hingeRow v b r̂` is a combination of
+`e_b`-panel rows, in `span rigidityRows` but not a single panelRow (design doc §1.35), exactly the
+shape `hsub` admits. This is the keystone the corrected `d = 3` candidate-completion route turns on
+(C2/C3). -/
+theorem PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ} {ι : Type*} [Finite ι]
+    {f : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ f)
+    (hsub : Submodule.span ℝ (Set.range f)
+      ≤ Submodule.span ℝ (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
+    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card ι) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  have hG : F.graph.vertexSet = V(G) := rfl
+  refine ⟨PanelHingeFramework.ofNormals G ends q₀,
+    PanelHingeFramework.ofNormals_graph G ends q₀, ?_⟩
+  have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hLI hsub
+    (by rw [hG]; exact hne) (by rw [hG]; exact hcard)
+  rw [hG] at hrig
+  exact hrig
 
 /-- **Case I `hglue` from a single panel realization** (`lem:case-I`, the route-(a) capstone;
 Katoh–Tanigawa 2011 §6.1 Claim 6.4). The genuinely-consumer-facing form of the genericity device
@@ -2146,7 +2212,7 @@ theorem hglue_of_realization [Fintype α] [Nonempty α] {ι : Type*} [Finite ι]
         - Module.finrank ℝ (F₀.pinnedMotionsOn sblk)) :
     (Module.finrank ℝ F₀.infinitesimalMotions : ℤ) ≤
       screwDim k + Module.finrank ℝ (F₀.pinnedMotionsOn sblk) := by
-  have ht := exists_good_realization_const F₀ a hspanrows hindep
+  have ht := exists_good_realization_const F₀ a hspanrows.le hindep
   have hcard : 1 ≤ Fintype.card α := Fintype.card_pos
   have hmatch' := hmatch ht
   have ht' : (Nat.card s : ℤ) + Module.finrank ℝ F₀.infinitesimalMotions

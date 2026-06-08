@@ -7,13 +7,13 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: the corrected L-wire decomposition** (DOCS-ONLY recon-of-the-core,
-`notes/Phase22-realization-design.md` §1.35). The prior commits' (g1)/(g2) device-feed fork and the
-embedded "re-examine" Hand-off are **resolved**: the candidate-row placement geometry and the device
-feed are pinned down once, verified against KT §6.4.1 eqs. (6.24)–(6.44) and the green Lean. §1.34's
-L-wire framing (route the candidate family through `hasFullRankRealization_of_independent_panelRow_index`,
+**The live route — the corrected L-wire decomposition** (recon-of-the-core,
+`notes/Phase22-realization-design.md` §1.35). The (g1)/(g2) device-feed fork and the embedded
+"re-examine" Hand-off are **resolved**: the candidate-row placement geometry and the device feed are
+pinned down once, verified against KT §6.4.1 eqs. (6.24)–(6.44) and the green Lean. §1.34's L-wire
+framing (route the candidate family through `hasFullRankRealization_of_independent_panelRow_index`,
 `hfamᵢ = panelRow ∘ jᵢ`) is **superseded** — see the three findings below; the corrected leaf
-sequence is C1–C5 (§1.35).
+sequence is C1–C5 (§1.35). **C1 has landed (this commit);** C2 is next.
 
 **Finding (1) — the placed row, final answer.** KT eq. (6.29)'s top-left full-rank block is the
 `va`-panelRows plus the single row `r̂ := ∑ λ_{(ab)j} r_j(q(ab))` at `(vb)i*`; the producers
@@ -46,13 +46,21 @@ independent subfamily of count `D(|V|−1)`, then `isInfinitesimallyRigidOn_vert
 `F : BodyHingeFramework`; `F` is instantiated to the concrete `ofNormals … q₀ᵢ` carrier **only** at
 the final device-feed call (per TACTICS-QUIRKS §38).
 
-**Next concrete step (smallest forward commit): C1 — the fixed-framework device-feed variant.** Build
-`hasFullRankRealization_of_independent_rigidityRow` (GenericityDevice.lean): fixed
-`F₀ = ofNormals G ends q₀`, an independent `f : ι → Module.Dual` with `span (range f) ≤ span
-F₀.rigidityRows` and `D(|V(G)|−1) ≤ |ι|` ⟹ `HasFullRankRealization k G`. A thin composition of
-`exists_good_realization_const` (weaken its `hspanrows` `=` to `≤` — the `hcoord` leg uses only
-`dualCoannihilator_anti`) + `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`. Abstract `F₀`. It is
-the keystone the corrected route turns on. Full leaf sequence C1–C5 + the verification: §1.35.
+**Just landed: C1 — the fixed-framework device-feed variant**
+(`PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow`, CaseI.lean). The keystone
+the corrected route turns on: fixed `F₀ = ofNormals G ends q₀`, an independent `f : ι → Module.Dual`
+with `span (range f) ≤ span F₀.rigidityRows` and `D(|V(G)|−1) ≤ |ι|` ⟹ `HasFullRankRealization k G`.
+Two pieces landed: (i) `exists_good_realization_const`'s `hspanrows` weakened `=`→`≤`; (ii) the
+rigidity-on-`V(G)` step refactored out of the existing `…_independent_rigidityRows` into a
+span-containment core `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`. C1 sits in
+CaseI.lean (not GenericityDevice as §1.35 said — the import goes CaseI → GenericityDevice). Build +
+lint clean.
+
+**Next concrete step (smallest forward commit): C2 — the single-candidate brick** (abstract `F`,
+§38). Compose the `r̂`-family producer (`linearIndependent_sum_{p2,p3,augment}_candidateRow`, the
+`r̂(C(e)) ≠ 0` direction) + the `span-⊆-rigidityRows` fact for the assembled family + count
+`D(|V|−1)` + C1. Output: `r̂(Cᵢ) ≠ 0 → HasFullRankRealization`. Full leaf sequence C2–C5 + the
+verification: §1.35.
 
 After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -171,12 +179,20 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   (RigidityMatrix.lean). The rank-invariance-under-row-operations fact: swap the candidate summand
   `w → w'` when `w' − w ∈ span (range (Sum.elim rn ro))`, independence preserved. Reassoc +
   `linearIndependent_sumElim_unit_iff`. Graph-/carrier-free (no §38). Green, sorry-free. (2026-06-07)
-- [ ] **C1 — the fixed-framework device-feed variant (next smallest commit).**
-  `hasFullRankRealization_of_independent_rigidityRow` (GenericityDevice.lean): fixed
-  `F₀ = ofNormals G ends q₀`, an independent `f : ι → Module.Dual` with `span (range f) ≤ span
-  F₀.rigidityRows` + `D(|V(G)|−1) ≤ |ι|` ⟹ `HasFullRankRealization k G`. Thin composition of
-  `exists_good_realization_const` (weaken `hspanrows` `=`→`≤`; `hcoord` uses only
-  `dualCoannihilator_anti`) + `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`. Abstract `F₀`. §1.35.
+- [x] **C1 — the fixed-framework device-feed variant**
+  (`PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow`, **CaseI.lean** — *not*
+  GenericityDevice: `exists_good_realization_const` lives in CaseI and the import goes CaseI →
+  GenericityDevice, so C1 cannot sit upstream). Fixed `F₀ = ofNormals G ends q₀`, an independent
+  `f : ι → Module.Dual` with `span (range f) ≤ span F₀.rigidityRows` + `D(|V(G)|−1) ≤ |ι|` ⟹
+  `HasFullRankRealization k G`. Weakened `exists_good_realization_const`'s `hspanrows` `=`→`≤`
+  (its `hcoord` leg is now `dualCoannihilator_anti hspanrows`; the one caller `hglue_of_realization`
+  takes `.le`). The rigidity-on-`V(G)` step turned out to already exist as
+  `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` — refactored its body into a
+  span-containment core `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`
+  (takes `hsub : span (range a) ≤ span rigidityRows` instead of pointwise `hmem`), kept the pointwise
+  form as a thin wrapper; C1 wraps the core into the `HasFullRankRealization` existential at the fixed
+  `ofNormals` placement. Abstract `F₀`, graph-free except the final `ofNormals` carrier. Green,
+  sorry-free, build + lint clean. (2026-06-07)
 - [ ] **C2 — the single-candidate brick** (abstract `F`, §38). Compose the `r̂`-family producer
   (`linearIndependent_sum_{p2,p3,augment}_candidateRow`, the `r̂(C(e)) ≠ 0` direction) + the
   `span-⊆-rigidityRows` fact (`hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j ∈ span rigidityRows`, via
@@ -199,22 +215,23 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   route (C1), not the panelRow-shaped `_index` feed. The `d=3` contrapositive (Claim 6.12) is green;
   the remaining work is the C1–C5 composition — substantive but no open math question.
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38; carried from 22a–e). The
-  `r̂`-producers + `exists_good_realization_const` are graph-free over abstract `F`; instantiate `F`
-  to the concrete `ofNormals … q₀ᵢ` carrier **only** at the final C1 device-feed call.
+  `r̂`-producers are graph-free over abstract `F`; C1 (now landed) instantiates `F` to the concrete
+  `ofNormals … q₀ᵢ` carrier only at the final device-feed call, and C2 states everything over abstract
+  `F`, instantiating only when it composes with C1.
 - **The L0 `hfamᵢ = panelRow ∘ jᵢ` contract is wrong** (§1.35 finding 2) — the candidate `+1` row is
   not a panelRow. C3 restates it to the C2 conclusion; L0 is green-modulo, so this is a signature edit
   on a not-yet-consumed skeleton, not a re-proof.
 ## Hand-off / next phase
 
-**Smallest next commit: C1 — the fixed-framework device-feed variant**
-`hasFullRankRealization_of_independent_rigidityRow` (GenericityDevice.lean). Fixed `F₀ = ofNormals G
-ends q₀`, an independent `f : ι → Module.Dual` with `span (range f) ≤ span F₀.rigidityRows` and
-`D(|V(G)|−1) ≤ |ι|` ⟹ `HasFullRankRealization k G`. A thin composition of two green lemmas:
-`exists_good_realization_const` (CaseI.lean:2100 — the genericity-free *constant*-family closure, no
-panelRow shape; weaken its `hspanrows` `=` to `≤`, since `hcoord` uses only `dualCoannihilator_anti`)
-giving `#s + dim Z(F₀) ≤ D|α|`, then `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`
-(Pinning.lean:1344) turning the relative full count `D(|V|−1)` into `IsInfinitesimallyRigidOn V(G)`.
-Abstract `F₀`. Then C2 (single-candidate brick), C3 (re-wire L0 + Claim-6.12 data), C4 (`theorem_55`
+**Smallest next commit: C2 — the single-candidate brick** (abstract `F`, §38). Compose, over abstract
+`F`: the `r̂`-family producer (`linearIndependent_sum_{p2,p3,augment}_candidateRow`, the
+`hr : r̂(C(e)) ≠ 0` direction) + the `span-⊆-rigidityRows` fact for the assembled family
+(`rn`/`ro` panelRows are rigidity rows; `hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j ∈ span rigidityRows`
+via `span_annihRow_eq_dualAnnihilator` for the `r_j ∈ (span C(e_b))^⊥` block rows) + count `D(|V|−1)`
++ **C1** (now green, `hasFullRankRealization_of_independent_rigidityRow` in CaseI.lean — feed the
+assembled `Sum`-indexed family directly, no `Set.range j` repackaging needed since C1 takes an
+abstract `ι`). Output: each candidate `r̂(Cᵢ) ≠ 0 → HasFullRankRealization`. Consumes L1 `so`/`sn`,
+L2 span bridge, L4 membership verbatim. Then C3 (re-wire L0 + Claim-6.12 data), C4 (`theorem_55`
 instance node), C5 (the `lem:case-II-realization` / `lem:case-III` flips), the Thm 5.5→5.6 push. Full
 verified leaf sequence + the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35 (read
 alongside this note — §1.34's panelRow-feed framing is superseded; its L0–L5 row-block bricks survive
@@ -231,6 +248,19 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **C1 landed by factoring the existing rigidity-on-`V(G)` closure, not duplicating it (2026-06-07).**
+  The rigidity-on-`V(G)` step C1 needs already existed as
+  `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`, which used its pointwise `hmem`
+  hypothesis only to build the span containment `hsub`. Factored the body into a span-containment core
+  `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` (takes `hsub`
+  directly), kept the pointwise form as a one-line wrapper, and built C1
+  (`hasFullRankRealization_of_independent_rigidityRow`) by wrapping the core into the
+  `HasFullRankRealization` existential at the fixed `ofNormals` placement. Also weakened
+  `exists_good_realization_const`'s `hspanrows` `=`→`≤` (its `hcoord` leg is `dualCoannihilator_anti`,
+  anti-monotone — only the one caller `hglue_of_realization` needed `.le`). **C1 lives in CaseI.lean,
+  not GenericityDevice as §1.35 said** — `exists_good_realization_const` is in CaseI and the import
+  runs CaseI → GenericityDevice, so C1 can't sit upstream; the rank-nullity closure it actually turns
+  on is the CaseI core anyway, so this is the natural home.
 - **L-wire corrected: device feed is the fixed-framework `_const` route, not the panelRow-shaped feed
   (2026-06-07; the recon-of-the-core, `notes/Phase22-realization-design.md` §1.35).** Verified against
   KT §6.4.1 eqs. (6.24)–(6.44): the placed `+1` row is `hingeRow v b r̂` (`r̂(C(e_b)) ≠ 0`) — provably
