@@ -7,16 +7,31 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Next concrete step (smallest forward commit): build the `d=3` `hsplit` producer.** Wire the
-green bricks `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`, output over `ofNormals G ends q₀`)
-⊕ the candidate row ⊕ `case_III_claim612` (selects the candidate making the top-left block full
-rank) into the graph-free `linearIndependent_sum_augment_candidateRow` **at real graph data** —
-extract `rn`/`ro`/`ρ`/`hnewpinaug` from the actual `G.splitOff …` framework, instantiate the
-graph-free producer, select the winning candidate — yielding
-`HasFullRankRealization k (G.splitOff …) ⟹ … k G`, which discharges `theorem_55`'s `hsplit`
-premise at `k=2`. This is the first consumer wiring real graph data, so **the `ofNormals`/`withGraph`
-defeq-timeout trap bites** (FRICTION; TACTICS-QUIRKS §38) — budget for it; it is the main
-engineering risk, not a math risk. See `notes/Phase22-realization-design.md` §1.33 (A) for the spine.
+**Just landed: the graph-free candidate-selection capstone `case_III_eq629_conditional`**
+(`RigidityMatrix.lean`), discharging the red `lem:case-III-eq629-conditional` (now GREEN). It is the
+abstract selection step the `d=3` `hsplit` producer instantiates: given the three candidate full
+families `fam₁/fam₂/fam₃` as implications `r̂(Cᵢ)≠0 ⟹ LinearIndependent famᵢ` (the per-candidate
+producers `linearIndependent_sum_p2/p3_candidateRow` + the candidate-completion assembly route each
+through the row-space criterion, `M₃` onto the same `r̂` by eq. (6.44)) plus the four-point
+affine-indep + N3b duality, `case_III_claim612`'s disjunction `r̂(C₁)≠0 ∨ r̂(C₂)≠0 ∨ r̂(C₃)≠0` picks
+the winning candidate. Deliberately stated graph-free (no `ofNormals`) to stay clear of the §38
+defeq trap; 1-line term proof (`case_III_claim612 …).imp hsel₁ (Or.imp hsel₂ hsel₃)`. The
+candidate-completion (`linearIndependent_sum_augment_candidateRow`) was likewise built graph-free in
+22e, so all the abstract row machinery the producer composes is now green and selector-complete.
+
+**Next concrete step (smallest forward commit): build the `d=3` `hsplit` producer at real graph
+data.** Wire `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`, output over `ofNormals G ends q₀`)
+⊕ the candidate row ⊕ the now-green `case_III_eq629_conditional` selection into
+`linearIndependent_sum_augment_candidateRow` **at the actual `G.splitOff …` framework** — extract
+`rn`/`ro`/`ρ` + supply the three per-candidate `hselᵢ` from the real candidate families, select the
+winning candidate, feed `hasFullRankRealization_of_independent_panelRow` — yielding
+`HasFullRankRealization k (G.splitOff …) ⟹ … k G`, discharging `theorem_55`'s `hsplit` premise at
+`k=2`. **`G.splitOff` is NOT `≤ G`** (edge-substitution: deletes `v`'s edges, adds fresh `e₀`); the
+transport routes through the common subgraph `G − v` (`removeVertex_le` / `removeVertex_le_splitOff`,
+both green) via N7b-2 `exists_independent_panelRow_transport`, exactly as `case_II_placement_eq612`
+already does internally. This is the first consumer wiring real graph data, so **the
+`ofNormals`/`withGraph` defeq-timeout trap bites** (FRICTION; TACTICS-QUIRKS §38) — budget for it; it
+is the main engineering risk, not a math risk. See `notes/Phase22-realization-design.md` §1.33 (A).
 
 After the `hsplit` producer: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -80,9 +95,12 @@ the Phase-23 cycle base).
 
 ## Lemma checklist
 
-- [ ] **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕
-  `case_III_claim612` into `linearIndependent_sum_augment_candidateRow` at real graph data, giving
-  `HasFullRankRealization k (G.splitOff …) ⟹ … k G`. The work; defeq-trap engineering. §1.33 (A).
+- [x] **`lem:case-III-eq629-conditional` candidate-selection capstone** — `case_III_eq629_conditional`
+  (`RigidityMatrix.lean`), the graph-free selection routing `case_III_claim612`'s disjunction through
+  the three per-candidate full-family implications. Node flipped GREEN. (2026-06-07)
+- [ ] **`d=3` `hsplit` producer** — wire `case_II_placement_eq612` ⊕ candidate-row ⊕ the green
+  `case_III_eq629_conditional` into `linearIndependent_sum_augment_candidateRow` at real graph data,
+  giving `HasFullRankRealization k (G.splitOff …) ⟹ … k G`. The work; defeq-trap engineering. §1.33 (A).
 - [ ] **`d=3`-instance `theorem_55` node** (B.2) — instantiate `theorem_55 (n:=2) (k:=2)` on the
   three green branch args; add the small green blueprint node the molecule-app chapter consumes.
 - [ ] **`lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -100,11 +118,15 @@ the Phase-23 cycle base).
 
 ## Hand-off / next phase
 
-**Smallest next commit:** build the `d=3` `hsplit` producer (the spine in §1.33 (A)) — wire the three
-green bricks into `linearIndependent_sum_augment_candidateRow` at real graph data and conclude
-`HasFullRankRealization k (G.splitOff …) ⟹ … k G`. Expect the defeq-trap engineering to dominate the
-commit; if it walls, extract the generic helper per TACTICS-QUIRKS §38 first. Then the `theorem_55`
-instantiation (B.2 node), the node flips, and the Thm 5.5→5.6 push.
+**Smallest next commit:** build the `d=3` `hsplit` producer (the spine in §1.33 (A)) — wire
+`case_II_placement_eq612` + the candidate row + the now-green selection capstone
+`case_III_eq629_conditional` into `linearIndependent_sum_augment_candidateRow` at real `G.splitOff`
+graph data and conclude `HasFullRankRealization k (G.splitOff …) ⟹ … k G`. All three abstract bricks
+are now green; the remaining content is the *graph-data instantiation* (extract `rn`/`ro`/`ρ` + the
+three `hselᵢ` from the real candidate families, transport the old block through the common subgraph
+`G − v` per N7b-2). Expect the `ofNormals`/`withGraph` defeq-trap engineering to dominate; if it
+walls, extract the generic helper per TACTICS-QUIRKS §38 first. Then the `theorem_55` instantiation
+(B.2 node), the `lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -117,6 +139,13 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **Selection capstone built graph-free as the first producer brick (2026-06-07).**
+  `case_III_eq629_conditional` discharges `lem:case-III-eq629-conditional` by composing
+  `case_III_claim612`'s disjunction with three abstract per-candidate implications
+  (`r̂(Cᵢ)≠0 ⟹ LinearIndependent famᵢ`). Stated over abstract families (no `ofNormals`) so the heavy
+  concrete-carrier `whnf` (§38) cannot bite — the selection logic is pure `Or`-mapping. The defeq
+  trap is thereby confined to the *one* remaining step (the real-graph instantiation), keeping it
+  isolatable per the §38 extract-a-helper mitigation. 1-line term proof.
 - **(B.1) the `d=3` `hsplit`/`theorem_55` path does NOT consume `lem:cycle-realization`
   (2026-06-07, open).** `theorem_55`/`theorem_55_generic` = `minimal_kdof_reduction` with three
   branches, no cycle branch, base case `V=2` only. Short cycles dissolve into repeated splits.

@@ -525,8 +525,12 @@ case), not the candidate-row input.
 
 \begin{lemma}[The eq.\ (6.29)/(6.30)/(6.41) top-left $D \times D$ full rank, for \emph{at least one} candidate (the candidate-completion conditional); KT eqs.\ (6.29), Claim 6.12]
   \label{lem:case-III-eq629-conditional}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_eq629_conditional}
+  \leanok
   \uses{lem:case-III-candidate-row-construction, lem:case-III-columnop,
-        lem:case-II-placement-block-independent, lem:case-III-claim612}
+        lem:case-II-placement-block-independent, lem:case-III-claim612,
+        lem:case-III-claim612-p2-placement, lem:case-III-claim612-p3-placement,
+        lem:case-III-claim612-eq644}
   The conditional the candidate-completion assembly
   (\cref{lem:case-III-candidate-row}) passes through, discharged by Claim~6.12
   (\cref{lem:case-III-claim612}). At $d = 3$ ($D = 6$) this is \emph{not} a single-candidate
@@ -545,7 +549,16 @@ case), not the candidate-row input.
   independent (the top-left $D \times D$ block of the block-triangularized $R(G, p_i)$ is full rank).
   This is exactly what \cref{lem:case-III-candidate-row}'s assembly consumes --- it takes
   $\rho$ / $\mathrm{rn}$ / $\mathrm{ro}$ abstractly, so the assembly itself stays green; the
-  conditional supplies which candidate to instantiate it at.
+  conditional supplies which candidate to instantiate it at. The Lean statement is the matching
+  selection step, stated abstractly over the three candidate families
+  $\mathrm{fam}_1, \mathrm{fam}_2, \mathrm{fam}_3$ (graph-free, so it stays clear of the
+  $\mathrm{ofNormals}$ concrete-carrier elaboration the realization assembly contends with): given,
+  for each candidate, the per-candidate full-family producer as an implication
+  $\hat r(C_i) \ne 0 \Rightarrow \mathrm{LinearIndependent}\ \mathrm{fam}_i$
+  (\cref{lem:case-III-claim612-p2-placement}, \cref{lem:case-III-claim612-p3-placement}, and the
+  candidate-completion assembly for $M_1$, each routed through the row-space criterion
+  \cref{lem:case-III-claim612-block-iff-perp} with $M_3$ onto the same $\hat r$ by eq.~(6.44),
+  \cref{lem:case-III-claim612-eq644}), at least one of the three families is independent.
   \emph{This conditional is discharged by Claim~6.12}
   (\cref{lem:case-III-claim612}): the row-space criterion
   (\cref{lem:case-III-claim612-block-iff-perp}) turns ``the candidate's block is full rank'' into
@@ -556,13 +569,17 @@ case), not the candidate-row input.
   is now green.
 \end{lemma}
 \begin{proof}
+  \leanok
+  \uses{lem:case-III-claim612}
   The three-way disjunction is Claim~6.12 (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)):
   if none of $M_1, M_2, M_3$ (the three top-left $D \times D$ submatrices) had full rank, the common
   vector $r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ would lie in $(\operatorname{span} C(L))^\perp$,
   $(\operatorname{span} C(L'))^\perp$, $(\operatorname{span} C(L''))^\perp$ for all lines, hence
   annihilate the degree-$(d-1)$-extensor span~(6.45), which has full dimension $D$
   (\cref{lem:case-III-claim612-extensor-span}); so $r = 0$, contradicting $r \ne 0$
-  (\cref{lem:case-III-claim612-r-nonzero}). See \cite[\S6.4.1]{katohTanigawa2011}.
+  (\cref{lem:case-III-claim612-r-nonzero}). Mapping the disjunction $\hat r(C_i) \ne 0$ through the
+  three per-candidate selector implications then yields an independent candidate family. See
+  \cite[\S6.4.1]{katohTanigawa2011}.
 \end{proof}
 
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.29)]

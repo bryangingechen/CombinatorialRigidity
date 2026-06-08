@@ -1355,6 +1355,47 @@ theorem case_III_claim612
   rintro x ⟨q, rfl⟩
   exact hduality h₁ h₂ h₃ q
 
+/-- **The candidate-completion conditional: at least one of the three candidate placements'
+top-left `D × D` blocks is full rank, so at least one candidate family is independent**
+(`lem:case-III-eq629-conditional`, KT eqs.~(6.29)/(6.30)/(6.41) + Claim~6.12; Katoh–Tanigawa 2011
+§6.4.1, Phase 22g). The conditional that the candidate-completion assembly
+(`linearIndependent_sum_augment_candidateRow`, `lem:case-III-candidate-row`) passes through —
+discharged by the `D`-candidate disjunction of Claim~6.12 (`case_III_claim612`,
+`lem:case-III-claim612`).
+
+At `d = 3` a *single* degenerate placement need not have a full-rank top-left block, so the
+conditional is the **three-way disjunction**: for the three candidate placements `p₁/p₂/p₃` (split
+at `v` along `va`/`vb`, and at the other degree-2 body `a` along `ac`), at least one yields a
+linearly independent full `D(|V|−1)`-size panel-row family. Each candidate's full-family
+independence `famᵢ` is conditioned, via the row-space criterion
+(`linearIndependent_sumElim_candidateRow_iff` threaded through the per-candidate producers
+`linearIndependent_sum_p2_candidateRow` / `linearIndependent_sum_p3_candidateRow` /
+`linearIndependent_sum_augment_candidateRow`), on the common candidate vector
+`r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` being **not** orthogonal to that block's supporting extensor `Cᵢ`
+(`hsel₁`/`hsel₂`/`hsel₃`); the `M₃` candidate is routed onto the *same* `r̂` by eq.~(6.44)
+(`candidateRow_ac_eq_neg`). Claim~6.12 (`case_III_claim612`) supplies the disjunction
+`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` — at `d = 3`, contrapositively, all three failing would put
+the nonzero `r̂` orthogonal to a spanning set of panel-meet extensors of four affinely-independent
+points (`hduality` + `span_omitTwoExtensor_eq_top`), forcing `r̂ = 0`. So at least one selector
+condition `r̂(Cᵢ) ≠ 0` holds, discharging the corresponding candidate's conditional and giving an
+independent full family. This is the selection step the `d = 3` `hsplit` producer instantiates at
+real graph data (where each `famᵢ` is the actual eq.~(6.29) candidate family on
+`ofNormals G ends q₀`). -/
+theorem case_III_eq629_conditional {ιfam : Type*}
+    {fam₁ fam₂ fam₃ : ιfam → Module.Dual ℝ (α → ScrewSpace 2)}
+    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
+    {C₁ C₂ C₃ : ScrewSpace 2}
+    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
+    (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
+      ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+        r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+          extensor_mem_exteriorPower _⟩ = 0)
+    (hsel₁ : r C₁ ≠ 0 → LinearIndependent ℝ fam₁)
+    (hsel₂ : r C₂ ≠ 0 → LinearIndependent ℝ fam₂)
+    (hsel₃ : r C₃ ≠ 0 → LinearIndependent ℝ fam₃) :
+    LinearIndependent ℝ fam₁ ∨ LinearIndependent ℝ fam₂ ∨ LinearIndependent ℝ fam₃ :=
+  (case_III_claim612 hr hp hduality).imp hsel₁ (Or.imp hsel₂ hsel₃)
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,
