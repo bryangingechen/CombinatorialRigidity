@@ -1381,8 +1381,10 @@ condition `r̂(Cᵢ) ≠ 0` holds, discharging the corresponding candidate's con
 independent full family. This is the selection step the `d = 3` `hsplit` producer instantiates at
 real graph data (where each `famᵢ` is the actual eq.~(6.29) candidate family on
 `ofNormals G ends q₀`). -/
-theorem case_III_eq629_conditional {ιfam : Type*}
-    {fam₁ fam₂ fam₃ : ιfam → Module.Dual ℝ (α → ScrewSpace 2)}
+theorem case_III_eq629_conditional {ιfam₁ ιfam₂ ιfam₃ : Type*}
+    {fam₁ : ιfam₁ → Module.Dual ℝ (α → ScrewSpace 2)}
+    {fam₂ : ιfam₂ → Module.Dual ℝ (α → ScrewSpace 2)}
+    {fam₃ : ιfam₃ → Module.Dual ℝ (α → ScrewSpace 2)}
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
     {C₁ C₂ C₃ : ScrewSpace 2}
     {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)

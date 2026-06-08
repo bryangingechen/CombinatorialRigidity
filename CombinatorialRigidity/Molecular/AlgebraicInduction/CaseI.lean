@@ -3170,4 +3170,82 @@ theorem PanelHingeFramework.exists_candidate_row_eq612 [Finite α]
     rw [← hρ]
     exact BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b ρ
 
+/-- **L0 — the `d = 3` `hsplit` producer skeleton** (`lem:case-II-realization` / `lem:case-III`,
+the `theorem_55.hsplit` branch at `k = 2`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phase 22g). The
+spine of the conjecture's crux at `d = 3`: given a realization of the split-off `G_v^{ab}` it
+produces a realization of `G`, by selecting (Claim 6.12) the one of three degenerate candidate
+placements whose top-left `D × D` block is full rank and feeding its independent eq. (6.29)
+panel-row family to the device closure.
+
+This is the **green-modulo skeleton** (`notes/Phase22-realization-design.md` §1.34): the residual
+graph-data obligations are carried here as *explicit* hypotheses, to be discharged one per leaf
+(L1–L5) in later commits. Concretely the candidate-selection data of `case_III_eq629_conditional`
+(the nonzero common candidate row `r ≠ 0`, the four affinely-independent points `p`, the N3b
+duality `hduality`, the three per-block selectors `hselᵢ : r Cᵢ ≠ 0 → LinearIndependent famᵢ`) plus,
+for each candidate `i ∈ {1, 2, 3}`, the *packaging* witnessing that the abstract family `famᵢ` is a
+`panelRow`-family of a common realization `ofNormals G ends q₀ᵢ` along an injective index `jᵢ` of
+relative-full count `D(|V(G)|−1) ≤ |ιᵢ|` (`hfamᵢ`/`hjᵢ`/`hcardᵢ`). The body composes the selection
+(`case_III_eq629_conditional`) with the abstractly-indexed device closure
+(`hasFullRankRealization_of_independent_panelRow_index`) in each branch.
+
+The leaves that discharge the carried hypotheses (each a smallest forward commit, `§1.34`):
+L1 (IH `ofNormals` → `rn`/`ro`/`ρ` extraction), L2 (pinned-block span bridge), L3 (the isolated §38
+`ofNormals`/`withGraph` defeq leaf), L4 (candidate-row `rigidityRows` membership), L5 (the
+`j`/`Sum.elim` packaging + injectivity). The shear/seed construction of the three placements and the
+`r`/`Cᵢ` data come from `case_II_placement_eq612` (eq. (6.12)) and `exists_candidate_row_eq612`
+(eq. (6.27)). It is honest: `hfamᵢ`/`hjᵢ`/`hcardᵢ` are the *witnessed-rank* inputs the placement
+supplies (the family is independent and counted, not asserted rigid), and the device closure
+concludes the rank — exactly as `case_II_placement_eq612` feeds its `+(D−1)` brick. -/
+theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
+    -- the `theorem_55.hsplit` premise data (at `n`, `k = 2`)
+    (_hG : G.IsMinimalKDof n 0) (_hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (_hv : v ∈ V(G)) (_hav : a ≠ v) (_hbv : b ≠ v) (_ha : a ∈ V(G)) (_hb : b ∈ V(G))
+    (_heab : eₐ ≠ e_b) (_hG_ea : G.IsLink eₐ v a) (_hG_eb : G.IsLink e_b v b)
+    (_hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (_he₀ : e₀ ∉ E(G))
+    (_hsplit : PanelHingeFramework.HasFullRankRealization 2 (G.splitOff v a b e₀))
+    -- the parent endpoint selector and a vertex (carried; supplied by the IH/links in L1/L5)
+    (ends : β → α × α) (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    -- the candidate-selection data of `case_III_eq629_conditional` (Claim 6.12; built in L3/N3b)
+    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0) {C₁ C₂ C₃ : ScrewSpace 2}
+    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
+    (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
+      ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+        r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+          extensor_mem_exteriorPower _⟩ = 0)
+    -- each candidate family `famᵢ`, its selector `hselᵢ`, and its `panelRow`-packaging
+    -- (seed `q₀ᵢ`, finite index `ιᵢ`, injective realization `jᵢ`, full count) — L1–L5
+    {ι₁ ι₂ ι₃ : Type*} [Finite ι₁] [Finite ι₂] [Finite ι₃]
+    {fam₁ : ι₁ → Module.Dual ℝ (α → ScrewSpace 2)}
+    {fam₂ : ι₂ → Module.Dual ℝ (α → ScrewSpace 2)}
+    {fam₃ : ι₃ → Module.Dual ℝ (α → ScrewSpace 2)}
+    {q₁ q₂ q₃ : α × Fin (2 + 2) → ℝ}
+    {j₁ : ι₁ → β × Set.powersetCard (Fin (2 + 2)) 2 × Set.powersetCard (Fin (2 + 2)) 2}
+    {j₂ : ι₂ → β × Set.powersetCard (Fin (2 + 2)) 2 × Set.powersetCard (Fin (2 + 2)) 2}
+    {j₃ : ι₃ → β × Set.powersetCard (Fin (2 + 2)) 2 × Set.powersetCard (Fin (2 + 2)) 2}
+    (hj₁ : Function.Injective j₁) (hj₂ : Function.Injective j₂) (hj₃ : Function.Injective j₃)
+    (hfam₁ : fam₁ =
+      fun i => (PanelHingeFramework.ofNormals G ends q₁).toBodyHinge.panelRow ends (j₁ i))
+    (hfam₂ : fam₂ =
+      fun i => (PanelHingeFramework.ofNormals G ends q₂).toBodyHinge.panelRow ends (j₂ i))
+    (hfam₃ : fam₃ =
+      fun i => (PanelHingeFramework.ofNormals G ends q₃).toBodyHinge.panelRow ends (j₃ i))
+    (hcard₁ : screwDim 2 * (V(G).ncard - 1) ≤ Nat.card ι₁)
+    (hcard₂ : screwDim 2 * (V(G).ncard - 1) ≤ Nat.card ι₂)
+    (hcard₃ : screwDim 2 * (V(G).ncard - 1) ≤ Nat.card ι₃)
+    (hsel₁ : r C₁ ≠ 0 → LinearIndependent ℝ fam₁)
+    (hsel₂ : r C₂ ≠ 0 → LinearIndependent ℝ fam₂)
+    (hsel₃ : r C₃ ≠ 0 → LinearIndependent ℝ fam₃) :
+    PanelHingeFramework.HasFullRankRealization 2 G := by
+  -- Select the winning candidate (Claim 6.12 disjunction), then feed its independent eq. (6.29)
+  -- panel-row family to the abstractly-indexed device closure (the `…_index` packaging-out brick).
+  rcases BodyHingeFramework.case_III_eq629_conditional hr hp hduality hsel₁ hsel₂ hsel₃ with
+    h₁ | h₂ | h₃
+  · exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow_index G ends hends hne
+      hj₁ (by rw [hfam₁] at h₁; exact h₁) hcard₁
+  · exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow_index G ends hends hne
+      hj₂ (by rw [hfam₂] at h₂; exact h₂) hcard₂
+  · exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow_index G ends hends hne
+      hj₃ (by rw [hfam₃] at h₃; exact h₃) hcard₃
+
 end CombinatorialRigidity.Molecular

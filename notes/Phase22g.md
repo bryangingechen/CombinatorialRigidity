@@ -7,49 +7,43 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: the abstractly-indexed device-closure feed
-`hasFullRankRealization_of_independent_panelRow_index`** (`GenericityDevice.lean`), the `Set`-free
-repackaging of `hasFullRankRealization_of_independent_panelRow`. Where the device closure consumes a
-*set*-indexed panel-row subfamily `s`, this takes a finite type `ι`, an injective index map
-`j : ι → β × ⋀ᵏ-pair × ⋀ᵏ-pair`, the panel-row family `i ↦ panelRow ends (j i)` independent, and the
-count `D(|V|−1) ≤ |ι|`, and produces `HasFullRankRealization k G` — reindexing across
-`Equiv.ofInjective j` + transferring the count by `Nat.card_range_of_injective`. This is exactly the
-final packaging step `case_II_placement_eq612` performs inline (CaseI.lean:2757–2818), lifted out so
-the `d=3` `hsplit` producer can feed the device closure the **candidate-completion's `Sum`-indexed
-output** (`linearIndependent_sum_augment_candidateRow` yields `(rn ⊕ {w}) ⊕ ro`, a `Sum` type, not a
-`Set`) once each summand is identified with a `panelRow ends (j i)`. Fully green, no defeq trap (it
-is index-bookkeeping over the already-green closure). The candidate-selection capstone
-`case_III_eq629_conditional` (the previous commit, graph-free, `RigidityMatrix.lean`) discharges
-`lem:case-III-eq629-conditional`; both this feed and the selection capstone are now green, so the
-producer's two end-bricks (selection in, packaging out) are in place — what remains is the
-graph-data instantiation between them.
+**Just landed: L0, the `d=3` `hsplit` producer SKELETON, green-modulo**
+(`PanelHingeFramework.case_III_hsplit_producer`, CaseI.lean). The spine of the conjecture's crux at
+`d=3`: it matches the `theorem_55.hsplit` premise shape at `k=2` (`G v a b eₐ e_b e₀`, the links,
+degree-2 closure, `e₀ ∉ E(G)`, `HasFullRankRealization 2 (G.splitOff …)`) and concludes
+`HasFullRankRealization 2 G`, **carrying as explicit `h…` hypotheses** the residual graph-data
+obligations (L1–L5): the candidate-selection data of `case_III_eq629_conditional` (`hr`/`hp`/`hduality`
++ the three `hselᵢ`) and, per candidate `i`, its `panelRow`-packaging (seed `q₀ᵢ`, finite index `ιᵢ`,
+injective `jᵢ`, the identification `hfamᵢ : famᵢ = fun t => panelRow ends (jᵢ t)`, count `hcardᵢ`).
+Body: `rcases` the Claim-6.12 disjunction (`BodyHingeFramework.case_III_eq629_conditional`), then feed
+the winning candidate's family to `hasFullRankRealization_of_independent_panelRow_index` in each
+branch — a 6-line term-shaped proof. Fully green, sorry-free (axioms = `propext`/`choice`/`Quot.sound`),
+warning-clean, lint clean. The blob is defeated: the spine is now green, L1–L5 are named, and the
+§38 defeq trap is confined to L3.
 
-**Next concrete step (smallest forward commit): build L0, the `hsplit` producer SKELETON
-green-modulo.** The core (the graph-data instantiation) is now cracked into named leaves L0–L5 —
-`notes/Phase22-realization-design.md` §1.34 (the live recon home; verdict below). The blob is
-defeated by stating the producer with its residual graph-data obligations as EXPLICIT `h…`
-hypotheses and flipping the spine green first; each leaf then discharges one hypothesis.
+One supporting edit landed alongside: `case_III_eq629_conditional` was minted with one shared index
+type `ιfam` for all three families; the three candidates genuinely differ (`M₁` is `(rn ⊕ Unit) ⊕ ro`),
+so it was generalized to `{ιfam₁ ιfam₂ ιfam₃}` (one-line signature change, no proof edit — the
+`.imp` proof is index-agnostic). FRICTION `[resolved]`.
 
-L0 (`case_III_hsplit_producer`, CaseI.lean) takes the `theorem_55.hsplit` premise data
-(`G v a b eₐ e_b e₀`, the links, degree-2 closure, `e₀ ∉ E(G)`) + `HasFullRankRealization k
-(G.splitOff …)` and concludes `HasFullRankRealization k G`, **carrying as explicit hypotheses**: the
-three candidate families + `hselᵢ`, the affine-indep/N3b-duality at real data (`hp`/`hduality`/`hr`),
-and the `j`-packaging. Body: extract the IH rigid `ofNormals` locus
-(`exists_rigidOn_ofNormals_of_hasFullRankRealization`), run `case_II_placement_eq612` for the
-`D(|V|−1)−1` old+new blocks, select via `case_III_eq629_conditional`, feed
-`hasFullRankRealization_of_independent_panelRow_index`. Flipping L0 green-modulo names L1–L5 and
-**isolates the `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) into L3** so the spine and the
-other leaves build graph-free over already-green bricks.
+**Next concrete step (smallest forward commit): L1 — IH → candidate `rn`/`ro`/`ρ` extraction.**
+From the IH-extracted rigid `ofNormals (splitOff) ends q` (rigid on `V(splitOff) = V(G)∖{v}`, via
+`exists_rigidOn_ofNormals_of_hasFullRankRealization`), produce the old block `ro` (N7b-0
+`exists_independent_panelRow_subfamily_of_rigidOn_linking`) and a new block `rn` (one of `v`'s edges),
+exactly as `case_II_placement_eq612` does internally — graph-free over `ofNormals`. Produces the
+`ιn`/`ιo` families + `hold`/`holdindep` the candidate assembly consumes. See §1.34 / the checklist
+below for L1–L5 shapes; each discharges one of L0's carried hypotheses. L3 is the lone defeq-risk
+leaf (deferrable); L1/L2/L4/L5 are green-brick plumbing.
 
-After the `hsplit` producer: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
+After all of L1–L5 discharge the carried hypotheses: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
 `rigidityMatrix_prop11`'s `hgen` (its `hub` lower bound is already green, discharged in-proof);
 do the Thm 5.5→5.6 multigraph push (`lem:motions-mono-of-graph-le`). Milestone: the molecular
 conjecture proved at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is
 **Phase 23** (reuse map: §1.33 (C)).
 
-**Core cracked; build not yet started.** §1.34 cracked the producer core into L0–L5 (this commit,
-docs only); the phase-open red-node + supersession + label-resolution gates ran clean. No Lean built.
+**Spine green; L1–L5 remain.** §1.34 cracked the producer core into L0–L5; L0 (the spine) is now
+green-modulo. The phase-open red-node + supersession + label-resolution gates ran clean at open.
 
 ## Red-node consistency gate — recon verdict (2026-06-07, opening commit)
 
@@ -110,10 +104,11 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   `ι` + injective `j` (the shape of the candidate-completion's `Sum`-indexed output). The producer's
   packaging-out end-brick. Fully green, no defeq trap; internal infra (no blueprint node). (2026-06-07)
 - **`d=3` `hsplit` producer — cracked into L0–L5** (§1.34; each a smallest-buildable commit):
-  - [ ] **L0 — `hsplit` skeleton green-modulo** (`case_III_hsplit_producer`, CaseI.lean). The spine:
-    state the producer carrying the candidate families + `hselᵢ` + `hp`/`hduality`/`hr` + `j`-packaging
-    as explicit hypotheses; body extracts the IH `ofNormals` locus, runs `case_II_placement_eq612`,
-    selects via `case_III_eq629_conditional`, feeds `…_index`. **The smallest first commit.**
+  - [x] **L0 — `hsplit` skeleton green-modulo** (`PanelHingeFramework.case_III_hsplit_producer`,
+    CaseI.lean). The spine: the producer carries the candidate families + `hselᵢ` + `hp`/`hduality`/`hr`
+    + per-candidate `panelRow`-packaging (`q₀ᵢ`/`ιᵢ`/`jᵢ`/`hfamᵢ`/`hcardᵢ`) as explicit hypotheses; body
+    `rcases`'s the Claim-6.12 disjunction (`BodyHingeFramework.case_III_eq629_conditional`) and feeds the
+    winner to `…_index` per branch. Green-modulo, sorry-free. (2026-06-07)
   - [ ] **L1 — IH → candidate `rn`/`ro`/`ρ` extraction.** Re-slice `case_II_placement_eq612`'s old/new
     blocks from the IH-extracted rigid `ofNormals (splitOff) ends q` (rigid on `V(G)∖{v}`); produces
     `ιn`/`ιo` + `hold`/`holdindep`. Graph-free over `ofNormals`.
@@ -151,18 +146,18 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 
 ## Hand-off / next phase
 
-**Smallest next commit: build L0, the `hsplit` producer SKELETON green-modulo**
-(`case_III_hsplit_producer`, CaseI.lean). State it over the `theorem_55.hsplit` premise data +
-`HasFullRankRealization k (G.splitOff …)`, **carrying as explicit `h…` hypotheses** the candidate
-families + `hselᵢ`, the `hp`/`hduality`/`hr` of `case_III_eq629_conditional`, and the `j`-packaging;
-body extracts the IH rigid `ofNormals` locus (`exists_rigidOn_ofNormals_of_hasFullRankRealization`),
-runs `case_II_placement_eq612` for the `D(|V|−1)−1` blocks, selects via `case_III_eq629_conditional`,
-feeds `hasFullRankRealization_of_independent_panelRow_index`. This flips the spine green-modulo,
-names L1–L5, and isolates the §38 trap to L3 — defeating the "multi-session blob". Then discharge
-L1→L5 one leaf per commit (checklist above; L1/L2/L4/L5 are green-brick plumbing, L3 is the lone
-defeq-risk leaf, deferrable). Then the `theorem_55` instantiation (B.2 node), the
-`lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push. Full leaf shapes,
-the `j` bridge, and the three structural facts: `notes/Phase22-realization-design.md` §1.34.
+**Smallest next commit: build L1 — discharge L0's per-candidate `panelRow`-packaging from the IH.**
+L0 (the spine) is green; L1 begins replacing its carried `h…` hypotheses with the real construction.
+Extract the IH rigid `ofNormals (splitOff) ends q` locus
+(`exists_rigidOn_ofNormals_of_hasFullRankRealization`, rigid on `V(splitOff) = V(G)∖{v}`), then re-slice
+`case_II_placement_eq612`'s internals to produce the old block `ro` (N7b-0
+`exists_independent_panelRow_subfamily_of_rigidOn_linking`) and a new block `rn` (one of `v`'s edges) —
+graph-free over `ofNormals`. Output: the `ιn`/`ιo` families + `hold`/`holdindep` the candidate assembly
+consumes (one of L0's `hfamᵢ`/`hcardᵢ`/`hjᵢ` triples). Then L2→L5 one leaf per commit (checklist above;
+L1/L2/L4/L5 are green-brick plumbing, L3 is the lone defeq-risk leaf, deferrable). Then the
+`theorem_55` instantiation (B.2 node), the `lem:case-II-realization` / `lem:case-III` flips, and the
+Thm 5.5→5.6 push. Full leaf shapes, the `j` bridge, and the three structural facts:
+`notes/Phase22-realization-design.md` §1.34.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -175,6 +170,14 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **L0 landed: the `hsplit` producer spine green-modulo; `case_III_eq629_conditional` generalized to
+  three index types (2026-06-07).** `PanelHingeFramework.case_III_hsplit_producer` (CaseI.lean) carries
+  the candidate-selection data + each candidate's `panelRow`-packaging (`q₀ᵢ`/`ιᵢ`/`jᵢ`/`hfamᵢ`/`hcardᵢ`)
+  as explicit hypotheses and composes `case_III_eq629_conditional` → `…_index` per disjunct (6-line proof).
+  The selection capstone was minted with one shared index `ιfam`; the three candidates genuinely differ
+  (`M₁` is `(rn ⊕ Unit) ⊕ ro`), so it was generalized to `{ιfam₁ ιfam₂ ιfam₃}` — one-line signature edit,
+  `.imp` proof unchanged. FRICTION `[resolved]`. Confirms the green-modulo-skeleton route below: the spine
+  is now plumbing-on-green-bricks, L1–L5 named, §38 trap confined to L3.
 - **`hsplit` producer core cracked: green-modulo-skeleton-first, defeq trap isolated to one leaf
   (2026-06-07).** Decided the green-modulo-skeleton route (state the producer carrying the residual
   graph-data obligations as explicit `h…`, flip the spine first, discharge each as a leaf) over

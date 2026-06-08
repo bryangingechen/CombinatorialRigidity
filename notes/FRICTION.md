@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `case_III_eq629_conditional` was minted with one shared index type `ιfam` for all three candidate families — the three genuinely differ; generalize to `ιfam₁ ιfam₂ ιfam₃`
+- **Where it bit:** Phase 22g L0 `case_III_hsplit_producer` (`CaseI.lean`) — feeding the three
+  candidate families (the `M₁` candidate is `(rn ⊕ Unit) ⊕ ro`; `M₂`/`M₃` differ) to the selection
+  capstone `BodyHingeFramework.case_III_eq629_conditional` (`RigidityMatrix.lean`).
+- **Friction:** the capstone's `{ιfam : Type*} {fam₁ fam₂ fam₃ : ιfam → …}` forced all three families
+  to share one index type, so the producer wouldn't typecheck ("Application type mismatch … `fam₃` /
+  `?m`", a universe-disagreement symptom of the unification failure).
+- **Resolution:** generalized the capstone to `{ιfam₁ ιfam₂ ιfam₃ : Type*}`, one per family. The
+  proof (`(case_III_claim612 …).imp hsel₁ (Or.imp hsel₂ hsel₃)`) is index-agnostic, so the single-type
+  constraint was gratuitous; one-line signature change, no proof edit. Project-internal (about the
+  capstone), below the upstream-mirror bar.
+
 ### [resolved] Swapping a wedge factor at the cost of a sign — `extensor ![a, b] = extensor ![b, -a]` — has no `extensor`/`ιMulti` lemma; go through `ExteriorAlgebra.ι_add_mul_swap`
 - **Where it bit:** Phase 22f `inf_range_wedgeFixedLeft` (`Meet.lean`), the `⊇` direction —
   showing `a ∧ b = wedgeFixedLeft a b` also lies in `range (wedgeFixedLeft b)` by exhibiting it as
