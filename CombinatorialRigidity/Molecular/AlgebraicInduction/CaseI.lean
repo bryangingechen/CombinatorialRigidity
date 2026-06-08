@@ -3097,6 +3097,59 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition
   obtain ⟨wGv, hwGv, wOther, hwOther, hsum⟩ := Submodule.mem_sup.1 hmem
   exact ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum.symm⟩
 
+/-- **Eqs. (6.24)/(6.25): the redundant-`ab`-row decomposition as an explicit unit-normalized
+nonzero combination** (`lem:case-III-claim612-r-nonzero` infra, the candidate vector `r̂` of KT
+eqs. (6.24)/(6.25); Katoh–Tanigawa 2011 §6.4.1, eqs. (6.24)–(6.25), Phase 22g). Where
+`exists_redundant_panelRow_ab_decomposition` (eq. (6.24)) delivers the redundant `ab`-row as
+`r i^* = wGv + wOther` — its `G_v`-row part `wGv` plus an expansion `wOther` of the *other*
+`ab`-rows — this leaf reads off KT's eq. (6.25): the explicit coefficient family `λ_{(ab)j}` with
+the redundant index's coefficient pinned to `λ_{(ab)i^*} = 1`, for which the candidate vector
+`r̂ := ∑_j λ_{(ab)j} r_j` (KT eq. (6.27)) is the `G_v`-row part `wGv` of the redundant row and is
+**nonzero** (it carries the unit coefficient on the independent member `i^*`).
+
+The coefficient extraction is the graph-free linear-algebra leaf
+`exists_smul_combination_eq_sub_of_mem_span_image_compl` applied to the decomposition's membership
+`wOther ∈ span (r '' {j | j ≠ i})`: it expands `wOther` over `{r_j : j ≠ i^*}` and pins the `i^*`
+coefficient to `1`, giving `∑_j λ_j r_j = r i^* − wOther = wGv` (the eq. (6.24) rearrangement) with
+`λ_{i^*} = 1`, hence `r̂ ≠ 0`. The `r̂ ≠ 0` conclusion is the `hr` input the Claim-6.12 disjunction
+(`case_III_claim612`, via `candidateRow_ne_zero`) needs; `r̂ = wGv` ties it to the `G_v`-row part
+the candidate-completion row operation (`exists_candidate_row_eq612`) consumes. -/
+theorem BodyHingeFramework.exists_redundant_panelRow_ab_lam
+    [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    {m k' : ℕ} (hk' : k' ≤ screwDim k - 2)
+    (h618 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1))
+    (h622 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1) - k') :
+    ∃ (r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k)) (lam : Fin (screwDim k - 1) → ℝ)
+      (i : Fin (screwDim k - 1)),
+      LinearIndependent ℝ r ∧
+      Submodule.span ℝ (Set.range r) = Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, p.1, p.2))) ∧
+      lam i = 1 ∧
+      (∑ j, lam j • r j) ∈ Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∧
+      (∑ j, lam j • r j) ≠ 0 := by
+  obtain ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum⟩ :=
+    BodyHingeFramework.exists_redundant_panelRow_ab_decomposition hD huv hne₀ he₀ hle hsplit hk'
+      h618 h622
+  -- `r i = wGv + wOther` with `wOther ∈ span (r '' {j ≠ i})`; extract the unit-normalized
+  -- coefficients `λ` (KT eq. (6.25), `λ i^* = 1`) for which `∑ λ_j r_j = r i − wOther = wGv`.
+  obtain ⟨lam, hlam_i, hlam_sum, hlam_ne⟩ :=
+    exists_smul_combination_eq_sub_of_mem_span_image_compl hr hwOther
+  -- `∑ λ_j r_j = r i − wOther = wGv` (rearranging `r i = wGv + wOther`), a `G_v`-row.
+  have hrhat : (∑ j, lam j • r j) = wGv := by rw [hlam_sum, hsum]; abel
+  exact ⟨r, lam, i, hr, hrspan, hlam_i, hrhat ▸ hwGv, hlam_ne⟩
+
 /-- **KT eq. (6.43): the `a`-column block of the eq. (6.24) vanishing combination is `0`**
 (`lem:case-III-candidate-row` infra, the candidate-completion's eq. (6.43); Katoh–Tanigawa 2011
 §6.4.1, eq. (6.43), Phase 22e). The eq. (6.24)/(6.25) decomposition

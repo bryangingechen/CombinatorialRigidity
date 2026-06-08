@@ -2826,6 +2826,25 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
   `linearIndependent_sumElim_unit_iff`).
 
+### [mirrored] `exists_smul_combination_eq_sub_of_mem_span_image_compl` — the explicit unit-normalized combination witnessed by a span-of-the-others membership
+- **Where it bit:** Phase 22g C5 (the Claim-6.12 `r̂` data; KT eqs. (6.24)/(6.25)). The
+  redundant-row decomposition (`exists_redundant_panelRow_ab_decomposition`) gives
+  `r i = wGv + wOther` with `wOther ∈ span (r '' {j ≠ i})`; KT eq. (6.25) needs the *explicit*
+  coefficients `λ` (pinned `λ_{i^*} = 1`) for which `r̂ := ∑_j λ_j r_j = wGv` is nonzero.
+- **Friction:** mathlib has `Fintype.mem_span_image_iff_exists_fun` (membership → coefficients
+  over the subtype `{j ≠ i}`) but no fused "extend by `1` at `i` to get a nonzero unit-normalized
+  combination equal to `v i − w`". Two minor build cycles: `Finset.sum_subtype` needed its
+  predicate annotated explicitly (`(p := fun j => j ≠ i)`, else a metavariable), and the
+  subtype-coercion residual `c ⟨↑a, _⟩ = c a` closes by `Subtype.coe_eta`.
+- **Resolution:** mirrored `exists_smul_combination_eq_sub_of_mem_span_image_compl` over a
+  nontrivial `Ring` — extend the `{j ≠ i}` coefficients by `0` at `i`, set `λ j = if j = i then 1
+  else −c' j`, and read off `∑ λ_j v_j = v i − w` (`Finset.sum_add_distrib` + `Finset.sum_ite_eq'`)
+  + nonzero (`linearIndependent_sum_smul_ne_zero` at the unit `λ i`). Phase 22g's
+  `exists_redundant_panelRow_ab_lam` (`CaseI.lean`) instantiates it on the decomposition output.
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
+  `linearIndependent_sum_smul_ne_zero`).
+
 ### [mirrored] `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` (+ helper `Submodule.finrank_map_mkQ`) — a finrank pigeonhole for a redundant family member
 - **Where it bit:** Phase 22d Gap 1, the KT Claim 6.11 / eq. (6.23) pigeonhole. Given a
   finite family `g : ι → V` (the `D−1` `ab`-rows) whose span, added to a subspace `W`

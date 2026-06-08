@@ -8,122 +8,37 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 ## Current state
 
 **The live route — the corrected L-wire decomposition** (recon-of-the-core,
-`notes/Phase22-realization-design.md` §1.35). The (g1)/(g2) device-feed fork and the embedded
-"re-examine" Hand-off are **resolved**: the candidate-row placement geometry and the device feed are
-pinned down once, verified against KT §6.4.1 eqs. (6.24)–(6.44) and the green Lean. §1.34's L-wire
-framing (route the candidate family through `hasFullRankRealization_of_independent_panelRow_index`,
-`hfamᵢ = panelRow ∘ jᵢ`) is **superseded** — see the three findings below; the corrected leaf
-sequence is C1–C5 (§1.35). **C1 + C2 + C3 have landed**, plus the first C5 producer-discharge leaf
-(the `+1` `r̂`-row membership). C4 (the green instance node) is blocked on the rest of C5 — the
-ordering is corrected below.
+`notes/Phase22-realization-design.md` §1.35). The (g1)/(g2) device-feed fork and the "re-examine"
+Hand-off are **resolved**: the candidate-row placement geometry and the device feed are pinned down,
+verified against KT §6.4.1 eqs. (6.24)–(6.44) and the green Lean. The corrected leaf sequence is
+C1–C5 (§1.35); §1.34's panelRow-feed framing is superseded (full findings 1–3 in §1.35). The placed
+`+1` row is `hingeRow v b r̂` (`r̂(C(e_b)) ≠ 0`) — *not* a single `panelRow`, but in `span rigidityRows`
+(a combination of `e_b`-panelRows), so it is fed at the *fixed* placement
+(`exists_good_realization_const`), not the panelRow-shaped genericity device. **C1 + C2 + C3 have
+landed** (the fixed-framework device feed `hasFullRankRealization_of_independent_rigidityRow`, the
+single-candidate brick `hasFullRankRealization_of_candidateSelector`, and the re-wired L0 spine
+`case_III_hsplit_producer`; see the checklist). The C3 spine carries the Claim-6.12 data
+(`r`/`hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`) + per-candidate `hmemᵢ`/`hcardᵢ` as explicit hypotheses,
+discharged one per C5 leaf. **C5 progress:** all three `hselᵢ` selectors + the `+1` `r̂`-row `hmemᵢ` +
+the `r̂` candidate-vector data (`hr`) are in hand; C4 (the green instance node) is blocked on the rest
+of C5.
 
-**Just landed: C3 — the L0 spine re-wired to the corrected route**
-(`PanelHingeFramework.case_III_hsplit_producer`, CaseI.lean). The producer's per-candidate
-hypotheses are now the C2 inputs (seed `q₀ᵢ` + per-row membership
-`hmemᵢ : ∀ i, famᵢ i ∈ span (ofNormals G ends q₀ᵢ).rigidityRows` + count `hcardᵢ` + selector
-`hselᵢ`), dropping the superseded panelRow packaging (`jᵢ`/`hjᵢ`/`hfamᵢ`). Body: `case_III_claim612`
-gives the disjunction `r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0`, mapped through three
-`hasFullRankRealization_of_candidateSelector` (C2) calls — **no device call in the spine** (C2 already
-concludes the realization, §1.35). Green-modulo (the carried `hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`/`hmemᵢ`
-are explicit hypotheses, discharged by subsequent leaves). Build + lint clean, warning-free,
-sorry-free; no downstream callers yet, so the signature edit is self-contained.
+**Next concrete step (smallest forward commit): the `Cᵢ`/`hp`/`hduality` Claim-6.12 data** — the
+`hr` half (`r̂ ≠ 0`, `r̂ = wGv`) just landed (`exists_redundant_panelRow_ab_lam`). What remains of the
+Claim-6.12 data: the supporting extensors `C₁/C₂/C₃` (the three candidates' `supportExtensor`s, =
+panel-meets), `hp` (the four affinely-independent points, `exists_affineIndependent_panel_incidence`,
+green), and `hduality` — the N3b annihilation packaging: from `r C₁=0, r C₂=0, r C₃=0` conclude `r`
+annihilates each of the six joins `omitTwoExtensor (homogenize ∘ p)`, assembling
+`extensor_join_eq_zero_of_complementIso_eq_zero` (N3b core, green via 22f) over the incidence pattern.
+Then the OLD/NEW-block `hmemᵢ` (L2 span bridge / L4 membership; the `+1` `r̂`-row `hmemᵢ` is in hand).
+**The C4↔C5 ordering is corrected:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot land
+before the C3 spine's carried candidate-selection data is discharged (C5) — the §1.35 verdict and
+B.2's "mint the node name when the producer lands" agree. So the live work stays C5: discharge
+`case_III_hsplit_producer`'s carried `Cᵢ`/`hp`/`hduality` and the OLD/NEW-block `hmemᵢ`, then C4
+folds in.
 
-**Finding (1) — the placed row, final answer.** KT eq. (6.29)'s top-left full-rank block is the
-`va`-panelRows plus the single row `r̂ := ∑ λ_{(ab)j} r_j(q(ab))` at `(vb)i*`; the producers
-(`linearIndependent_sum_{p2,augment}_candidateRow`) place exactly `hingeRow v b r̂` (resp. `v a r̂`),
-selector `r̂(C(e_b)) ≠ 0`. This row is **NOT a single `panelRow`** (panelRows annihilate `C(e_b)`,
-`r̂` does not — closes (g1)) but **IS in `span rigidityRows`** (`hingeRow v b r̂ = ∑ λ_j hingeRow v b r_j`,
-each `r_j ∈ (span C(e_b))^⊥` a panelRow at `e_b` — closes (g2): a *combination* of panelRows, not one).
-`exists_candidate_row_eq612` is about a **different `ρ`** (a block functional, the matrix-level
-eq.-(6.27) collapse producing the eq.-(6.29) *shape*), not the producer's `r̂`-row — the old "swap
-`r̂`-row by the collapse" Hand-off conflated the two. The swap core `linearIndependent_sumElim_candidateRow_swap`
-**cannot** swap the `r̂`-row for a panelRow (different cosets: panelRow ∈ `span base`, `r̂`-row ∉); the
-placed row is genuinely fresh, no single-panelRow substitute exists. (Swap core stands as a lemma; off
-the live route.)
-
-**Finding (2) — the device-feed fork, DECIDED: corrected route (A) on `exists_good_realization_const`.**
-The prompt's central question — is the panelRow shape load-bearing in the closure beyond
-`hcoord`/`hindep`? **YES** for `_ofParam`/`hasFullRankRealization_of_independent_panelRow[_index]`: its
-`hg` coordinatizes the rows as the degree-2 panel polynomials `annihRowPoly` in the free normals
-(GenericityDevice.lean:215–230) — an identity holding *only* for the literal `panelRow` shape, with no
-analog for a non-panelRow family. So the phase note's route (A) (relax `_index` to span-⊆-rigidityRows)
-does **not** drop in, and route (B) (single-panelRow `r̂`) is impossible by (1). **But**
-`HasFullRankRealization := ∃ Q, …IsInfinitesimallyRigidOn V(G)` asks for *some* rigid framework, not a
-generic one, so the candidate completion uses the **fixed** placement and the genericity-free
-`exists_good_realization_const` (CaseI.lean:2100, GREEN — runs the device on the *constant* family,
-`hg = eval_C`, **no panelRow shape**): fixed `F₀`, an arbitrary `span-⊆-rigidityRows` family, an
-independent subfamily of count `D(|V|−1)`, then `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`
-(the same N3 adapter). That is the corrected feed.
-
-**Finding (3) — abstract `F` (§38).** The `r̂`-producers + `_const` are graph-free over abstract
-`F : BodyHingeFramework`; `F` is instantiated to the concrete `ofNormals … q₀ᵢ` carrier **only** at
-the final device-feed call (per TACTICS-QUIRKS §38).
-
-**Just landed: C1 — the fixed-framework device-feed variant**
-(`PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow`, CaseI.lean). The keystone
-the corrected route turns on: fixed `F₀ = ofNormals G ends q₀`, an independent `f : ι → Module.Dual`
-with `span (range f) ≤ span F₀.rigidityRows` and `D(|V(G)|−1) ≤ |ι|` ⟹ `HasFullRankRealization k G`.
-Two pieces landed: (i) `exists_good_realization_const`'s `hspanrows` weakened `=`→`≤`; (ii) the
-rigidity-on-`V(G)` step refactored out of the existing `…_independent_rigidityRows` into a
-span-containment core `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`. C1 sits in
-CaseI.lean (not GenericityDevice as §1.35 said — the import goes CaseI → GenericityDevice). Build +
-lint clean.
-
-**Just landed: C2 — the single-candidate brick**
-(`PanelHingeFramework.hasFullRankRealization_of_candidateSelector`, CaseI.lean). Turns one
-candidate's row-space selector `hsel : r̂(Cᵢ) ≠ 0 → LinearIndependent fam` + per-row membership
-`hmem : ∀ i, fam i ∈ span rigidityRows` + count `D(|V|−1) ≤ |κ|` into
-`r̂(Cᵢ) ≠ 0 → HasFullRankRealization k G`, by assembling the span containment from `hmem`
-(`span_le`/`range_subset_iff`) and feeding C1 at the fixed `ofNormals G ends q₀`. Generic over the
-assembled family `fam` and index `κ` — it does **not** call the producers itself; it consumes their
-selector-shaped output (exactly the `hselᵢ` shape of `case_III_eq629_conditional`), so the producer
-machinery stays in the already-green abstract lemmas and the §38 trap is confined to C1's carrier.
-Build + lint clean, warning-free, sorry-free.
-
-**Next concrete step (smallest forward commit): the `r̂`/`Cᵢ`/`hduality` Claim-6.12 data** —
-`exists_redundant_panelRow_ab_decomposition` builds `r̂` and `candidateRow_ne_zero` its
-nonzero-ness; `case_III_claim612` is green via 22f. All three `hselᵢ` selectors are now in hand
-(`hsel₁`/`hsel₂`/`hsel₃`), so the remaining C5 ingredients are the Claim-6.12 data (`hr`/`hp`/
-`hduality`/`Cᵢ`) and the OLD/NEW-block `hmemᵢ` (L2 span bridge / L4 membership; the `+1` `r̂`-row
-`hmemᵢ` is in hand). **The C4↔C5 ordering is corrected:** a *green* `d=3`-instance `theorem_55`
-node (C4, B.2) cannot land before the C3 spine's carried candidate-selection data is discharged
-(C5) — the §1.35 verdict and B.2's "mint the node name when the producer lands" agree. So the live
-work stays C5: discharge `case_III_hsplit_producer`'s carried `hr`/`hp`/`hduality`/`Cᵢ` and the
-OLD/NEW-block `hmemᵢ`, then C4 folds in.
-
-**Just landed: the `hsel₁` (`M₁`) selector recast**
-(`BodyHingeFramework.linearIndependent_sum_augment_candidateRow_selector`, RigidityMatrix.lean).
-The last of the three candidate selectors, matching the `hsel₂`/`hsel₃` recasts. `M₁` (`p₁` split
-along the original `va`) has no separate producer — it *is* the candidate-completion assembly
-(`linearIndependent_sum_augment_candidateRow`) applied directly — so unlike the `p₂`/`p₃` selectors
-(which delegate the `hnewpinaug` discharge to their producers) this one builds the operated top-left
-block inline: `rw [hingeRow_comp_columnOp_comp_single hva r]` then the row-space criterion
-(`linearIndependent_sumElim_candidateRow_iff`). Still a thin ~4-line term wrapper; graph-free over
-abstract `F` (no §38). Build + lint clean, warning-free, axiom-clean (only the 3 standard axioms).
-With this all three `hselᵢ` are in hand; C5's remaining work is the Claim-6.12 `r̂`/`Cᵢ`/`hduality`
-data + the OLD/NEW-block `hmemᵢ`.
-
-**Earlier this phase: the `hsel₂`/`hsel₃` selector recasts** (`linearIndependent_sum_p2_candidateRow_selector`
-+ `linearIndependent_sum_p3_candidateRow_selector`, RigidityMatrix.lean). Package the `p₂`/`p₃`
-producers into the exact `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow ..
-r}) ro)` shape that `case_III_eq629_conditional` / `case_III_hsplit_producer` consume — by taking the
-candidate functional `ρ := r` and the supporting extensor `C := F.supportExtensor e`. Each is a
-one-line `fun hr => producer … hr` term proof (the producer's row-space criterion already does the
-work); graph-free over abstract `F` (no §38). Build + lint clean, warning-free, sorry-free. The `M₁`
-(`linearIndependent_sum_augment_candidateRow`) selector recast is the matching `hsel₁` leaf (it takes
-the operated full-block `hnewpinaug` rather than the row-space criterion, so it is the one remaining
-abstract selector before the §38-bearing final wiring).
-
-**Just landed: the `+1` `r̂`-row membership leaf** (`BodyHingeFramework.hingeRow_mem_rigidityRows`,
-Pinning.lean). The general block-row form of `panelRow_mem_rigidityRows`: for a link `e = uv` and
-*any* `r ∈ F.hingeRowBlock e`, `hingeRow u v r ∈ F.rigidityRows` directly by `rigidityRows`'s
-definition (`⟨e, u, v, hlink, r, hr, rfl⟩`). Discharges the `hmemᵢ` ingredient for the
-candidate-completion's `+1` row (§1.35 finding (1)): the placed row is `hingeRow v b r̂` with
-`r̂ = ∑_j λ_{(ab)j} r_j(q(ab))`, each `r_j ∈ r(p(e_b))` a hinge-row block member; since
-`hingeRowBlock e_b` is a `Submodule`, `r̂ ∈ hingeRowBlock e_b`, so the row is *directly* a rigidity
-row (cleaner than the note's earlier "= ∑ λ_j hingeRow v b r_j" route — no sum decomposition needed).
-Graph-free (no §38), one-line term proof, axiom-clean. Off the panelRow specialization (`r̂` is not a
-single `annihRow`; `r̂(C(e_b)) ≠ 0`).
+(Done C5 leaves — selectors `hsel₁`/`hsel₂`/`hsel₃`, the `+1` `r̂`-row `hmemᵢ`, the `r̂`
+candidate-vector data — are in the *Lemma checklist* + *Decisions made*; not duplicated here.)
 
 After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -285,10 +200,18 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   top-left block `hnewpinaug` inline (`hingeRow_comp_columnOp_comp_single` then the row-space criterion
   `linearIndependent_sumElim_candidateRow_iff`) rather than delegating like `hsel₂`/`hsel₃`. ~4-line
   term wrapper; graph-free (no §38), axiom-clean. All three `hselᵢ` now in hand. (2026-06-07)
-- [ ] **C5 — discharge `case_III_hsplit_producer`'s carried data** — `hr`/`hp`/`hduality`/`Cᵢ`
-  (all three `hselᵢ` selectors now in hand), and the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is
-  in hand). Wires `exists_redundant_panelRow_ab_decomposition` ⊕ `case_III_claim612` ⊕ the producers
-  at real `ofNormals` graph data (§38 defeq trap). Takes the C3 spine fully green.
+- [x] **C5-leaf — the `r̂` candidate-vector data (eqs. (6.24)/(6.25))**
+  (`BodyHingeFramework.exists_redundant_panelRow_ab_lam`, CaseI.lean; the mirror-eligible LA leaf
+  `exists_smul_combination_eq_sub_of_mem_span_image_compl`, `Mathlib/LinearAlgebra/.../Basic.lean`).
+  Reads off the explicit unit-normalized `λ` (KT eq. (6.25), `λ_{i^*} = 1`) from the redundant-row
+  decomposition's `r i = wGv + wOther`, so `r̂ := ∑_j λ_j r_j = wGv` (a `G_v`-row) and `r̂ ≠ 0`
+  (`hr`). Graph-free (no §38), axiom-clean. (2026-06-08)
+- [ ] **C5 — discharge `case_III_hsplit_producer`'s carried data** — `Cᵢ`/`hp`/`hduality` (the `hr`
+  half = `r̂ ≠ 0` now in hand; all three `hselᵢ` selectors too), and the OLD/NEW-block `hmemᵢ` (the
+  `+1`-row `hmemᵢ` is in hand). The remaining graph-free piece is `hduality` (the N3b annihilation
+  packaging over the six joins via `extensor_join_eq_zero_of_complementIso_eq_zero` + the N3a
+  incidence pattern); the rest wires `case_III_claim612` ⊕ the producers at real `ofNormals` graph
+  data (§38 defeq trap). Takes the C3 spine fully green.
 - [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
 - [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -307,19 +230,22 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   spine); the §38 trap re-enters only when the leaves that discharge `hmemᵢ` instantiate it.
 ## Hand-off / next phase
 
-**Smallest next commit: the Claim-6.12 `r̂`/`Cᵢ`/`hduality` data, OR an OLD/NEW-block `hmemᵢ` leaf.**
-All three candidate selectors (`hsel₁`/`hsel₂`/`hsel₃`) are now in hand, so the remaining C5
-ingredients are the carried Claim-6.12 data and the block memberships. **C4 (a green `theorem_55`
+**Smallest next commit: the `hduality` N3b-annihilation packaging, OR an OLD/NEW-block `hmemᵢ` leaf.**
+The `hr` half (`r̂ ≠ 0`, `r̂ = wGv`) just landed (`exists_redundant_panelRow_ab_lam`); all three
+candidate selectors (`hsel₁`/`hsel₂`/`hsel₃`) are in hand. The remaining C5 ingredients are the rest
+of the Claim-6.12 data (`Cᵢ`/`hp`/`hduality`) and the block memberships. **C4 (a green `theorem_55`
 `d=3`-instance) is blocked on C5** — it can only be minted once `case_III_hsplit_producer`'s carried
 candidate-selection data is discharged ("mint the node name when the producer lands", B.2). C5's
 remaining work at real `ofNormals` graph data (§38 defeq trap): discharge the C3 spine's carried —
-- `hr`/`hp`/`hduality`/`Cᵢ` from `exists_redundant_panelRow_ab_decomposition` (builds `r̂ = ∑
-  λ_{(ab)j} r_j`, nonzero by `λ_{(ab)i*} = 1`) + the N3b duality (`case_III_claim612`, green via 22f);
+- `Cᵢ`/`hp`/`hduality`: `hp` is `exists_affineIndependent_panel_incidence` (green); the `hduality`
+  packaging assembles `extensor_join_eq_zero_of_complementIso_eq_zero` (N3b core, green via 22f) over
+  the six joins, matching each candidate's supporting extensor `Cᵢ` (= panel-meet `complementIso (n∧n')`)
+  to its line's join via the N3a incidence pattern — graph-free, buildable before the §38 wiring;
 - the `hmemᵢ`: the OLD/NEW `so`/`sn` blocks via L2 span bridge (`span_panelRow_comp_single_of_edge`)
   / L4 membership (`panelRow_mem_rigidityRows_of_link`) on the L1 blocks, and the `+1` `r̂`-row via the
   now-landed `hingeRow_mem_rigidityRows` (the placed `hingeRow v b r̂` with `r̂ ∈ hingeRowBlock e_b`).
 
-A good next leaf: the `hr`/`Cᵢ`/`hduality` Claim-6.12 data — graph-free pieces buildable before the
+A good next leaf: the `hduality` N3b packaging — a graph-free piece buildable before the
 §38-bearing final wiring. Then C4 (mint the green `theorem_55 (n:=2) (k:=2)` instance node, **not** a
 standalone `theorem_55_dim3`), the `lem:case-II-realization` / `lem:case-III` flips, the Thm 5.5→5.6
 push. Full verified leaf sequence + the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35.
@@ -335,6 +261,15 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **The `r̂` candidate vector landed via a mirror-eligible coefficient-extraction leaf, not
+  inline (2026-06-08).** `exists_redundant_panelRow_ab_lam` (CaseI.lean) reads the explicit
+  unit-normalized `λ` (KT eq. (6.25), `λ_{i^*} = 1`) off the redundant-row decomposition's
+  `r i = wGv + wOther`, so `r̂ := ∑_j λ_j r_j = wGv` (a `G_v`-row) and `r̂ ≠ 0`. The actual
+  coefficient extraction is pure LA (negate `Fintype.mem_span_image_iff_exists_fun`, extend by `1`
+  at `i`; nonzero via `linearIndependent_sum_smul_ne_zero`), so it was mirrored as
+  `exists_smul_combination_eq_sub_of_mem_span_image_compl` (`Mathlib/LinearAlgebra/.../Basic.lean`,
+  alongside its sibling) over a nontrivial `Ring` rather than buried in the rigidity proof. Two
+  minor build cycles (FRICTION [mirrored]). Graph-free (no §38), axiom-clean.
 - **The `hsel₁` (`M₁`) selector builds `hnewpinaug` inline; the `hsel₂`/`hsel₃` ones delegate to the
   `p₂`/`p₃` producers (2026-06-07).** All three are `BodyHingeFramework`-level selector recasts
   packaging a candidate producer into the `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent famᵢ` shape
@@ -468,3 +403,5 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 - *The `ofNormals`/`withGraph` defeq-timeout trap + its extract-a-generic-helper mitigation*
   → TACTICS-QUIRKS § 38 (carried from 22a–e).
+- *The unit-normalized combination from a span-of-the-others membership*
+  (`exists_smul_combination_eq_sub_of_mem_span_image_compl`) → FRICTION [mirrored].
