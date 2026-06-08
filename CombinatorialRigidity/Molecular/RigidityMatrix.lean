@@ -1379,6 +1379,43 @@ theorem linearIndependent_sum_p3_candidateRow_selector (F : BodyHingeFramework k
         (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c r)) ro) :=
   fun hr => linearIndependent_sum_p3_candidateRow F e hac hold holdindep hrnpin hspan hr
 
+/-- **The `M₁` candidate selector: the un-symmetrized `va`-split block is full rank when the common
+candidate vector is not orthogonal to its supporting extensor** (`lem:case-III-candidate-row`, the
+selector recast of the `M₁` candidate-completion assembly; Katoh–Tanigawa 2011 §6.4.1, Phase 22g).
+The first of Claim~6.12's three candidates is `p₁` itself — split off at `v` along the *original*
+edge `va` — so it has no separate producer: it is the candidate-completion assembly
+(`linearIndependent_sum_augment_candidateRow`) applied directly at the column op `Φ = columnOp hva`
+for the edge `va`, with the operated top-left block `hnewpinaug` supplied by the row-space criterion
+(`linearIndependent_sumElim_candidateRow_iff`) at the `va`-hinge `e`. This packages it into the same
+`hsel₁` selector shape
+`r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro)`
+that `case_III_eq629_conditional` / the `d = 3` `hsplit` producer (`case_III_hsplit_producer`)
+consume, matching the `hsel₂`/`hsel₃` recasts. Unlike those two — which delegate the `hnewpinaug`
+discharge to the `p₂`/`p₃` producers — this one builds the operated block inline (there is no `M₁`
+producer to delegate to): once the operated, pinned candidate row `(hingeRow v a r̂) ∘ Φ ∘ single v`
+is identified with `r̂` (`hingeRow_comp_columnOp_comp_single`), the row-space criterion's
+`ScrewSpace k`-level iff reads on `hnewpinaug` directly. Graph-free (abstract `F`). -/
+theorem linearIndependent_sum_augment_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
+    [DecidableEq α] {v a : α} (hva : v ≠ a) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {r : Module.Dual ℝ (ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (hrnpin : LinearIndependent ℝ (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e) :
+    r (F.supportExtensor e) ≠ 0 →
+      LinearIndependent ℝ
+        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a r)) ro) :=
+  fun hr => linearIndependent_sum_augment_candidateRow hva hold
+    (by rw [hingeRow_comp_columnOp_comp_single hva r]
+        exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan r).2 hr)
+    holdindep
+
 /-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
 (`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).
 The candidate row shared by all three
