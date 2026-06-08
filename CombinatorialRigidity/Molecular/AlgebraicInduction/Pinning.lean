@@ -148,6 +148,26 @@ theorem panelRow_eq_hingeRow_annihRow_of_ends (F : BodyHingeFramework k α β) (
       = hingeRow u w (annihRow (F.supportExtensor e) t₁ t₂) := by
   rw [panelRow, hends]
 
+/-- **L4 — the candidate row is a rigidity row, by its edge's direct link**
+(`lem:case-II-realization` / `lem:case-III`, the membership leaf of the `d = 3` `hsplit` producer;
+Katoh–Tanigawa 2011 §6.4.1, eq. (6.27), Phase 22g). The candidate-completion assembly's `+1`
+`Unit`-summand row is the candidate placement's `e_a = va`-row; by L3
+(`panelRow_eq_hingeRow_annihRow_of_ends`) it IS the panel row at the `(edge, ⋀ᵏ-pair)` index
+`(e_a, t₁, t₂)`, so the device closure's packaging needs it to be a member of `rigidityRows`. Unlike
+the OLD block — whose `Gᵥ`-edges route through the IH subgraph `Gᵥ ≤ G` and need
+`IsSubgraph.isLink_iff` (the F2 sole use of `hGv` in `case_II_placement_eq612`'s membership step,
+CaseI.lean) — the candidate row's edge `e_a` links *directly* in the parent `G` (`hlink`, the
+`hG_ea` premise of the producer), so no subgraph transport is involved. The proof rewrites the
+endpoint selector by `hends : ends e = (u, w)` and feeds the direct link to
+`panelRow_mem_rigidityRows`. Graph-free over the carrier (`panelRow`/`rigidityRows` read only
+`ends`/`supportExtensor`/`graph`), so the `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38)
+does not bite. -/
+theorem panelRow_mem_rigidityRows_of_link (F : BodyHingeFramework k α β) (ends : β → α × α)
+    {e : β} {u w : α} (hends : ends e = (u, w)) (hlink : F.graph.IsLink e u w)
+    (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    F.panelRow ends (e, t₁, t₂) ∈ F.rigidityRows :=
+  F.panelRow_mem_rigidityRows (i := (e, t₁, t₂)) (by rw [hends]; exact hlink)
+
 /-- **Leg-restricted: the panel rows of the *linking* edges span the rigidity-row space**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of `span_panelRow_eq_rigidityRows`;
 Katoh–Tanigawa 2011 §6.2, Phase 22). The form Case I's *proper-subgraph* legs need. For a leg
