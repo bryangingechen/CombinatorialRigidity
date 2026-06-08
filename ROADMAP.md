@@ -889,18 +889,19 @@ realization assembly (Phase 22g). Forward-mode; dep-graph `algebraic-induction/c
 `notes/Phase22g.md`).** The deferred-unlettered "`d=3` assembly" cut, now lettered 22g, takes the
 two producer nodes `lem:case-II-realization` / `lem:case-III` from red to green at `d = 3`. With the
 `d=3` Case-III contrapositive fully green through Phase 22f, the one real gap is the **`d=3` `hsplit`
-producer**: wire the green bricks `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`) ⊕ the
-candidate row ⊕ `case_III_claim612` into the graph-free `linearIndependent_sum_augment_candidateRow`
-at real graph data (where the `ofNormals`/`withGraph` defeq-timeout trap bites, TACTICS-QUIRKS §38),
+producer**: compose the green bricks `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`) ⊕ the
+candidate row ⊕ `case_III_claim612` into a full-rank realization at the fixed degenerate placement,
 then instantiate `theorem_55 (n:=2) (k:=2)` on it + the green `hcontract`/`hbase` and feed
-`rigidityMatrix_prop11`'s `hgen` (whose `hub` lower bound is already green). The opening recon
+`rigidityMatrix_prop11`'s `hgen` (whose `hub` lower bound is already green). The producer build is
+cracked into buildable leaves (`notes/Phase22-realization-design.md` §1.34/§1.35; the `ofNormals`
+defeq-timeout trap, TACTICS-QUIRKS §38, is confined to the device-feed carrier). The opening recon
 resolved its two flagged items: the path does **not** consume the red `lem:cycle-realization` (KT
 Lemma 5.4 is a KT-narrative dependency at the Phase-23 cycle base, not Lean-load-bearing — the
 `minimal_kdof_reduction` induction has no cycle branch), and a small `d=3`-instance `theorem_55` node
 (not a standalone restatement) is the chosen architecture for Cor 5.7. Milestone: the molecular
 conjecture proved at `d = 3` (unblocking Cor 5.7, Phases 24–26). General `d` (KT Lemma 6.13) is
-Phase 23. Recon verdict + build spine + the reuse map: `notes/Phase22g.md`,
-`notes/Phase22-realization-design.md` §1.33.
+Phase 23. Recon verdict + corrected build decomposition + the reuse map: `notes/Phase22g.md`,
+`notes/Phase22-realization-design.md` §1.33/§1.35.
 
 ## Engineering conventions
 
