@@ -326,9 +326,13 @@ capstone `case_III_eq629_conditional` (GREEN), and the packaging feed
   `case_II_placement_eq612` does) and the new block `rn` (one of `v`'s edges). Mostly a re-slice of
   `case_II_placement_eq612`'s internals; graph-free over `ofNormals`. Shape: produces the `ιn`/`ιo`
   families + `hold`/`holdindep` the assembly consumes.
-- **L2 — the pinned-block span bridge (F3).** `rn` pinned through `v`'s column spans `F.hingeRowBlock
-  e_b`: `span_panelRow_edge_eq` + `finrank_hingeRowBlock` (GREEN) ⟹ `hspan`. A small `Submodule.eq_of_le_of_finrank_eq`
-  leaf (mirrors `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan`, CaseI.lean:2865).
+- **L2 — the pinned-block span bridge (F3). LANDED** (`span_panelRow_comp_single_of_edge`,
+  Pinning.lean). `rn` pinned through `v`'s column spans `F.hingeRowBlock e_b`: each pinned row IS the
+  bare `annihRow (C(e)) t₁ t₂ ∈ r(p(e))` (`single v` reads `v`, the distinct other endpoint `0`), `=`
+  by equal `finrank D−1` (`linearIndependent_panelRow_comp_single_of_edge` + `finrank_hingeRowBlock`).
+  The `comp Φ` the producers carry is identity at the pin (`columnOp hvb (single v x) = single v x`,
+  `b ≠ v`), so this `hspan` feeds them directly. A small `Submodule.eq_of_le_of_finrank_eq` leaf,
+  mirroring `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan`.
 - **L3 — the §38 defeq leaf, ISOLATED.** The one place real graph data meets the `ofNormals`/`withGraph`
   `whnf`/`isDefEq` trap: showing the seed `q₀`/selector `ends` of the candidate placement gives the
   candidate row's supporting extensor `C(e_a) ≠ 0` (the `va`-line `L ⊂ Π(a)`, KT eq. (6.12), `t ≠ 0`)

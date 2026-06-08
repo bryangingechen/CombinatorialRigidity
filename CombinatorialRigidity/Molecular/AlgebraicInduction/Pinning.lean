@@ -456,6 +456,64 @@ theorem linearIndependent_panelRow_comp_single_of_edge [DecidableEq α]
       LinearMap.coe_single, Pi.single_eq_same, Pi.single_eq_of_ne hev, sub_zero, hingeRow_apply]
   rw [heq]; exact hindep
 
+/-- **L2 — the pinned new-block rows span the whole hinge-row block**
+(`lem:case-II-placement-new-rows` infra, the `hspan` input of the Claim-6.12 candidate producers;
+Katoh–Tanigawa 2011 §6.4.1, Phase 22g). The candidate-completion full-block producers
+(`linearIndependent_sum_p2_candidateRow` / `linearIndependent_sum_p3_candidateRow`, via the
+row-space criterion `linearIndependent_sumElim_candidateRow_iff`) consume not just the
+*independence* of the re-inserted body `v`'s new-block rows pinned to its screw column
+(`linearIndependent_panelRow_comp_single_of_edge`, the `hrnpin` input) but that they *span* the
+whole hinge-row block `r(p(e)) = (span C(p(e)))^⊥`. This certifies that equality.
+
+For a transversal hinge `e = vw` (`hev : (ends e).2 ≠ (ends e).1`, nonzero supporting extensor
+`hne`) and an independent panel-row subfamily `s` all using `e` (`hs`) of full per-edge size
+`Nat.card s = D − 1` (`hcard`; supplied by `exists_independent_panelRow_subfamily_of_edge`), the
+span of the pinned rows `(panelRow ends i) ∘ₗ single (ends e).1` equals `F.hingeRowBlock e`. The
+`⊆` is membership: each pinned row is the annihilator functional `annihRow (C(p(e))) i.2.1 i.2.2`
+itself (`hingeRow v w r ∘ₗ single v = r`, the `single v` puts the test screw on `v`, the other
+endpoint `w ≠ v` reads `0`), which lies in `r(p(e)) = (span C(p(e)))^⊥` (`mem_hingeRowBlock_iff`
++ `annihRow_apply_self`). The `=` upgrades it through equal `finrank D − 1`: the pinned family is
+independent of size `D − 1` (`linearIndependent_panelRow_comp_single_of_edge` + `hcard`) and the
+block is `(D − 1)`-dimensional (`finrank_hingeRowBlock`). Mirrors
+`exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan` (the per-edge panel-row span half). -/
+theorem span_panelRow_comp_single_of_edge [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ends : β → α × α} {e : β}
+    (hev : (ends e).2 ≠ (ends e).1) (hne : F.supportExtensor e ≠ 0)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, (i : β × _ × _).1 = e) (hcard : Nat.card s = screwDim k - 1)
+    (hindep : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _))) :
+    Submodule.span ℝ (Set.range (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e).1))) = F.hingeRowBlock e := by
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  -- The pinned family is independent in the (finite-dimensional) small dual
+  -- `Dual ℝ (ScrewSpace k)`, so `↥s` is finite; this gives the `Fintype ↥s` the `finrank` count
+  -- needs.
+  have hpinindep := F.linearIndependent_panelRow_comp_single_of_edge hev hs hindep
+  haveI : Finite ↥s := hpinindep.finite
+  haveI : Fintype ↥s := Fintype.ofFinite ↥s
+  refine Submodule.eq_of_le_of_finrank_eq ?_ ?_
+  · -- `⊆`: each pinned row is the bare annihilator functional `annihRow (C(p(e))) i.2.1 i.2.2`
+    -- (`single (ends e).1` puts the test screw on `(ends e).1`, the distinct other endpoint reads
+    -- `0`), which lies in `r(p(e)) = (span C(p(e)))^⊥` (`mem_hingeRowBlock_iff` +
+    -- `annihRow_apply_self`).
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨i, hi⟩, rfl⟩
+    have hie : i.1 = e := hs i hi
+    change (F.panelRow ends i).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e).1) ∈ _
+    have hpin : (F.panelRow ends i).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e).1)
+        = annihRow (F.supportExtensor e) i.2.1 i.2.2 := by
+      refine LinearMap.ext fun x => ?_
+      rw [LinearMap.comp_apply, panelRow, hie, hingeRow_apply, LinearMap.coe_single,
+        Pi.single_eq_same, Pi.single_eq_of_ne hev, sub_zero]
+    rw [hpin, SetLike.mem_coe, mem_hingeRowBlock_iff]
+    exact annihRow_apply_self _ _ _
+  · -- `=` by equal `finrank D − 1`: the pinned family is independent of size `D − 1`, and the
+    -- block is `(D − 1)`-dimensional.
+    rw [finrank_span_eq_card hpinindep, ← Nat.card_eq_fintype_card, hcard,
+      F.finrank_hingeRowBlock hne]
+
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
 `dim Z(G,p) = D + k`, i.e. `rank R(G,p) = D|V| − dim Z(G,p) = D(|V|−1) − k`
