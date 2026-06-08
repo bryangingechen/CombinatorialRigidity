@@ -3343,6 +3343,56 @@ theorem PanelHingeFramework.case_III_old_new_blocks [DecidableEq α] [Finite α]
   exact ⟨hane, hnewne, so, hso_card, hso_indep_G, hold, hso_ne_eb, sn, hsn_e, hsn_card, hsn_indep,
     hnewpin⟩
 
+/-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
+`lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
+2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
+(`linearIndependent_sum_{augment,p2,p3}_candidateRow`) outputs a `Sum`-indexed family
+`(rn ⊕ {candidate row}) ⊕ ro` over `ι = (sn ⊕ Unit) ⊕ so`; the abstractly-indexed device feed
+(`hasFullRankRealization_of_independent_panelRow_index`) consumes it along an injective index map
+`j` placing each block index at its `(edge, ⋀ᵏ-pair)`. This certifies that `j` is injective — the
+candidate analog of the inline `hjinj` of `case_II_placement_eq612` (which has only the
+`sn ⊕ so` two-block split), with the extra `Unit` summand for the candidate row's edge `e_a`.
+
+The `sn`-indices use the new-block edge `e_b` (`hsn_e`); the candidate `Unit`-index uses `e_a`
+(the `va`-hinge of the re-inserted body `v`); the `so`-indices use `Gᵥ`-edges, none equal to `e_b`
+(`hso_ne_eb`, from `case_III_old_new_blocks`) nor `e_a` (`hso_ne_ea`; both link the fresh body
+`v ∉ V(Gᵥ)`). With `e_a ≠ e_b` (`heab`) the three blocks have pairwise-disjoint edge-supports, so
+the map is injective: a collision within `sn` or `so` is `Subtype.val`-injectivity, and any
+cross-block collision contradicts one of the three disjointness facts on the first coordinate. This
+is graph-free over the carrier (it reads only the edge labels), so the recurring `ofNormals`/
+`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem PanelHingeFramework.candidateCompletion_index_injective
+    {sn so : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    {e_a e_b : β} {ta tb : Set.powersetCard (Fin (k + 2)) k} (heab : e_a ≠ e_b)
+    (hsn_e : ∀ i ∈ sn, (i : β × _ × _).1 = e_b)
+    (hso_ne_eb : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_b)
+    (hso_ne_ea : ∀ i ∈ so, (i : β × _ × _).1 ≠ e_a) :
+    Function.Injective
+      (Sum.elim (Sum.elim (fun i : sn => (i : β × _ × _)) (fun _ : Unit => (e_a, ta, tb)))
+        (fun i : so => (i : β × _ × _)) :
+        (sn ⊕ Unit) ⊕ so → β × Set.powersetCard (Fin (k + 2)) k
+          × Set.powersetCard (Fin (k + 2)) k) := by
+  rintro ((⟨in₁, hin₁⟩ | u₁) | ⟨io₁, hio₁⟩) ((⟨in₂, hin₂⟩ | u₂) | ⟨io₂, hio₂⟩) hab <;>
+    simp only [Sum.elim_inl, Sum.elim_inr] at hab
+  -- `sn` vs `sn`: `Subtype.val` injective.
+  · exact congrArg (Sum.inl ∘ Sum.inl) (Subtype.ext hab)
+  -- `sn` vs `Unit`: the `sn`-edge `e_b` would equal `e_a`, against `heab`.
+  · exact absurd ((hsn_e _ hin₁).symm.trans (congrArg Prod.fst hab)) heab.symm
+  -- `sn` vs `so`: the `so`-edge would equal `e_b`, against `hso_ne_eb`.
+  · exact absurd ((congrArg Prod.fst hab).symm.trans (hsn_e _ hin₁)) (hso_ne_eb _ hio₂)
+  -- `Unit` vs `sn`: symmetric to the `sn` vs `Unit` case.
+  · exact absurd ((hsn_e _ hin₂).symm.trans (congrArg Prod.fst hab).symm) heab.symm
+  -- `Unit` vs `Unit`: both indices are `()`.
+  · rw [Subsingleton.elim u₁ u₂]
+  -- `Unit` vs `so`: the `so`-edge would equal `e_a`, against `hso_ne_ea`.
+  · exact absurd (congrArg Prod.fst hab).symm (hso_ne_ea _ hio₂)
+  -- `so` vs `sn`: symmetric to the `sn` vs `so` case.
+  · exact absurd ((congrArg Prod.fst hab).trans (hsn_e _ hin₂)) (hso_ne_eb _ hio₁)
+  -- `so` vs `Unit`: symmetric to the `Unit` vs `so` case.
+  · exact absurd (congrArg Prod.fst hab) (hso_ne_ea _ hio₁)
+  -- `so` vs `so`: `Subtype.val` injective.
+  · exact congrArg Sum.inr (Subtype.ext hab)
+
 /-- **L0 — the `d = 3` `hsplit` producer skeleton** (`lem:case-II-realization` / `lem:case-III`,
 the `theorem_55.hsplit` branch at `k = 2`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phase 22g). The
 spine of the conjecture's crux at `d = 3`: given a realization of the split-off `G_v^{ab}` it

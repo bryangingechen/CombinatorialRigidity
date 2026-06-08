@@ -349,9 +349,18 @@ capstone `case_III_eq629_conditional` (GREEN), and the packaging feed
   premise data), so `panelRow_mem_rigidityRows` gives the rigidityRows membership for the `+1` summand
   — the analog of `case_II_placement_eq612`'s membership step (CaseI.lean:2795), now for `e_a` instead
   of via `hGv`. Closes the F2 gap.
-- **L5 — the `j` / `Sum.elim` packaging (§1 question 2).** See §2 below; whether `j`'s injectivity is
-  its own leaf — YES, it is the candidate analog of `case_II_placement_eq612`'s `hjinj`
-  (CaseI.lean:2768), one extra summand.
+- **L5 — the `j` / `Sum.elim` packaging (§1 question 2).** See §2 below; `j`'s injectivity is its own
+  leaf — YES, the candidate analog of `case_II_placement_eq612`'s `hjinj` (one extra `Unit` summand).
+  **Split when built: L5-inj LANDED** (`candidateCompletion_index_injective`, CaseI.lean — abstract over
+  the three disjointness facts; note it needs a NEW `hso_ne_ea` fact L1 doesn't yet emit, since `so`
+  must avoid `e_a` too, both linking the fresh `v ∉ V(Gᵥ)`). **L5-pack remains** = the `panelRow ∘ j`
+  family identity + count. **(F1) subtlety surfaced building L5:** the candidate producer's `ρ` is a
+  *general* block functional in `r(p(e_a)) = (span C)^⊥`, NOT a priori a single `annihRow (C) ta tb`, so
+  the `Unit`-summand `hingeRow v a ρ` is not literally one `panelRow` (F1 as stated needs `ρ` to be a
+  single `annihRow`). L5-pack resolves this: either realize `ρ` as a specific pair via
+  `span_annihRow_eq_dualAnnihilator` (the block IS spanned by the `annihRow` family) and pick the
+  candidate row from such a pair, or restate the device feed (`…_index`) to accept a `Sum.elim` of
+  `panelRow`s + one block functional directly. Assess the smaller commit when L5-pack opens.
 
 #### §1 question 2 — the `j` / `Sum.elim` packaging bridge (concrete)
 

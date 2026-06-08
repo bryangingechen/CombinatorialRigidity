@@ -7,22 +7,27 @@ that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
 
 ## Current state
 
-**Just landed: L4, the candidate-row `rigidityRows` membership leaf**
-(`BodyHingeFramework.panelRow_mem_rigidityRows_of_link`, Pinning.lean). The `+1` `Unit`-summand
-candidate row IS the panel row at `(e_a, t₁, t₂)` (L3); its edge `e_a` links `v a` *directly* in `G`
-(`hlink`, the `hG_ea` premise), so `panelRow_mem_rigidityRows` (after `rw [hends]`) gives the
-membership — the direct-`G`-link analog of `case_II_placement_eq612`'s `hGv`-routed membership step.
-Closes the F2 gap. One-liner; graph-free (no §38 trap); fully green, sorry-free (axioms =
-`propext`/`choice`/`Quot.sound`), warning-clean, lint clean.
+**Just landed: L5-inj, the candidate-completion index-map injectivity leaf**
+(`PanelHingeFramework.candidateCompletion_index_injective`, CaseI.lean). The candidate-completion
+index `j = Sum.elim (Sum.elim (sn-vals) (const (e_a,ta,tb))) (so-vals)` over `(sn ⊕ Unit) ⊕ so` is
+injective — the candidate analog of `case_II_placement_eq612`'s inline `hjinj` (two-block `sn ⊕ so`),
+now with the extra `Unit` summand at `e_a`: three pairwise-disjoint edge-supports (`sn`→`e_b`,
+`Unit`→`e_a`, `so`→`Gᵥ`-edges ≠ `e_b`,`e_a`; `e_a ≠ e_b`). Abstract (caller supplies the three
+disjointness facts as `hsn_e`/`hso_ne_eb`/`hso_ne_ea`), graph-free (reads only edge labels, no §38
+trap). Fully green, sorry-free (axioms = `propext`/`Quot.sound`), warning-clean, lint clean.
 
-**Next concrete step (smallest forward commit): L5 — the `j`/`Sum.elim` packaging + injectivity.**
-`ι = (ιn ⊕ Unit) ⊕ ιo`; `j` places `ιn→e_b`, `Unit→e_a` (candidate row = `panelRow ends (e_a,·)` by
-L3, member by L4), `ιo→Gv`-edges. Injectivity is its own leaf (analog of `hjinj`,
-CaseI.lean:2768 — three pairwise-disjoint edge-supports: `e_a`/`e_b` distinct since `eₐ ≠ e_b`,
-`Gv`-edges excluding both since they'd link `v ∉ V(Gv)`). Then `…_index` reindexes independence across
-`Equiv.ofInjective j` + counts by `Nat.card_range_of_injective`; target count
-`D(|V|−1) = ((D−1)+1)+D(|V_v|−1)`. All bricks green; pure plumbing. See §1.34 / the checklist below for
-the `j` shape.
+**Next concrete step (smallest forward commit): L5-pack — the `j`/`Sum.elim` `panelRow ∘ j` packaging.**
+With injectivity now its own leaf (`candidateCompletion_index_injective`), L5-pack ties the candidate
+producer's abstract `Sum.elim (Sum.elim rn (Unit→hingeRow v a ρ)) ro` family
+(`linearIndependent_sum_{p2,augment}_candidateRow` on the L1 blocks + L2 span) to the
+`fun i => panelRow ends (j i)` shape the device feed
+(`hasFullRankRealization_of_independent_panelRow_index`) needs: `rn i = panelRow ends (sn-val)`,
+`ro i = panelRow ends (so-val)`, and the `Unit`-summand `hingeRow v a ρ = panelRow ends (e_a,ta,tb)`
+**once `ρ` is realized as `annihRow (C(e_a)) ta tb`** (the subtlety §1.34 (F1) glosses: the producer's
+`ρ` is a general block functional in `r(p(e_a)) = (span C)^⊥`, NOT a priori a single `annihRow`; pick
+the realizing pair via `span_annihRow_eq_dualAnnihilator` / route the device feed to accept the
+`Sum.elim` family directly — assess which is smaller). Then feed `…_index` with this leaf + the
+landed injectivity. Target count `D(|V|−1) = ((D−1)+1)+D(|V_v|−1)`. See §1.34 / the checklist below.
 
 (L0 spine, landed earlier this phase: `PanelHingeFramework.case_III_hsplit_producer` carries the
 candidate-selection data + each candidate's `panelRow`-packaging as explicit `h…` and composes
@@ -36,10 +41,11 @@ do the Thm 5.5→5.6 multigraph push (`lem:motions-mono-of-graph-le`). Milestone
 conjecture proved at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is
 **Phase 23** (reuse map: §1.33 (C)).
 
-**Spine + L1–L4 green; L5 remains.** §1.34 cracked the producer core into L0–L5; L0 (the spine)
-is green-modulo, L1 (block extraction) + L2 (span bridge) + L3 (candidate-row-as-panelRow) +
-L4 (candidate-row membership) green. The phase-open red-node + supersession + label-resolution gates
-ran clean at open.
+**Spine + L1–L4 + L5-inj green; L5-pack remains.** §1.34 cracked the producer core into L0–L5; L0
+(the spine) is green-modulo, L1 (block extraction) + L2 (span bridge) + L3 (candidate-row-as-panelRow)
++ L4 (candidate-row membership) + L5-inj (the index-map injectivity) green. L5-pack (the
+`panelRow ∘ j` family identity + count) is the last leaf before the spine's carried `hfamᵢ`/`hjᵢ`/
+`hcardᵢ` discharge. The phase-open red-node + supersession + label-resolution gates ran clean at open.
 
 ## Red-node consistency gate — recon verdict (2026-06-07, opening commit)
 
@@ -126,9 +132,17 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
     (after `rw [hends]`) for the `+1` summand — the direct-link analog of `case_II_placement_eq612`'s
     `hGv`-routed membership step. Closes the F2 gap. One-liner, graph-free (no §38). Green, sorry-free.
     (2026-06-07)
-  - [ ] **L5 — the `j`/`Sum.elim` packaging + injectivity.** `ι = (ιn ⊕ Unit) ⊕ ιo`; `j` places `ιn→e_b`,
-    `Unit→e_a` (candidate row IS `panelRow ends (e_a,·)` by F1), `ιo→Gv`-edges. Injectivity is its own
-    leaf (analog of `hjinj`, three disjoint edge-supports). Count `D(|V|−1) = ((D−1)+1)+D(|V_v|−1)`.
+  - [x] **L5-inj — the candidate-completion index-map injectivity**
+    (`PanelHingeFramework.candidateCompletion_index_injective`, CaseI.lean). `j` over `(sn ⊕ Unit) ⊕ so`
+    placing `sn→e_b`, `Unit→e_a`, `so→Gᵥ`-edges is injective — the candidate analog of
+    `case_II_placement_eq612`'s inline `hjinj`, abstract (3 disjointness facts in), graph-free (no §38).
+    Green, sorry-free. (2026-06-07)
+  - [ ] **L5-pack — the `panelRow ∘ j` family identity + count.** Tie the candidate producer's abstract
+    `Sum.elim` family to `fun i => panelRow ends (j i)`: `rn`/`ro` are `panelRow`s of `sn`/`so`-vals, the
+    `Unit`-summand `hingeRow v a ρ = panelRow ends (e_a,ta,tb)` once `ρ` is realized as `annihRow (C(e_a)) ta tb`
+    (the (F1) subtlety: producer `ρ` is a *general* block functional, realize via
+    `span_annihRow_eq_dualAnnihilator` OR route the device feed to accept the `Sum.elim` family directly).
+    Then feed `…_index` with this + L5-inj. Count `D(|V|−1) = ((D−1)+1)+D(|V_v|−1)`.
 - [ ] **`d=3`-instance `theorem_55` node** (B.2) — instantiate `theorem_55 (n:=2) (k:=2)` on the
   three green branch args; add the small green blueprint node the molecule-app chapter consumes.
 - [ ] **`lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -150,18 +164,24 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 
 ## Hand-off / next phase
 
-**Smallest next commit: build L5 — the `j`/`Sum.elim` packaging + injectivity.** L0–L4 are green: L1
-(`case_III_old_new_blocks`) gives the OLD/NEW blocks + `hane`/`hnewne`, L2
+**Smallest next commit: build L5-pack — the `panelRow ∘ j` family identity + count.** L0–L4 + L5-inj
+are green: L1 (`case_III_old_new_blocks`) gives the OLD/NEW blocks + `hane`/`hnewne`, L2
 (`span_panelRow_comp_single_of_edge`) gives the FULL hinge-block span, L3
 (`panelRow_eq_hingeRow_annihRow_of_ends`) identifies the `+1` candidate row as a `panelRow`, L4
-(`panelRow_mem_rigidityRows_of_link`) gives that row's `rigidityRows` membership. L5: index
-`ι = (ιn ⊕ Unit) ⊕ ιo`; the injective `j` places `ιn→e_b`, `Unit→e_a`, `ιo→Gv`-edges, then `…_index`
-reindexes independence across `Equiv.ofInjective j` + counts by `Nat.card_range_of_injective` (target
-`D(|V|−1) = ((D−1)+1)+D(|V_v|−1)`). Injectivity is its own leaf (the candidate analog of `hjinj`,
-CaseI.lean:2768 — three pairwise-disjoint edge-supports). Pure green-brick plumbing, no §38 risk. Then
-the `theorem_55` instantiation (B.2 node), the `lem:case-II-realization` / `lem:case-III` flips, and the
-Thm 5.5→5.6 push. Full leaf shapes, the `j` bridge, and the three structural facts:
-`notes/Phase22-realization-design.md` §1.34.
+(`panelRow_mem_rigidityRows_of_link`) gives that row's `rigidityRows` membership, and L5-inj
+(`candidateCompletion_index_injective`) gives the injective index map over `(sn ⊕ Unit) ⊕ so`.
+L5-pack: run a candidate producer (`linearIndependent_sum_p2_candidateRow` on the L1 blocks + L2 span)
+and tie its abstract `Sum.elim` family to `fun i => panelRow ends (j i)` (the device feed
+`…_index`'s shape), then feed `…_index` with the injectivity. **The one residual subtlety** (§1.34's
+(F1) glosses it): the producer's candidate functional `ρ` is a *general* member of the block
+`r(p(e_a)) = (span C)^⊥`, not a priori a single `annihRow (C(e_a)) ta tb`, so the `Unit`-summand
+isn't literally one `panelRow` — either realize `ρ` as a specific pair via
+`span_annihRow_eq_dualAnnihilator` (the block is spanned by the `annihRow` family) and choose the
+candidate row from such a pair, or restate the device feed to accept a `Sum.elim` family of `panelRow`s
+plus one block functional directly; assess which is the smaller commit when L5-pack opens. Count
+`D(|V|−1) = ((D−1)+1)+D(|V_v|−1)`. Then the `theorem_55` instantiation (B.2 node), the
+`lem:case-II-realization` / `lem:case-III` flips, and the Thm 5.5→5.6 push. Full leaf shapes, the `j`
+bridge, and the three structural facts: `notes/Phase22-realization-design.md` §1.34.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -174,6 +194,17 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **L5-inj landed: the candidate-completion index-map injectivity leaf (2026-06-07).**
+  `PanelHingeFramework.candidateCompletion_index_injective` (CaseI.lean, next to the L0 spine): the index
+  `j = Sum.elim (Sum.elim (sn-vals) (const (e_a,ta,tb))) (so-vals)` over `(sn ⊕ Unit) ⊕ so` is injective.
+  The candidate analog of `case_II_placement_eq612`'s inline `hjinj` (its two-block `sn ⊕ so`), with the
+  extra `Unit` summand for the candidate edge `e_a` — 9-way `rintro` case split, each cross-block clash
+  closed by one of the three disjointness facts on the first coordinate (`e_a ≠ e_b`, `so` avoids both).
+  Stated **abstractly** (the three facts as hypotheses `hsn_e`/`hso_ne_eb`/`hso_ne_ea`) so it is a clean
+  reusable leaf and graph-free (reads only edge labels, no §38 trap). `hso_ne_ea` (so avoids `e_a`) is a
+  NEW disjointness fact L1 does not yet output (it gives only `hso_ne_eb`); L5-pack must supply it (both
+  `e_a`/`e_b` link the fresh `v ∉ V(Gᵥ)`, so no `Gᵥ`-edge is either). No new FRICTION (the established
+  `Sum.elim`-injectivity idiom). Splits L5 into L5-inj (done) + L5-pack (the `panelRow ∘ j` identity).
 - **L4 landed: the candidate-row `rigidityRows` membership leaf (2026-06-07).**
   `BodyHingeFramework.panelRow_mem_rigidityRows_of_link` (Pinning.lean, next to L3): given
   `ends e = (u,w)` + a direct `F.graph.IsLink e u w`, the panel row at `(e,t₁,t₂)` is a rigidity row.
