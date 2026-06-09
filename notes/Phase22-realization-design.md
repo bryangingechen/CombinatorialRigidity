@@ -518,6 +518,81 @@ the L0 `hfamᵢ` contract change. Compress to a pointer in `notes/Phase22g.md`.
 
 ---
 
+### 1.36 The `hduality` six-join modeling subtlety — restate to the per-panel-line model (route (a)) (2026-06-08)
+
+Building the per-line N3b brick (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, C5b's
+verified ingredient) surfaced a red-node-consistency question on `case_III_claim612`'s `hduality`
+hypothesis. This is the resolution (canonical home; `notes/Phase22g.md` carries the ≤3-line verdict +
+pointer). Verified against KT §6.4.1 eqs. (6.42)–(6.45) (printed pp. 690–691), the green
+`case_III_claim612` proof, the per-line brick, and N3a (`exists_affineIndependent_panel_incidence`).
+
+**The shape as currently stated (RigidityMatrix.lean:1519).** `case_III_claim612` carries
+`hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 → ∀ q : {q // q.1 < q.2}, r (omitTwoExtensor (homogenize ∘
+p) …) = 0`, with three **fixed** `C₁ C₂ C₃ : ScrewSpace 2` (= the three candidate hinge support
+extensors `F.supportExtensor e`, each itself a panel-meet `complementIso (n_u ∧ n_v)`). The green
+proof is honest — it forwards `hduality` to `eq_zero_of_annihilates_span_top
+(span_omitTwoExtensor_eq_top hp)`. Both downstream consumers (`case_III_eq629_conditional`:1564,
+`case_III_hsplit_producer`, CaseI.lean:3640) likewise *forward* `hduality` as an explicit hypothesis;
+**nobody discharges it.** The discharge obligation lives at C5 (the producer's carried data).
+
+**Why it is undischargeable as stated (decisive).** `ScrewSpace 2 = ⋀²ℝ⁴` has `finrank = 6`. Three
+`2`-extensors `C₁,C₂,C₃` span a subspace of dimension `≤ 3`, so `r ⊥ C₁,C₂,C₃` is satisfiable by a
+nonzero `r` (the orthogonal complement is `≥ 3`-dimensional). Hence "`r C₁=0 → r C₂=0 → r C₃=0 →
+r ⊥ (all six joins, which span 6 dims)`" cannot be proved from the three fixed `Cᵢ` alone — it would
+force `r = 0` on a satisfiable premise. This is *strictly stronger* than the previous agent's framing
+("can't reach the three single-panel opposite joins"): with the brick fixing each join's line, the
+fixed `Cᵢ` reach *no* join whose line ≠ a `Cᵢ`-line. **Route (c) — "three fixed `Cᵢ` are
+sufficient" — is decisively wrong.**
+
+**What KT actually does (the per-panel-line quantification).** Claim 6.12 (p. 690): "at least one of
+`M₁,M₂,M₃` has full rank **for some choice** of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`." The
+contrapositive negates the existential: for **all** choices, all three blocks fail, giving (eqs.
+(6.42)–(6.44)) `r ⊥ C(L)` for *every* `L ⊂ Π(a)`, every `L' ⊂ Π(b)`, every `L'' ⊂ Π(c)` — i.e.
+`r ⊥` the entire union (6.45) `(∪_{L⊂Π(a)} C(L)) ∪ (∪_{L'⊂Π(b)} C(L')) ∪ (∪_{L''⊂Π(c)} C(L''))`. KT
+then takes four affinely-independent points `p0 = Π(a)∩Π(b)∩Π(c)`, `p1 ∈ Π(a)∩Π(b)∖Π(c)`,
+`p2 ∈ Π(b)∩Π(c)∖Π(a)`, `p3 ∈ Π(a)∩Π(c)∖Π(b)`; *every* join-line `pᵢpⱼ` lies in `Π(a)∪Π(b)∪Π(c)` (each
+endpoint pair shares ≥ 1 panel), so each join's `C(pᵢpⱼ)` is a member of (6.45). Lemma 2.1 ⟹ the six
+joins span `⋀²ℝ⁴`, so `r = 0`. **The quantification is genuinely per-panel-line; the three fixed
+candidate-hinge `Cᵢ` are not the annihilated family — the union (6.45) is.**
+
+**N3a panel-incidence data (`exists_affineIndependent_panel_incidence`, green).** Supplies three panel
+normals `n : Fin 3 → Fin 4 → ℝ` (`LinearIndependent`, the "nonparallel" hypothesis) for Π(a)/Π(b)/Π(c)
+and four affinely-indep points `p : Fin 4 → Fin 3 → ℝ` with incidence `p i ∈ Π(u) ⟺
+homogenize (p i) ⬝ᵥ n u = 0`. Tabulated orthogonality: `p0 ⊥ {n0,n1,n2}`, `p1 ⊥ {n0,n1}`,
+`p2 ⊥ {n1,n2}`, `p3 ⊥ {n0,n2}`. The six joins and their common normals: `p0∨p1: {n0,n1}`,
+`p0∨p2: {n1,n2}`, `p0∨p3: {n0,n2}` (two common normals each) and `p1∨p2: {n1}`, `p1∨p3: {n0}`,
+`p2∨p3: {n2}` (one common normal each). The per-line brick `…_dotProduct` takes two normals `{n_u,n'}`
+and transfers `r(complementIso (n_u∧n')) = 0 ⟹ r(pᵢ∨pⱼ) = 0` when both points are ⊥ both normals.
+
+**The fix — route (a): restate `hduality` to the per-panel-line model.** Replace the three-fixed-`Cᵢ`
+premise with KT eq. (6.45)'s honest quantification, keyed off the N3a data. The natural restated
+premise (to be pinned at build time against the brick's exact signature, C5a): for each of the six
+joins, the line lies in some panel `Π(u)`; the dispatch (C5b) supplies, per join, a *second* normal
+`n'` (a second hyperplane through the join-line within `Π(u)`) so the brick fires. The three through-p0
+joins use two N3a panel normals directly; the three opposite joins (single panel) take their second
+normal from the panel's line-sweep that the restated premise carries (KT's "any `L ⊂ Π(u)`"). The
+**conclusion is unchanged** (`r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0`, the disjunction the producer's
+candidate-selection needs). Route (b) ("enrich the producer's hypothesis") is the *same* edit: both
+consumers forward `hduality`, so the restate ripples identically through `case_III_eq629_conditional`
+and `case_III_hsplit_producer` with **no proof-body change** (each is a `.imp`/`rcases` over the
+disjunction the conclusion still provides).
+
+**Exact-premise caveat (flagged for the build).** The precise Lean shape of the restated `hduality`
+(how the "any second hyperplane through the line" is quantified — per-join `∃ n'` carried as data, vs.
+a uniform per-panel `∀ L ⊂ Π(u)` indexed family) is a small design call best made *at the C5a build*
+against the per-line brick + the disjunction-input the contrapositive needs; both candidate shapes are
+discharge-feasible (the brick fires either way), and the C5b assembly is graph-free. This is a shape
+refinement *within* the decided route (a), not a re-open of the (a)/(b)/(c) verdict.
+
+**Blueprint consistency.** The N3b node `lem:case-III-claim612-line-in-panel-union` (case-iii.tex:871)
+**already** states the per-panel-line model honestly ("a screw functional `r` that annihilates *every*
+panel-meet extensor `C(L)` of lines `L ⊂ Π(a)∪Π(b)∪Π(c)` also annihilates each spanning join"), and
+the `lem:case-III-claim612` node (case-iii.tex:1088) does not commit to a fixed-`Cᵢ` shape. **No
+blueprint prose is wrong** — the divergence was Lean-only (the `hduality` hypothesis narrowed past
+what the dep-graph describes). No `.tex` edit needed.
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.

@@ -23,19 +23,20 @@ discharged one per C5 leaf. **C5 progress:** all three `hselᵢ` selectors + the
 the `r̂` candidate-vector data (`hr`) are in hand; C4 (the green instance node) is blocked on the rest
 of C5.
 
-**Next concrete step (smallest forward commit): resolve the `hduality` six-join modeling subtlety,
-then assemble `hduality`** — see *Blockers*. The per-line N3b annihilation transfer
-(`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, `⬝ᵥ`-incidence form) + its mirror bridge
-(`Pi.basisFun_toDual_apply`) just landed (the verified ingredient the dispatch consumes). The `hr`
-half (`r̂ ≠ 0`, `r̂ = wGv`, `exists_redundant_panelRow_ab_lam`) and all three `hselᵢ` are in hand.
-What remains of the Claim-6.12 data: `C₁/C₂/C₃` (the three candidates' `supportExtensor`s, =
-panel-meets), `hp` (`exists_affineIndependent_panel_incidence`, green), and `hduality` — but
-`hduality` is **blocked on a red-node-consistency call**: KT eq. (6.45) (re-read this commit) reaches
-all six joins only by quantifying `C(L)` over *every* line of each panel, whereas the Lean
-`case_III_claim612` carries `hduality` with three *fixed* `Cᵢ`, which (Lemma 2.1 ⟹ all six joins
-independent) cannot reach the three single-panel "opposite" joins. So either restate
-`case_III_claim612`'s `hduality` to the per-panel-line model or enrich the producer hypothesis,
-*before* the assembly. **The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4,
+**Next concrete step (smallest forward commit): restate `case_III_claim612`'s `hduality` to the
+honest KT eq. (6.45) per-panel-line model (route (a), DECIDED this commit), then assemble it.** The
+modeling subtlety is **resolved**: the fixed-`C₁C₂C₃` `hduality` is **mathematically undischargeable**
+(three `2`-extensors span ≤ `3 < 6 = finrank ⋀²ℝ⁴`, so `r ⊥ C₁,C₂,C₃` cannot force `r = 0`); KT's
+contrapositive needs `r ⊥ C(L)` for **every** line `L` in `Π(a)∪Π(b)∪Π(c)` (eq. (6.45)), reaching the
+six joins via the four affinely-independent points + Lemma 2.1. The verdict + leaf cut are in
+*Decisions made* (and `notes/Phase22-realization-design.md` §1.36). Route (b) ("enrich the producer")
+is the **same fix** — both consumers (`case_III_eq629_conditional`, `case_III_hsplit_producer`) merely
+*forward* `hduality`, so the restate is a signature edit rippling identically through both with **no
+body change**. Route (c) (three fixed `Cᵢ` suffice) is decisively wrong (the dimension count above).
+The per-line N3b annihilation transfer (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`,
+`⬝ᵥ`-incidence form) + its mirror bridge (`Pi.basisFun_toDual_apply`) is the verified ingredient the
+restated dispatch consumes; the `hr` half (`r̂ ≠ 0`, `exists_redundant_panelRow_ab_lam`) and all three
+`hselᵢ` are in hand. **The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4,
 B.2) cannot land before the C3 spine's carried data is discharged (C5).
 
 (Done C5 leaves — selectors `hsel₁`/`hsel₂`/`hsel₃`, the `+1` `r̂`-row `hmemᵢ`, the `r̂`
@@ -215,39 +216,48 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   rather than the core's `(Pi.basisFun ℝ (Fin 4)).toDual pi n_u = 0`; conversion via the mirrored
   self-pairing identity `(Pi.basisFun ℝ (Fin 4)).toDual x y = ∑ i, x i * y i`. The per-line brick the
   `hduality` dispatch consumes over the six joins. Graph-free (no §38), axiom-clean. (2026-06-08)
-- [ ] **C5 — discharge `case_III_hsplit_producer`'s carried data** — `Cᵢ`/`hp`/`hduality` (the `hr`
-  half = `r̂ ≠ 0` and the per-line N3b transfer now in hand; all three `hselᵢ` selectors too), and
-  the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand). The remaining graph-free piece is
-  `hduality` proper: the **six-join dispatch** assembling
-  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` over the six joins, matching each
-  `omitTwoExtensor (homogenize ∘ p)` (= `extensor` of the complementary pair `{a,b}ᶜ`, the line
-  `pᵢ ∨ pⱼ`) to a panel its line lies in via the N3a incidence pattern. **Modeling subtlety to
-  resolve first** (see *Blockers*): the three within-p0-triple joins each lie in two panels, but the
-  three *opposite* joins (`p1∨p2`, `p1∨p3`, `p2∨p3`) lie in a *single* panel each, so the per-line
-  brick (which needs two normals) does not fire on them with the three fixed candidate `Cᵢ` — KT
-  (eq. (6.45)) gets all six only by quantifying `C(L)` over *every* line `L` in each panel, which the
-  fixed-`C₁C₂C₃` `case_III_claim612` does not model. The rest wires `case_III_claim612` ⊕ the
-  producers at real `ofNormals` graph data (§38 defeq trap). Takes the C3 spine fully green.
+- [ ] **C5a — restate `case_III_claim612`'s `hduality` to the per-panel-line model** (route (a),
+  RigidityMatrix.lean): replace the unsound three-fixed-`Cᵢ` premise `r C₁=0 → r C₂=0 → r C₃=0 → ∀ q,
+  r(pᵢ∨pⱼ)=0` with KT eq. (6.45)'s honest form, keyed off the N3a panel data
+  (`exists_affineIndependent_panel_incidence`: three panel normals `n : Fin 3 → Fin 4 → ℝ` + the
+  incidence pattern). The natural restated premise: a per-line duality
+  `∀ join (q : pair), (the two endpoints share two normals to which they are ⊥) → r(C(those two
+  normals)) = 0 → r(pᵢ∨pⱼ) = 0`, plus the disjunction-input that for *each panel* `r ⊥ C(L)` for all
+  its lines (the contrapositive-of-"some choice" sweep). The conclusion stays
+  `r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0`. Both consumers (`case_III_eq629_conditional`,
+  `case_III_hsplit_producer`) forward `hduality` verbatim — a pure signature ripple, no body change.
+  *Design the exact restated shape against the per-line brick + N3a in the build commit (§1.36).*
+- [ ] **C5b — assemble the restated `hduality`: the six-join dispatch.** Apply
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` over the six joins `pᵢ∨pⱼ` (each
+  `omitTwoExtensor (homogenize ∘ p)`), matching each to the two panel normals common to its two
+  endpoints, via the N3a incidence pattern (p0 ⊥ all three; p1 ⊥ {n0,n1}; p2 ⊥ {n1,n2}; p3 ⊥
+  {n0,n2}). The three through-p0 joins have two common normals directly; the three opposite joins
+  (each in a single panel) take their second normal from the same panel's line-sweep that the
+  restated premise supplies (KT's "any L ⊂ Π(u)"). Graph-free.
+- [ ] **C5c — discharge `case_III_hsplit_producer`'s remaining carried data** — `Cᵢ`/`hp` (green) +
+  the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand) at real `ofNormals` graph data (§38
+  defeq trap). Wires `case_III_claim612` ⊕ the producers. Takes the C3 spine fully green.
 - [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
 - [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
 - [ ] **Thm 5.5→5.6 push + feed `rigidityMatrix_prop11`'s `hgen`** — unblocks Cor 5.7 at `d=3`.
 ## Blockers / open questions
 
-- **Open: the `hduality` six-join dispatch needs a modeling decision (found 2026-06-08 building the
-  per-line N3b brick).** KT eq. (6.45) (re-read this commit) annihilates `r̂` against `C(L)` for
-  **every** line `L` in `Π(a) ∪ Π(b) ∪ Π(c)`, reaching all six joins because each `Mᵢ` failing gives
-  `r̂ ⊥ C(L)` for *any* chosen `L ⊂ Π(u)` (the Claim is "full rank for *some* choice"). The Lean
-  `case_III_claim612` (RigidityMatrix.lean) carries `hduality` with **three fixed** `C₁ C₂ C₃`. With
-  `Cᵢ` = the three lines through the triple point `p0`, the per-line brick
-  (`…_dotProduct`, two normals) fires on the three through-`p0` joins but **not** on the three
-  opposite joins (`p1∨p2`, `p1∨p3`, `p2∨p3`, each in a single panel) — and by Lemma 2.1 all six are
-  *independent*, so the opposite joins are not spanned by `C₁ C₂ C₃`. So the fixed-`Cᵢ` `hduality` is
-  not provable as stated for those three Cᵢ; either `case_III_claim612` needs restating to quantify
-  `C(L)` over each panel's lines (the honest KT model), or the producer supplies a richer
-  per-panel-bundle hypothesis. **Resolve this before scheduling the full `hduality` build** — it is a
-  red-node-consistency question on `case_III_claim612`'s `hduality` shape, not just a proof. The
-  per-line brick (`…_dotProduct`) is the verified ingredient either resolution consumes.
+- **RESOLVED (2026-06-08, this commit): the `hduality` six-join modeling subtlety → route (a),
+  restate to the per-panel-line model.** Verdict: the fixed-`C₁C₂C₃` `hduality` is **mathematically
+  undischargeable** — three `2`-extensors span ≤ `3 < 6 = finrank (⋀²ℝ⁴)`, so `r ⊥ C₁,C₂,C₃` cannot
+  force `r = 0` (this is *stronger* than the previous agent's "can't reach the three opposite joins":
+  it can't reach *any* join not coinciding with a `Cᵢ`-line). KT's contrapositive of "Claim 6.12: full
+  rank for *some* choice of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`" sweeps **all** choices,
+  giving `r ⊥ C(L)` for *every* line `L` in `Π(a)∪Π(b)∪Π(c)` = the union (6.45), which reaches the six
+  joins of four affinely-independent points (Lemma 2.1, dim 6). **The fix is to restate
+  `case_III_claim612`'s `hduality`** to that per-panel-line form (C5a), keyed off the N3a panel data,
+  and assemble it via the per-line brick over the six joins (C5b). Route (b) ("enrich the producer")
+  is the *same* edit — both consumers forward `hduality` unchanged (pure signature ripple). Route (c)
+  (fixed `Cᵢ` suffice) is wrong by the dimension count. The blueprint N3b node
+  (`lem:case-III-claim612-line-in-panel-union`) **already** states the per-panel-line model honestly,
+  so no blueprint prose is wrong; the divergence was Lean-only. Leaf cut + exact-shape design in
+  *Decisions made* and `notes/Phase22-realization-design.md` §1.36.
 - **No live blocker on the device feed.** The (g1)/(g2) fork is **resolved** (§1.35 / *Current
   state*): the corrected feed is the fixed-framework, genericity-free `exists_good_realization_const`
   route (C1), not the panelRow-shaped `_index` feed. The `d=3` contrapositive (Claim 6.12) is green
@@ -260,26 +270,26 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   spine); the §38 trap re-enters only when the leaves that discharge `hmemᵢ` instantiate it.
 ## Hand-off / next phase
 
-**Smallest next commit: resolve the `hduality` six-join modeling subtlety (*Blockers*), THEN assemble
-`hduality`** — or, if you'd rather make graph-side progress first, an OLD/NEW-block `hmemᵢ` leaf. The
-per-line N3b brick (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`) + the mirror bridge
-(`Pi.basisFun_toDual_apply`) just landed; the `hr` half and all three `hselᵢ` are in hand. **What
-remains for `hduality`** is the six-join dispatch — but it is **blocked on a modeling decision**
-(*Blockers*, found this commit): the fixed-`C₁C₂C₃` `case_III_claim612` cannot, as stated, reach the
-three opposite joins (single-panel lines, independent by Lemma 2.1). The next agent must first decide
-whether to restate `case_III_claim612`'s `hduality` to quantify `C(L)` over each panel's lines (the
-honest KT eq. (6.45) model) or to enrich the producer's hypothesis — a red-node-consistency call on
-`case_III_claim612`, then the assembly. **C4 (a green `theorem_55` `d=3`-instance) is blocked on C5.**
-The other C5 ingredient, the `hmemᵢ` (at real `ofNormals` graph data, §38 defeq trap): the OLD/NEW
-`so`/`sn` blocks via L2 span bridge (`span_panelRow_comp_single_of_edge`) / L4 membership
-(`panelRow_mem_rigidityRows_of_link`) on the L1 blocks, and the `+1` `r̂`-row via the landed
-`hingeRow_mem_rigidityRows` (the placed `hingeRow v b r̂` with `r̂ ∈ hingeRowBlock e_b`).
+**Smallest next commit: C5a — restate `case_III_claim612`'s `hduality` to the per-panel-line model**
+(route (a), DECIDED this commit; *Blockers* / *Decisions made*). It is a signature edit on
+`case_III_claim612` (RigidityMatrix.lean) replacing the unsound three-fixed-`Cᵢ` premise with KT
+eq. (6.45)'s honest form keyed off the N3a panel data; both consumers
+(`case_III_eq629_conditional`, `case_III_hsplit_producer`) forward `hduality` verbatim so the ripple
+is pure signature, no body change. *Design the exact restated premise shape against the per-line brick
++ N3a in that commit* — §1.36 sketches it but flags it for build-time pinning. Then C5b (the six-join
+dispatch on `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, graph-free, the per-line
+brick + mirror bridge already landed) and C5c (the remaining `hmemᵢ` at real `ofNormals` data, §38).
+If you'd rather make graph-side progress first, an OLD/NEW-block `hmemᵢ` leaf (C5c) is independent of
+the `hduality` restate.
 
-Next leaf: resolve the `hduality` six-join modeling subtlety (*Blockers*) and assemble `hduality` on
-the per-line transfer now in hand — graph-free, but gated on the `case_III_claim612` shape call. Then
-C4 (mint the green `theorem_55 (n:=2) (k:=2)` instance node, **not** a standalone `theorem_55_dim3`),
-the `lem:case-II-realization` / `lem:case-III` flips, the Thm 5.5→5.6 push. Full verified leaf
-sequence + the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35.
+**C4 (a green `theorem_55` `d=3`-instance) is blocked on C5.** The C5c `hmemᵢ` (at real `ofNormals`
+data, §38 defeq trap): the OLD/NEW `so`/`sn` blocks via L2 span bridge
+(`span_panelRow_comp_single_of_edge`) / L4 membership (`panelRow_mem_rigidityRows_of_link`) on the L1
+blocks, and the `+1` `r̂`-row via the landed `hingeRow_mem_rigidityRows` (the placed `hingeRow v b r̂`
+with `r̂ ∈ hingeRowBlock e_b`). After C5: C4 (mint the green `theorem_55 (n:=2) (k:=2)` instance node,
+**not** a standalone `theorem_55_dim3`), the `lem:case-II-realization` / `lem:case-III` flips, the
+Thm 5.5→5.6 push. Full verified leaf sequence + the KT/Lean verification:
+`notes/Phase22-realization-design.md` §1.35 (L-wire) + §1.36 (the `hduality` restate verdict).
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -292,15 +302,29 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
-- **The N3b per-line transfer landed as a `⬝ᵥ`-incidence restatement of the green core, surfacing
-  the six-join modeling subtlety (2026-06-08).** `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`
-  (Meet.lean) restates the green N3b core with incidence as `pi ⬝ᵥ n_u = 0` (N3a's shape) instead of
-  `toDual pi n_u = 0`, via the mirrored self-pairing identity `Pi.basisFun_toDual_apply` (`toDual x y
-  = ∑ i, x i * y i`). The per-line brick the `hduality` dispatch consumes. Building it forced a
-  re-read of KT eq. (6.45): the duality quantifies `C(L)` over *every* line of each panel; the fixed-
-  `C₁C₂C₃` `case_III_claim612` cannot model that for the three single-panel "opposite" joins
-  (independent by Lemma 2.1) — logged as the live open question in *Blockers*. Graph-free (no §38),
-  axiom-clean.
+- **The `hduality` six-join modeling subtlety → route (a): restate `case_III_claim612`'s `hduality`
+  to the per-panel-line model (2026-06-08, recon/design-pass commit; canonical home
+  `notes/Phase22-realization-design.md` §1.36).** Re-read KT §6.4.1 eqs. (6.42)–(6.45) (printed
+  pp. 690–691) against the green `case_III_claim612` proof + the per-line N3b brick + the N3a panel
+  data. **Verdict:** the fixed-`C₁C₂C₃` `hduality` (`r C₁=0 → r C₂=0 → r C₃=0 → r ⊥ all six joins`)
+  is **mathematically undischargeable** — three `2`-extensors span ≤ `3 < 6 = finrank (⋀²ℝ⁴)`. KT's
+  Claim is "full rank for *some* choice of lines `L ⊂ Π(a)`/`L' ⊂ Π(b)`/`L'' ⊂ Π(c)`"; its
+  contrapositive sweeps **all** choices, giving `r ⊥ C(L)` for *every* line in the panel union
+  (eq. (6.45)), reaching the six joins of 4 affinely-indep points (Lemma 2.1). The green proof is
+  honest (forwards `hduality`); the *hypothesis shape* was the unsound narrowing. Fix = restate
+  `hduality` to that per-panel-line form (C5a), keyed off N3a's three panel normals + incidence;
+  assemble via the per-line brick over the six joins (C5b). Both consumers
+  (`case_III_eq629_conditional`, `case_III_hsplit_producer`) forward `hduality` unchanged, so route (b)
+  ("enrich the producer") is the *same* signature ripple — no separate option. Route (c) (fixed `Cᵢ`
+  suffice) is wrong (dimension count). **No blueprint prose is wrong:** the N3b node
+  `lem:case-III-claim612-line-in-panel-union` already states the per-panel-line model; the divergence
+  was Lean-only — the consistency note is recorded but no `.tex` edit is needed.
+- **The N3b per-line transfer landed as a `⬝ᵥ`-incidence restatement of the green core (2026-06-08).**
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (Meet.lean) restates the green N3b core
+  with incidence as `pi ⬝ᵥ n_u = 0` (N3a's shape) instead of `toDual pi n_u = 0`, via the mirrored
+  self-pairing identity `Pi.basisFun_toDual_apply` (`toDual x y = ∑ i, x i * y i`). The per-line brick
+  the restated `hduality` dispatch (C5b) consumes. Building it forced the KT eq. (6.45) re-read that
+  surfaced the modeling subtlety resolved in the entry above. Graph-free (no §38), axiom-clean.
 - **The `r̂` candidate vector landed via a mirror-eligible coefficient-extraction leaf, not
   inline (2026-06-08).** `exists_redundant_panelRow_ab_lam` (CaseI.lean) reads the explicit
   unit-normalized `λ` (KT eq. (6.25), `λ_{i^*} = 1`) off the redundant-row decomposition's

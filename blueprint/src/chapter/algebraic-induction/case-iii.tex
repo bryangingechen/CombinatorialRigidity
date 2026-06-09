@@ -1120,6 +1120,15 @@ Grassmann--Cayley projective duality.
   affinely-independent points). So $r$ annihilates a spanning set and $r = 0$
   (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting $r \ne 0$
   (\cref{lem:case-III-claim612-r-nonzero}). Therefore at least one block has full rank.
+
+  The Lean \texttt{case\_III\_claim612} currently \emph{carries} the union-(6.45) annihilation as an
+  explicit hypothesis \texttt{hduality} (green-modulo the six-join dispatch): the per-line transfer
+  \cref{lem:case-III-claim612-line-in-panel-union} discharges one join, and assembling it over the six
+  joins of \cref{lem:case-III-claim612-points-affineIndep} --- keyed off the panel-incidence pattern,
+  with the second hyperplane through each single-panel line drawn from KT's ``any $L \subset \Pi(u)$''
+  --- wires \texttt{hduality} from the per-line node. (The fixed-$C_1 C_2 C_3$ form of the hypothesis
+  models a single chosen line per panel and is being restated to this union form, which the prose
+  above describes; three $2$-extensors cannot span $\R^D = \bigwedge^2 \R^4$.)
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
