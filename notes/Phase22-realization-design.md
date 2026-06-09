@@ -1582,6 +1582,192 @@ So this brick lands first, then Leaf 3's restate can call the now-complete `spli
 
 ---
 
+### 1.44 The three Leaf-3 producer sub-obligations adjudicated against the Lean — GAP 1 verdict (C) (genuine hole: `|V(G)|=3` IS reachable in the project's `hsplit` branch, so the `4 ≤ |V|` proper-ness guard is unmet and the triangle witness is improper), GAP 2 verdict (C) (genuine hole: the candidate's eq.-(6.12) sheared seed is degenerate by construction, so the producer cannot conclude the GP motive's `IsGeneralPosition`/`AlgebraicIndependent ℚ` conjuncts the way `case_I_realization` does), GAP 3 verdict (A) (bounded: the bad-`t` set is a single value, a good `t` exists) (2026-06-09)
+
+> **Build-free design pass settling the three sub-obligations the Leaf-3 concrete-seed producer
+> (`case_III_hsplit_producer` restated to `theorem_55_generic.hsplitGP`) carries, BEFORE the §38-trapped
+> producer build consumes them.** This pass is the latest instance of the recurring pattern (R1 →
+> R1-affine genericity, R3 → triangle-is-not-a-circuit): every time the build neared the bounded core a
+> new obligation the high-level recons (§1.40/§1.41/§1.42, "no research-shaped node remains") had not
+> captured surfaced. Two of the three are now found to be **genuine holes**, not bounded residuals. The
+> §1.41/§1.42 verdicts examined the GP-motive *inputs* (consume the GP `_hsplit`) and the simplicity
+> *brick* in isolation; neither examined GAP 1's *reachability* against the actual reduction skeleton nor
+> GAP 2's GP-motive *output* against the actual candidate seed. Verified against the green Lean
+> (`minimal_kdof_reduction` ForestSurgery.lean:992 — the reduction's branch logic; `case_III_hsplit_producer`
+> CaseI.lean:3970; `case_III_realization_of_line` :3901 — concludes the **bare** `HasFullRankRealization`;
+> `hasFullRankRealization_of_independent_rigidityRow` :2167; `hasFullRankRealization_of_candidateSelector`
+> :2204; `case_I_realization` :1999 + `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`
+> :1808 — how the GP conjuncts are built for the CONTRACT case; `HasGenericFullRankRealization`
+> PanelHinge.lean:1033; `IsGeneralPosition` :121; `theorem_55_generic` :1154/`hsplitGP` :1167;
+> `splitOff_simple_of_noRigid_of_card` Operations.lean:833 + `triangle_isProperRigidSubgraph` :783;
+> `case_III_old_new_blocks_of_line` CaseI.lean:3529 + `hnewtrans` :3548; `panelSupportExtensor_add_smul_left`
+> PanelLayer.lean:251) and **KT Lemma 6.7 / Lemma 6.8 read in full from the 2011 DCG PDF** (p. 677). No
+> `.lean`/`.tex` edits this pass.
+
+**GAP 1 — the `4 ≤ |V(G)|` proper-ness guard. Verdict (C): genuine hole — `|V(G)|=3` IS reachable in
+the project's `hsplit` branch, and there the triangle witness is improper.** This is the most consequential
+finding of the pass; it refutes the standing §1.42/§1.43 assumption ("the splitting branch never reaches
+the `|V|≤3` base case").
+
+- *KT carves out `|V|=3` as a separate base; the project does NOT.* KT Lemma 6.7(i) (p. 677) is explicit:
+  *"If `|V|=3`, then `k=0` and there is a nonparallel realization satisfying `rank = D(|V|−1)`"* — at
+  `|V|=3` a 2-edge-connected simple no-proper-rigid graph is a **triangle**, realized **directly by
+  Lemma 5.4**, *not* by splitting off. Lemma 6.7(ii) (the `G_v^{ab}` simplicity argument the project's
+  R3 mirrors) is stated *"If `|V|≥4`"*. So KT's manual case split never splits a `|V|=3` graph.
+- *The project's reduction has no `|V|=3` base — it splits the triangle.* `minimal_kdof_reduction`
+  (ForestSurgery.lean:1011–1047) inducts on `|V(G)|` with **only a `|V|=2` base** (`hbase`, :1015). For
+  `|V|≥3` (:1017, `hV3 : 3 ≤ |V(G)|`) it does `by_cases hrig` on the existence of a proper rigid subgraph:
+  proper-rigid → `hcontract`; **no proper-rigid → `hsplit`** (:1021, `exists_degree_eq_two` →
+  `exists_splitOff_data_of_degree_eq_two` → `splitOff` to `|V|−1`). A `|V|=3` triangle is a minimal
+  `0`-dof-graph (KT Lemma 6.7(i)) with **no proper rigid subgraph** (every proper subgraph has `≤2`
+  vertices, so cannot be a rigid subgraph in the molecular regime `D≥3`), so it falls into the `hsplit`
+  branch with `|V(G)|=3` exactly. `splitOff` then lands on `|V|=2` (the IH base). **So the `hsplit`
+  producer IS invoked at `|V(G)|=3`.**
+- *There the triangle witness is genuinely improper.* `triangle_isProperRigidSubgraph` (Operations.lean:783)
+  builds `H = G.induce {v,a,b}` and proves it *proper* only via `4 ≤ V(G).ncard` (:820–825: if
+  `{v,a,b} = V(G)` the witness is the whole graph, *not* a proper subgraph). At `|V(G)|=3`, `{v,a,b}` IS
+  all of `V(G)`, so the triangle is improper — `triangle_isProperRigidSubgraph` is *false* there, and
+  `splitOff_simple_of_noRigid_of_card`'s `4 ≤ |V|` hypothesis is genuinely unmet, not merely missing a
+  thread. The R3 simplicity discharge as built **does not apply at `|V(G)|=3`.**
+- *Simplicity itself still holds at `|V|=3`, but the R3 lemma is the wrong tool.* When `G` is the
+  triangle, `splitOff v a b e₀` is the 2-vertex single-edge graph on `{a,b}` (`vertexSet_splitOff`,
+  `edgeSet_splitOff`), which is trivially simple (one edge, no loop, no parallel pair). So the *fact*
+  `(G.splitOff …).Simple` is true at `|V|=3` — but it must be obtained by a **second, small route** (the
+  `|V|=2`-output direct simplicity), not by the triangle-contradiction. R3 covers only `|V|≥4`.
+- *The unblock.* Two clean options, both bounded: **(i)** add a hypothesis-free `|V(G)|=3` (`G.splitOff`
+  has `|V|=2`, simple by direct edge-count) branch to the simplicity discharge — a small case-split lemma
+  `splitOff_simple_of_…` that is `splitOff_simple_of_noRigid_of_card` for `|V|≥4` and the direct 2-vertex
+  argument for `|V|=3` — OR **(ii)** confirm the producer can take `3 ≤ |V(G)|` and split: the genuine
+  question is whether the *whole Leaf-3 candidate completion* is sound at `|V|=3`, not just simplicity
+  (the eq.-(6.12) old-block `case_III_old_new_blocks_of_line` needs `V(Gv) = V(G)∖{v}` nonempty — true at
+  `|V|=3`, `|V(Gv)|=2`, and the OLD block has `D(2−1)=D` rows; the count arithmetic must be re-checked at
+  `|V(G)|−1=2`). **Recommended:** (i) — supply `(G.splitOff …).Simple` at `|V|=3` directly, keep R3 for
+  `|V|≥4`, and let the rest of the candidate completion run uniformly (its count is parameterized over
+  `|V(G)|`, so `|V|=3` is not special for the row algebra, only for the simplicity brick). This is a new
+  bounded leaf, **but it is a hole the current build would hit** — the producer cannot discharge
+  `(G.splitOff …).Simple` for a general `G` on the `hsplit` branch with only `splitOff_simple_of_noRigid_of_card`.
+
+**GAP 2 — the GP-conclusion conjuncts. Verdict (C): genuine hole — the eq.-(6.12) candidate seed is
+degenerate by construction, so the `IsGeneralPosition` and (especially) `AlgebraicIndependent ℚ`
+conjuncts of `HasGenericFullRankRealization` cannot be produced the way `case_I_realization` produces
+them.** The R2 verdict (§1.41) correctly established that the producer must *consume* the GP `_hsplit` to
+get `hgab`; it did **not** examine that the producer must also *conclude* `HasGenericFullRankRealization`,
+whose four conjuncts the candidate-completion route does not deliver.
+
+- *What `case_I_realization` does, read end-to-end — and why it is NOT reusable for the split candidate.*
+  `case_I_realization` (:1999) concludes `HasGenericFullRankRealization` by routing through
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` (:1808), which builds the GP and
+  alg-indep conjuncts at a **generic, algebraically-independent** seed `q₀ := exists_injective_algebraicIndependent_real`
+  (:1857) — the seed is a simultaneous non-root of the `H`-leg rank polynomial `Q_H`, the contraction rank
+  polynomial `Q_c`, AND the general-position polynomial `Q_gp` (`exists_generalPosition_polynomial`,
+  PanelHinge.lean:375, :1846), so `hgp := hQgp_pos q₀ hq₀gp` (:1864) gives `IsGeneralPosition` and `halg`
+  gives the alg-indep conjunct, both for free at that generic seed. The block-triangular coupling reads
+  rigidity off **two generic legs** — it never builds a degenerate placement. **The Case-III candidate
+  completion is structurally the opposite:** `case_III_realization_of_line` (:3901) routes through
+  `hasFullRankRealization_of_candidateSelector` (:2204) → `hasFullRankRealization_of_independent_rigidityRow`
+  (:2167), which builds at the **fixed eq.-(6.12) sheared seed `q₀`** where `v`'s normal is `n_a + t•n'`
+  (CaseI.lean:3544, `hq₀`) and concludes only the **bare** `HasFullRankRealization` (:3918). The whole
+  point of the seed is to put the `va`-hinge collinear with the witness line `L` — i.e. to place `v`'s
+  panel in a *special* (degenerate) position relative to `a`'s. There is **no generic-seed freedom** in
+  the candidate route: the seed is determined by the witness line.
+- *`IsGeneralPosition` (pairwise) reduces to GAP 3 + the IH GP, so this conjunct alone is borderline-bounded.*
+  `IsGeneralPosition (ofNormals G ends q₀)` (PanelHinge.lean:121) is `∀ a' b', a'≠b' → LinearIndependent
+  ![normal a', normal b']`. At the candidate seed the normals are: `v ↦ n_a + t•n'`, all others `= q`'s.
+  The pairs not involving `v` are GP iff the IH split-off seed `q` is GP (from the GP `_hsplit`). The
+  `v`-`a` pair `![n_a + t•n', n_a]` is independent iff `n'∦n_a` and `t≠0` (= `hane`, supplied by `hL`).
+  The `v`-`b` pair `![n_a + t•n', n_b]` is **exactly GAP 3's `hnewtrans`** (so it reduces to the producer's
+  free `t`). The `v`-`u` pairs for other `u` need `t` generic against finitely many lines. So
+  `IsGeneralPosition` of the candidate seed *is* obtainable by choosing `t` generically — bounded,
+  overlapping GAP 3. **This half is (B).**
+- *`AlgebraicIndependent ℚ` is the genuine hole.* The fifth conjunct of `HasGenericFullRankRealization`
+  (PanelHinge.lean:1038) is `AlgebraicIndependent ℚ (fun (a',i) ↦ Q.normal a' i)` — the flattened seed
+  alg-independent over `ℚ`. This is KT's footnote-6 standing inductive choice (p. 685), consumed by the
+  Claim-6.11 kernel. But the candidate seed has `v`'s normal `= n_a + t•n'` — an **explicit `ℚ`-algebraic
+  (indeed `ℝ`-linear) combination** of `a`'s normal and the witness normal. So the flattened candidate
+  seed is **algebraically dependent over `ℚ` by construction**: it can NEVER be `AlgebraicIndependent ℚ`.
+  No choice of `t` repairs this — the dependence is in the *shape* of the seed, not its parameter. The
+  candidate-completion route fundamentally cannot deliver the alg-indep conjunct. (Contrast Case I: its
+  generic seed `exists_injective_algebraicIndependent_real` is alg-indep *because* it is unconstrained.)
+- *Why this is (C), not (B).* (B) would be "the conjuncts are buildable but need a named new piece." The
+  alg-indep conjunct is **not buildable at the candidate seed at all** — the seed is dependent by
+  construction. The producer concludes `HasGenericFullRankRealization` only if it can exhibit *some* `Q`
+  carrying all five conjuncts; the candidate-completion `Q = ofNormals G ends q₀` carries the bare
+  rigidity but provably not the alg-indep. **Resolution candidates (each itself unverified — this is the
+  research-shaped residual):** (a) the conjunct is consumed only as a *non-root certificate* for rank
+  polynomials (`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`), so perhaps the
+  Case-III producer can supply a *weaker* certificate (the degenerate seed is a non-root of the specific
+  Case-III rank polynomial directly, without alg-independence) — but the *motive* asks for alg-independence,
+  not a per-polynomial non-root, so this needs a **motive weakening / re-shaping** of
+  `HasGenericFullRankRealization`'s fifth conjunct, a cross-cutting change touching every producer; (b)
+  re-realize: after fixing the candidate placement to get bare rigidity, perturb to a nearby *generic*
+  seed that is still rigid (rigidity is Zariski-open) AND alg-indep — but then the GP-motive's link to the
+  *specific* witness line `L` is lost, and it is unclear the perturbed seed still certifies the same
+  Claim-6.12 selection. **Neither is the clean mirror §1.41 assumed.** This is a genuine architectural
+  question the build would hit at the producer-signature restate, NOT a bounded thread.
+- *KT cross-check — does KT claim GP output for the split case?* Yes: Lemma 6.8 (p. 677) concludes *"a
+  nonparallel realization"*, and eq. (6.12) chooses `Π°` *"not parallel to `Π(u)` for `u ∈ V∖{v}`"* — so
+  KT's realization is nonparallel (= `IsGeneralPosition`). But KT works over a transcendence basis
+  implicitly (footnote 6's alg-indep choice is a *global* convention, not re-derived per construction);
+  the Lean motive makes the alg-indep conjunct **explicit**, and the eq.-(6.12) shear breaks it. KT's
+  prose nonparallel-realization claim is faithful to the `IsGeneralPosition` half (the (B) half above);
+  the `AlgebraicIndependent ℚ` half is a Lean-formalization artifact of how footnote 6 was internalized
+  (Phase 22d, PanelHinge.lean:1017–1031) — it is the conjunct the candidate seed cannot honor.
+
+**GAP 3 — the `hnewtrans` genericity-in-`t`. Verdict (A): bounded — the bad-`t` set is at most a single
+value, so a good `t` exists; route named.** `case_III_old_new_blocks_of_line` (CaseI.lean:3548) carries
+`hnewtrans : LinearIndependent ![n_a + t•n', n_b]` as an explicit hypothesis the producer (choosing `t`)
+must supply. (The fixed-`n_b` case got it free from `hgab` via `panelSupportExtensor_add_smul_right`'s row
+reproduction, PanelLayer.lean:238 — but that identity holds **only at `n' = n_b`**, hence the explicit
+hypothesis for an arbitrary witness `n'`.)
+
+- *The bad set is a single value.* `![n_a + t•n', n_b]` fails to be independent iff `n_a + t•n' ∈ span{n_b}`
+  or `n_a + t•n' = 0`. The affine line `t ↦ n_a + t•n'` (direction `n'`, base `n_a`) is contained in the
+  line `span{n_b}` iff both `n_a ∈ span{n_b}` *and* `n' ∈ span{n_b}`; but `hgab : LinearIndependent
+  ![n_a, n_b]` (the pairwise GP from the GP `_hsplit`) gives `n_a ∉ span{n_b}`, so the affine line is NOT
+  contained in `span{n_b}` — hence meets it in **at most one** `t`. The vanishing `n_a + t•n' = 0` is also
+  at most one `t` (`n' ≠ 0` from `hL`). So the bad set `{t : ¬LinearIndependent ![n_a+t•n', n_b]}` has
+  cardinality `≤ 2` (in fact a single value plus possibly the vanishing point); `ℝ` is infinite, so a good
+  `t ≠ 0` exists.
+- *The route.* This is the classic "an affine line not contained in a 1-dim subspace meets it in ≤1 point."
+  In Lean: `LinearIndependent ![u, w] ↔ ¬∃ s, u = s•w` (for `w≠0`) via `linearIndependent_fin2` /
+  `LinearIndependent.pair_iff`; the equation `n_a + t•n' = s•n_b` is, projecting against a functional
+  separating `span{n_b}` from `n_a`, a single linear constraint on `t` with nonzero coefficient (the
+  coefficient is the same functional applied to `n'`; if it is zero then `n' ∈ span{n_b}^⊥`-direction and
+  the line never meets `span{n_b}`, so the bad set is empty). Either way the bad `t`-set is finite. The
+  cleanest Lean is likely a small lemma `∃ t, t ≠ 0 ∧ LinearIndependent ![n_a + t•n', n_b]` from
+  `hgab`/`hL` + `Set.Finite`/infinite-`ℝ`. **Bounded, ~part of the producer assembly; no new geometry**
+  (it is `Fin (k+2) → ℝ` linear algebra, graph-free, off the §38 trap).
+- *Overlap with GAP 2.* `hnewtrans` is *exactly* the `v`-`b` pair of `IsGeneralPosition` (GAP 2's (B)
+  half). So the same good-`t` choice discharges GAP 3 AND the pairwise-GP half of GAP 2 at once. It does
+  **not** touch GAP 2's alg-indep hole (that is shape-level, not `t`-level).
+
+**COMBINED VERDICT — the Leaf-3 concrete-seed producer is NOT genuinely buildable as scoped; two of the
+three sub-obligations are genuine holes.** GAP 3 is bounded (A). GAP 1 (C) and GAP 2 (C) are real:
+- **GAP 1** — the `4 ≤ |V(G)|` guard is genuinely unmet at the reachable `|V(G)|=3` triangle, where the
+  R3 triangle witness is improper. **Unblock (bounded):** a small `|V(G)|=3` simplicity branch
+  (`splitOff` lands on `|V|=2`, simple by direct edge-count), keeping R3 for `|V|≥4`. This is a missed
+  case, not a research obstacle — but it IS a hole the current build hits.
+- **GAP 2** — the producer must conclude `HasGenericFullRankRealization` (R2's `hsplitGP` shape), but the
+  eq.-(6.12) candidate seed is degenerate by construction and **cannot carry the `AlgebraicIndependent ℚ`
+  conjunct** (the `IsGeneralPosition` conjunct reduces to GAP 3, bounded). This is the research-shaped
+  residual: it needs either a **motive re-shaping** (weaken the fifth conjunct to a per-polynomial non-root
+  certificate the degenerate seed can supply) or a **re-realization** (perturb to a generic alg-indep
+  rigid seed while preserving the Claim-6.12 selection) — neither verified, both cross-cutting. **This is
+  the genuine architectural question the §38-trap producer build would hit; it should be settled (math-first)
+  before the producer is restated to `hsplitGP`.**
+
+**Why the high-level recons missed these (the lesson, for the friction log).** §1.41/§1.42 verified the
+GP-motive *inputs* and the simplicity *brick* in isolation, against the *statements* of the green lemmas,
+without tracing (a) GAP 1: the producer's `4 ≤ |V|` guard back through `minimal_kdof_reduction`'s branch
+logic to confirm reachability, and (b) GAP 2: the producer's *conclusion* (`HasGenericFullRankRealization`,
+five conjuncts) against the *fixed-degenerate-seed* route `case_III_realization_of_line` actually concludes
+(bare `HasFullRankRealization`). The pattern (§1.39 effort-accounting, R1, R3) holds again: **recon the
+target node's proof route end-to-end against the consuming skeleton, not just its statement** — the
+design-pass-first discipline's red-node consistency gate (top-level `CLAUDE.md`) is exactly this, and it
+caught GAP 1/GAP 2 here only because this pass re-read the *route*, not the verdicts.
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic
