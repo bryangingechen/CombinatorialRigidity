@@ -41,13 +41,14 @@ candidate placement, Leaf 2/3). `case_III_eq629_conditional` was deleted (no cod
 blueprint node folded into `lem:case-III-claim612` — now flipped green). Build + lint + verify.sh +
 supersession-gate all clean.
 
-**Next concrete step (smallest forward commit): Leaf 2 — the line-indexed candidate placement**
-(CaseI.lean; **§38 `ofNormals` trap**). Generalize `case_II_placement_eq612`'s seed/shear
-construction to an arbitrary witness line `L = pᵢpⱼ ⊂ Π(u)`: build the candidate whose `va`-hinge
-support is `C(L)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep reasoning over abstract `F`,
-instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Likely splits (seed-from-line;
-per-line block-failure/span criterion). Multi-commit. Then Leaf 3 wires it into the producer's
-`hcand`.
+**Next concrete step (smallest forward commit): Leaf 2b — the line-indexed candidate placement**
+(CaseI.lean; **§38 `ofNormals` trap**). Leaf 2a (the join↔meet bridge, the seed-from-line geometric
+core) LANDED 2026-06-09 (PanelLayer.lean, graph-free, axiom-clean) — see the checklist. What remains:
+generalize `case_II_placement_eq612`'s seed/shear construction so the `va`-hinge support is `C(L)` for
+the witness line `L = pᵢpⱼ ⊂ Π(u)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep reasoning
+over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Then Leaf 3 wires
+it into the producer's `hcand`, using the Leaf-2a bridge to feed `r̂(C(L)) ≠ 0` to the row-space
+criterion.
 
 After the producer lands (Leaf 3): instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed `rigidityMatrix_prop11`'s
@@ -66,14 +67,26 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
   `case_III_eq629_conditional` deleted (no code callers; blueprint node folded into
   `lem:case-III-claim612`, flipped green). The three selector recasts' doc-comments + the candidate-row
   selector doc rerouted off the deleted glue lemma.
-- [ ] **Leaf 2 — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**).
-  Generalize `case_II_placement_eq612`'s seed/shear construction to an **arbitrary witness line** `L`
-  (the join `pᵢ∨pⱼ`'s line, `L ⊂ Π(u)`): build the candidate framework whose `va`-hinge support is
-  `C(L)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep the row-space/independence reasoning over
-  abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Likely splits
-  (seed-from-line; per-line block-failure/span criterion). Multi-commit.
+- [x] **Leaf 2a — the join↔meet bridge** (DONE 2026-06-09; PanelLayer.lean; graph-free, axiom-clean).
+  The seed-from-line geometric core: `panelSupportExtensor_eq_complementIso_extensor` (the candidate
+  `va`-hinge support `panelSupportExtensor n_u n'` IS the Meet-form panel-meet `C(L) = complementIso
+  ⟨extensor ![n_u,n'],_⟩`, via `normalsJoin_coe`) + `panelSupportExtensor_join_eq_zero_of_eq_zero` (the
+  producer-direction annihilation transfer `r̂(C(L)) = 0 → r̂(pᵢ∨pⱼ) = 0`, contrapositive: the Leaf-1
+  existential `r̂(join) ≠ 0` forces `r̂(C(L)) ≠ 0`, the C2 row-space input). Reuses the green Phase-22f
+  Meet core (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`); the proportionality
+  `complementIso_smul_eq_extensor_join` was already green. Blueprint: defined the previously-dangling
+  `lem:case-III-claim612-line-in-panel-union` capstone node (meet.tex, green) — the join↔meet duality
+  the green Phase-22f sub-leaves all `\cref` but no node defined; pins the four duality lemmas. The
+  duality is the bridge §1.39(b) names; the *transfer* form is producer-direction (the `hann`-discharge
+  direction stays obsolete, §1.39(c)).
+- [ ] **Leaf 2b — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**).
+  Generalize `case_II_placement_eq612`'s seed/shear construction so the `va`-hinge support is `C(L)`
+  for the **witness line** `L = pᵢ∨pⱼ ⊂ Π(u)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep the
+  row-space/independence reasoning over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2
+  §38 discipline). Likely splits (seed-from-line normals; per-line block-failure/span criterion).
+  Multi-commit. Consumes Leaf 2a to read `r̂(C(L)) ≠ 0` from `r̂(join) ≠ 0`.
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
-  at the C2 feed). Build `hcand q hq` from `hq : r̂(pᵢ∨pⱼ) ≠ 0`: extract line `L` from `q`, run Leaf 2
+  at the C2 feed). Build `hcand q hq` from `hq : r̂(pᵢ∨pⱼ) ≠ 0`: extract line `L` from `q`, run Leaf 2b
   to build the candidate at `C(L)`, run the row-space criterion at `C(L)` → independent family → C2.
   Supply the four points `p` adapted to the real three panels (N3a-pattern). Removes the green-modulo
   `hcand` hypothesis from the producer signature. **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside
@@ -141,14 +154,18 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
 ## Hand-off / next phase
 
-**Smallest next commit: Leaf 2 — the line-indexed candidate placement** (CaseI.lean, §38 `ofNormals`
-trap, multi-commit). Generalize `case_II_placement_eq612`'s seed/shear construction to an arbitrary
-witness line `L = pᵢpⱼ ⊂ Π(u)`: build the candidate whose `va`-hinge support is `C(L)` and its `(D−1)`
-block rows span `(span C(L))^⊥`. Keep reasoning over abstract `F`, instantiate `ofNormals` only at the
-seed (C1/C2 §38 discipline). Likely splits (seed-from-line; per-line block-failure/span criterion).
-Then **Leaf 3** discharges the producer's carried `hcand : ∀ q, r(join q) ≠ 0 → HasFullRankRealization
-2 G` (build the candidate at the witness line, run the row-space criterion at `C(L)`, feed C2; supply
-the four points via the N3a incidence pattern). Full plan: `notes/Phase22-realization-design.md` §1.39.
+**Smallest next commit: Leaf 2b — the line-indexed candidate placement** (CaseI.lean, §38 `ofNormals`
+trap, multi-commit). Leaf 2a (the join↔meet bridge — `panelSupportExtensor_eq_complementIso_extensor`
++ `panelSupportExtensor_join_eq_zero_of_eq_zero`, PanelLayer.lean) LANDED 2026-06-09: the candidate
+`va`-hinge support IS the panel-meet `C(L)`, and `r̂(join) ≠ 0 → r̂(C(L)) ≠ 0` (the C2 row-space
+input). What remains in Leaf 2b: generalize `case_II_placement_eq612`'s seed/shear construction so the
+`va`-hinge support is `C(L)` for the witness line `L = pᵢpⱼ ⊂ Π(u)` and its `(D−1)` block rows span
+`(span C(L))^⊥`. Keep reasoning over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38
+discipline). Likely splits (seed-from-line normals; per-line block-failure/span criterion). Then
+**Leaf 3** discharges the producer's carried `hcand : ∀ q, r(join q) ≠ 0 → HasFullRankRealization 2 G`
+(build the candidate at the witness line, run the row-space criterion at `C(L)` via Leaf 2a, feed C2;
+supply the four points via the N3a incidence pattern). Full plan: `notes/Phase22-realization-design.md`
+§1.39.
 
 **Leaf 4/5** (the green `theorem_55 (n:=2) (k:=2)` instance node, the case-II/III flips, the Thm 5.5→5.6
 push) unblock Cor 5.7.
@@ -164,6 +181,17 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
+- **Leaf 2a — the join↔meet bridge reuses the green Phase-22f Meet core in the producer direction
+  (2026-06-09; PanelLayer.lean).** The candidate `va`-hinge support `panelSupportExtensor n_u n'` IS
+  the panel-meet `C(L) = complementIso ⟨extensor ![n_u,n'],_⟩` (`panelSupportExtensor_eq_complementIso_
+  extensor`, one `congrArg`/`Subtype.ext (normalsJoin_coe)`); the transfer
+  `panelSupportExtensor_join_eq_zero_of_eq_zero` is then a one-`rw` wrapper over the already-green
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`. Key insight: §1.39(c) lists the join↔meet
+  leaves as obsolete, but only the *`hann`-discharge direction* is — the *proportionality* (`complementIso_
+  smul_eq_extensor_join`) and its transfer are exactly the bridge §1.39(b) names, just read producer-side
+  (`r̂(join) ≠ 0 ⟹ r̂(C(L)) ≠ 0`). Blueprint: defined the dangling `lem:case-III-claim612-line-in-panel-
+  union` capstone (referenced by every green Phase-22f sub-leaf's `\cref`, no node) — a real broken-`\cref`
+  fix. Graph-free, axiom-clean.
 - **The `d=3` Case-III crux architecture: existential conclusion, drop `hann` entirely (2026-06-09
   design pass; canonical home `notes/Phase22-realization-design.md` §1.39, supersedes §1.37/§1.38's B1).**
   `case_III_claim612` → `∃ q : six joins, r̂(join q) ≠ 0`, no premise; ~5-line contrapositive (verified

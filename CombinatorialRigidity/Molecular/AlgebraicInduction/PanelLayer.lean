@@ -264,6 +264,53 @@ theorem panelSupportExtensor_add_smul_left (n₁ n₂ : Fin (k + 2) → ℝ) (t 
   rw [panelSupportExtensor, panelSupportExtensor, hjoin]
   exact map_smul _ _ _
 
+/-- **The panel support extensor is the Grassmann–Cayley meet of its two normals**
+(`def:panel-support-extensor`, the bridge from the panel-layer form to the `Molecular/Meet.lean`
+`complementIso`-of-an-`extensor` form). `panelSupportExtensor n₁ n₂` equals
+`complementIso ⟨extensor ![n₁, n₂], _⟩`: by definition `panelSupportExtensor = complementIso ∘
+normalsJoin` (`def:panel-support-extensor`) and `normalsJoin n₁ n₂ = ⟨extensor ![n₁, n₂], _⟩` as
+elements of `⋀² ℝ^(k+2)` (`normalsJoin_coe`, equal underlying graded element). This is the staging
+identity that lets the `d = 3` Case-III producer consume the point-join ↔ panel-meet duality of
+`Molecular/Meet.lean`, whose lemmas are stated against the `complementIso`-of-an-`extensor` form
+`C(L) = complementIso ⟨extensor ![n_u, n'], _⟩`, while a candidate's `va`-hinge supplies its
+supporting extensor in the `panelSupportExtensor` form. -/
+theorem panelSupportExtensor_eq_complementIso_extensor (n₁ n₂ : Fin (k + 2) → ℝ) :
+    panelSupportExtensor n₁ n₂
+      = complementIso (k := k) (j := 2) (by omega)
+          ⟨extensor ![n₁, n₂], extensor_mem_exteriorPower _⟩ := by
+  rw [panelSupportExtensor]
+  exact congrArg _ (Subtype.ext (normalsJoin_coe n₁ n₂))
+
+/-- **The point-join ↔ panel-meet annihilation transfer, in the producer (`panelSupportExtensor`)
+direction** (`lem:case-III-claim612-line-in-panel-union`, N3b; Katoh–Tanigawa 2011 §6.4.1 eq.
+(6.45), Phase 22g). The `d = 3` form of the duality consumed by the Case-III `hsplit` producer.
+Given two independent panel normals `n_u, n'` of a panel `Π(u)` and two points `pi, pj` of the line
+`L = pi pj ⊂ Π(u)` (each dot-orthogonal to both normals), a screw functional
+`r : Dual(ScrewSpace 2)` that annihilates the candidate `va`-hinge's supporting extensor
+`panelSupportExtensor n_u n'` also annihilates the spanning point-join
+`p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]` — and *contrapositively*, the producer's existential witness
+`r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0` (Claim 6.12, `case_III_claim612`) forces `r̂(panelSupportExtensor n_u n') ≠ 0`,
+the nonzero-row input the row-space criterion at `C(L)` feeds to the single-candidate brick.
+
+Immediate from the `Molecular/Meet.lean` core
+`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` after the bridge
+`panelSupportExtensor_eq_complementIso_extensor` rewrites the supporting extensor into the
+`complementIso`-of-an-`extensor` meet form the core is stated against. This is the
+producer-direction reading of the same proportionality `extensor ![pi, pj] = c • C(L)`; the
+`hann`-discharge direction
+(`extensor_join_eq_zero_of_complementIso_eq_zero`, off the `d = 3` live route per
+`notes/Phase22-realization-design.md` §1.39) pushed annihilation the other way. -/
+theorem panelSupportExtensor_join_eq_zero_of_eq_zero (n_u n' pi pj : Fin 4 → ℝ)
+    (hpair : LinearIndependent ℝ ![n_u, n'])
+    (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
+    (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
+    (r : Module.Dual ℝ (ScrewSpace 2))
+    (hr : r (panelSupportExtensor n_u n') = 0) :
+    r ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ = 0 :=
+  extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
+    hi_u hi_u' hj_u hj_u' r
+    (by rw [← panelSupportExtensor_eq_complementIso_extensor]; exact hr)
+
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the
 family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)`. Definitional, unfolding

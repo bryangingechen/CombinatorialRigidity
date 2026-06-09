@@ -235,6 +235,49 @@ consume them; projective invariance is Phase~25.
   injectivity of $f$ alone suffices.)
 \end{proof}
 
+\begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality (N3b assembly, KT eq.~(6.45))]
+  \label{lem:case-III-claim612-line-in-panel-union}
+  \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,
+        CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero,
+        CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct,
+        CombinatorialRigidity.Molecular.panelSupportExtensor_join_eq_zero_of_eq_zero}
+  \leanok
+  \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
+        lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
+  At $d = 3$ ($\bigwedge^{2}\R^4$), let $n_u, n'$ be two independent panel normals of a panel
+  $\Pi(u)$ and $p_i, p_j$ two points whose connecting line $L = p_i p_j$ lies in $\Pi(u)$ (each
+  point orthogonal to both normals). Then the point-join $\bar{p_i} \vee \bar{p_j} =
+  \mathrm{extensor}\,[p_i, p_j]$ is a scalar multiple of the panel-meet $C(L) =
+  \mathrm{complementIso}(n_u \wedge n')$ --- both are the Plücker vector of the line $L$, up to the
+  projective scale. Consequently a screw functional $r$ annihilating $C(L)$ also annihilates
+  $\bar{p_i} \vee \bar{p_j}$. This is the duality Katoh--Tanigawa use implicitly in reading
+  eq.~(6.45): the spanning point-joins and the annihilated panel-meets are the \emph{same} extensors
+  of the lines in the panel union $\Pi(a) \cup \Pi(b) \cup \Pi(c)$.
+
+  The transfer is stated both ways the $d = 3$ Case-III argument needs it: against the meet form
+  $C(L) = \mathrm{complementIso}(n_u \wedge n')$ (the Claim-6.12 capstone's annihilation reading),
+  and --- in the \emph{producer} direction --- against the panel-support-extensor form
+  $\mathrm{panelSupportExtensor}\,n_u\,n'$ a candidate $va$-hinge supplies, so that the existential
+  witness $\hat{r}(\bar{p_i} \vee \bar{p_j}) \ne 0$ of \cref{lem:case-III-claim612} forces
+  $\hat{r}(\mathrm{panelSupportExtensor}\,n_u\,n') \ne 0$, the nonzero-row input the row-space
+  criterion at $C(L)$ feeds to the single-candidate brick.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The two members lie in a common $1$-dimensional space, so the nonzero one scales to the other. At
+  $d = 3$ both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ are killed by every $2$-extensor of the
+  shared-direction span $\Phi = (n_u \wedge \R^4) + (n' \wedge \R^4)$ --- the point-join by a
+  Gram-determinant orthogonality, the panel-meet by the wedge-vanishing dictionary entry
+  (step~(i), \cref{lem:complement-iso-decomposable-wedge-perp}). Since $\dim \Phi = 3 + 3 - 1 = 5$,
+  its wedge-orthogonal complement $\Omega$ is $6 - 5 = 1$-dimensional (step~(ii)'s line count,
+  \cref{lem:complement-iso-line-one-dim}, in the $\bigwedge^{2}\R^4$-internal form via the injective
+  pull-back \cref{lem:complement-iso-exterior-map-injective}); the panel-meet is nonzero (the normals
+  are independent), so it spans $\Omega$ and the point-join is its multiple. The annihilation transfer
+  is then immediate from $r(\bar{p_i} \vee \bar{p_j}) = c \cdot r(C(L)) = 0$; the producer-direction
+  form rewrites $\mathrm{panelSupportExtensor}\,n_u\,n' = C(L)$
+  ($\mathrm{panelSupportExtensor\_eq\_complementIso\_extensor}$) and applies the same transfer.
+\end{proof}
+
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
   \lean{CombinatorialRigidity.Molecular.meet}
