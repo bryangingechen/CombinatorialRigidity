@@ -311,6 +311,39 @@ theorem panelSupportExtensor_join_eq_zero_of_eq_zero (n_u n' pi pj : Fin 4 → �
     hi_u hi_u' hj_u hj_u' r
     (by rw [← panelSupportExtensor_eq_complementIso_extensor]; exact hr)
 
+/-- **The eq. (6.12) candidate's `va`-hinge support carries the existential join witness**
+(`lem:case-III-claim612-line-in-panel-union`, the Leaf-2b seed-from-line transfer; Katoh–Tanigawa
+2011 §6.4.1 eq. (6.12)/(6.45), Phase 22g). The `d = 3` Case-III producer builds its degenerate
+candidate by placing the re-inserted body `v` at the sheared normal `n_u + t • n'` (`t ≠ 0`) of the
+witness panel `Π(u)`, with the `va`-hinge's second panel `a` at `n_u`; the candidate's `va`-hinge
+supporting extensor is then `panelSupportExtensor (n_u + t • n') n_u`, a nonzero multiple of the
+panel-meet `C(L) = complementIso (n_u ∧ n')` of the witness line `L = pi pj ⊂ Π(u)`
+(`panelSupportExtensor_add_smul_left`, the eq. (6.12) `va`-line). So a screw functional `r` not
+annihilating the spanning point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]` — Claim 6.12's existential
+witness (`case_III_claim612`) — does not annihilate that `va`-hinge support either:
+`r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u + t • n') n_u) ≠ 0`.
+
+This is the nonzero-row input the row-space criterion (`linearIndependent_sumElim_candidateRow_iff`)
+consumes at the candidate's `va`-hinge to certify the eq. (6.29) candidate family independent. It is
+the shear-invariant, producer-direction reading of the point-join ↔ panel-meet annihilation transfer
+`panelSupportExtensor_join_eq_zero_of_eq_zero` (the unsheared `n_u, n'` form): the shear factor `-t`
+(nonzero since `t ≠ 0`) cancels under `r`, so the candidate's actual sheared support and the
+unsheared panel-meet share the nonvanishing. -/
+theorem panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero (n_u n' pi pj : Fin 4 → ℝ)
+    {t : ℝ} (ht : t ≠ 0) (hpair : LinearIndependent ℝ ![n_u, n'])
+    (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
+    (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
+    (r : Module.Dual ℝ (ScrewSpace 2))
+    (hr : r ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ ≠ 0) :
+    r (panelSupportExtensor (n_u + t • n') n_u) ≠ 0 := by
+  intro hz
+  apply hr
+  apply panelSupportExtensor_join_eq_zero_of_eq_zero n_u n' pi pj hpair hi_u hi_u' hj_u hj_u' r
+  rw [panelSupportExtensor_add_smul_left, map_smul, smul_eq_zero] at hz
+  rcases hz with h | h
+  · exact absurd (neg_eq_zero.mp h) ht
+  · exact h
+
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the
 family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)`. Definitional, unfolding

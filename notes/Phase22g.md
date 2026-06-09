@@ -41,14 +41,18 @@ candidate placement, Leaf 2/3). `case_III_eq629_conditional` was deleted (no cod
 blueprint node folded into `lem:case-III-claim612` — now flipped green). Build + lint + verify.sh +
 supersession-gate all clean.
 
-**Next concrete step (smallest forward commit): Leaf 2b — the line-indexed candidate placement**
-(CaseI.lean; **§38 `ofNormals` trap**). Leaf 2a (the join↔meet bridge, the seed-from-line geometric
-core) LANDED 2026-06-09 (PanelLayer.lean, graph-free, axiom-clean) — see the checklist. What remains:
-generalize `case_II_placement_eq612`'s seed/shear construction so the `va`-hinge support is `C(L)` for
-the witness line `L = pᵢpⱼ ⊂ Π(u)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep reasoning
-over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Then Leaf 3 wires
-it into the producer's `hcand`, using the Leaf-2a bridge to feed `r̂(C(L)) ≠ 0` to the row-space
-criterion.
+**Next concrete step (smallest forward commit): Leaf 2b — generalize `case_II_placement_eq612` to
+the arbitrary witness line** (CaseI.lean; **§38 `ofNormals` trap**). Leaf 2b's *seed-from-line
+geometric core* LANDED 2026-06-09 (`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`,
+PanelLayer.lean, graph-free, axiom-clean): the candidate's actual *sheared* `va`-hinge support
+`panelSupportExtensor (n_u + t•n') n_u` (= `(-t)•C(L)`, `t ≠ 0`) carries the existential join witness
+`r̂(pᵢ∨pⱼ) ≠ 0 ⟹ r̂(supportExtensor e_a) ≠ 0` — exactly what the row-space criterion tests at the
+candidate's `va`-hinge. What remains in Leaf 2b: generalize `case_II_placement_eq612`'s seed/shear
+construction so the `va`-hinge's two normals are the witness panel's `n_u, n'` (making its support
+`(-t)•C(L)` for the witness line `L = pᵢpⱼ ⊂ Π(u)`) and its `(D−1)` block rows span `(span C(L))^⊥`.
+Keep reasoning over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38 discipline).
+Then Leaf 3 wires it into the producer's `hcand`, using this brick + the Leaf-2a bridge to feed
+`r̂(supportExtensor e_a) ≠ 0` to the row-space criterion.
 
 After the producer lands (Leaf 3): instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed `rigidityMatrix_prop11`'s
@@ -79,12 +83,21 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
   the green Phase-22f sub-leaves all `\cref` but no node defined; pins the four duality lemmas. The
   duality is the bridge §1.39(b) names; the *transfer* form is producer-direction (the `hann`-discharge
   direction stays obsolete, §1.39(c)).
-- [ ] **Leaf 2b — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**).
-  Generalize `case_II_placement_eq612`'s seed/shear construction so the `va`-hinge support is `C(L)`
-  for the **witness line** `L = pᵢ∨pⱼ ⊂ Π(u)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep the
-  row-space/independence reasoning over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2
-  §38 discipline). Likely splits (seed-from-line normals; per-line block-failure/span criterion).
-  Multi-commit. Consumes Leaf 2a to read `r̂(C(L)) ≠ 0` from `r̂(join) ≠ 0`.
+- [~] **Leaf 2b — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**;
+  multi-commit, IN PROGRESS).
+  - [x] **2b seed-from-line geometric core** (DONE 2026-06-09; PanelLayer.lean, graph-free,
+    axiom-clean): `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` — the candidate's
+    *sheared* `va`-hinge support `panelSupportExtensor (n_u + t•n') n_u = (-t)•C(L)` (`t ≠ 0`) carries
+    the existential witness: `r̂(extensor ![pi,pj]) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u+t•n') n_u) ≠ 0`.
+    The shear-invariant, candidate-direction reading of Leaf 2a's transfer
+    (`panelSupportExtensor_join_eq_zero_of_eq_zero`); the `-t` factor cancels under `r`. This is the
+    exact nonzero-row input `linearIndependent_sumElim_candidateRow_iff` tests at `e_a` (whose support
+    IS `panelSupportExtensor (n_u+t•n') n_u`). Blueprint: added to `lem:case-III-claim612-line-in-panel-
+    union`'s group `\lean{}` pin (corner-case variant), prose extended one clause for the sheared form.
+  - [ ] **2b candidate placement** (CaseI.lean): generalize `case_II_placement_eq612`'s seed/shear so
+    the `va`-hinge's two normals are the witness panel's `n_u, n'` and its `(D−1)` block rows span
+    `(span C(L))^⊥`. Keep reasoning over abstract `F`, instantiate `ofNormals` only at the seed.
+    Consumes the 2b core to read `r̂(supportExtensor e_a) ≠ 0` from `r̂(join) ≠ 0`.
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
   at the C2 feed). Build `hcand q hq` from `hq : r̂(pᵢ∨pⱼ) ≠ 0`: extract line `L` from `q`, run Leaf 2b
   to build the candidate at `C(L)`, run the row-space criterion at `C(L)` → independent family → C2.
@@ -154,18 +167,21 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
 ## Hand-off / next phase
 
-**Smallest next commit: Leaf 2b — the line-indexed candidate placement** (CaseI.lean, §38 `ofNormals`
-trap, multi-commit). Leaf 2a (the join↔meet bridge — `panelSupportExtensor_eq_complementIso_extensor`
-+ `panelSupportExtensor_join_eq_zero_of_eq_zero`, PanelLayer.lean) LANDED 2026-06-09: the candidate
-`va`-hinge support IS the panel-meet `C(L)`, and `r̂(join) ≠ 0 → r̂(C(L)) ≠ 0` (the C2 row-space
-input). What remains in Leaf 2b: generalize `case_II_placement_eq612`'s seed/shear construction so the
-`va`-hinge support is `C(L)` for the witness line `L = pᵢpⱼ ⊂ Π(u)` and its `(D−1)` block rows span
+**Smallest next commit: Leaf 2b candidate placement — generalize `case_II_placement_eq612`** (CaseI.lean,
+§38 `ofNormals` trap). Leaf 2b's *seed-from-line geometric core* LANDED 2026-06-09
+(`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`, PanelLayer.lean): the candidate's actual
+sheared `va`-hinge support `panelSupportExtensor (n_u+t•n') n_u = (-t)•C(L)` carries the existential
+witness `r̂(join) ≠ 0 ⟹ r̂(supportExtensor e_a) ≠ 0` — the exact form
+`linearIndependent_sumElim_candidateRow_iff` tests at `e_a`. (This builds on Leaf 2a's
+`panelSupportExtensor_eq_complementIso_extensor` + `panelSupportExtensor_join_eq_zero_of_eq_zero`,
+which identified the unsheared support with `C(L)`.) What remains in Leaf 2b: generalize
+`case_II_placement_eq612`'s seed/shear so the `va`-hinge's two normals are the witness panel's `n_u, n'`
+(support `(-t)•C(L)` for the witness line `L = pᵢpⱼ ⊂ Π(u)`) and its `(D−1)` block rows span
 `(span C(L))^⊥`. Keep reasoning over abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38
-discipline). Likely splits (seed-from-line normals; per-line block-failure/span criterion). Then
-**Leaf 3** discharges the producer's carried `hcand : ∀ q, r(join q) ≠ 0 → HasFullRankRealization 2 G`
-(build the candidate at the witness line, run the row-space criterion at `C(L)` via Leaf 2a, feed C2;
-supply the four points via the N3a incidence pattern). Full plan: `notes/Phase22-realization-design.md`
-§1.39.
+discipline). Then **Leaf 3** discharges the producer's carried
+`hcand : ∀ q, r(join q) ≠ 0 → HasFullRankRealization 2 G` (build the candidate at the witness line, run
+the row-space criterion at `e_a` via the 2b core, feed C2; supply the four points via the N3a incidence
+pattern). Full plan: `notes/Phase22-realization-design.md` §1.39.
 
 **Leaf 4/5** (the green `theorem_55 (n:=2) (k:=2)` instance node, the case-II/III flips, the Thm 5.5→5.6
 push) unblock Cor 5.7.
@@ -181,6 +197,14 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
+- **Leaf 2b seed-from-line core — the candidate's *sheared* `va`-support carries the witness
+  (2026-06-09; PanelLayer.lean).** `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`:
+  `r̂(extensor ![pi,pj]) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u+t•n') n_u) ≠ 0` (`t ≠ 0`). Key insight:
+  the row-space criterion tests `r̂(supportExtensor e_a)`, and at the eq.-(6.12) seed `e_a`'s support
+  is the *sheared* `panelSupportExtensor (n_u+t•n') n_u`, **not** the unsheared `panelSupportExtensor
+  n_u n'` Leaf 2a's transfer is stated against. The bridge is one `rw` of `panelSupportExtensor_add_
+  smul_left` (= `(-t)•(unsheared)`, both already green) then `map_smul`/`smul_eq_zero`; the `-t` factor
+  cancels under `r` (the `t=0` branch is `absurd … ht`). 8-line composition of green lemmas, no friction.
 - **Leaf 2a — the join↔meet bridge reuses the green Phase-22f Meet core in the producer direction
   (2026-06-09; PanelLayer.lean).** The candidate `va`-hinge support `panelSupportExtensor n_u n'` IS
   the panel-meet `C(L) = complementIso ⟨extensor ![n_u,n'],_⟩` (`panelSupportExtensor_eq_complementIso_

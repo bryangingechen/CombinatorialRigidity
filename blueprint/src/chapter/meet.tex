@@ -240,7 +240,8 @@ consume them; projective invariance is Phase~25.
   \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero,
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct,
-        CombinatorialRigidity.Molecular.panelSupportExtensor_join_eq_zero_of_eq_zero}
+        CombinatorialRigidity.Molecular.panelSupportExtensor_join_eq_zero_of_eq_zero,
+        CombinatorialRigidity.Molecular.panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
@@ -260,7 +261,13 @@ consume them; projective invariance is Phase~25.
   $\mathrm{panelSupportExtensor}\,n_u\,n'$ a candidate $va$-hinge supplies, so that the existential
   witness $\hat{r}(\bar{p_i} \vee \bar{p_j}) \ne 0$ of \cref{lem:case-III-claim612} forces
   $\hat{r}(\mathrm{panelSupportExtensor}\,n_u\,n') \ne 0$, the nonzero-row input the row-space
-  criterion at $C(L)$ feeds to the single-candidate brick.
+  criterion at $C(L)$ feeds to the single-candidate brick. The producer's candidate places the
+  re-inserted body $v$ at the \emph{sheared} normal $n_u + t \, n'$ ($t \ne 0$) of the witness panel
+  (KT eq.~(6.12)), so its $va$-hinge support is the sheared form
+  $\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u = -t \cdot \mathrm{panelSupportExtensor}\,n_u\,n'$;
+  the nonzero shear factor cancels under $r$, so the witness equally forces
+  $\hat{r}(\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u) \ne 0$ --- the form the row-space
+  criterion actually tests at the candidate's $va$-hinge.
 \end{lemma}
 \begin{proof}
   \leanok
