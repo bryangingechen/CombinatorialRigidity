@@ -241,7 +241,8 @@ consume them; projective invariance is Phase~25.
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero,
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct,
         CombinatorialRigidity.Molecular.panelSupportExtensor_join_eq_zero_of_eq_zero,
-        CombinatorialRigidity.Molecular.panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero}
+        CombinatorialRigidity.Molecular.panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_old_new_blocks_of_line}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
@@ -267,7 +268,12 @@ consume them; projective invariance is Phase~25.
   $\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u = -t \cdot \mathrm{panelSupportExtensor}\,n_u\,n'$;
   the nonzero shear factor cancels under $r$, so the witness equally forces
   $\hat{r}(\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u) \ne 0$ --- the form the row-space
-  criterion actually tests at the candidate's $va$-hinge.
+  criterion actually tests at the candidate's $va$-hinge. The companion block-placement leaf
+  ($\mathrm{case\_III\_old\_new\_blocks\_of\_line}$) realizes this line variation at the level of
+  the candidate framework: it shears body $v$ along an \emph{arbitrary} second normal $n'$ (not the
+  fixed inductive $n_b$), producing the inductive old/new panel-row blocks of the candidate placement
+  whose $va$-hinge is $L$, with the genuine-line and reproduced-$vb$-transversal facts entering as
+  explicit hypotheses.
 \end{lemma}
 \begin{proof}
   \leanok
