@@ -3618,8 +3618,9 @@ candidate family to the fixed-placement realization brick.
 This is the **green-modulo skeleton** (`notes/Phase22-realization-design.md` §1.35): the residual
 graph-data obligations are carried here as *explicit* hypotheses, to be discharged one per leaf in
 later commits. Concretely the candidate-selection data of `case_III_claim612`
-(the nonzero common candidate row `r ≠ 0`, the four affinely-independent points `p`, the N3b
-duality `hduality`, the three per-block selectors `hselᵢ : r Cᵢ ≠ 0 → LinearIndependent famᵢ`) plus,
+(the nonzero common candidate row `r ≠ 0`, the four affinely-independent points `p`, the
+per-panel-line N3b duality `hduality` (KT eq. (6.45)), the three per-block selectors
+`hselᵢ : r Cᵢ ≠ 0 → LinearIndependent famᵢ`) plus,
 for each candidate `i ∈ {1, 2, 3}`, the seed `q₀ᵢ`, the per-row membership
 `hmemᵢ : ∀ i, famᵢ i ∈ span (ofNormals G ends q₀ᵢ).rigidityRows`, and the relative-full count
 `D(|V(G)|−1) ≤ |ιᵢ|` (`hcardᵢ`) — exactly the inputs of C2
@@ -3652,8 +3653,11 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
     {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
     (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
       ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-        r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
-          extensor_mem_exteriorPower _⟩ = 0)
+        ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+          pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+          omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
+          r (complementIso (k := 2) (j := 2) (by omega)
+              ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0)
     -- each candidate family `famᵢ`, its selector `hselᵢ`, its seed `q₀ᵢ`, the per-row membership
     -- `hmemᵢ` in the fixed realization's rigidity rows, and the full count `hcardᵢ` — the C2
     -- (`hasFullRankRealization_of_candidateSelector`) inputs (L1/L2/L4 + the `r̂`-row

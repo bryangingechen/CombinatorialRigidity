@@ -11,6 +11,7 @@ public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Extensor
+public import CombinatorialRigidity.Molecular.Meet
 
 /-!
 # The panel-hinge rigidity matrix `R(G,p)` (`sec:molecular-rigidity-matrix`)
@@ -1501,39 +1502,64 @@ candidate-completion assembly for `M₁`) consume, discharging the candidate-com
 `lem:case-III-eq629-conditional`.
 
 The argument is a clean contrapositive: if all three blocks fail, then `r̂(C₁) = r̂(C₂) = r̂(C₃)
-= 0`, so by the **point-join ↔ panel-meet duality** (`lem:case-III-claim612-line-in-panel-union`,
-N3b, deferred to Phase 22f) `r̂` annihilates each of the six panel-support `2`-extensors
-`pᵢ ∨ pⱼ = omitTwoExtensor (homogenize ∘ p)` of the four affinely-independent points
-`p` of KT eq. (6.45) (`exists_affineIndependent_panel_incidence`, N3a). But those six joins **span**
+= 0`, so — as the **point-join ↔ panel-meet duality** (`lem:case-III-claim612-line-in-panel-union`,
+N3b) sweeps **every** line `L ⊂ Π(a) ∪ Π(b) ∪ Π(c)` (KT eq. (6.45)) — `r̂` annihilates each of the
+six panel-support `2`-extensors `pᵢ ∨ pⱼ = omitTwoExtensor (homogenize ∘ p)` of the four
+affinely-independent points `p` of KT eq. (6.45) (`exists_affineIndependent_panel_incidence`, N3a).
+Each such join lies in one of the three panels, so it is the panel-meet `C(L)` of a line `L` in the
+union; the per-line transfer `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (N3b)
+converts `r̂ ⊥ C(L)` to `r̂ ⊥ (pᵢ ∨ pⱼ)`. But those six joins **span**
 `ScrewSpace 2 = ⋀²ℝ⁴` (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), so a functional
 annihilating them is `0` (`eq_zero_of_annihilates_span_top`, N2) — contradicting `r̂ ≠ 0`
 (`candidateRow_ne_zero`, N5).
 
-**Green-modulo-N3b** (honesty-gate case (b)): the N3b duality — the implication carried here as the
-hypothesis `hduality`, "if `r̂` is orthogonal to the three supporting extensors `C₁, C₂, C₃` then it
-annihilates every spanning join `pᵢ ∨ pⱼ`" — is the conclusion of the still-red N3b node
-(`lem:case-III-claim612-line-in-panel-union`), whose exterior-algebra assembly lands in Phase 22f.
-Its three operational leaves are green (`Meet.lean`); only the bounded `⋀²ℝ⁴` Hodge-star assembly
-placing both `pᵢ∨pⱼ` and `C(L)` in `⋀²W` remains. The remaining steps (N1, N2, N3a) are green and
-used here directly. -/
+**The per-panel-line `hduality` model** (KT eq. (6.45), Phase 22g). The duality is carried as the
+hypothesis `hduality`, in the honest per-panel-line form: for *each* of the six spanning joins `q`
+(the join of the two points kept by `omitTwoExtensor`, namely the complement of the omitted pair),
+there is a line `L` through that join lying in the panel union — exhibited as a pair of independent
+normals `n_u, n'` to which both endpoints of the join are orthogonal — with `r̂` annihilating its
+panel-meet `C(L) = complementIso (n_u ∧ n')`. The carried equality
+`omitTwoExtensor (homogenize ∘ p) q = extensor ![pi, pj]` ties the kept-points join to the brick's
+`extensor`-form so the per-line transfer fires directly.
+
+This shape is the corrected `hduality`: the earlier three-fixed-`Cᵢ` premise (`r C₁ = 0 → r C₂ = 0 →
+r C₃ = 0 → r ⊥ all six joins`) is *mathematically undischargeable* — three `2`-extensors span ≤ 3 of
+the 6 dimensions of `⋀²ℝ⁴`, so `r ⊥ C₁,C₂,C₃` cannot force `r = 0`. KT's Claim sweeps *all* lines
+`L ⊂ Π(u)` (not just the three candidate-hinge supports), reaching every join of the four points
+(Lemma 2.1). The conclusion is unchanged (`r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0`, the disjunction the
+candidate selection consumes); both downstream consumers (`case_III_eq629_conditional`, the `d = 3`
+`hsplit` producer) forward `hduality` verbatim, so the restate is a pure signature ripple. -/
 theorem case_III_claim612
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
     {C₁ C₂ C₃ : ScrewSpace 2}
     {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
     (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
       ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-        r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
-          extensor_mem_exteriorPower _⟩ = 0) :
+        ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+          pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+          omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
+          r (complementIso (k := 2) (j := 2) (by omega)
+              ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0) :
     r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0 := by
-  -- Contrapositive: if `r` is orthogonal to all three supporting extensors, the N3b duality
-  -- annihilates each spanning join, the six joins span `ScrewSpace 2` (N1), so `r = 0` (N2),
-  -- contradicting `r ≠ 0` (N5).
+  -- Contrapositive: if `r` is orthogonal to all three supporting extensors, the per-panel-line N3b
+  -- duality annihilates each spanning join, the six joins span `ScrewSpace 2` (N1), so `r = 0`
+  -- (N2), contradicting `r ≠ 0` (N5).
   by_contra h
   push Not at h
   obtain ⟨h₁, h₂, h₃⟩ := h
   refine hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp) ?_)
   rintro x ⟨q, rfl⟩
-  exact hduality h₁ h₂ h₃ q
+  -- For each join `q`, the per-panel-line witness supplies a line `L = (n_u, n')` through it; the
+  -- per-line transfer (N3b) turns `r ⊥ C(L)` into `r ⊥ (the join `extensor ![pi, pj]`)`, and the
+  -- carried equality identifies that join with `omitTwoExtensor … q`.
+  obtain ⟨n_u, n', pi, pj, hpair, hiu, hiu', hju, hju', heq, hann⟩ := hduality h₁ h₂ h₃ q
+  change r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+    extensor_mem_exteriorPower _⟩ = 0
+  rw [show (⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+        extensor_mem_exteriorPower _⟩ : ScrewSpace 2)
+      = ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ from Subtype.ext heq]
+  exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
+    hiu hiu' hju hju' r hann
 
 /-- **The candidate-completion conditional: at least one of the three candidate placements'
 top-left `D × D` blocks is full rank, so at least one candidate family is independent**
@@ -1554,9 +1580,11 @@ independence `famᵢ` is conditioned, via the row-space criterion
 `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` being **not** orthogonal to that block's supporting extensor `Cᵢ`
 (`hsel₁`/`hsel₂`/`hsel₃`); the `M₃` candidate is routed onto the *same* `r̂` by eq.~(6.44)
 (`candidateRow_ac_eq_neg`). Claim~6.12 (`case_III_claim612`) supplies the disjunction
-`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` — at `d = 3`, contrapositively, all three failing would put
-the nonzero `r̂` orthogonal to a spanning set of panel-meet extensors of four affinely-independent
-points (`hduality` + `span_omitTwoExtensor_eq_top`), forcing `r̂ = 0`. So at least one selector
+`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` — at `d = 3`, contrapositively, all three failing would
+put the nonzero `r̂` orthogonal to the panel-meet `C(L)` of *every* line `L` in the panel union
+`Π(a) ∪ Π(b) ∪ Π(c)` (the per-panel-line `hduality`), hence to a spanning set of panel-meet
+extensors of four affinely-independent points (`span_omitTwoExtensor_eq_top`), forcing `r̂ = 0`. So
+at least one selector
 condition `r̂(Cᵢ) ≠ 0` holds, discharging the corresponding candidate's conditional and giving an
 independent full family. This is the selection step the `d = 3` `hsplit` producer instantiates at
 real graph data (where each `famᵢ` is the actual eq.~(6.29) candidate family on
@@ -1570,8 +1598,11 @@ theorem case_III_eq629_conditional {ιfam₁ ιfam₂ ιfam₃ : Type*}
     {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
     (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
       ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-        r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
-          extensor_mem_exteriorPower _⟩ = 0)
+        ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+          pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+          omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
+          r (complementIso (k := 2) (j := 2) (by omega)
+              ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0)
     (hsel₁ : r C₁ ≠ 0 → LinearIndependent ℝ fam₁)
     (hsel₂ : r C₂ ≠ 0 → LinearIndependent ℝ fam₂)
     (hsel₃ : r C₃ ≠ 0 → LinearIndependent ℝ fam₃) :

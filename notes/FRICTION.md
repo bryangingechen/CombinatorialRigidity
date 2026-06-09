@@ -464,6 +464,21 @@ housekeeping pass once their resolution is fully indexed.
   `ℕ ↪ ℝ` cast. Small enough to inline; not worth a mirror.
 - **Status:** resolved (lemma composition; no mirror needed).
 
+### [resolved] After `rintro x ⟨q, rfl⟩` on a `Set.range (fun q ↦ …)` membership, the goal carries the un-beta-reduced application `(fun q ↦ …) q` — `change` (not `show`) the value before `rw`
+- **Where it bit:** `case_III_claim612` (`RigidityMatrix.lean`, Phase 22g), restating `hduality` to the
+  per-panel-line model. The contrapositive feeds `eq_zero_of_annihilates_span_top
+  (span_omitTwoExtensor_eq_top hp)`, and `rintro x ⟨q, rfl⟩` leaves the goal
+  `r ((fun q ↦ ⟨omitTwoExtensor … (ne_of_lt q.2), _⟩) q) = 0`. A `rw [show (⟨omitTwoExtensor …⟩ : …)
+  = ⟨extensor ![pi, pj], _⟩ from Subtype.ext heq]` to swap in the per-join witness's extensor form
+  *failed to match* — the value sits under the un-reduced `(fun q ↦ …) q` redex.
+- **Fix:** prefix a `change r ⟨omitTwoExtensor … (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ = 0` to
+  beta-reduce the range function, then the `rw [show … from Subtype.ext heq]` fires. Note `change`, not
+  `show` — `show` here trips `linter.style.show` ("changed the goal, use `change`"), since the
+  beta-reduction is a defeq goal *change*, not a readability restatement. (The old proof unified up to
+  defeq via a bare `exact hduality … q`; the restated premise carries a witness that must be rewritten
+  in, so the redex must be reduced first.) One build cycle.
+- **Status:** resolved (one-line `change`; no mirror — local proof shape).
+
 ### [resolved] `obtain ⟨a, t⟩ := e j` on a *term* (not a hypothesis) doesn't substitute the term's other occurrences — use `rcases hej : e j with ⟨a, t⟩` then `simp only [hej]`
 - **Where it bit:** `exists_rankPolynomial_of_rigidOn` (Phase 22, Case-I per-leg rank polynomial), the
   coordinatization `hg : φ (g q i) j = eval q (c i j)`. After `rw [hc_def]` the RHS panel polynomial
