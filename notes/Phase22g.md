@@ -1,555 +1,206 @@
 # Phase 22g — the `d=3` realization assembly (work log)
 
 **Status:** in progress (opened 2026-06-07 on a build-free red-node consistency recon).
-The deferred-unlettered "`d=3` assembly" cut, now lettered 22g. Design-reconned in
-`notes/Phase22-realization-design.md` §1.33 (A)/(B); this note is the canonical home for
-that recon's verdict. KT §6.4.1 (Lemma 6.10) at the `k=0`/`d=3` scope.
+The deferred-unlettered "`d=3` assembly" cut, now lettered 22g. KT §6.4.1 (Lemma 6.10) at the
+`k=0`/`d=3` scope. Cross-cutting design history lives in `notes/Phase22-realization-design.md`
+§1.33–§1.39; this note carries current state, the live leaf sequence, blockers, and hand-off.
 
 ## Current state
 
-**The live route — the corrected L-wire decomposition** (recon-of-the-core,
-`notes/Phase22-realization-design.md` §1.35). The (g1)/(g2) device-feed fork is **resolved**: the
-candidate-row placement geometry and the device feed are pinned down, verified against KT §6.4.1
-eqs. (6.24)–(6.44) and the green Lean. The placed `+1` row is `hingeRow v b r̂` (`r̂(C(e_b)) ≠ 0`),
-in `span rigidityRows` (a combination of `e_b`-panelRows), fed at the *fixed* placement
-(`exists_good_realization_const`). **C1 + C2 + C3 have landed** (the fixed-framework device feed,
-the single-candidate brick `hasFullRankRealization_of_candidateSelector`, the re-wired L0 spine
-`case_III_hsplit_producer`). **C5a + C5b have landed** (this commit): `case_III_claim612`'s
-`hduality` is restated to the honest KT eq. (6.45) per-panel-line model, and its body dispatches the
-per-line N3b brick over the six joins. The C3 spine carries the Claim-6.12 data
-(`r`/`hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`) + per-candidate `hmemᵢ`/`hcardᵢ` as explicit hypotheses; all
-three `hselᵢ`, the `+1` `r̂`-row `hmemᵢ`, and the `r̂` candidate-vector data (`hr`) are in hand.
+**The `d=3` Case-III crux architecture is PINNED (`notes/Phase22-realization-design.md` §1.39,
+2026-06-09 design pass — supersedes §1.37/§1.38's B1).** `case_III_claim612` is restated to the
+**existential conclusion** `∃ q : six joins, r̂(join q) ≠ 0` with **no `hann`/`hduality` premise**:
+the honest proof is the ~5-line contrapositive `by_contra → push Not → eq_zero_of_annihilates_span_top
+(span_omitTwoExtensor_eq_top hp)`, reusing the current body's span→r=0 machinery (verified to close via
+`lean_multi_attempt`). `hann` was never a supplied premise — it is the internal `by_contra` negation.
+The existential ranges over the **six joins only** (they span via Lemma 2.1), not the line continuum.
 
-**Next concrete step (smallest forward commit): C5c-step-(1) — restate `case_III_claim612`'s
-`hduality` *antecedent* from the three fixed scalars to the unconditional `hann` union premise + body =
-the C5c assembly.** A coordinator re-adjudication (2026-06-09, `notes/Phase22-realization-design.md`
-§1.38, re-opening §1.37) **CONFIRMS** the architecture does not close as shaped and **REFUTES** the
-"three graph-fixed candidates suffice" escape: KT eq. (6.12)/Claim 6.9/(6.42) say `p₁(va) = L` for
-**any** `(d−2)`-line `L ⊂ Π(a)` (freely chosen, *not* graph-fixed), so Claim 6.12 is a genuine
-existential over the line continuum; three fixed candidate supports span ≤ 3 of `⋀²ℝ⁴`'s 6 dims
-(numerically verified), so `r̂ ⊥ C₁,C₂,C₃` can never force `r̂ = 0`. **§1.37's B1 restate of
-`case_III_claim612` itself does close** (the green proof uses `h₁/h₂/h₃` *only* to feed `hduality`'s
-antecedent, never for the contradiction — so dropping the antecedent and carrying `hann` unconditionally
-keeps the three-fixed conclusion provable; the contradiction lives in `hann ⟹ r̂=0` vs `r̂≠0`). The
-conclusion need **not** become an existential (it is what the selectors consume). **What §1.38 revises
-vs §1.37:** the producer's `hann` derivation (C5c-step-2) is **NOT "only a quantifier"** — to supply
-`hann` (= `r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`) the producer's three-fixed-seed `q₁/q₂/q₃` candidate
-carriage must be **re-parameterized over a free line `L`** (build the eq.-(6.12) placement + its `(D−1)`
-panel rows at an arbitrary `L`, run the row-space criterion at `C(L)`). That is a multi-commit
-producer-internal restructure (likely splits), not the ~1-commit edit §1.37 implied — but it stays
-producer-internal (no `case_III_claim612` / selector / C1–C3 / C5c-assembly change, no phase boundary).
-**The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot land before
-the C3 spine's carried data is discharged (C5c).
+**Effort-accounting flag (honest):** the existential restate makes five recently-landed leaves
+**obsolete on the `d=3` live route** — they were the machinery for *carrying and discharging* the
+per-join `hduality` witness, which no longer exists:
+`exists_hduality_witness_of_panel_incidence` (the C5c assembly), `exists_independent_perp_pair`,
+`omitTwoExtensor_homogenize_eq_extensor_kept`, `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`,
+and the C5a/C5b six-join dispatch in `case_III_claim612`'s current body. They stay as reusable
+graph-free lemmas (likely re-enter at **Phase-23** general-`d` join↔meet duality), but are off the
+`d=3` route. The contradiction core, `candidateRow_ne_zero`/`candidateRow_ac_eq_neg`, the `r̂`-vector
+data, C1/C2/C3, the row-space criterion, L1/L2/L4, and the `+1`-row membership all **survive verbatim**.
 
-After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
-`hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
-`rigidityMatrix_prop11`'s `hgen` (its `hub` lower bound is already green, discharged in-proof);
-do the Thm 5.5→5.6 multigraph push (`lem:motions-mono-of-graph-le`). Milestone: the molecular
-conjecture proved at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is
-**Phase 23** (reuse map: §1.33 (C)).
+**The genuine remaining math** is producer-internal and unchanged in difficulty from §1.38: the
+candidate construction (currently three fixed seeds) must be **re-parameterized over the witness
+join's line `L ⊂ Π(u)`** — build the eq.-(6.12) degenerate placement at an arbitrary `L`, run the
+row-space criterion at `C(L)`. The geometric identity that makes the existential consumable: a
+candidate support `(ofNormals …).supportExtensor e = panelSupportExtensor (normal u) (normal v)` is a
+**panel-meet** (PanelHinge.lean:89, `rfl`), the same `complementIso`/`extensor` form as a join — so the
+producer builds its candidate so its hinge line IS the witness join's line.
 
-The L0–L5 row-block bricks (eq.-(6.12) `so`/`sn` blocks, L2 span bridge, L4 membership) + the columnOp
-bridge + the row-swap core are green and survive as the infra C2 consumes; only the device feed and
-the L0 `hfamᵢ` contract change (§1.35). The phase-open red-node + supersession + label-resolution gates
-ran clean at open.
+**Next concrete step (smallest forward commit): Leaf 1 — `case_III_claim612` existential restate.**
+Safe, local, buildable-now: replace the three-fixed-`Cᵢ`/`hduality` signature with the existential
+conclusion (no premise), body = the verified 5-line contrapositive; ripple the two callers
+(`case_III_eq629_conditional`, `case_III_hsplit_producer`). Reconcile the `lem:case-III-claim612`
+blueprint prose to the existential in the same commit.
 
-## Red-node consistency gate — recon verdict (2026-06-07, opening commit)
+After the producer lands (Leaf 3): instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
+`hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed `rigidityMatrix_prop11`'s
+`hgen` (its `hub` lower bound already green); Thm 5.5→5.6 push (`lem:motions-mono-of-graph-le`).
+Milestone: the molecular conjecture at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT
+Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
-Read the target producer nodes `lem:case-II-realization` / `lem:case-III`
-(`algebraic-induction/case-iii.tex`) end-to-end (statement AND proof), traced
-`minimal_kdof_reduction` + the `theorem_55`/`theorem_55_generic` dispatch
-(`Induction/ForestSurgery.lean`, `AlgebraicInduction/PanelHinge.lean`), and ran the supersession +
-label-resolution gates over `algebraic-induction/*.tex`. **Gate clean; both open items resolved.**
+## Lemma checklist — the live leaf sequence (§1.39)
 
-- **(B.1) — CONFIRMED: the `d=3` `hsplit`/`theorem_55` path does NOT consume `lem:cycle-realization`
-  (KT Lemma 5.4).** `theorem_55` and `theorem_55_generic` are *literally*
-  `Graph.minimal_kdof_reduction` applied to three branch hypotheses — `hbase` (`V(G).ncard = 2`),
-  `hsplit` (a reducible degree-2 vertex, split off), `hcontract` (a proper rigid subgraph,
-  contracted). The reduction's induction (`Nat.strong_induction_on` on `V(G).ncard`) has **no
-  cycle branch**: the *only* base case is `V = 2`, reached purely by descent through `hsplit`/
-  `hcontract`. Short cycles dissolve into repeated splits — there is no separate short-cycle
-  realization input on the Lean path. So `lem:case-III`'s `\uses{lem:cycle-realization}` is a
-  **blueprint↔Lean structural divergence**: a KT-*narrative* dependency (KT's Lemma 6.13 opens by
-  Lemma 4.6 with $G$ a short cycle, by Lemma 5.4, *or* carrying a length-`d` chain — Lemma 6.10/6.13
-  proper is the chain case), **not** a Lean-load-bearing one for the `d=3` assembly.
-  - *Reconciled in this commit, not dropped.* `lem:cycle-realization` stays genuinely RED (no
-    `\leanok`; its residual gap is the cited Crapo–Whiteley projective input, not the device) and
-    stays a real general-`d` input for **Phase 23's** cycle base — and it is *already* load-bearing
-    for the `k > 0` `lem:case-II` (green, `\uses`'s it). So the `\uses` edge on `lem:case-III` is
-    kept, with a new prose note in the node clarifying the `d=3` Lean path does not consume it.
-  - *Stale `case-i.tex:149–151` text fixed.* The `lem:cycle-realization` node said the only
-    cited-not-formalized step is "the genericity device, Claim 6.4/6.9, shared with Cases I and II."
-    Stale post-22b — `lem:claim-6-4` went green (`\leanok`). Rewritten: the residual cited step is
-    the **Crapo–Whiteley** "cycle rigid iff hinge lines independent" projective input
-    (`crapoWhiteley1982` Prop 3.4 / `whiteley1999` Prop 3), with an explicit aside that Claim 6.4/6.9
-    is now green and is not the gap.
-- **(B.2) — DECIDED: add a small `d=3`-instance `theorem_55` node.** A blueprint node is
-  green-or-red, and the *general* `thm:theorem-55` (free `n k`) must stay red until Phase 23 supplies
-  `hsplit` at all `k`. So the molecule-app chapter (Cor 5.7) consumes a small green `d=3`-instance
-  node = `theorem_55 (n:=2) (k:=2)` applied to the three green args (`hbase`/`hsplit`/`hcontract`),
-  **not** a standalone `theorem_55_dim3` restating the statement. Rationale: avoids duplicating the
-  statement (it's an instantiation, not a re-proof) and keeps the general node honestly
-  red-pending-Phase-23 with a note. Mint the node name when the producer lands.
-- **Supersession + resolution gates clean.** Superseded labels =
-  {`-disjoint-line-meet`, `-e0-recovery`, `-motion-side-assembly`, `-pin-vertex`} (the four 22c
-  motion-side dead-ends); no live node's `\uses` reaches any of them. `\uses` ⊆ `\label` (no
-  dangling references). `lem:case-II-realization` / `lem:case-III` route through the same argument
-  their statements claim (the `d=3` contrapositive is green; the realization assembly is the genuine
-  remaining content), no live-route `\uses` reaches a superseded node.
+- [ ] **Leaf 1 — `case_III_claim612` existential restate** (RigidityMatrix.lean; **graph-free**, no §38).
+  Conclusion → `∃ q : {q // q.1 < q.2}, r ⟨omitTwoExtensor (homogenize∘p) (ne_of_lt q.2), _⟩ ≠ 0`;
+  drop `C₁ C₂ C₃`/`hduality`. Body = `by_contra; push Not at h; exact hr (eq_zero_of_annihilates_span_top
+  (span_omitTwoExtensor_eq_top hp) (by rintro x ⟨q, rfl⟩; exact h q))` (verified closes). **Ripple:**
+  `case_III_eq629_conditional` (:1809) drops `hduality`/`Cᵢ` — restate or **delete** (no callers; fold
+  its node into `lem:case-III-claim612` prose); `case_III_hsplit_producer` (CaseI.lean:3688) drops
+  `hduality`/`Cᵢ`/the three-fixed `hselᵢ`/`hmemᵢ`/`hcardᵢ`, body becomes green-modulo
+  (`obtain ⟨q,hq⟩ := case_III_claim612 hr hp` + a carried candidate-at-line obligation). Reconcile the
+  `lem:case-III-claim612` prose (case-iii.tex:1124–1133 describes the obsolete carry-`hduality` model).
+  One green unit.
+- [ ] **Leaf 2 — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**).
+  Generalize `case_II_placement_eq612`'s seed/shear construction to an **arbitrary witness line** `L`
+  (the join `pᵢ∨pⱼ`'s line, `L ⊂ Π(u)`): build the candidate framework whose `va`-hinge support is
+  `C(L)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep the row-space/independence reasoning over
+  abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Likely splits
+  (seed-from-line; per-line block-failure/span criterion). Multi-commit.
+- [ ] **Leaf 3 — wire the producer** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the C2
+  feed). `obtain ⟨q,hq⟩ := case_III_claim612 hr hp`; extract line `L` from `q`, run Leaf 2 to build the
+  candidate, run the row-space criterion at `C(L)` with `hq : r̂(pᵢ∨pⱼ) ≠ 0` → independent family →
+  C2. Supply the four points `p` adapted to the real three panels (N3a-pattern). Discharges Leaf 1's
+  green-modulo obligation. **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside (independent; the
+  `+1`-row `hmemᵢ` already in hand via `hingeRow_mem_rigidityRows`; `so`/`sn` blocks via L2
+  `span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`).
+- [ ] **Leaf 4 — `theorem_55` `d=3`-instance node** (B.2; graph-free). Instantiate
+  `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node
+  (**not** a standalone `theorem_55_dim3` — avoids duplicating the statement; general `thm:theorem-55`
+  stays red-pending-Phase-23).
+- [ ] **Leaf 5 — `lem:case-II-realization`/`lem:case-III` flips + Thm 5.5→5.6 push** feeding
+  `rigidityMatrix_prop11`'s `hgen`. Unblocks Cor 5.7 at `d=3`.
 
-**Verdict: the build is safe to scope.** The one real gap is the `d=3` `hsplit` producer (now cracked
-into L0–L5, §1.34); the `lem:cycle-realization` dependency is not Lean-load-bearing for it (B.1), and
-the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a prerequisite for `d=3`
-(it re-enters at the Phase-23 cycle base).
+### Landed leaves (one-line verdicts; full detail in the Lean source + git + design §1.35–§1.39)
 
-## Lemma checklist
-
-- [x] **`lem:case-III-eq629-conditional` candidate-selection capstone** — `case_III_eq629_conditional`
-  (`RigidityMatrix.lean`), the graph-free selection routing `case_III_claim612`'s disjunction through
-  the three per-candidate full-family implications. Node flipped GREEN. (2026-06-07)
-- [x] **Abstractly-indexed device-closure feed** — `hasFullRankRealization_of_independent_panelRow_index`
-  (`GenericityDevice.lean`), the `Set`-free repackaging of the device closure consuming a finite
-  `ι` + injective `j` (the shape of the candidate-completion's `Sum`-indexed output). The producer's
-  packaging-out end-brick. Fully green, no defeq trap; internal infra (no blueprint node). (2026-06-07)
-- **`d=3` `hsplit` producer — row-block bricks L0–L5** (§1.34's cut; the device feed they fed is
-  superseded by §1.35, but the bricks below survive as the infra C1–C5 consume):
-  - [x] **L0 — `hsplit` skeleton green-modulo** (`PanelHingeFramework.case_III_hsplit_producer`,
-    CaseI.lean). The spine: the producer carries the candidate families + `hselᵢ` + `hp`/`hduality`/`hr`
-    + per-candidate `panelRow`-packaging (`q₀ᵢ`/`ιᵢ`/`jᵢ`/`hfamᵢ`/`hcardᵢ`) as explicit hypotheses; body
-    `rcases`'s the Claim-6.12 disjunction (`BodyHingeFramework.case_III_eq629_conditional`) and feeds the
-    winner to `…_index` per branch. Green-modulo, sorry-free. (2026-06-07)
-  - [x] **L1 — IH → old/new block extraction** (`PanelHingeFramework.case_III_old_new_blocks`,
-    CaseI.lean). The front of `case_II_placement_eq612` exposing the OLD block `so`
-    (`holdindep`/`hold`/count/`so`-avoids-`e_b`) and NEW block `sn` (`hsn_e`/`hsn_indep`/`hnewpin`)
-    separately + `hane`/`hnewne`. Graph-free over `ofNormals`. Green, sorry-free. (2026-06-07)
-  - [x] **L2 — pinned-block span bridge** (`BodyHingeFramework.span_panelRow_comp_single_of_edge`,
-    Pinning.lean). `rn`-pinned spans `F.hingeRowBlock e` ⟹ the `hspan` the candidate producers need:
-    each pinned row IS `annihRow (C(e)) t₁ t₂ ∈ r(p(e))`, `=` by equal `finrank D−1`
-    (`linearIndependent_panelRow_comp_single_of_edge` + `finrank_hingeRowBlock`). Small
-    `eq_of_le_of_finrank_eq` leaf, mirrors `exists_redundant_panelRow_of_edge_of_finrank_lt`'s `hrspan`.
-    Green, sorry-free. (2026-06-07)
-  - [x] **L3 — the candidate-row-IS-a-panelRow leaf** (`BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends`,
-    Pinning.lean). The `+1` `Unit`-summand candidate row `hingeRow u w ρ` = `panelRow ends (e,t₁,t₂)`
-    (where `ρ = annihRow (C(p(e))) t₁ t₂`, `ends e = (u,w)`), so it lands at an `(edge,⋀ᵏ-pair)` index
-    of L5's `j`. Proof = `rw [panelRow, hends]`. **§38 trap did NOT bite** — graph-free (`panelRow` reads
-    only `ends`/`supportExtensor`), so the general `BodyHingeFramework`-level form is the answer; the
-    design's `ofNormals` round-trip helper was not needed. Green, sorry-free. (2026-06-07)
-  - [x] **L4 — candidate-row membership** (`BodyHingeFramework.panelRow_mem_rigidityRows_of_link`,
-    Pinning.lean). `e_a` links `v a` *directly* in `G` (`hlink`/`hG_ea`) ⟹ `panelRow_mem_rigidityRows`
-    (after `rw [hends]`) for the `+1` summand — the direct-link analog of `case_II_placement_eq612`'s
-    `hGv`-routed membership step. Closes the F2 gap. One-liner, graph-free (no §38). Green, sorry-free.
-    (2026-06-07)
-  - [x] **L5-inj — the candidate-completion index-map injectivity**
-    (`PanelHingeFramework.candidateCompletion_index_injective`, CaseI.lean). `j` over `(sn ⊕ Unit) ⊕ so`
-    placing `sn→e_b`, `Unit→e_a`, `so→Gᵥ`-edges is injective — the candidate analog of
-    `case_II_placement_eq612`'s inline `hjinj`, abstract (3 disjointness facts in), graph-free (no §38).
-    Green, sorry-free. (2026-06-07)
-  - [x] **L5-pack — the `panelRow ∘ j` family identity + count**
-    (`PanelHingeFramework.candidateCompletion_panelRow_packaging`, CaseI.lean). Ties the candidate
-    producer's abstract `Sum.elim` family to `fun i => panelRow ends (j i)`: `rn`/`ro` are `panelRow`s
-    of `sn`/`so`-vals, the `Unit`-summand `hingeRow u w ρ = panelRow ends (e_a,ta,tb)` via L3 once
-    `ρ = annihRow (C(e_a)) ta tb`. Count `D(|V|−1) = ((D−1)+1)+D(m−2)`, `m ≥ 1`. `funext`/`rcases`/`rfl`
-    identity (graph-free, no §38) + the `case_II_placement_eq612` count arithmetic. Green, sorry-free.
-    Off the live route (§1.35: the placed row's `ρ` is not `annihRow`-shaped); reusable lemma. (2026-06-07)
-- [x] **L-wire columnOp bridge** — `columnOp_apply_single` + `comp_columnOp_comp_single`
-  (RigidityMatrix.lean): `columnOp hvb` is the identity on body `v`'s screw column, converting the
-  producers' operated `hrnpin`/`hspan` to the bare L1/L2 forms. Green, sorry-free. (2026-06-07)
-- [x] **L-wire eq.-(6.27) row-swap core** — `BodyHingeFramework.linearIndependent_sumElim_candidateRow_swap`
-  (RigidityMatrix.lean). The rank-invariance-under-row-operations fact: swap the candidate summand
-  `w → w'` when `w' − w ∈ span (range (Sum.elim rn ro))`, independence preserved. Reassoc +
-  `linearIndependent_sumElim_unit_iff`. Graph-/carrier-free (no §38). Green, sorry-free. (2026-06-07)
-- [x] **C1 — the fixed-framework device-feed variant**
-  (`PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow`, **CaseI.lean** — *not*
-  GenericityDevice: `exists_good_realization_const` lives in CaseI and the import goes CaseI →
-  GenericityDevice, so C1 cannot sit upstream). Fixed `F₀ = ofNormals G ends q₀`, an independent
-  `f : ι → Module.Dual` with `span (range f) ≤ span F₀.rigidityRows` + `D(|V(G)|−1) ≤ |ι|` ⟹
-  `HasFullRankRealization k G`. Weakened `exists_good_realization_const`'s `hspanrows` `=`→`≤`
-  (its `hcoord` leg is now `dualCoannihilator_anti hspanrows`; the one caller `hglue_of_realization`
-  takes `.le`). The rigidity-on-`V(G)` step turned out to already exist as
-  `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` — refactored its body into a
-  span-containment core `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`
-  (takes `hsub : span (range a) ≤ span rigidityRows` instead of pointwise `hmem`), kept the pointwise
-  form as a thin wrapper; C1 wraps the core into the `HasFullRankRealization` existential at the fixed
-  `ofNormals` placement. Abstract `F₀`, graph-free except the final `ofNormals` carrier. Green,
-  sorry-free, build + lint clean. (2026-06-07)
-- [x] **C2 — the single-candidate brick**
-  (`PanelHingeFramework.hasFullRankRealization_of_candidateSelector`, CaseI.lean). Turns a
-  per-candidate selector `hsel : r̂(Cᵢ) ≠ 0 → LinearIndependent fam` + per-row membership
-  `hmem : ∀ i, fam i ∈ span rigidityRows` + count `D(|V|−1) ≤ |κ|` into
-  `r̂(Cᵢ) ≠ 0 → HasFullRankRealization k G` (assemble span containment from `hmem`, feed C1 at the
-  fixed `ofNormals G ends q₀`). Generic over `fam`/`κ`; consumes the producers' selector-shaped
-  output rather than calling them, so the §38 trap is confined to C1's carrier. Build + lint clean,
-  sorry-free. (2026-06-07)
-- [x] **C3 — re-wire L0 to the corrected route** (`PanelHingeFramework.case_III_hsplit_producer`,
-  CaseI.lean). Restated the per-candidate hypotheses from the superseded panelRow contract
-  (`jᵢ`/`hjᵢ`/`hfamᵢ`) to the C2 inputs (seed `q₀ᵢ` + `hmemᵢ` + `hcardᵢ` + `hselᵢ`); body =
-  `case_III_claim612`'s disjunction mapped through three `hasFullRankRealization_of_candidateSelector`
-  (C2) calls — no device call in the spine. Green-modulo (the candidate-selection data stays carried
-  as explicit hypotheses). Build + lint clean, sorry-free. (2026-06-07) §1.35.
-- [x] **C5-leaf — the `+1` `r̂`-row membership** (`BodyHingeFramework.hingeRow_mem_rigidityRows`,
-  Pinning.lean). General block-row form of `panelRow_mem_rigidityRows`: `r ∈ hingeRowBlock e` +
-  `IsLink e u v` ⟹ `hingeRow u v r ∈ rigidityRows` (`⟨e,u,v,hlink,r,hr,rfl⟩`). Discharges the
-  candidate `+1` row's `hmemᵢ` ingredient (§1.35 finding (1)). Graph-free, axiom-clean. (2026-06-07)
-- [x] **C5-leaf — the `hsel₂`/`hsel₃` selector recasts** (`linearIndependent_sum_p2_candidateRow_selector`
-  + `linearIndependent_sum_p3_candidateRow_selector`, RigidityMatrix.lean). Package the `p₂`/`p₃`
-  producers into the `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent famᵢ` shape (`ρ := r`,
-  `C := F.supportExtensor e`); one-line `fun hr => producer … hr` term proofs, graph-free (no §38).
+- [x] **C1/C2/C3 — the fixed-framework device feed + single-candidate brick + L0 spine re-wire**
+  (`hasFullRankRealization_of_independent_rigidityRow` / `…_of_candidateSelector` /
+  `case_III_hsplit_producer`, CaseI.lean). The corrected §1.35 route: candidate `+1` row is a
+  combination of `e_b`-panelRows (in `span rigidityRows`, not a single `panelRow`), fed at the *fixed*
+  `ofNormals` placement via `exists_good_realization_const` — no genericity device. **Survive** the
+  §1.39 restate (consume `r̂(Cᵢ)≠0`, which the producer still produces). (2026-06-07)
+- [x] **The three selector recasts** (`linearIndependent_sum_{p2,p3,augment}_candidateRow_selector`,
+  RigidityMatrix.lean) — package the producers into `hselᵢ : r(C(e))≠0 → LinearIndependent famᵢ`.
+  Graph-free. **Survive.** (2026-06-07)
+- [x] **The `r̂` candidate-vector data** (`exists_redundant_panelRow_ab_lam`, CaseI.lean; mirror
+  `exists_smul_combination_eq_sub_of_mem_span_image_compl`). `r̂ = ∑_j λ_j r_j = wGv ≠ 0` (KT eq.
+  (6.25), `λ_{i^*}=1`). **Survives.** (2026-06-08)
+- [x] **The `+1` `r̂`-row membership** (`hingeRow_mem_rigidityRows`, Pinning.lean). `r ∈ hingeRowBlock e`
+  + `IsLink e u v` ⟹ `hingeRow u v r ∈ rigidityRows`. **Survives.** (2026-06-07)
+- [x] **Row-block infra L0–L5** (CaseI/Pinning.lean) — eq.-(6.12) `so`/`sn` blocks
+  (`case_III_old_new_blocks`), L2 span bridge (`span_panelRow_comp_single_of_edge`), L4 membership
+  (`panelRow_mem_rigidityRows_of_link`), columnOp bridge, row-swap core. **Survive** as the infra
+  Leaf 2/3 consume; the swap core + `annihRow`-shaped L3/L5-pack are off the live route (reusable).
   (2026-06-07)
-- [x] **C5-leaf — the `hsel₁` (`M₁`) selector recast**
-  (`BodyHingeFramework.linearIndependent_sum_augment_candidateRow_selector`, RigidityMatrix.lean). The
-  last of the three; `M₁` (`p₁` along `va`) has no separate producer, so this one builds the operated
-  top-left block `hnewpinaug` inline (`hingeRow_comp_columnOp_comp_single` then the row-space criterion
-  `linearIndependent_sumElim_candidateRow_iff`) rather than delegating like `hsel₂`/`hsel₃`. ~4-line
-  term wrapper; graph-free (no §38), axiom-clean. All three `hselᵢ` now in hand. (2026-06-07)
-- [x] **C5-leaf — the `r̂` candidate-vector data (eqs. (6.24)/(6.25))**
-  (`BodyHingeFramework.exists_redundant_panelRow_ab_lam`, CaseI.lean; the mirror-eligible LA leaf
-  `exists_smul_combination_eq_sub_of_mem_span_image_compl`, `Mathlib/LinearAlgebra/.../Basic.lean`).
-  Reads off the explicit unit-normalized `λ` (KT eq. (6.25), `λ_{i^*} = 1`) from the redundant-row
-  decomposition's `r i = wGv + wOther`, so `r̂ := ∑_j λ_j r_j = wGv` (a `G_v`-row) and `r̂ ≠ 0`
-  (`hr`). Graph-free (no §38), axiom-clean. (2026-06-08)
-- [x] **C5-leaf — the N3b per-line annihilation transfer, `⬝ᵥ`-incidence form**
-  (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, Meet.lean; the mirror bridge
-  `Pi.basisFun_toDual_apply`, `Mathlib/LinearAlgebra/Dual/Basis.lean`). Restates the green N3b core
-  with incidence phrased as `pi ⬝ᵥ n_u = 0` (N3a's `exists_affineIndependent_panel_incidence` shape)
-  rather than the core's `(Pi.basisFun ℝ (Fin 4)).toDual pi n_u = 0`; conversion via the mirrored
-  self-pairing identity `(Pi.basisFun ℝ (Fin 4)).toDual x y = ∑ i, x i * y i`. The per-line brick the
-  `hduality` dispatch consumes over the six joins. Graph-free (no §38), axiom-clean. (2026-06-08)
-- [x] **C5a — restate `case_III_claim612`'s `hduality` to the per-panel-line model + C5b — the
-  six-join dispatch** (route (a), RigidityMatrix.lean; landed together — the signature restate breaks
-  the old body, so they are one green unit). (2026-06-09)
-  - The unsound three-fixed-`Cᵢ` premise `r C₁=0 → r C₂=0 → r C₃=0 → ∀ q, r(omitTwoExtensor q)=0` is
-    replaced by the honest *per-join-witness* form: `… → ∀ q : pair, ∃ (n_u n' pi pj : Fin 4 → ℝ),
-    LinearIndependent ![n_u,n'] ∧ (the 4 ⬝ᵥ-orthogonalities of pi,pj to n_u,n') ∧
-    omitTwoExtensor (homogenize∘p) q = extensor ![pi,pj] ∧ r(complementIso ⟨extensor ![n_u,n'],_⟩)=0`.
-    Conclusion unchanged (`r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0`).
-  - Body (C5b in-`case_III_claim612`): the contrapositive feeds
-    `eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)`; per `q`, the witness's
-    `extensor`-equality rewrites the goal join, then the per-line brick
-    `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` fires. Needed
-    `public import …Molecular.Meet` (the brick + `complementIso` live there; no cycle — Meet imports
-    only Extensor).
-  - Both consumers (`case_III_eq629_conditional`, `case_III_hsplit_producer`) forward `hduality`
-    verbatim — pure signature ripple, no proof-body change. Honesty gate **improved**: the carried
-    `hduality` now *is* the conclusion of `lem:case-III-claim612-line-in-panel-union` (the `\uses`'d
-    per-line node), so the node's `\leanok` is honest green-modulo case (b). Axiom-clean (no `sorryAx`),
-    build + lint clean.
-  - **The N3a-keyed six-join *witnessing* moved to C5c** — producing each `q`'s panel normals +
-    orthogonalities + `omitTwoExtensor=extensor` identity is now part of discharging `hduality` at
-    real data (the failed-block contrapositive supplies `r ⊥ C(L)`; the N3a tabulation supplies the
-    pairs, §1.36).
-- [x] **C5c-leaf — the six-join kept-points tabulation**
-  (`omitTwoExtensor_homogenize_eq_extensor_kept`, RigidityMatrix.lean). The combinatorial half of the
-  per-join `hduality` witness item (3): for each join `q`, names the kept pair `c < d` (increasing
-  complement of `{q.1, q.2}`) and the identity `omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2) =
-  extensor ![homogenize (p c), homogenize (p d)]`. Proof = `set emb := {i,j}ᶜ.orderEmbOfFin`, kept
-  pair is `emb 0/1` (`orderEmbOfFin_mem` ⟹ outside `{i,j}`, `strictMono` ⟹ `<`), identity by
-  `funext`. Graph-free, axiom-clean. (2026-06-09)
-- [x] **C5c-leaf — the constructed second panel normal** (`exists_independent_perp_pair`,
-  RigidityMatrix.lean). Given two line-points `pi, pj : Fin 4 → ℝ` and one normal `n_u ≠ 0` with both
-  points `⬝ᵥ`-orthogonal to it, produces a *second* normal `n'` independent from `n_u` with both
-  points also orthogonal — the second hyperplane through the line `L = pi pj` the per-line N3b brick
-  needs for the three single-panel "opposite" joins. Proof: the common-perp space is `ker (Matrix.of
-  ![pi,pj]).mulVecLin`, `finrank ≥ 4−2 = 2 > 1 = finrank (span {n_u})` by rank–nullity, so the span is
-  a *proper* subspace; `SetLike.exists_of_lt` + `LinearIndependent.pair_iff'`. Graph-free, axiom-clean.
-  (2026-06-09)
-- [x] **C5c-leaf — the six-join `hduality` witness *assembly***
-  (`BodyHingeFramework.exists_hduality_witness_of_panel_incidence`, RigidityMatrix.lean). Produces
-  `case_III_claim612`'s per-join `hduality` witness function from the N3a panel-incidence data
-  (normals `n`, the orthogonality tabulation of `exists_affineIndependent_panel_incidence`) **modulo**
-  the failed-block annihilation hypothesis `hann` (`r` annihilates the panel-meet `complementIso (n u ∧ m)`
-  of panel `Π(u)` with any independent second hyperplane `m` — KT's "any line `L ⊂ Π(u)`", eqs.
-  (6.42)–(6.44)). `fin_cases q`; per join the kept pair (`omitTwoExtensor_homogenize_eq_extensor_kept`)
-  fixes the points and the incidence tabulation the common panel(s): three through-`p0` joins use two
-  N3a normals (`htwo`), three opposite joins use one N3a normal + a constructed second
-  (`exists_independent_perp_pair`, `hone`). Graph-free, axiom-clean. **§38 call-site variant** (TACTICS-QUIRKS
-  §38): `q` passed as an explicit subtype literal per `fin_cases q` branch (not inferred) — `q := _`
-  timed out at `whnf` on the heavy `omitTwoExtensor`/`complementIso`. (2026-06-09)
-- [ ] **C5c-step-(1) — restate `case_III_claim612`'s `hduality` antecedent → `hann` + body = the
-  assembly** (§1.37 verdict). The fixed-`Cᵢ` antecedent is undischargeable; swap it for the union
-  premise (`= exists_hduality_witness_of_panel_incidence`'s `hann`), body = that assembly +
-  `span_omitTwoExtensor_eq_top` + `hr`. Both consumers (`case_III_eq629_conditional`,
-  `case_III_hsplit_producer`) forward verbatim (pure signature ripple, as §1.36); `case_III_hsplit_producer`
-  gains `hann` (+ N3a `n`/incidence) as carried data. The three selectors + C1/C2/C3 untouched
-  (consume the unchanged conclusion). Buildable now (the assembly exists). One green unit, mirrors C5a/C5b.
-- [ ] **C5c-step-(2) — derive `hann` at real `ofNormals` data** (§38 defeq trap; the genuine deferred
-  core, **the producer restructure**, §1.38): the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)`
-  for *every* line `L ⊂ Π(u)`, all three panels. **NOT "only a quantifier"** (§1.37 understated this):
-  the producer's three-fixed-seed `q₁/q₂/q₃` candidate carriage must be **re-parameterized over a free
-  line `L ⊂ Π(u)`** — build the eq.-(6.12) degenerate placement + its `(D−1)` panel rows at an arbitrary
-  `L`, then run the row-space criterion (`mem_hingeRowBlock_iff` /
-  `linearIndependent_sumElim_candidateRow_iff`) at `C(L)`. Multi-commit, producer-internal (likely
-  splits: line-indexed placement family + per-line block-failure + panel-sweep assembly); discharges
-  `case_III_hsplit_producer`'s new `hann` premise. **No `case_III_claim612` / selector / C1–C3 / C5c-
-  assembly change, no phase boundary.** SCOPE FLAG to user (§1.38).
-- [ ] **C5c-(ii) — the OLD/NEW-block `hmemᵢ`** at the `ofNormals` carrier (the `+1`-row `hmemᵢ` is in
-  hand via `hingeRow_mem_rigidityRows`) + `Cᵢ`/`hp` (green). Independent of (1)/(2). Wires the
-  producers. Together (1)+(2)+(ii) take the C3 spine fully green.
-- [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
-  `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
-- [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
-- [ ] **Thm 5.5→5.6 push + feed `rigidityMatrix_prop11`'s `hgen`** — unblocks Cor 5.7 at `d=3`.
+- [x] **OBSOLETE on the `d=3` live route (built to discharge the now-removed `hann`; reusable, likely
+  re-enter at Phase-23 join↔meet duality):** `exists_hduality_witness_of_panel_incidence` (`2bd5fa2`),
+  `exists_independent_perp_pair` (`07c537c`), `omitTwoExtensor_homogenize_eq_extensor_kept` (`b031eb3`),
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (Meet.lean, `b8477db`), and the C5a/C5b
+  six-join dispatch in `case_III_claim612`'s current body (`d851264`). All graph-free, axiom-clean.
+  (2026-06-08/09) §1.39.
+- [x] **Capstone + abstract device feed** (`case_III_eq629_conditional`,
+  `hasFullRankRealization_of_independent_panelRow_index`) — `case_III_eq629_conditional` becomes
+  obsolete under the existential restate (no callers; fold its node into `lem:case-III-claim612`).
+  (2026-06-07)
+
 ## Blockers / open questions
 
-- **Architecture does NOT close at the `hann` discharge as shaped — CONFIRMED + re-adjudicated; the
-  `case_III_claim612` restate is local, the producer's `hann` derivation is a multi-commit restructure**
-  (2026-06-09 coordinator re-adjudication, §1.38, re-opening §1.37). The three-fixed antecedent
-  `r C₁=0 → r C₂=0 → r C₃=0` is undischargeable (three supports span ≤ 3 of `⋀²ℝ⁴`'s 6 dims,
-  numerically verified) — and the "three graph-fixed candidates suffice" escape is **REFUTED**: KT
-  eq. (6.12)/Claim 6.9/(6.42) make `p₁(va) = L` a *free* line `L ⊂ Π(a)`, so Claim 6.12 is a genuine
-  existential over the line continuum, **no** forced `r̂`/`Cᵢ` relation. **`case_III_claim612` itself
-  closes via §1.37's B1** (~1 commit): the green proof feeds `h₁/h₂/h₃` *only* to `hduality`'s
-  antecedent (not the contradiction), so swapping the antecedent for an unconditional `hann` keeps the
-  three-fixed conclusion provable; conclusion need not become existential. **The producer's `hann`
-  derivation (C5c-step-2) is the genuine restructure** — its three-fixed-seed `q₁/q₂/q₃` carriage must
-  be re-parameterized over a free line `L` to supply `r̂ ⊥ C(L)` for *every* `L`; multi-commit,
-  producer-internal, no phase boundary. SCOPE FLAG raised to user. Full account: §1.38.
-- **Blueprint↔Lean divergence (honesty gate): `lem:case-III-claim612` is currently dishonestly green
-  on its antecedent.** The blueprint prose (case-iii.tex:1086–1134) *already* states the line-swept
-  union model and explicitly disavows the three fixed `Cᵢ` (1130–1133), so the **Lean is what
-  diverges** — its `hduality` antecedent carries the fixed scalars the prose disavows (mirror of the
-  conclusion-side issue §1.36 fixed). No `.tex` edit needed (prose is the target); reconcile the Lean
-  to it when C5c-step-(1) lands.
-- **No live blocker on the device feed.** The (g1)/(g2) fork is **resolved** (§1.35 / *Current
-  state*): the corrected feed is the fixed-framework, genericity-free `exists_good_realization_const`
-  route (C1), not the panelRow-shaped `_index` feed.
-- **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38; carried from 22a–e). The
-  `r̂`-producers are graph-free over abstract `F`; C1 instantiates `F` to the concrete
-  `ofNormals … q₀ᵢ` carrier only at the final device-feed call, and C2 states everything over abstract
-  `F`, instantiating only when it composes with C1. C3's spine carries the per-candidate `hmemᵢ` at the
-  concrete `ofNormals G ends q₀ᵢ` carrier, but only as a hypothesis (no `whnf` of the carrier in the
-  spine); the §38 trap re-enters only when the leaves that discharge `hmemᵢ` instantiate it.
+- **Architecture PINNED — existential conclusion, no `hann`** (2026-06-09, `notes/Phase22-realization-design.md`
+  §1.39, supersedes §1.37/§1.38's B1). The three-fixed disjunction is undischargeable (dim 3 < 6,
+  confirmed); KT's lines are *free* (eq. (6.12)/Claim 6.9), so Claim 6.12 is a genuine existential. The
+  existential conclusion is directly provable (no premise) and consumable (candidate supports are
+  panel-meets, matching the joins). No residual premise survives on `case_III_claim612`.
+- **The genuine remaining work is the producer line-indexed re-parameterization** (Leaf 2/3, multi-commit,
+  §38 trap). Producer-internal, no phase boundary. Same difficulty as §1.38's C5c-(2); the existential
+  just removes the dead `hann`/C5c-assembly scaffolding.
+- **Blueprint↔Lean: `lem:case-III-claim612`'s formalization-aside prose is stale** (case-iii.tex:1124–1133
+  describes the carry-`hduality` model the existential restate removes). Reconcile in Leaf 1 (the
+  statement-level prose 1095–1101 already reads as the existential).
+- **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites Leaf 2/3 (they
+  instantiate the concrete carrier). `case_III_claim612` (Leaf 1) is graph-free — no trap. Keep
+  reasoning over abstract `F`, instantiate only at the seed.
+
 ## Hand-off / next phase
 
-**Smallest next commit: C5c-step-(1) — restate `case_III_claim612`'s `hduality` antecedent → `hann`
-(the union premise) + body = the C5c assembly** (§1.37 verdict). A pure-signature edit on the green
-spine (mirrors §1.36's C5a/C5b): `hduality`'s antecedent `r C₁=0 → r C₂=0 → r C₃=0` becomes the
-`hann`-shaped union premise keyed off N3a normals `n` (`∀ u m indep, r(complementIso ⟨extensor
-![n u,m],_⟩)=0`); `case_III_claim612`'s body becomes literally `exists_hduality_witness_of_panel_incidence`
-(already built taking `hann`) + `eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)` +
-`hr`. Conclusion unchanged. Both consumers (`case_III_eq629_conditional`, `case_III_hsplit_producer`)
-forward verbatim; `case_III_hsplit_producer` gains `hann` (+ N3a `n`/incidence) as carried data. The
-three selectors + C1/C2/C3 are untouched (they consume the unchanged conclusion). One green unit.
-Reconcile `lem:case-III-claim612`'s Lean↔prose divergence in the same commit (no `.tex` edit — prose
-is already the target shape).
+**Smallest next commit: Leaf 1 — `case_III_claim612` existential restate** (graph-free, buildable now).
+Restate the conclusion to `∃ q : {q // q.1 < q.2}, r ⟨omitTwoExtensor (homogenize∘p) (ne_of_lt q.2), _⟩ ≠ 0`,
+drop `C₁ C₂ C₃`/`hduality`; body = the verified 5-line contrapositive. Ripple the two callers (delete or
+restate `case_III_eq629_conditional`; green-modulo `case_III_hsplit_producer`). Reconcile the blueprint
+formalization-aside in the same commit. One green unit. Full verification + the leaf sequence:
+`notes/Phase22-realization-design.md` §1.39.
 
-**Then C5c-step-(2): derive `hann` at real `ofNormals` data — the producer restructure** (§38 defeq
-trap; the genuine deferred core, §1.38, SCOPE-FLAGGED): the swept eqs.-(6.42)–(6.43) block-failure →
-`r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`. **NOT "only a quantifier"** — the producer's three-fixed-seed
-`q₁/q₂/q₃` candidate carriage must be **re-parameterized over a free line `L`** (build the eq.-(6.12)
-placement + `(D−1)` panel rows at an arbitrary `L`, run the row-space criterion at `C(L)`). Multi-commit
-(likely splits: line-indexed placement family + per-line block-failure + panel-sweep assembly),
-producer-internal, no phase boundary. **And C5c-(ii): the OLD/NEW-block `hmemᵢ`** (the `+1`-row `hmemᵢ`
-is in hand via `hingeRow_mem_rigidityRows`; the `so`/`sn` blocks via L2 span bridge
-`span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`), independent of (1)/(2).
+**Then Leaf 2/3 (the producer restructure, §38 trap, multi-commit):** generalize the candidate placement
+to an arbitrary witness line, then wire the producer (`obtain` the join, build the candidate at its line,
+run the row-space criterion, feed C2). C5c-(ii) OLD/NEW `hmemᵢ` rides alongside. **Leaf 4/5** (the green
+`theorem_55 (n:=2) (k:=2)` instance node, the case-II/III flips, the Thm 5.5→5.6 push) unblock Cor 5.7.
 
-**C4 (a green `theorem_55` `d=3`-instance) is blocked on C5.** After C5 (steps (1)+(2)+(ii)): C4 (mint
-the green `theorem_55 (n:=2) (k:=2)` instance node, **not** a standalone `theorem_55_dim3`), the
-`lem:case-II-realization` / `lem:case-III` flips, the Thm 5.5→5.6 push. Full verified leaf sequence +
-the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35 (L-wire) + §1.36 (conclusion-side
-`hduality` restate) + §1.37 (antecedent-side restate + the `hann` discharge verdict).
-
-After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
-(KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
-generalize the candidate chain on the graph-free assembly; build the `⋀^{d−1}` duality via the
-top-power route per §1.33 (D), reusing 22f's already-landed `map`-range infra; reuse the existing
-alg-independence machinery for the points). Open Phase 23 with its own recon (read eqs. 6.46–6.67
-against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/AlgebraicIndependence.md`.
+After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d` (KT
+Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1; generalize the candidate
+chain on the graph-free assembly; build the `⋀^{d−1}` duality via the top-power route per §1.33 (D), the
+obsolete-at-`d=3` join↔meet leaves re-entering here; reuse the alg-independence machinery for the points).
+Open Phase 23 with its own recon (eqs. 6.46–6.67 vs the `d=3` Lean) and add the general-`d`
+alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- **The `hann`-discharge re-adjudication: CONFIRM the gap + REFUTE the three-fixed-suffices escape;
-  `case_III_claim612` restate is local (~1 commit), the producer's `hann` derivation is a multi-commit
-  restructure (2026-06-09 coordinator re-adjudication; canonical home `notes/Phase22-realization-design.md`
-  §1.38, re-opening §1.37).** The three-fixed antecedent `r C₁=0 → r C₂=0 → r C₃=0` is undischargeable
-  (three supports span ≤ 3 of `⋀²ℝ⁴`'s 6 dims, numerically verified). **Linchpin escape REFUTED:** KT
-  eq. (6.12)/Claim 6.9/(6.42) make `p₁(va) = L` a *free* line `L ⊂ Π(a)` (not graph-fixed), so Claim
-  6.12 is a genuine existential over the line continuum — no forced `r̂`/`Cᵢ` relation. **`case_III_claim612`
-  closes via §1.37's B1** (the green proof feeds `h₁/h₂/h₃` only to `hduality`'s antecedent, never the
-  contradiction; swap antecedent → unconditional `hann`, conclusion stays three-fixed and provable).
-  **Producer restructure (C5c-step-2):** §1.37's "only a quantifier" understated it — to supply `hann`
-  the three-fixed-seed `q₁/q₂/q₃` carriage must be re-parameterized over a free line `L`; multi-commit,
-  producer-internal, no phase boundary. SCOPE-FLAGGED to user. All landed C5 leaves (assembly, two
-  bricks, three selectors, C1/C2/C3, `candidateRow_*`, `r̂`-data) survive; only the producer's seed/
-  `hmemᵢ` carriage reworks. Blueprint prose already states the line-swept model + disavows fixed `Cᵢ`
-  (case-iii.tex:1086–1134) — the Lean is the divergence (dishonestly green on its antecedent); reconcile
-  when step-(1) lands.
-- **C5c-leaves landed (2026-06-09; full detail in the Lean source + §1.36/§1.37, one-line verdicts).**
-  All three graph-free, axiom-clean. The §1.37 recon found these correctly built but consumed by a
-  mis-shaped `hduality` antecedent (see top entry) — they survive verbatim under the (B1) restate.
-  - `exists_hduality_witness_of_panel_incidence` — the six-join `hduality` assembly *modulo* `hann`;
-    `fin_cases q` dispatch (`htwo` three through-`p0` joins = two N3a normals, `hone` three opposite =
-    one normal + the construction). **§38 call-site variant** (`q` explicit subtype literal per branch)
-    → TACTICS-QUIRKS §38. This IS the body `case_III_claim612` gets under (B1).
-  - `exists_independent_perp_pair` — second normal `n'` indep of `n_u`, both line-points ⊥ both, via
-    `ker (Matrix.of ![pi,pj]).mulVecLin` rank–nullity. Consumed by `hone`.
-  - `omitTwoExtensor_homogenize_eq_extensor_kept` — the kept pair `c<d` (= `{q.1,q.2}ᶜ.orderEmbOfFin`
-    `0/1`) + join identity. Consumed by the assembly.
-- **C5a/C5b landed: `case_III_claim612`'s `hduality` *conclusion* restated to the per-join-witness
-  model + the six-join dispatch in-body (2026-06-09; verdict home §1.36).** Replaced the
-  undischargeable fixed-`Cᵢ` *conclusion* `r ⊥ all six joins` with the per-join witness form (`∀ q,
-  ∃ n_u n' pi pj, …`). Both consumers forward verbatim — pure signature ripple. Needed `public import
-  …Molecular.Meet`. **NB (superseded framing): the entry's original "honesty gate improved" claim was
-  half-right** — only the conclusion was made honest; the *antecedent* stayed the three fixed scalars,
-  which §1.37 shows is the undischargeable half (`lem:case-III-claim612` is still dishonestly green on
-  its antecedent until C5c-step-(1)). Axiom-clean, build + lint clean.
-- **The N3b per-line transfer landed as a `⬝ᵥ`-incidence restatement of the green core (2026-06-08).**
-  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (Meet.lean) restates the green N3b core
-  with incidence as `pi ⬝ᵥ n_u = 0` (N3a's shape) instead of `toDual pi n_u = 0`, via the mirrored
-  self-pairing identity `Pi.basisFun_toDual_apply` (`toDual x y = ∑ i, x i * y i`). The per-line brick
-  the restated `hduality` dispatch (C5b) consumes. Building it forced the KT eq. (6.45) re-read that
-  surfaced the modeling subtlety resolved in the entry above. Graph-free (no §38), axiom-clean.
-- **The `r̂` candidate vector landed via a mirror-eligible coefficient-extraction leaf, not
-  inline (2026-06-08).** `exists_redundant_panelRow_ab_lam` (CaseI.lean) reads the explicit
-  unit-normalized `λ` (KT eq. (6.25), `λ_{i^*} = 1`) off the redundant-row decomposition's
-  `r i = wGv + wOther`, so `r̂ := ∑_j λ_j r_j = wGv` (a `G_v`-row) and `r̂ ≠ 0`. The actual
-  coefficient extraction is pure LA (negate `Fintype.mem_span_image_iff_exists_fun`, extend by `1`
-  at `i`; nonzero via `linearIndependent_sum_smul_ne_zero`), so it was mirrored as
-  `exists_smul_combination_eq_sub_of_mem_span_image_compl` (`Mathlib/LinearAlgebra/.../Basic.lean`,
-  alongside its sibling) over a nontrivial `Ring` rather than buried in the rigidity proof. Two
-  minor build cycles (FRICTION [mirrored]). Graph-free (no §38), axiom-clean.
-- **The `hsel₁` (`M₁`) selector builds `hnewpinaug` inline; the `hsel₂`/`hsel₃` ones delegate to the
-  `p₂`/`p₃` producers (2026-06-07).** All three are `BodyHingeFramework`-level selector recasts
-  packaging a candidate producer into the `hselᵢ : r(C(e)) ≠ 0 → LinearIndependent famᵢ` shape
-  `case_III_eq629_conditional` / `case_III_hsplit_producer` consume (`ρ := r`,
-  `C := F.supportExtensor e`). `hsel₂`/`hsel₃` (`linearIndependent_sum_p{2,3}_candidateRow_selector`)
-  are one-line `fun hr => producer … hr` wrappers — the `p₂`/`p₃` producers do the `hnewpinaug` work.
-  `M₁` (`p₁` along the original `va`) has no separate producer (it *is* the candidate-completion
-  assembly `linearIndependent_sum_augment_candidateRow`), so its selector
-  (`linearIndependent_sum_augment_candidateRow_selector`) builds the operated block inline:
-  `rw [hingeRow_comp_columnOp_comp_single hva r]` then the row-space criterion
-  `linearIndependent_sumElim_candidateRow_iff` — a ~4-line term wrapper, still graph-free (no §38),
-  axiom-clean. No friction. Built as selectors (not folded into producers) so the producers keep the
-  cleaner `ρ(C(e)) ≠ 0` statement and the selectors match the consumer's `r C ≠ 0` shape verbatim.
-- **The `+1` `r̂`-row membership landed as the general block-row form, not the sum decomposition
-  (2026-06-07).** `hingeRow_mem_rigidityRows` (Pinning.lean): `r ∈ hingeRowBlock e` + `IsLink e u v`
-  ⟹ `hingeRow u v r ∈ rigidityRows`, a one-line `⟨e,u,v,hlink,r,hr,rfl⟩` straight off `rigidityRows`'s
-  definition. The candidate `+1` row is `hingeRow v b r̂` with `r̂ = ∑_j λ_{(ab)j} r_j`, each
-  `r_j ∈ r(p(e_b)) = hingeRowBlock e_b` (a `Submodule`), so `r̂ ∈ hingeRowBlock e_b` and the row is
-  *directly* a rigidity row — no `= ∑ λ_j hingeRow v b r_j` decomposition / `span_annihRow_eq_…`
-  needed (the §1.35 hand-off's route was heavier than the fact). Generalizes
-  `panelRow_mem_rigidityRows` (drops the `r = annihRow C` forcing — `r̂(C(e_b)) ≠ 0`, off the panelRow
-  coset). Graph-free (no §38), axiom-clean. No friction.
-- **C4↔C5 ordering corrected (2026-06-07).** A green `d=3`-instance `theorem_55` node (C4) is blocked
-  on the producer discharge (C5) — confirmed against §1.35 + B.2 ("mint the node name when the
-  producer lands"); the prior *Current state* "C4 next" predated that. C5 (discharge
-  `case_III_hsplit_producer`'s carried `hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`/`hmemᵢ` at real `ofNormals`
-  data) is the live work; the `+1`-row `hmemᵢ` ingredient is now in hand.
-- **C3 re-wired the L0 spine to the corrected route — a clean signature edit + 6-line body
-  (2026-06-07).** `case_III_hsplit_producer`'s per-candidate hypotheses dropped the superseded
-  panelRow packaging (`jᵢ`/`hjᵢ`/`hfamᵢ`) for the C2 inputs (`q₀ᵢ`/`hmemᵢ`/`hcardᵢ`/`hselᵢ`); body now
-  `rcases`'s `case_III_claim612`'s `r Cᵢ ≠ 0` disjunction and applies
-  `hasFullRankRealization_of_candidateSelector` (C2) to each disjunct — no device call in the spine.
-  No downstream callers, so the signature change was self-contained (green-modulo skeleton, carried
-  selection data unchanged). Used `BodyHingeFramework.case_III_claim612` directly (the disjunction
-  source) rather than `case_III_eq629_conditional` (which maps it through the selectors) — C2 wants the
-  `r Cᵢ ≠ 0` disjunct, not the `LinearIndependent famᵢ` it would already discharge into. No friction.
-- **C2 stated generic over the assembled family, consuming the producers' selector output rather
-  than calling them (2026-06-07).** `hasFullRankRealization_of_candidateSelector` takes the
-  selector-shaped `hsel : r̂(Cᵢ) ≠ 0 → LinearIndependent fam` (the exact `hselᵢ` shape of
-  `case_III_eq629_conditional`) + pointwise membership `hmem` + count, and feeds C1 — a 4-line
-  composition (`span_le`/`range_subset_iff` to lift `hmem` to the span containment). Keeping it
-  generic over `fam`/`κ` (not calling `linearIndependent_sum_{p2,p3,augment}_candidateRow` inside)
-  leaves the producer machinery in the green abstract lemmas and confines the §38 carrier trap to C1.
-  C1's implicit `q₀` needed `(q₀ := q₀)` passed explicitly (pinned only by the later `hsub` arg);
-  routine elaboration-order, no FRICTION.
-- **C1 landed by factoring the existing rigidity-on-`V(G)` closure, not duplicating it (2026-06-07).**
-  The rigidity-on-`V(G)` step C1 needs already existed as
-  `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`, which used its pointwise `hmem`
-  hypothesis only to build the span containment `hsub`. Factored the body into a span-containment core
-  `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` (takes `hsub`
-  directly), kept the pointwise form as a one-line wrapper, and built C1
-  (`hasFullRankRealization_of_independent_rigidityRow`) by wrapping the core into the
-  `HasFullRankRealization` existential at the fixed `ofNormals` placement. Also weakened
-  `exists_good_realization_const`'s `hspanrows` `=`→`≤` (its `hcoord` leg is `dualCoannihilator_anti`,
-  anti-monotone — only the one caller `hglue_of_realization` needed `.le`). **C1 lives in CaseI.lean,
-  not GenericityDevice as §1.35 said** — `exists_good_realization_const` is in CaseI and the import
-  runs CaseI → GenericityDevice, so C1 can't sit upstream; the rank-nullity closure it actually turns
-  on is the CaseI core anyway, so this is the natural home.
-- **L-wire corrected: device feed is the fixed-framework `_const` route, not the panelRow-shaped feed
-  (2026-06-07; the recon-of-the-core, `notes/Phase22-realization-design.md` §1.35).** Verified against
-  KT §6.4.1 eqs. (6.24)–(6.44): the placed `+1` row is `hingeRow v b r̂` (`r̂(C(e_b)) ≠ 0`) — provably
-  not a single `panelRow`, but in `span rigidityRows` (a combination of `e_b`-panelRows). The
-  `_ofParam`/`hasFullRankRealization_of_independent_panelRow[_index]` feed needs the literal panelRow
-  shape (its `hg` is the `annihRowPoly` coordinatization), so route (A)-as-stated and route (B) both
-  fail; the corrected feed is the genericity-free, fixed-framework `exists_good_realization_const`
-  (constant family, `hg = eval_C`, span-⊆-rigidityRows) + `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`.
-  Corrected leaf sequence C1–C5 in §1.35. (Supersedes §1.34's panelRow-feed framing + the prior "swap
-  the `r̂`-row by the collapse" Hand-off, which conflated the producer's `r̂` with
-  `exists_candidate_row_eq612`'s block `ρ`.)
-- **The swap core + columnOp bridge + L5-pack/L3 are green lemmas but off the live route (2026-06-07;
-  one-line record).** `linearIndependent_sumElim_candidateRow_swap` (the eq.-(6.27) row-op invariance),
-  `columnOp_apply_single`/`comp_columnOp_comp_single`, and `candidateCompletion_panelRow_packaging`/
-  `panelRow_eq_hingeRow_annihRow_of_ends` (the `annihRow`-shaped-`ρ` identity) all hold, but none is on
-  the corrected route: the placed candidate row is not `annihRow`-shaped and cannot be swapped for a
-  single panelRow (different cosets, §1.35 finding 1). Reusable; not consumed by C1–C5.
-- **Leaves L0–L5-inj landed earlier this phase (2026-06-07; one-line record, full detail in the Lean
-  source + git):**
-  - L0 `case_III_hsplit_producer` (CaseI.lean) — the green-modulo spine carrying `hselᵢ`/`hfamᵢ`/`hjᵢ`/
-    `hcardᵢ`, composing `case_III_eq629_conditional` → `…_index` per disjunct;
-    `case_III_eq629_conditional` generalized to three index types (FRICTION `[resolved]`). **Its
-    `hfamᵢ = panelRow ∘ jᵢ` contract is superseded by §1.35; C3 restates it to the C2 conclusion.**
-  - L1 `case_III_old_new_blocks` (CaseI.lean) — the front of `case_II_placement_eq612` re-exposed to
-    output the OLD `so` / NEW `sn` blocks separately (verbatim proof; re-exposed since the packaged set
-    hides the two-block split the `+1` augment needs).
-  - L2 `span_panelRow_comp_single_of_edge` (Pinning.lean) — the candidate producers' `hspan` (pinned
-    `D−1` rows span `hingeRowBlock e`), `eq_of_le_of_finrank_eq`; the `comp Φ` is identity at the pin.
-  - L3 `panelRow_eq_hingeRow_annihRow_of_ends` (Pinning.lean) — the `annihRow`-shaped-`ρ` candidate-row
-    identity; `rw [panelRow, hends]`, graph-free. Off the live route (§1.35 finding 1: the placed row
-    is not `annihRow`-shaped); reusable lemma.
-  - L4 `panelRow_mem_rigidityRows_of_link` (Pinning.lean) — the `+1` summand's `rigidityRows`
-    membership at `e_a` via its *direct* `G`-link (closes F2); graph-free.
-  - L5-inj `candidateCompletion_index_injective` (CaseI.lean) — `j` over `(sn ⊕ Unit) ⊕ so` injective,
-    abstract over the three disjointness facts (incl. the new `hso_ne_ea` L1 doesn't emit); graph-free.
-- **`hsplit` producer core cracked: green-modulo-skeleton-first, defeq trap isolated to one leaf
-  (2026-06-07).** Decided the green-modulo-skeleton route (state the producer carrying the residual
-  graph-data obligations as explicit `h…`, flip the spine first, discharge each as a leaf) over
-  all-at-once — it converts the "multi-session blob" into named leaves. (The §1.34 cut routed the
-  finished family through a panelRow-shaped device feed; §1.35 corrects that — the L0–L5 row-block
-  bricks survive as infra, the feed and the L0 `hfamᵢ` contract change. F2 holds: `case_II_placement_eq612`
-  needs `Gv ≤ G` for one membership step only, transport graph-free, reused verbatim.) Full corrected
-  cut + leaf shapes: `notes/Phase22-realization-design.md` §1.35.
-- **Device-closure feed lifted to an abstract index, decoupling the producer's packaging from
-  `case_II_placement_eq612` (2026-06-07).** `hasFullRankRealization_of_independent_panelRow_index`
-  repackages the `Set`-indexed device closure to consume a finite `ι` + injective `j` — the shape of
-  the candidate-completion's `Sum`-indexed output. Built green by reindexing across
-  `Equiv.ofInjective j` + `Nat.card_range_of_injective`, lifting the inline packaging out of
-  `case_II_placement_eq612` (CaseI.lean:2757–2818). No defeq trap (it is the already-green closure
-  under an index bijection). Internal infra — no blueprint node (a `Set`-free restatement of an
-  already-blueprinted lemma; churn-prone glue, below the selection bar). **NB (§1.35): the candidate
-  path does NOT reuse this `_index` feed — its `+1` row is not a panelRow, so it routes through the
-  fixed-framework `exists_good_realization_const` (C1) instead. `_index` stays the eq.-(6.12) brick's
-  own feed.**
-- **Selection capstone built graph-free as the first producer brick (2026-06-07).**
-  `case_III_eq629_conditional` discharges `lem:case-III-eq629-conditional` by composing
-  `case_III_claim612`'s disjunction with three abstract per-candidate implications
-  (`r̂(Cᵢ)≠0 ⟹ LinearIndependent famᵢ`). Stated over abstract families (no `ofNormals`) so the heavy
-  concrete-carrier `whnf` (§38) cannot bite — the selection logic is pure `Or`-mapping. The defeq
-  trap is thereby confined to the *one* remaining step (the real-graph instantiation), keeping it
-  isolatable per the §38 extract-a-helper mitigation. 1-line term proof.
-- **(B.1) the `d=3` `hsplit`/`theorem_55` path does NOT consume `lem:cycle-realization`
-  (2026-06-07, open).** `theorem_55`/`theorem_55_generic` = `minimal_kdof_reduction` with three
-  branches, no cycle branch, base case `V=2` only. Short cycles dissolve into repeated splits.
-  `lem:case-III`'s `\uses{lem:cycle-realization}` is a KT-narrative (not Lean-load-bearing)
-  dependency — kept with a clarifying prose note; the cited step it bottoms on is Crapo–Whiteley,
-  not Claim 6.4/6.9 (which is green). Fixed the stale `case-i.tex:149–151` text. Detail above.
-- **(B.2) add a small `d=3`-instance `theorem_55` node, not a standalone `theorem_55_dim3`
-  (2026-06-07, open).** It's `theorem_55 (n:=2) (k:=2)` on three green args; the general
-  `thm:theorem-55` stays honestly red-pending-Phase-23. Avoids duplicating the statement.
+- **The `d=3` Case-III crux architecture: existential conclusion, drop `hann` entirely (2026-06-09
+  design pass; canonical home `notes/Phase22-realization-design.md` §1.39, supersedes §1.37/§1.38's B1).**
+  `case_III_claim612` → `∃ q : six joins, r̂(join q) ≠ 0`, no premise; ~5-line contrapositive (verified
+  via `lean_multi_attempt`). `hann` was only ever the internal `by_contra` negation. The producer
+  consumes the existential because candidate supports are panel-meets (= join form): pick the witness
+  join, build the candidate at its line `L = pᵢpⱼ`. Five `hann`-discharge leaves (C5c assembly + two
+  bricks + N3b `⬝ᵥ`-form + C5a/C5b dispatch) go obsolete on the `d=3` route (reusable, re-enter at
+  Phase-23). Effort-accounting flagged to user. Everything else survives. Chosen over §1.38's B1 (which
+  kept a false-shaped three-fixed conclusion, the obsolete assembly on-route, and `hann` as undischarged
+  producer data — re-introducing the honesty-gate problem). Producer restructure (Leaf 2/3) is identical
+  difficulty under both.
+- **The `hann`-discharge diagnosis (CONFIRMED, §1.38, carried into §1.39).** Three-fixed antecedent
+  `r C₁=0→r C₂=0→r C₃=0` undischargeable (three `2`-extensors span ≤ 3 of `⋀²ℝ⁴`'s 6 dims, verified);
+  three-fixed-suffices escape REFUTED (KT lines free, not graph-fixed). Full account: §1.38/§1.39.
+- **C5c-leaves landed then went obsolete (2026-06-08/09; full detail Lean source + §1.36/§1.39).** All
+  graph-free, axiom-clean; built to carry/discharge the per-join `hduality` witness that the §1.39
+  existential restate dissolves. `exists_hduality_witness_of_panel_incidence` (six-join assembly modulo
+  `hann`, `fin_cases q` dispatch, §38 call-site variant → TACTICS-QUIRKS §38);
+  `exists_independent_perp_pair` (second perp normal via `ker (Matrix.of ![pi,pj]).mulVecLin`
+  rank–nullity); `omitTwoExtensor_homogenize_eq_extensor_kept` (kept pair = `{q.1,q.2}ᶜ.orderEmbOfFin`).
+  Reusable; off the `d=3` route.
+- **C5a/C5b landed then went obsolete (2026-06-09; §1.36/§1.39).** Restated `case_III_claim612`'s
+  `hduality` *conclusion* to the per-join witness model + the six-join in-body dispatch; needed
+  `public import …Molecular.Meet`. The §1.39 existential restate removes both the `hduality` premise and
+  this dispatch. Reusable Meet-side brick `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`
+  (`⬝ᵥ`-incidence form of the green N3b core).
+- **The corrected L-wire — device feed is the fixed-framework `_const` route (2026-06-07; §1.35).**
+  The placed `+1` row `hingeRow v b r̂` (`r̂(C(e_b))≠0`) is a combination of `e_b`-panelRows, in
+  `span rigidityRows` but not a single `panelRow`; fed at the fixed `ofNormals` placement via
+  `exists_good_realization_const` (constant family, `hg = eval_C`) + `…_finrank_le` — no genericity, no
+  panelRow re-shaping. Drove C1–C3 + the L0 `hfamᵢ`-contract restate.
+- **`hsplit` producer cracked green-modulo-skeleton-first; §38 trap isolated to the carrier-instantiating
+  leaves (2026-06-07).** State the producer carrying residual graph-data obligations as explicit `h…`,
+  flip the spine first, discharge each as a leaf. C1 lives in CaseI (not GenericityDevice — import
+  direction). C2 generic over the family. C3 spine = `rcases` the conclusion + per-disjunct C2 calls.
+- **(B.1) the `d=3` `hsplit`/`theorem_55` path does NOT consume `lem:cycle-realization` (2026-06-07,
+  open).** `theorem_55` = `minimal_kdof_reduction` with three branches, base case `V=2` only; short
+  cycles dissolve into repeated splits. The `\uses` edge is a KT-narrative (not Lean-load-bearing)
+  dependency — kept with a clarifying prose note; the cited step is Crapo–Whiteley, not Claim 6.4/6.9
+  (green). Fixed stale `case-i.tex:149–151`. (B.2) add a green `theorem_55 (n:=2) (k:=2)` instance node,
+  not a standalone `theorem_55_dim3`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
-- *The `(Matrix.of ![pi,pj]).mulVecLin x i = ![pi,pj] i ⬝ᵥ x` per-coordinate unfold*
-  → FRICTION [resolved].
-- *The `ofNormals`/`withGraph` defeq-timeout trap + its extract-a-generic-helper mitigation*
-  → TACTICS-QUIRKS § 38 (carried from 22a–e).
-- *The §38 call-site variant: pass a heavy-carrier-typed argument as an explicit literal (via
-  `fin_cases q`) so the witness is not inferred by unification* → TACTICS-QUIRKS § 38 (Phase 22g
-  addendum).
+- *The `ofNormals`/`withGraph` defeq-timeout trap + extract-a-generic-helper mitigation* → TACTICS-QUIRKS §38.
+- *The §38 call-site variant: pass a heavy-carrier-typed arg as an explicit literal (via `fin_cases`)* →
+  TACTICS-QUIRKS §38 (Phase 22g addendum).
+- *The `(Matrix.of ![pi,pj]).mulVecLin x i = ![pi,pj] i ⬝ᵥ x` per-coordinate unfold* → FRICTION [resolved].
 - *The unit-normalized combination from a span-of-the-others membership*
   (`exists_smul_combination_eq_sub_of_mem_span_image_compl`) → FRICTION [mirrored].
-- *The standard-basis `Basis.toDual` self-pairing is the dot product* (`Pi.basisFun_toDual_apply`)
-  → FRICTION [mirrored].
+- *The standard-basis `Basis.toDual` self-pairing is the dot product* (`Pi.basisFun_toDual_apply`) → FRICTION [mirrored].
 - *`rw [eq]` of a function-valued term over-rewrites its partial applications — narrow with
-  `conv_lhs`/`nth_rewrite`* → TACTICS-QUIRKS § 41.
+  `conv_lhs`/`nth_rewrite`* → TACTICS-QUIRKS §41.

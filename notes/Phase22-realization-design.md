@@ -724,6 +724,16 @@ edit needed (the prose is already the target shape — the Lean must catch up to
 
 ### 1.38 The `hann`-discharge re-adjudication — CONFIRM the gap, REFUTE the three-fixed-suffices escape; §1.37's B1 holds for `case_III_claim612` but the producer's `hann` derivation is a genuine restructure, not "only a quantifier" (2026-06-09)
 
+> **FIX SHAPE SUPERSEDED by §1.39 (2026-06-09, same-day coordinator design pass).** §1.38's
+> *diagnosis* (the three-fixed antecedent is undischargeable; dimension 3 < 6; the producer's real
+> work is a line-indexed candidate re-parameterization) **stands and is re-confirmed by §1.39.** What
+> §1.39 overturns is §1.38's *fix shape* — "keep the three-fixed disjunction conclusion + carry `hann`
+> as a premise discharged by the C5c assembly" (B1). The cleaner, KT-faithful fix is to restate
+> `case_III_claim612` to the **existential conclusion with NO `hann`/`hduality` premise** (the
+> coordinator's call, verified). That makes the C5c six-join assembly + its two bricks **obsolete on
+> the `d=3` live route**. Read §1.39 for the live architecture + leaf sequence; the producer-internal
+> restructure (C5c-(2)) is identical in difficulty under both shapes.
+
 > **Dated supersession of §1.37's scope estimate.** This recon re-opens §1.37 at a coordinator's
 > request (its B1 fix "likely does not close"). **Verdict: §1.37's *diagnosis* and its B1 restate of
 > `case_III_claim612` itself are CORRECT and survive; its *scope estimate* ("~2 commits, only a
@@ -821,7 +831,175 @@ family to *supply* `hann`. (The conclusion-consuming half — `hselᵢ`/C1/C2/C3
 
 ---
 
-## 2. Shared-infra map (green vs. missing across the layer)
+### 1.39 The definitive `d=3` Case-III crux architecture — DROP `hann` entirely; restate `case_III_claim612` to the existential conclusion (coordinator's call CONFIRMED, supersedes §1.37/§1.38's B1) (2026-06-09)
+
+> **Supersedes §1.37's B1 and §1.38's "keep three-fixed conclusion + carry `hann` as a premise".**
+> §1.37/§1.38's *diagnosis* (the three-fixed antecedent `r C₁=0→r C₂=0→r C₃=0` is undischargeable;
+> dimension 3 < 6; the producer's real work is a line-indexed candidate re-parameterization) **stands
+> and is re-confirmed.** What this section overturns is the *fix shape*: §1.38's B1 kept the
+> three-fixed disjunction `r̂C₁≠0 ∨ r̂C₂≠0 ∨ r̂C₃≠0` as the conclusion and carried `hann` as a premise
+> discharged by the (already-built) C5c assembly. **That is not the cleanest fix.** The honest
+> `case_III_claim612` is the **existential conclusion with no `hann`/`hduality` premise at all** — the
+> coordinator's position, verified below against the actual Lean. This makes the C5c assembly + its two
+> bricks **obsolete on the live route** (effort-accounting flag).
+
+This is a build-free design-pass verdict. The deliverable is a buildable leaf sequence; the architecture
+is pinned. Verified against the green Lean (`case_III_claim612` RigidityMatrix.lean:1626; the producer
+CaseI.lean:3641; the selectors :1432/:1459/:1493; `hasFullRankRealization_of_candidateSelector`
+CaseI.lean:2204; `toBodyHinge` PanelHinge.lean:87–97) and KT pp. 678/690–691, with `lean_multi_attempt`
+on the existential proof skeleton (closes, `goals:[]`).
+
+**(a) The cleanest `case_III_claim612` — existential conclusion, no premise.** Restate to:
+```
+theorem case_III_claim612 {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
+    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p) :
+    ∃ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+      r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+        extensor_mem_exteriorPower _⟩ ≠ 0
+```
+**No `C₁ C₂ C₃`, no `hduality`, no `hann`.** The ~5-line proof (verified to close via
+`lean_multi_attempt`):
+```
+  by_contra h
+  push Not at h
+  exact hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)
+    (by rintro x ⟨q, rfl⟩; exact h q))
+```
+i.e. *contrapositive of an existential*, reusing the **exact** machinery the current body already uses
+(`span_omitTwoExtensor_eq_top` + `eq_zero_of_annihilates_span_top`). `hann` was never a supplied
+premise — it is precisely the internal `by_contra` negation `h : ∀ q, r(join q) = 0`. This is what
+§1.36's prose at case-iii.tex:1105 ("Suppose all three blocks fail … for *every* choice of lines") is
+*about*: the union (6.45) annihilation is the negated existential, derived inside the proof, not
+carried in. The existential ranges over the **six joins of the four affinely-independent points `p`**
+only — it does **not** need the full line continuum (the joins already span via Lemma 2.1 /
+`span_omitTwoExtensor_eq_top`, exactly the coordinator's recon). `hduality`/`hann` **vanish entirely**
+(answers prompt (b): no residual premise survives on `case_III_claim612`).
+
+**(b) Why this is consumable — the geometric identity that closes the gap.** A candidate hinge support
+is `(ofNormals G ends q₀).toBodyHinge.supportExtensor e = panelSupportExtensor (normal u) (normal v)`
+for `(u,v) = ends e` (PanelHinge.lean:89, `rfl`) — a **panel-meet**, the same `extensor`/`complementIso`
+form as a join `pᵢ∨pⱼ` and as KT's `C(L)`. KT's three candidates split at the degree-2 bodies `v`
+(along `va`,`vb`) and `a` (along `ac`); candidate `M₁`'s support is the meet of body `v`'s panel with
+body `a`'s panel = a line `L ⊂ Π(a)` (KT eq. (6.12): `p₁(va) = L`, `L` freely chosen via the shear
+`t`/seed `q₀`). So the producer's `Cᵢ` **are** freely-chosen lines, and a witness join `pᵢ∨pⱼ` is a
+line in one of the three panels. **The producer consumes the existential by building its candidate
+placement so its hinge line IS the witness join's line `pᵢpⱼ`** — choosing the four points `p` (which
+`case_III_claim612` takes as a *parameter*, so the producer supplies them) adapted to the real three
+panels. This is the same producer-internal re-parameterization §1.38 identified as the genuine deferred
+core; the existential conclusion just states it faithfully instead of pre-fixing three concrete
+disjuncts the producer can't deliver.
+
+**(c) What survives, what is now OBSOLETE (effort-accounting, honest).**
+- **Survive verbatim:** the contradiction core (`span_omitTwoExtensor_eq_top`,
+  `eq_zero_of_annihilates_span_top`), `candidateRow_ne_zero` (`r̂ ≠ 0`), `candidateRow_ac_eq_neg`
+  (eq. (6.44)), the `r̂`-vector data (`exists_redundant_panelRow_ab_lam`), C1
+  (`hasFullRankRealization_of_independent_rigidityRow`), C2
+  (`hasFullRankRealization_of_candidateSelector`), the row-space criterion
+  (`linearIndependent_sumElim_candidateRow_iff` / `mem_hingeRowBlock_iff`), L1/L2/L4, the `+1`-row
+  membership (`hingeRow_mem_rigidityRows`). None reworks.
+- **OBSOLETE on the live route (built to discharge `hann`, which no longer exists):**
+  `exists_hduality_witness_of_panel_incidence` (the C5c six-join assembly, `2bd5fa2`),
+  `exists_independent_perp_pair` (`07c537c`), `omitTwoExtensor_homogenize_eq_extensor_kept` (`b031eb3`),
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (the N3b `⬝ᵥ`-form, `b8477db`), and the
+  C5a/C5b `hduality` six-join dispatch baked into the current `case_III_claim612` body (`d851264`).
+  These five leaves (the bulk of the last week's commits) were the machinery for *carrying and
+  discharging* the per-join `hduality` witness; the existential restate dissolves that obligation into
+  a one-line negated-existential. They stay as *reusable* lemmas (graph-free panel geometry, axiom-clean)
+  and likely re-enter at the **Phase-23 general-`d`** join↔meet duality — but they are **off the
+  `d=3` live route**. The three selector recasts (`hsel₁/₂/₃`) survive (they consume `r̂(Cᵢ)≠0`, which
+  the producer still produces) — but see (e): the producer must now *prove* `r̂(Cᵢ)≠0` from the
+  existential rather than receive it from the disjunction.
+- **NB — `case_III_eq629_conditional` is also obsolete on the live route.** It mapped the three-fixed
+  disjunction through `hselᵢ`; under the existential conclusion it has nothing to map (the producer
+  consumes the existential directly). It has no code callers (the producer uses `case_III_claim612`
+  directly, the C3 decision) — leave it as a reusable lemma or delete; not load-bearing for `d=3`.
+
+**(d) The producer ripple — exact.** Only two code sites touch `case_III_claim612`:
+`case_III_eq629_conditional` (RigidityMatrix.lean:1809, `.imp`) and `case_III_hsplit_producer`
+(CaseI.lean:3688, `rcases`). No other callers (grep-confirmed; the rest are doc-comment mentions).
+Under the existential restate:
+- `case_III_eq629_conditional`: its premise list drops `hduality`/`C₁C₂C₃`; its body can no longer be
+  `.imp hsel₁ …`. Either restate it to the existential-consuming shape or drop it (no callers). **Drop**
+  is cleanest (it is pure glue, below the blueprint-node bar already — it has its own node
+  `lem:case-III-eq629-conditional`, which should be folded into `lem:case-III-claim612`'s prose).
+- `case_III_hsplit_producer`: drops `hduality`/`C₁C₂C₃`/the three-fixed `hmemᵢ`/`hcardᵢ`/`hselᵢ` keyed
+  to fixed seeds; its body becomes `obtain ⟨q, hq⟩ := case_III_claim612 hr hp` then **build the
+  candidate at the join `q`'s line** and feed C2. This is the genuine C5c-(2) producer restructure,
+  unchanged in difficulty from §1.38 (the line-indexed candidate family) — but now the producer owns
+  the *whole* selection (pick the join, build the matching candidate), not "receive a disjunct + run a
+  pre-built selector."
+
+**(e) The producer's real obligation, restated for the build phase.** Given the witness join `q`
+(a pair `(i,j)` with `r̂(pᵢ∨pⱼ) ≠ 0`), the line `L = p̄ᵢ p̄ⱼ` lies in one of the three panels
+`Π(a)/Π(b)/Π(c)` (incidence tabulation). The producer:
+1. builds the eq.-(6.12) degenerate candidate placement (`case_II_placement_eq612`-style) **at line
+   `L`** — i.e. with `v`'s normal sheared so the `va`-hinge's panel-meet is `C(L) = pᵢ∨pⱼ`;
+2. its `(D−1)` panel rows span `(span C(L))^⊥` (the existing `span_panelRow_comp_single_of_edge` /
+   `linearIndependent_sumElim_candidateRow_iff` machinery, now at line `L` rather than a fixed edge);
+3. the row-space criterion at `C(L)` reads `r̂(C(L)) = r̂(pᵢ∨pⱼ) ≠ 0` ⟹ the candidate family is
+   independent;
+4. feed that family to C2 at the fixed placement.
+This is the line-indexed candidate construction. The four points `p` the producer supplies to
+`case_III_claim612` are chosen so their six joins are exactly the candidate lines KT's three placements
+can realize — KT's `p₀ = Π(a)∩Π(b)∩Π(c)`, `p₁ ∈ Π(a)∩Π(b)∖Π(c)`, etc. (the N3a incidence pattern), so
+*every* join lies in a panel the producer can split along.
+
+**(f) Verdict on the coordinator's two questions.**
+- *(a) Cleanest existential conclusion:* the `∃ q : six joins, r̂(join q) ≠ 0` form above (ranging over
+  the six joins, NOT the full line continuum, NOT an `∃ (panel u, normal m)` form). It is (i) directly
+  provable from `hr` + `span_omitTwoExtensor_eq_top` + `eq_zero_of_annihilates_span_top` (verified), and
+  (ii) consumable: the producer picks the join, identifies its line `L = pᵢpⱼ ⊂ Π(u)`, builds the
+  candidate at `L`, and the row-space criterion gives full rank.
+- *(b) Does `hduality`/`hann` vanish entirely?* **Yes, completely.** No residual premise survives on
+  `case_III_claim612`. `hann` was only ever the internal `by_contra` negation.
+
+**Why existential over §1.38's B1 (carry `hann`).** B1 keeps `case_III_claim612` provable but (i)
+leaves a *false-shaped* three-fixed disjunction as the conclusion the producer can't actually feed
+without the same re-parameterization, (ii) keeps the obsolete C5c assembly on the live route as the
+`hann`-discharging body, and (iii) carries `hann` (an abstract-panel premise over hardcoded N3a
+normals) as producer data with no honest derivation — re-introducing the very honesty-gate problem at
+the producer. The existential is faithful to KT (Claim 6.12 IS "∃ line choice, block full rank"),
+matches what the producer must do anyway, and is a 5-line proof. The producer-internal restructure
+(C5c-(2)) is identical in difficulty under both; the existential just removes the dead `hann` scaffolding.
+
+**Leaf sequence (3–5 commits, dependency-ordered) — the buildable plan.**
+1. **Leaf 1 (safe, local, buildable-now) — `case_III_claim612` existential restate.** Replace the
+   three-fixed-`Cᵢ` + `hduality` signature with the existential conclusion (no premise); body = the
+   5-line contrapositive verified above. Ripple the two callers: drop `hduality`/`C₁C₂C₃` from
+   `case_III_eq629_conditional` (or delete it — no callers; fold its node into `lem:case-III-claim612`)
+   and from `case_III_hsplit_producer`'s signature, leaving `case_III_hsplit_producer`'s body
+   green-modulo (it now `obtain`s the witness join and carries the candidate-at-line construction as a
+   new explicit hypothesis to discharge in Leaf 2–3). Reconcile `lem:case-III-claim612`'s blueprint
+   prose to the existential (see *Blueprint*). **Graph-free** (no §38 trap): `case_III_claim612` is
+   pure `Fin 4` / `ScrewSpace 2` geometry. One green unit.
+2. **Leaf 2 — the line-indexed candidate placement.** Generalize `case_II_placement_eq612`'s seed/shear
+   construction to take an **arbitrary witness line** (the join `pᵢ∨pⱼ`'s line `L ⊂ Π(u)`) rather than
+   the implicit fixed `va`/`vb`/`ac`, producing the candidate framework whose `va`-hinge support is
+   `C(L)` and its `(D−1)` block rows spanning `(span C(L))^⊥`. **Hits the §38 `ofNormals` trap** (it
+   instantiates the concrete `ofNormals G ends q₀` carrier) — keep the row-space/independence reasoning
+   over abstract `F` and instantiate only at the seed, per the existing C1/C2 discipline. Likely splits
+   (the seed-from-line construction; the per-line block-failure / span criterion). Multi-commit.
+3. **Leaf 3 — wire the producer.** `case_III_hsplit_producer`: `obtain ⟨q, hq⟩ := case_III_claim612 hr
+   hp`; from `q` extract the line `L`, run Leaf 2 to build the candidate, run the row-space criterion at
+   `C(L)` with `hq : r̂(pᵢ∨pⱼ) ≠ 0` to get the independent family, feed C2. Supplies the four points `p`
+   adapted to the real panels (N3a-pattern, or directly from the framework's three candidate-panel
+   normals). **§38 trap** at the C2 feed (the concrete carrier). Discharges the Leaf-1 green-modulo
+   hypothesis. The C5c-(ii) OLD/NEW-block `hmemᵢ` work (independent, the `+1`-row `hmemᵢ` already in
+   hand via `hingeRow_mem_rigidityRows`) rides alongside.
+4. **Leaf 4 — `theorem_55` `d=3`-instance node (B.2)** — once the producer is green: instantiate
+   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
+   Graph-free (an instantiation). Then **Leaf 5 — the `lem:case-II-realization`/`lem:case-III` flips +
+   Thm 5.5→5.6 push** feeding `rigidityMatrix_prop11`'s `hgen`, unblocking Cor 5.7 at `d=3`.
+
+**Blueprint.** `lem:case-III-claim612`'s prose (case-iii.tex:1086–1134) currently describes the *carry-
+`hduality`-as-explicit-hypothesis* model (1124–1133: "carries the union-(6.45) annihilation as an
+explicit hypothesis `hduality`"). Under the existential restate that paragraph is wrong — the Lean no
+longer carries `hduality`; the union annihilation is the internal `by_contra` negation. Rewrite the
+final paragraph to: "the Lean `case_III_claim612` concludes the **existential** `∃ join, r̂(join) ≠ 0`
+(the six joins of the four affinely-independent points), proved by contrapositive — if `r̂` annihilated
+all six it would annihilate their span `= ⋀²ℝ⁴` (Lemma 2.1) and be zero. No `hduality` premise." The
+statement-level prose (1095–1101) already reads as "at least one block full rank for some line choice" —
+the existential — so only the formalization-aside paragraph changes. Reconcile in Leaf 1.
 
 Built once, reused by all cases. **Green** unless marked.
 

@@ -900,8 +900,9 @@ Lemma 5.4 is a KT-narrative dependency at the Phase-23 cycle base, not Lean-load
 `minimal_kdof_reduction` induction has no cycle branch), and a small `d=3`-instance `theorem_55` node
 (not a standalone restatement) is the chosen architecture for Cor 5.7. Milestone: the molecular
 conjecture proved at `d = 3` (unblocking Cor 5.7, Phases 24–26). General `d` (KT Lemma 6.13) is
-Phase 23. Recon verdict + corrected build decomposition + the reuse map: `notes/Phase22g.md`,
-`notes/Phase22-realization-design.md` §1.33/§1.35.
+Phase 23. The crux Claim-6.12 node is pinned to an **existential** conclusion (no carried duality
+premise; the producer builds its candidate at the witness line). Recon verdict + the buildable leaf
+sequence + the reuse map: `notes/Phase22g.md`, `notes/Phase22-realization-design.md` §1.33/§1.35/§1.39.
 
 ## Engineering conventions
 
