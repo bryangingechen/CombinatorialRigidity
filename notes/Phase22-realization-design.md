@@ -1496,6 +1496,92 @@ bounded graph/algebra leaves + the §38-trap producer assembly. No research-shap
 
 ---
 
+### 1.43 The R3-triangle-brick recon — verdict: a direct full-rank/tightness computation, NOT a circuit (at `d=3` the triangle is *exactly* `(D,D)`-tight, so no circuit exists); buildable, with the `n`-uniform route an explicit `D`-spanning-tree packing on `(K₃)̃` (2026-06-09)
+
+> **Build-free design pass settling the one remaining R3 sub-leaf** — the triangle-0-dof brick
+> `htri` that `splitOff_simple_of_noRigid` (Operations.lean:738) carries as a hypothesis: an `ab`-edge
+> `f` (`G.IsLink f a b`) plus the `va`-edge `eₐ` and `vb`-edge `e_b` must yield `∃ H, H.IsProperRigidSubgraph
+> G n`. §1.42's R3 verdict (A) closed the *bounded combinatorial* half and named this sub-brick
+> "the project's `IsProperRigidSubgraph` + 0-dof machinery can state directly" but did not pin the
+> *proof route*. This pass pins it. Read against the green Lean (`circuit_induces_isRigidSubgraph`
+> Operations.lean:239, `rank_add_deficiency_eq` Deficiency.lean:994, `rank_matroidMG_le`
+> Deficiency.lean:580, `matroidMG_indep_iff` Deficiency.lean:157, `IsProperRigidSubgraph`
+> Deficiency.lean:381, `inducedSpan`/`fiberSpan` Operations.lean:44/51, `mulTilde_preconnected_of_isKDof_zero`
+> Deficiency.lean:533 as the closest-pattern deficiency computation) + KT Lemma 6.7(ii) (p. 677). No
+> `.lean`/`.tex` edits this pass.
+
+**The witness subgraph.** The proper rigid subgraph is the **vertex-induced triangle** `H = G.induce {v,a,b}`
+(equivalently the project's `inducedSpan` on the triangle's fibers — but `induce {v,a,b}` is the cleaner
+witness, no fiber detour). Its three obligations:
+- `H ≤ G` — `G.induce_le` on `{v,a,b} ⊆ V(G)` (`_hv`/`_ha`/`_hb` supply the inclusion).
+- `V(H).Nonempty` — `{v,a,b}` is nonempty.
+- `V(H) ⊂ V(G)` — **proper** because the splitting branch has `|V(G)| ≥ 4` (a 3-vertex graph is the
+  base case `theorem_55_generic` handles directly, not via splitting; the degree-2 vertex `v` plus
+  its two neighbours `a,b` are three of `≥ 4` vertices). This proper-ness needs a `|V(G)| ≥ 4` (or
+  "`∃ w ∉ {v,a,b}`") hypothesis the brick must take — **not** currently on `splitOff_simple_of_noRigid`,
+  so the brick's statement adds it (or threads it from the producer's `theorem_55_generic` branch
+  guard). Flagged below.
+- `H.IsKDof n 0` — `def(H̃) = 0`. **This is the genuine content**, settled next.
+
+**The crux finding: `def((K₃)̃) = 0` is a full-rank computation, and at `d=3` the triangle is EXACTLY
+`(D,D)`-tight — so there is NO circuit and the `circuit_induces_isRigidSubgraph` route does not apply.**
+The triangle `H` on 3 vertices with edges `{va, vb, ab}` has `H̃ = (D-1)·H` carrying `3(D-1)` fiber
+edges; full rank (hence `def = 0` via `rank_add_deficiency_eq`: `rank + def = D(|V|-1) = 2D`) needs
+`rank M(H̃) = 2D`. The edge budget vs the rank target:
+- `3(D-1) ≥ 2D ⟺ D ≥ 3 ⟺ bodyBarDim n ≥ 3 ⟺ n ≥ 2` (the regime KT works in). So the triangle has
+  *enough* edges to be rigid exactly when `n ≥ 2`.
+- **At `d=3` (`n=2`, `D=3`): `3(D-1) = 6 = 2D` — exactly tight.** The 6 multiplied edges are a *base*
+  of `M(H̃)`; `H̃` is `(D,D)`-tight, packing `D=3` edge-disjoint spanning trees on 3 vertices (each tree
+  = 2 edges, `3·2 = 6`). **No circuit lives inside the `d=3` triangle**, so the existing rigid-subgraph
+  constructor `circuit_induces_isRigidSubgraph` (which needs a *dependent* circuit) cannot produce it.
+- For `n ≥ 3` (`D ≥ 6`): `3(D-1) > 2D` strictly — the triangle is over-tight, a circuit exists, and the
+  circuit route *would* apply. But the brick is consumed by the producer at parametric `n` (Leaf 3
+  instantiates `theorem_55_generic` at `n` then specializes to `n=2` only at Leaf 4), so the brick must
+  hold **uniformly in `n ≥ 2`** — meaning the exactly-tight `n=2` case must be covered, so a circuit
+  route is insufficient regardless.
+
+**The `n`-uniform buildable route.** Prove `rank M(H̃) = 2D = D(|V(H)|-1)` directly, both bounds:
+- *Upper:* `rank_matroidMG_le H n hVne` gives `rank ≤ D(|V(H)|-1) = 2D` (green, no triangle specifics).
+- *Lower:* exhibit an independent set of size `2D` in `M(H̃)`. By `matroidMG_indep_iff` (boundary-regime
+  cleanliness), independence = `(D,D)`-sparsity of the restriction. The natural witness is the
+  **`D`-spanning-tree packing of `(K₃)̃`**: partition the `3(D-1)` fibers into `D` forests each acyclic
+  on `{v,a,b}`, take `2D` of them spanning. Concretely, the cleanest Lean: a `(D,D)`-tight fiber set of
+  size `2D` on the 3-vertex triangle. The arithmetic (`(D,D)`-sparsity of an explicit `2D`-fiber
+  selection on 3 vertices) is bounded; the spanning-tree packing existence is the body-hinge-Tay /
+  Tutte–Nash-Williams content already in tree for the boundary regime (Phase 13/15) — `H̃` `(D,D)`-tight
+  ⟺ packs `D` spanning trees is exactly `Graph.tutte_nash_williams` / `isSpanningTreePacking_of_isTight`.
+  So the lower bound reduces to "the triangle `(K₃)` is `(D,D)`-tight", a finite sparsity count.
+- Then `def(H̃) = 0` is `omega` off `rank_add_deficiency_eq` with both bounds (the `mulTilde_preconnected_of_isKDof_zero`
+  / `two_le_crossingEdges_of_isKDof_zero` pattern at Deficiency.lean:469–576 is the model for assembling
+  these `partitionDef`/`rank` facts).
+
+**Scope verdict — buildable, but a genuine count, NOT a one-liner; this is its own commit (or two).**
+The brick is a real `(D,D)`-tightness computation on an explicit 3-vertex multigraph, routed through the
+already-green Tutte–Nash-Williams tree-packing + the rank bridge — no new research-shaped content, but
+not a trivial mirror either. The cleanest factoring:
+1. **A triangle-tightness lemma** `Graph.<triangle>.IsTight (bodyBarDim n) (bodyBarDim n)` (or directly
+   `def = 0`): the 3-vertex / 3-edge graph is `(D,D)`-tight for `D ≥ 3`. Likely a small fresh lemma
+   stating `(K₃)̃` packs `D` spanning trees, or the sparsity count directly. (~1 commit.)
+2. **The `htri` discharge** in Operations.lean: assemble the `IsProperRigidSubgraph` witness `G.induce
+   {v,a,b}` from the tightness lemma + `induce_le` + the proper-ness `|V(G)| ≥ 4` guard. (~part of the
+   same or a follow-on commit.)
+
+**Statement adjustment flagged for the brick.** `splitOff_simple_of_noRigid`'s `htri` is consumed with
+`f` such that `G.IsLink f a b`; the brick's hypotheses are then `_hG_ea : G.IsLink eₐ v a`, `_hG_eb :
+G.IsLink e_b v b`, the `ab`-edge `f`, and a **proper-ness guard** (`∃ w ∈ V(G), w ∉ {v,a,b}` or `4 ≤
+V(G).ncard`). The producer supplies this from the splitting branch's standing `|V(G)| ≥ 4` (KT §6.4 only
+splits when the base case `|V|=2`/small-graph is not reached). Thread it through `case_III_hsplit_producer`
+as a hypothesis (it is true on the live `theorem_55_generic.hsplit` branch) — verify the exact form when
+wiring Leaf 3.
+
+**Why this is the prerequisite for both R3 and Leaf 3.** `splitOff_simple_of_noRigid` carries `htri`
+green-modulo; discharging it (a) completes R3 (`(G.splitOff …).Simple` becomes hypothesis-free given
+`G.Simple` + `hnoRigid` + the split data + the proper-ness guard), and (b) is consumed inside Leaf 3's
+producer-signature restate (the `hsplitGP` shape needs `(G.splitOff …).Simple` to pull the GP `hgab`).
+So this brick lands first, then Leaf 3's restate can call the now-complete `splitOff_simple_of_noRigid`.
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic
