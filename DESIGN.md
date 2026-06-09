@@ -1026,6 +1026,23 @@ discharged" covers laundered hypotheses; this covers an invalid/short proof
 step). Cross-ref: `notes/Phase21b.md` *Finding A/B*; `notes/FRICTION.md`
 *[process] producer constructibility*.
 
+**Corollary — a recon that restates a node's shape must also trace its
+hypotheses' discharge (Phase 22g, 2026-06-09).** The constructibility recon
+above traces a *count*; this one traces a *carried hypothesis*. When a recon
+fixes a green-modulo node's *shape* — its conclusion, or a carried hypothesis it
+restates — confirming the restated form *type-checks* is not enough: trace each
+load-bearing hypothesis to a concrete discharge at the real instantiation, or
+confirm it is a `by_contra`-internal assumption that is never supplied. Phase
+22g's first realization recon fixed `case_III_claim612`'s *conclusion* (the
+join side) but never traced whether its carried `hduality` could be discharged;
+five graph-free leaves were then built on a premise that was dimensionally
+**undischargeable** (`hann ⟹ r̂ = 0` for `r̂ ≠ 0`), all off-route once a later
+recon traced the discharge. **The tell:** a carried hypothesis that forces the
+very nonzero object the lemma is about (here `r̂`) to vanish — it can only ever
+live inside a `by_contra`, so a node that takes it as a *supplied premise* is
+mis-shaped. Skipping the discharge-trace re-incurs this section's churn one level
+up: at the *hypothesis* rather than the *count*.
+
 **Scale-up: design the LAYER, not just the node (Phase 22, 2026-06-04).** Per-node
 constructibility recon is necessary but not sufficient when an entire *layer* of
 interlocking producers shares an invariant. Phase 22's Case-I seed was recon'd

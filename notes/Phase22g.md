@@ -119,9 +119,12 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 - **The genuine remaining work is the producer line-indexed re-parameterization** (Leaf 2/3, multi-commit,
   §38 trap). Producer-internal, no phase boundary. Same difficulty as §1.38's C5c-(2); the existential
   just removes the dead `hann`/C5c-assembly scaffolding.
-- **Blueprint↔Lean: `lem:case-III-claim612`'s formalization-aside prose is stale** (case-iii.tex:1124–1133
-  describes the carry-`hduality` model the existential restate removes). Reconcile in Leaf 1 (the
-  statement-level prose 1095–1101 already reads as the existential).
+- **Blueprint: `lem:case-III-claim612` + `lem:case-III-eq629-conditional` `\leanok` DROPPED (now
+  honestly RED, 2026-06-09).** Both Lean decls carry/forward the undischargeable `hduality`, so the
+  green dep-graph nodes were dishonest (honesty gate). Statement-level prose already reads as the
+  existential and the stale carry-`hduality` formalization-aside was trimmed; `\lean{}` pins kept.
+  Re-green at Leaf 1 once the existential restate lands. (Downstream `lem:case-III-candidate-row` is
+  abstract — legitimately green, stops the cascade.)
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites Leaf 2/3 (they
   instantiate the concrete carrier). `case_III_claim612` (Leaf 1) is graph-free — no trap. Keep
   reasoning over abstract `F`, instantiate only at the seed.

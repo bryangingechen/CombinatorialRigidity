@@ -526,7 +526,6 @@ case), not the candidate-row input.
 \begin{lemma}[The eq.\ (6.29)/(6.30)/(6.41) top-left $D \times D$ full rank, for \emph{at least one} candidate (the candidate-completion conditional); KT eqs.\ (6.29), Claim 6.12]
   \label{lem:case-III-eq629-conditional}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_eq629_conditional}
-  \leanok
   \uses{lem:case-III-candidate-row-construction, lem:case-III-columnop,
         lem:case-II-placement-block-independent, lem:case-III-claim612,
         lem:case-III-claim612-p2-placement, lem:case-III-claim612-p3-placement,
@@ -569,7 +568,6 @@ case), not the candidate-row input.
   is now green.
 \end{lemma}
 \begin{proof}
-  \leanok
   \uses{lem:case-III-claim612}
   The three-way disjunction is Claim~6.12 (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)):
   if none of $M_1, M_2, M_3$ (the three top-left $D \times D$ submatrices) had full rank, the common
@@ -1086,7 +1084,6 @@ Grassmann--Cayley projective duality.
 \begin{lemma}[Claim 6.12: at least one of $M_1, M_2, M_3$ has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
   \label{lem:case-III-claim612}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_claim612}
-  \leanok
   \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish,
         lem:case-III-claim612-points-affineIndep, lem:case-III-claim612-line-in-panel-union,
         lem:case-III-claim612-block-iff-perp,
@@ -1101,7 +1098,6 @@ Grassmann--Cayley projective duality.
   the candidate-completion conditional (\cref{lem:case-III-eq629-conditional}).
 \end{lemma}
 \begin{proof}
-  \leanok
   Contrapositive. Suppose all three blocks fail to have full rank for \emph{every} choice of lines.
   By the row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}), $M_1$ failing places the
   common vector $r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ in $(\operatorname{span} C(L))^\perp$ for
@@ -1121,16 +1117,10 @@ Grassmann--Cayley projective duality.
   (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting $r \ne 0$
   (\cref{lem:case-III-claim612-r-nonzero}). Therefore at least one block has full rank.
 
-  The Lean \texttt{case\_III\_claim612} \emph{carries} the union-(6.45) annihilation as an explicit
-  hypothesis \texttt{hduality} (green-modulo its discharge by the producer): \texttt{hduality} is
-  exactly the conclusion of the per-line transfer \cref{lem:case-III-claim612-line-in-panel-union},
-  quantified over the six joins of \cref{lem:case-III-claim612-points-affineIndep} --- per join, a
-  line through it (a pair of independent normals to which both endpoints are orthogonal) lying in the
-  panel union, with $r$ annihilating that line's panel-meet $C(L)$. The body dispatches the per-line
-  transfer over the six joins. (The hypothesis is the union form above, \emph{not} the three fixed
-  candidate-hinge supports $C_1, C_2, C_3$: three $2$-extensors span $\le 3$ of the $6$ dimensions of
-  $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ cannot force $r = 0$; KT's argument sweeps every line
-  $L \subset \Pi(u)$, not one chosen line per panel.)
+  That the disjunction must range over a free choice of lines, not three fixed supports, is
+  essential: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions of
+  $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; KT's contrapositive
+  sweeps \emph{every} line $L \subset \Pi(u)$, reaching the full six-join span~(6.45).
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
