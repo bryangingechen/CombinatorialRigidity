@@ -359,6 +359,63 @@ theorem omitTwoExtensor_homogenize_eq_extensor_kept (p : Fin 4 → Fin 3 → ℝ
     (hmem 1).2, ?_⟩
   rw [omitTwoExtensor]; congr 1; ext k; fin_cases k <;> rfl
 
+/-- **A second panel normal through a line in `ℝ⁴`** (`lem:case-III-claim612`, N3a/N3b glue;
+Phase 22g). Given two points `pi, pj : Fin 4 → ℝ` of a line `L = pi pj` and one normal `n_u`
+to which both are dot-orthogonal (`pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`), with `n_u ≠ 0`, there is a
+*second* normal `n'`, linearly independent from `n_u`, to which both points are also orthogonal —
+i.e. a second hyperplane through the line `L`. This is the constructed second normal KT's
+contrapositive needs for the three "opposite" joins `pᵢ ∨ pⱼ` (the joins through a single panel
+`Π(u)`, eq. (6.45)): the per-line transfer
+(`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, N3b) consumes a pair `{n_u, n'}` of
+independent normals, but a single-panel join supplies only one panel normal directly, so the second
+is read off the geometry here.
+
+The common-perp space `W = {x | pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0}` is the kernel of
+`x ↦ ![pi ⬝ᵥ x, pj ⬝ᵥ x] : ℝ⁴ → ℝ²`, so by rank–nullity `finrank W ≥ 4 − 2 = 2 > 1 = finrank
+(span ℝ {n_u})`; the span is therefore a *proper* subspace of `W`, and `SetLike.exists_of_lt`
+exhibits `n' ∈ W ∖ span ℝ {n_u}`, which `LinearIndependent.pair_iff'` upgrades to independence. -/
+theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
+    (hi : pi ⬝ᵥ n_u = 0) (hj : pj ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
+    ∃ n' : Fin 4 → ℝ, LinearIndependent ℝ ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 := by
+  -- The common-perp space as the kernel of the two-functional map `L x = ![pi ⬝ᵥ x, pj ⬝ᵥ x]`.
+  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) :=
+    Matrix.mulVecLin (Matrix.of ![pi, pj]) with hL
+  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0 := by
+    intro x
+    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
+    rw [funext_iff]
+    constructor
+    · intro h
+      refine ⟨?_, ?_⟩
+      · have := h 0; simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using this
+      · have := h 1; simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using this
+    · rintro ⟨h0, h1⟩ i
+      fin_cases i
+      · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h0
+      · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h1
+  -- Rank–nullity: `finrank (ker L) ≥ 4 − 2 = 2`.
+  have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
+    have hrn := L.finrank_range_add_finrank_ker
+    have hdom : Module.finrank ℝ (Fin 4 → ℝ) = 4 := by rw [Module.finrank_pi]; rfl
+    have hcod : Module.finrank ℝ (LinearMap.range L) ≤ 2 := by
+      calc Module.finrank ℝ (LinearMap.range L)
+          ≤ Module.finrank ℝ (Fin 2 → ℝ) := Submodule.finrank_le _
+        _ = 2 := by rw [Module.finrank_pi]; rfl
+    omega
+  -- `n_u ∈ ker L`, and `span ℝ {n_u}` is a *proper* subspace (its finrank is `1 < 2 ≤ finrank W`).
+  have hn_uW : n_u ∈ LinearMap.ker L := (hmemW n_u).2 ⟨hi, hj⟩
+  have hlt : Submodule.span ℝ {n_u} < LinearMap.ker L := by
+    refine lt_of_le_of_ne ((Submodule.span_singleton_le_iff_mem _ _).2 hn_uW) ?_
+    intro heq
+    have h1 : Module.finrank ℝ (Submodule.span ℝ {n_u}) = 1 := finrank_span_singleton hn_u
+    rw [heq] at h1
+    omega
+  obtain ⟨n', hn'W, hn'not⟩ := SetLike.exists_of_lt hlt
+  obtain ⟨hi', hj'⟩ := (hmemW n').1 hn'W
+  refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, hi', hj'⟩
+  intro a heq
+  exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

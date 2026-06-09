@@ -20,18 +20,21 @@ per-line N3b brick over the six joins. The C3 spine carries the Claim-6.12 data
 (`r`/`hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`) + per-candidate `hmemᵢ`/`hcardᵢ` as explicit hypotheses; all
 three `hselᵢ`, the `+1` `r̂`-row `hmemᵢ`, and the `r̂` candidate-vector data (`hr`) are in hand.
 
-**Next concrete step (smallest forward commit): C5c-(i) cont. — the per-join `hduality` *normal*
-witnesses + the failed-block contrapositive.** The combinatorial half just landed
-(`omitTwoExtensor_homogenize_eq_extensor_kept`, RigidityMatrix.lean): for each of the six joins `q`
-it names the two kept points `c < d` (the increasing complement of `{q.1, q.2}`) and pins
-`omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2) = extensor ![homogenize (p c), homogenize (p d)]`
-— the item-(3) identity of every witness, graph-free. Still needed per join: the **two panel
-normals** `{n_u, n'}` (two N3a normals directly for the three through-`p0` joins; for the three
-single-panel "opposite" joins a *constructed* second normal — any `n'` independent from the N3a
-normal with both kept points ⊥ it, from the 2-dim orthogonal complement of `{homogenize (p c),
-homogenize (p d)}` in `ℝ⁴`), the four `⬝ᵥ`-orthogonalities (N3a incidence), and `r ⊥ C(n_u ∧ n')`
-(the failed-block contrapositive, KT eqs. (6.42)–(6.44)). Plus, independently, the OLD/NEW-block
-`hmemᵢ` at the real `ofNormals` carrier (§38). **The C4↔C5 ordering stands:** a *green*
+**Next concrete step (smallest forward commit): C5c-(i) cont. — the six-join `hduality` *assembly*
+(tie each join to its panel-line normals + fire the failed-block contrapositive).** The two graph-free
+normal/point bricks are now both in hand: `omitTwoExtensor_homogenize_eq_extensor_kept`
+(RigidityMatrix.lean — for each of the six joins `q`, the two kept points `c < d` and the identity
+`omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2) = extensor ![homogenize (p c), homogenize (p d)]`,
+the item-(3) identity) and `exists_independent_perp_pair` (RigidityMatrix.lean — the **constructed
+second normal**: given two line-points and one normal `n_u ≠ 0` with both points ⊥ it, a second `n'`
+independent from `n_u` with both points ⊥ it, via the `ker (Matrix.of ![pi,pj]).mulVecLin` rank–nullity
+`finrank ≥ 2 > 1`). Still needed for the per-join witness: the **N3a incidence assembly** — `fin_cases q`
+over the six joins, look up via the N3a tabulation (`exists_affineIndependent_panel_incidence`) which
+panel(s) the join's two kept points share (the three through-`p0` joins share two panels → two N3a
+normals directly; the three "opposite" joins share one panel → the N3a normal + a second from
+`exists_independent_perp_pair`), giving the four `⬝ᵥ`-orthogonalities + `LinearIndependent ![n_u,n']`,
+and the eqs. (6.42)–(6.44) failed-block contrapositive `r ⊥ C(n_u ∧ n')`. Plus, independently, the
+OLD/NEW-block `hmemᵢ` at the real `ofNormals` carrier (§38). **The C4↔C5 ordering stands:** a *green*
 `d=3`-instance `theorem_55` node (C4, B.2) cannot land before the C3 spine's carried data is
 discharged (C5c).
 
@@ -238,13 +241,22 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   extensor ![homogenize (p c), homogenize (p d)]`. Proof = `set emb := {i,j}ᶜ.orderEmbOfFin`, kept
   pair is `emb 0/1` (`orderEmbOfFin_mem` ⟹ outside `{i,j}`, `strictMono` ⟹ `<`), identity by
   `funext`. Graph-free, axiom-clean. (2026-06-09)
+- [x] **C5c-leaf — the constructed second panel normal** (`exists_independent_perp_pair`,
+  RigidityMatrix.lean). Given two line-points `pi, pj : Fin 4 → ℝ` and one normal `n_u ≠ 0` with both
+  points `⬝ᵥ`-orthogonal to it, produces a *second* normal `n'` independent from `n_u` with both
+  points also orthogonal — the second hyperplane through the line `L = pi pj` the per-line N3b brick
+  needs for the three single-panel "opposite" joins. Proof: the common-perp space is `ker (Matrix.of
+  ![pi,pj]).mulVecLin`, `finrank ≥ 4−2 = 2 > 1 = finrank (span {n_u})` by rank–nullity, so the span is
+  a *proper* subspace; `SetLike.exists_of_lt` + `LinearIndependent.pair_iff'`. Graph-free, axiom-clean.
+  (2026-06-09)
 - [ ] **C5c — discharge `case_III_hsplit_producer`'s remaining carried data** at real `ofNormals`
-  graph data (§38 defeq trap): (i) the per-join `hduality` witnesses — the kept-points identity is in
-  hand (the leaf above); still need the two panel **normals** (N3a directly for the three through-`p0`
-  joins, a constructed second normal for the three opposite joins) + the four `⬝ᵥ`-orthogonalities
-  (N3a) + the eqs. (6.42)–(6.44) failed-block contrapositive `r ⊥ C(n_u ∧ n')` — see *Current state*;
-  (ii) the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand) + `Cᵢ`/`hp` (green). Wires
-  `case_III_claim612` ⊕ the producers. Takes the C3 spine fully green.
+  graph data (§38 defeq trap): (i) the per-join `hduality` witnesses — the kept-points identity
+  (`omitTwoExtensor_homogenize_eq_extensor_kept`) and the constructed second normal
+  (`exists_independent_perp_pair`) are now both in hand; the remaining ingredient is the six-join
+  *assembly* tying each join to its panel(s) via the N3a incidence tabulation (the four
+  `⬝ᵥ`-orthogonalities) + the eqs. (6.42)–(6.44) failed-block contrapositive `r ⊥ C(n_u ∧ n')` — see
+  *Current state*; (ii) the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand) + `Cᵢ`/`hp`
+  (green). Wires `case_III_claim612` ⊕ the producers. Takes the C3 spine fully green.
 - [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
 - [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
@@ -274,15 +286,14 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 graph data** (§38 defeq trap). Two independent strands, either a smallest commit:
 - **(i) Produce the per-join `hduality` witnesses.** `case_III_claim612`'s restated `hduality` (C5a,
   landed) needs, per join `q`, the two panel normals + the four `⬝ᵥ`-orthogonalities + the
-  `omitTwoExtensor (homogenize∘p) q = extensor ![pi,pj]` identity + `r ⊥ C(those normals)`. **The
-  `omitTwoExtensor = extensor ![pi,pj]` identity + the kept indices are now in hand**
-  (`omitTwoExtensor_homogenize_eq_extensor_kept`, RigidityMatrix.lean — the `orderEmbOfFin`
-  computation). Still needed: the two panel normals (N3a `exists_affineIndependent_panel_incidence`
-  directly for the three through-`p0` joins; a *constructed* second normal for the three opposite
-  joins — any `n'` indep from the N3a normal with both kept points ⊥ it, from the 2-dim orthogonal
-  complement of the two kept homogenized points in `ℝ⁴`) + the four `⬝ᵥ`-orthogonalities (N3a
-  incidence) + the failed-block contrapositive `r ⊥ C(L)` (KT eqs. (6.42)–(6.44)). Graph-free until
-  the `r`/`Cᵢ` data is instantiated.
+  `omitTwoExtensor (homogenize∘p) q = extensor ![pi,pj]` identity + `r ⊥ C(those normals)`. **The two
+  graph-free bricks are now both in hand:** the kept-points identity + indices
+  (`omitTwoExtensor_homogenize_eq_extensor_kept`) and the *constructed* second normal
+  (`exists_independent_perp_pair` — for the three opposite joins; the three through-`p0` joins take
+  two N3a normals directly). The remaining work is the **N3a-incidence assembly**: `fin_cases q`,
+  look up the join's shared panel(s) from `exists_affineIndependent_panel_incidence`'s tabulation to
+  supply the four `⬝ᵥ`-orthogonalities + `LinearIndependent ![n_u,n']`, then the failed-block
+  contrapositive `r ⊥ C(L)` (KT eqs. (6.42)–(6.44)). Graph-free until the `r`/`Cᵢ` data is instantiated.
 - **(ii) The OLD/NEW-block `hmemᵢ`** at the real `ofNormals` carrier (the `+1`-row `hmemᵢ` is in hand
   via `hingeRow_mem_rigidityRows`); via L2 span bridge / L4 membership on the L1 blocks. Independent
   of (i).
@@ -307,6 +318,15 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **C5c-leaf: the constructed second normal landed via `ker (mulVecLin)` rank–nullity, not coordinate
+  case-splitting (2026-06-09).** `exists_independent_perp_pair` (RigidityMatrix.lean): given two
+  line-points `pi pj : Fin 4 → ℝ` and one normal `n_u ≠ 0` with both points ⊥ it, a second `n'`
+  independent from `n_u` with both points ⊥ it. Modelled the common-perp space as `ker (Matrix.of
+  ![pi,pj]).mulVecLin` (a single `ker`, so `LinearMap.finrank_range_add_finrank_ker` gives `finrank ≥
+  4−2 = 2`), then `1 = finrank (span {n_u}) < 2 ≤ finrank` makes the span a proper subspace
+  (`SetLike.exists_of_lt`) and `LinearIndependent.pair_iff'` upgrades "outside the span" to
+  independence. Kept it concrete to `Fin 4` (panel geometry, consumed only here) rather than mirroring.
+  Graph-free, axiom-clean. The `mulVecLin`-coordinate unfold is FRICTION [resolved].
 - **C5c-leaf: the six-join kept-points tabulation landed with the kept pair as `emb 0/1`, not
   hard-coded per-join values (2026-06-09).** `omitTwoExtensor_homogenize_eq_extensor_kept`
   (RigidityMatrix.lean) takes a join `q` and returns `∃ c d, c < d ∧ (c,d avoid q.1,q.2) ∧
@@ -477,6 +497,8 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *The `(Matrix.of ![pi,pj]).mulVecLin x i = ![pi,pj] i ⬝ᵥ x` per-coordinate unfold*
+  → FRICTION [resolved].
 - *The `ofNormals`/`withGraph` defeq-timeout trap + its extract-a-generic-helper mitigation*
   → TACTICS-QUIRKS § 38 (carried from 22a–e).
 - *The unit-normalized combination from a span-of-the-others membership*

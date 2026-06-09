@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `(Matrix.of ![pi, pj]).mulVecLin x i = ![pi, pj] i ⬝ᵥ x` needs a `simp [Matrix.mulVec, Matrix.of_apply, dotProduct_comm]` unfold per coordinate
+- **Where it bit:** Phase 22g `exists_independent_perp_pair` (`RigidityMatrix.lean`), proving the
+  common-perp space `{x | pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0}` is the kernel of the two-functional map
+  `x ↦ ![pi ⬝ᵥ x, pj ⬝ᵥ x]` built as `Matrix.mulVecLin (Matrix.of ![pi, pj])`.
+- **Friction:** `Matrix.mulVecLin_apply` lands at `(Matrix.of ![pi, pj]).mulVec x`, but turning
+  `(M.mulVec x) i` into `pi ⬝ᵥ x` (for `i = 0/1`) is a per-coordinate `simp [Matrix.mulVec,
+  Matrix.of_apply, dotProduct_comm]` (the `mulVec` row-`⬝ᵥ` is `M i ⬝ᵥ x = x ⬝ᵥ M i` orientation, so
+  `dotProduct_comm` is needed to match `pi ⬝ᵥ x`). No build cycle; the `LinearMap.pi ![dual pi, dual
+  pj]` framing would avoid the matrix detour but `mulVecLin` keeps the kernel a single `ker` for
+  rank–nullity.
+- **Status:** resolved (no fix needed; one callsite, below the mirror bar).
+
 ### [resolved] "`{i,j}ᶜ.orderEmbOfFin` lands outside `{i,j}`" is a 4-`rw` unfold (`mem_compl`/`mem_insert`/`mem_singleton`/`not_or`) every time
 - **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`),
   proving the kept indices `emb 0, emb 1` of `{i,j}ᶜ.orderEmbOfFin` differ from `i, j`. The identical
