@@ -61,8 +61,10 @@ green, re-shaped `lem:case-III-claim612-extensor-span` + `lem:case-III-claim612`
 added the affine-free core to `lem:extensor-independence`'s `\lean{}` group pin. The producer's `pbar`
 feed (`exists_homogeneousIncidence_of_normals`) is now type-aligned with what its consumers take.
 
-**Next concrete step (smallest forward commit): R3 splitOff-simplicity or Leaf 3 (the producer).
-No research-shaped node remains; R1 is now fully landed (core + consumer-restate).** **All of Leaf 2b
+**Next concrete step (smallest forward commit): R3-discharge (`splitOff_simple_of_…`, the triangle
+contradiction) or Leaf 3 (the producer). No research-shaped node remains; R1 fully landed (core +
+consumer-restate); R3's bounded criterion `splitOff_simple` LANDED 2026-06-09, leaving only the
+triangle-discharge.** **All of Leaf 2b
 is LANDED** (line-indexed candidate
 placement + per-line row-space-criterion runner `case_III_full_family_of_line`, CaseI.lean, axiom-clean;
 full detail in *Decisions* + the Lean source). **R1 homogeneous-vector core LANDED 2026-06-09**
@@ -191,13 +193,19 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
   re-shaped to the bare-LI form, the affine-free core added to `lem:extensor-independence`'s group pin.
   The producer's `pbar` feed (`exists_homogeneousIncidence_of_normals`) is now type-aligned with the
   consumers. Build + lint + verify.sh + supersession-gate all clean.
-- [ ] **R3 splitOff-simplicity** (Operations.lean; graph-side, bounded; §1.42 verdict (A)):
-  `splitOff_simple_of_…` — the sibling of the green `rigidContract_simple` (Contraction.lean:144).
-  KT Lemma 6.7(ii): `(G.splitOff v a b e₀).Simple` from `G.Simple` + `_hnoRigid` + the degree-2/`e₀∉E`
-  data, via the triangle `{va,vb,ab}` contradiction (parallel `ab`-edge ⟹ `ab ∈ E(G)` ⟹ triangle ⟹
-  0-dof proper rigid subgraph ⟹ ⊥). **No 2-edge-connectivity** (standing §6.4 assumption, used in Lemma
-  4.6 to *find* the degree-2 vertex, already supplied). Only non-routine brick: triangle-is-0-dof /
-  proper-rigid (Phase 19/20 machinery). (~1–2 commits; the triangle sub-brick may split.)
+- [~] **R3 splitOff-simplicity** (Operations.lean; graph-side, bounded; §1.42 verdict (A)). Split into
+  the criterion (DONE) and the triangle-discharge (remaining):
+  - [x] **R3-criterion** — `splitOff_simple` (Operations.lean, DONE 2026-06-09; axiom-clean,
+    `propext` only). The bounded `hloop`/`hpar`-hypothesis criterion `(G.splitOff …).Simple`, the
+    splitting-off sibling of the green `rigidContract_simple` (the criterion form; `map_simple` is its
+    contraction-side analogue). Graph-side helper, no blueprint node (matching `rigidContract_simple` /
+    `map_simple`, neither pinned). `not_isLoopAt` via `isLink_self_iff`, `eq_of_isLink` = `hpar`.
+  - [ ] **R3-discharge** — `splitOff_simple_of_…`: discharge `splitOff_simple`'s `hloop`/`hpar` from
+    `G.Simple` + `_hnoRigid` + the degree-2/`e₀∉E` data, via the triangle `{va,vb,ab}` contradiction
+    (parallel `ab`-edge ⟹ `ab ∈ E(G)` ⟹ triangle ⟹ 0-dof proper rigid subgraph ⟹ ⊥). **No
+    2-edge-connectivity** (standing §6.4 assumption, used in Lemma 4.6 to *find* the degree-2 vertex,
+    already supplied). The only non-routine brick — **"a triangle is 0-dof / proper rigid"** (the `def((K₃)̃)
+    = 0` body-hinge-Tay computation; NOT yet in tree, confirmed) — may itself split. (~1–2 commits.)
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
   at the C2 feed). **(R2) (B), §1.41: restate the producer to `theorem_55_generic`'s `hsplitGP` shape**
   (gains `G.Simple` + the conditioned IH; concludes `HasGenericFullRankRealization 2 G`), pull `q` +
@@ -253,45 +261,21 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
 ## Blockers / open questions
 
-- **Architecture PINNED — existential conclusion, no `hann`** (2026-06-09, `notes/Phase22-realization-design.md`
-  §1.39, supersedes §1.37/§1.38's B1). The three-fixed disjunction is undischargeable (dim 3 < 6,
-  confirmed); KT's lines are *free* (eq. (6.12)/Claim 6.9), so Claim 6.12 is a genuine existential. The
-  existential conclusion is directly provable (no premise) and consumable (candidate supports are
-  panel-meets, matching the joins). No residual premise survives on `case_III_claim612`.
-- **CRUX VERDICT (B) — constructible, needs non-degeneracy, producer's own data supplies it**
-  (2026-06-09, `notes/Phase22-realization-design.md` §1.40). The line-indexed candidate placement IS
-  constructible for an arbitrary one of the six witness joins: N3a + perp-pair cover all six uniformly,
-  and the Leaf-2b core turns the witness into the row-space-criterion input. NOT (C): the non-degeneracy
-  (nonparallel panels, affinely-indep points, per-opposite-join second normal) is supplied by the
-  producer's own construction, not a fragile Case-III hypothesis that could fail for a specific witness;
-  this is not the `hann`-trap shape (no per-witness premise survives).
-- **All three GENERAL-POSITION obligations SETTLED (none a gap), the `d=3` producer is buildable:**
-  - **(R1-affine) verdict (A) — DISSOLVES** (`notes/Phase22-realization-design.md` §1.42, 2026-06-09).
-    The §1.40 R1 "abstract-N3a ↔ real-placement / de-homogenization, the genericity residual" is **not
-    needed**. The consumers bottom out on Lemma 2.1, whose spanning content holds for any LI 4-family
-    (proof uses only `LinearIndependent ℝ v`; `omitTwoExtensor_linearIndependent_of_li` verified to
-    close), and the seed-from-line bridge takes bare `pi pj : Fin 4 → ℝ` with `⬝ᵥ`-orthogonality (NOT
-    `homogenize` of affine points). Restate the consumers to bare LI `pbar`, feed the green homogeneous
-    core directly — no de-homogenization, no at-infinity case, no genericity, NOT the hann-trap (no
-    per-witness obligation survives). The at-infinity danger is real but lives only in the
-    de-homogenization map the build never calls.
-  - **(R2) split-leg `ab`-transversality — verdict (B)** (§1.41). `case_II_placement_eq612` needs the
-    **pair** `hgab : LinearIndependent ![q(a,·),q(b,·)]`; the **bare** `_hsplit` carries no panel-normal
-    LI promise, the **GP** motive does (its `IsGeneralPosition` conjunct, `normal a = q(a,·)` by `rfl`).
-    Restate the producer to `theorem_55_generic.hsplitGP`; green precedent `case_I_realization` IS
-    `hcontractGP`. KT (pp. 680/682) takes `q` generic nonparallel resting on `G_v^{ab}` simple (Lemma
-    6.7(ii)). Leaf-4 ripple: instantiate `theorem_55_generic`, project `.2` (existing skeleton absorbs
-    it). NB GP gives only *pairwise* — the *triple* `LinearIndependent ![n_a,n_b,n_c]` the homogeneous
-    core needs is the producer's own nonparallel-panel construction, NOT GP.
-  - **(R3) splitOff-simplicity — verdict (A), clean triangle mirror, bounded, no 2-edge-connectivity**
-    (§1.42). The producer must discharge `(G.splitOff …).Simple` (the antecedent of the GP IH conjunct).
-    KT Lemma 6.7(ii)'s proof (read in full, p. 677): parallel `ab`-edge ⟹ `ab ∈ E(G)` ⟹ triangle
-    `{va,vb,ab}` ⟹ 0-dof proper rigid subgraph ⟹ ⊥ vs `_hnoRigid`. **Uses only `G.Simple` + `hnoRigid`
-    + the split data + triangle-is-0-dof** — 2-edge-connectivity is a *standing §6.4 assumption used
-    elsewhere* (Lemma 4.6 to find the degree-2 vertex, already supplied), NOT in the simplicity argument.
-    New graph-side leaf in `Operations.lean`, the bounded sibling of the green `rigidContract_simple`
-    (Contraction.lean:144 — §1.41's `rigidContract_isSimple_of_isProperRigidSubgraph` was a drifted
-    pointer; that decl does not exist). Not green, but the clean bounded mirror.
+- **Architecture + CRUX PINNED — existential conclusion, no `hann`; CRUX verdict (B)** (canonical home
+  `notes/Phase22-realization-design.md` §1.39–§1.40). Claim 6.12 is a genuine six-join existential (the
+  three-fixed disjunction is undischargeable, dim 3 < 6; KT's lines are free). It is directly provable
+  (premise-free) and consumable (candidate supports are panel-meets = join form), constructible for an
+  arbitrary witness via the producer's own data (N3a + perp-pair, not the `hann`-trap).
+- **All three GENERAL-POSITION obligations SETTLED — the `d=3` producer is buildable** (canonical home
+  §1.41–§1.42). One-line verdicts:
+  - **(R1-affine) (A) — DISSOLVES.** No de-homogenization: consumers bottom out on the affine-free
+    Lemma 2.1 (any LI 4-family), feed the green homogeneous core directly. LANDED (core + consumer-restate).
+  - **(R2) (B) — consume the GP `_hsplit`.** `hgab` is `theorem_55_generic.hsplitGP`'s `IsGeneralPosition`
+    conjunct (green precedent `case_I_realization` = `hcontractGP`); Leaf-4 ripple = project `.2`.
+  - **(R3) (A) — clean triangle mirror, bounded, no 2-edge-connectivity.** `(G.splitOff …).Simple` via
+    the triangle-`{va,vb,ab}` contradiction off `_hnoRigid` (KT Lemma 6.7(ii)). Bounded criterion
+    `splitOff_simple` LANDED; remaining = the triangle-discharge (only non-routine brick:
+    triangle-is-0-dof, not yet in tree).
 - **Blueprint: `lem:case-III-claim612` RE-GREENED, `lem:case-III-eq629-conditional` DELETED
   (Leaf 1, 2026-06-09).** The Lean decl is now the premise-free existential, so the node is honestly
   green (statement + proof prose rewritten to the existential contrapositive; `\uses` trimmed to the
@@ -323,10 +307,15 @@ type-aligned with the consumers it threads through.
 R3 is a clean bounded triangle mirror (verdict (A)). No research-shaped node remains on the
 `d=3` route — the producer is genuinely buildable.**
 
+**R3-criterion `splitOff_simple` LANDED 2026-06-09** (Operations.lean; axiom-clean, the bounded
+`hloop`/`hpar` sibling of the green `rigidContract_simple`). R3 now reduces to the
+**R3-discharge** sub-leaf only.
+
 **Smallest next buildable sub-leaf — pick either (independent, no ordering constraint):**
-- **R3 splitOff-simplicity** (Operations.lean; bounded graph-side leaf): `splitOff_simple_of_…` via the
-  triangle-`{va,vb,ab}` contradiction off `_hnoRigid` (KT Lemma 6.7(ii)), the sibling of the green
-  `rigidContract_simple`. No 2-edge-connectivity. Only non-routine brick: triangle-is-0-dof/proper-rigid.
+- **R3-discharge** (Operations.lean; bounded graph-side leaf): `splitOff_simple_of_…` discharging the
+  new `splitOff_simple`'s `hloop`/`hpar` via the triangle-`{va,vb,ab}` contradiction off `_hnoRigid`
+  (KT Lemma 6.7(ii)). No 2-edge-connectivity. Only non-routine brick: **triangle-is-0-dof/proper-rigid**
+  (`def((K₃)̃) = 0`, not yet in tree — may split into its own sub-leaf).
 - **Leaf 3 — discharge `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the seed feed):
   restate the producer to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the `IsGeneralPosition`
   conjunct, `(G.splitOff …).Simple` via R3, mirroring the green `case_I_realization`); feed
@@ -351,6 +340,14 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
+- **R3-criterion — `splitOff_simple` is the bounded `hloop`/`hpar` criterion, mirroring the green
+  `rigidContract_simple` (2026-06-09; Operations.lean).** Split R3 at the criterion/discharge boundary,
+  the criterion first (the same factoring as Case I, where `rigidContract_simple` is the realized-graph
+  criterion and its `IsProperRigidSubgraph` discharge is a separate composer). `(G.splitOff …).Simple`
+  from `hloop` (no link is a self-link, `not_isLoopAt` via `isLink_self_iff`) + `hpar` (no two edges
+  share an end-pair, = `eq_of_isLink`). Graph-side helper, no blueprint node (neither
+  `rigidContract_simple` nor `map_simple` is pinned). The triangle-discharge (R3-discharge) needs the
+  not-yet-in-tree "triangle is 0-dof" fact — confirmed absent; deferred to its own sub-leaf. No friction.
 - **R1-consumer-restate — extract the affine-free Lemma 2.1 verbatim, make the affine form its
   corollary (2026-06-09; Extensor/RigidityMatrix/CaseI.lean).** `omitTwoExtensor_linearIndependent`'s
   proof never reads the affine origin of `v` — it bottoms out on `LinearIndependent ℝ v` and the

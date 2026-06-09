@@ -683,4 +683,37 @@ lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀
     rw [splitOff_isLink]
     exact Or.inl ⟨fun hee => he₀ (hee ▸ h.1.edge_mem), h.1, h.2.1, h.2.2⟩
 
+/-- **Splitting-off simplicity criterion** (the splitting-off sibling of the green Case-I
+`rigidContract_simple`, Contraction.lean; the graph-side input to Theorem 5.5's *generic*
+Case-III/splitting inductive hypothesis `hsplitGP`). The splitting-off `G_v^{ab}` is simple
+provided
+
+* `hloop` — no surviving edge is a loop: a link `e x y` of `G_v^{ab}` always has `x ≠ y`
+  (rules out the fresh `e₀`-loop `a`-`a`, i.e. forces `a ≠ b`, and rules out any surviving
+  `G`-edge becoming a self-link);
+* `hpar` — no two surviving edges share an end-pair: links `e₁ x y` and `e₂ x y` of `G_v^{ab}`
+  force `e₁ = e₂` (rules out a `G`-edge parallel to the fresh `e₀ = ab`, which is the
+  obstruction KT Lemma 6.7(ii) routes to a triangle).
+
+`splitOff` does **not** preserve simplicity unconditionally — it can manufacture both a loop
+(when `a = b`) and a parallel pair (when `ab ∈ E(G)` already), which is why simplicity is a
+*conditioned* fact rather than an instance (matching `map_simple`'s `Simple`-not-preserved-by-`map`
+note). The hypotheses are phrased directly on `G_v^{ab}`'s links (the final edges), the analogue of
+`rigidContract_simple`'s realized-graph `hloop`/`hpar`.
+
+KT Lemma 6.7(ii) (Katoh–Tanigawa 2011, p. 677) discharges both from `G.Simple` together with the
+no-proper-rigid-subgraph assumption `¬ ∃ H, H.IsProperRigidSubgraph G n`: a parallel edge to
+`e₀ = ab` would force `ab ∈ E(G)`, giving the triangle `G[{va, vb, ab}]`, a `0`-dof (hence proper
+rigid) subgraph — contradicting the assumption. That discharge (the `splitOff` analogue of Case I's
+G2c step, itself routing through the not-yet-formalized "a triangle is `0`-dof" fact) is a separate
+graph-side leaf; this lemma is the bounded criterion it feeds, exactly as `rigidContract_simple` is
+the criterion its own composer discharges. -/
+lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
+    (hloop : ∀ e x y, (G.splitOff v a b e₀).IsLink e x y → x ≠ y)
+    (hpar : ∀ e₁ e₂ x y, (G.splitOff v a b e₀).IsLink e₁ x y →
+      (G.splitOff v a b e₀).IsLink e₂ x y → e₁ = e₂) :
+    (G.splitOff v a b e₀).Simple where
+  not_isLoopAt e x h := hloop e x x (isLink_self_iff.mp h) rfl
+  eq_of_isLink e f x y he hf := hpar e f x y he hf
+
 end Graph
