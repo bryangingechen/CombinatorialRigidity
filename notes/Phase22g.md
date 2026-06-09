@@ -33,8 +33,12 @@ candidate support `(ofNormals …).supportExtensor e = panelSupportExtensor (nor
 **panel-meet** (PanelHinge.lean:89, `rfl`), the same `complementIso`/`extensor` form as a join — so the
 producer builds its candidate so its hinge line IS the witness join's line.
 
-**Next concrete step (smallest forward commit):** **Leaf 3** — discharge the producer's `hcand`
-(`case_III_hsplit_producer`, CaseI.lean; §38 trap at the C2 feed). **R3 is now COMPLETE** (2026-06-09):
+**Next concrete step (smallest forward commit):** **Leaf 3 (concrete seed)** — the graph-free C2-feed
+assembly `case_III_realization_of_line` has LANDED (2026-06-09; CaseI.lean, axiom-clean); the remaining
+Leaf-3 work is the concrete `ofNormals` instantiation behind the §38 trap — restate
+`case_III_hsplit_producer` to the `theorem_55_generic.hsplitGP` shape (R2), build the candidate at the
+witness line via `case_III_old_new_blocks_of_line` + the seed-from-line core, and feed
+`case_III_realization_of_line`. **R3 is COMPLETE** (2026-06-09):
 part (1) `isKDof_zero_of_triangle` (Deficiency.lean) + part (2) the `htri` discharge
 (`triangle_isProperRigidSubgraph` + the hypothesis-free `splitOff_simple_of_noRigid_of_card`,
 Operations.lean) are both axiom-clean. The triangle brick assembles `IsProperRigidSubgraph (G.induce
@@ -56,9 +60,10 @@ consumer-restate to bare LI `pbar`), R3 (criterion `splitOff_simple` + discharge
 `triangle_isProperRigidSubgraph`/`splitOff_simple_of_noRigid_of_card`) — all axiom-clean (Lemma
 checklist carries the per-leaf detail).
 
-**Remaining (→ phase close): ~4 commits** — Leaf 3 (`hcand` §38-trap discharge, producer restated to
-`theorem_55_generic.hsplitGP`) ~2–3, Leaf 4 (`theorem_55_generic (n:=2)(k:=2)` instance, project `.2`)
-~1, Leaf 5 (case-II/III flips + Thm 5.5→5.6 push feeding `rigidityMatrix_prop11`'s `hgen`) ~1 (§1.42).
+**Remaining (→ phase close): ~3–4 commits** — Leaf 3 concrete seed (`hcand` §38-trap discharge, producer
+restated to `theorem_55_generic.hsplitGP`; the graph-free C2-feed assembly `case_III_realization_of_line`
+is LANDED) ~1–2, Leaf 4 (`theorem_55_generic (n:=2)(k:=2)` instance, project `.2`) ~1, Leaf 5
+(case-II/III flips + Thm 5.5→5.6 push feeding `rigidityMatrix_prop11`'s `hgen`) ~1 (§1.42).
 Milestone: the molecular conjecture at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma
 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
@@ -185,15 +190,29 @@ Milestone: the molecular conjecture at `d=3`, unblocking Cor 5.7 (Phases 24–26
     edges are `va,ab,vb` (the `ab`-edge `f` is the *middle*). No friction; mathlib `Graph.induce` API
     (`induce_isLink`/`edgeSet_induce`, `V(induce X) = X` by `rfl`) slotted in cleanly.
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
-  at the C2 feed). **(R2) (B), §1.41: restate the producer to `theorem_55_generic`'s `hsplitGP` shape**
-  (gains `G.Simple` + the conditioned IH; concludes `HasGenericFullRankRealization 2 G`), pull `q` +
-  `hgab` from the GP `_hsplit`'s `IsGeneralPosition` conjunct, discharging `(G.splitOff …).Simple` via the
-  R3 leaf. Mirrors the green `case_I_realization` (= `hcontractGP`). Feed `exists_homogeneousIncidence_of_normals`
-  (the producer's own nonparallel triple) for `pbar`/`hpbar` (R1). Build `hcand q hq` from
-  `hq : r̂(join q) ≠ 0`: extract line `L`, run L2b-place to build the candidate at `C(L)`, run
-  `case_III_full_family_of_line` at `e_a` → independent family → C2. Removes the green-modulo `hcand`.
-  **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside (`+1`-row via `hingeRow_mem_rigidityRows`; `so`/`sn`
-  via L2 `span_panelRow_comp_single_of_edge` / L4). (~2–3 commits.)
+  at the C2 feed). Two sub-steps:
+  - [x] **Leaf 3 C2-feed assembly** (`case_III_realization_of_line`, CaseI.lean; DONE 2026-06-09,
+    graph-free, axiom-clean). The abstract-`F` brick closing `case_III_full_family_of_line` → C1: runs the
+    per-line criterion at `e_a`, then feeds the full `D(|V|−1)` family
+    `Sum.elim (Sum.elim rn {hingeRow v a r}) ro` straight into
+    `hasFullRankRealization_of_independent_rigidityRow` (C1), with each summand's `span rigidityRows`
+    membership from `panelRow_mem_rigidityRows_of_link` (`sn`-rows at the direct `G`-link `e_a`), the
+    `hcand_mem` hypothesis (`+1` row, supplied by `hingeRow_mem_rigidityRows`), and the `hro_mem`
+    hypothesis (OLD block). The `+1`-row is *not* a single `panelRow` (it has `r(C(e_a)) ≠ 0`), so it
+    routes through C1's `span`-membership `hsub`, **not** the panelRow-indexed device feed (§1.35). The
+    count `hcard` is parameterized over the existentially-bound `sn` (`∀ sn, |sn| = D−1 → …`) since the
+    block-completion's `sn` only exists inside the criterion. No §38 trap (graph-free over abstract `F`).
+  - [ ] **Leaf 3 concrete seed (§38 trap)** — **(R2) (B), §1.41: restate the producer to
+    `theorem_55_generic`'s `hsplitGP` shape** (gains `G.Simple` + the conditioned IH; concludes
+    `HasGenericFullRankRealization 2 G`), pull `q` + `hgab` from the GP `_hsplit`'s `IsGeneralPosition`
+    conjunct, discharging `(G.splitOff …).Simple` via the R3 leaf. Mirrors the green `case_I_realization`
+    (= `hcontractGP`). Feed `exists_homogeneousIncidence_of_normals` (the producer's own nonparallel
+    triple) for `pbar`/`hpbar` (R1). Build `hcand q hq` from `hq : r̂(join q) ≠ 0`: extract line `L`, run
+    `case_III_old_new_blocks_of_line` to build the candidate at `C(L)` (supplying `hane`/OLD-block
+    `hold`/`holdindep`), get `r̂(C(e_a)) ≠ 0` from the seed-from-line core + `hq`, and feed
+    `case_III_realization_of_line` (the C2-feed assembly above). **C5c-(ii) — OLD/NEW-block `hro_mem`/
+    `hcand_mem`** ride alongside (`+1`-row via `hingeRow_mem_rigidityRows`; `so` via L4
+    `panelRow_mem_rigidityRows_of_link`). Removes the green-modulo `hcand`. (~1–2 commits.)
 - [ ] **Leaf 4 — `theorem_55_generic` `d=3`-instance node** (B.2 + R2 ripple §1.41; graph-free).
   Instantiate **`theorem_55_generic (n:=2) (k:=2)`** (not bare `theorem_55` — R2 verdict (B)) on the
   six green/green-modulo branch args (`hbase`/`hbaseGP`/`hsplit`/**`hsplitGP`** = the restated Case-III
@@ -277,15 +296,19 @@ discharge `splitOff_simple_of_noRigid`, triangle-0-dof `isKDof_zero_of_triangle`
 residuals settled (§1.42): R1 dissolved, R3 a clean bounded triangle mirror. **No research-shaped node
 remains — the `d=3` producer is genuinely buildable.**
 
-**Smallest next buildable sub-leaf — Leaf 3 (discharge the producer's `hcand`; the §38 trap leaf).**
-- **Leaf 3 — discharge `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the seed feed):
-  restate the producer to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the `IsGeneralPosition`
-  conjunct, `(G.splitOff …).Simple` via R3, mirroring the green `case_I_realization`); feed
-  `exists_homogeneousIncidence_of_normals` (the producer's own nonparallel triple) for `pbar`/`hpbar`.
-  For the witness `hq`, build the line-indexed candidate at `ofNormals G ends q₀`, obtain
-  `hane`/`hold`/`holdindep` (from `case_III_old_new_blocks_of_line` + transport) + the witness
-  `r̂(C(e_a)) ≠ 0` (seed-from-line core + `hq`), feed `case_III_full_family_of_line` → C2
-  (`hasFullRankRealization_of_candidateSelector` at the fixed seed) via L4 `panelRow_mem_rigidityRows`.
+**Landed this commit:** the graph-free C2-feed assembly `case_III_realization_of_line` (CaseI.lean,
+axiom-clean) — runs `case_III_full_family_of_line` at `e_a` then feeds the full family straight into C1
+(`hasFullRankRealization_of_independent_rigidityRow`); the abstract half of Leaf 3, off the §38 trap.
+
+**Smallest next buildable sub-leaf — Leaf 3 concrete seed (the §38 trap; ~1–2 commits).**
+- Restate `case_III_hsplit_producer` to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the
+  `IsGeneralPosition` conjunct, `(G.splitOff …).Simple` via R3 `splitOff_simple_of_noRigid_of_card`,
+  mirroring the green `case_I_realization`); feed `exists_homogeneousIncidence_of_normals` (the producer's
+  own nonparallel triple) for `pbar`/`hpbar`. For the witness `hq`, build the line-indexed candidate at
+  `ofNormals G ends q₀` via `case_III_old_new_blocks_of_line` (supplying `hane`/OLD-block
+  `hold`/`holdindep`), get `r̂(C(e_a)) ≠ 0` from the seed-from-line core + `hq`, assemble `hro_mem`/
+  `hcand_mem`/`hcard`, and feed `case_III_realization_of_line` (landed). The concrete `ofNormals`
+  instantiation is the only §38-trap surface left.
   Full plan: `notes/Phase22-realization-design.md` §1.42 (R1/R3) + §1.41 (R2) + §1.40 (CRUX) + §1.39.
 
 **Leaf 4/5** (the green `theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2
@@ -302,39 +325,31 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
-- **R3-triangle-brick part (2) — the `htri` discharge via the vertex-induced triangle `G.induce {v,a,b}`
-  (2026-06-09; Operations.lean, `triangle_isProperRigidSubgraph` + `splitOff_simple_of_noRigid_of_card`).**
-  Builds the `IsProperRigidSubgraph (G.induce {v,a,b}) G n` witness: `0`-dof from `isKDof_zero_of_triangle`,
-  `H ≤ G` from `induce_le`, `V(H) ⊂ V(G)` from a `4 ≤ V(G).ncard` proper-ness guard (`{v,a,b}.ncard ≤ 3`).
-  Mathlib `Graph.induce` slotted in cleanly: `induce_isLink`, `edgeSet_induce`, `V(induce X) = X` by `rfl`.
-  Two design points: (a) `isKDof_zero_of_triangle`'s vertex order is `v,a,b`, so its three edges are
-  `va,ab,vb` — the `ab`-edge `f` is the *middle*, not last; (b) the `E(H) = {eₐ,f,e_b}` exactness is the
-  only `G.Simple` step (a fourth induced edge has loopless ends in `{v,a,b}`, so is parallel to one of
-  the three — `first | … |` over `IsLink.unique_edge`/`.symm`). `splitOff_simple_of_noRigid_of_card` is
-  the hypothesis-free simplicity lemma (drops `htri`, takes the guard + `3 ≤ bodyBarDim n`) Leaf 3 calls
-  for the GP `hsplitGP` shape. Axiom-clean, no friction, no blueprint node (sibling of `rigidContract_simple`).
-- **R3-triangle-brick part (1) — a triangle is `0`-dof via the `def ≤ 0` partition route, NOT the
-  rank-bounds route the §1.43 recon pinned (2026-06-09; `isKDof_zero_of_triangle`, Deficiency.lean).**
-  `def(H̃) = ⨆_f partitionDef ≤ 0` by `ciSup_le` + `deficiency_nonneg`, reducing to a per-`f` bound
-  `D(|P|−1) ≤ (D−1)·d` over the five consistent label patterns of `(f x,f y,f z)` (the two
-  transitivity-violating combinations are `absurd`; `numParts = |{f x,f y,f z}|`, crossing `d ∈ {0,2,3}`
-  pinned per case, edge-distinctness from the link structure; `nlinarith [1 ≤ D]` closes, binding at
-  `3(D−1) ≥ 2D ⟺ D ≥ 3`). **Lesson: the recon over-engineered.** §1.43 predicted a `rank M(H̃) = 2D`
-  full-rank computation (upper `rank_matroidMG_le` + a `(D,D)`-tight `2D`-fiber selection / `D`-tree
-  packing); but `def = max_P partitionDef` and `def ≥ 0` mean `def ≤ 0` is the only thing to prove, and
-  bounding `partitionDef` per partition needs neither a fiber-set construction nor `matroidMG_indep_iff`
-  — it mirrors the green `two_le_crossingEdges_of_isKDof_zero` (the reverse cut-partition idiom), not
-  `circuit_induces_isRigidSubgraph`. Takes `x≠y/y≠z/x≠z` + `V(H)={x,y,z}` + `E(H)={exy,eyz,exz}` as hyps
-  (the consumer's `G.Simple` supplies them). Axiom-clean, no blueprint node.
-- **R3 splitOff-simplicity — criterion + combinatorial discharge, triangle-0-dof carried as `htri`
-  (2026-06-09; Operations.lean).** Split R3 three ways (mirroring Case I's criterion/composer
-  factoring). `splitOff_simple` is the bounded `hloop`/`hpar` criterion (`not_isLoopAt` via
-  `isLink_self_iff`, `eq_of_isLink` = `hpar`). `splitOff_simple_of_noRigid` does the whole bounded
-  combinatorial discharge from `[G.Simple]` + the `va`/`vb` edges + `hnoRigid`: `a ≠ b` via
-  `Simple.eq_of_isLink` + `heab`, then the four-case `rcases` over `splitOff_isLink`, the *mixed* KT
-  obstruction routed through `htri f`+`hnoRigid`. `htri : ∀ f, G.IsLink f a b → ∃ H, …ProperRigid…`
-  isolates the not-yet-in-tree triangle-0-dof brick (`def((K₃)̃) = 0`) as one green-modulo hypothesis.
-  Graph-side helpers, no blueprint node (sibling of the unpinned `rigidContract_simple`). No friction.
+- **Leaf 3 C2-feed assembly — route the candidate `+1` row through C1's `span`-membership, not the
+  panelRow device feed; parameterize the count over the existential `sn` (2026-06-09; CaseI.lean,
+  `case_III_realization_of_line`).** The graph-free brick closing `case_III_full_family_of_line` → C1.
+  Two design points: (a) the candidate `+1` row `hingeRow v a r` has `r(C(e_a)) ≠ 0` so it is *not* a
+  single `panelRow` (every panelRow annihilates its edge's extensor); it lands in `span rigidityRows` via
+  `hingeRow_mem_rigidityRows` (carried as `hcand_mem`), feeding C1's `hsub` rather than the
+  panelRow-indexed device feed — the corrected §1.35 route. So the assembly calls C1
+  (`hasFullRankRealization_of_independent_rigidityRow`) directly, not the conditional C2
+  `hasFullRankRealization_of_candidateSelector`. (b) `case_III_full_family_of_line` binds the NEW-block
+  index set `sn` existentially (it is extracted inside the criterion run), so the count obligation is
+  phrased `∀ sn, |sn| = D−1 → D(|V|−1) ≤ |(sn ⊕ Unit) ⊕ ιo|` — the consumer (Leaf 3) discharges it from
+  the L1/L5-pack arithmetic. `panelRow_mem_rigidityRows_of_link` accepts `G.IsLink e_a v a` defeq for
+  `F.graph.IsLink` (`ofNormals_graph`/`toBodyHinge_graph` both `rfl`), so the `sn`-row membership needs no
+  `change`. Axiom-clean, no friction, no §38 trap (abstract `F`).
+- **R3 splitOff-simplicity COMPLETE (settled; one-line verdicts — full prose in git + Lean
+  doc-comments + design §1.42/§1.43).** Four axiom-clean leaves, all in Operations.lean / Deficiency.lean,
+  no blueprint node (sibling of the unpinned `rigidContract_simple`): (i) `splitOff_simple` — the bounded
+  `hloop`/`hpar` criterion; (ii) `splitOff_simple_of_noRigid` — the combinatorial discharge from
+  `[G.Simple]` + the `va`/`vb` edges + `hnoRigid`, the *mixed* `splitOff_isLink` case routed through the
+  triangle brick `htri`; (iii) `isKDof_zero_of_triangle` — a triangle is `0`-dof via the `def ≤ 0`
+  *partition* route (`ciSup_le` + `deficiency_nonneg`, per-`f` `D(|P|−1) ≤ (D−1)·d` over the five label
+  patterns; the §1.43 recon over-engineered a rank computation); (iv) `triangle_isProperRigidSubgraph` +
+  the hypothesis-free `splitOff_simple_of_noRigid_of_card` — assembles `IsProperRigidSubgraph
+  (G.induce {v,a,b}) G n` from (iii) + `induce_le` + a `4 ≤ V(G).ncard` guard, dropping `htri` for the
+  GP `hsplitGP` shape Leaf 3 consumes.
 - **R1-consumer-restate — extract the affine-free Lemma 2.1 verbatim, make the affine form its
   corollary (2026-06-09; Extensor/RigidityMatrix/CaseI.lean).** `omitTwoExtensor_linearIndependent`'s
   proof never reads the affine origin of `v` — it bottoms out on `LinearIndependent ℝ v` and the

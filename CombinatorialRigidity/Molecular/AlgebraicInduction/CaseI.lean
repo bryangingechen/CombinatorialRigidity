@@ -3870,6 +3870,76 @@ theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
     | zero => simp
     | succ m' => rw [Nat.add_sub_cancel, Nat.mul_succ]; omega
 
+/-- **L2b-place (per-line realization) — the line-indexed candidate placement attains a full-rank
+realization when the common vector is not orthogonal to the witness line's panel-meet**
+(`lem:case-III-claim612-line-in-panel-union`, the C2-feed leaf of the `d = 3` `hsplit` producer;
+Katoh–Tanigawa 2011 §6.4.1, eqs.~(6.27)–(6.44), Phase 22g). The graph-free assembly closing the gap
+between the per-line independent candidate family (`case_III_full_family_of_line`) and the
+realization motive `HasFullRankRealization`: it runs the per-line row-space criterion at `e_a` to
+obtain the full `D(|V|−1)` candidate family `Sum.elim (Sum.elim rn {hingeRow v a r}) ro`, then feeds
+it straight into the fixed-placement realization brick C1
+(`hasFullRankRealization_of_independent_rigidityRow`) — the candidate `+1` row `hingeRow v a r` is
+*not* a single `panelRow` (it has `r(C(e_a)) ≠ 0`, while every panelRow annihilates its edge's
+extensor), so it cannot route through the panelRow-indexed device feed; but it lies in
+`span rigidityRows` (the `hcand_mem` hypothesis, supplied by the consumer via
+`hingeRow_mem_rigidityRows` once `r` is restricted to the `e_a`-hinge-row block), exactly C1's
+`hsub` shape (§1.35).
+
+The OLD block `ro` (the `D(|V(Gᵥ)|−1)` linking rows) enters abstractly: independent (`holdindep`),
+vanishing at `v`'s screw column (`hold`, the per-line criterion's pin input), and members of
+`span rigidityRows` (`hro_mem`). The `va`-hinge `e_a` is nondegenerate (`hane`) and the witness
+`r(F.supportExtensor e_a) ≠ 0` (`hr`, supplied by Claim~6.12's existential join witness through the
+Leaf-2b seed-from-line core) drives both the criterion (the NEW-block `sn`'s candidate-completion is
+independent) and C2's selector. The count `D(|V(G)|−1) ≤ |(sn ⊕ Unit) ⊕ ιo|` is the eq.~(6.29) full
+count, carried in as `hcard` (the consumer assembles it from the L1 block counts via the L5-pack
+arithmetic).
+
+Graph-free over the abstract `F` (it reads only `ends`/`supportExtensor`/`panelRow`/`hingeRow`/
+`rigidityRows`); the recurring `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) is confined
+to the producer's seed feed (Leaf 3), which supplies `F := ofNormals G ends q₀`,
+`hane`/`hold`/`holdindep`/`hro_mem`/`hcand_mem`/`hcard`/`hr` at the concrete carrier. -/
+theorem PanelHingeFramework.case_III_realization_of_line [DecidableEq α] [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ} {v a : α} {e_a : β} (hva : v ≠ a) (hends_ea : ends e_a = (v, a))
+    (hG_ea : G.IsLink e_a v a)
+    (hane : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e_a ≠ 0)
+    {ιo : Type*} [Finite ιo] {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k), ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (hro_mem : ∀ j, ro j ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
+    (r : Module.Dual ℝ (ScrewSpace k))
+    (hcand_mem : BodyHingeFramework.hingeRow (k := k) (α := α) v a r ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.rigidityRows)
+    (hr : r ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e_a) ≠ 0)
+    (hcard : ∀ sn : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      Nat.card sn = screwDim k - 1 →
+      screwDim k * (V(G).ncard - 1) ≤ Nat.card ((sn ⊕ Unit) ⊕ ιo)) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  -- (1) Run the per-line row-space criterion at `e_a`: the candidate-completion family
+  -- `Sum.elim (Sum.elim rn {hingeRow v a r}) ro` is linearly independent (witness `hr`).
+  obtain ⟨sn, hsn_e, hsn_card, hfam⟩ :=
+    PanelHingeFramework.case_III_full_family_of_line F ends hva hends_ea hane hold holdindep r hr
+  haveI : Finite ↥sn := Set.Finite.to_subtype (Set.toFinite sn)
+  -- (2) Each row of the family lies in `span rigidityRows`: the `sn`-rows are panelRows of `e_a`
+  -- (which links `v a` in `G`, by `hsn_e`/`hends_ea`); the `Unit` candidate row is `hcand_mem`;
+  -- the OLD-block rows are `hro_mem`.
+  refine PanelHingeFramework.hasFullRankRealization_of_independent_rigidityRow G ends hne
+    (q₀ := q₀) hfam ?_ (hcard sn hsn_card)
+  rw [Submodule.span_le, Set.range_subset_iff]
+  rintro ((⟨i, hi⟩ | u) | i) <;> simp only [Sum.elim_inl, Sum.elim_inr]
+  · -- `sn`-row: `panelRow` of `e_a`, a rigidity row by the direct `G`-link `e_a = va`.
+    refine Submodule.subset_span ?_
+    obtain ⟨e', t₁, t₂⟩ := (i : β × _ × _)
+    have hi1 : e' = e_a := hsn_e _ hi
+    subst hi1
+    exact F.panelRow_mem_rigidityRows_of_link ends hends_ea hG_ea t₁ t₂
+  · -- `Unit` candidate row `hingeRow v a r`: the `hcand_mem` hypothesis.
+    exact hcand_mem
+  · -- OLD-block row: the `hro_mem` hypothesis.
+    exact hro_mem i
+
 /-- **L0/C3 — the `d = 3` `hsplit` producer skeleton** (`lem:case-II-realization` / `lem:case-III`,
 the `theorem_55.hsplit` branch at `k = 2`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phase 22g). The
 spine of the conjecture's crux at `d = 3`: given a realization of the split-off `G_v^{ab}` it
