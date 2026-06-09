@@ -2787,6 +2787,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Pi.basisFun_toDual_apply` — the standard basis's `Basis.toDual` self-pairing is the dot product `∑ i, x i * y i`
+- **Where it bit:** Phase 22g C5 (the N3b dot-product incidence form,
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, Meet.lean). The N3b exterior-algebra
+  core states panel incidence as `(Pi.basisFun ℝ (Fin 4)).toDual pi n_u = 0`, but N3a
+  (`exists_affineIndependent_panel_incidence`) emits it as the plain dot product `pi ⬝ᵥ n_u = 0` —
+  the `hduality` dispatch needs to convert between the two.
+- **Friction:** `Module.Basis.toDual_apply_left`/`_right` only handle a *single* basis argument
+  (`b.toDual (b i) m = b.repr m i`); the bilinear evaluation of `toDual` against two arbitrary
+  vectors of `η → R` has no packaged formula. Expanding `y` in the basis and folding through
+  `toDual_apply_left` + `Pi.basisFun_repr` gives `∑ i, x i * y i`.
+- **Gotcha (cost a build cycle):** `rw [← (Pi.basisFun R η).sum_repr y]` rewrites *every*
+  occurrence of the function term `y`, including the partial applications `y i` inside the RHS
+  `∑ i, x i * y i`, blowing the goal up. Target the LHS only — `conv_lhs => rw [← …sum_repr y]`.
+  **Lifted to:** TACTICS-QUIRKS § 41 (rewriting a function term hits its partial applications).
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry. Stated in `∑`-form (no Matrix import in
+  the `Dual/Basis.lean` mirror); the consumer in Meet.lean closes `⬝ᵥ`-form incidence by `exact`
+  (definitional `⬝ᵥ = ∑ i, x i * y i`).
+- **Mirror file:** `Mathlib/LinearAlgebra/Dual/Basis.lean` (alongside the sibling
+  `Pi.basisFun_dualBasis`).
+
 ### [mirrored] `linearIndependent_sumElim_unit_iff` — appending one vector to an independent family stays LI iff the vector is fresh
 - **Where it bit:** Phase 22e N4 (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42)
   row-space criterion). The `D`-functional family (`D−1` `va`-block rows plus the candidate

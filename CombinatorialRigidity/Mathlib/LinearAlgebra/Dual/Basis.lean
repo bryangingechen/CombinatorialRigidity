@@ -12,7 +12,7 @@ public import Mathlib.LinearAlgebra.StdBasis
 # Upstream candidates: standard-basis-dual lemmas and the constructive
 row-rank-equals-column-rank identity.
 
-Two facts adjacent to `Module.Basis.dualBasis` and `LinearMap.dualMap` that
+Three facts adjacent to `Module.Basis.dualBasis` and `LinearMap.dualMap` that
 the combinatorial-rigidity project needed and that mathlib does not ship:
 
 1. **`Pi.basisFun_dualBasis`** identifies the dual-basis-of-the-standard-basis
@@ -23,7 +23,13 @@ the combinatorial-rigidity project needed and that mathlib does not ship:
    `Mathlib.LinearAlgebra.Dual.Basis` carries this lemma; `Dual/Basis.lean` does
    not even import `StdBasis.lean`.)
 
-2. **`LinearMap.range_dualMap_eq_span_image_dualBasis`** is the constructive
+2. **`Pi.basisFun_toDual_apply`** evaluates the self-pairing
+   `(Pi.basisFun R η).toDual x y` as the coordinate sum `∑ i, x i * y i` (the
+   dot product). `Module.Basis.toDual_apply_left` handles a single basis
+   argument; the bilinear evaluation against two arbitrary vectors of `η → R` is
+   not packaged.
+
+3. **`LinearMap.range_dualMap_eq_span_image_dualBasis`** is the constructive
    (span) form of row-rank-equals-column-rank: for any basis `b` on the
    codomain, the range of `f.dualMap` is the `R`-linear span of
    `f.dualMap '' (range b.dualBasis)`. Mathlib's
@@ -52,6 +58,17 @@ theorem basisFun_dualBasis (i : η) :
     (Pi.basisFun R η).dualBasis i = (LinearMap.proj i : (η → R) →ₗ[R] R) := by
   refine LinearMap.ext fun x => ?_
   simp [Pi.basisFun_repr]
+
+variable [Fintype η]
+
+/-- The self-pairing of the standard basis's `Basis.toDual` against two vectors
+of `η → R` is the coordinate sum `∑ i, x i * y i` (the dot product `x ⬝ᵥ y`). -/
+theorem basisFun_toDual_apply (x y : η → R) :
+    (Pi.basisFun R η).toDual x y = ∑ i, x i * y i := by
+  conv_lhs => rw [← (Pi.basisFun R η).sum_repr y, map_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  rw [map_smul, smul_eq_mul, Module.Basis.toDual_apply_left, Pi.basisFun_repr,
+    Pi.basisFun_repr, mul_comm]
 
 end Pi
 

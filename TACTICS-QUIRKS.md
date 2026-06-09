@@ -1511,3 +1511,20 @@ narrow-import file fails to synthesize an "obvious" algebraic instance (`IsTorsi
 `NoZeroSMulDivisors`, …) that a full-mathlib scratch finds, the instance's *defining import* is
 missing — add it, don't reach for `set_option`. Worked case: `linearIndependent_sumElim_unit_iff`
 (Phase 22e N4, `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`).
+
+## 41. `rw [← f.sum_repr y]` (or any `rw [eq]` rewriting a *function* term) hits the function's partial applications too — target the side with `conv`
+
+**Symptom.** Rewriting a function-valued term — e.g. `rw [← (Pi.basisFun R η).sum_repr y]` to expand
+`y` in its basis — unexpectedly blows up the *other* side of the goal: a clean RHS `∑ i, x i * y i`
+becomes `∑ i, x i * (∑ j, repr y j • basisFun j) i`, and the proof no longer closes. The rewrite was
+meant to touch only the `y` sitting in `toDual x y`.
+
+**Cause.** `rw [eq]` rewrites *every* occurrence of `eq`'s LHS as a *term*, and a bare function name
+`y : η → R` is a term that also occurs inside each partial application `y i`. So `← sum_repr y`
+matches the `y` in `y i` and rewrites it, not just the standalone `y` you had in mind.
+
+**Fix.** Scope the rewrite to one side: `conv_lhs => rw [← (Pi.basisFun R η).sum_repr y]` (or
+`conv_rhs`, `nth_rewrite k`). **General rule:** when an `rw` of an equation whose LHS is a
+*function-valued* term over-rewrites, the unintended hits are its partial applications elsewhere in
+the goal — narrow with `conv_lhs`/`conv_rhs`/`nth_rewrite` rather than re-stating the lemma. Worked
+case: `Pi.basisFun_toDual_apply` (Phase 22g, `Mathlib/LinearAlgebra/Dual/Basis.lean`).

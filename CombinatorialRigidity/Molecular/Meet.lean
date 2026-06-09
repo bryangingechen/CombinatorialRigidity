@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.ExteriorPower.Basis
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
 public import CombinatorialRigidity.Mathlib.Data.Finset.Card
 public import CombinatorialRigidity.Molecular.Extensor
 public import Mathlib.LinearAlgebra.Dual.Lemmas
@@ -1179,5 +1180,34 @@ theorem extensor_join_eq_zero_of_complementIso_eq_zero (n_u n' pi pj : Fin 4 →
     r ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ = 0 := by
   obtain ⟨c, hc⟩ := complementIso_smul_eq_extensor_join n_u n' pi pj hpair hi_u hi_u' hj_u hj_u'
   rw [← hc, map_smul, hr, smul_zero]
+
+/-- **Point-join ↔ panel-meet duality, the dot-product incidence form**
+(`lem:case-III-claim612-line-in-panel-union`, N3b, KT eq. (6.45); Phase 22g). The N3a-compatible
+restatement of `extensor_join_eq_zero_of_complementIso_eq_zero`: the panel incidence is phrased as
+the plain dot product `pi ⬝ᵥ n_u = 0` (the form `exists_affineIndependent_panel_incidence`, N3a,
+emits) rather than the standard-basis pairing `(Pi.basisFun ℝ (Fin 4)).toDual pi n_u = 0` of the
+exterior-algebra core. At `d = 3` (`⋀²ℝ⁴`), with `{n_u, n'}` independent panel normals of `Π(u)` and
+two points `pi, pj` of the line `L = pi pj ⊂ Π(u)` (each dot-orthogonal to both normals), a screw
+functional `r` annihilating the panel-meet `C(L) = complementIso (n_u ∧ n')` also annihilates the
+spanning point-join `p̄ᵢ ∨ p̄ⱼ = extensor ![pi, pj]`.
+
+This is the per-line annihilation transfer the Claim-6.12 capstone (`case_III_claim612`'s
+`hduality`) dispatches over the six joins `pᵢ ∨ pⱼ` of the four affinely-independent points of
+eq. (6.45): each join lies in (at least) one of the three panels `Π(a) ∪ Π(b) ∪ Π(c)`, so `r`
+orthogonal to that panel's meet annihilates it. The only content over the core is the incidence-form
+conversion, via the self-pairing identity `Pi.basisFun_toDual_apply`
+(`(Pi.basisFun ℝ (Fin 4)).toDual x y = x ⬝ᵥ y`). -/
+theorem extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n_u n' pi pj : Fin 4 → ℝ)
+    (hpair : LinearIndependent ℝ ![n_u, n'])
+    (hi_u : pi ⬝ᵥ n_u = 0) (hi_u' : pi ⬝ᵥ n' = 0)
+    (hj_u : pj ⬝ᵥ n_u = 0) (hj_u' : pj ⬝ᵥ n' = 0)
+    (r : Module.Dual ℝ (⋀[ℝ]^2 (Fin 4 → ℝ)))
+    (hr : r (complementIso (k := 2) (j := 2) (by omega)
+      ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0) :
+    r ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ = 0 :=
+  extensor_join_eq_zero_of_complementIso_eq_zero n_u n' pi pj hpair
+    (by rw [Pi.basisFun_toDual_apply]; exact hi_u) (by rw [Pi.basisFun_toDual_apply]; exact hi_u')
+    (by rw [Pi.basisFun_toDual_apply]; exact hj_u) (by rw [Pi.basisFun_toDual_apply]; exact hj_u')
+    r hr
 
 end CombinatorialRigidity.Molecular

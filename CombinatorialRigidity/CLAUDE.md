@@ -70,6 +70,7 @@ symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
 - *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
 - `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper)
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
+- `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
 
 ## Starting a Lean-touching session
 
