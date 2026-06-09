@@ -3680,6 +3680,86 @@ theorem PanelHingeFramework.case_III_old_new_blocks_of_line [DecidableEq α] [Fi
   exact ⟨hane, hnewne, so, hso_card, hso_indep_G, hold, hso_ne_eb, sn, hsn_e, hsn_card, hsn_indep,
     hnewpin⟩
 
+/-- **L2b-place (per-line criterion) — the line-indexed candidate placement attains the full
+`D(|V|−1)` family when the common vector is not orthogonal to the witness line's panel-meet**
+(`lem:case-III-claim612-line-in-panel-union`, the row-space-criterion leaf of the `d = 3` `hsplit`
+producer; Katoh–Tanigawa 2011 §6.4.1, eqs.~(6.12)/(6.29)/(6.42), Phase 22g). With the line-indexed
+OLD/NEW block placement in hand (`case_III_old_new_blocks_of_line`, whose `va`-hinge `e_a` is the
+witness line `L = n_a ∧ n' ⊂ Π(a)`, support `(-t)·C(L)`), this leaf runs KT's eq.~(6.42) row-space
+criterion (`linearIndependent_sumElim_candidateRow_iff`) **at `e_a`** to append the candidate `+1`
+row `hingeRow v a r̂` and lift the eq.~(6.12) `D(|V|−1)−1` brick to the full `D(|V|−1)` family.
+
+The structure is the `M₁` candidate-completion
+(`linearIndependent_sum_augment_candidateRow_selector`, split off at `v` along the *original* edge
+`va = e_a`): the **NEW block** `rn` is the `D − 1` panel rows of the `va`-hinge `e_a` itself
+(`exists_independent_panelRow_subfamily_of_edge` at `e_a`), pinned to `v`'s screw column
+(`linearIndependent_panelRow_comp_single_of_edge`) and spanning the whole hinge block
+`r(p(e_a)) = (span C(e_a))^⊥` (`span_panelRow_comp_single_of_edge`, L2); the selector's operated
+forms `(rn ·) ∘ₗ Φ ∘ₗ single v` (`Φ = columnOp hva`) reduce to those bare pinned forms by
+`comp_columnOp_comp_single` (the column op is the identity on `v`'s column). The OLD block `ro`
+(the `D(|V(Gv)|−1)` linking rows, vanishing at `v`'s column — `hold`/`holdindep`) is carried in. The
+criterion then fires on the **witness input** `r̂(C(e_a)) ≠ 0` (`hr`), which the Leaf-2b geometric
+core `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` supplies from Claim~6.12's
+existential join witness `r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0` — so the full
+`Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro` family is linearly independent, the eq.~(6.29)
+candidate family the fixed-placement device feed (C2) consumes.
+
+Graph-free over the abstract `F` (it reads only `ends`/`supportExtensor`/`panelRow`/`hingeRow`); the
+recurring `ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) is confined to the producer's seed
+feed (Leaf 3), which supplies `hane`/`hold`/`holdindep` at the concrete carrier. -/
+theorem PanelHingeFramework.case_III_full_family_of_line [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    {v a : α} {e_a : β} (hva : v ≠ a) (hends_ea : ends e_a = (v, a))
+    (hane : F.supportExtensor e_a ≠ 0)
+    {ιo : Type*} [Finite ιo] {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k), ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (r : Module.Dual ℝ (ScrewSpace k)) (hr : r (F.supportExtensor e_a) ≠ 0) :
+    ∃ sn : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ sn, (i : β × _ × _).1 = e_a) ∧ Nat.card sn = screwDim k - 1 ∧
+      LinearIndependent ℝ
+        (Sum.elim
+          (Sum.elim (fun i : sn => F.panelRow ends (i : β × _ × _))
+            (fun _ : Unit => BodyHingeFramework.hingeRow (k := k) (α := α) v a r))
+          ro) := by
+  -- The `va`-hinge `e_a` is transversal (`(ends e_a).1 = v ≠ a = (ends e_a).2`).
+  have huv : (ends e_a).1 ≠ (ends e_a).2 := by rw [hends_ea]; exact hva
+  have hev : (ends e_a).2 ≠ (ends e_a).1 := huv.symm
+  -- The `va`-hinge first endpoint is `v`.
+  have h1v : (ends e_a).1 = v := by rw [hends_ea]
+  -- (NEW block) the `D − 1` panel rows of the `va`-hinge `e_a`.
+  obtain ⟨sn, hsn_e, hsn_card, hsn_indep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_edge (ends := ends) (e := e_a) huv hane
+  refine ⟨sn, hsn_e, hsn_card, ?_⟩
+  -- The pinned NEW-block rows are independent (`linearIndependent_panelRow_comp_single_of_edge`,
+  -- bare `single v` form) and span the whole hinge block (`span_panelRow_comp_single_of_edge`, L2).
+  have hpin := F.linearIndependent_panelRow_comp_single_of_edge (ends := ends) (e := e_a)
+    hev hsn_e hsn_indep
+  haveI : Finite ↥sn := hpin.finite
+  have hspan := F.span_panelRow_comp_single_of_edge (ends := ends) (e := e_a)
+    hev hane hsn_e hsn_card hsn_indep
+  rw [h1v] at hpin hspan
+  -- Reroute the bare `single v` forms into the selector's operated `Φ ∘ single v` forms
+  -- (`comp_columnOp_comp_single`: the column op is the identity on `v`'s screw column).
+  have hbridge : (fun i : sn => ((F.panelRow ends (i : β × _ × _)).comp
+        (BodyHingeFramework.columnOp (k := k) hva).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      = (fun i : sn => (F.panelRow ends (i : β × _ × _)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+    funext i; exact BodyHingeFramework.comp_columnOp_comp_single hva _
+  have hrnpin : LinearIndependent ℝ (fun i : sn =>
+      ((F.panelRow ends (i : β × _ × _)).comp
+          (BodyHingeFramework.columnOp (k := k) hva).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+    rw [hbridge]; exact hpin
+  have hspan' : Submodule.span ℝ (Set.range (fun i : sn =>
+      ((F.panelRow ends (i : β × _ × _)).comp
+          (BodyHingeFramework.columnOp (k := k) hva).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e_a := by
+    rw [hbridge]; exact hspan
+  exact BodyHingeFramework.linearIndependent_sum_augment_candidateRow_selector
+    F e_a hva hold holdindep hrnpin hspan' hr
+
 /-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
 `lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly

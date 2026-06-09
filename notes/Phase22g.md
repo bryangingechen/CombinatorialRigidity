@@ -69,19 +69,22 @@ from `hnoRigid`, **not yet formalized** (a sibling of Case I's green `rigidContr
 Re-shapes **Leaf 3** (producer signature + R3 discharge) + **Leaf 4** (instantiate generic), bounded
 restatements + the bounded R3 leaf, not new *hard* math.
 
-**Next concrete step (smallest forward commit): L2b-place per-line criterion — wire
-`case_III_old_new_blocks_of_line`'s NEW block + the L2 span bridge into the row-space criterion at
-`e_a`** (CaseI.lean; **§38 `ofNormals` trap** at the C2-feed). The line-indexed *block placement*
-LANDED 2026-06-09 (`case_III_old_new_blocks_of_line`, CaseI.lean, axiom-clean): the generalization of
-`case_III_old_new_blocks` that shears body `v` along an arbitrary witness-panel second normal `n'`
-(not the fixed IH `n_b`), so the `va`-hinge `e_a` is the witness line `L = n_a ∧ n'` (support
-`(-t)•C(L)`), carrying the two transversality facts (`hL`, `hnewtrans`) as explicit hypotheses. The
-*seed-from-line geometric core* (`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`,
-PanelLayer.lean) already turns the existential witness `r̂(pᵢ∨pⱼ) ≠ 0 ⟹ r̂(supportExtensor e_a) ≠ 0`.
-What remains in L2b-place: feed the NEW block + L2 span bridge (`span_panelRow_comp_single_of_edge`)
-into `linearIndependent_sumElim_candidateRow_iff` at `e_a` with `r̂(C(L)) ≠ 0` (the 2b core, fed `hq`)
-→ the independent `D(|V|−1)`-family. Keep reasoning over abstract `F`, instantiate `ofNormals` only at
-the seed (C1/C2 §38 discipline). Then Leaf 3 wires it into `hcand`.
+**Next concrete step (smallest forward commit): Leaf 3 — discharge the producer's `hcand`**
+(`case_III_hsplit_producer`, CaseI.lean; **§38 `ofNormals` trap** at the seed feed). All of Leaf 2b
+has LANDED. **L2b-place per-line criterion LANDED 2026-06-09** (`case_III_full_family_of_line`,
+CaseI.lean, axiom-clean): the abstract-`F` row-space-criterion runner. Given the line-indexed candidate's
+`e_a` support nonzero (`hane`), the OLD block (`hold`/`holdindep`), and the witness `r̂(C(e_a)) ≠ 0`
+(`hr`), it builds the `M₁` candidate completion — NEW block at `e_a` itself (the `va`-hinge `L`-block,
+`exists_independent_panelRow_subfamily_of_edge`), pinned-independent + spanning `hingeRowBlock e_a`
+(`linearIndependent_panelRow_comp_single_of_edge` / `span_panelRow_comp_single_of_edge` L2, the
+selector's operated `Φ∘single v` forms reduced to the bare ones by `comp_columnOp_comp_single`) — and
+runs `linearIndependent_sum_augment_candidateRow_selector` at `e_a` → the full
+`Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro` `D(|V|−1)`-family. **Architecture note:** the `M₁` criterion
+runs at `e_a` (the `va`-line `L ⊂ Π(a)`), so its NEW block `rn` is at `e_a`, *not* `e_b`; the
+`_of_line` block-placement's `e_b`-NEW block is the *lower-bound* brick (it reproduces the `ab`-hinge),
+while the per-line criterion extracts the `e_a`-block freshly from `hane` (both `e_a`/`e_b` link `v`,
+so this is just `_subfamily_of_edge` at the other incident hinge). Graph-free, so the §38 trap stays
+out — it bites only the producer's concrete seed feed (Leaf 3).
 **Two carried obligations the build must own** (§1.40 (5), do NOT block L2b-place): **(R1)** the
 abstract-N3a ↔ real-placement panel reconciliation (N3a hardcodes normals `e₀,e₁,e₂`; the producer
 needs an N3a *parameterized by the real `n_a,n_b,n_c`* — a new bounded graph-free leaf via
@@ -132,8 +135,8 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
   the green Phase-22f sub-leaves all `\cref` but no node defined; pins the four duality lemmas. The
   duality is the bridge §1.39(b) names; the *transfer* form is producer-direction (the `hann`-discharge
   direction stays obsolete, §1.39(c)).
-- [~] **Leaf 2b — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**;
-  multi-commit, IN PROGRESS).
+- [x] **Leaf 2b — the line-indexed candidate placement** (CaseI.lean; graph-free, axiom-clean; DONE
+  2026-06-09, four commits).
   - [x] **2b seed-from-line geometric core** (DONE 2026-06-09; PanelLayer.lean, graph-free,
     axiom-clean): `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` — the candidate's
     *sheared* `va`-hinge support `panelSupportExtensor (n_u + t•n') n_u = (-t)•C(L)` (`t ≠ 0`) carries
@@ -165,11 +168,19 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
     Blueprint: added to `lem:case-III-claim612-line-in-panel-union`'s group `\lean{}` pin + one prose
     clause. **Carried open in this leaf:** the `(D−1)` block rows spanning `(span C(L))^⊥` is the L2
     span bridge, fed to the row-space criterion next (not yet wired).
-  - [ ] **L2b-place per-line criterion** (CaseI.lean; §38 trap at the `ofNormals` C2-feed): wire
-    `case_III_old_new_blocks_of_line`'s NEW block + the L2 span bridge (`span_panelRow_comp_single_of_
-    edge`) into `linearIndependent_sumElim_candidateRow_iff` at `e_a` with `r̂(C(L)) ≠ 0` (from the 2b
-    geometric core, fed the witness `hq`) → the independent `D(|V|−1)`-family. Keep reasoning over
-    abstract `F`, instantiate `ofNormals` only at the seed.
+  - [x] **L2b-place per-line criterion** (DONE 2026-06-09; CaseI.lean, `case_III_full_family_of_line`,
+    graph-free, axiom-clean). The abstract-`F` row-space-criterion runner: from `hane` (`e_a` support
+    ≠ 0), the OLD block (`hold`/`holdindep`), and the witness `r̂(C(e_a)) ≠ 0` (`hr`), builds the `M₁`
+    candidate completion — NEW block at `e_a` itself (the `va`-line `L`-block,
+    `exists_independent_panelRow_subfamily_of_edge`), pinned-independent + spanning `hingeRowBlock e_a`
+    (L2 `span_panelRow_comp_single_of_edge`; the selector's operated `Φ∘single v` forms reduced to the
+    bare `single v` ones by `comp_columnOp_comp_single`) — and runs
+    `linearIndependent_sum_augment_candidateRow_selector` at `e_a` → the full
+    `Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro` `D(|V|−1)`-family. **Key architecture finding:** the
+    `M₁` criterion runs at `e_a` (not `e_b`), so `rn` is the `e_a`-block, extracted freshly from `hane`
+    (both `e_a`/`e_b` link `v`); the `_of_line` `e_b`-NEW block is the lower-bound brick, off the
+    criterion's `rn`. Blueprint: added to `lem:case-III-claim612-line-in-panel-union`'s group `\lean{}`
+    pin + one prose clause.
 - [ ] **N3a-from-normals (R1)** (CaseI/RigidityMatrix.lean; graph-free): an N3a *parameterized by the
   real nonparallel `n_a,n_b,n_c`* — `∃ p, AffineIndependent p ∧ (six-join incidence rel. the real
   normals)` — via `exists_ne_zero_dotProduct_eq_zero` (green) per panel + the green det-polynomial
@@ -285,28 +296,31 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
 ## Hand-off / next phase
 
-**Smallest next buildable sub-leaf: L2b-place per-line criterion — wire
-`case_III_old_new_blocks_of_line`'s NEW block + the L2 span bridge into
-`linearIndependent_sumElim_candidateRow_iff` at `e_a`** (CaseI.lean, §38 `ofNormals` trap at the
-C2-feed). The line-indexed *block placement* LANDED 2026-06-09 (`case_III_old_new_blocks_of_line`,
-CaseI.lean, axiom-clean): the generalization of `case_III_old_new_blocks` shearing body `v` along an
-arbitrary witness-panel second normal `n'` (not the fixed IH `n_b`), so the `va`-hinge `e_a` is the
-witness line `L = n_a ∧ n'` (support `(-t)•C(L)`), with the two transversality facts (`hL`,
-`hnewtrans`) as explicit hypotheses. Its *seed-from-line geometric core*
-(`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`, PanelLayer.lean) turns the existential
-witness `r̂(join) ≠ 0 ⟹ r̂(supportExtensor e_a) ≠ 0` — the exact form
-`linearIndependent_sumElim_candidateRow_iff` tests at `e_a`. What remains in L2b-place: feed that NEW
-block + the L2 span bridge (`span_panelRow_comp_single_of_edge`, the `(D−1)` block rows spanning
-`(span C(L))^⊥`) into the row-space criterion at `e_a` with `r̂(C(L)) ≠ 0` (the 2b core, fed the
-witness `hq`) → the independent `D(|V|−1)`-family. Keep reasoning over abstract `F`, instantiate
-`ofNormals` only at the seed (C1/C2 §38 discipline). Then **N3a-from-normals (R1)** and
-**Leaf 3** discharge `hcand` (build the candidate at the witness line, run the criterion at `e_a` via
-the 2b core, feed C2; supply `p` via the real-normals N3a). **(R2) is SETTLED — verdict (B), §1.41:**
-Leaf 3 restates the producer to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the
-`IsGeneralPosition` conjunct, mirroring the green `case_I_realization`), and Leaf 4 instantiates
-`theorem_55_generic (n:=2)(k:=2)` projecting `.2`; both bounded restatements against the existing
-two-motive skeleton, not new math. Full plan: `notes/Phase22-realization-design.md` §1.41 (R2 verdict)
-+ §1.40 (CRUX verdict + decomposition) + §1.39 (architecture).
+**Leaf 2b is fully done** (the line-indexed candidate placement: seed-from-line core
+`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`, block placement
+`case_III_old_new_blocks_of_line`, and the per-line criterion `case_III_full_family_of_line` — all
+graph-free, axiom-clean, CaseI/PanelLayer.lean). The per-line criterion runs `M₁`
+(`linearIndependent_sum_augment_candidateRow_selector`) at the `va`-line `e_a`, building its NEW block
+freshly at `e_a` (the criterion's `rn`; the `_of_line` `e_b`-block is the lower-bound brick) and
+gating on the witness `r̂(C(e_a)) ≠ 0` the seed-from-line core supplies.
+
+**Smallest next buildable sub-leaf: split between (R1) N3a-from-normals and (Leaf 3) the producer
+discharge** — pick whichever is cleaner as the next commit:
+- **N3a-from-normals (R1)** (CaseI/RigidityMatrix.lean; graph-free): an N3a *parameterized by the real
+  nonparallel `n_a,n_b,n_c`* — `∃ p, AffineIndependent p ∧ (six-join incidence rel. the real
+  normals)` — via `exists_ne_zero_dotProduct_eq_zero` (green) per panel + the green det-polynomial
+  affine-indep route. Replaces hardcoded-normals `exists_affineIndependent_panel_incidence`. A
+  self-contained graph-free prerequisite Leaf 3 consumes; likely the cleaner standalone commit.
+- **Leaf 3 — discharge `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the seed
+  feed): for the witness `hq`, build the line-indexed candidate at the concrete `ofNormals G ends q₀`,
+  obtain `hane`/`hold`/`holdindep` (from `case_III_old_new_blocks_of_line` + transport) and the
+  witness `r̂(C(e_a)) ≠ 0` (from the seed-from-line core + `hq`), feed `case_III_full_family_of_line`
+  → the full family, then C2 (`hasFullRankRealization_of_candidateSelector` at the fixed seed) via L4
+  `panelRow_mem_rigidityRows`. **(R2) SETTLED — (B), §1.41:** restate the producer to
+  `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the `IsGeneralPosition` conjunct, mirroring
+  the green `case_I_realization`); **new bounded sub-obligation (R3):** discharge `(G.splitOff …).Simple`
+  (KT Lemma 6.7(ii), not yet formalized). Full plan: `notes/Phase22-realization-design.md` §1.41 (R2)
+  + §1.40 (CRUX + decomposition) + §1.39 (architecture).
 
 **Leaf 4/5** (the green `theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2
 ripple §1.41, the case-II/III flips, the Thm 5.5→5.6 push) unblock Cor 5.7.
@@ -322,6 +336,15 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
+- **L2b-place per-line criterion — the `M₁` criterion runs at `e_a`, so its `rn` is the `e_a`-block,
+  not the `_of_line` `e_b`-NEW block (2026-06-09; CaseI.lean, `case_III_full_family_of_line`).** The
+  abstract-`F` row-space-criterion runner: from `hane`/`hold`/`holdindep` + witness `r̂(C(e_a)) ≠ 0`,
+  builds the `M₁` completion and runs `linearIndependent_sum_augment_candidateRow_selector` at `e_a` →
+  the full `D(|V|−1)`-family. The selector's operated `(rn ∘ Φ) ∘ single v` forms (`Φ = columnOp hva`)
+  reduce to the bare L1/L2 `panelRow ∘ single v` forms by `comp_columnOp_comp_single`. Finding: the
+  criterion edge is the `va`-line `e_a`, so `rn` is extracted freshly at `e_a` (both `e_a`/`e_b` link
+  `v`); the `_of_line` `e_b`-NEW block is the lower-bound brick, off the criterion's `rn`. Graph-free,
+  no §38 trap. Leaf 3 supplies `hane`/`hold`/`holdindep`/`hr` at the concrete `ofNormals` seed.
 - **L2b-place block placement — `case_III_old_new_blocks_of_line` shears `v` along an arbitrary `n'`
   (2026-06-09; CaseI.lean).** Line-indexed generalization of `case_III_old_new_blocks`: replaces the
   fixed-`n_b` shear with an arbitrary witness-panel second normal `n'`, so the `va`-line is the witness

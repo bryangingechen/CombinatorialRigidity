@@ -242,7 +242,8 @@ consume them; projective invariance is Phase~25.
         CombinatorialRigidity.Molecular.extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct,
         CombinatorialRigidity.Molecular.panelSupportExtensor_join_eq_zero_of_eq_zero,
         CombinatorialRigidity.Molecular.panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_old_new_blocks_of_line}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_old_new_blocks_of_line,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_full_family_of_line}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
@@ -273,7 +274,11 @@ consume them; projective invariance is Phase~25.
   the candidate framework: it shears body $v$ along an \emph{arbitrary} second normal $n'$ (not the
   fixed inductive $n_b$), producing the inductive old/new panel-row blocks of the candidate placement
   whose $va$-hinge is $L$, with the genuine-line and reproduced-$vb$-transversal facts entering as
-  explicit hypotheses.
+  explicit hypotheses. Running KT's eq.~(6.42) row-space criterion at that $va$-hinge
+  ($\mathrm{case\_III\_full\_family\_of\_line}$) then appends the candidate $+1$ row
+  $\mathrm{hingeRow}\,v\,a\,\hat r$ to the eq.~(6.12) $D(\lvert V\rvert-1)-1$ brick and certifies the
+  full $D(\lvert V\rvert-1)$ candidate family linearly independent, gated exactly by the witness
+  $\hat r(C(L)) \ne 0$ the transfer above supplies.
 \end{lemma}
 \begin{proof}
   \leanok
