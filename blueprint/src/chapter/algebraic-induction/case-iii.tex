@@ -826,9 +826,19 @@ Grassmann--Cayley projective duality.
   triple-intersection incidence pattern relative to $n$: $\langle \bar p_1, n_u\rangle = 0$ for all
   $u$, and each $\bar p_{i+1}$ orthogonal to two of the $n_u$ and strictly off the third.
 
-  This is the homogeneous-coordinate core of the reconciliation; the remaining
-  de-homogenization to affine $\R^3$ points (that the orthogonal vectors are not at infinity --- the
-  genericity-bearing residual) is deferred, so this node is not yet on the green producer route.
+  This homogeneous-coordinate construction is the \emph{whole} of the reconciliation: no
+  de-homogenization to affine $\R^3$ points is needed. The two consumers --- the spanning
+  \cref{lem:case-III-claim612-extensor-span} and its contrapositive \cref{lem:case-III-claim612} ---
+  bottom out on Lemma~2.1 (\cref{lem:extensor-independence}), whose conclusion that the six omit-two
+  joins span $\bigwedge^2 \R^4$ holds for \emph{any} linearly independent family of four vectors in
+  $\R^4$ (the homogenization is only used to derive that linear independence from affine
+  independence); and the seed-from-line transfer
+  \cref{lem:case-III-claim612-line-in-panel-union} consumes the join points as bare vectors with
+  $\langle \cdot, n_u\rangle = 0$ incidence, not as homogenizations of finite points. So the
+  consumers are restated to take a linearly independent $\bar p \colon \mathrm{Fin}\,4 \to \R^4$
+  directly, fed by this lemma; the at-infinity worry (an orthogonal vector with vanishing last
+  coordinate) lives only in a de-homogenization map the producer never calls. This node is red only
+  pending that bounded consumer restatement, not a genericity residual.
 \end{lemma}
 \begin{proof}
   The pairing map $x \mapsto (u \mapsto \langle x, n_u\rangle)$ is the $\mathrm{mulVecLin}$ of the

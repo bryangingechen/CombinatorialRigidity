@@ -1340,6 +1340,162 @@ simplicity that unlocks the GP conjunct — all three now have a home.
 
 ---
 
+### 1.42 The two remaining general-position residuals settled — R1-affine verdict (A) (dissolves: the consumers are homogeneous-vector-native, affineness was a vestige) + R3 verdict (A) (clean triangle mirror, bounded, no 2-edge-connectivity needed in the proof) (2026-06-09)
+
+> **Build-free design pass settling the producer's two GENERAL-POSITION residuals before the Leaf-3
+> build consumes them** — R1-affine (the affine de-homogenization the §1.40 R1 split off as "the
+> genericity-bearing residual") and R3 (splitOff-simplicity, the §1.41 carried obligation flagged as
+> "bounded but 2-edge-connectivity isn't a project notion"). Both verdicts: **closes, genericity-free
+> / bounded — the Leaf-3 producer is genuinely buildable.** Verified against the green Lean
+> (`omitTwoExtensor_linearIndependent` Extensor.lean:493 — proof uses only the LI hypothesis, the
+> `homogenize` bridge at :498–500 is the only affine touchpoint, confirmed by a `lean_multi_attempt`
+> generalization that *closes* with bare `LinearIndependent ℝ v`; `span_omitTwoExtensor_eq_top`
+> RigidityMatrix.lean:124; `case_III_claim612` :1719; `exists_homogeneousIncidence_of_normals` :452;
+> `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` PanelLayer.lean:332 — takes bare
+> `pi pj : Fin 4 → ℝ` with `⬝ᵥ`-orthogonality, NOT `homogenize` of affine points; `IsGeneralPosition`
+> PanelHinge.lean:121 — *pairwise* only; `theorem_55_generic.hsplitGP` :1167; `splitOff` Operations.lean:574;
+> `rigidContract_simple` Contraction.lean:144) and **KT Lemma 6.7(ii)** (p. 677, read in full from the
+> 2011 DCG PDF). No `.lean`/`.tex` edits this pass.
+
+**R1-affine — verdict (A): it DISSOLVES; the producer chain is homogeneous-vector-native and
+affineness was a vestigial signature, not a requirement.** The §1.40 split called the affine
+de-homogenization "the genericity residual — an orthogonal vector can lie at infinity." It is a real
+geometric danger *for the de-homogenization map itself* — but the de-homogenization is **not needed**.
+
+- *The at-infinity danger is real if you de-homogenize.* A homogeneous `pbar : Fin 4 → ℝ⁴` represents
+  a finite affine point iff a scalar multiple has last coordinate `1`, i.e. iff `pbar (Fin.last 3) ≠ 0`
+  (`homogenize p = Fin.snoc p 1`, Extensor.lean:110); it is *at infinity* iff `pbar (last) = 0`. The
+  homogeneous core's triple-intersection point `pbar 0` is the common perp of `n_a, n_b, n_c`; its last
+  coordinate is `0` **iff** `e₃ = (0,0,0,1) ∈ span{n_a,n_b,n_c}` (the common perp lies in the
+  at-infinity hyperplane `H_∞ = {e₃}^⊥` iff `H_∞ ⊇ {n}^⊥` iff `e₃ ∈ span{n}`). For LI normals this is a
+  genuine codimension-1 possibility that `LinearIndependent ℝ n` does **not** exclude — so a naive
+  "rescale each `pbar i` to last-coord 1" lemma is genuinely false for some real normals. This is the
+  GP-residual the §1.40 R1 split smelled.
+- *But the consumers never need affineness — only LI of the four homogeneous vectors.* The two consumers
+  the producer feeds — `span_omitTwoExtensor_eq_top` (N1) and its contrapositive `case_III_claim612` —
+  bottom out on **Lemma 2.1** (`omitTwoExtensor_linearIndependent`). Reading its proof
+  (Extensor.lean:493–538): it `set v := fun i => homogenize (p i)`, derives `hv : LinearIndependent ℝ v`
+  *once* (:498–500, the only use of `AffineIndependent`/the homogenization), and the **entire rest of the
+  proof uses only `hv`** — every supporting brick (`join_pair_omitTwo_self_ne_zero`,
+  `join_pair_omitTwo_other_eq_zero`) takes a bare `v : Fin (e+2) → Fin (e+2) → ℝ` + `LinearIndependent`.
+  A `lean_multi_attempt` of the generalized statement `omitTwoExtensor_linearIndependent_of_li (v)
+  (hv : LinearIndependent ℝ v)` with that body verbatim **closes (`goals:[]`)**. So the six omit-two
+  joins of *any* LI `Fin 4 → ℝ⁴` family span `⋀²ℝ⁴ = ScrewSpace 2` — affineness is irrelevant to N1/N2.
+- *And the seed-from-line bridge is already homogeneous-native.* The Leaf-2b core
+  `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (PanelLayer.lean:332) and its unsheared
+  transfer (:303) take the join points as bare `pi pj : Fin 4 → ℝ` with **`⬝ᵥ`-orthogonality**
+  `pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0` (etc.) — *not* `homogenize` of affine `ℝ³` points. The incidence the
+  build actually consumes is "the join's two homogeneous vectors are dot-orthogonal to the two real
+  candidate normals", which is **exactly what the homogeneous core `exists_homogeneousIncidence_of_normals`
+  delivers, relative to the real `n_a,n_b,n_c`** (:455–458, the `pbar i ⬝ᵥ n u` pattern). Nothing
+  downstream reads a last coordinate or an `ℝ³` point.
+- *The clean route.* Restate the two consumers to the **homogeneous-vector layer**: take a bare
+  `pbar : Fin 4 → Fin 4 → ℝ` with `hpbar : LinearIndependent ℝ pbar` (replacing
+  `{p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)` and `omitTwoExtensor (homogenize ∘ p)` with
+  `omitTwoExtensor pbar`), backed by the new `omitTwoExtensor_linearIndependent_of_li` (the
+  affine-free Lemma 2.1, the verbatim-body generalization above). The producer then feeds
+  `exists_homogeneousIncidence_of_normals hn` (whose `hn : LinearIndependent ℝ n` is the GP triple — see
+  the R2/R3 note: the GP `_hsplit` supplies *pairwise*, the *triple* `LinearIndependent ![n_a,n_b,n_c]`
+  is the producer's own N3a-shaped construction, NOT GP, and the homogeneous core already takes it as
+  input) **directly**: its LI `pbar` + the eq.-(6.45) incidence relative to the real `n` are the exact
+  inputs. **No de-homogenization, no `homogenize`-rescaling lemma, no at-infinity case, no genericity.**
+  The current affine signature is a vestige inherited from before the homogeneous core landed.
+- *Why (A) not (B).* (B) would be "needs general position of the real normals and the GP motive supplies
+  it"; (C) "the GP guarantee is too weak / per-witness affine-realizability fails". **Neither holds: the
+  finiteness/affineness was never needed.** There is no per-witness failure (the hann-trap shape the
+  coordinator flagged) because there is no per-witness affine-realizability obligation at all — the
+  existential is fully consumed at the homogeneous-vector layer. The danger the §1.40 split identified
+  is real but routed around, not incurred: it lives only in the de-homogenization map, which the build
+  simply does not call. **R1's homogeneous core (already green) is the whole of R1; R1-affine is empty.**
+
+**R3 — verdict (A): clean triangle mirror of the green Case-I simplicity leaf, bounded; the proof
+does NOT need 2-edge-connectivity.** The §1.41 R3 flag held two facts in apparent tension —
+"2-edge-connectivity isn't a project notion" and "a sibling of Case I's green `rigidContract`-simplicity
+leaf, bounded". Reading **KT Lemma 6.7(ii)'s actual proof** (p. 677, verbatim) resolves it cleanly:
+
+> *"If `G_v^{ab}` is not simple, then `G_v^{ab}` contains two parallel edges between `a` and `b`
+> (because the original graph `G` is simple). This implies `ab ∈ E`. Therefore `G` contains a triangle
+> `G[{va,vb,ab}]` as its subgraph. Since a triangle is a 0-dof-graph, `G` contains a proper rigid
+> subgraph, contradicting the lemma assumption."*
+
+- *What the proof rests on, exactly:* (i) `G.Simple` — supplied by `hsplitGP` (PanelHinge.lean:1171);
+  (ii) `splitOff`'s only new edge is `e₀ = ab` and `e₀ ∉ E(G)` is given (`_he₀`), so a parallel edge in
+  `G_v^{ab}` to `e₀` forces a *pre-existing* `G`-edge `ab` (`splitOff_isLink`, Operations.lean:614 — the
+  surviving edges are exactly the `e₀`-distinct `v`-avoiding edges of `G`); (iii) the triangle
+  `{va, vb, ab}` is then a subgraph of `G` (`va = eₐ`, `vb = e_b`, `ab` the supposed pre-existing edge),
+  it is a proper subgraph because `|V(G)| ≥ 4` in the splitting branch (`{v,a,b} ⊊ V(G)`), and a triangle
+  is a 0-dof-graph hence rigid — contradicting `hnoRigid` (`_hnoRigid : ∀ H, ¬ H.IsProperRigidSubgraph
+  G n`, supplied). **The proof of (ii) does not use 2-edge-connectivity.** 2-edge-connectivity is a
+  *standing* hypothesis of KT §6.4 used *elsewhere* (Lemma 4.6, to *find* the degree-2 vertex — which
+  the producer already receives as the `_hdeg2`/`_hG_ea`/`_hG_eb` data), not in the simplicity argument.
+  So **R3 needs no 2-edge-connectivity notion** — the apparent tension was a mis-attribution of the
+  section's standing assumption to the lemma's proof.
+- *Loop-freeness (the other simplicity half):* `G_v^{ab}` simple also needs no `a`-`a` self-loop at
+  `e₀`, i.e. `a ≠ b`; this follows from `eₐ ≠ e_b` + `G` simple + the degree-2 data (`a, b` are the two
+  *distinct* neighbours of `v`; if `a = b` then `eₐ, e_b` are parallel `va`-edges, contradicting `G`
+  simple). Bounded combinatorics off the supplied `_hG_ea`/`_hG_eb`/`_heab`/`G.Simple`.
+- *The green sibling (corrected name — §1.41's pointer drifted).* §1.41(6) named the precedent
+  `rigidContract_isSimple_of_isProperRigidSubgraph` (Contraction.lean:151); **that decl does not exist.**
+  The actual green Case-I simplicity leaf is **`rigidContract_simple`** (Contraction.lean:144), which
+  derives `(G.rigidContract H r).Simple` from realized-graph `hloop`/`hpar` hypotheses; the G2c step of
+  `case_I_realization`'s composer discharges those from `H.IsProperRigidSubgraph G n` + `G.Simple`. R3 is
+  the same shape: derive `(G.splitOff …).Simple` (no surviving edge collapses to a loop or a parallel
+  pair) from `G.Simple` + `hnoRigid` + the split structure, via the triangle contradiction. A new
+  graph-side leaf in `Operations.lean` (a `splitOff_simple_of_…` sibling of `rigidContract_simple`),
+  bounded — the only non-routine ingredient is "a triangle is a 0-dof-graph / proper rigid subgraph",
+  which is the same triangle-is-rigid fact KT's Lemma 4.6/6.7 family uses and which the project's
+  `IsProperRigidSubgraph` + 0-dof machinery (Phase 19/20) can state directly.
+- *Why (A) not (B)/(C).* (C) is reserved for "needs an unformalized notion (2-edge-connectivity etc.)";
+  the proof needs none. (B) "needs more than the mirror but the pieces are green"; the mirror *is* the
+  argument (triangle-contradiction off `hnoRigid`, exactly as Case I's leaf is a `map`-simplicity
+  contradiction off `IsProperRigidSubgraph`). It is **new** Lean (not green — `splitOff` simplicity is
+  nowhere in tree, and PanelHinge.lean:995 explicitly notes `splitOff` does not preserve simplicity in
+  general, which is *why* it must be conditioned on `hnoRigid`), but it is the clean bounded mirror, so
+  the honest verdict is (A) on the "clean mirror, bounded" axis with the standing caveat that it is a
+  to-build leaf, not a green one.
+
+**Combined buildability conclusion.** Given the GP-motive data the producer consumes (the
+`theorem_55_generic.hsplitGP` branch — R2 verdict (B), §1.41), **both residuals are dischargeable and
+the Leaf-3 producer is genuinely buildable.** Neither is a real gap:
+- R1-affine dissolves (no de-homogenization; restate N1/N2 to bare LI `pbar`, feed the green homogeneous
+  core directly). The *only* triple-LI input the homogeneous core needs (`LinearIndependent ![n_a,n_b,n_c]`)
+  is the producer's own N3a-shaped construction — **not** GP (GP gives only pairwise), so it is supplied
+  by the producer building its three real panel normals nonparallel, exactly as KT's eq.-(6.45) point
+  choice does. (The pairwise `hgab` GP supplies is the *separate* placement-seed transversal of R2.)
+- R3 is the bounded triangle mirror, no new notion.
+
+So the program clears: the analytic `d=3` realization closes from green inputs + three bounded
+to-build leaves (R1-consumer-restate, R3-simplicity, R2-signature-restate) + the producer assembly.
+
+**Concrete remaining-commit estimate for Leaf 3 → phase close.** ~6–9 buildable commits:
+1. **R1-consumer-restate** (RigidityMatrix.lean / Extensor.lean) — add `omitTwoExtensor_linearIndependent_of_li`
+   (the affine-free Lemma 2.1, body verified to close); restate `span_omitTwoExtensor_eq_top` +
+   `case_III_claim612` to bare `pbar : Fin 4 → ℝ⁴` + `LinearIndependent ℝ pbar` (the affine versions can
+   stay as `homogenize`-specialized corollaries or be retired). Bounded, graph-free. (~1–2 commits.)
+2. **R3 splitOff-simplicity** (Operations.lean) — `splitOff_simple_of_simple_of_noRigid` (or the
+   `hloop`/`hpar`-style statement mirroring `rigidContract_simple`): the triangle-contradiction from
+   `G.Simple` + `hnoRigid` + the degree-2/`e₀∉E` data, plus the triangle-is-0-dof brick. Graph-side,
+   bounded. (~1–2 commits; the triangle-is-proper-rigid sub-brick may split off.)
+3. **R2 producer-signature restate + Leaf 3 `hcand` discharge** (CaseI.lean; **§38 trap** at the seed) —
+   restate `case_III_hsplit_producer` to the `hsplitGP` shape (`G.Simple` + conditioned IH, GP
+   conclusion; pull `q` + `hgab` from the GP conjunct after discharging `(G.splitOff …).Simple` via R3),
+   feed the homogeneous core for `pbar`/`hpbar` (R1), then discharge `hcand` with the L2b-place + per-line
+   criterion already green (Leaf 2b done): build the candidate at the witness line, run
+   `case_III_full_family_of_line` at `e_a`, feed C2. The §38-trap `hcand` discharge is the producer
+   assembly. (~2–3 commits.)
+4. **Leaf 4** — `theorem_55_generic (n:=2)(k:=2)` instance node, project `.2` (R2 ripple §1.41; the
+   existing two-motive skeleton :1191–1206 absorbs it). Mint the small green blueprint node. (~1 commit.)
+5. **Leaf 5** — `lem:case-II-realization`/`lem:case-III` blueprint flips + Thm 5.5→5.6 push feeding
+   `rigidityMatrix_prop11`'s `hgen` (its `hub` lower bound already green). Unblocks Cor 5.7 at `d=3`.
+   (~1 commit.)
+
+The hard math is all behind us (the existential Claim 6.12, the line-indexed candidate placement, the
+homogeneous core, the join↔meet bridge are green); the remaining work is bounded restatements + the two
+bounded graph/algebra leaves + the §38-trap producer assembly. No research-shaped node remains on the
+`d=3` route.
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic

@@ -69,39 +69,49 @@ from `hnoRigid`, **not yet formalized** (a sibling of Case I's green `rigidContr
 Re-shapes **Leaf 3** (producer signature + R3 discharge) + **Leaf 4** (instantiate generic), bounded
 restatements + the bounded R3 leaf, not new *hard* math.
 
-**Next concrete step (smallest forward commit): either R1-affine (the de-homogenization) or Leaf 3 —
-discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 `ofNormals` trap**
-at the seed feed). **All of Leaf 2b is LANDED** (line-indexed candidate placement + per-line
-row-space-criterion runner `case_III_full_family_of_line`, CaseI.lean, axiom-clean; full detail in
-*Decisions* + the Lean source). **R1 homogeneous-vector core LANDED 2026-06-09**
+**Next concrete step (smallest forward commit): Leaf 3 / R1-consumer-restate — the producer is now
+fully buildable, no research-shaped node remains.** **All of Leaf 2b is LANDED** (line-indexed candidate
+placement + per-line row-space-criterion runner `case_III_full_family_of_line`, CaseI.lean, axiom-clean;
+full detail in *Decisions* + the Lean source). **R1 homogeneous-vector core LANDED 2026-06-09**
 (`exists_homogeneousIncidence_of_normals`, RigidityMatrix.lean, axiom-clean): the witness points
 parameterized by the *real* nonparallel `n : Fin 3 → ℝ⁴`, at the homogeneous-vector layer (LI `pbar`
-+ eq.-(6.45) incidence rel. `n`, genericity-free). The remaining R1 piece is the affine
-de-homogenization (the genericity residual; see *Hand-off*).
-**Two carried obligations the build must own** (§1.40 (5), do NOT block L2b-place): **(R1)** the
-abstract-N3a ↔ real-placement panel reconciliation (N3a hardcodes normals `e₀,e₁,e₂`; the producer
-needs an N3a *parameterized by the real `n_a,n_b,n_c`* — a new bounded graph-free leaf via
-`exists_ne_zero_dotProduct_eq_zero` + the green det-polynomial route); **(R2) SETTLED — verdict (B)
-(`notes/Phase22-realization-design.md` §1.41, 2026-06-09).** The split-leg `ab`-transversality
-`hgab : LinearIndependent ![q(a,·),q(b,·)]` that `case_II_placement_eq612` needs is **not** promised
-by the **bare** `_hsplit`, but **is** the `IsGeneralPosition` conjunct of the **GP** motive
-(`P.normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` *is* `hgab`). So the producer must be restated to
-`theorem_55_generic`'s **`hsplitGP`** branch (consuming the GP `_hsplit`); the **green precedent does
-exactly this** — `case_I_realization` IS `hcontractGP` and pulls each leg's transversal from the GP
-IH. **Leaf-4 ripple: instantiate `theorem_55_generic (n:=2)(k:=2)`** (not bare `theorem_55`), project
-the bare conclusion off the **`.2` conjunct** the capstone needs; the existing two-motive skeleton
-absorbs it. NOT (C): the GP `_hsplit` is cleanly available at `d=3` *given* a bounded side-condition,
-and the ripple is trivial. **One new bounded sub-obligation (R3):** discharge `(G.splitOff …).Simple`
-(antecedent of the GP IH conjunct) — KT Lemma 6.7(ii)'s triangle argument from `hnoRigid`, **not yet
-formalized** (`minimal_kdof_reduction` does not hand it down; sibling of Case I's green
-`rigidContract`-simplicity leaf). Re-shapes **Leaf 3** (producer signature + R3 discharge) + **Leaf 4**
-(instantiate generic), bounded restatements + the bounded R3 leaf, not new *hard* math.
++ eq.-(6.45) incidence rel. `n`, genericity-free).
+
+**Both GENERAL-POSITION residuals SETTLED — both dischargeable, the `d=3` producer is genuinely
+buildable (`notes/Phase22-realization-design.md` §1.42, 2026-06-09 design pass).**
+- **(R1-affine) verdict (A) — DISSOLVES.** The affine de-homogenization (the §1.40 "genericity residual,
+  an orthogonal vector can lie at infinity") is **not needed**. The two consumers
+  (`span_omitTwoExtensor_eq_top`, `case_III_claim612`) bottom out on Lemma 2.1, whose proof uses **only**
+  `LinearIndependent ℝ v` (the `homogenize` is bridged away once; a `lean_multi_attempt` of the bare-LI
+  generalization `omitTwoExtensor_linearIndependent_of_li` *closes*), and the seed-from-line bridge takes
+  bare `pi pj : Fin 4 → ℝ` with `⬝ᵥ`-orthogonality — NOT `homogenize` of affine points. Restate the two
+  consumers to the homogeneous-vector layer (bare LI `pbar`) and feed `exists_homogeneousIncidence_of_normals`
+  directly. No de-homogenization, no at-infinity case, no genericity. The at-infinity danger is real but
+  lives only in the de-homogenization map, which the build never calls. NOT the hann-trap (no per-witness
+  obligation survives). **R1-affine is empty; the green homogeneous core is the whole of R1.**
+- **(R2) verdict (B) — the producer consumes the GP `_hsplit`** (§1.41). `hgab : LinearIndependent
+  ![q(a,·),q(b,·)]` is the `IsGeneralPosition` conjunct of `theorem_55_generic.hsplitGP`; green precedent
+  `case_I_realization` IS `hcontractGP`. Leaf-4 ripple: instantiate `theorem_55_generic (n:=2)(k:=2)`,
+  project `.2` (existing two-motive skeleton absorbs it). NB GP gives only *pairwise* LI — the *triple*
+  `LinearIndependent ![n_a,n_b,n_c]` the homogeneous core needs is the producer's own nonparallel-panel
+  construction, NOT GP.
+- **(R3) verdict (A) — clean triangle mirror of the green Case-I simplicity leaf, bounded; no
+  2-edge-connectivity** (§1.42). KT Lemma 6.7(ii)'s proof (read in full from the 2011 PDF, p. 677): if
+  `G_v^{ab}` not simple → parallel `ab`-edges → `ab ∈ E(G)` → triangle `{va,vb,ab}` ⊂ G → triangle is a
+  0-dof proper rigid subgraph, contradicting `hnoRigid`. **The proof uses only `G.Simple` + `hnoRigid` +
+  the split data + triangle-is-0-dof** — 2-edge-connectivity is a *standing §6.4 assumption used
+  elsewhere* (Lemma 4.6, to find the degree-2 vertex, already supplied as `_hdeg2`), NOT in the
+  simplicity argument. New graph-side leaf in `Operations.lean`, the bounded sibling of the green
+  `rigidContract_simple` (Contraction.lean:144 — **§1.41's `rigidContract_isSimple_of_isProperRigidSubgraph`
+  pointer was a drifted name, that decl does not exist**).
 
 After the producer lands (Leaf 3): instantiate `theorem_55_generic (n:=2) (k:=2)` (R2 verdict (B),
 §1.41 — not bare `theorem_55`) with the restated producer as `hsplitGP` + the green `hcontractGP`
 (`case_I_realization`) and `hbase`/`hbaseGP`, projecting the bare `.2` conjunct; feed
 `rigidityMatrix_prop11`'s `hgen` (its `hub` lower bound already green); Thm 5.5→5.6 push
-(`lem:motions-mono-of-graph-le`).
+(`lem:motions-mono-of-graph-le`). **Remaining commit estimate (Leaf 3 → phase close): ~6–9 commits**
+(R1-consumer-restate ~1–2, R3-simplicity ~1–2, R2-signature + `hcand` §38-trap discharge ~2–3, Leaf 4
+~1, Leaf 5 ~1; §1.42).
 Milestone: the molecular conjecture at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT
 Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
@@ -174,34 +184,39 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
     (both `e_a`/`e_b` link `v`); the `_of_line` `e_b`-NEW block is the lower-bound brick, off the
     criterion's `rn`. Blueprint: added to `lem:case-III-claim612-line-in-panel-union`'s group `\lean{}`
     pin + one prose clause.
-- [~] **N3a-from-normals (R1)** (RigidityMatrix.lean; graph-free): an N3a *parameterized by the
-  real nonparallel `n_a,n_b,n_c`*. **Homogeneous-vector core LANDED 2026-06-09**
-  (`exists_homogeneousIncidence_of_normals`, axiom-clean): given `LinearIndependent ℝ n`
-  (`n : Fin 3 → ℝ⁴`), produces four LI homogeneous vectors `pbar : Fin 4 → ℝ⁴` with the eq.-(6.45)
-  triple-intersection incidence *relative to the real `n`*. Surjectivity of the pairing
-  `mulVecLin (of n)` (full row rank, `LinearIndependent.rank_matrix` + `eq_top_of_finrank_eq`) hands a
-  preimage per prescribed pairing target; the four-point LI is the triangular incidence argument. **No
-  genericity** — it isolates the genericity-bearing residual exactly as the green N3a bricks do.
-  **Remaining (R1-affine):** the de-homogenization to affine `p : Fin 4 → ℝ³` (the orthogonal vectors
-  not at infinity, `pbar i = homogenize (p i)` representatives) — the genericity residual; until it
-  lands, the producer cannot yet feed `span_omitTwoExtensor_eq_top` / `case_III_claim612` (both need
-  `AffineIndependent ℝ p`). Blueprint: new red node `lem:case-III-claim612-points-affineIndep-real-normals`
-  (pins the homogeneous core; red — the affine residual undischarged).
+- [x] **R1 homogeneous-vector core LANDED** (`exists_homogeneousIncidence_of_normals`, RigidityMatrix.lean,
+  axiom-clean; 2026-06-09): given `LinearIndependent ℝ n` (`n : Fin 3 → ℝ⁴`), produces four LI homogeneous
+  vectors `pbar : Fin 4 → ℝ⁴` with the eq.-(6.45) triple-intersection incidence *relative to the real `n`*.
+  Surjectivity of the pairing `mulVecLin (of n)` (full row rank) + the triangular LI argument. No
+  genericity. **R1-affine DISSOLVES (§1.42, verdict (A)):** the de-homogenization to affine `ℝ³` is NOT
+  needed — restate the two consumers (`span_omitTwoExtensor_eq_top`/`case_III_claim612`) to bare LI `pbar`
+  (Lemma 2.1's spanning content holds for any LI 4-family; `omitTwoExtensor_linearIndependent_of_li`
+  verified to close) and feed the homogeneous core directly. The remaining R1 work is the bounded
+  consumer-restate (Leaf 3 below), NOT a genericity residual.
+- [ ] **R1-consumer-restate** (Extensor.lean / RigidityMatrix.lean; graph-free): add
+  `omitTwoExtensor_linearIndependent_of_li` (the affine-free Lemma 2.1, body = verbatim
+  `omitTwoExtensor_linearIndependent` minus the `homogenize` bridge, verified to close); restate
+  `span_omitTwoExtensor_eq_top` + `case_III_claim612` to bare `pbar : Fin 4 → ℝ⁴` + `LinearIndependent ℝ
+  pbar`. Drops the vestigial `AffineIndependent ℝ p`. Blueprint: re-green / re-shape
+  `lem:case-III-claim612-points-affineIndep-real-normals` (now the homogeneous core IS the whole node;
+  the affine residual is empty). (~1–2 commits.)
+- [ ] **R3 splitOff-simplicity** (Operations.lean; graph-side, bounded; §1.42 verdict (A)):
+  `splitOff_simple_of_…` — the sibling of the green `rigidContract_simple` (Contraction.lean:144).
+  KT Lemma 6.7(ii): `(G.splitOff v a b e₀).Simple` from `G.Simple` + `_hnoRigid` + the degree-2/`e₀∉E`
+  data, via the triangle `{va,vb,ab}` contradiction (parallel `ab`-edge ⟹ `ab ∈ E(G)` ⟹ triangle ⟹
+  0-dof proper rigid subgraph ⟹ ⊥). **No 2-edge-connectivity** (standing §6.4 assumption, used in Lemma
+  4.6 to *find* the degree-2 vertex, already supplied). Only non-routine brick: triangle-is-0-dof /
+  proper-rigid (Phase 19/20 machinery). (~1–2 commits; the triangle sub-brick may split.)
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
-  at the C2 feed). Build `hcand q hq` from `hq : r̂(pᵢ∨pⱼ) ≠ 0`: extract line `L` from `q`, run L2b-place
-  to build the candidate at `C(L)`, run the row-space criterion at `C(L)` → independent family → C2.
-  Supply the four points `p` adapted to the real three panels via N3a-from-normals (R1). **(R2) SETTLED
-  — (B), §1.41: restate the producer to `theorem_55_generic`'s `hsplitGP` shape** (gains `G.Simple` +
-  the conditioned IH; concludes `HasGenericFullRankRealization 2 G`), pull `q` + `hgab` from the GP
-  `_hsplit`'s `IsGeneralPosition` conjunct (`P.normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` IS `hgab`),
-  discharging the `(G.splitOff …).Simple` antecedent of that conjunct via **the new bounded R3 leaf**
-  (KT Lemma 6.7(ii)'s triangle argument from `hnoRigid` — not yet formalized; sibling of Case I's green
-  `rigidContract`-simplicity). Mirrors the green `case_I_realization` (= `hcontractGP`). Removes the
-  green-modulo `hcand` hypothesis. The six-join
-  panel dispatch reuses `exists_hduality_witness_of_panel_incidence`'s `fin_cases q` assignment +
-  `exists_independent_perp_pair` (both green). **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside
-  (`+1`-row already in hand via `hingeRow_mem_rigidityRows`; `so`/`sn` via L2
-  `span_panelRow_comp_single_of_edge` / L4).
+  at the C2 feed). **(R2) (B), §1.41: restate the producer to `theorem_55_generic`'s `hsplitGP` shape**
+  (gains `G.Simple` + the conditioned IH; concludes `HasGenericFullRankRealization 2 G`), pull `q` +
+  `hgab` from the GP `_hsplit`'s `IsGeneralPosition` conjunct, discharging `(G.splitOff …).Simple` via the
+  R3 leaf. Mirrors the green `case_I_realization` (= `hcontractGP`). Feed `exists_homogeneousIncidence_of_normals`
+  (the producer's own nonparallel triple) for `pbar`/`hpbar` (R1). Build `hcand q hq` from
+  `hq : r̂(join q) ≠ 0`: extract line `L`, run L2b-place to build the candidate at `C(L)`, run
+  `case_III_full_family_of_line` at `e_a` → independent family → C2. Removes the green-modulo `hcand`.
+  **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside (`+1`-row via `hingeRow_mem_rigidityRows`; `so`/`sn`
+  via L2 `span_panelRow_comp_single_of_edge` / L4). (~2–3 commits.)
 - [ ] **Leaf 4 — `theorem_55_generic` `d=3`-instance node** (B.2 + R2 ripple §1.41; graph-free).
   Instantiate **`theorem_55_generic (n:=2) (k:=2)`** (not bare `theorem_55` — R2 verdict (B)) on the
   six green/green-modulo branch args (`hbase`/`hbaseGP`/`hsplit`/**`hsplitGP`** = the restated Case-III
@@ -259,31 +274,33 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
   (nonparallel panels, affinely-indep points, per-opposite-join second normal) is supplied by the
   producer's own construction, not a fragile Case-III hypothesis that could fail for a specific witness;
   this is not the `hann`-trap shape (no per-witness premise survives).
-- **Two carried obligations the build must own (§1.40 (5)), the reason it is (B) not (A):**
-  - **(R1) abstract-N3a ↔ real-placement panels.** The Leaf-2b core's `n_u, n'` are the candidate's
-    *real* IH normals (`n_a = q(a,·)`, `n_b = q(b,·)` off `_hsplit`), but `exists_affineIndependent_panel_
-    incidence` hardcodes `n = e₀,e₁,e₂`. The build needs an N3a *parameterized by the real `n_a,n_b,n_c`*
-    so the witness points are orthogonal to the real normals — a new bounded graph-free leaf (green
-    machinery: `exists_ne_zero_dotProduct_eq_zero` + det-polynomial affine-indep route). The current N3a
-    is the wrong shape for the producer.
-  - **(R2) split-leg `ab`-transversality — SETTLED, verdict (B)** (`notes/Phase22-realization-design.md`
-    §1.41, 2026-06-09). `case_II_placement_eq612` needs only the **pair** `hgab : LinearIndependent
-    ![q(a,·),q(b,·)]` (not the triple — that is R1's witness-points stage). The **bare** `_hsplit`
-    (`HasFullRankRealization`) carries no panel-normal LI promise; the **GP** motive
-    (`HasGenericFullRankRealization`) does — its `IsGeneralPosition` conjunct is `∀ a b, a≠b →
-    LinearIndependent ![normal a, normal b]`, and `normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` **is**
-    `hgab`. So the producer is restated to `theorem_55_generic.hsplitGP` (consume the GP `_hsplit`). The
-    **green precedent settles it**: `case_I_realization` IS `hcontractGP`, pulling each leg's transversal
-    from the GP IH (`hQHgp`). KT (pp. 680/682, Lemma 6.10) takes the IH realization `q` as **generic
-    nonparallel** — the GP data — resting on `G_v^{ab}` simple (Lemma 6.7(ii)) + the "nonparallel if
-    simple" standing IH. **One new bounded sub-obligation (R3):** the producer must discharge
-    `(G.splitOff …).Simple` (the antecedent of the GP IH conjunct) — KT Lemma 6.7(ii)'s
-    triangle-from-`hnoRigid` argument, **not yet formalized** (`minimal_kdof_reduction` does not hand it
-    down; a sibling of Case I's green `rigidContract`-simplicity leaf). NOT (C): the GP `_hsplit` is
-    cleanly available at `d=3` *given* R3's bounded side-condition, and the Leaf-4 ripple (instantiate
-    `theorem_55_generic`, project `.2`) is
-    absorbed by the existing two-motive skeleton. Fully tracked by the two-motive split — NOT a smuggled
-    hypothesis.
+- **All three GENERAL-POSITION obligations SETTLED (none a gap), the `d=3` producer is buildable:**
+  - **(R1-affine) verdict (A) — DISSOLVES** (`notes/Phase22-realization-design.md` §1.42, 2026-06-09).
+    The §1.40 R1 "abstract-N3a ↔ real-placement / de-homogenization, the genericity residual" is **not
+    needed**. The consumers bottom out on Lemma 2.1, whose spanning content holds for any LI 4-family
+    (proof uses only `LinearIndependent ℝ v`; `omitTwoExtensor_linearIndependent_of_li` verified to
+    close), and the seed-from-line bridge takes bare `pi pj : Fin 4 → ℝ` with `⬝ᵥ`-orthogonality (NOT
+    `homogenize` of affine points). Restate the consumers to bare LI `pbar`, feed the green homogeneous
+    core directly — no de-homogenization, no at-infinity case, no genericity, NOT the hann-trap (no
+    per-witness obligation survives). The at-infinity danger is real but lives only in the
+    de-homogenization map the build never calls.
+  - **(R2) split-leg `ab`-transversality — verdict (B)** (§1.41). `case_II_placement_eq612` needs the
+    **pair** `hgab : LinearIndependent ![q(a,·),q(b,·)]`; the **bare** `_hsplit` carries no panel-normal
+    LI promise, the **GP** motive does (its `IsGeneralPosition` conjunct, `normal a = q(a,·)` by `rfl`).
+    Restate the producer to `theorem_55_generic.hsplitGP`; green precedent `case_I_realization` IS
+    `hcontractGP`. KT (pp. 680/682) takes `q` generic nonparallel resting on `G_v^{ab}` simple (Lemma
+    6.7(ii)). Leaf-4 ripple: instantiate `theorem_55_generic`, project `.2` (existing skeleton absorbs
+    it). NB GP gives only *pairwise* — the *triple* `LinearIndependent ![n_a,n_b,n_c]` the homogeneous
+    core needs is the producer's own nonparallel-panel construction, NOT GP.
+  - **(R3) splitOff-simplicity — verdict (A), clean triangle mirror, bounded, no 2-edge-connectivity**
+    (§1.42). The producer must discharge `(G.splitOff …).Simple` (the antecedent of the GP IH conjunct).
+    KT Lemma 6.7(ii)'s proof (read in full, p. 677): parallel `ab`-edge ⟹ `ab ∈ E(G)` ⟹ triangle
+    `{va,vb,ab}` ⟹ 0-dof proper rigid subgraph ⟹ ⊥ vs `_hnoRigid`. **Uses only `G.Simple` + `hnoRigid`
+    + the split data + triangle-is-0-dof** — 2-edge-connectivity is a *standing §6.4 assumption used
+    elsewhere* (Lemma 4.6 to find the degree-2 vertex, already supplied), NOT in the simplicity argument.
+    New graph-side leaf in `Operations.lean`, the bounded sibling of the green `rigidContract_simple`
+    (Contraction.lean:144 — §1.41's `rigidContract_isSimple_of_isProperRigidSubgraph` was a drifted
+    pointer; that decl does not exist). Not green, but the clean bounded mirror.
 - **Blueprint: `lem:case-III-claim612` RE-GREENED, `lem:case-III-eq629-conditional` DELETED
   (Leaf 1, 2026-06-09).** The Lean decl is now the premise-free existential, so the node is honestly
   green (statement + proof prose rewritten to the existential contrapositive; `\uses` trimmed to the
@@ -308,27 +325,30 @@ gating on the witness `r̂(C(e_a)) ≠ 0` the seed-from-line core supplies.
 **R1 homogeneous-vector core LANDED 2026-06-09** (`exists_homogeneousIncidence_of_normals`,
 RigidityMatrix.lean, axiom-clean): the witness points parameterized by the *real* nonparallel
 `n : Fin 3 → ℝ⁴`, at the homogeneous-vector layer (LI `pbar : Fin 4 → ℝ⁴` + eq.-(6.45) incidence rel.
-`n`). Genericity-free (surjectivity of `mulVecLin (of n)` + triangular LI). Isolates the
-genericity-bearing residual.
+`n`). Genericity-free.
 
-**Smallest next buildable sub-leaf: split between (R1-affine) de-homogenization and (Leaf 3) the
-producer discharge** — pick whichever is cleaner as the next commit:
-- **R1-affine de-homogenization** (RigidityMatrix.lean; graph-free): lift the landed homogeneous core
-  to affine `p : Fin 4 → ℝ³` with `AffineIndependent ℝ p` and the incidence on `homogenize (p i)` —
-  the genericity-bearing residual (the orthogonal vectors must not be at infinity, i.e. nonzero last
-  coordinate, rescaling `pbar i` to a `homogenize (p i)` representative; needs the det-polynomial
-  route or an explicit non-degeneracy). Produces the drop-in N3a the producer's
-  `span_omitTwoExtensor_eq_top`/`case_III_claim612` consume. The remaining R1 piece.
-- **Leaf 3 — discharge `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the seed
-  feed): for the witness `hq`, build the line-indexed candidate at the concrete `ofNormals G ends q₀`,
-  obtain `hane`/`hold`/`holdindep` (from `case_III_old_new_blocks_of_line` + transport) and the
-  witness `r̂(C(e_a)) ≠ 0` (from the seed-from-line core + `hq`), feed `case_III_full_family_of_line`
-  → the full family, then C2 (`hasFullRankRealization_of_candidateSelector` at the fixed seed) via L4
-  `panelRow_mem_rigidityRows`. **(R2) SETTLED — (B), §1.41:** restate the producer to
-  `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the `IsGeneralPosition` conjunct, mirroring
-  the green `case_I_realization`); **new bounded sub-obligation (R3):** discharge `(G.splitOff …).Simple`
-  (KT Lemma 6.7(ii), not yet formalized). Full plan: `notes/Phase22-realization-design.md` §1.41 (R2)
-  + §1.40 (CRUX + decomposition) + §1.39 (architecture).
+**Both GP residuals SETTLED (§1.42, 2026-06-09): R1-affine DISSOLVES (verdict (A) — no de-homogenization
+needed), R3 is a clean bounded triangle mirror (verdict (A)). No research-shaped node remains on the
+`d=3` route — the producer is genuinely buildable.**
+
+**Smallest next buildable sub-leaf: R1-consumer-restate** (Extensor.lean / RigidityMatrix.lean;
+graph-free, the cleanest first commit since it unblocks the producer's `pbar` feed): add
+`omitTwoExtensor_linearIndependent_of_li` (the affine-free Lemma 2.1 — body verified to close via
+`lean_multi_attempt`) and restate `span_omitTwoExtensor_eq_top` + `case_III_claim612` to bare
+`pbar : Fin 4 → ℝ⁴` + `LinearIndependent ℝ pbar`, dropping the vestigial `AffineIndependent ℝ p`. Then,
+in either order:
+- **R3 splitOff-simplicity** (Operations.lean; bounded graph-side leaf): `splitOff_simple_of_…` via the
+  triangle-`{va,vb,ab}` contradiction off `_hnoRigid` (KT Lemma 6.7(ii)), the sibling of the green
+  `rigidContract_simple`. No 2-edge-connectivity. Only non-routine brick: triangle-is-0-dof/proper-rigid.
+- **Leaf 3 — discharge `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the seed feed):
+  restate the producer to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the `IsGeneralPosition`
+  conjunct, `(G.splitOff …).Simple` via R3, mirroring the green `case_I_realization`); feed
+  `exists_homogeneousIncidence_of_normals` (the producer's own nonparallel triple) for `pbar`/`hpbar`.
+  For the witness `hq`, build the line-indexed candidate at `ofNormals G ends q₀`, obtain
+  `hane`/`hold`/`holdindep` (from `case_III_old_new_blocks_of_line` + transport) + the witness
+  `r̂(C(e_a)) ≠ 0` (seed-from-line core + `hq`), feed `case_III_full_family_of_line` → C2
+  (`hasFullRankRealization_of_candidateSelector` at the fixed seed) via L4 `panelRow_mem_rigidityRows`.
+  Full plan: `notes/Phase22-realization-design.md` §1.42 (R1/R3) + §1.41 (R2) + §1.40 (CRUX) + §1.39.
 
 **Leaf 4/5** (the green `theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2
 ripple §1.41, the case-II/III flips, the Thm 5.5→5.6 push) unblock Cor 5.7.
@@ -394,6 +414,17 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   GP is internal). New bounded sub-obligation **R3**: discharge `(G.splitOff …).Simple` (Lemma 6.7(ii)
   triangle argument, *not yet formalized*; sibling of Case I's green `rigidContract`-simplicity). (B)
   not (C): GP `_hsplit` cleanly available *given* R3, ripple absorbed by the existing skeleton.
+- **R1-affine + R3 verdicts — both (A), no gap (2026-06-09; canonical home
+  `notes/Phase22-realization-design.md` §1.42).** **R1-affine DISSOLVES:** the affine de-homogenization
+  is not needed — Lemma 2.1's spanning content holds for any LI 4-family
+  (`omitTwoExtensor_linearIndependent_of_li`, body verified to close) and the seed-from-line bridge is
+  `⬝ᵥ`-orthogonality on bare `Fin 4 → ℝ`, so restate the consumers to bare LI `pbar` and feed the green
+  homogeneous core directly (the at-infinity danger lives only in the de-homogenization map the build
+  never calls; NOT the hann-trap). **R3 is the clean bounded triangle mirror** of the green
+  `rigidContract_simple`: KT Lemma 6.7(ii) (p. 677) uses only `G.Simple` + `hnoRigid` + the split data +
+  triangle-is-0-dof — **no 2-edge-connectivity** (a standing §6.4 assumption used elsewhere). Both
+  dischargeable ⟹ the `d=3` producer is genuinely buildable. (Corrected §1.41's drifted
+  `rigidContract_isSimple_of_isProperRigidSubgraph` pointer — the green decl is `rigidContract_simple`.)
 - **Leaf 2b seed-from-line core — the candidate's *sheared* `va`-support carries the witness
   (2026-06-09; PanelLayer.lean).** `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`:
   `r̂(extensor ![pi,pj]) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u+t•n') n_u) ≠ 0` (`t ≠ 0`). Key insight:
