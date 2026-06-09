@@ -20,22 +20,24 @@ per-line N3b brick over the six joins. The C3 spine carries the Claim-6.12 data
 (`r`/`hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`) + per-candidate `hmemᵢ`/`hcardᵢ` as explicit hypotheses; all
 three `hselᵢ`, the `+1` `r̂`-row `hmemᵢ`, and the `r̂` candidate-vector data (`hr`) are in hand.
 
-**Next concrete step (smallest forward commit): C5c-(i) cont. — *derive `hann`* (the eqs.
-(6.42)–(6.44) failed-block contrapositive), or strand (ii) the OLD/NEW `hmemᵢ`.** The six-join
-`hduality` *assembly* is now LANDED (`exists_hduality_witness_of_panel_incidence`,
-RigidityMatrix.lean): it produces `case_III_claim612`'s per-join witness function from the N3a
-panel-incidence data **modulo** the failed-block annihilation hypothesis `hann` — that `r` annihilates
-the panel-meet `complementIso (n u ∧ m)` of panel `Π(u)` with *any* independent second hyperplane `m`
-(KT's "any line `L ⊂ Π(u)`"). It consumes both landed graph-free bricks
-(`omitTwoExtensor_homogenize_eq_extensor_kept` for the kept points; `exists_independent_perp_pair` for
-the opposite joins' constructed second normal) via a `fin_cases q` dispatch (three through-`p0` joins
-→ two N3a normals; three opposite → one N3a normal + the construction). So the remaining strand-(i)
-work is *deriving `hann`* at real `r`/`Cᵢ` data: the eqs. (6.42)–(6.44) contrapositive from
-`r C₁ = r C₂ = r C₃ = 0` to `r ⊥ C(L)` for every panel-union line — the genuinely harder remaining
-math (three fixed `Cᵢ` cannot reach arbitrary panel lines, §1.36; the failed-block row-space machinery
-sweeps the whole panel). Strand (ii) (OLD/NEW-block `hmemᵢ` at the `ofNormals` carrier, §38) is
-independent. **The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4, B.2)
-cannot land before the C3 spine's carried data is discharged (C5c).
+**Next concrete step (smallest forward commit): C5c-step-(1) — restate `case_III_claim612`'s
+`hduality` *antecedent* from the three fixed scalars to the `hann` union premise + body = the C5c
+assembly.** A recon (2026-06-09, `notes/Phase22-realization-design.md` §1.37) found the architecture
+**does NOT close as currently shaped** — verdict (B), but a LOCAL restate, not a phase boundary. The
+C5a/C5b restate (§1.36) made `hduality`'s *conclusion* honest (per-join witness) but **left its
+antecedent the three fixed scalars `r C₁=0 → r C₂=0 → r C₃=0`**, which is the *same* fixed-vs-swept
+mis-shaping in the unfixed half: those three fixed candidate-hinge supports span ≤ 3 of 6 dims, so the
+antecedent **cannot** supply the assembly's `hann` (= `r ⊥ C(L)` for *every* line `L ⊂ Π(u)`, KT's
+union (6.45)). Not circular — under-powered: the `r Cᵢ=0` premises are dead weight. The fix mirrors
+§1.36's edit on the other half: **`hduality`'s antecedent → `hann` (the union premise, keyed off N3a
+normals `n`), and `case_III_claim612`'s body becomes literally `exists_hduality_witness_of_panel_incidence`**
+(the C5c assembly was built taking `hann` precisely because it IS the body). Conclusion unchanged
+(`r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0` — what the producer's selectors consume). Then the genuine remaining math
+(the swept eqs.-(6.42)–(6.43) block-failure → `hann` at real `ofNormals` data) moves to the producer's
+carried obligation (a NEW `hann`-shaped hypothesis on `case_III_hsplit_producer`), correctly located —
+that is the deferred C5c-(i) core, unchanged in difficulty but no longer miscast as `hduality`'s dead
+antecedent. **The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot
+land before the C3 spine's carried data is discharged (C5c).
 
 After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -260,30 +262,44 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   (`exists_independent_perp_pair`, `hone`). Graph-free, axiom-clean. **§38 call-site variant** (TACTICS-QUIRKS
   §38): `q` passed as an explicit subtype literal per `fin_cases q` branch (not inferred) — `q := _`
   timed out at `whnf` on the heavy `omitTwoExtensor`/`complementIso`. (2026-06-09)
-- [ ] **C5c — discharge `case_III_hsplit_producer`'s remaining carried data** at real `ofNormals`
-  graph data (§38 defeq trap): (i) the per-join `hduality` witnesses — the six-join assembly
-  (`exists_hduality_witness_of_panel_incidence`) is now in hand, reducing this to *deriving its `hann`*
-  (the eqs. (6.42)–(6.44) failed-block contrapositive: from `r C₁=r C₂=r C₃=0` to `r ⊥ C(L)` for every
-  panel-union line) at real `r`/`Cᵢ` data — the genuinely harder remaining math; (ii) the OLD/NEW-block
-  `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand) + `Cᵢ`/`hp` (green). Wires `case_III_claim612` ⊕ the
-  producers. Takes the C3 spine fully green.
+- [ ] **C5c-step-(1) — restate `case_III_claim612`'s `hduality` antecedent → `hann` + body = the
+  assembly** (§1.37 verdict). The fixed-`Cᵢ` antecedent is undischargeable; swap it for the union
+  premise (`= exists_hduality_witness_of_panel_incidence`'s `hann`), body = that assembly +
+  `span_omitTwoExtensor_eq_top` + `hr`. Both consumers (`case_III_eq629_conditional`,
+  `case_III_hsplit_producer`) forward verbatim (pure signature ripple, as §1.36); `case_III_hsplit_producer`
+  gains `hann` (+ N3a `n`/incidence) as carried data. The three selectors + C1/C2/C3 untouched
+  (consume the unchanged conclusion). Buildable now (the assembly exists). One green unit, mirrors C5a/C5b.
+- [ ] **C5c-step-(2) — derive `hann` at real `ofNormals` data** (§38 defeq trap; the genuine deferred
+  core): the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`, all
+  three panels. Same row-space criterion (`mem_hingeRowBlock_iff` / `linearIndependent_sumElim_candidateRow_iff`)
+  as the three fixed candidates but quantified over an arbitrary `L` — no new machinery, only the
+  quantifier. Discharges `case_III_hsplit_producer`'s new `hann` premise. May itself split.
+- [ ] **C5c-(ii) — the OLD/NEW-block `hmemᵢ`** at the `ofNormals` carrier (the `+1`-row `hmemᵢ` is in
+  hand via `hingeRow_mem_rigidityRows`) + `Cᵢ`/`hp` (green). Independent of (1)/(2). Wires the
+  producers. Together (1)+(2)+(ii) take the C3 spine fully green.
 - [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
 - [ ] **C-flip — `lem:case-II-realization` / `lem:case-III` flip green** — once the producer + instance land.
 - [ ] **Thm 5.5→5.6 push + feed `rigidityMatrix_prop11`'s `hgen`** — unblocks Cor 5.7 at `d=3`.
 ## Blockers / open questions
 
-- **No live blocker.** The `hduality` six-join modeling subtlety is **resolved and landed** (C5a/C5b,
-  this commit): `case_III_claim612`'s `hduality` now carries KT eq. (6.45)'s per-panel-line model and
-  the body dispatches the per-line brick. Verdict (kept terse; full account in *Decisions made* +
-  §1.36): the fixed-`C₁C₂C₃` form was mathematically undischargeable (three `2`-extensors span
-  ≤ `3 < 6 = finrank ⋀²ℝ⁴`); KT sweeps every line in the panel union (6.45), reaching the six joins
-  via Lemma 2.1. The remaining work is C5c — *producing* the per-join witnesses at real `ofNormals`
-  data (now part of discharging `hduality`).
+- **Architecture does NOT close at the `hann` discharge as currently shaped — verdict (B), LOCAL
+  restate** (2026-06-09 recon, §1.37). `case_III_claim612`'s carried `hduality` *antecedent* is still
+  the three fixed scalars `r C₁=0 → r C₂=0 → r C₃=0` (§1.36 fixed only the conclusion). Those three
+  fixed candidate-hinge supports span ≤ 3 of 6 dims, so they **cannot** supply the assembly's `hann`
+  (= `r ⊥ C(L)` for *every* line `L ⊂ Π(u)`, KT's union (6.45)). **Not circular — under-powered**: the
+  `r Cᵢ=0` premises are dead weight. Fix = swap the antecedent for `hann` (the union premise) +
+  body = the C5c assembly; the genuine math (swept block-failure → `hann`) moves to the producer's
+  carried obligation. ~2 commits, no phase boundary, no consumer-proof change. Full account: §1.37.
+- **Blueprint↔Lean divergence (honesty gate): `lem:case-III-claim612` is currently dishonestly green
+  on its antecedent.** The blueprint prose (case-iii.tex:1086–1134) *already* states the line-swept
+  union model and explicitly disavows the three fixed `Cᵢ` (1130–1133), so the **Lean is what
+  diverges** — its `hduality` antecedent carries the fixed scalars the prose disavows (mirror of the
+  conclusion-side issue §1.36 fixed). No `.tex` edit needed (prose is the target); reconcile the Lean
+  to it when C5c-step-(1) lands.
 - **No live blocker on the device feed.** The (g1)/(g2) fork is **resolved** (§1.35 / *Current
   state*): the corrected feed is the fixed-framework, genericity-free `exists_good_realization_const`
-  route (C1), not the panelRow-shaped `_index` feed. The `d=3` contrapositive (Claim 6.12) is green
-  modulo the `hduality` shape question above; the remaining work is the C1–C5 composition.
+  route (C1), not the panelRow-shaped `_index` feed.
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38; carried from 22a–e). The
   `r̂`-producers are graph-free over abstract `F`; C1 instantiates `F` to the concrete
   `ofNormals … q₀ᵢ` carrier only at the final device-feed call, and C2 states everything over abstract
@@ -292,30 +308,31 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   spine); the §38 trap re-enters only when the leaves that discharge `hmemᵢ` instantiate it.
 ## Hand-off / next phase
 
-**Smallest next commit: C5c — discharge `case_III_hsplit_producer`'s carried data at real `ofNormals`
-graph data** (§38 defeq trap). Two independent strands, either a smallest commit:
-- **(i) Derive `hann` (the failed-block contrapositive).** The six-join `hduality` *assembly* is
-  LANDED (`exists_hduality_witness_of_panel_incidence`): it produces `case_III_claim612`'s per-join
-  witness from the N3a panel-incidence data **modulo** the annihilation hypothesis `hann` — that `r`
-  annihilates the panel-meet `complementIso (n u ∧ m)` of panel `Π(u)` with any independent second
-  hyperplane `m`. So the remaining strand-(i) work is *deriving `hann`* at real `r`/`Cᵢ` data: the eqs.
-  (6.42)–(6.44) failed-block contrapositive, from `r C₁ = r C₂ = r C₃ = 0` to `r ⊥ C(L)` for every
-  line `L` in the panel union (the genuinely harder remaining math — three fixed `Cᵢ` reach no
-  arbitrary panel line, §1.36; the failed-block row-space machinery sweeps the whole panel). The
-  assembly's `htwo`/`hone` + the two graph-free bricks (`omitTwoExtensor_homogenize_eq_extensor_kept`,
-  `exists_independent_perp_pair`) are all green and consumed.
-- **(ii) The OLD/NEW-block `hmemᵢ`** at the real `ofNormals` carrier (the `+1`-row `hmemᵢ` is in hand
-  via `hingeRow_mem_rigidityRows`); via L2 span bridge / L4 membership on the L1 blocks. Independent
-  of (i).
+**Smallest next commit: C5c-step-(1) — restate `case_III_claim612`'s `hduality` antecedent → `hann`
+(the union premise) + body = the C5c assembly** (§1.37 verdict). A pure-signature edit on the green
+spine (mirrors §1.36's C5a/C5b): `hduality`'s antecedent `r C₁=0 → r C₂=0 → r C₃=0` becomes the
+`hann`-shaped union premise keyed off N3a normals `n` (`∀ u m indep, r(complementIso ⟨extensor
+![n u,m],_⟩)=0`); `case_III_claim612`'s body becomes literally `exists_hduality_witness_of_panel_incidence`
+(already built taking `hann`) + `eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)` +
+`hr`. Conclusion unchanged. Both consumers (`case_III_eq629_conditional`, `case_III_hsplit_producer`)
+forward verbatim; `case_III_hsplit_producer` gains `hann` (+ N3a `n`/incidence) as carried data. The
+three selectors + C1/C2/C3 are untouched (they consume the unchanged conclusion). One green unit.
+Reconcile `lem:case-III-claim612`'s Lean↔prose divergence in the same commit (no `.tex` edit — prose
+is already the target shape).
 
-**C4 (a green `theorem_55` `d=3`-instance) is blocked on C5.** The C5c `hmemᵢ` (at real `ofNormals`
-data, §38 defeq trap): the OLD/NEW `so`/`sn` blocks via L2 span bridge
-(`span_panelRow_comp_single_of_edge`) / L4 membership (`panelRow_mem_rigidityRows_of_link`) on the L1
-blocks, and the `+1` `r̂`-row via the landed `hingeRow_mem_rigidityRows` (the placed `hingeRow v b r̂`
-with `r̂ ∈ hingeRowBlock e_b`). After C5: C4 (mint the green `theorem_55 (n:=2) (k:=2)` instance node,
-**not** a standalone `theorem_55_dim3`), the `lem:case-II-realization` / `lem:case-III` flips, the
-Thm 5.5→5.6 push. Full verified leaf sequence + the KT/Lean verification:
-`notes/Phase22-realization-design.md` §1.35 (L-wire) + §1.36 (the `hduality` restate verdict).
+**Then C5c-step-(2): derive `hann` at real `ofNormals` data** (§38 defeq trap; the genuine deferred
+core): the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`. Same
+row-space criterion (`mem_hingeRowBlock_iff` / `linearIndependent_sumElim_candidateRow_iff`) as the
+three fixed candidates but quantified over an arbitrary `L`. May itself split. **And C5c-(ii): the
+OLD/NEW-block `hmemᵢ`** (the `+1`-row `hmemᵢ` is in hand via `hingeRow_mem_rigidityRows`; the `so`/`sn`
+blocks via L2 span bridge `span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`),
+independent of (1)/(2).
+
+**C4 (a green `theorem_55` `d=3`-instance) is blocked on C5.** After C5 (steps (1)+(2)+(ii)): C4 (mint
+the green `theorem_55 (n:=2) (k:=2)` instance node, **not** a standalone `theorem_55_dim3`), the
+`lem:case-II-realization` / `lem:case-III` flips, the Thm 5.5→5.6 push. Full verified leaf sequence +
+the KT/Lean verification: `notes/Phase22-realization-design.md` §1.35 (L-wire) + §1.36 (conclusion-side
+`hduality` restate) + §1.37 (antecedent-side restate + the `hann` discharge verdict).
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d`
 (KT Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1 verbatim;
@@ -328,41 +345,36 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
-- **C5c-leaf: the six-join `hduality` assembly landed *modulo* the failed-block annihilation `hann`,
-  not deriving it (2026-06-09).** `exists_hduality_witness_of_panel_incidence` (RigidityMatrix.lean)
-  produces `case_III_claim612`'s per-join witness from the N3a incidence data, taking `hann` — `r`
-  annihilates `complementIso (n u ∧ m)` for panel `Π(u)` + any independent second hyperplane `m`
-  (KT's "any line `L ⊂ Π(u)`") — as an explicit hypothesis. This cleanly isolates the buildable
-  combinatorial six-join dispatch (consuming both landed bricks via `fin_cases q`: `htwo` for the
-  three through-`p0` joins = two N3a normals, `hone` for the three opposite = one N3a normal + the
-  `exists_independent_perp_pair` construction) from the still-missing eqs.-(6.42)–(6.44) derivation of
-  `hann` from `r C₁=r C₂=r C₃=0` (the genuinely harder math: three fixed `Cᵢ` reach no arbitrary
-  panel line, §1.36). Graph-free, axiom-clean. **§38 call-site variant** (`q` passed as explicit
-  subtype literal per `fin_cases q` branch, not inferred — `q := _` timed out at `whnf` on the heavy
-  `omitTwoExtensor`/`complementIso`); lifted to TACTICS-QUIRKS §38.
-- **C5c-leaf: the constructed second normal (2026-06-09).** `exists_independent_perp_pair`
-  (RigidityMatrix.lean): a second normal `n'` independent from `n_u`, both line-points ⊥ both, via
-  `ker (Matrix.of ![pi,pj]).mulVecLin` rank–nullity (`finrank ≥ 2 > 1 = finrank (span {n_u})` ⟹
-  proper subspace, `SetLike.exists_of_lt` + `LinearIndependent.pair_iff'`). Consumed by the C5c
-  assembly's `hone`. Graph-free, axiom-clean; the `mulVecLin`-coordinate unfold is FRICTION [resolved].
-- **C5c-leaf: the six-join kept-points tabulation (2026-06-09).**
-  `omitTwoExtensor_homogenize_eq_extensor_kept` (RigidityMatrix.lean) — the kept pair `c < d` (the
-  increasing complement of `{q.1,q.2}`, witnessed uniformly as `emb 0/1` for `emb := {q.1,q.2}ᶜ.orderEmbOfFin`,
-  `fin_cases`-free) + the join identity. Consumed by the C5c assembly. Graph-free, axiom-clean
-  (`mem_compl/insert/singleton/not_or` unfold FRICTION [resolved]).
-- **C5a/C5b landed: `case_III_claim612`'s `hduality` restated to the per-panel-line model + the
-  six-join dispatch in-body (2026-06-09; verdict home `notes/Phase22-realization-design.md` §1.36).**
-  The fixed-`C₁C₂C₃` `hduality` was mathematically undischargeable (three `2`-extensors span
-  ≤ `3 < 6 = finrank ⋀²ℝ⁴`); KT sweeps *every* line in the panel union (6.45), reaching the six joins
-  via Lemma 2.1. New `hduality` (per-join witness form): `r C₁=0 → r C₂=0 → r C₃=0 → ∀ q : pair,
-  ∃ n_u n' pi pj, indep ∧ (4 ⬝ᵥ-orths) ∧ omitTwoExtensor (homogenize∘p) q = extensor ![pi,pj] ∧
-  r(complementIso ⟨extensor ![n_u,n'],_⟩)=0`. Body: contrapositive → `span_omitTwoExtensor_eq_top`,
-  per `q` rewrite the join by the witness's `extensor`-equality, fire the per-line brick. Needed
-  `public import …Molecular.Meet` (brick + `complementIso`; no cycle). Both consumers forward
-  `hduality` verbatim — pure signature ripple. **Honesty gate improved**: `hduality` now *is* the
-  conclusion of the `\uses`'d `lem:case-III-claim612-line-in-panel-union` (legit green-modulo case
-  (b)). Updated that node's blueprint parenthetical to the landed past tense (no `\lean{}`/`\uses`
-  change → no checkdecls). Axiom-clean, build + lint clean.
+- **The `hann`-discharge recon: architecture does NOT close as shaped — verdict (B), LOCAL restate
+  (2026-06-09; canonical home `notes/Phase22-realization-design.md` §1.37).** §1.36 fixed `hduality`'s
+  *conclusion* (per-join witness) but left its *antecedent* the three fixed scalars `r C₁=0 → r C₂=0 →
+  r C₃=0` — the same fixed-vs-swept mis-shaping in the unfixed half. Those three fixed supports span
+  ≤ 3 of 6 dims, so they cannot supply the assembly's `hann` (= `r ⊥ C(L)` for *every* line, KT's
+  union (6.45)). **Not circular — under-powered**: the `r Cᵢ=0` premises are dead weight. Fix (mirrors
+  §1.36): antecedent → `hann` (union premise), `case_III_claim612` body = the already-built C5c
+  assembly; the genuine math (swept eqs.-(6.42)–(6.43) block-failure → `hann`) moves to the producer's
+  carried obligation. ~2 commits, no phase boundary, consumers forward verbatim, selectors/C1–C3
+  untouched. Blueprint prose already states the line-swept model (case-iii.tex:1086–1134) — the Lean
+  is the divergence (dishonestly green on its antecedent); reconcile when step-(1) lands.
+- **C5c-leaves landed (2026-06-09; full detail in the Lean source + §1.36/§1.37, one-line verdicts).**
+  All three graph-free, axiom-clean. The §1.37 recon found these correctly built but consumed by a
+  mis-shaped `hduality` antecedent (see top entry) — they survive verbatim under the (B1) restate.
+  - `exists_hduality_witness_of_panel_incidence` — the six-join `hduality` assembly *modulo* `hann`;
+    `fin_cases q` dispatch (`htwo` three through-`p0` joins = two N3a normals, `hone` three opposite =
+    one normal + the construction). **§38 call-site variant** (`q` explicit subtype literal per branch)
+    → TACTICS-QUIRKS §38. This IS the body `case_III_claim612` gets under (B1).
+  - `exists_independent_perp_pair` — second normal `n'` indep of `n_u`, both line-points ⊥ both, via
+    `ker (Matrix.of ![pi,pj]).mulVecLin` rank–nullity. Consumed by `hone`.
+  - `omitTwoExtensor_homogenize_eq_extensor_kept` — the kept pair `c<d` (= `{q.1,q.2}ᶜ.orderEmbOfFin`
+    `0/1`) + join identity. Consumed by the assembly.
+- **C5a/C5b landed: `case_III_claim612`'s `hduality` *conclusion* restated to the per-join-witness
+  model + the six-join dispatch in-body (2026-06-09; verdict home §1.36).** Replaced the
+  undischargeable fixed-`Cᵢ` *conclusion* `r ⊥ all six joins` with the per-join witness form (`∀ q,
+  ∃ n_u n' pi pj, …`). Both consumers forward verbatim — pure signature ripple. Needed `public import
+  …Molecular.Meet`. **NB (superseded framing): the entry's original "honesty gate improved" claim was
+  half-right** — only the conclusion was made honest; the *antecedent* stayed the three fixed scalars,
+  which §1.37 shows is the undischargeable half (`lem:case-III-claim612` is still dishonestly green on
+  its antecedent until C5c-step-(1)). Axiom-clean, build + lint clean.
 - **The N3b per-line transfer landed as a `⬝ᵥ`-incidence restatement of the green core (2026-06-08).**
   `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (Meet.lean) restates the green N3b core
   with incidence as `pi ⬝ᵥ n_u = 0` (N3a's shape) instead of `toDual pi n_u = 0`, via the mirrored

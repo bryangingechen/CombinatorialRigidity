@@ -593,6 +593,127 @@ what the dep-graph describes). No `.tex` edit needed.
 
 ---
 
+### 1.37 The `hann` discharge — verdict (B): `hduality`'s *antecedent* is mis-shaped; restate to the line-swept block-failure premise (2026-06-09)
+
+The C5a/C5b restate (§1.36, `d851264`) made `hduality`'s **conclusion** honest (the per-join witness
+form) but **left its antecedent the three fixed scalars `r C₁ = 0 → r C₂ = 0 → r C₃ = 0`.** Tracing
+the `hann` discharge — never analyzed by the §1.33 / §1.35 / §1.36 recons — shows this antecedent is
+the *same* mis-shaping the conclusion had, in the half that was not fixed. Verdict: **(B), but a
+LOCAL restate, not a phase-boundary re-architecture.** Verified against KT pp. 690–691 (eqs.
+(6.42)–(6.45)), `case_III_claim612` (RigidityMatrix.lean:1626), the C5c assembly
+`exists_hduality_witness_of_panel_incidence` (:1679), `case_III_hsplit_producer` (CaseI.lean:3641),
+and `mem_hingeRowBlock_iff` (:1262).
+
+**The gap, decisively (not circular, but under-powered).** `exists_hduality_witness_of_panel_incidence`
+produces `case_III_claim612`'s per-join witness *modulo* `hann`:
+`∀ u (m), LinearIndependent ![n u, m] → r (complementIso ⟨extensor ![n u, m], _⟩) = 0` — i.e.
+`r ⊥ C(L)` for **every** line `L ⊂ Π(u)`, all three panels (KT's union (6.45), exactly). But the
+*only* thing the contrapositive of `case_III_claim612`'s carried `hduality` supplies is its
+antecedent `r C₁ = r C₂ = r C₃ = 0` — `r ⊥` the **three fixed candidate-hinge supports**
+`Cᵢ = F.supportExtensor eᵢ` (`mem_hingeRowBlock_iff`: block-fail at edge `e` gives exactly the one
+scalar `r(supportExtensor e) = 0`). Three `2`-extensors span ≤ 3 of the 6 dims, so `r ⊥ C₁,C₂,C₃`
+**cannot** give `hann` (§1.36's own dimension count). So `hduality`-as-stated is *undischargeable from
+its own antecedent*: the `r Cᵢ = 0` premises are dead weight. **Not circular** — discharging it does
+not reduce to re-proving the conclusion — it is simply *under-powered*: the antecedent that `hann`
+needs ("all three blocks fail for **every** line choice `L`") is strictly stronger than the
+three-fixed-scalar premise the §1.36 restate left in place.
+
+**What KT actually quantifies (the per-line freedom).** KT p. 690: `p₁(va) = L`, `p₂(vb) = L'`,
+`p₃(ac) = L''`, *"where we **may choose any** (d−2)-dimensional affine subspaces `L ⊂ Π(a)`,
+`L' ⊂ Π(b)`, `L'' ⊂ Π(c)`"*. The candidate block `Mᵢ` is **parameterized by the line choice**; the
+candidate vector `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` is **fixed across all choices** (it reads only the
+inductive `ab`-data). "Mᵢ fails for choice `L`" ⟺ `r̂ ⊥ C(L)` (row-space criterion, KT (6.42)).
+Claim 6.12 is the **existential over line choices**: *at least one of M₁/M₂/M₃ has full rank **for
+some choice** of `L,L',L''`.* Its contrapositive is "all blocks fail for **all** choices" → `r̂ ⊥`
+the whole union (6.45) → (Lemma 2.1, four affinely-indep points) `r̂ = 0`. **The Lean's three fixed
+`C₁,C₂,C₃` are three SPECIFIC line choices, not the existential** — so the conclusion
+`r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0` is *narrower* than KT's "∃ line choice, block full rank", and the
+antecedent `r C₁=C₂=C₃=0` is *weaker* than KT's "fail for all `L`". Both halves are the same fixed-vs-
+swept mis-shaping; §1.36 caught it on the conclusion's *join* side and fixed that, but the
+**candidate/`Cᵢ`** side stayed fixed.
+
+**The fix (LOCAL — a signature restate of `case_III_claim612`, mirroring §1.36's edit on the other
+half).** Replace the dead three-scalar antecedent with the line-swept premise that the producer can
+actually deliver and the assembly actually needs. Two discharge-feasible shapes (pin the exact one at
+build against the assembly's signature; both are graph-free):
+- **(B1, recommended) carry `hann` directly as the premise.** `case_III_claim612`'s `hduality`
+  antecedent becomes the union form `∀ u m, LinearIndependent ![n u, m] → r(complementIso ⟨extensor
+  ![n u, m],_⟩)=0` (= the assembly's `hann`), keyed off N3a normals `n`. Then `hduality`'s body is
+  *literally* `exists_hduality_witness_of_panel_incidence` (already built), and the conclusion stays
+  the **existential** `∃ u (line choice), r̂(C(L)) ≠ 0` — or, kept concrete, the producer's needed
+  form (see ripple). The body of `case_III_claim612` becomes: contrapositive → `hann` → assembly →
+  `span_omitTwoExtensor_eq_top` → `r=0` ⨯ `hr`. This is the faithful KT encoding.
+- **(B2) carry the per-line block-failure family.** Premise = `∀ u (L ⊂ Π(u)), block(L) not full rank`,
+  phrased as `∀ u m indep, r̂(complementIso (n u ∧ m)) = 0` — definitionally the same as `hann` after
+  `mem_hingeRowBlock_iff`, so B2 collapses to B1. No separate value.
+
+So the *real* edit is: **`hduality`'s antecedent `r C₁=0→r C₂=0→r C₃=0` → `hann` (the union premise),
+and `case_III_claim612`'s body = the C5c assembly** (which is why the assembly was built taking `hann`:
+it IS the body). The three fixed `Cᵢ` then appear *only* in the conclusion the producer's
+candidate-selection consumes.
+
+**The conclusion + producer ripple — the one genuine design call.** KT's faithful conclusion is the
+existential `∃ line choice, block full rank`. But the producer (`case_III_hsplit_producer`) builds
+**three concrete candidate placements** (edges `va`/`vb`/`ac`, supports `C₁`/`C₂`/`C₃`) and consumes
+the *three-fixed* disjunction `r̂ C₁≠0 ∨ r̂ C₂≠0 ∨ r̂ C₃≠0`. Resolve as follows:
+- The producer's three fixed candidates are KT's existential **instantiated at three specific lines**
+  — the degenerate eq.-(6.12) placements at `va`/`vb`/`ac`. The contrapositive that *feeds* `hann`,
+  however, must range over **all** lines, which the three concrete placements do **not** witness by
+  themselves. **The producer cannot supply `hann` from its three blocks.** Therefore `hann` must come
+  from the **redundant-row / eqs.-(6.42)–(6.43) machinery directly**: for an *arbitrary* line `L ⊂ Π(u)`,
+  the candidate block built from `L` has its `D−1` rows spanning `(span C(L))^⊥` (`hspan` of the
+  selectors, but now at the swept line), and the *fixed* `r̂` lies in that block exactly when
+  `r̂(C(L)) = 0`. So `hann` is **not** "all three fixed blocks fail" — it is the statement that for
+  every line `L` in each panel, the (D−1) panel rows at `L` already span `(span C(L))^⊥` and `r̂` is
+  among them iff `r̂(C(L)) = 0`, which is the **per-line block-failure premise of Claim 6.12 KT
+  quantifies over**. This is genuinely *new* obligation content (the swept block-failure), but it is
+  the SAME row-space criterion (`mem_hingeRowBlock_iff` / `linearIndependent_sumElim_candidateRow_iff`)
+  applied at an arbitrary `L` rather than the three fixed edges — no new machinery, only a quantifier.
+- **Cleanest shape:** `case_III_claim612` keeps the three-fixed conclusion `r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0`
+  (what the producer's selectors consume, unchanged), and takes `hann` as its premise (B1). The
+  producer's obligation to *supply* `hann` then becomes a NEW carried hypothesis on
+  `case_III_hsplit_producer` (the union annihilation, at the real `ofNormals` `r̂`/normals data),
+  discharged by a NEW leaf that runs the row-space criterion over an arbitrary line. This is the
+  honest decomposition: `case_III_claim612` becomes *trivially green* (body = the assembly + span-top
+  + `hr`); the genuine remaining math (the swept block-failure → `hann`) moves to the producer's
+  carried data, exactly where C5c already lives.
+
+**Ripple (all local, no phase boundary).**
+- `case_III_claim612` (RigidityMatrix.lean:1626): antecedent `r C₁=0→r C₂=0→r C₃=0` ⟹ `hann`-shaped
+  union premise (keyed off N3a `n`, `h0`/`h1`/`h2`/`h3` incidence); body ⟹ the C5c assembly +
+  `span_omitTwoExtensor_eq_top` + `hr`. Conclusion unchanged. `C₁ C₂ C₃` move to the conclusion only.
+- `case_III_eq629_conditional` (RigidityMatrix.lean:1791) + `case_III_hsplit_producer` (CaseI.lean:3641):
+  forward the new `hann`-shaped `hduality` premise verbatim (same pure-signature ripple §1.36 had —
+  both `.imp`/`rcases` the unchanged conclusion). `case_III_hsplit_producer` gains the `hann` premise
+  (+ N3a `n`/incidence) as carried data; its body is unchanged (`rcases case_III_claim612 …`).
+- The three selector recasts (`linearIndependent_sum_{p2,p3,augment}_candidateRow_selector`) and C1/C2/
+  C3 are **untouched** — they consume the *conclusion* (`r̂ Cᵢ ≠ 0`), which does not change.
+- The C5c assembly `exists_hduality_witness_of_panel_incidence` is **already exactly the new body** —
+  built taking `hann`, it was constructed for precisely this shape. No rebuild.
+- The genuine remaining math (now correctly located): a NEW leaf deriving `hann` at real `ofNormals`
+  data = the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)` for every `L`. This is the "C5c-(i)"
+  work, unchanged in difficulty but now correctly stated as the producer's carried obligation rather
+  than miscast as `hduality`'s dead three-scalar antecedent.
+
+**Estimate: ~2 commits.** (1) the `case_III_claim612` antecedent→`hann` restate + body=assembly +
+the two-consumer signature ripple (one green unit, mirrors §1.36's C5a/C5b); (2) the swept-line `hann`
+derivation leaf at real data (the genuine C5c-(i) math — may itself split, see hand-off). The fixed
+`hann`-as-premise step (1) is buildable now (the assembly exists); step (2) is the deferred core.
+
+**Blueprint consistency.** `lem:case-III-claim612`'s statement + proof prose (case-iii.tex:1086–1134)
+**already** describes exactly the line-swept model: "Suppose all three blocks fail to have full rank
+for *every* choice of lines … `r ∈ (span C(L))^⊥` for all `L ⊂ Π(a)`", and the explicit aside
+(1130–1133) that `hduality` is "the union form … **not** the three fixed candidate-hinge supports
+`C₁,C₂,C₃`". So the **blueprint is correct and the Lean is what diverges** — the `hduality`
+*antecedent* still carries the three fixed scalars the prose explicitly disavows. The honesty gate
+verdict: `lem:case-III-claim612`'s `\leanok` is currently **dishonestly green** on its antecedent
+(the carried `hduality` does not match the prose's union form), the mirror of the conclusion-side
+issue §1.36 fixed. Flagging as a blueprint↔Lean divergence to reconcile when (B1) lands; no `.tex`
+edit needed (the prose is already the target shape — the Lean must catch up to it). Tracked in
+`notes/Phase22g.md` Blockers.
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.
