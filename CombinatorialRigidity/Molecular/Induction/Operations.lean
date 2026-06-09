@@ -767,4 +767,76 @@ lemma splitOff_simple_of_noRigid {G : Graph α β} {v a b : α} {eₐ e_b e₀ :
         exacts [h₂, h₂.symm]
       · rfl
 
+/-- **The triangle on a split vertex and its neighbours is a proper rigid subgraph** (KT
+Lemma 6.7(ii), Katoh–Tanigawa 2011 p. 677; the `htri` brick `splitOff_simple_of_noRigid`
+carries). Given the splitting data — the `va`-edge `eₐ`, the `vb`-edge `e_b`, and a real
+`ab`-edge `f` (the parallel-pair obstruction the splitting-off must avoid) — the
+vertex-induced triangle `H = G.induce {v, a, b}` is a *proper* rigid subgraph of `G`: it is
+`0`-dof by `isKDof_zero_of_triangle` (`def((K₃)̃) = 0`, the `D ≥ 3` triangle tightness), and
+it is *proper* because `|V(G)| ≥ 4` (the splitting branch never reaches the `|V| ≤ 3` base
+case), so its three vertices are a strict subset of `V(G)`.
+
+The edge-set computation `E(H) = {eₐ, e_b, f}` is where `G.Simple` enters: a fourth edge
+inside `{v, a, b}` would be parallel to one of the three (its loopless ends are one of the
+three vertex pairs), contradicting `G.Simple`. This isolates the `def((K₃)̃) = 0` deficiency
+count (`isKDof_zero_of_triangle`) from the bounded edge/vertex bookkeeping done here. -/
+lemma triangle_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {v a b : α}
+    {eₐ e_b f : β} {n : ℕ} (hD : 3 ≤ bodyBarDim n) (hG_ea : G.IsLink eₐ v a)
+    (hG_eb : G.IsLink e_b v b) (hf : G.IsLink f a b) (hab : a ≠ b)
+    (hcard : 4 ≤ V(G).ncard) :
+    ∃ H : Graph α β, H.IsProperRigidSubgraph G n := by
+  have hva : v ≠ a := hG_ea.ne
+  have hvb : v ≠ b := hG_eb.ne
+  -- `{v, a, b} ⊆ V(G)` (each vertex is the end of one of the three edges).
+  have hsub : ({v, a, b} : Set α) ⊆ V(G) := by
+    rintro w (rfl | rfl | rfl)
+    exacts [hG_ea.left_mem, hf.left_mem, hf.right_mem]
+  refine ⟨G.induce {v, a, b}, ⟨G.induce_le hsub, ?_⟩, ⟨v, by simp⟩, ?_⟩
+  · -- `def((K₃)̃) = 0`: the induced triangle is `0`-dof (vertices `v, a, b`; edges in the
+    -- `isKDof_zero_of_triangle` order are `va`, `ab`, `vb`).
+    refine isKDof_zero_of_triangle hD hva hab hvb
+      ⟨hG_ea, by simp, by simp⟩ ⟨hf, by simp, by simp⟩ ⟨hG_eb, by simp, by simp⟩
+      rfl ?_
+    -- `E(H) = {eₐ, f, e_b}`. `⊇`: the three edges link pairs inside `{v, a, b}`.
+    -- `⊆`: any induced edge has loopless ends among `{v, a, b}`, so it is parallel to
+    -- one of the three — equal to it by `G.Simple`.
+    rw [edgeSet_induce]
+    apply Set.Subset.antisymm
+    · rintro e ⟨x, y, he, hx, hy⟩
+      have hxy : x ≠ y := he.ne
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy ⊢
+      obtain rfl | rfl | rfl := hx <;> obtain rfl | rfl | rfl := hy <;>
+        first
+          | exact absurd rfl hxy
+          | exact Or.inl (he.unique_edge hG_ea)
+          | exact Or.inl (he.symm.unique_edge hG_ea)
+          | exact Or.inr (Or.inl (he.unique_edge hf))
+          | exact Or.inr (Or.inl (he.symm.unique_edge hf))
+          | exact Or.inr (Or.inr (he.unique_edge hG_eb))
+          | exact Or.inr (Or.inr (he.symm.unique_edge hG_eb))
+    · rintro e (rfl | rfl | rfl)
+      exacts [⟨v, a, hG_ea, by simp, by simp⟩, ⟨a, b, hf, by simp, by simp⟩,
+        ⟨v, b, hG_eb, by simp, by simp⟩]
+  · -- Proper: `{v, a, b}` is a strict subset of `V(G)` because `|V(G)| ≥ 4 > 3 ≥ |{v,a,b}|`.
+    refine hsub.ssubset_of_ne fun heq ↦ ?_
+    have h3 : ({v, a, b} : Set α).ncard ≤ 3 := by
+      refine (Set.ncard_insert_le _ _).trans ?_
+      exact Nat.add_le_add (Set.ncard_insert_le _ _) le_rfl |>.trans (by simp)
+    rw [heq] at h3; omega
+
+/-- **The splitting-off `G_v^{ab}` is simple** (KT Lemma 6.7(ii), Katoh–Tanigawa 2011
+p. 677), with the triangle-rigidity brick `htri` discharged: this is the fully
+hypothesis-free form of `splitOff_simple_of_noRigid`, supplying its `htri` from
+`triangle_isProperRigidSubgraph` (the proper rigid triangle `G[{v, a, b}]` an `ab`-edge
+would create) and `hnoRigid`. The proper-ness guard `4 ≤ |V(G)|` is the splitting branch's
+standing hypothesis (KT §6.4 only splits when the base case `|V| ≤ 3` is not reached). -/
+lemma splitOff_simple_of_noRigid_of_card [Finite α] {G : Graph α β} {v a b : α}
+    {eₐ e_b e₀ : β} {n : ℕ} [G.Simple] (hD : 3 ≤ bodyBarDim n) (heab : eₐ ≠ e_b)
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hcard : 4 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    (G.splitOff v a b e₀).Simple := by
+  have hab : a ≠ b := fun h ↦ heab (Simple.eq_of_isLink hG_ea (h ▸ hG_eb))
+  exact splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
+    fun f hf ↦ triangle_isProperRigidSubgraph hD hG_ea hG_eb hf hab hcard
+
 end Graph
