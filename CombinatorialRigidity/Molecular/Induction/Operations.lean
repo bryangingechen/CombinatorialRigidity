@@ -716,4 +716,55 @@ lemma splitOff_simple {G : Graph α β} {v a b : α} {e₀ : β}
   not_isLoopAt e x h := hloop e x x (isLink_self_iff.mp h) rfl
   eq_of_isLink e f x y he hf := hpar e f x y he hf
 
+/-- **The splitting-off `G_v^{ab}` is simple** (KT Lemma 6.7(ii), Katoh–Tanigawa 2011 p. 677; the
+graph-side discharge feeding Theorem 5.5's *generic* Case-III hypothesis `hsplitGP`). It discharges
+both hypotheses of `splitOff_simple` from `G.Simple`, the splitting data, and the
+no-proper-rigid-subgraph assumption `hnoRigid`, through the not-yet-formalized triangle brick
+`htri`. The two combinatorial halves are bounded:
+
+* **Loop-freeness.** A surviving `G`-edge inherits `G`'s looplessness; the fresh edge `e₀` links the
+  *distinct* neighbours `a ≠ b` (`a = b` would make `eₐ, e_b` parallel `va`-edges, contradicting
+  `G.Simple` via `heab`).
+* **No parallel pair.** Two surviving `G`-edges with a shared end-pair coincide by `G.Simple`; two
+  fresh edges both equal `e₀`; a *mixed* pair is the KT obstruction — a surviving `G`-edge `f`
+  sharing `e₀`'s end-pair `{a, b}` is a pre-existing edge `f` with `G.IsLink f a b`, which together
+  with `eₐ` (`va`) and `e_b` (`vb`) closes the triangle `G[{v, a, b}]`.
+
+The triangle's rigidity is the one non-routine ingredient, carried here as `htri`: an `ab`-edge
+yields a *proper* rigid subgraph of `G` (KT: "a triangle is a `0`-dof-graph", `def((K₃)̃) = 0`).
+Combined with `hnoRigid` it is the contradiction that rules out the mixed parallel pair. Phrasing
+`htri` as the proper-rigid-subgraph existence isolates the deficiency computation `def((K₃)̃) = 0`
+(not yet in tree, the sibling sub-leaf) from the bounded edge bookkeeping done here. -/
+lemma splitOff_simple_of_noRigid {G : Graph α β} {v a b : α} {eₐ e_b e₀ : β} {n : ℕ}
+    [G.Simple] (heab : eₐ ≠ e_b) (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (htri : ∀ f, G.IsLink f a b → ∃ H : Graph α β, H.IsProperRigidSubgraph G n) :
+    (G.splitOff v a b e₀).Simple := by
+  -- `a ≠ b`: else `eₐ, e_b` are parallel `va`-edges, contradicting `G.Simple` via `heab`.
+  have hab : a ≠ b := by
+    rintro rfl
+    exact heab (Simple.eq_of_isLink hG_ea hG_eb)
+  refine splitOff_simple (fun e x y h ↦ ?_) (fun e₁ e₂ x y h₁ h₂ ↦ ?_)
+  · -- Loop-freeness.
+    rw [splitOff_isLink] at h
+    rcases h with ⟨_, h, _, _⟩ | ⟨_, _, _, _, _, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩
+    · exact h.ne
+    · exact hab
+    · exact hab.symm
+  · -- No parallel pair.
+    rw [splitOff_isLink] at h₁ h₂
+    rcases h₁ with ⟨_, h₁, _, _⟩ | ⟨rfl, _, _, _, _, hxy₁⟩
+    · rcases h₂ with ⟨_, h₂, _, _⟩ | ⟨rfl, _, _, _, _, hxy₂⟩
+      · exact Simple.eq_of_isLink h₁ h₂
+      · -- mixed: `e₁` survives, `e₂ = e₀`; the surviving edge `e₁` links `{a, b}`.
+        refine absurd (htri e₁ ?_) (not_exists.mpr hnoRigid)
+        rcases hxy₂ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        exacts [h₁, h₁.symm]
+    · rcases h₂ with ⟨_, h₂, _, _⟩ | ⟨rfl, _, _, _, _, _⟩
+      · -- mixed: `e₁ = e₀`, `e₂` survives; the surviving edge `e₂` links `{a, b}`.
+        refine absurd (htri e₂ ?_) (not_exists.mpr hnoRigid)
+        rcases hxy₁ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        exacts [h₂, h₂.symm]
+      · rfl
+
 end Graph
