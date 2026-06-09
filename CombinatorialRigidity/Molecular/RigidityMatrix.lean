@@ -1655,6 +1655,111 @@ theorem case_III_claim612
   exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
     hiu hiu' hju hju' r hann
 
+/-- **The six-join `hduality` witness assembly from the panel-incidence data** (`lem:case-III`,
+the N3a → `hduality` glue of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1 eqs.
+(6.42)–(6.45), Phase 22g). This produces the per-join witness function `case_III_claim612`'s
+`hduality` hypothesis quantifies over, from the N3a panel-incidence data
+(`exists_affineIndependent_panel_incidence`: three panel normals `n : Fin 3 → ℝ⁴`,
+`LinearIndependent`, and four affinely-independent points `p : Fin 4 → ℝ³` with the
+triple-intersection incidence tabulation) and the **failed-block annihilation** hypothesis `hann`:
+`r` annihilates the panel-meet `C(L) = complementIso (n u ∧ m)` of *every* line `L ⊂ Π(u)` — i.e.
+of panel `Π(u)` (the normal `n u`) with any second hyperplane `m` independent from `n u` (KT's "for
+any choice of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`", eqs. (6.42)–(6.44), what the failed
+contrapositive supplies on each of the three failed candidate blocks).
+
+For each of the six joins `q`, the kept pair `(c, d)` (the complement of the omitted pair,
+`omitTwoExtensor_homogenize_eq_extensor_kept`) determines a *common* panel `Π(u)` the join line
+`p̄_c p̄_d` lies in (each endpoint pair of the four points shares ≥ 1 panel, from the incidence
+tabulation): the three joins through `p 0` share two panels (use the panel normal `n u` and a second
+panel normal), the three "opposite" joins share one panel (use `n u` and a *constructed* second
+normal `n'` through the line, `exists_independent_perp_pair`). Either way the brick's pair
+`{n_u, n'}` is independent with both kept points orthogonal to both, and `hann` supplies the meet
+annihilation, completing the witness. Graph-free (pure `Fin 4` panel geometry); the `r`/`Cᵢ`/`p`
+data is supplied by the producer at instantiation. -/
+theorem exists_hduality_witness_of_panel_incidence
+    {r : Module.Dual ℝ (ScrewSpace 2)}
+    {n : Fin 3 → Fin 4 → ℝ} (hn : LinearIndependent ℝ n)
+    {p : Fin 4 → Fin 3 → ℝ}
+    (h0 : ∀ u, homogenize (p 0) ⬝ᵥ n u = 0)
+    (h1 : homogenize (p 1) ⬝ᵥ n 0 = 0 ∧ homogenize (p 1) ⬝ᵥ n 1 = 0)
+    (h2 : homogenize (p 2) ⬝ᵥ n 1 = 0 ∧ homogenize (p 2) ⬝ᵥ n 2 = 0)
+    (h3 : homogenize (p 3) ⬝ᵥ n 2 = 0 ∧ homogenize (p 3) ⬝ᵥ n 0 = 0)
+    (hann : ∀ (u : Fin 3) (m : Fin 4 → ℝ), LinearIndependent ℝ ![n u, m] →
+      r (complementIso (k := 2) (j := 2) (by omega)
+        ⟨extensor ![n u, m], extensor_mem_exteriorPower _⟩) = 0) :
+    ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
+        r (complementIso (k := 2) (j := 2) (by omega)
+            ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0 := by
+  -- Two N3a panel normals `n a, n b` are independent (subfamily of the independent `n`).
+  have hpair : ∀ a b : Fin 3, a ≠ b → LinearIndependent ℝ ![n a, n b] := by
+    intro a b hab
+    have := hn.comp ![a, b] (by intro x y hxy; fin_cases x <;> fin_cases y <;> simp_all)
+    rwa [show (n ∘ ![a, b]) = ![n a, n b] from by ext x; fin_cases x <;> rfl] at this
+  -- **Two-panel join builder** (the three joins through `p 0`): the kept points `e₁ = homogenize
+  -- (p k₁)`, `e₂ = homogenize (p k₂)` both lie on panels `Π(u)` *and* `Π(w)` (two N3a normals), and
+  -- the join `omitTwoExtensor … = extensor ![e₁, e₂]`; `hann u (n w)` supplies the meet annihil.
+  have htwo : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u w : Fin 3) (e₁ e₂ : Fin 4 → ℝ),
+      u ≠ w → e₁ ⬝ᵥ n u = 0 → e₁ ⬝ᵥ n w = 0 → e₂ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n w = 0 →
+      omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![e₁, e₂] →
+      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
+        r (complementIso (k := 2) (j := 2) (by omega)
+            ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0 :=
+    fun _ u w e₁ e₂ huw h1u h1w h2u h2w hkept =>
+      ⟨n u, n w, e₁, e₂, hpair u w huw, h1u, h1w, h2u, h2w, hkept, hann u (n w) (hpair u w huw)⟩
+  -- **One-panel join builder** (the three "opposite" joins, single shared panel `Π(u)`): both kept
+  -- points lie on `Π(u)` (`e₁, e₂ ⊥ n u`); `exists_independent_perp_pair` builds a second
+  -- hyperplane `n'` through the line, and `hann u n'` supplies the meet annihilation.
+  have hone : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u : Fin 3) (e₁ e₂ : Fin 4 → ℝ),
+      e₁ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n u = 0 →
+      omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![e₁, e₂] →
+      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
+        r (complementIso (k := 2) (j := 2) (by omega)
+            ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0 :=
+    fun _ u e₁ e₂ h1u h2u hkept => by
+      obtain ⟨n', hpair', h1', h2'⟩ :=
+        exists_independent_perp_pair e₁ e₂ (n u) h1u h2u (hn.ne_zero u)
+      exact ⟨n u, n', e₁, e₂, hpair', h1u, h1', h2u, h2', hkept, hann u n' hpair'⟩
+  -- The per-join kept-points identity (concrete `c, d` per join), from the general tabulation.
+  have hkept : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (c d : Fin 4), c < d →
+      c ≠ q.1.1 → c ≠ q.1.2 → d ≠ q.1.1 → d ≠ q.1.2 →
+      omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)
+        = extensor ![homogenize (p c), homogenize (p d)] := by
+    intro q c d hcd hc1 hc2 hd1 hd2
+    obtain ⟨c', d', hcd', hc1', hc2', hd1', hd2', heq⟩ :=
+      omitTwoExtensor_homogenize_eq_extensor_kept p q
+    -- `c, d` and `c', d'` are both the increasing complement of `{q.1, q.2}`, hence equal.
+    obtain rfl : c' = c := by omega
+    obtain rfl : d' = d := by omega
+    exact heq
+  intro q
+  obtain ⟨h1a, h1b⟩ := h1; obtain ⟨h2a, h2b⟩ := h2; obtain ⟨h3a, h3b⟩ := h3
+  -- For each of the six joins, the kept points (`hkept`) come off the increasing complement of the
+  -- omitted pair, and the common panel(s) from the incidence tabulation: `(0,1)↦keep(2,3)`, `n2`
+  -- (one panel); `(0,2)↦keep(1,3)`, `n0`; `(0,3)↦keep(1,2)`, `n1`; `(1,2)↦keep(0,3)`, `{n0,n2}`
+  -- (two); `(1,3)↦keep(0,2)`, `{n1,n2}`; `(2,3)↦keep(0,1)`, `{n0,n1}`. The builders take `q`
+  -- explicitly so the heavy `omitTwoExtensor`/`complementIso` carrier need not be `whnf`'d to infer
+  -- it (TACTICS-QUIRKS §38).
+  fin_cases q
+  · exact hone ⟨(0, 1), by decide⟩ 2 _ _ h2b h3a
+      (hkept ⟨(0, 1), by decide⟩ 2 3 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact hone ⟨(0, 2), by decide⟩ 0 _ _ h1a h3b
+      (hkept ⟨(0, 2), by decide⟩ 1 3 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact hone ⟨(0, 3), by decide⟩ 1 _ _ h1b h2a
+      (hkept ⟨(0, 3), by decide⟩ 1 2 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact htwo ⟨(1, 2), by decide⟩ 0 2 _ _ (by decide) (h0 0) (h0 2) h3b h3a
+      (hkept ⟨(1, 2), by decide⟩ 0 3 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact htwo ⟨(1, 3), by decide⟩ 1 2 _ _ (by decide) (h0 1) (h0 2) h2a h2b
+      (hkept ⟨(1, 3), by decide⟩ 0 2 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact htwo ⟨(2, 3), by decide⟩ 0 1 _ _ (by decide) (h0 0) (h0 1) h1a h1b
+      (hkept ⟨(2, 3), by decide⟩ 0 1 (by decide) (by decide) (by decide) (by decide) (by decide))
+
 /-- **The candidate-completion conditional: at least one of the three candidate placements'
 top-left `D × D` blocks is full rank, so at least one candidate family is independent**
 (`lem:case-III-eq629-conditional`, KT eqs.~(6.29)/(6.30)/(6.41) + Claim~6.12; Katoh–Tanigawa 2011

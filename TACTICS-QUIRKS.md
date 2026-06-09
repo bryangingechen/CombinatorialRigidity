@@ -1456,6 +1456,19 @@ Worked case: `dualMap_matrix_entry_eq` (Phase 22d, `Molecular/AlgebraicInduction
 `extProj`-dual-map matrix entry feeding the projected rank polynomial's rationality (FRICTION
 *the `extProj`-dual-map matrix entry … is rational*).
 
+**Call-site variant (Phase 22g).** The same `whnf`/`isDefEq` timeout fires not only on an *in-place*
+unfold but when an `exact helper _ …` leaves a **heavy-carrier-typed argument implicit** and the
+elaborator must *infer* it by unifying the helper's conclusion against the goal — the conclusion
+mentions the heavy term (e.g. `omitTwoExtensor … (ne_of_lt q.2) = extensor …` over `⋀²ℝ⁴`), so
+solving the metavariable reduces it. Fix: **pass the heavy-carrier argument as an explicit literal**
+so the match is syntactic, not search. In `exists_hduality_witness_of_panel_incidence`
+(`Molecular/RigidityMatrix.lean`, the six-join `hduality` assembly) the join index `q` is the
+offending implicit — `fin_cases q` then `exact hone ⟨(0,1), by decide⟩ … ` (explicit subtype
+literal) elaborates instantly where the same call with `q := _` timed out. Corollary: prefer
+`fin_cases q` on the subtype over `obtain ⟨⟨i,j⟩,hij⟩ := q` + `fin_cases i <;> fin_cases j` — the
+latter leaves `hij : (fun i ↦ i) ⟨v,_⟩ < …` artifacts that block `omega` and forces a separate
+`c, d` resolution.
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or

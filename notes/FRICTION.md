@@ -768,6 +768,10 @@ housekeeping pass once their resolution is fully indexed.
   whnf blowup), but the remedy is lighter than § 38's extract-a-helper: a heavy carrier punishes
   left-to-right unification of underscored *lemma-application* args, so just name them — no abstract
   restatement needed when the timeout is at the *call site's* unification, not an in-place unfold.
+- **Recurred (Phase 22g):** the same call-site timeout, but the offending implicit was a *subtype
+  index* `q : {q // q.1 < q.2}` feeding a heavy `omitTwoExtensor (ne_of_lt q.2)` conclusion in
+  `exists_hduality_witness_of_panel_incidence` (`Molecular/RigidityMatrix.lean`). Remedy: `fin_cases q`
+  then pass `q` as an explicit subtype literal (`⟨(0,1), by decide⟩`) per branch — `q := _` timed out.
 - **Status:** resolved — explicit args in the landed proof.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 
