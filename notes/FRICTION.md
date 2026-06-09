@@ -76,6 +76,17 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Collapsing a 3-element `Set.insert` to a pair under a non-adjacent equality (`{a, b, c}` with `a = c`) — `rw [← h]; simp` doesn't close; use `ext w; simp only [mem_insert_iff, mem_singleton_iff, ← h]; tauto`
+- **Where it bit:** Phase 22g `isKDof_zero_of_triangle` (`Deficiency.lean`), the two-part-count
+  `({f x, f y, f z} : Set α).ncard = 2` in the `f x = f z` branch (collapse `{f x, f y, f z}` to
+  `{f x, f y}` before `Set.ncard_pair`).
+- **Friction:** `rw [← hxz']` turns `{f x, f y, f z}` into `{f y, f x, f x}` (the duplicate lands
+  *non-adjacent* to its twin after the `insert_comm` `simp` does), so `simp`/`Set.insert_idem` leaves a
+  residual `{f y, f x} = {f x, f y}`. The `f x = f y` and `f y = f z` branches collapse cleanly with
+  `rw [hxy']/[hyz']; simp` (duplicate adjacent); only the `f x = f z` "ends-equal" pattern needs the
+  membership-`ext` form. One MCP round-trip, no build cycle.
+- **Status:** resolved (`ext` + `tauto` form; one callsite, below the mirror bar).
+
 ### [resolved] `(Matrix.of ![pi, pj]).mulVecLin x i = ![pi, pj] i ⬝ᵥ x` needs a `simp [Matrix.mulVec, Matrix.of_apply, dotProduct_comm]` unfold per coordinate
 - **Where it bit:** Phase 22g `exists_independent_perp_pair` (`RigidityMatrix.lean`), proving the
   common-perp space `{x | pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0}` is the kernel of the two-functional map

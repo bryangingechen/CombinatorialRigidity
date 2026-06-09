@@ -381,6 +381,163 @@ induction (Phases 21–23). -/
 def IsProperRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop :=
   H.IsRigidSubgraph G n ∧ V(H).Nonempty ∧ V(H) ⊂ V(G)
 
+/-! ## A triangle is `0`-dof (`lem:case-III`, the `splitOff`-simplicity triangle brick) -/
+
+/-- **A triangle is body-hinge-rigid** (`0`-dof) for `D = bodyBarDim n ≥ 3`
+(Katoh–Tanigawa 2011, "a triangle is a `0`-dof-graph", the `splitOff`-simplicity
+obstruction of Lemma 6.7(ii)). Let `H` be a *triangle*: three distinct vertices
+`x, y, z` pairwise joined by three distinct edges `exy, eyz, exz` (with `V(H) =
+{x, y, z}` and `E(H) = {exy, eyz, exz}` exactly). Then `def(H̃) = 0`.
+
+Unlike a circuit-induced rigid subgraph (`circuit_induces_isRigidSubgraph`), a
+triangle at the regime `D ≥ 3` is *exactly* `(D,D)`-tight (`3(D−1) = 2D` at `D = 3`),
+so no circuit of `M(H̃)` lives inside it and the circuit route does not apply.
+Instead this is the direct `def ≤ 0` computation: `def(H̃) = ⨆_f def_{H̃}(P_f) ≤ 0`
+by `ciSup_le`, because every partition `P_f` of the three vertices has `def_{H̃}(P_f)
+= D(|P| − 1) − (D−1)·d(P) ≤ 0`. The three label-pattern cases (one part, two parts,
+three parts) carry crossing-edge counts `d ∈ {0, 2, 3}` — the singleton-out-of-two
+cut crosses both its edges, the all-distinct cut crosses all three — and the
+arithmetic `(D−1)·d ≥ D(|P| − 1)` closes for `D ≥ 3` (`D ≥ 2` already suffices for
+the two-part case; the three-part case is the binding `3(D−1) ≥ 2D ⟺ D ≥ 3`). With
+`def(H̃) ≥ 0` (`deficiency_nonneg`) this forces `def(H̃) = 0`. -/
+theorem isKDof_zero_of_triangle [Finite α] {H : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) {x y z : α} {exy eyz exz : β}
+    (hxney : x ≠ y) (hynez : y ≠ z) (hxnez : x ≠ z)
+    (hxy : H.IsLink exy x y) (hyz : H.IsLink eyz y z) (hxz : H.IsLink exz x z)
+    (hVH : V(H) = {x, y, z})
+    (hEH : E(H) = {exy, eyz, exz}) :
+    H.IsKDof n 0 := by
+  classical
+  have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
+  have hne : V(H).Nonempty := ⟨x, by rw [hVH]; exact Set.mem_insert x _⟩
+  haveI : Nonempty (α → α) := ⟨id⟩
+  rw [IsKDof]
+  refine le_antisymm ?_ (H.deficiency_nonneg n hne)
+  -- `def(H̃) = ⨆_f def_{H̃}(P_f) ≤ 0`: each partition's deficiency is `≤ 0`.
+  rw [deficiency]
+  refine ciSup_le fun f ↦ ?_
+  -- `numParts H f = |{f x, f y, f z}|`.
+  have himg : f '' V(H) = {f x, f y, f z} := by
+    rw [hVH]; ext w; simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨a, (rfl | rfl | rfl), rfl⟩ <;> tauto
+    · rintro (rfl | rfl | rfl)
+      exacts [⟨x, Or.inl rfl, rfl⟩, ⟨y, Or.inr (Or.inl rfl), rfl⟩, ⟨z, Or.inr (Or.inr rfl), rfl⟩]
+  -- The three edges are pairwise distinct: a shared edge would force a shared endpoint pair.
+  have hab_ne : exy ≠ eyz := fun h ↦ by
+    obtain ⟨h1, _⟩ | ⟨h1, _⟩ := hxy.eq_and_eq_or_eq_and_eq (h ▸ hyz)
+    exacts [hxney h1, hxnez h1]
+  have hbc_ne : eyz ≠ exz := fun h ↦ by
+    obtain ⟨h1, _⟩ | ⟨h1, _⟩ := hyz.eq_and_eq_or_eq_and_eq (h ▸ hxz)
+    exacts [hxney h1.symm, hynez h1]
+  have hac_ne : exy ≠ exz := fun h ↦ by
+    obtain ⟨_, h2⟩ | ⟨h1, _⟩ := hxy.eq_and_eq_or_eq_and_eq (h ▸ hxz)
+    exacts [hynez h2, hxnez h1]
+  -- An edge of `H` crosses `P_f` iff its two endpoints disagree under `f`; the three edges
+  -- are distinct, so each crossing condition is decided independently.
+  have hmem_exy : exy ∈ H.crossingEdges f ↔ f x ≠ f y := by
+    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+      true_or, true_and]
+    refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hxy, hd⟩⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hxy.eq_and_eq_or_eq_and_eq hl
+    exacts [hd, fun h ↦ hd h.symm]
+  have hmem_eyz : eyz ∈ H.crossingEdges f ↔ f y ≠ f z := by
+    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+      or_true, true_or, true_and]
+    refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨y, z, hyz, hd⟩⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hyz.eq_and_eq_or_eq_and_eq hl
+    exacts [hd, fun h ↦ hd h.symm]
+  have hmem_exz : exz ∈ H.crossingEdges f ↔ f x ≠ f z := by
+    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+      or_true, true_and]
+    refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, z, hxz, hd⟩⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hxz.eq_and_eq_or_eq_and_eq hl
+    exacts [hd, fun h ↦ hd h.symm]
+  -- `crossingEdges H f ⊆ {exy, eyz, exz}`, so it is one of the explicit sub-collections.
+  have hcross_sub : H.crossingEdges f ⊆ {exy, eyz, exz} := fun e he ↦ by
+    have : e ∈ E(H) := he.1; rwa [hEH] at this
+  -- The crux arithmetic: case on the three label equalities (the 5 consistent patterns;
+  -- the two transitivity-violating combinations are absurd). For each pattern both the
+  -- number of parts `|{f x, f y, f z}|` and the crossing count are pinned, and `omega`
+  -- closes `D(|P| − 1) ≤ (D − 1)·d` (binding at `3(D−1) ≥ 2D`, i.e. `D ≥ 3`).
+  rw [partitionDef, numParts, himg]
+  set D : ℤ := (bodyBarDim n : ℤ) with hDdef
+  by_cases hxy' : f x = f y <;> by_cases hyz' : f y = f z <;> by_cases hxz' : f x = f z
+  -- (1) all equal: 1 part, 0 crossing edges.
+  · have hpts : ({f x, f y, f z} : Set α).ncard = 1 := by
+      rw [show ({f x, f y, f z} : Set α) = {f x} by rw [hxy', hyz']; simp]; simp
+    have hcr : (H.crossingEdges f).ncard = 0 := by
+      rw [show H.crossingEdges f = ∅ from Set.eq_empty_of_forall_notMem fun e he ↦ by
+        rcases hcross_sub he with rfl | rfl | rfl
+        exacts [hmem_exy.mp he hxy', hmem_eyz.mp he hyz', hmem_exz.mp he hxz']]
+      exact Set.ncard_empty β
+    rw [hpts, hcr]; push_cast; ring_nf; linarith
+  -- (2) fx=fy, fy=fz, fx≠fz: impossible (transitivity).
+  · exact absurd (hxy'.trans hyz') hxz'
+  -- (3) fx=fy, fy≠fz, fx=fz: impossible (fz=fx=fy so fy=fz).
+  · exact absurd (hxz' ▸ hxy'.symm) hyz'
+  -- (4) fx=fy, fy≠fz, fx≠fz: 2 parts, edges yz & xz cross (d = 2).
+  · have hpts : ({f x, f y, f z} : Set α).ncard = 2 := by
+      rw [show ({f x, f y, f z} : Set α) = {f x, f z} by rw [hxy']; simp]
+      rw [Set.ncard_pair hxz']
+    have hcr : (H.crossingEdges f).ncard = 2 := by
+      rw [show H.crossingEdges f = {eyz, exz} from Set.Subset.antisymm
+        (fun e he ↦ by
+          rcases hcross_sub he with rfl | rfl | rfl
+          · exact absurd (hmem_exy.mp he) (not_not.mpr hxy')
+          · exact Set.mem_insert _ _
+          · exact Set.mem_insert_of_mem _ rfl)
+        (fun e he ↦ by
+          rcases he with rfl | rfl
+          exacts [hmem_eyz.mpr hyz', hmem_exz.mpr hxz'])]
+      exact Set.ncard_pair hbc_ne
+    rw [hpts, hcr]; push_cast; nlinarith [hDpos]
+  -- (5) fx≠fy, fy=fz, fx=fz: impossible (fx=fz=fy so fx=fy).
+  · exact absurd (hxz'.trans hyz'.symm) hxy'
+  -- (6) fx≠fy, fy=fz, fx≠fz: 2 parts, edges xy & xz cross (d = 2).
+  · have hpts : ({f x, f y, f z} : Set α).ncard = 2 := by
+      rw [show ({f x, f y, f z} : Set α) = {f x, f y} by rw [hyz']; simp]
+      rw [Set.ncard_pair hxy']
+    have hcr : (H.crossingEdges f).ncard = 2 := by
+      rw [show H.crossingEdges f = {exy, exz} from Set.Subset.antisymm
+        (fun e he ↦ by
+          rcases hcross_sub he with rfl | rfl | rfl
+          · exact Set.mem_insert _ _
+          · exact absurd (hmem_eyz.mp he) (not_not.mpr hyz')
+          · exact Set.mem_insert_of_mem _ rfl)
+        (fun e he ↦ by
+          rcases he with rfl | rfl
+          exacts [hmem_exy.mpr hxy', hmem_exz.mpr hxz'])]
+      exact Set.ncard_pair hac_ne
+    rw [hpts, hcr]; push_cast; nlinarith [hDpos]
+  -- (7) fx≠fy, fy≠fz, fx=fz: 2 parts, edges xy & yz cross (d = 2).
+  · have hpts : ({f x, f y, f z} : Set α).ncard = 2 := by
+      rw [show ({f x, f y, f z} : Set α) = {f x, f y} from by
+        ext w; simp only [Set.mem_insert_iff, Set.mem_singleton_iff, ← hxz']; tauto]
+      rw [Set.ncard_pair hxy']
+    have hcr : (H.crossingEdges f).ncard = 2 := by
+      rw [show H.crossingEdges f = {exy, eyz} from Set.Subset.antisymm
+        (fun e he ↦ by
+          rcases hcross_sub he with rfl | rfl | rfl
+          · exact Set.mem_insert _ _
+          · exact Set.mem_insert_of_mem _ rfl
+          · exact absurd (hmem_exz.mp he) (not_not.mpr hxz'))
+        (fun e he ↦ by
+          rcases he with rfl | rfl
+          exacts [hmem_exy.mpr hxy', hmem_eyz.mpr hyz'])]
+      exact Set.ncard_pair hab_ne
+    rw [hpts, hcr]; push_cast; nlinarith [hDpos]
+  -- (8) fx≠fy, fy≠fz, fx≠fz: 3 parts, all three edges cross (d = 3).
+  · have hpts : ({f x, f y, f z} : Set α).ncard = 3 := by
+      rw [Set.ncard_eq_three]; exact ⟨f x, f y, f z, hxy', hxz', hyz', rfl⟩
+    have hcr : (H.crossingEdges f).ncard = 3 := by
+      rw [show H.crossingEdges f = {exy, eyz, exz} from Set.Subset.antisymm hcross_sub
+        (fun e he ↦ by
+          rcases he with rfl | rfl | rfl
+          exacts [hmem_exy.mpr hxy', hmem_eyz.mpr hyz', hmem_exz.mpr hxz'])]
+      rw [Set.ncard_eq_three]; exact ⟨exy, eyz, exz, hab_ne, hac_ne, hbc_ne, rfl⟩
+    rw [hpts, hcr]; push_cast; nlinarith [hDpos]
+
 /-! ## Subgraph minimality (`lem:subgraph-minimality`; KT Lemma 3.3) -/
 
 /-- **Subgraph minimality** (`lem:subgraph-minimality`; Katoh–Tanigawa 2011 Lemma 3.3):

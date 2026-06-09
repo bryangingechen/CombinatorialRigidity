@@ -33,14 +33,15 @@ candidate support `(ofNormals …).supportExtensor e = panelSupportExtensor (nor
 **panel-meet** (PanelHinge.lean:89, `rfl`), the same `complementIso`/`extensor` form as a join — so the
 producer builds its candidate so its hinge line IS the witness join's line.
 
-**Next concrete step (smallest forward commit):** the **R3-triangle-brick** — its route is now SETTLED
-(recon §1.43): build (1) a triangle-tightness lemma (`(K₃)̃` is `(D,D)`-tight for `D ≥ 3`, the green
-Tutte–Nash-Williams `D`-spanning-tree packing) then (2) the `htri` discharge in Operations.lean
-(`G.induce {v,a,b}` + `induce_le` + a `4 ≤ V(G).ncard` proper-ness guard). The crux the recon pinned:
-`def((K₃)̃) = 0` is a **full-rank** computation, NOT a circuit — at `d=3` (`D=3`) the triangle is
-*exactly* `(D,D)`-tight (`3(D-1) = 6 = 2D`), so `circuit_induces_isRigidSubgraph` does not apply. This
-brick lands first (both R3 and Leaf 3 consume it). Full detail per leaf in the *Lemma checklist* +
-*Hand-off*; the checklist is the canonical done/open ledger.
+**Next concrete step (smallest forward commit):** the **R3-triangle-brick part (2)** — the `htri`
+discharge in Operations.lean. Part (1), the triangle-0-dof lemma `isKDof_zero_of_triangle`
+(Deficiency.lean), is **DONE 2026-06-09** (axiom-clean): a triangle is `0`-dof for `D ≥ 3`, proved via
+the `def ≤ 0` partition route (`ciSup_le` + a per-`f` `D(|P|−1) ≤ (D−1)·d` bound over the five label
+patterns) — cleaner than the rank-bounds route §1.43 sketched (no `2D`-fiber construction, no
+`matroidMG_indep_iff`). Part (2) assembles the `IsProperRigidSubgraph` witness `G.induce {v,a,b}` from
+it + `induce_le` + a `4 ≤ V(G).ncard` proper-ness guard, discharging `splitOff_simple_of_noRigid`'s
+`htri`. Full detail per leaf in the *Lemma checklist* + *Hand-off*; the checklist is the canonical
+done/open ledger.
 
 **Architecture + both GP residuals are SETTLED — no research-shaped node remains, the `d=3` producer
 is genuinely buildable** (full traces: `notes/Phase22-realization-design.md` §1.39–§1.42). The
@@ -54,11 +55,12 @@ Leaf 2a/2b (join↔meet bridge + line-indexed candidate placement + `case_III_fu
 criterion + discharge (`splitOff_simple`/`splitOff_simple_of_noRigid`) — all axiom-clean (Lemma
 checklist carries the per-leaf detail).
 
-**Remaining (→ phase close): ~4–6 commits** — R3-triangle-brick ~1–2, Leaf 3 (`hcand` §38-trap
-discharge, producer restated to `theorem_55_generic.hsplitGP`) ~2–3, Leaf 4 (`theorem_55_generic
-(n:=2)(k:=2)` instance, project `.2`) ~1, Leaf 5 (case-II/III flips + Thm 5.5→5.6 push feeding
-`rigidityMatrix_prop11`'s `hgen`) ~1 (§1.42). Milestone: the molecular conjecture at `d=3`, unblocking
-Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
+**Remaining (→ phase close): ~4–5 commits** — R3-triangle-brick part (2) (`htri` discharge,
+Operations.lean) ~1, Leaf 3 (`hcand` §38-trap discharge, producer restated to
+`theorem_55_generic.hsplitGP`) ~2–3, Leaf 4 (`theorem_55_generic (n:=2)(k:=2)` instance, project `.2`)
+~1, Leaf 5 (case-II/III flips + Thm 5.5→5.6 push feeding `rigidityMatrix_prop11`'s `hgen`) ~1 (§1.42).
+Milestone: the molecular conjecture at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma
+6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
 ## Lemma checklist — the live leaf sequence (§1.39)
 
@@ -165,17 +167,18 @@ Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23** (reuse map
     *mixed* KT obstruction = `htri f`+`hnoRigid`). **No 2-edge-connectivity** (standing §6.4 assumption,
     used in Lemma 4.6 to *find* the degree-2 vertex, already supplied). No friction, no blueprint node
     (sibling of the unpinned `rigidContract_simple`).
-  - [ ] **R3-triangle-brick** — discharge `htri`'s conclusion: a real `ab`-edge + the `va`,`vb` edges
-    close the triangle `H = G.induce {v,a,b}`, a 0-dof proper rigid subgraph. **Route SETTLED (recon
-    §1.43, 2026-06-09):** `def(H̃) = 0` is a direct **full-rank computation**, NOT a circuit — at `d=3`
-    (`n=2`, `D=3`) the triangle is *exactly* `(D,D)`-tight (`3(D-1) = 6 = 2D`), so no circuit exists and
-    `circuit_induces_isRigidSubgraph` does not apply. The `n`-uniform route: `rank M(H̃) = 2D` from both
-    bounds (upper `rank_matroidMG_le`; lower an explicit `(D,D)`-tight `2D`-fiber selection on the
-    3-vertex triangle = the green Tutte–Nash-Williams `D`-spanning-tree packing), then `def = 0` by
-    `omega` off `rank_add_deficiency_eq`. Two-part build: (1) a triangle-tightness lemma `(K₃)̃` is
-    `(D,D)`-tight for `D ≥ 3`; (2) the `htri` discharge in Operations.lean assembling `G.induce {v,a,b}`
-    + `induce_le` + a **proper-ness guard** (`4 ≤ V(G).ncard`, threaded from the splitting branch — flagged
-    in §1.43, verify the exact form when wiring). (~1–2 commits.) Lands first (R3 *and* Leaf 3 consume it).
+  - [x] **R3-triangle-brick part (1) — `isKDof_zero_of_triangle`** (Deficiency.lean, DONE 2026-06-09;
+    axiom-clean, no blueprint node). A triangle is `0`-dof for `D ≥ 3`, via the `def ≤ 0` partition
+    route (NOT the rank route §1.43 sketched). Full route + the recon-over-engineered lesson: *Decisions
+    made* / *Hand-off*.
+  - [ ] **R3-triangle-brick part (2) — the `htri` discharge** (Operations.lean): assemble the
+    `IsProperRigidSubgraph` witness `G.induce {v,a,b}` from `isKDof_zero_of_triangle` + `induce_le` + a
+    **proper-ness guard** (`4 ≤ V(G).ncard`, threaded from the splitting branch — flagged §1.43, verify
+    exact form when wiring). Need: `V(G.induce {v,a,b}) = {v,a,b}` (= `induce_vertexSet`-ish), the three
+    `induce`-links (`induce_isLink`, both endpoints in `{v,a,b}`), and `E(G.induce {v,a,b}) =
+    {eₐ,e_b,f}` exactly (the `edgeSet_induce` filtered set = the three edges, using `G.Simple` so no
+    fourth edge links a pair in `{v,a,b}`). Then `htri f hf := ⟨G.induce {v,a,b}, ⟨induce_le _, the
+    0-dof⟩, ⟨nonempty⟩, V ⊊ V(G) from the guard⟩`. (~1 commit.) Completes R3 and feeds Leaf 3.
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
   at the C2 feed). **(R2) (B), §1.41: restate the producer to `theorem_55_generic`'s `hsplitGP` shape**
   (gains `G.Simple` + the conditioned IH; concludes `HasGenericFullRankRealization 2 G`), pull `q` +
@@ -283,21 +286,30 @@ R3 is a clean bounded triangle mirror (verdict (A)). No research-shaped node rem
 `splitOff_simple` is the `hloop`/`hpar` sibling of the green `rigidContract_simple`; the discharge
 `splitOff_simple_of_noRigid` does the entire bounded combinatorial half — `a ≠ b` + the four-case
 `splitOff_isLink` `rcases`, with the triangle obstruction routed through `hnoRigid` + the
-green-modulo hypothesis `htri` (a real `ab`-edge ⟹ proper rigid subgraph). R3 now reduces to the
-**triangle-0-dof brick** only (discharge `htri`'s conclusion).
+green-modulo hypothesis `htri` (a real `ab`-edge ⟹ proper rigid subgraph).
 
-**Smallest next buildable sub-leaf — the R3-triangle-brick (lands first, both R3 and Leaf 3 consume it).
-Route SETTLED by recon §1.43.**
-- **R3-triangle-brick** (Operations.lean + a triangle-tightness lemma): discharge
-  `splitOff_simple_of_noRigid`'s `htri` — a real `ab`-edge + the `va`,`vb` edges close the triangle
-  `H = G.induce {v,a,b}`, a 0-dof (hence proper rigid) subgraph. **`def(H̃) = 0` is a full-rank
-  computation, NOT a circuit** (at `d=3` the triangle is *exactly* `(D,D)`-tight, `3(D-1)=6=2D`, so no
-  circuit exists — `circuit_induces_isRigidSubgraph` does not apply). The `n`-uniform route: `rank M(H̃)
-  = 2D` from both bounds (upper `rank_matroidMG_le`; lower an explicit `(D,D)`-tight `2D`-fiber selection
-  = the green Tutte–Nash-Williams `D`-spanning-tree packing on the 3-vertex triangle), then `def = 0` by
-  `omega` off `rank_add_deficiency_eq`. Two-part: (1) the triangle-tightness lemma; (2) the `htri`
-  discharge (`induce_le` + a `4 ≤ V(G).ncard` proper-ness guard, threaded from the splitting branch —
-  verify exact form when wiring). Full route + arithmetic + the statement-adjustment flag: §1.43.
+**R3-triangle-brick part (1) LANDED 2026-06-09** (`isKDof_zero_of_triangle`, Deficiency.lean;
+axiom-clean, no blueprint node). A triangle is `0`-dof for `D ≥ 3`. Built via the **`def ≤ 0`
+partition route** (NOT the rank-bounds route §1.43 sketched): `def(H̃) = ⨆_f partitionDef ≤ 0` by
+`ciSup_le`, reducing to a per-`f` bound `D(|P|−1) ≤ (D−1)·d` over the five consistent label patterns of
+`(f x, f y, f z)` (`numParts = |{f x,f y,f z}|`, crossing `d ∈ {0,2,3}` pinned per case; the two
+transitivity-violating combinations are `absurd`; `nlinarith [1 ≤ D]` closes, binding at `3(D−1) ≥
+2D`). Chosen over the rank route because it needs no `2D`-fiber construction and no `matroidMG_indep_iff`
+plumbing; with `deficiency_nonneg` it gives `def = 0`. Takes `x≠y/y≠z/x≠z` as explicit hyps (the
+consumer's `G.Simple` supplies them) + `V(H) = {x,y,z}` + `E(H) = {exy,eyz,exz}`. R3 now reduces to
+**part (2)** only — the `htri` discharge.
+
+**Smallest next buildable sub-leaf — the R3-triangle-brick part (2) (the `htri` discharge; completes R3,
+feeds Leaf 3).**
+- **R3-triangle-brick part (2)** (Operations.lean): discharge `splitOff_simple_of_noRigid`'s `htri` —
+  given a real `ab`-edge `f` (`G.IsLink f a b`) plus the `va`/`vb` edges, build the
+  `IsProperRigidSubgraph` witness `G.induce {v,a,b}` from `isKDof_zero_of_triangle` (now green) +
+  `induce_le` + a `4 ≤ V(G).ncard` **proper-ness guard** (threaded from the splitting branch — flagged
+  §1.43, verify exact form when wiring). Inputs to assemble for `isKDof_zero_of_triangle`: the three
+  `induce`-links (`induce_isLink`, both endpoints in `{v,a,b}`), `V(G.induce {v,a,b}) = {v,a,b}`, and
+  `E(G.induce {v,a,b}) = {eₐ,e_b,f}` exactly (the `edgeSet_induce` filtered set — uses `G.Simple` so no
+  fourth `G`-edge links a pair inside `{v,a,b}`); the vertex distinctness `v≠a/v≠b/a≠b` from `G.Simple` +
+  the edges. ~1 commit.
 - **Leaf 3 — discharge `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the seed feed):
   restate the producer to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the `IsGeneralPosition`
   conjunct, `(G.splitOff …).Simple` via R3, mirroring the green `case_I_realization`); feed
@@ -322,15 +334,19 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
-- **R3-triangle-brick recon — `def((K₃)̃) = 0` is a full-rank computation, NOT a circuit (2026-06-09;
-  canonical home `notes/Phase22-realization-design.md` §1.43).** The `htri` brick's content is
-  `H = G.induce {v,a,b}` is 0-dof. Crux finding: at `d=3` (`D=3`) the triangle is *exactly* `(D,D)`-tight
-  (`3(D-1) = 6 = 2D`), so no circuit lives in it and `circuit_induces_isRigidSubgraph` does not apply; the
-  brick is needed `n`-uniformly (consumed at the producer's parametric `n`), so the over-tight `n≥3`
-  circuit route is insufficient anyway. The `n`-uniform route: `rank M(H̃) = 2D` from `rank_matroidMG_le`
-  (upper) + a `(D,D)`-tight `2D`-fiber selection (lower, = the green Tutte–Nash-Williams `D`-tree packing),
-  then `def = 0` by `omega` off `rank_add_deficiency_eq`. Buildable, own commit(s); needs a `4 ≤ V(G).ncard`
-  proper-ness guard threaded through the brick (flagged §1.43). No `.lean`/`.tex` edits this pass.
+- **R3-triangle-brick part (1) — a triangle is `0`-dof via the `def ≤ 0` partition route, NOT the
+  rank-bounds route the §1.43 recon pinned (2026-06-09; `isKDof_zero_of_triangle`, Deficiency.lean).**
+  `def(H̃) = ⨆_f partitionDef ≤ 0` by `ciSup_le` + `deficiency_nonneg`, reducing to a per-`f` bound
+  `D(|P|−1) ≤ (D−1)·d` over the five consistent label patterns of `(f x,f y,f z)` (the two
+  transitivity-violating combinations are `absurd`; `numParts = |{f x,f y,f z}|`, crossing `d ∈ {0,2,3}`
+  pinned per case, edge-distinctness from the link structure; `nlinarith [1 ≤ D]` closes, binding at
+  `3(D−1) ≥ 2D ⟺ D ≥ 3`). **Lesson: the recon over-engineered.** §1.43 predicted a `rank M(H̃) = 2D`
+  full-rank computation (upper `rank_matroidMG_le` + a `(D,D)`-tight `2D`-fiber selection / `D`-tree
+  packing); but `def = max_P partitionDef` and `def ≥ 0` mean `def ≤ 0` is the only thing to prove, and
+  bounding `partitionDef` per partition needs neither a fiber-set construction nor `matroidMG_indep_iff`
+  — it mirrors the green `two_le_crossingEdges_of_isKDof_zero` (the reverse cut-partition idiom), not
+  `circuit_induces_isRigidSubgraph`. Takes `x≠y/y≠z/x≠z` + `V(H)={x,y,z}` + `E(H)={exy,eyz,exz}` as hyps
+  (the consumer's `G.Simple` supplies them). Axiom-clean, no blueprint node.
 - **R3 splitOff-simplicity — criterion + combinatorial discharge, triangle-0-dof carried as `htri`
   (2026-06-09; Operations.lean).** Split R3 three ways (mirroring Case I's criterion/composer
   factoring). `splitOff_simple` is the bounded `hloop`/`hpar` criterion (`not_isLoopAt` via
