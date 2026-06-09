@@ -810,6 +810,40 @@ Grassmann--Cayley projective duality.
   unnecessary by fixing the arrangement.
 \end{proof}
 
+\begin{lemma}[The witness points, parameterized by the \emph{real} split-leg panel normals; the (R1) reconciliation]
+  \label{lem:case-III-claim612-points-affineIndep-real-normals}
+  \lean{CombinatorialRigidity.Molecular.exists_homogeneousIncidence_of_normals}
+  \uses{lem:case-III-claim612-panel-point-exists, lem:affine-indep-iff}
+  The witness-point arrangement of \cref{lem:case-III-claim612-points-affineIndep} fixes its three
+  panel normals to the coordinate frame $e_0, e_1, e_2$. The $d = 3$ Case~III producer
+  (\cref{lem:case-II-realization}), however, reads its three panel normals $n_a, n_b, n_c$ off the
+  \emph{inductive} split-leg realization $q$ it is handed --- nonparallel (linearly independent),
+  but otherwise arbitrary --- and the candidate placement's supporting extensors must be incident to
+  \emph{those} real normals. So the producer needs the witness points
+  \emph{parameterized by given nonparallel $n \colon \mathrm{Fin}\,3 \to \R^4$}, not by a fixed
+  frame. Given any linearly independent $n$, there exist four homogeneous coordinate vectors
+  $\bar p \colon \mathrm{Fin}\,4 \to \R^4$ that are linearly independent and realize the same
+  triple-intersection incidence pattern relative to $n$: $\langle \bar p_1, n_u\rangle = 0$ for all
+  $u$, and each $\bar p_{i+1}$ orthogonal to two of the $n_u$ and strictly off the third.
+
+  This is the homogeneous-coordinate core of the reconciliation; the remaining
+  de-homogenization to affine $\R^3$ points (that the orthogonal vectors are not at infinity --- the
+  genericity-bearing residual) is deferred, so this node is not yet on the green producer route.
+\end{lemma}
+\begin{proof}
+  The pairing map $x \mapsto (u \mapsto \langle x, n_u\rangle)$ is the $\mathrm{mulVecLin}$ of the
+  row matrix whose rows are the $n_u$; its rows are linearly independent, so the matrix has full row
+  rank $3$ and the map is \emph{surjective}. Hence for any prescribed pairing target $t \in \R^3$
+  there is a preimage $x$ with $\langle x, n_u\rangle = t_u$. Take $\bar p_2, \bar p_3, \bar p_4$ as
+  the preimages of $(0,0,1), (1,0,0), (0,1,0)$ (giving exactly the off-one-panel incidence), and
+  $\bar p_1$ as the nonzero common-perp vector of all three normals
+  (\cref{lem:case-III-claim612-panel-point-exists}, $3 < 4$). Linear independence of the four
+  $\bar p_i$ is the triangular argument on the incidence matrix: pairing
+  $\sum_i g_i \bar p_i = 0$ against $n_0$ kills all but $\bar p_3 \Rightarrow g_3 = 0$; against $n_1
+  \Rightarrow g_4 = 0$; against $n_2 \Rightarrow g_2 = 0$; then $g_1 \bar p_1 = 0$ with
+  $\bar p_1 \ne 0 \Rightarrow g_1 = 0$. No genericity of $n$ beyond linear independence is used.
+\end{proof}
+
 \begin{lemma}[Point-join $\leftrightarrow$ panel-meet duality: a line in $\Pi(u)$ is annihilated by $r$ once $r \perp C(L)$; KT eq.\ (6.45) via Grassmann--Cayley]
   \label{lem:case-III-claim612-line-in-panel-union}
   \lean{CombinatorialRigidity.Molecular.complementIso_smul_eq_extensor_join,

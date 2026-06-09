@@ -88,6 +88,22 @@ housekeeping pass once their resolution is fully indexed.
   rank–nullity.
 - **Status:** resolved (no fix needed; one callsite, below the mirror bar).
 
+### [resolved] "row-LI `⟹ A.mulVecLin` surjective" (full row rank ⟹ the pairing map is onto) is not packaged — compose `LinearIndependent.rank_matrix` + `Submodule.eq_top_of_finrank_eq`
+- **Where it bit:** Phase 22g `exists_homogeneousIncidence_of_normals` (`RigidityMatrix.lean`), the
+  (R1)-core surjectivity step: from `LinearIndependent ℝ n` (`n : Fin 3 → Fin 4 → ℝ`), the pairing
+  map `x ↦ (u ↦ n u ⬝ᵥ x) = (Matrix.of n).mulVecLin` must be surjective so any prescribed pairing
+  target has a preimage (the incidence side-conditions of the four witness points).
+- **Friction:** mathlib has `LinearIndependent.rank_matrix` (`Matrix/Rank.lean`: row-LI ⟹ `A.rank =
+  card m`) and `Matrix.rank = finrank (range mulVecLin)` by definition, but not the one-step "row-LI
+  ⟹ `mulVecLin` surjective" corollary. The composition is short — `A.rank = 3`, then `range = ⊤` by
+  `Submodule.eq_top_of_finrank_eq` (`finrank (range) = 3 = finrank (Fin 3 → ℝ)`), then
+  `LinearMap.range_eq_top`. Two incidental gotchas: the lemma is the **root** `sum_dotProduct` (not
+  `Matrix.`/`Finset.`-namespaced); and `(A.mulVec x) u = A u ⬝ᵥ x = x ⬝ᵥ n u` needs `dotProduct_comm`
+  to match the `⬝ᵥ n u` orientation (same as the perp-pair entry above). Needed the new import
+  `Mathlib.LinearAlgebra.Matrix.Rank`.
+- **Status:** resolved (inlined; one callsite, below the mirror bar — the rectangular row-rank API is
+  already mirrored in `Mathlib/LinearAlgebra/Matrix/Rank.lean`, see the Phase-14 entries below).
+
 ### [resolved] "`{i,j}ᶜ.orderEmbOfFin` lands outside `{i,j}`" is a 4-`rw` unfold (`mem_compl`/`mem_insert`/`mem_singleton`/`not_or`) every time
 - **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`),
   proving the kept indices `emb 0, emb 1` of `{i,j}ᶜ.orderEmbOfFin` differ from `i, j`. The identical

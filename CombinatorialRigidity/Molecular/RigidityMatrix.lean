@@ -7,6 +7,7 @@ module
 
 public import Mathlib.Combinatorics.Graph.Basic
 public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import Mathlib.LinearAlgebra.Matrix.Rank
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
@@ -415,6 +416,117 @@ theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
   refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, hi', hj'⟩
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
+
+/-- **The homogeneous incidence core of the witness points, parameterized by the real panel
+normals** (`lem:case-III-claim612-points-affineIndep`, the (R1) reconciliation core; Katoh–Tanigawa
+2011 §6.4.1 eq. (6.45), Phase 22g). Given **three** real panel normals `n : Fin 3 → ℝ⁴` in
+*nonparallel* position (`LinearIndependent ℝ n` — the genericity the `d = 3` `hsplit` producer reads
+off its GP split-leg, `notes/Phase22-realization-design.md` §1.41), there exist four homogeneous
+coordinate vectors `pbar : Fin 4 → ℝ⁴` that are **linearly independent** and realize KT eq.
+(6.45)'s triple-intersection incidence pattern *relative to the real `n`*: `pbar 0` lies on all
+three panels (`⟨pbar 0, n u⟩ = 0`), and each `pbar (i+1)` lies on two of the panels but strictly off
+the third.
+
+This is the (R1) replacement, at the **homogeneous-vector** layer, for the hardcoded-normals
+`exists_affineIndependent_panel_incidence` (which fixes `n = e₀,e₁,e₂`): the producer's witness
+points must be orthogonal to the *real* split-leg panel normals `n_a, n_b, n_c`, not to a fixed
+coordinate frame. The construction is **genericity-free** — it isolates the genericity-bearing
+residual (the de-homogenization to affine `ℝ³` points, i.e. that the orthogonal vectors are not at
+infinity) exactly as `exists_ne_zero_dotProduct_eq_zero` / the det-polynomial bricks above isolate
+their own ingredients:
+
+* the row matrix `A = of n : Matrix (Fin 3) (Fin 4) ℝ` has linearly independent rows, so
+  `A.rank = 3` (`LinearIndependent.rank_matrix`); its image `range A.mulVecLin` then has
+  `finrank = 3 = finrank ℝ³`, hence is all of `ℝ³`, so `A.mulVecLin` is **surjective**. Concretely,
+  for *any* prescribed pairing target `t : Fin 3 → ℝ` there is `x : ℝ⁴` with `x ⬝ᵥ n u = t u` for
+  all `u`. The three points `pbar 1, pbar 2, pbar 3` are the preimages of the standard-basis-like
+  targets `(0,0,1)`, `(1,0,0)`, `(0,1,0)` (giving exactly the off-one-panel incidence), and `pbar 0`
+  is the nonzero common-perp vector from `exists_ne_zero_dotProduct_eq_zero`;
+* linear independence of the four `pbar` is the triangular argument on the incidence matrix: pairing
+  `∑ gᵢ • pbar i = 0` against `n 0` kills all but `pbar 2` ⟹ `g 2 = 0`; against `n 1` ⟹ `g 3 = 0`;
+  against `n 2` ⟹ `g 1 = 0`; then `g 0 • pbar 0 = 0` with `pbar 0 ≠ 0` ⟹ `g 0 = 0`. No genericity
+  of `n` beyond `LinearIndependent` is used.
+
+Graph-free; pure `Fin 4` panel geometry. The affine de-homogenization (the `pbar i = homogenize
+(p i)` representatives, the genericity-bearing residual) is the remaining (R1) sub-leaf. -/
+theorem exists_homogeneousIncidence_of_normals {n : Fin 3 → Fin 4 → ℝ}
+    (hn : LinearIndependent ℝ n) :
+    ∃ pbar : Fin 4 → Fin 4 → ℝ, LinearIndependent ℝ pbar ∧
+      (∀ u, pbar 0 ⬝ᵥ n u = 0) ∧
+      (pbar 1 ⬝ᵥ n 0 = 0 ∧ pbar 1 ⬝ᵥ n 1 = 0 ∧ pbar 1 ⬝ᵥ n 2 ≠ 0) ∧
+      (pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0 ∧ pbar 2 ⬝ᵥ n 0 ≠ 0) ∧
+      (pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0 ∧ pbar 3 ⬝ᵥ n 1 ≠ 0) := by
+  classical
+  -- The pairing map `x ↦ (u ↦ n u ⬝ᵥ x)` is `mulVecLin` of the row matrix `A = of n`; its rows are
+  -- linearly independent, so `A.rank = 3 = finrank ℝ³`, hence `mulVecLin` is surjective.
+  set A : Matrix (Fin 3) (Fin 4) ℝ := Matrix.of n with hA
+  have hrow : A.rank = 3 := by
+    have : LinearIndependent ℝ A.row := by
+      rw [show A.row = n from rfl]; exact hn
+    simpa using this.rank_matrix
+  have hsurj : Function.Surjective A.mulVecLin := by
+    rw [← LinearMap.range_eq_top]
+    apply Submodule.eq_top_of_finrank_eq
+    rw [show Module.finrank ℝ (Fin 3 → ℝ) = 3 from by rw [Module.finrank_pi]; rfl]
+    exact hrow
+  -- A preimage `x` of target `t : Fin 3 → ℝ` has `x ⬝ᵥ n u = t u` for all `u`.
+  have hpre : ∀ t : Fin 3 → ℝ, ∃ x : Fin 4 → ℝ, ∀ u, x ⬝ᵥ n u = t u := by
+    intro t
+    obtain ⟨x, hx⟩ := hsurj t
+    refine ⟨x, fun u => ?_⟩
+    have := congrFun hx u
+    rwa [Matrix.mulVecLin_apply, Matrix.mulVec, hA, dotProduct_comm] at this
+  -- `pbar 0`: nonzero common-perp vector of all three normals (`3 < 4`).
+  obtain ⟨p0, hp0ne, hp0⟩ := exists_ne_zero_dotProduct_eq_zero (by omega : 3 < 3 + 1) n
+  -- `pbar 1, 2, 3`: preimages of `(0,0,1)`, `(1,0,0)`, `(0,1,0)`; read their pairings off cleanly.
+  obtain ⟨p1, hp1⟩ := hpre ![0, 0, 1]
+  obtain ⟨p2, hp2⟩ := hpre ![1, 0, 0]
+  obtain ⟨p3, hp3⟩ := hpre ![0, 1, 0]
+  have e10 : p1 ⬝ᵥ n 0 = 0 := by simpa using hp1 0
+  have e11 : p1 ⬝ᵥ n 1 = 0 := by simpa using hp1 1
+  have e12 : p1 ⬝ᵥ n 2 = 1 := by simpa using hp1 2
+  have e20 : p2 ⬝ᵥ n 0 = 1 := by simpa using hp2 0
+  have e21 : p2 ⬝ᵥ n 1 = 0 := by simpa using hp2 1
+  have e22 : p2 ⬝ᵥ n 2 = 0 := by simpa using hp2 2
+  have e30 : p3 ⬝ᵥ n 0 = 0 := by simpa using hp3 0
+  have e31 : p3 ⬝ᵥ n 1 = 1 := by simpa using hp3 1
+  have e32 : p3 ⬝ᵥ n 2 = 0 := by simpa using hp3 2
+  -- Assemble the witness family and read its incidence off the clean pairings (`![…] i` reduces).
+  set pbar : Fin 4 → Fin 4 → ℝ := ![p0, p1, p2, p3] with hpbar
+  have hb0 : ∀ u, pbar 0 ⬝ᵥ n u = 0 := fun u => by simpa [hpbar] using hp0 u
+  have hb1 : pbar 1 ⬝ᵥ n 0 = 0 ∧ pbar 1 ⬝ᵥ n 1 = 0 ∧ pbar 1 ⬝ᵥ n 2 ≠ 0 :=
+    ⟨by simpa [hpbar] using e10, by simpa [hpbar] using e11, by simp [hpbar, e12]⟩
+  have hb2 : pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0 ∧ pbar 2 ⬝ᵥ n 0 ≠ 0 :=
+    ⟨by simpa [hpbar] using e21, by simpa [hpbar] using e22, by simp [hpbar, e20]⟩
+  have hb3 : pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0 ∧ pbar 3 ⬝ᵥ n 1 ≠ 0 :=
+    ⟨by simpa [hpbar] using e32, by simpa [hpbar] using e30, by simp [hpbar, e31]⟩
+  refine ⟨pbar, ?_, hb0, hb1, hb2, hb3⟩
+  -- Linear independence: the triangular argument on the incidence matrix.
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  -- Pairing `∑ gᵢ • pbar i = 0` against `n u` gives `∑ gᵢ (pbar i ⬝ᵥ n u) = 0`.
+  have hpair : ∀ u : Fin 3, g 0 * (p0 ⬝ᵥ n u) + g 1 * (p1 ⬝ᵥ n u) + g 2 * (p2 ⬝ᵥ n u)
+      + g 3 * (p3 ⬝ᵥ n u) = 0 := by
+    intro u
+    have hzero : (∑ i, g i • pbar i) ⬝ᵥ n u = 0 := by rw [hg]; simp
+    rw [sum_dotProduct, Fin.sum_univ_four] at hzero
+    simpa only [hpbar, smul_dotProduct, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.head_cons, Matrix.cons_val, Matrix.cons_val_two, Matrix.cons_val_three,
+      Matrix.tail_cons] using hzero
+  -- Each pairing isolates one coordinate (the unique `pbar i` off that panel).
+  have hg2 : g 2 = 0 := by
+    have h := hpair 0; rw [hp0 0, e10, e20, e30] at h; linarith
+  have hg3 : g 3 = 0 := by
+    have h := hpair 1; rw [hp0 1, e11, e21, e31] at h; linarith
+  have hg1 : g 1 = 0 := by
+    have h := hpair 2; rw [hp0 2, e12, e22, e32] at h; linarith
+  -- With `g 1 = g 2 = g 3 = 0`, `hg` reduces to `g 0 • p0 = 0`, and `p0 ≠ 0` forces `g 0 = 0`.
+  have hg0 : g 0 = 0 := by
+    rw [Fin.sum_univ_four, hg1, hg2, hg3] at hg
+    simp only [hpbar, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+      Matrix.cons_val_two, Matrix.cons_val_three, Matrix.tail_cons, zero_smul, add_zero] at hg
+    exact (smul_eq_zero.mp hg).resolve_right hp0ne
+  intro i; fin_cases i <;> assumption
 
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
