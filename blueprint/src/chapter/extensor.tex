@@ -169,7 +169,8 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 \begin{lemma}[Extensor independence; Katoh--Tanigawa Lemma 2.1]
   \label{lem:extensor-independence}
   \lean{CombinatorialRigidity.Molecular.omitTwoExtensor,
-    CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent}
+    CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent,
+    CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent_of_li}
   \leanok
   \uses{def:affine-subspace-extensor, def:plucker-coords, lem:affine-indep-iff}
   Let $p_1, \dots, p_{d+1} \in \R^{d}$ be affinely independent. The
@@ -201,6 +202,13 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   the $D$ extensors by the increasing pairs $a < b$, and reindexes the
   surviving join via the bijection that sends the first two slots to
   $a, b$ and the rest to the increasing enumeration of $\{a, b\}^{c}$.
+  The argument reads only \emph{linear} independence of the
+  homogenizations $\bar p_i$ (affine independence enters once, via
+  \cref{lem:affine-indep-iff}, to supply it), so the affine-free core
+  \texttt{omitTwoExtensor\_linearIndependent\_of\_li} holds for any
+  linearly-independent family; the Case~III spanning consumer
+  (\cref{lem:case-III-claim612-extensor-span}) is fed bare homogeneous
+  vectors and uses that form directly.
 \end{proof}
 
 This independence is the linear-algebraic foundation that Case~III of

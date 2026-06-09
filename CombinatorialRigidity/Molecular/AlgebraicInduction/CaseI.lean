@@ -3907,13 +3907,14 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
     (_hsplit : PanelHingeFramework.HasFullRankRealization 2 (G.splitOff v a b e₀))
     -- the parent endpoint selector and a vertex (carried; supplied by the IH/links in L1/L5)
     (ends : β → α × α) (_hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (_hne : V(G).Nonempty)
-    -- the candidate-selection data of `case_III_claim612` (Claim 6.12, existential form, §1.39)
+    -- the candidate-selection data of `case_III_claim612` (Claim 6.12, existential form, §1.39):
+    -- the witness points enter at the homogeneous-vector layer (bare LI, §1.42 R1-affine).
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
-    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
+    {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar)
     -- the line-indexed candidate placement (Leaf 2/3, §1.39): given the witness join `q` with
     -- `r̂(C(L)) ≠ 0` for the line `L = p̄ᵢ p̄ⱼ`, build the candidate at `L` and feed C2.
     (hcand : ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-      r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+      r ⟨omitTwoExtensor pbar (ne_of_lt q.2),
         extensor_mem_exteriorPower _⟩ ≠ 0 →
       PanelHingeFramework.HasFullRankRealization 2 G) :
     PanelHingeFramework.HasFullRankRealization 2 G := by

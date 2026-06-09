@@ -486,18 +486,20 @@ private theorem join_pair_omitTwo_other_eq_zero {e : ℕ} (v : Fin (e + 2) → F
     · simp [hk]
     · intro h; simp only [Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd] at h; omega
 
-/-- **Extensor independence; Katoh–Tanigawa Lemma 2.1**
-(`lem:extensor-independence`). For `e + 2` affinely independent points
-`p : Fin (e+2) → ℝ^(e+1)`, the `(e+2 choose 2)` many omit-two extensors of the
-homogenized family `v = homogenize ∘ p` are linearly independent. -/
-theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e + 1) → ℝ)
-    (hp : AffineIndependent ℝ p) :
+/-- **Extensor independence, affine-free form; Katoh–Tanigawa Lemma 2.1**
+(`lem:extensor-independence`). For any `e + 2` *linearly* independent vectors
+`v : Fin (e+2) → ℝ^(e+2)`, the `(e+2 choose 2)` many omit-two extensors are linearly
+independent. This is the load-bearing content of Lemma 2.1: the proof reads only
+`LinearIndependent ℝ v`, never the affine origin of `v`. The affine statement
+(`omitTwoExtensor_linearIndependent`) is the corollary at `v = homogenize ∘ p`, but the `d = 3`
+Case-III consumers (`span_omitTwoExtensor_eq_top`, `case_III_claim612`) feed bare homogeneous
+witness vectors (`exists_homogeneousIncidence_of_normals`), so they consume this form directly —
+no de-homogenization to affine points (`notes/Phase22-realization-design.md` §1.42, R1-affine). -/
+theorem omitTwoExtensor_linearIndependent_of_li {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → ℝ)
+    (hv : LinearIndependent ℝ v) :
     LinearIndependent ℝ
       (fun q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2} =>
-        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)) := by
-  set v := fun i => homogenize (p i) with hvdef
-  have hv : LinearIndependent ℝ v :=
-    (affineIndependent_iff_linearIndependent_homogenize p).mp hp
+        omitTwoExtensor v (ne_of_lt q.2)) := by
   rw [Fintype.linearIndependent_iff]
   intro g hg q₀
   obtain ⟨⟨a, b⟩, hablt⟩ := q₀
@@ -536,5 +538,20 @@ theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e 
   simp only [Finset.mem_univ, if_true] at key
   -- `g q₀ • T = 0` with `T ≠ 0` forces `g q₀ = 0`.
   exact (smul_eq_zero.mp key).resolve_right (join_pair_omitTwo_self_ne_zero hv hab)
+
+/-- **Extensor independence; Katoh–Tanigawa Lemma 2.1**
+(`lem:extensor-independence`). For `e + 2` affinely independent points
+`p : Fin (e+2) → ℝ^(e+1)`, the `(e+2 choose 2)` many omit-two extensors of the
+homogenized family `v = homogenize ∘ p` are linearly independent. The corollary of the affine-free
+core (`omitTwoExtensor_linearIndependent_of_li`) at `v = homogenize ∘ p`, where affine independence
+of `p` gives linear independence of the homogenizations
+(`affineIndependent_iff_linearIndependent_homogenize`). -/
+theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e + 1) → ℝ)
+    (hp : AffineIndependent ℝ p) :
+    LinearIndependent ℝ
+      (fun q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2} =>
+        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)) :=
+  omitTwoExtensor_linearIndependent_of_li (fun i => homogenize (p i))
+    ((affineIndependent_iff_linearIndependent_homogenize p).mp hp)
 
 end CombinatorialRigidity.Molecular

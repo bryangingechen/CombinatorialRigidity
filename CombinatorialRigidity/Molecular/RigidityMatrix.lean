@@ -111,30 +111,33 @@ theorem card_le_screwDim_of_linearIndependent {k m : ℕ} (c : Fin m → ScrewSp
   have := h.fintype_card_le_finrank
   rwa [Fintype.card_fin, screwSpace_finrank] at this
 
-/-- **The `D` panel-support 2-extensors of `4` affinely-independent points span `ScrewSpace 2`**
-(`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1). At `d = 3`
-(`D = 6`, `ScrewSpace 2 = ⋀²ℝ⁴`, `finrank = 6`), for four affinely-independent points
-`p : Fin 4 → ℝ³` the `binom(4,2) = 6` panel-support `2`-extensors `omitTwoExtensor (homogenize ∘ p)`
+/-- **The `D` panel-support 2-extensors of `4` linearly-independent homogeneous vectors span
+`ScrewSpace 2`** (`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1).
+At `d = 3` (`D = 6`, `ScrewSpace 2 = ⋀²ℝ⁴`, `finrank = 6`), for four linearly-independent
+homogeneous vectors `pbar : Fin 4 → ℝ⁴` the `binom(4,2) = 6` panel-support `2`-extensors
+`omitTwoExtensor pbar`
 — one per pair, the join `pᵢ ∨ pⱼ` of the line through each pair — span all of
-`⋀²ℝ⁴ = ScrewSpace 2`. By Lemma 2.1 (`omitTwoExtensor_linearIndependent` at `e = 2`) the six are
-linearly independent in the `6`-dimensional `ScrewSpace 2`, and a linearly independent family of
+`⋀²ℝ⁴ = ScrewSpace 2`. By Lemma 2.1 (`omitTwoExtensor_linearIndependent_of_li` at `e = 2`) the six
+are linearly independent in the `6`-dimensional `ScrewSpace 2`, and a linearly independent family of
 `6 = finrank ℝ (ScrewSpace 2)` vectors is a basis, hence spans. This is the spanning input to the
 Claim-6.12 contrapositive (`lem:case-III-claim612`): a single nonzero `r ∈ ScrewSpace 2`
-annihilating every supporting extensor in the union (6.45) is forced to be `0`. -/
-theorem span_omitTwoExtensor_eq_top {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p) :
+annihilating every supporting extensor in the union (6.45) is forced to be `0`. The bare-LI
+hypothesis is what the `d = 3` producer feeds directly (`exists_homogeneousIncidence_of_normals`),
+sparing the de-homogenization to affine points (`notes/Phase22-realization-design.md` §1.42). -/
+theorem span_omitTwoExtensor_eq_top {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar) :
     Submodule.span ℝ
         (Set.range (fun q : {q : Fin 4 × Fin 4 // q.1 < q.2} =>
-          (⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+          (⟨omitTwoExtensor pbar (ne_of_lt q.2),
             extensor_mem_exteriorPower _⟩ : ScrewSpace 2))) = ⊤ := by
   set c : {q : Fin 4 × Fin 4 // q.1 < q.2} → ScrewSpace 2 :=
-    fun q => ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+    fun q => ⟨omitTwoExtensor pbar (ne_of_lt q.2),
       extensor_mem_exteriorPower _⟩
   -- The coerced family is the Lemma-2.1 omit-two family, linearly independent; transport
   -- the independence through the (injective) submodule inclusion.
   have hcoe : LinearIndependent ℝ
       (fun q : {q : Fin 4 × Fin 4 // q.1 < q.2} =>
-        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)) :=
-    omitTwoExtensor_linearIndependent p hp
+        omitTwoExtensor pbar (ne_of_lt q.2)) :=
+    omitTwoExtensor_linearIndependent_of_li pbar hp
   have hLI : LinearIndependent ℝ c :=
     (LinearMap.linearIndependent_iff (⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype
       (Submodule.ker_subtype _)).1 hcoe
@@ -1707,20 +1710,24 @@ the panel-meet of a line through two of the four points is exactly one of their 
 
 The argument is a clean contrapositive of the existential. If `r̂` annihilated *every* one of the
 six joins — KT's union-(6.45) "for *every* choice of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`"
-— then since those six joins of four affinely-independent points **span** `ScrewSpace 2 = ⋀²ℝ⁴`
-(`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), `r̂` would annihilate their span and so be `0`
-(`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The annihilation hypothesis
-is *not* a carried premise: it is precisely the internal `by_contra` negation `∀ q, r̂(join q) = 0`.
-The earlier three-fixed-`Cᵢ` disjunction conclusion (`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` at three
-*hardcoded* lines) was *mathematically undischargeable* — three `2`-extensors span ≤ 3 of the 6
-dimensions of `⋀²ℝ⁴`, so `r̂ ⊥ C₁,C₂,C₃` cannot force `r̂ = 0`; only the full line sweep (Lemma 2.1)
-does. The producer (`case_III_hsplit_producer`) consumes the existential by building its candidate
-placement so its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. -/
+— then since those six joins of four linearly-independent homogeneous vectors **span** `ScrewSpace 2
+= ⋀²ℝ⁴` (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), `r̂` would annihilate their
+span and so be `0` (`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The
+annihilation hypothesis is *not* a carried premise: it is precisely the internal `by_contra`
+negation `∀ q, r̂(join q) = 0`. The earlier three-fixed-`Cᵢ` disjunction conclusion
+(`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` at three *hardcoded* lines) was *mathematically
+undischargeable* — three `2`-extensors span ≤ 3 of the 6 dimensions of `⋀²ℝ⁴`, so `r̂ ⊥ C₁,C₂,C₃`
+cannot force `r̂ = 0`; only the full line sweep (Lemma 2.1) does. The producer
+(`case_III_hsplit_producer`) consumes the existential by building its candidate placement so
+its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. The points enter at the
+**homogeneous-vector**
+layer (bare `LinearIndependent ℝ pbar`, fed by `exists_homogeneousIncidence_of_normals`); no affine
+de-homogenization is needed (`notes/Phase22-realization-design.md` §1.42, R1-affine). -/
 theorem case_III_claim612
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
-    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p) :
+    {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar) :
     ∃ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-      r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+      r ⟨omitTwoExtensor pbar (ne_of_lt q.2),
         extensor_mem_exteriorPower _⟩ ≠ 0 := by
   -- Contrapositive of the existential: if `r̂` annihilated *every* one of the six panel-support
   -- joins of the four affinely-independent points, it would annihilate their span `= ⋀²ℝ⁴`
