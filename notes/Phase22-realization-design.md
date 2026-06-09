@@ -1052,6 +1052,167 @@ transport (G3a's `htransport`, re-entering via `lem:case-III` / 22b+) and the
 
 ---
 
+### 1.40 The CaseI.lean producer-core recon + the line-realizability constructibility verdict — (B), with two carried obligations the producer's own data supplies (2026-06-09)
+
+> **Build-free design pass.** Recons the `case_III_hsplit_producer` core (CaseI.lean:3638, the
+> `hcand` discharge — Leaf 2/3) against the green Lean and KT §6.4.1 (pp. 678, 690–691). Verdict on
+> the coordinator's CRUX question (is the line-indexed candidate placement constructible for an
+> *arbitrary* one of the six witness joins, or does it need a non-degeneracy the existential /
+> Case-III hypotheses may not supply): **(B) — constructible, needs non-degeneracy, and the
+> producer's own construction supplies it** — with one genuine residual the build must own (the
+> abstract-N3a ↔ real-placement reconciliation + the split-leg `ab`-transversality), flagged below.
+> No `.lean` / `.tex` edits this pass.
+
+**The core, read end-to-end.** `case_III_hsplit_producer` is the **bare** `hsplit` branch of the
+two-motive `theorem_55` (PanelHinge.lean:1160, it produces `HasFullRankRealization`, consumes the
+bare `_hsplit : HasFullRankRealization 2 (G.splitOff v a b e₀)` — **no** GP/nonparallel promise). Its
+body is now `obtain ⟨q, hq⟩ := case_III_claim612 hr hp; exact hcand q hq` (§1.39, Leaf 1, green); the
+whole producer math is carried in the single green-modulo hypothesis
+`hcand : ∀ q : six joins, r̂(pᵢ∨pⱼ) ≠ 0 → HasFullRankRealization 2 G`. Discharging `hcand` is the
+genuine deferred core (Leaf 2/3). `HasFullRankRealization 2 G := ∃ Q, Q.graph = G ∧ Q rigid on V(G)`
+(PanelHinge.lean:979) is an **existential over realizations** — the producer is free to choose `Q`'s
+panel normals; this is the freedom the construction turns on.
+
+**(1) How the current FIXED-seed placement works (`case_II_placement_eq612`, CaseI.lean:2719).** From
+the IH-extracted rigid `ofNormals Gv ends q` (rigid on `V(Gv) = V(G)∖{v}`, `ab`-hinge `e₀` transversal
+`hgab : LinearIndependent ![n_a, n_b]`, `n_a := q(a,·)`, `n_b := q(b,·)`), it places body `v`'s normal
+at the **shear** `n_a + t•n_b` (`t ≠ 0`, the eq.-(6.12) seed `q₀`), overriding only the fresh
+`v ∉ V(Gv)` so the `Gv`-block is untouched and the IH rigidity transports
+(`ofNormals_update_eq_withNormal` + `toBodyHinge_withNormal_infinitesimalMotions_eq`). It assembles
+`D(|V|−1)−1` independent rigidity rows = the OLD block (`exists_independent_panelRow_subfamily_of_rigidOn_linking`
++ the `f=id`, `hrow=rfl` transport N7b-2) ⊕ the NEW block (`exists_independent_panelRow_subfamily_of_edge`
+at `e_b = vb`), pin-split through `v`'s screw column (N7b-3). The `+1` candidate row (the
+candidate-completion, `linearIndependent_sum_augment_candidateRow`) lifts it to `D(|V|−1)`, gated by
+the **row-space criterion** `linearIndependent_sumElim_candidateRow_iff F e_a r̂` ⟺ `r̂(C(e_a)) ≠ 0`
+(`mem_hingeRowBlock_iff`: the `D−1` `va`-block rows already span `(span C(e_a))^⊥`, so appending `r̂`
+raises rank to `D` iff `r̂ ∉ (span C(e_a))^⊥`). The carrier built is `ofNormals G ends q₀` (`withGraph`
+the §38 trap); the criterion needs `r̂(C(e_a)) ≠ 0` for `C(e_a) = F.supportExtensor e_a`.
+
+**(2) THE LOAD-BEARING GEOMETRIC FACT — the candidate's `va`-line is fixed by the IH seed, not the
+shear.** `e_a = (v,a)`'s two panel normals are `v`'s normal `n_a + t•n_b` and `a`'s normal `n_a`, so
+its support is `panelSupportExtensor (n_a + t•n_b) n_a`. By `panelSupportExtensor_add_smul_left`
+(PanelLayer.lean:251, green) this is `(-t)•panelSupportExtensor n_a n_b = (-t)•C(e₀)` — a **scalar
+multiple of the `ab`-hinge extensor `C(e₀)`**, for *every* `t ≠ 0`. **The shear `t` only rescales the
+extensor; it does NOT move the line.** So a single IH realization at seed `q` realizes exactly **one**
+`va`-line `span{C(e₀)} ⊂ Π(a)` (the meet of bodies `a`'s and `b`'s real panels). Symmetrically `M₂`
+(`vb`-split) realizes one line in `Π(b)`, `M₃` (`ac`-split, the `a↔v` iso) one in `Π(c)`. **The
+producer's three candidates therefore test `r̂` at three FIXED extensors `C₁,C₂,C₃` — exactly the
+three-fixed situation §1.38/§1.39 confirmed cannot force `r̂ = 0` (three `2`-extensors span ≤ 3 of
+`⋀²ℝ⁴`'s 6 dims).** KT's "for any `L ⊂ Π(a)`" freedom is genuine line-variation; the Lean shear is
+*not* it. This is why Claim 6.12 had to become the existential over the **six** joins (Lemma 2.1, full
+span) rather than the three candidate extensors — re-confirmed at the placement-construction level.
+
+**(3) §38 trap map.** The §38 `ofNormals`/`withGraph` defeq-timeout bites exactly the sub-terms that
+instantiate the heavy `ofNormals G ends q₀` carrier: `F.supportExtensor e_a` / `e_b` (the `hane`/`hnewne`
+extensor-nonzero facts, CaseI.lean:2815/2823, discharged via `toBodyHinge_supportExtensor` +
+`ofNormals_ends`/`ofNormals_normal` rewrites — reuse verbatim), `F.panelRow ends i ∈ F.rigidityRows`
+membership (`panelRow_mem_rigidityRows` + `IsSubgraph.isLink_iff`), and the final
+`hasFullRankRealization_of_candidateSelector` C2 feed (CaseI.lean:2204, which fixes `ofNormals G ends q₀`).
+Generic-helper extraction (TACTICS-QUIRKS §38): the row-space/independence reasoning is **already**
+graph-free over abstract `F` (`linearIndependent_sum_{p2,p3,augment}_candidateRow[_selector]`,
+`case_II_placement_eq612`'s blocks read only `ends`/`q₀`/`supportExtensor`); keep it abstract and
+instantiate `ofNormals` only at the seed (the C1/C2/L1–L4 discipline, already followed). The one new
+place the trap may newly bite is the per-line second-normal `n'` plumbing of (4) — but
+`exists_independent_perp_pair` + the Leaf-2b core are pure `Fin 4` geometry (graph-free), so the trap
+stays confined to the existing C2-feed site. No *new* generic helper is forced beyond what L3 already
+anticipated (`panelRow_ofNormals_candidate_eq`, §1.34 L3) unless a `convert`/`rw` walls.
+
+**(4) THE CRUX, settled — verdict (B).** The chain that closes the gap, every link verified green:
+- The producer **supplies the four points `p`** to `case_III_claim612` (they are a *parameter*, not
+  fixed) — so it uses the self-contained N3a witness `exists_affineIndependent_panel_incidence`
+  (RigidityMatrix.lean:290, green): three nonparallel normals `n : Fin 3 → ℝ⁴` (`LinearIndependent`)
+  + four affinely-independent points `p` with the `Π(a)/Π(b)/Π(c)` triple-intersection incidence.
+- For the witness join `q`, the kept-pair identity `omitTwoExtensor_homogenize_eq_extensor_kept`
+  (green) gives `pᵢ∨pⱼ = extensor ![p̄_c, p̄_d]`; the six-join dispatch
+  `exists_hduality_witness_of_panel_incidence` (green, `2bd5fa2` — **obsolete on §1.39's `hann`-route
+  but its `fin_cases q` panel-assignment is reusable**) shows **all six joins are covered**: the three
+  through-`p0` joins lie in TWO panels (use two N3a normals), the three "opposite" joins in ONE panel
+  (the second normal `n'` from `exists_independent_perp_pair`, RigidityMatrix.lean:377, green —
+  rank–nullity: the common-perp of two points in `ℝ⁴` is `≥ 2`-dim, strictly above `span{n_u}`).
+- The Leaf-2b core `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (PanelLayer.lean:332,
+  green) is the keystone: given `n_u, n'` independent with both join points `⊥` both, and `t ≠ 0`,
+  `r̂(extensor ![pi,pj]) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u + t•n') n_u) ≠ 0` — i.e. the existential
+  witness `r̂(pᵢ∨pⱼ) ≠ 0` forces `r̂(C(e_a)) ≠ 0` at the candidate built with `n_u`/`n'`, the exact
+  row-space-criterion input. The `-t` cancels under `r̂` (the shear-invariance of (2), turned to
+  advantage: the line is `n_u ∧ n'` regardless of `t`).
+- **So the construction IS feasible for an arbitrary one of the six witnesses** — provided the
+  candidate's `va`-hinge is built with `n_u, n'` = the witness join's two panel normals. **The
+  non-degeneracy needed** — (i) the three panels nonparallel (`LinearIndependent n`), (ii) the four
+  points affinely independent, (iii) per opposite join a transversal second normal `n'` — **is supplied
+  by the producer's own data**: (i)/(ii) by N3a (self-contained, the producer constructs them), (iii)
+  by `exists_independent_perp_pair`. None is a carried obligation that could be undischargeable for a
+  specific witness; N3a covers all six uniformly. **Verdict (B):** non-degeneracy is needed and the
+  producer's construction (not a fragile Case-III hypothesis) supplies it. This is *not* the `hann`-trap
+  shape — there is no premise on a specific witness that could fail; the existential is fully consumed.
+
+**(5) The two genuine residuals the build must own (why (B) not a clean "all six, nothing needed").**
+The verdict is (B) and not (A) because two reconciliations are real producer-internal work, not free:
+- **(R1) abstract-N3a ↔ real-placement panels.** The Leaf-2b core takes the candidate's *actual* `va`
+  normals `n_u = n_a`, `n' = n_b` — the **real IH realization's** normals (`n_a = q(a,·)`,
+  `n_b = q(b,·)`), read off `_hsplit`'s framework. The witness-join points `p̄_c, p̄_d` are the
+  **abstract N3a** points, orthogonal to the **abstract N3a** normals `n : Fin 3 → ℝ⁴` — *not* a priori
+  to the real `n_a, n_b`. The core fires only when `p̄_c, p̄_d ⊥ n_a, n_b`. So the build must **identify
+  the N3a normals with the real candidate-panel normals** — either choose `p` relative to the real
+  `n_a, n_b, n_c` (an N3a *parameterized by given nonparallel normals*, which the current
+  `exists_affineIndependent_panel_incidence` does NOT expose — it constructs `n = e₀,e₁,e₂`), or build
+  the candidate placement's normals to be the N3a `n`. The latter is available: `HasFullRankRealization`
+  is existential, and `case_II_placement_eq612` reads `n_a, n_b` from the IH seed `q` — but `q` (the
+  split-off realization) comes from `_hsplit`, fixed, so the producer cannot freely set `n_a, n_b` to
+  the N3a normals without re-realizing the split-off graph. The honest resolution: generalize N3a to
+  **take the real panel normals as input** (a points-from-given-normals existence lemma, via
+  `exists_ne_zero_dotProduct_eq_zero` (green) per panel-intersection + the affine-independence
+  det-polynomial route already green), so `p` is built against the real `n_a, n_b, n_c`. This is a new
+  graph-free leaf, bounded (the det-polynomial machinery N3a uses is all green), but it IS new work —
+  the current N3a is the wrong shape for the producer (it hardcodes the normals).
+- **(R2) the split-leg `ab`-transversality.** `case_II_placement_eq612` needs
+  `hgab : LinearIndependent ![n_a, n_b]` (the `ab`-hinge `e₀` transversal at the IH seed) and the three
+  panels nonparallel (`LinearIndependent ![n_a, n_b, n_c]`) for the candidate lines to be genuine
+  `(d−2)`-flats and the N3a identification (R1) to be non-degenerate. The **bare** `_hsplit` motive
+  carries **no GP/nonparallel promise** (PanelHinge.lean:1160; the GP motive `hsplitGP` does, but
+  `case_III_hsplit_producer` is the bare branch). This is the Track-B "incoming split-leg nonparallel"
+  flag (§3 Track B; KT pp. 673–675's Claim-6.4 nonparallel input). KT obtains it from the IH's
+  "nonparallel if simple" — i.e. the **GP motive**. So discharging `hcand` at full generality may need
+  the producer to consume the GP `_hsplit` (route through `hsplitGP`/`HasGenericFullRankRealization`),
+  or to supply the transversality some other way. This is the same general-position dependency Case-I's
+  simple cases hit (G1, dissolved by the two-motive split); for Case III it re-surfaces as the question
+  *which `theorem_55` branch the producer lives in*. **Flagged, not yet resolved:** confirm at Leaf-3
+  build whether the bare branch suffices (e.g. transversality of the *specific* `ab`-hinge follows from
+  `G.splitOff`'s structure + minimality without full GP) or whether `case_III_hsplit_producer` must be
+  restated to consume the GP motive. This does NOT re-incur the `hann` trap (it is a motive-strength
+  question, fully tracked by the two-motive split, not a smuggled hypothesis with no node).
+
+**(6) Buildable-leaf decomposition of the CaseI.lean core (discharging `hcand`, Leaf 2/3).** Bottom-up,
+each a smallest-buildable commit; the `[green]` bricks are already in tree:
+1. **L2b-place — the line-indexed candidate placement.** Generalize `case_II_placement_eq612` /
+   `case_III_old_new_blocks` (CaseI.lean:3353) to take the candidate's `va`-hinge normals as the
+   witness panel's `n_u, n'` (rather than the implicit IH `n_a, n_b`): produce the candidate framework
+   `ofNormals G ends q₀` whose `va`-support is `panelSupportExtensor (n_u + t•n') n_u = (-t)•C(L)` and
+   whose `(D−1)` block rows span `(span C(L))^⊥`. Reuses the green OLD/NEW block infra (L1) + L2 span
+   bridge + the shear lemmas `[green]`; the §38 trap is confined to the `ofNormals` carrier. Likely
+   splits (the seed-from-line construction; the per-line block span at `C(L)`).
+2. **N3a-from-normals (R1) — points adapted to the real panels.** A graph-free leaf:
+   `∃ p, AffineIndependent p ∧ (the six-join incidence relative to the real nonparallel `n_a,n_b,n_c`)`,
+   built via `exists_ne_zero_dotProduct_eq_zero` `[green]` per panel + the det-polynomial affine-indep
+   route `exists_affineIndependent_of_det_polynomial_ne_zero` / `exists_detPolynomial_of_pointPolynomial`
+   `[green]`. Replaces the hardcoded-normals `exists_affineIndependent_panel_incidence` for the producer.
+3. **per-line block-failure / span criterion at `C(L)`** — run `linearIndependent_sumElim_candidateRow_iff`
+   `[green]` at the L2b-place candidate's `e_a` with `r̂(C(L)) ≠ 0` (from the Leaf-2b core `[green]`,
+   fed the witness `hq`) → the independent `D(|V|−1)`-family.
+4. **row-space-criterion → C2 feed** — `hasFullRankRealization_of_candidateSelector` `[green]` (C2) at
+   the fixed `ofNormals G ends q₀`, the per-row `rigidityRows` membership from L4
+   `panelRow_mem_rigidityRows` `[green]`. Discharges `hcand q hq`. **§38 trap** at the carrier.
+5. **(R2) motive-branch reconciliation** — confirm bare `_hsplit` suffices or restate to GP; the
+   six-join panel dispatch reuses `exists_hduality_witness_of_panel_incidence`'s `fin_cases q`
+   assignment `[green]` + `exists_independent_perp_pair` `[green]` for the second normals.
+
+**Smallest next buildable sub-leaf:** **L2b-place** (item 1) — the line-indexed generalization of
+`case_II_placement_eq612`'s seed/shear, the prerequisite all of 3/4 consume; its seed-from-line
+*geometric* core already landed (`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`, Leaf 2b
+done). **Flag (R2) at Leaf 3** as the one genuine open architectural question (bare vs GP motive); it
+does not block L2b-place. The reuse map for Phase 23 general-`d` (§1.33 (C)/(D)) is unchanged.
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic
