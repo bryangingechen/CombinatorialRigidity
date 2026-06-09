@@ -76,6 +76,16 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] "`{i,j}ᶜ.orderEmbOfFin` lands outside `{i,j}`" is a 4-`rw` unfold (`mem_compl`/`mem_insert`/`mem_singleton`/`not_or`) every time
+- **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`),
+  proving the kept indices `emb 0, emb 1` of `{i,j}ᶜ.orderEmbOfFin` differ from `i, j`. The identical
+  chain already sits in `pairAppend_injective` (`Extensor.lean`).
+- **Friction:** `Finset.orderEmbOfFin_mem` gives `emb k ∈ {i,j}ᶜ`; turning that into `emb k ≠ i ∧
+  emb k ≠ j` is the 4-`rw` `mem_compl, mem_insert, mem_singleton, not_or` unfold each time. No build
+  cycle (precedent in-file); a one-line `Finset.notMem_pair_of_mem_compl_pair`-style helper would fuse
+  it, but two callsites is below the mirror bar.
+- **Status:** resolved (no fix needed; logged so a third callsite triggers the helper).
+
 ### [resolved] `case_III_eq629_conditional` was minted with one shared index type `ιfam` for all three candidate families — the three genuinely differ; generalize to `ιfam₁ ιfam₂ ιfam₃`
 - **Where it bit:** Phase 22g L0 `case_III_hsplit_producer` (`CaseI.lean`) — feeding the three
   candidate families (the `M₁` candidate is `(rn ⊕ Unit) ⊕ ro`; `M₂`/`M₃` differ) to the selection

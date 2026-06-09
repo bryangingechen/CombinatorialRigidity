@@ -322,6 +322,43 @@ theorem exists_affineIndependent_panel_incidence :
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
 
+/-- **The kept-points tabulation of the six spanning joins** (`lem:case-III-claim612`, N3a/N3b
+glue; Katoh–Tanigawa 2011 §6.4.1 eq. (6.45), Phase 22g). For the four affinely-independent points
+`p : Fin 4 → ℝ³` of `exists_affineIndependent_panel_incidence` (N3a) and a join
+`q : {q // q.1 < q.2}` (the omitted pair), the spanning join
+`omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2)` — the `2`-extensor of the two points **kept** by
+the omit-two operation — is the point-join `extensor ![homogenize (p c), homogenize (p d)]` of the
+two increasing complement indices `c < d` of `{q.1, q.2}`. This is the purely combinatorial
+`orderEmbOfFin`-computation half of the per-join `hduality` witness (`case_III_claim612`): it pins
+down, for each of the six joins, *which two points* span the join, so the `hduality` dispatch can
+look up the panel(s) the join's line `pᵢpⱼ` lies in (the incidence tabulation of N3a) and supply the
+two normals `{n_u, n'}` the per-line transfer
+(`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`) consumes.
+
+The six joins and their kept (complement) pairs: `(0,1)↦(2,3)`, `(0,2)↦(1,3)`, `(0,3)↦(1,2)`,
+`(1,2)↦(0,3)`, `(1,3)↦(0,2)`, `(2,3)↦(0,1)`. Graph-free; pure `Finset.orderEmbOfFin` arithmetic
+(`Finset.orderEmbOfFin_unique`) on `Fin 4`. -/
+theorem omitTwoExtensor_homogenize_eq_extensor_kept (p : Fin 4 → Fin 3 → ℝ)
+    (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
+    ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
+      omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)
+        = extensor ![homogenize (p c), homogenize (p d)] := by
+  obtain ⟨⟨i, j⟩, hij⟩ := q
+  -- The kept pair is the increasing enumeration `emb 0 < emb 1` of `{i, j}ᶜ` (`orderEmbOfFin`,
+  -- `StrictMono`); both differ from `i, j` (`orderEmbOfFin_mem` lands in the complement). The join
+  -- identity `omitTwoExtensor v = extensor (v ∘ emb) = extensor ![v (emb 0), v (emb 1)]` is then a
+  -- `funext`.
+  set emb := (({i, j} : Finset (Fin 4))ᶜ).orderEmbOfFin (card_compl_pair (ne_of_lt hij)) with hemb
+  have hmem : ∀ k : Fin 2, emb k ≠ i ∧ emb k ≠ j := by
+    intro k
+    have h := Finset.orderEmbOfFin_mem (({i, j} : Finset (Fin 4))ᶜ)
+      (card_compl_pair (ne_of_lt hij)) k
+    rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
+    exact ⟨(hemb ▸ h).1, (hemb ▸ h).2⟩
+  refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
+    (hmem 1).2, ?_⟩
+  rw [omitTwoExtensor]; congr 1; ext k; fin_cases k <;> rfl
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

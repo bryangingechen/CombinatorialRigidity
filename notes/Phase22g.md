@@ -20,15 +20,18 @@ per-line N3b brick over the six joins. The C3 spine carries the Claim-6.12 data
 (`r`/`hr`/`hp`/`hduality`/`Cᵢ`/`hselᵢ`) + per-candidate `hmemᵢ`/`hcardᵢ` as explicit hypotheses; all
 three `hselᵢ`, the `+1` `r̂`-row `hmemᵢ`, and the `r̂` candidate-vector data (`hr`) are in hand.
 
-**Next concrete step (smallest forward commit): C5c — discharge `case_III_hsplit_producer`'s
-remaining carried data at real `ofNormals` graph data (§38 defeq trap).** This now includes
-*producing* the per-panel-line `hduality` witnesses: for each of the six joins `q`, supply the two
-panel normals through the complementary line + the four `⬝ᵥ`-orthogonalities + the
-`omitTwoExtensor … q = extensor ![pi, pj]` identity + `r ⊥ C(those normals)` — keyed off the N3a
-incidence (`exists_affineIndependent_panel_incidence`, the panel tabulation in §1.36) and the
-failed-block contrapositive (KT eqs. (6.42)–(6.44)). Plus the OLD/NEW-block `hmemᵢ` at the real
-`ofNormals` carrier (§38). If graph-side progress is preferred, an OLD/NEW-block `hmemᵢ` leaf is
-independent of the `hduality`-witness assembly. **The C4↔C5 ordering stands:** a *green*
+**Next concrete step (smallest forward commit): C5c-(i) cont. — the per-join `hduality` *normal*
+witnesses + the failed-block contrapositive.** The combinatorial half just landed
+(`omitTwoExtensor_homogenize_eq_extensor_kept`, RigidityMatrix.lean): for each of the six joins `q`
+it names the two kept points `c < d` (the increasing complement of `{q.1, q.2}`) and pins
+`omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2) = extensor ![homogenize (p c), homogenize (p d)]`
+— the item-(3) identity of every witness, graph-free. Still needed per join: the **two panel
+normals** `{n_u, n'}` (two N3a normals directly for the three through-`p0` joins; for the three
+single-panel "opposite" joins a *constructed* second normal — any `n'` independent from the N3a
+normal with both kept points ⊥ it, from the 2-dim orthogonal complement of `{homogenize (p c),
+homogenize (p d)}` in `ℝ⁴`), the four `⬝ᵥ`-orthogonalities (N3a incidence), and `r ⊥ C(n_u ∧ n')`
+(the failed-block contrapositive, KT eqs. (6.42)–(6.44)). Plus, independently, the OLD/NEW-block
+`hmemᵢ` at the real `ofNormals` carrier (§38). **The C4↔C5 ordering stands:** a *green*
 `d=3`-instance `theorem_55` node (C4, B.2) cannot land before the C3 spine's carried data is
 discharged (C5c).
 
@@ -228,10 +231,19 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
     orthogonalities + `omitTwoExtensor=extensor` identity is now part of discharging `hduality` at
     real data (the failed-block contrapositive supplies `r ⊥ C(L)`; the N3a tabulation supplies the
     pairs, §1.36).
+- [x] **C5c-leaf — the six-join kept-points tabulation**
+  (`omitTwoExtensor_homogenize_eq_extensor_kept`, RigidityMatrix.lean). The combinatorial half of the
+  per-join `hduality` witness item (3): for each join `q`, names the kept pair `c < d` (increasing
+  complement of `{q.1, q.2}`) and the identity `omitTwoExtensor (homogenize ∘ p) (ne_of_lt q.2) =
+  extensor ![homogenize (p c), homogenize (p d)]`. Proof = `set emb := {i,j}ᶜ.orderEmbOfFin`, kept
+  pair is `emb 0/1` (`orderEmbOfFin_mem` ⟹ outside `{i,j}`, `strictMono` ⟹ `<`), identity by
+  `funext`. Graph-free, axiom-clean. (2026-06-09)
 - [ ] **C5c — discharge `case_III_hsplit_producer`'s remaining carried data** at real `ofNormals`
-  graph data (§38 defeq trap): (i) *produce* the per-join `hduality` witnesses (the N3a panel
-  tabulation + the eqs. (6.42)–(6.44) failed-block contrapositive — see *Current state*); (ii) the
-  OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand) + `Cᵢ`/`hp` (green). Wires
+  graph data (§38 defeq trap): (i) the per-join `hduality` witnesses — the kept-points identity is in
+  hand (the leaf above); still need the two panel **normals** (N3a directly for the three through-`p0`
+  joins, a constructed second normal for the three opposite joins) + the four `⬝ᵥ`-orthogonalities
+  (N3a) + the eqs. (6.42)–(6.44) failed-block contrapositive `r ⊥ C(n_u ∧ n')` — see *Current state*;
+  (ii) the OLD/NEW-block `hmemᵢ` (the `+1`-row `hmemᵢ` is in hand) + `Cᵢ`/`hp` (green). Wires
   `case_III_claim612` ⊕ the producers. Takes the C3 spine fully green.
 - [ ] **C4 — `d=3`-instance `theorem_55` node** (B.2) — once C5 lands: instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node.
@@ -261,12 +273,15 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 **Smallest next commit: C5c — discharge `case_III_hsplit_producer`'s carried data at real `ofNormals`
 graph data** (§38 defeq trap). Two independent strands, either a smallest commit:
 - **(i) Produce the per-join `hduality` witnesses.** `case_III_claim612`'s restated `hduality` (C5a,
-  landed) now needs, per join `q`, the two panel normals through the complementary line + the four
-  `⬝ᵥ`-orthogonalities + the `omitTwoExtensor (homogenize∘p) q = extensor ![pi,pj]` identity +
-  `r ⊥ C(those normals)`. Source: the N3a incidence (`exists_affineIndependent_panel_incidence`, the
-  six-join panel tabulation in §1.36) for the normals/orthogonalities, and the failed-block
-  contrapositive (KT eqs. (6.42)–(6.44)) for `r ⊥ C(L)`. The `omitTwoExtensor`-↔-complementary-pair
-  identity is a `fin_cases q` + `orderEmbOfFin` computation (Extensor.lean shapes). Graph-free until
+  landed) needs, per join `q`, the two panel normals + the four `⬝ᵥ`-orthogonalities + the
+  `omitTwoExtensor (homogenize∘p) q = extensor ![pi,pj]` identity + `r ⊥ C(those normals)`. **The
+  `omitTwoExtensor = extensor ![pi,pj]` identity + the kept indices are now in hand**
+  (`omitTwoExtensor_homogenize_eq_extensor_kept`, RigidityMatrix.lean — the `orderEmbOfFin`
+  computation). Still needed: the two panel normals (N3a `exists_affineIndependent_panel_incidence`
+  directly for the three through-`p0` joins; a *constructed* second normal for the three opposite
+  joins — any `n'` indep from the N3a normal with both kept points ⊥ it, from the 2-dim orthogonal
+  complement of the two kept homogenized points in `ℝ⁴`) + the four `⬝ᵥ`-orthogonalities (N3a
+  incidence) + the failed-block contrapositive `r ⊥ C(L)` (KT eqs. (6.42)–(6.44)). Graph-free until
   the `r`/`Cᵢ` data is instantiated.
 - **(ii) The OLD/NEW-block `hmemᵢ`** at the real `ofNormals` carrier (the `+1`-row `hmemᵢ` is in hand
   via `hingeRow_mem_rigidityRows`); via L2 span bridge / L4 membership on the L1 blocks. Independent
@@ -292,6 +307,17 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
+- **C5c-leaf: the six-join kept-points tabulation landed with the kept pair as `emb 0/1`, not
+  hard-coded per-join values (2026-06-09).** `omitTwoExtensor_homogenize_eq_extensor_kept`
+  (RigidityMatrix.lean) takes a join `q` and returns `∃ c d, c < d ∧ (c,d avoid q.1,q.2) ∧
+  omitTwoExtensor (homogenize∘p) (ne_of_lt q.2) = extensor ![homogenize (p c), homogenize (p d)]`.
+  Witnessing `c,d` as the literal complement values per join needed an explicit value in each
+  `fin_cases q` branch (the `by decide` selection proofs can't drive that inference — metavariable
+  errors); witnessing them as `emb 0, emb 1` (`emb := {q.1,q.2}ᶜ.orderEmbOfFin`) is uniform and
+  `fin_cases`-free — `orderEmbOfFin_mem` gives "outside `{i,j}`", `strictMono` gives `<`, identity by
+  `funext`. The consumer recovers concrete `c,d` via its own `fin_cases q` + the carried `≠`/`<`
+  constraints. Graph-free, axiom-clean. Friction: the `mem_compl/insert/singleton/not_or` unfold
+  (FRICTION [resolved]).
 - **C5a/C5b landed: `case_III_claim612`'s `hduality` restated to the per-panel-line model + the
   six-join dispatch in-body (2026-06-09; verdict home `notes/Phase22-realization-design.md` §1.36).**
   The fixed-`C₁C₂C₃` `hduality` was mathematically undischargeable (three `2`-extensors span
