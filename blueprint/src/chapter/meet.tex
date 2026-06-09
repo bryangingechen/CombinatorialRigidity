@@ -244,7 +244,8 @@ consume them; projective invariance is Phase~25.
         CombinatorialRigidity.Molecular.panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero,
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_old_new_blocks_of_line,
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_full_family_of_line,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_of_line}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_of_line,
+        CombinatorialRigidity.Molecular.exists_line_data_of_homogeneousIncidence}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
@@ -285,7 +286,12 @@ consume them; projective invariance is Phase~25.
   $+1$ row $\mathrm{hingeRow}\,v\,a\,\hat r$ as a row of the $va$-hinge block (it has
   $\hat r(C(L)) \ne 0$, so it is not a single panel row but it does lie in the hinge-row span) --- so
   the fixed-placement rank-nullity bound at the candidate framework yields a full-rank realization of
-  $G$ directly, no genericity round-trip.
+  $G$ directly, no genericity round-trip. The witness line itself is selected by the line-data leaf
+  ($\mathrm{exists\_line\_data\_of\_homogeneousIncidence}$): from the homogeneous incidence of the
+  four points relative to the three real split-leg normals (the producer-direction reading of
+  eq.~(6.45), stripped of the annihilation premise), each of the six joins $\bar{p_i} \vee \bar{p_j}$
+  yields a panel normal $n_u$ and a second hyperplane $n'$ through its line $L = \bar{p_i} \bar{p_j}$,
+  the line the candidate framework is built around.
 \end{lemma}
 \begin{proof}
   \leanok

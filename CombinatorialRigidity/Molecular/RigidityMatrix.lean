@@ -531,6 +531,123 @@ theorem exists_homogeneousIncidence_of_normals {n : Fin 3 → Fin 4 → ℝ}
     exact (smul_eq_zero.mp hg).resolve_right hp0ne
   intro i; fin_cases i <;> assumption
 
+/-- **The kept-points tabulation of the six spanning joins, at the homogeneous-vector layer**
+(`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1
+eq. (6.45), Phase 22g). The bare-`pbar` analogue of `omitTwoExtensor_homogenize_eq_extensor_kept`:
+for a homogeneous family `pbar : Fin 4 → ℝ⁴` and a join `q : {q // q.1 < q.2}` (the omitted pair),
+the spanning join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join
+`extensor ![pbar c, pbar d]` of the two increasing complement indices `c < d` of `{q.1, q.2}` — the
+two points the join's line `p̄_c p̄_d` actually spans. The producer feeds `pbar` directly from
+`exists_homogeneousIncidence_of_normals` (no affine de-homogenization, §1.42 R1-affine), so the
+join-line lookup is stated against the bare family rather than `homogenize ∘ p`. Graph-free; pure
+`Finset.orderEmbOfFin` arithmetic (same `orderEmbOfFin_unique` computation as the affine form). -/
+theorem omitTwoExtensor_eq_extensor_kept (pbar : Fin 4 → Fin 4 → ℝ)
+    (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
+    ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
+      omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pbar c, pbar d] := by
+  obtain ⟨⟨i, j⟩, hij⟩ := q
+  set emb := (({i, j} : Finset (Fin 4))ᶜ).orderEmbOfFin (card_compl_pair (ne_of_lt hij)) with hemb
+  have hmem : ∀ k : Fin 2, emb k ≠ i ∧ emb k ≠ j := by
+    intro k
+    have h := Finset.orderEmbOfFin_mem (({i, j} : Finset (Fin 4))ᶜ)
+      (card_compl_pair (ne_of_lt hij)) k
+    rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
+    exact ⟨(hemb ▸ h).1, (hemb ▸ h).2⟩
+  refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
+    (hmem 1).2, ?_⟩
+  rw [omitTwoExtensor]; congr 1; ext k; fin_cases k <;> rfl
+
+/-- **The per-join witness line data from the homogeneous incidence** (`lem:case-III-claim612`, the
+"extract the witness line `L`" leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1
+eqs. (6.42)–(6.45), Phase 22g). The producer-direction analogue of the (now `hann`-obsolete)
+`exists_hduality_witness_of_panel_incidence`: where that lemma carried a meet-annihilation premise
+`hann` and concluded the per-join annihilation, this strips both and hands over only the **geometric
+line data**, on the **homogeneous-vector** layer (bare `pbar`, fed by
+`exists_homogeneousIncidence_of_normals`, §1.42 R1-affine). For each of the six joins `q`, it
+produces a witness panel normal `n_u` (a real split-leg normal `n u`), a second hyperplane `n'`
+through the join line `L = p̄_c p̄_d` independent from `n_u`, and the two kept points
+`pi = pbar c, pj = pbar d` the join spans — all four facts the candidate placement needs:
+`LinearIndependent ![n_u, n']`, the four `⬝ᵥ`-orthogonalities `{pi, pj} ⊥ {n_u, n'}`, and the join
+identity `omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj]`.
+
+This is exactly the input
+`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (the Leaf-2b seed-from-line core)
+consumes to turn Claim 6.12's existential witness `r̂(p̄_i ∨ p̄_j) ≠ 0` into the nonzero
+candidate-row input `r̂(panelSupportExtensor (n_u + t • n') n_u) ≠ 0` the row-space criterion fires
+on. The
+construction mirrors `exists_hduality_witness_of_panel_incidence`'s two builders: the three joins
+through `p̄ 0` lie on **two** N3a panels (use two real normals `n u, n w`); the three "opposite"
+joins share **one** panel `Π(u)` (use `n u` and a constructed second normal from
+`exists_independent_perp_pair`). Graph-free; pure `Fin 4` panel geometry. -/
+theorem exists_line_data_of_homogeneousIncidence
+    {n : Fin 3 → Fin 4 → ℝ} (hn : LinearIndependent ℝ n)
+    {pbar : Fin 4 → Fin 4 → ℝ}
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (h1 : pbar 1 ⬝ᵥ n 0 = 0 ∧ pbar 1 ⬝ᵥ n 1 = 0)
+    (h2 : pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0)
+    (h3 : pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0) :
+    ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] := by
+  -- Two N3a panel normals `n a, n b` are independent (subfamily of the independent `n`).
+  have hpair : ∀ a b : Fin 3, a ≠ b → LinearIndependent ℝ ![n a, n b] := by
+    intro a b hab
+    have := hn.comp ![a, b] (by intro x y hxy; fin_cases x <;> fin_cases y <;> simp_all)
+    rwa [show (n ∘ ![a, b]) = ![n a, n b] from by ext x; fin_cases x <;> rfl] at this
+  -- **Two-panel join builder** (the three joins through `p̄ 0`): the kept points `e₁, e₂` both lie
+  -- on panels `Π(u)` *and* `Π(w)` (two N3a normals); take `{n_u, n'} = {n u, n w}`.
+  have htwo : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u w : Fin 3) (e₁ e₂ : Fin 4 → ℝ),
+      u ≠ w → e₁ ⬝ᵥ n u = 0 → e₁ ⬝ᵥ n w = 0 → e₂ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n w = 0 →
+      omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![e₁, e₂] →
+      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] :=
+    fun _ u w e₁ e₂ huw h1u h1w h2u h2w hkept =>
+      ⟨n u, n w, e₁, e₂, hpair u w huw, h1u, h1w, h2u, h2w, hkept⟩
+  -- **One-panel join builder** (the three "opposite" joins, single shared panel `Π(u)`): both kept
+  -- points lie on `Π(u)`; `exists_independent_perp_pair` builds a second hyperplane `n'`.
+  have hone : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u : Fin 3) (e₁ e₂ : Fin 4 → ℝ),
+      e₁ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n u = 0 →
+      omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![e₁, e₂] →
+      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
+        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] :=
+    fun _ u e₁ e₂ h1u h2u hkept => by
+      obtain ⟨n', hpair', h1', h2'⟩ :=
+        exists_independent_perp_pair e₁ e₂ (n u) h1u h2u (hn.ne_zero u)
+      exact ⟨n u, n', e₁, e₂, hpair', h1u, h1', h2u, h2', hkept⟩
+  -- The per-join kept-points identity (concrete `c, d` per join), from the general tabulation.
+  have hkept : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (c d : Fin 4), c < d →
+      c ≠ q.1.1 → c ≠ q.1.2 → d ≠ q.1.1 → d ≠ q.1.2 →
+      omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pbar c, pbar d] := by
+    intro q c d hcd hc1 hc2 hd1 hd2
+    obtain ⟨c', d', hcd', hc1', hc2', hd1', hd2', heq⟩ := omitTwoExtensor_eq_extensor_kept pbar q
+    -- `c, d` and `c', d'` are both the increasing complement of `{q.1, q.2}`, hence equal.
+    obtain rfl : c' = c := by omega
+    obtain rfl : d' = d := by omega
+    exact heq
+  intro q
+  obtain ⟨h1a, h1b⟩ := h1; obtain ⟨h2a, h2b⟩ := h2; obtain ⟨h3a, h3b⟩ := h3
+  -- For each of the six joins, the kept points come off the increasing complement of the omitted
+  -- pair, and the common panel(s) from the incidence tabulation: `(0,1)↦keep(2,3)`, `n2` (one);
+  -- `(0,2)↦keep(1,3)`, `n0`; `(0,3)↦keep(1,2)`, `n1`; `(1,2)↦keep(0,3)`, `{n0,n2}` (two);
+  -- `(1,3)↦keep(0,2)`, `{n1,n2}`; `(2,3)↦keep(0,1)`, `{n0,n1}`. The builders take `q` explicitly so
+  -- the heavy `omitTwoExtensor` carrier need not be `whnf`'d to infer it (TACTICS-QUIRKS §38).
+  fin_cases q
+  · exact hone ⟨(0, 1), by decide⟩ 2 _ _ h2b h3a
+      (hkept ⟨(0, 1), by decide⟩ 2 3 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact hone ⟨(0, 2), by decide⟩ 0 _ _ h1a h3b
+      (hkept ⟨(0, 2), by decide⟩ 1 3 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact hone ⟨(0, 3), by decide⟩ 1 _ _ h1b h2a
+      (hkept ⟨(0, 3), by decide⟩ 1 2 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact htwo ⟨(1, 2), by decide⟩ 0 2 _ _ (by decide) (h0 0) (h0 2) h3b h3a
+      (hkept ⟨(1, 2), by decide⟩ 0 3 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact htwo ⟨(1, 3), by decide⟩ 1 2 _ _ (by decide) (h0 1) (h0 2) h2a h2b
+      (hkept ⟨(1, 3), by decide⟩ 0 2 (by decide) (by decide) (by decide) (by decide) (by decide))
+  · exact htwo ⟨(2, 3), by decide⟩ 0 1 _ _ (by decide) (h0 0) (h0 1) h1a h1b
+      (hkept ⟨(2, 3), by decide⟩ 0 1 (by decide) (by decide) (by decide) (by decide) (by decide))
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space
