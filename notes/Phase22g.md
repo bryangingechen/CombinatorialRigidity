@@ -53,6 +53,22 @@ geometric fact the recon pinned: the candidate's `va`-line is `(-t)•C(e₀)` (
 smul_left`) — the shear `t` rescales but does NOT move the line, so each candidate tests ONE fixed
 extensor (re-confirming why the three-fixed `Cᵢ` failed and the six-join existential was forced).
 
+**R2 SETTLED — verdict (B) (`notes/Phase22-realization-design.md` §1.41, 2026-06-09 producer-signature
+recon).** The §1.40 (R2) carried obligation (the one genuine open architectural question) is resolved:
+the split-leg `ab`-transversality `hgab : LinearIndependent ![q(a,·),q(b,·)]` that
+`case_II_placement_eq612` needs is **not** promised by the **bare** `_hsplit` but **is** the
+`IsGeneralPosition` conjunct of the **GP** motive (`P.normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` IS
+`hgab`). The producer is restated to `theorem_55_generic`'s **`hsplitGP`** branch (GP `_hsplit`);
+the **green precedent does exactly this** — `case_I_realization` IS `hcontractGP`, pulling each leg's
+transversal from the GP IH; KT (pp. 680/682) takes `q` as *generic nonparallel*. Leaf-4 ripple:
+instantiate **`theorem_55_generic (n:=2)(k:=2)`** (not bare), project the `.2` conjunct the capstone
+needs (the existing two-motive skeleton absorbs it). NOT (C): GP `_hsplit` cleanly available at `d=3`
+*given* a bounded side-condition, ripple trivial. **One new bounded sub-obligation (R3):** discharge
+`(G.splitOff …).Simple` (the antecedent of the GP IH conjunct) — KT Lemma 6.7(ii)'s triangle argument
+from `hnoRigid`, **not yet formalized** (a sibling of Case I's green `rigidContract`-simplicity leaf).
+Re-shapes **Leaf 3** (producer signature + R3 discharge) + **Leaf 4** (instantiate generic), bounded
+restatements + the bounded R3 leaf, not new *hard* math.
+
 **Next concrete step (smallest forward commit): Leaf 2b candidate placement (L2b-place) — generalize
 `case_II_placement_eq612`'s seed/shear to the witness line** (CaseI.lean; **§38 `ofNormals` trap**).
 Leaf 2b's *seed-from-line geometric core* LANDED 2026-06-09 (`panelSupportExtensor_add_smul_left_ne_
@@ -65,13 +81,27 @@ instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Then Leaf 3 wi
 **Two carried obligations the build must own** (§1.40 (5), do NOT block L2b-place): **(R1)** the
 abstract-N3a ↔ real-placement panel reconciliation (N3a hardcodes normals `e₀,e₁,e₂`; the producer
 needs an N3a *parameterized by the real `n_a,n_b,n_c`* — a new bounded graph-free leaf via
-`exists_ne_zero_dotProduct_eq_zero` + the green det-polynomial route); **(R2)** the split-leg
-`ab`-transversality / nonparallel panels, which the **bare** `_hsplit` motive does NOT promise (the
-GP motive does) — the one genuine open architectural question (bare vs GP branch), to settle at Leaf 3.
+`exists_ne_zero_dotProduct_eq_zero` + the green det-polynomial route); **(R2) SETTLED — verdict (B)
+(`notes/Phase22-realization-design.md` §1.41, 2026-06-09).** The split-leg `ab`-transversality
+`hgab : LinearIndependent ![q(a,·),q(b,·)]` that `case_II_placement_eq612` needs is **not** promised
+by the **bare** `_hsplit`, but **is** the `IsGeneralPosition` conjunct of the **GP** motive
+(`P.normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` *is* `hgab`). So the producer must be restated to
+`theorem_55_generic`'s **`hsplitGP`** branch (consuming the GP `_hsplit`); the **green precedent does
+exactly this** — `case_I_realization` IS `hcontractGP` and pulls each leg's transversal from the GP
+IH. **Leaf-4 ripple: instantiate `theorem_55_generic (n:=2)(k:=2)`** (not bare `theorem_55`), project
+the bare conclusion off the **`.2` conjunct** the capstone needs; the existing two-motive skeleton
+absorbs it. NOT (C): the GP `_hsplit` is cleanly available at `d=3` *given* a bounded side-condition,
+and the ripple is trivial. **One new bounded sub-obligation (R3):** discharge `(G.splitOff …).Simple`
+(antecedent of the GP IH conjunct) — KT Lemma 6.7(ii)'s triangle argument from `hnoRigid`, **not yet
+formalized** (`minimal_kdof_reduction` does not hand it down; sibling of Case I's green
+`rigidContract`-simplicity leaf). Re-shapes **Leaf 3** (producer signature + R3 discharge) + **Leaf 4**
+(instantiate generic), bounded restatements + the bounded R3 leaf, not new *hard* math.
 
-After the producer lands (Leaf 3): instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
-`hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed `rigidityMatrix_prop11`'s
-`hgen` (its `hub` lower bound already green); Thm 5.5→5.6 push (`lem:motions-mono-of-graph-le`).
+After the producer lands (Leaf 3): instantiate `theorem_55_generic (n:=2) (k:=2)` (R2 verdict (B),
+§1.41 — not bare `theorem_55`) with the restated producer as `hsplitGP` + the green `hcontractGP`
+(`case_I_realization`) and `hbase`/`hbaseGP`, projecting the bare `.2` conjunct; feed
+`rigidityMatrix_prop11`'s `hgen` (its `hub` lower bound already green); Thm 5.5→5.6 push
+(`lem:motions-mono-of-graph-le`).
 Milestone: the molecular conjecture at `d=3`, unblocking Cor 5.7 (Phases 24–26). General `d` (KT
 Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
@@ -129,17 +159,26 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
   at the C2 feed). Build `hcand q hq` from `hq : r̂(pᵢ∨pⱼ) ≠ 0`: extract line `L` from `q`, run L2b-place
   to build the candidate at `C(L)`, run the row-space criterion at `C(L)` → independent family → C2.
-  Supply the four points `p` adapted to the real three panels via N3a-from-normals (R1). **(R2) settle
-  the motive branch** — confirm the bare `_hsplit` suffices (split-leg `ab`-transversality from
-  `splitOff`/minimality) or restate the producer to consume the GP motive (`hsplitGP`). Removes the
-  green-modulo `hcand` hypothesis. The six-join panel dispatch reuses
-  `exists_hduality_witness_of_panel_incidence`'s `fin_cases q` assignment + `exists_independent_perp_pair`
-  (both green). **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside (`+1`-row already in hand via
-  `hingeRow_mem_rigidityRows`; `so`/`sn` via L2 `span_panelRow_comp_single_of_edge` / L4).
-- [ ] **Leaf 4 — `theorem_55` `d=3`-instance node** (B.2; graph-free). Instantiate
-  `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node
-  (**not** a standalone `theorem_55_dim3` — avoids duplicating the statement; general `thm:theorem-55`
-  stays red-pending-Phase-23).
+  Supply the four points `p` adapted to the real three panels via N3a-from-normals (R1). **(R2) SETTLED
+  — (B), §1.41: restate the producer to `theorem_55_generic`'s `hsplitGP` shape** (gains `G.Simple` +
+  the conditioned IH; concludes `HasGenericFullRankRealization 2 G`), pull `q` + `hgab` from the GP
+  `_hsplit`'s `IsGeneralPosition` conjunct (`P.normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` IS `hgab`),
+  discharging the `(G.splitOff …).Simple` antecedent of that conjunct via **the new bounded R3 leaf**
+  (KT Lemma 6.7(ii)'s triangle argument from `hnoRigid` — not yet formalized; sibling of Case I's green
+  `rigidContract`-simplicity). Mirrors the green `case_I_realization` (= `hcontractGP`). Removes the
+  green-modulo `hcand` hypothesis. The six-join
+  panel dispatch reuses `exists_hduality_witness_of_panel_incidence`'s `fin_cases q` assignment +
+  `exists_independent_perp_pair` (both green). **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside
+  (`+1`-row already in hand via `hingeRow_mem_rigidityRows`; `so`/`sn` via L2
+  `span_panelRow_comp_single_of_edge` / L4).
+- [ ] **Leaf 4 — `theorem_55_generic` `d=3`-instance node** (B.2 + R2 ripple §1.41; graph-free).
+  Instantiate **`theorem_55_generic (n:=2) (k:=2)`** (not bare `theorem_55` — R2 verdict (B)) on the
+  six green/green-modulo branch args (`hbase`/`hbaseGP`/`hsplit`/**`hsplitGP`** = the restated Case-III
+  producer/`hcontract`/`hcontractGP` = `case_I_realization`); project the bare `HasFullRankRealization
+  2 G` the capstone needs off the conclusion's **`.2` conjunct`** (the existing skeleton :1191–1206
+  already threads the `⟨GP-if-simple, bare⟩` pair). Mint the small green blueprint node (**not** a
+  standalone `theorem_55_dim3` — avoids duplicating the statement; general `thm:theorem-55` stays
+  red-pending-Phase-23).
 - [ ] **Leaf 5 — `lem:case-II-realization`/`lem:case-III` flips + Thm 5.5→5.6 push** feeding
   `rigidityMatrix_prop11`'s `hgen`. Unblocks Cor 5.7 at `d=3`.
 
@@ -196,13 +235,24 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
     so the witness points are orthogonal to the real normals — a new bounded graph-free leaf (green
     machinery: `exists_ne_zero_dotProduct_eq_zero` + det-polynomial affine-indep route). The current N3a
     is the wrong shape for the producer.
-  - **(R2) split-leg `ab`-transversality / nonparallel panels — the ONE genuine open architectural
-    question.** `case_II_placement_eq612` needs `LinearIndependent ![n_a,n_b]` (and nonparallel
-    `n_a,n_b,n_c`), but `case_III_hsplit_producer` is the **bare** `hsplit` branch and the bare `_hsplit`
-    motive carries no GP/nonparallel promise (the GP motive `hsplitGP` does). The Track-B "incoming
-    split-leg nonparallel" flag (KT Claim 6.4 input). Settle at Leaf 3: does the bare branch suffice
-    (transversality of the specific `ab`-hinge from `splitOff`/minimality) or must the producer consume
-    the GP motive? Fully tracked by the two-motive split — NOT a smuggled `hann`-style hypothesis.
+  - **(R2) split-leg `ab`-transversality — SETTLED, verdict (B)** (`notes/Phase22-realization-design.md`
+    §1.41, 2026-06-09). `case_II_placement_eq612` needs only the **pair** `hgab : LinearIndependent
+    ![q(a,·),q(b,·)]` (not the triple — that is R1's witness-points stage). The **bare** `_hsplit`
+    (`HasFullRankRealization`) carries no panel-normal LI promise; the **GP** motive
+    (`HasGenericFullRankRealization`) does — its `IsGeneralPosition` conjunct is `∀ a b, a≠b →
+    LinearIndependent ![normal a, normal b]`, and `normal a = q(a,·)` by `rfl`, so GP-at-`a≠b` **is**
+    `hgab`. So the producer is restated to `theorem_55_generic.hsplitGP` (consume the GP `_hsplit`). The
+    **green precedent settles it**: `case_I_realization` IS `hcontractGP`, pulling each leg's transversal
+    from the GP IH (`hQHgp`). KT (pp. 680/682, Lemma 6.10) takes the IH realization `q` as **generic
+    nonparallel** — the GP data — resting on `G_v^{ab}` simple (Lemma 6.7(ii)) + the "nonparallel if
+    simple" standing IH. **One new bounded sub-obligation (R3):** the producer must discharge
+    `(G.splitOff …).Simple` (the antecedent of the GP IH conjunct) — KT Lemma 6.7(ii)'s
+    triangle-from-`hnoRigid` argument, **not yet formalized** (`minimal_kdof_reduction` does not hand it
+    down; a sibling of Case I's green `rigidContract`-simplicity leaf). NOT (C): the GP `_hsplit` is
+    cleanly available at `d=3` *given* R3's bounded side-condition, and the Leaf-4 ripple (instantiate
+    `theorem_55_generic`, project `.2`) is
+    absorbed by the existing two-motive skeleton. Fully tracked by the two-motive split — NOT a smuggled
+    hypothesis.
 - **Blueprint: `lem:case-III-claim612` RE-GREENED, `lem:case-III-eq629-conditional` DELETED
   (Leaf 1, 2026-06-09).** The Lean decl is now the premise-free existential, so the node is honestly
   green (statement + proof prose rewritten to the existential contrapositive; `\uses` trimmed to the
@@ -227,12 +277,15 @@ so the `va`-hinge's two normals are the witness panel's `n_u, n'` (support `(-t)
 `L = pᵢpⱼ ⊂ Π(u)`) and its `(D−1)` block rows span `(span C(L))^⊥`. Keep reasoning over abstract `F`,
 instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Then **N3a-from-normals (R1)** and
 **Leaf 3** discharge `hcand` (build the candidate at the witness line, run the criterion at `e_a` via
-the 2b core, feed C2; supply `p` via the real-normals N3a). **Settle (R2) — the bare-vs-GP motive
-branch — at Leaf 3** (the one genuine open architectural question; does NOT block L2b-place). Full
-plan: `notes/Phase22-realization-design.md` §1.40 (CRUX verdict + decomposition) + §1.39 (architecture).
+the 2b core, feed C2; supply `p` via the real-normals N3a). **(R2) is SETTLED — verdict (B), §1.41:**
+Leaf 3 restates the producer to `theorem_55_generic.hsplitGP` (GP `_hsplit`, `hgab` from the
+`IsGeneralPosition` conjunct, mirroring the green `case_I_realization`), and Leaf 4 instantiates
+`theorem_55_generic (n:=2)(k:=2)` projecting `.2`; both bounded restatements against the existing
+two-motive skeleton, not new math. Full plan: `notes/Phase22-realization-design.md` §1.41 (R2 verdict)
++ §1.40 (CRUX verdict + decomposition) + §1.39 (architecture).
 
-**Leaf 4/5** (the green `theorem_55 (n:=2) (k:=2)` instance node, the case-II/III flips, the Thm 5.5→5.6
-push) unblock Cor 5.7.
+**Leaf 4/5** (the green `theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2
+ripple §1.41, the case-II/III flips, the Thm 5.5→5.6 push) unblock Cor 5.7.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d` (KT
 Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1; generalize the candidate
@@ -255,6 +308,17 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   build obligations: (R1) N3a must be re-shaped to take the real panel normals (currently hardcodes
   `e₀,e₁,e₂`); (R2) the bare-vs-GP motive branch for the split-leg `ab`-transversality. Full trace +
   buildable-leaf decomposition: §1.40.
+- **R2 producer-signature verdict — (B), the producer consumes the GP `_hsplit` (2026-06-09; canonical
+  home `notes/Phase22-realization-design.md` §1.41).** `case_II_placement_eq612` needs the pair
+  `hgab : LinearIndependent ![q(a,·),q(b,·)]`, which the **bare** `_hsplit` does not promise but the
+  **GP** motive does (`IsGeneralPosition` ⇒ `LinearIndependent ![normal a, normal b]`, and `normal a =
+  q(a,·)` by `rfl`, so GP-at-`a≠b` IS `hgab`). Green precedent: `case_I_realization` IS `hcontractGP`,
+  pulling each leg's transversal from the GP IH. KT (pp. 680/682) takes `q` as *generic nonparallel*
+  resting on `G_v^{ab}` simple (Lemma 6.7(ii)). Route: restate producer to `theorem_55_generic.hsplitGP`;
+  Leaf-4 ripple = instantiate `theorem_55_generic`, project `.2` (capstone needs only the bare bound —
+  GP is internal). New bounded sub-obligation **R3**: discharge `(G.splitOff …).Simple` (Lemma 6.7(ii)
+  triangle argument, *not yet formalized*; sibling of Case I's green `rigidContract`-simplicity). (B)
+  not (C): GP `_hsplit` cleanly available *given* R3, ripple absorbed by the existing skeleton.
 - **Leaf 2b seed-from-line core — the candidate's *sheared* `va`-support carries the witness
   (2026-06-09; PanelLayer.lean).** `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`:
   `r̂(extensor ![pi,pj]) ≠ 0 ⟹ r̂(panelSupportExtensor (n_u+t•n') n_u) ≠ 0` (`t ≠ 0`). Key insight:
@@ -313,7 +377,8 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   open).** `theorem_55` = `minimal_kdof_reduction` with three branches, base case `V=2` only; short
   cycles dissolve into repeated splits. The `\uses` edge is a KT-narrative (not Lean-load-bearing)
   dependency — kept with a clarifying prose note; the cited step is Crapo–Whiteley, not Claim 6.4/6.9
-  (green). Fixed stale `case-i.tex:149–151`. (B.2) add a green `theorem_55 (n:=2) (k:=2)` instance node,
+  (green). Fixed stale `case-i.tex:149–151`. (B.2) add a green instance node — now
+  `theorem_55_generic (n:=2) (k:=2)` projecting `.2` (R2 verdict (B), §1.41), not bare `theorem_55`;
   not a standalone `theorem_55_dim3`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN

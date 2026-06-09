@@ -1213,6 +1213,133 @@ does not block L2b-place. The reuse map for Phase 23 general-`d` (§1.33 (C)/(D)
 
 ---
 
+### 1.41 The R2 producer-signature verdict — (B): the `hsplit` producer must consume the GP `_hsplit`; the two-motive structure supplies it cleanly, the green Case-I precedent does exactly this, the Leaf-4 ripple is `theorem_55_generic` (2026-06-09)
+
+> **Build-free design pass settling the §1.40 (R2) carried obligation** — the producer-signature
+> crux the coordinator flagged as the one genuine open architectural question before L2b-place
+> builds. Verdict: **(B) — needs the GP motive, and the two-motive structure provides it cleanly.**
+> The producer is restated to live in `theorem_55_generic`'s `hsplitGP` branch (consuming the GP
+> `_hsplit`); the **green precedent does precisely this** (`case_I_realization` *is* `hcontractGP`);
+> the Leaf-4 ripple is "instantiate `theorem_55_generic`, not bare `theorem_55`", and the bare
+> conclusion the capstone needs flows out via the `.2` conjunct for free. One bounded new sub-obligation
+> falls out (R3 below): the producer must discharge the `(G.splitOff …).Simple` antecedent of the GP IH
+> conjunct — KT Lemma 6.7(ii)'s triangle argument, *not yet formalized*, a sibling of Case I's green
+> `rigidContract`-simplicity leaf. This refines (B) but does not make it (C). No `.lean`/`.tex` edits
+> this pass. Verified against the green Lean (`theorem_55`/`theorem_55_generic` PanelHinge.lean:1098/
+> 1154; `IsGeneralPosition` :121; `ofNormals_normal` :268, `rfl`; `HasFullRankRealization`/
+> `HasGenericFullRankRealization` :979/:1033; `case_II_placement_eq612` CaseI.lean:2719;
+> `case_I_realization` :1999; `case_III_hsplit_producer` :3638) and KT pp. 669/677–678/680–682.
+
+**(1) Exactly what the placement requires, and that the bare motive does NOT promise it.**
+`case_II_placement_eq612` (CaseI.lean:2719) and its block-front `case_III_old_new_blocks` (:3353)
+take, as an explicit hypothesis, only the **pair** transversal
+`hgab : LinearIndependent ![q(a,·), q(b,·)]` (the IH seed's `ab`-hinge `e₀`); it consumes it twice
+(`hane` :2815, `hnewne` :2823 — the `va`-line `(-t)•C(e₀) ≠ 0` and the reproduced `vb`-row, both via
+`panelSupportExtensor_ne_zero_iff … |>.mpr hgab`). It does **not** take the nonparallel *triple*
+`![n_a,n_b,n_c]` — that enters only at the Claim-6.12 witness-points / N3a stage (R1, where the
+points must be orthogonal to the three *real* panel normals). The producer `case_III_hsplit_producer`
+(:3638) obtains the IH realization `q` and must *supply* `hgab`. Its `_hsplit` is the **bare**
+`HasFullRankRealization 2 (G.splitOff v a b e₀)` (:3645), which by definition (PanelHinge.lean:979)
+is only `∃ Q, Q.graph = G' ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G')` — **no panel-normal
+linear-independence promise**. So the bare branch cannot hand the producer `hgab`. **(A) is refuted:**
+no structural fact of a rigid `ofNormals` realization forces `ab`-hinge transversality (a rigid
+realization can have a parallel-panel pair — that is exactly the non-simple regime KT's Lemma 6.2
+inhabits, where parallel panels are *wanted*).
+
+**(2) The GP motive supplies `hgab` by definition.** `IsGeneralPosition P := ∀ a b, a ≠ b →
+LinearIndependent ![P.normal a, P.normal b]` (PanelHinge.lean:121). For `P = ofNormals Gv ends q`,
+`P.normal a = fun i => q (a, i)` *by `rfl`* (`ofNormals_normal` :268). So a GP realization's
+`IsGeneralPosition` conjunct, applied at `a ≠ b`, is **definitionally** `hgab : LinearIndependent
+![q(a,·), q(b,·)]`. The match is exact — no bridge lemma. `HasGenericFullRankRealization` (:1033)
+carries that `Q.IsGeneralPosition` conjunct; the bare `HasFullRankRealization` does not. **This is
+the lemma/structural fact (B) names: `IsGeneralPosition` IS the `hgab` transversal.**
+
+**(3) The green precedent — `case_I_realization` extracts the same transversal from the GP IH, and
+it lives in `hcontractGP`.** `case_I_realization` (:1999) concludes
+`HasGenericFullRankRealization k G`, takes the **conditioned (GP) IH** `hIH : ∀ G', … → (G'.Simple →
+HasGenericFullRankRealization k G') ∧ HasFullRankRealization k G'`, requires `hSimple : G.Simple`,
+and pulls each leg's general-position realization from the *GP* conjunct of that IH
+(`obtain ⟨QH, hQHg, hQHgp, …⟩ := (hIH H …).1 (hSimple.mono hle)`, :2056 — `hQHgp : QH.IsGeneralPosition`
+is precisely the transversality source). The doc-comment (CaseI.lean:153) states it outright: this
+node *is* `theorem_55_generic`'s `hcontractGP`. So in the **already-green** precedent, the
+general-position / transversality inputs come from the **GP IH motive** — exactly the route Case III
+should mirror. This is the cheapest correct route and it directly answers R2: **Case III's `hgab`
+comes from the GP `_hsplit`, the same place Case I's leg transversals come from.**
+
+**(4) KT cross-check — the transversality rests on simplicity + the "nonparallel if simple" IH, i.e.
+the GP motive.** KT §6.4.1 (pp. 680, 682, Lemma 6.10) opens its `q`-extraction with: *"by (6.1),
+there exists a **generic nonparallel** panel-hinge realization `(G_v^{ab}, q)`"* — explicitly
+nonparallel (= general position). The nonparallel property is what makes `Π(a),Π(b),Π(c)` pairwise
+transversal and lets eq. (6.12)'s `L ⊂ Π(a)` be a genuine `(d−2)`-flat; p. 682 closes on *"if the
+configuration of these three panels is **generic**, the extensors span 6 dims."* That nonparallel IH
+rests on two facts KT pins first: **`G_v^{ab}` is simple** (Lemma 6.7(ii): a degree-2 split of a
+2-edge-connected no-proper-rigid-subgraph graph is simple — else a triangle `{va,vb,ab}` is a proper
+rigid subgraph), and **the standing inductive choice that simple graphs get a nonparallel (generic)
+realization** (§5.1 / Lemma 5.2's perturbation, the algebraically-independent-coordinates choice of
+footnote 6). KT obtains the transversality from *exactly* the data the GP motive carries
+(`IsGeneralPosition` + the alg-independence conjunct), conditioned on simplicity — **the formal
+two-motive split is a faithful transcription of KT's "nonparallel, if simple"** (p. 669). The bare
+motive is the right one only at the non-simple leaves (Lemma 6.2, parallel panels *wanted*), where no
+`hgab` is needed because Case III does not fire there (no degree-2 reducible vertex in the parallel-K₂
+base).
+
+**(5) The route — restate the producer to `hsplitGP`, and the Leaf-4 ripple.** The producer is
+restated to the `theorem_55_generic.hsplitGP` shape (PanelHinge.lean:1167): it gains `G.Simple` and
+the *conditioned* IH `((G.splitOff …).Simple → HasGenericFullRankRealization 2 (G.splitOff …)) ∧
+HasFullRankRealization 2 (G.splitOff …)`, and concludes `HasGenericFullRankRealization 2 G`. It pulls
+`q` (with `hgab` = the `IsGeneralPosition` conjunct) from the GP `_hsplit` via the IH's `.1`
+conjunct, **after discharging the `(G.splitOff …).Simple` antecedent of that conjunct (R3, below).**
+The **Leaf-4 ripple** (was: instantiate bare
+`theorem_55 (n:=2)(k:=2)`, §1.33 (B.2)/(E)) becomes: instantiate **`theorem_55_generic (n:=2)(k:=2)`**
+on the six green/green-modulo branch args (`hbase`, `hbaseGP`, `hsplit`, **`hsplitGP`** = the restated
+Case-III producer, `hcontract`, `hcontractGP` = `case_I_realization`), and read the **bare**
+`HasFullRankRealization 2 G` the capstone needs off the conclusion's **`.2` conjunct**
+(`(theorem_55_generic … G …).2`). The skeleton at PanelHinge.lean:1191–1206 already threads exactly
+this — base/split/contract each return the `⟨GP-if-simple, bare⟩` pair, with `hsplit`'s bare half fed
+`hIH.2`. So the ripple is *absorbed by the existing skeleton*: Leaf 4 mints a small green
+`theorem_55_generic (n:=2)(k:=2)` instance node (still **not** a standalone `theorem_55_dim3`; the
+general node stays red-pending-Phase-23) and projects `.2`. The terminal consumer
+`rigidityMatrix_prop11`'s `hgen` (PanelHinge.lean:1247) needs only a `finrank` rank lower bound, which
+the bare `.2` motive supplies through the Thm 5.5→5.6 push — **the GP motive never reaches the
+capstone; it is purely internal scaffolding for the simple-case induction.**
+
+**(6) The third carried obligation R3 — the `(G.splitOff …).Simple` side-condition is a bounded
+to-build leaf, NOT green.** Discharging the GP `_hsplit` from the conditioned IH's `.1` conjunct
+requires proving its antecedent `(G.splitOff …).Simple`. The `hsplit`/`hsplitGP` branch hands the
+producer `hG : G.IsMinimalKDof n 0`, `hnoRigid : ∀ H, ¬ IsProperRigidSubgraph`, the degree-2 data,
+and (in `hsplitGP`) `G.Simple` — but **not** `(G.splitOff …).Simple` (verified: `minimal_kdof_reduction`
+hands it down at ForestSurgery.lean:996–1000; no `splitOff`-simplicity fact is in tree, and
+PanelHinge.lean:995 explicitly notes `splitOff` does *not* preserve simplicity in general). KT Lemma
+6.7(ii) (p. 677) is exactly this fact — `G_v^{ab}` is simple for a degree-2 split of a
+2-edge-connected minimal `0`-dof-graph with no proper rigid subgraph (else the triangle `{va,vb,ab}`
+is a proper rigid subgraph, contradicting `hnoRigid`). It is **bounded** (the contradiction-via-triangle
+argument from `hnoRigid`), but it is **not formalized** — and 2-edge-connectivity (its other input) is
+not yet a project notion. So R3 is a new graph-side leaf, the exact sibling of Case I's green
+`rigidContract_isSimple_of_isProperRigidSubgraph` (Contraction.lean:151, which derives
+`(G.rigidContract H r).Simple` from `H.IsProperRigidSubgraph G n` + `G.Simple`).
+
+**Why this is (B) not (C).** R3 does NOT downgrade the verdict: (C) is reserved for "the GP `_hsplit`
+is *not cleanly available* at `d=3`" or "the Leaf-4 ripple is *nontrivial*". Neither holds — the GP
+`_hsplit` is available *given* R3's bounded side-condition (a triangle-contradiction lemma, not a
+research obstacle), and the Leaf-4 ripple is fully absorbed by the existing two-motive skeleton
+(:1191–1206 already threads the `⟨GP-if-simple, bare⟩` pair and feeds `hsplit` the `hIH.2` bare half;
+the capstone reads the bare `.2`). The cost of (B) over a hypothetical (A) is: one signature change
+(`case_III_hsplit_producer` gains `G.Simple` + the conditioned IH, concludes GP) + the R1 work
+(tracked) + the R3 simplicity leaf (bounded, new). **This does not re-incur any honesty-gate problem:**
+the motive strength is fully tracked by the two-motive split (the device that dissolved Case-I's (G1)
+gap), and R3 is a visible graph-side obligation with a clear KT source, not a smuggled hypothesis.
+
+**Net effect on the build:** L2b-place is unaffected (it reasons over abstract `F` and takes the
+candidate normals as inputs — the motive question is upstream of it). The R2 verdict re-shapes **Leaf
+3** (the producer signature: `G.Simple` + conditioned IH, GP conclusion, `hgab` from the GP conjunct,
++ the R3 simplicity discharge) and **Leaf 4** (instantiate `theorem_55_generic`, project `.2`). Both
+are bounded restatements against an existing two-motive skeleton, plus the bounded R3 leaf — not new
+*hard* math. The producer's own N3a + perp-pair (R1) still supply the *triple* nonparallel for the
+witness-points; the GP motive supplies the *pair* `hgab` for the placement seed; R3 supplies the
+simplicity that unlocks the GP conjunct — all three now have a home.
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic
