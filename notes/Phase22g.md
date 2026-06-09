@@ -21,23 +21,25 @@ per-line N3b brick over the six joins. The C3 spine carries the Claim-6.12 data
 three `hselᵢ`, the `+1` `r̂`-row `hmemᵢ`, and the `r̂` candidate-vector data (`hr`) are in hand.
 
 **Next concrete step (smallest forward commit): C5c-step-(1) — restate `case_III_claim612`'s
-`hduality` *antecedent* from the three fixed scalars to the `hann` union premise + body = the C5c
-assembly.** A recon (2026-06-09, `notes/Phase22-realization-design.md` §1.37) found the architecture
-**does NOT close as currently shaped** — verdict (B), but a LOCAL restate, not a phase boundary. The
-C5a/C5b restate (§1.36) made `hduality`'s *conclusion* honest (per-join witness) but **left its
-antecedent the three fixed scalars `r C₁=0 → r C₂=0 → r C₃=0`**, which is the *same* fixed-vs-swept
-mis-shaping in the unfixed half: those three fixed candidate-hinge supports span ≤ 3 of 6 dims, so the
-antecedent **cannot** supply the assembly's `hann` (= `r ⊥ C(L)` for *every* line `L ⊂ Π(u)`, KT's
-union (6.45)). Not circular — under-powered: the `r Cᵢ=0` premises are dead weight. The fix mirrors
-§1.36's edit on the other half: **`hduality`'s antecedent → `hann` (the union premise, keyed off N3a
-normals `n`), and `case_III_claim612`'s body becomes literally `exists_hduality_witness_of_panel_incidence`**
-(the C5c assembly was built taking `hann` precisely because it IS the body). Conclusion unchanged
-(`r C₁≠0 ∨ r C₂≠0 ∨ r C₃≠0` — what the producer's selectors consume). Then the genuine remaining math
-(the swept eqs.-(6.42)–(6.43) block-failure → `hann` at real `ofNormals` data) moves to the producer's
-carried obligation (a NEW `hann`-shaped hypothesis on `case_III_hsplit_producer`), correctly located —
-that is the deferred C5c-(i) core, unchanged in difficulty but no longer miscast as `hduality`'s dead
-antecedent. **The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot
-land before the C3 spine's carried data is discharged (C5c).
+`hduality` *antecedent* from the three fixed scalars to the unconditional `hann` union premise + body =
+the C5c assembly.** A coordinator re-adjudication (2026-06-09, `notes/Phase22-realization-design.md`
+§1.38, re-opening §1.37) **CONFIRMS** the architecture does not close as shaped and **REFUTES** the
+"three graph-fixed candidates suffice" escape: KT eq. (6.12)/Claim 6.9/(6.42) say `p₁(va) = L` for
+**any** `(d−2)`-line `L ⊂ Π(a)` (freely chosen, *not* graph-fixed), so Claim 6.12 is a genuine
+existential over the line continuum; three fixed candidate supports span ≤ 3 of `⋀²ℝ⁴`'s 6 dims
+(numerically verified), so `r̂ ⊥ C₁,C₂,C₃` can never force `r̂ = 0`. **§1.37's B1 restate of
+`case_III_claim612` itself does close** (the green proof uses `h₁/h₂/h₃` *only* to feed `hduality`'s
+antecedent, never for the contradiction — so dropping the antecedent and carrying `hann` unconditionally
+keeps the three-fixed conclusion provable; the contradiction lives in `hann ⟹ r̂=0` vs `r̂≠0`). The
+conclusion need **not** become an existential (it is what the selectors consume). **What §1.38 revises
+vs §1.37:** the producer's `hann` derivation (C5c-step-2) is **NOT "only a quantifier"** — to supply
+`hann` (= `r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`) the producer's three-fixed-seed `q₁/q₂/q₃` candidate
+carriage must be **re-parameterized over a free line `L`** (build the eq.-(6.12) placement + its `(D−1)`
+panel rows at an arbitrary `L`, run the row-space criterion at `C(L)`). That is a multi-commit
+producer-internal restructure (likely splits), not the ~1-commit edit §1.37 implied — but it stays
+producer-internal (no `case_III_claim612` / selector / C1–C3 / C5c-assembly change, no phase boundary).
+**The C4↔C5 ordering stands:** a *green* `d=3`-instance `theorem_55` node (C4, B.2) cannot land before
+the C3 spine's carried data is discharged (C5c).
 
 After the producer lands: instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed that into
@@ -270,10 +272,15 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
   gains `hann` (+ N3a `n`/incidence) as carried data. The three selectors + C1/C2/C3 untouched
   (consume the unchanged conclusion). Buildable now (the assembly exists). One green unit, mirrors C5a/C5b.
 - [ ] **C5c-step-(2) — derive `hann` at real `ofNormals` data** (§38 defeq trap; the genuine deferred
-  core): the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`, all
-  three panels. Same row-space criterion (`mem_hingeRowBlock_iff` / `linearIndependent_sumElim_candidateRow_iff`)
-  as the three fixed candidates but quantified over an arbitrary `L` — no new machinery, only the
-  quantifier. Discharges `case_III_hsplit_producer`'s new `hann` premise. May itself split.
+  core, **the producer restructure**, §1.38): the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)`
+  for *every* line `L ⊂ Π(u)`, all three panels. **NOT "only a quantifier"** (§1.37 understated this):
+  the producer's three-fixed-seed `q₁/q₂/q₃` candidate carriage must be **re-parameterized over a free
+  line `L ⊂ Π(u)`** — build the eq.-(6.12) degenerate placement + its `(D−1)` panel rows at an arbitrary
+  `L`, then run the row-space criterion (`mem_hingeRowBlock_iff` /
+  `linearIndependent_sumElim_candidateRow_iff`) at `C(L)`. Multi-commit, producer-internal (likely
+  splits: line-indexed placement family + per-line block-failure + panel-sweep assembly); discharges
+  `case_III_hsplit_producer`'s new `hann` premise. **No `case_III_claim612` / selector / C1–C3 / C5c-
+  assembly change, no phase boundary.** SCOPE FLAG to user (§1.38).
 - [ ] **C5c-(ii) — the OLD/NEW-block `hmemᵢ`** at the `ofNormals` carrier (the `+1`-row `hmemᵢ` is in
   hand via `hingeRow_mem_rigidityRows`) + `Cᵢ`/`hp` (green). Independent of (1)/(2). Wires the
   producers. Together (1)+(2)+(ii) take the C3 spine fully green.
@@ -283,14 +290,19 @@ the architecture call is settled (B.2). No deferred Lemma-5.4 sub-phase is a pre
 - [ ] **Thm 5.5→5.6 push + feed `rigidityMatrix_prop11`'s `hgen`** — unblocks Cor 5.7 at `d=3`.
 ## Blockers / open questions
 
-- **Architecture does NOT close at the `hann` discharge as currently shaped — verdict (B), LOCAL
-  restate** (2026-06-09 recon, §1.37). `case_III_claim612`'s carried `hduality` *antecedent* is still
-  the three fixed scalars `r C₁=0 → r C₂=0 → r C₃=0` (§1.36 fixed only the conclusion). Those three
-  fixed candidate-hinge supports span ≤ 3 of 6 dims, so they **cannot** supply the assembly's `hann`
-  (= `r ⊥ C(L)` for *every* line `L ⊂ Π(u)`, KT's union (6.45)). **Not circular — under-powered**: the
-  `r Cᵢ=0` premises are dead weight. Fix = swap the antecedent for `hann` (the union premise) +
-  body = the C5c assembly; the genuine math (swept block-failure → `hann`) moves to the producer's
-  carried obligation. ~2 commits, no phase boundary, no consumer-proof change. Full account: §1.37.
+- **Architecture does NOT close at the `hann` discharge as shaped — CONFIRMED + re-adjudicated; the
+  `case_III_claim612` restate is local, the producer's `hann` derivation is a multi-commit restructure**
+  (2026-06-09 coordinator re-adjudication, §1.38, re-opening §1.37). The three-fixed antecedent
+  `r C₁=0 → r C₂=0 → r C₃=0` is undischargeable (three supports span ≤ 3 of `⋀²ℝ⁴`'s 6 dims,
+  numerically verified) — and the "three graph-fixed candidates suffice" escape is **REFUTED**: KT
+  eq. (6.12)/Claim 6.9/(6.42) make `p₁(va) = L` a *free* line `L ⊂ Π(a)`, so Claim 6.12 is a genuine
+  existential over the line continuum, **no** forced `r̂`/`Cᵢ` relation. **`case_III_claim612` itself
+  closes via §1.37's B1** (~1 commit): the green proof feeds `h₁/h₂/h₃` *only* to `hduality`'s
+  antecedent (not the contradiction), so swapping the antecedent for an unconditional `hann` keeps the
+  three-fixed conclusion provable; conclusion need not become existential. **The producer's `hann`
+  derivation (C5c-step-2) is the genuine restructure** — its three-fixed-seed `q₁/q₂/q₃` carriage must
+  be re-parameterized over a free line `L` to supply `r̂ ⊥ C(L)` for *every* `L`; multi-commit,
+  producer-internal, no phase boundary. SCOPE FLAG raised to user. Full account: §1.38.
 - **Blueprint↔Lean divergence (honesty gate): `lem:case-III-claim612` is currently dishonestly green
   on its antecedent.** The blueprint prose (case-iii.tex:1086–1134) *already* states the line-swept
   union model and explicitly disavows the three fixed `Cᵢ` (1130–1133), so the **Lean is what
@@ -320,13 +332,15 @@ three selectors + C1/C2/C3 are untouched (they consume the unchanged conclusion)
 Reconcile `lem:case-III-claim612`'s Lean↔prose divergence in the same commit (no `.tex` edit — prose
 is already the target shape).
 
-**Then C5c-step-(2): derive `hann` at real `ofNormals` data** (§38 defeq trap; the genuine deferred
-core): the swept eqs.-(6.42)–(6.43) block-failure → `r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`. Same
-row-space criterion (`mem_hingeRowBlock_iff` / `linearIndependent_sumElim_candidateRow_iff`) as the
-three fixed candidates but quantified over an arbitrary `L`. May itself split. **And C5c-(ii): the
-OLD/NEW-block `hmemᵢ`** (the `+1`-row `hmemᵢ` is in hand via `hingeRow_mem_rigidityRows`; the `so`/`sn`
-blocks via L2 span bridge `span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`),
-independent of (1)/(2).
+**Then C5c-step-(2): derive `hann` at real `ofNormals` data — the producer restructure** (§38 defeq
+trap; the genuine deferred core, §1.38, SCOPE-FLAGGED): the swept eqs.-(6.42)–(6.43) block-failure →
+`r̂ ⊥ C(L)` for *every* line `L ⊂ Π(u)`. **NOT "only a quantifier"** — the producer's three-fixed-seed
+`q₁/q₂/q₃` candidate carriage must be **re-parameterized over a free line `L`** (build the eq.-(6.12)
+placement + `(D−1)` panel rows at an arbitrary `L`, run the row-space criterion at `C(L)`). Multi-commit
+(likely splits: line-indexed placement family + per-line block-failure + panel-sweep assembly),
+producer-internal, no phase boundary. **And C5c-(ii): the OLD/NEW-block `hmemᵢ`** (the `+1`-row `hmemᵢ`
+is in hand via `hingeRow_mem_rigidityRows`; the `so`/`sn` blocks via L2 span bridge
+`span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`), independent of (1)/(2).
 
 **C4 (a green `theorem_55` `d=3`-instance) is blocked on C5.** After C5 (steps (1)+(2)+(ii)): C4 (mint
 the green `theorem_55 (n:=2) (k:=2)` instance node, **not** a standalone `theorem_55_dim3`), the
@@ -345,17 +359,22 @@ against the `d=3` Lean) and add the general-`d` alg-independence row to `notes/A
 
 ### Phase-local choices and proof techniques
 
-- **The `hann`-discharge recon: architecture does NOT close as shaped — verdict (B), LOCAL restate
-  (2026-06-09; canonical home `notes/Phase22-realization-design.md` §1.37).** §1.36 fixed `hduality`'s
-  *conclusion* (per-join witness) but left its *antecedent* the three fixed scalars `r C₁=0 → r C₂=0 →
-  r C₃=0` — the same fixed-vs-swept mis-shaping in the unfixed half. Those three fixed supports span
-  ≤ 3 of 6 dims, so they cannot supply the assembly's `hann` (= `r ⊥ C(L)` for *every* line, KT's
-  union (6.45)). **Not circular — under-powered**: the `r Cᵢ=0` premises are dead weight. Fix (mirrors
-  §1.36): antecedent → `hann` (union premise), `case_III_claim612` body = the already-built C5c
-  assembly; the genuine math (swept eqs.-(6.42)–(6.43) block-failure → `hann`) moves to the producer's
-  carried obligation. ~2 commits, no phase boundary, consumers forward verbatim, selectors/C1–C3
-  untouched. Blueprint prose already states the line-swept model (case-iii.tex:1086–1134) — the Lean
-  is the divergence (dishonestly green on its antecedent); reconcile when step-(1) lands.
+- **The `hann`-discharge re-adjudication: CONFIRM the gap + REFUTE the three-fixed-suffices escape;
+  `case_III_claim612` restate is local (~1 commit), the producer's `hann` derivation is a multi-commit
+  restructure (2026-06-09 coordinator re-adjudication; canonical home `notes/Phase22-realization-design.md`
+  §1.38, re-opening §1.37).** The three-fixed antecedent `r C₁=0 → r C₂=0 → r C₃=0` is undischargeable
+  (three supports span ≤ 3 of `⋀²ℝ⁴`'s 6 dims, numerically verified). **Linchpin escape REFUTED:** KT
+  eq. (6.12)/Claim 6.9/(6.42) make `p₁(va) = L` a *free* line `L ⊂ Π(a)` (not graph-fixed), so Claim
+  6.12 is a genuine existential over the line continuum — no forced `r̂`/`Cᵢ` relation. **`case_III_claim612`
+  closes via §1.37's B1** (the green proof feeds `h₁/h₂/h₃` only to `hduality`'s antecedent, never the
+  contradiction; swap antecedent → unconditional `hann`, conclusion stays three-fixed and provable).
+  **Producer restructure (C5c-step-2):** §1.37's "only a quantifier" understated it — to supply `hann`
+  the three-fixed-seed `q₁/q₂/q₃` carriage must be re-parameterized over a free line `L`; multi-commit,
+  producer-internal, no phase boundary. SCOPE-FLAGGED to user. All landed C5 leaves (assembly, two
+  bricks, three selectors, C1/C2/C3, `candidateRow_*`, `r̂`-data) survive; only the producer's seed/
+  `hmemᵢ` carriage reworks. Blueprint prose already states the line-swept model + disavows fixed `Cᵢ`
+  (case-iii.tex:1086–1134) — the Lean is the divergence (dishonestly green on its antecedent); reconcile
+  when step-(1) lands.
 - **C5c-leaves landed (2026-06-09; full detail in the Lean source + §1.36/§1.37, one-line verdicts).**
   All three graph-free, axiom-clean. The §1.37 recon found these correctly built but consumed by a
   mis-shaped `hduality` antecedent (see top entry) — they survive verbatim under the (B1) restate.

@@ -595,6 +595,14 @@ what the dep-graph describes). No `.tex` edit needed.
 
 ### 1.37 The `hann` discharge — verdict (B): `hduality`'s *antecedent* is mis-shaped; restate to the line-swept block-failure premise (2026-06-09)
 
+> **Scope estimate superseded by §1.38 (2026-06-09, same day, coordinator re-adjudication).** §1.37's
+> *diagnosis* (the three-fixed antecedent is undischargeable; not circular but under-powered) and its
+> B1 restate of `case_III_claim612` itself **stand and are re-confirmed**. What §1.38 revises: §1.37's
+> "~2 commits, only a quantifier" estimate for the producer's `hann` derivation (C5c-step-2) — that
+> step is a **re-parameterization of the candidate construction over a free line `L ⊂ Π(u)`** (the
+> three-fixed-seed `q₁/q₂/q₃` carriage must become line-indexed to *supply* `hann`), a multi-commit
+> producer-internal restructure, not a one-line quantifier addition. Read §1.38 for the live scope.
+
 The C5a/C5b restate (§1.36, `d851264`) made `hduality`'s **conclusion** honest (the per-join witness
 form) but **left its antecedent the three fixed scalars `r C₁ = 0 → r C₂ = 0 → r C₃ = 0`.** Tracing
 the `hann` discharge — never analyzed by the §1.33 / §1.35 / §1.36 recons — shows this antecedent is
@@ -711,6 +719,105 @@ verdict: `lem:case-III-claim612`'s `\leanok` is currently **dishonestly green** 
 issue §1.36 fixed. Flagging as a blueprint↔Lean divergence to reconcile when (B1) lands; no `.tex`
 edit needed (the prose is already the target shape — the Lean must catch up to it). Tracked in
 `notes/Phase22g.md` Blockers.
+
+---
+
+### 1.38 The `hann`-discharge re-adjudication — CONFIRM the gap, REFUTE the three-fixed-suffices escape; §1.37's B1 holds for `case_III_claim612` but the producer's `hann` derivation is a genuine restructure, not "only a quantifier" (2026-06-09)
+
+> **Dated supersession of §1.37's scope estimate.** This recon re-opens §1.37 at a coordinator's
+> request (its B1 fix "likely does not close"). **Verdict: §1.37's *diagnosis* and its B1 restate of
+> `case_III_claim612` itself are CORRECT and survive; its *scope estimate* ("~2 commits, only a
+> quantifier") is REVISED** — the genuine remaining work (the producer's `hann` derivation, the
+> deferred C5c-step-(2)) is a **re-parameterization of the candidate construction over a free line
+> `L ⊂ Π(u)`**, materially bigger than "add a quantifier." Read this section as the live scope; §1.37's
+> 2-commit estimate is superseded.
+
+**The objection adjudicated (verified against KT pp. 678/690–691 + the green Lean).** A coordinator
+objection holds that (i) `case_III_claim612` carries `hduality`/`hann` as a supplied premise the
+producer must discharge, (ii) `hann` (= `r ⊥ C(L)` for *every* panel line) spans `⋀²ℝ⁴` so forces
+`r = 0`, false for the real `r̂ ≠ 0`, hence undischargeable from a three-fixed antecedent, and (iii)
+the fix changes the conclusion to KT's existential and restructures the producer. **The prompt's
+linchpin escape** — that the producer's *three graph-fixed* candidates `C₁=C(va)/C₂=C(vb)/C₃=C(ac)`
+might *suffice* via a forced relation with `r̂` (so the three-fixed disjunction is provable without
+sweeping all lines) — **is REFUTED decisively:**
+
+- **KT eq. (6.12) + Claim 6.9 + eq. (6.42) (printed pp. 678, 690):** `p₁(va) = L` where **"`L` is a
+  `(d−2)`-affine subspace contained in `Π(a)`"** and "(G,p₁) is a panel-hinge realization **for any
+  choice** of `L ⊂ Π(a)`"; eq. (6.42) writes `M₁ = (r(L); r̂)`, `M₂ = (r(L'); r̂)`,
+  `M₃ = (r(L''); −r̂)` with **"we may choose any `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`."** The three
+  candidate placements are at **freely-chosen lines**, *not* three graph-fixed extensors. Claim 6.12 is
+  the **genuine existential over the continuum of line choices** ("for some choices of `L, L', L''`");
+  its contrapositive ("all blocks fail for **all** choices") is what gives the union (6.45), and
+  Lemma 2.1 on four affinely-independent points forces `r̂ = 0`. There is **no forced relation** among
+  `r̂` and three fixed `Cᵢ`.
+- **Dimension count (numerically confirmed):** the full panel sweep `n₀∧ℝ⁴ + n₁∧ℝ⁴ + n₂∧ℝ⁴` spans **6
+  dims** = `⋀²ℝ⁴`; **three fixed lines (one per panel) span ≤ 3 dims** (three vectors in a 6-dim space).
+  So `r̂ ⊥ C₁,C₂,C₃` leaves a `≥ 3`-dim space of valid nonzero `r̂` — the three-fixed disjunction
+  `r̂C₁≠0 ∨ r̂C₂≠0 ∨ r̂C₃≠0` is **not** a theorem for fixed `Cᵢ`. Escape refuted; objection (ii)
+  CONFIRMED.
+
+**Where §1.37's B1 is right (and the objection's "change the conclusion" demand is *not* needed).**
+The objection (iii) overstates the fix for `case_III_claim612` *itself*. The current green proof
+(RigidityMatrix.lean:1641–1656) does `by_contra → obtain ⟨h₁,h₂,h₃⟩ : r̂C₁=r̂C₂=r̂C₃=0 →
+hr (eq_zero_of_annihilates_span_top … (hduality h₁ h₂ h₃))`; **`h₁/h₂/h₃` are consumed *only* to feed
+`hduality`'s antecedent** — never to derive the contradiction. So if `hduality`'s antecedent is dropped
+and `hann` becomes an **unconditional** premise (§1.37's B1), the proof still closes: by_contra still
+produces `h₁/h₂/h₃` (now unused), and `hann → assembly → span-top → r̂=0 ⊥ hr`. **The three-fixed
+conclusion `r̂C₁≠0 ∨ r̂C₂≠0 ∨ r̂C₃≠0` stays — and is provable from `hann`** (the disjunction is the
+*conclusion* the producer's selectors consume; it need not become an existential, because the
+contradiction lives in `hann ⟹ r̂=0`, not in the three scalars). So `case_III_claim612` is a ~1-commit
+local restate, body = `exists_hduality_witness_of_panel_incidence` (already built taking `hann`). The
+C5c assembly + the three selectors + C1/C2/C3 survive verbatim. **The objection's "`hann` internal
+under a by_contra over an existential conclusion" is one valid encoding, but the carry-`hann`-as-premise
+encoding (B1) is equally faithful and minimally disruptive — the conclusion need not change.**
+
+**Where the objection is right and §1.37 understated — the producer's `hann` derivation (C5c-step-2).**
+§1.37 already conceded "the producer cannot supply `hann` from its three blocks" and located the genuine
+math in a NEW producer leaf, but called it "no new machinery, only a quantifier." **That understates
+it.** `hann` is `∀ u (m indep from n u), r̂(complementIso (n u ∧ m)) = 0` — i.e. `r̂ ⊥ C(L)` for
+*every* line `L ⊂ Π(u)`, all three panels. To derive this at the real `ofNormals` data, the producer
+must run the row-space criterion (`mem_hingeRowBlock_iff` / `linearIndependent_sumElim_candidateRow_iff`)
+**at an arbitrary line `L`**, where the candidate block's supporting extensor is `C(L)` — *not*
+`supportExtensor e` at a fixed graph edge. But the current producer
+(`case_III_hsplit_producer`, CaseI.lean:3641) carries **three fixed seeds `q₁/q₂/q₃`** and three fixed
+`hmemᵢ`/`hcardᵢ`/`hselᵢ` keyed to the three candidate edges; `hingeRowBlock e = (span C(p(e)))^⊥` is
+indexed by an **edge**, and `C(p(e))` is fixed by the seed. Deriving `hann` therefore requires the
+candidate-block construction (the eq.-(6.12) placement + the `D−1` panel rows spanning `(span C(L))^⊥`)
+to be **re-parameterized over a *family* of seeds indexed by the free line `L ⊂ Π(u)`** — the producer
+must build the degenerate placement at an *arbitrary* `L`, not just the three graph-fixed edges. **That
+is a structural reshape of the producer's carried data (a line-indexed candidate family), not a
+one-line quantifier addition.** This is the genuine deferred core; it is where the real KT content of
+Claim 6.12's existential lives.
+
+**Verdict + scope.** Architecture call: **CONFIRM** the carried-`hduality`-as-three-fixed-premise is
+undischargeable and **REFUTE** the three-fixed-suffices escape (KT's lines are free, not graph-fixed;
+dimension 3 < 6). The fix splits cleanly:
+- **(local, ~1 commit, buildable now) C5c-step-(1):** restate `case_III_claim612`'s `hduality`
+  *antecedent* `r C₁=0→r C₂=0→r C₃=0` → the unconditional `hann` union premise (keyed off N3a normals
+  `n`); body becomes `exists_hduality_witness_of_panel_incidence` + `span_omitTwoExtensor_eq_top` + `hr`.
+  Conclusion unchanged (three-fixed disjunction). `case_III_eq629_conditional` + `case_III_hsplit_producer`
+  forward verbatim (the producer gains `hann` + N3a `n`/incidence as carried data). Selectors + C1/C2/C3
+  untouched. Reconcile the `lem:case-III-claim612` Lean↔prose divergence here (prose already correct).
+  This is §1.37's B1 verbatim — it **does close** for the claim, contra the coordinator's worry.
+- **(genuine restructure, the real remaining math) C5c-step-(2):** derive `hann` at real `ofNormals`
+  data. **Not "only a quantifier"** — the producer's candidate construction (currently three fixed
+  seeds) must be re-parameterized to build the eq.-(6.12) degenerate placement + its `(D−1)` panel rows
+  at an **arbitrary line `L ⊂ Π(u)`**, then run the row-space criterion at `C(L)` to get `r̂ ⊥ C(L)` for
+  every `L`. This re-parameterization is the structural work; it will likely split (the line-indexed
+  placement family + the per-line block-failure + the panel-sweep assembly). **Scope flag: this is a
+  multi-commit restructure of the producer's carried `hmemᵢ`/seed data, not the ~1-commit local edit
+  §1.37 implied — but it does NOT change `case_III_claim612`, the selectors, C1/C2/C3, or the C5c
+  assembly, and does NOT cross a phase boundary** (it is producer-internal, all within
+  `case_III_hsplit_producer`'s discharge). Estimate: step-(1) = 1 commit; step-(2) = 3–5 commits
+  (the line-indexed candidate-family reshape + per-line criterion + sweep). The C5c-(ii) OLD/NEW-block
+  `hmemᵢ` work is independent and rides alongside.
+
+**What survives / what reworks.** All landed C5 leaves survive: the C5c assembly
+(`exists_hduality_witness_of_panel_incidence`), the two bricks (`exists_independent_perp_pair`,
+`omitTwoExtensor_homogenize_eq_extensor_kept`), the three selector recasts, C1/C2/C3, `candidateRow_ne_zero`,
+`candidateRow_ac_eq_neg`, the `r̂`-vector data — none reworks. The rework is **the producer's seed/`hmemᵢ`
+carriage**: the three-fixed-seed `q₁/q₂/q₃` + `hmem₁/₂/₃`/`hcard₁/₂/₃` shape must become a line-indexed
+family to *supply* `hann`. (The conclusion-consuming half — `hselᵢ`/C1/C2/C3 — is unchanged.)
 
 ---
 
