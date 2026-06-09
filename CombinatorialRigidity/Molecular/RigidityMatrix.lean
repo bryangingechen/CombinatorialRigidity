@@ -1425,8 +1425,8 @@ disjunction (`lem:case-III-claim612`) selects a candidate by the orthogonality t
 `r̂(Cₘ) ≠ 0` on the *common* candidate vector `r̂`, where `Cₘ` is that block's supporting extensor
 `C(p(e)) = F.supportExtensor e`. This packages `linearIndependent_sum_p2_candidateRow` into exactly
 that selector shape `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v b r̂}) ro)`
-— the `hsel₂` ingredient `case_III_eq629_conditional` / the `d = 3` `hsplit` producer
-(`case_III_hsplit_producer`) consume — by taking the candidate functional `ρ := r̂` and the
+— the selector shape the `d = 3` `hsplit` producer's line-indexed candidate construction
+(`case_III_hsplit_producer`) consumes — by taking the candidate functional `ρ := r̂` and the
 supporting extensor `C := F.supportExtensor e`. Graph-free (abstract `F`); the producer's row-space
 criterion already does all the work. -/
 theorem linearIndependent_sum_p2_candidateRow_selector (F : BodyHingeFramework k α β) (e : β)
@@ -1484,8 +1484,9 @@ for the edge `va`, with the operated top-left block `hnewpinaug` supplied by the
 (`linearIndependent_sumElim_candidateRow_iff`) at the `va`-hinge `e`. This packages it into the same
 `hsel₁` selector shape
 `r̂(C(e)) ≠ 0 → LinearIndependent (Sum.elim (Sum.elim rn {hingeRow v a r̂}) ro)`
-that `case_III_eq629_conditional` / the `d = 3` `hsplit` producer (`case_III_hsplit_producer`)
-consume, matching the `hsel₂`/`hsel₃` recasts. Unlike those two — which delegate the `hnewpinaug`
+that the `d = 3` `hsplit` producer's line-indexed candidate construction
+(`case_III_hsplit_producer`) consumes, matching the `hsel₂`/`hsel₃` recasts. Unlike those two —
+which delegate the `hnewpinaug`
 discharge to the `p₂`/`p₃` producers — this one builds the operated block inline (there is no `M₁`
 producer to delegate to): once the operated, pinned candidate row `(hingeRow v a r̂) ∘ Φ ∘ single v`
 is identified with `r̂` (`hingeRow_comp_columnOp_comp_single`), the row-space criterion's
@@ -1580,80 +1581,45 @@ theorem candidateRow_ac_eq_neg [DecidableEq α] {ιab ιac : Type*} [Fintype ιa
   simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply,
     LinearMap.smul_apply, e1, e2, LinearMap.zero_apply] using hx
 
-/-- **Claim 6.12 — at least one of `M₁, M₂, M₃` has full rank** (`lem:case-III-claim612`,
-Katoh–Tanigawa 2011 §6.4.1, Claim 6.12, eqs. (6.30)–(6.45); Phase 22e, **green-modulo-N3b**). The
-capstone of the `D`-candidate disjunction at `d = 3`. The candidate-completion
-(`linearIndependent_sum_augment_candidateRow`) lifts a single degenerate placement to full rank
-`D(|V|−1)` *provided* its top-left `D × D` block is full rank, equivalently (the row-space criterion
-`linearIndependent_sumElim_candidateRow_iff` at the candidate's hinge) the common candidate row
-`r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` is **not** orthogonal to that block's supporting extensor `Cₘ`. At
-`d = 3` a single placement may fail, so Claim 6.12 is the three-way disjunction: for the three
-candidates `p₁/p₂/p₃` (split at `v` along `va` / `vb`, and at the other degree-2 body `a` along
-`ac`, routed onto the *same* `r̂` by eq. (6.44), `candidateRow_ac_eq_neg`), at least one of
-`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` holds — exactly the conditional `hr` the three producers
-(`linearIndependent_sum_p2_candidateRow` for `M₂`, the analogous `M₃` form, and the
-candidate-completion assembly for `M₁`) consume, discharging the candidate-completion conditional
-`lem:case-III-eq629-conditional`.
+/-- **Claim 6.12 — for some line choice, the candidate block is full rank**
+(`lem:case-III-claim612`, Katoh–Tanigawa 2011 §6.4.1, Claim 6.12, eqs. (6.30)–(6.45); Phase 22g).
+The capstone of the candidate-selection argument at `d = 3`, stated as the **existential** it
+actually is: KT's lines `L ⊂ Π(u)` are *freely chosen* (eqs. (6.12)/(6.42)), so the claim is that
+*for some* choice the candidate's top-left `D × D` block is full rank — equivalently (the row-space
+criterion `linearIndependent_sumElim_candidateRow_iff` at the candidate's hinge) the common
+candidate row `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` is **not** orthogonal to that block's supporting
+extensor. Since a candidate's hinge support is the panel-meet of a line `L` (PanelHinge, `rfl`) and
+the panel-meet of a line through two of the four points is exactly one of their six joins
+`pᵢ ∨ pⱼ = omitTwoExtensor (homogenize ∘ p)`, the existential is stated over those **six joins**:
+`∃ q, r̂(pᵢ ∨ pⱼ) ≠ 0`.
 
-The argument is a clean contrapositive: if all three blocks fail, then `r̂(C₁) = r̂(C₂) = r̂(C₃)
-= 0`, so — as the **point-join ↔ panel-meet duality** (`lem:case-III-claim612-line-in-panel-union`,
-N3b) sweeps **every** line `L ⊂ Π(a) ∪ Π(b) ∪ Π(c)` (KT eq. (6.45)) — `r̂` annihilates each of the
-six panel-support `2`-extensors `pᵢ ∨ pⱼ = omitTwoExtensor (homogenize ∘ p)` of the four
-affinely-independent points `p` of KT eq. (6.45) (`exists_affineIndependent_panel_incidence`, N3a).
-Each such join lies in one of the three panels, so it is the panel-meet `C(L)` of a line `L` in the
-union; the per-line transfer `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (N3b)
-converts `r̂ ⊥ C(L)` to `r̂ ⊥ (pᵢ ∨ pⱼ)`. But those six joins **span**
-`ScrewSpace 2 = ⋀²ℝ⁴` (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), so a functional
-annihilating them is `0` (`eq_zero_of_annihilates_span_top`, N2) — contradicting `r̂ ≠ 0`
-(`candidateRow_ne_zero`, N5).
-
-**The per-panel-line `hduality` model** (KT eq. (6.45), Phase 22g). The duality is carried as the
-hypothesis `hduality`, in the honest per-panel-line form: for *each* of the six spanning joins `q`
-(the join of the two points kept by `omitTwoExtensor`, namely the complement of the omitted pair),
-there is a line `L` through that join lying in the panel union — exhibited as a pair of independent
-normals `n_u, n'` to which both endpoints of the join are orthogonal — with `r̂` annihilating its
-panel-meet `C(L) = complementIso (n_u ∧ n')`. The carried equality
-`omitTwoExtensor (homogenize ∘ p) q = extensor ![pi, pj]` ties the kept-points join to the brick's
-`extensor`-form so the per-line transfer fires directly.
-
-This shape is the corrected `hduality`: the earlier three-fixed-`Cᵢ` premise (`r C₁ = 0 → r C₂ = 0 →
-r C₃ = 0 → r ⊥ all six joins`) is *mathematically undischargeable* — three `2`-extensors span ≤ 3 of
-the 6 dimensions of `⋀²ℝ⁴`, so `r ⊥ C₁,C₂,C₃` cannot force `r = 0`. KT's Claim sweeps *all* lines
-`L ⊂ Π(u)` (not just the three candidate-hinge supports), reaching every join of the four points
-(Lemma 2.1). The conclusion is unchanged (`r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0`, the disjunction the
-candidate selection consumes); both downstream consumers (`case_III_eq629_conditional`, the `d = 3`
-`hsplit` producer) forward `hduality` verbatim, so the restate is a pure signature ripple. -/
+The argument is a clean contrapositive of the existential. If `r̂` annihilated *every* one of the
+six joins — KT's union-(6.45) "for *every* choice of lines `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`"
+— then since those six joins of four affinely-independent points **span** `ScrewSpace 2 = ⋀²ℝ⁴`
+(`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1), `r̂` would annihilate their span and so be `0`
+(`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The annihilation hypothesis
+is *not* a carried premise: it is precisely the internal `by_contra` negation `∀ q, r̂(join q) = 0`.
+The earlier three-fixed-`Cᵢ` disjunction conclusion (`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` at three
+*hardcoded* lines) was *mathematically undischargeable* — three `2`-extensors span ≤ 3 of the 6
+dimensions of `⋀²ℝ⁴`, so `r̂ ⊥ C₁,C₂,C₃` cannot force `r̂ = 0`; only the full line sweep (Lemma 2.1)
+does. The producer (`case_III_hsplit_producer`) consumes the existential by building its candidate
+placement so its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. -/
 theorem case_III_claim612
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
-    {C₁ C₂ C₃ : ScrewSpace 2}
-    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
-    (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
-      ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-        ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
-          pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
-          omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
-          r (complementIso (k := 2) (j := 2) (by omega)
-              ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0) :
-    r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0 := by
-  -- Contrapositive: if `r` is orthogonal to all three supporting extensors, the per-panel-line N3b
-  -- duality annihilates each spanning join, the six joins span `ScrewSpace 2` (N1), so `r = 0`
-  -- (N2), contradicting `r ≠ 0` (N5).
+    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p) :
+    ∃ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+      r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+        extensor_mem_exteriorPower _⟩ ≠ 0 := by
+  -- Contrapositive of the existential: if `r̂` annihilated *every* one of the six panel-support
+  -- joins of the four affinely-independent points, it would annihilate their span `= ⋀²ℝ⁴`
+  -- (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1) and so be `0`
+  -- (`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The annihilation
+  -- `∀ q, r̂(join q) = 0` is the internal `by_contra` negation — KT's union-(6.45) "for *every*
+  -- choice of lines" hypothesis — not a premise carried in.
   by_contra h
   push Not at h
-  obtain ⟨h₁, h₂, h₃⟩ := h
-  refine hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp) ?_)
-  rintro x ⟨q, rfl⟩
-  -- For each join `q`, the per-panel-line witness supplies a line `L = (n_u, n')` through it; the
-  -- per-line transfer (N3b) turns `r ⊥ C(L)` into `r ⊥ (the join `extensor ![pi, pj]`)`, and the
-  -- carried equality identifies that join with `omitTwoExtensor … q`.
-  obtain ⟨n_u, n', pi, pj, hpair, hiu, hiu', hju, hju', heq, hann⟩ := hduality h₁ h₂ h₃ q
-  change r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
-    extensor_mem_exteriorPower _⟩ = 0
-  rw [show (⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
-        extensor_mem_exteriorPower _⟩ : ScrewSpace 2)
-      = ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ from Subtype.ext heq]
-  exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
-    hiu hiu' hju hju' r hann
+  exact hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)
+    (by rintro x ⟨q, rfl⟩; exact h q))
 
 /-- **The six-join `hduality` witness assembly from the panel-incidence data** (`lem:case-III`,
 the N3a → `hduality` glue of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1 eqs.
@@ -1759,54 +1725,6 @@ theorem exists_hduality_witness_of_panel_incidence
       (hkept ⟨(1, 3), by decide⟩ 0 2 (by decide) (by decide) (by decide) (by decide) (by decide))
   · exact htwo ⟨(2, 3), by decide⟩ 0 1 _ _ (by decide) (h0 0) (h0 1) h1a h1b
       (hkept ⟨(2, 3), by decide⟩ 0 1 (by decide) (by decide) (by decide) (by decide) (by decide))
-
-/-- **The candidate-completion conditional: at least one of the three candidate placements'
-top-left `D × D` blocks is full rank, so at least one candidate family is independent**
-(`lem:case-III-eq629-conditional`, KT eqs.~(6.29)/(6.30)/(6.41) + Claim~6.12; Katoh–Tanigawa 2011
-§6.4.1, Phase 22g). The conditional that the candidate-completion assembly
-(`linearIndependent_sum_augment_candidateRow`, `lem:case-III-candidate-row`) passes through —
-discharged by the `D`-candidate disjunction of Claim~6.12 (`case_III_claim612`,
-`lem:case-III-claim612`).
-
-At `d = 3` a *single* degenerate placement need not have a full-rank top-left block, so the
-conditional is the **three-way disjunction**: for the three candidate placements `p₁/p₂/p₃` (split
-at `v` along `va`/`vb`, and at the other degree-2 body `a` along `ac`), at least one yields a
-linearly independent full `D(|V|−1)`-size panel-row family. Each candidate's full-family
-independence `famᵢ` is conditioned, via the row-space criterion
-(`linearIndependent_sumElim_candidateRow_iff` threaded through the per-candidate producers
-`linearIndependent_sum_p2_candidateRow` / `linearIndependent_sum_p3_candidateRow` /
-`linearIndependent_sum_augment_candidateRow`), on the common candidate vector
-`r̂ := ∑_j λ_{(ab)j} r_j(q(ab))` being **not** orthogonal to that block's supporting extensor `Cᵢ`
-(`hsel₁`/`hsel₂`/`hsel₃`); the `M₃` candidate is routed onto the *same* `r̂` by eq.~(6.44)
-(`candidateRow_ac_eq_neg`). Claim~6.12 (`case_III_claim612`) supplies the disjunction
-`r̂(C₁) ≠ 0 ∨ r̂(C₂) ≠ 0 ∨ r̂(C₃) ≠ 0` — at `d = 3`, contrapositively, all three failing would
-put the nonzero `r̂` orthogonal to the panel-meet `C(L)` of *every* line `L` in the panel union
-`Π(a) ∪ Π(b) ∪ Π(c)` (the per-panel-line `hduality`), hence to a spanning set of panel-meet
-extensors of four affinely-independent points (`span_omitTwoExtensor_eq_top`), forcing `r̂ = 0`. So
-at least one selector
-condition `r̂(Cᵢ) ≠ 0` holds, discharging the corresponding candidate's conditional and giving an
-independent full family. This is the selection step the `d = 3` `hsplit` producer instantiates at
-real graph data (where each `famᵢ` is the actual eq.~(6.29) candidate family on
-`ofNormals G ends q₀`). -/
-theorem case_III_eq629_conditional {ιfam₁ ιfam₂ ιfam₃ : Type*}
-    {fam₁ : ιfam₁ → Module.Dual ℝ (α → ScrewSpace 2)}
-    {fam₂ : ιfam₂ → Module.Dual ℝ (α → ScrewSpace 2)}
-    {fam₃ : ιfam₃ → Module.Dual ℝ (α → ScrewSpace 2)}
-    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
-    {C₁ C₂ C₃ : ScrewSpace 2}
-    {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
-    (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
-      ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-        ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
-          pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
-          omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
-          r (complementIso (k := 2) (j := 2) (by omega)
-              ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0)
-    (hsel₁ : r C₁ ≠ 0 → LinearIndependent ℝ fam₁)
-    (hsel₂ : r C₂ ≠ 0 → LinearIndependent ℝ fam₂)
-    (hsel₃ : r C₃ ≠ 0 → LinearIndependent ℝ fam₃) :
-    LinearIndependent ℝ fam₁ ∨ LinearIndependent ℝ fam₂ ∨ LinearIndependent ℝ fam₃ :=
-  (case_III_claim612 hr hp hduality).imp hsel₁ (Or.imp hsel₂ hsel₃)
 
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body

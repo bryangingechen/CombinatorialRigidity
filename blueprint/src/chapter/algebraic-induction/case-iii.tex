@@ -280,7 +280,7 @@ operated row $w \circ \Phi$ joins the stratum-1 brick's $va$-block and old block
 augment (\cref{lem:case-III-conditional-block}), and the operated independence transports back
 through the automorphism $\Phi$ to the original family of size $((D-1)+1)+D(|V_v|-1) = D(|V|-1)$.
 The one \emph{conditional} it passes through --- the eq.~(6.29) top-left $D \times D$
-full rank (\cref{lem:case-III-eq629-conditional}) --- is discharged by
+full rank for some line choice --- is discharged by
 Claim~6.12 (\cref{lem:case-III-claim612},
 \cref{sec:molecular-algebraic-induction-claim612}), so the candidate-completion assembly is
 green. The
@@ -523,63 +523,6 @@ case), not the candidate-row input.
   hinge-difference identity $(S_v - S_b) - (S_a - S_b) = S_v - S_a$.
 \end{proof}
 
-\begin{lemma}[The eq.\ (6.29)/(6.30)/(6.41) top-left $D \times D$ full rank, for \emph{at least one} candidate (the candidate-completion conditional); KT eqs.\ (6.29), Claim 6.12]
-  \label{lem:case-III-eq629-conditional}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_eq629_conditional}
-  \uses{lem:case-III-candidate-row-construction, lem:case-III-columnop,
-        lem:case-II-placement-block-independent, lem:case-III-claim612,
-        lem:case-III-claim612-p2-placement, lem:case-III-claim612-p3-placement,
-        lem:case-III-claim612-eq644}
-  The conditional the candidate-completion assembly
-  (\cref{lem:case-III-candidate-row}) passes through, discharged by Claim~6.12
-  (\cref{lem:case-III-claim612}). At $d = 3$ ($D = 6$) this is \emph{not} a single-candidate
-  fact: a single degenerate placement need not have a full-rank top-left block, so the conditional
-  is the \emph{three-way disjunction} of KT's Claim~6.12. KT builds three candidate placements ---
-  $p_1$ (split at $v$ along $va$, eqs.~(6.12)/(6.29)), $p_2$ (split at $v$ along $vb$,
-  eqs.~(6.19)/(6.30)), and $p_3$ (split at the \emph{other} degree-2 vertex $a$ along $vc$,
-  transported by the graph isomorphism $G_v^{ab} \cong G_a^{vc}$, eqs.~(6.32)/(6.41)). Each
-  candidate $\rho \in \{\rho_{va}, \rho_{vb}, \rho_{ac}\}$ (the hinge-row-block functional its
-  split contributes), together with a choice of $(d-2)$-affine lines $L \subset \Pi(a)$,
-  $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$, presents an augmented new block --- the candidate's
-  $va$-block (resp.\ $vb$-, $ac$-) pinned rows together with the operated candidate row
-  $w \circ \Phi \circ \mathrm{single}_v$ --- as a family of $D$ functionals on the splitting body's
-  $D$-dimensional screw column $\mathrm{ScrewSpace}\ k$. The statement is the existential: for
-  \emph{at least one} candidate $\rho$ and choice of lines, that $D$-functional family is linearly
-  independent (the top-left $D \times D$ block of the block-triangularized $R(G, p_i)$ is full rank).
-  This is exactly what \cref{lem:case-III-candidate-row}'s assembly consumes --- it takes
-  $\rho$ / $\mathrm{rn}$ / $\mathrm{ro}$ abstractly, so the assembly itself stays green; the
-  conditional supplies which candidate to instantiate it at. The Lean statement is the matching
-  selection step, stated abstractly over the three candidate families
-  $\mathrm{fam}_1, \mathrm{fam}_2, \mathrm{fam}_3$ (graph-free, so it stays clear of the
-  $\mathrm{ofNormals}$ concrete-carrier elaboration the realization assembly contends with): given,
-  for each candidate, the per-candidate full-family producer as an implication
-  $\hat r(C_i) \ne 0 \Rightarrow \mathrm{LinearIndependent}\ \mathrm{fam}_i$
-  (\cref{lem:case-III-claim612-p2-placement}, \cref{lem:case-III-claim612-p3-placement}, and the
-  candidate-completion assembly for $M_1$, each routed through the row-space criterion
-  \cref{lem:case-III-claim612-block-iff-perp} with $M_3$ onto the same $\hat r$ by eq.~(6.44),
-  \cref{lem:case-III-claim612-eq644}), at least one of the three families is independent.
-  \emph{This conditional is discharged by Claim~6.12}
-  (\cref{lem:case-III-claim612}): the row-space criterion
-  (\cref{lem:case-III-claim612-block-iff-perp}) turns ``the candidate's block is full rank'' into
-  ``$\hat r$ is not orthogonal to its supporting extensor $C$'', so the existential over the three
-  candidates \emph{is} Claim~6.12's disjunction
-  $\hat r(C_1) \ne 0 \vee \hat r(C_2) \ne 0 \vee \hat r(C_3) \ne 0$, whose point-join
-  $\leftrightarrow$ panel-meet duality leaf (\cref{lem:case-III-claim612-line-in-panel-union}, N3b)
-  is now green.
-\end{lemma}
-\begin{proof}
-  \uses{lem:case-III-claim612}
-  The three-way disjunction is Claim~6.12 (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)):
-  if none of $M_1, M_2, M_3$ (the three top-left $D \times D$ submatrices) had full rank, the common
-  vector $r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ would lie in $(\operatorname{span} C(L))^\perp$,
-  $(\operatorname{span} C(L'))^\perp$, $(\operatorname{span} C(L''))^\perp$ for all lines, hence
-  annihilate the degree-$(d-1)$-extensor span~(6.45), which has full dimension $D$
-  (\cref{lem:case-III-claim612-extensor-span}); so $r = 0$, contradicting $r \ne 0$
-  (\cref{lem:case-III-claim612-r-nonzero}). Mapping the disjunction $\hat r(C_i) \ne 0$ through the
-  three per-candidate selector implications then yields an independent candidate family. See
-  \cite[\S6.4.1]{katohTanigawa2011}.
-\end{proof}
-
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.29)]
   \label{lem:case-III-candidate-row}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_augment_candidateRow}
@@ -588,7 +531,7 @@ case), not the candidate-row input.
         lem:case-III-candidate-row-construction,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
         lem:case-III-transport-collapse,
-        lem:case-III-conditional-block, lem:case-III-eq629-conditional,
+        lem:case-III-conditional-block, lem:case-III-claim612,
         lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
@@ -609,10 +552,10 @@ case), not the candidate-row input.
   \leanok
   \uses{lem:case-III-candidate-row-construction, lem:case-III-columnop,
         lem:case-III-vanish-off-column, lem:case-III-transport-collapse,
-        lem:case-III-conditional-block, lem:case-III-eq629-conditional,
+        lem:case-III-conditional-block, lem:case-III-claim612,
         lem:case-II-realization-placement}
-  \emph{Green modulo the eq.~(6.29) conditional (\cref{lem:case-III-eq629-conditional}), which
-  Claim~6.12 (\cref{lem:case-III-claim612}) discharges.} The
+  \emph{Green modulo the eq.~(6.29) conditional --- the top-left $D \times D$ full rank for some
+  line choice, which Claim~6.12 (\cref{lem:case-III-claim612}) discharges.} The
   combination-level threading is green:
   \cref{lem:case-III-candidate-row-construction} takes the common element $w_{\mathrm{Gv}}$ of the
   eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row
@@ -632,7 +575,7 @@ case), not the candidate-row input.
   fixes it, $v \ne a$), so it keeps the brick's $\mathrm{hold}$ vanishing, and the $va$-rows keep
   their $v$-column pins. The augment is independent provided the eq.~(6.29) top-left $D \times D$
   block --- the $D - 1$ pinned $va$-rows plus the operated $w$'s $v$-column --- is full rank
-  (\cref{lem:case-III-eq629-conditional}, the one \emph{conditional}, Claim~6.12 territory); then
+  (the one \emph{conditional}, discharged by Claim~6.12, \cref{lem:case-III-claim612}); then
   transporting the operated independence back through $\Phi^\vee$ gives the original family
   $\mathrm{rn}\sqcup\{w\}\sqcup\mathrm{ro}$ independent, of size
   $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$ --- the full-rank assembly with bottom-right
@@ -646,9 +589,10 @@ case), not the candidate-row input.
 
 The candidate-completion (\cref{sec:molecular-algebraic-induction-candidate-completion}) lifts a
 \emph{single} degenerate placement $p_1$ to full rank $D(|V|-1)$ \emph{provided} its top-left
-$D \times D$ block (eq.~(6.29)) is full rank (\cref{lem:case-III-eq629-conditional}). At $d = 2$ KT
+$D \times D$ block (eq.~(6.29)) is full rank for some line choice (Claim~6.12,
+\cref{lem:case-III-claim612}). At $d = 2$ KT
 show this holds for $p_1$ or its symmetric partner $p_2$; \emph{at $d = 3$ it may fail for both}, so
-the conditional is genuinely a \emph{three-way disjunction}. KT introduce a third candidate $p_3$ ---
+the conditional is genuinely an existential over a free choice of lines. KT introduce a third candidate $p_3$ ---
 splitting off at the \emph{other} degree-2 vertex $a$ along $vc$, whose split-off graph $G_a^{vc}$ is
 isomorphic to $G_v^{ab}$ (eqs.~(6.31)--(6.41)) --- and prove Claim~6.12: at least one of the three
 top-left blocks $M_1, M_2, M_3$ (of eqs.~(6.29), (6.30), (6.41)) has full rank, for some choice of
@@ -1081,46 +1025,41 @@ Grassmann--Cayley projective duality.
   \lambda_{(ac)j}\, r_j(q(ac)) = 0$ for $r$ is eq.~(6.44).
 \end{proof}
 
-\begin{lemma}[Claim 6.12: at least one of $M_1, M_2, M_3$ has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
+\begin{lemma}[Claim 6.12: for some line choice the candidate block has full rank; KT Claim 6.12, eqs.\ (6.30)--(6.45)]
   \label{lem:case-III-claim612}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.case_III_claim612}
-  \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish,
-        lem:case-III-claim612-points-affineIndep, lem:case-III-claim612-line-in-panel-union,
-        lem:case-III-claim612-block-iff-perp,
-        lem:case-III-claim612-r-nonzero, lem:case-III-claim612-p2-placement,
-        lem:case-III-claim612-p3-placement, lem:case-III-claim612-eq644}
-  At $d = 3$, for the three candidate placements $p_1, p_2, p_3$
-  (\cref{lem:case-II-realization-placement}, \cref{lem:case-III-claim612-p2-placement},
-  \cref{lem:case-III-claim612-p3-placement}), at least one of the top-left $D \times D$ submatrices
-  $M_1, M_2, M_3$ (of eqs.~(6.29), (6.30), (6.41)) has full rank, for some choice of
-  $(d-2)$-affine lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$. Equivalently,
-  at least one of $R(G, p_1), R(G, p_2), R(G, p_3)$ attains the desired rank $D(|V| - 1)$, discharging
-  the candidate-completion conditional (\cref{lem:case-III-eq629-conditional}).
+  \leanok
+  \uses{lem:case-III-claim612-points-affineIndep, lem:case-III-claim612-r-nonzero}
+  At $d = 3$, let $r \ne 0$ be the common candidate row and $p_1, p_2, p_3, p_4 \in \R^3$ four
+  affinely-independent points (\cref{lem:case-III-claim612-points-affineIndep}). Then \emph{for some
+  pair} $(i, j)$ the join $r(p_i \vee p_j) \ne 0$. Since a candidate's hinge support is the
+  panel-meet of its (freely chosen) line and the panel-meet of a line through two of the four
+  points is exactly their join $p_i \vee p_j$, this is KT's Claim~6.12: for \emph{some} choice of
+  $(d-2)$-affine line, the corresponding candidate's top-left $D \times D$ block (one of $M_1, M_2,
+  M_3$ of eqs.~(6.29), (6.30), (6.41)) has full rank, equivalently $R(G, p_i)$ attains the desired
+  rank $D(|V| - 1)$ --- discharging the candidate-completion conditional the candidate-completion
+  assembly (\cref{lem:case-III-candidate-row}) passes through.
 \end{lemma}
 \begin{proof}
-  Contrapositive. Suppose all three blocks fail to have full rank for \emph{every} choice of lines.
-  By the row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}), $M_1$ failing places the
-  common vector $r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))$ in $(\operatorname{span} C(L))^\perp$ for
-  all $L \subset \Pi(a)$; likewise $M_2$ failing puts $r \in (\operatorname{span} C(L'))^\perp$ for
-  all $L' \subset \Pi(b)$. For $M_3$, eq.~(6.44) (\cref{lem:case-III-claim612-eq644}) makes its
-  candidate row $\sum_j \lambda_{(ac)j}\, r_j(q(ac)) = -r$, so $M_3$ failing puts the \emph{same} $r$
-  in $(\operatorname{span} C(L''))^\perp$ for all $L'' \subset \Pi(c)$. Hence $r$ is orthogonal to
-  every panel-meet supporting extensor $C(L)$ in the union~(6.45),
-  $\bigl(\bigcup_{L \subset \Pi(a)} C(L)\bigr) \cup \bigl(\bigcup_{L' \subset \Pi(b)} C(L')\bigr)
-  \cup \bigl(\bigcup_{L'' \subset \Pi(c)} C(L'')\bigr)$. Take the four affinely-independent points
-  $p_1, p_2, p_3, p_4$ of \cref{lem:case-III-claim612-points-affineIndep}: each connecting line
-  $p_i p_j$ lies in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$, so by the point-join $\leftrightarrow$
-  panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}) the join $p_i \vee p_j$ is a
-  scalar multiple of that line's panel-meet $C(L)$, hence $r$ annihilates each $p_i \vee p_j$ too.
-  But the six joins span $\R^D$ (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1 on the four
-  affinely-independent points). So $r$ annihilates a spanning set and $r = 0$
-  (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting $r \ne 0$
-  (\cref{lem:case-III-claim612-r-nonzero}). Therefore at least one block has full rank.
+  \leanok
+  \uses{lem:case-III-claim612-extensor-span, lem:case-III-claim612-orthseq-vanish}
+  Contrapositive of the existential. Suppose $r$ annihilated \emph{every} one of the six joins
+  $p_i \vee p_j$. (This negated existential is precisely KT's eq.~(6.45) hypothesis ``for
+  \emph{every} choice of lines $L \subset \Pi(a)$, $L' \subset \Pi(b)$, $L'' \subset \Pi(c)$'' once
+  each join is identified with the panel-meet $C(L)$ of the line through that pair via the
+  point-join $\leftrightarrow$ panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union},
+  with eq.~(6.44) routing all three failed blocks onto the same $r$); the formal argument works
+  directly with the joins.) But the six joins of four affinely-independent points span $\R^D$
+  (\cref{lem:case-III-claim612-extensor-span}, Lemma~2.1). So $r$ would annihilate a spanning set
+  and hence be $0$ (\cref{lem:case-III-claim612-orthseq-vanish}), contradicting $r \ne 0$
+  (\cref{lem:case-III-claim612-r-nonzero}). Therefore $r(p_i \vee p_j) \ne 0$ for some pair.
 
-  That the disjunction must range over a free choice of lines, not three fixed supports, is
-  essential: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions of
-  $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; KT's contrapositive
-  sweeps \emph{every} line $L \subset \Pi(u)$, reaching the full six-join span~(6.45).
+  The claim is genuinely an existential over a \emph{free} choice of lines, not a disjunction over
+  three fixed supports: three $2$-extensors $C_1, C_2, C_3$ span at most $3$ of the $6$ dimensions
+  of $\bigwedge^2 \R^4$, so $r \perp C_1, C_2, C_3$ alone cannot force $r = 0$; only the full
+  six-join span~(6.45) (the free line sweep) does. The realization producer consumes the
+  existential by building its candidate placement so its hinge line \emph{is} the witness join's
+  line $L = \bar p_i \bar p_j$.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -1133,7 +1072,7 @@ Grassmann--Cayley projective duality.
         lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
         lem:case-III-acolumn-zero, lem:case-III-candidate-row,
         lem:case-III-candidate-row-construction, lem:case-III-conditional-block,
-        lem:case-III-eq629-conditional, lem:case-III-transport-collapse,
+        lem:case-III-transport-collapse,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
         lem:case-III-claim612}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
@@ -1157,9 +1096,8 @@ Grassmann--Cayley projective duality.
   (\cref{lem:case-III-candidate-row}, green modulo the eq.~(6.29) conditional) produces a pure
   $v$-column row $w$ and assembles it with the $va$-block and old block into the
   $D(|V|-1)$-size independent family (\cref{lem:case-III-conditional-block}), block-triangularizing
-  $R(G, p_1)$ as in eq.~(6.29). The one conditional that assembly passes through
-  (\cref{lem:case-III-eq629-conditional}, the top-left $D \times D$ full rank for at least one
-  candidate) is discharged by the $D$-candidate disjunction of Claim~6.12
+  $R(G, p_1)$ as in eq.~(6.29). The one conditional that assembly passes through --- the top-left
+  $D \times D$ full rank for some line choice --- is discharged by the existential of Claim~6.12
   (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45),
   \cref{sec:molecular-algebraic-induction-claim612}): at $d = 3$ KT build \emph{three} candidate
   realizations $p_1, p_2, p_3$ (splitting at $v$ along $va$/$vb$, and at the other degree-2 vertex

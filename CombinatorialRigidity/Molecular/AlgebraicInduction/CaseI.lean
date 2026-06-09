@@ -2198,9 +2198,9 @@ combination of `e_b`-panelRows, hence in `span rigidityRows`, exactly the `hmem`
 containment C1 needs is assembled from the pointwise membership `hmem` (`Submodule.span_le` over
 `Set.range`), so the consumer (C3) supplies only the per-summand `rigidityRows` membership — the
 OLD/NEW panel-row blocks via `panelRow_mem_rigidityRows`/L4, the `r̂`-row via its `e_b`-panelRow
-decomposition. The selector `hsel` is consumed unchanged from `case_III_eq629_conditional`'s
-disjuncts; the brick is graph-free except the concrete `ofNormals` carrier C1 fixes (TACTICS-QUIRKS
-§38). -/
+decomposition. The selector `hsel` is consumed at the producer's witness line (the row-space
+criterion at `C(L) = pᵢ ∨ pⱼ`, Leaf 2/3); the brick is graph-free except the concrete `ofNormals`
+carrier C1 fixes (TACTICS-QUIRKS §38). -/
 theorem PanelHingeFramework.hasFullRankRealization_of_candidateSelector
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → ℝ} {κ : Type*} [Finite κ]
@@ -3611,33 +3611,30 @@ theorem PanelHingeFramework.candidateCompletion_panelRow_packaging [Finite β]
 /-- **L0/C3 — the `d = 3` `hsplit` producer skeleton** (`lem:case-II-realization` / `lem:case-III`,
 the `theorem_55.hsplit` branch at `k = 2`; Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phase 22g). The
 spine of the conjecture's crux at `d = 3`: given a realization of the split-off `G_v^{ab}` it
-produces a realization of `G`, by selecting (Claim 6.12) the one of three degenerate candidate
-placements whose top-left `D × D` block is full rank and feeding its independent eq. (6.29)
-candidate family to the fixed-placement realization brick.
+produces a realization of `G`, by selecting (Claim 6.12) a line `L = p̄ᵢ p̄ⱼ` with `r̂(C(L)) ≠ 0`,
+building the degenerate candidate placement whose hinge line is `L`, and feeding its independent
+eq. (6.29) candidate family to the fixed-placement realization brick.
 
-This is the **green-modulo skeleton** (`notes/Phase22-realization-design.md` §1.35): the residual
-graph-data obligations are carried here as *explicit* hypotheses, to be discharged one per leaf in
-later commits. Concretely the candidate-selection data of `case_III_claim612`
-(the nonzero common candidate row `r ≠ 0`, the four affinely-independent points `p`, the
-per-panel-line N3b duality `hduality` (KT eq. (6.45)), the three per-block selectors
-`hselᵢ : r Cᵢ ≠ 0 → LinearIndependent famᵢ`) plus,
-for each candidate `i ∈ {1, 2, 3}`, the seed `q₀ᵢ`, the per-row membership
-`hmemᵢ : ∀ i, famᵢ i ∈ span (ofNormals G ends q₀ᵢ).rigidityRows`, and the relative-full count
-`D(|V(G)|−1) ≤ |ιᵢ|` (`hcardᵢ`) — exactly the inputs of C2
-(`hasFullRankRealization_of_candidateSelector`). The body maps `case_III_claim612`'s disjunction
-`r C₁ ≠ 0 ∨ r C₂ ≠ 0 ∨ r C₃ ≠ 0` through three C2 calls; C2 already concludes the realization, so
-there is **no** device call in the spine (the corrected §1.35 route — the candidate `+1` row is a
-combination of `e_b`-panelRows, in `span rigidityRows` but not a single `panelRow`, so it is fed at
-the *fixed* placement, not the panelRow-shaped genericity device).
+This is the **green-modulo skeleton** (`notes/Phase22-realization-design.md` §1.39): the residual
+graph-data construction is carried here as a single *explicit* hypothesis `hcand`, the line-indexed
+candidate placement, to be discharged in Leaf 2/3. Concretely, `case_III_claim612` (Claim 6.12,
+`r ≠ 0` + the four affinely-independent points `p`) supplies a witness join
+`q : {q // q.1 < q.2}` with `r̂(pᵢ ∨ pⱼ) ≠ 0`; for that line `L = p̄ᵢ p̄ⱼ ⊂ Π(u)` the producer must
+exhibit a candidate family `fam` (its selector `hsel : r̂(C(L)) ≠ 0 → LinearIndependent fam`, a seed
+`q₀`, the per-row membership `hmem : ∀ i, fam i ∈ span (ofNormals G ends q₀).rigidityRows`, and the
+relative-full count `D(|V(G)|−1) ≤ |κ|`) — exactly the inputs of C2
+(`hasFullRankRealization_of_candidateSelector`), which already concludes the realization (no device
+call in the spine; the corrected §1.35 route — the candidate `+1` row is a combination of
+`e_b`-panelRows, in `span rigidityRows` but not a single `panelRow`, so it is fed at the *fixed*
+placement). `hcand` packages that per-line construction together with the C2 feed: given the witness
+join with `r̂(C(L)) ≠ 0`, it yields the realization.
 
-The leaves that discharge the carried hypotheses (each a smallest forward commit, `§1.35`):
-L1 (IH `ofNormals` → old/new block extraction), L2 (pinned-block span bridge), L4 (candidate-row
-`rigidityRows` membership), plus the `r̂`-row `e_b`-panelRow decomposition for the `+1` summand's
-membership. The shear/seed construction of the three placements and the `r`/`Cᵢ` data come from
-`case_II_placement_eq612` (eq. (6.12)) and `exists_redundant_panelRow_ab_decomposition`
-(eq. (6.27)). It is honest: `hmemᵢ`/`hcardᵢ` are the *witnessed-rank* placement inputs (the family
-is in `span rigidityRows` and counted, not asserted rigid), and C2's rank-nullity closure concludes
-the rank — exactly as `case_II_placement_eq612` feeds its `+(D−1)` brick. -/
+The leaf that discharges `hcand` (Leaf 2/3, §1.39, multi-commit, the §38 `ofNormals` trap):
+generalize `case_II_placement_eq612`'s seed/shear construction to the arbitrary witness line `L`,
+its `(D−1)` block rows spanning `(span C(L))^⊥`, run the row-space criterion
+(`linearIndependent_sumElim_candidateRow_iff`) at `C(L)` with `r̂(C(L)) ≠ 0` for the independent
+family, then feed C2. The four points `p` are supplied adapted to the real three panels (N3a
+incidence) so every witness join lies in a panel the producer can split along. -/
 theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
     -- the `theorem_55.hsplit` premise data (at `n`, `k = 2`)
@@ -3647,50 +3644,20 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
     (_hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (_he₀ : e₀ ∉ E(G))
     (_hsplit : PanelHingeFramework.HasFullRankRealization 2 (G.splitOff v a b e₀))
     -- the parent endpoint selector and a vertex (carried; supplied by the IH/links in L1/L5)
-    (ends : β → α × α) (_hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
-    -- the candidate-selection data of `case_III_claim612` (Claim 6.12; built in 22f's N3b)
-    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0) {C₁ C₂ C₃ : ScrewSpace 2}
+    (ends : β → α × α) (_hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (_hne : V(G).Nonempty)
+    -- the candidate-selection data of `case_III_claim612` (Claim 6.12, existential form, §1.39)
+    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
     {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIndependent ℝ p)
-    (hduality : r C₁ = 0 → r C₂ = 0 → r C₃ = 0 →
-      ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-        ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
-          pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
-          omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2) = extensor ![pi, pj] ∧
-          r (complementIso (k := 2) (j := 2) (by omega)
-              ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) = 0)
-    -- each candidate family `famᵢ`, its selector `hselᵢ`, its seed `q₀ᵢ`, the per-row membership
-    -- `hmemᵢ` in the fixed realization's rigidity rows, and the full count `hcardᵢ` — the C2
-    -- (`hasFullRankRealization_of_candidateSelector`) inputs (L1/L2/L4 + the `r̂`-row
-    -- decomposition; §1.35). The candidate `+1` row is a *combination* of `e_b`-panelRows, in
-    -- `span rigidityRows` but not a single `panelRow`, so the family is fed at the *fixed*
-    -- placement, not the panelRow-shaped genericity device.
-    {ι₁ ι₂ ι₃ : Type*} [Finite ι₁] [Finite ι₂] [Finite ι₃]
-    {fam₁ : ι₁ → Module.Dual ℝ (α → ScrewSpace 2)}
-    {fam₂ : ι₂ → Module.Dual ℝ (α → ScrewSpace 2)}
-    {fam₃ : ι₃ → Module.Dual ℝ (α → ScrewSpace 2)}
-    {q₁ q₂ q₃ : α × Fin (2 + 2) → ℝ}
-    (hmem₁ : ∀ i, fam₁ i ∈ Submodule.span ℝ
-      (PanelHingeFramework.ofNormals G ends q₁).toBodyHinge.rigidityRows)
-    (hmem₂ : ∀ i, fam₂ i ∈ Submodule.span ℝ
-      (PanelHingeFramework.ofNormals G ends q₂).toBodyHinge.rigidityRows)
-    (hmem₃ : ∀ i, fam₃ i ∈ Submodule.span ℝ
-      (PanelHingeFramework.ofNormals G ends q₃).toBodyHinge.rigidityRows)
-    (hcard₁ : screwDim 2 * (V(G).ncard - 1) ≤ Nat.card ι₁)
-    (hcard₂ : screwDim 2 * (V(G).ncard - 1) ≤ Nat.card ι₂)
-    (hcard₃ : screwDim 2 * (V(G).ncard - 1) ≤ Nat.card ι₃)
-    (hsel₁ : r C₁ ≠ 0 → LinearIndependent ℝ fam₁)
-    (hsel₂ : r C₂ ≠ 0 → LinearIndependent ℝ fam₂)
-    (hsel₃ : r C₃ ≠ 0 → LinearIndependent ℝ fam₃) :
+    -- the line-indexed candidate placement (Leaf 2/3, §1.39): given the witness join `q` with
+    -- `r̂(C(L)) ≠ 0` for the line `L = p̄ᵢ p̄ⱼ`, build the candidate at `L` and feed C2.
+    (hcand : ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+      r ⟨omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2),
+        extensor_mem_exteriorPower _⟩ ≠ 0 →
+      PanelHingeFramework.HasFullRankRealization 2 G) :
     PanelHingeFramework.HasFullRankRealization 2 G := by
-  -- Select the winning candidate (Claim 6.12 disjunction), then feed its independent eq. (6.29)
-  -- candidate family to C2 (`hasFullRankRealization_of_candidateSelector`) at the *fixed*
-  -- placement — C2 already concludes the realization, so there is no device call in the spine.
-  rcases BodyHingeFramework.case_III_claim612 hr hp hduality with hC₁ | hC₂ | hC₃
-  · exact PanelHingeFramework.hasFullRankRealization_of_candidateSelector G ends hne
-      hsel₁ hmem₁ hcard₁ hC₁
-  · exact PanelHingeFramework.hasFullRankRealization_of_candidateSelector G ends hne
-      hsel₂ hmem₂ hcard₂ hC₂
-  · exact PanelHingeFramework.hasFullRankRealization_of_candidateSelector G ends hne
-      hsel₃ hmem₃ hcard₃ hC₃
+  -- Select the witness line (Claim 6.12 existential), then build the candidate at that line and
+  -- feed C2 (`hcand`, Leaf 2/3) — C2 concludes the realization, no device call in the spine.
+  obtain ⟨q, hq⟩ := BodyHingeFramework.case_III_claim612 hr hp
+  exact hcand q hq
 
 end CombinatorialRigidity.Molecular

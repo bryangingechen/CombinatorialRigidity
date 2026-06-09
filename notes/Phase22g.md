@@ -33,11 +33,21 @@ candidate support `(ofNormals …).supportExtensor e = panelSupportExtensor (nor
 **panel-meet** (PanelHinge.lean:89, `rfl`), the same `complementIso`/`extensor` form as a join — so the
 producer builds its candidate so its hinge line IS the witness join's line.
 
-**Next concrete step (smallest forward commit): Leaf 1 — `case_III_claim612` existential restate.**
-Safe, local, buildable-now: replace the three-fixed-`Cᵢ`/`hduality` signature with the existential
-conclusion (no premise), body = the verified 5-line contrapositive; ripple the two callers
-(`case_III_eq629_conditional`, `case_III_hsplit_producer`). Reconcile the `lem:case-III-claim612`
-blueprint prose to the existential in the same commit.
+**Leaf 1 LANDED (2026-06-09).** `case_III_claim612` is now the existential `∃ q : six joins,
+r̂(join q) ≠ 0`, no `hann`/`hduality` premise (the 5-line contrapositive, axiom-clean). The producer
+`case_III_hsplit_producer` dropped `Cᵢ`/`hduality`/the three-fixed `hselᵢ`/`hmemᵢ`/`hcardᵢ`; it now
+`obtain`s the witness join and carries a single green-modulo hypothesis `hcand` (the line-indexed
+candidate placement, Leaf 2/3). `case_III_eq629_conditional` was deleted (no code callers; its
+blueprint node folded into `lem:case-III-claim612` — now flipped green). Build + lint + verify.sh +
+supersession-gate all clean.
+
+**Next concrete step (smallest forward commit): Leaf 2 — the line-indexed candidate placement**
+(CaseI.lean; **§38 `ofNormals` trap**). Generalize `case_II_placement_eq612`'s seed/shear
+construction to an arbitrary witness line `L = pᵢpⱼ ⊂ Π(u)`: build the candidate whose `va`-hinge
+support is `C(L)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep reasoning over abstract `F`,
+instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Likely splits (seed-from-line;
+per-line block-failure/span criterion). Multi-commit. Then Leaf 3 wires it into the producer's
+`hcand`.
 
 After the producer lands (Leaf 3): instantiate `theorem_55 (n:=2) (k:=2)` with it + the green
 `hcontract` (`case_I_realization`) and `hbase` (`theorem_55_base`); feed `rigidityMatrix_prop11`'s
@@ -47,29 +57,28 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 
 ## Lemma checklist — the live leaf sequence (§1.39)
 
-- [ ] **Leaf 1 — `case_III_claim612` existential restate** (RigidityMatrix.lean; **graph-free**, no §38).
-  Conclusion → `∃ q : {q // q.1 < q.2}, r ⟨omitTwoExtensor (homogenize∘p) (ne_of_lt q.2), _⟩ ≠ 0`;
-  drop `C₁ C₂ C₃`/`hduality`. Body = `by_contra; push Not at h; exact hr (eq_zero_of_annihilates_span_top
-  (span_omitTwoExtensor_eq_top hp) (by rintro x ⟨q, rfl⟩; exact h q))` (verified closes). **Ripple:**
-  `case_III_eq629_conditional` (:1809) drops `hduality`/`Cᵢ` — restate or **delete** (no callers; fold
-  its node into `lem:case-III-claim612` prose); `case_III_hsplit_producer` (CaseI.lean:3688) drops
-  `hduality`/`Cᵢ`/the three-fixed `hselᵢ`/`hmemᵢ`/`hcardᵢ`, body becomes green-modulo
-  (`obtain ⟨q,hq⟩ := case_III_claim612 hr hp` + a carried candidate-at-line obligation). Reconcile the
-  `lem:case-III-claim612` prose (case-iii.tex:1124–1133 describes the obsolete carry-`hduality` model).
-  One green unit.
+- [x] **Leaf 1 — `case_III_claim612` existential restate** (DONE 2026-06-09; RigidityMatrix.lean;
+  graph-free, axiom-clean). Conclusion now `∃ q : {q // q.1 < q.2}, r ⟨omitTwoExtensor (homogenize∘p)
+  (ne_of_lt q.2), _⟩ ≠ 0`; no premise. Body = the verified 5-line contrapositive. `case_III_hsplit_producer`
+  dropped `Cᵢ`/`hduality`/the three-fixed C2 inputs and carries a single green-modulo hypothesis
+  `hcand : ∀ q, r(join q) ≠ 0 → HasFullRankRealization 2 G` (the line-indexed candidate placement,
+  Leaf 2/3); body = `obtain ⟨q,hq⟩ := case_III_claim612 hr hp; exact hcand q hq`.
+  `case_III_eq629_conditional` deleted (no code callers; blueprint node folded into
+  `lem:case-III-claim612`, flipped green). The three selector recasts' doc-comments + the candidate-row
+  selector doc rerouted off the deleted glue lemma.
 - [ ] **Leaf 2 — the line-indexed candidate placement** (CaseI.lean; **§38 `ofNormals` trap**).
   Generalize `case_II_placement_eq612`'s seed/shear construction to an **arbitrary witness line** `L`
   (the join `pᵢ∨pⱼ`'s line, `L ⊂ Π(u)`): build the candidate framework whose `va`-hinge support is
   `C(L)` and its `(D−1)` block rows span `(span C(L))^⊥`. Keep the row-space/independence reasoning over
   abstract `F`, instantiate `ofNormals` only at the seed (C1/C2 §38 discipline). Likely splits
   (seed-from-line; per-line block-failure/span criterion). Multi-commit.
-- [ ] **Leaf 3 — wire the producer** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap** at the C2
-  feed). `obtain ⟨q,hq⟩ := case_III_claim612 hr hp`; extract line `L` from `q`, run Leaf 2 to build the
-  candidate, run the row-space criterion at `C(L)` with `hq : r̂(pᵢ∨pⱼ) ≠ 0` → independent family →
-  C2. Supply the four points `p` adapted to the real three panels (N3a-pattern). Discharges Leaf 1's
-  green-modulo obligation. **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside (independent; the
-  `+1`-row `hmemᵢ` already in hand via `hingeRow_mem_rigidityRows`; `so`/`sn` blocks via L2
-  `span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`).
+- [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
+  at the C2 feed). Build `hcand q hq` from `hq : r̂(pᵢ∨pⱼ) ≠ 0`: extract line `L` from `q`, run Leaf 2
+  to build the candidate at `C(L)`, run the row-space criterion at `C(L)` → independent family → C2.
+  Supply the four points `p` adapted to the real three panels (N3a-pattern). Removes the green-modulo
+  `hcand` hypothesis from the producer signature. **C5c-(ii) — OLD/NEW-block `hmemᵢ`** rides alongside
+  (independent; the `+1`-row `hmemᵢ` already in hand via `hingeRow_mem_rigidityRows`; `so`/`sn` blocks
+  via L2 `span_panelRow_comp_single_of_edge` / L4 `panelRow_mem_rigidityRows_of_link`).
 - [ ] **Leaf 4 — `theorem_55` `d=3`-instance node** (B.2; graph-free). Instantiate
   `theorem_55 (n:=2) (k:=2)` on the three green branch args; mint the small green blueprint node
   (**not** a standalone `theorem_55_dim3` — avoids duplicating the statement; general `thm:theorem-55`
@@ -101,13 +110,13 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 - [x] **OBSOLETE on the `d=3` live route (built to discharge the now-removed `hann`; reusable, likely
   re-enter at Phase-23 join↔meet duality):** `exists_hduality_witness_of_panel_incidence` (`2bd5fa2`),
   `exists_independent_perp_pair` (`07c537c`), `omitTwoExtensor_homogenize_eq_extensor_kept` (`b031eb3`),
-  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (Meet.lean, `b8477db`), and the C5a/C5b
-  six-join dispatch in `case_III_claim612`'s current body (`d851264`). All graph-free, axiom-clean.
-  (2026-06-08/09) §1.39.
-- [x] **Capstone + abstract device feed** (`case_III_eq629_conditional`,
-  `hasFullRankRealization_of_independent_panelRow_index`) — `case_III_eq629_conditional` becomes
-  obsolete under the existential restate (no callers; fold its node into `lem:case-III-claim612`).
-  (2026-06-07)
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` (Meet.lean, `b8477db`). All graph-free,
+  axiom-clean, still in tree. The C5a/C5b six-join `hduality` dispatch (`d851264`) was *removed* from
+  `case_III_claim612`'s body by the Leaf-1 restate (the existential proof bypasses it). (2026-06-08/09) §1.39.
+- [x] **`case_III_eq629_conditional` DELETED (Leaf 1, 2026-06-09).** The three-fixed-disjunction→selector
+  glue had no code callers; its blueprint node `lem:case-III-eq629-conditional` folded into
+  `lem:case-III-claim612`. (`hasFullRankRealization_of_independent_panelRow_index` — the abstract device
+  feed — stays green.) (2026-06-07/09)
 
 ## Blockers / open questions
 
@@ -119,29 +128,30 @@ Lemma 6.13) is **Phase 23** (reuse map: §1.33 (C)).
 - **The genuine remaining work is the producer line-indexed re-parameterization** (Leaf 2/3, multi-commit,
   §38 trap). Producer-internal, no phase boundary. Same difficulty as §1.38's C5c-(2); the existential
   just removes the dead `hann`/C5c-assembly scaffolding.
-- **Blueprint: `lem:case-III-claim612` + `lem:case-III-eq629-conditional` `\leanok` DROPPED (now
-  honestly RED, 2026-06-09).** Both Lean decls carry/forward the undischargeable `hduality`, so the
-  green dep-graph nodes were dishonest (honesty gate). Statement-level prose already reads as the
-  existential and the stale carry-`hduality` formalization-aside was trimmed; `\lean{}` pins kept.
-  Re-green at Leaf 1 once the existential restate lands. (Downstream `lem:case-III-candidate-row` is
-  abstract — legitimately green, stops the cascade.)
+- **Blueprint: `lem:case-III-claim612` RE-GREENED, `lem:case-III-eq629-conditional` DELETED
+  (Leaf 1, 2026-06-09).** The Lean decl is now the premise-free existential, so the node is honestly
+  green (statement + proof prose rewritten to the existential contrapositive; `\uses` trimmed to the
+  span + vanish leaves the formal proof actually invokes; the duality/eq644 leaves are conceptual
+  `\cref`s only, off the live `\uses`). The eq629-conditional node folded into claim612 (all 10
+  references rerouted to `lem:case-III-claim612` or reworded as the conceptual "eq.(6.29) conditional");
+  `verify.sh` + supersession gate clean. (Downstream `lem:case-III-candidate-row` stays abstract-green.)
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites Leaf 2/3 (they
   instantiate the concrete carrier). `case_III_claim612` (Leaf 1) is graph-free — no trap. Keep
   reasoning over abstract `F`, instantiate only at the seed.
 
 ## Hand-off / next phase
 
-**Smallest next commit: Leaf 1 — `case_III_claim612` existential restate** (graph-free, buildable now).
-Restate the conclusion to `∃ q : {q // q.1 < q.2}, r ⟨omitTwoExtensor (homogenize∘p) (ne_of_lt q.2), _⟩ ≠ 0`,
-drop `C₁ C₂ C₃`/`hduality`; body = the verified 5-line contrapositive. Ripple the two callers (delete or
-restate `case_III_eq629_conditional`; green-modulo `case_III_hsplit_producer`). Reconcile the blueprint
-formalization-aside in the same commit. One green unit. Full verification + the leaf sequence:
-`notes/Phase22-realization-design.md` §1.39.
+**Smallest next commit: Leaf 2 — the line-indexed candidate placement** (CaseI.lean, §38 `ofNormals`
+trap, multi-commit). Generalize `case_II_placement_eq612`'s seed/shear construction to an arbitrary
+witness line `L = pᵢpⱼ ⊂ Π(u)`: build the candidate whose `va`-hinge support is `C(L)` and its `(D−1)`
+block rows span `(span C(L))^⊥`. Keep reasoning over abstract `F`, instantiate `ofNormals` only at the
+seed (C1/C2 §38 discipline). Likely splits (seed-from-line; per-line block-failure/span criterion).
+Then **Leaf 3** discharges the producer's carried `hcand : ∀ q, r(join q) ≠ 0 → HasFullRankRealization
+2 G` (build the candidate at the witness line, run the row-space criterion at `C(L)`, feed C2; supply
+the four points via the N3a incidence pattern). Full plan: `notes/Phase22-realization-design.md` §1.39.
 
-**Then Leaf 2/3 (the producer restructure, §38 trap, multi-commit):** generalize the candidate placement
-to an arbitrary witness line, then wire the producer (`obtain` the join, build the candidate at its line,
-run the row-space criterion, feed C2). C5c-(ii) OLD/NEW `hmemᵢ` rides alongside. **Leaf 4/5** (the green
-`theorem_55 (n:=2) (k:=2)` instance node, the case-II/III flips, the Thm 5.5→5.6 push) unblock Cor 5.7.
+**Leaf 4/5** (the green `theorem_55 (n:=2) (k:=2)` instance node, the case-II/III flips, the Thm 5.5→5.6
+push) unblock Cor 5.7.
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d` (KT
 Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1; generalize the candidate
