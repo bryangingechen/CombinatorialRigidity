@@ -76,6 +76,16 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `AlgHom.map_det` (not `RingHom.map_det`) for `aeval`-based matrix-det bridges; `mvPolynomialX_mapMatrix_aeval` closes the matrix equation
+- **Where it bit:** Phase 22h `linearIndependent_normals_of_algebraicIndependent` (`CaseI.lean`),
+  proving `det B = aeval (q∘f) P` where `B = (aeval (q∘f)).mapMatrix (mvPolynomialX ..)`.
+- **Friction:** `RingHom.map_det f M` says `f M.det = (f.mapMatrix M).det` — correct direction but
+  `RingHom.mapMatrix` doesn't unify with `AlgHom.mapMatrix`. Use `AlgHom.map_det f M` (same statement,
+  but `f : S →ₐ[R] T`). The matrix equation `(aeval ...).mapMatrix (mvPolynomialX ..) = B` follows from
+  `Matrix.mvPolynomialX_mapMatrix_aeval ℚ B`. `convert this using 2` closes any remaining subgoal.
+- **Resolution:** `rw [← hφB, AlgHom.map_det]` where `hφB` is from `mvPolynomialX_mapMatrix_aeval`.
+- **Status:** resolved (one callsite; logs the `AlgHom` vs `RingHom` distinction for future det-poly proofs).
+
 ### [resolved] Proof-term mismatch between two `by tac` closures — use `let`-bound params in the theorem signature to force term identity
 - **Where it bit:** Phase 22h `basisFun3_normalsJoin_sorted_family` (`PanelLayer.lean`); the helper
   `normalsJoin_eq_ιMulti_family_pair h` needed `h` to be term-identical to the `h` inside

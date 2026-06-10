@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice
 import CombinatorialRigidity.Mathlib.RingTheory.MvPolynomial.Tower
 import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
+import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 
 /-!
 # The algebraic induction — Case I realization (`lem:case-I-realization`)
@@ -4740,5 +4741,176 @@ theorem BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows
   apply hingeRow_mem_rigidityRows Fv hlink_ec
   rw [hblock]
   exact acolumn_mem_hingeRowBlock_of_span_rigidityRows hac hlink_ec hblock hdeg2 hdeg2r hwGv
+
+/-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
+Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
+`q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.
+
+This is the bridge the Case-III `hcand` discharge needs: the IH carries
+`AlgebraicIndependent ℚ (fun p => Q.normal p.1 p.2)`, and the `d = 3` placement uses three
+distinct normals `n_a = q(a,·)`, `n_b = q(b,·)`, `n_c = q(c,·)` as input to
+`exists_homogeneousIncidence_of_normals`. General position (`IsGeneralPosition Q`, pairwise LI,
+§1.41(2)) gives the pairwise `hgab`; this lemma provides the triple LI.
+
+**Proof route** (det-polynomial, §1.48(2)): form the `3×3` submatrix `B i j = q([a,b,c][i],
+Fin.castSucc j)` (first three coordinates of each row). Show `B.det ≠ 0` by:
+(i) `B = (mvPolynomialX Fin3 Fin3 ℚ).map (eval₂ (algebraMap ℚ ℝ) (q ∘ f))`
+    where `f (i,j) = ([a,b,c][i], Fin.castSucc j)` (by `mvPolynomialX_map_eval₂`);
+(ii) `B.det = eval₂ (algebraMap ℚ ℝ) (q ∘ f) (det (mvPolynomialX ...))`
+    (by `RingHom.map_det`);
+(iii) `det (mvPolynomialX Fin3 Fin3 ℚ) ≠ 0` (`Matrix.det_mvPolynomialX_ne_zero`);
+(iv) `q ∘ f` is alg-indep over ℚ (`AlgebraicIndependent.comp`, since `f` is injective by `a,b,c`
+     distinct and `Fin.castSucc` injective);
+(v) `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` certifies `B.det ≠ 0`.
+Then `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp` (projection to
+first 3 coordinates) lifts to the full 4-coordinate rows. -/
+private lemma linearIndependent_normals_of_algebraicIndependent
+    {α : Type*} {q : α × Fin 4 → ℝ}
+    (hq : AlgebraicIndependent ℚ q)
+    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
+      Fin 3 → Fin 4 → ℝ) := by
+  classical
+  -- Suffices: the projection to the first 3 coordinates is also independent.
+  -- If the full-row family is dependent, so is the projected family; so we prove LI of the
+  -- projected family (rows of the 3×3 matrix B) and lift back.
+  apply LinearIndependent.of_comp
+    (LinearMap.pi (fun j : Fin 3 => (LinearMap.proj (Fin.castSucc j) : (Fin 4 → ℝ) →ₗ[ℝ] ℝ)))
+  -- The composed family equals the rows of the 3×3 matrix B i j = q([a,b,c][i], Fin.castSucc j).
+  have hcomp_eq : (LinearMap.pi
+        (fun j : Fin 3 => (LinearMap.proj (Fin.castSucc j) : (Fin 4 → ℝ) →ₗ[ℝ] ℝ))) ∘
+      (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] : Fin 3 → Fin 4 → ℝ) =
+      fun (i : Fin 3) (j : Fin 3) => q (![a, b, c] i, Fin.castSucc j) := by
+    ext i j; fin_cases i <;> rfl
+  rw [hcomp_eq]
+  -- Show the 3×3 matrix B has nonzero determinant (rows are then linearly independent).
+  apply Matrix.linearIndependent_rows_of_det_ne_zero
+  -- Set up the injection f : Fin 3 × Fin 3 → α × Fin 4.
+  set f : Fin 3 × Fin 3 → α × Fin 4 := fun p => (![a, b, c] p.1, Fin.castSucc p.2) with hf_def
+  have hfinj : Function.Injective f := by
+    intro ⟨i, j⟩ ⟨i', j'⟩ heq
+    simp only [hf_def, Prod.mk.injEq] at heq
+    have hjeq : j = j' := Fin.castSucc_injective _ heq.2
+    subst hjeq
+    suffices hi : i = i' by exact Prod.ext hi rfl
+    fin_cases i <;> fin_cases i' <;>
+      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
+  -- q∘f is algebraically independent over ℚ (injective precomposition of an alg-indep family).
+  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
+  -- The generic 3×3 det polynomial P = det(mvPolynomialX) is nonzero over ℚ.
+  have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det ≠ 0 :=
+    Matrix.det_mvPolynomialX_ne_zero (Fin 3) ℚ
+  -- B.det = aeval(q∘f) P.  Use mvPolynomialX_mapMatrix_aeval: aeval(A.·) (mvPolynomialX) = A,
+  -- then take .det and apply RingHom.map_det.
+  suffices hBdet :
+      Matrix.det (fun i j => q (![a, b, c] i, Fin.castSucc j)) =
+      MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
+        (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det by
+    rw [hBdet]
+    exact hqf.aeval_ne_zero hP_ne
+  -- Prove B.det = aeval(q∘f) det(mvPolynomialX).
+  -- B = (aeval (q∘f)).mapMatrix (mvPolynomialX) by mvPolynomialX_mapMatrix_aeval;
+  -- B.det = (aeval (q∘f)) (mvPolynomialX.det) by AlgHom.map_det.
+  -- B.det = aeval(q∘f) (det mvPolynomialX).
+  -- Step 1: (aeval (fun p => (q∘f) p)).mapMatrix (mvPolynomialX) = B
+  --         (by mvPolynomialX_mapMatrix_aeval, since (q∘f) p = B p.1 p.2 definitionally).
+  have hφB : (MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
+      (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ) =
+      (fun i j => q (![a, b, c] i, Fin.castSucc j)) := by
+    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
+      (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castSucc j)))
+    simp only [Matrix.of_apply] at this
+    convert this using 2
+  -- Step 2: aeval(q∘f) (det mvPolynomialX) = (aeval(q∘f).mapMatrix (mvPolynomialX)).det
+  --         by AlgHom.map_det (reversed direction).
+  rw [← hφB, AlgHom.map_det]
+
+/-- **G4e — the `hcand` discharge: the candidate-placement core for `d = 3` Case III**
+(`lem:case-II-realization` / `lem:case-III`, the §38-trap concrete-seed assembly;
+Katoh–Tanigawa 2011 §6.4.1, eqs. (6.41)–(6.47), Phase 22h).
+
+Given the chain data `(v, a, b, c, eₐ, e_b, e_c, e₀)` at `G` (from `exists_chain_data_of_noRigid`)
+and a **generic** full-rank realization of the `v`-split `G.splitOff v a b e₀` (the IH GP output
+`hsplitGP`), this produces a generic full-rank realization of `G` itself.
+
+**Proof architecture** (§1.49(5), the G4e dispatch):
+1. Unpack `hsplitGP` to extract the concrete framework `Q` with seed `q = Q.normal`.
+2. Derive `hgab : LinearIndependent ℝ ![q(a,·), q(b,·)]` from `Q.IsGeneralPosition`.
+3. Derive the triple-LI `hn : LinearIndependent ℝ ![q(a,·), q(b,·), q(c,·)]` from the alg-indep
+   conjunct of `hsplitGP` (the bridge lemma `linearIndependent_normals_of_algebraicIndependent`).
+4. Feed the triple-LI to `exists_homogeneousIncidence_of_normals` to get `pbar : Fin 4 → Fin 4 → ℝ`
+   with N3a incidence, then to `case_III_claim612` to get a witness join `q₁₂` with `r̂(join) ≠ 0`.
+5. Extract line data from `exists_line_data_of_homogeneousIncidence` for the witness join `q₁₂`.
+6. Dispatch on which normal `n_u ∈ {n_a, n_b, n_c}` the witness line involves (M₁/M₂/M₃):
+   - **M₁ (`n_u = n_a`)**: seed `q₀` shearing `v` along `n'`, OLD+NEW blocks from
+     `case_III_old_new_blocks_of_line`, candidate row from `exists_redundant_panelRow_ab_lam` +
+     `exists_candidate_row_eq612`, full-rank realization from `case_III_realization_of_line`,
+     then GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
+   - **M₂ (`n_u = n_b`)**: same chain with roles `a ↔ b` (the `vb`-split instead of `va`).
+   - **M₃ (`n_u = n_c`)**: G4c-ii relabel (`hasGenericFullRankRealization_of_splitOff_relabel`)
+     gives a realization of `G.splitOff a v c e₁`, then the same M₁ chain at `(a, c)` via
+     G4d-ii (`hingeRow_acolumn_mem_span_rigidityRows`). -/
+theorem PanelHingeFramework.case_III_hcand_discharge
+    [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n)
+    {G : Graph α β}
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hsimple : G.Simple)
+    -- Chain data
+    {v a b c : α} {eₐ e_b e_c e₀ : β}
+    (hvG : v ∈ V(G)) (haG : a ∈ V(G)) (hbG : b ∈ V(G)) (hcG : c ∈ V(G))
+    (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a) (hcv : c ≠ v) (hca : c ≠ a) (hbc : b ≠ c)
+    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b) (hlec : G.IsLink e_c a c)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G))
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization 2 (G.splitOff v a b e₀)) :
+    PanelHingeFramework.HasGenericFullRankRealization 2 G := by
+  classical
+  haveI := hsimple
+  have hD3 : 3 ≤ Graph.bodyBarDim n := by omega
+  -- (1) Unpack the generic v-split realization to get the concrete framework Q and seed q.
+  obtain ⟨Q, hQg, hQgp, hQrig, hQrec, hQalg⟩ := hsplitGP
+  -- The seed: q(x,i) = Q.normal x i.
+  set q : α × Fin 4 → ℝ := fun p => Q.normal p.1 p.2 with hq_def
+  -- Re-express Q as the canonical ofNormals at Q.ends (the link-recording selector).
+  -- Q.graph = G.splitOff v a b e₀ (from hQg), Q.normal = fun a i => q (a, i) (by def of q),
+  -- Q.ends = Q.ends: so Q = ofNormals (G.splitOff v a b e₀) Q.ends q.
+  have hQeq : Q = PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends q := by
+    cases Q with
+    | mk Qg Qn Qe =>
+      simp only [PanelHingeFramework.ofNormals, hq_def] at *
+      simp only [hQg]
+  -- (2) From IsGeneralPosition: pairwise LI of q(a,·), q(b,·) (hgab).
+  -- a and b are distinct vertices of the splitOff (a ≠ b since b ≠ a, and both ∈ V(splitOff)).
+  have hab_ne : a ≠ b := hba.symm
+  have hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))] := by
+    have := hQgp a b hab_ne
+    simp only [hq_def] at this ⊢
+    rwa [show ![(fun i => Q.normal a i), (fun i => Q.normal b i)] =
+        ![Q.normal a, Q.normal b] from by ext i j; fin_cases i <;> rfl]
+  -- (3) Triple LI from alg-indep (bridge lemma).
+  -- a, b, c are distinct (b ≠ a, b ≠ c from chain data; a ≠ c from hca).
+  have hac_ne : a ≠ c := hca.symm
+  have hn3 : LinearIndependent ℝ
+      (![(fun i => q (a, i)), (fun i => q (b, i)), (fun i => q (c, i))] :
+        Fin 3 → Fin 4 → ℝ) := by
+    apply linearIndependent_normals_of_algebraicIndependent hQalg
+    · exact hab_ne
+    · exact hac_ne
+    · exact hbc
+  -- We have:
+  --   hQrig   : the generic v-split framework is infinitesimally rigid on V(splitOff)
+  --   hn3     : triple-LI of the normals at a, b, c (the bridge; from hQalg)
+  --   hQgp    : Q.IsGeneralPosition (pairwise LI of all normals, including n_a/n_b)
+  -- The dispatch architecture (§1.49(5)) proceeds:
+  -- (4) Homogeneous incidence → pbar → Claim 6.12 → witness join with r̂(join) ≠ 0.
+  -- (5) Line-data extraction → M₁/M₂/M₃ dispatch.
+  -- (6) Each M arm produces HasFullRankRealization 2 G; GAP-2 upgrade closes.
+  -- The full dispatch is deferred as sorry; the bridge lemma (step 3) and the structural
+  -- unpacking (steps 1–2) are confirmed correct above.
+  sorry
 
 end CombinatorialRigidity.Molecular
