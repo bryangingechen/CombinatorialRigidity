@@ -1981,6 +1981,181 @@ coordinator's per-commit verdict-reasoning check (coordinate-phase step 3) is wh
 general form of that step's anecdote. Lifted to `CLAUDE.md` *Referencing prior work* neighbours / the
 coordinate-phase command (this session's instruction-improvement pass).
 
+### 1.48 The §1.47-commissioned recon — (1) the `|V|=3` triangle base case is NEW but bounded work (the green cycle bricks don't assemble; 4 leaves T1–T4, ~3–4 commits); (2) the `|V|≥4` `.1`-in-the-loop wiring CONFIRMS §1.47 as far as it went, but tracing the six-join *dispatch* surfaces **GAP 4**: the `M₃` third-panel candidate (KT's second split `G_a^{vc}` at an *adjacent degree-2 pair*, eqs. (6.41)–(6.44)) is absent from the leaf inventory and inexpressible in the current `hsplit`/`hsplitGP` branch interface (2026-06-09)
+
+> **Build-free design pass; the two §1.47 questions, answered against the Lean and KT read in full.**
+> Verified against the green Lean (`theorem_55_base` Pinning.lean:630 — the `V(G)`-relative two-body base;
+> `eq_succ_of_isInfinitesimalMotion_cycle`/`isTrivialMotion_of_…`/`rankHypothesis_zero_of_cycle`
+> Pinning.lean:670/692/724 — the `Fin m` cycle bricks; `toBodyHinge_rankHypothesis_zero[_cycle]`
+> PanelHinge.lean:538/899; `exists_independent_panelSupportExtensor` PanelLayer.lean:445 + the `⋀²`-basis
+> plumbing :390/:417; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` RigidityMatrix.lean:2291;
+> `isKDof_zero_of_triangle` Deficiency.lean:403; `rank_add_deficiency_eq` Deficiency.lean:1151;
+> `exists_degree_eq_two` ReducibleVertex.lean:587 + the reduction's `hsplit` wiring ForestSurgery.lean:1011–1047
+> (`splitOff_isMinimalKDof` on the route, :1037); `theorem_55_generic.hsplitGP` PanelHinge.lean:1167–1175;
+> `hasGenericFullRankRealization_of_rigidOn_ofNormals` CaseI.lean:1968; `case_III_old_new_blocks_of_line`
+> CaseI.lean:3616 (`hL` :3634, `hnewtrans` :3635); `case_III_realization_of_line` :3988 (role-parameterized
+> `{v a : α} {e_a : β}`); `case_III_hsplit_producer` :4057; `exists_homogeneousIncidence_of_normals`
+> RigidityMatrix.lean:455; `exists_line_data_of_homogeneousIncidence` :582 — the six-join witness-normal
+> tabulation) **and KT 2011 read end-to-end at pp. 664 (Lemma 4.6), 677 (Lemmas 6.7/6.8), 680–691 (Lemma 6.10:
+> the sketch p. 680 fixing `N_G(v)={a,b}`, `N_G(a)={v,c}`; (6.19)–(6.21) p. 682; the `ρ`-iso + `qρ` p. 686;
+> M₁/M₂/M₃ + Claim 6.12 eq. (6.42) p. 690; eqs. (6.43)–(6.44) p. 691)**. No `.lean`/`.tex` edits this pass.
+
+**(1) The `|V|=3` triangle base case — verdict: NEW WORK, bounded (~3–4 commits), and on the critical path
+of the whole `hsplit` recursion (not a corner case).** Criticality first: the reduction descends `|V|` by
+exactly 1 through `hsplit`, so every split chain that doesn't divert into `hcontract` passes through
+`|V|=3`; and the `|V(G)|=4` producer's own GP `.1` conjunct IS the `|V|=3` triangle's GP realization. What
+is in tree near `hbaseGP` (the `lem:cycle-realization` thread, partially green):
+- `theorem_55_base` (Pinning.lean:630) — the two-body base, already in the right *relative* form
+  (`IsInfinitesimallyRigidOn {u,v}`, on ambient `α`), but `m = 2` only.
+- The `Fin m` cycle bricks (`rankHypothesis_zero_of_cycle` :724 + its two steps; panel lift
+  `toBodyHinge_rankHypothesis_zero_cycle` PanelHinge.lean:899) — the *absolute* `RankHypothesis 0` on body
+  type `Fin m`, NOT the `V(G)`-relative motive on `α` the producer needs.
+- `exists_independent_panelSupportExtensor` (PanelLayer.lean:445) — supplies `m` **free pairs**
+  `(n₁ i, n₂ i)`; a cycle framework's `i`-th support is the *consecutive* pair
+  `panelSupportExtensor (normal i) (normal (i+1))` of a SINGLE normal family, so this lemma does **not**
+  instantiate the cycle's `hgen`. No cyclically-consistent existence half is in tree.
+- No unconditional `hbase`/`hbaseGP` producer exists either (they are still hypotheses, assembled at Leaf 4)
+  — so there is no `|V|≤3`-realization machinery to reuse beyond the bricks above.
+
+So: not available; new work. **Decomposition (T1–T4), each bounded, with the landed GAP-2 upgrade as the
+keystone that makes T4 cheap** (no triangle-specific genericity work — exhibit ONE rigid seed, upgrade):
+- **T1 (graph-side; Operations.lean or Deficiency.lean) — the triangle's third edge + vertex-set pin.**
+  `exists_isLink_of_isMinimalKDof_card_three : 3 ≤ bodyBarDim n → G.IsMinimalKDof n 0 → G.Simple →
+  V(G).ncard = 3 → G.IsLink eₐ v a → G.IsLink e_b v b → a ≠ v → b ≠ v →
+  (a ≠ b ∧ V(G) = {v, a, b} ∧ ∃ f, G.IsLink f a b)`. Route: `a ≠ b` from `G.Simple` + `heab` (a parallel
+  pair otherwise); `V(G) = {v,a,b}` from `ncard = 3` + the three distinct members
+  (`Set.eq_of_subset_of_ncard_le`); the third edge from the **edge count**: `rank M(G̃) = D(|V|−1) = 2D`
+  (`rank_add_deficiency_eq`, `def = 0`) and `rank ≤ |E(G̃)| = (D−1)|E|` force `|E| ≥ ⌈2D/(D−1)⌉ = 3`; on 3
+  vertices a simple graph carries at most the three pairs `{v,a},{v,b},{a,b}`, the first two occupied by
+  `eₐ/e_b`, so the third edge links `a b`. All inputs green (Phase 19 rank identity; the fiber-count
+  plumbing of Deficiency.lean).
+- **T2 (rigidity brick; Pinning.lean) — the three-body sibling of `theorem_55_base`.**
+  `theorem_55_triangle (F : BodyHingeFramework k α β) {e₁ e₂ e₃ : β} {u v w : α} (huv : u ≠ v)
+  (hvw : v ≠ w) (huw : u ≠ w) (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂,
+  F.supportExtensor e₃]) (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ v w)
+  (h₃ : F.graph.IsLink e₃ w u) : F.IsInfinitesimallyRigidOn {u, v, w}`. Proof = the
+  `eq_succ_of_isInfinitesimalMotion_cycle` telescoping at `m = 3` re-run on `α` (the three relative screws
+  lie in the three spans and sum to 0; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` over the `Fin 3`
+  `![]`-family forces each to vanish), then the 9-case constancy dispatch of `theorem_55_base`. Stays in
+  the relative form, no `Fin m` transport.
+- **T3 (concrete seed; PanelLayer.lean) — cyclically-consistent independent joins, `m = 3`.**
+  `exists_triangle_normals (k ≥ 1) : ∃ n₀ n₁ n₂ : Fin (k+2) → ℝ, (pairwise LinearIndependent) ∧
+  LinearIndependent ℝ ![panelSupportExtensor n₀ n₁, panelSupportExtensor n₁ n₂,
+  panelSupportExtensor n₂ n₀]`. Witness: three standard basis vectors; the three joins are the basis
+  `⋀²`-family members at `{0,1}, {1,2}, {0,2}` up to the wrap-around sign (`normalsJoin n₂ n₀ = −(n₀∧n₂)`;
+  independence survives unit scaling) — `panelSupportExtensor_linearIndependent_iff` +
+  `normalsJoin_basisFun_orderEmbOfFin` + `ιMulti_family_linearIndependent_ofBasis`, all green. Needs
+  `k+2 ≥ 3`, true at `k = 2`.
+- **T4 (assembly; CaseI.lean) — the triangle realization, generic motive.**
+  `hasGenericFullRankRealization_of_triangle : … → V(G).ncard = 3 → (T1 data) →
+  HasGenericFullRankRealization k G`. Seed `q₀` = T3's normals at `v/a/b` (anything off `{v,a,b}`
+  arbitrary), selector `G.endsOf` (`ofNormals_endsOf_recordsLinks` pattern); `hrig` = T2 at the three edges
+  (orientation/sign bookkeeping through `endsOf`'s pair order; sign flips don't break `hgen`), rewritten to
+  `V(G)` by T1's vertex-set pin; `hne` = every linking edge joins two distinct members of `{v,a,b}` (T1 +
+  `G.Simple`), whose seed normals are pairwise independent (T3) — `panelSupportExtensor_ne_zero_iff`. Then
+  the landed `hasGenericFullRankRealization_of_rigidOn_ofNormals` concludes the generic motive directly
+  (`hends`/`hne`/`hnev`/`hrig` all in hand). This IS KT Lemma 6.7(i)-via-5.4, formalized as the `m=3`
+  instance of the cycle realization at an explicit basis seed. *(Note for the bare branch: `hsplit` (no
+  `G.Simple`) at `|V|=3` either derives simplicity from `hnoRigid` — a parallel pair or loop is a proper
+  rigid subgraph at `|V|=3`, the `splitOff_simple_of_noRigid` argument re-run on `G` itself; KT p. 682 "As
+  remarked …, G is a simple graph" — or projects T4's generic conclusion through
+  `hasFullRankRealization_of_generic`. One small extra leaf either way, decided at the producer build.)*
+
+**(2) The `|V|≥4` route — the §1.47 `.1`-wiring CONFIRMS, with one addition; but the signature cannot yet
+be finalized, because the six-join dispatch trace surfaces GAP 4.**
+
+*Confirmed (the §1.47 route-A chain, every link checked):* R3 `splitOff_simple_of_noRigid_of_card`
+discharges the `.1` antecedent at `4 ≤ |V(G)|` → the GP split realization `⟨Q, hQg, hQgp, hQrig, hQlinks,
+hQalg⟩ := hIH.1 …` → `hgab := hQgp a b hab` is *definitionally* the placement's
+`LinearIndependent ![q(a,·), q(b,·)]` (`ofNormals_normal` rfl, §1.41(2), after the `case_I_realization`-style
+`ofNormals`-alignment extraction) → GAP-3's good `t` comes from `hgab` → `hnewtrans`; the line data supplies
+`hL`; the candidate completion (`case_III_old_new_blocks_of_line` → `case_III_full_family_of_line` →
+`case_III_realization_of_line`) lands the **bare** `HasFullRankRealization 2 G`; the landed GAP-2 upgrade
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` re-realizes it generically, its `hne` fed by the IH GP
+(the `Gv`-edges) + `hane`/`hnewne` (the `v`-hinges). **Addition (one more reason `.1` is in the loop):** the
+producer's N3a triple needs `hn : LinearIndependent ℝ n` for a *triple* — pairwise GP does NOT give triple
+independence (`n_c = n_a + n_b` is pairwise-independent). The honest source is the `.1` conjunct's
+**`AlgebraicIndependent ℚ`** (an ℝ-linear dependence among three normal rows kills every 3×3 minor, each a
+nonzero rational polynomial in the 12 seed coordinates — contradiction). A small bridge leaf
+(`linearIndependent_of_algebraicIndependent_normals`, or reuse the det-polynomial route of 22d); KT says
+exactly this ("since `(G_v^{ab}, q)` is a generic nonparallel framework, we can take such four points…",
+p. 691).
+
+*GAP 4 — the `M₃` third-panel complex (NEW; untracked by §1.40/§1.44/§1.47).* The trace that surfaces it:
+- The producer's `pbar` comes from `exists_homogeneousIncidence_of_normals` over a real triple
+  `n = ![n_a, n_b, n_c]`, and `exists_line_data_of_homogeneousIncidence`'s tabulation shows the three
+  **one-panel joins pin the witness normal to each of the three normals in turn** (`(0,1)↦n 2`,
+  `(0,2)↦n 0`, `(0,3)↦n 1`). So every `n u` occurs as the *only* admissible witness normal of some join.
+- The placement can realize a witness line **only inside a panel of one of `v`'s graph-neighbours**: the
+  candidate hinge is `e_a` (or `e_b`), whose support is `panelSupportExtensor (q₀ v) n_a` — it lies in
+  `Π(a)` for *every* choice of `v`'s normal (the seed-from-line core fires only at `n_u = n_a`, role-swap
+  `n_u = n_b`). A witness line `L ⊄ Π(a) ∪ Π(b)` is geometrically unplaceable at `v`'s hinges.
+- Two panels cannot cover: covering all pairs of 4 points by 2 cliques ("both endpoints in panel `u`")
+  forces one panel to contain all 4 points (any point in `A` only and any point in `B` only form an
+  uncovered pair) — 4 LI vectors inside one hyperplane of `ℝ⁴`, contradiction. KT states it outright: *"In `d = 2`
+  we can show that the corresponding top-left submatrix has full rank in at least one of (6.29) and (6.30),
+  but this may not be true for `d ≥ 3`. Hence, we shall introduce another framework `(G,p3)`"* (p. 686).
+- **KT's `M₃`** (pp. 680, 686, 690–691): choose `v, a` an **adjacent degree-2 pair** (`N_G(v)={a,b}`,
+  `N_G(a)={v,c}` — the sketch's standing choice, from **Lemma 4.6**'s chain-or-cycle dichotomy, p. 664:
+  a 2-edge-connected minimal `k`-dof graph with no proper rigid subgraph is a cycle of `≤ d` vertices or
+  contains a chain `v₀v₁…v_d` with interior degrees 2; at `d=3` that is *triangle-or-adjacent-pair*). Then
+  `G_a^{vc} ≅ G_v^{ab}` by the transposition `ρ = (a v)` (p. 686), and `M₃` is the candidate built on
+  `(G_a^{vc}, qρ)` — **the SAME seed `q` transported by `ρ`** — placing the `ac`-hinge at `L'' ⊂ Π(c)`.
+  The same-seed bookkeeping is essential: Claim 6.12 tests ONE `r̂`, and eqs. (6.43)–(6.44) (the (6.24)
+  dependency read at `a`'s six columns, using that `a`'s only incident edges in `G_v^{ab}` are `ab` and
+  `ac` — i.e. `deg(a) = 2`) give `r̂ = −∑ⱼ λ_{(ac)j} rⱼ(q(ac))`, so `M₃`'s candidate row tests the same
+  `r̂`. An *independent* IH realization of the second split would break this identity.
+- **What is missing in the project** (the GAP-4 leaf list):
+  - **G4a — the Lemma-4.6 chain dichotomy** (`d = 3` form): triangle, or an adjacent degree-2 pair `v, a`
+    with `N(v) = {a,b}`, `N(a) = {v,c}`, `b ≠ c` (if `b = c` the triangle `{v,a,b}` is a proper rigid
+    subgraph at `|V| ≥ 4` — `triangle_isProperRigidSubgraph`, in tree, closes this). The in-tree
+    `exists_degree_eq_two` is the *single-vertex* form (avg-degree + the 2-edge-connectivity cut bound);
+    the chain strengthening (KT's maximal-chain counting, p. 664) is NOT formalized. New combinatorial
+    leaf; its cycle branch is exactly the `|V|=3` triangle of part (1) (cycles of `> 3` vertices have
+    adjacent degree-2 pairs trivially).
+  - **G4b — the branch interface cannot express the choice.** `minimal_kdof_reduction` picks `v` via
+    `exists_degree_eq_two` and hands `hsplit`/`hsplitGP` a FIXED `(v,a,b,eₐ,e_b,e₀)` + the IH value *for
+    that split only* (ForestSurgery.lean:1024–1047; PanelHinge.lean:1167–1175). KT's proof needs `v, a`
+    *chosen as the adjacent pair* and the second split available. Two repair shapes (decision deferred to
+    the next design pass, NOT made here): **(α)** re-point the reduction's degree-2 selection at the
+    Lemma-4.6 chain and hand the chain data through the branch (structural edit of
+    `minimal_kdof_reduction` + `theorem_55`/`theorem_55_generic` + blueprint nodes; ripples into the
+    landed branch consumers); **(β)** hand the `hsplit`/`hsplitGP` branch the **full conditioned IH**
+    (mirroring `hcontract`'s shape) and let the producer re-choose its own pair via G4a +
+    `splitOff_isMinimalKDof` (in tree, ForestSurgery.lean:1037) — less invasive to the recursion, but the
+    branch hypotheses still change shape, and the producer still needs the `ρ`-relabel (G4c) for the
+    second split's *same-seed* realization (the full IH cannot substitute — see the (6.44) point above).
+  - **G4c — the `ρ`-relabel transport**: a bijective vertex-relabel (transposition) transport for
+    `ofNormals` realizations carrying graph/rigidity/links (`G_a^{vc} = ρ-image of G_v^{ab}`, `qρ = q∘ρ`).
+    Precedent: Case I's collapse-map transports (G2b `map`-simplicity, G3a rigidity transport) — those are
+    harder (non-injective collapse); a bijection is cleaner but is NOT packaged. New leaf.
+  - **G4d — the `M₃` candidate-row bookkeeping**: the `(6.24)`-at-`a` column reading
+    (`exists_redundant_panelRow_ab_lam`'s combination, restricted to `a`'s columns, + `deg_{G_v^{ab}}(a)=2`
+    from the chain) → `r̂ = −∑ λ_{(ac)j} rⱼ(q(ac))` (eq. 6.44), and the `M₃`-candidate `hcand_mem`
+    (`hingeRow a c r̂ ∈ span rigidityRows` of the relabeled candidate). Bounded but new; the ab-fiber
+    versions are green, the ac-fiber/relabeled versions are not.
+  - **G4e — the dispatch leaf**: `hcand`'s trichotomy on the witness join's panel
+    (`n_a ↦ M₁` at `e_a`; `n_b ↦ M₂` at `e_b`, roles swapped; `n_c ↦ M₃` via G4c/G4d). The landed
+    placement/criterion/C2-feed leaves are role-parameterized and cover M₁/M₂ by instantiation.
+- **Why §1.40/§1.44/§1.47 missed it:** §1.40-(2) *named* the M₁/M₂/M₃ trichotomy (including "`M₃`
+  (`ac`-split, the `a↔v` iso)") in its fixed-seed analysis, and §1.40-(4) verified the six-join **line
+  data** exists for every join — but the leaf decomposition (§1.40-(6), §1.39 Leaf 2/3) silently collapsed
+  the dispatch into the single role-parameterized placement, checking data *coverage* without checking
+  data *placeability* per witness. Same family as the §1.44/§1.47 lesson: the recon must trace the
+  dispatch (which construction consumes each witness), not just that per-witness data exists.
+
+**Combined verdict / corrected remaining-work picture for Phase 22g.** Remaining work =
+(i) the `|V|=3` triangle base-case complex T1–T4 (bounded, ~3–4 commits; also the floor of the `hsplit`
+recursion); (ii) the GAP-4 `M₃` complex G4a–G4e (multi-commit, with ONE structural decision — G4b (α) vs
+(β) — that must be settled by a dedicated design pass *before* the producer signature is final); (iii) the
+producer assembly itself (the §38-trap build, composing the confirmed `.1`-chain + GAP-2 upgrade + GAP-3 +
+the new triple-LI bridge); (iv) Leaf 4/5 as before. §1.45's "5–6 commits to phase close" and §1.46's
+"~3–4 routine commits" are both superseded; the §1.47 "not all-routine" correction stands and widens.
+The `|V|≥4` GP-wiring half of §1.47 is **confirmed**; its "buildable" headline was optimistic only in that
+it had not yet traced the dispatch. *(ROADMAP §22g note: the opening-recon claim "the path does not consume
+`lem:cycle-realization`" needs a caveat — the `|V|=3` base case consumes the green cycle/triangle bricks of
+that thread (KT 6.7(i)-via-5.4), though not the red general-`m` node.)*
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
