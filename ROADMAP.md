@@ -123,7 +123,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22d. KT Claim 6.11 (eq. (6.23), the redundant `ab`-row) + its green-machinery prerequisites | `Molecular/Induction/ForestSurgery.lean` + `AlgebraicInduction/{CaseI,PanelLayer,PanelHinge}.lean` (extends `algebraic-induction.tex`) | ✓ Complete (see `notes/Phase22d.md`) |
 | 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ Complete (N3b discharged in 22f; see `notes/Phase22e.md`) |
 | 22f. N3b: point-join↔panel-meet duality (the exterior-algebra assembly completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` | ✓ Complete — discharged 22e's green-modulo-N3b (see `notes/Phase22f.md`) |
-| 22g. `d=3` realization assembly (the `d=3` `hsplit` producer + `thm:theorem-55` `d=3`-instance, flipping `lem:case-II-realization` / `lem:case-III` green) | `Molecular/AlgebraicInduction/` | ◷ In progress — opened on the red-node consistency recon (see `notes/Phase22g.md`) |
+| 22g. `d=3` realization assembly: design program + leaf infrastructure | `Molecular/AlgebraicInduction/` | ✓ Complete — banner flips moved to 22h (see `notes/Phase22g.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -548,7 +548,8 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–19 complete; Phases 20–26 planned.** The
+**Status: Phases 17–22g (+ 21a/21b) complete; Phase 22h (the corrected
+`d=3` assembly) opens next; Phases 23–26 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -618,7 +619,7 @@ affine-subspace extensor `C(·)`, and **Lemma 2.1** — the independence of
 the `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely
 independent points (`omitTwoExtensor_linearIndependent`), on which the
 conjecture's hardest case (Case III, Phases 22–23) bottoms out. Phases
-20–26 remain planned — see `notes/MolecularConjecture.md` for the
+23–26 remain planned — see `notes/MolecularConjecture.md` for the
 per-phase detail and the reuse map.
 
 ### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (KT §2.2–2.4, §5 prep)
@@ -883,33 +884,23 @@ green; the two producer nodes `lem:case-II-realization` / `lem:case-III` await o
 realization assembly (Phase 22g). Forward-mode; dep-graph `algebraic-induction/case-iii.tex` +
 `meet.tex`. Per-leaf detail + decisions: `notes/Phase22f.md`.
 
-#### Phase 22g — the `d=3` realization assembly (KT §6.4.1) — ◷ In progress
+#### Phase 22g — the `d=3` realization assembly: design program + leaf infrastructure (KT §6.4.1) — ✓ Complete
 
-**Status (◷ in progress; opened 2026-06-07 on a build-free red-node consistency recon; see
-`notes/Phase22g.md`).** The deferred-unlettered "`d=3` assembly" cut, now lettered 22g, takes the
-two producer nodes `lem:case-II-realization` / `lem:case-III` from red to green at `d = 3`. With the
-`d=3` Case-III contrapositive fully green through Phase 22f, the one real gap is the **`d=3` `hsplit`
-producer**: compose the green bricks `case_II_placement_eq612` (eq. (6.12), `D(|V|−1)−1`) ⊕ the
-candidate row ⊕ `case_III_claim612` into a full-rank realization at the fixed degenerate placement,
-then instantiate `theorem_55 (n:=2) (k:=2)` on it + the green `hcontract`/`hbase` and feed
-`rigidityMatrix_prop11`'s `hgen` (whose `hub` lower bound is already green). The producer build is
-cracked into buildable leaves (`notes/Phase22-realization-design.md` §1.34/§1.35; the `ofNormals`
-defeq-timeout trap, TACTICS-QUIRKS §38, is confined to the device-feed carrier). A small
-`d=3`-instance `theorem_55` node (not a standalone restatement) is the chosen architecture for
-Cor 5.7. The producer recons (design §1.44–§1.49) surfaced three genuine remaining sub-problems beyond
-the leaf assembly: a direct `|V|=3` **triangle base case** (KT Lemma 6.7(i)/5.4 — it reuses the green
-short-cycle/triangle bricks of the `lem:cycle-realization` thread, though not the red general-`m`
-node, amending the opening recon's "no cycle-realization dependency" reading); the **`M₃`
-third-panel candidate** of KT's Claim 6.12 (the second split at an adjacent degree-2 pair, KT Lemma
-4.6) — its branch-interface decision is now **made** (design §1.49, verdict (β): the no-rigid branch
-receives the full conditioned IH, mirroring `hcontract`, and the producer chooses its own pair); and
-a **predicate repair** (design §1.49(0), machine-verified): `IsProperRigidSubgraph` admits
-single-vertex subgraphs, making the no-rigid-subgraph hypothesis unsatisfiable as stated — the
-`2 ≤ |V(H)|` strengthening lands before the G4 builds. Milestone: the
-molecular conjecture proved at `d = 3` (unblocking Cor 5.7, Phases 24–26). General `d` (KT Lemma
-6.13) is Phase 23. The crux Claim-6.12 node is pinned to an **existential** conclusion (no carried
-duality premise; the producer builds its candidate at the witness line). Recon verdicts + the leaf
-sequence: `notes/Phase22g.md`, `notes/Phase22-realization-design.md` §1.39–§1.49.
+**Status (✓ complete, closed 2026-06-09; see `notes/Phase22g.md`).** Closed as the design-program
++ leaf-infrastructure stratum of the `d=3` assembly (the 22c→22d precedent); the banner flips
+(`lem:case-II-realization` / `lem:case-III`, the `theorem_55` `d=3` instance) moved to Phase 22h.
+Delivered: the `d=3` Case-III crux architecture **pinned** — `case_III_claim612` restated to a
+premise-free **existential** over the six point-joins (the three-fixed disjunction is
+undischargeable, dim 3 < 6; the producer builds its candidate at the witness join's line); ~15
+axiom-clean leaves (the existential restate, the join↔meet bridge + line-indexed candidate
+placement, the homogeneous-vector Lemma 2.1 core + consumer restate, splitOff simplicity for
+`|V| ≥ 4`, the graph-free producer pieces, and the bare→generic upgrade
+`hasGenericFullRankRealization_of_rigidOn_ofNormals`); and the recon program (design §1.44–§1.49)
+that surfaced + scoped the corrected remaining-work picture — GAPs 1–5: the `|V|=3` triangle base
+(leaves T1–T4), the `M₃` third-panel dispatch (G4a–G4e, branch-interface verdict (β) = the
+no-rigid branch receives the full conditioned IH), the bounded good-`t`, the landed bare→generic
+upgrade, and the `IsProperRigidSubgraph` single-vertex predicate repair (G5) — all handed to 22h
+with signatures in design §1.48–§1.49. Leaf ledger + decisions: `notes/Phase22g.md`.
 
 ## Engineering conventions
 

@@ -272,35 +272,26 @@ consume them; projective invariance is Phase~25.
   $\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u = -t \cdot \mathrm{panelSupportExtensor}\,n_u\,n'$;
   the nonzero shear factor cancels under $r$, so the witness equally forces
   $\hat{r}(\mathrm{panelSupportExtensor}\,(n_u + t \, n')\,n_u) \ne 0$ --- the form the row-space
-  criterion actually tests at the candidate's $va$-hinge. The companion block-placement leaf
-  ($\mathrm{case\_III\_old\_new\_blocks\_of\_line}$) realizes this line variation at the level of
-  the candidate framework: it shears body $v$ along an \emph{arbitrary} second normal $n'$ (not the
-  fixed inductive $n_b$), producing the inductive old/new panel-row blocks of the candidate placement
-  whose $va$-hinge is $L$, with the genuine-line and reproduced-$vb$-transversal facts entering as
-  explicit hypotheses. Running KT's eq.~(6.42) row-space criterion at that $va$-hinge
-  ($\mathrm{case\_III\_full\_family\_of\_line}$) then appends the candidate $+1$ row
-  $\mathrm{hingeRow}\,v\,a\,\hat r$ to the eq.~(6.12) $D(\lvert V\rvert-1)-1$ brick and certifies the
-  full $D(\lvert V\rvert-1)$ candidate family linearly independent, gated exactly by the witness
-  $\hat r(C(L)) \ne 0$ the transfer above supplies. The realization leaf
-  ($\mathrm{case\_III\_realization\_of\_line}$) closes the loop: that full candidate family lies in
-  the span of the candidate placement's rigidity rows --- the old/new panel rows directly, and the
-  $+1$ row $\mathrm{hingeRow}\,v\,a\,\hat r$ as a row of the $va$-hinge block (it has
-  $\hat r(C(L)) \ne 0$, so it is not a single panel row but it does lie in the hinge-row span) --- so
-  the fixed-placement rank-nullity bound at the candidate framework yields a full-rank realization of
-  $G$ directly, no genericity round-trip. The witness line itself is selected by the line-data leaf
-  ($\mathrm{exists\_line\_data\_of\_homogeneousIncidence}$): from the homogeneous incidence of the
-  four points relative to the three real split-leg normals (the producer-direction reading of
-  eq.~(6.45), stripped of the annihilation premise), each of the six joins $\bar{p_i} \vee \bar{p_j}$
-  yields a panel normal $n_u$ and a second hyperplane $n'$ through its line $L = \bar{p_i} \bar{p_j}$,
-  the line the candidate framework is built around. Finally the bare $\to$ generic upgrade leaf
-  ($\mathrm{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}$) re-realizes the degenerate
-  candidate generically: the eq.~(6.12) seed shears $v$ to $n_a + t \, n'$, so it is
-  $\Q$-algebraically dependent and cannot itself be the general-position witness the generic motive
-  asks for; but that motive's framework is \emph{existentially quantified}, so it suffices to read
-  off the graph's rational rank polynomial (a function of $G$ and the endpoint selector only, the
-  witness line $L$ discarded once full rank is witnessed) and pick an algebraically-independent seed,
-  a simultaneous non-root of the rank and general-position polynomials --- KT's ``convert to a
-  nonparallel realization by Lemma~5.2 without decreasing rank''.
+  criterion actually tests at the candidate's $va$-hinge.
+
+  The remaining listed declarations carry this transfer through the producer's pipeline at the
+  witness line. The line data $(n_u, n', p_i, p_j)$ of each of the six joins is read off the
+  homogeneous incidence of the four witness points relative to the three real split-leg normals
+  (the producer-direction reading of eq.~(6.45), with no annihilation premise); the candidate
+  framework is built with its $va$-hinge \emph{on} that line, shearing body $v$ along the second
+  normal $n'$; KT's eq.~(6.42) row-space criterion at that hinge appends the candidate $+1$ row to
+  the eq.~(6.12) $D(\lvert V\rvert-1)-1$ brick and certifies the full $D(\lvert V\rvert-1)$ family
+  linearly independent, gated exactly by the witness $\hat r(C(L)) \ne 0$ supplied above; and since
+  the whole family lies in the span of the candidate placement's rigidity rows (the $+1$ row is not
+  a single panel row, but it is a row of the $va$-hinge block), the fixed-placement rank-nullity
+  bound yields a full-rank realization of $G$ directly. The eq.~(6.12) seed itself is
+  $\Q$-algebraically dependent, so it cannot be the general-position witness the generic motive
+  asks for; but the motive's framework is \emph{existentially quantified}, and the final upgrade
+  re-realizes the bare full-rank witness generically --- the rational rank polynomial depends only
+  on the graph and its endpoint selector (the witness line is discarded once full rank is
+  witnessed), so an algebraically-independent simultaneous non-root of the rank and
+  general-position polynomials serves: KT's ``convert to a nonparallel realization by Lemma~5.2
+  without decreasing rank''.
 \end{lemma}
 \begin{proof}
   \leanok

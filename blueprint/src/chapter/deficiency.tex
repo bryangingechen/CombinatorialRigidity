@@ -110,7 +110,13 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   is \emph{rigid} when it is $0$-dof ($\operatorname{def}(\tilde H) =
   0$), i.e.\ $\tilde H$ packs $D$ edge-disjoint spanning trees; it is a
   \emph{proper} rigid subgraph when additionally
-  $\emptyset \ne V(H) \subsetneq V(G)$. A \emph{circuit} of
+  $\emptyset \ne V(H) \subsetneq V(G)$. (Katoh--Tanigawa moreover
+  require $1 < |V(H)|$ of a proper rigid subgraph
+  \cite[p.~659]{katohTanigawa2011}; the formalized predicate currently
+  omits that lower bound, so single-vertex subgraphs qualify vacuously
+  and a ``no proper rigid subgraph'' hypothesis is unsatisfiable as
+  stated --- strengthening the definition to $2 \le |V(H)|$ is the
+  opening repair of the $d = 3$ realization-assembly phase.) A \emph{circuit} of
   $M(\tilde G)$ is a minimal dependent edge set (mathlib's
   \texttt{Matroid.IsCircuit}). Two-edge-connectivity of $G$ is the
   structural hypothesis Case~III of the algebraic induction works

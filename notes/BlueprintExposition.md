@@ -378,8 +378,14 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   substitutions `p₃(va)=q(ac)`, `p₃(vb)=q(ab)` of eq. (6.34), and a row reduction mirroring `R(G,p₁)`)
   whose end state is the block-triangular eq. (6.41) with the `M₃` top-left block. The formalization
   must make the graph-iso transport explicit (the `ofNormals` graph-swap defeq trap, the project's
-  recurring `IsInfinitesimallyRigidOn`-`convert` timeout). KT's densest single step in §6.4.1. Pointer:
-  KT pp. 687–689, eqs. (6.31)–(6.41); `notes/Phase22e.md` *Lemma checklist* N7.
+  recurring `IsInfinitesimallyRigidOn`-`convert` timeout). KT's densest single step in §6.4.1.
+  *Sharpened at 22g (§1.48–§1.49):* the `M₃` candidate is realized at the **same** inductive seed
+  transported by the relabel `ρ = (a v)` — eq. (6.44) forces it (a second IH application would
+  produce a different `r`) — and KT's Lemma 6.10 receives hypothesis (6.1) and invokes Lemma 4.6
+  *itself* to choose the adjacent degree-2 pair, so the formalized induction must hand the `k=0`
+  branch the full conditioned IH rather than pre-split data. Pointer:
+  KT pp. 687–689, eqs. (6.31)–(6.41); `notes/Phase22e.md` *Lemma checklist* N7;
+  `notes/Phase22-realization-design.md` §1.48–§1.49.
 - **`lem:case-III-claim612-eq644` — eq. (6.44) routes `M₃` onto the same `r`** — [pending] **(a)**
   (Phase 22e capture). **Stable insight:** the three candidates `M₁/M₂/M₃` only collapse to a *single*
   contradiction because they all test the **same** vector `r`. `M₁/M₂` share `r := Σⱼ λ_{(ab)j} rⱼ(q(ab))`
@@ -413,16 +419,36 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   reconciliation lemma (no Hodge/decomposable-dual API). Pointer: KT p. 691, eq. (6.45); `meet.tex`
   `def:meet`/`def:meet-complement-iso`; `notes/Phase22f.md` *Current state* + *Membership route —
   settled verdict*.
-- **`lem:case-III-claim612` / the span-(6.45) + Lemma-2.1 finish** — [pending] **(c)** (Phase 22e
-  capture; load-bearing, expected to land as scoped). **Stable insight:** the disjunction's
-  contrapositive closes on a clean dimension count: if all three blocks fail, `r ⊥` every supporting
-  2-extensor `C(L)` over all lines `L ⊂ Π(a)∪Π(b)∪Π(c)`. KT then picks **four** affinely-independent
-  points realizing the `Π`-triple-intersection incidence pattern (`p₁∈Π(a)∩Π(b)∩Π(c)`, etc.), so each
-  of the `(4 choose 2)=6` connecting lines lies in `Π(a)∪Π(b)∪Π(c)` and its 2-extensor is in the union
-  (6.45); Lemma 2.1 (`omitTwoExtensor_linearIndependent` at `e=2`) makes those six independent, hence a
-  basis of `⋀²ℝ⁴ ≅ ℝ⁶`, so `r ⊥` a spanning set ⟹ `r = 0`, contradicting `r ≠ 0`. The deepest
-  linear-algebra fact of the program (Lemma 2.1) discharges the hardest case's final step. Pointer:
-  KT p. 691, eq. (6.45); `notes/Phase22e.md` *Lemma checklist* N1–N9.
+- **`lem:case-III-claim612` / the span-(6.45) + Lemma-2.1 finish — Claim 6.12 is a genuine
+  existential over *free* lines, not a three-fixed disjunction** — [done (22g, the existential
+  restate)] **(a)** (Phase 22e capture as (c); upgraded at the Phase-22g reroute). **Stable
+  insight:** KT state Claim 6.12 as "at least one of `M₁, M₂, M₃` has full rank", which reads as a
+  disjunction over three fixed candidate supports — but three fixed supports cannot carry the
+  contradiction: three `2`-extensors span at most 3 of the 6 dimensions of `⋀²ℝ⁴`, so
+  `r ⊥ C₁, C₂, C₃` alone never forces `r = 0`. The load-bearing quantifier is KT's "*for some
+  choice of lines* `L ⊂ Π(a)`, `L' ⊂ Π(b)`, `L'' ⊂ Π(c)`" — the lines are **free**, and the honest
+  form is the premise-free existential *for some pair `(i,j)` of the four witness points,
+  `r̂(p̄ᵢ ∨ p̄ⱼ) ≠ 0`*, proved by the clean contrapositive: `r` annihilating all six joins
+  annihilates the span (6.45) — Lemma 2.1 makes the six joins of four linearly-independent
+  homogeneous vectors a basis of `⋀²ℝ⁴ ≅ ℝ⁶` — so `r = 0`, contradicting `r ≠ 0`. The deepest
+  linear-algebra fact of the program (Lemma 2.1) discharges the hardest case's final step; the
+  realization producer consumes the existential by building its candidate placement so its hinge
+  line IS the witness join's line. **Written** (22g: the `lem:case-III-claim612` statement + proof
+  prose carry the existential form and the why-not-three-fixed dimension count). Pointer: KT
+  p. 691, eq. (6.45); `notes/Phase22-realization-design.md` §1.38–§1.39; `notes/Phase22g.md`.
+- **`lem:case-III` `|V|=3` base — the `k=0` split recursion bottoms on a *direct* triangle
+  realization** — [pending] **(a)** (Phase 22g capture, §1.46–§1.48; writes at the
+  assembly phase's close with the T1–T4 leaves). **Stable insight:** the `d=3` Case-III induction
+  genuinely reaches the triangle (`|V|=3`), and there the split-off graph `G_v^{ab}` is the
+  *non-simple* double-edge `K₂` (the surviving `ab`-edge plus the fresh `e₀`) — so the inductive
+  motive's general-position conjunct ("nonparallel, *if simple*") is unavailable by any route, and
+  with it the candidate placement's transversality input (`hgab`, the independence of the two
+  split-leg normals). KT cover this floor compactly (a triangle is `0`-dof; its realization is the
+  3-panel cycle of Lemma 6.7(i) / the Lemma 5.4 family); the formalization must realize the
+  triangle *directly* — third-edge/vertex-pin counting, a 3-body sibling of the two-body base
+  case, a cyclically-consistent basis seed, then the bare→generic upgrade — rather than recurse.
+  Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
+  `notes/Phase22g.md`.
 
 ## Retroactive coverage
 
