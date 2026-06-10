@@ -88,9 +88,16 @@ quality / blueprint sync / notes discipline / commit message
   compaction, while task-local mathematical state does. Two
   implications: (a) the S/P/B axes under-rate tasks whose *scale*
   (not novelty) forces long sessions — scale should push the rung
-  up or the task should be pre-split smaller; (b) candidate protocol
-  amendment, pending user sign-off since it edits the experiment's
-  fixed dispatch prompt: a bail clause — "if you have not reached a
-  committable state by your first context compaction, stop, leave
-  the tree clean, and return BLOCKED with a progress summary" —
-  turning silent degradation into an honest escalation signal.
+  up or the task should be pre-split smaller; (b) **adopted
+  2026-06-10 (user-approved), two layers**: a mechanical
+  `block-sorry-commit.sh` PreToolUse hook (denies `git commit` when
+  the .lean diff vs HEAD adds `sorry`/`admit` — survives compaction
+  by construction) + a scope-to-fit / compaction-bailout clause in
+  the fixed dispatch prompt (`.claude/commands/coordinate-phase.md`
+  step 3: smallest complete deliverable, never trade completeness;
+  on compaction, clean the tree and return BLOCKED). The prompt
+  clause is acknowledged compaction-fragile — it shapes scope while
+  context is intact; the hook is the backstop after it degrades.
+  This amends the experiment's fixed dispatch prompt; rows ≥ 18 run
+  under the new prompt. Cross-repo sync of the command/template:
+  the user is handling it.

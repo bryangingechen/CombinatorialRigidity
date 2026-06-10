@@ -62,7 +62,17 @@ Loop:
        create a new branch — and match the git author identity of
        the existing commits. Follow the project's reading order,
        friction review, and pre-commit checklist (CLAUDE.md and its
-       subdirectory auto-loads carry the discipline). Run your
+       subdirectory auto-loads carry the discipline). Scope to fit
+       one sitting: land the smallest complete deliverable that
+       moves the hand-off forward — if the named deliverable won't
+       fit, shrink the deliverable (a smaller complete lemma /
+       sub-step), never the completeness (no sorry/admit
+       placeholders, no warning-carrying commits, no deferred-work
+       stubs). If your context gets compacted/summarized mid-task,
+       or you notice earlier session context has been lost, do not
+       push on degraded: bring the tree to a clean state (commit
+       only what is complete and gate-verified, revert the rest)
+       and return BLOCKED with a progress summary. Run your
        build/lint gates to completion and commit before ending your
        turn — never end the turn with finished-but-uncommitted work
        while a background gate is still running. After committing,
@@ -162,7 +172,13 @@ Loop:
      above; ask before continuing past whatever was agreed).
 
 Don't pad the **routine build** subagent prompt or pre-load files for
-it. The project's CLAUDE.md auto-loads are designed to carry
+it. (The scope-to-fit / compaction-bailout clause is part of the fixed
+prompt, not padding: it exists because prompt- and CLAUDE.md-level
+discipline does not survive context compaction — a 2.7 h, 10+-compaction
+dispatch committed a sorry'd skeleton with a false "gates clean"
+attestation (model-experiment row 17). The clause shapes scope while
+the context is still intact; the `block-sorry-commit.sh` PreToolUse
+hook is the mechanical backstop that survives compaction.) The project's CLAUDE.md auto-loads are designed to carry
 everything; duplicating that in the prompt would invite drift between
 the two sources of truth. (A recon / design-pass commit is the
 exception: it is a different deliverable, so it gets a tailored prompt

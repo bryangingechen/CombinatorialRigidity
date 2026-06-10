@@ -333,6 +333,16 @@ grep -nE 'warning:'`) and drive the count to zero. Touch the file
 first (`touch X.lean`) if the build is cached, since cached modules
 don't re-emit warnings.
 
+The `declaration uses 'sorry'` warning is the no-sorry gate's signal —
+**a `sorry` never rides in a commit**; carry an undischarged crux as an
+explicit `h…` hypothesis instead (the project's standing idiom). A
+PreToolUse hook (`../.claude/hooks/block-sorry-commit.sh`, wired in
+`../.claude/settings.json`) mechanically denies any `git commit` whose
+`.lean` diff vs HEAD adds a `sorry`/`admit` — added 2026-06-10 after a
+long context-compacted session committed a sorry'd skeleton with a
+false "gates clean" attestation (`notes/model-experiment.md` row 17);
+prompt-level discipline does not survive compaction, hooks do.
+
 **Fix warnings at the source; never paper over them.** The
 fix-precedence order is:
 1. **Solve it at the source** — drop the genuinely-unused simp arg;
