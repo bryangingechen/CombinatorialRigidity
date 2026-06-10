@@ -896,16 +896,20 @@ then instantiate `theorem_55 (n:=2) (k:=2)` on it + the green `hcontract`/`hbase
 cracked into buildable leaves (`notes/Phase22-realization-design.md` §1.34/§1.35; the `ofNormals`
 defeq-timeout trap, TACTICS-QUIRKS §38, is confined to the device-feed carrier). A small
 `d=3`-instance `theorem_55` node (not a standalone restatement) is the chosen architecture for
-Cor 5.7. The producer recons (design §1.44–§1.48) surfaced two genuine remaining sub-problems beyond
+Cor 5.7. The producer recons (design §1.44–§1.49) surfaced three genuine remaining sub-problems beyond
 the leaf assembly: a direct `|V|=3` **triangle base case** (KT Lemma 6.7(i)/5.4 — it reuses the green
 short-cycle/triangle bricks of the `lem:cycle-realization` thread, though not the red general-`m`
-node, amending the opening recon's "no cycle-realization dependency" reading), and the **`M₃`
+node, amending the opening recon's "no cycle-realization dependency" reading); the **`M₃`
 third-panel candidate** of KT's Claim 6.12 (the second split at an adjacent degree-2 pair, KT Lemma
-4.6), which needs a branch-interface decision before the producer signature is final. Milestone: the
+4.6) — its branch-interface decision is now **made** (design §1.49, verdict (β): the no-rigid branch
+receives the full conditioned IH, mirroring `hcontract`, and the producer chooses its own pair); and
+a **predicate repair** (design §1.49(0), machine-verified): `IsProperRigidSubgraph` admits
+single-vertex subgraphs, making the no-rigid-subgraph hypothesis unsatisfiable as stated — the
+`2 ≤ |V(H)|` strengthening lands before the G4 builds. Milestone: the
 molecular conjecture proved at `d = 3` (unblocking Cor 5.7, Phases 24–26). General `d` (KT Lemma
 6.13) is Phase 23. The crux Claim-6.12 node is pinned to an **existential** conclusion (no carried
 duality premise; the producer builds its candidate at the witness line). Recon verdicts + the leaf
-sequence: `notes/Phase22g.md`, `notes/Phase22-realization-design.md` §1.39–§1.48.
+sequence: `notes/Phase22g.md`, `notes/Phase22-realization-design.md` §1.39–§1.49.
 
 ## Engineering conventions
 

@@ -2156,6 +2156,251 @@ it had not yet traced the dispatch. *(ROADMAP §22g note: the opening-recon clai
 `lem:cycle-realization`" needs a caveat — the `|V|=3` base case consumes the green cycle/triangle bricks of
 that thread (KT 6.7(i)-via-5.4), though not the red general-`m` node.)*
 
+### 1.49 The GAP-4 interface design pass — G4b verdict **(β)** (hand the no-rigid branch the full conditioned IH, mirroring `hcontract`; KT-faithful and minimal-ripple); G4a–G4e scoped to leaves with signatures; **PLUS GAP 5 surfaced and machine-verified**: `IsProperRigidSubgraph` admits single-vertex subgraphs, so `hnoRigid` is *unsatisfiable* at `|V| ≥ 2` and the reduction's dichotomy is degenerate — the predicate repair (G5) must land before anything else (2026-06-09)
+
+> **The commissioned G4b design pass (docs-only).** Read end-to-end this pass: KT pp. 664–665 (Lemma 4.6
+> and its maximal-chain proof), 680–691 (Lemma 6.10 in full: the sketch fixing `N_G(v)={a,b}`,
+> `N_G(a)={v,c}`; (6.18)–(6.30); the `ρ`-iso + `qρ` (6.31)–(6.34); the `p₃` row reduction (6.35)–(6.41);
+> Claim 6.12 + eqs. (6.43)–(6.45)) — via the `.refs` PDF, not the design notes' paraphrase. Lean read:
+> `minimal_kdof_reduction` + `exists_splitOff_data_of_degree_eq_two` (ForestSurgery.lean:923–1047),
+> `theorem_55`/`theorem_55_generic` (PanelHinge.lean:1098/1154–1206), `exists_degree_le_two`/
+> `exists_degree_eq_two` + `no_rigid_edge_count` (ReducibleVertex.lean:330/495/587),
+> `case_III_hsplit_producer` (CaseI.lean:4057), `case_I_realization` (CaseI.lean:2086 — note its explicit
+> `hVH2 : 2 ≤ V(H).ncard`), `triangle_isProperRigidSubgraph`/`splitOff_simple_of_noRigid_of_card`
+> (Operations.lean:783/833), and `IsRigidSubgraph`/`IsProperRigidSubgraph`/`deficiency`
+> (Deficiency.lean:375/381/267). One `lean_run_code` machine-check (the GAP-5 witness below); no `.lean`
+> or `.tex` edits this pass.
+
+**(0) GAP 5 — the single-vertex degeneracy of `IsProperRigidSubgraph` (NEW; machine-verified;
+blocks the honest dischargeability of BOTH branches).** The finding, with the verified witness:
+
+- `IsProperRigidSubgraph H G n := H.IsRigidSubgraph G n ∧ V(H).Nonempty ∧ V(H) ⊂ V(G)` and
+  `IsRigidSubgraph H G n := H ≤ G ∧ H.IsKDof n 0` (Deficiency.lean:375/381). For the single-vertex
+  no-edge graph `H = Graph.noEdge {u} β` with `u ∈ V(G)`: `H ≤ G` holds (`{u} ⊆ V(G)` + vacuous
+  `isLink_mono`), and `H.deficiency n = ⨆ f, D·(numParts−1) − (D−1)·|crossing| = ⨆ f, D·0 − 0 = 0`
+  (every labeling sees one part, no crossing edges), so `H.IsKDof n 0` holds. Hence **for every `G`
+  with two distinct vertices, `∃ H, H.IsProperRigidSubgraph G n` is provable.** Verified this session
+  by a compiling `lean_run_code` snippet (witness `Graph.noEdge {u} β`; the `IsKDof` computation is
+  `partitionDef` + `ciSup_const`, the `⊂` from the second vertex).
+- **Consequences.** (i) `hnoRigid : ∀ H, ¬ H.IsProperRigidSubgraph G n` — the standing hypothesis of
+  the entire Case-III layer (`no_rigid_edge_count`, `exists_degree_le_two`, `exists_degree_eq_two`,
+  `splitOff_isMinimalKDof`, `splitOff_simple_of_noRigid[_of_card]`, `case_III_hsplit_producer`) — is
+  **unsatisfiable** whenever `2 ≤ |V(G)|`: those lemmas are true-but-vacuous as stated (none is
+  *wrong*; their proofs derive real content from `hnp`, but no caller can ever supply it). (ii) In
+  `minimal_kdof_reduction`'s `by_cases hrig`, the negative branch is dead code — the `hsplit` branch
+  of `theorem_55`/`theorem_55_generic` is *vacuously dischargeable* (its premises include `hnoRigid`
+  together with `v, a ∈ V(G)`, `a ≠ v`). (iii) Dually, `hcontract`'s `∃ H, IsProperRigidSubgraph G n`
+  carries **no information**, so the Leaf-4 wiring of `case_I_realization` (which requires
+  `hVH2 : 2 ≤ V(H).ncard` — exactly the conjunct the predicate is missing) into `hcontractGP` is
+  **undischargeable** for graphs whose only proper rigid subgraphs are singletons (e.g. the
+  triangle): the capstone could only close by re-drawing the genuine dichotomy *inside* the
+  `hcontract` discharge, abandoning the reduction's split branch entirely — a dishonest dep-graph
+  (KT 4.5–4.8/6.10 formalized with unsatisfiable hypotheses) even where technically completable.
+- **KT's text has the same surface degeneracy** ("a subgraph `G′` is rigid if `G̃′` contains `D`
+  edge-disjoint spanning trees on the vertex set of `G′`", p. 658 — vacuous on one vertex); KT's
+  *usage* silently excludes trivial subgraphs (every rigid subgraph KT contracts or counts against
+  arises from a matroid circuit, Lemma 3.4, hence has an edge and ≥ 2 vertices). The project wrote
+  the definition literally and the degeneracy slipped through; the partial awareness was already on
+  record (`ForestSurgery.lean` doc: "a single-vertex subgraph is vacuously rigid so the predicate
+  alone does not force the measure to drop") without the unsatisfiability consequence being drawn.
+- **Repair (G5) — strengthen the predicate at the definition, not the use sites:**
+  `IsProperRigidSubgraph H G n := H.IsRigidSubgraph G n ∧ 2 ≤ V(H).ncard ∧ V(H) ⊂ V(G)`
+  (the `Nonempty` conjunct becomes implied; keep or drop). Definition-level, so the *statements* of
+  `minimal_kdof_reduction`, `theorem_55`, `theorem_55_generic`, and every `hnp`-consumer are
+  textually unchanged; what re-proves is bounded and censused:
+  - **Producers of the predicate** (must now also supply `2 ≤ |V(H)|`): the two circuit sites
+    `exact hnp (G.inducedSpan n X) ⟨…⟩` (ForestSurgery.lean:734, Operations.lean:334) — a circuit
+    spans ≥ 2 vertices *once loops are excluded* (a loop fiber is a rank-0 circuit on one vertex;
+    looplessness comes from minimality: a matroid-loop fiber meets no base, contradicting
+    `IsMinimalKDof`'s base-meets-every-fiber conjunct — small new brick, or thread an existing
+    loopless fact); the triangle sites (Operations.lean:760/765 via `triangle_isProperRigidSubgraph`,
+    3 distinct vertices — trivial); `case_I_realization`'s eventual Leaf-4 wiring *gains* `hVH2` for
+    free (this is the conjunct it was waiting for).
+  - **Blueprint:** `def:rigid-subgraph` (deficiency.tex:105) — add the `≥ 2 vertices` clause + a
+    one-line remark on KT's implicit convention. No other node's statement changes.
+  - Estimated **1–2 commits**; MUST land before the G4 builds (everything below assumes the genuine
+    dichotomy). All §1.44–§1.48 reachability/wiring analyses were implicitly conducted in the
+    *corrected* semantics and **stand unchanged** once G5 lands (e.g. "the `|V|=3` triangle is
+    reachable in the `hsplit` branch" is true post-G5; pre-G5 nothing reaches `hsplit`).
+- *Process note:* the §1.44/§1.47/§1.48 lesson compounds — a recon that traces the route must also
+  check the route's *hypotheses are satisfiable*, down to the base predicates. What caught it here
+  was reading the producer's branch premises against the *definition* (not the lemma statements)
+  while weighing G4b — i.e. exactly the §1.48-commissioned "read the Lean, not the paraphrase".
+
+**(1) G4b — the branch-interface decision: verdict (β), hand the no-rigid branch the full
+conditioned IH (mirroring `hcontract`'s shape); the producer chooses its own adjacent pair.**
+The two candidates (§1.48(2)): **(α)** re-point `minimal_kdof_reduction`'s degree-2 selection at the
+Lemma-4.6 chain and hand `(v,a,b,c,eₐ,e_b,e_c,e₀)` + the split-only IH through the branch; **(β)**
+reshape the `hsplit`/`hsplitGP` hypotheses to receive `hnoRigid` + the **full conditioned IH** (as
+`hcontract`/`hcontractGP` already do) and let the producer re-choose its pair via G4a +
+`splitOff_isMinimalKDof`. Decision factors, weighed against KT and the tree:
+
+1. **KT-faithfulness favors (β).** KT's Lemma 6.10 *is* the full-IH shape: the proof receives the
+   induction hypothesis (6.1) — a ∀-over-smaller-graphs statement — invokes Lemma 4.6 *itself* to
+   choose the adjacent pair `v, a` (p. 680, the sketch's standing choice), and even applies (6.1) to
+   a **second, non-split smaller graph**: Claim 6.11's proof (p. 684) applies (6.1) to
+   `G_v = G_v^{ab} − ab` (the `k′ ≤ 4`-dof graph, eq. (6.22)) — KT's split branch was never
+   "IH at the one split the recursion hands you". (The project's Claim 6.11 went through the 22d
+   rank-polynomial route instead, so *that* IH use is not needed here — but it settles what KT's
+   interface is.) The in-file precedent is `hcontract`, which already carries the full conditioned
+   IH for exactly this reason (Case I needs the IH at *two* objects, the block and the contraction).
+2. **Ripple cost decisively favors (β).** Under (β): `minimal_kdof_reduction` (green, Phase-20,
+   blueprint-pinned `thm:minimal-kdof-reduction`) and `theorem_55` (pinned by red `thm:theorem-55`)
+   are **untouched**; `theorem_55_generic` has **no blueprint pin and no landed consumers** (Leaf 4
+   unbuilt — grep: only doc-comment mentions), so its in-place restate is free; the only landed
+   consumer of the old branch shape, `case_III_hsplit_producer`, was *already slated for restate* to
+   the `hsplitGP` shape (§1.48's Leaf-3 plan) — zero additional breakage. Under (α): structural edit
+   of the closed Phase-20 reduction + both `theorem_55`s + the green `thm:minimal-kdof-reduction` /
+   `lem:reducible-vertex` nodes, AND the chain-data tuple freezes into three signatures — any later
+   discovery that the producer needs one more datum (this phase surfaced gaps serially: GAPs 1–5)
+   re-ripples the whole chain. (β) localizes all future churn in the producer's own hypotheses.
+3. **The same-seed constraint is neutral between (α)/(β) — G4c is forced either way.** Eq. (6.44)
+   makes `M₃`'s candidate row test the *same* `r̂` only because `(G_a^{vc}, qρ)` is the SAME seed `q`
+   transported by `ρ = (a v)` (qρ := q ∘ ρ, (6.31)); Claim 6.12 tests one `r̂` against the three
+   panels. So (β)'s full IH must **not** be applied a second time to `G_a^{vc}` (an independent IH
+   realization has a different seed, different `λ`s, different `r̂` — the trichotomy collapses);
+   the second realization comes from G4c transport, full stop. (α)'s only structural advantage —
+   the reduction doing the choosing — buys nothing here.
+4. **The triangle arm composes better under (β).** G4a's dichotomy (`|V|=3` triangle vs adjacent
+   pair) dispatches *inside* the producer, whose `|V|=3` arm is exactly the already-scoped T1–T4;
+   under (α) the reduction would need a fourth branch (`htriangle`) — more reduction surgery for
+   the same math.
+
+**Implementation shape (the G4b-impl commit; signatures are design artifacts):** a new ~15-line
+sibling induction principle in ForestSurgery.lean — it needs *no* `hD`/`hfresh`/`DecidableEq`
+(it constructs no splitOff; pure strong induction + `by_cases hrig`):
+
+```lean
+theorem minimal_kdof_reduction_full [Finite α] {n : ℕ} {P : Graph α β → Prop}
+    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → P G)
+    (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → P G') → P G) :
+    ∀ G : Graph α β, G.IsMinimalKDof n 0 → 2 ≤ V(G).ncard → P G
+```
+
+then restate `theorem_55_generic`'s `hsplit`/`hsplitGP` to mirror `hcontract`/`hcontractGP` verbatim
+(premises `hG`/`hV3`/`hnoRigid`[/`G.Simple` for GP] + the full conditioned IH), rewire its proof over
+the new principle (the wiring lambda at PanelHinge.lean:1198–1201 simplifies), and drop its now-unused
+`hD`/`hfresh` (linter; Leaf 4 adjusts — unconsumed today). `theorem_55` (bare) keeps the old shape and
+the old reduction — it is the general-`d`/narrative node; the `d=3` route consumes only
+`theorem_55_generic` (Leaf 4 projects `.2`, R2 §1.41). The degree-2 selection machinery
+(`exists_degree_eq_two`, `exists_splitOff_data_of_degree_eq_two`, `splitOff_isMinimalKDof`,
+`splitOff_vertexSet_ncard_lt`) all remain consumed — by the *producer* now (and by the untouched bare
+reduction). Blueprint: a small green node for the new principle (or fold into the
+`thm:minimal-kdof-reduction` prose as its trivial full-IH corollary); `lem:case-II-realization` (red)
+restates its branch-shape prose in the producer commits.
+
+**(2) G4a — the `d = 3` chain dichotomy (adjacent degree-2 pair), with a CHEAPER proof than KT's
+maximal-chain counting.** KT Lemma 4.6 at `d = 3` needs a chain `v₀v₁v₂v₃` with
+`deg(v₁) = deg(v₂) = 2` — i.e. an **edge whose two endpoints both have degree 2**. KT's proof
+(pp. 664–665) counts maximal chains; at `d = 3` (`D ≥ 6`) a two-line double count suffices and avoids
+formalizing chains entirely. Suppose no such edge: then the 2s edge-ends at `X₂ := {deg = 2}` pair
+with ends in `X₃₊`, so `Σdeg ≥ 2s + 2s = 4s` (s := |X₂|; loops at degree-2 vertices are excluded as
+in `exists_splitOff_data_of_degree_eq_two`), and `Σdeg ≥ 2s + 3t` (t := |X₃₊|; `X₀ = X₁ = ∅` by
+two-edge-connectivity). Against the green KT-4.5 bound (`no_rigid_edge_count`,
+`(D−1)Σdeg < 2D|V| − 2`): from `Σdeg ≥ 2s+3t` get `(D−3)t < 2s`; from `Σdeg ≥ 4s` get
+`(D−2)s < Dt`; composing, `(D−2)(D−3)t < 2Dt` — false for `D ≥ 6` (at `D = 6`: `12t < 12t`),
+contradiction (`t = 0` separately: no `X₂`–`X₂` edge then means no edges at all). Two leaves,
+both in ReducibleVertex.lean (which already imports Operations via SplitOffDeficiency, so
+`triangle_isProperRigidSubgraph` is reachable):
+
+- **G4a-i (the counting core):** `theorem exists_adjacent_degree_two_pair [DecidableEq β] [Finite α]
+  [Finite β] {G : Graph α β} {n : ℕ} (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
+  (hG : G.IsMinimalKDof n 0) (hnp : ∀ H, ¬ H.IsProperRigidSubgraph G n) :
+  ∃ v a, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a` —
+  the double count above over `handshake_degree_subtype` + `no_rigid_edge_count` + the degree-`= 2`
+  upgrade (`two_le_crossingEdges_of_isKDof_zero` per vertex, as in `exists_degree_eq_two`).
+  Note the **`hD : 6 ≤ bodyBarDim n`** (the `d = 3` regime; KT's general-`d` chain needs the
+  maximal-chain argument — Phase 23, where the chain form generalizes).
+- **G4a-ii (the chain-data extraction, `|V| ≥ 4`):** `theorem exists_chain_data_of_noRigid … (hV4 :
+  4 ≤ V(G).ncard) … : ∃ (v a b c : α) (eₐ e_b e_c : β), v ∈ V(G) ∧ a ∈ V(G) ∧ b ∈ V(G) ∧ c ∈ V(G) ∧
+  a ≠ v ∧ b ≠ v ∧ b ≠ a ∧ c ≠ v ∧ c ≠ a ∧ b ≠ c ∧ eₐ ≠ e_b ∧ eₐ ≠ e_c ∧ G.IsLink eₐ v a ∧
+  G.IsLink e_b v b ∧ G.IsLink e_c a c ∧ (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧
+  (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)` — from G4a-i + `exists_splitOff_data_of_degree_eq_two`
+  run at `v` *and* at `a` (reconciling the shared edge `eₐ`); `b ≠ a`/`c ≠ v` since a second
+  `va`-edge is a parallel pair (kills `G.Simple`, below); **`b ≠ c` via
+  `triangle_isProperRigidSubgraph` + `hnp`** (a `b = c` collapse makes `G[{v,a,b}]` a proper rigid
+  subgraph at `|V| ≥ 4`). Consumes the simplicity leaf **G0**: `theorem simple_of_isMinimalKDof_of_
+  noRigid … (hV : 3 ≤ V(G).ncard) … : G.Simple` (KT p. 682 "As remarked…, G is a simple graph";
+  parallel pair ⟹ the 2-vertex double-edge `K₂` is a proper rigid subgraph at `|V| ≥ 3` — needs the
+  small `K₂`-is-0-dof partition brick, sibling of `isKDof_zero_of_triangle`; loop ⟹ matroid-loop
+  fiber meets no base ⟹ contradicts minimality — shared with G5's circuit-site repair). G0 also
+  discharges the producer's bare-conjunct projection (§1.48 T4 note, now pinned here).
+
+**(3) G4c — the `ρ`-relabel transport at a FIXED seed (not the existential motive).** What the
+producer needs is the concrete-level transport: the IH realization is
+`ofNormals (G.splitOff v a b e₀) ends₁ q₀` with (rigidity on `V∖{v}`, GP, `AlgebraicIndependent ℚ`,
+links); `M₃` needs the SAME data on `G.splitOff a v c e₁` at seed `q₀ ∘ ρ`, `ρ = Equiv.swap a v`.
+Transporting the *existential* `HasGenericFullRankRealization` would lose the seed identity that
+(6.44) requires — state everything at the `ofNormals` level. Two leaves:
+- **G4c-i (graph side; Operations.lean):** the iso. With the chain data and fresh `e₀ ∉ E(G)`,
+  `e₁ ∉ E(G) ∪ {e₀}`: `(G.splitOff a v c e₁).IsLink e x y ↔ (G.splitOff v a b e₀).IsLink (σ e)
+  (ρ x) (ρ y)` where `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` and `ρ = Equiv.swap a v`
+  (checked against KT (6.31): surviving `e ∉ {eₐ,e_b,e_c}` fixes both; `e_b ↦ e₀` carries `vb ↦ ab`;
+  `e₁ ↦ e_c` carries `vc ↦ ac`; needs `b ≠ c` and the two closures — all G4a-ii data). Note the
+  freshness plumbing: `e₁` must avoid `E(G) ∪ {e₀}`, which `hfresh G` alone does not give — apply
+  `hfresh` to a graph carrying `E(G) ∪ {e₀}` (e.g. `G.splitOff v a b e₀ ∪ G` or an `addEdge`), a
+  small definitional detour to settle at build time.
+- **G4c-ii (framework side; PanelLayer/CaseI.lean):** relabel-invariance of `ofNormals` data under a
+  vertex `Equiv` + edge `Equiv` intertwining `IsLink`: rigidity-on-`V` transports (precompose
+  motions with `ρ⁻¹`; the rigidity matrix's columns permute), `rigidityRows` correspond under the
+  dual of the `ρ`-permutation iso (the row-space correspondence G4d consumes), the links/`ends`
+  selector composes, and the GP/`AlgebraicIndependent ℚ` conjuncts are **free** (the coordinate
+  *set* of the seed is unchanged — `(q₀ ∘ ρ)`'s coordinate family is `q₀`'s reindexed;
+  `AlgebraicIndependent.comp ρ` + the GP pairwise statement reindexes). Precedent: the Case-I
+  collapse transports (G2b/G3a) are the *harder* non-injective versions; a bijection is cleaner but
+  is genuinely not packaged. Bounded plumbing, no new math.
+
+**(4) G4d — the eq.-(6.43)/(6.44) `a`-column bookkeeping (the `M₃` candidate row).** From the green
+ab-fiber dependency (`exists_redundant_panelRow_ab_lam`: `r̂ = Σ_j λ_j r_j`, `λ_{i*} = 1`, over the
+`e₀`-fiber + `E_v` rows of the split framework), read the six `a`-columns (evaluate the row
+functionals at `single a S`): rows of edges not incident to `a` vanish, and `a`'s only `G_v^{ab}`
+edges are `e₀` (the fresh `ab`) and `e_c` (the surviving `ac`) — `deg_{G_v^{ab}}(a) = 2` from the
+chain closures. Result (6.44): `r̂∘(single a) = −Σ_j λ_{(ac)j} r_j(q(ac))∘(single a)` — as a
+functional identity, `r̂ = −Σ_j λ_{(ac)j} rⱼ(C(e_c-hinge))` in the project's row terms. Two pieces:
+- **G4d-i (the column reading; CaseI.lean, abstract `F`):** the `(6.43) → (6.44)` identity from the
+  dependency + the two-edges-at-`a` closure. Mirrors the `exists_redundant_panelRow_ab_lam` fiber
+  bookkeeping at the `ac`-fiber; bounded.
+- **G4d-ii (the `M₃` `hcand_mem`):** `hingeRow a c r̂ ∈ span rigidityRows` of the `p₃` candidate
+  framework (the relabeled `ofNormals` of G4c with the `ac`-hinge placed at the witness line
+  `L″ ⊂ Π(c)`), via G4d-i + `hingeRow_mem_rigidityRows` + G4c-ii's row correspondence — the
+  `M₃` analogue of the landed `hcand_mem` route (§1.35). The `(6.35)–(6.41)` matrix reduction of KT
+  is *not* re-formalized: the project's row-space criterion + `case_III_old_new_blocks_of_line` at
+  the `(a,c)` role instantiation replaces it (role-parameterization confirmed: `case_III_realization_
+  of_line` is `{v a : α} {e_a : β}`-generic, CaseI.lean:3988).
+
+**(5) G4e — the witness-panel dispatch trichotomy (the producer's `hcand` body, not a standalone
+node).** `exists_line_data_of_homogeneousIncidence` tabulates each witness join's admissible normal
+`n_u ∈ {n_a, n_b, n_c}` (= the split-seed normals `q₀ a, q₀ b, q₀ c` after the N3a instantiation).
+Dispatch: `n_a ↦ M₁` (candidate at `eₐ`, the landed placement/criterion/C2-feed chain), `n_b ↦ M₂`
+(same chain, roles `a ↔ b` swapped — landed, instantiation only), `n_c ↦ M₃` (the second split:
+G4c transport of the SAME seed + G4d candidate row + the same landed completion chain at `(a,c)`).
+All three arms end in the bare `HasFullRankRealization 2 G` → the landed GAP-2 upgrade. G4e is the
+`rcases` spine inside the restated producer; its only new content is the three-way case split on
+the line-data witness normal (a `Fin 3`-valued discriminator worth a small helper lemma).
+
+**(6) Build order (supersedes §1.48's "combined verdict" sequencing; T1–T4 remain parallel-safe):**
+1. **G5** — the predicate repair + consumer re-proofs (1–2 commits; BLOCKS everything; includes the
+   loopless-from-minimality brick shared with G0).
+2. **G4b-impl** — `minimal_kdof_reduction_full` + the `theorem_55_generic` restate (1 commit; pins
+   the producer signature).
+3. **G4a-i/G4a-ii + G0** (1–2 commits) ∥ **T1–T4** (§1.48(1), ~3–4 commits) ∥ **G4c-i/G4c-ii**
+   (1–2 commits) — mutually independent once G5/G4b-impl land.
+4. **G4d-i/G4d-ii** (1–2 commits; consumes G4c).
+5. **The producer assembly** (the §38-trap build): restate `case_III_hsplit_producer` to the (β)
+   branch shape; body = G4a choice → `|V|=3 ↦ T4` / chain ↦ {IH at the `v`-split (via
+   `splitOff_isMinimalKDof` + measure), R3 → `.1` → `hgab` + triple-LI bridge, GAP-3 good-`t`,
+   G4e dispatch with M₃ via G4c/G4d} → GAP-2 upgrade; bare conjunct via G0 +
+   `hasFullRankRealization_of_generic` (1–2 commits).
+6. **Leaf 4** (`theorem_55_generic (n:=2) (k:=2)` instance, `.2` projection — now over the (β)
+   shape, and the `hcontractGP` wiring gains `hVH2` from G5) + **Leaf 5** as before.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
