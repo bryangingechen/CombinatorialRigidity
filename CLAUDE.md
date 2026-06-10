@@ -26,6 +26,12 @@ divergence, code-smell sweeps, long-proof audits) lives in
 `CLEANUP.md`; read it when running such a round or before opening a
 `notes/PhaseN-cleanup.md` work log.
 
+One further reference is **read on demand, not session-start
+orientation**: `REFS.md` (reading the reference PDFs in `.refs/`).
+The auto-loaded CLAUDE.md suite is a per-session token budget; when
+it grows, extract to read-on-demand references like this rather than
+deleting content.
+
 ## Reading order
 
 Every session, in order:
@@ -129,10 +135,15 @@ hand-off — and points at the blueprint chapter.)
   *"intentionally mid-step; if you stop me now, Y is the loose end."*
   Cheap, lets the user judge whether to stop or continue without
   the agent unilaterally drawing a session boundary.
-- Match git author identity to existing commits when committing on
-  the user's behalf — the repo has `bryangingechen@gmail.com` baked
-  in. Pass `git -c user.name=… -c user.email=… commit …`; never
-  write to git config.
+- **Commit attribution.** Match the author identity of existing
+  commits exactly — `git -c user.name='Bryan Gin-ge Chen' -c
+  user.email=bryangingechen@gmail.com commit …`; never write to git
+  config, and do **not** substitute an email from session context
+  (the harness-injected user email may differ from the project
+  identity). In the `Co-Authored-By:` trailer, name the model
+  *actually generating the commit* — check your own model identity
+  rather than copying the trailer from recent `git log` (history may
+  have been authored by a different model).
 - **Pushing to `master` triggers a Pages deploy** (blueprint, docs,
   upstreaming dashboard via `leanprover-community/docgen-action`).
   PRs run the same build but skip the deploy step. There is no
@@ -394,37 +405,10 @@ present.
 
 ### Reading PDFs in `.refs/`
 
-The standard `Read` tool needs `pdftoppm` (poppler) to extract text;
-poppler is **not** installed on this machine and `brew install
-poppler` has been failing with a Ruby startup error. Use the
-`pypdf` library inside the existing blueprint Python venv instead;
-it reads the PDF directly without external system tools:
-
-```sh
-cd blueprint && source .venv/bin/activate
-# pypdf is not in requirements.txt; install once per fresh venv.
-pip install pypdf >/dev/null
-
-python3 - <<'PY'
-import pypdf
-r = pypdf.PdfReader('/path/to/.refs/jordan-2016-msj-memoirs.pdf')
-print('pages:', len(r.pages))
-# Print TOC / specific pages
-print(r.pages[0].extract_text()[:4000])      # title + TOC
-print(r.pages[12].extract_text()[:4000])     # Jordán p.45 = pdf page 13
-# Or grep for keywords across the whole PDF:
-for i, page in enumerate(r.pages):
-    if 'Maxwell' in page.extract_text():
-        print(f'page {i+1} mentions Maxwell')
-PY
-```
-
-Page numbering caveat: Jordán's printed pages start at 33, so
-*Jordán p.N* corresponds to *pdf page (N − 32)*. Other refs may
-have similar offsets — check page 1 to calibrate.
-
-For formal `\cite{}` work in the blueprint, see `blueprint/CLAUDE.md`
-*Citations* and *Static checks before commit*.
+Reference PDFs accumulate under `.refs/` (gitignored). The how-to
+for reading them (pypdf inside the blueprint venv when the `Read`
+tool lacks poppler; the page-offset caveat) lives in `REFS.md` —
+read on demand when consulting a PDF, not session-start orientation.
 
 ## Project-history reminder
 

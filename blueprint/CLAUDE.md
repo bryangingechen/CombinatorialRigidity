@@ -313,34 +313,19 @@ pointer (`SimpleGraph.Henneberg.IsLaman.foo`, not
 `SimpleGraph.IsLaman.foo`). `inv web` + `checkdecls` run in ~15s,
 `verify.sh` ~30–45s — the everyday path, fast enough; don't substitute grep.
 
-**All `\uses{...}` and `\Cref{...}` labels are defined:**
+**The other scriptable gates are bundled in `blueprint/lint.sh`** —
+run it (from any cwd; sub-second, no venv/TeX/lake needed) on any
+commit touching a `\label` / `\uses` / `\cref` / `\cite` or a
+supersession marker. It checks:
 
-```sh
-grep -hoE '\\label\{[^}]+\}' chapter/*.tex | sed 's/\\label{//;s/}$//' \
-  | sort > /tmp/labels.txt
-grep -hoE '\\uses\{[^}]+\}' chapter/*.tex | sed 's/\\uses{//;s/}$//' \
-  | tr ',' '\n' | sed 's/^ *//;s/ *$//' | sort -u > /tmp/uses.txt
-comm -23 /tmp/uses.txt /tmp/labels.txt   # should be empty
-```
+- every `\uses{...}` and `\cref`/`\Cref{...}` target has a
+  `\label{...}`;
+- every `\cite{...}` key has a `bibliography.bib` entry, and every
+  bib entry is cited somewhere;
+- the supersession gate below.
 
-Same idea for `\Cref{...}` / `\cref{...}`. Any output from `comm -23`
-is a broken reference.
-
-**All `\cite{...}` keys resolve, and every bib entry is used:**
-
-```sh
-grep -hoE '\\cite\{[^}]+\}' chapter/*.tex \
-  | sed 's/\\cite{//;s/}$//' | tr ',' '\n' | sed 's/^ *//;s/ *$//' \
-  | sort -u > /tmp/cite-keys.txt
-grep -hoE '^@[a-z]+\{[^,]+' bibliography.bib | sed 's/^@[a-z]*{//' \
-  | sort -u > /tmp/bib-keys.txt
-comm -23 /tmp/cite-keys.txt /tmp/bib-keys.txt  # cites without entries
-comm -13 /tmp/cite-keys.txt /tmp/bib-keys.txt  # entries never cited
-```
-
-Both `comm` outputs should be empty. The first signals a typo or
-missing entry; the second signals a defined-but-unused entry —
-either cite it or remove it.
+It prints the offending names and exits non-zero on failure;
+`blueprint/lint.sh: all static reference checks passed.` is green.
 
 **No live-route node references a superseded one (the supersession
 gate).** When a commit supersedes a route or argument — replaces a
@@ -373,35 +358,12 @@ machine-readable status). The discipline:
   consistent audit trail (e.g. M3 `\uses` M2, both struck). The gate
   flags only a *non-superseded* node reaching into a superseded one.
 
-The scriptable form (same documented-one-liner style as the
-resolution checks above): enumerate superseded labels (title contains
-`superseded`; the `\label{}` is on the next line, the project's
-invariant `\begin`/`\label` adjacency), then assert no non-superseded
-node's `\uses` targets one. Two small `awk` passes feed a `comm`:
-
-```sh
-# Stage 1 — superseded labels (title carries the marker; \label is the next line).
-awk 'BEGIN{IGNORECASE=1}
- /\\begin\{(lemma|theorem|proposition|corollary|definition)\}\[/{e=1;s=($0~/superseded/)}
- e&&/\\label\{/{if(s){match($0,/\\label\{[^}]+\}/);l=substr($0,RSTART,RLENGTH);
-   gsub(/\\label\{|\}/,"",l);print l} e=0;s=0}' chapter/**/*.tex chapter/*.tex \
- | sort -u > /tmp/sup-labels.txt
-# Stage 2 — labels reached by a \uses of a NON-superseded env (statement or proof;
-# \uses bodies may wrap, so accumulate to the closing }). A \begin[...] resets the
-# live flag; a \begin{proof} (no [title]) inherits the preceding env's flag.
-awk 'BEGIN{IGNORECASE=1;live=1;u=0}
- /\\begin\{(lemma|theorem|proposition|corollary|definition)\}\[/{live=($0!~/superseded/);u=0;b=""}
- {ln=$0; if(u)b=b ln; else{i=index(ln,"\\uses{"); if(i>0){u=1;b=substr(ln,i+6)}}
-  if(u){j=index(b,"}"); if(j>0){body=substr(b,1,j-1);u=0;b="";
-   if(live){n=split(body,a,",");for(k=1;k<=n;k++){gsub(/[ \t\r\n]/,"",a[k]);
-     if(a[k]!="")print a[k]}}}}}' chapter/**/*.tex chapter/*.tex \
- | sort -u > /tmp/live-uses.txt
-comm -12 /tmp/sup-labels.txt /tmp/live-uses.txt    # should be empty
-```
-
-Any output is a live node depending on a struck one — reconcile it
-before commit. (The current tree is reconciled, so this runs clean;
-if your shell lacks `**` globbing, list the chapter dirs explicitly.)
+The scriptable form is `blueprint/lint.sh`'s third check (two `awk`
+passes feeding a `comm`: enumerate labels whose environment title
+contains `superseded` — the `\label{}` on the line after `\begin` is
+the project's invariant — then assert no non-superseded node's
+`\uses` targets one). Any hit is a live node depending on a struck
+one — reconcile it before commit.
 
 **Calibration case (Phase 22c).** Opening 22c to build the Case-II/III
 stratum-1 nodes, the live `lem:case-II-realization` /
@@ -415,7 +377,7 @@ phase-open red-node consistency gate (`../CLAUDE.md` *When this commit
 opens a phase*) keep it from recurring.
 
 **Every hypothesis of a `\leanok` node is discharged (the honesty
-gate).** The three checks above are name/label *resolution* checks —
+gate).** The checks above are name/label *resolution* checks —
 they are blind to hypothesis *content*, and `checkdecls` happily
 passes a `\lean{...}` declaration carrying any number of smuggled
 hypotheses as long as the name exists. This gate is the semantic
@@ -564,6 +526,9 @@ blueprint/
 ├── .gitignore           ← build artefacts + .venv/
 ├── requirements.txt     ← plastex / leanblueprint / invoke pins
 ├── tasks.py             ← invoke targets: web / bp / serve
+├── verify.sh            ← bundled bp + web + checkdecls gate
+├── lint.sh              ← fast static reference checks (labels,
+│                           cites, supersession gate)
 └── src/
     ├── web.tex          ← entry for plastex (HTML + dep-graph)
     ├── print.tex        ← entry for xelatex (PDF)
