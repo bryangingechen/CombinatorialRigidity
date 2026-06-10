@@ -41,6 +41,7 @@ quality / blueprint sync / notes discipline / commit message
 | 4 | G4a-ii `exists_chain_data_of_noRigid`, d1eef6d | 1/2/1 | sonnet | escalation-retry | clean | ✓✓✓✓✓✓ | 125k tok / 134 tools / 2190s | escalation pair with #3. Signature matches §1.49(2) verbatim; ForestSurgery.lean placement per corrected hand-off; 4-way case split verbose but sound. Pair lesson: haiku failed on a file-placement judgment call, not the proof |
 | 5 | T1 `exists_isLink_of_isMinimalKDof_card_three`, 2257053 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 52k tok / 137 tools / 1905s | compact (71-line) idiomatic proof; rank-formula edge count per §1.48(1); blueprint node + hand-off both correct |
 | 6 | T2 `theorem_55_triangle`, b3abd57 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 141k tok / 84 tools / 786s | 50-line brick reusing the cycle-telescoping infra; good reuse judgment (no Fin m transport) |
+| 7 | T3 `exists_triangle_normals`, b6761d1 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 118k tok / 313 tools / 6702s | hardest leaf so far (the §38 trap zone): 4 private helpers vs whnf explosion; surfaced + documented a NEW quirk (§42 proof-term mismatch, `let`-bound statement params) with FRICTION entry + quirks-index line — exemplary friction review. Same (1/2/1) profile as #5–6 but 3.5× the wall time: the S/P/B axes don't capture defeq-fragility of the target area |
 
 ## Findings
 
