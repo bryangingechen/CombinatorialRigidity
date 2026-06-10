@@ -94,24 +94,26 @@ GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`, §1.49(5)). 
 `hnoRigid`, `hfresh` stay producer-level, available to the discharge leaf at the application site.
 Build + lint clean; no live callers, no blueprint pin.
 
-**`hcand` discharge skeleton is LANDED** (`case_III_hcand_discharge` in CaseI.lean). Two new items:
-- `linearIndependent_normals_of_algebraicIndependent` (private) — the triple-LI bridge (§1.48(2)):
-  `AlgebraicIndependent ℚ q` + distinct `a,b,c` → `LinearIndependent ℝ ![q(a,·),q(b,·),q(c,·)]`.
-  Proof: `mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` + `AlgebraicIndependent.aeval_ne_zero` on
-  the generic 3×3 det polynomial; `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp`.
-- `case_III_hcand_discharge` (structural skeleton, conclusion `sorry`): unpacks `hsplitGP`, derives
-  `hgab` (pairwise LI from `IsGeneralPosition`), `hn3` (triple LI from bridge lemma). The M₁/M₂/M₃
-  dispatch (Claim 6.12 → witness join → line data → each arm), the `r̂` construction
-  (`exists_redundant_panelRow_ab_lam` + `h618`/`h622`), and the GAP-2 upgrade remain `sorry`'d.
+**The triple-LI bridge is LANDED** (§1.48(2)): `linearIndependent_normals_of_algebraicIndependent`
+(private, CaseI.lean) — `AlgebraicIndependent ℚ q` + distinct `a,b,c` →
+`LinearIndependent ℝ ![q(a,·),q(b,·),q(c,·)]`. Proof: `mvPolynomialX_mapMatrix_aeval` +
+`AlgHom.map_det` + `AlgebraicIndependent.aeval_ne_zero` on the generic 3×3 det polynomial;
+`Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp`. (A `sorry`'d
+discharge skeleton landed alongside it in af7f42b was removed by the coordinator — sorries
+don't ride on master; the discharge lands as complete lemmas, assembled at the end.)
 
-**Next concrete step:** in `case_III_hcand_discharge`, add the `r̂` chain — produce `r̂ ≠ 0` from
-IH rigidity + `exists_redundant_panelRow_ab_lam` (`h618` inline; `h622` deferred as `sorry`),
-then hook to `case_III_claim612` → `exists_line_data_of_homogeneousIncidence` → M₁ arm (the
-`e_a/n_a` case via `case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
-`hasGenericFullRankRealization_of_rigidOn_ofNormals`).
+**Next concrete step:** the first complete sub-lemma of the `hcand` discharge — the M₁-arm
+candidate chain at the witness line: from the unpacked generic `v`-split framework (concrete
+`Q`, seed `q`, `hgab` from `IsGeneralPosition`, `hn3` from the bridge lemma — all cheap inline
+derivations), produce `r̂ ≠ 0` via `exists_redundant_panelRow_ab_lam`, hook
+`case_III_claim612` → `exists_line_data_of_homogeneousIncidence`, and close the `n_a` arm via
+`case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
+`hasGenericFullRankRealization_of_rigidOn_ofNormals`. Land it as a standalone complete lemma
+(no `sorry` placeholders; if the piece is too big for one commit, split off a smaller complete
+sub-lemma instead).
 
-**Build order (design §1.49(6); estimated 3–5 commits remaining):** producer spine ✓ → discharge
-`hcand` skeleton ✓ → `r̂` chain + M₁ → M₂ → M₃ → Leaf 4 → Leaf 5.
+**Build order (design §1.49(6); estimated 3–6 commits remaining):** producer spine ✓ →
+triple-LI bridge ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` discharge → Leaf 4 → Leaf 5.
 
 ## Lemma checklist
 
@@ -150,11 +152,14 @@ then hook to `case_III_claim612` → `exists_line_data_of_homogeneousIncidence` 
   the **generic** motive. Body = `|V(G)|` dichotomy (`=3 ↦` T4 directly; `≥4 ↦` chain arm with the
   R3 split-simplicity discharge unlocking the IH's GP `.1` conjunct). Build + lint clean; no
   blueprint pin (the producer isn't `\lean`-pinned). Done.
-- [~] **Discharge `hcand`** (the candidate-placement core; the G4e spine; §1.49(5)): skeleton
-  landed (`case_III_hcand_discharge`): triple-LI bridge (`linearIndependent_normals_of_algebraicIndependent`
-  via `mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` + `aeval_ne_zero`) + structural unpacking
-  (`hgab`, `hn3`) done. Remaining `sorry`'d: `r̂` construction (`h618` inline + `h622` deferred),
-  `case_III_claim612` dispatch, line-data extraction, M₁/M₂/M₃ arms + GAP-2 upgrade.
+- [~] **Discharge `hcand`** (the candidate-placement core; the G4e spine; §1.49(5)): the
+  triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (§1.48(2)) is landed
+  (via `mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` + `aeval_ne_zero`). Remaining, as
+  complete lemmas (no `sorry` placeholders on master): the `r̂` construction
+  (`exists_redundant_panelRow_ab_lam`, incl. the `h618`/`h622` rank inputs), the
+  `case_III_claim612` dispatch + line-data extraction, the M₁/M₂/M₃ arms (M₃ via G4c/G4d),
+  GAP-3 good-`t`, and the GAP-2 upgrade; then assemble into the discharge lemma matching the
+  `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
