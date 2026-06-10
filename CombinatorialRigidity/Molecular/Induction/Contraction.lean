@@ -654,7 +654,8 @@ theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G 
         - ((G.matroidMG n ／ E(H.mulTilde n)).rank : ℤ) = k ∧
       ∀ B', ((G.matroidMG n) ／ E(H.mulTilde n)).IsBase B' →
         ∀ e ∈ E(G), e ∉ E(H) → (B' ∩ edgeFiber e n).Nonempty := by
-  obtain ⟨⟨hle, hrigid⟩, hVHne, _⟩ := hH
+  have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
+  obtain ⟨⟨hle, hrigid⟩, -, -⟩ := hH
   refine ⟨?_, fun B' hB' e heG heH ↦ contract_minimality_transport hG hB' heG heH⟩
   -- Deficiency conservation, with `def(G̃) = k` from `G`'s `k`-dof hypothesis.
   have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
@@ -696,7 +697,8 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
     {n : ℕ} [NeZero (bodyHingeMult n)] (hG : G.IsMinimalKDof n 0)
     (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
     (G.rigidContract H r).IsMinimalKDof n 0 := by
-  obtain ⟨⟨hle, hrigid⟩, hVHne, hVHsub⟩ := hH
+  have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
+  obtain ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
   have hVGne : V(G).Nonempty := hVHne.mono hHsub
   -- `D = bodyBarDim n ≥ 2` from `bodyHingeMult n = D - 1 ≥ 1`.
@@ -707,7 +709,7 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
     matroidMG_rigidContract_eq_contract hle hr hrigid hVHne
   -- The matroid-side minimal-`0`-dof packaging of `M(G̃)/E(H̃)`.
   obtain ⟨hcons, hmin⟩ :=
-    contraction_isMinimalKDof hD hG ⟨⟨hle, hrigid⟩, hVHne, hVHsub⟩ hVGne
+    contraction_isMinimalKDof hD hG ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ hVGne
   refine ⟨?_, fun B hB e heK ↦ ?_⟩
   · -- Deficiency half: `def((G/E(H))̃) = 0` via the def=corank bridge.
     have hVKne : V(G.rigidContract H r).Nonempty := by

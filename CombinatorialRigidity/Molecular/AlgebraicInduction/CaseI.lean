@@ -536,7 +536,8 @@ the coupling's combinatorial requirements:
 * `r` is a shared body (`r ∈ V(H)` by choice; `r ∈ V(G ＼ E(H))` since `V(G ＼ E(H)) = V(G)` and
   `r ∈ V(G)` because `V(H) ⊆ V(G)`);
 * the legs cover `G` (trivially — `V(G ＼ E(H)) = V(G)`, so the second leg alone covers);
-* both legs are nonempty (`V(H)` nonempty by hypothesis; `V(G ＼ E(H)) = V(G) ∋ r`).
+* both legs are nonempty (`V(H)` from the `2 ≤ |V(H)|` conjunct of the proper-rigid
+  predicate; `V(G ＼ E(H)) = V(G) ∋ r`).
 
 This is the §1.7 G3b brick: with the `Gc ≤ G` mismatch dissolved at the graph level (the splice's
 contraction leg is the literal subgraph `G ＼ E(H)`), the coupling's geometry inputs are pure
@@ -549,7 +550,8 @@ theorem PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph
     H ≤ G ∧ G.deleteEdges E(H) ≤ G ∧ r ∈ V(H) ∧ r ∈ V(G.deleteEdges E(H)) ∧
       V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H)) ∧ V(H).Nonempty ∧
       V(G.deleteEdges E(H)).Nonempty := by
-  obtain ⟨⟨hle, _⟩, hVHne, hVHss⟩ := hH
+  have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
+  obtain ⟨⟨hle, _⟩, -, hVHss⟩ := hH
   have hrG : r ∈ V(G) := hVHss.subset hr
   have hVc : V(G.deleteEdges E(H)) = V(G) := Graph.vertexSet_deleteEdges G E(H)
   refine ⟨hle, Graph.deleteEdges_le, hr, by rw [hVc]; exact hrG, ?_, hVHne, ?_⟩
@@ -2096,7 +2098,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     PanelHingeFramework.HasGenericFullRankRealization k G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
-  obtain ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩ := hH
+  obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
   have hVHlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hVHss (Set.toFinite _)
   -- Manufacture the parent endpoint selector from `G` alone via the canonical `endsOf` (G3c-iii-a):
@@ -2106,7 +2108,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   set ends := G.endsOf with hendsDef
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
     rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
-  have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩
+  have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩
   -- (Phase 22b route (i), Commit 4) The `H`-leg's selector-alignment `hswap`/`hne_ends` — formerly
   -- `hbundle` conjuncts — are now *discharged* against the canonical parent selector `ends =
   -- G.endsOf`: `hne_ends` is `endsOf_fst_ne_snd` (a link's two `endsOf`-ends differ in the loopless

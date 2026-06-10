@@ -10,15 +10,20 @@ bridge) and §1.49 (G5, G4a–G4e, G0, the (β) branch shape) — point at them,
 
 ## Current state
 
-**Next concrete step: G5 part 1 (the predicate repair, design §1.49(0)).** Strengthen
-`IsProperRigidSubgraph` to require `2 ≤ V(H).ncard` (Deficiency.lean:381; KT p. 659's
-`1 < |V′|`) and re-prove the censused producer sites — the two circuit sites
-(ForestSurgery.lean:734, Operations.lean:334) via a loopless-from-minimality brick (shared with
-G0), the two triangle sites trivially. Statements of all `hnp`-consumers unchanged. Sync blueprint
-`def:rigid-subgraph` (the honest caveat placed there at 22g close comes out in the same commit).
-1–2 commits. Until G5 lands, `hnoRigid` is unsatisfiable at `|V| ≥ 2` (machine-verified,
-§1.49(0)) — every Case-III branch is vacuous and the `hcontract` capstone wiring
-undischargeable; that is why G5 is first.
+**G5 is DONE (single commit).** `IsProperRigidSubgraph` now requires `2 ≤ V(H).ncard`
+(Deficiency.lean; KT p. 659's `1 < |V′|`), with the loopless-from-minimality brick
+`loopless_of_isMinimalKDof` (Deficiency.lean, shared with G0) feeding the two circuit sites
+(`circuit_splitOff_meets_fiber` / `fundCircuit_inducedSpan_vertexSet_eq`, each now `[G.Loopless]`).
+One producer site beyond the §1.49(0) census surfaced and was repaired: `splitOff_isMinimalKDof`
+offers the vertex-deleted `Gv` to `hnp` (KT 4.7), so it gained `hV3 : 3 ≤ V(G).ncard` — genuinely
+needed (at `|V|=2` the double edge splits to a one-vertex loop graph that is *not* minimal); its
+only caller `minimal_kdof_reduction` has `hV3` in the split branch. All other `hnp`-consumer
+statements unchanged; blueprint `def:rigid-subgraph` synced (22g caveat removed),
+`lem:reduction-step` + Thm 4.9 prose updated.
+
+**Next concrete step: G4b-impl** — `minimal_kdof_reduction_full` (the ~15-line full-IH strong
+induction, signature in design §1.49(1)) + the `theorem_55_generic` `hsplit`/`hsplitGP` restate to
+the (β) shape, dropping its now-unused `hD`/`hfresh`. Pins the producer signature; 1 commit.
 
 **Build order (design §1.49(6); estimated 13–18 commits):** G5 → **G4b-impl**
 (`minimal_kdof_reduction_full` + the `theorem_55_generic` `hsplit`/`hsplitGP` restate to the
@@ -30,8 +35,9 @@ push, unblocking Cor 5.7 at `d=3`).
 
 ## Lemma checklist
 
-- [ ] **G5** — the `IsProperRigidSubgraph` predicate repair (`2 ≤ V(H).ncard`) + censused
-  consumer re-proofs + blueprint `def:rigid-subgraph` sync (§1.49(0)). FIRST; 1–2 commits.
+- [x] **G5** — the `IsProperRigidSubgraph` predicate repair (`2 ≤ V(H).ncard`) + producer-site
+  re-proofs (incl. the uncensused `splitOff_isMinimalKDof` site, which gained `hV3`) +
+  `loopless_of_isMinimalKDof` brick + blueprint `def:rigid-subgraph` sync (§1.49(0)). Done.
 - [ ] **G4b-impl** — `minimal_kdof_reduction_full` (a ~15-line strong induction; the old
   reduction / `theorem_55` / their green blueprint nodes untouched) + the `theorem_55_generic`
   branch restate to the (β) full-IH shape (§1.49(1)).
@@ -69,18 +75,24 @@ push, unblocking Cor 5.7 at `d=3`).
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites every
   carrier-instantiating leaf (the producer body, the T3/T4 seeds). Keep reasoning over abstract
   `F`; instantiate only at the seed.
-- Nodes carrying `hnoRigid` are green-but-vacuous until G5 lands (the honest caveat sits at
-  blueprint `def:rigid-subgraph`; remove it in the G5 commit).
-
 ## Hand-off / next phase
 
-**Smallest next forward commit — G5 part 1** (the predicate strengthening + the censused consumer
-re-proofs per design §1.49(0); see *Current state*). After 22h closes (the molecular conjecture at
-`d=3`, Cor 5.7 unblocked → Phases 24–26): **Phase 23** = general `d` (KT Lemma 6.13), scoped with
-the §1.33 (C) reuse map; open it with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and
-add the general-`d` alg-independence row to `notes/AlgebraicIndependence.md`.
+**Smallest next forward commit — G4b-impl** (`minimal_kdof_reduction_full` + the
+`theorem_55_generic` (β) restate; design §1.49(1); see *Current state*). After 22h closes (the
+molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26): **Phase 23** = general `d` (KT
+Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own recon (KT eqs.
+(6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` alg-independence row to
+`notes/AlgebraicIndependence.md`.
 
 ## Decisions made during this phase
 
-(none yet — the scope decisions inherited at open are 22g's settled verdicts, `notes/Phase22g.md`
-*Decisions made* + design §1.48–§1.49)
+- **G5 census correction (one site beyond §1.49(0)):** `splitOff_isMinimalKDof`'s KT-4.7 step
+  offers `Gv = G.removeVertex v` to `hnp`, needing `2 ≤ |V(Gv)|` — so the lemma gained
+  `hV3 : 3 ≤ V(G).ncard`. Not a formality: at `|V(G)|=2` (double edge, hnp now satisfiable) the
+  splitOff is a one-vertex loop graph whose empty base misses the fresh fiber, so the old
+  statement is *false* under the corrected predicate. Lesson reinforces §1.49(0)'s: census
+  `hnp`-*applications*, not just `exact hnp …` greps — `refine hnp Gv ⟨…⟩` was the missed shape.
+- **Loopless route over minimality-hypothesis route for the circuit sites:** the two circuit-site
+  lemmas take `[G.Loopless]` (derived by callers via `loopless_of_isMinimalKDof`) rather than a
+  full `IsMinimalKDof` hypothesis — (4.10) and the fundCircuit spanning step need only
+  looplessness, keeping the statements at their honest strength.

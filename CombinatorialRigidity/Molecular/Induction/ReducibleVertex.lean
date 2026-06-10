@@ -333,6 +333,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
     (bodyHingeMult n : ℤ) * E(G).ncard
       < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n := by
   classical
+  haveI : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
   set M := G.matroidMG n with hM

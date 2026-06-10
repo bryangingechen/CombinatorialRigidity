@@ -911,8 +911,8 @@ the corrected remaining-work picture Phase 22g's recon program scoped (GAPs 1–
 signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.49) and takes the two
 producer nodes `lem:case-II-realization` / `lem:case-III` green at `d = 3`. Build order
 (design §1.49(6)): **G5** — the `IsProperRigidSubgraph` predicate repair (`2 ≤ |V(H)|`, KT
-p. 659's `1 < |V′|`; the opening commit(s) — until it lands, the no-rigid-subgraph hypothesis is
-unsatisfiable and the Case-III branch vacuous) → **G4b-impl** (`minimal_kdof_reduction_full` +
+p. 659's `1 < |V′|`; landed as the opening commit — before it, the no-rigid-subgraph hypothesis
+was unsatisfiable and the Case-III branch vacuous) → **G4b-impl** (`minimal_kdof_reduction_full` +
 the `theorem_55_generic` `hsplit`/`hsplitGP` restate to the full-conditioned-IH (β) shape) → in
 parallel: G4a-i/ii + G0 ∥ the `|V|=3` triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the
 (β)-shaped `hsplit` producer with the G4e `M₁/M₂/M₃` dispatch → Leaf 4 (the

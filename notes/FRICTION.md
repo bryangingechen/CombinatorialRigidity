@@ -2502,6 +2502,23 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   proofs.
 - **Status:** resolved (2026-05-18).
 
+### [resolved] `Set.one_lt_ncard.mpr` fails with *Unknown constant* — an `Iff` lemma behind an autoparam can't be dot-projected; apply the autoparam explicitly
+
+- **Where it bit:** the three `2 ≤ ncard` producer-site proofs of the
+  Phase 22h G5 predicate repair (`circuit_splitOff_meets_fiber`,
+  `fundCircuit_inducedSpan_vertexSet_eq`, `triangle_isProperRigidSubgraph`).
+- **Friction:** `Set.one_lt_ncard` is
+  `(hs : s.Finite := by toFinite_tac) : 1 < s.ncard ↔ ∃ a ∈ s, ∃ b ∈ s, a ≠ b` —
+  a *function into* an `Iff`, so the name-resolution form
+  `Set.one_lt_ncard.mpr` is looked up as a declaration literal and dies
+  with *Unknown constant `Set.one_lt_ncard.mpr`* (the autoparam is not
+  inserted before dot-projection).
+- **Resolution:** apply the autoparam explicitly:
+  `(Set.one_lt_ncard (Set.toFinite _)).mpr ⟨x, hx, y, hy, hxy⟩`. Note
+  `2 ≤ s.ncard` and `1 < s.ncard` unify definitionally, so the
+  `one_lt` form closes a `2 ≤` goal directly.
+- **Status:** resolved (2026-06-09).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

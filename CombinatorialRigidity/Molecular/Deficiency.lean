@@ -46,7 +46,9 @@ leaf node landing here:
   edge-fiber `ẽ` (the `D-1` parallel copies of `e ∈ E(G)`).
 * `IsRigidSubgraph` / `IsProperRigidSubgraph` (`def:rigid-subgraph`) — a subgraph
   `H ≤ G` is *rigid* when it is `0`-dof, *proper rigid* when additionally
-  `∅ ≠ V(H) ⊊ V(G)`. A *circuit* of `M(G̃)` is `Matroid.IsCircuit (G.matroidMG n)`.
+  `2 ≤ |V(H)|` and `V(H) ⊊ V(G)` (KT p. 659's `1 < |V′|`; without the lower bound a
+  single vertex is vacuously rigid and "no proper rigid subgraph" is unsatisfiable).
+  A *circuit* of `M(G̃)` is `Matroid.IsCircuit (G.matroidMG n)`.
 * `matroidMG_restrict_mulTilde` (`lem:matroid-restrict-subgraph`) — the engine of
   KT Lemma 3.3: `M(G̃) ↾ E(H̃) = M(H̃)` for `H ≤ G`, via `Matroid.ext_indep` through
   `matroidMG_indep_iff` (so it never touches the `Matroid.Union` internals).
@@ -357,12 +359,52 @@ double edge. -/
 def IsMinimalKDof [DecidableEq β] (G : Graph α β) (n : ℕ) (k : ℤ) : Prop :=
   G.IsKDof n k ∧ ∀ B, (G.matroidMG n).IsBase B → ∀ e ∈ E(G), (B ∩ edgeFiber e n).Nonempty
 
+/-- **A minimal `k`-dof-graph is loopless** (the loopless-from-minimality brick of the
+`d = 3` assembly, Phase 22h G5/G0; implicit in Katoh–Tanigawa 2011, who work with simple
+graphs throughout). A loop `e` at `x` would put a copy `p ∈ ẽ` into some base `B` of
+`M(G̃)` — the base/fiber-meeting conjunct of `IsMinimalKDof` forces `B ∩ ẽ ≠ ∅` — but the
+singleton `{p}` is *dependent*: by boundary-regime cleanliness (`matroidMG_indep_iff`)
+its independence would make `G̃ ↾ {p}` `(D,D)`-sparse, demanding `1 + D ≤ D·|{x}| = D`.
+This is what lets the circuit-side producers of `IsProperRigidSubgraph` read off that a
+circuit-induced subgraph spans at least two vertices. -/
+theorem loopless_of_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} {k : ℤ} (hG : G.IsMinimalKDof n k) : G.Loopless where
+  not_isLoopAt e x hloop := by
+    obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
+    obtain ⟨p, hpB, hpe⟩ := hG.2 B hB e hloop.edge_mem
+    -- `{p}` is independent as a subset of the base `B` …
+    have hindep : (G.matroidMG n).Indep {p} :=
+      hB.indep.subset (Set.singleton_subset_iff.mpr hpB)
+    rw [matroidMG_indep_iff] at hindep
+    obtain ⟨hsub, hsparse⟩ := hindep
+    -- … but `(D,D)`-sparsity fails on it: the loop copy spans the single vertex `x`.
+    have hedge : E(G.mulTilde n ↾ ({p} : Set (β × Fin (bodyHingeMult n)))) = {p} := by
+      rw [edgeSet_restrict, Set.inter_eq_right.mpr hsub]
+    have hbound := hsparse {p} hedge.ge ⟨p, rfl⟩
+    have hspan : ((G.mulTilde n) ↾ ({p} : Set (β × Fin (bodyHingeMult n)))).spanningVerts {p}
+        ⊆ {x} := by
+      rintro y ⟨q, hq, hinc⟩
+      obtain ⟨hincG, -⟩ := restrict_inc.mp hinc
+      obtain ⟨z, hlink⟩ := hincG
+      have hq1 : q.1 = e := by rw [Set.mem_singleton_iff.mp hq]; exact hpe
+      rw [mulTilde_isLink, hq1] at hlink
+      exact Set.mem_singleton_iff.mpr (hloop.eq_of_isLink hlink).1.symm
+    have hcard : (((G.mulTilde n) ↾ ({p} : Set (β × Fin (bodyHingeMult n)))).spanningVerts
+        {p}).ncard ≤ 1 := by
+      simpa using Set.ncard_le_ncard hspan (Set.finite_singleton x)
+    rw [Set.ncard_singleton] at hbound
+    have := Nat.mul_le_mul_left (bodyBarDim n) hcard
+    omega
+
 /-! ## Rigid subgraphs and circuits (`def:rigid-subgraph`)
 
 A subgraph `H ⊆ G` (`H ≤ G`, the multigraph `Graph.IsSubgraph` order) is *rigid*
 when it is `0`-dof — `def(H̃) = 0` — equivalently (`thm:body-hinge-tay`) `H̃` packs
 `D` edge-disjoint spanning trees. It is a *proper* rigid subgraph when its vertex
-set is a nonempty proper subset `∅ ≠ V(H) ⊊ V(G)`. A *circuit* of `M(G̃)` is a
+set is a proper subset on at least two vertices, `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`
+(Katoh–Tanigawa 2011 p. 659 requires `1 < |V′|`; without the lower bound the
+single-vertex no-edge subgraph is vacuously rigid, so "no proper rigid subgraph"
+would be unsatisfiable on any `G` with `2 ≤ |V(G)|`). A *circuit* of `M(G̃)` is a
 minimal dependent edge set; this is mathlib's `Matroid.IsCircuit (G.matroidMG n)`.
 These are the structural objects the algebraic induction of Phases 21–23 reduces
 against (rigid subgraphs feed Case I, circuits feed `lem:circuit-rigid`). -/
@@ -375,11 +417,22 @@ edge-disjoint spanning trees. -/
 def IsRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop := H ≤ G ∧ H.IsKDof n 0
 
 /-- `H` is a **proper rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa
-2011 §3): a rigid subgraph whose vertex set is a nonempty proper subset of `G`'s,
-`∅ ≠ V(H) ⊊ V(G)`. Proper rigid subgraphs are the case-I objects of the algebraic
-induction (Phases 21–23). -/
+2011 §3, p. 659): a rigid subgraph on at least two vertices whose vertex set is a
+proper subset of `G`'s, `2 ≤ |V(H)|` and `V(H) ⊊ V(G)`. The `2 ≤ |V(H)|` lower bound
+is KT's `1 < |V′|`: without it the single-vertex no-edge subgraph (vacuously `0`-dof —
+every partition of one vertex has one part and no crossing edges) would make
+`∃ H, IsProperRigidSubgraph` provable on any `G` with two vertices, so the standing
+"no proper rigid subgraph" hypothesis of the Case-III layer would be unsatisfiable.
+Proper rigid subgraphs are the case-I objects of the algebraic induction
+(Phases 21–23). -/
 def IsProperRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop :=
-  H.IsRigidSubgraph G n ∧ V(H).Nonempty ∧ V(H) ⊂ V(G)
+  H.IsRigidSubgraph G n ∧ 2 ≤ V(H).ncard ∧ V(H) ⊂ V(G)
+
+/-- A proper rigid subgraph has a nonempty vertex set (from the `2 ≤ |V(H)|`
+conjunct) — the weakening the Case-I geometry consumers read off. -/
+lemma IsProperRigidSubgraph.vertexSet_nonempty {H G : Graph α β} {n : ℕ}
+    (h : H.IsProperRigidSubgraph G n) : V(H).Nonempty :=
+  Set.nonempty_of_ncard_ne_zero (by have := h.2.1; omega)
 
 /-! ## A triangle is `0`-dof (`lem:case-III`, the `splitOff`-simplicity triangle brick) -/
 

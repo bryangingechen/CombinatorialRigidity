@@ -848,7 +848,10 @@ route that bypasses the deferred forest surgery
   gives $h^\ast \ge 1$. We show $E(\tilde G) \setminus \tilde e \subseteq B^\ast$
   (KT eq.~4.3). If some $f \in E(\tilde G) \setminus \tilde e$ were outside
   $B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(f, B^\ast)$
-  induces, by \cref{lem:circuit-induces-rigid}, a rigid subgraph $G[V(X)]$; the
+  induces, by \cref{lem:circuit-induces-rigid}, a rigid subgraph $G[V(X)]$
+  spanning at least two vertices ($G$ is loopless --- a loop copy would be a
+  matroid loop inside a base, contradicting the minimality clause of
+  \cref{def:k-dof}; \texttt{Graph.loopless\_of\_isMinimalKDof}); the
   no-proper-rigid hypothesis forces $V(X) = V(G)$ (the spanning step
   \texttt{Graph.fundCircuit\_inducedSpan\_vertexSet\_eq}). Then $X \cap \tilde e
   \neq \emptyset$: otherwise $X \subseteq E(\tilde G) \setminus \tilde e$, and for
@@ -948,9 +951,12 @@ route that bypasses the deferred forest surgery
   Each reduction --- splitting-off at the degree-2 vertex of
   \cref{lem:reducible-vertex}, or contraction of a proper rigid
   subgraph (\cref{lem:contraction-minimality}) --- carries a minimal
-  $0$-dof-graph (with no proper rigid subgraph, in the splitting-off
-  case) to a smaller minimal $0$-dof-graph. This is the inductive step
-  of KT Theorem~4.9.
+  $0$-dof-graph (with no proper rigid subgraph and $|V| \ge 3$, in the
+  splitting-off case) to a smaller minimal $0$-dof-graph. This is the
+  inductive step of KT Theorem~4.9. ($|V| \ge 3$ is the splitting
+  branch's standing regime and is genuinely needed: the two-vertex
+  double edge splits to a one-vertex loop graph, which is not
+  minimal.)
 \end{lemma}
 \begin{proof}
   \leanok
@@ -964,10 +970,13 @@ route that bypasses the deferred forest surgery
   surviving ground set $E(\tilde G_v) = E(\tilde G_v^{ab}) \setminus
   \tilde{ab}$ is independent in $M(\tilde G_v^{ab})$: otherwise a circuit
   inside it would be a circuit of $M(\tilde G)$ avoiding $v$, inducing a
-  proper rigid subgraph (\cref{lem:circuit-induces-rigid}). So $E(\tilde
+  proper rigid subgraph (\cref{lem:circuit-induces-rigid}; it spans at
+  least two vertices since $G$ is loopless --- a loop copy would be a
+  matroid loop inside a base, contradicting minimality;
+  \texttt{Graph.loopless\_of\_isMinimalKDof}). So $E(\tilde
   G_v)$ is a base of $M(\tilde G_v)$, and KT 4.7 gives
-  $\operatorname{def}(\tilde G_v) > 0$ ($G_v$ is a proper subgraph, so not
-  rigid). A \emph{rank count} replaces KT's iterated fundamental-circuit
+  $\operatorname{def}(\tilde G_v) > 0$ ($G_v$ is a proper subgraph on
+  $|V(G)| - 1 \ge 2$ vertices, so not rigid). A \emph{rank count} replaces KT's iterated fundamental-circuit
   swap: any base $B'$ of $M(\tilde G_v^{ab})$ avoiding a fiber $\tilde e$
   has $|B'| \le |E(\tilde G_v)|$ (split $B'$ across $\tilde{ab}$ and
   $E(\tilde G_v)$), which through
@@ -1007,11 +1016,11 @@ route that bypasses the deferred forest surgery
   splitting it off yields a strictly smaller minimal $0$-dof-graph
   (\cref{lem:reduction-step,lem:reduction-measure}) on which the induction
   hypothesis applies. The contraction branch is handed the induction
-  hypothesis rather than recursing internally: the matroid-side
-  \cref{lem:contraction-minimality} is not yet bridged to a graph-level
-  minimality statement for $G / E(H)$ (a single-vertex subgraph is
-  vacuously rigid, so the predicate alone need not drop the measure), and
-  the splitting-off branch carries an unused-edge-label premise for the
+  hypothesis rather than recursing internally: Case~I of the algebraic
+  induction genuinely consumes the induction hypothesis at \emph{two}
+  objects (the rigid block and the contraction), so the principle exposes
+  the full hypothesis rather than a single recursive call; the
+  splitting-off branch carries an unused-edge-label premise for the
   fresh short-circuit edge. This is
   Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011}; it is the
   combinatorial skeleton the algebraic induction (Phases~21--23) realizes

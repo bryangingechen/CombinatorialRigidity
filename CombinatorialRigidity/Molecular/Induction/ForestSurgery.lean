@@ -658,16 +658,21 @@ restrict identically to the surviving ground set `E(G̃_v)` (`matroidMG_restrict
 applied to `G̃_v ≤ G̃_v^{ab}` and to `G_v ≤ G`, both read off `Matroid.restrict_isCircuit_iff`),
 `X` is also a circuit of `M(G̃)` — with `v ∉ V(X)`, since every fiber of `X` is a copy of a
 `v`-avoiding edge of `G`. So `G[V(X)]` is a rigid subgraph (`circuit_induces_isRigidSubgraph`)
-that is *proper* (`v ∉ V(X)`), contradicting the no-proper-rigid hypothesis.
+that is *proper* — it avoids `v`, and it spans at least two vertices because a circuit
+contains an edge copy whose two `G`-ends are distinct (`[G.Loopless]`, the hypothesis the
+`2 ≤ |V(H)|` conjunct of `IsProperRigidSubgraph` costs; the caller supplies it from
+minimality via `loopless_of_isMinimalKDof`) — contradicting the no-proper-rigid hypothesis.
 
 This is the matroidal claim the minimality transport `splitOff_isMinimalKDof` consumes: it is
 exactly the statement that the surviving ground set `E(G̃_v)` is circuit-free, i.e. independent,
 in `M(G̃_v^{ab})`. Katoh–Tanigawa use it to drive an iterated fundamental-circuit swap relocating
 each `ã̃b` copy onto an `ẽ` copy; `splitOff_isMinimalKDof` instead consumes it directly, as the
 fact that `E(G̃_v)` is a base of `M(G̃_v)` (so the swap induction is bypassed by a rank count).
-Stated under no-proper-rigid alone — minimality of `G` is not needed for (4.10). -/
+Stated under no-proper-rigid plus looplessness — minimality of `G` itself is not needed
+for (4.10); `[G.Loopless]` (which the caller derives from minimality) only feeds the
+`2 ≤ |V(H)|` conjunct of the proper-rigid contradiction. -/
 theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
-    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ : β} (hvG : v ∈ V(G))
+    [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ : β} (hvG : v ∈ V(G))
     (he₀ : e₀ ∉ E(G)) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     {X : Set (β × Fin (bodyHingeMult n))}
     (hX : ((G.splitOff v a b e₀).matroidMG n).IsCircuit X) :
@@ -722,17 +727,19 @@ theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G
     rcases hlw.left_eq_or_eq hlxyG with h | h
     · exact hxv h.symm
     · exact hyv h.symm
-  -- A circuit spans a nonempty vertex set; with `v ∉ V(X)`, `G[V(X)]` is *proper* rigid.
-  have hVne : V(G.inducedSpan n X).Nonempty := by
+  -- A loopless circuit spans two distinct vertices; with `v ∉ V(X)`, `G[V(X)]` is *proper* rigid.
+  have hV2 : 2 ≤ V(G.inducedSpan n X).ncard := by
     rw [vertexSet_inducedSpan, fiberSpan]
     obtain ⟨q, hq⟩ := hcircG.nonempty
-    obtain ⟨x, _, hinc⟩ := exists_isLink_of_mem_edgeSet (hcircG.subset_ground hq)
-    exact ⟨x, q, hq, hinc.inc_left⟩
+    obtain ⟨x, y, hinc⟩ := exists_isLink_of_mem_edgeSet (hcircG.subset_ground hq)
+    have hxy : x ≠ y := ((mulTilde_isLink G n).mp hinc).ne
+    exact (Set.one_lt_ncard (Set.toFinite _)).mpr
+      ⟨x, ⟨q, hq, hinc.inc_left⟩, y, ⟨q, hq, hinc.inc_right⟩, hxy⟩
   have hVsub : V(G.inducedSpan n X) ⊆ V(G) := by
     rw [vertexSet_inducedSpan, fiberSpan]
     exact (G.mulTilde n).spanningVerts_subset_vertexSet X
   exact hnp (G.inducedSpan n X)
-    ⟨hrigid, hVne, hVsub.ssubset_of_ne (fun heq => hvnot (heq ▸ hvG))⟩
+    ⟨hrigid, hV2, hVsub.ssubset_of_ne (fun heq => hvnot (heq ▸ hvG))⟩
 
 /-! ## Splitting-off preserves minimal `0`-dof (`lem:reduction-step`, splitting-off branch)
 
@@ -753,36 +760,42 @@ comparison through the green `def = corank` bridge `isBase_ncard_add_deficiency_
   independent in `M(G̃_v^{ab})` (`circuit_splitOff_meets_fiber` — KT's (4.10) — says no circuit
   avoids `ã̃b`, i.e. `E(G̃_v)` is circuit-free), and restriction descends it to `M(G̃_v)`, where
   it is the whole ground set;
-* KT 4.7 (`def(G̃_v) > 0`): `G_v ≤ G` is a proper subgraph, so under no-proper-rigid it is not
-  `0`-dof, hence `def(G̃_v) > 0`;
+* KT 4.7 (`def(G̃_v) > 0`): `G_v ≤ G` is a proper subgraph on `|V(G)| − 1 ≥ 2` vertices (the
+  `hV3 : 3 ≤ |V(G)|` hypothesis — the splitting branch's standing regime, and genuinely needed:
+  at `|V(G)| = 2` the double edge splits to a one-vertex loop graph whose empty base misses the
+  fresh fiber), so under no-proper-rigid it is not `0`-dof, hence `def(G̃_v) > 0`;
 * finally, any base `B'` of `M(G̃_v^{ab})` avoiding a fiber `ẽ` (`e ∈ E(G_v^{ab})`) has
   `|B'| ≤ |E(G̃_v)|` (case `e = e₀`: `B' ⊆ E(G̃_v)`; case `e ≠ e₀`: `B'` splits into `B' ∩ ã̃b`
   of size `≤ D − 1` and `B' ∩ E(G̃_v) ⊆ E(G̃_v) ∖ ẽ` of size `≤ |E(G̃_v)| − (D − 1)`). Via
   `isBase_ncard_add_deficiency_eq` on the two bases this forces `def(G̃_v) ≤ def(G̃_v^{ab}) = 0`,
   contradicting `def(G̃_v) > 0`. So every base meets every fiber: `G_v^{ab}` is minimal. -/
 theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
-    (hD : 2 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
+    (hD : 2 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard) {v a b : α} {e₀ eₐ e_b : β}
     (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (hvG : v ∈ V(G))
     (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
     (hG : G.IsMinimalKDof n 0) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (G.splitOff v a b e₀).IsMinimalKDof n 0 := by
   classical
+  haveI : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   set G' := G.splitOff v a b e₀ with hG'def
   set Gv := G.removeVertex v with hGvdef
-  -- Vertex sets: `V(G') = V(Gv) = V(G) ∖ {v}`, nonempty (it contains `a`).
+  -- Vertex sets: `V(G') = V(Gv) = V(G) ∖ {v}`, nonempty (it contains `a`) and of size `≥ 2`.
   have hVeq : V(G') = V(G) \ {v} := vertexSet_splitOff G v a b e₀
   have hVveq : V(Gv) = V(G) \ {v} := vertexSet_removeVertex G v
   have hVne : V(G').Nonempty := by rw [hVeq]; exact ⟨a, haV, by simpa using hav⟩
   have hVvne : V(Gv).Nonempty := by rw [hVveq]; exact ⟨a, haV, by simpa using hav⟩
+  have hVv2 : 2 ≤ V(Gv).ncard := by
+    rw [hVveq, Set.ncard_diff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
+    omega
   -- `Gv ≤ G` a proper subgraph (`v ∈ V(G)` is dropped); under no-proper-rigid, `def(G̃v) > 0`.
   have hleGvG : Gv ≤ G := by rw [hGvdef, removeVertex]; exact deleteVerts_le
   have hdefGv_pos : 0 < Gv.deficiency n := by
     rcases lt_or_eq_of_le (Gv.deficiency_nonneg n hVvne) with h | h
     · exact h
     · exfalso
-      refine hnp Gv ⟨⟨hleGvG, h.symm⟩, hVvne, ?_⟩
+      refine hnp Gv ⟨⟨hleGvG, h.symm⟩, hVv2, ?_⟩
       rw [hVveq]; exact Set.diff_singleton_ssubset.mpr hvG
   -- 0-dof half: `def(G̃') = 0` from `dof_tracking` squeezed against `def(G̃) = 0` and `def ≥ 0`.
   have hdofG : G.deficiency n = 0 := hG.1
@@ -982,13 +995,15 @@ minimal `0`-dof-graph on which the induction hypothesis closes the `hsplit` prem
 The contraction branch is handed only the *existence* of a proper rigid subgraph together with
 the strong induction hypothesis (rather than recursing on `rigidContract` internally): bridging
 the matroid-side `contraction_isMinimalKDof` to a graph-level `(G.rigidContract H r).IsMinimalKDof`
-is the graph↔matroid correspondence Phase 20 deliberately did not build (see `notes/Phase20.md`),
-and a single-vertex subgraph is vacuously rigid so the predicate alone does not force the measure
-to drop — the user discharges Case I from `H`. The splitting-off branch, fully graph-level,
-recurses internally. The `hfresh` premise supplies an unused edge label for each splitting-off
-(`splitOff` injects a fresh `e₀`); it holds whenever `β` is not exhausted by `E(G)` — e.g. `β`
-infinite, or large relative to the edge count. This is the combinatorial backbone the algebraic
-induction (Phases 21–23) realizes at the rigidity-matrix rank. -/
+is the graph↔matroid correspondence Phase 20 deliberately did not build (see `notes/Phase20.md`;
+the Phase-21 N4 bridge `rigidContract_isMinimalKDof` has since closed it, and the Phase-22h
+predicate repair makes proper rigid subgraphs span `≥ 2` vertices so the measure does drop —
+the handed-IH shape stays because Case I genuinely consumes the IH at *two* objects, the block
+and the contraction). The user discharges Case I from `H`. The splitting-off branch, fully
+graph-level, recurses internally. The `hfresh` premise supplies an unused edge label for each
+splitting-off (`splitOff` injects a fresh `e₀`); it holds whenever `β` is not exhausted by
+`E(G)` — e.g. `β` infinite, or large relative to the edge count. This is the combinatorial
+backbone the algebraic induction (Phases 21–23) realizes at the rigidity-matrix rank. -/
 theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 3 ≤ bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     {P : Graph α β → Prop}
@@ -1035,7 +1050,7 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
       -- A fresh edge label `e₀ ∉ E(G)` (the freshness hypothesis: `β` carries unused labels).
       obtain ⟨e₀, he₀⟩ := hfresh G
       have hsplitMin : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
-        splitOff_isMinimalKDof hD2 hav hbv haV hbV hvG heab hla hlb hdeg2 he₀ hG hrig
+        splitOff_isMinimalKDof hD2 hV3 hav hbv haV hbV hvG heab hla hlb hdeg2 he₀ hG hrig
       have hsmaller : V(G.splitOff v a b e₀).ncard < N :=
         hN ▸ splitOff_vertexSet_ncard_lt hvG
       have hsplit2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by

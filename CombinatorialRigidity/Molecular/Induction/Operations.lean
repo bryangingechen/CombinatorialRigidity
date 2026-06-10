@@ -303,9 +303,11 @@ edge-count bound `lem:no-rigid-edge-count` (and again in the KT 4.7–4.8 reduct
 fundamental circuit of any redundant fiber is forced to be *spanning*, which is what lets the
 later base-exchange relocate redundancy onto a single fiber `ẽ`. It isolates the clean,
 matroid-API half of KT 4.5(i) (the rigid-subgraph / no-proper-rigid reasoning) from the
-remaining base-exchange count. -/
+remaining base-exchange count. The `[G.Loopless]` hypothesis (which the caller derives from
+minimality via `loopless_of_isMinimalKDof`) feeds the `2 ≤ |V(H)|` conjunct of
+`IsProperRigidSubgraph`: a circuit of a loopless graph spans two distinct vertices. -/
 theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ} (hD : 1 ≤ bodyBarDim n)
+    {G : Graph α β} [G.Loopless] {n : ℕ} (hD : 1 ≤ bodyBarDim n)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B)
     {p : β × Fin (bodyHingeMult n)} (hpE : p ∈ E(G.mulTilde n)) (hpB : p ∉ B) :
@@ -322,17 +324,20 @@ theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finit
   have hsub : V(G.inducedSpan n X) ⊆ V(G) := by
     rw [vertexSet_inducedSpan, fiberSpan]
     exact (G.mulTilde n).spanningVerts_subset_vertexSet X
-  -- `V(X)` is nonempty: a circuit is nonempty, and each fiber spans a vertex.
-  have hVne : V(G.inducedSpan n X).Nonempty := by
+  -- `V(X)` spans two distinct vertices: a circuit is nonempty, and a fiber of the loopless
+  -- `G` has two distinct ends.
+  have hV2 : 2 ≤ V(G.inducedSpan n X).ncard := by
     rw [vertexSet_inducedSpan, fiberSpan]
     obtain ⟨q, hq⟩ := hXcirc.nonempty
-    obtain ⟨x, _, hinc⟩ := exists_isLink_of_mem_edgeSet (hXcirc.subset_ground hq)
-    exact ⟨x, q, hq, hinc.inc_left⟩
+    obtain ⟨x, y, hinc⟩ := exists_isLink_of_mem_edgeSet (hXcirc.subset_ground hq)
+    have hxy : x ≠ y := ((mulTilde_isLink G n).mp hinc).ne
+    exact (Set.one_lt_ncard (Set.toFinite _)).mpr
+      ⟨x, ⟨q, hq, hinc.inc_left⟩, y, ⟨q, hq, hinc.inc_right⟩, hxy⟩
   -- If `V(X) ⊊ V(G)`, `G[V(X)]` is a *proper* rigid subgraph — excluded by hypothesis.
   refine subset_antisymm hsub ?_
   by_contra hnotle
   exact hnp (G.inducedSpan n X)
-    ⟨hrigid, hVne, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
+    ⟨hrigid, hV2, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
 
 /-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
 
@@ -791,7 +796,8 @@ lemma triangle_isProperRigidSubgraph [Finite α] {G : Graph α β} [G.Simple] {v
   have hsub : ({v, a, b} : Set α) ⊆ V(G) := by
     rintro w (rfl | rfl | rfl)
     exacts [hG_ea.left_mem, hf.left_mem, hf.right_mem]
-  refine ⟨G.induce {v, a, b}, ⟨G.induce_le hsub, ?_⟩, ⟨v, by simp⟩, ?_⟩
+  refine ⟨G.induce {v, a, b}, ⟨G.induce_le hsub, ?_⟩,
+    (Set.one_lt_ncard (Set.toFinite _)).mpr ⟨v, by simp, a, by simp, hva⟩, ?_⟩
   · -- `def((K₃)̃) = 0`: the induced triangle is `0`-dof (vertices `v, a, b`; edges in the
     -- `isKDof_zero_of_triangle` order are `va`, `ab`, `vb`).
     refine isKDof_zero_of_triangle hD hva hab hvb
