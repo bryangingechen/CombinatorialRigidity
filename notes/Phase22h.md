@@ -27,7 +27,12 @@ clean.
 the two splitOff-data pairs at v and a contains eₐ; `same_right` helper for endpoint uniqueness;
 `triangle_isProperRigidSubgraph + hnp` for `b ≠ c`.
 
-**Next concrete step: T1–T4** (~3–4 commits, §1.48(1)), parallel-safe with G4c-i/ii (§1.49(3)).
+**T1 is DONE.** `exists_isLink_of_isMinimalKDof_card_three` (Operations.lean; blueprint node
+`lem:triangle-third-edge` added; build + lint + verify.sh clean). Vertex pin via `ncard = 3`;
+edge count via `rank_matroidMG_of_isKDof_zero` + `edgeMultiply_edgeSet_ncard` + ℤ cast;
+case split on endpoint membership eliminates all non-`a–b` cases via `unique_edge`.
+
+**Next concrete step: T2** (`theorem_55_triangle`, §1.48(1)), the 3-body sibling of `theorem_55_base`.
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -47,11 +52,11 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `lem:adjacent-degree-two-pair`). Done.
 - [x] **G4a-ii** — `exists_chain_data_of_noRigid` (§1.49(2)): `exists_splitOff_data_of_degree_eq_two`
   at `v` and `a`, `b ≠ c` via `triangle_isProperRigidSubgraph` + `hnp` at `|V| ≥ 4`. Done.
-- [ ] **T1–T4** — the `|V|=3` triangle base (§1.48(1)): T1 third-edge/vertex-pin (edge count via
-  `rank_add_deficiency_eq`), T2 `theorem_55_triangle` (3-body sibling of `theorem_55_base`), T3
-  the cyclically-consistent basis seed, T4 assembly through the GAP-2 upgrade. ~3–4 commits;
-  parallel-safe after G4b-impl. (Ledger entry: `notes/BlueprintExposition.md`, writes at this
-  phase's close.)
+- [x] **T1** — `exists_isLink_of_isMinimalKDof_card_three` (Operations.lean): vertex pin +
+  third-edge existence via edge-count lower bound. Blueprint node `lem:triangle-third-edge`. Done.
+- [ ] **T2–T4** — `theorem_55_triangle` (T2, 3-body sibling of `theorem_55_base`), cyclically-consistent
+  basis seed (T3), assembly through the GAP-2 upgrade (T4). ~2–3 commits; parallel-safe after G4b-impl.
+  (Ledger entry: `notes/BlueprintExposition.md`, writes at this phase's close.)
 - [ ] **G4c-i/ii** — the fixed-seed `ρ = (a v)` relabel transport (graph iso + `ofNormals`
   framework transport; the existential motive is NOT transported — eq. (6.44) needs the SAME
   seed; genericity free, same coordinate set) (§1.49(3)).
@@ -79,9 +84,9 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — T1** (the `|V|=3` triangle base, §1.48(1)):
-pin the third edge/vertex of the triangle via `rank_add_deficiency_eq`, then proceed to
-T2–T4. Parallel-safe with G4c-i/ii (§1.49(3)).
+**Smallest next forward commit — T2** (`theorem_55_triangle`, §1.48(1)):
+the 3-body panel-hinge rigidity statement for the triangle graph; sibling of `theorem_55_base`.
+Parallel-safe with G4c-i/ii (§1.49(3)).
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`

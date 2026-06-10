@@ -1112,6 +1112,26 @@ Grassmann--Cayley projective duality.
   line $L = \bar p_i \bar p_j$.
 \end{proof}
 
+\begin{lemma}[$|V|=3$ triangle base: vertex and edge pin; KT \S6.4]
+  \label{lem:triangle-third-edge}
+  \lean{Graph.exists_isLink_of_isMinimalKDof_card_three}
+  \leanok
+  \uses{}
+  Let $G$ be a simple minimal $0$-dof graph on exactly three vertices, with edges $e_a : v$--$a$
+  and $e_b : v$--$b$ and $e_a \ne e_b$. Then $a \ne b$, $V(G) = \{v,a,b\}$, and there exists an
+  edge $f : a$--$b$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  (1) $a \ne b$: if $a = b$ then $e_a, e_b$ are parallel, contradicting simplicity.
+  (2) Vertex pin: $\{v,a,b\} \subseteq V(G)$ from the edge hypotheses; $|\{v,a,b\}| = 3 = |V(G)|$
+  forces equality.
+  (3) Third edge: the rank formula $\operatorname{rank} M(\tilde G) = D(|V|-1) = 2D$ and the rank
+  bound $\operatorname{rank} M(\tilde G) \le (D-1)|E(G)|$ force $|E(G)| \ge 3$, so a third edge
+  $f \notin \{e_a, e_b\}$ exists. Its endpoints lie in $\{v,a,b\}$; simplicity and
+  \texttt{unique\_edge} eliminate all cases except $f : a$--$b$.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,

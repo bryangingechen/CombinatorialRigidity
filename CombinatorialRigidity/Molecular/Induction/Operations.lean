@@ -845,4 +845,75 @@ lemma splitOff_simple_of_noRigid_of_card [Finite α] {G : Graph α β} {v a b : 
   exact splitOff_simple_of_noRigid heab hG_ea hG_eb hnoRigid
     fun f hf ↦ triangle_isProperRigidSubgraph hD hG_ea hG_eb hf hab hcard
 
+/-- **The `|V|=3` triangle base — vertex and edge pin** (KT §6.4 §1.48(1), Katoh–Tanigawa 2011
+p. 659). Given a minimal `n`-dof-0 graph `G` on exactly three vertices, with two edges `eₐ : v–a`
+and `e_b : v–b` and `eₐ ≠ e_b`, the third vertex pair `a–b` is distinct (`a ≠ b`) and `G` has an
+edge `f` linking them.
+
+**Proof.** (1) `a ≠ b`: if `a = b` then `eₐ` and `e_b` are parallel, contradicting `G.Simple`.
+(2) Vertex pin: `{v,a,b} ⊆ V(G)` from the `IsLink` hypotheses; `|{v,a,b}| = 3 = |V(G)|` gives
+`V(G) = {v,a,b}`. (3) Third edge: the rank formula `rank(G̃) = D·(|V|−1) = 2D` and the rank bound
+`rank(G̃) ≤ (D−1)·|E|` force `|E| ≥ 3`, so some third edge `f ∉ {eₐ, e_b}` exists. Its endpoints
+are in `{v,a,b}` (same vertex set); the Simple hypothesis and `unique_edge` eliminate all cases
+except `f : a–b`. -/
+theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} [G.Simple]
+    (hD : 3 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0)
+    (hcard : V(G).ncard = 3)
+    {v a b : α} {eₐ e_b : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) :
+    a ≠ b ∧ V(G) = {v, a, b} ∧ ∃ f, G.IsLink f a b := by
+  have hva : v ≠ a := hav.symm
+  have hvb : v ≠ b := hbv.symm
+  have hab : a ≠ b := fun h ↦ heab (Simple.eq_of_isLink hG_ea (h ▸ hG_eb))
+  have hsub : ({v, a, b} : Set α) ⊆ V(G) := by
+    rintro w (rfl | rfl | rfl)
+    exacts [hG_ea.left_mem, hG_ea.right_mem, hG_eb.right_mem]
+  have hncard3 : ({v, a, b} : Set α).ncard = 3 := by
+    rw [ncard_insert_of_notMem (by simp [hva, hvb]),
+        ncard_insert_of_notMem (by simp [hab]), ncard_singleton]
+  have hVeq : V(G) = {v, a, b} :=
+    (Set.eq_of_subset_of_ncard_le hsub (hcard ▸ hncard3.ge) V(G).toFinite).symm
+  have hne : V(G).Nonempty := ⟨v, hG_ea.left_mem⟩
+  have hrank : ((G.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) :=
+    rank_matroidMG_of_isKDof_zero (by omega) hne hG.1
+  have hrank_le : (G.matroidMG n).rank ≤ bodyHingeMult n * E(G).ncard := by
+    calc (G.matroidMG n).rank ≤ E(G.mulTilde n).ncard := by
+          rw [Matroid.rank_def, mulTilde]; exact (G.matroidMG n).rk_le_card _
+      _ = bodyHingeMult n * E(G).ncard := by rw [mulTilde, edgeMultiply_edgeSet_ncard]
+  have hE3 : 3 ≤ E(G).ncard := by
+    rw [hcard] at hrank; norm_num at hrank
+    have hle : ((G.matroidMG n).rank : ℤ) ≤ (bodyHingeMult n : ℤ) * E(G).ncard :=
+      by exact_mod_cast hrank_le
+    rw [show (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 from by unfold bodyHingeMult; omega,
+        hrank] at hle
+    exact_mod_cast (show (3 : ℤ) ≤ E(G).ncard by
+      nlinarith [show (0 : ℤ) < bodyBarDim n from by exact_mod_cast Nat.pos_of_ne_zero (by omega)])
+  have hne2 : (E(G) \ {eₐ, e_b}).Nonempty := by
+    by_contra h
+    simp only [Set.not_nonempty_iff_eq_empty] at h
+    have hpair : E(G) ⊆ {eₐ, e_b} := Set.diff_eq_empty.mp h
+    have h2 : ({eₐ, e_b} : Set β).ncard = 2 := by
+      rw [ncard_insert_of_notMem (by simp [heab]) (Set.finite_singleton _), ncard_singleton]
+    exact absurd (Set.ncard_le_ncard hpair (Set.toFinite _)) (by omega)
+  obtain ⟨f, hfE, hfne⟩ := hne2
+  rw [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hfne
+  obtain ⟨hfea, hfeb⟩ := hfne
+  obtain ⟨x, y, hfxy⟩ := G.exists_isLink_of_mem_edgeSet hfE
+  have hx : x ∈ ({v, a, b} : Set α) := hVeq ▸ hfxy.left_mem
+  have hy : y ∈ ({v, a, b} : Set α) := hVeq ▸ hfxy.right_mem
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
+  refine ⟨hab, hVeq, ?_⟩
+  rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+  · exact absurd rfl hfxy.ne
+  · exact absurd (hfxy.unique_edge hG_ea) hfea
+  · exact absurd (hfxy.unique_edge hG_eb) hfeb
+  · exact absurd (hfxy.symm.unique_edge hG_ea) hfea
+  · exact absurd rfl hfxy.ne
+  · exact ⟨f, hfxy⟩
+  · exact absurd (hfxy.symm.unique_edge hG_eb) hfeb
+  · exact ⟨f, hfxy.symm⟩
+  · exact absurd rfl hfxy.ne
+
 end Graph
