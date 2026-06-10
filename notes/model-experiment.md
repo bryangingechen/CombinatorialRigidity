@@ -40,6 +40,7 @@ quality / blueprint sync / notes discipline / commit message
 | 3 | G4a-ii `exists_chain_data_of_noRigid` (no commit) | 1/2/1 | haiku | probe | BLOCKED | —————— | 143k tok / 69 tools / 1050s | probe one rung below map (sonnet). Hit the real ReducibleVertex→…→ForestSurgery import chain but mis-concluded "needs module restructuring"; correct resolution (place the lemma in ForestSurgery.lean — design §1.49(2) pins the signature, not the file) was its own dismissed option 2. Reverted cleanly, no tree damage. Also returned without the LANDED/BLOCKED-only format. Escalating to sonnet with corrected hand-off |
 | 4 | G4a-ii `exists_chain_data_of_noRigid`, d1eef6d | 1/2/1 | sonnet | escalation-retry | clean | ✓✓✓✓✓✓ | 125k tok / 134 tools / 2190s | escalation pair with #3. Signature matches §1.49(2) verbatim; ForestSurgery.lean placement per corrected hand-off; 4-way case split verbose but sound. Pair lesson: haiku failed on a file-placement judgment call, not the proof |
 | 5 | T1 `exists_isLink_of_isMinimalKDof_card_three`, 2257053 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 52k tok / 137 tools / 1905s | compact (71-line) idiomatic proof; rank-formula edge count per §1.48(1); blueprint node + hand-off both correct |
+| 6 | T2 `theorem_55_triangle`, b3abd57 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 141k tok / 84 tools / 786s | 50-line brick reusing the cycle-telescoping infra; good reuse judgment (no Fin m transport) |
 
 ## Findings
 
