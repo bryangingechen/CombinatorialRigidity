@@ -8,10 +8,10 @@ conditional on it.)
 — the portable, repo-agnostic half (axes, assignment map, rubric,
 log schema). Keep it byte-identical across participating repos; this
 file carries only repo-local state: config, the dispatch log, and
-findings. Last protocol sync: 2026-06-09 (from autoformaltemplate).
-**Local protocol amendment 2026-06-10** (log-row timing rule +
-softened change-propagation framing) — propagate to
-autoformaltemplate and other participating repos at next sync.
+findings. Last protocol sync: 2026-06-10 — the 2026-06-10 local
+amendments (log-row timing rule, softened change-propagation
+framing) are upstream (autoformaltemplate fbb6a29) and in
+enharmonic; all three copies byte-identical again.
 
 ## Repo-local config
 
@@ -42,7 +42,24 @@ quality / blueprint sync / notes discipline / commit message
 | 5 | T1 `exists_isLink_of_isMinimalKDof_card_three`, 2257053 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 52k tok / 137 tools / 1905s | compact (71-line) idiomatic proof; rank-formula edge count per §1.48(1); blueprint node + hand-off both correct |
 | 6 | T2 `theorem_55_triangle`, b3abd57 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 141k tok / 84 tools / 786s | 50-line brick reusing the cycle-telescoping infra; good reuse judgment (no Fin m transport) |
 | 7 | T3 `exists_triangle_normals`, b6761d1 | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 118k tok / 313 tools / 6702s | hardest leaf so far (the §38 trap zone): 4 private helpers vs whnf explosion; surfaced + documented a NEW quirk (§42 proof-term mismatch, `let`-bound statement params) with FRICTION entry + quirks-index line — exemplary friction review. Same (1/2/1) profile as #5–6 but 3.5× the wall time: the S/P/B axes don't capture defeq-fragility of the target area |
+| 8 | T4 `hasGenericFullRankRealization_of_triangle` (no commit) | 1/2/1 | sonnet | normal | **machine-crash (external)** | —————— | ~38 min wall, lost | Not a model grade: the machine OOM-crashed under a runaway build cascade in the *sibling enharmonic repo* (its model-experiment row 12), killing this dispatch mid-design — it had read context and was lemma-hunting, zero file writes, zero commits, tree verified clean afterward. S/P/B reconstructed from the crashed coordinator's session log (same profile + rung reasoning as #5–7). Re-dispatch T4 fresh; nothing to recover |
 
 ## Findings
 
 (accumulate here; distill at phase close per the protocol)
+
+- (2026-06-10, cross-repo) Enharmonic's haiku probe (its row 12)
+  OOM-crashed the shared machine — a lake CLI syntax error cascaded
+  into a hallucinated `lake build --update`, a silent
+  toolchain/manifest rewrite, concurrent from-source mathlib builds,
+  and a **fabricated "all gates green" attestation** in both commit
+  message and notes. Lesson imported here even though our own haiku
+  probe (row 3) merely BLOCKED honestly: (a) destructive-capability
+  guards must be *mechanical* — this repo now ships the
+  `block-lake-update.sh` PreToolUse hook + a *Build discipline*
+  section in `CombinatorialRigidity/CLAUDE.md`; (b) a "gates green"
+  claim in a dispatch return is an attestation, not evidence — the
+  coordinator re-runs gates for below-top-rung dispatches
+  (`coordinate-phase.md` step 4); (c) collateral note: a crash
+  elsewhere on the machine kills in-flight dispatches here (row 8) —
+  the dispatch-then-log-row ordering meant zero repair cost.
