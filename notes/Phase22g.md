@@ -34,20 +34,24 @@ form as a join — so the producer builds its candidate so its hinge line IS the
 that degenerate placement is exactly the source of GAP 2** (the seed cannot carry the GP motive's
 `AlgebraicIndependent ℚ` conjunct, §1.44) — see *Blockers*.
 
-**Next concrete step (re-scoped after §1.45 — GAP 2 RECLASSIFIED bounded):** GAP 2 is no longer
-research-shaped. The §1.45 design pass settled it **(B-derive)**: the producer does NOT have to conclude
-`HasGenericFullRankRealization` *at the degenerate seed* (which is impossible — the seed is `ℚ`-alg-dependent
-by construction). The motive's realizing framework is **existentially quantified** (PanelHinge.lean:1033), so
-the producer builds the degenerate candidate to **bare** `HasFullRankRealization` (Leaf 3, unchanged) then
-invokes a **single-graph bare→generic upgrade** — derivable from green machinery (`exists_rankPolynomial_of_rigidOn_linking`
-→ rational rank polynomial `Q`, depends on `G`/`ends` ONLY → non-root at the `exists_injective_algebraicIndependent_real`
-seed via the alg-indep eval bridge → generic alg-indep rigid witness). This is exactly KT's "convert (G,p1) to
-a nonparallel realization by Lemma 5.2 without decreasing rank" (KT p. 678); the conclusion is `L`-independent
-(the rank polynomial is a graph property, `L` is discarded once full rank is witnessed). The three forward
-commits are now all bounded: **GAP-2 upgrade leaf** (`hasGenericFullRankRealization_of_hasFullRankRealization`,
-~1 commit, reuses `case_I_realization`'s rank-polynomial block), **GAP-1 `|V|=3` simplicity branch** (supply
-`(G.splitOff …).Simple` directly at `|V(G)|=3`, where the R3 triangle witness is improper), and **GAP-3
-genericity-in-`t`** (the bad-`t` set is a single value, so a good `t≠0` exists; folded into the producer).
+**Next concrete step (GAP-2 upgrade leaf LANDED 2026-06-09 — GAP 1 + GAP 3 + the §38-trap producer
+remain):** the GAP-2 keystone is built: `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+(CaseI.lean, axiom-clean) — takes the concrete rigid+linking-transversal `ofNormals G ends q₀`
+(`hends`/`hne`/`hnev`/`hrig`) and concludes the generic motive `HasGenericFullRankRealization k G` by
+re-realizing at an alg-indep seed `q₁`: the rational rank polynomial `Q` of `G`/`ends` *only*
+(`exists_rankPolynomial_of_rigidOn_linking`), non-root at `q₁` via the alg-indep eval bridge; the GP
+factor `Qgp` likewise; the seed `q₁` carries the alg-indep conjunct. Body = the `case_I_realization`
+rank-polynomial block over a *single* graph (no two-block splice). This was the smallest forward commit;
+GAP 1 (`|V|=3` simplicity branch) + GAP 3 (genericity-in-`t`, folded into the producer) + the §38-trap
+concrete-seed producer (Leaf 3) now **compose this upgrade onto the bare candidate** to conclude the
+`hsplitGP` shape. The producer supplies the upgrade's `hne` from its candidate completion (`hane`/`hnewtrans`
+cover the `va`/`vb` hinges; remaining direct `G`-links are the candidate's panel hinges).
+The §1.45 design pass settled GAP 2 **(B-derive)**: the producer does NOT conclude
+`HasGenericFullRankRealization` *at the degenerate seed* (impossible — the seed is `ℚ`-alg-dependent by
+construction; the motive's framework is **existentially quantified**, PanelHinge.lean:1033), it builds the
+candidate to **bare** `HasFullRankRealization` (Leaf 3) then invokes this upgrade. KT's "convert (G,p1) to
+a nonparallel realization by Lemma 5.2 without decreasing rank" (KT p. 678); `L`-independent (rank
+polynomial is a graph property, `L` discarded once full rank is witnessed).
 **R3 for `|V|≥4` is COMPLETE** (2026-06-09): part (1)
 `isKDof_zero_of_triangle` (Deficiency.lean) + part (2) the `htri` discharge (`triangle_isProperRigidSubgraph`
 + the hypothesis-free `splitOff_simple_of_noRigid_of_card`, Operations.lean) are axiom-clean — but they
@@ -64,20 +68,20 @@ The three sub-obligations the §38-trapped producer carries, all bounded:
   not). There the triangle witness `G.induce{v,a,b}` = all of `G`, so it is improper and R3 is false.
   **Unblock (bounded):** a small `|V(G)|=3` simplicity branch (splitOff → `|V|=2`, simple by direct
   edge-count), keeping R3 for `|V|≥4`. A missed case, not a research obstacle — but a hole the build hits.
-- **GAP 2 — RECLASSIFIED bounded (B-derive), §1.45 (supersedes §1.44's (C)).** R2's `hsplitGP` shape makes
-  the producer conclude `HasGenericFullRankRealization`. The eq.-(6.12) candidate seed shears `v` to
-  `n_a + t•n'` — `ℚ`-alg-dependent by construction, so it cannot itself carry the `AlgebraicIndependent ℚ`
-  conjunct. **But the motive's realizing framework is existentially quantified** (PanelHinge.lean:1033) — it
-  asks for *some* generic alg-indep rigid framework on `G`, not for the candidate seed to be generic. So the
-  producer builds the candidate to **bare** `HasFullRankRealization` (Leaf 3, unchanged), then invokes a
-  **single-graph bare→generic upgrade**: `exists_rankPolynomial_of_rigidOn_linking` turns the bare rigid
-  witness into a rational rank polynomial `Q` (depends on `G`/`ends` ONLY, NOT on `L` or the seed), nonzero
-  at the `exists_injective_algebraicIndependent_real` alg-indep seed via the alg-indep eval bridge → a
-  generic alg-indep rigid witness, all five conjuncts. **This is exactly KT's "convert (G,p1) to a
-  nonparallel realization by Lemma 5.2 without decreasing rank" (KT p. 678 + footnote 4).** L-independent
-  (the conclusion is a graph property; `L` is discarded once full rank is witnessed). **Bounded new leaf
-  `hasGenericFullRankRealization_of_hasFullRankRealization` (~1 commit), reuses `case_I_realization`'s
-  rank-polynomial block.** No motive re-shaping needed.
+- **GAP 2 — LANDED 2026-06-09 (the upgrade leaf; B-derive, §1.45).** R2's `hsplitGP` shape makes the
+  producer conclude `HasGenericFullRankRealization`. The eq.-(6.12) candidate seed shears `v` to
+  `n_a + t•n'` — `ℚ`-alg-dependent, so it cannot itself carry the `AlgebraicIndependent ℚ` conjunct — but
+  the motive's framework is **existentially quantified** (PanelHinge.lean:1033). The producer builds the
+  candidate to **bare** `HasFullRankRealization` (Leaf 3), then invokes the **single-graph bare→generic
+  upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`** (CaseI.lean, axiom-clean): takes the
+  concrete rigid+linking-transversal `ofNormals G ends q₀` and builds the rational rank polynomial `Q`
+  (`exists_rankPolynomial_of_rigidOn_linking`, depends on `G`/`ends` ONLY, NOT `L`/the seed), nonzero at the
+  `exists_injective_algebraicIndependent_real` alg-indep seed `q₁` via the alg-indep eval bridge → a generic
+  alg-indep rigid witness, all five conjuncts. **KT's "convert (G,p1) to a nonparallel realization by Lemma
+  5.2 without decreasing rank" (KT p. 678 + footnote 4).** L-independent (graph property; `L` discarded once
+  full rank is witnessed). Body = the `case_I_realization` rank-polynomial block over a single graph (no
+  two-block splice). **Remaining:** the producer (Leaf 3) composes this onto the bare candidate, supplying
+  the upgrade's `hne` (linking transversality) from its candidate completion.
 - **GAP 3 — bounded (A):** `hnewtrans : LinearIndependent ![n_a + t•n', n_b]` — the bad-`t` set
   is at most a single value (the affine line `t↦n_a+t•n'` is not contained in `span{n_b}` since `n_a∉span{n_b}`
   from the pairwise GP `hgab`), so a good `t≠0` exists. Bounded `Fin(k+2)→ℝ` linear algebra, no new geometry.
@@ -94,9 +98,9 @@ consumer-restate to bare LI `pbar`), R3 **for `|V|≥4`** (criterion `splitOff_s
 (C2-feed assembly `case_III_realization_of_line`, line-data leaf `exists_line_data_of_homogeneousIncidence`).
 The Lemma checklist carries the per-leaf detail.
 
-**Remaining (→ phase close): all bounded, ~5–6 commits.** GAP-2 bare→generic upgrade leaf
-(`hasGenericFullRankRealization_of_hasFullRankRealization`, ~1) + GAP-1 `|V|=3` simplicity branch (~1) +
-GAP-3 good-`t` (folded into the producer) + the §38-trap concrete-seed producer (~1–2) + Leaf 4
+**Remaining (→ phase close): all bounded, ~4–5 commits.** GAP-1 `|V|=3` simplicity branch (~1) +
+GAP-3 good-`t` (folded into the producer) + the §38-trap concrete-seed producer (~1–2, composes the
+landed GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate) + Leaf 4
 (`theorem_55_generic (n:=2)(k:=2)` instance, project `.2`) + Leaf 5 (case-II/III flips + Thm 5.5→5.6 push).
 **No research-shaped node remains in Phase 22g** — Lemma 6.10 / Claim 6.11 (the §4 risk register's largest
 KT proof) is already green via Phases 22d/22e/22f. Milestone unchanged: the molecular conjecture at `d=3`,
@@ -252,7 +256,20 @@ unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23**
     `lem:case-III-claim612-line-in-panel-union`'s group `\lean{}` + one prose clause. This is the exact
     input the Leaf-2b seed-from-line core consumes to turn `hq : r̂(join q) ≠ 0` into
     `r̂(panelSupportExtensor (n_u + t•n') n_u) ≠ 0`. Graph-free, no §38 trap.
-  - [ ] **Leaf 3 concrete seed (§38 trap) — UNBLOCKED (§1.45 reclassified GAP 2 bounded).** Restate the
+  - [x] **Leaf 3 GAP-2 bare→generic upgrade** (`hasGenericFullRankRealization_of_rigidOn_ofNormals`,
+    CaseI.lean; DONE 2026-06-09, axiom-clean). Takes the concrete rigid+linking-transversal
+    `ofNormals G ends q₀` (`hends`/`hne`/`hnev`/`hrig`) and concludes `HasGenericFullRankRealization k G`:
+    `exists_rankPolynomial_of_rigidOn_linking` → rational `Q` of `G`/`ends` ONLY (the seed enters only via
+    `eval q₀ Q ≠ 0`; `L` enters nowhere) + `exists_generalPosition_polynomial` → `Qgp` → alg-indep seed `q₁`
+    (`exists_injective_algebraicIndependent_real`) is a simultaneous non-root via the alg-indep eval bridge →
+    `ofNormals G ends q₁` rigid (device-row closure) + GP (`hQgp_pos`) + links (`ofNormals_recordsLinks_of_hends`)
+    + alg-indep (`halg`), all 5 conjuncts. Body = the `case_I_realization` rank-polynomial block
+    (CaseI.lean:1843–1936) over a *single* graph (no two-block splice). §38: the `rigidityRows` membership
+    is built via the **inline-witness** `hrow_mem` (take `G.IsLink` as an explicit arg, supply the
+    `⟨e,u,v,…,rfl⟩` constructor) — the `panelRow_mem_rigidityRows` call timed out at `whnf` reconciling
+    `F.graph` with `G` (TACTICS-QUIRKS §38 membership-witness variant). Pinned to
+    `lem:case-III-claim612-line-in-panel-union`'s group `\lean{}` + one prose clause.
+  - [ ] **Leaf 3 concrete seed (§38 trap) — UNBLOCKED (§1.45 reclassified GAP 2 bounded; GAP-2 leaf now done).** Restate the
     producer to `theorem_55_generic`'s `hsplitGP` shape (gains `G.Simple` + the conditioned IH; concludes
     `HasGenericFullRankRealization 2 G` — via the new GAP-2 upgrade leaf composed onto the bare candidate),
     pull `q` + `hgab` from the GP `_hsplit` (via
@@ -266,17 +283,13 @@ unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23**
       branch fires at `|V|≥3` (only a `|V|=2` base) and splits the `|V|=3` triangle, where the R3 witness
       `G.induce{v,a,b}` = all of `G` is improper. **Sub-leaf to build (bounded):** a `|V(G)|=3` simplicity
       branch — `splitOff` lands on `|V|=2`, simple by direct edge-count; keep R3 for `|V|≥4`.
-    - **GAP 2 (B-derive, §1.45) — bare→generic upgrade, ~1 commit.** The `hsplitGP` shape concludes
-      `HasGenericFullRankRealization` (5 conjuncts). The candidate seed shears `v` to `n_a + t•n'` —
-      `ℚ`-alg-dependent, so it cannot itself carry the `AlgebraicIndependent ℚ` conjunct — but the motive's
-      realizing framework is **existentially quantified**. `case_III_realization_of_line` produces the
-      **bare** `HasFullRankRealization`; a new single-graph upgrade leaf
-      `hasGenericFullRankRealization_of_hasFullRankRealization` (steps: `exists_rigidOn_ofNormals_of_hasFullRankRealization`
-      → `exists_rankPolynomial_of_rigidOn_linking` for a rational `Q` depending on `G`/`ends` only →
-      `exists_injective_algebraicIndependent_real` seed `q₁` + `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`
-      → `ofNormals G ends q₁` full-rank + GP + alg-indep, all 5 conjuncts) then concludes the generic motive.
-      KT's Lemma 5.2 "convert to nonparallel without decreasing rank" (KT p. 678). L-independent. Reuses
-      `case_I_realization`'s rank-polynomial block (CaseI.lean:1843–1936) nearly verbatim. NO motive re-shaping.
+    - **GAP 2 (B-derive, §1.45) — bare→generic upgrade LANDED (the new leaf below).** The `hsplitGP` shape
+      concludes `HasGenericFullRankRealization` (5 conjuncts). The candidate seed is `ℚ`-alg-dependent so
+      cannot itself be generic — but the motive's framework is **existentially quantified**.
+      `case_III_realization_of_line` produces the **bare** `HasFullRankRealization`; the new upgrade leaf
+      `hasGenericFullRankRealization_of_rigidOn_ofNormals` re-realizes it generically (see the `[x]` entry
+      below). The producer composes it onto the bare candidate, supplying its `hne` from the candidate
+      completion. NO motive re-shaping.
     - **GAP 3 (A) — `hnewtrans` genericity-in-`t`: bounded.** `LinearIndependent ![n_a + t•n', n_b]`: the
       bad-`t` set is a single value (`n_a∉span{n_b}` from `hgab`, so the affine line `t↦n_a+t•n'` meets
       `span{n_b}` in ≤1 `t`), good `t≠0` exists. `Fin(k+2)→ℝ` linear algebra, off the §38 trap; also
@@ -377,41 +390,32 @@ R1 (homogeneous core + bare-LI consumer-restate), R3 **for `|V|≥4`** (criterio
 discharge `splitOff_simple_of_noRigid`, triangle-0-dof `isKDof_zero_of_triangle`, `htri` discharge
 `triangle_isProperRigidSubgraph` + the hypothesis-free `splitOff_simple_of_noRigid_of_card`), and the
 graph-free Leaf-3 pieces (C2-feed assembly `case_III_realization_of_line`, line-data leaf
-`exists_line_data_of_homogeneousIncidence`, seed-from-line core, block placement, per-line criterion).
+`exists_line_data_of_homogeneousIncidence`, seed-from-line core, block placement, per-line criterion),
+and the **GAP-2 bare→generic upgrade leaf** `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
 
-**Landed this commit (docs-only, no `.lean`):** the §1.45 design pass settling GAP 2 — **VERDICT
-(B-derive):** the bare→generic single-graph upgrade is derivable from green machinery, is L-independent,
-and is faithful to how KT concludes Lemma 6.8 (degenerate witness + Lemma 5.2 "convert to nonparallel
-without decreasing rank"). GAP 2 reclassified from research-shaped to bounded; the `d=3` producer is
-buildable, no research-shaped node remains in Phase 22g.
+**Landed this commit:** the GAP-2 keystone `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+(CaseI.lean, axiom-clean) — from a concrete rigid+linking-transversal `ofNormals G ends q₀` it concludes
+the generic motive `HasGenericFullRankRealization k G` by re-realizing at an alg-indep seed `q₁` (rational
+rank polynomial `Q` of `G`/`ends` only, GP factor `Qgp`, the seed carrying the alg-indep conjunct). Body =
+the `case_I_realization` rank-polynomial block over a single graph (no two-block splice). Pinned to
+`lem:case-III-claim612-line-in-panel-union`'s group `\lean{}` + one prose clause; TACTICS-QUIRKS §38 gained
+the membership-witness call-site variant (inline the `rigidityRows` witness rather than calling
+`panelRow_mem_rigidityRows`, which `whnf`-times-out reconciling `F.graph` with `G`).
 
-**The producer assembly is UNBLOCKED.** The §1.44 "blocked on GAP 2" verdict is overturned: the producer
-does NOT have to conclude `HasGenericFullRankRealization` at the degenerate seed (the motive's realizing
-framework is **existentially quantified** — PanelHinge.lean:1033). It builds the candidate to **bare**
-`HasFullRankRealization`, then a new bounded upgrade leaf concludes the generic motive `hsplitGP` wants.
-
-**Smallest next forward commit (the GAP-2 upgrade leaf — the keystone that unblocks the producer):**
-- **GAP-2 bare→generic upgrade** (~1 commit, GenericityDevice.lean or CaseI.lean) —
-  `hasGenericFullRankRealization_of_hasFullRankRealization : HasFullRankRealization k G →
-  HasGenericFullRankRealization k G`. Body: `exists_rigidOn_ofNormals_of_hasFullRankRealization` →
-  `exists_rankPolynomial_of_rigidOn_linking` (rational `Q`, depends on `G`/`ends` only) →
-  `exists_injective_algebraicIndependent_real` seed `q₁` + `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`
-  → witness `ofNormals G ends q₁` with all 5 conjuncts (GP via `exists_generalPosition_polynomial` threaded
-  into the product, exactly as `case_I_realization` does). Reuses the `case_I_realization` block
-  (CaseI.lean:1843–1936) nearly verbatim; the `_linking` rank polynomial sidesteps the all-edges `hne`.
-  Graph-free except the `ofNormals` carrier the rank-polynomial brick already fixes (no new §38 surface).
-
-**The other two bounded gaps (fold into the producer assembly):**
+**Smallest next forward commit (the GAP-1 `|V|=3` simplicity branch):**
 - **GAP 1 `|V(G)|=3` simplicity branch** (~1 commit, Operations.lean) — supply `(G.splitOff …).Simple`
   directly at `|V(G)|=3` (splitOff lands on `|V|=2`, simple by edge-count); keep R3 for `|V|≥4`. Confirm
   the candidate completion's count arithmetic is sound at `|V(G)|−1=2`.
-- **GAP 3 genericity-in-`t`** (part of the producer assembly, `Fin(k+2)→ℝ` linear algebra) — the
-  good-`t` existence lemma; off the §38 trap.
 
-Then the §38-trap concrete-seed producer (Leaf 3, ~1–2 commits, composing the GAP-2 upgrade onto the bare
-candidate), **Leaf 4/5** (the `theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2
-ripple §1.41, the case-II/III flips, the Thm 5.5→5.6 push) unblocking Cor 5.7. **Estimate to phase close:
-~5–6 commits, all bounded.** Full traces: `notes/Phase22-realization-design.md` §1.45 (GAP-2 resolution).
+**Then (the §38-trap concrete-seed producer, Leaf 3):** restate the producer to `theorem_55_generic`'s
+`hsplitGP` shape, build the concrete degenerate `ofNormals` candidate to **bare** `HasFullRankRealization`
+(`case_III_realization_of_line`), then **compose the landed `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+onto it** — supplying the upgrade's `hne` (linking transversality) from the candidate completion
+(`hane`/`hnewtrans` cover the `va`/`vb` hinges). Folds in **GAP 3 genericity-in-`t`** (the good-`t`
+existence lemma, `Fin(k+2)→ℝ` linear algebra, off the §38 trap). Then **Leaf 4/5** (the
+`theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2 ripple §1.41, the case-II/III
+flips, the Thm 5.5→5.6 push) unblocking Cor 5.7. **Estimate to phase close: ~4–5 commits, all bounded.**
+Full traces: `notes/Phase22-realization-design.md` §1.45 (GAP-2 resolution).
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d` (KT
 Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1; generalize the candidate
@@ -424,26 +428,23 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
-- **GAP-2 resolution — VERDICT (B-derive): the bare→generic upgrade dissolves the §1.44 GAP-2 hole
-  (2026-06-09; docs-only, `notes/Phase22-realization-design.md` §1.45).** §1.44 had flagged GAP 2 as a
-  research-shaped hole ("the candidate seed is `ℚ`-alg-dependent so cannot carry the `AlgebraicIndependent ℚ`
-  conjunct"). §1.45 overturns that: `HasGenericFullRankRealization`'s realizing framework is **existentially
-  quantified** (PanelHinge.lean:1033) — the producer builds the degenerate candidate to **bare**
-  `HasFullRankRealization`, then a single-graph upgrade `hasGenericFullRankRealization_of_hasFullRankRealization`
-  (green: `exists_rankPolynomial_of_rigidOn_linking` → rational `Q` depending on `G`/`ends` only → non-root
-  at the `exists_injective_algebraicIndependent_real` seed via the alg-indep eval bridge → generic alg-indep
-  rigid witness) concludes the generic motive. This IS KT's argument (degenerate witness + Lemma 5.2 "convert
-  to nonparallel without decreasing rank", KT p. 678; generic=alg-indep maximizes rank, footnote 4 p. 662);
-  L-independent (the rank polynomial is a graph property). ~1 commit, reuses `case_I_realization`'s block.
-  No motive re-shaping. GAP 1 (bounded — `|V|=3` simplicity branch) and GAP 3 (bounded — single bad-`t`)
-  unchanged; all three now bounded, the `d=3` producer is buildable.
-- **Leaf-3 producer sub-obligations recon — the three sub-obligations surfaced (2026-06-09; docs-only,
-  `notes/Phase22-realization-design.md` §1.44).** Adjudicated the three sub-obligations the §38-trap
-  producer carries against the *actual Lean route*, not the green lemmas' statements — surfacing GAP 1
-  (the `|V|=3` reachability hole, `minimal_kdof_reduction` has only a `|V|=2` base and splits the triangle
-  where the R3 witness is improper), GAP 2 (the GP-conclusion conjuncts, resolved (B-derive) by §1.45 above),
-  and GAP 3 (the `hnewtrans` genericity-in-`t`). The lesson (the recon-traces-the-route, not-the-statement
-  rule) is in §1.44's closing paragraph — flagged for FRICTION/the next phase-close organization review.
+- **GAP-2 bare→generic upgrade LANDED — single-graph reuse of the `case_I_realization` rank-polynomial
+  block (2026-06-09; CaseI.lean, `hasGenericFullRankRealization_of_rigidOn_ofNormals`).** Takes the concrete
+  rigid+linking-transversal `ofNormals G ends q₀` and concludes the generic motive by re-realizing at an
+  alg-indep seed `q₁`: rational rank `Q` of `G`/`ends` only (`exists_rankPolynomial_of_rigidOn_linking`) +
+  GP factor `Qgp` → simultaneous non-root at `q₁` via the alg-indep eval bridge → all 5 conjuncts. The body
+  is the `case_I_realization` block (CaseI.lean:1843–1936) stripped of the two-block (`H`/`c`) splice — one
+  graph, one rank polynomial. Design choices: (a) **take the concrete `ofNormals`+`hne` (linking
+  transversality) as input**, not a packaged `HasFullRankRealization` — the `_linking` rank polynomial needs
+  `hne` at the seed, which a bare existential cannot supply but the producer's candidate completion can; (b)
+  build the `rigidityRows` membership via an **inline-witness `hrow_mem`** (TACTICS-QUIRKS §38). Verdict
+  (B-derive) settled in design §1.45: the motive's framework is existentially quantified, so the degenerate
+  `ℚ`-alg-dependent seed need not itself be generic — KT's Lemma 5.2 "convert to nonparallel without
+  decreasing rank" (KT p. 678; generic=alg-indep maximizes rank, footnote 4). L-independent.
+- **Leaf-3 producer sub-obligations recon — GAP 1/2/3 surfaced (2026-06-09; §1.44, GAPs now tracked in
+  *Blockers*).** Adjudicated the three sub-obligations against the *actual Lean route*, not the green
+  lemmas' statements (GAP 2 since landed; GAP 1/3 in *Blockers*). The recon-traces-the-route lesson is in
+  §1.44's closing paragraph — flagged for FRICTION/the next phase-close organization review.
 - **Leaf 3 line-data leaf — strip `hann` from the obsolete six-join witness; stay on the
   homogeneous-vector layer (2026-06-09; RigidityMatrix.lean, `exists_line_data_of_homogeneousIncidence`
   + `omitTwoExtensor_eq_extensor_kept`).** The producer's "extract the witness line `L`" step. The
@@ -586,6 +587,8 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 - *The `ofNormals`/`withGraph` defeq-timeout trap + extract-a-generic-helper mitigation* → TACTICS-QUIRKS §38.
 - *The §38 call-site variant: pass a heavy-carrier-typed arg as an explicit literal (via `fin_cases`)* →
   TACTICS-QUIRKS §38 (Phase 22g addendum).
+- *The §38 membership-witness variant: inline the `rigidityRows` `⟨e,u,v,…,rfl⟩` witness rather than calling
+  `panelRow_mem_rigidityRows` (whnf-times-out reconciling `F.graph` with `G`)* → TACTICS-QUIRKS §38.
 - *The `(Matrix.of ![pi,pj]).mulVecLin x i = ![pi,pj] i ⬝ᵥ x` per-coordinate unfold* → FRICTION [resolved].
 - *"row-LI ⟹ `mulVecLin` surjective" is not packaged — compose `LinearIndependent.rank_matrix` +
   `eq_top_of_finrank_eq`; the lemma is root `sum_dotProduct`* → FRICTION [resolved].

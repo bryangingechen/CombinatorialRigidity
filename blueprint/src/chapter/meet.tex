@@ -245,7 +245,8 @@ consume them; projective invariance is Phase~25.
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_old_new_blocks_of_line,
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_full_family_of_line,
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_of_line,
-        CombinatorialRigidity.Molecular.exists_line_data_of_homogeneousIncidence}
+        CombinatorialRigidity.Molecular.exists_line_data_of_homogeneousIncidence,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
         lem:complement-iso-exterior-map-injective, def:meet-complement-iso, def:join, def:extensor}
@@ -291,7 +292,15 @@ consume them; projective invariance is Phase~25.
   four points relative to the three real split-leg normals (the producer-direction reading of
   eq.~(6.45), stripped of the annihilation premise), each of the six joins $\bar{p_i} \vee \bar{p_j}$
   yields a panel normal $n_u$ and a second hyperplane $n'$ through its line $L = \bar{p_i} \bar{p_j}$,
-  the line the candidate framework is built around.
+  the line the candidate framework is built around. Finally the bare $\to$ generic upgrade leaf
+  ($\mathrm{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}$) re-realizes the degenerate
+  candidate generically: the eq.~(6.12) seed shears $v$ to $n_a + t \, n'$, so it is
+  $\Q$-algebraically dependent and cannot itself be the general-position witness the generic motive
+  asks for; but that motive's framework is \emph{existentially quantified}, so it suffices to read
+  off the graph's rational rank polynomial (a function of $G$ and the endpoint selector only, the
+  witness line $L$ discarded once full rank is witnessed) and pick an algebraically-independent seed,
+  a simultaneous non-root of the rank and general-position polynomials --- KT's ``convert to a
+  nonparallel realization by Lemma~5.2 without decreasing rank''.
 \end{lemma}
 \begin{proof}
   \leanok

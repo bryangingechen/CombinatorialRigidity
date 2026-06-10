@@ -1469,6 +1469,17 @@ literal) elaborates instantly where the same call with `q := _` timed out. Corol
 latter leaves `hij : (fun i ↦ i) ⟨v,_⟩ < …` artifacts that block `omega` and forces a separate
 `c, d` resolution.
 
+**Membership-witness variant (Phase 22g).** The same timeout fires when a *membership* lemma
+(`F.panelRow_mem_rigidityRows`, whose hypothesis is `F.graph.IsLink …` over a heavy `F =
+(ofNormals G ends q).toBodyHinge`) is invoked at a `… ∈ F.rigidityRows` goal and the elaborator must
+unify the supplied `G.IsLink …` against `F.graph.IsLink …` — even via `refine … ?_; change G.IsLink _
+_ _` the `whnf` to reconcile `F.graph` with `G` blows up. Fix: don't call the membership lemma at all
+— **inline the `rigidityRows` membership witness** as the anonymous constructor `⟨e, u, v, hlink, …,
+rfl⟩` in a helper `have hrow_mem : ∀ i, G.IsLink i.1 … → F.panelRow ends i ∈ F.rigidityRows`, taking
+the `G.IsLink` as an *explicit argument* (the witness is *supplied*, not an inferred goal, so the
+defeq is checked cheaply). This is the form `hasGenericFullRankRealization_of_rigidOn_ofNormals` and
+the green `case_I_realization` block (`Molecular/AlgebraicInduction/CaseI.lean`) both use.
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or

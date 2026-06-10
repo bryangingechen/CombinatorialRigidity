@@ -1941,6 +1941,93 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   rw [hFG] at hrig
   exact hrig
 
+/-- **The single-graph bare→generic upgrade** (`lem:case-III-claim612-line-in-panel-union` /
+`lem:case-III-realization`, the GAP-2 keystone of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011
+§6.2, Lemma 5.2 "convert to a nonparallel realization without decreasing rank" (printed p. 678,
+footnote 4 p. 662); Phase 22g, design doc §1.45). The `d = 3` Case-III producer builds the
+eq.-(6.12) degenerate candidate by shearing body `v`'s normal to `n_a + t·n'`, so the candidate seed
+is `ℚ`-algebraically *dependent* by construction and cannot itself carry the
+`AlgebraicIndependent ℚ` conjunct of the *generic* motive `HasGenericFullRankRealization k G`. But
+that motive's realizing framework is **existentially quantified** — it asks for *some*
+general-position alg-independent rigid framework on `G`, not for the candidate seed to be generic.
+So the producer hands the degenerate candidate to a bare full-rank realization
+(`case_III_realization_of_line` → C1), then this single-graph upgrade re-realizes it generically.
+
+The upgrade is `exists_rankPolynomial_of_rigidOn_linking` read for one graph: from the rigid
+`ofNormals G ends q₀` (with linking hinges transversal, `hne`) it builds the rational rank
+polynomial `Q` — a function of `G` and `ends` *only*, with the seed entering solely through
+`eval q₀ Q ≠ 0` (so the candidate's witness line `L` is discarded once full rank is witnessed). The
+general-position factor `Qgp` (`exists_generalPosition_polynomial`) is rational too, so an
+algebraically-independent-over-`ℚ` seed `q₁` (`exists_injective_algebraicIndependent_real`) is a
+simultaneous non-root of both — giving `D(|V(G)|−1)` independent rigidity rows of `ofNormals G ends
+q₁` (hence rigid on `V(G)`), general position, the link-recording selector, and the
+alg-independence conjunct at once. This is KT's own argument (a degenerate witness gives the rank
+lower bound; genericity, which maximizes rank over nonparallel realizations, then supplies the
+nonparallel realization at `≥` that rank). It reuses the `case_I_realization` rank-polynomial block
+over a *single* graph rather than the two-block splice. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
+    (hnev : V(G).Nonempty)
+    (hrig : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G)) :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  -- (i) The single graph's leg-restricted rank polynomial at the degenerate seed `q₀` (rational);
+  -- its witnessed index family `s` links in `G` (`hsupp`), has full size, and is independent at
+  -- every non-root of `Q`.
+  obtain ⟨s, Q, hsupp, hscard, hQ0, hQrat, hLI⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking G ends hends hne hnev hrig
+  -- (ii) The general-position factor (rational).
+  obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ := exists_generalPosition_polynomial (k := k) G ends
+  have hQne : Q ≠ 0 := fun h => hQ0 (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  -- (iii) An algebraically-independent-over-`ℚ` seed `q₁` is a simultaneous non-root of `Q` (rank)
+  -- and `Qgp` (general position), and carries the alg-independence conjunct.
+  obtain ⟨q₁, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
+  have hq₁Q : MvPolynomial.eval q₁ Q ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQrat hQne
+  have hq₁gp : MvPolynomial.eval q₁ Qgp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₁).IsGeneralPosition :=
+    hQgp_pos q₁ hq₁gp
+  set F := (PanelHingeFramework.ofNormals G ends q₁).toBodyHinge with hF
+  -- (iv) The `s`-subfamily of `F`'s panel rows is independent at `q₁` and lies in `F.rigidityRows`
+  -- (every member links in `G`), summing to `≥ D(|V(G)|−1)` rows — the device-row closure then
+  -- makes `F = ofNormals G ends q₁` rigid on `V(G)` at `q₁` itself; with `q₁` general position the
+  -- strengthened generic motive holds.
+  have hLI₁ : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := hLI q₁ hq₁Q
+  -- A panel row of `F` whose edge links in `G` is one of `F`'s rigidity rows. Stated taking the
+  -- `G.IsLink` as an explicit argument (the membership witness is supplied directly, not inferred),
+  -- so the heavy `ofNormals` carrier never enters the elaborator's `whnf` (TACTICS-QUIRKS §38).
+  have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      G.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows := by
+    rintro ⟨e', t₁, t₂⟩ hlink
+    exact ⟨e', (ends e').1, (ends e').2, hlink,
+      annihRow (F.supportExtensor e') t₁ t₂, by
+        rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+        intro x hx
+        rw [Submodule.mem_span_singleton] at hx
+        obtain ⟨ρ, rfl⟩ := hx
+        rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
+  have hmem : ∀ i : s, F.panelRow ends (i : β × _ × _) ∈ F.rigidityRows := fun i =>
+    hrow_mem _ (hsupp _ i.2)
+  have hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s := hscard
+  refine ⟨PanelHingeFramework.ofNormals G ends q₁,
+    PanelHingeFramework.ofNormals_graph G ends q₁, hgp, ?_,
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₁ hends, halg⟩
+  have hFG : F.graph.vertexSet = V(G) := by
+    rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hrig₁ := F.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows hLI₁ hmem
+    (by rw [hFG]; exact hnev) (by rw [hFG]; exact hcard)
+  rw [hFG] at hrig₁
+  exact hrig₁
+
 /-- **Case I realization: the contraction producer** (`lem:case-I-realization`, the N6 composer;
 Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a). The capstone of the Case-I
 realization layer: from a *fixed* proper rigid subgraph `H` of a simple minimal `0`-dof-graph `G`
