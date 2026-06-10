@@ -102,18 +102,27 @@ Build + lint clean; no live callers, no blueprint pin.
 discharge skeleton landed alongside it in af7f42b was removed by the coordinator — sorries
 don't ride on master; the discharge lands as complete lemmas, assembled at the end.)
 
-**Next concrete step:** the first complete sub-lemma of the `hcand` discharge — the M₁-arm
-candidate chain at the witness line: from the unpacked generic `v`-split framework (concrete
-`Q`, seed `q`, `hgab` from `IsGeneralPosition`, `hn3` from the bridge lemma — all cheap inline
-derivations), produce `r̂ ≠ 0` via `exists_redundant_panelRow_ab_lam`, hook
-`case_III_claim612` → `exists_line_data_of_homogeneousIncidence`, and close the `n_a` arm via
-`case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
+**GAP-3 good-`t` is LANDED** (Blockers, below): `exists_shear_linearIndependent_pair` (PanelLayer.lean)
+— given `hgab : LinearIndependent ![n_a, n_b]`, `∃ t ≠ 0, LinearIndependent ![n_a + t•n', n_b]`. The
+bad set is a subsingleton (two distinct bad `t`s put `n'`, then `n_a`, in `span {n_b}`, against
+`hgab`), so among `t = 1, 2` one is good. Graph-free `Fin(k+2)→ℝ` linear algebra (no `ofNormals`
+carrier ⟹ no §38 trap); supplies the `hnewtrans` input `case_III_old_new_blocks_of_line` requires.
+Blueprint `lem:case-III-claim612-line-in-panel-union` pin + prose extended. Build + lint +
+verify.sh clean; axiom-clean.
+
+**Next concrete step:** the M₁-arm candidate chain at the witness line, now that its `hnewtrans`
+feed exists. From the unpacked generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from
+`IsGeneralPosition`, `hn3` from the triple-LI bridge — all cheap inline derivations), produce
+`r̂ ≠ 0` via `exists_redundant_panelRow_ab_lam`, hook `case_III_claim612` →
+`exists_line_data_of_homogeneousIncidence`, pick the good `t` via `exists_shear_linearIndependent_pair`,
+and close the `n_a` arm via `case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
 `hasGenericFullRankRealization_of_rigidOn_ofNormals`. Land it as a standalone complete lemma
 (no `sorry` placeholders; if the piece is too big for one commit, split off a smaller complete
-sub-lemma instead).
+sub-lemma instead — e.g. the line-data → witness `r̂(C(e_a)) ≠ 0` glue, graph-free, dodges §38).
 
-**Build order (design §1.49(6); estimated 3–6 commits remaining):** producer spine ✓ →
-triple-LI bridge ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` discharge → Leaf 4 → Leaf 5.
+**Build order (design §1.49(6); estimated 3–5 commits remaining):** producer spine ✓ →
+triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` discharge → Leaf 4
+→ Leaf 5.
 
 ## Lemma checklist
 
@@ -153,13 +162,12 @@ triple-LI bridge ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` disch
   R3 split-simplicity discharge unlocking the IH's GP `.1` conjunct). Build + lint clean; no
   blueprint pin (the producer isn't `\lean`-pinned). Done.
 - [~] **Discharge `hcand`** (the candidate-placement core; the G4e spine; §1.49(5)): the
-  triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (§1.48(2)) is landed
-  (via `mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` + `aeval_ne_zero`). Remaining, as
-  complete lemmas (no `sorry` placeholders on master): the `r̂` construction
-  (`exists_redundant_panelRow_ab_lam`, incl. the `h618`/`h622` rank inputs), the
-  `case_III_claim612` dispatch + line-data extraction, the M₁/M₂/M₃ arms (M₃ via G4c/G4d),
-  GAP-3 good-`t`, and the GAP-2 upgrade; then assemble into the discharge lemma matching the
-  `hcand` signature.
+  triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (§1.48(2)) and the GAP-3
+  good-`t` core `exists_shear_linearIndependent_pair` are landed. Remaining, as complete lemmas
+  (no `sorry` placeholders on master): the `r̂` construction (`exists_redundant_panelRow_ab_lam`,
+  incl. the `h618`/`h622` rank inputs), the `case_III_claim612` dispatch + line-data extraction,
+  the M₁/M₂/M₃ arms (M₃ via G4c/G4d), and the GAP-2 upgrade; then assemble into the discharge lemma
+  matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -168,23 +176,25 @@ triple-LI bridge ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` disch
 
 ## Blockers / open questions
 
-- **GAP 3 (bounded, folded into the producer):** `hnewtrans : LinearIndependent ![n_a + t•n', n_b]`
-  — the bad-`t` set is ≤ 1 value (the affine line `t ↦ n_a + t•n'` meets `span{n_b}` at most once,
-  from `hgab`), so a good `t ≠ 0` exists. `Fin(k+2)→ℝ` linear algebra.
+- **GAP 3 — core LANDED** (`exists_shear_linearIndependent_pair`, PanelLayer.lean): the good-`t`
+  existence (`hnewtrans : LinearIndependent ![n_a + t•n', n_b]` for some `t ≠ 0`, bad set ≤ 1 value
+  from `hgab`). Remaining: feed it into the M₁ chain at the producer's seed.
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites every
   carrier-instantiating leaf (the producer body, the T3/T4 seeds). Keep reasoning over abstract
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
 **Smallest next forward commit — the M₁-arm candidate chain as a standalone complete lemma**
-(first sub-step of the `hcand` discharge; mirrors *Next concrete step* above): from the unpacked
+(next sub-step of the `hcand` discharge; mirrors *Next concrete step* above): from the unpacked
 generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from `IsGeneralPosition`, `hn3` from
-the bridge lemma — all cheap inline derivations), produce `r̂ ≠ 0` via
+the triple-LI bridge — all cheap inline derivations), produce `r̂ ≠ 0` via
 `exists_redundant_panelRow_ab_lam` (incl. the `h618`/`h622` rank inputs), hook
-`case_III_claim612` → `exists_line_data_of_homogeneousIncidence`, and close the `n_a` arm via
-`case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
-`hasGenericFullRankRealization_of_rigidOn_ofNormals`. **No `sorry` placeholders** — if the piece
-won't fit one commit, split off a smaller complete sub-lemma instead. M₂/M₃ follow as their own
+`case_III_claim612` → `exists_line_data_of_homogeneousIncidence`, pick the good `t` via the now-landed
+`exists_shear_linearIndependent_pair`, and close the `n_a` arm via `case_III_old_new_blocks_of_line`
++ `case_III_realization_of_line` + `hasGenericFullRankRealization_of_rigidOn_ofNormals`. **No
+`sorry` placeholders** — if the piece won't fit one commit, split off a smaller complete sub-lemma
+instead (the line-data → `r̂(C(e_a)) ≠ 0` glue is graph-free and dodges §38; the OLD-block
+`hro_mem` re-derivation from the line placement is another clean cut). M₂/M₃ follow as their own
 complete lemmas; the discharge lemma matching the `hcand` signature assembles them at the end.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
@@ -277,3 +287,10 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   generic-in/generic-out. 9c5879c's dichotomy spine, `hfresh` ownership rationale, and
   `hGv2`-via-`Set.ncard_diff` pattern are kept; G0 is no longer called in the body (`G.Simple` is
   now a premise). T4 stays above the producer in CaseI.lean.
+- **GAP-3 good-`t` (`exists_shear_linearIndependent_pair`, PanelLayer.lean):** the bad-`t` set is a
+  subsingleton, proved via `LinearIndependent.pair_iff'` at the nonzero `n_b` (swap to `![n_b, ·]`
+  since `n_a + t•n'` may be zero) — each bad `t` gives `c, c•n_b = n_a + t•n'`; two distinct bad
+  `t`s subtract to put `n'`, then `n_a`, in `span {n_b}`, against `hgab`. With ≤ 1 bad value, `t = 1`
+  or `t = 2` is good (closed by `by_cases` + `norm_num`, no infinite-set machinery). The `∃ c` needs
+  `: ℝ` (HSMul-metavar stuck, §31-family). Graph-free, no §38 trap; pinned to the existing node
+  `lem:case-III-claim612-line-in-panel-union` (the line-in-panel-union group).

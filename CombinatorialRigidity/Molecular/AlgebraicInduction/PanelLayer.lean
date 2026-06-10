@@ -344,6 +344,74 @@ theorem panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero (n_u n' pi pj
   · exact absurd (neg_eq_zero.mp h) ht
   · exact h
 
+/-- **GAP-3 good-`t`: a generic shear keeps the reproduced `vb`-hinge transversal** (the genericity-
+in-`t` condition the `d = 3` Case-III producer must supply to `case_III_old_new_blocks_of_line`'s
+`hnewtrans`; Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22h). The line-indexed candidate shears
+the re-inserted body `v`'s normal along the witness line `L = n_a ∧ n'` to `n_a + t • n'` (`t ≠ 0`);
+for the new block `e_b = vb` to stay a genuine hinge the producer needs `n_a + t • n'` independent
+from the IH `b`-normal `n_b`. This holds for **all but at most one** value of `t`: if two distinct
+`t₁ ≠ t₂` were both bad (each making `n_a + tᵢ • n'` collinear with `n_b`), subtracting the two
+collinearity witnesses puts `n'` in `span {n_b}`, hence `n_a = (witness) - tᵢ • n' ∈ span {n_b}`,
+contradicting `hgab : LinearIndependent ![n_a, n_b]` (the IH `ab`-hinge transversal). With the bad
+set a subsingleton, two distinct nonzero candidates `t = 1, 2` cannot both be bad, so one of them is
+a good nonzero shear.
+
+The witness line being genuine (`hL : LinearIndependent ![n_a, n']`) is *not* needed for this
+existence (the bad-set bound uses only `hgab`); it is recorded as the companion hypothesis the
+producer carries for `case_III_old_new_blocks_of_line`'s `hL` slot, and ensures `n' ≠ 0` so the
+shear is nondegenerate. -/
+theorem exists_shear_linearIndependent_pair (n_a n' n_b : Fin (k + 2) → ℝ)
+    (hgab : LinearIndependent ℝ ![n_a, n_b]) :
+    ∃ t : ℝ, t ≠ 0 ∧ LinearIndependent ℝ ![n_a + t • n', n_b] := by
+  -- `n_b ≠ 0` (the second entry of the independent pair `![n_a, n_b]`).
+  have hn_b : n_b ≠ 0 := by
+    have := hgab.ne_zero 1; simpa using this
+  -- `n_a` is not a scalar multiple of `n_b` (`![n_b, n_a]` is independent, so `pair_iff'`).
+  have hgba : LinearIndependent ℝ ![n_b, n_a] := by
+    have hsw : (![n_a, n_b] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1 = ![n_b, n_a] := by
+      funext i; fin_cases i <;> simp
+    rw [← hsw]; exact hgab.comp _ (Equiv.swap 0 1).injective
+  have hna_not : ∀ c : ℝ, c • n_b ≠ n_a := (LinearIndependent.pair_iff' hn_b).mp hgba
+  -- A value `t` is *bad* when `n_a + t • n'` is collinear with `n_b`, i.e. `c • n_b = n_a + t•n'`
+  -- for some `c` (the pair `![n_b, n_a + t•n']` dependent, `pair_iff'` at the nonzero `n_b`). We
+  -- show at most one `t` is bad; then two distinct nonzero candidates `t = 1, 2` can't both be bad.
+  have hbad : ∀ t : ℝ, ¬ LinearIndependent ℝ ![n_a + t • n', n_b] →
+      ∃ c : ℝ, c • n_b = n_a + t • n' := by
+    intro t hb
+    -- `![n_a + t•n', n_b]` dep ⟺ `![n_b, n_a + t•n']` dep ⟺ `¬ ∀ c, c • n_b ≠ n_a + t•n'`.
+    have hbsw : ¬ LinearIndependent ℝ ![n_b, n_a + t • n'] := by
+      intro h
+      apply hb
+      have hsw : (![n_b, n_a + t • n'] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1
+          = ![n_a + t • n', n_b] := by funext i; fin_cases i <;> simp
+      rw [← hsw]; exact h.comp _ (Equiv.swap 0 1).injective
+    rw [LinearIndependent.pair_iff' hn_b] at hbsw
+    push Not at hbsw
+    exact hbsw
+  -- The bad set is a subsingleton: any two bad `t`s coincide.
+  have hbad_unique : ∀ t₁ t₂ : ℝ, ¬ LinearIndependent ℝ ![n_a + t₁ • n', n_b] →
+      ¬ LinearIndependent ℝ ![n_a + t₂ • n', n_b] → t₁ = t₂ := by
+    intro t₁ t₂ hb₁ hb₂
+    by_contra hne
+    obtain ⟨c₁, hc₁⟩ := hbad t₁ hb₁
+    obtain ⟨c₂, hc₂⟩ := hbad t₂ hb₂
+    -- Subtract `c₁ • n_b = n_a + t₁•n'` and `c₂ • n_b = n_a + t₂•n'`:
+    -- `(c₁ - c₂) • n_b = (t₁ - t₂) • n'`, so `n' = ((c₁-c₂)/(t₁-t₂)) • n_b` (`t₁ ≠ t₂`).
+    have htd : t₁ - t₂ ≠ 0 := sub_ne_zero.mpr hne
+    have hsub : (c₁ - c₂) • n_b = (t₁ - t₂) • n' := by
+      rw [sub_smul, sub_smul, hc₁, hc₂]; abel
+    have hn' : n' = ((c₁ - c₂) / (t₁ - t₂)) • n_b := by
+      rw [div_eq_inv_mul, mul_smul, hsub, inv_smul_smul₀ htd]
+    -- Then `n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hna_not`.
+    apply hna_not (c₁ - t₁ * ((c₁ - c₂) / (t₁ - t₂)))
+    rw [sub_smul, mul_smul, ← hn', hc₁]; abel
+  -- `t = 1` or `t = 2` is good (two distinct nonzero candidates can't both be bad).
+  by_cases h1 : LinearIndependent ℝ ![n_a + (1 : ℝ) • n', n_b]
+  · exact ⟨1, one_ne_zero, h1⟩
+  · by_cases h2 : LinearIndependent ℝ ![n_a + (2 : ℝ) • n', n_b]
+    · exact ⟨2, two_ne_zero, h2⟩
+    · exact absurd (hbad_unique 1 2 h1 h2) (by norm_num)
+
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the
 family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)`. Definitional, unfolding
