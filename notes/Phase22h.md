@@ -43,8 +43,15 @@ added; build + lint + verify.sh clean). Witness: `e₀, e₁, e₂ ∈ ℝ^(k+2)
 `normalsJoin_basisFun_ne_zero_of_lt`; extensor LI via `units_smul` decomposition + `ιMulti_family`
 basis LI + 3-index injection.
 
-**Next concrete step: T4** (`hasGenericFullRankRealization_of_triangle`, CaseI.lean; §1.48(1)), the
-triangle realization assembly through `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
+**T4 is DONE.** `hasGenericFullRankRealization_of_triangle` (CaseI.lean; blueprint node
+`lem:triangle-realization` added to case-iii.tex; build + lint + verify.sh clean). Seed `q₀`
+assigns `v↦n₀, a↦n₁, b↦n₂`; each triangle-edge extensor is ±Cᵢ from T3's cyclic LI family
+(unit scalar from `endsOf` orientation via `endsOf_eq_or_swap`); T2 closes rigidity on `{v,a,b}`;
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to generic motive.
+
+**Next concrete step: G4c-i/ii** (§1.49(3)), the fixed-seed `ρ = (a v)` relabel transport
+(graph iso + `ofNormals` framework transport). Parallel-safe with T4 (done); depends only on T4
+being green (which it now is).
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -69,8 +76,8 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
 - [x] **T2** — `theorem_55_triangle` (Pinning.lean; blueprint `lem:theorem-55-triangle`). Done.
 - [x] **T3** — `exists_triangle_normals` (PanelLayer.lean; blueprint node `lem:triangle-normals`).
   Done.
-- [ ] **T4** — `hasGenericFullRankRealization_of_triangle` (CaseI.lean; §1.48(1)): triangle
-  assembly through `hasGenericFullRankRealization_of_rigidOn_ofNormals`. ~1–2 commits.
+- [x] **T4** — `hasGenericFullRankRealization_of_triangle` (CaseI.lean; blueprint node
+  `lem:triangle-realization`; §1.48(1)). Done.
 - [ ] **G4c-i/ii** — the fixed-seed `ρ = (a v)` relabel transport (graph iso + `ofNormals`
   framework transport; the existential motive is NOT transported — eq. (6.44) needs the SAME
   seed; genericity free, same coordinate set) (§1.49(3)).
@@ -98,10 +105,10 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — T4** (`hasGenericFullRankRealization_of_triangle`, CaseI.lean;
-§1.48(1)): triangle realization assembly through `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
-Uses T1 (`exists_isLink_of_isMinimalKDof_card_three`), T2 (`theorem_55_triangle`), T3
-(`exists_triangle_normals`). ~1–2 commits; parallel-safe with G4c-i/ii (§1.49(3)).
+**Smallest next forward commit — G4c-i/ii** (§1.49(3)): fixed-seed `ρ = (a v)` relabel
+transport (graph iso + `ofNormals` framework transport; existential motive is NOT transported —
+eq. (6.44) needs the SAME seed; genericity free, same coordinate set). T4 is done; G4c is now
+the bottleneck for the (β) producer.
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -150,3 +157,10 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `let`-bound `h01/h12/h02` in the statement (not explicit args) so that after `intro`, the proof
   terms in the goal match `Finset.card_pair (Fin.ne_of_lt hXX)` exactly, enabling direct `exact`
   application. Proof-term mismatch pattern → TACTICS-QUIRKS § 42.
+- **T4 sign-flip dispatch (`hasGenericFullRankRealization_of_triangle`):** each triangle-edge
+  extensor equals ±Cᵢ via `endsOf_eq_or_swap` (2 cases × 3 edges = 8-way `rcases` dispatch).
+  The `hLI_neg` helper builds LI for `![ε₀•C₀, ε₁•C₁, ε₂•C₂]` via `units_smul_iff` + the
+  `Pi.smul` form (`![ε₀,ε₁,ε₂] • ![C₀,C₁,C₂]`); each of the 8 cases is closed by
+  `convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)` (the `1 • X = X` goals
+  close by `rfl`; the `mk0(-1) • X = -X` goals close by default `simp`; the all-negative case
+  closes by `convert h using 1` alone because `neg_one_smul` is a simp lemma used by `congr`).

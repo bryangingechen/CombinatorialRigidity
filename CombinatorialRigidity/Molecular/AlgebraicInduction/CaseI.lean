@@ -4082,4 +4082,187 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
   obtain ⟨q, hq⟩ := BodyHingeFramework.case_III_claim612 hr hp
   exact hcand q hq
 
+/-- **Triangle realization, generic motive** (`lem:triangle-realization`, T4; Katoh–Tanigawa 2011
+§6.4, KT Lemma 6.7(i) at `m = 3`; Phase 22h). The base of the `d = 3` split-off recursion
+for Case~III: a simple minimal `0`-dof-graph on exactly three vertices has the generic-motive
+realization `HasGenericFullRankRealization k G`.
+
+**Construction.** T1 (`exists_isLink_of_isMinimalKDof_card_three`) gives `V(G) = {v,a,b}` and
+a third edge `f : a–b` completing the triangle. T3 (`exists_triangle_normals`) produces three
+normals `n₀, n₁, n₂ ∈ ℝ^(k+2)` with pairwise nonvanishing joins and LI cyclic extensor family
+`panelSupportExtensor n₀ n₁, panelSupportExtensor n₁ n₂, panelSupportExtensor n₂ n₀`. The seed
+`q₀` assigns `v ↦ n₀`, `a ↦ n₁`, `b ↦ n₂` (junk elsewhere). The canonical `G.endsOf` selector
+orients each edge; the support extensor of each triangle edge is ± a member of T3's LI cyclic
+family (unit scalar from `endsOf` orientation), so T2 (`theorem_55_triangle`)'s independence
+hypothesis holds. T2 gives rigidity on `{v,a,b} = V(G)`, and
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to the generic motive. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ} (G : Graph α β) [G.Simple]
+    (hD : 3 ≤ Graph.bodyBarDim n) (hk : 1 ≤ k)
+    (hG : G.IsMinimalKDof n 0)
+    (hcard : V(G).ncard = 3)
+    {v a b : α} {eₐ e_b : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b)
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b) :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  -- T1: vertex set pin + third edge.
+  obtain ⟨hab, hVeq, f, hf⟩ :=
+    Graph.exists_isLink_of_isMinimalKDof_card_three hD hG hcard hG_ea hG_eb hav hbv heab
+  -- T3: the triangle normals with LI cyclic extensor family and pairwise nonzero joins.
+  obtain ⟨n₀, n₁, n₂, ⟨hn₀₁, hn₁₂, hn₂₀⟩, hLI⟩ := exists_triangle_normals (k := k) hk
+  -- Convert T3's fun-form LI to the `![C₀,C₁,C₂]` matrix form.
+  -- `fun i => panelSupportExtensor (![n₀,n₁,n₂] i) (![n₁,n₂,n₀] i)` equals
+  -- `![C₀, C₁, C₂]` where `Cᵢ = panelSupportExtensor (T3 pairs)`.
+  have hLI' : LinearIndependent ℝ
+      ![panelSupportExtensor (k := k) n₀ n₁, panelSupportExtensor n₁ n₂,
+        panelSupportExtensor n₂ n₀] := by
+    have heq : (![panelSupportExtensor (k := k) n₀ n₁, panelSupportExtensor n₁ n₂,
+        panelSupportExtensor n₂ n₀] : Fin 3 → _) =
+        fun i => panelSupportExtensor (![n₀, n₁, n₂] i) (![n₁, n₂, n₀] i) := by
+      funext i; fin_cases i <;> rfl
+    rw [heq]; exact hLI
+  -- Derive `panelSupportExtensor nᵢ nⱼ ≠ 0` from T3's join hypotheses.
+  have hne₀₁ : panelSupportExtensor (k := k) n₀ n₁ ≠ 0 :=
+    (panelSupportExtensor_ne_zero_iff n₀ n₁).mpr ((normalsJoin_ne_zero_iff n₀ n₁).mp hn₀₁)
+  have hne₁₂ : panelSupportExtensor (k := k) n₁ n₂ ≠ 0 :=
+    (panelSupportExtensor_ne_zero_iff n₁ n₂).mpr ((normalsJoin_ne_zero_iff n₁ n₂).mp hn₁₂)
+  have hne₂₀ : panelSupportExtensor (k := k) n₂ n₀ ≠ 0 :=
+    (panelSupportExtensor_ne_zero_iff n₂ n₀).mpr ((normalsJoin_ne_zero_iff n₂ n₀).mp hn₂₀)
+  -- `G.endsOf` needs `Inhabited α`.
+  haveI : Inhabited α := ⟨v⟩
+  -- Build the seed `q₀`: vertex `v ↦ n₀`, `a ↦ n₁`, `b ↦ n₂`, junk elsewhere.
+  let q₀ : α × Fin (k + 2) → ℝ :=
+    fun p => if p.1 = v then n₀ p.2 else if p.1 = a then n₁ p.2 else if p.1 = b then n₂ p.2 else 0
+  -- Normal evaluations: q₀ at the three vertices (pointwise, used below).
+  have hq₀v : ∀ i, q₀ (v, i) = n₀ i := fun i => by simp [q₀]
+  have hq₀a : ∀ i, q₀ (a, i) = n₁ i := fun i => by
+    simp only [q₀]; split_ifs with h1
+    · exact absurd h1 hav
+    · rfl
+  have hq₀b : ∀ i, q₀ (b, i) = n₂ i := fun i => by
+    simp only [q₀]; split_ifs with h1 h2
+    · exact absurd h1 hbv
+    · exact absurd h2.symm hab
+    · rfl
+  -- Equalities of functions `Fin(k+2) → ℝ` at the three bodies (for support extensor rewriting).
+  have hfn_v : (fun i => q₀ (v, i)) = n₀ := funext hq₀v
+  have hfn_a : (fun i => q₀ (a, i)) = n₁ := funext hq₀a
+  have hfn_b : (fun i => q₀ (b, i)) = n₂ := funext hq₀b
+  set F := (PanelHingeFramework.ofNormals (k := k) G G.endsOf q₀).toBodyHinge with hFdef
+  -- Raw support extensor formula for `F`.
+  have hsupp_raw : ∀ e : β,
+      F.supportExtensor e = panelSupportExtensor (fun i => q₀ ((G.endsOf e).1, i))
+        (fun i => q₀ ((G.endsOf e).2, i)) := fun e => by
+    simp only [hFdef, PanelHingeFramework.toBodyHinge_supportExtensor,
+               PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal]
+  -- Support extensor at `eₐ` (link `v-a`): either `panelSupportExtensor n₀ n₁` or its negative.
+  have hsupp_ea : F.supportExtensor eₐ = panelSupportExtensor n₀ n₁ ∨
+      F.supportExtensor eₐ = -panelSupportExtensor n₀ n₁ := by
+    rcases G.endsOf_eq_or_swap hG_ea with heo | heo
+    · exact Or.inl (by rw [hsupp_raw, heo, hfn_v, hfn_a])
+    · exact Or.inr (by rw [hsupp_raw, heo, hfn_a, hfn_v, panelSupportExtensor_swap])
+  -- Support extensor at `f` (link `a-b`): either `panelSupportExtensor n₁ n₂` or its negative.
+  have hsupp_f : F.supportExtensor f = panelSupportExtensor n₁ n₂ ∨
+      F.supportExtensor f = -panelSupportExtensor n₁ n₂ := by
+    rcases G.endsOf_eq_or_swap hf with heo | heo
+    · exact Or.inl (by rw [hsupp_raw, heo, hfn_a, hfn_b])
+    · exact Or.inr (by rw [hsupp_raw, heo, hfn_b, hfn_a, panelSupportExtensor_swap])
+  -- Support extensor at `e_b` (link `v-b`): either `panelSupportExtensor n₂ n₀` or its negative.
+  -- The T3 cyclic family is `n₀n₁, n₁n₂, n₂n₀`; `v-b` gives `n₀n₂ = -(n₂n₀)` or `n₂n₀`.
+  have hsupp_eb : F.supportExtensor e_b = panelSupportExtensor n₂ n₀ ∨
+      F.supportExtensor e_b = -panelSupportExtensor n₂ n₀ := by
+    rcases G.endsOf_eq_or_swap hG_eb with heo | heo
+    · exact Or.inr (by rw [hsupp_raw, heo, hfn_v, hfn_b, panelSupportExtensor_swap])
+    · exact Or.inl (by rw [hsupp_raw, heo, hfn_b, hfn_v])
+  -- `hne`: every linking edge has nonzero support extensor.
+  -- Use `hsupp_raw`, case-split on endpoint membership in V(G)={v,a,b}, apply pairwise nonzero.
+  have hne : ∀ e, G.IsLink e (G.endsOf e).1 (G.endsOf e).2 →
+      F.supportExtensor e ≠ 0 := by
+    intro e hlink
+    have hne12 : (G.endsOf e).1 ≠ (G.endsOf e).2 := G.endsOf_fst_ne_snd hlink.edge_mem
+    have hmem1 : (G.endsOf e).1 ∈ V(G) := hlink.left_mem
+    have hmem2 : (G.endsOf e).2 ∈ V(G) := hlink.right_mem
+    rw [hVeq] at hmem1 hmem2
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem1 hmem2
+    rw [hsupp_raw]
+    -- Case-split on membership using named hypotheses, then rewrite via hfn_*.
+    rcases hmem1 with h1 | h1 | h1 <;> rcases hmem2 with h2 | h2 | h2
+    · exact absurd (h1.trans h2.symm) hne12
+    · rw [show (fun i => q₀ ((G.endsOf e).1, i)) = n₀ from by rw [h1]; exact hfn_v,
+          show (fun i => q₀ ((G.endsOf e).2, i)) = n₁ from by rw [h2]; exact hfn_a]
+      exact hne₀₁
+    · rw [show (fun i => q₀ ((G.endsOf e).1, i)) = n₀ from by rw [h1]; exact hfn_v,
+          show (fun i => q₀ ((G.endsOf e).2, i)) = n₂ from by rw [h2]; exact hfn_b,
+          panelSupportExtensor_swap]
+      exact neg_ne_zero.mpr hne₂₀
+    · rw [show (fun i => q₀ ((G.endsOf e).1, i)) = n₁ from by rw [h1]; exact hfn_a,
+          show (fun i => q₀ ((G.endsOf e).2, i)) = n₀ from by rw [h2]; exact hfn_v,
+          panelSupportExtensor_swap]
+      exact neg_ne_zero.mpr hne₀₁
+    · exact absurd (h1.trans h2.symm) hne12
+    · rw [show (fun i => q₀ ((G.endsOf e).1, i)) = n₁ from by rw [h1]; exact hfn_a,
+          show (fun i => q₀ ((G.endsOf e).2, i)) = n₂ from by rw [h2]; exact hfn_b]
+      exact hne₁₂
+    · rw [show (fun i => q₀ ((G.endsOf e).1, i)) = n₂ from by rw [h1]; exact hfn_b,
+          show (fun i => q₀ ((G.endsOf e).2, i)) = n₀ from by rw [h2]; exact hfn_v]
+      exact hne₂₀
+    · rw [show (fun i => q₀ ((G.endsOf e).1, i)) = n₂ from by rw [h1]; exact hfn_b,
+          show (fun i => q₀ ((G.endsOf e).2, i)) = n₁ from by rw [h2]; exact hfn_a,
+          panelSupportExtensor_swap]
+      exact neg_ne_zero.mpr hne₁₂
+    · exact absurd (h1.trans h2.symm) hne12
+  -- `hgen`: the three triangle-edge extensors are LI.
+  -- Each is ± one member of the T3 cyclic family `![C₀,C₁,C₂]`; negation preserves LI via
+  -- `LinearIndependent.units_smul_iff`: `w • v` is LI ↔ `v` is LI (w units).
+  have hgen : LinearIndependent ℝ
+      ![F.supportExtensor eₐ, F.supportExtensor f, F.supportExtensor e_b] := by
+    -- Helper: `![-C₀, -C₁, -C₂]`-type sign flips preserve LI.
+    have hLI_neg : ∀ (ε₀ ε₁ ε₂ : ℝˣ),
+        LinearIndependent ℝ
+          (fun i : Fin 3 =>
+            ![ε₀ • panelSupportExtensor (k := k) n₀ n₁,
+              ε₁ • panelSupportExtensor n₁ n₂,
+              ε₂ • panelSupportExtensor n₂ n₀] i) := by
+      intro ε₀ ε₁ ε₂
+      have : (fun i : Fin 3 =>
+            ![ε₀ • panelSupportExtensor (k := k) n₀ n₁,
+              ε₁ • panelSupportExtensor n₁ n₂,
+              ε₂ • panelSupportExtensor n₂ n₀] i) =
+          (![ε₀, ε₁, ε₂]) • (![panelSupportExtensor (k := k) n₀ n₁,
+              panelSupportExtensor n₁ n₂, panelSupportExtensor n₂ n₀]) := by
+        funext i; fin_cases i <;> rfl
+      rw [this]
+      exact (LinearIndependent.units_smul_iff _ _).mpr hLI'
+    rcases hsupp_ea with hea | hea <;> rcases hsupp_f with hf' | hf' <;>
+        rcases hsupp_eb with heb | heb <;>
+      rw [hea, hf', heb]
+    · exact hLI'
+    · have h := hLI_neg 1 1 (Units.mk0 (-1 : ℝ) (by norm_num))
+      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+    · have h := hLI_neg 1 (Units.mk0 (-1 : ℝ) (by norm_num)) 1
+      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+    · have h := hLI_neg 1 (Units.mk0 (-1 : ℝ) (by norm_num)) (Units.mk0 (-1 : ℝ) (by norm_num))
+      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+    · have h := hLI_neg (Units.mk0 (-1 : ℝ) (by norm_num)) 1 1
+      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+    · have h := hLI_neg (Units.mk0 (-1 : ℝ) (by norm_num)) 1 (Units.mk0 (-1 : ℝ) (by norm_num))
+      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+    · have h := hLI_neg (Units.mk0 (-1 : ℝ) (by norm_num)) (Units.mk0 (-1 : ℝ) (by norm_num)) 1
+      convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)
+    · have h := hLI_neg (Units.mk0 (-1 : ℝ) (by norm_num)) (Units.mk0 (-1 : ℝ) (by norm_num))
+            (Units.mk0 (-1 : ℝ) (by norm_num))
+      convert h using 1
+  -- T2: rigidity on `{v,a,b}` via `theorem_55_triangle`.
+  have hFgraph : F.graph = G := by
+    simp only [hFdef, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hrigVAB : F.IsInfinitesimallyRigidOn {v, a, b} :=
+    BodyHingeFramework.theorem_55_triangle F hav.symm hab hbv.symm hgen
+      (hFgraph ▸ hG_ea) (hFgraph ▸ hf) (hFgraph ▸ hG_eb.symm)
+  -- T1 vertex-set pin + upgrade to generic motive.
+  have hrig : F.IsInfinitesimallyRigidOn V(G) := by rwa [hVeq]
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G G.endsOf
+    (fun e u w he => G.isLink_endsOf he.edge_mem) hne
+    ⟨v, hG_ea.left_mem⟩ hrig
+
 end CombinatorialRigidity.Molecular

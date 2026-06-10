@@ -1132,6 +1132,29 @@ Grassmann--Cayley projective duality.
   \texttt{unique\_edge} eliminate all cases except $f : a$--$b$.
 \end{proof}
 
+\begin{lemma}[$|V|=3$ triangle base: generic realization; KT \S6.4]
+  \label{lem:triangle-realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_triangle}
+  \leanok
+  \uses{lem:triangle-third-edge, lem:theorem-55-triangle, lem:triangle-normals}
+  Let $G$ be a simple minimal $0$-dof graph on exactly three vertices, with two
+  edges $e_a, e_b$ from a common vertex $v$. Then $G$ has a generic full-rank
+  panel-hinge realization.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:triangle-third-edge, lem:theorem-55-triangle, lem:triangle-normals}
+  T1 (\cref{lem:triangle-third-edge}) gives $V(G)=\{v,a,b\}$ and a completing edge
+  $f:a$--$b$. T3 (\cref{lem:triangle-normals}) produces normals $n_0,n_1,n_2$ with
+  pairwise nonvanishing joins and a linearly independent cyclic extensor family
+  $C_0=C(n_0,n_1)$, $C_1=C(n_1,n_2)$, $C_2=C(n_2,n_0)$. Assigning $v\mapsto n_0$,
+  $a\mapsto n_1$, $b\mapsto n_2$ yields a seed $q_0$; each triangle edge's support
+  extensor equals $\pm C_i$ (sign from the canonical orientation), so T2
+  (\cref{lem:theorem-55-triangle}) gives rigidity on $\{v,a,b\}=V(G)$.
+  Upgrade to generic motive by
+  \texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
