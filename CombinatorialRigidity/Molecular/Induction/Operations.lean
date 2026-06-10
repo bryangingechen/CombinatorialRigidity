@@ -916,4 +916,285 @@ theorem exists_isLink_of_isMinimalKDof_card_three [DecidableEq β] [Finite α] [
   · exact ⟨f, hfxy.symm⟩
   · exact absurd rfl hfxy.ne
 
+/-- **G4c-i: IsLink correspondence under the `ρ = (a v)` relabel** (the graph-side half of the
+`d = 3` Case-III `ρ`-relabel transport; KT 2011 eq. (6.31), p. 686). Given the chain data
+`G.IsLink eₐ v a`, `G.IsLink e_b v b`, `G.IsLink e_c a c` with degree-2 closures at `v` and `a`,
+and fresh edges `e₀ ∉ E(G)`, `e₁ ∉ E(G)`, `e₁ ≠ e₀`, the two splitting-offs are related by:
+
+  `(G.splitOff a v c e₁).IsLink e x y ↔ (G.splitOff v a b e₀).IsLink (σ e) (ρ x) (ρ y)`
+
+where `ρ = Equiv.swap a v` (vertex transposition) and `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`
+(edge permutation). The bijection maps:
+* `e_b ↦ e₀` (the surviving `v`-`b` edge becomes the fresh `a`-`b` edge), carrying `vb ↦ ab`;
+* `e₁ ↦ e_c` (the fresh `v`-`c` edge becomes the surviving `a`-`c` edge), carrying `vc ↦ ac`;
+* all other edges are fixed (including `eₐ`, which is absent from both graphs as each
+  deletes one of its endpoints).
+
+The proof works by expanding `splitOff_isLink` on both sides and exhaustively matching the cases
+using the degree-2 closures (only `eₐ, e_b` incident to `v`; only `eₐ, e_c` incident to `a`)
+to show that surviving edges not equal to `e_b` have both endpoints away from both `a` and `v`,
+so `σ` and `ρ` fix them. -/
+lemma splitOff_isLink_relabel [DecidableEq α] [DecidableEq β] {G : Graph α β}
+    {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
+    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
+    {e : β} {x y : α} :
+    (G.splitOff a v c e₁).IsLink e x y ↔
+      (G.splitOff v a b e₀).IsLink
+        ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)
+        ((Equiv.swap a v) x) ((Equiv.swap a v) y) := by
+  -- Derived edge-distinctness facts.
+  have he_b_ne_e₀ : e_b ≠ e₀ := fun h => he₀ (h ▸ hG_eb.edge_mem)
+  have he_c_ne_e₀ : e_c ≠ e₀ := fun h => he₀ (h ▸ hG_ec.edge_mem)
+  have he_b_ne_e₁ : e_b ≠ e₁ := fun h => he₁ (h ▸ hG_eb.edge_mem)
+  have he_c_ne_e₁ : e_c ≠ e₁ := fun h => he₁ (h ▸ hG_ec.edge_mem)
+  -- `e_b ≠ e_c`: if equal, their endpoint sets coincide; `{v,b} = {a,c}` forces `v = a` or
+  -- `v = c`, contradicting `hav` / `hcv`.
+  have he_b_ne_e_c : e_b ≠ e_c := by
+    intro h
+    -- left_eq_or_eq: hG_eb.left_eq_or_eq (h ▸ hG_ec) gives v = a ∨ v = c.
+    rcases hG_eb.left_eq_or_eq (h ▸ hG_ec) with hva | hvc
+    · exact hav hva.symm
+    · exact hcv hvc.symm
+  -- `b ≠ a`: if b = a, then G.IsLink e_b a v (from hG_eb.symm rewritten), and hcla gives
+  -- e_b = eₐ ∨ e_b = e_c; heab and he_b_ne_e_c both give contradiction.
+  have hba : b ≠ a := fun hba' => he_b_ne_e_c
+    ((hcla e_b v (hba' ▸ hG_eb.symm)).resolve_left (Ne.symm heab))
+  -- Key `σ` evaluations (σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c).
+  have hσ_eb : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e_b = e₀ := by
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
+    split_ifs with h1 h2 <;> simp_all
+  have hσ_e₁ : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e₁ = e_c := by
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
+    split_ifs with h1 h2 <;> simp_all
+  have hσ_other : ∀ f, f ≠ e_b → f ≠ e₁ → f ≠ e_c → f ≠ e₀ →
+      (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) f = f := by
+    intro f hfb hf₁ hfc hf₀
+    simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
+    split_ifs <;> simp_all
+  -- Key `ρ` evaluations (ρ = Equiv.swap a v).
+  have hρ_a : (Equiv.swap a v) a = v := Equiv.swap_apply_left a v
+  have hρ_v : (Equiv.swap a v) v = a := Equiv.swap_apply_right a v
+  have hρ_other : ∀ w, w ≠ a → w ≠ v → (Equiv.swap a v) w = w :=
+    fun w hwa hwv => Equiv.swap_apply_of_ne_of_ne hwa hwv
+  -- Helper: ρ w = a ∧ w ≠ a → w = v.
+  have hρ_eq_a_imp_v : ∀ w, w ≠ a → (Equiv.swap a v) w = a → w = v := by
+    intro w hwa heq
+    by_contra hwnv; rw [hρ_other w hwa hwnv] at heq; exact hwa heq
+  -- Helper: eₐ's endpoints are {v, a} — used to derive contradictions when e links a to something.
+  -- Helper: e_b's unique right endpoint (from G.IsLink e_b v b).
+  -- hG_eb.eq_and_eq_or_eq_and_eq hy with hy : G.IsLink e_b v y' gives:
+  -- (v = v ∧ b = y') ∨ (v = y' ∧ b = v).
+  have hG_eb_right : ∀ y', G.IsLink e_b v y' → y' = b := by
+    intro y' hy
+    rcases hG_eb.eq_and_eq_or_eq_and_eq hy with ⟨-, hby'⟩ | ⟨-, hbv'⟩
+    · exact hby'.symm
+    · exact absurd hbv' hbv
+  have hG_eb_left : ∀ x', G.IsLink e_b x' b → x' = v := by
+    intro x' hx
+    rcases hG_eb.eq_and_eq_or_eq_and_eq hx with ⟨hvx', -⟩ | ⟨hbv', -⟩
+    · exact hvx'.symm
+    · exact absurd hbv'.symm hbv
+  -- The iff follows by expanding `splitOff_isLink` on both sides and case-splitting.
+  simp only [splitOff_isLink]
+  constructor
+  · -- Forward: (G.splitOff a v c e₁).IsLink e x y → RHS.
+    rintro (⟨hne₁, hGe, hxa, hya⟩ | ⟨he_eq_e₁, hav_ne, hca_ne, hvV, hcV, hxy⟩)
+    · -- Surviving edge: e ≠ e₁, G.IsLink e x y, x ≠ a, y ≠ a.
+      by_cases heb : e = e_b
+      · -- e = e_b: σ e = e₀ → RHS Case 2 (fresh edge of G_v^{ab}).
+        -- Determine x, y from G.IsLink e_b x y and hG_eb : G.IsLink e_b v b.
+        -- eq_and_eq_or_eq_and_eq gives (v = x ∧ b = y) ∨ (v = y ∧ b = x).
+        rcases hG_eb.eq_and_eq_or_eq_and_eq (heb ▸ hGe) with ⟨hvx, hby⟩ | ⟨hvy, hbx⟩
+        · -- v = x, b = y.
+          rw [heb, hσ_eb, ← hvx, ← hby, hρ_v, hρ_other b (fun h => hya (hby ▸ h ▸ rfl)) hbv]
+          exact Or.inr ⟨rfl, hav, hbv, hG_ea.right_mem, hG_eb.right_mem, Or.inl ⟨rfl, rfl⟩⟩
+        · -- v = y, b = x.
+          rw [heb, hσ_eb, ← hbx, ← hvy,
+              hρ_other b (fun h => hxa (hbx ▸ h ▸ rfl)) hbv, hρ_v]
+          exact Or.inr ⟨rfl, hav, hbv, hG_ea.right_mem, hG_eb.right_mem, Or.inr ⟨rfl, rfl⟩⟩
+      · -- e ≠ e_b: use degree-2 closures to show endpoints avoid v, then σ fixes e.
+        have hxv : x ≠ v := by
+          intro hxv
+          rcases hclv e y (hxv ▸ hGe) with rfl | rfl
+          · -- e = eₐ links v and a; eq_and_eq gives (v = v ∧ a = y) ∨ (v = y ∧ a = v).
+            rcases hG_ea.eq_and_eq_or_eq_and_eq (hxv ▸ hGe) with ⟨-, hay⟩ | ⟨-, hav_eq⟩
+            · exact hya hay.symm
+            · exact hav hav_eq
+          · exact heb rfl
+        have hyv : y ≠ v := by
+          intro hyv
+          rcases hclv e x (hyv ▸ hGe.symm) with rfl | rfl
+          · rcases hG_ea.eq_and_eq_or_eq_and_eq (hyv ▸ hGe.symm) with ⟨-, hax⟩ | ⟨-, hav_eq⟩
+            · exact hxa hax.symm
+            · exact hav hav_eq
+          · exact heb rfl
+        have he₀_ne : e ≠ e₀ := fun h => he₀ (h ▸ hGe.edge_mem)
+        -- e ≠ e_c: endpoints of e_c are {a, c}, but x ≠ a and y ≠ a.
+        -- eq_and_eq_or_eq_and_eq gives (a = x ∧ c = y) ∨ (a = y ∧ c = x).
+        have hec : e ≠ e_c := by
+          intro hec
+          rcases hG_ec.eq_and_eq_or_eq_and_eq (hec ▸ hGe) with ⟨hax, -⟩ | ⟨hay, -⟩
+          · exact hxa hax.symm
+          · exact hya hay.symm
+        have hσe : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e = e :=
+          hσ_other e heb hne₁ hec he₀_ne
+        have hρx : (Equiv.swap a v) x = x := hρ_other x hxa hxv
+        have hρy : (Equiv.swap a v) y = y := hρ_other y hya hyv
+        rw [hσe, hρx, hρy]
+        exact Or.inl ⟨he₀_ne, hGe, hxv, hyv⟩
+    · -- Fresh edge: e = e₁, endpoints are {v, c}; σ e₁ = e_c; ρ v = a; ρ c = c.
+      subst he_eq_e₁
+      have hρc : (Equiv.swap a v) c = c := hρ_other c hca hcv
+      rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · -- x = v, y = c; σ e₁ = e_c; ρ v = a; ρ c = c.
+        rw [hσ_e₁, hρ_v, hρc]
+        exact Or.inl ⟨fun h => he₀ (h ▸ hG_ec.edge_mem), hG_ec, hav, hcv⟩
+      · -- x = c, y = v.
+        rw [hσ_e₁, hρc, hρ_v]
+        exact Or.inl ⟨fun h => he₀ (h ▸ hG_ec.edge_mem), hG_ec.symm, hcv, hav⟩
+  · -- Backward: RHS → (G.splitOff a v c e₁).IsLink e x y.
+    rintro (⟨hσne₀, hGσe, hρxv, hρyv⟩ | ⟨hσe_eq_e₀, -, hbv_ne, haV, hbV, hxy⟩)
+    · -- Surviving in G_v^{ab}: σ e ≠ e₀, G.IsLink (σ e) (ρ x) (ρ y), ρ x ≠ v, ρ y ≠ v.
+      have hxa : x ≠ a := fun h => hρxv (h ▸ hρ_a)
+      have hya : y ≠ a := fun h => hρyv (h ▸ hρ_a)
+      by_cases he₁e : e = e₁
+      · -- e = e₁: σ e = e_c. G.IsLink e_c (ρ x) (ρ y). Endpoints of e_c are {a, c}.
+        subst he₁e; rw [hσ_e₁] at hGσe hσne₀
+        -- Use eq_and_eq_or_eq_and_eq to get (a = ρ x ∧ c = ρ y) ∨ (a = ρ y ∧ c = ρ x).
+        rcases hG_ec.eq_and_eq_or_eq_and_eq hGσe with ⟨hρxa, hρyc⟩ | ⟨hρxc, hρya⟩
+        · -- hρxa : a = ρ x, hρyc : c = ρ y.
+          -- a = ρ x → x = v.
+          have hxv : x = v := hρ_eq_a_imp_v x hxa hρxa.symm
+          -- c = ρ y → y = c (c ≠ a, c ≠ v).
+          have hyc : y = c := by
+            have heq : (Equiv.swap a v) y = c := hρyc.symm
+            by_contra hync
+            by_cases hyv : y = v
+            · rw [hyv, hρ_v] at heq; exact hca heq.symm  -- heq : a = c
+            · rw [hρ_other y hya hyv] at heq; exact hync heq
+          exact Or.inr ⟨rfl, hav.symm, hca, hG_ea.left_mem, hG_ec.right_mem,
+                        Or.inl ⟨hxv, hyc⟩⟩
+        · -- hρxc : a = ρ y, hρya : c = ρ x (orientations from eq_and_eq_or_eq_and_eq).
+          have hyv : y = v := hρ_eq_a_imp_v y hya hρxc.symm
+          have hxc : x = c := by
+            have heq : (Equiv.swap a v) x = c := hρya.symm
+            by_contra hxnc
+            by_cases hxv : x = v
+            · rw [hxv, hρ_v] at heq; exact hca heq.symm  -- heq : a = c
+            · rw [hρ_other x hxa hxv] at heq; exact hxnc heq
+          exact Or.inr ⟨rfl, hav.symm, hca, hG_ea.left_mem, hG_ec.right_mem,
+                        Or.inr ⟨hxc, hyv⟩⟩
+      · -- e ≠ e₁: σ e ≠ e₁ (else e₁ ∈ E(G)), σ e ≠ e_c, σ e ≠ e_b, derive σ e = e.
+        have hσe_ne_e₁_val : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e ≠ e₁ :=
+          fun hσe_e₁ => he₁ (hσe_e₁ ▸ hGσe.edge_mem)
+        have hσe_ne_ec : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e ≠ e_c := by
+          -- σ e₁ = e_c (hσ_e₁); so σ e = e_c → e = e₁ by injectivity. Contradicts he₁e.
+          intro hσec
+          exact he₁e ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c).injective (hσec.trans hσ_e₁.symm))
+        have hσe_ne_eb : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e ≠ e_b := by
+          intro hσe_eb
+          -- hG_eb : G.IsLink e_b v b; eq_and_eq gives (v = ρ x ∧ b = ρ y) ∨ (v = ρ y ∧ b = ρ x).
+          rcases hG_eb.eq_and_eq_or_eq_and_eq (hσe_eb ▸ hGσe) with ⟨hvρx, -⟩ | ⟨hvρy, -⟩
+          · exact hρxv hvρx.symm
+          · exact hρyv hvρy.symm
+        have he_ne_eb : e ≠ e_b := fun heb => hσne₀ (heb ▸ hσ_eb)
+        have he_ne_ec : e ≠ e_c := by
+          -- σ e_c = (swap e_b e₀) ((swap e₁ e_c) e_c) = (swap e_b e₀) e₁ = e₁
+          -- (since e₁ ≠ e_b and e₁ ≠ e₀), so e = e_c → σ e = e₁, contradicting hσe_ne_e₁_val.
+          intro hec
+          apply hσe_ne_e₁_val
+          calc (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e
+              = (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e_c := by rw [hec]
+            _ = (Equiv.swap e_b e₀) ((Equiv.swap e₁ e_c) e_c) := rfl
+            _ = (Equiv.swap e_b e₀) e₁ := by rw [Equiv.swap_apply_right]
+            _ = e₁ := Equiv.swap_apply_of_ne_of_ne he_b_ne_e₁.symm he₁₀
+        have he_ne_e₀ : e ≠ e₀ := by
+          -- σ e₀ = (swap e_b e₀) ((swap e₁ e_c) e₀) = (swap e_b e₀) e₀ = e_b
+          -- (since e₀ ≠ e₁ and e₀ ≠ e_c), so e = e₀ → σ e = e_b, contradicting hσe_ne_eb.
+          intro he₀e
+          apply hσe_ne_eb
+          calc (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e
+              = (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e₀ := by rw [he₀e]
+            _ = (Equiv.swap e_b e₀) ((Equiv.swap e₁ e_c) e₀) := rfl
+            _ = (Equiv.swap e_b e₀) e₀ :=
+                by rw [Equiv.swap_apply_of_ne_of_ne he₁₀.symm he_c_ne_e₀.symm]
+            _ = e_b := Equiv.swap_apply_right e_b e₀
+        have hσe_eq : (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e = e :=
+          hσ_other e he_ne_eb he₁e he_ne_ec he_ne_e₀
+        rw [hσe_eq] at hGσe
+        -- ρ x ≠ a: if ρ x = a then x = v, so e is incident to v via G.IsLink e v (ρ y).
+        -- Closure at v: e = eₐ or e_b, both excluded.
+        have hρxa_ne_a : (Equiv.swap a v) x ≠ a := by
+          intro hρxa
+          have hxv : x = v := hρ_eq_a_imp_v x hxa hρxa
+          rw [hxv, hρ_v] at hGσe
+          -- hGσe : G.IsLink e a (ρ y); use closure at a.
+          rcases hcla e ((Equiv.swap a v) y) hGσe with rfl | rfl
+          · -- e = eₐ; hG_ea : G.IsLink eₐ v a; eq_and_eq gives (v = a ∧ ..) ∨ (v = ρ y ∧ ..).
+            rcases hG_ea.eq_and_eq_or_eq_and_eq hGσe with ⟨hva, -⟩ | ⟨hρyv', -⟩
+            · exact hav hva.symm
+            · exact hρyv hρyv'.symm
+          · exact he_ne_ec rfl
+        have hρya_ne_a : (Equiv.swap a v) y ≠ a := by
+          intro hρya
+          have hyv : y = v := hρ_eq_a_imp_v y hya hρya
+          rw [hyv, hρ_v] at hGσe
+          rcases hcla e ((Equiv.swap a v) x) hGσe.symm with rfl | rfl
+          · rcases hG_ea.eq_and_eq_or_eq_and_eq hGσe.symm with ⟨hva, -⟩ | ⟨hρxv', -⟩
+            · exact hav hva.symm
+            · exact hρxv hρxv'.symm
+          · exact he_ne_ec rfl
+        -- ρ x ≠ a → x ≠ v; combined with hxa : x ≠ a, gives ρ x = x.
+        have hxv' : x ≠ v := fun hxv => hρxa_ne_a (hxv ▸ hρ_v)
+        have hρx_eq : (Equiv.swap a v) x = x := hρ_other x hxa hxv'
+        have hyv' : y ≠ v := fun hyv => hρya_ne_a (hyv ▸ hρ_v)
+        have hρy_eq : (Equiv.swap a v) y = y := hρ_other y hya hyv'
+        rw [hρx_eq, hρy_eq] at hGσe
+        exact Or.inl ⟨he₁e, hGσe, hxa, hya⟩
+    · -- Fresh edge of G_v^{ab}: σ e = e₀ → e = e_b (σ injective, σ e_b = e₀).
+      have he_eq_eb : e = e_b :=
+        (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c).injective (hσe_eq_e₀.trans hσ_eb.symm)
+      subst he_eq_eb
+      -- hxy: (ρ x = a ∧ ρ y = b) ∨ (ρ x = b ∧ ρ y = a).
+      rcases hxy with ⟨hρx_a, hρy_b⟩ | ⟨hρx_b, hρy_a⟩
+      · -- ρ x = a → x = v; ρ y = b → y = b.
+        -- x ≠ a: if x = a then ρ a = v, but ρ x = a → v = a, contradicting hav.
+        have hxa_x : x ≠ a := fun hxa' => hav ((hρ_a.symm.trans (hxa' ▸ hρx_a)).symm)
+        have hxv : x = v := hρ_eq_a_imp_v x hxa_x hρx_a
+        have hyb : y = b := by
+          by_contra hynb
+          by_cases hyv : y = v
+          · -- ρ v = a, so hρy_b becomes a = b; then G.IsLink e a v, closed by hcla.
+            -- (After subst he_eq_eb, e_b is replaced by e in the context.)
+            rw [hyv, hρ_v] at hρy_b
+            rcases hcla e v (hρy_b ▸ hG_eb.symm) with h_ea | h_ec
+            · exact heab h_ea.symm
+            · exact he_b_ne_e_c h_ec
+          by_cases hya : y = a
+          · rw [hya, hρ_a] at hρy_b; exact hbv hρy_b.symm  -- hρy_b : v = b
+          · rw [hρ_other y hya hyv] at hρy_b; exact hynb hρy_b
+        exact Or.inl ⟨he_b_ne_e₁, hxv ▸ hyb ▸ hG_eb, hxv ▸ hav.symm, hyb ▸ hba⟩
+      · -- ρ x = b → x = b; ρ y = a → y = v.
+        -- y ≠ a: if y = a then ρ a = v, but ρ y = a → v = a, contradicting hav.
+        have hya_y : y ≠ a := fun hya' => hav ((hρ_a.symm.trans (hya' ▸ hρy_a)).symm)
+        have hyv : y = v := hρ_eq_a_imp_v y hya_y hρy_a
+        have hxb : x = b := by
+          by_contra hxnb
+          by_cases hxv : x = v
+          · -- ρ v = a, so hρx_b becomes a = b; then G.IsLink e a v, closed by hcla.
+            -- (After subst he_eq_eb, e_b is replaced by e in the context.)
+            rw [hxv, hρ_v] at hρx_b
+            rcases hcla e v (hρx_b ▸ hG_eb.symm) with h_ea | h_ec
+            · exact heab h_ea.symm
+            · exact he_b_ne_e_c h_ec
+          by_cases hxa : x = a
+          · rw [hxa, hρ_a] at hρx_b; exact hbv hρx_b.symm  -- hρx_b : v = b
+          · rw [hρ_other x hxa hxv] at hρx_b; exact hxnb hρx_b
+        exact Or.inl ⟨he_b_ne_e₁, hxb ▸ hyv ▸ hG_eb.symm, hxb ▸ hba, hyv ▸ hav.symm⟩
+
 end Graph

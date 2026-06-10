@@ -49,9 +49,15 @@ assigns `v↦n₀, a↦n₁, b↦n₂`; each triangle-edge extensor is ±Cᵢ fr
 (unit scalar from `endsOf` orientation via `endsOf_eq_or_swap`); T2 closes rigidity on `{v,a,b}`;
 `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades to generic motive.
 
-**Next concrete step: G4c-i/ii** (§1.49(3)), the fixed-seed `ρ = (a v)` relabel transport
-(graph iso + `ofNormals` framework transport). Parallel-safe with T4 (done); depends only on T4
-being green (which it now is).
+**G4c-i is DONE.** `splitOff_isLink_relabel` (Operations.lean; blueprint node
+`lem:splitOff-isLink-relabel` added to case-iii.tex; build + lint + verify.sh clean). The
+`ρ = (a v)` vertex-transposition iff between `splitOff a v c e₁` and `splitOff v a b e₀`; proved
+by case analysis using degree-2 closures at `v` and `a`. Key derived facts: `hba : b ≠ a`
+(from `hcla` + `heab` + `he_b_ne_e_c`); after `subst he_eq_eb` in the backward fresh-edge case,
+`e_b` is replaced by `e` in context.
+
+**Next concrete step: G4c-ii** (§1.49(3)), the `ofNormals` framework transport: relabel-invariance
+of `ofNormals` data under a vertex `Equiv` + edge `Equiv` intertwining `IsLink` (PanelLayer/CaseI.lean).
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -78,9 +84,11 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   Done.
 - [x] **T4** — `hasGenericFullRankRealization_of_triangle` (CaseI.lean; blueprint node
   `lem:triangle-realization`; §1.48(1)). Done.
-- [ ] **G4c-i/ii** — the fixed-seed `ρ = (a v)` relabel transport (graph iso + `ofNormals`
-  framework transport; the existential motive is NOT transported — eq. (6.44) needs the SAME
-  seed; genericity free, same coordinate set) (§1.49(3)).
+- [x] **G4c-i** — `splitOff_isLink_relabel` (Operations.lean; blueprint node
+  `lem:splitOff-isLink-relabel`; §1.49(3) graph side). Done.
+- [ ] **G4c-ii** — the `ofNormals` framework transport (PanelLayer/CaseI.lean; §1.49(3) framework
+  side): rigidity-on-`V`, `rigidityRows`, links/`ends`, GP/`AlgebraicIndependent ℚ` transport
+  under the vertex `Equiv.swap a v` + edge `σ` intertwining `IsLink`.
 - [ ] **G4d-i/ii** — the (6.43)→(6.44) `a`-column identity + the `M₃` `hcand_mem` (§1.49(4)).
 - [ ] **The (β)-shaped `hsplit` producer** (the G4e spine; the §38 trap; §1.49(5)): G4a chain
   dichotomy → `|V|=3 ↦ T4`; chain arm: its own split data + `splitOff_isMinimalKDof` + measure ⟹
@@ -105,10 +113,11 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — G4c-i/ii** (§1.49(3)): fixed-seed `ρ = (a v)` relabel
-transport (graph iso + `ofNormals` framework transport; existential motive is NOT transported —
-eq. (6.44) needs the SAME seed; genericity free, same coordinate set). T4 is done; G4c is now
-the bottleneck for the (β) producer.
+**Smallest next forward commit — G4c-ii** (§1.49(3) framework side):
+`ofNormals` relabel-invariance under vertex `Equiv.swap a v` + edge `σ` intertwining `IsLink`
+(PanelLayer/CaseI.lean). Transport rigidity-on-`V`, `rigidityRows` row-space correspondence,
+links/`ends`/GP/`AlgebraicIndependent ℚ` — all free since the coordinate set is unchanged
+(`AlgebraicIndependent.comp ρ`). Consumes `splitOff_isLink_relabel` (G4c-i, done).
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -157,6 +166,13 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `let`-bound `h01/h12/h02` in the statement (not explicit args) so that after `intro`, the proof
   terms in the goal match `Finset.card_pair (Fin.ne_of_lt hXX)` exactly, enabling direct `exact`
   application. Proof-term mismatch pattern → TACTICS-QUIRKS § 42.
+- **G4c-i `subst` naming caveat:** `subst he_eq_eb` (where `he_eq_eb : e = e_b`) replaces `e_b`
+  with `e` in the context — after that, writing `e_b` in a tactic gives "unknown identifier". Use
+  `e` in the backward fresh-edge branch. Also: `hba : b ≠ a` must be derived explicitly (from
+  `hcla e_b v (hba' ▸ hG_eb.symm)` + `heab.symm` + `he_b_ne_e_c`); it is not a direct hypothesis.
+  The `hσe_ne_ec` short proof: `σ e = e_c` and `σ e₁ = e_c` → `e = e₁` by injectivity, contradicts
+  `he₁e`. Similarly `he_ne_ec`/`he_ne_e₀` use explicit `calc` chains over `swap_apply_right` +
+  `swap_apply_of_ne_of_ne` to avoid `simp_all` whnf timeouts.
 - **T4 sign-flip dispatch (`hasGenericFullRankRealization_of_triangle`):** each triangle-edge
   extensor equals ±Cᵢ via `endsOf_eq_or_swap` (2 cases × 3 edges = 8-way `rcases` dispatch).
   The `hLI_neg` helper builds LI for `![ε₀•C₀, ε₁•C₁, ε₂•C₂]` via `units_smul_iff` + the

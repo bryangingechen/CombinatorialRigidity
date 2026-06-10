@@ -1004,6 +1004,34 @@ Grassmann--Cayley projective duality.
   $R(G_v^{ab}, q)$, common to both candidates.
 \end{proof}
 
+\begin{lemma}[$\mathrm{IsLink}$ under the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
+  \label{lem:splitOff-isLink-relabel}
+  \lean{Graph.splitOff_isLink_relabel}
+  \leanok
+  \uses{}
+  Given chain data $G.\mathrm{IsLink}\,e_a\,v\,a$, $G.\mathrm{IsLink}\,e_b\,v\,b$,
+  $G.\mathrm{IsLink}\,e_c\,a\,c$ with degree-2 closures at $v$ and $a$, and fresh
+  edges $e_0, e_1 \notin E(G)$ with $e_1 \ne e_0$, the two split-offs are
+  related by
+  \[
+    (G.\mathrm{splitOff}\,a\,v\,c\,e_1).\mathrm{IsLink}\,e\,x\,y \;\iff\;
+    (G.\mathrm{splitOff}\,v\,a\,b\,e_0).\mathrm{IsLink}\,(\sigma e)\,(\rho x)\,(\rho y),
+  \]
+  where $\rho = \mathrm{Equiv.swap}\,a\,v$ and
+  $\sigma = (\mathrm{Equiv.swap}\,e_b\,e_0) \cdot (\mathrm{Equiv.swap}\,e_1\,e_c)$.
+  This is KT eq.~(6.31): the graph-level isomorphism $G_a^{vc} \cong G_v^{ab}$ sending
+  $e_b \mapsto e_0$ (the surviving $v\text{-}b$ edge becomes the fresh $a\text{-}b$ edge)
+  and $e_1 \mapsto e_c$ (the fresh $v\text{-}c$ edge becomes the surviving $a\text{-}c$ edge).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Expand $\mathrm{splitOff\_isLink}$ on both sides and match cases using the degree-2
+  closures. Surviving edges $e \notin \{e_b, e_1\}$ have both endpoints away from $v$
+  and $a$ (by closure at each), so $\sigma$ and $\rho$ fix them. The $e_b$-case maps to
+  the fresh $e_0$-edge (endpoints $v \mapsto a$, $b \mapsto b$); the $e_1$-case maps to
+  the surviving $e_c$-edge (endpoints $v \mapsto a$, $c \mapsto c$).
+\end{proof}
+
 \begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]
   \label{lem:case-III-claim612-p3-placement}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p3_candidateRow}
