@@ -1696,6 +1696,56 @@ theorem hnew_of_isLink_incident (F : BodyHingeFramework k α β) (v : α) {G' : 
     rw [F.hingeConstraint_comm, hingeConstraint, hSv, zero_sub, Submodule.neg_mem_iff]
     exact hspan e u he.symm (fun h => hg h.symm)
 
+/-- **Theorem 5.5, triangle base** (`lem:theorem-55-triangle`): the three-body sibling of
+`theorem_55_base`. A body-hinge framework `F` whose three edges `e₁ : u–v`, `e₂ : v–w`,
+`e₃ : w–u` form a triangle and whose three supporting extensors
+`C(p(e₁)), C(p(e₂)), C(p(e₃))` are linearly independent is infinitesimally rigid *on the three
+bodies* `{u, v, w}` — every infinitesimal motion is constant on `{u, v, w}`.
+
+The argument is the three-body instance of the cycle-telescoping of
+`eq_succ_of_isInfinitesimalMotion_cycle`, re-run directly on `α` without `Fin m` transport: each
+hinge constraint puts the relative screw `S u − S v`, `S v − S w`, `S w − S u` in the
+one-dimensional span of its supporting extensor, and the three differences telescope around the
+triangle to `(S u − S v) + (S v − S w) + (S w − S u) = 0`. Linear independence
+(`eq_zero_of_mem_span_singleton_of_sum_eq_zero`) forces each to vanish, so `S u = S v = S w`. A
+9-case membership dispatch then gives constancy on `{u, v, w}`. -/
+theorem theorem_55_triangle (F : BodyHingeFramework k α β)
+    {e₁ e₂ e₃ : β} {u v w : α} (huv : u ≠ v) (hvw : v ≠ w) (huw : u ≠ w)
+    (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂,
+      F.supportExtensor e₃])
+    (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ v w)
+    (h₃ : F.graph.IsLink e₃ w u) :
+    F.IsInfinitesimallyRigidOn {u, v, w} := by
+  intro S hS
+  -- Each edge's hinge constraint gives the relative screw in the 1-dim span.
+  have hd₁ : S u - S v ∈ Submodule.span ℝ {F.supportExtensor e₁} := hS e₁ u v h₁
+  have hd₂ : S v - S w ∈ Submodule.span ℝ {F.supportExtensor e₂} := hS e₂ v w h₂
+  have hd₃ : S w - S u ∈ Submodule.span ℝ {F.supportExtensor e₃} := hS e₃ w u h₃
+  -- Package into Fin 3 indexed families for eq_zero_of_mem_span_singleton_of_sum_eq_zero.
+  have hd : ∀ i : Fin 3,
+      (![S u - S v, S v - S w, S w - S u] i) ∈
+        Submodule.span ℝ
+          {(![F.supportExtensor e₁, F.supportExtensor e₂, F.supportExtensor e₃] i)} := by
+    intro i; fin_cases i <;> simp [hd₁, hd₂, hd₃]
+  -- The three differences telescope around the triangle to 0.
+  have hsum : ∑ i : Fin 3, (![S u - S v, S v - S w, S w - S u] i) = 0 := by
+    simp only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+      Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]
+    abel
+  -- Independence forces S u = S v and S v = S w.
+  have key1 : S u = S v := by
+    have := eq_zero_of_mem_span_singleton_of_sum_eq_zero hgen hd hsum 0
+    simpa using sub_eq_zero.mp this
+  have key2 : S v = S w := by
+    have := eq_zero_of_mem_span_singleton_of_sum_eq_zero hgen hd hsum 1
+    simpa using sub_eq_zero.mp this
+  -- Constancy on {u, v, w}: 9-case membership dispatch.
+  intro a ha b hb
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
+  rcases ha with rfl | rfl | rfl <;> rcases hb with rfl | rfl | rfl <;>
+    first | rfl | exact key1 | exact key1.symm | exact key2 | exact key2.symm
+          | exact key1.trans key2 | exact (key1.trans key2).symm
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

@@ -261,6 +261,31 @@ whole induction.
   condition on bodies outside $\{u, v\}$ is needed.
 \end{proof}
 
+\begin{lemma}[Theorem 5.5 triangle base ($|V(G)| = 3$)]
+  \label{lem:theorem-55-triangle}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_triangle}
+  \leanok
+  \uses{def:rank-hypothesis, lem:rank-parallel-full}
+  The three-body triangle sibling of the two-body base case
+  \cref{lem:theorem-55-base}: if a body-hinge framework $F$ has three
+  edges $e_1 : u$--$v$, $e_2 : v$--$w$, $e_3 : w$--$u$ forming a
+  triangle whose three supporting extensors $C(p(e_1))$, $C(p(e_2))$,
+  $C(p(e_3))$ are linearly independent, then $F$ is infinitesimally rigid
+  on the three bodies $\{u, v, w\}$
+  ($\mathrm{IsInfinitesimallyRigidOn}\,\{u,v,w\}$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-parallel-full}
+  Each hinge constraint puts a relative screw $S(u) - S(v)$, $S(v) -
+  S(w)$, $S(w) - S(u)$ in the one-dimensional span of its supporting
+  extensor; the three differences telescope to $0$ (the cyclic shift is a
+  bijection of $\{u,v,w\}$). Linear independence of the three extensors
+  --- the $m = 3$ instance of \cref{lem:rank-parallel-full}'s
+  $m$-dimensional generalization --- forces each difference to vanish, so
+  $S(u) = S(v) = S(w)$, and constancy on $\{u,v,w\}$ follows.
+\end{proof}
+
 \subsection{The framework-construction op}
 \label{sec:molecular-algebraic-induction-withgraph}
 
