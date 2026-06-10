@@ -4570,4 +4570,107 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel
   · exact Or.inr ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
       by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
 
+/-- **G4d-i — the `a`-column restriction of a `G_v`-row-span vector lies in `hingeRowBlock e_c`**
+(`lem:case-III-claim612-eq644`, §1.49(4), Phase 22h). Given `wGv` in the span of a framework
+`Fv`'s rigidity rows and the degree-2-at-`a` constraint that `e_c` is the *only* edge of `Fv`
+incident to `a` (endpoints `a`, `c` with `a ≠ c`), the column restriction `wGv ∘ single a` lies
+in the `e_c`-hinge-row block of a second framework `Fab` whose `e_c`-block agrees with `Fv`'s
+(`hblock`).
+
+The proof is a `Submodule.span_induction` on `hwGv`:
+- For each generator `hingeRow u w ρ ∈ Fv.rigidityRows` (link `f u w`, `ρ ∈ Fv.hingeRowBlock f`):
+  - If `u = a`: then `hdeg2 f w hlink` forces `f = e_c`, so
+    `ρ ∈ Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c`
+    and `(hingeRow a w ρ) ∘ single a = ρ` (`hingeRow_comp_single_tail hac`).
+  - If `w = a` (but `u ≠ a`): `hdeg2r f u hlink` forces `f = e_c`; rewrite via `hingeRow_swap`
+    (`hingeRow u a ρ = hingeRow a u (−ρ)`) and `hingeRow_comp_single_tail`; the block is a
+    submodule so `−ρ` stays in it.
+  - Otherwise `u ≠ a` and `w ≠ a`: `hingeRow_comp_single_off` gives zero, which is in any block.
+- The `zero`, `add`, and `smul` cases follow from submodule closure. -/
+theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
+    [DecidableEq α] {Fab Fv : BodyHingeFramework k α β}
+    {a c : α} {e_c : β}
+    (hac : a ≠ c)
+    (hlink_ec : Fv.graph.IsLink e_c a c)
+    (hblock : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
+    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
+    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    (hwGv : wGv ∈ Submodule.span ℝ Fv.rigidityRows) :
+    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) ∈ Fab.hingeRowBlock e_c := by
+  -- Apply span_induction with the transported predicate `φ.comp(single a) ∈ Fab.hingeRowBlock e_c`.
+  apply Submodule.span_induction (p := fun ψ _ =>
+    ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) ∈ Fab.hingeRowBlock e_c) _ _ _ _ hwGv
+  · -- generator case: hingeRow u w ρ ∈ Fv.rigidityRows
+    rintro ψ ⟨f, u, w, hlink, ρ, hρ, rfl⟩
+    by_cases hau : u = a
+    · -- u = a: hdeg2 forces f = e_c; use links to get w = c
+      have hfe : f = e_c := by rw [hau] at hlink; exact hdeg2 f w hlink
+      -- hlink rewritten: IsLink e_c a w; use eq_and_eq_or_eq_and_eq with hlink_ec
+      have hwc : w = c := by
+        rw [hau, hfe] at hlink
+        -- hlink : IsLink e_c a w; hlink_ec : IsLink e_c a c → a = a ∧ w = c ∨ a = c ∧ w = a
+        rcases hlink.eq_and_eq_or_eq_and_eq hlink_ec with ⟨-, h⟩ | ⟨h, -⟩
+        · exact h
+        · exact absurd h hac
+      rw [hau, hwc, hingeRow_comp_single_tail hac]
+      exact hblock ▸ hfe ▸ hρ
+    · by_cases haw : w = a
+      · -- w = a, u ≠ a: hdeg2r forces f = e_c; use links to get u = c
+        have hfe : f = e_c := by rw [haw] at hlink; exact hdeg2r f u hlink
+        have huc : u = c := by
+          rw [haw, hfe] at hlink
+          -- hlink : IsLink e_c u a; hlink_ec : IsLink e_c a c → u = a ∧ a = c ∨ u = c ∧ a = a
+          rcases hlink.eq_and_eq_or_eq_and_eq hlink_ec with ⟨h, -⟩ | ⟨h, -⟩
+          · exact absurd h hau
+          · exact h
+        -- hingeRow u w ρ = hingeRow u a ρ; rewrite via hingeRow_swap, then
+        -- hingeRow_comp_single_tail
+        rw [hfe] at hρ
+        rw [haw, hingeRow_swap u a ρ, huc, hingeRow_comp_single_tail hac]
+        exact (Fab.hingeRowBlock e_c).neg_mem (hblock ▸ hρ)
+      · -- u ≠ a, w ≠ a: off-column; restricts to 0
+        rw [hingeRow_comp_single_off (Ne.symm hau) (Ne.symm haw)]
+        exact (Fab.hingeRowBlock e_c).zero_mem
+  · -- zero
+    simp [(Fab.hingeRowBlock e_c).zero_mem]
+  · -- add
+    intro x y _ _ hx hy
+    rw [LinearMap.add_comp]
+    exact (Fab.hingeRowBlock e_c).add_mem hx hy
+  · -- smul
+    intro r x _ hx
+    rw [LinearMap.smul_comp]
+    exact (Fab.hingeRowBlock e_c).smul_mem r hx
+
+/-- **G4d-ii — the `M₃` candidate hinge row lies in the `a`-split rigidity-row span**
+(`lem:case-III-claim612-eq644`, §1.49(4), Phase 22h). From G4d-i
+(`acolumn_mem_hingeRowBlock_of_span_rigidityRows`) —
+`r̂ := wGv.comp(single a) ∈ Fab.hingeRowBlock e_c`
+— together with `hingeRow_mem_rigidityRows` (the membership certificate for a single hinge row),
+the row `hingeRow a c r̂` lies in the rigidity-row *set* of the `v`-split framework `Fv` (since
+`hlink_ec : Fv.graph.IsLink e_c a c` and `hblock ▸ hr̂`), and hence in the
+`Submodule.span` of `Fv.rigidityRows`.
+
+This is the `M₃` analogue of `exists_candidate_row_eq612`'s `hcand_mem` output: the common
+candidate vector `r̂` — the `a`-column restriction of the `G_v`-redundant row — serves as the
+block functional for a `hingeRow a c r̂` rigidity row, whose `e_c`-hinge lies in `Fv`. -/
+theorem BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows
+    [DecidableEq α] {Fab Fv : BodyHingeFramework k α β}
+    {a c : α} {e_c : β}
+    (hac : a ≠ c)
+    (hlink_ec : Fv.graph.IsLink e_c a c)
+    (hblock : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
+    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
+    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    (hwGv : wGv ∈ Submodule.span ℝ Fv.rigidityRows) :
+    BodyHingeFramework.hingeRow (k := k) (α := α) a c
+        (wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))
+      ∈ Submodule.span ℝ Fv.rigidityRows := by
+  apply Submodule.subset_span
+  apply hingeRow_mem_rigidityRows Fv hlink_ec
+  rw [hblock]
+  exact acolumn_mem_hingeRowBlock_of_span_rigidityRows hac hlink_ec hblock hdeg2 hdeg2r hwGv
+
 end CombinatorialRigidity.Molecular

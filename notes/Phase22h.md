@@ -74,11 +74,17 @@ Graph side G4c-i (`splitOff_isLink_relabel`) reused verbatim, both `.mp`/`.mpr`.
 verify.sh clean; axiom-clean. Blueprint `lem:splitOff-ofNormals-relabel` restated + new node
 `lem:splitOff-rigidityRows-relabel`.
 
-**Next concrete step: G4d-i** (§1.49(4)), the eq.(6.43)→(6.44) `a`-column identity.
+**G4d-i/ii are DONE** (Phase 22h). Two new lemmas in CaseI.lean:
+- `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (G4d-i): `wGv ∈ span Fv.rigidityRows` + degree-2-at-`a`
+  ⟹ `wGv.comp(single a) ∈ Fab.hingeRowBlock e_c`; proof by span-induction, three cases on endpoint.
+- `hingeRow_acolumn_mem_span_rigidityRows` (G4d-ii): short corollary producing `hingeRow a c r̂ ∈ span Fv.rigidityRows`
+  directly from G4d-i + `hingeRow_mem_rigidityRows`. Build + lint clean.
 
-**Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
-{G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
-concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Leaf 5.
+**Next concrete step: the (β)-shaped `hsplit` producer** (G4e spine, §1.49(5)): the `case_III_hsplit_producer`
+restate with M₁/M₂/M₃ dispatch; consumes G4a/G4b/G4c/G4d.
+
+**Build order (design §1.49(6); estimated 3–5 commits remaining):** G4d-i/ii ✓ → the (β)-shaped
+`hsplit` producer (the §38-trap concrete-seed assembly with the G4e M₁/M₂/M₃ dispatch) → Leaf 4 → Leaf 5.
 
 ## Lemma checklist
 
@@ -109,7 +115,8 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   (CaseI.lean; blueprint `lem:splitOff-ofNormals-relabel` restated + `lem:splitOff-rigidityRows-relabel`).
   Corrected from b6a66de's existential→existential transport (the design-deviation §1.49(3)
   excludes). Done.
-- [ ] **G4d-i/ii** — the (6.43)→(6.44) `a`-column identity + the `M₃` `hcand_mem` (§1.49(4)).
+- [x] **G4d-i/ii** — `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (span-induction; three endpoint
+  cases) + `hingeRow_acolumn_mem_span_rigidityRows` (short corollary) (CaseI.lean; §1.49(4)). Done.
 - [ ] **The (β)-shaped `hsplit` producer** (the G4e spine; the §38 trap; §1.49(5)): G4a chain
   dichotomy → `|V|=3 ↦ T4`; chain arm: its own split data + `splitOff_isMinimalKDof` + measure ⟹
   IH at the `v`-split; R3 ⟹ the GP `.1` conjunct ⟹ `q` + `hgab` (via
@@ -133,10 +140,10 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — G4d-i** (§1.49(4)): the eq.(6.43)→(6.44) `a`-column identity
-(`candidateRow_ac_eq_neg` in BodyHingeFramework; consumes `exists_redundant_panelRow_ab_decomposition_acolumn_zero` and
-`hingeRow_comp_single_tail`/`hingeRow_comp_single_off`; blueprint node `lem:case-III-claim612-eq644` already green).
-After G4d-i, G4d-ii (the `M₃` `hcand_mem`), then the (β)-shaped `hsplit` producer (G4e spine).
+**Smallest next forward commit — the (β)-shaped `hsplit` producer** (§1.49(5)): restate
+`case_III_hsplit_producer` to the (β) branch shape; body = G4a choice → `|V|=3 ↦ T4` / chain ↦
+IH at the `v`-split (via `splitOff_isMinimalKDof` + measure) + G4e M₁/M₂/M₃ dispatch + GAP-2
+upgrade. See design §1.49(5) for the full structure. Consumes all G4a–G4d + T1–T4.
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
