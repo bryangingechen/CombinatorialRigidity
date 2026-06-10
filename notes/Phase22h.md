@@ -176,12 +176,16 @@ triple-LI bridge ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` disch
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — `r̂` chain + M₁ arm** (first concrete sub-step of the `hcand`
-discharge): inside `case_III_hcand_discharge`, add the `r̂` construction (`h618` derived inline from
-`hQrig`; `h622` `sorry`'d), call `exists_redundant_panelRow_ab_lam` → `exists_candidate_row_eq612`
-to get `r̂ ≠ 0`, then `case_III_claim612` → `exists_line_data_of_homogeneousIncidence` → the M₁
-(n_a) arm via `case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
-`hasGenericFullRankRealization_of_rigidOn_ofNormals`. M₂ and M₃ remain `sorry`'d.
+**Smallest next forward commit — the M₁-arm candidate chain as a standalone complete lemma**
+(first sub-step of the `hcand` discharge; mirrors *Next concrete step* above): from the unpacked
+generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from `IsGeneralPosition`, `hn3` from
+the bridge lemma — all cheap inline derivations), produce `r̂ ≠ 0` via
+`exists_redundant_panelRow_ab_lam` (incl. the `h618`/`h622` rank inputs), hook
+`case_III_claim612` → `exists_line_data_of_homogeneousIncidence`, and close the `n_a` arm via
+`case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
+`hasGenericFullRankRealization_of_rigidOn_ofNormals`. **No `sorry` placeholders** — if the piece
+won't fit one commit, split off a smaller complete sub-lemma instead. M₂/M₃ follow as their own
+complete lemmas; the discharge lemma matching the `hcand` signature assembles them at the end.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
