@@ -997,6 +997,20 @@ producer-scrutiny honesty gate (`blueprint/CLAUDE.md`) applied to the *motive*,
 not just to a single node's hypotheses. Cross-refs: `notes/Phase21b.md`
 *Current state* + *Decisions*; the 2026-06-04 realization re-plan.
 
+**Corollary — a standing hypothesis needs a satisfiability witness, not just
+green consumers (Phase 22h G5, 2026-06-09).** The same trap one level up: a
+*hypothesis* every consumer takes as given is never checked satisfiable by a
+green build. `IsProperRigidSubgraph` transcribed KT p. 659's `1 < |V′|` as
+`V(H).Nonempty`; a single vertex is vacuously `0`-dof, so the Case-III layer's
+standing `hnoRigid : ∀ H, ¬ H.IsProperRigidSubgraph G n` was **unsatisfiable**
+for `|V(G)| ≥ 2` — and four phases of conditional theorems built on it stayed
+green (the §1.49 design pass caught it with a one-line `lean_run_code` witness,
+`Graph.noEdge {u} β`). The rule: when a branch hypothesis *quantifies over* a
+transcribed definition ("no X exists", "every X satisfies …"), (a) re-verify
+the transcription against the primary source's exact inequality, and (b)
+exhibit a satisfying instance of the hypothesis the first time a phase
+consumes it — a one-line witness is cheap; churn on a vacuous branch is not.
+
 ## Constructibility recon before scheduling a producer build
 
 **The trap (Phase 21b, 2026-06-04; four re-plans).** A realization/existence
