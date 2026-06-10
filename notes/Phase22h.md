@@ -83,8 +83,8 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — G4b-impl** (`minimal_kdof_reduction_full` + the
-`theorem_55_generic` (β) restate; design §1.49(1); see *Current state*). After 22h closes (the
+**Smallest next forward commit — G4a-i** (`exists_adjacent_degree_two_pair`,
+ReducibleVertex.lean: the `D ≥ 6` double-count; design §1.49(2); see *Current state*). After 22h closes (the
 molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26): **Phase 23** = general `d` (KT
 Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own recon (KT eqs.
 (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` alg-independence row to
