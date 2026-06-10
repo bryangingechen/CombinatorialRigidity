@@ -1923,6 +1923,64 @@ buildable-leaf path:
 > *brick* ("the `4 ≤ |V|` guard is unmet") without tracing whether the producer/IH wiring (post-§1.45) ever
 > reaches for the brick, and asserted a `|V|=3` simplicity fact without checking the triangle's edge count.
 
+### 1.47 Coordinator cross-check — §1.46's GAP-1 dissolution is UNSOUND (it orphans `hgab`); the corrected picture is `|V|≥4` buildable (needs the GP `.1` conjunct + R3) / `|V|=3` a GENUINE HOLE (the triangle base case) (2026-06-09)
+
+> **Coordinator verdict-reasoning check on the §1.46 recon commit (not a build/recon pass — a correction
+> landed at the user's pause-and-evaluate checkpoint).** §1.46 was mechanically clean (docs-only, on master)
+> but its headline finding — "GAP 1 dissolves: the producer takes the bare `hIH.2` and the GP `.1` conjunct
+> is unused" — does **not** close. It is the coordinate-phase step-3 failure mode: a recon that *re-routes*
+> to dissolve one gap without re-verifying the producer's **other** carried obligations still close under the
+> new route. §1.46 finding-(2) (the `|V|=3` splitOff is a non-simple double-edge `K₂`) is **sound and stands**;
+> finding-(1) ("dissolved, `.1` unused") is **retracted**.
+
+**The orphaned `hgab` (the airtight chain).**
+- The producer's candidate placement `case_III_old_new_blocks_of_line` (CaseI.lean:3454) takes
+  `hgab : LinearIndependent ℝ ![q(a,·), q(b,·)]` as an **explicit hypothesis** (and `hnewtrans` at :3635).
+- GAP-3's "bounded" verdict (§1.44, line ~1725) derives its good-`t` **from `hgab`**: *"`hgab` (the pairwise
+  GP from the GP `_hsplit`) gives `n_a ∉ span{n_b}`"*. So `hnewtrans` needs `hgab`.
+- R2 (§1.41) and GAP-3 both source `hgab` from the **GP `.1` conjunct's `IsGeneralPosition`** — and §1.44
+  established a *bare* rigid realization does NOT force `ab`-transversality (the non-simple regime has
+  parallel panels), so `hIH.2` cannot supply `hgab`.
+- §1.46 declares the `.1` conjunct **unused**. ⟹ `hgab` is orphaned: the candidate placement requires it,
+  its only established source is the `.1` §1.46 discards. §1.46 conflated *"the producer needn't conclude GP
+  at the split graph for the final answer"* (true — it concludes GP at `G` via the GAP-2 upgrade) with *"the
+  producer needn't use `.1` at all"* (false — it needs `.1`'s `IsGeneralPosition` for `hgab` to build the
+  candidate).
+
+**The corrected picture (to confirm against the Lean in the next session's recon, not asserted settled):**
+- **`|V(G)| ≥ 4`: buildable, but `.1` and R3 are ON the route (not off it).** `splitOff` is simple (R3:
+  a parallel pair would give the triangle as a *proper* rigid subgraph, contradicting `hnoRigid`), so the GP
+  `.1` antecedent `(G.splitOff …).Simple` holds → `.1` yields a *generic* split realization → `hgab` (every
+  pair transversal). The producer uses `.1` (for `hgab`) **and** the GAP-2 upgrade (for the generic-`G`
+  conclusion). [Alt: route-B — upgrade the bare `.2` split realization to generic via the GAP-2 leaf — needs
+  `hne` extracted from the bare existential, the same open requirement the GAP-2 leaf flagged; route-A via
+  `.1` is cleaner here.]
+- **`|V(G)| = 3`: a GENUINE HOLE — the triangle base case.** `splitOff` is the non-simple double-edge `K₂`
+  (§1.46-(2), sound) → the GP `.1` antecedent is **false**, AND `K₂` is the base object where GP genuinely
+  fails (PanelHinge.lean:1125–1128) so the bare→generic upgrade cannot manufacture GP for the split either →
+  `hgab` is unavailable by **either** route → the producer cannot build the candidate at `|V|=3`. The project's
+  `minimal_kdof_reduction` routes the `|V|=3` triangle into the `hsplit` branch (no proper rigid subgraph, only
+  a `|V|=2` base), but the `hsplit` producer cannot discharge it. KT handles `|V|=3` *separately* (Lemma
+  6.7(i): the triangle realized **directly** by Lemma 5.4, not by splitting). So `|V|=3` needs a **direct
+  triangle-realization base case** for the `d=3` molecular conjecture — §1.44's GAP-1 (C) "genuine hole" was
+  right; §1.46-(2) shows the easy patch (a `|V|=3` simplicity branch) is *false*, so the hole has no cheap fix.
+
+**Status correction.** Phase 22g does **NOT** have "no research-shaped node remains / ~3–4 routine commits."
+Two open items the next session must settle BEFORE the §38-trap producer build:
+1. **The `|V|=3` triangle base case** — check whether a direct full-rank/generic realization of the triangle
+   (KT Lemma 5.4 / 6.7(i)) is already in the project (base-case machinery near `hbaseGP`) or is new work; if
+   new, scope it. This is the genuine sub-problem.
+2. **Confirm the `|V|≥4` producer route** sources `hgab` from the GP `.1` conjunct (+ R3 simplicity) and
+   composes the GAP-2 upgrade — i.e. re-derive the producer signature with `.1` in the loop (R3 is back ON
+   the live route), not the bare-`.2`-only shape §1.46 wrote.
+
+**Process lesson (promote).** A recon that *re-routes* to dissolve a gap (here: "take `.2` instead of `.1`")
+must re-verify **every other carried obligation closes under the new route** — §1.46 changed the conjunct the
+producer consumes without re-checking the `hgab`/`hnewtrans`/GAP-3 chain that the discarded conjunct fed. The
+coordinator's per-commit verdict-reasoning check (coordinate-phase step 3) is what caught it; this is the
+general form of that step's anecdote. Lifted to `CLAUDE.md` *Referencing prior work* neighbours / the
+coordinate-phase command (this session's instruction-improvement pass).
+
 ---
 
 ## 3. Per-case producer structure, node list, build order

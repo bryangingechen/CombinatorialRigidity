@@ -1043,6 +1043,29 @@ live inside a `by_contra`, so a node that takes it as a *supplied premise* is
 mis-shaped. Skipping the discharge-trace re-incurs this section's churn one level
 up: at the *hypothesis* rather than the *count*.
 
+**Corollary — trace the producer's WIRING, not the green lemmas' statements; a
+re-route must re-verify every other obligation (Phase 22g, 2026-06-09).** A
+producer-node recon that checks the green inputs' *statements in isolation* —
+"`hsplitGP` consumes the GP IH, `case_III_realization_of_line` concludes
+full-rank" — repeatedly misses *interaction* holes that only a trace of the
+actual producer/IH wiring exposes: what each hypothesis literally is, where it
+is sourced, and what the *output type* demands. Phase 22g's three high-level
+recons declared "no research-shaped node remains"; tracing the wiring then
+surfaced, in succession, that the producer's points needed an affine
+de-homogenization (R1-affine), that the triangle-rigidity brick is exactly tight
+not a circuit (it dissolved), that the `|V|=3` split graph is reachable and
+non-simple (a genuine base-case hole), and that the producer's output conjunct
+`AlgebraicIndependent ℚ` clashes with its degenerate seed (GAP 2, resolved by an
+existential upgrade). **And the sharpest tell:** when a later recon *dissolves*
+one of these by *re-routing* — changing which IH conjunct / hypothesis the
+producer consumes (§1.46: "take the bare `.2`, not the generic `.1`, so split
+simplicity is never needed") — it must re-verify that the producer's **other**
+carried obligations still close under the new route. §1.46's re-route orphaned
+`hgab` (the split-leg transversality only the discarded `.1` conjunct supplied,
+still required by the candidate placement and by GAP 3's good-`t`); the
+"dissolution" did not close. Trace the route end-to-end *each time the route
+changes*, not just the node that changed.
+
 **Scale-up: design the LAYER, not just the node (Phase 22, 2026-06-04).** Per-node
 constructibility recon is necessary but not sufficient when an entire *layer* of
 interlocking producers shares an invariant. Phase 22's Case-I seed was recon'd
