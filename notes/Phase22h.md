@@ -80,26 +80,26 @@ verify.sh clean; axiom-clean. Blueprint `lem:splitOff-ofNormals-relabel` restate
 - `hingeRow_acolumn_mem_span_rigidityRows` (G4d-ii): short corollary producing `hingeRow a c r̂ ∈ span Fv.rigidityRows`
   directly from G4d-i + `hingeRow_mem_rigidityRows`. Build + lint clean.
 
-**Producer (β)-restate spine is DONE** (Phase 22h). `case_III_hsplit_producer` (CaseI.lean) restated to
-the **(β) branch shape** — receives `hG`/`hV3`/`hnoRigid` + the bare conditioned IH `hIH` (mirroring
-`theorem_55_generic.hsplit`) + a fresh-edge supply `hfresh` (the (β) reduction does no splitting
-internally, so the producer owns it — the shape `minimal_kdof_reduction`'s `hfresh` carried, moved here)
-+ the carried candidate-placement core `hcand`. Body = G0 simplicity → dichotomy on `|V(G)|`: `=3 ↦`
-T4 (`hasGenericFullRankRealization_of_triangle` via `exists_adjacent_degree_two_pair` +
-`exists_splitOff_data_of_degree_eq_two`, forgotten to bare by `hasFullRankRealization_of_generic`); `≥4 ↦`
-chain arm (`exists_chain_data_of_noRigid` → `splitOff_isMinimalKDof` + `splitOff_vertexSet_ncard_lt` →
-IH realizes the `v`-split → feed `hcand`). Build + lint clean; no live callers (the old producer's only
-mentions are doc-comments), so the restate breaks nothing downstream. Producer had to be **moved after T4**
-in the file (T4 was defined below it). **The candidate-placement core stays carried in `hcand`** — the
-genuinely-hard residual (Leaf 2/3 + the G4c/G4d/G4e M₁/M₂/M₃ dispatch + GAP-3 + R1/R2 + the triple-LI
-bridge); discharging it is the next concrete work.
+**Producer spine is DONE (corrected to the `hsplitGP` shape).** `case_III_hsplit_producer`
+(CaseI.lean) is stated at the **`theorem_55_generic.hsplitGP` callback shape** (R2 verdict (B),
+design §1.41(5)): premises `hG`/`hV3`/`hnoRigid`/`G.Simple` + the **full conditioned IH**
+(`(Simple → generic) ∧ bare`) + `hfresh` + the carried core `hcand`; conclusion
+`HasGenericFullRankRealization 2 G`. Body = G4a dichotomy: `=3 ↦` T4 returned directly (no
+forgetful — the conclusion is generic); `≥4 ↦` chain arm (`exists_chain_data_of_noRigid` → fresh
+`e₀` → `splitOff_isMinimalKDof` + measure drop → **R3** `splitOff_simple_of_noRigid_of_card`
+discharges the GP `.1` antecedent at `|V|≥4` → the **generic** `v`-split realization feeds
+`hcand`). `hcand` consumes the chain data + the generic `v`-split realization and yields
+`HasGenericFullRankRealization 2 G` (its M-dispatch arms end bare; the discharge composes the
+GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`, §1.49(5)). `G.Simple`,
+`hnoRigid`, `hfresh` stay producer-level, available to the discharge leaf at the application site.
+Build + lint clean; no live callers, no blueprint pin.
 
 **Next concrete step: discharge `hcand`** — the §1.49(5) producer-assembly leaf (the §38-trap concrete-seed
 build): generalize `case_II_placement_eq612` to the witness line, run the row-space criterion, the G4e
 M₁/M₂/M₃ dispatch (M₃ via G4c/G4d), GAP-3 good-`t`, R1/R2 reconciliation. The candidate core's signature
 is now pinned by the `hcand` hypothesis in `case_III_hsplit_producer`.
 
-**Build order (design §1.49(6); estimated 3–5 commits remaining):** producer (β)-spine ✓ → discharge
+**Build order (design §1.49(6); estimated 3–5 commits remaining):** producer spine ✓ → discharge
 `hcand` (the candidate-placement core, multi-commit) → Leaf 4 → Leaf 5.
 
 ## Lemma checklist
@@ -133,17 +133,20 @@ is now pinned by the `hcand` hypothesis in `case_III_hsplit_producer`.
   excludes). Done.
 - [x] **G4d-i/ii** — `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (span-induction; three endpoint
   cases) + `hingeRow_acolumn_mem_span_rigidityRows` (short corollary) (CaseI.lean; §1.49(4)). Done.
-- [x] **Producer (β)-restate spine** — `case_III_hsplit_producer` (CaseI.lean) restated to the (β)
-  branch shape (conditioned IH `hIH` + `hnoRigid` + `hfresh` + carried `hcand`); body = G0 simplicity
-  → `|V(G)|` dichotomy (`=3 ↦` T4 forgotten to bare; `≥4 ↦` chain arm: `exists_chain_data_of_noRigid`
-  + `splitOff_isMinimalKDof` + measure ⟹ IH at the `v`-split ⟹ `hcand`). Build + lint clean; no
+- [x] **Producer spine (corrected to the `hsplitGP` shape)** — `case_III_hsplit_producer`
+  (CaseI.lean) at the `theorem_55_generic.hsplitGP` callback shape (R2 verdict (B), §1.41(5)):
+  `hG`/`hV3`/`hnoRigid`/`G.Simple` + full conditioned IH + `hfresh` + carried `hcand`; concludes
+  the **generic** motive. Body = `|V(G)|` dichotomy (`=3 ↦` T4 directly; `≥4 ↦` chain arm with the
+  R3 split-simplicity discharge unlocking the IH's GP `.1` conjunct). Build + lint clean; no
   blueprint pin (the producer isn't `\lean`-pinned). Done.
 - [ ] **Discharge `hcand`** (the candidate-placement core; the G4e spine; the §38 trap; §1.49(5)):
   generalize `case_II_placement_eq612` to the witness line; the G4e `M₁/M₂/M₃` dispatch (`M₃` via
-  G4c/G4d); GAP-3 good-`t`; R1/R2 reconciliation; R3 ⟹ the GP `.1` conjunct ⟹ `q` + `hgab` (via
-  `hasGenericRealization_transport_ends`) + the triple-LI-from-alg-indep bridge (§1.48(2)); compose
-  the GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate,
-  supplying its `hne` from the candidate completion. Signature now pinned by the `hcand` hypothesis.
+  G4c/G4d); GAP-3 good-`t`; R1/R2 reconciliation; unpack the spine-supplied **generic** `v`-split
+  realization for the seed `q` + `hgab` (the `IsGeneralPosition` conjunct, definitional per
+  §1.41(2); `hasGenericRealization_transport_ends` for any selector alignment) + the
+  triple-LI-from-alg-indep bridge (§1.48(2)); compose the GAP-2 upgrade
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate, supplying its
+  `hne` from the candidate completion. Signature now pinned by the `hcand` hypothesis.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -161,12 +164,14 @@ is now pinned by the `hcand` hypothesis in `case_III_hsplit_producer`.
 ## Hand-off / next phase
 
 **Smallest next forward commit — discharge `hcand`** (the candidate-placement core; §1.49(5)): the
-producer (β)-spine is landed (`case_III_hsplit_producer`, the dichotomy + chain-arm IH wiring); what
-remains is the §38-trap concrete-seed assembly that `hcand` carries — generalize
-`case_II_placement_eq612` to the witness line, run the row-space criterion at `C(L)` with `r̂(C(L)) ≠ 0`,
-then the G4e M₁/M₂/M₃ dispatch (M₃ via G4c/G4d). This is genuinely multi-commit; the first sub-commit
-is likely the witness-line generalization of the placement (L2b-place, §1.39(6).1). The `hcand`
-signature in `case_III_hsplit_producer` pins exactly what the core must produce. Consumes G4c/G4d/T1–T4.
+producer spine is landed at the corrected `hsplitGP` shape (`case_III_hsplit_producer`, dichotomy +
+chain-arm GP-IH wiring incl. the R3 discharge); what remains is the §38-trap concrete-seed assembly
+that `hcand` carries — generalize `case_II_placement_eq612` to the witness line, run the row-space
+criterion at `C(L)` with `r̂(C(L)) ≠ 0`, then the G4e M₁/M₂/M₃ dispatch (M₃ via G4c/G4d). This is
+genuinely multi-commit; the first sub-commit is likely the witness-line generalization of the
+placement (L2b-place, §1.39(6).1). The `hcand` signature in `case_III_hsplit_producer` pins exactly
+what the core must produce (generic `v`-split realization in, generic `G` out). Consumes
+G4c/G4d/T1–T4.
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -246,13 +251,14 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)` (the `1 • X = X` goals
   close by `rfl`; the `mk0(-1) • X = -X` goals close by default `simp`; the all-negative case
   closes by `convert h using 1` alone because `neg_one_smul` is a simp lemma used by `congr`).
-- **Producer (β)-spine carries `hfresh` + `hcand`; the M-dispatch is NOT yet built.** The (β)
-  reduction `minimal_kdof_reduction_full` does no splitting internally (its doc: "Requires no
-  `hD`/`hfresh`"), so `case_III_hsplit_producer` owns the fresh-edge supply — it carries
-  `hfresh : ∀ G', ∃ e₀, e₀ ∉ E(G')` (the shape the *old* `minimal_kdof_reduction` carried; can't be
-  built from `[Finite β]`). The genuinely-hard candidate-placement core stays the explicit `hcand`
-  hypothesis (the "carry the crux as `h…`, keep the node red" idiom): this commit lands only the
-  *spine* (dichotomy + chain-arm IH wiring), not the M₁/M₂/M₃ dispatch. `hGv2 : 2 ≤ |V(splitOff)|`
-  reuses `splitOff_isMinimalKDof`'s `Set.ncard_diff` pattern (`= |V(G)|−1 ≥ 2`); `IsMinimalKDof` is a
-  conjunction so `.1` (not `.isKDof`) projects the `IsKDof`. T4 had to be moved *above* the producer
-  in CaseI.lean (forward-reference: T4 was defined below it).
+- **Producer corrected to the `hsplitGP` shape (corrective commit replacing 9c5879c's bare-IH
+  restate).** 9c5879c read "(β) branch shape" as bare IH + bare conclusion — a misread ((β) hands
+  the no-rigid branch the **full conditioned IH**, §1.49(1)) that re-enacted the §1.46 GAP-1
+  dissolution the §1.47/R2/R3 verdicts overturned: it orphans `hgab` (only the GP `.1` conjunct
+  supplies the placement transversal + alg-indep; a bare rigid realization may have parallel
+  panels, §1.41(1)). Fix: `G.Simple` + full conditioned IH in, generic motive out; chain arm
+  discharges the split's GP `.1` antecedent via R3 (`splitOff_simple_of_noRigid_of_card`, needs
+  `|V|≥4` — the `|V|=3` branch goes to T4 and never splits, §1.46 finding 2); `hcand` is
+  generic-in/generic-out. 9c5879c's dichotomy spine, `hfresh` ownership rationale, and
+  `hGv2`-via-`Set.ncard_diff` pattern are kept; G0 is no longer called in the body (`G.Simple` is
+  now a premise). T4 stays above the producer in CaseI.lean.

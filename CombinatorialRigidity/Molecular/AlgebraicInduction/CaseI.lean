@@ -4213,52 +4213,65 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
     ⟨v, hG_ea.left_mem⟩ hrig
 
 
-/-- **The `d = 3` Case-III (`hsplit`) producer, (β) branch shape** (`lem:case-II-realization` /
-`lem:case-III`, the `theorem_55_generic.hsplit` branch at `k = 2`; Katoh–Tanigawa 2011 §6.4.1,
-Lemma 6.10, Phases 22g–22h). The conjecture's crux at `d = 3`, restated to the **conditioned-IH
-("(β)") interface** that `theorem_55_generic`'s `hsplit` premise threads (mirroring `hcontract`):
-the producer receives `hnoRigid` together with the **full conditioned induction hypothesis**
-`hIH` over all smaller minimal `0`-dof-graphs, and **chooses its own adjacent degree-2 pair** via
-the `d = 3` chain dichotomy (`notes/Phase22-realization-design.md` §1.49(1), verdict (β); the
-KT-faithful, minimal-ripple branch interface). No split-vertex data is handed in — the producer
-re-selects it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
+/-- **The `d = 3` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
+(`lem:case-II-realization` / `lem:case-III`, the `theorem_55_generic.hsplitGP` branch at `k = 2`;
+Katoh–Tanigawa 2011 §6.4.1,
+Lemma 6.10, Phases 22g–22h). The conjecture's crux at `d = 3`, stated at the **generic-motive
+callback interface** that `theorem_55_generic`'s `hsplitGP` premise threads (the R2 verdict (B),
+`notes/Phase22-realization-design.md` §1.41(5)): the producer receives `hnoRigid`, `G.Simple`, and
+the **full conditioned induction hypothesis** `hIH` (the `(G'.Simple → generic) ∧ bare` pair over
+all smaller minimal `0`-dof-graphs, mirroring `hcontractGP`), **chooses its own adjacent degree-2
+pair** via the `d = 3` chain dichotomy (§1.49(1), verdict (β)), and concludes the **generic** motive
+`HasGenericFullRankRealization 2 G`. No split-vertex data is handed in — the producer re-selects
+it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
 
 **Dichotomy spine (G4a).** On `|V(G)|`:
 
 * `|V(G)| = 3` — the **triangle base** (T1–T4): `exists_adjacent_degree_two_pair` (G4a-i) picks an
   adjacent degree-2 pair `v–a` and `exists_splitOff_data_of_degree_eq_two` its two `v`-edges, so
-  `hasGenericFullRankRealization_of_triangle` (T4) closes the generic motive on the triangle, and
-  `hasFullRankRealization_of_generic` forgets it to the bare rank. (Simplicity comes from G0
-  `simple_of_isMinimalKDof_of_noRigid`.)
+  `hasGenericFullRankRealization_of_triangle` (T4) closes the generic motive on the triangle
+  directly (KT never splits a `|V| = 3` graph — §1.46 finding 2).
 * `|V(G)| ≥ 4` — the **chain arm**: `exists_chain_data_of_noRigid` (G4a-ii) extracts the full chain
   data `(v,a,b,c,eₐ,e_b,e_c)` with the two degree-2 closures; with a fresh `e₀ ∉ E(G)`,
   `splitOff_isMinimalKDof` makes the `v`-split `G_v^{ab}` a smaller minimal `0`-dof-graph
-  (`splitOff_vertexSet_ncard_lt` for the measure drop), so the IH realizes it concretely. That bare
-  `v`-split realization feeds the carried **candidate-placement core** `hcand` (the still-unbuilt
-  Leaf 2/3 + the G4c/G4d/G4e `M₁/M₂/M₃` dispatch + the GAP-3 good-`t` choice + the R1/R2
-  reconciliation — the §38 `ofNormals` trap), which produces the bare realization of `G`.
+  (`splitOff_vertexSet_ncard_lt` for the measure drop); `splitOff_simple_of_noRigid_of_card` (R3,
+  KT Lemma 6.7(ii)) discharges the split's simplicity at `4 ≤ |V(G)|`, so the IH's **GP `.1`
+  conjunct** yields the **generic** `v`-split realization — the seed `q` whose `IsGeneralPosition`
+  conjunct *is* the placement transversal `hgab` and whose `AlgebraicIndependent ℚ` conjunct feeds
+  the triple-LI bridge (§1.41(2), §1.48(2); the bare `.2` conjunct provably cannot supply either —
+  a rigid realization may have parallel panels). That generic `v`-split realization feeds the
+  carried **candidate-placement core** `hcand`.
 
 `hcand` is the single *explicit* hypothesis carrying the genuinely-hard remaining work, in the
 established "carry the analytic crux as `h…`, keep the node red" idiom (Phase 21b): it consumes the
-chosen chain data and the IH-derived bare `v`-split realization and yields `HasFullRankRealization
-2 G`. The §1.49(5) producer-assembly leaf discharges it; the dichotomy spine and the IH-at-`v`-split
-wiring built here are the rest of the producer. -/
+chosen chain data and the IH-derived **generic** `v`-split realization and yields
+`HasGenericFullRankRealization 2 G` — internally its `M₁/M₂/M₃` dispatch arms end in the bare
+realization of `G`, and the discharge composes the landed GAP-2 upgrade
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the concrete candidate (§1.49(5)). The
+§1.49(5) producer-assembly leaf discharges it (Leaf 2/3 + the G4c/G4d/G4e dispatch + the GAP-3
+good-`t` choice); `G.Simple`, `hnoRigid`, and `hfresh` remain available to that leaf as
+producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring built here are the
+rest of the producer. -/
 theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
     -- the `theorem_55_generic.hsplit` premise data (at `n`, `k = 2`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hsimple : G.Simple)
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-      V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization 2 G')
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G') ∧
+        PanelHingeFramework.HasFullRankRealization 2 G')
     -- a fresh edge label for the chain arm's short-circuit `ab`-edge (the (β) reduction
     -- `minimal_kdof_reduction_full` does no splitting internally, so the producer owns it; the
     -- shape `minimal_kdof_reduction`'s `hfresh` carried, moved here at the (β) interface, §1.49(1))
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     -- the candidate-placement core (the still-unbuilt Leaf 2/3 + the `M₁/M₂/M₃` dispatch,
-    -- §1.49(5)): given the chosen chain data, a fresh `e₀ ∉ E(G)`, and the IH-derived bare
-    -- `v`-split realization, it produces the bare realization of `G`. The genuinely-hard residual
-    -- is carried here in the "explicit `h…` crux" idiom (Phase 21b); the producer-assembly leaf
-    -- (§1.49(5)) discharges it.
+    -- §1.49(5)): given the chosen chain data, a fresh `e₀ ∉ E(G)`, and the IH-derived **generic**
+    -- `v`-split realization (the seed `q` with `hgab`/alg-indep, §1.41(2)), it produces the
+    -- generic realization of `G` (the bare candidate + the GAP-2 upgrade). The genuinely-hard
+    -- residual is carried here in the "explicit `h…` crux" idiom (Phase 21b); the
+    -- producer-assembly leaf (§1.49(5)) discharges it.
     (hcand : ∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
       v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
       a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
@@ -4267,20 +4280,18 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
       (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
       e₀ ∉ E(G) →
-      PanelHingeFramework.HasFullRankRealization 2 (G.splitOff v a b e₀) →
-      PanelHingeFramework.HasFullRankRealization 2 G) :
-    PanelHingeFramework.HasFullRankRealization 2 G := by
+      PanelHingeFramework.HasGenericFullRankRealization 2 (G.splitOff v a b e₀) →
+      PanelHingeFramework.HasGenericFullRankRealization 2 G) :
+    PanelHingeFramework.HasGenericFullRankRealization 2 G := by
   classical
   have hD3 : 3 ≤ Graph.bodyBarDim n := by omega
   have hD2 : 2 ≤ Graph.bodyBarDim n := by omega
   have hD1 : 1 ≤ Graph.bodyBarDim n := by omega
-  -- G0: under no proper rigid subgraph, a minimal `0`-dof-graph on `≥ 3` vertices is simple.
-  haveI hsimp : G.Simple :=
-    Graph.simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnoRigid
+  haveI := hsimple
   -- Dichotomy on `|V(G)|`: the triangle base (`= 3`) versus the chain arm (`≥ 4`).
   rcases eq_or_lt_of_le hV3 with hV3eq | hV4
   · -- **Triangle base (T1–T4).** Pick an adjacent degree-2 pair and its two `v`-edges; T4 closes
-    -- the generic motive on the triangle, forgotten to the bare rank.
+    -- the generic motive on the triangle directly.
     have hcard3 : V(G).ncard = 3 := hV3eq.symm
     obtain ⟨v, a, hvG, haG, hdegv, _, eₐ, hlea⟩ :=
       Graph.exists_adjacent_degree_two_pair hD hV3 hG hnoRigid
@@ -4289,11 +4300,11 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       Graph.exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
     -- The splitOff data at `v` supplies two distinct `v`-edges `eₐ'`, `e_b` with distinct far
     -- endpoints `a'`, `b` (`a' ≠ v`, `b ≠ v`); T4 needs exactly two such edges to pin the triangle.
-    exact PanelHingeFramework.hasFullRankRealization_of_generic
-      (PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := 2)
-        G hD3 (by norm_num) hG hcard3 hlea' hleb ha'v hbv heab')
+    exact PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := 2)
+      G hD3 (by norm_num) hG hcard3 hlea' hleb ha'v hbv heab'
   · -- **Chain arm (`|V(G)| ≥ 4`).** Extract the chain data, build the `v`-split (a smaller minimal
-    -- `0`-dof-graph by `splitOff_isMinimalKDof`), realize it via the IH, and feed `hcand`.
+    -- `0`-dof-graph by `splitOff_isMinimalKDof`, simple by R3), pull its **generic** realization
+    -- from the IH's GP `.1` conjunct, and feed `hcand`.
     have hV4' : 4 ≤ V(G).ncard := hV4
     obtain ⟨v, a, b, c, eₐ, e_b, e_c, hvG, haG, hbG, hcG, hav, hbv, hba, hcv, hca, hbc,
       heab, heac, hlea, hleb, hlec, hclv, hcla⟩ :=
@@ -4310,10 +4321,17 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       rw [Graph.vertexSet_splitOff, Set.ncard_diff (by simpa using hvG) (Set.toFinite _),
         Set.ncard_singleton]
       omega
-    have hsplit : PanelHingeFramework.HasFullRankRealization 2 (G.splitOff v a b e₀) :=
-      hIH _ hGv hGv2 hGvlt
+    -- … and simple (R3, KT Lemma 6.7(ii)): an `ab`-parallel pair in the split would close the
+    -- triangle `G[{v,a,b}]`, a proper rigid subgraph at `4 ≤ |V(G)|`, contradicting `hnoRigid`.
+    have hGvSimple : (G.splitOff v a b e₀).Simple :=
+      Graph.splitOff_simple_of_noRigid_of_card hD3 heab hlea hleb hV4' hnoRigid
+    -- The IH's GP `.1` conjunct: the generic `v`-split realization (the placement seed `q`, whose
+    -- `IsGeneralPosition` conjunct is `hgab` and whose alg-indep conjunct feeds the triple-LI
+    -- bridge — the data the bare `.2` conjunct cannot supply, §1.41(1)–(2)).
+    have hsplitGP : PanelHingeFramework.HasGenericFullRankRealization 2 (G.splitOff v a b e₀) :=
+      (hIH _ hGv hGv2 hGvlt).1 hGvSimple
     exact hcand v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-      hlea hleb hlec hclv hcla he₀ hsplit
+      hlea hleb hlec hclv hcla he₀ hsplitGP
 
 
 /-- The edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` of the `ρ = (av)` relabel is
