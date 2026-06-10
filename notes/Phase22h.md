@@ -110,15 +110,27 @@ carrier ⟹ no §38 trap); supplies the `hnewtrans` input `case_III_old_new_bloc
 Blueprint `lem:case-III-claim612-line-in-panel-union` pin + prose extended. Build + lint +
 verify.sh clean; axiom-clean.
 
-**Next concrete step:** the M₁-arm candidate chain at the witness line, now that its `hnewtrans`
-feed exists. From the unpacked generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from
-`IsGeneralPosition`, `hn3` from the triple-LI bridge — all cheap inline derivations), produce
-`r̂ ≠ 0` via `exists_redundant_panelRow_ab_lam`, hook `case_III_claim612` →
-`exists_line_data_of_homogeneousIncidence`, pick the good `t` via `exists_shear_linearIndependent_pair`,
-and close the `n_a` arm via `case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
-`hasGenericFullRankRealization_of_rigidOn_ofNormals`. Land it as a standalone complete lemma
-(no `sorry` placeholders; if the piece is too big for one commit, split off a smaller complete
-sub-lemma instead — e.g. the line-data → witness `r̂(C(e_a)) ≠ 0` glue, graph-free, dodges §38).
+**The Claim-6.12 → witness-meet glue is LANDED** (the line-data → `r̂(C(L)) ≠ 0` clean cut, §1.49(5)):
+`exists_complementIso_ne_zero_of_homogeneousIncidence` (RigidityMatrix.lean, `BodyHingeFramework`
+namespace; added to blueprint `lem:case-III-claim612-line-in-panel-union`'s `\lean` pin + prose). The
+**forward (existence) dual** of `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`: from
+`r ≠ 0` + `LinearIndependent ℝ pbar` + three LI panel normals `n` + the homogeneous incidence
+(`h0`–`h3`), it composes `case_III_claim612` (witness join `r̂(pᵢ∨pⱼ) ≠ 0`) with
+`exists_line_data_of_homogeneousIncidence` (the join's line data) and the contrapositive of the
+per-line duality to produce a witness panel `{n_u, n'}` with `r̂(complementIso (n_u ∧ n')) ≠ 0` — the
+nonzero-candidate-row input the eq.-(6.12) candidate placement's row-space criterion is gated on.
+Graph-free (`Fin 4` / `⋀²ℝ⁴`, off the §38 trap); build + lint + verify.sh clean; axiom-clean.
+
+**Next concrete step:** the rest of the M₁-arm candidate chain, now that the witness `r̂(C(L)) ≠ 0`
+glue exists. From the unpacked generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from
+`IsGeneralPosition`, `hn3` from the triple-LI bridge — all cheap inline derivations): produce
+`r̂ ≠ 0` via `exists_redundant_panelRow_ab_lam` (incl. the `h618`/`h622` rank inputs); turn the witness
+meet into the nonzero `va`-hinge support `r̂(panelSupportExtensor (n_a + t•n') n_a) ≠ 0` (the
+`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` seed-from-line core); pick the good `t`
+via `exists_shear_linearIndependent_pair`; and close the `n_a` arm via `case_III_old_new_blocks_of_line`
++ `case_III_realization_of_line` + `hasGenericFullRankRealization_of_rigidOn_ofNormals`. Land it as a
+standalone complete lemma (no `sorry` placeholders; the OLD-block `hro_mem` re-derivation from the line
+placement is another clean cut if it won't fit one commit).
 
 **Build order (design §1.49(6); estimated 3–5 commits remaining):** producer spine ✓ →
 triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` discharge → Leaf 4
@@ -162,10 +174,12 @@ triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ →
   R3 split-simplicity discharge unlocking the IH's GP `.1` conjunct). Build + lint clean; no
   blueprint pin (the producer isn't `\lean`-pinned). Done.
 - [~] **Discharge `hcand`** (the candidate-placement core; the G4e spine; §1.49(5)): the
-  triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (§1.48(2)) and the GAP-3
-  good-`t` core `exists_shear_linearIndependent_pair` are landed. Remaining, as complete lemmas
-  (no `sorry` placeholders on master): the `r̂` construction (`exists_redundant_panelRow_ab_lam`,
-  incl. the `h618`/`h622` rank inputs), the `case_III_claim612` dispatch + line-data extraction,
+  triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (§1.48(2)), the GAP-3
+  good-`t` core `exists_shear_linearIndependent_pair`, and the Claim-6.12 → witness-meet glue
+  `exists_complementIso_ne_zero_of_homogeneousIncidence` (line-data → `r̂(C(L)) ≠ 0`) are landed.
+  Remaining, as complete lemmas (no `sorry` placeholders on master): the `r̂` construction
+  (`exists_redundant_panelRow_ab_lam`, incl. the `h618`/`h622` rank inputs), the witness-meet →
+  `va`-hinge-support nonzero step (`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`),
   the M₁/M₂/M₃ arms (M₃ via G4c/G4d), and the GAP-2 upgrade; then assemble into the discharge lemma
   matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
@@ -184,18 +198,19 @@ triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ →
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — the M₁-arm candidate chain as a standalone complete lemma**
-(next sub-step of the `hcand` discharge; mirrors *Next concrete step* above): from the unpacked
-generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from `IsGeneralPosition`, `hn3` from
-the triple-LI bridge — all cheap inline derivations), produce `r̂ ≠ 0` via
-`exists_redundant_panelRow_ab_lam` (incl. the `h618`/`h622` rank inputs), hook
-`case_III_claim612` → `exists_line_data_of_homogeneousIncidence`, pick the good `t` via the now-landed
-`exists_shear_linearIndependent_pair`, and close the `n_a` arm via `case_III_old_new_blocks_of_line`
-+ `case_III_realization_of_line` + `hasGenericFullRankRealization_of_rigidOn_ofNormals`. **No
-`sorry` placeholders** — if the piece won't fit one commit, split off a smaller complete sub-lemma
-instead (the line-data → `r̂(C(e_a)) ≠ 0` glue is graph-free and dodges §38; the OLD-block
-`hro_mem` re-derivation from the line placement is another clean cut). M₂/M₃ follow as their own
-complete lemmas; the discharge lemma matching the `hcand` signature assembles them at the end.
+**Smallest next forward commit — the witness-meet → `va`-hinge-support nonzero step** (next sub-step
+of the M₁ arm; the clean cut sitting between the now-landed
+`exists_complementIso_ne_zero_of_homogeneousIncidence` glue and `case_III_realization_of_line`'s `hr`
+input): turn the witness `r̂(complementIso (n_u ∧ n')) ≠ 0` into the sheared `va`-hinge-support
+nonzero `r̂(panelSupportExtensor (n_u + t•n') n_u) ≠ 0` via
+`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` + the
+`panelSupportExtensor_eq_complementIso_extensor` rewrite. Graph-free (`Fin (k+2) → ℝ`, dodges §38);
+small and complete. **No `sorry` placeholders.** That feed plus the landed `exists_shear_…` good-`t`
+and the `r̂` construction (`exists_redundant_panelRow_ab_lam`) then close the full `n_a` arm via
+`case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` (its own commit if needed; the OLD-block
+`hro_mem` re-derivation is a further clean cut). M₂/M₃ follow as their own complete lemmas; the
+discharge lemma matching the `hcand` signature assembles them at the end.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -294,3 +309,11 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   or `t = 2` is good (closed by `by_cases` + `norm_num`, no infinite-set machinery). The `∃ c` needs
   `: ℝ` (HSMul-metavar stuck, §31-family). Graph-free, no §38 trap; pinned to the existing node
   `lem:case-III-claim612-line-in-panel-union` (the line-in-panel-union group).
+- **Claim-6.12 → witness-meet glue (`exists_complementIso_ne_zero_of_homogeneousIncidence`,
+  RigidityMatrix.lean, `BodyHingeFramework`):** the forward (existence) dual of the green
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` — a clean three-line composition of
+  `case_III_claim612` (witness join `r̂(pᵢ∨pⱼ)≠0`), `exists_line_data_of_homogeneousIncidence` (line
+  data), and the duality's contrapositive (`r̂(C(L))=0 ⟹ r̂(join)=0`, against the witness). The one
+  idiom: `rw [show ⟨omitTwoExtensor pbar …, _⟩ = ⟨extensor ![pi,pj], _⟩ from Subtype.ext hkept]`
+  lifts the line-data underlying-value identity to the `ScrewSpace 2` subtype. Graph-free, no §38;
+  added to the existing node's `\lean` pin + prose (the witness `r̂(C(L))≠0` the producer is gated on).

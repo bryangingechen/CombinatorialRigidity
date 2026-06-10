@@ -1962,6 +1962,50 @@ theorem exists_hduality_witness_of_panel_incidence
   · exact htwo ⟨(2, 3), by decide⟩ 0 1 _ _ (by decide) (h0 0) (h0 1) h1a h1b
       (hkept ⟨(2, 3), by decide⟩ 0 1 (by decide) (by decide) (by decide) (by decide) (by decide))
 
+/-- **The witness panel-meet a nonzero screw functional fails to annihilate**
+(`lem:case-III-claim612-line-in-panel-union`, the Claim 6.12 → candidate-row glue of the `d = 3`
+`hsplit` producer's `n_a`/`n_b` arms, KT eq. (6.45); Phase 22h). The forward (existence) dual of
+`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`: rather than transferring annihilation,
+it produces, from a **nonzero** functional `r` and the homogeneous incidence data of four
+affinely-independent points `pbar` against three independent panel normals `n`, a line `L` in one of
+the three panels whose **panel-meet** `C(L) = complementIso (n_u ∧ n')` the functional `r` does
+*not* annihilate.
+
+This is the contrapositive of KT's Claim 6.12 union argument made constructive: Claim 6.12
+(`case_III_claim612`) supplies a witness join `pᵢ ∨ pⱼ = omitTwoExtensor pbar (ne_of_lt q.2)` with
+`r(pᵢ ∨ pⱼ) ≠ 0`; the per-join line data (`exists_line_data_of_homogeneousIncidence`) exhibits the
+join line `L = pᵢ pⱼ` inside a panel `Π(n_u)` with a second hyperplane `n'`; and the per-line
+duality (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, contrapositive) forces
+`r(C(L)) ≠ 0` from `r(pᵢ ∨ pⱼ) ≠ 0`. The resulting `{n_u, n'}` with
+`r(complementIso (n_u ∧ n')) ≠ 0` is the nonzero-candidate-row input the producer's eq. (6.12)
+candidate placement consumes (its hinge line is built to be exactly this witness line `L`).
+Graph-free (pure `Fin 4` / `⋀²ℝ⁴` geometry, off the `ofNormals` `whnf` trap, TACTICS-QUIRKS §38);
+the `r`/`pbar`/`n` data is supplied by the producer at instantiation. -/
+theorem exists_complementIso_ne_zero_of_homogeneousIncidence
+    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
+    {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar)
+    {n : Fin 3 → Fin 4 → ℝ} (hn : LinearIndependent ℝ n)
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (h1 : pbar 1 ⬝ᵥ n 0 = 0 ∧ pbar 1 ⬝ᵥ n 1 = 0)
+    (h2 : pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0)
+    (h3 : pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0) :
+    ∃ n_u n' : Fin 4 → ℝ, LinearIndependent ℝ ![n_u, n'] ∧
+      r (complementIso (k := 2) (j := 2) (by omega)
+        ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) ≠ 0 := by
+  -- Claim 6.12: a witness join `pᵢ ∨ pⱼ = omitTwoExtensor pbar (ne_of_lt q.2)` with `r(·) ≠ 0`.
+  obtain ⟨q, hq⟩ := case_III_claim612 hr hp
+  -- The per-join line data: the join line `L = pᵢ pⱼ ⊂ Π(n_u)`, second hyperplane `n'`.
+  obtain ⟨n_u, n', pi, pj, hpair, hi_u, hi_u', hj_u, hj_u', hkept⟩ :=
+    exists_line_data_of_homogeneousIncidence hn h0 h1 h2 h3 q
+  refine ⟨n_u, n', hpair, fun hC => hq ?_⟩
+  -- Contrapositive of the per-line duality: `r(C(L)) = 0` forces `r(pᵢ ∨ pⱼ) = 0`, i.e.
+  -- `r` annihilates the witness join — contradicting `hq`.
+  rw [show (⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ :
+        ⋀[ℝ]^2 (Fin 4 → ℝ)) = ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ from
+      Subtype.ext hkept]
+  exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
+    hi_u hi_u' hj_u hj_u' r hC
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,

@@ -247,6 +247,7 @@ consume them; projective invariance is Phase~25.
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_full_family_of_line,
         CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization_of_line,
         CombinatorialRigidity.Molecular.exists_line_data_of_homogeneousIncidence,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.exists_complementIso_ne_zero_of_homogeneousIncidence,
         CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals}
   \leanok
   \uses{lem:complement-iso-decomposable-wedge-perp, lem:complement-iso-line-one-dim,
@@ -278,7 +279,12 @@ consume them; projective invariance is Phase~25.
   The remaining listed declarations carry this transfer through the producer's pipeline at the
   witness line. The line data $(n_u, n', p_i, p_j)$ of each of the six joins is read off the
   homogeneous incidence of the four witness points relative to the three real split-leg normals
-  (the producer-direction reading of eq.~(6.45), with no annihilation premise); the candidate
+  (the producer-direction reading of eq.~(6.45), with no annihilation premise). Composing
+  \cref{lem:case-III-claim612}'s witness join $\hat r(\bar{p_i} \vee \bar{p_j}) \ne 0$ with that
+  line data and the \emph{contrapositive} of the transfer above produces a single witness panel
+  $\Pi(n_u)$ whose meet the nonzero functional fails to annihilate, $\hat r(C(L)) \ne 0$ --- the
+  constructive form of KT's union argument that the candidate placement's row-space criterion is
+  gated on. The candidate
   framework is built with its $va$-hinge \emph{on} that line, shearing body $v$ along the second
   normal $n'$ by a generic factor $t \ne 0$ chosen so the reproduced $vb$-hinge stays transversal
   (the affine line $t \mapsto n_a + t\,n'$ meets the span of the $b$-normal at most once, so all
