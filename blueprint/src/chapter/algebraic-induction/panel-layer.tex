@@ -286,6 +286,39 @@ whole induction.
   $S(u) = S(v) = S(w)$, and constancy on $\{u,v,w\}$ follows.
 \end{proof}
 
+\begin{lemma}[Cyclic-seed existence for the triangle base]
+  \label{lem:triangle-normals}
+  \lean{CombinatorialRigidity.Molecular.exists_triangle_normals}
+  \leanok
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
+        lem:extensor-independence}
+  When $k \ge 1$ (so $k+2 \ge 3$), there exist three vectors $n_0, n_1, n_2 \in \R^{k+2}$
+  such that (1) each cyclic pair $(n_0,n_1)$, $(n_1,n_2)$, $(n_2,n_0)$ has a nonzero
+  grade-2 join ($n_i \wedge n_j \ne 0$), and (2) the cyclic supporting-extensor family
+  $i \mapsto \mathrm{panelSupportExtensor}(n_{\sigma(i)}, n_{\sigma(i)+1})$ is linearly
+  independent. The witness is $n_0 = e_0$, $n_1 = e_1$, $n_2 = e_2$ (standard basis
+  vectors in $\R^{k+2}$): the cyclic family reduces (via the grade-2 antisymmetry at the
+  reversed pair $(e_2, e_0) = -(e_0 \wedge e_2)$) to the sorted family $e_0 \wedge e_1$,
+  $e_1 \wedge e_2$, $e_0 \wedge e_2$, up to unit scalars; the sorted family is a
+  three-member subfamily of the $\Lambda^2$-basis indexed by distinct 2-subsets; that
+  basis family is linearly independent (\cref{lem:extensor-independence}); unit scaling
+  preserves linear independence; and $e_i \wedge e_j \ne 0$ for $i < j$ since each such
+  join is a nonzero member of the same linearly independent basis family.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:panel-support-extensor-independence, lem:extensor-independence}
+  By \cref{lem:panel-support-extensor-independence} it suffices to show the grade-2 join
+  family is linearly independent. Via \texttt{normalsJoin\_swap}, the cyclic join family
+  $(e_0 \wedge e_1,\, e_1 \wedge e_2,\, e_2 \wedge e_0)$ equals (unit scalars) times the
+  sorted family $(e_0 \wedge e_1,\, e_1 \wedge e_2,\, e_0 \wedge e_2)$; unit scaling
+  preserves independence. Each sorted join equals the corresponding member of the
+  $\Lambda^2$-basis family (\texttt{normalsJoin\_basisFun\_orderEmbOfFin}); the three
+  indices $\{0,1\}$, $\{1,2\}$, $\{0,2\}$ are distinct, so the three-element subfamily
+  inherits independence from the full basis family
+  (\cref{lem:extensor-independence}).
+\end{proof}
+
 \subsection{The framework-construction op}
 \label{sec:molecular-algebraic-induction-withgraph}
 

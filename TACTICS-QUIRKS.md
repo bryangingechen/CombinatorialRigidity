@@ -1552,3 +1552,41 @@ matches the `y` in `y i` and rewrites it, not just the standalone `y` you had in
 *function-valued* term over-rewrites, the unintended hits are its partial applications elsewhere in
 the goal — narrow with `conv_lhs`/`conv_rhs`/`nth_rewrite` rather than re-stating the lemma. Worked
 case: `Pi.basisFun_toDual_apply` (Phase 22g, `Mathlib/LinearAlgebra/Dual/Basis.lean`).
+
+## 42. Proof-term mismatch between two `by tac` closures for the same proposition — use `let` in the theorem signature
+
+**Symptom.** A helper lemma `h : P := by tac` is elaborated twice: once when declaring the helper's
+type and once when using the result in a `congr`, `exact`, or `rw`. Lean treats the two `by tac`
+closures as definitionally equal but *not* syntactically equal, so `exact normalsJoin_eq_ιMulti_family_pair h`
+(where `h` was provided as an explicit argument `(h : i < j)`) fails or times out on a `congr`
+motive that checks the proof of the `Finset.card_pair` subterm — even though the proposition is
+the same. Concretely: `Finset.card_pair (Fin.ne_of_lt h01)` inside the helper's conclusion uses the
+`h01` argument, while `Finset.card_pair (Fin.ne_of_lt h01')` at the call site uses a different
+`h01'` proof object (same type, different elaboration closure), causing a definitional-equality
+puzzle under a whnf-heavy context.
+
+**Cause.** `by omega` (or any tactic proof) inside a term — e.g. as the membership proof in
+`⟨{i, j}, Finset.card_pair (Fin.ne_of_lt h)⟩` — produces a closed proof term, but *two calls*
+produce *two distinct closed terms* (the elaborator doesn't cache them across call sites). When the
+helper's conclusion mentions `Finset.card_pair (Fin.ne_of_lt h)` and the caller passes a proof of
+the same inequality obtained by a separate `by simp only [Fin.mk_lt_mk]; omega`, the two proof terms
+differ and `exact` / `rw` trips on the motive.
+
+**Fix.** Declare the inequality proofs as `let`-bound parameters in the helper's *statement*, not as
+regular explicit arguments:
+
+```lean
+private theorem sorted_family_eq (hk : 1 ≤ k) :
+    let h01 : ⟨0⟩ < (⟨1⟩ : Fin (k+2)) := by simp only [Fin.mk_lt_mk]; omega
+    ...
+    <conclusion referencing h01 in Finset.card_pair (Fin.ne_of_lt h01)> := by
+  intro h01 ...
+  exact helper h01
+```
+
+After `intro h01`, the `h01` in the *goal* is exactly the `let`-body — the same closed proof term
+that appears in the `Finset.card_pair` subterm of the conclusion. Now `exact helper h01` can unify
+because `h01` is literally the same term on both sides. The caller uses
+`rw [sorted_family_eq hk]` and does not need to supply the inequality proofs at all. Worked case:
+`basisFun3_normalsJoin_sorted_family` (Phase 22h, `PanelLayer.lean`); the alternative (explicit
+`(h01 : ...)` argument) timed out in whnf due to a proof-term mismatch under a `fin_cases` context.

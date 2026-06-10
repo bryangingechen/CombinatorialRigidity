@@ -38,7 +38,13 @@ puts `S u − S v`, `S v − S w`, `S w − S u` in the matching span; they sum 
 `eq_zero_of_mem_span_singleton_of_sum_eq_zero` forces each to 0; 9-case dispatch closes the
 `IsInfinitesimallyRigidOn {u,v,w}` goal.
 
-**Next concrete step: T3** (`exists_triangle_normals`, §1.48(1)), the cyclic-seed existence lemma.
+**T3 is DONE.** `exists_triangle_normals` (PanelLayer.lean; blueprint node `lem:triangle-normals`
+added; build + lint + verify.sh clean). Witness: `e₀, e₁, e₂ ∈ ℝ^(k+2)`. Pairwise nonvanishing via
+`normalsJoin_basisFun_ne_zero_of_lt`; extensor LI via `units_smul` decomposition + `ιMulti_family`
+basis LI + 3-index injection.
+
+**Next concrete step: T4** (`hasGenericFullRankRealization_of_triangle`, CaseI.lean; §1.48(1)), the
+triangle realization assembly through `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -61,9 +67,8 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
 - [x] **T1** — `exists_isLink_of_isMinimalKDof_card_three` (Operations.lean): vertex pin +
   third-edge existence via edge-count lower bound. Blueprint node `lem:triangle-third-edge`. Done.
 - [x] **T2** — `theorem_55_triangle` (Pinning.lean; blueprint `lem:theorem-55-triangle`). Done.
-- [ ] **T3** — `exists_triangle_normals` (PanelLayer.lean; §1.48(1)): 3 pairwise-LI standard-basis
-  normals + cyclic join LI. ~1 commit; parallel-safe after G4b-impl.
-  (Ledger entry: `notes/BlueprintExposition.md`, writes at this phase's close.)
+- [x] **T3** — `exists_triangle_normals` (PanelLayer.lean; blueprint node `lem:triangle-normals`).
+  Done.
 - [ ] **T4** — `hasGenericFullRankRealization_of_triangle` (CaseI.lean; §1.48(1)): triangle
   assembly through `hasGenericFullRankRealization_of_rigidOn_ofNormals`. ~1–2 commits.
 - [ ] **G4c-i/ii** — the fixed-seed `ρ = (a v)` relabel transport (graph iso + `ofNormals`
@@ -93,9 +98,10 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — T3** (`exists_triangle_normals`, §1.48(1)):
-3 pairwise-LI standard-basis normals + cyclic join LI (PanelLayer.lean).
-Parallel-safe with G4c-i/ii (§1.49(3)).
+**Smallest next forward commit — T4** (`hasGenericFullRankRealization_of_triangle`, CaseI.lean;
+§1.48(1)): triangle realization assembly through `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
+Uses T1 (`exists_isLink_of_isMinimalKDof_card_three`), T2 (`theorem_55_triangle`), T3
+(`exists_triangle_normals`). ~1–2 commits; parallel-safe with G4c-i/ii (§1.49(3)).
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -138,3 +144,9 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   is the loop case, killed by the `y ≠ x` hypothesis). The 4-way `(g₁/g₂ = eₐ) × (f₁/f₂ = eₐ)`
   case split avoids `subst` on shared names; closures are reindexed via `Or.imp_left` +
   `Eq.trans` + `.symm` rather than `▸` rewrites in term position.
+- **T3 proof decomposition (`exists_triangle_normals`):** extracted 4 private helpers to avoid
+  `whnf`-context explosion: `normalsJoin_basisFun_ne_zero_of_lt`, `normalsJoin_eq_ιMulti_family_pair`,
+  `basisFun3_normalsJoin_cyclic_eq_units_smul`, `basisFun3_normalsJoin_sorted_family`. The last uses
+  `let`-bound `h01/h12/h02` in the statement (not explicit args) so that after `intro`, the proof
+  terms in the goal match `Finset.card_pair (Fin.ne_of_lt hXX)` exactly, enabling direct `exact`
+  application. Proof-term mismatch pattern → TACTICS-QUIRKS § 42.

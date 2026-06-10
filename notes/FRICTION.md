@@ -76,6 +76,19 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Proof-term mismatch between two `by tac` closures — use `let`-bound params in the theorem signature to force term identity
+- **Where it bit:** Phase 22h `basisFun3_normalsJoin_sorted_family` (`PanelLayer.lean`); the helper
+  `normalsJoin_eq_ιMulti_family_pair h` needed `h` to be term-identical to the `h` inside
+  `Finset.card_pair (Fin.ne_of_lt h)` in the conclusion. Providing `h01` as an explicit argument
+  (`(h01 : ⟨0⟩ < ⟨1⟩ : Fin (k+2))`) caused `exact normalsJoin_eq_ιMulti_family_pair h01` to time
+  out under `fin_cases` because the caller's `h01` and the helper's `h` are two separate `by omega`
+  elaborations — syntactically distinct even though propositionally equal.
+- **Fix:** Declare the proof as a `let`-binding in the theorem statement: `let h01 : P := by tac`.
+  After `intro h01` in the proof body, `h01` IS the closed `by tac` term, so `Finset.card_pair
+  (Fin.ne_of_lt h01)` in the goal is literally the same term as in `normalsJoin_eq_ιMulti_family_pair h01`.
+  The caller uses `rw [sorted_family_eq hk]` and never supplies the proof objects.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 42.
+
 ### [resolved] Collapsing a 3-element `Set.insert` to a pair under a non-adjacent equality (`{a, b, c}` with `a = c`) — `rw [← h]; simp` doesn't close; use `ext w; simp only [mem_insert_iff, mem_singleton_iff, ← h]; tauto`
 - **Where it bit:** Phase 22g `isKDof_zero_of_triangle` (`Deficiency.lean`), the two-part-count
   `({f x, f y, f z} : Set α).ncard = 2` in the `f x = f z` branch (collapse `{f x, f y, f z}` to

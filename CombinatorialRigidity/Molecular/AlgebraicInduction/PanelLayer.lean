@@ -448,6 +448,178 @@ theorem exists_independent_panelSupportExtensor {m : ℕ} (hm : m ≤ screwDim k
   obtain ⟨n₁, n₂, h⟩ := exists_independent_normalsJoin (k := k) hm
   exact ⟨n₁, n₂, (panelSupportExtensor_linearIndependent_iff n₁ n₂).mpr h⟩
 
+-- Private helpers for `exists_triangle_normals` below.
+-- Extracted as standalone lemmas to avoid context-explosion timeouts in the main proof.
+
+/-- The grade-2 join of two distinct standard-basis vectors is nonzero: `normalsJoin eᵢ eⱼ ≠ 0`
+for `i < j`. Follows from `ιMulti_family_linearIndependent_ofBasis`: the join equals the
+`{i,j}`-member of the `⋀²`-basis family (via `normalsJoin_basisFun_orderEmbOfFin`), which is
+nonzero because the whole family is LI. -/
+private theorem normalsJoin_basisFun_ne_zero_of_lt {i j : Fin (k + 2)} (h : i < j) :
+    normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) i) (Pi.basisFun ℝ (Fin (k + 2)) j) ≠ 0 := by
+  have hcard := Finset.card_pair (Fin.ne_of_lt h)
+  have hne := (exteriorPower.ιMulti_family_linearIndependent_ofBasis ℝ 2
+    (Pi.basisFun ℝ (Fin (k + 2)))).ne_zero ⟨{i, j}, hcard⟩
+  have hoE0 : ({i, j} : Finset (Fin (k + 2))).orderEmbOfFin hcard 0 = i := by
+    have := @Finset.orderEmbOfFin_zero (Fin (k + 2)) _ {i, j} 2 hcard (by norm_num)
+    simp only [show (⟨0, by norm_num⟩ : Fin 2) = 0 from rfl] at this
+    rw [this]; simp [Finset.min'_insert, Finset.min'_singleton, le_of_lt h]
+  have hoE1 : ({i, j} : Finset (Fin (k + 2))).orderEmbOfFin hcard 1 = j := by
+    have := @Finset.orderEmbOfFin_last (Fin (k + 2)) _ {i, j} 2 hcard (by norm_num)
+    simp only [show (⟨2 - 1, by norm_num⟩ : Fin 2) = 1 from rfl] at this
+    rw [this]; simp [Finset.max'_insert, Finset.max'_singleton, le_of_lt h]
+  rw [← normalsJoin_basisFun_orderEmbOfFin, hoE0, hoE1] at hne
+  exact hne
+
+/-- The join of two standard-basis vectors `eᵢ eⱼ` (for `i < j`) equals the `{i,j}`-member of
+the `ιMulti_family` basis. Used to rewrite the sorted-pair family into the `ιMulti_family` range
+so that `ιMulti_family_linearIndependent_ofBasis.comp` applies. -/
+private theorem normalsJoin_eq_ιMulti_family_pair {i j : Fin (k + 2)} (h : i < j) :
+    normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) i) (Pi.basisFun ℝ (Fin (k + 2)) j) =
+      exteriorPower.ιMulti_family ℝ 2 (Pi.basisFun ℝ (Fin (k + 2)))
+        ⟨{i, j}, Finset.card_pair (Fin.ne_of_lt h)⟩ := by
+  have hcard := Finset.card_pair (Fin.ne_of_lt h)
+  rw [← normalsJoin_basisFun_orderEmbOfFin ⟨{i, j}, hcard⟩]
+  congr 2
+  · have := @Finset.orderEmbOfFin_zero (Fin (k + 2)) _ {i, j} 2 hcard (by norm_num)
+    simp only [show (⟨0, by norm_num⟩ : Fin 2) = 0 from rfl] at this
+    rw [this]; simp [Finset.min'_insert, Finset.min'_singleton, le_of_lt h]
+  · have := @Finset.orderEmbOfFin_last (Fin (k + 2)) _ {i, j} 2 hcard (by norm_num)
+    simp only [show (⟨2 - 1, by norm_num⟩ : Fin 2) = 1 from rfl] at this
+    rw [this]; simp [Finset.max'_insert, Finset.max'_singleton, le_of_lt h]
+
+/-- The cyclic normal family `(e₀,e₁), (e₁,e₂), (e₂,e₀)` equals (unit scalars) × the sorted
+family `(e₀,e₁), (e₁,e₂), (e₀,e₂)`: pairs `(0,1)` and `(1,2)` carry scalar `+1`; pair `(2,0)`
+carries scalar `-1` (from `normalsJoin_swap`). This decomposes the cyclic family as a
+`LinearIndependent.units_smul`-suitable re-indexing of the sorted LI family. -/
+private theorem basisFun3_normalsJoin_cyclic_eq_units_smul (hk : 1 ≤ k) :
+    (fun i => normalsJoin
+      (![Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩,
+         Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩,
+         Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩] i)
+      (![Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩,
+         Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩,
+         Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩] i)) =
+    (![Units.mk0 (1 : ℝ) (by norm_num), Units.mk0 (1 : ℝ) (by norm_num),
+        Units.mk0 (-1 : ℝ) (by norm_num)] : Fin 3 → ℝˣ) •
+    (![normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                   (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩),
+       normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩)
+                   (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩),
+       normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                   (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩)] : Fin 3 → _) := by
+  funext i; fin_cases i
+  · change normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                       (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩)
+           = (Units.mk0 (1 : ℝ) (by norm_num) : ℝˣ) •
+               normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                           (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩)
+    rw [Units.smul_def, Units.val_mk0, one_smul]
+  · change normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩)
+                       (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩)
+           = (Units.mk0 (1 : ℝ) (by norm_num) : ℝˣ) •
+               normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩)
+                           (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩)
+    rw [Units.smul_def, Units.val_mk0, one_smul]
+  · change normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩)
+                       (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+           = (Units.mk0 (-1 : ℝ) (by norm_num) : ℝˣ) •
+               normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                           (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩)
+    rw [normalsJoin_swap, Units.smul_def, Units.val_mk0]; module
+
+/-- The sorted normal family `(e₀,e₁), (e₁,e₂), (e₀,e₂)` equals `ιMulti_family ∘ index-map`,
+where the index map sends each position to the corresponding 2-element subset `{eᵢ, eⱼ}`.
+Uses `let` for `h01 h12 h02` so that after `intro`, the proof terms in the goal exactly match
+`Finset.card_pair (Fin.ne_of_lt hXX)`, enabling `normalsJoin_eq_ιMulti_family_pair` directly. -/
+private theorem basisFun3_normalsJoin_sorted_family (hk : 1 ≤ k) :
+    let h01 : (⟨0, by omega⟩ : Fin (k + 2)) < ⟨1, by omega⟩ := by simp only [Fin.mk_lt_mk]; omega
+    let h12 : (⟨1, by omega⟩ : Fin (k + 2)) < ⟨2, by omega⟩ := by simp only [Fin.mk_lt_mk]; omega
+    let h02 : (⟨0, by omega⟩ : Fin (k + 2)) < ⟨2, by omega⟩ := by simp only [Fin.mk_lt_mk]; omega
+    (![normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                   (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩),
+       normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩)
+                   (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩),
+       normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩)
+                   (Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩)] : Fin 3 → _)
+      = (exteriorPower.ιMulti_family ℝ 2 (Pi.basisFun ℝ (Fin (k + 2)))) ∘
+          ![⟨{⟨0, by omega⟩, ⟨1, by omega⟩}, Finset.card_pair (Fin.ne_of_lt h01)⟩,
+            ⟨{⟨1, by omega⟩, ⟨2, by omega⟩}, Finset.card_pair (Fin.ne_of_lt h12)⟩,
+            ⟨{⟨0, by omega⟩, ⟨2, by omega⟩}, Finset.card_pair (Fin.ne_of_lt h02)⟩] := by
+  intro h01 h12 h02
+  funext i; fin_cases i
+  · exact normalsJoin_eq_ιMulti_family_pair h01
+  · exact normalsJoin_eq_ιMulti_family_pair h12
+  · exact normalsJoin_eq_ιMulti_family_pair h02
+
+/-- **Cyclic-seed existence for the triangle base (`d = 3`)** (`lem:triangle-normals`, §1.48(1)):
+there exist three vectors `n₀ n₁ n₂ : Fin (k+2) → ℝ` (with `k ≥ 1`, so `k+2 ≥ 3`) such that
+(1) each cyclic pair has a nonzero grade-2 join (`normalsJoin nᵢ nⱼ ≠ 0`) and (2) the cyclic
+supporting-extensor family `i ↦ panelSupportExtensor (![n₀,n₁,n₂] i) (![n₁,n₂,n₀] i)` is
+linearly independent. The witness is the standard basis: `n₀ = e₀`, `n₁ = e₁`, `n₂ = e₂` in
+`ℝ^(k+2)`. The cyclic family reduces (via `normalsJoin_swap` at the reversed pair) to the sorted
+family `nJ(e₀,e₁), nJ(e₁,e₂), nJ(e₀,e₂)` up to unit scalars; the sorted family equals a
+3-member subfamily of the `⋀²`-basis indexed by distinct 2-subsets; the basis family is LI and
+unit scaling preserves LI. Each join `nJ(eᵢ,eⱼ)` for `i < j` is nonzero since it is a nonzero
+member of the LI basis family. -/
+theorem exists_triangle_normals (hk : 1 ≤ k) :
+    ∃ n₀ n₁ n₂ : Fin (k + 2) → ℝ,
+      (normalsJoin n₀ n₁ ≠ 0 ∧ normalsJoin n₁ n₂ ≠ 0 ∧ normalsJoin n₂ n₀ ≠ 0) ∧
+      LinearIndependent ℝ
+        (fun i => panelSupportExtensor (![n₀, n₁, n₂] i) (![n₁, n₂, n₀] i)) := by
+  have h01 : (⟨0, by omega⟩ : Fin (k + 2)) < ⟨1, by omega⟩ := by
+    simp only [Fin.mk_lt_mk]; omega
+  have h12 : (⟨1, by omega⟩ : Fin (k + 2)) < ⟨2, by omega⟩ := by
+    simp only [Fin.mk_lt_mk]; omega
+  have h02 : (⟨0, by omega⟩ : Fin (k + 2)) < ⟨2, by omega⟩ := by
+    simp only [Fin.mk_lt_mk]; omega
+  set s₀₁ : Set.powersetCard (Fin (k + 2)) 2 :=
+    ⟨{⟨0, by omega⟩, ⟨1, by omega⟩}, Finset.card_pair (Fin.ne_of_lt h01)⟩ with hs₀₁
+  set s₁₂ : Set.powersetCard (Fin (k + 2)) 2 :=
+    ⟨{⟨1, by omega⟩, ⟨2, by omega⟩}, Finset.card_pair (Fin.ne_of_lt h12)⟩ with hs₁₂
+  set s₀₂ : Set.powersetCard (Fin (k + 2)) 2 :=
+    ⟨{⟨0, by omega⟩, ⟨2, by omega⟩}, Finset.card_pair (Fin.ne_of_lt h02)⟩ with hs₀₂
+  refine ⟨Pi.basisFun ℝ (Fin (k + 2)) ⟨0, by omega⟩,
+          Pi.basisFun ℝ (Fin (k + 2)) ⟨1, by omega⟩,
+          Pi.basisFun ℝ (Fin (k + 2)) ⟨2, by omega⟩, ?_, ?_⟩
+  · -- Pairwise nonvanishing: each cyclic pair (n₀,n₁), (n₁,n₂), (n₂,n₀) has nJ ≠ 0.
+    refine ⟨normalsJoin_basisFun_ne_zero_of_lt h01,
+            normalsJoin_basisFun_ne_zero_of_lt h12, ?_⟩
+    -- normalsJoin n₂ n₀ = -(normalsJoin n₀ n₂) ≠ 0 since normalsJoin n₀ n₂ ≠ 0.
+    rw [normalsJoin_swap]
+    exact neg_ne_zero.mpr (normalsJoin_basisFun_ne_zero_of_lt h02)
+  · -- Extensor LI: cyclic family is LI via units-smul + ιMulti_family basis LI.
+    rw [panelSupportExtensor_linearIndependent_iff,
+        basisFun3_normalsJoin_cyclic_eq_units_smul hk,
+        LinearIndependent.units_smul_iff,
+        basisFun3_normalsJoin_sorted_family hk]
+    apply (exteriorPower.ιMulti_family_linearIndependent_ofBasis ℝ 2
+      (Pi.basisFun ℝ (Fin (k + 2)))).comp
+    -- Injectivity of the three-element index map `![s₀₁, s₁₂, s₀₂]`.
+    intro i j hij
+    fin_cases i <;> fin_cases j
+    · rfl
+    · change s₀₁ = s₁₂ at hij
+      exfalso; simp only [s₀₁, s₁₂, Subtype.mk.injEq] at hij
+      have := Finset.ext_iff.mp hij ⟨0, by omega⟩; simp at this
+    · change s₀₁ = s₀₂ at hij
+      exfalso; simp only [s₀₁, s₀₂, Subtype.mk.injEq] at hij
+      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+    · change s₁₂ = s₀₁ at hij
+      exfalso; simp only [s₁₂, s₀₁, Subtype.mk.injEq] at hij
+      have := Finset.ext_iff.mp hij ⟨0, by omega⟩; simp at this
+    · rfl
+    · change s₁₂ = s₀₂ at hij
+      exfalso; simp only [s₁₂, s₀₂, Subtype.mk.injEq] at hij
+      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+    · change s₀₂ = s₀₁ at hij
+      exfalso; simp only [s₀₂, s₀₁, Subtype.mk.injEq] at hij
+      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+    · change s₀₂ = s₁₂ at hij
+      exfalso; simp only [s₀₂, s₁₂, Subtype.mk.injEq] at hij
+      have := Finset.ext_iff.mp hij ⟨1, by omega⟩; simp at this
+    · rfl
+
 /-- **A `⋀^k`-coordinate of the panel support extensor as a degree-2 polynomial in the panel
 coordinates** (B0, the device-keystone polynomiality; `lem:rows-polynomial-in-normals`,
 sub-commit 2). The supporting `k`-extensor
