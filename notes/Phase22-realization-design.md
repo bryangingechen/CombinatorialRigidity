@@ -1876,6 +1876,53 @@ buildable-leaf path:
   a clean bounded close (no research-shaped node remains in Phase 22g; Lemma 6.10/Claim 6.11 the §4 risk
   register flags as the largest KT proof is already green via Phase 22d/22e/22f).
 
+### 1.46 GAP 1 DISSOLVED — the producer never consumes `(G.splitOff …).Simple` (the GAP-2 B-derive route uses `hIH.2`'s bare conjunct); and §1.44's "supply `(G.splitOff …).Simple` directly at `|V|=3`" is FALSE (the `|V|=3` triangle's splitOff genuinely has a parallel pair) (2026-06-09)
+
+> **Build-free recon pass re-tracing GAP 1 against the actual producer/IH wiring, after the GAP-2 leaf
+> landed.** §1.44 flagged GAP 1 ((C), the "most consequential finding") as: the producer needs
+> `(G.splitOff v a b e₀).Simple` (to feed the IH's *generic* conjunct), but `splitOff_simple_of_noRigid_of_card`
+> needs `4 ≤ |V(G)|`, unmet at the reachable `|V(G)|=3` triangle; its proposed unblock (i) was a "small
+> `|V(G)|=3` simplicity branch — `splitOff` lands on `|V|=2`, simple by direct edge-count." Re-reading the
+> *route* (not the §1.44 verdict) against the now-green producer + `theorem_55_generic`'s `hsplitGP` shape,
+> **GAP 1 is dissolved, and §1.44's unblock (i) is mathematically false.** Two findings:
+>
+> 1. **The producer never needs split-simplicity (GAP 1 dissolves under the §1.45 GAP-2 B-derive route).**
+>    `theorem_55_generic`'s `hsplitGP` premise (PanelHinge.lean:1167–1175) hands the producer
+>    `hIH : ((G.splitOff …).Simple → HasGenericFullRankRealization k (G.splitOff …)) ∧
+>    HasFullRankRealization k (G.splitOff …)` together with `G.Simple`, and asks for
+>    `HasGenericFullRankRealization k G`. Under §1.45 the producer (a) takes the **bare**
+>    `_hsplit := hIH.2 : HasFullRankRealization k (G.splitOff …)` — the *unconditional* `.2` conjunct, no
+>    `(G.splitOff …).Simple` required — feeds it to `case_III_hsplit_producer` to build the degenerate
+>    candidate `ofNormals G ends q₀` to **bare** `HasFullRankRealization`, then (b) invokes
+>    `hasGenericFullRankRealization_of_rigidOn_ofNormals` (CaseI.lean:1968, the landed GAP-2 leaf) to
+>    re-realize it generically. Neither (a) nor (b) consumes `(G.splitOff …).Simple` (the upgrade reads
+>    the graph's rank polynomial off the *fixed* concrete candidate, never the split graph). The IH's
+>    *generic* `.1` conjunct — the only place `(G.splitOff …).Simple` would enter — is **unused**. So GAP 1
+>    was an artifact of the pre-§1.45 plan (conclude GP *at the split graph* via the generic IH conjunct);
+>    the B-derive route concludes GP *at `G`* from the bare candidate and discards the split-simplicity need.
+>
+> 2. **§1.44's unblock (i) is FALSE: `(G.splitOff …).Simple` does not hold at `|V(G)|=3`.** §1.44 line ~1632
+>    asserted "when `G` is the triangle, `splitOff v a b e₀` is the 2-vertex single-edge graph on `{a,b}`,
+>    trivially simple." This is wrong. At `|V(G)|=3`, `D=3`, a minimal `0`-dof `G` is `(D,D)`-tight so
+>    `|E(G)| = D·(|V|−1)/(D−1) = 3·2/2 = 3` — i.e. `G` is the triangle, which DOES carry the `ab`-edge `f`
+>    (`G.IsLink f a b`). In `splitOff v a b e₀` (Operations.lean:574), `f` survives via the first disjunct
+>    (`f ≠ e₀` since `e₀ ∉ E(G)`, `G.IsLink f a b`, `a ≠ v`, `b ≠ v`) **and** the fresh `e₀` links `a-b` via
+>    the second disjunct — two *distinct* edges `f ≠ e₀` on the pair `a-b` = a parallel pair, so
+>    `(G.splitOff …)` is **not simple**. The split graph is the 2-vertex *double*-edge `K₂` (the same base
+>    object `hbase`/`hbaseGP` handle, where GP genuinely fails — PanelHinge.lean:1125–1128), not a single
+>    edge. So no `|V(G)|=3` simplicity branch exists to build; option (i) is unprovable.
+>
+> **Net:** GAP 1 needs no new lemma — it dissolves into the GAP-2 B-derive route already chosen. The
+> originally-planned `|V|=3` simplicity branch is dropped (it was false). `R3` (`splitOff_simple_of_noRigid_of_card`,
+> `|V|≥4`) stays exactly as a reusable graph-side fact (sibling of `rigidContract_simple`), even though the
+> `d=3` producer no longer calls it — KT's Lemma 6.7(ii) `G_v^{ab}`-simplicity at `|V|≥4` is genuine math
+> that re-enters anywhere a *simple* split realization is wanted (e.g. a future unconditional-GP variant or
+> Phase 23). The remaining `d=3` work is unchanged minus GAP 1: the §38-trap concrete-seed producer (composing
+> the landed GAP-2 upgrade onto the bare candidate, folding in GAP-3 good-`t`), then Leaf 4/5. **This is again
+> the "recon-traces-the-route, not the verdicts" lesson §1.44 named** — §1.44 itself adjudicated GAP 1 as a
+> *brick* ("the `4 ≤ |V|` guard is unmet") without tracing whether the producer/IH wiring (post-§1.45) ever
+> reaches for the brick, and asserted a `|V|=3` simplicity fact without checking the triangle's edge count.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order

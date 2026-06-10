@@ -34,40 +34,48 @@ form as a join — so the producer builds its candidate so its hinge line IS the
 that degenerate placement is exactly the source of GAP 2** (the seed cannot carry the GP motive's
 `AlgebraicIndependent ℚ` conjunct, §1.44) — see *Blockers*.
 
-**Next concrete step (GAP-2 upgrade leaf LANDED 2026-06-09 — GAP 1 + GAP 3 + the §38-trap producer
-remain):** the GAP-2 keystone is built: `hasGenericFullRankRealization_of_rigidOn_ofNormals`
-(CaseI.lean, axiom-clean) — takes the concrete rigid+linking-transversal `ofNormals G ends q₀`
-(`hends`/`hne`/`hnev`/`hrig`) and concludes the generic motive `HasGenericFullRankRealization k G` by
-re-realizing at an alg-indep seed `q₁`: the rational rank polynomial `Q` of `G`/`ends` *only*
-(`exists_rankPolynomial_of_rigidOn_linking`), non-root at `q₁` via the alg-indep eval bridge; the GP
-factor `Qgp` likewise; the seed `q₁` carries the alg-indep conjunct. Body = the `case_I_realization`
-rank-polynomial block over a *single* graph (no two-block splice). This was the smallest forward commit;
-GAP 1 (`|V|=3` simplicity branch) + GAP 3 (genericity-in-`t`, folded into the producer) + the §38-trap
-concrete-seed producer (Leaf 3) now **compose this upgrade onto the bare candidate** to conclude the
-`hsplitGP` shape. The producer supplies the upgrade's `hne` from its candidate completion (`hane`/`hnewtrans`
-cover the `va`/`vb` hinges; remaining direct `G`-links are the candidate's panel hinges).
-The §1.45 design pass settled GAP 2 **(B-derive)**: the producer does NOT conclude
+**Next concrete step (the §38-trap concrete-seed producer, Leaf 3 — GAP 1 DISSOLVED §1.46, GAP-2 upgrade
+leaf LANDED, GAP 3 folds in):** the remaining `d=3` build is the §38-trap concrete-seed producer. Restate
+`case_III_hsplit_producer` to `theorem_55_generic`'s `hsplitGP` shape; take the **bare** `_hsplit := hIH.2`
+(no split-simplicity — see GAP-1 below), build the eq.-(6.12) degenerate candidate `ofNormals G ends q₀` to
+**bare** `HasFullRankRealization` (`case_III_realization_of_line`), then **compose the landed GAP-2 upgrade
+`hasGenericFullRankRealization_of_rigidOn_ofNormals`** onto it to conclude `HasGenericFullRankRealization k G`.
+The producer supplies the upgrade's `hne` from its candidate completion (`hane`/`hnewtrans` cover the
+`va`/`vb` hinges; remaining direct `G`-links are the candidate's panel hinges); GAP 3 (genericity-in-`t`,
+`Fin(k+2)→ℝ` linear algebra) folds into the assembly. The GAP-2 keystone is built:
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` (CaseI.lean, axiom-clean) — takes the concrete
+rigid+linking-transversal `ofNormals G ends q₀` (`hends`/`hne`/`hnev`/`hrig`) and concludes the generic motive
+by re-realizing at an alg-indep seed `q₁`: the rational rank polynomial `Q` of `G`/`ends` *only*
+(`exists_rankPolynomial_of_rigidOn_linking`), non-root at `q₁` via the alg-indep eval bridge; the GP factor
+`Qgp` likewise; the seed `q₁` carries the alg-indep conjunct. Body = the `case_I_realization` rank-polynomial
+block over a *single* graph (no two-block splice). The §1.45 design pass settled GAP 2 **(B-derive)**: the
+producer does NOT conclude
 `HasGenericFullRankRealization` *at the degenerate seed* (impossible — the seed is `ℚ`-alg-dependent by
 construction; the motive's framework is **existentially quantified**, PanelHinge.lean:1033), it builds the
 candidate to **bare** `HasFullRankRealization` (Leaf 3) then invokes this upgrade. KT's "convert (G,p1) to
 a nonparallel realization by Lemma 5.2 without decreasing rank" (KT p. 678); `L`-independent (rank
 polynomial is a graph property, `L` discarded once full rank is witnessed).
-**R3 for `|V|≥4` is COMPLETE** (2026-06-09): part (1)
+**R3 (`splitOff_simple_of_noRigid_of_card`, `|V|≥4`) is COMPLETE** (2026-06-09): part (1)
 `isKDof_zero_of_triangle` (Deficiency.lean) + part (2) the `htri` discharge (`triangle_isProperRigidSubgraph`
-+ the hypothesis-free `splitOff_simple_of_noRigid_of_card`, Operations.lean) are axiom-clean — but they
-cover only `|V|≥4` (GAP 1). Full detail per leaf in the *Lemma checklist* + *Hand-off*; the checklist is
-the canonical done/open ledger.
++ the hypothesis-free `splitOff_simple_of_noRigid_of_card`, Operations.lean) are axiom-clean. It stays as a
+reusable KT Lemma 6.7(ii) graph-side fact (sibling of `rigidContract_simple`) — the `d=3` producer no longer
+calls it (GAP 1 dissolved, §1.46: the producer takes the bare `hIH.2`, never the split graph's simplicity).
+Full detail per leaf in the *Lemma checklist* + *Hand-off*; the checklist is the canonical done/open ledger.
 
-**THREE bounded gaps remain in the Leaf-3 producer (§1.44 surfaced them; §1.45 reclassified GAP 2 from
-research-shaped to bounded). The `d=3` producer IS buildable — no research-shaped node remains in 22g.**
-The three sub-obligations the §38-trapped producer carries, all bounded:
-- **GAP 1 — bounded (was (C)):** the `4 ≤ |V(G)|` proper-ness guard `splitOff_simple_of_noRigid_of_card`
-  needs is **unmet at the reachable `|V(G)|=3` triangle**. `minimal_kdof_reduction` (ForestSurgery.lean)
-  has only a `|V|=2` base — its `hsplit` branch fires at `|V|≥3` with no proper rigid subgraph, so it
-  splits the `|V|=3` triangle (KT carves `|V|=3` out as a separate base via Lemma 6.7(i); the project does
-  not). There the triangle witness `G.induce{v,a,b}` = all of `G`, so it is improper and R3 is false.
-  **Unblock (bounded):** a small `|V(G)|=3` simplicity branch (splitOff → `|V|=2`, simple by direct
-  edge-count), keeping R3 for `|V|≥4`. A missed case, not a research obstacle — but a hole the build hits.
+**GAP 1 DISSOLVED (§1.46, 2026-06-09); TWO bounded sub-obligations remain in the Leaf-3 producer (§1.44
+surfaced three; §1.45 reclassified GAP 2 from research-shaped to bounded; §1.46 dissolved GAP 1). The `d=3`
+producer IS buildable — no research-shaped node remains in 22g.** The sub-obligations the §38-trapped
+producer carries, all bounded:
+- **GAP 1 — DISSOLVED (§1.46; was (C)).** The producer **never consumes `(G.splitOff …).Simple`** under the
+  §1.45 GAP-2 B-derive route: it takes the **bare** `_hsplit := hIH.2 : HasFullRankRealization k (G.splitOff
+  …)` (the *unconditional* `.2` conjunct of `theorem_55_generic`'s `hsplitGP` IH — no split-simplicity), builds
+  the bare candidate, then upgrades via `hasGenericFullRankRealization_of_rigidOn_ofNormals`. The IH's *generic*
+  `.1` conjunct (the only place split-simplicity would enter) is unused. Bonus finding: §1.44's proposed
+  "`|V|=3` simplicity branch" was **false** — at `|V(G)|=3`, `D=3`, a minimal `0`-dof `G` is the triangle
+  (`|E(G)| = 3·2/2 = 3`), whose splitOff carries BOTH the surviving `ab`-edge `f` AND the fresh `e₀` on `a-b`
+  (a parallel pair), so it is the 2-vertex *double*-edge `K₂`, NOT simple. No `|V|=3` branch to build; R3
+  (`splitOff_simple_of_noRigid_of_card`, `|V|≥4`) stays as a reusable graph-side fact (the producer no longer
+  calls it). Full trace: §1.46.
 - **GAP 2 — LANDED 2026-06-09 (the upgrade leaf; B-derive, §1.45).** R2's `hsplitGP` shape makes the
   producer conclude `HasGenericFullRankRealization`. The eq.-(6.12) candidate seed shears `v` to
   `n_a + t•n'` — `ℚ`-alg-dependent, so it cannot itself carry the `AlgebraicIndependent ℚ` conjunct — but
@@ -86,8 +94,8 @@ The three sub-obligations the §38-trapped producer carries, all bounded:
   is at most a single value (the affine line `t↦n_a+t•n'` is not contained in `span{n_b}` since `n_a∉span{n_b}`
   from the pairwise GP `hgab`), so a good `t≠0` exists. Bounded `Fin(k+2)→ℝ` linear algebra, no new geometry.
 
-Full traces: `notes/Phase22-realization-design.md` §1.45 (GAP-2 resolution) + §1.44 (the three sub-obligations)
-+ §1.39–§1.43.
+Full traces: `notes/Phase22-realization-design.md` §1.46 (GAP-1 dissolution) + §1.45 (GAP-2 resolution) +
+§1.44 (the three sub-obligations) + §1.39–§1.43.
 
 **Landed (all axiom-clean; off the to-do list):** Leaf 1 (existential `case_III_claim612`), Leaf 2a/2b
 (join↔meet bridge + line-indexed candidate placement `case_III_old_new_blocks_of_line` +
@@ -98,9 +106,9 @@ consumer-restate to bare LI `pbar`), R3 **for `|V|≥4`** (criterion `splitOff_s
 (C2-feed assembly `case_III_realization_of_line`, line-data leaf `exists_line_data_of_homogeneousIncidence`).
 The Lemma checklist carries the per-leaf detail.
 
-**Remaining (→ phase close): all bounded, ~4–5 commits.** GAP-1 `|V|=3` simplicity branch (~1) +
-GAP-3 good-`t` (folded into the producer) + the §38-trap concrete-seed producer (~1–2, composes the
-landed GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate) + Leaf 4
+**Remaining (→ phase close): all bounded, ~3–4 commits** (GAP 1 dissolved, §1.46). GAP-3 good-`t` (folded
+into the producer) + the §38-trap concrete-seed producer (~1–2, takes the bare `hIH.2`, composes the landed
+GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate) + Leaf 4
 (`theorem_55_generic (n:=2)(k:=2)` instance, project `.2`) + Leaf 5 (case-II/III flips + Thm 5.5→5.6 push).
 **No research-shaped node remains in Phase 22g** — Lemma 6.10 / Claim 6.11 (the §4 risk register's largest
 KT proof) is already green via Phases 22d/22e/22f. Milestone unchanged: the molecular conjecture at `d=3`,
@@ -194,40 +202,13 @@ unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23**
   re-shaped to the bare-LI form, the affine-free core added to `lem:extensor-independence`'s group pin.
   The producer's `pbar` feed (`exists_homogeneousIncidence_of_normals`) is now type-aligned with the
   consumers. Build + lint + verify.sh + supersession-gate all clean.
-- [x] **R3 splitOff-simplicity COMPLETE** (Operations.lean; graph-side, bounded; §1.42 verdict (A)).
-  Three-way split — criterion (DONE), bounded combinatorial discharge (DONE), triangle-0-dof brick
-  parts (1)+(2) (DONE 2026-06-09); `splitOff_simple_of_noRigid_of_card` is the hypothesis-free
-  simplicity lemma Leaf 3 calls:
-  - [x] **R3-criterion** — `splitOff_simple` (Operations.lean, DONE 2026-06-09; axiom-clean,
-    `propext` only). The bounded `hloop`/`hpar`-hypothesis criterion `(G.splitOff …).Simple`, the
-    splitting-off sibling of the green `rigidContract_simple` (the criterion form; `map_simple` is its
-    contraction-side analogue). Graph-side helper, no blueprint node (matching `rigidContract_simple` /
-    `map_simple`, neither pinned). `not_isLoopAt` via `isLink_self_iff`, `eq_of_isLink` = `hpar`.
-  - [x] **R3-discharge (bounded combinatorial half)** — `splitOff_simple_of_noRigid`
-    (Operations.lean, DONE 2026-06-09; axiom-clean). Discharges `splitOff_simple`'s `hloop`/`hpar` from
-    `[G.Simple]` + `heab`/`hG_ea`/`hG_eb` + `hnoRigid`, carrying the triangle-rigidity brick as one
-    explicit hypothesis `htri : ∀ f, G.IsLink f a b → ∃ H, H.IsProperRigidSubgraph G n`. The two
-    combinatorial halves are bounded: looplessness (`a ≠ b` from `Simple.eq_of_isLink` on the two
-    `va`-edges + `heab`; surviving edges inherit `IsLink.ne`) and the no-parallel-pair `rcases` over
-    `splitOff_isLink`'s four cases (both-surviving = `Simple.eq_of_isLink`; both-fresh = `rfl`; the
-    *mixed* KT obstruction = `htri f`+`hnoRigid`). **No 2-edge-connectivity** (standing §6.4 assumption,
-    used in Lemma 4.6 to *find* the degree-2 vertex, already supplied). No friction, no blueprint node
-    (sibling of the unpinned `rigidContract_simple`).
-  - [x] **R3-triangle-brick part (1) — `isKDof_zero_of_triangle`** (Deficiency.lean, DONE 2026-06-09;
-    axiom-clean, no blueprint node). A triangle is `0`-dof for `D ≥ 3`, via the `def ≤ 0` partition
-    route (NOT the rank route §1.43 sketched). Full route + the recon-over-engineered lesson: *Decisions
-    made* / *Hand-off*.
-  - [x] **R3-triangle-brick part (2) — the `htri` discharge** (Operations.lean, DONE 2026-06-09;
-    axiom-clean, no blueprint node). `triangle_isProperRigidSubgraph` assembles the
-    `IsProperRigidSubgraph (G.induce {v,a,b}) G n` witness from `isKDof_zero_of_triangle` (the 0-dof,
-    fed `rfl` for `V(H) = {v,a,b}` and the `E(H) = {eₐ,f,e_b}` computation), `induce_le`, and a
-    `4 ≤ V(G).ncard` proper-ness guard (for `{v,a,b} ⊂ V(G)`). The edge-set exactness is the only
-    `G.Simple` step — a fourth induced edge has loopless ends among `{v,a,b}`, so it is parallel to one
-    of the three (`first | … |` over `IsLink.unique_edge`/`.symm`). `splitOff_simple_of_noRigid_of_card`
-    then drops `htri` entirely (calls the triangle brick with `hnoRigid`), the form Leaf 3 consumes for
-    the GP `hsplitGP` shape. The `isKDof_zero_of_triangle` arg order is vertices `v,a,b`, so its three
-    edges are `va,ab,vb` (the `ab`-edge `f` is the *middle*). No friction; mathlib `Graph.induce` API
-    (`induce_isLink`/`edgeSet_induce`, `V(induce X) = X` by `rfl`) slotted in cleanly.
+- [x] **R3 splitOff-simplicity COMPLETE for `|V|≥4`** (Operations.lean / Deficiency.lean; graph-side,
+  axiom-clean; §1.42 verdict (A)). Four leaves: `splitOff_simple` (criterion), `splitOff_simple_of_noRigid`
+  (combinatorial discharge), `isKDof_zero_of_triangle` (triangle `0`-dof, `def ≤ 0` partition route), and
+  `triangle_isProperRigidSubgraph` + the hypothesis-free `splitOff_simple_of_noRigid_of_card`. Per-leaf
+  detail: *Decisions made* "R3 splitOff-simplicity COMPLETE" + the Lean doc-comments. **Now off the `d=3`
+  live route** (GAP 1 dissolved, §1.46 — the producer takes the bare `hIH.2`, never split-simplicity); kept
+  as a reusable KT Lemma 6.7(ii) graph-side fact (sibling of the unpinned `rigidContract_simple`).
 - [ ] **Leaf 3 — discharge the producer's `hcand`** (`case_III_hsplit_producer`, CaseI.lean; **§38 trap**
   at the C2 feed). Sub-steps:
   - [x] **Leaf 3 C2-feed assembly** (`case_III_realization_of_line`, CaseI.lean; DONE 2026-06-09,
@@ -269,20 +250,23 @@ unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23**
     `⟨e,u,v,…,rfl⟩` constructor) — the `panelRow_mem_rigidityRows` call timed out at `whnf` reconciling
     `F.graph` with `G` (TACTICS-QUIRKS §38 membership-witness variant). Pinned to
     `lem:case-III-claim612-line-in-panel-union`'s group `\lean{}` + one prose clause.
-  - [ ] **Leaf 3 concrete seed (§38 trap) — UNBLOCKED (§1.45 reclassified GAP 2 bounded; GAP-2 leaf now done).** Restate the
-    producer to `theorem_55_generic`'s `hsplitGP` shape (gains `G.Simple` + the conditioned IH; concludes
-    `HasGenericFullRankRealization 2 G` — via the new GAP-2 upgrade leaf composed onto the bare candidate),
-    pull `q` + `hgab` from the GP `_hsplit` (via
-    `hasGenericRealization_transport_ends`, mirroring `case_I_realization`), build `hcand q hq`
-    (`exists_line_data_of_homogeneousIncidence q` → `(n_u,n',pi,pj)`; the producer's own N3a real triple
-    `n` for `pbar`/`hpbar`; `case_III_old_new_blocks_of_line`; seed-from-line core + `hq` →
-    `r̂(C(e_a))≠0`; `case_III_realization_of_line`). The concrete `ofNormals` is the §38-trap surface. The
-    three sub-obligations, §1.44-adjudicated (the recon the §38-trap producer build was about to consume):
-    - **GAP 1 (bounded) — `4 ≤ |V(G)|` proper-ness guard: a missed case the build hits.**
-      `splitOff_simple_of_noRigid_of_card` needs `4 ≤ |V(G)|`, but `minimal_kdof_reduction`'s `hsplit`
-      branch fires at `|V|≥3` (only a `|V|=2` base) and splits the `|V|=3` triangle, where the R3 witness
-      `G.induce{v,a,b}` = all of `G` is improper. **Sub-leaf to build (bounded):** a `|V(G)|=3` simplicity
-      branch — `splitOff` lands on `|V|=2`, simple by direct edge-count; keep R3 for `|V|≥4`.
+  - [ ] **Leaf 3 concrete seed (§38 trap) — UNBLOCKED (§1.45 reclassified GAP 2 bounded + GAP-2 leaf done;
+    §1.46 dissolved GAP 1).** Restate the producer to `theorem_55_generic`'s `hsplitGP` shape (gains
+    `G.Simple` + the conditioned IH; concludes `HasGenericFullRankRealization 2 G` — via the GAP-2 upgrade
+    leaf composed onto the bare candidate). Take the **bare** `_hsplit := hIH.2` (no split-simplicity — GAP 1
+    dissolved); pull `q` + `hgab` from the GP `_hsplit` (via `hasGenericRealization_transport_ends`,
+    mirroring `case_I_realization`), build `hcand q hq` (`exists_line_data_of_homogeneousIncidence q` →
+    `(n_u,n',pi,pj)`; the producer's own N3a real triple `n` for `pbar`/`hpbar`;
+    `case_III_old_new_blocks_of_line`; seed-from-line core + `hq` → `r̂(C(e_a))≠0`;
+    `case_III_realization_of_line`). The concrete `ofNormals` is the §38-trap surface. The remaining
+    sub-obligations:
+    - **GAP 1 — DISSOLVED (§1.46).** The producer never consumes `(G.splitOff …).Simple`: it takes the
+      **bare** `hIH.2 : HasFullRankRealization k (G.splitOff …)` (the unconditional `.2` conjunct of the
+      `hsplitGP` IH) and upgrades to generic via `hasGenericFullRankRealization_of_rigidOn_ofNormals` — the
+      generic `.1` conjunct (the only split-simplicity consumer) is unused. §1.44's proposed `|V|=3`
+      simplicity branch was **false** (at `|V|=3`, `D=3`, `G` is the triangle, whose splitOff carries the
+      surviving `ab`-edge AND the fresh `e₀` = a parallel pair, so it is the double-edge `K₂`, not simple).
+      No `|V|=3` branch to build; R3 (`|V|≥4`) stays a reusable graph-side fact.
     - **GAP 2 (B-derive, §1.45) — bare→generic upgrade LANDED (the new leaf below).** The `hsplitGP` shape
       concludes `HasGenericFullRankRealization` (5 conjuncts). The candidate seed is `ℚ`-alg-dependent so
       cannot itself be generic — but the motive's framework is **existentially quantified**.
@@ -344,19 +328,24 @@ unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23**
   three-fixed disjunction is undischargeable, dim 3 < 6; KT's lines are free). It is directly provable
   (premise-free) and consumable (candidate supports are panel-meets = join form), constructible for an
   arbitrary witness via the producer's own data (N3a + perp-pair, not the `hann`-trap).
-- **THREE bounded gaps in the Leaf-3 producer — the `d=3` producer IS buildable, no research-shaped node
-  remains** (canonical home §1.44 surfaced them, §1.45 reclassified GAP 2 from research-shaped to bounded).
-  The three sub-obligations, all bounded:
-  - **GAP 1 (bounded) — `4 ≤ |V(G)|` proper-ness guard.** `minimal_kdof_reduction` splits the
-    reachable `|V(G)|=3` triangle (only a `|V|=2` base), where the R3 triangle witness is improper and the
-    `4 ≤ |V|` hypothesis of `splitOff_simple_of_noRigid_of_card` is unmet. **Unblock:** a `|V|=3`
-    simplicity branch (splitOff → `|V|=2`, simple by edge-count); keep R3 for `|V|≥4`.
+- **TWO bounded gaps in the Leaf-3 producer — the `d=3` producer IS buildable, no research-shaped node
+  remains** (canonical home §1.44 surfaced three, §1.45 reclassified GAP 2 bounded, §1.46 dissolved GAP 1).
+  The remaining sub-obligations, all bounded:
+  - **GAP 1 — DISSOLVED (§1.46, supersedes §1.44's (C)).** The producer **never consumes
+    `(G.splitOff …).Simple`** under the §1.45 B-derive route: it takes the **bare**
+    `hIH.2 : HasFullRankRealization k (G.splitOff …)` (the unconditional `.2` conjunct of
+    `theorem_55_generic`'s `hsplitGP` IH), builds the bare candidate, then upgrades via
+    `hasGenericFullRankRealization_of_rigidOn_ofNormals`. The IH's generic `.1` conjunct — the only
+    split-simplicity consumer — is unused. §1.44's proposed `|V|=3` simplicity branch was **false** anyway:
+    at `|V|=3`, `D=3`, `G` is the triangle (`|E(G)|=3`), whose splitOff carries the surviving `ab`-edge AND
+    the fresh `e₀` on `a-b` (a parallel pair), so it is the double-edge `K₂`, not simple. No `|V|=3` branch
+    to build.
   - **GAP 2 (B-derive, §1.45 — supersedes §1.44's (C)) — the bare→generic upgrade dissolves it.** The
     `hsplitGP` shape concludes `HasGenericFullRankRealization`, and the eq.-(6.12) candidate seed
     (`v↦n_a+t•n'`) is `ℚ`-alg-dependent so cannot itself carry the `AlgebraicIndependent ℚ` conjunct — but
     the motive's realizing framework is **existentially quantified** (PanelHinge.lean:1033). The producer
-    builds the candidate to **bare** `HasFullRankRealization`, then a single-graph upgrade leaf
-    `hasGenericFullRankRealization_of_hasFullRankRealization` (green machinery:
+    builds the candidate to **bare** `HasFullRankRealization`, then the single-graph upgrade leaf
+    `hasGenericFullRankRealization_of_rigidOn_ofNormals` (LANDED; green machinery:
     `exists_rankPolynomial_of_rigidOn_linking` → rational `Q`, depends on `G`/`ends` only → non-root at the
     `exists_injective_algebraicIndependent_real` seed via the alg-indep eval bridge → generic alg-indep
     rigid witness) concludes the generic motive. This is KT's "convert to nonparallel by Lemma 5.2 without
@@ -369,8 +358,10 @@ unblocking Cor 5.7 (Phases 24–26). General `d` (KT Lemma 6.13) is **Phase 23**
   *input* fact; the GP *output* is GAP 2, now bounded via the §1.45 upgrade); R3 (A) the triangle
   simplicity mirror is COMPLETE **for `|V|≥4`** (criterion `splitOff_simple`, discharge
   `splitOff_simple_of_noRigid`, `isKDof_zero_of_triangle`,
-  `triangle_isProperRigidSubgraph`/`splitOff_simple_of_noRigid_of_card`) — but R3 covers only `|V|≥4`, the
-  gap GAP 1 names.
+  `triangle_isProperRigidSubgraph`/`splitOff_simple_of_noRigid_of_card`). R3 covers only `|V|≥4`, but the
+  `|V|=3` gap GAP 1 originally named is **dissolved, not a hole** (§1.46): the producer never consumes split
+  simplicity, and `(G.splitOff …).Simple` is in fact *false* at `|V|=3` (the triangle's splitOff is the
+  double-edge `K₂`). R3 stays a reusable KT Lemma 6.7(ii) graph-side fact, off the `d=3` live route.
 - **Blueprint: `lem:case-III-claim612` RE-GREENED, `lem:case-III-eq629-conditional` DELETED
   (Leaf 1, 2026-06-09).** The Lean decl is now the premise-free existential, so the node is honestly
   green (statement + proof prose rewritten to the existential contrapositive; `\uses` trimmed to the
@@ -393,29 +384,28 @@ graph-free Leaf-3 pieces (C2-feed assembly `case_III_realization_of_line`, line-
 `exists_line_data_of_homogeneousIncidence`, seed-from-line core, block placement, per-line criterion),
 and the **GAP-2 bare→generic upgrade leaf** `hasGenericFullRankRealization_of_rigidOn_ofNormals`.
 
-**Landed this commit:** the GAP-2 keystone `hasGenericFullRankRealization_of_rigidOn_ofNormals`
-(CaseI.lean, axiom-clean) — from a concrete rigid+linking-transversal `ofNormals G ends q₀` it concludes
-the generic motive `HasGenericFullRankRealization k G` by re-realizing at an alg-indep seed `q₁` (rational
-rank polynomial `Q` of `G`/`ends` only, GP factor `Qgp`, the seed carrying the alg-indep conjunct). Body =
-the `case_I_realization` rank-polynomial block over a single graph (no two-block splice). Pinned to
-`lem:case-III-claim612-line-in-panel-union`'s group `\lean{}` + one prose clause; TACTICS-QUIRKS §38 gained
-the membership-witness call-site variant (inline the `rigidityRows` witness rather than calling
-`panelRow_mem_rigidityRows`, which `whnf`-times-out reconciling `F.graph` with `G`).
+**Landed this commit (build-free recon, §1.46): GAP 1 DISSOLVED.** Re-traced the §1.44 GAP-1 "`4 ≤ |V(G)|`
+proper-ness guard / `|V|=3` simplicity branch" against the now-green producer + `theorem_55_generic`'s
+`hsplitGP` IH shape and found **GAP 1 needs no new lemma**: under the §1.45 GAP-2 B-derive route the producer
+takes the **bare** `hIH.2 : HasFullRankRealization k (G.splitOff …)` (the unconditional `.2` conjunct, no
+`(G.splitOff …).Simple`), builds the bare candidate, then upgrades via the landed
+`hasGenericFullRankRealization_of_rigidOn_ofNormals`. The IH's *generic* `.1` conjunct (the sole
+split-simplicity consumer) is unused. Bonus: §1.44's proposed `|V|=3` simplicity branch was **false** — at
+`|V|=3`, `D=3`, a minimal `0`-dof `G` is the triangle (`|E(G)| = D(|V|−1)/(D−1) = 3`), whose splitOff carries
+the surviving `ab`-edge AND the fresh `e₀` on `a-b` (a parallel pair), so it is the double-edge `K₂`, not
+simple. No `|V|=3` branch to build; R3 (`splitOff_simple_of_noRigid_of_card`, `|V|≥4`) stays as a reusable KT
+Lemma 6.7(ii) graph-side fact off the `d=3` live route. Build-free docs commit; full trace in design §1.46.
 
-**Smallest next forward commit (the GAP-1 `|V|=3` simplicity branch):**
-- **GAP 1 `|V(G)|=3` simplicity branch** (~1 commit, Operations.lean) — supply `(G.splitOff …).Simple`
-  directly at `|V(G)|=3` (splitOff lands on `|V|=2`, simple by edge-count); keep R3 for `|V|≥4`. Confirm
-  the candidate completion's count arithmetic is sound at `|V(G)|−1=2`.
-
-**Then (the §38-trap concrete-seed producer, Leaf 3):** restate the producer to `theorem_55_generic`'s
-`hsplitGP` shape, build the concrete degenerate `ofNormals` candidate to **bare** `HasFullRankRealization`
+**Smallest next forward commit (the §38-trap concrete-seed producer, Leaf 3):** restate the producer to
+`theorem_55_generic`'s `hsplitGP` shape, take the **bare** `_hsplit := hIH.2` (no split-simplicity — GAP 1
+dissolved), build the concrete degenerate `ofNormals` candidate to **bare** `HasFullRankRealization`
 (`case_III_realization_of_line`), then **compose the landed `hasGenericFullRankRealization_of_rigidOn_ofNormals`
 onto it** — supplying the upgrade's `hne` (linking transversality) from the candidate completion
 (`hane`/`hnewtrans` cover the `va`/`vb` hinges). Folds in **GAP 3 genericity-in-`t`** (the good-`t`
 existence lemma, `Fin(k+2)→ℝ` linear algebra, off the §38 trap). Then **Leaf 4/5** (the
 `theorem_55_generic (n:=2) (k:=2)` instance node + `.2` projection per the R2 ripple §1.41, the case-II/III
-flips, the Thm 5.5→5.6 push) unblocking Cor 5.7. **Estimate to phase close: ~4–5 commits, all bounded.**
-Full traces: `notes/Phase22-realization-design.md` §1.45 (GAP-2 resolution).
+flips, the Thm 5.5→5.6 push) unblocking Cor 5.7. **Estimate to phase close: ~3–4 commits, all bounded.**
+Full traces: `notes/Phase22-realization-design.md` §1.46 (GAP-1 dissolution) + §1.45 (GAP-2 resolution).
 
 After 22g closes (molecular conjecture at `d=3`, Cor 5.7 unblocked): **Phase 23** = general `d` (KT
 Lemma 6.13), scoped with the §1.33 (C) reuse map (reuse Claim 6.11 + Lemma 2.1; generalize the candidate
@@ -428,6 +418,16 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ### Phase-local choices and proof techniques
 
+- **GAP 1 DISSOLVED — the producer never consumes `(G.splitOff …).Simple` (build-free recon, 2026-06-09;
+  §1.46).** §1.44 flagged GAP 1 as a hole (the `4 ≤ |V|` guard unmet at the `|V|=3` triangle) with unblock (i)
+  "supply `(G.splitOff …).Simple` at `|V|=3` directly." Re-tracing the *route* after the GAP-2 leaf landed:
+  under the §1.45 B-derive route the producer takes the **bare** `hIH.2 : HasFullRankRealization k
+  (G.splitOff …)` (the unconditional `.2` conjunct of `theorem_55_generic`'s `hsplitGP` IH, PanelHinge.lean:
+  1167–1175), builds the bare candidate, then upgrades via `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+  — the IH's generic `.1` conjunct (the only split-simplicity consumer) is unused. And §1.44's unblock (i)
+  was **false**: at `|V|=3`, `D=3`, `G` is the triangle, whose splitOff carries the surviving `ab`-edge + the
+  fresh `e₀` (a parallel pair) = the double-edge `K₂`, not simple. So no `|V|=3` lemma exists or is needed; R3
+  (`|V|≥4`) stays a reusable graph-side fact. Same "recon-traces-the-route, not the verdicts" lesson §1.44 named.
 - **GAP-2 bare→generic upgrade LANDED — single-graph reuse of the `case_I_realization` rank-polynomial
   block (2026-06-09; CaseI.lean, `hasGenericFullRankRealization_of_rigidOn_ofNormals`).** Takes the concrete
   rigid+linking-transversal `ofNormals G ends q₀` and concludes the generic motive by re-realizing at an
@@ -443,8 +443,11 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   decreasing rank" (KT p. 678; generic=alg-indep maximizes rank, footnote 4). L-independent.
 - **Leaf-3 producer sub-obligations recon — GAP 1/2/3 surfaced (2026-06-09; §1.44, GAPs now tracked in
   *Blockers*).** Adjudicated the three sub-obligations against the *actual Lean route*, not the green
-  lemmas' statements (GAP 2 since landed; GAP 1/3 in *Blockers*). The recon-traces-the-route lesson is in
-  §1.44's closing paragraph — flagged for FRICTION/the next phase-close organization review.
+  lemmas' statements (GAP 1 since dissolved §1.46; GAP 2 since landed §1.45; GAP 3 in *Blockers*). The
+  recon-traces-the-route lesson is in §1.44's closing paragraph — flagged for FRICTION/the next phase-close
+  organization review. §1.46 (GAP-1 dissolution) is a fresh data point for that lesson: §1.44 adjudicated
+  GAP 1 as a *brick* (the `4 ≤ |V|` guard) without tracing whether the producer/IH wiring ever reaches for
+  it, and asserted a `|V|=3` simplicity fact without checking the triangle's edge count.
 - **Leaf 3 line-data leaf — strip `hann` from the obsolete six-join witness; stay on the
   homogeneous-vector layer (2026-06-09; RigidityMatrix.lean, `exists_line_data_of_homogeneousIncidence`
   + `omitTwoExtensor_eq_extensor_kept`).** The producer's "extract the witness line `L`" step. The
