@@ -26,6 +26,14 @@ enharmonic; all three copies byte-identical again.
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
+- **Standing rung override (2026-06-10, user-approved):** the
+  remaining Phase 22h `hcand`-discharge sub-commits (M₁/M₂/M₃
+  chains, the discharge assembly) dispatch at **opus minimum**,
+  overriding the map's sonnet rating for their 2/2/1 profiles.
+  Grounds: rows 11/14/17 — three sonnet design/discipline failures
+  concentrated in the §38-trap producer zone; the axes under-rate
+  scale/defeq-fragility there (see Findings). Lift the override
+  when the discharge assembly closes.
 
 ## Log
 

@@ -75,7 +75,9 @@ Loop:
        and return BLOCKED with a progress summary. Run your
        build/lint gates to completion and commit before ending your
        turn — never end the turn with finished-but-uncommitted work
-       while a background gate is still running. After committing,
+       while a background gate is still running. Do not edit
+       notes/model-experiment.md — the dispatch log is
+       coordinator-owned. After committing,
        return a final message of exactly the form:
          LANDED <sha>: <one-line summary>
        or
@@ -99,6 +101,22 @@ Loop:
    and verify.sh never ran (enharmonic 2026-06-10, model-experiment
    row 12). For haiku specifically, re-run every gate the return
    names.
+   **Design-conformance check on the landed statement's SHAPE.** When
+   the hand-off pins the deliverable to a design-doc verdict (a
+   "§1.NN" pointer or a named verdict like "R2/(β)"), read that
+   section and diff the landed statement against it — specifically
+   the motive strength (bare vs generic/GP), the transport direction,
+   and which hypotheses are consumed vs carried. A commit can pass
+   every mechanical check (right files, green gates, honest notes)
+   and still land the shape the design explicitly excludes: Phase 22h
+   hit this twice in one session — G4c-ii landed as the
+   existential→existential transport §1.49(3) forbids (row 11), and
+   the producer landed at the bare-IH shape the R2/R3 verdict
+   overturned, re-enacting the §1.46 reading that orphans `hgab`
+   (row 14). Both were caught only by re-reading the design section,
+   not by any mechanical gate. A shape deviation is corrective-commit
+   material (escalate one rung, tailored prompt naming the verdict),
+   not a discharge-on-top.
    **Mechanical fixups, not stops:** if the subagent committed on a
    new branch, `git checkout master && git merge --ff-only <branch>
    && git branch -d <branch>`; if the author is wrong, `git commit
@@ -144,9 +162,17 @@ Loop:
    this same verdict-reasoning scrutiny to those unsolicited recons
    too, *especially* when one overturns or dissolves a prior finding.
 5. If the commit changed any `.lean` file, run `lake build` of the
-   leftmost active phase file as a cheap post-commit gate. If red,
-   stop and surface. Skip this gate for docs/blueprint-only commits
-   (no `.lean` changed — nothing to rebuild).
+   leftmost active phase file as a cheap post-commit gate — and scan
+   the output for warnings, not just success: `lake build <module>
+   2>&1 | grep -E 'warning:|error:'` (touch the changed file first if
+   the build is cached; cached modules don't re-emit warnings). A
+   green build over a `declaration uses 'sorry'` warning is exactly
+   how a sorry'd skeleton rode a "gates clean" attestation onto
+   master (model-experiment row 17); the warning-clean rule the Lean
+   manual imposes on subagents applies to this gate too. If red or
+   warning-bearing, stop and surface. Skip this gate for
+   docs/blueprint-only commits (no `.lean` changed — nothing to
+   rebuild).
 6. Write one sentence to the user: clean handoff to the next
    iteration, or the specific concern if anything looked off. If the
    remaining work suggests a **phase-boundary decision** — closing
