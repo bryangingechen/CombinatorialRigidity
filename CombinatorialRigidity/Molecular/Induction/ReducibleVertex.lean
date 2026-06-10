@@ -612,6 +612,253 @@ theorem exists_degree_eq_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
   have hle := crossingEdges_cutLabeling_singleton_ncard_le (G := G) (v := v) (a := v) (b := b)
   omega
 
+/-! ### Simplicity from minimality and no proper rigid subgraph (G0, Phase 22h) -/
+
+/-- **A minimal `0`-dof-graph with no proper rigid subgraph is simple**
+(G0, Phase 22h; Katoh–Tanigawa 2011 p. 682 "As remarked…, G is a simple graph"). For
+`D = bodyBarDim n ≥ 2` and `3 ≤ |V(G)|`:
+
+* **Loopless:** from `loopless_of_isMinimalKDof`.
+* **No parallel edges:** a parallel pair `e₁ ≠ e₂` from `x` to `y` makes the two-vertex induced
+  subgraph `G.induce {x, y}` a `0`-dof-graph (`isKDof_zero_of_parallel_pair`) with `2 ≤ |V(H)|`
+  and `V(H) ⊊ V(G)` (proper because `3 ≤ |V(G)|`), contradicting `hnp`. -/
+theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) : G.Simple where
+  not_isLoopAt e x hloop := by
+    haveI := loopless_of_isMinimalKDof hG
+    exact this.not_isLoopAt e x hloop
+  eq_of_isLink := by
+    intro e f x y hle hlf
+    -- Assume `e ≠ f` (parallel edges) and derive contradiction via `hnp`.
+    by_contra hne
+    -- Basic facts.
+    haveI hLl := loopless_of_isMinimalKDof hG
+    have hxy : x ≠ y := hle.ne
+    have hxG : x ∈ V(G) := hle.left_mem
+    have hyG : y ∈ V(G) := hle.right_mem
+    have hsub : ({x, y} : Set α) ⊆ V(G) := by
+      rintro w (rfl | rfl); exacts [hxG, hyG]
+    -- Construct H = (G.induce {x,y}).restrict {e,f}, a 2-vertex 2-edge subgraph.
+    -- V(H) = {x,y}, E(H) = {e,f}.
+    set H := (G.induce {x, y}).restrict {e, f}
+    have hVH : V(H) = {x, y} := rfl
+    -- The IsLink for H: g ∈ {e,f} ∧ G.IsLink g p q ∧ p ∈ {x,y} ∧ q ∈ {x,y}.
+    have hl₁ : H.IsLink e x y := by
+      simp only [H, restrict_isLink, induce_isLink]
+      exact ⟨Or.inl rfl, hle, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩
+    have hl₂ : H.IsLink f x y := by
+      simp only [H, restrict_isLink, induce_isLink]
+      exact ⟨Or.inr rfl, hlf, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩
+    -- E(H) = {e, f}: H = (G.induce {x,y}).restrict {e,f}, so E(H) = E(G[{x,y}]) ∩ {e,f}.
+    -- Both e,f ∈ E(G[{x,y}]) (since G.IsLink e x y with x,y ∈ {x,y}), so E(H) = {e,f}.
+    have hEH : E(H) = {e, f} := by
+      simp only [H, edgeSet_restrict, edgeSet_induce]
+      apply Set.Subset.antisymm
+      · exact Set.inter_subset_right
+      · apply Set.insert_subset_iff.mpr; constructor
+        · exact ⟨⟨x, y, hle, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩,
+                 Set.mem_insert e _⟩
+        · exact Set.singleton_subset_iff.mpr
+            ⟨⟨x, y, hlf, Set.mem_insert x _, Set.mem_insert_of_mem x rfl⟩,
+             Set.mem_insert_of_mem e rfl⟩
+    -- H is 0-dof via the parallel-pair lemma.
+    have hHkdof : H.IsKDof n 0 :=
+      isKDof_zero_of_parallel_pair hD hxy hl₁ hl₂ hne hVH hEH
+    -- H ≤ G: H is a subgraph of G.
+    have hHle : H ≤ G := by
+      calc H ≤ G.induce {x, y} := restrict_le
+        _ ≤ G := G.induce_le hsub
+    -- H is a proper rigid subgraph of G, contradicting hnp.
+    refine hnp H ⟨⟨hHle, hHkdof⟩, ?_, ?_⟩
+    · -- 2 ≤ |V(H)| = |{x,y}| = 2.
+      simp [hVH, Set.ncard_pair hxy]
+    · -- V(H) ⊊ V(G): {x,y} ≠ V(G) since |V(G)| ≥ 3 > 2.
+      rw [hVH]
+      refine ssubset_of_subset_of_ne hsub fun heq ↦ ?_
+      have h2 : ({x, y} : Set α).ncard = 2 := Set.ncard_pair hxy
+      rw [heq] at h2; omega
+
+/-! ### Adjacent degree-2 pair in the Case-III `d = 3` regime (G4a-i, Phase 22h)
+
+Katoh–Tanigawa 2011 Lemma 4.6 at `d = 3` (`D ≥ 6`) — two adjacent degree-2 vertices
+— proved by a cheaper double-count than KT's maximal-chain argument. -/
+
+/-- **An adjacent degree-2 pair exists** (G4a-i, Phase 22h; Katoh–Tanigawa 2011 Lemma 4.6 at
+`d = 3`). In a minimal `0`-dof-graph with no proper rigid subgraph, `D ≥ 6` (the `d = 3`
+regime), and `3 ≤ |V(G)|`, there exist adjacent vertices `v, a` both of degree exactly `2`.
+
+Proof: by contradiction. Assume no two degree-2 vertices are adjacent. Let
+`X₂ = {v ∈ V(G) | deg v = 2}`, `X₃₊ = V(G) \ X₂`. Then:
+
+1. `Σdeg ≥ 2|X₂| + 3|X₃₊|` (degrees ≥ 2 on X₂ and ≥ 3 on X₃₊, by two-edge-connectivity).
+2. `Σ_{w ∈ X₃₊} deg w ≥ Σ_{v ∈ X₂} deg v = 2|X₂|`: for each edge type `e`, the number of
+   X₂ endpoints `≤` the number of X₃₊ endpoints (one X₂ endpoint forces the other in X₃₊;
+   two X₂ endpoints are impossible by hypothesis). By `incFun`/`Finset.sum_comm`, summing over
+   all edges gives `Σ_{X₂} deg ≤ Σ_{X₃₊} deg`, hence `Σdeg ≥ 4|X₂|`.
+3. Combined with `no_rigid_edge_count`: `(D−1)·Σdeg < 2D·|V| − 2`. The two lower bounds and
+   `D ≥ 6`, `|V| ≥ 3` yield a numeric contradiction via `nlinarith`. -/
+theorem exists_adjacent_degree_two_pair [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 6 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    ∃ v a : α, v ∈ V(G) ∧ a ∈ V(G) ∧ G.degree v = 2 ∧ G.degree a = 2 ∧ ∃ e, G.IsLink e v a := by
+  classical
+  haveI hFin : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  haveI : Fintype α := Fintype.ofFinite _
+  haveI : Fintype β := Fintype.ofFinite _
+  haveI hLl : G.Loopless := loopless_of_isMinimalKDof hG
+  have hD2 : 2 ≤ bodyBarDim n := by linarith
+  have hD1 : 1 ≤ bodyBarDim n := by linarith
+  have hDi : (6 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  -- KT 4.5(i) edge bound.
+  have hedge := no_rigid_edge_count hD2 hVne hG hnp
+  -- Handshake over the vertex Finset.
+  set s := G.vertexSet_finite.toFinset with hs
+  have hhand : ∑ v ∈ s, G.degree v = 2 * E(G).ncard := by
+    rw [hs, ← finsum_mem_eq_finite_toFinset_sum _ G.vertexSet_finite]
+    exact handshake_degree_subtype G
+  have hscard : s.card = V(G).ncard := by
+    rw [hs, ← Set.ncard_eq_toFinset_card _ G.vertexSet_finite]
+  -- By contradiction: no two adjacent degree-2 vertices.
+  by_contra hno
+  -- Push the negation through.
+  push Not at hno
+  -- hno : ∀ v a, v ∈ V(G) → a ∈ V(G) → G.degree v = 2 → G.degree a = 2 →
+  --        ∀ e, ¬ G.IsLink e v a
+  -- (The `push Not` on `¬ ∃ v a, ...` fully distributes.)
+  -- We use `hno` directly as `hno'`.
+  have hno' : ∀ v a : α, v ∈ V(G) → a ∈ V(G) → G.degree v = 2 → G.degree a = 2 →
+      ∀ e : β, ¬ G.IsLink e v a := hno
+  -- Define X₂ and X3p (= X₃₊) as Finsets.
+  set s2 := s.filter (fun v => G.degree v = 2) with hs2
+  set s3p := s \ s2 with hs3p
+  -- Helper: membership.
+  have hmemV : ∀ v, v ∈ s ↔ v ∈ V(G) := fun v => by simp [hs]
+  have hmem2 : ∀ v, v ∈ s2 ↔ v ∈ V(G) ∧ G.degree v = 2 := fun v => by
+    simp [hs2, Finset.mem_filter, hmemV]
+  have hmem3p : ∀ w, w ∈ s3p ↔ w ∈ V(G) ∧ G.degree w ≠ 2 := fun w => by
+    simp only [hs3p, Finset.mem_sdiff, hs2, Finset.mem_filter]
+    constructor
+    · rintro ⟨hw, hnd⟩; exact ⟨(hmemV w).mp hw, fun h => hnd ⟨hw, h⟩⟩
+    · rintro ⟨hwV, hwd⟩; exact ⟨(hmemV w).mpr hwV, fun ⟨_, h⟩ => hwd h⟩
+  -- Every vertex in X3p has degree ≥ 3.
+  have hX3deg : ∀ w ∈ s3p, 3 ≤ G.degree w := by
+    intro w hw
+    obtain ⟨hwV, hwdeg2⟩ := (hmem3p w).mp hw
+    -- Pick any b ≠ w in V(G) (exists since |V| ≥ 3).
+    obtain ⟨b, hbV, hbw⟩ : ∃ b ∈ V(G), b ≠ w := by
+      by_contra h
+      push Not at h
+      have hss : V(G) ⊆ {w} := fun x hx => (h x hx).symm ▸ Set.mem_singleton w
+      linarith [Set.ncard_le_ncard hss (Set.toFinite _), Set.ncard_singleton (α := α) w]
+    have hcross : 2 ≤ (G.crossingEdges (cutLabeling {w} w b)).ncard :=
+      two_le_crossingEdges_of_isKDof_zero hD1 hG.1 (Set.mem_singleton w) hwV hbV
+        (by simpa using hbw)
+    have hdeg_ge2 : 2 ≤ G.degree w :=
+      le_trans hcross
+        (crossingEdges_cutLabeling_singleton_ncard_le (G := G) (v := w) (a := w) (b := b))
+    omega
+  -- Sum splits over s2 ∪ s3p = s.
+  have hsplit : ∀ f : α → ℕ,
+      ∑ v ∈ s, f v = ∑ v ∈ s2, f v + ∑ v ∈ s3p, f v := fun f => by
+    have h := Finset.sum_sdiff (Finset.filter_subset (fun v => G.degree v = 2) s) (f := f)
+    -- h : ∑ v ∈ s3p, f v + ∑ v ∈ s2, f v = ∑ v ∈ s, f v
+    -- (s3p = s \ s2 and s2 = s.filter ... by definition)
+    change ∑ x ∈ s \ s2, f x + ∑ x ∈ s2, f x = ∑ x ∈ s, f x at h
+    rw [← hs3p] at h
+    linarith
+  have hX2sum_eq : ∑ v ∈ s2, G.degree v = 2 * s2.card := by
+    have := Finset.sum_const_nat (fun v hv => ((hmem2 v).mp hv).2)
+    linarith
+  -- Bound 1: Σdeg ≥ 2|X₂| + 3|X3p|.
+  have hsum_lb1 : 2 * s2.card + 3 * s3p.card ≤ ∑ v ∈ s, G.degree v := by
+    rw [hsplit]
+    have h3 : 3 * s3p.card ≤ ∑ w ∈ s3p, G.degree w := by
+      have := Finset.card_nsmul_le_sum s3p G.degree 3 hX3deg
+      simpa [mul_comm] using this
+    linarith [hX2sum_eq ▸ (le_refl (∑ v ∈ s2, G.degree v))]
+  -- Bound 2: Σ_{X3p} deg ≥ Σ_{X₂} deg, so Σdeg ≥ 4|X₂|.
+  -- Double counting via incFun: per-edge, #X₂-endpoints ≤ #X3p-endpoints.
+  have hX3_ge_X2 : ∑ v ∈ s2, G.degree v ≤ ∑ w ∈ s3p, G.degree w := by
+    have hrw₂ : ∑ v ∈ s2, G.degree v = ∑ v ∈ s2, ∑ e : β, G.incFun e v :=
+      Finset.sum_congr rfl fun v _ => degree_eq_fintype_sum G v
+    have hrw₃ : ∑ w ∈ s3p, G.degree w = ∑ w ∈ s3p, ∑ e : β, G.incFun e w :=
+      Finset.sum_congr rfl fun w _ => degree_eq_fintype_sum G w
+    conv_lhs => rw [hrw₂]; rw [Finset.sum_comm]
+    conv_rhs => rw [hrw₃]; rw [Finset.sum_comm]
+    -- Goal: ∑ e : β, ∑ v ∈ s2, incFun e v ≤ ∑ e : β, ∑ w ∈ s3p, incFun e w
+    apply Finset.sum_le_sum
+    intro e _
+    -- Per-edge: ∑_{v ∈ s2} incFun e v ≤ ∑_{w ∈ s3p} incFun e w.
+    by_cases hpos : 0 < ∑ v ∈ s2, G.incFun e v
+    · -- Extract v ∈ s2 incident to e.
+      have ⟨v, hvs2, hv_pos⟩ : ∃ v ∈ s2, 0 < G.incFun e v := by
+        by_contra hall
+        push Not at hall
+        have : ∑ v ∈ s2, G.incFun e v = 0 :=
+          Finset.sum_eq_zero fun v hv => Nat.le_zero.mp (hall v hv)
+        omega
+      -- v is incident to e (incFun > 0 ↔ Inc).
+      have hvinc : G.Inc e v := by
+        have h0 : G.incFun e v ≠ 0 := by omega
+        exact not_not.mp (incFun_vertex_eq_zero_iff.not.mp h0)
+      obtain ⟨hvV, hvdeg2⟩ := (hmem2 v).mp hvs2
+      -- v is a nonloop (G is loopless), so there's another endpoint w.
+      have hvnl : G.IsNonloopAt e v := hvinc.isNonloopAt
+      obtain ⟨w, _hwv, hlvw⟩ := hvnl
+      have hwV : w ∈ V(G) := hlvw.right_mem
+      -- w ∉ X₂ (no X₂–X₂ adjacency).
+      have hwdeg2 : G.degree w ≠ 2 := fun hd => hno' v w hvV hwV hvdeg2 hd e hlvw
+      have hws3p : w ∈ s3p := (hmem3p w).mpr ⟨hwV, hwdeg2⟩
+      have hwincfun : G.incFun e w = 1 := hlvw.inc_right.isNonloopAt.incFun_eq_one
+      -- ∑_{u ∈ s2} incFun e u ≤ 1: at most one X₂ vertex incident to e.
+      have hLHS1 : ∑ u ∈ s2, G.incFun e u ≤ 1 := by
+        apply Finset.sum_le_one_iff.mpr
+        intro u u' hus2 hu's2 hu_ne0 hu'_ne0
+        have hunc : G.Inc e u :=
+          not_not.mp (incFun_vertex_eq_zero_iff.not.mp (by omega))
+        have hu'nc : G.Inc e u' :=
+          not_not.mp (incFun_vertex_eq_zero_iff.not.mp (by omega))
+        obtain ⟨wu, _, hluwu⟩ := hunc.isNonloopAt
+        obtain ⟨wu', _, hluwu'⟩ := hu'nc.isNonloopAt
+        obtain ⟨huu', _⟩ | ⟨_huwu', hwuu'⟩ := hluwu.eq_and_eq_or_eq_and_eq hluwu'
+        · -- u = u'; incFun = 1 for nonloops.
+          exact ⟨huu', hunc.isNonloopAt.incFun_eq_one⟩
+        · -- wu = u'; e links u to wu = u': a X₂–X₂ adjacency → contradiction.
+          obtain ⟨huV, hudeg2⟩ := (hmem2 u).mp hus2
+          obtain ⟨hu'V, hu'deg2⟩ := (hmem2 u').mp hu's2
+          -- hwuu' : wu = u'; hluwu : G.IsLink e u wu → G.IsLink e u u' (after subst)
+          exact absurd (hwuu'.symm ▸ hluwu) (hno' u u' huV hu'V hudeg2 hu'deg2 e)
+      calc ∑ v ∈ s2, G.incFun e v
+          ≤ 1 := hLHS1
+        _ = G.incFun e w := hwincfun.symm
+        _ ≤ ∑ w ∈ s3p, G.incFun e w :=
+            Finset.single_le_sum (fun i _ => Nat.zero_le _) hws3p
+    · -- ∑ = 0 ≤ ∑ ≥ 0.
+      simp only [not_lt, Nat.le_zero] at hpos
+      rw [hpos]
+      exact Finset.sum_nonneg (f := G.incFun e) fun w _ => Nat.zero_le _
+  -- Bound 2: Σdeg ≥ 4|X₂|.
+  have hsum_lb2 : 4 * s2.card ≤ ∑ v ∈ s, G.degree v := by
+    rw [hsplit, hX2sum_eq]
+    linarith [Finset.sum_nonneg (f := G.degree) (s := s3p) fun w _ => Nat.zero_le _]
+  -- Card identity: |s2| + |s3p| = |V(G)|.
+  have hs2s3card : s2.card + s3p.card = V(G).ncard := by
+    have hdisjoint : Disjoint s2 s3p := Finset.disjoint_sdiff
+    have hunion : s2 ∪ s3p = s := by
+      rw [hs3p]; exact Finset.union_sdiff_of_subset (Finset.filter_subset _ s)
+    rw [← Finset.card_union_of_disjoint hdisjoint, hunion, hscard]
+  -- Final numeric contradiction.
+  have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+  zify at hedge hsum_lb1 hsum_lb2 hhand hs2s3card
+  nlinarith [Nat.cast_nonneg (α := ℤ) s2.card, Nat.cast_nonneg (α := ℤ) s3p.card]
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

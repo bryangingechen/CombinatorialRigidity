@@ -10,30 +10,22 @@ bridge) and §1.49 (G5, G4a–G4e, G0, the (β) branch shape) — point at them,
 
 ## Current state
 
-**G5 is DONE (single commit).** `IsProperRigidSubgraph` now requires `2 ≤ V(H).ncard`
-(Deficiency.lean; KT p. 659's `1 < |V′|`), with the loopless-from-minimality brick
-`loopless_of_isMinimalKDof` (Deficiency.lean, shared with G0) feeding the two circuit sites
-(`circuit_splitOff_meets_fiber` / `fundCircuit_inducedSpan_vertexSet_eq`, each now `[G.Loopless]`).
-One producer site beyond the §1.49(0) census surfaced and was repaired: `splitOff_isMinimalKDof`
-offers the vertex-deleted `Gv` to `hnp` (KT 4.7), so it gained `hV3 : 3 ≤ V(G).ncard` — genuinely
-needed (at `|V|=2` the double edge splits to a one-vertex loop graph that is *not* minimal); its
-only caller `minimal_kdof_reduction` has `hV3` in the split branch. All other `hnp`-consumer
-statements unchanged; blueprint `def:rigid-subgraph` synced (22g caveat removed),
-`lem:reduction-step` + Thm 4.9 prose updated.
+**G5 is DONE.** `IsProperRigidSubgraph` requires `2 ≤ V(H).ncard`; `loopless_of_isMinimalKDof`
+brick shared with G0. Done.
 
-**G4b-impl is DONE (single commit).** `minimal_kdof_reduction_full` (ForestSurgery.lean, the
-full-IH strong induction: no `hD`/`hfresh`, the `hsplit` branch gets the same full conditioned IH
-as `hcontract`) + `theorem_55_generic` restated over it (PanelHinge.lean: `hsplit`/`hsplitGP` now
-take `hnoRigid` + full conditioned IH, dropping per-vertex split data and the `hD`/`hfresh`
-parameters; `[DecidableEq β]` and `[Finite β]` remain). Blueprint prose at
-`thm:minimal-kdof-reduction` updated with one-line note. Build green, lint clean.
+**G4b-impl is DONE.** `minimal_kdof_reduction_full` + `theorem_55_generic` (β) restate. Done.
 
-**Next concrete step: G4a-i/ii + G0** (or the `|V|=3` triangle leaves T1–T4) — both are
-parallel-safe now that the producer signature is pinned. The standard next choice is **G4a-i**
-(`exists_adjacent_degree_two_pair`, ReducibleVertex.lean: the `D ≥ 6` double-count, bounded,
-~1 commit) and then **G4a-ii** (`exists_chain_data_of_noRigid`, same file, ~1 commit, needs G0
-`simple_of_isMinimalKDof_of_noRigid` as a brick) — these supply the chain data the (β) producer
-will use. Parallel: T1–T4 (the `|V|=3` triangle base, ~3–4 commits, design §1.48(1)).
+**G4a-i + G0 are DONE (single commit).** `simple_of_isMinimalKDof_of_noRigid` (ReducibleVertex.lean:
+loopless + no parallel pair; `isKDof_zero_of_parallel_pair` from Deficiency.lean as the K₂ brick)
+and `exists_adjacent_degree_two_pair` (ReducibleVertex.lean: the `D ≥ 6` double-count via
+`incFun`/`Finset.sum_comm`, KT Lemma 4.6 at `d = 3`). Blueprint nodes `lem:two-vertex-zero-dof`,
+`lem:simple-minimal-noRigid`, `lem:adjacent-degree-two-pair` added; build green, lint + verify.sh
+clean.
+
+**Next concrete step: G4a-ii** (`exists_chain_data_of_noRigid`, ReducibleVertex.lean, ~1 commit;
+needs G0 + `exists_splitOff_data_of_degree_eq_two` run at `v` and `a`; `b ≠ c` via
+`triangle_isProperRigidSubgraph` + `hnp`; design §1.49(2)). Parallel-safe: T1–T4 (~3–4 commits,
+§1.48(1)) and G4c-i/ii (§1.49(3)).
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -47,10 +39,12 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
 - [x] **G4b-impl** — `minimal_kdof_reduction_full` (ForestSurgery.lean, full-IH strong induction)
   + `theorem_55_generic` (β) restate (PanelHinge.lean; `hsplit`/`hsplitGP` → full conditioned IH
   shape, dropping per-vertex data and `hD`/`hfresh`). Done.
-- [ ] **G4a-i/ii + G0** — the `d=3` adjacent-degree-2-pair chain dichotomy (the cheap `D ≥ 6`
-  double count, NOT KT's maximal chains — those are Phase 23's general-`d` form) + the data
-  extraction (`b ≠ c`) + `simple_of_isMinimalKDof_of_noRigid` (§1.49(2)). Parallel-safe after
-  G4b-impl.
+- [x] **G4a-i + G0** — `exists_adjacent_degree_two_pair` (the `D ≥ 6` double-count) +
+  `simple_of_isMinimalKDof_of_noRigid` (loopless + no parallel pair; `isKDof_zero_of_parallel_pair`
+  K₂ brick). Blueprint nodes added (`lem:two-vertex-zero-dof`, `lem:simple-minimal-noRigid`,
+  `lem:adjacent-degree-two-pair`). Done.
+- [ ] **G4a-ii** — `exists_chain_data_of_noRigid` (§1.49(2)): `exists_splitOff_data_of_degree_eq_two`
+  at `v` and `a`, `b ≠ c` via `triangle_isProperRigidSubgraph` + `hnp` at `|V| ≥ 4`.
 - [ ] **T1–T4** — the `|V|=3` triangle base (§1.48(1)): T1 third-edge/vertex-pin (edge count via
   `rank_add_deficiency_eq`), T2 `theorem_55_triangle` (3-body sibling of `theorem_55_base`), T3
   the cyclically-consistent basis seed, T4 assembly through the GAP-2 upgrade. ~3–4 commits;
@@ -83,12 +77,12 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — G4a-i** (`exists_adjacent_degree_two_pair`,
-ReducibleVertex.lean: the `D ≥ 6` double-count; design §1.49(2); see *Current state*). After 22h closes (the
-molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26): **Phase 23** = general `d` (KT
-Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own recon (KT eqs.
-(6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` alg-independence row to
-`notes/AlgebraicIndependence.md`.
+**Smallest next forward commit — G4a-ii** (`exists_chain_data_of_noRigid`,
+ReducibleVertex.lean: chain-data extraction from G4a-i; design §1.49(2); see *Current state*).
+After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
+**Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
+with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
+alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ## Decisions made during this phase
 
@@ -114,3 +108,11 @@ Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own recon (K
   lemmas take `[G.Loopless]` (derived by callers via `loopless_of_isMinimalKDof`) rather than a
   full `IsMinimalKDof` hypothesis — (4.10) and the fundCircuit spanning step need only
   looplessness, keeping the statements at their honest strength.
+- **G0 parallel-pair brick:** G0 constructs `H = (G.induce {x,y}).restrict {e,f}` (not
+  `G.induce {x,y}` directly, which would require G simple) so `E(H) = {e,f}` is literal, and
+  `isKDof_zero_of_parallel_pair` applies. The `restrict_le + induce_le` chain gives `H ≤ G`.
+- **G4a-i incFun double-count:** `Finset.sum_comm` swaps Σ_v Σ_e to Σ_e Σ_v; per-edge the X₂
+  endpoint count is ≤ 1 (any X₂–X₂ adjacency would be the pair we want, contradicting `hno'`),
+  proved via `Finset.sum_le_one_iff` + `IsLink.eq_and_eq_or_eq_and_eq` for the case-split; then
+  `Finset.single_le_sum` carries `1 ≤ Σ_{X₃₊} incFun e`. The numeric finale needs `zify` +
+  `nlinarith` to combine the two lower bounds with the edge bound and `D ≥ 6`.

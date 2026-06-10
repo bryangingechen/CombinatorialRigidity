@@ -591,6 +591,80 @@ theorem isKDof_zero_of_triangle [Finite α] {H : Graph α β} {n : ℕ}
       rw [Set.ncard_eq_three]; exact ⟨exy, eyz, exz, hab_ne, hac_ne, hbc_ne, rfl⟩
     rw [hpts, hcr]; push_cast; nlinarith [hDpos]
 
+/-! ## A parallel pair is `0`-dof (G0 brick, Phase 22h) -/
+
+/-- **A parallel pair is body-hinge-rigid** (`0`-dof) for `D = bodyBarDim n ≥ 2`
+(the K₂-is-0-dof partition brick; sibling of `isKDof_zero_of_triangle`, used in G0
+`simple_of_isMinimalKDof_of_noRigid`). Let `H` be a two-vertex multigraph: two distinct
+vertices `x, y` pairwise joined by two distinct parallel edges `e₁, e₂` (with `V(H) = {x, y}`
+and `E(H) = {e₁, e₂}` exactly). Then `def(H̃) = 0`.
+
+Proof: `def ≤ 0` by `ciSup_le`, since for every partition `f`: if `f x = f y` (one part,
+no crossings) the deficiency is `0`; if `f x ≠ f y` (two parts, both edges cross) the
+deficiency is `D·1 − (D−1)·2 = 2 − D ≤ 0` for `D ≥ 2`. Combined with `def ≥ 0`
+(`deficiency_nonneg`) this forces `def(H̃) = 0`. -/
+theorem isKDof_zero_of_parallel_pair [Finite α] {H : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {x y : α} {e₁ e₂ : β}
+    (hxy : x ≠ y)
+    (hl₁ : H.IsLink e₁ x y) (hl₂ : H.IsLink e₂ x y)
+    (hne : e₁ ≠ e₂)
+    (hVH : V(H) = {x, y})
+    (hEH : E(H) = {e₁, e₂}) :
+    H.IsKDof n 0 := by
+  classical
+  have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
+  have hD2 : (2 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  have hne_v : V(H).Nonempty := ⟨x, by rw [hVH]; exact Set.mem_insert x _⟩
+  haveI : Nonempty (α → α) := ⟨id⟩
+  rw [IsKDof]
+  refine le_antisymm ?_ (H.deficiency_nonneg n hne_v)
+  rw [deficiency]
+  refine ciSup_le fun f ↦ ?_
+  -- `f '' V(H) = {f x, f y}`
+  have himg : f '' V(H) = {f x, f y} := by
+    rw [hVH]; ext w
+    simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨a, (rfl | rfl), rfl⟩ <;> tauto
+    · rintro (rfl | rfl)
+      exacts [⟨x, Or.inl rfl, rfl⟩, ⟨y, Or.inr rfl, rfl⟩]
+  -- The two crossing-edge membership biconditionals.
+  have hmem₁ : e₁ ∈ H.crossingEdges f ↔ f x ≠ f y := by
+    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+      true_or, true_and]
+    refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hl₁, hd⟩⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hl₁.eq_and_eq_or_eq_and_eq hl
+    exacts [hd, fun h ↦ hd h.symm]
+  have hmem₂ : e₂ ∈ H.crossingEdges f ↔ f x ≠ f y := by
+    simp only [crossingEdges, Set.mem_setOf_eq, hEH, Set.mem_insert_iff, Set.mem_singleton_iff,
+      or_true, true_and]
+    refine ⟨fun ⟨p, q, hl, hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hl₂, hd⟩⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hl₂.eq_and_eq_or_eq_and_eq hl
+    exacts [hd, fun h ↦ hd h.symm]
+  have hcross_sub : H.crossingEdges f ⊆ {e₁, e₂} := fun e he ↦ by
+    have : e ∈ E(H) := he.1; rwa [hEH] at this
+  rw [partitionDef, numParts, himg]
+  set D : ℤ := (bodyBarDim n : ℤ) with hDdef
+  by_cases hfxy : f x = f y
+  -- Case 1: same label → 1 part, 0 crossings.
+  · have hpts : ({f x, f y} : Set α).ncard = 1 := by
+      rw [show ({f x, f y} : Set α) = {f x} by rw [hfxy]; simp]; simp
+    have hcr : (H.crossingEdges f).ncard = 0 := by
+      rw [show H.crossingEdges f = ∅ from Set.eq_empty_of_forall_notMem fun e he ↦ by
+        rcases hcross_sub he with rfl | rfl
+        exacts [hmem₁.mp he hfxy, hmem₂.mp he hfxy]]
+      exact Set.ncard_empty β
+    rw [hpts, hcr]; push_cast; ring_nf; linarith
+  -- Case 2: different labels → 2 parts, both edges cross.
+  · have hpts : ({f x, f y} : Set α).ncard = 2 := Set.ncard_pair hfxy
+    have hcr : (H.crossingEdges f).ncard = 2 := by
+      rw [show H.crossingEdges f = {e₁, e₂} from Set.Subset.antisymm hcross_sub
+        (fun e he ↦ by
+          rcases he with rfl | rfl
+          exacts [hmem₁.mpr hfxy, hmem₂.mpr hfxy])]
+      exact Set.ncard_pair hne
+    rw [hpts, hcr]; push_cast; nlinarith [hDpos, hD2]
+
 /-! ## Subgraph minimality (`lem:subgraph-minimality`; KT Lemma 3.3) -/
 
 /-- **Subgraph minimality** (`lem:subgraph-minimality`; Katoh–Tanigawa 2011 Lemma 3.3):

@@ -1031,3 +1031,67 @@ route that bypasses the deferred forest surgery
   receiving it from the reduction), used by
   \texttt{theorem\_55\_generic}'s Case~III interface.
 \end{proof}
+
+\subsection{Simplicity and the adjacent-degree-2-pair lemma ($d=3$)}
+\label{sec:simplicity-and-adjacent-pair}
+
+\begin{lemma}[Two-vertex double edge is $0$-dof]
+  \label{lem:two-vertex-zero-dof}
+  \lean{Graph.isKDof_zero_of_parallel_pair}
+  \leanok
+  \uses{def:k-dof}
+  Let $H$ be a two-vertex multigraph with vertex set $\{x, y\}$ ($x \ne y$) and
+  exactly two edges $e_1, e_2$ (with $e_1 \ne e_2$), both linking $x$ to $y$,
+  and $D = \binom{d+1}{2} \ge 2$. Then $\operatorname{def}(\tilde H) = 0$, i.e.\ $H$
+  is a $0$-dof-graph.
+\end{lemma}
+\begin{proof}
+  \leanok
+  For the single-part partition ($f(x) = f(y)$) the deficiency contribution is $0$.
+  For the two-part partition ($f(x) \ne f(y)$) both edges cross, giving $D \cdot 1 -
+  (D-1) \cdot 2 = 2 - D \le 0$. Since the deficiency is also $\ge 0$
+  (\texttt{Graph.deficiency\_nonneg}), the supremum equals $0$.
+\end{proof}
+
+\begin{lemma}[Simplicity from minimality and no proper rigid subgraph; KT p.~682]
+  \label{lem:simple-minimal-noRigid}
+  \lean{Graph.simple_of_isMinimalKDof_of_noRigid}
+  \leanok
+  \uses{def:k-dof, def:rigid-subgraph, lem:two-vertex-zero-dof}
+  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph, $|V(G)| \ge 3$,
+  and $D = \binom{d+1}{2} \ge 2$. Then $G$ is simple (loopless and no parallel
+  edges).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Looplessness is \texttt{Graph.loopless\_of\_isMinimalKDof}. A parallel pair
+  $e \ne f$ between vertices $x, y$ makes the two-vertex subgraph
+  $H = (G[\{x,y\}])|_{\{e,f\}}$ a $0$-dof-graph
+  (\cref{lem:two-vertex-zero-dof}), with $|V(H)| = 2$ and
+  $V(H) \subsetneq V(G)$ (since $|V(G)| \ge 3$), contradicting the
+  no-proper-rigid-subgraph hypothesis.
+\end{proof}
+
+\begin{lemma}[Adjacent degree-2 pair; KT Lemma 4.6 at $d = 3$]
+  \label{lem:adjacent-degree-two-pair}
+  \lean{Graph.exists_adjacent_degree_two_pair}
+  \leanok
+  \uses{lem:no-rigid-edge-count, lem:two-edge-conn, def:k-dof, def:rigid-subgraph}
+  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph, $|V(G)| \ge 3$,
+  and $D = \binom{d+1}{2} \ge 6$ (the $d = 3$ regime). Then there exist adjacent
+  vertices $v, a \in V(G)$ both of degree exactly $2$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:two-vertex-zero-dof, lem:simple-minimal-noRigid}
+  By contradiction: assume no two adjacent degree-$2$ vertices. Partition $V(G)$ as
+  $X_2 = \{v \mid \deg v = 2\}$ and $X_{\ge 3} = V(G) \setminus X_2$.
+  For each edge~$e$, the number of $X_2$-endpoints of $e$ is at most $1$: if both
+  endpoints were in $X_2$ they would form an adjacent degree-$2$ pair, contradicting
+  the assumption. Summing over all edges via the incidence function and swapping the
+  order of summation gives $\sum_{v \in X_2} \deg v \le \sum_{w \in X_{\ge 3}} \deg w$.
+  Combined with the KT 4.5(i) edge bound (\cref{lem:no-rigid-edge-count}), the
+  handshake identity, and $D \ge 6$, this forces $4|X_2| \le 2|E| < 2D|V|/(D-1)$,
+  which together with $3|X_{\ge 3}| \le \sum_{X_{\ge 3}} \deg$ yields a numeric
+  contradiction via $|X_2| + |X_{\ge 3}| = |V| \ge 3$.
+\end{proof}
