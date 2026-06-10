@@ -22,8 +22,13 @@ and `exists_adjacent_degree_two_pair` (ReducibleVertex.lean: the `D ≥ 6` doubl
 `lem:simple-minimal-noRigid`, `lem:adjacent-degree-two-pair` added; build green, lint + verify.sh
 clean.
 
-**Next concrete step: G4a-ii** (`exists_chain_data_of_noRigid`, ReducibleVertex.lean, ~1 commit;
-needs G0 + `exists_splitOff_data_of_degree_eq_two` run at `v` and `a`; `b ≠ c` via
+**Next concrete step: G4a-ii** (`exists_chain_data_of_noRigid`, **ForestSurgery.lean**, after
+`exists_splitOff_data_of_degree_eq_two` — NOT ReducibleVertex.lean: that file is *upstream* of
+`exists_splitOff_data_of_degree_eq_two` (ReducibleVertex → Contraction → ForestSurgery), and the
+design pins G4a-ii's signature, not its file; all inputs (G4a-i/G0 in ReducibleVertex,
+`triangle_isProperRigidSubgraph` in Operations) are visible there and the consumer
+(`case_III_hsplit_producer`, CaseI.lean) is downstream via PanelLayer. ~1 commit; needs G0 +
+`exists_splitOff_data_of_degree_eq_two` run at `v` and `a`; `b ≠ c` via
 `triangle_isProperRigidSubgraph` + `hnp`; design §1.49(2)). Parallel-safe: T1–T4 (~3–4 commits,
 §1.48(1)) and G4c-i/ii (§1.49(3)).
 
@@ -78,7 +83,7 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
 ## Hand-off / next phase
 
 **Smallest next forward commit — G4a-ii** (`exists_chain_data_of_noRigid`,
-ReducibleVertex.lean: chain-data extraction from G4a-i; design §1.49(2); see *Current state*).
+ForestSurgery.lean — placement rationale in *Current state*; design §1.49(2)).
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
