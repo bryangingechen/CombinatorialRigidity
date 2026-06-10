@@ -33,6 +33,7 @@ quality / blueprint sync / notes discipline / commit message
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
 | 1 | G4b-impl `minimal_kdof_reduction_full` + (β) restate, 624b585 | 1/2/2 | sonnet | normal | clean | ✓✓✓✓✗✓ | 163k tok / 81 tools / 906s | full-diff read clean; matched §1.49(1) interface exactly. Notes ✗: Hand-off section left stale (still named G4b-impl); coordinator repaired (2-line edit) |
+| 2 | G4a-i + G0 `exists_adjacent_degree_two_pair` + `simple_of_isMinimalKDof_of_noRigid`, 6a0346d | 1/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 118k tok / 301 tools / 3529s | bundled G0 + K₂ brick with G4a-i (the checklist's own grouping; G4a-ii needs G0) — scope pass; hand-off updated correctly this time |
 
 ## Findings
 
