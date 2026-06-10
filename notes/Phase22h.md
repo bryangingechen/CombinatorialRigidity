@@ -56,8 +56,17 @@ by case analysis using degree-2 closures at `v` and `a`. Key derived facts: `hba
 (from `hcla` + `heab` + `he_b_ne_e_c`); after `subst he_eq_eb` in the backward fresh-edge case,
 `e_b` is replaced by `e` in context.
 
-**Next concrete step: G4c-ii** (§1.49(3)), the `ofNormals` framework transport: relabel-invariance
-of `ofNormals` data under a vertex `Equiv` + edge `Equiv` intertwining `IsLink` (PanelLayer/CaseI.lean).
+**G4c-ii is DONE.** `hasGenericFullRankRealization_of_splitOff_relabel` (CaseI.lean; blueprint
+node `lem:splitOff-ofNormals-relabel` added to case-iii.tex; build warning-clean). The
+`ofNormals` framework transport: GP via `ρ.injective.ne`; rigidity via `S ∘ ρ` pull-back using
+`splitOff_isLink_relabel` forward + `hρρ` double-application; link-recording via `splitOff_isLink_relabel`
+backward + `hρρ` roundtrip; alg-indep via `AlgebraicIndependent.comp` + injective reindex. Key
+tricks: `set Q'` to avoid `.toBodyHinge\n.supportExtensor` parse error; `change` to expose
+`ofNormals` form for `simp only` (bypasses `let`-binding opacity); `Equiv.Perm.inv_def` +
+`Equiv.symm_apply_apply` to reduce `σ⁻¹ (σ f)`; `simp only [Equiv.Perm.inv_def] at h1 h2`
+to normalize before `rw [h1]` in link-recording.
+
+**Next concrete step: G4d-i** (§1.49(4)), the eq.(6.43)→(6.44) `a`-column identity.
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -86,9 +95,8 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `lem:triangle-realization`; §1.48(1)). Done.
 - [x] **G4c-i** — `splitOff_isLink_relabel` (Operations.lean; blueprint node
   `lem:splitOff-isLink-relabel`; §1.49(3) graph side). Done.
-- [ ] **G4c-ii** — the `ofNormals` framework transport (PanelLayer/CaseI.lean; §1.49(3) framework
-  side): rigidity-on-`V`, `rigidityRows`, links/`ends`, GP/`AlgebraicIndependent ℚ` transport
-  under the vertex `Equiv.swap a v` + edge `σ` intertwining `IsLink`.
+- [x] **G4c-ii** — `hasGenericFullRankRealization_of_splitOff_relabel` (CaseI.lean; blueprint
+  node `lem:splitOff-ofNormals-relabel`; §1.49(3) framework side). Done.
 - [ ] **G4d-i/ii** — the (6.43)→(6.44) `a`-column identity + the `M₃` `hcand_mem` (§1.49(4)).
 - [ ] **The (β)-shaped `hsplit` producer** (the G4e spine; the §38 trap; §1.49(5)): G4a chain
   dichotomy → `|V|=3 ↦ T4`; chain arm: its own split data + `splitOff_isMinimalKDof` + measure ⟹
@@ -113,11 +121,10 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — G4c-ii** (§1.49(3) framework side):
-`ofNormals` relabel-invariance under vertex `Equiv.swap a v` + edge `σ` intertwining `IsLink`
-(PanelLayer/CaseI.lean). Transport rigidity-on-`V`, `rigidityRows` row-space correspondence,
-links/`ends`/GP/`AlgebraicIndependent ℚ` — all free since the coordinate set is unchanged
-(`AlgebraicIndependent.comp ρ`). Consumes `splitOff_isLink_relabel` (G4c-i, done).
+**Smallest next forward commit — G4d-i** (§1.49(4)): the eq.(6.43)→(6.44) `a`-column identity
+(`candidateRow_ac_eq_neg` in BodyHingeFramework; consumes `exists_redundant_panelRow_ab_decomposition_acolumn_zero` and
+`hingeRow_comp_single_tail`/`hingeRow_comp_single_off`; blueprint node `lem:case-III-claim612-eq644` already green).
+After G4d-i, G4d-ii (the `M₃` `hcand_mem`), then the (β)-shaped `hsplit` producer (G4e spine).
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -173,6 +180,15 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   The `hσe_ne_ec` short proof: `σ e = e_c` and `σ e₁ = e_c` → `e = e₁` by injectivity, contradicts
   `he₁e`. Similarly `he_ne_ec`/`he_ne_e₀` use explicit `calc` chains over `swap_apply_right` +
   `swap_apply_of_ne_of_ne` to avoid `simp_all` whnf timeouts.
+- **G4c-ii `let`-opacity and `.toBodyHinge\n.field` parse hazards:** `set Q'` avoids the
+  `.toBodyHinge\n.supportExtensor` newline-parse bug (line 2 is parsed as argument, not field).
+  `change (ofNormals ...).toBodyHinge.supportExtensor _ = _` exposes the `ofNormals` form so
+  `simp only` can unfold `ofNormals_ends`/`ofNormals_normal` (plain `set`-bound `Q'` is opaque to
+  `simp only`). `Equiv.Perm.inv_def` rewrites `σ⁻¹` to `Equiv.symm σ`; then `Equiv.symm_apply_apply`
+  reduces `σ.symm (σ f) = f` (the `HInv` form blocks `Equiv.symm_apply_apply` directly). Link-recording:
+  `simp only [Equiv.Perm.inv_def] at h1 h2` normalizes `h1`/`h2` to the `.symm` form before
+  `rw [h1]` finds its pattern. Promoted to TACTICS-QUIRKS (§ 35 extension or new entry for the
+  `let`-opacity/`change`-before-simp pattern). → See also FRICTION.md [let-opacity].
 - **T4 sign-flip dispatch (`hasGenericFullRankRealization_of_triangle`):** each triangle-edge
   extensor equals ±Cᵢ via `endsOf_eq_or_swap` (2 cases × 3 edges = 8-way `rcases` dispatch).
   The `hLI_neg` helper builds LI for `![ε₀•C₀, ε₁•C₁, ε₂•C₂]` via `units_smul_iff` + the

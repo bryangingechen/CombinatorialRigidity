@@ -3888,6 +3888,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored. The callsite collapses to one `rw`.
 - **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
 
+### [open] `set`-bound `let` is opaque to `simp only`; `change` required to expose inner form
+
+- **Where it bit:** `hasGenericFullRankRealization_of_splitOff_relabel` (Phase 22h, CaseI.lean):
+  `set Q' := PanelHingeFramework.ofNormals …` introduces `Q'` as a `let`-binding; a subsequent
+  `simp only [ofNormals_ends, ofNormals_normal, …]` on a goal mentioning `Q'.toBodyHinge.supportExtensor`
+  made no progress because `Q'` is opaque to `simp only`. Fix: add
+  `change (PanelHingeFramework.ofNormals …).toBodyHinge.supportExtensor _ = _` before the simp to
+  expose the `ofNormals` constructor form.
+- **Candidate fix / general pattern:** always pair `set X := body` with a `change` or `unfold X` before
+  `simp only` on the first goal where `X`'s inner structure matters. Or use `simp only [show X = body from rfl]`
+  to force expansion. Neither `unfold_let` nor `simp only [Q']` works here.
+- **Status:** open (project-internal idiom; the `change`-before-simp is the accepted workaround).
+
+### [open] `Equiv.Perm.inv_def` + `Equiv.symm_apply_apply` needed to reduce `σ⁻¹ (σ f)`
+
+- **Where it bit:** `hasGenericFullRankRealization_of_splitOff_relabel` (Phase 22h): the goal
+  contained `σ⁻¹ (σ f)` (HInv form) and the attempted `Equiv.symm_apply_apply σ f` did not fire
+  because `σ⁻¹` is `HInv.hInv σ`, not `Equiv.symm σ`. Fix: `rw [Equiv.Perm.inv_def]` rewrites
+  `σ⁻¹` to `σ.symm`; then `Equiv.symm_apply_apply` reduces `σ.symm (σ f) = f`.
+  Similarly, normalizing `h : … (σ⁻¹ e') …` before `rw [h]` required
+  `simp only [Equiv.Perm.inv_def] at h` to get the `.symm` form.
+- **Status:** open (project idiom for `Equiv.Perm` inversion in `simp`/`rw` chains).
+
 ### [resolved] `LinearMap.proj u - LinearMap.proj v` over a Pi type elaborates stuck
 
 `def screwDiff (u v : α) : (α → W) →ₗ[ℝ] W := LinearMap.proj u - LinearMap.proj v`

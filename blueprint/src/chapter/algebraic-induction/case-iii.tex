@@ -1032,6 +1032,38 @@ Grassmann--Cayley projective duality.
   the surviving $e_c$-edge (endpoints $v \mapsto a$, $c \mapsto c$).
 \end{proof}
 
+\begin{lemma}[Generic realization transport across the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
+  \label{lem:splitOff-ofNormals-relabel}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel}
+  \leanok
+  \uses{lem:splitOff-isLink-relabel}
+  Under the same chain data and degree-2 hypotheses as
+  \cref{lem:splitOff-isLink-relabel}, a generic full-rank realization of
+  $G.\mathrm{splitOff}\,a\,v\,c\,e_1$ (vertex-relabelled by $\rho = \mathrm{Equiv.swap}\,a\,v$ and
+  edge-relabelled by $\sigma = (\mathrm{Equiv.swap}\,e_b\,e_0) \cdot (\mathrm{Equiv.swap}\,e_1\,e_c)$)
+  transports to a generic full-rank realization of $G.\mathrm{splitOff}\,v\,a\,b\,e_0$.
+  Concretely: the transported framework $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,v\,a\,b\,e_0)$
+  with seed $q_\rho(x, i) := Q.\mathrm{normal}\,(\rho\,x)\,i$ and selector
+  $\mathrm{ends}'(e') := (\rho\,(Q.\mathrm{ends}\,(\sigma^{-1} e'))_1,\, \rho\,(Q.\mathrm{ends}\,(\sigma^{-1} e'))_2)$
+  inherits all five generic-realization conjuncts via the $\rho$/$\sigma$ transport.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:splitOff-isLink-relabel}
+  Each conjunct is transported by the vertex-swap $\rho$ and edge-permutation $\sigma$.
+  General position: the $\rho$-reindexed seed is GP because $\rho$ is injective and
+  the original seed is GP. Rigidity: any motion $S$ of the transported framework pulls
+  back to a motion $S \circ \rho$ of $Q$, using \cref{lem:splitOff-isLink-relabel}
+  forward to move each link from $G.\mathrm{splitOff}\,v\,a\,b\,e_0$ to
+  $G.\mathrm{splitOff}\,a\,v\,c\,e_1$; rigidity of $Q$ forces $S \circ \rho$ constant,
+  hence $S$ constant after applying $\rho\rho = \mathrm{id}$.
+  Link-recording: \cref{lem:splitOff-isLink-relabel} backward translates each
+  link of $G.\mathrm{splitOff}\,v\,a\,b\,e_0$ to a link of $Q$'s graph, whose
+  link-recording gives the endpoint pair; transporting back through $\rho$ gives
+  $\mathrm{ends}'(e')$. Algebraic independence: the seed family is an injective
+  re-index of $Q$'s algebraically-independent family.
+\end{proof}
+
 \begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]
   \label{lem:case-III-claim612-p3-placement}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p3_candidateRow}
