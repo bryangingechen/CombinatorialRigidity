@@ -1024,5 +1024,10 @@ route that bypasses the deferred forest surgery
   fresh short-circuit edge. This is
   Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011}; it is the
   combinatorial skeleton the algebraic induction (Phases~21--23) realizes
-  at the rigidity-matrix rank.
+  at the rigidity-matrix rank. A companion variant
+  \texttt{Graph.minimal\_kdof\_reduction\_full} hands the no-rigid-subgraph
+  branch the same full induction hypothesis as the contraction branch (the
+  producer then re-extracts the degree-2 vertex internally rather than
+  receiving it from the reduction), used by
+  \texttt{theorem\_55\_generic}'s Case~III interface.
 \end{proof}

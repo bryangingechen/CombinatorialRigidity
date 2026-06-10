@@ -1117,61 +1117,48 @@ theorem theorem_55 [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
 
 /-- **Theorem 5.5, conditioned-motive (generic) reduction skeleton** (`thm:theorem-55`,
 the generic-motive reduction N6-G2-G2a; Katoh–Tanigawa 2011 §5–§6.2, the "nonparallel, if `G`
-is simple" strengthening). The generic sibling of `theorem_55`: it runs the *same* Phase-20
-reduction dichotomy `Graph.minimal_kdof_reduction`, but against the **conditioned motive**
-`Pc G := (G.Simple → HasGenericFullRankRealization k G) ∧ HasFullRankRealization k G` — the
-honest formalization of KT's conclusion "there exists a (nonparallel, if `G` is simple)
-realization" (printed p. 669). The general-position (`HasGenericFullRankRealization`) conjunct is
-**conditioned on `G.Simple`** because unconditional general position genuinely fails at the
-non-simple leaves (the parallel-K₂ base and the non-simple Lemma-6.2 branch want *equal* panels,
-p. 670); routing those to the bare conjunct makes `splitOff`'s non-preservation of simplicity
-(KT Lemma 6.7) harmless.
+is simple" strengthening). The generic sibling of `theorem_55`: it runs the `|V|`-strong-induction
+reduction dichotomy `Graph.minimal_kdof_reduction_full` (the full-IH interface), against the
+**conditioned motive** `Pc G := (G.Simple → HasGenericFullRankRealization k G) ∧
+HasFullRankRealization k G` — the honest formalization of KT's conclusion "there exists a
+(nonparallel, if `G` is simple) realization" (printed p. 669). The general-position
+(`HasGenericFullRankRealization`) conjunct is **conditioned on `G.Simple`** because unconditional
+general position genuinely fails at the non-simple leaves (the parallel-K₂ base and the
+non-simple Lemma-6.2 branch want *equal* panels, p. 670).
 
 Conclusion `Pc G` for every minimal `0`-dof-graph `G` with `2 ≤ |V(G)|`. The bare-motive
 conjunct is discharged exactly as in `theorem_55` (its `hbase`/`hsplit`/`hcontract` are the same
 hypotheses). The **`G.Simple → general-position`** conjunct is discharged per branch:
 
 * `hbaseGP` — the simple two-vertex base (KT Lemma 5.3, two non-parallel bodies);
-* `hsplitGP` — the simple splitting-off branch. **This is KT Case III** (the `k = 0` reducible-
-  vertex split, `theorem_55.hsplit` — one rigidity row short, eq. (6.12) + the Case-III redundant
-  row), out of Phase-22a's Case-I scope; it is carried as an explicit hypothesis here in the
-  Phase-21b green-modulo `h…` idiom, to be discharged by the Track-B producer of Phase 22b+;
+* `hsplitGP` — the simple no-rigid-subgraph branch (KT Case III, `k = 0`, Lemma 6.10). It
+  receives the **full conditioned induction hypothesis** `∀ G', … → Pc G'` (mirroring
+  `hcontractGP`) so the producer can re-choose its own adjacent degree-2 pair (Lemma 4.6 chain
+  data, G4a) and apply the IH to `G.splitOff v a b e₀` inside the producer, rather than being
+  handed a fixed split IH value. Carried as an explicit hypothesis (the Phase-21b green-modulo
+  `h…` idiom), to be discharged by the Track-B producer of Phase 22h+;
 * `hcontractGP` — the simple Case-I branch (KT Lemma 6.3/6.5, the proper-rigid-subgraph
-  contraction). It receives the **full conditioned induction hypothesis** `∀ G', … → Pc G'` so
-  that the Case-I assembly (N6-G3, Phase 22a) can extract a general-position realization of each
-  Lemma-6.3 leg — the rigid block `H` (simple by `Graph.Simple.mono`) and the contraction
-  `G/E(H)` (simple by the new `map`-simplicity fact, G2b) — feed them through
-  `hasGenericRealization_transport_ends` into the generic producer
-  `hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1), and land `G.Simple → GP G`.
+  contraction). Receives the full conditioned IH so the Case-I assembly (N6-G3, Phase 22a) can
+  extract GP realizations of both legs and conclude `G.Simple → GP G`.
 
-**G2a settles the flagged routing sub-question by carrying, not internalizing, the split-off
-GP step.** The `Simple → GP` conjunct of the splitting-off branch is *itself* the Case-III
-producer (Track B), which is out of 22a scope and entirely red; so even though `splitOff` does
-not preserve simplicity, the binding obstruction is one of *scope*, not of routing — and the
-honest in-scope shape carries `hsplitGP` as a hypothesis (design doc §1.6 escalation (ii)). G2c
-will instantiate this skeleton with the genuine Case-I `hcontractGP` to conclude
-`lem:case-I-realization`. -/
-theorem theorem_55_generic [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
-    (hD : 3 ≤ Graph.bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+Uses `Graph.minimal_kdof_reduction_full` (the (β)-interface: no `hD`/`hfresh`/`[DecidableEq β]`
+in the `hsplit`/`hsplitGP` callbacks). -/
+theorem theorem_55_generic [DecidableEq β] [Finite α] {n k : ℕ}
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
       PanelHingeFramework.HasFullRankRealization k G)
     (hbaseGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → G.Simple →
       PanelHingeFramework.HasGenericFullRankRealization k G)
-    (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
-      G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      v ∈ V(G) → a ≠ v → b ≠ v → a ∈ V(G) → b ∈ V(G) → eₐ ≠ e_b →
-      G.IsLink eₐ v a → G.IsLink e_b v b → (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      e₀ ∉ E(G) →
-      PanelHingeFramework.HasFullRankRealization k (G.splitOff v a b e₀) →
+    (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization k G') →
       PanelHingeFramework.HasFullRankRealization k G)
-    (hsplitGP : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
-      G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      v ∈ V(G) → a ≠ v → b ≠ v → a ∈ V(G) → b ∈ V(G) → eₐ ≠ e_b →
-      G.IsLink eₐ v a → G.IsLink e_b v b → (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      e₀ ∉ E(G) → G.Simple →
-      ((G.splitOff v a b e₀).Simple →
-        PanelHingeFramework.HasGenericFullRankRealization k (G.splitOff v a b e₀)) ∧
-        PanelHingeFramework.HasFullRankRealization k (G.splitOff v a b e₀) →
+    (hsplitGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) → G.Simple →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
+          PanelHingeFramework.HasFullRankRealization k G') →
       PanelHingeFramework.HasGenericFullRankRealization k G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
@@ -1188,17 +1175,16 @@ theorem theorem_55_generic [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k G) ∧
       PanelHingeFramework.HasFullRankRealization k G :=
-  Graph.minimal_kdof_reduction (P := fun G =>
+  Graph.minimal_kdof_reduction_full (P := fun G =>
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k G) ∧
         PanelHingeFramework.HasFullRankRealization k G)
-    hD hfresh
     -- base: bare from `hbase`; the simple two-vertex base from `hbaseGP`.
     (fun G hG hV2 => ⟨fun hSimple => hbaseGP G hG hV2 hSimple, hbase G hG hV2⟩)
-    -- split off a degree-2 vertex (Case III): bare from `hsplit`, GP carried (`hsplitGP`).
-    (fun G v a b eₐ e_b e₀ hG hnp hvG hav hbv haV hbV heab hla hlb hclo he₀ hIH =>
-      ⟨fun hSimple => hsplitGP G v a b eₐ e_b e₀ hG hnp hvG hav hbv haV hbV heab hla hlb hclo he₀
-          hSimple hIH,
-        hsplit G v a b eₐ e_b e₀ hG hnp hvG hav hbv haV hbV heab hla hlb hclo he₀ hIH.2⟩)
+    -- no-rigid-subgraph branch (Case III): bare from `hsplit`, GP carried (`hsplitGP`).
+    -- Both callbacks receive the full conditioned IH; `hsplit` projects its `.2` (bare) part.
+    (fun G hG hV3 hnp hIH =>
+      ⟨fun hSimple => hsplitGP G hG hV3 hnp hSimple hIH,
+        hsplit G hG hV3 hnp (fun G' hG' hG'2 hlt => (hIH G' hG' hG'2 hlt).2)⟩)
     -- contract a rigid subgraph (Case I): bare from `hcontract`, simple Case-I `hcontractGP`.
     (fun G hG hV3 hrig hIH =>
       ⟨fun hSimple => hcontractGP G hG hV3 hrig hSimple hIH,

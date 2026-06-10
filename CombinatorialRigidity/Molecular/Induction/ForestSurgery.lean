@@ -1061,6 +1061,41 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
       exact hsplit G v a b eₐ e_b e₀ hG hrig hvG hav hbv haV hbV heab hla hlb hdeg2 he₀
         (IH _ hsmaller _ rfl hsplitMin hsplit2)
 
+/-- **Full-IH reduction of minimal `0`-dof-graphs** (the (β)-interface variant of
+`minimal_kdof_reduction`, used by `theorem_55_generic`'s Case-III producer). The same
+`|V|`-strong-induction as `minimal_kdof_reduction`, but the **`hsplit` branch is handed the full
+conditioned induction hypothesis** (all strictly-smaller minimal `0`-dof-graphs satisfy `P`)
+rather than only the IH value at the specific splitting `G.splitOff v a b e₀`. This mirrors the
+`hcontract` interface exactly, allowing the producer to re-choose its own degree-2 pair, extract
+the adjacent-pair chain data (G4a), and apply the IH to whichever split it needs.
+
+Requires no `hD`/`hfresh`/`[Finite β]` — the new `hsplit` makes no splitting internally;
+`classical` handles the `by_cases` on the rigid-subgraph existence. (`[DecidableEq β]` is still
+needed in the signature because `IsMinimalKDof` carries it.) -/
+theorem minimal_kdof_reduction_full [DecidableEq β] [Finite α] {n : ℕ} {P : Graph α β → Prop}
+    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → P G)
+    (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → P G') → P G) :
+    ∀ G : Graph α β, G.IsMinimalKDof n 0 → 2 ≤ V(G).ncard → P G := by
+  classical
+  intro G
+  induction hN : V(G).ncard using Nat.strong_induction_on generalizing G with
+  | _ N IH =>
+  intro hG hV2
+  rcases eq_or_lt_of_le hV2 with hVeq | hVlt
+  · exact hbase G hG (hN.trans hVeq.symm)
+  · have hV3 : 3 ≤ V(G).ncard := by rw [hN]; omega
+    by_cases hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n
+    · exact hcontract G hG hV3 hrig (fun G' hG' hG'2 hlt => IH _ (hN ▸ hlt) _ rfl hG' hG'2)
+    · push Not at hrig
+      exact hsplit G hG hV3 hrig (fun G' hG' hG'2 hlt => IH _ (hN ▸ hlt) _ rfl hG' hG'2)
+
 /-! ### The repacking descent: a base admits a balanced forest packing
 (`lem:forest-surgery-split`, the balanced-packing descent — outer loop)
 

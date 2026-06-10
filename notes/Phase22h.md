@@ -21,26 +21,32 @@ only caller `minimal_kdof_reduction` has `hV3` in the split branch. All other `h
 statements unchanged; blueprint `def:rigid-subgraph` synced (22g caveat removed),
 `lem:reduction-step` + Thm 4.9 prose updated.
 
-**Next concrete step: G4b-impl** — `minimal_kdof_reduction_full` (the ~15-line full-IH strong
-induction, signature in design §1.49(1)) + the `theorem_55_generic` `hsplit`/`hsplitGP` restate to
-the (β) shape, dropping its now-unused `hD`/`hfresh`. Pins the producer signature; 1 commit.
+**G4b-impl is DONE (single commit).** `minimal_kdof_reduction_full` (ForestSurgery.lean, the
+full-IH strong induction: no `hD`/`hfresh`, the `hsplit` branch gets the same full conditioned IH
+as `hcontract`) + `theorem_55_generic` restated over it (PanelHinge.lean: `hsplit`/`hsplitGP` now
+take `hnoRigid` + full conditioned IH, dropping per-vertex split data and the `hD`/`hfresh`
+parameters; `[DecidableEq β]` and `[Finite β]` remain). Blueprint prose at
+`thm:minimal-kdof-reduction` updated with one-line note. Build green, lint clean.
 
-**Build order (design §1.49(6); estimated 13–18 commits):** G5 → **G4b-impl**
-(`minimal_kdof_reduction_full` + the `theorem_55_generic` `hsplit`/`hsplitGP` restate to the
-full-conditioned-IH (β) shape — pins the producer signature) → in parallel: {G4a-i/ii + G0 ∥ the
-`|V|=3` triangle leaves T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the
-§38-trap concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 (the
-`theorem_55_generic (n:=2) (k:=2)` instance node) → Leaf 5 (the banner flips + the Thm 5.5→5.6
-push, unblocking Cor 5.7 at `d=3`).
+**Next concrete step: G4a-i/ii + G0** (or the `|V|=3` triangle leaves T1–T4) — both are
+parallel-safe now that the producer signature is pinned. The standard next choice is **G4a-i**
+(`exists_adjacent_degree_two_pair`, ReducibleVertex.lean: the `D ≥ 6` double-count, bounded,
+~1 commit) and then **G4a-ii** (`exists_chain_data_of_noRigid`, same file, ~1 commit, needs G0
+`simple_of_isMinimalKDof_of_noRigid` as a brick) — these supply the chain data the (β) producer
+will use. Parallel: T1–T4 (the `|V|=3` triangle base, ~3–4 commits, design §1.48(1)).
+
+**Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
+{G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
+concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Leaf 5.
 
 ## Lemma checklist
 
 - [x] **G5** — the `IsProperRigidSubgraph` predicate repair (`2 ≤ V(H).ncard`) + producer-site
   re-proofs (incl. the uncensused `splitOff_isMinimalKDof` site, which gained `hV3`) +
   `loopless_of_isMinimalKDof` brick + blueprint `def:rigid-subgraph` sync (§1.49(0)). Done.
-- [ ] **G4b-impl** — `minimal_kdof_reduction_full` (a ~15-line strong induction; the old
-  reduction / `theorem_55` / their green blueprint nodes untouched) + the `theorem_55_generic`
-  branch restate to the (β) full-IH shape (§1.49(1)).
+- [x] **G4b-impl** — `minimal_kdof_reduction_full` (ForestSurgery.lean, full-IH strong induction)
+  + `theorem_55_generic` (β) restate (PanelHinge.lean; `hsplit`/`hsplitGP` → full conditioned IH
+  shape, dropping per-vertex data and `hD`/`hfresh`). Done.
 - [ ] **G4a-i/ii + G0** — the `d=3` adjacent-degree-2-pair chain dichotomy (the cheap `D ≥ 6`
   double count, NOT KT's maximal chains — those are Phase 23's general-`d` form) + the data
   extraction (`b ≠ c`) + `simple_of_isMinimalKDof_of_noRigid` (§1.49(2)). Parallel-safe after
@@ -86,6 +92,14 @@ Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own recon (K
 
 ## Decisions made during this phase
 
+- **G4b-impl (β) interface:** `minimal_kdof_reduction_full` adds `classical` to the proof body
+  (for `by_cases` on the prop-valued `∃ H, IsProperRigidSubgraph G n`); `[DecidableEq β]` must
+  remain in the signature because `IsMinimalKDof` bakes it in. `theorem_55` (bare reduction)
+  is untouched. The `theorem_55_generic` `hsplit`/`hsplitGP` no longer carry split-vertex data or
+  `hD`/`hfresh` — those are internalized by the future producer (G4e). `[Finite β]` was also
+  dropped from `theorem_55_generic` (the old version called `minimal_kdof_reduction` which needed
+  it; the new version calls only `minimal_kdof_reduction_full` which doesn't). The `hsplit`
+  wiring lambda in the new proof projects `.2` (bare) from the full IH, mirroring `hcontract`.
 - **Model-tier dispatch experiment running on this phase** —
   coordinator sessions rate each dispatch and pick the subagent model
   rung per `notes/model-experiment-protocol.md`, logging to
