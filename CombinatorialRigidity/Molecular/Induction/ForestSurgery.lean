@@ -971,6 +971,197 @@ theorem exists_splitOff_data_of_degree_eq_two [Finite α] [Finite β]
       simpa [Set.mem_insert_iff] using this
   exact ⟨a, b, eₐ, e_b, hav, hbv, hla.right_mem, hlb.right_mem, hne, hla, hlb, hclosure⟩
 
+/-! ### Chain data for the Case-III `d = 3` producer (G4a-ii, Phase 22h) -/
+
+/-- **Chain data for the Case-III `d = 3` splitting producer** (G4a-ii, Phase 22h;
+Katoh–Tanigawa 2011 §6.4.1). For a minimal `0`-dof-graph with no proper rigid subgraph,
+`D ≥ 6` (the `d = 3` regime), and `4 ≤ |V(G)|`, there exist distinct vertices `v, a, b, c`
+and edges `eₐ, e_b, e_c` forming the chain `b — v — a — c`:
+
+* `G.IsLink eₐ v a` (the shared `va`-edge),
+* `G.IsLink e_b v b` (the second `v`-edge),
+* `G.IsLink e_c a c` (the second `a`-edge),
+* the degree-2 closures: every `v`-edge is `eₐ` or `e_b`, every `a`-edge is `eₐ` or `e_c`,
+* all distinctness: `a ≠ v`, `b ≠ v`, `b ≠ a`, `c ≠ v`, `c ≠ a`, `b ≠ c`,
+  `eₐ ≠ e_b`, `eₐ ≠ e_c`.
+
+Proof: apply `exists_adjacent_degree_two_pair` (G4a-i) to get `v, a` both of degree 2
+adjacent via `eₐ`. Simplicity (`simple_of_isMinimalKDof_of_noRigid`, G0) then lets
+`exists_splitOff_data_of_degree_eq_two` at `v` (resp. `a`) identify the two edges; the
+shared `eₐ` pins `a` (resp. `v`) as the far endpoint, leaving `e_b, b` (resp. `e_c, c`).
+The `b ≠ c` inequality follows from `triangle_isProperRigidSubgraph` + `hnp`: if `b = c`
+then `G[{v, a, b}]` is a proper rigid subgraph of `G` (a triangle, `4 ≤ |V(G)|`). -/
+theorem exists_chain_data_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 6 ≤ bodyBarDim n) (hV4 : 4 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    ∃ (v a b c : α) (eₐ e_b e_c : β),
+      v ∈ V(G) ∧ a ∈ V(G) ∧ b ∈ V(G) ∧ c ∈ V(G) ∧
+      a ≠ v ∧ b ≠ v ∧ b ≠ a ∧ c ≠ v ∧ c ≠ a ∧ b ≠ c ∧
+      eₐ ≠ e_b ∧ eₐ ≠ e_c ∧
+      G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ G.IsLink e_c a c ∧
+      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧
+      (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite _
+  haveI : Fintype β := Fintype.ofFinite _
+  have hD3 : 3 ≤ bodyBarDim n := by linarith
+  have hD2 : 2 ≤ bodyBarDim n := by linarith
+  have hD1 : 1 ≤ bodyBarDim n := by linarith
+  have hV3 : 3 ≤ V(G).ncard := by linarith
+  have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
+  -- G0: G is simple.
+  haveI hsimp : G.Simple := simple_of_isMinimalKDof_of_noRigid hD2 hV3 hG hnp
+  haveI hLl : G.Loopless := loopless_of_isMinimalKDof hG
+  -- G4a-i: get adjacent degree-2 vertices v, a with edge eₐ.
+  obtain ⟨v, a, hvG, haG, hdegv, hdega, eₐ, hlaG⟩ :=
+    exists_adjacent_degree_two_pair hD hV3 hG hnp
+  -- exists_splitOff_data at v (companion a, a ≠ v).
+  have hav : a ≠ v := hlaG.ne.symm
+  obtain ⟨a₁, b, f₁, f₂, ha₁v, hbv, ha₁G, hbG, hf₁f₂, hlf₁, hlf₂, hclv⟩ :=
+    exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
+  -- Identify which of f₁/f₂ is eₐ (the va-edge) using the v-closure.
+  have hea_mem : eₐ = f₁ ∨ eₐ = f₂ := hclv eₐ a hlaG
+  -- Apply exists_splitOff_data at a (companion v, v ≠ a).
+  obtain ⟨v₁, c₀, g₁, g₂, hv₁a, hc₀a, hv₁G, hc₀G, hg₁g₂, hlg₁, hlg₂, hcla⟩ :=
+    exists_splitOff_data_of_degree_eq_two hD1 hG.1 haG hvG hav.symm hdega
+  -- Identify which of g₁/g₂ is eₐ (using the a-closure).
+  have hea_mem_a : eₐ = g₁ ∨ eₐ = g₂ := hcla eₐ v hlaG.symm
+  -- Helper: from `G.IsLink e x y` and `G.IsLink e x z` with the same edge and left endpoint,
+  -- and `y ≠ x`, the right endpoint is determined: `y = z` or `z = x` (the loop case, excluded).
+  -- We avoid `eq_and_eq_or_eq_and_eq` complications; instead use `left_eq_or_eq` + `right_unique`.
+  have same_right : ∀ (e : β) (x y z : α), G.IsLink e x y → G.IsLink e x z → y ≠ x → y = z := by
+    intro e x y z hly hlz hyx
+    rcases hly.eq_and_eq_or_eq_and_eq hlz with ⟨_, h⟩ | ⟨h₁, h₂⟩
+    · exact h
+    · exact absurd h₂ hyx
+  -- Case split on which of g₁, g₂ is eₐ.
+  rcases hea_mem_a with hg₁ea | hg₂ea
+  · -- eₐ = g₁. So hlg₁ : G.IsLink g₁ a v₁. Since eₐ = g₁, G.IsLink eₐ a v₁.
+    -- Also hlaG.symm : G.IsLink eₐ a v. Same-right (with v₁ ≠ a from hv₁a) gives v₁ = v.
+    have hlg₁' : G.IsLink eₐ a v₁ := hg₁ea ▸ hlg₁
+    have hv₁v : v₁ = v := same_right eₐ a v₁ v hlg₁' hlaG.symm hv₁a
+    -- So g₂ links a→c₀, and c₀ ≠ v (else g₂ links a→v = eₐ = g₁, so g₂ = g₁, contra).
+    have hc₀v : c₀ ≠ v := by
+      intro hceqv
+      have hlg₂' : G.IsLink g₂ a v := hceqv ▸ hlg₂
+      have hg₂g₁ : g₂ = g₁ := by
+        have hlg₁'' : G.IsLink g₁ a v := hv₁v ▸ hlg₁
+        exact hlg₂'.unique_edge hlg₁''
+      exact hg₁g₂ hg₂g₁.symm
+    -- e_c := g₂, c := c₀.
+    -- Now case split on hea_mem for the v-side.
+    rcases hea_mem with hf₁ea | hf₂ea
+    · -- eₐ = f₁. hlf₁ : G.IsLink f₁ v a₁. G.IsLink eₐ v a₁. Same-right gives a₁ = a.
+      have hlf₁' : G.IsLink eₐ v a₁ := hf₁ea ▸ hlf₁
+      have ha₁a : a₁ = a := same_right eₐ v a₁ a hlf₁' hlaG ha₁v
+      -- e_b := f₂, b_out := b.
+      -- b ≠ a: if b = a, f₂ links v→a = eₐ = f₁, unique_edge → f₂ = f₁, contra hf₁f₂.
+      have hba : b ≠ a := by
+        intro hbeqa
+        have hlf₂' : G.IsLink f₂ v a := hbeqa ▸ hlf₂
+        have : f₂ = f₁ := hlf₂'.unique_edge (ha₁a ▸ hlf₁ : G.IsLink f₁ v a)
+        exact hf₁f₂ this.symm
+      -- b ≠ c₀: triangle v–a–b with edge eₐ (va), f₂ (vb), g₂ (ac₀=ab).
+      have hbc₀ : b ≠ c₀ := by
+        intro hbeqc
+        have hlg₂' : G.IsLink g₂ a b := hbeqc ▸ hlg₂
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₂ hlg₂' (Ne.symm hba) hV4)
+          (fun ⟨H, hH⟩ ↦ hnp H hH)
+      exact ⟨v, a, b, c₀, eₐ, f₂, g₂, hvG, haG, hbG, hc₀G, hav, hbv, hba,
+        hc₀v, hc₀a, hbc₀,
+        hf₁ea ▸ hf₁f₂,
+        hg₁ea ▸ hg₁g₂,
+        hlaG, hlf₂, hlg₂,
+        fun e x hle ↦ (hclv e x hle).imp_left (fun h ↦ h.trans hf₁ea.symm),
+        fun e x hle ↦ (hcla e x hle).imp_left (fun h ↦ h.trans hg₁ea.symm)⟩
+    · -- eₐ = f₂. hlf₂ : G.IsLink f₂ v b. G.IsLink eₐ v b. Same-right gives b = a.
+      have hlf₂' : G.IsLink eₐ v b := hf₂ea ▸ hlf₂
+      have hba : b = a := same_right eₐ v b a hlf₂' hlaG hbv
+      -- e_b := f₁, b_out := a₁.
+      -- a₁ ≠ a: if a₁ = a, f₁ links v→a = eₐ = f₂, unique_edge → f₁ = f₂, contra.
+      have ha₁a : a₁ ≠ a := by
+        intro ha₁a
+        have hlf₁' : G.IsLink f₁ v a := ha₁a ▸ hlf₁
+        -- hlf₂' : G.IsLink eₐ v b and hba : b = a, so G.IsLink eₐ v a
+        have hlf₂a : G.IsLink eₐ v a := hba ▸ hlf₂'
+        have hf₁ea : f₁ = eₐ := hlf₁'.unique_edge hlf₂a
+        exact hf₁f₂ (hf₁ea.trans hf₂ea)
+      -- a₁ ≠ c₀: triangle v–a–a₁.
+      have ha₁c₀ : a₁ ≠ c₀ := by
+        intro ha₁c₀
+        have hlg₂' : G.IsLink g₂ a a₁ := ha₁c₀ ▸ hlg₂
+        have hab₁ : a ≠ a₁ := Ne.symm ha₁a
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₁ hlg₂' hab₁ hV4)
+          (fun ⟨H, hH⟩ ↦ hnp H hH)
+      exact ⟨v, a, a₁, c₀, eₐ, f₁, g₂, hvG, haG, ha₁G, hc₀G, hav, ha₁v, ha₁a,
+        hc₀v, hc₀a, ha₁c₀,
+        fun h ↦ hf₁f₂ (h.symm.trans hf₂ea),
+        hg₁ea ▸ hg₁g₂,
+        hlaG, hlf₁, hlg₂,
+        fun e x hle ↦ ((hclv e x hle).symm).imp_left (fun h ↦ h.trans hf₂ea.symm),
+        fun e x hle ↦ (hcla e x hle).imp_left (fun h ↦ h.trans hg₁ea.symm)⟩
+  · -- eₐ = g₂. hlg₂ : G.IsLink g₂ a c₀. G.IsLink eₐ a c₀. Same-right gives c₀ = v.
+    have hlg₂' : G.IsLink eₐ a c₀ := hg₂ea ▸ hlg₂
+    have hc₀v : c₀ = v := same_right eₐ a c₀ v hlg₂' hlaG.symm hc₀a
+    -- g₁ links a→v₁, v₁ ≠ v (else g₁ links a→v = eₐ = g₂, so g₁ = g₂, contra).
+    have hv₁v : v₁ ≠ v := by
+      intro hv₁v
+      have hlg₁' : G.IsLink g₁ a v := hv₁v ▸ hlg₁
+      have hlg₂'' : G.IsLink g₂ a v := hc₀v ▸ hlg₂
+      exact hg₁g₂ (hlg₁'.unique_edge hlg₂'')
+    -- e_c := g₁, c := v₁.
+    rcases hea_mem with hf₁ea | hf₂ea
+    · -- eₐ = f₁. a₁ = a.
+      have hlf₁' : G.IsLink eₐ v a₁ := hf₁ea ▸ hlf₁
+      have ha₁a : a₁ = a := same_right eₐ v a₁ a hlf₁' hlaG ha₁v
+      -- e_b := f₂, b_out := b. c := v₁.
+      -- b ≠ a.
+      have hba : b ≠ a := by
+        intro hbeqa
+        have hlf₂' : G.IsLink f₂ v a := hbeqa ▸ hlf₂
+        have : f₂ = f₁ := hlf₂'.unique_edge (ha₁a ▸ hlf₁)
+        exact hf₁f₂ this.symm
+      -- b ≠ v₁: triangle.
+      have hbv₁ : b ≠ v₁ := by
+        intro hbv₁
+        have hlg₁' : G.IsLink g₁ a b := hbv₁ ▸ hlg₁
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₂ hlg₁' (Ne.symm hba) hV4)
+          (fun ⟨H, hH⟩ ↦ hnp H hH)
+      exact ⟨v, a, b, v₁, eₐ, f₂, g₁, hvG, haG, hbG, hv₁G, hav, hbv, hba,
+        hv₁v, hv₁a, hbv₁,
+        hf₁ea ▸ hf₁f₂,
+        fun h ↦ hg₁g₂ (h.symm.trans hg₂ea),
+        hlaG, hlf₂, hlg₁,
+        fun e x hle ↦ (hclv e x hle).imp_left (fun h ↦ h.trans hf₁ea.symm),
+        fun e x hle ↦ ((hcla e x hle).symm).imp_left (fun h ↦ h.trans hg₂ea.symm)⟩
+    · -- eₐ = f₂. b = a.
+      have hlf₂' : G.IsLink eₐ v b := hf₂ea ▸ hlf₂
+      have hba : b = a := same_right eₐ v b a hlf₂' hlaG hbv
+      -- e_b := f₁, b_out := a₁. c := v₁.
+      -- a₁ ≠ a.
+      have ha₁a : a₁ ≠ a := by
+        intro ha₁a
+        have hlf₁' : G.IsLink f₁ v a := ha₁a ▸ hlf₁
+        -- hlf₂' : G.IsLink eₐ v b, hba : b = a, so G.IsLink eₐ v a
+        have hlf₂a : G.IsLink eₐ v a := hba ▸ hlf₂'
+        have hf₁ea : f₁ = eₐ := hlf₁'.unique_edge hlf₂a
+        exact hf₁f₂ (hf₁ea.trans hf₂ea)
+      -- a₁ ≠ v₁: triangle.
+      have ha₁v₁ : a₁ ≠ v₁ := by
+        intro ha₁v₁
+        have hlg₁' : G.IsLink g₁ a a₁ := ha₁v₁ ▸ hlg₁
+        exact absurd (triangle_isProperRigidSubgraph hD3 hlaG hlf₁ hlg₁' (Ne.symm ha₁a) hV4)
+          (fun ⟨H, hH⟩ ↦ hnp H hH)
+      exact ⟨v, a, a₁, v₁, eₐ, f₁, g₁, hvG, haG, ha₁G, hv₁G, hav, ha₁v, ha₁a,
+        hv₁v, hv₁a, ha₁v₁,
+        fun h ↦ hf₁f₂ (h.symm.trans hf₂ea),
+        fun h ↦ hg₁g₂ (h.symm.trans hg₂ea),
+        hlaG, hlf₁, hlg₁,
+        fun e x hle ↦ ((hclv e x hle).symm).imp_left (fun h ↦ h.trans hf₂ea.symm),
+        fun e x hle ↦ ((hcla e x hle).symm).imp_left (fun h ↦ h.trans hg₂ea.symm)⟩
+
 /-- **Reduction of minimal `0`-dof-graphs** (`thm:minimal-kdof-reduction`; Katoh–Tanigawa 2011
 Theorem 4.9). The combinatorial skeleton of the molecular conjecture's induction, phrased as the
 well-founded induction principle that the reduction dichotomy + the vertex-count measure drive.

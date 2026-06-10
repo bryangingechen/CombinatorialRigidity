@@ -1095,3 +1095,31 @@ route that bypasses the deferred forest surgery
   which together with $3|X_{\ge 3}| \le \sum_{X_{\ge 3}} \deg$ yields a numeric
   contradiction via $|X_2| + |X_{\ge 3}| = |V| \ge 3$.
 \end{proof}
+
+\begin{lemma}[Chain data; G4a-ii]
+  \label{lem:chain-data-of-noRigid}
+  \lean{Graph.exists_chain_data_of_noRigid}
+  \leanok
+  \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph, def:k-dof}
+  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
+  $D = \binom{d+1}{2} \ge 6$ (the $d = 3$ regime), and $|V(G)| \ge 4$.
+  Then there exist distinct vertices $v, a, b, c$ and edges $e_a, e_b, e_c$
+  forming the chain $b - v - a - c$: $G$ links $e_a$ from $v$ to $a$,
+  $e_b$ from $v$ to $b$, and $e_c$ from $a$ to $c$; every $v$-incident
+  edge is $e_a$ or $e_b$; every $a$-incident edge is $e_a$ or $e_c$;
+  $e_a \ne e_b$, $e_a \ne e_c$; and $b \ne c$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid, def:rigid-subgraph}
+  \cref{lem:adjacent-degree-two-pair} supplies adjacent degree-$2$ vertices
+  $v, a$ with shared edge $e_a$.  Simplicity
+  (\cref{lem:simple-minimal-noRigid}) ensures the degree-$2$ closure at $v$
+  identifies two distinct edges $e_a, e_b$ (linking $v$ to $a$ and $b$), and
+  the closure at $a$ identifies two distinct edges $e_a, e_c$ (linking $a$ to
+  $v$ and $c$).  The shared edge $e_a$ pins the companion at each vertex
+  (the other endpoint of $e_a$ at $v$ is $a$, and at $a$ is $v$).
+  If $b = c$ then $G[\{v, a, b\}]$ with the three edges $e_a, e_b, e_c$ is a
+  triangle, hence a proper rigid subgraph of $G$ (since $|V(G)| \ge 4$),
+  contradicting the hypothesis.
+\end{proof}

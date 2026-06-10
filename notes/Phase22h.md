@@ -22,15 +22,12 @@ and `exists_adjacent_degree_two_pair` (ReducibleVertex.lean: the `D ≥ 6` doubl
 `lem:simple-minimal-noRigid`, `lem:adjacent-degree-two-pair` added; build green, lint + verify.sh
 clean.
 
-**Next concrete step: G4a-ii** (`exists_chain_data_of_noRigid`, **ForestSurgery.lean**, after
-`exists_splitOff_data_of_degree_eq_two` — NOT ReducibleVertex.lean: that file is *upstream* of
-`exists_splitOff_data_of_degree_eq_two` (ReducibleVertex → Contraction → ForestSurgery), and the
-design pins G4a-ii's signature, not its file; all inputs (G4a-i/G0 in ReducibleVertex,
-`triangle_isProperRigidSubgraph` in Operations) are visible there and the consumer
-(`case_III_hsplit_producer`, CaseI.lean) is downstream via PanelLayer. ~1 commit; needs G0 +
-`exists_splitOff_data_of_degree_eq_two` run at `v` and `a`; `b ≠ c` via
-`triangle_isProperRigidSubgraph` + `hnp`; design §1.49(2)). Parallel-safe: T1–T4 (~3–4 commits,
-§1.48(1)) and G4c-i/ii (§1.49(3)).
+**G4a-ii is DONE.** `exists_chain_data_of_noRigid` (ForestSurgery.lean; blueprint node
+`lem:chain-data-of-noRigid` added; build + lint + verify.sh clean). 4-way case split on which of
+the two splitOff-data pairs at v and a contains eₐ; `same_right` helper for endpoint uniqueness;
+`triangle_isProperRigidSubgraph + hnp` for `b ≠ c`.
+
+**Next concrete step: T1–T4** (~3–4 commits, §1.48(1)), parallel-safe with G4c-i/ii (§1.49(3)).
 
 **Build order (design §1.49(6); estimated 11–16 commits remaining):** G4b-impl ✓ → in parallel:
 {G4a-i/ii + G0 ∥ T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer (the §38-trap
@@ -48,8 +45,8 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `simple_of_isMinimalKDof_of_noRigid` (loopless + no parallel pair; `isKDof_zero_of_parallel_pair`
   K₂ brick). Blueprint nodes added (`lem:two-vertex-zero-dof`, `lem:simple-minimal-noRigid`,
   `lem:adjacent-degree-two-pair`). Done.
-- [ ] **G4a-ii** — `exists_chain_data_of_noRigid` (§1.49(2)): `exists_splitOff_data_of_degree_eq_two`
-  at `v` and `a`, `b ≠ c` via `triangle_isProperRigidSubgraph` + `hnp` at `|V| ≥ 4`.
+- [x] **G4a-ii** — `exists_chain_data_of_noRigid` (§1.49(2)): `exists_splitOff_data_of_degree_eq_two`
+  at `v` and `a`, `b ≠ c` via `triangle_isProperRigidSubgraph` + `hnp` at `|V| ≥ 4`. Done.
 - [ ] **T1–T4** — the `|V|=3` triangle base (§1.48(1)): T1 third-edge/vertex-pin (edge count via
   `rank_add_deficiency_eq`), T2 `theorem_55_triangle` (3-body sibling of `theorem_55_base`), T3
   the cyclically-consistent basis seed, T4 assembly through the GAP-2 upgrade. ~3–4 commits;
@@ -82,8 +79,9 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — G4a-ii** (`exists_chain_data_of_noRigid`,
-ForestSurgery.lean — placement rationale in *Current state*; design §1.49(2)).
+**Smallest next forward commit — T1** (the `|V|=3` triangle base, §1.48(1)):
+pin the third edge/vertex of the triangle via `rank_add_deficiency_eq`, then proceed to
+T2–T4. Parallel-safe with G4c-i/ii (§1.49(3)).
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -121,3 +119,8 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   proved via `Finset.sum_le_one_iff` + `IsLink.eq_and_eq_or_eq_and_eq` for the case-split; then
   `Finset.single_le_sum` carries `1 ≤ Σ_{X₃₊} incFun e`. The numeric finale needs `zify` +
   `nlinarith` to combine the two lower bounds with the edge bound and `D ≥ 6`.
+- **G4a-ii endpoint disambiguation:** `same_right` local helper extracts unique right endpoint
+  from two same-edge same-left-endpoint IsLink facts (via `eq_and_eq_or_eq_and_eq`; second case
+  is the loop case, killed by the `y ≠ x` hypothesis). The 4-way `(g₁/g₂ = eₐ) × (f₁/f₂ = eₐ)`
+  case split avoids `subst` on shared names; closures are reindexed via `Or.imp_left` +
+  `Eq.trans` + `.symm` rather than `▸` rewrites in term position.
