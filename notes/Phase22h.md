@@ -80,11 +80,27 @@ verify.sh clean; axiom-clean. Blueprint `lem:splitOff-ofNormals-relabel` restate
 - `hingeRow_acolumn_mem_span_rigidityRows` (G4d-ii): short corollary producing `hingeRow a c r̂ ∈ span Fv.rigidityRows`
   directly from G4d-i + `hingeRow_mem_rigidityRows`. Build + lint clean.
 
-**Next concrete step: the (β)-shaped `hsplit` producer** (G4e spine, §1.49(5)): the `case_III_hsplit_producer`
-restate with M₁/M₂/M₃ dispatch; consumes G4a/G4b/G4c/G4d.
+**Producer (β)-restate spine is DONE** (Phase 22h). `case_III_hsplit_producer` (CaseI.lean) restated to
+the **(β) branch shape** — receives `hG`/`hV3`/`hnoRigid` + the bare conditioned IH `hIH` (mirroring
+`theorem_55_generic.hsplit`) + a fresh-edge supply `hfresh` (the (β) reduction does no splitting
+internally, so the producer owns it — the shape `minimal_kdof_reduction`'s `hfresh` carried, moved here)
++ the carried candidate-placement core `hcand`. Body = G0 simplicity → dichotomy on `|V(G)|`: `=3 ↦`
+T4 (`hasGenericFullRankRealization_of_triangle` via `exists_adjacent_degree_two_pair` +
+`exists_splitOff_data_of_degree_eq_two`, forgotten to bare by `hasFullRankRealization_of_generic`); `≥4 ↦`
+chain arm (`exists_chain_data_of_noRigid` → `splitOff_isMinimalKDof` + `splitOff_vertexSet_ncard_lt` →
+IH realizes the `v`-split → feed `hcand`). Build + lint clean; no live callers (the old producer's only
+mentions are doc-comments), so the restate breaks nothing downstream. Producer had to be **moved after T4**
+in the file (T4 was defined below it). **The candidate-placement core stays carried in `hcand`** — the
+genuinely-hard residual (Leaf 2/3 + the G4c/G4d/G4e M₁/M₂/M₃ dispatch + GAP-3 + R1/R2 + the triple-LI
+bridge); discharging it is the next concrete work.
 
-**Build order (design §1.49(6); estimated 3–5 commits remaining):** G4d-i/ii ✓ → the (β)-shaped
-`hsplit` producer (the §38-trap concrete-seed assembly with the G4e M₁/M₂/M₃ dispatch) → Leaf 4 → Leaf 5.
+**Next concrete step: discharge `hcand`** — the §1.49(5) producer-assembly leaf (the §38-trap concrete-seed
+build): generalize `case_II_placement_eq612` to the witness line, run the row-space criterion, the G4e
+M₁/M₂/M₃ dispatch (M₃ via G4c/G4d), GAP-3 good-`t`, R1/R2 reconciliation. The candidate core's signature
+is now pinned by the `hcand` hypothesis in `case_III_hsplit_producer`.
+
+**Build order (design §1.49(6); estimated 3–5 commits remaining):** producer (β)-spine ✓ → discharge
+`hcand` (the candidate-placement core, multi-commit) → Leaf 4 → Leaf 5.
 
 ## Lemma checklist
 
@@ -117,13 +133,17 @@ restate with M₁/M₂/M₃ dispatch; consumes G4a/G4b/G4c/G4d.
   excludes). Done.
 - [x] **G4d-i/ii** — `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (span-induction; three endpoint
   cases) + `hingeRow_acolumn_mem_span_rigidityRows` (short corollary) (CaseI.lean; §1.49(4)). Done.
-- [ ] **The (β)-shaped `hsplit` producer** (the G4e spine; the §38 trap; §1.49(5)): G4a chain
-  dichotomy → `|V|=3 ↦ T4`; chain arm: its own split data + `splitOff_isMinimalKDof` + measure ⟹
-  IH at the `v`-split; R3 ⟹ the GP `.1` conjunct ⟹ `q` + `hgab` (via
-  `hasGenericRealization_transport_ends`) + the triple-LI-from-alg-indep bridge (§1.48(2));
-  GAP-3 good-`t`; the G4e `M₁/M₂/M₃` dispatch (`M₃` via G4c/G4d); compose the GAP-2 upgrade
-  `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate, supplying its
-  `hne` from the candidate completion.
+- [x] **Producer (β)-restate spine** — `case_III_hsplit_producer` (CaseI.lean) restated to the (β)
+  branch shape (conditioned IH `hIH` + `hnoRigid` + `hfresh` + carried `hcand`); body = G0 simplicity
+  → `|V(G)|` dichotomy (`=3 ↦` T4 forgotten to bare; `≥4 ↦` chain arm: `exists_chain_data_of_noRigid`
+  + `splitOff_isMinimalKDof` + measure ⟹ IH at the `v`-split ⟹ `hcand`). Build + lint clean; no
+  blueprint pin (the producer isn't `\lean`-pinned). Done.
+- [ ] **Discharge `hcand`** (the candidate-placement core; the G4e spine; the §38 trap; §1.49(5)):
+  generalize `case_II_placement_eq612` to the witness line; the G4e `M₁/M₂/M₃` dispatch (`M₃` via
+  G4c/G4d); GAP-3 good-`t`; R1/R2 reconciliation; R3 ⟹ the GP `.1` conjunct ⟹ `q` + `hgab` (via
+  `hasGenericRealization_transport_ends`) + the triple-LI-from-alg-indep bridge (§1.48(2)); compose
+  the GAP-2 upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the bare candidate,
+  supplying its `hne` from the candidate completion. Signature now pinned by the `hcand` hypothesis.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -140,10 +160,13 @@ restate with M₁/M₂/M₃ dispatch; consumes G4a/G4b/G4c/G4d.
   `F`; instantiate only at the seed.
 ## Hand-off / next phase
 
-**Smallest next forward commit — the (β)-shaped `hsplit` producer** (§1.49(5)): restate
-`case_III_hsplit_producer` to the (β) branch shape; body = G4a choice → `|V|=3 ↦ T4` / chain ↦
-IH at the `v`-split (via `splitOff_isMinimalKDof` + measure) + G4e M₁/M₂/M₃ dispatch + GAP-2
-upgrade. See design §1.49(5) for the full structure. Consumes all G4a–G4d + T1–T4.
+**Smallest next forward commit — discharge `hcand`** (the candidate-placement core; §1.49(5)): the
+producer (β)-spine is landed (`case_III_hsplit_producer`, the dichotomy + chain-arm IH wiring); what
+remains is the §38-trap concrete-seed assembly that `hcand` carries — generalize
+`case_II_placement_eq612` to the witness line, run the row-space criterion at `C(L)` with `r̂(C(L)) ≠ 0`,
+then the G4e M₁/M₂/M₃ dispatch (M₃ via G4c/G4d). This is genuinely multi-commit; the first sub-commit
+is likely the witness-line generalization of the placement (L2b-place, §1.39(6).1). The `hcand`
+signature in `case_III_hsplit_producer` pins exactly what the core must produce. Consumes G4c/G4d/T1–T4.
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
 with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
@@ -223,3 +246,13 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `convert h using 1; funext i; fin_cases i <;> (first | rfl | simp)` (the `1 • X = X` goals
   close by `rfl`; the `mk0(-1) • X = -X` goals close by default `simp`; the all-negative case
   closes by `convert h using 1` alone because `neg_one_smul` is a simp lemma used by `congr`).
+- **Producer (β)-spine carries `hfresh` + `hcand`; the M-dispatch is NOT yet built.** The (β)
+  reduction `minimal_kdof_reduction_full` does no splitting internally (its doc: "Requires no
+  `hD`/`hfresh`"), so `case_III_hsplit_producer` owns the fresh-edge supply — it carries
+  `hfresh : ∀ G', ∃ e₀, e₀ ∉ E(G')` (the shape the *old* `minimal_kdof_reduction` carried; can't be
+  built from `[Finite β]`). The genuinely-hard candidate-placement core stays the explicit `hcand`
+  hypothesis (the "carry the crux as `h…`, keep the node red" idiom): this commit lands only the
+  *spine* (dichotomy + chain-arm IH wiring), not the M₁/M₂/M₃ dispatch. `hGv2 : 2 ≤ |V(splitOff)|`
+  reuses `splitOff_isMinimalKDof`'s `Set.ncard_diff` pattern (`= |V(G)|−1 ≥ 2`); `IsMinimalKDof` is a
+  conjunction so `.1` (not `.isKDof`) projects the `IsKDof`. T4 had to be moved *above* the producer
+  in CaseI.lean (forward-reference: T4 was defined below it).
