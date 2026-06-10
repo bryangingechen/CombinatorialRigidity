@@ -1766,6 +1766,116 @@ target node's proof route end-to-end against the consuming skeleton, not just it
 design-pass-first discipline's red-node consistency gate (top-level `CLAUDE.md`) is exactly this, and it
 caught GAP 1/GAP 2 here only because this pass re-read the *route*, not the verdicts.
 
+### 1.45 GAP 2 resolution — VERDICT (B-derive): the bare→generic single-graph upgrade IS derivable from the green rank-polynomial machinery, is L-independent, and is faithful to how KT actually concludes Lemma 6.8 (KT builds the degenerate witness and invokes Lemma 5.2's "convert to nonparallel without decreasing rank"); GAP 2 dissolves into "build the degenerate candidate (bare full rank) + invoke the upgrade" (2026-06-09)
+
+> **Build-free design pass settling GAP 2 (§1.44), the research-shaped producer blocker.** The question:
+> does the producer have to *conclude* `HasGenericFullRankRealization` at the eq.-(6.12) degenerate seed
+> (which it provably cannot — the seed is `ℚ`-algebraically dependent by construction), or can it conclude
+> the GENERIC realization is full-rank via a single-graph "full rank is Zariski-open" upgrade WITHOUT the
+> candidate itself being generic? **Verdict: the upgrade route is correct, the green machinery already has
+> every brick, and it is exactly KT's own argument.** Verified against the green Lean
+> (`HasGenericFullRankRealization` PanelHinge.lean:1033 — the realization is **existentially quantified**;
+> `exists_rankPolynomial_of_rigidOn` GenericityDevice.lean:1159 — the bare→rank-polynomial brick;
+> `exists_injective_algebraicIndependent_real` + `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`
+> Mathlib/RingTheory/MvPolynomial/Tower.lean:69; `hasGenericFullRankRealization_of_splice_ofNormals`
+> GenericityDevice.lean:914 — the "rigid GP alg-indep seed → generic motive" assembly pattern;
+> `case_I_realization` CaseI.lean:1857/1864/1934 — how the GP conjuncts are built; `exists_good_realization`
+> GenericityDevice.lean:109 + its header :43–46 "rank is lower semicontinuous, attains its maximum on a
+> Zariski-open generic set"; `case_III_old_new_blocks_of_line` CaseI.lean:3529–3548 — the seed shears ONLY
+> body `v`) **and KT 2011 read in full** (p. 662 footnote 4 / generic = alg-indep maximizes rank; Lemma 5.2
+> p. 671; Lemma 6.8 + Claim 6.9 + eq. (6.12) pp. 677–678, the "ΠG,p1(v) and ΠG,p1(a) are parallel … convert
+> to nonparallel by Lemma 5.2 without decreasing rank" passage). No `.lean`/`.tex` edits this pass.
+
+**The genericity-device read — `HasGenericFullRankRealization` is L-free and seed-free in its statement.**
+The motive (PanelHinge.lean:1033) is `∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧ …rigid… ∧ links ∧
+AlgebraicIndependent ℚ (normals)`. **The realizing `Q` is existentially bound** — the motive asks only that
+*some* framework on `G` carry all five conjuncts; it does NOT fix a seed, and it never mentions `L`. So the
+producer's job is not "make the candidate seed generic" (impossible) but "exhibit *some* generic alg-indep
+rigid framework on `G`". The witness line `L` is scaffolding to exhibit *one* full-rank realization; once
+full rank is witnessed anywhere, genericity supplies a different `Q`. This is the whole point of Claim 6.12
+(§1.39): produce one full-rank witness, let genericity do the rest.
+
+**The bare→generic upgrade exists as green machinery (no packaged single-graph lemma yet — bounded new
+leaf).** The route, all bricks green:
+1. `case_III_realization_of_line` (CaseI.lean:3901) already produces the **bare** `HasFullRankRealization k
+   G`, witnessed by the degenerate `ofNormals G ends q₀` (C1, `hasFullRankRealization_of_independent_rigidityRow`).
+2. From that bare witness, `exists_rigidOn_ofNormals_of_hasFullRankRealization` (GenericityDevice.lean:1125)
+   recovers `(ends, q₀)` with `ofNormals G ends q₀` rigid on `V(G)`.
+3. `exists_rankPolynomial_of_rigidOn` (GenericityDevice.lean:1159) turns that single rigid seed into a
+   **rational** `MvPolynomial Q ≠ 0` (`eval q₀ Q ≠ 0`, `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`) whose every
+   non-root `q` carries `≥ D(|V|−1)` independent panel rows of `ofNormals G ends q`. **`Q` is built from
+   `g q i := (ofNormals G ends q).panelRow ends i` and `c i j` = body-incidence sign × `annihRowPoly`
+   (:1198–1204) — functions of `G` and `ends` ONLY; the seed `q₀` enters solely through `eval q₀ Q ≠ 0`,
+   and `L` enters nowhere.** This is the formal L-independence: the rank polynomial is a property of the
+   graph, not the placement.
+4. `exists_injective_algebraicIndependent_real (α × Fin (k+2))` gives an injective `ℚ`-alg-indep seed `q₁`;
+   `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (Tower.lean:69) certifies `eval q₁ Q ≠ 0`,
+   so `ofNormals G ends q₁` is full-rank — AND `q₁` is alg-indep (the fifth conjunct) AND general position
+   (an alg-indep seed is pairwise-independent; the `case_I_realization` route gets `IsGeneralPosition` for
+   free at exactly this seed via `exists_generalPosition_polynomial`, threaded into the same triple product,
+   CaseI.lean:1846/1864). The witness `Q = ofNormals G ends q₁` then satisfies all five conjuncts of
+   `HasGenericFullRankRealization` — exactly the `hasGenericFullRankRealization_of_splice_ofNormals`
+   assembly pattern (GenericityDevice.lean:930–933), but for a single graph rather than a splice.
+
+   This is a **bounded new leaf** — a single-graph upgrade lemma
+   `hasGenericFullRankRealization_of_hasFullRankRealization` (working title): `HasFullRankRealization k G →
+   HasGenericFullRankRealization k G`, body = steps 2–4, reusing `case_I_realization`'s own block (:1843–1936)
+   nearly verbatim with the rank-polynomial product replaced by the single graph's `Q`. The one wrinkle is
+   `exists_rankPolynomial_of_rigidOn`'s **all-edges `hne` (every hinge transversal at `q₀`)**: at the
+   degenerate seed only the linking edges are guaranteed transversal (the `va`/`vb` hinges via
+   `hane`/`hnewtrans`). The fix is already in tree — the **leg-restricted** `exists_rankPolynomial_of_rigidOn_linking`
+   (:1252) needs `hne` only on *linking* edges (`G.IsLink e (ends e).1 (ends e).2 → supportExtensor e ≠ 0`),
+   which the candidate completion supplies, and delivers the same `Q`. So step 3 uses the `_linking` variant.
+   No new geometry; pure assembly of existing green bricks. **Estimate: 1 commit** (the upgrade lemma) once
+   the producer's bare-`HasFullRankRealization` output (Leaf 3 concrete seed) exists.
+
+**L-independence determination — CONFIRMED clean, the upgrade does NOT lose the Claim-6.12 selection.** The
+generic full-rank conclusion is genuinely `L`-independent (the §1.44 suspicion is correct): (i) the rank
+polynomial `Q` depends only on `G`/`ends` (step 3); (ii) `L` is consumed entirely *before* the upgrade — it
+is the scaffolding that makes the degenerate candidate full-rank (`r̂(C(L)) ≠ 0` feeds the row-space
+criterion), and once `HasFullRankRealization k G` is in hand, `L` has done its job and is discarded; (iii)
+the downstream capstone consumes only `HasGenericFullRankRealization k G` (no `L`-dependence in
+`theorem_55_generic`'s `hsplitGP` conclusion, PanelHinge.lean:1175, nor in `rigidityMatrix_prop11`'s `hgen`).
+The generic realization is a different framework `Q = ofNormals G ends q₁` at the alg-indep seed `q₁`, with
+`v`'s panel in *general* position — KT's "rotated `Π(v)`". Nothing `L`-specific survives into the output, so
+there is no link to lose. This **refutes** the §1.44 worry "it is unclear the perturbed seed still certifies
+the same Claim-6.12 selection": the selection is not a property of the output realization, it is the device
+(Claim 6.12) that *found* a full-rank witness; the output need only be *some* generic full-rank realization.
+
+**KT cross-check — KT builds a degenerate witness and invokes genericity; this IS resolution route (b),
+done KT's way (not a perturbation that loses the selection).** KT Lemma 6.8 (p. 677) builds `(G, p1)` via
+eq. (6.12) — `p1(va) = L`, `p1(vb) = q(ab)` — proves `rankR(G,p1) ≥ D(|V|−1) − k`, and explicitly notes
+*"Although ΠG,p1(v) and ΠG,p1(a) are parallel in (G,p1), at the end of the proof we will convert (G,p1) to a
+nonparallel panel-hinge realization by slightly rotating ΠG,p1(v) without decreasing the rank of the
+rigidity matrix"* — citing **Lemma 5.2** (p. 671: a realization with exactly one equal/parallel pair `(a,b)`
+has a nonparallel realization of `rank ≥` it). KT's footnote-4 / p. 662 definition makes generic = alg-indep
+and states *"the rank of R(G,p) takes the maximum value over all nonparallel realizations if (G,p) is
+generic"*. So KT's own argument is: **degenerate witness → rank lower bound → genericity (max rank) gives the
+nonparallel realization at ≥ that rank**. The Lean rank-polynomial route (steps 2–4) is the faithful
+formalization: `exists_rankPolynomial_of_rigidOn` is the "rank is a polynomial, nonzero somewhere ⟹ nonzero
+generically" content of footnote 4 + Lemma 5.2 combined; the alg-indep seed `q₁` is KT's "generic
+nonparallel realization". The §1.44 resolution (a) (motive-weakening to a per-polynomial non-root) is NOT
+needed and would diverge from KT; resolution (b) (re-realize generically) is the right one, and it is L-clean
+because the upgrade reads off the graph's rank polynomial, not the degenerate placement.
+
+**RECLASSIFIED — GAP 2 is bounded (B-derive), not research-shaped.** The §1.44 "(C) genuine hole,
+research-shaped" verdict is **overturned**: there is no architectural question. The producer concludes
+`HasGenericFullRankRealization k G` by (1) building the degenerate candidate to bare `HasFullRankRealization`
+(Leaf 3 concrete seed, the §38-trap producer build, unchanged) then (2) the new bounded upgrade leaf. The
+buildable-leaf path:
+- **GAP-2 leaf (NEW, ~1 commit):** `hasGenericFullRankRealization_of_hasFullRankRealization` (GenericityDevice.lean
+  or CaseI.lean) — steps 2–4 above, reusing the `case_I_realization` rank-polynomial block with the single
+  graph's `_linking` rank polynomial. Graph-free over the abstract assembly except the `ofNormals` carrier
+  the rank-polynomial brick already fixes (no *new* §38 surface — the bricks are green at that carrier).
+- The producer (Leaf 3 concrete seed) builds bare `HasFullRankRealization`, then composes the GAP-2 leaf to
+  conclude the generic motive `hsplitGP` wants — so the `hsplitGP` restate is unblocked. GAP 1 (the `|V|=3`
+  branch) and GAP 3 (`hnewtrans` genericity-in-`t`) remain the two bounded sub-leaves §1.44 named; all three
+  are now bounded. **Refreshed estimate to phase close:** GAP-2 upgrade leaf (~1) + GAP-1 `|V|=3` branch (~1)
+  + GAP-3 good-`t` (folded into the producer assembly) + the §38-trap concrete-seed producer (~1–2) + Leaf 4
+  `theorem_55_generic (n:=2)(k:=2)` instance (~1) + Leaf 5 flips/Thm 5.5→5.6 (~1) ≈ **5–6 commits**, back to
+  a clean bounded close (no research-shaped node remains in Phase 22g; Lemma 6.10/Claim 6.11 the §4 risk
+  register flags as the largest KT proof is already green via Phase 22d/22e/22f).
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
