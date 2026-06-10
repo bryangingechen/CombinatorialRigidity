@@ -86,6 +86,10 @@ Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own recon (K
 
 ## Decisions made during this phase
 
+- **Model-tier dispatch experiment running on this phase** —
+  coordinator sessions rate each dispatch and pick the subagent model
+  rung per `notes/model-experiment-protocol.md`, logging to
+  `notes/model-experiment.md` (the repo-local config + log).
 - **G5 census correction (one site beyond §1.49(0)):** `splitOff_isMinimalKDof`'s KT-4.7 step
   offers `Gv = G.removeVertex v` to `hnp`, needing `2 ≤ |V(Gv)|` — so the lemma gained
   `hV3 : 3 ≤ V(G).ncard`. Not a formality: at `|V(G)|=2` (double edge, hnp now satisfiable) the

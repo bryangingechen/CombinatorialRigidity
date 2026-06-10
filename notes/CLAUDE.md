@@ -43,6 +43,12 @@ for *organizing* this directory is here.
   (the broadened blueprint re-read — see top-level `CLAUDE.md` *When this
   commit closes a phase*). Inclusion criterion = KT-math difficulty, **not**
   project-side setup; see the file's own header (format, flavors, criterion).
+- **`model-experiment-protocol.md` / `model-experiment.md`** — the
+  model-tier dispatch experiment (which subagent model rung per
+  task). The protocol file is portable — keep it byte-identical
+  across participating repos; the log file is repo-local (config +
+  dispatch log + findings), and its Status line arms the
+  experiment step in `.claude/commands/coordinate-phase.md`.
 
 ## One canonical home per content type
 
