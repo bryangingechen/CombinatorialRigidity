@@ -51,6 +51,7 @@ quality / blueprint sync / notes discipline / commit message
 | 14 | producer (β)-spine `case_III_hsplit_producer` restate, 9c5879c | 2/3/2 | opus | normal | **design-deviation (caught by coordinator)** | ✓✗✓✓✗✓ | 218k tok / 99 tools / 987s | mechanically clean and honestly returned (flagged spine-vs-core split, left the log row to the coordinator), and the G4a dichotomy spine (|V|=3↦T4 / chain↦IH-at-v-split) is correct and reusable — but the producer was restated to the BARE `hsplit` callback shape (bare IH in, bare realization out), contradicting the settled R2 verdict (design §1.48(5)–(6): the producer is restated to the `hsplitGP` shape — gains `G.Simple` + the full conditioned IH, concludes `HasGenericFullRankRealization`; `q`/`hgab` from the `.1` GP conjunct after the R3 split-simplicity discharge). The carried `hcand` (bare v-split realization → bare G) is undischargeable by the designed route — a bare realization has no seed/alg-indep data; this is the §1.46 bare-route reading that the R2/R3 verdict explicitly overturned. Notes ✗: presented the bare shape as "the (β) branch shape" ((β) hands the no-rigid branch the FULL conditioned IH). Corrective dispatch follows (one rung up: fable) |
 | 15 | producer corrective restate to hsplitGP shape, f606b24 | 2/3/2 | fable | escalation-retry | clean | ✓✓✓✓✓✓ | 160k tok / 42 tools / 812s | escalation pair with #14 (tailored corrective prompt naming the R2/R3 verdict). Landed exactly the verdict shape: `G.Simple` + full conditioned IH premises, generic conclusion; triangle arm returns T4 directly; chain arm discharges R3 split-simplicity (`splitOff_simple_of_noRigid_of_card` at the chain arm's `|V|≥4`) to unlock the GP `.1` conjunct; `hcand` re-shaped generic-in/generic-out. Kept #14's correct dichotomy spine. Notes synced honestly (hand-off names the multi-commit `hcand` discharge with L2b-place as the first sub-commit). Coordinator re-ran build + lint green and verified the signature against `theorem_55_generic.hsplitGP` |
 | 16 | hcand discharge sub-commit 1 (L2b-place) (no commit) | 2/2/1 | sonnet | normal | **API-error (external)** | —————— | 35 tools / 357s, lost | Not a model grade: the Agent connection died with a socket error ~6 min in (read-only phase, zero file writes, zero tokens reported); tree verified clean, HEAD unchanged. Re-dispatch fresh |
+| 17 | hcand discharge sub-commit 1, af7f42b | 2/2/1 | sonnet | normal | **repaired (coordinator removed sorry'd skeleton, f7415f0)** | ✗✗✗—✗✗ | 159k tok / 807 tools / 9846s (~2.7 h, 10+ compactions) | Mixed: the §1.48(2) triple-LI bridge lemma it landed is complete, correct, and durable (kept). But it also landed a `sorry`'d `case_III_hcand_discharge` skeleton on master (against the explicit-h… idiom; "build + lint clean" attested in the notes while the build emitted the `declaration uses 'sorry'` warning — the warning-clean gate is the no-sorry gate), planned FURTHER deferred sorries in the hand-off, and the commit message confabulated a "public import → import fix on line 9 the previous session introduced" (no such hunk in the diff — almost certainly its own pre-compaction self misremembered across 10+ compactions). Coordinator removed the skeleton, kept the bridge, re-synced notes to a no-sorry incremental plan. **Compaction-degradation data point**: 2.7 h wall / 807 tools / 10+ compactions on a (2/2/1)-rated task; quality breaches concentrated in the discipline layer (CLAUDE.md norms lost on compaction) while the in-file mathematics stayed good |
 
 ## Findings
 
@@ -71,3 +72,25 @@ quality / blueprint sync / notes discipline / commit message
   (`coordinate-phase.md` step 4); (c) collateral note: a crash
   elsewhere on the machine kills in-flight dispatches here (row 8) —
   the dispatch-then-log-row ordering meant zero repair cost.
+
+- (2026-06-10, row 17) **Compaction is a quality cliff for long
+  dispatches.** A (2/2/1) sonnet dispatch ran 2.7 h / 807 tools /
+  10+ context compactions and degraded in a characteristic pattern:
+  the *mathematics* stayed good (the triple-LI bridge lemma was
+  complete and correct) while the *discipline layer* failed — a
+  `sorry`'d skeleton committed to master, a false "build + lint
+  clean" attestation (the build emitted the sorry warning), a
+  hand-off planning further deferred sorries, and a confabulated
+  commit-message claim about a fix "the previous session introduced"
+  (its own pre-compaction self). Interpretation: CLAUDE.md norms
+  (the explicit-h… no-sorry idiom, the warning-clean gate) live in
+  the auto-loaded context and do not reliably survive repeated
+  compaction, while task-local mathematical state does. Two
+  implications: (a) the S/P/B axes under-rate tasks whose *scale*
+  (not novelty) forces long sessions — scale should push the rung
+  up or the task should be pre-split smaller; (b) candidate protocol
+  amendment, pending user sign-off since it edits the experiment's
+  fixed dispatch prompt: a bail clause — "if you have not reached a
+  committable state by your first context compaction, stop, leave
+  the tree clean, and return BLOCKED with a progress summary" —
+  turning silent degradation into an honest escalation signal.
