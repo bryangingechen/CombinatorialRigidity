@@ -4265,31 +4265,274 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
     (fun e u w he => G.isLink_endsOf he.edge_mem) hne
     ⟨v, hG_ea.left_mem⟩ hrig
 
-/-- **G4c-ii: generic-realization transport across the `ρ = (av)` vertex-swap**
+
+/-- The edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` of the `ρ = (av)` relabel is
+an involution. The two transpositions have disjoint supports (`{e_b, e₀}` and `{e₁, e_c}` are
+disjoint by the four distinctness facts), so each cancels: `σ ∘ σ = id`. The shared
+σ-cancellation step in `ofNormals_relabel` and `rigidityRows_ofNormals_relabel`. -/
+private theorem hσσ_relabel {β : Type*} [DecidableEq β] {e_b e_c e₀ e₁ : β}
+    (hbe₁ : e_b ≠ e₁) (hbec : e_b ≠ e_c) (h₀e₁ : e₀ ≠ e₁) (h₀ec : e₀ ≠ e_c) (f : β) :
+    (Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) f) = f := by
+  -- Pointwise: the two swaps act on disjoint pairs `{e_b, e₀}` and `{e₁, e_c}`.
+  simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
+  split_ifs <;> simp_all
+
+/-- **G4c-ii (fixed-seed form): the `ρ = (av)` relabel transports the concrete v-split `ofNormals`
+data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
 (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31) framework side, Phase 22h).
 
-Given the chain data `G.IsLink eₐ v a`, `G.IsLink e_b v b`, `G.IsLink e_c a c` with degree-2
-closures at `v` and `a`, fresh edges `e₀, e₁ ∉ E(G)` with `e₁ ≠ e₀`, and a generic full-rank
-realization of the `a`-split-off `G.splitOff a v c e₁` (`G_a^{vc}` in KT notation), produce a
-generic full-rank realization of the `v`-split-off `G.splitOff v a b e₀` (`G_v^{ab}`).
+This is the transport in the **producer's direction**: the induction hypothesis realizes the
+`v`-split `G.splitOff v a b e₀` (`G_v^{ab}` in KT) concretely as `ofNormals (G.splitOff v a b e₀)
+ends₀ q₀` with the four generic-realization conjuncts (general position, rigidity on `V(G)∖{v}`,
+link-recording, `AlgebraicIndependent ℚ`), and the `M₃` arm of the Case-III producer needs the SAME
+data on the `a`-split `G.splitOff a v c e₁` (`G_a^{vc}`) at the SAME seed transported by
+`ρ = Equiv.swap a v` — *not* a fresh existential realization (an independent realization has a
+different seed, hence different `λ`s and a different `r̂`, collapsing the eq.-(6.44) trichotomy;
+KT §6.4.1, eqs. (6.31)/(6.44)). So the lemma is stated at the `ofNormals` level, naming the
+relabelled construction explicitly with
 
-The transport uses the graph-level isomorphism `G4c-i` (`Graph.splitOff_isLink_relabel`): vertex
-transposition `ρ = Equiv.swap a v` and edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`
-intertwine the two split-offs. Given a framework witness `Q` for `G_a^{vc}`, the witness for
-`G_v^{ab}` is `ofNormals (G.splitOff v a b e₀) ends' nrm` where `nrm p = Q.normal (ρ p.1) p.2`
-and `ends' e' = (ρ (Q.ends (σ⁻¹ e')).1, ρ (Q.ends (σ⁻¹ e')).2)`.
+* edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`,
+* seed `qρ (x, i) := q₀ (ρ x, i)` (the original seed reindexed by `ρ`),
+* selector `endsσρ e := (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)`,
 
-The five conjuncts transport as follows. **GP:** `nrm (x, ·) = Q.normal (ρ x)`, so pairwise
-linear independence transfers via `ρ`-injectivity. **Rigidity:** given `S` an infinitesimal motion
-of `Q'`, the function `S ∘ ρ` is an infinitesimal motion of `Q` (via `splitOff_isLink_relabel` and
-the support-extensor equality `Q'.supportExtensor (σ f) = Q.supportExtensor f`, which holds because
-`ρ ∘ ρ = id` cancels the double reindex); Q's rigidity on `V(G) \ {a}` then gives `S u = S w` for
-`u, w ∈ V(G) \ {v}` since `ρ` bijectively maps `V(G) \ {v} → V(G) \ {a}`. **Link-recording:**
-given a link `(G.splitOff v a b e₀).IsLink e' u w`, `splitOff_isLink_relabel` gives the
-corresponding `(G.splitOff a v c e₁).IsLink (σ⁻¹ e') (ρ u) (ρ w)`, Q's link-recording pins
-`Q.ends (σ⁻¹ e')` to `(ρ u, ρ w)` up to order, and applying `ρ` and using `ρ ∘ ρ = id` gives
-`ends' e' = (u, w)` up to order. **AlgIndep:** `nrm = (fun p => Q.normal p.1 p.2) ∘ (fun p =>
-(ρ p.1, p.2))`, an injective reindex, so `AlgebraicIndependent.comp` applies. -/
+so the producer and `G4d-ii` can name the relabelled framework `ofNormals (G.splitOff a v c e₁)
+endsσρ qρ` directly (its row-space correspondence is `rigidityRows_ofNormals_relabel`, below).
+
+The four conjuncts transport via the graph-level iso `G4c-i` (`Graph.splitOff_isLink_relabel`),
+which `ρ`/`σ` intertwine. **GP:** `qρ`'s normals are `q₀`'s reindexed by the injective `ρ`.
+**Rigidity:** a motion `S` of the `a`-split framework pulls back to the motion `S ∘ ρ` of the
+`v`-split framework (using `splitOff_isLink_relabel` to move each `a`-split link to a `v`-split
+link, and the support-extensor equality across the two `ofNormals` terms); the `v`-split rigidity
+on `V(G)∖{v}` then forces `S` constant on `V(G)∖{a}` since `ρ` maps `V(G)∖{a} → V(G)∖{v}`
+bijectively. **Link-recording:** each `a`-split link maps forward to a `v`-split link whose
+endpoints `ends₀` records, transported through `ρ`. **AlgIndep:** `qρ` is an injective `ρ`-reindex
+of `q₀`. -/
+theorem PanelHingeFramework.ofNormals_relabel [DecidableEq α] [DecidableEq β]
+    {G : Graph α β}
+    {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
+    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
+    {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    (hQgp : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀ q₀).IsGeneralPosition)
+    (hQrig :
+      (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
+        q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G.splitOff v a b e₀))
+    (hQrec : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
+        ends₀ e = (u, w) ∨ ends₀ e = (w, u))
+    (hQalg : AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (p.1, p.2))) :
+    (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
+        (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
+        (fun p => q₀ (Equiv.swap a v p.1, p.2))).IsGeneralPosition ∧
+    (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
+        (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
+        (fun p => q₀ (Equiv.swap a v p.1, p.2))).toBodyHinge.IsInfinitesimallyRigidOn
+          V(G.splitOff a v c e₁) ∧
+    (∀ e u w, (G.splitOff a v c e₁).IsLink e u w →
+        (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (u, w) ∨
+        (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2) = (w, u)) ∧
+    AlgebraicIndependent ℚ
+      (fun p : α × Fin (k + 2) => q₀ (Equiv.swap a v p.1, p.2)) := by
+  classical
+  set ρ : Equiv.Perm α := Equiv.swap a v with hρ_def
+  set σ : Equiv.Perm β := Equiv.swap e_b e₀ * Equiv.swap e₁ e_c with hσ_def
+  set endsσρ : β → α × α := fun e => (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2) with hendsσρ
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q₀ (ρ p.1, p.2) with hqρ
+  -- ρ ∘ ρ = id.
+  have hρρ : ∀ x : α, ρ (ρ x) = x := fun x => Equiv.swap_apply_self a v x
+  -- ρ maps V(G) to itself (a, v ∈ V(G)).
+  have hρmemV : ∀ u : α, u ∈ V(G) → ρ u ∈ V(G) := fun u hu => by
+    rw [hρ_def, Equiv.swap_apply_def]
+    split_ifs with h1 h2
+    · exact hG_ea.left_mem   -- u = a → ρ u = v ∈ V(G)
+    · exact hG_ea.right_mem  -- u = v → ρ u = a ∈ V(G)
+    · exact hu               -- otherwise fixed
+  -- ρ maps V(G) \ {a} to V(G) \ {v} bijectively.
+  have hρ_diff : ∀ u : α, u ∈ V(G) \ {a} → ρ u ∈ V(G) \ {v} := fun u hu => by
+    refine Set.mem_diff_of_mem (hρmemV u hu.1) ?_
+    intro h
+    have hρa : ρ a = v := by rw [hρ_def]; exact Equiv.swap_apply_left a v
+    have hua : u = a := ρ.injective ((Set.mem_singleton_iff.mp h).trans hρa.symm)
+    exact hu.2 (Set.mem_singleton_iff.mpr hua)
+  -- σ ∘ σ = id, from the four edge-distinctness facts.
+  have hbe₁ : e_b ≠ e₁ := fun h => he₁ (h ▸ hG_eb.edge_mem)
+  have h₀ec : e₀ ≠ e_c := fun h => he₀ (h ▸ hG_ec.edge_mem)
+  have hbec : e_b ≠ e_c := by
+    intro h
+    rcases hG_eb.left_eq_or_eq (h ▸ hG_ec) with h1 | h1
+    · exact hav h1.symm
+    · exact hcv h1.symm
+  have hσσ : ∀ f, σ (σ f) = f := fun f => hσσ_relabel hbe₁ hbec he₁₀.symm h₀ec f
+  set Q := PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀ q₀ with hQ_def
+  set Q' := PanelHingeFramework.ofNormals (G.splitOff a v c e₁) endsσρ qρ with hQ'_def
+  -- Q'.supportExtensor f = Q.supportExtensor (σ f): the relabelled framework's hinge at f reads
+  -- q₀ at the ρ-shifted endpoints, i.e. the original hinge at (σ f). No σ-involution needed.
+  have h_supp : ∀ f : β,
+      Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := by
+    intro f
+    simp only [hQ_def, hQ'_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hendsσρ, hqρ, hρρ]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  -- (1) General position: Q'.normal x = q₀ (ρ x, ·), reindexed by injective ρ.
+  · intro x y hxy
+    change LinearIndependent ℝ ![fun i => qρ (x, i), fun i => qρ (y, i)]
+    have := hQgp (ρ x) (ρ y) (ρ.injective.ne hxy)
+    simpa only [hQ_def, PanelHingeFramework.ofNormals_normal, hqρ] using this
+  -- (2) Rigidity: any motion S of Q' yields the motion S ∘ ρ of Q, constant on V(G) \ {v},
+  --     hence S constant on V(G) \ {a}.
+  · intro S hS u hu w hw
+    -- S ∘ ρ is an infinitesimal motion of Q.
+    have hSmot : Q.toBodyHinge.IsInfinitesimalMotion (S ∘ ρ) := by
+      intro f x y hf
+      simp only [hQ_def, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph] at hf
+      have hfQ' : (G.splitOff a v c e₁).IsLink (σ f) (ρ x) (ρ y) :=
+        (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
+          heab heac hclv hcla he₀ he₁ he₁₀).mpr (by rw [hσσ f, hρρ, hρρ]; exact hf)
+      have harg : Q'.toBodyHinge.graph.IsLink (σ f) (ρ x) (ρ y) := by
+        simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
+          PanelHingeFramework.ofNormals_graph]; exact hfQ'
+      have hSc : Q'.toBodyHinge.hingeConstraint S (σ f) (ρ x) (ρ y) := hS (σ f) (ρ x) (ρ y) harg
+      -- hSc : S (ρ x) - S (ρ y) ∈ span {Q'.supportExtensor (σ f)} = span {Q.supportExtensor f}.
+      change (S ∘ ρ) x - (S ∘ ρ) y ∈ Submodule.span ℝ {Q.toBodyHinge.supportExtensor f}
+      rw [show Q.toBodyHinge.supportExtensor f = Q'.toBodyHinge.supportExtensor (σ f) by
+        rw [h_supp (σ f), hσσ f]]
+      exact hSc
+    -- Apply Q's rigidity on V(G.splitOff v a b e₀) = V(G) \ {v}.
+    rw [Graph.vertexSet_splitOff] at hu hw
+    have hρu := hρ_diff u hu
+    have hρw := hρ_diff w hw
+    rw [hQ_def, Graph.vertexSet_splitOff] at hQrig
+    have hSmotConst := hQrig (S ∘ ρ) hSmot (ρ u) hρu (ρ w) hρw
+    simp only [Function.comp] at hSmotConst
+    rwa [hρρ u, hρρ w] at hSmotConst
+  -- (3) Link-recording: every link of G.splitOff a v c e₁ has endpoints recorded by endsσρ.
+  · intro e' u w he'
+    have hfQ : (G.splitOff v a b e₀).IsLink (σ e') (ρ u) (ρ w) :=
+      (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
+        heab heac hclv hcla he₀ he₁ he₁₀).mp he'
+    rcases hQrec (σ e') (ρ u) (ρ w) hfQ with h1 | h1
+    · refine Or.inl ?_
+      change (ρ (ends₀ (σ e')).1, ρ (ends₀ (σ e')).2) = (u, w)
+      rw [h1]; exact Prod.ext (hρρ u) (hρρ w)
+    · refine Or.inr ?_
+      change (ρ (ends₀ (σ e')).1, ρ (ends₀ (σ e')).2) = (w, u)
+      rw [h1]; exact Prod.ext (hρρ w) (hρρ u)
+  -- (4) AlgebraicIndependent ℚ: qρ is an injective ρ-reindex of q₀.
+  · change AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (ρ p.1, p.2))
+    have := hQalg.comp (fun p : α × Fin (k + 2) => (ρ p.1, p.2))
+        (fun p q h => Prod.ext (ρ.injective (Prod.ext_iff.mp h).1) (Prod.ext_iff.mp h).2)
+    simpa only [Function.comp] using this
+
+/-- **G4c-ii (row-space correspondence): the relabelled `a`-split framework's rigidity rows are the
+image of the `v`-split framework's under the dual of the `ρ`-coordinate permutation** (the
+deliverable `G4d-ii` consumes; KT 2011 eqs. (6.31)/(6.44), Phase 22h).
+
+The coordinate-relabel map `LinearMap.funLeft ℝ (ScrewSpace k) ρ : (α → ScrewSpace k) →ₗ[ℝ]
+(α → ScrewSpace k)`, `S ↦ S ∘ ρ`, has dual `(funLeft ℝ _ ρ).dualMap` sending `φ ↦ φ ∘ (· ∘ ρ)`.
+Under it, each rigidity row `hingeRow u w r` of the `a`-split framework `ofNormals (G.splitOff a v c
+e₁) endsσρ qρ` is the image of the `v`-split framework's row `hingeRow (ρ u) (ρ w) r` — because
+`ρ ∘ ρ = id`, `(funLeft ρ).dualMap (hingeRow (ρ u) (ρ w) r) = hingeRow u w r`. As `G4c-i`
+(`Graph.splitOff_isLink_relabel`) puts the two graphs' links in `ρ`-correspondence and the
+hinge-row blocks at corresponding edges coincide (the same support extensor, by the same `q₀`
+reindex as in `ofNormals_relabel`), the two rigidity-row *sets* correspond exactly under
+`(funLeft ρ).dualMap`. This is the row-space identity the eq.-(6.44) `M₃` candidate-row membership
+step transports across. -/
+theorem PanelHingeFramework.rigidityRows_ofNormals_relabel [DecidableEq α] [DecidableEq β]
+    {G : Graph α β}
+    {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
+    (hG_ea : G.IsLink eₐ v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (hav : a ≠ v) (hbv : b ≠ v) (hcv : c ≠ v) (hca : c ≠ a)
+    (heab : eₐ ≠ e_b) (heac : eₐ ≠ e_c)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
+    (ends₀ : β → α × α) (q₀ : α × Fin (k + 2) → ℝ) :
+    (PanelHingeFramework.ofNormals (G.splitOff a v c e₁)
+        (fun e => (Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).1,
+          Equiv.swap a v (ends₀ ((Equiv.swap e_b e₀ * Equiv.swap e₁ e_c) e)).2))
+        (fun p => q₀ (Equiv.swap a v p.1, p.2))).toBodyHinge.rigidityRows =
+      (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap ''
+        (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀
+          q₀).toBodyHinge.rigidityRows := by
+  classical
+  set ρ : Equiv.Perm α := Equiv.swap a v with hρ_def
+  set σ : Equiv.Perm β := Equiv.swap e_b e₀ * Equiv.swap e₁ e_c with hσ_def
+  set endsσρ : β → α × α := fun e => (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2) with hendsσρ
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q₀ (ρ p.1, p.2) with hqρ
+  have hρρ : ∀ x : α, ρ (ρ x) = x := fun x => Equiv.swap_apply_self a v x
+  -- (funLeft ρ).dualMap (hingeRow (ρ u) (ρ w) r) = hingeRow u w r.
+  have hdual : ∀ (u w : α) (r : Module.Dual ℝ (ScrewSpace k)),
+      (LinearMap.funLeft ℝ (ScrewSpace k) ρ).dualMap
+        (BodyHingeFramework.hingeRow (ρ u) (ρ w) r) = BodyHingeFramework.hingeRow u w r := by
+    intro u w r
+    refine LinearMap.ext fun S => ?_
+    rw [LinearMap.dualMap_apply, BodyHingeFramework.hingeRow_apply,
+      BodyHingeFramework.hingeRow_apply]
+    simp only [LinearMap.funLeft_apply, hρρ]
+  have hbe₁ : e_b ≠ e₁ := fun h => he₁ (h ▸ hG_eb.edge_mem)
+  have h₀ec : e₀ ≠ e_c := fun h => he₀ (h ▸ hG_ec.edge_mem)
+  have hbec : e_b ≠ e_c := by
+    intro h
+    rcases hG_eb.left_eq_or_eq (h ▸ hG_ec) with h1 | h1
+    · exact hav h1.symm
+    · exact hcv h1.symm
+  have hσσ : ∀ f, σ (σ f) = f := fun f => hσσ_relabel hbe₁ hbec he₁₀.symm h₀ec f
+  set Q := PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends₀ q₀ with hQ_def
+  set Q' := PanelHingeFramework.ofNormals (G.splitOff a v c e₁) endsσρ qρ with hQ'_def
+  -- Q'.supportExtensor f = Q.supportExtensor (σ f): the relabelled hinge at f reads q₀ at the
+  -- ρ-shifted endpoints, i.e. the original hinge at (σ f). No σ-involution needed.
+  have h_supp : ∀ f : β,
+      Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := by
+    intro f
+    simp only [hQ_def, hQ'_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hendsσρ, hqρ, hρρ]
+  -- The hinge-row blocks at ρ-corresponding edges coincide (dual annihilator of the same span).
+  have hblock : ∀ f : β,
+      Q'.toBodyHinge.hingeRowBlock f = Q.toBodyHinge.hingeRowBlock (σ f) := by
+    intro f; simp only [BodyHingeFramework.hingeRowBlock, h_supp f]
+  apply Set.eq_of_subset_of_subset
+  -- ⊆ : every a-split row is the image of a matching v-split row.
+  · rintro φ ⟨e', u, w, hlink', r, hr, rfl⟩
+    refine ⟨BodyHingeFramework.hingeRow (ρ u) (ρ w) r,
+      ⟨σ e', ρ u, ρ w, ?_, r, ?_, rfl⟩, hdual u w r⟩
+    · have hmp := (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
+        heab heac hclv hcla he₀ he₁ he₁₀ (e := e') (x := u) (y := w)).mp
+      simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph] at hlink'
+      simpa only [hQ_def, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph] using hmp hlink'
+    · rw [← hblock e']; exact hr
+  -- ⊇ : every image of a v-split row is an a-split row.
+  · rintro φ ⟨ψ, ⟨e', u, w, hlink, r, hr, rfl⟩, rfl⟩
+    refine ⟨σ e', ρ u, ρ w, ?_, r, ?_, ?_⟩
+    · have hmpr := (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
+        heab heac hclv hcla he₀ he₁ he₁₀ (e := σ e') (x := ρ u) (y := ρ w)).mpr
+      simp only [hQ_def, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph] at hlink
+      simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph]
+      exact hmpr (by rw [hσσ e', hρρ, hρρ]; exact hlink)
+    · rw [hblock (σ e'), hσσ e']; exact hr
+    · have := hdual (ρ u) (ρ w) r
+      rwa [hρρ, hρρ] at this
+
+/-- **G4c-ii (existential corollary): the producer-direction transport at the level of the
+existential motive** (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31); Phase 22h). A short
+consequence of the fixed-seed `ofNormals_relabel`: a generic full-rank realization of the `v`-split
+`G.splitOff v a b e₀` (`G_v^{ab}`) transports to one of the `a`-split `G.splitOff a v c e₁`
+(`G_a^{vc}`) at the relabelled seed `q₀ ∘ ρ`. This is the *producer's* direction (it consumes the
+IH at the `v`-split, the form `theorem_55_generic`'s `hsplit` branch supplies, and yields the
+`a`-split datum the `M₃` arm needs); the fixed-seed form above is the load-bearing one, since the
+producer reads the concrete `ofNormals` framework and its row-space correspondence
+(`rigidityRows_ofNormals_relabel`), not the bare existential. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel
     {G : Graph α β}
     {v a b c : α} {eₐ e_b e_c e₀ e₁ : β}
@@ -4299,119 +4542,32 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel
     (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     (hcla : ∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c)
     (he₀ : e₀ ∉ E(G)) (he₁ : e₁ ∉ E(G)) (he₁₀ : e₁ ≠ e₀)
-    (hQ : PanelHingeFramework.HasGenericFullRankRealization k (G.splitOff a v c e₁)) :
-    PanelHingeFramework.HasGenericFullRankRealization k (G.splitOff v a b e₀) := by
+    (hQ : PanelHingeFramework.HasGenericFullRankRealization k (G.splitOff v a b e₀)) :
+    PanelHingeFramework.HasGenericFullRankRealization k (G.splitOff a v c e₁) := by
   classical
   obtain ⟨Q, hQg, hQgp, hQrig, hQrec, hQalg⟩ := hQ
-  -- Vertex and edge permutations.
-  set ρ : Equiv.Perm α := Equiv.swap a v with hρ_def
-  set σ : Equiv.Perm β := Equiv.swap e_b e₀ * Equiv.swap e₁ e_c with hσ_def
-  -- ρ is self-inverse: ρ ∘ ρ = id (Equiv.swap is an involution).
-  have hρρ : ∀ x : α, ρ (ρ x) = x := fun x => by
-    have h : ρ.symm = ρ := by simp [hρ_def]
-    rw [← h]; exact ρ.symm_apply_apply x
-  -- ρ maps V(G) to itself (since a, v ∈ V(G) and ρ swaps them).
-  have hρmemV : ∀ u : α, u ∈ V(G) → ρ u ∈ V(G) := fun u hu => by
-    simp only [hρ_def, Equiv.swap_apply_def]
-    split_ifs with h1 h2
-    · exact hG_ea.left_mem   -- u = a → ρ u = v ∈ V(G)
-    · exact hG_ea.right_mem  -- u = v → ρ u = a ∈ V(G)
-    · exact hu               -- u ≠ a, u ≠ v → ρ u = u
-  -- ρ maps V(G) \ {v} to V(G) \ {a} bijectively.
-  have hρ_diff : ∀ u : α, u ∈ V(G) \ {v} → ρ u ∈ V(G) \ {a} := fun u hu => by
-    have hu_mem : u ∈ V(G) := hu.1
-    have hu_ne : u ∉ ({v} : Set α) := hu.2
-    refine Set.mem_diff_of_mem (hρmemV u hu_mem) ?_
-    intro h
-    -- ρ u = a → u = v, contradicting u ∉ {v}.
-    have huv : u = v := ρ.injective (h.trans (by simp [hρ_def]))
-    exact hu_ne (Set.mem_singleton_iff.mpr huv)
-  -- Shifted normal family and endpoint selector.
-  set nrm : α × Fin (k + 2) → ℝ := fun p => Q.normal (ρ p.1) p.2 with hnrm_def
-  set ends' : β → α × α := fun e' => (ρ (Q.ends (σ⁻¹ e')).1, ρ (Q.ends (σ⁻¹ e')).2)
-    with hends'_def
-  -- The witness: ofNormals (G.splitOff v a b e₀) ends' nrm.
-  refine ⟨PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends' nrm, rfl, ?_, ?_, ?_, ?_⟩
-  -- (1) General position: normals are Q.normal reindexed by ρ, which is injective.
-  · intro x y hxy
-    simp only [PanelHingeFramework.ofNormals_normal, hnrm_def]
-    exact hQgp (ρ x) (ρ y) (ρ.injective.ne hxy)
-  -- (2) Rigidity: S ∘ ρ is a motion of Q, so S is constant on V(G) \ {v}.
-  · intro S hS u hu w hw
-    -- Support-extensor equality: Q'.supportExtensor (σ f) = Q.supportExtensor f.
-    -- This follows because Q'.normal (Q'.ends (σ f)).i = Q.normal (Q.ends f).i
-    -- after applying ρ ∘ ρ = id and σ⁻¹ ∘ σ = id.
-    -- Key: Q'.supportExtensor (σ f) = Q.supportExtensor f for all f.
-    -- Proof: Q'.normal (Q'.ends (σ f)).i = Q.normal (Q.ends f).i (using ρ ∘ ρ = id, σ⁻¹ ∘ σ = id).
-    set Q' := PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends' nrm
-    have h_supp : ∀ f : β,
-        Q'.toBodyHinge.supportExtensor (σ f) = Q.toBodyHinge.supportExtensor f := by
-      intro f
-      -- Q' is definitionally ofNormals ...; expose it for simp.
-      change (PanelHingeFramework.ofNormals
-          (G.splitOff v a b e₀) ends' nrm).toBodyHinge.supportExtensor (σ f) = _
-      simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
-        PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
-        hends'_def, hnrm_def, Equiv.Perm.inv_def, Equiv.symm_apply_apply, hρρ]
-    -- S ∘ ρ is an infinitesimal motion of Q.
-    have hSmot : Q.toBodyHinge.IsInfinitesimalMotion (S ∘ ρ) := by
-      intro f x y hf
-      simp only [PanelHingeFramework.toBodyHinge_graph] at hf
-      rw [hQg] at hf
-      -- G4c-i: (G.splitOff a v c e₁).IsLink f x y → (G.splitOff v a b e₀).IsLink (σ f) (ρ x) (ρ y)
-      have hfQ' : (G.splitOff v a b e₀).IsLink (σ f) (ρ x) (ρ y) :=
-        (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-          heab heac hclv hcla he₀ he₁ he₁₀).mp hf
-      -- Q' motion constraint at (σ f) (ρ x) (ρ y).
-      have harg : Q'.toBodyHinge.graph.IsLink (σ f) (ρ x) (ρ y) := by
-        simp only [PanelHingeFramework.toBodyHinge_graph]
-        exact hfQ'
-      have hSc : Q'.toBodyHinge.hingeConstraint S (σ f) (ρ x) (ρ y) :=
-        hS (σ f) (ρ x) (ρ y) harg
-      -- The goal is (S ∘ ρ) x - (S ∘ ρ) y ∈ span {Q.supportExtensor f}.
-      -- hSc is S (ρ x) - S (ρ y) ∈ span {Q'.supportExtensor (σ f)}.
-      -- These coincide since Q'.supportExtensor (σ f) = Q.supportExtensor f.
-      change (S ∘ ρ) x - (S ∘ ρ) y ∈ Submodule.span ℝ {Q.toBodyHinge.supportExtensor f}
-      simp only [Function.comp, ← h_supp f]
-      exact hSc
-    -- Apply Q's rigidity on V(G) \ {a} = V(G.splitOff a v c e₁).
-    rw [Graph.vertexSet_splitOff] at hu hw
-    have hρu := hρ_diff u hu
-    have hρw := hρ_diff w hw
-    rw [Graph.vertexSet_splitOff] at hQrig
-    have hSmotConst := hQrig (S ∘ ρ) hSmot (ρ u) hρu (ρ w) hρw
-    -- hSmotConst : S (ρ (ρ u)) = S (ρ (ρ w)), i.e. S u = S w.
-    simp only [Function.comp] at hSmotConst
-    rwa [hρρ u, hρρ w] at hSmotConst
-  -- (3) Link-recording: for every link of G.splitOff v a b e₀, ends' records its endpoints
-  --     up to swap.
-  · intro e' u w he'
-    -- G4c-i backward: (G.splitOff v a b e₀).IsLink e' u w →
-    --   (G.splitOff a v c e₁).IsLink (σ⁻¹ e') (ρ u) (ρ w).
-    have hfQ : (G.splitOff a v c e₁).IsLink (σ⁻¹ e') (ρ u) (ρ w) :=
-      (_root_.Graph.splitOff_isLink_relabel hG_ea hG_eb hG_ec hav hbv hcv hca
-        heab heac hclv hcla he₀ he₁ he₁₀).mpr (by
-          change (G.splitOff v a b e₀).IsLink (σ (σ⁻¹ e')) (ρ (ρ u)) (ρ (ρ w))
-          have : σ (σ⁻¹ e') = e' := by rw [Equiv.Perm.inv_def]; exact Equiv.apply_symm_apply σ e'
-          rw [this, hρρ, hρρ]; exact he')
-    -- Q's link-recording at σ⁻¹ e' (ρ u) (ρ w).
-    rcases hQrec (σ⁻¹ e') (ρ u) (ρ w) (hQg ▸ hfQ) with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · -- Q.ends (σ⁻¹ e') = (ρ u, ρ w) → ends' e' = (u, w).
-      simp only [Equiv.Perm.inv_def] at h1 h2
-      exact Or.inl ⟨by simp only [PanelHingeFramework.ofNormals_ends, hends'_def,
-                         Equiv.Perm.inv_def]; rw [h1]; exact hρρ u,
-                    by simp only [PanelHingeFramework.ofNormals_ends, hends'_def,
-                         Equiv.Perm.inv_def]; rw [h2]; exact hρρ w⟩
-    · -- Q.ends (σ⁻¹ e') = (ρ w, ρ u) → ends' e' = (w, u).
-      simp only [Equiv.Perm.inv_def] at h1 h2
-      exact Or.inr ⟨by simp only [PanelHingeFramework.ofNormals_ends, hends'_def,
-                         Equiv.Perm.inv_def]; rw [h1]; exact hρρ w,
-                    by simp only [PanelHingeFramework.ofNormals_ends, hends'_def,
-                         Equiv.Perm.inv_def]; rw [h2]; exact hρρ u⟩
-  -- (4) AlgebraicIndependent ℚ: the normal family is an injective reindex of Q's.
-  · -- nrm p = Q.normal (ρ p.1) p.2 = (fun p => Q.normal p.1 p.2) ∘ (fun p => (ρ p.1, p.2)).
-    simp only [PanelHingeFramework.ofNormals_normal, hnrm_def]
-    exact hQalg.comp (fun p : α × Fin (k + 2) => (ρ p.1, p.2))
-        (fun p q h => Prod.ext (ρ.injective (Prod.ext_iff.mp h).1) (Prod.ext_iff.mp h).2)
+  -- Re-express Q as the canonical `ofNormals` of its own normals/ends; feed `ofNormals_relabel`.
+  have hQeq : PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
+      (fun p => Q.normal p.1 p.2) = Q := by rw [← hQg]; rfl
+  have hgp' : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
+      (fun p => Q.normal p.1 p.2)).IsGeneralPosition := by rw [hQeq]; exact hQgp
+  have hrig' : (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) Q.ends
+      (fun p => Q.normal p.1 p.2)).toBodyHinge.IsInfinitesimallyRigidOn
+        V(G.splitOff v a b e₀) := by rw [hQeq]; exact hQrig
+  have hrec' : ∀ e u w, (G.splitOff v a b e₀).IsLink e u w →
+      Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
+    intro e u w he
+    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact Or.inl (Prod.ext h1 h2)
+    · exact Or.inr (Prod.ext h1 h2)
+  obtain ⟨hgp, hrig, hrec, halg⟩ := PanelHingeFramework.ofNormals_relabel hG_ea hG_eb hG_ec
+    hav hbv hcv hca heab heac hclv hcla he₀ he₁ he₁₀ hgp' hrig' hrec' hQalg
+  -- Repackage the link conjunct from Prod-equality form into the motive's And/Or form.
+  refine ⟨_, rfl, hgp, hrig, fun e u w he => ?_, halg⟩
+  rcases hrec e u w he with h1 | h1
+  · exact Or.inl ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
+      by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
+  · exact Or.inr ⟨by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).1],
+      by rw [PanelHingeFramework.ofNormals_ends, (Prod.ext_iff.mp h1).2]⟩
 
 end CombinatorialRigidity.Molecular

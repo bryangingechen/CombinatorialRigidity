@@ -3888,28 +3888,37 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored. The callsite collapses to one `rw`.
 - **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
 
-### [open] `set`-bound `let` is opaque to `simp only`; `change` required to expose inner form
+### [open] `set`-bound `let` is opaque to `simp only`; pass the `with`-named eq (or `change`) to expose inner form
 
-- **Where it bit:** `hasGenericFullRankRealization_of_splitOff_relabel` (Phase 22h, CaseI.lean):
-  `set Q' := PanelHingeFramework.ofNormals …` introduces `Q'` as a `let`-binding; a subsequent
-  `simp only [ofNormals_ends, ofNormals_normal, …]` on a goal mentioning `Q'.toBodyHinge.supportExtensor`
-  made no progress because `Q'` is opaque to `simp only`. Fix: add
-  `change (PanelHingeFramework.ofNormals …).toBodyHinge.supportExtensor _ = _` before the simp to
-  expose the `ofNormals` constructor form.
-- **Candidate fix / general pattern:** always pair `set X := body` with a `change` or `unfold X` before
-  `simp only` on the first goal where `X`'s inner structure matters. Or use `simp only [show X = body from rfl]`
-  to force expansion. Neither `unfold_let` nor `simp only [Q']` works here.
-- **Status:** open (project-internal idiom; the `change`-before-simp is the accepted workaround).
+- **Where it bit:** `ofNormals_relabel` / `rigidityRows_ofNormals_relabel` (Phase 22h, CaseI.lean):
+  `set Q := PanelHingeFramework.ofNormals … with hQ_def` introduces `Q` as a `let`-binding opaque to
+  `simp only`; a `simp only [ofNormals_ends, ofNormals_normal, …]` on a goal mentioning
+  `Q.toBodyHinge.supportExtensor` made no progress. Fix: pass the `with`-named definitional equality
+  `hQ_def` (and `hQ'_def`, `hqρ`, `hendsσρ`) into the same `simp only` list — they unfold the
+  `set`-locals to their `ofNormals` bodies so the constructor-projection simp lemmas fire. For a single
+  `exact`/`rw` goal, `change <unfolded form>` is the warning-clean equivalent (`show` trips the style
+  linter).
+- **General pattern:** when `set X := body with hX` then need `X`'s inner structure in `simp only`,
+  include `hX` in the simp set; for `exact`/`rw` use `change body`. Neither `simp only [X]` nor
+  `unfold_let` works.
+- **Status:** open (project-internal idiom).
 
-### [open] `Equiv.Perm.inv_def` + `Equiv.symm_apply_apply` needed to reduce `σ⁻¹ (σ f)`
+### [resolved] statement-level `Equiv.swap`/`let` opacity — inline the term in the statement, re-`set` in the proof
 
-- **Where it bit:** `hasGenericFullRankRealization_of_splitOff_relabel` (Phase 22h): the goal
-  contained `σ⁻¹ (σ f)` (HInv form) and the attempted `Equiv.symm_apply_apply σ f` did not fire
-  because `σ⁻¹` is `HInv.hInv σ`, not `Equiv.symm σ`. Fix: `rw [Equiv.Perm.inv_def]` rewrites
-  `σ⁻¹` to `σ.symm`; then `Equiv.symm_apply_apply` reduces `σ.symm (σ f) = f`.
-  Similarly, normalizing `h : … (σ⁻¹ e') …` before `rw [h]` required
-  `simp only [Equiv.Perm.inv_def] at h` to get the `.symm` form.
-- **Status:** open (project idiom for `Equiv.Perm` inversion in `simp`/`rw` chains).
+- **Where it bit:** `ofNormals_relabel` (Phase 22h, CaseI.lean) names the relabelled construction in
+  its *statement* (so consumers can name the framework). A first draft used `let ρ : Equiv.Perm α :=
+  Equiv.swap a v` (etc.) in the statement + `intro ρ σ …`: this (i) forces `[DecidableEq α/β]` into the
+  signature (`Equiv.swap` needs it), and (ii) makes the `let`-locals opaque after `intro` —
+  `exact Equiv.swap_apply_self … : Equiv.swap a v (…) = …` fails against the goal's `let`-bound
+  `ρ (ρ x) = x` (not unfolded at `exact`'s defeq). The earlier-draft `σ⁻¹ (σ f)`-reduction friction
+  (`Equiv.Perm.inv_def` + `Equiv.symm_apply_apply`) was an artefact of the *reversed*-direction draft;
+  the corrected producer-direction proof never needs `σ⁻¹` (it uses the involution `σ (σ f) = f`).
+- **Fix:** *inline* the explicit terms in the statement (the docstring carries the `ρ/σ/qρ/endsσρ`
+  abbreviations), then `set ρ := Equiv.swap a v with hρ_def` in the proof to fold them into nameable
+  locals (keep `[DecidableEq]` only on the lemmas whose *statement* mentions `Equiv.swap`; the
+  existential corollary drops them and uses `classical`). The σ-involution is a 3-line `private` helper
+  (`hσσ_relabel`, pointwise via `Equiv.swap_apply_def` + `split_ifs <;> simp_all`).
+- **Status:** resolved (the inline-statement + re-`set`-in-proof idiom).
 
 ### [resolved] `LinearMap.proj u - LinearMap.proj v` over a Pi type elaborates stuck
 

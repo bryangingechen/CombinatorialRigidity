@@ -1032,36 +1032,75 @@ Grassmann--Cayley projective duality.
   the surviving $e_c$-edge (endpoints $v \mapsto a$, $c \mapsto c$).
 \end{proof}
 
-\begin{lemma}[Generic realization transport across the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
+\begin{lemma}[Fixed-seed realization transport across the $\rho = (a\,v)$ relabel; KT eq.\ (6.31)]
   \label{lem:splitOff-ofNormals-relabel}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.ofNormals_relabel,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasGenericFullRankRealization_of_splitOff_relabel}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Under the same chain data and degree-2 hypotheses as
-  \cref{lem:splitOff-isLink-relabel}, a generic full-rank realization of
-  $G.\mathrm{splitOff}\,a\,v\,c\,e_1$ (vertex-relabelled by $\rho = \mathrm{Equiv.swap}\,a\,v$ and
-  edge-relabelled by $\sigma = (\mathrm{Equiv.swap}\,e_b\,e_0) \cdot (\mathrm{Equiv.swap}\,e_1\,e_c)$)
-  transports to a generic full-rank realization of $G.\mathrm{splitOff}\,v\,a\,b\,e_0$.
-  Concretely: the transported framework $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,v\,a\,b\,e_0)$
-  with seed $q_\rho(x, i) := Q.\mathrm{normal}\,(\rho\,x)\,i$ and selector
-  $\mathrm{ends}'(e') := (\rho\,(Q.\mathrm{ends}\,(\sigma^{-1} e'))_1,\, \rho\,(Q.\mathrm{ends}\,(\sigma^{-1} e'))_2)$
-  inherits all five generic-realization conjuncts via the $\rho$/$\sigma$ transport.
+  Under the same chain data and degree-2 hypotheses as \cref{lem:splitOff-isLink-relabel}, the
+  transport runs in the \emph{producer's direction} and is stated at the $\mathrm{ofNormals}$ level
+  --- \emph{not} as an existential. The induction hypothesis realizes the $v$-split
+  $G.\mathrm{splitOff}\,v\,a\,b\,e_0$ ($G_v^{ab}$) concretely as
+  $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,v\,a\,b\,e_0)\,\mathrm{ends}_0\,q_0$ with the four
+  generic-realization conjuncts (general position; rigidity on $V(G)\setminus\{v\}$;
+  link-recording; algebraic independence over $\Q$ of the seed). The lemma produces the same four
+  conjuncts for the $a$-split $G.\mathrm{splitOff}\,a\,v\,c\,e_1$ ($G_a^{vc}$) at the
+  \emph{same} seed transported by $\rho = \mathrm{Equiv.swap}\,a\,v$: the named framework
+  $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,a\,v\,c\,e_1)\,\mathrm{ends}_{\sigma\rho}\,q_\rho$ with
+  seed $q_\rho(x, i) := q_0(\rho\,x, i)$, selector
+  $\mathrm{ends}_{\sigma\rho}(e) := (\rho\,(\mathrm{ends}_0(\sigma e))_1,\,\rho\,(\mathrm{ends}_0(\sigma e))_2)$,
+  and $\sigma = (\mathrm{Equiv.swap}\,e_b\,e_0) \cdot (\mathrm{Equiv.swap}\,e_1\,e_c)$.
+  Stating it at the fixed seed (rather than transporting the bare existential
+  $\mathrm{HasGenericFullRankRealization}$) preserves the seed identity that eq.~(6.44) requires:
+  the $M_3$ arm of the producer tests the \emph{same} $\hat r$ against all three panels, which is
+  only meaningful when $(G_a^{vc}, q_\rho)$ shares the $v$-split's seed via $\rho$ --- an
+  independent realization would carry a different seed and collapse the trichotomy. The bare
+  existential form ($G_v^{ab}$-realization $\Rightarrow$ $G_a^{vc}$-realization at $q_0 \circ \rho$)
+  is recorded as a short corollary.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:splitOff-isLink-relabel}
-  Each conjunct is transported by the vertex-swap $\rho$ and edge-permutation $\sigma$.
-  General position: the $\rho$-reindexed seed is GP because $\rho$ is injective and
-  the original seed is GP. Rigidity: any motion $S$ of the transported framework pulls
-  back to a motion $S \circ \rho$ of $Q$, using \cref{lem:splitOff-isLink-relabel}
-  forward to move each link from $G.\mathrm{splitOff}\,v\,a\,b\,e_0$ to
-  $G.\mathrm{splitOff}\,a\,v\,c\,e_1$; rigidity of $Q$ forces $S \circ \rho$ constant,
-  hence $S$ constant after applying $\rho\rho = \mathrm{id}$.
-  Link-recording: \cref{lem:splitOff-isLink-relabel} backward translates each
-  link of $G.\mathrm{splitOff}\,v\,a\,b\,e_0$ to a link of $Q$'s graph, whose
-  link-recording gives the endpoint pair; transporting back through $\rho$ gives
-  $\mathrm{ends}'(e')$. Algebraic independence: the seed family is an injective
-  re-index of $Q$'s algebraically-independent family.
+  Each of the four conjuncts is transported by the vertex-swap $\rho$ and edge-permutation $\sigma$
+  (an involution, since its two transpositions have disjoint supports). General position: the
+  $\rho$-reindexed seed $q_\rho$ is GP because $\rho$ is injective and $q_0$ is GP. Rigidity: any
+  motion $S$ of the $a$-split framework pulls back to a motion $S \circ \rho$ of the $v$-split
+  framework, using \cref{lem:splitOff-isLink-relabel} to move each $a$-split link to a $v$-split
+  link and the support-extensor equality across the two $\mathrm{ofNormals}$ terms; the $v$-split's
+  rigidity on $V(G)\setminus\{v\}$ then forces $S \circ \rho$ constant, hence $S$ constant on
+  $V(G)\setminus\{a\}$ since $\rho$ maps $V(G)\setminus\{a\} \to V(G)\setminus\{v\}$ bijectively
+  (using $\rho\rho = \mathrm{id}$). Link-recording: \cref{lem:splitOff-isLink-relabel} forward
+  translates each $a$-split link to a $v$-split link whose endpoints $\mathrm{ends}_0$ records,
+  transported back through $\rho$ to $\mathrm{ends}_{\sigma\rho}$. Algebraic independence: $q_\rho$
+  is an injective $\rho$-reindex of $q_0$.
+\end{proof}
+
+\begin{lemma}[Row-space correspondence under the $\rho = (a\,v)$ relabel; KT eqs.\ (6.31)/(6.44)]
+  \label{lem:splitOff-rigidityRows-relabel}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rigidityRows_ofNormals_relabel}
+  \leanok
+  \uses{lem:splitOff-isLink-relabel, lem:splitOff-ofNormals-relabel}
+  The deliverable the $M_3$ candidate-row step (\cref{lem:case-III-claim612-p3-placement}) consumes.
+  The coordinate-relabel map $\mathrm{funLeft}\,\rho \colon (\alpha \to \mathrm{ScrewSpace}\,k) \to
+  (\alpha \to \mathrm{ScrewSpace}\,k)$, $S \mapsto S \circ \rho$, has dual
+  $(\mathrm{funLeft}\,\rho)^* \colon \phi \mapsto \phi \circ (\cdot \circ \rho)$. Under it the
+  rigidity rows of the relabelled $a$-split framework
+  $\mathrm{ofNormals}\,(G.\mathrm{splitOff}\,a\,v\,c\,e_1)\,\mathrm{ends}_{\sigma\rho}\,q_\rho$ are
+  exactly the image of the $v$-split framework's rigidity rows: each $a$-split row
+  $\mathrm{hingeRow}\,u\,w\,r$ is $(\mathrm{funLeft}\,\rho)^*$ of the $v$-split row
+  $\mathrm{hingeRow}\,(\rho u)\,(\rho w)\,r$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:splitOff-isLink-relabel}
+  Since $\rho\rho = \mathrm{id}$, a direct computation gives
+  $(\mathrm{funLeft}\,\rho)^*(\mathrm{hingeRow}\,(\rho u)\,(\rho w)\,r) = \mathrm{hingeRow}\,u\,w\,r$.
+  \Cref{lem:splitOff-isLink-relabel} puts the two graphs' links in $\rho$-correspondence, and the
+  hinge-row blocks at corresponding edges coincide (the same supporting extensor, by the same $q_0$
+  reindex as in \cref{lem:splitOff-ofNormals-relabel}, since $\sigma$ is an involution). Hence the
+  two rigidity-row \emph{sets} correspond exactly under $(\mathrm{funLeft}\,\rho)^*$, by mutual
+  inclusion.
 \end{proof}
 
 \begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]

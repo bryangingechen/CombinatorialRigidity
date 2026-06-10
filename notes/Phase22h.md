@@ -56,15 +56,23 @@ by case analysis using degree-2 closures at `v` and `a`. Key derived facts: `hba
 (from `hcla` + `heab` + `he_b_ne_e_c`); after `subst he_eq_eb` in the backward fresh-edge case,
 `e_b` is replaced by `e` in context.
 
-**G4c-ii is DONE.** `hasGenericFullRankRealization_of_splitOff_relabel` (CaseI.lean; blueprint
-node `lem:splitOff-ofNormals-relabel` added to case-iii.tex; build warning-clean). The
-`ofNormals` framework transport: GP via `ρ.injective.ne`; rigidity via `S ∘ ρ` pull-back using
-`splitOff_isLink_relabel` forward + `hρρ` double-application; link-recording via `splitOff_isLink_relabel`
-backward + `hρρ` roundtrip; alg-indep via `AlgebraicIndependent.comp` + injective reindex. Key
-tricks: `set Q'` to avoid `.toBodyHinge\n.supportExtensor` parse error; `change` to expose
-`ofNormals` form for `simp only` (bypasses `let`-binding opacity); `Equiv.Perm.inv_def` +
-`Equiv.symm_apply_apply` to reduce `σ⁻¹ (σ f)`; `simp only [Equiv.Perm.inv_def] at h1 h2`
-to normalize before `rw [h1]` in link-recording.
+**G4c-ii is DONE (corrected to the fixed-seed shape; commit b6a66de's existential→existential
+transport was a design deviation, replaced).** Now three lemmas in CaseI.lean:
+- `ofNormals_relabel` — the **load-bearing** fixed-seed transport in the **producer's direction**:
+  from the concrete v-split `ofNormals (splitOff v a b e₀) ends₀ q₀` four conjuncts (GP, rigid on
+  V∖{v}, links, alg-indep) to the same four for the relabeled a-split `ofNormals (splitOff a v c e₁)
+  endsσρ qρ` at the SAME seed `qρ (x,i) = q₀ (ρ x, i)`, ρ = swap a v, σ = swap e_b e₀ * swap e₁ e_c,
+  `endsσρ e = (ρ (ends₀ (σ e)).1, ρ (ends₀ (σ e)).2)`. The relabeled construction is exposed
+  (named in the statement) so the producer / G4d-ii can consume the concrete framework.
+- `rigidityRows_ofNormals_relabel` — the **row-space correspondence §1.49(4) says G4d-ii consumes**:
+  `(a-split).rigidityRows = (LinearMap.funLeft ℝ _ ρ).dualMap '' (v-split).rigidityRows`
+  (each `hingeRow u w r` ↤ `hingeRow (ρ u) (ρ w) r`, via `ρρ = id` + the hinge-block coincidence).
+- `hasGenericFullRankRealization_of_splitOff_relabel` — short existential corollary in the
+  producer direction (v-split realization ⟹ a-split realization at `q₀∘ρ`); derived from
+  `ofNormals_relabel`. (The old reversed-direction existential is gone — no two parallel transports.)
+Graph side G4c-i (`splitOff_isLink_relabel`) reused verbatim, both `.mp`/`.mpr`. Build + lint +
+verify.sh clean; axiom-clean. Blueprint `lem:splitOff-ofNormals-relabel` restated + new node
+`lem:splitOff-rigidityRows-relabel`.
 
 **Next concrete step: G4d-i** (§1.49(4)), the eq.(6.43)→(6.44) `a`-column identity.
 
@@ -95,8 +103,12 @@ concrete-seed assembly with the G4e `M₁/M₂/M₃` dispatch) → Leaf 4 → Le
   `lem:triangle-realization`; §1.48(1)). Done.
 - [x] **G4c-i** — `splitOff_isLink_relabel` (Operations.lean; blueprint node
   `lem:splitOff-isLink-relabel`; §1.49(3) graph side). Done.
-- [x] **G4c-ii** — `hasGenericFullRankRealization_of_splitOff_relabel` (CaseI.lean; blueprint
-  node `lem:splitOff-ofNormals-relabel`; §1.49(3) framework side). Done.
+- [x] **G4c-ii** — `ofNormals_relabel` (fixed-seed producer-direction transport, §1.49(3)) +
+  `rigidityRows_ofNormals_relabel` (the row-space correspondence G4d-ii consumes, §1.49(4)) +
+  `hasGenericFullRankRealization_of_splitOff_relabel` (existential corollary, producer direction)
+  (CaseI.lean; blueprint `lem:splitOff-ofNormals-relabel` restated + `lem:splitOff-rigidityRows-relabel`).
+  Corrected from b6a66de's existential→existential transport (the design-deviation §1.49(3)
+  excludes). Done.
 - [ ] **G4d-i/ii** — the (6.43)→(6.44) `a`-column identity + the `M₃` `hcand_mem` (§1.49(4)).
 - [ ] **The (β)-shaped `hsplit` producer** (the G4e spine; the §38 trap; §1.49(5)): G4a chain
   dichotomy → `|V|=3 ↦ T4`; chain arm: its own split data + `splitOff_isMinimalKDof` + measure ⟹
@@ -180,15 +192,23 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   The `hσe_ne_ec` short proof: `σ e = e_c` and `σ e₁ = e_c` → `e = e₁` by injectivity, contradicts
   `he₁e`. Similarly `he_ne_ec`/`he_ne_e₀` use explicit `calc` chains over `swap_apply_right` +
   `swap_apply_of_ne_of_ne` to avoid `simp_all` whnf timeouts.
-- **G4c-ii `let`-opacity and `.toBodyHinge\n.field` parse hazards:** `set Q'` avoids the
-  `.toBodyHinge\n.supportExtensor` newline-parse bug (line 2 is parsed as argument, not field).
-  `change (ofNormals ...).toBodyHinge.supportExtensor _ = _` exposes the `ofNormals` form so
-  `simp only` can unfold `ofNormals_ends`/`ofNormals_normal` (plain `set`-bound `Q'` is opaque to
-  `simp only`). `Equiv.Perm.inv_def` rewrites `σ⁻¹` to `Equiv.symm σ`; then `Equiv.symm_apply_apply`
-  reduces `σ.symm (σ f) = f` (the `HInv` form blocks `Equiv.symm_apply_apply` directly). Link-recording:
-  `simp only [Equiv.Perm.inv_def] at h1 h2` normalizes `h1`/`h2` to the `.symm` form before
-  `rw [h1]` finds its pattern. Promoted to TACTICS-QUIRKS (§ 35 extension or new entry for the
-  `let`-opacity/`change`-before-simp pattern). → See also FRICTION.md [let-opacity].
+- **G4c-ii corrected to fixed-seed (design-deviation fix; replaced b6a66de).** The deviation:
+  b6a66de stated G4c-ii as an existential→existential transport in the *reversed* direction (a-split
+  ⟹ v-split), which §1.49(3) explicitly excludes ("transporting the existential loses the seed
+  identity (6.44) requires — state everything at the ofNormals level") and which omitted the
+  rigidityRows row-space correspondence §1.49(4) says G4d-ii consumes. Fix: (a) `ofNormals_relabel`
+  states the transport in the **producer direction** at the **fixed seed** `q₀∘ρ`, exposing the
+  relabeled `ofNormals` construction in the statement (so consumers name it); (b)
+  `rigidityRows_ofNormals_relabel` adds the `(funLeft ρ).dualMap`-image row correspondence; (c) the
+  existential is a short *producer-direction* corollary (no two parallel transports).
+- **Statement-level `Equiv.swap` opacity (the fix's main friction).** Putting `let ρ := Equiv.swap
+  a v` etc. in the *statement* requires `[DecidableEq α/β]` and makes the `let`-locals opaque after
+  `intro` (`exact Equiv.swap_apply_self …` fails against the `let`-bound `ρ (ρ x) = x`). Resolution:
+  *inline* the explicit terms (`Equiv.swap a v`, …) in the statement (consumers name them via the
+  same expression; the docstring carries the `ρ/σ/qρ/endsσρ` abbreviations), then `set ρ := Equiv.swap
+  a v` in the proof body to fold them back into nameable locals. `change` (not `show`) is the
+  warning-clean tactic for the defeq goal changes that expose the `ofNormals` form for `simp only`
+  / `exact`. → FRICTION.md [let-opacity].
 - **T4 sign-flip dispatch (`hasGenericFullRankRealization_of_triangle`):** each triangle-edge
   extensor equals ±Cᵢ via `endsOf_eq_or_swap` (2 cases × 3 edges = 8-way `rcases` dispatch).
   The `hLI_neg` helper builds LI for `![ε₀•C₀, ε₁•C₁, ε₂•C₂]` via `units_smul_iff` + the
