@@ -84,6 +84,7 @@ below and `ROADMAP.md` carry the fine-grained, live status.
 |   22e | candidate-completion + Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ |
 |   22f | point-join↔panel-meet duality (the exterior-algebra leaf completing Case III at `d=3`) | `Molecular/Meet.lean` | ✓ |
 |   22g | `d=3` realization assembly: design + leaf infrastructure (the existential Claim 6.12 architecture) | `Molecular/AlgebraicInduction/` | ✓ |
+|   22h | the corrected `d=3` assembly (the `hsplit` producer + Theorem 5.5 at `d=3`, completing Case III there) | `Molecular/{Induction,AlgebraicInduction}/` | ◷ |
 |   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

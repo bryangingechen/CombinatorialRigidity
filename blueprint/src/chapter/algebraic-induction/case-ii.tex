@@ -239,18 +239,29 @@
   data (it was already in scope where \cref{thm:minimal-kdof-reduction} dispatches
   $\mathtt{hsplit}$, via \cref{lem:reducible-vertex}), so the producer can consume
   it; without it the producer is under-determined ($a, b$ alone do not name $v$'s
-  edges).
+  edges). (The assembly phase reshapes this interface once more: the
+  $\mathtt{hsplit}$/$\mathtt{hsplitGP}$ branches receive the no-proper-rigid-subgraph
+  hypothesis and the \emph{full conditioned induction hypothesis}, mirroring the
+  contraction branch --- KT's Lemma~6.10 receives hypothesis (6.1) and invokes
+  Lemma~4.6 itself --- so the producer chooses its own adjacent degree-2 pair,
+  realizes the $|V| = 3$ triangle floor directly, and dispatches the witness panel
+  across KT's three candidates, the third at the \emph{same} inductive seed
+  transported by the relabel of eqs.~(6.43)--(6.44).)
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:case-II-realization-placement}
+  \uses{lem:case-II, lem:case-II-realization-placement,
+        lem:case-III-claim612-line-in-panel-union}
   The eq.~(6.12) placement \cref{lem:case-II-realization-placement} supplies, from
   the inductive realization of $G_v^{ab}$, a free normal assignment $q_0$ for $G$
   together with a linearly independent family of $D(|V(G)|-1)$ panel-rows of
   $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ (the degenerate placement
   $p_1(vb)=q(ab)$ making the $vb$-row reproduce the $e_0$-row, so the inductive
-  rows transport without an $e_0$-free block). Feeding that witnessed independent
-  family to the device-closure glue \cref{lem:realization-of-independent-rows}
-  (N7a) yields a generic realization of $G$ rigid on $V(G)$ at rank
-  $D(|V(G)|-1)$.
+  rows transport without an $e_0$-free block). The witnessed independent family is
+  fed at the \emph{fixed} candidate placement (the rank--nullity bound at the
+  candidate framework; the eq.~(6.12) seed is degenerate by construction, so no
+  genericity device runs there), yielding a bare full-rank realization of $G$; the
+  bare $\to$ generic upgrade (the final step of
+  \cref{lem:case-III-claim612-line-in-panel-union}) then re-realizes it at an
+  algebraically-independent seed, supplying the generic motive.
 \end{proof}
 

@@ -124,6 +124,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ Complete (N3b discharged in 22f; see `notes/Phase22e.md`) |
 | 22f. N3b: point-join↔panel-meet duality (the exterior-algebra assembly completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` | ✓ Complete — discharged 22e's green-modulo-N3b (see `notes/Phase22f.md`) |
 | 22g. `d=3` realization assembly: design program + leaf infrastructure | `Molecular/AlgebraicInduction/` | ✓ Complete — banner flips moved to 22h (see `notes/Phase22g.md`) |
+| 22h. the corrected `d=3` assembly (G5 → G4 → the (β) producer → the `lem:case-II-realization`/`lem:case-III` flips) | `Molecular/{Induction,AlgebraicInduction}/` | ◷ In progress (see `notes/Phase22h.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -549,7 +550,7 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 ### Phase 17+ — The Molecular Conjecture program
 
 **Status: Phases 17–22g (+ 21a/21b) complete; Phase 22h (the corrected
-`d=3` assembly) opens next; Phases 23–26 planned.** The
+`d=3` assembly) in progress; Phases 23–26 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -738,7 +739,8 @@ bundled three independent bodies of work (Case I; Case III at `d=3`; the `d=3`
 assembly). Sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26
 stable; sub-letters name *one distinct chunk each* and are minted only when the
 chunk's turn comes (Case III at `d=3` itself split: stratum 1 = 22c, the
-D-candidate crux strata 2–3 = 22d, the `d=3` assembly still unlettered).
+D-candidate crux strata 2–3 = 22d; the `d=3` assembly later split the same way,
+its design stratum = 22g and the corrected build = 22h).
 **Structural-edit phase:** no new blueprint chapter; the producer nodes extend
 `algebraic-induction.tex`, where they are already stubbed red. The KT math is
 worked out in `notes/Phase21b.md` *Finding A/B* — the sub-phases formalize it.
@@ -901,6 +903,22 @@ that surfaced + scoped the corrected remaining-work picture — GAPs 1–5: the 
 no-rigid branch receives the full conditioned IH), the bounded good-`t`, the landed bare→generic
 upgrade, and the `IsProperRigidSubgraph` single-vertex predicate repair (G5) — all handed to 22h
 with signatures in design §1.48–§1.49. Leaf ledger + decisions: `notes/Phase22g.md`.
+
+#### Phase 22h — the corrected `d=3` assembly (KT §6.4.1, §5.2) — ◷ In progress
+
+**Status (◷ in progress; opened 2026-06-09 at the 22g close; see `notes/Phase22h.md`).** Builds
+the corrected remaining-work picture Phase 22g's recon program scoped (GAPs 1–5; per-leaf
+signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.49) and takes the two
+producer nodes `lem:case-II-realization` / `lem:case-III` green at `d = 3`. Build order
+(design §1.49(6)): **G5** — the `IsProperRigidSubgraph` predicate repair (`2 ≤ |V(H)|`, KT
+p. 659's `1 < |V′|`; the opening commit(s) — until it lands, the no-rigid-subgraph hypothesis is
+unsatisfiable and the Case-III branch vacuous) → **G4b-impl** (`minimal_kdof_reduction_full` +
+the `theorem_55_generic` `hsplit`/`hsplitGP` restate to the full-conditioned-IH (β) shape) → in
+parallel: G4a-i/ii + G0 ∥ the `|V|=3` triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the
+(β)-shaped `hsplit` producer with the G4e `M₁/M₂/M₃` dispatch → Leaf 4 (the
+`theorem_55_generic (n:=2) (k:=2)` instance node) → Leaf 5 (the banner flips + the Thm 5.5→5.6
+push, unblocking Cor 5.7 at `d=3`). Estimated 13–18 commits. Milestone: the molecular conjecture
+proved at `d = 3` (Phases 24–26 unblocked). General `d` (KT Lemma 6.13) is Phase 23.
 
 ## Engineering conventions
 
