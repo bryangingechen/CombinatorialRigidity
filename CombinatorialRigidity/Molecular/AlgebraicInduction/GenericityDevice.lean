@@ -1769,33 +1769,8 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial
   rw [Nat.mul_succ]
   omega
 
-/-! ## M2/M4: genuine-hinge realization motive and forgetful map
-(`def:genuine-hinge-realization`, Phase 22i L0d) -/
-
-/-- **M2: the genuine-hinge panel realization motive** (`def:genuine-hinge-realization`,
-Phase 22i L0d). The honest bare motive for Theorem 5.5: a graph `G` has a genuine-hinge
-`k`-dimensional panel realization at the target rank when there exists a
-`BodyHingeFramework k α β` on `G` with a panel-normal assignment
-`normal : α → Fin (k + 2) → ℝ` such that:
-
-* every vertex has a nonzero panel normal (`normal v ≠ 0`);
-* every link's supporting extensor is nonzero and lies in both endpoint panels
-  (`ExtensorInPanel` — the extensor of two points in the hyperplane `nᵥ⊥`);
-* the rigidity-row span has the ℤ-rank `D(|V(G)| − 1) − def(G̃)`.
-
-Placed in the root `Molecular` namespace (not inside `PanelHingeFramework`): the def
-quantifies a free `BodyHingeFramework` + a normal assignment, so `PanelHingeFramework`
-dot-notation would misdirect. Both `k` and `n` are explicit parameters; call sites pin
-`G.deficiency n` via their `G.IsMinimalKDof n _` hypothesis. -/
-def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
-  ∃ (F : BodyHingeFramework k α β) (normal : α → Fin (k + 2) → ℝ),
-    F.graph = G ∧
-    (∀ v ∈ V(G), normal v ≠ 0) ∧
-    (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
-      ExtensorInPanel (F.supportExtensor e) (normal u) ∧
-      ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
-    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+/-! ## M4: genuine-hinge realization forgetful map
+(`def:genuine-hinge-realization`, Phase 22i L0e) -/
 
 /-- **M4: a generic realization is a genuine-hinge realization** (`def:genuine-hinge-realization`,
 Phase 22i L0e). Forgetful map from `PanelHingeFramework.HasGenericFullRankRealization 2 n G`

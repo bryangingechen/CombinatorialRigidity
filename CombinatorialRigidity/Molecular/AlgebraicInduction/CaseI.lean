@@ -2161,7 +2161,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-        PanelHingeFramework.HasFullRankRealization k G') :
+        HasPanelRealization k n G') :
     PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
@@ -5341,7 +5341,7 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        PanelHingeFramework.HasFullRankRealization 2 G')
+        HasPanelRealization 2 n G')
     -- a fresh edge label for the chain arm's short-circuit `ab`-edge (the (β) reduction
     -- `minimal_kdof_reduction_full` does no splitting internally, so the producer owns it; the
     -- shape `minimal_kdof_reduction`'s `hfresh` carried, moved here at the (β) interface, §1.49(1))
@@ -6900,7 +6900,7 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        PanelHingeFramework.HasFullRankRealization 2 G') :
+        HasPanelRealization 2 n G') :
     PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
   PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple hIH hfresh
     (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
@@ -6926,25 +6926,25 @@ by classical cases on whether some proper rigid subgraph `H` of `G` has a simple
 - **Negative (KT Lemma 6.5 arm, unformalized):** carried as the explicit `h65` hypothesis
   (the 6.5-stratum instance; adjudicated carry; Lemma-6.5 arm lands in successor sub-phase 22i).
 
-Conclusion is the **full conditioned pair** `(G.Simple → GP) ∧ bare` — all three bare
-callbacks (`hbase`, `hsplit`, `hcontract`) ride as named hypotheses (adjudicated carries;
-discharged at the 22i all-`k` restructure per `notes/Phase22h.md` *Blockers*). GAP 6 rides
-as `h622`. -/
+Conclusion is the **full conditioned pair** `(G.Simple → GP) ∧ HasPanelRealization 2 n G` —
+all three genuine-hinge callbacks (`hbase`, `hsplit`, `hcontract`) ride as named hypotheses
+(adjudicated carries; discharged at the 22i all-`k` restructure per
+`notes/Phase22h.md` *Blockers*). GAP 6 rides as `h622`. -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
-      PanelHingeFramework.HasFullRankRealization 2 G)
+      HasPanelRealization 2 n G)
     (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization 2 G') →
-      PanelHingeFramework.HasFullRankRealization 2 G)
+        V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') →
+      HasPanelRealization 2 n G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization 2 G') →
-      PanelHingeFramework.HasFullRankRealization 2 G)
+        V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') →
+      HasPanelRealization 2 n G)
     -- GAP 6 (adjudicated carry, §1.50(b) option (ii)): the eq.-(6.22) nested-IH rank bound,
     -- quantified over the graph, chain vertices/edges, and the IH-suppliable (ends, q) data.
     -- Instantiated at each `(G, v, a, b, e₀)` invocation inside the `hsplitGP` wiring.
@@ -6969,11 +6969,11 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
         V(G').ncard < V(G).ncard →
         (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-          PanelHingeFramework.HasFullRankRealization 2 G') →
+          HasPanelRealization 2 n G') →
       PanelHingeFramework.HasGenericFullRankRealization 2 n G)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
-      PanelHingeFramework.HasFullRankRealization 2 G :=
+      HasPanelRealization 2 n G :=
   theorem_55_generic hbase
     -- `hbaseGP`: discharged by vacuity — a simple two-vertex minimal-`0`-dof graph
     -- does not exist (`not_simple_of_isMinimalKDof_of_ncard_two`, KT p. 671 case (iii)).

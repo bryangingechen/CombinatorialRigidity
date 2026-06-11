@@ -1070,6 +1070,33 @@ end PanelHingeFramework
 
 variable {α β : Type*}
 
+/-! ## M2: genuine-hinge realization motive (`def:genuine-hinge-realization`, Phase 22i L0d) -/
+
+/-- **M2: the genuine-hinge panel realization motive** (`def:genuine-hinge-realization`,
+Phase 22i L0d). The honest bare motive for Theorem 5.5: a graph `G` has a genuine-hinge
+`k`-dimensional panel realization at the target rank when there exists a
+`BodyHingeFramework k α β` on `G` with a panel-normal assignment
+`normal : α → Fin (k + 2) → ℝ` such that:
+
+* every vertex has a nonzero panel normal (`normal v ≠ 0`);
+* every link's supporting extensor is nonzero and lies in both endpoint panels
+  (`ExtensorInPanel` — the extensor of two points in the hyperplane `nᵥ⊥`);
+* the rigidity-row span has the ℤ-rank `D(|V(G)| − 1) − def(G̃)`.
+
+Placed in the root `Molecular` namespace (not inside `PanelHingeFramework`): the def
+quantifies a free `BodyHingeFramework` + a normal assignment, so `PanelHingeFramework`
+dot-notation would misdirect. Both `k` and `n` are explicit parameters; call sites pin
+`G.deficiency n` via their `G.IsMinimalKDof n _` hypothesis. -/
+def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework k α β) (normal : α → Fin (k + 2) → ℝ),
+    F.graph = G ∧
+    (∀ v ∈ V(G), normal v ≠ 0) ∧
+    (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
+      ExtensorInPanel (F.supportExtensor e) (normal u) ∧
+      ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
+    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
 /-- **Theorem 5.5: every minimal `0`-dof-graph has a full-rank panel realization**
 (`thm:theorem-55`; Katoh–Tanigawa 2011 §5, Theorem 5.5, at `k = 0`). For the molecular regime
 `D = bodyBarDim n ≥ 3` (so `n ≥ 2`) and a freshness supply of edge labels (`hfresh`), every
@@ -1113,16 +1140,17 @@ theorem theorem_55 [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
 the generic-motive reduction N6-G2-G2a; Katoh–Tanigawa 2011 §5–§6.2, the "nonparallel, if `G`
 is simple" strengthening). The generic sibling of `theorem_55`: it runs the `|V|`-strong-induction
 reduction dichotomy `Graph.minimal_kdof_reduction_full` (the full-IH interface), against the
-**conditioned motive** `Pc G := (G.Simple → HasGenericFullRankRealization k G) ∧
-HasFullRankRealization k G` — the honest formalization of KT's conclusion "there exists a
+**conditioned motive** `Pc G := (G.Simple → HasGenericFullRankRealization k n G) ∧
+HasPanelRealization k n G` — the honest formalization of KT's conclusion "there exists a
 (nonparallel, if `G` is simple) realization" (printed p. 669). The general-position
 (`HasGenericFullRankRealization`) conjunct is **conditioned on `G.Simple`** because unconditional
 general position genuinely fails at the non-simple leaves (the parallel-K₂ base and the
 non-simple Lemma-6.2 branch want *equal* panels, p. 670).
 
-Conclusion `Pc G` for every minimal `0`-dof-graph `G` with `2 ≤ |V(G)|`. The bare-motive
-conjunct is discharged exactly as in `theorem_55` (its `hbase`/`hsplit`/`hcontract` are the same
-hypotheses). The **`G.Simple → general-position`** conjunct is discharged per branch:
+Conclusion `Pc G` for every minimal `0`-dof-graph `G` with `2 ≤ |V(G)|`. The
+`HasPanelRealization` conjunct is threaded through `hbase`/`hsplit`/`hcontract`, each now
+typed at `HasPanelRealization k n G` (Phase 22i L0e pair-swap). The
+**`G.Simple → general-position`** conjunct is discharged per branch:
 
 * `hbaseGP` — the simple two-vertex base (KT Lemma 5.3, two non-parallel bodies);
 * `hsplitGP` — the simple no-rigid-subgraph branch (KT Case III, `k = 0`, Lemma 6.10). It
@@ -1139,39 +1167,39 @@ Uses `Graph.minimal_kdof_reduction_full` (the (β)-interface: no `hD`/`hfresh`/`
 in the `hsplit`/`hsplitGP` callbacks). -/
 theorem theorem_55_generic [DecidableEq β] [Finite α] {n k : ℕ}
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
-      PanelHingeFramework.HasFullRankRealization k G)
+      HasPanelRealization k n G)
     (hbaseGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → G.Simple →
       PanelHingeFramework.HasGenericFullRankRealization k n G)
     (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization k G') →
-      PanelHingeFramework.HasFullRankRealization k G)
+        V(G').ncard < V(G).ncard → HasPanelRealization k n G') →
+      HasPanelRealization k n G)
     (hsplitGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) → G.Simple →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
         V(G').ncard < V(G).ncard →
         (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-          PanelHingeFramework.HasFullRankRealization k G') →
+          HasPanelRealization k n G') →
       PanelHingeFramework.HasGenericFullRankRealization k n G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization k G') →
-      PanelHingeFramework.HasFullRankRealization k G)
+        V(G').ncard < V(G).ncard → HasPanelRealization k n G') →
+      HasPanelRealization k n G)
     (hcontractGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
         V(G').ncard < V(G).ncard →
         (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-          PanelHingeFramework.HasFullRankRealization k G') →
+          HasPanelRealization k n G') →
       PanelHingeFramework.HasGenericFullRankRealization k n G)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
-      PanelHingeFramework.HasFullRankRealization k G :=
+      HasPanelRealization k n G :=
   Graph.minimal_kdof_reduction_full (P := fun G =>
       (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
-        PanelHingeFramework.HasFullRankRealization k G)
+        HasPanelRealization k n G)
     -- base: bare from `hbase`; the simple two-vertex base from `hbaseGP`.
     (fun G hG hV2 => ⟨fun hSimple => hbaseGP G hG hV2 hSimple, hbase G hG hV2⟩)
     -- no-rigid-subgraph branch (Case III): bare from `hsplit`, GP carried (`hsplitGP`).
