@@ -1,8 +1,8 @@
-\subsection{Case III deferred (the crux)}
+\subsection{Case III (the crux)}
 \label{sec:molecular-algebraic-induction-caseIII}
 
 The crux of Case III is the missing $+1$ row of KT Claim~6.11 (the $D$-th
-$ab$-row of $R(G_v^{ab}, q)$ that lifts the stratum-1 brick
+$ab$-row of $R(G_v^{ab}, q)$ that lifts the one-row-short candidate placement
 $D(|V|-1) - 1$ of \cref{lem:case-II-realization-placement} to full rank
 $D(|V|-1)$). Claim~6.11's discharge factors, in dependency order, through three
 combinatorial$\to$linear gaps; the leaf-most --- pure $M(\tilde G)$ matroid
@@ -22,9 +22,11 @@ $k = 0$, built here.
   \]
   i.e.\ $\widetilde{ab} \not\subseteq B'$: a redundant $\widetilde{ab}$-copy exists.
   This is KT's step~1 toward Claim~6.11 (the redundant $ab$-row of
-  $R(G_v^{ab}, q)$); the remaining gaps --- the nested IH at the restricted
-  realization and the $M(\tilde G)\leftrightarrow$row-dependence bridge --- stay
-  deferred.
+  $R(G_v^{ab}, q)$); the other two gaps --- the nested IH at the restricted
+  realization and the $M(\tilde G)\leftrightarrow$row-dependence bridge --- are
+  the rank-attainment and pigeonhole nodes below
+  (\cref{lem:case-III-rank-attainment},
+  \cref{lem:case-III-claim-6-11-redundant-row}).
 \end{lemma}
 \begin{proof}
   \leanok
@@ -45,7 +47,9 @@ $k'$-dof-graph for $k' := \operatorname{def}(\tilde G_v)$, and that deficiency i
 small ($k' \le D - 2$). The combinatorial half --- minimality and the deficiency
 bound, both pure $M(\tilde G)$ matroid theory --- is green here; the
 \emph{analytic} half it feeds (applying the geometric IH to $G_v$ at the
-inductively-fixed seed, KT eq.\ (6.22)) is the deferred crux.
+inductively-fixed seed, KT eq.\ (6.22)) is the one input of the whole Case-III
+argument carried as an explicit hypothesis
+(\cref{lem:case-III-nested-rank-lower} below).
 
 \begin{lemma}[$G - v$ is minimal $k'$-dof with $k' \le D - 2$; KT Lemma~4.3(ii)/nested IH, Claim~6.11 prerequisite]
   \label{lem:case-III-gap3-minimalKDof}
@@ -140,7 +144,49 @@ the Proposition-1.1 reconciliation, \cref{prop:rigidity-matrix-prop11}) with the
   complements). Rearranging gives the bound.
 \end{proof}
 
-The upper bound above is the last \emph{leaf}; the two analytic halves now assemble. The nested
+The upper bound above has a \emph{lower}-bound companion at the nested $k'$-dof
+subgraph, and that companion is where the formalization currently diverges from
+the paper: KT obtain it by applying the induction hypothesis (6.1) --- which in
+the paper ranges over minimal $k$-dof-graphs for \emph{all} $k$ --- to the
+auxiliary graph $G_v$, whereas the formalized induction motive is $0$-dof-only.
+The single reduced inequality is therefore carried as an explicitly named
+hypothesis through every assembly node downstream, tracked by the red node
+below.
+
+\begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
+  \label{lem:case-III-nested-rank-lower}
+  \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof,
+        lem:case-III-seed-rank-bridge}
+  Let $G$ be a minimal $0$-dof-graph with a degree-2 vertex $v$ (neighbours
+  $a, b$, fresh edge $e_0$), let $\mathit{ends}$ be an endpoint selector
+  recording every link of the splitting-off $G_v^{ab}$, and let $q$ be a seed
+  with pairwise linearly independent body normals, algebraically independent
+  over $\Q$. Then the rigidity rows of the free-normal panel framework on the
+  vertex-removal $G_v = G - v$ at $(\mathit{ends}, q)$ satisfy
+  \[
+    D\,\bigl(|V(G_v^{ab})| - 1\bigr) - (D - 2)
+    \;\le\; \dim \operatorname{span}\bigl(\text{rigidity rows of }(G_v, q)\bigr):
+  \]
+  the nested subgraph $G_v$ --- minimal $k'$-dof with $k' \le D - 2$
+  (\cref{lem:case-III-gap3-minimalKDof}) --- attains at the inductively-fixed
+  seed at least the rank $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1)
+  predicts for it. \emph{Red --- the adjudicated carry.} This is KT's
+  \emph{nested} use of the induction (Claim~6.11, eq.~(6.22)), unreachable from
+  the $0$-dof-only motive; it rides through the realization assembly as the
+  quantified hypothesis $\mathtt{h622}$ on \cref{lem:case-III} and
+  \cref{thm:theorem-55-d3-instance}. Its discharge is the all-$k$ motive
+  restructure of the successor sub-phase (22i), which proves hypothesis (6.1)
+  at every $k$ and then feeds this node by a single wiring step.
+\end{lemma}
+\begin{proof}
+  Apply the all-$k$ Theorem~5.5 to the minimal $k'$-dof-graph $G_v$
+  (\cref{lem:case-III-gap3-minimalKDof}) to obtain a realization at rank
+  $D(|V_v| - 1) - k' \ge D(|V_v| - 1) - (D - 2)$, then transfer the attained
+  rank to the inductively-fixed algebraically-independent seed by the
+  footnote-6 seed-transfer device (\cref{lem:case-III-seed-rank-bridge}).
+\end{proof}
+
+The upper bound earlier is the last \emph{leaf}; the two analytic halves now assemble. The nested
 subgraph $G_v$ attains its predicted rank at the inductively-fixed seed by pinning the equality
 between the genericity-free lower bound and the matroid-predicted upper bound.
 
@@ -232,7 +278,7 @@ discharges the corank gap and produces KT's redundant $ab$-row
   D(m-1)$ (the $0$-dof full rank, $m = |V(G_{ab})| = |V(G_v)|$) and eq.~(6.22)
   $\dim \operatorname{span}(R(G_v, q)\text{-rows}) = D(m-1) - k'$ with $k' \le D - 2$ --- one of the
   $D-1$ many $ab$-rows of $R(G_{ab}, q)$ is redundant modulo $\operatorname{span}(R(G_v, q)\text{-rows})$
-  and the other $ab$-rows: KT's eq.~(6.23). This is the $+1$ that the deferred candidate-completion
+  and the other $ab$-rows: KT's eq.~(6.23). This is the $+1$ that the candidate-completion
   assembly converts into the missing full-rank row.
 \end{lemma}
 \begin{proof}
@@ -257,34 +303,34 @@ of the stratum-1 brick. KT's mechanism (eqs.~(6.24)--(6.29)) is a single fundame
 row operation \emph{followed by the eqs.~(6.14)--(6.15) column operation}: the redundant
 row's linear combination, transported from $R(G_v^{ab}, q)$ up to $R(G, p_1)$ and then
 column-reduced (add column $v$ to column $a$), produces a row $w$ of $R(G, p_1)$ whose
-$V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)). The eqs.~(6.24)--(6.25) decomposition
-of the redundant row (\cref{lem:case-III-redundant-decomposition}, green), the per-edge seam
-identity (\cref{lem:case-III-seam}, green), and the pure-$v$-column characterization of such a
-row (\cref{lem:case-III-vanish-off-column}, green) are in place, as is the column operation $\Phi$
-itself: a Phase~22e recon found it load-bearing for the vanishing --- the transported row
-$w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ and $a$, so the column
-op, not the seam alone, is what makes its $V \setminus \{v\}$ part zero --- and
-\cref{lem:case-III-columnop} now supplies $\Phi$ (the $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$
-change-of-variables automorphism) together with the fact that $w \circ \Phi$ is pure $v$-column.
-The per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse}, green) closes the
+$V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)). The pieces: the
+eqs.~(6.24)--(6.25) decomposition of the redundant row
+(\cref{lem:case-III-redundant-decomposition}), the per-edge seam identity
+(\cref{lem:case-III-seam}), the pure-$v$-column characterization
+(\cref{lem:case-III-vanish-off-column}), and the column operation $\Phi$
+(\cref{lem:case-III-columnop}, the $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$
+change-of-variables automorphism). The column op --- not the seam alone --- is what
+makes the $V \setminus \{v\}$ part vanish: the transported row
+$w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ and $a$,
+and $w \circ \Phi$ is pure $v$-column.
+The per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse}) closes the
 core algebra: each transported $(vb)j$-row minus the inductive $(ab)j$-row is the pure $(va)$-hinge
 row $\mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ \cdot)$ (same supporting extensor by the shear
 identity), and it packages the column-op composition certifying $w \circ \Phi$ pure $v$-column.
-The combination-level threading is itself now green
+The combination-level threading
 (\cref{lem:case-III-candidate-row-construction}): the redundant row's common $G_v$-row element
 $w_{\mathrm{Gv}}$ is an $ab$-block element, so it is $\mathrm{hingeRow}\ a\ b\ \rho$ for some
 $\rho \in r(p(e_0))$, its transported $(vb)i^*$-row $\mathrm{hingeRow}\ v\ b\ \rho$ is a genuine
 rigidity row of $R(G, p_1)$, and the collapse yields the candidate row $\mathrm{hingeRow}\ v\ a\ \rho$.
-The full $D(|V|-1)$-family assembly is now in place (\cref{lem:case-III-candidate-row}, green): the
+The full $D(|V|-1)$-family assembly (\cref{lem:case-III-candidate-row}): the
 operated row $w \circ \Phi$ joins the stratum-1 brick's $va$-block and old block in the pin-a-body
 augment (\cref{lem:case-III-conditional-block}), and the operated independence transports back
 through the automorphism $\Phi$ to the original family of size $((D-1)+1)+D(|V_v|-1) = D(|V|-1)$.
 The one \emph{conditional} it passes through --- the eq.~(6.29) top-left $D \times D$
 full rank for some line choice --- is discharged by
 Claim~6.12 (\cref{lem:case-III-claim612},
-\cref{sec:molecular-algebraic-induction-claim612}), so the candidate-completion assembly is
-green. The
-$a$-column-block vanishing (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$
+\cref{sec:molecular-algebraic-induction-claim612}). The
+$a$-column-block vanishing (\cref{lem:case-III-acolumn-zero}) is a Claim~6.12 fact (the $M_3$
 case), not the candidate-row input.
 
 \begin{lemma}[A rigidity row vanishing off $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
@@ -554,9 +600,9 @@ case), not the candidate-row input.
         lem:case-III-vanish-off-column, lem:case-III-transport-collapse,
         lem:case-III-conditional-block, lem:case-III-claim612,
         lem:case-II-realization-placement}
-  \emph{Green modulo the eq.~(6.29) conditional --- the top-left $D \times D$ full rank for some
-  line choice, which Claim~6.12 (\cref{lem:case-III-claim612}) discharges.} The
-  combination-level threading is green:
+  The one conditional --- the eq.~(6.29) top-left $D \times D$ full rank for some
+  line choice --- is discharged by Claim~6.12 (\cref{lem:case-III-claim612}). The
+  combination-level threading:
   \cref{lem:case-III-candidate-row-construction} takes the common element $w_{\mathrm{Gv}}$ of the
   eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) --- the $G_v$-row
   part of the redundant $ab$-row, which is itself an $ab$-block element --- writes it as
@@ -567,7 +613,7 @@ case), not the candidate-row input.
   (\cref{lem:case-III-transport-collapse}). The row $w$ is supported on \emph{both} columns $v$ and
   $a$, with $w(S) = \rho(S_v - S_a)$; the column operation $\Phi(S) = \mathrm{update}\ S\ v\ (S_v +
   S_a)$ of eqs.~(6.14)--(6.15) (\cref{lem:case-III-columnop}) makes $w \circ \Phi$ pure $v$-column
-  (\cref{lem:case-III-vanish-off-column}). \emph{The assembly} (this commit): precomposing the whole
+  (\cref{lem:case-III-vanish-off-column}). \emph{The assembly}: precomposing the whole
   family $\mathrm{rn}\sqcup\{w\}\sqcup\mathrm{ro}$ with the automorphism $\Phi$ (the dual equivalence
   $\Phi^\vee$, preserving independence) yields the operated family, in which $w \circ \Phi$ joins the
   $va$-block $\mathrm{rn}$ in the pin-a-body augment (\cref{lem:case-III-conditional-block}) --- the
@@ -1213,6 +1259,28 @@ Grassmann--Cayley projective duality.
   line $L = \bar p_i \bar p_j$.
 \end{proof}
 
+\medskip\noindent\emph{The triangle floor.} The Case-III recursion needs a floor
+of its own, and finding it is a point where the formalization must do visible
+work that the paper covers in a phrase. KT open Lemma~6.13 by Lemma~4.6: $G$ is
+either a short cycle (handled by the Lemma~5.4 cycle family) or carries a
+length-$d$ chain. The formalized reduction has no separate cycle branch --- short
+cycles dissolve into repeated splits --- so the split recursion descends until
+$|V(G)| = 3$. There it genuinely cannot recurse: splitting off a degree-2 vertex
+of a triangle leaves the \emph{double edge} on two bodies --- a non-simple graph
+--- so the conditioned induction hypothesis (``general position \emph{if
+simple}'') supplies only the bare conjunct for it, and with it the candidate
+placement loses its transversality input (the linear independence of the two
+split-leg normals). A triangle is a minimal $0$-dof-graph, and the realization
+must be produced \emph{directly}: pin the vertex set and find the third edge by
+edge counting (\cref{lem:triangle-third-edge}), realize three mutually
+transversal panels by a cyclically consistent standard-basis seed
+(\cref{lem:triangle-normals}), conclude rigidity from the three-extensor
+telescoping independence (\cref{lem:theorem-55-triangle}, the three-body sibling
+of the two-body base case \cref{lem:theorem-55-base}), and upgrade the attained
+rank to a general-position, algebraically-independent seed by the genericity
+device. This is the one floor of the $d = 3$ recursion, in the spirit of KT's
+Lemma~5.4 short-cycle family but not consuming the general-$m$ cycle node.
+
 \begin{lemma}[$|V|=3$ triangle base: vertex and edge pin; KT \S6.4]
   \label{lem:triangle-third-edge}
   \lean{Graph.exists_isLink_of_isMinimalKDof_card_three}
@@ -1256,83 +1324,76 @@ Grassmann--Cayley projective duality.
   \texttt{hasGenericFullRankRealization\_of\_rigidOn\_ofNormals}.
 \end{proof}
 
-\begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
+\begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13 at $d = 3$]
   \label{lem:case-III}
-  \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
-        lem:cycle-realization, lem:case-II-realization-placement,
-        lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof,
-        lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper,
-        lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
-        lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-acolumn-zero, lem:case-III-candidate-row,
-        lem:case-III-candidate-row-construction, lem:case-III-conditional-block,
-        lem:case-III-transport-collapse,
-        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
-        lem:case-III-claim612}
-  Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
-  proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
-  $D(|V|-1)$. A single candidate realization is one row short of full
-  rank (the stratum-1 brick $D(|V|-1) - 1$ of
-  \cref{lem:case-II-realization-placement}); the missing $+1$ row is KT
-  Claim~6.11 (\cref{lem:case-III-claim-6-11}), now green: its matroid-base
-  4.3(ii) form (\cref{lem:case-III-claim-6-11-base}), the nested-IH reduction
-  $G - v$ minimal $k'$-dof with $k' \le D - 2$
-  (\cref{lem:case-III-gap3-minimalKDof}), the analytic
-  rank-at-the-fixed-seed attainment (\cref{lem:case-III-seed-rank-bridge} for
-  $\operatorname{def} = 0$, its $\operatorname{def} > 0$ upper-bound half
-  \cref{lem:case-III-seed-rank-upper}, and their packaging into the exact rank
-  \cref{lem:case-III-rank-attainment}), and the redundant-row pigeonhole
-  (\cref{lem:case-III-claim-6-11-redundant-row}) fed through the row-set
-  identity at the specific graphs $G_v^{ab}$, $G_v$ all assemble into the
-  redundant $ab$-row. The candidate-completion
-  (\cref{sec:molecular-algebraic-induction-candidate-completion}) converts that
-  redundant $ab$-row into the missing $+1$: the row operation of eqs.~(6.24)--(6.29)
-  (\cref{lem:case-III-candidate-row}, green modulo the eq.~(6.29) conditional) produces a pure
-  $v$-column row $w$ and assembles it with the $va$-block and old block into the
-  $D(|V|-1)$-size independent family (\cref{lem:case-III-conditional-block}), block-triangularizing
-  $R(G, p_1)$ as in eq.~(6.29). The one conditional that assembly passes through --- the top-left
-  $D \times D$ full rank for some line choice --- is discharged by the existential of Claim~6.12
-  (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45),
-  \cref{sec:molecular-algebraic-induction-claim612}): at $d = 3$ KT build \emph{three} candidate
-  realizations $p_1, p_2, p_3$ (splitting at $v$ along $va$/$vb$, and at the other degree-2 vertex
-  $a$ along $vc$ via $G_v^{ab} \cong G_a^{vc}$), and show at least one has a full-rank top-left
-  block. The degree-2 condition forces all three to test the \emph{same} vector $r =
-  \sum_j \lambda_{(ab)j}\, r_j(q(ab)) \in \R^D$ (eq.~(6.44),
-  \cref{lem:case-III-claim612-eq644}); if all failed, $r$ would annihilate every panel-meet
-  $C(L)$ of lines in $\Pi(a) \cup \Pi(b) \cup \Pi(c)$, hence --- by the point-join $\leftrightarrow$
-  panel-meet duality (\cref{lem:case-III-claim612-line-in-panel-union}) --- the
-  $\binom{4}{2} = D$ joins of four affinely-independent points
-  (\cref{lem:case-III-claim612-points-affineIndep}), which by the extensor-independence Lemma~2.1
-  (\cref{lem:extensor-independence}, via \cref{lem:case-III-claim612-extensor-span}) span $\R^D$,
-  forcing $r = 0$ --- contradicting $r \ne 0$ (\cref{lem:case-III-claim612-r-nonzero}).
-  \textbf{The $d = 3$ contrapositive is now fully green}: the candidate-completion
-  (\cref{sec:molecular-algebraic-induction-candidate-completion}) and Claim~6.12
-  (\cref{sec:molecular-algebraic-induction-claim612}) leaves --- including the
-  point-join$\leftrightarrow$panel-meet duality node
-  (\cref{lem:case-III-claim612-line-in-panel-union}, N3b) --- are all green. Two further pieces
-  remain: the \emph{realization assembly} that instantiates the (graph-free)
-  candidate-completion at the actual $d = 3$ graph data --- combining the stratum-1 brick
-  \cref{lem:case-II-realization-placement} with the Claim~6.12 candidate it selects to produce the full
-  $D(|V|-1)$ realization (the deferred ``$d = 3$ assembly''), and the general-$d$ argument
-  (\textbf{Phase~23}). This node stays red until those land; it is stated
-  here to close the Theorem~5.5 dichotomy.
-
-  The cycle-realization input (\cref{lem:cycle-realization}, KT Lemma~5.4) appears in the
-  \uses{} above as a KT-narrative dependency: KT's Lemma~6.13 opens by Lemma~4.6 with $G$ either a
-  short cycle (handled by Lemma~5.4) or carrying a length-$d$ chain. The \emph{Lean} reduction the
-  realization assembly instantiates --- \cref{thm:minimal-kdof-reduction}, run through
-  \texttt{theorem\_55} --- has \emph{no} cycle branch: its only base case is the two-vertex graph,
-  reached by descent through the splitting-off (Case~III) and rigid-subgraph-contraction (Case~I)
-  steps, so short cycles dissolve into repeated splits rather than bottoming on a separate
-  short-cycle realization. The $d = 3$ assembly path therefore does \emph{not} consume
-  \cref{lem:cycle-realization}; it remains a genuine general-$d$ input at the cycle base of
-  Phase~23 (and is already load-bearing for the $k > 0$ Case~II, \cref{lem:case-II}). The one
-  floor the $d = 3$ split recursion does bottom on is the $|V| = 3$ \emph{triangle} (whose
-  split-off is the non-simple double-edge $K_2$, so the inductive general-position conjunct is
-  unavailable there); the assembly phase realizes it directly, in the spirit of the Lemma~5.4
-  short-cycle family but without consuming the general-$m$ node.
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
+  \leanok
+  \uses{def:panel-hinge-framework, def:rank-hypothesis,
+        lem:simple-minimal-noRigid, lem:reduction-step,
+        lem:case-III-nested-rank-lower}
+  Let $G$ be a simple minimal $0$-dof-graph on $|V| \ge 3$ bodies with no
+  proper rigid subgraph ($d = 3$, $D = 6$), and suppose the conditioned
+  induction hypothesis at every smaller minimal $0$-dof-graph: a
+  general-position, link-recording realization at an
+  algebraically-independent seed when the smaller graph is simple, and a
+  bare full-rank realization (\cref{def:rank-hypothesis}) in all cases.
+  Then $G$ carries a general-position full-rank realization at rank
+  $D(|V|-1)$ --- the splitting-off premise ($\mathtt{hsplitGP}$) of the
+  formalized Theorem~5.5 instance (\cref{thm:theorem-55-d3-instance}).
+  Two hypotheses ride explicitly: a fresh-edge supply (every graph leaves
+  some edge name unused --- the splitting-off's short-circuit edge $e_0$),
+  and the eq.-(6.22) nested-IH rank lower bound $\mathtt{h622}$
+  (\cref{lem:case-III-nested-rank-lower}, red), the one Case-III input
+  that lies outside the $0$-dof-only induction motive.
 \end{lemma}
 \begin{proof}
-  The $d = 3$ contrapositive above is fully green; the $d = 3$ realization assembly and general-$d$
-  are deferred. See \cite[\S6.4]{katohTanigawa2011}.
+  \leanok
+  \uses{lem:triangle-realization, lem:chain-data-of-noRigid,
+        lem:adjacent-degree-two-pair, lem:simple-minimal-noRigid,
+        lem:reduction-step, lem:case-II-realization-placement,
+        lem:case-III-claim-6-11, lem:case-III-candidate-row,
+        lem:case-III-claim612, lem:case-III-claim612-p2-placement,
+        lem:case-III-claim612-p3-placement, lem:case-III-claim612-eq644,
+        lem:splitOff-ofNormals-relabel, lem:splitOff-rigidityRows-relabel,
+        lem:case-III-rank-attainment, lem:case-III-nested-rank-lower,
+        lem:genericity-device}
+  Induction on $|V(G)|$ inside the conditioned motive. At $|V| = 3$ the
+  recursion bottoms on the triangle floor, realized directly
+  (\cref{lem:triangle-realization}; see the discussion preceding
+  \cref{lem:triangle-third-edge}). At $|V| \ge 4$, KT Lemma~4.6 supplies an
+  adjacent degree-2 pair and with it the chain $b$--$v$--$a$--$c$
+  (\cref{lem:adjacent-degree-two-pair}, \cref{lem:chain-data-of-noRigid});
+  split off at $v$ along $va$, a smaller simple minimal $0$-dof-graph
+  (\cref{lem:reduction-step}; simplicity of the split-off holds at
+  $|V| \ge 4$), so the induction hypothesis hands a general-position,
+  link-recording realization $(G_v^{ab}, q)$ at an
+  algebraically-independent seed. The eq.-(6.12) placement
+  (\cref{lem:case-II-realization-placement}) re-attaches $v$ one row short
+  of full rank; Claim~6.11 (\cref{lem:case-III-claim-6-11}, consuming the
+  carried eq.-(6.22) bound at the nested $k'$-dof subgraph) produces the
+  redundant $ab$-row, the candidate-completion
+  (\cref{lem:case-III-candidate-row}) converts it into the missing $+1$,
+  and the Claim-6.12 existential (\cref{lem:case-III-claim612}) selects
+  which of the three candidate placements $p_1, p_2, p_3$ closes --- the
+  $M_1$/$M_2$ arms at the $v$-split's roles, the $M_3$ arm at the second
+  split $G_a^{vc}$ read through the vertex relabel at the \emph{same} seed
+  (\cref{lem:splitOff-ofNormals-relabel},
+  \cref{lem:splitOff-rigidityRows-relabel},
+  \cref{lem:case-III-claim612-eq644}). Each arm certifies its KT-(6.29)
+  row count at the $t = 0$ hinge-level family and transfers the attained
+  rank along the one-parameter shear (the KT Lemma-5.2 rank-transfer,
+  packaged with the seed-rank attainment
+  \cref{lem:case-III-rank-attainment}); the genericity device
+  (\cref{lem:genericity-device}) then re-realizes the attained rank at a
+  general-position, algebraically-independent, link-recording seed,
+  which is the conditioned motive's conclusion.
+
+  KT's Lemma~6.13 opens by Lemma~4.6 with $G$ either a short cycle
+  (handled by the Lemma-5.4 cycle family, \cref{lem:cycle-realization}) or
+  carrying a length-$d$ chain; the formalized reduction has no cycle
+  branch --- short cycles dissolve into repeated splits bottoming on the
+  triangle floor --- so the cycle family is not consumed here and remains
+  a genuine general-$d$ input (Phase~23, alongside the general-$d$ form of
+  this node), while staying load-bearing for the $k > 0$ Case~II
+  (\cref{lem:case-II}).
 \end{proof}

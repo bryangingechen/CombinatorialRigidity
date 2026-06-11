@@ -1,8 +1,11 @@
 # Phase 22h — the corrected `d=3` assembly (work log)
 
-**Status:** in progress (opened 2026-06-09 at the 22g close).
+**Status:** ✓ complete (closed 2026-06-11; opened 2026-06-09 at the 22g close).
+**Close shape (user-adjudicated 2026-06-11): green-modulo the named carry family
+{`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} per §1.55(b)** — all five discharged by the
+successor sub-phase 22i.
 
-Takes the two producer nodes `lem:case-II-realization` / `lem:case-III` green at `d=3` by building
+Took the two producer nodes `lem:case-II-realization` / `lem:case-III` green at `d=3` by building
 the corrected remaining-work picture the 22g recon program scoped (GAPs 1–5). **Per-leaf
 signatures stay canonical in `notes/Phase22-realization-design.md` §1.48 (T1–T4, the triple-LI
 bridge), §1.49 (G5, G4a–G4e, G0, the (β) branch shape), §1.50 (the `hcand` discharge: the
@@ -15,41 +18,16 @@ don't duplicate.**
 
 ## Current state
 
-**Next concrete step: L5e′** — the blueprint close commit: instance node
-`thm:theorem-55-d3-instance`, `lem:case-II-realization`/`lem:case-III` pins + flips, GAP-6
-red node `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red; the carried bare
-family presented per §1.55(b) (§1.54(c)).
-
-**L5d′ landed** — `PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3` +
-the private `reaim` micro-brick (CaseI.lean): off-edge selector re-aim rebuilds `Q′ = ⟨G,
-Q.normal, ends′⟩` (links → `Q.ends`, non-links → fixed pair `(x₀, y₀)`), then applies
-`rigidityMatrix_prop11` with `hC` from GP + link-recording and `hgen` from the spanning
-condition. Build + lint clean.
-
-**L5c′ landed** — the `hcontractGP` dispatch in `theorem_55_d3` (CaseI.lean): `by_cases` on
-`∃ H r, H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple`; positive →
-`case_I_realization (by omega) G hG hH hr hH.2.1 hSimple hcSimple hIH` (the 6.3 arm); negative
-→ `h65` carry. `hcontractGP` parameter dropped; `h65` carry added. Build + lint clean.
-
-**L5b′ landed** — `not_simple_of_isMinimalKDof_of_ncard_two` (ReducibleVertex.lean) + the
-`theorem_55_d3` re-shape (ReducibleVertex.lean + CaseI.lean): `hbaseGP` discharged by vacuity
-via the new lemma; conclusion is the full `(Simple → GP) ∧ bare` pair; named
-`case_III_realization` wrapper minted; build + lint clean (§1.55(c)).
-
-**Leaf 4 fully superseded** — `theorem_55_d3` now routes through `case_III_realization` and
-`theorem_55_generic` with `hbaseGP` vacuously eliminated; `hcontractGP` wired via 6.3-vs-6.5
-dispatch; remaining three bare callbacks (`hbase`/`hsplit`/`hcontract`) ride as named hypotheses
-per §1.54(a).
-
-**All §1.48/§1.49 leaves AND the entire `hcand` discharge (W1–W10b) are landed** — the producer
-spine `case_III_hsplit_producer` (CaseI.lean; carries the open core as its `hcand` parameter) and
-the dispatch assembly `case_III_candidate_dispatch` that matches and discharges it. The discharge
-is the discriminator (`fin_cases u` over the §1.53 selector, KT eqs. (6.24)–(6.44)) dispatching to
-the three role-parametric arm closers (`case_III_arm_realization` M₁ / `_M2` / `_M3`), all fed off
-*one* W6b invocation (one redundancy, one GAP-6 consumption). Per-leaf proof technique:
-*Decisions made* + git history; exact signatures: design §1.51–§1.53. Build + lint + verify.sh
-clean throughout; axiom-clean ([propext, Classical.choice, Quot.sound]). GAP-6 rides as the
-quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
+**Closed.** Delivered, in order: G5 (predicate repair) → G4b-impl ((β) restate) → the §1.48/§1.49
+leaves (T1–T4 triangle floor, G4a/G0/G4c/G4d) → the producer spine + the full `hcand` discharge
+(W1–W10b, one W6b invocation feeding the three arm closers M₁/M₂/M₃) → Leaf 4 (`theorem_55_d3`)
+→ the §1.54 feed audit + §1.55 adjudications → L5a′–L5d′ (blueprint honesty repairs, vacuity
+discharge + `case_III_realization` wrapper, the 6.3-vs-6.5 dispatch,
+`rankHypothesis_deficiency_of_theorem_55_d3` + `reaim`) → L5e′ (the blueprint close:
+`thm:theorem-55-d3-instance` minted green; `lem:case-II-realization` / `lem:case-III` pinned to
+`case_III_realization` and flipped; GAP-6 red node `lem:case-III-nested-rank-lower` minted;
+`thm:theorem-55` stays red, re-summarized). All Lean axiom-clean
+([propext, Classical.choice, Quot.sound]); build + lint + verify.sh green throughout.
 
 ## Lemma checklist
 
@@ -121,58 +99,36 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   param dropped; `h65` param added. Build + lint clean. Done.
 - [x] **L5d′** — `rankHypothesis_deficiency_of_theorem_55_d3` + `reaim` micro-brick
   (CaseI.lean; §1.54(b)). Build + lint clean. Done.
-- [ ] **L5e′** — the blueprint close commit: instance node `thm:theorem-55-d3-instance`,
-  `lem:case-II-realization`/`lem:case-III` pins + flips, the GAP-6 red node
-  `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red; the carried bare family
-  presented per §1.55(b) (§1.54(c)).
+- [x] **L5e′** — the blueprint close commit: instance node `thm:theorem-55-d3-instance`
+  (pins `theorem_55_generic` + `theorem_55_d3` + the vacuity brick +
+  `rankHypothesis_deficiency_of_theorem_55_d3`), `lem:case-II-realization`/`lem:case-III`
+  both pinned to `case_III_realization` + flipped (§1.54(c)2 — the hand-off's
+  `hasGenericFullRankRealization_of_case_II_realization` name never existed), the GAP-6 red
+  node `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red (re-summarized, points at
+  the instance node); the carried bare family presented per §1.55(b). Phase-close surfaces
+  synced. Done.
 
 ## Blockers / open questions
 
-- **GAP 6 — ADJUDICATED (user, 2026-06-10): carry as explicit hypothesis (§1.50(b) option (ii)).**
-  The eq.-(6.22) rank lower bound at the `k'`-dof `G − v` is KT's nested IH (6.1), unreachable
-  from the 0-dof-only motive (verified against KT p. 684 + the Lean). The single reduced
-  inequality rides as the honestly-named `h…` crux: it enters at W5 (its one consumption site)
-  and rides up through W10 and Leaf 4/5, so **22h closes green-modulo this one hypothesis**. The
-  successor sub-phase implements the all-`k` motive restructure (§1.50(b) option (i), est.
-  ~10–17 commits) and discharges it with a small wiring commit. How the 0-dof narrowing happened:
-  DESIGN.md *Narrowing an induction motive requires an IH-application census*.
-- **GAP 3 — core LANDED + subsingleton extracted (W6a)** (`exists_shear_linearIndependent_pair`,
-  PanelLayer.lean): the inline bad-set bound is now the standalone
-  `setOf_not_shear_linearIndependent_subsingleton` (the existence lemma consumes it); W7 feeds it
-  to the W6f transfer as the `bad`-set (§1.51(b)/(h)).
-- **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites every
-  carrier-instantiating leaf (the producer body, the T3/T4 seeds). Keep reasoning over abstract
-  `F`; instantiate only at the seed. The §1.50 re-route helps: `F₀` and leaves A0/B are abstract /
-  graph-free.
-- **The §1.54 decisions — ADJUDICATED (user, 2026-06-11; canonical record §1.55 + `DESIGN.md`
-  *Statement faithfulness to the source*).** Decision 1: the bare motive is weaker than KT
-  (degenerately satisfiable) and **will be strengthened to KT's strength** — scheduled at the
-  all-`k` motive redesign in the successor sub-phase "22i" (one design moment for both
-  changes); in 22h the degenerate brick is cut and `hbase`/`hsplit`/`hcontract` ride as named
-  carries. Decision 2: route (B) — the 6.3-vs-6.5 dispatch lands here (L5c′), the 6.5 arm
-  defers to 22i behind the named `h65` carry. **22i scope** (recorded for the boundary):
-  all-`k` restructure + genuine-hinge conjunct + the Lemma-5.3 graph-level base + the
-  Lemma-6.2 non-simple branch + the 6.5 arm + the `h622`/`h65`/bare-family discharges; opens
-  with a single motive design pass; seed `notes/Phase22i.md` with the carries table
-  (§1.55(b)).
+None — the phase is closed. The five carries and their adjudications (GAP 6 / `h622`,
+user 2026-06-10, §1.50(b) option (ii); the §1.54 decisions / `h65` + the bare family,
+user 2026-06-11, §1.55 + `DESIGN.md` *Statement faithfulness to the source*) are recorded
+in §1.55(b) and tracked by the blueprint red nodes `lem:case-III-nested-rank-lower`,
+`lem:case-I-dispatch`, and `def:genuine-hinge-realization`.
 
 ## Hand-off / next phase
 
-**Smallest next forward commit — L5e′**: the blueprint close commit — add
-`thm:theorem-55-d3-instance` node (pins `rankHypothesis_deficiency_of_theorem_55_d3` and
-flips `\leanok`), flip `lem:case-II-realization` and `lem:case-III` to `\leanok` with their
-`\lean{...}` pins (`hasGenericFullRankRealization_of_case_II_realization` and
-`case_III_realization`), add GAP-6 node `lem:case-III-nested-rank-lower` (red, no `\leanok`),
-leave `thm:theorem-55` red; present the carried bare family per §1.55(b) (§1.54(c)). Phase
-close green-modulo {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)).
-
-After 22h closes: **the successor sub-phase 22i** ("the honest all-`k` Theorem 5.5" —
-scope in §1.55(a) and the *Blockers* entry; opens with a single motive design pass and the
-carries table in `notes/Phase22i.md`), which discharges all five carries and delivers the
-KT-strength Thm 5.5 → 5.6 → Cor 5.7 at `d=3`, unblocking Phases 24–26. Then **Phase 23** =
-general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own
-recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` alg-independence
-row to `notes/AlgebraicIndependence.md`.
+**Smallest next forward commit — open sub-phase 22i** ("the honest all-`k` Theorem 5.5"):
+create `notes/Phase22i.md` **seeded with the carries table** (carry / red node / Lean
+consumption site / discharge sub-plan — §1.55(b)'s structural fix for orphaned deferrals)
+and run the single **motive design pass** (a §1.56-style block in
+`notes/Phase22-realization-design.md`) pinning the all-`k` + genuine-hinge motive together.
+22i scope (§1.55(a)): the all-`k` restructure + the genuine-hinge conjunct + the Lemma-5.3
+graph-level base + the Lemma-6.2 non-simple branch + the Lemma-6.5 arm + the
+`h622`/`h65`/bare-family discharges — delivering the KT-strength Thm 5.5 → 5.6 → Cor 5.7 at
+`d=3`, unblocking Phases 24–26. Then **Phase 23** = general `d` (KT Lemma 6.13), scoped with
+the §1.33 (C) reuse map; open it with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3`
+Lean) and add the general-`d` alg-independence row to `notes/AlgebraicIndependence.md`.
 
 ## Decisions made during this phase
 
@@ -273,6 +229,12 @@ row to `notes/AlgebraicIndependence.md`.
   invocation, W8-pattern normalization, `fin_cases u` → W7/W8/W9c; M₁/M₂ rows via the W10a
   congruence. Friction promoted (§§ 45/46/38). Settled.
 
+- **L5e′ phase-close re-read catch — `lem:case-II-realization-placement` restated honest:** the
+  red node claimed the *full* `D(|V|−1)` family while the landed Lean (`case_II_placement_eq612`,
+  22c) and every live consumer treat it as the one-row-short `D(|V|−1)−1` brick; restated at
+  stratum-1 strength, pinned + flipped green. Also collapsed accreted status narration in the
+  case-iii candidate-completion intro and the genericity-and-count device intro ("deferred to
+  Phase 22b" rot).
 - **L5b′ vacuity discharge of `hbaseGP`:** `not_simple_of_isMinimalKDof_of_ncard_two` proves a
   simple minimal-`0`-dof graph on 2 vertices cannot exist (two-edge-connectivity gives ≥2 crossing
   edges; simplicity forces them equal — contradiction). Discharged in `theorem_55_generic`'s

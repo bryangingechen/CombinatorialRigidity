@@ -58,11 +58,14 @@ green through the body-hinge Tay–Whiteley theorem
 molecular-conjecture program, phases 17–22 build the extensor algebra, the
 panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
 induction, and the algebraic induction realizing that reduction at the
-rigidity-matrix rank; the algebraic induction's hardest case, Katoh–Tanigawa's
-**Case III** (`k=0`, no proper rigid subgraph), is now green at `d=3` through
-its exterior-algebra core. Work is in progress on the `d=3` realization
-assembly that flips Case III's two producer nodes green and proves the
-conjecture at `d=3` (then general `d`). The per-phase status table is on the
+rigidity-matrix rank. All three cases of the realization theorem (Theorem
+5.5) are now formalized at `d=3`, including the hardest, Katoh–Tanigawa's
+**Case III** (`k=0`, no proper rigid subgraph); the formalized instance
+holds modulo a small, explicitly tracked family of carried hypotheses —
+chiefly the nested use of the induction at every degree of freedom. The
+current frontier is discharging those carries by restating the induction
+at full Katoh–Tanigawa strength (all `k`, genuine hinges), then general
+`d`. The per-phase status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 

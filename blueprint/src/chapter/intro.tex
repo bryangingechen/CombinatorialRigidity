@@ -287,9 +287,14 @@ is fully formalized. Within the molecular-conjecture program
 panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
 induction (\cref{thm:minimal-kdof-reduction}, Theorem~4.9), and the
 algebraic induction realizing that reduction at the rigidity-matrix rank
-(\cref{sec:molecular-algebraic-induction}) are formalized through the
-exterior-algebra core of its hardest case, Katoh--Tanigawa's Case~III; the
-current frontier is the $d = 3$ realization assembly that completes Case~III
-at $d = 3$ and proves the conjecture there (then general~$d$). See
+(\cref{sec:molecular-algebraic-induction}) are formalized through all
+three cases of Theorem~5.5 at $d = 3$, including the hardest, Case~III:
+the formalized instance (\cref{thm:theorem-55-d3-instance}) holds modulo
+a small, explicitly tracked family of carried hypotheses --- chiefly the
+nested use of the induction at every degree of freedom and one
+vertex-removal case --- visible as the remaining red nodes of the
+dependency graph. The current frontier is discharging those carries by
+restating the induction at full Katoh--Tanigawa strength (all $k$,
+genuine hinges), then general~$d$. See
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}
 and the dependency graph for live, fine-grained status.

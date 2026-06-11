@@ -1,18 +1,20 @@
-\section{The algebraic induction: Theorem 5.5 base, Cases I \& II}
+\section{The algebraic induction: Theorem 5.5 and its three cases}
 \label{sec:molecular-algebraic-induction}
 
-This chapter is the \textbf{Phase~21} dep-graph: the opening of the
+This chapter is the dep-graph of the
 \emph{algebraic} half of Katoh--Tanigawa's proof of the molecular
-conjecture --- \cite[\S5, \S6.1--6.3]{katohTanigawa2011}, the fifth and
-final proof stratum. Where \cref{sec:molecular-induction} reduced every
+conjecture --- \cite[\S5, \S6]{katohTanigawa2011}, the fifth and
+final proof stratum (phases~21--26). Where \cref{sec:molecular-induction} reduced every
 minimal $0$-dof-graph to the two-vertex double edge by a combinatorial
 induction (Theorem~4.9, \cref{thm:minimal-kdof-reduction}), this chapter
 \emph{realizes} that reduction at the rigidity-matrix rank: it states
 Katoh--Tanigawa's Theorem~5.5 --- every minimal $k$-dof-graph $G$ with
 $|V| \ge 2$ has a panel-hinge realization $(G,p)$ with
 $\operatorname{rank} R(G,p) = D(|V|-1) - k$ --- and discharges its base
-case and the first two of its three inductive cases. The crux Case~III
-($k=0$, no proper rigid subgraph) is deferred to Phases~22--23.
+case and all three of its inductive cases at $d = 3$, including the crux
+Case~III ($k=0$, no proper rigid subgraph); the formalized $d = 3$ instance
+(\cref{thm:theorem-55-d3-instance}) holds modulo a named family of carried
+hypotheses, and general $d$ is Phase~23.
 Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar dimension,
 $\tilde G = (D-1)\cdot G$ is the multiplied graph of
 \cref{sec:body-hinge}, $R(G,p)$ is the panel-hinge rigidity matrix of
@@ -58,9 +60,7 @@ and the $V(G)$-relative count bridge (\cref{lem:relative-screw-split},
 that converts the device's absolute screw-count to the $V(G)$-relative motive
 are all green.
 
-A math-first feasibility pass against
-Katoh--Tanigawa~\cite[\S6.2--6.3]{katohTanigawa2011} placed the two
-realization \emph{producers} with the realization layer of Phases~22--23:
+The two realization \emph{producers} carry the geometric content:
 \begin{itemize}
   \item \emph{The Case~II producer (\cref{lem:case-II-realization}) is KT
         Case~III.} The project's $\mathtt{hsplit}$ branch is the $k=0$
@@ -70,27 +70,27 @@ realization \emph{producers} with the realization layer of Phases~22--23:
         at $q(ab)$, reproducing the $e_0$ row) yields only
         $\mathrm{rank}\,R(G,p_1) \ge (D-1) + D(|V|-2) = D(|V|-1)-1$ --- \emph{one
         row short} of full rank (KT p.~680). The missing row is the Case~III
-        redundant-edge row (Lemma~6.10/6.13). KT's Lemma~6.8 (where $+(D-1)$
-        suffices) is $k>0$ \emph{only}.
+        redundant-edge row (Lemma~6.10/6.13), built in
+        \cref{sec:molecular-algebraic-induction-caseIII}. KT's Lemma~6.8 (where
+        $+(D-1)$ suffices) is $k>0$ \emph{only}.
   \item \emph{The Case~I producer (\cref{lem:case-I-realization}) is full-rank
-        and tractable (KT~\S6.2), reaching full $D(|V|-1)$ with \emph{no}
+        (KT~\S6.2), reaching full $D(|V|-1)$ with \emph{no}
         shortfall.} It is KT eq.~(6.3)'s block-triangular rank-addition over a
         single common framework --- the rigid-block rows $E(H)$ $\sqcup$ the
         surviving-edge rows $E(G) \setminus E(H)$, made jointly independent by
         the exterior-column projection (KT's top-right $0$), fed to the device's
-        row-count closure. It is green-modulo its single residual analytic
-        obligation, KT Claim~6.4 (\cref{lem:claim-6-4}, the surviving block's
-        exterior-projected rank, eq.~(6.9)), deferred to Phase~22b; the
-        graph$\leftrightarrow$matroid bridge
-        \cref{lem:rigidContract-isMinimalKDof} (a Phase-20 carry-forward) is
-        green.
+        row-count closure, with KT Claim~6.4 (\cref{lem:claim-6-4}, the
+        surviving block's exterior-projected rank, eq.~(6.9)) as the analytic
+        input and the graph$\leftrightarrow$matroid bridge
+        \cref{lem:rigidContract-isMinimalKDof} on the combinatorial side.
 \end{itemize}
-The reusable green infra (the row sub-nodes N7b-0/1/2/3, the device-closure glue
+The reusable row infra (the row sub-nodes N7b-0/1/2/3, the device-closure glue
 \cref{lem:realization-of-independent-rows}, the count bridge) feeds those
-producers. The capstone \cref{thm:theorem-55} and the reconciliation
-\cref{prop:rigidity-matrix-prop11} therefore remain green-modulo-22--23 (awaiting
-the producers and the genericity-free $\mathtt{hub}$ partition brick); Case~III
-(\cref{lem:case-III}) is also Phases~22--23, where all three flip.
+producers. At $d = 3$ all three case producers are formalized and the instance
+\cref{thm:theorem-55-d3-instance} assembles them, modulo the named carried
+hypotheses recorded there; the general-$d$ capstone \cref{thm:theorem-55} and
+the full reconciliation \cref{prop:rigidity-matrix-prop11} stay red pending
+the all-$k$ motive restatement and Phase~23.
 
 \input{chapter/algebraic-induction/panel-layer.tex}
 \input{chapter/algebraic-induction/case-i.tex}

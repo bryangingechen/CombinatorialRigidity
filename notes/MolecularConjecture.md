@@ -700,7 +700,7 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–22g + 21a are complete; **Phase 22 (the realization layer) is sub-lettered** — opened
+Phases 17–22h + 21a are complete; **Phase 22 (the realization layer) is sub-lettered** — opened
 as a single Phase 22 on 2026-06-04, then split into **22a** (Case I realization, ✓;
 `notes/Phase22a.md`), **22b** (KT Claim 6.4, ✓ 2026-06-05; `notes/Phase22b.md`), **22c** (Case III
 at `d=3`, stratum 1 = the eq. (6.12) `+(D−1)` placement, ✓ stratum-1 2026-06-05;
@@ -709,19 +709,16 @@ at `d=3`, stratum 1 = the eq. (6.12) `+(D−1)` placement, ✓ stratum-1 2026-06
 2026-06-07; `notes/Phase22e.md`), **22f** (N3b, the point-join↔panel-meet duality leaf, ✓
 2026-06-07; `notes/Phase22f.md`), **22g** (the `d=3` assembly's design-program +
 leaf-infrastructure stratum, ✓ 2026-06-09; `notes/Phase22g.md`), and **22h** (the corrected `d=3`
-assembly — the banner flips, ◷ opened 2026-06-09; `notes/Phase22h.md`). Sub-lettering keeps the
-integer phase numbers 23–26 stable.
+assembly — Theorem 5.5 at `d=3`, ✓ 2026-06-11 green-modulo the named carry family;
+`notes/Phase22h.md`). Sub-lettering keeps the integer phase numbers 23–26 stable.
 
-**Current cut (◷ in progress): Phase 22h, the corrected `d=3` assembly** (opened 2026-06-09;
-`notes/Phase22h.md`). 22g pinned the existential Claim-6.12 crux architecture, landed the leaf
-infrastructure, and scoped the corrected remaining work (GAPs 1–5; signatures
-`notes/Phase22-realization-design.md` §1.48–§1.49). 22h builds it, in the §1.49(6) order: **G5**
-(the `IsProperRigidSubgraph` `2 ≤ |V(H)|` predicate repair — KT p. 659's `1 < |V′|`; the opening
-commit(s)) → **G4b-impl** (`minimal_kdof_reduction_full` + the `theorem_55_generic`
-`hsplit`/`hsplitGP` restate to the full-conditioned-IH (β) shape) → in parallel: G4a-i/ii + G0 ∥
-the `|V|=3` triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the (β)-shaped `hsplit` producer with
-the G4e `M₁/M₂/M₃` dispatch → the `theorem_55_generic (n:=2)(k:=2)` instance node → the
-`lem:case-II-realization`/`lem:case-III` flips + the Thm 5.5→5.6 push, unblocking Cor 5.7.
-Estimated 13–18 commits. The smallest next commit is **G5 part 1** (the predicate strengthening +
-the censused consumer re-proofs, design §1.49(0)). Then **general-`d`** (Lemma 6.13, reuse map in
-§1.33 (C)) is **Phase 23**.
+**Next cut: sub-phase 22i, "the honest all-`k` Theorem 5.5"** (not yet opened; open it per
+`notes/Phase22h.md` *Hand-off*). 22h closed with `thm:theorem-55-d3-instance` green modulo five
+named carried hypotheses — `h622` (the KT eq.-(6.22) nested-IH rank bound), `h65` (the KT
+Lemma-6.5 vertex-removal arm), and the bare-motive slots `hbase`/`hsplit`/`hcontract` — each
+tracked by a blueprint red node (`lem:case-III-nested-rank-lower`, `lem:case-I-dispatch`,
+`def:genuine-hinge-realization`). 22i discharges all five via the all-`k` + genuine-hinge motive
+redesign (`notes/Phase22-realization-design.md` §1.55(a); opens with a single motive design pass
+and a carries table seeded into `notes/Phase22i.md`), delivering the KT-strength
+Thm 5.5 → 5.6 → Cor 5.7 at `d=3` and unblocking Phases 24–26. Then **general-`d`** (Lemma 6.13,
+reuse map in §1.33 (C)) is **Phase 23**.

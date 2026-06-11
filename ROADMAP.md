@@ -124,7 +124,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ Complete (N3b discharged in 22f; see `notes/Phase22e.md`) |
 | 22f. N3b: point-join↔panel-meet duality (the exterior-algebra assembly completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` | ✓ Complete — discharged 22e's green-modulo-N3b (see `notes/Phase22f.md`) |
 | 22g. `d=3` realization assembly: design program + leaf infrastructure | `Molecular/AlgebraicInduction/` | ✓ Complete — banner flips moved to 22h (see `notes/Phase22g.md`) |
-| 22h. the corrected `d=3` assembly (G5 → G4 → the (β) producer → the `lem:case-II-realization`/`lem:case-III` flips) | `Molecular/{Induction,AlgebraicInduction}/` | ◷ In progress (see `notes/Phase22h.md`) |
+| 22h. the corrected `d=3` assembly (Theorem 5.5 at `d=3`, green-modulo the named carry family) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ Complete (closed 2026-06-11; see `notes/Phase22h.md`) |
+| 22i. the honest all-`k` Theorem 5.5 (discharges the five 22h carries) | (not yet opened) | ◷ Next — open per `notes/Phase22h.md` *Hand-off* |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -549,8 +550,8 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–22g (+ 21a/21b) complete; Phase 22h (the corrected
-`d=3` assembly) in progress; Phases 23–26 planned.** The
+**Status: Phases 17–22h (+ 21a/21b) complete; sub-phase 22i (the honest
+all-`k` Theorem 5.5) is next; Phases 23–26 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -904,36 +905,28 @@ no-rigid branch receives the full conditioned IH), the bounded good-`t`, the lan
 upgrade, and the `IsProperRigidSubgraph` single-vertex predicate repair (G5) — all handed to 22h
 with signatures in design §1.48–§1.49. Leaf ledger + decisions: `notes/Phase22g.md`.
 
-#### Phase 22h — the corrected `d=3` assembly (KT §6.4.1, §5.2) — ◷ In progress
+#### Phase 22h — the corrected `d=3` assembly (KT §6.4.1, §5.2) — ✓ Complete
 
-**Status (◷ in progress; opened 2026-06-09 at the 22g close; see `notes/Phase22h.md`).** Builds
-the corrected remaining-work picture Phase 22g's recon program scoped (GAPs 1–5; per-leaf
-signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.55) and takes the two
-producer nodes `lem:case-II-realization` / `lem:case-III` green at `d = 3`. Landed: **G5** (the
-`IsProperRigidSubgraph` predicate repair) → **G4b-impl** (the full-conditioned-IH (β) restate) →
-G4a-i/ii + G0 ∥ the triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the (β)-shaped `hsplit`
-producer spine (the candidate-placement core carried as the explicit `hcand` hypothesis) + the
-triple-LI bridge, the GAP-3 good-`t` core, and the Claim-6.12 → witness-meet glue. The `hcand`
-discharge follows design **§1.50** (the 2026-06-10 recon, superseding §1.49(5)'s arm route): the
-witness-normal discriminator restate → the KT-Lemma-5.2 **rank-transfer** assembly (certify the
-KT-(6.29) count at the `t = 0` hinge-level family, transfer along the shear by a one-variable
-minor polynomial) for the `M₁/M₂/M₃` arms → the dispatch assembly → **Leaf 4 partially landed**
-(`PanelHingeFramework.theorem_55_d3`, the `theorem_55_generic (k:=2)` instance with `hsplitGP`
-wired; its five other callbacks ride as hypotheses) → the **Leaf-5 feed audit** (design §1.54:
-all five feeds pinned or gap-recorded — surfacing that the bare motive `HasFullRankRealization`
-is weaker than KT's realization notion, and that the KT 6.3-vs-6.5 Case-I dispatch was never
-formalized; postmortem in `DESIGN.md` *Statement faithfulness to the source*) → the **§1.55
-adjudications** (user, 2026-06-11): the bare motive will be strengthened to KT's strength at
-the successor sub-phase's all-`k` motive redesign, and the Lemma-6.5 arm defers behind a named
-carry. **L5a′–L5d′ done** (blueprint honesty repairs, callback wiring, 6.3-vs-6.5 dispatch, and the
-`def = 0` stratum of the Thm 5.5→5.6 push — `rankHypothesis_deficiency_of_theorem_55_d3` +
-`reaim` micro-brick). Remaining: **L5e′** (blueprint close: banner flips +
-`thm:theorem-55-d3-instance` node). The phase closes **green-modulo the named carry family**
-{`h622` (GAP 6, the KT eq.-(6.22) nested-IH rank bound, user-adjudicated 2026-06-10), `h65`
-(the Lemma-6.5 arm), `hbase`/`hsplit`/`hcontract` (the bare-motive slots)} — all five
-discharged by the successor sub-phase **22i** ("the honest all-`k` Theorem 5.5", §1.55(a)),
-which delivers the KT-strength Thm 5.5 → 5.6 → Cor 5.7 at `d = 3`. Milestone: the molecular
-conjecture proved at `d = 3` (Phases 24–26 unblocked). General `d` (KT Lemma 6.13) is Phase 23.
+**Status (✓ complete, closed 2026-06-11; see `notes/Phase22h.md`).** Built the corrected
+remaining-work picture Phase 22g's recon scoped (GAPs 1–5; signatures canonical in
+`notes/Phase22-realization-design.md` §1.48–§1.55) and took the two producer nodes
+`lem:case-II-realization` / `lem:case-III` green at `d = 3`, both pinned to
+`PanelHingeFramework.case_III_realization`. Delivered: the predicate repair G5, the
+full-conditioned-IH (β) restate, the `|V|=3` triangle floor (T1–T4), the (β)-shaped `hsplit`
+producer with the full candidate-placement discharge (W1–W10b: the KT-Lemma-5.2 rank-transfer
+assembly for the `M₁/M₂/M₃` arms off one redundancy), the `theorem_55_d3` instance with the
+6.3-vs-6.5 dispatch and vacuity-discharged simple base, the `def = 0`/simple/spanning stratum of
+the Thm 5.5→5.6 push (`rankHypothesis_deficiency_of_theorem_55_d3`), and the blueprint close
+(`thm:theorem-55-d3-instance` green; `thm:theorem-55` stays red). **Closed green-modulo the named
+carry family** {`h622` (KT eq.-(6.22) nested-IH rank bound, red node
+`lem:case-III-nested-rank-lower`), `h65` (the Lemma-6.5 arm, red node `lem:case-I-dispatch`),
+`hbase`/`hsplit`/`hcontract` (the bare-motive slots, red node `def:genuine-hinge-realization`)} —
+user-adjudicated close shape (2026-06-10/11); all five discharged by the successor sub-phase
+**22i** ("the honest all-`k` Theorem 5.5", §1.55(a); open it per `notes/Phase22h.md` *Hand-off*),
+which delivers the KT-strength Thm 5.5 → 5.6 → Cor 5.7 at `d = 3` (Phases 24–26 unblocked).
+Postmortem of the two surfaced divergences (the weak bare motive; the unformalized 6.3-vs-6.5
+dispatch): `DESIGN.md` *Statement faithfulness to the source*. General `d` (KT Lemma 6.13) is
+Phase 23.
 
 ## Engineering conventions
 

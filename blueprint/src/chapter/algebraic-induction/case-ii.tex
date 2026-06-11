@@ -163,105 +163,55 @@
   Phase~21b).
 \end{proof}
 
-\begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
+\begin{lemma}[Case II realization at $k = 0$: the splitting-off producer; KT Lemmas 6.8, 6.10]
   \label{lem:case-II-realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
+  \leanok
   \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
-        lem:case-II-realization-placement, lem:case-III-candidate-row,
-        lem:case-III-claim612, lem:case-III-claim612-line-in-panel-union}
-  The realization motive of \cref{thm:theorem-55}
-  ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
-  $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
-  Let $G$ be a minimal $0$-dof-graph with a reducible degree-2 vertex $v$ and
-  splitting-off $G_v^{ab}$ (a smaller minimal $0$-dof-graph,
-  \cref{lem:reduction-step}), and let $G_v^{ab}$ carry a realization at its
-  target rank. Then $G$ carries a realization at rank $D(|V(G)|-1)$,
-  discharging the Case~II premise ($\mathtt{hsplit}$) of \cref{thm:theorem-55}.
-  This is the \emph{producer} counterpart to the Case~II accounting iff
-  \cref{lem:case-II}: where that iff takes the span-membership condition
-  $\mathtt{hspan}$ ($S a \in \operatorname{span} C(e_a)$,
-  $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
-  a hypothesis, this node must \emph{construct} the panel normal $n$ for the
-  re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
-  framework realizes its rank. \emph{Red --- this producer \textbf{is} KT Case~III
-  ($k = 0$), whose $d = 3$ algebra is now fully green, with the realization
-  assembly that wires it to the graph data the remaining deferred cut.} The
-  project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
-  split, so by KT Lemma~4.8(i) $G_v^{ab}$ is minimal $0$-dof and the realization
-  must reach \emph{full} rank $D(|V|-1)$. KT's actual construction (Lemma~6.8,
-  eq.~(6.12)) is a \emph{degenerate} placement: $p_1(va)=L\subset\Pi_q(a)$ a
-  $(d-2)$-hinge and \textbf{$p_1(vb)=q(ab)$} (the $vb$-hinge placed at the very
-  $e_0=ab$ hinge of $q$, so its row \emph{reproduces} the $e_0$ row of
-  $R(G_v^{ab},q)$); column ops make $R(G,p_1)$ block-triangular with
-  $R(G_v^{ab},q)$ a submatrix, giving $\mathrm{rank}\,R(G,p_1)\ge (D-1) +
-  D(|V|-2) = D(|V|-1)-1$ --- \emph{one row short}. For $k=0$ the missing row is
-  the Case~III redundant-edge row (KT Lemma~6.10/6.13), now constructed: the
-  candidate-completion
-  (\cref{lem:case-III-candidate-row}) turns 22d's redundant $ab$-row into the
-  missing $+1$, and the candidate it instantiates at is selected by Claim~6.12
-  (\cref{lem:case-III-claim612}, KT eqs.~(6.30)--(6.45)), whose point-join
-  $\leftrightarrow$ panel-meet duality leaf
-  \cref{lem:case-III-claim612-line-in-panel-union} (N3b) is now green.
-  What stays \emph{deferred} for this producer is the \emph{realization assembly}:
-  instantiating the graph-free candidate-completion at the actual $G$ to discharge
-  $\mathtt{hsplit}$ --- the deferred ``$d = 3$ assembly''. The eq.~(6.12) placement
-  reads off the inductive realization $(G_v^{ab}, q)$ the transversal $ab$-hinge
-  $L = \Pi_q(a) \cap \Pi_q(b)$, so $q$ must be \emph{nonparallel} (general position):
-  the producer routes through the generic motive's $\mathtt{hsplitGP}$ branch
-  (\cref{thm:theorem-55}, the ``nonparallel, if simple'' conjunct), consuming the
-  general-position split-off realization and projecting the bare rank for the
-  capstone --- exactly as the Case~I producer
-  (\cref{lem:case-I-realization}) consumes its legs' general-position realizations.
-  The reusable green row
-  infra (the device-closure glue \cref{lem:realization-of-independent-rows} and
-  the sub-nodes N7b-0/1/2/3) feeds it via the live route, the eq.~(6.12)
-  \emph{degenerate placement} \cref{lem:case-II-realization-placement}: the
-  $e_0$-row is recovered by \emph{reproducing} it --- $p_1(vb)=q(ab)$ places $v$'s
-  $b$-hinge at the very $e_0=ab$ hinge of $q$, so the $vb$-row equals the $e_0$-row
-  of $R(G_v^{ab},q)$ --- not by an impossible $e_0$-free block. Two earlier
-  dead-ends are \emph{off} this route, retained only for the audit trail: the
-  row-side $e_0$-recovery node N7b-4 (\cref{lem:case-II-placement-e0-recovery}),
-  which sought an $e_0$-free old block of full count that does not exist in
-  $G_v^{ab}$ (the $e_0$-free $G-v$ is not rigid); and the motion-side assembly
-  M1--M3 (\cref{lem:case-II-placement-motion-side-assembly}), which was \emph{not}
-  KT's argument --- it assumes a $G$-motion is constant on $V(G)\setminus\{v\}$,
-  which the non-rigid $G-v$ does not force. Full record:
-  \texttt{notes/Phase21b.md} \emph{Finding A/B}.
-  Against the relativized motive (\cref{def:rank-hypothesis}) the inductive
-  hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
-  vertices), so the producer is well-posed; it is the shallower sibling of the
-  Case~I producer (one re-inserted body, $+(D-1)$ rows, KT~(6.12)) rather than
-  a full splice. The producer needs
-  $v$'s reducible-degree-2 data --- the two incident edges $e_a, e_b$, their links
-  $G.\mathrm{IsLink}\,e_a\,v\,a$, $G.\mathrm{IsLink}\,e_b\,v\,b$, and the closure
-  that they are $v$'s only incident edges --- to re-attach $v$ in $G$. The
-  $\mathtt{hsplit}$ premise of \cref{thm:theorem-55} (and of
-  \cref{thm:minimal-kdof-reduction} it forwards) was strengthened to expose this
-  data (it was already in scope where \cref{thm:minimal-kdof-reduction} dispatches
-  $\mathtt{hsplit}$, via \cref{lem:reducible-vertex}), so the producer can consume
-  it; without it the producer is under-determined ($a, b$ alone do not name $v$'s
-  edges). (The assembly phase reshapes this interface once more: the
-  $\mathtt{hsplit}$/$\mathtt{hsplitGP}$ branches receive the no-proper-rigid-subgraph
-  hypothesis and the \emph{full conditioned induction hypothesis}, mirroring the
-  contraction branch --- KT's Lemma~6.10 receives hypothesis (6.1) and invokes
-  Lemma~4.6 itself --- so the producer chooses its own adjacent degree-2 pair,
-  realizes the $|V| = 3$ triangle floor directly, and dispatches the witness panel
-  across KT's three candidates, the third at the \emph{same} inductive seed
-  transported by the relabel of eqs.~(6.43)--(6.44).)
+        lem:case-II-realization-placement, lem:case-III-nested-rank-lower}
+  The realization motive of \cref{thm:theorem-55} is closed under splitting
+  off a reducible degree-2 vertex. The project's splitting-off premise
+  ($\mathtt{hsplit}$/$\mathtt{hsplitGP}$) is the $k = 0$ split, so this
+  producer \emph{is} KT Case~III: by Lemma~4.8(i) the splitting-off
+  $G_v^{ab}$ is again minimal $0$-dof (\cref{lem:reduction-step}) and the
+  realization must reach \emph{full} rank $D(|V|-1)$ --- one row beyond
+  what the $1$-extension placement supplies. KT's construction
+  (Lemma~6.8, eq.~(6.12)) is a \emph{degenerate} placement:
+  $p_1(va) = L \subset \Pi_q(a)$ a $(d-2)$-hinge and $p_1(vb) = q(ab)$
+  (the $vb$-hinge placed at the very $e_0 = ab$ hinge of the inductive
+  realization $q$, so its row \emph{reproduces} the $e_0$-row of
+  $R(G_v^{ab}, q)$); column operations make $R(G, p_1)$ block-triangular
+  with $R(G_v^{ab}, q)$ a submatrix, giving $\operatorname{rank} R(G, p_1)
+  \ge (D-1) + D(|V|-2) = D(|V|-1) - 1$, and the missing $+1$ is the
+  Case-III redundant-row argument. Reading the transversal $ab$-hinge
+  $L = \Pi_q(a) \cap \Pi_q(b)$ off $(G_v^{ab}, q)$ needs $q$ nonparallel,
+  so the producer consumes the \emph{general-position} inductive
+  realization through the conditioned motive's $\mathtt{hsplitGP}$ branch
+  and carries the eq.-(6.22) nested-IH bound
+  (\cref{lem:case-III-nested-rank-lower}, red). The formalized producer is
+  the same Lean theorem as the Case-III node; \cref{lem:case-III} states
+  it at the branch interface and carries the assembly. This node records
+  the eq.-(6.12) placement mechanism --- the producer counterpart to the
+  $k > 0$ accounting iff \cref{lem:case-II}, whose span-membership
+  hypothesis the constructed placement discharges. Two earlier dead-ends
+  are \emph{off} the live route, retained for the audit trail: the
+  row-side $e_0$-recovery node N7b-4
+  (\cref{lem:case-II-placement-e0-recovery}; an $e_0$-free old block of
+  full count does not exist --- the $e_0$-free $G - v$ is not rigid) and
+  the motion-side assembly M1--M3
+  (\cref{lem:case-II-placement-motion-side-assembly}; not KT's argument).
+  Full record: \texttt{notes/Phase21b.md} \emph{Finding A/B}.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:case-II-realization-placement,
-        lem:case-III-claim612-line-in-panel-union}
-  The eq.~(6.12) placement \cref{lem:case-II-realization-placement} supplies, from
-  the inductive realization of $G_v^{ab}$, a free normal assignment $q_0$ for $G$
-  together with a linearly independent family of $D(|V(G)|-1)$ panel-rows of
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ (the degenerate placement
-  $p_1(vb)=q(ab)$ making the $vb$-row reproduce the $e_0$-row, so the inductive
-  rows transport without an $e_0$-free block). The witnessed independent family is
-  fed at the \emph{fixed} candidate placement (the rank--nullity bound at the
-  candidate framework; the eq.~(6.12) seed is degenerate by construction, so no
-  genericity device runs there), yielding a bare full-rank realization of $G$; the
-  bare $\to$ generic upgrade (the final step of
-  \cref{lem:case-III-claim612-line-in-panel-union}) then re-realizes it at an
-  algebraically-independent seed, supplying the generic motive.
+  \leanok
+  \uses{lem:case-III, lem:case-II-realization-placement}
+  The producer is \cref{lem:case-III}: the eq.~(6.12) degenerate placement
+  (\cref{lem:case-II-realization-placement}) supplies the one-row-short
+  stratum, the redundant-row/candidate-completion/Claim-6.12 chain
+  supplies the missing row at one of KT's three candidate placements, and
+  the genericity device re-realizes the attained rank at a
+  general-position, algebraically-independent seed --- the conditioned
+  motive's general-position conjunct, whose bare half the reduction
+  projects.
 \end{proof}
 

@@ -55,11 +55,15 @@ nodes), `blueprint/CLAUDE.md` *Proof verbosity* (the crux-node carve-out), and
 `notes/MolecularConjecture.md`. The format, the sharpened inclusion criterion
 (KT-math, not project-side setup), and the `(a)/(b)/(c)` flavors are stable.
 **The write stage has now begun:** the first expositions landed at 22b-close (the
-`lem:claim-6-4` three-brick assembly) and 22d-close (the `lem:case-III-claim-6-11`
-Gap-2→3→1 chain, this commit). The write-late timing held up — both were written
-once the argument was `sorry`-free, so the clean account was stable. The
-remaining `pending` entries write at their own phase-close (Lemma 2.1 + Prop 1.1
-when Case III completes; Phase-20 forest-surgery on its next touch).
+`lem:claim-6-4` three-brick assembly), 22d-close (the `lem:case-III-claim-6-11`
+Gap-2→3→1 chain), and 22h-close (the triangle floor). The write-late timing held
+up — each was written once the argument was `sorry`-free, so the clean account was
+stable. The remaining `pending` entries write at their own phase-close; the
+Case-III assembly family (`lem:case-II-realization` eq.-(6.12), the one-row
+shortfall, p3/eq-(6.44)) is green-*modulo* the carried `h622`, so per the
+green-modulo rule it writes at **22i-close**, when the carries discharge and the
+assembly account is final (Lemma 2.1 + Prop 1.1 likewise; Phase-20 forest-surgery
+on its next touch).
 
 ## Format
 
@@ -437,8 +441,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   prose carry the existential form and the why-not-three-fixed dimension count). Pointer: KT
   p. 691, eq. (6.45); `notes/Phase22-realization-design.md` §1.38–§1.39; `notes/Phase22g.md`.
 - **`lem:case-III` `|V|=3` base — the `k=0` split recursion bottoms on a *direct* triangle
-  realization** — [pending] **(a)** (Phase 22g capture, §1.46–§1.48; writes at the
-  assembly phase's close with the T1–T4 leaves). **Stable insight:** the `d=3` Case-III induction
+  realization** — [done (`case-iii.tex` *The triangle floor*, 22h-close)] **(a)** (Phase 22g
+  capture, §1.46–§1.48). **Stable insight:** the `d=3` Case-III induction
   genuinely reaches the triangle (`|V|=3`), and there the split-off graph `G_v^{ab}` is the
   *non-simple* double-edge `K₂` (the surviving `ab`-edge plus the fresh `e₀`) — so the inductive
   motive's general-position conjunct ("nonparallel, *if simple*") is unavailable by any route, and
@@ -447,7 +451,9 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   3-panel cycle of Lemma 6.7(i) / the Lemma 5.4 family); the formalization must realize the
   triangle *directly* — third-edge/vertex-pin counting, a 3-body sibling of the two-body base
   case, a cyclically-consistent basis seed, then the bare→generic upgrade — rather than recurse.
-  Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
+  **Written** (22h-close): the *triangle floor* prose block in `case-iii.tex` (preceding
+  `lem:triangle-third-edge`) spells out why the floor exists and how the four leaves T1–T4
+  assemble. Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
   `notes/Phase22g.md`.
 
 ## Retroactive coverage

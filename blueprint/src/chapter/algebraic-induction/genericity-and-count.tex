@@ -18,21 +18,21 @@ of \cref{lem:cycle-realization}). It does \emph{not} build the realizations the
 induction consumes. Two things stand between the device and a realization
 producer: (i) the device must be \emph{applied} to a varying panel-coordinate
 family, which needs the row coordinatization
-\cref{lem:rows-polynomial-in-normals} (B0, now green) --- the prior phase only
-ever invoked the device on a constant family; and (ii) the device needs a
+\cref{lem:rows-polynomial-in-normals} (B0); and (ii) the device needs a
 \emph{seed} realization to lift. The device-to-motive closure itself --- lift a
 seed's witnessed independent rows to a generic realization rigid on $V(G)$ --- is
-the green glue \cref{lem:realization-of-independent-rows}, shared by both cases;
+the glue \cref{lem:realization-of-independent-rows}, shared by both cases;
 what remains in each is the \emph{placement}: the seed realization to feed it. For
-Case~I the producer (\cref{lem:case-I-realization}) is now green-modulo: KT
-eq.~(6.3)'s block-triangular rank-addition over one common framework supplies the
-$D(|V(G)|-1)$ independent rows directly, its single residual being KT Claim~6.4
-(\cref{lem:claim-6-4}, deferred to Phase~22b); for Case~II
+Case~I the producer (\cref{lem:case-I-realization}) is KT
+eq.~(6.3)'s block-triangular rank-addition over one common framework, supplying the
+$D(|V(G)|-1)$ independent rows directly with KT Claim~6.4
+(\cref{lem:claim-6-4}) as the surviving-block input; for Case~II
 the placement is the $1$-extension normal
-(\cref{lem:case-II-realization-placement}), still red. Nor
+(\cref{lem:case-II-realization-placement}). Nor
 does the device supply \cref{prop:rigidity-matrix-prop11}'s genericity-free
-upper bound $\mathtt{hub}$, a distinct Phase-19-partition obligation carried as
-an explicit hypothesis; the device underwrites only the $\mathtt{hgen}$ half.
+upper bound $\mathtt{hub}$, a distinct partition-machinery obligation
+(\cref{lem:trivial-motions-rank-bound}); the device underwrites only the
+$\mathtt{hgen}$ half.
 
 \begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
@@ -78,12 +78,11 @@ an explicit hypothesis; the device underwrites only the $\mathtt{hgen}$ half.
 
 \noindent The device thus discharges the genericity \emph{hypotheses} the
 accounting nodes carry, but not the realization-layer constructions that feed
-the induction. With the row coordinatization \cref{lem:rows-polynomial-in-normals}
-green and the Case~I producer (\cref{lem:case-I-realization}) now green-modulo KT
-Claim~6.4 (\cref{lem:claim-6-4}, deferred to Phase~22b), the still-red
-constructions are that residual Claim~6.4 and the Case~II $1$-extension
-realization (\cref{lem:case-II-realization}). The device is also consumed by the
-Case~III candidate-framework genericity of Phases~22--23.
+the induction --- those are the producer nodes
+(\cref{lem:case-I-realization}, \cref{lem:case-II-realization},
+\cref{lem:case-III}), each of which feeds a seed realization through the
+device. The device is also consumed by the Case~III candidate-framework
+genericity (\cref{sec:molecular-algebraic-induction-claim612}).
 
 \subsection{The \texorpdfstring{$V(G)$}{V(G)}-relative count (device output to relative motive)}
 \label{sec:molecular-algebraic-induction-relative}
@@ -217,94 +216,62 @@ anticipates.
   $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q$ (whose vertex set is $V(G)$).
 \end{proof}
 
-\begin{lemma}[Case II placement: the $1$-extension normal; KT (6.12)]
+\begin{lemma}[Case II placement: the $1$-extension normal, one row short; KT (6.12)]
   \label{lem:case-II-realization-placement}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement_eq612}
+  \leanok
   \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
         lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
-  The remaining geometric obligation of \cref{lem:case-II-realization}: from the
-  inductive realization of the splitting-off $G_v^{ab}$, construct a free normal
-  assignment $q_0$ for the parent graph $G$ --- in particular a panel normal $n$
-  for the re-inserted body $v$ --- together with a linearly independent family of
-  $D(|V(G)|-1)$ rigidity rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$.
-  Geometrically: re-insert $v$ joined to its two neighbours $a, b$ by the
-  \emph{degenerate} placement of KT eq.~(6.12) --- $p_1(va)=L\subset\Pi_q(a)$ a
-  $(d-2)$-hinge inside $a$'s panel and $p_1(vb)=q(ab)$ placing $v$'s $b$-hinge at
-  the very $e_0=ab$ hinge of the inductive realization $q$. The two new edges then
-  contribute $+(D-1)$ independent rows in $v$'s column block, and the $vb$-row
-  \emph{reproduces} the short-circuit edge $e_0=ab$'s row of $R(G_v^{ab},q)$, so
-  the inductive realization's rows transport onto $G$ through the common subgraph
-  $G - v$ without an $e_0$-free old block: the edge substitution $G_v^{ab}$ adds
-  $e_0$ but deletes $v$'s edges, and the deleted $e_0$ constraint is recovered as
-  the reproduced $vb$-row, not as a free transport. The two blocks witness the
-  full target count $D(|V(G)|-1)$. This is the shallower parallel of the Case~I
-  splice placement (one re-inserted body, $+(D-1)$ rows). \emph{Red}
-  (realization layer, Phase~22c stratum~1): the witnessed-independent-row
-  construction across the edge substitution is the genuine content; once green it
-  feeds the glue \cref{lem:realization-of-independent-rows}.
-
-  \medskip\noindent\emph{Decomposition (realization-layer plan, eq.~(6.12)
-  degenerate-placement route; Phase~22c stratum~1).} Per the hand-off discipline
-  for a genuinely-geometric node, this placement breaks into the green N7b
-  sub-nodes plus a closing assembly, mirroring the Case~I splice placement's
-  block-triangular split. The seed family $s$ partitions into the \emph{new-edge
-  block} (the two hinges re-attaching $v$) and the \emph{old block} (the inductive
-  realization's rows, threaded onto $G$ through the common subgraph $G - v$); the
-  count is $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$.
-  \begin{enumerate}
-    \item \cref{lem:case-II-placement-new-rows} (N7b-1, green): choose the normal $n$
-      for $v$ so that $v$'s two new hinges supply $D-1$ linearly independent panel rows.
-    \item \cref{lem:case-II-placement-old-rows-extract} (N7b-0, green): \emph{produce}
-      the old block --- extract $D(|V(G)|-2)$ independent panel rows from the inductive
-      realization's rigidity on $V(G_v^{ab})$ (the rank-equals-codimension forward
-      direction, the converse of \cref{lem:isInfRigidOn-of-relative-count}).
-    \item \cref{lem:case-II-placement-old-rows} (N7b-2, green): transport that old
-      block onto $G$ through the common subgraph $G - v$. \emph{This is where the
-      eq.~(6.12) degeneracy enters:} the per-row match $\mathrm{hrow}$ that licenses
-      the transport is exactly the row reproduction $p_1(vb)=q(ab)$ --- the $e_0=ab$
-      row of $R(G_v^{ab},q)$ equals the $vb$-row of $R(G,p_1)$, so the full
-      $D(|V(G)|-2)$ old count transports (no $e_0$-free sub-selection is needed; the
-      $e_0$-row is carried by the reproduced $vb$-row, recovered jointly with the
-      new block in step~4).
-    \item \cref{lem:case-II-placement-block-independent} (N7b-3, green): the two blocks
-      are jointly independent (the new-edge rows live in the $v$-column block, the
-      old rows in its complement; pin-a-body Lemma~5.1,
-      \cref{lem:rank-delete-vertex}, makes the union block-triangular --- this is the
-      Lean form of KT's eq.~(6.16) column operations).
-  \end{enumerate}
-  The genuine content is the eq.~(6.12) degeneracy itself: that the $vb$-row of
-  $R(G,p_1)$ reproduces the $e_0$-row of $R(G_v^{ab},q)$ (step~3's $\mathrm{hrow}$),
-  the single new placement obligation of stratum~1, fed to the green N7b-0/1/2/3
-  bricks. The remaining row-side $e_0$-recovery node N7b-4
-  (\cref{lem:case-II-placement-e0-recovery}) and the motion-side assembly M1--M3
-  (\cref{lem:case-II-placement-motion-side-assembly}) are two earlier dead-ends,
-  \emph{off} the live route and retained only for the audit trail; see ``The
-  superseded row-side and motion-side dead-ends'' below. The green N7b-0/1/2/3
-  sub-nodes + glue N7a are reused by Case~I.
+  The eq.-(6.12) placement brick of \cref{lem:case-II-realization}: from the
+  inductive realization of the splitting-off $G_v^{ab}$ at a seed $q$ (rigid on
+  $V(G_v^{ab})$, transversal hinges), construct a free normal assignment $q_0$
+  for the parent graph $G$ --- placing the re-inserted body $v$'s panel normal at
+  the \emph{shear} $n_a + t\,n_b$, $t \ne 0$ --- together with a linearly
+  independent family of $D(|V(G)|-1) - 1$ rigidity rows of
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$, \emph{one row short} of the
+  $k = 0$ full target $D(|V(G)|-1)$; the missing $+1$ is the Case-III
+  redundant-row content (\cref{lem:case-III-claim-6-11},
+  \cref{lem:case-III-candidate-row}). Geometrically this is the
+  \emph{degenerate} placement of KT eq.~(6.12): the shear identity makes $v$'s
+  $b$-hinge \emph{reproduce} the $e_0 = ab$ hinge of the inductive realization
+  (the $vb$-row equals the $e_0$-row of $R(G_v^{ab}, q)$), while $t \ne 0$
+  keeps $v$'s $a$-hinge a nondegenerate line $L \subset \Pi_q(a)$. So the
+  inductive rows transport onto $G$ through the common subgraph $G - v$ without
+  an $e_0$-free old block --- the deleted $e_0$ constraint is recovered as the
+  reproduced $vb$-row, not as a free transport. This is the shallower parallel
+  of the Case~I splice placement (one re-inserted body, $+(D-1)$ rows). The two
+  earlier dead-ends N7b-4 (\cref{lem:case-II-placement-e0-recovery}) and M1--M3
+  (\cref{lem:case-II-placement-motion-side-assembly}) are \emph{off} the live
+  route, retained only for the audit trail; see ``The superseded row-side and
+  motion-side dead-ends'' below.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:case-II, lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
   Place the degenerate $p_1$ of KT eq.~(6.12): take $q_0$ to agree with the
-  inductive realization's normals on $V(G)\setminus\{v\} = V(G_v^{ab})$, assign
-  $v$ the general-position normal $n$ of \cref{lem:case-II-placement-new-rows}, and
-  set $v$'s $b$-hinge to $q(ab)$. Let $s$ be the union of the new-edge block
-  (\cref{lem:case-II-placement-new-rows}, $D-1$ rows) and the old block
-  (\cref{lem:case-II-placement-old-rows-extract,lem:case-II-placement-old-rows},
-  $D(|V(G)|-2)$ rows transported from the inductive realization through the common
-  subgraph $G - v$); \cref{lem:case-II-placement-block-independent} makes the union
-  independent (pin-a-body, KT eq.~(6.16)), and the count is $D(|V(G)|-1)$. The
-  genuine content is the edge substitution: $s$ is \emph{not} a free transport of
-  $G_v^{ab}$'s rows (the short-circuit $e_0$ is deleted in $G$, $v$'s two edges
-  added), so the old block is read through $G - v$ ($\mathrm{removeVertex}$), not
-  along an inclusion $G_v^{ab}\le G$, and the deleted $e_0$-row's constraint is
-  recovered as the reproduced $vb$-row ($p_1(vb)=q(ab)$ --- the per-row match
-  $\mathrm{hrow}$ of \cref{lem:case-II-placement-old-rows}). See
-  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
+  inductive realization's normals on $V(G)\setminus\{v\} = V(G_v^{ab})$ and
+  assign $v$ the sheared normal $n_a + t\,n_b$ ($t \ne 0$); overriding only the
+  fresh body $v$ leaves the inductive block untouched, so the IH rigidity
+  transports to $q_0$. The family is the union of the \emph{new-edge block} ---
+  the $D-1$ panel rows of $v$'s $b$-edge, independent through $v$'s screw
+  column (\cref{lem:case-II-placement-new-rows}) --- and the \emph{old block}
+  --- $D(|V(G)|-2)$ independent panel rows extracted from the inductive
+  realization's rigidity (\cref{lem:case-II-placement-old-rows-extract}) and
+  transported onto $G$ through the common subgraph $G - v$
+  (\cref{lem:case-II-placement-old-rows}; the per-row match is exactly the
+  $vb$-row reproduction, so the full old count transports with no $e_0$-free
+  sub-selection). The pin-a-body column split
+  (\cref{lem:case-II-placement-block-independent}, the Lean form of KT's
+  eq.~(6.16) column operations) makes the union independent: the old rows
+  vanish on $v$'s column, the new rows read it. The count is
+  $(D-1) + D(|V(G)|-2) = D(|V(G)|-1) - 1$. See
+  \cite[\S6.3, \S6.4.1]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
 \end{proof}
 
 \begin{lemma}[N7b-1: a re-inserted body's transversal hinge gives $D-1$ independent panel rows]
