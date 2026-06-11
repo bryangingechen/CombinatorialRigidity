@@ -95,10 +95,15 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**Smallest next forward commit: L1 combinatorial bricks** (§1.57(h)) — the `|V| ≤ 2`
-trichotomy; cut-edge decomposition (KT 3.6); `TwoEdgeConnected` predicate (V2);
-`rigidContract_isMinimalKDof` all-`k` (KT 3.5, V4); `exists_degree_eq_two` 2EC-restate
-(KT 4.6, V3); KT 4.8 (`G_v^{ab}` minimal `(k−1)`-dof). L0 is fully complete.
+**Smallest next forward commit: the L1 signature pin** — a §1.58 design block in
+`notes/Phase22-realization-design.md` (each layer opens with its own pin, per the layer-plan
+header): resolve V2 (the `TwoEdgeConnected` predicate form, against the landed
+`crossingEdges` machinery), V3 (`exists_degree_le_two` dof-agnosticity), V4
+(`rigidContract_isMinimalKDof` all-`k` generalization shape), and fix exact statements +
+placements for the L1 bricks — the `|V| ≤ 2` trichotomy, the cut-edge decomposition
+(KT 3.6 `k = k₁ + k₂ + 1` + 3.3 sides), the `exists_degree_eq_two` 2EC-restate (KT 4.6),
+and KT 4.8 (`G_v^{ab}` minimal `(k−1)`-dof at `k > 0`). Then the L1 build commits. L0 is
+fully complete.
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
 `d = 3` Lean, §1.33 (C) reuse map) and adds the general-`d` row to
