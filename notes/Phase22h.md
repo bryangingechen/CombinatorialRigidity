@@ -15,9 +15,14 @@ don't duplicate.**
 
 ## Current state
 
-**Next concrete step: L5c′** — the `hcontractGP` dispatch, route (B) (§1.55(c)): `by_cases`
-on simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor; negative → the
-named `h65` carry.
+**Next concrete step: L5d′** — the Thm 5.5→5.6 push, `def = 0`/simple/spanning stratum
+(`rankHypothesis_deficiency_of_theorem_55_d3` + the off-edge selector re-aim micro-brick;
+§1.54(b)).
+
+**L5c′ landed** — the `hcontractGP` dispatch in `theorem_55_d3` (CaseI.lean): `by_cases` on
+`∃ H r, H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple`; positive →
+`case_I_realization (by omega) G hG hH hr hH.2.1 hSimple hcSimple hIH` (the 6.3 arm); negative
+→ `h65` carry. `hcontractGP` parameter dropped; `h65` carry added. Build + lint clean.
 
 **L5b′ landed** — `not_simple_of_isMinimalKDof_of_ncard_two` (ReducibleVertex.lean) + the
 `theorem_55_d3` re-shape (ReducibleVertex.lean + CaseI.lean): `hbaseGP` discharged by vacuity
@@ -25,8 +30,9 @@ via the new lemma; conclusion is the full `(Simple → GP) ∧ bare` pair; named
 `case_III_realization` wrapper minted; build + lint clean (§1.55(c)).
 
 **Leaf 4 fully superseded** — `theorem_55_d3` now routes through `case_III_realization` and
-`theorem_55_generic` with `hbaseGP` vacuously eliminated; the remaining four callbacks
-(`hbase`/`hsplit`/`hcontract`/`hcontractGP`) ride as named hypotheses per §1.54(a).
+`theorem_55_generic` with `hbaseGP` vacuously eliminated; `hcontractGP` wired via 6.3-vs-6.5
+dispatch; remaining three bare callbacks (`hbase`/`hsplit`/`hcontract`) ride as named hypotheses
+per §1.54(a).
 
 **All §1.48/§1.49 leaves AND the entire `hcand` discharge (W1–W10b) are landed** — the producer
 spine `case_III_hsplit_producer` (CaseI.lean; carries the open core as its `hcand` parameter) and
@@ -103,9 +109,9 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
 - [x] **L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) + the `theorem_55_d3`
   re-shape: `hbaseGP` discharged by vacuity; conclusion restated to `(Simple → GP) ∧ bare`;
   `case_III_realization` wrapper minted (§1.55(c)). Build + lint clean. Done.
-- [ ] **L5c′** — the `hcontractGP` dispatch, route (B) (§1.55(c)): `by_cases` on
-  simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor; negative → the
-  named `h65` carry.
+- [x] **L5c′** — `hcontractGP` dispatch in `theorem_55_d3`: `by_cases` on simple-contraction
+  existence; positive → `case_I_realization` (6.3 arm); negative → `h65` carry. `hcontractGP`
+  param dropped; `h65` param added. Build + lint clean. Done.
 - [ ] **L5d′** — the Thm 5.5→5.6 push, `def = 0`/simple/spanning stratum
   (`rankHypothesis_deficiency_of_theorem_55_d3` + the off-edge selector re-aim micro-brick;
   §1.54(b)). The `def > 0` push is post-22h (the 22i all-`k` successor).
@@ -146,9 +152,11 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
 
 ## Hand-off / next phase
 
-**Smallest next forward commit — L5c′**: the `hcontractGP` dispatch, route (B) (§1.55(c)):
-`by_cases` on simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor;
-negative → the named `h65` carry. Build order L5c′ → L5d′ → L5e′. Phase close green-modulo
+**Smallest next forward commit — L5d′**: the Thm 5.5→5.6 push, `def = 0`/simple/spanning
+stratum: (1) off-edge selector re-aim micro-brick (rebuild `Q′ := ⟨G, Q.normal, ends′⟩` with
+`ends′ = Q.ends` on links and a constant distinct pair off-link, so `prop11`'s all-`β` `hC`
+feeds); (2) `rankHypothesis_deficiency_of_theorem_55_d3` using the GP conjunct of
+`case_III_realization` (§1.54(b)). Build order L5d′ → L5e′. Phase close green-modulo
 {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)). **No `sorry`** at any step.
 
 After 22h closes: **the successor sub-phase 22i** ("the honest all-`k` Theorem 5.5" —
@@ -265,13 +273,18 @@ row to `notes/AlgebraicIndependence.md`.
   `case_III_realization` extracts the inline `hsplitGP` wiring from `theorem_55_d3` into a named
   declaration (§1.55(c)). Conclusion restated from bare `.2`-projection to the full conditioned
   pair `(Simple → GP) ∧ bare`; `hbase`/`hsplit`/`hcontract`/`hcontractGP` still ride as carries.
+- **L5c′ dispatch shape:** `hcontractGP` in `theorem_55_d3` wired via `by_cases hd : ∃ H r,
+  H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple`; positive →
+  `case_I_realization (by omega) G hG hH hr hH.2.1 hSimple hcSimple hIH`; negative →
+  `h65 G hG hV3 hrig hSimple (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩) hIH`. `h65`
+  type carries the "all-rigid-subgraph-contractions-are-non-simple" antecedent. No friction.
 - **Leaf-5 feed audit (§1.54, docs-only; supersedes the §1.41(5) "six green/green-modulo branch
   args" expectation).** Verdicts: no graph-level base layer exists (Pinning.lean's
   `theorem_55_base` is framework-level); `hbaseGP` vacuous (parallel-pair cut bound);
   `HasFullRankRealization` is degenerately satisfiable for every connected `0`-dof graph (zero
   extensors weld — adjudicated: strengthen at 22i, carry the bare slots; §1.55);
   `hcontractGP` needs the unformalized KT 6.3-vs-6.5 dispatch (`hcSimple` is a *case
-  hypothesis*; the 6.5 arm = Claim 6.6 + Π°-placement, bounded, ~4–6 commits); the Thm
+  hypothesis`; dispatch lands L5c′; the 6.5 arm defers to 22i behind `h65`); the Thm
   5.5→5.6 push at 22h-close is the `def = 0`/simple/spanning stratum (full Thm 5.6 = the
   all-`k` GAP-6 successor). Exact wiring/signatures + the blueprint plan: §1.54(a)–(d).
 

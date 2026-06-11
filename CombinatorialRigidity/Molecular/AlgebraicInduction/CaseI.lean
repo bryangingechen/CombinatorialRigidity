@@ -6779,17 +6779,23 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
 
 /-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,`h65`,`hbase`,
 `hsplit`,`hcontract`}** (`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the
-(β)-shape reduction; Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1, Phase 22h L5b′).
+(β)-shape reduction; Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1, Phase 22h L5c′).
 
 Instantiates `theorem_55_generic` at `k = 2` with the `hsplitGP` slot wired to
 `case_III_realization`; `hbaseGP` is discharged via `not_simple_of_isMinimalKDof_of_ncard_two`
 (a simple two-vertex minimal-`0`-dof graph does not exist, KT p. 671 case (iii)).
 
+The `hcontractGP` slot is discharged by the **KT 6.3-vs-6.5 dispatch** (Phase 22h L5c′):
+by classical cases on whether some proper rigid subgraph `H` of `G` has a simple contraction
+`G.rigidContract H r` (KT Lemma 6.3 / Lemma 6.5 dichotomy at p. 673).
+- **Positive (KT Lemma 6.3 arm):** extract `(H, r, hcSimple)` and apply `case_I_realization`.
+- **Negative (KT Lemma 6.5 arm, unformalized):** carried as the explicit `h65` hypothesis
+  (the 6.5-stratum instance; adjudicated carry; Lemma-6.5 arm lands in successor sub-phase 22i).
+
 Conclusion is the **full conditioned pair** `(G.Simple → GP) ∧ bare` — all three bare
 callbacks (`hbase`, `hsplit`, `hcontract`) ride as named hypotheses (adjudicated carries;
-discharged at the 22i all-`k` restructure per `notes/Phase22h.md` *Blockers*). The
-`hcontractGP` callback (KT 6.3-vs-6.5 dispatch + Lemma-6.5 arm) is an explicit hypothesis
-`h65`-carry added at L5c′. GAP 6 rides as `h622`. -/
+discharged at the 22i all-`k` restructure per `notes/Phase22h.md` *Blockers*). GAP 6 rides
+as `h622`. -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
@@ -6805,13 +6811,6 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
         V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization 2 G') →
       PanelHingeFramework.HasFullRankRealization 2 G)
-    (hcontractGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G') ∧
-          PanelHingeFramework.HasFullRankRealization 2 G') →
-      PanelHingeFramework.HasGenericFullRankRealization 2 G)
     -- GAP 6 (adjudicated carry, §1.50(b) option (ii)): the eq.-(6.22) nested-IH rank bound,
     -- quantified over the graph, chain vertices/edges, and the IH-suppliable (ends, q) data.
     -- Instantiated at each `(G, v, a, b, e₀)` invocation inside the `hsplitGP` wiring.
@@ -6824,6 +6823,20 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
         ≤ Module.finrank ℝ (Submodule.span ℝ
             (PanelHingeFramework.ofNormals (G.removeVertex v) ends
               q).toBodyHinge.rigidityRows))
+    -- GAP 5 / h65 (adjudicated carry): KT Lemma 6.5 arm — every proper rigid subgraph of `G`
+    -- has non-simple contraction; discharged in successor sub-phase 22i alongside the all-`k`
+    -- motive restructure.  Quantified form: for each `G` in the induction, given `G.Simple` and
+    -- the evidence that every `IsProperRigidSubgraph`'s contraction is non-simple, produce the
+    -- generic realization.  (`\uses{lem:case-I-dispatch}` in the blueprint instance node.)
+    (h65 : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
+      (∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
+          ¬ (G.rigidContract H r).Simple) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G') ∧
+          PanelHingeFramework.HasFullRankRealization 2 G') →
+      PanelHingeFramework.HasGenericFullRankRealization 2 G)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G) ∧
       PanelHingeFramework.HasFullRankRealization 2 G :=
@@ -6835,6 +6848,19 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
     hsplit
     (fun G hG hV3 hnoRigid hSimple hIH =>
       PanelHingeFramework.case_III_realization hD hfresh h622 G hG hV3 hnoRigid hSimple hIH)
-    hcontract hcontractGP G hG hV
+    hcontract
+    -- `hcontractGP`: KT 6.3-vs-6.5 dispatch (L5c′). Classical case split on whether some
+    -- proper rigid subgraph has a simple contraction.
+    (fun G hG hV3 hrig hSimple hIH => by
+      by_cases hd : ∃ H : Graph α β, ∃ r : α,
+          H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple
+      · -- KT Lemma 6.3 arm: `(G.rigidContract H r).Simple`; apply `case_I_realization`.
+        obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
+        exact PanelHingeFramework.case_I_realization (by omega) G hG hH hr hH.2.1 hSimple
+          hcSimple hIH
+      · -- KT Lemma 6.5 arm (unformalized): carry `h65`.
+        exact h65 G hG hV3 hrig hSimple
+          (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩) hIH)
+    G hG hV
 
 end CombinatorialRigidity.Molecular
