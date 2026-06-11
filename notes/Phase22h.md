@@ -29,25 +29,28 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step:** W5 — the redundancy-data packaging at the unpacked IH framework (§1.50(b)/(f)):
-`exists_redundant_panelRow_ab_lam` + W2's `finrank_span_rigidityRows_of_rigidOn` + the (b)
-`k''`-reduction, **taking the GAP-6 inequality as an explicit hypothesis** (adjudicated carry —
-Blockers). Output the redundancy data `r`/`lam`/`i*`/`r̂ ≠ 0`/`hingeRow a b r̂ = wGv ∈ span(Gv-rows)`.
-W4 (leaf A0, the restriction-bottom block-triangular augment) is **landed** —
-`BodyHingeFramework.linearIndependent_sum_restriction_block` (RigidityMatrix.lean): the transposed
-sibling of `linearIndependent_sum_pinned_block` — `Sum.elim top bot` LI when the `top` rows are
-pure-`v` (`htopvanish`, vanish on every `S v = 0`) with pinned-independent `v`-forms (`htoppin`) and
-the `bot` rows' restrictions to `V∖{v}` are independent (`hbotrestrict`, composites with the off-`v`
-projection `P_v = id − single v ∘ proj v`). Proof: evaluate a vanishing combination at `P_v S` to kill
-`top`, recover the `bot` coefficients by `hbotrestrict`; pin to `v`'s column to recover the `top`
-coefficients by `htoppin`. Graph-free, no §38 trap; no `\lean` pin (internal infra). W3/W2/W1 landed
-before it.
+**Next concrete step:** W6 — the M₁ `t = 0` certification (leaf A1 at `F₀`, §1.50(c)/(f)): assemble
+`g 0` independent at the `t = 0` hinge-level family `F₀` from W5's redundancy data, the witness gate
+`r̂(C(L)) ≠ 0`, W4 (leaf A0), and the landed columnOp/criterion bricks; the bottom is the chosen
+`D(m−1)` independent split-rows-minus-`(ab)i*` carried as `F₀`-rows. W7 (the M₁ closer A2) follows.
+
+**W5 (the redundancy-data packaging) is landed** — `BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn`
+(CaseI.lean): the consumer-level form of `exists_redundant_panelRow_ab_lam` whose two `finrank`
+inputs ride at their natural shape. `h618` is replaced by the realization motive `hrig`
+(`Gab` rigid on `Gab.vertexSet`, `m := V(Gab).ncard`) → W2 `finrank_span_rigidityRows_of_rigidOn`;
+`h622` holds **by construction** via `k' := D(m−1) − finrank(span R(Gv)-rows)` once the free upper
+bound `finrank(span R(Gv)-rows) ≤ D(m−1)` (from `span_rigidityRows_eq_sup_span_panelRow_edge` +
+`finrank_mono le_sup_left`); the remaining `hk' : k' ≤ D−2` is **the carried GAP-6 lower bound**
+`h622lb : D(m−1) − (D−2) ≤ finrank(span R(Gv)-rows)` (the adjudicated explicit hypothesis — Blockers),
+rearranged by `omega`. Output = `_ab_lam`'s data verbatim (`r`/`lam`/`i*`/`lam i* = 1`/`r̂ ∈ span
+R(Gv)-rows`/`r̂ ≠ 0`). Build + lint + axiom-clean; no `\lean` pin (internal infra). W4/W3/W2/W1
+landed before it.
 
 **Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
 → ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → ~~W4 leaf A0 (restriction-bottom
-augment)~~ (done) → W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ →
-W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 →
-phase close, **green-modulo-GAP-6**.
+augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hypothesis** `h622lb`) →
+W6/W7 M₁ → W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 →
+Leaf 5 → phase close, **green-modulo-GAP-6**.
 
 ## Lemma checklist
 
@@ -100,9 +103,11 @@ phase close, **green-modulo-GAP-6**.
   one-variable rank transfer, graph-free), and **W4 leaf A0**
   (`linearIndependent_sum_restriction_block`, RigidityMatrix.lean — the restriction-bottom
   block-triangular augment, the transposed sibling of `linearIndependent_sum_pinned_block`;
-  graph-free). Remaining, as complete lemmas (no `sorry` on master),
-  per §1.50(f): W5 redundancy packaging (carries the GAP-6 inequality as the adjudicated explicit
-  hypothesis — Blockers) → W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
+  graph-free), and **W5 the redundancy-data packaging**
+  (`exists_redundant_panelRow_ab_lam_of_rigidOn`, CaseI.lean — the consumer-level
+  `exists_redundant_panelRow_ab_lam` with `h618` from `hrig`/W2 and `h622` by-construction; the
+  carried GAP-6 lower bound `h622lb` is its `hk'`). Remaining, as complete lemmas (no `sorry` on
+  master), per §1.50(f): W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
   `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
@@ -128,18 +133,21 @@ phase close, **green-modulo-GAP-6**.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W5, the redundancy-data packaging (§1.50(b)/(f)).** At the
-unpacked IH framework, combine `exists_redundant_panelRow_ab_lam` + W2's
-`finrank_span_rigidityRows_of_rigidOn` + the (b) `k''`-reduction (`k'' := D(m−1) − finrank (span
-Gv-rows)`, `Gv := G.removeVertex v`), **taking the GAP-6 inequality as an explicit hypothesis** (the
-adjudicated carry — Blockers; `screwDim k * (m−1) − (screwDim k − 2) ≤ finrank (span (ofNormals Gv
-…).rigidityRows)`). Output the redundancy data `r`/`lam`/`i*`/`r̂ ≠ 0`/`hingeRow a b r̂ = wGv ∈
-span(Gv-rows)` that W6 (the M₁ `t = 0` certification at `F₀`) consumes. GAP 6 is adjudicated (carry,
-not block), so nothing gates W5+. **No `sorry` placeholders** at any step (carry the GAP-6 inequality
-as a named `h…` hypothesis, never a `sorry`).
+**Smallest next forward commit — W6, the M₁ `t = 0` certification (leaf A1 at `F₀`, §1.50(c)/(f)).**
+Assemble `g 0` linearly independent at the `t = 0` hinge-level family `F₀` (KT's `p₁` as a
+`BodyHingeFramework`, hinge-primary) from: W5's redundancy data
+(`exists_redundant_panelRow_ab_lam_of_rigidOn`'s `r`/`lam`/`i*`/`r̂ ∈ span R(Gv)-rows`/`r̂ ≠ 0`),
+the witness gate `r̂(C(L)) ≠ 0` (the discriminator glue's output ∘
+`panelSupportExtensor_eq_complementIso_extensor`), W4 (leaf A0, the restriction-bottom augment), and
+the landed columnOp/criterion bricks. The bottom is the chosen `D(m−1)` independent
+split-rows-minus-`(ab)i*` carried as `F₀`-rows (`Ev`-rows verbatim; `(ab)ⱼ ↦ (vb)ⱼ`). Then W7 (the
+M₁ closer A2): A1 + W3 (leaf B) + the membership packaging + GAP-2 ⟹ `HasGenericFullRankRealization
+2 G`. The carried GAP-6 hypothesis `h622lb` rides through W6/W7 from W5. **No `sorry` placeholders**
+at any step (carry GAP-6 as a named `h…`, never a `sorry`).
 
-All four abstract/graph-free leaves (W1 discriminator, W2 `h618`, W3 leaf B, W4 leaf A0) are landed;
-W5 is the first leaf at the unpacked IH framework (where the GAP-6 hypothesis enters).
+All five leaves W1–W5 are landed: W1 discriminator, W2 `h618`, W3 leaf B, W4 leaf A0 (all
+abstract/graph-free), and W5 the redundancy-data packaging (the first leaf at the unpacked IH
+framework, where the GAP-6 hypothesis `h622lb` enters as an explicit carry).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -278,3 +286,12 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   ∑ (tᵢ.comp single)` step has no fused lemma (`LinearMap.sum_comp` doesn't exist) — done pointwise
   via `LinearMap.ext` + `LinearMap.congr_fun`, the same idiom the sibling's `hnew0` already uses
   (not new friction). No `\lean` pin (internal infra). Build/lint/axiom-clean.
+- **W5 redundancy packaging (`exists_redundant_panelRow_ab_lam_of_rigidOn`, CaseI.lean):** the
+  `_ab_lam` consumer wrapper whose two `finrank` inputs ride at their natural shape. `h618` ← `hrig`
+  (`Gab` rigid on `Gab.vertexSet`) via W2; the `Gab.vertexSet`-stated `hnev`/`hrig` bridge into W2's
+  `F.graph.vertexSet` form by the `Fab.graph = Gab := rfl` `ofNormals` graph defeq (the established
+  idiom, not new friction). `h622` is **by construction**: `k' := D(m−1) − fGv` makes `fGv = D(m−1)
+  − k'` hold by `omega` once the free upper bound `fGv ≤ D(m−1)` (from
+  `span_rigidityRows_eq_sup_span_panelRow_edge` + `finrank_mono le_sup_left`); then `hk' : k' ≤ D−2`
+  is the carried GAP-6 lower bound `h622lb` rearranged by `omega`. Clean three-step composition; no
+  `change`/`show`, no glue chains. No `\lean` pin (internal infra). Build/lint/axiom-clean.

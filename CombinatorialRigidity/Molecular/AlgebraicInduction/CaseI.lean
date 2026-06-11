@@ -3240,6 +3240,91 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_lam
   have hrhat : (∑ j, lam j • r j) = wGv := by rw [hlam_sum, hsum]; abel
   exact ⟨r, lam, i, hr, hrspan, hlam_i, hrhat ▸ hwGv, hlam_ne⟩
 
+/-- **W5 — the redundancy-data packaging at the unpacked IH framework** (`lem:case-III-claim612-r`
+infra, the `hcand`-discharge consumer-level redundancy extractor; Katoh–Tanigawa 2011 §6.4.1,
+eqs. (6.18), (6.22)–(6.25), Phase 22h §1.50(b)/(f)). The form of `exists_redundant_panelRow_ab_lam`
+the M₁/M₂/M₃ arms of the `hcand` discharge actually consume: the two `finrank` inputs of KT's
+redundant-`ab`-row argument are supplied at their *natural* shape rather than as raw equations.
+
+The eq.-(6.18) full-rank input `h618` is replaced by the realization-motive hypothesis `hrig`
+(`Gab` is infinitesimally rigid on its own vertex set, `m = |V(Gab)|`): the rigidity-row span then
+has dimension `D(m−1)` by the seed-rank bridge `finrank_span_rigidityRows_of_rigidOn` (W2, eq.
+(6.18)).
+
+The eq.-(6.22) input `h622` is replaced by the **lower bound** (KT's nested IH (6.1) at the
+`k'`-dof `G_v`) plus the *free* upper bound. Defining `k' := D(m−1) − finrank(span R(G_v)-rows)`
+makes `h622` (`finrank(span R(G_v)-rows) = D(m−1) − k'`) hold **by construction**, since the
+`G_v`-row span sits inside the `G_{ab}`-row span (`span_rigidityRows_eq_sup_span_panelRow_edge` +
+`finrank_mono`, the free upper bound `finrank(span R(G_v)-rows) ≤ D(m−1)`). The remaining hypothesis
+`hk'` (`k' ≤ D − 2`) is precisely KT's eq.-(6.22) lower bound, carried here as the explicit named
+crux `h622lb`:
+\[ D(m-1) - (D-2) \;\le\; \operatorname{finrank}(\operatorname{span} R(G_v, q)\text{-rows}). \]
+
+> **GAP 6 — adjudicated carry (user, 2026-06-10; Phase 22h Blockers).** `h622lb` is KT's nested
+> induction hypothesis (6.1) applied to the minimal `k'`-dof `G_v` (`k' ≤ D − 2` via
+> `splitOff_removeVertex_minimalKDof`), unreachable from the project's `0`-dof-only realization
+> motive. It rides as this explicit hypothesis up through the `hcand` discharge and the Leaf-4/5
+> wiring; 22h closes green-modulo this one inequality, discharged by a successor sub-phase that
+> restructures the induction to KT's all-`k` motive.
+
+The output is `exists_redundant_panelRow_ab_lam`'s redundancy data verbatim: the `(D − 1)`
+independent `ab`-rows `r`, the unit-normalized coefficients `lam` (`lam i^* = 1`, KT eq. (6.25)),
+the candidate vector `r̂ := ∑_j lam_j r_j` (KT eq. (6.27)) as a nonzero `G_v`-row member — the
+`r̂ ≠ 0`
+the Claim-6.12 disjunction needs and the `r̂ ∈ span R(G_v)-rows` the candidate-completion row
+operation consumes. -/
+theorem BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn
+    [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    (hnev : Gab.vertexSet.Nonempty)
+    (hrig : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.IsInfinitesimallyRigidOn
+      Gab.vertexSet)
+    (h622lb : screwDim k * (Gab.vertexSet.ncard - 1) - (screwDim k - 2)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)) :
+    ∃ (r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k)) (lam : Fin (screwDim k - 1) → ℝ)
+      (i : Fin (screwDim k - 1)),
+      LinearIndependent ℝ r ∧
+      Submodule.span ℝ (Set.range r) = Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, p.1, p.2))) ∧
+      lam i = 1 ∧
+      (∑ j, lam j • r j) ∈ Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∧
+      (∑ j, lam j • r j) ≠ 0 := by
+  set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
+  set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
+  set m := Gab.vertexSet.ncard with hm
+  -- Eq. (6.18): the rigid `Gab` framework has full rank `D(m − 1)` (W2, the seed-rank bridge). The
+  -- framework graph is `Gab` definitionally, so its vertex set is `Gab.vertexSet`.
+  have hgraph : Fab.graph = Gab := rfl
+  have h618 : Module.finrank ℝ (Submodule.span ℝ Fab.rigidityRows) = screwDim k * (m - 1) := by
+    have := Fab.finrank_span_rigidityRows_of_rigidOn (hgraph ▸ hnev) (hgraph ▸ hrig)
+    rwa [hgraph] at this
+  -- Eq. (6.22) by construction: set `k' := D(m − 1) − finrank(span R(G_v)-rows)`. The free upper
+  -- bound `finrank(span R(G_v)-rows) ≤ D(m − 1)` (the `G_v`-row span sits in the `G_{ab}`-row span)
+  -- makes the equation `finrank = D(m − 1) − k'` hold by omega.
+  set fGv := Module.finrank ℝ (Submodule.span ℝ Fv.rigidityRows) with hfGv
+  have hext : ∀ e, Fab.supportExtensor e = Fv.supportExtensor e := fun _ => rfl
+  have hrow : Submodule.span ℝ Fab.rigidityRows
+      = Submodule.span ℝ Fv.rigidityRows
+        ⊔ Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+            × Set.powersetCard (Fin (k + 2)) k => Fab.panelRow ends (e₀, p.1, p.2))) :=
+    Fab.span_rigidityRows_eq_sup_span_panelRow_edge Fv hext hne₀ he₀ hle hsplit
+  have hub : fGv ≤ screwDim k * (m - 1) := by
+    rw [hfGv, ← h618, hrow]; exact Submodule.finrank_mono le_sup_left
+  set k' := screwDim k * (m - 1) - fGv with hk'def
+  have h622 : fGv = screwDim k * (m - 1) - k' := by omega
+  -- `hk' : k' ≤ D − 2` is exactly the carried eq.-(6.22) lower bound `h622lb` (GAP 6), rearranged.
+  have hk' : k' ≤ screwDim k - 2 := by omega
+  exact BodyHingeFramework.exists_redundant_panelRow_ab_lam (m := m) hD huv hne₀ he₀ hle hsplit
+    hk' h618 h622
+
 /-- **KT eq. (6.43): the `a`-column block of the eq. (6.24) vanishing combination is `0`**
 (`lem:case-III-candidate-row` infra, the candidate-completion's eq. (6.43); Katoh–Tanigawa 2011
 §6.4.1, eq. (6.43), Phase 22e). The eq. (6.24)/(6.25) decomposition
