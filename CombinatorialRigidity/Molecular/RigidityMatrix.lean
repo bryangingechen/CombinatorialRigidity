@@ -652,6 +652,20 @@ theorem exists_line_data_of_homogeneousIncidence
   · exact htwo ⟨(2, 3), by decide⟩ 0 1 _ _ (by decide) (h0 0) (h0 1) h1a h1b
       (hkept ⟨(2, 3), by decide⟩ 0 1 (by decide) (by decide) (by decide) (by decide) (by decide))
 
+/-- **A screw-space element `C` lies in a hyperplane `n^⊥`** (`def:genuine-hinge-realization`,
+the per-link containment predicate of the honest bare motive M2; Phase 22i L0a). The `k`-extensor
+`C ∈ ScrewSpace k` is *in the panel with normal `n`* when it is the extensor of `k` points of the
+hyperplane `n^⊥ = {p | p ⬝ᵥ n = 0}`. The `k = 0` case (`extensor ![] = 1`) is degenerate and
+satisfies the predicate vacuously; the relevant instances are `k = 2` (the `d = 3` producers,
+where each link's `ScrewSpace 2` element is the meet of two hyperplanes, itself the extensor of
+two common-perp points, `exists_extensor_eq_panelSupportExtensor` in `PanelLayer.lean`).
+`C = 0` satisfies the predicate (degenerate `p`); nonzero-ness is M2's separate conjunct.
+Scalars in the first slot absorb: `c • extensor p = extensor (update p 0 (c • p 0))`
+(`AlternatingMap.map_update_smul`). -/
+def ExtensorInPanel {k : ℕ} (C : ScrewSpace k) (n : Fin (k + 2) → ℝ) : Prop :=
+  ∃ p : Fin k → Fin (k + 2) → ℝ,
+    (C : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

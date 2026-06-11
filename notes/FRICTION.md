@@ -4056,6 +4056,14 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   per-branch `simp only` set so the index normalizes first.
 - **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 46.
 
+### [resolved] `ExteriorAlgebra.ιMulti ℝ n` needs `(M := ...)` annotation when calling `map_update_smul`
+- **Where it bit:** `exists_extensor_eq_panelSupportExtensor` in
+  `Molecular/AlgebraicInduction/PanelLayer.lean` (Phase 22i L0a). The call
+  `(ExteriorAlgebra.ιMulti ℝ 2).map_update_smul` failed with *"failed to synthesize
+  `Module ℝ (ExteriorAlgebra ℝ ?m)`"* — the base module type `M` is a free metavar.
+- **Fix:** annotate `(ExteriorAlgebra.ιMulti ℝ 2 (M := Fin 4 → ℝ)).map_update_smul`.
+- **Status:** resolved.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
