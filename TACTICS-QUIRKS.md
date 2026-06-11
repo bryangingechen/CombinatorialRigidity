@@ -1688,3 +1688,39 @@ dual evaluation: `rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, �
 `-(-(ρ (panelSupportExtensor n₁ n₂)))` (Phase 22h W8, `CaseI.lean` — the M₂-arm `ρ' := -ρ`
 conversions). The general rule: read where the `-` sits before reaching for `map_neg`; argument
 vs. functional negation are different lemmas.
+
+## 45. A *combining* diacritic (`ρ̂`, written as base-char + U+0302) is rejected mid-proof — *"expected token"*
+
+**Symptom.** A `set`/`obtain`/`have` introducing an identifier like `ρ̂` fails to parse —
+*"expected token"* on the line, often with the column pointing just past the base letter. The same
+glyph copy-pasted from a paper or another editor looks fine but Lean won't accept it.
+
+**Cause.** There are two distinct Unicode encodings of "rho-hat": the *precomposed* form is a
+single codepoint (and `ŵ` = U+0175 is a precomposed letter Lean *does* accept), but a base letter
+**+ a combining diacritic** (`ρ` U+03C1 followed by U+0302 combining circumflex) is two codepoints,
+and Lean's lexer does not treat the combining mark as an identifier-continuation character. So
+`ρ` + U+0302 lexes as the identifier `ρ` followed by a stray token. Pasting from LaTeX-rendered
+math (`\hat\rho`) or some terminals produces the combining form silently.
+
+**Fix.** Don't use combining-diacritic identifiers — pick an ASCII-decorated name (`ρ0`, `rhat`,
+`w0`). To detect the form when a glyph mysteriously won't parse, dump the codepoints
+(`python3 -c "print([hex(ord(c)) for c in 'ρ̂'])"` — a trailing `0x302` is the combining mark).
+Phase 22h W10b (`CaseI.lean`) hit this with a normalized `ρ̂`/`ŵ` family, renamed to `ρ0`/`w0`.
+
+## 46. `Matrix.cons_val_*` won't fire on `![…] ⟨0, h⟩` after `fin_cases` — normalize the `Fin.mk` to the literal first
+
+**Symptom.** After `fin_cases u` (`u : Fin 3`), a hypothesis/goal mentions `![x, y, z] ⟨0, ⋯⟩`
+(the index is a `Fin.mk`, not the literal `0`). `simp only [Matrix.cons_val_zero]` reports the
+argument as *unused* / makes no progress, and the `vecCons` access never reduces to `x`.
+
+**Cause.** `Matrix.cons_val_zero : vecCons a s 0 = a` matches the *literal* `0 : Fin (n+1)`
+(`OfNat`), but `fin_cases` substitutes the anonymous-constructor form `⟨0, by decide⟩`, which is
+only *defeq* to `0`, not syntactically equal — so the simp lemma's LHS pattern is absent.
+
+**Fix.** Insert a `show (⟨0, by omega⟩ : Fin 3) = 0 from rfl` (resp. `= 1`, `= 2`) into the
+`simp only` set to rewrite the `Fin.mk` to the literal first, *then* `Matrix.cons_val_zero` /
+`cons_val_one` / `cons_val_two` (+ `head_cons` / `tail_cons` as needed) fire:
+`simp only [show (⟨0, by omega⟩ : Fin 3) = 0 from rfl, Matrix.cons_val_zero] at h`. Because the
+three `fin_cases` branches each need a *different* `cons_val_*`, do the reduction *per branch* (a
+combined `<;> simp only […]` flags the non-matching args unused). Phase 22h W10b (`CaseI.lean`),
+the `fin_cases u` discriminator dispatch.
