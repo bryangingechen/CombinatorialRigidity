@@ -5,7 +5,8 @@
 Takes the two producer nodes `lem:case-II-realization` / `lem:case-III` green at `d=3` by building
 the corrected remaining-work picture the 22g recon program scoped (GAPs 1–5). **Per-leaf
 signatures stay canonical in `notes/Phase22-realization-design.md` §1.48 (T1–T4, the triple-LI
-bridge) and §1.49 (G5, G4a–G4e, G0, the (β) branch shape) — point at them, don't duplicate.**
+bridge), §1.49 (G5, G4a–G4e, G0, the (β) branch shape), and §1.50 (the `hcand` discharge: the
+discriminator, the rank-transfer re-route W1–W10, GAP 6) — point at them, don't duplicate.**
 22g's archive (delivered leaves + settled verdicts): `notes/Phase22g.md`.
 
 ## Current state
@@ -121,20 +122,30 @@ per-line duality to produce a witness panel `{n_u, n'}` with `r̂(complementIso 
 nonzero-candidate-row input the eq.-(6.12) candidate placement's row-space criterion is gated on.
 Graph-free (`Fin 4` / `⋀²ℝ⁴`, off the §38 trap); build + lint + verify.sh clean; axiom-clean.
 
-**Next concrete step:** the rest of the M₁-arm candidate chain, now that the witness `r̂(C(L)) ≠ 0`
-glue exists. From the unpacked generic `v`-split framework (concrete `Q`, seed `q`, `hgab` from
-`IsGeneralPosition`, `hn3` from the triple-LI bridge — all cheap inline derivations): produce
-`r̂ ≠ 0` via `exists_redundant_panelRow_ab_lam` (incl. the `h618`/`h622` rank inputs); turn the witness
-meet into the nonzero `va`-hinge support `r̂(panelSupportExtensor (n_a + t•n') n_a) ≠ 0` (the
-`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` seed-from-line core); pick the good `t`
-via `exists_shear_linearIndependent_pair`; and close the `n_a` arm via `case_III_old_new_blocks_of_line`
-+ `case_III_realization_of_line` + `hasGenericFullRankRealization_of_rigidOn_ofNormals`. Land it as a
-standalone complete lemma (no `sorry` placeholders; the OLD-block `hro_mem` re-derivation from the line
-placement is another clean cut if it won't fit one commit).
+**The `hcand`-discharge recon is DONE (design §1.50; supersedes the §1.49(5) M-arm route).** Three
+findings, full detail + exact signatures in §1.50: **(1)** the witness-normal discriminator is a
+free statement-level restate of `exists_line_data_of_homogeneousIncidence` + the a9f191e glue, in
+place, proofs reused (`∃ u : Fin 3` returning the real normal `n u`). **(2)** The §1.49(5) M-arm
+route as scoped is **not dischargeable**: the sheared `ofNormals` placement breaks KT's
+(6.26)–(6.28) row transport (`hro_mem`/`hcand_mem` of `case_III_realization_of_line` fail for
+`n' ≠ n_b`; at `n' = n_b` the gate fails) — dissolved by the KT-Lemma-5.2 **rank-transfer
+re-route**: certify the KT-(6.29) count at the `t = 0` hinge-level `BodyHingeFramework` `F₀`
+(where all memberships hold by construction) and transfer along the one-parameter shear by a
+one-variable minor polynomial. The planned sheared-support step
+(`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` feed) is obsolete under the re-route.
+**(3) GAP 6 (genuinely open, needs adjudication):** the eq.-(6.22) rank lower bound at the
+`k'`-dof `G − v` is KT's nested IH (6.1), which the 0-dof-only induction cannot supply; interim =
+carry the single reduced inequality as an explicit `h…` hypothesis (§1.50(b)).
 
-**Build order (design §1.49(6); estimated 3–5 commits remaining):** producer spine ✓ →
-triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ → assemble `hcand` discharge → Leaf 4
-→ Leaf 5.
+**Next concrete step:** W1 — the discriminator restate (§1.50(a), RigidityMatrix.lean, both
+lemmas in place). Then W2 (`finrank_span_rigidityRows_of_rigidOn` micro-leaf), W3 (one-variable
+rank transfer), W4 (restriction-bottom augment) — all unconditionally buildable and independent
+of the GAP-6 adjudication.
+
+**Build order (design §1.50(f); supersedes §1.49(6) item 5's discharge clause):** W1 discriminator
+→ W2 `h618` micro-leaf → W3 leaf B → W4 leaf A0 → W5 redundancy packaging (carries the GAP-6
+hypothesis) → W6/W7 M₁ → W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s
+shape) → Leaf 4 → Leaf 5. Parallel: adjudicate GAP 6 (coordinator/user).
 
 ## Lemma checklist
 
@@ -173,15 +184,15 @@ triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ →
   the **generic** motive. Body = `|V(G)|` dichotomy (`=3 ↦` T4 directly; `≥4 ↦` chain arm with the
   R3 split-simplicity discharge unlocking the IH's GP `.1` conjunct). Build + lint clean; no
   blueprint pin (the producer isn't `\lean`-pinned). Done.
-- [~] **Discharge `hcand`** (the candidate-placement core; the G4e spine; §1.49(5)): the
-  triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (§1.48(2)), the GAP-3
-  good-`t` core `exists_shear_linearIndependent_pair`, and the Claim-6.12 → witness-meet glue
-  `exists_complementIso_ne_zero_of_homogeneousIncidence` (line-data → `r̂(C(L)) ≠ 0`) are landed.
-  Remaining, as complete lemmas (no `sorry` placeholders on master): the `r̂` construction
-  (`exists_redundant_panelRow_ab_lam`, incl. the `h618`/`h622` rank inputs), the witness-meet →
-  `va`-hinge-support nonzero step (`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`),
-  the M₁/M₂/M₃ arms (M₃ via G4c/G4d), and the GAP-2 upgrade; then assemble into the discharge lemma
-  matching the `hcand` signature.
+- [~] **Discharge `hcand`** (the candidate-placement core; **§1.50 is now canonical** —
+  supersedes the §1.49(5) arm route): landed feeds = the triple-LI bridge (§1.48(2)), the GAP-3
+  good-`t` core `exists_shear_linearIndependent_pair`, the Claim-6.12 → witness-meet glue
+  `exists_complementIso_ne_zero_of_homogeneousIncidence`. Remaining, as complete lemmas (no
+  `sorry` on master), per §1.50(f): W1 discriminator restate → W2 `h618` micro-leaf → W3
+  one-variable rank transfer → W4 restriction-bottom augment → W5 redundancy packaging (carries
+  the GAP-6 inequality as an explicit hypothesis pending adjudication) → W6/W7 M₁ (`t = 0`
+  certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10
+  dispatch + assembly matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -190,27 +201,27 @@ triple-LI bridge ✓ → GAP-3 good-`t` ✓ → M₁ chain → M₂ → M₃ →
 
 ## Blockers / open questions
 
-- **GAP 3 — core LANDED** (`exists_shear_linearIndependent_pair`, PanelLayer.lean): the good-`t`
-  existence (`hnewtrans : LinearIndependent ![n_a + t•n', n_b]` for some `t ≠ 0`, bad set ≤ 1 value
-  from `hgab`). Remaining: feed it into the M₁ chain at the producer's seed.
+- **GAP 6 — OPEN, needs coordinator/user adjudication (§1.50(b)).** The eq.-(6.22) rank lower
+  bound at the `k'`-dof `G − v` (`rank ≥ D(m−1) − (D−2)` at the IH seed) is KT's nested IH (6.1),
+  unreachable from the project's 0-dof-only induction motive. Options: (i) all-`k` motive
+  restructure (phase-sized) vs (ii) carry the single reduced inequality as the explicit `h…` crux
+  through W5–W10 and Leaf 4/5 (recommended interim). W1–W4 don't depend on the call.
+- **GAP 3 — core LANDED** (`exists_shear_linearIndependent_pair`, PanelLayer.lean): consumed by
+  leaf B's good-`t` choice (§1.50(c), the `bad`-set input).
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites every
   carrier-instantiating leaf (the producer body, the T3/T4 seeds). Keep reasoning over abstract
-  `F`; instantiate only at the seed.
+  `F`; instantiate only at the seed. The §1.50 re-route helps: `F₀` and leaves A0/B are abstract /
+  graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — the witness-meet → `va`-hinge-support nonzero step** (next sub-step
-of the M₁ arm; the clean cut sitting between the now-landed
-`exists_complementIso_ne_zero_of_homogeneousIncidence` glue and `case_III_realization_of_line`'s `hr`
-input): turn the witness `r̂(complementIso (n_u ∧ n')) ≠ 0` into the sheared `va`-hinge-support
-nonzero `r̂(panelSupportExtensor (n_u + t•n') n_u) ≠ 0` via
-`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` + the
-`panelSupportExtensor_eq_complementIso_extensor` rewrite. Graph-free (`Fin (k+2) → ℝ`, dodges §38);
-small and complete. **No `sorry` placeholders.** That feed plus the landed `exists_shear_…` good-`t`
-and the `r̂` construction (`exists_redundant_panelRow_ab_lam`) then close the full `n_a` arm via
-`case_III_old_new_blocks_of_line` + `case_III_realization_of_line` +
-`hasGenericFullRankRealization_of_rigidOn_ofNormals` (its own commit if needed; the OLD-block
-`hro_mem` re-derivation is a further clean cut). M₂/M₃ follow as their own complete lemmas; the
-discharge lemma matching the `hcand` signature assembles them at the end.
+**Smallest next forward commit — W1, the discriminator restate (§1.50(a)).** Restate
+`exists_line_data_of_homogeneousIncidence` and `exists_complementIso_ne_zero_of_homogeneousIncidence`
+(both RigidityMatrix.lean, no outside consumers) **in place** at the discriminating level
+`∃ u : Fin 3, …` with the witness normal returned as the real `n u` — the `Fin 3`-valued
+M₁/M₂/M₃ dispatch input. Statement-level change; both proofs reuse verbatim (every builder branch
+already supplies a concrete `u`). Exact signatures in §1.50(a). **No `sorry` placeholders.**
+Then W2–W4 (each one commit, §1.50(f)), W5 onward per the build order; the GAP-6 adjudication
+(Blockers) runs in parallel and gates only W5+.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -309,6 +320,12 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   or `t = 2` is good (closed by `by_cases` + `norm_num`, no infinite-set machinery). The `∃ c` needs
   `: ℝ` (HSMul-metavar stuck, §31-family). Graph-free, no §38 trap; pinned to the existing node
   `lem:case-III-claim612-line-in-panel-union` (the line-in-panel-union group).
+- **`hcand`-discharge recon (design §1.50; docs-only).** Verdicts: discriminator restate free
+  (statement-level, proofs reuse); the §1.49(5) sheared-placement arm route undischargeable (the
+  KT (6.26)–(6.28) transport needs `p₁(vb) = q(ab)`, lost at `n' ≠ n_b`) → re-routed via KT
+  Lemma 5.2 (certify at the `t = 0` hinge-level `F₀`, transfer by a one-variable minor
+  polynomial; `annihRow`'s linearity in `C` makes the `e_a`-rows `t`-constant after rescaling);
+  GAP 6 surfaced (eq.-(6.22) nested-IH rank bound, open). All detail + signatures in §1.50.
 - **Claim-6.12 → witness-meet glue (`exists_complementIso_ne_zero_of_homogeneousIncidence`,
   RigidityMatrix.lean, `BodyHingeFramework`):** the forward (existence) dual of the green
   `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` — a clean three-line composition of

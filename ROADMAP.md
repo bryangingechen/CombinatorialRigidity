@@ -908,17 +908,21 @@ with signatures in design §1.48–§1.49. Leaf ledger + decisions: `notes/Phase
 
 **Status (◷ in progress; opened 2026-06-09 at the 22g close; see `notes/Phase22h.md`).** Builds
 the corrected remaining-work picture Phase 22g's recon program scoped (GAPs 1–5; per-leaf
-signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.49) and takes the two
-producer nodes `lem:case-II-realization` / `lem:case-III` green at `d = 3`. Build order
-(design §1.49(6)): **G5** — the `IsProperRigidSubgraph` predicate repair (`2 ≤ |V(H)|`, KT
-p. 659's `1 < |V′|`; landed as the opening commit — before it, the no-rigid-subgraph hypothesis
-was unsatisfiable and the Case-III branch vacuous) → **G4b-impl** (`minimal_kdof_reduction_full` +
-the `theorem_55_generic` `hsplit`/`hsplitGP` restate to the full-conditioned-IH (β) shape) → in
-parallel: G4a-i/ii + G0 ∥ the `|V|=3` triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the
-(β)-shaped `hsplit` producer with the G4e `M₁/M₂/M₃` dispatch → Leaf 4 (the
+signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.50) and takes the two
+producer nodes `lem:case-II-realization` / `lem:case-III` green at `d = 3`. Landed: **G5** (the
+`IsProperRigidSubgraph` predicate repair) → **G4b-impl** (the full-conditioned-IH (β) restate) →
+G4a-i/ii + G0 ∥ the triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the (β)-shaped `hsplit`
+producer spine (the candidate-placement core carried as the explicit `hcand` hypothesis) + the
+triple-LI bridge, the GAP-3 good-`t` core, and the Claim-6.12 → witness-meet glue. The `hcand`
+discharge follows design **§1.50** (the 2026-06-10 recon, superseding §1.49(5)'s arm route): the
+witness-normal discriminator restate → the KT-Lemma-5.2 **rank-transfer** assembly (certify the
+KT-(6.29) count at the `t = 0` hinge-level family, transfer along the shear by a one-variable
+minor polynomial) for the `M₁/M₂/M₃` arms → the dispatch assembly → Leaf 4 (the
 `theorem_55_generic (n:=2) (k:=2)` instance node) → Leaf 5 (the banner flips + the Thm 5.5→5.6
-push, unblocking Cor 5.7 at `d=3`). Estimated 13–18 commits. Milestone: the molecular conjecture
-proved at `d = 3` (Phases 24–26 unblocked). General `d` (KT Lemma 6.13) is Phase 23.
+push, unblocking Cor 5.7 at `d=3`). One genuinely open input rides as an explicit hypothesis
+pending adjudication: **GAP 6**, the KT eq.-(6.22) nested-IH rank bound at the `k'`-dof `G − v`
+(§1.50(b)). Milestone: the molecular conjecture proved at `d = 3` (Phases 24–26 unblocked).
+General `d` (KT Lemma 6.13) is Phase 23.
 
 ## Engineering conventions
 

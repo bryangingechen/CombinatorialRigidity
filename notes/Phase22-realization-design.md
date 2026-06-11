@@ -2401,6 +2401,246 @@ the line-data witness normal (a `Fin 3`-valued discriminator worth a small helpe
 6. **Leaf 4** (`theorem_55_generic (n:=2) (k:=2)` instance, `.2` projection — now over the (β)
    shape, and the `hcontractGP` wiring gains `hVH2` from G5) + **Leaf 5** as before.
 
+### 1.50 The `hcand`-discharge recon — the discriminator restate is a free statement-level change; the §1.49(5) M-arm route as scoped is NOT dischargeable (the sheared placement breaks KT's (6.26)–(6.28) row transport — surfaced and DISSOLVED via the KT-Lemma-5.2 rank-transfer re-route: certify at the `t = 0` hinge-level family, transfer along the one-parameter shear); **PLUS GAP 6 surfaced (genuinely open)**: the eq.-(6.22) rank lower bound at the `k'`-dof `G_v` is KT's nested IH (6.1), which the project's 0-dof-only induction cannot supply (2026-06-10)
+
+> **Docs-only recon (the §1.49(5) build-out design pass).** Lean read this pass (declarations, not
+> paraphrases): `exists_line_data_of_homogeneousIncidence` (RigidityMatrix.lean:582, incl. both
+> builders), `exists_complementIso_ne_zero_of_homogeneousIncidence` (:1984), `case_III_claim612`
+> (:1843), `candidateRow_ac_eq_neg` (:1790), `exists_homogeneousIncidence_of_normals` (:455),
+> `annihRow` (PanelLayer.lean:800 — **linear in `C`**, load-bearing below),
+> `exists_shear_linearIndependent_pair` / `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero`
+> (PanelLayer.lean:363/332), and in CaseI.lean: `case_III_hsplit_producer` (:4256, the `hcand`
+> application site :4334), `case_III_old_new_blocks[_of_line]` (:3443/:3619),
+> `case_III_full_family_of_line` (:3800), `case_III_realization_of_line` (:3991),
+> `exists_redundant_panelRow_ab_{of_finrank_eq,decomposition[_acolumn_zero],lam}` (:3093–:3300),
+> `exists_candidate_row_eq612` (:3374), `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+> (:1971), `ofNormals_relabel`/`rigidityRows_ofNormals_relabel` (:4379/:4517), G4d-i/ii
+> (:4659/:4727), the triple-LI bridge (:4767); the rank-side suppliers
+> `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` /
+> `exists_independent_panelRow_subfamily_of_rigidOn[_linking]` (GenericityDevice.lean:431/521/603,
+> incl. the inline `hfin` rank-nullity block), `rankHypothesis_ofNormals_of_rankPolynomial_
+> algebraicIndependent` (CaseI.lean:2723 — note its `hspan : V(G) = univ`),
+> `splitOff_removeVertex_minimalKDof` (ForestSurgery.lean:2042), `theorem_55[_generic]`
+> (PanelHinge.lean:1098/1154). KT read: pp. 668–669 (Lemma 5.2 **in full** — the rotation
+> `Π_t(a)`, minors continuous in `t`), 681–686 (the p₁/p₂/p₃ sketch; eqs. (6.12), (6.16),
+> (6.19)–(6.21), Claim 6.11 + footnote 6, eqs. (6.22)–(6.30)). No `.lean`/`.tex` edits this pass.
+
+**(a) The witness-normal discriminator — verdict: BUILDABLE, a statement-level restate of both
+lemmas in place (proofs reuse verbatim).** Both builders inside
+`exists_line_data_of_homogeneousIncidence` already return a *real* normal: `hone` yields
+`⟨n u, n', …⟩` and `htwo` yields `⟨n u, n w, …⟩` — the bound `n_u` is `n u` in every one of the six
+`fin_cases` branches (per-join `u`: `(0,1)↦2, (0,2)↦0, (0,3)↦1, (1,2)↦0, (1,3)↦1, (2,3)↦0`).
+Neither lemma has any consumer outside RigidityMatrix.lean (grep), so both are restated **in
+place** at the discriminating level:
+
+```lean
+theorem exists_line_data_of_homogeneousIncidence
+    {n : Fin 3 → Fin 4 → ℝ} (hn : LinearIndependent ℝ n)
+    {pbar : Fin 4 → Fin 4 → ℝ}
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (h1 : pbar 1 ⬝ᵥ n 0 = 0 ∧ pbar 1 ⬝ᵥ n 1 = 0)
+    (h2 : pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0)
+    (h3 : pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0) :
+    ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
+      ∃ (u : Fin 3) (n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+        pi ⬝ᵥ n u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+        omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj]
+
+theorem exists_complementIso_ne_zero_of_homogeneousIncidence
+    {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
+    {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar)
+    {n : Fin 3 → Fin 4 → ℝ} (hn : LinearIndependent ℝ n)
+    (h0 …h3 : as above) :
+    ∃ (u : Fin 3) (n' : Fin 4 → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+      r (complementIso (k := 2) (j := 2) (by omega)
+        ⟨extensor ![n u, n'], extensor_mem_exteriorPower _⟩) ≠ 0
+```
+
+The producer instantiates `n := ![n_a, n_b, n_c]` (the triple-LI bridge's exact output family), so
+the discriminator dispatch is `u = 0 ↦ M₁(Π(a)), 1 ↦ M₂(Π(b)), 2 ↦ M₃(Π(c))`. One commit.
+
+**(b) The `h618`/`h622` rank inputs — `h618` is a micro-leaf; `h622` is GAP 6, genuinely open.**
+At the `hcand` application site (CaseI.lean:4334) the discharge lemma may consume, beyond `hcand`'s
+own parameters: `hD`, `hG`, `hV4'`, `hnoRigid`, `hsimple`, `hfresh`, `hGv` (split minimal 0-dof),
+`hGvSimple`, **and `hIH` (the full conditioned IH — but over minimal `0`-dof graphs ONLY)** — all
+in scope where the producer applies `hcand`, hence suppliable by the Leaf-4 wiring lambda.
+
+- **h618 (eq. (6.18), the split's full rank at the IH seed): NEEDS-MICRO-LEAF.** No packaged lemma
+  exists; the computation lives inline (the `hfin` block, GenericityDevice.lean:543/630). Extract:
+
+  ```lean
+  theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn [Finite α]
+      (F : BodyHingeFramework k α β) (hnev : F.graph.vertexSet.Nonempty)
+      (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
+      Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+        = screwDim k * (F.graph.vertexSet.ncard - 1)
+  ```
+
+  (`infinitesimalMotions_eq_dualCoannihilator` + `finrank_infinitesimalMotions_of_…_vertexSet` +
+  the dual-annihilator complement + `finrank_screwAssignment`; no `hends`/`hne` needed at this
+  level.) Instantiated at the unpacked IH framework (the `hQeq` re-expression idiom of
+  `hasGenericFullRankRealization_of_splitOff_relabel`), with `m := V(G.splitOff v a b e₀).ncard`.
+- **h622 (eq. (6.22)) — first, the consumer-side reduction.** `exists_redundant_panelRow_ab_lam`'s
+  `h622`-equality is over-strong: define `k'' := D(m−1) − finrank ℝ (span ℝ (Gv-rows))` with
+  `Gv := G.removeVertex v` (its links = the split's minus `e₀`, so `hle`/`hsplit` hold); then
+  `h622` holds *by construction* once `finrank (Gv-rows) ≤ D(m−1)` (free: `span_rigidityRows_eq_
+  sup_span_panelRow_edge` + h618 + monotonicity), and the whole remaining content is the single
+  `hk'`-feeding inequality
+
+  ```lean
+  -- GAP 6 — the ONE open analytic input (KT eq. (6.22) lower bound, nested IH (6.1) at G_v):
+  screwDim k * (m - 1) - (screwDim k - 2)
+    ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows)
+  ```
+
+  at the IH's alg-indep seed `q`. **This is NOT derivable from anything landed.** KT derives it by
+  applying the induction hypothesis (6.1) to the **minimal `k'`-dof** graph `G_v` (`k' ≤ D−2` is
+  the landed gap3 `splitOff_removeVertex_minimalKDof`) and transferring to the fixed seed by
+  footnote 6 — the landed seed-rank kernel (`finrank_infinitesimalMotions_le_of_rankPolynomial_
+  algebraicIndependent`, usable here, no `hspan`) consumes a **rank-polynomial witness for `G_v`**
+  that only a `k'`-dof realization theorem can produce. The project's induction motive
+  (`theorem_55[_generic]`, `minimal_kdof_reduction[_full]`, the producer's `hIH`) is **0-dof
+  only**; `G_v` has `k' > 0` in general. Verified dead ends: (i) the deterministic hub bound runs
+  the wrong way (`rank ≤ D(m−1) − k'`); (ii) augmenting `G_v` to a 0-dof graph and restricting
+  loses up to `D−1` per added fiber (only recovers the trivial `≥ D(m−1) − (D−1)`, one short);
+  (iii) the row-level "added rank ≤ matroid added rank" increment bound is false deterministically.
+  Also: the landed packaging `rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`
+  carries `hspan : V(G) = Set.univ`, unsatisfiable in the producer context (ambient junk bodies +
+  the removed `v`) — the reduced-inequality form above is the right consumer-level target, fed
+  through the (no-`hspan`) upper-bound lemma once a witness exists. **Resolution options** (needs
+  coordinator/user adjudication): **(i)** strengthen the induction to KT's actual all-`k` motive
+  (KT 5.5 inducts over minimal `k`-dof for all `k`; the `k ≥ 1` split arm is *easier* — the landed
+  22c one-short brick already meets the `k ≥ 1` target — but this restructures the Phase-20
+  reduction + `theorem_55[_generic]` + base/contract cases: phase-sized); **(ii)** carry the GAP-6
+  inequality as the explicit `h…` crux (the standing Phase-21b idiom) on the redundancy-data leaf
+  and let it ride up through the discharge to the Leaf-4/5 wiring — 22h then closes green-modulo
+  one honestly-named hypothesis, discharged by a successor sub-phase implementing (i). **(ii) is
+  the recommended interim**: it unblocks every other leaf and isolates the genuine residue.
+
+**(c) The M₁ arm — the §1.49(5)/§1.40(6) route as scoped is NOT dischargeable (surfaced flaw),
+and DISSOLVES via the KT-Lemma-5.2 rank-transfer re-route.**
+
+- **The flaw (machine-checked against the Lean + KT pp. 681–686).** KT's eq.-(6.12) candidate `p₁`
+  places **both** `p₁(va) = L ⊂ Π(a)` (the free witness line) **and** `p₁(vb) = q(ab)` (the
+  `vb`-hinge *at* the IH `ab`-hinge — the row-transport (6.26)–(6.28) and the (6.29) bottom block
+  both live on this reproduction). That forces `v`'s panel `= Π(a)`, which `ofNormals` cannot
+  represent non-degenerately (equal normals kill the `va`-support). The project's sheared seed
+  `q₀(v) = n_a + t•n'` (`t ≠ 0`) keeps `va = L` but moves the `vb`-hinge to
+  `C_new = C(e₀) + t • panelSupportExtensor n' n_b ≠ C(e₀)`: the transported `(vb)ⱼ`-functionals
+  `hingeRow v b ρⱼ` (`ρⱼ ∈ (span C(e₀))^⊥`) are then **not** rows of the sheared candidate
+  (`ρⱼ(C_new) = t·ρⱼ(panelSupportExtensor n' n_b) ≠ 0` in general), so `case_III_realization_of_
+  line`'s `hro_mem` (the OLD block's `e₀`-fiber members) and `hcand_mem` are **undischargeable at
+  the sheared `ofNormals` placement** for `n' ≠ n_b` — and at `n' = n_b` the gate `r̂(C(e_a)) ≠ 0`
+  is identically false (`C(e_a) = (−t)C(e₀)` and `r̂(C(e₀)) = 0` by construction). Moreover the
+  `hold`-shaped (v-vanishing) OLD block of `case_III_{full_family,realization}_of_line` caps at
+  `D(m−1) − 1` certifiable dimensions at any non-degenerate line (the in-span v-vanishing subspace
+  is `Gv`-span + the codim-1 `ab`-slice `(C(e₀))^⊥ ∩ (C(L))^⊥`), one short of its `hcard` — KT's
+  (6.29) bottom block is *not* v-vanishing; it is **restriction-independent** (the `(vb)ⱼ`-rows
+  restricted to `V∖{v}` reproduce the split's rows after the column op). Both landed `_of_line`
+  leaves stay as reusable infrastructure (blocks, transversality, criterion), but their
+  OLD-contract is the wrong shape for the live route.
+- **The dissolution = KT Lemma 5.2, made one-variable-polynomial (pp. 668–669: rotate `Π_t`,
+  "each minor of `R(G, p_t)` is continuous in `t`").** Certify the full count at the **`t = 0`
+  hinge-level family** and transfer along the shear:
+  * **`F₀` — KT's `p₁` as a `BodyHingeFramework`** (hinge-primary, no normals needed):
+    `F₀.graph = G`, `supportExtensor: e_a ↦ panelSupportExtensor n_a n' (= C(L)), e_b ↦
+    panelSupportExtensor n_a n_b (= C(e₀)), e ↦ the split's extensor otherwise`. At `F₀` every
+    (6.26)–(6.28) membership holds **by construction**: `ρⱼ ∈ F₀.hingeRowBlock e_b` literally, so
+    the transported `(vb)ⱼ`-rows are genuine `F₀`-rows, and the operated candidate row (the (6.28)
+    pure-`v` row with value `r̂`) is a span-member as an explicit combination — no shear identity
+    needed (`exists_candidate_row_eq612`'s argument, easier).
+  * **The certifying family `g : ℝ → ι → Module.Dual ℝ (α → ScrewSpace k)`** over a fixed index
+    `ι` of size `D(|V(G)|−1)`: the `e_a`-members are `hingeRow v a (annihRow C(L) t₁ t₂)` —
+    **constant in `t`**, and since `annihRow` is linear in its extensor (PanelLayer.lean:800),
+    each equals `(−1/t) •` a genuine `panelRow` of the sheared candidate for every `t ≠ 0`; all
+    other members are genuine `panelRow`s of `ofNormals G ends (q₀ t)` (`q₀ t = q` off `v`,
+    `v ↦ n_a + t•n'`) — polynomial in `t`. `g 0` is the `F₀`-certified KT-(6.29) family; for
+    `t ≠ 0` every member lies in `span (sheared candidate).rigidityRows`.
+  * **The transfer leaf (B)**: `LinearIndependent ℝ (g 0)` + entrywise polynomiality ⟹
+    independent for all but finitely many `t` (coordinatize `Module.Dual ℝ (α → ScrewSpace k)`;
+    a top minor is a `Polynomial ℝ`, nonzero at `0`); intersect with
+    `exists_shear_linearIndependent_pair`'s ≤ 1 bad value to pick a good `t ≠ 0` with every
+    linking hinge transversal. Then `hasFullRankRealization_of_independent_rigidityRow` (landed)
+    gives the bare realization and `hasGenericFullRankRealization_of_rigidOn_ofNormals` (GAP-2,
+    landed) the generic motive. Note: the witness gate consumed at `t = 0` is `r̂(C(L)) ≠ 0` —
+    the discriminator glue's output composed with `panelSupportExtensor_eq_complementIso_extensor`
+    directly; the previously-planned sheared-support step
+    (`panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` feed) is **obsolete** under the
+    re-route (the shear factor never meets the gate).
+  * **New leaves** (shapes; exact forms pinned at build):
+    - **A0 (restriction-bottom block-triangular augment; the missing sibling of the landed
+      v-vanishing augment):** `Sum.elim top bot` independent when the `top` rows are pure-`v`
+      (post-columnOp) with pinned-independent `v`-forms and the `bot` rows' restrictions to
+      `V∖{v}` are independent. (Proof skeleton: evaluate a vanishing combination on `v`-vanishing
+      assignments to kill `bot`, then pin `v`.)
+    - **B (one-variable rank transfer; graph-free):**
+      `∀ {ι κ} [Fintype ι] (b : Basis κ ℝ M) (g : ℝ → ι → M) (P : ι → κ → Polynomial ℝ)
+      (hg : ∀ t i j, b.repr (g t i) j = (P i j).eval t) (h0 : LinearIndependent ℝ (g 0))
+      (bad : Finset ℝ) : ∃ t, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent ℝ (g t)`.
+    - **A1 (the `t = 0` certification, per arm):** assemble `g 0` independent at `F₀` from: the
+      redundancy data (`exists_redundant_panelRow_ab_lam`'s `r`/`lam`/`i` + `h618` + the (b)
+      `k''`-reduction, with the GAP-6 inequality as an explicit hypothesis pending adjudication),
+      the witness gate `r̂(C(L)) ≠ 0`, A0, and the landed columnOp/criterion bricks. The bottom is
+      the chosen `D(m−1)` independent split-rows-minus-`(ab)i*` carried as `F₀`-rows (`Ev`-rows
+      verbatim; `(ab)ⱼ ↦ (vb)ⱼ`).
+    - **A2 (the arm closer):** A1 + B + the membership packaging + the device feed + GAP-2 ⟹
+      `HasGenericFullRankRealization 2 G`.
+  Verdict: **buildable modulo GAP 6** (carried per (b)(ii)); the count, memberships, and transfer
+  were each re-verified against KT (6.16)/(6.23)/(6.29) and the landed signatures.
+
+**(d) M₂ — CONFIRMED a roles-`a↔b` instantiation of the M₁ chain; nothing new.** Same split, same
+`e₀`, same `r̂` (KT p. 681: "`r′` is indeed equal to `r`"): candidate hinge `e_b` at `L' ⊂ Π(b)`
+(`u = 1` witness), reproduced hinge `e_a` at `C(e₀)`, shear `q₀'(v) = n_b + t•n''`, `F₀`/`g`/A0–A2
+verbatim at the swapped roles. The good-`t` input swaps `hgab` to `![n_b, n_a]`
+(`LinearIndependent` swap, derivable from GP/the triple-LI bridge).
+
+**(e) M₃ — same A0/A1/B pattern at the relabeled `a`-split; G4c/G4d thread as inputs, plus the
+landed sign bridge.** The chain, named: **(1)** `ofNormals_relabel` (G4c-ii, fixed seed) turns the
+unpacked `v`-split IH data into the rigid `a`-split framework
+`ofNormals (G.splitOff a v c e₁) endsσρ qρ` at the same seed values (`qρ(a,·) = n_v… = q₀∘ρ`;
+`e₁` fresh via `hfresh` applied to a graph carrying `E(G) ∪ {e₀}`, the §1.49(3) freshness
+plumbing); the (b) micro-leaf `finrank_span_rigidityRows_of_rigidOn` then gives the `M₃` `h618`
+analogue at the relabeled framework. **(2)** The `t = 0` candidate `F₀''` re-inserts `a`: graph
+`G`, `supportExtensor: e_c ↦ panelSupportExtensor n_c n''' (= C(L''), L'' ⊂ Π(c), the `u = 2`
+witness), e_a ↦ panelSupportExtensor n_a n_c (the relabeled split's `e₁ = vc`-hinge, the
+reproduction `p₃(av) = qρ(vc)`), e ↦ the `a`-split's extensor otherwise`; the shear is
+`q₀''(a) = n_c + t•n'''`. **(3)** The candidate row's value is the **same** `r̂` with reversed
+sign: `candidateRow_ac_eq_neg` (RigidityMatrix.lean:1790, landed) consumes the `a`-column
+vanishing of the (6.24) combination (`exists_redundant_panelRow_ab_decomposition_acolumn_zero`,
+landed) regrouped at the degree-2 body `a` — the regrouping's `grest`-vanishing is exactly the
+G4d-i span-induction shape (`acolumn_mem_hingeRowBlock_of_span_rigidityRows` at
+`Fv := ofNormals (G.removeVertex v) …`, whose `hdeg2` IS `hcla` restricted off `v`), and the
+row-space correspondence `rigidityRows_ofNormals_relabel` (G4c-ii) transports the `v`-split
+redundancy data onto the `a`-split rows. **(4)** A0/A1/B/A2 run verbatim at the `(a, c)` roles.
+**Missing micro-leaves beyond M₁'s:** none new in kind — the M₃-specific work is the (1)–(3)
+wiring; the GAP-6 input is the *same* carried inequality (same `r̂`, same redundancy data).
+Verdict: **buildable after M₁ + the G4c/G4d wiring, modulo GAP 6**.
+
+**(f) The corrected build order (supersedes §1.49(6) item 5's G4e clause for the discharge; each
+item one commit unless noted):**
+
+1. **W1 — the discriminator restate** ((a); RigidityMatrix.lean, both lemmas in place, proof
+   reuse). Buildable now; first leaf.
+2. **W2 — the `h618` micro-leaf** `finrank_span_rigidityRows_of_rigidOn` ((b);
+   GenericityDevice.lean extraction + the two inline-`hfin` call sites optionally refactored).
+3. **W3 — leaf B** (the one-variable rank transfer; graph-free).
+4. **W4 — leaf A0** (the restriction-bottom augment; abstract, graph-free).
+5. **W5 — the redundancy-data packaging** at the unpacked IH framework: `ab_lam` + W2 + the (b)
+   `k''`-reduction, taking the **GAP-6 inequality as an explicit hypothesis** (per (b)(ii),
+   pending adjudication). Output: `r`/`lam`/`i*`/`r̂ ≠ 0`/`hingeRow a b r̂ = wGv ∈ span(Gv-rows)`.
+6. **W6 — A1 (M₁ `t = 0` certification at `F₀`)**, then **W7 — A2 (M₁ closer)**.
+7. **W8 — M₂** (role-swap instantiation), **W9 — M₃** ((e) wiring), **W10 — the G4e dispatch +
+   discharge assembly**: unpack `hsplitGP`, derive `hgab`/triple-LI, run the discriminator glue,
+   `match u with 0 ↦ M₁ | 1 ↦ M₂ | 2 ↦ M₃`, ending at a lemma matching `case_III_hsplit_producer`'s
+   `hcand` parameter shape exactly (plus the producer-level extras of (b) and the carried GAP-6
+   hypothesis, all available at the Leaf-4 wiring site).
+8. **Leaf 4 + Leaf 5** as in §1.49(6), with the GAP-6 hypothesis riding until its adjudicated
+   discharge (option (i) restructure or a successor sub-phase).
+
+**Parallel track (coordinator/user): adjudicate GAP 6** — (i) all-`k` motive restructure vs (ii)
+carry-and-defer. W1–W4 are unconditionally buildable and independent of the adjudication.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
