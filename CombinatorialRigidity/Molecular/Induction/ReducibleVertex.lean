@@ -681,6 +681,58 @@ theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq 
       have h2 : ({x, y} : Set α).ncard = 2 := Set.ncard_pair hxy
       rw [heq] at h2; omega
 
+/-! ### Two-vertex minimal `0`-dof graphs are not simple (L5b′, Phase 22h) -/
+
+/-- **A minimal `0`-dof graph with exactly two vertices is not simple**
+(L5b′, Phase 22h; Katoh–Tanigawa 2011 p. 671, the `|V| = 2` base trichotomy). The three
+two-vertex minimal `k`-dof cases are (i) no edges (`0`-dof → impossible, `def ≥ D`), (ii) one edge
+(`0`-dof → impossible for `D ≥ 1`, the cut bound), and (iii) the parallel pair (`0`-dof via the
+`D = 1` count). Only case (iii) is `0`-dof, and a parallel pair is not simple.
+
+Lean route: `two_le_crossingEdges_of_isKDof_zero` at the single-vertex cut `{u}` yields two
+distinct crossing edges, both of which link `u v` (the only option with `V(G) = {u, v}`); but
+`G.Simple.eq_of_isLink` would collapse them to one edge — contradiction. -/
+theorem not_simple_of_isMinimalKDof_of_ncard_two
+    [Finite α] [Finite β] [DecidableEq β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hV : V(G).ncard = 2) :
+    ¬ G.Simple := by
+  classical
+  intro hSimple
+  -- Extract u ≠ v with V(G) = {u, v}.
+  obtain ⟨u, v, huv, hVuv⟩ := Set.ncard_eq_two.mp hV
+  have huV : u ∈ V(G) := hVuv ▸ Set.mem_insert u _
+  have hvV : v ∈ V(G) := hVuv ▸ Set.mem_insert_of_mem u rfl
+  -- Two-edge-connectivity: ≥ 2 edges cross the {u} | V(G) cut.
+  have hcross : 2 ≤ (G.crossingEdges (cutLabeling {u} u v)).ncard :=
+    two_le_crossingEdges_of_isKDof_zero hD hG.1 (Set.mem_singleton u) huV hvV
+      (by simpa using fun h : v = u => huv h.symm)
+  -- Extract two distinct crossing edges e₁ ≠ e₂.
+  rw [show 2 ≤ _ ↔ 1 < _ from Iff.rfl,
+    Set.one_lt_ncard_iff (Set.toFinite _)] at hcross
+  obtain ⟨e₁, e₂, he₁, he₂, hne⟩ := hcross
+  -- Each crossing edge links u to v: by V(G) = {u, v}, the only crossing pair is (u, v).
+  have isLink_of_cross : ∀ e, e ∈ G.crossingEdges (cutLabeling {u} u v) → G.IsLink e u v := by
+    intro e he
+    simp only [crossingEdges, Set.mem_setOf_eq] at he
+    obtain ⟨_, x, y, hxy, hfne⟩ := he
+    -- x, y ∈ V(G) = {u, v}
+    have hxV : x = u ∨ x = v := by
+      have := hxy.left_mem; rw [hVuv] at this; simpa using this
+    have hyV : y = u ∨ y = v := by
+      have := hxy.right_mem; rw [hVuv] at this; simpa using this
+    -- split over x = u/v and y = u/v; the non-crossing (same-label) cases are contradictions.
+    rcases hxV with rfl | rfl <;> rcases hyV with rfl | rfl
+    · -- x = u, y = u: f u = u = f u, no crossing — contradiction.
+      simp [cutLabeling] at hfne
+    · -- x = u, y = v: this is the link u v.
+      exact hxy
+    · -- x = v, y = u: flip.
+      exact hxy.symm
+    · -- x = v, y = v: f v = v = f v, no crossing — contradiction.
+      simp [cutLabeling] at hfne
+  -- Simplicity collapses e₁ = e₂, contradicting e₁ ≠ e₂.
+  exact hne (hSimple.eq_of_isLink (isLink_of_cross e₁ he₁) (isLink_of_cross e₂ he₂))
+
 /-! ### Adjacent degree-2 pair in the Case-III `d = 3` regime (G4a-i, Phase 22h)
 
 Katoh–Tanigawa 2011 Lemma 4.6 at `d = 3` (`D ≥ 6`) — two adjacent degree-2 vertices

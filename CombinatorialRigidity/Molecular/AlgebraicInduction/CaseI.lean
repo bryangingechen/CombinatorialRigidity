@@ -6738,24 +6738,63 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
       · exact Or.inl hgen
       · exact Or.inr hcand
 
-/-- **Theorem 5.5 at `d = 3`, bare motive, green-modulo-GAP-6**
-(`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the (β)-shape reduction;
-Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1).
+/-- **The Case-III `d = 3` realization** (`lem:case-II-realization` / `lem:case-III`, the
+`hsplitGP`-shaped producer wrapping the `d = 3` Case-III assembly at `k = 2`; Katoh–Tanigawa
+2011 §6.4.1, Lemma 6.10, Phase 22h L5b′). Named wrapper for the inline wiring of
+`case_III_hsplit_producer` + `case_III_candidate_dispatch` that `theorem_55_d3` threads
+through `theorem_55_generic`'s `hsplitGP` slot.
 
-Instantiates `theorem_55_generic` at `k = 2` with the `hsplitGP` slot wired to the
-Case-III `d = 3` assembly (`case_III_hsplit_producer` + `case_III_candidate_dispatch`);
-projects the `.2` bare-motive conjunct. The remaining six callbacks (`hbase`, `hbaseGP`,
-`hsplit`, `hcontract`, `hcontractGP`) are explicit hypotheses, to be discharged when
-their respective producers land (`lem:theorem-55-base` and the Case-I assembly). GAP 6 (the
-eq.-(6.22) nested-IH rank bound at `G − v`, KT p. 684) rides as the explicit `h622`
-hypothesis (adjudicated carry; see `notes/Phase22h.md` *Blockers*). -/
+Carries the two adjudicated hypotheses `hfresh` (fresh edge supply for the chain arm's
+short-circuit edge) and `h622` (GAP 6, the eq.-(6.22) nested-IH rank lower bound — the
+all-`k` successor sub-phase 22i discharges it). -/
+theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    -- GAP 6 (adjudicated carry): see `theorem_55_d3`.
+    (h622 : ∀ (G : Graph α β) (v a b : α) (e₀ : β)
+        (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hSimple : G.Simple)
+    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G') ∧
+        PanelHingeFramework.HasFullRankRealization 2 G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 G :=
+  PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple hIH hfresh
+    (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀ hsplitGP' =>
+      PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
+        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀
+        (h622 G v a b e₀)
+        hsplitGP')
+
+/-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,`h65`,`hbase`,
+`hsplit`,`hcontract`}** (`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the
+(β)-shape reduction; Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1, Phase 22h L5b′).
+
+Instantiates `theorem_55_generic` at `k = 2` with the `hsplitGP` slot wired to
+`case_III_realization`; `hbaseGP` is discharged via `not_simple_of_isMinimalKDof_of_ncard_two`
+(a simple two-vertex minimal-`0`-dof graph does not exist, KT p. 671 case (iii)).
+
+Conclusion is the **full conditioned pair** `(G.Simple → GP) ∧ bare` — all three bare
+callbacks (`hbase`, `hsplit`, `hcontract`) ride as named hypotheses (adjudicated carries;
+discharged at the 22i all-`k` restructure per `notes/Phase22h.md` *Blockers*). The
+`hcontractGP` callback (KT 6.3-vs-6.5 dispatch + Lemma-6.5 arm) is an explicit hypothesis
+`h65`-carry added at L5c′. GAP 6 rides as `h622`. -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
       PanelHingeFramework.HasFullRankRealization 2 G)
-    (hbaseGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → G.Simple →
-      PanelHingeFramework.HasGenericFullRankRealization 2 G)
     (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
@@ -6786,17 +6825,16 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
             (PanelHingeFramework.ofNormals (G.removeVertex v) ends
               q).toBodyHinge.rigidityRows))
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
-    PanelHingeFramework.HasFullRankRealization 2 G :=
-  (theorem_55_generic hbase hbaseGP hsplit
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G) ∧
+      PanelHingeFramework.HasFullRankRealization 2 G :=
+  theorem_55_generic hbase
+    -- `hbaseGP`: discharged by vacuity — a simple two-vertex minimal-`0`-dof graph
+    -- does not exist (`not_simple_of_isMinimalKDof_of_ncard_two`, KT p. 671 case (iii)).
+    (fun G hG hV2 hSimple =>
+      absurd hSimple (Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) hG hV2))
+    hsplit
     (fun G hG hV3 hnoRigid hSimple hIH =>
-      PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple hIH hfresh
-        (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-            hlea hleb hlec hclv hcla he₀ hsplitGP' =>
-          PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
-            hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-            hlea hleb hlec hclv hcla he₀
-            (h622 G v a b e₀)
-            hsplitGP'))
-    hcontract hcontractGP G hG hV).2
+      PanelHingeFramework.case_III_realization hD hfresh h622 G hG hV3 hnoRigid hSimple hIH)
+    hcontract hcontractGP G hG hV
 
 end CombinatorialRigidity.Molecular

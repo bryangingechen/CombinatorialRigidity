@@ -15,21 +15,18 @@ don't duplicate.**
 
 ## Current state
 
-**Next concrete step: L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) +
-the `theorem_55_d3` re-shape (feed `hbaseGP`; keep `hbase`/`hsplit`/`hcontract` as hypotheses;
-restate conclusion to `(Simple → GP) ∧ bare`; mint `case_III_realization` wrapper; §1.55(c)).
-L5a′ landed (docs-only; `def:rank-hypothesis` prose corrected + `def:genuine-hinge-realization`
-red node + `lem:case-I-realization` `hcSimple` case-hypothesis marking + `lem:case-I-dispatch`
-red node; lint + bp + web + checkdecls green).
+**Next concrete step: L5c′** — the `hcontractGP` dispatch, route (B) (§1.55(c)): `by_cases`
+on simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor; negative → the
+named `h65` carry.
 
-**Leaf 4 landed PARTIALLY instantiated** (`PanelHingeFramework.theorem_55_d3`, CaseI.lean):
-instantiates `theorem_55_generic` at `k = 2` with `hsplitGP` wired via `case_III_hsplit_producer`
-+ `case_III_candidate_dispatch`; projects `.2` for the bare motive; GAP-6 carries as the
-quantified `h622` hypothesis (exact form per §1.53(f), quantifying over `(G,v,a,b,e₀,ends,q)`).
-Build + lint clean. **Two pinned sub-clauses of the original Leaf-4 item were NOT delivered and
-now belong to the L5 leaves:** (i) the five remaining callbacks (`hbase`/`hbaseGP`/`hsplit`/
-`hcontract`/`hcontractGP`) ride as *hypotheses* — feeds now audited and pinned in §1.54(a);
-(ii) no blueprint instance node was minted (→ L5e).
+**L5b′ landed** — `not_simple_of_isMinimalKDof_of_ncard_two` (ReducibleVertex.lean) + the
+`theorem_55_d3` re-shape (ReducibleVertex.lean + CaseI.lean): `hbaseGP` discharged by vacuity
+via the new lemma; conclusion is the full `(Simple → GP) ∧ bare` pair; named
+`case_III_realization` wrapper minted; build + lint clean (§1.55(c)).
+
+**Leaf 4 fully superseded** — `theorem_55_d3` now routes through `case_III_realization` and
+`theorem_55_generic` with `hbaseGP` vacuously eliminated; the remaining four callbacks
+(`hbase`/`hsplit`/`hcontract`/`hcontractGP`) ride as named hypotheses per §1.54(a).
 
 **All §1.48/§1.49 leaves AND the entire `hcand` discharge (W1–W10b) are landed** — the producer
 spine `case_III_hsplit_producer` (CaseI.lean; carries the open core as its `hcand` parameter) and
@@ -103,10 +100,9 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   `def:genuine-hinge-realization` red node (KT honest form); `lem:case-I-realization` restated
   to carry `hcSimple` as the KT-6.3 case hypothesis + `lem:case-I-dispatch` red node (the 6.5
   arm). Lint + bp + web + checkdecls green. Done.
-- [ ] **L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) + the `theorem_55_d3`
-  re-shape: feed `hbaseGP` (vacuity); keep `hbase`/`hsplit`/`hcontract` carried; restate the
-  conclusion to the full `(Simple → GP) ∧ bare` pair; mint the named `case_III_realization`
-  wrapper (§1.55(c)).
+- [x] **L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) + the `theorem_55_d3`
+  re-shape: `hbaseGP` discharged by vacuity; conclusion restated to `(Simple → GP) ∧ bare`;
+  `case_III_realization` wrapper minted (§1.55(c)). Build + lint clean. Done.
 - [ ] **L5c′** — the `hcontractGP` dispatch, route (B) (§1.55(c)): `by_cases` on
   simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor; negative → the
   named `h65` carry.
@@ -150,10 +146,9 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
 
 ## Hand-off / next phase
 
-**Smallest next forward commit — L5b′**: `not_simple_of_isMinimalKDof_of_ncard_two`
-(§1.54(a1)) + the `theorem_55_d3` re-shape (feed `hbaseGP`; keep `hbase`/`hsplit`/`hcontract`
-as hypotheses; restate conclusion to `(Simple → GP) ∧ bare`; mint `case_III_realization`
-wrapper; §1.55(c)). Build order L5b′ → L5c′ → L5d′ → L5e′. Phase close green-modulo
+**Smallest next forward commit — L5c′**: the `hcontractGP` dispatch, route (B) (§1.55(c)):
+`by_cases` on simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor;
+negative → the named `h65` carry. Build order L5c′ → L5d′ → L5e′. Phase close green-modulo
 {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)). **No `sorry`** at any step.
 
 After 22h closes: **the successor sub-phase 22i** ("the honest all-`k` Theorem 5.5" —
@@ -263,6 +258,13 @@ row to `notes/AlgebraicIndependence.md`.
   invocation, W8-pattern normalization, `fin_cases u` → W7/W8/W9c; M₁/M₂ rows via the W10a
   congruence. Friction promoted (§§ 45/46/38). Settled.
 
+- **L5b′ vacuity discharge of `hbaseGP`:** `not_simple_of_isMinimalKDof_of_ncard_two` proves a
+  simple minimal-`0`-dof graph on 2 vertices cannot exist (two-edge-connectivity gives ≥2 crossing
+  edges; simplicity forces them equal — contradiction). Discharged in `theorem_55_generic`'s
+  `hbaseGP` slot as `fun G hG hV2 hSimple => absurd hSimple (not_simple … (by omega) hG hV2)`.
+  `case_III_realization` extracts the inline `hsplitGP` wiring from `theorem_55_d3` into a named
+  declaration (§1.55(c)). Conclusion restated from bare `.2`-projection to the full conditioned
+  pair `(Simple → GP) ∧ bare`; `hbase`/`hsplit`/`hcontract`/`hcontractGP` still ride as carries.
 - **Leaf-5 feed audit (§1.54, docs-only; supersedes the §1.41(5) "six green/green-modulo branch
   args" expectation).** Verdicts: no graph-level base layer exists (Pinning.lean's
   `theorem_55_base` is framework-level); `hbaseGP` vacuous (parallel-pair cut bound);
