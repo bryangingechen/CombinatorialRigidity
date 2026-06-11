@@ -48,9 +48,11 @@ realization, no second redundancy, no second GAP-6). Three one-commit leaves: **
 short-circuit-free relabel span-induction), **W9b** (the per-member bottom tag transport),
 **W9c** (the arm closer, a W8-pattern instantiation). **W9a + W9b + W9c are LANDED**
 (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` + `case_III_bottom_relabel` +
-`case_III_arm_realization_M3`, CaseI.lean). Smallest next commit: **W10** (dispatch + discharge
-matching `hcand`, + the ends-congruence pre-brick of §1.52(e)). Then per §1.51(j)/§1.52(f):
-Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6.
+`case_III_arm_realization_M3`, CaseI.lean). Smallest next commit: **the W10 design-settle pass**
+(§1.53 — W10 is the one remaining un-pinned assembly slot; see the recon-before-build flag in
+*Hand-off*), then **W10** itself (dispatch + discharge matching `hcand`, + the ends-congruence
+pre-brick of §1.52(e)). Then per §1.51(j)/§1.52(f): Leaf 4 → Leaf 5 → phase close
+green-modulo-GAP-6.
 
 **W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
 the role-parametric arm yielding `HasGenericFullRankRealization k G` from the unpacked split context
@@ -160,7 +162,13 @@ detail is in git history + *Decisions made* below.
 ## Hand-off / next phase
 
 **Smallest next forward commit — W10, the dispatch + discharge assembly (design §1.51(i) +
-§1.52(e)):** the leaf that matches `case_III_hsplit_producer`'s `hcand` parameter shape, feeding
+§1.52(e)). Recon-before-build flag:** unlike W1–W9c, W10 has **no exact-signature spec block** —
+§1.51(i) is a prose route and §1.52(e) defers the ends-congruence pre-brick "to the W10 moment".
+That is the same under-pinned-assembly shape that blocked two builders at W6-concrete
+(model-experiment rows 26–27) and mis-routed W9 at 365740b (rows 38–39): the next dispatch
+should be a **design-settle pass** (a §1.53 pinning W10's exact signature, the pre-brick's
+statement, and the `u`-dispatch wiring shapes), then the W10 build. The leaf
+matches `case_III_hsplit_producer`'s `hcand` parameter shape, feeding
 the three now-landed arms W7/W8/W9c off **one** W6b invocation. Route (§1.51(i)): unpack
 `hsplitGP` (the `hQeq` idiom, see W7's body), override the selector at the two re-inserted hinges
 (`ends' := Function.update (Function.update Q.ends e_a (v,a)) e_b (v,b)` — the IH selector is junk

@@ -144,7 +144,18 @@ Loop:
      confirmed against KT p. 684 + the Lean motive in one sitting).
      Build-dispatched
      agents sometimes self-redirect to a recon — often rightly; same
-     scrutiny, especially when one overturns a prior finding.
+     scrutiny, especially when one overturns a prior finding. A
+     **route claim recorded in the hand-off by a build agent** (a
+     "the next step must …" finding it didn't itself build) is a
+     recon verdict in disguise: verify it before dispatching a build
+     on it, and check it against what the design doc *actually
+     proposed* — a true premise can carry a wrong conclusion that
+     attacks a configuration nobody planned (22h rows 38–39: "W9
+     must re-derive W7's chain" was overturned by the §1.52 design
+     pass; the design's own `Gv`-slot made W9 a 3-leaf
+     instantiation). When the canonical design doc itself defers the
+     shapes ("pin at the X design moment"), the design moment IS the
+     next dispatch — a design-settle pass, not a build.
    - **Plan-label deviations (destructive→additive, slice re-size)
      are a normal, usually-correct self-redirect in migration
      phases** — four consecutive "destructive" slices rightly landed

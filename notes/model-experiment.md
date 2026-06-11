@@ -85,6 +85,7 @@ quality / blueprint sync / notes discipline / commit message
 | 39 | W9 design pass §1.52, 556ddde | 3/3/1 | fable | normal | clean | —✓——✓✓ | 297k tok / 45 tools / 1885s | high-yield docs-only pass. Verdict: M₃ IS a W7-instantiation at `Gv := G − a` / `q := qρ` / `ρ̃ := −ρ` — the 365740b finding's premise true but its conclusion attacked a configuration §1.51(i) never proposed. Coordinator independently verified the decisive KT claim against pp. 687–689 (pypdf): (6.31) only defines p₃; the (6.36) column op = the landed `columnOp` at roles (a,c); (6.38)–(6.39) row correspondence vb↔ab/va↔ac exact; (6.41) bottom block = the SAME v-split matrix reusing (6.24)'s λ/i* — no a-split rank, no second GAP-6. Also traced the W9a algebra at `φ := hingeRow a b ρ` (a-column = ρ; difference identity + genuine `e_b`-row + `sub_mem` yields the `hρGv`-slot) — consistent. Loser routes killed signature-level (fresh a-split W6b ⇒ second undischargeable eq.-(6.22) carry; chain re-derivation ⇒ ~600 duplicated lines still hitting the e₁-elimination). Honest consumption ledger: relabel suite/G4d-ii/`candidateRow_ac_eq_neg` off the live route with the phase-close blueprint obligation recorded; GAP-6 surface unchanged; W10 ends-congruence pre-brick flagged. Three exact-signature leaves W9a/W9b/W9c; hand-off re-pointed at W9a |
 | 40 | W9a short-circuit-free relabel span-induction `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, db3df42 | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 221k tok / 103 tools / 1782s | standing override raised rung from mapped sonnet. Signature matches §1.52(b) (one permitted discretionary tweak: unused `hva` dropped); three-branch cancellation algebra correct (e_c-generators cancel the subtracted a-column row, off-a generators swap-fixed via `htrans`). Genuine §38 finding: naive 3-branch span_induction with chained big-carrier rw's blew the 200k cumulative budget — fixed by the LinearMap-`T` bundle (light predicate) + per-branch single `simp only`, no `maxHeartbeats` (coordinator grep-confirmed); lifted to QUIRKS §38 *span_induction variant* + FRICTION. Gates re-run clean; hand-off re-pointed at W9b |
 | 41 | W9b bottom-row tag transport `case_III_bottom_relabel`, 5287268 | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 256k tok / 109 tools / 1728s | standing override raised rung from mapped sonnet. Signature matches §1.52(c) verbatim; tag conversions + sign algebra correct (a-incident `Gv`-rows → `(c,v)`-block with `ρ' = ∓r` via `panelSupportExtensor_swap`/`map_neg`; off-case stays a genuine `G−a`-row at `ends₃`; `(ab)`-tag → genuine `e_b`-row); §38-clean (hrow_mem idiom throughout). New §4 complement lifted (subst named-variable direction steer) + FRICTION. Also a correct in-commit D1: the duplicated landed-leaf roster compressed, note 464 lines. Gates re-run clean; hand-off re-pointed at W9c |
+| 42 | W9c the M₃ arm closer `case_III_arm_realization_M3`, 3c5f429 | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 217k tok / 85 tools / 870s | standing override raised rung from mapped sonnet. The third arm closes: W7-instantiation at the §1.52(d) roles with `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ` / `w̃ := dualMap ∘ w`; heavy transports delegated to G4d-i (hρe₀), W9a (hρGv via `sub_mem` against the genuine `e_b`-row), W9b (hwmem) exactly as pinned. Two permitted discretionary tweaks ([DecidableEq α] genuinely needed for the swap in binders; placement after G4d-ii since it consumes G4d-i). Honest no-new-friction review (four fix iterations all established idioms). Gates re-run clean; hand-off re-pointed at W10 (dispatch + discharge + the ends-congruence pre-brick). All three M-arms now landed |
 
 ## Findings
 
@@ -134,3 +135,34 @@ quality / blueprint sync / notes discipline / commit message
   This amends the experiment's fixed dispatch prompt; rows ≥ 18 run
   under the new prompt. Cross-repo sync of the command/template:
   the user is handling it.
+
+- (2026-06-11, rows 31–42) **The opus floor ran 10 consecutive
+  build dispatches clean** (rows 31–38, 40–42; profiles 1/1/1 to
+  2/2/1, all in the §38-trap discharge zone), zero escalations,
+  zero repairs — including the chain's two designated §38-exposed
+  leaves (W7, W6d) and four genuine new quirks surfaced and
+  properly lifted (§43, §44, two §38 variants, the §4 complement).
+  Costs ranged ~140–340k tok / 8–56 min per leaf. Interpretation:
+  with exact-signature design pins (§1.51/§1.52) opus reliably
+  one-shots leaves the map rates sonnet; whether sonnet would too
+  is untested this session (the override forbids probes). When the
+  override lifts at the discharge-assembly close, schedule
+  boundary pairs at the sonnet/opus boundary to recover that data.
+
+- (2026-06-11, rows 38–39) **A build agent's recorded design-moment
+  finding is a recon-shaped return.** Row 38's build dispatch
+  correctly self-shrank to a complete bridge sub-step but recorded
+  a route claim in the hand-off ("W9 must re-derive W7's chain at
+  the relabeled framework") whose premise was true and whose
+  conclusion was wrong — it attacked a configuration the design
+  never proposed (§1.51(i)'s `Gv`-slot was always `G − a`), and the
+  design doc had explicitly deferred W9's shapes to "the W9 design
+  moment". Coordinator scrutiny caught the gap; a fable design pass
+  (§1.52, row 39) overturned the conclusion with a KT-verified
+  lighter route (3 instantiation-style leaves, all landed clean in
+  rows 40–42; the row-38 bridge's CaseI half ended up OFF the live
+  route). Lesson promoted to `coordinate-phase.md` step 4: verify a
+  hand-off-recorded route claim like a recon verdict *before* the
+  next build, and when the canonical design doc itself defers the
+  shapes ("pin at the X design moment"), the next dispatch is a
+  design-settle pass, not a build.
