@@ -2895,6 +2895,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` + `LinearIndependent.exists_notMem_of_polynomial_repr` (general polynomial-entry Gram-det engine + basis-coordinate transfer)
+- **Where it bit:** Phase 22h W3 (leaf B, the KT-Lemma-5.2 one-variable rank
+  transfer, §1.50(c)) — certify a row family at `t = 0`, transfer LI along a
+  one-parameter shear whose basis coordinates are univariate-polynomial in `t`.
+- **Friction:** the existing mirror engine
+  `finite_setOf_not_linearIndependent_rows_along_affine_path` only covers the
+  affine family `A + t • B`; the shear family's `e_a`-rows are polynomial (not
+  affine) in `t`, and no basis-coordinate (vector-family, not matrix-row) form
+  was packaged.
+- **Resolution:** mirrored (a) the general engine
+  `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` (arbitrary
+  `P : Matrix m n (Polynomial ℝ)`; same `Q := det (P * Pᵀ)` +
+  `Polynomial.finite_setOf_isRoot` argument — the affine engine is the special
+  case `P = X • B.map C + A.map C`), and (b) the consumer-shaped
+  `LinearIndependent.exists_notMem_of_polynomial_repr` (pull back along
+  `b.equivFun`, avoid a finite `bad ∪ {0}` via `Set.Finite.infinite_compl`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`, beside the affine
+  engine it generalizes.
+
 ### [mirrored] `Pi.basisFun_toDual_apply` — the standard basis's `Basis.toDual` self-pairing is the dot product `∑ i, x i * y i`
 - **Where it bit:** Phase 22g C5 (the N3b dot-product incidence form,
   `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, Meet.lean). The N3b exterior-algebra
