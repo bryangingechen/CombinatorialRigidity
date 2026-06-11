@@ -29,14 +29,17 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step:** W2 — the `h618` micro-leaf `BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn`
-(§1.50(b), RigidityMatrix.lean; extract the inline `hfin` rank-nullity computation from
-GenericityDevice.lean:543/630). W1 (the discriminator restate, §1.50(a)) is **landed** —
-`exists_line_data_of_homogeneousIncidence` + `exists_complementIso_ne_zero_of_homogeneousIncidence`
-now return the discriminating index `u : Fin 3` (witness normal `n u`), the M₁/M₂/M₃ dispatch input.
+**Next concrete step:** W3 — leaf B (the one-variable rank transfer, graph-free; §1.50(c)). W2
+(the `h618` micro-leaf `BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn`) is **landed** —
+extracted the inline `hfin` rank-nullity computation into a packaged lemma in GenericityDevice.lean
+(next to its sole dependency `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`,
+*not* RigidityMatrix.lean as the §1.50(b) note aspired — the support lemma is downstream of
+RigidityMatrix.lean, so the honest home is beside it), and de-duped the two inline `hfin` blocks in
+`exists_independent_panelRow_subfamily_of_rigidOn`(`_linking`) to call it (`rw [span_panelRow…] ;
+exact …`). Needs neither `hends`/`hne`. W1 (the discriminator restate, §1.50(a)) landed before it.
 
 **Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
-→ W2 `h618` micro-leaf → W3 leaf B (rank transfer) → W4 leaf A0 (restriction-bottom augment)
+→ ~~W2 `h618` micro-leaf~~ (done) → W3 leaf B (rank transfer) → W4 leaf A0 (restriction-bottom augment)
 → W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ → W8 M₂
 → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 →
 phase close, **green-modulo-GAP-6**.
@@ -83,8 +86,11 @@ phase close, **green-modulo-GAP-6**.
   good-`t` core `exists_shear_linearIndependent_pair`, the Claim-6.12 → witness-meet glue
   `exists_complementIso_ne_zero_of_homogeneousIncidence`, and **W1 the discriminator restate**
   (`exists_line_data_of_homogeneousIncidence` + the witness-meet glue now return the dispatch index
-  `u : Fin 3`, witness normal `n u`). Remaining, as complete lemmas (no `sorry` on master), per
-  §1.50(f): W2 `h618` micro-leaf → W3 one-variable rank transfer → W4 restriction-bottom augment →
+  `u : Fin 3`, witness normal `n u`), and **W2 the `h618` micro-leaf**
+  (`finrank_span_rigidityRows_of_rigidOn`, GenericityDevice.lean: `finrank (span rigidityRows) =
+  D(|V|−1)` from `IsInfinitesimallyRigidOn V(F.graph)`; the inline `hfin` extract, the two
+  `…_subfamily_of_rigidOn` sites now call it). Remaining, as complete lemmas (no `sorry` on master),
+  per §1.50(f): W3 one-variable rank transfer → W4 restriction-bottom augment →
   W5 redundancy packaging (carries the GAP-6 inequality as the adjudicated explicit hypothesis —
   Blockers) → W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
   `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature.
@@ -112,19 +118,22 @@ phase close, **green-modulo-GAP-6**.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W2, the `h618` micro-leaf (§1.50(b)).** Extract the inline
-`hfin` rank-nullity computation (GenericityDevice.lean:543/630) into the packaged lemma
-`BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn` (signature in §1.50(b)):
-`finrank ℝ (span F.rigidityRows) = screwDim k * (V(F.graph).ncard − 1)` from `IsInfinitesimallyRigidOn`
-on a nonempty vertex set (`infinitesimalMotions_eq_dualCoannihilator` + the dual-annihilator
-complement + `finrank_screwAssignment`; no `hends`/`hne` needed). Then W3 leaf B (one-variable rank
-transfer, graph-free) → W4 leaf A0 (restriction-bottom block-triangular augment), each one commit,
-§1.50(f). W5 onward per the build order; GAP 6 is adjudicated (carry as explicit hypothesis —
-Blockers), so nothing gates W5+. **No `sorry` placeholders** at any step.
+**Smallest next forward commit — W3, leaf B (the one-variable rank transfer, graph-free; §1.50(c)).**
+The KT-Lemma-5.2 transfer: certify the (6.29) count at the `t = 0` hinge-level family, then transfer
+along the one-parameter shear by a one-variable minor polynomial (`annihRow` linear in `C`, so the
+`e_a`-rows are `t`-constant after rescaling). Graph-free — abstract `F`, no §38 carrier trap. Then
+W4 leaf A0 (restriction-bottom block-triangular augment), each one commit, §1.50(f). W5 onward per
+the build order; GAP 6 is adjudicated (carry as explicit hypothesis — Blockers), so nothing gates
+W5+. **No `sorry` placeholders** at any step.
 
-W1 (the discriminator restate, §1.50(a)) **landed** — both lemmas restated in place at
-`∃ u : Fin 3, …` with the witness normal returned as `n u`; statement-level only, both proofs
-reused verbatim, build/lint/axiom-clean.
+W2 (the `h618` micro-leaf, §1.50(b)) **landed** — `BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn`
+(GenericityDevice.lean, beside its sole dependency `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`):
+`finrank ℝ (span F.rigidityRows) = screwDim k * (V(F.graph).ncard − 1)` from `IsInfinitesimallyRigidOn`
+on the (nonempty) vertex set (`infinitesimalMotions_eq_dualCoannihilator` + the dual-coannihilator
+complement + `finrank_screwAssignment`; no `hends`/`hne`). The inline `hfin` rank-nullity computation
+extracted from GenericityDevice.lean's two `…_subfamily_of_rigidOn`(`_linking`) blocks, both now
+`rw [span_panelRow…]; exact …` one-liners. Build/lint/axiom-clean. W1 (the discriminator restate,
+§1.50(a)) landed before it.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -237,3 +246,11 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   idiom: `rw [show ⟨omitTwoExtensor pbar …, _⟩ = ⟨extensor ![pi,pj], _⟩ from Subtype.ext hkept]`
   lifts the line-data underlying-value identity to the `ScrewSpace 2` subtype. Graph-free, no §38;
   added to the existing node's `\lean` pin + prose (the witness `r̂(C(L))≠0` the producer is gated on).
+- **W2 `h618` micro-leaf (`finrank_span_rigidityRows_of_rigidOn`):** placed in GenericityDevice.lean,
+  *not* RigidityMatrix.lean as §1.50(b) aspired — the proof's sole non-trivial dependency
+  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` is itself in GenericityDevice
+  (downstream of RigidityMatrix), so beside it is the honest home (moving the support lemma upstream
+  was out of scope for a micro-leaf). Body = the inline `hfin` rank-nullity computation verbatim
+  minus the `span_panelRow_eq_rigidityRows` conversion (so no `hends`/`hne`); the two
+  `…_subfamily_of_rigidOn`(`_linking`) sites now `rw [span_panelRow…]; exact …`, dropping the
+  duplicated `hZ`/`h1`/`hsplit`/`hcompl` boilerplate. No `\lean` pin (internal infra). No friction.

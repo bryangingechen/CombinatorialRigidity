@@ -2465,8 +2465,11 @@ own parameters: `hD`, `hG`, `hV4'`, `hnoRigid`, `hsimple`, `hfresh`, `hGv` (spli
 `hGvSimple`, **and `hIH` (the full conditioned IH — but over minimal `0`-dof graphs ONLY)** — all
 in scope where the producer applies `hcand`, hence suppliable by the Leaf-4 wiring lambda.
 
-- **h618 (eq. (6.18), the split's full rank at the IH seed): NEEDS-MICRO-LEAF.** No packaged lemma
-  exists; the computation lives inline (the `hfin` block, GenericityDevice.lean:543/630). Extract:
+- **h618 (eq. (6.18), the split's full rank at the IH seed): LANDED (W2, GenericityDevice.lean).**
+  The packaged lemma below (`finrank_span_rigidityRows_of_rigidOn`) extracts the inline `hfin` block
+  (was GenericityDevice.lean:543/630); the two `…_subfamily_of_rigidOn`(`_linking`) sites now call it.
+  Placed in GenericityDevice (beside its dependency `finrank_infinitesimalMotions_of_…_vertexSet`),
+  not RigidityMatrix as aspired below — the support lemma is downstream of RigidityMatrix. Signature:
 
   ```lean
   theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn [Finite α]

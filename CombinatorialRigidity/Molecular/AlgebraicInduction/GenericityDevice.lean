@@ -448,6 +448,46 @@ theorem BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigi
   rw [hpin, F.finrank_pinnedMotionsOn_vertexSet] at hadd
   rw [Nat.mul_succ, ← hadd]
 
+/-- **A framework rigid on its whole body set has rigidity-row span of dimension `D(|V|−1)`**
+(`h618`, eq. (6.18); Katoh–Tanigawa 2011 §6.2/§6.4.1, Phase 22h W2). The rank-nullity bridge that
+turns rigidity on `V(F.graph)` into an *exact* dimension count for the rigidity-row span: the null
+space `Z(G,p)` has dimension `D·(|V(G)ᶜ| + 1)`
+(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`), so its row-span dual —
+which equals `Z`'s coannihilator (`infinitesimalMotions_eq_dualCoannihilator`) — has the
+complementary dimension `D|V| − dim Z = D(|V|−1)` via `Subspace.finrank_dualCoannihilator_eq` and
+the column count `finrank (α → ScrewSpace k) = D|α|` (`finrank_screwAssignment`).
+
+This is the packaged form of the `finrank`-computation that
+`exists_independent_panelRow_subfamily_of_rigidOn` and its linking-edge sibling perform inline; it
+needs neither the hinge-link selector (`hends`) nor the transversality witness (`hne`) — those enter
+only when one further wants the rows to be carried by *panel rows* of specific edges
+(`span_panelRow_eq_rigidityRows`), not for the rigidity-row span dimension itself. The eq. (6.18)
+seed-rank input the candidate-completion redundancy argument (KT eq. (6.22)–(6.23)) consumes. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn
+    [Finite α] (F : BodyHingeFramework k α β) (hnev : F.graph.vertexSet.Nonempty)
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
+    Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+      = screwDim k * (F.graph.vertexSet.ncard - 1) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  -- `dim Z = D·(|V(G)ᶜ| + 1)` (rigid block).
+  have hZ : Module.finrank ℝ F.infinitesimalMotions
+      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
+    F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hnev hrig
+  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnev
+  have hsplit : screwDim k * Fintype.card α
+      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  -- `finrank Φ + finrank Φ.dualCoannihilator = D|V|`, and `Φ.dualCoannihilator = Z`.
+  set Φ : Subspace ℝ (Module.Dual ℝ (α → ScrewSpace k)) := Submodule.span ℝ F.rigidityRows with hΦ
+  have hcompl : Module.finrank ℝ Φ + Module.finrank ℝ Φ.dualCoannihilator
+      = Module.finrank ℝ (α → ScrewSpace k) := by
+    rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
+      Subspace.dual_finrank_eq]
+  rw [← F.infinitesimalMotions_eq_dualCoannihilator, hZ,
+    BodyHingeFramework.finrank_screwAssignment, Nat.mul_succ] at hcompl
+  rw [Nat.mul_sub, Nat.mul_one]
+  omega
+
 /-- **A framework rigid on a body set `s` caps the null space at `D·(|sᶜ| + 1)`** (the body-set
 generalization of `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`;
 Katoh–Tanigawa 2011 §6.2, Phase 22a/G3c-i). If `F` is infinitesimally rigid on an arbitrary
@@ -532,28 +572,12 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
   set T := Set.range (F.panelRow ends) with hT
   haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
     Module.Finite.span_of_finite ℝ (Set.finite_range _)
-  -- The panel-row span has dimension `D|V| − dim Z = D(|V| − 1)` (rigid block).
-  have hZ : Module.finrank ℝ F.infinitesimalMotions
-      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
-    F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hnev hrig
-  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnev
-  have hsplit : screwDim k * Fintype.card α
-      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
-    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  -- The panel-row span has dimension `D|V| − dim Z = D(|V| − 1)` (rigid block, `h618`): under
+  -- transversal hinges the panel rows span the rigidity rows (`span_panelRow_eq_rigidityRows`).
   have hfin : Module.finrank ℝ (Submodule.span ℝ T)
       = screwDim k * (F.graph.vertexSet.ncard - 1) := by
-    -- `span (range panelRow) = span rigidityRows`, the kernel-complement of `Z`.
     rw [hT, F.span_panelRow_eq_rigidityRows hends hne]
-    set Φ : Subspace ℝ (Module.Dual ℝ (α → ScrewSpace k)) := Submodule.span ℝ F.rigidityRows with hΦ
-    -- `finrank Φ + finrank Φ.dualCoannihilator = D|V|`, and `Φ.dualCoannihilator = Z`.
-    have hcompl : Module.finrank ℝ Φ + Module.finrank ℝ Φ.dualCoannihilator
-        = Module.finrank ℝ (α → ScrewSpace k) := by
-      rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
-        Subspace.dual_finrank_eq]
-    rw [← F.infinitesimalMotions_eq_dualCoannihilator, hZ,
-      BodyHingeFramework.finrank_screwAssignment, Nat.mul_succ] at hcompl
-    rw [Nat.mul_sub, Nat.mul_one]
-    omega
+    exact F.finrank_span_rigidityRows_of_rigidOn hnev hrig
   -- Extract a `Fin (D(|V| − 1))`-indexed independent subfamily of *actual* panel rows.
   obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
   choose idx hidx using hfmem
@@ -619,26 +643,13 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
   set T := Set.range (fun i : L => F.panelRow ends (i : β × _ × _)) with hT
   haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
     Module.Finite.span_of_finite ℝ (Set.finite_range _)
-  -- The linking-edge panel-row span has dimension `D|V| − dim Z = D(|V| − 1)` (rigid block).
-  have hZ : Module.finrank ℝ F.infinitesimalMotions
-      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
-    F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hnev hrig
-  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnev
-  have hsplit : screwDim k * Fintype.card α
-      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
-    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  -- The linking-edge panel-row span has dimension `D|V| − dim Z = D(|V| − 1)` (rigid block,
+  -- `h618`): the linking-edge panel rows span the rigidity rows
+  -- (`span_panelRow_linking_eq_rigidityRows`).
   have hfin : Module.finrank ℝ (Submodule.span ℝ T)
       = screwDim k * (F.graph.vertexSet.ncard - 1) := by
     rw [hT, F.span_panelRow_linking_eq_rigidityRows hends hne]
-    set Φ : Subspace ℝ (Module.Dual ℝ (α → ScrewSpace k)) := Submodule.span ℝ F.rigidityRows with hΦ
-    have hcompl : Module.finrank ℝ Φ + Module.finrank ℝ Φ.dualCoannihilator
-        = Module.finrank ℝ (α → ScrewSpace k) := by
-      rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
-        Subspace.dual_finrank_eq]
-    rw [← F.infinitesimalMotions_eq_dualCoannihilator, hZ,
-      BodyHingeFramework.finrank_screwAssignment, Nat.mul_succ] at hcompl
-    rw [Nat.mul_sub, Nat.mul_one]
-    omega
+    exact F.finrank_span_rigidityRows_of_rigidOn hnev hrig
   -- Extract a `Fin (D(|V| − 1))`-indexed independent subfamily of *actual* linking panel rows.
   obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
   choose idx hidx using hfmem
