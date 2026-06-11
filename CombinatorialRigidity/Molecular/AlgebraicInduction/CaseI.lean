@@ -6045,6 +6045,234 @@ theorem BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows
   rw [hblock]
   exact acolumn_mem_hingeRowBlock_of_span_rigidityRows hac hlink_ec hblock hdeg2 hdeg2r hwGv
 
+/-- **W9c — the `M₃` arm closer: the third candidate (the line `L'' ⊂ Π(c)`) realizes the `d = 3`
+framework at full rank** (`lem:case-II-realization` / `lem:case-III`, the third of the three
+`hcand`-discharge arms; Katoh–Tanigawa 2011 §6.4.1, eqs.~(6.31)–(6.44), the `M₃ = (r̂; r(L''))`
+arm, design §1.52(d), Phase 22h). The `M₃` arm carries the candidate line `L'' ⊂ Π(c)` at the
+*third* body `c` (the neighbour of `a` across the degree-2 edge `e_c = ac`), introduced by the
+isomorphism `ρ : (G, p₃) ≅ (G_v^{ab}, q)` of KT eq.~(6.31) that relabels `a ↔ v`. The key
+structural fact (KT eqs.~(6.35)–(6.41)) is that `R(G, p₃)`'s relevant submatrix *is* the v-split
+matrix read through the relabel: the bottom block of (6.41) is the same `R(G_v^{ab} ∖ (ab)i^*, q)`
+as the `M₁`/`M₂` arms, with the same `λ`s and the same redundant index `i^*`. So the `M₃` arm
+consumes the **same** candidate/bottom data `ρ`/`w` as `M₁`/`M₂` (one W6b invocation feeds all
+three; KT p. 686), transported *pointwise* across the vertex relabel `(a v)` by the W9a/W9b
+leaves — there is no a-split rank certification, hence no second GAP-6.
+
+This is a pure instantiation of `case_III_arm_realization` (W7) at the roles
+`(v, a, b, e_a, e_b, n') := (a, c, v, e_c, e_a, n''')`, with the `Gv`-slot `G.removeVertex a` (the
+relabeled split minus its short-circuit edge — a subgraph of `G`), the relabeled seed
+`qρ = q ∘ (a v)` (inline `fun p => q (Equiv.swap a v p.1, p.2)`), the candidate functional
+`ρ̃ := -ρ` (KT eq.~(6.44): `Σ λ_{(ac)j} r_j(q(ac)) = -r̂`; the negation is a Lean-orientation
+artifact, `hingeRow c v (-ρ) = hingeRow v c ρ`), and the bottom family
+`w̃ := (funLeft (a v)).dualMap ∘ w`. The heavy transports are delegated: the candidate
+`hρe₀`-slot to **G4d-i** (`ρ ⊥ C(q(ac))`), the candidate `hρGv`-slot to **W9a** (the
+short-circuit-free span transport into the `G − a`-row span), and the bottom `hwmem`-slot to
+**W9b** (the per-member tag transport). Graph-free transport over the carrier; the §38 trap lives
+inside W7. -/
+theorem PanelHingeFramework.case_III_arm_realization_M3
+    [Finite α] [Finite β] [DecidableEq α]
+    (G : Graph α β) (ends₀ ends₃ : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b c : α} {e_a e_b e_c : β}
+    (hva : v ≠ a) (hab : a ≠ b) (hvb : v ≠ b) (hca : c ≠ a) (hcv : c ≠ v)
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (heac : e_a ≠ e_c)
+    (hcla : ∀ e x, G.IsLink e a x → e = e_a ∨ e = e_c)
+    (hrecGv : ∀ e x y, (G.removeVertex v).IsLink e x y →
+      ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (hends₃_ec : ends₃ e_c = (a, c)) (hends₃_ea : ends₃ e_a = (a, v))
+    (hends₃_eb : ends₃ e_b = (v, b))
+    (hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = ends₀ e)
+    (hends_Gva : ∀ e x y, (G.removeVertex a).IsLink e x y →
+      (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2)
+    (hne_Gva : ∀ e, (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2 →
+      (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
+        (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
+    (hV3 : 3 ≤ V(G).ncard)
+    {n''' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (c, i)), n'''])
+    (hgca : LinearIndependent ℝ ![(fun i => q (c, i)), (fun i => q (a, i))])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (c, i)) n''') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
+  set Fv := (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge with hFv
+  -- The relabeled seed reads `q` at the swapped body: `qρ(c,·) = q(c,·)`, `qρ(v,·) = q(a,·)`.
+  have hqρc : (fun i => qρ (c, i)) = (fun i => q (c, i)) := by
+    funext i; rw [hqρ]; simp only [Equiv.swap_apply_of_ne_of_ne hca hcv]
+  have hqρv : (fun i => qρ (v, i)) = (fun i => q (a, i)) := by
+    funext i; rw [hqρ]; simp only [Equiv.swap_apply_right]
+  -- The `e_c`-link of `Fv = ofNormals (G − v) ends₀ q`: `e_c` survives `removeVertex v`
+  -- (endpoints `a, c ≠ v`).
+  have hGv_ec : (G.removeVertex v).IsLink e_c a c :=
+    Graph.removeVertex_isLink.mpr ⟨hG_ec, hva.symm, hcv⟩
+  have hFv_link_ec : Fv.graph.IsLink e_c a c := by
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact hGv_ec
+  -- Degree-2 at `a` inside `Fv`: the only `(G − v)`-link at `a` is `e_c` (the `e_a` branch links
+  -- `v` and so cannot survive `removeVertex v`).
+  have hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c := by
+    intro f x hlink
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    obtain ⟨hGlink, _, hxv⟩ := Graph.removeVertex_isLink.mp hlink
+    rcases hcla f x hGlink with rfl | rfl
+    · rcases hG_ea.eq_and_eq_or_eq_and_eq hGlink with ⟨h, _⟩ | ⟨h, _⟩
+      · exact absurd h hva
+      · exact absurd h.symm hxv
+    · rfl
+  have hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c := fun f x hlink => hdeg2 f x hlink.symm
+  -- The candidate functional's annihilation `ρ ⊥ C(q(ac))` via G4d-i (the `a`-column of
+  -- `hingeRow a b ρ` is `ρ`, which lands in `Fv.hingeRowBlock e_c`, i.e. `ρ ⊥ Fv.supportExtensor
+  -- e_c = ±C(q(ac))`).
+  have hρ_ac : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (c, i))) = 0 := by
+    have hcol :=
+      BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows (Fab := Fv) (Fv := Fv)
+        (a := a) (c := c) (e_c := e_c) (Ne.symm hca) hFv_link_ec rfl hdeg2 hdeg2r hρGv
+    rw [BodyHingeFramework.hingeRow_comp_single_tail hab] at hcol
+    have hperp := (Fv.mem_hingeRowBlock_iff e_c ρ).1 hcol
+    rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hperp
+    -- `ends₀ e_c ∈ {(a,c),(c,a)}`; either gives `ρ ⊥ ±C(q(ac))`.
+    rcases hrecGv e_c a c hGv_ec with he | he
+    · rwa [he] at hperp
+    · rw [he, panelSupportExtensor_swap, map_neg, neg_eq_zero] at hperp; exact hperp
+  -- The genuine `e_b`-row of the `M₃` framework `Fva = ofNormals (G − a) ends₃ qρ`.
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃ qρ).toBodyHinge with hFva
+  -- `c, v ∈ V(G − a)` and `a ∉ V(G − a)`.
+  have ha_mem : a ∈ V(G) := hG_ea.right_mem
+  have hc_mem : c ∈ V(G) := hG_ec.right_mem
+  have hv_mem : v ∈ V(G) := hG_ea.left_mem
+  have hcard_Gva : V(G.removeVertex a).ncard = V(G).ncard - 1 := by
+    rw [Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem ha_mem]
+  refine PanelHingeFramework.case_III_arm_realization (k := k) G (G.removeVertex a) ends₃
+    (q := qρ) (v := a) (a := c) (b := v) (e_a := e_c) (e_b := e_a) (n' := n''')
+    ?hvVc ?haVc ?hbVc hG_ec hG_ea.symm hends₃_ec hends₃_ea heac.symm
+    ?hleG ?hsplitG hends_Gva hne_Gva ?hVone ?hVcard ?hLn ?hgab
+    (ρ := -ρ) ?hρgate ?hρe₀ ?hρGv (ιb := ιb)
+    (w := (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap ∘ w)
+    ?hwcard ?hw ?hwmem
+  case hvVc => rw [Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+  case haVc => rw [Graph.vertexSet_removeVertex]; exact ⟨hc_mem, hca⟩
+  case hbVc => rw [Graph.vertexSet_removeVertex]; exact ⟨hv_mem, hva⟩
+  case hleG => exact fun e u w hlink => (Graph.removeVertex_isLink.mp hlink).1
+  case hsplitG =>
+    intro e u w hlink
+    by_cases hua : u = a
+    · subst u; rcases hcla e w hlink with rfl | rfl
+      · exact Or.inr (Or.inl rfl)
+      · exact Or.inl rfl
+    · by_cases hwa : w = a
+      · subst w; rcases hcla e u hlink.symm with rfl | rfl
+        · exact Or.inr (Or.inl rfl)
+        · exact Or.inl rfl
+      · exact Or.inr (Or.inr (Graph.removeVertex_isLink.mpr ⟨hlink, hua, hwa⟩))
+  case hVone => rw [hcard_Gva]; omega
+  case hVcard => rw [hcard_Gva]; omega
+  case hLn => rw [hqρc]; exact hLn
+  case hgab => rw [hqρc, hqρv]; exact hgca
+  case hρgate =>
+    rw [hqρc, LinearMap.neg_apply, neg_ne_zero]; exact hρgate
+  case hρe₀ =>
+    rw [hqρc, hqρv, LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ_ac,
+      neg_zero, neg_zero]
+  case hρGv =>
+    -- `hingeRow c v (-ρ) = hingeRow v c ρ ∈ span Fva.rigidityRows`. From W9a at
+    -- `φ := hingeRow a b ρ` (image `hingeRow v b ρ`, `a`-column `ρ`), giving
+    -- `hingeRow v b ρ - hingeRow v c ρ ∈ span`;
+    -- `hingeRow v b ρ` is the genuine `e_b`-row of `Fva` (via `hρe₀`), so `Submodule.sub_mem`.
+    rw [BodyHingeFramework.hingeRow_swap c v (-ρ), neg_neg]
+    have htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
+        Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f := by
+      intro f x y hlink hxa hya
+      rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+      obtain ⟨hGflink, hxv, hyv⟩ := Graph.removeVertex_isLink.mp hlink
+      have hfne_a : f ≠ e_a := by
+        rintro rfl
+        rcases hG_ea.eq_and_eq_or_eq_and_eq hGflink with ⟨hh, _⟩ | ⟨hh, _⟩
+        · exact hxv hh.symm
+        · exact hyv hh.symm
+      have hfne_b : f ≠ e_b := by
+        rintro rfl
+        rcases hG_eb.eq_and_eq_or_eq_and_eq hGflink with ⟨hh, _⟩ | ⟨hh, _⟩
+        · exact hxv hh.symm
+        · exact hyv hh.symm
+      have hfne_c : f ≠ e_c := by
+        rintro rfl
+        rcases hG_ec.eq_and_eq_or_eq_and_eq hGflink with ⟨hh, _⟩ | ⟨hh, _⟩
+        · exact hxa hh.symm
+        · exact hya hh.symm
+      refine ⟨?_, ?_⟩
+      · rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+          Graph.removeVertex_isLink]
+        exact ⟨hGflink, hxa, hya⟩
+      · -- the `f`-extensors at `Fva` and `Fv` coincide off `{e_a, e_b, e_c}` (`ends₃ f = ends₀ f`,
+        -- `qρ = q` at the recorded endpoints `∉ {a, v}`), so the blocks are equal.
+        intro r hr
+        rw [Fva.mem_hingeRowBlock_iff]
+        rw [Fv.mem_hingeRowBlock_iff] at hr
+        rw [hFva, PanelHingeFramework.toBodyHinge_supportExtensor,
+          PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+          PanelHingeFramework.ofNormals_ends, hends₃_off f hfne_a hfne_b hfne_c]
+        rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor,
+          PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+          PanelHingeFramework.ofNormals_ends] at hr
+        rcases hrecGv f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
+          simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
+            Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
+    have hw9a := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+      (Fv := Fv) (Fva := Fva) (v := v) (a := a) (c := c) (e_c := e_c)
+      hca hcv hFv_link_ec hdeg2 hdeg2r
+      (fun f x y hlink => by
+        rw [hFv, PanelHingeFramework.toBodyHinge_graph,
+          PanelHingeFramework.ofNormals_graph] at hlink
+        exact (Graph.removeVertex_isLink.mp hlink).2)
+      htrans (φ := BodyHingeFramework.hingeRow a b ρ) hρGv
+    -- `(funLeft (a v)).dualMap (hingeRow a b ρ) = hingeRow v b ρ`; `a`-column is `ρ`.
+    rw [BodyHingeFramework.hingeRow_funLeft_dualMap, Equiv.swap_apply_left,
+      Equiv.swap_apply_of_ne_of_ne (Ne.symm hab) (Ne.symm hvb),
+      BodyHingeFramework.hingeRow_comp_single_tail hab] at hw9a
+    -- `hingeRow v b ρ` is the genuine `e_b`-row of `Fva`.
+    have hvb_row : BodyHingeFramework.hingeRow v b ρ ∈ Submodule.span ℝ Fva.rigidityRows := by
+      refine Submodule.subset_span ⟨e_b, v, b, ?_, ρ, ?_, rfl⟩
+      · rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+          Graph.removeVertex_isLink]
+        exact ⟨hG_eb, hva, Ne.symm hab⟩
+      · rw [Fva.mem_hingeRowBlock_iff, hFva, PanelHingeFramework.toBodyHinge_supportExtensor,
+          PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+          PanelHingeFramework.ofNormals_ends, hends₃_eb]
+        simp only [hqρ, Equiv.swap_apply_right, Equiv.swap_apply_of_ne_of_ne (Ne.symm hab)
+          (Ne.symm hvb)]
+        exact hρe₀
+    have := Submodule.sub_mem _ hvb_row hw9a
+    rwa [sub_sub_cancel] at this
+  case hwcard =>
+    -- both `w̃` and `w` index by `ιb`; the count matches (`V(G − a).ncard − 1 = V(G).ncard − 2`).
+    rw [hwcard, hcard_Gva, Nat.sub_sub]
+  case hw =>
+    exact hw.map' _ (LinearMap.ker_eq_bot.2
+      (LinearMap.dualMap_injective_of_surjective
+        (LinearMap.funLeft_surjective_of_injective _ _ (Equiv.swap a v) (Equiv.injective _))))
+  case hwmem =>
+    intro j
+    -- bridge the `∘` and the `qρ(c,·)/qρ(v,·) = q(c,·)/q(a,·)` seed identities, then W9b.
+    simp only [Function.comp_apply, hqρc, hqρv]
+    exact PanelHingeFramework.case_III_bottom_relabel hva hab hvb hca hcv hG_ea hG_eb hG_ec hcla
+      (fun e x y hlink => (Graph.removeVertex_isLink.mp hlink).1)
+      (fun e x y hlink => ⟨(Graph.removeVertex_isLink.mp hlink).2.1,
+        (Graph.removeVertex_isLink.mp hlink).2.2⟩)
+      (fun e x y hlink => hrecGv e x y hlink) hends₃_eb hends₃_off (hwmem j)
+
 /-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
 Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
 `q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.

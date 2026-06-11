@@ -46,11 +46,11 @@ finding):** W9 IS a W7-instantiation — roles `(v,a,b,e_a,e_b,n') := (a,c,v,e_c
 invocation (KT eqs. (6.35)–(6.41): `R(G,p₃)`'s bottom block IS the v-split matrix; no a-split
 realization, no second redundancy, no second GAP-6). Three one-commit leaves: **W9a** (the
 short-circuit-free relabel span-induction), **W9b** (the per-member bottom tag transport),
-**W9c** (the arm closer, a W8-pattern instantiation). **W9a + W9b are LANDED**
-(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` + `case_III_bottom_relabel`, CaseI.lean).
-Smallest next commit: **W9c**. Then per §1.51(j)/§1.52(f): W10 (dispatch + discharge matching
-`hcand`, + the ends-congruence pre-brick of §1.52(e)) → Leaf 4 → Leaf 5 → phase close
-green-modulo-GAP-6.
+**W9c** (the arm closer, a W8-pattern instantiation). **W9a + W9b + W9c are LANDED**
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` + `case_III_bottom_relabel` +
+`case_III_arm_realization_M3`, CaseI.lean). Smallest next commit: **W10** (dispatch + discharge
+matching `hcand`, + the ends-congruence pre-brick of §1.52(e)). Then per §1.51(j)/§1.52(f):
+Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6.
 
 **W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
 the role-parametric arm yielding `HasGenericFullRankRealization k G` from the unpacked split context
@@ -68,9 +68,10 @@ variant*); `[DecidableEq α/β]` dropped (`classical` supplies them). Build + li
 `h622lb`).
 
 **Build order (§1.51(j) + §1.52(f)):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8** + **W9a** +
-**W9b** all landed (M₁ certify-then-rebase + M₂ instantiation + the M₃ relabel span-induction core
-+ the M₃ per-member bottom tag transport; `h622lb` GAP-6 carry entered at W5, rides through W6b) →
-W9c (the M₃ arm closer, §1.52) → W10 (dispatch + discharge assembly, matches `hcand`'s shape; + the
+**W9b** + **W9c** all landed (M₁ certify-then-rebase + M₂ instantiation + the full M₃ arm: relabel
+span-induction core + per-member bottom tag transport + the W8-pattern arm closer; `h622lb` GAP-6
+carry entered at W5, rides through W6b) →
+W10 (dispatch + discharge assembly, matches `hcand`'s shape; + the
 ends-congruence pre-brick) → Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact
 signatures + per-leaf consumes/consumed-by/§38 notes: §1.51 + §1.52 (design doc). Per-leaf landing
 detail is in git history + *Decisions made* below.
@@ -127,10 +128,11 @@ detail is in git history + *Decisions made* below.
   `case_III_rank_certification`, **W7** `case_III_arm_realization` (M₁), **W8**
   `case_III_arm_realization_M2`, **W9-bridge** `hingeRow_funLeft_dualMap` (RigidityMatrix.lean; the
   span-level `mem_span_rigidityRows_ofNormals_relabel` landed but OFF the live route, §1.52(e)),
-  **W9a** `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, **W9b** `case_III_bottom_relabel`. All
-  axiom-clean, no `\lean` pins (internal infra). **Remaining** (complete lemmas, no `sorry` on
-  master): **W9c** (the M₃ arm closer, a W7-instantiation at `Gv := G.removeVertex a` / `qρ` /
-  `ρ̃ := −ρ`) → W10 dispatch + assembly matching the `hcand` signature.
+  **W9a** `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, **W9b** `case_III_bottom_relabel`,
+  **W9c** `case_III_arm_realization_M3` (the M₃ arm closer, a W7-instantiation at
+  `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ`). All axiom-clean, no `\lean` pins (internal infra).
+  **Remaining** (complete lemmas, no `sorry` on master): **W10** dispatch + assembly matching the
+  `hcand` signature (feeds the three arms W7/W8/W9c off one W6b invocation).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -157,24 +159,24 @@ detail is in git history + *Decisions made* below.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W9c, the M₃ arm closer `case_III_arm_realization_M3` (design
-§1.52(d)):** a W8-pattern instantiation of W7 (`case_III_arm_realization`) at the roles
-`(v,a,b,e_a,e_b,n') := (a,c,v,e_c,e_a,n''')`, `Gv := G.removeVertex a`, `q := qρ` (inline
-`fun p => q (swap a v p.1, p.2)`), `ρ̃ := −ρ`, `w̃ := (funLeft (swap a v)).dualMap ∘ w`. Discharge
-W7's hypotheses: the structural/seed-evaluation slots by `removeVertex_isLink` /
-`vertexSet_removeVertex` + `Set.ncard_diff` + the swap-`simp only`; the candidate `hρe₀`-slot via
-**G4d-i** (`acolumn_mem_hingeRowBlock_of_span_rigidityRows` at `wGv := hingeRow a b ρ`); `hρGv`-slot
-via **W9a** at `φ := hingeRow a b ρ`; the bottom `hwmem̃ j := W9b … (hwmem j)` (the just-landed
-`case_III_bottom_relabel`), `hw̃` by `funLeft`/`dualMap` injectivity of the swap. Exact signature +
-the 22-hypothesis route: §1.52(d). **The 365740b hand-off finding ("W9 must re-derive
-W7's chain with the relabeled a-split framework as rigidity source") is superseded by §1.52(a):**
-the §1.51(i) `Gv`-slot was always `G − a` (a subgraph of `G`); KT (6.35)–(6.41) never realizes
-the a-split, and the relabel-SPAN bridge / `ofNormals_relabel` suite / G4d-ii /
-`candidateRow_ac_eq_neg` are off the live route (consumption ledger + phase-close blueprint
-obligation: §1.52(e); `hingeRow_funLeft_dualMap` IS consumed, by W9a/W9b). Then per
-§1.51(j)/§1.52(f): W10 (dispatch + discharge matching `hcand`; + the small ends-congruence
-pre-brick flagged in §1.52(e)) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6. **No `sorry`**
-at any step (carry GAP-6 as the named `h622lb`, never a `sorry`).
+**Smallest next forward commit — W10, the dispatch + discharge assembly (design §1.51(i) +
+§1.52(e)):** the leaf that matches `case_III_hsplit_producer`'s `hcand` parameter shape, feeding
+the three now-landed arms W7/W8/W9c off **one** W6b invocation. Route (§1.51(i)): unpack
+`hsplitGP` (the `hQeq` idiom, see W7's body), override the selector at the two re-inserted hinges
+(`ends' := Function.update (Function.update Q.ends e_a (v,a)) e_b (v,b)` — the IH selector is junk
+off `E(Gab)` and `e_a, e_b ∉ E(Gab)`; `e₀ ∈ E(Gab)` keeps its recorded pair *possibly swapped*, so
+W10 case-splits on the recorded order); derive `hgab`/triple-LI from GP; `hne_Gv` from GP +
+`supportExtensor_ne_zero_of_isGeneralPosition`; invoke **W6b** (the single `h622lb` GAP-6 carry
+enters W10's signature here); run the discriminator glue at `hr := ρ ≠ 0`; bridge the gate to each
+arm's shape via `panelSupportExtensor_eq_complementIso_extensor`; then `match u with | 0 => W7
+| 1 => W8 | 2 => W9c`. **The small ends-congruence pre-brick (§1.52(e)):** W7/W8 feed `hρGv`/`hwmem`
+at the *overridden* selector `ends'` while W6b emits them at `Q.ends`; since `rigidityRows`/
+`IsInfinitesimallyRigidOn` read `ends` only at linked edges and `e_a, e_b ∉ E(Gab)`, one small
+row-set congruence lemma (`ofNormals`-`rigidityRows` agrees under selectors equal on links)
+discharges it — budget it inside W10's commit or as a micro-leaf just before it. W9c needs no such
+brick (W9a/W9b conclude at `ends₃` directly). Then per §1.51(j)/§1.52(f): Leaf 4 → Leaf 5 → phase
+close green-modulo-GAP-6. **No `sorry`** at any step (carry GAP-6 as the named `h622lb`, never a
+`sorry`).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -448,6 +450,17 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   output LEFT disjunct is *set* membership in `Fva.rigidityRows` (not `span`). §38: every membership
   an explicit `⟨e,u,v,…⟩` witness; every extensor eval through `toBodyHinge_supportExtensor` /
   `ofNormals_{ends,normal}` + the swap lemmas, never `whnf`. Axiom-clean; no `\lean` pin.
+- **W9c the M₃ arm closer (§1.52(d); `PanelHingeFramework.case_III_arm_realization_M3`, CaseI.lean,
+  after G4d-ii).** One-`refine` instantiation of W7 at roles `(v,a,b,e_a,e_b,n') :=
+  (a,c,v,e_c,e_a,n''')`, `Gv := G.removeVertex a`, `q := qρ`, `ρ̃ := −ρ`,
+  `w̃ := (funLeft (swap a v)).dualMap ∘ w`; W7's 22 hyps discharged in `case` blocks. Seed slots by
+  `swap_apply_of_ne_of_ne`/`_right`; `hρe₀` (`ρ ⊥ C(q(ac))`) via **G4d-i** + `mem_hingeRowBlock_iff`
+  + the `hrecGv` sign split; `hρGv` via **W9a** at `φ := hingeRow a b ρ` (image `hingeRow v b ρ`,
+  then `Submodule.sub_mem` vs the genuine `e_b`-row + `sub_sub_cancel`; W9a's `htrans` off-case = the
+  `hends₃_off`/`hrecGv` agreement of W9b's); `hwmem̃ := W9b ∘ hwmem` after `simp [Function.comp_apply,
+  hqρc, hqρv]`; `hw̃` by `LinearIndependent.map'` + `funLeft`/`dualMap` swap-injectivity; `hwcard` by
+  `ncard_diff_singleton_of_mem` + `Nat.sub_sub`. `[DecidableEq α]` kept (statement `Equiv.swap a v`).
+  Axiom-clean; no `\lean` pin.
 
 ### Promoted to TACTICS-QUIRKS / FRICTION
 - *A multi-branch `span_induction` over a heavy `Module.Dual` span hits the cumulative heartbeat
