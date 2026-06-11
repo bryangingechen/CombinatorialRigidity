@@ -6738,4 +6738,65 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
       · exact Or.inl hgen
       · exact Or.inr hcand
 
+/-- **Theorem 5.5 at `d = 3`, bare motive, green-modulo-GAP-6**
+(`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the (β)-shape reduction;
+Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1).
+
+Instantiates `theorem_55_generic` at `k = 2` with the `hsplitGP` slot wired to the
+Case-III `d = 3` assembly (`case_III_hsplit_producer` + `case_III_candidate_dispatch`);
+projects the `.2` bare-motive conjunct. The remaining six callbacks (`hbase`, `hbaseGP`,
+`hsplit`, `hcontract`, `hcontractGP`) are explicit hypotheses, to be discharged when
+their respective producers land (`lem:theorem-55-base` and the Case-I assembly). GAP 6 (the
+eq.-(6.22) nested-IH rank bound at `G − v`, KT p. 684) rides as the explicit `h622`
+hypothesis (adjudicated carry; see `notes/Phase22h.md` *Blockers*). -/
+theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 6 ≤ Graph.bodyBarDim n)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
+      PanelHingeFramework.HasFullRankRealization 2 G)
+    (hbaseGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → G.Simple →
+      PanelHingeFramework.HasGenericFullRankRealization 2 G)
+    (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization 2 G') →
+      PanelHingeFramework.HasFullRankRealization 2 G)
+    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization 2 G') →
+      PanelHingeFramework.HasFullRankRealization 2 G)
+    (hcontractGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 G') ∧
+          PanelHingeFramework.HasFullRankRealization 2 G') →
+      PanelHingeFramework.HasGenericFullRankRealization 2 G)
+    -- GAP 6 (adjudicated carry, §1.50(b) option (ii)): the eq.-(6.22) nested-IH rank bound,
+    -- quantified over the graph, chain vertices/edges, and the IH-suppliable (ends, q) data.
+    -- Instantiated at each `(G, v, a, b, e₀)` invocation inside the `hsplitGP` wiring.
+    (h622 : ∀ (G : Graph α β) (v a b : α) (e₀ : β)
+        (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
+    PanelHingeFramework.HasFullRankRealization 2 G :=
+  (theorem_55_generic hbase hbaseGP hsplit
+    (fun G hG hV3 hnoRigid hSimple hIH =>
+      PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple hIH hfresh
+        (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+            hlea hleb hlec hclv hcla he₀ hsplitGP' =>
+          PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
+            hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+            hlea hleb hlec hclv hcla he₀
+            (h622 G v a b e₀)
+            hsplitGP'))
+    hcontract hcontractGP G hG hV).2
+
 end CombinatorialRigidity.Molecular
