@@ -15,9 +15,16 @@ don't duplicate.**
 
 ## Current state
 
-**Next concrete step: L5d′** — the Thm 5.5→5.6 push, `def = 0`/simple/spanning stratum
-(`rankHypothesis_deficiency_of_theorem_55_d3` + the off-edge selector re-aim micro-brick;
-§1.54(b)).
+**Next concrete step: L5e′** — the blueprint close commit: instance node
+`thm:theorem-55-d3-instance`, `lem:case-II-realization`/`lem:case-III` pins + flips, GAP-6
+red node `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red; the carried bare
+family presented per §1.55(b) (§1.54(c)).
+
+**L5d′ landed** — `PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3` +
+the private `reaim` micro-brick (CaseI.lean): off-edge selector re-aim rebuilds `Q′ = ⟨G,
+Q.normal, ends′⟩` (links → `Q.ends`, non-links → fixed pair `(x₀, y₀)`), then applies
+`rigidityMatrix_prop11` with `hC` from GP + link-recording and `hgen` from the spanning
+condition. Build + lint clean.
 
 **L5c′ landed** — the `hcontractGP` dispatch in `theorem_55_d3` (CaseI.lean): `by_cases` on
 `∃ H r, H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple`; positive →
@@ -112,9 +119,8 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
 - [x] **L5c′** — `hcontractGP` dispatch in `theorem_55_d3`: `by_cases` on simple-contraction
   existence; positive → `case_I_realization` (6.3 arm); negative → `h65` carry. `hcontractGP`
   param dropped; `h65` param added. Build + lint clean. Done.
-- [ ] **L5d′** — the Thm 5.5→5.6 push, `def = 0`/simple/spanning stratum
-  (`rankHypothesis_deficiency_of_theorem_55_d3` + the off-edge selector re-aim micro-brick;
-  §1.54(b)). The `def > 0` push is post-22h (the 22i all-`k` successor).
+- [x] **L5d′** — `rankHypothesis_deficiency_of_theorem_55_d3` + `reaim` micro-brick
+  (CaseI.lean; §1.54(b)). Build + lint clean. Done.
 - [ ] **L5e′** — the blueprint close commit: instance node `thm:theorem-55-d3-instance`,
   `lem:case-II-realization`/`lem:case-III` pins + flips, the GAP-6 red node
   `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red; the carried bare family
@@ -152,12 +158,13 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
 
 ## Hand-off / next phase
 
-**Smallest next forward commit — L5d′**: the Thm 5.5→5.6 push, `def = 0`/simple/spanning
-stratum: (1) off-edge selector re-aim micro-brick (rebuild `Q′ := ⟨G, Q.normal, ends′⟩` with
-`ends′ = Q.ends` on links and a constant distinct pair off-link, so `prop11`'s all-`β` `hC`
-feeds); (2) `rankHypothesis_deficiency_of_theorem_55_d3` using the GP conjunct of
-`case_III_realization` (§1.54(b)). Build order L5d′ → L5e′. Phase close green-modulo
-{`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)). **No `sorry`** at any step.
+**Smallest next forward commit — L5e′**: the blueprint close commit — add
+`thm:theorem-55-d3-instance` node (pins `rankHypothesis_deficiency_of_theorem_55_d3` and
+flips `\leanok`), flip `lem:case-II-realization` and `lem:case-III` to `\leanok` with their
+`\lean{...}` pins (`hasGenericFullRankRealization_of_case_II_realization` and
+`case_III_realization`), add GAP-6 node `lem:case-III-nested-rank-lower` (red, no `\leanok`),
+leave `thm:theorem-55` red; present the carried bare family per §1.55(b) (§1.54(c)). Phase
+close green-modulo {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)).
 
 After 22h closes: **the successor sub-phase 22i** ("the honest all-`k` Theorem 5.5" —
 scope in §1.55(a) and the *Blockers* entry; opens with a single motive design pass and the
@@ -273,6 +280,13 @@ row to `notes/AlgebraicIndependence.md`.
   `case_III_realization` extracts the inline `hsplitGP` wiring from `theorem_55_d3` into a named
   declaration (§1.55(c)). Conclusion restated from bare `.2`-projection to the full conditioned
   pair `(Simple → GP) ∧ bare`; `hbase`/`hsplit`/`hcontract`/`hcontractGP` still ride as carries.
+- **L5d′ `reaim` + `prop11` feed:** `reaim` rebuilds `Q′ = ⟨G, Q.normal, ends′⟩` with
+  `ends′ = Q.ends` on links and `(x₀, y₀)` on non-links (classical decidability via `haveI`).
+  `reaim_infinitesimalMotions` via `infinitesimalMotions_eq_of_isLink_supportExtensor` (motion
+  space = links only). `hC` from GP + link-recording (`rcases hQrec`) + looplessness (`hle.ne`)
+  on links, GP on `(x₀, y₀)` off-links. `hgen` from `finrank_…_of_isInfinitesimallyRigidOn_vertexSet`
+  + `hspan` (complement ncard = 0 → `dim Z = D`). `_hSimple` carried but mechanically unused
+  (GP witness already embeds the simple-case entry). No friction.
 - **L5c′ dispatch shape:** `hcontractGP` in `theorem_55_d3` wired via `by_cases hd : ∃ H r,
   H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple`; positive →
   `case_I_realization (by omega) G hG hH hr hH.2.1 hSimple hcSimple hIH`; negative →

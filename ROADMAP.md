@@ -925,9 +925,10 @@ is weaker than KT's realization notion, and that the KT 6.3-vs-6.5 Case-I dispat
 formalized; postmortem in `DESIGN.md` *Statement faithfulness to the source*) → the **§1.55
 adjudications** (user, 2026-06-11): the bare motive will be strengthened to KT's strength at
 the successor sub-phase's all-`k` motive redesign, and the Lemma-6.5 arm defers behind a named
-carry. The remaining work is the revised cut **L5a′–L5e′** (≈5 commits: the blueprint honesty
-repairs, the remaining callback wiring, the 6.3-vs-6.5 dispatch, the `def = 0` stratum of the
-Thm 5.5→5.6 push, the banner flips). The phase closes **green-modulo the named carry family**
+carry. **L5a′–L5d′ done** (blueprint honesty repairs, callback wiring, 6.3-vs-6.5 dispatch, and the
+`def = 0` stratum of the Thm 5.5→5.6 push — `rankHypothesis_deficiency_of_theorem_55_d3` +
+`reaim` micro-brick). Remaining: **L5e′** (blueprint close: banner flips +
+`thm:theorem-55-d3-instance` node). The phase closes **green-modulo the named carry family**
 {`h622` (GAP 6, the KT eq.-(6.22) nested-IH rank bound, user-adjudicated 2026-06-10), `h65`
 (the Lemma-6.5 arm), `hbase`/`hsplit`/`hcontract` (the bare-motive slots)} — all five
 discharged by the successor sub-phase **22i** ("the honest all-`k` Theorem 5.5", §1.55(a)),

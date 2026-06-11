@@ -6863,4 +6863,117 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
           (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩) hIH)
     G hG hV
 
+/-- **The off-edge selector re-aim** (Phase 22h L5d′ micro-brick): rebuild a panel-hinge framework
+with graph `G` and the same panel normals as `Q`, but with an endpoint selector that uses `Q.ends`
+on links of `G` and a fixed pair `(x₀, y₀)` on non-links. Since `IsInfinitesimalMotion` fires only
+on links, this preserves the motion space; and with `Q.IsGeneralPosition` + `x₀ ≠ y₀`, every
+edge's supporting extensor is nonzero. -/
+private noncomputable def PanelHingeFramework.reaim (k : ℕ) {α β : Type*}
+    (Q : PanelHingeFramework k α β) (G : Graph α β) (x₀ y₀ : α) :
+    PanelHingeFramework k α β where
+  graph := G
+  normal := Q.normal
+  ends := fun e =>
+    haveI := Classical.propDecidable (∃ u v, G.IsLink e u v)
+    if _h : ∃ u v, G.IsLink e u v then Q.ends e else (x₀, y₀)
+
+/-- The `reaim` framework's `toBodyHinge` has the same `infinitesimalMotions` as `Q.toBodyHinge`
+(with graph `G`): only link extensors enter the constraint, and `reaim` agrees with `Q` on links. -/
+private theorem PanelHingeFramework.reaim_infinitesimalMotions {k : ℕ} {α β : Type*}
+    (Q : PanelHingeFramework k α β) (G : Graph α β) (x₀ y₀ : α)
+    (hQg : Q.graph = G) :
+    (Q.reaim k G x₀ y₀).toBodyHinge.infinitesimalMotions
+      = Q.toBodyHinge.infinitesimalMotions := by
+  apply (BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
+    Q.toBodyHinge (Q.reaim k G x₀ y₀).toBodyHinge (by simp [reaim, hQg]) (fun e u v he => ?_)).symm
+  simp only [toBodyHinge_supportExtensor, reaim]
+  have : (∃ u' v', G.IsLink e u' v') := ⟨u, v, hQg ▸ he⟩
+  simp [this]
+
+/-- **Theorem 5.5 → Proposition 1.1, `def = 0`/simple/spanning stratum**
+(`prop:rigidity-matrix-prop11`, the `d = 3` instance; Katoh–Tanigawa 2011 §5.1/§5.2,
+Phase 22h L5d′). For a simple spanning
+minimal-`0`-dof graph on `≥ 2` bodies in `d = 3`, a generic panel-hinge realization produces
+a framework realizing the rank hypothesis at `def(G̃) = 0`: `dim Z(G, Q) = D = D + def(G̃)`.
+
+This is the first genuine `hgen` feed of `rigidityMatrix_prop11` (KT Prop 1.1): the spanning
+condition (`hspan : V(G) = Set.univ`) kills the complement so `dim Z = D·1 = D ≤ D + 0`, and the
+off-edge selector re-aim (`reaim`) satisfies `hC : ∀ e, supportExtensor e ≠ 0` by GP on links
+(link-recording + `IsLink.ne`) and the explicit pair `(x₀, y₀)` on non-links. -/
+theorem PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3
+    [Nonempty α] [Finite α] [Finite β] [DecidableEq β]
+    (G : Graph α β) (hG : G.IsMinimalKDof 3 0) (hV : 2 ≤ V(G).ncard)
+    (hspan : V(G) = Set.univ) (_hSimple : G.Simple)
+    (hGP : PanelHingeFramework.HasGenericFullRankRealization 2 G) :
+    ∃ Q : PanelHingeFramework 2 α β, Q.graph = G ∧
+      Q.toBodyHinge.RankHypothesis (G.deficiency 3) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  -- Extract the GP realization.
+  obtain ⟨Q, hQg, hQgp, hQrig, hQrec, hQai⟩ := hGP
+  -- Get two distinct bodies from `2 ≤ V(G).ncard` + `hspan`.
+  have hVcard : 2 ≤ Fintype.card α := by
+    have : V(G).ncard = Fintype.card α := by
+      rw [hspan, Set.ncard_univ, Nat.card_eq_fintype_card]
+    omega
+  obtain ⟨x₀⟩ := ‹Nonempty α›
+  obtain ⟨y₀, hxy⟩ := Fintype.exists_ne_of_one_lt_card (by omega) x₀
+  -- Build `Q'` with the re-aimed ends selector.
+  let Q' := Q.reaim 2 G x₀ y₀
+  -- `Q'` has graph `G`.
+  have hQ'g : Q'.graph = G := rfl
+  -- `Q'` has the same `infinitesimalMotions` as `Q` (on graph `G`).
+  have hmotions : Q'.toBodyHinge.infinitesimalMotions = Q.toBodyHinge.infinitesimalMotions :=
+    Q.reaim_infinitesimalMotions G x₀ y₀ hQg
+  -- `Q'` is infinitesimally rigid on `V(G)`.
+  have hQ'rig : Q'.toBodyHinge.IsInfinitesimallyRigidOn V(G) := by
+    intro S hS u hu v hv
+    have hS' : Q.toBodyHinge.IsInfinitesimalMotion S :=
+      (BodyHingeFramework.mem_infinitesimalMotions Q.toBodyHinge S).mp
+        (hmotions ▸ (BodyHingeFramework.mem_infinitesimalMotions Q'.toBodyHinge S).mpr hS)
+    exact hQrig S hS' u hu v hv
+  -- Looplessness from minimality.
+  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  -- `hC`: every edge's supporting extensor is nonzero.
+  have hC : ∀ e, Q'.toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e
+    simp only [Q', reaim, toBodyHinge_supportExtensor]
+    by_cases hlink : ∃ u v, G.IsLink e u v
+    · -- Link case: `Q'.ends e = Q.ends e`; use link-recording + looplessness + GP.
+      rw [dif_pos hlink]
+      obtain ⟨u, v, hle⟩ := hlink
+      rw [panelSupportExtensor_ne_zero_iff]
+      -- From link-recording: `(Q.ends e) = (u,v)` or `(v,u)`.
+      rcases hQrec e u v (hQg ▸ hle) with ⟨h1, h2⟩ | ⟨h1, h2⟩
+      · rw [h1, h2]; exact hQgp u v hle.ne
+      · rw [h1, h2]; exact hQgp v u hle.ne.symm
+    · -- Non-link case: `Q'.ends e = (x₀, y₀)`.
+      rw [dif_neg hlink]
+      simp only [panelSupportExtensor_ne_zero_iff]
+      exact hQgp x₀ y₀ hxy.symm
+  -- Nonemptiness.
+  have hQ'ne : V(Q'.toBodyHinge.graph).Nonempty := by
+    simp only [toBodyHinge_graph, hQ'g, hspan]
+    exact Set.univ_nonempty
+  -- Rigidity on the vertex set; needed for `finrank_…_of_isInfinitesimallyRigidOn_vertexSet`.
+  have hQ'rig_vs : Q'.toBodyHinge.IsInfinitesimallyRigidOn Q'.toBodyHinge.graph.vertexSet := by
+    simp only [toBodyHinge_graph, hQ'g]; exact hQ'rig
+  -- `dim Z = D * 1 = D`.
+  have hfinrank : Module.finrank ℝ Q'.toBodyHinge.infinitesimalMotions
+      = screwDim 2 * ((V(G))ᶜ.ncard + 1) :=
+    Q'.toBodyHinge.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet
+      (by simpa [toBodyHinge_graph, hQ'g] using hQ'ne) hQ'rig_vs
+  have hcompl : (V(G))ᶜ.ncard = 0 := by
+    simp [hspan, Set.compl_univ]
+  -- `hgen`: `(dim Z : ℤ) ≤ D + def`.
+  have hgen : (Module.finrank ℝ Q'.toBodyHinge.infinitesimalMotions : ℤ)
+      ≤ (screwDim 2 : ℤ) + Q'.toBodyHinge.graph.deficiency 3 := by
+    rw [hfinrank, hcompl, Nat.zero_add, Nat.mul_one]
+    simp only [toBodyHinge_graph, hQ'g]
+    have hdef : G.deficiency 3 = 0 := hG.1
+    linarith [hdef.symm ▸ (le_refl (0 : ℤ))]
+  -- Apply `rigidityMatrix_prop11`.
+  have hprop11 : Q'.toBodyHinge.RankHypothesis (Q'.toBodyHinge.graph.deficiency 3) :=
+    rigidityMatrix_prop11 Q'.toBodyHinge 3 (by omega) hC hgen
+  exact ⟨Q', hQ'g, by simpa [toBodyHinge_graph, hQ'g] using hprop11⟩
+
 end CombinatorialRigidity.Molecular
