@@ -488,6 +488,68 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn
   rw [Nat.mul_sub, Nat.mul_one]
   omega
 
+/-- **Coannihilator complement: rigidity-row span + null space = full screw-assignment space**
+(the coannihilator complement brick shared by B1 and B2). For any finite body-hinge framework,
+the rigidity-row span and its coannihilator (= the null space `Z(G,p)`) are complementary
+subspaces of the dual of the screw-assignment space `α → ScrewSpace k`:
+
+  `finrank (span rigidityRows) + finrank Z = D·|α|`
+
+This is the `Subspace.finrank_add_finrank_dualAnnihilator_eq` + `Subspace.dual_finrank_eq`
+identity packaged for repeated use in B1 and B2. It appears inline in
+`finrank_span_rigidityRows_of_rigidOn` (W2) and
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`; extracting it
+avoids re-deriving the coannihilator step at each call site. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+    [Finite α] (F : BodyHingeFramework k α β) :
+    Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+      + Module.finrank ℝ F.infinitesimalMotions
+      = screwDim k * Nat.card α := by
+  haveI : Fintype α := Fintype.ofFinite α
+  rw [Nat.card_eq_fintype_card]
+  set Φ : Subspace ℝ (Module.Dual ℝ (α → ScrewSpace k)) := Submodule.span ℝ F.rigidityRows
+  have hcompl : Module.finrank ℝ Φ + Module.finrank ℝ Φ.dualCoannihilator
+      = Module.finrank ℝ (α → ScrewSpace k) := by
+    rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
+      Subspace.dual_finrank_eq]
+  rw [← F.infinitesimalMotions_eq_dualCoannihilator, BodyHingeFramework.finrank_screwAssignment]
+    at hcompl
+  linarith
+
+/-- **B1: rigidity on the vertex set iff the rigidity-row span has the right dimension**
+(`def:rank-hypothesis`, Phase 22i L0b). The `def = 0` bridge: a body-hinge framework is
+infinitesimally rigid on its own vertex set `V(F.graph)` if and only if the rigidity-row span
+has dimension exactly `D·(|V(G)|−1)`:
+
+  `F.IsInfinitesimallyRigidOn V(F.graph) ↔ finrank (span F.rigidityRows) = D·(|V(G)|−1)`
+
+Forward direction: W2 (`finrank_span_rigidityRows_of_rigidOn`).
+Reverse direction: the complement brick gives `dim Z = D·|α| − finrank (span rows) =
+D·(|V(G)ᶜ| + 1)` (arithmetic off `Set.ncard_add_ncard_compl`), and N3
+(`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`) upgrades the count bound to rigidity.
+No transversality or link-selector hypothesis — those enter only when the row span must be
+carried by *panel rows* of specific edges. -/
+theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
+    [Finite α] (F : BodyHingeFramework k α β) (hne : F.graph.vertexSet.Nonempty) :
+    F.IsInfinitesimallyRigidOn F.graph.vertexSet ↔
+      Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+        = screwDim k * (F.graph.vertexSet.ncard - 1) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  constructor
+  · exact F.finrank_span_rigidityRows_of_rigidOn hne
+  · intro hcount
+    apply isInfinitesimallyRigidOn_vertexSet_of_finrank_le F hne
+    -- Use the complement brick: `finrank (span rows) + finrank Z = D·|α|`.
+    have hcompl := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+    have hsplit : screwDim k * Nat.card α
+        = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
+      rw [← Nat.mul_add, Set.ncard_add_ncard_compl]
+    have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+    -- `finrank Z = D·|α| − D·(|V|−1) = D + D·|Vᶜ| = D·(|Vᶜ|+1)`.
+    -- Lift to ℤ to handle the Nat subtraction in `hcount`.
+    zify [h1] at hcount hcompl hsplit ⊢
+    linarith
+
 /-- **A framework rigid on a body set `s` caps the null space at `D·(|sᶜ| + 1)`** (the body-set
 generalization of `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`;
 Katoh–Tanigawa 2011 §6.2, Phase 22a/G3c-i). If `F` is infinitesimally rigid on an arbitrary
