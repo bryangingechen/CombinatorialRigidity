@@ -8,17 +8,21 @@ signatures stay canonical in `notes/Phase22-realization-design.md` §1.48 (T1–
 bridge), §1.49 (G5, G4a–G4e, G0, the (β) branch shape), §1.50 (the `hcand` discharge: the
 discriminator, the rank-transfer re-route W1–W10, GAP 6), §1.51 (the W6-concrete
 decomposition W6a–W6f + W7, exact signatures), §1.52 (W9a–W9c), §1.53 (W10a/W10b: the
-ends-congruence pre-brick + the dispatch assembly, exact signatures), and §1.54 (the Leaf-5
-feed audit + the L5a–L5e cut) — point at them, don't duplicate.**
+ends-congruence pre-brick + the dispatch assembly, exact signatures), §1.54 (the Leaf-5
+feed audit), and §1.55 (the user adjudications + the revised L5a′–L5e′ cut) — point at them,
+don't duplicate.**
 22g's archive (delivered leaves + settled verdicts): `notes/Phase22g.md`.
 
 ## Current state
 
-**Next concrete step: obtain the two §1.54 user decisions** (the degenerate-bare-motive
-sign-off + the Lemma-6.5 (A)-build-vs-(B)-carry scope call — see *Blockers*), **then L5a**
-(the two base/degenerate bricks). The Leaf-5 feed audit (§1.54, 2026-06-11) corrected three
-hand-off expectations and re-cut Leaf 5 into **L5a–L5e** (≈5 commits on route (B), ≈9–11 on
-route (A)); phase close stays green-modulo-`h622` (+ `h65` on route (B)).
+**Next concrete step: L5a′** (the blueprint honesty repairs, docs-only; §1.55(c)). The two
+§1.54 decisions are **adjudicated** (user, 2026-06-11; §1.55 + the postmortem `DESIGN.md`
+*Statement faithfulness to the source*): Decision 1 — the bare motive WILL be strengthened to
+KT's strength, at the all-`k` redesign in the successor sub-phase "22i", so the degenerate
+brick is **cut** and `hbase`/`hsplit`/`hcontract` stay carried hypotheses; Decision 2 — route
+(B) (`h65` carry; the 6.3-vs-6.5 dispatch itself still lands here). Revised cut
+**L5a′–L5e′** (≈5 commits); phase close green-modulo the named family {`h622`, `h65`,
+`hbase`, `hsplit`, `hcontract`}.
 
 **Leaf 4 landed PARTIALLY instantiated** (`PanelHingeFramework.theorem_55_d3`, CaseI.lean):
 instantiates `theorem_55_generic` at `k = 2` with `hsplitGP` wired via `case_III_hsplit_producer`
@@ -96,22 +100,24 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   exists; the bare motive is degenerately satisfiable for every connected `0`-dof graph —
   one brick feeds `hbase`/`hsplit`/`hcontract`; `hcontractGP` needs the unformalized KT
   6.3-vs-6.5 dispatch + Lemma-6.5 arm). Leaf 5 re-cut into L5a–L5e below.
-- [ ] **L5a** — the two base/degenerate bricks (`hasFullRankRealization_of_isKDof_zero`,
-  `not_simple_of_isMinimalKDof_of_ncard_two`; §1.54(a1)/(a2)). **Gated on the user's (a2)
-  sign-off.**
-- [ ] **L5b** — rewire `theorem_55_d3`: feed `hbase`/`hbaseGP`/`hsplit`/`hcontract`; restate
-  the conclusion to the full `(Simple → GP) ∧ bare` pair; mint the named
-  `case_III_realization` wrapper (§1.54(d)).
-- [ ] **L5c** — the `hcontractGP` arm per the user's scope call: (A) Claim 6.6 + the
-  Π°-placement producer + dispatch (~4–6 commits, §1.54(a3)) or (B) one commit carrying the
-  named `h65` hypothesis + the 6.3-arm feed.
-- [ ] **L5d** — the Thm 5.5→5.6 push, `def = 0`/simple/spanning stratum
+- [ ] **L5a′** — the blueprint honesty repairs (docs-only; §1.55(c)): `def:rank-hypothesis`
+  re-prosed to the Lean's actual strength + the 22i strengthening red node;
+  `lem:case-I-realization` restated to carry `hcSimple` as the KT-6.3 case hypothesis + the
+  6.5-arm red node. Per the two new gates (`blueprint/CLAUDE.md` *Static checks*).
+- [ ] **L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) + the `theorem_55_d3`
+  re-shape: feed `hbaseGP` (vacuity); keep `hbase`/`hsplit`/`hcontract` carried; restate the
+  conclusion to the full `(Simple → GP) ∧ bare` pair; mint the named `case_III_realization`
+  wrapper (§1.55(c)).
+- [ ] **L5c′** — the `hcontractGP` dispatch, route (B) (§1.55(c)): `by_cases` on
+  simple-contraction existence; positive → the §1.54(a3) 6.3-arm adaptor; negative → the
+  named `h65` carry.
+- [ ] **L5d′** — the Thm 5.5→5.6 push, `def = 0`/simple/spanning stratum
   (`rankHypothesis_deficiency_of_theorem_55_d3` + the off-edge selector re-aim micro-brick;
-  §1.54(b)). The `def > 0` push is post-22h (needs the all-`k` GAP-6 successor, already
-  adjudicated).
-- [ ] **L5e** — the blueprint commit: instance node `thm:theorem-55-d3-instance`,
+  §1.54(b)). The `def > 0` push is post-22h (the 22i all-`k` successor).
+- [ ] **L5e′** — the blueprint close commit: instance node `thm:theorem-55-d3-instance`,
   `lem:case-II-realization`/`lem:case-III` pins + flips, the GAP-6 red node
-  `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red (§1.54(c)).
+  `lem:case-III-nested-rank-lower`, `thm:theorem-55` stays red; the carried bare family
+  presented per §1.55(b) (§1.54(c)).
 
 ## Blockers / open questions
 
@@ -131,35 +137,33 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   carrier-instantiating leaf (the producer body, the T3/T4 seeds). Keep reasoning over abstract
   `F`; instantiate only at the seed. The §1.50 re-route helps: `F₀` and leaves A0/B are abstract /
   graph-free.
-- **USER DECISION 1 (§1.54(a2)) — the degenerate bare-motive route.** `HasFullRankRealization`
-  carries no genuine-hinge condition, so a zero-extensor (welded) framework discharges
-  `hbase`/`hsplit`/`hcontract` in one brick — sound Lean, but it makes `thm:theorem-55`'s bare
-  conjunct mathematically vacuous (the content lives in the GP conjunct, which is all the
-  capstone consumes). §1.54 recommends landing it now and folding the genuine-hinge motive
-  strengthening into the all-`k` GAP-6 successor re-design. Awaiting sign-off.
-- **USER DECISION 2 (§1.54(a3)) — the Lemma-6.5 arm scope.** `hcontractGP` is NOT
-  `case_I_realization` alone: the KT 6.3-vs-6.5 dispatch on `(G.rigidContract H r).Simple` is
-  unformalized, and the 6.5 arm (Claim 6.6 + the Π°-placement) is bounded new work (~4–6
-  commits, no research risk — bricks all landed). Option (A) build in-phase; option (B) close
-  green-modulo a second named carry `h65`. Changes the phase-close estimate.
+- **The §1.54 decisions — ADJUDICATED (user, 2026-06-11; canonical record §1.55 + `DESIGN.md`
+  *Statement faithfulness to the source*).** Decision 1: the bare motive is weaker than KT
+  (degenerately satisfiable) and **will be strengthened to KT's strength** — scheduled at the
+  all-`k` motive redesign in the successor sub-phase "22i" (one design moment for both
+  changes); in 22h the degenerate brick is cut and `hbase`/`hsplit`/`hcontract` ride as named
+  carries. Decision 2: route (B) — the 6.3-vs-6.5 dispatch lands here (L5c′), the 6.5 arm
+  defers to 22i behind the named `h65` carry. **22i scope** (recorded for the boundary):
+  all-`k` restructure + genuine-hinge conjunct + the Lemma-5.3 graph-level base + the
+  Lemma-6.2 non-simple branch + the 6.5 arm + the `h622`/`h65`/bare-family discharges; opens
+  with a single motive design pass; seed `notes/Phase22i.md` with the carries table
+  (§1.55(b)).
 
 ## Hand-off / next phase
 
-**Smallest next forward commit — L5a (the two base/degenerate bricks, §1.54(a1)/(a2),
-exact signatures pinned there), once the two §1.54 user decisions land** (see *Blockers*:
-the degenerate-bare-motive sign-off gates L5a; the Lemma-6.5 (A)-vs-(B) scope call sizes
-L5c). The feed audit is done (§1.54, 2026-06-11): all five callback feeds are pinned or
-gap-recorded against the landed Lean — `hbase`/`hsplit`/`hcontract` off the one degenerate
-brick, `hbaseGP` by the parallel-pair vacuity, `hcontractGP` = the 6.3 arm
-(`case_I_realization`, exact adaptor in §1.54(a3)) + the open 6.5 arm/dispatch. Build order
-L5a → L5b → L5c → L5d → L5e per the checklist above; the Π°-placement producer (L5c route
-(A) only) needs its own §1.53-style signature pin before building. Phase close
-green-modulo-`h622` (+ `h65` on route (B)). **No `sorry`** at any step.
+**Smallest next forward commit — L5a′ (the blueprint honesty repairs, docs-only; exact
+scope in §1.55(c)).** Both §1.54 decisions are adjudicated (see *Blockers*); build order
+L5a′ → L5b′ → L5c′ → L5d′ → L5e′ per the checklist above. Phase close green-modulo the
+named family {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)). **No `sorry`**
+at any step.
 
-After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
-**Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
-with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
-alg-independence row to `notes/AlgebraicIndependence.md`.
+After 22h closes: **the successor sub-phase 22i** ("the honest all-`k` Theorem 5.5" —
+scope in §1.55(a) and the *Blockers* entry; opens with a single motive design pass and the
+carries table in `notes/Phase22i.md`), which discharges all five carries and delivers the
+KT-strength Thm 5.5 → 5.6 → Cor 5.7 at `d=3`, unblocking Phases 24–26. Then **Phase 23** =
+general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it with its own
+recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` alg-independence
+row to `notes/AlgebraicIndependence.md`.
 
 ## Decisions made during this phase
 
@@ -264,7 +268,7 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   args" expectation).** Verdicts: no graph-level base layer exists (Pinning.lean's
   `theorem_55_base` is framework-level); `hbaseGP` vacuous (parallel-pair cut bound);
   `HasFullRankRealization` is degenerately satisfiable for every connected `0`-dof graph (zero
-  extensors weld — one brick feeds all three bare callbacks, user sign-off pending);
+  extensors weld — adjudicated: strengthen at 22i, carry the bare slots; §1.55);
   `hcontractGP` needs the unformalized KT 6.3-vs-6.5 dispatch (`hcSimple` is a *case
   hypothesis*; the 6.5 arm = Claim 6.6 + Π°-placement, bounded, ~4–6 commits); the Thm
   5.5→5.6 push at 22h-close is the `def = 0`/simple/spanning stratum (full Thm 5.6 = the

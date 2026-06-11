@@ -3914,6 +3914,60 @@ Phase close = L5a–L5e (≈ 5 commits on route (B), ≈ 9–11 on route (A)), *
 (+ `h65` on route (B)). The two user decisions to obtain before L5a: the (a2) degenerate-route
 sign-off and the (a3) (A)-vs-(B) scope call.
 
+### 1.55 The §1.54 adjudications (user, 2026-06-11) + the revised Leaf-5 cut — Decision 1: the bare motive WILL be strengthened to KT's strength, scheduled at the all-`k` redesign (the successor sub-phase "22i", one motive-design moment for both changes); consequence: the (a2) degenerate brick is CUT (carry the three bare slots as named hypotheses instead — zero rework). Decision 2: route (B) (the `h65` carry; the 6.3-vs-6.5 dispatch still lands in 22h)
+
+**(a) Decision 1 — honesty over convenience, scheduled at the single redesign moment.** The
+project's formalized statements must match KT's strength: `HasFullRankRealization` gets a
+genuine-hinge conjunct. NOT in 22h: the strengthening and the already-adjudicated all-`k`
+restructure (§1.50(b) option (i)) reshape the same defs / reduction theorems / bare producers,
+so both land in **one successor sub-phase ("22i — the honest all-`k` Theorem 5.5")**, opening
+with a single motive design pass (a §1.56-style block) that pins the all-`k` + genuine-hinge
+motive together, then: the spine restate, the two KT builds the weak motive skipped (the
+graph-level Lemma-5.3 base — the off-link-selector design problem of (a1) — and the Lemma-6.2
+non-simple branch, N6a re-aimed), the Lemma-6.5 arm ((a3) steps 1–3), and the `h622`/`h65`/
+bare-slot discharges. Postmortem + full rationale: `DESIGN.md` *Statement faithfulness to the
+source*; the four process rules extracted from it are in force as of the same date.
+
+**(b) Consequence for the L5 cut — the degenerate brick is cut as pure throwaway.**
+`hasFullRankRealization_of_isKDof_zero` would be deleted by the 22i strengthening and briefly
+enshrines the vacuous discharge; instead `hbase`/`hsplit`/`hcontract` **stay carried as named
+hypotheses on `theorem_55_d3`** (they already ride there since Leaf 4 — zero work now, real
+discharges in 22i). `hbaseGP` still discharges via the (a1) vacuity lemma (durable graph
+combinatorics, motive-independent). The 22h-close green-modulo surface is therefore the named
+family {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} — each with a tracked artifact (the L5e
+red nodes + the 22i obligations), presented in the blueprint as: the GP conjunct is the
+delivered content (it is all the `d=3` capstone consumes); the bare conjunct awaits the honest
+motive. **At the 22h→22i boundary, seed `notes/Phase22i.md` with a carries table** (carry /
+red node / Lean consumption site / discharge sub-plan) — the postmortem's structural fix for
+orphaned deferrals.
+
+**(c) The revised cut (supersedes §1.54(d); each leaf one commit).**
+
+* **L5a′ — the blueprint honesty repairs (docs-only).** Per the two new gates: re-prose
+  `def:rank-hypothesis` to state the Lean's actual strength (existential over arbitrary
+  selector/normals; cheapest witness = the welded framework), naming the KT divergence and the
+  22i strengthening obligation (mint the red node `def:genuine-hinge-realization` or
+  equivalent for the honest form); restate `lem:case-I-realization`'s prose to carry
+  `hcSimple` as the KT-6.3 case hypothesis and mint the red node for the 6.5 arm
+  (`lem:case-I-dispatch`, statement = the (a3) dispatch + Lemma-6.5 decomposition). No Lean.
+* **L5b′ — `not_simple_of_isMinimalKDof_of_ncard_two` ((a1)) + the `theorem_55_d3` re-shape:**
+  feed `hbaseGP` (the vacuity absurd); keep `hbase`/`hsplit`/`hcontract` as hypotheses;
+  restate the conclusion to the full `(Simple → GP) ∧ bare` pair (drop the `.2` projection,
+  (b)); mint the named `case_III_realization` wrapper ((c)2). Statement change → grep
+  `blueprint/src` per the structural-edit gate.
+* **L5c′ — the `hcontractGP` dispatch (route (B)):** `by_cases` on the simple-contraction
+  existence; positive → the 6.3-arm adaptor ((a3) exact wiring); negative → the named carry
+  `h65` (the 6.5-stratum `hcontractGP` instance, quantified per the (a3) step-3 negative
+  branch — every proper rigid subgraph has non-simple contraction — in the `h622` carry
+  idiom). One commit.
+* **L5d′ — unchanged** (§1.54(d) L5d: the off-edge selector re-aim micro-brick +
+  `rankHypothesis_deficiency_of_theorem_55_d3`).
+* **L5e′ — the blueprint close commit** ((c)1–5, adjusted: the instance node presents the
+  carried bare family per (b); the L5a′ red nodes enter the carries roster).
+
+Phase close = L5a′–L5e′ (≈ 5 commits), green-modulo the named family of (b). Then open 22i
+with the motive design pass.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
