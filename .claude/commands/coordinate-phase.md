@@ -36,15 +36,19 @@ Loop:
    `notes/model-experiment-protocol.md` (the single source of truth —
    don't duplicate it here); pass it as the Agent tool's `model`
    parameter, prompt held fixed. Honor any **standing rung override**
-   in the log's repo-local config. Append the log row only after the
-   verification pass completes in full — and match the previous row's
-   tail only, never an edit span that includes the following section
-   header (the `## Findings` header got clobbered 3× this way on
-   2026-06-10). If Status says concluded, follow the promoted
-   guideline instead.
+   in the log's repo-local config. Log rows follow the protocol's
+   *Per-dispatch record* rules (write-after-verification timing,
+   tail-only edit matching). If Status says concluded, follow the
+   promoted guideline instead.
 3. Dispatch Agent (subagent_type: general-purpose) with exactly the
-   prompt below (for a recon / design-pass step, adapt the first line
-   to name that deliverable):
+   prompt below. Two exceptions adapt it: a **recon / design-pass**
+   step names that deliverable in the first line; a **phase-open /
+   phase-close** step gets a short prologue stating what is
+   sanctioned (e.g. a user-adjudicated close shape — "closing now is
+   sanctioned; do not re-litigate it") and what is out of scope
+   ("the successor phase is NOT opened by this commit") — without it
+   the agent must re-derive both, and either re-asking or
+   over-reaching is bad (L5e′, 2026-06-11):
 
        Continue Phase $ARGUMENTS — do the next concrete commit per
        notes/Phase$ARGUMENTS.md "Hand-off / next phase", then stop.
@@ -111,7 +115,14 @@ Loop:
      partially-delivered item can be rewritten to match what landed,
      silently dropping pinned sub-clauses (row 46: a checklist item's
      wiring + blueprint-node sub-clauses vanished in the same commit
-     that marked it Done).
+     that marked it Done). The same check covers **prose routes**: a
+     commit that authors red-node / deferred-route prose gets that
+     route diffed against the canonical design § exactly like a Lean
+     statement — a mechanically clean TeX commit described the 6.5
+     arm via the wrong argument (contraction-splice vs the §1.54(a3)
+     vertex-removal; row 50), and only the design-§ re-read caught a
+     red node mis-describing its deferred proof (the rot the
+     red-node consistency gate would otherwise meet phases later).
    - **Mechanical fixups, not stops:** wrong branch → `git checkout
      master && git merge --ff-only <branch> && git branch -d
      <branch>`; wrong author → `git commit --amend --author=…`;
@@ -132,10 +143,14 @@ Loop:
      identity. A dispatch **killed by a session/usage limit** also
      returns neither (the return is the limit error itself): check
      `git status` for stranded work, log it as outcome `killed`,
-     and relaunch fresh — salvaging the dead
-     agent's read map (its `agent-<id>.jsonl` transcript under the
-     session's `subagents/` dir) into the relaunch prompt recovers
-     most of the lost reading phase (rows 28→29).
+     and relaunch fresh — salvaging the dead agent's read map (its
+     transcript, at the path named in the Agent tool result / task
+     notification — e.g. `…/tasks/<agentId>.output`; extract the
+     tool-call file paths) into the relaunch prompt recovers most of
+     the lost reading phase, and a coherent stranded *edit* can be
+     left in tree for the relaunch to review-and-extend rather than
+     reverted (rows 28→29; rows 54→55, where the relaunch kept and
+     completed the predecessor's partial blueprint edit).
    - **Recon verdicts get reasoning scrutiny, not just commit
      mechanics** — a mechanically clean recon can still be wrong, and
      building on it re-incurs the churn it was meant to end.
@@ -221,3 +236,11 @@ For **cleanup rounds** (per CLEANUP.md) a third dispatch shape works
 well: a scoped no-git editor — "Edit ONLY <file>. Touch no other
 file. Do NOT run git / commit / `inv` / `verify.sh` / `lake`" — with
 the coordinator reviewing and committing the result itself.
+
+A fourth shape is **no dispatch at all**: decision records,
+adjudication outcomes, and postmortem syntheses born in the
+coordinator's own conversation with the user are coordinator-authored
+commits — a subagent would have to reconstruct that context from a
+prompt, lossily. Same per-commit checklists, project author identity,
+and the coordinator's *actual* model in the trailer (the §1.55 +
+postmortem commits, 2026-06-11).
