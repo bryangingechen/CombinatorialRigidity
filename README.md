@@ -2,6 +2,10 @@
 
 [![Build & deploy site](https://github.com/bryangingechen/CombinatorialRigidity/actions/workflows/push.yml/badge.svg)](https://github.com/bryangingechen/CombinatorialRigidity/actions/workflows/push.yml)
 
+> [!CAUTION]
+> This is an ongoing **experiment** in autoformalization using LLMs.
+> I (Bryan) have not yet fully vetted the prose or Lean code, so take everything you read here with a grain of salt.
+
 A Lean 4 / mathlib4 formalization of combinatorial rigidity theory. Its
 first goal is **Laman's theorem** (1970): for `n ≥ 2`, a graph is
 generically rigid in the plane iff it contains a `(2, 3)`-tight spanning

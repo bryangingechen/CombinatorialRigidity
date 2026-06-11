@@ -4,6 +4,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {%- seo -%}
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
+  <style>
+    /* Site-wide experiment-disclaimer banner. Mirrored in
+       blueprint/src/extra_styles.css for the blueprint pages. */
+    body::before {
+      content: "⚠️ An ongoing experiment in autoformalization using LLMs — the prose and Lean code are not yet fully vetted. Take everything here with a grain of salt.";
+      display: block;
+      padding: 0.4rem 1rem;
+      background: #fff3cd;
+      color: #664d03;
+      border-bottom: 1px solid #ffe69c;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+  </style>
   {%- feed_meta -%}
   {%- if jekyll.environment == 'production' and site.google_analytics -%}
     {%- include google-analytics.html -%}

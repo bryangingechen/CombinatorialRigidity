@@ -13,3 +13,19 @@ nav.local_toc ul { font-size: 1.2rem; }
     nav.toc       { width: 25vw; }
     div.with-toc  { margin-left: 25vw; }
 }
+
+/* Site-wide experiment-disclaimer banner. Mirrored in
+   home_page/_includes/head.html for the Jekyll pages. The blueprint
+   theme lays body out as a 100vh flex column, so the banner is a
+   non-shrinking flex item that pushes the page wrapper down. */
+body::before {
+    content: "⚠️ An ongoing experiment in autoformalization using LLMs — the prose and Lean code are not yet fully vetted. Take everything here with a grain of salt.";
+    display: block;
+    flex-shrink: 0;
+    padding: 0.4rem 1rem;
+    background: #fff3cd;
+    color: #664d03;
+    border-bottom: 1px solid #ffe69c;
+    font-size: 1.1rem;
+    text-align: center;
+}

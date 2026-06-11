@@ -3,6 +3,10 @@ layout: home
 title: Combinatorial Rigidity
 ---
 
+> **⚠️ Caution:** This is an ongoing **experiment** in autoformalization
+> using LLMs. I (Bryan) have not yet fully vetted the prose or Lean code,
+> so take everything you read here with a grain of salt.
+
 A Lean 4 / mathlib4 formalization of combinatorial rigidity theory,
 working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) (1970):
 
