@@ -38,17 +38,17 @@ Coordinator independently verified all three verdicts against KT pp. 681–684 +
 **certify-then-rebase** — certify the (6.29) count at `F₀` (W6c+W6d), convert to a rank lower
 bound and re-extract a literal `F₀.panelRow` family (W6e), transfer that along the `t`-family
 (W6f), close through the span core + GAP-2 (W7). **All of W6a–W6f, W7, AND W8 are landed** — the
-certify-then-rebase arm (M₁) and the M₂ arm (a pure W7 instantiation) are complete. Smallest next
-commit: finish **W9** (the M₃ arm, §1.50(e)/§1.51(i)) — W7 at the *relabeled* `a`-split data (the
-`caseIIICandidate` def takes the relabeled seed `qρ` as its `q`; W7's `(v,a,b,e_a,e_b,n')`-slots at
-`(a,c,v,e_c,e_a,n''')`), with the candidate functional arriving as the same `ρ` through
-`candidateRow_ac_eq_neg` + the `rigidityRows_ofNormals_relabel` row-space transport. **The W9
-relabel row-transport bridge is now landed** (`mem_span_rigidityRows_ofNormals_relabel` +
-`hingeRow_funLeft_dualMap`) — the precise "relabel transport to wire" the §1.50(e) step-(3) chain
-needs (`hingeRow a c r̂ ∈ span(v-split) ↦ hingeRow v c r̂ ∈ span(a-split)`); the remaining W9 work is
-the arm-closer wiring (re-deriving W7's route with the relabeled `a`-split framework as the rigidity
-source — see *Hand-off*). Then per §1.51(j): W10 (dispatch + discharge matching `hcand`) → Leaf 4 →
-Leaf 5 → phase close green-modulo-GAP-6.
+certify-then-rebase arm (M₁) and the M₂ arm (a pure W7 instantiation) are complete. **The W9
+design pass is done (design §1.52, now canonical for W9; it supersedes the 365740b hand-off
+finding):** W9 IS a W7-instantiation — roles `(v,a,b,e_a,e_b,n') := (a,c,v,e_c,e_a,n''')`,
+`Gv`-slot `G.removeVertex a` (a subgraph of `G`), seed `qρ = q∘(swap a v)`, candidate functional
+`ρ̃ := −ρ` — with the M₃ candidate/bottom data transported POINTWISE from the one v-split W6b
+invocation (KT eqs. (6.35)–(6.41): `R(G,p₃)`'s bottom block IS the v-split matrix; no a-split
+realization, no second redundancy, no second GAP-6). Three one-commit leaves: **W9a** (the
+short-circuit-free relabel span-induction), **W9b** (the per-member bottom tag transport),
+**W9c** (the arm closer, a W8-pattern instantiation). Smallest next commit: **W9a**. Then per
+§1.51(j)/§1.52(f): W10 (dispatch + discharge matching `hcand`, + the ends-congruence pre-brick
+of §1.52(e)) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6.
 
 **W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
 the role-parametric arm yielding `HasGenericFullRankRealization k G` from the unpacked split context
@@ -65,12 +65,12 @@ variant*); `[DecidableEq α/β]` dropped (`classical` supplies them). Build + li
 ([propext, Classical.choice, Quot.sound]); no `\lean` pin (internal infra). GAP-6-clean (W6b carries
 `h622lb`).
 
-**Build order (§1.51(j); supersedes §1.50(f) item 6):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8**
+**Build order (§1.51(j) + §1.52(f)):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8**
 all landed (M₁ certify-then-rebase + M₂ instantiation; `h622lb` GAP-6 carry entered at W5, rides
-through W6b) → W9 (M₃ wiring) → W10 (dispatch + discharge assembly, matches `hcand`'s shape) →
-Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact signatures + per-leaf
-consumes/consumed-by/§38 notes: §1.51 (design doc). Per-leaf landing detail is in git history +
-*Decisions made* below.
+through W6b) → W9a → W9b → W9c (the M₃ arm, §1.52) → W10 (dispatch + discharge assembly, matches
+`hcand`'s shape; + the ends-congruence pre-brick) → Leaf 4 → Leaf 5 → phase close,
+**green-modulo-GAP-6**. Exact signatures + per-leaf consumes/consumed-by/§38 notes: §1.51 +
+§1.52 (design doc). Per-leaf landing detail is in git history + *Decisions made* below.
 
 ## Lemma checklist
 
@@ -186,9 +186,10 @@ consumes/consumed-by/§38 notes: §1.51 (design doc). Per-leaf landing detail is
   `mem_span_rigidityRows_ofNormals_relabel`, CaseI.lean — the span-membership corollary transporting
   a `v`-split rigidity-row-span member to the relabeled `a`-split span via `Submodule.span_image` +
   `mem_map_of_mem`; both graph-free, axiom-clean, no `\lean` pin). Remaining, as complete lemmas
-  (no `sorry` on master), per §1.51(i)/(j): the W9 M₃ arm closer (the relabeled-framework
-  certify-then-rebase route — *not* a W7-instantiation, see *Hand-off*) → W10 dispatch + assembly
-  matching the `hcand` signature. Exact per-leaf signatures: §1.51(c)–(i).
+  (no `sorry` on master), per §1.51(i)/(j) + §1.52: **W9a** (the short-circuit-free relabel
+  span-induction) → **W9b** (the per-member bottom tag transport) → **W9c** (the M₃ arm closer, a
+  W7-instantiation at `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ`) → W10 dispatch + assembly
+  matching the `hcand` signature. Exact per-leaf signatures: §1.51(c)–(i) + §1.52(b)–(d).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -215,29 +216,24 @@ consumes/consumed-by/§38 notes: §1.51 (design doc). Per-leaf landing detail is
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — finish W9 (the M₃ arm closer, §1.50(e)/§1.51(i)).** The W9
-relabel row-transport bridge just landed (`mem_span_rigidityRows_ofNormals_relabel` +
-`hingeRow_funLeft_dualMap`, CaseI/RigidityMatrix), so the remaining W9 commit is the arm closer:
-the M₃ analogue of W7 (`case_III_arm_realization`) at the relabeled `a`-split roles
-`(v,a,b,e_a,e_b,n') := (a,c,v,e_c,e_a,n''')` (re-inserted body `a`, candidate hinge `e_c = ac` on
-`L'' ⊂ Π(c)` — the `u = 2` witness; reproduced hinge `e_a = av` at the relabeled split's `vc`-hinge),
-with the candidate functional arriving as the same `ρ` through `candidateRow_ac_eq_neg` (= `−r̂`,
-KT eq. (6.44)) + the just-landed transport.
-
-**W9-design-moment finding (important — saves the next agent a dead end): W9 is NOT a pure
-W7-instantiation like W8.** W7's `hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w` forces W7's `Gv`
-to be a *subgraph of `G`*; but the M₃ rigidity certificate lives on the **relabeled `a`-split**
-`G.splitOff a v c e₁`, which is *not* a subgraph of `G` (it carries the fresh short-circuit `e₁` and
-the relabeled body). So W7 cannot be instantiated with `Gv := G.splitOff a v c e₁`. W9 must instead
-**re-derive W7's certify-then-rebase route** (W6d→W6e→W6f → `q₀`-membership → GAP-2) with the
-relabeled framework `ofNormals (G.splitOff a v c e₁) endsσρ qρ` as the *rigidity source* — its rows
-transported to the M₃ candidate/bottom data via the just-landed
-`mem_span_rigidityRows_ofNormals_relabel`. The producer-direction `ofNormals_relabel` (gives the
-relabeled framework's GP/rigid/recording/alg-indep), `rigidityRows_ofNormals_relabel`, the G4d-i/ii
-column lemmas, and `candidateRow_ac_eq_neg` are all landed; what remains is wiring them into the
-W6b→W6d→W6e→W6f→close chain at the `(a,c)` roles. Then per §1.51(i)/(j): W10 (dispatch + discharge
-matching `hcand`) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6. **No `sorry`** at any step
-(carry GAP-6 as the named `h622lb`, never a `sorry`).
+**Smallest next forward commit — W9a, the short-circuit-free relabel transport (design
+§1.52(b)):** `BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (CaseI.lean,
+beside G4d-i) — a `Submodule.span_induction` showing
+`(funLeft (swap a v)).dualMap φ − hingeRow v c (φ ∘ single a) ∈ span(Fva.rigidityRows)` for any
+`φ ∈ span(Fv.rigidityRows)` under the degree-2-at-`a` data (off-`a` generators are swap-fixed,
+`e_c`-generators cancel against the subtracted `a`-column row). Exact signature + proof route:
+§1.52(b). Then **W9b** (the per-member bottom tag transport, §1.52(c)) and **W9c** (the M₃ arm
+closer `case_III_arm_realization_M3`, §1.52(d) — a W8-pattern instantiation of W7 at
+`(v,a,b,e_a,e_b,n') := (a,c,v,e_c,e_a,n''')`, `Gv := G.removeVertex a`, `q := qρ`, `ρ̃ := −ρ`,
+with `hρe₀` via G4d-i and `hρGv` via W9a). **The 365740b hand-off finding ("W9 must re-derive
+W7's chain with the relabeled a-split framework as rigidity source") is superseded by §1.52(a):**
+the §1.51(i) `Gv`-slot was always `G − a` (a subgraph of `G`); KT (6.35)–(6.41) never realizes
+the a-split, and the relabel-SPAN bridge / `ofNormals_relabel` suite / G4d-ii /
+`candidateRow_ac_eq_neg` are off the live route (consumption ledger + phase-close blueprint
+obligation: §1.52(e); `hingeRow_funLeft_dualMap` IS consumed, by W9a/W9b). Then per
+§1.51(j)/§1.52(f): W10 (dispatch + discharge matching `hcand`; + the small ends-congruence
+pre-brick flagged in §1.52(e)) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6. **No `sorry`**
+at any step (carry GAP-6 as the named `h622lb`, never a `sorry`).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -477,13 +473,17 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   rows) → (funLeft (swap a v)).dualMap φ ∈ span(a-split rows)`, by rewriting through
   `rigidityRows_ofNormals_relabel` (rows = dualMap-image) + `Submodule.span_image` (span of image =
   `map` of span) + `Submodule.mem_map_of_mem`. Both first-try clean (no friction); both
-  axiom-clean, no `\lean` pin. The M₃ arm reads `hingeRow a c r̂ ∈ span(v-split)` (G4d-ii) and gets
-  `hingeRow v c r̂ ∈ span(a-split)` (`swap a v` sends `a↦v, c↦c`).
-- **W9-design-moment finding: W9 ≠ a W7-instantiation (unlike W8).** W7's `hleG` forces its `Gv` to
-  be a subgraph of `G`, but the M₃ rigidity certificate is on the relabeled `a`-split
-  `G.splitOff a v c e₁` ∉ subgraphs of `G`. So the W9 arm closer must re-derive W7's
-  certify-then-rebase route with the relabeled framework as the rigidity source (rows transported by
-  the bridge above), not call W7. Recorded in *Hand-off* to spare the next agent the dead end.
+  axiom-clean, no `\lean` pin. *Consumption correction (§1.52(e)):* the live W9 route consumes
+  only `hingeRow_funLeft_dualMap` (via W9a/W9b); the span-level bridge's `span(a-split)` target is
+  the wrong home (the `e₁`-block can't be stripped post hoc) — it stays landed, off the route.
+- **W9 design pass (§1.52, docs-only; supersedes the 365740b "not-a-W7-instantiation" finding).**
+  W9 IS a W7-instantiation: `Gv`-slot `G.removeVertex a` (the §1.51(i) "relabeled split minus its
+  short-circuit edge", a subgraph of `G`), seed `qρ`, `ρ̃ := −ρ`. The M₃ data transports pointwise
+  from the one v-split W6b invocation (KT (6.35)–(6.41): `R(G,p₃)`'s bottom block IS the v-split
+  matrix; no a-split realization, no second GAP-6; re-derivation routes are strictly dominated —
+  §1.52(a)). New leaves W9a/W9b/W9c with exact signatures in §1.52(b)–(d); `hρe₀` via G4d-i,
+  `hρGv` via W9a; `ofNormals_relabel` suite / G4d-ii / `candidateRow_ac_eq_neg` off the live
+  route (ledger + phase-close blueprint obligation: §1.52(e)).
 
 ### Promoted to TACTICS-QUIRKS / FRICTION
 - *`rw [map_neg]` fails on `(-f) x` (functional-side negation) — use `LinearMap.neg_apply`* →

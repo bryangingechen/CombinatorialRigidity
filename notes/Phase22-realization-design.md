@@ -3098,6 +3098,304 @@ pinned signatures fix the mathematical content (binders, hypotheses, conclusion)
 adjustments (`[Finite β]`, `[DecidableEq …]`) demanded by elaboration are at the builder's
 discretion and are not design deviations.
 
+### 1.52 The W9 design moment — verdict: W9 IS a W7-instantiation at `Gv := G − a` with the relabeled seed `qρ` (the 365740b "not-a-W7-instantiation" finding is true of a configuration the design never proposed — the a-split graph is NOT the `Gv`-slot and never enters the live chain); the M₃ candidate/bottom data transports POINTWISE from the ONE v-split W6b invocation (KT eqs. (6.35)–(6.41): `R(G,p₃)`'s bottom block IS the v-split matrix `R(G_v^{ab} ∖ (ab)i^*, q)` read inside it through the vertex relabel — no a-split rank, no second redundancy, no second GAP-6); two new transport leaves W9a/W9b + the closer W9c; the relabel-SPAN bridge and the G4c-ii/G4d-ii suite drop off the live route (2026-06-11)
+
+> **Docs-only design pass (the §1.50(e)/§1.51(i) W9 build-out).** Lean read this pass
+> (declarations, current line numbers): CaseI.lean — W7 `case_III_arm_realization` (:4549, full
+> body incl. the step-(iii)–(v) membership/close mechanics), W8 `case_III_arm_realization_M2`
+> (:4794, the instantiation pattern), W6b `exists_candidateRow_bottomRows_of_rigidOn` (:3357, full
+> body — the `hext : ∀ e, Fab.supportExtensor e = Fv.supportExtensor e := fun _ => rfl` idiom),
+> `exists_redundant_panelRow_ab_decomposition_acolumn_zero` (:3489), G4c-ii `ofNormals_relabel` /
+> `rigidityRows_ofNormals_relabel` / `hasGenericFullRankRealization_of_splitOff_relabel` (:5375/
+> :5513/:5601), the W9 bridge `mem_span_rigidityRows_ofNormals_relabel` (:5652), G4d-i/ii
+> (:5691/:5759), the triple-LI bridge (:5799); RigidityMatrix.lean — `hingeRow_funLeft_dualMap`
+> (:851), `hingeRow_swap` (:837), `hingeRow_sub_hingeRow_eq` (:867), `rigidityRows` (:905 — rows
+> quantify over LINKS only; `ends` is read only at linked edges), `hingeRowBlock` (:739),
+> `candidateRow_ac_eq_neg` (:2051), `case_III_claim612` (:2105); Operations.lean — `removeVertex`
+> + `removeVertex_isLink`/`vertexSet_removeVertex`/`removeVertex_le_splitOff` (:536–:690),
+> `splitOff`/`splitOff_isLink` (:579/:619). KT re-read: pp. 684–686 (Claim 6.11, eqs.
+> (6.22)–(6.30) — "the same λ_{(ab)j} … and the index i^* are used in (6.29) and (6.30) since they
+> are determined by (G_v^{ab}, q)"), **pp. 687–689 (eqs. (6.31)–(6.41) in full — the decisive M₃
+> mechanics)**, p. 690 (eq. (6.42), Claim 6.12). No `.lean`/`.tex` edits this pass.
+
+**(a) The adjudication — W7-instantiation at `Gv := G − a` WINS; the re-derivation route is
+strictly dominated (signature-level).** The 365740b hand-off finding said: W7's `hleG` forces its
+`Gv`-slot to be a subgraph of `G`, the M₃ rigidity certificate lives on the relabeled `a`-split
+`G.splitOff a v c e₁` ∉ subgraphs of `G`, hence "W9 must re-derive W7's certify-then-rebase chain
+with the relabeled framework as the rigidity source". The premise is true; the conclusion attacks
+a configuration §1.51(i) never proposed — its `Gv`-slot is "**the relabeled split minus its
+short-circuit edge**", i.e. edge-wise `G − a` (`G.removeVertex a`), which IS a subgraph of `G`.
+The real question the finding pointed at is where the M₃ candidate/bottom data at the
+`(G − a, qρ)`-shape comes from. KT answers it at eqs. (6.35)–(6.41) (pp. 687–689), re-read in
+full this pass:
+
+* **KT never realizes the a-split.** The isomorphism `ρ` (6.31) only *defines* `p₃` (the seed
+  `qρ`) and identifies panels. The rank argument runs bodily against `R(G, p₃)`: the (6.36)
+  column op adds `a`'s columns to `c`'s — *exactly* the landed `columnOp` of W6c/W6d at the role
+  pair `(v\text{-slot}, a\text{-slot}) = (a, c)` — and (6.38)–(6.39) identify the resulting
+  `E∖{ac}, V∖{a}`-submatrix with `R(G_v^{ab}, q)` via the row correspondence `(vb)_j ↔ (ab)_j`,
+  `(va)_j ↔ (ac)_j`, `e_j ↔ e_j`. The bottom block of (6.41) is **`R(G_v^{ab} ∖ (ab)i^*, q)` —
+  the same v-split matrix as M₁/M₂'s (6.29)/(6.30)**, same `λ`s, same `i^*`, rank by the same
+  (6.23). There is no a-split rank certification anywhere, hence no eq.-(6.22)-analogue at
+  `G − a`, hence **no second GAP-6**.
+* **The Lean's `caseIIICandidate` at the §1.51(i) roles is literally KT's `p₃`.** Instantiating
+  W7 at `(v, a, b, e_a, e_b, n') := (a, c, v, e_c, e_a, n''')`, `q := qρ` (inline:
+  `fun p => q (Equiv.swap a v p.1, p.2)`), the `t = 0` framework has `e_c ↦ C(L'') = n_c ∧ n'''`,
+  `e_a ↦ n_c ∧ n_a = ±C(q(ac))` (KT `p₃(va) = q(ac)`), `e_b ↦` the seed extensor at
+  `(qρ(v,·), qρ(b,·)) = (n_a, n_b) = C(q(ab))` (KT `p₃(vb) = q(ab)`), all other edges the
+  `q`-extensors — eq. (6.33) slot for slot. W7's internal shear `q₀ : a ↦ n_c + t•n'''` is the
+  `Π(c)`-line shear, its W6d certification is the (6.41) count, its brick-1 transport at the
+  roles (`hingeRow a v ρ' ∘ Φ ∘ P_a = hingeRow c v ρ'`) is exactly KT's (6.39) row
+  correspondence read functional-wise.
+* **The three §1.51(i) residual questions resolve as follows.** (1) *Short-circuit elimination:*
+  there is no span-level `e₁`-elimination — the M₃ analogue of "the `λ/i^*` redundancy inside
+  W6b" is a **pointwise generator transport**: each v-split datum maps under
+  `(funLeft (Equiv.swap a v)).dualMap` and the image is classified by the degree-2-at-`a` fact
+  (`hcla`): `(ab)`-block rows `hingeRow a b ρ' ↦ hingeRow v b ρ'` = genuine `e_b`-rows of
+  `G − a`; `e_c`-rows `hingeRow a c r ↦ hingeRow v c r = hingeRow c v (−r)` = exactly W7's
+  `hwmem` ρ'-TAG (the `(c,v)`-block tag, realized inside W7 as the `e_a = (av)`-row of `F₀` —
+  KT's `(va)_j ↔ (ac)_j`); rows avoiding `a, v` are fixed and stay genuine rows. The candidate
+  membership (`hρGv`-slot) needs one new span-induction leaf (W9a below) because W6b's
+  *forgetful* span output can't be classified post hoc. (2) *`ends`-selector:* dissolved for W9 —
+  `rigidityRows` (:905) reads `ends` only at linked edges, and the W9 transport leaves re-derive
+  every membership generator-wise *at the target selector* `ends₃ := update³ ends₀` (pinned
+  `(a,c)/(a,v)/(v,b)` at `e_c/e_a/e_b`, the IH selector off them), with the extensor agreements
+  discharged from the IH recording. No `Function.update`-congruence lemma is needed *for W9*
+  (M₁/M₂ still need one at the W10 boundary — see (e)). (3) *Sign bookkeeping:* the M₃ candidate
+  functional is `ρ̃ := −ρ` (KT (6.44): `Σλ_{(ac)j} r_j(q(ac)) = −r̂`); its three W7 gates convert
+  by `LinearMap.neg_apply` (§44 — the negation sits on the functional), `hingeRow_swap`
+  (`hingeRow c v (−ρ) = hingeRow v c ρ`), and `panelSupportExtensor_swap`. Notably
+  **`candidateRow_ac_eq_neg` is not consumed**: the eq.-(6.43)/(6.44) content arrives through
+  the landed **G4d-i** span-induction (`acolumn_mem_hingeRowBlock_of_span_rigidityRows` at
+  `wGv := hingeRow a b ρ`, whose `a`-column is `ρ` by `hingeRow_comp_single_tail`), which
+  directly yields `ρ ∈ blockFv(e_c)`, i.e. `ρ ⊥ C(q(ac))` — the `hρe₀`-slot.
+
+**Why the loser loses.** The re-derivation route has two readings, both worse. *(B1) Fresh
+W6b at the a-split* (`Gab := G.splitOff a v c e₁`, `e₀ := e₁`, rigidity from `ofNormals_relabel`):
+its `h622lb` input is `D(m−1) − (D−2) ≤ finrank span((G−a)\text{-rows at } qρ)` — the nested-IH
+(6.1) bound at the `k''`-dof `G − a`, **a second undischargeable GAP-6 carry** (the §1.50(b)
+dead-end analysis applies verbatim at `a`; the relabel doesn't help — under `σ` the `(G−a)`-rows
+correspond to the *v-split-minus-`e_c`* rows, whose bound from `h618` alone is `D(m−1) − (D−1)`,
+one short). It would ride to phase close beside the first, doubling the green-modulo surface,
+and is KT-unfaithful (KT reuses the same `λ/i^*`; p. 686). *(B2) Re-derive the certify-then-rebase
+chain* against `span(a\text{-split rows})` as certificate home: duplicates W6c/W6d/W7
+(≈600 lines of the heaviest landed material) for zero reuse, and **still** hits the
+`e₁`-elimination — the final step must place every `F(t^*)`-slot in
+`span (ofNormals G ends q₀).rigidityRows`, and `e₁ ∉ E(G)`, so the a-split's `e₁`-rows are not
+`G`-rows and must be regrouped away exactly as in (1) above. Route B is Route A's transport
+leaves plus duplication plus (under B1) a second crux. Verdict: **Route A**, three leaves.
+
+**(b) W9a — the short-circuit-free relabel transport (the span-induction core; CaseI.lean,
+beside G4d-i; one commit; no §38).** The G4d-i sibling that transports a v-split-row-span member
+across the vertex relabel *with the `e_c`-content stripped*: the `e_c`-generators' images are
+exactly `hingeRow v c (generator ∘ single_a)`, so subtracting the `a`-column hinge row makes
+every generator land in the `G − a`-row span (off-`a` generators are `swap`-fixed and survive;
+`e_c`-generators cancel). Stated abstractly over two `BodyHingeFramework`s (the G4d-i house
+style):
+
+```lean
+theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+    [DecidableEq α] {Fv Fva : BodyHingeFramework k α β}
+    {v a c : α} {e_c : β}
+    (hva : v ≠ a) (hca : c ≠ a) (hcv : c ≠ v)
+    (hlink_ec : Fv.graph.IsLink e_c a c)
+    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
+    (hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v)
+    (htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
+      Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ Fv.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+        - BodyHingeFramework.hingeRow (k := k) (α := α) v c
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))
+      ∈ Submodule.span ℝ Fva.rigidityRows
+```
+
+Proof route: `Submodule.span_induction` with the predicate
+`p ψ := (funLeft (swap a v)).dualMap ψ − hingeRow v c (ψ ∘ single a) ∈ span Fva.rigidityRows`
+(linear in `ψ`; `zero/add/smul` by submodule closure + `map_add`/`map_smul`/`LinearMap.add_comp`).
+Generator `hingeRow x y r` at link `f`, by the G4d-i endpoint case split: `x = a` → `f = e_c`
+(`hdeg2`), `y = c` (link uniqueness vs `hlink_ec`, `hca` kills the flip), image
+`hingeRow v c r` (`hingeRow_funLeft_dualMap` + `swap_apply_left` + `swap_apply_of_ne_of_ne hca
+hcv`), `a`-column `r` (`hingeRow_comp_single_tail hca.symm`… at `a ≠ c`), difference `0` ✓;
+`y = a` symmetric via `hingeRow_swap` (difference again `0`); else the `a`-column is `0`
+(`hingeRow_comp_single_off`), `hingeRow v c 0 = 0` (`map_zero`), the image is the generator
+itself (`swap` fixes `x, y ∉ {a, v}`, the `v`-side from `hnov`), in `Fva.rigidityRows` by
+`htrans` + `Submodule.subset_span`. Consumes: `hingeRow_funLeft_dualMap` (the 365740b
+RigidityMatrix half), `hingeRow_swap`, `hingeRow_comp_single_tail/_off`. Consumed by: W9c (at
+`φ := hingeRow a b ρ`, giving the `hρGv`-slot). No `\lean` pin (internal infra).
+
+**(c) W9b — the M₃ bottom-row tag transport (per-member; CaseI.lean, after W9a; one commit; §38
+exposure mild, mitigations named).** The pointwise conversion of one W6b bottom-family member
+from the v-split tag shape to the W7-at-M₃-roles tag shape. Stated at the concrete `ofNormals`
+frameworks with the `Gv`-side abstract (W9c passes `G.removeVertex v`) and the target hardcoded
+at `G.removeVertex a` / the relabeled seed inline:
+
+```lean
+theorem PanelHingeFramework.case_III_bottom_relabel
+    [DecidableEq α] {G Gv : Graph α β} {ends₀ ends₃ : β → α × α}
+    {q : α × Fin (k + 2) → ℝ}
+    {v a b c : α} {e_a e_b e_c : β}
+    (hva : v ≠ a) (hab : a ≠ b) (hvb : v ≠ b) (hca : c ≠ a) (hcv : c ≠ v)
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (hcla : ∀ e x, G.IsLink e a x → e = e_a ∨ e = e_c)
+    (hGv_le : ∀ e x y, Gv.IsLink e x y → G.IsLink e x y)
+    (hnov : ∀ e x y, Gv.IsLink e x y → x ≠ v ∧ y ≠ v)
+    (hrecGv : ∀ e x y, Gv.IsLink e x y → ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (hends₃_eb : ends₃ e_b = (v, b))
+    (hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = ends₀ e)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals Gv ends₀ q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        φ = BodyHingeFramework.hingeRow a b ρ') :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ ∈
+      (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
+        (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (c, i)) (fun i => q (a, i))) = 0 ∧
+        (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+          = BodyHingeFramework.hingeRow c v ρ'
+```
+
+Proof route, per input tag. *`(ab)`-block tag* (`φ = hingeRow a b ρ'`): image `hingeRow v b ρ'`
+(`hingeRow_funLeft_dualMap`, `swap_apply_left`, `b` fixed) → LEFT, the genuine `e_b`-row of the
+target: link `removeVertex_isLink.mpr ⟨hG_eb, hva.symm…, hab.symm…⟩` (endpoints `v, b ≠ a`),
+block via the `ends₃ e_b = (v,b)` extensor evaluation (`ofNormals_normal` +
+`swap_apply_right`/`swap_apply_of_ne_of_ne` reduce the seed to `panelSupportExtensor n_a n_b`)
+and `mem_hingeRowBlock_iff.mpr` of the input annihilation. *`Gv`-row tag*, destructure
+`⟨f, x, y, hlink, r, hr, rfl⟩` and case on `a ∈ {x, y}` (the G4d-i skeleton, with `hdeg2`
+*derived*: `hGv_le` + `hcla`, the `f = e_a` branch killed by link uniqueness vs `hG_ea` + `hnov`):
+`x = a` → `f = e_c`, `y = c` → RIGHT with `ρ' := −r` (image `hingeRow v c r = hingeRow c v (−r)`;
+annihilation from `r ∈ blockFv(e_c)` at `ends₀ e_c ∈ {(a,c), (c,a)}` (`hrecGv`) via
+`panelSupportExtensor_swap` + `LinearMap.neg_apply` — §44, the negation is on the functional);
+`y = a` symmetric with `ρ' := r`; else → LEFT, the image is `φ` itself (`swap` fixes
+`x, y ∉ {a, v}`), a genuine target row: link survives `removeVertex` (`hGv_le` + endpoints
+`≠ a`), block by `ends₃ f = ends₀ f` (`hends₃_off`; `f ∉ {e_a, e_b, e_c}` by link uniqueness
+against `hG_ea`/`hG_eb`/`hG_ec` + `hnov` + the case) and the recorded components `∉ {a, v}`
+(`hrecGv` + `hnov` + case), where the inline seed reduces to `q`. **§38 note:** all memberships
+by explicit link witnesses (the `hrow_mem` idiom); extensor evaluations only through
+`toBodyHinge_supportExtensor`/`ofNormals_ends`/`ofNormals_normal` rewrites + `Equiv.swap`
+evaluation lemmas — never `whnf` on a carrier. Consumes: `hingeRow_funLeft_dualMap`,
+`hingeRow_swap`, `panelSupportExtensor_swap`, `mem_hingeRowBlock_iff`, `removeVertex_isLink`.
+Consumed by: W9c (mapped over `j`). No `\lean` pin.
+
+**(d) W9c — the M₃ arm closer `case_III_arm_realization_M3` (CaseI.lean, after W9b; one commit;
+§38 exposure mild — the trap lives inside W7).** The W8-pattern instantiation commit, with the
+heavier conversions delegated to G4d-i/W9a/W9b. Takes the chain context + the v-split W6b
+outputs (the SAME `ρ`/`w` package M₁/M₂ consume — one W6b invocation feeds all three arms, KT
+p. 686) + the `u = 2` witness data, concludes the generic motive:
+
+```lean
+theorem PanelHingeFramework.case_III_arm_realization_M3
+    [Finite α] [Finite β]
+    (G : Graph α β) (ends₀ ends₃ : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b c : α} {e_a e_b e_c : β}
+    (hva : v ≠ a) (hab : a ≠ b) (hvb : v ≠ b) (hca : c ≠ a) (hcv : c ≠ v)
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b) (hG_ec : G.IsLink e_c a c)
+    (heac : e_a ≠ e_c)
+    (hcla : ∀ e x, G.IsLink e a x → e = e_a ∨ e = e_c)
+    (hrecGv : ∀ e x y, (G.removeVertex v).IsLink e x y →
+      ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (hends₃_ec : ends₃ e_c = (a, c)) (hends₃_ea : ends₃ e_a = (a, v))
+    (hends₃_eb : ends₃ e_b = (v, b))
+    (hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = ends₀ e)
+    (hends_Gva : ∀ e x y, (G.removeVertex a).IsLink e x y →
+      (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2)
+    (hne_Gva : ∀ e, (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2 →
+      (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃
+        (fun p => q (Equiv.swap a v p.1, p.2))).toBodyHinge.supportExtensor e ≠ 0)
+    (hV3 : 3 ≤ V(G).ncard)
+    {n''' : Fin (k + 2) → ℝ}
+    -- the candidate line `L'' ⊂ Π(c)`: the `u = 2` discriminator witness
+    (hLn : LinearIndependent ℝ ![(fun i => q (c, i)), n'''])
+    (hgca : LinearIndependent ℝ ![(fun i => q (c, i)), (fun i => q (a, i))])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (c, i)) n''') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(G).ncard - 2))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends₀ q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    PanelHingeFramework.HasGenericFullRankRealization k G
+```
+
+Proof route — `refine case_III_arm_realization (k := k) G (G.removeVertex a) ends₃
+(q := fun p => q (Equiv.swap a v p.1, p.2)) …` at the roles `(v, a, b, e_a, e_b, n') :=
+(a, c, v, e_c, e_a, n''')` with `ρ̃ := −ρ`, `w̃ := (funLeft (swap a v)).dualMap ∘ w`, then
+discharge the 22 hypotheses: *(structural)* `a ∉ V(G−a)` / `c, v ∈ V(G−a)` (`hca`/`hva` +
+`left/right_mem`), the two links (`hG_ec`, `hG_ea.symm`), the two `ends₃` evaluations, `heac.symm`,
+`hleG` (`removeVertex_isLink.mp`), `hsplitG` from `hcla` (a non-`e_a`/`e_c` link cannot touch
+`a`), `hends_Gva`/`hne_Gva` verbatim, `hVone`/`hVcard`/`hwcard` by `vertexSet_removeVertex` +
+`Set.ncard_diff`-of-singleton + `omega` (`hV3` makes the ℕ-subtraction sane); *(seed-evaluation)*
+every W7 hypothesis mentioning `fun i => qW (x, i)` reduces by `simp only
+[Equiv.swap_apply_left, Equiv.swap_apply_right, Equiv.swap_apply_of_ne_of_ne …]` under the
+binder (`qρ(c,·) = n_c`, `qρ(v,·) = n_a`) — `hLn`/`hgca` then close the `hLn`/`hgab` slots;
+*(candidate functional, `ρ̃ = −ρ`)* `hρgate`-slot by `LinearMap.neg_apply` + `neg_ne_zero` (§44);
+`hρe₀`-slot = `(−ρ)(panelSupportExtensor n_c n_a) = 0` from **G4d-i** at `Fv := ofNormals
+(G.removeVertex v) ends₀ q`, `Fab := Fv` (`hblock := rfl`), `wGv := hingeRow a b ρ` (its
+`a`-column is `ρ`, `hingeRow_comp_single_tail hab`), whose conclusion `ρ ∈ blockFv(e_c)` reads
+`ρ ⊥ ±panelSupportExtensor n_a n_c` through `mem_hingeRowBlock_iff` + `hrecGv` at the
+`e_c`-link + `panelSupportExtensor_swap` (the `hdeg2/hdeg2r` inputs derive from `hcla` +
+`removeVertex_isLink` + link uniqueness vs `hG_ea`); `hρGv`-slot = `hingeRow c v (−ρ) =
+hingeRow v c ρ` (`hingeRow_swap`) `∈ span((G−a)\text{-rows})` from **W9a** at `φ := hingeRow a b
+ρ` (image `hingeRow v b ρ`, `a`-column `ρ`; `htrans` discharged by the same recording/extensor
+computations as W9b's off-case) — `hingeRow v b ρ − hingeRow v c ρ ∈ span`, and `hingeRow v b ρ`
+is itself the genuine `e_b`-row (`hρe₀` + `hends₃_eb`), so `Submodule.sub_mem` closes;
+*(bottom)* `hw̃ := hw.map' _ (LinearMap.ker_eq_bot.2 (LinearMap.dualMap_injective_of_surjective
+(LinearMap.funLeft_surjective_of_injective … (Equiv.injective _))))` — `funLeft` of the swap is
+surjective since the swap is injective — and `hwmem̃ j := W9b … (hwmem j)`. **§38:** no new
+carrier; the swap-evaluation `simp only` set + the `hrow_mem` idiom; the W7-internal trap is
+already mitigated inside W7. Consumes: W7, W9a, W9b, G4d-i, `hingeRow_funLeft_dualMap`,
+`hingeRow_swap`, mathlib `funLeft`/`dualMap` injectivity. Consumed by: W10 (`u = 2` branch).
+No `\lean` pin.
+
+**(e) Consumption/supersession ledger (honesty pass) + the W10 boundary note.**
+
+* **Consumed by the live W9 route:** W7, W6b's outputs, G4d-i, `hingeRow_funLeft_dualMap` (the
+  365740b RigidityMatrix half), `hingeRow_swap`, `hingeRow_comp_single_tail/_off`,
+  `panelSupportExtensor_swap`, `mem_hingeRowBlock_iff`, the `removeVertex` API, mathlib
+  `funLeft`/`dualMap`.
+* **Landed but OFF the live route** (stay as green blueprint-pinned nodes documenting KT
+  (6.31)/(6.44); do not route new work through them): `mem_span_rigidityRows_ofNormals_relabel`
+  (the 365740b CaseI half — its `span(a\text{-split rows})` target is the wrong home: the
+  `e₁`-block cannot be stripped from a forgetful span membership post hoc; W9a replaces it),
+  `rigidityRows_ofNormals_relabel`, `ofNormals_relabel` (all four conjuncts — the a-split
+  framework, its rigidity, and the `e₁`-freshness plumbing never enter the live chain),
+  `hasGenericFullRankRealization_of_splitOff_relabel`, G4d-ii
+  (`hingeRow_acolumn_mem_span_rigidityRows` — its v-split-span conclusion is bypassed by W9a's
+  direct `G − a`-span transport), and `candidateRow_ac_eq_neg` (its (6.44) content arrives via
+  G4d-i). **Phase-close obligation:** the blueprint re-read must make the M₃ prose
+  (case-iii.tex: `lem:case-III-claim612-eq644`, `lem:splitOff-ofNormals-relabel`,
+  `lem:splitOff-rigidityRows-relabel`) describe the (6.39)-transport route and keep those nodes
+  as *stated-fact* documentation of KT (6.31)/(6.44), with no live `\uses`-route claiming the W9
+  chain routes through them (the supersession gate).
+* **GAP-6 surface unchanged:** W9a/W9b/W9c are GAP-6-clean; the single `h622lb` stays on
+  W6b/W10 only.
+* **W10 boundary pre-brick (flagged now, designed at the W10 moment):** M₁/M₂'s W7 feed consumes
+  `hρGv`/`hwmem` at the *overridden* selector `ends' := update² ends₀` while W6b emits them at
+  `ends₀`; since `rigidityRows`/`IsInfinitesimallyRigidOn` read `ends` only at linked edges and
+  `e_a, e_b` are not `G − v`-links, one small row-set congruence lemma (`ofNormals`-`rigidityRows`
+  agrees under selectors equal on links) discharges it. W9 does not need it (W9a/W9b conclude at
+  `ends₃` directly); budget it inside W10's commit or as a micro-leaf before it.
+
+**(f) The corrected build order (refines §1.51(j)'s W9 slot; each item one commit).**
+~~W1–W8~~ (landed) → **W9a** (the span-induction transport core; leftmost buildable leaf — only
+landed inputs) → **W9b** (the per-member bottom tag transport) → **W9c** (the M₃ arm closer) →
+**W10** (dispatch + discharge assembly per §1.51(i), + the ends-congruence pre-brick of (e)) →
+Leaf 4 → Leaf 5, phase close **green-modulo-GAP-6**. Dependency edges: W9c ← {W9a, W9b, W7,
+G4d-i}; W9a ∥ W9b (order between them free; W9a first as the deeper risk). The pinned signatures
+fix the mathematical content; instance-set adjustments and small hypothesis-form tweaks
+(e.g. carrying `hebc`, or `hwcard` at an equivalent `ncard` form) demanded by elaboration are at
+the builder's discretion and are not design deviations.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
