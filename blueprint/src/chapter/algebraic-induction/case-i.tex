@@ -574,7 +574,7 @@
   zero-rank-loss of the exterior-column projection on a rigid block.
 \end{proof}
 
-\begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.3), (6.9)]
+\begin{lemma}[Case I realization: the contraction producer, simple-contraction case; KT Lemma~6.3]
   \label{lem:case-I-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization}
   \leanok
@@ -582,14 +582,19 @@
         lem:claim-6-4, lem:genericity-device, lem:rows-polynomial-in-normals,
         lem:isInfRigidOn-of-relative-count}
   The (strengthened, general-position) realization motive of
-  \cref{thm:theorem-55} is closed under contracting a proper rigid subgraph.
+  \cref{thm:theorem-55} is closed under contracting a proper rigid subgraph,
+  \emph{in the case that the contraction is simple}
+  ($\mathtt{hcSimple} : (G.\mathrm{rigidContract}\,H\,r).\mathrm{Simple}$ ---
+  KT Lemma~6.3's case hypothesis; the non-simple-contraction case is
+  \cref{lem:case-I-dispatch}).
   Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
-  $s = V(H)$ ($2 \le |V(H)|$, KT Lemma~6.3's case object) and representative
-  body $r \in V(H)$; the (conditioned, generic) induction hypothesis supplies
-  generic realizations of both $H$ and the contraction $G/E(H)$ at their target
-  ranks. Then $G$ carries a generic realization at rank $D(|V(G)|-1)$,
-  discharging the Case~I premise ($\mathtt{hcontract}$) of
-  \cref{thm:theorem-55}.
+  $s = V(H)$ ($2 \le |V(H)|$) and representative body $r \in V(H)$; assume
+  additionally that the contraction $G/E(H)$ (with $r$ as the representative
+  body) is itself simple.  The (conditioned, generic) induction hypothesis
+  supplies generic realizations of both $H$ and the contraction $G/E(H)$ at
+  their target ranks.  Then $G$ carries a generic realization at rank
+  $D(|V(G)|-1)$, discharging the Case~I premise ($\mathtt{hcontract}$) of
+  \cref{thm:theorem-55} for this stratum.
 
   The proof is KT eq.\ (6.3)'s \emph{block-triangular rank-addition} over a
   \emph{single} common framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
@@ -633,5 +638,28 @@
   (\cref{lem:isInfRigidOn-of-relative-count}) converts it to rigidity on $V(G)$
   (\cref{lem:case-I}); general position of $q_0$ delivers the strengthened
   motive.
+\end{proof}
+
+\begin{lemma}[Case I dispatch: simple vs non-simple contraction; KT Lemmas~6.3, 6.5]
+  \label{lem:case-I-dispatch}
+  \uses{def:panel-hinge-framework, lem:case-I}
+  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
+  $s = V(H)$ ($2 \le |V(H)|$) and representative body $r \in V(H)$.  The full
+  Case~I realization --- discharging $\mathtt{hcontract}$ for all simple minimal
+  $0$-dof-graphs with a proper rigid subgraph --- splits on the simplicity of
+  the contraction $G/E(H)$: the simple-contraction branch is
+  \cref{lem:case-I-realization} (KT Lemma~6.3); the non-simple-contraction
+  branch uses a $\Pi^\circ$-placement at the parallel pair and the inductive
+  hypothesis on $G/E(H)$ via the Lemma~6.2 splice (KT Lemma~6.5).
+
+  \emph{Status.}  The simple-contraction branch (\cref{lem:case-I-realization})
+  is green.  The non-simple-contraction branch (KT Lemma~6.5, the
+  $\Pi^\circ$-placement arm) is the obligation of sub-phase 22i; it rides as
+  the named hypothesis $\mathtt{h65}$ on the current formalized Theorem~5.5.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-I-realization}
+  Branch on $\mathtt{hcSimple}$.  If $(G/E(H))$ is simple, apply
+  \cref{lem:case-I-realization}.  Otherwise the $\Pi^\circ$ arm (22i).
 \end{proof}
 

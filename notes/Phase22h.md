@@ -15,14 +15,12 @@ don't duplicate.**
 
 ## Current state
 
-**Next concrete step: L5a′** (the blueprint honesty repairs, docs-only; §1.55(c)). The two
-§1.54 decisions are **adjudicated** (user, 2026-06-11; §1.55 + the postmortem `DESIGN.md`
-*Statement faithfulness to the source*): Decision 1 — the bare motive WILL be strengthened to
-KT's strength, at the all-`k` redesign in the successor sub-phase "22i", so the degenerate
-brick is **cut** and `hbase`/`hsplit`/`hcontract` stay carried hypotheses; Decision 2 — route
-(B) (`h65` carry; the 6.3-vs-6.5 dispatch itself still lands here). Revised cut
-**L5a′–L5e′** (≈5 commits); phase close green-modulo the named family {`h622`, `h65`,
-`hbase`, `hsplit`, `hcontract`}.
+**Next concrete step: L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) +
+the `theorem_55_d3` re-shape (feed `hbaseGP`; keep `hbase`/`hsplit`/`hcontract` as hypotheses;
+restate conclusion to `(Simple → GP) ∧ bare`; mint `case_III_realization` wrapper; §1.55(c)).
+L5a′ landed (docs-only; `def:rank-hypothesis` prose corrected + `def:genuine-hinge-realization`
+red node + `lem:case-I-realization` `hcSimple` case-hypothesis marking + `lem:case-I-dispatch`
+red node; lint + bp + web + checkdecls green).
 
 **Leaf 4 landed PARTIALLY instantiated** (`PanelHingeFramework.theorem_55_d3`, CaseI.lean):
 instantiates `theorem_55_generic` at `k = 2` with `hsplitGP` wired via `case_III_hsplit_producer`
@@ -100,10 +98,11 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   exists; the bare motive is degenerately satisfiable for every connected `0`-dof graph —
   one brick feeds `hbase`/`hsplit`/`hcontract`; `hcontractGP` needs the unformalized KT
   6.3-vs-6.5 dispatch + Lemma-6.5 arm). Leaf 5 re-cut into L5a–L5e below.
-- [ ] **L5a′** — the blueprint honesty repairs (docs-only; §1.55(c)): `def:rank-hypothesis`
-  re-prosed to the Lean's actual strength + the 22i strengthening red node;
-  `lem:case-I-realization` restated to carry `hcSimple` as the KT-6.3 case hypothesis + the
-  6.5-arm red node. Per the two new gates (`blueprint/CLAUDE.md` *Static checks*).
+- [x] **L5a′** — the blueprint honesty repairs (docs-only; §1.55(c)): `def:rank-hypothesis`
+  re-prosed to the Lean's actual strength (bare rank; welded-witness note; 22i obligation) +
+  `def:genuine-hinge-realization` red node (KT honest form); `lem:case-I-realization` restated
+  to carry `hcSimple` as the KT-6.3 case hypothesis + `lem:case-I-dispatch` red node (the 6.5
+  arm). Lint + bp + web + checkdecls green. Done.
 - [ ] **L5b′** — `not_simple_of_isMinimalKDof_of_ncard_two` (§1.54(a1)) + the `theorem_55_d3`
   re-shape: feed `hbaseGP` (vacuity); keep `hbase`/`hsplit`/`hcontract` carried; restate the
   conclusion to the full `(Simple → GP) ∧ bare` pair; mint the named `case_III_realization`
@@ -151,11 +150,11 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
 
 ## Hand-off / next phase
 
-**Smallest next forward commit — L5a′ (the blueprint honesty repairs, docs-only; exact
-scope in §1.55(c)).** Both §1.54 decisions are adjudicated (see *Blockers*); build order
-L5a′ → L5b′ → L5c′ → L5d′ → L5e′ per the checklist above. Phase close green-modulo the
-named family {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)). **No `sorry`**
-at any step.
+**Smallest next forward commit — L5b′**: `not_simple_of_isMinimalKDof_of_ncard_two`
+(§1.54(a1)) + the `theorem_55_d3` re-shape (feed `hbaseGP`; keep `hbase`/`hsplit`/`hcontract`
+as hypotheses; restate conclusion to `(Simple → GP) ∧ bare`; mint `case_III_realization`
+wrapper; §1.55(c)). Build order L5b′ → L5c′ → L5d′ → L5e′. Phase close green-modulo
+{`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (§1.55(b)). **No `sorry`** at any step.
 
 After 22h closes: **the successor sub-phase 22i** ("the honest all-`k` Theorem 5.5" —
 scope in §1.55(a) and the *Blockers* entry; opens with a single motive design pass and the

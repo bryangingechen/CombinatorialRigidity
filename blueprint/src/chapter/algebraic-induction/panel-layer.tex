@@ -145,7 +145,7 @@ whole induction.
 \subsection{The induction skeleton and base case}
 \label{sec:molecular-algebraic-induction-base}
 
-\begin{definition}[Generic-rank hypothesis (6.1), $V(G)$-relative]
+\begin{definition}[Generic-rank hypothesis (6.1), $V(G)$-relative --- bare rank form]
   \label{def:rank-hypothesis}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigidOn,
         CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
@@ -155,10 +155,22 @@ whole induction.
   For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, the
   \emph{realization hypothesis} $(6.1)$ asserts the existence of a
   panel-hinge realization $(G,p)$ with
-  $\operatorname{rank} R(G,p) = D(|V|-1) - k$, and --- when $G$ is simple
-  --- with no two hinges parallel. This is the predicate Theorem~5.5
-  establishes by induction on $|V|$, where $|V| = |V(G)|$ is the number of
-  bodies $G$ actually carries.
+  $\operatorname{rank} R(G,p) = D(|V|-1) - k$.
+
+  \textbf{Lean form (bare rank).}  The Lean predicate
+  $\mathtt{HasFullRankRealization}\,k\,G$ is:
+  \[
+    \exists\,Q,\; Q.\mathrm{graph} = G \;\wedge\;
+    Q.\mathrm{toBodyHinge}.\mathrm{IsInfinitesimallyRigidOn}\,V(G),
+  \]
+  that is, the existence of any panel-hinge framework on $G$ realizing the
+  target rank --- without a constraint on the hinge directions.  In particular
+  a degenerate \emph{welded} framework (all-zero-extensor selector
+  $\mathrm{ends}(e) = (a_0, a_0)$ for every edge $e$) satisfies the predicate
+  for every connected $0$-dof graph, so the bare conjunct of the formalized
+  Theorem~5.5 is weaker than KT's (6.1).  The honest form --- requiring genuine
+  hinges --- is \cref{def:genuine-hinge-realization}; the strengthening is
+  scheduled at the all-$k$ motive redesign in the successor sub-phase 22i.
 
   \emph{The rank must be read $V(G)$-relative.} The rigidity rows of
   $R(G,p)$ come only from the edges of $G$, so $\operatorname{rank} R(G,p) =
@@ -180,6 +192,23 @@ whole induction.
   the absolute null-space form is unsatisfiable for them (see the chapter
   status); the rank form above is the $\alpha$-independent motive the
   realization layer is re-stated against.
+\end{definition}
+
+\begin{definition}[Generic-rank hypothesis (6.1) --- genuine-hinge form; KT eq.\ (6.1)]
+  \label{def:genuine-hinge-realization}
+  \uses{def:rank-hypothesis, def:panel-hinge-framework}
+  The \emph{genuine-hinge realization hypothesis}: a minimal $k$-dof-graph $G$
+  (with $|V| \ge 2$) carries a panel-hinge realization $(G,p)$ with
+  $\operatorname{rank} R(G,p) = D(|V(G)|-1) - k$ \emph{and} genuine hinges
+  (nonzero supporting extensors, i.e.\ no two hinge panels coincide), and ---
+  when $G$ is simple --- with no two hinges parallel.  This is KT's
+  hypothesis (6.1) at full strength.
+
+  \emph{Status.}  The bare rank form (\cref{def:rank-hypothesis}) is
+  formalized; the genuine-hinge conjunct is the obligation of sub-phase 22i,
+  which strengthens $\mathtt{HasFullRankRealization}$ to require
+  $Q.\mathrm{IsGeneralPosition}$ (pairwise-independent panel normals) when $G$
+  is simple, and genuine nonzero extensors in all cases.
 \end{definition}
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
