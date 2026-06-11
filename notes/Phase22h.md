@@ -29,20 +29,24 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step:** W4 — leaf A0 (the restriction-bottom block-triangular augment; abstract,
-graph-free; §1.50(c)). W3 (leaf B, the one-variable rank transfer) is **landed** —
-`LinearIndependent.exists_notMem_of_polynomial_repr` (Rank.lean): for a basis `b : Basis κ ℝ M` and
-a family `g : ℝ → ι → M` with `b.repr (g t i) j = (P i j).eval t`, LI at `t = 0` gives a good
-`t ∉ bad`, `t ≠ 0` with `g t` LI. Routed through a new general-polynomial matrix engine
-`Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` (the `P : Matrix m n (Polynomial ℝ)`
-generalization of the affine `…_along_affine_path`); leaf B pulls `g t` back along `b.equivFun` to
-that engine, then picks `t` from `ℝ ∖ (bad ∪ {0} ∪ {dependent t})`. Graph-free, no §38 trap. No
-`\lean` pin (internal infra). W2/W1 landed before it.
+**Next concrete step:** W5 — the redundancy-data packaging at the unpacked IH framework (§1.50(b)/(f)):
+`exists_redundant_panelRow_ab_lam` + W2's `finrank_span_rigidityRows_of_rigidOn` + the (b)
+`k''`-reduction, **taking the GAP-6 inequality as an explicit hypothesis** (adjudicated carry —
+Blockers). Output the redundancy data `r`/`lam`/`i*`/`r̂ ≠ 0`/`hingeRow a b r̂ = wGv ∈ span(Gv-rows)`.
+W4 (leaf A0, the restriction-bottom block-triangular augment) is **landed** —
+`BodyHingeFramework.linearIndependent_sum_restriction_block` (RigidityMatrix.lean): the transposed
+sibling of `linearIndependent_sum_pinned_block` — `Sum.elim top bot` LI when the `top` rows are
+pure-`v` (`htopvanish`, vanish on every `S v = 0`) with pinned-independent `v`-forms (`htoppin`) and
+the `bot` rows' restrictions to `V∖{v}` are independent (`hbotrestrict`, composites with the off-`v`
+projection `P_v = id − single v ∘ proj v`). Proof: evaluate a vanishing combination at `P_v S` to kill
+`top`, recover the `bot` coefficients by `hbotrestrict`; pin to `v`'s column to recover the `top`
+coefficients by `htoppin`. Graph-free, no §38 trap; no `\lean` pin (internal infra). W3/W2/W1 landed
+before it.
 
 **Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
-→ ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → W4 leaf A0 (restriction-bottom
-augment) → W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ → W8 M₂
-→ W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 →
+→ ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → ~~W4 leaf A0 (restriction-bottom
+augment)~~ (done) → W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ →
+W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 →
 phase close, **green-modulo-GAP-6**.
 
 ## Lemma checklist
@@ -93,10 +97,12 @@ phase close, **green-modulo-GAP-6**.
   `…_subfamily_of_rigidOn` sites now call it), and **W3 leaf B**
   (`LinearIndependent.exists_notMem_of_polynomial_repr` + the general-polynomial matrix engine
   `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial`, Rank.lean — the KT-Lemma-5.2
-  one-variable rank transfer, graph-free). Remaining, as complete lemmas (no `sorry` on master),
-  per §1.50(f): W4 restriction-bottom augment →
-  W5 redundancy packaging (carries the GAP-6 inequality as the adjudicated explicit hypothesis —
-  Blockers) → W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
+  one-variable rank transfer, graph-free), and **W4 leaf A0**
+  (`linearIndependent_sum_restriction_block`, RigidityMatrix.lean — the restriction-bottom
+  block-triangular augment, the transposed sibling of `linearIndependent_sum_pinned_block`;
+  graph-free). Remaining, as complete lemmas (no `sorry` on master),
+  per §1.50(f): W5 redundancy packaging (carries the GAP-6 inequality as the adjudicated explicit
+  hypothesis — Blockers) → W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
   `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
@@ -122,23 +128,18 @@ phase close, **green-modulo-GAP-6**.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W4, leaf A0 (the restriction-bottom block-triangular augment;
-abstract, graph-free; §1.50(c)).** `Sum.elim top bot` independent when the `top` rows are pure-`v`
-(post-columnOp) with pinned-independent `v`-forms and the `bot` rows' restrictions to `V∖{v}` are
-independent — the missing sibling of the landed v-vanishing augment. (Proof skeleton: evaluate a
-vanishing combination on `v`-vanishing assignments to kill `bot`, then pin `v`.) Then W5 redundancy
-packaging onward per the build order; GAP 6 is adjudicated (carry as explicit hypothesis —
-Blockers), so nothing gates W5+. **No `sorry` placeholders** at any step.
+**Smallest next forward commit — W5, the redundancy-data packaging (§1.50(b)/(f)).** At the
+unpacked IH framework, combine `exists_redundant_panelRow_ab_lam` + W2's
+`finrank_span_rigidityRows_of_rigidOn` + the (b) `k''`-reduction (`k'' := D(m−1) − finrank (span
+Gv-rows)`, `Gv := G.removeVertex v`), **taking the GAP-6 inequality as an explicit hypothesis** (the
+adjudicated carry — Blockers; `screwDim k * (m−1) − (screwDim k − 2) ≤ finrank (span (ofNormals Gv
+…).rigidityRows)`). Output the redundancy data `r`/`lam`/`i*`/`r̂ ≠ 0`/`hingeRow a b r̂ = wGv ∈
+span(Gv-rows)` that W6 (the M₁ `t = 0` certification at `F₀`) consumes. GAP 6 is adjudicated (carry,
+not block), so nothing gates W5+. **No `sorry` placeholders** at any step (carry the GAP-6 inequality
+as a named `h…` hypothesis, never a `sorry`).
 
-W3 (leaf B, §1.50(c)) **landed** — `LinearIndependent.exists_notMem_of_polynomial_repr`
-(Mathlib/LinearAlgebra/Matrix/Rank.lean): for a finite-index family `g : ℝ → ι → M` whose basis
-coordinates are univariate-polynomial evaluations (`b.repr (g t i) j = (P i j).eval t`), LI at
-`t = 0` yields a `t ∉ bad`, `t ≠ 0` with `g t` LI. Routed through the new general-polynomial matrix
-engine `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` (generalizes the affine
-`…_along_affine_path` to a `P : Matrix m n (Polynomial ℝ)`): leaf B pulls `g t` back along
-`b.equivFun` to a polynomial-entry matrix, gets the dependent-`t` set finite from the engine, and
-picks `t` from the complement of `{dependent t} ∪ bad ∪ {0}`. Graph-free, no §38 trap; no `\lean`
-pin (internal infra). Build/lint/axiom-clean. W2/W1 landed before it.
+All four abstract/graph-free leaves (W1 discriminator, W2 `h618`, W3 leaf B, W4 leaf A0) are landed;
+W5 is the first leaf at the unpacked IH framework (where the GAP-6 hypothesis enters).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -267,3 +268,13 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   leaf B pulls `g t` back along `φ := b.equivFun` (so `φ ∘ g t` is the `evalRingHom t`-row of
   `Matrix.of P`) and picks `t` from `ℝ ∖ ({dependent t} ∪ bad ∪ {0})` via `Set.Finite.infinite_compl`.
   Both land in the `Mathlib/` mirror (upstream `Matrix`/`LinearIndependent` namespaces). No friction.
+- **W4 leaf A0 (`linearIndependent_sum_restriction_block`, RigidityMatrix.lean):** the transposed
+  sibling of `linearIndependent_sum_pinned_block` — same block-triangular argument, roles swapped on
+  the *kind* of restriction. Hypotheses: `top` pure-`v` (`htopvanish : S v = 0 → top i S = 0`) with
+  pinned-independent `v`-forms (`htoppin`), and `bot` restricted to `V∖{v}` independent (`hbotrestrict`
+  on the composites `bot j ∘ₗ P_v`, `P_v := id − single v ∘ₗ proj v`). Proof mirrors the sibling:
+  evaluate at `P_v S` (`(P_v S) v = 0`) to kill `top`, recover `bot`-coeffs by `hbotrestrict`, then
+  pin to `v` (`comp (single v)`) to recover `top`-coeffs by `htoppin`. The `(∑ tᵢ).comp single =
+  ∑ (tᵢ.comp single)` step has no fused lemma (`LinearMap.sum_comp` doesn't exist) — done pointwise
+  via `LinearMap.ext` + `LinearMap.congr_fun`, the same idiom the sibling's `hnew0` already uses
+  (not new friction). No `\lean` pin (internal infra). Build/lint/axiom-clean.

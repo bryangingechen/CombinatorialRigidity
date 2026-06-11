@@ -1315,6 +1315,89 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
   · exact hgn i
   · exact hgo j
 
+/-- **The restriction-bottom block-triangular augment (the sibling of
+`linearIndependent_sum_pinned_block`, roles transposed)** (`lem:case-III-candidate-row`, the KT
+eq.~(6.29) `t = 0` certification shape;
+Katoh–Tanigawa 2011 §6.4.1, Phase 22h). The pin-a-body split `linearIndependent_sum_pinned_block`
+proves `Sum.elim rn ro` independent from a *pinned* top block (`rn` independent on body `v`'s screw
+column) and a *full*-strength bottom block (`ro` independent as ambient functionals, vanishing on
+pure-`v` assignments). The `t = 0` hinge-level family of KT's eq.~(6.29) presents the transposed
+shape: the **top** block `top` is the operated, pure-`v`-column candidate rows (vanishing on every
+assignment supported off `v`, `htopvanish`), and the **bottom** block `bot` is the chosen split-off
+rows carried as `F₀`-rows, independent only *after restriction to `V ∖ {v}`* (`hbotrestrict`, their
+composites with the off-`v` projection `P_v S = Function.update S v 0`, expressed as
+`id − single v ∘ proj v`). So the augment runs with the block-triangular argument the *other* way
+round: evaluate a vanishing combination at the off-`v` assignment `Function.update S v 0` — the
+pure-`v` top rows vanish there (`htopvanish`), leaving a vanishing combination of the restricted
+bottom rows `bot ∘ P_v`, whose coefficients vanish by `hbotrestrict`; the residual is a vanishing
+combination of `top` alone, and pinning to body `v`'s column (composing with `single v`) forces the
+top coefficients by `htoppin`. This is the abstract count carrier of the M₁/M₂/M₃ arms' `t = 0`
+certification (design §1.50(c)): the top is the candidate-completion's extra `D` rows, the bottom is
+the `D(|V_v|−1)` split-off rows reproduced as `F₀`-rows, the union's independence the eq.~(6.29)
+full `D(|V|−1)`. Graph-free and carrier-free pure linear algebra (the `ofNormals`/`withGraph` defeq
+trap, TACTICS-QUIRKS §38, does not bite). -/
+theorem linearIndependent_sum_restriction_block {ιt ιb : Type*} [Finite ιt] [Finite ιb]
+    [DecidableEq α] {v : α}
+    {top : ιt → Module.Dual ℝ (α → ScrewSpace k)} {bot : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (htopvanish : ∀ (i : ιt) (S : α → ScrewSpace k), S v = 0 → top i S = 0)
+    (htoppin : LinearIndependent ℝ
+      (fun i : ιt => (top i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (hbotrestrict : LinearIndependent ℝ
+      (fun j : ιb => (bot j).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v)))) :
+    LinearIndependent ℝ (Sum.elim top bot) := by
+  classical
+  haveI : Fintype ιt := Fintype.ofFinite ιt
+  haveI : Fintype ιb := Fintype.ofFinite ιb
+  -- The off-`v` projection `P_v S = Function.update S v 0` (`id − single v ∘ proj v`).
+  set P : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k) :=
+    (LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+      - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v) with hP
+  -- `P S` zeroes the `v`-coordinate and fixes the rest.
+  have hPv : ∀ (S : α → ScrewSpace k), (P S) v = 0 := fun S => by
+    rw [hP, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, LinearMap.proj_apply,
+      LinearMap.coe_single, Pi.sub_apply, Pi.single_eq_same, sub_self]
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  rw [Fintype.sum_sum_type] at hg
+  simp only [Sum.elim_inl, Sum.elim_inr] at hg
+  -- Step 1: evaluate at `P S` (which has `(P S) v = 0`) to kill the top block, isolate the bottom.
+  have hbot0 : ∑ j : ιb, g (.inr j) • (bot j).comp P = 0 := by
+    refine LinearMap.ext fun S => ?_
+    have happ := LinearMap.congr_fun hg (P S)
+    rw [LinearMap.add_apply, LinearMap.zero_apply, LinearMap.sum_apply, LinearMap.sum_apply] at happ
+    -- The top block vanishes at `P S` (its `v`-coordinate is `0`).
+    have htopsum : ∑ i : ιt, (g (.inl i) • top i) (P S) = 0 :=
+      Finset.sum_eq_zero fun i _ => by
+        rw [LinearMap.smul_apply, htopvanish i (P S) (hPv S), smul_zero]
+    rw [htopsum, zero_add] at happ
+    -- The bottom block collapses to the restricted functionals at `S`.
+    rw [LinearMap.sum_apply, LinearMap.zero_apply]
+    refine Eq.trans (Finset.sum_congr rfl fun j _ => ?_) happ
+    rw [LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+  -- The bottom coefficients vanish by `hbotrestrict`.
+  have hgb : ∀ j : ιb, g (.inr j) = 0 := Fintype.linearIndependent_iff.1 hbotrestrict _ hbot0
+  -- Step 2: the residual is a vanishing combination of the top block.
+  have htop0 : ∑ i : ιt, g (.inl i) • top i = 0 := by
+    have hbotzero : ∑ j : ιb, g (.inr j) • bot j = 0 :=
+      Finset.sum_eq_zero fun j _ => by rw [hgb j, zero_smul]
+    rwa [hbotzero, add_zero] at hg
+  -- Pin to body `v`'s column: the pinned residual vanishes, forcing the top coefficients.
+  have htoppin0 : ∑ i : ιt, g (.inl i) •
+      (top i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0 := by
+    refine LinearMap.ext fun x => ?_
+    rw [LinearMap.sum_apply, LinearMap.zero_apply]
+    have happ := LinearMap.congr_fun htop0 (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v x)
+    rw [LinearMap.sum_apply, LinearMap.zero_apply] at happ
+    refine Eq.trans (Finset.sum_congr rfl fun i _ => ?_) happ
+    rw [LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+  have hgt : ∀ i : ιt, g (.inl i) = 0 :=
+    Fintype.linearIndependent_iff.1 htoppin (fun i => g (.inl i)) htoppin0
+  rintro (i | j)
+  · exact hgt i
+  · exact hgb j
+
 /-- **The conditional `D`-row new block: the operated candidate row lifts the `va`-block from
 `D − 1` to `D`** (`lem:case-III-candidate-row`, KT eq.~(6.29); Katoh–Tanigawa 2011 §6.4.1, the
 candidate-completion's block-triangular `+1`, Phase 22e). The eq.~(6.29) assembly that takes the
