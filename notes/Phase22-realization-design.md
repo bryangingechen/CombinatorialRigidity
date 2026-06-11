@@ -4255,6 +4255,328 @@ prop11 feed). Structural-edit mode throughout (no new blueprint chapter; per-sli
 across panel-layer/case-i/case-iii/the base section). Estimate: ~20–30 commits — plural
 sessions; the layer plan is the tracking artifact.
 
+### 1.57 The L0 signature pin — V1 resolved (pointwise `ExtensorInPanel`, with the coercion fix; the meet-decomposition lemma pinned at `k = 2` over the landed PanelLayer duality), V10 resolved (B2 = relative re-derivation via a complement-separating partition refinement; `reaim` NOT applicable — the partition bricks never needed all-`e` `hC` in the first place), the exact M1–M5/B1/B2 statements, and the L0a–L0e slice cut (2026-06-11)
+
+> **Docs-only design pass (the L0 pin).** Lean read this pass beyond §1.56's census:
+> RigidityMatrix.lean — `ScrewSpace` (:86, `↥(⋀[ℝ]^k (Fin (k+2) → ℝ))` — a *bundled
+> submodule element*, the coercion finding in (a)), `exists_ne_zero_dotProduct_eq_zero`
+> (:181, general-`d`!), `exists_independent_perp_pair` (:381),
+> `exists_homogeneousIncidence_of_normals` (:455, the `mulVecLin` rank-nullity pattern),
+> `BodyHingeFramework` (:670 — `graph` + `supportExtensor : β → ScrewSpace k`, **no `ends`
+> field**, confirming M2's relational containment), `rigidityRows` (:905),
+> `IsInfinitesimallyRigidOn` (:2436); Extensor.lean — `extensor` (:194, lands in the **full**
+> `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, not the graded piece); PanelLayer.lean —
+> `panelSupportExtensor` (:231), `panelSupportExtensor_eq_complementIso_extensor` (:330),
+> `panelSupportExtensor_join_eq_zero_of_eq_zero` (:356, **the meet-lemma engine**),
+> `normalsJoin_ne_zero_iff` (via :243), `partitionConstant`/`finrank_partitionConstant`
+> (:1152/:1192 — **exact** `D·|range f|`, the V10 key), `mul_numParts_le_finrank_partitionConstant`
+> (:1211 — the `≤` is *only* the `f''V(G) ⊆ range f` slack), `partitionMotions` (:1224),
+> `finrank_partitionCutMap_codomain` (:1369 — `hC` quantified **over crossing edges only**),
+> `screwDim_mul_numParts_sub_le_finrank_partitionMotions` (:1406),
+> `screwDim_add_deficiency_le_finrank_infinitesimalMotions` (:1464, the hub bound + its
+> `hDcast` reconciliation `bodyBarDim (k+1) = screwDim k`); Pinning.lean — `RankHypothesis`
+> (:592), `theorem_55_base` (:630), `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`
+> (:1369, N3); GenericityDevice.lean —
+> `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` (:431),
+> `finrank_span_rigidityRows_of_rigidOn` (:466, W2 — its inline coannihilator-complement
+> count is the brick B1/B2 share), `hasFullRankRealization_of_splice_of_supportExtensor`
+> (:822, N6a); PanelHinge.lean — the motives (:979/:1033), `hasFullRankRealization_of_generic`
+> (:1046 — **no live consumers**, doc-comment references only), `theorem_55` (:1098),
+> `theorem_55_generic` (:1146), `rigidityMatrix_prop11` (:1230); CaseI.lean — the conditioned
+> IH's bare `.2` conjunct is **never destructured on the live route** (all live IH uses are
+> `.1`: :2147, :2172, :5329 — §1.54(a2)'s vacuity finding at the consumption level), `reaim`
+> (:6871), `theorem_55_d3` (:6799), `rankHypothesis_deficiency_of_theorem_55_d3` (:6903);
+> Framework.lean — `bodyBarDim` (:61, `n(n+1)/2`); blueprint panel-layer.tex —
+> `def:rank-hypothesis` (:149), `def:genuine-hinge-realization` (:198),
+> `thm:theorem-55` (:216), `thm:theorem-55-d3-instance` (:275). No `.lean`/`.tex` edits this
+> pass.
+
+**(a) V1 resolved: the pointwise form, with two fixes to §1.56's sketch.** Verdict —
+**pointwise points-in-hyperplane**, against the three candidates:
+
+* *Pointwise wins on the consumer audit.* The Lemma-5.3/6.2 constructions (L3/L5) *exhibit*
+  explicit point tuples inside the common panel — pointwise is their native output. The
+  Thm-5.6 re-add step (L10) consumes an existential ("some `(d−2)`-flat in the
+  intersection") — an `∃ p` form is exactly what it opens. The homogeneous-incidence
+  machinery (`exists_homogeneousIncidence_of_normals`, `exists_ne_zero_dotProduct_eq_zero` —
+  the latter already general-`d`) produces points-with-`⬝ᵥ = 0` data, aligning with
+  pointwise verbatim. The annihilator-dual and meet-image forms both route through
+  `exteriorPower.map`-range plumbing whose injectivity/range API is landed only at `⋀²ℝ⁴`
+  (Meet.lean N3b-1/2) — they'd make the *general-`k` definition* depend on `d = 3`-only
+  machinery, exactly backwards.
+* *Fix 1 (the coercion).* §1.56's sketch `C = Matrix.extensor p` is type-incorrect twice
+  over: the project's `extensor` (Molecular namespace, not `Matrix`) lands in the **full**
+  `ExteriorAlgebra ℝ (Fin (k+2) → ℝ)`, while `C : ScrewSpace k` is the bundled graded
+  piece. The equality is stated through the submodule coercion.
+* *Fix 2 (placement).* `RigidityMatrix.lean` (graph-free geometry section, beside the
+  homogeneous-incidence suite), **not** PanelLayer: the def needs only `extensor` +
+  `ScrewSpace` + `⬝ᵥ`, all in scope there; the meet-decomposition *lemma* (below) needs the
+  PanelLayer duality and lives there.
+
+```lean
+-- RigidityMatrix.lean (graph-free geometry section, after the incidence suite)
+/-- The k-extensor `C` lies in the panel with normal `n`: it is the extensor of `k`
+points of the hyperplane `n^⊥`. -/
+def ExtensorInPanel {k : ℕ} (C : ScrewSpace k) (n : Fin (k + 2) → ℝ) : Prop :=
+  ∃ p : Fin k → Fin (k + 2) → ℝ,
+    (C : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
+```
+
+Notes: `C = 0` satisfies the predicate (a degenerate `p`) — nonzero-ness is M2's separate
+conjunct, deliberately. Scalars absorb into a point for `k ≥ 1` (`c • extensor p =
+extensor (update p 0 (c • p 0))`); the `k = 0` degeneracy (`extensor ![] = 1`) is
+irrelevant to every consumer (`k = 2` producers, `k ≥ 1` motives in practice) and left as
+is.
+
+**The meet-decomposition lemma (M4's engine) — pinned at `k = 2`, PanelLayer.lean:**
+
+```lean
+/-- The meet of two transversal panels is the extensor of two points of both panels. -/
+theorem exists_extensor_eq_panelSupportExtensor {n₁ n₂ : Fin 4 → ℝ}
+    (h : LinearIndependent ℝ ![n₁, n₂]) :
+    ∃ p : Fin 2 → Fin 4 → ℝ,
+      ((panelSupportExtensor (k := 2) n₁ n₂ : ScrewSpace 2) :
+        ExteriorAlgebra ℝ (Fin 4 → ℝ)) = extensor p ∧
+      ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0
+```
+
+(+ the one-line corollary packaging it as `ExtensorInPanel … n₁ ∧ ExtensorInPanel … n₂`.)
+Proof route, all landed API: (1) two **linearly independent** common-perp points `p₀, p₁`
+of `{n₁, n₂}` — the `mulVecLin` rank-nullity pattern of
+`exists_homogeneousIncidence_of_normals` (ker of the 2-row pairing map has finrank ≥ 2;
+extract an independent pair); (2) every `r : Dual (ScrewSpace 2)` killing the meet kills
+`extensor ![p₀, p₁]` — **verbatim `panelSupportExtensor_join_eq_zero_of_eq_zero`**; (3) the
+finite-dimensional double-annihilator step (`(∀ r, r C = 0 → r x = 0) → x ∈ span {C}` —
+the one mathlib-search item of the slice; if no exact match, a small dual-separation mirror
+brick); (4) `extensor ![p₀, p₁] ≠ 0` from independence via `normalsJoin_ne_zero_iff` +
+`normalsJoin_coe`, so the proportionality scalar is nonzero and rescales into `p₀`.
+**Why `k = 2` and not general `k`:** every consumer of M4 is a `d = 3` producer
+(`theorem_55_d3`'s wiring; the GP spine is `ScrewSpace 2`-hardcoded), and step (2)'s engine
+is the `Fin 4` duality suite; the general-`k` meet-in-`⋀^k(n^⊥)` half is genuinely new
+exterior-algebra work that belongs to Phase 23 (general `d`), not here. The general-`k`
+*definition* costs nothing; only the meet lemma is `d = 3`.
+
+**(b) V10 resolved: B2 is a relative re-derivation; `reaim` is not applicable — and not
+needed.** Two findings against the landed proofs:
+
+* *The all-`e` quantification of the hub bound's `hC` is an artifact, not a real
+  obstruction.* `finrank_partitionCutMap_codomain` consumes `hC` only **on crossing edges**
+  (`∀ e ∈ crossingEdges f, …`), and crossing edges are links by definition
+  (`crossingEdges = {e ∈ E(G) | ∃ x y, IsLink e x y ∧ …}`). The hub bound merely *passes*
+  its all-`e` `hC` down (`fun e _ => hC e`). So the relative siblings take the M2-shaped
+  per-link hypothesis `∀ e u v, IsLink e u v → supportExtensor e ≠ 0` directly — no `reaim`
+  re-aim of off-link selectors is needed anywhere in the B2 chain. (`reaim` solved a
+  different problem: feeding `rigidityMatrix_prop11`'s genuinely all-`e` `hC`, which keeps
+  its shape; the L10 instance keeps using it there.)
+* *The genuine gap is the ambient complement count.* The landed hub bound gives
+  `D + def ≤ dim Z`; combined with the coannihilator complement
+  (`finrank span rows + dim Z = D|α|`, W2's inline count) it yields only
+  `finrank span rows ≤ D(|V(G)|−1) − def + D·|V(G)ᶜ.ncard|` — too weak by the ambient junk
+  bodies whenever `G` does not span `α`. The fix is to make the deficiency-attaining
+  partition **also separate every body of `V(G)ᶜ` into its own part**: each junk body
+  carries no link (links' endpoints lie in `V(G)`), so the crossing count is unchanged
+  while the part count gains `|V(G)ᶜ|` — and `finrank_partitionConstant` is already an
+  **exact** `D·|range f|`, so the extra parts are pure profit. Route, three bricks (~2–3
+  commits, PanelLayer.lean beside the hub bound):
+  1. *The `|range f|`-form motion bound* — the landed
+     `screwDim_mul_numParts_sub_le_finrank_partitionMotions` re-proved with
+     `Nat.card (Set.range f)` in place of `G.numParts f` (its proof's only use of
+     `numParts` is the `hWf` step, where `finrank_partitionConstant` gives the range form
+     *exactly*; everything else is verbatim):
+     `(screwDim k : ℤ) * Nat.card (Set.range f) − (screwDim k − 1) * (crossingEdges f).ncard
+     ≤ finrank (partitionMotions f)`, `hC` per crossing edge as landed.
+  2. *Label normalization + complement separation.* (i) `partitionDef` is invariant under
+     post-composition with a map injective on `f '' V(G)` (`numParts` and `crossingEdges`
+     both see only labels of `V(G)`-vertices — `IsLink.left_mem`/`right_mem`), so WLOG the
+     def-attaining `f` has `f '' V(G) ⊆ V(G)`; (ii) for such `f`, the refinement
+     `f'' := fun x => if x ∈ V(G) then f x else x` has
+     `Nat.card (range f'') = G.numParts f + (V(G))ᶜ.ncard` (the two label families are
+     disjoint by (i)) and `crossingEdges f'' = crossingEdges f`.
+  3. *The relative hub + B2 close*:
+
+```lean
+-- PanelLayer.lean, beside the hub bound
+theorem BodyHingeFramework.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
+    [Finite α] [Finite β] {n : ℕ} (F : BodyHingeFramework k α β)
+    (hn : Graph.bodyBarDim n = screwDim k) (hne : V(F.graph).Nonempty)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (screwDim k : ℤ) * (((V(F.graph))ᶜ.ncard : ℤ) + 1) + F.graph.deficiency n
+      ≤ (Module.finrank ℝ F.infinitesimalMotions : ℤ)
+
+/-- B2: the V(G)-relative deficiency upper bound on the rigidity-row span. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
+    [Finite α] [Finite β] {n : ℕ} (F : BodyHingeFramework k α β)
+    (hn : Graph.bodyBarDim n = screwDim k) (hne : V(F.graph).Nonempty)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      ≤ screwDim k * ((V(F.graph).ncard : ℤ) - 1) - F.graph.deficiency n
+```
+
+  B2's own proof is then a 5-liner: relative hub + the extracted coannihilator complement
+  (next bullet) + `ncard + ncardᶜ = card α` arithmetic. `[Nonempty α]` derives from `hne`
+  inside.
+* *The `D`-convention hypothesis.* `deficiency n` counts with `bodyBarDim n`, the screw side
+  with `screwDim k`; the landed hub bound hard-codes `n := k + 1`
+  (`bodyBarDim (k+1) = screwDim k`, its `hDcast`). The relative siblings instead take
+  **`hn : Graph.bodyBarDim n = screwDim k`** — the form the use sites actually have (the
+  motives carry an abstract `n`; `bodyBarDim` is strictly monotone so this is equivalent to
+  `n = k + 1`, but the hypothesis form avoids an injectivity detour and matches
+  `deficiency`'s parameter directly).
+* *The shared complement brick.* W2 proves `finrank (span rigidityRows) + dim Z = D·|α|`
+  inline; B1's reverse direction and B2's close both need it again — extract it as
+  `finrank_span_rigidityRows_add_finrank_infinitesimalMotions` (GenericityDevice.lean, one
+  commit with B1; W2 optionally refactored over it).
+
+**(c) B1 — the `def = 0` bridge, exact statement.** GenericityDevice.lean, beside W2:
+
+```lean
+theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
+    [Finite α] (F : BodyHingeFramework k α β) (hne : V(F.graph).Nonempty) :
+    F.IsInfinitesimallyRigidOn V(F.graph) ↔
+      Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+        = screwDim k * (V(F.graph).ncard - 1)
+```
+
+ℕ-form RHS matching W2 (the motives' ℤ-cast at `def = 0` is a `zify`/`omega` step at use
+sites, `1 ≤ ncard` from `hne`). Forward: W2 verbatim. Reverse: the complement brick turns
+the row count into `dim Z = D·(|V(G)ᶜ| + 1)`, then N3
+(`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`). Note B1 needs **no genuine-hinge
+hypothesis** in either direction (W2 and N3 take none) — `hC` enters only B2.
+
+**(d) M2–M5 — exact statements, placements, discipline.**
+
+* **M2** (`HasPanelRealization`, PanelHinge.lean, **root `Molecular` namespace** — it
+  quantifies a `BodyHingeFramework` + a normal assignment, so the `PanelHingeFramework`
+  namespace would misdirect dot-notation):
+
+```lean
+def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework k α β) (normal : α → Fin (k + 2) → ℝ),
+    F.graph = G ∧
+    (∀ v ∈ V(G), normal v ≠ 0) ∧
+    (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
+      ExtensorInPanel (F.supportExtensor e) (normal u) ∧
+      ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
+    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+```
+
+  §1.56(b)'s design notes (i)–(iv) stand; confirmed against the carrier: the Molecular
+  `BodyHingeFramework` has no `ends` field, so the relational per-link quantification is
+  the only possible shape — no link-recording conjunct exists to state. The `(k, n)` pair:
+  both explicit parameters; nothing relates them in the definition (the use sites' `IsMinimalKDof n k`
+  facts pin `deficiency n`, and B2's `hn` pins the convention where it matters).
+* **M3** (`HasGenericFullRankRealization`, in place, gains `n`, rank-form conjunct):
+
+```lean
+def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ Q : PanelHingeFramework k α β,
+    Q.graph = G ∧ Q.IsGeneralPosition ∧
+    ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n) ∧
+    (∀ e u v, G.IsLink e u v →
+      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u)) ∧
+    AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => Q.normal p.1 p.2)
+```
+
+  The rank conjunct is deliberately stated on `Q.toBodyHinge.rigidityRows` — M4's transfer
+  of it to M2's `F := Q.toBodyHinge` is then **literal** (same expression). Every call site
+  gains the `n` argument (mechanical; the live sites all sit at `n` already in scope from
+  `IsMinimalKDof n _`).
+* **M4** (the forgetful map, PanelHinge.lean, `k = 2` per (a)):
+
+```lean
+theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless]
+    (hV : 2 ≤ V(G).ncard)
+    (h : PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
+    HasPanelRealization 2 n G
+```
+
+  Per conjunct: `F := Q.toBodyHinge`, `normal := Q.normal`; panel nonzeroness — `hV` gives
+  a second body `w ∈ V(G), w ≠ v`, GP at `(v, w)` + `LinearIndependent.ne_zero`; genuine
+  hinge on links — landed `supportExtensor_ne_zero_of_isGeneralPosition` via link-recording
+  + `IsLink.ne` (`[G.Loopless]`, the instance the spine derives from minimality,
+  `loopless_of_isMinimalKDof`); containment — the meet lemma of (a) applied at the *actual*
+  `ends e` order (its two conclusions cover `{normal u, normal v}` whichever way the
+  link-recording disjunct falls); rank — literal transfer. The conditioned pair becomes
+  `Pc G := (G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G`.
+* **M5** (naming/migration — *re-timed*, the one §1.56 correction of substance):
+  `HasFullRankRealization` **cannot be deleted at L0** — it is the conclusion type of the
+  live GenericityDevice producers (N6a and siblings) and of `theorem_55`, all of which
+  restate at their own layers (L3/L5/L9 per (d)/(e) of §1.56). Decision 1's "no weak form
+  survives" is a **phase-close invariant, discharged at L9** (the spine restate deletes
+  `theorem_55` and the last bare-motive citations together). What L0 *does* do: take the
+  weak motive **off the live conditioned spine** (the L0e pair swap below), drop its
+  blueprint pin from `def:rank-hypothesis` (re-prose, (f)), and delete the now
+  consumer-free old forgetful `hasFullRankRealization_of_generic` (verified: doc-comment
+  references only).
+
+**(e) The L0 slice cut** (each slice a warning-clean commit; statement-changing slices run
+the structural-edit grep gate):
+
+* **L0a** — `ExtensorInPanel` (RigidityMatrix.lean) + the meet-decomposition lemma + its
+  perp-pair sub-brick (PanelLayer.lean). Purely additive. The double-annihilator step is
+  the slice's one search item.
+* **L0b** — the complement brick + B1 (GenericityDevice.lean). Additive.
+* **L0c** — the `|range f|` motion bound + the normalization/refinement bricks + the
+  relative hub + B2 (PanelLayer.lean). Additive. (Splittable in two if the partition
+  bricks run long.)
+* **L0d** — M2 `HasPanelRealization` + M4 `hasPanelRealization_of_generic` (PanelHinge.lean)
+  + the blueprint flip of `def:genuine-hinge-realization` ((f) below). Additive +
+  `checkdecls`.
+* **L0e** — the in-place restates, one coordinated slice (the grep gate's home): M3's new
+  conjunct + `n` parameter; `theorem_55_generic`'s conditioned pair swapped to
+  `… ∧ HasPanelRealization k n G` (plumbing-only body — the pair is motive-generic);
+  `theorem_55_d3`'s three bare carries re-typed to `HasPanelRealization 2 n`-shaped slots
+  (they are *hypotheses*, no proofs to fix); the GP producers' conclusion seams converted
+  (each ends in a `⟨Q, …, hrig, …⟩` pack — replace `hrig` by B1.mp + `hG.1`'s
+  `deficiency = 0` + the cast; the conditioned IH's bare `.2` is never destructured on the
+  live route, so the IH-type ripple through `case_I_realization` / `case_III_*` signatures
+  is signature-only); `rankHypothesis_deficiency_of_theorem_55_d3`'s `hQrig` extraction
+  re-derived through B1.mpr; the old forgetful deleted; `def:rank-hypothesis` re-prosed.
+  This is the bulk slice — if it runs past one sitting, cut it M3-first (M3 + producer
+  seams green with the pair *unswapped*, `theorem_55_generic` still consuming the old bare
+  motive) and swap the pair in a follow-up.
+
+**Two statement-level flags for later layers** (recorded here so the L9/L10 pins inherit
+them): (i) `theorem_55_d3`'s `hD : 6 ≤ Graph.bodyBarDim n` must **tighten to
+`hn : Graph.bodyBarDim n = screwDim 2`** at the L9 restate — the rank-form motive couples
+the two `D` conventions through `deficiency n` in the `k > 0` strata (the `≥`-form was an
+artifact of the `def = 0` rigidity-form conclusion; the `def = 0` GP producers keep their
+`6 ≤` since B1 is `n`-free there). (ii) `rigidityMatrix_prop11` and the L10 feed keep the
+all-`e` `hC` + `reaim` pattern unchanged — B2's per-link `hC` does not replace that
+interface.
+
+**(f) The L0 blueprint def-node dispositions.**
+
+* **`def:genuine-hinge-realization`** (panel-layer.tex:198) — at L0d: gains
+  `\lean{CombinatorialRigidity.Molecular.HasPanelRealization,
+  CombinatorialRigidity.Molecular.ExtensorInPanel,
+  CombinatorialRigidity.Molecular.hasPanelRealization_of_generic}` + `\leanok`; statement
+  restated to the M2 form (the free-hinge carrier + per-link `ExtensorInPanel` containment
+  + the ℤ-cast rank-deficiency equality, `V(G)`-relative discipline); the "*Status* …
+  obligation of sub-phase 22i" paragraph deleted (it describes the pre-L0 state — and its
+  sketch of the fix, "strengthen `HasFullRankRealization` to require `IsGeneralPosition`
+  when simple", is *not* the §1.56 design; the restate replaces it); `\uses` gains
+  `def:D-deficiency`.
+* **`def:rank-hypothesis`** (panel-layer.tex:149) — at L0e: drop the
+  `…HasFullRankRealization` pin (the node keeps `IsInfinitesimallyRigidOn` +
+  `RankHypothesis` and gains the B1 bridge
+  `…isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`); the "Lean form
+  (bare rank)" + welded-degenerate paragraphs are replaced by the rank-form-substrate
+  prose: the node now states the *shared rank form* both motives instantiate (the ℤ-cast
+  row-span equality) and its `def = 0` equivalence with `IsInfinitesimallyRigidOn V(G)`
+  (B1); the `V(G)`-relative paragraph survives as is.
+* **`lem:trivial-motions-rank-bound`** (genericity-and-count.tex) — at L0c: the relative
+  hub + B2 join its `\lean` list; one added sentence on the `V(G)`-relative form (the
+  complement-separating refinement). Node stays green.
+* **`thm:theorem-55` / `thm:theorem-55-d3-instance`** — untouched at L0 (their restates are
+  L9's); the d3-instance's `\lean` list survives L0e verbatim (same decl names, new
+  statement shapes — *this is exactly the case the structural-edit grep gate exists for*;
+  the carried-family prose in the instance node should be re-checked at L0e for the
+  re-typed carries and adjusted in the same commit if its hypothesis descriptions name the
+  old motive).
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
