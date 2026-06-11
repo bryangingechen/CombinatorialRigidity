@@ -37,9 +37,10 @@ Coordinator independently verified all three verdicts against KT pp. 681–684 +
 (its candidate row and `(vb)ⱼ`-transports are not sheared-candidate rows at `t ≠ 0`); the route is
 **certify-then-rebase** — certify the (6.29) count at `F₀` (W6c+W6d), convert to a rank lower
 bound and re-extract a literal `F₀.panelRow` family (W6e), transfer that along the `t`-family
-(W6f), close through the span core + GAP-2 (W7). **W6a is landed** (the `caseIIICandidate`
-`t`-family + the six infra bricks). Smallest next commit: **W6c** or **W6e** (both independently
-buildable now from landed inputs only — order between them free; §1.51(d)/(f)).
+(W6f), close through the span core + GAP-2 (W7). **W6a and W6e are landed**
+(the `caseIIICandidate` `t`-family + the six infra bricks; the rank-bound panelRow re-extraction).
+Smallest next commit: **W6c** (the restriction-form full family, §1.51(d) — independently buildable
+now from landed inputs only).
 
 **W5 (the redundancy-data packaging) is landed** — `BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn`
 (CaseI.lean): the consumer-level form of `exists_redundant_panelRow_ab_lam` whose two `finrank`
@@ -57,9 +58,9 @@ landed before it.
 → ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → ~~W4 leaf A0 (restriction-bottom
 augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hypothesis** `h622lb`) →
 ~~W6-core (restriction-form candidate augment, the A1 abstract core)~~ (done) → ~~W6a (the
-`caseIIICandidate` `t`-family + infra bricks)~~ (done) → **W6c** ∥ **W6e** (restriction-form full
-family; rank-bound panelRow re-extraction — both buildable now) → **W6b** (candidate/bottom
-packaging; GAP-6 carry above W5) → **W6f** (the W3 transfer feed) → **W6d** (the `t = 0` rank
+`caseIIICandidate` `t`-family + infra bricks)~~ (done) → ~~W6e (rank-bound panelRow
+re-extraction)~~ (done) → **W6c** (restriction-form full family — buildable now) → **W6b**
+(candidate/bottom packaging; GAP-6 carry above W5) → **W6f** (the W3 transfer feed) → **W6d** (the `t = 0` rank
 certification at `F₀`) → **W7** (the arm closer, role-parametric) → W8 M₂ (W7 instantiation at
 swapped roles, `−ρ`) → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) →
 Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact signatures + per-leaf
@@ -129,8 +130,14 @@ consumes/consumed-by/§38 notes: §1.51.
   `setOf_not_shear_linearIndependent_subsingleton` (refactored out of
   `exists_shear_linearIndependent_pair`), PanelLayer.lean; the two restriction-transport bricks
   `hingeRow_comp_columnOp_comp_offProj` / `comp_columnOp_comp_offProj_of_single_eq_zero`,
-  RigidityMatrix.lean; all graph-free / abstract, axiom-clean, no `\lean` pin). Remaining, as
-  complete lemmas (no `sorry` on master), per §1.51(j): W6c ∥ W6e → W6b → W6f → W6d → W7 (the M₁
+  RigidityMatrix.lean; all graph-free / abstract, axiom-clean, no `\lean` pin), and **W6e the
+  rank-bound panelRow re-extraction** (`exists_independent_panelRow_subfamily_of_le_finrank`,
+  GenericityDevice.lean — the rank-input generalization of `_of_rigidOn_linking`: feed a rank lower
+  bound `N ≤ finrank(span F.rigidityRows)`, get `N` literal linking `F.panelRow`s, by transporting
+  the bound to `span T` via `span_panelRow_linking_eq_rigidityRows` and cutting the
+  `exists_fun_fin_finrank_span_eq` family to `Fin N` via `Fin.castLE`; `_of_rigidOn_linking`
+  refactored to its 3-line corollary via W2; axiom-clean, no `\lean` pin). Remaining, as
+  complete lemmas (no `sorry` on master), per §1.51(j): W6c → W6b → W6f → W6d → W7 (the M₁
   arm, certify-then-rebase) → W8 M₂ (W7 instantiation) → W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`)
   → W10 dispatch + assembly matching the `hcand` signature. Exact per-leaf signatures: §1.51(d)–(h).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
@@ -159,11 +166,12 @@ consumes/consumed-by/§38 notes: §1.51.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W6c or W6e (both independently buildable now from landed inputs
-only; order between them free).** **W6c** = `case_III_full_family_restriction` (the
-restriction-bottom sibling of `case_III_full_family_of_line`, §1.51(d)); **W6e** =
-`exists_independent_panelRow_subfamily_of_le_finrank` (the rank-bound `F₀.panelRow`
-re-extraction, GenericityDevice.lean, §1.51(f)). Then per §1.51(j): W6b → W6f → W6d → W7 → W8 →
+**Smallest next forward commit — W6c (independently buildable now from landed inputs only).**
+**W6c** = `case_III_full_family_restriction` (the restriction-bottom sibling of
+`case_III_full_family_of_line`, §1.51(d)): mirror that lemma's body but enter the bottom block with
+W4's restriction-independence contract (`hbotrestrict`) and close with the W6-core augment
+`linearIndependent_sum_augment_candidateRow_restriction` in place of the v-vanishing selector;
+no W6a/W6b dependency, no §38. Then per §1.51(j): W6b → W6f → W6d → W7 → W8 →
 W9 → W10 → Leaf 4 → Leaf 5. The carried GAP-6 hypothesis `h622lb` enters the chain at W5, rides on
 **W6b and W10 only** (W6c–W6f and W7 take W6b's outputs as hypotheses and are GAP-6-clean), and
 exits at the Leaf-4/5 wiring. **No `sorry` placeholders** at any step (carry GAP-6 as a named
@@ -350,3 +358,13 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `_smul_left` + `annihRow_add`/`_smul`) and `hingeRow_eq_dualMap` for `hingeRow`'s `r`-linearity.
   RigidityMatrix brick 2: `columnOp_apply` `rw` didn't fire post-coercion → `unfold columnOp` +
   pointwise (new FRICTION [resolved]). All axiom-clean; no `\lean` pins.
+- **W6e the rank-bound panelRow re-extraction (§1.51(f); `exists_independent_panelRow_subfamily_of_le_finrank`,
+  GenericityDevice.lean).** The honest "rank ⟹ that many literal panel rows" converter: feed a rank
+  lower bound `N ≤ finrank(span F.rigidityRows)`, get `N` linking `F.panelRow`s. Body = the
+  `_of_rigidOn_linking` skeleton with two changes — transport the bound to `span T` via
+  `span_panelRow_linking_eq_rigidityRows`, then cut the `exists_fun_fin_finrank_span_eq` family to
+  `Fin N` by precomposing the re-index with `Fin.castLE hNle` (`Fin.castLE_injective` for the
+  injectivity, `hfindep.comp (Fin.castLE …)` for LI of the subfamily). Placed it *above*
+  `_of_rigidOn_linking` and refactored the latter to its 3-line corollary (feed
+  `(finrank_span_rigidityRows_of_rigidOn …).ge` as the bound — same extract-and-refactor move W2
+  made). Clean mirror, no `change`/glue; axiom-clean, no `\lean` pin (internal infra). No friction.

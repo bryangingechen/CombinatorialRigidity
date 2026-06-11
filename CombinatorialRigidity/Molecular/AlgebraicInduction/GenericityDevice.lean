@@ -605,6 +605,76 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
     exact hindep2
 
+/-- **Rank ⟹ that many literal linking panel rows: a rank lower bound on the rigidity-row span
+yields `N` independent `panelRow`s of linking edges** (Phase 22h W6e, the rank-input generalization
+of `exists_independent_panelRow_subfamily_of_rigidOn_linking`; Katoh–Tanigawa 2011 §6.2/§6.4.1). The
+`_of_rigidOn_linking` sibling consumes rigidity (`hnev`/`hrig`) *only* to compute
+`finrank (span F.rigidityRows) = D(|V|−1)` (via `finrank_span_rigidityRows_of_rigidOn`, W2); the
+certify-then-rebase route of the `d = 3` candidate-completion (KT (6.29)→(6.30), §1.51(a)) consumes
+the rank bound at the *not-yet-known-rigid* `t = 0` candidate framework `F₀`, where only a lower
+bound `N ≤ finrank (span F.rigidityRows)` is available (the (6.29) count read as a rank bound). This
+lemma takes that bound directly and re-extracts a *literal* `F.panelRow` family of exactly `N`
+linking edges — the honest "rank ⟹ that many actual panel rows" converter the device family lacked.
+
+The linking-edge panel rows span the rigidity rows (`span_panelRow_linking_eq_rigidityRows`, needs
+only `hends`/transversality `hne`, no rigidity), so the rank bound transports to the panel-row span;
+`Submodule.exists_fun_fin_finrank_span_eq` extracts the full `Fin (finrank …)`-indexed independent
+family, which is then *cut to its first `N` members* through `Fin.castLE hN` (a subfamily of a
+linearly independent family stays linearly independent), and each member is re-indexed by its
+underlying `(linking edge, ⋀^k-pair)`. -/
+theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
+    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α}
+    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
+    {N : ℕ} (hN : N ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)) :
+    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ s, F.graph.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+        (ends (i : β × _ × _).1).2) ∧
+      Nat.card s = N ∧
+      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- The linking-edge index subtype and the panel-row family restricted to it.
+  set L := {i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k //
+    F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} with hL
+  set T := Set.range (fun i : L => F.panelRow ends (i : β × _ × _)) with hT
+  haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
+    Module.Finite.span_of_finite ℝ (Set.finite_range _)
+  -- The linking-edge panel rows span the rigidity rows, so the rank bound transports to `span T`.
+  have hNle : N ≤ Module.finrank ℝ (Submodule.span ℝ T) := by
+    rw [hT, F.span_panelRow_linking_eq_rigidityRows hends hne]; exact hN
+  -- Extract the full `Fin (finrank (span T))`-indexed independent linking-panel-row family.
+  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
+  choose idx hidx using hfmem
+  -- Cut to the first `N` members through `Fin.castLE hNle`, re-indexing each by its
+  -- `(linking edge, ⋀^k-pair)` index.
+  set j : Fin N → L := fun i => idx (Fin.castLE hNle i) with hj
+  set j' : Fin N → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
+    fun i => (j i : β × _ × _) with hj'
+  have hj'inj : Function.Injective j' := by
+    intro a b hab
+    rw [hj', hj] at hab
+    have hidxab : idx (Fin.castLE hNle a) = idx (Fin.castLE hNle b) := Subtype.coe_injective hab
+    have : f (Fin.castLE hNle a) = f (Fin.castLE hNle b) := by
+      rw [← hidx (Fin.castLE hNle a), ← hidx (Fin.castLE hNle b), hidxab]
+    exact Fin.castLE_injective hNle (hfindep.injective this)
+  refine ⟨Set.range j', ?_, ?_, ?_⟩
+  · rintro i ⟨a, rfl⟩; exact (j a).2
+  · rw [Nat.card_range_of_injective hj'inj, Nat.card_eq_fintype_card, Fintype.card_fin]
+  · -- The `range j'`-subfamily of `panelRow` is `f ∘ Fin.castLE hNle` reindexed across
+    -- `Equiv.ofInjective j'`.
+    have hreindex : (fun i : Set.range j' => F.panelRow ends (i : β × _ × _))
+        ∘ (Equiv.ofInjective j' hj'inj) = f ∘ Fin.castLE hNle := by
+      funext a
+      simp only [Function.comp_apply, Equiv.ofInjective_apply]
+      rw [hj', hj]
+      exact hidx (Fin.castLE hNle a)
+    have hindep2 :=
+      (hfindep.comp (Fin.castLE hNle) (Fin.castLE_injective hNle)).comp
+        (Equiv.ofInjective j' hj'inj).symm (Equiv.ofInjective j' hj'inj).symm.injective
+    rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
+    exact hindep2
+
 /-- **Leg-restricted: a rigid leg carries `D(|V|−1)` independent panel rows of its *linking* edges**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of
 `exists_independent_panelRow_subfamily_of_rigidOn`; Katoh–Tanigawa 2011 §6.2, Phase 22). The form
@@ -616,14 +686,12 @@ records a link of every linking edge) and `hne` on linking edges only (the form 
 rigid block (`hrig`) still carries an index subset `s` of size `D(|V(F.graph)|−1)`, **every member
 of which links** (`hsupp`), whose actual `panelRow ends`-subfamily is linearly independent.
 
-Same proof skeleton as the all-edges form, but spanning the rigidity rows by the *linking-edge*
-panel rows (`span_panelRow_linking_eq_rigidityRows`): the rigid block forces the rigidity-row span
-to have dimension `D(|V|−1)` (`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` +
-the dual-coannihilator complement), the linking-edge panel rows span that whole space, so
-`Submodule.exists_fun_fin_finrank_span_eq` extracts an independent subfamily of that many *actual*
-panel rows of linking edges; re-indexing each by its `(linking edge, ⋀^k-pair)` packages them as a
-genuine index subset every member of which links. This is the per-leg rank witness the shared-seed
-coupling threads through `exists_rankPolynomial_of_rigidOn_linking`. -/
+Now a three-line corollary of the rank-input form
+`exists_independent_panelRow_subfamily_of_le_finrank`: the rigid block forces the rigidity-row span
+to have dimension exactly `D(|V|−1)` (`finrank_span_rigidityRows_of_rigidOn`, W2), so feeding that
+finrank value back as the rank bound `N := D(|V|−1)` re-extracts that many literal linking panel
+rows. This is the per-leg rank witness the shared-seed coupling threads through
+`exists_rankPolynomial_of_rigidOn_linking`. -/
 theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking
     [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α}
     (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
@@ -634,50 +702,9 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
       (∀ i ∈ s, F.graph.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
         (ends (i : β × _ × _).1).2) ∧
       Nat.card s = screwDim k * (F.graph.vertexSet.ncard - 1) ∧
-      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := by
-  classical
-  haveI : Fintype α := Fintype.ofFinite α
-  -- The linking-edge index subtype and the panel-row family restricted to it.
-  set L := {i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k //
-    F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} with hL
-  set T := Set.range (fun i : L => F.panelRow ends (i : β × _ × _)) with hT
-  haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
-    Module.Finite.span_of_finite ℝ (Set.finite_range _)
-  -- The linking-edge panel-row span has dimension `D|V| − dim Z = D(|V| − 1)` (rigid block,
-  -- `h618`): the linking-edge panel rows span the rigidity rows
-  -- (`span_panelRow_linking_eq_rigidityRows`).
-  have hfin : Module.finrank ℝ (Submodule.span ℝ T)
-      = screwDim k * (F.graph.vertexSet.ncard - 1) := by
-    rw [hT, F.span_panelRow_linking_eq_rigidityRows hends hne]
-    exact F.finrank_span_rigidityRows_of_rigidOn hnev hrig
-  -- Extract a `Fin (D(|V| − 1))`-indexed independent subfamily of *actual* linking panel rows.
-  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
-  choose idx hidx using hfmem
-  -- Re-index each chosen row by its underlying `(linking edge, ⋀^k-pair)` index.
-  set j : Fin (Module.finrank ℝ (Submodule.span ℝ T)) → L := fun i => idx i with hj
-  set j' : Fin (Module.finrank ℝ (Submodule.span ℝ T))
-      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
-    fun i => (j i : β × _ × _) with hj'
-  have hj'inj : Function.Injective j' := by
-    intro a b hab
-    rw [hj', hj] at hab
-    have hidxab : idx a = idx b := Subtype.coe_injective hab
-    have : f a = f b := by rw [← hidx a, ← hidx b, hidxab]
-    exact hfindep.injective this
-  refine ⟨Set.range j', ?_, ?_, ?_⟩
-  · rintro i ⟨a, rfl⟩; exact (j a).2
-  · rw [Nat.card_range_of_injective hj'inj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
-  · -- The `range j'`-subfamily of `panelRow` is `f` reindexed across `Equiv.ofInjective j'`.
-    have hreindex : (fun i : Set.range j' => F.panelRow ends (i : β × _ × _))
-        ∘ (Equiv.ofInjective j' hj'inj) = f := by
-      funext a
-      simp only [Function.comp_apply, Equiv.ofInjective_apply]
-      rw [hj', hj]
-      exact hidx a
-    have hindep2 :=
-      hfindep.comp (Equiv.ofInjective j' hj'inj).symm (Equiv.ofInjective j' hj'inj).symm.injective
-    rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
-    exact hindep2
+      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) :=
+  F.exists_independent_panelRow_subfamily_of_le_finrank hends hne
+    (F.finrank_span_rigidityRows_of_rigidOn hnev hrig).ge
 
 /-- **Body-set-relative leg-restricted N7b-0: a leg rigid on a body set `s` carries `≥ D(|s|−1)`
 independent panel rows of its linking edges** (the body-set generalization of
