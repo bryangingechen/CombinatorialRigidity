@@ -238,6 +238,16 @@ When `grind` is the closer it papers over this — both branches close
 regardless of which variables remain. Reach for named hypotheses
 only when downstream tactics depend on a specific name.
 
+**When you genuinely want the substitution but in the *other*
+direction** (e.g. you `by_cases hxa : x = a` on a destructured-link
+local `x` and want to keep the section body `a`, not eliminate it),
+use the **named-variable form `subst x`** (not `subst hxa`): `subst x`
+eliminates the variable `x` regardless of which side of `hxa` it sits
+on, replacing it by `a` and keeping every `a`/`c` reference downstream
+intact. (Phase 22h W9b `case_III_bottom_relabel`: `subst hxa` killed
+the section variable `a`, breaking the `hingeRow c v ρ'` tags; `subst
+x` keeps `a`/`c`.)
+
 **Related: destructuring a *term* doesn't rewrite its occurrences.**
 `obtain ⟨a, t⟩ := e j` (or `rcases e j with ⟨a, t⟩`) on a bare *term*
 `e j` — as opposed to a local hypothesis — introduces `a, t` but does

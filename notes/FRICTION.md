@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `subst h` (h : x = a) eliminates the section body `a`, not the local `x` — use the named-variable form `subst x` to control direction
+- **Where it bit:** Phase 22h `case_III_bottom_relabel` (W9b, `CaseI.lean`); after
+  `by_cases hxa : x = a` on a destructured-link local `x`, `subst hxa` eliminated the section
+  variable `a` (replacing it by `x`), breaking the conclusion's `hingeRow c v ρ'` / `q (a, ·)` tags
+  that name `a`.
+- **Friction:** the conclusion is stated in the section bodies `a`/`c`; eliminating `a` renames them
+  and the goal no longer mentions `a` at all (*"Unknown identifier `a`"* downstream).
+- **Fix:** `subst x` (the named-variable form) eliminates the local `x` regardless of the equation's
+  orientation, keeping `a`/`c` intact. The complement of the § 4 trap (there you avoid subst; here
+  you steer it).
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 4.
+
 ### [resolved] A multi-branch `Submodule.span_induction` over a heavy `Module.Dual` span hits the cumulative heartbeat budget — bundle the transport as one `LinearMap` `T` + per-branch `simp only`
 - **Where it bit:** Phase 22h `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (W9a, `CaseI.lean`);
   a `span_induction` concluding in `span Fva.rigidityRows` over `Module.Dual ℝ (α → ScrewSpace k)`,
