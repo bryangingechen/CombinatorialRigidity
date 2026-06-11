@@ -14,14 +14,19 @@ duplicate.**
 
 ## Current state
 
-**Next concrete step: Leaf 5** — the `lem:case-II-realization` / `lem:case-III` blueprint flips
-(add `\lean{…}` pins + `\leanok`) and the Thm 5.5→5.6 push feeding `rigidityMatrix_prop11`'s
-`hgen`; unblocks Cor 5.7 at `d=3`, closes the phase.
+**Next concrete step: the Leaf-5 feed-audit / design-settle pass** (recon-before-build — see
+*Hand-off*), then **Leaf 5** (the remaining callback wiring + the blueprint flips + the
+Thm 5.5→5.6 push; closes the phase green-modulo-GAP-6).
 
-**Leaf 4 landed** (`PanelHingeFramework.theorem_55_d3`, CaseI.lean): instantiates
-`theorem_55_generic` at `k = 2` with `hsplitGP` wired via `case_III_hsplit_producer` +
-`case_III_candidate_dispatch`; projects `.2` for the bare motive. GAP-6 carries as the
-quantified `h622` hypothesis (exact form from §1.53(c)). Build + lint clean.
+**Leaf 4 landed PARTIALLY instantiated** (`PanelHingeFramework.theorem_55_d3`, CaseI.lean):
+instantiates `theorem_55_generic` at `k = 2` with `hsplitGP` wired via `case_III_hsplit_producer`
++ `case_III_candidate_dispatch`; projects `.2` for the bare motive; GAP-6 carries as the
+quantified `h622` hypothesis (exact form per §1.53(f), quantifying over `(G,v,a,b,e₀,ends,q)`).
+Build + lint clean. **Two pinned sub-clauses of the original Leaf-4 item were NOT delivered and
+now belong to Leaf 5:** (i) the five remaining callbacks (`hbase`/`hbaseGP`/`hsplit`/`hcontract`/
+`hcontractGP`) ride as *hypotheses* instead of being fed from the landed lemmas (§1.41(5):
+`hcontractGP := case_I_realization`, gaining `hVH2` from G5); (ii) no blueprint instance node was
+minted.
 
 **All §1.48/§1.49 leaves AND the entire `hcand` discharge (W1–W10b) are landed** — the producer
 spine `case_III_hsplit_producer` (CaseI.lean; carries the open core as its `hcand` parameter) and
@@ -80,11 +85,18 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   one W6b invocation feeds all three arms W7/W8/W9c off the `fin_cases u` discriminator). All
   axiom-clean ([propext, Classical.choice, Quot.sound]), no `\lean` pins (internal infra). GAP-6
   rides as the quantified `h622lb` hypothesis (consumed once, at the W6b call inside W10b).
-- [x] **Leaf 4** — `PanelHingeFramework.theorem_55_d3` (CaseI.lean): `theorem_55_generic (k:=2)`
-  instance, `hsplitGP` wired via `case_III_hsplit_producer` + `case_III_candidate_dispatch`;
-  projects `.2`; GAP-6 as quantified `h622`. Build + lint clean. Done.
-- [ ] **Leaf 5** — the `lem:case-II-realization` / `lem:case-III` flips + the Thm 5.5→5.6 push
-  feeding `rigidityMatrix_prop11`'s `hgen`; unblocks Cor 5.7 at `d=3`.
+- [x] **Leaf 4 (partial)** — `PanelHingeFramework.theorem_55_d3` (CaseI.lean): `theorem_55_generic
+  (k:=2)` instance, `hsplitGP` wired via `case_III_hsplit_producer` +
+  `case_III_candidate_dispatch`; projects `.2`; GAP-6 as quantified `h622`. The other five
+  callbacks ride as hypotheses (their wiring + the blueprint instance node moved to Leaf 5 — see
+  *Current state*). Build + lint clean.
+- [ ] **Leaf 5** — (i) feed `theorem_55_d3`'s five carried callbacks from the landed lemmas
+  (`hcontractGP := case_I_realization` + `hVH2` from G5, §1.41(3)/(5); `hbase`/`hbaseGP` ← the
+  Pinning.lean base layer; `hsplit`/`hcontract` (bare) — **feed availability unverified**, see
+  *Hand-off*); (ii) mint the small green `theorem_55_generic (k:=2)` blueprint instance node (NOT
+  a standalone `theorem_55_dim3` node — `thm:theorem-55` stays red pending Phase 23, §1.41(5));
+  (iii) the `lem:case-II-realization` / `lem:case-III` flips + the Thm 5.5→5.6 push feeding
+  `rigidityMatrix_prop11`'s `hgen`; unblocks Cor 5.7 at `d=3`.
 
 ## Blockers / open questions
 
@@ -106,10 +118,21 @@ quantified `h622lb` hypothesis (§1.50(b) option (ii); see Blockers).
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — Leaf 5**: add `\lean{}` pins + `\leanok` to
-`lem:case-II-realization` and `lem:case-III` in the blueprint; push `theorem_55_d3` + the
-Case-I/II producers to assemble the Thm 5.5→5.6 bridge feeding `rigidityMatrix_prop11`'s `hgen`;
-flip `thm:theorem-55` to `\leanok`. That closes the phase green-modulo-GAP-6.
+**Smallest next forward commit — the Leaf-5 feed-audit / design-settle pass (recon-before-build
+flag).** Leaf 5 now owns the five-callback wiring Leaf 4 deferred and has **no exact-signature
+spec block** — the same under-pinned-assembly shape that blocked W6-concrete (rows 26–27) and
+mis-routed W9 (rows 38–39); W10's §1.53 design-settle precedent applies. The pass should pin, as
+a §1.54: (a) the feed for each of `theorem_55_d3`'s five carried callbacks at `k = 2` —
+`hcontractGP := case_I_realization` (+ `hVH2` from G5, §1.41(3)/(5)) and `hbase`/`hbaseGP` from
+the Pinning.lean base layer are expected-green; **`hsplit`/`hcontract` (the bare-motive branches,
+the non-simple leaves of §1.41(4)) have no verified landed feed — audit first**, and if a feed is
+genuinely missing, surface it (it changes the phase-close estimate, a phase-boundary decision for
+the user); (b) the Thm 5.5→5.6 push's exact statement feeding `rigidityMatrix_prop11`'s `hgen`;
+(c) the blueprint plan — mint the small green `theorem_55_generic (k:=2)` instance node, the
+`lem:case-II-realization` / `lem:case-III` `\lean{}` pins + `\leanok` flips, `thm:theorem-55`
+disposition (stays red pending Phase 23 per §1.41(5)). Then **Leaf 5** itself per the §1.54 pins;
+phase close green-modulo-GAP-6 (the fully-quantified `h622` rides on `theorem_55_d3`'s
+consumers). **No `sorry`** at any step.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it

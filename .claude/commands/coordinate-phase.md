@@ -105,7 +105,13 @@ Loop:
      in one 22h session (rows 11, 14); only the section re-read
      caught them. A shape deviation = corrective dispatch one rung
      up with a tailored prompt naming the verdict, never a
-     discharge-on-top.
+     discharge-on-top. Diff against the **pre-commit** text of the
+     checklist item / design section (`git show <noted-sha>:notes/…`),
+     not the post-commit one — the builder edits the notes too, and a
+     partially-delivered item can be rewritten to match what landed,
+     silently dropping pinned sub-clauses (row 46: a checklist item's
+     wiring + blueprint-node sub-clauses vanished in the same commit
+     that marked it Done).
    - **Mechanical fixups, not stops:** wrong branch → `git checkout
      master && git merge --ff-only <branch> && git branch -d
      <branch>`; wrong author → `git commit --amend --author=…`;

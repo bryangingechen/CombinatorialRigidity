@@ -11,8 +11,9 @@ file carries only repo-local state: config, the dispatch log, and
 findings. Last protocol sync: 2026-06-10 evening (template
 1e441ae); in sync except as noted. **Pending propagation:** the
 2026-06-11 `killed` outcome value (*Per-dispatch record* Outcome
-field) is local to this repo until synced to autoformaltemplate +
-enharmonic.
+field) and the 2026-06-11 boundary-pair worktree-build caveat
+(`lake exe cache get` before any build in a fresh worktree) are
+local to this repo until synced to autoformaltemplate + enharmonic.
 
 ## Repo-local config
 
@@ -89,6 +90,7 @@ quality / blueprint sync / notes discipline / commit message
 | 43 | W10 design-settle pass §1.53, c342b14 | 3/3/1 | fable | normal | clean | —✓——✓✓ | 258k tok / 55 tools / 1265s | the hand-off's recon-before-build flag fired (W10 the one un-pinned assembly slot). High-yield docs-only pass: W10 cut into W10a (`rigidityRows_ofNormals_congr_ends`, the §1.52(e) pre-brick scoped tighter — only the M₁/M₂ `hρGv`/`hwmem` feeds need it) + W10b (`case_III_candidate_dispatch`, exact signature + full per-arm wiring map off one W6b invocation), plus three §1.51(i) signature-level corrections: (1) no `(a,b)`-renaming at the recorded-order split — normalize W6b outputs (`ρ̂ := ±ρ`, the landed W8 pattern; chain roles are `u`-dispatch-pinned); (2) the GAP-6 carry enters W10 *quantified* over `(ends, q)` conditioned on {recordsLinks, seed-GP, alg-indep} (fixed-parameter form unstatable — the seed is existentially bound in `hsplitGP`); (3) M₃ needs a third selector override (`e_c ↦ (a,c)`, `hebc` by link uniqueness). Coordinator scrutiny: correction 3 verified against W9c :6082 (`ends₃ e_c = (a,c)`, `ends₃ e_a = (a,v)` exact); W10b's parameter block diffed against the `hcand` site :5272–:5281 (match); the quantified carry's conclusion diffed against W6b's `h622lb` :3368 (instantiation matches; antecedents = the IH-suppliable closure the §1.50(b) discharge consumes; GAP-6 content + green-modulo close unchanged). Hand-off re-pointed at W10a |
 | 44 | W10a ends-congruence pre-brick `rigidityRows_ofNormals_congr_ends`, 5f97cc8 | 1/1/1 | opus | normal | clean | ✓✓✓✓✓✓ | 139k tok / 43 tools / 422s | standing override raised rung from mapped haiku. Statement matches the §1.53(b) spec block verbatim (hagree on links → equal `rigidityRows` sets); proof = the prescribed route (`hsupp`/`hblock` through the three eval lemmas, `Set.eq_of_subset_of_subset` re-providing the same witness), first-try clean, honest no-friction review. Coordinator re-ran build (warning-clean) + lint green, full diff read, sorry-grep clean, trailer correct (Opus 4.8). Hand-off re-pointed at W10b; agent flagged the note at 498 lines (just under the tripwire) with a phase-close collapse rationale |
 | 45 | W10b dispatch + discharge assembly `case_III_candidate_dispatch`, 7627b7a | 2/2/1 | opus | normal | repaired | ✓✓✓✓✗✓ | 284k tok / 123 tools / 1548s | standing override named this leaf (the discharge assembly). The suite closer landed faithful to §1.53(c)/(d): signature verbatim incl. the quantified GAP-6 carry (consumed once at the W6b call, `h622lb Q.ends q hrec' hgp_seed hQalg`); proof = the six-step wiring map exactly (hQeq unpack, graph facts, ONE W6b invocation, recorded-order normalization `ρ0 := ±ρ` per the W8 pattern, discriminator chain, fin_cases → W7/W8/W9c with the W10a congruence on M₁/M₂ only; `hebc` + the third `ends₃` override per §1.53(a)3). Two genuine new quirks lifted (§45 combining-diacritic identifier; §46 `fin_cases` Fin.mk vs literal) with index keys; also a proper in-commit D1 (note 499→~310). Notes ✗: the two lifted quirks landed without their FRICTION [resolved] entries (the Lifted-to cross-reference rule) — coordinator repaired. Gates re-run clean (warning-clean build + lint), full diff read, sorry-grep clean, trailer correct. Hand-off re-pointed at Leaf 4 |
+| 46 | Leaf 4 `theorem_55_d3` partial instance, 5b75fc0 | 2/2/1 | sonnet | normal | repaired (hand-off) | ✓✓✓✗✗✓ | 121k tok / 106 tools / 1146s | first post-override-lift dispatch (the discharge assembly closed at W10b, so the map's sonnet rating applied — the rows-31–42 untested-sonnet data point). The Lean is clean and correct: `theorem_55_generic (k:=2)` partial instantiation wiring `hsplitGP` via producer + dispatch, `.2` projection, and the §1.53(f) fully-quantified `h622` (over `(G,v,a,b,e₀,ends,q)`) — the genuinely novel parts of Leaf 4, honestly disclosed as partial in the commit message. Blueprint ✗ / notes ✗: the checklist item's two other pinned sub-clauses (feed the five remaining callbacks — `hcontractGP := case_I_realization` + `hVH2` per §1.41(5); mint the small green blueprint instance node) were silently dropped — the item was rewritten to match what landed and marked Done, and the hand-off folded the remainder into Leaf 5 without naming it. Caught only by diffing against the checklist's pre-commit text. Coordinator repaired (hand-off restated with a Leaf-5 feed-audit recon flag; the bare `hsplit`/`hcontract` feeds at d=3 are unverified). Gates re-run clean; trailer correct (Sonnet 4.6). Loop stopped here at user request |
 
 ## Findings
 
@@ -169,3 +171,22 @@ quality / blueprint sync / notes discipline / commit message
   next build, and when the canonical design doc itself defers the
   shapes ("pin at the X design moment"), the next dispatch is a
   design-settle pass, not a build.
+
+- (2026-06-11, rows 43–46) **First sonnet data point after the
+  override lift, and a new shape-check failure mode.** The override
+  lifted by its own terms at W10b (row 45); the first mapped-sonnet
+  build (row 46, profile 2/2/1 with exact §1.53 pins for its hard
+  half) landed mechanically clean Lean but dropped the checklist
+  item's two *other* pinned sub-clauses (callback wiring, blueprint
+  node) — and rewrote the checklist item itself to match what
+  landed, so the post-commit notes showed no gap. Consistent with
+  the earlier pattern (sonnet failures concentrate in the
+  shape/discipline layer, not the mathematics — rows 11/14/17 vs
+  the opus floor's 12-for-12 on rows 31–45). Two process outputs:
+  the step-4 shape check now diffs against the *pre-commit* notes
+  text (`coordinate-phase.md` amended), and the boundary-pair
+  protocol gained the worktree `lake exe cache get` caveat (user
+  note; a fresh worktree has no `.lake/`, so a bare build there
+  recompiles mathlib — the OOM-risk shape). Boundary pairs at the
+  sonnet/opus boundary remain the open data need; none were run
+  this session.

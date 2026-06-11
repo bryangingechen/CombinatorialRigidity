@@ -67,6 +67,12 @@ Published function of the profile, so assignment is reproducible:
   *same task* to the adjacent rung in an **isolated worktree**; keep
   the primary's commit, log both outcomes, discard the duplicate's
   tree. This is the only true same-task comparison in the design.
+  *Worktree build caveat (Lean repos):* a fresh worktree has no
+  `.lake/` — a bare `lake build` there recompiles mathlib from
+  source (expensive; on shared machines a known OOM risk). Have the
+  duplicate run `lake exe cache get` in the worktree first so its
+  build reuses the mathlib olean cache; if the cache step fails,
+  abort the duplicate rather than building through.
 - **Escalation.** BLOCKED return or failed verification → re-dispatch
   the same task one rung up; log the pair (wasted cost included).
 
