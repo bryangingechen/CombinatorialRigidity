@@ -37,12 +37,13 @@ Coordinator independently verified all three verdicts against KT pp. 681–684 +
 (its candidate row and `(vb)ⱼ`-transports are not sheared-candidate rows at `t ≠ 0`); the route is
 **certify-then-rebase** — certify the (6.29) count at `F₀` (W6c+W6d), convert to a rank lower
 bound and re-extract a literal `F₀.panelRow` family (W6e), transfer that along the `t`-family
-(W6f), close through the span core + GAP-2 (W7). **All of W6a–W6f AND W7 are landed** — the
-certify-then-rebase arm is complete. Smallest next commit: **W8** (the M₂ arm, §1.51(i)) — a pure
-*instantiation* of W7 at the swapped roles `(a,b,e_a,e_b,n') := (b,a,e_b,e_a,n'')` feeding
-`ρ' := −ρ` (`hingeRow a b ρ = hingeRow b a (−ρ)`, an orientation artifact; KT p. 681 "r' = r"); its
-`hρe₀`/`hwmem` shapes convert by `panelSupportExtensor_swap` + `map_neg`. Then per §1.51(j):
-W9 (M₃ wiring) → W10 (dispatch + discharge matching `hcand`) → Leaf 4 → Leaf 5 → phase close
+(W6f), close through the span core + GAP-2 (W7). **All of W6a–W6f, W7, AND W8 are landed** — the
+certify-then-rebase arm (M₁) and the M₂ arm (a pure W7 instantiation) are complete. Smallest next
+commit: **W9** (the M₃ arm, §1.50(e)/§1.51(i)) — W7 at the *relabeled* `a`-split data (the
+`caseIIICandidate` def takes the relabeled seed `qρ` as its `q`; W7's `(v,a,b,e_a,e_b,n')`-slots at
+`(a,c,v,e_c,e_a,n''')`), with the candidate functional arriving as the same `ρ` through
+`candidateRow_ac_eq_neg` + the `rigidityRows_ofNormals_relabel` row-space transport. Then per
+§1.51(j): W10 (dispatch + discharge matching `hcand`) → Leaf 4 → Leaf 5 → phase close
 green-modulo-GAP-6.
 
 **W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
@@ -60,12 +61,12 @@ variant*); `[DecidableEq α/β]` dropped (`classical` supplies them). Build + li
 ([propext, Classical.choice, Quot.sound]); no `\lean` pin (internal infra). GAP-6-clean (W6b carries
 `h622lb`).
 
-**Build order (§1.51(j); supersedes §1.50(f) item 6):** W1–W5 + W6-core + W6a–W6f + **W7** all
-landed (the certify-then-rebase arm; `h622lb` GAP-6 carry entered at W5, rides through W6b) →
-**W8** (M₂ = W7 instantiation at swapped roles, `−ρ`) → W9 (M₃ wiring) → W10 (dispatch + discharge
-assembly, matches `hcand`'s shape) → Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact
-signatures + per-leaf consumes/consumed-by/§38 notes: §1.51 (design doc). Per-leaf landing detail is
-in git history + *Decisions made* below.
+**Build order (§1.51(j); supersedes §1.50(f) item 6):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8**
+all landed (M₁ certify-then-rebase + M₂ instantiation; `h622lb` GAP-6 carry entered at W5, rides
+through W6b) → W9 (M₃ wiring) → W10 (dispatch + discharge assembly, matches `hcand`'s shape) →
+Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact signatures + per-leaf
+consumes/consumed-by/§38 notes: §1.51 (design doc). Per-leaf landing detail is in git history +
+*Decisions made* below.
 
 ## Lemma checklist
 
@@ -171,10 +172,13 @@ in git history + *Decisions made* below.
   `finrank_span_eq_card` + `finrank_mono`. GAP-6-clean (W6b carries `h622lb`); axiom-clean, no
   `\lean` pin), and **W7 the M₁ arm closer** (`case_III_arm_realization`, CaseI.lean — W6d→W6e→W6f
   certify-then-rebase + the `q₀`-membership + GAP-2 close; see *Current state* + *Decisions made*
-  for the route and the §38 row-family generalization). Remaining, as complete lemmas (no `sorry` on
-  master), per §1.51(i)/(j): W8 M₂ (W7 instantiation, `−ρ`) → W9 M₃ (G4c/G4d +
-  `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature. Exact per-leaf
-  signatures: §1.51(c)–(i).
+  for the route and the §38 row-family generalization), and **W8 the M₂ arm closer**
+  (`case_III_arm_realization_M2`, CaseI.lean — a pure instantiation of W7 at the swapped roles with
+  `ρ' := −ρ`; candidate at `e_b`/line `n_b ∧ n''`, hypotheses convert by `hingeRow_swap` /
+  `panelSupportExtensor_swap` / `LinearMap.neg_apply` / `LinearIndependent.pair_symm_iff`;
+  graph-free, axiom-clean, no `\lean` pin). Remaining, as complete lemmas (no `sorry` on master),
+  per §1.51(i)/(j): W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching
+  the `hcand` signature. Exact per-leaf signatures: §1.51(c)–(i).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -201,17 +205,20 @@ in git history + *Decisions made* below.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W8 (the M₂ arm, §1.51(i)).** W7 (`case_III_arm_realization`) is
-landed and is **role-parametric**, so W8 is a pure *instantiation* of it at the swapped roles
-`(v,a,b,e_a,e_b,n') := (v,b,a,e_b,e_a,n'')` feeding the candidate functional `ρ' := −ρ` (because
-`r̂ = hingeRow a b ρ = hingeRow b a (−ρ)` by `hingeRow_swap` — a Lean-orientation artifact, not a KT
-discrepancy: KT p. 681 has `r' = r`, identical row content). The `hρe₀`/`hwmem` shapes convert by
-`panelSupportExtensor_swap` + `map_neg`; the gate at the `u = 1` witness is
-`ρ(panelSupportExtensor n_b n'') ≠ 0 → (−ρ)(…) ≠ 0`. If genuinely small it may instead be inlined
-into W10's `u = 1` branch (budget it as its own commit otherwise). Then per §1.51(i)/(j):
-W9 (M₃ wiring, §1.50(e)) → W10 (dispatch + discharge matching `hcand`) → Leaf 4 → Leaf 5 → phase
-close green-modulo-GAP-6. **No `sorry`** at any step (carry GAP-6 as the named `h622lb`, never a
-`sorry`).
+**Smallest next forward commit — W9 (the M₃ arm, §1.50(e)/§1.51(i)).** W7
+(`case_III_arm_realization`) is landed and **role-parametric**, and W8
+(`case_III_arm_realization_M2`) instantiated it for M₂; W9 is the third arm — W7 at the
+*relabeled* `a`-split data. The `caseIIICandidate` def takes the relabeled seed `qρ` as its
+`q`-argument, and W7's `(v,a,b,e_a,e_b,n')`-slots are instantiated at `(a,c,v,e_c,e_a,n''')`
+(re-inserted body `a`, candidate hinge `e_c = ac` on the line `L'' ⊂ Π(c)` — the `u = 2` witness;
+reproduced hinge `e_a = av` at the relabeled split's `vc`-hinge; `Gv`-slot the relabeled split minus
+its short-circuit edge). The candidate functional arrives as the *same* `ρ` through
+`candidateRow_ac_eq_neg` + the `rigidityRows_ofNormals_relabel` row-space transport; pin the
+residual sign/wiring shapes at the W9 design moment (the producer-direction `ofNormals_relabel` /
+G4c/G4d leaves are landed). Unlike W8 (a pure type-level instantiation), W9 has the relabel
+transport to wire, so budget it as its own commit. Then per §1.51(i)/(j): W10 (dispatch +
+discharge matching `hcand`) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6. **No `sorry`** at
+any step (carry GAP-6 as the named `h622lb`, never a `sorry`).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -438,8 +445,21 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   4M heartbeats) on its heavy `Ft.panelRow`-family argument — fixed by `set f := <family>;
   clear_value f` (→ TACTICS-QUIRKS §38). `[DecidableEq α/β]` dropped (the `unusedDecidableInType`
   lint; `classical` + `caseIIICandidate`'s own instances suffice). Axiom-clean; no `\lean` pin.
+- **W8 the M₂ arm closer (§1.51(i); `case_III_arm_realization_M2`, CaseI.lean).** A one-`refine`
+  instantiation of W7 at the swapped roles `(a,b,e_a,e_b,n') := (b,a,e_b,e_a,n'')` with `ρ' := −ρ`.
+  Signature is W7's mirror: candidate gate at the `b`-side (`ρ(panelSupportExtensor n_b n'') ≠ 0`),
+  `hLn` at `![n_b, n'']`; everything tied to the inductive `(ab)`-row (`ρ`, `hρe₀`, `hρGv` at
+  `hingeRow a b ρ`, the `w` family) is **identical** to W7's, so W10 feeds both arms from one W6b
+  invocation. The seven W7 hypotheses needing conversion all close in one tactic each: `hsplitG`
+  reorders the first two disjuncts (`rcases … <;> exacts […]`); `hgab` swaps via
+  `LinearIndependent.pair_symm_iff`; `hingeRow b a (−ρ) = hingeRow a b ρ` via `← hingeRow_swap`;
+  the dual-evaluation gates via `LinearMap.neg_apply` + `panelSupportExtensor_swap` + `map_neg`
+  (NOT `map_neg` alone — the `−` sits on the functional `(−ρ)`, see §44 below). Graph-free,
+  axiom-clean, no §38 (the trap lives inside W7); no `\lean` pin.
 
 ### Promoted to TACTICS-QUIRKS / FRICTION
+- *`rw [map_neg]` fails on `(-f) x` (functional-side negation) — use `LinearMap.neg_apply`* →
+  TACTICS-QUIRKS § 44.
 - *`set X := e with hX` folds `e` in pre-existing hypotheses too, so a later `rw [h]` (LHS was `e`)
   finds nothing* → TACTICS-QUIRKS § 43 (FRICTION [resolved] pointer).
 - *A span/rigidity lemma applied with a heavy-carrier row-family argument `whnf`-times-out —

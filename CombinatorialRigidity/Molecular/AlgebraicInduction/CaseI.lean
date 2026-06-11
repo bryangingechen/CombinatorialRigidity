@@ -4772,6 +4772,80 @@ theorem PanelHingeFramework.case_III_arm_realization
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_q₀
     hne_q₀ hnev hrig
 
+/-- **W8 — the M₂ arm closer: the candidate at `e_b` realizes the `d = 3` framework at full rank**
+(`lem:case-II-realization` / `lem:case-III`, the second of the three `hcand`-discharge arms;
+Katoh–Tanigawa 2011 §6.4.1, eq. (6.42)'s `M₂ = (r(L'); r̂)`, the swapped-role instantiation of
+design §1.51(i), Phase 22h). The M₂ arm carries the candidate line `L' ⊂ Π(b)` (the second
+normal `n''` of body `b`'s panel), so the witness gate sits at the `b`-side
+(`hρgate : ρ (panelSupportExtensor n_b n'') ≠ 0`, the `u = 1` discriminator branch). Everything
+tied to the inductive `(ab)`-row — the candidate functional `ρ`, its annihilation `ρ(C(e₀)) = 0`,
+its `Gᵥ`-row membership `hingeRow a b ρ ∈ span`, and the bottom family `w` — is **identical** to
+W7's (KT p. 686: "the same `λ_{(ab)j}` and the index `i^*` are used"), so W10 feeds both arms from
+one W6b invocation; only `hLn`/`hρgate` move to the `b`-side.
+
+This is a pure instantiation of `case_III_arm_realization` at the swapped roles
+`(a, b, e_a, e_b, n') := (b, a, e_b, e_a, n'')`, feeding `ρ' := -ρ`: the swapped-role candidate
+functional is `-ρ` because `r̂ = hingeRow a b ρ = hingeRow b a (-ρ)` (`hingeRow_swap`) — a
+Lean-orientation artifact, not a KT discrepancy (KT p. 681: "`r'` is indeed equal to `r`"; the
+row content is identical). The hypothesis conversions are `hingeRow_swap`, `LinearMap.neg_apply`
+(the functional-side `(-ρ) x = -(ρ x)`) + `panelSupportExtensor_swap` + `map_neg`, and
+`LinearIndependent.pair_symm_iff`. Graph-free over the carrier (it only reorders data and rewrites
+functionals); the §38 trap lives inside W7. -/
+theorem PanelHingeFramework.case_III_arm_realization_M2
+    [Finite α] [Finite β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n'' : Fin (k + 2) → ℝ}
+    -- the candidate line `L' ⊂ Π(b)`: the witness normal `n''` is transversal to `n_b`
+    (hLn : LinearIndependent ℝ ![(fun i => q (b, i)), n''])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    -- the gate at the `b`-side line (the `u = 1` discriminator witness)
+    (hρgate : ρ (panelSupportExtensor (fun i => q (b, i)) n'') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  -- Feed W7 at the swapped roles `a ↔ b`, `e_a ↔ e_b`, with `ρ' := -ρ`. The candidate row content
+  -- is invariant: `hingeRow a b ρ = hingeRow b a (-ρ)`.
+  refine PanelHingeFramework.case_III_arm_realization (k := k) G Gv ends
+    hvVc hbVc haVc hG_eb hG_ea hends_eb hends_ea heab.symm hleG
+    (fun e u w hlink => by
+      rcases hsplitG e u w hlink with h | h | h
+      exacts [Or.inr (Or.inl h), Or.inl h, Or.inr (Or.inr h)])
+    hends_Gv hne_Gv hVone hVcard hLn (LinearIndependent.pair_symm_iff.mp hgab)
+    (ρ := -ρ) ?_ ?_ ?_ (ιb := ιb) (w := w) hwcard hw ?_
+  -- `hρgate`: `(-ρ)(panelSupportExtensor n_b n'') ≠ 0` from `hρgate` (negation on the functional).
+  · rw [LinearMap.neg_apply, neg_ne_zero]; exact hρgate
+  -- `hρe₀`: `(-ρ)(panelSupportExtensor n_b n_a) = 0` from `hρe₀` via `panelSupportExtensor_swap`.
+  · rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀, neg_zero, neg_zero]
+  -- `hρGv`: `hingeRow b a (-ρ) ∈ span` is `hingeRow a b ρ ∈ span` (`hingeRow_swap`).
+  · rwa [← BodyHingeFramework.hingeRow_swap]
+  -- `hwmem`: each `ρ'`-tagged member converts to `-ρ'` (`hingeRow b a (-ρ') = hingeRow a b ρ'`;
+  -- the annihilation swaps the normals and negates the functional).
+  · intro j
+    rcases hwmem j with hgen | ⟨ρ', hρ'e₀, hwj⟩
+    · exact Or.inl hgen
+    · exact Or.inr ⟨-ρ', by rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ'e₀,
+        neg_zero, neg_zero], by rw [hwj, ← BodyHingeFramework.hingeRow_swap]⟩
+
 /-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
 `lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly

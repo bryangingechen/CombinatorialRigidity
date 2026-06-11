@@ -1634,3 +1634,23 @@ could not find `span (range r)`.)
 The general rule: after a `set`/`subst`/`simp only [eqn] at *` that touches the context, re-read
 what your *old* hypotheses now say before threading them into a later `rw`. The atom you named is
 no longer spelled the way it was when you obtained the hypothesis.
+
+## 44. `rw [map_neg]` on `(-f) x` fails — that is *functional*-side negation; use `LinearMap.neg_apply`
+
+**Symptom.** *"Tactic `rewrite` failed: Did not find an occurrence of the pattern `?f (-?a)`"* on
+`rw [map_neg]` against a goal like `(-ρ) (panelSupportExtensor n₁ n₂) = …` (`ρ : Module.Dual ℝ _`,
+or any bundled linear map). The `-` is on the *map*, not the argument.
+
+**Cause.** `map_neg` is `f (-a) = -(f a)` — it pushes a negation *out of the argument*. A term
+`(-f) a` has the negation on `f` itself (an `AddMonoidHom`/`LinearMap` negated via the module
+structure on the hom space), so `map_neg`'s LHS pattern `?f (-?a)` is simply absent. The correct
+rewrite is `LinearMap.neg_apply : (-f) a = -(f a)` (the `Neg`-on-the-hom companion; `NegHomClass`
+generalisations exist but the bundled-`LinearMap` form is what fires here).
+
+**Fix.** Use `LinearMap.neg_apply` to strip the functional-side negation, *then* `map_neg` for any
+argument-side one. The two compose cleanly when both occur — e.g. converting a swapped-orientation
+dual evaluation: `rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, …]` turns
+`(-ρ) (panelSupportExtensor n₂ n₁)` into `-(ρ (-(panelSupportExtensor n₁ n₂)))` into
+`-(-(ρ (panelSupportExtensor n₁ n₂)))` (Phase 22h W8, `CaseI.lean` — the M₂-arm `ρ' := -ρ`
+conversions). The general rule: read where the `-` sits before reaching for `map_neg`; argument
+vs. functional negation are different lemmas.
