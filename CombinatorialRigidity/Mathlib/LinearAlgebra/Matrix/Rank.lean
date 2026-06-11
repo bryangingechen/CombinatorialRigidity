@@ -141,6 +141,49 @@ theorem finite_setOf_not_linearIndependent_rows_along_affine_path
   by_contra h_ne
   exact ht ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr h_ne)
 
+/-- **Linear independence of rows is cofinite along a polynomial-entry family.** Generalizes
+`finite_setOf_not_linearIndependent_rows_along_affine_path` from the affine family `A + t • B` to an
+arbitrary polynomial-entry matrix `P : Matrix m n (Polynomial ℝ)`: if the rows of the specialization
+`P.map (eval t₀)` are linearly independent at some `t₀ : ℝ`, then the rows of `P.map (eval t)` are
+linearly independent for all but finitely many `t : ℝ`.
+
+The proof is the same Gram-determinant argument: the iff
+`linearIndependent_rows_iff_det_mul_transpose_ne_zero`
+turns "rows of `P.map (eval t)` LI" into the non-vanishing of `Q.eval t`, where
+`Q := det (P * Pᵀ) : Polynomial ℝ` (a single univariate polynomial whose evaluation at `t` is the
+Gram determinant of the specialized matrix, via `(evalRingHom t).map_det` + `Matrix.map_mul` +
+`Matrix.transpose_map`). `Q` is nonzero (nonzero at `t₀`), so by `Polynomial.finite_setOf_isRoot`
+the bad-`t` set — contained in `Q`'s root set — is finite. The affine engine is the special case
+`P = X • B.map C + A.map C`. -/
+theorem finite_setOf_not_linearIndependent_rows_of_polynomial
+    [Finite m] [Finite n] (P : Matrix m n (Polynomial ℝ)) {t₀ : ℝ}
+    (h : LinearIndependent ℝ (P.map (Polynomial.evalRingHom t₀)).row) :
+    {t : ℝ | ¬ LinearIndependent ℝ (P.map (Polynomial.evalRingHom t)).row}.Finite := by
+  classical
+  haveI : Fintype m := Fintype.ofFinite m
+  haveI : Fintype n := Fintype.ofFinite n
+  -- Gram-det polynomial `Q := det (P * Pᵀ) ∈ Polynomial ℝ`.
+  let Q : Polynomial ℝ := (P * Pᵀ).det
+  -- `Q.eval t = det ((P.map (eval t)) * (P.map (eval t))ᵀ)`, via `RingHom.map_det` +
+  -- `RingHom.mapMatrix_apply` + `Matrix.map_mul` + `Matrix.transpose_map`.
+  have hQ_eval : ∀ t : ℝ, Q.eval t
+      = ((P.map (Polynomial.evalRingHom t)) * (P.map (Polynomial.evalRingHom t))ᵀ).det := by
+    intro t
+    change (Polynomial.evalRingHom t) Q = _
+    rw [(Polynomial.evalRingHom t).map_det, RingHom.mapMatrix_apply, Matrix.map_mul,
+      Matrix.transpose_map]
+  -- `Q ≠ 0`: at `t = t₀`, `Q.eval t₀ = det(…) ≠ 0` by hypothesis.
+  have hQ_ne : Q ≠ 0 := fun hQ_zero => by
+    have := hQ_eval t₀
+    rw [hQ_zero, Polynomial.eval_zero] at this
+    exact ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mp h) this.symm
+  -- The bad-`t` set is contained in `Q`'s root set, which is finite.
+  refine (Polynomial.finite_setOf_isRoot hQ_ne).subset fun t ht => ?_
+  rw [Set.mem_setOf_eq] at ht
+  rw [Set.mem_setOf_eq, Polynomial.IsRoot, hQ_eval]
+  by_contra h_ne
+  exact ht ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr h_ne)
+
 /-- **Linear independence of rows is attained at a generic specialization** (multivariate
 analogue of `finite_setOf_not_linearIndependent_rows_along_affine_path`). Let
 `P : Matrix m n (MvPolynomial σ ℝ)` be a polynomial-entry matrix. If the rows of the
@@ -581,3 +624,56 @@ theorem exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range
       (P.map (MvPolynomial.eval p)).row (RingHom.id ℝ) e ?_
     rw [RingHom.id_apply, ← heval p]
     exact hp
+
+/-- **One-variable rank transfer along a polynomial-coordinate family** (Phase-22h leaf B, the
+KT-Lemma-5.2 transfer brick — Katoh–Tanigawa 2011 pp. 668–669: each minor of `R(G, p_t)` is
+continuous in `t`). For a basis `b : Basis κ ℝ M` (with `κ` finite) and a family
+`g : ℝ → ι → M` (with `ι` finite) whose basis coordinates are *univariate-polynomial evaluations*
+— a fixed `P : ι → κ → Polynomial ℝ` with `b.repr (g t i) j = (P i j).eval t` — if the family `g 0`
+is linearly independent at `t = 0`, then there is a `t` avoiding any prescribed finite bad set and
+nonzero (`t ∉ bad`, `t ≠ 0`) at which `g t` is again linearly independent.
+
+The basis-free, graph-free shape the molecular Case-III realization (KT §6.4.1) consumes: the
+`t = 0` hinge-level family is certified independent, then transferred along the one-parameter shear,
+the bad `t` intersected with the good-`t` set of `exists_shear_linearIndependent_pair`. The proof
+pulls `g t` back along `φ := b.equivFun : M ≃ₗ[ℝ] (κ → ℝ)` (so `φ (g t i) j = b.repr (g t i) j =
+(P i j).eval t`, i.e. `φ ∘ g t` is the row family of `(Matrix.of P).map (evalRingHom t)`); LI
+transfers across `φ` (`LinearMap.linearIndependent_iff`), so
+`finite_setOf_not_linearIndependent_rows_of_polynomial` makes the dependent-`t` set finite, and
+`ℝ`'s infinitude supplies a `t` outside that set together with the finite `bad ∪ {0}`. -/
+theorem LinearIndependent.exists_notMem_of_polynomial_repr
+    {ι κ M : Type*} [Finite ι] [Finite κ] [AddCommGroup M] [Module ℝ M]
+    (b : Module.Basis κ ℝ M) (g : ℝ → ι → M) (P : ι → κ → Polynomial ℝ)
+    (hg : ∀ t i j, b.repr (g t i) j = (P i j).eval t)
+    (h0 : LinearIndependent ℝ (g 0)) (bad : Finset ℝ) :
+    ∃ t : ℝ, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent ℝ (g t) := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  haveI : Fintype κ := Fintype.ofFinite κ
+  -- Basis identification `φ : M ≃ₗ[ℝ] (κ → ℝ)` and the polynomial-entry matrix `Pm := of P`.
+  let φ : M ≃ₗ[ℝ] (κ → ℝ) := b.equivFun
+  let Pm : Matrix ι κ (Polynomial ℝ) := Matrix.of P
+  -- The specialized rows of `Pm` at `t` are `φ ∘ (g t)`.
+  have hrow : ∀ t : ℝ, (Pm.map (Polynomial.evalRingHom t)).row = ⇑φ ∘ g t := by
+    intro t; funext i j
+    change (P i j).eval t = φ (g t i) j
+    rw [← hg, b.equivFun_apply]
+  -- LI of the vector family ↔ LI of the matrix rows, via the LinearEquiv `φ`.
+  have hiff : ∀ t : ℝ, LinearIndependent ℝ (g t)
+      ↔ LinearIndependent ℝ (Pm.map (Polynomial.evalRingHom t)).row := by
+    intro t; rw [hrow t]
+    exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
+  -- The set of `t` at which `g t` is dependent is finite, since `g 0` is independent.
+  have hfin : {t : ℝ | ¬ LinearIndependent ℝ (g t)}.Finite := by
+    refine (Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial Pm
+      (t₀ := 0) ((hiff 0).mp h0)).subset fun t ht => ?_
+    rw [Set.mem_setOf_eq] at ht ⊢
+    rwa [hiff] at ht
+  -- `ℝ` is infinite, so there is a `t` outside the finite union of bad sets.
+  have hbad : ({t : ℝ | ¬ LinearIndependent ℝ (g t)}
+      ∪ ((bad : Set ℝ) ∪ {0})).Finite :=
+    hfin.union (bad.finite_toSet.union (Set.finite_singleton 0))
+  obtain ⟨t, ht⟩ := hbad.infinite_compl.nonempty
+  rw [Set.mem_compl_iff, Set.mem_union, Set.mem_union, Set.mem_setOf_eq, not_or, not_or,
+    not_not, Finset.mem_coe, Set.mem_singleton_iff] at ht
+  exact ⟨t, ht.2.1, ht.2.2, ht.1⟩

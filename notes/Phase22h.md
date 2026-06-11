@@ -29,18 +29,19 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step:** W3 — leaf B (the one-variable rank transfer, graph-free; §1.50(c)). W2
-(the `h618` micro-leaf `BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn`) is **landed** —
-extracted the inline `hfin` rank-nullity computation into a packaged lemma in GenericityDevice.lean
-(next to its sole dependency `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`,
-*not* RigidityMatrix.lean as the §1.50(b) note aspired — the support lemma is downstream of
-RigidityMatrix.lean, so the honest home is beside it), and de-duped the two inline `hfin` blocks in
-`exists_independent_panelRow_subfamily_of_rigidOn`(`_linking`) to call it (`rw [span_panelRow…] ;
-exact …`). Needs neither `hends`/`hne`. W1 (the discriminator restate, §1.50(a)) landed before it.
+**Next concrete step:** W4 — leaf A0 (the restriction-bottom block-triangular augment; abstract,
+graph-free; §1.50(c)). W3 (leaf B, the one-variable rank transfer) is **landed** —
+`LinearIndependent.exists_notMem_of_polynomial_repr` (Rank.lean): for a basis `b : Basis κ ℝ M` and
+a family `g : ℝ → ι → M` with `b.repr (g t i) j = (P i j).eval t`, LI at `t = 0` gives a good
+`t ∉ bad`, `t ≠ 0` with `g t` LI. Routed through a new general-polynomial matrix engine
+`Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` (the `P : Matrix m n (Polynomial ℝ)`
+generalization of the affine `…_along_affine_path`); leaf B pulls `g t` back along `b.equivFun` to
+that engine, then picks `t` from `ℝ ∖ (bad ∪ {0} ∪ {dependent t})`. Graph-free, no §38 trap. No
+`\lean` pin (internal infra). W2/W1 landed before it.
 
 **Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
-→ ~~W2 `h618` micro-leaf~~ (done) → W3 leaf B (rank transfer) → W4 leaf A0 (restriction-bottom augment)
-→ W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ → W8 M₂
+→ ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → W4 leaf A0 (restriction-bottom
+augment) → W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ → W8 M₂
 → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 →
 phase close, **green-modulo-GAP-6**.
 
@@ -89,8 +90,11 @@ phase close, **green-modulo-GAP-6**.
   `u : Fin 3`, witness normal `n u`), and **W2 the `h618` micro-leaf**
   (`finrank_span_rigidityRows_of_rigidOn`, GenericityDevice.lean: `finrank (span rigidityRows) =
   D(|V|−1)` from `IsInfinitesimallyRigidOn V(F.graph)`; the inline `hfin` extract, the two
-  `…_subfamily_of_rigidOn` sites now call it). Remaining, as complete lemmas (no `sorry` on master),
-  per §1.50(f): W3 one-variable rank transfer → W4 restriction-bottom augment →
+  `…_subfamily_of_rigidOn` sites now call it), and **W3 leaf B**
+  (`LinearIndependent.exists_notMem_of_polynomial_repr` + the general-polynomial matrix engine
+  `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial`, Rank.lean — the KT-Lemma-5.2
+  one-variable rank transfer, graph-free). Remaining, as complete lemmas (no `sorry` on master),
+  per §1.50(f): W4 restriction-bottom augment →
   W5 redundancy packaging (carries the GAP-6 inequality as the adjudicated explicit hypothesis —
   Blockers) → W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
   `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature.
@@ -118,22 +122,23 @@ phase close, **green-modulo-GAP-6**.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W3, leaf B (the one-variable rank transfer, graph-free; §1.50(c)).**
-The KT-Lemma-5.2 transfer: certify the (6.29) count at the `t = 0` hinge-level family, then transfer
-along the one-parameter shear by a one-variable minor polynomial (`annihRow` linear in `C`, so the
-`e_a`-rows are `t`-constant after rescaling). Graph-free — abstract `F`, no §38 carrier trap. Then
-W4 leaf A0 (restriction-bottom block-triangular augment), each one commit, §1.50(f). W5 onward per
-the build order; GAP 6 is adjudicated (carry as explicit hypothesis — Blockers), so nothing gates
-W5+. **No `sorry` placeholders** at any step.
+**Smallest next forward commit — W4, leaf A0 (the restriction-bottom block-triangular augment;
+abstract, graph-free; §1.50(c)).** `Sum.elim top bot` independent when the `top` rows are pure-`v`
+(post-columnOp) with pinned-independent `v`-forms and the `bot` rows' restrictions to `V∖{v}` are
+independent — the missing sibling of the landed v-vanishing augment. (Proof skeleton: evaluate a
+vanishing combination on `v`-vanishing assignments to kill `bot`, then pin `v`.) Then W5 redundancy
+packaging onward per the build order; GAP 6 is adjudicated (carry as explicit hypothesis —
+Blockers), so nothing gates W5+. **No `sorry` placeholders** at any step.
 
-W2 (the `h618` micro-leaf, §1.50(b)) **landed** — `BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn`
-(GenericityDevice.lean, beside its sole dependency `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`):
-`finrank ℝ (span F.rigidityRows) = screwDim k * (V(F.graph).ncard − 1)` from `IsInfinitesimallyRigidOn`
-on the (nonempty) vertex set (`infinitesimalMotions_eq_dualCoannihilator` + the dual-coannihilator
-complement + `finrank_screwAssignment`; no `hends`/`hne`). The inline `hfin` rank-nullity computation
-extracted from GenericityDevice.lean's two `…_subfamily_of_rigidOn`(`_linking`) blocks, both now
-`rw [span_panelRow…]; exact …` one-liners. Build/lint/axiom-clean. W1 (the discriminator restate,
-§1.50(a)) landed before it.
+W3 (leaf B, §1.50(c)) **landed** — `LinearIndependent.exists_notMem_of_polynomial_repr`
+(Mathlib/LinearAlgebra/Matrix/Rank.lean): for a finite-index family `g : ℝ → ι → M` whose basis
+coordinates are univariate-polynomial evaluations (`b.repr (g t i) j = (P i j).eval t`), LI at
+`t = 0` yields a `t ∉ bad`, `t ≠ 0` with `g t` LI. Routed through the new general-polynomial matrix
+engine `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` (generalizes the affine
+`…_along_affine_path` to a `P : Matrix m n (Polynomial ℝ)`): leaf B pulls `g t` back along
+`b.equivFun` to a polynomial-entry matrix, gets the dependent-`t` set finite from the engine, and
+picks `t` from the complement of `{dependent t} ∪ bad ∪ {0}`. Graph-free, no §38 trap; no `\lean`
+pin (internal infra). Build/lint/axiom-clean. W2/W1 landed before it.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -254,3 +259,11 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   minus the `span_panelRow_eq_rigidityRows` conversion (so no `hends`/`hne`); the two
   `…_subfamily_of_rigidOn`(`_linking`) sites now `rw [span_panelRow…]; exact …`, dropping the
   duplicated `hZ`/`h1`/`hsplit`/`hcompl` boilerplate. No `\lean` pin (internal infra). No friction.
+- **W3 leaf B (`LinearIndependent.exists_notMem_of_polynomial_repr`, Rank.lean):** the basis-free
+  KT-Lemma-5.2 transfer. Factored into a reusable general-polynomial matrix engine
+  `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` (the `P : Matrix m n (Polynomial ℝ)`
+  generalization of the affine `…_along_affine_path` — same Gram-det `Q := det (P·Pᵀ)`,
+  `Polynomial.finite_setOf_isRoot` argument, just a general `P` rather than `X • C(B) + C(A)`), then
+  leaf B pulls `g t` back along `φ := b.equivFun` (so `φ ∘ g t` is the `evalRingHom t`-row of
+  `Matrix.of P`) and picks `t` from `ℝ ∖ ({dependent t} ∪ bad ∪ {0})` via `Set.Finite.infinite_compl`.
+  Both land in the `Mathlib/` mirror (upstream `Matrix`/`LinearIndependent` namespaces). No friction.
