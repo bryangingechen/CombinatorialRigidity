@@ -6273,6 +6273,47 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
         (Graph.removeVertex_isLink.mp hlink).2.2⟩)
       (fun e x y hlink => hrecGv e x y hlink) hends₃_eb hends₃_off (hwmem j)
 
+/-- **W10a — the ends-congruence pre-brick** (design §1.53(b); Phase 22h). Two free-normal panel
+frameworks on the *same* graph `G` and seed `q` whose endpoint selectors `ends`, `ends'` agree on
+every link of `G` have *equal* rigidity-row sets. The dispatch lemma (W10b) builds the `M₁`/`M₂`
+arm selector `ends₁` by overriding `Q.ends` at the two re-inserted hinges `e_a`, `e_b`; this brick
+rewrites the W6b outputs (stated at `Q.ends`) into the `ends₁`-row span those arms consume.
+
+Both `rigidityRows` sets quantify over links `G.IsLink e u v` and read `ends` only through the
+support extensor `panelSupportExtensor (q ((ends e).1, ·)) (q ((ends e).2, ·))` (via
+`toBodyHinge_supportExtensor` + `ofNormals_ends`/`ofNormals_normal`); the generator
+`hingeRow u v r` is itself `ends`-free. So on links the support extensor — hence the hinge-row
+block `(span C)^⊥` — coincides between the two frameworks, and the row sets are equal. Graph-free
+over the carrier (no `whnf`; the established eval-lemma discipline, TACTICS-QUIRKS §38). No `\lean`
+pin (internal infra). -/
+theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends
+    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → ℝ)
+    (hagree : ∀ e u v, G.IsLink e u v → ends e = ends' e) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows
+      = (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.rigidityRows := by
+  -- On any link `e u v`, the support extensors coincide (`ends e = ends' e`), so the hinge-row
+  -- blocks coincide; the generator `hingeRow u v r` is `ends`-free. Each membership re-provides
+  -- the same `⟨e, u, v, hlink, r, …⟩` witness.
+  have hsupp : ∀ e u v, G.IsLink e u v →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e =
+        (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.supportExtensor e := by
+    intro e u v hlink
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      hagree e u v hlink]
+  have hblock : ∀ e u v, G.IsLink e u v →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.hingeRowBlock e =
+        (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.hingeRowBlock e := by
+    intro e u v hlink
+    simp only [BodyHingeFramework.hingeRowBlock, hsupp e u v hlink]
+  apply Set.eq_of_subset_of_subset
+  · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
+    refine ⟨e, u, v, hlink, r, ?_, rfl⟩
+    rwa [← hblock e u v hlink]
+  · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
+    refine ⟨e, u, v, hlink, r, ?_, rfl⟩
+    rwa [hblock e u v hlink]
+
 /-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
 Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
 `q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.

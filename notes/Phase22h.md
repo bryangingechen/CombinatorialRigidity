@@ -53,10 +53,10 @@ short-circuit-free relabel span-induction), **W9b** (the per-member bottom tag t
 `case_III_arm_realization_M3`, CaseI.lean). **The W10 design-settle pass is DONE (design §1.53,
 now canonical for all remaining `hcand`-discharge work):** the W10 slot is two exact-signature
 one-commit leaves — **W10a** (`rigidityRows_ofNormals_congr_ends`, the §1.52(e) ends-congruence
-pre-brick, independently buildable now) and **W10b** (`case_III_candidate_dispatch`, the
-dispatch + discharge assembly matching `hcand` + `hsimple` + the *quantified* GAP-6 carry; full
-per-arm wiring map in §1.53(d)). Smallest next commit: **W10a**. Then per §1.53(f): W10b →
-Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6.
+pre-brick) **LANDED** and **W10b** (`case_III_candidate_dispatch`, the dispatch + discharge
+assembly matching `hcand` + `hsimple` + the *quantified* GAP-6 carry; full per-arm wiring map in
+§1.53(d)). Smallest next commit: **W10b**. Then per §1.53(f): Leaf 4 → Leaf 5 → phase close
+green-modulo-GAP-6.
 
 **W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
 the role-parametric arm yielding `HasGenericFullRankRealization k G` from the unpacked split context
@@ -74,11 +74,11 @@ variant*); `[DecidableEq α/β]` dropped (`classical` supplies them). Build + li
 `h622lb`).
 
 **Build order (§1.53(f)):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8** + **W9a** +
-**W9b** + **W9c** all landed (M₁ certify-then-rebase + M₂ instantiation + the full M₃ arm: relabel
-span-induction core + per-member bottom tag transport + the W8-pattern arm closer; `h622lb` GAP-6
-carry entered at W5, rides through W6b) →
-**W10a** (the ends-congruence pre-brick) → **W10b** (the dispatch + discharge assembly, matches
-`hcand`'s shape; quantified GAP-6 carry) → Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**.
+**W9b** + **W9c** + **W10a** all landed (M₁ certify-then-rebase + M₂ instantiation + the full M₃
+arm: relabel span-induction core + per-member bottom tag transport + the W8-pattern arm closer +
+the ends-congruence pre-brick; `h622lb` GAP-6 carry entered at W5, rides through W6b) →
+**W10b** (the dispatch + discharge assembly, matches `hcand`'s shape; quantified GAP-6 carry) →
+Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**.
 Exact signatures + per-leaf consumes/consumed-by/§38 notes: §1.51 + §1.52 + §1.53 (design doc).
 Per-leaf landing detail is in git history + *Decisions made* below.
 
@@ -136,9 +136,10 @@ Per-leaf landing detail is in git history + *Decisions made* below.
   span-level `mem_span_rigidityRows_ofNormals_relabel` landed but OFF the live route, §1.52(e)),
   **W9a** `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, **W9b** `case_III_bottom_relabel`,
   **W9c** `case_III_arm_realization_M3` (the M₃ arm closer, a W7-instantiation at
-  `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ`). All axiom-clean, no `\lean` pins (internal infra).
-  **Remaining** (complete lemmas, no `sorry` on master; exact signatures §1.53(b)/(c)): **W10a**
-  `rigidityRows_ofNormals_congr_ends` (the ends-congruence pre-brick), **W10b**
+  `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ`), **W10a** `rigidityRows_ofNormals_congr_ends` (the
+  ends-congruence pre-brick: selectors agreeing on links give equal `rigidityRows` sets). All
+  axiom-clean, no `\lean` pins (internal infra).
+  **Remaining** (complete lemma, no `sorry` on master; exact signature §1.53(c)): **W10b**
   `case_III_candidate_dispatch` (the dispatch + assembly matching the `hcand` signature; feeds
   the three arms W7/W8/W9c off one W6b invocation).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
@@ -167,12 +168,12 @@ Per-leaf landing detail is in git history + *Decisions made* below.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W10a, the ends-congruence pre-brick
-`rigidityRows_ofNormals_congr_ends` (exact signature + proof route: design §1.53(b); CaseI.lean,
-file tail; independently buildable now, no dependencies beyond landed API).** Then **W10b**, the
-dispatch + discharge assembly `case_III_candidate_dispatch` — exact signature §1.53(c), the full
-step-by-step wiring map (W6b feed, recorded-order normalization, discriminator glue, per-arm
-hypothesis-feeding tables for W7/W8/W9c) §1.53(d), §38 mitigations §1.53(e). **§1.53 is canonical
+**Smallest next forward commit — W10b, the dispatch + discharge assembly
+`case_III_candidate_dispatch`** — exact signature §1.53(c), the full step-by-step wiring map (W6b
+feed, recorded-order normalization, discriminator glue, per-arm hypothesis-feeding tables for
+W7/W8/W9c) §1.53(d), §38 mitigations §1.53(e). (W10a, the ends-congruence pre-brick
+`rigidityRows_ofNormals_congr_ends`, is **LANDED** — CaseI.lean, before the triple-LI bridge; W10b
+consumes it as the `M₁`/`M₂` `hρGv`/`hwmem` row-set `rw`.) **§1.53 is canonical
 for both leaves — build against it, not §1.51(i)/§1.52(e)** (it corrects §1.51(i) on three
 signature-level points: no `(a,b)`-renaming at the recorded-order split — normalize the W6b
 outputs instead, the W8 pattern; the GAP-6 carry enters W10 *quantified* over the IH seed, not at
@@ -472,6 +473,14 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   outputs (`ρ̂ := -ρ`, the W8 pattern), never rename `(a,b)` (chain roles are `u`-dispatch-pinned);
   `h622lb` enters *quantified* over `(ends, q)`, conditioned on {recordsLinks, seed-GP, alg-indep}
   (the seed is bound inside `hsplitGP`); M₃'s `ends₃` overrides *three* edges (`e_c ↦ (a,c)` too).
+- **W10a the ends-congruence pre-brick (§1.53(b); `PanelHingeFramework.rigidityRows_ofNormals_congr_ends`,
+  CaseI.lean, before the triple-LI bridge).** Two `ofNormals` frameworks on the *same* `G`/`q`
+  whose `ends`/`ends'` agree on every `G`-link have equal `rigidityRows` sets. Proof = a `hsupp`/
+  `hblock` pair (on links the support extensor — read through `toBodyHinge_supportExtensor` +
+  `ofNormals_ends`/`ofNormals_normal` + `rw [hagree …]` — hence the `(span C)^⊥` block coincide) then
+  `Set.eq_of_subset_of_subset`, each direction re-providing the same `⟨e,u,v,hlink,r,…⟩` witness
+  (`hingeRow u v r` is `ends`-free; the framework-graph `IsLink` is defeq to `G.IsLink`). No
+  `change`/glue, no §38; first-try clean, no friction. Axiom-clean; no `\lean` pin.
 
 ### Promoted to TACTICS-QUIRKS / FRICTION
 - *A multi-branch `span_induction` over a heavy `Module.Dual` span hits the cumulative heartbeat
