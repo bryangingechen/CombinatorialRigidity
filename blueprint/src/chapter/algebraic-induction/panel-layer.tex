@@ -196,19 +196,26 @@ whole induction.
 
 \begin{definition}[Generic-rank hypothesis (6.1) --- genuine-hinge form; KT eq.\ (6.1)]
   \label{def:genuine-hinge-realization}
-  \uses{def:rank-hypothesis, def:panel-hinge-framework}
-  The \emph{genuine-hinge realization hypothesis}: a minimal $k$-dof-graph $G$
-  (with $|V| \ge 2$) carries a panel-hinge realization $(G,p)$ with
-  $\operatorname{rank} R(G,p) = D(|V(G)|-1) - k$ \emph{and} genuine hinges
-  (nonzero supporting extensors, i.e.\ no two hinge panels coincide), and ---
-  when $G$ is simple --- with no two hinges parallel.  This is KT's
-  hypothesis (6.1) at full strength.
+  \lean{CombinatorialRigidity.Molecular.HasPanelRealization,
+    CombinatorialRigidity.Molecular.ExtensorInPanel,
+    CombinatorialRigidity.Molecular.hasPanelRealization_of_generic}
+  \leanok
+  \uses{def:rank-hypothesis, def:panel-hinge-framework, def:D-deficiency}
+  A graph $G$ \emph{has a genuine-hinge panel realization} at dimension $k$ and
+  defect parameter $n$ when there exist a body-hinge framework $F$ on $G$ and a
+  panel-normal assignment $\mathtt{normal} : V \to \mathbb{R}^{k+2}$ such that:
+  every vertex has a nonzero normal; every link's supporting $k$-extensor is
+  nonzero and lies in both endpoint panels (each endpoint's hyperplane
+  $\mathtt{normal}(v)^\perp$ contains $k$ spanning points of the extensor,
+  $\mathtt{ExtensorInPanel}$); and the rigidity-row span attains the target rank
+  $D(|V(G)|-1) - \operatorname{def}(\tilde G)$ (KT eq.~(6.1), $\mathbb Z$-cast form).
 
-  \emph{Status.}  The bare rank form (\cref{def:rank-hypothesis}) is
-  formalized; the genuine-hinge conjunct is the obligation of sub-phase 22i,
-  which strengthens $\mathtt{HasFullRankRealization}$ to require
-  $Q.\mathrm{IsGeneralPosition}$ (pairwise-independent panel normals) when $G$
-  is simple, and genuine nonzero extensors in all cases.
+  Every generic realization (\cref{def:panel-hinge-framework}) with
+  $|V| \ge 2$ yields a genuine-hinge realization
+  ($\mathtt{hasPanelRealization\_of\_generic}$): panel normals in general position
+  give nonzero extensors (general position forces transversality on each link);
+  the meet-decomposition lemma furnishes the $\mathtt{ExtensorInPanel}$ witnesses;
+  and infinitesimal rigidity converts to the rank count via W2.
 \end{definition}
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]

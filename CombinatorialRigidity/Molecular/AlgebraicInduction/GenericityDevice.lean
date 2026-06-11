@@ -1759,4 +1759,114 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial
   rw [Nat.mul_succ]
   omega
 
+/-! ## M2/M4: genuine-hinge realization motive and forgetful map
+(`def:genuine-hinge-realization`, Phase 22i L0d) -/
+
+/-- **M2: the genuine-hinge panel realization motive** (`def:genuine-hinge-realization`,
+Phase 22i L0d). The honest bare motive for Theorem 5.5: a graph `G` has a genuine-hinge
+`k`-dimensional panel realization at the target rank when there exists a
+`BodyHingeFramework k α β` on `G` with a panel-normal assignment
+`normal : α → Fin (k + 2) → ℝ` such that:
+
+* every vertex has a nonzero panel normal (`normal v ≠ 0`);
+* every link's supporting extensor is nonzero and lies in both endpoint panels
+  (`ExtensorInPanel` — the extensor of two points in the hyperplane `nᵥ⊥`);
+* the rigidity-row span has the ℤ-rank `D(|V(G)| − 1) − def(G̃)`.
+
+Placed in the root `Molecular` namespace (not inside `PanelHingeFramework`): the def
+quantifies a free `BodyHingeFramework` + a normal assignment, so `PanelHingeFramework`
+dot-notation would misdirect. Both `k` and `n` are explicit parameters; call sites pin
+`G.deficiency n` via their `G.IsMinimalKDof n _` hypothesis. -/
+def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
+  ∃ (F : BodyHingeFramework k α β) (normal : α → Fin (k + 2) → ℝ),
+    F.graph = G ∧
+    (∀ v ∈ V(G), normal v ≠ 0) ∧
+    (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
+      ExtensorInPanel (F.supportExtensor e) (normal u) ∧
+      ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
+    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+
+/-- **M4: a generic realization is a genuine-hinge realization** (`def:genuine-hinge-realization`,
+Phase 22i L0d). Forgetful map from `PanelHingeFramework.HasGenericFullRankRealization 2 G`
+(the GP-motive, pre-L0e form) to `HasPanelRealization 2 n G` (the honest bare motive M2).
+
+The four conjunct bridges:
+* *Panel nonzeroness*: from `2 ≤ |V|` get a second body `w ≠ v`; GP at `(v, w)` +
+  `LinearIndependent.ne_zero 0` gives `Q.normal v ≠ 0`.
+* *Genuine hinge*: link-recording recovers `(Q.ends e).1 ≠ (Q.ends e).2` via `IsLink.ne`
+  (`[G.Loopless]`); then `supportExtensor_ne_zero_of_isGeneralPosition` closes.
+* *`ExtensorInPanel`*: `exists_extensor_eq_panelSupportExtensor` at the `ends e` order
+  (its two perp-ness conclusions cover `{normal u, normal v}` whichever disjunct falls).
+* *Rank*: W2 `finrank_span_rigidityRows_of_rigidOn` converts rigidity to the ℕ count;
+  `hdef : G.deficiency n = 0` + cast gives the ℤ form.
+
+**Temporary signature (L0d, pre-L0e)**: the `hdef` hypothesis bridges M3's current
+`IsInfinitesimallyRigidOn V(G)` slot to M2's ℤ rank-deficiency equality; at every call
+site it is discharged by `hG.1 : G.IsKDof n 0` (i.e.\ `G.deficiency n = 0`). At L0e,
+M3 gains its own rank conjunct and `hdef` is absorbed into a literal transfer. -/
+theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] [Finite α]
+    (hV : 2 ≤ V(G).ncard)
+    (hdef : G.deficiency n = 0)
+    (h : PanelHingeFramework.HasGenericFullRankRealization 2 G) :
+    HasPanelRealization 2 n G := by
+  obtain ⟨Q, hQg, hQgp, hQrig, hQrec, _⟩ := h
+  have hne : V(G).Nonempty := (Set.ncard_pos (Set.toFinite _)).mp (by omega)
+  -- Restate hQrig and hne against Q.toBodyHinge.graph.vertexSet for W2 / B1.
+  have hne' : Q.toBodyHinge.graph.vertexSet.Nonempty := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne
+  have hQrig' : Q.toBodyHinge.IsInfinitesimallyRigidOn Q.toBodyHinge.graph.vertexSet := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hQrig
+  -- W2: rigidity → finrank (span rigidityRows) = D*(|V(G)|−1) (ℕ).
+  have hW2 := Q.toBodyHinge.finrank_span_rigidityRows_of_rigidOn hne' hQrig'
+  refine ⟨Q.toBodyHinge, Q.normal, ?_, ?_, ?_, ?_⟩
+  · -- F.graph = G
+    rw [PanelHingeFramework.toBodyHinge_graph]; exact hQg
+  · -- ∀ v ∈ V(G), Q.normal v ≠ 0
+    intro v _hv
+    obtain ⟨w, _hwV, hwne⟩ := Set.exists_ne_of_one_lt_ncard (show 1 < V(G).ncard by omega) v
+    have hli := hQgp v w hwne.symm
+    intro heq
+    exact hli.ne_zero 0 (by simp [Matrix.cons_val_zero, heq])
+  · -- ∀ e u v, G.IsLink e u v → (supportExtensor e ≠ 0) ∧ ExtensorInPanel ... u ∧ ... v
+    intro e u v he
+    have hends := hQrec e u v he
+    -- (Q.ends e).1 ≠ (Q.ends e).2 via link-recording + IsLink.ne.
+    have hends_ne : (Q.ends e).1 ≠ (Q.ends e).2 := by
+      rcases hends with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> [rw [h1, h2]; rw [h1, h2]] <;>
+        [exact he.ne; exact he.ne.symm]
+    refine ⟨PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition Q hQgp hends_ne, ?_⟩
+    -- ExtensorInPanel witnesses from exists_extensor_eq_panelSupportExtensor.
+    -- One `?_` for the conjunction `ExtensorInPanel ... u ∧ ExtensorInPanel ... v`.
+    rcases hends with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · -- Case: (Q.ends e).1 = u, (Q.ends e).2 = v
+      -- supportExtensor e = panelSupportExtensor (Q.normal u) (Q.normal v)
+      have hsupp : Q.toBodyHinge.supportExtensor e =
+          panelSupportExtensor (Q.normal u) (Q.normal v) := by
+        rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
+      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor (hQgp u v he.ne)
+      have hval : (Q.toBodyHinge.supportExtensor e : ExteriorAlgebra ℝ _) = extensor p :=
+        congr_arg Subtype.val hsupp ▸ hp
+      exact ⟨⟨p, hval, fun i => (hperp i).1⟩, ⟨p, hval, fun i => (hperp i).2⟩⟩
+    · -- Case: (Q.ends e).1 = v, (Q.ends e).2 = u
+      -- supportExtensor e = panelSupportExtensor (Q.normal v) (Q.normal u)
+      have hsupp : Q.toBodyHinge.supportExtensor e =
+          panelSupportExtensor (Q.normal v) (Q.normal u) := by
+        rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
+      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor (hQgp v u he.ne.symm)
+      have hval : (Q.toBodyHinge.supportExtensor e : ExteriorAlgebra ℝ _) = extensor p :=
+        congr_arg Subtype.val hsupp ▸ hp
+      exact ⟨⟨p, hval, fun i => (hperp i).2⟩, ⟨p, hval, fun i => (hperp i).1⟩⟩
+  · -- Rank: cast W2 + hdef.
+    have hVncard : Q.toBodyHinge.graph.vertexSet.ncard = V(G).ncard := by
+      rw [PanelHingeFramework.toBodyHinge_graph, hQg]
+    have h1 : 1 ≤ V(G).ncard := by omega
+    rw [hdef, sub_zero]
+    have hW2' : (Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 2 * ((V(G).ncard : ℤ) - 1) := by
+      rw [hVncard] at hW2
+      zify [h1] at hW2
+      exact_mod_cast hW2
+    exact hW2'
+
 end CombinatorialRigidity.Molecular
