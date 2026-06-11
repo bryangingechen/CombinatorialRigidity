@@ -839,6 +839,22 @@ theorem hingeRow_swap (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
   LinearMap.ext fun S => by rw [hingeRow_apply, hingeRow_apply, LinearMap.neg_apply, ← map_neg,
     neg_sub]
 
+/-- **A body relabel transports a hinge row along its endpoint permutation**
+(`lem:splitOff-rigidityRows-relabel`, the dual-of-`funLeft` half of KT eq.~(6.31); Katoh–Tanigawa
+2011 §6.4.1, Phase 22h). Relabelling the screw assignments by a body map `ρ : α → α` is the linear
+map `funLeft ρ : S ↦ S ∘ ρ`; its transpose `(funLeft ρ).dualMap` sends the hinge row
+`hingeRow u v r` to the hinge row at the *relabelled* endpoints, `hingeRow (ρ u) (ρ v) r`:
+`((funLeft ρ).dualMap (hingeRow u v r)) S = (hingeRow u v r)(S ∘ ρ) = r(S(ρ u) − S(ρ v))`. No
+involution on `ρ` is needed — the identity holds for any body map — which makes it the clean export
+of the `hdual` computation inlined in `rigidityRows_ofNormals_relabel`, the form the `M₃` arm's
+candidate-row membership transport (the `ρ = (a v)` relabel) reads. -/
+theorem hingeRow_funLeft_dualMap (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) (ρ : α → α) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ).dualMap (hingeRow (k := k) (α := α) u v r)
+      = hingeRow (ρ u) (ρ v) r :=
+  LinearMap.ext fun S => by
+    rw [LinearMap.dualMap_apply, hingeRow_apply, hingeRow_apply, LinearMap.funLeft_apply,
+      LinearMap.funLeft_apply]
+
 /-- **The hinge-difference collapse: two rows sharing an endpoint subtract to a third hinge row**
 (`def:rigidity-matrix`, the candidate-completion's eq.~(6.27) collapse algebra; Katoh–Tanigawa 2011
 §6.4.1, Phase 22e). For a fixed hinge-row-block functional `r` and a common endpoint `w`,
