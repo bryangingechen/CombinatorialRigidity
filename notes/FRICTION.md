@@ -4037,6 +4037,25 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
 - **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 43 (general rule: after a `set`/`subst`/
   `simp only [eqn] at *`, re-read what old hypotheses now say before threading them into a `rw`).
 
+### [resolved] A combining-diacritic identifier (`ρ̂` = `ρ` + U+0302) is rejected by the lexer — *"expected token"*
+- **Where it bit:** `case_III_candidate_dispatch` (W10b, `Molecular/AlgebraicInduction/CaseI.lean`,
+  Phase 22h). The design doc's normalized candidate functional was written `ρ̂` (base rho + a
+  *combining* circumflex, two codepoints); a `obtain ⟨ρ̂, …⟩` failed to parse — Lean's lexer does
+  not treat the combining mark as an identifier-continuation character (precomposed letters like
+  `ŵ` U+0175 are fine).
+- **Fix:** renamed to the ASCII-decorated `ρ0`/`w0` family.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 45 (incl. the codepoint-dump detection
+  one-liner).
+
+### [resolved] `Matrix.cons_val_zero` won't fire on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal)
+- **Where it bit:** `case_III_candidate_dispatch` (W10b, `Molecular/AlgebraicInduction/CaseI.lean`,
+  Phase 22h). After `fin_cases u` on the discriminator's `u : Fin 3`, the per-branch hypotheses
+  read `![na, nb, nc] ⟨0, ⋯⟩` — the anonymous-constructor `Fin.mk`, which `simp only
+  [Matrix.cons_val_zero]` reports as unused (its LHS keys on the `0` literal).
+- **Fix:** prepend `show (⟨0, by omega⟩ : Fin 3) = 0 from rfl` (resp. `= 1`, `= 2`) to the
+  per-branch `simp only` set so the index normalizes first.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 46.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
