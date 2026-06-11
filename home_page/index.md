@@ -54,10 +54,10 @@ algebraic induction realizing that reduction at the rigidity-matrix rank
 Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid subgraph); the
 formalized instance holds modulo a small, explicitly tracked family of
 carried hypotheses — chiefly the nested use of the induction at every
-degree of freedom. The current frontier is discharging those carries by
-restating the induction at full Katoh–Tanigawa strength (all `k`, genuine
-hinges), then general `d`. The table below and `ROADMAP.md` carry the
-fine-grained, live status.
+degree of freedom. The current frontier — now in progress — is
+discharging those carries by restating the induction at full
+Katoh–Tanigawa strength (all `k`, genuine hinges), then general `d`. The
+table below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
 |------:|-----------------------------|------------------------------------------------------------------|:------:|
@@ -92,7 +92,8 @@ fine-grained, live status.
 |   22f | point-join↔panel-meet duality (the exterior-algebra leaf completing Case III at `d=3`) | `Molecular/Meet.lean` | ✓ |
 |   22g | `d=3` realization assembly: design + leaf infrastructure (the existential Claim 6.12 architecture) | `Molecular/AlgebraicInduction/` | ✓ |
 |   22h | the corrected `d=3` assembly (the `hsplit` producer + Theorem 5.5 at `d=3`, completing Case III there) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ |
-|   ⋯ | the all-`k` Theorem 5.5 (discharging the carried hypotheses), general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
+|   22i | the honest all-`k` Theorem 5.5 (genuine hinges; discharging the carried hypotheses) | `Molecular/` | ◷ |
+|   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

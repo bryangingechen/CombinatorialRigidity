@@ -3968,6 +3968,293 @@ orphaned deferrals.
 Phase close = L5a′–L5e′ (≈ 5 commits), green-modulo the named family of (b). Then open 22i
 with the motive design pass.
 
+### 1.56 The 22i motive design pass — the all-`k` + genuine-hinge motive pinned together: the honest bare motive moves to the free-hinge `BodyHingeFramework` carrier (a panel assignment + extensor-in-panel containment + the ℤ-cast rank-deficiency equality), the generic motive keeps its `PanelHingeFramework` carrier with only the rank form generalized, and the induction becomes KT's four-case all-`k` `|V|`-recursion (Lemma 6.1 not-2-edge-connected + Lemma 6.8 `k>0` split are NEW cases the 0-dof reduction never had) (2026-06-11)
+
+> **Docs-only design pass (the 22i phase-open motive pin; §1.55(a)'s "single motive design
+> moment").** Lean read this pass (declarations, current line numbers): PanelHinge.lean —
+> `PanelHingeFramework` (:65 — `normal : α → Fin (k+2) → ℝ`, `ends : β → α × α`; the hinge IS
+> the derived meet), `toBodyHinge` (:87, `supportExtensor e = panelSupportExtensor (normal
+> (ends e).1) (normal (ends e).2)`), `toBodyHinge_supportExtensor_ne_zero_iff` (:105 — nonzero
+> ⟺ the two selected normals LI), `IsHingeCoplanar` (:920 — "arises as a `toBodyHinge`", so it
+> inherits the same hinge-as-meet expressiveness limit), `HasFullRankRealization` (:979),
+> `HasGenericFullRankRealization` (:1033), `hasFullRankRealization_of_generic` (:1046),
+> `theorem_55` (:1098), `theorem_55_generic` (:1146), `rigidityMatrix_prop11` (:1230 — `hgen`
+> ℤ-cast, the established mixed-`ℤ` precedent); ForestSurgery.lean — `minimal_kdof_reduction`
+> (:1198) and `minimal_kdof_reduction_full` (:1266), both **`IsMinimalKDof n 0`-only** in every
+> branch hypothesis and the conclusion, `splitOff_isMinimalKDof` (0-dof → 0-dof only),
+> `splitOff_removeVertex_minimalKDof` (:2035 — note `IsMinimalKDof n (deficiency)` with the
+> dof ℤ-valued and `0 ≤ def ≤ D − 2`); ReducibleVertex.lean — `exists_degree_eq_two` (:588,
+> KT 4.6 — its degree-≥2 half routes through `two_le_crossingEdges_of_isKDof_zero`, i.e. the
+> **0-dof** 2-edge-connectivity, so the all-`k` form must take 2-edge-connectivity as a *case
+> hypothesis*), `simple_of_isMinimalKDof_of_noRigid` (:625 — G0, no 2-edge-connectivity
+> needed); Contraction.lean — `rigidContract_isMinimalKDof` (:696, the N4 bridge, **0-dof →
+> 0-dof**; KT 3.5 is all-`k`); CaseI.lean — `case_III_realization` (:6750, the `h622`
+> consumption), `theorem_55_d3` (:6799, the five carries :6802–:6839),
+> `rankHypothesis_deficiency_of_theorem_55_d3` (:6903); GenericityDevice.lean —
+> `hasFullRankRealization_of_splice_of_supportExtensor` (:822, N6a) +
+> `finrank_span_rigidityRows_of_rigidOn` (W2). KT 2011 read **against the PDF this pass**:
+> p. 669 (Lemma 5.2 + the §5.2 opening; Lemma 5.3 statement), p. 670 (Lemma 5.3 proof — the
+> realization has Π(u) = Π(v) and p(e) ≠ p(f); Theorem 5.5 + 5.6 statements + 5.6's proof:
+> strip to a minimal `k`-dof spanning subgraph, Thm 5.5, projective move, re-add edges),
+> p. 671 (the base trichotomy (i) `E = ∅` / (ii) one edge / (iii) the parallel pair via
+> Lemma 3.2, "(i) and (ii) are trivial"; **the four-case `|V| ≥ 3` split**; the induction
+> hypothesis (6.1) quantified over *every* nonnegative `k_H`), p. 672 (Lemma 6.1 — the
+> cut-edge decomposition, `k = k₁ + k₂ + 1` by Lemma 3.6, sides minimal `kᵢ`-dof by Lemma
+> 3.3, the block-triangular rank addition over the cut row), pp. 673–674 (the §6.2 trifurcation
+> prose; Lemma 6.2 — `G[{e,f}]` is a proper rigid subgraph, Lemma-5.3 leg with **coincident
+> panels** `Π(a) = Π(b) = Π(v*)`, eq. (6.2)–(6.5) rank addition; Lemma 6.3 statement),
+> p. 677 (Lemma 6.7 — (i) the `|V|=3` triangle, (ii) `G_v^{ab}` simple at `|V| ≥ 4`; "G is
+> simple since multiple edges induce a proper rigid subgraph"), pp. 677–679 (Lemma 6.8 — the
+> `k > 0` split: `G_v^{ab}` minimal `(k−1)`-dof by **Lemma 4.8**, the eq. (6.12) placement,
+> eqs. (6.13)–(6.17) column ops, rank ≥ (D−1) + D(|V∖v|−1) − (k−1) = D(|V|−1) − k, then
+> Lemma 5.2 to nonparallel). No `.lean`/`.tex` edits this pass.
+
+**(a) The expressiveness finding that forces a carrier split.** KT's panel-hinge realization
+assigns each vertex a hyperplane *panel* and each edge `uv` a **freely chosen** `(d−2)`-flat
+hinge `p(uv) ⊆ Π(u) ∩ Π(v)`. The project's `PanelHingeFramework` *derives* the hinge as the
+meet of the two selected normals — strictly less expressive exactly when two adjacent panels
+**coincide**: the meet degenerates (`panelSupportExtensor n n = 0`) where KT picks an arbitrary
+`(d−2)`-flat inside the common panel. The coincident-panel freedom is load-bearing in exactly
+the two non-simple KT builds the weak motive skipped: **Lemma 5.3** (p. 670: the parallel-pair
+base is realized with `Π(u) = Π(v)` and two *distinct* genuine hinges `p(e) ≠ p(f)` in that
+common panel — under a link-recording selector with derived hinges, the two extensors are
+forced *equal*, so the two row blocks span only `D − 1 < D` and the honest rank is
+unreachable; quantifier-level check, no Lean needed) and **Lemma 6.2** (pp. 673–674: the
+contraction splice takes `Π(a) = Π(b) = Π(v*)`). Verdict: **the honest bare motive cannot
+keep the `PanelHingeFramework` carrier.** It moves to the free-hinge `BodyHingeFramework`
+(KT's actual model) plus an explicit panel assignment with a containment condition — while
+the **generic (simple-case) motive keeps its `PanelHingeFramework` carrier unchanged**: for a
+simple `G` in general position every two adjacent panels are transversal, so the hinge *is*
+the meet and nothing is lost — and every landed GP producer (the entire 22a–22h spine)
+survives untouched-but-for the rank form of (c).
+
+**(b) The pinned motives (M1–M5).** Names indicative, checkdecls-gated at L0; the `(k, n)`
+parameter pair stays as in `theorem_55_generic` (grading `k`, multiplicity `n`; the consumers
+relate them, `screwDim k = bodyBarDim n` at the instance).
+
+* **M1 — the containment predicate** (new, PanelLayer.lean or RigidityMatrix.lean):
+
+  ```lean
+  /-- The k-extensor `C` lies in the panel with normal `n`: it is spanned by points of the
+  hyperplane `n^⊥`. -/
+  def ExtensorInPanel (C : ScrewSpace k) (n : Fin (k + 2) → ℝ) : Prop :=
+    ∃ p : Fin k → (Fin (k + 2) → ℝ), C = Matrix.extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
+  ```
+
+  **V1 (resolve at the L0 pin):** the exact formulation — the pointwise form above vs the
+  annihilator/`annihRow` dual form vs "in the image of `meet` with `n`" — chosen against what
+  the two consumers need: the Lemma-5.3/6.2 *constructions* (want pointwise: exhibit the
+  points) and the Thm-5.6 re-add step (wants "any `(d−2)`-flat in a panel intersection"). The
+  landed homogeneous-incidence machinery (`exists_homogeneousIncidence_of_normals`,
+  RigidityMatrix.lean:455; `omitTwoExtensor`) is the existing API to align with. The forgetful
+  map (M4) needs: the meet `panelSupportExtensor n₁ n₂` of LI normals satisfies
+  `ExtensorInPanel · n₁ ∧ ExtensorInPanel · n₂` — expected derivable from the same machinery.
+
+* **M2 — the honest bare motive** (replaces `HasFullRankRealization`; the
+  `def:genuine-hinge-realization` form):
+
+  ```lean
+  def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
+    ∃ (F : BodyHingeFramework k α β) (normal : α → Fin (k + 2) → ℝ),
+      F.graph = G ∧
+      (∀ v ∈ V(G), normal v ≠ 0) ∧
+      (∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
+        ExtensorInPanel (F.supportExtensor e) (normal u) ∧
+        ExtensorInPanel (F.supportExtensor e) (normal v)) ∧
+      (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+        = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
+  ```
+
+  Design notes, each deliberate: **(i)** the carrier is the bare `BodyHingeFramework` — all
+  Phase-18 rank machinery applies verbatim, and no `ends` selector exists (the containment is
+  quantified relationally over links, so no link-recording conjunct is needed or possible);
+  **(ii)** genuine hinges (`≠ 0`) and containment are required **on links only** and panels
+  nonzero **on `V(G)` only** (the `V(G)`-relative discipline — ambient junk bodies and
+  off-edge labels unconstrained, same reason as Phase 21b's motive re-plan); **(iii)** the
+  rank conjunct is the **ℤ-cast equality** at the graph's own deficiency (`G.deficiency n` is
+  already ℤ; the `rigidityMatrix_prop11` `hgen` precedent) — no separate dof parameter, the
+  graph carries its dof, and `IsMinimalKDof n k` hypotheses at use sites pin `deficiency = k`;
+  **(iv)** the *equality* (not `≥`) is KT-faithful; producers prove `≥` and close with **B2**
+  (below). At `|V| = 1` the convention is harmless (`def = 0`, target `0`).
+
+* **M3 — the generic motive restate** (in place, same name `HasGenericFullRankRealization`,
+  same `PanelHingeFramework` carrier): the conclusion conjunct
+  `Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)` is replaced by the same ℤ-cast rank equality
+  as M2 (now gaining the `n` parameter); `IsGeneralPosition`, link-recording, and the
+  `AlgebraicIndependent ℚ` conjuncts are unchanged. At `def = 0` the two forms are equivalent
+  (**B1**); the landed producers restate through B1, not by re-proof.
+
+* **M4 — the conditioned pair + forgetful map.** The induction motive stays the pair
+  `Pc G := (G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G`
+  (KT p. 670: "(nonparallel, if `G` is simple)"). The forgetful map
+  `hasPanelRealization_of_generic [G.Loopless] : Generic → Bare` is no longer projection-
+  trivial: take `F := Q.toBodyHinge`, `normal := Q.normal`; genuine hinges on links = GP +
+  link-recording + `hle.ne` (loopless); containment = the M1 meet-decomposition lemma; panel
+  nonzeroness = pairwise LI at a second body (`2 ≤ |V(G)|` ambient). One lemma, bounded.
+
+* **M5 — naming/migration.** `HasFullRankRealization` is **deleted** (Decision 1, §1.55(a):
+  no weak form survives to be cited); `HasPanelRealization` is the new honest bare motive;
+  `HasGenericFullRankRealization` restates **in place**. Blueprint: `def:genuine-hinge-
+  realization` gains the `\lean{…HasPanelRealization}` pin + `\leanok` at L0;
+  `def:rank-hypothesis` re-proses to the *rank-form* substrate both motives share (it keeps
+  `IsInfinitesimallyRigidOn`/`RankHypothesis` pins — those predicates remain the `def = 0`
+  bridge targets); every `lem:`/`thm:` node naming the old motive restates per slice
+  (structural-edit gate: grep `blueprint/src` per statement-changing commit).
+
+**(c) The all-`k` reduction principle (the Phase-20 generalization).** KT p. 671: induction
+on `|V|` with IH (6.1) over **every** dof; base `|V| = 2` is the Lemma-3.2 trichotomy; at
+`|V| ≥ 3` a **four-case** split. The 0-dof `minimal_kdof_reduction[_full]` stays (it drives
+`thm:minimal-kdof-reduction`, untouched); a NEW principle lands beside it:
+
+```lean
+theorem minimal_kdof_reduction_all_k [DecidableEq β] [Finite α] {n : ℕ}
+    {P : Graph α β → Prop}
+    (hbase : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → V(G).ncard ≤ 2 → P G)
+    (hcut : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      ¬ G.TwoEdgeConnected → IH → P G)
+    (hcontract : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      (∃ H, H.IsProperRigidSubgraph G n) → IH → P G)
+    (hsplitPos : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 0 < k →
+      3 ≤ V(G).ncard → G.TwoEdgeConnected → (∀ H, ¬ H.IsProperRigidSubgraph G n) →
+      IH → P G)
+    (hsplitZero : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H, ¬ H.IsProperRigidSubgraph G n) → IH → P G) :
+    ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → P G
+  -- IH abbreviates: ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' →
+  --   V(G').ncard < V(G).ncard → P G'
+```
+
+Design notes: **(i)** the vertex floor drops to nothing (base covers `ncard ≤ 2`): KT's
+Lemma-6.1 decomposition produces cut-sides of size 1, which its IH application silently
+covers — the formalization makes the `ncard ≤ 1` case explicit (a realization with no
+constrained links; `def = 0` there) rather than excluding it. **(ii)** `k : ℤ` with
+nonnegativity carried inside `IsMinimalKDof` facts (`deficiency_nonneg`), matching the landed
+ℤ-valued deficiency. **(iii)** `G.TwoEdgeConnected` is a NEW predicate (**V2**, pin at the L1
+design pass): the candidate form is the crossing-edge count `∀ V' ⊂ V(G), V'.Nonempty →
+V' ≠ V(G) → 2 ≤ (crossing edges of V')` over the landed `crossingEdges` machinery —
+*including* connectivity (KT's 2-edge-connected is connected + bridgeless; the disconnected
+arm of Lemma 6.1 routes through the same `hcut` case). **(iv)** the dichotomy driver inside
+the proof: at `3 ≤ ncard`, classical cases on 2EC, then on rigid-subgraph existence, then on
+`k = 0` (`deficiency` decidable enough via `by_cases` on the ℤ equality); `hsplitPos`'s
+degree-2 vertex is found *inside the producer* (the (β)-interface precedent — hand the full
+IH, let the producer choose its split), so the principle itself needs **no** new
+combinatorial lemma beyond the case split. The combinatorial bricks live in the *producers*:
+
+* **landed and reusable as-is:** G0 `simple_of_isMinimalKDof_of_noRigid` (no-rigid ⟹ simple,
+  no 2EC needed); `splitOff_removeVertex_minimalKDof` (the `k' ≤ D − 2` shell);
+  `splitOff_isMinimalKDof` (the `k = 0` split step).
+* **restate/generalize:** `exists_degree_eq_two` — the all-`k` form takes `G.TwoEdgeConnected`
+  as a hypothesis in place of the 0-dof-derived cut bound (**V3**: confirm the average-degree
+  half `exists_degree_le_two` is already dof-agnostic; expected yes, it is a count);
+  `rigidContract_isMinimalKDof` — KT 3.5 is all-`k`; the N4 proof routes through def=corank
+  on the contraction, generalization expected mechanical (**V4**).
+* **NEW bricks:** the `|V| ≤ 2` trichotomy (KT Lemma 3.2 consequence: at `ncard = 2`
+  minimality bounds the parallel class at 2, so `E ∈ {∅, {e}, {e,f}}` with `k ∈ {D, 1, 0}`
+  respectively); the cut-edge decomposition (KT Lemma 3.6 `k = k₁ + k₂ + 1` + Lemma 3.3
+  sides-minimal — wholly new `M(G̃)` matroid work, the `hcut` producer's substrate); KT
+  Lemma 4.8 (at `k > 0`, no rigid subgraph: `G_v^{ab}` is minimal `(k−1)`-dof — the dof
+  *decrements*, unlike the landed 4.7).
+
+**(d) The case-producer map (what discharges each branch of (c) at the conditioned pair).**
+
+* **`hbase`** — `ncard ≤ 1`: free. `ncard = 2` trichotomy: (i) `E = ∅` (`k = D`): rank 0,
+  any nonzero panel normals — free; (ii) one edge (`k = 1`): two LI normals, hinge = meet,
+  rank `D − 1` (the landed single-row rank fact); GP conjunct = the same witness; (iii) the
+  parallel pair (`k = 0`): **the graph-level Lemma 5.3, the genuinely new geometric brick** —
+  equal normals `n` at `u, v`, two non-proportional extensors `C_e, C_f` built from explicit
+  point tuples inside `n^⊥` (M1's pointwise form), rank `D` via the two-row-block computation;
+  re-aim Pinning.lean's framework-level `theorem_55_base` (:630 — its LI-extensor-pair
+  hypothesis is exactly `![C_e, C_f]` LI) as the rank engine. GP conjunct vacuous
+  (`not_simple_of_isMinimalKDof_of_ncard_two`, landed L5b′).
+* **`hcut`** — KT Lemma 6.1 (NEW, p. 672): decompose at the cut (Lemma-3.6 brick), realize the
+  sides by IH, combine: side hinges unchanged, the cut edge's hinge = a flat in
+  `Π(u) ∩ Π(v)`; rank addition is the landed block-triangular pattern (Lemma 5.1 / the
+  pinned-block suite) over the `D − 1` cut rows. KT takes an isometry to make the two sides'
+  panels transversal; **the project's fixed-ambient-seed style does better** — both sides
+  realized at one global alg-indep seed make cross-side transversality automatic for the GP
+  conjunct, and for the bare conjunct transversality at the cut pair is not even needed
+  (any flat inside a *common* panel still has `C ≠ 0` — the free-hinge carrier absorbs it).
+  Verify the route at the L4 pin (**V5**).
+* **`hcontract`** — dispatch on `G.Simple`: simple → the landed 6.3/6.5 GP arm (restated per
+  (e)) + forgetful M4; non-simple → **KT Lemma 6.2 (NEW, the N6a re-aim)**: `G' := G[{e,f}]`
+  (a parallel pair, proper rigid — the landed G0-adjacent brick), the Lemma-5.3 leg *at the
+  contraction's panel* (`Π(a) = Π(b) = Π(v*)`, the coincident-panel freedom again), IH at
+  `G/E'` (bare honest), eq. (6.3)–(6.5) rank addition. The old N6a
+  `hasFullRankRealization_of_splice_of_supportExtensor` (GenericityDevice:822) is the
+  closest landed splice — **V6**: read its exact statement at the L5 pin and re-aim at the
+  honest carrier (its `hends`/`hsupp` shape was built for the weak motive).
+* **`hsplitPos`** — KT Lemma 6.8 (NEW assembly, mostly landed parts): degree-2 vertex
+  (restated 4.6), `G_v^{ab}` minimal `(k−1)`-dof (NEW Lemma 4.8) and simple (landed 6.7(ii)
+  analog = R3/`splitOff` simplicity at `|V| ≥ 4`; the `|V| = 3` triangle is 6.7(i) = the
+  landed T1–T4), IH at `G_v^{ab}`, the eq. (6.12) placement — **the landed 22c stratum-1
+  brick `case_II_placement_eq612` is exactly eqs. (6.13)–(6.17)** — giving rank
+  `≥ (D−1) + D(|V∖v|−1) − (k−1) = D(|V|−1) − k`, then the GP conjunct via the Lemma-5.2
+  shear transfer (**V7**: how much of the 22h W-suite — the one-parameter rank transfer
+  W3/W6f and the certify-then-rebase pattern — re-instantiates here; expected substantial,
+  it was built for the *harder* `k = 0` case).
+* **`hsplitZero`** — the landed 22h Case-III producer, restated: `case_III_realization`'s
+  carried `h622` hypothesis is **replaced by a derivation from the all-`k` IH** (the
+  `lem:case-III-nested-rank-lower` discharge): IH at `G_v = G − v` (simple, minimal
+  `k'`-dof, `k' ≤ D − 2` by the landed shell, smaller) gives a generic realization at rank
+  `D(m−1) − k'` at its own seed; extract the rational rank-polynomial witness (**V8**: the
+  landed subfamily-extraction `exists_independent_panelRow_subfamily_of_rigidOn` is
+  rigid-framework-shaped — generalize to the rank form, bounded); transfer to the given
+  `(ends, q)` by the landed footnote-6 bridge (`lem:case-III-seed-rank-bridge` /
+  `finrank_…_le_of_rankPolynomial_algebraicIndependent`, no `hspan`). The bare conjunct of
+  this branch is **free**: G0 gives `G.Simple`, so forgetful ∘ (the GP conclusion) — this is
+  the `hsplit` carry's entire discharge.
+
+**(e) The spine, the instance, and the Thm-5.6 push.** `theorem_55_generic` → the all-`k`
+conditioned spine over (c) (name: `theorem_55_all_k`); `theorem_55` (bare, 0-dof) is
+**superseded and deleted** with `thm:theorem-55` re-pinned (it finally goes green at `d = 3`
+content-wise; it stays red only for general-`d`, Phase 23 — restate its red-rationale prose
+then). `theorem_55_d3` restates with **zero carried hypotheses** (`hfresh` stays: ambient
+data). The 6.5 arm (`h65` discharge) is the unchanged §1.54(a3) plan — Claim 6.6 graph side
++ the Π°-placement producer (its own §1.53-style pin before build) + the landed L5c′
+dispatch; note Claim 6.6's conclusion lands *in* the `k = 0` stratum (KT p. 676: maximality
+forces `G = G″` rigid), so the arm needs no all-`k` generality. Then **Theorem 5.6 at
+`d = 3`** (the `def > 0` `prop:rigidity-matrix-prop11` feed, KT p. 670): strip `G` to a
+deficiency-preserving minimal `k`-dof spanning subgraph (NEW combinatorial brick — greedy
+edge deletion under `def` invariance), apply the instance, re-add edges
+(`lem:motions-mono-of-graph-le`, landed) with hinges in the panel intersections — KT's
+projective move is expected **free** in the project's homogeneous model (two distinct linear
+hyperplanes always meet in a `(d−2)`-subspace; **V9** verify, and the coincident-panel
+re-add is absorbed by the free-hinge carrier). `rankHypothesis_deficiency_of_theorem_55_d3`
+survives as the `def = 0` stratum instance. Corollary 5.7 stays **Phase 26** (it needs the
+Phase-24 3-D matroid + Phase-25 molecule equivalence); 22i's deliverable boundary is
+KT-strength Thm 5.5 + 5.6 at `d = 3`.
+
+**(f) Bridges (L0).** **B1**: at `def = 0` + `V(G).Nonempty`, the ℤ-cast rank equality ⟺
+`IsInfinitesimallyRigidOn V(G)` — assemble from the landed W2
+(`finrank_span_rigidityRows_of_rigidOn`, rigid → count) and the relative-count adapter
+(`lem:isInfRigidOn-of-relative-count` direction, count → rigid). **B2**: the universal
+`V(G)`-relative upper bound `(finrank span rigidityRows : ℤ) ≤ D(|V(G)|−1) − def(G̃)` *given
+genuine hinges on links* — the `V(G)`-relative form of the landed hub bound
+(`screwDim_add_deficiency_le_finrank_infinitesimalMotions` is absolute + all-`e`-quantified;
+re-derive relatively or via the `reaim` idiom; **V10**). B2 is what lets every producer prove
+`≥` and conclude the M2/M3 equality.
+
+**(g) Verification items** (resolve each at its layer's design pass, before that layer's
+first Lean commit): **V1** `ExtensorInPanel`'s exact form; **V2** the `TwoEdgeConnected`
+predicate; **V3** `exists_degree_le_two` dof-agnosticity; **V4** `rigidContract_isMinimalKDof`
+all-`k` generalization shape; **V5** the Lemma-6.1 fixed-seed transversality route; **V6**
+N6a's statement vs the honest carrier; **V7** the W-suite reuse at `k > 0`; **V8** the
+subfamily extraction at rank (non-rigid) form; **V9** the homogeneous projective-move
+freeness; **V10** the relative hub bound B2.
+
+**(h) The layer plan** (the 22i to-do skeleton; each L-layer opens with its own §1.57+
+signature pin — the carries table + checklist live in `notes/Phase22i.md`, which points
+here): **L0** motives M1–M5 + bridges B1/B2 + the def-node blueprint flips; **L1** the
+combinatorial bricks ((c)'s census: trichotomy, 3.6/3.3-cut, 3.5-all-`k`, 4.6-restate, 4.8);
+**L2** `minimal_kdof_reduction_all_k`; **L3** the base producer (incl. the Lemma-5.3
+coincident-panel brick); **L4** Lemma 6.1; **L5** Lemma 6.2 + the 6.3/6.5 all-`k` restate of
+`case_I_realization`; **L6** Lemma 6.8 (`k > 0` split); **L7** the Case-III rewire (`h622`
+discharge); **L8** the 6.5 arm (`h65` discharge; §1.54(a3)); **L9** the spine + instance
+restate (all carries gone) + blueprint close; **L10** Thm 5.6 at `d = 3` (the `def > 0`
+prop11 feed). Structural-edit mode throughout (no new blueprint chapter; per-slice restates
+across panel-layer/case-i/case-iii/the base section). Estimate: ~20–30 commits — plural
+sessions; the layer plan is the tracking artifact.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order

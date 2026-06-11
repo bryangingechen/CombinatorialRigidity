@@ -118,6 +118,8 @@ in §1.55(b) and tracked by the blueprint red nodes `lem:case-III-nested-rank-lo
 
 ## Hand-off / next phase
 
+**(Executed 2026-06-11 — 22i is open; pick up at `notes/Phase22i.md`.)**
+
 **Smallest next forward commit — open sub-phase 22i** ("the honest all-`k` Theorem 5.5"):
 create `notes/Phase22i.md` **seeded with the carries table** (carry / red node / Lean
 consumption site / discharge sub-plan — §1.55(b)'s structural fix for orphaned deferrals)

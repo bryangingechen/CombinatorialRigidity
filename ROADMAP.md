@@ -125,7 +125,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22f. N3b: point-join↔panel-meet duality (the exterior-algebra assembly completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` | ✓ Complete — discharged 22e's green-modulo-N3b (see `notes/Phase22f.md`) |
 | 22g. `d=3` realization assembly: design program + leaf infrastructure | `Molecular/AlgebraicInduction/` | ✓ Complete — banner flips moved to 22h (see `notes/Phase22g.md`) |
 | 22h. the corrected `d=3` assembly (Theorem 5.5 at `d=3`, green-modulo the named carry family) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ Complete (closed 2026-06-11; see `notes/Phase22h.md`) |
-| 22i. the honest all-`k` Theorem 5.5 (discharges the five 22h carries) | (not yet opened) | ◷ Next — open per `notes/Phase22h.md` *Hand-off* |
+| 22i. the honest all-`k` Theorem 5.5 (discharges the five 22h carries) | `Molecular/` (motive restate + new cases) | ◷ In progress (opened 2026-06-11; see `notes/Phase22i.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -551,7 +551,7 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 ### Phase 17+ — The Molecular Conjecture program
 
 **Status: Phases 17–22h (+ 21a/21b) complete; sub-phase 22i (the honest
-all-`k` Theorem 5.5) is next; Phases 23–26 planned.** The
+all-`k` Theorem 5.5) is in progress; Phases 23–26 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -927,6 +927,23 @@ which delivers the KT-strength Thm 5.5 → 5.6 → Cor 5.7 at `d = 3` (Phases 24
 Postmortem of the two surfaced divergences (the weak bare motive; the unformalized 6.3-vs-6.5
 dispatch): `DESIGN.md` *Statement faithfulness to the source*. General `d` (KT Lemma 6.13) is
 Phase 23.
+
+#### Phase 22i — the honest all-`k` Theorem 5.5 (KT §3, §5.2, §6.1–6.4) — ◷ In progress
+
+**Status (◷ opened 2026-06-11; see `notes/Phase22i.md`).** Discharges the five 22h carries
+({`h622`, `h65`, `hbase`, `hsplit`, `hcontract`}) by restating the realization motive at KT's
+strength and re-running the spine. Two changes, pinned together in one design moment
+(`notes/Phase22-realization-design.md` §1.56): **genuine hinges** — the bare motive moves to
+the free-hinge `BodyHingeFramework` carrier with an extensor-in-panel containment (KT's
+coincident-panel realizations, Lemmas 5.3/6.2, are inexpressible with derived hinge-as-meet),
+while the generic (simple-case) motive keeps its `PanelHingeFramework` carrier — and the
+**all-`k` induction** — KT's four-case `|V|`-recursion with IH (6.1) over every dof, adding
+the not-2-edge-connected case (Lemma 6.1) and the `k > 0` splitting-off case (Lemma 6.8) that
+the 0-dof reduction never had. New KT builds: the graph-level Lemma-5.3 base, the Lemma-6.2
+non-simple branch, the Lemma-6.5 arm (Claim 6.6 + the Π°-placement). Deliverable boundary:
+KT-strength Thm 5.5 + Thm 5.6 at `d = 3` (the `def > 0` `prop:rigidity-matrix-prop11` feed),
+unblocking Phases 24–26; Corollary 5.7 lands in Phase 26; general `d` is Phase 23. Carries
+table + layer plan (L0–L10): `notes/Phase22i.md`.
 
 ## Engineering conventions
 

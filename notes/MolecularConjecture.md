@@ -1,97 +1,15 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS. Phases 17–22g + 21a complete; the current frontier is **Phase 22h, the
-corrected `d=3` assembly** (◷ opened 2026-06-09; `notes/Phase22h.md`): the
-`IsProperRigidSubgraph` predicate repair (G5) →
-the full-conditioned-IH branch restate (G4b) → the `|V|=3` triangle base (T1–T4) ∥ the `M₃`
-third-panel dispatch (G4a–G4e) → the (β)-shaped `hsplit` producer + the `theorem_55_generic`
-`d=3`-instance node, flipping `lem:case-II-realization` / `lem:case-III` and unblocking Cor 5.7.
-Then **Phase 23** (general `d`). **Phase 22g** (✓ complete, closed 2026-06-09;
-`notes/Phase22g.md`) closed as the `d=3` assembly's **design-program + leaf-infrastructure
-stratum**: the existential Claim-6.12 crux architecture pinned, ~15 axiom-clean leaves landed
-(incl. the bare→generic upgrade `hasGenericFullRankRealization_of_rigidOn_ofNormals`), and the
-recon program that scoped the corrected remaining work — GAPs 1–5, with signatures in
-`notes/Phase22-realization-design.md` §1.48–§1.49. **Phase 22f** (✓ complete, closed 2026-06-07) landed N3b — the
-point-join↔panel-meet duality `pᵢ∨pⱼ = λ·C(L)` (bounded `⋀²ℝ⁴` exterior-algebra,
-`complementIso_smul_eq_extensor_join` / `extensor_join_eq_zero_of_complementIso_eq_zero`) —
-discharging 22e's last red leaf, so KT Claim 6.12 and the candidate-completion chain are now
-fully green. **Phase 22e** (✓ complete, closed 2026-06-07) delivered the candidate-completion +
-KT Claim 6.12 for Case III at `d=3` (KT §6.4.1): the missing `+1` row construction and the
-three-candidate disjunction, the successor to 22d
-(whose crux KT Claim 6.11 / eq. (6.23), the redundant `ab`-row, landed green +
-axiom-clean at the close of Phase 22d). Phases
-17–20 + 21a delivered `M(G̃)`, deficiency, `k`-dof, the def = corank bridge, the
-Theorem-4.9 combinatorial induction, and the Grassmann–Cayley meet (see
-`notes/Phase19.md`, `notes/Phase20.md`, `notes/Phase21a.md`). Phase 21
-(algebraic induction) is **complete, GREEN-modulo-21b**: all
-genericity-free content green (panel layer, Theorem 5.5, Cases I/II, the
-analytic half of Prop 1.1), with the shared analytic crux Claim 6.4/6.9
-(the genericity device) scoped out into its own sub-phase **Phase 21b**,
-entering each consuming node as an explicit hypothesis (risk #4/#7 +
-`DESIGN.md` *Genericity device (Claim 6.4/6.9) is its own sub-phase
-(Phase 21b)*). **Phase 21b is complete** (closed 2026-06-04): it delivered
-the genericity device, the genericity-free accounting iffs, and the
-`V(G)`-relative count bridges. A math-first feasibility pass against KT
-§6.2–6.3 then **re-scoped the realization *producers* to Phases 22–23** and
-corrected the case-naming — **the project's reducible-vertex split
-(`theorem_55`'s `hsplit`, k=0) is KT Case III, not Case II** (it is one row
-short of full rank via eq. (6.12) and needs the Lemma 6.10/6.13 redundant-edge
-row); only the rigid-subgraph contraction (Case I) reaches full rank. The KT
-math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* +
-*Hand-off to Phases 22–23* and folded into the *Phase 22+* plan below.
-**Phase 22 (the realization layer) is sub-lettered.** Opened as a single Phase 22
-on 2026-06-04, it was split the same day because it over-broadly bundled three
-independent bodies of work; sub-lettering (22a, 22b, …) keeps the integer phase
-numbers 23–26 stable. **Phase 22a is complete** (Case I
-realization, KT §6.2; see `notes/Phase22a.md`): the composer
-`PanelHingeFramework.case_I_realization` (`lem:case-I-realization`) discharges
-`theorem_55`'s Case-I branch, delivered via the **block-triangular
-reframe**: KT eq. (6.3)'s rank-addition over one common framework
-`ofNormals G ends q₀`, routed through the genericity device's independent-row count
-(the H-block edges ⊔ the surviving edges made independent by the exterior-column
-projection), not a common-seed splice. It shipped green-modulo a single dischargeable
-hypothesis = KT **Claim 6.4** (`lem:claim-6-4`, the surviving block's exterior-projected
-rank at the generic placement, KT eqs. (6.5)/(6.9)), **fully discharged in Phase 22b**
-(so `lem:case-I-realization` is now fully green). The phase's cross-cutting lesson — a formalization must reproduce
-the source's argument **structure**, not just its conclusion — surfaced from the
-hpinc→asymmetric→block-triangular→Qc-non-root design arc (the common-seed splice
-type-checked but kept needing undischargeable bridge hypotheses) and is promoted to
-`DESIGN.md` *Match the source's argument structure, not just its conclusion*. The
-full Case-I brick inventory (N4 contraction-minimality bridge via the Whitney-style
-sub-build N4a→N4b→N4c, the N5 splice/seed/rank-polynomial bricks, N6a/N6b/N6c, the
-two-motive split, the generic-motive induction G2a–c / G3a–c) + decision history
-live in `notes/Phase22a.md`. **Phase 22b is complete** (closed 2026-06-05): KT Claim 6.4 — the discharge of 22a's
-green-modulo obligation — is **fully discharged** (`lem:claim-6-4` green), so
-`lem:case-I-realization` is fully green. The reduction N-22b-1/2/3 cut Claim 6.4 to the single
-hypothesis `htransport`; the discharge then built the three composing bricks (U3a the relabel-leg
-rigidity transport; **U3b** the genuine crux — the exterior-column projection loses zero rank on a
-rigid block, via `Z ⊔ range(extProj) = ⊤` whose one real-content input is the rigid-block pin-count;
-U2/U1 the collapse-relabel projected-row reproduction at KT eq. (6.7)'s degenerate placement) and the
-route-(i) motive strengthening (the link-recording conjunct, discharging the selector alignment),
-composed by the capstone U4 producer `rigidContract_exterior_rank_transport_htransport`. The
-course-correction discipline (the crux moved U2→U3, then U3a was found not a leaf) + design arc
-(`notes/Phase22-realization-design.md` §1.14–§1.24) are in `notes/Phase22b.md`.
-**Phase 22c is stratum-1 complete** (opened 2026-06-05 design-pass-first; stratum-1
-producer landed 2026-06-05; crux split out to 22d): Case III at `d=3` (KT §6.4.1, Lemma
-6.10) — the `theorem_55.hsplit` producer at `k=0`, the conjecture's crux. **Case III at
-`d=3` is multi-phase**; 22c claimed only the FIRST of three difficulty strata: stratum
-1, the eq. (6.12) `+(D−1)` block-triangular placement — green + axiom-clean as
-`PanelHingeFramework.case_II_placement_eq612` (`rank R(G,p₁) ≥ D(|V|−1)−1`, from the
-green Phase-21b N7b row infra). Opened on a **layer-level design recon, not a build**
-(Case I burned ~10 node-by-node commits before a layer pass surfaced the binding gap;
-`DESIGN.md` *Scale-up: design the LAYER, not just the node*).
-**Phase 22d is complete** (opened 2026-06-05 design-pass-first, re-scoped 2026-06-05 per a
-fresh user direction, closed at the Claim 6.11 milestone): it attacked the conjecture's
-hardest node — KT **Claim 6.11**, the *missing `+1` row* lifting 22c's `D(|V|−1)−1` brick
-toward full `D(|V|−1)` — **bottom-up**, building the prerequisite chain green + axiom-clean
-rather than axiomatizing the claim (user override of the opening axiomatize-as-hypothesis
-verdict). The discharge factored through three combinatorial↔linear gaps (matroid-base
-4.3(ii) → nested IH-at-restriction → the `M(G̃)`↔row bridge), all green, on a seed-rank
-analytic kernel that forced the project's first algebraic-independence use. The
-candidate-completion + Claim-6.12 disjunction and the `d=3` assembly are the deferred,
-UNLETTERED successor. See the *Phase 22d* detail block below + ROADMAP §22d.
-Phases 23–26 planned. This is the program design for Phases 17–26 and the runbook for
-threading the remaining phases.
+**Status:** IN PROGRESS. Phases 17–22h (+ 21a/21b) complete; the current frontier is
+**sub-phase 22i, the honest all-`k` Theorem 5.5** (◷ opened 2026-06-11; `notes/Phase22i.md`):
+discharging the five carries 22h closed green-modulo ({`h622`, `h65`, `hbase`, `hsplit`,
+`hcontract`}) via the all-`k` + genuine-hinge motive redesign pinned in
+`notes/Phase22-realization-design.md` §1.56, delivering KT-strength Thm 5.5 + Thm 5.6 at
+`d = 3` and unblocking Phases 24–26. Then **Phase 23** (general `d`, KT Lemma 6.13).
+Phases 23–26 planned. The per-phase record lives in the phase table and per-phase detail
+blocks below, ROADMAP §17–§22i, and `notes/PhaseN.md` — this Status paragraph is a pointer,
+not a log (*One canonical home per content type*, `notes/CLAUDE.md`). This file is the
+program design for Phases 17–26 and the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
@@ -300,7 +218,8 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22e ✓ | **candidate-completion + KT Claim 6.12** (Case III at `d=3`, Lemma 6.10; closed 2026-06-07, `notes/Phase22e.md`). Lifts 22c's stratum-1 `D(\|V\|−1)−1` brick to full `D(\|V\|−1)` by converting 22d's green redundant `ab`-row (eq. (6.23)) into the missing `+1` row — the eqs. (6.24)→(6.29) row-op construction of the `v`-column `w` (its eq. (6.28) column-support core already green, landed under 22d's tail = 22e's first leaf) — then the **Claim 6.12** `D`-candidate disjunction (de-risked on the green Lemma 2.1, eq. (6.44) "same `r`"; N3a takes the existence/Zariski route, **not** alg-independence). Closed green-modulo a single N3b duality leaf at the time; that leaf landed in 22f, so the candidate-completion chain (`lem:case-III-candidate-row`) and Claim 6.12 are now fully green. The two target producer nodes `lem:case-II-realization` / `lem:case-III` **stay red** (N10 honest-scope correction: they carry no `\lean`, and their discharge needs the *deferred `d=3` realization assembly*). Opened on a red-node consistency recon (supersession gate clean), not a build. | §6.4.1 | 5 |
 | 22f ✓ | **N3b: the point-join↔panel-meet duality bridge** (`lem:case-III-claim612-line-in-panel-union`, completing Claim 6.12 / Lemma 6.10 at `d=3`; closed 2026-06-07, `notes/Phase22f.md`). `pᵢ∨pⱼ = λ·C(L)` for a line `L ⊂ Π(u)`: both the point-join and the panel-meet `C(L) = complementIso(n_u∧n')` lie in the **1-dim** dual-annihilator line `Ω = (dualAnnihilator Φ̃).comap b.toDualEquiv` (`Φ̃ = n_u∧ℝ⁴ + n'∧ℝ⁴`, `dim 5`), the point-join by a Gram-determinant orthogonality, the panel-meet by the green dictionary half — concrete at `⋀²ℝ⁴`, **not** general Hodge theory (`complementIso_smul_eq_extensor_join` + the `r(C)=0 ⟹ r(join)=0` transfer). Discharged 22e's green-modulo-N3b, taking Claim 6.12 (N9) and the candidate-completion chain fully green; the two producer nodes await only the deferred `d=3` realization assembly. | §6.4.1 | 5 |
 | 22g ✓ | **The `d=3` assembly: design program + leaf infrastructure** (closed 2026-06-09, `notes/Phase22g.md`; the 22c→22d stratum precedent — banner flips moved to 22h). Pinned the Case-III crux architecture: `case_III_claim612` restated to the premise-free six-join **existential** (the three-fixed disjunction is undischargeable, dim 3 < 6; the producer builds its candidate at the witness join's line). Landed ~15 axiom-clean leaves (the join↔meet bridge, the line-indexed candidate placement, the homogeneous-vector Lemma 2.1 core + consumer restate, splitOff simplicity at `|V|≥4`, the graph-free producer pieces, the GAP-2 bare→generic upgrade). The recon program (design §1.44–§1.49) surfaced + scoped the corrected remaining work — GAPs 1–5: the `|V|=3` triangle base (T1–T4), the `M₃` third-panel dispatch (G4a–G4e, branch-interface verdict (β) = full conditioned IH), the bounded good-`t`, the landed upgrade, and the `IsProperRigidSubgraph` single-vertex predicate repair (G5, first) — all handed to 22h with signatures in design §1.48–§1.49. | §5.1, §6.4.1 | 5 |
-| 22h ◷ | **The corrected `d=3` assembly** (opened 2026-06-09, `notes/Phase22h.md`). Build order (design §1.49(6)): **G5** (the `IsProperRigidSubgraph` `2 ≤ \|V(H)\|` predicate repair, KT p. 659's `1 < \|V′\|`; first) → **G4b-impl** (`minimal_kdof_reduction_full` + the `theorem_55_generic` restate to the full-conditioned-IH (β) shape) → {G4a-i/ii + G0 ∥ the `\|V\|=3` triangle leaves T1–T4 ∥ G4c-i/ii} → G4d-i/ii → the (β)-shaped `hsplit` producer with the G4e `M₁/M₂/M₃` dispatch → the `theorem_55_generic (n:=2)(k:=2)` instance node → the `lem:case-II-realization`/`lem:case-III` flips + the Thm 5.5→5.6 push, unblocking Cor 5.7. ~13–18 commits; signatures design §1.48–§1.49. Milestone: the conjecture at `d=3`. | §5.1–5.2, §6.4.1 | 5 |
+| 22h ✓ | **The corrected `d=3` assembly** (closed 2026-06-11, `notes/Phase22h.md`). Took `lem:case-II-realization` / `lem:case-III` green at `d=3` (both pinned to `case_III_realization`): G5 predicate repair, the (β) full-conditioned-IH restate, the `\|V\|=3` triangle floor T1–T4, the `hsplit` producer + the full candidate-placement discharge (W1–W10b), `theorem_55_d3` with the 6.3-vs-6.5 dispatch, the `def=0` Thm 5.5→5.6 stratum, the blueprint close (`thm:theorem-55-d3-instance` green). **Closed green-modulo the named carry family** {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (user-adjudicated; design §1.50–§1.55); postmortem: `DESIGN.md` *Statement faithfulness to the source*. | §5.1–5.2, §6.4.1 | 5 |
+| 22i ◷ | **The honest all-`k` Theorem 5.5** (opened 2026-06-11, `notes/Phase22i.md`). Discharges all five 22h carries via the motive redesign pinned in design §1.56: genuine hinges (the free-hinge carrier + extensor-in-panel containment; KT's coincident-panel Lemmas 5.3/6.2 are inexpressible with derived hinge-as-meet) + the all-`k` four-case induction (NEW cases: Lemma 6.1 not-2-edge-connected, Lemma 6.8 `k>0` split), the Lemma-6.5 arm, and the Thm-5.6 `d=3` push (`prop:rigidity-matrix-prop11` at `def>0`). Carries table + layer plan L0–L10: `notes/Phase22i.md`. | §3, §5.2, §6.1–6.4 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -415,10 +334,11 @@ candidate-completion chain are now fully green. The two target producer nodes
 assembly, not N3b — N10 was a blueprint scope reconciliation). The `d=3` assembly then split as
 its predecessors did: **22g** = its design-program + leaf-infrastructure stratum (✓ complete,
 closed 2026-06-09; `notes/Phase22g.md` — the existential Claim-6.12 architecture, ~15 axiom-clean
-leaves, the GAPs-1–5 recon program), and **22h** = the corrected `d=3` assembly (the G5 predicate
-repair → the G4 builds + T1–T4 → the (β)-shaped producer → the banner flips; see *Opening the
-next phase* below). Math worked out in `notes/Phase21b.md` *Finding A/B* +
-`notes/Phase22-realization-design.md` §1.39–§1.49; the green Phase-21b/22c–22f infra feeds it.
+leaves, the GAPs-1–5 recon program), **22h** = the corrected `d=3` assembly (✓ complete, closed
+2026-06-11 green-modulo the named carry family; `notes/Phase22h.md`), and **22i** = the honest
+all-`k` Theorem 5.5 discharging those carries (◷ opened 2026-06-11; `notes/Phase22i.md`; see
+*Opening the next phase* below). Math worked out in `notes/Phase21b.md` *Finding A/B* +
+`notes/Phase22-realization-design.md` §1.39–§1.56; the green Phase-21b/22c–22h infra feeds it.
 
 **Phase 22a — Case I realization (§6.2) — ✓ Complete.** Track A:
 the tractable entry point, full-rank, independent of Case III. The composer
@@ -712,13 +632,16 @@ leaf-infrastructure stratum, ✓ 2026-06-09; `notes/Phase22g.md`), and **22h** (
 assembly — Theorem 5.5 at `d=3`, ✓ 2026-06-11 green-modulo the named carry family;
 `notes/Phase22h.md`). Sub-lettering keeps the integer phase numbers 23–26 stable.
 
-**Next cut: sub-phase 22i, "the honest all-`k` Theorem 5.5"** (not yet opened; open it per
-`notes/Phase22h.md` *Hand-off*). 22h closed with `thm:theorem-55-d3-instance` green modulo five
-named carried hypotheses — `h622` (the KT eq.-(6.22) nested-IH rank bound), `h65` (the KT
-Lemma-6.5 vertex-removal arm), and the bare-motive slots `hbase`/`hsplit`/`hcontract` — each
-tracked by a blueprint red node (`lem:case-III-nested-rank-lower`, `lem:case-I-dispatch`,
-`def:genuine-hinge-realization`). 22i discharges all five via the all-`k` + genuine-hinge motive
-redesign (`notes/Phase22-realization-design.md` §1.55(a); opens with a single motive design pass
-and a carries table seeded into `notes/Phase22i.md`), delivering the KT-strength
-Thm 5.5 → 5.6 → Cor 5.7 at `d=3` and unblocking Phases 24–26. Then **general-`d`** (Lemma 6.13,
-reuse map in §1.33 (C)) is **Phase 23**.
+**Current cut: sub-phase 22i, "the honest all-`k` Theorem 5.5"** (◷ opened 2026-06-11;
+`notes/Phase22i.md`). 22h closed with `thm:theorem-55-d3-instance` green modulo five named
+carried hypotheses — `h622` (the KT eq.-(6.22) nested-IH rank bound), `h65` (the KT Lemma-6.5
+vertex-removal arm), and the bare-motive slots `hbase`/`hsplit`/`hcontract` — each tracked by
+a blueprint red node (`lem:case-III-nested-rank-lower`, `lem:case-I-dispatch`,
+`def:genuine-hinge-realization`). 22i discharges all five via the all-`k` + genuine-hinge
+motive redesign, pinned at phase open in `notes/Phase22-realization-design.md` §1.56 (the
+single motive design moment of §1.55(a)); the carries table + layer plan (L0–L10) are in
+`notes/Phase22i.md`. Deliverable boundary: KT-strength Thm 5.5 + Thm 5.6 at `d=3`
+(Cor 5.7 itself lands in Phase 26, on the Phase-24/25 machinery), unblocking Phases 24–26.
+**Next cut after 22i: general-`d`** (Lemma 6.13, reuse map in §1.33 (C)) is **Phase 23** —
+open it with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d`
+row to `notes/AlgebraicIndependence.md`.

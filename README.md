@@ -63,9 +63,9 @@ rigidity-matrix rank. All three cases of the realization theorem (Theorem
 **Case III** (`k=0`, no proper rigid subgraph); the formalized instance
 holds modulo a small, explicitly tracked family of carried hypotheses —
 chiefly the nested use of the induction at every degree of freedom. The
-current frontier is discharging those carries by restating the induction
-at full Katoh–Tanigawa strength (all `k`, genuine hinges), then general
-`d`. The per-phase status table is on the
+current frontier — now in progress — is discharging those carries by
+restating the induction at full Katoh–Tanigawa strength (all `k`, genuine
+hinges), then general `d`. The per-phase status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 
