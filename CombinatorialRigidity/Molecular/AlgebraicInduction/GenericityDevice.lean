@@ -1052,15 +1052,25 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals
     {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
     (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
     (hcontract :
-      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
-    PanelHingeFramework.HasGenericFullRankRealization k G :=
-  -- The witness is the seed framework itself; rigidity on `V(G)` is the genericity-free splice glue
-  -- (no device round-trip, so general position of `q₀` survives), general position is `hgp`, the
-  -- link-recording conjunct is the seed selector's link-recording (`hends`), and the
-  -- algebraic-independence conjunct is `halg` (the seed's normals *are* `q₀`).
-  ⟨PanelHingeFramework.ofNormals G ends q₀, PanelHingeFramework.ofNormals_graph G ends q₀, hgp,
-    (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.isInfinitesimallyRigidOn_of_splice
-      (GH := GH) (Gc := Gc) hGH hGc hcH hcc hcover hblock hcontract,
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gc))
+    (n : ℕ) (hne : V(G).Nonempty) (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  -- Derive rigidity from the splice glue.
+  have hrig : F.IsInfinitesimallyRigidOn V(G) :=
+    F.isInfinitesimallyRigidOn_of_splice (GH := GH) (Gc := Gc)
+      (by rw [hF]; exact hGH) (by rw [hF]; exact hGc) hcH hcc hcover hblock hcontract
+  -- Convert rigidity to rank via W2 + hdef.
+  have hFG : F.graph.vertexSet = V(G) := by
+    rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hne' : F.graph.vertexSet.Nonempty := by rw [hFG]; exact hne
+  have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+  have hW2 := F.finrank_span_rigidityRows_of_rigidOn hne' (hFG ▸ hrig)
+  have hrank : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
+    rw [hFG] at hW2; rw [hdef, sub_zero]; zify [h1] at hW2 ⊢; exact_mod_cast hW2
+  exact ⟨PanelHingeFramework.ofNormals G ends q₀,
+    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, hrank,
     PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends, halg⟩
 
 /-- **Case I splice producer, leg-native general-position-free form (the non-simple producer)**
@@ -1788,8 +1798,9 @@ def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
 /-- **M4: a generic realization is a genuine-hinge realization** (`def:genuine-hinge-realization`,
-Phase 22i L0d). Forgetful map from `PanelHingeFramework.HasGenericFullRankRealization 2 G`
-(the GP-motive, pre-L0e form) to `HasPanelRealization 2 n G` (the honest bare motive M2).
+Phase 22i L0e). Forgetful map from `PanelHingeFramework.HasGenericFullRankRealization 2 n G`
+(the GP-motive, L0e form with rank conjunct) to `HasPanelRealization 2 n G` (the honest bare
+motive M2).
 
 The four conjunct bridges:
 * *Panel nonzeroness*: from `2 ≤ |V|` get a second body `w ≠ v`; GP at `(v, w)` +
@@ -1798,27 +1809,13 @@ The four conjunct bridges:
   (`[G.Loopless]`); then `supportExtensor_ne_zero_of_isGeneralPosition` closes.
 * *`ExtensorInPanel`*: `exists_extensor_eq_panelSupportExtensor` at the `ends e` order
   (its two perp-ness conclusions cover `{normal u, normal v}` whichever disjunct falls).
-* *Rank*: W2 `finrank_span_rigidityRows_of_rigidOn` converts rigidity to the ℕ count;
-  `hdef : G.deficiency n = 0` + cast gives the ℤ form.
-
-**Temporary signature (L0d, pre-L0e)**: the `hdef` hypothesis bridges M3's current
-`IsInfinitesimallyRigidOn V(G)` slot to M2's ℤ rank-deficiency equality; at every call
-site it is discharged by `hG.1 : G.IsKDof n 0` (i.e.\ `G.deficiency n = 0`). At L0e,
-M3 gains its own rank conjunct and `hdef` is absorbed into a literal transfer. -/
+* *Rank*: direct transfer — M3's rank conjunct IS M2's ℤ form, no W2 round-trip needed. -/
 theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] [Finite α]
     (hV : 2 ≤ V(G).ncard)
-    (hdef : G.deficiency n = 0)
-    (h : PanelHingeFramework.HasGenericFullRankRealization 2 G) :
+    (h : PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
     HasPanelRealization 2 n G := by
-  obtain ⟨Q, hQg, hQgp, hQrig, hQrec, _⟩ := h
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, _⟩ := h
   have hne : V(G).Nonempty := (Set.ncard_pos (Set.toFinite _)).mp (by omega)
-  -- Restate hQrig and hne against Q.toBodyHinge.graph.vertexSet for W2 / B1.
-  have hne' : Q.toBodyHinge.graph.vertexSet.Nonempty := by
-    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne
-  have hQrig' : Q.toBodyHinge.IsInfinitesimallyRigidOn Q.toBodyHinge.graph.vertexSet := by
-    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hQrig
-  -- W2: rigidity → finrank (span rigidityRows) = D*(|V(G)|−1) (ℕ).
-  have hW2 := Q.toBodyHinge.finrank_span_rigidityRows_of_rigidOn hne' hQrig'
   refine ⟨Q.toBodyHinge, Q.normal, ?_, ?_, ?_, ?_⟩
   · -- F.graph = G
     rw [PanelHingeFramework.toBodyHinge_graph]; exact hQg
@@ -1857,16 +1854,7 @@ theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] 
       have hval : (Q.toBodyHinge.supportExtensor e : ExteriorAlgebra ℝ _) = extensor p :=
         congr_arg Subtype.val hsupp ▸ hp
       exact ⟨⟨p, hval, fun i => (hperp i).2⟩, ⟨p, hval, fun i => (hperp i).1⟩⟩
-  · -- Rank: cast W2 + hdef.
-    have hVncard : Q.toBodyHinge.graph.vertexSet.ncard = V(G).ncard := by
-      rw [PanelHingeFramework.toBodyHinge_graph, hQg]
-    have h1 : 1 ≤ V(G).ncard := by omega
-    rw [hdef, sub_zero]
-    have hW2' : (Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
-        = screwDim 2 * ((V(G).ncard : ℤ) - 1) := by
-      rw [hVncard] at hW2
-      zify [h1] at hW2
-      exact_mod_cast hW2
-    exact hW2'
+  · -- Rank: direct from hQrank.
+    exact hQrank
 
 end CombinatorialRigidity.Molecular

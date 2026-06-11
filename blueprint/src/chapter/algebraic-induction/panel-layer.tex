@@ -145,10 +145,11 @@ whole induction.
 \subsection{The induction skeleton and base case}
 \label{sec:molecular-algebraic-induction-base}
 
-\begin{definition}[Generic-rank hypothesis (6.1), $V(G)$-relative --- bare rank form]
+\begin{definition}[Generic-rank hypothesis (6.1), $V(G)$-relative --- rank-form substrate]
   \label{def:rank-hypothesis}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigidOn,
         CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.HasGenericFullRankRealization,
         CombinatorialRigidity.Molecular.BodyHingeFramework.RankHypothesis}
   \leanok
   \uses{def:rigidity-matrix, def:k-dof}
@@ -157,21 +158,6 @@ whole induction.
   panel-hinge realization $(G,p)$ with
   $\operatorname{rank} R(G,p) = D(|V|-1) - k$.
 
-  \textbf{Lean form (bare rank).}  The Lean predicate
-  $\mathtt{HasFullRankRealization}\,k\,G$ is:
-  \[
-    \exists\,Q,\; Q.\mathrm{graph} = G \;\wedge\;
-    Q.\mathrm{toBodyHinge}.\mathrm{IsInfinitesimallyRigidOn}\,V(G),
-  \]
-  that is, the existence of any panel-hinge framework on $G$ realizing the
-  target rank --- without a constraint on the hinge directions.  In particular
-  a degenerate \emph{welded} framework (all-zero-extensor selector
-  $\mathrm{ends}(e) = (a_0, a_0)$ for every edge $e$) satisfies the predicate
-  for every connected $0$-dof graph, so the bare conjunct of the formalized
-  Theorem~5.5 is weaker than KT's (6.1).  The honest form --- requiring genuine
-  hinges --- is \cref{def:genuine-hinge-realization}; the strengthening is
-  scheduled at the all-$k$ motive redesign in the successor sub-phase 22i.
-
   \emph{The rank must be read $V(G)$-relative.} The rigidity rows of
   $R(G,p)$ come only from the edges of $G$, so $\operatorname{rank} R(G,p) =
   \dim \operatorname{span}(\text{rigidity rows})$ depends only on $V(G)$ ---
@@ -179,19 +165,34 @@ whole induction.
   carries is therefore the \emph{rank} equality
   \[
     \dim \operatorname{span}\bigl(\text{rigidity rows of } (G,p)\bigr)
-      \;=\; D\,(|V(G)| - 1) - k,
+      \;=\; D\,(|V(G)| - 1) - \operatorname{def}(\tilde{G}),
   \]
-  equivalently ``every infinitesimal motion is constant on $V(G)$'' at
-  $k = 0$. This is \emph{not} the same as the null-space equality
+  equivalently ``every infinitesimal motion is constant on $V(G)$'' when
+  $\operatorname{def} = 0$. This is \emph{not} the same as the null-space equality
   $\dim Z(G,p) = D + k$ over the whole screw-assignment space
-  $\R^{D|V_\alpha|}$ of the ambient body type: by rank--nullity
-  $\operatorname{rank} R = D|V_\alpha| - \dim Z$, so the null-space form
-  reads $\dim Z(G,p) = D\,(|V_\alpha| - |V(G)| + 1) + k$, which coincides
-  with $\dim Z = D + k$ only when $G$ spans the ambient type
-  ($V(G) = V_\alpha$). The induction reduces to non-spanning subgraphs, so
-  the absolute null-space form is unsatisfiable for them (see the chapter
-  status); the rank form above is the $\alpha$-independent motive the
-  realization layer is re-stated against.
+  $\R^{D|V_\alpha|}$ of the ambient body type; the rank form above is the
+  $\alpha$-independent motive the realization layer is stated against.
+
+  \textbf{Lean forms.}  Two predicates pin this definition.
+
+  $\mathtt{HasFullRankRealization}\,k\,G$ is the bare existential
+  $\exists\,Q,\; Q.\mathrm{graph} = G \;\wedge\;
+  Q.\mathrm{toBodyHinge}.\mathrm{IsInfinitesimallyRigidOn}\,V(G)$,
+  used as the induction motive of Theorem~5.5.
+  It is equivalent to the rank equality (B1,
+  $\mathtt{isInfinitesimallyRigidOn\_vertexSet\_iff\_finrank\_span\_rigidityRows}$)
+  when $V(G)$ is nonempty.
+
+  $\mathtt{HasGenericFullRankRealization}\,k\,n\,G$ is the strengthened motive
+  that carries the rank equality as an explicit conjunct (at deficiency $n$,
+  alongside general position and algebraic independence of the normals);
+  it is the induction substrate for the generic-motive reduction
+  $\mathtt{theorem\_55\_generic}$.  The rank conjunct is the
+  $\mathbb{Z}$-cast form
+  $(\dim \operatorname{span}(\text{rigidity rows}) : \mathbb{Z}) =
+    D\,(|V(G)| - 1) - \operatorname{def}(\tilde{G})$,
+  matching the $\mathbb{Z}$ arithmetic of the genuine-hinge motive
+  (\cref{def:genuine-hinge-realization}).
 \end{definition}
 
 \begin{definition}[Generic-rank hypothesis (6.1) --- genuine-hinge form; KT eq.\ (6.1)]

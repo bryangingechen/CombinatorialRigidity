@@ -995,7 +995,9 @@ force threading simplicity through the Phase-20 reduction `Graph.minimal_kdof_re
 `splitOff` does *not* preserve simplicity (KT Lemma 6.7, so an `(G.Simple → …)` conjunct's inductive
 hypothesis lands on the wrong graph at the splitting-off step) — the general-position obligation is
 localized to this second motive, carried only through the simple cases, with a one-line forgetful
-map `hasFullRankRealization_of_generic` to the bare motive. `theorem_55`'s bare-motive statement is
+map (derived via B1,
+`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`) to the bare motive.
+`theorem_55`'s bare-motive statement is
 untouched. This dissolves gap (G1) (the splice/rank-polynomial producers
 `hasFullRankRealization_of_splice_ofNormals` / `exists_rankPolynomial_of_rigidOn` need a
 *general-position* rigid seed, which a bare rigid IH does not supply) at the source: a
@@ -1030,23 +1032,15 @@ alg-indep-over-`ℚ` `q : α × Fin (k+2) → ℝ`), which is simultaneously a n
 *rational* rank polynomial — so the same seed lands rigidity, general position, and the
 alg-independence conjunct at once. The bare motive and `theorem_55` remain untouched (the
 strengthening is generic-motive only). -/
-def HasGenericFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
+def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β,
-    Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G) ∧
+    Q.graph = G ∧ Q.IsGeneralPosition ∧
+    ((Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) : ℤ)
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n) ∧
     (∀ e u v, G.IsLink e u v →
       ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u)) ∧
     AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => Q.normal p.1 p.2)
 
-/-- **The forgetful map: a general-position realization is a realization** (`thm:theorem-55`,
-two-motive split; Phase 22). Dropping the `Q.IsGeneralPosition` conjunct, the strengthened motive
-`HasGenericFullRankRealization` implies the bare `HasFullRankRealization`. This is the one-line
-bridge that lets the simple Case-I cases (which produce a general-position realization, KT Lemma
-6.3/6.5) feed the bare-motive consumers — chiefly `theorem_55`'s `hcontract` premise — without the
-bare motive ever having to carry general position. -/
-theorem hasFullRankRealization_of_generic {k : ℕ} {G : Graph α β}
-    (h : HasGenericFullRankRealization k G) : HasFullRankRealization k G :=
-  let ⟨Q, hQg, _, hQrig, _, _⟩ := h
-  ⟨Q, hQg, hQrig⟩
 
 /-- **A free-normal panel realization with a link-recording selector records its own graph's links**
 (`thm:theorem-55`, the motive's link-recording conjunct, producer form; Katoh–Tanigawa 2011 §6.2,
@@ -1147,7 +1141,7 @@ theorem theorem_55_generic [DecidableEq β] [Finite α] {n k : ℕ}
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
       PanelHingeFramework.HasFullRankRealization k G)
     (hbaseGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → G.Simple →
-      PanelHingeFramework.HasGenericFullRankRealization k G)
+      PanelHingeFramework.HasGenericFullRankRealization k n G)
     (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
@@ -1157,9 +1151,9 @@ theorem theorem_55_generic [DecidableEq β] [Finite α] {n k : ℕ}
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) → G.Simple →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
         V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
           PanelHingeFramework.HasFullRankRealization k G') →
-      PanelHingeFramework.HasGenericFullRankRealization k G)
+      PanelHingeFramework.HasGenericFullRankRealization k n G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
@@ -1169,14 +1163,14 @@ theorem theorem_55_generic [DecidableEq β] [Finite α] {n k : ℕ}
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
         V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
           PanelHingeFramework.HasFullRankRealization k G') →
-      PanelHingeFramework.HasGenericFullRankRealization k G)
+      PanelHingeFramework.HasGenericFullRankRealization k n G)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k G) ∧
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
       PanelHingeFramework.HasFullRankRealization k G :=
   Graph.minimal_kdof_reduction_full (P := fun G =>
-      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k G) ∧
+      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
         PanelHingeFramework.HasFullRankRealization k G)
     -- base: bare from `hbase`; the simple two-vertex base from `hbaseGP`.
     (fun G hG hV2 => ⟨fun hSimple => hbaseGP G hG hV2 hSimple, hbase G hG hV2⟩)
