@@ -99,7 +99,7 @@ coordinator session before being caught).
 | S/P/B | the a-priori axis scores |
 | Model | rung actually dispatched |
 | Mode | normal / probe / boundary-pair-primary / boundary-pair-duplicate / escalation-retry |
-| Outcome | clean / repaired (note cost) / escalated / BLOCKED |
+| Outcome | clean / repaired (note cost) / escalated / BLOCKED / killed (harness or usage-limit death mid-dispatch, no agent fault — log the wasted cost; salvage the transcript read map into the relaunch prompt) |
 | Rubric | 6-bit quality vector, below |
 | Cost | tokens + tool uses + wall time, as reported by the Agent tool |
 | Notes | anything load-bearing |

@@ -97,12 +97,24 @@ Loop:
      discharge-on-top.
    - **Mechanical fixups, not stops:** wrong branch → `git checkout
      master && git merge --ff-only <branch> && git branch -d
-     <branch>`; wrong author → `git commit --amend --author=…`. A
+     <branch>`; wrong author → `git commit --amend --author=…`;
+     wrong co-author trailer (a subagent naming a model it didn't
+     run on — twice in one 22h session, rows 21/26, both times the
+     dominant trailer from recent `git log` instead of the dispatched
+     model) → amend the trailer before logging the sha (the
+     protocol's attribution-hygiene rule; not counted against the
+     outcome grade). A
      return with **neither LANDED nor BLOCKED** usually means the
      subagent parked on a background gate with finished-but-
      uncommitted work (twice on 22h's G5) — don't blind-redispatch;
      verify the tree diff against the hand-off yourself, run the
-     gates, commit with the project identity.
+     gates, commit with the project identity. A dispatch **killed by
+     a session/usage limit** also returns neither (the return is the
+     limit error itself): check `git status` for stranded work, log
+     it as outcome `killed`, and relaunch fresh — salvaging the dead
+     agent's read map (its `agent-<id>.jsonl` transcript under the
+     session's `subagents/` dir) into the relaunch prompt recovers
+     most of the lost reading phase (rows 28→29).
    - **Recon verdicts get reasoning scrutiny, not just commit
      mechanics** — a mechanically clean recon can still be wrong, and
      building on it re-incurs the churn it was meant to end.
@@ -133,7 +145,15 @@ Loop:
      phase-close checklist). After a user-approved mid-session
      close-and-split, confirm with the user before resuming the loop
      on the successor phase.
-   - BLOCKED return; or HEAD didn't advance.
+   - BLOCKED return; or HEAD didn't advance. Exception — a
+     **sizing-shaped BLOCKED** (deliverable judged un-carvable, tree
+     untouched, usually because the design doc pins no concrete
+     signatures below the named slot) is the step-1 design-pass
+     trigger, resolvable in-session: dispatch a decomposition
+     design-pass at the design-settle rung rather than re-dispatching
+     the build one rung up (rows 27→29: the §1.51 seven-leaf cut
+     un-blocked what brute escalation would have re-hit). Stop on a
+     BLOCKED without a clear within-workflow resolution.
    - A recon flags a decision for **user adjudication** (e.g. a
      carried hypothesis or motive change) — present the options with
      estimates; don't pick unilaterally.
