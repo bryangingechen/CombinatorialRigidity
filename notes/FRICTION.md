@@ -3975,6 +3975,16 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   (a `simps`/`def`-bound coercion that `rw` can't see — prefer `unfold` + pointwise, or a
   hand-stated `show … from`).
 
+### [resolved] `set X := e with hX` silently folds `e` in *pre-existing* hypotheses → a later `rw [h]` (whose LHS was `e`) finds no pattern
+- **Where it bit:** `exists_candidateRow_bottomRows_of_rigidOn` (W6b, `Molecular/AlgebraicInduction/CaseI.lean`,
+  Phase 22h). `set Eb := Submodule.span ℝ (Set.range r)` ran *after* obtaining W5's
+  `hrspan : span (range r) = span (panelRow e₀)`, so the `set` rewrote `hrspan` to `Eb = …`; the
+  next `rw [hEb, hrspan]` (and a sibling `rw` in `hrow`) then failed to find `span (range r)`.
+- **Fix:** drop the redundant `rw` and lean on the fold — `hrspan` already reads `Eb = …`, so the
+  chains became `rw [hrspan, …]` (no `rw [hEb]` first). Captured a derived form `hEb'` once.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 43 (general rule: after a `set`/`subst`/
+  `simp only [eqn] at *`, re-read what old hypotheses now say before threading them into a `rw`).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

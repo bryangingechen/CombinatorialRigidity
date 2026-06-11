@@ -37,10 +37,12 @@ Coordinator independently verified all three verdicts against KT pp. 681–684 +
 (its candidate row and `(vb)ⱼ`-transports are not sheared-candidate rows at `t ≠ 0`); the route is
 **certify-then-rebase** — certify the (6.29) count at `F₀` (W6c+W6d), convert to a rank lower
 bound and re-extract a literal `F₀.panelRow` family (W6e), transfer that along the `t`-family
-(W6f), close through the span core + GAP-2 (W7). **W6a, W6e, and W6c are landed**
+(W6f), close through the span core + GAP-2 (W7). **W6a, W6e, W6c, and W6b are landed**
 (the `caseIIICandidate` `t`-family + the six infra bricks; the rank-bound panelRow re-extraction;
-the restriction-form full family). Smallest next commit: **W6b** (the candidate/bottom packaging,
-§1.51(c) — the first GAP-6 carry above W5, feeds W6d/W10).
+the restriction-form full family; **the candidate/bottom data packaging — `h622lb` now enters the
+Lean here, W6b being W5's sole caller**). Smallest next commit: **W6f** (the one-variable transfer
+at the `t`-family, §1.51(g) — specializes W3's polynomial rank-transfer to `caseIIICandidate`;
+consumes only W6a/W3, GAP-6-clean; feeds W7).
 
 **W5 (the redundancy-data packaging) is landed** — `BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn`
 (CaseI.lean): the consumer-level form of `exists_redundant_panelRow_ab_lam` whose two `finrank`
@@ -59,8 +61,9 @@ landed before it.
 augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hypothesis** `h622lb`) →
 ~~W6-core (restriction-form candidate augment, the A1 abstract core)~~ (done) → ~~W6a (the
 `caseIIICandidate` `t`-family + infra bricks)~~ (done) → ~~W6e (rank-bound panelRow
-re-extraction)~~ (done) → ~~W6c (restriction-form full family)~~ (done) → **W6b**
-(candidate/bottom packaging; GAP-6 carry above W5) → **W6f** (the W3 transfer feed) → **W6d** (the `t = 0` rank
+re-extraction)~~ (done) → ~~W6c (restriction-form full family)~~ (done) → ~~W6b
+(candidate/bottom packaging; **carries the GAP-6 hypothesis** `h622lb`, W5's sole caller)~~ (done)
+→ **W6f** (the W3 transfer feed) → **W6d** (the `t = 0` rank
 certification at `F₀`) → **W7** (the arm closer, role-parametric) → W8 M₂ (W7 instantiation at
 swapped roles, `−ρ`) → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) →
 Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact signatures + per-leaf
@@ -143,8 +146,16 @@ consumes/consumed-by/§38 notes: §1.51.
   closed against W4's restriction-bottom contract `hbotrestrict` via the W6-core augment instead of
   the v-vanishing selector; the two W6-core inputs are the selector's inline `hnewpinaug` two-liner
   + `hrnvanish` via `panelRow_eq_hingeRow_annihRow_of_ends` + `hingeRow_comp_columnOp_vanish_off`;
-  graph-free, axiom-clean, no `\lean` pin). Remaining, as complete lemmas (no `sorry` on master),
-  per §1.51(j): W6b → W6f → W6d → W7 (the M₁ arm, certify-then-rebase) → W8 M₂ (W7 instantiation) →
+  graph-free, axiom-clean, no `\lean` pin), and **W6b the candidate/bottom data packaging**
+  (`BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn`, CaseI.lean — one W5 invocation
+  gives the candidate functional `ρ` (`r̂ = hingeRow … ρ` via `span_panelRow_edge_eq` + `mem_hingeRowBlock_iff`;
+  `ρ ≠ 0`, `ρ(C(e₀)) = 0`, `hingeRow … ρ ∈ span Gv-rows`) **and** the `D(m−1)` bottom rows `w`
+  extracted by `exists_fun_fin_finrank_span_eq` from `span(Gv-rows ∪ r '' {≠ i^*})` — which equals
+  `span Gab-rows` of finrank `D(m−1)` since `r i^* = r̂ − ∑_{≠ i^*} λ_j r_j`, both addends in the
+  union span — each `w j` per-tagged as a `Gv`-row or a block `hingeRow … ρ'` (`ρ'(C(e₀)) = 0`);
+  **this is W5's sole caller, so `h622lb` enters the Lean here**; axiom-clean, no `\lean` pin).
+  Remaining, as complete lemmas (no `sorry` on master),
+  per §1.51(j): W6f → W6d → W7 (the M₁ arm, certify-then-rebase) → W8 M₂ (W7 instantiation) →
   W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand`
   signature. Exact per-leaf signatures: §1.51(c)–(h).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
@@ -173,30 +184,37 @@ consumes/consumed-by/§38 notes: §1.51.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W6b (the candidate/bottom data packaging, §1.51(c)).**
-**W6b** = `BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn` (CaseI.lean): from ONE
-invocation of W5's redundancy data (`exists_redundant_panelRow_ab_lam_of_rigidOn`, KT p. 686 —
-the same `λ_{(ab)j}`/`i^*` in (6.29) and (6.30)) produce the candidate functional `ρ` (from
-`r̂ = ∑_j λ_{(ab)j} r_j ∈` the `e₀`-block span, annihilating `C(e₀)`, with `hingeRow … ρ ∈
-span(Gv-rows)`) **and** the chosen `D(m−1)` bottom rows `w` of `R(G_v^{ab} ∖ (ab)i^*, q)`
-(`exists_fun_fin_finrank_span_eq` at finrank `D(m−1)` via W2's `hgraph := rfl` idiom + the
-`span_rigidityRows_eq_sup_span_panelRow_edge`/`span_panelRow_edge_eq` span identities), each `w j`
-per-tagged as a `Gv`-row or a `hingeRow … ρ'` with `ρ'(C(e₀)) = 0`. **This is where the carried
-GAP-6 hypothesis `h622lb` enters the Lean** (W6b becomes W5's sole caller); it next appears only on
-W10. Then per §1.51(j): W6f → W6d → W7 → W8 → W9 → W10 → Leaf 4 → Leaf 5. W6c–W6f and W7 take W6b's
-*outputs* as hypotheses and are GAP-6-clean; the hypothesis exits at the Leaf-4/5 wiring.
-**No `sorry` placeholders** at any step (carry GAP-6 as a named `h…`, never a `sorry`).
+**Smallest next forward commit — W6f (the one-variable transfer at the `t`-family, §1.51(g)).**
+**W6f** = `PanelHingeFramework.caseIIICandidate_exists_good_shear` (CaseI.lean): W3's basis-free
+KT-Lemma-5.2 rank transfer specialized to the `caseIIICandidate` `t`-family. From a `t = 0`-LI
+panel-row subfamily (indexed by `idx`) and a finite `bad` set, pick `t ∉ bad`, `t ≠ 0` keeping the
+family LI at `t`. Route: `caseIIICandidate_panelRow_eq_add_smul` (W6a) gives `g t i = A i + t • B i`;
+take `b := Module.finBasis ℝ (Dual …)`, `P i j := C (b.repr (A i) j) + X * C (b.repr (B i) j)`
+(degree ≤ 1; `hg` by `map_add`/`map_smul`), apply W3 `LinearIndependent.exists_notMem_of_polynomial_repr`.
+Consumes only **W6a/W3** (both landed) → **GAP-6-clean**; feeds W7. Then per §1.51(j):
+W6d → W7 → W8 → W9 → W10 → Leaf 4 → Leaf 5. **No `sorry` placeholders** at any step (carry GAP-6 as
+a named `h…`, never a `sorry`).
 
-**W6c (the restriction-form full family) is landed** — `PanelHingeFramework.case_III_full_family_
-restriction` (CaseI.lean): the restriction-bottom sibling of `case_III_full_family_of_line`, closing
-the same NEW block against W4's `hbotrestrict` via the W6-core augment. Together with the landed
-**W6a** (the `caseIIICandidate` `t`-family + six infra bricks) and **W6e** (rank-bound panelRow
-re-extraction) — see the *Discharge `hcand`* checklist entry for the per-piece list — these are the
-W6d/W7 inputs. The `t`-family `PanelHingeFramework.caseIIICandidate` (KT's `p₁` at shear `t`; `F₀`
-its `t = 0` point) carries the W6f polynomiality input `caseIIICandidate_panelRow_eq_add_smul`; the
-W4-restriction transport bricks (`hingeRow_comp_columnOp_comp_offProj` = the (6.26)–(6.28)
-`(vb)ⱼ ↦ (ab)ⱼ` membership; `comp_columnOp_comp_offProj_of_single_eq_zero` = genuine `G_v`-rows
-survive the operated restriction) feed W6d/W7.
+**W6b (the candidate/bottom data packaging) is landed** —
+`BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn` (CaseI.lean): from ONE W5 invocation
+(`exists_redundant_panelRow_ab_lam_of_rigidOn`, KT p. 686 — the same `λ_{(ab)j}`/`i^*` in (6.29) and
+(6.30)) it produces the candidate functional `ρ` (from `r̂ = ∑_j λ_{(ab)j} r_j ∈` the `e₀`-block
+span = `map (screwDiff …).dualMap (hingeRowBlock e₀)`, so `r̂ = hingeRow … ρ`; `ρ ≠ 0`, `ρ(C(e₀)) =
+0`, `hingeRow … ρ ∈ span(Gv-rows)`) **and** the `D(m−1)` bottom rows `w` of `R(G_v^{ab} ∖ (ab)i^*,
+q)` (`exists_fun_fin_finrank_span_eq` from `span(Gv-rows ∪ r '' {≠ i^*})` = `span Gab-rows` of
+finrank `D(m−1)` since `r i^* = r̂ − ∑_{≠ i^*} λ_j r_j`; the `hgraph := rfl` + W2 idiom for the
+finrank), each `w j` per-tagged as a `Gv`-row or a block `hingeRow … ρ'` (`ρ'(C(e₀)) = 0`). **GAP-6
+`h622lb` entered the Lean here** (W6b is W5's sole caller); it next appears only on W7+/W10. Build +
+lint + axiom-clean; no `\lean` pin (internal infra).
+
+**W6c (the restriction-form full family), W6a (`caseIIICandidate` `t`-family + six infra bricks),
+and W6e (rank-bound panelRow re-extraction) are landed** — see the *Discharge `hcand`* checklist
+entry for the per-piece list; these are the W6d/W7 inputs. The `t`-family
+`PanelHingeFramework.caseIIICandidate` (KT's `p₁` at shear `t`; `F₀` its `t = 0` point) carries the
+W6f polynomiality input `caseIIICandidate_panelRow_eq_add_smul`; the W4-restriction transport bricks
+(`hingeRow_comp_columnOp_comp_offProj` = the (6.26)–(6.28) `(vb)ⱼ ↦ (ab)ⱼ` membership;
+`comp_columnOp_comp_offProj_of_single_eq_zero` = genuine `G_v`-rows survive the operated
+restriction) feed W6d/W7.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -379,3 +397,16 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `_of_rigidOn_linking` and refactored the latter to its 3-line corollary (feed
   `(finrank_span_rigidityRows_of_rigidOn …).ge` as the bound — same extract-and-refactor move W2
   made). Clean mirror, no `change`/glue; axiom-clean, no `\lean` pin (internal infra). No friction.
+- **W6b the candidate/bottom data packaging (§1.51(c); `exists_candidateRow_bottomRows_of_rigidOn`,
+  CaseI.lean).** One W5 call → `ρ` (factor `r̂ = ∑ λ_j r_j` through `span(range r) = E_b = map
+  (screwDiff …).dualMap (hingeRowBlock e₀)` via `span_panelRow_edge_eq`; `ρ ≠ 0` since `r̂ ≠ 0`;
+  `ρ(C(e₀)) = 0` by `mem_hingeRowBlock_iff`) and `D(m−1)` bottom rows from
+  `span(Gv-rows ∪ r '' {≠ i^*})` (`Submodule.exists_fun_fin_finrank_span_eq`, finrank via W2 +
+  `span_rigidityRows_eq_sup_span_panelRow_edge`; `r i^* = r̂ − ∑_{≠ i^*}` puts the span = Gab-rows),
+  re-indexed `Fin (finrank) → Fin (D(m−1))` by `Fin.cast hfin.symm`. **W5's sole caller → `h622lb`
+  enters here.** Friction: `set Eb := span(range r)` folded W5's `hrspan` into `Eb = …`, breaking a
+  later `rw` (→ FRICTION / TACTICS-QUIRKS § 43). Axiom-clean; no `\lean` pin.
+
+### Promoted to TACTICS-QUIRKS
+- *`set X := e with hX` folds `e` in pre-existing hypotheses too, so a later `rw [h]` (LHS was `e`)
+  finds nothing* → TACTICS-QUIRKS § 43 (FRICTION [resolved] pointer).

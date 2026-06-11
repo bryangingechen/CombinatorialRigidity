@@ -1590,3 +1590,32 @@ because `h01` is literally the same term on both sides. The caller uses
 `rw [sorted_family_eq hk]` and does not need to supply the inequality proofs at all. Worked case:
 `basisFun3_normalsJoin_sorted_family` (Phase 22h, `PanelLayer.lean`); the alternative (explicit
 `(h01 : ...)` argument) timed out in whnf due to a proof-term mismatch under a `fin_cases` context.
+
+---
+
+## 43. `set X := e with hX` folds `e` in *pre-existing* hypotheses — a later `rw [h]` whose LHS was `e` then finds nothing
+
+**Symptom.** *"Tactic `rewrite` failed: Did not find an occurrence of the pattern"* on a
+`rw [h]` (or `rw [h₁, h₂, …]`) where `h : e = …` came from an earlier `obtain`/`have`, and a
+`set X := e with hX` ran *between* obtaining `h` and the failing `rw`.
+
+**Cause.** `set X := e with hX` rewrites *every existing occurrence* of `e` — in the goal **and in
+all hypotheses already in context** — to the new local `X`. So a hypothesis `h : e = rhs` obtained
+before the `set` silently becomes `h : X = rhs`. A later `rw [h]` (intending to rewrite the syntactic
+`e`) now rewrites `X`; if the target still shows `e` (e.g. just produced by another rewrite), the
+pattern `X` is absent and the `rw` fails — or, dually, `rw [h]` over-fires on an unexpected `X`.
+(Worked case: Phase 22h W6b, `CaseI.lean` — `set Eb := Submodule.span ℝ (Set.range r)` folded W5's
+`hrspan : span (range r) = …` into `hrspan : Eb = …`, so the subsequent `rw [hEb, hrspan]` chain
+could not find `span (range r)`.)
+
+**Fix.** Track that the `set` already rewrote your old hypotheses, and drop the now-redundant
+`rw [hX]` / `rw [h]` step. Two reliable shapes:
+- **Lean on the fold:** since `set X := e` made `h : X = rhs`, write the downstream chain *against
+  `X`* directly — `rw [h]` now rewrites `X → rhs` exactly where you want it, no `rw [hX]` first.
+- **Decouple a derived form:** introduce `hX' : X = <other form> := by rw [h, …]` right after the
+  `set`, then use `hX'`. This pins the post-fold identity once instead of re-deriving it in each
+  consumer.
+
+The general rule: after a `set`/`subst`/`simp only [eqn] at *` that touches the context, re-read
+what your *old* hypotheses now say before threading them into a later `rw`. The atom you named is
+no longer spelled the way it was when you obtained the hypothesis.

@@ -72,6 +72,7 @@ symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
 - `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
 - `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
+- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43
 
 ## Starting a Lean-touching session
 

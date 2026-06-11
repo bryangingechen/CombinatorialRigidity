@@ -3325,6 +3325,142 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn
   exact BodyHingeFramework.exists_redundant_panelRow_ab_lam (m := m) hD huv hne₀ he₀ hle hsplit
     hk' h618 h622
 
+/-- **W6b — the candidate/bottom data packaging** (`lem:case-III-claim612-r` infra, the
+`hcand`-discharge M₁/M₂ arms' input bundle; Katoh–Tanigawa 2011 §6.4.1, eqs. (6.23), (6.27), (6.29),
+(6.30), Phase 22h §1.51(c)). From **one** invocation of W5's redundancy data
+(`exists_redundant_panelRow_ab_lam_of_rigidOn`, KT p. 686: the *same* coefficients `λ_{(ab)j}` and
+index `i^*` appear in (6.29) and (6.30)), produce the two ingredients the certify-then-rebase route
+(§1.51(a)) consumes, both tied to that one `i^*`:
+
+* the **candidate functional** `ρ` — KT's `r̂ = Σ_j λ_{(ab)j} r_j(q(ab))` read as a
+  `ScrewSpace`-functional through `r̂ = hingeRow (ends e₀).1 (ends e₀).2 ρ`. Since
+  `r̂ ∈ span (range r) = span {R(G_{ab}, q; (e₀)·)}` (the `e₀ = ab`-block) and that block is the
+  `hingeRow`-image of the `(D−1)`-dimensional hinge-row block `r(p(e₀)) = (span C(e₀))^⊥`
+  (`span_panelRow_edge_eq`), `r̂` factors as `hingeRow … ρ` with `ρ ∈ r(p(e₀))`, i.e.
+  `ρ(C(e₀)) = 0` (`mem_hingeRowBlock_iff`). It is nonzero (`r̂ ≠ 0` and `hingeRow` linear in `ρ`),
+  the discriminator's `hr`, and `hingeRow … ρ = r̂ ∈ span R(G_v, q)`-rows is W5's
+  `r̂ ∈ span(G_v-rows)` re-read.
+
+* the chosen `D(m−1)` **bottom rows** `w` of `R(G_v^{ab} ∖ (ab)i^*, q)` (KT eq. (6.23): that matrix
+  is full rank `D(m−1)`, p. 685). Because `λ_{i^*} = 1`, `r i^* = r̂ − Σ_{j≠i^*} λ_j r_j` lies in
+  `span(G_v-rows) ⊔ span(r '' {j ≠ i^*})`, so
+  `span(R(G_v, q)-rows ∪ r '' {j ≠ i^*}) = span(R(G_{ab}, q)-rows)`
+  (`span_rigidityRows_eq_sup_span_panelRow_edge` + `hrspan`), of finrank `D(m−1)` (W2, the
+  `hgraph := rfl` idiom of W5). `Submodule.exists_fun_fin_finrank_span_eq` extracts an independent
+  `w` of that size, each member per-tagged: a `G_v`-row, or an `r j'` member (`j' ≠ i^*`) — which,
+  being in the `e₀`-block, is `hingeRow … ρ'` for some `ρ'(C(e₀)) = 0`.
+
+**GAP 6 — adjudicated carry (user, 2026-06-10; §1.50(b) option (ii)).** This becomes W5's sole
+caller, so KT's nested-IH lower bound `h622lb` (eq. (6.22) at the `k'`-dof `G_v`, unreachable from
+the `0`-dof-only realization motive) enters the Lean *here*. It exits at the Leaf-4/5 wiring; 22h
+closes green-modulo this one inequality (Phase 22h *Blockers*). -/
+theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
+    [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    (hnev : Gab.vertexSet.Nonempty)
+    (hrig : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.IsInfinitesimallyRigidOn
+      Gab.vertexSet)
+    (h622lb : screwDim k * (Gab.vertexSet.ncard - 1) - (screwDim k - 2)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)) :
+    ∃ (ρ : Module.Dual ℝ (ScrewSpace k))
+      (w : Fin (screwDim k * (Gab.vertexSet.ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k)),
+      ρ ≠ 0 ∧
+      ρ ((PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀) = 0 ∧
+      BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ ∈ Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∧
+      LinearIndependent ℝ w ∧
+      (∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+          ρ' ((PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀) = 0 ∧
+          w j = BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ') := by
+  classical
+  set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
+  set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
+  set m := Gab.vertexSet.ncard with hm
+  -- W5: the `(D − 1)` independent `ab`-rows `r`, unit-normalized coefficients `lam` (`lam i = 1`),
+  -- and the candidate `r̂ := ∑_j λ_j r_j` as a nonzero member of `span (R(G_v)-rows)`.
+  obtain ⟨r, lam, i, hr, hrspan, hlam_i, hrhat_mem, hrhat_ne⟩ :=
+    BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn (Gab := Gab) (Gv := Gv)
+      (ends := ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀ hle hsplit hnev hrig h622lb
+  -- The `e₀`-block `E_b = span (range r) = span {R(G_{ab}, q; (e₀)·)}`, the `hingeRow`-image of the
+  -- `(D−1)`-dimensional hinge-row block `r(p(e₀))` (`span_panelRow_edge_eq`).
+  set Eb := Submodule.span ℝ (Set.range r) with hEb
+  have hEb' : Eb = Submodule.map (screwDiff (ends e₀).1 (ends e₀).2).dualMap
+      (Fab.hingeRowBlock e₀) := by rw [hrspan, Fab.span_panelRow_edge_eq e₀ hne₀]
+  set rhat := ∑ j, lam j • r j with hrhat
+  -- `r̂ ∈ E_b = map (screwDiff …).dualMap (r(p(e₀)))`, so `r̂ = hingeRow … ρ`, `ρ` in the block.
+  have hrhat_Eb : rhat ∈ Eb := by
+    rw [hrhat]
+    exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
+  rw [hEb', Submodule.mem_map] at hrhat_Eb
+  obtain ⟨ρ, hρ_blk, hρ⟩ := hrhat_Eb
+  rw [← BodyHingeFramework.hingeRow_eq_dualMap] at hρ
+  -- `ρ(C(e₀)) = 0` (block membership), and `ρ ≠ 0` (else `r̂ = hingeRow … 0 = 0`).
+  have hρe₀ : ρ (Fab.supportExtensor e₀) = 0 := (Fab.mem_hingeRowBlock_iff e₀ ρ).1 hρ_blk
+  have hρne : ρ ≠ 0 := by
+    rintro rfl
+    rw [BodyHingeFramework.hingeRow, LinearMap.zero_comp] at hρ
+    exact hrhat_ne hρ.symm
+  -- The candidate-row span membership: `hingeRow … ρ = r̂ ∈ span (R(G_v)-rows)`.
+  have hρGv : BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ
+      ∈ Submodule.span ℝ Fv.rigidityRows := hρ.symm ▸ hrhat_mem
+  -- The bottom-row generating set: `R(G_v, q)-rows ∪ r '' {j ≠ i^*}`, whose span is the full
+  -- `R(G_{ab}, q)`-row span (`r i^* = r̂ − ∑_{j≠i^*} λ_j r_j`, both addends in the union's span).
+  set S := Fv.rigidityRows ∪ r '' {j | j ≠ i} with hS
+  have hext : ∀ e, Fab.supportExtensor e = Fv.supportExtensor e := fun _ => rfl
+  have hrow : Submodule.span ℝ Fab.rigidityRows
+      = Submodule.span ℝ Fv.rigidityRows ⊔ Eb := by
+    rw [hrspan]
+    exact Fab.span_rigidityRows_eq_sup_span_panelRow_edge Fv hext hne₀ he₀ hle hsplit
+  -- `r̂ = ∑_j λ_j r_j = r i^* + ∑_{j ≠ i^*} λ_j r_j` (since `λ_{i^*} = 1`), so
+  -- `r i^* = r̂ − ∑_{j≠i^*} λ_j r_j`.
+  have hri : r i = rhat - ∑ j ∈ Finset.univ.erase i, lam j • r j := by
+    rw [hrhat, Finset.sum_erase_eq_sub (Finset.mem_univ i), hlam_i, one_smul]; abel
+  have hSspan : Submodule.span ℝ S = Submodule.span ℝ Fab.rigidityRows := by
+    rw [hS, Submodule.span_union, hrow, hEb]
+    refine le_antisymm (sup_le_sup_left ?_ _) (sup_le le_sup_left ?_)
+    · -- `span (r '' {≠ i}) ≤ span (range r) = E_b`.
+      rw [Submodule.span_le]
+      rintro _ ⟨j, _, rfl⟩; exact Submodule.subset_span ⟨j, rfl⟩
+    · -- `span (range r) ≤ span (R(G_v)-rows) ⊔ span (r '' {≠ i})`: `r i^*` is the only generator
+      -- not already in `span (r '' {≠ i})`, and it equals `r̂ − ∑_{≠ i^*}` ∈ the join.
+      rw [Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      by_cases hji : j = i
+      · subst hji
+        rw [hri]
+        refine Submodule.sub_mem _ (Submodule.mem_sup_left hrhat_mem) (Submodule.mem_sup_right ?_)
+        exact Submodule.sum_mem _ fun j' hj' => Submodule.smul_mem _ _ <| Submodule.subset_span
+          ⟨j', Finset.ne_of_mem_erase hj', rfl⟩
+      · exact Submodule.mem_sup_right (Submodule.subset_span ⟨j, hji, rfl⟩)
+  haveI : Fintype α := Fintype.ofFinite α
+  -- The span has finrank `D(m − 1)` (W2 at the rigid `Gab`; the `hgraph := rfl` idiom of W5).
+  have hgraph : Fab.graph = Gab := rfl
+  have hfin : Module.finrank ℝ (Submodule.span ℝ S) = screwDim k * (m - 1) := by
+    rw [hSspan]
+    have := Fab.finrank_span_rigidityRows_of_rigidOn (hgraph ▸ hnev) (hgraph ▸ hrig)
+    rwa [hgraph] at this
+  -- Extract `D(m − 1)` independent members of `S`; per-tag each as a `G_v`-row or an `r j'`-row.
+  obtain ⟨w₀, hw₀mem, _, hw₀indep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ S
+  -- Re-index from `Fin (finrank …)` to `Fin (D(m−1))` along `hfin`.
+  refine ⟨ρ, fun j => w₀ (Fin.cast hfin.symm j), hρne, hρe₀, hρGv,
+    hw₀indep.comp _ (Fin.cast_injective _), fun j => ?_⟩
+  rcases hw₀mem (Fin.cast hfin.symm j) with hv | ⟨j', _, hj'⟩
+  · exact Or.inl hv
+  · -- An `r j'`-tagged member: `r j' ∈ span (range r) = E_b`, the `hingeRow`-image of `r(p(e₀))`.
+    refine Or.inr ?_
+    have hrj'_Eb : r j' ∈ Eb := Submodule.subset_span ⟨j', rfl⟩
+    rw [hEb', Submodule.mem_map] at hrj'_Eb
+    obtain ⟨ρ', hρ'_blk, hρ'⟩ := hrj'_Eb
+    rw [← BodyHingeFramework.hingeRow_eq_dualMap] at hρ'
+    exact ⟨ρ', (Fab.mem_hingeRowBlock_iff e₀ ρ').1 hρ'_blk, (hρ'.trans hj').symm⟩
+
 /-- **KT eq. (6.43): the `a`-column block of the eq. (6.24) vanishing combination is `0`**
 (`lem:case-III-candidate-row` infra, the candidate-completion's eq. (6.43); Katoh–Tanigawa 2011
 §6.4.1, eq. (6.43), Phase 22e). The eq. (6.24)/(6.25) decomposition
