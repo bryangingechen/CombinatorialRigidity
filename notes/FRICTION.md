@@ -76,6 +76,22 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A multi-branch `Submodule.span_induction` over a heavy `Module.Dual` span hits the cumulative heartbeat budget — bundle the transport as one `LinearMap` `T` + per-branch `simp only`
+- **Where it bit:** Phase 22h `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (W9a, `CaseI.lean`);
+  a `span_induction` concluding in `span Fva.rigidityRows` over `Module.Dual ℝ (α → ScrewSpace k)`,
+  generator case dispatching `by_cases x = a / y = a / else`, each with its own chained big-carrier
+  `rw [hingeRow_funLeft_dualMap, hingeRow_swap, hingeRow_comp_single_{tail,off}, …]` — declaration-level
+  *"timeout at `whnf`"* (first line) + *"tactic execution"* timeout from the second `by_cases` branch
+  on (the first branch starves the rest). The default 200000 budget; the Molecular subsystem carries
+  zero `maxHeartbeats` overrides.
+- **Resolution:** (1) `set T := (funLeft swap).dualMap - (screwDiff v c).dualMap ∘ₗ (single a).dualMap
+  with hT`; the `span_induction` predicate is then the light `T ψ ∈ span …`, so `zero/add/smul` close
+  by `map_zero/map_add/map_smul` + `Submodule.{zero,add,smul}_mem` with no heavy-term restatement.
+  (2) Per generator sub-case, plain `rw [hxa, hyc]` for the cheap *variable* substitutions only, then
+  one `simp only [...]` for the heavy rewrite lemmas (one traversal, not N motive abstractions). Avoid
+  `subst h` on `h : x = c` (RHS `c` a lemma binder) — it eliminates `c`; use `rw [h]`. **Lifted to:**
+  TACTICS-QUIRKS § 38 (*`span_induction` variant*). Opacity + single-traversal, not a heartbeat bump.
+
 ### [resolved] A span/rigidity lemma applied with a heavy-carrier row-family argument `whnf`-times-out — `set f := <family>; clear_value f` first
 - **Where it bit:** Phase 22h `case_III_arm_realization` (W7, `CaseI.lean`); the final
   `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` applied with

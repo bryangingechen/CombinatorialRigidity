@@ -46,9 +46,10 @@ finding):** W9 IS a W7-instantiation — roles `(v,a,b,e_a,e_b,n') := (a,c,v,e_c
 invocation (KT eqs. (6.35)–(6.41): `R(G,p₃)`'s bottom block IS the v-split matrix; no a-split
 realization, no second redundancy, no second GAP-6). Three one-commit leaves: **W9a** (the
 short-circuit-free relabel span-induction), **W9b** (the per-member bottom tag transport),
-**W9c** (the arm closer, a W8-pattern instantiation). Smallest next commit: **W9a**. Then per
-§1.51(j)/§1.52(f): W10 (dispatch + discharge matching `hcand`, + the ends-congruence pre-brick
-of §1.52(e)) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6.
+**W9c** (the arm closer, a W8-pattern instantiation). **W9a is LANDED**
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, CaseI.lean). Smallest next commit: **W9b**.
+Then per §1.51(j)/§1.52(f): W9c → W10 (dispatch + discharge matching `hcand`, + the ends-congruence
+pre-brick of §1.52(e)) → Leaf 4 → Leaf 5 → phase close green-modulo-GAP-6.
 
 **W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
 the role-parametric arm yielding `HasGenericFullRankRealization k G` from the unpacked split context
@@ -65,12 +66,13 @@ variant*); `[DecidableEq α/β]` dropped (`classical` supplies them). Build + li
 ([propext, Classical.choice, Quot.sound]); no `\lean` pin (internal infra). GAP-6-clean (W6b carries
 `h622lb`).
 
-**Build order (§1.51(j) + §1.52(f)):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8**
-all landed (M₁ certify-then-rebase + M₂ instantiation; `h622lb` GAP-6 carry entered at W5, rides
-through W6b) → W9a → W9b → W9c (the M₃ arm, §1.52) → W10 (dispatch + discharge assembly, matches
-`hcand`'s shape; + the ends-congruence pre-brick) → Leaf 4 → Leaf 5 → phase close,
-**green-modulo-GAP-6**. Exact signatures + per-leaf consumes/consumed-by/§38 notes: §1.51 +
-§1.52 (design doc). Per-leaf landing detail is in git history + *Decisions made* below.
+**Build order (§1.51(j) + §1.52(f)):** W1–W5 + W6-core + W6a–W6f + **W7** + **W8** + **W9a**
+all landed (M₁ certify-then-rebase + M₂ instantiation + the M₃ relabel span-induction core;
+`h622lb` GAP-6 carry entered at W5, rides through W6b) → W9b → W9c (the rest of the M₃ arm, §1.52)
+→ W10 (dispatch + discharge assembly, matches `hcand`'s shape; + the ends-congruence pre-brick) →
+Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact signatures + per-leaf
+consumes/consumed-by/§38 notes: §1.51 + §1.52 (design doc). Per-leaf landing detail is in git
+history + *Decisions made* below.
 
 ## Lemma checklist
 
@@ -185,11 +187,16 @@ through W6b) → W9a → W9b → W9c (the M₃ arm, §1.52) → W10 (dispatch + 
   hingeRow (ρ u)(ρ v) r`, the clean export of `rigidityRows_ofNormals_relabel`'s inline `hdual`; +
   `mem_span_rigidityRows_ofNormals_relabel`, CaseI.lean — the span-membership corollary transporting
   a `v`-split rigidity-row-span member to the relabeled `a`-split span via `Submodule.span_image` +
-  `mem_map_of_mem`; both graph-free, axiom-clean, no `\lean` pin). Remaining, as complete lemmas
-  (no `sorry` on master), per §1.51(i)/(j) + §1.52: **W9a** (the short-circuit-free relabel
-  span-induction) → **W9b** (the per-member bottom tag transport) → **W9c** (the M₃ arm closer, a
-  W7-instantiation at `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ`) → W10 dispatch + assembly
-  matching the `hcand` signature. Exact per-leaf signatures: §1.51(c)–(i) + §1.52(b)–(d).
+  `mem_map_of_mem`; both graph-free, axiom-clean, no `\lean` pin), and **W9a the short-circuit-free
+  relabel span-induction** (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, CaseI.lean, beside
+  G4d-i — the §1.52(b) core: a `span_induction` over `Module.Dual ℝ (α → ScrewSpace k)` showing
+  `(funLeft (swap a v)).dualMap φ − hingeRow v c (φ ∘ single a) ∈ span Fva.rigidityRows`; off-`a`
+  generators are swap-fixed and survive via `htrans`, the `e_c`-generators cancel against the
+  subtracted `a`-column row; graph-free, axiom-clean, no `\lean` pin). Remaining, as complete lemmas
+  (no `sorry` on master), per §1.51(i)/(j) + §1.52: **W9b** (the per-member bottom tag transport) →
+  **W9c** (the M₃ arm closer, a W7-instantiation at `Gv := G.removeVertex a` / `qρ` / `ρ̃ := −ρ`) →
+  W10 dispatch + assembly matching the `hcand` signature. Exact per-leaf signatures: §1.51(c)–(i) +
+  §1.52(c)–(d).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -216,14 +223,15 @@ through W6b) → W9a → W9b → W9c (the M₃ arm, §1.52) → W10 (dispatch + 
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W9a, the short-circuit-free relabel transport (design
-§1.52(b)):** `BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (CaseI.lean,
-beside G4d-i) — a `Submodule.span_induction` showing
-`(funLeft (swap a v)).dualMap φ − hingeRow v c (φ ∘ single a) ∈ span(Fva.rigidityRows)` for any
-`φ ∈ span(Fv.rigidityRows)` under the degree-2-at-`a` data (off-`a` generators are swap-fixed,
-`e_c`-generators cancel against the subtracted `a`-column row). Exact signature + proof route:
-§1.52(b). Then **W9b** (the per-member bottom tag transport, §1.52(c)) and **W9c** (the M₃ arm
-closer `case_III_arm_realization_M3`, §1.52(d) — a W8-pattern instantiation of W7 at
+**Smallest next forward commit — W9b, the per-member bottom-row tag transport (design §1.52(c)):**
+`PanelHingeFramework.case_III_bottom_relabel` (CaseI.lean, after W9a) — the pointwise conversion of
+one W6b bottom-family member from the v-split tag shape to the W7-at-M₃-roles tag shape (input tag
+is a `Gv`-row or an `(ab)`-block `hingeRow a b ρ'`; output is a `G − a`-row at `ends₃` or a `(c,v)`-block
+`hingeRow c v ρ'`). The `(ab)`-block tag images to a genuine `e_b`-row; the `Gv`-row tag destructures
+and case-splits on `a ∈ {x,y}` (the G4d-i skeleton, `hdeg2` *derived* from `hGv_le` + `hcla`).
+Consumes `hingeRow_funLeft_dualMap` / `hingeRow_swap` / `panelSupportExtensor_swap` /
+`mem_hingeRowBlock_iff` / `removeVertex_isLink`. Exact signature + proof route: §1.52(c). Then **W9c**
+(the M₃ arm closer `case_III_arm_realization_M3`, §1.52(d) — a W8-pattern instantiation of W7 at
 `(v,a,b,e_a,e_b,n') := (a,c,v,e_c,e_a,n''')`, `Gv := G.removeVertex a`, `q := qρ`, `ρ̃ := −ρ`,
 with `hρe₀` via G4d-i and `hρGv` via W9a). **The 365740b hand-off finding ("W9 must re-derive
 W7's chain with the relabeled a-split framework as rigidity source") is superseded by §1.52(a):**
@@ -484,8 +492,21 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   §1.52(a)). New leaves W9a/W9b/W9c with exact signatures in §1.52(b)–(d); `hρe₀` via G4d-i,
   `hρGv` via W9a; `ofNormals_relabel` suite / G4d-ii / `candidateRow_ac_eq_neg` off the live
   route (ledger + phase-close blueprint obligation: §1.52(e)).
+- **W9a the short-circuit-free relabel span-induction (§1.52(b);
+  `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, CaseI.lean, beside G4d-i).** The §1.52(b)
+  signature, minus the listed `hva : v ≠ a` (the proof doesn't use it — the `x=a`/`y=a` branch
+  contradictions close on `Ne.symm hca`/`hxa`; a discretionary signature tweak per CLAUDE.md, not a
+  design deviation). The heavy carrier `Module.Dual ℝ (α → ScrewSpace k)` made the naive 3-branch
+  `span_induction` with chained big-carrier `rw`s exhaust the 200000 cumulative budget; fixed §38-style
+  by (1) bundling the transport as one `LinearMap` `T` (light predicate `T ψ ∈ span …`, so
+  `zero/add/smul` close by `map_*` + `Submodule.*_mem`) and (2) consolidating each generator sub-case's
+  post-substitution rewrites into a single `simp only`. Axiom-clean ([propext, Classical.choice,
+  Quot.sound]); no `\lean` pin.
 
 ### Promoted to TACTICS-QUIRKS / FRICTION
+- *A multi-branch `span_induction` over a heavy `Module.Dual` span hits the cumulative heartbeat
+  budget — bundle the transport as one `LinearMap` `T` + per-branch `simp only`* → TACTICS-QUIRKS § 38
+  (*`span_induction` variant*) / FRICTION [resolved].
 - *`rw [map_neg]` fails on `(-f) x` (functional-side negation) — use `LinearMap.neg_apply`* →
   TACTICS-QUIRKS § 44.
 - *`set X := e with hX` folds `e` in pre-existing hypotheses too, so a later `rw [h]` (LHS was `e`)

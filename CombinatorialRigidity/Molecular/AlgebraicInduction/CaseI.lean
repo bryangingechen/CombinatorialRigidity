@@ -5671,6 +5671,117 @@ theorem PanelHingeFramework.mem_span_rigidityRows_ofNormals_relabel [DecidableEq
       heab heac hclv hcla he₀ he₁ he₁₀ ends₀ q₀, Submodule.span_image]
   exact Submodule.mem_map_of_mem hφ
 
+/-- **W9a — the short-circuit-free relabel transport** (the `M₃` candidate/bottom-row span-induction
+core, design §1.52(b); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.31)/(6.39), Phase 22h). The G4d-i sibling
+that transports a vector in the span of the `v`-split framework `Fv`'s rigidity rows across the
+vertex relabel `(a v)` *with the `e_c`-content stripped*: for any `φ ∈ span Fv.rigidityRows`,
+$$(\mathrm{funLeft}\,(a\,v)).\mathrm{dualMap}\,\varphi
+\;-\; \mathrm{hingeRow}\;v\;c\;(\varphi\circ\mathrm{single}\,a)
+\;\in\; \mathrm{span}\;F_{va}.\mathrm{rigidityRows},$$
+where `Fva` is a second framework (concretely the `G − a` framework) whose links and hinge-row
+blocks agree with `Fv` off body `a` (`htrans`).
+
+This is the relabel half of KT's eq.~(6.39) row correspondence read functional-wise. Under the
+degree-2-at-`a` hypothesis (the only `Fv`-links touching `a` are `e_c = ac`), the relabel
+`(funLeft (a v)).dualMap` of a generator `hingeRow x y r` lands in the target row span after the
+subtracted `a`-column hinge row cancels the `e_c`-content: a generator at `e_c` (endpoint `a`) maps
+to `hingeRow v c r`, which the subtracted `hingeRow v c (φ ∘ single a) = hingeRow v c (±r)` exactly
+cancels; an off-`a` generator is fixed by the swap (its endpoints avoid both `a` and `v`) and
+survives into `Fva`'s rows via `htrans`. The candidate-functional `hρGv`-slot of the `M₃` arm (W9c)
+reads this at `φ := hingeRow a b ρ`. Unlike the superseded `mem_span_rigidityRows_ofNormals_relabel`
+(whose `a`-split span target cannot strip the short-circuit `e₁`-block post hoc), this concludes
+directly in the `G − a`-row span. Graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read
+only `graph`/`hingeRowBlock`), so the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+    [DecidableEq α] {Fv Fva : BodyHingeFramework k α β}
+    {v a c : α} {e_c : β}
+    (hca : c ≠ a) (hcv : c ≠ v)
+    (hlink_ec : Fv.graph.IsLink e_c a c)
+    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
+    (hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v)
+    (htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
+      Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ Fv.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+        - BodyHingeFramework.hingeRow (k := k) (α := α) v c
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))
+      ∈ Submodule.span ℝ Fva.rigidityRows := by
+  -- Bundle the transport as a single linear map `T` so the `span_induction` predicate stays
+  -- light (`T ψ ∈ span …`) — keeping the heavy `Module.Dual (α → ScrewSpace k)` terms out of
+  -- the predicate, which is what the `add`/`smul`/`zero` cases discharge mechanically by
+  -- `map_add`/`map_smul`/`map_zero`. `hingeRow v c (· ∘ single a)` is the linear composite
+  -- `(screwDiff v c).dualMap ∘ₗ (single a).dualMap` (both `hingeRow_eq_dualMap` and
+  -- `LinearMap.dualMap` of `single` unfold `∘ₗ` to the same `comp`).
+  set T : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k) :=
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap
+      - (screwDiff (k := k) (α := α) v c).dualMap.comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a).dualMap with hT
+  -- `T ψ` is the transported difference, for every `ψ` (the `hingeRow`/`comp` forms agree with
+  -- the `dualMap` composites by `rfl`).
+  have hTapply : ∀ ψ : Module.Dual ℝ (α → ScrewSpace k),
+      T ψ = (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap ψ
+        - BodyHingeFramework.hingeRow (k := k) (α := α) v c
+            (ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)) := fun ψ => by
+    rw [hT, LinearMap.sub_apply, LinearMap.comp_apply, hingeRow_eq_dualMap]; rfl
+  rw [← hTapply]
+  -- `span_induction` on `hφ` with the light predicate `T ψ ∈ span Fva.rigidityRows`.
+  apply Submodule.span_induction
+    (p := fun ψ _ => T ψ ∈ Submodule.span ℝ Fva.rigidityRows) _ _ _ _ hφ
+  · -- generator case: ψ = hingeRow x y r at a link f, r ∈ Fv.hingeRowBlock f.
+    -- Unfold `T` to the `dualMap` form (not via `hTapply`): keeping the subtracted term as
+    -- `(screwDiff v c).dualMap (…)` lets `map_zero` close the off-case without producing the
+    -- heavy nested `hingeRow v c 0` term whose `rw`-motive abstraction trips §38.
+    rintro ψ ⟨f, x, y, hlink, r, hr, rfl⟩
+    rw [hT, LinearMap.sub_apply, LinearMap.comp_apply,
+      BodyHingeFramework.hingeRow_funLeft_dualMap,
+      show (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a).dualMap (hingeRow x y r)
+          = (hingeRow x y r).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) from rfl]
+    by_cases hxa : x = a
+    · -- x = a: hdeg2 forces f = e_c, hence y = c; the relabel is hingeRow v c r and the
+      -- a-column is r, so the difference vanishes.
+      have hfe : f = e_c := by rw [hxa] at hlink; exact hdeg2 f y hlink
+      have hyc : y = c := by
+        rw [hxa, hfe] at hlink
+        rcases hlink.eq_and_eq_or_eq_and_eq hlink_ec with ⟨-, h⟩ | ⟨h, -⟩
+        · exact h
+        · exact absurd h (Ne.symm hca)
+      rw [hxa, hyc]
+      simp only [Equiv.swap_apply_left, Equiv.swap_apply_of_ne_of_ne hca hcv,
+        hingeRow_comp_single_tail hca.symm, ← hingeRow_eq_dualMap, sub_self]
+      exact Submodule.zero_mem _
+    · by_cases hya : y = a
+      · -- y = a, x ≠ a: hdeg2r forces f = e_c, hence x = c.
+        have hfe : f = e_c := by rw [hya] at hlink; exact hdeg2r f x hlink
+        have hxc : x = c := by
+          rw [hya, hfe] at hlink
+          rcases hlink.eq_and_eq_or_eq_and_eq hlink_ec with ⟨h, -⟩ | ⟨h, -⟩
+          · exact absurd h hxa
+          · exact h
+        -- relabel: hingeRow c v r; a-column: hingeRow c a r ∘ single a = -r (swap then tail);
+        -- subtracted row hingeRow v c (-r) = hingeRow c v r, so the difference vanishes.
+        rw [hxc, hya]
+        simp only [Equiv.swap_apply_of_ne_of_ne hca hcv, Equiv.swap_apply_left,
+          hingeRow_swap c a r, hingeRow_comp_single_tail hca.symm, ← hingeRow_eq_dualMap,
+          hingeRow_swap v c (-r), neg_neg, sub_self]
+        exact Submodule.zero_mem _
+      · -- x ≠ a, y ≠ a: the swap fixes both endpoints (they also avoid v by hnov), the a-column
+        -- is 0, so the result is the generator itself — a genuine Fva-row via htrans.
+        obtain ⟨hxv, hyv⟩ := hnov f x y hlink
+        obtain ⟨hlink', hble⟩ := htrans f x y hlink hxa hya
+        simp only [Equiv.swap_apply_of_ne_of_ne hxa hxv, Equiv.swap_apply_of_ne_of_ne hya hyv,
+          hingeRow_comp_single_off (Ne.symm hxa) (Ne.symm hya), map_zero, sub_zero]
+        exact Submodule.subset_span ⟨f, x, y, hlink', r, hble hr, rfl⟩
+  · -- zero
+    rw [map_zero]; exact Submodule.zero_mem _
+  · -- add: `T` is linear, so the (x+y)-row is the sum of the x- and y-rows.
+    intro x y _ _ hx hy
+    rw [map_add]; exact Submodule.add_mem _ hx hy
+  · -- smul
+    intro t x _ hx
+    rw [map_smul]; exact Submodule.smul_mem _ t hx
+
 /-- **G4d-i — the `a`-column restriction of a `G_v`-row-span vector lies in `hingeRowBlock e_c`**
 (`lem:case-III-claim612-eq644`, §1.49(4), Phase 22h). Given `wGv` in the span of a framework
 `Fv`'s rigidity rows and the degree-2-at-`a` constraint that `e_c` is the *only* edge of `Fv`

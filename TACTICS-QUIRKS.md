@@ -1495,6 +1495,30 @@ the `clear_value` removes). Worked case: `case_III_arm_realization` (W7, the `d 
 `Molecular/AlgebraicInduction/CaseI.lean`). As always: **the `set`/`clear_value` is the fix, not a
 `maxHeartbeats` bump** (4M still timed out).
 
+**`span_induction` variant (Phase 22h).** A `Submodule.span_induction` whose *conclusion* lives in a
+heavy `Module.Dual ℝ (α → ScrewSpace k)` span and whose generator case dispatches on several
+endpoint sub-cases (`by_cases x = a` / `y = a` / else) hits the *cumulative*-budget timeout (the
+declaration-level *"timeout at `whnf`"* at the theorem's first line, plus a *"tactic execution"*
+timeout starting in the second `by_cases` branch — the first branch starves the rest) when each
+sub-case carries its own **chained big-carrier `rw`**. Two compounding fixes, both pure §38 medicine
+(keep the heavy carrier out of repeated `rw`-motive abstraction):
+- **Bundle the transport as one `LinearMap` `T`** (`set T := … with hT`) so the `span_induction`
+  predicate is the *light* `T ψ ∈ span …`; the `zero`/`add`/`smul` cases then close by
+  `map_zero`/`map_add`/`map_smul` + `Submodule.{zero,add,smul}_mem` with **no** restatement of the
+  heavy difference term (restating it in a `have … = …` ascription re-incurs the whnf blowup).
+- **Per generator sub-case, consolidate the post-substitution rewrites into a single `simp only
+  [...]`** (one goal traversal) rather than a chain of `rw [a, b, c, …]` (N separate motive
+  abstractions over the heavy term). Use plain `rw [hxa, hyc]` only for the cheap *variable*
+  substitutions (`x → a`, etc. — they touch only the small endpoint args), then hand the heavy
+  rewrite lemmas (`hingeRow_funLeft_dualMap`, `hingeRow_swap`, `hingeRow_comp_single_{tail,off}`,
+  `← hingeRow_eq_dualMap`, `map_zero`) to one `simp only`. Avoid `subst h` on a hypothesis `h : x =
+  c` whose RHS is a *lemma binder* variable (`{v a c : α}`) — `subst` eliminates the RHS `c`, making
+  `c` "unknown identifier" downstream; `rw [h]` keeps it.
+Worked case: `BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (W9a, the M₃
+relabel transport, `Molecular/AlgebraicInduction/CaseI.lean`). **No `maxHeartbeats` bump** — the
+whole Molecular subsystem carries zero overrides; the `T`-bundle + `simp only` keeps it under the
+default 200000.
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or
