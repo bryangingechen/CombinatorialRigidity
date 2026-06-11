@@ -95,7 +95,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 **Smallest next forward commit: the L0e build commit** — in-place restates per §1.57(e):
 M3 (`HasGenericFullRankRealization`) gains `n` parameter + rank conjunct; conditioned pair
 in `theorem_55_generic` / `theorem_55_d3` swaps to `HasPanelRealization`; GP producer seams
-converted; old forgetful deleted; `def:rank-hypothesis` re-prosed. Grep gate applies to every
+converted; old forgetful deleted; `def:rank-hypothesis` re-prosed; **M4
+(`hasPanelRealization_of_generic`) restated to its §1.57(d) final shape** — drop the temporary
+`hdef : G.deficiency n = 0` bridge hypothesis and consume the restated M3's rank conjunct
+directly (the L0d deviation's deferred obligation). Grep gate applies to every
 changed statement — run `grep blueprint/src/ HasGenericFullRankRealization` before committing.
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
