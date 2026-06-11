@@ -29,10 +29,13 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step:** W6 — the M₁ `t = 0` certification (leaf A1 at `F₀`, §1.50(c)/(f)): assemble
-`g 0` independent at the `t = 0` hinge-level family `F₀` from W5's redundancy data, the witness gate
-`r̂(C(L)) ≠ 0`, W4 (leaf A0), and the landed columnOp/criterion bricks; the bottom is the chosen
-`D(m−1)` independent split-rows-minus-`(ab)i*` carried as `F₀`-rows. W7 (the M₁ closer A2) follows.
+**Next concrete step (W6 remainder):** the concrete A1 assembly at `F₀` — instantiate the new
+abstract restriction-form augment `linearIndependent_sum_augment_candidateRow_restriction` (landed,
+RigidityMatrix.lean; the A1 core) at the `t = 0` hinge-level `BodyHingeFramework` `F₀`, discharging
+its `hrnvanish`/`hnewpinaug`/`hbotrestrict` from W5's redundancy data, the witness gate
+`r̂(C(L)) ≠ 0`, and the chosen `D(m−1)` split-rows-minus-`(ab)i*` carried as restriction-independent
+`F₀`-rows. Then W7 (the M₁ closer A2). The hard linear-algebra core of A1 is now done; the remainder
+is the `F₀` construction + the brick discharges.
 
 **W5 (the redundancy-data packaging) is landed** — `BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn`
 (CaseI.lean): the consumer-level form of `exists_redundant_panelRow_ab_lam` whose two `finrank`
@@ -49,8 +52,9 @@ landed before it.
 **Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
 → ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → ~~W4 leaf A0 (restriction-bottom
 augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hypothesis** `h622lb`) →
-W6/W7 M₁ → W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 →
-Leaf 5 → phase close, **green-modulo-GAP-6**.
+~~W6-core (restriction-form candidate augment, the A1 abstract core)~~ (done) → W6-concrete/W7 M₁
+(the `F₀` `t = 0` assembly + closer) → W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches
+`hcand`'s shape) → Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**.
 
 ## Lemma checklist
 
@@ -106,9 +110,13 @@ Leaf 5 → phase close, **green-modulo-GAP-6**.
   graph-free), and **W5 the redundancy-data packaging**
   (`exists_redundant_panelRow_ab_lam_of_rigidOn`, CaseI.lean — the consumer-level
   `exists_redundant_panelRow_ab_lam` with `h618` from `hrig`/W2 and `h622` by-construction; the
-  carried GAP-6 lower bound `h622lb` is its `hk'`). Remaining, as complete lemmas (no `sorry` on
-  master), per §1.50(f): W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
-  `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature.
+  carried GAP-6 lower bound `h622lb` is its `hk'`), and **W6-core the restriction-form candidate
+  augment** (`linearIndependent_sum_augment_candidateRow_restriction`, RigidityMatrix.lean — the
+  abstract A1 core: the restriction-bottom sibling of `linearIndependent_sum_augment_candidateRow`,
+  using W4 instead of `_pinned_block_augment`; graph-free, axiom-clean, no `\lean` pin). Remaining, as
+  complete lemmas (no `sorry` on master), per §1.50(f): W6-concrete/W7 M₁ (the `F₀` `t = 0`
+  assembly + closer) → W8 M₂ → W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10 dispatch + assembly
+  matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -133,21 +141,25 @@ Leaf 5 → phase close, **green-modulo-GAP-6**.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W6, the M₁ `t = 0` certification (leaf A1 at `F₀`, §1.50(c)/(f)).**
-Assemble `g 0` linearly independent at the `t = 0` hinge-level family `F₀` (KT's `p₁` as a
-`BodyHingeFramework`, hinge-primary) from: W5's redundancy data
-(`exists_redundant_panelRow_ab_lam_of_rigidOn`'s `r`/`lam`/`i*`/`r̂ ∈ span R(Gv)-rows`/`r̂ ≠ 0`),
-the witness gate `r̂(C(L)) ≠ 0` (the discriminator glue's output ∘
-`panelSupportExtensor_eq_complementIso_extensor`), W4 (leaf A0, the restriction-bottom augment), and
-the landed columnOp/criterion bricks. The bottom is the chosen `D(m−1)` independent
-split-rows-minus-`(ab)i*` carried as `F₀`-rows (`Ev`-rows verbatim; `(ab)ⱼ ↦ (vb)ⱼ`). Then W7 (the
-M₁ closer A2): A1 + W3 (leaf B) + the membership packaging + GAP-2 ⟹ `HasGenericFullRankRealization
-2 G`. The carried GAP-6 hypothesis `h622lb` rides through W6/W7 from W5. **No `sorry` placeholders**
-at any step (carry GAP-6 as a named `h…`, never a `sorry`).
+**Smallest next forward commit — W6-concrete, the concrete A1 assembly at `F₀` (§1.50(c)/(f)).**
+The abstract A1 core is now landed (`linearIndependent_sum_augment_candidateRow_restriction`,
+RigidityMatrix.lean); the remaining commit instantiates it at the `t = 0` hinge-level family `F₀`
+(KT's `p₁` as a `BodyHingeFramework`, hinge-primary). Build `F₀` (graph `G`,
+`supportExtensor: e_a ↦ C(L), e_b ↦ C(e₀), e ↦ split's extensor otherwise`), then discharge the
+augment's three hypotheses: `hrnvanish`/`hnewpinaug` from the `va`-panel rows + the witness gate
+`r̂(C(L)) ≠ 0` (the discriminator glue's output ∘ `panelSupportExtensor_eq_complementIso_extensor`,
+through the row-space criterion as in `linearIndependent_sum_augment_candidateRow_selector`), and
+`hbotrestrict` from the chosen `D(m−1)` split-rows-minus-`(ab)i*` carried as `F₀`-rows
+(`Ev`-rows verbatim; `(ab)ⱼ ↦ (vb)ⱼ`) — their restrictions to `V∖{v}` reproducing the split's rows
+(W5 supplies the redundancy data `r`/`lam`/`i*`/`r̂ ∈ span R(Gv)-rows`/`r̂ ≠ 0`). Then W7 (the M₁
+closer A2): A1 + W3 (leaf B) + the membership packaging + GAP-2 ⟹ `HasGenericFullRankRealization 2
+G`. The carried GAP-6 hypothesis `h622lb` rides through from W5. **No `sorry` placeholders** at any
+step (carry GAP-6 as a named `h…`, never a `sorry`).
 
-All five leaves W1–W5 are landed: W1 discriminator, W2 `h618`, W3 leaf B, W4 leaf A0 (all
-abstract/graph-free), and W5 the redundancy-data packaging (the first leaf at the unpacked IH
-framework, where the GAP-6 hypothesis `h622lb` enters as an explicit carry).
+All landed feeds for A1: W1 discriminator, W2 `h618`, W3 leaf B, W4 leaf A0, W6-core (the
+restriction-form candidate augment — all abstract/graph-free), and W5 the redundancy-data packaging
+(the leaf at the unpacked IH framework, where the GAP-6 hypothesis `h622lb` enters as an explicit
+carry).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -286,6 +298,14 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   ∑ (tᵢ.comp single)` step has no fused lemma (`LinearMap.sum_comp` doesn't exist) — done pointwise
   via `LinearMap.ext` + `LinearMap.congr_fun`, the same idiom the sibling's `hnew0` already uses
   (not new friction). No `\lean` pin (internal infra). Build/lint/axiom-clean.
+- **W6-core (`linearIndependent_sum_augment_candidateRow_restriction`, RigidityMatrix.lean):** the
+  abstract A1 core — the restriction-bottom sibling of `linearIndependent_sum_augment_candidateRow`.
+  Same column op `Φ = columnOp hva` + `Φ.dualMap` transport-back, but the operated family is fed to
+  W4 (`linearIndependent_sum_restriction_block`) instead of `_pinned_block_augment`: the operated
+  top block (`va`-rows + operated candidate, pure-`v`-column) meets W4's `htopvanish`/`htoppin`, the
+  operated bottom meets `hbotrestrict`. The abstract `rn` block carries its own
+  `hrnvanish` (the v-vanishing the candidate gets free from `hingeRow_comp_columnOp_vanish_off`).
+  No `change`/glue chains — a clean mirror of the sibling; no `\lean` pin (internal infra, like W4).
 - **W5 redundancy packaging (`exists_redundant_panelRow_ab_lam_of_rigidOn`, CaseI.lean):** the
   `_ab_lam` consumer wrapper whose two `finrank` inputs ride at their natural shape. `h618` ← `hrig`
   (`Gab` rigid on `Gab.vertexSet`) via W2; the `Gab.vertexSet`-stated `hnev`/`hrig` bridge into W2's

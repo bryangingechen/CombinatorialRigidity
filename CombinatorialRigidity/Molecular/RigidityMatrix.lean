@@ -1569,6 +1569,89 @@ theorem linearIndependent_sum_augment_candidateRow
   rw [hcomp] at hop
   exact (Φ.dualMap.toLinearMap.linearIndependent_iff hker).1 hop
 
+/-- **The restriction-bottom candidate-completion augment: the operated top block joins a
+restriction-independent bottom block** (`lem:case-III-candidate-row`, the abstract core of the
+M₁/M₂/M₃ arms' `t = 0` certification at the hinge-level family `F₀`; Katoh–Tanigawa 2011 §6.4.1,
+eq.~(6.29), Phase 22h §1.50(c)). The restriction-bottom sibling of
+`linearIndependent_sum_augment_candidateRow`: where that producer assembles the candidate
+completion against a *pure-`v`-vanishing* old block (`hold`, the `case_III_*_of_line` shape), this
+one assembles it against a bottom block independent only *after restriction to `V ∖ {v}`* — KT's
+eq.~(6.29) bottom block at the `t = 0` candidate `F₀`, the `(vb)ⱼ`-rows whose restrictions to
+`V ∖ {v}` reproduce the split's rows (design §1.50(c): the eq.~(6.29) bottom is
+**restriction-independent**, not `v`-vanishing).
+
+Same column operation `Φ = columnOp hva` (`col_a += col_v`, eqs.~(6.14)–(6.15)) makes the candidate
+row `w = hingeRow v a ρ` and the `va`-block rows `rn` pure-`v`-column in the operated frame
+(`hingeRow_comp_columnOp_vanish_off`; `hrnvanish` for the abstract `rn`); precomposing the whole
+family with `Φ` (a linear automorphism, independence preserved via the injective dual equivalence
+`Φ.dualMap`) turns it into the operated family
+`Sum.elim (Sum.elim (rn ·∘ₗ Φ) (w ∘ₗ Φ)) (ro ·∘ₗ Φ)`. There the operated top block — the `va`-rows
+plus the operated candidate row, all pure-`v`-column — meets the *top*-vanishing hypothesis of the
+restriction-bottom augment `linearIndependent_sum_restriction_block`, the operated top is
+pinned-independent on body `v`'s column (`hnewpinaug`, eq.~(6.29) top-left `D × D` full rank = the
+Claim~6.12 conditional, passed through), and the operated bottom is independent after restriction to
+`V ∖ {v}` (`hbotrestrict`). The augment fires, and the operated family's independence transports
+back through `Φ.dualMap` (injective) to the original family
+`Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow v a ρ)) ro` — the eq.~(6.29) certified count at
+`F₀`. Graph-free / carrier-free pure linear algebra (the `ofNormals`/`withGraph` defeq trap,
+TACTICS-QUIRKS §38, does not bite). -/
+theorem linearIndependent_sum_augment_candidateRow_restriction
+    [DecidableEq α] {v a : α} (hva : v ≠ a) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hrnvanish : ∀ (i : ιn) (S : α → ScrewSpace k), S v = 0 →
+      (rn i).comp (columnOp (k := k) hva).toLinearMap S = 0)
+    (hnewpinaug : LinearIndependent ℝ (Sum.elim
+      (fun i : ιn =>
+        ((rn i).comp (columnOp (k := k) hva).toLinearMap).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      (fun _ : Unit =>
+        ((hingeRow (k := k) (α := α) v a ρ).comp (columnOp (k := k) hva).toLinearMap).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))))
+    (hbotrestrict : LinearIndependent ℝ
+      (fun j : ιo => ((ro j).comp (columnOp (k := k) hva).toLinearMap).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v)))) :
+    LinearIndependent ℝ
+      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a ρ)) ro) := by
+  set Φ := columnOp (k := k) hva with hΦ
+  have hker : LinearMap.ker Φ.dualMap.toLinearMap = ⊥ :=
+    LinearMap.ker_eq_bot_of_injective Φ.dualMap.injective
+  -- The operated top block `(rn ⊕ {w}) ∘ₗ Φ` vanishes on every assignment supported off `v`: the
+  -- `rn`-part by `hrnvanish`, the operated candidate `w ∘ₗ Φ` by the columnOp vanish-off brick.
+  have htopvanish : ∀ (i : ιn ⊕ Unit) (S : α → ScrewSpace k), S v = 0 →
+      Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
+        (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap) i S = 0 := by
+    rintro (i | u) S hS
+    · exact hrnvanish i S hS
+    · rw [Sum.elim_inr, LinearMap.comp_apply, LinearEquiv.coe_coe,
+        hingeRow_comp_columnOp_vanish_off hva ρ S hS]
+  -- The operated top block is pinned-independent on body `v`'s column: `hnewpinaug` after the
+  -- `Sum.elim`-of-pins is reassociated to the pin-of-`Sum.elim` shape.
+  have htoppin : LinearIndependent ℝ
+      (fun i : ιn ⊕ Unit =>
+        (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
+          (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap) i).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+    convert hnewpinaug using 1
+    funext i; rcases i with i | u <;> rfl
+  -- The restriction-bottom augment fires on the operated family.
+  have hop : LinearIndependent ℝ (Sum.elim
+      (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
+        (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap))
+      (fun j : ιo => (ro j).comp Φ.toLinearMap)) :=
+    linearIndependent_sum_restriction_block (v := v) htopvanish htoppin hbotrestrict
+  -- The operated family is `Φ.dualMap ∘ (original family)`; transport independence back through the
+  -- injective dual equivalence `Φ.dualMap` (`g ↦ g ∘ₗ Φ`).
+  have hcomp : (Sum.elim (Sum.elim (fun i : ιn => (rn i).comp Φ.toLinearMap)
+        (fun _ : Unit => (hingeRow (k := k) (α := α) v a ρ).comp Φ.toLinearMap))
+      (fun j : ιo => (ro j).comp Φ.toLinearMap))
+      = Φ.dualMap ∘
+        (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v a ρ)) ro) := by
+    funext i; rcases i with (i | i) | j <;> rfl
+  rw [hcomp] at hop
+  exact (Φ.dualMap.toLinearMap.linearIndependent_iff hker).1 hop
+
 /-- **A row functional lies in the hinge-row block iff it annihilates the supporting extensor**
 (`lem:case-III-claim612-block-iff-perp`, the membership half of KT's eq.~(6.42) row-space criterion;
 Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The hinge-row block `r(p(e)) = (span C(p(e)))^⊥` is the
