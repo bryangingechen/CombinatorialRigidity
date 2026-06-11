@@ -643,23 +643,30 @@
 \begin{lemma}[Case I dispatch: simple vs non-simple contraction; KT Lemmas~6.3, 6.5]
   \label{lem:case-I-dispatch}
   \uses{def:panel-hinge-framework, lem:case-I}
-  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
-  $s = V(H)$ ($2 \le |V(H)|$) and representative body $r \in V(H)$.  The full
-  Case~I realization --- discharging $\mathtt{hcontract}$ for all simple minimal
-  $0$-dof-graphs with a proper rigid subgraph --- splits on the simplicity of
-  the contraction $G/E(H)$: the simple-contraction branch is
-  \cref{lem:case-I-realization} (KT Lemma~6.3); the non-simple-contraction
-  branch uses a $\Pi^\circ$-placement at the parallel pair and the inductive
-  hypothesis on $G/E(H)$ via the Lemma~6.2 splice (KT Lemma~6.5).
+  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph.  The
+  full Case~I realization --- discharging $\mathtt{hcontract}$ for all such $G$
+  --- splits on whether \emph{some} proper rigid subgraph $H$ with
+  representative body $r \in V(H)$ has a simple contraction $G/E(H)$: if so,
+  that pair feeds \cref{lem:case-I-realization} (KT Lemma~6.3).  Otherwise
+  (every choice yields a non-simple contraction) KT Lemma~6.5's
+  \emph{vertex-removal} argument applies: take a vertex-inclusionwise
+  \emph{maximal} proper rigid subgraph $G'$; KT Claim~6.6 turns the
+  non-simplicity of its contraction into a vertex $v \notin V(G')$ of degree
+  two with $G = G' + v$, so $G - v$ is a smaller simple minimal
+  $0$-dof-graph; the inductive hypothesis at $G - v$ supplies a generic
+  realization, and the $\Pi^\circ$-placement re-attaches $v$ at the same seed
+  --- the two hinge constraints at $v$, with linearly independent supporting
+  extensors, weld $v$ to the rest (KT pp.~676--677).
 
   \emph{Status.}  The simple-contraction branch (\cref{lem:case-I-realization})
-  is green.  The non-simple-contraction branch (KT Lemma~6.5, the
-  $\Pi^\circ$-placement arm) is the obligation of sub-phase 22i; it rides as
-  the named hypothesis $\mathtt{h65}$ on the current formalized Theorem~5.5.
+  is green.  The Lemma~6.5 arm (Claim~6.6 + the $\Pi^\circ$-placement) is the
+  obligation of sub-phase 22i; it rides as the named hypothesis $\mathtt{h65}$
+  on the current formalized Theorem~5.5.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-I-realization}
-  Branch on $\mathtt{hcSimple}$.  If $(G/E(H))$ is simple, apply
-  \cref{lem:case-I-realization}.  Otherwise the $\Pi^\circ$ arm (22i).
+  Case on whether some $(H, r)$ has $(G/E(H))$ simple: if yes, apply
+  \cref{lem:case-I-realization}; otherwise the Claim~6.6 + $\Pi^\circ$
+  vertex-removal arm (22i).
 \end{proof}
 
