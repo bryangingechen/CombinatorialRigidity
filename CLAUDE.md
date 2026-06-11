@@ -186,7 +186,14 @@ content change (docs commits):
 - **Move deferred items to where they will land.** A lemma punted
   from Phase 2 to Phase 3 belongs in Phase 3's "Lemmas to develop"
   list with a one-line rationale, not as a footnote in Phase 2.
-  Forward-looking TODOs stranded under closed phases rot.
+  Forward-looking TODOs stranded under closed phases rot. **"Wiring",
+  "assembly", and "coordinator work" are not deferral categories:** a
+  deferred dispatch / case split / assembly is a deliverable like any
+  lemma — it gets a checklist item or a red blueprint node, never just
+  a commit-message phrase. (Phase-22a calibration: "the `hcontract`
+  dispatch is the coordinator's wiring" left the KT Lemma-6.5 arm with
+  no tracking artifact across five sub-phases; postmortem in
+  `DESIGN.md` *Statement faithfulness to the source*.)
 - **Lift on promotion.** If a `notes/PhaseN.md` decision has been
   referenced in 2+ files or by 2+ phases, promote it to
   `TACTICS-GOLF.md` (general idiom), `TACTICS-QUIRKS.md` (rescue

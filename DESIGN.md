@@ -1132,7 +1132,14 @@ truth*, and must say how — otherwise label it "asserted (unverified)". Two che
 mandatory checks at every recon crux:
 1. **Consumer-fit.** For any "it's just lemma `X`" claim, write `X`'s conclusion and
    the consumer's required hypothesis side by side and confirm the *shapes match*
-   (not just that the `\uses` edges type-check).
+   (not just that the `\uses` edges type-check). **This check fires at *write time*,
+   wherever the claim is written**: a docs-only feed assertion (`hX := lemma_L` in a
+   design-doc checklist or hand-off) is a recon crux even when no build is being
+   scheduled — it will be consumed as settled fact by a later builder. Calibration
+   (Phase-22h postmortem): §1.41(5) asserted `hcontractGP := case_I_realization` in
+   a docs pass four days *after* the signature (with its `hcSimple` case hypothesis,
+   two lines above the binder the same pass quoted) had landed; one side-by-side
+   would have caught it, and it instead survived to the §1.54 feed audit.
 2. **Quantitative against the exact lemma.** Any finrank/rank/dimension/count
    equality cites the *exact* lemma yielding it — with its real hypotheses
    (vertex-set vs `α`, `≤` vs `=`) — or is derived from first principles.
@@ -1350,6 +1357,75 @@ gap + resolution options); `notes/Phase22h.md` *Blockers* (adjudication
 status); the sibling k-bookkeeping lesson above.
 
 ---
+
+## Statement faithfulness to the source (the Phase-22h postmortem)
+
+**The decision (user-adjudicated, 2026-06-11): the project's formalized
+statements must match the source's strength — `HasFullRankRealization`
+gets a genuine-hinge strengthening, scheduled at the all-`k` motive
+redesign (the GAP-6 successor sub-phase), one redesign moment for both
+changes.** This section is the canonical postmortem record for the two
+gaps the §1.54 feed audit surfaced; the durable rules extracted from it
+live at their own homes (pointer list at the end).
+
+**Finding 1 — the vacuous bare motive.** `HasFullRankRealization`
+(`PanelHinge.lean`) was born existential at Phase 21 (`1cd26cc`) as
+induction rank-bookkeeping and was never checked against KT's
+definition of "panel-hinge realization" (genuine hinges, nonzero
+extensors): an all-zero-extensor *welded* framework (degenerate
+selector `ends := fun _ => (a₀, a₀)`) satisfies it for every connected
+graph, so the bare conjunct of the formalized Thm 5.5 was vacuous. It
+survived three weeks because (i) the one re-design moment (22a's
+two-motive split) re-read KT along a *different* axis
+(nonparallel-vs-GP for simple graphs) and never posed the
+cheapest-witness question; (ii) the blueprint *masked* the divergence —
+`def:rank-hypothesis` carried `\leanok` with paper-strength prose; and
+(iii) no gate compares a def's `Prop` body to its prose (the honesty
+gate reads hypotheses; `checkdecls` reads names). Containment: the
+weakness is isolated to the bare-motive family (`theorem_55`,
+`theorem_55_d3`'s `.2`, the `.2` of `theorem_55_generic`); the GP
+motive and the Phase 18–22 headline statements are KT-faithful, and the
+producer layer's mathematics is real — a statement-selection weakness,
+not an empty proof.
+
+**Finding 2 — the orphaned Lemma-6.5 arm.** The 22a recon correctly
+identified KT's 6.2/6.3/6.5 trifurcation and even named the right
+tracking idiom (carry the case hypothesis explicitly), but the landing
+commit reclassified the 6.3-vs-6.5 dispatch + 6.5 arm as "the
+coordinator's wiring"; the green-modulo flip minted a red node for
+Claim 6.4 only; 22a's close declared Claim 6.4 "the single deferred
+obligation" — and the arm vanished from every forward list for five
+sub-phases. §1.41(5) then asserted `hcontractGP := case_I_realization`
+without a side-by-side against the landed signature (which had carried
+`hcSimple` for four days). Of ~15 molecular-phase deferrals, 13 were
+properly tracked; the two orphans are exactly the pieces of that one
+"wiring" sentence. Diagnosis: rule-compliance failures (the honesty
+gate, *Move deferred items*, consumer-fit) plus two genuine gaps, all
+five now addressed:
+
+- *Definition-faithfulness gate (cheapest-witness audit)* — new:
+  `blueprint/CLAUDE.md` *Static checks*.
+- *Case hypotheses are obligations, never ambient* — honesty-gate
+  clause: `blueprint/CLAUDE.md` *Static checks*.
+- *"Wiring" is not a deferral category* — `CLAUDE.md` *Move deferred
+  items to where they will land*.
+- *Consumer-fit fires at write time on docs-only feed assertions* —
+  this file, *Constructibility recon → the two mandatory checks*.
+- What worked (keep doing it): the recon-before-build trigger fired the
+  §1.54 audit exactly on schedule, bounding the damage to re-planning —
+  no Lean was built on either gap; and the checklist-pre-commit-diff
+  rule (model-experiment row 46) is what queued the audit at all.
+
+Scheduling rationale (why not strengthen immediately): the genuine-hinge
+conjunct and the all-`k` restructure reshape the same defs, reduction
+theorems, and bare producers; two passes would mean designing and
+re-touching the motive surface twice — and this postmortem is a study of
+what piecemeal motive design costs. 22h closes at its original scope with
+the bare slots (`hbase`/`hsplit`/`hcontract`) *carried as named
+hypotheses* (not discharged degenerately — the welded brick was cut as
+pure throwaway once the strengthening was decided), proving the leaf
+suite composes end-to-end before the redesign re-types it. Cross-refs:
+`notes/Phase22-realization-design.md` §1.54–§1.55; `notes/Phase22h.md`.
 
 ## Choices to revisit
 

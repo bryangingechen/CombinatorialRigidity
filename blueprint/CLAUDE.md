@@ -404,6 +404,22 @@ hypothesis *is* `lem:genericity-device`, a `\uses`'d node that was red
 until discharged. The failure mode is case (b) *claimed* but not
 *true* — a `\uses` edge that doesn't actually conclude the hypothesis.
 
+**Case hypotheses are obligations, never ambient (Phase-22h
+calibration).** A hypothesis the source paper obtains by a **case
+split** — one whose *failure* is handled by a separate named lemma in
+the source (`hcSimple : (G.rigidContract H r).Simple` ↔ KT Lemma 6.3,
+whose failure is Lemma 6.5) — is load-bearing even when it reads like
+input data, and even when the commit calls its discharge "wiring" or
+"the coordinator's assembly". Before `\leanok` lands on a node
+carrying one: name the source's other branch and either (a) discharge
+the dispatch in Lean, (b) mint a tracked red node for the other
+branch, or (c) put it on the *active* phase's forward checklist with a
+one-line source pointer. Calibration: `lem:case-I-realization` went
+green in 22a carrying `hcSimple` with none of the three — the
+Lemma-6.5 arm had no tracking artifact anywhere and stayed orphaned
+across five sub-phases until the §1.54 feed audit (postmortem:
+`../DESIGN.md` *Statement faithfulness to the source*).
+
 **Producer / existence lemmas get extra scrutiny.** A node whose
 statement promises to *produce* something (`∃ p, …`,
 `HasFullRankRealization`, "attains full rank") but whose Lean
@@ -448,6 +464,30 @@ build on the green half** — "green-with-a-red-sibling" ≠ "green". Rule + the
 calibration: `../DESIGN.md` *Match the source's argument structure, not just its
 conclusion*; dead-end in `../notes/FRICTION.md` *[process] Phase 22a — motion-space
 splice glue vs KT block-triangular*.
+
+**A definition node's prose states what the Lean states (the
+definition-faithfulness gate).** The honesty gate audits a theorem
+node's *hypotheses*; this is its companion for **definitions**, where
+the failure mode is prose at the *source's* strength over a weaker
+Lean `Prop`. On any commit that adds `\leanok` to a `def:` node — or
+adds/reshapes a `def … : Prop` modeling a paper notion — run the
+**cheapest-witness audit**: ask what the cheapest satisfying witness
+is, and read the node's prose against *that*, not against the paper.
+If the Lean is deliberately weaker or stronger than the source notion,
+the prose must say so explicitly (what diverges, and where the honest
+form is tracked) — paper-strength prose over a weaker definition is a
+masked divergence no other gate can catch (`checkdecls` is name-only;
+the honesty gate reads hypotheses, not `Prop` bodies; a def has no
+proof for the proof-reading passes to audit). Calibration (Phase-22h
+postmortem): `def:rank-hypothesis` sat `\leanok` describing KT's
+genuine panel-hinge realization ("no two hinges parallel") while the
+pinned `HasFullRankRealization` was satisfiable by an all-zero-
+extensor *welded* framework on every connected graph — the bare
+conjunct of the formalized Thm 5.5 was vacuous, unnoticed from the
+def's birth (Phase 21) through three weeks of building on top, because
+the blueprint masked the divergence instead of exposing it. Full
+narrative + the strengthening decision: `../DESIGN.md` *Statement
+faithfulness to the source*.
 
 ## Local build
 
