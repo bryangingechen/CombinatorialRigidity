@@ -37,6 +37,12 @@ design docs it cites) and scores, *before* dispatching:
   1 = mechanical (doc edits, restates, bridges, `rfl`-adjacent);
   2 = real proof assembly along a known route with named grounding;
   3 = novel proof route, search, or no informal proof written.
+  *Docs-only is not automatically P=1:* a deliverable that *describes
+  an unbuilt argument* (red-node prose, deferred-route accounts)
+  takes its P from the math content, **P ≥ 2** — "mechanical" covers
+  only edits checkable against existing artifacts. (Calibration: a
+  2/1/1-rated blueprint-honesty commit's one failure was precisely
+  its prose describing the deferred KT-6.5 route.)
 - **B — blast radius.** Integration breadth.
   1 = one file, additive (nothing existing breaks);
   2 = few files, bounded caller repair through known bridges;
@@ -57,6 +63,13 @@ Published function of the profile, so assignment is reproducible:
 | P=3 or B=3 | opus |
 | S=3, or phase-open / phase-close / design-settle commits | fable (top rung; never delegated down) |
 
+- **The map covers commit-producing dispatches.** Read-only recon /
+  research dispatches (no commit deliverable) fall outside the axes:
+  log them with Mode `recon` and pick the rung by stakes — default
+  opus; fable when the verdict re-routes a phase or adjudicates a
+  carried-hypothesis / motive change. (Rating a postmortem recon
+  1/1/1 maps to haiku — absurd; the axes measure commit risk, not
+  question difficulty.)
 - **Optimistic ladder.** When torn between two scores on an axis,
   score lower (cheaper). The capability boundary is the experiment's
   main product; the per-commit verification gate bounds the damage.
@@ -104,7 +117,7 @@ coordinator session before being caught).
 | Task | short name + final commit sha (post-amend) |
 | S/P/B | the a-priori axis scores |
 | Model | rung actually dispatched |
-| Mode | normal / probe / boundary-pair-primary / boundary-pair-duplicate / escalation-retry |
+| Mode | normal / probe / boundary-pair-primary / boundary-pair-duplicate / escalation-retry / recon (read-only, no commit) |
 | Outcome | clean / repaired (note cost) / escalated / BLOCKED / killed (harness or usage-limit death mid-dispatch, no agent fault — log the wasted cost; salvage the transcript read map into the relaunch prompt) |
 | Rubric | 6-bit quality vector, below |
 | Cost | tokens + tool uses + wall time, as reported by the Agent tool |

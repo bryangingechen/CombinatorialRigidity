@@ -9,11 +9,12 @@ conditional on it.)
 log schema). Keep it byte-identical across participating repos; this
 file carries only repo-local state: config, the dispatch log, and
 findings. Last protocol sync: 2026-06-10 evening (template
-1e441ae); in sync except as noted. **Pending propagation:** the
-2026-06-11 `killed` outcome value (*Per-dispatch record* Outcome
-field) and the 2026-06-11 boundary-pair worktree-build caveat
-(`lake exe cache get` before any build in a fresh worktree) are
-local to this repo until synced to autoformaltemplate + enharmonic.
+1e441ae); in sync except as noted. **Pending propagation** (local
+until synced to autoformaltemplate + enharmonic): the 2026-06-11
+`killed` outcome value; the boundary-pair worktree-build caveat
+(`lake exe cache get` before any build in a fresh worktree); and
+the 22h-close protocol amendments (P ≥ 2 for unbuilt-argument
+prose; Mode `recon` + stakes-based recon rungs).
 
 ## Repo-local config
 
@@ -28,14 +29,11 @@ local to this repo until synced to autoformaltemplate + enharmonic.
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Standing rung override (2026-06-10, user-approved):** the
-  remaining Phase 22h `hcand`-discharge sub-commits (M₁/M₂/M₃
-  chains, the discharge assembly) dispatch at **opus minimum**,
-  overriding the map's sonnet rating for their 2/2/1 profiles.
-  Grounds: rows 11/14/17 — three sonnet design/discipline failures
-  concentrated in the §38-trap producer zone; the axes under-rate
-  scale/defeq-fragility there (see Findings). Lift the override
-  when the discharge assembly closes.
+- **Standing rung override — LIFTED 2026-06-10 at the W10b close,
+  by its own terms.** Rows 31–45 dispatched under it (opus minimum
+  for the `hcand`-discharge zone; grounds: the rows-11/14/17 sonnet
+  failure cluster in the §38-trap producer zone — see Findings). No
+  override is currently active.
 
 ## Log
 
@@ -103,7 +101,62 @@ quality / blueprint sync / notes discipline / commit message
 
 ## Findings
 
-(accumulate here; distill at phase close per the protocol)
+(accumulate episode bullets here; distill at each phase close per
+the protocol)
+
+### Phase 22h close-out (2026-06-11; rows 1–55)
+
+**Rates per rung** (externally-killed dispatches — rows 8, 16, 28,
+54, a ~7% harness loss rate — excluded from quality grading):
+
+- **haiku** (1 graded): 0/1. The row-3 probe BLOCKED honestly
+  (reverted cleanly, mis-concluded its blocker). The haiku zone is
+  otherwise untested here; enharmonic's row-12 fabrication is the
+  cross-repo caution.
+- **sonnet** (16 graded): 12 clean (two of those with one rubric
+  blemish), 4 failed/repaired — rows 11 (design-deviation), 17 (the
+  compaction cliff), 46 (silent sub-clause drop + checklist
+  rewrite), 50 (wrong deferred-route prose). **All four failures
+  sit in the shape/discipline/prose layer; sonnet's Lean was
+  mathematically wrong zero times.** Post-override-lift record
+  (rows 46, 50–53): five dispatches, Lean clean 5/5, two cheap
+  coordinator repairs — the map's sonnet ratings hold outside the
+  §38 zone, with the verification gate as the (necessary) catch.
+- **opus** (25 commit-graded, excl. the 2 recons): 21 clean, 2
+  notes-discipline repairs (23, 45), 1 design-deviation (14), 1
+  sizing-BLOCKED (27 — resolved by a design pass, not escalation).
+  Rows 31–44: 12 consecutive clean builds in the override zone
+  (row 45, the thirteenth, took one notes repair).
+- **fable** (7 graded): 7/7 clean — all design-settle / recon /
+  phase-boundary dispatches, consistently high-yield (row 47
+  surfaced two phase-close-changing gaps before anything was built
+  on them; row 55's close re-read caught a pre-existing blueprint
+  over-claim unprompted).
+
+**Escalation / relaunch pairs:** 3→4 (haiku BLOCKED → sonnet clean),
+14→15 (opus design-deviation → fable clean), 27→§1.51→29 (the
+sizing-BLOCKED → design-settle un-block, not brute escalation), and
+the two kill-relaunches 28→29 and 54→55 (same rung, read-map salvage
+into the prompt; both clean — the salvage protocol validated twice,
+the second also keeping a coherent stranded edit in tree).
+**Boundary pairs: zero run this phase** (forbidden by the override
+rows 31–45; the close arrived first) — the top open data need for
+22i, especially at the sonnet/opus boundary.
+
+**Map changes adopted at this close** (protocol text amended
+2026-06-11; pending cross-repo propagation, see header): (1) P ≥ 2
+for deliverables describing unbuilt arguments (row 50's failure was
+exactly P=1-rated red-node prose); (2) read-only recon dispatches
+fall outside the map — Mode `recon`, stakes-based rung (rows 48–49
+rated 1/1/1 would map to haiku, which is absurd for postmortem
+research). **No change to the core S/P/B → rung map**: the §38-zone
+sonnet cluster is carrier-weight-specific and the standing-override
+mechanism, not a map change, remains the tool for such zones.
+
+**Cross-rung pattern:** the dominant failure bit is rubric 5 (notes
+discipline) — rows 1, 11, 14, 17, 23, 45, 46 — across every rung
+below fable. The pre-commit-text diff rule (row 46) and the
+postmortem's write-time consumer-fit gate now target exactly this.
 
 - (2026-06-10, cross-repo) Enharmonic's haiku probe (its row 12)
   OOM-crashed the shared machine — a lake CLI syntax error cascaded
