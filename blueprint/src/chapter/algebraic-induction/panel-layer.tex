@@ -191,9 +191,13 @@ whole induction.
   Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
   realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V(G)|-1)$ ---
   an infinitesimally rigid (on $V(G)$) panel-hinge framework
-  (\cref{def:rank-hypothesis}, at $k' = 0$). (The general minimal $k$-dof
-  statement is recovered the same way; the molecular conjecture needs only
-  the $0$-dof case.)
+  (\cref{def:rank-hypothesis}, at $k' = 0$). (The molecular conjecture needs
+  only the $0$-dof instance stated here. Note, however, that the proof is not
+  self-contained in $k$: Katoh--Tanigawa's induction runs over minimal
+  $k$-dof-graphs for \emph{all} $k$, and the Case~III argument applies the
+  inductive statement to an auxiliary minimal $k'$-dof graph with
+  $0 \le k' \le D-2$ (Claim~6.11, eq.~(6.22)). This nested use is the one
+  input of the Case~III argument still outstanding.)
 \end{theorem}
 \begin{proof}
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,

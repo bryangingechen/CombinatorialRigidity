@@ -1315,6 +1315,40 @@ surface analogy ("it's a degree-2 split, so it's Case II"). Cross-ref:
 work* attribution bar (this is the rank-arithmetic analogue of verifying a §N
 pointer).
 
+## Narrowing an induction motive requires an IH-application census
+
+**The bug (introduced 2026-06-04, surfaced 2026-06-10 as GAP 6, design
+§1.50(b)).** KT state Theorem 5.5 / eq. (6.1) for **all** minimal `k`-dof
+graphs; the project's `theorem_55` / `minimal_kdof_reduction[_full]` carry the
+motive at `k = 0` only. Phase 21 opened (da68934) with the KT-faithful all-`k`
+blueprint statement; the narrowing rode in a day later inside the (otherwise
+unrelated) Phase-21b `V(G)`-relative motive re-plan (1ed6fed), justified by the
+parenthetical "the general minimal `k`-dof statement is recovered the same
+way" — plausible, top-down, and **backwards**: KT's Case-III interior applies
+(6.1) to the *auxiliary* graph `G_v = G_v^{ab} − ab` — minimal `k'`-dof,
+`k' ≤ D−2`, **not a child of the reduction** — at eq. (6.22) (KT p. 684), so
+the `0`-dof proof *consumes* the all-`k` statement rather than subsuming it.
+The narrowing *was* locally verified at the skeleton level (both reduction
+arms preserve `0`-dof, KT Lemma 4.8(i)) — the audit that passed was simply not
+the audit that mattered, because the leak is an IH application two lemmas deep
+inside one case's interior. Missed catch-point: Phase 22d (2026-06-06)
+*formalized the mismatch fact itself* (`splitOff_removeVertex_minimalKDof`:
+`G_v` is minimal `k'`-dof) while its deferral note scoped the remaining work
+as "applying the geometric IH to `G_v` at the fixed seed" — deferring an
+application whose hypothesis (`G_v` in the motive's domain) was already
+provably false in-repo.
+
+**The rules.** (1) Before narrowing an induction motive from the source's
+(all-`k` → `k = 0`, all-`d` → `d = 3`, …), **census every IH application in
+the source's full proof tree** — including applications to auxiliary objects
+inside case interiors — and check each target lies in the narrowed domain. The
+reduction skeleton's children are not the complete list. (2) When scoping
+deferred work as "apply X to Y", **verify Y satisfies X's hypotheses at
+scoping time** — "apply the IH to `G_v`" hid GAP 6 for four days and six
+sub-phases. Cross-refs: `notes/Phase22-realization-design.md` §1.50(b) (the
+gap + resolution options); `notes/Phase22h.md` *Blockers* (adjudication
+status); the sibling k-bookkeeping lesson above.
+
 ---
 
 ## Choices to revisit
