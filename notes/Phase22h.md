@@ -37,40 +37,35 @@ Coordinator independently verified all three verdicts against KT pp. 681–684 +
 (its candidate row and `(vb)ⱼ`-transports are not sheared-candidate rows at `t ≠ 0`); the route is
 **certify-then-rebase** — certify the (6.29) count at `F₀` (W6c+W6d), convert to a rank lower
 bound and re-extract a literal `F₀.panelRow` family (W6e), transfer that along the `t`-family
-(W6f), close through the span core + GAP-2 (W7). **All of W6a–W6f are landed** (the
-`caseIIICandidate` `t`-family + six infra bricks; the rank-bound panelRow re-extraction; the
-restriction-form full family; the candidate/bottom data packaging — `h622lb` entered the Lean at
-W6b, W5's sole caller; the one-variable transfer at the `t`-family; and **W6d the `t = 0` rank
-certification at `F₀`** — `case_III_rank_certification`, the (6.29) count at `caseIIICandidate … 0`
-concluded as the rank lower bound `D(|V(G)|−1) ≤ finrank(span F₀.rigidityRows)`). Smallest next
-commit: **W7** (the M₁ arm closer, §1.51(h) — role-parametric: re-extract the certified rank as a
-literal `F₀.panelRow` family via W6e, transfer along the `t`-family via W6f, read each `F(t^*)`-slot
-as a genuine `ofNormals … (q₀ t^*)` row, close through the span-containment core + GAP-2).
+(W6f), close through the span core + GAP-2 (W7). **All of W6a–W6f AND W7 are landed** — the
+certify-then-rebase arm is complete. Smallest next commit: **W8** (the M₂ arm, §1.51(i)) — a pure
+*instantiation* of W7 at the swapped roles `(a,b,e_a,e_b,n') := (b,a,e_b,e_a,n'')` feeding
+`ρ' := −ρ` (`hingeRow a b ρ = hingeRow b a (−ρ)`, an orientation artifact; KT p. 681 "r' = r"); its
+`hρe₀`/`hwmem` shapes convert by `panelSupportExtensor_swap` + `map_neg`. Then per §1.51(j):
+W9 (M₃ wiring) → W10 (dispatch + discharge matching `hcand`) → Leaf 4 → Leaf 5 → phase close
+green-modulo-GAP-6.
 
-**W5 (the redundancy-data packaging) is landed** — `BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn`
-(CaseI.lean): the consumer-level form of `exists_redundant_panelRow_ab_lam` whose two `finrank`
-inputs ride at their natural shape. `h618` is replaced by the realization motive `hrig`
-(`Gab` rigid on `Gab.vertexSet`, `m := V(Gab).ncard`) → W2 `finrank_span_rigidityRows_of_rigidOn`;
-`h622` holds **by construction** via `k' := D(m−1) − finrank(span R(Gv)-rows)` once the free upper
-bound `finrank(span R(Gv)-rows) ≤ D(m−1)` (from `span_rigidityRows_eq_sup_span_panelRow_edge` +
-`finrank_mono le_sup_left`); the remaining `hk' : k' ≤ D−2` is **the carried GAP-6 lower bound**
-`h622lb : D(m−1) − (D−2) ≤ finrank(span R(Gv)-rows)` (the adjudicated explicit hypothesis — Blockers),
-rearranged by `omega`. Output = `_ab_lam`'s data verbatim (`r`/`lam`/`i*`/`lam i* = 1`/`r̂ ∈ span
-R(Gv)-rows`/`r̂ ≠ 0`). Build + lint + axiom-clean; no `\lean` pin (internal infra). W4/W3/W2/W1
-landed before it.
+**W7 (the M₁ arm closer) is landed** — `PanelHingeFramework.case_III_arm_realization` (CaseI.lean):
+the role-parametric arm yielding `HasGenericFullRankRealization k G` from the unpacked split context
++ W6b's `ρ`/`w` package. Route: (i) W6d → the rank bound at `F₀`; (ii) W6e re-extracts a literal
+`F₀.panelRow` linking family of size `D(|V(G)|−1)`; (iii) W6f transfers it to a good `t^* ≠ 0`
+outside the GAP-3 bad set, forcing `![n_a + t^*·n', n_b]` LI; (iv) each `F(t^*)`-slot lies in
+`span (ofNormals G ends q₀).rigidityRows` (`q₀` shears `v` along `n_a + t^*·n'`): the `e_b`/`Gᵥ`-slots
+have *equal* extensors (genuine rows), the candidate `e_a`-slot is `(-1/t^*) •` a genuine row
+(`panelSupportExtensor_add_smul_left` + `annihRow_smul`); (v)
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` + GAP-2 close. §38: the heavy
+`Ft.panelRow`-family is generalized to an opaque `f` (`set` + `clear_value`) before the rigidity
+lemma (else `whnf`-timeout even at 4M heartbeats — TACTICS-QUIRKS §38 *Row-family-argument
+variant*); `[DecidableEq α/β]` dropped (`classical` supplies them). Build + lint + axiom-clean
+([propext, Classical.choice, Quot.sound]); no `\lean` pin (internal infra). GAP-6-clean (W6b carries
+`h622lb`).
 
-**Build order (§1.51(j); supersedes §1.50(f) item 6):** ~~W1 discriminator~~ (done)
-→ ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → ~~W4 leaf A0 (restriction-bottom
-augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hypothesis** `h622lb`) →
-~~W6-core (restriction-form candidate augment, the A1 abstract core)~~ (done) → ~~W6a (the
-`caseIIICandidate` `t`-family + infra bricks)~~ (done) → ~~W6e (rank-bound panelRow
-re-extraction)~~ (done) → ~~W6c (restriction-form full family)~~ (done) → ~~W6b
-(candidate/bottom packaging; **carries the GAP-6 hypothesis** `h622lb`, W5's sole caller)~~ (done)
-→ ~~W6f (the W3 transfer feed)~~ (done) → ~~W6d (the `t = 0` rank
-certification at `F₀`)~~ (done) → **W7** (the arm closer, role-parametric) → W8 M₂ (W7 instantiation at
-swapped roles, `−ρ`) → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) →
-Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact signatures + per-leaf
-consumes/consumed-by/§38 notes: §1.51.
+**Build order (§1.51(j); supersedes §1.50(f) item 6):** W1–W5 + W6-core + W6a–W6f + **W7** all
+landed (the certify-then-rebase arm; `h622lb` GAP-6 carry entered at W5, rides through W6b) →
+**W8** (M₂ = W7 instantiation at swapped roles, `−ρ`) → W9 (M₃ wiring) → W10 (dispatch + discharge
+assembly, matches `hcand`'s shape) → Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**. Exact
+signatures + per-leaf consumes/consumed-by/§38 notes: §1.51 (design doc). Per-leaf landing detail is
+in git history + *Decisions made* below.
 
 ## Lemma checklist
 
@@ -174,11 +169,12 @@ consumes/consumed-by/§38 notes: §1.51.
   v b ρ − hingeRow a b ρ` (`hingeRow v b ρ` a genuine `e_b`-row at `t=0`, `hingeRow a b ρ ∈ span
   Fv-rows ≤ span F₀-rows`), bottom per-tag; (iv) count `((D−1)+1)+D(m_v−1) = D(|V(G)|−1)` via
   `finrank_span_eq_card` + `finrank_mono`. GAP-6-clean (W6b carries `h622lb`); axiom-clean, no
-  `\lean` pin).
-  Remaining, as complete lemmas (no `sorry` on master),
-  per §1.51(j): W7 (the M₁ arm, certify-then-rebase) → W8 M₂ (W7 instantiation) →
-  W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand`
-  signature. Exact per-leaf signatures: §1.51(c)–(h).
+  `\lean` pin), and **W7 the M₁ arm closer** (`case_III_arm_realization`, CaseI.lean — W6d→W6e→W6f
+  certify-then-rebase + the `q₀`-membership + GAP-2 close; see *Current state* + *Decisions made*
+  for the route and the §38 row-family generalization). Remaining, as complete lemmas (no `sorry` on
+  master), per §1.51(i)/(j): W8 M₂ (W7 instantiation, `−ρ`) → W9 M₃ (G4c/G4d +
+  `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature. Exact per-leaf
+  signatures: §1.51(c)–(i).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -205,26 +201,17 @@ consumes/consumed-by/§38 notes: §1.51.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W7 (the M₁ arm closer, role-parametric, §1.51(h)).** All of
-W6a–W6f are now landed (the certify-then-rebase inputs); W7 assembles them into the M₁ arm of the
-`hcand` discharge. Route per §1.51(h): re-extract W6d's certified rank `D(|V(G)|−1) ≤ finrank(span
-F₀.rigidityRows)` as a *literal* `F₀.panelRow` family via W6e
-(`exists_independent_panelRow_subfamily_of_le_finrank`); transfer that family along the
-`caseIIICandidate` `t`-family to a good `t^*` via W6f (`caseIIICandidate_exists_good_shear`, feeding
-the GAP-3 `bad`-set `setOf_not_shear_linearIndependent_subsingleton`); read each `F(t^*)`-slot as a
-genuine `ofNormals … (q₀ t^*)` row and close through the span-containment core + GAP-2
-(`hasGenericFullRankRealization_of_rigidOn_ofNormals`). Role-parametric so W8 (M₂) is the
-instantiation at swapped `a ↔ b` roles with `ρ' := −ρ`. **§38 note:** keep reasoning over the
-abstract `t`-family through the W6a simp lemmas; memberships via explicit link witnesses (the
-`hrow_mem` idiom, CaseI.lean:2011). Then per §1.51(j): W8 → W9 → W10 → Leaf 4 → Leaf 5.
-**No `sorry` placeholders** at any step (carry GAP-6 as a named `h…`, never a `sorry`).
-
-**W6d (the `t = 0` rank certification at `F₀`) is landed** —
-`PanelHingeFramework.case_III_rank_certification` (CaseI.lean): the (6.29) count at
-`F₀ := caseIIICandidate G ends q e_a e_b na n' nb 0`, concluded as the consumable rank lower bound
-`D(|V(G)|−1) ≤ finrank(span F₀.rigidityRows)`. Per-piece route in the *Discharge `hcand`*
-checklist entry + §1.51(e). Build + lint + axiom-clean ([propext, Classical.choice, Quot.sound]);
-no `\lean` pin (internal infra). With W6d, **all W6 leaves are in** — the W7 inputs are complete.
+**Smallest next forward commit — W8 (the M₂ arm, §1.51(i)).** W7 (`case_III_arm_realization`) is
+landed and is **role-parametric**, so W8 is a pure *instantiation* of it at the swapped roles
+`(v,a,b,e_a,e_b,n') := (v,b,a,e_b,e_a,n'')` feeding the candidate functional `ρ' := −ρ` (because
+`r̂ = hingeRow a b ρ = hingeRow b a (−ρ)` by `hingeRow_swap` — a Lean-orientation artifact, not a KT
+discrepancy: KT p. 681 has `r' = r`, identical row content). The `hρe₀`/`hwmem` shapes convert by
+`panelSupportExtensor_swap` + `map_neg`; the gate at the `u = 1` witness is
+`ρ(panelSupportExtensor n_b n'') ≠ 0 → (−ρ)(…) ≠ 0`. If genuinely small it may instead be inlined
+into W10's `u = 1` branch (budget it as its own commit otherwise). Then per §1.51(i)/(j):
+W9 (M₃ wiring, §1.50(e)) → W10 (dispatch + discharge matching `hcand`) → Leaf 4 → Leaf 5 → phase
+close green-modulo-GAP-6. **No `sorry`** at any step (carry GAP-6 as the named `h622lb`, never a
+`sorry`).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -439,7 +426,22 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   the block to `Fv`'s). (iv) The index `(sn ⊕ Unit) ⊕ ιb` is `Finite` via `hfam.finite`; count
   `((D−1)+1)+D(m_v−1) = D·m_v` via `obtain ⟨m', …⟩` + `Nat.mul_succ` + `omega` (`D ≥ 1` =
   `Nat.choose_pos`). GAP-6-clean (carried in W6b); axiom-clean; no `\lean` pin.
+- **W7 the M₁ arm closer (§1.51(h); `case_III_arm_realization`, CaseI.lean).** The five-step route
+  (W6d rank → W6e re-extract → W6f shear → `q₀`-membership → rigidity + GAP-2) is summarized in
+  *Current state*. Two friction points: (1) the `q₀`-membership of each `F(t^*)`-slot splits by
+  `hsplitG` into the `e_a` slot (`(-1/t^*) •` a genuine row via `panelSupportExtensor_add_smul_left`
+  + `annihRow_smul` + `hingeRow` linearity, `t^* ≠ 0` inverts), the `e_b`/`Gᵥ` slots (extensors
+  *equal* the sheared seed's, so genuine rows — a small `hFG₀_eq_panelRow` "equal extensors ⟹ equal
+  panelRows" helper via `panelRow_eq_hingeRow_annihRow_of_ends`); all dispatched with named `he`
+  equalities + `rw [he]`, never `rcases … rfl` (avoids the §4 `e_a`/`e_b` subst-direction trap). (2)
+  the closing `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` `whnf`-timed-out (even at
+  4M heartbeats) on its heavy `Ft.panelRow`-family argument — fixed by `set f := <family>;
+  clear_value f` (→ TACTICS-QUIRKS §38). `[DecidableEq α/β]` dropped (the `unusedDecidableInType`
+  lint; `classical` + `caseIIICandidate`'s own instances suffice). Axiom-clean; no `\lean` pin.
 
-### Promoted to TACTICS-QUIRKS
+### Promoted to TACTICS-QUIRKS / FRICTION
 - *`set X := e with hX` folds `e` in pre-existing hypotheses too, so a later `rw [h]` (LHS was `e`)
   finds nothing* → TACTICS-QUIRKS § 43 (FRICTION [resolved] pointer).
+- *A span/rigidity lemma applied with a heavy-carrier row-family argument `whnf`-times-out —
+  `set f := <family>; clear_value f` first* → TACTICS-QUIRKS § 38 (*Row-family-argument variant*) +
+  FRICTION [resolved].

@@ -76,6 +76,17 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A span/rigidity lemma applied with a heavy-carrier row-family argument `whnf`-times-out — `set f := <family>; clear_value f` first
+- **Where it bit:** Phase 22h `case_III_arm_realization` (W7, `CaseI.lean`); the final
+  `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` applied with
+  `(a := fun i : ↥s => Ft.panelRow ends i)`, `Ft = caseIIICandidate G ends q …`, `whnf`-timed-out at
+  the application even at `maxHeartbeats 4000000`, while every prior `have` (including the membership
+  `hmem`/`hsub`) elaborated instantly.
+- **Resolution:** `set f := <heavy family> with hf` then `clear_value f` before the application (the
+  family's `LinearIndependent`/span hypotheses auto-fold onto `f`); apply the lemma at the *concrete*
+  `(ofNormals G ends q₀).toBodyHinge`, not a `set`-bound abbrev. **Lifted to:** TACTICS-QUIRKS § 38
+  (*Row-family-argument variant*). Same medicine as the rest of §38: opacity, not a heartbeat bump.
+
 ### [resolved] `AlgHom.map_det` (not `RingHom.map_det`) for `aeval`-based matrix-det bridges; `mvPolynomialX_mapMatrix_aeval` closes the matrix equation
 - **Where it bit:** Phase 22h `linearIndependent_normals_of_algebraicIndependent` (`CaseI.lean`),
   proving `det B = aeval (q∘f) P` where `B = (aeval (q∘f)).mapMatrix (mvPolynomialX ..)`.

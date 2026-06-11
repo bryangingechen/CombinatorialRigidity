@@ -4512,6 +4512,266 @@ theorem PanelHingeFramework.case_III_rank_certification
   rw [← hcard, Nat.card_eq_fintype_card, ← finrank_span_eq_card hfam]
   exact Submodule.finrank_mono hsub
 
+/-- **W7 — the M₁ arm closer: certify-then-rebase realizes the `d = 3` candidate at full rank**
+(`lem:case-II-realization` / `lem:case-III`, the role-parametric arm of the `hcand` discharge;
+Katoh–Tanigawa 2011 §6.4.1, eqs. (6.29)/(6.30), the certify-then-rebase route of design
+§1.51(a)/(h),
+Phase 22h). Given the unpacked split context — fresh body `v ∉ V(Gᵥ)` joined to `a, b ∈ V(Gᵥ)` by
+the two re-inserted hinges `e_a = va`, `e_b = vb`, the IH-rigid old subgraph `Gᵥ`, the witness
+second normal `n'` of `Π(a)` with its transversality data (`hLn`, `hgab`), and W6b's candidate /
+bottom-row package (`ρ`, `w`) — produces `HasGenericFullRankRealization k G`.
+
+The route is KT's own reading of eq. (6.29) ("if the top-left `6×6` block is full rank then
+`rank R(G,p₁) = 6(|V|−1)`", p. 684), a statement about the *rank* of `R(G,p₁)`, not a distinguished
+row family. (i) W6d certifies the (6.29) count at the hinge-level framework
+`F₀ := caseIIICandidate G ends q e_a e_b n_a n' n_b 0` as the rank bound
+`D(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. (ii) W6e re-extracts from that rank a *literal*
+`F₀.panelRow` family of exactly `D(|V(G)|−1)` linking edges — each slot an
+`annihRow`-of-the-edge-extensor row, polynomial in the shear. (iii) W6f transfers that family along
+the one-parameter `t`-family `F(t)` to a good `t^* ≠ 0` outside the GAP-3 bad set
+(`setOf_not_shear_linearIndependent_subsingleton`), keeping it linearly independent and forcing
+`![n_a + t^*·n', n_b]` independent (the reproduced `vb`-hinge stays transversal). (iv) Each
+`F(t^*)`-slot lies in `span (ofNormals G ends q₀).rigidityRows`, where `q₀` shears `v` along
+`n_a + t^*·n'`: the `e_b`-slot and the `Gᵥ`-slots have extensors *equal* to the sheared seed's (the
+`e_b`-normals are `(n_a + t^*·n', n_b)` exactly; the `Gᵥ`-endpoints avoid `v`), so they are genuine
+rows, while the candidate `e_a`-slot is `(-1/t^*) •` the genuine `e_a`-row
+(`panelSupportExtensor_add_smul_left` makes the sheared `e_a`-extensor `(-t^*) • C(L)`, `annihRow`
+linear in the extensor scales the row, and `t^* ≠ 0` inverts). (v)
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` gives rigidity on `V(G)` at
+`ofNormals G ends q₀`, and GAP-2 `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades
+to the generic motive.
+
+Role-parametric over `(v, a, b, e_a, e_b, n')` so that W8 (the M₂ arm) is the instantiation at the
+swapped roles `a ↔ b` with `ρ' := -ρ`. **§38:** the only concrete carrier reached is
+`ofNormals G ends q₀` in (iv)–(v); every extensor evaluation goes through the W6a simp lemmas plus
+`toBodyHinge_supportExtensor`/`ofNormals_normal` and the funext-`if_neg` `q₀`-override pattern, and
+every membership is an explicit link witness (the `hrow_mem` idiom, never `whnf` on the carrier). -/
+theorem PanelHingeFramework.case_III_arm_realization
+    [Finite α] [Finite β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set na := (fun i => q (a, i)) with hna
+  set nb := (fun i => q (b, i)) with hnb
+  have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
+  have hvb : v ≠ b := fun h => hvVc (h ▸ hbVc)
+  have hnev : V(G).Nonempty := ⟨v, hG_ea.left_mem⟩
+  -- (i) W6d: the (6.29) rank lower bound at the `t = 0` candidate framework `F₀`.
+  set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb 0 with hF₀
+  have hVoneG : 1 ≤ V(Gv).ncard := hVone
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ F₀.rigidityRows) :=
+    PanelHingeFramework.case_III_rank_certification G Gv ends hvVc haVc hbVc hG_ea hG_eb
+      hends_ea hends_eb heab hleG hVone hVcard hLn hρgate hρe₀ hρGv hwcard hw hwmem
+  -- The candidate / reproduced extensors at `F₀` (W6a simp lemmas), and their nonvanishing.
+  have hsuppea : F₀.supportExtensor e_a = panelSupportExtensor na n' :=
+    PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb 0 heab
+  have hsuppeb : F₀.supportExtensor e_b = panelSupportExtensor na nb := by
+    rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero]
+  -- (ii) W6e at `F₀`: the rank re-extracts that many literal linking `F₀.panelRow`s.
+  -- `hends` at `F₀.graph = G`: every `G`-link is `e_a`, `e_b`, or a `Gᵥ`-link (`hsplitG`).
+  have hF₀graph : F₀.graph = G := by rw [hF₀]; exact PanelHingeFramework.caseIIICandidate_graph ..
+  -- `hends`/`hne` at `G` (= `F₀.graph` definitionally), shared by W6e and the GAP-2 close.
+  have hends_q₀ : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 := by
+    intro e u w hlink
+    rcases hsplitG e u w hlink with he | he | hGv
+    · rw [he, hends_ea]; exact hG_ea
+    · rw [he, hends_eb]; exact hG_eb
+    · exact hleG e _ _ (hends_Gv e u w hGv)
+  have hends_G : ∀ e u w, F₀.graph.IsLink e u w → F₀.graph.IsLink e (ends e).1 (ends e).2 :=
+    hF₀graph ▸ hends_q₀
+  -- `hne` on linking edges: `e_a ↦ C(L) ≠ 0` (`hLn`), `e_b ↦ C(e₀) ≠ 0` (`hgab`), `Gᵥ` via `hne_Gv`
+  -- + extensor agreement off `{e_a, e_b}`.
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
+    intro e u w hlink
+    have hune : u ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
+    have hwne : w ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
+    have hGlink := hleG e u w hlink
+    refine ⟨fun he => ?_, fun he => ?_⟩
+    · subst he
+      rcases (hG_ea).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hune hh.symm
+      · exact hwne hh.symm
+    · subst he
+      rcases (hG_eb).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hune hh.symm
+      · exact hwne hh.symm
+  have hne_F₀ : ∀ e, F₀.graph.IsLink e (ends e).1 (ends e).2 → F₀.supportExtensor e ≠ 0 := by
+    intro e hlink
+    rcases hsplitG e (ends e).1 (ends e).2 hlink with he | he | hGv
+    · rw [he, hsuppea]; exact (panelSupportExtensor_ne_zero_iff na n').mpr hLn
+    · rw [he, hsuppeb]; exact (panelSupportExtensor_ne_zero_iff na nb).mpr hgab
+    · obtain ⟨hne_a, hne_b⟩ := hGv_off hGv
+      rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb
+        0 hne_a hne_b]
+      exact hne_Gv e (hends_Gv e _ _ hGv)
+  obtain ⟨s, hs_link, hs_card, hs_indep⟩ :=
+    F₀.exists_independent_panelRow_subfamily_of_le_finrank (ends := ends) hends_G hne_F₀ hrank
+  -- (iii) W6f: transfer the re-extracted family to a good `t^* ≠ 0` outside the GAP-3 bad set.
+  haveI : Finite ↥s := Set.Finite.to_subtype (Set.toFinite s)
+  set bad : Finset ℝ :=
+    (setOf_not_shear_linearIndependent_subsingleton na n' nb hgab).finite.toFinset with hbad
+  obtain ⟨t, ht_bad, ht_ne, ht_li⟩ :=
+    PanelHingeFramework.caseIIICandidate_exists_good_shear G ends q heab na n' nb
+      (ι := ↥s) (fun i => (i : β × _ × _)) (by rw [← hF₀]; exact hs_indep) bad
+  -- `t ∉ bad` forces `![na + t·n', nb]` independent (the reproduced `vb`-hinge stays transversal).
+  have hnewtrans : LinearIndependent ℝ ![na + t • n', nb] := by
+    by_contra hdep
+    refine ht_bad ?_
+    rw [hbad, Set.Finite.mem_toFinset]
+    exact hdep
+  -- (iv) The sheared seed `q₀ : v ↦ na + t·n'`, agreeing with `q` off `v`.
+  set Ft := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb t with hFt
+  set q₀ : α × Fin (k + 2) → ℝ := fun p => if p.1 = v then (na + t • n') p.2 else q p with hq₀def
+  set FG₀ := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hFG₀
+  have hq₀v : (fun i => q₀ (v, i)) = na + t • n' := by funext i; rw [hq₀def]; simp
+  have hq₀a : (fun i => q₀ (a, i)) = na := by
+    funext i; rw [hq₀def, hna]; simp only [if_neg hva.symm]
+  have hq₀b : (fun i => q₀ (b, i)) = nb := by
+    funext i; rw [hq₀def, hnb]; simp only [if_neg hvb.symm]
+  -- Off `v`, `q₀` agrees with `q`, so the `ofNormals G ends q₀` extensor of any edge avoiding `v`
+  -- equals the `ofNormals G ends q` one (= `F₀`/`Ft`'s seed off `{e_a, e_b}`).
+  have hq₀_off : ∀ u, u ≠ v → (fun i => q₀ (u, i)) = (fun i => q (u, i)) := by
+    intro u hu; funext i; rw [hq₀def]; simp only [if_neg hu]
+  -- The genuine `FG₀`-extensors at the three relevant kinds of edge.
+  have hFG₀_ea : FG₀.supportExtensor e_a = (-t) • panelSupportExtensor na n' := by
+    rw [hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_ea]
+    simp only [hq₀v, hq₀a, panelSupportExtensor_add_smul_left]
+  have hFG₀_eb : FG₀.supportExtensor e_b = panelSupportExtensor (na + t • n') nb := by
+    rw [hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, hends_eb]
+    simp only [hq₀v, hq₀b]
+  have hFt_eb : Ft.supportExtensor e_b = panelSupportExtensor (na + t • n') nb := by
+    rw [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced]
+  have hFt_ea : Ft.supportExtensor e_a = panelSupportExtensor na n' :=
+    PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb t heab
+  -- A `Gᵥ`-edge keeps both `Ft` and `FG₀` at the `q`-seed extensor (its endpoints avoid `v`).
+  have hGv_seed_eq : ∀ {e u w}, Gv.IsLink e u w →
+      Ft.supportExtensor e = FG₀.supportExtensor e := by
+    intro e u w hlink
+    obtain ⟨hne_a, hne_b⟩ := hGv_off hlink
+    -- the *recorded* endpoints of `e` lie in `V(Gᵥ)` (via `hends_Gv`), so both avoid `v`, hence
+    -- `q₀` agrees with `q` at each.
+    have hrec := hends_Gv e u w hlink
+    have hfst : (ends e).1 ≠ v := fun h => hvVc (h ▸ hrec.left_mem)
+    have hsnd : (ends e).2 ≠ v := fun h => hvVc (h ▸ hrec.right_mem)
+    rw [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb t
+        hne_a hne_b, hFG₀, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, hq₀_off (ends e).1 hfst, hq₀_off (ends e).2 hsnd]
+  -- `FG₀.graph = G` definitionally (`toBodyHinge_graph`/`ofNormals_graph` are `rfl`), so a `G`-link
+  -- is an `FG₀`-link and `panelRow_mem_rigidityRows_of_link` applies directly.
+  have hFG₀_eq_panelRow : ∀ {e u w} (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k),
+      ends e = (u, w) → Ft.supportExtensor e = FG₀.supportExtensor e →
+      Ft.panelRow ends (e, t₁, t₂) = FG₀.panelRow ends (e, t₁, t₂) := by
+    intro e u w t₁ t₂ hends_e hext
+    rw [Ft.panelRow_eq_hingeRow_annihRow_of_ends ends hends_e,
+      FG₀.panelRow_eq_hingeRow_annihRow_of_ends ends hends_e, hext]
+  -- The candidate `e_a`-slot: `Ft`-row is `(-1/t) •` the genuine `FG₀` `e_a`-row (extracted as a
+  -- standalone fact to avoid substituting `e_a`/`e_b` away in the `hmem` dispatch).
+  have hmem_ea : ∀ t₁ t₂, Ft.panelRow ends (e_a, t₁, t₂) ∈ Submodule.span ℝ FG₀.rigidityRows := by
+    intro t₁ t₂
+    have hFtrow : Ft.panelRow ends (e_a, t₁, t₂)
+        = BodyHingeFramework.hingeRow v a (annihRow (panelSupportExtensor na n') t₁ t₂) := by
+      rw [Ft.panelRow_eq_hingeRow_annihRow_of_ends ends hends_ea, hFt_ea]
+    have hFG₀row : FG₀.panelRow ends (e_a, t₁, t₂)
+        = (-t) • BodyHingeFramework.hingeRow v a (annihRow (panelSupportExtensor na n') t₁ t₂) := by
+      rw [FG₀.panelRow_eq_hingeRow_annihRow_of_ends ends hends_ea, hFG₀_ea, annihRow_smul,
+        BodyHingeFramework.hingeRow_eq_dualMap, map_smul, ← BodyHingeFramework.hingeRow_eq_dualMap]
+    have hmem_genuine : FG₀.panelRow ends (e_a, t₁, t₂) ∈ Submodule.span ℝ FG₀.rigidityRows :=
+      Submodule.subset_span (FG₀.panelRow_mem_rigidityRows_of_link ends hends_ea hG_ea t₁ t₂)
+    rw [hFtrow,
+      show BodyHingeFramework.hingeRow v a (annihRow (panelSupportExtensor na n') t₁ t₂)
+        = (-t)⁻¹ • FG₀.panelRow ends (e_a, t₁, t₂) from by
+          rw [hFG₀row, smul_smul, inv_mul_cancel₀ (neg_ne_zero.mpr ht_ne), one_smul]]
+    exact Submodule.smul_mem _ _ hmem_genuine
+  -- Membership of each `Ft`-slot in `span FG₀.rigidityRows`.
+  have hmem : ∀ i : ↥s, Ft.panelRow ends (i : β × _ × _) ∈ Submodule.span ℝ FG₀.rigidityRows := by
+    rintro ⟨⟨e, t₁, t₂⟩, hi⟩
+    have hlink : G.IsLink e (ends e).1 (ends e).2 := hs_link _ hi
+    change Ft.panelRow ends (e, t₁, t₂) ∈ Submodule.span ℝ FG₀.rigidityRows
+    rcases hsplitG e (ends e).1 (ends e).2 hlink with he | he | hGv
+    · -- `e = e_a`: the candidate slot, via `hmem_ea`.
+      rw [he]; exact hmem_ea t₁ t₂
+    · -- `e = e_b`: the reproduced slot, extensors agree so it is a genuine `FG₀`-row.
+      rw [he, hFG₀_eq_panelRow t₁ t₂ hends_eb (by rw [hFt_eb, hFG₀_eb])]
+      exact Submodule.subset_span (FG₀.panelRow_mem_rigidityRows_of_link ends hends_eb hG_eb t₁ t₂)
+    · -- A `Gᵥ`-slot: extensors agree (`hGv_seed_eq`), so `Ft`-row is a genuine `FG₀`-row.
+      rw [hFG₀_eq_panelRow t₁ t₂ (Prod.mk.eta (p := ends e)) (hGv_seed_eq hGv)]
+      exact Submodule.subset_span (FG₀.panelRow_mem_rigidityRows_of_link ends
+        (Prod.mk.eta (p := ends e)) (hleG e _ _ (hends_Gv e _ _ hGv)) t₁ t₂)
+  -- (v) Rigidity on `V(G)` at `q₀`, then GAP-2 upgrades to the generic motive.
+  have hsub : Submodule.span ℝ
+      (Set.range (fun i : ↥s => Ft.panelRow ends (i : β × _ × _)))
+      ≤ Submodule.span ℝ FG₀.rigidityRows := by
+    rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩; exact hmem i
+  have hFG₀graph : FG₀.graph.vertexSet = V(G) := by
+    rw [hFG₀, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hcard_s : screwDim k * (V(G).ncard - 1) ≤ Nat.card ↥s := hs_card.ge
+  -- Feed the lemma at its own `FG₀.graph.vertexSet` shape (via `hFG₀graph`), then read the
+  -- conclusion back as `V(G)` — `FG₀.graph = G` by `rfl`, so no defeq-check forces the heavy
+  -- `q₀`-seed open (TACTICS-QUIRKS §38).
+  -- GAP-2 `hne` at `q₀`: the linking-edge extensors are nonzero (`e_a ↦ (-t)·C(L)`, `e_b ↦ C(e₀)`
+  -- at the sheared `vb`, `Gᵥ` via `hne_Gv` through the `Ft`/`FG₀` extensor agreement).
+  have hne_q₀ : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e hlink
+    rw [show (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge = FG₀ from hFG₀.symm]
+    rcases hsplitG e (ends e).1 (ends e).2 hlink with he | he | hGv
+    · rw [he, hFG₀_ea]
+      exact smul_ne_zero (neg_ne_zero.mpr ht_ne)
+        ((panelSupportExtensor_ne_zero_iff na n').mpr hLn)
+    · rw [he, hFG₀_eb]; exact (panelSupportExtensor_ne_zero_iff (na + t • n') nb).mpr hnewtrans
+    · rw [← hGv_seed_eq hGv]
+      obtain ⟨hne_a, hne_b⟩ := hGv_off hGv
+      rw [hFt, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb
+        t hne_a hne_b]
+      exact hne_Gv e (hends_Gv e _ _ hGv)
+  -- (v) Rigidity on `V(G)` at `q₀` — generalize the heavy `Ft.panelRow`-family to a plain `f` so
+  -- the `_of_span_le_rigidityRows` application never `whnf`s the `caseIIICandidate` carrier (§38),
+  -- then GAP-2 upgrades to the generic motive.
+  rw [hFG₀] at hsub
+  set f : ↥s → Module.Dual ℝ (α → ScrewSpace k) := fun i => Ft.panelRow ends (i : β × _ × _)
+    with hf_def
+  clear_value f
+  have hG : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.graph.vertexSet = V(G) := rfl
+  have hrig :=
+    BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows
+      (F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge)
+      ht_li hsub (by rw [hG]; exact hnev) (by rw [hG]; exact hcard_s)
+  rw [hG] at hrig
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_q₀
+    hne_q₀ hnev hrig
+
 /-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
 `lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly

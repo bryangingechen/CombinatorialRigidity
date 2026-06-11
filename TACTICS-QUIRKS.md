@@ -1480,6 +1480,21 @@ the `G.IsLink` as an *explicit argument* (the witness is *supplied*, not an infe
 defeq is checked cheaply). This is the form `hasGenericFullRankRealization_of_rigidOn_ofNormals` and
 the green `case_I_realization` block (`Molecular/AlgebraicInduction/CaseI.lean`) both use.
 
+**Row-family-argument variant (Phase 22h).** A span/rigidity lemma
+(`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`) applied with its **row-family argument
+built over a heavy carrier** — `(a := fun i : ↥s => Ft.panelRow ends i)` where `Ft =
+caseIIICandidate G ends q …` — `whnf`-times-out even at `maxHeartbeats 4000000`, while every prior
+`have` elaborates instantly (the explosion is *only* the lemma application, where the elaborator
+processes the heavy `Ft.panelRow` while unifying the family and synthesizing its codomain instances).
+Fix: **`set f := <heavy family> with hf` then `clear_value f`** right before the application, having
+already discharged the family's `LinearIndependent`/span-containment hypotheses (they auto-fold onto
+`f` under `set`). The lemma then applies to the opaque `f` with no carrier `whnf`. Pair with the §38
+*membership-witness* idiom for the span-containment proof and apply the lemma at the *concrete*
+carrier `(ofNormals G ends q₀).toBodyHinge` (not a `set`-bound abbrev — the `let`-indirection is what
+the `clear_value` removes). Worked case: `case_III_arm_realization` (W7, the `d = 3` Case-III arm,
+`Molecular/AlgebraicInduction/CaseI.lean`). As always: **the `set`/`clear_value` is the fix, not a
+`maxHeartbeats` bump** (4M still timed out).
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or
