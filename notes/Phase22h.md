@@ -29,10 +29,13 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step:** W1 — the discriminator restate (§1.50(a), RigidityMatrix.lean, both
-lemmas in place; exact signatures written there).
+**Next concrete step:** W2 — the `h618` micro-leaf `BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn`
+(§1.50(b), RigidityMatrix.lean; extract the inline `hfin` rank-nullity computation from
+GenericityDevice.lean:543/630). W1 (the discriminator restate, §1.50(a)) is **landed** —
+`exists_line_data_of_homogeneousIncidence` + `exists_complementIso_ne_zero_of_homogeneousIncidence`
+now return the discriminating index `u : Fin 3` (witness normal `n u`), the M₁/M₂/M₃ dispatch input.
 
-**Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** W1 discriminator
+**Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
 → W2 `h618` micro-leaf → W3 leaf B (rank transfer) → W4 leaf A0 (restriction-bottom augment)
 → W5 redundancy packaging (**introduces the carried GAP-6 hypothesis**) → W6/W7 M₁ → W8 M₂
 → W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 →
@@ -78,12 +81,13 @@ phase close, **green-modulo-GAP-6**.
 - [~] **Discharge `hcand`** (the candidate-placement core; **§1.50 is now canonical** —
   supersedes the §1.49(5) arm route): landed feeds = the triple-LI bridge (§1.48(2)), the GAP-3
   good-`t` core `exists_shear_linearIndependent_pair`, the Claim-6.12 → witness-meet glue
-  `exists_complementIso_ne_zero_of_homogeneousIncidence`. Remaining, as complete lemmas (no
-  `sorry` on master), per §1.50(f): W1 discriminator restate → W2 `h618` micro-leaf → W3
-  one-variable rank transfer → W4 restriction-bottom augment → W5 redundancy packaging (carries
-  the GAP-6 inequality as the adjudicated explicit hypothesis — Blockers) → W6/W7 M₁ (`t = 0`
-  certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10
-  dispatch + assembly matching the `hcand` signature.
+  `exists_complementIso_ne_zero_of_homogeneousIncidence`, and **W1 the discriminator restate**
+  (`exists_line_data_of_homogeneousIncidence` + the witness-meet glue now return the dispatch index
+  `u : Fin 3`, witness normal `n u`). Remaining, as complete lemmas (no `sorry` on master), per
+  §1.50(f): W2 `h618` micro-leaf → W3 one-variable rank transfer → W4 restriction-bottom augment →
+  W5 redundancy packaging (carries the GAP-6 inequality as the adjudicated explicit hypothesis —
+  Blockers) → W6/W7 M₁ (`t = 0` certification at `F₀` + closer) → W8 M₂ → W9 M₃ (G4c/G4d +
+  `candidateRow_ac_eq_neg`) → W10 dispatch + assembly matching the `hcand` signature.
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -108,14 +112,19 @@ phase close, **green-modulo-GAP-6**.
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W1, the discriminator restate (§1.50(a)).** Restate
-`exists_line_data_of_homogeneousIncidence` and `exists_complementIso_ne_zero_of_homogeneousIncidence`
-(both RigidityMatrix.lean, no outside consumers) **in place** at the discriminating level
-`∃ u : Fin 3, …` with the witness normal returned as the real `n u` — the `Fin 3`-valued
-M₁/M₂/M₃ dispatch input. Statement-level change; both proofs reuse verbatim (every builder branch
-already supplies a concrete `u`). Exact signatures in §1.50(a). **No `sorry` placeholders.**
-Then W2–W4 (each one commit, §1.50(f)), W5 onward per the build order; GAP 6 is adjudicated
-(carry as explicit hypothesis — Blockers), so nothing gates W5+.
+**Smallest next forward commit — W2, the `h618` micro-leaf (§1.50(b)).** Extract the inline
+`hfin` rank-nullity computation (GenericityDevice.lean:543/630) into the packaged lemma
+`BodyHingeFramework.finrank_span_rigidityRows_of_rigidOn` (signature in §1.50(b)):
+`finrank ℝ (span F.rigidityRows) = screwDim k * (V(F.graph).ncard − 1)` from `IsInfinitesimallyRigidOn`
+on a nonempty vertex set (`infinitesimalMotions_eq_dualCoannihilator` + the dual-annihilator
+complement + `finrank_screwAssignment`; no `hends`/`hne` needed). Then W3 leaf B (one-variable rank
+transfer, graph-free) → W4 leaf A0 (restriction-bottom block-triangular augment), each one commit,
+§1.50(f). W5 onward per the build order; GAP 6 is adjudicated (carry as explicit hypothesis —
+Blockers), so nothing gates W5+. **No `sorry` placeholders** at any step.
+
+W1 (the discriminator restate, §1.50(a)) **landed** — both lemmas restated in place at
+`∃ u : Fin 3, …` with the witness normal returned as `n u`; statement-level only, both proofs
+reused verbatim, build/lint/axiom-clean.
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it

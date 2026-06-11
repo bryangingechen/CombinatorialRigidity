@@ -564,11 +564,13 @@ eqs. (6.42)–(6.45), Phase 22g). The producer-direction analogue of the (now `h
 `hann` and concluded the per-join annihilation, this strips both and hands over only the **geometric
 line data**, on the **homogeneous-vector** layer (bare `pbar`, fed by
 `exists_homogeneousIncidence_of_normals`, §1.42 R1-affine). For each of the six joins `q`, it
-produces a witness panel normal `n_u` (a real split-leg normal `n u`), a second hyperplane `n'`
-through the join line `L = p̄_c p̄_d` independent from `n_u`, and the two kept points
-`pi = pbar c, pj = pbar d` the join spans — all four facts the candidate placement needs:
-`LinearIndependent ![n_u, n']`, the four `⬝ᵥ`-orthogonalities `{pi, pj} ⊥ {n_u, n'}`, and the join
-identity `omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj]`.
+produces a **discriminating witness index** `u : Fin 3` (so the witness panel normal is the real
+split-leg normal `n u` — the `Fin 3`-valued M₁/M₂/M₃ dispatch input the `hcand`-discharge reads,
+§1.50(a)), a second hyperplane `n'` through the join line `L = p̄_c p̄_d` independent from `n u`,
+and the two kept points `pi = pbar c, pj = pbar d` the join spans — all four facts the candidate
+placement needs: `LinearIndependent ![n u, n']`, the four `⬝ᵥ`-orthogonalities
+`{pi, pj} ⊥ {n u, n'}`, and the join identity
+`omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj]`.
 
 This is exactly the input
 `panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero` (the Leaf-2b seed-from-line core)
@@ -587,8 +589,8 @@ theorem exists_line_data_of_homogeneousIncidence
     (h2 : pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0)
     (h3 : pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0) :
     ∀ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
-      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
-        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+      ∃ (u : Fin 3) (n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+        pi ⬝ᵥ n u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
         omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] := by
   -- Two N3a panel normals `n a, n b` are independent (subfamily of the independent `n`).
   have hpair : ∀ a b : Fin 3, a ≠ b → LinearIndependent ℝ ![n a, n b] := by
@@ -596,27 +598,29 @@ theorem exists_line_data_of_homogeneousIncidence
     have := hn.comp ![a, b] (by intro x y hxy; fin_cases x <;> fin_cases y <;> simp_all)
     rwa [show (n ∘ ![a, b]) = ![n a, n b] from by ext x; fin_cases x <;> rfl] at this
   -- **Two-panel join builder** (the three joins through `p̄ 0`): the kept points `e₁, e₂` both lie
-  -- on panels `Π(u)` *and* `Π(w)` (two N3a normals); take `{n_u, n'} = {n u, n w}`.
+  -- on panels `Π(u)` *and* `Π(w)` (two N3a normals); the discriminating witness normal is `n u`,
+  -- the second hyperplane `n' = n w` (so `u : Fin 3` is the dispatch index the producer reads).
   have htwo : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u w : Fin 3) (e₁ e₂ : Fin 4 → ℝ),
       u ≠ w → e₁ ⬝ᵥ n u = 0 → e₁ ⬝ᵥ n w = 0 → e₂ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n w = 0 →
       omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![e₁, e₂] →
-      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
-        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+      ∃ (u : Fin 3) (n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+        pi ⬝ᵥ n u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
         omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] :=
     fun _ u w e₁ e₂ huw h1u h1w h2u h2w hkept =>
-      ⟨n u, n w, e₁, e₂, hpair u w huw, h1u, h1w, h2u, h2w, hkept⟩
+      ⟨u, n w, e₁, e₂, hpair u w huw, h1u, h1w, h2u, h2w, hkept⟩
   -- **One-panel join builder** (the three "opposite" joins, single shared panel `Π(u)`): both kept
-  -- points lie on `Π(u)`; `exists_independent_perp_pair` builds a second hyperplane `n'`.
+  -- points lie on `Π(u)`; the discriminating witness normal is `n u` and
+  -- `exists_independent_perp_pair` builds the second hyperplane `n'`.
   have hone : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (u : Fin 3) (e₁ e₂ : Fin 4 → ℝ),
       e₁ ⬝ᵥ n u = 0 → e₂ ⬝ᵥ n u = 0 →
       omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![e₁, e₂] →
-      ∃ (n_u n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n_u, n'] ∧
-        pi ⬝ᵥ n_u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n_u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
+      ∃ (u : Fin 3) (n' pi pj : Fin 4 → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+        pi ⬝ᵥ n u = 0 ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n u = 0 ∧ pj ⬝ᵥ n' = 0 ∧
         omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pi, pj] :=
     fun _ u e₁ e₂ h1u h2u hkept => by
       obtain ⟨n', hpair', h1', h2'⟩ :=
         exists_independent_perp_pair e₁ e₂ (n u) h1u h2u (hn.ne_zero u)
-      exact ⟨n u, n', e₁, e₂, hpair', h1u, h1', h2u, h2', hkept⟩
+      exact ⟨u, n', e₁, e₂, hpair', h1u, h1', h2u, h2', hkept⟩
   -- The per-join kept-points identity (concrete `c, d` per join), from the general tabulation.
   have hkept : ∀ (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) (c d : Fin 4), c < d →
       c ≠ q.1.1 → c ≠ q.1.2 → d ≠ q.1.1 → d ≠ q.1.2 →
@@ -1967,18 +1971,19 @@ theorem exists_hduality_witness_of_panel_incidence
 `hsplit` producer's `n_a`/`n_b` arms, KT eq. (6.45); Phase 22h). The forward (existence) dual of
 `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`: rather than transferring annihilation,
 it produces, from a **nonzero** functional `r` and the homogeneous incidence data of four
-affinely-independent points `pbar` against three independent panel normals `n`, a line `L` in one of
-the three panels whose **panel-meet** `C(L) = complementIso (n_u ∧ n')` the functional `r` does
-*not* annihilate.
+affinely-independent points `pbar` against three independent panel normals `n`, a
+**discriminating index** `u : Fin 3` and a line `L` in panel `Π(n u)` whose **panel-meet**
+`C(L) = complementIso (n u ∧ n')` the functional `r` does *not* annihilate.
 
 This is the contrapositive of KT's Claim 6.12 union argument made constructive: Claim 6.12
 (`case_III_claim612`) supplies a witness join `pᵢ ∨ pⱼ = omitTwoExtensor pbar (ne_of_lt q.2)` with
 `r(pᵢ ∨ pⱼ) ≠ 0`; the per-join line data (`exists_line_data_of_homogeneousIncidence`) exhibits the
-join line `L = pᵢ pⱼ` inside a panel `Π(n_u)` with a second hyperplane `n'`; and the per-line
+join line `L = pᵢ pⱼ` inside a panel `Π(n u)` with a second hyperplane `n'`; and the per-line
 duality (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, contrapositive) forces
-`r(C(L)) ≠ 0` from `r(pᵢ ∨ pⱼ) ≠ 0`. The resulting `{n_u, n'}` with
-`r(complementIso (n_u ∧ n')) ≠ 0` is the nonzero-candidate-row input the producer's eq. (6.12)
-candidate placement consumes (its hinge line is built to be exactly this witness line `L`).
+`r(C(L)) ≠ 0` from `r(pᵢ ∨ pⱼ) ≠ 0`. The resulting `u`, `{n u, n'}` with
+`r(complementIso (n u ∧ n')) ≠ 0` is the nonzero-candidate-row input the producer's eq. (6.12)
+candidate placement consumes (its hinge line is built to be exactly this witness line `L`); the
+returned `u : Fin 3` is the M₁/M₂/M₃ dispatch index the `hcand`-discharge reads (§1.50(a)).
 Graph-free (pure `Fin 4` / `⋀²ℝ⁴` geometry, off the `ofNormals` `whnf` trap, TACTICS-QUIRKS §38);
 the `r`/`pbar`/`n` data is supplied by the producer at instantiation. -/
 theorem exists_complementIso_ne_zero_of_homogeneousIncidence
@@ -1989,21 +1994,23 @@ theorem exists_complementIso_ne_zero_of_homogeneousIncidence
     (h1 : pbar 1 ⬝ᵥ n 0 = 0 ∧ pbar 1 ⬝ᵥ n 1 = 0)
     (h2 : pbar 2 ⬝ᵥ n 1 = 0 ∧ pbar 2 ⬝ᵥ n 2 = 0)
     (h3 : pbar 3 ⬝ᵥ n 2 = 0 ∧ pbar 3 ⬝ᵥ n 0 = 0) :
-    ∃ n_u n' : Fin 4 → ℝ, LinearIndependent ℝ ![n_u, n'] ∧
+    ∃ (u : Fin 3) (n' : Fin 4 → ℝ), LinearIndependent ℝ ![n u, n'] ∧
       r (complementIso (k := 2) (j := 2) (by omega)
-        ⟨extensor ![n_u, n'], extensor_mem_exteriorPower _⟩) ≠ 0 := by
+        ⟨extensor ![n u, n'], extensor_mem_exteriorPower _⟩) ≠ 0 := by
   -- Claim 6.12: a witness join `pᵢ ∨ pⱼ = omitTwoExtensor pbar (ne_of_lt q.2)` with `r(·) ≠ 0`.
   obtain ⟨q, hq⟩ := case_III_claim612 hr hp
-  -- The per-join line data: the join line `L = pᵢ pⱼ ⊂ Π(n_u)`, second hyperplane `n'`.
-  obtain ⟨n_u, n', pi, pj, hpair, hi_u, hi_u', hj_u, hj_u', hkept⟩ :=
+  -- The per-join line data: the join line `L = pᵢ pⱼ ⊂ Π(n u)` for a discriminating index
+  -- `u : Fin 3` (the witness panel normal is the real split-leg normal `n u`), and a second
+  -- hyperplane `n'`.
+  obtain ⟨u, n', pi, pj, hpair, hi_u, hi_u', hj_u, hj_u', hkept⟩ :=
     exists_line_data_of_homogeneousIncidence hn h0 h1 h2 h3 q
-  refine ⟨n_u, n', hpair, fun hC => hq ?_⟩
+  refine ⟨u, n', hpair, fun hC => hq ?_⟩
   -- Contrapositive of the per-line duality: `r(C(L)) = 0` forces `r(pᵢ ∨ pⱼ) = 0`, i.e.
   -- `r` annihilates the witness join — contradicting `hq`.
   rw [show (⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ :
         ⋀[ℝ]^2 (Fin 4 → ℝ)) = ⟨extensor ![pi, pj], extensor_mem_exteriorPower _⟩ from
       Subtype.ext hkept]
-  exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct n_u n' pi pj hpair
+  exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n u) n' pi pj hpair
     hi_u hi_u' hj_u hj_u' r hC
 
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
