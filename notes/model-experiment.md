@@ -8,13 +8,10 @@ conditional on it.)
 — the portable, repo-agnostic half (axes, assignment map, rubric,
 log schema). Keep it byte-identical across participating repos; this
 file carries only repo-local state: config, the dispatch log, and
-findings. Last protocol sync: 2026-06-10 — the 2026-06-10 local
-amendments (log-row timing rule, softened change-propagation
-framing) are upstream (autoformaltemplate fbb6a29) and in
-enharmonic. **Pending propagation:** the 2026-06-10 (evening)
-log-row append-hazard sentence (*Per-dispatch record*) and the
+findings. Last protocol sync: 2026-06-10 evening (template
+1e441ae); in sync except as noted. **Pending propagation:** the
 2026-06-11 `killed` outcome value (*Per-dispatch record* Outcome
-field) are local to this repo until synced to autoformaltemplate +
+field) is local to this repo until synced to autoformaltemplate +
 enharmonic.
 
 ## Repo-local config

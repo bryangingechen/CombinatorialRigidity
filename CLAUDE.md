@@ -119,6 +119,11 @@ hand-off — and points at the blueprint chapter.)
   `notes/PhaseN.md`'s *Layer plan* section rather than a single
   blueprint chapter, and the affected chapters spend a few Layer
   commits with selected nodes red until their Lean catches up.
+  Per-slice gate (two misses in enharmonic Phase 17): before
+  committing a slice that changes a decl's *statement*, grep
+  `blueprint/src/` for that decl — when the `\lean{...}` name
+  survives the flip, `checkdecls` cannot catch a node still stating
+  the legacy form; restate it in the same commit.
 - **Every commit is a potential handoff point.** Treat each commit
   as if the session could end on it. The pre-commit checklists
   below (*keep the hand-off contract honest*) and the Lean-side
@@ -143,7 +148,9 @@ hand-off — and points at the blueprint chapter.)
   identity). In the `Co-Authored-By:` trailer, name the model
   *actually generating the commit* — check your own model identity
   rather than copying the trailer from recent `git log` (history may
-  have been authored by a different model).
+  have been authored by a different model). Write the model name in
+  display form (`Claude Sonnet 4.6 <noreply@anthropic.com>`), not
+  the model-id form (`claude-sonnet-4-6`).
 - **Pushing to `master` triggers a Pages deploy** (blueprint, docs,
   upstreaming dashboard via `leanprover-community/docgen-action`).
   PRs run the same build but skip the deploy step. There is no

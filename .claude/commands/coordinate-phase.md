@@ -85,7 +85,18 @@ Loop:
      gate always runs; for below-top-rung dispatches also re-run
      `lake lint` and read the **full diff** (protocol rule); for
      haiku, re-run every gate the return names (a haiku once
-     fabricated all three gates green — enharmonic, row 12).
+     fabricated all three gates green — enharmonic 2026-06-10,
+     model-experiment row 12).
+   - **Sorry-grep the touched `.lean` files after every
+     below-top-rung dispatch**, regardless of what the return says —
+     a LANDED return can omit a `sorry` that the commit message
+     discloses (enharmonic row 13: the commit message was honest,
+     the return was not). Read the commit message body, not just the
+     summary line. A landed sorry is a failed verification →
+     escalation per the protocol: re-dispatch one rung up with the
+     route named in the prompt, keep the landed commit, close the
+     sorry in the follow-up (enharmonic rows 7–8 and 13–14
+     precedent).
    - **Shape check:** when the hand-off pins the deliverable to a
      design verdict (a §1.NN pointer or named verdict), diff the
      landed statement against that section — motive strength,
@@ -98,20 +109,24 @@ Loop:
    - **Mechanical fixups, not stops:** wrong branch → `git checkout
      master && git merge --ff-only <branch> && git branch -d
      <branch>`; wrong author → `git commit --amend --author=…`;
-     wrong co-author trailer (a subagent naming a model it didn't
-     run on — twice in one 22h session, rows 21/26, both times the
+     wrong co-author trailer — a subagent naming a model it didn't
+     run on (twice in one 22h session, rows 21/26, both times the
      dominant trailer from recent `git log` instead of the dispatched
-     model) → amend the trailer before logging the sha (the
-     protocol's attribution-hygiene rule; not counted against the
-     outcome grade). A
-     return with **neither LANDED nor BLOCKED** usually means the
-     subagent parked on a background gate with finished-but-
-     uncommitted work (twice on 22h's G5) — don't blind-redispatch;
-     verify the tree diff against the hand-off yourself, run the
-     gates, commit with the project identity. A dispatch **killed by
-     a session/usage limit** also returns neither (the return is the
-     limit error itself): check `git status` for stranded work, log
-     it as outcome `killed`, and relaunch fresh — salvaging the dead
+     model), or the model name in model-id form (`claude-sonnet-4-6`)
+     instead of display form (`Claude Sonnet 4.6`; sonnet does this
+     persistently even with the rule in CLAUDE.md) → amend the
+     trailer before logging the sha (the protocol's
+     attribution-hygiene rule; not counted against the outcome
+     grade). A return with **neither LANDED nor BLOCKED** usually
+     means the subagent parked on a background gate with
+     finished-but-uncommitted work (twice on 22h's G5) — don't
+     blind-redispatch (a fresh "continue" agent re-reads everything
+     and may park the same way); verify the tree diff against the
+     hand-off yourself, run the gates, commit with the project
+     identity. A dispatch **killed by a session/usage limit** also
+     returns neither (the return is the limit error itself): check
+     `git status` for stranded work, log it as outcome `killed`,
+     and relaunch fresh — salvaging the dead
      agent's read map (its `agent-<id>.jsonl` transcript under the
      session's `subagents/` dir) into the relaunch prompt recovers
      most of the lost reading phase (rows 28→29).
@@ -124,11 +139,22 @@ Loop:
      route silently supplied — 22g §1.46 orphaned `hgab`). A recon
      that surfaces a **new gap** is usually cheaply verifiable —
      check it against the primary source (`.refs/` PDFs, REFS.md)
-     and/or a one-line Lean witness *before* re-planning on it (22g
-     GAPs 4/5 settled in minutes; 22h GAP 6 confirmed against KT
-     p. 684 + the Lean motive in one sitting). Build-dispatched
+     and/or a one-line Lean witness (`lean_run_code`) *before*
+     re-planning on it (22g GAPs 4/5 settled in minutes; 22h GAP 6
+     confirmed against KT p. 684 + the Lean motive in one sitting).
+     Build-dispatched
      agents sometimes self-redirect to a recon — often rightly; same
      scrutiny, especially when one overturns a prior finding.
+   - **Plan-label deviations (destructive→additive, slice re-size)
+     are a normal, usually-correct self-redirect in migration
+     phases** — four consecutive "destructive" slices rightly landed
+     additively in one run (enharmonic Phase 17). Verify the stated
+     reason against the source once (the first occurrence sets the
+     pattern), confirm the deferred obligation (legacy retirement,
+     follow-up sub-slice) is recorded in the phase notes with a
+     slice pointer, and fix the drift at the authoritative plan doc
+     when pausing — a plan doc that says "destructive" while reality
+     went additive is a trap for the next coordinator.
    - Re-read the updated "Hand-off / next phase".
 5. If the commit changed any `.lean` file: `touch` the changed file
    (cached modules don't re-emit warnings), then `lake build
