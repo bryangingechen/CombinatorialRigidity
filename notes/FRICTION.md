@@ -4064,6 +4064,32 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
 - **Fix:** annotate `(ExteriorAlgebra.ιMulti ℝ 2 (M := Fin 4 → ℝ)).map_update_smul`.
 - **Status:** resolved.
 
+### [resolved] `open Classical in` must precede the docstring, not follow it
+- **Where it bit:** Phase 22i L0c (`PanelLayer.lean`). Three `open Classical in theorem`s
+  placed *after* their `/-- ... -/` docstrings caused `"unexpected token 'open'; expected
+  'lemma'"` at the end of the docstring line. Lean's parser expects a declaration keyword
+  immediately after a docstring, and `open X in` is not such a keyword.
+- **Fix:** put `open Classical in` *before* the docstring:
+  ```lean
+  open Classical in
+  /-- doc -/
+  theorem T ...
+  ```
+  For a proof body that needs classical (but the statement doesn't have `if`), the
+  `classical` tactic is cleaner than `open Classical in` at the declaration level.
+- **Status:** resolved.
+
+### [resolved] `sᶜ.ncard` vs `s.compl.ncard` notation mismatch for `rw`
+- **Where it bit:** Phase 22i L0c (`PanelLayer.lean`, `GenericityDevice.lean`).
+  `Set.ncard_add_ncard_compl` states `s.ncard + sᶜ.ncard = Nat.card α` (using `·ᶜ`
+  notation), but `zify` and `hhub` produced `s.compl.ncard` terms. `rw [←
+  Set.ncard_add_ncard_compl]` fails pattern-match; `linarith` treats `sᶜ.ncard` and
+  `s.compl.ncard` as distinct.
+- **Fix:** introduce `have heq : sᶜ.ncard = s.compl.ncard := rfl` then `rw [← heq, ←
+  Nat.mul_add, h]`. The `rfl` closes because `Set.compl = (·ᶜ)` definitionally.
+- **Status:** resolved. (If this pattern recurs, a `@[simp]` lemma or a norm-simp
+  canonicalization to one notation would eliminate it.)
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

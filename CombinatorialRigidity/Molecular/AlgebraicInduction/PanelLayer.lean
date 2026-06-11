@@ -1676,6 +1676,226 @@ theorem screwDim_le_finrank_infinitesimalMotions [Nonempty α] [Finite α]
   rw [← F.finrank_trivialMotions]
   exact Submodule.finrank_mono F.trivialMotions_le_infinitesimalMotions
 
+/-! ### Complement-separated `|range f|`-form hub bound and B2 (`Phase 22i L0c`)
+
+The landed `screwDim_mul_numParts_sub_le_finrank_partitionMotions` bound uses `numParts G f =
+|f '' V(G)|`, which counts only labels of `V(G)`-vertices. For B2 we need the ambient complement
+count `|V(G)ᶜ|` to appear. The route (design doc §1.57(b)):
+
+1. Re-state the bound with `Nat.card (Set.range f)` replacing `numParts G f` — lossless because
+   `finrank_partitionConstant` is already exact (`D · |range f|`).
+2. Normalize the def-attaining `f₀` to `g` with `g '' V(G) ⊆ V(G)` by injecting the
+   `numParts` label values into `V(G)` (possible since `|f₀ '' V(G)| ≤ |V(G)|`). The injection
+   preserves `numParts` (ncard of image unchanged) and `crossingEdges` (injective → distinct iff
+   distinct). Since `g x = x` for `x ∉ V(G)`, `range g = g '' V(G) ∪ V(G)ᶜ` disjointly, so
+   `|range g| = numParts + |V(G)ᶜ|`.
+3. Apply the range bound at `g` and chain to `infinitesimalMotions`. -/
+
+/-- **The `|range f|`-form motion bound** (Phase 22i L0c): the `≥ D·|P|` step in
+`screwDim_mul_numParts_sub_le_finrank_partitionMotions` is lossless — `finrank_partitionConstant`
+gives `D·|range f|` exactly — so the same rank-nullity argument gives the exact-range version
+`D·|range f| − (D−1)·d_G(P) ≤ finrank (partitionMotions f)` with no extra cost. This is the
+foundational building block for the relative hub and B2: plugging the complement-separated
+refinement `f'` gives the ambient range count `|range f'| = numParts + |Vᶜ|`. -/
+theorem screwDim_mul_range_card_sub_le_finrank_partitionMotions [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) (f : α → α)
+    (hC : ∀ e ∈ F.graph.crossingEdges f, F.supportExtensor e ≠ 0) :
+    (screwDim k : ℤ) * Nat.card (Set.range f)
+        - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f).ncard
+      ≤ (Module.finrank ℝ (F.partitionMotions f) : ℤ) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype ↥(F.graph.crossingEdges f) := Fintype.ofFinite _
+  have hfull : Module.finrank ℝ (LinearMap.range (F.partitionCutMap f))
+      + Module.finrank ℝ (LinearMap.ker (F.partitionCutMap f)) = screwDim k * Fintype.card α := by
+    rw [LinearMap.finrank_range_add_finrank_ker, finrank_screwAssignment]
+  have hrange : Module.finrank ℝ (LinearMap.range (F.partitionCutMap f))
+      ≤ screwDim k * (F.graph.crossingEdges f).ncard - (F.graph.crossingEdges f).ncard := by
+    have := (LinearMap.range (F.partitionCutMap f)).finrank_le.trans_eq
+      (F.finrank_partitionCutMap_codomain f hC)
+    rwa [Nat.sub_mul, one_mul] at this
+  have hinf : Module.finrank ℝ (LinearMap.ker (F.partitionCutMap f))
+        + Module.finrank ℝ (partitionConstant (k := k) f)
+      ≤ Module.finrank ℝ (F.partitionMotions f) + screwDim k * Fintype.card α := by
+    have hsup := Submodule.finrank_sup_add_finrank_inf_eq
+      (LinearMap.ker (F.partitionCutMap f)) (partitionConstant (k := k) f)
+    rw [partitionCutMap_ker_inf] at hsup
+    have hle : Module.finrank ℝ
+          (↥(LinearMap.ker (F.partitionCutMap f) ⊔ partitionConstant (k := k) f))
+        ≤ screwDim k * Fintype.card α := by
+      rw [← finrank_screwAssignment (α := α) (k := k)]
+      exact Submodule.finrank_le _
+    omega
+  -- `finrank W_f = D·|range f|` exactly.
+  have hWf : screwDim k * Nat.card (Set.range f)
+      = Module.finrank ℝ (partitionConstant (k := k) f) := by
+    rw [finrank_partitionConstant]
+  have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+  have hdle : (F.graph.crossingEdges f).ncard ≤ screwDim k * (F.graph.crossingEdges f).ncard :=
+    Nat.le_mul_of_pos_left _ (by omega)
+  rw [sub_mul, one_mul]
+  zify [hdle] at hrange ⊢
+  zify at hfull hinf hWf
+  omega
+
+open Classical in
+/-- **Complement-separation for `crossingEdges`** (Phase 22i L0c): the refinement
+`f' := fun x => if x ∈ V(G) then f x else x` has the same crossing-edge set as `f`, because
+every link of `G` has both endpoints in `V(G)` (`IsLink.left_mem`, `IsLink.right_mem`), so the
+`if x ∈ V(G)` guard fires for both endpoints and `f' u = f u`, `f' v = f v`. -/
+theorem crossingEdges_complement_sep (G : Graph α β) (f : α → α) :
+    G.crossingEdges (fun x => if x ∈ G.vertexSet then f x else x) = G.crossingEdges f := by
+  ext e
+  simp only [Graph.crossingEdges, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨heE, u, v, hlink, hne⟩
+    exact ⟨heE, u, v, hlink, by rwa [if_pos hlink.left_mem, if_pos hlink.right_mem] at hne⟩
+  · rintro ⟨heE, u, v, hlink, hne⟩
+    exact ⟨heE, u, v, hlink, by rwa [if_pos hlink.left_mem, if_pos hlink.right_mem]⟩
+
+open Classical in
+/-- **Complement-separation range count** (Phase 22i L0c): for a labeling `f : α → α` with
+`f '' V(G) ⊆ V(G)` (labels stay inside `V(G)`), the refinement `f' := fun x => if x ∈ V(G)
+then f x else x` satisfies `|range f'| = numParts G f + |(V(G))ᶜ|`. The two label families
+`{f x | x ∈ V(G)} = f '' V(G)` and `{x | x ∉ V(G)} = (V(G))ᶜ` are disjoint by the `f ''
+V(G) ⊆ V(G)` hypothesis, and their union covers `range f'`. -/
+theorem range_complement_sep_card [Finite α] (G : Graph α β) (f : α → α)
+    (hf : f '' G.vertexSet ⊆ G.vertexSet) :
+    Nat.card (Set.range (fun x => if x ∈ G.vertexSet then f x else x))
+      = G.numParts f + G.vertexSet.compl.ncard := by
+  -- `range f' = f '' V(G) ∪ (V(G))ᶜ`
+  have hrange : Set.range (fun x : α => if x ∈ G.vertexSet then f x else x)
+      = f '' G.vertexSet ∪ G.vertexSet.compl := by
+    ext y
+    simp only [Set.mem_range, Set.mem_union, Set.mem_image]
+    constructor
+    · rintro ⟨x, hx⟩
+      by_cases hxV : x ∈ G.vertexSet
+      · left; exact ⟨x, hxV, by rwa [if_pos hxV] at hx⟩
+      · right; rw [if_neg hxV] at hx; rw [← hx]; exact hxV
+    · rintro (⟨x, hxV, rfl⟩ | hyVc)
+      · exact ⟨x, by rw [if_pos hxV]⟩
+      · exact ⟨y, by rw [if_neg hyVc]⟩
+  -- The two parts are disjoint: `f '' G.vertexSet ⊆ G.vertexSet` and `G.vertexSet.compl` disjoint.
+  have hdisj : Disjoint (f '' G.vertexSet) G.vertexSet.compl :=
+    Set.disjoint_left.mpr fun y hy hyc => hyc (hf hy)
+  rw [Nat.card_coe_set_eq, hrange,
+      Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _)]
+  simp [Graph.numParts]
+
+open Classical in
+/-- **The relative hub** (Phase 22i L0c): `D·(|V(G)ᶜ| + 1) + def(G̃) ≤ finrank Z(G,p)`.
+The proof normalizes the def-attaining partition `f₀` to `g` with `g '' V(G) ⊆ V(G)` via
+`Set.Finite.exists_injOn_of_encard_le`, then applies the `|range f|`-form bound at `g`. -/
+theorem screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions
+    [Finite α] [Finite β] {n : ℕ}
+    (F : BodyHingeFramework k α β)
+    (hn : Graph.bodyBarDim n = screwDim k)
+    (hne : F.graph.vertexSet.Nonempty)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (screwDim k : ℤ) * (F.graph.vertexSet.compl.ncard + 1) + F.graph.deficiency n
+      ≤ (Module.finrank ℝ F.infinitesimalMotions : ℤ) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Nonempty α := ⟨hne.some⟩
+  set VG := F.graph.vertexSet
+  -- Pick the def-attaining partition `f₀`.
+  obtain ⟨f₀, hf₀⟩ := exists_eq_ciSup_of_finite (f := F.graph.partitionDef n)
+  rw [Graph.deficiency, ← hf₀]
+  -- Normalize: `|f₀ '' VG| ≤ |VG|` because f₀ maps VG into at most |VG| distinct values.
+  have hencard : (f₀ '' VG).encard ≤ VG.encard := Set.encard_image_le f₀ VG
+  -- Obtain `ι₀ : α → α` injective on `f₀ '' VG` with `ι₀ '' (f₀ '' VG) ⊆ VG`.
+  obtain ⟨ι₀, hι₀maps, hι₀inj⟩ :=
+    (Set.toFinite (f₀ '' VG)).exists_injOn_of_encard_le hencard
+  -- Define the normalized labeling `g : α → α`.
+  set g : α → α := fun x => if x ∈ VG then ι₀ (f₀ x) else x with hg_def
+  -- `g '' VG ⊆ VG`: for x ∈ VG, g x = ι₀ (f₀ x) ∈ VG since f₀ x ∈ f₀ '' VG and ι₀ maps into VG.
+  have hg_img : g '' VG ⊆ VG := by
+    rintro y ⟨x, hxV, rfl⟩
+    simp only [hg_def, if_pos hxV]
+    exact hι₀maps (Set.mem_image_of_mem f₀ hxV)
+  -- `numParts G g = numParts G f₀`: g '' VG = ι₀ '' (f₀ '' VG); ι₀ is injective on f₀ '' VG.
+  have hnumParts : F.graph.numParts g = F.graph.numParts f₀ := by
+    simp only [Graph.numParts, hg_def]
+    -- g '' VG = ι₀ '' (f₀ '' VG), so their ncard is equal via injectivity of ι₀.
+    have himg : (fun x => if x ∈ VG then ι₀ (f₀ x) else x) '' VG = ι₀ '' (f₀ '' VG) := by
+      ext y
+      simp only [Set.mem_image]
+      constructor
+      · rintro ⟨x, hxV, rfl⟩
+        rw [if_pos hxV]
+        exact Set.mem_image_of_mem ι₀ (Set.mem_image_of_mem f₀ hxV)
+      · rintro ⟨_, ⟨x, hxV, rfl⟩, rfl⟩
+        exact ⟨x, hxV, by rw [if_pos hxV]⟩
+    rw [himg]
+    exact hι₀inj.ncard_image
+  -- `crossingEdges G g = crossingEdges G f₀`: g u ≠ g v ↔ ι₀(f₀ u) ≠ ι₀(f₀ v) ↔ f₀ u ≠ f₀ v
+  -- (since ι₀ is injective on f₀ '' VG and f₀ u, f₀ v ∈ f₀ '' VG for u, v ∈ VG).
+  have hcross : F.graph.crossingEdges g = F.graph.crossingEdges f₀ := by
+    ext e
+    simp only [Graph.crossingEdges, Set.mem_setOf_eq]
+    constructor
+    · rintro ⟨heE, u, v, hlink, hne⟩
+      refine ⟨heE, u, v, hlink, ?_⟩
+      -- `hne : g u ≠ g v`; after unfolding g at u and v, this is `ι₀ (f₀ u) ≠ ι₀ (f₀ v)`.
+      have hu : g u = ι₀ (f₀ u) := if_pos hlink.left_mem
+      have hv : g v = ι₀ (f₀ v) := if_pos hlink.right_mem
+      rw [hu, hv] at hne
+      exact fun h => hne (congrArg ι₀ h)
+    · rintro ⟨heE, u, v, hlink, hne⟩
+      refine ⟨heE, u, v, hlink, ?_⟩
+      -- `hne : f₀ u ≠ f₀ v`; show `g u ≠ g v` via injectivity of ι₀.
+      have hu : g u = ι₀ (f₀ u) := if_pos hlink.left_mem
+      have hv : g v = ι₀ (f₀ v) := if_pos hlink.right_mem
+      rw [hu, hv]
+      exact fun h => hne (hι₀inj (Set.mem_image_of_mem f₀ hlink.left_mem)
+        (Set.mem_image_of_mem f₀ hlink.right_mem) h)
+  -- `partitionDef n g = partitionDef n f₀` (same numParts and crossingEdges).
+  have hpdef : F.graph.partitionDef n g = F.graph.partitionDef n f₀ := by
+    rw [Graph.partitionDef, Graph.partitionDef, hcross, hnumParts]
+  -- `range g = g '' VG ∪ VGᶜ` (g x = x for x ∉ VG, so g '' VGᶜ = VGᶜ; disjoint from g '' VG ⊆ VG).
+  have hrange_g : Nat.card (Set.range g) = F.graph.numParts g + VGᶜ.ncard := by
+    have hrange_eq : Set.range g = g '' VG ∪ VGᶜ := by
+      ext y
+      simp only [Set.mem_range, Set.mem_union, Set.mem_image, Set.mem_compl_iff]
+      constructor
+      · rintro ⟨x, rfl⟩
+        by_cases hx : x ∈ VG
+        · exact Or.inl ⟨x, hx, rfl⟩
+        · right; simp only [hg_def, if_neg hx]; exact hx
+      · rintro (⟨x, hxV, rfl⟩ | hx)
+        · exact ⟨x, rfl⟩
+        · exact ⟨y, by simp [hg_def, hx]⟩
+    have hdisj : Disjoint (g '' VG) VGᶜ :=
+      Set.disjoint_left.mpr fun y hy hyc => hyc (hg_img hy)
+    rw [Nat.card_coe_set_eq, hrange_eq,
+        Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _)]
+    simp only [Graph.numParts]
+    rfl
+  -- Apply the `|range g|`-form motion bound.
+  have hCg : ∀ e ∈ F.graph.crossingEdges g, F.supportExtensor e ≠ 0 := by
+    rw [hcross]
+    intro e he
+    obtain ⟨_, x, y, hlink, _⟩ := he
+    exact hC e x y hlink
+  have hlb := F.screwDim_mul_range_card_sub_le_finrank_partitionMotions g hCg
+  have hmono : Module.finrank ℝ (F.partitionMotions g)
+      ≤ Module.finrank ℝ F.infinitesimalMotions :=
+    Submodule.finrank_mono (F.partitionMotions_le_infinitesimalMotions g)
+  -- Assemble: D*(numParts + |VGᶜ|) - (D-1)*crossing ≤ dim Z.
+  -- and D*(numParts + |VGᶜ|) - (D-1)*crossing = D*(|VGᶜ|+1) + partitionDef n f₀.
+  rw [hrange_g, hnumParts] at hlb
+  rw [hcross] at hlb
+  -- `partitionDef n f₀ = D*(numParts f₀ - 1) - (D-1)*crossing f₀`
+  -- Goal: D*(|VGᶜ|+1) + partitionDef n f₀ ≤ dim Z
+  have hDcast : (Graph.bodyBarDim n : ℤ) = (screwDim k : ℤ) := by exact_mod_cast hn
+  have hpdef_eq : F.graph.partitionDef n f₀
+      = (screwDim k : ℤ) * ((F.graph.numParts f₀ : ℤ) - 1)
+        - (screwDim k - 1 : ℤ) * (F.graph.crossingEdges f₀).ncard := by
+    simp [Graph.partitionDef, hDcast]
+  -- Bridge `VGᶜ.ncard = VG.compl.ncard` (definitionally equal; unify for linarith).
+  have hcompl_eq : VGᶜ.ncard = VG.compl.ncard := rfl
+  zify [hcompl_eq] at hmono hlb ⊢
+  linarith [hpdef_eq]
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

@@ -550,6 +550,37 @@ theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_r
     zify [h1] at hcount hcompl hsplit ⊢
     linarith
 
+/-- **B2: the V(G)-relative deficiency upper bound on the rigidity-row span** (Phase 22i L0c).
+For any body-hinge framework `F` with `bodyBarDim n = screwDim k`, nonempty vertex set, and
+genuine hinges on all links, the rigidity-row span satisfies:
+
+  `finrank (span F.rigidityRows) ≤ D·(|V(G)|−1) − def(G̃)`
+
+where `D = screwDim k`. Proof: relative hub
+(`screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions`)
++ complement brick (L0b) + `ncard + ncardᶜ = card α` arithmetic. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_add_deficiency_le
+    [Finite α] [Finite β] {n : ℕ}
+    (F : BodyHingeFramework k α β)
+    (hn : Graph.bodyBarDim n = screwDim k)
+    (hne : F.graph.vertexSet.Nonempty)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0) :
+    (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      ≤ screwDim k * (F.graph.vertexSet.ncard - 1 : ℤ) - F.graph.deficiency n := by
+  haveI : Fintype α := Fintype.ofFinite α
+  have hcompl := F.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+  have hhub := F.screwDim_mul_compl_add_deficiency_le_finrank_infinitesimalMotions hn hne hC
+  have hsplit : screwDim k * Nat.card α
+      = screwDim k * F.graph.vertexSet.ncard + screwDim k * F.graph.vertexSet.compl.ncard := by
+    have h : F.graph.vertexSet.ncard + F.graph.vertexSetᶜ.ncard = Nat.card α :=
+      Set.ncard_add_ncard_compl F.graph.vertexSet (Set.toFinite _) (Set.toFinite _)
+    have heq : F.graph.vertexSetᶜ.ncard = F.graph.vertexSet.compl.ncard := rfl
+    rw [← heq, ← Nat.mul_add, h]
+  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+  rw [Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card] at hcompl
+  zify [h1] at hcompl hhub hsplit ⊢
+  linarith
+
 /-- **A framework rigid on a body set `s` caps the null space at `D·(|sᶜ| + 1)`** (the body-set
 generalization of `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`;
 Katoh–Tanigawa 2011 §6.2, Phase 22a/G3c-i). If `F` is infinitesimally rigid on an arbitrary
