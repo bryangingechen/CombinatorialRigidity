@@ -3960,6 +3960,21 @@ Pi fiber metavariable. Fixed by type-ascribing the first summand to the full
 `BodyHingeFramework.screwDiff` in `Molecular/RigidityMatrix.lean` (Phase 21b
 rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
 
+### [resolved] `rw [columnOp_apply]` (a `@[simps! apply]` `LinearEquiv` lemma) won't fire on `⇑(columnOp hva) (update S v 0)` — `unfold columnOp` instead, or compute the result pointwise via `show … from by funext`
+- **Where it bit:** `comp_columnOp_comp_offProj_of_single_eq_zero` (W6a brick 2,
+  `Molecular/RigidityMatrix.lean`, Phase 22h). After reducing `P_v S` to `update S v 0`,
+  the goal `g (columnOp hva (update S v 0)) = g S` needed `columnOp hva (update S v 0) =
+  update S v (S a)`, but `rw [columnOp_apply]` failed ("Did not find … `(columnOp ?hva)
+  ?S ?a`") — the `@[simps! apply]`-generated lemma's LHS coercion form didn't match the
+  `⇑e`-applied term here (it fires fine when the `columnOp` is freshly introduced, as in
+  `columnOp_apply_single`, but not after the `LinearEquiv.coe_coe`/`hPv`-rewrite cascade).
+- **Fix:** `rw [show (columnOp hva) (update S v 0) = update S v (S a) from by funext y;
+  unfold columnOp; rcases eq_or_ne y v with rfl | hy; · simp […]; · simp […]]` — `unfold
+  columnOp` exposes the raw `toFun` lambda the funext/`simp` then discharge pointwise.
+- **Status:** resolved (tactic choice; no lemma needed). Sibling of TACTICS-QUIRKS § 6
+  (a `simps`/`def`-bound coercion that `rw` can't see — prefer `unfold` + pointwise, or a
+  hand-stated `show … from`).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

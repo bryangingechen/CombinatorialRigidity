@@ -3673,6 +3673,109 @@ theorem PanelHingeFramework.case_III_old_new_blocks [DecidableEq α] [Finite α]
   exact ⟨hane, hnewne, so, hso_card, hso_indep_G, hold, hso_ne_eb, sn, hsn_e, hsn_card, hsn_indep,
     hnewpin⟩
 
+/-- **The eq. (6.12) candidate `t`-family** (KT's `p₁` at shear `t`, hinge-level and
+role-parametric; Katoh–Tanigawa 2011 §6.4.1, Phase 22h). The candidate framework the W6
+certify-then-rebase route varies over: it starts from the seed framework
+`(ofNormals G ends q).toBodyHinge` and overrides two
+hinge slots — the **candidate** hinge `e_c` (the free `va`-line `L = n_u ∧ n'`) gets support
+`panelSupportExtensor n_u n'`, and the **reproduced** hinge `e_r` (KT's `p₁(vb) = q(ab)` at `t = 0`)
+gets the sheared support `panelSupportExtensor (n_u + t • n') n_r`. All other hinges keep their seed
+extensor. The roles instantiate as M₁ (`e_c := e_a, e_r := e_b, n_u := n_a, n_r := n_b`), M₂
+(swap `a ↔ b`), M₃ (the relabeled seed). `F₀ := caseIIICandidate … 0` is the `t = 0` point: there
+`e_r ↦ panelSupportExtensor n_u n_r`, which for M₁ is the `e₀`-meet `C(e₀)` exactly (reproduction).
+Defined directly as a `BodyHingeFramework` (overriding `supportExtensor`) rather than through a
+panel framework, because the candidate's two overridden hinges are not normal-assignments of a
+single panel coordinatization — only the `e_r`-slot moves with `t`, linearly
+(`caseIIICandidate_panelRow_eq_add_smul`, the W6f polynomiality input). -/
+noncomputable def PanelHingeFramework.caseIIICandidate [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) :
+    BodyHingeFramework k α β where
+  graph := G
+  supportExtensor := Function.update (Function.update
+      ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor)
+      e_c (panelSupportExtensor n_u n'))
+    e_r (panelSupportExtensor (n_u + t • n') n_r)
+
+@[simp]
+theorem PanelHingeFramework.caseIIICandidate_graph [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).graph = G := rfl
+
+/-- **The candidate hinge's support is the `va`-line meet** (KT eq. (6.12); Phase 22h): at the
+candidate hinge `e_c` (distinct from the reproduced hinge `e_r`), the `t`-family's supporting
+extensor is `panelSupportExtensor n_u n'`, the panel-meet of the free `va`-line `L = n_u ∧ n'`,
+independent of `t`. -/
+theorem PanelHingeFramework.caseIIICandidate_supportExtensor_candidate [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    {e_c e_r : β} (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) (hcr : e_c ≠ e_r) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e_c
+      = panelSupportExtensor n_u n' := by
+  change Function.update (Function.update _ e_c _) e_r _ e_c = _
+  rw [Function.update_of_ne hcr, Function.update_self]
+
+/-- **The reproduced hinge's support is the sheared meet** (KT eq. (6.12), the `e_r`-slot;
+Phase 22h): at the reproduced hinge `e_r`, the `t`-family's supporting extensor is
+`panelSupportExtensor (n_u + t • n') n_r`. At `t = 0` it is `panelSupportExtensor n_u n_r` (for M₁,
+`C(e₀)`), and it is the *only* slot moving with `t`. -/
+theorem PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e_r
+      = panelSupportExtensor (n_u + t • n') n_r := by
+  change Function.update (Function.update _ e_c _) e_r _ e_r = _
+  rw [Function.update_self]
+
+/-- **Every other hinge keeps the seed extensor** (KT eq. (6.12); Phase 22h): at a hinge `e`
+distinct from both overridden slots `e_c`, `e_r`, the `t`-family's supporting extensor is the seed
+framework's, independent of `t`, `n_u`, `n'`, `n_r`. -/
+theorem PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) {e : β} (h1 : e ≠ e_c) (h2 : e ≠ e_r) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e
+      = (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e := by
+  change Function.update (Function.update _ e_c _) e_r _ e = _
+  rw [Function.update_of_ne h2, Function.update_of_ne h1]
+
+/-- **The candidate's panel rows are affine in the shear `t`** (the W6f one-variable transfer input;
+Katoh–Tanigawa 2011 §6.4.1, eqs. (6.26)–(6.28), Phase 22h). Every panel row of the `t`-family
+decomposes as its `t = 0` value plus a `t`-multiple of a fixed row, supported only on the reproduced
+hinge `e_r`: the only `t`-dependence is the `e_r`-slot's supporting extensor
+`panelSupportExtensor (n_u + t • n') n_r`, which splits as `panelSupportExtensor n_u n_r +
+t • panelSupportExtensor n' n_r` (`panelSupportExtensor_add_left`/`_smul_left`), and `annihRow` is
+linear in the extensor (`annihRow_add`/`_smul`), `hingeRow` linear in its block functional. So the
+row at index `p = (e, t₁, t₂)` is `panelRow … 0 p + t • (if e = e_r then
+hingeRow (ends e_r).1 (ends e_r).2 (annihRow (panelSupportExtensor n' n_r) t₁ t₂) else 0)`. This is
+the precise polynomiality KT's Lemma 5.2 rank-transfer (W3) consumes to push the `F₀`-certified rank
+along the family to a good `t`. -/
+theorem PanelHingeFramework.caseIIICandidate_panelRow_eq_add_smul [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    {e_c e_r : β} (n_u n' n_r : Fin (k + 2) → ℝ) (hcr : e_c ≠ e_r) (t : ℝ)
+    (p : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).panelRow ends p
+      = (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r 0).panelRow ends p
+        + t • (if p.1 = e_r then BodyHingeFramework.hingeRow (ends e_r).1 (ends e_r).2
+            (annihRow (panelSupportExtensor n' n_r) p.2.1 p.2.2) else 0) := by
+  obtain ⟨e, t₁, t₂⟩ := p
+  simp only [BodyHingeFramework.panelRow]
+  rcases eq_or_ne e e_r with rfl | hne_r
+  · -- The reproduced hinge: the extensor splits along the shear, carrying through `annihRow`/
+    -- `hingeRow` linearity.
+    rw [caseIIICandidate_supportExtensor_reproduced, caseIIICandidate_supportExtensor_reproduced,
+      zero_smul, add_zero, panelSupportExtensor_add_left, panelSupportExtensor_smul_left,
+      annihRow_add, annihRow_smul, BodyHingeFramework.hingeRow_eq_dualMap,
+      BodyHingeFramework.hingeRow_eq_dualMap, BodyHingeFramework.hingeRow_eq_dualMap, map_add,
+      map_smul, if_pos rfl]
+  · -- Any other hinge: the extensor is `t`-independent, so the `t`-row equals the `t = 0` row.
+    rcases eq_or_ne e e_c with rfl | hne_c
+    · rw [caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr,
+        caseIIICandidate_supportExtensor_candidate _ _ _ _ _ _ _ hcr,
+        if_neg hne_r, smul_zero, add_zero]
+    · rw [caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r,
+        caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r,
+        if_neg hne_r, smul_zero, add_zero]
+
 /-- **L2b-place (seed-from-line) — the inductive old/new blocks of the *line-indexed* candidate
 placement** (`lem:case-III-claim612-line-in-panel-union`, the producer-direction generalization of
 `case_III_old_new_blocks`; Katoh–Tanigawa 2011 §6.4.1, eqs. (6.12)/(6.45), Phase 22g). Where

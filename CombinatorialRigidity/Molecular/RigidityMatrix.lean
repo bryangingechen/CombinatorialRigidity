@@ -1708,6 +1708,82 @@ theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v 
     rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe,
       hingeRow_comp_columnOp_apply, LinearMap.single_apply, Pi.single_eq_same]
 
+/-- **The operated, off-`v`-restricted `vb`-transport IS the `ab`-row** (KT eqs.~(6.26)–(6.28), the
+membership-by-construction in functional form; Katoh–Tanigawa 2011 §6.4.1, Phase 22h). Brick 1 of
+the W6 restriction-transport: composing the transported candidate row `hingeRow v b ρ` of
+`R(G, p_1)` with the column op `Φ = columnOp hva` (`col_a += col_v`) and then the off-`v` projection
+`P_v = id − single v ∘ₗ proj v` (W4's restriction) recovers the genuine `ab`-row `hingeRow a b ρ`.
+The mechanism: `P_v S` zeroes the `v`-coordinate, so `(Φ (P_v S)) v = (P_v S) v + (P_v S) a = S a`
+(using `v ≠ a`), while `(Φ (P_v S)) b = (P_v S) b = S b` (using `v ≠ b`, `Φ` only touches `v`);
+hence `(hingeRow v b ρ)(Φ (P_v S)) = ρ(S a − S b) = (hingeRow a b ρ) S`. This is the reading of
+KT's "`R(G, p_1; (vb)_j, v) = r_j(p_1(vb)) = r_j(q(ab))`" reproduction: in the operated, restricted
+frame the `(vb)_j`-row coincides with the `(ab)_j`-row, so the certified `t = 0` family rebases onto
+genuine `G_v^{ab}`-rows. -/
+theorem hingeRow_comp_columnOp_comp_offProj [DecidableEq α] {v a b : α}
+    (hva : v ≠ a) (hvb : v ≠ b) (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hva).toLinearMap).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v))
+      = hingeRow (k := k) (α := α) a b ρ :=
+  LinearMap.ext fun S => by
+    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, hingeRow_apply,
+      hingeRow_apply, columnOp_apply, columnOp_apply, Function.update_self,
+      Function.update_of_ne hvb.symm]
+    -- `P_v S = S − single v (S v)`: zero at `v`, `S a`/`S b` at the distinct bodies `a`, `b`.
+    simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, LinearMap.proj_apply,
+      LinearMap.coe_single, Pi.sub_apply, Pi.single_eq_same, Pi.single_eq_of_ne hva.symm,
+      Pi.single_eq_of_ne hvb.symm, sub_zero, sub_self, zero_add]
+
+/-- **A row reading nothing on `v`'s column is untouched by the operated restriction** (KT
+eqs.~(6.26)–(6.28); Katoh–Tanigawa 2011 §6.4.1, Phase 22h). Brick 2 of the W6 restriction-transport:
+when a functional `g` annihilates body `v`'s screw column (`g.comp (single v) = 0`), composing it
+with the column op `Φ = columnOp hva` and the off-`v` projection `P_v` leaves it unchanged. Both
+`Φ S = S + single v (S a)` and `P_v S = S − single v (S v)` differ from `S` only by `single v (·)`
+terms, on which `g` vanishes, so `g (Φ (P_v S)) = g S`. This is the certificate that the genuine
+`G_v`-rows (which read nothing on the re-inserted body `v`'s column) survive the operated
+restriction verbatim — the "bottom rows are genuine `F₀`-rows" half of the W6 rebase, complementing
+`hingeRow_comp_columnOp_comp_offProj`'s candidate-row tag. -/
+theorem comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α] {v a : α} (hva : v ≠ a)
+    {g : Module.Dual ℝ (α → ScrewSpace k)}
+    (hg : g.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0) :
+    (g.comp (columnOp (k := k) hva).toLinearMap).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v)) = g :=
+  LinearMap.ext fun S => by
+    -- `g (single v x) = 0` for every `x`, the pointwise form of `hg`.
+    have hgsingle : ∀ x : ScrewSpace k,
+        g (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v x) = 0 :=
+      fun x => by rw [← LinearMap.comp_apply, hg, LinearMap.zero_apply]
+    -- The off-`v` projection `P_v S = update S v 0` (`id − single v ∘ proj v`).
+    set P : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k) :=
+      (LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+        - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v) with hP
+    have hPv : ∀ (T : α → ScrewSpace k), P T = Function.update T v 0 := fun T => by
+      funext y
+      rw [hP]
+      simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply,
+        LinearMap.proj_apply, LinearMap.coe_single, Pi.sub_apply]
+      rcases eq_or_ne y v with rfl | hy
+      · rw [Pi.single_eq_same, sub_self, Function.update_self]
+      · rw [Pi.single_eq_of_ne hy, sub_zero, Function.update_of_ne hy]
+    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, hPv]
+    -- `Φ (P_v S) = update S v (S a)`: `P_v` zeroes the `v`-coordinate, `Φ` then sets it to
+    -- `(P_v S) v + (P_v S) a = 0 + S a = S a`.
+    rw [show (columnOp (k := k) hva) (Function.update S v 0) = Function.update S v (S a) from by
+      funext y
+      unfold columnOp
+      rcases eq_or_ne y v with rfl | hy
+      · simp [Function.update_of_ne hva.symm]
+      · simp [Function.update_of_ne hy]]
+    -- `update S v (S a) = S + single v (S a − S v)`; `g` kills the `single v` term, leaving `g S`.
+    have hupd : Function.update S v (S a)
+        = S + LinearMap.single ℝ (fun _ : α => ScrewSpace k) v (S a - S v) := by
+      funext y
+      rcases eq_or_ne y v with rfl | hy
+      · simp [Pi.single_eq_same]
+      · simp [Function.update_of_ne hy, Pi.single_eq_of_ne hy]
+    rw [hupd, map_add, hgsingle, add_zero]
+
 /-- **A hinge row restricted to its tail body's screw column is the block functional** (the
 column-restriction leaf of KT eq.~(6.43)/(6.44); Katoh–Tanigawa 2011 §6.4.1, Phase 22e). For a
 hinge oriented out of body `a` (the tail) into a distinct body `b`, precomposing

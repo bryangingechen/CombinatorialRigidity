@@ -189,6 +189,36 @@ theorem normalsJoin_add_smul_right (n₁ n₂ : Fin (k + 2) → ℝ) (t : ℝ) :
     all_goals (funext i; fin_cases i <;> simp)
   rw [h1, normalsJoin_self, smul_zero, add_zero]
 
+/-- **The grade-2 join is additive in its first normal** (`def:panel-support-extensor`,
+first-column linearity): `normalsJoin (n₁ + n₂) n₃ = normalsJoin n₁ n₃ + normalsJoin n₂ n₃`. The
+join is the alternating map `ιMulti ℝ 2 ![·, ·]`, additive in each column
+(`AlternatingMap.map_update_add`). The join-level form of `panelSupportExtensor_add_left`; it feeds
+the `t`-family decomposition of the eq.~(6.12) candidate (the sheared `e_r`-slot's support extensor
+splits along the shear `n_u + t • n'`). -/
+theorem normalsJoin_add_left (n₁ n₂ n₃ : Fin (k + 2) → ℝ) :
+    normalsJoin (n₁ + n₂) n₃ = normalsJoin (k := k) n₁ n₃ + normalsJoin n₂ n₃ := by
+  rw [normalsJoin, normalsJoin, normalsJoin,
+    show (![n₁ + n₂, n₃] : Fin 2 → Fin (k + 2) → ℝ)
+      = Function.update ![n₁, n₃] 0 (n₁ + n₂) from by funext i; fin_cases i <;> simp,
+    show (n₁ + n₂ : Fin (k + 2) → ℝ) = ![n₁, n₃] 0 + ![n₂, n₃] 0 from by simp,
+    (exteriorPower.ιMulti ℝ 2).map_update_add]
+  congr 2
+  all_goals (funext i; fin_cases i <;> simp)
+
+/-- **The grade-2 join is homogeneous in its first normal** (`def:panel-support-extensor`,
+first-column linearity): `normalsJoin (c • n₁) n₂ = c • normalsJoin n₁ n₂`. The join is the
+alternating map `ιMulti ℝ 2 ![·, ·]`, homogeneous in each column
+(`AlternatingMap.map_update_smul`). The join-level form of `panelSupportExtensor_smul_left`. -/
+theorem normalsJoin_smul_left (c : ℝ) (n₁ n₂ : Fin (k + 2) → ℝ) :
+    normalsJoin (c • n₁) n₂ = c • normalsJoin (k := k) n₁ n₂ := by
+  rw [normalsJoin, normalsJoin,
+    show (![c • n₁, n₂] : Fin 2 → Fin (k + 2) → ℝ)
+      = Function.update ![n₁, n₂] 0 (c • n₁) from by funext i; fin_cases i <;> simp,
+    show (c • n₁ : Fin (k + 2) → ℝ) = c • ![n₁, n₂] 0 from by simp,
+    (exteriorPower.ιMulti ℝ 2).map_update_smul]
+  congr 2
+  all_goals (funext i; fin_cases i <;> simp)
+
 /-- **The panel support extensor** of a hinge between two panels with normals `n₁, n₂`
 (`def:panel-support-extensor`): the supporting `k`-extensor `C(p(e)) ∈ ScrewSpace k` of the
 codimension-2 intersection `panel(u) ∩ panel(v)`, given as the Grassmann–Cayley meet of the
@@ -226,6 +256,29 @@ theorem panelSupportExtensor_swap (n₁ n₂ : Fin (k + 2) → ℝ) :
     panelSupportExtensor n₂ n₁ = -panelSupportExtensor (k := k) n₁ n₂ := by
   rw [panelSupportExtensor, panelSupportExtensor, normalsJoin_swap]
   exact map_neg _ _
+
+/-- **The panel support extensor is additive in its first normal** (`def:panel-support-extensor`,
+first-column linearity): `panelSupportExtensor (n₁ + n₂) n₃ = panelSupportExtensor n₁ n₃ +
+panelSupportExtensor n₂ n₃`. The support extensor is the fixed linear image `complementIso` of the
+grade-2 join, which is additive in its first column (`normalsJoin_add_left`). This is the linearity
+brick the eq.~(6.12) `t`-family decomposition rests on: the sheared `e_r`-slot's support extensor
+`panelSupportExtensor (n_u + t • n') n_r` splits into the `t = 0` part plus a `t`-multiple
+(`panelSupportExtensor_smul_left`), so the candidate's `panelRow` is affine in `t`. -/
+theorem panelSupportExtensor_add_left (n₁ n₂ n₃ : Fin (k + 2) → ℝ) :
+    panelSupportExtensor (n₁ + n₂) n₃
+      = panelSupportExtensor (k := k) n₁ n₃ + panelSupportExtensor n₂ n₃ := by
+  rw [panelSupportExtensor, panelSupportExtensor, panelSupportExtensor, normalsJoin_add_left]
+  exact map_add _ _ _
+
+/-- **The panel support extensor is homogeneous in its first normal** (`def:panel-support-extensor`,
+first-column linearity): `panelSupportExtensor (c • n₁) n₂ = c • panelSupportExtensor n₁ n₂`. The
+support extensor is the fixed linear image `complementIso` of the grade-2 join, homogeneous in its
+first column (`normalsJoin_smul_left`). The companion of `panelSupportExtensor_add_left` for the
+eq.~(6.12) `t`-family decomposition. -/
+theorem panelSupportExtensor_smul_left (c : ℝ) (n₁ n₂ : Fin (k + 2) → ℝ) :
+    panelSupportExtensor (c • n₁) n₂ = c • panelSupportExtensor (k := k) n₁ n₂ := by
+  rw [panelSupportExtensor, panelSupportExtensor, normalsJoin_smul_left]
+  exact map_smul _ _ _
 
 /-- **The `vb`-row reproduces the `e₀`-row at the eq. (6.12) placement**
 (`def:panel-support-extensor`, the eq. (6.12) reproduction; Katoh–Tanigawa 2011 §6.4.1):
@@ -344,6 +397,59 @@ theorem panelSupportExtensor_add_smul_left_ne_zero_of_join_ne_zero (n_u n' pi pj
   · exact absurd (neg_eq_zero.mp h) ht
   · exact h
 
+/-- **GAP-3, the bad-shear set is a subsingleton** (the bad-set bound of
+`exists_shear_linearIndependent_pair`; Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22h). The set
+of shears `t` making the eq.~(6.12) `va`-line `n_a + t • n'` collinear with the IH `b`-normal `n_b`
+has at most one element: if two distinct `t₁ ≠ t₂` were both bad (each `n_a + tᵢ • n'` a scalar
+multiple of `n_b`), subtracting the two collinearity witnesses puts `n'` in `span {n_b}`, hence
+`n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hgab : LinearIndependent ![n_a, n_b]`. This
+is the standalone bad-set the producer's `t`-family transfer intersects with the genericity device's
+finite bad set (the `t = 0` rank certification re-extracts a `t`-independent family, then
+`exists_shear_linearIndependent_pair`-style avoidance picks a `t` outside both bad sets, KT's
+"`p₁` nonparallel" choice). -/
+theorem setOf_not_shear_linearIndependent_subsingleton (n_a n' n_b : Fin (k + 2) → ℝ)
+    (hgab : LinearIndependent ℝ ![n_a, n_b]) :
+    {t : ℝ | ¬ LinearIndependent ℝ ![n_a + t • n', n_b]}.Subsingleton := by
+  -- `n_b ≠ 0` (the second entry of the independent pair `![n_a, n_b]`).
+  have hn_b : n_b ≠ 0 := by
+    have := hgab.ne_zero 1; simpa using this
+  -- `n_a` is not a scalar multiple of `n_b` (`![n_b, n_a]` is independent, so `pair_iff'`).
+  have hgba : LinearIndependent ℝ ![n_b, n_a] := by
+    have hsw : (![n_a, n_b] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1 = ![n_b, n_a] := by
+      funext i; fin_cases i <;> simp
+    rw [← hsw]; exact hgab.comp _ (Equiv.swap 0 1).injective
+  have hna_not : ∀ c : ℝ, c • n_b ≠ n_a := (LinearIndependent.pair_iff' hn_b).mp hgba
+  -- A value `t` is *bad* when `n_a + t • n'` is collinear with `n_b`, i.e. `c • n_b = n_a + t•n'`
+  -- for some `c` (the pair `![n_b, n_a + t•n']` dependent, `pair_iff'` at the nonzero `n_b`).
+  have hbad : ∀ t : ℝ, ¬ LinearIndependent ℝ ![n_a + t • n', n_b] →
+      ∃ c : ℝ, c • n_b = n_a + t • n' := by
+    intro t hb
+    -- `![n_a + t•n', n_b]` dep ⟺ `![n_b, n_a + t•n']` dep ⟺ `¬ ∀ c, c • n_b ≠ n_a + t•n'`.
+    have hbsw : ¬ LinearIndependent ℝ ![n_b, n_a + t • n'] := by
+      intro h
+      apply hb
+      have hsw : (![n_b, n_a + t • n'] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1
+          = ![n_a + t • n', n_b] := by funext i; fin_cases i <;> simp
+      rw [← hsw]; exact h.comp _ (Equiv.swap 0 1).injective
+    rw [LinearIndependent.pair_iff' hn_b] at hbsw
+    push Not at hbsw
+    exact hbsw
+  -- Any two bad `t`s coincide.
+  intro t₁ hb₁ t₂ hb₂
+  by_contra hne
+  obtain ⟨c₁, hc₁⟩ := hbad t₁ hb₁
+  obtain ⟨c₂, hc₂⟩ := hbad t₂ hb₂
+  -- Subtract `c₁ • n_b = n_a + t₁•n'` and `c₂ • n_b = n_a + t₂•n'`:
+  -- `(c₁ - c₂) • n_b = (t₁ - t₂) • n'`, so `n' = ((c₁-c₂)/(t₁-t₂)) • n_b` (`t₁ ≠ t₂`).
+  have htd : t₁ - t₂ ≠ 0 := sub_ne_zero.mpr hne
+  have hsub : (c₁ - c₂) • n_b = (t₁ - t₂) • n' := by
+    rw [sub_smul, sub_smul, hc₁, hc₂]; abel
+  have hn' : n' = ((c₁ - c₂) / (t₁ - t₂)) • n_b := by
+    rw [div_eq_inv_mul, mul_smul, hsub, inv_smul_smul₀ htd]
+  -- Then `n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hna_not`.
+  apply hna_not (c₁ - t₁ * ((c₁ - c₂) / (t₁ - t₂)))
+  rw [sub_smul, mul_smul, ← hn', hc₁]; abel
+
 /-- **GAP-3 good-`t`: a generic shear keeps the reproduced `vb`-hinge transversal** (the genericity-
 in-`t` condition the `d = 3` Case-III producer must supply to `case_III_old_new_blocks_of_line`'s
 `hnewtrans`; Katoh–Tanigawa 2011 §6.4.1, eq. (6.12), Phase 22h). The line-indexed candidate shears
@@ -363,54 +469,13 @@ shear is nondegenerate. -/
 theorem exists_shear_linearIndependent_pair (n_a n' n_b : Fin (k + 2) → ℝ)
     (hgab : LinearIndependent ℝ ![n_a, n_b]) :
     ∃ t : ℝ, t ≠ 0 ∧ LinearIndependent ℝ ![n_a + t • n', n_b] := by
-  -- `n_b ≠ 0` (the second entry of the independent pair `![n_a, n_b]`).
-  have hn_b : n_b ≠ 0 := by
-    have := hgab.ne_zero 1; simpa using this
-  -- `n_a` is not a scalar multiple of `n_b` (`![n_b, n_a]` is independent, so `pair_iff'`).
-  have hgba : LinearIndependent ℝ ![n_b, n_a] := by
-    have hsw : (![n_a, n_b] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1 = ![n_b, n_a] := by
-      funext i; fin_cases i <;> simp
-    rw [← hsw]; exact hgab.comp _ (Equiv.swap 0 1).injective
-  have hna_not : ∀ c : ℝ, c • n_b ≠ n_a := (LinearIndependent.pair_iff' hn_b).mp hgba
-  -- A value `t` is *bad* when `n_a + t • n'` is collinear with `n_b`, i.e. `c • n_b = n_a + t•n'`
-  -- for some `c` (the pair `![n_b, n_a + t•n']` dependent, `pair_iff'` at the nonzero `n_b`). We
-  -- show at most one `t` is bad; then two distinct nonzero candidates `t = 1, 2` can't both be bad.
-  have hbad : ∀ t : ℝ, ¬ LinearIndependent ℝ ![n_a + t • n', n_b] →
-      ∃ c : ℝ, c • n_b = n_a + t • n' := by
-    intro t hb
-    -- `![n_a + t•n', n_b]` dep ⟺ `![n_b, n_a + t•n']` dep ⟺ `¬ ∀ c, c • n_b ≠ n_a + t•n'`.
-    have hbsw : ¬ LinearIndependent ℝ ![n_b, n_a + t • n'] := by
-      intro h
-      apply hb
-      have hsw : (![n_b, n_a + t • n'] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1
-          = ![n_a + t • n', n_b] := by funext i; fin_cases i <;> simp
-      rw [← hsw]; exact h.comp _ (Equiv.swap 0 1).injective
-    rw [LinearIndependent.pair_iff' hn_b] at hbsw
-    push Not at hbsw
-    exact hbsw
-  -- The bad set is a subsingleton: any two bad `t`s coincide.
-  have hbad_unique : ∀ t₁ t₂ : ℝ, ¬ LinearIndependent ℝ ![n_a + t₁ • n', n_b] →
-      ¬ LinearIndependent ℝ ![n_a + t₂ • n', n_b] → t₁ = t₂ := by
-    intro t₁ t₂ hb₁ hb₂
-    by_contra hne
-    obtain ⟨c₁, hc₁⟩ := hbad t₁ hb₁
-    obtain ⟨c₂, hc₂⟩ := hbad t₂ hb₂
-    -- Subtract `c₁ • n_b = n_a + t₁•n'` and `c₂ • n_b = n_a + t₂•n'`:
-    -- `(c₁ - c₂) • n_b = (t₁ - t₂) • n'`, so `n' = ((c₁-c₂)/(t₁-t₂)) • n_b` (`t₁ ≠ t₂`).
-    have htd : t₁ - t₂ ≠ 0 := sub_ne_zero.mpr hne
-    have hsub : (c₁ - c₂) • n_b = (t₁ - t₂) • n' := by
-      rw [sub_smul, sub_smul, hc₁, hc₂]; abel
-    have hn' : n' = ((c₁ - c₂) / (t₁ - t₂)) • n_b := by
-      rw [div_eq_inv_mul, mul_smul, hsub, inv_smul_smul₀ htd]
-    -- Then `n_a = c₁ • n_b - t₁ • n' ∈ span {n_b}`, contradicting `hna_not`.
-    apply hna_not (c₁ - t₁ * ((c₁ - c₂) / (t₁ - t₂)))
-    rw [sub_smul, mul_smul, ← hn', hc₁]; abel
-  -- `t = 1` or `t = 2` is good (two distinct nonzero candidates can't both be bad).
+  -- The bad set is a subsingleton; two distinct nonzero candidates `t = 1, 2` can't both be bad.
+  have hbad_unique := setOf_not_shear_linearIndependent_subsingleton n_a n' n_b hgab
   by_cases h1 : LinearIndependent ℝ ![n_a + (1 : ℝ) • n', n_b]
   · exact ⟨1, one_ne_zero, h1⟩
   · by_cases h2 : LinearIndependent ℝ ![n_a + (2 : ℝ) • n', n_b]
     · exact ⟨2, two_ne_zero, h2⟩
-    · exact absurd (hbad_unique 1 2 h1 h2) (by norm_num)
+    · exact absurd (hbad_unique h1 h2) (by norm_num)
 
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the
@@ -816,6 +881,26 @@ of the family lies in the dual annihilator `(span {C})^⊥`. -/
 theorem annihRow_apply_self (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
     annihRow C t₁ t₂ C = 0 := by
   rw [annihRow_apply]; ring
+
+/-- **The annihilator functional is additive in its screw vector** (B0,
+`lem:rows-polynomial-in-normals`): `annihRow (C + C') t₁ t₂ = annihRow C t₁ t₂ + annihRow C' t₁ t₂`.
+Each annihilator coordinate `(screwBasis).repr · t` is linear, and `annihRow` is a difference of
+two such coordinates times fixed dual functionals, so it is linear in `C`. This is the linearity in
+the extensor the eq.~(6.12) `t`-family transfer relies on: when the candidate's `e_r`-slot extensor
+splits as `panelSupportExtensor n_u n_r + t • panelSupportExtensor n' n_r`
+(`panelSupportExtensor_add_left`/`_smul_left`), its annihilator rows split affinely in `t`. -/
+theorem annihRow_add (C C' : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    annihRow (C + C') t₁ t₂ = annihRow C t₁ t₂ + annihRow (k := k) C' t₁ t₂ := by
+  simp only [annihRow, map_add, Finsupp.add_apply, add_smul]
+  abel
+
+/-- **The annihilator functional is homogeneous in its screw vector** (B0,
+`lem:rows-polynomial-in-normals`): `annihRow (c • C) t₁ t₂ = c • annihRow C t₁ t₂`. The companion of
+`annihRow_add`: `annihRow` is linear in `C`, each coordinate `(screwBasis).repr · t` being
+homogeneous. -/
+theorem annihRow_smul (c : ℝ) (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    annihRow (c • C) t₁ t₂ = c • annihRow (k := k) C t₁ t₂ := by
+  simp only [annihRow, map_smul, Finsupp.smul_apply, smul_sub, smul_eq_mul, mul_smul]
 
 /-- **The annihilator family spans the hinge-row block** (B0, `lem:rows-polynomial-in-normals`,
 the device-input span identity): for a nonzero screw vector `C`, the span of the per-pair
