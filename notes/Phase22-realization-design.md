@@ -2638,8 +2638,7 @@ item one commit unless noted):**
 8. **Leaf 4 + Leaf 5** as in §1.49(6), with the GAP-6 hypothesis riding until its adjudicated
    discharge (option (i) restructure or a successor sub-phase).
 
-**Parallel track (coordinator/user): adjudicate GAP 6** — (i) all-`k` motive restructure vs (ii)
-carry-and-defer. W1–W4 are unconditionally buildable and independent of the adjudication.
+**GAP 6 adjudicated (user, 2026-06-10): (ii) carry-and-defer** — see the (b) verdict above.
 
 ---
 

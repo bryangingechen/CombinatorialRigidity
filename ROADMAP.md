@@ -919,9 +919,10 @@ witness-normal discriminator restate → the KT-Lemma-5.2 **rank-transfer** asse
 KT-(6.29) count at the `t = 0` hinge-level family, transfer along the shear by a one-variable
 minor polynomial) for the `M₁/M₂/M₃` arms → the dispatch assembly → Leaf 4 (the
 `theorem_55_generic (n:=2) (k:=2)` instance node) → Leaf 5 (the banner flips + the Thm 5.5→5.6
-push, unblocking Cor 5.7 at `d=3`). One genuinely open input rides as an explicit hypothesis
-pending adjudication: **GAP 6**, the KT eq.-(6.22) nested-IH rank bound at the `k'`-dof `G − v`
-(§1.50(b)). Milestone: the molecular conjecture proved at `d = 3` (Phases 24–26 unblocked).
+push, unblocking Cor 5.7 at `d=3`). One genuinely open input rides as an explicitly carried
+hypothesis (user-adjudicated 2026-06-10): **GAP 6**, the KT eq.-(6.22) nested-IH rank bound at the
+`k'`-dof `G − v` (§1.50(b)); the phase closes green-modulo it, and a successor sub-phase
+(the all-`k` motive restructure) discharges it. Milestone: the molecular conjecture proved at `d = 3` (Phases 24–26 unblocked).
 General `d` (KT Lemma 6.13) is Phase 23.
 
 ## Engineering conventions
