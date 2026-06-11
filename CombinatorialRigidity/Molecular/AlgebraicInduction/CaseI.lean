@@ -3912,6 +3912,53 @@ theorem PanelHingeFramework.caseIIICandidate_panelRow_eq_add_smul [DecidableEq �
         caseIIICandidate_supportExtensor_of_ne _ _ _ _ _ _ _ _ _ hne_c hne_r,
         if_neg hne_r, smul_zero, add_zero]
 
+/-- **The one-variable rank transfer at the `t`-family** (W6f, the W3 KT-Lemma-5.2 transfer brick
+specialized to `caseIIICandidate`; Katoh–Tanigawa 2011 §6.4.1, the certify-then-rebase step of
+design §1.51(a)/(g); Phase 22h). Given a panel-row subfamily of the `t = 0` framework `F₀` (indexed
+by `idx`) that is linearly independent at `t = 0` (`h0`) and any prescribed finite `bad` set of
+shears, there is a *nonzero* `t` outside `bad` keeping the family linearly independent at `t`.
+
+The `t`-rows are affine in `t` (`caseIIICandidate_panelRow_eq_add_smul`, W6a):
+`g t i = A i + t • B i` with `A i := g 0 i` the `t = 0` rows and `B i` the `e_r`-correction. Picking
+a finite basis `b` of the (finite-dimensional) dual `α → ScrewSpace k`, each coordinate
+`b.repr (g t i) j = b.repr (A i) j + t * b.repr (B i) j` is the evaluation at `t` of the
+degree-`≤ 1` polynomial `P i j := C (b.repr (A i) j) + X * C (b.repr (B i) j)`, so W3
+(`LinearIndependent.exists_notMem_of_polynomial_repr`) supplies the good `t`. This is KT's "each
+minor of `R(G, p_t)` is continuous in `t`" (pp. 668–669) in one-variable polynomial form. -/
+theorem PanelHingeFramework.caseIIICandidate_exists_good_shear [DecidableEq β] [Finite α]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    {e_c e_r : β} (hcr : e_c ≠ e_r) (n_u n' n_r : Fin (k + 2) → ℝ)
+    {ι : Type*} [Finite ι]
+    (idx : ι → β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+    (h0 : LinearIndependent ℝ (fun i => (PanelHingeFramework.caseIIICandidate G ends q
+      e_c e_r n_u n' n_r 0).panelRow ends (idx i)))
+    (bad : Finset ℝ) :
+    ∃ t : ℝ, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent ℝ (fun i =>
+      (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).panelRow
+        ends (idx i)) := by
+  classical
+  -- The `t`-row family and its `t = 0` value / `e_r`-correction (the affine split of W6a).
+  set g : ℝ → ι → Module.Dual ℝ (α → ScrewSpace k) := fun t i =>
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).panelRow ends (idx i)
+    with hg_def
+  set A : ι → Module.Dual ℝ (α → ScrewSpace k) := g 0 with hA_def
+  set B : ι → Module.Dual ℝ (α → ScrewSpace k) := fun i =>
+    if (idx i).1 = e_r then BodyHingeFramework.hingeRow (ends e_r).1 (ends e_r).2
+      (annihRow (panelSupportExtensor n' n_r) (idx i).2.1 (idx i).2.2) else 0 with hB_def
+  have hsplit : ∀ t i, g t i = A i + t • B i := fun t i => by
+    rw [hg_def, hA_def, hB_def]
+    exact caseIIICandidate_panelRow_eq_add_smul G ends q n_u n' n_r hcr t (idx i)
+  -- A finite basis of the finite-dimensional dual, and the degree-`≤ 1` coordinate polynomials.
+  let b := Module.finBasis ℝ (Module.Dual ℝ (α → ScrewSpace k))
+  let P : ι → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → Polynomial ℝ :=
+    fun i j => Polynomial.C (b.repr (A i) j) + Polynomial.X * Polynomial.C (b.repr (B i) j)
+  have hP : ∀ t i j, b.repr (g t i) j = (P i j).eval t := fun t i j => by
+    rw [hsplit, map_add, map_smul, Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul]
+    simp only [P, Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_X]
+  obtain ⟨t, ht_bad, ht_ne, ht_li⟩ :=
+    LinearIndependent.exists_notMem_of_polynomial_repr b g P hP h0 bad
+  exact ⟨t, ht_bad, ht_ne, ht_li⟩
+
 /-- **L2b-place (seed-from-line) — the inductive old/new blocks of the *line-indexed* candidate
 placement** (`lem:case-III-claim612-line-in-panel-union`, the producer-direction generalization of
 `case_III_old_new_blocks`; Katoh–Tanigawa 2011 §6.4.1, eqs. (6.12)/(6.45), Phase 22g). Where
