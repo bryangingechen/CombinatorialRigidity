@@ -2643,6 +2643,461 @@ item one commit unless noted):**
 
 **GAP 6 adjudicated (user, 2026-06-10): (ii) carry-and-defer** — see the (b) verdict above.
 
+### 1.51 The W6-concrete decomposition — the single "W6-concrete/W7 M₁" slot of §1.50(f) is replaced by seven exact-signature leaves W6a–W6f + W7 (one commit each); PLUS one refinement of §1.50(c)'s sketch: the certified `t = 0` mixed family is NOT itself the transfer family `g` (its candidate row and transported `(vb)ⱼ`-rows are not sheared-candidate rows at `t ≠ 0`) — the route is **certify-then-rebase**: certify the KT-(6.29) count at `F₀`, convert it to a rank lower bound, re-extract a literal `F₀.panelRow` family, and transfer THAT (2026-06-11)
+
+> **Docs-only design pass (the §1.50(c)/(f) build-out).** Lean re-read this pass (declarations,
+> current line numbers): RigidityMatrix.lean — `linearIndependent_sum_restriction_block` (:1339,
+> W4), `linearIndependent_sum_augment_candidateRow[_restriction]` (:1521/:1598, W6-core),
+> `linearIndependent_sumElim_candidateRow_iff` (:1686), `hingeRow_comp_columnOp_{apply,vanish_off,
+> comp_single}` (:1166/:1179/:1703), `hingeRow_comp_single_{tail,off}` (:1718/:1734), `columnOp` +
+> `columnOp_apply_single`/`comp_columnOp_comp_single` (:1094–:1156), `mem_hingeRowBlock_iff`
+> (:1664), `exists_complementIso_ne_zero_of_homogeneousIncidence` (:2155), `candidateRow_ac_eq_neg`
+> (:1959); CaseI.lean — W5 `exists_redundant_panelRow_ab_lam[_of_rigidOn]` (:3207/:3276),
+> `exists_candidate_row_eq612` (:3459), `case_III_old_new_blocks[_of_line]` (:3528/:3704),
+> `case_III_full_family_of_line` (:3885), `candidateCompletion_{index_injective,panelRow_packaging}`
+> (:3956/:4013), `case_III_realization_of_line` (:4076), C1/C2 (:2257/:2294),
+> `exists_good_realization_const` (:2214), GAP-2 `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+> (:1971, incl. the §38-avoidance `hrow_mem` idiom :2011), the producer + `hcand` site (:4341),
+> `hasGenericFullRankRealization_of_splitOff_relabel` (:4690, the `hQeq` unpack idiom);
+> Pinning.lean — `panelRow` (:46), `span_panelRow_eq_rigidityRows` (:64),
+> `span_panelRow_edge_eq` (:283), `finrank_span_panelRow_edge` (:305),
+> `span_rigidityRows_eq_sup_span_panelRow_edge` (:343),
+> `exists_independent_panelRow_subfamily_of_edge` (:442),
+> `linearIndependent_panelRow_comp_single_of_edge` (:503), `span_panelRow_comp_single_of_edge`
+> (:547); GenericityDevice.lean — W2 (:466), `exists_independent_panelRow_subfamily_of_rigidOn
+> [_linking]` (:561/:627); PanelLayer.lean — `panelSupportExtensor_{add_smul_right,add_smul_left,
+> swap,ne_zero_iff,eq_complementIso_extensor}` (:238/:251/:225/:212/:277), `annihRow` +
+> `span_annihRow_eq_dualAnnihilator` (:800/:833), `exists_shear_linearIndependent_pair` (:363);
+> Rank.lean (Mathlib mirror) — W3 `LinearIndependent.exists_notMem_of_polynomial_repr` (:644);
+> PanelHinge.lean — `ofNormals` (:253), the two motives (:979/:1033). KT re-read this pass:
+> pp. 681–686 (the sketch; eqs. (6.18)–(6.30); Claim 6.11; footnote 6) —
+> `.refs/katoh-tanigawa-2011-molecular-conjecture.pdf`, printed p. N = pdf p. N − 646; the
+> Lemma 5.2 mechanism (pp. 668–669) rides on §1.50's verified read (model-experiment row 20).
+> No `.lean`/`.tex` edits this pass.
+
+**(a) The refinement of §1.50(c) — certify-then-rebase (machine-checked against the Lean + KT
+pp. 684–686).** §1.50(c) sketched the certifying family `g` as "`g 0` is the `F₀`-certified
+KT-(6.29) family". That is not literally transferable: the certified (6.29) family contains the
+candidate row `hingeRow v a ρ` (with `ρ(C(L)) ≠ 0`, so for `t ≠ 0` it is *not* in the sheared
+candidate's row span — the same obstruction §1.50(c) diagnosed for the `_of_line` OLD-contract)
+and the transported `(vb)ⱼ`-rows `hingeRow v b ρⱼ` (`ρⱼ ∈ (span C(e₀))^⊥`, not rows of the sheared
+candidate whose `e_b`-support is `C(e₀) + t·(n' ∧ n_b) ≠ C(e₀)`). The corrected route inserts one
+rank-rebase step, exactly KT's own reading of (6.29) ("if the top-left 6×6 block is full rank,
+then rank R(G,p₁) = 6(|V|−1)", p. 684 — a statement about the *rank* of `R(G,p₁)`, not about a
+distinguished row family):
+
+1. **Certify** the mixed (6.29) family — `(D−1)` `e_a`-rows ⊕ the candidate `hingeRow v a ρ` ⊕
+   the chosen `D(m_v−1)` bottom rows — linearly independent at `F₀` (W6c + W6d below).
+2. **Rebase**: every member lies in `span ℝ F₀.rigidityRows` (`e_a`-rows genuine; the candidate
+   via the eq.-(6.27) collapse `hingeRow v a ρ = hingeRow v b ρ − hingeRow a b ρ`, with
+   `hingeRow v b ρ` a genuine `F₀`-row — `ρ ∈ (span C(e₀))^⊥ = F₀`'s `e_b`-block — and
+   `hingeRow a b ρ = r̂ ∈ span(G_v\text{-rows}) ⊆ span F₀`-rows; the bottom per-tag), so
+   `D(|V(G)|−1) ≤ finrank (span ℝ F₀.rigidityRows)`, and a **literal `F₀.panelRow` family** of
+   that size is re-extracted (W6e). Each slot of the re-extracted family is an
+   `annihRow`-of-the-edge-extensor row, which IS polynomial in the shear parameter.
+3. **Transfer** the re-extracted family along the one-parameter `t`-family of hinge-level
+   frameworks `F(t)` (`F(0) = F₀`; only the `e_b`-slot moves, linearly) via W3 (W6f), then read
+   every `F(t^*)`-slot as a (scaled) genuine row of `ofNormals G ends (q₀ t^*)` and close through
+   the span-containment core + GAP-2 (W7).
+
+Everything else in §1.50(c) stands: `F₀` hinge-primary, memberships at `t = 0` by construction,
+the witness gate `r̂(C(L)) ≠ 0` consumed at `t = 0` only, the obsolete sheared-support step.
+
+**(b) The `t`-family `F(t)` and the infra bricks — leaf W6a (CaseI.lean def + PanelLayer.lean /
+RigidityMatrix.lean bricks; one commit; no §38).** KT's `p₁` (eq. (6.12)) at shear `t`, hinge-level
+and role-parametric (M₁: `e_c := e_a, e_r := e_b, n_u := n_a, n_r := n_b`; M₂ swaps `a ↔ b`; M₃
+passes the relabeled seed `qρ` — §1.50(d)/(e)):
+
+```lean
+-- CaseI.lean. `e_c` = the candidate hinge (the free line `L = n_u ∧ n'`), `e_r` = the reproduced
+-- hinge (`= n_u ∧ n_r` at `t = 0`, KT's `p₁(vb) = q(ab)`); all other edges keep the seed extensor.
+noncomputable def PanelHingeFramework.caseIIICandidate [DecidableEq β]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) :
+    BodyHingeFramework k α β where
+  graph := G
+  supportExtensor := Function.update (Function.update
+      ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor)
+      e_c (panelSupportExtensor n_u n'))
+    e_r (panelSupportExtensor (n_u + t • n') n_r)
+```
+
+with evaluation/affinity lemmas (statement shapes; `caseIIICandidate_graph … = G := rfl`):
+
+```lean
+theorem caseIIICandidate_supportExtensor_candidate (hcr : e_c ≠ e_r) :
+    (caseIIICandidate G ends q e_c e_r n_u n' n_r t).supportExtensor e_c
+      = panelSupportExtensor n_u n'
+theorem caseIIICandidate_supportExtensor_reproduced :
+    (caseIIICandidate …).supportExtensor e_r = panelSupportExtensor (n_u + t • n') n_r
+theorem caseIIICandidate_supportExtensor_of_ne (h1 : e ≠ e_c) (h2 : e ≠ e_r) :
+    (caseIIICandidate …).supportExtensor e
+      = (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e
+-- the W6f polynomiality input: only the `e_r`-slot moves, linearly in `t`
+theorem caseIIICandidate_panelRow_eq_add_smul (hcr : e_c ≠ e_r) (t : ℝ) (p : β × _ × _) :
+    (caseIIICandidate G ends q e_c e_r n_u n' n_r t).panelRow ends p
+      = (caseIIICandidate G ends q e_c e_r n_u n' n_r 0).panelRow ends p
+        + t • (if p.1 = e_r then BodyHingeFramework.hingeRow (ends e_r).1 (ends e_r).2
+            (annihRow (panelSupportExtensor n' n_r) p.2.1 p.2.2) else 0)
+```
+
+At `t = 0`, `e_r ↦ panelSupportExtensor n_u n_r` — for M₁ that is `C(e₀)` exactly (KT's
+`p₁(vb) = q(ab)` reproduction; verified against the p. 686 eq.-(6.28) computation
+"`R(G, p₁; (vb)ⱼ, v) = rⱼ(p₁(vb)) = rⱼ(q(ab))` … by `p₁(vb) = q(ab)`"); for M₂ it is
+`panelSupportExtensor n_b n_a = −C(e₀)` (`panelSupportExtensor_swap`), harmless — every
+consumer reads the extensor only through `(span {C})^⊥`-membership or `≠ 0`, both sign-blind.
+The supporting bricks, same commit:
+
+```lean
+-- PanelLayer.lean (first-slot linearity; the `map_update_add/smul` idiom of
+-- `panelSupportExtensor_add_smul_left`, which becomes a corollary):
+theorem panelSupportExtensor_add_left  : panelSupportExtensor (n₁ + n₂) n₃
+  = panelSupportExtensor n₁ n₃ + panelSupportExtensor (k := k) n₂ n₃
+theorem panelSupportExtensor_smul_left : panelSupportExtensor (c • n₁) n₂
+  = c • panelSupportExtensor (k := k) n₁ n₂
+-- PanelLayer.lean (annihRow is linear in its extensor — load-bearing per §1.50's recon note):
+theorem annihRow_add  : annihRow (C + C') t₁ t₂ = annihRow C t₁ t₂ + annihRow C' t₁ t₂
+theorem annihRow_smul : annihRow (c • C) t₁ t₂ = c • annihRow C t₁ t₂
+-- PanelLayer.lean (the GAP-3 bad set as a *set* — `exists_shear_linearIndependent_pair`'s inline
+-- `hbad_unique`, extracted so W7 can intersect it with W3's finite bad set; the landed existence
+-- lemma is refactored to consume it):
+theorem setOf_not_shear_linearIndependent_subsingleton (n_a n' n_b : Fin (k + 2) → ℝ)
+    (hgab : LinearIndependent ℝ ![n_a, n_b]) :
+    {t : ℝ | ¬ LinearIndependent ℝ ![n_a + t • n', n_b]}.Subsingleton
+-- RigidityMatrix.lean (the two restriction-transport bricks; `P_v := id − single v ∘ proj v`,
+-- W4's off-`v` projection). Brick 1 is the (6.26)–(6.28) membership-by-construction in
+-- functional form: the operated, restricted `(vb)ⱼ`-transport IS the `(ab)ⱼ`-row —
+-- `(Φ (P_v S)) v = S a`, `(Φ (P_v S)) b = S b`, so the composite reads `ρ (S a − S b)`:
+theorem BodyHingeFramework.hingeRow_comp_columnOp_comp_offProj [DecidableEq α] {v a b : α}
+    (hva : v ≠ a) (hvb : v ≠ b) (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hva).toLinearMap).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v))
+      = hingeRow (k := k) (α := α) a b ρ
+-- Brick 2: a row reading nothing on `v`'s column is untouched by `Φ` and `P_v`
+-- (`Φ S = S + single v (S a)`, `P_v S = S − single v (S v)`, both killed by `hg`):
+theorem BodyHingeFramework.comp_columnOp_comp_offProj_of_single_eq_zero [DecidableEq α]
+    {v a : α} (hva : v ≠ a) {g : Module.Dual ℝ (α → ScrewSpace k)}
+    (hg : g.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0) :
+    (g.comp (columnOp (k := k) hva).toLinearMap).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v)) = g
+```
+
+Consumes: landed `panelSupportExtensor`/`annihRow`/`columnOp` API. Consumed by: W6c–W6f, W7
+(every later leaf names `caseIIICandidate`; consumed-by-spec, not speculative). No `\lean` pin
+(internal infra, the W4/W5 pattern).
+
+**(c) The candidate/bottom data packaging — leaf W6b (CaseI.lean; one commit; no new §38).** The
+M₁/M₂ arms need, from ONE invocation of W5's redundancy data (KT p. 686: "the same `λ_{(ab)j}` …
+and the index `i^*` are used in (6.29) and (6.30)"), two things tied to the same `i^*`: the
+candidate functional `ρ` (KT's `r̂ = Σ_j λ_{(ab)j} r_j(q(ab))` read as a `ScrewSpace`-functional
+through `r̂ = hingeRow a b ρ`) and the chosen `D(m−1)` bottom rows of `R(G_v^{ab} ∖ (ab)i^*, q)`
+(KT eq. (6.23): that matrix has full rank `D(m−1)`, p. 685). Signature (hypotheses = W5's
+verbatim; stated at `(ends e₀).1/.2` so no `hends_e0` is consumed — the W10 wiring rewrites):
+
+```lean
+theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
+    [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    (hnev : Gab.vertexSet.Nonempty)
+    (hrig : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.IsInfinitesimallyRigidOn
+      Gab.vertexSet)
+    -- GAP 6 (adjudicated carry, §1.50(b)): enters HERE (via W5, whose sole caller this becomes)
+    (h622lb : screwDim k * (Gab.vertexSet.ncard - 1) - (screwDim k - 2)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)) :
+    ∃ (ρ : Module.Dual ℝ (ScrewSpace k))
+      (w : Fin (screwDim k * (Gab.vertexSet.ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k)),
+      ρ ≠ 0 ∧
+      ρ ((PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀) = 0 ∧
+      BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ ∈ Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∧
+      LinearIndependent ℝ w ∧
+      (∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+          ρ' ((PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀) = 0 ∧
+          w j = BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ')
+```
+
+Proof route: invoke W5 (`exists_redundant_panelRow_ab_lam_of_rigidOn`) → `r̂ := ∑ j, lam j • r j`;
+`ρ` from `r̂ ∈ span(range r) = e₀-block-span = map (screwDiff …).dualMap (hingeRowBlock e₀)`
+(`hrspan` + `span_panelRow_edge_eq` + `hingeRow_eq_dualMap`; annihilation via
+`mem_hingeRowBlock_iff`; `ρ ≠ 0` since `r̂ ≠ 0` and `hingeRow` is linear in `ρ`). Bottom rows:
+`lam i^* = 1` makes `r i^* = r̂ − ∑_{j ≠ i^*} lam j • r j ∈ span(Fv.rigidityRows) ⊔
+span(r '' {j ≠ i^*})`, so `span(Fv.rigidityRows ∪ range (r ∘ Subtype.val : {j // j ≠ i^*} → _))
+= span(Fab-rows)` (via `span_rigidityRows_eq_sup_span_panelRow_edge` + `hrspan`), of finrank
+`D(m−1)` (W2 re-derivation, the `hgraph : Fab.graph = Gab := rfl` idiom of W5);
+`Submodule.exists_fun_fin_finrank_span_eq` extracts `w` with per-member tags (an `r j'`-tagged
+member yields its `ρ'` through the same block destructuring). Consumes: W5, W2,
+`span_panelRow_edge_eq`, `span_rigidityRows_eq_sup_span_panelRow_edge`. Consumed by: W10 (which
+feeds the outputs to the glue — `ρ ≠ 0` is the discriminator's `hr` — and to W7/W8 as data).
+**GAP-6 path:** `h622lb` enters the Lean at W5, is carried by W6b (W5's sole caller), and next
+appears on W10's signature — W6c–W6f and W7 below take W6b's *outputs* as hypotheses and are
+GAP-6-clean. No `\lean` pin.
+
+**(d) The restriction-form full family — leaf W6c (CaseI.lean; one commit; no §38; independently
+buildable NOW).** The restriction-bottom sibling of `case_III_full_family_of_line` — same NEW-block
+construction (the `D−1` `e_a`-panel-rows + the candidate, via the row-space criterion), but the
+bottom block enters with W4's restriction-independence contract and the assembly is W6-core
+instead of the v-vanishing selector. Stated over abstract `F` (serves M₁/M₂/M₃):
+
+```lean
+theorem PanelHingeFramework.case_III_full_family_restriction [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    {v a : α} {e_a : β} (hva : v ≠ a) (hends_ea : ends e_a = (v, a))
+    (hane : F.supportExtensor e_a ≠ 0)
+    {ιo : Type*} [Finite ιo] {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    (hbotrestrict : LinearIndependent ℝ
+      (fun j : ιo => ((ro j).comp (BodyHingeFramework.columnOp (k := k) hva).toLinearMap).comp
+        ((LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+          - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v))))
+    (r : Module.Dual ℝ (ScrewSpace k)) (hr : r (F.supportExtensor e_a) ≠ 0) :
+    ∃ sn : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ sn, (i : β × _ × _).1 = e_a) ∧ Nat.card sn = screwDim k - 1 ∧
+      LinearIndependent ℝ
+        (Sum.elim
+          (Sum.elim (fun i : sn => F.panelRow ends (i : β × _ × _))
+            (fun _ : Unit => BodyHingeFramework.hingeRow (k := k) (α := α) v a r))
+          ro)
+```
+
+Proof route: mirror `case_III_full_family_of_line`'s body — `exists_independent_panelRow_
+subfamily_of_edge` + `linearIndependent_panelRow_comp_single_of_edge` +
+`span_panelRow_comp_single_of_edge` + the `comp_columnOp_comp_single` bridge give the operated
+pinned NEW block and its span; `hnewpinaug` closes by `rw [hingeRow_comp_columnOp_comp_single]` +
+`(linearIndependent_sumElim_candidateRow_iff F e_a … r).2 hr` (verbatim the selector's :1913
+two-liner); `hrnvanish` for the `sn`-rows is `hends_ea`-rewrite + `hingeRow_comp_columnOp_vanish_
+off`; finish with W6-core `linearIndependent_sum_augment_candidateRow_restriction` in place of the
+selector. Consumes: W6-core, W4-era bricks (all landed — no W6a/W6b dependency). Consumed by:
+W6d. No `\lean` pin.
+
+**(e) The `t = 0` rank certification — leaf W6d (CaseI.lean; one commit; §38 exposure: moderate,
+mitigated).** The (6.29) count at `F₀ := caseIIICandidate G ends q e_a e_b n_a n' n_b 0`,
+concluded as the rank lower bound (per (a) step 2 — the consumable form). The bottom family rides
+abstractly-indexed (`ιb` + `Nat.card`), so W6b's `Fin`-indexed output feeds it without a cast and
+the leaf builds independently of W6b:
+
+```lean
+theorem PanelHingeFramework.case_III_rank_certification
+    [DecidableEq α] [DecidableEq β] [Finite α]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+```
+
+Proof route: (i) **transport the bottom** — define `w̃ j := w j` on the `Fv`-tag (a literal
+`Fv`-generator `hingeRow u w' r'` with `u, w' ≠ v` by `hvVc`; brick 2 applies via
+`hingeRow_comp_single_off`, so its `Φ/P_v`-composite is `w j` itself) and
+`w̃ j := hingeRow v b ρ'` on the `ρ'`-tag (brick 1 makes the composite `hingeRow a b ρ' = w j`);
+the composite family is `w`, so `hbotrestrict` holds by `hw`. (ii) **A1** — feed W6c at `F := F₀`,
+`ro := w̃`, `r := ρ` (`hane` via `caseIIICandidate_supportExtensor_candidate heab` +
+`panelSupportExtensor_ne_zero_iff.mpr hLn`; the gate is `hρgate` through the same simp). (iii)
+**memberships** — every member of the certified family is in `span ℝ F₀.rigidityRows`: `sn`-rows
+by `panelRow_mem_rigidityRows_of_link hends_ea hG_ea`; the candidate by the collapse
+`hingeRow v a ρ = hingeRow v b ρ − hingeRow a b ρ` (`hingeRow_sub_hingeRow_eq`) with
+`hingeRow v b ρ ∈ F₀.rigidityRows` (witness `⟨e_b, v, b, hG_eb, ρ, mem_hingeRowBlock_iff.mpr ∘
+(caseIIICandidate_supportExtensor_reproduced ▸ hρe₀-at-t=0), rfl⟩` — at `t = 0` the `e_b`-extensor
+is `panelSupportExtensor n_a n_b`, the `hρe₀` shape exactly) and `hingeRow a b ρ ∈
+span(Fv-rows) ⊆ span(F₀-rows)` (each `Fv`-generator is an `F₀`-row: `hleG`-link + equal extensor
+off `{e_a, e_b}` — a `Gv`-edge is neither, derivable from `hvVc` + edge-uniqueness against
+`hG_ea`/`hG_eb`); the bottom `w̃`-rows per-tag the same way. (iv) **count** — the family is
+`(sn ⊕ Unit) ⊕ ιb` of card `((D−1)+1) + D(m_v−1) = D·m_v = D(|V(G)|−1)` (`hwcard`/`hVcard`/
+`hVone`, omega); `finrank_span_eq_card` + `Submodule.finrank_mono` convert LI-in-span to the
+bound. **§38 note:** `F₀`'s extensors are reached ONLY through the three W6a simp lemmas (the
+`update`-form never meets `whnf`); memberships are built with explicit link witnesses (the
+`hrow_mem` idiom, CaseI.lean:2011). Consumes: W6a, W6c, brick 1/2, landed collapse +
+membership bricks. Consumed by: W7. No `\lean` pin.
+
+**(f) The rank-bound panelRow re-extraction — leaf W6e (GenericityDevice.lean; one commit; no
+§38; independently buildable NOW).** The generalization of
+`exists_independent_panelRow_subfamily_of_rigidOn_linking` that replaces the rigidity input
+(`hnev`/`hrig`, used there only to compute `finrank(span rigidityRows)` via W2) by the rank bound
+itself — the form step (a)2→3 consumes at the *not-yet-known-rigid* `F₀`:
+
+```lean
+theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank
+    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α}
+    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
+    {N : ℕ} (hN : N ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)) :
+    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ s, F.graph.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+        (ends (i : β × _ × _).1).2) ∧
+      Nat.card s = N ∧
+      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _))
+```
+
+Proof route: the `_of_rigidOn_linking` skeleton verbatim (`span_panelRow_linking_eq_rigidityRows`
+→ `Submodule.exists_fun_fin_finrank_span_eq` over the linking-index subtype → `choose`/re-index),
+with the extracted `Fin (finrank …)`-family cut to its first `N` members through `Fin.castLE hN`
+(sub-family of an LI family). Refactor `_of_rigidOn_linking` in the same commit to be the 3-line
+corollary via W2 (its `hfin` block is exactly W2 + the span identity) — the same
+extract-and-refactor move W2 itself made. Consumed by: W7 (and reusable beyond — the lemma is the
+honest "rank ⟹ that many literal panel rows" converter the device family lacked). No `\lean` pin.
+
+**(g) The one-variable transfer at the `t`-family — leaf W6f (CaseI.lean; one commit; no §38).**
+The W3 feed specialized to `caseIIICandidate` (per (a) step 3):
+
+```lean
+theorem PanelHingeFramework.caseIIICandidate_exists_good_shear
+    [DecidableEq β] [Finite α]
+    (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    {e_c e_r : β} (hcr : e_c ≠ e_r) (n_u n' n_r : Fin (k + 2) → ℝ)
+    {ι : Type*} [Finite ι]
+    (idx : ι → β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+    (h0 : LinearIndependent ℝ (fun i => (PanelHingeFramework.caseIIICandidate G ends q
+      e_c e_r n_u n' n_r 0).panelRow ends (idx i)))
+    (bad : Finset ℝ) :
+    ∃ t : ℝ, t ∉ bad ∧ t ≠ 0 ∧ LinearIndependent ℝ (fun i =>
+      (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).panelRow ends (idx i))
+```
+
+Proof route: `g t i := (caseIIICandidate … t).panelRow ends (idx i)`;
+`caseIIICandidate_panelRow_eq_add_smul` (W6a) gives `g t i = A i + t • B i` (`A` the `t = 0` rows,
+`B` the `e_r`-correction, `0` off `e_r`); take `b := Module.finBasis ℝ (Module.Dual ℝ (α →
+ScrewSpace k))` and `P i j := Polynomial.C (b.repr (A i) j) + Polynomial.X * Polynomial.C
+(b.repr (B i) j)` (degree ≤ 1; `hg` by `map_add`/`map_smul` of `b.repr`); apply W3
+`LinearIndependent.exists_notMem_of_polynomial_repr`. This is KT Lemma 5.2's "each minor of
+`R(G, p_t)` is continuous in `t`" (pp. 668–669) in its one-variable polynomial form. Consumes:
+W6a, W3. Consumed by: W7. No `\lean` pin.
+
+**(h) The arm closer — leaf W7 (CaseI.lean; one commit; THE §38-exposed leaf, mitigations
+named).** The role-parametric arm: from the unpacked-split context + W6b's data, the generic
+motive. Supersedes the §1.50(f) "W7 — A2 (M₁ closer)" slot; W8 (M₂) becomes a pure
+instantiation of this lemma (see (i)):
+
+```lean
+theorem PanelHingeFramework.case_III_arm_realization
+    [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    PanelHingeFramework.HasGenericFullRankRealization k G
+```
+
+Proof route: (i) W6d → the rank bound at `F₀`; (ii) W6e at `F₀` (`hends` at `F₀.graph = G`
+derived from `hsplitG`/`hends_Gv`/`hleG` + the two recorded links; `hne` on linking edges:
+`e_a ↦ C(L) ≠ 0` by `hLn`, `e_b ↦ panelSupportExtensor n_a n_b ≠ 0` by `hgab`, `Gv`-edges by
+`hne_Gv` + extensor agreement) → a linking index set `s`, `Nat.card s = D(|V(G)|−1)`, literal
+`F₀.panelRow`-family LI; (iii) W6f with `bad := ((setOf_not_shear_linearIndependent_subsingleton
+… hgab).finite.toFinset)` → `t^* ∉ bad`, `t^* ≠ 0`, the `F(t^*)`-family LI, and (by `t^* ∉ bad`,
+contraposition) `LinearIndependent ℝ ![n_a + t^* • n', n_b]`; (iv) **membership at `t^*`** —
+define `q₀ : α × Fin (k+2) → ℝ := fun p => if p.1 = v then (n_a + t^* • n') p.2 else q p` (the
+`hq₀v/hq₀b/hq₀a` funext-`if_neg` pattern of `case_III_old_new_blocks`); each `F(t^*)`-slot is in
+`span ℝ (ofNormals G ends q₀).toBodyHinge.rigidityRows`: the `e_r = e_b`-slot and the `Gv`-slots
+have extensors *equal* to the sheared candidate's (the `e_b`-normals are `(n_a + t^*n', n_b)`
+exactly; `Gv`-endpoints avoid `v`), so they are genuine rows (`panelRow_mem_rigidityRows_of_link`
+at `hG_eb` / the `hleG`-links); the `e_c = e_a`-slot is `(−1/t^*) •` the genuine `e_a`-row
+(`panelSupportExtensor_add_smul_left` makes the sheared `e_a`-extensor `(−t^*) • C(L)`;
+`annihRow_smul` (W6a) scales the row; `t^* ≠ 0` inverts); (v) **close** —
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` (count = `Nat.card s`) gives rigidOn
+`V(G)` at `ofNormals G ends q₀`, and GAP-2 `hasGenericFullRankRealization_of_rigidOn_ofNormals`
+(its `hends` = the derived G-level one; its `hne` = the (ii) list at `q₀`) concludes. **§38
+mitigations:** the only concrete carrier is `ofNormals G ends q₀` in (iv)–(v); all memberships
+are built with explicit link witnesses (the `hrow_mem` idiom, CaseI.lean:2011), all extensor
+evaluations go through `toBodyHinge_supportExtensor`/`ofNormals_normal` rewrites plus the W6a
+simp lemmas, and the `q₀`-overrides through the funext-`if_neg` pattern — never `whnf` on the
+carrier. Consumes: W6d, W6e, W6f, W6a's subsingleton, GAP-2, the span-containment core. Consumed
+by: W10 (M₁ at the listed roles, M₂ per (i) below, M₃ after the W9 wiring). No `\lean` pin.
+
+**(i) What supersedes what; M₂/M₃/W10 under the new cut.** The §1.50(f) build-order items
+6 ("W6 — A1, then W7 — A2") are **superseded** by W6a–W6f + W7 above; §1.50(c)'s leaf names map
+A1 ↦ W6c + W6d, A2 ↦ W6e + W6f + W7 (with the (a) certify-then-rebase correction). Items W8–W10
+keep their names and slots, refined:
+
+* **W8 (M₂)** is an *instantiation commit* of W7 at the swapped roles `(a, b, e_a, e_b, n') :=
+  (b, a, e_b, e_a, n'')`, feeding `ρ' := −ρ`: the swapped-role candidate functional is `−ρ`
+  because `r̂ = hingeRow a b ρ = hingeRow b a (−ρ)` (`hingeRow_swap`) — a Lean-orientation
+  artifact, not a KT discrepancy (KT p. 681: "`r'` is indeed equal to `r`"; the row content is
+  identical). Its `hρe₀`/`hwmem` shapes convert by `panelSupportExtensor_swap` + `map_neg`; the
+  gate at the `u = 1` witness is `ρ(panelSupportExtensor n_b n'') ≠ 0 → (−ρ)(…) ≠ 0`. If the
+  conversion is genuinely small it may be inlined into W10's `u = 1` branch; budget it as its own
+  commit.
+* **W9 (M₃)** stays as scoped in §1.50(e) (the G4c/G4d wiring + `candidateRow_ac_eq_neg`),
+  now targeting W7 at the *relabeled* `a`-split data: the `caseIIICandidate` def takes the
+  relabeled seed `qρ` as its `q`-argument, and W7's `(v, a, b, e_a, e_b, n')`-slots are
+  instantiated at `(a, c, v, e_c, e_a, n''')` — re-inserted body `a`, candidate hinge `e_c = ac`
+  on the line `L'' ⊂ Π(c)` (the `u = 2` witness), reproduced hinge `e_a = av` at the relabeled
+  split's `vc`-hinge (§1.50(e)'s `p₃(av) = qρ(vc)`), `Gv`-slot the relabeled split minus its
+  short-circuit edge. The candidate functional arrives as the *same* `ρ` through
+  `candidateRow_ac_eq_neg` + the `rigidityRows_ofNormals_relabel` row-space transport; pin the
+  residual sign/wiring shapes at the W9 design moment, after W7 lands.
+* **W10 (dispatch + discharge)** unchanged in role: unpack `hsplitGP` (the `hQeq` idiom,
+  CaseI.lean:4704), override the selector at the two re-inserted hinges (`ends' := Function.update
+  (Function.update Q.ends e_a (v, a)) e_b (v, b)` — the IH selector is junk off `E(Gab)`, and
+  `e_a, e_b ∉ E(Gab)`; `e₀ ∈ E(Gab)` keeps its recorded pair, *possibly in either order* — the
+  recordsLinks conjunct pins it only up to swap, so W10 case-splits and feeds the arms with
+  `(a, b)` named in recorded order), derive `hgab`/triple-LI from GP, `hne_Gv` from GP +
+  `supportExtensor_ne_zero_of_isGeneralPosition`, invoke **W6b** (GAP-6 `h622lb` on W10's
+  signature), run the discriminator glue at `hr := ρ ≠ 0`, bridge the gate to the arm shape via
+  `panelSupportExtensor_eq_complementIso_extensor`, and `match u with | 0 => W7 | 1 => W8 |
+  2 => W9`, ending at `case_III_hsplit_producer`'s `hcand` parameter shape.
+
+**(j) The corrected build order (replaces §1.50(f) item 6; each item one commit).**
+~~W1–W5, W6-core~~ (landed) → **W6a** (infra bricks + the `t`-family def) → **W6c** ∥ **W6e**
+(both independently buildable now — only landed inputs; order between them free) → **W6b** (the
+packaging; first GAP-6 carry above W5) → **W6f** (the transfer feed) → **W6d** (the `t = 0`
+certification) → **W7** (the arm closer) → **W8** (M₂ instantiation) → **W9** (M₃ wiring,
+§1.50(e)) → **W10** (dispatch + discharge assembly, matching `hcand`) → Leaf 4 → Leaf 5, phase
+close **green-modulo-GAP-6**. Dependency edges (anything not listed is independent):
+W6d ← {W6a, W6c}; W6f ← W6a; W7 ← {W6d, W6e, W6f}; W8/W9/W10 as in (i). All seven new leaves are
+statement-complete above — a build agent picks the leftmost unlanded leaf and lands it whole (no
+`sorry`; the only carried hypothesis anywhere is GAP-6's `h622lb`, and only on W6b/W10+). The
+pinned signatures fix the mathematical content (binders, hypotheses, conclusion); instance-set
+adjustments (`[Finite β]`, `[DecidableEq …]`) demanded by elaboration are at the builder's
+discretion and are not design deviations.
+
 ---
 
 ## 3. Per-case producer structure, node list, build order

@@ -908,7 +908,7 @@ with signatures in design §1.48–§1.49. Leaf ledger + decisions: `notes/Phase
 
 **Status (◷ in progress; opened 2026-06-09 at the 22g close; see `notes/Phase22h.md`).** Builds
 the corrected remaining-work picture Phase 22g's recon program scoped (GAPs 1–5; per-leaf
-signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.50) and takes the two
+signatures canonical in `notes/Phase22-realization-design.md` §1.48–§1.51) and takes the two
 producer nodes `lem:case-II-realization` / `lem:case-III` green at `d = 3`. Landed: **G5** (the
 `IsProperRigidSubgraph` predicate repair) → **G4b-impl** (the full-conditioned-IH (β) restate) →
 G4a-i/ii + G0 ∥ the triangle leaves T1–T4 ∥ G4c-i/ii → G4d-i/ii → the (β)-shaped `hsplit`

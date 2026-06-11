@@ -5,8 +5,9 @@
 Takes the two producer nodes `lem:case-II-realization` / `lem:case-III` green at `d=3` by building
 the corrected remaining-work picture the 22g recon program scoped (GAPs 1–5). **Per-leaf
 signatures stay canonical in `notes/Phase22-realization-design.md` §1.48 (T1–T4, the triple-LI
-bridge), §1.49 (G5, G4a–G4e, G0, the (β) branch shape), and §1.50 (the `hcand` discharge: the
-discriminator, the rank-transfer re-route W1–W10, GAP 6) — point at them, don't duplicate.**
+bridge), §1.49 (G5, G4a–G4e, G0, the (β) branch shape), §1.50 (the `hcand` discharge: the
+discriminator, the rank-transfer re-route W1–W10, GAP 6), and §1.51 (the W6-concrete
+decomposition W6a–W6f + W7, exact signatures) — point at them, don't duplicate.**
 22g's archive (delivered leaves + settled verdicts): `notes/Phase22g.md`.
 
 ## Current state
@@ -19,8 +20,8 @@ its `hcand` parameter), the triple-LI bridge, the GAP-3 good-`t` core
 (lemma + file + blueprint node), *Decisions made* (proof techniques), and the design §refs.
 Build + lint + verify.sh clean throughout; axiom-clean.
 
-**The `hcand`-discharge recon is DONE (design §1.50 — canonical for ALL remaining work;
-supersedes the §1.49(5) M-arm route).** (1) The witness-normal discriminator is a free in-place
+**The `hcand`-discharge recon is DONE (design §1.50, its W6-remainder build-out decomposed in
+§1.51; together canonical for ALL remaining work — supersedes the §1.49(5) M-arm route).** (1) The witness-normal discriminator is a free in-place
 restate of the line-data lemma + the glue (proofs reuse). (2) The sheared-placement arm route is
 undischargeable (it breaks KT's (6.26)–(6.28) row transport) — re-routed via KT Lemma 5.2:
 certify the (6.29) count at the `t = 0` hinge-level `BodyHingeFramework` `F₀` (memberships hold
@@ -29,13 +30,15 @@ planned sheared-support step is obsolete. (3) GAP 6 surfaced and **adjudicated**
 Coordinator independently verified all three verdicts against KT pp. 681–684 + the Lean
 (model-experiment row 20).
 
-**Next concrete step (W6 remainder):** the concrete A1 assembly at `F₀` — instantiate the new
-abstract restriction-form augment `linearIndependent_sum_augment_candidateRow_restriction` (landed,
-RigidityMatrix.lean; the A1 core) at the `t = 0` hinge-level `BodyHingeFramework` `F₀`, discharging
-its `hrnvanish`/`hnewpinaug`/`hbotrestrict` from W5's redundancy data, the witness gate
-`r̂(C(L)) ≠ 0`, and the chosen `D(m−1)` split-rows-minus-`(ab)i*` carried as restriction-independent
-`F₀`-rows. Then W7 (the M₁ closer A2). The hard linear-algebra core of A1 is now done; the remainder
-is the `F₀` construction + the brick discharges.
+**Next concrete step (W6 remainder): design §1.51 is now canonical** — the monolithic
+"W6-concrete/W7" slot is decomposed into seven exact-signature one-commit leaves **W6a–W6f + W7**
+(two opus builders had sized the undivided slot as un-carvable, model-experiment rows 26–27).
+§1.51(a) also *refines* §1.50(c): the certified `t = 0` mixed family is not itself transferable
+(its candidate row and `(vb)ⱼ`-transports are not sheared-candidate rows at `t ≠ 0`); the route is
+**certify-then-rebase** — certify the (6.29) count at `F₀` (W6c+W6d), convert to a rank lower
+bound and re-extract a literal `F₀.panelRow` family (W6e), transfer that along the `t`-family
+(W6f), close through the span core + GAP-2 (W7). Smallest next commit: **W6a** (below). W6c and
+W6e are independently buildable alternates (only landed inputs).
 
 **W5 (the redundancy-data packaging) is landed** — `BodyHingeFramework.exists_redundant_panelRow_ab_lam_of_rigidOn`
 (CaseI.lean): the consumer-level form of `exists_redundant_panelRow_ab_lam` whose two `finrank`
@@ -49,12 +52,16 @@ rearranged by `omega`. Output = `_ab_lam`'s data verbatim (`r`/`lam`/`i*`/`lam i
 R(Gv)-rows`/`r̂ ≠ 0`). Build + lint + axiom-clean; no `\lean` pin (internal infra). W4/W3/W2/W1
 landed before it.
 
-**Build order (§1.50(f); supersedes §1.49(6) item 5's discharge clause):** ~~W1 discriminator~~ (done)
+**Build order (§1.51(j); supersedes §1.50(f) item 6):** ~~W1 discriminator~~ (done)
 → ~~W2 `h618` micro-leaf~~ (done) → ~~W3 leaf B (rank transfer)~~ (done) → ~~W4 leaf A0 (restriction-bottom
 augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hypothesis** `h622lb`) →
-~~W6-core (restriction-form candidate augment, the A1 abstract core)~~ (done) → W6-concrete/W7 M₁
-(the `F₀` `t = 0` assembly + closer) → W8 M₂ → W9 M₃ → W10 dispatch + discharge assembly (matches
-`hcand`'s shape) → Leaf 4 → Leaf 5 → phase close, **green-modulo-GAP-6**.
+~~W6-core (restriction-form candidate augment, the A1 abstract core)~~ (done) → **W6a** (the
+`caseIIICandidate` `t`-family + infra bricks) → **W6c** ∥ **W6e** (restriction-form full family;
+rank-bound panelRow re-extraction — both buildable now) → **W6b** (candidate/bottom packaging;
+GAP-6 carry above W5) → **W6f** (the W3 transfer feed) → **W6d** (the `t = 0` rank certification at
+`F₀`) → **W7** (the arm closer, role-parametric) → W8 M₂ (W7 instantiation at swapped roles, `−ρ`)
+→ W9 M₃ → W10 dispatch + discharge assembly (matches `hcand`'s shape) → Leaf 4 → Leaf 5 → phase
+close, **green-modulo-GAP-6**. Exact signatures + per-leaf consumes/consumed-by/§38 notes: §1.51.
 
 ## Lemma checklist
 
@@ -114,9 +121,10 @@ augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hyp
   augment** (`linearIndependent_sum_augment_candidateRow_restriction`, RigidityMatrix.lean — the
   abstract A1 core: the restriction-bottom sibling of `linearIndependent_sum_augment_candidateRow`,
   using W4 instead of `_pinned_block_augment`; graph-free, axiom-clean, no `\lean` pin). Remaining, as
-  complete lemmas (no `sorry` on master), per §1.50(f): W6-concrete/W7 M₁ (the `F₀` `t = 0`
-  assembly + closer) → W8 M₂ → W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10 dispatch + assembly
-  matching the `hcand` signature.
+  complete lemmas (no `sorry` on master), per §1.51(j): W6a (the `caseIIICandidate` `t`-family +
+  infra bricks) → W6c ∥ W6e → W6b → W6f → W6d → W7 (the M₁ arm, certify-then-rebase) → W8 M₂
+  (W7 instantiation) → W9 M₃ (G4c/G4d + `candidateRow_ac_eq_neg`) → W10 dispatch + assembly
+  matching the `hcand` signature. Exact per-leaf signatures: §1.51(b)–(h).
 - [ ] **Leaf 4** — the `theorem_55_generic (n:=2) (k:=2)` instance node over the (β) shape,
   projecting `.2` (R2 verdict (B), §1.41); the `hcontractGP` wiring gains `hVH2` from G5. A small
   green blueprint node, not a standalone `theorem_55_dim3`.
@@ -133,33 +141,32 @@ augment)~~ (done) → ~~W5 redundancy packaging~~ (done; **carries the GAP-6 hyp
   successor sub-phase implements the all-`k` motive restructure (§1.50(b) option (i), est.
   ~10–17 commits) and discharges it with a small wiring commit. How the 0-dof narrowing happened:
   DESIGN.md *Narrowing an induction motive requires an IH-application census*.
-- **GAP 3 — core LANDED** (`exists_shear_linearIndependent_pair`, PanelLayer.lean): consumed by
-  leaf B's good-`t` choice (§1.50(c), the `bad`-set input).
+- **GAP 3 — core LANDED** (`exists_shear_linearIndependent_pair`, PanelLayer.lean): W6a restates
+  its inline bad-set bound as `setOf_not_shear_linearIndependent_subsingleton`; W7 feeds it to the
+  W6f transfer as the `bad`-Finset (§1.51(b)/(h)).
 - **The `ofNormals`/`withGraph` defeq-timeout trap** (TACTICS-QUIRKS §38) bites every
   carrier-instantiating leaf (the producer body, the T3/T4 seeds). Keep reasoning over abstract
   `F`; instantiate only at the seed. The §1.50 re-route helps: `F₀` and leaves A0/B are abstract /
   graph-free.
 ## Hand-off / next phase
 
-**Smallest next forward commit — W6-concrete, the concrete A1 assembly at `F₀` (§1.50(c)/(f)).**
-The abstract A1 core is now landed (`linearIndependent_sum_augment_candidateRow_restriction`,
-RigidityMatrix.lean); the remaining commit instantiates it at the `t = 0` hinge-level family `F₀`
-(KT's `p₁` as a `BodyHingeFramework`, hinge-primary). Build `F₀` (graph `G`,
-`supportExtensor: e_a ↦ C(L), e_b ↦ C(e₀), e ↦ split's extensor otherwise`), then discharge the
-augment's three hypotheses: `hrnvanish`/`hnewpinaug` from the `va`-panel rows + the witness gate
-`r̂(C(L)) ≠ 0` (the discriminator glue's output ∘ `panelSupportExtensor_eq_complementIso_extensor`,
-through the row-space criterion as in `linearIndependent_sum_augment_candidateRow_selector`), and
-`hbotrestrict` from the chosen `D(m−1)` split-rows-minus-`(ab)i*` carried as `F₀`-rows
-(`Ev`-rows verbatim; `(ab)ⱼ ↦ (vb)ⱼ`) — their restrictions to `V∖{v}` reproducing the split's rows
-(W5 supplies the redundancy data `r`/`lam`/`i*`/`r̂ ∈ span R(Gv)-rows`/`r̂ ≠ 0`). Then W7 (the M₁
-closer A2): A1 + W3 (leaf B) + the membership packaging + GAP-2 ⟹ `HasGenericFullRankRealization 2
-G`. The carried GAP-6 hypothesis `h622lb` rides through from W5. **No `sorry` placeholders** at any
-step (carry GAP-6 as a named `h…`, never a `sorry`).
-
-All landed feeds for A1: W1 discriminator, W2 `h618`, W3 leaf B, W4 leaf A0, W6-core (the
-restriction-form candidate augment — all abstract/graph-free), and W5 the redundancy-data packaging
-(the leaf at the unpacked IH framework, where the GAP-6 hypothesis `h622lb` enters as an explicit
-carry).
+**Smallest next forward commit — W6a, the `caseIIICandidate` `t`-family + infra bricks
+(§1.51(b), exact signatures there).** One commit: the hinge-level `t`-parameterized candidate
+framework `PanelHingeFramework.caseIIICandidate` (KT's `p₁` at shear `t`; `F₀` is its `t = 0`
+point) + its three extensor simp lemmas + the affine `panelRow` identity (CaseI.lean); the
+first-slot linearity bricks `panelSupportExtensor_add_left`/`_smul_left` and
+`annihRow_add`/`_smul`, plus the GAP-3 bad set as a subsingleton
+(`setOf_not_shear_linearIndependent_subsingleton`, refactoring
+`exists_shear_linearIndependent_pair` to consume it) (PanelLayer.lean); and the two
+restriction-transport bricks `hingeRow_comp_columnOp_comp_offProj` /
+`comp_columnOp_comp_offProj_of_single_eq_zero` (RigidityMatrix.lean). Everything is
+consumed-by-spec — §1.51(d)–(h)'s pinned signatures name each piece. If a different leaf suits
+the session better, **W6c** (`case_III_full_family_restriction`, §1.51(d)) and **W6e**
+(`exists_independent_panelRow_subfamily_of_le_finrank`, §1.51(f)) are also buildable now from
+landed inputs only. Then per §1.51(j): W6b → W6f → W6d → W7 → W8 → W9 → W10 → Leaf 4 → Leaf 5.
+The carried GAP-6 hypothesis `h622lb` enters the chain at W5, rides on **W6b and W10 only**
+(W6c–W6f and W7 take W6b's outputs as hypotheses and are GAP-6-clean), and exits at the Leaf-4/5
+wiring. **No `sorry` placeholders** at any step (carry GAP-6 as a named `h…`, never a `sorry`).
 
 After 22h closes (the molecular conjecture at `d=3`, Cor 5.7 unblocked → Phases 24–26):
 **Phase 23** = general `d` (KT Lemma 6.13), scoped with the §1.33 (C) reuse map; open it
@@ -315,3 +322,11 @@ alg-independence row to `notes/AlgebraicIndependence.md`.
   `span_rigidityRows_eq_sup_span_panelRow_edge` + `finrank_mono le_sup_left`); then `hk' : k' ≤ D−2`
   is the carried GAP-6 lower bound `h622lb` rearranged by `omega`. Clean three-step composition; no
   `change`/`show`, no glue chains. No `\lean` pin (internal infra). Build/lint/axiom-clean.
+- **W6-concrete decomposed (design §1.51; docs-only).** The slot two opus builders sized as
+  un-carvable is cut into seven exact-signature one-commit leaves W6a–W6f + W7, pinned against
+  the landed source + KT pp. 668–669/681–686. One §1.50(c) correction: the certified `t = 0`
+  mixed family is *not* directly transferable (its candidate row / `(vb)ⱼ`-transports aren't
+  sheared-candidate rows at `t ≠ 0`); the fixed route is **certify-then-rebase** (rank-bound at
+  `F₀` → re-extract literal `F₀.panelRow`s → transfer those). GAP-6 isolation fell out: only W6b
+  and W10 carry `h622lb`. M₂ = W7 at swapped roles with `ρ' := −ρ` (orientation artifact; KT
+  p. 681 has `r' = r`).
