@@ -2893,6 +2893,19 @@ limitations. Worth a once-over so future agents don't re-litigate.
   enough to be the standard fix, but a one-off here.
 - **Status:** resolved (Phase 21b N7b-3).
 
+### [resolved] `rw [Nat.card_unique]` fires on the leftmost `Nat.card _`, demanding `Unique` of the wrong summand
+- **Where it bit:** Phase 22h W6d `case_III_rank_certification` (`CaseI.lean`), the
+  `(sn ⊕ Unit) ⊕ ιb` count. `rw [Nat.card_sum, Nat.card_sum, Nat.card_unique, hsn_card, hwcard,
+  hVcard]` mis-fired `Nat.card_unique` (which needs `[Unique _]`) onto the leftmost `Nat.card ↑sn`,
+  not the `Nat.card Unit` I meant — failing to synthesize `Nonempty ↑sn` / `Subsingleton ↑sn`.
+- **Friction:** the same leftmost-occurrence trap as the `Finset.sum_eq_zero` entry above, but the
+  rewrite lemma carries a typeclass side-goal, so the mis-fire shows up as an instance-synth failure
+  rather than a type mismatch.
+- **Resolution:** reorder so the *other* `Nat.card`s are consumed first — `rw [Nat.card_sum,
+  Nat.card_sum, hsn_card, hwcard, Nat.card_unique, hVcard]` leaves only `Nat.card Unit` when
+  `Nat.card_unique` fires. (Same "pin the occurrence" lesson as the entry above.)
+- **Status:** resolved (Phase 22h W6d).
+
 ## Mirrored
 
 ### [mirrored] `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` + `LinearIndependent.exists_notMem_of_polynomial_repr` (general polynomial-entry Gram-det engine + basis-coordinate transfer)

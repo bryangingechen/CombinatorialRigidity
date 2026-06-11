@@ -4324,6 +4324,194 @@ theorem PanelHingeFramework.case_III_full_family_restriction [DecidableEq α]
   exact BodyHingeFramework.linearIndependent_sum_augment_candidateRow_restriction
     hva hrnvanish hnewpinaug hbotrestrict
 
+/-- **W6d — the `t = 0` rank certification at `F₀`** (`lem:case-III`, the certify step of the
+certify-then-rebase route; Katoh–Tanigawa 2011 §6.4.1, eq. (6.29), the certify half of design
+§1.51(a)/(e); Phase 22h). The KT-(6.29) count at the `t = 0` candidate framework
+`F₀ := caseIIICandidate G ends q e_a e_b n_a n' n_b 0` — concluded in the *consumable* form a rank
+lower bound `D(|V(G)|−1) ≤ finrank (span ℝ F₀.rigidityRows)`. This is KT's own reading of (6.29)
+("if the top-left `6×6` block is full rank then `rank R(G,p₁) = 6(|V|−1)`", p. 684 — a statement
+about the *rank* of `R(G,p₁)`, not about a distinguished row family), the step that lets the rebase
+(W6e) re-extract a literal `F₀.panelRow` family of that size for the W6f transfer.
+
+The certified family is W6c's restriction-form `Sum.elim (Sum.elim (sn-rows) {hingeRow v a ρ}) w̃`
+at `F := F₀`: the `D − 1` `e_a`-panel rows of the candidate hinge, the candidate row
+`hingeRow v a ρ` (the redundant `ab`-combination W6b supplies as `ρ`), and a transported copy `w̃`
+of W6b's `D(m_v−1)` bottom rows. The bottom transport (i) replaces each `w j` by a row `w̃ j` whose
+`Φ ∘ P_v`-composite (`Φ = columnOp hva`, `P_v = id − single v ∘ proj v`, W4's off-`v` restriction)
+is `w j` itself: a genuine `G_v`-row `hingeRow u w' r'` (`u, w' ≠ v` by `hvVc`) survives by brick 2
+(`comp_columnOp_comp_offProj_of_single_eq_zero`, via `hingeRow_comp_single_off`), and a transported
+`ρ'`-row enters as `hingeRow v b ρ'`, whose composite is `hingeRow a b ρ' = w j` (brick 1,
+`hingeRow_comp_columnOp_comp_offProj`); so `hbotrestrict` holds by `hw`. (ii) W6c then certifies the
+family LI at `F₀`. (iii) Every member lies in `span ℝ F₀.rigidityRows`: the `sn`-rows are genuine
+`F₀`-rows of the candidate `e_a`-link; the candidate collapses by the eq.-(6.27) identity
+`hingeRow v a ρ = hingeRow v b ρ − hingeRow a b ρ` (`hingeRow_sub_hingeRow_eq`) into a genuine
+`e_b`-row `hingeRow v b ρ` (`ρ(C(e₀)) = 0` at `t = 0`, `hρe₀`) minus `hingeRow a b ρ`, a member of
+`span F_v`-rows (`hρGv`) — and `span F_v`-rows `≤ span F₀`-rows since every `G_v`-edge keeps its
+seed extensor; the
+`w̃`-rows per-tag the same way. (iv) The family is `(sn ⊕ Unit) ⊕ ιb` of card
+`((D−1)+1) + D(m_v−1) = D·m_v = D(|V(G)|−1)`, and `finrank_span_eq_card` + `Submodule.finrank_mono`
+convert LI-in-span to the bound. -/
+theorem PanelHingeFramework.case_III_rank_certification
+    [DecidableEq β] [Finite α]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ') :
+    screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype ιb := Fintype.ofFinite ιb
+  set na := (fun i => q (a, i)) with hna
+  set nb := (fun i => q (b, i)) with hnb
+  set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb 0 with hF₀
+  set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
+  have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
+  have hvb : v ≠ b := fun h => hvVc (h ▸ hbVc)
+  -- The candidate hinge `e_a`'s support at `F₀` is the `va`-line meet `C(L) = panelSupportExtensor
+  -- na n'`, nonzero (the free line is transversal, `hLn`); the gate `hρgate` reads on it.
+  have hsuppea : F₀.supportExtensor e_a = panelSupportExtensor na n' :=
+    PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb 0 heab
+  have hane : F₀.supportExtensor e_a ≠ 0 := by
+    rw [hsuppea]; exact (panelSupportExtensor_ne_zero_iff na n').mpr hLn
+  have hr : ρ (F₀.supportExtensor e_a) ≠ 0 := by rw [hsuppea]; exact hρgate
+  -- The reproduced hinge `e_b`'s support at `t = 0` is `panelSupportExtensor na nb = C(e₀)`.
+  have hsuppeb : F₀.supportExtensor e_b = panelSupportExtensor na nb := by
+    rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced, zero_smul, add_zero]
+  -- `Φ = columnOp hva` (col_a += col_v); `P_v = id − single v ∘ proj v` (W4's off-`v` restriction).
+  set Φ := BodyHingeFramework.columnOp (k := k) hva with hΦ
+  set Pv : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k) :=
+    (LinearMap.id : (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k))
+      - (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).comp (LinearMap.proj v) with hPv
+  -- The seed off `{e_a, e_b}` agrees with `Fv` (graph-free `ofNormals` support).
+  have hseed_eq : ∀ e, (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e
+      = Fv.supportExtensor e := fun _ => rfl
+  -- A `G_v`-edge keeps its `F₀`-seed extensor: its endpoints are in `V(Gv)`, so neither is `v`,
+  -- hence `e ≠ e_a` and `e ≠ e_b` (both link `v`), and `caseIIICandidate_supportExtensor_of_ne`
+  -- collapses `F₀.supportExtensor e` to `Fv.supportExtensor e`.
+  have hGv_ne : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
+    intro e u w hlink
+    have hu : u ∈ V(Gv) := hlink.left_mem
+    have hw : w ∈ V(Gv) := hlink.right_mem
+    have hune : u ≠ v := fun h => hvVc (h ▸ hu)
+    have hwne : w ≠ v := fun h => hvVc (h ▸ hw)
+    have hGlink := hleG e u w hlink
+    refine ⟨fun he => ?_, fun he => ?_⟩
+    · subst he
+      rcases (hG_ea).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hune hh.symm
+      · exact hwne hh.symm
+    · subst he
+      rcases (hG_eb).eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hune hh.symm
+      · exact hwne hh.symm
+  have hF₀_ext_Gv : ∀ {e u w}, Gv.IsLink e u w → F₀.supportExtensor e = Fv.supportExtensor e := by
+    intro e u w hlink
+    obtain ⟨hne_a, hne_b⟩ := hGv_ne hlink
+    rw [hF₀, PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_a e_b na n' nb 0
+      hne_a hne_b, hseed_eq]
+  -- `span Fv.rigidityRows ≤ span F₀.rigidityRows`: every `Fv`-row is an `F₀`-row.
+  have hFvle : Submodule.span ℝ Fv.rigidityRows ≤ Submodule.span ℝ F₀.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨e, u, w, hlink, r, hr_blk, rfl⟩
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    refine Submodule.subset_span ⟨e, u, w, hleG e u w hlink, r, ?_, rfl⟩
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff, hF₀_ext_Gv hlink,
+      ← BodyHingeFramework.mem_hingeRowBlock_iff]
+    exact hr_blk
+  -- (i) The bottom transport: per `j`, a row `w̃ j` in `span F₀.rigidityRows` whose `Φ ∘ Pv`-
+  -- composite is `w j`.
+  have htransport : ∀ j, ∃ wt : Module.Dual ℝ (α → ScrewSpace k),
+      ((wt.comp Φ.toLinearMap).comp Pv = w j) ∧ wt ∈ Submodule.span ℝ F₀.rigidityRows := by
+    intro j
+    rcases hwmem j with hgen | ⟨ρ', hρ'e₀, hwj⟩
+    · -- A genuine `G_v`-row `hingeRow u w' r'` (`u, w' ≠ v`): brick 2 leaves it fixed, and it is
+      -- an `F₀`-row by `hFvle ∘ subset_span`.
+      refine ⟨w j, ?_, hFvle (Submodule.subset_span hgen)⟩
+      -- The `Fv`-row form `w j = hingeRow u w' r'` with `v ≠ u, v ≠ w'` (the endpoints are in
+      -- `V(Gv)`, so `≠ v`); brick 2 with `g.comp (single v) = 0` from `hingeRow_comp_single_off`.
+      obtain ⟨e, u, w', hlink, r', -, hwj⟩ := hgen
+      rw [hFv, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph] at hlink
+      have hune : v ≠ u := fun h => hvVc (h ▸ hlink.left_mem)
+      have hwne : v ≠ w' := fun h => hvVc (h ▸ hlink.right_mem)
+      rw [hwj]
+      exact BodyHingeFramework.comp_columnOp_comp_offProj_of_single_eq_zero hva
+        (BodyHingeFramework.hingeRow_comp_single_off hune hwne r')
+    · -- A transported `ρ'`-row: enter as `hingeRow v b ρ'`, composite = `hingeRow a b ρ' = w j`
+      -- (brick 1), and `hingeRow v b ρ'` is a genuine `e_b`-row of `F₀` (`ρ'(C(e₀)) = 0`, `t = 0`).
+      refine ⟨BodyHingeFramework.hingeRow v b ρ', ?_, ?_⟩
+      · rw [BodyHingeFramework.hingeRow_comp_columnOp_comp_offProj hva hvb ρ', hwj]
+      · refine Submodule.subset_span ⟨e_b, v, b, hG_eb, ρ', ?_, rfl⟩
+        rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsuppeb]
+        exact hρ'e₀
+  choose wtil hwtilcomp hwtilmem using htransport
+  -- `hbotrestrict`: the operated `wtil`-family is `w`, LI by `hw`.
+  have hbotrestrict : LinearIndependent ℝ
+      (fun j : ιb => ((wtil j).comp Φ.toLinearMap).comp Pv) := by
+    have : (fun j : ιb => ((wtil j).comp Φ.toLinearMap).comp Pv) = w := funext hwtilcomp
+    rw [this]; exact hw
+  -- (ii) W6c certifies the restriction-form family at `F₀`.
+  obtain ⟨sn, hsn_e, hsn_card, hfam⟩ :=
+    PanelHingeFramework.case_III_full_family_restriction F₀ ends hva hends_ea hane
+      hbotrestrict ρ hr
+  -- (iii) Every member lies in `span F₀.rigidityRows`. Assemble the span-containment.
+  set fam := Sum.elim
+      (Sum.elim (fun i : sn => F₀.panelRow ends (i : β × _ × _))
+        (fun _ : Unit => BodyHingeFramework.hingeRow (k := k) (α := α) v a ρ))
+      wtil with hfam_def
+  have hmem : ∀ x, fam x ∈ Submodule.span ℝ F₀.rigidityRows := by
+    rintro ((⟨i, hi⟩ | u) | j)
+    · -- `sn`-row: a genuine `F₀`-panel row of the candidate link `e_a` (`= (v, a)`).
+      refine Submodule.subset_span (F₀.panelRow_mem_rigidityRows (i := (i : β × _ × _)) ?_)
+      have he : (i : β × _ × _).1 = e_a := hsn_e _ hi
+      rw [he, hends_ea]; exact hG_ea
+    · -- The candidate row collapses to `hingeRow v b ρ − hingeRow a b ρ` (eq. (6.27)).
+      change BodyHingeFramework.hingeRow (k := k) (α := α) v a ρ ∈ Submodule.span ℝ F₀.rigidityRows
+      rw [← BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b ρ]
+      refine Submodule.sub_mem _ (Submodule.subset_span ⟨e_b, v, b, hG_eb, ρ, ?_, rfl⟩)
+        (hFvle hρGv)
+      rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsuppeb]; exact hρe₀
+    · exact hwtilmem j
+  have hsub : Submodule.span ℝ (Set.range fam) ≤ Submodule.span ℝ F₀.rigidityRows := by
+    rw [Submodule.span_le]; rintro _ ⟨x, rfl⟩; exact hmem x
+  -- (iv) Count: the family is `(sn ⊕ Unit) ⊕ ιb` of card `D·(|V(G)|−1)`. The index is finite (an
+  -- LI family in the finite-dimensional dual `Module.Dual ℝ (α → ScrewSpace k)`).
+  haveI hfin_idx : Finite ((↥sn ⊕ Unit) ⊕ ιb) := hfam.finite
+  haveI : Finite ↥sn :=
+    Finite.of_injective (fun x : ↥sn => (Sum.inl (Sum.inl x) : (↥sn ⊕ Unit) ⊕ ιb))
+      (fun _ _ h => by simpa using h)
+  haveI : Fintype ↥sn := Fintype.ofFinite _
+  haveI : Fintype ((↥sn ⊕ Unit) ⊕ ιb) := Fintype.ofFinite _
+  have hcard : Nat.card ((↥sn ⊕ Unit) ⊕ ιb) = screwDim k * (V(G).ncard - 1) := by
+    rw [Nat.card_sum, Nat.card_sum, hsn_card, hwcard, Nat.card_unique, hVcard]
+    -- `D ≥ 1` (`(k+2).choose 2 ≥ 1`) and `m_v ≥ 1`: write `m_v = m' + 1`, expand `D·(m'+1)`.
+    have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+    obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
+    rw [hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ]
+    omega
+  rw [← hcard, Nat.card_eq_fintype_card, ← finrank_span_eq_card hfam]
+  exact Submodule.finrank_mono hsub
+
 /-- **L5 — the candidate-completion index map is injective** (`lem:case-II-realization` /
 `lem:case-III`, the `j`/`Sum.elim` packaging leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa
 2011 §6.4.1, eq. (6.29), Phase 22g). The candidate-completion assembly
