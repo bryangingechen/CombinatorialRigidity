@@ -488,6 +488,118 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   -- `(D−1)|E| = |Bs| + |E∖Bs| ≤ D(|V|−1) + (D−1−h*) < D(|V|−1) + (D−1)` since `h* ≥ 1`.
   nlinarith [hsplit, hfibersplit, hdiffle, hstarpos, hBscard, hhstar]
 
+/-! ### Independence of `E(G̃)` and base uniqueness at `k > 0`
+(`lem:edge-set-indep-pos`, KT 4.5(ii))
+
+Katoh–Tanigawa 2011 Lemma 4.5(ii) (printed p.663): in a minimal `k`-dof-graph with `k > 0` and
+no proper rigid subgraph, the whole edge-set `E(G̃)` is **independent** in `M(G̃)`. Equivalently,
+it is the **unique** base. This is the `k > 0` counterpart of KT 4.5(i)'s edge-count bound and
+the key uniqueness fact the KT 4.7/4.8(ii) assembly relies on.
+
+Proof of independence: if `E(G̃)` were dependent it would contain a circuit `C`
+(`Matroid.Dep.exists_isCircuit_subset`). `circuit_induces_isRigidSubgraph` promotes `C` to a
+rigid subgraph `H = G.inducedSpan n C ≤ G`. Looplessness (`loopless_of_isMinimalKDof`) gives
+`2 ≤ |V(H)|` (the circuit spans ≥ 2 vertices). The no-proper-rigid hypothesis (`hnp`) then forces
+`V(H) = V(G)` (else `H` is a proper rigid subgraph), so `H.IsKDof n 0` already means
+`G.deficiency n = 0`, contradicting `k > 0`. Uniqueness: `E(G̃)` independent + `B ⊆ E(G̃)` +
+`IsBase.eq_of_subset_indep`. -/
+
+/-- **KT Lemma 4.5(ii): `E(G̃)` is independent when `k > 0` and no proper rigid subgraph**
+(`lem:edge-set-indep-pos`; Katoh–Tanigawa 2011 Lemma 4.5(ii), printed p.663). For a minimal
+`k`-dof-graph `G` with `k > 0`, no proper rigid subgraph, and `D = bodyBarDim n ≥ 2`, the
+edge-set `E(G.mulTilde n)` is independent in `M(G̃)`.
+
+Proof: if dependent, it contains a circuit `C`; `circuit_induces_isRigidSubgraph` gives a rigid
+`H = G.inducedSpan n C`; looplessness gives `2 ≤ |V(H)|`; `hnp` forces `V(H) = V(G)`, so the
+rigid subgraph spans all of `G`, giving `def(G̃) = 0` and contradicting `k > 0`. -/
+theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hk : 0 < k)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    (G.matroidMG n).Indep E(G.mulTilde n) := by
+  classical
+  haveI hLl : G.Loopless := loopless_of_isMinimalKDof hG
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  -- Suppose for contradiction `E(G̃)` is dependent.
+  by_contra hindep
+  -- `E(G̃)` is in the ground set; so it is a `Dep` set.
+  have hground : E(G.mulTilde n) ⊆ (G.matroidMG n).E := by
+    simp [matroidMG, Matroid.restrict_ground_eq]
+  have hDep : (G.matroidMG n).Dep E(G.mulTilde n) := ⟨hindep, hground⟩
+  -- Extract a circuit `C ⊆ E(G̃)`.
+  obtain ⟨C, hCsub, hCcirc⟩ := hDep.exists_isCircuit_subset
+  -- `H = G.inducedSpan n C` is a rigid subgraph of `G`.
+  set H := G.inducedSpan n C with hHdef
+  have hHrigid : H.IsRigidSubgraph G n := circuit_induces_isRigidSubgraph hD1 hCcirc
+  -- `|V(H)| ≥ 2`: the circuit is nonempty and `G` is loopless.
+  have hVH2 : 2 ≤ V(H).ncard := by
+    -- The circuit contains a fiber element; its underlying edge has two distinct endpoints.
+    obtain ⟨p, hp⟩ := hCcirc.nonempty
+    obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet (hCsub hp)
+    have hxyG : G.IsLink p.1 x y := mulTilde_isLink G n |>.mp hlink
+    have hxy : x ≠ y := hxyG.ne
+    -- Both endpoints lie in `V(H)`.
+    have hxH : x ∈ V(H) := by
+      rw [hHdef, vertexSet_inducedSpan]; exact ⟨p, hp, hlink.inc_left⟩
+    have hyH : y ∈ V(H) := by
+      rw [hHdef, vertexSet_inducedSpan]; exact ⟨p, hp, hlink.inc_right⟩
+    calc 2 = ({x, y} : Set α).ncard := (Set.ncard_pair hxy).symm
+      _ ≤ V(H).ncard :=
+          Set.ncard_le_ncard (Set.insert_subset_iff.mpr ⟨hxH, Set.singleton_subset_iff.mpr hyH⟩)
+            (Set.toFinite _)
+  -- `hnp` forces `V(H) = V(G)` (else `H` is a proper rigid subgraph).
+  have hVHsub : V(H) ⊆ V(G) := hHrigid.1.vertexSet_mono
+  have hVHeq : V(H) = V(G) := by
+    by_contra hne
+    exact hnp H ⟨hHrigid, hVH2, hVHsub.ssubset_of_ne hne⟩
+  have hVne : V(G).Nonempty := by rw [← hVHeq]; exact Set.nonempty_of_ncard_ne_zero (by omega)
+  -- `H ≤ G`, `H.IsKDof n 0`, `V(H) = V(G)` → `rank M(H̃) = D(|V(G)|-1)`.
+  have hHkdof : H.IsKDof n 0 := hHrigid.2
+  have hVHne : V(H).Nonempty := hVHeq.symm ▸ hVne
+  have hrankH : ((H.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+    have := rank_matroidMG_of_isKDof_zero hD1 hVHne hHkdof
+    rwa [hVHeq] at this
+  -- `E(H̃) ⊆ E(G̃)` (H ≤ G), so `M(H̃) = M(G̃) ↾ E(H̃)` and `rank M(H̃) ≤ rank M(G̃)`.
+  have hHle : H ≤ G := hHrigid.1
+  have hrestrict : H.matroidMG n = (G.matroidMG n) ↾ E(H.mulTilde n) :=
+    (matroidMG_restrict_mulTilde hHle n).symm
+  -- `M(G̃)` is `RankFinite` (ground set is finite).
+  haveI hMGFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  haveI hMGRF : (G.matroidMG n).RankFinite := Matroid.rankFinite_of_finite _
+  -- A base of `M(H̃)` is also independent in `M(G̃)`.
+  obtain ⟨B, hBbase⟩ := (H.matroidMG n).exists_isBase
+  have hBindepG : (G.matroidMG n).Indep B := by
+    have hBindepH := hBbase.indep
+    rw [hrestrict, Matroid.restrict_indep_iff] at hBindepH
+    exact hBindepH.1
+  -- `|B| = rank M(H̃) = D(|V(G)|-1)`, so `rank M(G̃) ≥ D(|V(G)|-1)`.
+  have hBcard : (B.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+    rw [← hrankH]; exact_mod_cast hBbase.ncard
+  have hrankG_ge : (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) ≤ ((G.matroidMG n).rank : ℤ) := by
+    rw [← hBcard]; exact_mod_cast hBindepG.ncard_le_rank
+  -- `rank M(G̃) + def(G̃) = D(|V(G)|-1)` and `def(G̃) = k > 0` → contradiction.
+  have hbridge := G.rank_add_deficiency_eq n hD1 hVne
+  have hkDef : G.deficiency n = k := hG.1
+  linarith [hrankG_ge, hbridge, hkDef]
+
+/-- **The unique base at `k > 0` with no proper rigid subgraph is `E(G̃)`**
+(`lem:edge-set-indep-pos`, uniqueness corollary; Katoh–Tanigawa 2011 Lemma 4.5(ii)). Under the
+same hypotheses as `indep_edgeSet_mulTilde_of_noRigid_of_pos`, every base of `M(G̃)` equals
+`E(G.mulTilde n)`. Since `E(G̃)` is independent (`indep_edgeSet_mulTilde_of_noRigid_of_pos`)
+and any base `B ⊆ E(G̃) = M.E`, `IsBase.eq_of_subset_indep` gives `B = E(G̃)`. -/
+theorem isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hk : 0 < k)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B) :
+    B = E(G.mulTilde n) := by
+  have hindep := indep_edgeSet_mulTilde_of_noRigid_of_pos hD hG hk hnp
+  -- `B ⊆ E(G̃) = M.E` since bases are subsets of the ground set.
+  have hME : (G.matroidMG n).E = E(G.mulTilde n) := by
+    simp [matroidMG, Matroid.restrict_ground_eq]
+  have hBsub : B ⊆ E(G.mulTilde n) := hME ▸ hB.subset_ground
+  exact hB.eq_of_subset_indep hindep hBsub
+
 /-! ### A low-degree vertex by the average-degree count (`lem:reducible-vertex`, F″ core)
 
 Katoh–Tanigawa 2011 Lemma 4.6 forces a degree-`2` vertex in a minimal `0`-dof-graph with no

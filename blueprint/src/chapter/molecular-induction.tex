@@ -863,6 +863,31 @@ route that bypasses the deferred forest surgery
   D(|V(G)| - 1) - k + (D - 2)$.
 \end{proof}
 
+\begin{lemma}[Independence of $E(\tilde G)$ at $k > 0$; KT Lemma 4.5(ii)]
+  \label{lem:edge-set-indep-pos}
+  \lean{Graph.indep_edgeSet_mulTilde_of_noRigid_of_pos,
+        Graph.isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos}
+  \leanok
+  \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG,
+        thm:def-eq-corank}
+  Let $G$ be a minimal $k$-dof-graph with $k > 0$, no proper rigid subgraph, and
+  $D \ge 2$. Then $E(\tilde G)$ is independent in $M(\tilde G)$ and is its unique base.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG,
+        thm:def-eq-corank}
+  If $E(\tilde G)$ were dependent, it would contain a circuit $C$; by
+  \cref{lem:circuit-induces-rigid} the induced span $H = G[V(C)]$ is a rigid subgraph
+  of $G$; looplessness gives $|V(H)| \ge 2$; the no-proper-rigid hypothesis forces
+  $V(H) = V(G)$. Then $H$ is rigid and spans all of $V(G)$, so
+  $\operatorname{rank}M(\tilde G) \ge \operatorname{rank}M(\tilde H) = D(|V(G)|-1)$;
+  combined with $\operatorname{rank}M(\tilde G) + \operatorname{def}(G) = D(|V(G)|-1)$
+  and $\operatorname{def}(G) = k > 0$, this is a contradiction.
+  Uniqueness: $E(\tilde G)$ independent and any base $B \subseteq E(\tilde G)$ gives
+  $B = E(\tilde G)$ by \texttt{Matroid.IsBase.eq\_of\_subset\_indep}.
+\end{proof}
+
 \begin{lemma}[A low-degree vertex by the average-degree count; KT Lemma 4.6, core]
   \label{lem:low-degree-vertex}
   \lean{Graph.exists_degree_le_two}

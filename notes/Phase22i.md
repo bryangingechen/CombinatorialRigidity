@@ -15,7 +15,7 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a, L1b, L1c, and L1d are complete.** Next: any of L1f/L1g (both independent; see Hand-off).
+**L1a, L1b, L1c, L1d, and L1f are complete.** Next: L1g or L1e (both unblocked; see Hand-off).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -82,6 +82,8 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     membership equivalences inline. Requires `[Finite α] [Finite β]` on split (needed for
     `Set.ncard_union_eq` on image/crossingEdges sets). Split statement uses explicit ℤ
     arithmetic `((bodyBarDim n : ℤ) - 1)` to avoid ℕ-subtraction/`ring` mismatch.
+  - [x] **L1f** — `indep_edgeSet_mulTilde_of_noRigid_of_pos` + `isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos`
+    in `ReducibleVertex.lean` + `lem:edge-set-indep-pos` blueprint node in `molecular-induction.tex`.
   - [x] **L1b** — `deficiency_of_edgeSet_empty` + `deficiency_of_single_edge` +
     `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` +
     `isMinimalKDof_ncard_le_two_trichotomy` in `Deficiency.lean` (after the corank bridge)
@@ -115,11 +117,9 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a, L1b, L1c, and L1d complete.** **Smallest next forward
-commit: L1f** (KT 4.5(ii) + base uniqueness + `lem:edge-set-indep-pos`, additive to
-`ReducibleVertex.lean`, signatures in §1.58(g)). Then **L1g** (reverse acyclicity
-bricks in `ForestSurgery.lean`) and **L1e** (KT 3.6 part 2, needs L1a + L1d) —
-order per §1.58(i).
+**L0 fully complete. L1a, L1b, L1c, L1d, and L1f complete.** **Smallest next forward
+commit: L1g** (reverse acyclicity bricks in `ForestSurgery.lean`, unblocked, §1.58(g)) or
+**L1e** (KT 3.6 part 2, needs L1a + L1d, §1.58(f)) — order per §1.58(i). Both are independent.
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
 `d = 3` Lean, §1.33 (C) reuse map) and adds the general-`d` row to
@@ -127,6 +127,17 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
 
 ## Decisions made during this phase
 
+- **L1f build (2026-06-12):** `indep_edgeSet_mulTilde_of_noRigid_of_pos` + uniqueness corollary
+  in `ReducibleVertex.lean`. Core argument: dependence → circuit `C` →
+  `circuit_induces_isRigidSubgraph` + looplessness + `hnp` → `V(H) = V(G)` → rank lower bound
+  via `matroidMG_restrict_mulTilde` (restrict direction is `.symm` of the stated form) + base of
+  restricted matroid is independent in `G.matroidMG n` + `ncard_le_rank`; combined with
+  `rank_add_deficiency_eq` to contradict `k > 0`. `Matroid.rankFinite_of_finite` needed (from
+  `finite_of_finite`) to discharge `[RankFinite M]` on `ncard_le_rank`. `vertexSet_mono` is the
+  correct field for `H ≤ G → V(H) ⊆ V(G)` (not `left_mem`; `left_mem` is on `IsLink`).
+  `mulTilde_isLink G n |>.mp` to convert `(G.mulTilde n).IsLink` to `G.IsLink` for `ne`.
+  `Set.insert_subset_iff.mpr` for `{x,y} ⊆ S` membership check.
+  `Set.Subset.ssubset_of_ne` (dot notation on `hVHsub : V(H) ⊆ V(G)`) for strict subset.
 - **L1d build (2026-06-12):** three `partitionDef` lemmas in `Deficiency.lean`.
   `partitionDef_congr`: `simp [partitionDef, numParts, Set.image_congr h, crossingEdges_congr h]`
   closes in one line via a private `crossingEdges_congr` helper.
