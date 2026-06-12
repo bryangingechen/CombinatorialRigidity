@@ -74,6 +74,7 @@ symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
 - `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
 - *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43
 - `rw [map_neg]` fails *"Did not find … `?f (-?a)`"* on `(-f) x` (negation on the *map*, not the argument) → § 44 (use `LinearMap.neg_apply`)
+- `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
 - *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
 - `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
 

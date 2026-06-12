@@ -4090,6 +4090,40 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
 - **Status:** resolved. (If this pattern recurs, a `@[simp]` lemma or a norm-simp
   canonicalization to one notation would eliminate it.)
 
+### [resolved] `V(G.induce X) = X` doesn't fire in `simp [numParts]`
+- **Where it bit:** Phase 22i L1d (`Deficiency.lean`, `partitionDef_split_of_sides`).
+  `Graph.induce_vertexSet` (the `simps!`-generated lemma `V(G.induce X) = X`) is shadowed
+  by the explicit `lemma induce_vertexSet : G.induce V(G) = G` — same name, different
+  statement. So `simp only [numParts, Graph.induce_vertexSet]` makes no progress on
+  `(g '' V(G[V₁])).ncard`.
+- **Fix:** `V(G.induce X) = X` is definitionally `rfl`. Prove the `numParts` additivity
+  step via a `have hkey := Set.ncard_union_eq hdisj_img` then
+  `rw [← Set.image_union, ← hVun] at hkey; exact hkey` — this avoids `simp` on the
+  vertex set entirely.
+- **Status:** resolved.
+
+### [resolved] `Set.ncard_union_eq` `toFinite_tac` auto-param fails for image sets
+- **Where it bit:** Phase 22i L1d (`Deficiency.lean`, `partitionDef_split_of_sides`).
+  `Set.ncard_union_eq (h : Disjoint s t) (hs := by toFinite_tac) (ht := by toFinite_tac)`
+  — the auto-params failed for `g '' V₁` and `G[X].crossingEdges g` because Lean cannot
+  synthesize `Finite ↑(g '' V₁)` without `[Finite α]`.
+- **Fix:** add `[Finite α] [Finite β]` to the theorem. For edge-set finiteness, `[Finite β]`
+  suffices (all `Set β` subsets are finite). For image finiteness, `[Finite α]` suffices.
+  When passing explicit finite witnesses, use `Set.toFinite _` (which works under `[Finite α]`)
+  or `(Set.toFinite s₁).union (Set.toFinite s₂)` for a union.
+- **Status:** resolved.
+
+### [resolved] ℕ-subtraction in a theorem statement causes `ring` to fail
+- **Where it bit:** Phase 22i L1d (`Deficiency.lean`, `partitionDef_split_of_sides`).
+  The statement `+ bodyBarDim n - (bodyBarDim n - 1) * c` has `(bodyBarDim n - 1 : ℕ)` as
+  ℕ-subtraction, coerced to ℤ as `↑(n - 1 : ℕ)`. After `push_cast`, this differs from
+  `(↑n - 1 : ℤ)`, so `ring` sees two distinct atoms and fails.
+- **Fix:** write `((bodyBarDim n : ℤ) - 1) * c` in the statement — explicit ℤ subtraction.
+  General rule: in theorem *statements* mixing `ℕ` quantities and `ℤ` arithmetic, cast
+  before subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : ℕ)`).
+  **Lifted to:** TACTICS-QUIRKS § 47.
+- **Status:** resolved.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

@@ -1724,3 +1724,29 @@ only *defeq* to `0`, not syntactically equal — so the simp lemma's LHS pattern
 three `fin_cases` branches each need a *different* `cons_val_*`, do the reduction *per branch* (a
 combined `<;> simp only […]` flags the non-matching args unused). Phase 22h W10b (`CaseI.lean`),
 the `fin_cases u` discriminator dispatch.
+
+
+## 47. ℕ-subtraction in a theorem statement causes `ring` to fail after `push_cast`
+
+**Symptom.** A theorem statement contains `n - 1` where `n : ℕ`, coerced to `ℤ` in a larger
+expression. After `push_cast`, `ring` sees `↑(n - 1 : ℕ)` (or `n - 1` still as a ℕ atom in
+ℤ) and cannot equate it with `↑n - 1 : ℤ`, leaving an unsolved goal like:
+```
+⊢ … - ↑(bodyBarDim n) * ↑c + ↑c = … - ↑c * ↑(bodyBarDim n - 1)
+```
+
+**Cause.** `↑(n - 1 : ℕ)` and `(↑n - 1 : ℤ)` differ when `n = 0` (ℕ truncates to 0;
+ℤ gives −1). `push_cast` cannot resolve `↑(n - 1)` to `↑n - 1` without a proof that `1 ≤ n`,
+so it leaves the ℕ coercion atom opaque, and `ring` treats it as distinct from `↑n - 1`.
+
+**Fix.** In the theorem *statement*, write the subtraction in `ℤ` directly:
+```lean
+-- ❌ ℕ subtraction coerced: ring will fail
+... + bodyBarDim n - (bodyBarDim n - 1) * c
+-- ✓ ℤ subtraction: ring closes cleanly
+... + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * c
+```
+General rule: in theorem statements mixing `ℕ` quantities and `ℤ` arithmetic, cast *before*
+subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : ℕ)`). Phase 22i L1d
+(`Deficiency.lean`, `partitionDef_split_of_sides`). See FRICTION [resolved] *ℕ-subtraction
+in a theorem statement causes `ring` to fail*.

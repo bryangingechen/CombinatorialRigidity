@@ -15,7 +15,7 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a, L1b, and L1c are complete.** Next: any of L1d/L1f/L1g (all independent; see Hand-off).
+**L1a, L1b, L1c, and L1d are complete.** Next: any of L1f/L1g (both independent; see Hand-off).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -76,6 +76,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     hypothesis), `simple_of_isMinimalKDof_of_noRigid`, `rigidContract_isMinimalKDof`
     (in `ReducibleVertex.lean` / `Contraction.lean`); call site update in `ForestSurgery.lean`;
     blueprint nodes restated in `molecular-induction.tex` + `algebraic-induction/case-i.tex`.
+  - [x] **L1d** — KT 3.6 part 1: `partitionDef_congr`, `partitionDef_comp_of_injOn`,
+    `partitionDef_split_of_sides` in `Deficiency.lean` (section after `mulTilde_preconnected_of_isKDof_zero`).
+    Two private helpers (`crossingEdges_congr`, `crossingEdges_induce`) avoid re-proving
+    membership equivalences inline. Requires `[Finite α] [Finite β]` on split (needed for
+    `Set.ncard_union_eq` on image/crossingEdges sets). Split statement uses explicit ℤ
+    arithmetic `((bodyBarDim n : ℤ) - 1)` to avoid ℕ-subtraction/`ring` mismatch.
   - [x] **L1b** — `deficiency_of_edgeSet_empty` + `deficiency_of_single_edge` +
     `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` +
     `isMinimalKDof_ncard_le_two_trichotomy` in `Deficiency.lean` (after the corank bridge)
@@ -109,11 +115,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a, L1b, and L1c complete.** Next independent L1 slices
-(pick any one): **L1d** (KT 3.6 part 1 in `Deficiency.lean`), **L1f** (KT 4.5(ii)
-in `ReducibleVertex.lean`), or **L1g** (reverse acyclicity bricks in
-`ForestSurgery.lean`) — all independent per §1.58(i). Signatures pinned
-in §1.58. **Smallest next forward commit: L1d or L1f** (either; both
+**L0 fully complete. L1a, L1b, L1c, and L1d complete.** Next independent L1 slices
+(pick any one): **L1f** (KT 4.5(ii) in `ReducibleVertex.lean`) or **L1g**
+(reverse acyclicity bricks in `ForestSurgery.lean`) — both independent per §1.58(i).
+Signatures pinned in §1.58. **Smallest next forward commit: L1f or L1g** (either; both
 additive to existing files, no new imports needed).
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -122,6 +127,19 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
 
 ## Decisions made during this phase
 
+- **L1d build (2026-06-12):** three `partitionDef` lemmas in `Deficiency.lean`.
+  `partitionDef_congr`: `simp [partitionDef, numParts, Set.image_congr h, crossingEdges_congr h]`
+  closes in one line via a private `crossingEdges_congr` helper.
+  `partitionDef_comp_of_injOn`: ncard equality via `Set.InjOn.ncard_image` (not `ncard_image_of_injOn`,
+  which is deprecated); crossingEdges equality via iff-on-g. `Set.ncard_union_eq` requires finiteness
+  (`[Finite α] [Finite β]` added to split); `Set.toFinite _` auto-params fail on image sets —
+  pass `((Set.toFinite _).union (Set.toFinite _))` for the union of two crossingEdge sets.
+  Split statement: use `((bodyBarDim n : ℤ) - 1)` (ℤ subtraction, not ℕ→ℤ) so `ring` closes;
+  the ℕ form `(bodyBarDim n - 1)` produces `↑(n-1 : ℕ)` which `ring` can't equate with `↑n - 1`.
+  `crossingEdges_induce` helper + `numParts` additivity via `have hkey := ncard_union_eq` then
+  `rw [← image_union, ← hVun] at hkey; exact hkey` (avoids `change`/simp-on-vertex-set).
+  `Disjoint.union_left` not `union_right` for `Disjoint (A ∪ B) C`. `eq_and_eq_or_eq_and_eq`
+  second swap case (`x'=y, y'=x`) needs both `hxV₁, hyV₁` from the first element's pattern.
 - **L1c build (2026-06-12):** in-place all-`k` restates of V3/V4/G0 across three files.
   `no_rigid_edge_count`: the `X ∩ ẽ ≠ ∅` step re-routes via `k ≤ 0` (from `|X-ej| ≤ |B'| = D(|V|-1)−k`)
   then `deficiency_nonneg` pins `k = 0`, then `subst hk0` before the base-meets-fiber contradiction;

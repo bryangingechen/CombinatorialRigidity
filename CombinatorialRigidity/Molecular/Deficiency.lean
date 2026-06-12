@@ -1008,6 +1008,174 @@ theorem mulTilde_preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : 
   have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
   linarith
 
+/-! ## KT Lemma 3.6 bricks (`lem:cut-edge-decomposition`, part 1 of 2)
+
+Three auxiliary lemmas for the cut-edge decomposition (KT Lemma 3.6, p. 659):
+`partitionDef_congr` (reads `f` only on `V(G)`), `partitionDef_comp_of_injOn`
+(relabeling invariance), and `partitionDef_split_of_sides` (the exact split of a
+side-separated labeling). The refinement bound, the full deficiency equality, and
+the `¬2EC` packaging (`lem:cut-edge-decomposition`) land in the next slice (L1e). -/
+
+/-- Helper: `EqOn f g V(G)` implies `crossingEdges G f = crossingEdges G g`. -/
+private lemma crossingEdges_congr {G : Graph α β} {f g : α → α}
+    (h : Set.EqOn f g V(G)) : G.crossingEdges f = G.crossingEdges g := by
+  ext e
+  simp only [crossingEdges, Set.mem_setOf_eq]
+  constructor <;> rintro ⟨heE, x, y, hlink, hne⟩
+  · exact ⟨heE, x, y, hlink, by rwa [h hlink.left_mem, h hlink.right_mem] at hne⟩
+  · exact ⟨heE, x, y, hlink, by rwa [← h hlink.left_mem, ← h hlink.right_mem] at hne⟩
+
+/-- **`partitionDef` reads `f` only on `V(G)`** (`lem:cut-edge-decomposition`).
+If `f` and `g` agree on the vertex set `V(G)` (i.e. `Set.EqOn f g V(G)`), then
+`partitionDef G n f = partitionDef G n g`. Both `numParts` and `crossingEdges`
+only observe `f`-values at vertices of `G`. -/
+lemma partitionDef_congr {G : Graph α β} {n : ℕ} {f g : α → α}
+    (h : Set.EqOn f g V(G)) : G.partitionDef n f = G.partitionDef n g := by
+  simp only [partitionDef, numParts, Set.image_congr h, crossingEdges_congr h]
+
+/-- **Relabeling invariance** (`lem:cut-edge-decomposition`): post-composition with
+a map `g` that is injective on the carried labels `f '' V(G)` does not change
+`partitionDef`. That is, `partitionDef G n (g ∘ f) = partitionDef G n f` when
+`g` is injective on `f '' V(G)`.
+
+Proof: `|(g ∘ f) '' V(G)| = |g '' (f '' V(G))| = |f '' V(G)|`
+(by `Set.InjOn.ncard_image`); and `g (f x) ≠ g (f y) ↔ f x ≠ f y` for
+`x, y ∈ V(G)` (since `f x, f y ∈ f '' V(G)` and `g` is injective there), so
+`crossingEdges G (g ∘ f) = crossingEdges G f`. -/
+lemma partitionDef_comp_of_injOn {G : Graph α β} {n : ℕ} {f g : α → α}
+    (hg : Set.InjOn g (f '' V(G))) : G.partitionDef n (g ∘ f) = G.partitionDef n f := by
+  -- Show numParts and crossingEdges.ncard agree separately.
+  have hnp : ((g ∘ f) '' V(G)).ncard = (f '' V(G)).ncard := by
+    rw [Set.image_comp, hg.ncard_image]
+  have hce : G.crossingEdges (g ∘ f) = G.crossingEdges f := by
+    ext e
+    simp only [crossingEdges, Function.comp, Set.mem_setOf_eq]
+    constructor <;> rintro ⟨heE, x, y, hlink, hne⟩
+    · exact ⟨heE, x, y, hlink, fun h => hne (congr_arg g h)⟩
+    · exact ⟨heE, x, y, hlink,
+        fun h => hne (hg (Set.mem_image_of_mem f hlink.left_mem)
+                         (Set.mem_image_of_mem f hlink.right_mem) h)⟩
+  simp only [partitionDef, numParts, hnp, hce]
+
+/-- Helper: edges of `G.induce X` with distinct `g`-labels are exactly those edges
+in `E(G)` with both endpoints in `X` having distinct `g`-labels.
+Used in `partitionDef_split_of_sides`. -/
+private lemma crossingEdges_induce {G : Graph α β} {X : Set α} {g : α → α} :
+    (G.induce X).crossingEdges g =
+      {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ x ∈ X ∧ y ∈ X ∧ g x ≠ g y} := by
+  ext e
+  simp only [crossingEdges, Graph.edgeSet_induce, Graph.induce_isLink, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨⟨x, y, hlink, hxX, hyX⟩, x', y', ⟨hlink', _, _⟩, hne⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink.eq_and_eq_or_eq_and_eq hlink'
+    · exact ⟨hlink.edge_mem, x, y, hlink, hxX, hyX, hne⟩
+    -- second case: x' = y, y' = x; hne : g y ≠ g x
+    · exact ⟨hlink.edge_mem, y, x, hlink.symm, hyX, hxX, hne⟩
+  · rintro ⟨heE, x, y, hlink, hxX, hyX, hne⟩
+    exact ⟨⟨x, y, hlink, hxX, hyX⟩, x, y, ⟨hlink, hxX, hyX⟩, hne⟩
+
+/-- **Exact split of a side-separated labeling** (`lem:cut-edge-decomposition`).
+For a labeling `g` that is *side-separated* (no label crosses the bipartition
+`{V₁, V(G) ∖ V₁}`: `∀ x ∈ V₁, ∀ y ∈ V(G) ∖ V₁, g x ≠ g y`), the `D`-deficiency
+of `G` under `g` splits exactly as:
+
+  `partitionDef G n g`
+    `= partitionDef (G.induce V₁) n g + partitionDef (G.induce (V(G) ∖ V₁)) n g`
+    `  + D - (D - 1) * |cutEdges G V₁|`  (with `D = bodyBarDim n`, arithmetic in `ℤ`)
+
+The split decomposes both `numParts` and `crossingEdges`:
+* `numParts G g = numParts (G.induce V₁) g + numParts (G.induce (V(G) ∖ V₁)) g`:
+  the label images of the two sides are disjoint by `hsep`, so their union over `V(G)`
+  has ncard equal to the sum.
+* `crossingEdges G g = crossingEdges (G.induce V₁) g ∪ crossingEdges (G.induce (V(G) ∖ V₁)) g
+  ∪ cutEdges V₁`: every edge of `G` is within `V₁`, within `V(G) ∖ V₁`, or crossing;
+  cut edges cross by `hsep`; the three pieces are pairwise disjoint.
+The `ℤ` arithmetic then closes by `ring`. -/
+lemma partitionDef_split_of_sides [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {V₁ : Set α} {g : α → α}
+    (hsub : V₁ ⊆ V(G)) (hsep : ∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, g x ≠ g y) :
+    G.partitionDef n g
+      = (G.induce V₁).partitionDef n g + (G.induce (V(G) \ V₁)).partitionDef n g
+        + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
+  -- Step 1: Decompose numParts.
+  -- The image of V(G) under g splits as the disjoint union of the images of V₁ and V(G) ∖ V₁.
+  have hVun : V(G) = V₁ ∪ (V(G) \ V₁) := (Set.union_diff_cancel hsub).symm
+  have hdisj_img : Disjoint (g '' V₁) (g '' (V(G) \ V₁)) := by
+    rw [Set.disjoint_left]
+    rintro w ⟨x, hxV₁, rfl⟩ ⟨y, hyV, hgy⟩
+    exact hsep x hxV₁ y hyV hgy.symm
+  have hnparts : G.numParts g = (G.induce V₁).numParts g + (G.induce (V(G) \ V₁)).numParts g := by
+    -- V(G.induce X) = X definitionally, so the equation reduces to ncard of disjoint union.
+    unfold numParts
+    -- The equation (g '' V(G)).ncard = (g '' V₁).ncard + (g '' (V(G)\V₁)).ncard
+    -- holds by ncard_union_eq (disjoint images) after V(G) = V₁ ∪ (V(G)\V₁).
+    have hkey : (g '' V₁ ∪ g '' (V(G) \ V₁)).ncard = (g '' V₁).ncard + (g '' (V(G) \ V₁)).ncard :=
+      Set.ncard_union_eq hdisj_img
+    rw [← Set.image_union, ← hVun] at hkey
+    -- V(G.induce V₁) = V₁ and V(G.induce (V(G)\V₁)) = V(G)\V₁ definitionally.
+    exact hkey
+  -- Step 2: Decompose crossingEdges into three pairwise-disjoint pieces.
+  -- Classify edges by endpoint location via crossingEdges_induce.
+  have hcross_eq :
+      G.crossingEdges g = (G.induce V₁).crossingEdges g
+        ∪ (G.induce (V(G) \ V₁)).crossingEdges g ∪ G.cutEdges V₁ := by
+    ext e
+    rw [Set.mem_union, Set.mem_union, crossingEdges_induce, crossingEdges_induce]
+    simp only [Set.mem_setOf_eq, crossingEdges, cutEdges]
+    constructor
+    · rintro ⟨heE, x, y, hlink, hne⟩
+      by_cases hxV₁ : x ∈ V₁
+      · by_cases hyV₁ : y ∈ V₁
+        · exact Or.inl (Or.inl ⟨heE, x, y, hlink, hxV₁, hyV₁, hne⟩)
+        · exact Or.inr ⟨heE, x, y, hlink, hxV₁, hyV₁⟩
+      · by_cases hyV₁ : y ∈ V₁
+        · exact Or.inr ⟨heE, y, x, hlink.symm, hyV₁, hxV₁⟩
+        · exact Or.inl (Or.inr
+            ⟨heE, x, y, hlink, ⟨hlink.left_mem, hxV₁⟩, ⟨hlink.right_mem, hyV₁⟩, hne⟩)
+    · rintro ((⟨heE, x, y, hlink, _, _, hne⟩ | ⟨heE, x, y, hlink, _, _, hne⟩) |
+              ⟨heE, x, y, hlink, hxV₁, hyV₁⟩)
+      · exact ⟨heE, x, y, hlink, hne⟩
+      · exact ⟨heE, x, y, hlink, hne⟩
+      · exact ⟨heE, x, y, hlink, hsep x hxV₁ y ⟨hlink.right_mem, hyV₁⟩⟩
+  -- The three pieces are pairwise disjoint.
+  have hdisj₁₂ : Disjoint ((G.induce V₁).crossingEdges g)
+      ((G.induce (V(G) \ V₁)).crossingEdges g) := by
+    rw [crossingEdges_induce, crossingEdges_induce, Set.disjoint_left]
+    rintro e ⟨_, x, y, hlink, hxV₁, hyV₁, _⟩ ⟨_, x', y', hlink', hxV₂, _, _⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink.eq_and_eq_or_eq_and_eq hlink'
+    · exact hxV₂.2 hxV₁  -- x' = x; hxV₂ : x ∉ V₁
+    · exact hxV₂.2 hyV₁  -- x' = y; hxV₂ : y ∉ V₁
+  have hdisj₁c : Disjoint ((G.induce V₁).crossingEdges g) (G.cutEdges V₁) := by
+    rw [crossingEdges_induce, Set.disjoint_left]
+    rintro e ⟨_, x, y, hlink, hxV₁, hyV₁, _⟩ ⟨_, x', y', hlink', hxV₁', hyV₁'⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink.eq_and_eq_or_eq_and_eq hlink'
+    · exact hyV₁' hyV₁  -- y' = y; hyV₁' : y ∉ V₁
+    · exact hyV₁' hxV₁  -- y' = x; hyV₁' : x ∉ V₁
+  have hdisj₂c : Disjoint ((G.induce (V(G) \ V₁)).crossingEdges g) (G.cutEdges V₁) := by
+    rw [crossingEdges_induce, Set.disjoint_left]
+    rintro e ⟨_, x, y, hlink, hxV₂, hyV₂, _⟩ ⟨_, x', y', hlink', hxV₁', _⟩
+    obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hlink.eq_and_eq_or_eq_and_eq hlink'
+    · exact hxV₂.2 hxV₁'  -- x' = x; hxV₂ : x ∈ V(G) \ V₁; hxV₁' : x ∈ V₁
+    · exact hyV₂.2 hxV₁'  -- x' = y; hyV₂ : y ∈ V(G) \ V₁; hxV₁' : y ∈ V₁
+  -- Count: split the ncard of crossingEdges.
+  -- The three pieces A = cross(V₁), B = cross(V(G)\V₁), C = cut(V₁) are pairwise disjoint.
+  -- (A ∪ B) disjoint C: hdisj₁c says A disjoint C; hdisj₂c says B disjoint C.
+  -- ncard(A ∪ B ∪ C) = ncard(A ∪ B) + ncard(C) = ncard(A) + ncard(B) + ncard(C).
+  have hncard_cross :
+      (G.crossingEdges g).ncard
+        = ((G.induce V₁).crossingEdges g).ncard
+          + ((G.induce (V(G) \ V₁)).crossingEdges g).ncard
+          + (G.cutEdges V₁).ncard := by
+    rw [hcross_eq,
+      Set.ncard_union_eq (hdisj₁c.union_left hdisj₂c)
+        ((Set.toFinite _).union (Set.toFinite _)) (Set.toFinite _),
+      Set.ncard_union_eq hdisj₁₂ (Set.toFinite _) (Set.toFinite _)]
+  -- Step 3: Rewrite partitionDef on both sides and close by ring.
+  simp only [partitionDef]
+  rw [hnparts, hncard_cross]
+  push_cast
+  ring
+
 /-! ## The rank upper bound (`thm:def-eq-corank`, conjecture-relevant half) -/
 
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
