@@ -644,6 +644,366 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
         (mulTilde_splitOff_deleteFiber_le n)
     exact hF.2 C hCK hCF
 
+/-! ## The reverse degree-2 swap preserves acyclicity (`lem:edge-splitting`, KT 4.2 forest core)
+
+The reverse companion of `isAcyclicSet_splitOff_reroute`, and the genuinely new engine of the
+edge-splitting extension (Katoh–Tanigawa 2011 Lemma 4.2, the forest core of the all-`k` layer).
+Where the forward reroute trades a degree-2 forest's two `v`-edges for one short-circuit copy,
+the reverse swap **undoes** that move: a forest `F'` of the multiplied splitting-off `G̃_v^{ab}`
+that uses a short-circuit copy `r` of the fresh edge `e₀` trades it back for the two `v`-edges
+`pa` (a `v—a` copy) and `pb` (a `v—b` copy). The swapped set `(F' ∖ {r}) ∪ {pa, pb}` must stay
+acyclic in the multiplied original `G̃ = (D−1)·G`.
+
+The acyclicity rests on the dual cycle-lift: any cycle `C` of `G̃` whose edges lie in
+`(F' ∖ {r}) ∪ {pa, pb}` lifts to a cyclic structure of `G̃_v^{ab}` inside `F'`, contradicting
+`F'`'s acyclicity. The fresh vertex `v` is incident in the swapped set to exactly `pa, pb`
+(every fiber of `F'` lives in `E(G̃_v^{ab})`, which omits `v`), so a cycle either avoids both
+`v`-edges or uses both — using exactly one would leave `v` with degree 1, impossible in a cycle.
+If `C` avoids both, its edges lie in `F' ∖ {r} ⊆ E((G_v)̃)` (the short-circuit copies of `F'`
+are a subsingleton, so removing `r` clears the fresh fiber), and `(G_v)̃ ≤ G̃_v^{ab}` lifts `C`
+into `G̃_v^{ab}` inside `F'`. If `C` uses both, rotate it so `pa` is its first edge; its last
+edge is forced to be `pb` (the only other `v`-edge in the swapped set, reached because `C`
+closes at `v`), so `C = (a —pa— v —pb— b) ⋯ a` with the middle stretch `w₂` from `a` to `b`
+avoiding `v`. Substituting the short-circuit copy `r` (which joins `a, b` in `G̃_v^{ab}`) for the
+`v`-traversing 2-path turns `C` into a closed `G̃_v^{ab}`-trail whose edges sit inside `F'`,
+hence contains a `G̃_v^{ab}`-cycle inside `F'`. Either way `F'` carries a cycle, contradiction.
+
+This is the brick the all-`k` edge-splitting extension `splitOff_indep_extend_of_fiber_lt`
+(KT 4.2(i)/(ii)) runs on: each split-side forest using one `e₀`-copy is converted up to a
+`G̃`-forest using the two `v`-edges. Its companion pendant-insert brick — a `v`-avoiding
+`G̃_v^{ab}`-forest absorbing a single `v`-edge copy — composes the landed acyclicity transport
+`isAcyclicSet_mulTilde_of_splitOff_of_disjoint` with `acyclicSet_insert_vfiber_of_not_inc`. -/
+
+/-- **The reverse degree-2 swap preserves acyclicity** (`lem:edge-splitting`, KT 4.2 forest
+core; Katoh–Tanigawa 2011 Lemma 4.2 p.660). The reverse companion of
+`isAcyclicSet_splitOff_reroute`. Let `v` be a vertex of `G` with distinct neighbours `a ≠ b`
+(`a, b ≠ v`, `a, b ∈ V(G)`) and `e₀ ∉ E(G)` the fresh short-circuit edge. Let `F'` be a
+`(G̃_v^{ab}).cycleMatroid`-independent (forest) fiber set of the multiplied splitting-off that
+contains a copy `r` of `e₀` (`r.1 = e₀`, `r ∈ F'`), and let `pa, pb` be a `v—a` copy and a
+`v—b` copy of `G̃` (necessarily distinct, since `a ≠ b`). Then the **reverse-swapped forest**
+`(F' ∖ {r}) ∪ {pa, pb}`, obtained by trading the short-circuit copy `r` for the two `v`-edges,
+is acyclic in the multiplied original `G̃ = (D−1)·G`:
+`(G.mulTilde n).cycleMatroid.Indep (insert pa (insert pb (F' \ {r})))`.
+
+This is the rerouting half of KT 4.2's per-forest acyclicity preservation, undoing the forward
+`isAcyclicSet_splitOff_reroute` (the swap and the cycle-lift run in the opposite direction). The
+proof lifts a hypothetical `G̃`-cycle through `pa, pb` to a `G̃_v^{ab}`-cycle inside `F'`
+(substituting the 2-path through `v` by `r`), contradicting acyclicity; see the section
+preamble. -/
+lemma isAcyclicSet_mulTilde_of_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {n : ℕ}
+    (hab : a ≠ b) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
+    {F' : Set (β × Fin (bodyHingeMult n))} {pa pb r : β × Fin (bodyHingeMult n)}
+    (hF' : ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep F')
+    (hpa : (G.mulTilde n).IsLink pa v a) (hpb : (G.mulTilde n).IsLink pb v b)
+    (hr : r.1 = e₀) (hrF' : r ∈ F') (he₀ : e₀ ∉ E(G)) :
+    (G.mulTilde n).cycleMatroid.Indep (insert pa (insert pb (F' \ {r}))) := by
+  classical
+  -- Abbreviations: the original `K = G̃` and the splitting-off `Ksp = G̃_v^{ab}`.
+  set K := G.mulTilde n with hK
+  set Ksp := (G.splitOff v a b e₀).mulTilde n with hKsp
+  rw [cycleMatroid_indep] at hF'
+  -- `pa, pb` are not copies of the fresh edge (their `G`-edges live in `E(G)`, but `e₀` doesn't).
+  have hpaE : pa.1 ∈ E(G) := by rw [hK, mulTilde_isLink] at hpa; exact hpa.edge_mem
+  have hpbE : pb.1 ∈ E(G) := by rw [hK, mulTilde_isLink] at hpb; exact hpb.edge_mem
+  have hpane₀ : pa.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpaE)
+  have hpbne₀ : pb.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpbE)
+  -- `pa, pb ∈ E(K)`.
+  have hpaEK : pa ∈ E(K) := hpa.edge_mem
+  have hpbEK : pb ∈ E(K) := hpb.edge_mem
+  -- The fresh-fiber-avoiding core `F' ∖ {r}` lives in `E((G_v)̃)` (a forest holds ≤ 1 `e₀`-copy).
+  have hsubsing : (F' ∩ edgeFiber e₀ n).Subsingleton :=
+    fiber_inter_subsingleton_of_isAcyclicSet_splitOff hab ha hb haV hbV
+      (by rw [cycleMatroid_indep]; exact hF')
+  have hdiffdisj : Disjoint (F' \ {r}) (edgeFiber e₀ n) := by
+    rw [Set.disjoint_left]
+    rintro p ⟨hpF', hpr⟩ hpf
+    have hrf : r ∈ F' ∩ edgeFiber e₀ n := ⟨hrF', by rw [edgeFiber, Set.mem_setOf_eq]; exact hr⟩
+    have hpinter : p ∈ F' ∩ edgeFiber e₀ n := ⟨hpF', hpf⟩
+    exact hpr (Set.mem_singleton_iff.mpr (hsubsing hpinter hrf))
+  have hdiffGv : (F' \ {r}) ⊆ E((G.removeVertex v).mulTilde n) := by
+    rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
+    exact Set.subset_diff.mpr ⟨fun p hp ↦ hF'.1 hp.1, hdiffdisj⟩
+  -- The swapped set lies in `E(K)`.
+  have hSE : insert pa (insert pb (F' \ {r})) ⊆ E(K) := by
+    refine Set.insert_subset hpaEK (Set.insert_subset hpbEK ?_)
+    intro p hp
+    exact (mulTilde_splitOff_deleteFiber_le n).edgeSet_mono
+      (Set.mem_diff_of_mem (hF'.1 hp.1) (Set.disjoint_left.mp hdiffdisj hp))
+  -- The core fibers avoid `v` (they live in `(G_v)̃`, which omits `v`).
+  have hvnotinc : ∀ p ∈ F' \ {r}, ¬ K.Inc p v := by
+    intro p hp hinc
+    have hpE : p ∈ E((G.removeVertex v).mulTilde n) := hdiffGv hp
+    rw [hK, mulTilde_inc] at hinc
+    rw [mem_edgeSet_mulTilde] at hpE
+    obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hpE
+    rw [removeVertex_isLink] at hl
+    obtain ⟨hlink, hxv, hyv⟩ := hl
+    rcases hinc with ⟨w, hw⟩
+    rcases hlink.eq_and_eq_or_eq_and_eq hw with ⟨hxw, -⟩ | ⟨-, hyw⟩
+    · exact hxv hxw
+    · exact hyv hyw
+  set S := insert pa (insert pb (F' \ {r})) with hS
+  -- The only `v`-incident edges of `S` are `pa, pb`.
+  have hSv : ∀ p ∈ S, K.Inc p v → p = pa ∨ p = pb := by
+    intro p hp hinc
+    rcases Set.mem_insert_iff.mp hp with h | h
+    · exact Or.inl h
+    · rcases Set.mem_insert_iff.mp h with h | h
+      · exact Or.inr h
+      · exact absurd hinc (hvnotinc p h)
+  rw [cycleMatroid_indep, isAcyclicSet_iff]
+  refine ⟨hSE, ?_⟩
+  rw [restrict_isForest_iff']
+  intro C hCS hCcyc
+  -- Edges of `C` other than `pa, pb` lie in `F' ∖ {r}`.
+  have hCedge : ∀ p ∈ C.edgeSet, p = pa ∨ p = pb ∨ p ∈ F' \ {r} := by
+    intro p hp
+    rcases Set.mem_insert_iff.mp (Set.mem_of_mem_of_subset hp hCS) with h | h
+    · exact Or.inl h
+    · rcases Set.mem_insert_iff.mp h with h | h
+      · exact Or.inr (Or.inl h)
+      · exact Or.inr (Or.inr h)
+  by_cases hpaC : pa ∈ C.edgeSet
+  · -- `C` uses `pa`: it must also use `pb` (a cycle through `v` uses both `v`-edges).
+    -- Rotate `C` so its first edge is `pa`.
+    obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := pa) hpaC
+    have hDcyc : K.IsCyclicWalk (C.rotate m) := hCcyc.rotate m
+    have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
+    obtain ⟨x, epa, w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
+    have hepa : epa = pa := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
+    rw [heq] at hDcyc hDE
+    rw [hepa] at hDcyc hDE
+    -- `D₀ = cons x pa w'` is closed, so `w'.last = x`.
+    have hclosed : (WList.cons x pa w').IsClosed := hDcyc.isClosed
+    rw [WList.cons_isClosed_iff] at hclosed
+    -- The first link: `pa` joins `x` and `w'.first`; matched against `pa : v —a`.
+    have hwalk : K.IsWalk (WList.cons x pa w') := hDcyc.isWalk
+    rw [cons_isWalk_iff] at hwalk
+    obtain ⟨hpalink, hw'walk⟩ := hwalk
+    have hxw' : (v = x ∧ a = w'.first) ∨ (v = w'.first ∧ a = x) :=
+      hpa.eq_and_eq_or_eq_and_eq hpalink
+    -- Edge bookkeeping: `pa` is used once, so `pa ∉ E(w')`.
+    have hnodup : (WList.cons x pa w').edge.Nodup := hDcyc.edge_nodup
+    rw [WList.cons_edge, List.nodup_cons] at hnodup
+    obtain ⟨hpanw', hw'nodup⟩ := hnodup
+    -- The edges of `w'` lie in `C.edgeSet`.
+    have hw'sub : w'.edgeSet ⊆ C.edgeSet := by
+      intro p hp
+      rw [← hDE, WList.cons_edgeSet]; exact Set.mem_insert_of_mem _ hp
+    -- Uniform reorientation: a walk `wab` running `a → v` (reverse `w'` in the flipped case),
+    -- with the same edge set, nodup, and avoiding `pa`.
+    obtain ⟨wab, hwab_walk, hwab_first, hwab_last, hwab_edgeSet, hwab_nodup, hpa_nwab⟩ :
+        ∃ wab : WList α (β × Fin (bodyHingeMult n)), K.IsWalk wab ∧ wab.first = a ∧
+          wab.last = v ∧ wab.edgeSet = w'.edgeSet ∧ wab.edge.Nodup ∧ pa ∉ wab.edge := by
+      rcases hxw' with ⟨hvx, haw'⟩ | ⟨hvw', hax⟩
+      · exact ⟨w', hw'walk, haw'.symm, hvx ▸ hclosed.symm, rfl, hw'nodup, hpanw'⟩
+      · refine ⟨w'.reverse, hw'walk.reverse,
+          by rw [WList.reverse_first]; exact hclosed.symm.trans hax.symm,
+          by rw [WList.reverse_last]; exact hvw'.symm, WList.reverse_edgeSet, ?_, ?_⟩
+        · rw [WList.reverse_edge]; exact List.nodup_reverse.mpr hw'nodup
+        · rw [WList.reverse_edge]; simpa using hpanw'
+    -- `wab` is nonempty (`a ≠ v`), so its last edge `pb := wab.lastEdge` exists.
+    have hwab_ne : wab.Nonempty := by
+      by_contra hnil
+      rw [WList.not_nonempty_iff] at hnil
+      exact ha (hwab_first ▸ hwab_last ▸ hnil.first_eq_last)
+    set qpb := hwab_ne.lastEdge with hqpb
+    -- `qpb` is the last edge, incident to `wab.last = v`, and lies in `S`.
+    have hqpb_mem : qpb ∈ wab.edge := hwab_ne.lastEdge_mem
+    have hqpb_S : qpb ∈ S := hCS (hw'sub (hwab_edgeSet ▸ WList.mem_edgeSet_iff.mpr hqpb_mem))
+    -- Decompose `wab = w₂.concat qpb v` with `w₂ = wab.dropLast` running `a → b`.
+    set w₂ := wab.dropLast with hw₂
+    have hwab_eq : w₂.concat qpb v = wab := by
+      rw [hw₂, hqpb, ← hwab_last]; exact hwab_ne.concat_dropLast
+    have hw₂_first : w₂.first = a := by rw [hw₂, WList.dropLast_first]; exact hwab_first
+    -- The last link of `wab`: `qpb` joins `w₂.last` and `v`.
+    have hconcat_walk : K.IsWalk (w₂.concat qpb v) := hwab_eq ▸ hwab_walk
+    rw [concat_isWalk_iff] at hconcat_walk
+    obtain ⟨hw₂_walk, hqpb_link⟩ := hconcat_walk
+    -- `qpb` is `v`-incident, so `qpb = pa ∨ qpb = pb`; it is `≠ pa` (nodup), so `qpb = pb`.
+    have hqpb_inc : K.Inc qpb v := hqpb_link.symm.inc_left
+    have hqpb_eq : qpb = pb := by
+      rcases hSv qpb hqpb_S hqpb_inc with h | h
+      · exact absurd (hwab_edgeSet ▸ WList.mem_edgeSet_iff.mpr hqpb_mem)
+          (h ▸ (fun hmem ↦ hpa_nwab (WList.mem_edgeSet_iff.mp (hwab_edgeSet ▸ hmem))))
+      · exact h
+    -- `w₂.last = b`: `qpb = pb` links `v, b` and `w₂.last, v`.
+    have hw₂_last : w₂.last = b := by
+      have := hqpb_eq ▸ hqpb_link
+      rcases hpb.eq_and_eq_or_eq_and_eq this with ⟨hvw, hbv⟩ | ⟨hvv, hbw⟩
+      · exact absurd hbv hb
+      · exact hbw.symm
+    -- `wab.edge = w₂.edge ++ [qpb]`, so `qpb ∉ w₂.edge` and `w₂.edge` is nodup.
+    have hwab_edge_eq : wab.edge = w₂.edge ++ [qpb] := by
+      rw [← hwab_eq, WList.concat_edge]
+    rw [hwab_edge_eq, List.nodup_append] at hwab_nodup
+    have hqpb_nw₂ : qpb ∉ w₂.edge :=
+      fun h ↦ hwab_nodup.2.2 qpb h qpb (List.mem_singleton.mpr rfl) rfl
+    have hw₂_nodup : w₂.edge.Nodup := hwab_nodup.1
+    have hw₂_sub_wab : ∀ p ∈ w₂.edge, p ∈ wab.edge := fun p hp ↦ by
+      rw [hwab_edge_eq]; exact List.mem_append_left _ hp
+    -- `w₂`'s edges lie in `F' ∖ {r}` (they avoid `pa` and `pb`).
+    have hw₂_edge_core : ∀ p ∈ w₂.edge, p ∈ F' \ {r} := by
+      intro p hp
+      have hpw' : p ∈ w'.edgeSet :=
+        hwab_edgeSet ▸ WList.mem_edgeSet_iff.mpr (hw₂_sub_wab p hp)
+      have hpne_pa : p ≠ pa := fun h ↦ hpa_nwab (h ▸ hw₂_sub_wab p hp)
+      have hpne_pb : p ≠ pb := fun h ↦ hqpb_nw₂ (hqpb_eq ▸ h ▸ hp)
+      rcases hCedge p (hw'sub hpw') with h | h | h
+      · exact absurd h hpne_pa
+      · exact absurd h hpne_pb
+      · exact h
+    -- The core edges lie in `E((G_v)̃)` and `E(F')` (subset of `F'`).
+    have hw₂_edgeSet_Gv : w₂.edgeSet ⊆ E((G.removeVertex v).mulTilde n) := fun p hp ↦
+      hdiffGv (hw₂_edge_core p (WList.mem_edgeSet_iff.mp hp))
+    have hw₂_edge_F' : ∀ p ∈ w₂.edge, p ∈ F' := fun p hp ↦ (hw₂_edge_core p hp).1
+    -- `w₂` is a walk of `(G_v)̃`, hence of `Ksp`.
+    have hw₂_ne : w₂.Nonempty := by
+      by_contra hnil
+      rw [WList.not_nonempty_iff] at hnil
+      exact hab (hw₂_first ▸ hw₂_last ▸ hnil.first_eq_last)
+    have hle_Gv_K : (G.removeVertex v).mulTilde n ≤ K :=
+      hK ▸ edgeMultiply_mono (removeVertex_le G v) _
+    have hw₂_Gv : ((G.removeVertex v).mulTilde n).IsWalk w₂ :=
+      hw₂_walk.isWalk_le_of_nonempty hle_Gv_K
+        (by intro p hp; exact hw₂_edgeSet_Gv hp) hw₂_ne
+    have hw₂_Ksp : Ksp.IsWalk w₂ := hw₂_Gv.of_le (mulTilde_removeVertex_le_splitOff n he₀)
+    -- The short-circuit copy `r` joins `a, b` in `Ksp`.
+    have hrlink : Ksp.IsLink r a b := by
+      rw [hKsp, mulTilde_isLink, splitOff_isLink]
+      exact Or.inr ⟨hr, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
+    -- `r ∉ w₂.edge` (it lives in the fresh fiber, the core avoids it).
+    have hr_nw₂ : r ∉ w₂.edge := fun h ↦ (hw₂_edge_core r h).2 rfl
+    -- Build the closed `Ksp`-trail `T = w₂.concat r a`: `a → ⋯ → b —r— a`.
+    set T := w₂.concat r a with hT
+    have hT_walk : Ksp.IsWalk T := by
+      rw [hT, concat_isWalk_iff]; exact ⟨hw₂_Ksp, hw₂_last ▸ hrlink.symm⟩
+    have hT_tour : Ksp.IsTour T := by
+      refine ⟨⟨hT_walk, ?_⟩, ?_, ?_⟩
+      · rw [hT, WList.concat_edge, List.nodup_append]
+        exact ⟨hw₂_nodup, List.nodup_singleton _,
+          fun p hp q hq hpq ↦ hr_nw₂ (List.mem_singleton.mp hq ▸ hpq ▸ hp)⟩
+      · rw [hT]; exact (WList.concat_nonempty w₂ r a)
+      · rw [hT, WList.concat_isClosed_iff]; exact hw₂_first.symm
+    have hT_edge_F' : T.edgeSet ⊆ F' := by
+      rw [hT, WList.concat_edgeSet]
+      exact Set.insert_subset hrF' (fun p hp ↦ hw₂_edge_F' p (WList.mem_edgeSet_iff.mp hp))
+    -- A `Ksp`-tour contains a `Ksp`-cycle whose edges sit inside `F'`, contradicting `hF'`.
+    obtain ⟨C', hC', hsub⟩ := hT_tour.exists_isCyclicWalk
+    exact hF'.2 C' hC' (hsub.edge_subset.trans hT_edge_F')
+  · -- `C` avoids `pa`. Then it also avoids `pb`, else it would use a single `v`-edge.
+    have hpbC : pb ∉ C.edgeSet := by
+      intro hpbC
+      -- Rotate `C` so `pb` is its first edge; the other `v`-edge is forced to be `pa ∈ C`.
+      obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := pb) hpbC
+      have hDcyc : K.IsCyclicWalk (C.rotate m) := hCcyc.rotate m
+      have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
+      obtain ⟨x, epb, w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
+      have hepb : epb = pb := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
+      rw [heq] at hDcyc hDE
+      rw [hepb] at hDcyc hDE
+      have hclosed : (WList.cons x pb w').IsClosed := hDcyc.isClosed
+      rw [WList.cons_isClosed_iff] at hclosed
+      have hwalk : K.IsWalk (WList.cons x pb w') := hDcyc.isWalk
+      rw [cons_isWalk_iff] at hwalk
+      obtain ⟨hpblink, hw'walk⟩ := hwalk
+      have hxw' : (v = x ∧ b = w'.first) ∨ (v = w'.first ∧ b = x) :=
+        hpb.eq_and_eq_or_eq_and_eq hpblink
+      have hnodup : (WList.cons x pb w').edge.Nodup := hDcyc.edge_nodup
+      rw [WList.cons_edge, List.nodup_cons] at hnodup
+      obtain ⟨hpbnw', hw'nodup⟩ := hnodup
+      have hw'sub : w'.edgeSet ⊆ C.edgeSet := by
+        intro p hp; rw [← hDE, WList.cons_edgeSet]; exact Set.mem_insert_of_mem _ hp
+      -- Reorient to a walk `wba` running `b → v` (reverse in the flipped case).
+      obtain ⟨wba, hwba_walk, hwba_first, hwba_last, hwba_edgeSet, hwba_nodup, hpb_nwba⟩ :
+          ∃ wba : WList α (β × Fin (bodyHingeMult n)), K.IsWalk wba ∧ wba.first = b ∧
+            wba.last = v ∧ wba.edgeSet = w'.edgeSet ∧ wba.edge.Nodup ∧ pb ∉ wba.edge := by
+        rcases hxw' with ⟨hvx, hbw'⟩ | ⟨hvw', hbx⟩
+        · exact ⟨w', hw'walk, hbw'.symm, hvx ▸ hclosed.symm, rfl, hw'nodup, hpbnw'⟩
+        · refine ⟨w'.reverse, hw'walk.reverse,
+            by rw [WList.reverse_first]; exact hclosed.symm.trans hbx.symm,
+            by rw [WList.reverse_last]; exact hvw'.symm, WList.reverse_edgeSet, ?_, ?_⟩
+          · rw [WList.reverse_edge]; exact List.nodup_reverse.mpr hw'nodup
+          · rw [WList.reverse_edge]; simpa using hpbnw'
+      -- `wba` is nonempty (`b ≠ v`); its last edge `qpa` is `v`-incident, distinct from `pb`.
+      have hwba_ne : wba.Nonempty := by
+        by_contra hnil
+        rw [WList.not_nonempty_iff] at hnil
+        exact hb (hwba_first ▸ hwba_last ▸ hnil.first_eq_last)
+      set qpa := hwba_ne.lastEdge with hqpa
+      have hqpa_mem : qpa ∈ wba.edge := hwba_ne.lastEdge_mem
+      have hqpa_C : qpa ∈ C.edgeSet :=
+        hw'sub (hwba_edgeSet ▸ WList.mem_edgeSet_iff.mpr hqpa_mem)
+      -- Decompose `wba = (wba.dropLast).concat qpa v`; the last link makes `qpa` `v`-incident.
+      have hwba_eq : wba.dropLast.concat qpa v = wba := by
+        rw [hqpa, ← hwba_last]; exact hwba_ne.concat_dropLast
+      have hconcat_walk : K.IsWalk (wba.dropLast.concat qpa v) := by rw [hwba_eq]; exact hwba_walk
+      rw [concat_isWalk_iff] at hconcat_walk
+      have hqpa_inc : K.Inc qpa v := hconcat_walk.2.symm.inc_left
+      -- `qpa = pa ∨ qpa = pb`; it is `≠ pb` (nodup), so `qpa = pa ∈ C` — contradiction.
+      have hqpa_ne_pb : qpa ≠ pb := fun h ↦ hpb_nwba (h ▸ hqpa_mem)
+      have hqpa_eq : qpa = pa :=
+        (hSv qpa (hCS hqpa_C) hqpa_inc).resolve_right hqpa_ne_pb
+      exact hpaC (hqpa_eq ▸ hqpa_C)
+    -- Both `v`-edges absent: `C` lives in `F' ∖ {r} ⊆ E((G_v)̃) ⊆ E(Ksp)`, lift the cycle.
+    have hCcore : ∀ p ∈ C.edgeSet, p ∈ F' \ {r} := by
+      intro p hp
+      rcases hCedge p hp with h | h | h
+      · exact absurd (h ▸ hp) hpaC
+      · exact absurd (h ▸ hp) hpbC
+      · exact h
+    have hCGv : C.edgeSet ⊆ E((G.removeVertex v).mulTilde n) := fun p hp ↦ hdiffGv (hCcore p hp)
+    -- `C` is a tour of `(G_v)̃`, hence a cyclic walk of `Ksp` inside `F'`.
+    have hC_Gv_tour : ((G.removeVertex v).mulTilde n).IsTour C :=
+      hCcyc.isTour.of_le_of_subset (hK ▸ edgeMultiply_mono (removeVertex_le G v) _)
+        (fun p hp ↦ hCGv hp)
+    have hC_Ksp_cyc : Ksp.IsCyclicWalk C :=
+      ⟨hC_Gv_tour.of_le (mulTilde_removeVertex_le_splitOff n he₀), hCcyc.nodup⟩
+    exact hF'.2 C hC_Ksp_cyc (fun p hp ↦ (hCcore p hp).1)
+
+/-- **A split-off forest absorbs a `v`-edge copy as a pendant** (`lem:edge-splitting`, KT 4.2
+forest core, the pendant-insert companion to `isAcyclicSet_mulTilde_of_splitOff_reroute`;
+Katoh–Tanigawa 2011 Lemma 4.2 p.660). Let `F` be a `(G̃_v^{ab}).cycleMatroid`-independent
+(forest) fiber set of the multiplied splitting-off that **avoids the fresh short-circuit fiber**
+`ã̃b = edgeFiber e₀ n` (`Disjoint F (ã̃b)`, with `e₀ ∉ E(G)` fresh), and let `x` be a copy of a
+`v`-incident `G`-edge linking `v` to a distinct vertex `w` (`(G̃).IsLink x v w`, `w ≠ v`). Then
+`insert x F` is acyclic in the multiplied original `G̃ = (D−1)·G`:
+`(G.mulTilde n).cycleMatroid.Indep (insert x F)`.
+
+This is the brick KT 4.2's edge-splitting extension `splitOff_indep_extend_of_fiber_lt` runs on
+for the forests that pick up a single `v`-edge (the `h' < i ≤ D−1` forests, which gain one
+`eₐ`-copy, and `F_D`, which gains one `e_b`-copy). It composes the landed acyclicity transport
+`isAcyclicSet_mulTilde_of_splitOff_of_disjoint` (a fresh-fiber-avoiding `G̃_v^{ab}`-forest is a
+`G̃`-forest) with the redistribution kernel `acyclicSet_insert_vfiber_of_not_inc` (a `v`-avoiding
+`G̃`-forest absorbs a `v`-edge as a pendant): the transported `F` avoids `v` (it lives in
+`(G_v)̃`, which omits `v`), so the pendant insert applies. -/
+lemma isAcyclicSet_mulTilde_insert_vfiber_of_splitOff {G : Graph α β} {v a b : α} {e₀ : β}
+    {n : ℕ} (he₀ : e₀ ∉ E(G)) {F : Set (β × Fin (bodyHingeMult n))}
+    {x : β × Fin (bodyHingeMult n)} {w : α}
+    (hF : ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep F)
+    (hdisj : Disjoint F (edgeFiber e₀ n)) (hxvw : (G.mulTilde n).IsLink x v w) (hwv : w ≠ v) :
+    (G.mulTilde n).cycleMatroid.Indep (insert x F) := by
+  -- Transport `F` down to `G̃`; it lives in `(G_v)̃`, so it avoids `v`.
+  have hFK : (G.mulTilde n).cycleMatroid.Indep F :=
+    isAcyclicSet_mulTilde_of_splitOff_of_disjoint hF hdisj
+  have hFGv : F ⊆ E((G.removeVertex v).mulTilde n) := by
+    rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
+    rw [cycleMatroid_indep] at hF
+    exact Set.subset_diff.mpr ⟨hF.1, hdisj⟩
+  have hFv : ∀ p ∈ F, ¬ (G.mulTilde n).Inc p v := by
+    intro p hp hinc
+    have hpE : p ∈ E((G.removeVertex v).mulTilde n) := hFGv hp
+    rw [mulTilde_inc] at hinc
+    rw [mem_edgeSet_mulTilde] at hpE
+    obtain ⟨y, z, hl⟩ := exists_isLink_of_mem_edgeSet hpE
+    rw [removeVertex_isLink] at hl
+    obtain ⟨hlink, hyv, hzv⟩ := hl
+    obtain ⟨t, ht⟩ := hinc
+    rcases hlink.eq_and_eq_or_eq_and_eq ht with ⟨hyw, -⟩ | ⟨-, hzw⟩
+    · exact hyv hyw
+    · exact hzv hzw
+  exact acyclicSet_insert_vfiber_of_not_inc hFK hxvw hwv hFv
+
 /-! ## Circuits of the multiplied splitting-off meet the short-circuit (`lem:reduction-step`)
 
 The conceptual heart of the splitting-off minimality transport (Katoh–Tanigawa 2011 Lemma

@@ -1354,6 +1354,35 @@ housekeeping pass once their resolution is fully indexed.
   mirror. **Lifted to:** TACTICS-QUIRKS § 29.
 - **Status:** resolved.
 
+### [resolved] `[matroid]` Reverse cycle-lift swap (KT 4.2): the `concat`/`dropLast`/`reverse` mirror of the forward `cons`-substitution
+- **Where it bit:** `Graph.isAcyclicSet_mulTilde_of_splitOff_reroute` in `Molecular/Induction/`
+  (Phase 22i L1g, the reverse of `isAcyclicSet_splitOff_reroute`). A `G̃`-cycle `C` in
+  `(F'∖{r}) ∪ {pa, pb}` is lifted to a `G̃ᵥᵃᵇ`-cycle inside `F'` by substituting the
+  `v`-traversing 2-path `a—pa—v—pb—b` *back* by the single short-circuit edge `r`. Mirrors the
+  forward §29 idiom but in the opposite direction, so the substituted edges land at the walk's
+  *end* rather than its *front*.
+- **Friction (additions over the forward §29 idiom):** (1) the second `v`-edge `pb` is located as
+  the **last edge** of the sub-walk via `wab.Nonempty.lastEdge` + `Nonempty.concat_dropLast`
+  (`wab.dropLast.concat hw.lastEdge wab.last = wab`) + `concat_isWalk_iff` (`Graph.`-namespaced;
+  gives `IsLink (lastEdge) w₂.last v`), not `cons_isWalk_iff` on the front. (2) The two endpoint
+  orientations (`pa` joins `v,a` either way around) are unified by reorienting the sub-walk with
+  `WList.reverse` (`reverse_first`/`reverse_last`/`reverse_edgeSet`/`reverse_edge` +
+  `List.nodup_reverse`), packing `K.IsWalk wab ∧ first ∧ last ∧ edgeSet ∧ Nodup ∧ pa∉edge` into one
+  `obtain` so the downstream argument is orientation-free. (3) `wab.edge = w₂.edge ++ [qpb]` (via
+  `concat_edge`), so `qpb ∉ w₂.edge` / `w₂.edge.Nodup` come from `List.nodup_append` — whose third
+  component is `∀ a ∈ l₁, ∀ b ∈ l₂, a ≠ b` (apply at `qpb`/`List.mem_singleton.mpr rfl`), **not**
+  `List.Disjoint`. (4) the "uses exactly one `v`-edge" case is ruled out by the *same* reverse swap
+  run from `pb` (its forced other-end edge is `pa`, contradicting `pa ∉ C`); no cycle-degree lemma
+  needed. (5) `mulTilde n = edgeMultiply (bodyHingeMult n)` (not `edgeMultiply n`) — feed
+  `edgeMultiply_mono h _` with `_` for the multiplicity, and `hK ▸` to defeat the `set K` alias
+  blocking the `≤`.
+- **Fix / general lesson:** for a reverse edge-substitution cycle-lift, locate the trailing special
+  edge as `lastEdge` and decompose with `concat_dropLast`; unify endpoint orientations with one
+  `reverse`-or-not `obtain` rather than duplicating the substitution per case. Project-internal
+  (about our `splitOff`/`mulTilde`), lives in `Induction/`; no upstream mirror. **See:**
+  TACTICS-QUIRKS § 29 (the forward idiom).
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` no mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through `IsBasis'.contract_eq_contract_delete` + loops
 - **Where it bit:** `Matroid.IsBase.union_isBasis_of_contract` in
   `Molecular/Induction/` (Phase 20 `lem:contract-minimality-transport`). mathlib

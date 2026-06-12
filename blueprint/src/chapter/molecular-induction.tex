@@ -650,6 +650,66 @@ stays deferred, being sound but unneeded.
   unformalized.
 \end{proof}
 
+The all-$k$ induction (Phase~22i) does bring the edge-splitting
+extension onto a critical path --- the reverse forest direction of
+KT~4.2(i)/(ii) feeds the all-$k$ degree-of-freedom transport. Its two
+acyclicity bricks --- the reverse mirrors of
+\cref{lem:reroute-cycle-lift} and \cref{lem:reroute-vfree-transport}
+--- are landed below; the count-level $\widetilde{H} \to
+\widetilde{H_{ab}^v}$ packing assembly that consumes them is deferred to
+that layer.
+
+\begin{lemma}[Reverse reroute step: the degree-2 cycle-lift swap]
+  \label{lem:reverse-reroute-cycle-lift}
+  \lean{Graph.isAcyclicSet_mulTilde_of_splitOff_reroute}
+  \leanok
+  \uses{def:graph-operations, def:matroid-MG, lem:reroute-cycle-lift}
+  The reverse companion of \cref{lem:reroute-cycle-lift}. Let $F'$ be a
+  forest of $\widetilde{G_v^{ab}}$ containing a copy $r$ of the fresh
+  short-circuit fiber $\widetilde{ab}$, and let $pa$ (a $v$--$a$ copy) and
+  $pb$ (a $v$--$b$ copy) be the two $v$-edges of $\tilde G$. Then $(F'
+  \setminus \{r\}) \cup \{pa, pb\}$ is cycle-matroid-independent in $\tilde
+  G$: the forest may trade the direct $ab$-edge back for the
+  $a$--$v$--$b$ path through $v$ without creating a cycle.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Suppose the reverse-swapped set had a cycle $C$. The only $v$-incident
+  edges available are $pa, pb$ ($F' \setminus \{r\}$ lives in
+  $\widetilde{(G - v)}$, which omits $v$), and a cycle through $v$ uses
+  both. If $C$ avoids both, its edges lie in $F' \setminus \{r\} \subseteq
+  E(\widetilde{(G - v)})$ (a forest holds at most one $\widetilde{ab}$
+  copy, so removing $r$ clears the fresh fiber), so $C$ lifts to a
+  $\widetilde{G_v^{ab}}$-cycle inside $F'$. If $C$ uses both, rotate it so
+  $pa$ is first; its last edge is forced to be $pb$ (the only other
+  $v$-edge, reached because $C$ closes at $v$), so $C = (a\text{-}pa\text
+  {-}v\text{-}pb\text{-}b)\,w_2\,a$ with $w_2 : a \to b$ avoiding $v$.
+  Substituting the short-circuit copy $r$ ($= ab$ in $\widetilde{G_v^
+  {ab}}$) for the $2$-path yields a closed $\widetilde{G_v^{ab}}$-trail
+  inside $F'$, hence a $\widetilde{G_v^{ab}}$-cycle inside $F'$. Either way
+  $F'$ carries a cycle --- contradiction.
+\end{proof}
+
+\begin{lemma}[Reverse pendant insert: a split-off forest absorbs a $v$-edge]
+  \label{lem:reverse-pendant-insert}
+  \lean{Graph.isAcyclicSet_mulTilde_insert_vfiber_of_splitOff}
+  \leanok
+  \uses{def:graph-operations, def:matroid-MG, lem:reroute-vfree-transport, lem:acyclic-insert-vfiber}
+  The reverse companion of \cref{lem:reroute-vfree-transport}, for the
+  forests that pick up a single $v$-edge. Let $F$ be a forest of
+  $\widetilde{G_v^{ab}}$ avoiding the fresh fiber $\widetilde{ab}$, and let
+  $x$ be a copy of a $v$-incident $G$-edge linking $v$ to a distinct vertex
+  $w$. Then $\operatorname{insert} x\,F$ is a forest of $\tilde G$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The fresh-fiber-avoiding $F$ transports down to a forest of $\tilde G$
+  (\cref{lem:reroute-vfree-transport}), where it lives in
+  $\widetilde{(G - v)}$ and so avoids $v$; the $v$-avoiding forest then
+  absorbs $x$ as a pendant (the redistribution kernel
+  \cref{lem:acyclic-insert-vfiber}).
+\end{proof}
+
 \subsection{Degree-of-freedom tracking (via deficiency counting)}
 \label{sec:molecular-induction-dof}
 
