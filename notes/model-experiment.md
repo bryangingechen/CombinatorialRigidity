@@ -22,7 +22,13 @@ agentId before any fresh relaunch, rows 64→65); and the
 confidence language, task pinning, sequential builds, the
 worktree gate limitation, the fixed duplicate prologue — rows
 70–71, user-requested; companion nudge in
-`.claude/commands/coordinate-phase.md` step 2 is repo-local).
+`.claude/commands/coordinate-phase.md` step 2 is repo-local);
+and the 2026-06-12 no-nested-subagents amendment (a fixed-prompt
+clause + the `block-nested-agent.sh` PreToolUse hook denying
+in-subagent Agent calls — row 74's dispatch fanned out
+sub-subagents under agent-teams mode, confounding per-rung
+attribution; user-approved; rows ≥ 75 run under the amended
+prompt).
 
 ## Repo-local config
 

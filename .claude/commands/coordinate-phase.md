@@ -76,7 +76,11 @@ Loop:
        and return BLOCKED with a progress summary. Run your
        build/lint gates to completion and commit before ending your
        turn — never end the turn with finished-but-uncommitted work
-       while a background gate is still running. Do not edit
+       while a background gate is still running. Do all the work
+       yourself, in this conversation — never launch subagents (the
+       Agent tool; a hook also blocks it): if the task won't fit,
+       shrink the deliverable or return BLOCKED, and let the
+       coordinator decompose. Do not edit
        notes/model-experiment.md — the dispatch log is
        coordinator-owned. After committing,
        return a final message of exactly the form:
