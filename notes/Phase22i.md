@@ -15,8 +15,10 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a, L1b, L1c, L1d, L1e, L1f, and L1g are complete.** Next: L1h (KT
-4.2(i)/(ii)) — order per §1.58(i). L1i (KT 4.4-eq / 4.3(ii)-rev) unblocked once L1h lands.
+**L1a–L1g complete; L1h is half-landed** — case ii (`splitOff_indep_extend_of_fiber_subset`,
+KT 4.2(ii) full-fiber arm) is green; case i (`splitOff_indep_extend_of_fiber_lt`, KT 4.2(i)
+partial-fiber arm) is the next forward commit. L1i (KT 4.4-eq / 4.3(ii)-rev) unblocked once
+**both** L1h arms land (4.4-eq is 4.2(i) at `h'=0`, 4.3(ii)-rev needs 4.2(ii)).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -65,8 +67,8 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 - [ ] **L1** — the combinatorial bricks; signatures pinned in §1.58, sliced **L1a–L1j**
   (V2 predicate; the `|V| ≤ 2` trichotomy; V3/V4/G0 in-place all-`k` restates; the KT 3.6
   cut decomposition; KT 4.5(ii)/4.2/4.4-eq/4.7/4.3(ii)/4.8(ii)). Build order §1.58(i):
-  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a–L1g} all done;
-  L1h is now the open task.**
+  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a–L1g} done;
+  L1h case ii done; L1h case i is the open task.**
   - [x] **L1a** — `cutEdges` + `TwoEdgeConnected` + three bridge lemmas
     (`cutEdges_eq_crossingEdges_cutLabeling`, `twoEdgeConnected_of_isKDof_zero`,
     `two_le_degree_of_twoEdgeConnected`) in `Deficiency.lean` + `def:cut-edges-2ec` blueprint
@@ -106,6 +108,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     the one new engine) + `isAcyclicSet_mulTilde_insert_vfiber_of_splitOff` (the pendant
     insert) in `ForestSurgery.lean` + `lem:reverse-reroute-cycle-lift` / `lem:reverse-pendant-insert`
     blueprint nodes (both green) in `molecular-induction.tex`.
+  - [~] **L1h** — KT 4.2(i)/(ii) edge-splitting extension in `ForestSurgery.lean` +
+    `lem:edge-splitting` in `molecular-induction.tex`. **Case ii done** (full-fiber,
+    `splitOff_indep_extend_of_fiber_subset`, green). **Case i pending**
+    (`splitOff_indep_extend_of_fiber_lt`, partial-fiber — the next forward commit).
 - [ ] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c)).
 - [ ] **L3** — the base producer (`hbase` carry discharged).
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
@@ -129,18 +135,27 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   pass, none blocks the L0 pin from starting. None is research-shaped; V8 (subfamily
   extraction at rank form) and V10 (the relative hub bound B2) are the two with real
   proof-shape uncertainty.
-- **L1h implementation size.** Two failed sonnet attempts confirm L1h exceeds one session.
-  The proof structure is fully designed (see Decisions section). Next attempt: write
-  case-ii first (simpler, no pending inserts), gate-verify it, then add case-i.
+- **L1h is split across two commits** (the case-ii-first tactic worked): case ii landed
+  warning-clean as one opus sitting; case i is the next forward commit (salvage in Decisions
+  + the build plan in Hand-off). The case-ii scaffolding (`hFsmem`/`hDs_fst`/`rOf`/`paOf`)
+  is the model — case i reuses it and adds the pendant inserts + κ-index assignment.
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a–L1g all complete** (KT 3.6 both parts, KT 4.5(ii), KT 4.2
-forest core, KT 3.6 packaging in `lem:cut-edge-decomposition` all green).
-**Smallest next forward commit: L1h** (KT 4.2(i)/(ii): `splitOff_indep_extend_of_fiber_lt` /
-`_subset` + `lem:edge-splitting`; §1.58(f)). **Tactic: write case-ii first** (full fiber,
-simpler — all D-1 forests reroute, one pendant stays unchanged, no pendant inserts), prove
-its three conjuncts, gate-verify, commit; then write case-i as a second commit.
+**L0 fully complete. L1a–L1g complete; L1h case ii (full-fiber) complete.**
+**Smallest next forward commit: L1h case i** (`splitOff_indep_extend_of_fiber_lt`, KT 4.2(i)
+partial-fiber arm; add it to `lem:edge-splitting`'s `\lean` list + flip the "partial-fiber arm
+forthcoming" prose). Model it on the landed case ii (`splitOff_indep_extend_of_fiber_subset`,
+same file, immediately above the `circuit_splitOff_meets_fiber` section): same disjointed
+forest packing + `S`-set + `rOf`/`paOf`/`pbOf`/`hFsmem`/`hDs_fst` scaffolding. **What case i
+adds** (`hlt : |I' ∩ ẽ₀| < D−1`, so `h' < D−1`): the `D−1−h'` forests with no `e₀`-copy each
+gain **one pendant** `eₐ`-copy and the last forest one `e_b`-copy (vs. case ii's "pendant
+forest unchanged"); use `isAcyclicSet_mulTilde_insert_vfiber_of_splitOff` for those inserts.
+The inserted copies need fresh distinct second coordinates from the `bodyHingeMult n` index
+pool not already used by the `S`-forests' recovered `(eₐ, rOf.2)`/`(e_b, rOf.2)` copies —
+build the κ-assignment via `Finset.orderIsoOfFin` (has `.symm`, unlike `orderEmbOfFin`) on the
+unused-index finset (§1.58(g) / the L1h-design Decisions entry). Count: `|I| + 1 = |I'| + D`
+becomes `|I| = |I'| + D` (no `−1`) — re-derive the shrink/grow bookkeeping for the inserts.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -149,28 +164,25 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
 
 ## Decisions made during this phase
 
-- **L1h design (2026-06-12, sonnet BLOCK after two attempts):** Both `splitOff_indep_extend_of_fiber_lt`
-  (case i) and `splitOff_indep_extend_of_fiber_subset` (case ii) have fully designed proof routes.
-  *Case ii* (full fiber, simpler): `|S| = D-1`; one pendant (`e_b_forest`); D-1 forests rerouted
-  via `isAcyclicSet_mulTilde_of_splitOff_reroute`; pendant uses `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`
-  (no insert — pendant stays as `Fs e_b_forest`). Cardinality: each rerouted grows by 1, pendant unchanged
-  → `|I| + 1 = |I'| + D`. Disjointness: rerouted vs pendant — `hpea_notFs` / `hpeb_notFs` exclude
-  eₐ/e_b copies from the splitOff forests. *Case i* (partial fiber): additionally needs pendant inserts —
-  one e_b insert at `e_b_forest` using `extra_k ∉ usedKs`, one eₐ insert per `j ∈ eₐ_pendantS` using
-  `κ(j) = (τ (σ_eₐ.symm ⟨j, …⟩)).val` where `σ_eₐ = Finset.orderIsoOfFin eₐ_pendantS rfl` and
-  `τ = Finset.orderIsoOfFin unusedA hcount_eq.symm`. Key: use `Finset.orderIsoOfFin` (has `.symm`)
-  not `orderEmbOfFin` (no `.symm`). *API pitfalls identified:*
-  `Set.ncard_eq_zero` takes no argument (the `mpr` form doesn't exist — use `Set.ncard_eq_zero.mpr`
-  → actually correct but needs `(hemp : s = ∅) : s.ncard = 0`); `Set.ncard_eq_one.mpr` needs
-  `∃ a, s = {a}` not a `Subsingleton` — convert via `Set.Subsingleton.eq_singleton_iff`;
-  `Finset.card_sdiff` takes no argument (it's `(h : t ⊆ s) : (s \ t).card = s.card - t.card` but
-  the actual Mathlib version is `Finset.card_sdiff : (h : s ⊆ t) → (t \ s).card = t.card - s.card`
-  — check argument order); `push_neg` is fine (not deprecated); extra_k proof: after
-  `simp only [heq, Finset.card_univ, Fintype.card_fin, husedKs_card]` the goal should be
-  `False` from `hSlt_HM : S.card < bodyHingeMult n = Finset.univ.card`, close with `omega`;
-  for the `hpea_notFs` / `hpeb_notFs` proofs the `simp at hc` at the `e₀` case doesn't work
-  — check the first branch of `edgeSet_splitOff` more carefully (`e₀` case is `p.1 = e₀ ∧ …`,
-  not a contradiction from `eₐ = e₀` — need `he₀` applied after extracting the edge membership).
+- **L1h case ii build (2026-06-12, opus retry after the sonnet BLOCK):**
+  `splitOff_indep_extend_of_fiber_subset` (KT 4.2(ii) full-fiber) in `ForestSurgery.lean`,
+  green. Construction: disjointify a forest packing of `I'` (`disjointed`), `S = {i | Ds i`
+  meets `ẽ₀}`; `|S| = D−1` (whole `ẽ₀ ⊆ I'`, each forest holds ≤1 copy by
+  `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). Rerouted family `Fs i = if i ∈ S then
+  insert paOf (insert pbOf (Ds i ∖ {rOf i})) else Ds i` with `paOf i = (eₐ, (rOf i).2)`,
+  `pbOf i = (e_b, (rOf i).2)`. Acyclicity: `…_reroute` on `S`, `…_of_disjoint` off. Key device:
+  the first-coordinate classifier `hFsmem` (an `eₐ`/`e_b`-copy of `Fs i` is `paOf`/`pbOf`, else
+  in `Ds i`) + `hDs_fst` (`Ds` carries no `eₐ`/`e_b` copies since `eₐ, e_b ∉ E(splitOff)` —
+  `v`-incident) drive disjointness, count, and the survivor conjunct uniformly. `hdeg2`
+  unused in case ii (kept as `_hdeg2` for the pinned signature). Idioms hit were all
+  pre-logged (FRICTION `ncard_diff_singleton` arg-count, `push_neg`→`not_or`, `set`-λ
+  `.2`-projection via `simp only [hpaOf]` not `rw`, `edgeFiber`-on-negation via `simp only`).
+- **L1h case i salvage (next commit):** `splitOff_indep_extend_of_fiber_lt` (partial fiber,
+  `hlt : |I' ∩ ẽ₀| < D−1`) reuses case ii's scaffolding; additionally the `D−1−h'`
+  copy-free forests gain one `eₐ`-pendant each (last one an `e_b`-pendant) via
+  `isAcyclicSet_mulTilde_insert_vfiber_of_splitOff`. Distinct fresh second coordinates from
+  the unused-index pool via `Finset.orderIsoOfFin` (has `.symm`, unlike `orderEmbOfFin`).
+  Count becomes `|I| = |I'| + D` (no `−1`). See the Hand-off for the build plan.
 - **L1g build (2026-06-12, opus retry after the sonnet BLOCK):** two reverse-acyclicity bricks in
   `ForestSurgery.lean`. (B) `isAcyclicSet_mulTilde_of_splitOff_reroute` (the one new engine): a
   `G̃`-cycle `C` in `(F'∖{r})∪{pa,pb}` is killed by case split on `pa∈C` / `pb∈C` — both-absent

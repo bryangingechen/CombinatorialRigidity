@@ -1004,6 +1004,310 @@ lemma isAcyclicSet_mulTilde_insert_vfiber_of_splitOff {G : Graph α β} {v a b :
     · exact hzv hzw
   exact acyclicSet_insert_vfiber_of_not_inc hFK hxvw hwv hFv
 
+/-! ## The edge-splitting extension (`lem:edge-splitting`, KT Lemma 4.2)
+
+The count-level assembly of the reverse forest surgery: Katoh–Tanigawa 2011 Lemma 4.2
+(pp. 660–661). Where the forward surgery (`forest_surgery_count`, KT Lemma 4.1) reroutes a
+forest packing of `M(G̃)` across the degree-2 vertex `v` *down* to one of the multiplied
+splitting-off `M(G̃_v^{ab})`, this is the *up* direction: an independent set `I'` of
+`M(G̃_v^{ab})` extends to an independent set `I` of `M(G̃)`, recovering the `v`-edges that
+the splitting-off short-circuited away.
+
+The construction partitions `I'` into `D = bodyBarDim n` edge-disjoint forests of
+`G̃_v^{ab}` (`matroidMG_indep_iff_exists_forest_packing`, made disjoint by the `disjointed`
+pattern), then trades each fresh short-circuit copy `r` of `ã̃b = edgeFiber e₀ n` for the two
+`v`-edges it short-circuits — a `va`-copy `(eₐ, r.2)` and a `vb`-copy `(e_b, r.2)` — via the
+reverse cycle-lift `isAcyclicSet_mulTilde_of_splitOff_reroute`; the one forest holding no
+`ã̃b`-copy transports down verbatim (`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`). Each
+rerouted forest grows by exactly one (`−1` for `r`, `+2` for the recovered `v`-edges), the
+pendant forest is unchanged, and the inserted copies are distinct across forests (distinct
+`r.2`), so the union is again a `D`-forest packing — `M(G̃)`-independent.
+
+This subsection ships the **full-fiber case** (KT 4.2(ii), `h' = D − 1`): when the whole
+fresh fiber `ã̃b` lies in `I'`, all `D − 1` of its copies are recovered, giving the count
+`|I| + 1 = |I'| + D` and the *survivor conjunct* `I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b` (the two sides
+agree off the three special fibers). The survivor conjunct carries the 4.8(ii) minimality
+transport (a base avoiding `ẽ` extends to a base still avoiding `ẽ`). -/
+
+/-- **The edge-splitting extension, full-fiber case** (`lem:edge-splitting`, KT Lemma 4.2(ii);
+Katoh–Tanigawa 2011 pp. 660–661). Let `v` be a degree-2 vertex of `G` with distinct
+neighbours `a ≠ b` (`a, b ≠ v`), incident edges exactly `eₐ ≠ e_b` (`G.IsLink eₐ v a`,
+`G.IsLink e_b v b`), and `e₀ ∉ E(G)` the fresh short-circuit edge, `D = bodyBarDim n ≥ 2`.
+Given an `M(G̃_v^{ab})`-independent fiber set `I'` that **contains the whole fresh fiber**
+`ã̃b = edgeFiber e₀ n` (`hsub`), there is an `M(G̃)`-independent set `I` with
+`I.ncard + 1 = I'.ncard + bodyBarDim n` and the *survivor conjunct*
+`I ∖ (ẽₐ ∪ ẽ_b) = I' ∖ ã̃b`.
+
+This is KT 4.2's `h' = D − 1` arm: every one of the `D − 1` short-circuit copies of `I'` is
+traded back for the `v`-edges it short-circuited. See the section preamble. -/
+theorem splitOff_indep_extend_of_fiber_subset [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (_hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    {I' : Set (β × Fin (bodyHingeMult n))}
+    (hI' : ((G.splitOff v a b e₀).matroidMG n).Indep I')
+    (hsub : edgeFiber e₀ n ⊆ I') :
+    ∃ I, (G.matroidMG n).Indep I ∧ I.ncard + 1 = I'.ncard + bodyBarDim n ∧
+      I \ (edgeFiber eₐ n ∪ edgeFiber e_b n) = I' \ edgeFiber e₀ n := by
+  classical
+  haveI : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  -- `eₐ, e_b ≠ e₀` (they are edges of `G`, `e₀` is not).
+  have heane₀ : eₐ ≠ e₀ := fun h ↦ he₀ (h ▸ hla.edge_mem)
+  have hebne₀ : e_b ≠ e₀ := fun h ↦ he₀ (h ▸ hlb.edge_mem)
+  -- Disjointify a forest packing of `I'` into a genuine partition.
+  obtain ⟨hI'E, Fs₀, hcover₀, hindep₀⟩ :=
+    (matroidMG_indep_iff_exists_forest_packing (G.splitOff v a b e₀) n).mp hI'
+  set Ds := disjointed Fs₀ with hDs
+  have hDscover : ⋃ i, Ds i = I' := by rw [hDs, iUnion_disjointed]; exact hcover₀
+  have hDsindep : ∀ i, ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (Ds i) :=
+    fun i ↦ (hindep₀ i).subset (disjointed_le Fs₀ i)
+  have hDsdisj : Pairwise (Function.onFun Disjoint Ds) := disjoint_disjointed Fs₀
+  have hDssubI' : ∀ i, Ds i ⊆ I' := fun i ↦ hDscover ▸ Set.subset_iUnion Ds i
+  -- Each forest holds at most one `e₀`-copy.
+  have hsubsing : ∀ i, (Ds i ∩ edgeFiber e₀ n).Subsingleton := fun i ↦
+    fiber_inter_subsingleton_of_isAcyclicSet_splitOff hab hav hbv haV hbV (hDsindep i)
+  -- `S` = the forests holding an `e₀`-copy; for `i ∈ S`, `rOf i` is the unique such copy.
+  set S : Finset (Fin (bodyBarDim n)) :=
+    {i | (Ds i ∩ edgeFiber e₀ n).Nonempty} with hS
+  have hSiff : ∀ i, i ∈ S ↔ (Ds i ∩ edgeFiber e₀ n).Nonempty := by
+    intro i; simp only [hS, Finset.mem_filter, Finset.mem_univ, true_and]
+  -- A chosen `e₀`-copy per `S`-forest (else a placeholder).
+  haveI : Nonempty (β × Fin (bodyHingeMult n)) := by
+    obtain ⟨p, hp⟩ : (edgeFiber e₀ n).Nonempty := by
+      rw [← Set.ncard_pos (Set.toFinite _), edgeFiber_ncard, bodyHingeMult]; omega
+    exact ⟨p⟩
+  set rOf : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n) := fun i =>
+    if h : (Ds i ∩ edgeFiber e₀ n).Nonempty then h.choose else Classical.arbitrary _ with hrOf
+  have hrOf_mem : ∀ i ∈ S, rOf i ∈ Ds i ∩ edgeFiber e₀ n := by
+    intro i hi
+    have hne := (hSiff i).mp hi
+    simp only [hrOf, dif_pos hne]; exact hne.choose_spec
+  have hrOf1 : ∀ i ∈ S, (rOf i).1 = e₀ := fun i hi ↦ by
+    have := (hrOf_mem i hi).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
+  -- The recovered `v`-edges: a `va`-copy and a `vb`-copy sharing `r`'s second coordinate.
+  set paOf : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n) := fun i => (eₐ, (rOf i).2) with hpaOf
+  set pbOf : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n) := fun i => (e_b, (rOf i).2) with hpbOf
+  have hpaℓ : ∀ i, (G.mulTilde n).IsLink (paOf i) v a := fun i ↦ by
+    rw [mulTilde_isLink, hpaOf]; exact hla
+  have hpbℓ : ∀ i, (G.mulTilde n).IsLink (pbOf i) v b := fun i ↦ by
+    rw [mulTilde_isLink, hpbOf]; exact hlb
+  -- The rerouted family.
+  set Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)) := fun i =>
+    if i ∈ S then insert (paOf i) (insert (pbOf i) (Ds i \ {rOf i})) else Ds i with hFs
+  -- `S.card = D − 1`: the whole `e₀`-fiber (`D − 1` copies) is partitioned one-per-`S`-forest.
+  have hfibpart : ⋃ i, Ds i ∩ edgeFiber e₀ n = edgeFiber e₀ n := by
+    rw [← Set.iUnion_inter, hDscover, Set.inter_eq_right.mpr hsub]
+  have hScard : S.card = bodyBarDim n - 1 := by
+    have hdisj_fib : Pairwise (Function.onFun Disjoint (fun i ↦ Ds i ∩ edgeFiber e₀ n)) :=
+      fun i j hij ↦ (hDsdisj hij).mono Set.inter_subset_left Set.inter_subset_left
+    have hsum : ∑ i, (Ds i ∩ edgeFiber e₀ n).ncard = bodyHingeMult n := by
+      have hkey := Set.ncard_iUnion_of_finite (s := fun i ↦ Ds i ∩ edgeFiber e₀ n)
+        (fun i ↦ Set.toFinite _) hdisj_fib
+      rw [hfibpart, edgeFiber_ncard, finsum_eq_sum_of_fintype] at hkey
+      exact hkey.symm
+    -- Each term is `0` (off `S`) or `1` (on `S`).
+    have hterm : ∀ i, (Ds i ∩ edgeFiber e₀ n).ncard = if i ∈ S then 1 else 0 := by
+      intro i
+      by_cases hi : i ∈ S
+      · rw [if_pos hi]
+        exact (Set.ncard_le_one_iff_subsingleton.mpr (hsubsing i)).antisymm
+          (Set.Nonempty.ncard_pos (Set.toFinite _) ((hSiff i).mp hi))
+      · have hemp : Ds i ∩ edgeFiber e₀ n = ∅ :=
+          Set.not_nonempty_iff_eq_empty.mp (by rw [← hSiff i]; exact hi)
+        rw [if_neg hi, hemp, Set.ncard_empty]
+    simp only [hterm, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, smul_eq_mul,
+      mul_one] at hsum
+    rw [hsum, bodyHingeMult]
+  -- `eₐ, e_b` are not edges of the splitting-off (they are `v`-incident in `G`), so no forest
+  -- of `G̃_v^{ab}` holds a copy of either.
+  have hnotin_of_vlink : ∀ {e w}, e ≠ e₀ → G.IsLink e v w → e ∉ E(G.splitOff v a b e₀) := by
+    intro e w hne hl
+    rw [edgeSet_splitOff]; rintro (⟨h, _⟩ | ⟨_, x, y, hl', hx, hy⟩)
+    · exact hne h
+    · rcases hl.eq_and_eq_or_eq_and_eq hl' with ⟨hvx, -⟩ | ⟨hvy, -⟩
+      · exact hx hvx.symm
+      · exact hy hvy.symm
+  have hea_notin : eₐ ∉ E(G.splitOff v a b e₀) := hnotin_of_vlink heane₀ hla
+  have heb_notin : e_b ∉ E(G.splitOff v a b e₀) := hnotin_of_vlink hebne₀ hlb
+  -- No forest holds a copy of `eₐ` or `e_b`.
+  have hDssubE : ∀ i, Ds i ⊆ E((G.splitOff v a b e₀).mulTilde n) :=
+    fun i ↦ (hDsindep i).subset_ground
+  have hpa_notDs : ∀ i j, paOf i ∉ Ds j := by
+    intro i j hp
+    have h1 := hDssubE j hp
+    rw [mem_edgeSet_mulTilde, hpaOf] at h1; exact hea_notin h1
+  have hpb_notDs : ∀ i j, pbOf i ∉ Ds j := by
+    intro i j hp
+    have h1 := hDssubE j hp
+    rw [mem_edgeSet_mulTilde, hpbOf] at h1; exact heb_notin h1
+  -- Each rerouted forest is acyclic in `G̃`.
+  have hindep' : ∀ i, (G.mulTilde n).cycleMatroid.Indep (Fs i) := by
+    intro i
+    simp only [hFs]
+    by_cases hi : i ∈ S
+    · rw [if_pos hi]
+      exact isAcyclicSet_mulTilde_of_splitOff_reroute hab hav hbv haV hbV (hDsindep i)
+        (hpaℓ i) (hpbℓ i) (hrOf1 i hi) (hrOf_mem i hi).1 he₀
+    · rw [if_neg hi]
+      refine isAcyclicSet_mulTilde_of_splitOff_of_disjoint (hDsindep i) ?_
+      rw [Set.disjoint_left]
+      intro p hpD hpf
+      exact ((hSiff i).not.mp hi) ⟨p, hpD, hpf⟩
+  -- Distinctness: distinct `S`-forests carry distinct `e₀`-copies, hence distinct second
+  -- coordinates, hence distinct recovered `v`-edges.
+  have hrOf_ne : ∀ i ∈ S, ∀ j ∈ S, i ≠ j → rOf i ≠ rOf j := by
+    intro i hi j hj hij heq
+    exact Set.disjoint_left.mp (hDsdisj hij) (hrOf_mem i hi).1 (heq ▸ (hrOf_mem j hj).1)
+  have hrOf2_ne : ∀ i ∈ S, ∀ j ∈ S, i ≠ j → (rOf i).2 ≠ (rOf j).2 := by
+    intro i hi j hj hij h2
+    exact hrOf_ne i hi j hj hij (Prod.ext ((hrOf1 i hi).trans (hrOf1 j hj).symm) h2)
+  -- `paOf i, pbOf i ∉ Ds i \ {rOf i}` (no `eₐ`/`e_b` copies in `Ds i`), and `paOf i ≠ pbOf i`.
+  have hpa_ne_pb : ∀ i, paOf i ≠ pbOf i := fun i h ↦ heab (by
+    have := (Prod.ext_iff.mp h).1; rwa [hpaOf, hpbOf] at this)
+  -- A first-coordinate classifier for membership in `Fs k`: an `eₐ`-copy of `Fs k` is `paOf k`,
+  -- an `e_b`-copy is `pbOf k`, and any other member lies in the core `Ds k`.
+  have hFsmem : ∀ k p, p ∈ Fs k →
+      (k ∈ S ∧ p = paOf k) ∨ (k ∈ S ∧ p = pbOf k) ∨ p ∈ Ds k := by
+    intro k p hp
+    simp only [hFs] at hp
+    by_cases hk : k ∈ S
+    · rw [if_pos hk] at hp
+      rcases Set.mem_insert_iff.mp hp with rfl | hp'
+      · exact Or.inl ⟨hk, rfl⟩
+      rcases Set.mem_insert_iff.mp hp' with rfl | hp''
+      · exact Or.inr (Or.inl ⟨hk, rfl⟩)
+      · exact Or.inr (Or.inr hp''.1)
+    · rw [if_neg hk] at hp; exact Or.inr (Or.inr hp)
+  -- The core members of `Fs k` have first coordinate `≠ eₐ, e_b` (they live in `E(G̃_v^{ab})`).
+  have hDs_fst : ∀ k p, p ∈ Ds k → p.1 ≠ eₐ ∧ p.1 ≠ e_b := by
+    intro k p hp
+    have hpE := hDssubE k hp
+    rw [mem_edgeSet_mulTilde] at hpE
+    exact ⟨fun h ↦ hea_notin (h ▸ hpE), fun h ↦ heb_notin (h ▸ hpE)⟩
+  -- `paOf k` has first coord `eₐ`, `pbOf k` has `e_b`; core members have neither.
+  have hpaOf_fst : ∀ k, (paOf k).1 = eₐ := fun k ↦ by rw [hpaOf]
+  have hpbOf_fst : ∀ k, (pbOf k).1 = e_b := fun k ↦ by rw [hpbOf]
+  -- Pairwise disjointness of the rerouted family.
+  have hdisj' : Pairwise (Function.onFun Disjoint Fs) := by
+    intro i j hij
+    simp only [Function.onFun, Set.disjoint_left]
+    intro p hpi hpj
+    rcases hFsmem i p hpi with ⟨hiS, hpeqi⟩ | ⟨hiS, hpeqi⟩ | hpci <;>
+      rcases hFsmem j p hpj with ⟨hjS, hpeqj⟩ | ⟨hjS, hpeqj⟩ | hpcj
+    -- both `eₐ`-copies: `paOf i = paOf j`, forcing `(rOf i).2 = (rOf j).2`, contra `hrOf2_ne`.
+    · exact hrOf2_ne i hiS j hjS hij (by
+        have := (Prod.ext_iff.mp (hpeqi.symm.trans hpeqj)).2; simpa only [hpaOf] using this)
+    · exact heab ((hpaOf_fst i) ▸ (hpbOf_fst j) ▸ hpeqi ▸ hpeqj ▸ rfl)
+    · exact (hDs_fst j p hpcj).1 (hpeqi ▸ hpaOf_fst i)
+    · exact heab ((hpaOf_fst j) ▸ (hpbOf_fst i) ▸ hpeqj ▸ hpeqi ▸ rfl)
+    -- both `e_b`-copies: symmetric.
+    · exact hrOf2_ne i hiS j hjS hij (by
+        have := (Prod.ext_iff.mp (hpeqi.symm.trans hpeqj)).2; simpa only [hpbOf] using this)
+    · exact (hDs_fst j p hpcj).2 (hpeqi ▸ hpbOf_fst i)
+    · exact (hDs_fst i p hpci).1 (hpeqj ▸ hpaOf_fst j)
+    · exact (hDs_fst i p hpci).2 (hpeqj ▸ hpbOf_fst j)
+    -- both core: `p ∈ Ds i ∩ Ds j = ∅`.
+    · exact Set.disjoint_left.mp (hDsdisj hij) hpci hpcj
+  -- Set `I := ⋃ Fs i` and dispatch the three remaining conjuncts.
+  refine ⟨⋃ i, Fs i, ?_, ?_, ?_⟩
+  · -- `M(G̃)`-independence: `Fs` is a `D`-forest packing of `⋃ Fs i`.
+    rw [matroidMG_indep_iff_exists_forest_packing]
+    refine ⟨Set.iUnion_subset fun i ↦ (hindep' i).subset_ground, Fs, rfl, hindep'⟩
+  · -- The count: every `S`-forest grows by one, the pendant is unchanged.
+    -- For `i ∈ S`: `rOf i ∈ Ds i` is removed and `paOf i ≠ pbOf i ∉ Ds i` are added, net `+1`.
+    have hshrink : ∀ i, (Fs i).ncard = (Ds i).ncard + (if i ∈ S then 1 else 0) := by
+      intro i
+      by_cases hi : i ∈ S
+      · simp only [hFs, if_pos hi]
+        have hpaD : paOf i ∉ insert (pbOf i) (Ds i \ {rOf i}) := by
+          rw [Set.mem_insert_iff, not_or]
+          exact ⟨hpa_ne_pb i, fun h ↦ hpa_notDs i i h.1⟩
+        have hpbD : pbOf i ∉ Ds i \ {rOf i} := fun h ↦ hpb_notDs i i h.1
+        rw [Set.ncard_insert_of_notMem hpaD (Set.toFinite _),
+          Set.ncard_insert_of_notMem hpbD (Set.toFinite _),
+          Set.ncard_diff_singleton_of_mem (hrOf_mem i hi).1]
+        have hpos : 0 < (Ds i).ncard :=
+          Set.Nonempty.ncard_pos (Set.toFinite _) ⟨rOf i, (hrOf_mem i hi).1⟩
+        omega
+      · simp only [hFs, if_neg hi, add_zero]
+    have hsumFs : ∑ i, (Fs i).ncard = (⋃ i, Fs i).ncard := by
+      rw [← finsum_eq_sum_of_fintype,
+        ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj']
+    have hsumDs : ∑ i, (Ds i).ncard = I'.ncard := by
+      rw [← finsum_eq_sum_of_fintype,
+        ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hDsdisj, hDscover]
+    have hsumeq : ∑ i, (Fs i).ncard = ∑ i, (Ds i).ncard + S.card := by
+      rw [Finset.sum_congr rfl (fun i _ ↦ hshrink i), Finset.sum_add_distrib, Finset.sum_ite_mem,
+        Finset.univ_inter, Finset.sum_const, smul_eq_mul, mul_one]
+    rw [hsumFs, hsumDs] at hsumeq
+    rw [hsumeq, hScard]; omega
+  · -- The survivor conjunct: both sides equal the union of the cores `Ds i ∖ {rOf i}`.
+    -- A sharper membership: off the three special fibers, `Fs i`-membership is `Ds i ∖ {rOf i}`.
+    have hcoreFs : ∀ i p, p ∈ Fs i → p.1 ≠ e₀ → p.1 ≠ eₐ → p.1 ≠ e_b →
+        p ∈ Ds i ∧ (i ∈ S → p ≠ rOf i) := by
+      intro i p hp hp0 hpa hpb
+      simp only [hFs] at hp
+      by_cases hi : i ∈ S
+      · rw [if_pos hi] at hp
+        rcases Set.mem_insert_iff.mp hp with rfl | hp'
+        · exact absurd (hpaOf_fst i) hpa
+        rcases Set.mem_insert_iff.mp hp' with rfl | hp''
+        · exact absurd (hpbOf_fst i) hpb
+        · exact ⟨hp''.1, fun _ ↦ fun h ↦ hp''.2 (h ▸ rfl)⟩
+      · rw [if_neg hi] at hp; exact ⟨hp, fun h ↦ absurd h hi⟩
+    rw [← hDscover]
+    apply Set.Subset.antisymm
+    · rintro p ⟨hpU, hpab⟩
+      rw [Set.mem_union, not_or] at hpab
+      obtain ⟨hpa, hpb⟩ := hpab
+      simp only [edgeFiber, Set.mem_setOf_eq] at hpa hpb
+      rw [Set.mem_iUnion] at hpU
+      obtain ⟨i, hpi⟩ := hpU
+      -- `p` avoids `ẽₐ, ẽ_b`. If `p.1 = e₀`, `p = rOf i` is excluded by the sharper membership.
+      by_cases hp0 : p.1 = e₀
+      · exfalso
+        -- `p ∈ Fs i`, `p.1 = e₀ ⟹ p ∈ Ds i` is an `e₀`-copy ⟹ `i ∈ S` and `p = rOf i`.
+        have hpD : p ∈ Ds i := by
+          rcases hFsmem i p hpi with ⟨hiS, rfl⟩ | ⟨hiS, rfl⟩ | hpD
+          · exact absurd (hpaOf_fst i) hpa
+          · exact absurd (hpbOf_fst i) hpb
+          · exact hpD
+        have hpf : p ∈ edgeFiber e₀ n := by rw [edgeFiber, Set.mem_setOf_eq]; exact hp0
+        have hiS : i ∈ S := (hSiff i).mpr ⟨p, hpD, hpf⟩
+        have hpeqr : p = rOf i := hsubsing i ⟨hpD, hpf⟩ (hrOf_mem i hiS)
+        -- But `rOf i ∉ Fs i`: the reroute removes it (`≠ paOf i, pbOf i`, `∉ Ds i ∖ {rOf i}`).
+        simp only [hFs, if_pos hiS] at hpi
+        rw [hpeqr] at hpi
+        rcases Set.mem_insert_iff.mp hpi with hpa' | hpi'
+        · exact heane₀ (((hrOf1 i hiS).symm.trans (congrArg Prod.fst hpa')).trans
+            (hpaOf_fst i)).symm
+        rcases Set.mem_insert_iff.mp hpi' with hpb' | hpi''
+        · exact hebne₀ (((hrOf1 i hiS).symm.trans (congrArg Prod.fst hpb')).trans
+            (hpbOf_fst i)).symm
+        · exact hpi''.2 rfl
+      · refine ⟨Set.mem_iUnion.mpr ⟨i, (hcoreFs i p hpi hp0 hpa hpb).1⟩, ?_⟩
+        rw [edgeFiber, Set.mem_setOf_eq]; exact hp0
+    · rintro p ⟨hpU, hp0⟩
+      rw [edgeFiber, Set.mem_setOf_eq] at hp0
+      rw [Set.mem_iUnion] at hpU
+      obtain ⟨i, hpi⟩ := hpU
+      -- `p ∈ Ds i`, `p.1 ≠ e₀`. Its first coord is not `eₐ, e_b` (core lives in `E(G̃_v^{ab})`).
+      obtain ⟨hpa, hpb⟩ := hDs_fst i p hpi
+      refine ⟨Set.mem_iUnion.mpr ⟨i, ?_⟩, ?_⟩
+      · -- `p ∈ Fs i`: if `i ∈ S`, `p ≠ rOf i` (else `p.1 = e₀`), so `p ∈ Ds i ∖ {rOf i} ⊆ Fs i`.
+        simp only [hFs]
+        by_cases hi : i ∈ S
+        · rw [if_pos hi]
+          refine Set.mem_insert_iff.mpr (Or.inr (Set.mem_insert_iff.mpr (Or.inr ⟨hpi, ?_⟩)))
+          rw [Set.mem_singleton_iff]
+          intro h; exact hp0 (h ▸ hrOf1 i hi)
+        · rw [if_neg hi]; exact hpi
+      · simp only [Set.mem_union, not_or, edgeFiber, Set.mem_setOf_eq]
+        exact ⟨hpa, hpb⟩
+
 /-! ## Circuits of the multiplied splitting-off meet the short-circuit (`lem:reduction-step`)
 
 The conceptual heart of the splitting-off minimality transport (Katoh–Tanigawa 2011 Lemma
