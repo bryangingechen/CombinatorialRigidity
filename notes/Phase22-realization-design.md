@@ -4577,6 +4577,492 @@ interface.
   re-typed carries and adjusted in the same commit if its hypothesis descriptions name the
   old motive).
 
+### 1.58 The L1 signature pin — V2 resolved (`TwoEdgeConnected` = the labeling-free `cutEdges` count over nonempty proper vertex sets, connectivity included), V3 resolved (the landed swap proof is all-`k` after one re-routed contradiction; the `= 2` upgrade takes the V2 predicate as hypothesis), V4 resolved (mechanical in-place), a KT-numbering correction (the landed `splitOff_isMinimalKDof` is KT **4.8(i)**, not 4.7), KT 3.6 by a pure partition argument (no matroid direct sum), the KT-4.8(ii) cluster decomposed (the reverse forest direction KT 4.2 is the one genuinely new engine), and the L1a–L1j slice cut (2026-06-11)
+
+> **Docs-only design pass (the L1 pin).** Lean read this pass: Deficiency.lean —
+> `crossingEdges` (:245), `numParts` (:251), `partitionDef` (:258), `deficiency` (:269,
+> `iSup` over labelings), `partitionDef_le_deficiency` (:304), `deficiency_nonneg` (:312),
+> `IsMinimalKDof` (:359), `loopless_of_isMinimalKDof` (:370), `IsProperRigidSubgraph` (:428),
+> `isKDof_zero_of_parallel_pair` (:606), `subgraph_minimality` (:684, **KT 3.3, landed** —
+> its `hH : H.IsKDof n k'` is supplied as `rfl` at use sites),
+> `cutLabeling`/`numParts_cutLabeling` (:746/:753), `two_le_crossingEdges_of_isKDof_zero`
+> (:780, KT 3.1); ReducibleVertex.lean — `no_rigid_edge_count` (:330, KT 4.5(i); its
+> `hBscard` line is the only `def = 0` use), `exists_degree_le_two` (:496),
+> `crossingEdges_cutLabeling_singleton_ncard_le` (:571), `exists_degree_eq_two` (:588),
+> `simple_of_isMinimalKDof_of_noRigid` (:625, G0 — its parallel-pair brick is
+> `k`-independent), `exists_adjacent_degree_two_pair` (:755, consumes `no_rigid_edge_count`
+> at `k = 0`); Contraction.lean — `contraction_isMinimalKDof` (:650, **already all-`k`** on
+> the matroid side), `rigidContract_isMinimalKDof` (:696 — the `0` enters only via
+> `change … = 0; linarith`); SplitOffDeficiency.lean — `splitOff_deficiency_le` (:62) /
+> `_ge` (:197) (together = KT 4.3(i), the dichotomy `def(G̃ᵥᵃᵇ) ∈ {k−1, k}`),
+> `removeVertex_deficiency_ge` (:405, KT 4.4 first half), `dof_tracking` (:545);
+> ForestSurgery.lean — the acyclicity suite (:156–:484, **split direction only**),
+> `isCycleSet_pair_edgeFiber_splitOff` (:354) +
+> `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` (:391, each forest holds ≤ 1 fiber
+> copy — the WLOG-relabel key), `circuit_splitOff_meets_fiber` (:674),
+> `splitOff_isMinimalKDof` (:772, **KT 4.8(i)**), `minimal_kdof_reduction[_full]`
+> (:1198/:1266, the two `exists_degree_eq_two` call sites), `exists_balanced_forest_packing`
+> (:1347, the `disjointed`-partition pattern), `splitOff_exists_base_inter_fiber_lt` (:1958,
+> KT 4.3(ii) forward at `k = 0`), `splitOff_removeVertex_minimalKDof` (:2035);
+> Operations.lean — `inducedSpan` (:51), `circuit_induces_isTight` (:174),
+> `subset_edgeSet_mulTilde_inducedSpan` (:215), `circuit_induces_isRigidSubgraph` (:239),
+> `fundCircuit_inducedSpan_vertexSet_eq` (:309), `matroidMG_indep_iff_exists_forest_packing`
+> (:369, the forest framing KT 4.2 opens on), `rank_matroidMG_of_isKDof_zero` (:431),
+> `removeVertex` (:536), `splitOff` (:579); `induce`/`restrict` semantics
+> (`V(G.induce X) = X` is `rfl`). KT 2011 read **against the PDF** (printed p.N = pdf page
+> N − 646): pp. 656–659 (Lemmas 3.1–3.6 with proofs), pp. 660–667 (§4 entire: 4.1–4.8 +
+> Theorem 4.9 with proofs). No `.lean`/`.tex` edits this pass.
+
+**(a) KT-numbering corrections (verified against the PDF; §1.56 cited partly from memory).**
+The landed `splitOff_isMinimalKDof` is **KT 4.8(i)** (its own docstring is right; §1.56(c)'s
+"unlike the landed 4.7" misnames it). The actual roster: **4.1/4.2** = the forest surgery,
+split and edge-splitting (reverse) directions; **4.3** = the splitting-off dichotomy
+(`G_v^{ab}` is `k`-dof or minimal `(k−1)`-dof; clause (ii) = the base criterion
+`|ãb ∩ B'| < D − 1` ⟺ the `k`-dof arm) — its two-sided deficiency bound is landed
+(`splitOff_deficiency_le/_ge`), its base criterion is **not** (deliberately deferred in
+Phase 20 as "off the Theorem-4.9 critical path"; it comes **on** the path here, for
+4.7/4.8(ii)); **4.4** = `def(G̃ᵥ) ≥ k` (landed, `removeVertex_deficiency_ge`) *plus the
+equality clause* (if `= k`, some base `B` of `M(G̃)` has `|ṽb ∩ B| = 1`) — the clause is not
+landed; **4.5(ii)** = at `k > 0` with no proper rigid subgraph, `Ẽ` is independent (hence
+the unique base) — not landed; **4.7** = `def(G̃ᵥ) > k` (the `k = 0` arm is inline in
+`splitOff_isMinimalKDof`'s `hdefGv_pos`; the `k > 0` arm needs 4.4-equality + 4.5(ii)) — not
+landed; **4.8(ii)** = the `(k−1)`-decrement split — not landed. Also **KT 3.2** (a minimal
+`k`-dof-graph is not 3-edge-connected, p. 657): only its `|V| = 2` consequence is needed
+(the parallel class is bounded at 2); (e) pins that directly and full 3.2 is **not**
+formalized.
+
+**(b) V2 resolved: `TwoEdgeConnected` is the labeling-free cut count, connectivity
+included.** The `cutLabeling` encoding needs two representative labels and a `Decidable`
+instance — wrong shape for a `def`. Instead a labeling-free cut-edge set, with one transfer
+lemma that makes every landed `crossingEdges`/`cutLabeling` fact available:
+
+```lean
+-- Deficiency.lean, in the `lem:two-edge-conn` section
+/-- The edges of `G` crossing the cut `{V', V(G) ∖ V'}`. Labeling-free mirror of
+`crossingEdges (cutLabeling V' a b)`. -/
+def cutEdges (G : Graph α β) (V' : Set α) : Set β :=
+  {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ x ∈ V' ∧ y ∉ V'}
+
+/-- KT's 2-edge-connectivity in cut form, connectivity included: every nonempty proper
+subset of `V(G)` is crossed by at least two edges. -/
+def TwoEdgeConnected (G : Graph α β) : Prop :=
+  ∀ V' : Set α, V'.Nonempty → V' ⊂ V(G) → 2 ≤ (G.cutEdges V').ncard
+
+lemma cutEdges_eq_crossingEdges_cutLabeling {G : Graph α β} {V' : Set α} {a b : α}
+    [∀ x, Decidable (x ∈ V')] (ha : a ∈ V') (hb : b ∉ V') :
+    G.cutEdges V' = G.crossingEdges (cutLabeling V' a b)
+
+theorem twoEdgeConnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) : G.TwoEdgeConnected
+
+theorem two_le_degree_of_twoEdgeConnected [Finite β] {G : Graph α β}
+    (htec : G.TwoEdgeConnected) {v : α} (hv : v ∈ V(G)) (hV2 : 2 ≤ V(G).ncard) :
+    2 ≤ G.degree v
+```
+
+Design notes: **(i)** connectivity is *included* automatically — a connected component `V'`
+of a disconnected `G` has `cutEdges V' = ∅ < 2`, so the disconnected arm of Lemma 6.1 routes
+through the same `hcut` case of the L2 principle (¬2EC), exactly as §1.56(c)(iii) wanted; at
+`|V(G)| ≤ 1` the predicate is vacuous (KT's convention). **(ii)** the transfer lemma is the
+single bridge: `x ∈ V' ∧ y ∉ V'` ⟺ the `cutLabeling`-labels differ (up to the `IsLink`
+swap), so `twoEdgeConnected_of_isKDof_zero` is `two_le_crossingEdges_of_isKDof_zero` +
+transfer (the ssubset supplies `a ∈ V' ⊆ V(G)` and `b ∈ V(G) ∖ V'`), and the degree bridge
+is the landed `crossingEdges_cutLabeling_singleton_ncard_le` at the singleton cut `{v}`
+(proper by `hV2`). **(iii)** `cutEdges` takes arbitrary `V' : Set α` (the `⊂ V(G)`
+constraint lives in the predicate's quantifier, not the def).
+
+**(c) V3 resolved: yes — and stronger than expected: the landed swap proof is itself
+all-`k`.** The expected answer ("the average-degree half is a count") understated it: the
+*edge bound* `no_rigid_edge_count` also generalizes **in place**, because its fundamental-
+circuit swap never uses `def = 0` structurally. The two `0`-touching spots: `hBscard`
+becomes `|Bs| = D(|V|−1) − k` (`isBase_ncard_add_deficiency_eq` verbatim, no rewrite to
+`0`), and the `X ∩ ẽ ≠ ∅` step's contradiction re-routes uniformly — if `X ∩ ẽ = ∅` then
+`X − ej` is `(D,D)`-tight on `V(X) = V` (`circuit_induces_isTight` +
+`fundCircuit_inducedSpan_vertexSet_eq`), so it is independent of size
+`D(|V|−1) ≤ rank = D(|V|−1) − k`, forcing `k ≤ 0`; with `k = def ≥ 0` (`deficiency_nonneg`)
+that pins `k = 0`, whereupon `X − ej` is a *base* avoiding `ẽ` and the landed minimality
+contradiction closes. One proof, no case split. In-place restates, all ReducibleVertex.lean:
+
+```lean
+theorem no_rigid_edge_count … {k : ℤ} (hD : 2 ≤ bodyBarDim n) (hVne : V(G).Nonempty)
+    (hG : G.IsMinimalKDof n k) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    (bodyHingeMult n : ℤ) * E(G).ncard
+      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k + bodyHingeMult n
+
+theorem exists_degree_le_two … {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hVne : V(G).Nonempty)
+    (hG : G.IsMinimalKDof n k) (hnp : …) : ∃ v ∈ V(G), G.degree v ≤ 2
+
+theorem exists_degree_eq_two … {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n k) (htec : G.TwoEdgeConnected) (hnp : …) :
+    ∃ v ∈ V(G), G.degree v = 2
+
+theorem simple_of_isMinimalKDof_of_noRigid … {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hV : 3 ≤ V(G).ncard) (hG : G.IsMinimalKDof n k) (hnp : …) : G.Simple
+```
+
+Per lemma: `exists_degree_le_two` — the `2|E| < 3|V|` arithmetic absorbs the new `− k` via
+`0 ≤ k` (derived inside from `hG.1 ▸ deficiency_nonneg`; `nlinarith` gains one term).
+`exists_degree_eq_two` (the KT 4.6 restate) — the `htec` hypothesis replaces the
+`two_le_crossingEdges_of_isKDof_zero` call by `two_le_degree_of_twoEdgeConnected`;
+**call-site ripple is two sites** (`minimal_kdof_reduction` :1230 and
+`exists_chain_data_of_noRigid`, both at `k = 0`: supply
+`twoEdgeConnected_of_isKDof_zero hD1 hG.1`). G0 (`simple_of_isMinimalKDof_of_noRigid`) —
+proof verbatim (`loopless_of_isMinimalKDof` is already all-`k`; the parallel-pair subgraph
+is `0`-dof regardless of `G`'s `k`); zero call-site ripple (implicit `k` unifies at `0`).
+`exists_adjacent_degree_two_pair` (the `d = 3` G4a consumer) stays at `k = 0` but its
+`hedge` term gains `− 0` — minor body touch-up in the same commit. `exists_degree_eq_two`
+keeps `hnp` (KT 4.6's chain alternative is not needed: the project's form already
+specializes to the bare degree-2 vertex).
+
+**(d) V4 resolved: mechanical.** `contraction_isMinimalKDof` (the matroid side) is
+*already* all-`k`; the graph bridge generalizes in place —
+
+```lean
+theorem rigidContract_isMinimalKDof … {k : ℤ} (hG : G.IsMinimalKDof n k)
+    (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
+    (G.rigidContract H r).IsMinimalKDof n k
+```
+
+— the only `0`-specific proof line is `change (G.rigidContract H r).deficiency n = 0`; it
+becomes `… = k` and the same `linarith [hbridge, hcons]` closes (`hcons` already carries
+`k`). Call sites (CaseI.lean :2243 area) unify at `k = 0`, zero ripple. Blueprint:
+`lem:rigidContract-isMinimalKDof` (case-i.tex:456) restates all-`k` in the same commit
+(statement-grep gate).
+
+**(e) The `|V| ≤ 2` trichotomy (KT p. 671 base + the Lemma-3.2 consequence).** Three bricks
++ one packaging, Deficiency.lean beside `isKDof_zero_of_parallel_pair`:
+
+```lean
+/-- With no edges every partition's deficiency is `D(|P|−1)`, maximized by the discrete
+partition (`f = id`): `def(G̃) = D(|V(G)|−1)`. -/
+theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
+    (hne : V(G).Nonempty) (hE : E(G) = ∅) :
+    G.deficiency n = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1)
+
+/-- A single edge on two vertices: the two-part cut crosses once, `def = D − (D−1) = 1`. -/
+theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) {x y : α} (hxy : x ≠ y) {e : β}
+    (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e}) :
+    G.deficiency n = 1
+
+/-- The Lemma-3.2 consequence: at `|V| = 2`, minimality bounds the parallel class at 2. -/
+theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hV : V(G).ncard = 2) : E(G).ncard ≤ 2
+
+theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
+    (E(G) = ∅ ∧ k = bodyBarDim n * ((V(G).ncard : ℤ) - 1)) ∨
+    (∃ x y e, x ≠ y ∧ V(G) = {x, y} ∧ E(G) = {e} ∧ G.IsLink e x y ∧ k = 1) ∨
+    (∃ x y e f, x ≠ y ∧ e ≠ f ∧ V(G) = {x, y} ∧ E(G) = {e, f} ∧
+      G.IsLink e x y ∧ G.IsLink f x y ∧ k = 0)
+```
+
+Design notes: **(i)** the first disjunct covers `ncard ∈ {1, 2}` uniformly (`k = 0` resp.
+`k = D`): at `ncard = 1` looplessness (`loopless_of_isMinimalKDof`) forces `E = ∅`.
+**(ii)** the parallel-class bound's proof is *not* full KT 3.2: with three distinct edges
+(all linking `x, y` by looplessness + `hV`), restrict to two — `H := G.restrict {e₁, e₂}`
+is `0`-dof (`isKDof_zero_of_parallel_pair`), `rank M(H̃) = D`
+(`rank_matroidMG_of_isKDof_zero`), a base `B_H` of `M(H̃)` is `M(G̃)`-independent
+(`matroidMG_restrict_mulTilde` + `restrict_le`) of size `D ≤ rank M(G̃) = D − k`, forcing
+`k = 0` (nonneg), whence `B_H` is a base of `M(G̃)` avoiding `ẽ₃` — contradicting `hG.2`.
+**(iii)** the `k`-values come from the deficiency computations (`hG.1` pins `def = k`); the
+parallel-pair arm reuses `isKDof_zero_of_parallel_pair` on `G` itself. **(iv) the L2 floor
+flag (recorded here for the L2 pin):** §1.56(c)'s design note (i) ("the vertex floor drops
+to nothing") over-reaches at `V(G) = ∅`: with `α` empty, `deficiency` is an `iSup` over the
+empty labeling type — junk, and M2's rank conjunct is then *false* of the empty framework,
+so `hbase` would be undischargeable. The L2 principle should conclude
+`∀ k G, IsMinimalKDof n k → V(G).Nonempty → P G` with `hbase` covering `1 ≤ ncard ≤ 2` —
+KT-faithful, and sound because Lemma 6.1's cut sides are nonempty *by construction* (the IH
+is never applied to an empty graph).
+
+**(f) The cut-edge decomposition (KT Lemma 3.6, p. 659) — a pure partition argument, no
+matroid direct sum.** KT route the equality through `M(G̃) = M(G̃₁) ⊕ M(G̃₂) ⊕ M(G̃₃)` (via
+"no circuit crosses the cut", Lemmas 3.1 + 3.4). The project does **not** need the direct
+sum: both inequalities fall to the landed `partitionDef` machinery. The `≥` direction
+combines optimal side-partitions (attained, `exists_eq_ciSup_of_finite`) into one
+side-separated labeling; the `≤` direction refines an arbitrary labeling to a
+side-separated one without decreasing `partitionDef` (here `d_G(P) ≤ 1` enters: the
+refinement gains `D` per straddling part split and pays at most `D − 1` for the at-most-one
+cut edge newly crossing), then splits exactly. Five bricks + packaging, Deficiency.lean,
+new subsection after the two-edge-connectivity section:
+
+```lean
+/-- `partitionDef` reads `f` only on `V(G)`. -/
+lemma partitionDef_congr {G : Graph α β} {n : ℕ} {f g : α → α}
+    (h : Set.EqOn f g V(G)) : G.partitionDef n f = G.partitionDef n g
+
+/-- Relabeling invariance: post-composition with a map injective on the carried labels. -/
+lemma partitionDef_comp_of_injOn {G : Graph α β} {n : ℕ} {f g : α → α}
+    (hg : Set.InjOn g (f '' V(G))) : G.partitionDef n (g ∘ f) = G.partitionDef n f
+
+/-- The exact split of a side-separated labeling: parts and crossings decompose over
+`{V₁, V(G) ∖ V₁}`, every cut edge crossing. -/
+lemma partitionDef_split_of_sides {G : Graph α β} {n : ℕ} {V₁ : Set α} {g : α → α}
+    (hsub : V₁ ⊆ V(G)) (hsep : ∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, g x ≠ g y) :
+    G.partitionDef n g
+      = (G.induce V₁).partitionDef n g + (G.induce (V(G) \ V₁)).partitionDef n g
+        + bodyBarDim n - (bodyBarDim n - 1) * (G.cutEdges V₁).ncard
+
+/-- The side-refinement does not decrease `partitionDef` when at most one edge crosses. -/
+lemma exists_sides_separated_partitionDef_le [Finite α] {G : Graph α β} {n : ℕ}
+    {V₁ : Set α} (hsub : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) (f : α → α) :
+    ∃ g : α → α, (∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, g x ≠ g y) ∧
+      G.partitionDef n f ≤ G.partitionDef n g
+
+/-- KT Lemma 3.6, both arms (`d_G(P) = 1`: `k = k₁ + k₂ + 1`; `d_G(P) = 0`: `+ D`). -/
+theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {V₁ : Set α} (hne : V₁.Nonempty)
+    (hssub : V₁ ⊂ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    G.deficiency n
+      = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
+        + bodyBarDim n - (bodyBarDim n - 1) * (G.cutEdges V₁).ncard
+
+/-- The `hcut` producer's opener: cut decomposition + KT 3.3 sides-minimal. -/
+theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 1 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hntec : ¬ G.TwoEdgeConnected) :
+    ∃ (V₁ : Set α) (k₁ k₂ : ℤ), V₁.Nonempty ∧ V₁ ⊂ V(G) ∧ (V(G) \ V₁).Nonempty ∧
+      (G.induce V₁).IsMinimalKDof n k₁ ∧
+      (G.induce (V(G) \ V₁)).IsMinimalKDof n k₂ ∧
+      (G.cutEdges V₁).ncard ≤ 1 ∧
+      k = k₁ + k₂ + bodyBarDim n - (bodyBarDim n - 1) * (G.cutEdges V₁).ncard
+```
+
+Proof routes: *split* — `numParts` decomposes because the two sides' label images are
+disjoint (`hsep`); `crossingEdges G g` is the disjoint union of the two sides' crossing
+sets and `cutEdges V₁` (each cut edge crosses by `hsep`; the edge trichotomy "within `V₁` /
+within the complement / crossing" is an inline classification over `edgeSet_induce`); the
+`ℤ` arithmetic is `ring`-level. *Refinement* — `g x := rep (f x, side x)` choosing one
+representative vertex per (part ∩ side) piece (distinct pieces are disjoint nonempty vertex
+sets, so representatives are automatically distinct — the L0c relative-hub normalization
+pattern); `Δ = D·s − (D−1)·(d_g − d_f)` with `s` = the number of straddling parts;
+`d_g − d_f ≤ 1` (only a cut edge inside an `f`-part can newly cross, and there is at most
+one) and `d_g > d_f` forces `s ≥ 1`, so `Δ ≥ 0`. *Equality* — `≤` by `ciSup_le` ∘
+refinement ∘ split ∘ `partitionDef_le_deficiency` per side; `≥` by attained side-optima
+`f₁, f₂` (`exists_eq_ciSup_of_finite`), normalized into the sides
+(`Set.Finite.exists_injOn_of_encard_le` injections `fᵢ '' Vᵢ ↪ Vᵢ` +
+`partitionDef_comp_of_injOn` + `partitionDef_congr`), combined piecewise and split.
+*Packaging* — ¬2EC unfolds to the `V₁` witness with `ncard < 2`; sides-minimal is the
+landed `subgraph_minimality (G.induce_le hsub) hG rfl` (the
+`splitOff_removeVertex_minimalKDof` idiom); complement nonemptiness falls out of the
+ssubset. The L4 producer additionally reads `0 ≤ k₁, k₂` (`deficiency_nonneg`, sides
+nonempty) and `|Vᵢ| < |V(G)|` (proper) — both one-liners at the use site, not packaged.
+
+**(g) The KT-4.8(ii) cluster — decomposed; the reverse forest direction (KT 4.2) is the one
+genuinely new engine.** Everything else rides on landed machinery. The dependency chain
+(statements below): 4.2(i)/(ii) → {4.4-equality, 4.3(ii)-reverse}; 4.5(ii) (independent of
+4.2) → with 4.4-equality → 4.7 all-`k`; 4.3(ii)-forward (mechanical generalization) + 4.7 +
+4.2(ii) + the commuting square → 4.8(ii).
+
+* **KT 4.2, the edge-splitting extension (NEW, the forest core).** Stated over the
+  project's `splitOff` — no new graph operation: `G` *is* the edge-split of
+  `G.splitOff v a b e₀` along `e₀`, so the lemma takes the standing degree-2 data and
+  converts split-side independence back up. ForestSurgery.lean:
+
+  ```lean
+  theorem splitOff_indep_extend_of_fiber_lt [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+      (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+      (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+      (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+      {I' : Set (β × Fin (bodyHingeMult n))}
+      (hI' : ((G.splitOff v a b e₀).matroidMG n).Indep I')
+      (hlt : (I' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n) :
+      ∃ I, (G.matroidMG n).Indep I ∧ I.ncard = I'.ncard + bodyBarDim n ∧
+        (I ∩ edgeFiber e_b n).ncard = (I' ∩ edgeFiber e₀ n).ncard + 1 ∧
+        I \ (edgeFiber eₐ n ∪ edgeFiber e_b n) = I' \ edgeFiber e₀ n
+
+  theorem splitOff_indep_extend_of_fiber_subset  -- same data; the h' = D − 1 case
+      … (hI' : Indep I') (hsub : edgeFiber e₀ n ⊆ I') :
+      ∃ I, (G.matroidMG n).Indep I ∧ I.ncard + 1 = I'.ncard + bodyBarDim n ∧
+        I \ (edgeFiber eₐ n ∪ edgeFiber e_b n) = I' \ edgeFiber e₀ n
+  ```
+
+  The *survivor conjunct* (`I` and `I'` agree off the three special fibers) is free from
+  the construction and carries the 4.8(ii) minimality transport (a base avoiding `ẽ`
+  extends to a base still avoiding `ẽ`). KT's construction (pp. 660–661): partition `I'`
+  into `D` forests (`matroidMG_indep_iff_exists_forest_packing`, made disjoint by the
+  landed `disjointed` pattern of `exists_balanced_forest_packing`); each forest holds
+  **≤ 1** `ẽ₀`-copy (the landed `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` — two
+  parallel copies form a cycle), so after a forest-reindex + fiber-relabel WLOG the `h'`
+  copies are `(e₀)ᵢ ∈ F'ᵢ`, `i ≤ h'`; extend `Fᵢ = F'ᵢ − (e₀)ᵢ + (eₐ)ᵢ + (e_b)ᵢ` for
+  `i ≤ h'`, `Fᵢ = F'ᵢ + (eₐ)ᵢ` for `h' < i ≤ D−1`, `F_D = F'_D + (e_b)_{h'+1}` (case (ii):
+  swap all `D − 1`, `F_D = F'_D`). Two **new reverse-direction acyclicity bricks**: (A)
+  *pendant insert* — a `v`-avoiding `G̃`-forest absorbs one `(eₐ)ᵢ` or `(e_b)ᵢ` copy
+  (mirror of the landed `acyclicSet_insert_vfiber_of_not_inc`, which is stated for the
+  descent's context — adapt or re-derive); (B) *the through-`v` swap* — `F'` acyclic in
+  `G̃ᵥᵃᵇ` with `(e₀)ᵢ ∈ F'` makes `F' − (e₀)ᵢ + (eₐ)ᵢ + (e_b)ᵢ` acyclic in `G̃` (removing
+  a forest edge separates `a` from `b`; the fresh `v` re-joins them — mirror of the landed
+  forward reroute `isAcyclicSet_splitOff_reroute`). The cardinality bookkeeping is the
+  disjoint-union count `I = (I' ∖ ẽ₀-used) ∪ (D−1 eₐ-copies) ∪ (h'+1 e_b-copies)`.
+
+* **KT 4.5(ii) (NEW, cheap).** ReducibleVertex.lean beside `no_rigid_edge_count`:
+
+  ```lean
+  theorem indep_edgeSet_mulTilde_of_noRigid_of_pos [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+      (hG : G.IsMinimalKDof n k) (hk : 0 < k)
+      (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+      (G.matroidMG n).Indep E(G.mulTilde n)
+
+  theorem isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos  -- the uniqueness corollary
+      … {B} (hB : (G.matroidMG n).IsBase B) : B = E(G.mulTilde n)
+  ```
+
+  Proof: dependence yields a circuit `C ⊆ Ẽ`; `circuit_induces_isRigidSubgraph` + `hnp` +
+  looplessness (`2 ≤ |V(C)|`) force `V(C) = V(G)`, so `G` carries a spanning rigid
+  subgraph: `rank M(G̃) ≥ D(|V|−1)` (`rank_matroidMG_of_isKDof_zero` through
+  `matroidMG_restrict_mulTilde`), so `def ≤ 0`, contradicting `hk`. Uniqueness: `Ẽ`
+  independent + `B ⊆ Ẽ` + `IsBase.eq_of_subset_indep`.
+
+* **KT 4.4-equality (NEW; 4.2(i) at `h' = 0`).** ForestSurgery.lean:
+
+  ```lean
+  theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof … {k : ℤ}
+      (hD : 2 ≤ bodyBarDim n) [degree-2 data + he₀] (hG : G.IsKDof n k)
+      (hGv : (G.removeVertex v).IsKDof n k) :
+      ∃ B, (G.matroidMG n).IsBase B ∧ (B ∩ edgeFiber e_b n).ncard = 1
+  ```
+
+  A base `B'` of `M(G̃ᵥ)` is `M(G̃ᵥᵃᵇ)`-independent (`mulTilde_removeVertex_le_splitOff` +
+  `matroidMG_restrict_mulTilde`) with `B' ∩ ẽ₀ = ∅`; 4.2(i) lifts it to `M(G̃)`-independent
+  `I` of size `|B'| + D = D(|V∖v|−1) − k + D = D(|V|−1) − k = rank M(G̃)`
+  (`rank_add_deficiency_eq` both sides), so `I` is a base (`Indep.isBase_of_ncard`) with
+  `|I ∩ ẽ_b| = 0 + 1`.
+
+* **KT 4.7 all-`k` (NEW assembly).** ForestSurgery.lean:
+
+  ```lean
+  theorem removeVertex_deficiency_gt_of_noRigid … {k : ℤ} (hD : 3 ≤ bodyBarDim n)
+      (hV3 : 3 ≤ V(G).ncard) [degree-2 data + he₀] (hG : G.IsMinimalKDof n k)
+      (hnp : …) : k < (G.removeVertex v).deficiency n
+  ```
+
+  `k = 0` arm: extract the landed inline (`splitOff_isMinimalKDof`'s `hdefGv_pos`: `G_v` is
+  a proper subgraph on `≥ 2` vertices, so `hnp` forbids `def(G̃ᵥ) = 0`; nonneg gives `> 0`).
+  `k > 0` arm: `≥ k` is the landed `removeVertex_deficiency_ge`; equality would give a base
+  `B` with `|ẽ_b ∩ B| = 1` (4.4-equality), but every base is `Ẽ` (4.5(ii) uniqueness) with
+  `|ẽ_b ∩ Ẽ| = D − 1 ≥ 2` (`edgeFiber_ncard`, `hD`) — contradiction. (`hD : 3 ≤ D` is
+  sharp: at `D = 2`, `D − 1 = 1` and the contradiction vanishes; the molecular regime is
+  `D ≥ 6` anyway.)
+
+* **KT 4.3(ii), both directions.** Forward — the landed
+  `splitOff_exists_base_inter_fiber_lt` restates **in place** at general `k`: hypotheses
+  `(hG : G.IsKDof n k)` and `(hH : (G.splitOff v a b e₀).IsKDof n k)` (the landed `k = 0`
+  form derived `hH` internally from `splitOff_deficiency_le` + nonneg; the general form
+  takes it — its one consumer, `splitOff_removeVertex_minimalKDof` :2061, supplies its
+  internal `hdefH_zero`). The rank arithmetic is the same `forest_surgery_count` reroute
+  with `rank = D(|V∖v|−1) − k`. Reverse — NEW (needs 4.2(i)):
+
+  ```lean
+  theorem splitOff_isKDof_of_exists_base_inter_fiber_lt … {k : ℤ}
+      (hG : G.IsKDof n k) {B'} (hB' : ((G.splitOff v a b e₀).matroidMG n).IsBase B')
+      (hlt : (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n) :
+      (G.splitOff v a b e₀).IsKDof n k
+  ```
+
+  (4.2(i) lifts `B'` to `M(G̃)`-independent of size `D(|V|−1) − def(G̃ᵥᵃᵇ)`, so
+  `k = def(G̃) ≤ def(G̃ᵥᵃᵇ)`; with the landed `splitOff_deficiency_le`, equality.)
+
+* **The commuting square (NEW, small).** Operations.lean beside `splitOff` — needed because
+  4.8(ii)'s edge-split happens *inside a subgraph*:
+
+  ```lean
+  lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set α}
+      (hvS : v ∉ S) (haS : a ∈ S) (hbS : b ∈ S) (he₀ : e₀ ∉ E(G)) :
+      (G.induce (insert v S)).splitOff v a b e₀ = (G.splitOff v a b e₀).induce S
+  ```
+
+  `Graph.ext`: both vertex sets are `S`; both link relations are "`G`-links avoiding `v`
+  with ends in `S`, plus the `e₀`-link at `(a, b)`".
+
+* **KT 4.8(ii), the assembly (NEW).** ForestSurgery.lean beside `splitOff_isMinimalKDof`:
+
+  ```lean
+  theorem splitOff_isMinimalKDof_of_pos [DecidableEq β] [Finite α] [Finite β]
+      {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+      (hk : 0 < k) {v a b : α} {eₐ e_b e₀ : β}
+      (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
+      (hvG : v ∈ V(G)) (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+      (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+      (hG : G.IsMinimalKDof n k) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+      (G.splitOff v a b e₀).IsMinimalKDof n (k - 1)
+  ```
+
+  Route (KT pp. 665–666, against the landed inventory): **(1)** `def(H) ∈ {k−1, k}`
+  (`dof_tracking` + `hG.1`). **(2)** rule out `k`: if `def(H) = k`, 4.3(ii)-forward gives a
+  base `B'` with `|B' ∩ ẽ₀| < D − 1`, so some copy `p ∈ ẽ₀ ∖ B'`; `X := fundCircuit p B'`;
+  `G' := H.inducedSpan n X` is rigid in `H` (`circuit_induces_isRigidSubgraph`);
+  `V(G') = V(H)` would make `def(H) ≤ 0 < k` (the spanning-rigid rank argument of 4.5(ii)),
+  so `V(G') ⊊ V(H)`; `a, b ∈ V(G')` (`p ∈ X` and `e₀` links `a, b`); set
+  `K := G.induce (insert v V(G'))` — the commuting square identifies `K.splitOff v a b e₀`
+  with `G'`, and `I := X ∖ {p}` is `M(G̃')`-independent
+  (`subset_edgeSet_mulTilde_inducedSpan` + restriction) with
+  `|I ∩ ẽ₀| ≤ |B' ∩ ẽ₀| < D − 1` and `|I| = D(|V(G')|−1)` (`circuit_induces_isTight`);
+  4.2(i) at `K` lifts to `M(K̃)`-independent of size `D(|V(K)|−1)`, so `def(K̃) ≤ 0` and `K`
+  is a **proper rigid subgraph of `G`** (`insert v V(G') ⊊ V(G)` from
+  `V(G') ⊊ V(H) = V(G) ∖ {v}`; `2 ≤ |V(K)|` from `a, v`) — contradicting `hnp`. **(3)**
+  minimality at `def(H) = k − 1`: a base `B'` of `M(H̃)` avoiding `ẽ` — case `e = e₀`:
+  `B' ⊆ E(G̃ᵥ)` (`edgeSet_mulTilde_splitOff_diff_fiber`), so
+  `rank M(G̃ᵥ) ≥ |B'| = D(|V∖v|−1) − (k−1)`, i.e. `def(G̃ᵥ) ≤ k − 1 < k`, contradicting
+  4.7; case `e ≠ e₀`: `ẽ₀ ⊆ B'` (else 4.3(ii)-reverse gives `def(H) = k`), so 4.2(ii)
+  lifts `B'` to an `M(G̃)`-independent `J` of size `D(|V|−1) − k = rank` — a base — whose
+  survivor conjunct gives `J ∩ ẽ = B' ∩ ẽ = ∅` (distinct fibers are disjoint,
+  `e ∉ {eₐ, e_b, e₀}`), contradicting `hG.2`.
+
+**(h) Blueprint dispositions (structural-edit mode; each lands with its Lean slice).** New
+nodes — deficiency.tex `sec:molecular-deficiency-rigid`: `def:cut-edges-2ec` (the (b)
+suite; `lem:two-edge-conn` gains one pointer sentence), `lem:two-vertex-trichotomy` (the
+(e) suite), `lem:cut-edge-decomposition` (the (f) suite, one node, `\lean`-listing the
+bricks + packaging); molecular-induction.tex: `lem:edge-splitting` (the KT 4.2 pair, in
+`sec:molecular-induction-forest`; `rem:kt-lemma-41`'s "the matroid-base form … is off the
+Theorem-4.9 critical path" sentence gains the qualifier "…and comes on the path for the
+all-`k` layer (Phase 22i L1)"), `lem:edge-set-indep-pos` (4.5(ii) + uniqueness),
+`lem:removal-deficiency-strict` (4.7; sibling of `lem:removal-deficiency`, which keeps
+4.4's `≥` half — the 4.4-equality clause joins the new node's `\lean` list),
+`lem:splitoff-kdof-criterion` (4.3(ii) forward restate + reverse), `lem:reduction-step-pos`
+(4.8(ii), beside `lem:reduction-step`). Restated **in place** (the statement-grep gate per
+slice): `lem:no-rigid-edge-count`, `lem:low-degree-vertex`, `lem:reducible-vertex` (gains
+the 2EC hypothesis), `lem:simple-minimal-noRigid` (molecular-induction.tex);
+`lem:rigidContract-isMinimalKDof` (case-i.tex).
+
+**(i) The L1 slice cut** (each a warning-clean commit; statement-changing slices run the
+structural-edit grep gate):
+
+* **L1a** — V2: `cutEdges` + `TwoEdgeConnected` + the three bridges (Deficiency.lean) +
+  `def:cut-edges-2ec`. Additive. *Buildable.*
+* **L1b** — the `|V| ≤ 2` trichotomy: the two deficiency computations, the parallel-class
+  bound, the packaging (Deficiency.lean) + `lem:two-vertex-trichotomy`. Additive.
+  *Buildable.*
+* **L1c** — the in-place all-`k` restates (V3 + V4 + G0): `no_rigid_edge_count`,
+  `exists_degree_le_two`, `exists_degree_eq_two` (2EC hypothesis; two call sites + the
+  `exists_adjacent_degree_two_pair` body touch-up), `simple_of_isMinimalKDof_of_noRigid`,
+  `rigidContract_isMinimalKDof` + the five blueprint restates. Needs L1a. *Buildable;
+  splittable* (degree suite / contract bridge) *if it runs long.*
+* **L1d** — KT 3.6 part 1: `partitionDef_congr`, `partitionDef_comp_of_injOn`,
+  `partitionDef_split_of_sides` (Deficiency.lean). Additive. *Buildable.*
+* **L1e** — KT 3.6 part 2: the refinement bound, `deficiency_eq_of_cutEdges_ncard_le_one`,
+  the ¬2EC packaging + `lem:cut-edge-decomposition`. Needs L1a + L1d. *Buildable.*
+* **L1f** — KT 4.5(ii) + base uniqueness + `lem:edge-set-indep-pos`. Additive. *Buildable.*
+* **L1g** — the reverse acyclicity bricks (pendant insert + the through-`v` swap,
+  ForestSurgery.lean). Additive. *Buildable — the watch item: mirrors of landed lemmas, but
+  the cycle-lift bookkeeping is where the forward direction spent its budget.*
+* **L1h** — KT 4.2(i)/(ii) (`splitOff_indep_extend_of_fiber_lt` / `_subset`) +
+  `lem:edge-splitting`. Needs L1g. *Buildable; the WLOG forest-reindex/fiber-relabel is the
+  fiddly half — keep the `disjointed` partition from the start.*
+* **L1i** — KT 4.4-equality + 4.7 all-`k` + 4.3(ii) forward-restate + reverse +
+  `lem:removal-deficiency-strict` / `lem:splitoff-kdof-criterion`. Needs L1f + L1h.
+  *Buildable.*
+* **L1j** — the commuting square + the 4.8(ii) assembly + `lem:reduction-step-pos`. Needs
+  L1h + L1i (+ the L1f rank argument). *Buildable.*
+
+Build order: **L1a → {L1b, L1c, L1d, L1f, L1g} (independent) → L1e, L1h → L1i → L1j.**
+~10 commits. L1's outputs feed L2 (`minimal_kdof_reduction_all_k` consumes the V2 predicate
+and the (e) floor flag), L3 (the trichotomy), L4 (the cut decomposition), and L6 (the
+4.6-restate + 4.8(ii)).
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
