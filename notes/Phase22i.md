@@ -115,11 +115,11 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a, L1b, L1c, and L1d complete.** Next independent L1 slices
-(pick any one): **L1f** (KT 4.5(ii) in `ReducibleVertex.lean`) or **L1g**
-(reverse acyclicity bricks in `ForestSurgery.lean`) — both independent per §1.58(i).
-Signatures pinned in §1.58. **Smallest next forward commit: L1f or L1g** (either; both
-additive to existing files, no new imports needed).
+**L0 fully complete. L1a, L1b, L1c, and L1d complete.** **Smallest next forward
+commit: L1f** (KT 4.5(ii) + base uniqueness + `lem:edge-set-indep-pos`, additive to
+`ReducibleVertex.lean`, signatures in §1.58(g)). Then **L1g** (reverse acyclicity
+bricks in `ForestSurgery.lean`) and **L1e** (KT 3.6 part 2, needs L1a + L1d) —
+order per §1.58(i).
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
 `d = 3` Lean, §1.33 (C) reuse map) and adds the general-`d` row to
