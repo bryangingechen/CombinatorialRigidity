@@ -1480,4 +1480,289 @@ theorem IsKDof.exists_isBase_isForestPacking [DecidableEq β] [Finite α] [Finit
     rw [hrig] at hcount
     linarith
 
+/-! ## The `|V| ≤ 2` trichotomy (`lem:two-vertex-trichotomy`, Phase 22i L1b)
+
+Three lemmas + packaging for `|V| ≤ 2`: the deficiency of an edge-free graph,
+the deficiency of a single-edge graph, the parallel-class bound at `|V| = 2`,
+and the trichotomy packaging them into the `L3`/`L9` base-case form. -/
+
+/-- **Deficiency of an edge-free graph** (`lem:two-vertex-trichotomy`; KT p. 671):
+if `E(G) = ∅` then `def(G̃) = D(|V(G)| − 1)`.
+
+Proof: every labeling has `crossingEdges G f = ∅`, so `def_P = D(|f '' V(G)| − 1) ≤
+D(|V(G)| − 1)` (the label image is a subset of `V(G)`). The discrete partition
+`f = id` achieves the bound: `|id '' V(G)| = |V(G)|`. The `iSup` therefore equals
+`D(|V(G)| − 1)`. -/
+theorem deficiency_of_edgeSet_empty [Finite α] {G : Graph α β} {n : ℕ}
+    (hE : E(G) = ∅) :
+    G.deficiency n = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
+  classical
+  haveI : Nonempty (α → α) := ⟨id⟩
+  have hcross : ∀ f : α → α, G.crossingEdges f = ∅ := fun f ↦ by
+    simp only [crossingEdges, hE, Set.mem_empty_iff_false, false_and, Set.setOf_false]
+  refine le_antisymm ?_ ?_
+  · -- `def ≤ D(|V| − 1)`: each partition is at most the discrete one.
+    rw [deficiency]
+    refine ciSup_le fun f ↦ ?_
+    rw [partitionDef, hcross f, Set.ncard_empty, Nat.cast_zero, mul_zero, sub_zero, numParts]
+    apply mul_le_mul_of_nonneg_left _ (by positivity)
+    have := Set.ncard_image_le (f := f) (s := V(G)) (Set.toFinite _)
+    push_cast at *; linarith
+  · -- `def ≥ D(|V| − 1)`: `f = id` achieves the bound.
+    have hid : G.partitionDef n id = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
+      rw [partitionDef, hcross id, Set.ncard_empty, Nat.cast_zero, mul_zero, sub_zero,
+        numParts, Set.image_id]
+    linarith [G.partitionDef_le_deficiency n id, hid.symm.le]
+
+/-- **Deficiency of a single-edge graph** (`lem:two-vertex-trichotomy`; KT p. 671):
+if `V(H) = {x, y}`, `E(H) = {e}`, `H.IsLink e x y`, and `x ≠ y` then `def(H̃) = 1`
+for `D = bodyBarDim n ≥ 1`.
+
+Proof: the two-part partition `f x ≠ f y` witnesses `def_P = D − (D−1)·1 = 1 ≥ 1`;
+every other partition has `def_P = 0` (one part, no crossings) or is the previous
+case, so the sup equals 1. -/
+theorem deficiency_of_single_edge [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) {x y : α} (hxy : x ≠ y) {e : β}
+    (hl : G.IsLink e x y) (hV : V(G) = {x, y}) (hE : E(G) = {e}) :
+    G.deficiency n = 1 := by
+  classical
+  haveI : Nonempty (α → α) := ⟨id⟩
+  have hne : V(G).Nonempty := ⟨x, by rw [hV]; exact Set.mem_insert x _⟩
+  have hD1 : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  refine le_antisymm ?_ ?_
+  · -- `def ≤ 1`: each partition gives `def_P ≤ 1`.
+    rw [deficiency]
+    refine ciSup_le fun f ↦ ?_
+    -- `f '' V(G) = {f x, f y}`
+    have himg : f '' V(G) = {f x, f y} := by
+      rw [hV]; ext w
+      simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_singleton_iff]
+      constructor
+      · rintro ⟨a, (rfl | rfl), rfl⟩ <;> tauto
+      · rintro (rfl | rfl)
+        exacts [⟨x, Or.inl rfl, rfl⟩, ⟨y, Or.inr rfl, rfl⟩]
+    -- membership in crossingEdges
+    have hmem : e ∈ G.crossingEdges f ↔ f x ≠ f y := by
+      simp only [crossingEdges, Set.mem_setOf_eq, hE, Set.mem_singleton_iff, true_and]
+      refine ⟨fun ⟨p, q, hl', hd⟩ ↦ ?_, fun hd ↦ ⟨x, y, hl, hd⟩⟩
+      obtain ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ := hl.eq_and_eq_or_eq_and_eq hl'
+      exacts [hd, fun h ↦ hd h.symm]
+    have hcross_sub : G.crossingEdges f ⊆ {e} := fun e' he' ↦ by
+      have : e' ∈ E(G) := he'.1; rwa [hE] at this
+    rw [partitionDef, numParts, himg]
+    set D : ℤ := (bodyBarDim n : ℤ)
+    by_cases hfxy : f x = f y
+    · -- same label: 1 part, 0 crossings → def_P ≤ 1
+      have hpts : ({f x, f y} : Set α).ncard = 1 := by
+        rw [show ({f x, f y} : Set α) = {f x} by rw [hfxy]; simp]; simp
+      have hcr : (G.crossingEdges f).ncard = 0 := by
+        have hempty : G.crossingEdges f = ∅ :=
+          Set.eq_empty_of_forall_notMem fun e' he' ↦ by
+            rcases hcross_sub he' with rfl; exact hmem.mp he' hfxy
+        simp [hempty]
+      rw [hpts, hcr]; push_cast; linarith
+    · -- different labels: 2 parts, 1 crossing → def_P = D − (D−1) = 1 ≤ 1
+      have hpts : ({f x, f y} : Set α).ncard = 2 := Set.ncard_pair hfxy
+      have hcr : (G.crossingEdges f).ncard = 1 := by
+        rw [show G.crossingEdges f = {e} from Set.Subset.antisymm hcross_sub
+          (fun e' he' ↦ by rcases he' with rfl; exact hmem.mpr hfxy)]
+        exact Set.ncard_singleton e
+      rw [hpts, hcr]; push_cast; linarith
+  · -- `def ≥ 1`: the two-part partition `f₀ = fun v ↦ if v = x then x else y` witnesses
+    -- `def_P = D - (D-1) = 1`.
+    set f₀ : α → α := fun v ↦ if v = x then x else y with hf₀_def
+    have hf₀img : f₀ '' V(G) = {x, y} := by
+      have hfx : f₀ x = x := by simp [hf₀_def]
+      have hfy : f₀ y = y := by simp [hf₀_def, hxy.symm]
+      rw [hV, Set.image_insert_eq, Set.image_singleton, hfx, hfy]
+    have hf₀cross : G.crossingEdges f₀ = {e} := by
+      apply Set.Subset.antisymm
+      · intro e' he'; have : e' ∈ E(G) := he'.1; rwa [hE] at this
+      · intro e' he'
+        rw [Set.mem_singleton_iff] at he'; subst he'
+        refine ⟨hl.edge_mem, x, y, hl, ?_⟩
+        simp only [hf₀_def, if_pos rfl, if_neg hxy.symm]; exact hxy
+    have hfun : G.partitionDef n f₀ = 1 := by
+      rw [partitionDef, numParts, hf₀img, hf₀cross, Set.ncard_pair hxy, Set.ncard_singleton]
+      push_cast; ring
+    linarith [G.partitionDef_le_deficiency n f₀, hfun.symm.le]
+
+/-- **Parallel-class bound at `|V| = 2`** (`lem:two-vertex-trichotomy`; KT Lemma 3.2
+consequence): a minimal `k`-dof-graph with exactly two vertices and `D ≥ 2` has at
+most two edges, i.e. `E(G).ncard ≤ 2`.
+
+Proof: if `|E(G)| ≥ 3`, pick three distinct edges `e₁, e₂, e₃`. The restriction
+`H := G ↾ {e₁, e₂}` is `0`-dof by `isKDof_zero_of_parallel_pair`. The corank bridge
+gives a base `B_H` of `M(H̃)` with `|B_H| = D`; by `matroidMG_restrict_mulTilde`,
+`B_H` is `M(G̃)`-independent of size `D`, giving `rank M(G̃) ≥ D`. Combined with the
+rank-deficiency bridge, `k = 0` and `B_H` is a `M(G̃)`-base. But `B_H ⊆ E(H̃)` avoids
+`ẽ₃`, contradicting `hG.2`. -/
+theorem edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two [DecidableEq β] [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hV : V(G).ncard = 2) : E(G).ncard ≤ 2 := by
+  by_contra hlt
+  push Not at hlt
+  haveI hLl := loopless_of_isMinimalKDof hG
+  obtain ⟨x, y, hne, hVG⟩ := Set.ncard_eq_two.mp hV
+  -- Extract three distinct edges using Set.ncard_eq_three.
+  obtain ⟨t, htE, ht3⟩ := Set.exists_subset_card_eq (s := E(G)) (n := 3) (by omega)
+  obtain ⟨e₁, e₂, e₃, hne₁₂, hne₁₃, hne₂₃, hteq⟩ := Set.ncard_eq_three.mp ht3
+  have he₁ : e₁ ∈ E(G) := htE (hteq ▸ Set.mem_insert _ _)
+  have he₂ : e₂ ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem _ (Set.mem_insert _ _))
+  have he₃ : e₃ ∈ E(G) := htE (hteq ▸ Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl))
+  -- Each edge links x to y (looplessness + V(G) = {x, y}).
+  have linkxy : ∀ f, f ∈ E(G) → G.IsLink f x y := by
+    intro f hf
+    obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet hf
+    have hpV : p ∈ V(G) := hlink.left_mem
+    have hqV : q ∈ V(G) := hlink.right_mem
+    rw [hVG] at hpV hqV
+    rcases Set.mem_insert_iff.mp hpV with rfl | rfl <;>
+    rcases Set.mem_insert_iff.mp hqV with rfl | rfl
+    · exact absurd rfl hlink.ne
+    · exact hlink
+    · exact hlink.symm
+    · exact absurd rfl hlink.ne
+  have hlink₁ : G.IsLink e₁ x y := linkxy e₁ he₁
+  have hlink₂ : G.IsLink e₂ x y := linkxy e₂ he₂
+  -- Restriction H = G ↾ {e₁, e₂} is 0-dof.
+  set H := G ↾ ({e₁, e₂} : Set β) with hH_def
+  have hHle : H ≤ G := restrict_le
+  have hHL1 : H.IsLink e₁ x y := by
+    simp only [hH_def, restrict_isLink]; exact ⟨Set.mem_insert e₁ _, hlink₁⟩
+  have hHL2 : H.IsLink e₂ x y := by
+    simp only [hH_def, restrict_isLink]; exact ⟨Set.mem_insert_of_mem _ rfl, hlink₂⟩
+  have hVH : V(H) = {x, y} := by
+    simp only [hH_def, vertexSet_restrict, hVG]
+  have hEH : E(H) = {e₁, e₂} := by
+    simp only [hH_def, edgeSet_restrict]
+    exact Set.inter_eq_right.mpr
+      (Set.insert_subset_iff.mpr ⟨he₁, Set.singleton_subset_iff.mpr he₂⟩)
+  have hH0 : H.IsKDof n 0 :=
+    isKDof_zero_of_parallel_pair hD hne hHL1 hHL2 hne₁₂ hVH hEH
+  have hHne : V(H).Nonempty := hVH ▸ ⟨x, Set.mem_insert x _⟩
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  -- Get a base B_H of M(H̃) and compute |B_H|.
+  obtain ⟨B_H, hB_H⟩ := H.matroidMG n |>.exists_isBase
+  have hVH2 : V(H).ncard = 2 := by
+    rw [hVH]; exact Set.ncard_pair hne
+  have hBsize : (B_H.ncard : ℤ) = (bodyBarDim n : ℤ) := by
+    have heq := H.isBase_ncard_add_deficiency_eq n hD1 hHne hB_H
+    rw [hH0, hVH2] at heq; push_cast at heq; linarith
+  -- B_H is M(G̃)-independent via the restriction identity.
+  have hBindep : (G.matroidMG n).Indep B_H := by
+    have hrestr : ((G.matroidMG n) ↾ E(H.mulTilde n)).Indep B_H := by
+      rw [matroidMG_restrict_mulTilde hHle]; exact hB_H.indep
+    rw [restrict_indep_iff] at hrestr; exact hrestr.1
+  -- rank M(G̃) ≥ D and k = 0.
+  have hne_G : V(G).Nonempty := ⟨x, by rw [hVG]; exact Set.mem_insert x _⟩
+  -- rank + def = D(|V|-1) = D·1 = D.
+  have hRD_eq : (G.matroidMG n).rank + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) :=
+    G.rank_add_deficiency_eq n hD1 hne_G
+  have hk_val : k = G.deficiency n := hG.1.symm
+  -- rank M(G̃) ≥ D: B_H is D-element independent.
+  haveI hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  have hrank_ge : (bodyBarDim n : ℤ) ≤ (G.matroidMG n).rank := by
+    have hle := hBindep.ncard_le_rank
+    have : (B_H.ncard : ℤ) ≤ ((G.matroidMG n).rank : ℤ) := by exact_mod_cast hle
+    linarith [hBsize]
+  -- k = 0.
+  have hkle : k ≤ 0 := by
+    have : (G.matroidMG n).rank + k = bodyBarDim n := by
+      rw [← hk_val, hV] at hRD_eq; push_cast at hRD_eq; linarith
+    linarith
+  have hkge : 0 ≤ k := hk_val ▸ G.deficiency_nonneg n hne_G
+  have hk0 : k = 0 := le_antisymm hkle hkge
+  -- rank M(G̃) = D.
+  have hrank_D : (G.matroidMG n).rank = bodyBarDim n := by
+    have hdef0 : G.deficiency n = 0 := hk_val.symm.trans hk0
+    rw [← hk_val, hV] at hRD_eq; push_cast at hRD_eq; linarith [hdef0]
+  -- B_H is a base of M(G̃).
+  have hBbase : (G.matroidMG n).IsBase B_H := by
+    apply hBindep.isBase_of_ncard
+    rw [hrank_D]; exact_mod_cast hBsize.symm.le
+  -- e₃ hits B_H (minimality of G); but B_H ⊆ E(H̃) avoids e₃.
+  obtain ⟨p, hpBH, hpe₃⟩ := hG.2 B_H hBbase e₃ he₃
+  have hpH : p ∈ E(H.mulTilde n) := hB_H.subset_ground hpBH
+  simp only [hH_def, mem_edgeSet_mulTilde] at hpH
+  simp only [edgeSet_restrict, Set.mem_inter_iff,
+    Set.mem_insert_iff, Set.mem_singleton_iff] at hpH
+  simp only [edgeFiber, Set.mem_setOf_eq] at hpe₃
+  obtain ⟨-, h | h⟩ := hpH <;> simp_all
+
+/-- **The `|V| ≤ 2` trichotomy** (`lem:two-vertex-trichotomy`; KT p. 671): a minimal
+`k`-dof-graph on at most two vertices with `V(G).Nonempty` and `D ≥ 2` is in one of
+three cases:
+- (empty) `E(G) = ∅` and `k = D(|V(G)| − 1)` (covers both `|V| = 1` and `|V| = 2`);
+- (single edge) `|V| = 2`, `|E| = 1`, linking `x` to `y`, and `k = 1`;
+- (parallel pair) `|V| = 2`, `|E| = 2`, two parallel edges between `x` and `y`,
+  and `k = 0`.
+
+Proof: `|V| = 1` forces `E = ∅` (looplessness). `|V| = 2` gives vertices `{x, y}`;
+the parallel-class bound (`edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two`) gives
+`|E| ≤ 2`; `|E| = 0` is the empty arm; `|E| = 1` is the single-edge arm via
+`deficiency_of_single_edge`; `|E| = 2` is the parallel-pair arm via
+`isKDof_zero_of_parallel_pair`. -/
+theorem isMinimalKDof_ncard_le_two_trichotomy [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 2 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
+    (E(G) = ∅ ∧ k = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1)) ∨
+    (∃ x y e, x ≠ y ∧ V(G) = {x, y} ∧ E(G) = {e} ∧ G.IsLink e x y ∧ k = 1) ∨
+    (∃ x y e f, x ≠ y ∧ e ≠ f ∧ V(G) = {x, y} ∧ E(G) = {e, f} ∧
+      G.IsLink e x y ∧ G.IsLink f x y ∧ k = 0) := by
+  classical
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  haveI hLl := loopless_of_isMinimalKDof hG
+  -- Dispatch on |V| = 1 vs. |V| = 2.
+  have hVpos : 0 < V(G).ncard := hne.ncard_pos
+  rcases Nat.lt_or_eq_of_le (Nat.succ_le_of_lt hVpos) with hV1 | hV1
+  · -- |V| ≥ 2 but ≤ 2 → |V| = 2.
+    have hV2 : V(G).ncard = 2 := le_antisymm hV hV1
+    obtain ⟨x, y, hxy, hVG⟩ := Set.ncard_eq_two.mp hV2
+    have hEle2 : E(G).ncard ≤ 2 :=
+      edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two hD hG hV2
+    -- Each edge links x to y.
+    have hlinks : ∀ f, f ∈ E(G) → G.IsLink f x y := by
+      intro f hf
+      obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet hf
+      have hpV : p ∈ V(G) := hlink.left_mem
+      have hqV : q ∈ V(G) := hlink.right_mem
+      rw [hVG] at hpV hqV
+      rcases Set.mem_insert_iff.mp hpV with rfl | rfl <;>
+      rcases Set.mem_insert_iff.mp hqV with rfl | rfl
+      · exact absurd rfl hlink.ne
+      · exact hlink
+      · exact hlink.symm
+      · exact absurd rfl hlink.ne
+    -- Case on |E| = 0, 1, or 2.
+    rcases Nat.eq_zero_or_pos (E(G).ncard) with hE0 | hEpos
+    · have hE : E(G) = ∅ := by rwa [← Set.ncard_eq_zero (Set.toFinite _)]
+      exact Or.inl ⟨hE, hG.1.symm.trans (deficiency_of_edgeSet_empty hE)⟩
+    · -- |E| = 1 or |E| = 2
+      have hE12 : E(G).ncard = 1 ∨ E(G).ncard = 2 := by omega
+      rcases hE12 with hE1 | hE2
+      · obtain ⟨e, hE⟩ := Set.ncard_eq_one.mp hE1
+        have hlinkxy : G.IsLink e x y := hlinks e (hE ▸ Set.mem_singleton e)
+        exact Or.inr (Or.inl ⟨x, y, e, hxy, hVG, hE, hlinkxy,
+          hG.1.symm.trans (deficiency_of_single_edge hD1 hxy hlinkxy hVG hE)⟩)
+      · obtain ⟨e₁, e₂, hne₁₂, hE⟩ := Set.ncard_eq_two.mp hE2
+        have hl₁ : G.IsLink e₁ x y := hlinks e₁ (hE ▸ Set.mem_insert e₁ _)
+        have hl₂ : G.IsLink e₂ x y := hlinks e₂ (hE ▸ Set.mem_insert_of_mem _ rfl)
+        have hk0 : k = 0 :=
+          hG.1.symm.trans (isKDof_zero_of_parallel_pair hD hxy hl₁ hl₂ hne₁₂ hVG hE)
+        exact Or.inr (Or.inr ⟨x, y, e₁, e₂, hxy, hne₁₂, hVG, hE, hl₁, hl₂, hk0⟩)
+  · -- |V| = 1: looplessness forces E = ∅.
+    have hV1' : V(G).ncard = 1 := hV1.symm
+    obtain ⟨a, hVa⟩ := Set.ncard_eq_one.mp hV1'
+    have hE : E(G) = ∅ := by
+      ext e; simp only [Set.mem_empty_iff_false, iff_false]
+      intro he
+      obtain ⟨p, q, hlink⟩ := G.exists_isLink_of_mem_edgeSet he
+      have hpV : p ∈ V(G) := hlink.left_mem
+      have hqV : q ∈ V(G) := hlink.right_mem
+      rw [hVa] at hpV hqV
+      rw [Set.mem_singleton_iff] at hpV hqV
+      exact hlink.ne (hpV ▸ hqV ▸ rfl)
+    exact Or.inl ⟨hE, hG.1.symm.trans (deficiency_of_edgeSet_empty hE)⟩
+
 end Graph

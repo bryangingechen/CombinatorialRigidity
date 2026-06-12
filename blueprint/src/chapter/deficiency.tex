@@ -251,6 +251,47 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   (\cref{thm:def-eq-corank}); it is deferred with that node.
 \end{proof}
 
+\begin{lemma}[$|V| \le 2$ trichotomy for minimal $k$-dof-graphs; KT p.~671]
+  \label{lem:two-vertex-trichotomy}
+  \lean{Graph.deficiency_of_edgeSet_empty, Graph.deficiency_of_single_edge,
+    Graph.edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two,
+    Graph.isMinimalKDof_ncard_le_two_trichotomy}
+  \leanok
+  \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
+  Let $D = \operatorname{bodyBarDim}\,n \ge 2$ and let $G$ be a minimal
+  $k$-dof-graph with $V(G) \ne \emptyset$ and $|V(G)| \le 2$.  Then
+  exactly one of the following holds: (i) $E(G) = \emptyset$ and
+  $k = D(|V(G)| - 1)$, covering $|V| = 1$ (looplessness forces $E =
+  \emptyset$) and $|V| = 2$; (ii) $|V(G)| = 2$, $|E(G)| = 1$ (a single
+  edge $e$ between the two vertices), and $k = 1$; or (iii) $|V(G)| = 2$,
+  $|E(G)| = 2$ (a parallel pair $e, f$ between the two vertices), and
+  $k = 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:k-dof, lem:matroid-restrict-subgraph, thm:def-eq-corank}
+  The deficiency of an edge-free graph
+  ($\operatorname{def}(\tilde G) = D(|V(G)|-1)$, the discrete partition
+  maximizes the sup) and of a single-edge graph
+  ($\operatorname{def}(\tilde G) = 1$, the two-part cut crosses once,
+  $D - (D-1) = 1$) are direct computations.
+
+  At $|V| = 2$ with vertices $\{x, y\}$, every edge links $x$ to $y$
+  (looplessness).  The parallel-class bound ($|E(G)| \le 2$) follows by
+  contradiction: given three distinct edges $e_1, e_2, e_3$, restrict
+  to $H := G \restriction \{e_1, e_2\}$.  Then $H$ is $0$-dof
+  (\cref{def:k-dof}, the parallel-pair criterion), so $M(\tilde H)$ has
+  rank $D$ and a base $B_H$ of size $D$.  By the restriction identity
+  (\cref{lem:matroid-restrict-subgraph}) $B_H$ is $M(\tilde
+  G)$-independent, giving $\operatorname{rank} M(\tilde G) \ge D$.
+  Combined with the corank bridge (\cref{thm:def-eq-corank}) and
+  nonnegativity of $k$, this forces $k = 0$ and $B_H$ a $M(\tilde
+  G)$-base.  But $B_H \subseteq E(\tilde H)$ avoids $\tilde e_3$,
+  contradicting minimality ($B_H \cap \tilde e_3 \ne \emptyset$).
+  With $|E(G)| \le 2$ established, the $k$-values follow from the
+  deficiency computations and the parallel-pair $0$-dof criterion.
+\end{proof}
+
 \subsection{The deficiency \texorpdfstring{$=$}{=} corank bridge}
 \label{sec:molecular-deficiency-bridge}
 
