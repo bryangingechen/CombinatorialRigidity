@@ -1227,7 +1227,8 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
     · -- Case II: no proper rigid subgraph ⟹ a reducible degree-2 vertex; split it off.
       push Not at hrig
       have hV2' : 2 ≤ V(G).ncard := by rw [hN]; exact hV2
-      obtain ⟨v, hvG, hvdeg⟩ := exists_degree_eq_two hD hV2' hG hrig
+      obtain ⟨v, hvG, hvdeg⟩ := exists_degree_eq_two hD hV2' hG
+        (twoEdgeConnected_of_isKDof_zero hD1 hG.1) hrig
       -- A companion vertex `b₀ ≠ v` (exists since `|V(G)| ≥ 2`).
       obtain ⟨b₀, hb₀G, hb₀v⟩ : ∃ b₀ ∈ V(G), b₀ ≠ v := by
         by_contra h

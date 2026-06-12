@@ -460,14 +460,14 @@
   The Case~I producer applies the induction hypothesis of
   \cref{thm:theorem-55} to the contracted graph $G/E(H)$
   (\cref{def:rigid-contraction}), which requires $G/E(H)$ to be itself a
-  minimal $0$-dof-graph with strictly fewer vertices. The vertex drop is
+  minimal $k$-dof-graph with strictly fewer vertices. The vertex drop is
   \cref{lem:reduction-step}; the minimality is the content here:
   \[
-    G.\mathrm{IsMinimalKDof}\,n\,0,\ \ H \text{ proper rigid}
-      \;\Longrightarrow\; (G/E(H)).\mathrm{IsMinimalKDof}\,n\,0 .
+    G.\mathrm{IsMinimalKDof}\,n\,k,\ \ H \text{ proper rigid}
+      \;\Longrightarrow\; (G/E(H)).\mathrm{IsMinimalKDof}\,n\,k .
   \]
   The matroid-side statement --- that the matroid contraction
-  $M(\tilde G)/E(\tilde H)$ is a minimal $0$-dof matroid --- is
+  $M(\tilde G)/E(\tilde H)$ is a minimal $k$-dof matroid --- is
   \cref{lem:contraction-minimality}. What this node adds is the
   \emph{graph$\leftrightarrow$matroid bridge}: that the matroid of the
   \emph{graph} contraction $G/E(H) = (G \setminus E(H))$ with $V(H)$ collapsed

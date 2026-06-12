@@ -825,15 +825,13 @@ route that bypasses the deferred forest surgery
   \lean{Graph.no_rigid_edge_count}
   \leanok
   \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG}
-  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph and
+  Let $G$ be a minimal $k$-dof-graph with no proper rigid subgraph and
   $D = \binom{d+1}{2} \ge 2$. Then
   \[
-    (D-1)\,|E(G)| \;<\; D\,(|V(G)| - 1) + (D-1).
+    (D-1)\,|E(G)| \;<\; D\,(|V(G)| - 1) - k + (D-1).
   \]
-  Equivalently, $\operatorname{corank} M(\tilde G) = |E(\tilde G)| -
-  \operatorname{rank} M(\tilde G) \le D - 2$: the fibers redundant in
-  $M(\tilde G)$ all concentrate on a single edge-fiber. This is the edge bound
-  Katoh--Tanigawa use to force a low-degree vertex (\cref{lem:reducible-vertex}).
+  This is the edge bound Katoh--Tanigawa use to force a low-degree vertex
+  (\cref{lem:reducible-vertex}). At $k = 0$ it recovers the original KT form.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -841,28 +839,24 @@ route that bypasses the deferred forest surgery
   Read the graph-level bound through the matroid: $|E(\tilde G)| = (D-1)\,|E(G)|$
   (each edge of $G$ contributes a fiber $\tilde e$ of size $D-1$, the
   \texttt{mulTilde}-level count \texttt{Graph.mulTilde\_edgeSet\_ncard}), and a
-  base $B^\ast$ has $|B^\ast| = D(|V(G)| - 1)$ since $G$ is $0$-dof
-  (\cref{thm:def-eq-corank}); so the claim is exactly $\operatorname{corank}
-  M(\tilde G) \le D - 2$. Fix an edge $e$ and let $h^\ast = \min_B |\tilde e \cap
+  base $B^\ast$ has $|B^\ast| = D(|V(G)| - 1) - k$ since $G$ is $k$-dof
+  (\cref{thm:def-eq-corank}); so the claim is $|E(\tilde G)| < |B^\ast| + (D-1)$.
+  Fix an edge $e$ and let $h^\ast = \min_B |\tilde e \cap
   B|$ over bases $B$ of $M(\tilde G)$, attained at $B^\ast$; minimality of $G$
   gives $h^\ast \ge 1$. We show $E(\tilde G) \setminus \tilde e \subseteq B^\ast$
   (KT eq.~4.3). If some $f \in E(\tilde G) \setminus \tilde e$ were outside
   $B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(f, B^\ast)$
   induces, by \cref{lem:circuit-induces-rigid}, a rigid subgraph $G[V(X)]$
-  spanning at least two vertices ($G$ is loopless --- a loop copy would be a
-  matroid loop inside a base, contradicting the minimality clause of
-  \cref{def:k-dof}; \texttt{Graph.loopless\_of\_isMinimalKDof}); the
-  no-proper-rigid hypothesis forces $V(X) = V(G)$ (the spanning step
+  spanning at least two vertices ($G$ is loopless; \texttt{Graph.loopless\_of\_isMinimalKDof});
+  the no-proper-rigid hypothesis forces $V(X) = V(G)$ (the spanning step
   \texttt{Graph.fundCircuit\_inducedSpan\_vertexSet\_eq}). Then $X \cap \tilde e
-  \neq \emptyset$: otherwise $X \subseteq E(\tilde G) \setminus \tilde e$, and for
-  any $e_j \in X$ the set $X - e_j$ is independent and, by
-  \cref{lem:circuit-induces-rigid}, of full size $D(|V(X)| - 1) = D(|V(G)| - 1) =
-  |B^\ast|$, hence a \emph{base} avoiding $\tilde e$ entirely --- contradicting
-  minimality. (This is a direct base-meets-fiber contradiction, not the
-  $D$-spanning-trees forest argument of KT; the minimality clause of
-  \cref{def:k-dof} carries it.) Picking $e_j \in X \cap \tilde e$, the base
-  exchange $B = B^\ast + f - e_j$ (independent by the fundamental-circuit
-  characterization, with $f \notin \tilde e$ so $f \neq e_j$) has $|B \cap \tilde
+  \neq \emptyset$: otherwise $X - e_j$ is independent of size $D(|V(G)| - 1)$ for any
+  $e_j \in X$; any base $B'$ containing $X - e_j$ has $|B'| = D(|V(G)| - 1) - k$, so
+  $D(|V(G)| - 1) \le D(|V(G)| - 1) - k$, forcing $k \le 0$, and
+  $\operatorname{def}(G) \ge 0$ then pins $k = 0$.
+  At $k = 0$, $X - e_j$ is itself a base avoiding $\tilde e$, contradicting minimality.
+  Picking $e_j \in X \cap \tilde e$, the base
+  exchange $B = B^\ast + f - e_j$ has $|B \cap \tilde
   e| = h^\ast - 1 < h^\ast$, contradicting the choice of $B^\ast$. So
   $E(\tilde G) \setminus \tilde e \subseteq B^\ast$, whence $|E(\tilde G)| =
   |B^\ast| + (|\tilde e| - h^\ast) = D(|V(G)| - 1) + (D - 1 - h^\ast) \le
@@ -874,19 +868,18 @@ route that bypasses the deferred forest surgery
   \lean{Graph.exists_degree_le_two}
   \leanok
   \uses{lem:no-rigid-edge-count, def:k-dof}
-  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
+  Let $G$ be a minimal $k$-dof-graph with no proper rigid subgraph,
   $V(G) \neq \emptyset$, and $D = \binom{d+1}{2} \ge 3$ (the molecular
   regime $d \ge 2$). Then some vertex $v \in V(G)$ has multigraph degree
   $\deg_G(v) \le 2$.
 \end{lemma}
 \begin{proof}
   \leanok
-  Average-degree count. The edge bound (\cref{lem:no-rigid-edge-count})
-  reads $(D-1)\,|E| < D\,(|V|-1) + (D-1) = D|V| - 1$; multiplying by $2$
-  and cancelling against $3(D-1)|V|$ (using $D \ge 3$ and $|V| \ge 1$)
-  gives the average-degree bound $2|E| < 3|V|$, i.e.\ $d_{\mathrm{avg}} =
-  2|E|/|V| < 2D/(D-1) \le 3$. The multigraph handshake $\sum_v \deg_G(v)
-  = 2|E|$ then forces some vertex to have degree $< 3$, i.e.\ $\le 2$,
+  Average-degree count. The all-$k$ edge bound (\cref{lem:no-rigid-edge-count})
+  gives $(D-1)\,|E| < D\,(|V|-1) - k + (D-1)$; using $k \ge 0$
+  (\texttt{Graph.deficiency\_nonneg}) this implies $(D-1)\,|E| < D|V| - 1$,
+  i.e.\ $2|E| < 3|V|$ (after $D \ge 3$ and $|V| \ge 1$). The multigraph handshake
+  $\sum_v \deg_G(v) = 2|E|$ then forces some vertex to have degree $\le 2$
   by a finite pigeonhole. The degree function and the handshake are the
   vendored \texttt{Graph.degree} / \texttt{Graph.handshake\_degree\_subtype}
   API (Peter Nelson's \texttt{apnelson1/Matroid} \texttt{Graph.incFun}
@@ -898,26 +891,21 @@ route that bypasses the deferred forest surgery
   \lean{Graph.exists_degree_eq_two}
   \leanok
   \uses{lem:low-degree-vertex, lem:two-edge-conn, def:k-dof}
-  A minimal $0$-dof-graph $G$ with no proper rigid subgraph, $|V| \ge 2$,
-  and $D = \binom{d+1}{2} \ge 3$ (the molecular regime $d \ge 2$)
-  contains a vertex $v$ of multigraph degree exactly $2$. (This degree-2
-  vertex is the one whose splitting-off the reduction step
-  (\cref{lem:reduction-step}) shows preserves minimality and the degree
-  of freedom.)
+  A minimal $k$-dof-graph $G$ that is $2$-edge-connected, has no proper rigid
+  subgraph, $|V| \ge 2$, and $D = \binom{d+1}{2} \ge 3$ (the molecular regime
+  $d \ge 2$) contains a vertex $v$ of multigraph degree exactly $2$. The
+  $2$-edge-connectivity is supplied at the call site for $k = 0$ by
+  \cref{lem:two-edge-conn}. (This degree-2 vertex is the one whose splitting-off
+  the reduction step (\cref{lem:reduction-step}) shows preserves minimality and
+  the degree of freedom.)
 \end{lemma}
 \begin{proof}
   \leanok
   The average-degree count (\cref{lem:low-degree-vertex}) supplies a
-  vertex of degree $\le 2$; the $2$-edge-connectivity
-  (\cref{lem:two-edge-conn}) rules out degree $\le 1$, pinning it to
-  degree exactly $2$. Concretely, the single-vertex cut $\{v\}$ has at
-  least two crossing edges (KT~3.1 admits no bridge cut in a $0$-dof
-  graph), and the crossing edges of $\{v\}$ are exactly the nonloop
-  edges at $v$, so $\deg_G(v) \ge d_G(\{v\}) \ge 2$. The cut count and
-  the vendored multigraph degree (\texttt{Graph.degree}) are bridged by
-  the observation that an edge crosses $\{v\}$ iff exactly one endpoint
-  is $v$. This is the lemma that guarantees the induction can always
-  take a step.
+  vertex of degree $\le 2$; the $2$-edge-connectivity hypothesis forces
+  $\deg_G(v) \ge 2$ (\texttt{Graph.two\_le\_degree\_of\_twoEdgeConnected}),
+  pinning it to degree exactly $2$. This is the lemma that guarantees the
+  induction can always take a step.
 \end{proof}
 
 \begin{lemma}[Each reduction strictly shrinks the vertex set; KT Theorem 4.9, measure]
@@ -1058,9 +1046,9 @@ route that bypasses the deferred forest surgery
   \lean{Graph.simple_of_isMinimalKDof_of_noRigid}
   \leanok
   \uses{def:k-dof, def:rigid-subgraph, lem:two-vertex-zero-dof}
-  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph, $|V(G)| \ge 3$,
+  Let $G$ be a minimal $k$-dof-graph with no proper rigid subgraph, $|V(G)| \ge 3$,
   and $D = \binom{d+1}{2} \ge 2$. Then $G$ is simple (loopless and no parallel
-  edges).
+  edges). The proof is $k$-independent.
 \end{lemma}
 \begin{proof}
   \leanok

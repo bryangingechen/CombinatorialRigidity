@@ -314,24 +314,24 @@ forest reasoning. A base exchange `B = insert f B* − ej` (with `ej ∈ X ∩ �
 `B*`. So `Ẽ∖ẽ ⊆ B*`, and `|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) + (D − 2)`. -/
 
 /-- **KT Lemma 4.5(i) edge-count bound, F′ swap core** (`lem:no-rigid-edge-count`;
-Katoh–Tanigawa 2011 Lemma 4.5(i), printed p.663). For a minimal `0`-dof-graph `G` with **no
+Katoh–Tanigawa 2011 Lemma 4.5(i), printed p.663). For a minimal `k`-dof-graph `G` with **no
 proper rigid subgraph** and `D = bodyBarDim n ≥ 2`,
-`(D − 1)·|E(G)| < D·(|V(G)| − 1) + (D − 1)` (in `ℤ`, `|V|−1` written `V(G).ncard - 1`).
-Equivalently `corank M(G̃) ≤ D − 2`: the fibers redundant in `M(G̃)` all concentrate on a
-single edge-fiber. This is the edge bound Katoh–Tanigawa use to force a low-degree vertex
-(`lem:reducible-vertex`).
+`(D − 1)·|E(G)| < D·(|V(G)| − 1) + (D − 1) − k` (in `ℤ`, `|V|−1` written
+`V(G).ncard - 1`). At `k = 0` this specialises to the standard edge bound
+`(D−1)|E| < D(|V|−1) + (D−1)`.
 
 Proof: the fundamental-circuit swap (KT eq. 4.3). For a fixed edge `e`, the minimum
 `h* = minₐ |ẽ ∩ B|` over bases is `≥ 1` by minimality; every out-of-base fiber `f ∉ ẽ` has a
 fundamental circuit spanning `V` (`fundCircuit_inducedSpan_vertexSet_eq`) that must meet `ẽ`
-(else `X − ej` is a base avoiding `ẽ`, contradicting minimality — a base-meets-fiber step, not
-forest reasoning), so a base exchange drops `|B ∩ ẽ|` below `h*` unless `f ∈ B*`. Hence
-`Ẽ∖ẽ ⊆ B*`, and `|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) + (D−2)`. -/
+(else `X − ej` is independent of size `D(|V|−1)`, but rank is `D(|V|−1) − k`, forcing `k ≤ 0`
+then `k = 0`; the base-meets-fiber minimality contradiction then closes), so a base exchange
+drops `|B ∩ ẽ|` below `h*` unless `f ∈ B*`. Hence `Ẽ∖ẽ ⊆ B*`, and
+`|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) − k + (D−2)`. -/
 theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
-    (hD : 2 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n 0)
+    {k : ℤ} (hD : 2 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n k)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     (bodyHingeMult n : ℤ) * E(G).ncard
-      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n := by
+      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k + bodyHingeMult n := by
   classical
   haveI : G.Loopless := loopless_of_isMinimalKDof hG
   have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
@@ -339,12 +339,14 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   set M := G.matroidMG n with hM
   -- `|E(G̃)| = (D−1)·|E(G)|`.
   have hEcard : E(G.mulTilde n).ncard = bodyHingeMult n * E(G).ncard := mulTilde_edgeSet_ncard G n
-  -- Case `E(G) = ∅`: LHS `= 0`, RHS `≥ D−1 ≥ 1 > 0`.
+  -- Case `E(G) = ∅`: LHS `= 0`, RHS `= D−1 ≥ 1 > 0` (since `k = D(|V|−1)` when rank = 0).
   rcases eq_empty_or_nonempty E(G) with hEempty | hEne
   · rw [hEempty, Set.ncard_empty]
     have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+    have hrank_def := G.rank_add_deficiency_eq n hD1 hVne
+    rw [hG.1] at hrank_def
     push_cast
-    nlinarith [hD, hVpos]
+    nlinarith [hD, hVpos, hrank_def, Nat.zero_le (G.matroidMG n).rank]
   -- Pick an edge `e`; its fiber `ẽ = edgeFiber e n ⊆ E(G̃)`, `|ẽ| = D−1`.
   obtain ⟨e, he⟩ := hEne
   have hfiberE : edgeFiber e n ⊆ E(G.mulTilde n) := by
@@ -366,13 +368,12 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
     have hmeet := hG.2 Bs hBsmem e he
     rw [Set.inter_comm] at hmeet
     exact hmeet.ncard_pos
-  -- Eq 4.3: `E(G̃) ∖ ẽ ⊆ Bs`.
-  -- `|Bs| = D(|V|−1)` since `G` is `0`-dof.
-  have hBscard : (Bs.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+  -- `|Bs| = D(|V|−1) − k` via the def=corank bridge `isBase_ncard_add_deficiency_eq`.
+  have hBscard : (Bs.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k := by
     have hb := G.isBase_ncard_add_deficiency_eq n hD1 hVne hBsmem
     rw [hM] at hBsmem
-    rw [(hG.1 : G.deficiency n = 0)] at hb
-    simpa using hb
+    rw [hG.1] at hb
+    linarith
   have h43 : E(G.mulTilde n) \ edgeFiber e n ⊆ Bs := by
     intro f hf
     by_contra hfB
@@ -384,22 +385,40 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
       fundCircuit_inducedSpan_vertexSet_eq hD1 hnp hBsmem hf.1 hfB
     have hfiberspan : (G.fiberSpan n X).ncard = V(G).ncard := by
       rw [← vertexSet_inducedSpan G n X, hspan]
-    -- Step 3: `X ∩ ẽ ≠ ∅`. Else `X − ej` is a base avoiding `ẽ`, contradicting minimality.
+    -- Step 3: `X ∩ ẽ ≠ ∅`. Else `X − ej` is independent of size `D(|V|−1)`, but rank is
+    -- `D(|V|−1) − k`, forcing `k ≤ 0`, then `k = 0` (nonneg), and a base-meets-fiber
+    -- minimality contradiction closes.
     have hXmeet : (X ∩ edgeFiber e n).Nonempty := by
       rw [Set.nonempty_iff_ne_empty]
       intro hXe
       obtain ⟨ej, hej⟩ := hXcirc.nonempty
-      -- `X − ej` is independent of full size `D(|V|−1) = |Bs|`, hence a base.
+      -- `X − ej` is independent of size `D(|V|−1)`.
       have hindep : M.Indep (X \ {ej}) := hXcirc.diff_singleton_indep hej
       have htight : (X \ {ej}).ncard + bodyBarDim n = bodyBarDim n * (G.fiberSpan n X).ncard :=
         circuit_induces_isTight (hM ▸ hXcirc) hej
-      have hcard : (X \ {ej}).ncard = Bs.ncard := by
-        have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
-        zify [hVpos] at hBscard ⊢
+      have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+      -- `|X − ej| = D(|V|−1)` as a ℕ fact, from the tight-circuit count.
+      have hXcard : (X \ {ej}).ncard = bodyBarDim n * (V(G).ncard - 1) := by
         rw [hfiberspan] at htight
-        zify [hVpos] at htight
-        linarith [hBscard, htight]
+        -- `D*(|V|-1) = D*|V| - D`; with htight: `|X\{ej}| + D = D*|V|`, so `|X\{ej}| = D*(|V|-1)`.
+        have hmul : bodyBarDim n * (V(G).ncard - 1) = bodyBarDim n * V(G).ncard - bodyBarDim n := by
+          rw [Nat.mul_sub]; ring_nf
+        omega
+      -- `X − ej` fits in a base: `D(|V|−1) ≤ |B'| = D(|V|−1) − k`, forcing `k = 0`.
       obtain ⟨B', hB', hsub'⟩ := hindep.exists_isBase_superset
+      have hB'card : (B'.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - k := by
+        have hb' := G.isBase_ncard_add_deficiency_eq n hD1 hVne (hM ▸ hB')
+        rw [hG.1] at hb'; linarith
+      have hk0 : k = 0 := by
+        have hle : (X \ {ej}).ncard ≤ B'.ncard :=
+          Set.ncard_le_ncard hsub' hB'.finite
+        have hk_nonneg : 0 ≤ k := hG.1 ▸ G.deficiency_nonneg n hVne
+        zify [hVpos] at hXcard hle
+        linarith [hB'card, hXcard, hk_nonneg]
+      subst hk0
+      -- At `k = 0`: `|X − ej| = D(|V|−1) = |Bs|`; `X − ej` is a base avoiding `ẽ`.
+      have hcard : (X \ {ej}).ncard = Bs.ncard := by
+        zify [hVpos] at hBscard hXcard ⊢; linarith
       have heqcard : (X \ {ej}).ncard = B'.ncard := by
         rw [hcard, hBsmem.ncard_eq_ncard_of_isBase hB']
       have hXeb : X \ {ej} = B' :=
@@ -485,22 +504,22 @@ This is the F″ core of `lem:reducible-vertex`. Pairing it with two-edge-connec
 degree-`exactly`-2 vertex Theorem 4.9 splits off; that refinement and the full reducibility
 packaging are the remaining `lem:reducible-vertex` work. -/
 
-/-- **A minimal `0`-dof-graph with no proper rigid subgraph has a vertex of degree `≤ 2`**
-(`lem:reducible-vertex`, F″ core; Katoh–Tanigawa 2011 Lemma 4.6, printed p.664). For
+/-- **A minimal `k`-dof-graph with no proper rigid subgraph has a vertex of degree `≤ 2`**
+(`lem:low-degree-vertex`; Katoh–Tanigawa 2011 Lemma 4.6, printed p.664). For
 `D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`) and `V(G).Nonempty`, the average-degree
 bound `2|E|/|V| < 2D/(D−1) ≤ 3` forces some `v ∈ V(G)` with multigraph degree `G.degree v ≤
-2`. Combines the green KT 4.5(i) edge bound (`no_rigid_edge_count`) with the multigraph
+2`. Combines the all-`k` KT 4.5(i) edge bound (`no_rigid_edge_count`) with the multigraph
 handshake `∑_v deg(v) = 2|E|` (`Graph.handshake_degree_subtype`, vendored) via a Finset
 pigeonhole (`Finset.exists_lt_of_sum_lt`). The two-edge-connectivity (KT 3.1) needed to
 upgrade `≤ 2` to `= 2` is a separate step. -/
 theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n 0)
+    {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n k)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     ∃ v ∈ V(G), G.degree v ≤ 2 := by
   classical
   haveI : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
   have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
-  -- The KT 4.5(i) edge bound, read over ℤ: `(D−1)|E| < D(|V|−1) + (D−1)`.
+  -- The all-`k` KT 4.5(i) edge bound: `(D−1)|E| < D(|V|−1) − k + (D−1)`.
   have hedge := no_rigid_edge_count hD2 hVne hG hnp
   -- The handshake `∑_{v ∈ V(G)} deg(v) = 2|E(G)|` over the finite vertex Finset.
   set s := G.vertexSet_finite.toFinset with hs
@@ -518,8 +537,10 @@ theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
     rw [hscard]
     -- `2|E| < 3|V|`: cast to ℤ and discharge with the edge bound.
     have h2D : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+    have hk0 : 0 ≤ k := by
+      rw [← hG.1]; exact G.deficiency_nonneg n hVne
     zify
-    nlinarith [hedge, hHM, hVpos, h2D]
+    nlinarith [hedge, hHM, hVpos, h2D, hk0]
   obtain ⟨v, hvs, hvdeg⟩ := Finset.exists_lt_of_sum_lt hsum_lt
   exact ⟨v, (by rwa [hs, Set.Finite.mem_toFinset] at hvs), by omega⟩
 
@@ -527,62 +548,45 @@ theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
 
 Katoh–Tanigawa 2011 Lemma 4.6 needs a degree-`exactly`-2 vertex, not merely a degree-`≤ 2`
 one. The average-degree count (`exists_degree_le_two`) supplies the `≤ 2` half; the
-`= 2` upgrade comes from two-edge-connectivity (`two_le_degree_of_twoEdgeConnected`, KT 3.1
-in labeling-free form): a `0`-dof-graph is `TwoEdgeConnected`, so the single-vertex cut
-`{v}` has at least two crossing edges, and `crossingEdges_cutLabeling_singleton_ncard_le`
-transfers that to `degree v ≥ 2`. The cut↔degree bridge lemmas live in `Deficiency.lean`
-(next to `cutLabeling`). -/
+`= 2` upgrade comes from `two_le_degree_of_twoEdgeConnected` (KT 3.1 in labeling-free form):
+the `TwoEdgeConnected` hypothesis forces `degree v ≥ 2`. The call-site at `k = 0`
+supplies `twoEdgeConnected_of_isKDof_zero`; the general `k` form takes it as a hypothesis. -/
 
-/-- **A minimal `0`-dof-graph with no proper rigid subgraph and `|V| ≥ 2` has a vertex of
-degree exactly `2`** (`lem:reducible-vertex`; Katoh–Tanigawa 2011 Lemma 4.6). For
-`D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`) and `2 ≤ |V(G)|`, the average-degree
-count (`exists_degree_le_two`) gives a vertex `v` of multigraph degree `≤ 2`, and
-two-edge-connectivity (`two_le_crossingEdges_of_isKDof_zero`, KT 3.1) rules out
-`degree v ≤ 1`: the single-vertex cut `{v}` would otherwise be a bridge cut, contradicting
-that a `0`-dof-graph admits none. The bridge `crossingEdges_cutLabeling_singleton_ncard_le`
-links the cut count `d_G({v}) ≥ 2` to `degree v ≥ 2`. This is the reducible degree-2 vertex
-Theorem 4.9 splits off. -/
+/-- **A minimal `k`-dof-graph with no proper rigid subgraph, `2`-edge-connectivity, and
+`|V| ≥ 2` has a vertex of degree exactly `2`** (`lem:reducible-vertex`; Katoh–Tanigawa 2011
+Lemma 4.6). For `D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`) and `2 ≤ |V(G)|`, the
+average-degree count (`exists_degree_le_two`) gives a vertex `v` of multigraph degree `≤ 2`,
+and the `TwoEdgeConnected` hypothesis (`two_le_degree_of_twoEdgeConnected`, KT 3.1) rules out
+`degree v ≤ 1`. This is the reducible degree-2 vertex Theorem 4.9 splits off. -/
 theorem exists_degree_eq_two [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
-    (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard) (hG : G.IsMinimalKDof n 0)
+    {k : ℤ} (hD : 3 ≤ bodyBarDim n) (hV2 : 2 ≤ V(G).ncard) (hG : G.IsMinimalKDof n k)
+    (htec : G.TwoEdgeConnected)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
     ∃ v ∈ V(G), G.degree v = 2 := by
   classical
-  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
   have hVne : V(G).Nonempty := Set.nonempty_of_ncard_ne_zero (by omega)
   -- The average-degree count supplies a vertex of degree `≤ 2`.
   obtain ⟨v, hvG, hvle⟩ := exists_degree_le_two hD hVne hG hnp
   refine ⟨v, hvG, ?_⟩
-  -- Two-edge-connectivity forces `degree v ≥ 2`. Pick a second vertex `b ≠ v` for the cut.
-  obtain ⟨b, hbG, hbv⟩ : ∃ b ∈ V(G), b ≠ v := by
-    by_contra h
-    push Not at h
-    -- If every vertex of `G` equals `v`, then `V(G) ⊆ {v}` has `ncard ≤ 1`, contra `≥ 2`.
-    have hsub : V(G) ⊆ {v} := fun x hx => h x hx
-    have : V(G).ncard ≤ ({v} : Set α).ncard := Set.ncard_le_ncard hsub (Set.toFinite _)
-    rw [Set.ncard_singleton] at this
-    omega
-  -- The single-vertex cut `{v}`: `a = v ∈ {v}`, `b ∉ {v}`, both in `V(G)`.
-  have hcross : 2 ≤ (G.crossingEdges (cutLabeling {v} v b)).ncard :=
-    two_le_crossingEdges_of_isKDof_zero hD1 hG.1 (Set.mem_singleton v) hvG hbG
-      (by simpa using hbv)
-  -- The crossing count bounds the degree: `2 ≤ d_G({v}) ≤ degree v ≤ 2`.
-  have hle := crossingEdges_cutLabeling_singleton_ncard_le (G := G) (v := v) (a := v) (b := b)
+  -- Two-edge-connectivity forces `degree v ≥ 2`.
+  have hge := two_le_degree_of_twoEdgeConnected htec hvG hV2
   omega
 
 /-! ### Simplicity from minimality and no proper rigid subgraph (G0, Phase 22h) -/
 
-/-- **A minimal `0`-dof-graph with no proper rigid subgraph is simple**
-(G0, Phase 22h; Katoh–Tanigawa 2011 p. 682 "As remarked…, G is a simple graph"). For
+/-- **A minimal `k`-dof-graph with no proper rigid subgraph is simple**
+(G0; Katoh–Tanigawa 2011 p. 682 "As remarked…, G is a simple graph"). For
 `D = bodyBarDim n ≥ 2` and `3 ≤ |V(G)|`:
 
 * **Loopless:** from `loopless_of_isMinimalKDof`.
 * **No parallel edges:** a parallel pair `e₁ ≠ e₂` from `x` to `y` makes the two-vertex induced
   subgraph `G.induce {x, y}` a `0`-dof-graph (`isKDof_zero_of_parallel_pair`) with `2 ≤ |V(H)|`
-  and `V(H) ⊊ V(G)` (proper because `3 ≤ |V(G)|`), contradicting `hnp`. -/
+  and `V(H) ⊊ V(G)` (proper because `3 ≤ |V(G)|`), contradicting `hnp`. The proof is
+  `k`-independent (the parallel-pair subgraph is `0`-dof regardless of `k`). -/
 theorem simple_of_isMinimalKDof_of_noRigid [Finite α] [Finite β] [DecidableEq β]
-    {G : Graph α β} {n : ℕ}
+    {G : Graph α β} {n : ℕ} {k : ℤ}
     (hD : 2 ≤ bodyBarDim n) (hV : 3 ≤ V(G).ncard)
-    (hG : G.IsMinimalKDof n 0)
+    (hG : G.IsMinimalKDof n k)
     (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) : G.Simple where
   not_isLoopAt e x hloop := by
     haveI := loopless_of_isMinimalKDof hG

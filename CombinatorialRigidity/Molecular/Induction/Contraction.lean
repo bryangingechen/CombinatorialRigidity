@@ -678,25 +678,25 @@ is a base of the contraction (N4c). The deficiency half runs the def=corank brid
 
 /-- **Graph-level minimality of the rigid-subgraph contraction** (`lem:rigidContract-isMinimalKDof`;
 the graph↔matroid bridge of Katoh–Tanigawa 2011 Lemma 3.5, graph form). Contracting a proper
-rigid subgraph `H` of a minimal `0`-dof-graph `G` again yields a minimal `0`-dof-graph:
-`G.IsMinimalKDof n 0`, `H` proper rigid `⟹ (G.rigidContract H r).IsMinimalKDof n 0`, under
+rigid subgraph `H` of a minimal `k`-dof-graph `G` again yields a minimal `k`-dof-graph:
+`G.IsMinimalKDof n k`, `H` proper rigid `⟹ (G.rigidContract H r).IsMinimalKDof n k`, under
 `D = bodyBarDim n ≥ 2` (`[NeZero (bodyHingeMult n)]`) and `r ∈ V(H)`. This is the Case-I
 producer's reduction step: it names `G/E(H)` and proves its minimality so the induction
 hypothesis of `thm:theorem-55` applies, with the strict vertex drop from
 `rigidContract_vertexSet_ncard_lt`.
 
-The matroid contraction `M(G̃)/E(H̃)` is already a minimal `0`-dof matroid
+The matroid contraction `M(G̃)/E(H̃)` is already a minimal `k`-dof matroid
 (`contraction_isMinimalKDof`), and `matroidMG_rigidContract_eq_contract` (N4c) identifies it
 with `M((G/E(H))̃)`. So the two halves of `IsMinimalKDof` transport: the base/fiber-meeting
 condition reads each edge `e ∈ E(G/E(H)) = E(G) \ E(H)` as a surviving `G`-edge
-(`edgeSet_rigidContract`); the deficiency `def((G/E(H))̃) = 0` follows from the def=corank
+(`edgeSet_rigidContract`); the deficiency `def((G/E(H))̃) = k` follows from the def=corank
 bridge `rank_add_deficiency_eq` on `G/E(H)`, the conserved rank
 `rank(M(G̃)/E(H̃)) = D(|V(G)|−|V(H)|)`, and the collapse vertex-count
 `|V(G/E(H))| = |V(G)|−|V(H)|+1` (`rigidContract_vertexSet_ncard`). -/
 theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
-    {n : ℕ} [NeZero (bodyHingeMult n)] (hG : G.IsMinimalKDof n 0)
+    {n : ℕ} {k : ℤ} [NeZero (bodyHingeMult n)] (hG : G.IsMinimalKDof n k)
     (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H)) :
-    (G.rigidContract H r).IsMinimalKDof n 0 := by
+    (G.rigidContract H r).IsMinimalKDof n k := by
   have hVHne : V(H).Nonempty := hH.vertexSet_nonempty
   obtain ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ := hH
   have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
@@ -707,11 +707,11 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
   -- N4c: the matroid of the graph contraction is the matroid contraction.
   have hN4c : (G.rigidContract H r).matroidMG n = (G.matroidMG n) ／ E(H.mulTilde n) :=
     matroidMG_rigidContract_eq_contract hle hr hrigid hVHne
-  -- The matroid-side minimal-`0`-dof packaging of `M(G̃)/E(H̃)`.
+  -- The matroid-side minimal-`k`-dof packaging of `M(G̃)/E(H̃)`.
   obtain ⟨hcons, hmin⟩ :=
     contraction_isMinimalKDof hD hG ⟨⟨hle, hrigid⟩, hVH2, hVHsub⟩ hVGne
   refine ⟨?_, fun B hB e heK ↦ ?_⟩
-  · -- Deficiency half: `def((G/E(H))̃) = 0` via the def=corank bridge.
+  · -- Deficiency half: `def((G/E(H))̃) = k` via the def=corank bridge.
     have hVKne : V(G.rigidContract H r).Nonempty := by
       rw [vertexSet_rigidContract]
       exact ⟨r, r, hHsub hr, by unfold collapseTo; rw [if_pos hr]⟩
@@ -723,8 +723,8 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
       have hVH : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
       rw [rigidContract_vertexSet_ncard hr hHsub]; push_cast [Nat.sub_add_cancel]; omega
     rw [hvc] at hbridge
-    -- `hcons : D·(|V(G)|−|V(H)|) − rank = 0`, so `rank = D·(…)`; the bridge then forces `def = 0`.
-    change (G.rigidContract H r).deficiency n = 0
+    -- `hcons : D·(|V(G)|−|V(H)|) − rank = 0`, so `rank = D·(…)`; the bridge then forces `def = k`.
+    change (G.rigidContract H r).deficiency n = k
     linarith [hbridge, hcons]
   · -- Minimality half: each edge of `G/E(H)` is a surviving `G`-edge; transport the base.
     rw [edgeSet_rigidContract] at heK
