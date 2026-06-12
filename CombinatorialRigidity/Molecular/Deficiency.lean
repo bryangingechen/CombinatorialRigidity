@@ -1008,13 +1008,15 @@ theorem mulTilde_preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : 
   have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
   linarith
 
-/-! ## KT Lemma 3.6 bricks (`lem:cut-edge-decomposition`, part 1 of 2)
+/-! ## KT Lemma 3.6 bricks (`lem:cut-edge-decomposition`)
 
-Three auxiliary lemmas for the cut-edge decomposition (KT Lemma 3.6, p. 659):
+Five lemmas for the cut-edge decomposition (KT Lemma 3.6, p. 659):
 `partitionDef_congr` (reads `f` only on `V(G)`), `partitionDef_comp_of_injOn`
-(relabeling invariance), and `partitionDef_split_of_sides` (the exact split of a
-side-separated labeling). The refinement bound, the full deficiency equality, and
-the `¬2EC` packaging (`lem:cut-edge-decomposition`) land in the next slice (L1e). -/
+(relabeling invariance), `partitionDef_split_of_sides` (the exact split of a
+side-separated labeling), `exists_sides_separated_partitionDef_le` (the refinement
+bound: `≤ 1` cut edge means a side refinement does not decrease `partitionDef`),
+and `deficiency_eq_of_cutEdges_ncard_le_one` (KT Lemma 3.6). The ¬2EC packaging
+`exists_cut_decomposition_of_not_twoEdgeConnected` follows in the same section. -/
 
 /-- Helper: `EqOn f g V(G)` implies `crossingEdges G f = crossingEdges G g`. -/
 private lemma crossingEdges_congr {G : Graph α β} {f g : α → α}
@@ -1176,7 +1178,364 @@ lemma partitionDef_split_of_sides [Finite α] [Finite β]
   push_cast
   ring
 
-/-! ## The rank upper bound (`thm:def-eq-corank`, conjecture-relevant half) -/
+/-- **Side-separation refinement does not decrease `partitionDef`**
+(`lem:cut-edge-decomposition`). Given a vertex set `V₁ ⊆ V(G)` with at most one
+crossing edge (`|cutEdges G V₁| ≤ 1`) and any labeling `f : α → α`, there exists a
+side-separated labeling `g` (no label crosses the bipartition) such that
+`G.partitionDef n f ≤ G.partitionDef n g`.
+
+Proof: define `g` by injecting the pairs `(f x, side x)` (where `side x = 0` if `x ∈ V₁`,
+else `1`) into `V(G)` via `Set.Finite.exists_injOn_of_encard_le` (there are at most
+`|V(G)|` such pairs since each pair determines a vertex up to its piece). The injection `ι`
+is then set `g x = ι (pair x)` for `x ∈ V(G)`. Side-separation is immediate from
+injectivity (pairs in `V₁` have second coordinate `0`, pairs outside have `1`, so they
+are always distinct). Counting: `numParts G g ≥ numParts G f + s` (`s` = straddling parts),
+`crossingEdges G g` gains at most one new edge (only a cut edge inside an `f`-part can newly
+cross under `g`, and `hcut` bounds the cut). The net change is `≥ D·s − (D−1)·1 ≥ 0`. -/
+lemma exists_sides_separated_partitionDef_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    {V₁ : Set α} (hsub : V₁ ⊆ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) (f : α → α) :
+    ∃ g : α → α, (∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, g x ≠ g y) ∧
+      G.partitionDef n f ≤ G.partitionDef n g := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- When V(G) is empty, g = f works trivially (no vertices, no side-separation obligations).
+  by_cases hVne : V(G).Nonempty
+  swap
+  · push Not at hVne
+    exact ⟨f, fun x hxV₁ => absurd (hsub hxV₁) (hVne ▸ Set.notMem_empty _), le_refl _⟩
+  -- V(G) is nonempty, so α is nonempty (needed for exists_injOn_of_encard_le).
+  haveI : Nonempty α := ⟨hVne.choose⟩
+  -- Define the piece-labeling: x ↦ (f x, side x) where side x = 0 if x ∈ V₁, else 1.
+  let side : α → Fin 2 := fun x => if x ∈ V₁ then 0 else 1
+  let pair : α → α × Fin 2 := fun x => (f x, side x)
+  -- The set of pair-values on V(G) has at most |V(G)| elements.
+  have hencard : (pair '' V(G)).encard ≤ V(G).encard :=
+    Set.encard_image_le pair V(G)
+  -- Get an injection ι : α × Fin 2 → α with pair '' V(G) ⊆ ι ⁻¹' V(G) and InjOn ι (pair '' V(G)).
+  obtain ⟨ι, hιmaps, hιinj⟩ :=
+    (Set.toFinite (pair '' V(G))).exists_injOn_of_encard_le hencard
+  -- Define g : α → α by injecting the pair-value into V(G).
+  let g : α → α := fun x => if x ∈ V(G) then ι (pair x) else f x
+  use g
+  constructor
+  · -- Side-separation: x ∈ V₁ and y ∈ V(G) \ V₁ → g x ≠ g y.
+    intro x hxV₁ y ⟨hyV, hyV₁⟩
+    simp only [g, if_pos (hsub hxV₁), if_pos hyV]
+    intro heq
+    -- ι(pair x) = ι(pair y), and ι is injective on pair '' V(G).
+    have hpair : pair x = pair y :=
+      hιinj (Set.mem_image_of_mem pair (hsub hxV₁)) (Set.mem_image_of_mem pair hyV) heq
+    -- pair x = pair y means (f x, 0) = (f y, 1): second coordinates must match.
+    simp only [pair, side, if_pos hxV₁, if_neg hyV₁] at hpair
+    simp [Prod.ext_iff] at hpair
+  · -- `partitionDef G n f ≤ partitionDef G n g`.
+    simp only [partitionDef]
+    -- Bound crossingEdges: G.crossingEdges g ⊆ G.crossingEdges f ∪ G.cutEdges V₁.
+    have hcross_sub : G.crossingEdges g ⊆ G.crossingEdges f ∪ G.cutEdges V₁ := by
+      intro e he
+      simp only [crossingEdges, cutEdges, Set.mem_setOf_eq] at he ⊢
+      obtain ⟨heE, x, y, hlink, hne⟩ := he
+      simp only [Set.mem_union, Set.mem_setOf_eq]
+      -- g x ≠ g y; unfold g at x and y.
+      have hgx : g x = ι (pair x) := by simp only [g, if_pos hlink.left_mem]
+      have hgy : g y = ι (pair y) := by simp only [g, if_pos hlink.right_mem]
+      rw [hgx, hgy] at hne
+      -- ι injectivity: pair x ≠ pair y.
+      have hpair_ne : pair x ≠ pair y := by
+        intro h; exact hne (congrArg ι h)
+      -- pair x ≠ pair y means (f x, side x) ≠ (f y, side y).
+      simp only [pair] at hpair_ne
+      -- Either f x ≠ f y (then e ∈ crossingEdges f) or side x ≠ side y (then e ∈ cutEdges).
+      by_cases hf : f x = f y
+      · -- f x = f y but pair x ≠ pair y, so side x ≠ side y.
+        have hside : side x ≠ side y := by
+          intro h; exact hpair_ne (Prod.ext hf h)
+        -- side x ≠ side y means one of x, y is in V₁ and the other is not.
+        simp only [side] at hside
+        -- case split on membership
+        by_cases hxV₁ : x ∈ V₁ <;> by_cases hyV₁ : y ∈ V₁
+        · simp [if_pos hxV₁, if_pos hyV₁] at hside
+        · exact Or.inr ⟨heE, x, y, hlink, hxV₁, hyV₁⟩
+        · exact Or.inr ⟨heE, y, x, hlink.symm, hyV₁, hxV₁⟩
+        · simp [if_neg hxV₁, if_neg hyV₁] at hside
+      · exact Or.inl ⟨heE, x, y, hlink, hf⟩
+    -- crossingEdges f ⊆ crossingEdges g (f-crossing edges remain g-crossing).
+    have hcross_mono : G.crossingEdges f ⊆ G.crossingEdges g := by
+      intro e ⟨heE, x, y, hlink, hne⟩
+      refine ⟨heE, x, y, hlink, ?_⟩
+      simp only [g, if_pos hlink.left_mem, if_pos hlink.right_mem]
+      intro heqι
+      -- ι is injective on pair '' V(G), so pair x = pair y.
+      have hpair_eq : pair x = pair y :=
+        hιinj (Set.mem_image_of_mem pair hlink.left_mem)
+          (Set.mem_image_of_mem pair hlink.right_mem) heqι
+      -- pair x = pair y implies f x = f y, contradicting hne.
+      exact hne ((Prod.ext_iff.mp hpair_eq).1)
+    -- Use that g '' V(G) = ι '' (pair '' V(G)).
+    have hg_img : g '' V(G) = ι '' (pair '' V(G)) := by
+      ext y
+      constructor
+      · rintro ⟨x, hxV, rfl⟩
+        exact ⟨pair x, Set.mem_image_of_mem pair hxV, by simp only [g, if_pos hxV]⟩
+      · rintro ⟨p, ⟨x, hxV, rfl⟩, rfl⟩
+        exact ⟨x, hxV, by simp only [g, if_pos hxV]⟩
+    -- numParts g = |ι '' (pair '' V(G))| = |pair '' V(G)| (ι injective).
+    have hnumParts_g : G.numParts g = (pair '' V(G)).ncard := by
+      simp only [numParts, hg_img]
+      exact hιinj.ncard_image
+    -- Define straddling parts.
+    let straddle := f '' V₁ ∩ f '' (V(G) \ V₁)
+    -- |pair '' V(G)| ≥ |f '' V₁| + |f '' (V(G)\V₁)|.
+    have hpair_card : (f '' V₁).ncard + (f '' (V(G) \ V₁)).ncard ≤ (pair '' V(G)).ncard := by
+      have h1 : (fun c : α => (c, (0 : Fin 2))) '' (f '' V₁) ⊆ pair '' V(G) := by
+        rintro ⟨c, s⟩ ⟨c', ⟨x, hxV₁, rfl⟩, h⟩
+        simp only [Prod.mk.injEq] at h
+        exact ⟨x, hsub hxV₁, by simp [pair, side, if_pos hxV₁, h.1, ← h.2]⟩
+      have h2 : (fun c : α => (c, (1 : Fin 2))) '' (f '' (V(G) \ V₁)) ⊆ pair '' V(G) := by
+        rintro ⟨c, s⟩ ⟨c', ⟨x, ⟨hxV, hxV₁⟩, rfl⟩, h⟩
+        simp only [Prod.mk.injEq] at h
+        exact ⟨x, hxV, by simp [pair, side, if_neg hxV₁, h.1, ← h.2]⟩
+      have hdisj12 : Disjoint ((fun c : α => (c, (0 : Fin 2))) '' (f '' V₁))
+          ((fun c : α => (c, (1 : Fin 2))) '' (f '' (V(G) \ V₁))) := by
+        rw [Set.disjoint_left]
+        rintro ⟨c, s⟩ ⟨c', _, h1⟩ ⟨c'', _, h2⟩
+        simp only [Prod.mk.injEq] at h1 h2
+        exact absurd (h2.2.trans h1.2.symm) (by decide)
+      have hinj0 : Set.InjOn (fun c : α => (c, (0 : Fin 2))) (f '' V₁) :=
+        fun _ _ _ _ h => (Prod.ext_iff.mp h).1
+      have hinj1 : Set.InjOn (fun c : α => (c, (1 : Fin 2))) (f '' (V(G) \ V₁)) :=
+        fun _ _ _ _ h => (Prod.ext_iff.mp h).1
+      calc (f '' V₁).ncard + (f '' (V(G) \ V₁)).ncard
+          = ((fun c : α => (c, (0 : Fin 2))) '' (f '' V₁)).ncard +
+              ((fun c : α => (c, (1 : Fin 2))) '' (f '' (V(G) \ V₁))).ncard := by
+            rw [hinj0.ncard_image, hinj1.ncard_image]
+        _ = ((fun c : α => (c, (0 : Fin 2))) '' (f '' V₁) ∪
+              (fun c : α => (c, (1 : Fin 2))) '' (f '' (V(G) \ V₁))).ncard := by
+            rw [Set.ncard_union_eq hdisj12 (Set.toFinite _) (Set.toFinite _)]
+        _ ≤ (pair '' V(G)).ncard :=
+            Set.ncard_le_ncard (Set.union_subset h1 h2)
+    -- |f '' V₁| + |f '' (V\V₁)| = |f '' V(G)| + |straddle|.
+    have hVsplit : V(G) = V₁ ∪ (V(G) \ V₁) := (Set.union_diff_cancel hsub).symm
+    have hfVsplit : f '' V(G) = f '' V₁ ∪ f '' (V(G) \ V₁) := by
+      conv_lhs => rw [hVsplit]
+      exact Set.image_union f V₁ (V(G) \ V₁)
+    have hstraddle_eq : (f '' V₁).ncard + (f '' (V(G) \ V₁)).ncard =
+        (f '' V(G)).ncard + straddle.ncard := by
+      have := Set.ncard_union_add_ncard_inter (f '' V₁) (f '' (V(G) \ V₁))
+              (Set.toFinite _) (Set.toFinite _)
+      rw [← hfVsplit] at this
+      linarith
+    -- Bound numParts g:
+    have hnumParts_f : G.numParts f = (f '' V(G)).ncard := by
+      simp only [numParts]
+    have hnumParts_ge : G.numParts f + straddle.ncard ≤ G.numParts g := by
+      rw [hnumParts_f, hnumParts_g]
+      linarith [hpair_card, hstraddle_eq.symm.le]
+    -- Every e ∈ cross_g \ cross_f is a cut edge with f x = f y.
+    have hnew_cross_sub_cut : G.crossingEdges g \ G.crossingEdges f ⊆ G.cutEdges V₁ := by
+      intro e ⟨heg, hef⟩
+      obtain ⟨heE, x, y, hlink, hne_g⟩ := heg
+      have hfxy : f x = f y := by
+        by_contra hfne
+        exact hef ⟨heE, x, y, hlink, hfne⟩
+      simp only [g, if_pos hlink.left_mem, if_pos hlink.right_mem] at hne_g
+      have hpair_ne : pair x ≠ pair y := by
+        intro h; exact hne_g (congrArg ι h)
+      simp only [pair, hfxy, ne_eq, Prod.mk.injEq, true_and] at hpair_ne
+      -- side x ≠ side y: one is in V₁, the other is not.
+      simp only [side] at hpair_ne
+      by_cases hxV₁ : x ∈ V₁ <;> by_cases hyV₁ : y ∈ V₁
+      · simp [if_pos hxV₁, if_pos hyV₁] at hpair_ne
+      · exact ⟨heE, x, y, hlink, hxV₁, hyV₁⟩
+      · exact ⟨heE, y, x, hlink.symm, hyV₁, hxV₁⟩
+      · simp [if_neg hxV₁, if_neg hyV₁] at hpair_ne
+    have hnew_cross_bound : (G.crossingEdges g \ G.crossingEdges f).ncard ≤ straddle.ncard := by
+      by_cases hs : straddle.ncard = 0
+      · have hempty : G.crossingEdges g \ G.crossingEdges f = ∅ := by
+          rw [Set.eq_empty_iff_forall_notMem]
+          intro e he
+          obtain ⟨heE, x, y, hlink, hxV₁, hyV₁⟩ := hnew_cross_sub_cut he
+          have hfxy : f x = f y := by
+            by_contra hfne
+            exact he.2 ⟨heE, x, y, hlink, hfne⟩
+          have hstrad : f x ∈ straddle := ⟨⟨x, hxV₁, rfl⟩, ⟨y, ⟨hlink.right_mem, hyV₁⟩, hfxy.symm⟩⟩
+          exact absurd (straddle.ncard_pos.mpr ⟨_, hstrad⟩) (by omega)
+        simp [hempty]
+      · calc (G.crossingEdges g \ G.crossingEdges f).ncard
+            ≤ (G.cutEdges V₁).ncard := Set.ncard_le_ncard hnew_cross_sub_cut
+          _ ≤ 1 := hcut
+          _ ≤ straddle.ncard := Nat.one_le_iff_ne_zero.mpr hs
+    -- |crossingEdges g| ≤ |crossingEdges f| + |straddle|.
+    have hcross_g_ncard_le : (G.crossingEdges g).ncard ≤
+        (G.crossingEdges f).ncard + straddle.ncard := by
+      have h1 : G.crossingEdges g = G.crossingEdges f ∪ (G.crossingEdges g \ G.crossingEdges f) :=
+        (Set.union_diff_cancel hcross_mono).symm
+      calc (G.crossingEdges g).ncard
+          = (G.crossingEdges f ∪ (G.crossingEdges g \ G.crossingEdges f)).ncard := by rw [← h1]
+        _ ≤ (G.crossingEdges f).ncard + (G.crossingEdges g \ G.crossingEdges f).ncard :=
+            Set.ncard_union_le _ _
+        _ ≤ (G.crossingEdges f).ncard + straddle.ncard := by linarith [hnew_cross_bound]
+    -- Final arithmetic: show partitionDef n g ≥ partitionDef n f.
+    have hcross_f_le : (G.crossingEdges f).ncard ≤ (G.crossingEdges g).ncard :=
+      Set.ncard_le_ncard hcross_mono
+    zify at hnumParts_ge hcross_g_ncard_le hcross_f_le ⊢
+    nlinarith [hnumParts_ge, hcross_g_ncard_le, hcross_f_le,
+              show (0 : ℤ) ≤ (bodyBarDim n : ℤ) from Int.natCast_nonneg _,
+              show (0 : ℤ) ≤ (straddle.ncard : ℤ) from Int.natCast_nonneg _,
+              mul_comm (bodyBarDim n : ℤ) ((G.numParts g : ℤ) - 1)]
+
+/-- **KT Lemma 3.6** (`lem:cut-edge-decomposition`): when at most one edge crosses the
+cut `{V₁, V(G) ∖ V₁}`, the deficiency of `G` splits over the two sides.
+
+`d_G(V₁) = 1` arm: `def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)`.
+`d_G(V₁) = 0` arm: `def(G̃) = def(G̃₁) + def(G̃₂) + D`.
+
+Both arms collapse to the single formula
+`def(G̃) = def(G̃₁) + def(G̃₂) + D - (D-1)·|cutEdges G V₁|`. -/
+theorem deficiency_eq_of_cutEdges_ncard_le_one [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {V₁ : Set α} (hne : V₁.Nonempty)
+    (hssub : V₁ ⊂ V(G)) (hcut : (G.cutEdges V₁).ncard ≤ 1) :
+    G.deficiency n
+      = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n
+        + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype β := Fintype.ofFinite β
+  -- hD is part of the public API (used by callers); not needed in this proof.
+  have _ := hD
+  -- α is nonempty (needed for ciSup_le and exists_eq_ciSup_of_finite on α → α).
+  haveI : Nonempty α := ⟨hne.choose⟩
+  haveI : Nonempty (α → α) := ⟨id⟩
+  apply le_antisymm
+  · -- Direction `≤`: for any labeling f, partitionDef G f ≤ RHS.
+    -- Refine f to a side-separated g (refinement bound), then split by partitionDef_split_of_sides.
+    rw [deficiency]
+    refine ciSup_le fun f => ?_
+    obtain ⟨g, hgsep, hfg⟩ := exists_sides_separated_partitionDef_le hssub.subset hcut f
+    calc G.partitionDef n f
+        ≤ G.partitionDef n g := hfg
+      _ = (G.induce V₁).partitionDef n g +
+            (G.induce (V(G) \ V₁)).partitionDef n g +
+            (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard :=
+          partitionDef_split_of_sides hssub.subset hgsep
+      _ ≤ (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n +
+            (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
+          have h1 : (G.induce V₁).partitionDef n g ≤ (G.induce V₁).deficiency n :=
+            (G.induce V₁).partitionDef_le_deficiency n g
+          have h2 : (G.induce (V(G) \ V₁)).partitionDef n g ≤
+              (G.induce (V(G) \ V₁)).deficiency n :=
+            (G.induce (V(G) \ V₁)).partitionDef_le_deficiency n g
+          linarith
+  · -- Direction `≥`: combine optimal partitions from each side.
+    -- Get attaining labelings f₁ (for induce V₁) and f₂ (for induce (V(G)\V₁)).
+    obtain ⟨f₁, hf₁⟩ := exists_eq_ciSup_of_finite (f := (G.induce V₁).partitionDef n)
+    obtain ⟨f₂, hf₂⟩ := exists_eq_ciSup_of_finite (f := (G.induce (V(G) \ V₁)).partitionDef n)
+    -- Normalize f₁ to have image ⊆ V₁, and f₂ to have image ⊆ V(G)\V₁, with disjoint images.
+    -- Step 1: Get injection ι₁ : f₁ '' V₁ → V₁.
+    have hf₁img_le : (f₁ '' V₁).encard ≤ V₁.encard :=
+      Set.encard_image_le f₁ V₁
+    obtain ⟨ι₁, hι₁maps, hι₁inj⟩ :=
+      (Set.toFinite (f₁ '' V₁)).exists_injOn_of_encard_le hf₁img_le
+    -- Step 2: Get injection ι₂ : f₂ '' (V(G)\V₁) → V(G)\V₁.
+    have hf₂img_le : (f₂ '' (V(G) \ V₁)).encard ≤ (V(G) \ V₁).encard :=
+      Set.encard_image_le f₂ (V(G) \ V₁)
+    obtain ⟨ι₂, hι₂maps, hι₂inj⟩ :=
+      (Set.toFinite (f₂ '' (V(G) \ V₁))).exists_injOn_of_encard_le hf₂img_le
+    -- (G.induce V₁).partitionDef n (ι₁ ∘ f₁) = (G.induce V₁).partitionDef n f₁:
+    -- by partitionDef_comp_of_injOn (since ι₁ is injective on f₁ '' V(G.induce V₁) = f₁ '' V₁).
+    have hg₁_def_eq : (G.induce V₁).partitionDef n (ι₁ ∘ f₁) = (G.induce V₁).partitionDef n f₁ :=
+      partitionDef_comp_of_injOn (G := G.induce V₁) (f := f₁) (g := ι₁)
+        (by simpa using hι₁inj)
+    -- (G.induce (V(G)\V₁)).partitionDef n (ι₂ ∘ f₂) = (G.induce (V(G)\V₁)).partitionDef n f₂:
+    have hg₂_def_eq : (G.induce (V(G) \ V₁)).partitionDef n (ι₂ ∘ f₂) =
+        (G.induce (V(G) \ V₁)).partitionDef n f₂ :=
+      partitionDef_comp_of_injOn (G := G.induce (V(G) \ V₁)) (f := f₂) (g := ι₂)
+        (by simpa using hι₂inj)
+    -- Now build a combined labeling h : α → α that:
+    -- - on V₁: h x = ι₁ (f₁ x) ∈ V₁
+    -- - on V(G)\V₁: h x = ι₂ (f₂ x) ∈ V(G)\V₁
+    -- - outside V(G): arbitrary.
+    -- The images are disjoint since ι₁ maps into V₁ and ι₂ maps into V(G)\V₁.
+    -- Let's define h directly.
+    letI := Classical.propDecidable
+    let h : α → α := fun x =>
+      if hxV₁ : x ∈ V₁ then ι₁ (f₁ x)
+      else if hxV : x ∈ V(G) then ι₂ (f₂ x)
+      else f₁ x  -- arbitrary outside V(G)
+    -- h is side-separated: h x ∈ V₁ for x ∈ V₁ (via ι₁), h y ∈ V(G)\V₁ for y ∈ V(G)\V₁.
+    -- The images are in V₁ and V(G)\V₁ respectively, which are disjoint.
+    have hh_sep : ∀ x ∈ V₁, ∀ y ∈ V(G) \ V₁, h x ≠ h y := by
+      intro x hxV₁ y ⟨hyV, hyV₁⟩
+      simp only [h, dif_pos hxV₁, dif_neg hyV₁, dif_pos hyV]
+      -- h x = ι₁ ... ∈ V₁; h y = ι₂ ... ∈ V(G)\V₁; V₁ ∩ (V(G)\V₁) = ∅.
+      intro heq
+      have hx_in : ι₁ (f₁ x) ∈ V₁ :=
+        hι₁maps (Set.mem_image_of_mem f₁ hxV₁)
+      have hy_in : ι₂ (f₂ y) ∈ V(G) \ V₁ :=
+        hι₂maps (Set.mem_image_of_mem f₂ ⟨hyV, hyV₁⟩)
+      rw [← heq] at hy_in
+      exact hy_in.2 hx_in
+    -- Use partitionDef_split_of_sides on h.
+    have hsplit_h := partitionDef_split_of_sides (G := G) (n := n) hssub.subset hh_sep
+    -- Show (G.induce V₁).partitionDef n h = (G.induce V₁).partitionDef n f₁.
+    -- Since h agrees with ι₁ ∘ f₁ on V₁, partitionDef_congr transfers.
+    have hh_eq_g₁_on_V₁ : Set.EqOn h (ι₁ ∘ f₁) V₁ := by
+      intro x hxV₁
+      simp only [h, dif_pos hxV₁, Function.comp]
+    have hh_V₁_def : (G.induce V₁).partitionDef n h = (G.induce V₁).partitionDef n f₁ := by
+      rw [partitionDef_congr (G := G.induce V₁) (by simpa using hh_eq_g₁_on_V₁)]
+      exact hg₁_def_eq
+    -- Show (G.induce (V(G)\V₁)).partitionDef n h = (G.induce (V(G)\V₁)).partitionDef n f₂.
+    have hh_eq_g₂_on_compl : Set.EqOn h (ι₂ ∘ f₂) (V(G) \ V₁) := by
+      intro x ⟨hxV, hxV₁⟩
+      simp only [h, dif_neg hxV₁, dif_pos hxV, Function.comp]
+    have hh_compl_def : (G.induce (V(G) \ V₁)).partitionDef n h =
+        (G.induce (V(G) \ V₁)).partitionDef n f₂ := by
+      rw [partitionDef_congr (G := G.induce (V(G) \ V₁)) (by simpa using hh_eq_g₂_on_compl)]
+      exact hg₂_def_eq
+    -- Assemble the lower bound.
+    simp only [deficiency]
+    rw [← hf₁, ← hf₂]
+    rw [← hh_V₁_def, ← hh_compl_def, ← hsplit_h]
+    exact G.partitionDef_le_deficiency n h
+
+/-- **The `hcut` producer's opener** (`lem:cut-edge-decomposition`): cut decomposition
+for minimal `k`-dof-graphs that are not `2`-edge-connected (KT Lemma 3.6 + Lemma 3.3
+sides-minimal). When `G` is a minimal `k`-dof-graph that fails `2`-edge-connectivity,
+there is a nonempty proper cut `V₁ ⊂ V(G)` with at most one crossing edge such that
+both sides are minimal `k₁`- and `k₂`-dof-graphs (for some `k₁, k₂ ≥ 0`) and
+`k = k₁ + k₂ + D - (D-1)·|cutEdges G V₁|`. -/
+theorem exists_cut_decomposition_of_not_twoEdgeConnected [DecidableEq β] [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ} (hD : 1 ≤ bodyBarDim n)
+    (hG : G.IsMinimalKDof n k) (hntec : ¬ G.TwoEdgeConnected) :
+    ∃ (V₁ : Set α) (k₁ k₂ : ℤ), V₁.Nonempty ∧ V₁ ⊂ V(G) ∧ (V(G) \ V₁).Nonempty ∧
+      (G.induce V₁).IsMinimalKDof n k₁ ∧
+      (G.induce (V(G) \ V₁)).IsMinimalKDof n k₂ ∧
+      (G.cutEdges V₁).ncard ≤ 1 ∧
+      k = k₁ + k₂ + (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
+  -- Unfold ¬2EC to get a cut V₁ with < 2 crossing edges.
+  simp only [TwoEdgeConnected, not_forall, not_le, exists_prop] at hntec
+  obtain ⟨V₁, hne, hssub, hcut_lt2⟩ := hntec
+  have hcut : (G.cutEdges V₁).ncard ≤ 1 := Nat.lt_succ_iff.mp hcut_lt2
+  -- Compute deficiency equality for this cut.
+  have hdef_eq := deficiency_eq_of_cutEdges_ncard_le_one hD hne hssub hcut
+  -- Sides-minimal via subgraph_minimality.
+  have hle₁ : G.induce V₁ ≤ G := G.induce_le hssub.subset
+  have hle₂ : G.induce (V(G) \ V₁) ≤ G := G.induce_le (Set.diff_subset)
+  -- Get deficiency of each side.
+  have hk₁def : (G.induce V₁).IsKDof n ((G.induce V₁).deficiency n) := rfl
+  have hk₂def : (G.induce (V(G) \ V₁)).IsKDof n ((G.induce (V(G) \ V₁)).deficiency n) := rfl
+  -- Sides are minimal k-dof-graphs via subgraph_minimality.
+  have hmin₁ : (G.induce V₁).IsMinimalKDof n ((G.induce V₁).deficiency n) :=
+    subgraph_minimality hle₁ hG hk₁def
+  have hmin₂ : (G.induce (V(G) \ V₁)).IsMinimalKDof n ((G.induce (V(G) \ V₁)).deficiency n) :=
+    subgraph_minimality hle₂ hG hk₂def
+  -- Complement nonemptiness: V(G) \ V₁ is nonempty because V₁ ⊊ V(G).
+  have hne₂ : (V(G) \ V₁).Nonempty := Set.nonempty_of_ssubset hssub
+  -- Deficiency equation: k = k₁ + k₂ + D - (D-1)*|cut|.
+  have hk_eq : k = (G.induce V₁).deficiency n + (G.induce (V(G) \ V₁)).deficiency n +
+      (bodyBarDim n : ℤ) - ((bodyBarDim n : ℤ) - 1) * (G.cutEdges V₁).ncard := by
+    rw [← hdef_eq]; exact hG.1.symm
+  exact ⟨V₁, _, _, hne, hssub, hne₂, hmin₁, hmin₂, hcut, hk_eq⟩
 
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
     (hne : V(G).Nonempty) :

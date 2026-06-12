@@ -176,6 +176,49 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   edges of $\{v\}$ are exactly the nonloop edges at $v$, whose count is at most the degree.
 \end{proof}
 
+\begin{theorem}[Deficiency splits over a cut of size $\le 1$; KT Lemma 3.6]
+  \label{lem:cut-edge-decomposition}
+  \lean{Graph.partitionDef_congr, Graph.partitionDef_comp_of_injOn,
+    Graph.partitionDef_split_of_sides,
+    Graph.exists_sides_separated_partitionDef_le,
+    Graph.deficiency_eq_of_cutEdges_ncard_le_one}
+  \leanok
+  \uses{def:k-dof, def:cut-edges-2ec}
+  Let $G$ be a multigraph, $V' \subsetneq V(G)$ nonempty, and
+  $|\operatorname{cutEdges}(G, V')| \le 1$.  Then
+  \[
+    \operatorname{def}(\tilde G)
+    = \operatorname{def}(\tilde G[V']) + \operatorname{def}(\tilde G[V(G) \setminus V'])
+      + D - (D-1)\,|\operatorname{cutEdges}(G, V')|,
+  \]
+  where $G[V']$ is the vertex-induced subgraph.  The two cases are:
+  $|\operatorname{cutEdges}| = 0$ (the two sides are disconnected,
+  deficiencies add with an extra $+D$) and $|\operatorname{cutEdges}| = 1$
+  (one crossing edge, deficiencies add with $+1$ since $D - (D-1) = 1$).
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{def:D-deficiency, def:cut-edges-2ec, thm:def-eq-corank}
+  The equality has two directions.  For $\le$: given any labeling $f$,
+  apply the side-refinement lemma (replace $f$ by a labeling $g$ that
+  separates the two sides, i.e.\ $g(x) \ne g(y)$ for $x \in V'$,
+  $y \notin V'$) to get $\operatorname{partitionDef}(G,n,f) \le
+  \operatorname{partitionDef}(G,n,g)$.  The refinement increases the
+  part count by one new straddling part per straddle, and each new
+  crossing is a cut edge ($\le 1$ of them), so the net change is
+  $\ge 0$.  Then apply the exact split
+  $\operatorname{partitionDef}(G,n,g) = \operatorname{partitionDef}(G[V'],n,g)
+  + \operatorname{partitionDef}(G[V{\setminus}V'],n,g) + D - (D-1)\,d$
+  (parts decompose over the two sides; cut edges all cross under $g$)
+  and bound each side term by its deficiency.  For $\ge$: take
+  attaining labelings $f_1, f_2$ for the two induced subgraphs (by
+  $\operatorname{def} = \operatorname{corank}$ and finiteness), normalize
+  them into the two sides (injections $\iota_i \colon f_i(V_i) \hookrightarrow V_i$
+  exist by $|f_i(V_i)| \le |V_i|$; use
+  $\operatorname{partitionDef}$-comp-of-injOn), and combine piecewise
+  to get a single labeling of $V(G)$ attaining the right-hand side.
+\end{proof}
+
 \begin{lemma}[Matroid restriction descends to subgraphs]
   \label{lem:matroid-restrict-subgraph}
   \lean{Graph.matroidMG_restrict_mulTilde}

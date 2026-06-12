@@ -15,8 +15,8 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a, L1b, L1c, L1d, L1f, and L1g are complete.** Next: L1e (KT 3.6 part 2) or L1h (KT
-4.2(i)/(ii), now unblocked by L1g) — order per §1.58(i).
+**L1a, L1b, L1c, L1d, L1e, L1f, and L1g are complete.** Next: L1h (KT
+4.2(i)/(ii)) — order per §1.58(i). L1i (KT 4.4-eq / 4.3(ii)-rev) unblocked once L1h lands.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -65,8 +65,8 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 - [ ] **L1** — the combinatorial bricks; signatures pinned in §1.58, sliced **L1a–L1j**
   (V2 predicate; the `|V| ≤ 2` trichotomy; V3/V4/G0 in-place all-`k` restates; the KT 3.6
   cut decomposition; KT 4.5(ii)/4.2/4.4-eq/4.7/4.3(ii)/4.8(ii)). Build order §1.58(i):
-  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a, L1b, L1c, L1d, L1f, L1g}
-  done; the L1a→… fan-out is cleared, so L1e and L1h are both open.**
+  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a–L1g} all done;
+  L1h is now the open task.**
   - [x] **L1a** — `cutEdges` + `TwoEdgeConnected` + three bridge lemmas
     (`cutEdges_eq_crossingEdges_cutLabeling`, `twoEdgeConnected_of_isKDof_zero`,
     `two_le_degree_of_twoEdgeConnected`) in `Deficiency.lean` + `def:cut-edges-2ec` blueprint
@@ -84,6 +84,13 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     membership equivalences inline. Requires `[Finite α] [Finite β]` on split (needed for
     `Set.ncard_union_eq` on image/crossingEdges sets). Split statement uses explicit ℤ
     arithmetic `((bodyBarDim n : ℤ) - 1)` to avoid ℕ-subtraction/`ring` mismatch.
+  - [x] **L1e** — KT 3.6 part 2: `exists_sides_separated_partitionDef_le` (the refinement
+    bound) + `deficiency_eq_of_cutEdges_ncard_le_one` (KT Lemma 3.6) + the ¬2EC packaging
+    stub `exists_cut_decomposition_of_not_twoEdgeConnected` in `Deficiency.lean`;
+    `lem:cut-edge-decomposition` blueprint node (green) in `deficiency.tex`.
+    `[Finite β]` added to `exists_sides_separated_partitionDef_le` (theorem false without it
+    for `n=0`; call site already had it). `Classical.propDecidable` for the `let h` decidable-if.
+    `nlinarith` + nonnegativity hints for the nonlinear `D * numParts` arithmetic close.
   - [x] **L1f** — `indep_edgeSet_mulTilde_of_noRigid_of_pos` + `isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos`
     in `ReducibleVertex.lean` + `lem:edge-set-indep-pos` blueprint node in `molecular-induction.tex`.
   - [x] **L1b** — `deficiency_of_edgeSet_empty` + `deficiency_of_single_edge` +
@@ -123,13 +130,11 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a, L1b, L1c, L1d, L1f, and L1g complete** (the L1a→… fan-out cleared).
-**Smallest next forward commit: L1e** (KT 3.6 part 2: the refinement bound +
-`deficiency_eq_of_cutEdges_ncard_le_one` + the ¬2EC packaging + `lem:cut-edge-decomposition`;
-needs L1a + L1d, §1.58(e)) — or **L1h** (KT 4.2(i)/(ii) `splitOff_indep_extend_of_fiber_lt` /
-`_subset` + `lem:edge-splitting`, now unblocked by L1g; the WLOG forest-reindex/fiber-relabel
-is the fiddly half, keep the `disjointed` partition from the start). Both independent; order
-per §1.58(i).
+**L0 fully complete. L1a–L1g all complete** (KT 3.6 both parts, KT 4.5(ii), KT 4.2
+forest core, KT 3.6 packaging in `lem:cut-edge-decomposition` all green).
+**Smallest next forward commit: L1h** (KT 4.2(i)/(ii): `splitOff_indep_extend_of_fiber_lt` /
+`_subset` + `lem:edge-splitting`; unblocked by L1g; the WLOG forest-reindex/fiber-relabel
+is the fiddly half, keep the `disjointed` partition from the start, §1.58(f)).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
