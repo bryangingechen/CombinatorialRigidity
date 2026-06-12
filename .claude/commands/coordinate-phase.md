@@ -229,7 +229,15 @@ Loop:
      design-pass at the design-settle rung rather than re-dispatching
      the build one rung up (rows 27→29: the §1.51 seven-leaf cut
      un-blocked what brute escalation would have re-hit). Stop on a
-     BLOCKED without a clear within-workflow resolution.
+     BLOCKED without a clear within-workflow resolution. **Whatever
+     the resolution, salvage the return first:** a BLOCKED return
+     often carries the dead attempt's route findings (verified
+     tactic steps, confirmed-nonexistent APIs); copy them into the
+     phase note's hand-off in the same stop/escalation commit —
+     stranded in the agent return they are invisible to the next
+     session (row 72: a reverted L1g attempt left a 5-step verified
+     route map that only survived because the coordinator moved it
+     into the hand-off).
    - A recon flags a decision for **user adjudication** (e.g. a
      carried hypothesis or motive change) — present the options with
      estimates; don't pick unilaterally.

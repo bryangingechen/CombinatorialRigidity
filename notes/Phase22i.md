@@ -15,7 +15,9 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a, L1b, L1c, L1d, and L1f are complete.** Next: L1g or L1e (both unblocked; see Hand-off).
+**L1a, L1b, L1c, L1d, and L1f are complete; L1g is mid-escalation** (sonnet BLOCKED,
+reverted clean; retry at opus with the salvaged route notes — see Hand-off). Next: L1e or
+the L1g retry.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -118,8 +120,22 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 ## Hand-off / next phase
 
 **L0 fully complete. L1a, L1b, L1c, L1d, and L1f complete.** **Smallest next forward
-commit: L1g** (reverse acyclicity bricks in `ForestSurgery.lean`, unblocked, §1.58(g)) or
-**L1e** (KT 3.6 part 2, needs L1a + L1d, §1.58(f)) — order per §1.58(i). Both are independent.
+commit: L1e** (KT 3.6 part 2, needs L1a + L1d, §1.58(f)) or the **L1g escalation retry**
+(below) — both independent, order per §1.58(i).
+
+**L1g is mid-escalation (2026-06-12):** a sonnet dispatch BLOCKED on the through-`v` swap
+brick (working name `isAcyclicSet_mulTilde_of_splitOff_reroute`, ForestSurgery.lean), fully
+reverted — tree clean, nothing landed; the §1.58(i) watch item (cycle-lift bookkeeping ate
+the forward direction's budget too) proved out. Per the experiment protocol the retry goes
+**one rung up (opus)**. Salvaged route notes from the failed attempt, for the retry prompt:
+(1) `rw [heq] at hDcyc hDE; rw [her] at hDcyc hDE` instead of `subst her` (keeps `pa` in
+scope); (2) `hpa.eq_and_eq_or_eq_and_eq hpalink` for endpoint orientation; (3)
+`concat_isWalk_iff.mp (hne'.concat_dropLast ▸ hw'walk)` for lastEdge incidence; (4)
+`prefixUntilVertex b` + `hw'walk.vertex_mem_of_edge_mem` for sub-walk extraction to the `b`
+endpoint; (5) `((deleteEdges_isCyclicWalk_iff _ _).mpr ⟨hCcyc, hCnofresh⟩).of_le
+(mulTilde_splitOff_deleteFiber_le n)` for the neither-`pa`-nor-`pb` case. Confirmed
+nonexistent APIs (don't hunt): `IsWalk.edge_subset`, `WList.append_isWalk_iff`,
+`IsWalk.isTrail_of_acyclic`.
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
 `d = 3` Lean, §1.33 (C) reuse map) and adds the general-`d` row to
