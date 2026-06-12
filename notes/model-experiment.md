@@ -47,11 +47,19 @@ superior elements into the primary branch).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Standing rung override — LIFTED 2026-06-10 at the W10b close,
-  by its own terms.** Rows 31–45 dispatched under it (opus minimum
-  for the `hcand`-discharge zone; grounds: the rows-11/14/17 sonnet
-  failure cluster in the §38-trap producer zone — see Findings). No
-  override is currently active.
+- **Standing rung override — EXPIRED 2026-06-12 at the L1h close
+  (row 77), by its own terms.** Was: opus minimum for the remaining
+  L1h work (case i). Grounds: the KT-4.2 fiber-bookkeeping zone read
+  sonnet 0/2 (rows 72, 75, both honest BLOCKs after in-session
+  reverts) vs opus 2/2 clean first-try (rows 73, 76), and case i was
+  a strict superset of the case-ii work that sank sonnet.
+  Zone-scoped per the close-out findings' rule (override, not a map
+  change). No override is currently active.
+- *(prior)* **Standing rung override — LIFTED 2026-06-10 at the
+  W10b close, by its own terms.** Rows 31–45 dispatched under it
+  (opus minimum for the `hcand`-discharge zone; grounds: the
+  rows-11/14/17 sonnet failure cluster in the §38-trap producer
+  zone — see Findings).
 
 ## Log
 
@@ -137,6 +145,7 @@ quality / blueprint sync / notes discipline / commit message
 | 74 | L1e KT 3.6 part 2 (refinement bound + `deficiency_eq_of_cutEdges_ncard_le_one` + ¬2EC packaging + `lem:cut-edge-decomposition`), 1f7cd32 | 1/2/1 | sonnet | normal | repaired (blueprint pin + notes wording) | ✓✓✓✗✗✗ | 137k tok / 106 tools / 5020s (84 min, compacted; nested sub-subagent launches observed) | the Lean is complete and faithful: all three statements match the §1.58(f) pins verbatim (one disclosed honest coupling, `[Finite β]` on the refinement bound); the refinement proof's pair-injection normalization is the pin's argument; the packaging is a FULL proof. The discipline layer degraded post-compaction in the row-17 pattern, but in the benign direction — the commit message and notes mis-describe the finished packaging as a "partial stub, pending L4" (no stub exists; the design's own text says the L4 producer derives `0 ≤ k₁,k₂` at the use site), and consistently with that false belief the packaging decl was left OFF the blueprint node's `\lean` pin (rubric 4 ✗; design (h) says "bricks + packaging"). Return-message degradation too: first-person confusion ("already committed from the previous session"), and the dispatch spawned nested sub-subagents (user-observed; a discipline-clause gap — the fixed prompt says nothing about delegation). Coordinator repaired: pin + one packaging sentence on the node, notes wording corrected (commit message stands, inaccuracy documented here). Gates re-run clean (sorry-grep 0, warning-clean full rebuild, lake lint, bp lint.sh + verify.sh/checkdecls). Hand-off re-pointed at L1h |
 | 75 | L1h KT 4.2(i)/(ii) edge-splitting extension (salvage commit b543159, no Lean) | 1/2/1 | sonnet | normal | BLOCKED | —————— | 136k tok / 191 tools / 5464s | dispatched as the intended boundary-pair primary (first under the no-nested-subagents prompt); the BLOCK converts it to the 75→76 escalation pair instead. Second sonnet BLOCK in the KT-4.2 zone (after row 72/L1g): two in-session attempts, both reverted; the agent ran the BLOCKED-salvage protocol *itself* — a clean docs-only commit recording the full two-case proof design (case-ii-first tactic: full fiber, no pendant inserts, three conjuncts), the `orderIsoOfFin`-vs-`orderEmbOfFin` κ-inversion fix, and four API pitfalls, with the hand-off re-pointed at the case-ii-first split. Tree verified clean, Lean untouched, trailer correct (Sonnet 4.6). Watch item for the close-out findings: the S/P/B axes under-rate the WList/fiber-bookkeeping zone — both its slices map sonnet and both BLOCKED there while opus cleared L1g first-try. Escalation retry at opus next |
 | 76 | L1h case ii `splitOff_indep_extend_of_fiber_subset` + `lem:edge-splitting` (retry), 8f46ecf | 1/2/1 | opus | escalation-retry | clean | ✓✓✓✓✓✓ | 265k tok / 126 tools / 1485s | escalation pair with #75 (second sonnet→opus pair in the KT-4.2 zone; opus clean first-try again, 25 min). Sanctioned scope-shrink to the salvaged case-ii-first tactic: statement matches the §1.58(g) pin verbatim (`_hdeg2` underscore for the case-i-shared unused datum, disclosed); construction = the design sketch exactly (disjointified packing, one-per-forest fiber count → `\|S\| = D−1`, reroute via the L1g swap brick, copy-free forest transported verbatim, 9-case pairwise disjointness, both survivor-conjunct directions real). Blueprint node honestly scoped (title names the full-fiber case; partial-fiber arm disclosed as forthcoming); hand-off exemplary (case-i build plan naming the reusable scaffolding + κ-assignment route). Coordinator: full diff read, sorry-grep 0, warning-clean full rebuild + lake lint + bp lint.sh + verify.sh/checkdecls re-run green, trailer correct (Opus 4.8). Hand-off re-pointed at L1h case i |
+| 77 | L1h case i `splitOff_indep_extend_of_fiber_lt` (L1h complete), 54cce23 | 1/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 260k tok / 86 tools / 1110s | first dispatch under the L1h-zone standing override (this row's config edit; mapped sonnet). Statement matches the §1.58(g) pin verbatim (three-conjunct conclusion incl. the `e_b`-count KT-4.4 feed); construction reuses the case-ii scaffolding + the salvaged κ-route exactly (pendant coords bijected onto the unused pool via `orderIsoOfFin.symm.trans`, `Sᶜ.min'` as the designated `e_b`-pendant forest); blueprint node restated to cover both arms (title + itemized counts; "forthcoming" prose flipped). Coordinator: full diff read (coordinate-collision check on the κ-assignment done by hand — sound, cross-fiber sharing harmless), sorry-grep 0, warning-clean full rebuild + lake lint + bp lint.sh + verify.sh/checkdecls re-run green, trailer correct (Opus 4.8). **L1h complete; the standing override expires by its own terms.** Hand-off re-pointed at L1i |
 
 ## Findings
 
