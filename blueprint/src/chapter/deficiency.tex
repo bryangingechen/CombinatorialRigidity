@@ -130,7 +130,8 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   A body-hinge-rigid ($0$-dof) graph $G$ is $2$-edge-connected: for any
   nonempty proper vertex set $V' \subsetneq V(G)$ separating $V(G)$, at
   least two edges cross the cut $\{V', V \setminus V'\}$, i.e.\
-  $d_G(V') \ge 2$.
+  $d_G(V') \ge 2$.  The labeling-free form of this statement and its
+  degree corollary are in \cref{def:cut-edges-2ec}.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -145,6 +146,34 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   cut is encoded by the labeling $f$ collapsing $V'$ and its complement
   to two distinct representatives ($D = \operatorname{bodyBarDim} n \ge
   1$).
+\end{proof}
+
+\begin{definition}[Labeling-free cut edges and $2$-edge-connectivity; degree corollary]
+  \label{def:cut-edges-2ec}
+  \lean{Graph.cutEdges, Graph.TwoEdgeConnected, Graph.cutEdges_eq_crossingEdges_cutLabeling,
+    Graph.twoEdgeConnected_of_isKDof_zero, Graph.two_le_degree_of_twoEdgeConnected,
+    Graph.crossingEdges_cutLabeling_singleton_subset,
+    Graph.crossingEdges_cutLabeling_singleton_ncard_le}
+  \leanok
+  \uses{def:k-dof}
+  For a multigraph $G$ and a vertex set $V'$, define $\operatorname{cutEdges}(G, V') =
+  \{e \in E(G) \mid e \text{ has one endpoint in } V' \text{ and one outside}\}$, the
+  labeling-free cut.  Say $G$ is \emph{$2$-edge-connected} if every nonempty proper vertex
+  set $V' \subsetneq V(G)$ satisfies $|\operatorname{cutEdges}(G, V')| \ge 2$; connectivity
+  is automatic (a component gives a cut of size $0$).  A single transfer lemma identifies
+  $\operatorname{cutEdges}(G, V') = \operatorname{crossingEdges}(G, \operatorname{cutLabeling}\,V'\,a\,b)$
+  for any $a \in V'$, $b \notin V'$.  Consequently a $0$-dof graph is $2$-edge-connected
+  (\cref{lem:two-edge-conn} in the labeling-free form), and every vertex $v \in V(G)$ of a
+  $2$-edge-connected graph with $|V(G)| \ge 2$ satisfies $\deg_G(v) \ge 2$.
+\end{definition}
+\begin{proof}
+  \leanok
+  \uses{lem:two-edge-conn}
+  The $0$-dof case reduces to \cref{lem:two-edge-conn} via the transfer lemma (the strict
+  inclusion $V' \subsetneq V(G)$ supplies the two representatives).  For the degree bound:
+  the singleton cut $\{v\}$ is a nonempty proper vertex set (proper since $|V| \ge 2$), so
+  $2$-edge-connectivity gives $2 \le |\operatorname{cutEdges}(G, \{v\})|$, and the crossing
+  edges of $\{v\}$ are exactly the nonloop edges at $v$, whose count is at most the degree.
 \end{proof}
 
 \begin{lemma}[Matroid restriction descends to subgraphs]

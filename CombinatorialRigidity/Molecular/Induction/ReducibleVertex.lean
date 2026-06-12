@@ -527,54 +527,11 @@ theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph
 
 Katoh–Tanigawa 2011 Lemma 4.6 needs a degree-`exactly`-2 vertex, not merely a degree-`≤ 2`
 one. The average-degree count (`exists_degree_le_two`) supplies the `≤ 2` half; the
-`= 2` upgrade comes from two-edge-connectivity (`two_le_crossingEdges_of_isKDof_zero`, KT
-3.1): a `0`-dof-graph admits no bridge cut, so the single-vertex cut `V' = {v}` has at
-least two crossing edges, forcing `degree v ≥ 2`.
-
-The bridge from the project's cut form (`crossingEdges`, an edge count) to the vendored
-multigraph `Graph.degree` (an endpoint count) is the observation that the crossing edges
-of the single-vertex cut `{v}` are exactly the *nonloop* edges at `v`: an edge crosses
-`{v}` iff exactly one endpoint is `v`, which is `IsNonloopAt e v`. The multigraph degree
-counts each nonloop edge once and each loop twice (`degree_eq_ncard_add_ncard`), so the
-crossing count is at most the degree, and `2 ≤ crossing ≤ degree v` pins `degree v ≥ 2`. -/
-
-/-- **Crossing edges of the single-vertex cut are nonloop edges at `v`**
-(`lem:reducible-vertex`, cut↔degree bridge). The edges of `G` crossing the two-part cut
-`{{v}, V(G) ∖ {v}}` (encoded by `cutLabeling {v} a b` with `a ≠ b`) are exactly the
-*nonloop* edges incident to `v`: an edge crosses iff exactly one of its endpoints is `v`.
-This is the structural fact linking the project's cut count `d_G(V')` to the vendored
-multigraph degree `Graph.degree`. -/
-lemma crossingEdges_cutLabeling_singleton_subset {G : Graph α β} {v a b : α}
-    [∀ x, Decidable (x ∈ ({v} : Set α))] :
-    G.crossingEdges (cutLabeling {v} a b) ⊆ {e | G.IsNonloopAt e v} := by
-  rintro e ⟨heG, x, y, hlink, hfxy⟩
-  -- `f x ≠ f y` with `f = cutLabeling {v} a b` forces exactly one of `x, y` to equal `v`.
-  simp only [cutLabeling, Set.mem_singleton_iff] at hfxy
-  rw [Set.mem_setOf_eq]
-  by_cases hx : x = v
-  · -- `x = v`, so `y ≠ v` (else `f x = f y`); `e` is a nonloop at `v` via the link `v, y`.
-    subst hx
-    have hy : y ≠ x := by rintro rfl; simp at hfxy
-    exact ⟨y, hy, hlink⟩
-  · -- `x ≠ v`, so `y = v` (else both map to `b`); `e` is a nonloop at `v` via `v, x`.
-    by_cases hy : y = v
-    · subst hy
-      exact ⟨x, hx, hlink.symm⟩
-    · simp [hx, hy] at hfxy
-
-/-- **The cut-crossing count is at most the multigraph degree at `v`**
-(`lem:reducible-vertex`, cut↔degree bridge). For the single-vertex cut `{v}`, the number of
-crossing edges `d_G({v})` is at most the vendored multigraph degree `Graph.degree v`: the
-crossing edges are the nonloop edges at `v` (`crossingEdges_cutLabeling_singleton_subset`),
-and the degree counts each nonloop edge at least once
-(`Graph.degree_eq_ncard_add_ncard`). -/
-lemma crossingEdges_cutLabeling_singleton_ncard_le [Finite β] {G : Graph α β} {v a b : α}
-    [∀ x, Decidable (x ∈ ({v} : Set α))] :
-    (G.crossingEdges (cutLabeling {v} a b)).ncard ≤ G.degree v := by
-  calc (G.crossingEdges (cutLabeling {v} a b)).ncard
-      ≤ {e | G.IsNonloopAt e v}.ncard :=
-        Set.ncard_le_ncard crossingEdges_cutLabeling_singleton_subset (Set.toFinite _)
-    _ ≤ G.degree v := by rw [G.degree_eq_ncard_add_ncard v]; omega
+`= 2` upgrade comes from two-edge-connectivity (`two_le_degree_of_twoEdgeConnected`, KT 3.1
+in labeling-free form): a `0`-dof-graph is `TwoEdgeConnected`, so the single-vertex cut
+`{v}` has at least two crossing edges, and `crossingEdges_cutLabeling_singleton_ncard_le`
+transfers that to `degree v ≥ 2`. The cut↔degree bridge lemmas live in `Deficiency.lean`
+(next to `cutLabeling`). -/
 
 /-- **A minimal `0`-dof-graph with no proper rigid subgraph and `|V| ≥ 2` has a vertex of
 degree exactly `2`** (`lem:reducible-vertex`; Katoh–Tanigawa 2011 Lemma 4.6). For
