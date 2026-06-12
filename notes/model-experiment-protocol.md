@@ -117,8 +117,8 @@ coordinator session before being caught).
 | Task | short name + final commit sha (post-amend) |
 | S/P/B | the a-priori axis scores |
 | Model | rung actually dispatched |
-| Mode | normal / probe / boundary-pair-primary / boundary-pair-duplicate / escalation-retry / recon (read-only, no commit) |
-| Outcome | clean / repaired (note cost) / escalated / BLOCKED / killed (harness or usage-limit death mid-dispatch, no agent fault — log the wasted cost; salvage the transcript read map into the relaunch prompt) |
+| Mode | normal / probe / boundary-pair-primary / boundary-pair-duplicate / escalation-retry / recon (read-only, no commit) / resume (the same killed agent continued via SendMessage to its agentId — context and read phase intact, not a fresh dispatch; rate it as the original task, same rung) |
+| Outcome | clean / repaired (note cost) / escalated / BLOCKED / killed (harness or usage-limit death mid-dispatch, no agent fault — log the wasted cost; **prefer resuming the same agent** via SendMessage to its agentId where the harness supports it [agent teams], preserving the full context and read phase; only if resume is unavailable or fails, salvage the transcript read map into a fresh relaunch prompt) |
 | Rubric | 6-bit quality vector, below |
 | Cost | tokens + tool uses + wall time, as reported by the Agent tool |
 | Notes | anything load-bearing |

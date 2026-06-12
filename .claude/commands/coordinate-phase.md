@@ -143,14 +143,25 @@ Loop:
      identity. A dispatch **killed by a session/usage limit** also
      returns neither (the return is the limit error itself): check
      `git status` for stranded work, log it as outcome `killed`,
-     and relaunch fresh — salvaging the dead agent's read map (its
-     transcript, at the path named in the Agent tool result / task
-     notification — e.g. `…/tasks/<agentId>.output`; extract the
-     tool-call file paths) into the relaunch prompt recovers most of
-     the lost reading phase, and a coherent stranded *edit* can be
-     left in tree for the relaunch to review-and-extend rather than
-     reverted (rows 28→29; rows 54→55, where the relaunch kept and
-     completed the predecessor's partial blueprint edit).
+     then **first try resuming the same agent** — `SendMessage` to
+     the `agentId` from the Agent tool result, with a short message
+     naming where it died and what remains (available when agent
+     teams are enabled, `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`; the
+     harness resumes it from its transcript, full context + read
+     phase intact — rows 64→65, where the resume re-emitted an
+     unwritten design block from context with zero re-reading; if
+     the tree was clean at the kill, say so explicitly so the agent
+     re-emits rather than assumes its edits survived). Log the
+     resume as its own row, Mode `resume`. Only if resume is
+     unavailable or fails, relaunch fresh — salvaging the dead
+     agent's read map (its transcript, at the path named in the
+     Agent tool result / task notification — e.g.
+     `…/tasks/<agentId>.output`; extract the tool-call file paths)
+     into the relaunch prompt recovers most of the lost reading
+     phase, and a coherent stranded *edit* can be left in tree for
+     the relaunch to review-and-extend rather than reverted (rows
+     28→29; rows 54→55, where the relaunch kept and completed the
+     predecessor's partial blueprint edit).
    - **Recon verdicts get reasoning scrutiny, not just commit
      mechanics** — a mechanically clean recon can still be wrong, and
      building on it re-incurs the churn it was meant to end.

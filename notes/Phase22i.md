@@ -15,25 +15,17 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L0e complete (pair-swap committed).** `def HasPanelRealization` moved from
-`GenericityDevice.lean` to `PanelHinge.lean` (enabling the swap); `theorem_55_generic`'s
-conditioned pair second slot swapped from `HasFullRankRealization k G` to `HasPanelRealization k n G`
-(plumbing-only body change; `P :=` annotation updated); `theorem_55_d3`'s three genuine-hinge
-callbacks (`hbase`/`hsplit`/`hcontract`) re-typed to `HasPanelRealization 2 n G`-shaped slots;
-all IH-threading signatures in `case_I_realization` / `case_III_hsplit_producer` /
-`case_III_realization` / `h65` updated; `thm:theorem-55-d3-instance` blueprint prose updated
-(second-slot description + carried-family description). Build green (2764 jobs, zero warns);
-`lake lint` clean; `blueprint/verify.sh` + `lint.sh` pass. L0 fully complete.
-
-**L1 signature pin landed (§1.58).** V2 resolved (labeling-free `cutEdges` +
-`TwoEdgeConnected`, connectivity included); V3 resolved (in-place all-`k` restates — the
-landed swap proof needs only one re-routed contradiction; the `= 2` upgrade takes the V2
-predicate); V4 resolved (mechanical). KT 3.6 pinned as a pure partition argument (no matroid
-direct sum); the KT-4.8(ii) cluster decomposed (the reverse forest direction KT 4.2 is the
-one new engine); KT-numbering corrected against the PDF (`splitOff_isMinimalKDof` =
-KT 4.8(i), not 4.7). Sliced **L1a–L1j** with build order in §1.58(i). **Next concrete step:
-the L1a build** (`cutEdges` + `TwoEdgeConnected` + the three bridges, Deficiency.lean +
-the `def:cut-edges-2ec` blueprint node).
+**Next concrete step: the L1a build** (`cutEdges` + `TwoEdgeConnected` + the three
+bridges, Deficiency.lean + the `def:cut-edges-2ec` blueprint node — exact statements in
+§1.58(b)/(i)). **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
+bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
+layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
+(labeling-free `cutEdges` + `TwoEdgeConnected`, connectivity included), V3 resolved
+(in-place all-`k` restates), V4 resolved (mechanical); KT 3.6 pinned as a pure partition
+argument (no matroid direct sum); the KT-4.8(ii) cluster decomposed (the reverse forest
+direction KT 4.2 is the one new engine); KT numbering corrected against the PDF
+(`splitOff_isMinimalKDof` = KT 4.8(i), not 4.7). L1 is sliced **L1a–L1j** with build
+order in §1.58(i).
 
 The phase-open red-node consistency gate was run on the five target nodes
 (`lem:case-III-nested-rank-lower`, `lem:case-I-dispatch`, `def:genuine-hinge-realization`,
