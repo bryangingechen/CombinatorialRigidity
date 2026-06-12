@@ -42,7 +42,8 @@ Loop:
    promoted guideline instead. **Run boundary pairs when due** — when
    the log's findings name an open pair need and the profile fits,
    launch one without asking; the protocol's worktree procedure
-   (cache-get caveat, sequential builds, the fixed duplicate
+   (cache-get caveat, parallel dispatch with the sequential fallback,
+   the harvest-before-discard option, the fixed duplicate
    prologue) already neutralizes the OOM/cost concerns that have made
    coordinators hesitate (rows 70–71 ran clean under it). Pin a
    free-choice hand-off to one slice first so both members run the

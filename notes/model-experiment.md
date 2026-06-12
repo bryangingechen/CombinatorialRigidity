@@ -28,7 +28,11 @@ clause + the `block-nested-agent.sh` PreToolUse hook denying
 in-subagent Agent calls — row 74's dispatch fanned out
 sub-subagents under agent-teams mode, confounding per-rung
 attribution; user-approved; rows ≥ 75 run under the amended
-prompt).
+prompt); and the 2026-06-12 boundary-pair parallel-dispatch +
+harvest-before-discard amendments (user-approved: members may run
+concurrently, sequential as the shared-machine fallback; after
+both rows are logged the coordinator may port the duplicate's
+superior elements into the primary branch).
 
 ## Repo-local config
 
@@ -131,11 +135,28 @@ quality / blueprint sync / notes discipline / commit message
 | 72 | L1g reverse acyclicity bricks (no commit) | 2/2/1 | sonnet | normal | BLOCKED | —————— | 30k tok / 242 tools / 2851s | the §1.58(i) watch item proved out (cycle-lift bookkeeping — the forward direction's budget sink). Long compacted sitting (47 min / 242 tools / low reported tokens); the bailout clause worked as designed: the failed through-`v`-swap rewrite fully reverted, tree clean, HEAD unchanged, and the return carried a 5-step verified route map + 3 confirmed-nonexistent APIs — salvaged into the Phase22i.md hand-off for the retry. Escalation one rung up (opus) pending per protocol; loop stopped at user request before the retry |
 | 73 | L1g reverse acyclicity bricks (retry), 9019d5e | 2/2/1 | opus | escalation-retry | clean | ✓✓✓✓✓✓ | 299k tok / 136 tools / 1615s | escalation pair with #72 (sonnet BLOCKED → opus clean, the §1.58(i) watch item's budget sink cleared one rung up). Both bricks land (the through-`v` swap `isAcyclicSet_mulTilde_of_splitOff_reroute` + the pendant insert `…_insert_vfiber_of_splitOff`); blueprint mirrors `lem:reverse-reroute-cycle-lift`/`lem:reverse-pendant-insert` minted green with `lem:edge-splitting` correctly left for L1h's packaging per §1.58(h). Notable: the row-72 salvaged route notes went **partly unused** — opus found a cleaner `concat_dropLast` + `reverse`-unify route avoiding the cycle-lift bookkeeping that sank sonnet (honest disclosure; reverse-idiom FRICTION entry filed pointing at the forward §29); one benign deviation (unused `hpab` hypothesis dropped, derivable from `a ≠ b`). Coordinator: full diff read, sorry-grep clean (prose-only), warning-clean rebuild (module + full) + lake lint + bp lint.sh re-run green, trailer correct (Opus 4.8). Hand-off re-pointed at L1e ∥ L1h |
 | 74 | L1e KT 3.6 part 2 (refinement bound + `deficiency_eq_of_cutEdges_ncard_le_one` + ¬2EC packaging + `lem:cut-edge-decomposition`), 1f7cd32 | 1/2/1 | sonnet | normal | repaired (blueprint pin + notes wording) | ✓✓✓✗✗✗ | 137k tok / 106 tools / 5020s (84 min, compacted; nested sub-subagent launches observed) | the Lean is complete and faithful: all three statements match the §1.58(f) pins verbatim (one disclosed honest coupling, `[Finite β]` on the refinement bound); the refinement proof's pair-injection normalization is the pin's argument; the packaging is a FULL proof. The discipline layer degraded post-compaction in the row-17 pattern, but in the benign direction — the commit message and notes mis-describe the finished packaging as a "partial stub, pending L4" (no stub exists; the design's own text says the L4 producer derives `0 ≤ k₁,k₂` at the use site), and consistently with that false belief the packaging decl was left OFF the blueprint node's `\lean` pin (rubric 4 ✗; design (h) says "bricks + packaging"). Return-message degradation too: first-person confusion ("already committed from the previous session"), and the dispatch spawned nested sub-subagents (user-observed; a discipline-clause gap — the fixed prompt says nothing about delegation). Coordinator repaired: pin + one packaging sentence on the node, notes wording corrected (commit message stands, inaccuracy documented here). Gates re-run clean (sorry-grep 0, warning-clean full rebuild, lake lint, bp lint.sh + verify.sh/checkdecls). Hand-off re-pointed at L1h |
+| 75 | L1h KT 4.2(i)/(ii) edge-splitting extension (salvage commit b543159, no Lean) | 1/2/1 | sonnet | normal | BLOCKED | —————— | 136k tok / 191 tools / 5464s | dispatched as the intended boundary-pair primary (first under the no-nested-subagents prompt); the BLOCK converts it to the 75→76 escalation pair instead. Second sonnet BLOCK in the KT-4.2 zone (after row 72/L1g): two in-session attempts, both reverted; the agent ran the BLOCKED-salvage protocol *itself* — a clean docs-only commit recording the full two-case proof design (case-ii-first tactic: full fiber, no pendant inserts, three conjuncts), the `orderIsoOfFin`-vs-`orderEmbOfFin` κ-inversion fix, and four API pitfalls, with the hand-off re-pointed at the case-ii-first split. Tree verified clean, Lean untouched, trailer correct (Sonnet 4.6). Watch item for the close-out findings: the S/P/B axes under-rate the WList/fiber-bookkeeping zone — both its slices map sonnet and both BLOCKED there while opus cleared L1g first-try. Escalation retry at opus next |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- (2026-06-12, user note for the analysis phase) **Custom agent
+  types are a live option when the experiment concludes.** Claude
+  Code supports project-level agent definitions
+  (`.claude/agents/<name>.md`) with frontmatter tool denylists
+  (`disallowedTools: Agent` gives "general-purpose minus subagent
+  spawning" while inheriting MCP tools; `tools:` allowlists and
+  per-agent `mcpServers:` scoping also exist). When the pooled
+  findings distill into a standing guideline, consider writing a
+  few special-purpose dispatch agent types (builder / recon /
+  design-settle) encoding the per-rung discipline in their system
+  prompts, and iterating on those — rather than carrying all
+  discipline in the fixed dispatch prompt. Not adopted during the
+  experiment: a custom body replaces the built-in general-purpose
+  system prompt, which would change a held-fixed factor mid-run
+  (the repo uses the `block-nested-agent.sh` hook instead).
 
 ### Phase 22h close-out (2026-06-11; rows 1–55)
 

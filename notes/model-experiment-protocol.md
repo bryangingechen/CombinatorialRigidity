@@ -94,9 +94,28 @@ Published function of the profile, so assignment is reproducible:
     next slice, the coordinator pins it to one slice (a hand-off
     edit committed with the log row) before dispatching, so both
     members run the same task.
-  - **Sequential, primary first.** Verify the primary fully (its
-    gates finish) before launching the duplicate — one build at a
-    time per machine.
+  - **Parallel dispatch is sanctioned** (2026-06-12, user-approved;
+    previously "sequential, primary first"). The worktree isolates
+    the trees, and the cache-get caveat retires the mathlib-rebuild
+    risk, so the two members may run concurrently — the duplicate
+    launched alongside (or in the background of) the primary. The
+    residual concurrency is two *project* builds on one machine:
+    acceptable on a dedicated box; fall back to sequential when the
+    machine is shared, already under memory pressure, or the slice
+    sits in a known heavy-elaboration zone. Verification order is
+    unchanged: the primary's gates run and finish before either row
+    is graded (write-after-verification).
+  - **Harvest the duplicate before discarding it.** "Discard the
+    duplicate's tree" applies *after* both rows are logged. At that
+    point the coordinator MAY port concrete superior elements of the
+    duplicate's commit (a cleaner proof, richer docstrings, blueprint
+    prose) into the primary branch as a coordinator-authored
+    follow-up commit that names the duplicate rung as the source —
+    the comparison data is already recorded, so incorporation costs
+    nothing scientifically and recovers value from the duplicate's
+    spend. Grades do not retro-change; note the incorporation (and
+    its cost) in the duplicate row's Notes. Harvest (diff/cherry-pick)
+    before pruning the worktree.
   - **Worktree gate limitation.** Repo gates that need untracked
     tooling (e.g. a gitignored blueprint venv → `verify.sh` /
     `checkdecls`) can't run in a worktree; the duplicate runs the
