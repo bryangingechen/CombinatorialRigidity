@@ -39,7 +39,14 @@ Loop:
    in the log's repo-local config. Log rows follow the protocol's
    *Per-dispatch record* rules (write-after-verification timing,
    tail-only edit matching). If Status says concluded, follow the
-   promoted guideline instead.
+   promoted guideline instead. **Run boundary pairs when due** — when
+   the log's findings name an open pair need and the profile fits,
+   launch one without asking; the protocol's worktree procedure
+   (cache-get caveat, sequential builds, the fixed duplicate
+   prologue) already neutralizes the OOM/cost concerns that have made
+   coordinators hesitate (rows 70–71 ran clean under it). Pin a
+   free-choice hand-off to one slice first so both members run the
+   same task.
 3. Dispatch Agent (subagent_type: general-purpose) with exactly the
    prompt below. Two exceptions adapt it: a **recon / design-pass**
    step names that deliverable in the first line; a **phase-open /

@@ -86,6 +86,34 @@ Published function of the profile, so assignment is reproducible:
   duplicate run `lake exe cache get` in the worktree first so its
   build reuses the mathlib olean cache; if the cache step fails,
   abort the duplicate rather than building through.
+  **The caveat makes pairs safe to run — don't skip them out of
+  OOM/cost caution** (that caution is what the caveat exists to
+  retire; a coordinator deferring pairs "until later" is how a whole
+  phase closes with zero, the 22h gap). Procedure:
+  - **Pin the task first.** If the hand-off offers a free choice of
+    next slice, the coordinator pins it to one slice (a hand-off
+    edit committed with the log row) before dispatching, so both
+    members run the same task.
+  - **Sequential, primary first.** Verify the primary fully (its
+    gates finish) before launching the duplicate — one build at a
+    time per machine.
+  - **Worktree gate limitation.** Repo gates that need untracked
+    tooling (e.g. a gitignored blueprint venv → `verify.sh` /
+    `checkdecls`) can't run in a worktree; the duplicate runs the
+    Lean gates + the static lint and discloses the rest, graded `—`.
+  - **Fixed duplicate prompt.** Prepend this prologue to the
+    standard dispatch prompt verbatim (and substitute the branch
+    name for `master` in its commit instruction); change nothing
+    else:
+
+    > Boundary-pair duplicate dispatch (model-experiment protocol):
+    > you are working in the isolated git worktree at `<path>`
+    > (branch `<branch>`), NOT the main checkout. Do all reading,
+    > editing, building, and committing inside that directory.
+    > Before any `lake build` or `lake lint`, first run
+    > `lake exe cache get` in the worktree so the build reuses the
+    > mathlib olean cache; if the cache step fails, do not build
+    > through — return BLOCKED instead. Never run `lake update`.
 - **Escalation.** BLOCKED return or failed verification → re-dispatch
   the same task one rung up; log the pair (wasted cost included).
 
