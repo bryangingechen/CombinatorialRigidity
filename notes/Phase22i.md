@@ -15,12 +15,14 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a–L1h complete.** Both edge-splitting arms are green:
-`splitOff_indep_extend_of_fiber_subset` (KT 4.2(ii) full-fiber) and
-`splitOff_indep_extend_of_fiber_lt` (KT 4.2(i) partial-fiber). **L1i** (KT 4.4-eq /
-4.3(ii)-rev) is now unblocked; the smallest next forward commit is the KT 4.4-equality
-producer `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` (= 4.2(i) at `h'=0`, a
-direct consumer of the landed case i — see Hand-off).
+**L1a–L1i complete.** The KT-4.8(ii) prerequisites are all green: both edge-splitting arms
+(L1h), and the L1i quartet — the in-place all-`k` restate of
+`splitOff_exists_base_inter_fiber_lt` (4.3(ii) forward, now takes `hG : G.IsKDof n k` +
+`hH : (G.splitOff …).IsKDof n k`), the 4.3(ii) reverse
+`splitOff_isKDof_of_exists_base_inter_fiber_lt`, the 4.4-equality producer
+`exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`, and the KT 4.7 all-`k`
+`removeVertex_deficiency_gt_of_noRigid` (all in `ForestSurgery.lean`). **L1j** (the
+commuting square + the 4.8(ii) assembly) is now unblocked — see Hand-off.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -69,8 +71,8 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 - [ ] **L1** — the combinatorial bricks; signatures pinned in §1.58, sliced **L1a–L1j**
   (V2 predicate; the `|V| ≤ 2` trichotomy; V3/V4/G0 in-place all-`k` restates; the KT 3.6
   cut decomposition; KT 4.5(ii)/4.2/4.4-eq/4.7/4.3(ii)/4.8(ii)). Build order §1.58(i):
-  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a–L1h} done;
-  L1i is the open task.**
+  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a–L1i} done;
+  L1j is the open task.**
   - [x] **L1a** — `cutEdges` + `TwoEdgeConnected` + three bridge lemmas
     (`cutEdges_eq_crossingEdges_cutLabeling`, `twoEdgeConnected_of_isKDof_zero`,
     `two_le_degree_of_twoEdgeConnected`) in `Deficiency.lean` + `def:cut-edges-2ec` blueprint
@@ -114,6 +116,14 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     `lem:edge-splitting` in `molecular-induction.tex` (both arms green;
     `splitOff_indep_extend_of_fiber_subset` = full-fiber 4.2(ii),
     `splitOff_indep_extend_of_fiber_lt` = partial-fiber 4.2(i)).
+  - [x] **L1i** — KT 4.4-eq (`exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`) +
+    4.7 all-`k` (`removeVertex_deficiency_gt_of_noRigid`) + 4.3(ii) forward restated in
+    place at general `k` (`splitOff_exists_base_inter_fiber_lt` gains `{k}` + the
+    `hH : ….IsKDof n k` hypothesis; one call site updated) + 4.3(ii) reverse
+    (`splitOff_isKDof_of_exists_base_inter_fiber_lt`), all in `ForestSurgery.lean`.
+    Blueprint: new `lem:removal-deficiency-strict` + `lem:splitoff-kdof-criterion`
+    (molecular-induction.tex); `lem:case-III-claim-6-11-base` restated in place at
+    general `k` (statement-grep gate — its `\lean` pin survived the flip).
 - [ ] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c)).
 - [ ] **L3** — the base producer (`hbase` carry discharged).
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
@@ -140,19 +150,19 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a–L1h complete (both edge-splitting arms green).**
-**Smallest next forward commit: L1i, the KT 4.4-equality producer**
-`exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof` in `ForestSurgery.lean` (pin §1.58(f)
-/ design notes §4920) — the cleanest first L1i node and a direct consumer of the landed case
-i. Statement: given degree-2 data + `(hG : G.IsKDof n k)` + `(hGv : (G.removeVertex v).IsKDof
-n k)`, `∃ B, (G.matroidMG n).IsBase B ∧ (B ∩ edgeFiber e_b n).ncard = 1`. Proof: a base `B'`
-of `M(G̃ᵥ)` is `M(G̃ᵥᵃᵇ)`-independent (`mulTilde_removeVertex_le_splitOff` +
-`matroidMG_restrict_mulTilde`) with `B' ∩ ẽ₀ = ∅` (so `h' = 0 < D−1`); feed it to
-`splitOff_indep_extend_of_fiber_lt` to lift to `M(G̃)`-independent `I` of size `|B'| + D =
-D(|V|−1) − k = rank M(G̃)` (`rank_add_deficiency_eq` both sides), so `I` is a base
-(`Indep.isBase_of_ncard`) with `|I ∩ ẽ_b| = h' + 1 = 1` (the case-i `e_b`-count conjunct).
-Then L1i's remaining nodes (KT 4.3(ii)-reverse `splitOff_isKDof_of_exists_base_inter_fiber_lt`
-+ the in-place forward 4.3(ii) restate; design §4951), then L1j (4.7/4.8(ii)).
+**L0 fully complete. L1a–L1i complete.**
+**Smallest next forward commit: L1j**, the commuting square + the KT 4.8(ii) assembly
+(design §1.58(g), statements at design notes §4969/§4981): (1) `induce_insert_splitOff` in
+`Operations.lean` beside `splitOff` — `(G.induce (insert v S)).splitOff v a b e₀ =
+(G.splitOff v a b e₀).induce S` for `v ∉ S`, `a, b ∈ S`, `e₀ ∉ E(G)`, by `Graph.ext`;
+(2) `splitOff_isMinimalKDof_of_pos` in `ForestSurgery.lean` beside `splitOff_isMinimalKDof`
+— a minimal `k`-dof `G` (`k > 0`, no proper rigid subgraph, `|V| ≥ 3`, `D ≥ 3`) splits off
+to a minimal `(k−1)`-dof graph; route per §4994: dof-tracking pins `def(H) ∈ {k−1, k}`,
+4.3(ii)-forward + the fundamental-circuit + the commuting square + 4.2(i) rule out `k`
+(producing a proper rigid subgraph against `hnp`), and minimality at `k−1` runs the
+`e = e₀` / `e ≠ e₀` base-fiber split through 4.7 and 4.2(ii); (3) blueprint
+`lem:reduction-step-pos` beside `lem:reduction-step`. If (2) runs long, (1) + its blueprint
+note is a complete smaller commit. Then L2 (the four-case reduction principle).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -161,6 +171,17 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
 
 ## Decisions made during this phase
 
+- **L1i build (2026-06-12):** the KT 4.4-eq / 4.7 / 4.3(ii) quartet in `ForestSurgery.lean`
+  (node list in the layer-plan bullet). 4.3(ii)-forward restated in place (its one consumer
+  `splitOff_removeVertex_minimalKDof` computes `hdefH_zero` before the call and passes it as
+  `hH`). 4.4-eq and 4.3(ii)-reverse are thin consumers of L1h's 4.2(i) + the def=corank
+  bridge (`rw [hVcard, mul_sub, mul_one] at hcard` then `linarith`); 4.7 dispatches
+  `by_cases 0 < k` — `k > 0`: 4.4-eq base vs the 4.5(ii) unique base `E(G̃)` (fiber count 1
+  vs `D−1 ≥ 2`); `k = 0`: `G_v` would be a proper rigid subgraph
+  (`Set.diff_singleton_ssubset.mpr` for `V ∖ {v} ⊂ V`), against `hnp`.
+  - *Snag (root-caused):* chained `x - 1 - 1` in a `have` type fails to parse — the Graph
+    package's scoped `G - S` deleteVerts notation poisons `-` chains (TACTICS-QUIRKS § 48;
+    supersedes the L1h `set`-bound misattribution below).
 - **L1h, both arms (2026-06-12, opus):** the edge-splitting extension
   (`splitOff_indep_extend_of_fiber_{subset,lt}`, KT 4.2(ii)/(i)) in `ForestSurgery.lean`,
   green; `lem:edge-splitting` restated to cover both arms. Case i reuses case ii's disjointed
@@ -175,8 +196,8 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
   `e_b`-count `h'+1` via `I ∩ ẽ_b = pbOf '' S ∪ {qb}`.
   - *Build snags (low):* `Finset.card_sdiff` takes no subset hyp (`(t\s).card = t.card −
     (s∩t).card`; bridge `Finset.inter_univ`); `Set.ncard_coe_finset` (lowercase `f`); a
-    `have : … = bodyBarDim n - 1 - h'` next to a `set`-bound `h'` tripped a spurious
-    "unexpected token '-'" — inline the equation into its consumer.
+    `have : … = bodyBarDim n - 1 - h'` tripped a spurious "unexpected token '-'" — at the
+    time blamed on the `set`-bound `h'`, actually the chained-`-` quirk (TACTICS-QUIRKS § 48).
 - **L1g build (2026-06-12, opus retry after the sonnet BLOCK):** two reverse-acyclicity bricks in
   `ForestSurgery.lean`. (B) `isAcyclicSet_mulTilde_of_splitOff_reroute` (the one new engine): a
   `G̃`-cycle `C` in `(F'∖{r})∪{pa,pb}` is killed by case split on `pa∈C` / `pb∈C` — both-absent

@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Chained subtraction fails to parse in Graph scope — the package's scoped `G - S` deleteVerts notation poisons `x - a - b`
+- **Where it bit:** `ForestSurgery.lean` L1i (`splitOff_isKDof_of_exists_base_inter_fiber_lt`,
+  a `have hexp : D * ((c : ℤ) - 1 - 1) = …`); previously L1h, misattributed to a `set`-bound
+  variable (the Phase22i L1h build snag note).
+- **Friction:** `unexpected token '-'; expected ')', ',' or ':'` at the *second* minus of any
+  iterated `x - a - b` in term/type position, plus downstream bogus `HSub ℤ ℕ (Sort ?)` /
+  "expected Prop" errors. Root cause: `Matroid/Graph/Subgraph/Defs.lean`'s
+  `scoped notation:51 G:100 " - " S:100 => Graph.deleteVerts G S` — level-100 operands make
+  `-` non-chaining while in scope. Single subtractions parse, so the failure looks spurious.
+- **Proposed fix:** parenthesize `((x - a) - b)`, or produce the term by rewriting
+  (`rw [mul_sub, mul_one]`) instead of writing it in source. Upstream-eligible: the fork
+  could lower the operand levels (e.g. `G:51 " - " S:100`) to restore chaining.
+- **Status:** resolved (workaround); fork-side notation fix not attempted.
+- **Lifted to:** TACTICS-QUIRKS § 48.
+
 ### [resolved] `subst h` (h : x = a) eliminates the section body `a`, not the local `x` — use the named-variable form `subst x` to control direction
 - **Where it bit:** Phase 22h `case_III_bottom_relabel` (W9b, `CaseI.lean`); after
   `by_cases hxa : x = a` on a destructured-link local `x`, `subst hxa` eliminated the section

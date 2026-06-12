@@ -9,18 +9,23 @@ combinatorial$\to$linear gaps; the leaf-most --- pure $M(\tilde G)$ matroid
 theory, all inputs green --- is the matroid-base form of KT Lemma~4.3(ii) at
 $k = 0$, built here.
 
-\begin{lemma}[Matroid-base 4.3(ii) at $k = 0$; KT Lemma~4.3(ii), Claim~6.11 prerequisite]
+\begin{lemma}[Matroid-base 4.3(ii), forward half; KT Lemma~4.3(ii), Claim~6.11 prerequisite]
   \label{lem:case-III-claim-6-11-base}
   \lean{Graph.splitOff_exists_base_inter_fiber_lt}
   \leanok
   \uses{def:k-dof, def:matroid-MG, thm:def-eq-corank, lem:forest-surgery-count, lem:splitoff-deficiency}
-  Let $G$ be a $0$-dof-graph ($\operatorname{def}(\tilde G) = 0$) with a degree-2
-  vertex $v$ (distinct neighbours $a, b$, incident edges exactly $e_a \ne e_b$,
-  $e_0 \notin E(G)$ fresh). Then $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+  Let $G$ be a $k$-dof-graph with a degree-2 vertex $v$ (distinct neighbours
+  $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$ fresh) whose
+  splitting-off $G_v^{ab}$ is also a $k$-dof-graph. Then
+  $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
   \[
     \bigl|\widetilde{ab} \cap B'\bigr| \;<\; D - 1,
   \]
   i.e.\ $\widetilde{ab} \not\subseteq B'$: a redundant $\widetilde{ab}$-copy exists.
+  (The two-sided criterion --- this forward half together with its converse ---
+  is \cref{lem:splitoff-kdof-criterion}; the Claim-6.11 consumer below
+  instantiates it at $k = 0$, where the $k$-dof hypothesis on $G_v^{ab}$ is
+  automatic from \cref{lem:splitoff-deficiency} with $\operatorname{def} \ge 0$.)
   This is KT's step~1 toward Claim~6.11 (the redundant $ab$-row of
   $R(G_v^{ab}, q)$); the other two gaps --- the nested IH at the restricted
   realization and the $M(\tilde G)\leftrightarrow$row-dependence bridge --- are
@@ -33,12 +38,11 @@ $k = 0$, built here.
   Reroute a balanced $D$-forest packing of a base of $M(\tilde G)$ across $v$
   (\cref{lem:forest-surgery-count}): this yields an $M(\widetilde{G_v^{ab}})$-%
   independent set $I'$ with $|I'| = |\text{base}| - D$ and $|\widetilde{ab} \cap I'|
-  < D - 1$ (KT Lemma~4.1's two conclusions). At $k = 0$ splitting off keeps the
-  graph $0$-dof (\cref{lem:splitoff-deficiency}, with
-  $\operatorname{def} \ge 0$), so $\operatorname{rank} M(\widetilde{G_v^{ab}}) =
-  D(|V \setminus \{v\}| - 1) = |\text{base}| - D = |I'|$ by the def\,$=$\,corank
-  identity (\cref{thm:def-eq-corank}); an independent set of full rank is a base.
-  That base $I'$ carries the fiber bound.
+  < D - 1$ (KT Lemma~4.1's two conclusions). Since both graphs are $k$-dof, the
+  def\,$=$\,corank identity (\cref{thm:def-eq-corank}) gives
+  $\operatorname{rank} M(\widetilde{G_v^{ab}}) =
+  D(|V \setminus \{v\}| - 1) - k = |\text{base}| - D = |I'|$; an independent
+  set of full rank is a base. That base $I'$ carries the fiber bound.
 \end{proof}
 
 The second factor of Claim~6.11 is KT's nested-induction step: the

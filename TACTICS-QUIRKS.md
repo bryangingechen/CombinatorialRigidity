@@ -1750,3 +1750,28 @@ General rule: in theorem statements mixing `ℕ` quantities and `ℤ` arithmetic
 subtracting (`(↑n - 1 : ℤ)`) rather than subtract-then-cast (`↑(n - 1 : ℕ)`). Phase 22i L1d
 (`Deficiency.lean`, `partitionDef_split_of_sides`). See FRICTION [resolved] *ℕ-subtraction
 in a theorem statement causes `ring` to fail*.
+
+
+## 48. Chained subtraction `x - a - b` fails to parse ("unexpected token '-'") in Graph-package scope
+
+**Symptom.** A `have h : … x - 1 - 1 …` (any *iterated* infix `-`) inside a file that
+imports/opens the `Matroid` package's `Graph` API fails with
+`unexpected token '-'; expected ')', ',' or ':'` (inside parens) or
+`…; expected command` (at top level) at the *second* minus, often followed by a bogus
+`failed to synthesize HSub ℤ ℕ (Sort ?)` or `Type mismatch … expected Prop` — the type parser
+silently stopped after the first subtraction. A *single* subtraction parses fine, which makes
+the failure look spurious (Phase 22i L1h misattributed it to a `set`-bound variable; the
+recurrence at L1i pinned it).
+
+**Cause.** `Matroid/Graph/Subgraph/Defs.lean` declares
+`scoped notation:51 G:100 " - " S:100 => Graph.deleteVerts G S`. Both arguments parse at
+level 100, so the notation does not chain: after `x - a` (a level-51 parse), the second `-`
+demands a level-100 *left* operand and the parser cannot reuse the level-51 result — the
+whole `-` grammar (including ordinary `HSub`) is poisoned for left-nested chains while this
+scoped notation is in scope (the project's `Molecular/` files all are, via `open Graph`).
+
+**Fix.** Parenthesize the chain explicitly — `((x - a) - b)` parses — or restructure to avoid
+the iterated literal subtraction (e.g. rewrite `D * (c - 1 - 1)` via `rw [mul_sub, mul_one]`
+so the goal-side term is produced by rewriting rather than written in source; the L1i
+`splitOff_isKDof_of_exists_base_inter_fiber_lt` route). Phase 22i L1i (`ForestSurgery.lean`).
+See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*.

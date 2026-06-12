@@ -3034,30 +3034,31 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   -- Combine: `def(H̃) = D(|V|−2) − rank ≤ D(|V|−2) − (|B|−D) = D(|V|−1) − |B| = def(G̃)`.
   linarith [hrkZ, hcountZ, hBrank, hHrank]
 
-/-! ### The matroid-base 4.3(ii) form at `k = 0` (`lem:case-III-claim-6-11-base`)
+/-! ### The matroid-base 4.3(ii) form at general `k` (`lem:splitoff-kdof-criterion`, forward half)
 
-Katoh–Tanigawa 2011 Lemma 4.3(ii) at `k = 0` (the splitting-off matroid-base count; KT p.660),
-the first missing-green prerequisite of KT Claim 6.11 (the `+1` redundant `ab`-row of §6.4.1;
-`notes/Phase22d.md`). For a `0`-dof-graph `G` (`def(G̃) = 0`) with a degree-2 vertex `v`
-(neighbours `a ≠ b`, incident edges exactly `eₐ ≠ e_b`, `e₀ ∉ E(G)` fresh), there is a **base**
-`B'` of `M(G̃_v^{ab})` whose intersection with the short-circuit fiber `ã̃b = edgeFiber e₀ n` has
-fewer than `D − 1 = bodyHingeMult n` copies — i.e. `ã̃b ⊄ B'`, so a redundant `ã̃b`-copy exists.
+Katoh–Tanigawa 2011 Lemma 4.3(ii) at general `k` (the splitting-off matroid-base count; KT p.660
+and the all-`k` regime of the Phase-22i carry `h622`). For a `k`-dof-graph `G`
+(`def(G̃) = k`) with a degree-2 vertex `v` (neighbours `a ≠ b`, incident edges exactly
+`eₐ ≠ e_b`, `e₀ ∉ E(G)` fresh), if the splitting-off `H = G_v^{ab}` is also a `k`-dof-graph
+(`def(H̃) = k`), then there is a **base** `B'` of `M(H̃)` whose intersection with the
+short-circuit fiber `ã̃b = edgeFiber e₀ n` has fewer than `D − 1 = bodyHingeMult n` copies
+— i.e. `ã̃b ⊄ B'`, so a redundant `ã̃b`-copy exists.
 
 This is KT's own step-1 argument, run on the corrected forest surgery: rerouting a balanced
 `D`-forest packing of a base of `M(G̃)` across `v` (`forest_surgery_count`) yields an
-`M(G̃_v^{ab})`-independent set `I' = ⋃ Fs' i` with `|I'| + D = |base|` and `|I' ∩ ã̃b| < D − 1`
-(KT Lemma 4.1's two conclusions). At `k = 0` the surgery's deficiency bound
-(`splitOff_deficiency_le`, with `def ≥ 0`) gives `def(G̃_v^{ab}) = 0`, so
-`rank M(G̃_v^{ab}) = D(|V \ {v}| − 1) = |base| − D = |I'|`; an independent set of full rank is a
-base (`Indep.isBase_of_ncard`). That base `I'` carries the fiber bound. Needs `D = bodyBarDim n ≥ 2`
-(so `G̃` has edge copies and the fiber `ã̃b` is nonempty). -/
+`M(H̃)`-independent set `I' = ⋃ Fs' i` with `|I'| + D = |base|` and `|I' ∩ ã̃b| < D − 1`
+(KT Lemma 4.1's two conclusions). The hypothesis `def(H̃) = k` (equivalent to `H.IsKDof n k`)
+gives `rank M(H̃) = D(|V \ {v}| − 1) − k = |base| − D = |I'|` via the def=corank bridge;
+an independent set of full rank is a base (`Indep.isBase_of_ncard`). At `k = 0` this recovers
+the previous form (where `def(H̃) = 0` was derived internally from `splitOff_deficiency_le`).
+Needs `D = bodyBarDim n ≥ 2` (so `G̃` has edge copies and the fiber `ã̃b` is nonempty). -/
 theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite β]
-    {G : Graph α β} {n : ℕ}
+    {G : Graph α β} {n : ℕ} {k : ℤ}
     (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
     (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
     (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
     (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
-    (he₀ : e₀ ∉ E(G)) (hG : G.IsKDof n 0) :
+    (he₀ : e₀ ∉ E(G)) (hG : G.IsKDof n k) (hH : (G.splitOff v a b e₀).IsKDof n k) :
     ∃ B', ((G.splitOff v a b e₀).matroidMG n).IsBase B' ∧
       (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
   classical
@@ -3067,8 +3068,8 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
   have hbV : b ∈ V(G) := hlb.right_mem
   have hvG : v ∈ V(G) := hla.left_mem
   have hVne : V(G).Nonempty := ⟨v, hvG⟩
-  set H := G.splitOff v a b e₀ with hH
-  have hVHne : V(H).Nonempty := ⟨a, by rw [hH, vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
+  set H := G.splitOff v a b e₀ with hHdef
+  have hVHne : V(H).Nonempty := ⟨a, by rw [hHdef, vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
   -- The reroute: an `M(H̃)`-independent `I' = ⋃ Fs' i`, `|I'| + D = |base|`, `|I' ∩ ã̃b| < D − 1`.
   obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
   obtain ⟨Fs, hcover, hindep, hpdisj, hmeetv⟩ :=
@@ -3077,23 +3078,16 @@ theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite
     forest_surgery_count hD hab hav hbv heab haV hbV he₀ hla hlb hdeg2 Fs hcover hindep
       hpdisj hmeetv
   refine ⟨⋃ i, Fs' i, ?_, hfiblt⟩
-  -- At `k = 0`: `def(H̃) = 0` (splitting off does not increase deficiency, and `def ≥ 0`).
-  have hdofG : G.deficiency n = 0 := hG
-  have hdefH_zero : H.deficiency n = 0 := by
-    have hle : H.deficiency n ≤ G.deficiency n :=
-      splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
-    have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
-    rw [hdofG] at hle; omega
-  -- `rank M(H̃) = D(|V \ {v}| − 1) = |base| − D = |I'|`, so `I'` is a base.
+  -- `rank M(H̃) = D(|V \ {v}| − 1) − k` and `|base| + k = D(|V|−1)` (def=corank).
   have hHrank := H.rank_add_deficiency_eq n hD1 hVHne
-  rw [hdefH_zero, add_zero] at hHrank
+  rw [hH, hHdef] at hHrank
   have hBrank := G.isBase_ncard_add_deficiency_eq n hD1 hVne hB
-  rw [hdofG, add_zero] at hBrank
+  rw [hG] at hBrank
   have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
-    rw [hH, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    rw [hHdef, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
     have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
     omega
-  -- `|I'| = |base| − D = D(|V|−1) − D = D(|V|−2) = rank M(H̃)`.
+  -- `|I'| = |base| − D = D(|V|−1) − k − D = D(|V|−2) − k = rank M(H̃)`.
   have hcountZ : (((⋃ i, Fs' i).ncard : ℤ)) + (bodyBarDim n : ℤ) = (B.ncard : ℤ) := by
     exact_mod_cast hcount
   have hIcardZ : ((⋃ i, Fs' i).ncard : ℤ) = ((H.matroidMG n).rank : ℤ) := by
@@ -3152,15 +3146,15 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
   have hminimal : Gv.IsMinimalKDof n (Gv.deficiency n) :=
     subgraph_minimality (G.removeVertex_le v) hG rfl
   refine ⟨hminimal, Gv.deficiency_nonneg n hVvne, ?_⟩
-  -- The Gap-2 base `B'` of `M(G̃_v^{ab})`: `|ãb ∩ B'| = h < D − 1`.
-  obtain ⟨B', hB', hfiblt⟩ :=
-    splitOff_exists_base_inter_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hG.1
-  -- `def(G̃_v^{ab}) = 0` at `k = 0`, so `|B'| = D(|V ∖ v| − 1)`.
+  -- `def(G̃_v^{ab}) = 0` at `k = 0`: splitting off does not increase deficiency, and `def ≥ 0`.
   have hdefH_zero : H.deficiency n = 0 := by
     have hle : H.deficiency n ≤ G.deficiency n :=
       splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
     have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
     rw [(hG.1 : G.deficiency n = 0)] at hle; omega
+  -- The Gap-2 base `B'` of `M(G̃_v^{ab})`: `|ãb ∩ B'| = h < D − 1`.
+  obtain ⟨B', hB', hfiblt⟩ :=
+    splitOff_exists_base_inter_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hG.1 hdefH_zero
   have hB'card := H.isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
   rw [hdefH_zero, add_zero] at hB'card
   -- `B' ∖ ãb ⊆ E(G̃_v)` (surviving fibers) and independent in `M(G̃_v)`.
@@ -3191,6 +3185,185 @@ theorem splitOff_removeVertex_minimalKDof [DecidableEq β] [Finite α] [Finite �
   -- `def(G̃_v) = D(|V∖v|−1) − rank ≤ D(|V∖v|−1) − (|B'| − h) = h < D − 1`.
   rw [hVeq] at hGvrank
   linarith [hdiffleZ, hsplitZ, hB'card, hGvrank, hfibltZ, hHM]
+
+/-! ### 4.3(ii) reverse: base with partial fiber forces `k`-dof (`lem:splitoff-kdof-criterion`)
+
+KT Lemma 4.3(ii), reverse direction: given a base `B'` of `M(G̃_v^{ab})` with `|B' ∩ ẽ₀| < D − 1`,
+the splitting-off `G_v^{ab}` is itself a `k`-dof-graph. The forward direction (proven above as
+`splitOff_exists_base_inter_fiber_lt`) produces such a base from a `k`-dof-graph `G` and a
+`k`-dof splitting-off `H`; the reverse direction recovers the dof from the base. -/
+theorem splitOff_isKDof_of_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {k : ℤ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hG : G.IsKDof n k)
+    {B' : Set (β × Fin (bodyHingeMult n))}
+    (hB' : ((G.splitOff v a b e₀).matroidMG n).IsBase B')
+    (hlt : (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n) :
+    (G.splitOff v a b e₀).IsKDof n k := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have haV : a ∈ V(G) := hla.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  have hVHne : V(G.splitOff v a b e₀).Nonempty :=
+    ⟨a, by rw [vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
+  -- `def(H̃) ≤ k`: splitting off does not increase the deficiency (KT 4.3(i)).
+  have hle : (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
+    splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
+  rw [hG] at hle
+  -- 4.2(i) lifts `B'` to an `M(G̃)`-independent `I` of size `|B'| + D`.
+  obtain ⟨I, hIindep, hIcard, -, -⟩ :=
+    splitOff_indep_extend_of_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hB'.indep hlt
+  -- def = corank both sides: `|B'| + def(H̃) = D(|V|−2)`, `rank M(G̃) + k = D(|V|−1)`.
+  have hB'card := (G.splitOff v a b e₀).isBase_ncard_add_deficiency_eq n hD1 hVHne hB'
+  have hVHcard : (V(G.splitOff v a b e₀).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
+    rw [vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
+    omega
+  rw [hVHcard, mul_sub, mul_one] at hB'card
+  have hGrank := G.rank_add_deficiency_eq n hD1 hVne
+  rw [hG] at hGrank
+  -- `|I| = |B'| + D ≤ rank M(G̃)` pins `def(H̃) ≥ k`; with `hle`, equality.
+  have hIle : (I.ncard : ℤ) ≤ ((G.matroidMG n).rank : ℤ) := by
+    exact_mod_cast hIindep.ncard_le_rank
+  have hIeq : (I.ncard : ℤ) = (B'.ncard : ℤ) + (bodyBarDim n : ℤ) := by exact_mod_cast hIcard
+  rw [IsKDof]
+  linarith [hB'card, hGrank, hIle, hIeq, hle]
+
+/-! ### KT 4.4-equality: a base of `M(G̃)` with `|ẽ_b ∩ B| = 1` (`lem:removal-deficiency-strict`)
+
+Katoh–Tanigawa 2011 Lemma 4.4 equality case: for a `k`-dof-graph `G` with degree-2 vertex
+`v` (neighbours `a, b`) where the vertex-removal `G_v` is also a `k`-dof-graph, there is a
+base `B` of `M(G̃)` with `|ẽ_b ∩ B| = 1`. This is a precise sharpening of
+`removeVertex_deficiency_ge` to equality (`def(G̃_v) = k`) via the forest surgery direction.
+
+The proof: a base `B'` of `M(G̃_v)` is `M(G̃_v^{ab})`-independent (via
+`mulTilde_removeVertex_le_splitOff` + `matroidMG_restrict_mulTilde`) with `B' ∩ ẽ₀ = ∅`
+(so `h' = 0 < D − 1`); 4.2(i) (`splitOff_indep_extend_of_fiber_lt`) lifts it to
+`M(G̃)`-independent `I` of size `|B'| + D = D(|V∖v|−1) − k + D = D(|V|−1) − k = rank M(G̃)`,
+so `I` is a base with `|I ∩ ẽ_b| = 0 + 1 = 1`. -/
+theorem exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof [DecidableEq β] [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ} {k : ℤ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hG : G.IsKDof n k) (hGv : (G.removeVertex v).IsKDof n k) :
+    ∃ B, (G.matroidMG n).IsBase B ∧ (B ∩ edgeFiber e_b n).ncard = 1 := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have haV : a ∈ V(G) := hla.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  have hVvne : V(G.removeVertex v).Nonempty :=
+    ⟨a, by rw [vertexSet_removeVertex]; exact ⟨haV, hav⟩⟩
+  -- A base `B'` of `M(G̃ᵥ)`; it lives in the surviving fibers `E(G̃ᵥ) = E(G̃ᵥᵃᵇ) ∖ ẽ₀`.
+  obtain ⟨B', hB'⟩ := ((G.removeVertex v).matroidMG n).exists_isBase
+  have hB'sub : B' ⊆ E((G.removeVertex v).mulTilde n) := by
+    have := hB'.subset_ground; rwa [matroidMG] at this
+  -- `B'` is `M(G̃ᵥᵃᵇ)`-independent (the restriction identity).
+  have hB'indepH : ((G.splitOff v a b e₀).matroidMG n).Indep B' := by
+    have h := hB'.indep
+    rw [← matroidMG_restrict_mulTilde
+        (removeVertex_le_splitOff (v := v) (a := a) (b := b) he₀) n,
+      Matroid.restrict_indep_iff] at h
+    exact h.1
+  -- `B' ∩ ẽ₀ = ∅`.
+  have hB'fib : B' ∩ edgeFiber e₀ n = ∅ := by
+    ext p
+    simp only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]
+    intro hpB' hpfib
+    have hpGv := hB'sub hpB'
+    rw [← edgeSet_mulTilde_splitOff_diff_fiber (a := a) (b := b) n he₀] at hpGv
+    exact hpGv.2 hpfib
+  have hlt : (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
+    rw [hB'fib, Set.ncard_empty, bodyHingeMult]; omega
+  -- 4.2(i) lifts `B'` to `M(G̃)`-independent `I`, `|I| = |B'| + D`, `|I ∩ ẽ_b| = 0 + 1`.
+  obtain ⟨I, hIindep, hIcard, hIfib, -⟩ :=
+    splitOff_indep_extend_of_fiber_lt hD hab hav hbv heab hla hlb hdeg2 he₀ hB'indepH hlt
+  -- Rank count: `|I| = |B'| + D = (D(|V|−2) − k) + D = D(|V|−1) − k = rank M(G̃)`.
+  have hB'card := (G.removeVertex v).isBase_ncard_add_deficiency_eq n hD1 hVvne hB'
+  rw [hGv] at hB'card
+  have hVvcard : (V(G.removeVertex v).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
+    rw [vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
+    omega
+  rw [hVvcard, mul_sub, mul_one] at hB'card
+  have hGrank := G.rank_add_deficiency_eq n hD1 hVne
+  rw [hG] at hGrank
+  have hIeq : (I.ncard : ℤ) = (B'.ncard : ℤ) + (bodyBarDim n : ℤ) := by exact_mod_cast hIcard
+  have hIrank : (I.ncard : ℤ) = ((G.matroidMG n).rank : ℤ) := by
+    linarith [hB'card, hGrank, hIeq]
+  have hIle : (G.matroidMG n).rank ≤ I.ncard := by omega
+  haveI : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  exact ⟨I, hIindep.isBase_of_ncard hIle, by rw [hIfib, hB'fib, Set.ncard_empty]⟩
+
+/-! ### KT 4.7 all-`k`: the strict removal gap (`lem:removal-deficiency-strict`)
+
+Katoh–Tanigawa 2011 Lemma 4.7, all-`k` form: for a **minimal** `k`-dof-graph `G` with no
+proper rigid subgraph and a degree-2 vertex `v`, the vertex-removal `G_v` has deficiency
+**strictly greater than `k`**: `def(G̃_v) > k`. This is strictly sharper than
+`removeVertex_deficiency_ge` (which gives `def(G̃_v) ≥ k`); the strictness is the content.
+
+The argument: `def(G̃_v) ≥ k` is `removeVertex_deficiency_ge`. For `k = 0`, equality
+`def(G̃_v) = 0` would make `G_v` a proper rigid subgraph of `G` (proper on `≥ 2` vertices
+since `|V(G)| ≥ 3` and `v ∈ V(G)`), contradicting `hnp`. For `k > 0`, equality would give
+(by `exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`) a base `B` of `M(G̃)` with
+`|ẽ_b ∩ B| = 1`; but `k > 0` + `hnp` + `isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos`
+force every base to equal `E(G̃)`, with `|ẽ_b ∩ E(G̃)| = D − 1 ≥ 2` (`hD : 3 ≤ D` is sharp:
+at `D = 2`, `D − 1 = 1` and the contradiction vanishes) — contradiction. -/
+theorem removeVertex_deficiency_gt_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {k : ℤ}
+    (hD : 3 ≤ bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hG : G.IsMinimalKDof n k) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    k < (G.removeVertex v).deficiency n := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have hvG : v ∈ V(G) := hla.left_mem
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  -- `def(G̃_v) ≥ k` by `removeVertex_deficiency_ge`; rule out equality.
+  have hge := removeVertex_deficiency_ge hD2 hav hbv heab hla hlb hdeg2
+  rw [hG.1] at hge
+  rcases lt_or_eq_of_le hge with hlt | heq
+  · exact hlt
+  exfalso
+  have hGv : (G.removeVertex v).IsKDof n k := heq.symm
+  by_cases hkpos : 0 < k
+  · -- `k > 0`: 4.4-equality gives a base `B` with `|B ∩ ẽ_b| = 1`; 4.5(ii) uniqueness
+    -- forces `B = E(G̃)` with `|E(G̃) ∩ ẽ_b| = D − 1 ≥ 2`.
+    obtain ⟨B, hB, hBfib⟩ := exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof
+      hD2 hab hav hbv heab hla hlb hdeg2 he₀ hG.1 hGv
+    have hBeq := isBase_eq_edgeSet_mulTilde_of_noRigid_of_pos hD2 hG hkpos hnp hB
+    have hfibsub : edgeFiber e_b n ⊆ E(G.mulTilde n) := by
+      intro p hp
+      rw [edgeFiber, Set.mem_setOf_eq] at hp
+      rw [mem_edgeSet_mulTilde, hp]
+      exact hlb.edge_mem
+    have hfibcard : (E(G.mulTilde n) ∩ edgeFiber e_b n).ncard = bodyHingeMult n := by
+      rw [Set.inter_eq_right.mpr hfibsub, edgeFiber_ncard]
+    rw [hBeq, hfibcard, bodyHingeMult] at hBfib
+    omega
+  · -- `k = 0`: equality makes `G_v` a proper rigid subgraph of `G`, contradicting `hnp`.
+    have hk0 : k = 0 :=
+      le_antisymm (not_lt.mp hkpos) (by rw [← hG.1]; exact G.deficiency_nonneg n hVne)
+    subst hk0
+    refine hnp (G.removeVertex v) ⟨⟨G.removeVertex_le v, hGv⟩, ?_, ?_⟩
+    · -- `2 ≤ |V(G_v)| = |V(G)| − 1` from `hV3`.
+      rw [vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+      omega
+    · -- `V(G) \ {v} ⊊ V(G)` since `v ∈ V(G)`.
+      rw [vertexSet_removeVertex]
+      exact Set.diff_singleton_ssubset.mpr hvG
 
 /-- **The forest-surgery route to the KT-4.3 splitting-off deficiency bound**
 (`cor:forest-surgery-deficiency`; narrative bridge). The deficiency bound

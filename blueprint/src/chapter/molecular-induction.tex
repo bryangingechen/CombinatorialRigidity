@@ -888,8 +888,9 @@ route that bypasses the deferred forest surgery
   $k$-dof-graph then $\operatorname{def}(\widetilde{G_v}) \ge k$. This is
   the other half of the local dof bookkeeping at $v$. (Katoh--Tanigawa's
   additional clause --- if equality holds there is a base $B$ of $M(\tilde
-  G)$ with $|\tilde{vb} \cap B| = 1$ --- is read through the forest surgery
-  and is not needed for Theorem~4.9.)
+  G)$ with $|\tilde{vb} \cap B| = 1$ --- is the equality clause of
+  \cref{lem:removal-deficiency-strict}; it is read through the forest
+  surgery and is not needed for Theorem~4.9.)
 \end{lemma}
 \begin{proof}
   \leanok
@@ -940,6 +941,40 @@ route that bypasses the deferred forest surgery
   deficiency-count comparison through the def\,$=$\,corank bridge
   (\cref{thm:def-eq-corank}), no forests. This replaces
   Katoh--Tanigawa's forest-surgery derivation (\cref{rem:kt-lemma-41}).
+\end{proof}
+
+\begin{lemma}[Base-fiber criterion for the splitting-off dof; KT Lemma 4.3(ii)]
+  \label{lem:splitoff-kdof-criterion}
+  \lean{Graph.splitOff_exists_base_inter_fiber_lt,
+        Graph.splitOff_isKDof_of_exists_base_inter_fiber_lt}
+  \leanok
+  \uses{def:k-dof, def:graph-operations, def:matroid-MG, lem:edge-splitting,
+        lem:splitoff-deficiency, thm:def-eq-corank}
+  Let $G$ be a $k$-dof-graph with a degree-2 vertex $v$ (distinct neighbours
+  $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$ fresh) and
+  $D \ge 2$. The splitting-off $G_v^{ab}$ is itself a $k$-dof-graph if and
+  only if $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+  $|\widetilde{ab} \cap B'| < D - 1$. This is the refinement of the
+  two-sided bound of \cref{lem:dof-tracking} that reads off \emph{which}
+  alternative ($k$-dof or $(k-1)$-dof) the splitting-off lands in from the
+  short-circuit count of a base.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:forest-surgery-count, lem:balanced-forest-packing}
+  Forward (a $k$-dof splitting-off has such a base): reroute a balanced
+  $D$-forest packing of a base of $M(\tilde G)$ across $v$
+  (\cref{lem:forest-surgery-count}); the rerouted set $I'$ is
+  $M(\widetilde{G_v^{ab}})$-independent with $|I'| = |\text{base}| - D$ and
+  $|\widetilde{ab} \cap I'| < D - 1$, and since both graphs are $k$-dof the
+  def\,$=$\,corank identity (\cref{thm:def-eq-corank}) makes $|I'|$ the full
+  rank, so $I'$ is the desired base. Reverse: the edge-splitting extension
+  (\cref{lem:edge-splitting}, partial-fiber arm) lifts a base $B'$ with
+  $|\widetilde{ab} \cap B'| < D - 1$ to an $M(\tilde G)$-independent set of
+  size $|B'| + D$; bounding it by $\operatorname{rank} M(\tilde G) =
+  D(|V|-1) - k$ gives $\operatorname{def}(\widetilde{G_v^{ab}}) \ge k$, and
+  the splitting-off deficiency bound (\cref{lem:splitoff-deficiency}) gives
+  the matching $\le k$.
 \end{proof}
 
 \begin{lemma}[Edge-count bound with no proper rigid subgraph; KT Lemma 4.5(i)]
@@ -1008,6 +1043,42 @@ route that bypasses the deferred forest surgery
   and $\operatorname{def}(G) = k > 0$, this is a contradiction.
   Uniqueness: $E(\tilde G)$ independent and any base $B \subseteq E(\tilde G)$ gives
   $B = E(\tilde G)$ by \texttt{Matroid.IsBase.eq\_of\_subset\_indep}.
+\end{proof}
+
+\begin{lemma}[Strict removal gap; KT Lemma 4.4 (equality clause) and Lemma 4.7]
+  \label{lem:removal-deficiency-strict}
+  \lean{Graph.exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof,
+        Graph.removeVertex_deficiency_gt_of_noRigid}
+  \leanok
+  \uses{lem:removal-deficiency, lem:edge-splitting, lem:edge-set-indep-pos,
+        def:k-dof, def:rigid-subgraph, thm:def-eq-corank}
+  Let $G$ be a $k$-dof-graph with a degree-2 vertex $v$ (distinct neighbours
+  $a, b$, incident edges exactly $e_a \ne e_b$, $e_0 \notin E(G)$ fresh). Two
+  sharpenings of the removal bound $\operatorname{def}(\widetilde{G_v}) \ge k$
+  of \cref{lem:removal-deficiency}: (i) \emph{(KT 4.4, equality clause)} if
+  $D \ge 2$ and equality $\operatorname{def}(\widetilde{G_v}) = k$ holds, then
+  $M(\tilde G)$ has a base $B$ with $|\widetilde{vb} \cap B| = 1$;
+  (ii) \emph{(KT 4.7)} if moreover $G$ is a \emph{minimal} $k$-dof-graph with
+  no proper rigid subgraph, $|V(G)| \ge 3$, and $D \ge 3$, the bound is
+  strict: $\operatorname{def}(\widetilde{G_v}) > k$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  (i) A base $B'$ of $M(\widetilde{G_v})$ is independent in
+  $M(\widetilde{G_v^{ab}})$ (matroid restriction along $\widetilde{G_v} \le
+  \widetilde{G_v^{ab}}$) and avoids $\widetilde{ab}$ entirely, so the
+  edge-splitting extension (\cref{lem:edge-splitting}, partial-fiber arm at
+  $h' = 0$) lifts it to an $M(\tilde G)$-independent $I$ of size $|B'| + D =
+  (D(|V|-2) - k) + D = D(|V|-1) - k = \operatorname{rank} M(\tilde G)$ (the
+  def\,$=$\,corank identity on both sides, \cref{thm:def-eq-corank}) --- a
+  base with $|\widetilde{vb} \cap I| = 0 + 1 = 1$. (ii) Suppose
+  $\operatorname{def}(\widetilde{G_v}) = k$. At $k = 0$ the removal $G_v$
+  would be a rigid subgraph of $G$, proper on $|V| - 1 \ge 2$ vertices ---
+  contradicting the no-proper-rigid hypothesis. At $k > 0$, clause (i) gives
+  a base meeting $\widetilde{vb}$ in exactly one copy, but
+  \cref{lem:edge-set-indep-pos} forces every base to equal $E(\tilde G)$,
+  which meets $\widetilde{vb}$ in all $D - 1 \ge 2$ copies ($D \ge 3$ is
+  sharp: at $D = 2$ the contradiction vanishes) --- contradiction.
 \end{proof}
 
 \begin{lemma}[A low-degree vertex by the average-degree count; KT Lemma 4.6, core]
