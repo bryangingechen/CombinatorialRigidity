@@ -82,10 +82,23 @@ Published function of the profile, so assignment is reproducible:
   tree. This is the only true same-task comparison in the design.
   *Worktree build caveat (Lean repos):* a fresh worktree has no
   `.lake/` — a bare `lake build` there recompiles mathlib from
-  source (expensive; on shared machines a known OOM risk). Have the
-  duplicate run `lake exe cache get` in the worktree first so its
-  build reuses the mathlib olean cache; if the cache step fails,
-  abort the duplicate rather than building through.
+  source (expensive; on shared machines a known OOM risk). **The
+  robust fix is coordinator-side: seed the worktree's `.lake` from
+  the main checkout before dispatching the duplicate** — e.g. on
+  APFS `cp -Rc .lake <worktree>/.lake` (copy-on-write clone, fast
+  and disk-cheap; the target must not already exist, else BSD `cp`
+  nests the copy inside it — `ls -a` to check). Seeding beats
+  having the duplicate run `lake exe cache get` for two reasons
+  found on first contact (2026-06-12): (1) sandboxed agent
+  environments may deny access to the out-of-tree cache dir
+  (`~/.cache/mathlib` → `cache get` dies with *"already exists
+  (error code: 17)"* / *"Operation not permitted"* — environmental,
+  not recoverable agent-side); (2) the clone carries the *project*
+  oleans too, so the duplicate's build is incremental rather than
+  cache-restore + full project rebuild. Where seeding isn't
+  possible, fall back to the duplicate running `lake exe cache get`
+  first; if that fails, the duplicate aborts rather than building
+  through.
   **The caveat makes pairs safe to run — don't skip them out of
   OOM/cost caution** (that caution is what the caveat exists to
   retire; a coordinator deferring pairs "until later" is how a whole
@@ -123,16 +136,26 @@ Published function of the profile, so assignment is reproducible:
   - **Fixed duplicate prompt.** Prepend this prologue to the
     standard dispatch prompt verbatim (and substitute the branch
     name for `master` in its commit instruction); change nothing
-    else:
+    else. Seeded-worktree form (the default — see the build caveat
+    above):
 
     > Boundary-pair duplicate dispatch (model-experiment protocol):
     > you are working in the isolated git worktree at `<path>`
     > (branch `<branch>`), NOT the main checkout. Do all reading,
-    > editing, building, and committing inside that directory.
-    > Before any `lake build` or `lake lint`, first run
-    > `lake exe cache get` in the worktree so the build reuses the
-    > mathlib olean cache; if the cache step fails, do not build
-    > through — return BLOCKED instead. Never run `lake update`.
+    > editing, building, and committing inside that directory. The
+    > coordinator has pre-seeded the worktree's `.lake` build cache
+    > from the main checkout — do NOT run `lake exe cache get` (it
+    > can fail under the sandbox and is not needed); `lake build` /
+    > `lake lint` run incrementally against the seeded cache. If a
+    > build nevertheless starts compiling thousands of mathlib
+    > files, stop immediately and return BLOCKED. Never run
+    > `lake update`.
+
+    Unseeded fallback form: replace the seeded-cache sentences with
+    "Before any `lake build` or `lake lint`, first run `lake exe
+    cache get` in the worktree so the build reuses the mathlib olean
+    cache; if the cache step fails, do not build through — return
+    BLOCKED instead."
 - **Escalation.** BLOCKED return or failed verification → re-dispatch
   the same task one rung up; log the pair (wasted cost included).
 

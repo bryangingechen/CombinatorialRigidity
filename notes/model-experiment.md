@@ -32,7 +32,13 @@ prompt); and the 2026-06-12 boundary-pair parallel-dispatch +
 harvest-before-discard amendments (user-approved: members may run
 concurrently, sequential as the shared-machine fallback; after
 both rows are logged the coordinator may port the duplicate's
-superior elements into the primary branch).
+superior elements into the primary branch); and the 2026-06-12
+worktree-seeding amendment (coordinator pre-seeds the duplicate's
+`.lake` from the main checkout — APFS `cp -Rc`, target must not
+exist; supersedes agent-run `lake exe cache get`, which dies under
+the agent sandbox's `~/.cache/mathlib` denial — found on the first
+parallel pair, L1i; seeded-prologue + fallback forms now in the
+protocol).
 
 ## Repo-local config
 
