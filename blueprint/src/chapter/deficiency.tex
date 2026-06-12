@@ -181,7 +181,8 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   \lean{Graph.partitionDef_congr, Graph.partitionDef_comp_of_injOn,
     Graph.partitionDef_split_of_sides,
     Graph.exists_sides_separated_partitionDef_le,
-    Graph.deficiency_eq_of_cutEdges_ncard_le_one}
+    Graph.deficiency_eq_of_cutEdges_ncard_le_one,
+    Graph.exists_cut_decomposition_of_not_twoEdgeConnected}
   \leanok
   \uses{def:k-dof, def:cut-edges-2ec}
   Let $G$ be a multigraph, $V' \subsetneq V(G)$ nonempty, and
@@ -195,6 +196,11 @@ full def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) all land.
   $|\operatorname{cutEdges}| = 0$ (the two sides are disconnected,
   deficiencies add with an extra $+D$) and $|\operatorname{cutEdges}| = 1$
   (one crossing edge, deficiencies add with $+1$ since $D - (D-1) = 1$).
+  Packaged for the reduction principle: when a minimal $k$-dof-graph $G$
+  fails $2$-edge-connectivity, such a cut $V'$ exists, both induced sides
+  are again minimal dof-graphs (with their own deficiencies $k_1, k_2$ as
+  the dof counts, by minimality descending to subgraphs), and
+  $k = k_1 + k_2 + D - (D-1)\,|\operatorname{cutEdges}(G, V')|$.
 \end{theorem}
 \begin{proof}
   \leanok

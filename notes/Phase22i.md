@@ -86,8 +86,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     arithmetic `((bodyBarDim n : ℤ) - 1)` to avoid ℕ-subtraction/`ring` mismatch.
   - [x] **L1e** — KT 3.6 part 2: `exists_sides_separated_partitionDef_le` (the refinement
     bound) + `deficiency_eq_of_cutEdges_ncard_le_one` (KT Lemma 3.6) + the ¬2EC packaging
-    stub `exists_cut_decomposition_of_not_twoEdgeConnected` in `Deficiency.lean`;
-    `lem:cut-edge-decomposition` blueprint node (green) in `deficiency.tex`.
+    `exists_cut_decomposition_of_not_twoEdgeConnected` in `Deficiency.lean` (**complete**,
+    all per the §1.58(f) pins — the commit message's "partial stub, pending L4" clause is
+    wrong: the L4 producer only *consumes* it, deriving `0 ≤ k₁, k₂` at the use site per
+    the design); `lem:cut-edge-decomposition` blueprint node (green) in `deficiency.tex`.
     `[Finite β]` added to `exists_sides_separated_partitionDef_le` (theorem false without it
     for `n=0`; call site already had it). `Classical.propDecidable` for the `let h` decidable-if.
     `nlinarith` + nonnegativity hints for the nonlinear `D * numParts` arithmetic close.
