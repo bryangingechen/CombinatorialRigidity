@@ -805,7 +805,7 @@ encodings; `twoEdgeConnected_of_isKDof_zero` and `two_le_degree_of_twoEdgeConnec
 two main consequences. -/
 
 /-- **Crossing edges of the single-vertex cut are nonloop edges at `v`**
-(`lem:reducible-vertex`, cut↔degree bridge; also used by `lem:cut-edges-2ec`). The edges of
+(`lem:reducible-vertex`, cut↔degree bridge; also used by `def:cut-edges-2ec`). The edges of
 `G` crossing the two-part cut `{{v}, V(G) ∖ {v}}` (encoded by `cutLabeling {v} a b` with
 `a ≠ b`) are exactly the *nonloop* edges incident to `v`: an edge crosses iff exactly one of
 its endpoints is `v`. This is the structural fact linking the project's cut count `d_G(V')`
@@ -829,7 +829,7 @@ lemma crossingEdges_cutLabeling_singleton_subset {G : Graph α β} {v a b : α}
     · simp [hx, hy] at hfxy
 
 /-- **The cut-crossing count is at most the multigraph degree at `v`**
-(`lem:reducible-vertex`, cut↔degree bridge; also used by `lem:cut-edges-2ec`). For the
+(`lem:reducible-vertex`, cut↔degree bridge; also used by `def:cut-edges-2ec`). For the
 single-vertex cut `{v}`, the number of crossing edges `d_G({v})` is at most the vendored
 multigraph degree `Graph.degree v`: the crossing edges are the nonloop edges at `v`
 (`crossingEdges_cutLabeling_singleton_subset`), and the degree counts each nonloop edge at
