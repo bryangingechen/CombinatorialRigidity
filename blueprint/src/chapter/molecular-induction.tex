@@ -656,9 +656,9 @@ KT~4.2(i)/(ii) feeds the all-$k$ degree-of-freedom transport. Its two
 acyclicity bricks --- the reverse mirrors of
 \cref{lem:reroute-cycle-lift} and \cref{lem:reroute-vfree-transport}
 --- are landed below, and the count-level $\widetilde{G_v^{ab}} \to
-\tilde G$ packing assembly that consumes them is \cref{lem:edge-splitting}:
-its full-fiber arm (KT~4.2(ii)) lands here, the partial-fiber arm
-(KT~4.2(i)) following.
+\tilde G$ packing assembly that consumes them is \cref{lem:edge-splitting},
+covering both the full-fiber arm (KT~4.2(ii)) and the partial-fiber arm
+(KT~4.2(i)).
 
 \begin{lemma}[Reverse reroute step: the degree-2 cycle-lift swap]
   \label{lem:reverse-reroute-cycle-lift}
@@ -711,48 +711,65 @@ its full-fiber arm (KT~4.2(ii)) lands here, the partial-fiber arm
   \cref{lem:acyclic-insert-vfiber}).
 \end{proof}
 
-\begin{lemma}[Edge-splitting extension, full-fiber case; KT Lemma 4.2(ii)]
+\begin{lemma}[Edge-splitting extension; KT Lemma 4.2(i)/(ii)]
   \label{lem:edge-splitting}
-  \lean{Graph.splitOff_indep_extend_of_fiber_subset}
+  \lean{Graph.splitOff_indep_extend_of_fiber_subset,
+    Graph.splitOff_indep_extend_of_fiber_lt}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:forest-packing-decomp,
     lem:reverse-reroute-cycle-lift, lem:reverse-pendant-insert}
   The count-level assembly of the reverse forest surgery. Let $v$ be a
   degree-2 vertex of $G$ with distinct neighbours $a \ne b$, incident edges
   exactly $eₐ \ne e_b$, $e_0 \notin E(G)$ the fresh short-circuit edge, and
-  $D = \operatorname{bodyBarDim} n \ge 2$. Suppose $I'$ is independent in
-  $M(\widetilde{G_v^{ab}})$ and \textbf{contains the whole fresh fiber}
-  $\widetilde{ab} = \operatorname{edgeFiber} e_0\, n$ (the full-fiber arm,
-  $h' = D - 1$). Then there is an $M(\tilde G)$-independent set $I$ with
+  $D = \operatorname{bodyBarDim} n \ge 2$. Let $I'$ be independent in
+  $M(\widetilde{G_v^{ab}})$ and write $h' = |I' \cap \widetilde{ab}|$ for the
+  number of fresh short-circuit copies it carries, where $\widetilde{ab} =
+  \operatorname{edgeFiber} e_0\, n$ ($|\widetilde{ab}| = D - 1$). Then there is
+  an $M(\tilde G)$-independent set $I$ with
   \[
-    |I| + 1 = |I'| + D
-    \qquad\text{and}\qquad
-    I \setminus (\widetilde{e_a} \cup \widetilde{e_b}) = I' \setminus \widetilde{ab}.
+    I \setminus (\widetilde{e_a} \cup \widetilde{e_b}) = I' \setminus \widetilde{ab}
   \]
-  The second equation is the \emph{survivor conjunct}: $I$ and $I'$ agree off
-  the three special fibers, which carries the minimality transport (a base
-  avoiding $\widetilde e$ extends to a base still avoiding it).
+  (the \emph{survivor conjunct}: $I$ and $I'$ agree off the three special
+  fibers, which carries the minimality transport --- a base avoiding
+  $\widetilde e$ extends to a base still avoiding it) and:
+  \begin{itemize}
+    \item \textbf{Full-fiber arm} (KT~4.2(ii), $h' = D - 1$, when
+      $\widetilde{ab} \subseteq I'$): $|I| + 1 = |I'| + D$.
+    \item \textbf{Partial-fiber arm} (KT~4.2(i), $h' < D - 1$): $|I| = |I'| +
+      D$ and $|I \cap \widetilde{e_b}| = h' + 1$.
+  \end{itemize}
 \end{lemma}
 \begin{proof}
   \leanok
   Partition $I'$ into $D$ edge-disjoint forests of $\widetilde{G_v^{ab}}$
   (\cref{lem:forest-packing-decomp}, disjointified). Each forest holds at most
-  one $\widetilde{ab}$-copy, and the whole fiber ($D - 1$ copies) lies in
-  $I'$, so exactly $D - 1$ forests carry one short-circuit copy $r$ each, and
-  one forest carries none. For each $\widetilde{ab}$-carrying forest, trade
-  $r$ for the two $v$-edges it short-circuited --- a $va$-copy $(eₐ, r.2)$ and
-  a $vb$-copy $(e_b, r.2)$ --- via the reverse cycle-lift
-  (\cref{lem:reverse-reroute-cycle-lift}); the one forest with no copy
-  transports down verbatim (\cref{lem:reverse-pendant-insert}'s underlying
-  $v$-free transport). The recovered copies share their second coordinate
-  with the distinct $r$'s, so they are distinct across forests; each rerouted
-  forest grows by exactly one ($-1$ for $r$, $+2$ for the two $v$-edges) and
-  the pendant forest is unchanged, giving $|I| + 1 = |I'| + D$. Reassembled,
-  the family is again a $D$-forest packing, so $I$ is $M(\tilde G)$-independent;
-  the survivor conjunct holds because both sides equal the union of the forest
-  cores (each forest minus its short-circuit copy). The partial-fiber arm
-  (KT~4.2(i), $h' < D - 1$, which additionally inserts the unmatched $v$-edges
-  as pendants) is forthcoming.
+  one $\widetilde{ab}$-copy, so exactly $h'$ forests carry one short-circuit
+  copy $r$ each. For each $\widetilde{ab}$-carrying forest, trade $r$ for the
+  two $v$-edges it short-circuited --- a $va$-copy $(eₐ, r.2)$ and a $vb$-copy
+  $(e_b, r.2)$ --- via the reverse cycle-lift
+  (\cref{lem:reverse-reroute-cycle-lift}). The recovered copies share their
+  second coordinate with the distinct $r$'s, so they are distinct across
+  forests; each such forest grows by exactly one ($-1$ for $r$, $+2$ for the
+  two $v$-edges).
+
+  In the \emph{full-fiber arm} every forest but one carries a copy, so the
+  remaining $D - h' = 1$ forest is unchanged and the count is
+  $|I| + 1 = |I'| + D$. In the \emph{partial-fiber arm} the $D - h'$ copy-free
+  forests would leave the packing one edge short of size $D$; we add a fresh
+  $v$-edge pendant to each of them (\cref{lem:reverse-pendant-insert}): a
+  $va$-copy $(eₐ, c)$ to $D - 1 - h'$ of them and a $vb$-copy $(e_b, c)$ to the
+  last. The pendant copies draw their second coordinates $c$ from the $D - 1 -
+  h'$ indices not already used by the recovered $(eₐ, r.2)$/$(e_b, r.2)$ copies
+  --- assigned bijectively to the $eₐ$-pendant forests by an order
+  isomorphism onto the unused index pool --- so all $eₐ$-copies (and all
+  $e_b$-copies) carry distinct coordinates and the family stays disjoint. Every
+  forest now grows by exactly one, giving $|I| = |I'| + D$; the $e_b$-copies of
+  $I$ are the $h'$ recovered $(e_b, r.2)$ plus the single pendant, so $|I \cap
+  \widetilde{e_b}| = h' + 1$. Reassembled, the family is again a $D$-forest
+  packing, so $I$ is $M(\tilde G)$-independent; the survivor conjunct holds in
+  both arms because both sides equal the union of the forest cores (each forest
+  minus its short-circuit copy), the construction leaving $I$ with no
+  $\widetilde{ab}$-copy.
 \end{proof}
 
 \subsection{Degree-of-freedom tracking (via deficiency counting)}
