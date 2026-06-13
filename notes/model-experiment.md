@@ -72,8 +72,8 @@ the primary's faithful-but-wrong commit is not a model failure — rows
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-13, fresh coordinator session — supersedes the
-  prior same-date note, which expired at its own session end).** fable **unavailable**
+- **Session availability (2026-06-13, fresh coordinator session, re-confirmed at session
+  start — supersedes the prior same-date notes, each expired at its own session end).** fable **unavailable**
   this session (user-confirmed at session start); the reachable rungs are
   haiku / sonnet / opus, dispatched per the S/P/B → map. Per the *Unavailable rung*
   substitution rule, every fable-mapped pass (design-settle / phase-boundary / S=3 /
