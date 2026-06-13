@@ -34,10 +34,9 @@ and the bare-conjunct producer (`case_cut_edge_realization`, `CaseI.lean`) are L
 `lem:block-rank-cut` and `lem:case-cut-edge-realization` are green blueprint nodes.
 The bare-conjunct producer proves only the `HasPanelRealization` half of the `hcut` slot's `Pc`;
 the GP conjunct (L4b) completes the full slot-filler (no current consumer — wires at L9).
-**Next: L4b-1** — `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` (GenericityDevice.lean):
-the V5-b design pass (§1.62) landed, so this is now a plain build. Route GP-2 confirmed viable with NO IH
-statement-level change; this lemma is the one genuinely-new piece (a two-swap copy of
-`exists_rankPolynomial_of_rigidOn_linking`, swapping in the landed W6e rank-input subfamily extractor).
+**L4b-1 complete**: `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` (GenericityDevice.lean)
+Lean-green, axiom-clean; `lem:rank-polynomial-of-le-finrank` (genericity-and-count.tex) green.
+**Next: L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean, §1.62(d)), the GP producer for the cut-edge case.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -112,10 +111,11 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   `lem:theorem-55-base-producer{,-empty,-single,-parallel}` green at the strong-pair conclusion.
 - [x] **L4a** — block-rank brick + bare-conjunct producer; both Lean-green; `lem:block-rank-cut`
   + `lem:case-cut-edge-realization` green. V5-a resolved. Canonical: §1.61(b)/(c).
-- [ ] **L4b** — the GP conjunct for the cut-edge case. **V5-b RESOLVED (§1.62):** Route GP-2
-  viable, NO IH change, no new `MvPolynomial` lemma. Sliced **L4b-1** (`exists_rankPolynomial_of_le_finrank_linking`,
-  the deficiency-aware rank-polynomial extractor — a two-swap copy of `exists_rankPolynomial_of_rigidOn_linking`
-  off the landed W6e) → **L4b-2** (`case_cut_edge_realization_gp`, the GP producer). Canonical: §1.62(c)/(d)/(f).
+- [x] **L4b-1** — `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` (GenericityDevice.lean),
+  `lem:rank-polynomial-of-le-finrank` green. Two-swap copy of `exists_rankPolynomial_of_rigidOn_linking`:
+  (i) W6e `exists_independent_panelRow_subfamily_of_le_finrank` replaces the rigid N7b-0; (ii) conclusion
+  rephrased to `N ≤ finrank rigidityRows` via `finrank_span_eq_card` + `Submodule.finrank_mono`.
+- [ ] **L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean), the GP producer. Canonical: §1.62(d).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
@@ -171,12 +171,14 @@ and bare-conjunct producer (`case_cut_edge_realization`, `CaseI.lean`):
 both Lean-green, axiom-clean, build+lint clean. Blueprint: `lem:block-rank-cut` (`rigidity-matrix.tex`)
 and `lem:case-cut-edge-realization` (`molecular-induction.tex`) both green.
 
-**Smallest next forward commit: L4b-1** — `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`
-in GenericityDevice.lean (the deficiency-aware rank-polynomial extractor; §1.62(c)). The L4b design
-micro-pass (§1.62) is done: V5-b resolved, Route GP-2 viable, NO IH change, no new `MvPolynomial`
-lemma. L4b-1 is a two-swap copy of `exists_rankPolynomial_of_rigidOn_linking` (swap in the landed W6e
-`exists_independent_panelRow_subfamily_of_le_finrank`; re-phrase the conclusion to "rank ≥ N"). Then
-**L4b-2**: `case_cut_edge_realization_gp` (CaseI.lean, §1.62(d)), completing the `⟨gp, bare⟩` slot-filler.
+**L4b-1 complete.** `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` Lean-green,
+`lem:rank-polynomial-of-le-finrank` blueprint-green.
+
+**Smallest next forward commit: L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean, §1.62(d)):
+the GP producer for the cut-edge case. Body: cut decomposition (as L4a); side IH GP frameworks
+`Qᵢ` from `(hIH kᵢ (G.induce Vᵢ) …).1 hSimpleᵢ`; per-side W6e +
+`exists_rankPolynomial_of_le_finrank_linking` → `Qᵢ_rank`; GP polynomial; fresh combined seed
+non-root of triple; combined rank ≥ D(|V|−1)−k from L4a brick + arithmetic; B2 closes ≤; antisymmetry.
 After L4b: L5 (`hcontract`, Lemma 6.2 + the 6.3/6.5 all-`k` restate).
 
 At phase close:
@@ -307,16 +309,12 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   `set_option maxHeartbeats 400000 in` before (not after) the doc comment. Blueprint nodes:
   `lem:block-rank-cut` (rigidity-matrix.tex) and `lem:case-cut-edge-realization`
   (molecular-induction.tex) both green.
-- **L4b design micro-pass — V5-b RESOLVED (2026-06-13, opus):** the §1.61(d) "combine the two side
-  seeds" framing (Route GP-1 reseed vs GP-2 seed-union) rests on a *false premise* — the project never
-  combines IH seeds (verified against the landed `hasGenericFullRankRealization_of_couple_ofNormals`:
-  it builds *one fresh combined seed* and transfers each leg's rank via a rational-rank-polynomial
-  non-root), and mathlib's only disjoint-index alg-indep fact (`AlgebraicIndependent.sumElim_iff`)
-  needs alg-indep over the adjoined field, so the naive union fact is unsound. The real V5-b content is
-  **rank-lower-bound transfer for the deficient (non-rigid) sides**, resolved by the already-landed
-  rigidity-free W6e `exists_independent_panelRow_subfamily_of_le_finrank` + the seed-transfer engine
-  `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`. Cross-side transversality is
-  automatic from global GP at the fresh seed (`V₁ ∩ V₂ = ∅` ⇒ distinct cut endpoints). **Verdict: Route
-  GP-2 viable, NO IH statement-level change** (decision-guard GP-1 escape not triggered); one new piece
-  (the deficiency-aware extractor, L4b-1). KT p. 671/672 re-verified vs the PDF. Canonical: §1.62; sliced
-  L4b-1 (`exists_rankPolynomial_of_le_finrank_linking`) → L4b-2 (`case_cut_edge_realization_gp`).
+- **L4b design micro-pass — V5-b RESOLVED (2026-06-13, opus):** Route GP-2 viable, NO IH change; one
+  new piece (the deficiency-aware extractor, L4b-1). Canonical: §1.62.
+- **L4b-1 build (2026-06-13, sonnet):** `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`
+  (GenericityDevice.lean). Two-swap copy of `exists_rankPolynomial_of_rigidOn_linking`: (i) W6e
+  `exists_independent_panelRow_subfamily_of_le_finrank` (feeding `hN` directly) replaces the rigid N7b-0;
+  (ii) conclusion rephrased via `finrank_span_eq_card` + `Submodule.finrank_mono` (the LI subfamily has
+  count `N = Nat.card s`; its span ≤ rigidity-row span; monotonicity closes `N ≤ finrank rigidityRows`).
+  The single type mismatch (`hsupp ⟨(e', t₁, t₂), hi⟩` → `hsupp (e', t₁, t₂)`) caught at first build;
+  clean on second. `lem:rank-polynomial-of-le-finrank` (genericity-and-count.tex) green.

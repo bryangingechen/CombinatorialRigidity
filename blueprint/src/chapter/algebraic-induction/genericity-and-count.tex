@@ -216,6 +216,33 @@ anticipates.
   $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q$ (whose vertex set is $V(G)$).
 \end{proof}
 
+\begin{lemma}[Rank-input rank polynomial; Phase 22i L4b-1]
+  \label{lem:rank-polynomial-of-le-finrank}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking}
+  \leanok
+  \uses{lem:rows-polynomial-in-normals}
+  The deficiency-aware sibling of the rank-polynomial device
+  \cref{lem:rows-polynomial-in-normals}: a framework $\mathrm{ofNormals}\,G\,
+  \mathrm{ends}\,q_0$ with a rank lower bound $N \le
+  \mathrm{rank}\,R(G,q_0)$ (no full rigidity required) yields a nonzero
+  rational polynomial $Q$ whose non-vanishing at any $q$ forces the same
+  rank bound $N \le \mathrm{rank}\,R(G,q)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rows-polynomial-in-normals}
+  The rigid sibling \cref{lem:rows-polynomial-in-normals} uses the
+  rigidity of the seed to extract $D(|V(G)|-1)$ independent linking
+  panel rows; here the rank bound $N$ feeds the rank-input W6e extractor
+  directly, yielding exactly $N$ such rows. The same Gram-determinant
+  $g/c/\varphi$ coordinatization and
+  $\mathtt{exists\_polynomial\_ne\_zero\_of\_linearIndependent}$ device
+  produce $Q$; at a non-root $q$ the extracted subfamily is linearly
+  independent, so $N \le \mathrm{finrank}(\mathrm{span}\,
+  \mathrm{rigidityRows}(G,q))$ via \texttt{finrank\_span\_eq\_card}
+  and \texttt{Submodule.finrank\_mono}.
+\end{proof}
+
 \begin{lemma}[Case II placement: the $1$-extension normal, one row short; KT (6.12)]
   \label{lem:case-II-realization-placement}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_placement_eq612}
