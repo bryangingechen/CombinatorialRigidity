@@ -217,7 +217,21 @@ coordinator session before being caught).
 | Outcome | clean / repaired (note cost) / escalated / BLOCKED / killed (harness or usage-limit death mid-dispatch, no agent fault — log the wasted cost; **prefer resuming the same agent** via SendMessage to its agentId where the harness supports it [agent teams], preserving the full context and read phase; only if resume is unavailable or fails, salvage the transcript read map into a fresh relaunch prompt) |
 | Rubric | 6-bit quality vector, below |
 | Cost | tokens + tool uses + wall time, as reported by the Agent tool |
-| Notes | anything load-bearing |
+| Notes | the experiment-relevant signal only — see *Notes discipline* |
+
+**Notes discipline (the column is signal, not a recap).** The Notes
+field records only what the *experiment* needs and what is found
+*nowhere else*: the outcome's cause, which rubric bit failed and why,
+confounds or cost anomalies that qualify the data point, and the
+escalation- / boundary-pair *verdict* (that verdict is the experiment's
+product — keep it). It is **not** a recap of the mathematics, the proof
+route, or the design verdict that landed — those live in the commit
+(`git show`), the design section the row cites, and `notes/PhaseN.md`'s
+*Decisions made*. The test: if a sentence restates what the *commit*
+did rather than how the *model* did, cut it. Target a few lines; a row
+that runs to a full paragraph is almost always recapping. (Calibration:
+rows 84–93 ballooned to 1.4–2.8k chars each by recapping the math, and
+were compressed to signal-only on 2026-06-13.)
 
 **Cost caveat.** The reported token figure is noisy across runs (it
 does not obviously track tool-use count or wall time); record all
