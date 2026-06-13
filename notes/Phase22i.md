@@ -15,20 +15,17 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3 + L4 complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** L2 landed
-`minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
-`(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
-**L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
-polynomial extractor, and GP producer are all Lean-green; `lem:block-rank-cut`,
-`lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`, and
-`lem:case-cut-edge-realization-gp` are all green blueprint nodes.
-**Next: L5a-i** — the shared-body block-rank brick `le_finrank_span_rigidityRows_of_splice` (the only
-new math in L5; the L5 signature pin is landed, §1.63). L5 discharges `hcontract` by a
-`by_cases G.Simple` dispatch (§1.63(a)): simple → forgetful M4 ∘ the all-`k`-restated GP
-`case_I_realization` (6.5 sub-arm carried as `h65`, L8); non-simple → the NEW KT Lemma 6.2
-coincident-panel splice. Sliced L5a-i (the brick, standalone) → L5a-ii (the non-simple bare producer)
-→ L5b (the simple-branch all-`k` GP restate + the dispatch). V6 RESOLVED: N6a is dead infrastructure
-(deleted-motive-bound), so L5a builds fresh on the `BodyHingeFramework` carrier in the L4a idiom.
+**L2 + L3 + L4 + L5a-i complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
+L5a-i landed `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (RigidityMatrix.lean,
+`section SpliceBrick`); `lem:rigidityRows-splice-rank-add` green. V6-a RESOLVED: the brick uses the
+S′-collapse (not `zeroOutsideV₁`) to prove `S_H ⊓ S_c = ⊥`; no `hC`/`hH` hypotheses needed.
+**Next: L5a-ii** — the non-simple bare producer `case_I_realization_nonsimple` (CaseI.lean, beside
+`case_cut_edge_realization`): IH `HasPanelRealization` legs + the L5a-i brick + B2 + the landed
+`exists_extensor_in_two_panels` (coincident-panel hinge). Mints `lem:case-I-realization-nonsimple`.
+L5 discharges `hcontract` by a `by_cases G.Simple` dispatch (§1.63(a)): simple → forgetful M4 ∘ the
+all-`k`-restated GP `case_I_realization` (6.5 sub-arm carried as `h65`, L8); non-simple → the NEW KT
+Lemma 6.2 coincident-panel splice. V6 RESOLVED: N6a is dead infrastructure (deleted-motive-bound), so
+L5a builds fresh on the `BodyHingeFramework` carrier in the L4a idiom.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -114,9 +111,8 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   (`hcontract` carry discharged; the 6.5 sub-arm stays carried as `h65` → L8). **Signature pinned in
   §1.63**, sliced **L5a** → **L5b**, with L5a sub-split (row-91 brick-then-producer pattern) for a
   sonnet/opus boundary pair on the brick:
-  - [ ] **L5a-i** — the shared-body block-rank brick `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`
-    (RigidityMatrix.lean, beside L4a's `le_finrank_span_rigidityRows_of_cut`); the only genuinely-new math in
-    L5 (KT eq. (6.3)–(6.5) block-triangular, V6-a). **Standalone commit** (no consumer until L5a-ii).
+  - [x] **L5a-i** — `le_finrank_span_rigidityRows_of_splice` (RigidityMatrix.lean, `section SpliceBrick`);
+    `lem:rigidityRows-splice-rank-add` green. V6-a RESOLVED: S′-collapse proves `S_H ⊓ S_c = ⊥`.
   - [ ] **L5a-ii** — the non-simple bare producer `case_I_realization_nonsimple` (CaseI.lean, beside
     `case_cut_edge_realization`): IH `HasPanelRealization` legs + the L5a-i brick + B2 + the landed
     `exists_extensor_in_two_panels` (coincident-panel hinge). Mints `lem:case-I-realization-nonsimple`.
@@ -169,29 +165,20 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L4 complete; the L5 signature pin is landed (§1.63).** `hbase` discharged at KT strength (L3 —
-the base-producer strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization`); the
-not-2-edge-connected case (KT Lemma 6.1) is fully built (L4 — both conjuncts via the block-rank brick +
-the deficiency-aware rank-polynomial extractor + the fresh-seed device; four L4 nodes green).
+**L0–L5a-i complete; the L5 signature pin is landed (§1.63).** `hbase` discharged at KT strength (L3);
+the not-2-edge-connected case (KT Lemma 6.1) fully built (L4 — four L4 nodes green); the shared-body
+block-rank brick landed (L5a-i — `lem:rigidityRows-splice-rank-add` green).
 **Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
-**Smallest next forward commit: L5a-i — the shared-body block-rank brick**
-`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (RigidityMatrix.lean, beside L4a's
-`le_finrank_span_rigidityRows_of_cut` — the shared-body sibling of the disjoint-body cut brick; the **only
-genuinely-new math in L5**, KT eq. (6.3)–(6.5) block-triangular, pinned in §1.63(c)). A standalone commit
-(no consumer until L5a-ii), mirroring row 91's brick-then-producer pattern; V6-a (the brick's reuse of
-`isInfinitesimallyRigidOn_of_splice`'s span decomposition vs an explicit `Submodule.finrank_sup`
-block-triangular argument) resolves at this build. **Then L5a-ii** — the non-simple bare producer
-`case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization` — the
-`BodyHingeFramework`-native bare producer concluding `HasPanelRealization 2 n G` from the `.2`-projected
-conditioned IH, the coincident-panel hinge from the already-landed `exists_extensor_in_two_panels` at
-`n₁ = n₂`; mints `lem:case-I-realization-nonsimple`). **Then L5b** (§1.63(d)): the all-`k` GP restate of
-`case_I_realization` + the `by_cases G.Simple` dispatch (M4-forgetful on the simple arm, L5a on the
-non-simple arm, `h65` threaded unchanged → L8); statement change to `case_I_realization` triggers the
-structural-edit grep gate. V6 RESOLVED at this pin: N6a (`hasFullRankRealization_of_splice_of_supportExtensor`,
-GenericityDevice.lean:915) is **dead infrastructure** for the honest motive (it concludes the deleted
-`HasFullRankRealization` and is `ofNormals`-bound) — L5a builds fresh, not a re-aim. The **6.5 arm (`h65`)
-is L8, not L5.**
+**Smallest next forward commit: L5a-ii — the non-simple bare producer** `case_I_realization_nonsimple`
+(CaseI.lean, beside `case_cut_edge_realization`): `BodyHingeFramework`-native bare producer concluding
+`HasPanelRealization 2 n G` from the `.2`-projected conditioned IH on both sides; the coincident-panel
+hinge from the already-landed `exists_extensor_in_two_panels` at `n₁ = n₂`; rank closed by
+`le_finrank_span_rigidityRows_of_splice` (lb) + B2 (ub); mints `lem:case-I-realization-nonsimple`.
+**Then L5b** (§1.63(d)): the all-`k` GP restate of `case_I_realization` + the `by_cases G.Simple`
+dispatch (M4-forgetful on the simple arm, L5a on the non-simple arm, `h65` threaded unchanged → L8);
+statement change to `case_I_realization` triggers the structural-edit grep gate. V6 RESOLVED: N6a is
+dead infrastructure — L5a builds fresh, not a re-aim. The **6.5 arm (`h65`) is L8, not L5.**
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -336,6 +323,15 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   via `infinitesimalMotions_eq_of_isLink_supportExtensor` WITHOUT `.symm`; `hF₁span`/`hF₂span` by
   `congr 1` alone; `let R₁/R₂` to shorten finrank expressions; `set_option maxHeartbeats 800000`.
   `lem:case-cut-edge-realization-gp` green.
+- **L5a-i build (2026-06-13, sonnet):** `le_finrank_span_rigidityRows_of_splice` (RigidityMatrix.lean,
+  `section SpliceBrick`). V6-a RESOLVED: the shared-body block-rank brick does NOT reuse `zeroOutsideV₁`
+  (which only separates disjoint vertex sets); instead, the S′-collapse proves `S_H ⊓ S_c = ⊥` via two
+  span-induction vanishing helpers (`mem_span_rigidityRows_splice_vanish_at_const` and
+  `_vanish_at_zero_on_c`), then `finrank_sup_add_finrank_inf_eq` closes the rank sum. The brick needs no
+  `hC`/`hH` hypotheses — only `hr : r ∈ VH`. Blueprint: `lem:rigidityRows-splice-rank-add` green.
+  Quirk: inside `namespace BodyHingeFramework`, declare as `theorem le_finrank_...` (not
+  `BodyHingeFramework.le_finrank_...`); `span_induction` add/smul cases use `LinearMap.add_apply` /
+  `LinearMap.smul_apply` (not `map_add`/`map_smul`, which expect a morphism application `φ (x+y)`).
 - **L5 signature pin (2026-06-13):** the non-simple Case-I branch (KT Lemma 6.2) pinned; canonical: §1.63.
   KT 6.2 verified vs the PDF (pp. 673–674): `G' = G[{e,f}]` parallel-pair proper-rigid, Lemma-5.3 coincident-
   panel base `Π(a)=Π(b)`, splice at `Π(v*)=Π(a)=Π(b)`, eq. (6.3)–(6.5) block-triangular rank addition. **V6
