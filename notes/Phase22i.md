@@ -320,24 +320,12 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
 - **L1 signature pin (2026-06-11):** V2 labeling-free `cutEdges` (connectivity included);
   V3 in-place all-`k`; KT 3.6 as pure partition argument; 4.8(ii) cluster decomposed with
   KT 4.2 as the one new engine; KT numbering corrected vs the PDF; canonical: §1.58.
-- **L0a–L0e builds (2026-06-11):** all per the §1.57 pins; M2/M4 placement and the M4
-  temporary-`hdef` wrinkle resolved by L0e; `hasFullRankRealization_of_generic` deleted.
-- **L1a–L1f builds (2026-06-12):** all per the §1.58 pins; notable deviations (each
-  disclosed + benign): singleton-cut bridges moved to `Deficiency.lean` (L1a); `hne`
-  dropped from `deficiency_of_edgeSet_empty` (L1b); `[Finite α] [Finite β]` honest
-  couplings on the partition split and refinement bound (L1d/L1e); ℤ-subtraction statement
-  form → TACTICS-QUIRKS §47 (L1d).
-- **L1g (2026-06-12, opus after a sonnet BLOCK):** the reverse acyclicity bricks; the
-  `concat_dropLast` + `reverse`-unify route (cleaner than the salvaged notes) → FRICTION
-  reverse-cycle-lift entry pointing at the forward §29 idiom.
-- **L1h (2026-06-12, opus after a sonnet BLOCK):** both edge-splitting arms, case-ii-first;
-  the κ-assignment via `Finset.orderIsoOfFin` (has `.symm`); `_hdeg2` kept underscored for
-  the shared pin signature.
-- **L1i (2026-06-12, sonnet, resumed after a harness kill):** the 4.4-eq/4.7/4.3(ii)
-  quartet; 4.3(ii) forward restated in place (explicit `hH`, one call site); the scoped
-  `G - S` notation root cause → TACTICS-QUIRKS §48.
-- **L1j (2026-06-12, sonnet):** commuting square + KT 4.8(ii) assembly per the §1.58(g)
-  route; `IsKDof`/`IsMinimalKDof` non-reducibility vs `linarith` → TACTICS-GOLF §4 update.
+- **L0a–L0e + L1a–L1j builds (2026-06-11/12; sonnet, with L1g/L1h opus after sonnet BLOCKs in the
+  KT-4.2/WList zone):** all per the §1.57/§1.58 pins — motives M1–M5 + bridges B1/B2 + the
+  conditioned-pair swap (L0, `hasFullRankRealization_of_generic` deleted); the combinatorial bricks
+  `cutEdges`/`TwoEdgeConnected` + trichotomy + KT-3.6 partition + reverse-acyclicity + edge-splitting
+  + commuting-square/4.8(ii) (L1). Promoted: FRICTION reverse-cycle-lift; TACTICS-QUIRKS §§47/48;
+  TACTICS-GOLF §4. Per-slice detail: git + §1.57/§1.58.
 - **L2 signature pin (2026-06-12):** floor flag implemented + the IH-`Nonempty`-guard
   consequence; four-case split verified verbatim vs KT p. 671 (`hcontract` without 2EC is
   paper-faithful); five-slot audit clean; legacy principle stays beside the new one
@@ -416,36 +404,13 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   consumer; wires at L9). Sliced L4a (brick + bare conjunct, transversality-free) → L4b (GP conjunct,
   gated on the V5-b seed-combination open sub-question — flagged to coordinator, may force an IH
   statement-level change).
-- **L4a brick build (2026-06-13, sonnet):** `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
-  landed in `RigidityMatrix.lean` (`section CutEdgeBrick`). Proof: `flowSum V₁` maps the
-  `hingeRow`-span `Sc` to the single cut-edge's dual row, `screwDim k - 1` rank from `hingeRowBlock`
-  finrank + injectivity; `S₁⊓S₂ = ⊥` + `Sc⊓(S₁⊔S₂) = ⊥` by `span_induction` + `flowSum` side-eqs;
-  calc chains the disjoint-rank additions. Key quirks → TACTICS-QUIRKS §§49–52.
-- **L4a bare-conjunct producer (2026-06-13, sonnet):** `case_cut_edge_realization` landed in
-  `CaseI.lean`. Proof: `exists_cut_decomposition_of_not_twoEdgeConnected` → `V₁/V₂`; IH on both
-  sides; `exists_extensor_in_two_panels` for the cut-edge extensor; `le_finrank_span_rigidityRows_of_cut`
-  (lb) + B2 `finrank_span_rigidityRows_add_deficiency_le` (ub) close rank equality via `nlinarith`.
-  Key quirks: `Set.ncard_le_one` needs four args (`e hmem e_c hec_mem`); `Set.ncard_pos` pattern is
-  `(Set.ncard_pos (Set.toFinite _)).2 hne`; `V(G.induce V₁) = V₁` by `rfl` (use directly, not
-  `simp`); `Nat.cast_sub hscrew` for `↑(n-1)`; products need `nlinarith` not `linarith`;
-  `set_option maxHeartbeats 400000 in` before (not after) the doc comment. Blueprint nodes:
-  `lem:block-rank-cut` (rigidity-matrix.tex) and `lem:case-cut-edge-realization`
-  (molecular-induction.tex) both green.
-- **L4b design micro-pass — V5-b RESOLVED (2026-06-13, opus):** Route GP-2 viable, NO IH change; one
-  new piece (the deficiency-aware extractor, L4b-1). Canonical: §1.62.
-- **L4b-1 build (2026-06-13, sonnet):** `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking`
-  (GenericityDevice.lean). Two-swap copy of `exists_rankPolynomial_of_rigidOn_linking`: (i) W6e
-  `exists_independent_panelRow_subfamily_of_le_finrank` (feeding `hN` directly) replaces the rigid N7b-0;
-  (ii) conclusion rephrased via `finrank_span_eq_card` + `Submodule.finrank_mono` (the LI subfamily has
-  count `N = Nat.card s`; its span ≤ rigidity-row span; monotonicity closes `N ≤ finrank rigidityRows`).
-  The single type mismatch (`hsupp ⟨(e', t₁, t₂), hi⟩` → `hsupp (e', t₁, t₂)`) caught at first build;
-  clean on second. `lem:rank-polynomial-of-le-finrank` (genericity-and-count.tex) green.
-- **L4b-2 build (2026-06-13, sonnet):** `case_cut_edge_realization_gp` (CaseI.lean). Route GP-2 per
-  §1.62(d): cut decomposition; side IH `.1 hSimpleᵢ` → side GP frameworks; `set F := ofNormals ...`
-  then `hFgraph : F.graph = G` for normalizing brick output → TACTICS-QUIRKS §53; `hmotQF₁`/`hmotQF₂`
-  via `infinitesimalMotions_eq_of_isLink_supportExtensor` WITHOUT `.symm`; `hF₁span`/`hF₂span` by
-  `congr 1` alone; `let R₁/R₂` to shorten finrank expressions; `set_option maxHeartbeats 800000`.
-  `lem:case-cut-edge-realization-gp` green.
+- **L4a + L4b builds (2026-06-13; sonnet, opus micro-pass):** the cut-edge (Lemma 6.1) arm — the NEW
+  vertex-disjoint block-rank brick `le_finrank_span_rigidityRows_of_cut` (RigidityMatrix) + bare producer
+  `case_cut_edge_realization` (L4a, `lem:block-rank-cut` / `lem:case-cut-edge-realization` green);
+  **V5-b RESOLVED (opus micro-pass, §1.62): Route GP-2, NO IH change**; the deficiency-aware rank-poly
+  extractor `exists_rankPolynomial_of_le_finrank_linking` (L4b-1) + GP producer
+  `case_cut_edge_realization_gp` (L4b-2 — **the GP-builder pattern L5b-ii mirrors with the splice brick**).
+  Promoted: TACTICS-QUIRKS §§49–53. Per-slice detail: git + §1.61/§1.62.
 - **L5 signature pin (2026-06-13):** the non-simple Case-I branch (KT Lemma 6.2) pinned; canonical: §1.63.
   KT 6.2 verified vs the PDF (pp. 673–674): `G' = G[{e,f}]` parallel-pair proper-rigid, Lemma-5.3 coincident-
   panel base `Π(a)=Π(b)`, splice at `Π(v*)=Π(a)=Π(b)`, eq. (6.3)–(6.5) block-triangular rank addition. **V6
