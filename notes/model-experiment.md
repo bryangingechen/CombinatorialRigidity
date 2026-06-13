@@ -221,12 +221,30 @@ quality / blueprint sync / notes discipline / commit message
 | 98 | L5a-i brick (boundary-pair duplicate, opus) — BLOCKED with the correct design-error diagnosis | 2/2/1 | opus | boundary-pair-duplicate | BLOCKED (high-value — caught the pin error) | —————— | 163k tok / 24 tools / 247s (~4 min) | L5a-i brick, opus duplicate — **BLOCKED, high-value**: scrutinized the pin instead of building and caught the §1.63(c) error (`rigidContract` collapses ≠ `induce`); read-only, no commit. **Pair verdict: the value was the pin-audit, not brick-math quality** (sonnet's was fine + faster). Meta: row-96 opus *pinned* wrong, row-98 opus *caught* it. Episode → Findings rows 96–100. Trailer N/A |
 | 99 | L5a RE-PIN §1.64 — correct the §1.63(c)/(f) splice brick, 01a057e | 3/3/1 | opus | normal | clean | —✓——✓✓ | 236k tok / 52 tools / 630s (~10.5 min) | L5a RE-PIN §1.64 — corrective re-pin (user-chosen resolution); opus produced a **SOUND** pin this time. **Signal (cf. 96): SAME opus rung, WRONG unprimed (96) vs RIGHT primed-with-verified-diagnosis + honesty-mandate (99) — prompt framing beat the rung.** Coordinator re-verified the cited decls + the 4-step assembly. Episode → Findings rows 96–100. Docs-only → gates N/A. Trailer correct |
 | 100 | L5a-i splice brick `le_finrank_span_rigidityRows_of_splice` (CORRECTED), 7bbe790 | 2/2/1 | sonnet | normal | clean (notes ✗ coordinator-repaired 9b6bfd9) | ✓✓✓✓✗✓ | 80k tok / 288 tools / 3670s (~61 min) | L5a-i brick (corrected, post-§1.64). **Row-91 P≈3 pattern REPEATED** (2/2/1 a-priori → realized P≈3, 61 min, 2nd-longest L-dispatch). Sonnet's reliable-math held (axiom-clean, gates green; QUIRKS §54 lifted) but it **abstracted/deferred the kernel** (proved the rank-nullity half, relocated the Lemma-5.1 step to L5a-ii as `hInj`); the hand-off then re-underestimated that as "plumbing" (notes ✗; repaired 9b6bfd9). Episode + the open "new-brick→opus?" question → Findings rows 96–100. Trailer correct |
+| 101 | L5a-ii `hInj` discharge (3 lemmas: `Z⊔W=⊤` core + injOn mirror + finrank form), 3fe3ecb | 2/3/1 | opus | boundary-pair-primary | clean | ✓✓✓✓✓✓ | 243k tok / 76 tools / 1072s (~18 min) | the genuinely-new P=3 kernel, rated up to opus per the rows-91/100 finding. **Confronted the crux** (built `hInj` as its own §1.64(f)-sanctioned slice, deferred only the plumbing) — inverse of row 100's defer-the-kernel; cleaner route than the §1.64 pin (a direct `Z⊔W=⊤` decomposition, disclosed). Pair with row 102 → Findings. Coordinator: full-diff read, warning-clean rebuild, sorry-grep clean, trailer correct |
+| 102 | L5a-ii `hInj` kernel, same task, duplicate (worktree, discarded), c6a8619 | 2/3/1 | sonnet | boundary-pair-duplicate | clean | ✓✓✓—✓✓ | 115k tok / 187 tools / 3093s (~51.5 min) | sonnet **also confronted the kernel** (one compact lemma reducing `extProj t`→`{r}` first, closer to KT 5.1; correct, rigidity-free, gates re-run green in the seeded worktree). Blueprint —: worktree can't run checkdecls AND it minted no node (primary added `lem:extProj-preserves-rank-of-inter`; the rows-87/88 sonnet-drops-the-node pattern). Pair verdict → Findings. Trailer correct |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- (2026-06-13, rows 101–102, L5a-ii) **At a genuinely-new P=3 kernel with
+  no abstraction-split escape, sonnet confronts it (does NOT defer) and lands
+  it correctly — but ~2.9× slower than opus, and again drops the blueprint
+  node.** The `hInj` kernel (the Lemma-5.1 column-deletion relocated out of
+  L5a-i, row 100) was built by both an opus primary (18 min; 3 reusable lemmas
+  — `Z⊔W=⊤` core + injOn mirror + finrank form — plus the blueprint node) and a
+  sonnet duplicate (51.5 min; one compact lemma reducing `extProj t`→`{r}`
+  first, no node). Both correct, rigidity-free, gate-clean; neither BLOCKed or
+  deferred the kernel. This **refines the rows-91/100 finding**: sonnet's
+  "abstract/defer the kernel" tendency was contingent on a split being
+  *available* — forced to confront an irreducible kernel, sonnet succeeds, so
+  the case for mapping genuinely-new bricks to opus rests on **cost (~3×) + the
+  recurring blueprint-node-drop discipline gap** (cf. rows 87/88), not on
+  correctness. The map's P=3→opus rating holds on those grounds. Also a clean
+  pin-audit: the §1.64 `hInj` route built from both rungs with no pin error
+  this time (contrast rows 96–100).
 - (2026-06-13, rows 96–100, L5/L5a) **A boundary pair caught a design
   error the coordinator had approved — the pair's biggest payoff was an
   adversarial pin-audit, not a model-quality comparison.** The L5 pin
