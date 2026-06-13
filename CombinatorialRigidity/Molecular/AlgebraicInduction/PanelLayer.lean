@@ -423,6 +423,84 @@ theorem exists_two_perp_of_linearIndependent_normals {n₁ n₂ : Fin 4 → ℝ}
   -- LI of `f` in the subtype lifts to LI of `p = f.val` in the ambient space.
   exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
 
+/-- **Three linearly-independent vectors in a single panel `n^⊥ ⊆ ℝ⁴`**
+(`def:genuine-hinge-realization`, the spanning sub-brick of the base producer's coincident-panel
+construction; Phase 22i L3a). For any normal `n : Fin 4 → ℝ`, the panel `n^⊥ = {x : x ⬝ᵥ n = 0}`
+has dimension `≥ 3` in `ℝ⁴`, so it contains three linearly independent vectors (the bound holds
+even at `n = 0`, where `n^⊥ = ℝ⁴`). The construction mirrors
+`exists_two_perp_of_linearIndependent_normals` for a *single* normal: the pairing map
+`L x = n ⬝ᵥ x : ℝ⁴ → ℝ` is the `mulVecLin` of the `1 × 4` row matrix `![n]`;
+`finrank (ker L) ≥ 4 - 1 = 3` (rank–nullity), and `exists_linearIndependent_of_le_finrank` at `3`
+extracts the LI triple. -/
+theorem exists_three_perp (n : Fin 4 → ℝ) :
+    ∃ v : Fin 3 → Fin 4 → ℝ, LinearIndependent ℝ v ∧ ∀ i, v i ⬝ᵥ n = 0 := by
+  classical
+  -- The pairing map `L x = n ⬝ᵥ x` as the `mulVecLin` of the 1×4 row matrix `![n]`.
+  set A : Matrix (Fin 1) (Fin 4) ℝ := Matrix.of ![n] with hA
+  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 1 → ℝ) := A.mulVecLin with hL
+  -- `hmemW`: `x ∈ ker L ↔ x ⬝ᵥ n = 0`.
+  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ x ⬝ᵥ n = 0 := by
+    intro x
+    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
+    have hrow0 : ∀ j : Fin 4, A 0 j = n j := fun j => by simp [hA, Matrix.of_apply]
+    have hmv0 : A.mulVec x 0 = n ⬝ᵥ x := by simp [Matrix.mulVec, dotProduct, hrow0]
+    constructor
+    · intro hx; rw [dotProduct_comm]; rw [← hmv0]; exact congrFun hx 0
+    · intro hn0; ext i; fin_cases i; simpa [hmv0, dotProduct_comm] using hn0
+  -- rank-nullity: `finrank (ker L) ≥ 4 - 1 = 3`.
+  have hrange : Module.finrank ℝ (LinearMap.range L) ≤ 1 := by
+    refine le_trans (Submodule.finrank_le _) ?_
+    simp
+  have hker : 3 ≤ Module.finrank ℝ (LinearMap.ker L) := by
+    have hrk := L.finrank_range_add_finrank_ker
+    rw [show Module.finrank ℝ (Fin 4 → ℝ) = 4 from by rw [Module.finrank_pi]; rfl] at hrk
+    omega
+  -- `exists_linearIndependent_of_le_finrank` extracts an LI family `f : Fin 3 → ker L`.
+  obtain ⟨f, hfli⟩ := exists_linearIndependent_of_le_finrank (R := ℝ) (M := LinearMap.ker L) hker
+  refine ⟨fun i => (f i).val, ?_, fun i => (hmemW _).mp (f i).prop⟩
+  exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
+
+/-- **Two linearly-independent extensors inside a common panel `n^⊥ ⊆ ℝ⁴`**
+(`def:genuine-hinge-realization`, the base producer's coincident-panel geometric brick; Phase 22i
+L3a). For a nonzero normal `n : Fin 4 → ℝ`, there are two point-pairs `p, q : Fin 2 → Fin 4 → ℝ`,
+each lying in the panel `n^⊥` (`p i ⬝ᵥ n = 0`, `q i ⬝ᵥ n = 0`), whose `ScrewSpace 2` extensors are
+linearly independent. This is the two-non-proportional-extensors-in-a-common-hyperplane device of
+Katoh–Tanigawa's `|V| = 2` parallel-pair realization (Lemma 5.3, KT 2011 p. 670): two hinges whose
+panels coincide (`Π(u) = Π(v) = n^⊥`) but whose supporting extensors are independent give the full
+`ScrewSpace 2` rank `D = 6`, which the base producer feeds to `theorem_55_base`.
+
+The construction: pick three LI vectors `a, b, c` spanning `n^⊥` (`exists_three_perp`), set
+`p := ![a, b]`, `q := ![a, c]`; the LI of `![a ∧ b, a ∧ c]` follows from the LI of `![a, b, c]`
+(`linearIndependent_pair_extensor_of_li3`), and transports through the injective `⋀[ℝ]^2`-inclusion
+to `ScrewSpace 2`. (The result holds for any `n`, since `n^⊥` is at least `3`-dimensional even at
+`n = 0`; the base producer instantiates it at a chosen nonzero panel normal.) -/
+theorem exists_linearIndependent_extensor_pair_perp (n : Fin 4 → ℝ) :
+    ∃ p q : Fin 2 → Fin 4 → ℝ,
+      (∀ i, p i ⬝ᵥ n = 0) ∧ (∀ i, q i ⬝ᵥ n = 0) ∧
+      LinearIndependent ℝ
+        ![(⟨extensor p, extensor_mem_exteriorPower _⟩ : ScrewSpace 2),
+          ⟨extensor q, extensor_mem_exteriorPower _⟩] := by
+  obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
+  refine ⟨![v 0, v 1], ![v 0, v 2], ?_, ?_, ?_⟩
+  · intro i; fin_cases i
+    · exact hvperp 0
+    · exact hvperp 1
+  · intro i; fin_cases i
+    · exact hvperp 0
+    · exact hvperp 2
+  · -- LI of the two `ScrewSpace 2` extensors, transported from the ambient exterior algebra.
+    have hv3 : LinearIndependent ℝ ![v 0, v 1, v 2] := by
+      have heq : (![v 0, v 1, v 2] : Fin 3 → Fin 4 → ℝ) = v := by
+        ext i; fin_cases i <;> rfl
+      rw [heq]; exact hvli
+    have hpair : LinearIndependent ℝ ![extensor ![v 0, v 1], extensor ![v 0, v 2]] :=
+      linearIndependent_pair_extensor_of_li3 hv3
+    -- Transport through the injective inclusion `⋀[ℝ]^2 (Fin 4 → ℝ) ↪ ExteriorAlgebra`.
+    rw [← LinearMap.linearIndependent_iff (⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype
+      (Submodule.ker_subtype _)]
+    convert hpair using 1
+    ext i; fin_cases i <;> rfl
+
 /-- **The meet of two transversal panels is the extensor of two common-perp points**
 (`def:genuine-hinge-realization`, the M4 engine; Phase 22i L0a). For two linearly independent
 (= transversal) normals `n₁ n₂ : Fin 4 → ℝ`, the panel meet `panelSupportExtensor n₁ n₂` is the

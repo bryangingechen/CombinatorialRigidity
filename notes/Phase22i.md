@@ -15,16 +15,19 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 complete + L3 pinned (L0–L2 done; L3 design-settled, build not started).** L2 landed
+**L2 complete + L3a complete; L3b is next (L0–L2 + L3a done).** L2 landed
 `minimal_kdof_reduction_all_k` in `ForestSurgery.lean`; `thm:minimal-kdof-reduction-all-k` is
-green. **The L3 signature pin is landed (§1.60):** the base producer is a NEW graph-level
-`theorem_55_base_producer` (Pinning.lean, beside the engine) — NOT a re-aim of `theorem_55_base`
-(which is the framework-level *rank engine*, stays put); it dispatches on the landed trichotomy
-(`isMinimalKDof_ncard_le_two_trichotomy`), covers `1 ≤ ncard ≤ 2` (the floor flag's `ncard = 1`
-arm is real), concludes the conditioned pair, with the parallel-pair `k = 0` arm the one new
-geometric brick (two non-proportional extensors in a common panel `n^⊥` → `theorem_55_base` → B1).
-L3 sliced **L3a** (the LI-extensor-pair construction) → **L3b** (the producer + legacy-`hbase`
-rewire). **Next: the L3a build** — see Hand-off.
+green. **L3a landed (the geometric brick):** the LI-extensor-pair construction
+`exists_linearIndependent_extensor_pair_perp` (PanelLayer.lean) + its wedge-LI base fact
+`linearIndependent_pair_extensor_of_li3` (Extensor.lean) + the single-normal perp helper
+`exists_three_perp` (PanelLayer.lean); the new blueprint node `lem:extensor-pair-in-panel`
+(panel-layer.tex, after `lem:theorem-55-base`) is green. **The L3 signature pin is landed (§1.60):**
+the base producer is a NEW graph-level `theorem_55_base_producer` (Pinning.lean, beside the engine) —
+NOT a re-aim of `theorem_55_base` (which is the framework-level *rank engine*, stays put); it
+dispatches on the landed trichotomy (`isMinimalKDof_ncard_le_two_trichotomy`), covers
+`1 ≤ ncard ≤ 2` (the floor flag's `ncard = 1` arm is real), concludes the conditioned pair, with
+the parallel-pair `k = 0` arm the geometric brick L3a just landed (→ `theorem_55_base` → B1).
+**Next: the L3b build** — see Hand-off.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -86,8 +89,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   `thm:minimal-kdof-reduction-all-k` node in `molecular-induction.tex` (2026-06-12).
 - [ ] **L3** — the base producer (`hbase` carry discharged); pinned §1.60, sliced L3a (the
   LI-extensor-pair-in-`n^⊥` construction) → L3b (`theorem_55_base_producer` + legacy-`hbase`
-  rewire). NEW node `lem:theorem-55-base-producer` (panel-layer.tex); `def:genuine-hinge-realization`
-  + `lem:theorem-55-base` already green.
+  rewire). **L3a landed**: `exists_linearIndependent_extensor_pair_perp` (PanelLayer.lean) +
+  wedge-LI fact `linearIndependent_pair_extensor_of_li3` (Extensor.lean) + perp helper
+  `exists_three_perp` (PanelLayer.lean); node `lem:extensor-pair-in-panel` green. **L3b remains**:
+  `theorem_55_base_producer` (trichotomy dispatch + three arms + GP pair) in Pinning.lean +
+  legacy-`hbase` rewire of `theorem_55_d3`; NEW node `lem:theorem-55-base-producer` (panel-layer.tex);
+  `def:genuine-hinge-realization` + `lem:theorem-55-base` already green.
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
@@ -109,24 +116,31 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   L0/L1 pins; V5 (L4), V6 (L5), V7 (L6), V8 (L7), V9 (L10), V10 (resolved at L0) gate to
   their layer's design pass. V8 (subfamily extraction at rank form) is the one with real
   proof-shape uncertainty left.
-- **V-base (L3, §1.60(g)):** three bounded items to confirm at the L3a/L3b build — the wedge-LI
-  fact `LI ![a,b,c] → LI ![a∧b, a∧c]` (basis-level Grassmann; mathlib `exteriorPower` basis API or
-  a short Extensor.lean mirror), the landed single-hinge-row rank lemma name (arm (ii)), and
-  whether the landed single-edge GP `ofNormals`-at-alg-indep-seed infra covers the single-edge GP
-  arm. None research-shaped.
+- **V-base (L3, §1.60(g)):** the wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]` is **resolved** —
+  mirrored as `linearIndependent_pair_extensor_of_li3` (Extensor.lean), the two-subset instance of
+  the join-to-isolate technique behind `omitTwoExtensor_linearIndependent_of_li`; no mathlib basis
+  API needed. Two L3b items remain to confirm at the L3b build: the landed single-hinge-row rank
+  lemma name (arm (ii)), and whether the landed single-edge GP `ofNormals`-at-alg-indep-seed infra
+  covers the single-edge GP arm. Neither research-shaped.
 
 ## Hand-off / next phase
 
-**L0–L2 complete; L3 pinned (§1.60).**
-**Smallest next forward commit: the L3a build** — `exists_linearIndependent_extensor_pair_perp`
-in Extensor.lean / PanelLayer.lean (§1.60(c)/(g)): for a nonzero `n : Fin 4 → ℝ`, two points-pairs
-in `n^⊥` whose `ScrewSpace 2` extensors are linearly independent (pick three LI vectors `a,b,c`
-spanning the 3-dim `n^⊥`, set `p := ![a,b]`, `q := ![a,c]`; LI of `![a∧b, a∧c]` from LI of
-`![a,b,c]` — the wedge-LI fact V-base flags). The cheapest complete sub-step, no producer yet;
-optionally mints `lem:extensor-pair-in-panel`. Then **L3b** = `theorem_55_base_producer`
-(trichotomy dispatch + the three arms + the GP pair) in Pinning.lean + the legacy-`hbase` rewire
-of `theorem_55_d3` (additive, `.2` projection) + green `lem:theorem-55-base-producer`. Resolve
-V-base (§1.60(g)) at the L3a/L3b design micro-pass before the first build.
+**L0–L2 + L3a complete; L3 pinned (§1.60).**
+**Smallest next forward commit: the L3b build** — `theorem_55_base_producer` in Pinning.lean
+(§1.60(a)/(b)/(d)/(e)): the graph-level base producer dispatching on
+`isMinimalKDof_ncard_le_two_trichotomy`, concluding the conditioned pair
+`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` for `1 ≤ |V| ≤ 2`.
+Three bare-conjunct arms (§1.60(b)): (i) `E = ∅` rank-0 empty framework; (ii) single edge, rank
+`D−1`, single nonzero extensor in `n^⊥` via the L3a brick's first pair + single-row-`≥` + B2-`≤`;
+(iii) parallel pair `k=0`, full rank `D`, the L3a brick's `exists_linearIndependent_extensor_pair_perp`
+feeding `theorem_55_base` + B1. GP arms (§1.60(e)): (iii) excluded by `G.Simple`
+(`not_simple_of_isMinimalKDof_of_ncard_two`); (ii) the one genuine GP construction (`def=1` at rank
+`D−1`); (i) rank-0. Land in the SAME commit the legacy-`hbase` rewire of `theorem_55_d3`
+(`(theorem_55_base_producer hD G hG hne (by omega)).2`, additive). NEW node
+`lem:theorem-55-base-producer` (panel-layer.tex, after `lem:extensor-pair-in-panel`), `\uses` the L3a
+node + `lem:two-vertex-trichotomy` + `lem:theorem-55-base` + the two motives. Confirm the two
+remaining V-base items (single-hinge-row rank lemma name; single-edge GP infra) at the L3b
+design micro-pass before the build.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -178,3 +192,15 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   One new geometric brick (`exists_linearIndependent_extensor_pair_perp`); GP conjunct: parallel-pair
   excluded by simplicity (vacuity), single-edge GP does real work. Sliced L3a→L3b; blueprint mints
   one node `lem:theorem-55-base-producer`, no statement-grep ripple. Canonical: §1.60.
+- **L3a build (2026-06-12, opus):** the geometric brick, three decls.
+  `linearIndependent_pair_extensor_of_li3` (Extensor.lean): `LI ![a,b,c] → LI ![a∧b, a∧c]` via the
+  two-subset join-to-isolate technique (left-join with `c`/`b` to kill the cross term; the surviving
+  triple wedge nonzero by `extensor_ne_zero_iff_linearIndependent` on a reindex of `![a,b,c]`) —
+  resolves the V-base wedge-LI flag, no mathlib basis API. `exists_three_perp` + the target
+  `exists_linearIndependent_extensor_pair_perp` (PanelLayer.lean) mirror
+  `exists_two_perp_of_linearIndependent_normals` (single-normal kernel, finrank ≥ 3) + the
+  `⋀[ℝ]^2`-subtype LI transport idiom from `span_omitTwoExtensor_eq_top`. **Deviation (benign):
+  dropped the pinned `hn : n ≠ 0`** — `n^⊥` is ≥3-dim even at `n=0`, so the construction needs no
+  nonzero hypothesis; strengthens the lemma, the L3b producer instantiates at a chosen nonzero
+  normal anyway. Node `lem:extensor-pair-in-panel` green. No FRICTION (reindex idioms already
+  covered).

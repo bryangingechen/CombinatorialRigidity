@@ -379,6 +379,33 @@ whole induction.
   condition on bodies outside $\{u, v\}$ is needed.
 \end{proof}
 
+\begin{lemma}[Two independent extensors in a common panel]
+  \label{lem:extensor-pair-in-panel}
+  \lean{CombinatorialRigidity.Molecular.exists_linearIndependent_extensor_pair_perp}
+  \leanok
+  \uses{def:extensor, lem:extensor-independence}
+  For any normal $n \in \R^4$ there are two point-pairs $p, q : \{0,1\} \to \R^4$, each lying
+  in the panel $n^{\perp} = \{x : x \cdot n = 0\}$, whose grade-2 extensors
+  $\mathtt{extensor}\,p,\ \mathtt{extensor}\,q \in \bigwedge^2 \R^4$ are linearly independent.
+  This is the coincident-panel ($\Pi(u) = \Pi(v) = n^{\perp}$) geometric brick of
+  Katoh--Tanigawa's parallel-pair realization (Lemma~5.3, KT~2011 p.~670): two hinges sharing a
+  panel but carrying non-proportional supporting extensors, the input the two-vertex base producer
+  feeds to \cref{lem:theorem-55-base}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:extensor-independence}
+  The panel $n^{\perp}$ has dimension at least $3$ in $\R^4$ (it is the kernel of the single
+  pairing functional $x \mapsto x \cdot n$, so $\dim n^{\perp} \ge 4 - 1 = 3$, with equality
+  unless $n = 0$). Pick three linearly independent vectors $a, b, c \in n^{\perp}$ and set
+  $p = (a, b)$, $q = (a, c)$. The two wedges $a \wedge b$ and $a \wedge c$ are linearly
+  independent: a relation $s\,(a \wedge b) + t\,(a \wedge c) = 0$, joined on the left with $c$
+  (resp.\ $b$), kills the second (resp.\ first) term by the alternating property and leaves
+  $s\,(c \wedge a \wedge b) = 0$ (resp.\ $t\,(b \wedge a \wedge c) = 0$); the surviving triple
+  wedge is nonzero by independence of $\{a, b, c\}$, so $s = t = 0$. (This is the two-subset
+  instance of the join-to-isolate technique behind \cref{lem:extensor-independence}.)
+\end{proof}
+
 \begin{lemma}[Theorem 5.5 triangle base ($|V(G)| = 3$)]
   \label{lem:theorem-55-triangle}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_triangle}
