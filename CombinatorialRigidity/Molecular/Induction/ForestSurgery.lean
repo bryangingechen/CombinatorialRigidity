@@ -2383,6 +2383,79 @@ theorem minimal_kdof_reduction_full [DecidableEq β] [Finite α] {n : ℕ} {P : 
     · push Not at hrig
       exact hsplit G hG hV3 hrig (fun G' hG' hG'2 hlt => IH _ (hN ▸ hlt) _ rfl hG' hG'2)
 
+/-- **KT's four-case all-`k` induction skeleton** (KT 2011 p. 671, §6 opening + IH (6.1)):
+a property `P` of minimal `k`-dof-graphs that is closed under four cases holds for every
+nonempty minimal `k`-dof-graph. The four cases are:
+
+1. **`hbase`**: `|V| ≤ 2` (the base region; producers handle the `|V| = 1` / `|V| = 2`
+   trichotomy from `isMinimalKDof_ncard_le_two_trichotomy`).
+2. **`hcut`**: `|V| ≥ 3` and `¬TwoEdgeConnected` (KT §6.1, the cut-edge decomposition;
+   `exists_cut_decomposition_of_not_twoEdgeConnected` supplies two smaller nonempty pieces).
+3. **`hcontract`**: `|V| ≥ 3` and `∃ H, H.IsProperRigidSubgraph G n` (KT §6.2, Case I;
+   `rigidContract_isMinimalKDof` reduces to a smaller minimal `k'`-dof-graph).
+4. **`hsplitPos`** / **`hsplitZero`**: `|V| ≥ 3`, `TwoEdgeConnected`, no proper rigid
+   subgraph, with the split at `k > 0` vs `k = 0` (KT §6.3 and §6.4 respectively;
+   `splitOff_isMinimalKDof_of_pos` reduces the `k > 0` branch).
+
+Each case is handed the full conditioned induction hypothesis over every strictly-smaller
+nonempty minimal `k'`-dof-graph (IH (6.1) of KT). The principle requires no `hD`/`hfresh`/
+`[Finite β]` — following the `minimal_kdof_reduction_full` precedent, all reduction is
+left to the producer. `[DecidableEq β]` is inherited from `IsMinimalKDof`; the `k`-dispatch
+(`0 < k` vs `k = 0` in the no-rigid 2EC branch) derives from `deficiency_nonneg`.
+
+This is the well-founded induction principle underlying the algebraic induction of KT
+Theorem 5.5 (Katoh–Tanigawa 2011, §6 proof opening). It is distinct from
+`minimal_kdof_reduction` (KT Theorem 4.9, `thm:minimal-kdof-reduction`), which handles only
+`k = 0`; see `notes/Phase22i.md` (§1.59) for the two-principle co-existence rationale. -/
+theorem minimal_kdof_reduction_all_k [DecidableEq β] [Finite α] {n : ℕ}
+    {P : Graph α β → Prop}
+    (hbase : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → V(G).Nonempty →
+      V(G).ncard ≤ 2 → P G)
+    (hcut : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      ¬ G.TwoEdgeConnected →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hcontract : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hsplitPos : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 0 < k →
+      3 ≤ V(G).ncard → G.TwoEdgeConnected →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hsplitZero : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G) :
+    ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → V(G).Nonempty → P G := by
+  classical
+  intro k G
+  induction hN : V(G).ncard using Nat.strong_induction_on generalizing k G with
+  | _ N IH =>
+  intro hG hne
+  -- IH plumbing: wrap the strong IH into the principle's IH shape.
+  have IH' : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → P G' :=
+    fun k' G' hG' hne' hlt => IH _ (hN ▸ hlt) k' G' rfl hG' hne'
+  -- Dispatch on ncard.
+  by_cases hV2 : V(G).ncard ≤ 2
+  · exact hbase k G hG hne hV2
+  · push Not at hV2
+    have hV3 : 3 ≤ V(G).ncard := hV2
+    -- Dispatch on 2-edge-connectivity.
+    by_cases htec : G.TwoEdgeConnected
+    · -- 2EC: dispatch on proper rigid subgraph existence.
+      by_cases hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n
+      · exact hcontract k G hG hV3 hrig IH'
+      · -- No proper rigid subgraph; dispatch on `k = 0` vs `k > 0`.
+        push Not at hrig
+        have hk0 : 0 ≤ k := hG.1 ▸ deficiency_nonneg G n hne
+        by_cases hk : k = 0
+        · exact hsplitZero G (hk ▸ hG) hV3 htec hrig IH'
+        · exact hsplitPos k G hG (lt_of_le_of_ne hk0 (Ne.symm hk)) hV3 htec hrig IH'
+    · exact hcut k G hG hV3 htec IH'
+
 /-! ### The repacking descent: a base admits a balanced forest packing
 (`lem:forest-surgery-split`, the balanced-packing descent — outer loop)
 

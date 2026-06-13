@@ -1266,6 +1266,29 @@ route that bypasses the deferred forest surgery
   \texttt{theorem\_55\_generic}'s Case~III interface.
 \end{proof}
 
+\begin{theorem}[All-$k$ induction skeleton for Theorem~5.5]
+  \label{thm:minimal-kdof-reduction-all-k}
+  \lean{Graph.minimal_kdof_reduction_all_k}
+  \leanok
+  \uses{def:k-dof, def:cut-edges-2ec, def:rigid-subgraph}
+  A property $P$ of graphs that is closed under four cases holds of every
+  nonempty minimal $k$-dof-graph.  The four cases are: \textup{(i)} $|V| \le 2$
+  (base region); \textup{(ii)} $|V| \ge 3$ and $G$ is not $2$-edge-connected
+  (cut-edge decomposition, \cref{def:cut-edges-2ec}); \textup{(iii)} $|V| \ge 3$
+  and $G$ has a proper rigid subgraph (\cref{def:rigid-subgraph}); \textup{(iv)}
+  $|V| \ge 3$, $G$ is $2$-edge-connected, has no proper rigid subgraph, with
+  the split $k > 0$ vs $k = 0$.  Each case is handed the full conditioned
+  induction hypothesis over every strictly-smaller nonempty minimal $k'$-dof-graph
+  (IH (6.1) of Katoh--Tanigawa~\cite[Sect.~6]{katohTanigawa2011}).
+\end{theorem}
+\begin{proof}
+  \leanok
+  Strong induction on $|V|$, generalizing over $k$.  At $|V| \le 2$ the base
+  case fires.  At $|V| \ge 3$: $0 \le k$ from \texttt{deficiency\_nonneg};
+  three nested case splits on $2$-edge-connectivity, proper-rigid-subgraph
+  existence, and $k = 0$ vs $k > 0$ dispatch to the four cases.
+\end{proof}
+
 \subsection{Simplicity and the adjacent-degree-2-pair lemma ($d=3$)}
 \label{sec:simplicity-and-adjacent-pair}
 

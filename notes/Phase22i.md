@@ -15,14 +15,10 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1 fully complete (L1a–L1j); the L2 signature pin is landed (§1.59).** The pin
-implements the §1.58(e)(iv) floor flag (conclude at `V(G).Nonempty`, `hbase` covers
-`1 ≤ ncard ≤ 2`, **and the IH carries the same `Nonempty` guard** — the one consequence
-the flag's wording left implicit), verifies the four-case split against KT p. 671
-(verbatim match; `hcontract` carries no 2EC, paper-faithful), audits all five slots
-against the landed bricks (clean), and pins the blueprint node
-(`thm:minimal-kdof-reduction-all-k`, new, green on landing). **Next: the L2 build** —
-see Hand-off.
+**L2 complete (L0–L2 all done).** `minimal_kdof_reduction_all_k` landed in `ForestSurgery.lean`
+directly after `minimal_kdof_reduction_full`; `thm:minimal-kdof-reduction-all-k` is green in
+`molecular-induction.tex` `sec:molecular-induction-thm49`. Build warning-clean; `lake lint` +
+`checkdecls` + `blueprint/lint.sh` all pass. **Next: the L3 pin (§1.60)** — see Hand-off.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -79,9 +75,9 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   `lem:splitoff-kdof-criterion`; `lem:case-III-claim-6-11-base` restated in place);
   *L1j* the commuting square `induce_insert_splitOff` + KT 4.8(ii)
   `splitOff_isMinimalKDof_of_pos` (`lem:reduction-step-pos`).
-- [ ] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c));
-  signature pinned in §1.59 (one additive commit: the decl beside
-  `minimal_kdof_reduction_full` + the green `thm:minimal-kdof-reduction-all-k` node).
+- [x] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c));
+  signature pinned in §1.59; landed in `ForestSurgery.lean` + green
+  `thm:minimal-kdof-reduction-all-k` node in `molecular-induction.tex` (2026-06-12).
 - [ ] **L3** — the base producer (`hbase` carry discharged).
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
@@ -107,16 +103,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 and L1 fully complete; the L2 pin (§1.59) landed.**
-**Smallest next forward commit: the L2 build** — one additive commit per §1.59:
-`minimal_kdof_reduction_all_k` in `ForestSurgery.lean` directly after
-`minimal_kdof_reduction_full` (the exact signature is §1.59(a); proof skeleton §1.59(a)(v):
-the `_full` strong-induction pattern `generalizing k G`, `hbase` at `ncard ≤ 2`, three
-nested `by_cases` at `3 ≤ ncard` with `0 ≤ k` from `hG.1 ▸ deficiency_nonneg`), plus the
-new green node `thm:minimal-kdof-reduction-all-k` in `molecular-induction.tex`
-`sec:molecular-induction-thm49` (`\uses{def:k-dof, def:cut-edges-2ec, def:rigid-subgraph}`;
-prose per §1.59(d) — the KT §6 p. 671 induction skeleton, not a numbered KT theorem). The
-legacy `minimal_kdof_reduction[_full]` is untouched (§1.59(c)). Then the §1.60 L3 pin.
+**L0–L2 fully complete.**
+**Smallest next forward commit: the L3 pin (§1.60)** — the base producer (`hbase` carry
+discharged): the `|V| = 2` trichotomy (KT p. 671: `E = ∅` / one edge / parallel pair,
+`k ∈ {D, 1, 0}`) + the graph-level Lemma-5.3 coincident-panel brick (two non-proportional
+extensors in a common panel, M1 pointwise form) re-aimed into `Pinning.lean`'s
+`theorem_55_base`. Design pass per §1.60 first (the pin), then build.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -157,3 +149,5 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   consequence; four-case split verified verbatim vs KT p. 671 (`hcontract` without 2EC is
   paper-faithful); five-slot audit clean; legacy principle stays beside the new one
   (neither derivable from the other); canonical: §1.59.
+- **L2 build (2026-06-12, sonnet):** per §1.59 — `minimal_kdof_reduction_all_k` one additive
+  commit; `push_neg` → `push Not` (deprecation fix); `thm:minimal-kdof-reduction-all-k` green.
