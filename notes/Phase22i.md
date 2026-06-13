@@ -15,7 +15,8 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3 + L4 + L5a-i complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
+**L2 + L3 + L4 + L5a-i + the L5a-ii `hInj` discharge complete; four carries remain: `h622`, `h65`,
+`hsplit`, `hcontract`.**
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
 **L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
@@ -23,11 +24,22 @@ polynomial extractor, and GP producer are all Lean-green; `lem:block-rank-cut`,
 `lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`, and
 `lem:case-cut-edge-realization-gp` are all green blueprint nodes.
 **L5a-i complete**: `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` landed in
-`RigidityMatrix.lean` (`section SpliceBrick`) with `lem:rigidityRows-splice-rank-add` green. Key
-technique: `letI hSAG : AddCommGroup ↥S := S.addCommGroup` to shadow the global `S.addCommMonoid`
-instance and enable `(D.domRestrict S).ker.finrank_quotient_add_finrank` + `quotKerEquivRange` +
-`ker_domRestrict` + `map_comap_subtype` (see FRICTION entry below). V6-a RESOLVED.
-**Next: L5a-ii — `case_I_realization_nonsimple` (CaseI.lean)**.
+`RigidityMatrix.lean` (`section SpliceBrick`) ABSTRACT over `D` + the four interface hypotheses
+(`hFH_le`, `hFH_ker`, `hFc_surv_le`, `hInj`), proving only the block-triangular rank-nullity;
+`lem:rigidityRows-splice-rank-add` green.
+**L5a-ii `hInj` discharge complete (the genuinely-new math, split out per §1.64(f))**: the brick's
+`hInj` hypothesis — that `(extProj V(H)).dualMap` preserves the contraction's rigidity-row-span rank
+at `def = k > 0` — landed as three lemmas in `CaseI.lean` beside the rigid Claim-6.4 versions:
+`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` (the `Z ⊔ W = ⊤` core, proved
+by an explicit `z = constant-S r-on-V(G)` decomposition — NO rank count, NO rigidity, the deficiency-
+tolerant content of KT Lemma 5.1) → `BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`
+(the dual-API mirror of the rigid `injOn_extProj_dualMap_rigidityRows`, swapping in the rigidity-free
+`Z ⊔ W = ⊤`) → `BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`
+(the direct `hInj`-form `finrank Sc = finrank (Sc.map D)`, via rank-nullity on `D|Sc`). Mints
+`lem:extProj-preserves-rank-of-inter` (rigidity-matrix.tex, beside the splice brick). All three
+axiom-clean; build+lint+blueprint-verify green. V6-a fully RESOLVED.
+**Next: L5a-ii (remainder) — `case_I_realization_nonsimple` (CaseI.lean)**, now pure plumbing
+(the `hInj` interface hyp is discharged).
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -141,11 +153,20 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     rigidity-free collapse row-correspondence). Mints `lem:rigidityRows-splice-rank-add`. V6-a RESOLVED. Key
     quirk: `letI` (not `haveI`) needed to shadow global `Submodule.addCommMonoid` with `AddCommGroup ↥S` — see
     FRICTION entry (`letI` vs `haveI` for `AddCommMonoid`/`AddCommGroup` instance diamond on submodules).
-  - [ ] **L5a-ii** — `case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization`):
-    IH-plumbing + the L5a-i brick + B2 + the coincident-panel Lemma-5.3 leg (`exists_extensor_in_two_panels` at
-    `n₁=n₂`) + the parallel-pair proper-rigidity (`isKDof_zero_of_parallel_pair`). Mints
-    `lem:case-I-realization-nonsimple`. (The old bare `induce`-brick + producer 90e8d4a was built then reverted,
-    superseded by these two leaves.)
+  - [x] **L5a-ii `hInj` discharge** — the genuinely-new column-deletion math, split out of the producer per
+    §1.64(f)'s sanction. Three lemmas in `CaseI.lean` (beside the rigid Claim-6.4 versions):
+    `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` (rigidity-free `Z ⊔ W = ⊤` via the
+    explicit `z = const-S r-on-V(G)` decomposition) → `…injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`
+    → `…finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` (the direct `hInj`-form). Mints
+    `lem:extProj-preserves-rank-of-inter`. V6-a RESOLVED.
+  - [ ] **L5a-ii producer** — `case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization`):
+    now pure plumbing (the `hInj` interface hyp is discharged above). IH on both legs (`G[{e,f}]` H-leg + the
+    *contraction* `rigidContract G H r`) + the L5a-i brick fed the discharged `hInj` + the three other interface
+    hyps (`hFH_le`/`hFH_ker` via `hingeRow_comp_extProj_eq_zero`, `hFc_surv_le` via
+    `panelRow_collapseTo_comp_extProj_dualMap`) + B2 + the coincident-panel Lemma-5.3 leg
+    (`exists_extensor_in_two_panels` at `n₁=n₂`) + the parallel-pair proper-rigidity
+    (`isKDof_zero_of_parallel_pair`). Mints `lem:case-I-realization-nonsimple`. (The old bare `induce`-brick +
+    producer 90e8d4a was built then reverted, superseded by this structure.)
   - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch. §1.64(f)
     caveat: the simple all-`k` restate is **not** a mechanical `0→k` substitution — it re-routes its surviving
     block through the L5a-i brick's GP variant (the landed `rigidContract_exterior_rank_transport` leg is
@@ -209,30 +230,33 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L5a-i complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
+**L0–L5a-i + the L5a-ii `hInj` discharge complete; four carries remain: `h622`, `h65`, `hsplit`,
+`hcontract`.**
 
-`le_finrank_span_rigidityRows_of_splice` Lean-green, `lem:rigidityRows-splice-rank-add` green,
-build+lint+checkdecls clean (coordinator-verified). V6-a RESOLVED. Canonical: §1.64. **Note the
-brick landed ABSTRACT** — it takes `D` as an abstract endomorphism + the four hypotheses
-(`hFH_le`, `hFH_ker`, `hFc_surv_le`, `hInj`) and proves only the block-triangular **rank-nullity**
-(§1.64(f)'s "rank-nullity half"). The §1.64(c) genuinely-new step — the **Lemma-5.1 column-deletion**
-establishing `hInj : finrank Sc = finrank (Sc.map D)` (D = `(extProj V(H)).dualMap` injective on the
-contraction-row span, the deleted single `v∗=r` column preserves rank via
-`finrank_pinnedMotions_add_screwDim`) — was **NOT in the brick; it is relocated to L5a-ii** (§1.64(f)'s
-"Lemma-5.1 half", still unbuilt).
+The L5a-i splice brick is ABSTRACT over `D` + four interface hypotheses (`hFH_le`, `hFH_ker`,
+`hFc_surv_le`, `hInj`), proving only the block-triangular rank-nullity (§1.64(f)'s "rank-nullity
+half"). The §1.64(c) genuinely-new step — the **Lemma-5.1 column-deletion** discharging
+`hInj : finrank Sc = finrank (Sc.map D)` (`D = (extProj V(H)).dualMap` rank-preserving on the
+deficient contraction-row span) — **is now landed** as `lem:extProj-preserves-rank-of-inter`'s three
+lemmas (`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` →
+`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` →
+`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`), all axiom-clean,
+build+lint+blueprint-verify green (coordinator-verifiable). V6-a fully RESOLVED. Canonical: §1.64.
 
-**Smallest next forward commit: L5a-ii — `case_I_realization_nonsimple` (CaseI.lean)** beside
-`case_cut_edge_realization`. **This is NOT mere IH-plumbing** — it must discharge the brick's four
-interface hypotheses, and discharging **`hInj` is the relocated genuinely-new (b)(iii) Lemma-5.1
-column-deletion** (the real new linear algebra of L5, per §1.64(c)), with `hFc_surv_le` the (b)(ii)
-collapse-correspondence (`panelRow_collapseTo_comp_extProj_dualMap`, CaseI.lean:940) and `hFH_ker` the
-(b)(i) row-vanishing (`hingeRow_comp_extProj_eq_zero`). On top of that interface: IH on both legs (the
-H-leg `G[{e,f}]` and the *contraction* `rigidContract G H r`), B2 for the `≤`, the coincident-panel
-Lemma-5.3 leg (`exists_extensor_in_two_panels` at `n₁=n₂`), and the parallel-pair proper-rigidity
-(`isKDof_zero_of_parallel_pair`). **Rate/scope it as the genuinely-new build it is (P≈3), not plumbing**
-— if `hInj`/the column-deletion won't fit alongside the producer, split it out as its own slice
-(§1.64(f) sanctioned the rank-nullity / Lemma-5.1 split; the brick took the former, so the latter +
-the producer remain). Mints `lem:case-I-realization-nonsimple`. §1.64(d)/(f).
+**Smallest next forward commit: the L5a-ii producer — `case_I_realization_nonsimple` (CaseI.lean)**
+beside `case_cut_edge_realization`. **Now pure plumbing** (P≈1–2) — the brick's genuinely-new `hInj`
+interface hypothesis is discharged by `…finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`
+(fed `F := Fc` the contraction realization, `proj := V(H)`, `hinter` from
+`rigidContract_vertexSet_inter_eq_singleton`). The remaining brick interface hyps are landed
+correspondences: `hFH_ker` from `hingeRow_comp_extProj_eq_zero` (CaseI.lean:862), `hFc_surv_le` from
+`panelRow_collapseTo_comp_extProj_dualMap` (CaseI.lean:940), `hFH_le` from the H-block ⊆ full-span row
+membership. On top of that interface: IH on both legs (the H-leg `G[{e,f}]` parallel pair via
+`isKDof_zero_of_parallel_pair`, and the *contraction* `rigidContract G H r` minimal-`k`-dof via
+`rigidContract_isMinimalKDof`), B2 (`finrank_span_rigidityRows_add_deficiency_le`) for the `≤`, the
+coincident-panel Lemma-5.3 hinge (`exists_extensor_in_two_panels` at `n₁=n₂`), and the rank arithmetic
+`D + (D(|V|−2)−k) = D(|V|−1)−k`. Mints `lem:case-I-realization-nonsimple`, `\uses`-ing the splice brick
++ `lem:extProj-preserves-rank-of-inter`. Model the edge-dispatch on the landed L4a
+`case_cut_edge_realization` producer. §1.64(d)/(f).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -418,5 +442,17 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   two `AddCommMonoid ↥S` instances are NOT definitionally equal; `letI` shadows where `haveI` does not);
   then `(D.domRestrict S).ker.finrank_quotient_add_finrank` for quotient rank-nullity; `quotKerEquivRange` +
   `range_domRestrict` for the quotient ≅ image identification; `ker_domRestrict` + `finrank_map_subtype_eq` +
-  `map_comap_subtype` for the kernel ≅ `S ⊓ ker D`; outer `linarith`. V6-a RESOLVED. Key quirk → FRICTION
-  (below). `lem:rigidityRows-splice-rank-add` (rigidity-matrix.tex) green.
+  `map_comap_subtype` for the kernel ≅ `S ⊓ ker D`; outer `linarith`. Brick is ABSTRACT over `D` + the four
+  interface hyps incl. `hInj` (the genuinely-new content relocated to the next slice). Key quirk →
+  TACTICS-QUIRKS §54. `lem:rigidityRows-splice-rank-add` (rigidity-matrix.tex) green.
+- **L5a-ii `hInj` discharge (2026-06-13, opus):** the §1.64(c) genuinely-new column-deletion math, split out of
+  the producer (§1.64(f) sanctioned splitting the rank-nullity / Lemma-5.1 halves). Three lemmas in `CaseI.lean`
+  beside the rigid Claim-6.4 versions. The crux `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`
+  proves the general-rank `Z ⊔ W = ⊤` by an **explicit decomposition, no rank count, no rigidity**: any `S` =
+  `z + (S−z)` with `z a = if a ∈ V(G) then S r else S a` (a motion — constraints have both endpoints in `V(G)`
+  where `z` is the constant `S r`) and `S − z` vanishing on `proj = {r} ∪ (proj∖V(G))`. The rigid sibling's count
+  route (`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_...`) was NOT reusable (rigidity propagates `S r = 0`
+  to all of `V(G)`, false at `def > 0`) — the explicit-`z` route sidesteps it. Then dual-API mirror →
+  `injOn_…_of_inter_eq_singleton` (swap `Z ⊔ W = ⊤` input only), `hInj`-form via rank-nullity on `D|Sc`. Mints
+  `lem:extProj-preserves-rank-of-inter`. Axiom-clean. V6-a fully RESOLVED. FRICTION: `disjoint_ker_iff_injOn`
+  (not deprecated `disjoint_ker'`).

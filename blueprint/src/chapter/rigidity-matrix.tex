@@ -351,6 +351,45 @@ and the generic-rank argument are in hand.
   Adding the two inequalities and using rank-nullity gives the bound.
 \end{proof}
 
+\begin{lemma}[The exterior-column projection preserves the rigidity-row rank at any rank; the splice brick's injectivity input]
+  \label{lem:extProj-preserves-rank-of-inter}
+  \lean{CombinatorialRigidity.Molecular.infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton}
+  \leanok
+  \uses{def:rigidity-matrix, lem:rank-delete-vertex, lem:claim-6-4}
+  Let $F$ be a body-hinge framework and $t$ a body set meeting the vertex
+  set in exactly one body, $V(F.\mathrm{graph}) \cap t = \{r\}$.  Let
+  $D = (\operatorname{extProj} t)^{\!*}$ be the dual of the projection that
+  zeroes the $t$-columns.  Then $D$ is injective on the rigidity-row span
+  $S = \operatorname{span}(R(F))$, so the projection preserves its rank,
+  $\operatorname{rank}(S) = \operatorname{rank}(D(S))$.  This is the
+  injectivity hypothesis (3) of \cref{lem:rigidityRows-splice-rank-add},
+  discharged at a \emph{deficient} contraction leg where the
+  full-rigidity-gated form (\cref{lem:claim-6-4}) is unavailable.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:rigidity-matrix, lem:rank-delete-vertex}
+  Injectivity on $S$ is $S \cap \ker D = \bot$, equivalently
+  $Z \sqcup W = \top$ for $Z$ the infinitesimal motions and
+  $W = \operatorname{range}(\operatorname{extProj} t)$ the screw
+  assignments vanishing on $t$ (by the dual-annihilator calculus:
+  $\ker D = W^\circ$, $S = Z^\circ$, so $S \cap \ker D = (Z \sqcup W)^\circ$).
+  Unlike the rigid form, $Z \sqcup W = \top$ holds at \emph{any} rank by an
+  explicit decomposition needing no rank count: any assignment $\sigma$
+  splits as $z + (\sigma - z)$ with $z(a) = \sigma(r)$ for $a \in V(G)$ and
+  $z(a) = \sigma(a)$ otherwise; $z$ is a motion (every constraint has both
+  endpoints in $V(G)$, where $z$ is the constant $\sigma(r)$, so the
+  relative screw is $0$), and $\sigma - z$ vanishes on $t = \{r\} \cup
+  (t \setminus V(G))$ since $V(G) \cap t = \{r\}$.  This is the algebraic
+  content KT~\cite{katohTanigawa2011} invokes through Lemma~5.1
+  (\cref{lem:rank-delete-vertex}): deleting the single shared body $r$'s
+  columns preserves rank, the only motion lost to the projection being the
+  trivial $\sigma(r)$-shift recovered by $z$.  Rank-nullity for $D$
+  restricted to $S$ then gives $\operatorname{rank}(D(S)) = \operatorname{rank}(S)$.
+\end{proof}
+
 \begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]
   \label{lem:block-rank-cut}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}

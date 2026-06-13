@@ -1107,6 +1107,135 @@ theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows
     infinitesimalMotions_sup_range_extProj_eq_top F hrig hr hinter,
     Submodule.dualAnnihilator_top]
 
+/-- **The motions and the exterior-projection range jointly span everything — at ANY rank, no
+rigidity** (`lem:rigidityRows-splice-rank-add`, the genuinely-new general-rank input of the L5a
+splice brick; Katoh–Tanigawa 2011 §6.2, eq. (6.5) / Lemma 5.1, Phase 22i L5a-ii). The
+**deficiency-tolerant** sibling of `infinitesimalMotions_sup_range_extProj_eq_top`: for *any*
+body-hinge framework `F` and a block `proj` meeting the vertex set in exactly the representative
+body `r` (`V(G) ∩ proj = {r}`), the infinitesimal motions `Z = infinitesimalMotions` and the
+exterior-projection range `W = range (extProj proj)` **jointly span everything**: `Z ⊔ W = ⊤`.
+
+Unlike the rigid sibling — which routes through the `Z ⊔ W` *finrank count* and needs full
+rigidity to pin the residual at `D(|V(G)ᶜ| + 1 − |proj|)` — this proves `Z ⊔ W = ⊤` by an
+**explicit decomposition** that needs no rank input at all. For any assignment `S`, set the
+"flattened-on-`V(G)`" motion `z a := if a ∈ V(G) then S r else S a`: `z` is an infinitesimal motion
+(every constraint has both endpoints in `V(G)`, where `z` is the constant `S r`, so the relative
+screw `z u − z v = 0 ∈ span C(p(e))`), and the residual `S − z` vanishes on `proj` (on `r`:
+`S r − S r = 0`; on `proj ∖ {r} ⊆ V(G)ᶜ`: `z a = S a`, so `S a − z a = 0`), hence lies in
+`W = ⨅ i ∈ proj, ker (proj i)` (`extProj_range_eq_iInf_ker_proj`). This is the algebraic
+content KT (6.5) invokes through Lemma 5.1: deleting the single shared body `r`'s columns
+(`extProj proj` zeroes exactly column `r` of the contraction's own bodies, since
+`V(G) ∩ proj = {r}`) preserves rank because the only `Z`-motion lost to the projection is the
+trivial `S r`-shift, recovered by the constant-on-`V(G)` motion `z`. -/
+theorem infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton
+    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    F.infinitesimalMotions ⊔ LinearMap.range (extProj (k := k) proj) = ⊤ := by
+  classical
+  rw [eq_top_iff]
+  intro S _
+  rw [Submodule.mem_sup]
+  -- The "flattened-on-`V(G)`" motion: constant `S r` on `V(G)`, equal to `S` off `V(G)`.
+  refine ⟨fun a => if a ∈ F.graph.vertexSet then S r else S a, ?_,
+    fun a => if a ∈ F.graph.vertexSet then S a - S r else 0, ?_, ?_⟩
+  · -- `z` is an infinitesimal motion: every edge's endpoints lie in `V(G)`, where `z = S r`.
+    intro e u v he
+    rw [BodyHingeFramework.hingeConstraint, if_pos he.left_mem, if_pos he.right_mem, sub_self]
+    exact Submodule.zero_mem _
+  · -- The residual lies in `W = range (extProj proj) = ⨅ i ∈ proj, ker (proj i)`.
+    rw [extProj_range_eq_iInf_ker_proj, Submodule.mem_iInf]
+    intro i
+    rw [Submodule.mem_iInf]
+    intro hi
+    rw [LinearMap.mem_ker, LinearMap.proj_apply]
+    -- A body of `proj` is either `r` (where the residual is `S r − S r = 0`) or outside `V(G)`
+    -- (where it is `0` by the `else` branch), since `V(G) ∩ proj = {r}`.
+    by_cases hiV : i ∈ F.graph.vertexSet
+    · rw [if_pos hiV]
+      have : i = r := (Set.ext_iff.1 hinter i).1 ⟨hiV, hi⟩ |>.symm ▸ rfl
+      rw [this, sub_self]
+    · rw [if_neg hiV]
+  · -- `z + residual = S` pointwise.
+    funext a
+    by_cases haV : a ∈ F.graph.vertexSet
+    · simp only [Pi.add_apply, if_pos haV, add_sub_cancel]
+    · simp only [Pi.add_apply, if_neg haV, add_zero]
+
+/-- **The exterior-column projection is injective on the rigidity-row span — at ANY rank, no
+rigidity** (`lem:rigidityRows-splice-rank-add`, the L5a `hInj` injectivity; Katoh–Tanigawa 2011
+§6.2 eq. (6.5) / Lemma 5.1, Phase 22i L5a-ii). The **deficiency-tolerant** sibling of
+`BodyHingeFramework.injOn_extProj_dualMap_rigidityRows`: for *any* body-hinge framework `F` and a
+block `proj` meeting `V(G)` in exactly the representative body `r`, the exterior-column projection's
+dual map `D = (extProj proj).dualMap` is **injective on the rigidity-row span** `Φ = span
+rigidityRows`. The chain is the *identical* dual-API computation as the rigid sibling
+(`ker D = W.dualAnnihilator`, `Φ = Z.dualAnnihilator`, so `Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator =
+⊥`), differing only in the `Z ⊔ W = ⊤` input: here the rigidity-free
+`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` rather than the rigid count.
+This is the projection-loses-zero-rank fact at a *deficient* contraction leg, which the landed
+rigidity-gated version cannot supply. -/
+theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton
+    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    Set.InjOn (extProj (k := k) proj).dualMap (Submodule.span ℝ F.rigidityRows) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  have hΦeq : Submodule.span ℝ F.rigidityRows
+      = F.infinitesimalMotions.dualAnnihilator := by
+    rw [F.infinitesimalMotions_eq_dualCoannihilator,
+      Subspace.dualCoannihilator_dualAnnihilator_eq]
+  refine LinearMap.injOn_of_disjoint_ker le_rfl ?_
+  rw [disjoint_iff, LinearMap.ker_dualMap_eq_dualAnnihilator_range, hΦeq,
+    ← Submodule.dualAnnihilator_sup_eq,
+    infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton F hinter,
+    Submodule.dualAnnihilator_top]
+
+/-- **The exterior-column projection preserves the rigidity-row-span rank — at ANY rank, no
+rigidity** (`lem:rigidityRows-splice-rank-add`, the L5a brick's `hInj` interface hypothesis;
+Katoh–Tanigawa 2011 §6.2 eq. (6.5) / Lemma 5.1, Phase 22i L5a-ii). The direct `hInj`-form of the
+column-deletion rank invariance: for *any* body-hinge framework `F` and a block `proj` meeting
+`V(G)` in exactly the representative body `r`, the dual map `D = (extProj proj).dualMap` carries the
+rigidity-row span `Sc = span rigidityRows` to an image of the **same** dimension,
+
+  `finrank Sc = finrank (Sc.map D)`.
+
+This is exactly the `hInj` hypothesis of `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`
+(the L5a-i splice brick), discharged at a *deficient* contraction leg where the rigidity-gated route
+is unavailable. It is the genuinely-new linear algebra of L5: deleting the single shared body `r`'s
+columns preserves rank (KT Lemma 5.1, here as injectivity on `Sc` via
+`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`), so the surviving block keeps its full
+rank `D(|sc|−1) − k`. Immediate from injectivity on `Sc`
+(`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`) via rank-nullity for the restricted
+map. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton
+    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) =
+      Module.finrank ℝ
+        ↥((Submodule.span ℝ F.rigidityRows).map (extProj (k := k) proj).dualMap) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  set Sc := Submodule.span ℝ F.rigidityRows with hSc_def
+  set D := (extProj (k := k) proj).dualMap with hD_def
+  -- Injectivity on `Sc` is `Sc ⊓ ker D = ⊥`; rank-nullity for `D|Sc` then gives the equality.
+  have hdisj : Sc ⊓ LinearMap.ker D = ⊥ :=
+    disjoint_iff.mp (LinearMap.disjoint_ker_iff_injOn.mpr
+      (F.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton hinter))
+  -- Rank-nullity for `D` restricted to `Sc`: `finrank (Sc.map D) + finrank (Sc ⊓ ker D)`
+  -- `= finrank Sc`, and the kernel term is `0` by `hdisj`.
+  letI hScAG : AddCommGroup ↥Sc := Sc.addCommGroup
+  have hq : Module.finrank ℝ (↥Sc ⧸ (D.domRestrict Sc).ker) +
+      Module.finrank ℝ ↥(D.domRestrict Sc).ker = Module.finrank ℝ ↥Sc :=
+    (D.domRestrict Sc).ker.finrank_quotient_add_finrank
+  have heq : Module.finrank ℝ (↥Sc ⧸ (D.domRestrict Sc).ker) =
+      Module.finrank ℝ ↥(Sc.map D) := by
+    have h := LinearEquiv.finrank_eq (D.domRestrict Sc).quotKerEquivRange
+    rwa [LinearMap.range_domRestrict] at h
+  have hker0 : Module.finrank ℝ ↥(D.domRestrict Sc).ker = 0 := by
+    rw [LinearMap.ker_domRestrict,
+      ← Submodule.finrank_map_subtype_eq Sc (Submodule.comap Sc.subtype (LinearMap.ker D)),
+      Submodule.map_comap_subtype, hdisj, finrank_bot]
+  rw [heq, hker0, add_zero] at hq
+  exact hq.symm
+
 /-- **The projected-subfamily extraction: a framework rigid on its full vertex set, pinned at a
 block meeting `V(G)` in one body, carries `≥ D(|V(G)|−1)` independent *exterior-projected* panel
 rows of its linking edges** (`lem:claim-6-4`, the U3b projected U3-tool skeleton — the

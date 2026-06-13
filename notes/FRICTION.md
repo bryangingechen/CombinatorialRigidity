@@ -76,6 +76,16 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `disjoint Sc (ker f) ↔ InjOn f Sc` is `LinearMap.disjoint_ker_iff_injOn`, not `disjoint_ker'` (deprecated)
+- **Where it bit:** `CaseI.lean` L5a-ii (`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`),
+  deriving `Sc ⊓ ker D = ⊥` from the `InjOn` I had just proved.
+- **Friction:** the natural-looking `LinearMap.disjoint_ker'` is `@[deprecated (since := "2025-11-07")]`;
+  using it would have ridden a deprecation warning into the commit. The live name is
+  `LinearMap.disjoint_ker_iff_injOn : Disjoint p (ker f) ↔ Set.InjOn f p`.
+- **Proposed fix:** `disjoint_iff.mp (LinearMap.disjoint_ker_iff_injOn.mpr hInjOn)` (caught by grep before
+  the build, no cycle paid).
+- **Status:** resolved (named the live lemma).
+
 ### [resolved] Chained subtraction fails to parse in Graph scope — the package's scoped `G - S` deleteVerts notation poisons `x - a - b`
 - **Where it bit:** `ForestSurgery.lean` L1i (`splitOff_isKDof_of_exists_base_inter_fiber_lt`,
   a `have hexp : D * ((c : ℤ) - 1 - 1) = …`); previously L1h, misattributed to a `set`-bound
