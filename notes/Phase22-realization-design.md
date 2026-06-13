@@ -5063,6 +5063,128 @@ Build order: **L1a → {L1b, L1c, L1d, L1f, L1g} (independent) → L1e, L1h → 
 and the (e) floor flag), L3 (the trichotomy), L4 (the cut decomposition), and L6 (the
 4.6-restate + 4.8(ii)).
 
+### 1.59 The L2 signature pin — `minimal_kdof_reduction_all_k` pinned with the §1.58(e)(iv) floor flag implemented (conclude at `V(G).Nonempty`, `hbase` covers `1 ≤ ncard ≤ 2`, **and the IH carries the same `Nonempty` guard** — the one statement-level delta the flag forces beyond its own wording); the five-slot-vs-landed-inventory audit clean; the principle needs no `hD`/`hfresh`/`[Finite β]` (the `_full` precedent); the legacy `minimal_kdof_reduction[_full]` stays beside it, neither derivable from the other; blueprint: NEW node `thm:minimal-kdof-reduction-all-k` (2026-06-12)
+
+> **Docs-only design pass (the L2 pin).** Lean read this pass (declarations, current line
+> numbers): ForestSurgery.lean — `minimal_kdof_reduction` (:2293, the 0-dof three-case
+> principle: `hD`/`hfresh`, value-IH `hsplit`, conclusion at `2 ≤ ncard`),
+> `minimal_kdof_reduction_full` (:2362, the (β)-interface variant — **no `hD`/`hfresh`/
+> `[Finite β]`**, full IH to both branches; its strong-induction pattern
+> `induction hN : V(G).ncard using Nat.strong_induction_on generalizing G` is the skeleton
+> L2 reuses with `k` added to the `generalizing`), `splitOff_isMinimalKDof` (:1867, KT
+> 4.8(i)), `splitOff_isMinimalKDof_of_pos` (:3399, KT 4.8(ii), landed L1j);
+> Deficiency.lean — `deficiency_nonneg` (:312, needs `[Finite α]` + `V(G).Nonempty`),
+> `IsKDof` (:350, defeq `G.deficiency n = k`), `IsMinimalKDof` (:359, `[DecidableEq β]`),
+> `IsProperRigidSubgraph` (:428), `cutEdges` (:851), `TwoEdgeConnected` (:859, a bare `Prop`
+> — classical `by_cases` suffices), `twoEdgeConnected_of_isKDof_zero` (:899),
+> `exists_cut_decomposition_of_not_twoEdgeConnected` (:1507, landed L1e),
+> `isMinimalKDof_ncard_le_two_trichotomy` (:2233, landed L1b); Contraction.lean —
+> `rigidContract_isMinimalKDof` (:696, all-`k`, landed L1c — note the instance hypothesis
+> `[NeZero (bodyHingeMult n)]` in place of an explicit `hD`); ReducibleVertex.lean —
+> `exists_degree_eq_two` (:673, all-`k` with `htec`, landed L1c),
+> `simple_of_isMinimalKDof_of_noRigid` (:698, all-`k`, landed L1c). KT re-read against the
+> PDF: p. 671 (§6 opening — the base trichotomy, **the four-case `|V| ≥ 3` split verbatim**,
+> IH (6.1) over every nonnegative `k_H`). Blueprint read: molecular-induction.tex
+> `sec:molecular-induction-thm49` (:1222–1268, `thm:minimal-kdof-reduction`);
+> deficiency.tex labels (`def:k-dof` :86, `def:rigid-subgraph` :105, `def:cut-edges-2ec`
+> :152). No `.lean`/`.tex` edits this pass.
+
+**(a) The pinned statement.** ForestSurgery.lean, directly after
+`minimal_kdof_reduction_full`, in the same section:
+
+```lean
+/-- KT's four-case all-`k` induction skeleton (KT 2011 p. 671, §6 opening + IH (6.1)). -/
+theorem minimal_kdof_reduction_all_k [DecidableEq β] [Finite α] {n : ℕ}
+    {P : Graph α β → Prop}
+    (hbase : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → V(G).Nonempty →
+      V(G).ncard ≤ 2 → P G)
+    (hcut : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      ¬ G.TwoEdgeConnected →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hcontract : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hsplitPos : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 0 < k →
+      3 ≤ V(G).ncard → G.TwoEdgeConnected →
+      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G)
+    (hsplitZero : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      G.TwoEdgeConnected → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard → P G') → P G) :
+    ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → V(G).Nonempty → P G
+```
+
+Design notes: **(i) the floor flag, fully unfolded.** §1.58(e)(iv) recorded "conclude at
+`V(G).Nonempty` with `hbase` covering `1 ≤ ncard ≤ 2`"; implementing it forces one further
+statement-level consequence the flag's wording leaves implicit: **the IH must carry the same
+`Nonempty` guard** — inside the strong induction the IH is exactly the conclusion-at-smaller-
+`ncard`, and the conclusion now holds only for nonempty graphs. This *weakens* the
+obligation on producers vs the legacy IH's `2 ≤ V(G').ncard` guard (they currently prove
+`2 ≤`, will now prove `Nonempty`), and every IH target is nonempty by construction (cut
+sides: explicit conjuncts of the L1e packaging; splits/contractions: `ncard ≥ 2` resp.
+contains `r`). §1.56(c)'s draft IH (no guard) is unprovable as written — this is the
+recorded flag doing its job, not a new gap. **(ii) the four-case split is KT p. 671
+verbatim** (re-verified against the PDF this pass): ¬2EC (§6.1) / proper rigid subgraph
+(§6.2) / 2EC + no-rigid + `k > 0` (§6.3) / 2EC + no-rigid + `k = 0` (§6.4), with IH (6.1)
+over every nonnegative dof. `hcontract` carries **no** 2EC hypothesis — paper-faithful (KT's
+§6.2 case never assumes it); the fact is available in the proof branch (the dispatch tests
+2EC first), so adding it later would be a one-commit statement ripple if L5 ever surfaces a
+need — it is *omitted* now because neither KT §6.2 nor the landed 22h `hcontract` arm
+consumes it. **(iii) no `hD`, no `hfresh`, no `[Finite β]`** — the `_full` precedent: all
+four `|V| ≥ 3` slots are handed the full conditioned IH ((β)-interface, §1.56(c)(iv)), so
+the principle does no internal splitting/contracting and needs no combinatorial brick. The
+only non-classical content is the `k`-dispatch: `0 ≤ k` from `hG.1 ▸ deficiency_nonneg G n
+hne` (whence `by_cases hk : k = 0` gives `0 < k` in the negative branch via
+`lt_of_le_of_ne` + `Ne.symm`) — that is what `[Finite α]` and the `Nonempty` hypothesis
+feed. `[DecidableEq β]` rides on `IsMinimalKDof`. `TwoEdgeConnected` and the rigid-subgraph
+existence dispatch by classical `by_cases`. **(iv)** `hsplitZero` is pinned at the
+*instantiated* `IsMinimalKDof n 0` (no `k` binder + `hk : k = 0` equation), matching the
+legacy `_full` `hsplit` slot shape its L7 producer restates from. **(v) proof skeleton:**
+`intro k G; induction hN : V(G).ncard using Nat.strong_induction_on generalizing k G`
+(the `_full` pattern + `k`); `ncard ≤ 2` → `hbase`; at `3 ≤ ncard` the three nested
+`by_cases` per (ii)–(iii); IH plumbing `fun k' G' hG' hne' hlt => IH _ (hN ▸ hlt) k' G' rfl
+hG' hne'`. One commit, no new lemma.
+
+**(b) The slot-vs-inventory audit (all five clean against the landed Lean).**
+
+| Slot | Discharging layer | Landed reduction brick(s) consumed there | Shape check |
+|---|---|---|---|
+| `hbase` | L3 | `isMinimalKDof_ncard_le_two_trichotomy` (Deficiency:2233) | slot supplies exactly its `hG`/`hne`/`hV ≤ 2`; producer adds its own `hD : 2 ≤ D` ✓ |
+| `hcut` | L4 | `exists_cut_decomposition_of_not_twoEdgeConnected` (Deficiency:1507) | slot's `hntec` is its trigger; sides nonempty + `⊂ V(G)` (→ `ncard <` via `Set.ncard_lt_ncard`, `[Finite α]`) feed the guarded IH ✓ |
+| `hcontract` | L5 | `rigidContract_isMinimalKDof` (Contraction:696, all-`k`) | slot's `∃ H` is its trigger; `[NeZero (bodyHingeMult n)]` from the producer's `hD`; smaller via `rigidContract_vertexSet_ncard_lt`, nonempty (contains `r`) ✓ |
+| `hsplitPos` | L6 | `exists_degree_eq_two` (ReducibleVertex:673) + `splitOff_isMinimalKDof_of_pos` (ForestSurgery:3399) | slot supplies `htec`/`hnp`/`0 < k`/`3 ≤ ncard` — exactly their hypothesis sets minus the producer-side `hD : 3 ≤ D` and the fresh label (the producer carries its own `hfresh`, as `theorem_55_d3` already does; the principle has none) ✓ |
+| `hsplitZero` | L7 (+L9 wiring) | the landed 22h Case-III chain, restated | strict superset of the legacy `_full` `hsplit` slot: gains `htec` (ignorable or consumed in place of `twoEdgeConnected_of_isKDof_zero`) and the **all-`k` IH** — the entire point (the `h622` derivation at the `k'`-dof `G_v`) ✓ |
+
+**(c) The `k = 0` legacy arm: `minimal_kdof_reduction[_full]` stays, side by side.**
+Neither wraps the other. The legacy is not derivable from the new principle (its `hbase` is
+`ncard = 2` only and its motive contract is 0-dof-specific — instantiating `P' G :=
+G.IsMinimalKDof n 0 → P G` strands the `ncard = 1` base case the legacy `hbase` never
+covered); the new one is not derivable from the legacy (the legacy case lattice has no ¬2EC
+case — at `k = 0` it is vacuous by `twoEdgeConnected_of_isKDof_zero` — and its IH is 0-dof-
+only). `minimal_kdof_reduction` remains `thm:minimal-kdof-reduction`'s pin (KT Theorem 4.9,
+a Phase-20 deliverable in its own right) and keeps its consumers until L9 re-pins the spine
+onto the all-`k` principle; no deletion, no restate.
+
+**(d) Blueprint disposition.** NEW node `thm:minimal-kdof-reduction-all-k`,
+molecular-induction.tex `sec:molecular-induction-thm49`, directly after
+`thm:minimal-kdof-reduction`; `\lean{Graph.minimal_kdof_reduction_all_k}` + `\leanok` in
+the same L2 commit (green on landing); `\uses{def:k-dof, def:cut-edges-2ec,
+def:rigid-subgraph}` (the principle's proof consumes only the case-split substrate — no
+`lem:reduction-step*`, no `lem:reduction-measure`: it does no internal reduction).
+Statement prose: this is **not a numbered KT theorem** — it is the induction skeleton of KT
+Theorem 5.5's proof (the §6 opening, p. 671: the four-case split + IH (6.1)), stated as the
+well-founded induction principle, citing \cite[Sect.~6]{katohTanigawa2011}; the existing
+`thm:minimal-kdof-reduction` node gains nothing (its 0-dof statement is untouched). The L9
+restate of `thm:theorem-55` will `\uses` the new node.
+
+**(e) The L2 slice: one commit** — the Lean decl (ForestSurgery.lean beside
+`minimal_kdof_reduction_full`) + the green blueprint node. Additive (no statement-grep
+ripple). *Buildable.*
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
