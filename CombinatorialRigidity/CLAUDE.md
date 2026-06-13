@@ -75,6 +75,7 @@ pattern and the working fix.
 - *"rewrite … motive is not type correct"* on `rw [hsub]` (a `Submodule` eq) under `finrank ℝ ↥(…)` → § 33
 - *"Did not find … `?g (∑ …)`"* / *"AddMonoidHomClass (M ≃ₗ …)"* on `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate → § 34
 - *"Invalid field `foo`"* on `g.foo` where `Graph.foo` resolves by name but not by projection (file-local re-namespace) → § 35
+- *"… does not contain field `Exists.foo`"* on `h.foo`, where `h`'s *type* is a `def : Prop` unfolding to `∃ …` (a motive like `HasGenericFullRankRealization`) → § 35 (variant — call the pkg lemma by qualified name, `∃`-hyp positional)
 - *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
 - *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
 - `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper)

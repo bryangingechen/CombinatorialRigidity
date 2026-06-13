@@ -1398,6 +1398,17 @@ Worked case: `case_I_realization` in `Molecular/AlgebraicInduction/` (Phase 22a,
 — first hit while drafting a `Graph.exists_ends_of_graph` helper (later dropped in favour of the
 pre-existing `Graph.endsOf`, which *is* in a `namespace Graph` block).
 
+**Variant — the value's *type* is a `def : Prop` that unfolds to `Exists`.** Same axis, the other
+common trigger. A hypothesis `h : HasGenericFullRankRealization k n G` (a `def … : Prop` whose body
+is `∃ Q, …`) has type-head `Exists`, **not** `PanelHingeFramework`, so `h.some_pkg_lemma` tries to
+project `Exists.some_pkg_lemma` and errors *"does not contain `Exists.some_pkg_lemma`"* — even when
+`PanelHingeFramework.some_pkg_lemma` takes the `∃`-bundle positionally and is perfectly applicable.
+**Fix:** call the lemma by its qualified name with the `∃`-hypothesis as a positional argument
+(`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq Gc f ends h hends`), not by
+projection (`h.finrank_…`). Tell: the error names `Exists.<field>` rather than your type. Worked
+case: the L5b-i completion `exists_rankPolynomial_of_IH_relabel_linking` calling the shared core
+(Phase 22i).
+
 ## 36. Matching a value indexed by a *derived* cardinality (`m + n`, a `disjUnion`) against one at a *literal* cardinality
 
 **Symptom.** A lemma output is indexed at a glued cardinality — e.g.
