@@ -212,13 +212,27 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 **L0–L5a-i complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
 `le_finrank_span_rigidityRows_of_splice` Lean-green, `lem:rigidityRows-splice-rank-add` green,
-build+lint clean. V6-a RESOLVED. Canonical: §1.64.
+build+lint+checkdecls clean (coordinator-verified). V6-a RESOLVED. Canonical: §1.64. **Note the
+brick landed ABSTRACT** — it takes `D` as an abstract endomorphism + the four hypotheses
+(`hFH_le`, `hFH_ker`, `hFc_surv_le`, `hInj`) and proves only the block-triangular **rank-nullity**
+(§1.64(f)'s "rank-nullity half"). The §1.64(c) genuinely-new step — the **Lemma-5.1 column-deletion**
+establishing `hInj : finrank Sc = finrank (Sc.map D)` (D = `(extProj V(H)).dualMap` injective on the
+contraction-row span, the deleted single `v∗=r` column preserves rank via
+`finrank_pinnedMotions_add_screwDim`) — was **NOT in the brick; it is relocated to L5a-ii** (§1.64(f)'s
+"Lemma-5.1 half", still unbuilt).
 
 **Smallest next forward commit: L5a-ii — `case_I_realization_nonsimple` (CaseI.lean)** beside
-`case_cut_edge_realization`. IH-plumbing + the L5a-i brick (with the abstract `D` and the
-correspondence `hFH_ker`/`hFc_surv_le`/`hInj` as the interface to the brick) + B2 + the
-coincident-panel Lemma-5.3 leg (`exists_extensor_in_two_panels` at `n₁=n₂`) + the parallel-pair
-proper-rigidity (`isKDof_zero_of_parallel_pair`). Mints `lem:case-I-realization-nonsimple`. §1.64(f).
+`case_cut_edge_realization`. **This is NOT mere IH-plumbing** — it must discharge the brick's four
+interface hypotheses, and discharging **`hInj` is the relocated genuinely-new (b)(iii) Lemma-5.1
+column-deletion** (the real new linear algebra of L5, per §1.64(c)), with `hFc_surv_le` the (b)(ii)
+collapse-correspondence (`panelRow_collapseTo_comp_extProj_dualMap`, CaseI.lean:940) and `hFH_ker` the
+(b)(i) row-vanishing (`hingeRow_comp_extProj_eq_zero`). On top of that interface: IH on both legs (the
+H-leg `G[{e,f}]` and the *contraction* `rigidContract G H r`), B2 for the `≤`, the coincident-panel
+Lemma-5.3 leg (`exists_extensor_in_two_panels` at `n₁=n₂`), and the parallel-pair proper-rigidity
+(`isKDof_zero_of_parallel_pair`). **Rate/scope it as the genuinely-new build it is (P≈3), not plumbing**
+— if `hInj`/the column-deletion won't fit alongside the producer, split it out as its own slice
+(§1.64(f) sanctioned the rank-nullity / Lemma-5.1 split; the brick took the former, so the latter +
+the producer remain). Mints `lem:case-I-realization-nonsimple`. §1.64(d)/(f).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
