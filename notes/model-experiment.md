@@ -53,15 +53,18 @@ protocol).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session-local rung override — ACTIVE 2026-06-12 (this coordinator
-  session only; user-requested, not a protocol map change).** Dispatch
-  only opus and fable; after fable became unavailable mid-session, the
-  set narrowed to **opus only** (the coordinator itself is now opus).
-  Applies to *every* dispatch this session including design-settle /
-  recon passes that the map would route to fable. Not a persistent
-  standing override — it expires when this session ends; the
-  experiment's S/P/B → rung map is unchanged for future sessions. Rows
-  ≥ 84 (the L3 pin onward) run under it.
+- **Session-local rung override — EXPIRED 2026-06-12 at session end, by
+  its own terms (user-requested, not a protocol map change).** Was:
+  dispatch only opus and fable; after fable became unavailable
+  mid-session, **opus only** (the coordinator itself was opus), applying
+  to *every* dispatch including design-settle / recon passes the map
+  routes to fable. Rows 84–86 (L3 pin, L3a, L3b parallel arm) ran under
+  it, all clean. **A fresh coordinator should revert to the S/P/B → rung
+  map** (the experiment is still Status: running) — *unless* fable is
+  again unavailable in that session, in which case substitute opus for
+  the fable-mapped design/recon rungs and log the substitution (this
+  session's rows 84–86 are the precedent: opus carried two design-settle
+  pins cleanly, incl. row 84's two carries-table corrections).
 - **Standing rung override — EXPIRED 2026-06-12 at the L1h close
   (row 77), by its own terms.** Was: opus minimum for the remaining
   L1h work (case i). Grounds: the KT-4.2 fiber-bookkeeping zone read
@@ -169,12 +172,32 @@ quality / blueprint sync / notes discipline / commit message
 | 83 | L2 build `minimal_kdof_reduction_all_k` + `thm:minimal-kdof-reduction-all-k`, c04d5b7 | 3/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 132k tok / 77 tools / 876s | the L2 single-commit build. Statement matches the §1.59(a) pin verbatim (all five case slots, `V(G).Nonempty` conclusion + the IH-`Nonempty` guard); proof = the §1.59(a)(v) skeleton exactly (`intro k G` then `induction hN : V(G).ncard using Nat.strong_induction_on generalizing k G`, IH plumbing via `hN ▸ hlt`, `hbase` at `ncard ≤ 2`, three nested `by_cases` at `3 ≤ ncard`, `0 ≤ k` from `hG.1 ▸ deficiency_nonneg`). One benign style fix disclosed (`push_neg` → `push Not`, deprecation-free). Blueprint node green per §1.59(d) (`\uses{def:k-dof, def:cut-edges-2ec, def:rigid-subgraph}`, KT §6 framing). Coordinator: full diff read, sorry-grep clean (only "admit**s**" prose), warning-clean rebuild + `lake lint` re-run green, trailer correct (Sonnet 4.6). Hand-off re-pointed at the §1.60 L3 pin. **Last dispatch before the session-local opus-only override; rows ≥ 84 run under it** |
 | 84 | L3 signature pin (§1.60), 31e87af | 3/2/1 | opus | normal | clean | —✓——✓✓ | 202k tok / 46 tools / 476s | **first dispatch under the session-local opus-only override** (a design-settle pin the map would route to fable; fable unavailable this session). High-yield docs-only pass with two carries-table corrections, both coordinator-verified against the landed Lean: (1) L2's `hbase` slot is all-`k`/`Nonempty`/`ncard ≤ 2`, so the producer covers a real `ncard = 1` arm — confirmed (I read the L2 statement); (2) `theorem_55_base` (Pinning:630) is the framework-level rank *engine* (`BodyHingeFramework → IsInfinitesimallyRigidOn {u,v}`), NOT the graph-level producer — confirmed by reading the decl; the deliverable is a NEW `theorem_55_base_producer` beside it. Coordinator also re-verified the trichotomy three-arm shape (Deficiency:2233, exact), B1 equality (GenericityDevice:532), B2 `≤` (:562) — all as the pin uses them. The one new geometric brick (`exists_linearIndependent_extensor_pair_perp`, two non-proportional `n^⊥`-extensors) de-risked to a basis-level Grassmann fact; recon adds rather than re-routes (legacy `theorem_55_d3` `hbase` preserved via `.2`) → no orphaned obligations. Sliced L3a (the construction) → L3b (producer + legacy rewire); V-base verification item (wedge-LI fact + single-row rank lemma + single-edge GP infra) flagged. Hand-off re-pointed at L3a. Trailer correct (Opus 4.8) |
 | 85 | L3a the LI-extensor-pair-in-common-panel brick, a9c8386 | 2/2/1 | opus | normal | clean | ✓✓✓✓✓✓ | 176k tok / 67 tools / 1064s | the L3a geometric substrate (three decls): `linearIndependent_pair_extensor_of_li3` (Extensor.lean — the V-base wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]`, resolved via the join-to-isolate technique behind `omitTwoExtensor_linearIndependent_of_li`, no mathlib basis API), `exists_three_perp` + the target `exists_linearIndependent_extensor_pair_perp` (PanelLayer.lean — two non-proportional `ScrewSpace 2` extensors in a common panel `n^⊥`, KT Lemma 5.3). Coordinator read the full diff: `exists_three_perp` via row-matrix `![n]` rank-nullity (`ker ≥ 3` for any `n`); the wedge-LI proof left-joins with `c`/`b` to kill the cross term, surviving triple-wedge nonzero as a reindexing of the LI triple — math sound. One benign deviation (disclosed): dropped the pinned `hn : n ≠ 0` — a strict strengthening (`n^⊥` ≥3-dim even at `n=0`; the L3b producer picks a nonzero normal anyway). Blueprint `lem:extensor-pair-in-panel` green, faithful prose, correct `\uses`. Coordinator: sorry-grep clean, warning-clean rebuild (PanelLayer+Extensor) + `lake lint` re-run green, trailer correct (Opus 4.8). Hand-off re-pointed at L3b |
+| 86 | L3b parallel-pair arm `theorem_55_base_producer_parallel_pair`, 0e323ee | 2/2/1 | opus | normal | clean (sizing self-shrink) | ✓✓✓✓✓✓ | 211k tok / 75 tools / 989s | the geometrically-new §1.60(b)(iii) arm: parallel pair (`V(G)={x,y}`, `E(G)={e,f}`, `def=0`) → `HasPanelRealization 2 n G` at full rank `D·1=6` via coincident panels `n₀^⊥` (fixed `Pi.single 0 1`) + the L3a brick + `theorem_55_base` + B1. **Sanctioned sizing self-shrink** (scope-to-fit): shrank the full §1.60 producer to its only geometrically-new arm; the empty/single-edge bare arms + the GP conjunct + trichotomy dispatch + legacy-`hbase` rewire are deferred — coordinator confirmed they're tracked as a real deliverable in the hand-off + the L3b layer-plan sub-items (not an orphaned phrase). Two benign deviations, both coordinator-verified: (1) home CaseI.lean not Pinning.lean — M2/B1 are downstream of Pinning so a producer concluding M2 can't live there (import-direction, the §1.60-pin oversight; it compiled, imports resolve); (2) dropped `hD` — confirmed sound: M2's rank conjunct is `screwDim k·(|V|−1) − def(n)` (uses `screwDim 2 = 6`, NOT `bodyBarDim n`), `hdef` pins `def = 0`, final `rw [hB1,hVcard,hdef]; push_cast; ring` closes `6 = screwDim 2·1 − 0`. Blueprint `lem:theorem-55-base-producer-parallel` honestly scoped (the arm only; "empty/single-edge are bookkeeping"). Coordinator: full diff read, sorry-grep clean (prose-only), warning-clean CaseI rebuild + `lake lint` re-run green, trailer correct (Opus 4.8). **Loop stopped here at user request; session-local opus-only override expires at session end** |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- (2026-06-12, rows 82–86, L2+L3) **Opus substitutes cleanly for
+  fable on design-settle passes when fable is unavailable.** A
+  user-requested session-local override (opus/fable-only, narrowing to
+  opus-only once fable became unavailable) ran five dispatches clean:
+  two design-settle pins (rows 84 L3-pin, 82 was fable), three opus
+  builds (83 sonnet, 85/86 opus). The standout is **row 84 (L3 pin) at
+  opus**: it caught two carries-table errors the fable-mapped slot
+  would otherwise have been trusted on — (1) the L2 `hbase` slot is
+  all-`k`/`ncard ≤ 2` so the producer needs a real `ncard = 1` arm; (2)
+  `theorem_55_base` is the framework-level rank *engine*, not the
+  graph-level producer. Both verified against the landed Lean. Data
+  point for the experiment's open question of whether the fable-only
+  design-pass mapping is necessary or whether opus suffices: at least
+  for *carries-table-correction* design passes (read landed Lean,
+  re-verify pins, correct the design doc), opus is sufficient and
+  high-yield. The fable-vs-opus design-pass boundary (does fable add
+  value on the harder *re-route* / *new-gap* recons like §1.50's GAP 6
+  or §1.52's W9 overturn?) remains the open comparison — none of those
+  shapes arose this session.
 - (2026-06-12, user note for the analysis phase) **Custom agent
   types are a live option when the experiment concludes.** Claude
   Code supports project-level agent definitions
