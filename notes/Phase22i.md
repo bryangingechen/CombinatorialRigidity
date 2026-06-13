@@ -15,10 +15,16 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 complete (L0–L2 all done).** `minimal_kdof_reduction_all_k` landed in `ForestSurgery.lean`
-directly after `minimal_kdof_reduction_full`; `thm:minimal-kdof-reduction-all-k` is green in
-`molecular-induction.tex` `sec:molecular-induction-thm49`. Build warning-clean; `lake lint` +
-`checkdecls` + `blueprint/lint.sh` all pass. **Next: the L3 pin (§1.60)** — see Hand-off.
+**L2 complete + L3 pinned (L0–L2 done; L3 design-settled, build not started).** L2 landed
+`minimal_kdof_reduction_all_k` in `ForestSurgery.lean`; `thm:minimal-kdof-reduction-all-k` is
+green. **The L3 signature pin is landed (§1.60):** the base producer is a NEW graph-level
+`theorem_55_base_producer` (Pinning.lean, beside the engine) — NOT a re-aim of `theorem_55_base`
+(which is the framework-level *rank engine*, stays put); it dispatches on the landed trichotomy
+(`isMinimalKDof_ncard_le_two_trichotomy`), covers `1 ≤ ncard ≤ 2` (the floor flag's `ncard = 1`
+arm is real), concludes the conditioned pair, with the parallel-pair `k = 0` arm the one new
+geometric brick (two non-proportional extensors in a common panel `n^⊥` → `theorem_55_base` → B1).
+L3 sliced **L3a** (the LI-extensor-pair construction) → **L3b** (the producer + legacy-`hbase`
+rewire). **Next: the L3a build** — see Hand-off.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -78,7 +84,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 - [x] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c));
   signature pinned in §1.59; landed in `ForestSurgery.lean` + green
   `thm:minimal-kdof-reduction-all-k` node in `molecular-induction.tex` (2026-06-12).
-- [ ] **L3** — the base producer (`hbase` carry discharged).
+- [ ] **L3** — the base producer (`hbase` carry discharged); pinned §1.60, sliced L3a (the
+  LI-extensor-pair-in-`n^⊥` construction) → L3b (`theorem_55_base_producer` + legacy-`hbase`
+  rewire). NEW node `lem:theorem-55-base-producer` (panel-layer.tex); `def:genuine-hinge-realization`
+  + `lem:theorem-55-base` already green.
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
@@ -100,15 +109,24 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   L0/L1 pins; V5 (L4), V6 (L5), V7 (L6), V8 (L7), V9 (L10), V10 (resolved at L0) gate to
   their layer's design pass. V8 (subfamily extraction at rank form) is the one with real
   proof-shape uncertainty left.
+- **V-base (L3, §1.60(g)):** three bounded items to confirm at the L3a/L3b build — the wedge-LI
+  fact `LI ![a,b,c] → LI ![a∧b, a∧c]` (basis-level Grassmann; mathlib `exteriorPower` basis API or
+  a short Extensor.lean mirror), the landed single-hinge-row rank lemma name (arm (ii)), and
+  whether the landed single-edge GP `ofNormals`-at-alg-indep-seed infra covers the single-edge GP
+  arm. None research-shaped.
 
 ## Hand-off / next phase
 
-**L0–L2 fully complete.**
-**Smallest next forward commit: the L3 pin (§1.60)** — the base producer (`hbase` carry
-discharged): the `|V| = 2` trichotomy (KT p. 671: `E = ∅` / one edge / parallel pair,
-`k ∈ {D, 1, 0}`) + the graph-level Lemma-5.3 coincident-panel brick (two non-proportional
-extensors in a common panel, M1 pointwise form) re-aimed into `Pinning.lean`'s
-`theorem_55_base`. Design pass per §1.60 first (the pin), then build.
+**L0–L2 complete; L3 pinned (§1.60).**
+**Smallest next forward commit: the L3a build** — `exists_linearIndependent_extensor_pair_perp`
+in Extensor.lean / PanelLayer.lean (§1.60(c)/(g)): for a nonzero `n : Fin 4 → ℝ`, two points-pairs
+in `n^⊥` whose `ScrewSpace 2` extensors are linearly independent (pick three LI vectors `a,b,c`
+spanning the 3-dim `n^⊥`, set `p := ![a,b]`, `q := ![a,c]`; LI of `![a∧b, a∧c]` from LI of
+`![a,b,c]` — the wedge-LI fact V-base flags). The cheapest complete sub-step, no producer yet;
+optionally mints `lem:extensor-pair-in-panel`. Then **L3b** = `theorem_55_base_producer`
+(trichotomy dispatch + the three arms + the GP pair) in Pinning.lean + the legacy-`hbase` rewire
+of `theorem_55_d3` (additive, `.2` projection) + green `lem:theorem-55-base-producer`. Resolve
+V-base (§1.60(g)) at the L3a/L3b design micro-pass before the first build.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -151,3 +169,12 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   (neither derivable from the other); canonical: §1.59.
 - **L2 build (2026-06-12, sonnet):** per §1.59 — `minimal_kdof_reduction_all_k` one additive
   commit; `push_neg` → `push Not` (deprecation fix); `thm:minimal-kdof-reduction-all-k` green.
+- **L3 signature pin (2026-06-12):** two carries-table/§1.56 corrections, both verified vs the
+  landed Lean — (1) the slot is all-`k`/`Nonempty`/`ncard ≤ 2`, so the producer covers a real
+  `ncard = 1` arm (the floor flag), not just `ncard = 2`; (2) `theorem_55_base` is the *rank
+  engine*, not the producer — the deliverable is a NEW graph-level `theorem_55_base_producer`
+  (trichotomy dispatch → parallel-pair `k=0` arm builds two LI extensors in `n^⊥`, feeds
+  `theorem_55_base`, lifts via B1; single-edge arm via single-row-`≥` + B2-`≤`; empty arm rank 0).
+  One new geometric brick (`exists_linearIndependent_extensor_pair_perp`); GP conjunct: parallel-pair
+  excluded by simplicity (vacuity), single-edge GP does real work. Sliced L3a→L3b; blueprint mints
+  one node `lem:theorem-55-base-producer`, no statement-grep ripple. Canonical: §1.60.

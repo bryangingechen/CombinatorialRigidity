@@ -5185,6 +5185,229 @@ restate of `thm:theorem-55` will `\uses` the new node.
 `minimal_kdof_reduction_full`) + the green blueprint node. Additive (no statement-grep
 ripple). *Buildable.*
 
+### 1.60 The L3 signature pin — the base producer (`hbase` carry): the genuine-hinge `|V| ≤ 2` base built on the landed trichotomy, the parallel-pair `k = 0` arm as the one new geometric brick (two non-proportional extensors inside a common panel `n^⊥`, fed to `theorem_55_base`), the rank conjunct closed by B1, re-aimed into `Pinning.lean`'s `theorem_55_base` as the rank engine; `theorem_55_base` is the *right* home but only as the LI-extensor-pair *engine* — the graph-level producer is NEW (2026-06-12)
+
+> **Docs-only design pass (the L3 pin).** Lean read this pass (declarations, current line
+> numbers, all verified this pass): CaseI.lean — `theorem_55_d3` (:6933, the `hbase`
+> consumption: its current `hbase` slot is `∀ G, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
+> HasPanelRealization 2 n G` at :6936, threaded into `theorem_55_generic`'s `hbase` at :6977;
+> its `hbaseGP` is discharged by vacuity via `not_simple_of_isMinimalKDof_of_ncard_two` at
+> :6980); PanelHinge.lean — `HasPanelRealization` (M2, :1090), `theorem_55_generic` (:1168, the
+> spine the L3 producer feeds, `hbase`/`hbaseGP` slots at :1169/:1171); `HasGenericFullRankRealization`
+> (M3, :1035 — `IsGeneralPosition` + ℤ-rank + link-recording + `AlgebraicIndependent ℚ`);
+> RigidityMatrix.lean — `ExtensorInPanel` (M1, :665), `BodyHingeFramework` (:684 — just
+> `{graph, supportExtensor}`), `ofHinge` (:704); Pinning.lean — `theorem_55_base` (:630, the rank
+> engine: `LinearIndependent ℝ ![supportExtensor e₁, supportExtensor e₂]` + two `IsLink _ u v` →
+> `IsInfinitesimallyRigidOn {u,v}`), `eq_of_hingeConstraint_two_parallel` (the Lemma-5.3 leg it
+> calls); GenericityDevice.lean — `isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`
+> (B1, :532), `finrank_span_rigidityRows_add_deficiency_le` (B2, :562),
+> `hasPanelRealization_of_generic` (M4, :1788); PanelLayer.lean — `exists_extensor_eq_panelSupportExtensor`
+> (M1 engine, :453, only for *transversal* panels — degenerate at coincident panels, hence not the
+> parallel-pair tool), `extensor_ne_zero_iff_linearIndependent` (Extensor.lean:270);
+> Deficiency.lean — `isMinimalKDof_ncard_le_two_trichotomy` (:2233, landed L1b — the three
+> disjuncts at :2236–:2239), `deficiency_of_edgeSet_empty` (:2023 — note `hne` dropped, gives
+> `D(|V|−1)` for any `E = ∅`), `isKDof_zero_of_parallel_pair` (:606), `not_simple_of_isMinimalKDof_of_ncard_two`
+> (ReducibleVertex.lean:768). KT 2011 read against the PDF this pass: p. 671 (the `|V| = 2`
+> trichotomy (i) `E = ∅` / (ii) one edge / (iii) the parallel pair via Lemma 3.2; "(i) and (ii)
+> are trivial"; Lemma 5.3's parallel-pair realization with `Π(u) = Π(v)` and `p(e) ≠ p(f)`,
+> p. 669–670). Blueprint read: panel-layer.tex `def:genuine-hinge-realization` (:202, green),
+> `lem:theorem-55-base` (:353, green), `thm:theorem-55-d3-instance` (:281, the `hbase` carry
+> named at :316); deficiency.tex `lem:two-vertex-trichotomy` (:304, green). No `.lean`/`.tex`
+> edits this pass.
+
+**The corrected target shape (the §1.56(c) / carries-table fix the L2 floor flag forced).**
+§1.56(c)/(d) and the carries table pinned `hbase` as "the `|V| = 2` trichotomy" re-aimed into
+`theorem_55_base`. Two corrections fall out of reading the *landed* L2 principle (§1.59) and
+`theorem_55_base` against the producer's actual obligation:
+
+* **The slot is all-`k`, `Nonempty`, `ncard ≤ 2` — not `ncard = 2`, not 0-dof.** L2's `hbase`
+  slot (§1.59(a)) is `∀ (k : ℤ) (G), G.IsMinimalKDof n k → V(G).Nonempty → V(G).ncard ≤ 2 → P G`.
+  The current `theorem_55_d3`/`theorem_55_generic` `hbase` is the *legacy* 0-dof `ncard = 2`
+  form (they run `minimal_kdof_reduction_full`, not yet the all-`k` principle). So the L3
+  producer must cover **`ncard = 1` (`k = D·0 = 0`, `E = ∅`)** as well as the three `ncard = 2`
+  arms — the floor flag's "covers `1 ≤ ncard ≤ 2`" is a real extra arm, not bookkeeping. At
+  `P G = Pc G := (G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G`
+  (the conditioned pair, §1.56(b) M4), the producer concludes the *pair*.
+* **`theorem_55_base` is the right home but only as the LI-extensor-pair *engine*; the
+  graph-level producer is NEW.** The carries table's "re-aim Pinning.lean's `theorem_55_base`"
+  reads as if `theorem_55_base` *is* the base producer. It is not: it is a *framework-level* rank
+  lemma (given a `BodyHingeFramework` whose two named edges carry LI supporting extensors,
+  conclude `IsInfinitesimallyRigidOn {u,v}`). The L3 deliverable is the *graph-level* producer
+  that (a) dispatches on the landed trichotomy, (b) for the parallel-pair arm *constructs* the
+  framework with two LI extensors, (c) feeds `theorem_55_base`, (d) lifts its rigidity conclusion
+  to the M2 rank conjunct via B1. `theorem_55_base` stays put in Pinning.lean (no re-aim needed —
+  its `V(G)`-relative form already landed at Phase 21b); the new producer lives beside it.
+
+**(a) The pinned graph-level base producer.** Pinning.lean, beside `theorem_55_base` (the file
+that owns the rank engine; the producer is the base case of Theorem 5.5, so it sits with the
+other Theorem-5.5-assembly lemmas there, not in CaseI.lean). One conditioned-pair producer:
+
+```lean
+/-- **Theorem 5.5 base producer** (`lem:theorem-55-base-producer`; `hbase` carry, Phase 22i L3).
+The graph-level base case of the all-`k` reduction: a minimal `k`-dof-graph on `1 ≤ |V| ≤ 2`
+bodies carries the conditioned realization pair. -/
+theorem theorem_55_base_producer [DecidableEq β] [Finite α] [Finite β] {n : ℕ} {k : ℤ}
+    (hD : 6 ≤ Graph.bodyBarDim n)
+    (G : Graph α β) (hG : G.IsMinimalKDof n k)
+    (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
+      HasPanelRealization 2 n G
+```
+
+Design notes:
+
+* **`hD : 6 ≤ bodyBarDim n`** matches `theorem_55_d3`/`case_III_realization` (the `d = 3`,
+  `D = 6 = screwDim 2` scope of all of 22i's producers; the `2 ≤ D` the trichotomy needs is a
+  weakening). `k : ℤ` and the four typeclasses are exactly L2's `hbase` slot context (it carries
+  `[DecidableEq β] [Finite α]`; `[Finite β]` rides on the trichotomy lemma). At the L9 spine the
+  producer is applied with `k` from the principle's binder; for the *current* (legacy-spine)
+  `theorem_55_d3` it is instantiated at `k = 0`, `hV : ncard = 2 → ncard ≤ 2` (`omega`) — so L3
+  can also discharge `theorem_55_d3`'s present `hbase` slot in the same commit, by composing the
+  producer's `.2` (the `HasPanelRealization` conjunct) — see (e).
+* **The GP conjunct (`G.Simple → …`) must still be produced when `G.Simple` holds, but the
+  parallel-pair arm is excluded by simplicity.** The landed `theorem_55_d3` discharges its
+  `hbaseGP` (the `ncard = 2` GP case) by **vacuity** — a simple two-vertex minimal-0-dof graph
+  does not exist (`not_simple_of_isMinimalKDof_of_ncard_two`, the parallel-pair arm is non-simple).
+  At the all-`k` slot the producer must additionally handle `ncard = 1` and the simple `ncard = 2`
+  *single-edge* arm. The GP arm by trichotomy (see (e) for the full statement): `ncard = 1` simple
+  → `E = ∅`, target rank `0`, empty/single-body GP framework (rank 0, GP/link-recording vacuous,
+  alg-indep of the one-body normal seed); `ncard = 2` simple → `|E| ≤ 1`, and `|E| = 1` (single
+  edge, `k = 1`, `def = 1 > 0`) is *not* rigid, so its GP conjunct is a `def = 1` generic
+  realization at rank `D − 1` — **a genuine GP construction, not vacuous**. This single-edge GP arm
+  is the one place the GP conjunct does real work at the base, and is the reason the producer
+  concludes the *pair*. *Flag (V-base):* a single edge gives only *one* nonzero extensor, rank
+  `D − 1` (= target), so the single-edge arm uses the **single-row** rank fact, not `theorem_55_base`
+  (which needs an LI extensor *pair* for full rank `D`); the rank conjunct closes by single-row-`≥`
+  + B2-`≤` (see (c)/(d)).
+
+**(b) The trichotomy dispatch (the bare `HasPanelRealization` conjunct).** `obtain` the landed
+`isMinimalKDof_ncard_le_two_trichotomy (by omega : 2 ≤ D) hG hne hV`; three arms:
+
+* **(i) `E(G) = ∅`, `k = D(|V|−1)` (covers `ncard ∈ {1, 2}`).** Target rank
+  `D(|V|−1) − def = D(|V|−1) − k = 0` (`hG.1` pins `def = k`, the empty arm gives `k = D(|V|−1)`).
+  Build `F := ⟨G, fun _ => 0⟩` (all-zero supportExtensor — every edge label, but `E = ∅` means no
+  link fires the constraint). `rigidityRows = ∅` (no links), so `span = ⊥`, `finrank = 0`. M2
+  conjuncts: `normal v := n₀` a fixed nonzero vector (panels nonzero); the per-link conjunct is
+  **vacuous** (`E = ∅`, no `IsLink`); rank conjunct `0 = 0`. *Buildable*, no geometry.
+* **(ii) single edge, `ncard = 2`, `k = 1`.** Target rank `D·1 − 1 = D − 1`. One genuine hinge:
+  pick a nonzero `n` and build *one* extensor `C := extensor p₀` of two LI points `p₀ : Fin 2 →
+  Fin 4 → ℝ` in `n^⊥` (the single-hinge analogue of (iii); the same `n^⊥`-point construction, one
+  copy). `F := ⟨G, fun e' => if e' = e then C else 0⟩`. The single hinge-row block has rank
+  `D − 1` (the landed single-row fact: one nonzero extensor constrains the relative screw to a
+  `1`-codim subspace; `finrank (span {row}) = ` the row count of one `hingeRowBlock`, which is
+  `D − 1` — *confirm the exact landed single-row rank lemma at the build, flag V-base*). M2: panels
+  `normal u = normal v = n` (coincident, the parallel-pair carrier reason — but here a *single*
+  edge, panels may as well coincide); `ExtensorInPanel C n` by the pointwise witness `⟨p₀, rfl, hperp⟩`;
+  rank `= D − 1` by the single-row count `≥` and B2 `≤`. *Buildable from the single-row infra.*
+* **(iii) parallel pair, `ncard = 2`, `k = 0` — THE NEW GEOMETRIC BRICK (KT Lemma 5.3, p. 670).**
+  Target rank `D·1 − 0 = D` (full). Equal normals `n` at `u, v` (coincident panels); two
+  *non-proportional* extensors `C_e, C_f`, each `extensor` of two points in `n^⊥`, with
+  `LinearIndependent ℝ ![C_e, C_f]`. Build `F := ⟨G, fun e' => if e' = e then C_e else if e' = f
+  then C_f else 0⟩`; feed `theorem_55_base huv hgen (hl_e) (hl_f)` (with `hgen : LinearIndependent
+  ℝ ![F.supportExtensor e, F.supportExtensor f]` = the LI of `C_e, C_f` after `if`-reduction) to
+  get `IsInfinitesimallyRigidOn {u,v}`; since `V(G) = {u,v}` (trichotomy), that is
+  `IsInfinitesimallyRigidOn V(G)`, and **B1** (`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`)
+  turns it into `finrank (span rigidityRows) = D·(|V|−1) = D = target`. M2: panels `n ≠ 0`;
+  `ExtensorInPanel C_e n ∧ ExtensorInPanel C_f n` by the two pointwise witnesses; rank by B1.
+  *The one research-ish leaf of L3* — but de-risked: it is `theorem_55_base` (green) + B1 (green)
+  + **the two-LI-extensors-in-`n^⊥` construction (NEW)**.
+
+**(c) The new construction (the L3 substrate, the only genuinely new Lean): two non-proportional
+`ScrewSpace 2` extensors inside a common hyperplane `n^⊥ ⊆ ℝ⁴`.** This is what (ii)/(iii) bottom
+out on. Pin (pin-shape; checkdecls-gated at the build):
+
+```lean
+/-- For a nonzero `n : Fin 4 → ℝ`, there are two points-pairs in `n^⊥` whose extensors are
+linearly independent. -/
+theorem exists_linearIndependent_extensor_pair_perp {n : Fin 4 → ℝ} (hn : n ≠ 0) :
+    ∃ (p q : Fin 2 → Fin 4 → ℝ),
+      (∀ i, p i ⬝ᵥ n = 0) ∧ (∀ i, q i ⬝ᵥ n = 0) ∧
+      LinearIndependent ℝ
+        ![(⟨extensor p, extensor_mem_exteriorPower _⟩ : ScrewSpace 2),
+          ⟨extensor q, extensor_mem_exteriorPower _⟩]
+```
+
+Design notes: **(i)** `n^⊥` is a 3-dim subspace of `ℝ⁴`; `⋀² n^⊥ ⊆ ⋀² ℝ⁴ = ScrewSpace 2` is
+`(3 choose 2) = 3`-dimensional, so two LI decomposable elements exist with room to spare. The
+clean route: pick three LI vectors `a, b, c` spanning `n^⊥` (from `n ≠ 0`, `finrank n^⊥ = 3`,
+`exists_linearIndependent_of_le_finrank` — the same shape as `exists_two_perp_of_linearIndependent_normals`
+at PanelLayer.lean:420, here for *one* normal not two), set `p := ![a, b]`, `q := ![a, c]`; then
+`extensor p = a ∧ b`, `extensor q = a ∧ c`, and `a∧b, a∧c` are LI in `⋀²` iff `b, c` are LI mod
+`⟨a⟩` — which holds since `a, b, c` are LI (standard: `extensor` of subfamilies of an LI family is
+an LI family of extensors; **the load-bearing fact to locate/mirror at the build — flag V-base**:
+`linearIndependent` of `![a∧b, a∧c]` from LI of `![a,b,c]`. mathlib's `ExteriorAlgebra`/`exteriorPower`
+basis API or `Basis.tensorPower`-style results may give it; if not, a short project lemma in
+Extensor.lean — it is the wedge analogue of "distinct 2-subsets of a basis give basis vectors of
+`⋀²`"). **(ii)** the single-edge arm (ii) uses just the *first* pair `p` (one nonzero extensor;
+`extensor_ne_zero_iff_linearIndependent` gives `C ≠ 0` from `a, b` LI). **(iii)** `n ≠ 0` comes
+free from the producer's panel-normal choice (we *pick* `n`, e.g. `n := Pi.single 0 1`); it is not
+extracted from `G`.
+
+**(d) The rank conjunct closes uniformly by B1 (rigid arm) or single-row-`≥` + B2-`≤` (single
+edge).** For (iii), B1 is an *equality* (`finrank = D(|V|−1)` ⟺ rigid-on-`V`), so the rigid
+conclusion gives `= D` directly. For (ii) the framework is *not* rigid (`def = 1`), so B1 does not
+apply; instead the single hinge-row gives the lower bound `finrank ≥ D − 1` (the row block has
+that rank) and **B2** (`finrank_span_rigidityRows_add_deficiency_le`, with `hC : ∀ link, supportExtensor ≠ 0`
+— the single edge's `C ≠ 0`) gives `finrank ≤ D·1 − def = D − 1`; antisymmetry closes the M2
+equality. For (i) both sides are `0` (no rows). This is the §1.56(f) B2 role ("producers prove
+`≥`, B2 closes `=`") at the base — B2 is already landed and `V(G)`-relative, no re-derivation.
+
+**(e) The GP conjunct (`G.Simple → HasGenericFullRankRealization 2 n G`) at the base.** Cases on
+the trichotomy under the extra `G.Simple`:
+
+* parallel-pair arm (iii) is **excluded by `G.Simple`** (`e ≠ f` both linking `u,v` is a parallel
+  pair, not simple) — `not_simple_of_isMinimalKDof_of_ncard_two` is the landed witness, exactly
+  how `theorem_55_d3`'s `hbaseGP` is discharged today (vacuity);
+* single-edge arm (ii) with `G.Simple`: this **does** occur (`def = 1 > 0`), and is the one base
+  arm where the GP conjunct does real work — build the `PanelHingeFramework` `ofNormals` at a
+  general-position alg-indep seed with the single edge's two distinct endpoints, GP forcing the
+  single extensor nonzero, link-recording from `ofNormals`, alg-indep from the seed, rank `D − 1`
+  via the single-row count. *Flag V-base:* this reuses the `case_*` `ofNormals`-at-alg-indep-seed
+  pattern (the landed producers' standard opening) at the *single-row* count; confirm the landed
+  single-row GP infra covers it, else it is a small new GP single-edge lemma;
+* empty arm (i) with `G.Simple` (`ncard = 1`, `E = ∅`): GP framework is the single-body / empty
+  framework, rank `0`, GP / link-recording vacuous, alg-indep of the one-body normal seed.
+
+This is why the producer concludes the **pair** rather than `HasPanelRealization` alone (it feeds
+the L9 spine's conditioned motive directly, mirroring `theorem_55_d3`'s `theorem_55_generic`
+shape); and the bare `HasPanelRealization`-only legacy `hbase` slot of the *current*
+`theorem_55_d3` is discharged in the same commit by `(theorem_55_base_producer hD G hG hne
+(by omega)).2`, with `hne` from `ncard = 2`. The current `hbaseGP` slot stays its one-line vacuity
+discharge (untouched) — or, if cleaner, is rewired to `(… ).1`; decide at the build.
+
+**(f) Blueprint disposition.** `def:genuine-hinge-realization` (panel-layer.tex:202) and
+`lem:theorem-55-base` (:353) are **already green** — L3 mints **one new node**
+`lem:theorem-55-base-producer` in panel-layer.tex (directly after `lem:theorem-55-base`, before
+`lem:theorem-55-triangle`), `\lean{…theorem_55_base_producer}` + `\leanok` on landing,
+`\uses{lem:two-vertex-trichotomy, lem:theorem-55-base, lem:rank-parallel-full,
+def:genuine-hinge-realization, def:rank-hypothesis}` (the trichotomy dispatch, the rank engine, the
+parallel-hinges-full leg, the two motives). If the two-LI-extensors construction earns its own node
+(it is a clean Grassmann fact), mint `lem:extensor-pair-in-panel` in extensor.tex or
+rigidity-matrix.tex and `\uses` it; otherwise fold it into the producer's proof `\uses`. The
+existing `thm:theorem-55-d3-instance` carries `hbase` as a named hypothesis (:316) — its
+*statement* is unchanged at L3 (the carry is still threaded through `theorem_55_d3` until L9 rewires
+the spine), so **no statement-grep ripple**; L3 only *adds* the producer node + green it. The
+carry-discharge prose on `thm:theorem-55-d3-instance` is updated at **L9** (when the spine swaps to
+the all-`k` principle and the carry physically disappears), not here — L3 lands the *tool* that L9
+plugs in.
+
+**(g) The L3 slice cut.** Two commits, the construction first (it is the only new math):
+
+* **L3a** — `exists_linearIndependent_extensor_pair_perp` (+ the wedge-LI helper if needed) in
+  Extensor.lean / PanelLayer.lean; the cheapest complete sub-step, gate-verified, no producer yet.
+  Optionally mints `lem:extensor-pair-in-panel`.
+* **L3b** — `theorem_55_base_producer` (the trichotomy dispatch + the three arms + the GP pair) in
+  Pinning.lean, consuming L3a; the legacy-`hbase` rewire of `theorem_55_d3` in the same commit
+  (additive, `.2`/`.1` projections); mints + greens `lem:theorem-55-base-producer`.
+
+If L3a proves a one-lemma half-day (the wedge-LI fact is in mathlib), fold both into one commit;
+if the wedge-LI fact needs a real Extensor.lean mirror, keep them split. *V-base* (the one
+verification item L3 adds, resolve at the L3a/L3b design micro-pass before the first build):
+the wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]`, the landed single-hinge-row rank lemma name
+(arm (ii)/(d)), and the single-edge GP infra (arm (ii)/(e)). All three are bounded; none is
+research-shaped (the only nontrivial geometry, the LI extensor pair, is a basis-level Grassmann
+fact, not a KT crux).
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
