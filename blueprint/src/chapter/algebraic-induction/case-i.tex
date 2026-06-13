@@ -640,6 +640,43 @@
   motive.
 \end{proof}
 
+\begin{lemma}[Case I realization: parallel-pair arm (non-simple \(G\)); KT Lemma~6.2]
+  \label{lem:case-I-realization-nonsimple}
+  \lean{CombinatorialRigidity.Molecular.case_I_realization_nonsimple}
+  \leanok
+  \uses{def:panel-hinge-framework, lem:case-I, lem:two-vertex-zero-dof,
+        lem:rigidContract-isMinimalKDof}
+  Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is \emph{not simple}: it
+  carries a parallel pair, edges $e \ne f$ both linking vertices $a \ne b$.  Given the
+  realization inductive hypothesis for all minimal $k'$-dof-graphs with fewer vertices,
+  $G$ carries a panel-hinge realization at rank $D(|V(G)|-1) - k$.
+
+  The parallel pair $\{e, f\}$ spans a proper rigid subgraph $H' = G[\{a,b\}]{\upharpoonright}\{e,f\}$
+  ($0$-dof by \cref{lem:two-vertex-zero-dof}; proper because $|V(G)| \ge 3$).  Contract
+  to $G' = G/H'$, apply the inductive hypothesis to get a panel-hinge framework $F_c$
+  on $G'$, and install coincident panels at $a$ and $b$ via \cref{lem:extensor-pair-in-panel}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:extensor-pair-in-panel, lem:theorem-55-base,
+        lem:trivial-motions-rank-bound, lem:rigidityRows-splice-rank-add,
+        lem:extProj-preserves-rank-of-inter}
+  Build $H' = G[\{a,b\}]{\upharpoonright}\{e,f\}$ with $V(H') = \{a,b\}$.  The contraction
+  $F_c$ on $G' = G/H'$ comes from the inductive hypothesis.  Set $\mathtt{normal}(v) =
+  F_c.\mathtt{normal}(\mathtt{collapseTo}\,a\,V(H')\,v)$, so both $a$ and $b$ get the
+  same panel.  Pick linearly independent extensors $C_e, C_f$ in that panel
+  (\cref{lem:extensor-pair-in-panel}).  Assemble $F$ (graph $= G$) from $C_e, C_f$ on
+  $H'$-edges and $F_c$'s extensors on surviving edges; likewise $F_H$ (graph $= H'$).
+  Since $C_e, C_f$ are independent and $V(H') = \{a,b\}$, \cref{lem:theorem-55-base}
+  gives $\dim\,F_H = D$.  Apply \cref{lem:rigidityRows-splice-rank-add} with
+  $D = (\mathtt{extProj}\,V(H'))^\vee$: the $H'$-rows vanish under $D$ (both endpoints
+  in $V(H')$), the $F_c$-rows inject (\cref{lem:extProj-preserves-rank-of-inter}), and the
+  surviving-edge image in $F$ contains the $F_c$-image, giving $D + \mathrm{rank}(F_c)
+  \le \mathrm{rank}(F)$.  The upper bound $\mathrm{rank}(F) \le D(|V(G)|-1) - k$
+  follows from B2 (\cref{lem:trivial-motions-rank-bound}); arithmetic
+  $D + (D(|V(G)| - 2) - k) = D(|V(G)|-1) - k$ closes rank equality.
+\end{proof}
+
 \begin{lemma}[Case I dispatch: simple vs non-simple contraction; KT Lemmas~6.3, 6.5]
   \label{lem:case-I-dispatch}
   \uses{def:panel-hinge-framework, lem:case-I}
@@ -664,7 +701,7 @@
   on the current formalized Theorem~5.5.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-I-realization}
+  \uses{lem:case-I-realization, lem:case-I-realization-nonsimple}
   Case on whether some $(H, r)$ has $(G/E(H))$ simple: if yes, apply
   \cref{lem:case-I-realization}; otherwise the Claim~6.6 + $\Pi^\circ$
   vertex-removal arm (22i).

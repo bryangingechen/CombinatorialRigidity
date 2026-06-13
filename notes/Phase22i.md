@@ -15,7 +15,7 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3 + L4 + L5a-i + the L5a-ii `hInj` discharge complete; four carries remain: `h622`, `h65`,
+**L2 + L3 + L4 + L5a-i + L5a-ii complete; four carries remain: `h622`, `h65`,
 `hsplit`, `hcontract`.**
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
@@ -38,8 +38,8 @@ tolerant content of KT Lemma 5.1) → `BodyHingeFramework.injOn_extProj_dualMap_
 (the direct `hInj`-form `finrank Sc = finrank (Sc.map D)`, via rank-nullity on `D|Sc`). Mints
 `lem:extProj-preserves-rank-of-inter` (rigidity-matrix.tex, beside the splice brick). All three
 axiom-clean; build+lint+blueprint-verify green. V6-a fully RESOLVED.
-**Next: L5a-ii (remainder) — `case_I_realization_nonsimple` (CaseI.lean)**, now pure plumbing
-(the `hInj` interface hyp is discharged).
+**L5a-ii producer complete**: `case_I_realization_nonsimple` (CaseI.lean) landed; `lem:case-I-realization-nonsimple` green.
+**Next: L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch.
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -159,14 +159,11 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     explicit `z = const-S r-on-V(G)` decomposition) → `…injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton`
     → `…finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` (the direct `hInj`-form). Mints
     `lem:extProj-preserves-rank-of-inter`. V6-a RESOLVED.
-  - [ ] **L5a-ii producer** — `case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization`):
-    now pure plumbing (the `hInj` interface hyp is discharged above). IH on both legs (`G[{e,f}]` H-leg + the
-    *contraction* `rigidContract G H r`) + the L5a-i brick fed the discharged `hInj` + the three other interface
-    hyps (`hFH_le`/`hFH_ker` via `hingeRow_comp_extProj_eq_zero`, `hFc_surv_le` via
-    `panelRow_collapseTo_comp_extProj_dualMap`) + B2 + the coincident-panel Lemma-5.3 leg
-    (`exists_extensor_in_two_panels` at `n₁=n₂`) + the parallel-pair proper-rigidity
-    (`isKDof_zero_of_parallel_pair`). Mints `lem:case-I-realization-nonsimple`. (The old bare `induce`-brick +
-    producer 90e8d4a was built then reverted, superseded by this structure.)
+  - [x] **L5a-ii producer** — `case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization`):
+    IH on the *contraction* `rigidContract G H r` + the L5a-i brick fed the discharged `hInj` + the three other
+    interface hyps + B2 + coincident-panel extensors (`exists_linearIndependent_extensor_pair_perp`) +
+    `isKDof_zero_of_parallel_pair`. Mints `lem:case-I-realization-nonsimple` (green, blueprint-verify clean).
+    (The old bare `induce`-brick + producer 90e8d4a was built then reverted, superseded by this structure.)
   - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch. §1.64(f)
     caveat: the simple all-`k` restate is **not** a mechanical `0→k` substitution — it re-routes its surviving
     block through the L5a-i brick's GP variant (the landed `rigidContract_exterior_rank_transport` leg is
@@ -230,33 +227,18 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L5a-i + the L5a-ii `hInj` discharge complete; four carries remain: `h622`, `h65`, `hsplit`,
-`hcontract`.**
+**L0–L5a complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
-The L5a-i splice brick is ABSTRACT over `D` + four interface hypotheses (`hFH_le`, `hFH_ker`,
-`hFc_surv_le`, `hInj`), proving only the block-triangular rank-nullity (§1.64(f)'s "rank-nullity
-half"). The §1.64(c) genuinely-new step — the **Lemma-5.1 column-deletion** discharging
-`hInj : finrank Sc = finrank (Sc.map D)` (`D = (extProj V(H)).dualMap` rank-preserving on the
-deficient contraction-row span) — **is now landed** as `lem:extProj-preserves-rank-of-inter`'s three
-lemmas (`infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton` →
-`injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` →
-`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`), all axiom-clean,
-build+lint+blueprint-verify green (coordinator-verifiable). V6-a fully RESOLVED. Canonical: §1.64.
+L5a-ii is done: `case_I_realization_nonsimple` (CaseI.lean) + `lem:case-I-realization-nonsimple`
+(case-i.tex) both green; blueprint-verify clean. V6-a fully RESOLVED; §1.64 canonical.
 
-**Smallest next forward commit: the L5a-ii producer — `case_I_realization_nonsimple` (CaseI.lean)**
-beside `case_cut_edge_realization`. **Now pure plumbing** (P≈1–2) — the brick's genuinely-new `hInj`
-interface hypothesis is discharged by `…finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`
-(fed `F := Fc` the contraction realization, `proj := V(H)`, `hinter` from
-`rigidContract_vertexSet_inter_eq_singleton`). The remaining brick interface hyps are landed
-correspondences: `hFH_ker` from `hingeRow_comp_extProj_eq_zero` (CaseI.lean:862), `hFc_surv_le` from
-`panelRow_collapseTo_comp_extProj_dualMap` (CaseI.lean:940), `hFH_le` from the H-block ⊆ full-span row
-membership. On top of that interface: IH on both legs (the H-leg `G[{e,f}]` parallel pair via
-`isKDof_zero_of_parallel_pair`, and the *contraction* `rigidContract G H r` minimal-`k`-dof via
-`rigidContract_isMinimalKDof`), B2 (`finrank_span_rigidityRows_add_deficiency_le`) for the `≤`, the
-coincident-panel Lemma-5.3 hinge (`exists_extensor_in_two_panels` at `n₁=n₂`), and the rank arithmetic
-`D + (D(|V|−2)−k) = D(|V|−1)−k`. Mints `lem:case-I-realization-nonsimple`, `\uses`-ing the splice brick
-+ `lem:extProj-preserves-rank-of-inter`. Model the edge-dispatch on the landed L4a
-`case_cut_edge_realization` producer. §1.64(d)/(f).
+**Smallest next forward commit: L5b** — the all-`k` GP restate of `case_I_realization` and the
+`by_cases G.Simple` dispatch wiring `hcontract`. Per §1.64(f): the simple all-`k` restate is **not**
+a mechanical `0→k` substitution — the landed `case_I_realization`'s surviving block routes through
+`rigidContract_exterior_rank_transport` which is `hdef=0`-gated; the all-`k` arm needs the L5a-i
+brick's GP variant. Scope: one new lemma `case_I_realization_all_k` (CaseI.lean) + the dispatch
+producing `HasPanelRealization 2 n G` from the `hcontract` premise (the `h65` sub-arm stays red →
+L8). Mints `lem:case-I-realization-all-k` + updates `lem:case-I-dispatch`.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -456,3 +438,16 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   `injOn_…_of_inter_eq_singleton` (swap `Z ⊔ W = ⊤` input only), `hInj`-form via rank-nullity on `D|Sc`. Mints
   `lem:extProj-preserves-rank-of-inter`. Axiom-clean. V6-a fully RESOLVED. FRICTION: `disjoint_ker_iff_injOn`
   (not deprecated `disjoint_ker'`).
+- **L5a-ii producer (2026-06-13, sonnet):** `case_I_realization_nonsimple` (CaseI.lean). Proof: `¬G.Simple` +
+  looplessness → parallel pair `(e, f, a, b)`; `H' = G[{a,b}] ↾ {e,f}` with `V(H') = {a,b}`, `E(H') = {e,f}`;
+  `isKDof_zero_of_parallel_pair` + ssubset proof from `|V(G)| ≥ 3` → `H'.IsProperRigidSubgraph`; IH on
+  `G.rigidContract H' a`; `normal := Fc_normal ∘ collapseTo a V(H')` (coincident panels); LI extensors
+  `Ce, Cf ∈ (normal a)^⊥` via `exists_linearIndependent_extensor_pair_perp`; assemble `F`/`FH`; four
+  splice-brick hyps discharged (`hFH_le`: row inclusion; `hFH_ker`: `change`+`simp [dualMap_apply']`+
+  `hingeRow_comp_extProj_eq_zero`; `hInj`: `finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`
+  + `rigidContract_vertexSet_inter_eq_singleton`; `hFc_surv_le`: `simp [dualMap_apply']+
+  hingeRow_collapseTo_comp_extProj_eq`); B2 closes upper bound; arithmetic `D + (D(|V|−2)−k) = D(|V|−1)−k`.
+  Key quirks: `set H'` with `hH'_def`; `simp only [ht_def]` to see through the `set`-defined `t` for
+  `hlink.left_mem`; `change` (not `show`) for goals that differ up to definitional equality; `rw [hFcg,
+  Graph.rigidContract, Graph.map_isLink]` to unpack contraction links in `hFc_surv_le`. Mints
+  `lem:case-I-realization-nonsimple` (case-i.tex) green.

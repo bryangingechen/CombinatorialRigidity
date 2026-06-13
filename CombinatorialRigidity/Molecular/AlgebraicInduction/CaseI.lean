@@ -8453,4 +8453,300 @@ theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n
       PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀,
       by simpa only [PanelHingeFramework.ofNormals_normal] using halg⟩
 
+set_option maxHeartbeats 800000 in
+-- The splice-brick assembly (Step 9) is elaboration-heavy; 800000 suffices in practice.
+/-- **L5a-ii producer: non-simple Case I arm** (`lem:case-I-realization-nonsimple`;
+KT Lemma 6.2, the parallel-edge contraction arm; Phase 22i).
+
+Given a minimal `k`-dof graph `G` with `|V(G)| ≥ 3` that is **not simple** (has a parallel pair
+`e, f` joining some vertices `a, b`), the genuine-hinge panel realization motive
+`HasPanelRealization 2 n G` holds.
+
+**Proof sketch.** `¬G.Simple` + looplessness (from `IsMinimalKDof`) gives vertices `a, b` and
+parallel edges `e, f` with `G.IsLink e a b` and `G.IsLink f a b` and `e ≠ f`. Build
+`H' := G[{a, b}] ↾ {e, f}`, a proper rigid subgraph (`isKDof_zero_of_parallel_pair`, `{a,b}` has
+ncard 2, and `|V(G)| ≥ 3`). Contract: `G.rigidContract H' a` is minimal `k`-dof
+(`rigidContract_isMinimalKDof`) with `|V(G.rigidContract H' a)| < |V(G)|`; IH gives `Fc_fw`.
+Build the H'-leg framework `FH` with coincident panels at `a` and `b` (degenerate placement
+`Fc_normal ∘ collapseTo a V(H')`, so both panels equal `Fc_normal a`) and LI extensors `Ce, Cf`
+(`exists_linearIndependent_extensor_pair_perp`). Rigidity of `FH` on `{a,b}` (`theorem_55_base`)
++ B1 gives `finrank FH = D`. Assemble `F` from `FH` for H'-edges, `Fc_fw` for surviving edges.
+Four splice-brick hypotheses: `hFH_ker` from `hingeRow_comp_extProj_eq_zero`; `hFc_surv_le` from
+`hingeRow_collapseTo_comp_extProj_eq`; `hInj` from
+`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
+`rigidContract_vertexSet_inter_eq_singleton`. Brick gives `D + finrank Fc ≤ finrank F`; B2 gives
+`finrank F ≤ D(|V|−1) − k`; arithmetic (`D + (D(|V|−2)−k) = D(|V|−1)−k`) closes M2. -/
+theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+    (hnsimple : ¬ G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
+    HasPanelRealization 2 n G := by
+  classical
+  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  -- ── Step 1: Extract looplessness + parallel pair ─────────────────────────────────────────
+  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  -- ¬G.Simple + G.Loopless gives a parallel pair.
+  have hpairs : ∃ e_edge f_edge : β, ∃ a b : α,
+      G.IsLink e_edge a b ∧ G.IsLink f_edge a b ∧ e_edge ≠ f_edge := by
+    simp only [Graph.simple_iff, not_and_or] at hnsimple
+    rcases hnsimple with hloopFalse | hnotAll
+    · exact absurd hloop hloopFalse
+    · push Not at hnotAll
+      obtain ⟨e, f, x, y, hlex, hlfy, hef⟩ := hnotAll
+      exact ⟨e, f, x, y, hlex, hlfy, hef⟩
+  obtain ⟨e_edge, f_edge, a, b, hle, hlf, hef⟩ := hpairs
+  have hab : a ≠ b := hle.ne
+  -- ── Step 2: Build H' = G[{a,b}] ↾ {e_edge, f_edge} ──────────────────────────────────────
+  set H' : Graph α β := G.induce {a, b} ↾ {e_edge, f_edge} with hH'_def
+  have hVH' : V(H') = {a, b} := by
+    simp only [hH'_def, Graph.vertexSet_restrict, Graph.vertexSet_induce]
+  have hH'a : a ∈ V(H') := by rw [hVH']; exact Set.mem_insert a _
+  have hH'b : b ∈ V(H') := by rw [hVH']; simp
+  have hH'le : H'.IsLink e_edge a b := by
+    simp only [hH'_def, Graph.restrict_isLink, Graph.induce_isLink]
+    exact ⟨Set.mem_insert _ _, hle, Set.mem_insert a _, by simp⟩
+  have hH'lf : H'.IsLink f_edge a b := by
+    simp only [hH'_def, Graph.restrict_isLink, Graph.induce_isLink]
+    exact ⟨by simp, hlf, Set.mem_insert a _, by simp⟩
+  -- e_edge, f_edge ∈ E(G[{a,b}]) (used in hEH' below).
+  have he_in_ind : e_edge ∈ E(G.induce {a, b}) :=
+    ((Graph.induce_isLink G {a, b} e_edge a b).mpr
+      ⟨hle, Set.mem_insert a _, by simp⟩).edge_mem
+  have hf_in_ind : f_edge ∈ E(G.induce {a, b}) :=
+    ((Graph.induce_isLink G {a, b} f_edge a b).mpr
+      ⟨hlf, Set.mem_insert a _, by simp⟩).edge_mem
+  have hEH' : E(H') = {e_edge, f_edge} := by
+    rw [hH'_def, Graph.edgeSet_restrict]
+    ext e; simp only [Set.mem_inter_iff, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · intro ⟨_, he⟩; exact he
+    · rintro (rfl | rfl)
+      · exact ⟨he_in_ind, Or.inl rfl⟩
+      · exact ⟨hf_in_ind, Or.inr rfl⟩
+  have hH'leG : H' ≤ G := by
+    refine ⟨?_, ?_⟩
+    · rw [hVH']; intro v hv; simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hv
+      rcases hv with rfl | rfl
+      · exact hle.left_mem
+      · exact hle.right_mem
+    · intro e u v hlink
+      have hrl := (Graph.restrict_isLink _ _ e u v).mp (hH'_def ▸ hlink)
+      exact ((Graph.induce_isLink G {a, b} e u v).mp hrl.2).1
+  -- ── Step 3: H' is a proper rigid subgraph ────────────────────────────────────────────────
+  have hVH'ncard : V(H').ncard = 2 := by rw [hVH', Set.ncard_pair hab]
+  have hH'rigid : H'.IsKDof n 0 :=
+    Graph.isKDof_zero_of_parallel_pair hD hab hH'le hH'lf hef hVH' hEH'
+  have hHsub : V(H') ⊆ V(G) := hH'leG.vertexSet_mono
+  have hH'proper : H'.IsProperRigidSubgraph G n := by
+    refine ⟨⟨hH'leG, hH'rigid⟩, by rw [hVH'ncard], ?_⟩
+    refine ⟨hHsub, fun hrev => ?_⟩
+    have : V(G).ncard ≤ V(H').ncard := Set.ncard_le_ncard hrev (Set.toFinite _)
+    rw [hVH'ncard] at this; omega
+  -- ── Step 4: IH on the contraction ────────────────────────────────────────────────────────
+  have hKlt : V(G.rigidContract H' a).ncard < V(G).ncard :=
+    Graph.rigidContract_vertexSet_ncard_lt hHsub (by rw [hVH'ncard])
+  have hKmin : (G.rigidContract H' a).IsMinimalKDof n k :=
+    Graph.rigidContract_isMinimalKDof hG hH'proper hH'a
+  have hKne : V(G.rigidContract H' a).Nonempty := by
+    apply (Set.ncard_pos (Set.toFinite _)).mp
+    rw [Graph.rigidContract_vertexSet_ncard hH'a hHsub, hVH'ncard]; omega
+  obtain ⟨Fc_fw, Fc_normal, hFcg, hFcne, hFcext, hFcrank⟩ :=
+    hIH k (G.rigidContract H' a) hKmin hKne hKlt
+  have hKcard : V(G.rigidContract H' a).ncard = V(G).ncard - 1 := by
+    rw [Graph.rigidContract_vertexSet_ncard hH'a hHsub, hVH'ncard]; omega
+  -- ── Step 5: Degenerate normals ───────────────────────────────────────────────────────────
+  -- Both a and b get Fc_normal a
+  -- (= Fc_normal (collapseTo a V(H') a) = Fc_normal (collapseTo a V(H') b)).
+  set normal : α → Fin 4 → ℝ := fun v => Fc_normal (Graph.collapseTo a V(H') v)
+  have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
+    intro v hv; simp only [normal]
+    apply hFcne
+    simp only [Graph.vertexSet_rigidContract]
+    exact ⟨v, hv, rfl⟩
+  -- ── Step 6: LI extensors Ce, Cf in (normal a)^⊥ ────────────────────────────────────────
+  obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ :=
+    exists_linearIndependent_extensor_pair_perp (normal a)
+  set Ce : ScrewSpace 2 := ⟨extensor p, extensor_mem_exteriorPower _⟩
+  set Cf : ScrewSpace 2 := ⟨extensor q, extensor_mem_exteriorPower _⟩
+  have hCe_ne : Ce ≠ 0 := by simpa using hpq_li.ne_zero 0
+  have hCf_ne : Cf ≠ 0 := by simpa using hpq_li.ne_zero 1
+  have hCe_perp : ExtensorInPanel Ce (normal a) := ⟨p, rfl, hp_perp⟩
+  have hCf_perp : ExtensorInPanel Cf (normal a) := ⟨q, rfl, hq_perp⟩
+  -- normal b = normal a (both collapse to a under collapseTo a V(H')).
+  have hn_b_eq : normal b = normal a := by
+    simp only [normal, Graph.collapseTo, hH'b, hH'a, ↓reduceIte]
+  -- ── Step 7: Assemble F and FH ─────────────────────────────────────────────────────────────
+  set extF : β → ScrewSpace 2 := fun e =>
+    if e = e_edge then Ce else if e = f_edge then Cf else Fc_fw.supportExtensor e
+  set F : BodyHingeFramework 2 α β := { graph := G, supportExtensor := extF }
+  set FH : BodyHingeFramework 2 α β := { graph := H', supportExtensor := extF }
+  have hFg : F.graph = G := rfl
+  have hFHg : FH.graph = H' := rfl
+  have hFe : extF e_edge = Ce := by simp [extF]
+  have hFf : extF f_edge = Cf := by simp [extF, hef.symm]
+  -- e_edge ≠ f_edge and the ite values.
+  have hef_ne : e_edge ≠ f_edge := hef
+  -- For surviving edges e' ∉ {e_edge, f_edge}: extF e' = Fc_fw.supportExtensor e'.
+  have hextF_surv : ∀ e' : β, e' ≠ e_edge → e' ≠ f_edge →
+      extF e' = Fc_fw.supportExtensor e' := by
+    intro e' hne1 hne2; simp [extF, hne1, hne2]
+  -- ── Step 8: finrank FH = D via theorem_55_base + B1 ──────────────────────────────────────
+  have hFH_li : LinearIndependent ℝ ![FH.supportExtensor e_edge, FH.supportExtensor f_edge] := by
+    change LinearIndependent ℝ ![extF e_edge, extF f_edge]
+    rw [hFe, hFf]; exact hpq_li
+  have hFHne : FH.graph.vertexSet.Nonempty := by
+    rw [hFHg, hVH']; exact ⟨a, Set.mem_insert a _⟩
+  have hFH_rig : FH.IsInfinitesimallyRigidOn {a, b} :=
+    FH.theorem_55_base hab hFH_li (hFHg ▸ hH'le) (hFHg ▸ hH'lf)
+  have hFH_rigV : FH.IsInfinitesimallyRigidOn FH.graph.vertexSet := by
+    rw [hFHg, hVH']; exact hFH_rig
+  have hFH_finrank_nat : Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows)
+      = screwDim 2 * (V(H').ncard - 1) :=
+    (FH.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hFHne).mp
+      (hFHg ▸ hFH_rigV)
+  have hFH_finrank : (Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows) : ℤ) = screwDim 2 := by
+    rw [hFH_finrank_nat, hVH'ncard]; push_cast; ring
+  -- ── Step 9: Splice brick hypotheses ─────────────────────────────────────────────────────
+  set t := V(H') with ht_def
+  set Dmap := (extProj (k := 2) t).dualMap
+  -- (i) hFH_le: FH rows ≤ F rows (same extensor; H' ≤ G).
+  have hFH_le : Submodule.span ℝ FH.rigidityRows ≤ Submodule.span ℝ F.rigidityRows := by
+    apply Submodule.span_mono
+    intro φ hφ
+    simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq] at hφ ⊢
+    obtain ⟨e, u, v, hlink, r, hr, rfl⟩ := hφ
+    exact ⟨e, u, v, hH'leG.isLink_mono hlink, r,
+      by simpa [BodyHingeFramework.hingeRowBlock, FH, F] using hr, rfl⟩
+  -- (ii) hFH_ker: FH rows ≤ ker Dmap (H'-link endpoints are in t = V(H')).
+  have hFH_ker : Submodule.span ℝ FH.rigidityRows ≤ LinearMap.ker Dmap := by
+    apply Submodule.span_le.mpr
+    intro φ hφ
+    simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq] at hφ
+    obtain ⟨e, u, v, hlink, r, hr, rfl⟩ := hφ
+    have hu : u ∈ t := by simp only [ht_def]; exact hFHg ▸ hlink.left_mem
+    have hv : v ∈ t := by simp only [ht_def]; exact hFHg ▸ hlink.right_mem
+    change Dmap (BodyHingeFramework.hingeRow u v r) = 0
+    simp only [Dmap, LinearMap.dualMap_apply']
+    exact hingeRow_comp_extProj_eq_zero hu hv r
+  -- (iii) hInj: finrank Fc_fw = finrank (Fc_fw span).map Dmap.
+  have hFcg_inter : Fc_fw.graph.vertexSet ∩ t = {a} := by
+    rw [ht_def, hFcg]
+    exact Graph.rigidContract_vertexSet_inter_eq_singleton G H' hH'a hHsub
+  have hInj : Module.finrank ℝ ↥(Submodule.span ℝ Fc_fw.rigidityRows) =
+      Module.finrank ℝ ↥((Submodule.span ℝ Fc_fw.rigidityRows).map Dmap) :=
+    Fc_fw.finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton hFcg_inter
+  -- (iv) hFc_surv_le: (span Fc rows).map Dmap ≤ (span F rows).map Dmap.
+  -- Strategy: for each generator hingeRow u' v' r' of Fc rows (where u' = collapseTo a t u,
+  -- v' = collapseTo a t v for a G-surviving-edge link G.IsLink e' u v),
+  -- Dmap(hingeRow u' v' r') = Dmap(hingeRow u v r') by hingeRow_collapseTo_comp_extProj_eq,
+  -- and hingeRow u v r' ∈ F.rigidityRows (since extF e' = Fc_fw.supportExtensor e' for e' ∉ E(H')).
+  have hFc_surv_le : (Submodule.span ℝ Fc_fw.rigidityRows).map Dmap ≤
+      (Submodule.span ℝ F.rigidityRows).map Dmap := by
+    rw [Submodule.map_span, Submodule.map_span]
+    apply Submodule.span_mono
+    intro ψ hψ
+    simp only [Set.mem_image, BodyHingeFramework.rigidityRows, Set.mem_setOf_eq] at hψ
+    obtain ⟨φ, ⟨e', u', v', hlink', r', hr', rfl⟩, rfl⟩ := hψ
+    -- Unpack the rigidContract link: hlink' : Fc_fw.graph.IsLink e' u' v'.
+    rw [hFcg, Graph.rigidContract, Graph.map_isLink] at hlink'
+    obtain ⟨u, v, hGdel, rfl, rfl⟩ := hlink'
+    rw [Graph.deleteEdges_isLink] at hGdel
+    obtain ⟨hGlink, hnotEH'⟩ := hGdel
+    rw [hEH'] at hnotEH'
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hnotEH'
+    obtain ⟨hne1, hne2⟩ := hnotEH'
+    have hextEq : extF e' = Fc_fw.supportExtensor e' := hextF_surv e' hne1 hne2
+    have hr'F : r' ∈ (F : BodyHingeFramework 2 α β).hingeRowBlock e' := by
+      simpa [BodyHingeFramework.hingeRowBlock, F, hextEq] using hr'
+    have ha_t : a ∈ t := hH'a
+    have hrow_eq : Dmap (BodyHingeFramework.hingeRow (Graph.collapseTo a t u)
+          (Graph.collapseTo a t v) r') =
+        Dmap (BodyHingeFramework.hingeRow u v r') := by
+      simp only [Dmap, LinearMap.dualMap_apply']
+      exact hingeRow_collapseTo_comp_extProj_eq ha_t u v r'
+    have hrowF : BodyHingeFramework.hingeRow u v r' ∈ F.rigidityRows := by
+      simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
+      exact ⟨e', u, v, hFg ▸ hGlink, r', hr'F, rfl⟩
+    -- Dmap(hingeRow u' v' r') = Dmap(hingeRow u v r') ∈ Dmap '' F.rigidityRows.
+    exact ⟨BodyHingeFramework.hingeRow u v r', hrowF, hrow_eq.symm⟩
+  -- ── Step 10: Apply splice brick ──────────────────────────────────────────────────────────
+  have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_splice F FH Fc_fw Dmap
+    hFH_le hFH_ker hFc_surv_le hInj
+  -- ── Step 11: B2 upper bound ──────────────────────────────────────────────────────────────
+  have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
+    intro e u v hl
+    simp only [F, extF]
+    split_ifs with h1 h2
+    · exact hCe_ne
+    · exact hCf_ne
+    · -- e is a surviving edge; extF e = Fc_fw.supportExtensor e.
+      -- Show (G.rigidContract H' a).IsLink e u v and use hFcext.
+      have hclink : (G.rigidContract H' a).IsLink e
+          (Graph.collapseTo a V(H') u) (Graph.collapseTo a V(H') v) := by
+        rw [Graph.rigidContract, Graph.map_isLink]
+        refine ⟨u, v, ?_, rfl, rfl⟩
+        rw [Graph.deleteEdges_isLink]
+        exact ⟨hFg ▸ hl, by rw [hEH']; simp [h1, h2]⟩
+      exact (hFcext e _ _ hclink).1
+  have hFVne : V(F.graph).Nonempty := by
+    rw [hFg]; exact (Set.ncard_pos (Set.toFinite _)).mp (by omega)
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
+  -- ── Step 12: Fc finrank from IH ──────────────────────────────────────────────────────────
+  have hFcfinrank : (Module.finrank ℝ (Submodule.span ℝ Fc_fw.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - k := by
+    rw [hFcrank]; congr 1; rw [hKmin.1]
+  -- ── Step 13: Arithmetic to get rank = D(|V|−1) − k ──────────────────────────────────────
+  have hVcard : (V(G).ncard : ℤ) = (V(G.rigidContract H' a).ncard : ℤ) + 1 := by
+    have := hKcard; omega
+  have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+    have hbrickZ : (Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows) : ℤ) +
+        (Module.finrank ℝ (Submodule.span ℝ Fc_fw.rigidityRows) : ℤ) ≤
+        (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
+      exact_mod_cast hbrick
+    have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+        ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+      have := hB2; rw [hG.1, hFg] at this; linarith
+    have hlb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
+        (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
+      rw [hFH_finrank, hFcfinrank] at hbrickZ
+      rw [hVcard]; linarith
+    linarith
+  -- ── Step 14: hlinks — nonzero + ExtensorInPanel for all G-edges ──────────────────────────
+  have hlinks : ∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
+      ExtensorInPanel (F.supportExtensor e) (normal u) ∧
+      ExtensorInPanel (F.supportExtensor e) (normal v) := by
+    intro e u v hl
+    simp only [F, extF]
+    split_ifs with h1 h2
+    · -- e = e_edge: Ce ∈ (normal a)^⊥. Need to show normal u = normal a and normal v = normal a.
+      -- From h1 : e = e_edge and hl : G.IsLink e u v and hle : G.IsLink e_edge a b,
+      -- we get {u, v} = {a, b} (up to swap).
+      subst h1
+      rcases hl.eq_and_eq_or_eq_and_eq hle with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · exact ⟨hCe_ne, hCe_perp, hn_b_eq ▸ hCe_perp⟩
+      · exact ⟨hCe_ne, hn_b_eq ▸ hCe_perp, hCe_perp⟩
+    · -- e = f_edge: Cf ∈ (normal a)^⊥.
+      subst h2
+      rcases hl.eq_and_eq_or_eq_and_eq hlf with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+      · exact ⟨hCf_ne, hCf_perp, hn_b_eq ▸ hCf_perp⟩
+      · exact ⟨hCf_ne, hn_b_eq ▸ hCf_perp, hCf_perp⟩
+    · -- Surviving edge: extF e = Fc_fw.supportExtensor e.
+      -- Build the contracted link:
+      -- (G.rigidContract H' a).IsLink e (collapseTo a t u) (collapseTo a t v).
+      have hclink : (G.rigidContract H' a).IsLink e
+          (Graph.collapseTo a t u) (Graph.collapseTo a t v) := by
+        rw [Graph.rigidContract, Graph.map_isLink]
+        refine ⟨u, v, ?_, rfl, rfl⟩
+        rw [Graph.deleteEdges_isLink]
+        refine ⟨hl, ?_⟩
+        rw [hEH']; simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or]; exact ⟨h1, h2⟩
+      obtain ⟨hne, hpan1, hpan2⟩ := hFcext e _ _ hclink
+      exact ⟨hne, hpan1, hpan2⟩
+  -- ── Step 15: Return the realization ──────────────────────────────────────────────────────
+  rw [← hG.1] at hrank_eq
+  exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
+
 end CombinatorialRigidity.Molecular
