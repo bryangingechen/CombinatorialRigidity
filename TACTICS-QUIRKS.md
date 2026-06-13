@@ -1775,3 +1775,78 @@ the iterated literal subtraction (e.g. rewrite `D * (c - 1 - 1)` via `rw [mul_su
 so the goal-side term is produced by rewriting rather than written in source; the L1i
 `splitOff_isKDof_of_exists_base_inter_fiber_lt` route). Phase 22i L1i (`ForestSurgery.lean`).
 See FRICTION [resolved] *Chained subtraction fails to parse in Graph scope*.
+
+
+## 49. `Pi.single w y u` type-inference failure and `▸` in `Pi.single_eq_of_ne` lambda
+
+**Symptom (a).** `Pi.single w y u` elaborates with a type error — Lean cannot determine the
+fill type from context (e.g. when the enclosing `simp` goal has `ScrewSpace k` as the value
+type but the elaborator hasn't bound it yet).
+
+**Fix (a).** Annotate the intermediate function: `(Pi.single w y : α → ScrewSpace k) u`.
+
+**Symptom (b).** `Pi.single_eq_of_ne (fun h => hu (h ▸ ...))` fails — Lean can't infer the
+type of `h` from the bare lambda.
+
+**Fix (b).** Spell it out explicitly:
+```lean
+Pi.single_eq_of_ne (show u ≠ w from fun (h : u = w) => hu (h ▸ ...))
+```
+
+Phase 22i L4a (`RigidityMatrix.lean`, `flowSum_hingeRow_both_mem` /
+`flowSum_hingeRow_both_not_mem`).
+
+
+## 50. `Function.update_same` renamed to `Function.update_self`; `Submodule.subtype_injective` elaboration
+
+**`Function.update_same`.** The lemma `Function.update_same : Function.update f a (f a) = f a`
+(updating a function at a point to its own value is identity) has been renamed to
+`Function.update_self` in the current mathlib. Use `Function.update_self` directly.
+Phase 22i L4a (`RigidityMatrix.lean`, `flowSum_hingeRow_mem_not_mem`).
+
+**`Submodule.subtype_injective` elaboration collapse.** When passed as a plain term to
+`LinearMap.finrank_range_of_inj`, `Submodule.subtype_injective` can elaborate as
+`Function.Injective (fun x ↦ x)` (the identity) rather than injectivity of the subtype
+inclusion, causing a type mismatch or a false goal. Use `Subtype.coe_injective` directly, which
+elaborates unambiguously. Phase 22i L4a (`RigidityMatrix.lean`, `hSc_rk`).
+
+
+## 51. `set_option ... in` before a docstring-decorated declaration
+
+**Symptom.** A `set_option maxHeartbeats N in /-- docstring -/ theorem ...` raises a parse
+error ("unexpected token 'set_option'; expected 'lemma'") if the `set_option ... in` is placed
+*between* the docstring and the theorem keyword.
+
+**Cause.** In Lean 4, `set_option ... in decl` treats the entire decorated declaration
+(including any docstring) as the "declaration" argument. The docstring must come *after*
+`set_option ... in`, not before it.
+
+**Fix.** Put `set_option ... in` before the docstring:
+```lean
+set_option maxHeartbeats 400000 in
+/-- docstring -/
+theorem my_theorem ...
+```
+Phase 22i L4a (`RigidityMatrix.lean`, `le_finrank_span_rigidityRows_of_cut`).
+
+
+## 52. `set_option linter.style.openClassical false` must be a standalone command
+
+**Symptom.** Writing `set_option linter.style.openClassical false in open Classical` suppresses
+the linter warning for the `open Classical` command itself, but the `Classical` instances are
+then only available *during that command's elaboration*, not section-wide. All
+`Classical.decEq`-dependent tactics in the section see "no instance for `DecidableEq`" or
+similar.
+
+**Cause.** The `in <cmd>` syntax scopes the option to that one command. `open Classical` needs
+to persist across the whole section (or file); wrapping it with `in` ends the scope
+immediately.
+
+**Fix.** Use two standalone commands:
+```lean
+set_option linter.style.openClassical false
+open Classical
+```
+The `set_option` applies to all subsequent commands in the same section/file scope and
+suppresses the linter warning; `open Classical` persists normally.
+Phase 22i L4a (`RigidityMatrix.lean`, `section CutEdgeBrick`).

@@ -36,6 +36,9 @@ producer fills the L2 `hcut` slot at the conditioned pair `Pc`, and has no curre
 in at L9). Sliced **L4a → L4b**. Next: **L4a** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
 (the block-rank brick, the only new math) + the bare-conjunct producer `lem:case-cut-edge-realization`
 (minted red, GP conjunct pending L4b).
+**L4a block-rank brick complete (`le_finrank_span_rigidityRows_of_cut`); next is the bare-conjunct
+producer.** The vertex-disjoint block-rank-addition lower bound landed in `RigidityMatrix.lean`
+(`section CutEdgeBrick`), axiom/lint clean.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -114,10 +117,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   substance is the lower bound `≥` (a NEW vertex-disjoint block-rank-addition brick
   `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`, the project's fixed-seed route in place of
   KT's isometry). KT's disconnected/connected cases unify via the L1e `cutEdges.ncard ∈ {0,1}`
-  arithmetic. *L4a* (first build): the block-rank brick + the bare-conjunct producer
-  `HasPanelRealization` (transversality-free); *L4b*: the GP conjunct — gated on **V5-b** (the
-  seed-combination open sub-question: shared-reseed vs independent-seed-union alg-indep; may force a
-  statement-level change to the IH the `hcut` slot delivers — flagged to coordinator).
+  arithmetic. *L4a* (first build): **brick (`le_finrank_span_rigidityRows_of_cut`) landed** ✓;
+  bare-conjunct producer `HasPanelRealization` (transversality-free) pending; *L4b*: the GP
+  conjunct — gated on **V5-b** (shared-reseed vs independent-seed-union alg-indep; may force an IH
+  statement-level change — flagged to coordinator).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
@@ -163,20 +166,18 @@ motive; the GP arms (`theorem_55_base_producer_{empty,single_edge}_gp`) are buil
 alg-indep seed; the legacy-`hbase` `.2` rewire of `theorem_55_d3` is unchanged. Four carries remain:
 `h622`, `h65`, `hsplit`, `hcontract`.
 
-**L4 signature pin landed (§1.61); next is the first L4 build.** V5 resolved: the producer
-`lem:case-cut-edge-realization` fills the L2 `hcut` slot at the conditioned pair `Pc`, consuming the
-L1e cut decomposition `exists_cut_decomposition_of_not_twoEdgeConnected` + the smaller-graph IH. The
-closing `≤` is free (B2, landed); the substance is the lower bound `≥`, a NEW vertex-disjoint
-block-rank-addition brick (the project's fixed-seed route in place of KT's isometry). Sliced L4a → L4b.
+**L4a block-rank brick landed (`le_finrank_span_rigidityRows_of_cut`).** The
+vertex-disjoint block-rank-addition lower bound is in `RigidityMatrix.lean` (`section CutEdgeBrick`),
+axiom-clean, build + lint clean. Three-submodule disjointness argument via `flowSum` + `hingeRow` +
+`span_induction`; the `screwDim k - 1` row from the single cut edge. Blueprint §1.61(b) shape confirmed.
 
-**Smallest next forward commit: L4a** — build `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
-(the block-rank-addition brick, the only genuinely-new math; pin-shape in §1.61(b)) + the bare-conjunct
-producer concluding `HasPanelRealization 2 n G` for the `hcut` slot (the §1.61(c) IH-plumbing + B2
-assembly). Mint `lem:case-cut-edge-realization` (red — GP conjunct pending L4b). Decide the home
-(CaseI.lean vs a dedicated `CutEdge.lean`) at the build. The producer has **no current consumer** (the
-legacy `theorem_55_d3` spine never reaches the cut case — 0-dof is always 2EC); it wires into the
-all-`k` spine at L9. **L4b** (the GP conjunct) needs its own design micro-pass first to adjudicate
-V5-b (Route GP-1 vs GP-2). After L4: L5 (`hcontract`, Lemma 6.2 + the 6.3/6.5 all-`k` restate).
+**Smallest next forward commit: L4a bare-conjunct producer** — build `lem:case-cut-edge-realization`
+concluding `HasPanelRealization 2 n G` for the `hcut` slot (§1.61(c) IH-plumbing + B2 assembly,
+consuming `le_finrank_span_rigidityRows_of_cut` + `exists_cut_decomposition_of_not_twoEdgeConnected` +
+the smaller-graph IH). Home: CaseI.lean (no new file). Mint `lem:case-cut-edge-realization` red in the
+blueprint (GP conjunct pending L4b). The producer has **no current consumer** (wires at L9). **L4b**
+needs its own design micro-pass to adjudicate V5-b (Route GP-1 vs GP-2). After L4: L5 (`hcontract`,
+Lemma 6.2 + the 6.3/6.5 all-`k` restate).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -291,3 +292,14 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   consumer; wires at L9). Sliced L4a (brick + bare conjunct, transversality-free) → L4b (GP conjunct,
   gated on the V5-b seed-combination open sub-question — flagged to coordinator, may force an IH
   statement-level change).
+- **L4a brick build (2026-06-13, sonnet):** `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
+  landed in `RigidityMatrix.lean` (`section CutEdgeBrick`). Proof: `flowSum V₁` maps the
+  `hingeRow`-span `Sc` to the single cut-edge's dual row, `screwDim k - 1` rank from `hingeRowBlock`
+  finrank + injectivity; `S₁⊓S₂ = ⊥` + `Sc⊓(S₁⊔S₂) = ⊥` by `span_induction` + `flowSum` side-eqs;
+  calc chains the disjoint-rank additions. Key quirks: `hingeRow u v` is a bare function (not bundled
+  — use `hingeRow_eq_dualMap` to get linearity); `Pi.single w y u` needs explicit type annotation;
+  `▸` in `Pi.single_eq_of_ne` lambda needs explicit `h : u = w` annotation; `Function.update_same` →
+  `Function.update_self`; `Submodule.subtype_injective` elaboration — use `Subtype.coe_injective`
+  instead; `set_option maxHeartbeats 400000 in` before docstring (not between docstring and `theorem`);
+  `set_option linter.style.openClassical false` as standalone command (not `in`-wrapped). All
+  promoted to TACTICS-QUIRKS §§49–52 (see file). Build + lint clean.
