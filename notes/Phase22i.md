@@ -148,25 +148,22 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L3 complete; the `hbase` carry is fully discharged at KT strength.** The trichotomy-dispatch
-`theorem_55_base_producer` concludes the §1.60(a) strong pair
-`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` = the L9-spine `Pc`
-motive; the GP arms (`theorem_55_base_producer_{empty,single_edge}_gp`) are built at an injective
-alg-indep seed; the legacy-`hbase` `.2` rewire of `theorem_55_d3` is unchanged. Four carries remain:
-`h622`, `h65`, `hsplit`, `hcontract`.
+**L0–L4 complete.** `hbase` discharged at KT strength (L3 — the base-producer strong pair
+`(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization`); the not-2-edge-connected
+case (KT Lemma 6.1) is fully built (L4 — both conjuncts: the bare `HasPanelRealization` producer
+`case_cut_edge_realization` and the GP producer `case_cut_edge_realization_gp`, via the block-rank
+brick + the deficiency-aware rank-polynomial extractor + the fresh-seed device). Four L4 nodes
+green: `lem:block-rank-cut`, `lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`,
+`lem:case-cut-edge-realization-gp`. **Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
-**L4a complete.** Block-rank brick (`le_finrank_span_rigidityRows_of_cut`, `RigidityMatrix.lean`)
-and bare-conjunct producer (`case_cut_edge_realization`, `CaseI.lean`):
-both Lean-green, axiom-clean, build+lint clean. Blueprint: `lem:block-rank-cut` (`rigidity-matrix.tex`)
-and `lem:case-cut-edge-realization` (`molecular-induction.tex`) both green.
-
-**L4 fully complete.** All four L4 deliverables Lean-green and blueprint-green:
-`lem:block-rank-cut`, `lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`,
-`lem:case-cut-edge-realization-gp`.
-
-**Smallest next forward commit: L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5
-all-`k` restate of `case_I_realization` (`hcontract` carry discharged). Design canonical: §1.56
-carries table + §1.62 V6 entry.
+**Smallest next forward commit: the L5 signature pin — a design-settle pass, NOT a build**
+(per the layer-plan's per-layer-pin rule, and because KT Lemma 6.2 is NEW math). L5 discharges
+`hcontract` by dispatching on `G.Simple`: the simple branch is the 6.3/6.5 all-`k` restate of
+`case_I_realization`; the **non-simple branch is KT Lemma 6.2** (V6 — the coincident-panel splice:
+the parallel-pair subgraph + the Lemma-5.3 leg at the contraction panel + the eq. (6.3)–(6.5) rank
+addition; N6a re-aimed). The pin opens a new §1.6x: verify the Lemma-6.2 splice shape against KT
+§6.2 in the PDF, pin exact signatures, and slice L5 into build leaves. Design input: §1.56 carries
+table (`hcontract` row) + the V6 framing — **not** §1.62 (that is the L4b/V5-b pass).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
