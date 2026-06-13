@@ -22,10 +22,11 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 polynomial extractor, and GP producer are all Lean-green; `lem:block-rank-cut`,
 `lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`, and
 `lem:case-cut-edge-realization-gp` are all green blueprint nodes.
-**Next: the L5a build** (the L5 signature pin is landed, §1.63). L5 discharges `hcontract` by a
+**Next: L5a-i** — the shared-body block-rank brick `le_finrank_span_rigidityRows_of_splice` (the only
+new math in L5; the L5 signature pin is landed, §1.63). L5 discharges `hcontract` by a
 `by_cases G.Simple` dispatch (§1.63(a)): simple → forgetful M4 ∘ the all-`k`-restated GP
 `case_I_realization` (6.5 sub-arm carried as `h65`, L8); non-simple → the NEW KT Lemma 6.2
-coincident-panel splice. Sliced L5a (the non-simple bare producer + its shared-body block-rank brick)
+coincident-panel splice. Sliced L5a-i (the brick, standalone) → L5a-ii (the non-simple bare producer)
 → L5b (the simple-branch all-`k` GP restate + the dispatch). V6 RESOLVED: N6a is dead infrastructure
 (deleted-motive-bound), so L5a builds fresh on the `BodyHingeFramework` carrier in the L4a idiom.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
@@ -111,11 +112,17 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   Canonical: §1.62(d).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3 all-`k` restate of `case_I_realization`
   (`hcontract` carry discharged; the 6.5 sub-arm stays carried as `h65` → L8). **Signature pinned in
-  §1.63**, sliced **L5a** (the non-simple bare producer `case_I_realization_nonsimple` + its shared-body
-  block-rank brick `le_finrank_span_rigidityRows_of_splice`, the only new math) → **L5b** (the all-`k` GP
-  restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch). V6 RESOLVED — N6a is dead
-  infrastructure (deleted-motive-bound, `ofNormals`-bound), L5a builds fresh in the L4a idiom; V4
-  (`rigidContract_isMinimalKDof` all-`k`) confirmed already-landed.
+  §1.63**, sliced **L5a** → **L5b**, with L5a sub-split (row-91 brick-then-producer pattern) for a
+  sonnet/opus boundary pair on the brick:
+  - [ ] **L5a-i** — the shared-body block-rank brick `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`
+    (RigidityMatrix.lean, beside L4a's `le_finrank_span_rigidityRows_of_cut`); the only genuinely-new math in
+    L5 (KT eq. (6.3)–(6.5) block-triangular, V6-a). **Standalone commit** (no consumer until L5a-ii).
+  - [ ] **L5a-ii** — the non-simple bare producer `case_I_realization_nonsimple` (CaseI.lean, beside
+    `case_cut_edge_realization`): IH `HasPanelRealization` legs + the L5a-i brick + B2 + the landed
+    `exists_extensor_in_two_panels` (coincident-panel hinge). Mints `lem:case-I-realization-nonsimple`.
+  - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch.
+  V6 RESOLVED — N6a is dead infrastructure (deleted-motive-bound, `ofNormals`-bound), L5a builds fresh in
+  the L4a idiom; V4 (`rigidContract_isMinimalKDof` all-`k`) confirmed already-landed.
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
   (6.13)–(6.17); the Lemma-5.2 shear transfer via the 22h W-suite, V7).
 - [ ] **L7** — the Case-III rewire: `case_III_realization` restated, `h622` derived from
@@ -168,16 +175,17 @@ not-2-edge-connected case (KT Lemma 6.1) is fully built (L4 — both conjuncts v
 the deficiency-aware rank-polynomial extractor + the fresh-seed device; four L4 nodes green).
 **Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
-**Smallest next forward commit: the L5a build (the non-simple Case-I bare producer, KT Lemma 6.2)** —
-the first L5 build leaf, pinned in §1.63(c)/(f). It is two new decls in one commit:
+**Smallest next forward commit: L5a-i — the shared-body block-rank brick**
 `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (RigidityMatrix.lean, beside L4a's
-`le_finrank_span_rigidityRows_of_cut` — the shared-body sibling of the disjoint-body cut brick; the only
-genuinely-new math in L5, KT eq. (6.3)–(6.5)) + `case_I_realization_nonsimple` (CaseI.lean, beside
-`case_cut_edge_realization` — the `BodyHingeFramework`-native bare producer concluding `HasPanelRealization
-2 n G` from the `.2`-projected conditioned IH, the coincident-panel hinge from the already-landed
-`exists_extensor_in_two_panels` at `n₁ = n₂`). Mints `lem:case-I-realization-nonsimple` (+ optionally
-`lem:rigidityRows-splice-rank-add`). V6-a (the brick's reuse of `isInfinitesimallyRigidOn_of_splice`'s span
-decomposition) resolves at this build. **Then L5b** (§1.63(d)): the all-`k` GP restate of
+`le_finrank_span_rigidityRows_of_cut` — the shared-body sibling of the disjoint-body cut brick; the **only
+genuinely-new math in L5**, KT eq. (6.3)–(6.5) block-triangular, pinned in §1.63(c)). A standalone commit
+(no consumer until L5a-ii), mirroring row 91's brick-then-producer pattern; V6-a (the brick's reuse of
+`isInfinitesimallyRigidOn_of_splice`'s span decomposition vs an explicit `Submodule.finrank_sup`
+block-triangular argument) resolves at this build. **Then L5a-ii** — the non-simple bare producer
+`case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization` — the
+`BodyHingeFramework`-native bare producer concluding `HasPanelRealization 2 n G` from the `.2`-projected
+conditioned IH, the coincident-panel hinge from the already-landed `exists_extensor_in_two_panels` at
+`n₁ = n₂`; mints `lem:case-I-realization-nonsimple`). **Then L5b** (§1.63(d)): the all-`k` GP restate of
 `case_I_realization` + the `by_cases G.Simple` dispatch (M4-forgetful on the simple arm, L5a on the
 non-simple arm, `h65` threaded unchanged → L8); statement change to `case_I_realization` triggers the
 structural-edit grep gate. V6 RESOLVED at this pin: N6a (`hasFullRankRealization_of_splice_of_supportExtensor`,
