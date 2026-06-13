@@ -6,7 +6,12 @@ looks off.
 Setup: follow CLAUDE.md reading order (CLAUDE.md, ROADMAP.md,
 notes/Phase$ARGUMENTS.md). Confirm `git status` is clean and the
 leftmost active phase file builds green (per *Starting a Lean-touching
-session* in CombinatorialRigidity/CLAUDE.md). Run the loop in the
+session* in CombinatorialRigidity/CLAUDE.md). While the model-experiment
+is running, also run the protocol's **session-start availability check**
+(`notes/model-experiment-protocol.md`, *Model assignment map*): determine
+which rungs the Agent tool's `model` parameter can reach this session and
+record the available set + any substitution in the repo-local config
+before the first dispatch. Run the loop in the
 foreground of this session only — never backgrounded or forked: two
 instances sharing one working tree have ended with one committing the
 other's half-validated uncommitted work.

@@ -70,10 +70,23 @@ Published function of the profile, so assignment is reproducible:
   carried-hypothesis / motive change. (Rating a postmortem recon
   1/1/1 maps to haiku — absurd; the axes measure commit risk, not
   question difficulty.)
+- **Session-start availability check (before the first dispatch).**
+  Rungs come and go between sessions (model-availability outages, plan
+  caps). At session start the coordinator determines which rungs the
+  Agent tool's `model` parameter can actually reach this session and
+  records the available set — with an expiry — in the repo-local
+  config, *then* fixes each unavailable rung's substitute up front per
+  the next bullet. Establishing the substitution once, at the top,
+  keeps assignment reproducible and the decision visible in one place
+  rather than rediscovered per-dispatch (a coordinator that learns
+  fable is gone only when its first fable-mapped pass comes due has to
+  reconstruct the substitution mid-loop). A fresh coordinator re-runs
+  the check and reverts to the full map as rungs return.
 - **Unavailable rung → substitute the nearest available, log the
-  substitution.** When a session lacks a mapped rung's model (e.g.
-  fable unavailable), substitute the nearest available rung and record
-  it in the row's Model column + Notes. For the fable-mapped commits
+  substitution.** When the session-start check (above) finds a mapped
+  rung's model unavailable (e.g. fable unavailable), substitute the
+  nearest available rung and record it in the row's Model column +
+  Notes. For the fable-mapped commits
   (design-settle / phase-boundary / S=3) the substitute is **opus**
   (the next-most-capable). This is *not* a map change — the map is
   what would run with all rungs present; a session-local config note

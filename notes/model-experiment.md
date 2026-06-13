@@ -42,7 +42,12 @@ protocol); and the 2026-06-12 model-availability-fallback amendment
 (when a session lacks a mapped rung's model — e.g. fable unavailable —
 substitute the nearest available rung and log it; fable-mapped commits
 fall to opus; not a map change; rows 84–86 precedent — a new bullet
-under the protocol's *Model assignment map*).
+under the protocol's *Model assignment map*); and the 2026-06-13
+session-start-availability-check amendment (the coordinator determines
+which rungs are reachable at session start and fixes substitutions up
+front, recorded in the repo-local config, rather than rediscovering
+them per-dispatch — a new bullet under *Model assignment map*; companion
+setup nudge in `.claude/commands/coordinate-phase.md` is repo-local).
 
 ## Repo-local config
 
@@ -57,6 +62,14 @@ under the protocol's *Model assignment map*).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
+- **Session availability (2026-06-13, current session — set by the session-start
+  check).** fable **unavailable** this session (user-confirmed); the reachable
+  rungs are haiku / sonnet / opus, dispatched per the S/P/B → map. Per the
+  *Unavailable rung* substitution rule, every fable-mapped pass (design-settle /
+  phase-boundary / S=3 / recon-by-stakes) substitutes **opus** (logged in the
+  row). Not a map change; **expires at session end** — a fresh coordinator
+  re-runs the availability check and reverts to the full map (substituting again
+  only if fable is still unavailable that session).
 - **Session constraint — EXPIRED 2026-06-13 at session end, by its own terms (rows
   87–88).** Was: fable unavailable → rungs capped at opus; build dispatches followed
   the S/P/B → rung map (haiku/sonnet/opus by profile), and any fable-mapped pass
