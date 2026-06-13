@@ -57,13 +57,25 @@ under the protocol's *Model assignment map*).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session-local constraint — 2026-06-13 (this session; expires at session end).**
-  fable is unavailable; rungs capped at opus. Build dispatches follow the S/P/B →
-  rung map as written (haiku/sonnet/opus by profile); any fable-mapped pass
-  (design-settle / phase-boundary / S=3 / recon-by-stakes) substitutes **opus** per
-  the model-availability fallback (a80fce7). Not a map change — a fresh coordinator
-  with fable available reverts to the map. (No design/recon pass arose under it yet;
-  rows 87–88 are sonnet/opus build dispatches per the map.)
+- **Session constraint — EXPIRED 2026-06-13 at session end, by its own terms (rows
+  87–88).** Was: fable unavailable → rungs capped at opus; build dispatches followed
+  the S/P/B → rung map (haiku/sonnet/opus by profile), and any fable-mapped pass
+  (design-settle / phase-boundary / S=3 / recon-by-stakes) substituted **opus** per
+  the model-availability fallback (a80fce7) — not a map change. **A fresh coordinator
+  reverts to the map**; if fable is *still* unavailable that session, keep substituting
+  opus for the fable-mapped passes and log it (rows 84–88 precedent). No design/recon
+  pass arose under it — rows 87–88 were sonnet/opus build dispatches per the map.
+- **Boundary-pair worktree environment (2026-06-13, repo-local).** Two sandbox facts
+  from running the rows 87–88 pair: (1) git worktrees *outside* the project dir fail
+  (`could not create leading directories … Operation not permitted`) — create the
+  worktree *inside* the project (e.g. `/.bp-<slice>`) and hide it from the main tree's
+  `git status` with a local `.git/info/exclude` line (never committed), or use the
+  Agent tool's built-in `isolation: "worktree"` (lands under the writable
+  `.claude/worktrees/`). (2) The user **granted `~/.cache` write access on 2026-06-13**
+  (verify it persists in a fresh session) — so a dispatched duplicate can now run
+  `lake exe cache get` itself; the protocol's APFS `.lake`-seeding default is no longer
+  *required* (still a fine fast path) and its unseeded `cache get` fallback now works
+  agent-side. The worktree-location point (1) is the standing repo-local constraint.
 - **Session-local rung override — EXPIRED 2026-06-12 at session end, by
   its own terms (user-requested, not a protocol map change).** Was:
   dispatch only opus and fable; after fable became unavailable
