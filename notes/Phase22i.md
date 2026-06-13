@@ -32,7 +32,8 @@ by simplicity. `lem:theorem-55-base-producer` green at the strong-pair conclusio
 block-rank brick (`le_finrank_span_rigidityRows_of_cut`, `RigidityMatrix.lean §CutEdgeBrick`)
 and the bare-conjunct producer (`case_cut_edge_realization`, `CaseI.lean`) are Lean-green;
 `lem:block-rank-cut` and `lem:case-cut-edge-realization` are green blueprint nodes.
-The producer fills the L2 `hcut` slot at `Pc` (no current consumer — wires at L9).
+The bare-conjunct producer proves only the `HasPanelRealization` half of the `hcut` slot's `Pc`;
+the GP conjunct (L4b) completes the full slot-filler (no current consumer — wires at L9).
 **Next: L4b** — the GP conjunct, gated on the V5-b seed-combination design pass (see Blockers).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the

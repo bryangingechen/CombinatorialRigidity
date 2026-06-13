@@ -1300,10 +1300,13 @@ route that bypasses the deferred forest surgery
   $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
   $k'$-dof-graph has a genuine-hinge panel realization
   \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
-  genuine-hinge panel realization.  This is the arm of the all-$k$ induction
-  \textup{(}\cref{thm:minimal-kdof-reduction-all-k}, case~(ii)\textup{)}
-  that fills the $\mathtt{hcut}$ slot; Katoh--Tanigawa's
-  Lemma~6.1~\cite[\S6.1]{katohTanigawa2011}.
+  genuine-hinge panel realization.  This is the \emph{bare}
+  $\mathtt{HasPanelRealization}$ conjunct of the cut-edge arm of the all-$k$
+  induction \textup{(}\cref{thm:minimal-kdof-reduction-all-k}, case~(ii)\textup{)};
+  the full conditioned-pair $\mathtt{hcut}$-slot producer additionally requires the
+  simple-graph generic conjunct \textup{(}$G$ simple $\Rightarrow
+  \mathtt{HasGenericFullRankRealization}$\textup{)}, completed in Phase~22i~L4b.
+  Katoh--Tanigawa's Lemma~6.1~\cite[\S6.1]{katohTanigawa2011}.
 \end{lemma}
 \begin{proof}
   \leanok
