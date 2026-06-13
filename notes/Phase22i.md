@@ -28,8 +28,14 @@ conditioned motive `Pc`. The GP conjunct's real arms landed: `theorem_55_base_pr
 extensor forced nonzero by general position, single-row rank); the parallel-pair arm stays vacuous
 by simplicity. `lem:theorem-55-base-producer` green at the strong-pair conclusion; the `.2` rewire of
 `theorem_55_d3` + its `hbaseGP`-vacuity discharge are unchanged and still consume the bare conjunct.
-**Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** Next: **L4** (Lemma 6.1, the
-cut-edge case, V5).
+**Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** **L4 signature pin landed (§1.61):**
+V5 resolved (the closing `≤` is free via B2; the substance is the lower bound `≥`, a NEW
+vertex-disjoint block-rank-addition brick — the project's fixed-seed route replaces KT's isometry;
+KT's disconnected/connected split collapses into one `cutEdges.ncard ∈ {0,1}` arithmetic); the
+producer fills the L2 `hcut` slot at the conditioned pair `Pc`, and has no current consumer (it wires
+in at L9). Sliced **L4a → L4b**. Next: **L4a** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
+(the block-rank brick, the only new math) + the bare-conjunct producer `lem:case-cut-edge-realization`
+(minted red, GP conjunct pending L4b).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -102,7 +108,16 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   forces the lone extensor nonzero by GP, rank `D−1` via the single-row machinery; empty rank 0;
   parallel-pair vacuous by simplicity. The legacy-`hbase` `.2` rewire of `theorem_55_d3` is unchanged.
   `lem:theorem-55-base-producer{,-empty,-single,-parallel}` green at the strong-pair conclusion.
-- [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
+- [ ] **L4** — Lemma 6.1, the cut-edge / not-2-edge-connected case; signature pinned in **§1.61**,
+  sliced **L4a → L4b**. The graph-level producer `lem:case-cut-edge-realization` fills the L2 `hcut`
+  slot at `Pc` (no current consumer — wires at L9). V5 resolved: the closing `≤` is free (B2), the
+  substance is the lower bound `≥` (a NEW vertex-disjoint block-rank-addition brick
+  `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`, the project's fixed-seed route in place of
+  KT's isometry). KT's disconnected/connected cases unify via the L1e `cutEdges.ncard ∈ {0,1}`
+  arithmetic. *L4a* (first build): the block-rank brick + the bare-conjunct producer
+  `HasPanelRealization` (transversality-free); *L4b*: the GP conjunct — gated on **V5-b** (the
+  seed-combination open sub-question: shared-reseed vs independent-seed-union alg-indep; may force a
+  statement-level change to the IH the `hcut` slot delivers — flagged to coordinator).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
@@ -120,9 +135,16 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 ## Blockers / open questions
 
 - The remaining verification items of **V1–V10** (§1.56(g)) — V1–V4 resolved by the
-  L0/L1 pins; V5 (L4), V6 (L5), V7 (L6), V8 (L7), V9 (L10), V10 (resolved at L0) gate to
-  their layer's design pass. V8 (subfamily extraction at rank form) is the one with real
-  proof-shape uncertainty left.
+  L0/L1 pins; V5 resolved at the L4 pin (§1.61), splitting into **V5-a** (the disjoint-block
+  additivity route, `buildable`, resolve at L4a's build) and **V5-b** (the GP-conjunct
+  seed-combination, the genuine open sub-question, isolated in L4b — see below); V6 (L5),
+  V7 (L6), V8 (L7), V9 (L10), V10 (resolved at L0) gate to their layer's design pass.
+- **V5-b (L4b) and V8 (L7) are the two items with real proof-shape uncertainty left.** V5-b:
+  combining the two IH side-frameworks' independent alg-indep seeds into one GP framework on `G`
+  — either re-seed both sides at one shared global seed (Route GP-1, likely needs a statement-level
+  change to what the `hcut` slot's IH delivers) or prove the union of the two disjoint seeds
+  alg-independent (Route GP-2, recommended, needs a standard `MvPolynomial` disjoint-union lemma).
+  The bare conjunct (L4a) is transversality-free / seed-free and carries no such question.
 - **V-base (L3, §1.60(g)): RESOLVED.** The wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]` mirrored as
   `linearIndependent_pair_extensor_of_li3` (Extensor.lean). The single-hinge-row rank lemma (arm (ii))
   is `finrank_span_panelRow_edge` (Pinning.lean), reached via `span_panelRow_linking_eq_rigidityRows`
@@ -141,13 +163,20 @@ motive; the GP arms (`theorem_55_base_producer_{empty,single_edge}_gp`) are buil
 alg-indep seed; the legacy-`hbase` `.2` rewire of `theorem_55_d3` is unchanged. Four carries remain:
 `h622`, `h65`, `hsplit`, `hcontract`.
 
-**Smallest next forward commit: open L4** (Lemma 6.1, the not-2-edge-connected / cut-edge reduction
-case). Per the layer plan + §1.56(c)/(e): the new reduction case for the cut-edge branch of
-`minimal_kdof_reduction_all_k`. **V5 (the fixed-seed transversality route)** gates to L4's design
-pass — run the L4 signature pin (its own §1.57+ section) first, reading the target nodes
-end-to-end (the red-node consistency gate). The L4 dep-graph node is the Lemma-6.1 cut-edge producer
-(the cut-edge decomposition `exists_cut_decomposition_of_not_twoEdgeConnected` from L1e is the
-combinatorial input). After L4: L5 (`hcontract`, Lemma 6.2 + the 6.3/6.5 all-`k` restate).
+**L4 signature pin landed (§1.61); next is the first L4 build.** V5 resolved: the producer
+`lem:case-cut-edge-realization` fills the L2 `hcut` slot at the conditioned pair `Pc`, consuming the
+L1e cut decomposition `exists_cut_decomposition_of_not_twoEdgeConnected` + the smaller-graph IH. The
+closing `≤` is free (B2, landed); the substance is the lower bound `≥`, a NEW vertex-disjoint
+block-rank-addition brick (the project's fixed-seed route in place of KT's isometry). Sliced L4a → L4b.
+
+**Smallest next forward commit: L4a** — build `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`
+(the block-rank-addition brick, the only genuinely-new math; pin-shape in §1.61(b)) + the bare-conjunct
+producer concluding `HasPanelRealization 2 n G` for the `hcut` slot (the §1.61(c) IH-plumbing + B2
+assembly). Mint `lem:case-cut-edge-realization` (red — GP conjunct pending L4b). Decide the home
+(CaseI.lean vs a dedicated `CutEdge.lean`) at the build. The producer has **no current consumer** (the
+legacy `theorem_55_d3` spine never reaches the cut case — 0-dof is always 2EC); it wires into the
+all-`k` spine at L9. **L4b** (the GP conjunct) needs its own design micro-pass first to adjudicate
+V5-b (Route GP-1 vs GP-2). After L4: L5 (`hcontract`, Lemma 6.2 + the 6.3/6.5 all-`k` restate).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -253,3 +282,12 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   lemmas (comma-`\lean{}`) with the generic-companion prose; the dispatch node + `def:rank-hypothesis`
   `\uses`. Axiom-clean. One self-inflicted build cycle (a redundant re-`set` of `ends`) → FRICTION
   anti-pattern *Re-`set`ting an already-`set`-bound variable*.
+- **L4 signature pin (2026-06-13):** Lemma 6.1 cut-edge case pinned; canonical: §1.61. V5 resolved — the
+  closing `≤` is free (B2, landed, `V(G)`-relative); the substance is the lower bound `≥`, a NEW
+  vertex-disjoint block-rank-addition brick (`BodyHingeFramework.le_finrank_span_rigidityRows_of_cut`, the
+  disjoint-support refinement of the landed single-edge span split), the project's fixed-seed route in
+  place of KT's isometry. KT Lemma 6.1 verified vs the PDF (p. 672); KT's disconnected/connected cases
+  unify via the L1e `cutEdges.ncard ∈ {0,1}` arithmetic. One graph-level producer at `Pc` (no current
+  consumer; wires at L9). Sliced L4a (brick + bare conjunct, transversality-free) → L4b (GP conjunct,
+  gated on the V5-b seed-combination open sub-question — flagged to coordinator, may force an IH
+  statement-level change).

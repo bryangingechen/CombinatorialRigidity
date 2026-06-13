@@ -5408,6 +5408,215 @@ the wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]`, the landed single-hinge-
 research-shaped (the only nontrivial geometry, the LI extensor pair, is a basis-level Grassmann
 fact, not a KT crux).
 
+### 1.61 The L4 signature pin — Lemma 6.1, the cut-edge / not-2-edge-connected case (`hcut`): one graph-level producer concluding the conditioned pair `Pc`, consuming the L1e cut decomposition + the smaller-graph IH; V5 RESOLVED — the closing `≤` is free (B2, landed), the substance is the lower bound `≥`, established by a NEW vertex-disjoint block-rank-addition lemma (the project's fixed-seed route replaces KT's isometry); the disconnected/connected split of KT collapses into one `cutEdges.ncard ∈ {0,1}` arithmetic; sliced L4a (the block-rank-addition brick, bare conjunct) → L4b (the producer + GP conjunct) (2026-06-13)
+
+> **Docs-only design pass (the L4 pin).** Lean read this pass (declarations, current line numbers,
+> all verified this pass): Deficiency.lean — `exists_cut_decomposition_of_not_twoEdgeConnected`
+> (:1507, the L1e opener: `hD : 1 ≤ bodyBarDim n`, `hG : IsMinimalKDof n k`, `hntec`; yields
+> `V₁ k₁ k₂` with `V₁.Nonempty ∧ V₁ ⊂ V(G) ∧ (V(G) ∖ V₁).Nonempty ∧ (induce V₁).IsMinimalKDof n k₁
+> ∧ (induce (V(G)∖V₁)).IsMinimalKDof n k₂ ∧ (cutEdges V₁).ncard ≤ 1 ∧ k = k₁ + k₂ + D − (D−1)·|cut|`),
+> `cutEdges` (:851), `TwoEdgeConnected` (:859), `deficiency_eq_of_cutEdges_ncard_le_one` (the cut
+> arithmetic L1e wraps); ForestSurgery.lean — `minimal_kdof_reduction_all_k` (the L2 principle, §1.59;
+> the `hcut` slot at §1.59(a): `∀ (k : ℤ) (G), IsMinimalKDof n k → 3 ≤ ncard → ¬ TwoEdgeConnected →
+> (guarded-IH) → P G`); PanelHinge.lean — `HasPanelRealization` (M2, :1090, the `{F, normal}` + nonzero
+> panels + genuine/contained links + ℤ-rank conjunct), `HasGenericFullRankRealization` (M3, :1035),
+> `theorem_55_generic` (:1168 — still the *legacy 0-dof* spine; the all-`k` spine `theorem_55_all_k` is
+> L9, so the L4 producer has **no current consumer** — it stands alone until L9 wires the `hcut` slot);
+> RigidityMatrix.lean — `BodyHingeFramework` (:684, just `{graph, supportExtensor}`),
+> `rigidityRows` (:919, `{φ | ∃ e u v, IsLink e u v ∧ ∃ r ∈ hingeRowBlock e, φ = hingeRow u v r}`),
+> `hingeRowBlock` (:753), `finrank_hingeRowBlock` (:1049, `= D−1`), `linearIndependent_hingeRow` (:902);
+> Pinning.lean — `span_rigidityRows_eq_sup_span_panelRow_edge` (:343, the *single-deleted-edge, same
+> vertex set* span split — the closest landed precedent, NOT the disjoint-sides one L4 needs),
+> `exists_independent_panelRow_of_edge` (:403, the cut row's `D−1` independent rows),
+> `finrank_span_panelRow_edge` (:305); GenericityDevice.lean — `…finrank_span_rigidityRows_add_deficiency_le`
+> (B2, :562, the `V(G)`-relative `≤` upper bound — the closing half, free), B1 (:532, the rigid-iff,
+> applies only at `def = 0`, NOT the cut case in general), `…finrank_span_rigidityRows_add_finrank_infinitesimalMotions`
+> (the complement brick, :503). KT 2011 read against the PDF this pass: p. 671 (the §6 opening — IH (6.1)
+> over every nonnegative `k_H`; the four-case `|V| ≥ 3` split), **p. 672 §6.1 Lemma 6.1 verbatim** (the
+> cut-edge decomposition `k = k₁ + k₂ + 1` by Lemma 3.6, sides minimal `kᵢ`-dof by Lemma 3.3, the isometry
+> making `ΠG₁,p₁(v₁)`/`ΠG₂,p₂(v₂)` nonparallel for *every* cross pair → `ΠG₁,p₁(u) ∩ ΠG₂,p₂(v)` a
+> `(d−2)`-flat, `p(uv)` = that flat, the block-triangular rank addition over the single cut row
+> `r(p(uv))` of rank `D−1` via Lemma 5.1 pin-a-body, "the disconnected case is proved in the same
+> manner"). Blueprint read: molecular-induction.tex `thm:minimal-kdof-reduction-all-k` (:1269, green),
+> deficiency.tex `lem:cut-edge-decomposition` (:179, green), panel-layer.tex
+> `def:genuine-hinge-realization` (:201, green). No `.lean`/`.tex` edits this pass.
+
+**Citation.** Katoh–Tanigawa 2011, *Discrete Comput. Geom.* **45**, 647–700; **Lemma 6.1**, §6.1, p. 672
+(the not-2-edge-connected case of the all-`k` Theorem 5.5 induction). The cut decomposition `k = k₁ + k₂ + 1`
+is KT's **Lemma 3.6** (deficiency over a cut, p. 658) + **Lemma 3.3** (sides minimal, p. 657); the cut-row
+rank `D − 1` and the pin-a-body equality `rank R(G₁,p₁; E₁, V₁∖{u}) = rank R(G₁,p₁)` are **Lemma 5.1**
+(p. 668, the [29] = Tay–Whiteley fact). All verified against the PDF this pass.
+
+**Red-node consistency gate (run on the L4 inputs).** L4 *mints* its producer node — there is **no
+existing cut-edge / Lemma-6.1 realization node** in the dep-graph (structural-edit mode: per-slice
+restate, no new chapter). The two green nodes L4 consumes were re-read end-to-end: `lem:cut-edge-decomposition`
+(deficiency.tex:179 — statement and proof both route through the Lemma-3.6 partition argument + Lemma-3.3
+sides-minimal, unifying KT's connected/disconnected cases by `|cut| ∈ {0,1}`; no `\uses` at a superseded
+node) and `thm:minimal-kdof-reduction-all-k` (molecular-induction.tex:1269 — the four-case skeleton, its
+`hcut` slot is L4's exact obligation). `blueprint/lint.sh` green (supersession gate included). Both
+self-consistent; the L4 producer plugs into the `hcut` slot at L9.
+
+**The slot the producer fills.** L2's `hcut` slot (§1.59(a)), at `P G = Pc G :=
+(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` (§1.56(b) M4):
+
+```text
+hcut : ∀ (k : ℤ) (G), G.IsMinimalKDof n k → 3 ≤ V(G).ncard → ¬ G.TwoEdgeConnected →
+  (∀ (k' : ℤ) (G'), G'.IsMinimalKDof n k' → V(G').Nonempty → V(G').ncard < V(G).ncard → Pc G') →
+  Pc G
+```
+
+So the producer receives `hG`, `3 ≤ ncard`, `hntec`, and the guarded conditioned IH; it must conclude
+`Pc G`. Its first move is the L1e opener `exists_cut_decomposition_of_not_twoEdgeConnected (by omega : 1 ≤ D)
+hG hntec`, yielding the cut `V₁`, side dofs `k₁ k₂`, the two minimal-dof induced sides, `|cutEdges V₁| ≤ 1`,
+and the deficiency arithmetic `k = k₁ + k₂ + D − (D−1)·|cut|`. Both sides are nonempty and strictly smaller
+(`V₁ ⊂ V(G)` and `(V(G)∖V₁) ⊂ V(G)`, `[Finite α]` → `Set.ncard_lt_ncard`), so the guarded IH applies to each.
+
+**(a) V5 RESOLVED — the fixed-seed transversality route, and where the real work is.** The pin's central
+finding: **the closing `≤` half is already free.** B2 (`finrank_span_rigidityRows_add_deficiency_le`, landed,
+`V(G)`-relative) gives `(finrank (span F.rigidityRows) : ℤ) ≤ D(|V(G)|−1) − def(G̃)` for *any* body-hinge
+`F` whose hinges are genuine on links (`hC`) and whose `bodyBarDim n = screwDim k`. So the entire L4
+difficulty collapses onto the **lower bound** `finrank (span F.rigidityRows) ≥ D(|V|−1) − k`; antisymmetry
+with B2 + `def(G̃) = k` (`hG.1`) closes the M2 equality. This is the same `≥`-then-B2 closing pattern §1.60(d)
+pinned for the base producer's single-edge arm — B2 is the universal `≤`, the producer only ever supplies `≥`.
+
+* *Why B1 does NOT apply.* B1 (the rigid-iff) is an *equality* only at `def = 0`. The cut case has
+  `def(G̃) = k = k₁ + k₂ + 1 ≥ 1` (connected) or `k₁ + k₂ + D` (disconnected) — generally `> 0`, so the
+  combined framework is **not** rigid-on-`V(G)` and B1 cannot supply the lower bound. The lower bound is
+  KT's block-triangular rank addition, and it must be built (it is the substance of L4).
+
+* *The project's fixed-seed route vs KT's isometry (§1.56(d)).* KT realizes the two sides at *independent*
+  placements `p₁, p₂`, then applies an isometry to make `ΠG₁,p₁(v₁)` / `ΠG₂,p₂(v₂)` nonparallel for every
+  cross pair, so the single cut hinge `p(uv) = ΠG₁,p₁(u) ∩ ΠG₂,p₂(v)` is a genuine `(d−2)`-flat. The
+  project builds the **combined `BodyHingeFramework` directly on the shared `α`** (no re-homing — both IH
+  side-frameworks already live over the same `α`; `BodyHingeFramework` is just `{graph, supportExtensor}`),
+  by edge-label dispatch:
+  ```text
+  F := ⟨G, fun e => if e ∈ E(G.induce V₁) then F₁.supportExtensor e
+                    else if e ∈ E(G.induce (V(G)∖V₁)) then F₂.supportExtensor e
+                    else C_cut⟩          -- C_cut a genuine extensor in the common panel n_u^⊥ ∩ n_v^⊥
+  ```
+  For the **bare conjunct** the transversality KT engineers with the isometry **is not even needed**: any
+  flat inside a common panel still has `C_cut ≠ 0` (the free-hinge carrier absorbs coincident panels — the
+  same §1.56(a) freedom the parallel-pair base uses), and `ExtensorInPanel C_cut (normal u) ∧ ExtensorInPanel
+  C_cut (normal v)` holds by construction (`C_cut` chosen in `n_u^⊥` resp. `n_v^⊥`, transversal or not). So
+  V5's "transversality" is a **GP-conjunct-only** concern; the bare conjunct is transversality-free.
+
+**(b) The lower bound — the NEW Lean (the block-rank-addition brick, the genuine L4 substrate).** The
+`rigidityRows` of `F` decompose by edge over the three groups (`E₁`, the cut edge, `E₂`):
+`span F.rigidityRows = span(R₁-rows) ⊔ span(cut-block) ⊔ span(R₂-rows)`, where `R_i-rows` are the rows
+carried by `Eᵢ`-links (which equal `Fᵢ.rigidityRows` since `Fᵢ.supportExtensor = F.supportExtensor` on `Eᵢ`
+and `G.induce Vᵢ` has exactly the `Eᵢ`-links). This is the multi-group analogue of the landed
+single-edge split `span_rigidityRows_eq_sup_span_panelRow_edge` (Pinning.lean:343 — same proof shape,
+`hsplit` now a three-way edge classification instead of two-way). The lower bound then needs the three
+pieces **jointly independent enough**:
+\[ \mathrm{finrank}(\mathrm{span}\,R_1 \sqcup \mathrm{cut} \sqcup \mathrm{span}\,R_2)
+   \ge \mathrm{finrank}(R_1) + (D-1)\cdot|\mathrm{cut}| + \mathrm{finrank}(R_2). \]
+The structural reason (KT's block-triangular matrix): `R₁`-rows are functionals of the screw assignment
+that read only bodies in `V₁`, `R₂`-rows only bodies in `V₂`, and `V₁ ∩ V₂ = ∅` — so the three row-groups
+act on **disjoint coordinate blocks** of `α → ScrewSpace k`. Concretely the brick to build (pin-shape,
+checkdecls-gated at the build):
+
+```lean
+/-- **Vertex-disjoint block-rank addition** (`lem:rigidityRows-cut-rank-add`; KT Lemma 6.1 block-triangular
+core; Phase 22i L4). For a body-hinge framework `F` whose link set partitions over a cut `V₁ ⊂ V(F.graph)`
+with at most one crossing edge, the rigidity-row span's dimension is at least the sum of the two
+side-spans plus the cut block. -/
+theorem BodyHingeFramework.le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) {V₁ : Set α} (hcut : (F.graph.cutEdges V₁).ncard ≤ 1)
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
+    (… side/cut-edge classification hypotheses …) :
+    Module.finrank ℝ (Submodule.span ℝ (F.restrictTo V₁).rigidityRows)
+      + (screwDim k - 1) * (F.graph.cutEdges V₁).ncard
+      + Module.finrank ℝ (Submodule.span ℝ (F.restrictTo (V(F.graph) ∖ V₁)).rigidityRows)
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+```
+Design notes: **(i)** the disjoint-coordinate-block independence is the one genuinely new piece — express
+each side's row span as the image of an injective coordinate-restriction map (`funLeft` to the side's
+bodies; the dual-map injectivity precedent is `linearIndependent_hingeRow`/`hingeRow_funLeft_dualMap`,
+RigidityMatrix.lean:865/902), so the two sides + cut land in a direct-sum-friendly position and
+`Submodule.finrank_sup_add…`/`finrank_add_le_finrank_of_disjoint`-style additivity gives the `≥`. **(ii)**
+the cut block is `(D−1)·|cut|`: zero rows in the disconnected case (`|cut| = 0`), `D−1` independent rows in
+the connected case (`exists_independent_panelRow_of_edge` at the cut edge, `linearIndependent_hingeRow` lifting
+the `(D−1)`-dim `hingeRowBlock` basis). **(iii)** `restrictTo Vᵢ` is the side framework `⟨G.induce Vᵢ,
+F.supportExtensor⟩` (same extensors, induced graph) — its `rigidityRows` are exactly the `Eᵢ`-rows of `F`.
+**(iv)** this is `buildable`, not research-shaped: it is KT's elementary block-triangular argument, the
+disjoint-support refinement of the landed single-edge split. **Flag V5-a:** confirm at the build whether the
+disjoint-block additivity lands cleanest via (route 1) the coordinate-restriction injection + a mathlib
+`finrank` direct-sum lemma, or (route 2) the dual `infinitesimalMotions` side — `Z(G,p) ⊆ {S | S|_{V₁} ∈
+Z(G₁,p₁) ∧ S|_{V₂} ∈ Z(G₂,p₂)}` plus the complement brick (the B1/B2 machinery is motion-side, so route 2
+may reuse more). Route 1 is the primary; route 2 is the fallback if the row-side injection fights mathlib.
+
+With the brick, the lower bound closes by arithmetic: the IH gives `finrank(Rᵢ) = D(|Vᵢ|−1) − kᵢ`
+(`HasPanelRealization` conjunct of `Pc(G.induce Vᵢ)`), and `|V| = |V₁| + |V₂|` (`V₁ ⊔ (V(G)∖V₁)`), so
+`finrank(R₁) + (D−1)|cut| + finrank(R₂) = D(|V₁|−1) − k₁ + (D−1)|cut| + D(|V₂|−1) − k₂
+= D(|V|−1) − (k₁ + k₂ + D − (D−1)|cut|) = D(|V|−1) − k` (the L1e arithmetic, `omega`/`linarith` over ℤ).
+
+**(c) The bare conjunct `HasPanelRealization 2 n G` (the L4a deliverable, transversality-free).** Assemble
+`F` and `normal` (the panel assignment): take `normal v := F₁.normal v` for `v ∈ V₁`, `F₂.normal v` for
+`v ∈ V(G)∖V₁` (both nonzero by the IH `HasPanelRealization` conjuncts; junk bodies off `V(G)` get a fixed
+`n₀ ≠ 0`). Per-link conjunct: an `E₁`-link's extensor is `F₁`'s (nonzero + contained, from `Pc(G.induce V₁)`),
+likewise `E₂`; the cut link's `C_cut ≠ 0` and `ExtensorInPanel C_cut (normal u) ∧ ExtensorInPanel C_cut
+(normal v)` by the explicit construction (a genuine flat in `n_u^⊥ ∩ n_v^⊥`, or in each panel separately for
+the bare conjunct — coincident-panel-tolerant). Rank conjunct: `≥` from the (b) brick + IH + L1e arithmetic,
+`≤` from B2; antisymmetry. *Buildable from L4a + the IH + B2.*
+
+**(d) The GP conjunct `G.Simple → HasGenericFullRankRealization 2 n G` (the L4b deliverable, where V5's
+transversality genuinely bites — and the one OPEN sub-question to flag).** Under `G.Simple`, the induced
+sides `G.induce Vᵢ` are simple (induced subgraphs of simple graphs are simple — fork has the instance), so the
+IH delivers each side's GP conjunct `HasGenericFullRankRealization 2 n (G.induce Vᵢ)`. KT's conclusion is
+"nonparallel if `G` is simple", which needs the cut hinge genuinely transversal (`p(uv)` a `(d−2)`-flat) and
+the combined framework in general position. **The genuine open sub-question for the GP arm:** the two IH
+side-frameworks are produced *each at its own independent alg-indep seed*; `HasGenericFullRankRealization`
+carries an `AlgebraicIndependent ℚ` conjunct over the side's panel coordinates. Combining them into one GP
+framework on `G` requires the *union* of the two seeds to be alg-independent, OR re-running both sides at one
+shared global seed. Two candidate routes, **to adjudicate at the L4b design micro-pass before any GP build**:
+* *Route GP-1 (fixed shared seed).* Re-run the IH at one global alg-indep seed shared across both sides
+  (the project's "fixed-ambient-seed" style, §1.56(d)) — but the IH is a `Pc`-valued *hypothesis*, not a
+  re-runnable producer, so this needs the IH's GP realization to be *re-seedable*, which it is not as a
+  black box. Likely requires strengthening what the `hcut` slot's IH delivers (a seed-parametrized GP
+  conjunct), a statement-level change — flag to coordinator.
+* *Route GP-2 (independent-seed union).* Keep the two independent seeds and prove their union alg-independent
+  (disjoint variable sets over `ℚ` → the union of two alg-indep families on disjoint index sets is alg-indep,
+  a standard `MvPolynomial` fact — V5-b). Cross-side transversality then follows from general position at the
+  combined seed. This is the route that matches "the choices of `p₁` and `p₂` are independent" (KT p. 672)
+  and avoids re-seeding; it is the **recommended** route, but the alg-indep-of-disjoint-union lemma and the
+  GP-forces-transversal step are unverified at this pass — **V5-b is the L4b open item.**
+
+The bare conjunct (c) has **no such open question** — it is transversality-free and seed-free. This is why the
+slice puts the bare conjunct first (L4a) and isolates the GP conjunct + its open sub-question in L4b.
+
+**(e) Blueprint disposition.** L4 mints **one new node** `lem:case-cut-edge-realization` in molecular-induction.tex
+(directly after `thm:minimal-kdof-reduction-all-k`, the principle whose `hcut` slot it fills) — *not* in the
+algebraic-induction case chapters (it is a reduction-case producer, sibling to the all-`k` skeleton, and
+consumes `lem:cut-edge-decomposition` from deficiency.tex). `\uses{lem:cut-edge-decomposition,
+def:genuine-hinge-realization, def:rank-hypothesis, lem:rigidity-matrix-prop11-hub}` (B2's hub) plus the new
+block-rank brick node if it earns one. If the (b) brick is a clean standalone Grassmann/linear-algebra fact,
+mint `lem:rigidityRows-cut-rank-add` in rigidity-matrix.tex and `\uses` it; otherwise fold it into the
+producer's proof `\uses`. No statement-grep ripple: the producer is additive (a new node), and the legacy
+`theorem_55_d3` spine never reaches the cut case (0-dof is always 2EC), so nothing existing restates. The node
+greens only when L4b lands the GP conjunct (the bare conjunct alone is green-modulo the GP arm — keep the node
+red, or land it green-modulo with the GP conjunct carried as a tracked red sibling, per the L4 slice below).
+
+**(f) The L4 slice cut.** Two layers, the bare conjunct first (it carries no open sub-question):
+
+* **L4a** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_cut` (the block-rank-addition brick, (b)) +
+  the bare-conjunct producer concluding `HasPanelRealization 2 n G` for the `hcut` slot (the (c) assembly),
+  in CaseI.lean or a new `CutEdge.lean` (decide at the build — it is a reduction-case producer; CaseI.lean
+  is the precedent home for `theorem_55_d3`-adjacent producers, but a dedicated `CutEdge.lean` keeps the
+  cut case isolated). Mints `lem:case-cut-edge-realization` (red, GP conjunct pending) + optionally
+  `lem:rigidityRows-cut-rank-add`. The block-rank brick is the only genuinely-new math; the assembly is
+  IH-plumbing + B2. **First concrete L4 commit.** *Buildable.*
+* **L4b** — the GP conjunct `G.Simple → HasGenericFullRankRealization 2 n G`, after the L4b design
+  micro-pass adjudicates Route GP-1 vs GP-2 + resolves V5-b (the alg-indep-of-disjoint-seed-union lemma).
+  Greens `lem:case-cut-edge-realization` to the full pair. *Gated on the V5-b verdict — may need a
+  statement-level IH change (Route GP-1) or a new `MvPolynomial` lemma (Route GP-2).*
+
+*Verification items L4 adds:* **V5-a** (the disjoint-block additivity route — row-side injection vs
+motion-side, (b)(iv); bounded, resolve at L4a's build); **V5-b** (the GP-conjunct seed-combination —
+shared-reseed vs independent-union-alg-indep, (d); the one with real proof-shape uncertainty, resolve at the
+L4b micro-pass before any GP build). V5-a is `buildable`; V5-b is the genuine open sub-question, isolated in
+L4b and flagged to coordinator (it may force a statement-level change to what the `hcut` slot's IH delivers).
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
