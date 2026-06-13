@@ -93,6 +93,7 @@ pattern and the working fix.
 - *"unexpected token 'set_option'; expected 'lemma'"* when placing `set_option … in` between a docstring and `theorem` → § 51 (put `set_option … in` *before* the docstring)
 - `set_option linter.style.openClassical false in open Classical` breaks section-wide `Classical` availability → § 52 (use two standalone commands, not `in`-wrapped)
 - `set F := expr`; theorem applied to `F` returns `F.graph` (or another field) unfolded — downstream `rw [hField]` fails → § 53 (introduce `hFgraph : F.graph = G` explicitly, `rw [hFgraph] at …` first)
+- *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
 
 ## Starting a Lean-touching session
 

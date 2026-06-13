@@ -3150,6 +3150,89 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
 
 end CutEdgeBrick
 
+section SpliceBrick
+
+variable {α β : Type*} {k : ℕ}
+
+set_option maxHeartbeats 400000 in
+-- letI instance-shadowing for AddCommGroup ↥S in the h_rn subproof is elaboration-heavy
+-- (the Semiring/AddCommMonoid vs. Ring/AddCommGroup instance diamond for submodule subtypes);
+/-- **General-rank shared-body splice block-rank addition** (`lem:rigidityRows-splice-rank-add`;
+KT Lemma 6.2 eqs.\ (6.3)–(6.5); Phase 22i L5a-i). Block-triangular rank-addition for a
+shared-body split: given a linear endomorphism `D` of the rigidity-row dual space, a "rigid
+block" submodule `SH = span(FH.rigidityRows)` lying in the kernel of `D`, and a "contraction
+block" `Sc = span(Fc.rigidityRows)` whose image under `D` embeds in the image of the full span
+`S = span(F.rigidityRows)`, the two block finranks satisfy
+
+  `finrank SH + finrank Sc ≤ finrank S`.
+
+This is the row-space version of KT's lower-triangular block-rank inequality (eq. (6.3)):
+the `H`-block rows vanish under `D` (the top-right `0` of the block-triangular matrix, from
+`hingeRow_comp_extProj_eq_zero`), and the contraction rows survive under `D` at their full
+rank (Lemma 5.1 / `finrank_pinnedMotions_add_screwDim`, the column-deletion rank invariance
+captured by `hInj`). Unlike L4a's vertex-disjoint cut (`le_finrank_span_rigidityRows_of_cut`,
+where the split is disjoint by a vertex-projection argument), the two blocks share the
+contracted body `r = v*`; the "disjointness" is the kernel containment `SH ≤ ker D` rather
+than a geometric vertex partition.
+
+Proof: rank-nullity for `D` restricted to `S` gives
+`finrank(S.map D) + finrank(S ⊓ ker D) = finrank S`.
+`SH ≤ S ⊓ ker D` (from `hFH_le` and `hFH_ker`) bounds the kernel term below by `finrank SH`.
+`hFc_surv_le` and `hInj` bound the image term below by `finrank Sc`.
+Adding gives the conclusion. -/
+theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
+    (F FH Fc : BodyHingeFramework k α β)
+    (D : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k))
+    (hFH_le : Submodule.span ℝ FH.rigidityRows ≤ Submodule.span ℝ F.rigidityRows)
+    (hFH_ker : Submodule.span ℝ FH.rigidityRows ≤ LinearMap.ker D)
+    (hFc_surv_le : (Submodule.span ℝ Fc.rigidityRows).map D ≤
+                    (Submodule.span ℝ F.rigidityRows).map D)
+    (hInj : Module.finrank ℝ ↥(Submodule.span ℝ Fc.rigidityRows) =
+             Module.finrank ℝ ↥((Submodule.span ℝ Fc.rigidityRows).map D)) :
+    Module.finrank ℝ ↥(Submodule.span ℝ FH.rigidityRows) +
+    Module.finrank ℝ ↥(Submodule.span ℝ Fc.rigidityRows) ≤
+    Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype β := Fintype.ofFinite β
+  haveI : FiniteDimensional ℝ (Module.Dual ℝ (α → ScrewSpace k)) := inferInstance
+  set SH := Submodule.span ℝ FH.rigidityRows with hSH_def
+  set Sc := Submodule.span ℝ Fc.rigidityRows with hSc_def
+  set S := Submodule.span ℝ F.rigidityRows with hS_def
+  -- Rank-nullity for D restricted to S: finrank(S.map D) + finrank(S ⊓ ker D) = finrank S.
+  -- Route: let N = comap S.subtype (ker D) ≤ ↥S (the kernel of D|_S inside ↥S).
+  -- Quotient rank-nullity on ↥S with N gives finrank(↥S ⧸ N) + finrank N = finrank S.
+  -- Then ↥S ⧸ N ≅ (D.comp S.subtype).range = S.map D via quotKerEquivRange,
+  -- and finrank N = finrank(S ⊓ ker D) via finrank_map_subtype_eq + map_comap_subtype.
+  have h_rn : Module.finrank ℝ ↥(S.map D) + Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) =
+      Module.finrank ℝ ↥S := by
+    -- letI (not haveI) forces AddCommGroup ↥S to shadow the global AddCommMonoid ↥S instance,
+    -- enabling Ring/AddCommGroup paths for domRestrict and finrank_quotient_add_finrank.
+    letI hSAG : AddCommGroup ↥S := S.addCommGroup
+    have hq : Module.finrank ℝ (↥S ⧸ (D.domRestrict S).ker) +
+        Module.finrank ℝ ↥(D.domRestrict S).ker = Module.finrank ℝ ↥S :=
+      (D.domRestrict S).ker.finrank_quotient_add_finrank
+    have heq : Module.finrank ℝ (↥S ⧸ (D.domRestrict S).ker) =
+        Module.finrank ℝ ↥(S.map D) := by
+      have h := LinearEquiv.finrank_eq (D.domRestrict S).quotKerEquivRange
+      rw [LinearMap.range_domRestrict] at h
+      exact h
+    have hker : Module.finrank ℝ ↥(D.domRestrict S).ker =
+        Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) := by
+      rw [LinearMap.ker_domRestrict,
+          ← Submodule.finrank_map_subtype_eq S (Submodule.comap S.subtype (LinearMap.ker D)),
+          Submodule.map_comap_subtype]
+    linarith
+  -- SH ≤ S ⊓ ker D, so finrank SH ≤ finrank(S ⊓ ker D).
+  have h_SH_le_inf : SH ≤ S ⊓ LinearMap.ker D := le_inf hFH_le hFH_ker
+  have h_SH_le : Module.finrank ℝ ↥SH ≤ Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) :=
+    Submodule.finrank_mono h_SH_le_inf
+  -- Sc.map D ≤ S.map D, so finrank Sc ≤ finrank(S.map D).
+  have h_Sc_le : Module.finrank ℝ ↥Sc ≤ Module.finrank ℝ ↥(S.map D) :=
+    hInj.le.trans (Submodule.finrank_mono hFc_surv_le)
+  linarith
+
+end SpliceBrick
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

@@ -1876,3 +1876,62 @@ rewrites that expect the folded form.  The same pattern applies to any structure
 (`F.supportExtensor`, `F.toBodyHinge`, etc.) that a theorem's conclusion mentions unfolded.
 
 Phase 22i L4b-2 (`CaseI.lean`, `case_cut_edge_realization_gp`).
+
+## 54. `letI` (not `haveI`) to shadow `Submodule.addCommMonoid` with `AddCommGroup` for Ring-path lemmas on submodule subtypes
+
+**Symptom.** After writing `haveI : AddCommGroup ↥S := S.addCommGroup`, calls to
+`(D.domRestrict S).ker.finrank_quotient_add_finrank` or
+`(D.domRestrict S).quotKerEquivRange` fail with:
+
+```
+Application type mismatch: D.domRestrict S has type … S.addCommMonoid …
+but expected … AddCommGroup.toAddCommMonoid …
+```
+
+or a "synthesized type class instance is not definitionally equal to expression
+inferred by typing rules: synthesized `S.addCommMonoid`, inferred `hSAG.toAddCommMonoid`"
+elaboration failure.
+
+**Cause.** Two distinct `AddCommMonoid ↥S` instances exist for a submodule `S` of
+an `AddCommGroup` module:
+- `Submodule.addCommMonoid S` (Semiring/AddSubmonoid path, the **global** instance
+  `Submodule.instAddCommMonoidSubtypeMemSubmodule`).
+- `Submodule.addCommGroup S |>.toAddCommMonoid` (Ring/AddSubgroup path).
+
+These are **not definitionally equal** in Lean 4 — they are synthesized from distinct
+typeclass paths. `haveI : AddCommGroup ↥S := S.addCommGroup` declares the instance
+in the *local context*, but `domRestrict`, `subtype`, `comap`, and similar ops elaborate
+the subtype from the *global* `Submodule.addCommMonoid` instance (which `haveI` does
+not shadow). The mismatch surfaces when a downstream Ring-path lemma (`[Ring R] [AddCommGroup M]`)
+expects `AddCommGroup.toAddCommMonoid` but finds `Submodule.addCommMonoid`.
+
+**Fix.** Use **`letI`**, not `haveI`:
+
+```lean
+letI hSAG : AddCommGroup ↥S := S.addCommGroup
+-- Now D.domRestrict S, quotKerEquivRange, finrank_quotient_add_finrank all typecheck.
+have hq := (D.domRestrict S).ker.finrank_quotient_add_finrank
+have heq : Module.finrank ℝ (↥S ⧸ (D.domRestrict S).ker) =
+    Module.finrank ℝ ↥(S.map D) := by
+  have h := LinearEquiv.finrank_eq (D.domRestrict S).quotKerEquivRange
+  rw [LinearMap.range_domRestrict] at h; exact h
+have hker : Module.finrank ℝ ↥(D.domRestrict S).ker =
+    Module.finrank ℝ ↥(S ⊓ LinearMap.ker D) := by
+  rw [LinearMap.ker_domRestrict,
+      ← Submodule.finrank_map_subtype_eq S (Submodule.comap S.subtype (LinearMap.ker D)),
+      Submodule.map_comap_subtype]
+```
+
+`letI` introduces the instance as a `let`-binding into the elaboration context, which
+*does* shadow the global instance for subsequent elaboration. `haveI` only enters a
+local hypothesis — it does not shadow global instances.
+
+**Do not** `set N := (D.domRestrict S).ker` with a `set` before using `letI` — the
+`set` would elaborate `N`'s type before the shadowing takes effect, re-embedding
+`Submodule.addCommMonoid`. Work directly with `(D.domRestrict S).ker` after `letI`.
+
+**Style gate.** A `set_option maxHeartbeats N in` wrapping the `letI`-containing proof
+requires a comment explaining the heartbeat increase — `linter.style.maxHeartbeats`
+flags the option without one.
+
+Phase 22i L5a-i (`RigidityMatrix.lean`, `le_finrank_span_rigidityRows_of_splice`).

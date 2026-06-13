@@ -4188,6 +4188,25 @@ rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
   or `(Set.toFinite s₁).union (Set.toFinite s₂)` for a union.
 - **Status:** resolved.
 
+### [resolved] `letI` (not `haveI`) to shadow `Submodule.addCommMonoid` with `AddCommGroup` for ring-path lemmas on submodule subtypes
+- **Where it bit:** Phase 22i L5a-i (`RigidityMatrix.lean`,
+  `le_finrank_span_rigidityRows_of_splice`). Calling
+  `(D.domRestrict S).ker.finrank_quotient_add_finrank` (which requires `[Ring R] [AddCommGroup M]`)
+  or `(D.domRestrict S).quotKerEquivRange` with `S : Submodule ℝ V` where `V` is an `AddCommGroup`
+  failed with *"Application type mismatch: … has type `S.addCommMonoid` but expected
+  `AddCommGroup.toAddCommMonoid`"* even after `haveI : AddCommGroup ↥S := S.addCommGroup`.
+- **Cause:** Two `AddCommMonoid ↥S` instances for a submodule of an `AddCommGroup` module —
+  `Submodule.addCommMonoid p` (Semiring/AddSubmonoid path) and
+  `Submodule.addCommGroup p |>.toAddCommMonoid` (Ring/AddSubgroup path) — are **not**
+  definitionally equal in Lean 4 (the error reports "synthesized `S.addCommMonoid` inferred
+  `hSAG.toAddCommMonoid`"). `haveI` enters only the local context; it does not shadow the
+  global `Submodule.instAddCommMonoidSubtypeMemSubmodule`. **`letI` does.**
+- **Fix:** `letI hSAG : AddCommGroup ↥S := S.addCommGroup` (NOT `haveI`) before any call to
+  `domRestrict`, `quotKerEquivRange`, or `finrank_quotient_add_finrank` on a subtype of a
+  submodule. Do not `set N := (D.domRestrict S).ker` before `letI` — the `set` re-embeds
+  `Submodule.addCommMonoid` into `N`'s type before the shadowing takes effect.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 54.
+
 ### [resolved] ℕ-subtraction in a theorem statement causes `ring` to fail
 - **Where it bit:** Phase 22i L1d (`Deficiency.lean`, `partitionDef_split_of_sides`).
   The statement `+ bodyBarDim n - (bodyBarDim n - 1) * c` has `(bodyBarDim n - 1 : ℕ)` as

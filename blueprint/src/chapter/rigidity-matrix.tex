@@ -318,6 +318,39 @@ and the generic-rank argument are in hand.
   and thus the maximal rank.
 \end{proof}
 
+\begin{lemma}[Block-triangular rank-addition for shared-body splice; L5a-i splice brick]
+  \label{lem:rigidityRows-splice-rank-add}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_splice}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  Let $F$, $F_H$, $F_c$ be body-hinge frameworks on the same bodies and hinges.
+  Let $S = \operatorname{span}(R(F))$, $S_H = \operatorname{span}(R(F_H))$,
+  $S_c = \operatorname{span}(R(F_c))$ be the corresponding rigidity-row spans.
+  Let $D$ be a linear endomorphism of the row dual space (in practice, the
+  dual of the projection that collapses the contracted body; see \S\ref{sec:case-I}).
+  Suppose:
+  \begin{enumerate}
+    \item $S_H \le S$ and $S_H \le \ker D$ (the hinge block lies in $S$ and is killed by $D$);
+    \item $D(S_c) \le D(S)$ (the contraction block maps into the image of $S$);
+    \item $D$ is injective on $S_c$ (so $\operatorname{rank}(S_c) = \operatorname{rank}(D(S_c))$).
+  \end{enumerate}
+  Then
+  \[
+    \operatorname{rank}(S_H) + \operatorname{rank}(S_c) \;\le\; \operatorname{rank}(S).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  Rank-nullity applied to $D$ restricted to $S$ gives
+  $\operatorname{rank}(D(S)) + \operatorname{rank}(S \cap \ker D) = \operatorname{rank}(S)$.
+  By hypothesis (1), $S_H \le S \cap \ker D$, so
+  $\operatorname{rank}(S_H) \le \operatorname{rank}(S \cap \ker D)$.
+  By hypotheses (2) and (3),
+  $\operatorname{rank}(S_c) = \operatorname{rank}(D(S_c)) \le \operatorname{rank}(D(S))$.
+  Adding the two inequalities and using rank-nullity gives the bound.
+\end{proof}
+
 \begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]
   \label{lem:block-rank-cut}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}

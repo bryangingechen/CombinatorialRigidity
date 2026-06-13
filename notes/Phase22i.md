@@ -15,17 +15,19 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3 + L4 complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** L2 landed
-`minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
+**L2 + L3 + L4 + L5a-i complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
+L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
 **L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
 polynomial extractor, and GP producer are all Lean-green; `lem:block-rank-cut`,
 `lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`, and
 `lem:case-cut-edge-realization-gp` are all green blueprint nodes.
-**Next: L5a-i — build the corrected splice block-rank brick `le_finrank_span_rigidityRows_of_splice`** (the
-one genuinely-new math of L5). **The L5a re-pin is landed (§1.64)**, correcting the WRONG §1.63(c)/(f): a
-sonnet/opus boundary pair on the old L5a-i brick caught the error (the opus duplicate BLOCKED with the
-diagnosis; the sonnet primary's faithful-to-the-wrong-pin `induce`-brick was reverted, commit 0a51f80/90e8d4a).
+**L5a-i complete**: `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` landed in
+`RigidityMatrix.lean` (`section SpliceBrick`) with `lem:rigidityRows-splice-rank-add` green. Key
+technique: `letI hSAG : AddCommGroup ↥S := S.addCommGroup` to shadow the global `S.addCommMonoid`
+instance and enable `(D.domRestrict S).ker.finrank_quotient_add_finrank` + `quotKerEquivRange` +
+`ker_domRestrict` + `map_comap_subtype` (see FRICTION entry below). V6-a RESOLVED.
+**Next: L5a-ii — `case_I_realization_nonsimple` (CaseI.lean)**.
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -133,11 +135,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 - [ ] **L5** — Lemma 6.2 (non-simple Case I) + the 6.3 all-`k` restate of `case_I_realization`
   (`hcontract` carry discharged; the 6.5 sub-arm stays carried as `h65` → L8). Sliced **L5a-i** → **L5a-ii**
   → **L5b** (§1.64(f)):
-  - [ ] **L5a-i** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (the general-rank shared-body
+  - [x] **L5a-i** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (the general-rank shared-body
     block-triangular block-rank brick, RigidityMatrix.lean beside `le_finrank_span_rigidityRows_of_cut`). **The
     one genuinely-new math of L5** (rank-nullity of `(extProj V(H)).dualMap` ⊕ Lemma 5.1 column-deletion ⊕ the
-    rigidity-free collapse row-correspondence). Mints `lem:rigidityRows-splice-rank-add`. **Next commit.** V6-a
-    (the exact correspondence-hypothesis form) resolves at this build.
+    rigidity-free collapse row-correspondence). Mints `lem:rigidityRows-splice-rank-add`. V6-a RESOLVED. Key
+    quirk: `letI` (not `haveI`) needed to shadow global `Submodule.addCommMonoid` with `AddCommGroup ↥S` — see
+    FRICTION entry (`letI` vs `haveI` for `AddCommMonoid`/`AddCommGroup` instance diamond on submodules).
   - [ ] **L5a-ii** — `case_I_realization_nonsimple` (CaseI.lean, beside `case_cut_edge_realization`):
     IH-plumbing + the L5a-i brick + B2 + the coincident-panel Lemma-5.3 leg (`exists_extensor_in_two_panels` at
     `n₁=n₂`) + the parallel-pair proper-rigidity (`isKDof_zero_of_parallel_pair`). Mints
@@ -206,40 +209,16 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L4 complete; the L5 signature pin is landed (§1.63).** `hbase` discharged at KT strength (L3 —
-the base-producer strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization`); the
-not-2-edge-connected case (KT Lemma 6.1) is fully built (L4 — both conjuncts via the block-rank brick +
-the deficiency-aware rank-polynomial extractor + the fresh-seed device; four L4 nodes green).
-**Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
+**L0–L5a-i complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
-**The L5a re-pin is landed (§1.64).** Smallest next forward commit: **L5a-i — build
-`BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`** (the general-rank shared-body block-triangular
-block-rank brick, RigidityMatrix.lean beside L4a's `le_finrank_span_rigidityRows_of_cut`; mints
-`lem:rigidityRows-splice-rank-add`). It is the **one genuinely-new math of L5** — the rank-nullity of
-`(extProj V(H)).dualMap` (which kills the rigid `H`-block, `hingeRow_comp_extProj_eq_zero`, rigidity-free) ⊕
-the Lemma-5.1 column-deletion `finrank_pinnedMotions_add_screwDim` (RigidityMatrix.lean:2694, general-rank, the
-deleted single `v∗ = r` column preserves rank) ⊕ the collapse row-correspondence
-`panelRow_collapseTo_comp_extProj_dualMap` (CaseI.lean:940, rigidity-free). §1.64 settled the corrected pin
-(verified against the landed Lean):
-- **The contraction leg is `rigidContract G H r` (a COLLAPSE), NOT `induce`** — `induce` drops the crossing
-  edges `rigidContract` keeps relabelled to `r`, so the induce-leg bound is strictly too weak; the IH realizes
-  the contraction (minimal-`k`-dof by `rigidContract_isMinimalKDof`, V4), not the induce-leg. §1.64(a).
-- **The `def = k > 0` crux (resolved):** the landed `injOn_extProj_dualMap_rigidityRows` Claim-6.4 route is
-  full-rigidity-gated and **does not apply** at `k > 0` (the contraction is then deficient, not rigid). KT's
-  `k > 0` argument (p. 674) instead uses **Lemma 5.1** (= `finrank_pinnedMotions_add_screwDim`, general-rank,
-  no rigidity) + the **block-triangular `≥`** (eq. 6.3, elementary). NO bare span split (the splice's legs
-  share the contracted body and have many crossing edges — L4a's disjointness route does not transfer). §1.64(b).
-- **Honesty flag (§1.64(c)):** the route is **buildable, NO IH/motive change**, but the projected-image-rank
-  step (`finrank ((extProj V(H)).dualMap '' span(rigidContract-rows)) = rank R(G/E')` at deficient rank) is
-  **genuinely new** linear algebra — a real brick (its own L5a-i slice), not a one-liner, and not the
-  rigidity-gated `injOn_extProj` route. No decision needs adjudication; the route is determined.
-- **L5b caveat (§1.64(f)):** the *simple* all-`k` Case-I restate ALSO needs the (d) brick (GP variant) for its
-  surviving block — the landed `case_I_realization`'s `rigidContract_exterior_rank_transport` leg is
-  `hdef = 0`-gated, so the all-`k` restate is **not** a mechanical `0 → k` substitution (V6-b re-scoped). Still
-  buildable.
-- The `by_cases G.Simple` dispatch (§1.63(a)) and V6 (N6a dead infrastructure) **stand**; the **6.5 arm
-  (`h65`) is L8, not L5**. Re-cut slice: **L5a-i** (the brick) → **L5a-ii** (`case_I_realization_nonsimple`) →
-  **L5b** (the all-`k` GP restate + dispatch). §1.64(f).
+`le_finrank_span_rigidityRows_of_splice` Lean-green, `lem:rigidityRows-splice-rank-add` green,
+build+lint clean. V6-a RESOLVED. Canonical: §1.64.
+
+**Smallest next forward commit: L5a-ii — `case_I_realization_nonsimple` (CaseI.lean)** beside
+`case_cut_edge_realization`. IH-plumbing + the L5a-i brick (with the abstract `D` and the
+correspondence `hFH_ker`/`hFc_surv_le`/`hInj` as the interface to the brick) + B2 + the
+coincident-panel Lemma-5.3 leg (`exists_extensor_in_two_panels` at `n₁=n₂`) + the parallel-pair
+proper-rigidity (`isKDof_zero_of_parallel_pair`). Mints `lem:case-I-realization-nonsimple`. §1.64(f).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -418,3 +397,12 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   genuinely-new linear algebra — a real brick (its own L5a-i slice), not a one-liner; no decision needs
   adjudication. L5b caveat (§1.64(f)): the simple all-`k` restate also needs the brick's GP variant (V6-b
   re-scoped, not mechanical). Re-cut to L5a-i (brick) → L5a-ii (producer) → L5b. Docs-only.
+- **L5a-i build (2026-06-13, sonnet):** `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` in
+  `RigidityMatrix.lean` (`section SpliceBrick`). Proof: `letI hSAG : AddCommGroup ↥S := S.addCommGroup`
+  to shadow the global `S.addCommMonoid` instance (needed because `domRestrict`/`finrank_quotient_add_finrank`
+  live in the Ring/AddCommGroup world, while submodule ops default to the Semiring/AddCommMonoid path — these
+  two `AddCommMonoid ↥S` instances are NOT definitionally equal; `letI` shadows where `haveI` does not);
+  then `(D.domRestrict S).ker.finrank_quotient_add_finrank` for quotient rank-nullity; `quotKerEquivRange` +
+  `range_domRestrict` for the quotient ≅ image identification; `ker_domRestrict` + `finrank_map_subtype_eq` +
+  `map_comap_subtype` for the kernel ≅ `S ⊓ ker D`; outer `linarith`. V6-a RESOLVED. Key quirk → FRICTION
+  (below). `lem:rigidityRows-splice-rank-add` (rigidity-matrix.tex) green.
