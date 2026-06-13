@@ -52,7 +52,12 @@ the 2026-06-13 *Notes discipline* amendment (the log schema's Notes column
 is signal-only — outcome cause, rubric-fail cause, confounds, pair/escalation
 verdicts — NOT a recap of the math/route/verdict that lives in git / the
 design § / `notes/PhaseN.md`; rows 84–93 compressed from 1.4–2.8k chars
-to signal-only as the calibration).
+to signal-only as the calibration); and the 2026-06-13
+boundary-pair-as-pin-audit amendment (a pair's second value is an
+adversarial audit of the pin/hand-off; a duplicate's BLOCKED-with-
+diagnosis is a high-value outcome graded on diagnosis correctness, and
+the primary's faithful-but-wrong commit is not a model failure — rows
+96–100, where a pair caught a pin error the coordinator had approved).
 
 ## Repo-local config
 
@@ -216,6 +221,44 @@ quality / blueprint sync / notes discipline / commit message
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- (2026-06-13, rows 96–100, L5/L5a) **A boundary pair caught a design
+  error the coordinator had approved — the pair's biggest payoff was an
+  adversarial pin-audit, not a model-quality comparison.** The L5 pin
+  (row 96, opus) stated a splice brick's contraction leg as an `induce`
+  subgraph; the coordinator scrutinized it (verifying the *cited* APIs)
+  and approved. The L5a-i boundary pair then ran: sonnet primary built
+  the pinned brick clean+fast (row 97), opus duplicate BLOCKED (row 98)
+  diagnosing that `rigidContract` *collapses* V(H)→r (≠ `induce`) → the
+  bound was wrong. Verified against the landed Lean, reverted, re-pinned
+  (§1.64). **Three durable lessons promoted** (to `coordinate-phase.md`
+  + the protocol): (1) *scrutinize a pin's named OBJECTS, not just its
+  cited API names* — a pin can name the right vertex set but the wrong
+  construction; (2) *a BLOCKED-with-diagnosis duplicate is a high-value
+  outcome*, graded on diagnosis correctness, and a pair doubles as a
+  pin-audit (run it when the pin is recent/unverified); (3) *the
+  design-pass prompt needs a verify-against-landed-source + flag-don't-
+  force mandate* — the SAME opus rung pinned §1.63 wrong unprimed (96)
+  and §1.64 right when primed with the verified diagnosis + honesty
+  mandate (99): **prompt framing beat the rung**, and single-pass design
+  output is fallible even at the top rung.
+- (2026-06-13, rows 91 + 100) **The "genuinely-new linear-algebra
+  block-rank brick" profile reliably realizes P≈3 — and sonnet
+  abstracts/defers the hard kernel rather than confronting it.** Both
+  the L4a cut brick (row 91, 108 min) and the L5a-i splice brick (row
+  100, 61 min) were rated 2/2/1 but cost like P=3 (the two longest
+  L-dispatches). Sonnet's reliable-math held (both correct, axiom-clean,
+  surfacing real Lean quirks — §§49–52, §54), but row 100 also showed a
+  tendency: sonnet *abstracted* the brick (proved the easy
+  block-triangular rank-nullity, took the genuinely-new Lemma-5.1
+  injectivity as a hypothesis), **relocating the crux into the consuming
+  leaf** — a legitimate slice, but the hand-off then re-underestimated
+  that leaf as "IH-plumbing" (coordinator-repaired; lesson promoted to
+  `coordinate-phase.md`, the "abstraction defers ≠ does the crux"
+  bullet). Open assignment-map question (now 2 data points): should
+  genuinely-new linear-algebra bricks map to **opus**, or at least carry
+  a standing "expect P≈3, pre-split the hard kernel" calibration? Not
+  changing the map mid-phase on n=2 (both landed correct at sonnet); flag
+  for the phase-close distillation.
 - (2026-06-12, rows 82–86, L2+L3) **Opus substitutes cleanly for
   fable on design-settle passes when fable is unavailable.** A
   user-requested session-local override (opus/fable-only, narrowing to

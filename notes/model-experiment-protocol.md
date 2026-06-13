@@ -106,6 +106,18 @@ Published function of the profile, so assignment is reproducible:
   *same task* to the adjacent rung in an **isolated worktree**; keep
   the primary's commit, log both outcomes, discard the duplicate's
   tree. This is the only true same-task comparison in the design.
+  **A pair has a second value beyond model-comparison: it is an
+  adversarial audit of the *pin/hand-off* the primary builds against.**
+  A duplicate that returns BLOCKED with a design-error diagnosis
+  (rather than a build) is a **high-value outcome, not a failed pair** —
+  the fresh adversarial read caught what the pin's author and the
+  coordinator's scrutiny both missed. So a pair is especially worth
+  running when the build's pin is recent or not yet deeply verified;
+  grade such a BLOCK on the *correctness of its diagnosis*, and the
+  primary's faithful-but-wrong commit is **not** a model failure (it
+  implemented the pin). Verify the diagnosis against the landed source,
+  then correct the pin (precedent: a pin error a pair caught *after* the
+  coordinator had approved it).
   *Worktree build caveat (Lean repos):* a fresh worktree has no
   `.lake/` — a bare `lake build` there recompiles mathlib from
   source (expensive; on shared machines a known OOM risk). **The

@@ -197,7 +197,20 @@ Loop:
      and/or a one-line Lean witness (`lean_run_code`) *before*
      re-planning on it (22g GAPs 4/5 settled in minutes; 22h GAP 6
      confirmed against KT p. 684 + the Lean motive in one sitting).
-     Build-dispatched
+     **Scrutinize a pin's named OBJECTS, not just its cited API
+     names.** A design-pass can name the right *vertex set* but the
+     wrong *construction* (22i §1.63 pinned a splice leg as
+     `induce ((V∖V(H))∪{r})` when the contraction `rigidContract`
+     *collapses* V(H)→r — same vertices, but it keeps the crossing
+     edges `induce` drops → a strictly weaker, wrong bound). Confirming
+     only that the APIs the agent *cites* exist misses this: open the
+     landed `def`/`theorem` of every graph construction
+     (`induce`/contraction/`collapseTo`/`map`) the pin's statement
+     references and confirm the pinned object **is** that construction.
+     A build then faithfully implements the wrong pin and gates green —
+     here only a boundary-pair duplicate caught it (rows 96–99), and the
+     coordinator's first-pass scrutiny (verifying the *named* APIs) did
+     not. Build-dispatched
      agents sometimes self-redirect to a recon — often rightly; same
      scrutiny, especially when one overturns a prior finding. A
      **route claim recorded in the hand-off by a build agent** (a
@@ -211,6 +224,24 @@ Loop:
      instantiation). When the canonical design doc itself defers the
      shapes ("pin at the X design moment"), the design moment IS the
      next dispatch — a design-settle pass, not a build.
+   - **An abstraction that defers the crux as a hypothesis is not
+     progress on the crux.** When a build *abstracts* a pinned lemma —
+     taking a genuinely-new fact as a hypothesis rather than proving it
+     (22i L5a-i landed the splice brick taking the Lemma-5.1 injectivity
+     `hInj` as a hypothesis, proving only the easy block-triangular
+     rank-nullity) — the hard step is **relocated to the caller, not
+     done**. Often a legitimate slice (the design doc may sanction the
+     split), but the genuinely-new obligation now lives in the next
+     leaf. A builder tends to then re-frame the consuming leaf as
+     "plumbing + interface", re-burying the very crux the design pass
+     flagged: the coordinator re-flags the relocated obligation in the
+     hand-off and **rates the next dispatch by the deferred math, not
+     the plumbing** (rows 99–100: §1.64(c) flagged the new step, the
+     abstract brick relocated it into `hInj`, the hand-off
+     re-underestimated the consuming leaf as "IH-plumbing" →
+     coordinator-repaired). The tell is a hypothesis the design doc
+     called "genuinely-new" appearing as a `h…` argument of a landed
+     lemma — grep the deferred fact, confirm where it is discharged.
    - **Plan-label deviations (destructive→additive, slice re-size)
      are a normal, usually-correct self-redirect in migration
      phases** — four consecutive "destructive" slices rightly landed
@@ -272,7 +303,17 @@ degrades. Post-amendment evidence it works: rows 18–19 self-shrank to
 complete sub-lemmas.) A **recon / design-pass** dispatch is the
 exception: give it a tailored prompt naming what to recon, the
 coordinator's verified findings motivating it, and the deliverable
-(a design-doc entry + re-pointed hand-off).
+(a design-doc entry + re-pointed hand-off). **Two clauses earn their
+place in every design-pass prompt** (rows 96 vs 99: the same opus rung
+pinned §1.63 *wrong* unprimed, then pinned §1.64 *right* when primed):
+(i) *verify every load-bearing claim against the landed source* — the
+actual `def`/`theorem`, not the prior pin's prose; (ii) an explicit
+*flag-don't-force* mandate — "if the corrected route needs a
+motive/IH-level change or genuinely-new math, say so and stop; a pin
+that honestly names an open decision beats a confident wrong one (that
+is exactly what cost a revert)." Single-pass design output is fallible
+even at the top rung; the grounding + the honesty mandate, not the
+rung, is what made the re-pin sound.
 
 For **cleanup rounds** (per CLEANUP.md) a third dispatch shape works
 well: a scoped no-git editor — "Edit ONLY <file>. Touch no other
