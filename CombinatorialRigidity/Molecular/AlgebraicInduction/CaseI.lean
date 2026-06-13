@@ -1292,6 +1292,58 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
   have hinj := F.injOn_extProj_dualMap_rigidityRows hrig hr hinter
   exact hindep.map_injOn _ (hinj.mono hspan_le)
 
+/-- **Deficiency-aware exterior-projected independent surviving subfamily** (the V6-b leaf,
+route-1 extractor; the `_le_finrank` analogue of
+`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`, swapping the rigidity gate for
+a rank input + the rigidity-free `injOn` core; Katoh–Tanigawa 2011 §6.2 eqs. (6.5)/(6.9),
+Phase 22i L5b-ii-a). For a body-hinge framework `F` with a block `proj` meeting `V(G)` in exactly
+the representative body `r` (`V(G) ∩ proj = {r}`), and given any rank lower bound `N ≤ finrank
+(span F.rigidityRows)`, there is an index subset `t` whose
+`(extProj proj).dualMap ∘ panelRow ends`-subfamily is linearly independent, of size `≥ N`, every
+member of which links in `F.graph`.
+
+This is the deficiency-aware twin of
+`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` (route 1 of §1.66): instead of
+deriving the un-projected subfamily from rigidity, it feeds the rank input `N` to the rank-input
+extractor `exists_independent_panelRow_subfamily_of_le_finrank` (W6e), then maps the result through
+the rigidity-free `injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton` (L5a-ii). The proof
+body is the rigid extractor's proof verbatim with the two rigidity-gated calls swapped out. -/
+theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank_proj
+    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α} {proj : Set α} {r : α}
+    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
+    (hinter : F.graph.vertexSet ∩ proj = {r})
+    {N : ℕ} (hN : N ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)) :
+    ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ t, F.graph.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+        (ends (i : β × _ × _).1).2) ∧
+      N ≤ Nat.card t ∧
+      LinearIndependent ℝ (fun i : t => (extProj (k := k) proj).dualMap
+        (F.panelRow ends (i : β × _ × _))) := by
+  classical
+  -- The un-projected independent subfamily from the rank-input tool (W6e).
+  obtain ⟨t, hsupp, hcard, hindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_le_finrank hends hne hN
+  refine ⟨t, hsupp, hcard.ge, ?_⟩
+  -- A panel row of `F` whose edge links in `F.graph` is one of `F`'s rigidity rows, so the
+  -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective (the §1.22 core).
+  have hrow_mem : ∀ i : t,
+      F.panelRow ends (i : β × _ × _) ∈ Submodule.span ℝ F.rigidityRows := by
+    rintro ⟨⟨e', t₁, t₂⟩, hi⟩
+    refine Submodule.subset_span ⟨e', (ends e').1, (ends e').2, hsupp _ hi,
+      annihRow (F.supportExtensor e') t₁ t₂, ?_, rfl⟩
+    rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+    intro x hx
+    rw [Submodule.mem_span_singleton] at hx
+    obtain ⟨ρ, rfl⟩ := hx
+    rw [map_smul, annihRow_apply_self, smul_zero]
+  have hspan_le : Submodule.span ℝ (Set.range (fun i : t => F.panelRow ends (i : β × _ × _)))
+      ≤ Submodule.span ℝ F.rigidityRows :=
+    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ hrow_mem i)
+  -- The rigidity-free `injOn` core (L5a-ii): no rigidity hypothesis needed.
+  have hinj := F.injOn_extProj_dualMap_rigidityRows_of_inter_eq_singleton hinter
+  exact hindep.map_injOn _ (hinj.mono hspan_le)
+
 /-- **The relabelled selector records the relabelled graph's links** (`lem:claim-6-4`, the U3a
 contraction-leg `IsLink.map`-under-collapse fact; Katoh–Tanigawa 2011 §6.2, eq. (6.7), Phase 22b
 route (i), risk (c)). If a parent endpoint selector `ends` records every link of `Gc` up to swap
