@@ -5619,6 +5619,202 @@ L4b and flagged to coordinator (it may force a statement-level change to what th
 
 ---
 
+### 1.62 The L4b design micro-pass — V5-b RESOLVED: Route GP-2 is viable with NO IH statement-level change; the §1.61(d) "combine the two side seeds" framing rests on a false premise (both halves of it), and the project's actual GP route is the standing **fresh-shared-seed + rational-rank-polynomial non-root** idiom, generalized rigid→deficient by the already-landed W6e rank-input subfamily extractor; the one new project-internal piece is a deficiency-aware rank-polynomial extractor (a near-mechanical copy of `exists_rankPolynomial_of_rigidOn_linking`), no new `MvPolynomial` lemma (2026-06-13)
+
+> **Docs-only design pass (the L4b V5-b adjudication).** Lean read this pass (declarations + current
+> line numbers, all verified): PanelHinge.lean — `HasGenericFullRankRealization` (:1035, the GP motive:
+> `∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧ rank = D(|V|−1)−def ∧ link-recording ∧ AlgebraicIndependent ℚ
+> (fun p : α × Fin (k+2) => Q.normal p.1 p.2)`), `IsGeneralPosition` (:121, `∀ a b, a ≠ b → LI ![normal a,
+> normal b]` — a property of the *single combined* normal assignment on all of `α`), `theorem_55_generic`
+> (:1168 — the `hcontractGP`/`hsplitGP` slots show the GP conjunct receives the *full conditioned IH*
+> `∀ G', … → Pc G'`), `exists_generalPosition_polynomial` (:375, the rational GP factor, nonzero at any
+> injective seed, whose non-root gives `IsGeneralPosition` of `ofNormals G ends q` for the *whole* graph),
+> `ofNormals_endsOf_recordsLinks` (CaseI.lean:332, the link-recording term off the canonical selector);
+> CaseI.lean — `hasGenericFullRankRealization_of_couple_ofNormals` (:158, the Case-I GP composer — the
+> exemplar of the project's GP architecture: it does **not** combine the two leg seeds; it extracts each
+> leg's *rational rank polynomial* from the leg's rigidity, builds one fresh seed `q₀ :=
+> exists_injective_algebraicIndependent_real (α × Fin (k+2))`, proves `q₀` a simultaneous non-root of both
+> + the GP factor, realizes at `q₀`, and reads `AlgebraicIndependent ℚ` straight off `halg q₀`),
+> `case_cut_edge_realization` (:7588, the landed L4a bare conjunct — `F` assembled from the two IH
+> `HasPanelRealization` side frameworks at their own seeds; seed-free brick + B2);
+> GenericityDevice.lean — `exists_rankPolynomial_of_rigidOn_linking` (:1393, the rank-polynomial extractor,
+> consumes `IsInfinitesimallyRigidOn V(G)` = rigidity = `def = 0`), `exists_independent_panelRow_subfamily_of_le_finrank`
+> (:718, **W6e — the rigidity-FREE, rank-input subfamily extractor**: takes only `N ≤ finrank (span
+> F.rigidityRows)` and yields `N` independent *linking* `panelRow`s; spans-the-rigidity-rows step needs only
+> `hends`/transversality, no rigidity), `finrank_span_rigidityRows_add_deficiency_le` (:562, B2, the free
+> `V(G)`-relative `≤`); Rank.lean — `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`
+> (:588, **the seed-transfer engine**: takes ANY linearly-independent panel-row subfamily at a source seed
+> `p₀` and returns a *rational* `Q` with `eval p₀ Q ≠ 0` whose non-vanishing forces that same subfamily
+> independent at any other seed — rigidity-free), `exists_injective_algebraicIndependent_real`
+> (TranscendenceBasis.lean:70, the fresh single combined seed `q : σ → ℝ`, injective + `AlgebraicIndependent ℚ`);
+> RigidityMatrix.lean — `le_finrank_span_rigidityRows_of_cut` (:2991, the L4a brick — **seed-free**:
+> consumes only `F : BodyHingeFramework`, the cut structure, `hC_ext : ∀ e u v, IsLink → supportExtensor ≠ 0`);
+> Deficiency.lean — `loopless_of_isMinimalKDof` (:370, every minimal-`k`-dof graph is loopless, so links
+> join distinct bodies). Mathlib read via the Lean LSP MCP (`lean_loogle "AlgebraicIndependent _ (Sum.elim _ _)"`):
+> `AlgebraicIndependent.sumElim` / `.sumElim_iff` (`Mathlib.RingTheory.AlgebraicIndependent.Transcendental`)
+> — the *only* disjoint-index alg-indep facts upstream, and they require `AlgebraicIndependent
+> (Algebra.adjoin R (Set.range x)) y` (the second family alg-indep over the field *extended by the first*),
+> **NOT** the unconditional "disjoint variable sets → union independent" that the §1.61(d) GP-2 framing assumed.
+> KT 2011 re-read against the PDF this pass: **p. 671** (the IH (6.1): "(nonparallel, if `Gₕ` is simple)
+> … `rank R(Gₕ,pₕ) = D(|Vₕ|−1) − kₕ`" — the GP conjunct *and* the rank equality at the side's own placement),
+> **p. 672 §6.1 Lemma 6.1 verbatim** ("the choices of `p₁` and `p₂` are independent of each other and …
+> the rank … is invariant under an isometric transformation … we can take `p₁` and `p₂` such that
+> `ΠG₁,p₁(v₁)` and `ΠG₂,p₂(v₂)` are nonparallel for any pair", `p(uv) = ΠG₁,p₁(u) ∩ ΠG₂,p₂(v)` a `(d−2)`-flat,
+> `rank r(p(uv)) = D−1`, the block-triangular `rank ≥ …`). No `.lean`/`.tex` edits this pass.
+
+**Citation.** Katoh–Tanigawa 2011, *Discrete Comput. Geom.* **45**, 647–700; **Lemma 6.1**, §6.1, p. 672,
+and the §6 IH (6.1), p. 671. The transcendence-seed device (algebraically-independent-over-`ℚ` coordinates
+as the standing inductive genericity choice) is KT's footnote 6, p. 685 — the project's realization of
+"the choices of `p₁` and `p₂` are independent."
+
+**(a) The §1.61(d) framing was wrong — both routes rested on a false premise.** §1.61(d) framed V5-b as
+"the two IH side-frameworks are produced *each at its own independent alg-indep seed* … combining them into
+one GP framework on `G` requires the *union* of the two seeds to be alg-independent, OR re-running both sides
+at one shared global seed." Reading the *landed* GP architecture (`hasGenericFullRankRealization_of_couple_ofNormals`,
+the only existing producer that lands the GP conjunct from two GP legs) refutes both halves:
+
+* **The project never combines the IH seeds.** The Case-I GP composer does *not* touch either leg's seed. It
+  extracts each leg's **rational rank polynomial** (a `Q : MvPolynomial (α × Fin (k+2)) ℝ` with `Q.coeffs ⊆
+  range (algebraMap ℚ ℝ)`, nonzero at the leg's seed, whose non-vanishing forces the leg's rank), builds **one
+  fresh combined seed** `q₀ := exists_injective_algebraicIndependent_real (α × Fin (k+2))` over *all* of `α ×
+  Fin (k+2)`, proves `q₀` is a simultaneous non-root of `Q₁ · Q₂ · Q_gp` (the alg-indep seed is a non-root of
+  every nonzero rational polynomial, `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`), and
+  realizes `ofNormals G G.endsOf q₀` at that single seed. The motive's `AlgebraicIndependent ℚ` conjunct is then
+  `halg` for `q₀` *directly*. So "Route GP-1 (reseed)" is a non-problem (there is nothing to reseed — the
+  producer builds its own fresh seed) and "Route GP-2 (seed union)" mis-describes the mechanism.
+* **The naive "GP-2 disjoint-union" fact is false anyway.** The only upstream disjoint-index alg-indep lemma
+  is `AlgebraicIndependent.sumElim_iff`, which needs the *second* family alg-indep over `Algebra.adjoin ℚ
+  (range first)` — not the unconditional "disjoint variable sets → union independent." Two independently-chosen
+  transcendence-basis fragments of `ℝ/ℚ` are concrete reals and need *not* be jointly independent (one could be
+  algebraic over the other). So even the seed-union route §1.61(d) called "recommended" would have been
+  **unsound** as stated. This is why the project's idiom builds *one* fresh seed instead of merging two.
+
+**(b) The genuine V5-b question, restated correctly, and its resolution (Route GP-2, viable, no IH change).**
+The real obstruction is **not** seed-combination; it is **rank-lower-bound transfer across seeds for the
+*deficient* (non-rigid) sides.** The combined GP producer builds one fresh seed `q₀` and needs the side rank
+lower bound `finrank (span (⟨G.induce Vᵢ, ofNormals-extensors⟩).rigidityRows) ≥ D(|Vᵢ|−1) − kᵢ` *at* `q₀`. The
+IH gives this equality only at the side's *own* seed. The existing transfer machinery
+(`exists_rankPolynomial_of_rigidOn_linking`) consumes **rigidity** (`IsInfinitesimallyRigidOn V(G)`, i.e.
+`def = 0`) — but the cut sides are general `kᵢ`-dof (`def = kᵢ`, possibly `> 0`), so they are **not rigid**, and
+that extractor does not apply. *This* is V5-b's real content.
+
+It resolves with already-landed infrastructure, because rigidity was only ever used to compute a *full-size*
+`D(|V|−1)` independent subfamily. The Phase-22h **W6e** lemma `exists_independent_panelRow_subfamily_of_le_finrank`
+is the rigidity-FREE generalization: given *only* `N ≤ finrank (span F.rigidityRows)`, it extracts `N`
+independent *linking* `panelRow`s (the "span the rigidity rows" step needs only `hends`/transversality, no
+rigidity). So the deficiency-aware transfer is:
+1. From the side IH GP framework `Qᵢ` (at its own seed `qᵢ`): the rank equality gives `Nᵢ := D(|Vᵢ|−1) − kᵢ ≤
+   finrank (span (Qᵢ.toBodyHinge).rigidityRows)`. Feed `Nᵢ` to **W6e** → `Nᵢ` independent linking `panelRow`s at `qᵢ`.
+2. Feed that LI subfamily to the **seed-transfer engine**
+   `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` (rigidity-free; same `g`/`c`/`φ`
+   Gram-minor coordinatization as `exists_rankPolynomial_of_rigidOn_linking`) → a *rational* `Qᵢ_rank` with
+   `eval qᵢ Qᵢ_rank ≠ 0`, whose non-vanishing forces that subfamily (hence `rank ≥ Nᵢ`) at any seed.
+3. Build the fresh combined seed `q₀`, a simultaneous non-root of `Q₁_rank · Q₂_rank · Q_gp` (alg-indep ⇒
+   non-root of every nonzero rational poly). At `q₀`: each side has `rank ≥ Nᵢ`, the whole framework is in
+   general position.
+
+**The cross-side transversality KT engineers with the isometry is automatic from global GP at `q₀`.** Under
+`IsGeneralPosition` (every pair of *distinct* bodies has independent normals) and `V₁ ∩ V₂ = ∅`, the cut
+edge's endpoints `u_c ∈ V₁`, `v_c ∈ V₂` are distinct, so `supportExtensor_ne_zero_of_isGeneralPosition` makes
+the cut hinge's extensor nonzero — the project's `(d−2)`-flat-transversal analogue, holding for *every* cross
+pair at once (a strictly cleaner property than KT's per-pair isometry). Looplessness
+(`loopless_of_isMinimalKDof`) gives the same for the two side blocks' edges. So the seed-free L4a brick's
+hypothesis `hC_ext : ∀ e u v, IsLink → supportExtensor ≠ 0` is discharged on *all* edges by GP at `q₀`, and the
+brick gives the combined lower bound `finrank (span F.rigidityRows) ≥ rank₁ + (D−1)|cut| + rank₂ ≥ D(|V|−1) − k`
+by the L1e arithmetic `k = k₁ + k₂ + D − (D−1)|cut|` + `|V| = |V₁| + |V₂|` (identical to L4a's). B2 gives the
+matching `≤`; antisymmetry closes the rank equality. **Verdict: Route GP-2 (independent placements, one fresh
+combined non-root seed, per-side rank transfer) is viable and needs NO IH statement-level change.** The decision
+guard's GP-1 escape (a seed-parametrized IH GP conjunct) is **not** triggered.
+
+**(c) V5-b — the one new piece (no new `MvPolynomial` lemma).** The disjoint-union alg-indep lemma §1.61(d)
+hoped for is *not needed and would be unsound*; `exists_injective_algebraicIndependent_real` already supplies the
+single fresh seed. The one genuinely-new declaration is a **deficiency-aware rank-polynomial extractor**, the
+non-rigid sibling of `exists_rankPolynomial_of_rigidOn_linking`:
+
+```lean
+/-- **Rank-input rank polynomial** (Phase 22i L4b; the deficiency-aware sibling of
+`exists_rankPolynomial_of_rigidOn_linking`). A framework with a rank LOWER BOUND `N` on its
+rigidity-row span yields a nonzero rational polynomial `Q` whose non-vanishing forces `N`
+independent linking panel rows (hence `rank ≥ N`) at *any* seed. No rigidity. -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hne : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
+    {N : ℕ} (hN : N ≤ Module.finrank ℝ (Submodule.span ℝ (ofNormals G ends q₀).toBodyHinge.rigidityRows)) :
+    ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
+      MvPolynomial.eval q₀ Q ≠ 0 ∧ (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+      ∀ q, MvPolynomial.eval q Q ≠ 0 →
+        N ≤ Module.finrank ℝ (Submodule.span ℝ (ofNormals G ends q).toBodyHinge.rigidityRows)
+```
+Its proof is the existing `exists_rankPolynomial_of_rigidOn_linking` with two swaps: (i) replace the
+rigid subfamily extractor `exists_independent_panelRow_subfamily_of_rigidOn_linking` by the rank-input
+**W6e** `exists_independent_panelRow_subfamily_of_le_finrank` (feeding `hN`); (ii) re-phrase the conclusion
+from "rows linearly independent" to "rank ≥ N" via `LinearIndependent.le_finrank_span` /
+`finrank_span_le_of_...` on the `N`-element subfamily plus `span_panelRow_linking_eq_rigidityRows`. The
+`g`/`c`/`φ` Gram-minor coordinatization and the rational-coefficient bookkeeping are copied verbatim. This is
+`buildable`, not research-shaped.
+
+**(d) The GP-conjunct producer signature, and how it composes with the landed bare conjunct.** The slot is
+`Pc G = (G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` (§1.56(b) M4). The full
+slot-filler is `⟨gp, bare⟩` where `bare` is the **landed** `case_cut_edge_realization` (the `.2` conjunct,
+unchanged — its IH is the `.2` projection of the conditioned IH) and `gp` is the new L4b producer (the `.1`
+conjunct, fed the *full* conditioned IH so it can extract each side's GP realization, mirroring `hcontractGP`):
+
+```lean
+theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+    (hntec : ¬ G.TwoEdgeConnected) (hSimple : G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G
+```
+Body: cut decomposition (L1e, as L4a); each side `G.induce Vᵢ` is simple (induced subgraph of a simple graph;
+fork has the `Simple.induce` instance) so `(hIH kᵢ (G.induce Vᵢ) … ).1 hSimpleᵢ` gives the side GP framework
+`Qᵢ`; per-side W6e + `exists_rankPolynomial_of_le_finrank_linking` → `Qᵢ_rank`; `exists_generalPosition_polynomial
+G G.endsOf` → `Q_gp`; one fresh `q₀` non-root of the triple (`exists_injective_algebraicIndependent_real` +
+`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` thrice); set `Q := ofNormals G G.endsOf q₀`,
+`F := Q.toBodyHinge`; GP from `Q_gp` non-root; side ranks `≥ Nᵢ` at `q₀` from the transfer polys + the
+side-span equalities of L4a (`hF₁span`/`hF₂span`, reused — the `ofNormals`-on-`G.induce Vᵢ` rows equal `F`'s
+`Eᵢ`-rows); combined `≥ D(|V|−1)−k` from the **seed-free L4a brick** + L1e arithmetic; `≤` from B2; antisymmetry;
+link-recording from `ofNormals_endsOf_recordsLinks`; `AlgebraicIndependent ℚ` from `halg`. *Buildable* once
+`exists_rankPolynomial_of_le_finrank_linking` lands.
+
+**(e) Blueprint disposition (settles §1.61(e)).** Keep the **green-bare + restate-to-`Pc`** structure §1.61(e)
+sketched, concretely: `lem:case-cut-edge-realization` (molecular-induction.tex) stays **green at the bare
+`HasPanelRealization` conjunct** — its role-prose already says so (the 0dd8b09 repair). L4b mints **one new
+node** `lem:case-cut-edge-realization-gp` for the `G.Simple → HasGenericFullRankRealization` conjunct, `\uses`-ing
+`lem:case-cut-edge-realization` (bare), `lem:rigidityRows-cut-rank-add` (the seed-free brick),
+`def:rank-hypothesis`, `prop:rigidity-matrix-prop11` (B2's hub), the GP-device nodes (the rank-polynomial /
+seed-transfer / general-position-factor chain the Case-I GP composer already `\uses`), and a small new node
+`lem:rank-polynomial-of-le-finrank` for the deficiency-aware extractor (c) if it earns one (else fold into the
+producer's `\uses`). The L9 spine consumes the conjunction `⟨gp, bare⟩` at the `hcut` slot. This is the
+restate-as-a-sibling option (not a single restated node), chosen because the bare conjunct is already green and
+seed-free while the GP conjunct is seed-and-transversality-bearing — splitting keeps the green honesty gate
+honest and matches how `theorem_55_generic` keeps `hsplit`/`hsplitGP` (bare/GP) as *separate* slots. No
+statement-grep ripple (both nodes additive; the legacy `theorem_55_d3` spine never reaches the cut case).
+
+**(f) The L4b slice cut (exact-signature build leaves, build order).**
+
+* **L4b-1** — `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` (the deficiency-aware
+  rank-polynomial extractor, (c)) in GenericityDevice.lean, beside `exists_rankPolynomial_of_rigidOn_linking`.
+  The only genuinely-new declaration; a two-swap copy of its rigid sibling. Mints (optionally)
+  `lem:rank-polynomial-of-le-finrank`. **First concrete L4b commit.** *Buildable.*
+* **L4b-2** — `case_cut_edge_realization_gp` (the GP-conjunct producer, (d)) in CaseI.lean, beside
+  `case_cut_edge_realization`. Composes L4b-1 + the side IH GP frameworks + the fresh-seed device + the seed-free
+  L4a brick + B2; reuses L4a's `hF₁span`/`hF₂span`/arithmetic. Greens `lem:case-cut-edge-realization-gp`;
+  completes the full `Pc` slot-filler `⟨gp, bare⟩` for the `hcut` slot. *Buildable on L4b-1.*
+
+*Verification items L4b resolves:* **V5-b** (the GP-conjunct seed question) — **RESOLVED** as a rank-transfer
+question (not a seed-combination one); Route GP-2 viable, no IH change, no new `MvPolynomial` lemma; the one new
+piece is the deficiency-aware extractor (c). No residual open sub-question for L4b.
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic
