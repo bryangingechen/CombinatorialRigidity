@@ -62,14 +62,19 @@ setup nudge in `.claude/commands/coordinate-phase.md` is repo-local).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-13, current session — set by the session-start
-  check).** fable **unavailable** this session (user-confirmed); the reachable
-  rungs are haiku / sonnet / opus, dispatched per the S/P/B → map. Per the
+- **Session availability (2026-06-13, re-checked by a fresh coordinator session —
+  the prior same-date note expired at its own session end).** fable **unavailable**
+  this session (user-confirmed at session start); the reachable rungs are
+  haiku / sonnet / opus, dispatched per the S/P/B → map. Per the
   *Unavailable rung* substitution rule, every fable-mapped pass (design-settle /
   phase-boundary / S=3 / recon-by-stakes) substitutes **opus** (logged in the
   row). Not a map change; **expires at session end** — a fresh coordinator
   re-runs the availability check and reverts to the full map (substituting again
-  only if fable is still unavailable that session).
+  only if fable is still unavailable that session). **Run modifications this
+  session (user-set at session start):** the 10-run check-in cap is **lifted**
+  (the loop runs to phase close or a surfaced concern), and step-4 mechanical
+  fixups (wrong branch / author / co-author trailer) are **pre-authorized** (apply
+  without stopping to ask). The coordinator is Opus 4.8 (1M context).
 - **Session constraint — EXPIRED 2026-06-13 at session end, by its own terms (rows
   87–88).** Was: fable unavailable → rungs capped at opus; build dispatches followed
   the S/P/B → rung map (haiku/sonnet/opus by profile), and any fable-mapped pass
