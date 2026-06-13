@@ -25,8 +25,8 @@ geometrically-new; via L3a brick + `theorem_55_base` + B1); `theorem_55_base_pro
 (§1.60(b)(i), all-zero framework, rank 0, vacuous per-link); `theorem_55_base_producer_single_edge`
 (§1.60(b)(ii), one nonzero extensor in `n₀^⊥`, rank `D−1` via `span_panelRow_linking_eq_rigidityRows`
 + `finrank_span_panelRow_edge`). All in `CaseI.lean` (downstream home); all green; `hne` dropped
-from empty arm signature (unused). `lem:theorem-55-base-producer-parallel` green node; the full
-`lem:theorem-55-base-producer` node awaits the dispatch. **Next:** GP conjunct + the trichotomy-dispatch
+from empty arm signature (unused). `lem:theorem-55-base-producer-{parallel,empty,single}` green
+nodes; the full `lem:theorem-55-base-producer` dispatch node awaits the dispatch. **Next:** GP conjunct + the trichotomy-dispatch
 `theorem_55_base_producer` + legacy-`hbase` rewire of `theorem_55_d3`.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
@@ -93,10 +93,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   `linearIndependent_pair_extensor_of_li3` (Extensor.lean) + perp helper `exists_three_perp`
   (PanelLayer.lean); node `lem:extensor-pair-in-panel` green. **All three L3b bare arms landed**
   (see *Current state*): `theorem_55_base_producer_{parallel_pair,empty,single_edge}` in
-  CaseI.lean; `lem:theorem-55-base-producer-parallel` green. **L3b remains**: the GP conjunct
+  CaseI.lean; `lem:theorem-55-base-producer-{parallel,empty,single}` green. **L3b remains**: the GP conjunct
   (`G.Simple →`: parallel-pair vacuous, empty rank-0, single-edge genuine `def=1` GP build); the
   trichotomy-dispatch `theorem_55_base_producer` itself; legacy-`hbase` rewire of `theorem_55_d3`;
-  NEW node `lem:theorem-55-base-producer`. `def:genuine-hinge-realization` + `lem:theorem-55-base` green.
+  NEW node `lem:theorem-55-base-producer` (the dispatch). `def:genuine-hinge-realization` + `lem:theorem-55-base` green.
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).

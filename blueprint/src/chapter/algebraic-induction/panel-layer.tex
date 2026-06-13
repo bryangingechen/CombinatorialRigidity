@@ -406,6 +406,50 @@ whole induction.
   instance of the join-to-isolate technique behind \cref{lem:extensor-independence}.)
 \end{proof}
 
+\begin{lemma}[Theorem 5.5 base producer, empty arm]
+  \label{lem:theorem-55-base-producer-empty}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy}
+  Let $G$ be a minimal-$k$-dof-graph on $1 \le |V(G)| \le 2$ bodies realizing the \emph{empty}
+  case of the base trichotomy (\cref{lem:two-vertex-trichotomy} (i)): $E(G) = \emptyset$ and
+  hence $\mathrm{def}(\tilde G) = D(|V(G)| - 1)$. Then $G$ has a genuine-hinge panel realization
+  (\cref{def:genuine-hinge-realization}) at the target rank $D(|V(G)|-1) - \mathrm{def} = 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The construction is geometry-free: take the all-zero framework (every edge carries the zero
+  supporting extensor) at a fixed nonzero panel normal. With no edges no hinge constraint fires,
+  so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the per-link
+  conjunct of the motive is vacuous. The target rank vanishes because the empty-graph deficiency
+  is exactly $D(|V(G)|-1)$ (\cref{lem:two-vertex-trichotomy}).
+\end{proof}
+
+\begin{lemma}[Theorem 5.5 base producer, single-edge arm]
+  \label{lem:theorem-55-base-producer-single}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy, lem:extensor-pair-in-panel,
+        def:rigidity-matrix}
+  Let $G$ be a two-vertex minimal-$1$-dof-graph realizing the \emph{single-edge} case of the base
+  trichotomy (\cref{lem:two-vertex-trichotomy} (ii)): $V(G) = \{x, y\}$ with $x \ne y$,
+  $E(G) = \{e\}$ a single edge joining $x$ and $y$, and $\mathrm{def}(\tilde G) = 1$. Then $G$ has
+  a genuine-hinge panel realization (\cref{def:genuine-hinge-realization}) at the target rank
+  $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:extensor-pair-in-panel, def:rigidity-matrix}
+  Place coincident panels $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero normal $n$ and assign
+  the single hinge one nonzero supporting extensor inside the common panel (the first of the pair
+  of \cref{lem:extensor-pair-in-panel}; nonzero by its linear independence). The lone hinge's row
+  block already \emph{is} the entire rigidity-row family (there is only one edge), and that block
+  has rank exactly $D - 1$ (\cref{def:rigidity-matrix}); so the rigidity-row span has rank
+  $D - 1 = D(|V(G)|-1) - \mathrm{def}$, the rank equality of the motive. Unlike the parallel-pair
+  arm the framework is not rigid ($\mathrm{def} = 1$): the rank is the single hinge-row count, not
+  the full two-vertex base rank.
+\end{proof}
+
 \begin{lemma}[Theorem 5.5 base producer, parallel-pair arm]
   \label{lem:theorem-55-base-producer-parallel}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair}
