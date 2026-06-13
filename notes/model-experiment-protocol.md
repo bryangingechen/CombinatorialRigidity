@@ -245,6 +245,21 @@ that runs to a full paragraph is almost always recapping. (Calibration:
 rows 84–93 ballooned to 1.4–2.8k chars each by recapping the math, and
 were compressed to signal-only on 2026-06-13.)
 
+**Episode lessons live in *Findings*, not in every row.** A multi-row
+episode (a boundary pair, an escalation, a re-route later caught wrong)
+yields *one* durable lesson — write it **once** in the sibling log's
+*Findings* and have each participating row *cite* it ("→ Findings
+<date>") rather than restate it. The regrowth failure mode is each row of
+an episode re-narrating the shared lesson; that is how a freshly-
+compressed log reinflates within a single phase (it recurred once after
+the rows-84–93 compression above, on the very next multi-row episode).
+The per-row Notes then carries only that row's *own* signal: its outcome
+cause and its rubric-fail cause — the cross-row lesson is the *Findings*
+bullet's job. **Firm cue:** a Notes cell past ~4 lines / ~600 chars is
+almost certainly recapping the math or re-narrating an episode lesson —
+compress it in the same commit. The row is working memory; the episode's
+writeup is *Findings*.
+
 **Cost caveat.** The reported token figure is noisy across runs (it
 does not obviously track tool-use count or wall time); record all
 three cost numbers and prefer wall time + tool uses for comparisons
