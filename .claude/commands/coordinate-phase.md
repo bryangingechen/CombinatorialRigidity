@@ -3,6 +3,13 @@ does the next concrete commit per the existing workflow, then sanity-
 check and dispatch the next. Stop when the phase closes or something
 looks off.
 
+**Rare / explicit-trigger detail lives in
+`notes/coordinate-phase-rescue.md`, symptom-indexed** (mechanical
+fixups, neither-return, killed-dispatch resume, plan-label deviations,
+BLOCKED resolution, non-build dispatch shapes). Consult it when a trigger
+below points there (`→ rescue §N`); this body carries the every-iteration
+core.
+
 Setup: follow CLAUDE.md reading order (CLAUDE.md, ROADMAP.md,
 notes/Phase$ARGUMENTS.md). Confirm `git status` is clean and the
 leftmost active phase file builds green (per *Starting a Lean-touching
@@ -11,56 +18,52 @@ is running, also run the protocol's **session-start availability check**
 (`notes/model-experiment-protocol.md`, *Model assignment map*): determine
 which rungs the Agent tool's `model` parameter can reach this session and
 record the available set + any substitution in the repo-local config
-before the first dispatch. Run the loop in the
-foreground of this session only — never backgrounded or forked: two
-instances sharing one working tree have ended with one committing the
-other's half-validated uncommitted work.
+before the first dispatch. Run the loop in the foreground of this session
+only — never backgrounded or forked: two instances sharing one working
+tree have ended with one committing the other's half-validated
+uncommitted work.
 
 Before the first dispatch, ask the user once whether this run modifies
 these instructions — in practice users customize at session start,
-typically lifting the 10-run cap and pre-authorizing the step-4
-mechanical fixups.
+typically lifting the 10-run cap and pre-authorizing the mechanical
+fixups (rescue §1).
 
 Loop:
 
 1. Note HEAD and re-read notes/Phase$ARGUMENTS.md "Hand-off / next
-   phase" — that's what the next commit should accomplish. If that
-   step is **research-shaped** — the hand-off flags recon-before-build,
-   OR 2+ consecutive leaf commits have fed a hard core that is itself
-   not yet built, OR 3+ consecutive commits are thin wrappers aliasing
-   existing facts — the next commit is a **recon / design-pass**, not a
-   build: dispatch a read-only Plan-agent recon, or a docs/blueprint
-   design-pass commit that decomposes the core into buildable leaves
-   with exact signatures. Recon is this workflow's highest-leverage
-   move; trigger it **early**, before the next leaf (22g burned ~4
-   leaf commits on an undischargeable core; 22h's §1.50 recon, fired
-   at exactly the 2-leaf trigger, re-routed the whole discharge and
-   surfaced GAP 6 before anything was built on the dead route).
-2. **Model-tier experiment (only while `notes/model-experiment.md`
-   says Status: running):** rate S/P/B and pick the rung per
+   phase" — that's what the next commit should accomplish. If that step
+   is **research-shaped** — the hand-off flags recon-before-build, OR 2+
+   consecutive leaf commits have fed a hard core not yet built, OR 3+
+   consecutive commits are thin wrappers aliasing existing facts — the
+   next commit is a **recon / design-pass**, not a build: dispatch a
+   read-only Plan-agent recon, or a docs/blueprint design-pass commit
+   that decomposes the core into buildable leaves with exact signatures.
+   Recon is this workflow's highest-leverage move; trigger it **early**,
+   before the next leaf (22g burned ~4 leaf commits on an undischargeable
+   core; the 2-leaf trigger is the floor).
+2. **Model-tier experiment (only while `notes/model-experiment.md` says
+   Status: running):** rate S/P/B and pick the rung per
    `notes/model-experiment-protocol.md` (the single source of truth —
    don't duplicate it here); pass it as the Agent tool's `model`
-   parameter, prompt held fixed. Honor any **standing rung override**
-   in the log's repo-local config. Log rows follow the protocol's
+   parameter, prompt held fixed. Honor any **standing rung override** in
+   the log's repo-local config. Log rows follow the protocol's
    *Per-dispatch record* rules (write-after-verification timing,
    tail-only edit matching). If Status says concluded, follow the
-   promoted guideline instead. **Run boundary pairs when due** — when
-   the log's findings name an open pair need and the profile fits,
-   launch one without asking; the protocol's worktree procedure
-   (cache-get caveat, parallel dispatch with the sequential fallback,
-   the harvest-before-discard option, the fixed duplicate
-   prologue) already neutralizes the OOM/cost concerns that have made
-   coordinators hesitate (rows 70–71 ran clean under it). Pin a
-   free-choice hand-off to one slice first so both members run the
-   same task.
+   promoted guideline. **Run boundary pairs when due** — when the log's
+   findings name an open pair need and the profile fits, launch one
+   without asking (the protocol's worktree procedure neutralizes the
+   OOM/cost concern); pin a free-choice hand-off to one slice first so
+   both members run the same task. A pair also audits the pin the primary
+   builds against — a duplicate's BLOCKED-with-diagnosis is a win, not a
+   failed pair (protocol *Boundary pairs*).
 3. Dispatch Agent (subagent_type: general-purpose) with exactly the
-   prompt below. Two exceptions adapt it: a **recon / design-pass**
-   step names that deliverable in the first line; a **phase-open /
-   phase-close** step gets a short prologue stating what is
-   sanctioned (e.g. a user-adjudicated close shape — "closing now is
-   sanctioned; do not re-litigate it") and what is out of scope
-   ("the successor phase is NOT opened by this commit") — without it
-   the agent must re-derive both, and either re-asking or
+   prompt below. Two exceptions adapt it: a **recon / design-pass** step
+   names that deliverable in the first line (and carries the design-pass
+   clauses — see end); a **phase-open / phase-close** step gets a short
+   prologue stating what is sanctioned (e.g. a user-adjudicated close
+   shape — "closing now is sanctioned; do not re-litigate it") and what
+   is out of scope ("the successor phase is NOT opened by this commit") —
+   without it the agent must re-derive both, and either re-asking or
    over-reaching is bad (L5e′, 2026-06-11):
 
        Continue Phase $ARGUMENTS — do the next concrete commit per
@@ -96,163 +99,83 @@ Loop:
 
 4. Verify the return:
    - **Mechanics:** `git log --oneline -3`, `git show --stat HEAD`,
-     `git branch --show-current`. HEAD advanced past the noted sha;
-     still on `master`; author bryangingechen@gmail.com; diff matches
-     what the hand-off pointed at. A docs/blueprint-only commit
-     (recon, design pass, decomposition, re-scope) is normal in a
-     research-shaped phase — judge against the hand-off, not against
-     "must touch Lean".
-   - **"Gates green" is an attestation, not evidence.** The step-5
-     gate always runs; for below-top-rung dispatches also re-run
-     `lake lint` and read the **full diff** (protocol rule); for
-     haiku, re-run every gate the return names (a haiku once
-     fabricated all three gates green — enharmonic 2026-06-10,
-     model-experiment row 12).
-   - **Sorry-grep the touched `.lean` files after every
-     below-top-rung dispatch**, regardless of what the return says —
-     a LANDED return can omit a `sorry` that the commit message
-     discloses (enharmonic row 13: the commit message was honest,
-     the return was not). Read the commit message body, not just the
-     summary line. The converse also happens — **judge completeness
-     from the diff, not the prose**: a post-compaction commit message
-     can mis-describe *finished* work as partial (row 74's "partial
-     stub, pending L4" over a complete proof), and the same false
-     belief can propagate into the notes and the blueprint pin (the
-     "stub" decl was left off its node's `\lean` list) — when message
-     and diff disagree, trust the diff and repair the prose. A landed sorry is a failed verification →
-     escalation per the protocol: re-dispatch one rung up with the
-     route named in the prompt, keep the landed commit, close the
-     sorry in the follow-up (enharmonic rows 7–8 and 13–14
-     precedent).
-   - **Shape check:** when the hand-off pins the deliverable to a
-     design verdict (a §1.NN pointer or named verdict), diff the
-     landed statement against that section — motive strength,
-     transport direction, consumed-vs-carried hypotheses.
-     Mechanically clean commits landed design-excluded shapes twice
-     in one 22h session (rows 11, 14); only the section re-read
-     caught them. A shape deviation = corrective dispatch one rung
-     up with a tailored prompt naming the verdict, never a
-     discharge-on-top. Diff against the **pre-commit** text of the
-     checklist item / design section (`git show <noted-sha>:notes/…`),
+     `git branch --show-current`. HEAD advanced past the noted sha; still
+     on `master`; author bryangingechen@gmail.com; diff matches what the
+     hand-off pointed at. A docs/blueprint-only commit (recon, design
+     pass, decomposition, re-scope) is normal in a research-shaped phase —
+     judge against the hand-off, not against "must touch Lean". (Wrong
+     branch / author / trailer → rescue §1: a fixup, not a stop.)
+   - **"Gates green" is an attestation, not evidence.** The step-5 gate
+     always runs; for below-top-rung dispatches also re-run `lake lint`
+     and read the **full diff** (protocol rule); for haiku, re-run every
+     gate the return names (a haiku once fabricated all three gates green,
+     row 12).
+   - **Sorry-grep the touched `.lean` files after every below-top-rung
+     dispatch**, regardless of what the return says — a LANDED return can
+     omit a `sorry` the commit message discloses (row 13). Read the commit
+     message body, not just the summary line. The converse also happens —
+     **judge completeness from the diff, not the prose**: a post-compaction
+     commit message can mis-describe *finished* work as partial (row 74),
+     and the false belief propagates into the notes/blueprint pin; when
+     message and diff disagree, trust the diff and repair the prose. A
+     landed sorry is a failed verification → escalate one rung up with the
+     route named, keep the commit, close the sorry in the follow-up.
+   - **Shape check:** when the hand-off pins the deliverable to a design
+     verdict (a §1.NN pointer or named verdict), diff the landed statement
+     against that section — motive strength, transport direction,
+     consumed-vs-carried hypotheses. Mechanically clean commits have
+     landed design-excluded shapes (rows 11/14); only the section re-read
+     caught them. A shape deviation = corrective dispatch one rung up with
+     a tailored prompt naming the verdict, never a discharge-on-top. Diff
+     against the **pre-commit** design text (`git show <noted-sha>:notes/…`),
      not the post-commit one — the builder edits the notes too, and a
      partially-delivered item can be rewritten to match what landed,
-     silently dropping pinned sub-clauses (row 46: a checklist item's
-     wiring + blueprint-node sub-clauses vanished in the same commit
-     that marked it Done). The same check covers **prose routes**: a
-     commit that authors red-node / deferred-route prose gets that
-     route diffed against the canonical design § exactly like a Lean
-     statement — a mechanically clean TeX commit described the 6.5
-     arm via the wrong argument (contraction-splice vs the §1.54(a3)
-     vertex-removal; row 50), and only the design-§ re-read caught a
-     red node mis-describing its deferred proof (the rot the
-     red-node consistency gate would otherwise meet phases later).
-   - **Mechanical fixups, not stops:** wrong branch → `git checkout
-     master && git merge --ff-only <branch> && git branch -d
-     <branch>`; wrong author → `git commit --amend --author=…`;
-     wrong co-author trailer — a subagent naming a model it didn't
-     run on (twice in one 22h session, rows 21/26, both times the
-     dominant trailer from recent `git log` instead of the dispatched
-     model), or the model name in model-id form (`claude-sonnet-4-6`)
-     instead of display form (`Claude Sonnet 4.6`; sonnet does this
-     persistently even with the rule in CLAUDE.md) → amend the
-     trailer before logging the sha (the protocol's
-     attribution-hygiene rule; not counted against the outcome
-     grade). A return with **neither LANDED nor BLOCKED** usually
-     means the subagent parked on a background gate with
-     finished-but-uncommitted work (twice on 22h's G5) — don't
-     blind-redispatch (a fresh "continue" agent re-reads everything
-     and may park the same way); verify the tree diff against the
-     hand-off yourself, run the gates, commit with the project
-     identity. A dispatch **killed by a session/usage limit** also
-     returns neither (the return is the limit error itself): check
-     `git status` for stranded work, log it as outcome `killed`,
-     then **first try resuming the same agent** — `SendMessage` to
-     the `agentId` from the Agent tool result, with a short message
-     naming where it died and what remains (available when agent
-     teams are enabled, `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`; the
-     harness resumes it from its transcript, full context + read
-     phase intact — rows 64→65, where the resume re-emitted an
-     unwritten design block from context with zero re-reading; if
-     the tree was clean at the kill, say so explicitly so the agent
-     re-emits rather than assumes its edits survived). Log the
-     resume as its own row, Mode `resume`. Only if resume is
-     unavailable or fails, relaunch fresh — salvaging the dead
-     agent's read map (its transcript, at the path named in the
-     Agent tool result / task notification — e.g.
-     `…/tasks/<agentId>.output`; extract the tool-call file paths)
-     into the relaunch prompt recovers most of the lost reading
-     phase, and a coherent stranded *edit* can be left in tree for
-     the relaunch to review-and-extend rather than reverted (rows
-     28→29; rows 54→55, where the relaunch kept and completed the
-     predecessor's partial blueprint edit).
-   - **Recon verdicts get reasoning scrutiny, not just commit
-     mechanics** — a mechanically clean recon can still be wrong, and
-     building on it re-incurs the churn it was meant to end.
-     Scrutinize hardest a recon that **dissolves or re-routes** a
-     gap: confirm every *other* carried obligation still closes under
-     the new route (a re-route can orphan a hypothesis the discarded
-     route silently supplied — 22g §1.46 orphaned `hgab`). A recon
-     that surfaces a **new gap** is usually cheaply verifiable —
-     check it against the primary source (`.refs/` PDFs, REFS.md)
-     and/or a one-line Lean witness (`lean_run_code`) *before*
-     re-planning on it (22g GAPs 4/5 settled in minutes; 22h GAP 6
-     confirmed against KT p. 684 + the Lean motive in one sitting).
-     **Scrutinize a pin's named OBJECTS, not just its cited API
-     names.** A design-pass can name the right *vertex set* but the
-     wrong *construction* (22i §1.63 pinned a splice leg as
-     `induce ((V∖V(H))∪{r})` when the contraction `rigidContract`
-     *collapses* V(H)→r — same vertices, but it keeps the crossing
+     silently dropping pinned sub-clauses (row 46). Same for **prose
+     routes**: a red-node / deferred-route commit gets its route diffed
+     against the canonical design § exactly like a Lean statement (row 50).
+   - **Recon verdicts get reasoning scrutiny, not just mechanics** — a
+     mechanically clean recon can be wrong, and building on it re-incurs
+     the churn it was meant to end. Scrutinize hardest a recon that
+     **dissolves or re-routes** a gap: confirm every *other* carried
+     obligation still closes under the new route (a re-route can orphan a
+     hypothesis the old route silently supplied — 22g §1.46 orphaned
+     `hgab`). A **new gap** is usually cheaply verifiable — check it
+     against the primary source (`.refs/` PDFs, REFS.md) and/or a one-line
+     Lean witness (`lean_run_code`) *before* re-planning. **Scrutinize a
+     pin's named OBJECTS, not just its cited API names** — a design-pass
+     can name the right *vertex set* but the wrong *construction* (22i
+     §1.63 pinned a splice leg as `induce ((V∖V(H))∪{r})` when the
+     contraction `rigidContract` *collapses* V(H)→r, keeping the crossing
      edges `induce` drops → a strictly weaker, wrong bound). Confirming
-     only that the APIs the agent *cites* exist misses this: open the
-     landed `def`/`theorem` of every graph construction
-     (`induce`/contraction/`collapseTo`/`map`) the pin's statement
-     references and confirm the pinned object **is** that construction.
-     A build then faithfully implements the wrong pin and gates green —
-     here only a boundary-pair duplicate caught it (rows 96–99), and the
-     coordinator's first-pass scrutiny (verifying the *named* APIs) did
-     not. Build-dispatched
-     agents sometimes self-redirect to a recon — often rightly; same
-     scrutiny, especially when one overturns a prior finding. A
-     **route claim recorded in the hand-off by a build agent** (a
-     "the next step must …" finding it didn't itself build) is a
-     recon verdict in disguise: verify it before dispatching a build
-     on it, and check it against what the design doc *actually
-     proposed* — a true premise can carry a wrong conclusion that
-     attacks a configuration nobody planned (22h rows 38–39: "W9
-     must re-derive W7's chain" was overturned by the §1.52 design
-     pass; the design's own `Gv`-slot made W9 a 3-leaf
-     instantiation). When the canonical design doc itself defers the
-     shapes ("pin at the X design moment"), the design moment IS the
+     only that the cited APIs exist misses this: open the landed
+     `def`/`theorem` of every graph construction
+     (`induce`/contraction/`collapseTo`/`map`) the pin references and
+     confirm the pinned object **is** that construction — else a build
+     faithfully implements the wrong pin and gates green (only a
+     boundary-pair duplicate caught it, rows 96–99; first-pass scrutiny of
+     just the *named* APIs did not). A **route claim a build agent records
+     in the hand-off** ("the next step must …") is a recon verdict in
+     disguise — verify it against what the design doc *actually proposed*
+     before dispatching a build on it (22h rows 38–39). When the design
+     doc itself defers a shape ("pin at the X moment"), that moment IS the
      next dispatch — a design-settle pass, not a build.
-   - **An abstraction that defers the crux as a hypothesis is not
-     progress on the crux.** When a build *abstracts* a pinned lemma —
-     taking a genuinely-new fact as a hypothesis rather than proving it
-     (22i L5a-i landed the splice brick taking the Lemma-5.1 injectivity
-     `hInj` as a hypothesis, proving only the easy block-triangular
-     rank-nullity) — the hard step is **relocated to the caller, not
-     done**. Often a legitimate slice (the design doc may sanction the
-     split), but the genuinely-new obligation now lives in the next
-     leaf. A builder tends to then re-frame the consuming leaf as
-     "plumbing + interface", re-burying the very crux the design pass
-     flagged: the coordinator re-flags the relocated obligation in the
-     hand-off and **rates the next dispatch by the deferred math, not
-     the plumbing** (rows 99–100: §1.64(c) flagged the new step, the
-     abstract brick relocated it into `hInj`, the hand-off
-     re-underestimated the consuming leaf as "IH-plumbing" →
-     coordinator-repaired). The tell is a hypothesis the design doc
-     called "genuinely-new" appearing as a `h…` argument of a landed
-     lemma — grep the deferred fact, confirm where it is discharged.
-   - **Plan-label deviations (destructive→additive, slice re-size)
-     are a normal, usually-correct self-redirect in migration
-     phases** — four consecutive "destructive" slices rightly landed
-     additively in one run (enharmonic Phase 17). Verify the stated
-     reason against the source once (the first occurrence sets the
-     pattern), confirm the deferred obligation (legacy retirement,
-     follow-up sub-slice) is recorded in the phase notes with a
-     slice pointer, and fix the drift at the authoritative plan doc
-     when pausing — a plan doc that says "destructive" while reality
-     went additive is a trap for the next coordinator.
-   - Re-read the updated "Hand-off / next phase".
+   - **An abstraction that defers the crux as a hypothesis is not progress
+     on the crux.** When a build *abstracts* a pinned lemma — taking a
+     genuinely-new fact as a hypothesis rather than proving it (22i L5a-i
+     landed the splice brick taking the Lemma-5.1 injectivity `hInj` as a
+     hypothesis, proving only the easy block-triangular rank-nullity) —
+     the hard step is **relocated to the caller, not done**. Often a
+     legitimate slice (the design doc may sanction the split), but the
+     genuinely-new obligation now lives in the next leaf, and a builder
+     tends to re-frame that leaf as "plumbing + interface", re-burying the
+     crux. Re-flag the relocated obligation in the hand-off and **rate the
+     next dispatch by the deferred math, not the plumbing** (rows 99–100).
+     The tell: a fact the design doc called "genuinely-new" appearing as a
+     `h…` argument of a landed lemma — grep it, confirm where it is
+     discharged.
+   - Re-read the updated "Hand-off / next phase". (Returns with neither
+     LANDED nor BLOCKED, killed dispatches, plan-label deviations →
+     rescue §§2–4.)
 5. If the commit changed any `.lean` file: `touch` the changed file
    (cached modules don't re-emit warnings), then `lake build
    <leftmost active module> 2>&1 | grep -E 'warning:|error:'` —
@@ -268,62 +191,39 @@ Loop:
      phase-close checklist). After a user-approved mid-session
      close-and-split, confirm with the user before resuming the loop
      on the successor phase.
-   - BLOCKED return; or HEAD didn't advance. Exception — a
-     **sizing-shaped BLOCKED** (deliverable judged un-carvable, tree
-     untouched, usually because the design doc pins no concrete
-     signatures below the named slot) is the step-1 design-pass
-     trigger, resolvable in-session: dispatch a decomposition
-     design-pass at the design-settle rung rather than re-dispatching
-     the build one rung up (rows 27→29: the §1.51 seven-leaf cut
-     un-blocked what brute escalation would have re-hit). Stop on a
-     BLOCKED without a clear within-workflow resolution. **Whatever
-     the resolution, salvage the return first:** a BLOCKED return
-     often carries the dead attempt's route findings (verified
-     tactic steps, confirmed-nonexistent APIs); copy them into the
-     phase note's hand-off in the same stop/escalation commit —
-     stranded in the agent return they are invisible to the next
-     session (row 72: a reverted L1g attempt left a 5-step verified
-     route map that only survived because the coordinator moved it
-     into the hand-off).
-   - A recon flags a decision for **user adjudication** (e.g. a
-     carried hypothesis or motive change) — present the options with
-     estimates; don't pick unilaterally.
-   - Suspicious diff: unexpectedly large, unrelated files, or the
-     step-5 gate red.
-   - The agreed run cap (default 10) reached since the user last
-     checked in.
+   - BLOCKED return; or HEAD didn't advance — **but salvage the return's
+     route findings into the hand-off first** (row 72), and check for a
+     within-workflow resolution before stopping (a sizing-shaped BLOCKED
+     is the step-1 design-pass trigger, not a stop — rescue §5).
+   - A recon flags a decision for **user adjudication** (e.g. a carried
+     hypothesis or motive change) — present the options with estimates;
+     don't pick unilaterally.
+   - Suspicious diff: unexpectedly large, unrelated files, or the step-5
+     gate red.
+   - The agreed run cap (default 10) reached since the user last checked in.
 
-Don't pad the **routine build** prompt or pre-load files — the
-CLAUDE.md auto-loads carry the discipline, and duplication invites
-drift. (The scope-to-fit / compaction-bailout clause *is* part of the
-fixed prompt: prompt-level discipline doesn't survive compaction —
-row 17's 2.7 h dispatch — so the clause shapes scope while context is
-intact and the `block-sorry-commit.sh` hook backstops after it
-degrades. Post-amendment evidence it works: rows 18–19 self-shrank to
-complete sub-lemmas.) A **recon / design-pass** dispatch is the
-exception: give it a tailored prompt naming what to recon, the
-coordinator's verified findings motivating it, and the deliverable
-(a design-doc entry + re-pointed hand-off). **Two clauses earn their
-place in every design-pass prompt** (rows 96 vs 99: the same opus rung
-pinned §1.63 *wrong* unprimed, then pinned §1.64 *right* when primed):
-(i) *verify every load-bearing claim against the landed source* — the
-actual `def`/`theorem`, not the prior pin's prose; (ii) an explicit
-*flag-don't-force* mandate — "if the corrected route needs a
-motive/IH-level change or genuinely-new math, say so and stop; a pin
-that honestly names an open decision beats a confident wrong one (that
-is exactly what cost a revert)." Single-pass design output is fallible
-even at the top rung; the grounding + the honesty mandate, not the
-rung, is what made the re-pin sound.
+Don't pad the **routine build** prompt or pre-load files — the CLAUDE.md
+auto-loads carry the discipline, and duplication invites drift. (The
+scope-to-fit / compaction-bailout clause *is* part of the fixed prompt:
+prompt-level discipline doesn't survive compaction — row 17's 2.7 h
+dispatch — so the clause shapes scope while context is intact and the
+`block-sorry-commit.sh` hook backstops after it degrades. Post-amendment
+evidence it works: rows 18–19 self-shrank to complete sub-lemmas.)
 
-For **cleanup rounds** (per CLEANUP.md) a third dispatch shape works
-well: a scoped no-git editor — "Edit ONLY <file>. Touch no other
-file. Do NOT run git / commit / `inv` / `verify.sh` / `lake`" — with
-the coordinator reviewing and committing the result itself.
+A **recon / design-pass** dispatch is the exception: give it a tailored
+prompt naming what to recon, the coordinator's verified findings
+motivating it, and the deliverable (a design-doc entry + re-pointed
+hand-off). **Two clauses earn their place in every design-pass prompt**
+(rows 96 vs 99: the same opus rung pinned §1.63 *wrong* unprimed, then
+§1.64 *right* when primed): (i) *verify every load-bearing claim against
+the landed source* — the actual `def`/`theorem`, not the prior pin's
+prose; (ii) an explicit *flag-don't-force* mandate — "if the corrected
+route needs a motive/IH-level change or genuinely-new math, say so and
+stop; a pin that honestly names an open decision beats a confident wrong
+one (that is exactly what cost a revert)." Single-pass design output is
+fallible even at the top rung; the grounding + the honesty mandate, not
+the rung, is what made the re-pin sound.
 
-A fourth shape is **no dispatch at all**: decision records,
-adjudication outcomes, and postmortem syntheses born in the
-coordinator's own conversation with the user are coordinator-authored
-commits — a subagent would have to reconstruct that context from a
-prompt, lossily. Same per-commit checklists, project author identity,
-and the coordinator's *actual* model in the trailer (the §1.55 +
-postmortem commits, 2026-06-11).
+Other dispatch shapes — the **cleanup-round** scoped no-git editor and
+the **no-dispatch** coordinator-authored commit (decision records,
+adjudications, postmortems) — are in rescue §6.

@@ -49,6 +49,13 @@ for *organizing* this directory is here.
   across participating repos; the log file is repo-local (config +
   dispatch log + findings), and its Status line arms the
   experiment step in `.claude/commands/coordinate-phase.md`.
+- **`coordinate-phase-rescue.md`** — symptom-indexed rescue reference
+  for the `/coordinate-phase` loop: the rare / explicit-trigger
+  patterns (mechanical fixups, killed-dispatch resume, plan-label
+  deviations, BLOCKED resolution, non-build dispatch shapes) split out
+  of `.claude/commands/coordinate-phase.md` so that body stays the
+  every-iteration core. Read on demand when a trigger fires (the
+  TACTICS-QUIRKS model), not session-start orientation.
 
 ## One canonical home per content type
 
