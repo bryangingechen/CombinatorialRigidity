@@ -39,9 +39,23 @@ tolerant content of KT Lemma 5.1) → `BodyHingeFramework.injOn_extProj_dualMap_
 `lem:extProj-preserves-rank-of-inter` (rigidity-matrix.tex, beside the splice brick). All three
 axiom-clean; build+lint+blueprint-verify green. V6-a fully RESOLVED.
 **L5a-ii producer complete**: `case_I_realization_nonsimple` (CaseI.lean) landed; `lem:case-I-realization-nonsimple` green.
-**Next: L5b-i** — the V6-b leaf (the `def = k > 0` exterior-projected surviving-block rank transport, `P≈3`,
-genuinely-new; §1.65 decomposed L5b into L5b-i leaf → L5b-ii producer → L5b-iii dispatch; internal route is a
-flagged open decision per §1.65(c)).
+**L5b-i shared core landed (the deficiency-aware relabel transport, §1.65(g) sub-commit).** The
+**rigidity-free rank invariant** both L5b-i routes need is now in tree:
+`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean, beside the rigid
+`hasGenericRealization_transport_relabel`) carries the contraction IH's *possibly-deficient* rank
+`D(|V|−1) − def` across the collapse-relabel selector swap as a plain finrank equality — the
+deficiency-tolerant sibling of the rigid transport, available at `def = k > 0` where the rigid
+route's `hdef=0` gate fails. Two RigidityMatrix.lean helpers support it:
+`BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` (the `Φ = Z°`
+factoring) + `span_rigidityRows_eq_of_infinitesimalMotions_eq` (equal motions ⟹ equal rank).
+Mints `lem:span-rigidityRows-eq-of-motions-eq` + `lem:rank-transport-relabel-of-le-finrank`
+(rigidity-matrix.tex, both green; all gates clean). The §1.65(c) internal-route decision is still
+correctly **deferred** — this is the route-independent core; the seed-placement / projection step
+that completes the full V6-b leaf is the next sub-commit.
+
+**Next: complete L5b-i** — the remaining V6-b leaf step (the `_proj` projection or the pulled-back
+full-span step on top of the just-landed relabel transport), `P≈2`-now, route resolved at that build
+per §1.65(c). Then L5b-ii producer → L5b-iii dispatch.
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -168,14 +182,18 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     (The old bare `induce`-brick + producer 90e8d4a was built then reverted, superseded by this structure.)
   - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch.
     **Decomposed §1.65 (2026-06-13) into three leaves**, the V6-b brick first:
-    - [ ] **L5b-i** — the **V6-b leaf** `exists_rankPolynomial_surviving_proj_of_le_finrank` (or its route-2
-      split): the `def = k > 0` exterior-projected surviving-block rank transport, the `_le_finrank` analogue
-      of the rigid `rigidContract_exterior_rank_transport` + `exists_rankPolynomial_of_rigidOn_linking_set_proj`.
-      **`P≈3` — the one genuinely-new math of L5b, its own slice.** §1.65(c) flags an **open internal-route
-      decision** (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii `hInj`); both need
-      a deficiency-aware relabel transport as their irreducible new core; **do not pin the route in advance** —
-      resolve at this build with the goal state open. First concrete L5b commit. Mints a new GenericityDevice
-      node.
+    - [ ] **L5b-i** — the **V6-b leaf** (`P≈3`, the genuinely-new math of L5b), sliced per §1.65(g):
+      - [x] **shared core** — `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean):
+        the deficiency-aware relabel transport, carrying the contraction IH's `D(|V|−1) − def` rank across the
+        collapse-relabel selector swap (rigidity-free, via the motion-space swap brick + the new RigidityMatrix
+        helpers `span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` /
+        `span_rigidityRows_eq_of_infinitesimalMotions_eq`). The route-independent core both candidate routes
+        need. Mints `lem:span-rigidityRows-eq-of-motions-eq` + `lem:rank-transport-relabel-of-le-finrank`.
+      - [ ] **completion** — the seed-placement / `_proj` step on top of the shared core, finishing the V6-b
+        leaf (`exists_rankPolynomial_surviving_proj_of_le_finrank` or its route-2 split). §1.65(c)'s **open
+        internal-route decision** (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii
+        `hInj`) resolves **at this build** with the goal state open — both use the just-landed relabel transport
+        as their core. Mints a GenericityDevice node.
     - [ ] **L5b-ii** — `case_I_realization_all_k` (the GP producer, the splice-brick analogue of L4b-2's
       `case_cut_edge_realization_gp`): assembly of landed pieces + the L5b-i leaf + the L5a-i splice brick + B2.
       **`P≈2`.** Statement change → blueprint statement-grep gate. Mints `lem:case-I-realization-all-k`.
@@ -266,16 +284,24 @@ landed `_proj` extractor / `_proj` rank polynomial is deficiency-aware; `hasGene
 is `hdef=0`-gated), and the route is best chosen at the build with the goal state open. Soft recommendation:
 route 2 (smaller new surface, leans on the just-landed L5a-ii / L4b-1). No motive / IH change.
 
-**Smallest next forward commit: L5b-i — the V6-b leaf** `exists_rankPolynomial_surviving_proj_of_le_finrank`
-(or its route-2 split), the `def = k > 0` exterior-projected surviving-block rank transport (§1.65(d) signature
-pin). **Rung-relevant difficulty: `P≈3` (opus) — genuinely-new linear algebra, NOT a clean assembly**; it is the
-deficient reconstruction of the rigid U3a/U3b/U2-proj + rank-polynomial-proj chain `case_I_realization` consumes,
-with the §1.65(c) internal-route decision to resolve **at the build** (do not over-commit it in advance — the
-relabel-transport's exact rank invariant is the real uncertainty; an over-confident single-pass pin is what cost
-the boundary-pair revert + the row-104 under-scope). Then L5b-ii (`case_I_realization_all_k`, the GP producer,
-`P≈2`, assembly mirroring L4b-2) → L5b-iii (the `by_cases G.Simple` dispatch, `P≈1`, plumbing). Mints a new
-GenericityDevice node (L5b-i) + `lem:case-I-realization-all-k` (L5b-ii) + updates `lem:case-I-dispatch`
-(L5b-iii); the `h65` sub-arm stays red → L8. Canonical: §1.65.
+**L5b-i shared core landed (`finrank_span_rigidityRows_ofNormals_relabel_eq` + the two RigidityMatrix
+helpers); the §1.65(g) sub-commit split was taken because the full leaf is `P≈3` with a flagged open
+route.** The shared core resolved the *real uncertainty* §1.65(c) named — "the relabel-transport's
+exact rank invariant" — concretely: it is a plain finrank *equality* (the contraction IH's
+`D(|V|−1) − def` value), carried rigidity-free by the motion-space swap brick. This de-risks both
+candidate routes (each now consumes this equality as its core) and removes the over-commit hazard the
+row-104 under-scope / boundary-pair revert flagged.
+
+**Smallest next forward commit: complete L5b-i** — build the seed-placement / projection step on the
+landed relabel transport, finishing the V6-b leaf (`exists_rankPolynomial_surviving_proj_of_le_finrank`
+or its route-2 split). **`P≈2`-now** (the genuinely-new rank-invariant core is landed; what remains is
+the projection / rank-polynomial wrapping). The §1.65(c) route decision (route-1 `_proj` mirror vs
+route-2 pulled-back full-span + the landed L5a-ii `hInj`) resolves **at that build** with the goal state
+open — both consume the relabel transport as their core; soft recommendation route 2 (leans on the
+landed L5a-ii `hInj` + L4b-1 full-span rank polynomial). Then L5b-ii (`case_I_realization_all_k`, the GP
+producer, `P≈2`, assembly mirroring L4b-2) → L5b-iii (the `by_cases G.Simple` dispatch, `P≈1`,
+plumbing). Mints a GenericityDevice node (L5b-i completion) + `lem:case-I-realization-all-k` (L5b-ii) +
+updates `lem:case-I-dispatch` (L5b-iii); the `h65` sub-arm stays red → L8. Canonical: §1.65.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -498,3 +524,14 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii `hInj`) is left unpinned — both
   need a deficiency-aware relabel transport; resolve at the L5b-i build with the goal state open. No motive/IH
   change. Canonical: §1.65.
+- **L5b-i shared core (2026-06-13, opus):** the deficiency-aware relabel transport
+  `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean) — the §1.65(g)-sanctioned
+  sub-commit split of the `P≈3` V6-b leaf. The "exact rank invariant" §1.65(c) flagged as the real uncertainty
+  is a plain finrank *equality* (the IH's `D(|V|−1) − def` value), carried rigidity-free across the
+  collapse-relabel selector swap by the existing motion-space swap brick
+  `infinitesimalMotions_ofNormals_eq_of_ends_swap` + two new RigidityMatrix helpers (`Φ = Z°` factoring +
+  equal-motions⟹equal-rank). Deviation from §1.65(d): dropped `hne`/`hdef` from the pinned signature — both
+  genuinely unused (the rank conjunct of `HasGenericFullRankRealization` already carries `− def`, read off
+  directly), which is exactly what makes it deficiency-tolerant (the rigid sibling's `hdef=0` is the gate that
+  fails at `k>0`). Route decision still correctly deferred. Axiom-clean; all gates green. No FRICTION (reused
+  the `injOn_...` file's `Φ = Z°` idiom + the L4b-2 swap-transport pattern).

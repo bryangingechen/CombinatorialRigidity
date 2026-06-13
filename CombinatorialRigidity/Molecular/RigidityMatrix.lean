@@ -1012,6 +1012,36 @@ theorem infinitesimalMotions_eq_dualCoannihilator (F : BodyHingeFramework k α �
     have := hS (hingeRow u v r) ⟨e, u, v, he, r, hr, rfl⟩
     rwa [hingeRow_apply] at this
 
+/-- **The rigidity-row span is the dual annihilator of the motion space** (`def:rigidity-matrix`,
+the dual-side restatement of `infinitesimalMotions_eq_dualCoannihilator` over a finite body set).
+When the body set `α` is finite, the screw-assignment dual is finite-dimensional, so the
+finite-dimensional double-annihilator identity
+(`Subspace.dualCoannihilator_dualAnnihilator_eq`) closes the loop
+`span rigidityRows = (span rigidityRows).dualCoannihilator.dualAnnihilator =
+Z.dualAnnihilator` (`Z = infinitesimalMotions`). This is the `Φ = Z.dualAnnihilator` step the
+`injOn_extProj_dualMap_rigidityRows` family inlines, factored out so the motion-space transport
+of the Case-I splice can read the rigidity-row span off the motions alone. -/
+theorem span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions [Finite α]
+    (F : BodyHingeFramework k α β) :
+    Submodule.span ℝ F.rigidityRows = F.infinitesimalMotions.dualAnnihilator := by
+  haveI : Fintype α := Fintype.ofFinite α
+  rw [F.infinitesimalMotions_eq_dualCoannihilator,
+    Subspace.dualCoannihilator_dualAnnihilator_eq]
+
+/-- **Equal motion spaces give equal rigidity-row spans** (`def:rigidity-matrix`, the rigidity-free
+rank-invariance the Case-I splice's deficiency-aware relabel transport reads). Two body-hinge
+frameworks with the *same* infinitesimal-motion space have the *same* rigidity-row span — at any
+rank, with no rigidity hypothesis — because the span is the dual annihilator of the motions
+(`span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions`). This is what carries the rank of one
+framework to another sharing its motion space (the selector-swap brick
+`infinitesimalMotions_ofNormals_eq_of_ends_swap` supplies exactly such a motion-space equality). -/
+theorem span_rigidityRows_eq_of_infinitesimalMotions_eq [Finite α]
+    (F G : BodyHingeFramework k α β)
+    (h : F.infinitesimalMotions = G.infinitesimalMotions) :
+    Submodule.span ℝ F.rigidityRows = Submodule.span ℝ G.rigidityRows := by
+  rw [F.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+    G.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions, h]
+
 /-- **A finite family of rows spans the rigidity row space** (`def:rigidity-matrix`,
 the genericity device's finite-index input): when the body set `α` is finite, the screw-
 assignment space `α → ScrewSpace k` is finite-dimensional (`finrank_screwAssignment`), hence so

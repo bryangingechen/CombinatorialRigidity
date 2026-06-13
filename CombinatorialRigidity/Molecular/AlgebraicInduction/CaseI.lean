@@ -1423,6 +1423,69 @@ theorem PanelHingeFramework.hasGenericRealization_transport_relabel
   -- `Q = ofNormals Q.graph Q.ends nrm` definitionally (structure eta + `nrm = Q.normal`-pullback).
   exact hS
 
+/-- **The contraction leg's rank transports across the collapse map to the relabel selector — at any
+deficiency, no rigidity** (`lem:case-I-realization-all-k`, the V6-b deficiency-aware relabel
+transport; Katoh–Tanigawa 2011 §6.2, eq. (6.5) / Lemma 5.1, Phase 22i L5b-i). The
+**deficiency-tolerant** sibling of `hasGenericRealization_transport_relabel`: where the rigid
+version converts the contraction's *full* rank to `IsInfinitesimallyRigidOn` and hands that to the
+rigid projected-subfamily extractor, this carries the contraction's IH rank — the
+**possibly-deficient** value `D(|V(Gc.map f)|−1) − def(Gc.map f)` — across the relabel selector swap
+as a plain `finrank` equality, available at `def = k > 0` where the rigid route is not.
+
+The transport is rigidity-free for the same reason the rigid one is: the relabel selector
+`endsᵐ e := (f (ends e).1, f (ends e).2)` and the IH realization's own selector `Q.ends` record the
+same unordered link of every edge of `Gc.map f` (`recordsLinks_agree_swap` of `Q`'s link-recording
+conjunct `hQrec` and the relabelled `recordsLinks_map_of_records`), so the selector-swap brick
+`infinitesimalMotions_ofNormals_eq_of_ends_swap` equates the motion spaces of `Q = ofNormals Q.graph
+Q.ends nrm` and `ofNormals (Gc.map f) endsᵐ nrm`; equal motion spaces give equal rigidity-row spans
+(`span_rigidityRows_eq_of_infinitesimalMotions_eq`), hence equal finrank. General position transfers
+verbatim (a property of the normals alone). The output framework `ofNormals (Gc.map f) endsᵐ nrm` is
+the relabel-leg framework the splice brick reads at the surviving block; its rank equals the
+contraction IH's, so it inherits the deficient surviving rank `D(|sc|−1) − def` directly — the
+shared core both candidate L5b-i routes need (the `_proj` mirror's transport step and the
+pulled-back full-span route's seed-placement step). -/
+theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq
+    [Finite α] (Gc : Graph α β) (f : α → α) (ends : β → α × α)
+    {n : ℕ} (Qcf : PanelHingeFramework.HasGenericFullRankRealization k n (Gc.map f))
+    (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
+    ∃ nrm : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals (Gc.map f)
+        (fun e => (f (ends e).1, f (ends e).2)) nrm).IsGeneralPosition ∧
+      (Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (Gc.map f)
+          (fun e => (f (ends e).1, f (ends e).2)) nrm).toBodyHinge.rigidityRows) : ℤ)
+        = screwDim k * ((V(Gc.map f).ncard : ℤ) - 1) - (Gc.map f).deficiency n := by
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, _⟩ := Qcf
+  set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
+  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
+  -- General position transfers to `ofNormals … endsM …` verbatim (the normals are `Q.normal`,
+  -- unchanged by the selector; `IsGeneralPosition` reads only the normals).
+  have hgp' : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).IsGeneralPosition := by
+    intro a b hab
+    simpa only [hnrm, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
+  refine ⟨nrm, hgp', ?_⟩
+  -- The two selectors `Q.ends` and `endsM := f ∘ (parent ends)` both record `Q.graph = Gc.map f`'s
+  -- links, so they agree up to swap; the swap brick then equates the motion spaces of
+  -- `Q = ofNormals Q.graph Q.ends nrm` and `ofNormals Q.graph endsM nrm`.
+  have hswap : ∀ e u v, Q.graph.IsLink e u v →
+      ((Q.ends e).1 = (endsM e).1 ∧ (Q.ends e).2 = (endsM e).2) ∨
+      ((Q.ends e).1 = (endsM e).2 ∧ (Q.ends e).2 = (endsM e).1) := by
+    rw [hQg]
+    exact PanelHingeFramework.recordsLinks_agree_swap Q.ends endsM hQrec
+      (PanelHingeFramework.recordsLinks_map_of_records f ends hends)
+  have hmot : (PanelHingeFramework.ofNormals Q.graph endsM nrm).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
+      Q.graph endsM Q.ends nrm hswap
+  -- Equal motion spaces ⟹ equal rigidity-row spans ⟹ equal finrank. `Q = ofNormals Q.graph Q.ends
+  -- nrm` definitionally (structure eta + `nrm = Q.normal`-pullback), and `Q.graph = Gc.map f`.
+  have hspan : Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).toBodyHinge.rigidityRows
+      = Submodule.span ℝ Q.toBodyHinge.rigidityRows := by
+    rw [← hQg]
+    exact BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
+  rw [hspan, hQrank]
+
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,

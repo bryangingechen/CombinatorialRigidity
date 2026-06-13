@@ -390,6 +390,63 @@ and the generic-rank argument are in hand.
   restricted to $S$ then gives $\operatorname{rank}(D(S)) = \operatorname{rank}(S)$.
 \end{proof}
 
+\begin{lemma}[Rigidity-row span is the motions' annihilator; equal motions give equal rank]
+  \label{lem:span-rigidityRows-eq-of-motions-eq}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq}
+  \leanok
+  \uses{def:rigidity-matrix}
+  Over a finite body set, the rigidity-row span of a body-hinge
+  framework is the dual annihilator of its infinitesimal-motion space,
+  $\operatorname{span}(R(F)) = Z(F)^\circ$.  Consequently two frameworks
+  with the same motion space have the same rigidity-row span --- hence
+  the same rank --- at any deficiency, with no rigidity hypothesis.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:rigidity-matrix}
+  The motion space is the dual coannihilator of the row span
+  (\texttt{infinitesimalMotions\_eq\_dualCoannihilator}); over a finite
+  body set the screw-assignment dual is finite-dimensional, so the
+  double-annihilator identity closes
+  $\operatorname{span}(R(F)) = Z(F)^\circ$.  Equal motion spaces then
+  give equal annihilators, hence equal spans and equal finrank.
+\end{proof}
+
+\begin{lemma}[Deficiency-aware rank transport across the collapse relabel; L5b-i shared core]
+  \label{lem:rank-transport-relabel-of-le-finrank}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq}
+  \leanok
+  \uses{def:rigidity-matrix, lem:span-rigidityRows-eq-of-motions-eq, def:genuine-hinge-realization}
+  Let $G_c$ be the surviving-edge subgraph $G \setminus E(H)$ and
+  $f = \operatorname{collapseTo} r\, V(H)$ the contraction map, so
+  $f(G_c) = G/E(H)$ is the contracted graph.  Given the contraction's
+  inductive realization (a general-position panel framework on $f(G_c)$
+  at the rigidity-row rank $D(|V(f(G_c))|-1) - \operatorname{def}(f(G_c))$,
+  the value carried at any deficiency) and a parent selector recording
+  $G_c$'s links, the free-normal panel framework on $f(G_c)$ at the
+  \emph{relabel selector} $e \mapsto (f(\text{ends}(e)_1),
+  f(\text{ends}(e)_2))$ is again in general position and has
+  \emph{the same} rigidity-row rank
+  $D(|V(f(G_c))|-1) - \operatorname{def}(f(G_c))$.
+  This is the deficiency-tolerant sibling of the rigid
+  contraction-leg transport (\cref{lem:claim-6-4}): it carries the
+  contraction's possibly-deficient rank ($\operatorname{def} = k > 0$)
+  across the relabel, where the full-rigidity route is unavailable.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:span-rigidityRows-eq-of-motions-eq}
+  The relabel selector and the inductive realization's own selector
+  record the same unordered link of every edge of $f(G_c)$, so they
+  agree up to a swap of endpoints; since the hinge constraint is
+  membership in the (sign-insensitive) line through the supporting
+  extensor, swapping endpoints fixes every constraint, hence the whole
+  motion space.  Equal motion spaces give equal rigidity-row rank
+  (\cref{lem:span-rigidityRows-eq-of-motions-eq}); general position is a
+  property of the normals alone, unchanged by the selector.
+\end{proof}
+
 \begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]
   \label{lem:block-rank-cut}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}
