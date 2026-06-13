@@ -67,27 +67,26 @@ to signal-only as the calibration).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-13, re-checked by a fresh coordinator session —
-  the prior same-date note expired at its own session end).** fable **unavailable**
+- **Session availability (2026-06-13, fresh coordinator session — supersedes the
+  prior same-date note, which expired at its own session end).** fable **unavailable**
   this session (user-confirmed at session start); the reachable rungs are
-  haiku / sonnet / opus, dispatched per the S/P/B → map. Per the
-  *Unavailable rung* substitution rule, every fable-mapped pass (design-settle /
-  phase-boundary / S=3 / recon-by-stakes) substitutes **opus** (logged in the
-  row). Not a map change; **expires at session end** — a fresh coordinator
-  re-runs the availability check and reverts to the full map (substituting again
-  only if fable is still unavailable that session). **Run modifications this
-  session (user-set at session start):** the 10-run check-in cap is **lifted**
-  (the loop runs to phase close or a surfaced concern), and step-4 mechanical
-  fixups (wrong branch / author / co-author trailer) are **pre-authorized** (apply
-  without stopping to ask). The coordinator is Opus 4.8 (1M context).
-- **Session constraint — EXPIRED 2026-06-13 at session end, by its own terms (rows
-  87–88).** Was: fable unavailable → rungs capped at opus; build dispatches followed
-  the S/P/B → rung map (haiku/sonnet/opus by profile), and any fable-mapped pass
-  (design-settle / phase-boundary / S=3 / recon-by-stakes) substituted **opus** per
-  the model-availability fallback (a80fce7) — not a map change. **A fresh coordinator
-  reverts to the map**; if fable is *still* unavailable that session, keep substituting
-  opus for the fable-mapped passes and log it (rows 84–88 precedent). No design/recon
-  pass arose under it — rows 87–88 were sonnet/opus build dispatches per the map.
+  haiku / sonnet / opus, dispatched per the S/P/B → map. Per the *Unavailable rung*
+  substitution rule, every fable-mapped pass (design-settle / phase-boundary / S=3 /
+  recon-by-stakes) substitutes **opus** (logged in the row). Not a map change;
+  **expires at session end** — a fresh coordinator re-runs the availability check and
+  reverts to the full map (substituting again only if fable is still unavailable that
+  session). **Run modifications this session (user-set at session start):** the 10-run
+  check-in cap is **lifted** (the loop runs to phase close or a surfaced concern), and
+  step-4 mechanical fixups (wrong branch / author / co-author trailer) are
+  **pre-authorized** (apply without stopping to ask). The coordinator is Opus 4.8
+  (1M context).
+- **Expired session overrides (audit trail in git history + the Log rows).** Earlier
+  2026-06-{10,12,13} session-local rung overrides and availability constraints — all
+  expired by their own terms. A fresh coordinator reverts to the S/P/B → map
+  (substituting opus when fable is unavailable that session, as above). Their grounds
+  live in *Findings* (the §38-trap and KT-4.2-fiber-zone sonnet-failure clusters) and
+  the cited Log rows; the prior same-date availability note matched this session's
+  (fable down, cap lifted, fixups pre-authorized).
 - **Boundary-pair worktree environment (2026-06-13, repo-local).** Two sandbox facts
   from running the rows 87–88 pair: (1) git worktrees *outside* the project dir fail
   (`could not create leading directories … Operation not permitted`) — create the
@@ -99,31 +98,9 @@ to signal-only as the calibration).
   `lake exe cache get` itself; the protocol's APFS `.lake`-seeding default is no longer
   *required* (still a fine fast path) and its unseeded `cache get` fallback now works
   agent-side. The worktree-location point (1) is the standing repo-local constraint.
-- **Session-local rung override — EXPIRED 2026-06-12 at session end, by
-  its own terms (user-requested, not a protocol map change).** Was:
-  dispatch only opus and fable; after fable became unavailable
-  mid-session, **opus only** (the coordinator itself was opus), applying
-  to *every* dispatch including design-settle / recon passes the map
-  routes to fable. Rows 84–86 (L3 pin, L3a, L3b parallel arm) ran under
-  it, all clean. **A fresh coordinator should revert to the S/P/B → rung
-  map** (the experiment is still Status: running) — *unless* fable is
-  again unavailable in that session, in which case substitute opus for
-  the fable-mapped design/recon rungs and log the substitution (this
-  session's rows 84–86 are the precedent: opus carried two design-settle
-  pins cleanly, incl. row 84's two carries-table corrections).
-- **Standing rung override — EXPIRED 2026-06-12 at the L1h close
-  (row 77), by its own terms.** Was: opus minimum for the remaining
-  L1h work (case i). Grounds: the KT-4.2 fiber-bookkeeping zone read
-  sonnet 0/2 (rows 72, 75, both honest BLOCKs after in-session
-  reverts) vs opus 2/2 clean first-try (rows 73, 76), and case i was
-  a strict superset of the case-ii work that sank sonnet.
-  Zone-scoped per the close-out findings' rule (override, not a map
-  change). No override is currently active.
-- *(prior)* **Standing rung override — LIFTED 2026-06-10 at the
-  W10b close, by its own terms.** Rows 31–45 dispatched under it
-  (opus minimum for the `hcand`-discharge zone; grounds: the
-  rows-11/14/17 sonnet failure cluster in the §38-trap producer
-  zone — see Findings).
+- **No rung override currently active.** (Prior zone-scoped overrides — opus-minimum
+  for the §38-trap `hcand`-discharge zone and the KT-4.2 fiber-bookkeeping zone — all
+  expired by their own terms; see the collapsed-overrides bullet above and *Findings*.)
 
 ## Log
 
