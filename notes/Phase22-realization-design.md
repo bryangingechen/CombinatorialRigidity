@@ -5817,18 +5817,16 @@ piece is the deficiency-aware extractor (c). No residual open sub-question for L
 
 ### 1.63 The L5 signature pin — Lemma 6.2, the non-simple Case-I branch (`hcontract`): the `hcontract` slot is a `by_cases` dispatch on `G.Simple` (the §1.55(c) precedent generalized to all-`k`), simple → forgetful M4 ∘ the all-`k`-restated GP `case_I_realization` (6.5 sub-arm carried as `h65`, L8), non-simple → the NEW KT Lemma 6.2 coincident-panel splice; V6 RESOLVED — the landed N6a `hasFullRankRealization_of_splice_of_supportExtensor` cannot be re-aimed (it concludes the *deleted* `HasFullRankRealization` and is `PanelHingeFramework`/`ofNormals`-bound), so L5's non-simple branch is a fresh `BodyHingeFramework`-native bare producer mirroring the landed L4a `case_cut_edge_realization` shape, with the coincident-panel cut hinge supplied by the already-landed `exists_extensor_in_two_panels` (which works AT `n=n`); sliced L5a (the non-simple bare producer) → L5b (the simple-branch all-`k` GP restate + the dispatch) (2026-06-13)
 
-> ⚠️ **(c)/(f) CORRECTION PENDING (2026-06-13, the L5a-i boundary pair).** The splice-brick statement and
-> slice below are **WRONG** and superseded by the forthcoming §1.64 re-pin. The error: the contraction leg
-> was stated as `induce ((V(G)∖V(H))∪{r})` and framed as a *bare, transversality-free* block-triangular
-> brick, but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` *collapses* V(H)→r — same vertex
-> set as `induce`, but it **keeps the relabelled crossing edges** `induce` drops, so the induce-leg rank
-> `≠ D(|V|−2)−k` (a strictly weaker bound the producer can't close), and the IH supplies the *contraction's*
-> realization, not the induce-leg's. The genuine (6.3)–(6.5) additivity is the **`extProj` column-projection
-> gated on generic rigidity** (`injOn_extProj_dualMap_rigidityRows`, the Claim-6.4 "projection loses zero
-> rank" fact — CaseI.lean:1091/1130), the SAME machinery the landed `case_I_realization` uses; there is no
-> bare `S_H + S_c ≤ S` route. The (a) dispatch and (b) V6 (N6a dead infrastructure) verdicts **stand**; only
-> the (c) brick statement + (f) slice are corrected at §1.64. (The bare `induce`-brick was built — sonnet
-> primary 90e8d4a — and reverted.)
+> ⚠️ **(c)/(f) SUPERSEDED by §1.64 (2026-06-13, the L5a-i boundary pair + the L5a re-pin).** The splice-brick
+> statement and slice in (c)/(f) below are **WRONG** — read §1.64 for the corrected pin; the text is kept here
+> only because the surrounding (a)/(b)/(d)/(e) of §1.63 still stand and §1.64 cites them. The error: the
+> contraction leg was stated as `induce ((V(G)∖V(H))∪{r})` and framed as a *bare, transversality-free*
+> block-triangular brick, but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` *collapses* V(H)→r —
+> same vertex set as `induce`, but it **keeps the relabelled crossing edges** `induce` drops, so the
+> induce-leg rank `≠ D(|V|−2)−k` (a strictly weaker bound the producer can't close), and the IH supplies the
+> *contraction's* (`rigidContract`'s) realization, not the induce-leg's. §1.64 replaces (c)'s brick + (f)'s
+> slice; the (a) dispatch, (b) V6 (N6a dead infrastructure), and (d) L5b simple-branch restate verdicts
+> **stand unchanged**. (The bare `induce`-brick was built — sonnet primary 90e8d4a — and reverted.)
 
 > **Docs-only design pass (the L5 pin).** Lean read this pass (declarations + current line numbers, all
 > verified this pass): GenericityDevice.lean — `hasFullRankRealization_of_splice_of_supportExtensor` (:915,
@@ -6139,6 +6137,259 @@ block-rank brick's reuse of the landed splice-glue span decomposition; bounded, 
 **V6-b** (the all-`k` thread through `case_I_realization`'s rank-transport leg; expected mechanical, resolve at
 L5b's build). Both `buildable`; neither is a research-shaped open question (the only NEW math in L5 is the
 (c) shared-body block-rank brick, and it is KT's elementary (6.3)–(6.5) block-triangular argument).
+
+---
+
+### 1.64 The L5a RE-PIN — correcting §1.63(c)/(f): the contraction leg is `rigidContract` (a COLLAPSE), not `induce`; the (6.3)–(6.5) additivity is a NEW general-rank block-triangular brick assembled from landed rigidity-FREE pieces (`extProj` row-vanishing ⊕ the collapse row-correspondence ⊕ the deficiency-aware `_of_le_finrank` extractor ⊕ the general-rank Lemma 5.1 column-deletion `finrank_pinnedMotions_add_screwDim`); it is **buildable, NO IH/motive change** — but the projected-image-rank step is genuinely new linear algebra (not a one-line brick, not the rigidity-gated `injOn_extProj` route), flagged for the L5a build (2026-06-13)
+
+> **Docs-only design pass (the L5a re-pin).** Lean read this pass — declarations + line numbers, all
+> **verified this pass against the landed Lean** (the boundary-pair postmortem cost a revert, so every
+> load-bearing signature below was re-read, not trusted from the prior pin's prose):
+> CaseI.lean — `extProj` (:821, the column projection) + `extProj_apply_mem`/`_not_mem` (:827/:832) +
+> `extProj_apply_collapseTo` (:847) + `hingeRow_comp_extProj_eq_zero` (:862, **rigid-block rows vanish under
+> the projection — NO rigidity hypothesis**) + `hingeRow_collapseTo_comp_extProj_eq` (:884) +
+> `panelRow_collapseTo_comp_extProj_dualMap` (:940, **the collapse row-correspondence — NO rigidity
+> hypothesis**) + `extProj_range_eq_iInf_ker_proj` (:971) +
+> `injOn_extProj_dualMap_rigidityRows` (:1091, **GATED on `F.IsInfinitesimallyRigidOn F.graph.vertexSet` —
+> full rigidity — this is the Claim-6.4 "projection loses zero rank"; UNUSABLE at `def = k > 0`**) +
+> `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` (:1130, same full-rigidity gate);
+> `rigidContract_exterior_rank_transport` (:1553, **`hdef : (G.rigidContract H r).deficiency n = 0`** — the
+> whole U3a/U3b/U2 transport is 0-deficiency) + `..._htransport` (:1642, same); `case_I_realization` (:2155,
+> the landed `0`-dof simple Lemma-6.3 arm) + `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set`
+> (:745, the splice coupler — its docstring :715–765 states explicitly that the contraction-leg
+> complement-isolation equality `finrank (pinnedMotionsOn sc) = D·|scᶜ|` is **FALSE** for the deficient
+> contraction leg; the project's `finrank_pinnedMotionsOn_le` proves only the *upper* bound) +
+> `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` (:1772, the rank-nullity core) +
+> `case_cut_edge_realization` (:7588, the landed L4a bare producer, the `induce`-leg precedent — note its two
+> legs are genuine `induce` subgraphs, the structural reason it works bare and the splice can't);
+> RigidityMatrix.lean — `finrank_pinnedMotions_add_screwDim` (:2694, **Lemma 5.1, the deleted-`v∗`-columns
+> rank identity at GENERAL rank — `finrank (pinnedMotions v) + D = finrank Z`, NO rigidity, holds at any
+> deficiency**) + `le_finrank_span_rigidityRows_of_cut` (:2991, L4a's disjoint-block brick — `S₁ ⊓ S₂ = ⊥` by
+> the V₁/V₂ projection, NOT the splice's shared-body shape) + `rigidityRows` (:920) + `hingeRowBlock` (:754);
+> GenericityDevice.lean — `exists_independent_panelRow_subfamily_of_le_finrank` (:718, **W6e, the
+> deficiency-aware / rigidity-FREE extractor: a rank lower bound `N ≤ finrank (span rigidityRows)` yields `N`
+> independent linking panel rows** — the deficient-leg tool L4b-1 already uses) +
+> `finrank_span_rigidityRows_add_deficiency_le` (:562, B2, the free `V(G)`-relative `≤`); Pinning.lean —
+> `pinnedMotionsOn` (:917) + `pinnedMotionsOn_singleton` (:937) + `finrank_iInf_ker_proj_eq` (:1076);
+> ReducibleVertex.lean — `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))` (:1052) +
+> `vertexSet_rigidContract = collapseTo r V(H) '' V(G)` (:1056) + `rigidContract_vertexSet_ncard`
+> (`= (|V(G)|−|V(H)|)+1`, :1097); CaseI.lean — `Graph.rigidContract_vertexSet_inter_eq_singleton`
+> (:1597, `V(G.rigidContract H r) ∩ V(H) = {r}` — **the single shared/deleted column is `r = v∗`**);
+> Contraction.lean — `rigidContract_isMinimalKDof` (:696, **all-`k` already**, V4 discharged);
+> PanelLayer.lean — `exists_extensor_in_two_panels` (:631, the coincident-panel hinge, works AT `n₁ = n₂`);
+> Deficiency.lean — `isKDof_zero_of_parallel_pair` (:606), `IsProperRigidSubgraph` (:428),
+> `couple_geometry_of_isProperRigidSubgraph` (CaseI.lean:560). **KT re-read against the PDF this pass**
+> (offset `printed p.N = pdf page (N − 646)`): **p. 673–674 §6.2 eqs. (6.2)–(6.5) verbatim** (the block-
+> triangular matrix (6.3), the (6.4) `p|E∖E' = p₂` entry equality, the (6.5) deleted-`v∗`-columns + Lemma 5.1
+> rank identity, the (6.3)+(6.5) `≥` rank chain). No `.lean`/`.tex` edits this pass.
+
+**Citation.** Katoh–Tanigawa 2011, *Discrete Comput. Geom.* **45**, 647–700; **Lemma 6.2**, §6.2, p. 673–674.
+The deleted-`v∗`-columns rank invariance `rank R(G/E', p₂; E∖E', V∖V') = rank R(G/E', p₂)` is **Lemma 5.1**
+(the [29] = White–Whiteley pin-a-body fact), p. 668 — landed at general rank as
+`finrank_pinnedMotions_add_screwDim`. The block-triangular `≥` is KT eq. (6.3), elementary linear algebra
+(a lower-triangular block matrix `[[A,0],[∗,B]]` has `rank ≥ rank A + rank B`). All verified vs the PDF.
+
+**(a) What §1.63 got wrong, restated precisely (the verified diagnosis).** §1.63(c) stated the splice's second
+leg as `induce ((V(G)∖V(H))∪{r})` and the brick as a *bare, transversality-free* `S_H + S_c ≤ S` span split
+mirroring L4a. Two independent errors, both confirmed against the landed Lean this pass:
+
+1. **The contraction leg is a COLLAPSE, not an induced subgraph.** `rigidContract G H r =
+   (G ＼ E(H)).map (collapseTo r V(H))` (ReducibleVertex.lean:1052) and `induce ((V(G)∖V(H))∪{r})` have the
+   **same vertex set** (`vertexSet_rigidContract` ∩ `rigidContract_vertexSet_inter_eq_singleton`: both are
+   `(V(G)∖V(H)) ∪ {r}`), but `induce` **drops** every crossing edge `δ_G(V(H))` (an edge with one endpoint
+   inside `V(H)∖{r}`), whereas `rigidContract` **keeps** it, relabelled to `r`. So `rank R(induce-leg) =
+   D(|V|−2) − def((induce-leg)~)`, a **strictly weaker** lower bound (the induce-leg drops constraints, raising
+   its deficiency above `k`), which the producer cannot close against the `D(|V|−1)−k` target. And the IH does
+   NOT realize the induce-leg — it realizes the **contraction** `G.rigidContract H r`, which is minimal-`k`-dof
+   by `rigidContract_isMinimalKDof` (already all-`k`, V4). The brick must read the contraction's rows.
+2. **The (6.3)–(6.5) additivity is NOT a bare span split.** §1.63 framed it as "the same `Submodule.finrank_sup`
+   argument as L4a." But L4a's `le_finrank_span_rigidityRows_of_cut` works bare **only because its two legs are
+   vertex-DISJOINT** (`S₁ ⊓ S₂ = ⊥` by the V₁/V₂ coordinate projection) with ≤1 crossing edge. The splice's two
+   legs (`H`-block on `V(H)` and the surviving block on `(V∖V(H))∪{r}`) **share the contracted body `r`** and
+   have **many** crossing edges (all of `δ_G(V(H))`, relabelled into the surviving block) — they are not disjoint
+   and the L4a disjointness proof does not transfer. KT (6.3) is a genuine **lower-triangular** block matrix
+   `[[R(G',p₁), 0],[∗, R(G,p;E∖E',V∖V')]]`, not a block-diagonal one.
+
+**(b) THE KEY SUBTLETY RESOLVED — `def = k > 0` and Lemma 5.1 (the crux, and why the row-96/§1.63 pins went
+wrong).** The landed `case_I_realization` route (and its `injOn_extProj_dualMap_rigidityRows` /
+`rigidContract_exterior_rank_transport`) is **`0`-dof-bound at the deepest level, not merely in its hypotheses**:
+its contraction leg `G.rigidContract H r` is itself minimal-**`0`**-dof (`hKmin`, CaseI.lean:2242), so its IH
+realization is **fully rigid** (`HasGenericFullRankRealization`), and the Claim-6.4 machinery
+`injOn_extProj_dualMap_rigidityRows` requires exactly that (`hrig : F.IsInfinitesimallyRigidOn
+F.graph.vertexSet`, CaseI.lean:1093; `rigidContract_exterior_rank_transport` requires `hdef = 0`, :1555).
+
+At `def(G̃) = k > 0` (the non-simple Lemma-6.2 case, and the general Case I), the contraction
+`G.rigidContract H r` is minimal-**`k`**-dof, so its realization is **NOT** fully rigid — `def = k > 0` means
+`rank R(G/E',p₂) = D(|V(G/E')|−1) − k < D(|V(G/E')|−1)`. **The rigidity-gated extProj/Claim-6.4 machinery does
+not apply.** This is precisely why both the row-96 pin ("bare block-triangular, transversality-free") and the
+§1.63 pin ("reuse the `case_I_realization` route" / "bare `induce` split") were wrong: there is no bare route,
+AND the landed rigidity-gated route is unavailable at `k > 0`.
+
+KT's actual `k > 0` argument (p. 674) uses **Lemma 5.1**, not Claim 6.4. The two are different facts:
+
+* **Claim 6.4** (= `injOn_extProj_dualMap_rigidityRows`): "the exterior-column projection loses *zero* rank" —
+  the projection `(extProj V(H)).dualMap` is *injective* on the full rigidity-row span. **Requires full
+  rigidity** (`Z ⊔ W = ⊤`). Gives the surviving block its *full* rank `D(|sc|−1)`. Used at `def = 0` only.
+* **Lemma 5.1** (= `finrank_pinnedMotions_add_screwDim`, RigidityMatrix.lean:2694): "deleting one body's `D`
+  columns drops exactly the `D` trivial-motion dimensions, preserving rank" — `finrank (pinnedMotions v) + D =
+  finrank Z`, equivalently `rank R(G; cols∖{v}) = rank R(G)`. **Holds at ANY rank, NO rigidity hypothesis.**
+  This is the fact KT (6.5) invokes to equate the surviving block `R(G,p; E∖E', V∖V')` (= `R(G/E',p₂)` with the
+  `v∗` columns deleted) with `rank R(G/E',p₂)`.
+
+So the corrected `≥` chain (the buildable assembly): in the row-span view set `D := (extProj V(H)).dualMap`,
+`S_H := span(H-block rows)`, `S_surv := span(surviving E∖E' rows of F)`:
+- (i) `D` **kills `S_H`** — `hingeRow_comp_extProj_eq_zero` (rigidity-FREE), KT's top-right `0` of (6.3);
+- (ii) the surviving rows, projected, **correspond row-for-row** to the projected collapsed rows over
+  `G.rigidContract H r` — `panelRow_collapseTo_comp_extProj_dualMap` (rigidity-FREE), KT (6.4); so
+  `D '' S_surv = D '' span(rigidContract-rows)`;
+- (iii) `D` restricted to `span(rigidContract-rows)` **deletes exactly the single column `r = v∗`**
+  (`rigidContract_vertexSet_inter_eq_singleton`: `V(G/E') ∩ V(H) = {r}`, so `extProj V(H)` zeroes only the `r`
+  coordinate on the contraction's own bodies), and by **Lemma 5.1** that column-deletion *preserves rank*, so
+  `finrank (D '' span(rigidContract-rows)) = rank R(G/E',p₂) = D(|sc|−1) − k`;
+- (iv) **block-triangular `≥`:** `finrank (span F.rigidityRows) ≥ finrank (S_H ⊔ S_surv) ≥ finrank S_H +
+  finrank (D '' S_surv)` — the second `≥` is rank-nullity for `D` on `S_H ⊔ S_surv` with `S_H ⊆ ker D` (i),
+  `D '' (S_H ⊔ S_surv) = D '' S_surv` (i). With `finrank S_H = D(|sH|−1) = D` (the rigid parallel-pair block)
+  and (iii), this is `≥ D + (D(|V|−2)−k) = D(|V|−1)−k`. Then B2 (`finrank_span_rigidityRows_add_deficiency_le`,
+  landed, the free `≤`) closes the M2 rank equality by antisymmetry, exactly as L4a's producer does.
+
+**This route requires NO motive change, NO IH statement-level change, and NO new `MvPolynomial`/genericity
+content** (the splice is transversality-free / bare, the coincident-panel hinge is the whole point — GP fails,
+so the non-simple branch concludes only the bare `HasPanelRealization`, exactly as §1.63(a) had it). The
+bare `HasPanelRealization` conjunct **can** be produced without generic content (confirmed: the M2 motive is a
+deficiency-aware rank equality at *some* framework, supplied by the fixed splice framework `F` itself, as in
+the landed L4a producer).
+
+**(c) HONESTY FLAG — the one genuinely-new linear-algebra brick (NOT a one-line brick; for coordinator
+awareness, not a blocker).** Step (b)(iii) — `finrank ((extProj V(H)).dualMap '' span(rigidContract-rows)) =
+rank R(G/E',p₂)` at general (deficient) rank — has **no landed precedent**. The landed
+`injOn_extProj_dualMap_rigidityRows` is the *rigidity-gated* analogue (full injectivity on the full span); the
+deficient version is a *rank identity via Lemma 5.1*, not injectivity. The pieces are all landed and
+rigidity-free (`extProj` infra, the collapse row-correspondence, `finrank_pinnedMotions_add_screwDim`,
+`extProj_range_eq_iInf_ker_proj`/`finrank_iInf_ker_proj_eq`), and the math is KT's elementary block-triangular
+argument — so this is **`buildable`, not `research-shaped`**. But it is a *real new brick* (the
+"general-rank shared-body block-triangular rank addition over a collapse"), likely several commits, **not** the
+§1.63 "fold into the producer's `\uses`" one-liner. The honest statement: *the L5a math is settled and routes
+entirely through landed rigidity-free pieces, but the new brick is a substantive assembly, not a trivial
+mirror of L4a.* No decision needs coordinator adjudication — the route is determined; this flag is so the L5a
+build is scheduled with the brick as its own slice (L5a-i), not underestimated as a one-liner again.
+
+**(d) The corrected L5a signature(s).** Two declarations, the brick first. The brick is stated on the
+*surviving-rows / contraction* shape (not the `induce` shape).
+
+*The general-rank shared-body block-triangular rank-addition brick* (`lem:rigidityRows-splice-rank-add`; KT
+Lemma 6.2 eq. (6.3)–(6.5); the collapse-aware, deficiency-tolerant sibling of L4a's disjoint-body
+`le_finrank_span_rigidityRows_of_cut`). For a body-hinge framework `F` on `G` whose surviving rows correspond
+to a contraction `G.rigidContract H r` realized at rank `Rc`, the rigidity-row span dimension is at least the
+rigid `H`-block plus `Rc`:
+```lean
+/-- **General-rank shared-body splice block-rank addition** (`lem:rigidityRows-splice-rank-add`; KT
+Lemma 6.2 eqs. (6.3)–(6.5); Phase 22i L5a). For a body-hinge framework `F` on `G`, a proper rigid
+subgraph `H ≤ G` with representative `r ∈ V(H)`, where the `E(H)`-rows are the rigid block and the
+`E(G) ∖ E(H)`-rows correspond (under `extProj V(H)`) to the contraction `G.rigidContract H r`'s rows,
+the rigidity-row span dimension is at least the `H`-block span plus the contraction's rank `Rc`.
+Unlike L4a this is a *lower-triangular* (shared-body) split — the surviving block reads the
+contraction's rows after deleting the single `v∗ = r` column, whose deletion preserves rank by
+Lemma 5.1 (`finrank_pinnedMotions_add_screwDim`); the additivity is the rank-nullity of
+`(extProj V(H)).dualMap` (which kills the rigid block, `hingeRow_comp_extProj_eq_zero`). -/
+theorem BodyHingeFramework.le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) {H : Graph α β} {r : α}
+    (hH : H ≤ F.graph) (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(F.graph))
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
+    (… the surviving-rows ↔ contraction correspondence + the rigid-H-block hypotheses …) :
+    -- the `H`-block term + the contraction's rank term ≤ the full span
+    screwDim k * (V(H).ncard - 1)
+      + (Module.finrank ℝ (Submodule.span ℝ «contraction-realization».rigidityRows))
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+```
+The `(…)` is left as a design slot **deliberately** (this is a *pin*, not a build): the exact form of the
+"surviving-rows ↔ contraction correspondence" hypothesis depends on whether the brick is stated against the
+*contraction's realization framework* directly (cleanest — feed the IH framework `F_c` and the collapse
+row-correspondence `panelRow_collapseTo_comp_extProj_dualMap` as a hypothesis) or reconstructs the
+correspondence internally from `(G,H,r)` + `F`'s edge dispatch. The L5a build resolves which (V6-a, see (f));
+both are buildable from the landed pieces enumerated in (b)/(c). The brick's **substance** is steps (b)(iii)+(iv)
+— the rank-nullity of `(extProj V(H)).dualMap` + the Lemma-5.1 column-deletion — independent of that choice.
+
+*The L5a non-simple bare producer* (`lem:case-I-realization-nonsimple`; KT Lemma 6.2; the contraction-leg
+analogue of L4a's `case_cut_edge_realization`). It fills the `hcontract` bare slot (verified against
+`theorem_55_generic`, PanelHinge.lean:1185, the `hcontract` slot the L9 spine wires):
+```lean
+theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+    (hnsimple : ¬ G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
+    HasPanelRealization 2 n G
+```
+Body (KT Lemma 6.2 verbatim, the corrected leg structure): `¬ G.Simple` + `G.IsMinimalKDof` (loopless,
+`loopless_of_isMinimalKDof`) gives multiple edges `e, f` joining some `a, b`; `G' := G[{e,f}]` is a proper
+rigid subgraph (`isKDof_zero_of_parallel_pair`, the `ẽ ∪ f̃` carries `D` spanning trees on `{a,b}`); set
+`r := a`. The contraction `G.rigidContract G' r` is minimal-`k`-dof and strictly smaller
+(`rigidContract_isMinimalKDof` + `rigidContract_vertexSet_ncard_lt`); IH gives its `HasPanelRealization` `F_c`
+at `rank = D(|V(G/E')|−1) − k = D(|V|−2) − k`. The `H = G'`-leg is minimal-`0`-dof on `{a,b}`, realized by
+**Lemma 5.3** with **coincident panels** `Π(a) = Π(b)` (the coincident-panel hinge from
+`exists_extensor_in_two_panels (normal a) (normal a)` AT `n₁ = n₂`, which the landed lemma supports) at rank
+`D`. Assemble `F : BodyHingeFramework` by edge dispatch (`E' = {e,f}` rows from the `G'`-leg, `E∖E'` rows from
+`F_c` pulled back through the collapse — KT's `p|E∖E' = p₂`, the `degeneratePlacement`-style normals), the
+shared body `r = v∗`'s panel coincident with `Π(a) = Π(b)`. Rank `≥` from (d)'s brick + `F_c`'s rank conjunct
++ the arithmetic (`D + (D(|V|−2)−k) = D(|V|−1)−k`, `|V(G/E')| = |V|−2+1` since `|V(G')|=2`); rank `≤` from B2;
+antisymmetry closes M2. *Transversality-free* — the coincident-panel hinge is the whole point, no GP. (Reuses
+the `couple_geometry_of_isProperRigidSubgraph` cover + the L4a producer's `extF` edge-dispatch / `normal`
+junk-value idioms.)
+
+**(e) Blueprint disposition (unchanged from §1.63(e)).** L5a mints **one** new node
+`lem:case-I-realization-nonsimple` (case-i.tex, beside `lem:case-I-realization`) for the non-simple branch's
+bare `HasPanelRealization`, `\uses`-ing `def:genuine-hinge-realization` (M2), the proper-rigid-subgraph bricks,
+`def:rank-hypothesis`, and `prop:rigidity-matrix-prop11` (B2's hub) — **plus** a new node
+`lem:rigidityRows-splice-rank-add` for the (d) brick (rigidity-matrix.tex, beside L4a's
+`lem:rigidityRows-cut-rank-add`). **Correction vs §1.63(e):** the brick earns its own node, NOT an optional
+`\uses`-fold — it is the substantive new math (c), and it `\uses` `lem:rank-delete-vertex` (Lemma 5.1) and the
+`extProj`/`lem:claim-6-4` row-vanishing + collapse-correspondence nodes. No statement-grep ripple from L5a
+(additive node; the legacy `theorem_55_d3` spine reaches Case I only at `0`-dof via `case_I_realization`, which
+**L5b** restates, not L5a). L5b is **unchanged from §1.63(d)** (the all-`k` GP restate of `case_I_realization`
++ the `by_cases G.Simple` dispatch; statement change → grep `blueprint/src` per the structural-edit gate).
+
+**(f) The re-cut L5a slice (exact build leaves, build order).** Three leaves now (the brick is its own slice,
+per the honesty flag (c)), the brick first:
+
+* **L5a-i** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (the (d) general-rank shared-body
+  block-rank brick) in RigidityMatrix.lean (beside L4a's `le_finrank_span_rigidityRows_of_cut`). **This is the
+  one genuinely-new math of L5** (the (b)(iii)+(iv) rank-nullity + Lemma-5.1 column-deletion assembly). Mints
+  `lem:rigidityRows-splice-rank-add`. **First concrete L5 commit.** *Buildable* from the landed rigidity-free
+  pieces (b)/(c); **V6-a** (the exact correspondence-hypothesis form: feed `F_c` + the collapse row-equality, vs
+  reconstruct internally) resolves at this build. If the full brick won't fit one sitting, the rank-nullity
+  half (`D` kills `S_H`, `D''(S_H⊔S_surv) = D''S_surv`) and the Lemma-5.1 column-deletion half
+  (`finrank(D''span(rigidContract-rows)) = rank R(G/E')`) can split into two sub-commits.
+* **L5a-ii** — `case_I_realization_nonsimple` (the (d) non-simple bare producer) in CaseI.lean (beside
+  `case_cut_edge_realization`). IH-plumbing + the L5a-i brick + B2 + the coincident-panel Lemma-5.3 leg
+  (`exists_extensor_in_two_panels` at `n₁ = n₂`) + the parallel-pair proper-rigidity
+  (`isKDof_zero_of_parallel_pair`). Mints `lem:case-I-realization-nonsimple`.
+* **L5b** — `case_I_realization_all_k` (the all-`k` GP restate of `case_I_realization`, §1.63(d), unchanged) +
+  the `hcontract` slot-filler dispatch (the §1.63(a) `by_cases G.Simple`). Statement change to
+  `case_I_realization` → grep `blueprint/src` per the structural-edit gate. Completes the full `Pc` slot-filler
+  `⟨gp, bare⟩`. *Buildable on L5a-ii* (V6-b, the all-`k` thread through `case_I_realization`'s rank-transport
+  leg, resolves here — and note (b) confirms the simple branch's contraction *is* `0`-dof only when... see
+  the L5b caveat below).
+
+> **L5b caveat for the build (verified this pass, recorded so the L5b agent does not re-discover it).** The
+> simple-branch restate `case_I_realization_all_k` reuses the landed `case_I_realization`'s
+> `rigidContract_exterior_rank_transport` leg, which is **`hdef = 0`-gated** (CaseI.lean:1555). At `def(G̃) =
+> k > 0` the contraction `G.rigidContract H r` is minimal-`k`-dof, so that transport **does not apply** —
+> meaning the *simple* all-`k` Case-I arm (Lemma 6.3 at `k > 0`) ALSO needs the (d) Lemma-5.1 block-triangular
+> route for its surviving block, NOT a mechanical `0 → k` thread of the existing `injOn_extProj` leg. So
+> **§1.63(d)/§1.63 (the V6-b "expected mechanical" flag) UNDER-scoped L5b**: the all-`k` simple Case-I restate
+> is *not* a deficiency-substitution of the landed proof — it must re-route its surviving-block rank through
+> the same (d) brick (the GP version: the surviving block reaches its rank `D(|sc|−1)−k` at the generic seed,
+> via the deficiency-aware extractor `_of_le_finrank` rather than `_of_rigidOn_..._proj`). **This is still
+> buildable** (the (d) brick + the L4b GP-conjunct machinery already in tree), but it is NOT mechanical, and
+> L5b should be scoped as "re-route Case I's surviving block to the general-rank brick (GP variant)", not
+> "substitute `k` for `0`". Flagged here, not silently carried.
+
+*Verification items L5a adds/resolves:* **V6-a REOPENED → re-aimed** at the (d) general-rank brick's
+correspondence-hypothesis form (resolve at L5a-i build); the §1.63 V6-a ("reuse
+`isInfinitesimallyRigidOn_of_splice`'s span decomposition") is **superseded** — that decomposition is the
+`def = 0` rigidity instance, unusable here, and the brick instead routes through Lemma 5.1. **V6-b re-scoped**
+(see the L5b caveat: not mechanical; re-route through the (d) brick's GP variant). Neither is research-shaped.
 
 ---
 
