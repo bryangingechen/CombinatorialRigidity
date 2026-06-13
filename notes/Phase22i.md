@@ -232,13 +232,29 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 L5a-ii is done: `case_I_realization_nonsimple` (CaseI.lean) + `lem:case-I-realization-nonsimple`
 (case-i.tex) both green; blueprint-verify clean. V6-a fully RESOLVED; §1.64 canonical.
 
-**Smallest next forward commit: L5b** — the all-`k` GP restate of `case_I_realization` and the
-`by_cases G.Simple` dispatch wiring `hcontract`. Per §1.64(f): the simple all-`k` restate is **not**
-a mechanical `0→k` substitution — the landed `case_I_realization`'s surviving block routes through
-`rigidContract_exterior_rank_transport` which is `hdef=0`-gated; the all-`k` arm needs the L5a-i
-brick's GP variant. Scope: one new lemma `case_I_realization_all_k` (CaseI.lean) + the dispatch
-producing `HasPanelRealization 2 n G` from the `hcontract` premise (the `h65` sub-arm stays red →
-L8). Mints `lem:case-I-realization-all-k` + updates `lem:case-I-dispatch`.
+**L5b sizing-BLOCKED (2026-06-13, sonnet, tree clean — diagnosis credible, coordinator-verified at
+the structural level).** The all-`k` GP restate `case_I_realization_all_k` does **not** fit one
+commit: §1.64(f)'s "needs the brick's GP variant" (V6-b) is a genuinely-new prerequisite, not inline
+assembly. The wall: `case_I_realization`'s surviving block routes through the **rigid**
+`rigidContract_exterior_rank_transport` (CaseI:1682) + `exists_rankPolynomial_of_rigidOn_linking_set_proj`
+(CaseI:1506), both `hdef=0`-gated → unavailable at the deficient (`k>0`) contraction. The splice
+brick's `hInj` gives `finrank Fc = finrank (Dmap '' Fc)` and `Dmap '' Fc = Dmap '' Fsurvive`, but
+controlling `finrank (Dmap '' Fsurvive)` at a **fresh generic seed** needs to relate the
+**uncollapsed**-normal surviving rows (`ofNormals G G.endsOf q₀`) to the contraction's
+**collapsed**-normal GP framework — and the landed correspondence
+(`panelRow_collapseTo_comp_extProj_dualMap`) holds only at a **degenerate placement**, not a generic
+seed. Two candidate routes the BLOCK proposed: (1) the **GP/deficiency-aware variant of the projected
+rank-transport** — a rank polynomial `Q` over the *original*-graph selector s.t. at `Q`-non-roots the
+exterior-projected surviving-row finrank reaches `D(|sc|−1)−k` (generalizing
+`exists_rankPolynomial_of_rigidOn_linking_set_proj` to the deficient contraction, likely via L4b-1's
+deficiency-aware `exists_rankPolynomial_of_le_finrank_linking`); (2) a different proof structure
+avoiding the collapsed/uncollapsed mismatch entirely. Per the BLOCK, neither needs a motive/IH change.
+
+**Smallest next forward commit: the L5b design-pass** — decompose L5b into buildable leaves: the
+V6-b GP-variant rank-transport leaf (pick route 1 vs 2; pin its exact signature, verified against the
+landed `case_I_realization` / `rigidContract_exterior_rank_transport` / L4b-1 extractor) → then
+`case_I_realization_all_k` + the `by_cases G.Simple` dispatch (assembly). Mints
+`lem:case-I-realization-all-k` + updates `lem:case-I-dispatch`; the `h65` sub-arm stays red → L8.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
