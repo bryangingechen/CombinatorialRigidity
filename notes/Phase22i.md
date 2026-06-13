@@ -15,19 +15,13 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3a complete; L3b parallel-pair + empty + single-edge bare-`HasPanelRealization` arms
-landed; the GP conjunct + producer dispatch remain.** L2 landed `minimal_kdof_reduction_all_k` in
-`ForestSurgery.lean`; `thm:minimal-kdof-reduction-all-k` is green. **L3a landed (the geometric
-brick):** `exists_linearIndependent_extensor_pair_perp` (PanelLayer.lean) + `linearIndependent_pair_extensor_of_li3`
-(Extensor.lean) + `exists_three_perp` (PanelLayer.lean); `lem:extensor-pair-in-panel` green.
-**L3b three bare arms landed (2026-06-12):** `theorem_55_base_producer_parallel_pair` (§1.60(b)(iii),
-geometrically-new; via L3a brick + `theorem_55_base` + B1); `theorem_55_base_producer_empty`
-(§1.60(b)(i), all-zero framework, rank 0, vacuous per-link); `theorem_55_base_producer_single_edge`
-(§1.60(b)(ii), one nonzero extensor in `n₀^⊥`, rank `D−1` via `span_panelRow_linking_eq_rigidityRows`
-+ `finrank_span_panelRow_edge`). All in `CaseI.lean` (downstream home); all green; `hne` dropped
-from empty arm signature (unused). `lem:theorem-55-base-producer-{parallel,empty,single}` green
-nodes; the full `lem:theorem-55-base-producer` dispatch node awaits the dispatch. **Next:** GP conjunct + the trichotomy-dispatch
-`theorem_55_base_producer` + legacy-`hbase` rewire of `theorem_55_d3`.
+**L2 + L3 complete; `hbase` carry discharged.** L2 landed `minimal_kdof_reduction_all_k` in
+`ForestSurgery.lean`; `thm:minimal-kdof-reduction-all-k` is green. L3a landed the geometric brick
+(`exists_linearIndependent_extensor_pair_perp` etc.); `lem:extensor-pair-in-panel` green. **L3b
+complete (2026-06-13):** trichotomy-dispatch `theorem_55_base_producer` + legacy-`hbase` rewire of
+`theorem_55_d3` — `lem:theorem-55-base-producer` green; `hbase` carry discharged; `theorem_55_d3`
+signature updated (drops `hbase`, adds `hn : bodyBarDim n = screwDim 2`; four carries remain:
+`h622`, `h65`, `hsplit`, `hcontract`). **Next:** L4 — Lemma 6.1, the cut-edge case (V5).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -51,7 +45,7 @@ gate included).
 |---|---|---|---|
 | `h622` (KT eq. (6.22), the nested-IH rank lower bound at the `k'`-dof `G_v`) | `lem:case-III-nested-rank-lower` (case-iii.tex) | `case_III_realization` (CaseI.lean:6750) and `theorem_55_d3` (:6817); consumed at the one W6b call inside `case_III_candidate_dispatch` | **L7**: replace the hypothesis by a derivation from the all-`k` IH at `G_v` — IH gives the generic realization at rank `D(m−1) − k'`; extract the rational rank-polynomial witness (V8); transfer to the given `(ends, q)` by the landed footnote-6 bridge (`lem:case-III-seed-rank-bridge`) |
 | `h65` (the KT Lemma-6.5 vertex-removal arm of the Case-I dispatch) | `lem:case-I-dispatch` (case-i.tex) | `theorem_55_d3` (:6831), the negative branch of the L5c′ `by_cases` | **L8**: §1.54(a3) steps 1–2 — Claim 6.6 graph side (~2–3 commits) + the Π°-placement producer (own signature pin first); the dispatch itself landed in 22h. Claim 6.6 concludes inside the `k = 0` stratum, no all-`k` generality needed |
-| `hbase` (the bare two-vertex base) | `def:genuine-hinge-realization` (panel-layer.tex; + `lem:theorem-55-base` as the rank engine) | `theorem_55_d3` (:6802), passed to `theorem_55_generic`'s `hbase` slot | **L3**: the `\|V\| = 2` trichotomy (KT p. 671: `E = ∅` / one edge / parallel pair, `k ∈ {D, 1, 0}`) + the graph-level Lemma-5.3 coincident-panel brick (two non-proportional extensors in a common panel, M1 pointwise form) re-aimed into Pinning.lean's `theorem_55_base` |
+| `hbase` (the bare two-vertex base) | ~~`def:genuine-hinge-realization`~~ → **✓ discharged** (`lem:theorem-55-base-producer` green, 2026-06-13) | `theorem_55_d3` rewired: `theorem_55_base_producer` supplies `.2`; `hbase` dropped from signature | **L3 complete**: trichotomy dispatch `theorem_55_base_producer` (CaseI.lean) + `theorem_55_d3` rewire (adds `hn : bodyBarDim n = screwDim 2`) |
 | `hsplit` (the bare no-rigid-subgraph branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6804) | **L9 wiring, no new build**: G0 (`simple_of_isMinimalKDof_of_noRigid`) gives `G.Simple`; forgetful (M4) ∘ the GP Case-III producer |
 | `hcontract` (the bare Case-I branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6809) | **L5**: dispatch on `G.Simple` — simple → forgetful (M4) ∘ the 6.3/6.5 GP arm; non-simple → KT Lemma 6.2 (NEW: the coincident-panel splice; the parallel-pair subgraph + the Lemma-5.3 leg at the contraction panel + the eq. (6.3)–(6.5) rank addition; N6a re-aimed, V6) |
 

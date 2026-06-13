@@ -7134,13 +7134,58 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     push_cast [hVcard, hdef]
     ring
 
-/-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,`h65`,`hbase`,
+/-- **Theorem 5.5 base producer, trichotomy dispatch** (`lem:theorem-55-base-producer`;
+`hbase` carry, Phase 22i L3b). For a minimal-`k`-dof-graph `G` with `|V(G)| ≤ 2` (the base
+region of `minimal_kdof_reduction_all_k`), the **conditioned pair**
+`(G.Simple → HasPanelRealization 2 n G) ∧ HasPanelRealization 2 n G` holds.
+
+Dispatches via `isMinimalKDof_ncard_le_two_trichotomy` to the three L3b arm lemmas:
+* **(i) empty arm** (`E(G) = ∅`): the all-zero framework, rank 0 —
+  `theorem_55_base_producer_empty`. GP conjunct: unconditional, the bare arm already gives
+  `HasPanelRealization 2 n G`.
+* **(ii) single-edge arm** (`|V| = 2`, `|E| = 1`): one nonzero extensor in `n₀^⊥`, rank
+  `D − 1` — `theorem_55_base_producer_single_edge`. GP conjunct: unconditional.
+* **(iii) parallel-pair arm** (`|V| = 2`, `|E| = 2`, `k = 0`): coincident panels + two LI
+  extensors, rank `D` — `theorem_55_base_producer_parallel_pair`. GP conjunct: `G` cannot be
+  simple (`not_simple_of_isMinimalKDof_of_ncard_two`), so the `G.Simple →` antecedent is
+  vacuous.
+
+The `hn : bodyBarDim n = screwDim 2` hypothesis threads the `d = 3` / `n = 3` constraint
+into the empty arm's rank arithmetic (the empty arm's `HasPanelRealization 2 n G` needs the
+`deficiency = bodyBarDim n * (|V| − 1) = screwDim 2 * (|V| − 1)` equality). -/
+theorem theorem_55_base_producer [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k)
+    (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
+    (G.Simple → HasPanelRealization 2 n G) ∧ HasPanelRealization 2 n G := by
+  rcases Graph.isMinimalKDof_ncard_le_two_trichotomy hD hG hne hV with
+    ⟨hE, hk⟩ | ⟨x, y, e, hxy, hVG, hEG, hl, hk⟩ | ⟨x, y, e, f, hxy, hef, hVG, hEG, hle, hlf, hk⟩
+  · -- (i) empty arm: `E(G) = ∅`, `k = bodyBarDim n * (ncard - 1)`.
+    -- The all-zero framework gives rank 0; GP conjunct unconditional.
+    have hprod := theorem_55_base_producer_empty hn G hE (hk ▸ hG)
+    exact ⟨fun _ => hprod, hprod⟩
+  · -- (ii) single-edge arm: `|V| = 2`, `|E| = 1`, `G.IsLink e x y`, `k = 1`.
+    -- One nonzero extensor in `n₀^⊥` gives rank `D − 1`; GP conjunct unconditional.
+    have hprod := theorem_55_base_producer_single_edge G hxy hVG hEG hl (hk ▸ hG)
+    exact ⟨fun _ => hprod, hprod⟩
+  · -- (iii) parallel-pair arm: `|V| = 2`, `|E| = {e,f}`, `k = 0`.
+    -- `G` is not simple (two parallel edges between the same pair).
+    have hVcard : V(G).ncard = 2 := by rw [hVG, Set.ncard_pair hxy]
+    have hnotSimple : ¬ G.Simple :=
+      Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hk ▸ hG) hVcard
+    -- `G.deficiency n = 0` from `IsMinimalKDof n k` and `k = 0`.
+    have hdef : G.deficiency n = 0 := by exact_mod_cast hG.1.trans hk
+    have hprod := theorem_55_base_producer_parallel_pair G hxy hef hVG hEG hle hlf hdef
+    exact ⟨fun hSimple => absurd hSimple hnotSimple, hprod⟩
+
+/-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,`h65`,
 `hsplit`,`hcontract`}** (`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the
 (β)-shape reduction; Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1, Phase 22h L5c′).
 
 Instantiates `theorem_55_generic` at `k = 2` with the `hsplitGP` slot wired to
 `case_III_realization`; `hbaseGP` is discharged via `not_simple_of_isMinimalKDof_of_ncard_two`
-(a simple two-vertex minimal-`0`-dof graph does not exist, KT p. 671 case (iii)).
+(a simple two-vertex minimal-`0`-dof graph does not exist, KT p. 671 case (iii)); the bare
+`hbase` slot is now discharged by `theorem_55_base_producer` (Phase 22i L3b dispatch).
 
 The `hcontractGP` slot is discharged by the **KT 6.3-vs-6.5 dispatch** (Phase 22h L5c′):
 by classical cases on whether some proper rigid subgraph `H` of `G` has a simple contraction
@@ -7150,14 +7195,15 @@ by classical cases on whether some proper rigid subgraph `H` of `G` has a simple
   (the 6.5-stratum instance; adjudicated carry; Lemma-6.5 arm lands in successor sub-phase 22i).
 
 Conclusion is the **full conditioned pair** `(G.Simple → GP) ∧ HasPanelRealization 2 n G` —
-all three genuine-hinge callbacks (`hbase`, `hsplit`, `hcontract`) ride as named hypotheses
+`hbase` discharged; `hsplit`/`hcontract` and `h622`/`h65` remain as named hypotheses
 (adjudicated carries; discharged at the 22i all-`k` restructure per
-`notes/Phase22h.md` *Blockers*). GAP 6 rides as `h622`. -/
+`notes/Phase22h.md` *Blockers*). -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n)
+    -- `hn` threads the `d = 3` / `D = screwDim 2 = 6` constraint into the base producer's
+    -- empty-arm rank arithmetic (needed by `theorem_55_base_producer`).
+    (hn : Graph.bodyBarDim n = screwDim 2)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
-      HasPanelRealization 2 n G)
     (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
@@ -7197,7 +7243,13 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
-  theorem_55_generic hbase
+  theorem_55_generic
+    -- `hbase`: discharged by `theorem_55_base_producer` (Phase 22i L3b dispatch),
+    -- taking the `.2` (bare) conjunct of the conditioned pair.
+    -- `V(G).Nonempty` from `ncard = 2 ≥ 1`; `ncard ≤ 2` from `ncard = 2`.
+    (fun G hG hV2 => by
+      have hne : V(G).Nonempty := (Set.ncard_pos (Set.toFinite _)).mp (by omega)
+      exact (theorem_55_base_producer (by omega) hn G hG hne (Nat.le_of_eq hV2)).2)
     -- `hbaseGP`: discharged by vacuity — a simple two-vertex minimal-`0`-dof graph
     -- does not exist (`not_simple_of_isMinimalKDof_of_ncard_two`, KT p. 671 case (iii)).
     (fun G hG hV2 hSimple =>
