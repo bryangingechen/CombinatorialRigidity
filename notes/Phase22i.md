@@ -39,23 +39,21 @@ tolerant content of KT Lemma 5.1) → `BodyHingeFramework.injOn_extProj_dualMap_
 `lem:extProj-preserves-rank-of-inter` (rigidity-matrix.tex, beside the splice brick). All three
 axiom-clean; build+lint+blueprint-verify green. V6-a fully RESOLVED.
 **L5a-ii producer complete**: `case_I_realization_nonsimple` (CaseI.lean) landed; `lem:case-I-realization-nonsimple` green.
-**L5b-i shared core landed (the deficiency-aware relabel transport, §1.65(g) sub-commit).** The
-**rigidity-free rank invariant** both L5b-i routes need is now in tree:
-`PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean, beside the rigid
-`hasGenericRealization_transport_relabel`) carries the contraction IH's *possibly-deficient* rank
-`D(|V|−1) − def` across the collapse-relabel selector swap as a plain finrank equality — the
-deficiency-tolerant sibling of the rigid transport, available at `def = k > 0` where the rigid
-route's `hdef=0` gate fails. Two RigidityMatrix.lean helpers support it:
-`BodyHingeFramework.span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` (the `Φ = Z°`
-factoring) + `span_rigidityRows_eq_of_infinitesimalMotions_eq` (equal motions ⟹ equal rank).
-Mints `lem:span-rigidityRows-eq-of-motions-eq` + `lem:rank-transport-relabel-of-le-finrank`
-(rigidity-matrix.tex, both green; all gates clean). The §1.65(c) internal-route decision is still
-correctly **deferred** — this is the route-independent core; the seed-placement / projection step
-that completes the full V6-b leaf is the next sub-commit.
+**L5b-i fully complete (V6-b leaf RESOLVED, 2026-06-13, route 2 taken).** The two-sub-commit
+split (shared core → completion) is done:
+- Shared core: `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean)
+  carries the contraction IH's `D(|V|−1) − def` rank across the collapse-relabel selector swap
+  as a finrank equality. Mints `lem:rank-transport-relabel-of-le-finrank`.
+- Completion: `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking` (CaseI.lean,
+  route 2 via `exists_rankPolynomial_of_le_finrank_linking`). Produces `N : ℕ` satisfying
+  `(N : ℤ) = D(|sc|−1) − def` + a nonzero rational `Q` s.t. `N ≤ finrank (span Sc at q)` for
+  non-root `q`. Mints `lem:rank-polynomial-IH-relabel` (rigidity-matrix.tex, green).
+  All gates clean (build+lint+checkdecls; axiom-clean; `haveI : Loopless` pattern for `IsLink.ne`).
 
-**Next: complete L5b-i** — the remaining V6-b leaf step (the `_proj` projection or the pulled-back
-full-span step on top of the just-landed relabel transport), `P≈2`-now, route resolved at that build
-per §1.65(c). Then L5b-ii producer → L5b-iii dispatch.
+**Next: L5b-ii** — `case_I_realization_all_k` (GP producer, splice-brick analogue of L4b-2).
+Assembly of landed pieces: `exists_rankPolynomial_of_IH_relabel_linking` + H-leg rigid polynomial
++ GP polynomial + fresh alg-indep seed + splice brick + B2. Statement change → blueprint
+statement-grep gate (structural-edit). `P≈2`. Mints `lem:case-I-realization-all-k`. Then L5b-iii.
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -182,18 +180,15 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     (The old bare `induce`-brick + producer 90e8d4a was built then reverted, superseded by this structure.)
   - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch.
     **Decomposed §1.65 (2026-06-13) into three leaves**, the V6-b brick first:
-    - [ ] **L5b-i** — the **V6-b leaf** (`P≈3`, the genuinely-new math of L5b), sliced per §1.65(g):
+    - [x] **L5b-i** — the **V6-b leaf** (`P≈3`, the genuinely-new math of L5b), sliced per §1.65(g):
       - [x] **shared core** — `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean):
         the deficiency-aware relabel transport, carrying the contraction IH's `D(|V|−1) − def` rank across the
-        collapse-relabel selector swap (rigidity-free, via the motion-space swap brick + the new RigidityMatrix
-        helpers `span_rigidityRows_eq_dualAnnihilator_infinitesimalMotions` /
-        `span_rigidityRows_eq_of_infinitesimalMotions_eq`). The route-independent core both candidate routes
-        need. Mints `lem:span-rigidityRows-eq-of-motions-eq` + `lem:rank-transport-relabel-of-le-finrank`.
-      - [ ] **completion** — the seed-placement / `_proj` step on top of the shared core, finishing the V6-b
-        leaf (`exists_rankPolynomial_surviving_proj_of_le_finrank` or its route-2 split). §1.65(c)'s **open
-        internal-route decision** (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii
-        `hInj`) resolves **at this build** with the goal state open — both use the just-landed relabel transport
-        as their core. Mints a GenericityDevice node.
+        collapse-relabel selector swap. Mints `lem:span-rigidityRows-eq-of-motions-eq` +
+        `lem:rank-transport-relabel-of-le-finrank`.
+      - [x] **completion** — `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking` (CaseI.lean,
+        route 2: shared core → `exists_rankPolynomial_of_le_finrank_linking`). Produces `N : ℕ` with
+        `(N : ℤ) = D(|sc|−1) − def` + nonzero rational `Q` s.t. `N ≤ finrank (span Sc at q)` for
+        non-root `q`. Mints `lem:rank-polynomial-IH-relabel` (rigidity-matrix.tex, green).
     - [ ] **L5b-ii** — `case_I_realization_all_k` (the GP producer, the splice-brick analogue of L4b-2's
       `case_cut_edge_realization_gp`): assembly of landed pieces + the L5b-i leaf + the L5a-i splice brick + B2.
       **`P≈2`.** Statement change → blueprint statement-grep gate. Mints `lem:case-I-realization-all-k`.
@@ -284,24 +279,22 @@ landed `_proj` extractor / `_proj` rank polynomial is deficiency-aware; `hasGene
 is `hdef=0`-gated), and the route is best chosen at the build with the goal state open. Soft recommendation:
 route 2 (smaller new surface, leans on the just-landed L5a-ii / L4b-1). No motive / IH change.
 
-**L5b-i shared core landed (`finrank_span_rigidityRows_ofNormals_relabel_eq` + the two RigidityMatrix
-helpers); the §1.65(g) sub-commit split was taken because the full leaf is `P≈3` with a flagged open
-route.** The shared core resolved the *real uncertainty* §1.65(c) named — "the relabel-transport's
-exact rank invariant" — concretely: it is a plain finrank *equality* (the contraction IH's
-`D(|V|−1) − def` value), carried rigidity-free by the motion-space swap brick. This de-risks both
-candidate routes (each now consumes this equality as its core) and removes the over-commit hazard the
-row-104 under-scope / boundary-pair revert flagged.
+**L5b-i fully complete (2026-06-13, sonnet; both sub-commits landed).** Route 2 taken for the
+completion: shared-core `finrank_span_rigidityRows_ofNormals_relabel_eq` → rank polynomial
+`exists_rankPolynomial_of_IH_relabel_linking` via `exists_rankPolynomial_of_le_finrank_linking`
+at the witness seed with `hN := le_refl`. The §1.65(c) flagged decision resolved in favour of
+route 2 (no new `_proj` surface; `IsLink.ne` needs `haveI : Loopless` not hypothesis dot-access).
+`lem:rank-polynomial-IH-relabel` green; all gates clean.
 
-**Smallest next forward commit: complete L5b-i** — build the seed-placement / projection step on the
-landed relabel transport, finishing the V6-b leaf (`exists_rankPolynomial_surviving_proj_of_le_finrank`
-or its route-2 split). **`P≈2`-now** (the genuinely-new rank-invariant core is landed; what remains is
-the projection / rank-polynomial wrapping). The §1.65(c) route decision (route-1 `_proj` mirror vs
-route-2 pulled-back full-span + the landed L5a-ii `hInj`) resolves **at that build** with the goal state
-open — both consume the relabel transport as their core; soft recommendation route 2 (leans on the
-landed L5a-ii `hInj` + L4b-1 full-span rank polynomial). Then L5b-ii (`case_I_realization_all_k`, the GP
-producer, `P≈2`, assembly mirroring L4b-2) → L5b-iii (the `by_cases G.Simple` dispatch, `P≈1`,
-plumbing). Mints a GenericityDevice node (L5b-i completion) + `lem:case-I-realization-all-k` (L5b-ii) +
-updates `lem:case-I-dispatch` (L5b-iii); the `h65` sub-arm stays red → L8. Canonical: §1.65.
+**Smallest next forward commit: L5b-ii** — `case_I_realization_all_k` (the GP producer, `P≈2`,
+assembly mirroring `case_cut_edge_realization_gp` with splice brick). Inputs: H-leg rigid polynomial
+(`exists_rankPolynomial_of_rigidOn_linking_set` — `H` is rigid), `exists_rankPolynomial_of_IH_relabel_linking`
+for the surviving block, `exists_generalPosition_polynomial`; fresh alg-indep seed non-root of all
+three; splice brick `le_finrank_span_rigidityRows_of_splice` with `hInj` from
+`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
+`rigidContract_vertexSet_inter_eq_singleton`; B2 closes the `≤`. Statement change vs the simple
+`case_I_realization` → structural-edit blueprint statement-grep gate (per `CLAUDE.md`). Mints
+`lem:case-I-realization-all-k`. Then L5b-iii dispatch (`by_cases G.Simple`, `P≈1`). Canonical: §1.65.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -495,8 +488,10 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   is a plain finrank *equality* (the IH's `D(|V|−1) − def` value), carried rigidity-free across the
   collapse-relabel selector swap by the existing motion-space swap brick
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` + two new RigidityMatrix helpers (`Φ = Z°` factoring +
-  equal-motions⟹equal-rank). Deviation from §1.65(d): dropped `hne`/`hdef` from the pinned signature — both
-  genuinely unused (the rank conjunct of `HasGenericFullRankRealization` already carries `− def`, read off
-  directly), which is exactly what makes it deficiency-tolerant (the rigid sibling's `hdef=0` is the gate that
-  fails at `k>0`). Route decision still correctly deferred. Axiom-clean; all gates green. No FRICTION (reused
-  the `injOn_...` file's `Φ = Z°` idiom + the L4b-2 swap-transport pattern).
+  equal-motions⟹equal-rank). Axiom-clean; all gates green.
+- **L5b-i completion (2026-06-13, sonnet):** **route 2** taken: shared core → `exists_rankPolynomial_of_le_finrank_linking`
+  (L4b-1) at the witness `nrm` with `hN := le_refl`. `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking`
+  (CaseI.lean) produces `N : ℕ` with `(N : ℤ) = D(|sc|−1)−def` + nonzero rational `Q` s.t. `N ≤ finrank
+  (span Sc at q)` for non-root `q`. The `hne` (support extensor nonzero) comes from GP + `haveI : Loopless`
+  (IsLink.ne needs the Loopless instance, not a hypothesis — writing `hloop.isLink_ne` fails). V6-b RESOLVED.
+  Mints `lem:rank-polynomial-IH-relabel`. Axiom-clean; all gates clean.

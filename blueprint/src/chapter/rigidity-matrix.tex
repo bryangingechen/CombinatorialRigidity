@@ -447,6 +447,38 @@ and the generic-rank argument are in hand.
   property of the normals alone, unchanged by the selector.
 \end{proof}
 
+\begin{lemma}[Deficiency-aware rank polynomial for the relabeled contraction leg; L5b-i completion]
+  \label{lem:rank-polynomial-IH-relabel}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
+  Under the setup of \cref{lem:rank-transport-relabel-of-le-finrank} (with $f(G_c)$ loopless),
+  there exists a natural number $N$ with
+  $(N : \mathbb{Z}) = D(|V(f(G_c))| - 1) - \operatorname{def}(f(G_c))$
+  and a nonzero rational polynomial $Q$ over the body-normal parameters of the original graph
+  such that at every $Q$-non-root seed $q$, the rigidity-row span of
+  $\operatorname{ofNormals}(f(G_c), e \mapsto (f(\text{ends}(e)_1), f(\text{ends}(e)_2)), q)$
+  has rank at least $N$.
+  This is the surviving-block rank input the splice brick
+  (\cref{lem:rigidityRows-splice-rank-add}) consumes at any fresh combined seed: combined
+  with the placement-free $\operatorname{hInj}$
+  (\cref{lem:extProj-preserves-rank-of-inter}) and the H-leg rigid polynomial, it closes the
+  block-sum $\geq$ at any algebraically independent seed that avoids the product
+  $Q_H \cdot Q_c \cdot Q_{\mathrm{gp}}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
+  Call the shared core (\cref{lem:rank-transport-relabel-of-le-finrank}) to obtain a witness
+  seed $q_0$ at which the rigidity-row rank equals $N$ exactly and the framework is in general
+  position.  Apply the deficiency-aware rank polynomial
+  (\cref{lem:rank-polynomial-of-le-finrank}) at $q_0$ with the trivial bound $N \le N$:
+  the support extensor is nonzero at every link of $f(G_c)$ because general position forces it
+  and looplessness ensures distinct endpoints.  The resulting polynomial $Q$ is nonzero
+  (its evaluation at $q_0$ is nonzero) and rational, and it transfers the rank lower bound $N$
+  to every non-root seed.
+\end{proof}
+
 \begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]
   \label{lem:block-rank-cut}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}
