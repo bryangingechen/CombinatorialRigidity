@@ -235,6 +235,7 @@ quality / blueprint sync / notes discipline / commit message
 | 106 | L5b-i shared core `finrank_span_rigidityRows_ofNormals_relabel_eq` (+2 helpers), a8d06ac | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 222k tok / 52 tools / 1238s (~21 min) | dispatched as the P≈3 V6-b leaf; opus took the **sanctioned §1.65(g) shrink** — built the route-independent shared core (the deficiency-aware relabel rank-transport, a deficiency-tolerant sibling of the rigid `hasGenericRealization_transport_relabel`, dropping the unused `hne`/`hdef`), deferring the route-dependent projection/seed step. **De-risked the §1.65(c) open route** (rank invariant now a plain finrank equality → V6-b completion drops to P≈2). Coordinator: full-diff read, warning-clean rebuild, sorry-grep clean, trailer correct |
 | 107 | L5b-i completion `exists_rankPolynomial_of_IH_relabel_linking` (route 2), f22699e | 2/2/1 | sonnet | boundary-pair-primary | clean | ✓✓✓✓✓✓ | 141k tok / 149 tools / 1452s (~24 min) | post-core-landed V6-b completion; realized difficulty matched the a-priori P=2 (the genuinely-new core was split out + landed at row 106 — contrast the brick rows 91/100 P≈3). Friction (`haveI:Loopless` for `IsLink.ne`) captured in phase-note only, not lifted; the duplicate lifted the more-general def-∃ quirk (harvested eb567db). Pair → Findings 2026-06-13 (rows 107–108) |
 | 108 | L5b-i completion `exists_rankPolynomial_relabel_of_le_finrank` (route 2), 2aaae9f (worktree, discarded) | 2/2/1 | opus | boundary-pair-duplicate | clean | ✓✓✓—✓✓ | 270k tok / 86 tools / 1439s (~24 min) | seeded-worktree duplicate; independently chose route 2 = same structure as the primary → §1.65(c) route-2 soft-rec confirmed (pin-audit PASS). Cleaner surface (Loopless instance arg; lifted the def-∃ dot-notation quirk → QUIRKS §35, harvested eb567db). Blueprint —: worktree checkdecls not coord-verified (disclosed green). ~2× tokens, ~same wall. Pair → Findings 2026-06-13 (rows 107–108) |
+| 109 | L5b-ii `case_I_realization_all_k` (no commit) | 2/2/1 | sonnet | normal | BLOCKED | —————— | 37k tok / 69 tools / 1754s (~29 min) | **sizing-BLOCKED, correct + coordinator-verified diagnosis** (good outcome, not a capability fail): L5b-ii needs the splice brick's `hFc_surv_le` *containment*, which the L5b-i route-2 leaf (rank only, generic seed) cannot supply — containment needs a collapse/degenerate placement (as the non-simple producer used), conflicting with the GP builder's generic seed. My 2/2/1 P=2 repeated the row-104-class under-scope; the real obstacle is the §1.65 core P≈3 difficulty. HEAD unchanged → §1.66 design-pass trigger (decompose, not escalate). → Findings 2026-06-13 (rows 107–108 addendum) |
 
 ## Findings
 
@@ -259,6 +260,16 @@ the protocol)
   the narrow idiom in-note (duplicate's entry harvested to master, eb567db).
   Caveat: the route was *open*, mildly confounding the same-task comparison — the
   remaining open need is a pair on a *single-determined-route* leaf.
+  **Addendum (row 109):** the pin-audit validated route 2 as a *correct lemma*, but L5b-ii
+  then BLOCKED — route 2 supplies the surviving-block *rank* yet not the splice brick's
+  `hFc_surv_le` *containment* (which needs a collapse placement, not the generic seed). Sharper
+  lesson: **a boundary pair on a *leaf* confirms the leaf's internal correctness, not its fitness
+  for a downstream consumer's obligation built in a later dispatch.** Both pair members (and the
+  coordinator) built/checked the leaf in isolation; only assembling the producer surfaced that
+  route 1 (`_proj`, which yields the containment) was likely the right route, not route 2. When a
+  leaf's route choice hinges on a not-yet-built consumer's hypotheses, check the route against
+  those hyps — or defer the route pick to the consumer's build — rather than grading "is it a
+  viable lemma."
 
 - (2026-06-13, rows 101–102, L5a-ii) **At a genuinely-new P=3 kernel with
   no abstraction-split escape, sonnet confronts it (does NOT defer) and lands

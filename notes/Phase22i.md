@@ -50,10 +50,15 @@ split (shared core → completion) is done:
   non-root `q`. Mints `lem:rank-polynomial-IH-relabel` (rigidity-matrix.tex, green).
   All gates clean (build+lint+checkdecls; axiom-clean; `haveI : Loopless` pattern for `IsLink.ne`).
 
-**Next: L5b-ii** — `case_I_realization_all_k` (GP producer, splice-brick analogue of L4b-2).
-Assembly of landed pieces: `exists_rankPolynomial_of_IH_relabel_linking` + H-leg rigid polynomial
-+ GP polynomial + fresh alg-indep seed + splice brick + B2. Statement change → blueprint
-statement-grep gate (structural-edit). `P≈2`. Mints `lem:case-I-realization-all-k`. Then L5b-iii.
+**Next: a design pass (§1.66) to resolve L5b-ii's `hFc_surv_le` route.** L5b-ii BLOCKED
+(2026-06-13, sonnet; HEAD unchanged, tree clean) — the route-2 leaf gives the surviving-block
+*rank* but NOT the splice brick's *containment* `hFc_surv_le : (span Fc.rigidityRows).map D ≤
+(span F.rigidityRows).map D`, which holds at a collapse/degenerate placement (as the non-simple
+producer used via `hingeRow_collapseTo_comp_extProj_eq`) but NOT at the GP builder's fresh generic
+seed. Coordinator-verified (brick signature RigidityMatrix:3213; non-simple discharge route).
+`P≈2` was optimistic. See *Hand-off* for the two candidate routes (route-1 `_proj` vs route-2
+degenerate-seed, reusing the existing `degeneratePlacement` / `panelRow_collapseTo_comp_extProj_dualMap`
+infra).
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -191,7 +196,11 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
         non-root `q`. Mints `lem:rank-polynomial-IH-relabel` (rigidity-matrix.tex, green).
     - [ ] **L5b-ii** — `case_I_realization_all_k` (the GP producer, the splice-brick analogue of L4b-2's
       `case_cut_edge_realization_gp`): assembly of landed pieces + the L5b-i leaf + the L5a-i splice brick + B2.
-      **`P≈2`.** Statement change → blueprint statement-grep gate. Mints `lem:case-I-realization-all-k`.
+      **BLOCKED (2026-06-13) on the splice brick's `hFc_surv_le` containment** — the route-2 leaf gives
+      the surviving-block rank but not the containment (holds at a collapse/degenerate placement, not the
+      GP builder's generic seed). `P≈2` was optimistic; the real obstacle is the §1.65 core P≈3 difficulty.
+      Awaiting the **§1.66 design pass** (route-1 `_proj` vs route-2 degenerate-seed) — see *Hand-off*.
+      Then mints `lem:case-I-realization-all-k`.
     - [ ] **L5b-iii** — the `hcontract` slot-filler dispatch (`by_cases G.Simple`): plumbing (`P≈1`); the 6.5
       sub-arm stays red → L8. Updates `lem:case-I-dispatch`.
   V6 RESOLVED — N6a is dead infrastructure (deleted-motive-bound, `ofNormals`-bound); V4
@@ -286,15 +295,32 @@ at the witness seed with `hN := le_refl`. The §1.65(c) flagged decision resolve
 route 2 (no new `_proj` surface; `IsLink.ne` needs `haveI : Loopless` not hypothesis dot-access).
 `lem:rank-polynomial-IH-relabel` green; all gates clean.
 
-**Smallest next forward commit: L5b-ii** — `case_I_realization_all_k` (the GP producer, `P≈2`,
-assembly mirroring `case_cut_edge_realization_gp` with splice brick). Inputs: H-leg rigid polynomial
-(`exists_rankPolynomial_of_rigidOn_linking_set` — `H` is rigid), `exists_rankPolynomial_of_IH_relabel_linking`
-for the surviving block, `exists_generalPosition_polynomial`; fresh alg-indep seed non-root of all
-three; splice brick `le_finrank_span_rigidityRows_of_splice` with `hInj` from
-`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
-`rigidContract_vertexSet_inter_eq_singleton`; B2 closes the `≤`. Statement change vs the simple
-`case_I_realization` → structural-edit blueprint statement-grep gate (per `CLAUDE.md`). Mints
-`lem:case-I-realization-all-k`. Then L5b-iii dispatch (`by_cases G.Simple`, `P≈1`). Canonical: §1.65.
+**L5b-ii BLOCKED on `hFc_surv_le` (2026-06-13, sonnet; HEAD unchanged, tree clean) — the route-2
+leaf gives rank, not containment.** The splice brick (RigidityMatrix:3213) needs BOTH `hInj`
+(rank preserved, landed L5a-ii) AND `hFc_surv_le : (span Fc.rigidityRows).map D ≤
+(span F.rigidityRows).map D` (a span **containment**). The L5b-i route-2 polynomial
+`exists_rankPolynomial_of_IH_relabel_linking` supplies only the surviving-block *rank* lower bound
+at a *generic* seed — nothing about the containment. `hFc_surv_le` holds when Fc's hinge rows
+correspond to F's, i.e. at a **collapse/degenerate** placement (the non-simple producer
+`case_I_realization_nonsimple` discharged it via `hingeRow_collapseTo_comp_extProj_eq`), NOT at the
+GP builder's fresh generic seed. So route-2's full-span-at-generic-seed and the producer's
+containment-needs-collapse **conflict on the seed**. Coordinator-verified (brick signature; the
+non-simple discharge route). The §1.65(c) route-2 soft-rec was the wrong tool for the producer; the
+boundary pair (rows 107–108) validated route 2 as a *lemma* but neither member checked it against
+the producer's `hFc_surv_le`.
+
+**Smallest next forward commit: a design pass (§1.66)** to resolve the route + re-decompose L5b-ii.
+Two candidate unblocks (BLOCKED-agent diagnosis, coordinator-verified): (1) **route-1 `_proj`** — a
+deficiency-aware *projected* rank polynomial for the surviving block that ALSO yields
+`(span Fc.rigidityRows).map D ≤ (span F.rigidityRows).map D` at the seed (~3 new GenericityDevice
+lemmas, the `_proj` analogue of L4b-1); (2) **route-2 degenerate-seed** — reuse the EXISTING
+collapse machinery (`degeneratePlacement` CaseI:907, `panelRow_collapseTo_comp_extProj_dualMap`
+CaseI:940 — which already reconcile the differing endpoints under the degenerate placement) so the
+degenerate placement discharges `hFc_surv_le`, then show the L5b-i polynomial `Q` is nonzero at
+`degeneratePlacement r V(H) q₀` for generic `q₀` (the only genuinely-new piece; the rest is landed).
+The design pass reads the existing degeneratePlacement infra, picks the route, decides whether the
+L5b-i route-2 completion is reused (option 2) or superseded (option 1), and re-decomposes L5b-ii
+with exact signatures. fable-mapped (→ opus sub). Canonical-to-be: §1.66.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
