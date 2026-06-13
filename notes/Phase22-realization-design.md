@@ -5817,6 +5817,19 @@ piece is the deficiency-aware extractor (c). No residual open sub-question for L
 
 ### 1.63 The L5 signature pin — Lemma 6.2, the non-simple Case-I branch (`hcontract`): the `hcontract` slot is a `by_cases` dispatch on `G.Simple` (the §1.55(c) precedent generalized to all-`k`), simple → forgetful M4 ∘ the all-`k`-restated GP `case_I_realization` (6.5 sub-arm carried as `h65`, L8), non-simple → the NEW KT Lemma 6.2 coincident-panel splice; V6 RESOLVED — the landed N6a `hasFullRankRealization_of_splice_of_supportExtensor` cannot be re-aimed (it concludes the *deleted* `HasFullRankRealization` and is `PanelHingeFramework`/`ofNormals`-bound), so L5's non-simple branch is a fresh `BodyHingeFramework`-native bare producer mirroring the landed L4a `case_cut_edge_realization` shape, with the coincident-panel cut hinge supplied by the already-landed `exists_extensor_in_two_panels` (which works AT `n=n`); sliced L5a (the non-simple bare producer) → L5b (the simple-branch all-`k` GP restate + the dispatch) (2026-06-13)
 
+> ⚠️ **(c)/(f) CORRECTION PENDING (2026-06-13, the L5a-i boundary pair).** The splice-brick statement and
+> slice below are **WRONG** and superseded by the forthcoming §1.64 re-pin. The error: the contraction leg
+> was stated as `induce ((V(G)∖V(H))∪{r})` and framed as a *bare, transversality-free* block-triangular
+> brick, but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` *collapses* V(H)→r — same vertex
+> set as `induce`, but it **keeps the relabelled crossing edges** `induce` drops, so the induce-leg rank
+> `≠ D(|V|−2)−k` (a strictly weaker bound the producer can't close), and the IH supplies the *contraction's*
+> realization, not the induce-leg's. The genuine (6.3)–(6.5) additivity is the **`extProj` column-projection
+> gated on generic rigidity** (`injOn_extProj_dualMap_rigidityRows`, the Claim-6.4 "projection loses zero
+> rank" fact — CaseI.lean:1091/1130), the SAME machinery the landed `case_I_realization` uses; there is no
+> bare `S_H + S_c ≤ S` route. The (a) dispatch and (b) V6 (N6a dead infrastructure) verdicts **stand**; only
+> the (c) brick statement + (f) slice are corrected at §1.64. (The bare `induce`-brick was built — sonnet
+> primary 90e8d4a — and reverted.)
+
 > **Docs-only design pass (the L5 pin).** Lean read this pass (declarations + current line numbers, all
 > verified this pass): GenericityDevice.lean — `hasFullRankRealization_of_splice_of_supportExtensor` (:915,
 > N6a, the bare splice; **concludes `PanelHingeFramework.HasFullRankRealization k G`** — the M5-deleted weak
