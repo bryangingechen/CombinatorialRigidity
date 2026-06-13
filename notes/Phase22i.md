@@ -15,14 +15,10 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L1a–L1i complete.** The KT-4.8(ii) prerequisites are all green: both edge-splitting arms
-(L1h), and the L1i quartet — the in-place all-`k` restate of
-`splitOff_exists_base_inter_fiber_lt` (4.3(ii) forward, now takes `hG : G.IsKDof n k` +
-`hH : (G.splitOff …).IsKDof n k`), the 4.3(ii) reverse
-`splitOff_isKDof_of_exists_base_inter_fiber_lt`, the 4.4-equality producer
-`exists_isBase_vb_fiber_eq_one_of_removeVertex_isKDof`, and the KT 4.7 all-`k`
-`removeVertex_deficiency_gt_of_noRigid` (all in `ForestSurgery.lean`). **L1j** (the
-commuting square + the 4.8(ii) assembly) is now unblocked — see Hand-off.
+**L1 fully complete (L1a–L1j).** L1j landed: `induce_insert_splitOff` (commuting square)
+in `Operations.lean`, `splitOff_isMinimalKDof_of_pos` (KT 4.8(ii)) in `ForestSurgery.lean`,
+and `lem:reduction-step-pos` (green) in the blueprint. **L2** (the four-case
+`minimal_kdof_reduction_all_k`) is the next build target.
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -68,11 +64,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     deleted; `def:rank-hypothesis` re-prosed. Pair-swap sub-commit still pending.
   - [x] **L0e** (pair-swap) — swap `theorem_55_generic`/`theorem_55_d3` second slot to
     `HasPanelRealization k n G`; re-type three bare carries; update d3-instance prose.
-- [ ] **L1** — the combinatorial bricks; signatures pinned in §1.58, sliced **L1a–L1j**
+- [x] **L1** — the combinatorial bricks; signatures pinned in §1.58, sliced **L1a–L1j**
   (V2 predicate; the `|V| ≤ 2` trichotomy; V3/V4/G0 in-place all-`k` restates; the KT 3.6
   cut decomposition; KT 4.5(ii)/4.2/4.4-eq/4.7/4.3(ii)/4.8(ii)). Build order §1.58(i):
-  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **{L1a–L1i} done;
-  L1j is the open task.**
+  L1a → {L1b, L1c, L1d, L1f, L1g} → L1e, L1h → L1i → L1j. **All done.**
   - [x] **L1a** — `cutEdges` + `TwoEdgeConnected` + three bridge lemmas
     (`cutEdges_eq_crossingEdges_cutLabeling`, `twoEdgeConnected_of_isKDof_zero`,
     `two_le_degree_of_twoEdgeConnected`) in `Deficiency.lean` + `def:cut-edges-2ec` blueprint
@@ -124,6 +119,11 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     Blueprint: new `lem:removal-deficiency-strict` + `lem:splitoff-kdof-criterion`
     (molecular-induction.tex); `lem:case-III-claim-6-11-base` restated in place at
     general `k` (statement-grep gate — its `\lean` pin survived the flip).
+  - [x] **L1j** — commuting square `induce_insert_splitOff` in `Operations.lean` +
+    KT 4.8(ii) `splitOff_isMinimalKDof_of_pos` in `ForestSurgery.lean` +
+    `lem:reduction-step-pos` (green) in `molecular-induction.tex`. Three-step proof:
+    dof-tracking pins `def(H) ∈ {k−1, k}`; 4.3(ii)-forward + fundamental circuit +
+    commuting square + 4.2(i) rule out `k`; minimality at `k−1` via 4.7 + 4.2(ii).
 - [ ] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c)).
 - [ ] **L3** — the base producer (`hbase` carry discharged).
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
@@ -150,19 +150,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0 fully complete. L1a–L1i complete.**
-**Smallest next forward commit: L1j**, the commuting square + the KT 4.8(ii) assembly
-(design §1.58(g), statements at design notes §4969/§4981): (1) `induce_insert_splitOff` in
-`Operations.lean` beside `splitOff` — `(G.induce (insert v S)).splitOff v a b e₀ =
-(G.splitOff v a b e₀).induce S` for `v ∉ S`, `a, b ∈ S`, `e₀ ∉ E(G)`, by `Graph.ext`;
-(2) `splitOff_isMinimalKDof_of_pos` in `ForestSurgery.lean` beside `splitOff_isMinimalKDof`
-— a minimal `k`-dof `G` (`k > 0`, no proper rigid subgraph, `|V| ≥ 3`, `D ≥ 3`) splits off
-to a minimal `(k−1)`-dof graph; route per §4994: dof-tracking pins `def(H) ∈ {k−1, k}`,
-4.3(ii)-forward + the fundamental-circuit + the commuting square + 4.2(i) rule out `k`
-(producing a proper rigid subgraph against `hnp`), and minimality at `k−1` runs the
-`e = e₀` / `e ≠ e₀` base-fiber split through 4.7 and 4.2(ii); (3) blueprint
-`lem:reduction-step-pos` beside `lem:reduction-step`. If (2) runs long, (1) + its blueprint
-note is a complete smaller commit. Then L2 (the four-case reduction principle).
+**L0 fully complete. L1a–L1j complete.**
+**Smallest next forward commit: L2**, the four-case reduction principle
+`minimal_kdof_reduction_all_k` (§1.56(c)): the all-`k` analogue of
+`minimal_kdof_reduction` in `ForestSurgery.lean`; the `k > 0` case consumes
+`splitOff_isMinimalKDof_of_pos` and `rigidContract_isMinimalKDof` (both green);
+blueprint node `thm:minimal-kdof-reduction-all-k` in `molecular-induction.tex`.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -171,6 +164,14 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
 
 ## Decisions made during this phase
 
+- **L1j build (2026-06-12):** `induce_insert_splitOff` (commuting square) in `Operations.lean`
+  + `splitOff_isMinimalKDof_of_pos` (KT 4.8(ii)) in `ForestSurgery.lean`. Three-step:
+  dof-tracking → fundamental-circuit + commuting square + 4.2(i) rule out `def = k` →
+  4.7 + 4.2(ii) minimality at `k−1`. Key: `IsKDof`/`IsMinimalKDof` are non-reducible `def`s
+  — extract `H.deficiency n = k` before `linarith` (§ 4, TACTICS-GOLF updated).
+  `Matroid.rankFinite_of_finite` (not `finite_of_finite`) for `[RankFinite M]`;
+  `Set.notMem_empty`/`Set.ncard_insert_of_notMem`/`Set.ncard_diff_singleton_lt_of_mem`
+  (camelCase, `_of_mem` suffix — FRICTION updated). `blueprint/verify.sh` green.
 - **L1i build (2026-06-12):** the KT 4.4-eq / 4.7 / 4.3(ii) quartet in `ForestSurgery.lean`
   (node list in the layer-plan bullet). 4.3(ii)-forward restated in place (its one consumer
   `splitOff_removeVertex_minimalKDof` computes `hdefH_zero` before the call and passes it as

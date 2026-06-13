@@ -237,9 +237,10 @@ It is what keeps the project's API gaps from accumulating silently.
    - A multi-rewrite chain (3+ `rw` arguments) for one mathematical
      step — usually a missing fused lemma.
    - A manual `have h : <unfolded body> := h_predicate` to surface a
-     `def`-predicate's content for `omega` / `grind` (cf.
+     `def`-predicate's content for `omega` / `grind` / `linarith` (cf.
      `../TACTICS-GOLF.md` § 4 for the `IsLaman` / `IsTight` cases —
-     `IsInfinitesimallyRigid` joined the club in Phase 4).
+     `IsInfinitesimallyRigid` joined the club in Phase 4, `IsKDof` /
+     `IsMinimalKDof` in Phase 22i).
    - `omega` or `nlinarith` failed and you added a numeric hint, a
      `ring`-normalized rewrite, or a manual `mul_comm`.
    - Two `rw` lemmas to bridge a single conversion (e.g. `coe_X` then

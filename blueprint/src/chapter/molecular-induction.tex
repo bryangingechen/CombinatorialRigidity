@@ -1190,6 +1190,34 @@ route that bypasses the deferred forest surgery
   G_v) \le 0$ --- a contradiction. Hence every base meets every fiber.
 \end{proof}
 
+\begin{lemma}[Reduction step preserves minimality, positive dof; KT Lemma 4.8(ii)]
+  \label{lem:reduction-step-pos}
+  \lean{Graph.splitOff_isMinimalKDof_of_pos}
+  \leanok
+  \uses{lem:dof-tracking, lem:reduction-measure, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
+  Let $G$ be a minimal $k$-dof-graph with $k > 0$, $D \ge 3$, $|V| \ge 3$, and no proper
+  rigid subgraph. Then splitting off at a degree-2 vertex $v$ (with neighbours $a, b$) yields
+  a minimal $(k-1)$-dof-graph $G_v^{ab}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:dof-tracking, lem:splitoff-kdof-criterion, lem:edge-splitting, lem:edge-set-indep-pos, lem:removal-deficiency-strict, lem:circuit-induces-rigid}
+  \textbf{Step 1 (dof tracking).} \Cref{lem:dof-tracking} gives
+  $\operatorname{def}(G_v^{ab}) \in \{k-1, k\}$. \textbf{Step 2 (ruling out $k$).}
+  If $\operatorname{def}(G_v^{ab}) = k$ then by \cref{lem:splitoff-kdof-criterion} some
+  base $B$ of $M(\tilde{G}_v^{ab})$ meets the fiber $\widetilde{ab}$ in fewer than $D-1$
+  elements. \Cref{lem:edge-set-indep-pos} provides the unique base $E(\tilde{G}_v)$ of
+  $M(\tilde{G}_v^{ab})$; a fundamental-circuit argument then applies
+  \cref{lem:edge-splitting} (KT 4.2(i)) to produce a proper rigid subgraph, contradicting
+  the hypothesis. Hence $\operatorname{def}(G_v^{ab}) = k-1$.
+  \textbf{Step 3 (minimality at $k-1$).} For any proper subgraph $H \le G_v^{ab}$: if
+  $e_0 \notin E(H)$ then \cref{lem:removal-deficiency-strict} and \cref{lem:edge-splitting}
+  (KT 4.2(ii)) show $\operatorname{def}(H) < k-1$; otherwise $H$ lifts to a proper
+  subgraph of $G$ via the commuting square
+  $\mathtt{induce\_insert\_splitOff}$, and \cref{lem:circuit-induces-rigid} forces the
+  deficiency below $k-1$.
+\end{proof}
+
 \subsection{Theorem 4.9}
 \label{sec:molecular-induction-thm49}
 

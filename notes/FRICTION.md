@@ -1220,6 +1220,17 @@ housekeeping pass once their resolution is fully indexed.
   slot, or use the bare lemma if it has none.
 - **Status:** resolved (idiom in-proof; no mirror — it's a calling-convention gotcha, not a missing lemma).
 
+### [resolved] `Set.ncard` naming: camelCase `notMem` variants, `_of_mem` suffix for strict-lt
+- **Where it bit:** `splitOff_isMinimalKDof_of_pos` in `Molecular/Induction/ForestSurgery.lean`
+  (Phase 22i, L1j). Three names guessed wrong on first try:
+  - `Set.not_mem_empty` → correct is `Set.notMem_empty`
+  - `Set.ncard_insert_of_not_mem` → correct is `Set.ncard_insert_of_notMem`
+  - `Set.ncard_diff_singleton_lt` → correct is `Set.ncard_diff_singleton_lt_of_mem`
+- **Pattern:** `Set.ncard` lemmas follow mathlib4's camelCase `notMem` (not underscore
+  `not_mem`) and include the `_of_mem` membership hypothesis suffix in the name when the
+  hypothesis is required.
+- **Status:** resolved (naming).
+
 ### [resolved] A lemma whose *statement* mentions `cutLabeling V' a b` needs `[∀ x, Decidable (x ∈ V')]` in the binder list
 - **Where it bit:** `crossingEdges_cutLabeling_singleton_subset` / `_ncard_le` in
   `Molecular/Induction/` (Phase 20 KT 4.6, `lem:reducible-vertex` cut↔degree bridge).
@@ -1249,8 +1260,11 @@ housekeeping pass once their resolution is fully indexed.
      cardinality, `IsBase.ncard_eq_ncard_of_isBase`) forces `I = B'`. **When the rank count is
      in hand, prefer the dedicated `Indep.isBase_of_ncard hI (h : M.rank ≤ I.ncard)`** (one
      line; Phase-22d `splitOff_exists_base_inter_fiber_lt`). It needs `[M.RankFinite]`, which on
-     a finite ground type is `haveI : M.Finite := Matroid.finite_of_finite (M := …)` (pass `M`
-     explicitly; `matroidMG`'s `[DecidableEq β]` must be on the *statement*, not just `classical`).
+     a finite ground type is `haveI : M.RankFinite := Matroid.rankFinite_of_finite (M := …)`
+     (pass `M` explicitly; `matroidMG`'s `[DecidableEq β]` must be on the *statement*, not just
+     `classical`). Trap: `Matroid.finite_of_finite` gives `M.Finite` (a weaker instance), not
+     `RankFinite`; the compiler accepts both without complaint, but only `rankFinite_of_finite`
+     discharges `[RankFinite M]` (Phase-22i, `splitOff_isMinimalKDof_of_pos`, 3 occurrences).
   3. **`X∩ẽ≠∅` is base-meets-fiber, not forest:** if `X∩ẽ=∅`, `X−ej` is independent of full
      size (tight on `V(X)=V`) ⟹ a base avoiding `ẽ`, contradicting `IsMinimalKDof`'s clause
      (`hG.2`). No `rank M↾(E∖ẽ)` detour.

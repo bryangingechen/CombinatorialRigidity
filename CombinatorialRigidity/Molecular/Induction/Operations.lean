@@ -1197,4 +1197,58 @@ lemma splitOff_isLink_relabel [DecidableEq α] [DecidableEq β] {G : Graph α β
           · rw [hρ_other x hxa hxv] at hρx_b; exact hxnb hρx_b
         exact Or.inl ⟨he_b_ne_e₁, hxb ▸ hyv ▸ hG_eb.symm, hxb ▸ hba, hyv ▸ hav.symm⟩
 
+/-- **Commuting square: induce then split off = split off then induce** (used by
+`lem:reduction-step-pos`, KT 4.8(ii)). Given a vertex `v ∉ S` with neighbours `a, b ∈ S ∩ V(G)`
+and a fresh edge `e₀ ∉ E(G)`, splitting off `v` from the `v`-augmented induced subgraph
+`G.induce (insert v S)` produces the same graph as splitting off `v` from `G` and then
+inducing on `S`:
+
+  `(G.induce (insert v S)).splitOff v a b e₀ = (G.splitOff v a b e₀).induce S`
+
+The vertex sets agree: both equal `S` (the LHS deletes `v` from `insert v S`). The link
+relations agree: in the surviving case `e ≠ e₀`, the `insert v S` membership with `x,y ≠ v`
+reduces to `x, y ∈ S`; in the fresh-edge case `e = e₀`, the LHS uses `a, b ∈ insert v S`
+while the RHS requires `a, b ∈ V(G)`, so `haV`/`hbV` are needed as hypotheses. -/
+lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set α}
+    (hvS : v ∉ S) (haS : a ∈ S) (hbS : b ∈ S)
+    (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G)) :
+    (G.induce (insert v S)).splitOff v a b e₀ = (G.splitOff v a b e₀).induce S := by
+  have hav : a ≠ v := fun h => hvS (h ▸ haS)
+  have hbv : b ≠ v := fun h => hvS (h ▸ hbS)
+  refine Graph.ext ?_ (fun e x y => ?_)
+  · -- Vertex sets: both are `S`.
+    simp only [vertexSet_splitOff]
+    ext x
+    simp only [Set.mem_diff, Set.mem_singleton_iff]
+    exact ⟨fun ⟨hxins, hxnv⟩ => Or.resolve_left hxins hxnv,
+           fun hxS => ⟨Or.inr hxS, fun h => hvS (h ▸ hxS)⟩⟩
+  · -- Link relations: unfold both sides.
+    simp only [splitOff_isLink, Graph.induce_isLink]
+    constructor
+    · -- LHS → RHS
+      rintro (⟨hne, ⟨hGl, hxins, hyins⟩, hxv, hyv⟩ | ⟨rfl, -, -, -, -, hxy⟩)
+      · -- Surviving edge: membership in `insert v S` + `≠ v` gives `∈ S`.
+        exact ⟨Or.inl ⟨hne, hGl, hxv, hyv⟩,
+          Set.mem_of_mem_insert_of_ne hxins hxv,
+          Set.mem_of_mem_insert_of_ne hyins hyv⟩
+      · -- Fresh edge `e = e₀`: endpoints are `a, b ∈ S`.
+        rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · exact ⟨Or.inr ⟨rfl, hav, hbv, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩, haS, hbS⟩
+        · exact ⟨Or.inr ⟨rfl, hav, hbv, haV, hbV, Or.inr ⟨rfl, rfl⟩⟩, hbS, haS⟩
+    · -- RHS → LHS
+      rintro ⟨hlink | hlink, hxS, hyS⟩
+      · -- Surviving edge: inject back into `insert v S`.
+        obtain ⟨hne, hGl, hxv, hyv⟩ := hlink
+        exact Or.inl ⟨hne,
+          ⟨hGl, Set.mem_insert_of_mem _ hxS, Set.mem_insert_of_mem _ hyS⟩, hxv, hyv⟩
+      · -- Fresh edge `e = e₀`: `x = a` or `x = b`, both in `insert v S`.
+        obtain ⟨rfl, -, -, -, -, hxy⟩ := hlink
+        rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · -- x = a, y = b; hxS : a ∈ S, hyS : b ∈ S
+          exact Or.inr ⟨rfl, hav, hbv,
+            Set.mem_insert_of_mem _ hxS, Set.mem_insert_of_mem _ hyS, Or.inl ⟨rfl, rfl⟩⟩
+        · -- x = b, y = a; hxS : b ∈ S, hyS : a ∈ S; goal has y ≠ v ∧ x ≠ v ∧ y∈.. ∧ x∈..
+          exact Or.inr ⟨rfl, hav, hbv,
+            Set.mem_insert_of_mem _ hyS, Set.mem_insert_of_mem _ hxS, Or.inr ⟨rfl, rfl⟩⟩
+
 end Graph

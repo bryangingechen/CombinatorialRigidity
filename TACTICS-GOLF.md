@@ -25,8 +25,8 @@ symptom-indexed and lighter.
 3. **Mirror-first rule** — if you needed a lemma upstream-eligible,
    mirror it before landing the proof.
 4. **`refine ⟨?_, ?_⟩` for our `def`s** — `IsLaman`, `IsTight`,
-   `IsSparse`, `edgesIn` are non-reducible; expose their structure
-   manually.
+   `IsSparse`, `IsKDof`, `IsMinimalKDof`, `edgesIn` are non-reducible;
+   expose their structure manually (also blocks `linarith`).
 5. **Lifting Subtype-Sym2 equalities** — prefer `congrArg (Sym2.map
    Subtype.val)` over `rw [Subtype.mk.injEq]; subst`.
 6. **`fun_prop` for continuity / differentiability** — replace explicit
@@ -451,13 +451,17 @@ your guess of what mathlib calls it — names drift, types don't.
 
 ## 4. `refine ⟨?_, ?_⟩` for our `def`s
 
-`IsLaman`, `IsTight`, `IsSparse`, and `edgesIn` are non-reducible
-`def`s. `grind` will *not* unfold them. Consequences:
+`IsLaman`, `IsTight`, `IsSparse`, `IsKDof`, `IsMinimalKDof`, and `edgesIn` are
+non-reducible `def`s. `grind` and `linarith` will *not* unfold them. Consequences:
 
 - `grind` will not see through `IsLaman G ↔ G.IsTight 2 3` on its own.
   Expose the structure with `refine ⟨?_, ?_⟩` (using the `And.intro`
   for `IsTight`'s pair shape) before letting `grind` finish each
   branch.
+- `linarith` will not see through `IsKDof` or `IsMinimalKDof`: if a hypothesis
+  `hG : G.IsMinimalKDof n k` is in scope and you need `G.deficiency n = k` for
+  `linarith`, extract it first: `have hGk : G.deficiency n = k := hG.1`
+  (Phase-22i, `splitOff_isMinimalKDof_of_pos`).
 - A goal like `(G.edgesIn ↑Finset.univ).ncard ≤ …` won't be touched
   by `grind` until you either rewrite via `edgesIn_univ` first or
   pass `edgesIn_univ` as a hint.
