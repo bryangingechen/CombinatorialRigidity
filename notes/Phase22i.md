@@ -39,7 +39,9 @@ tolerant content of KT Lemma 5.1) → `BodyHingeFramework.injOn_extProj_dualMap_
 `lem:extProj-preserves-rank-of-inter` (rigidity-matrix.tex, beside the splice brick). All three
 axiom-clean; build+lint+blueprint-verify green. V6-a fully RESOLVED.
 **L5a-ii producer complete**: `case_I_realization_nonsimple` (CaseI.lean) landed; `lem:case-I-realization-nonsimple` green.
-**Next: L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch.
+**Next: L5b-i** — the V6-b leaf (the `def = k > 0` exterior-projected surviving-block rank transport, `P≈3`,
+genuinely-new; §1.65 decomposed L5b into L5b-i leaf → L5b-ii producer → L5b-iii dispatch; internal route is a
+flagged open decision per §1.65(c)).
 **The defect:** §1.63 stated the contraction leg as `induce ((V(G)∖V(H))∪{r})` framed as a *bare,
 transversality-free* brick — but `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` COLLAPSES V(H)→r
 (same vertex set as `induce` but **keeps the relabelled crossing edges** `induce` drops), so the induce-leg
@@ -81,7 +83,7 @@ gate included).
 | `h65` (the KT Lemma-6.5 vertex-removal arm of the Case-I dispatch) | `lem:case-I-dispatch` (case-i.tex) | `theorem_55_d3` (:6831), the negative branch of the L5c′ `by_cases` | **L8**: §1.54(a3) steps 1–2 — Claim 6.6 graph side (~2–3 commits) + the Π°-placement producer (own signature pin first); the dispatch itself landed in 22h. Claim 6.6 concludes inside the `k = 0` stratum, no all-`k` generality needed |
 | `hbase` (the bare two-vertex base) | `def:genuine-hinge-realization` + `def:rank-hypothesis`; `lem:theorem-55-base-producer` green at the strong pair | `theorem_55_d3` rewired: `theorem_55_base_producer` supplies `.2`; `hbase` dropped from signature | **L3 complete**: the producer concludes the §1.60(a) strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (the L9-spine `Pc` motive); single-edge + empty GP arms built, parallel-pair vacuous by simplicity |
 | `hsplit` (the bare no-rigid-subgraph branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6804) | **L9 wiring, no new build**: G0 (`simple_of_isMinimalKDof_of_noRigid`) gives `G.Simple`; forgetful (M4) ∘ the GP Case-III producer |
-| `hcontract` (the bare Case-I branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6809) | **L5** (re-pinned §1.64): dispatch on `G.Simple` — simple → forgetful (M4) ∘ the 6.3/6.5 GP arm; non-simple → KT Lemma 6.2 (the coincident-panel splice). The eq. (6.3)–(6.5) rank addition is the **block-triangular `≥` + Lemma 5.1** column-deletion (`finrank_pinnedMotions_add_screwDim`, general-rank), assembled into a NEW general-rank shared-body brick `le_finrank_span_rigidityRows_of_splice` — NOT the rigidity-gated `injOn_extProj`/Claim-6.4 route (unavailable at `k>0`), NOT a bare span split. Re-cut L5a-i (brick) → L5a-ii (producer) → L5b |
+| `hcontract` (the bare Case-I branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6809) | **L5** (re-pinned §1.64): dispatch on `G.Simple` — simple → forgetful (M4) ∘ the 6.3/6.5 GP arm; non-simple → KT Lemma 6.2 (the coincident-panel splice). The eq. (6.3)–(6.5) rank addition is the **block-triangular `≥` + Lemma 5.1** column-deletion (`finrank_pinnedMotions_add_screwDim`, general-rank), assembled into a NEW general-rank shared-body brick `le_finrank_span_rigidityRows_of_splice` — NOT the rigidity-gated `injOn_extProj`/Claim-6.4 route (unavailable at `k>0`), NOT a bare span split. Re-cut L5a-i (brick) → L5a-ii (producer) → L5b; L5b further decomposed (§1.65) into L5b-i (the V6-b `def=k>0` projected rank-transport brick, `P≈3`) → L5b-ii (`case_I_realization_all_k`) → L5b-iii (dispatch) |
 
 Beyond the carries, the all-`k` restructure itself adds the structural deliverables of
 §1.56(c)/(e): the new reduction cases (Lemma 6.1 not-2-edge-connected; Lemma 6.8 `k > 0`
@@ -164,10 +166,21 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     interface hyps + B2 + coincident-panel extensors (`exists_linearIndependent_extensor_pair_perp`) +
     `isKDof_zero_of_parallel_pair`. Mints `lem:case-I-realization-nonsimple` (green, blueprint-verify clean).
     (The old bare `induce`-brick + producer 90e8d4a was built then reverted, superseded by this structure.)
-  - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch. §1.64(f)
-    caveat: the simple all-`k` restate is **not** a mechanical `0→k` substitution — it re-routes its surviving
-    block through the L5a-i brick's GP variant (the landed `rigidContract_exterior_rank_transport` leg is
-    `hdef=0`-gated). Still buildable.
+  - [ ] **L5b** — the all-`k` GP restate `case_I_realization_all_k` + the `by_cases G.Simple` dispatch.
+    **Decomposed §1.65 (2026-06-13) into three leaves**, the V6-b brick first:
+    - [ ] **L5b-i** — the **V6-b leaf** `exists_rankPolynomial_surviving_proj_of_le_finrank` (or its route-2
+      split): the `def = k > 0` exterior-projected surviving-block rank transport, the `_le_finrank` analogue
+      of the rigid `rigidContract_exterior_rank_transport` + `exists_rankPolynomial_of_rigidOn_linking_set_proj`.
+      **`P≈3` — the one genuinely-new math of L5b, its own slice.** §1.65(c) flags an **open internal-route
+      decision** (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii `hInj`); both need
+      a deficiency-aware relabel transport as their irreducible new core; **do not pin the route in advance** —
+      resolve at this build with the goal state open. First concrete L5b commit. Mints a new GenericityDevice
+      node.
+    - [ ] **L5b-ii** — `case_I_realization_all_k` (the GP producer, the splice-brick analogue of L4b-2's
+      `case_cut_edge_realization_gp`): assembly of landed pieces + the L5b-i leaf + the L5a-i splice brick + B2.
+      **`P≈2`.** Statement change → blueprint statement-grep gate. Mints `lem:case-I-realization-all-k`.
+    - [ ] **L5b-iii** — the `hcontract` slot-filler dispatch (`by_cases G.Simple`): plumbing (`P≈1`); the 6.5
+      sub-arm stays red → L8. Updates `lem:case-I-dispatch`.
   V6 RESOLVED — N6a is dead infrastructure (deleted-motive-bound, `ofNormals`-bound); V4
   (`rigidContract_isMinimalKDof` all-`k`) confirmed already-landed; **V6-a re-aimed + V6-b re-scoped (§1.64)**.
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
@@ -200,10 +213,14 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   a bare span split (the splice legs share the contracted body + many crossing edges). V6-a now = the brick's
   exact correspondence-hypothesis form, resolves at the L5a-i build. **Honesty flag (§1.64(c)):** the route is
   buildable + needs NO IH/motive change, but the projected-image-rank step is genuinely-new linear algebra (a
-  real brick, its own L5a-i slice — not a one-liner). **V6-b RE-SCOPED (§1.64(f)):** the *simple* all-`k`
-  Case-I restate ALSO needs the brick (GP variant) for its surviving block — the landed
-  `case_I_realization`'s `rigidContract_exterior_rank_transport` leg is `hdef=0`-gated, so the all-`k` restate
-  is **not** a mechanical `0→k` substitution (still buildable); resolves at the L5b build. V7 (L6), V8 (L7),
+  real brick, its own L5a-i slice — not a one-liner). **V6-b RESOLVED at the pin level (§1.65, 2026-06-13) —
+  re-rated `P≈3`** (the §1.64(f) "GP variant, still buildable" wording understated it as `P≈2`): the *simple*
+  all-`k` Case-I restate's surviving block needs a `def = k > 0` exterior-projected rank transport — the
+  `_le_finrank` analogue of the rigid `rigidContract_exterior_rank_transport` +
+  `exists_rankPolynomial_of_rigidOn_linking_set_proj` chain (both `hdef=0`-gated). No landed `_proj` tool is
+  deficiency-aware, so this is a **real new brick** (L5b-i), with a **flagged open internal-route decision**
+  (§1.65(c): route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii `hInj`; both need a
+  deficiency-aware relabel transport). No motive/IH change. Resolves (route + build) at L5b-i. V7 (L6), V8 (L7),
   V9 (L10), V10 (resolved at L0) gate to their layer's design pass.
 - **V5-b RESOLVED (§1.62); V8 (L7) is the one item with real proof-shape uncertainty left.**
   V5-b's §1.61(d) framing (combine the two IH side seeds — Route GP-1 reseed vs GP-2 union) rested
@@ -232,29 +249,33 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 L5a-ii is done: `case_I_realization_nonsimple` (CaseI.lean) + `lem:case-I-realization-nonsimple`
 (case-i.tex) both green; blueprint-verify clean. V6-a fully RESOLVED; §1.64 canonical.
 
-**L5b sizing-BLOCKED (2026-06-13, sonnet, tree clean — diagnosis credible, coordinator-verified at
-the structural level).** The all-`k` GP restate `case_I_realization_all_k` does **not** fit one
-commit: §1.64(f)'s "needs the brick's GP variant" (V6-b) is a genuinely-new prerequisite, not inline
-assembly. The wall: `case_I_realization`'s surviving block routes through the **rigid**
-`rigidContract_exterior_rank_transport` (CaseI:1682) + `exists_rankPolynomial_of_rigidOn_linking_set_proj`
-(CaseI:1506), both `hdef=0`-gated → unavailable at the deficient (`k>0`) contraction. The splice
-brick's `hInj` gives `finrank Fc = finrank (Dmap '' Fc)` and `Dmap '' Fc = Dmap '' Fsurvive`, but
-controlling `finrank (Dmap '' Fsurvive)` at a **fresh generic seed** needs to relate the
-**uncollapsed**-normal surviving rows (`ofNormals G G.endsOf q₀`) to the contraction's
-**collapsed**-normal GP framework — and the landed correspondence
-(`panelRow_collapseTo_comp_extProj_dualMap`) holds only at a **degenerate placement**, not a generic
-seed. Two candidate routes the BLOCK proposed: (1) the **GP/deficiency-aware variant of the projected
-rank-transport** — a rank polynomial `Q` over the *original*-graph selector s.t. at `Q`-non-roots the
-exterior-projected surviving-row finrank reaches `D(|sc|−1)−k` (generalizing
-`exists_rankPolynomial_of_rigidOn_linking_set_proj` to the deficient contraction, likely via L4b-1's
-deficiency-aware `exists_rankPolynomial_of_le_finrank_linking`); (2) a different proof structure
-avoiding the collapsed/uncollapsed mismatch entirely. Per the BLOCK, neither needs a motive/IH change.
+**L5b design-pass complete (§1.65, 2026-06-13, opus; tree clean, docs-only).** The row-104 BLOCK's
+structural diagnosis was **re-verified against the landed source** (every load-bearing decl opened, not
+trusted from prose) and is correct: `case_I_realization`'s surviving block routes through the rigid
+`rigidContract_exterior_rank_transport` (CaseI:1682, `hdef=0` at :1684) +
+`exists_rankPolynomial_of_rigidOn_linking_set_proj` (CaseI:1506), and the final rigid coupler
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` (CaseI:1988) is doubly `0`-dof-gated
+(hard `hdef=0` at :2013 + a full-`D(|sc|−1)` projected-rank demand at :2010). So the all-`k` simple restate
+cannot thread the landed proof; it follows the **L4b-2 GP-builder pattern** (`case_cut_edge_realization_gp`,
+CaseI:8108) with the L5a-i **splice** brick instead of the cut brick. §1.65 re-cut L5b into three leaves and
+**re-rated the V6-b leaf `P≈3`** (a real new brick, not the §1.64(f) "GP variant" understatement that read
+`P≈2`). **Flagged open decision (§1.65(c)):** the V6-b leaf's *internal* route — route-1 (`_proj` rank-transport
+mirror of the rigid chain) vs route-2 (pulled-back full-span rank polynomial + the landed L5a-ii `hInj`) — is
+left unpinned; both need a **deficiency-aware relabel-and-extract transport** as their irreducible new core (no
+landed `_proj` extractor / `_proj` rank polynomial is deficiency-aware; `hasGenericRealization_transport_relabel`
+is `hdef=0`-gated), and the route is best chosen at the build with the goal state open. Soft recommendation:
+route 2 (smaller new surface, leans on the just-landed L5a-ii / L4b-1). No motive / IH change.
 
-**Smallest next forward commit: the L5b design-pass** — decompose L5b into buildable leaves: the
-V6-b GP-variant rank-transport leaf (pick route 1 vs 2; pin its exact signature, verified against the
-landed `case_I_realization` / `rigidContract_exterior_rank_transport` / L4b-1 extractor) → then
-`case_I_realization_all_k` + the `by_cases G.Simple` dispatch (assembly). Mints
-`lem:case-I-realization-all-k` + updates `lem:case-I-dispatch`; the `h65` sub-arm stays red → L8.
+**Smallest next forward commit: L5b-i — the V6-b leaf** `exists_rankPolynomial_surviving_proj_of_le_finrank`
+(or its route-2 split), the `def = k > 0` exterior-projected surviving-block rank transport (§1.65(d) signature
+pin). **Rung-relevant difficulty: `P≈3` (opus) — genuinely-new linear algebra, NOT a clean assembly**; it is the
+deficient reconstruction of the rigid U3a/U3b/U2-proj + rank-polynomial-proj chain `case_I_realization` consumes,
+with the §1.65(c) internal-route decision to resolve **at the build** (do not over-commit it in advance — the
+relabel-transport's exact rank invariant is the real uncertainty; an over-confident single-pass pin is what cost
+the boundary-pair revert + the row-104 under-scope). Then L5b-ii (`case_I_realization_all_k`, the GP producer,
+`P≈2`, assembly mirroring L4b-2) → L5b-iii (the `by_cases G.Simple` dispatch, `P≈1`, plumbing). Mints a new
+GenericityDevice node (L5b-i) + `lem:case-I-realization-all-k` (L5b-ii) + updates `lem:case-I-dispatch`
+(L5b-iii); the `h65` sub-arm stays red → L8. Canonical: §1.65.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -467,3 +488,13 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   `hlink.left_mem`; `change` (not `show`) for goals that differ up to definitional equality; `rw [hFcg,
   Graph.rigidContract, Graph.map_isLink]` to unpack contraction links in `hFc_surv_le`. Mints
   `lem:case-I-realization-nonsimple` (case-i.tex) green.
+- **L5b design-pass (2026-06-13, opus; §1.65):** decomposed the BLOCKED all-`k` simple GP restate into three
+  leaves (L5b-i V6-b brick → L5b-ii `case_I_realization_all_k` producer → L5b-iii dispatch); every load-bearing
+  decl re-verified against the landed source (the BLOCK's diagnosis confirmed: `case_I_realization`'s surviving
+  block + final coupler are `0`-dof-gated, CaseI:1682/:1506/:1988). Target shape = the **splice analogue of
+  L4b-2's `case_cut_edge_realization_gp`** (NOT the rigid coupler). **V6-b re-rated `P≈3`** (a real new brick,
+  the deficient `_le_finrank` reconstruction of the rigid U3a/U3b/U2-proj + rank-polynomial-proj chain — no
+  landed `_proj` tool is deficiency-aware). **Flagged open decision (not forced):** the V6-b internal route
+  (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii `hInj`) is left unpinned — both
+  need a deficiency-aware relabel transport; resolve at the L5b-i build with the goal state open. No motive/IH
+  change. Canonical: §1.65.
