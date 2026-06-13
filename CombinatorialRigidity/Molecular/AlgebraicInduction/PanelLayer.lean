@@ -620,6 +620,54 @@ theorem extensorInPanel_panelSupportExtensor {n₁ n₂ : Fin 4 → ℝ}
   obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor h
   exact ⟨⟨p, heq, fun i => (hperp i).1⟩, ⟨p, heq, fun i => (hperp i).2⟩⟩
 
+/-- **A nonzero extensor lying in two panels simultaneously** (Phase 22i L4a cut-edge brick).
+For any two normals `n₁ n₂ : Fin 4 → ℝ`, there exists a nonzero `C : ScrewSpace 2` with
+`ExtensorInPanel C n₁` and `ExtensorInPanel C n₂`. The extensor rows lie in `n₁^⊥ ∩ n₂^⊥`;
+this intersection has dimension `≥ 2` by rank–nullity applied to the pairing map `x ↦ (x ⬝ᵥ n₁,
+x ⬝ᵥ n₂)`, regardless of whether `n₁` and `n₂` are linearly independent.
+
+Used by the cut-edge bare-conjunct producer (`case_cut_edge_realization`) to supply the cut hinge
+extensor when no transversality is available. -/
+theorem exists_extensor_in_two_panels (n₁ n₂ : Fin 4 → ℝ) :
+    ∃ C : ScrewSpace 2, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
+  classical
+  set A : Matrix (Fin 2) (Fin 4) ℝ := Matrix.of ![n₁, n₂] with hA
+  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) := A.mulVecLin with hL
+  -- The kernel characterization: `x ∈ ker L ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0`.
+  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0 := by
+    intro x
+    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
+    have hrow0 : ∀ j : Fin 4, A 0 j = n₁ j := fun j => by simp [hA, Matrix.of_apply]
+    have hrow1 : ∀ j : Fin 4, A 1 j = n₂ j := fun j => by simp [hA, Matrix.of_apply]
+    have hmv0 : A.mulVec x 0 = n₁ ⬝ᵥ x := by simp [Matrix.mulVec, dotProduct, hrow0]
+    have hmv1 : A.mulVec x 1 = n₂ ⬝ᵥ x := by simp [Matrix.mulVec, dotProduct, hrow1]
+    constructor
+    · intro hx
+      exact ⟨by rw [dotProduct_comm]; rw [← hmv0]; exact congrFun hx 0,
+             by rw [dotProduct_comm]; rw [← hmv1]; exact congrFun hx 1⟩
+    · intro ⟨hn1, hn2⟩
+      ext i; fin_cases i
+      · simpa [hmv0, dotProduct_comm] using hn1
+      · simpa [hmv1, dotProduct_comm] using hn2
+  -- rank(L) ≤ 2 (codomain is ℝ²); dim(ℝ⁴) = 4; rank–nullity gives dim(ker L) ≥ 2.
+  have hrange : Module.finrank ℝ (LinearMap.range L) ≤ 2 := by
+    refine le_trans (Submodule.finrank_le _) ?_; simp
+  have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
+    have hrk := L.finrank_range_add_finrank_ker
+    rw [show Module.finrank ℝ (Fin 4 → ℝ) = 4 from by rw [Module.finrank_pi]; rfl] at hrk
+    omega
+  -- Extract two LI vectors `p 0, p 1 ∈ ker L`.
+  obtain ⟨f, hfli⟩ := exists_linearIndependent_of_le_finrank (R := ℝ) (M := LinearMap.ker L) hker
+  set p : Fin 2 → Fin 4 → ℝ := fun i => (f i).val
+  have hp_perp : ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 := fun i => (hmemW _).mp (f i).prop
+  have hpli : LinearIndependent ℝ p := hfli.map' L.ker.subtype (Submodule.ker_subtype _)
+  -- Build `C = ⟨extensor p, _⟩ : ScrewSpace 2`.
+  refine ⟨⟨extensor p, extensor_mem_exteriorPower _⟩, ?_, ⟨p, rfl, fun i => (hp_perp i).1⟩,
+         ⟨p, rfl, fun i => (hp_perp i).2⟩⟩
+  -- `C ≠ 0` because `extensor p ≠ 0`, which follows from `hpli`.
+  intro heq
+  exact (extensor_ne_zero_iff_linearIndependent p).mpr hpli (congr_arg Subtype.val heq)
+
 /-- **The eq. (6.12) candidate's `va`-hinge support carries the existential join witness**
 (`lem:case-III-claim612-line-in-panel-union`, the Leaf-2b seed-from-line transfer; Katoh–Tanigawa
 2011 §6.4.1 eq. (6.12)/(6.45), Phase 22g). The `d = 3` Case-III producer builds its degenerate

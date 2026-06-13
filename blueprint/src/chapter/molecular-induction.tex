@@ -1289,6 +1289,37 @@ route that bypasses the deferred forest surgery
   existence, and $k = 0$ vs $k > 0$ dispatch to the four cases.
 \end{proof}
 
+\begin{lemma}[L4a bare-conjunct producer: cut-edge case; KT Lemma 6.1]
+  \label{lem:case-cut-edge-realization}
+  \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
+        thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
+        lem:trivial-motions-rank-bound}
+  Let $G$ be a minimal $k$-dof-graph with $|V(G)| \ge 3$ that is not
+  $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
+  $k'$-dof-graph has a genuine-hinge panel realization
+  \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
+  genuine-hinge panel realization.  This is the arm of the all-$k$ induction
+  \textup{(}\cref{thm:minimal-kdof-reduction-all-k}, case~(ii)\textup{)}
+  that fills the $\mathtt{hcut}$ slot; Katoh--Tanigawa's
+  Lemma~6.1~\cite[\S6.1]{katohTanigawa2011}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
+        lem:trivial-motions-rank-bound}
+  Apply \cref{lem:cut-edge-decomposition} to obtain $V_1$, $V_2 = V(G)\setminus V_1$
+  with $|C| \le 1$ and $k = k_1 + k_2 + D - (D-1)|C|$.  Apply the induction
+  hypothesis on each side to get frameworks $F_1, F_2$ at their target ranks.
+  Assemble $F$ by inheriting $F_1$'s and $F_2$'s extensors for non-cut edges; for
+  the at-most-one cut edge assign a nonzero extensor lying in both endpoint panels
+  (from \texttt{exists\_extensor\_in\_two\_panels}).  The rank lower bound is
+  \cref{lem:block-rank-cut}; the upper bound is the genericity-free hub bound
+  \cref{lem:trivial-motions-rank-bound} (bridge~B2); the deficiency arithmetic
+  $k = k_1 + k_2 + D - (D-1)|C|$ and $|V| = |V_1| + |V_2|$ close equality.
+\end{proof}
+
 \subsection{Simplicity and the adjacent-degree-2-pair lemma ($d=3$)}
 \label{sec:simplicity-and-adjacent-pair}
 

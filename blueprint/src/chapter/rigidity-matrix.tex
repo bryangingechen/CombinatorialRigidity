@@ -317,3 +317,38 @@ and the generic-rank argument are in hand.
   generic member of the rotation family has the largest supporting spans
   and thus the maximal rank.
 \end{proof}
+
+\begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]
+  \label{lem:block-rank-cut}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_cut}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  Let $(G,p)$ be a body-hinge framework with all nonzero supporting extensors,
+  and let $V_1 \subsetneq V(G)$ be a nonempty proper vertex subset with cut
+  $C = \operatorname{cutEdges}(G,V_1)$ satisfying $|C| \le 1$.  Write
+  $V_2 = V(G) \setminus V_1$ and let $F_i = (G[V_i],p)$ be the induced
+  subframeworks.  Then
+  \[
+    \operatorname{rank} R(G[V_1],p) + (D-1)\,|C|
+    + \operatorname{rank} R(G[V_2],p)
+    \;\le\;
+    \operatorname{rank} R(G,p).
+  \]
+  This is the vertex-disjoint block-rank-addition lower bound for a
+  cut-edge decomposition; it replaces the isometry argument of
+  Katoh--Tanigawa~\cite[Lemma~6.1]{katohTanigawa2011} with a
+  fixed-seed route via three mutually disjoint subspaces of the
+  rigidity-row span.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:rigidity-matrix, def:hinge-row-block}
+  When $|C| = 0$ the two sides are disconnected: $S_1, S_2 \le S$ and
+  $S_1 \cap S_2 = \bot$ (a flow-sum argument separates them), giving
+  $\operatorname{finrank}(S_1) + \operatorname{finrank}(S_2)
+  \le \operatorname{finrank}(S)$.
+  When $|C| = 1$ the single cut edge $e_c$ contributes a $(D-1)$-dimensional
+  subspace $S_c$ (from the hinge-row block of $e_c$, nonzero by hypothesis);
+  the three subspaces $S_1, S_c, S_2$ are pairwise disjoint, and a
+  calc chain of disjoint-rank additions closes the inequality.
+\end{proof}
