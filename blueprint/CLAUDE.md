@@ -434,6 +434,26 @@ between-phases re-run of this gate is `CLEANUP.md` §A step 1 — but
 this is a *per-commit* gate, run at the moment `\leanok` is added, not
 a debt deferred to a cleanup round.
 
+**Sliced producers — scope the node to the conjunct actually built.**
+When a producer is built one conjunct at a time (the molecular program's
+recurring bare-`HasPanelRealization` / GP-`HasGenericFullRankRealization`
+split — the L3 base producer, the L4 cut-edge producer,
+`theorem_55_generic`'s `hsplit`/`hsplitGP`), the *intermediate* commit
+lands only one half. Represent that as a **green node whose statement
+*and* role-prose are scoped to the conjunct actually proven**, plus a
+separate sibling (or red) node for the unbuilt conjunct — **never one
+node claiming the full slot/pair while only half is built.** Two failure
+modes, both seen in Phase 22i: a green node landing at the *weaker*
+conjunct the slot doesn't want (row 89 — the GP conjunct discharged as
+the bare type), and a node honestly green for its *statement* but whose
+**prose overclaims its role** (row 92 — "fills the `hcut` slot" when only
+the bare `HasPanelRealization` conjunct is built; `checkdecls` and the
+hypothesis-honesty gate both pass, so only a design-§ re-read of the
+role-prose catches it). The clean structure (settled at
+`notes/Phase22-realization-design.md` §1.62(e)): green-bare node + a
+sibling for the GP conjunct, mirroring how `theorem_55_generic` keeps
+`hsplit`/`hsplitGP` as separate slots.
+
 The gate has a *second half*, and it is the one that bites producers:
 even with every hypothesis honest, the intended **proof step may not
 follow** or the **target count the construction can't reach**. Before a
