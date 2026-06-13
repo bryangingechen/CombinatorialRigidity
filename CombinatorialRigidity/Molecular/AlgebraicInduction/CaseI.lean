@@ -6911,6 +6911,83 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
         (h622 G v a b e₀)
         hdef_Gab hG.1 hsplitGP')
 
+/-- **Theorem 5.5 base producer, parallel-pair arm** (`lem:theorem-55-base-producer-parallel`, the
+`|V| = 2`, `k = 0` arm; Katoh–Tanigawa 2011 §5/§6, Lemma 5.3, p. 670; Phase 22i L3b). The
+genuinely-new geometric arm of the all-`k` base producer: a two-vertex minimal-`0`-dof-graph — a
+*parallel pair* of edges `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and `def(G̃) = 0`
+(KT p. 671 case (iii), `isMinimalKDof_ncard_le_two_trichotomy`) — carries a genuine-hinge panel
+realization at the full target rank `D(|V|−1) − def = D·1 = 6`.
+
+The construction places *coincident panels* `Π(x) = Π(y) = n^⊥` at a fixed nonzero normal
+`n := Pi.single 0 1` and assigns the two parallel hinges two **linearly-independent** supporting
+extensors inside that common panel `n^⊥` (`exists_linearIndependent_extensor_pair_perp`, the L3a
+brick). The two independent extensors give the combined hinge-row blocks full rank `D = 6` on the
+relative screw `S x − S y`, so `theorem_55_base` makes the framework infinitesimally rigid on
+`{x, y} = V(G)`; bridge **B1**
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`) turns that into the M2 rank
+equality. This is the `|V| = 2`, `k = 0` leaf KT's p. 670 Lemma 5.3 realizes; it bottoms out on the
+two-independent-extensors-in-a-common-hyperplane device, the only new geometry the base producer
+needs (the empty and single-edge arms are bookkeeping / single-row counts). -/
+theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
+    (G : Graph α β) {x y : α} {e f : β}
+    (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
+    (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) (hdef : G.deficiency n = 0) :
+    HasPanelRealization 2 n G := by
+  classical
+  -- A fixed nonzero panel normal `n₀ : Fin 4 → ℝ`; both bodies share the panel `n₀^⊥`.
+  set n₀ : Fin 4 → ℝ := Pi.single 0 1 with hn₀
+  have hn₀_ne : n₀ ≠ 0 := by
+    intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
+  -- The L3a geometric brick: two point-pairs in `n₀^⊥` with linearly-independent extensors.
+  obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp n₀
+  set Ce : ScrewSpace 2 := ⟨extensor p, extensor_mem_exteriorPower _⟩ with hCe
+  set Cf : ScrewSpace 2 := ⟨extensor q, extensor_mem_exteriorPower _⟩ with hCf
+  -- The two-hinge framework: `e ↦ Ce`, `f ↦ Cf`, all other edges `0`.
+  set F : BodyHingeFramework 2 α β :=
+    { graph := G
+      supportExtensor := fun e' => if e' = e then Ce else if e' = f then Cf else 0 } with hF
+  -- The two supporting extensors reduce to `Ce`, `Cf`.
+  have hFe : F.supportExtensor e = Ce := by simp [hF]
+  have hFf : F.supportExtensor f = Cf := by simp [hF, hef.symm]
+  -- `Ce`, `Cf` are nonzero (from their linear independence).
+  have hCe_ne : Ce ≠ 0 := by simpa [hCe] using hpq_li.ne_zero 0
+  have hCf_ne : Cf ≠ 0 := by simpa [hCf] using hpq_li.ne_zero 1
+  -- Every link of `G` is at `e` or `f` (the parallel pair, `E(G) = {e, f}`).
+  have hlink_cases : ∀ e' u v, G.IsLink e' u v → e' = e ∨ e' = f := by
+    intro e' u v he'
+    have : e' ∈ E(G) := he'.edge_mem
+    rw [hEG] at this
+    simpa [Set.mem_insert_iff] using this
+  -- The vertex set has exactly two bodies.
+  have hVcard : V(G).ncard = 2 := by rw [hVG, Set.ncard_pair hxy]
+  -- `V(F.graph) = {x, y}` is nonempty.
+  have hFg : F.graph = G := rfl
+  have hne : F.graph.vertexSet.Nonempty := by rw [hFg, hVG]; exact ⟨x, Or.inl rfl⟩
+  refine ⟨F, fun _ => n₀, rfl, ?_, ?_, ?_⟩
+  · -- Every body has a nonzero panel normal (the fixed `n₀`).
+    exact fun v _ => hn₀_ne
+  · -- Every link's supporting extensor is nonzero and lies in both endpoint panels `n₀^⊥`.
+    intro e' u v he'
+    have hCein : ExtensorInPanel Ce n₀ := ⟨p, rfl, hp_perp⟩
+    have hCfin : ExtensorInPanel Cf n₀ := ⟨q, rfl, hq_perp⟩
+    rcases hlink_cases e' u v he' with rfl | rfl
+    · rw [hFe]; exact ⟨hCe_ne, hCein, hCein⟩
+    · rw [hFf]; exact ⟨hCf_ne, hCfin, hCfin⟩
+  · -- The rank conjunct, via `theorem_55_base` (full rank on `{x,y}`) and bridge B1.
+    -- The two LI supporting extensors at the two parallel hinges make `F` rigid on `{x, y}`.
+    have hgen : LinearIndependent ℝ ![F.supportExtensor e, F.supportExtensor f] := by
+      rw [hFe, hFf]; exact hpq_li
+    have hrig : F.IsInfinitesimallyRigidOn {x, y} :=
+      F.theorem_55_base hxy hgen hl_e hl_f
+    have hrigV : F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
+      rw [hFg, hVG]; exact hrig
+    -- B1 turns rigidity on `V(G)` into the full-rank count.
+    have hB1 := (F.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hne).mp hrigV
+    rw [hFg] at hB1
+    rw [hB1, hVcard, hdef]
+    push_cast
+    ring
+
 /-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,`h65`,`hbase`,
 `hsplit`,`hcontract`}** (`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the
 (β)-shape reduction; Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1, Phase 22h L5c′).

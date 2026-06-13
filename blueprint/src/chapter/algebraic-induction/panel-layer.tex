@@ -406,6 +406,34 @@ whole induction.
   instance of the join-to-isolate technique behind \cref{lem:extensor-independence}.)
 \end{proof}
 
+\begin{lemma}[Theorem 5.5 base producer, parallel-pair arm]
+  \label{lem:theorem-55-base-producer-parallel}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_parallel_pair}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy, lem:theorem-55-base,
+        lem:extensor-pair-in-panel}
+  Let $G$ be a two-vertex minimal-$0$-dof-graph realizing the \emph{parallel-pair} case of the
+  base trichotomy (\cref{lem:two-vertex-trichotomy} (iii)): $V(G) = \{x, y\}$ with $x \ne y$,
+  $E(G) = \{e, f\}$ with $e \ne f$ two edges both joining $x$ and $y$, and $\mathrm{def}(\tilde G)
+  = 0$. Then $G$ has a genuine-hinge panel realization
+  (\cref{def:genuine-hinge-realization}) at the full target rank $D(|V(G)|-1) - \mathrm{def} =
+  D \cdot 1 = 6$ (at $d = 3$, $D = 6$). This is the geometrically nontrivial arm of the all-$k$
+  base producer; the empty and single-edge arms are bookkeeping / single-row counts.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:theorem-55-base, lem:extensor-pair-in-panel}
+  Place \emph{coincident panels} $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero normal
+  $n$ and assign the two parallel hinges two linearly independent supporting extensors inside the
+  common panel $n^{\perp}$ (\cref{lem:extensor-pair-in-panel}). Each link's supporting extensor is
+  then nonzero and lies in both endpoint panels, discharging the per-link conjunct of the motive.
+  The two independent extensors give the combined hinge-row blocks full rank $D$ on the relative
+  screw $S(x) - S(y)$, so the two-vertex base case (\cref{lem:theorem-55-base}) makes the framework
+  infinitesimally rigid on $\{x, y\} = V(G)$; the $V(G)$-relative rank bridge (rigid on $V(G)$ iff
+  the rigidity-row span has rank $D(|V(G)|-1)$) turns that into the rank equality of the motive,
+  with $\mathrm{def}(\tilde G) = 0$.
+\end{proof}
+
 \begin{lemma}[Theorem 5.5 triangle base ($|V(G)| = 3$)]
   \label{lem:theorem-55-triangle}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_triangle}
