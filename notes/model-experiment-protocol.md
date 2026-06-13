@@ -70,6 +70,19 @@ Published function of the profile, so assignment is reproducible:
   carried-hypothesis / motive change. (Rating a postmortem recon
   1/1/1 maps to haiku — absurd; the axes measure commit risk, not
   question difficulty.)
+- **Unavailable rung → substitute the nearest available, log the
+  substitution.** When a session lacks a mapped rung's model (e.g.
+  fable unavailable), substitute the nearest available rung and record
+  it in the row's Model column + Notes. For the fable-mapped commits
+  (design-settle / phase-boundary / S=3) the substitute is **opus**
+  (the next-most-capable). This is *not* a map change — the map is
+  what would run with all rungs present; a session-local config note
+  records the constraint and its expiry, and a fresh coordinator
+  reverts to the map. Precedent (2026-06-12, rows 84–86): fable-mapped
+  design pins ran at opus cleanly, incl. one carries-table-correction
+  pin that caught two design errors. Open question this leaves: does
+  fable add value over opus on the *harder* design passes (re-routes,
+  new-gap recons), not just the correction-shaped ones?
 - **Optimistic ladder.** When torn between two scores on an axis,
   score lower (cheaper). The capability boundary is the experiment's
   main product; the per-commit verification gate bounds the damage.

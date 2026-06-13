@@ -38,7 +38,11 @@ worktree-seeding amendment (coordinator pre-seeds the duplicate's
 exist; supersedes agent-run `lake exe cache get`, which dies under
 the agent sandbox's `~/.cache/mathlib` denial — found on the first
 parallel pair, L1i; seeded-prologue + fallback forms now in the
-protocol).
+protocol); and the 2026-06-12 model-availability-fallback amendment
+(when a session lacks a mapped rung's model — e.g. fable unavailable —
+substitute the nearest available rung and log it; fable-mapped commits
+fall to opus; not a map change; rows 84–86 precedent — a new bullet
+under the protocol's *Model assignment map*).
 
 ## Repo-local config
 
