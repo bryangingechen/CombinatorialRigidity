@@ -35,6 +35,15 @@ When a `lake build` fails with an unfamiliar Lean error, scan these
 symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
 (The fix lives in §N — these are match-keys only.)
 
+**No match here, or the same issue bites a second time in one
+session? Grep `../notes/FRICTION.md` (and `FRICTION-archive.md`) for
+a keyword from the error or the API you're fighting** before
+brute-forcing another attempt. FRICTION is written at friction-review
+time precisely so a repeat encounter doesn't re-pay the discovery
+cost — but it only pays off if it's *read* on the second hit, not
+just appended to at commit time. Many entries carry the exact failing
+pattern and the working fix.
+
 - *"motive is not type correct"* after `simp only` citing a hypothesis not in the goal → § 5
 - *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` / `subst` between two free vars → § 4
 - `interval_cases (Fintype.card V)` won't close by `rfl` → § 7

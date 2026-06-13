@@ -108,7 +108,13 @@ Loop:
      a LANDED return can omit a `sorry` that the commit message
      discloses (enharmonic row 13: the commit message was honest,
      the return was not). Read the commit message body, not just the
-     summary line. A landed sorry is a failed verification →
+     summary line. The converse also happens — **judge completeness
+     from the diff, not the prose**: a post-compaction commit message
+     can mis-describe *finished* work as partial (row 74's "partial
+     stub, pending L4" over a complete proof), and the same false
+     belief can propagate into the notes and the blueprint pin (the
+     "stub" decl was left off its node's `\lean` list) — when message
+     and diff disagree, trust the diff and repair the prose. A landed sorry is a failed verification →
      escalation per the protocol: re-dispatch one rung up with the
      route named in the prompt, keep the landed commit, close the
      sorry in the follow-up (enharmonic rows 7–8 and 13–14
