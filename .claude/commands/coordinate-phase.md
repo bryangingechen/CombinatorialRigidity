@@ -34,8 +34,13 @@ Loop:
    phase" — that's what the next commit should accomplish. If that step
    is **research-shaped** — the hand-off flags recon-before-build, OR 2+
    consecutive leaf commits have fed a hard core not yet built, OR 3+
-   consecutive commits are thin wrappers aliasing existing facts — the
-   next commit is a **recon / design-pass**, not a build: dispatch a
+   consecutive commits are thin wrappers aliasing existing facts, OR the
+   hand-off flags a step as "needs the [GP / general-rank /
+   deficiency-aware] variant of [a landed lemma]" and you cannot confirm
+   that variant already exists in tree (grep it — a missing variant is a
+   hidden genuinely-new prerequisite, a P≈3 leaf, NOT a P=2 "mechanical
+   restate"; the L5b sizing-BLOCKED then design-decomposed, rows 104–105)
+   — the next commit is a **recon / design-pass**, not a build: dispatch a
    read-only Plan-agent recon, or a docs/blueprint design-pass commit
    that decomposes the core into buildable leaves with exact signatures.
    Recon is this workflow's highest-leverage move; trigger it **early**,

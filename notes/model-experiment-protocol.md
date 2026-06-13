@@ -43,6 +43,15 @@ design docs it cites) and scores, *before* dispatching:
   only edits checkable against existing artifacts. (Calibration: a
   2/1/1-rated blueprint-honesty commit's one failure was precisely
   its prose describing the deferred KT-6.5 route.)
+  *A "needs the [X]-variant of [landed lemma Y]" flag is P ≥ 2, usually
+  P = 3:* when a design pass or hand-off says a step "just needs the GP /
+  general-rank / deficiency-aware variant of" a landed lemma, it is
+  naming a **genuinely-new sibling**, not a mechanical restate — *unless*
+  that variant demonstrably already exists. Grep for it before rating; a
+  missing variant is a new leaf (often its own slice or a
+  decompose-recon). Calibration: a "buildable GP variant" flag rated
+  P≈2 BLOCKED at the build, and the follow-up design pass re-rated the
+  leaf P≈3.
 - **B — blast radius.** Integration breadth.
   1 = one file, additive (nothing existing breaks);
   2 = few files, bounded caller repair through known bridges;

@@ -63,7 +63,13 @@ multi-row episode's lesson lives once in *Findings* and rows cite it
 rather than restate it, + a firm ~4-line / ~600-char per-row cue — the
 anti-regrowth rule added after rows 96–100 regrew the rows-84–93
 compression; rows 94–100 re-compressed to Findings-pointers the same
-day).
+day); and the 2026-06-13 P-axis *variant-flag* calibration (a "needs the
+[GP / general-rank / deficiency-aware] variant of [landed lemma Y]" step
+is P ≥ 2 / usually P = 3 — a genuinely-new sibling unless the variant
+demonstrably exists; grep before rating — added after the row-104 L5b
+sizing-BLOCKED, where §1.64(f)'s "buildable GP variant" read P≈2 and was
+re-rated P≈3 by the row-105 design pass; companion research-shaped
+trigger added to `.claude/commands/coordinate-phase.md` step 1, repo-local).
 
 ## Repo-local config
 
