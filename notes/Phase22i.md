@@ -15,22 +15,21 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3a + the L3b dispatch landed; L3 green-modulo the producer's GP conjunct.** L2 landed
+**L2 + L3a + L3b complete (`hbase` carry fully discharged at KT strength); L4 next.** L2 landed
 `minimal_kdof_reduction_all_k` in `ForestSurgery.lean`; `thm:minimal-kdof-reduction-all-k` is green.
 L3a landed the geometric brick (`exists_linearIndependent_extensor_pair_perp` etc.);
-`lem:extensor-pair-in-panel` green. **L3b dispatch landed (481fbee):** the trichotomy-dispatch
-`theorem_55_base_producer` + the legacy-`hbase` `.2` rewire of `theorem_55_d3` (drops `hbase`, adds
-`hn : bodyBarDim n = screwDim 2`); `lem:theorem-55-base-producer` green; the *bare*
-`HasPanelRealization` conjunct + the legacy `theorem_55_d3` slot are done (four carries remain:
-`h622`, `h65`, `hsplit`, `hcontract`). **BUT the producer's GP conjunct landed weak** —
-`(G.Simple → HasPanelRealization 2 n G)` discharged trivially as `fun _ => hprod`, instead of
-§1.60(a)/(e)'s `(G.Simple → HasGenericFullRankRealization 2 n G)`; the single-edge genuine GP
-construction (§1.60(e): "the one base arm where the GP conjunct does real work" — a `def=1` generic
-realization at rank `D−1`) and the empty-arm GP framework were skipped, so the producer does **not**
-yet feed the L9 spine's conditioned motive `Pc`. **Next (corrective restate, opus): restate
-`theorem_55_base_producer` to the §1.60 pair** `(G.Simple → HasGenericFullRankRealization 2 n G) ∧
-HasPanelRealization 2 n G` — build the single-edge + empty GP arms (parallel-pair stays
-vacuous-by-simplicity); the `.2` rewire + `hbaseGP`-vacuity discharge are unaffected. Then L4.
+`lem:extensor-pair-in-panel` green. **L3b complete:** the trichotomy-dispatch
+`theorem_55_base_producer` now concludes the §1.60(a) **strong pair**
+`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` — the L9 spine's
+conditioned motive `Pc`. The GP conjunct's real arms landed: `theorem_55_base_producer_empty_gp`
+(single-body/empty GP framework at an alg-indep seed, rank 0) and
+`theorem_55_base_producer_single_edge_gp` (§1.60(e)'s genuine `def=1` GP realization at rank `D−1`
+— `ofNormals` at an injective alg-indep seed that is a non-root of the GP polynomial, single hinge's
+extensor forced nonzero by general position, single-row rank); the parallel-pair arm stays vacuous
+by simplicity. `lem:theorem-55-base-producer` green at the strong-pair conclusion; the `.2` rewire of
+`theorem_55_d3` + its `hbaseGP`-vacuity discharge are unchanged and still consume the bare conjunct.
+**Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** Next: **L4** (Lemma 6.1, the
+cut-edge case, V5).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -54,7 +53,7 @@ gate included).
 |---|---|---|---|
 | `h622` (KT eq. (6.22), the nested-IH rank lower bound at the `k'`-dof `G_v`) | `lem:case-III-nested-rank-lower` (case-iii.tex) | `case_III_realization` (CaseI.lean:6750) and `theorem_55_d3` (:6817); consumed at the one W6b call inside `case_III_candidate_dispatch` | **L7**: replace the hypothesis by a derivation from the all-`k` IH at `G_v` — IH gives the generic realization at rank `D(m−1) − k'`; extract the rational rank-polynomial witness (V8); transfer to the given `(ends, q)` by the landed footnote-6 bridge (`lem:case-III-seed-rank-bridge`) |
 | `h65` (the KT Lemma-6.5 vertex-removal arm of the Case-I dispatch) | `lem:case-I-dispatch` (case-i.tex) | `theorem_55_d3` (:6831), the negative branch of the L5c′ `by_cases` | **L8**: §1.54(a3) steps 1–2 — Claim 6.6 graph side (~2–3 commits) + the Π°-placement producer (own signature pin first); the dispatch itself landed in 22h. Claim 6.6 concludes inside the `k = 0` stratum, no all-`k` generality needed |
-| `hbase` (the bare two-vertex base) | `def:genuine-hinge-realization` (legacy `theorem_55_d3` slot ✓ via `.2`; `lem:theorem-55-base-producer` green but its GP conjunct still weak) | `theorem_55_d3` rewired: `theorem_55_base_producer` supplies `.2`; `hbase` dropped from signature | **L3 dispatch landed (481fbee), green-modulo the GP-conjunct restate**: the producer concludes `(G.Simple → HasPanelRealization) ∧ HasPanelRealization`, but §1.60(a)/(e) pin the GP conjunct at `HasGenericFullRankRealization` (the L9-spine `Pc` motive) — corrective restate owed (single-edge + empty GP arms) |
+| `hbase` (the bare two-vertex base) | `def:genuine-hinge-realization` + `def:rank-hypothesis`; `lem:theorem-55-base-producer` green at the strong pair | `theorem_55_d3` rewired: `theorem_55_base_producer` supplies `.2`; `hbase` dropped from signature | **L3 complete**: the producer concludes the §1.60(a) strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (the L9-spine `Pc` motive); single-edge + empty GP arms built, parallel-pair vacuous by simplicity |
 | `hsplit` (the bare no-rigid-subgraph branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6804) | **L9 wiring, no new build**: G0 (`simple_of_isMinimalKDof_of_noRigid`) gives `G.Simple`; forgetful (M4) ∘ the GP Case-III producer |
 | `hcontract` (the bare Case-I branch) | `def:genuine-hinge-realization` | `theorem_55_d3` (:6809) | **L5**: dispatch on `G.Simple` — simple → forgetful (M4) ∘ the 6.3/6.5 GP arm; non-simple → KT Lemma 6.2 (NEW: the coincident-panel splice; the parallel-pair subgraph + the Lemma-5.3 leg at the contraction panel + the eq. (6.3)–(6.5) rank addition; N6a re-aimed, V6) |
 
@@ -90,18 +89,19 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 - [x] **L2** — `minimal_kdof_reduction_all_k` (the four-case principle, §1.56(c));
   signature pinned in §1.59; landed in `ForestSurgery.lean` + green
   `thm:minimal-kdof-reduction-all-k` node in `molecular-induction.tex` (2026-06-12).
-- [ ] **L3** — the base producer (`hbase` carry discharged); pinned §1.60, sliced L3a (the
+- [x] **L3** — the base producer (`hbase` carry discharged); pinned §1.60, sliced L3a (the
   LI-extensor-pair-in-`n^⊥` construction) → L3b. **L3a landed**:
   `exists_linearIndependent_extensor_pair_perp` (PanelLayer.lean) + wedge-LI fact
   `linearIndependent_pair_extensor_of_li3` (Extensor.lean) + perp helper `exists_three_perp`
-  (PanelLayer.lean); node `lem:extensor-pair-in-panel` green. **All three L3b bare arms landed**
-  (see *Current state*): `theorem_55_base_producer_{parallel_pair,empty,single_edge}` in
-  CaseI.lean; `lem:theorem-55-base-producer-{parallel,empty,single}` green. **L3b dispatch landed
-  (481fbee)**: trichotomy-dispatch `theorem_55_base_producer` + legacy-`hbase` `.2` rewire of
-  `theorem_55_d3`; `lem:theorem-55-base-producer` green. **L3b remains — the GP-conjunct restate**:
-  the producer's GP conjunct landed weak (`HasPanelRealization`, trivial `fun _ => hprod`); restate to
-  §1.60(a)/(e)'s `HasGenericFullRankRealization` — single-edge genuine `def=1` GP build + empty rank-0
-  GP framework (parallel-pair vacuous-by-simplicity). `def:genuine-hinge-realization` + `lem:theorem-55-base` green.
+  (PanelLayer.lean); node `lem:extensor-pair-in-panel` green. **All three L3b bare arms landed**:
+  `theorem_55_base_producer_{parallel_pair,empty,single_edge}` in CaseI.lean. **L3b dispatch +
+  strong-pair GP conjunct landed**: trichotomy-dispatch `theorem_55_base_producer` now concludes the
+  §1.60(a) strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization`; the GP arms
+  `theorem_55_base_producer_{empty,single_edge}_gp` (CaseI.lean) build `ofNormals` at an injective
+  alg-indep seed (non-root of the GP polynomial → general position + alg-independence); single-edge
+  forces the lone extensor nonzero by GP, rank `D−1` via the single-row machinery; empty rank 0;
+  parallel-pair vacuous by simplicity. The legacy-`hbase` `.2` rewire of `theorem_55_d3` is unchanged.
+  `lem:theorem-55-base-producer{,-empty,-single,-parallel}` green at the strong-pair conclusion.
 - [ ] **L4** — Lemma 6.1, the cut-edge case (V5: the fixed-seed transversality route).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
@@ -123,39 +123,31 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   L0/L1 pins; V5 (L4), V6 (L5), V7 (L6), V8 (L7), V9 (L10), V10 (resolved at L0) gate to
   their layer's design pass. V8 (subfamily extraction at rank form) is the one with real
   proof-shape uncertainty left.
-- **V-base (L3, §1.60(g)):** the wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]` is **resolved** —
-  mirrored as `linearIndependent_pair_extensor_of_li3` (Extensor.lean), the two-subset instance of
-  the join-to-isolate technique behind `omitTwoExtensor_linearIndependent_of_li`; no mathlib basis
-  API needed. Two L3b items remain to confirm at the L3b build: the landed single-hinge-row rank
-  lemma name (arm (ii)), and whether the landed single-edge GP `ofNormals`-at-alg-indep-seed infra
-  covers the single-edge GP arm. Neither research-shaped.
+- **V-base (L3, §1.60(g)): RESOLVED.** The wedge-LI fact `LI ![a,b,c] → LI ![a∧b, a∧c]` mirrored as
+  `linearIndependent_pair_extensor_of_li3` (Extensor.lean). The single-hinge-row rank lemma (arm (ii))
+  is `finrank_span_panelRow_edge` (Pinning.lean), reached via `span_panelRow_linking_eq_rigidityRows`
+  + the subtype-to-single-edge `hrange` reduction. The single-edge GP arm reuses the standard
+  `case_*` opening (`exists_generalPosition_polynomial` +
+  `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` at an injective alg-indep seed) — no
+  new GP single-edge lemma needed; the seed gives general position + alg-independence at once, and the
+  rank closes by the same single-row machinery as the bare arm.
 
 ## Hand-off / next phase
 
-**L0–L2 + L3a complete; the L3b dispatch landed (481fbee) but green-modulo the producer's GP
-conjunct.** The trichotomy-dispatch `theorem_55_base_producer`, its three bare arms, and the
-legacy-`hbase` `.2` rewire of `theorem_55_d3` are in; the producer's GP conjunct, however, landed at
-the weak `HasPanelRealization` (discharged trivially) instead of §1.60(a)/(e)'s
-`HasGenericFullRankRealization` — so the producer does **not** yet feed the L9 spine's conditioned
-motive `Pc G := (G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G`.
+**L0–L3 complete; the `hbase` carry is fully discharged at KT strength.** The trichotomy-dispatch
+`theorem_55_base_producer` concludes the §1.60(a) strong pair
+`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` = the L9-spine `Pc`
+motive; the GP arms (`theorem_55_base_producer_{empty,single_edge}_gp`) are built at an injective
+alg-indep seed; the legacy-`hbase` `.2` rewire of `theorem_55_d3` is unchanged. Four carries remain:
+`h622`, `h65`, `hsplit`, `hcontract`.
 
-**Smallest next forward commit (corrective restate, §1.60(a)/(e)):** change
-`theorem_55_base_producer`'s conclusion to `(G.Simple → HasGenericFullRankRealization 2 n G) ∧
-HasPanelRealization 2 n G` and build the GP conjunct's real arms:
-* **single-edge arm (the real work, §1.60(e)):** `G.Simple` holds (`def = 1 > 0`); build the
-  `PanelHingeFramework` `ofNormals` at a general-position alg-indep seed with the single edge's two
-  distinct endpoints — GP forces the single extensor nonzero, link-recording from `ofNormals`,
-  alg-indep from the seed, rank `D−1` via the single-row count. *V-base: reuse the landed `case_*`
-  `ofNormals`-at-alg-indep-seed pattern at the single-row count; confirm the landed single-edge GP
-  infra covers it, else a small new GP single-edge lemma.*
-* **empty arm (§1.60(e)):** `ncard = 1`, `E = ∅`, `G.Simple`; the single-body / empty GP framework,
-  rank 0, GP / link-recording vacuous, alg-indep of the one-body normal seed.
-* **parallel-pair arm:** stays excluded by `G.Simple` (`not_simple_of_isMinimalKDof_of_ncard_two`),
-  the vacuity discharge already landed.
-The `.2` rewire of `theorem_55_d3` and its `hbaseGP`-vacuity discharge are unaffected (both consume
-the bare conjunct / vacuity, not `.1`); update the `lem:theorem-55-base-producer` node prose to the
-strong-pair conclusion in the same commit (statement-grep gate — the `\lean` name survives the flip).
-Then L4 (Lemma 6.1, the cut-edge case, V5).
+**Smallest next forward commit: open L4** (Lemma 6.1, the not-2-edge-connected / cut-edge reduction
+case). Per the layer plan + §1.56(c)/(e): the new reduction case for the cut-edge branch of
+`minimal_kdof_reduction_all_k`. **V5 (the fixed-seed transversality route)** gates to L4's design
+pass — run the L4 signature pin (its own §1.57+ section) first, reading the target nodes
+end-to-end (the red-node consistency gate). The L4 dep-graph node is the Lemma-6.1 cut-edge producer
+(the cut-edge decomposition `exists_cut_decomposition_of_not_twoEdgeConnected` from L1e is the
+combinatorial input). After L4: L5 (`hcontract`, Lemma 6.2 + the 6.3/6.5 all-`k` restate).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -248,3 +240,16 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   Root cause shared with the pre-commit hand-off, whose (A)/(B) already stated the weak type while
   (A)'s prose described the real GP work. Landed commit kept (the `.2` rewire is correct); corrective
   restate dispatched one rung up (opus). See *Current state* / *Hand-off*; model-experiment row 89.
+- **L3b GP-conjunct restate (2026-06-13, opus):** restated `theorem_55_base_producer`'s conclusion to
+  the §1.60(a) strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization`; built
+  the two GP arms `theorem_55_base_producer_{empty,single_edge}_gp` (CaseI.lean). Both build
+  `ofNormals` at an injective alg-indep seed that is a non-root of `exists_generalPosition_polynomial`
+  (so the seed gives general position + alg-independence at once — the standard `case_*` opening, no
+  new GP single-edge lemma). Single-edge: GP forces the lone extensor nonzero, rank `D−1` via
+  `span_panelRow_linking_eq_rigidityRows` + `finrank_span_panelRow_edge` (the bare arm's single-row
+  machinery). Empty: rank 0 (no links), GP/link-recording vacuous; the empty GP arm took the dispatch's
+  `hne : V(G).Nonempty` (to pick the irrelevant constant selector body). The `.2` rewire of
+  `theorem_55_d3` + `hbaseGP` vacuity unchanged. Blueprint: the `-empty`/`-single` nodes became group
+  lemmas (comma-`\lean{}`) with the generic-companion prose; the dispatch node + `def:rank-hypothesis`
+  `\uses`. Axiom-clean. One self-inflicted build cycle (a redundant re-`set` of `ends`) → FRICTION
+  anti-pattern *Re-`set`ting an already-`set`-bound variable*.

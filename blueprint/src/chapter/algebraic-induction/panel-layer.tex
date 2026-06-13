@@ -406,46 +406,60 @@ whole induction.
 
 \begin{lemma}[Theorem 5.5 base producer, empty arm]
   \label{lem:theorem-55-base-producer-empty}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_empty,
+        CombinatorialRigidity.Molecular.theorem_55_base_producer_empty_gp}
   \leanok
-  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy}
+  \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy}
   Let $G$ be a minimal-$k$-dof-graph on $1 \le |V(G)| \le 2$ bodies realizing the \emph{empty}
   case of the base trichotomy (\cref{lem:two-vertex-trichotomy} (i)): $E(G) = \emptyset$ and
   hence $\mathrm{def}(\tilde G) = D(|V(G)| - 1)$. Then $G$ has a genuine-hinge panel realization
-  (\cref{def:genuine-hinge-realization}) at the target rank $D(|V(G)|-1) - \mathrm{def} = 0$.
+  (\cref{def:genuine-hinge-realization}) at the target rank $D(|V(G)|-1) - \mathrm{def} = 0$, and
+  --- the general-position companion --- a \emph{generic} full-rank realization
+  (\cref{def:rank-hypothesis}) at that same rank.
 \end{lemma}
 \begin{proof}
   \leanok
-  The construction is geometry-free: take the all-zero framework (every edge carries the zero
-  supporting extensor) at a fixed nonzero panel normal. With no edges no hinge constraint fires,
-  so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the per-link
-  conjunct of the motive is vacuous. The target rank vanishes because the empty-graph deficiency
-  is exactly $D(|V(G)|-1)$ (\cref{lem:two-vertex-trichotomy}).
+  The bare construction is geometry-free: take the all-zero framework (every edge carries the
+  zero supporting extensor) at a fixed nonzero panel normal. With no edges no hinge constraint
+  fires, so the rigidity-row family is empty, its span is $\{0\}$, and the rank is $0$; the
+  per-link conjunct of the motive is vacuous. The target rank vanishes because the empty-graph
+  deficiency is exactly $D(|V(G)|-1)$ (\cref{lem:two-vertex-trichotomy}). For the generic
+  companion build the single-body / empty framework at an injective
+  algebraically-independent seed (a non-root of the general-position polynomial): the panel
+  normals are then in general position and algebraically independent, the rigidity-row family is
+  still empty (rank $0$), and link-recording is vacuous.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base producer, single-edge arm]
   \label{lem:theorem-55-base-producer-single}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge}
+  \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge,
+        CombinatorialRigidity.Molecular.theorem_55_base_producer_single_edge_gp}
   \leanok
-  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy, lem:extensor-pair-in-panel,
-        def:rigidity-matrix}
+  \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
+        lem:extensor-pair-in-panel, def:rigidity-matrix}
   Let $G$ be a two-vertex minimal-$1$-dof-graph realizing the \emph{single-edge} case of the base
   trichotomy (\cref{lem:two-vertex-trichotomy} (ii)): $V(G) = \{x, y\}$ with $x \ne y$,
   $E(G) = \{e\}$ a single edge joining $x$ and $y$, and $\mathrm{def}(\tilde G) = 1$. Then $G$ has
   a genuine-hinge panel realization (\cref{def:genuine-hinge-realization}) at the target rank
-  $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$).
+  $D(|V(G)|-1) - \mathrm{def} = D - 1 = 5$ (at $d = 3$, $D = 6$), and --- the general-position
+  companion, the one base arm where this conjunct does genuine geometric work --- a \emph{generic}
+  full-rank realization (\cref{def:rank-hypothesis}) at that same rank.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:extensor-pair-in-panel, def:rigidity-matrix}
-  Place coincident panels $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero normal $n$ and assign
-  the single hinge one nonzero supporting extensor inside the common panel (the first of the pair
-  of \cref{lem:extensor-pair-in-panel}; nonzero by its linear independence). The lone hinge's row
-  block already \emph{is} the entire rigidity-row family (there is only one edge), and that block
-  has rank exactly $D - 1$ (\cref{def:rigidity-matrix}); so the rigidity-row span has rank
-  $D - 1 = D(|V(G)|-1) - \mathrm{def}$, the rank equality of the motive. Unlike the parallel-pair
-  arm the framework is not rigid ($\mathrm{def} = 1$): the rank is the single hinge-row count, not
-  the full two-vertex base rank.
+  For the bare motive, place coincident panels $\Pi(x) = \Pi(y) = n^{\perp}$ at a fixed nonzero
+  normal $n$ and assign the single hinge one nonzero supporting extensor inside the common panel
+  (the first of the pair of \cref{lem:extensor-pair-in-panel}; nonzero by its linear
+  independence). The lone hinge's row block already \emph{is} the entire rigidity-row family
+  (there is only one edge), and that block has rank exactly $D - 1$ (\cref{def:rigidity-matrix});
+  so the rigidity-row span has rank $D - 1 = D(|V(G)|-1) - \mathrm{def}$, the rank equality of the
+  motive. Unlike the parallel-pair arm the framework is not rigid ($\mathrm{def} = 1$): the rank
+  is the single hinge-row count, not the full two-vertex base rank. The generic companion builds
+  $\mathtt{ofNormals}$ at an injective algebraically-independent seed (a non-root of the
+  general-position polynomial) with the single edge's two distinct endpoints: general position
+  forces the lone supporting extensor nonzero, the same single hinge-row count gives rank $D - 1$,
+  and the seed supplies general position $+$ algebraic independence of the panel normals.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base producer, parallel-pair arm]
@@ -480,25 +494,35 @@ whole induction.
   \label{lem:theorem-55-base-producer}
   \lean{CombinatorialRigidity.Molecular.theorem_55_base_producer}
   \leanok
-  \uses{def:genuine-hinge-realization, lem:two-vertex-trichotomy,
+  \uses{def:rank-hypothesis, def:genuine-hinge-realization, lem:two-vertex-trichotomy,
         lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
         lem:theorem-55-base-producer-parallel}
   Let $G$ be a minimal-$k$-dof-graph with $1 \le |V(G)| \le 2$ (the base region of the
   all-$k$ reduction, \cref{thm:minimal-kdof-reduction-all-k}).  Then the conditioned pair
-  $(G\text{ simple} \Rightarrow \text{has genuine-hinge panel realization at target rank})$
-  and $(\text{has genuine-hinge panel realization at target rank})$ both hold
-  (\cref{def:genuine-hinge-realization}).
+  $(G\text{ simple} \Rightarrow \text{has a \emph{generic} full-rank panel realization})$
+  and $(\text{has a genuine-hinge panel realization at target rank})$ both hold.  The
+  simple conjunct is the strengthened generic motive
+  (\cref{def:rank-hypothesis}, general position $+$ algebraically-independent panel
+  normals); the unconditional conjunct is the honest bare motive
+  (\cref{def:genuine-hinge-realization}).  This is the conditioned pair $P_c\,G$ that the
+  all-$k$ spine recurses against.
 \end{lemma}
 \begin{proof}
   \leanok
   \uses{lem:theorem-55-base-producer-empty, lem:theorem-55-base-producer-single,
         lem:theorem-55-base-producer-parallel}
-  Dispatch on the base trichotomy (\cref{lem:two-vertex-trichotomy}). In the empty and
-  single-edge arms the bare genuine-hinge panel realization already holds, so the
-  $G$-simple conjunct is trivially implied. In the parallel-pair arm ($k = 0$) a
-  two-vertex minimal-$0$-dof-graph cannot be simple (the single-vertex cut supplies
-  two distinct parallel edges, both forced to link the same pair, which simplicity
-  collapses --- contradiction); the $G$-simple antecedent is therefore vacuous.
+  Dispatch on the base trichotomy (\cref{lem:two-vertex-trichotomy}). The unconditional
+  bare conjunct comes from the three bare arms. For the simple conjunct: the empty arm
+  ($E(G) = \emptyset$) and the single-edge arm ($\mathrm{def} = 1 > 0$) both admit a
+  \emph{generic} full-rank realization --- built from $\mathtt{ofNormals}$ at an injective
+  algebraically-independent seed, which is a non-root of the general-position polynomial, so
+  the panel normals are simultaneously in general position and algebraically independent; the
+  rank is $0$ (empty) resp.\ $D - 1$ (single-edge, the single hinge-row count). The
+  single-edge arm is the one base arm where the simple conjunct does genuine geometric work.
+  In the parallel-pair arm ($k = 0$) a two-vertex minimal-$0$-dof-graph cannot be simple (the
+  single-vertex cut supplies two distinct parallel edges, both forced to link the same pair,
+  which simplicity collapses --- contradiction); the $G$-simple antecedent is therefore
+  vacuous.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 triangle base ($|V(G)| = 3$)]

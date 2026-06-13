@@ -2883,6 +2883,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Lifted to:** TACTICS-QUIRKS § 1 *`omega`/`grind` treat
   `set`-aliased terms as opaque atoms*.
 
+### [wontfix] Re-`set`ting an already-`set`-bound variable breaks `rw`/`simp` matching
+- **Where it bit:** `theorem_55_base_producer_single_edge_gp` in
+  `Molecular/AlgebraicInduction/CaseI.lean` (Phase 22i L3b, the single-edge
+  GP arm). The proof had `set ends := fun _ => (x, y)` and then, in the rank
+  section, redundantly `set ends' : β → α × α := ends with hends'_def`.
+- **Friction:** the second `set` introduced `ends'` as a fresh local *equal*
+  to (but syntactically distinct from) `ends`, so `simp only [hends'_def,
+  hends_def]` and the `finrank_span_panelRow_edge (huv := by simp [...])`
+  goal `¬ (ends e).1 = (ends e).2` could not reduce uniformly — the two
+  layers of aliasing left `rw`/`simp` chasing the wrong constant. One build
+  cycle lost.
+- **Proposed fix:** none — just don't do it. Use the already-`set`-bound
+  variable (`ends`) directly; there is never a reason to `set` a new name
+  equal to an existing `set` alias. Dropping `ends'` and threading `ends`
+  through the rank section closed every goal.
+- **Status:** wontfix (self-inflicted; the lesson is "one `set` per term").
+
 ### [wontfix] `nlinarith` over ℕ struggles with quadratic bounds
 - **Where it bit:** `top_fin_two_isGenericallyRigid` in `Framework.lean`,
   closing the arithmetic step `4 * d + 2 ≤ (d + 1) * (d + 2)` (over ℕ).
