@@ -233,11 +233,32 @@ quality / blueprint sync / notes discipline / commit message
 | 104 | L5b `case_I_realization_all_k` (no commit) | 2/2/1 | sonnet | normal | BLOCKED | —————— | 145k tok / 106 tools / 2215s (~37 min) | **sizing-BLOCKED with a correct, actionable diagnosis** (good outcome, not a capability fail): L5b has a hidden genuinely-new prerequisite (V6-b, the GP/deficiency-aware variant of the projected rank-transport) — the landed rigid rank-transport is `hdef=0`-gated, unavailable at `k>0`; the uncollapsed/collapsed normal correspondence holds only at a degenerate placement, not a generic seed. My 2/2/1 rating was too optimistic (the §1.64(f) "needs GP variant" flag under-scoped it). Tree clean, HEAD unchanged → step-1 design-pass trigger (decompose, not escalate). Diagnosis salvaged to the hand-off. Trailer N/A |
 | 105 | L5b design-pass §1.65 — decompose the BLOCKED `case_I_realization_all_k`, 5fa74b5 | 3/3/1 | opus | normal | clean | —✓——✓✓ | 226k tok / 54 tools / 650s (~11 min) | fable-mapped design-settle (→ opus sub). Decomposed the row-104 sizing-BLOCK: confirmed the diagnosis (file:line), **re-rated V6-b `P≈3` genuinely-new** (coordinator grep-confirmed: no deficiency-aware *projected* rank-transport exists — correcting §1.64(f)'s P≈2 under-scope), cut L5b → L5b-i (V6-b brick, P≈3) / ii (producer) / iii (dispatch). **Honored flag-don't-force:** left the V6-b internal route open for the build (route-2 soft-rec), no over-commit (the §1.64-revert lesson); no motive/IH change. Trailer correct |
 | 106 | L5b-i shared core `finrank_span_rigidityRows_ofNormals_relabel_eq` (+2 helpers), a8d06ac | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 222k tok / 52 tools / 1238s (~21 min) | dispatched as the P≈3 V6-b leaf; opus took the **sanctioned §1.65(g) shrink** — built the route-independent shared core (the deficiency-aware relabel rank-transport, a deficiency-tolerant sibling of the rigid `hasGenericRealization_transport_relabel`, dropping the unused `hne`/`hdef`), deferring the route-dependent projection/seed step. **De-risked the §1.65(c) open route** (rank invariant now a plain finrank equality → V6-b completion drops to P≈2). Coordinator: full-diff read, warning-clean rebuild, sorry-grep clean, trailer correct |
+| 107 | L5b-i completion `exists_rankPolynomial_of_IH_relabel_linking` (route 2), f22699e | 2/2/1 | sonnet | boundary-pair-primary | clean | ✓✓✓✓✓✓ | 141k tok / 149 tools / 1452s (~24 min) | post-core-landed V6-b completion; realized difficulty matched the a-priori P=2 (the genuinely-new core was split out + landed at row 106 — contrast the brick rows 91/100 P≈3). Friction (`haveI:Loopless` for `IsLink.ne`) captured in phase-note only, not lifted; the duplicate lifted the more-general def-∃ quirk (harvested eb567db). Pair → Findings 2026-06-13 (rows 107–108) |
+| 108 | L5b-i completion `exists_rankPolynomial_relabel_of_le_finrank` (route 2), 2aaae9f (worktree, discarded) | 2/2/1 | opus | boundary-pair-duplicate | clean | ✓✓✓—✓✓ | 270k tok / 86 tools / 1439s (~24 min) | seeded-worktree duplicate; independently chose route 2 = same structure as the primary → §1.65(c) route-2 soft-rec confirmed (pin-audit PASS). Cleaner surface (Loopless instance arg; lifted the def-∃ dot-notation quirk → QUIRKS §35, harvested eb567db). Blueprint —: worktree checkdecls not coord-verified (disclosed green). ~2× tokens, ~same wall. Pair → Findings 2026-06-13 (rows 107–108) |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- (2026-06-13, rows 107–108, L5b-i boundary pair) **First 22i sonnet/opus
+  boundary pair — closes the 22h zero-pair gap at this profile.** The
+  post-core-landed V6-b completion (a-priori 2/2/1, the splice/V6-b zone that
+  realized P≈3 at rows 91/100/104) ran as sonnet primary + opus duplicate.
+  **Both landed clean, both independently chose route 2** (shared core → L4b-1
+  full-span rank polynomial) → the §1.65(c) *deliberately-open* route-2 soft-rec
+  was sound (**pin-audit PASS** — the pair's second value, exercised on a recent
+  open pin). **Headline:** once the genuinely-new core is split out and landed
+  (row 106), the residual completion IS P=2 and **sonnet suffices**; the
+  rows-91/100/104 P≈3 was the *embedded hard core*, not the assembly — the
+  long-open "does sonnet handle the post-decomposition leaf" data point resolves
+  *yes* at this profile. Cost: sonnet 141k tok / 149 tools vs opus 270k / 86 —
+  same ~24 min wall, opus ~2× tokens but fewer tool-uses (less trial-and-error).
+  Quality delta in the discipline layer only (whole-experiment pattern): opus
+  lifted the general def-∃ dot-notation quirk to QUIRKS §35, sonnet captured only
+  the narrow idiom in-note (duplicate's entry harvested to master, eb567db).
+  Caveat: the route was *open*, mildly confounding the same-task comparison — the
+  remaining open need is a pair on a *single-determined-route* leaf.
 
 - (2026-06-13, rows 101–102, L5a-ii) **At a genuinely-new P=3 kernel with
   no abstraction-split escape, sonnet confronts it (does NOT defer) and lands
