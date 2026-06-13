@@ -92,6 +92,7 @@ pattern and the working fix.
 - `Submodule.subtype_injective` elaborates as the identity in some call sites → § 50 (use `Subtype.coe_injective` directly)
 - *"unexpected token 'set_option'; expected 'lemma'"* when placing `set_option … in` between a docstring and `theorem` → § 51 (put `set_option … in` *before* the docstring)
 - `set_option linter.style.openClassical false in open Classical` breaks section-wide `Classical` availability → § 52 (use two standalone commands, not `in`-wrapped)
+- `set F := expr`; theorem applied to `F` returns `F.graph` (or another field) unfolded — downstream `rw [hField]` fails → § 53 (introduce `hFgraph : F.graph = G` explicitly, `rw [hFgraph] at …` first)
 
 ## Starting a Lean-touching session
 

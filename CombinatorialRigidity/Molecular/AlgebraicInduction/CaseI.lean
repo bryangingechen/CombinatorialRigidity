@@ -7956,4 +7956,372 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
     rw [← hG.1] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
+set_option maxHeartbeats 800000 in
+-- The combined seed + per-side rank polynomials + |C|=0/1 case analysis exhausts the 200000 limit.
+/-- **L4b-2 GP-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization-gp`,
+GP conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` GP arm; Phase 22i).
+
+Given a minimal `k`-dof simple graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
+generic-motive conjunct `HasGenericFullRankRealization 2 n G` holds.
+
+**Proof sketch.** Cut decomposition (as L4a). Each side `G.induce Vᵢ` is simple (induced subgraph
+of a simple graph), so the conditioned IH's `.1 hSimpleᵢ` supplies a side GP framework `QFᵢ`.
+Seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`; GP transfers to `ofNormals (G.induce Vᵢ) G.endsOf q₀ᵢ`
+(same normals, motion-space equality by swap-invariance → same finrank). W6e +
+`exists_rankPolynomial_of_le_finrank_linking` → rational `Qᵢ_rank` transferring `Nᵢ = finrank QFᵢ`
+rows. `exists_generalPosition_polynomial` → `Q_gp`. Fresh combined seed `q₀` from
+`exists_injective_algebraicIndependent_real`; alg-indep seed is a non-root of every nonzero rational
+polynomial, so `q₀` is a simultaneous non-root of `Q₁_rank · Q₂_rank · Q_gp`. Set
+`QF := ofNormals G G.endsOf q₀`; global GP from `Q_gp`. Side rank bounds at `q₀` from the rank
+transfer polynomials. Seed-free L4a brick + L1e arithmetic → combined lower bound. B2 → upper bound;
+antisymmetry closes. Link-recording from `ofNormals_endsOf_recordsLinks`; alg-independence from
+`halg`. -/
+theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+    (hntec : ¬ G.TwoEdgeConnected) (hSimple : G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+  classical
+  -- ── Step 1: Cut decomposition ─────────────────────────────────────────────────────────
+  obtain ⟨V₁, k₁, k₂, hV₁ne, hV₁sub, hV₂ne, hG₁, hG₂, hcut_le, hk_eq⟩ :=
+    Graph.exists_cut_decomposition_of_not_twoEdgeConnected (by omega) hG hntec
+  set V₂ := V(G) \ V₁
+  -- Inhabited instance for G.endsOf (needs a vertex)
+  haveI : Inhabited α := ⟨hV₁ne.choose⟩
+  -- ── Step 2: Cardinality helpers ─────────────────────────────────────────────────────────
+  have hV₁ncard : V(G.induce V₁).ncard < V(G).ncard :=
+    Set.ncard_lt_ncard hV₁sub (Set.toFinite _)
+  have hVcard : V₁.ncard + V₂.ncard = V(G).ncard := by
+    have hunion : V₁ ∪ V₂ = V(G) := Set.union_diff_cancel hV₁sub.subset
+    have hdisj : Disjoint V₁ V₂ := Set.disjoint_sdiff_right
+    rw [← hunion, Set.ncard_union_eq hdisj (Set.toFinite V₁) (Set.toFinite V₂)]
+  have hVeq₁ : V(G.induce V₁).ncard = V₁.ncard := rfl
+  have hVeq₂ : V(G.induce V₂).ncard = V₂.ncard := rfl
+  have hV₂ncard : V(G.induce V₂).ncard < V(G).ncard := by
+    have hV₁pos : 0 < V₁.ncard := hV₁ne.ncard_pos
+    omega
+  -- ── Step 3: Side simplicity ─────────────────────────────────────────────────────────
+  have hSimple₁ : (G.induce V₁).Simple :=
+    hSimple.mono (G.induce_le hV₁sub.subset)
+  have hSimple₂ : (G.induce V₂).Simple :=
+    hSimple.mono (G.induce_le Set.diff_subset)
+  -- ── Step 4: Side GP frameworks from IH ─────────────────────────────────────────────────
+  obtain ⟨QF₁, hQF₁g, hQF₁gp, hQF₁rank, hQF₁rec, hQF₁alg⟩ :=
+    (hIH k₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard).1 hSimple₁
+  obtain ⟨QF₂, hQF₂g, hQF₂gp, hQF₂rank, hQF₂rec, hQF₂alg⟩ :=
+    (hIH k₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard).1 hSimple₂
+  -- ── Step 5: Side seeds ─────────────────────────────────────────────────────────────────
+  -- Each side IH framework is literally `ofNormals (G.induce Vᵢ) QFᵢ.ends q₀ᵢ`
+  -- at the seed `q₀ᵢ := fun p => QFᵢ.normal p.1 p.2`.
+  set q₀₁ : α × Fin 4 → ℝ := fun p => QF₁.normal p.1 p.2
+  set q₀₂ : α × Fin 4 → ℝ := fun p => QF₂.normal p.1 p.2
+  -- ── Step 6: GP transfers to the G.endsOf selector ────────────────────────────────────────
+  -- Same normals → same IsGeneralPosition on ofNormals (G.induce Vᵢ) G.endsOf q₀ᵢ.
+  have hgp₁' : (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).IsGeneralPosition := by
+    intro a b hab
+    simp only [PanelHingeFramework.IsGeneralPosition, PanelHingeFramework.ofNormals_normal] at *
+    exact hQF₁gp a b hab
+  have hgp₂' : (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).IsGeneralPosition := by
+    intro a b hab
+    simp only [PanelHingeFramework.IsGeneralPosition, PanelHingeFramework.ofNormals_normal] at *
+    exact hQF₂gp a b hab
+  -- ── Step 7: Motion-space / finrank equality between QFᵢ.ends and G.endsOf at q₀ᵢ ─────────
+  -- The swap-invariance of the motion space: G.endsOf ↔ QF₁.ends agree up to order on
+  -- (G.induce V₁).
+  have hswap₁ : ∀ e u v, (G.induce V₁).IsLink e u v →
+      ((QF₁.ends e).1 = (G.endsOf e).1 ∧ (QF₁.ends e).2 = (G.endsOf e).2) ∨
+      ((QF₁.ends e).1 = (G.endsOf e).2 ∧ (QF₁.ends e).2 = (G.endsOf e).1) :=
+    PanelHingeFramework.recordsLinks_swap_endsOf
+      (G.induce_le hV₁sub.subset) QF₁.ends hQF₁rec
+  have hmot₁ :
+      (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals (G.induce V₁) QF₁.ends q₀₁).toBodyHinge.infinitesimalMotions
+      :=
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
+      (G.induce V₁) G.endsOf QF₁.ends q₀₁ hswap₁
+  -- The QF₁.ends version of ofNormals has the same infinitesimalMotions as QF₁.toBodyHinge,
+  -- because they share the same graph and the same supportExtensor function on every link.
+  have hmotQF₁ :
+      (PanelHingeFramework.ofNormals (G.induce V₁) QF₁.ends q₀₁).toBodyHinge.infinitesimalMotions
+      = QF₁.toBodyHinge.infinitesimalMotions :=
+    BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
+      (PanelHingeFramework.ofNormals (G.induce V₁) QF₁.ends q₀₁).toBodyHinge
+      QF₁.toBodyHinge
+      (by simp [hQF₁g])
+      (fun e u v _ => by
+        simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, q₀₁])
+  -- Same infinitesimalMotions → same finrank (span rigidityRows) via the complement identity.
+  have hfinrank₁ : Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.rigidityRows)
+      = Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) := by
+    have hcompl1 := BodyHingeFramework.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+      (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge
+    have hcompl2 := BodyHingeFramework.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+      QF₁.toBodyHinge
+    rw [hmot₁, hmotQF₁] at hcompl1
+    omega
+  -- Analogously for side 2.
+  have hswap₂ : ∀ e u v, (G.induce V₂).IsLink e u v →
+      ((QF₂.ends e).1 = (G.endsOf e).1 ∧ (QF₂.ends e).2 = (G.endsOf e).2) ∨
+      ((QF₂.ends e).1 = (G.endsOf e).2 ∧ (QF₂.ends e).2 = (G.endsOf e).1) :=
+    PanelHingeFramework.recordsLinks_swap_endsOf
+      (G.induce_le Set.diff_subset) QF₂.ends hQF₂rec
+  have hmot₂ :
+      (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge.infinitesimalMotions
+      :=
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
+      (G.induce V₂) G.endsOf QF₂.ends q₀₂ hswap₂
+  have hmotQF₂ :
+      (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge.infinitesimalMotions
+      = QF₂.toBodyHinge.infinitesimalMotions :=
+    BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
+      (PanelHingeFramework.ofNormals (G.induce V₂) QF₂.ends q₀₂).toBodyHinge
+      QF₂.toBodyHinge
+      (by simp [hQF₂g])
+      (fun e u v _ => by
+        simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+          PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, q₀₂])
+  have hfinrank₂ : Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.rigidityRows)
+      = Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) := by
+    have hcompl1 := BodyHingeFramework.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+      (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge
+    have hcompl2 := BodyHingeFramework.finrank_span_rigidityRows_add_finrank_infinitesimalMotions
+      QF₂.toBodyHinge
+    rw [hmot₂, hmotQF₂] at hcompl1
+    omega
+  -- ── Step 8: Build per-side rank polynomials ─────────────────────────────────────────
+  -- Transversality witnesses at q₀ᵢ: nonzero extensor for (G.induce Vᵢ)-links at G.endsOf.
+  have hne₁ : ∀ e, (G.induce V₁).IsLink e (G.endsOf e).1 (G.endsOf e).2 →
+      (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.supportExtensor e
+        ≠ 0 := by
+    intro e he
+    let P₁ := PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁
+    apply P₁.supportExtensor_ne_zero_of_isGeneralPosition hgp₁'
+    rw [PanelHingeFramework.ofNormals_ends]
+    exact G.endsOf_fst_ne_snd (he.of_le (G.induce_le hV₁sub.subset)).edge_mem
+  have hne₂ : ∀ e, (G.induce V₂).IsLink e (G.endsOf e).1 (G.endsOf e).2 →
+      (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.supportExtensor e
+        ≠ 0 := by
+    intro e he
+    let P₂ := PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂
+    apply P₂.supportExtensor_ne_zero_of_isGeneralPosition hgp₂'
+    rw [PanelHingeFramework.ofNormals_ends]
+    exact G.endsOf_fst_ne_snd (he.of_le (G.induce_le Set.diff_subset)).edge_mem
+  -- Rank bounds at q₀ᵢ from QFᵢ rank equality + finrank equality.
+  have hN₁ : Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) ≤
+      Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀₁).toBodyHinge.rigidityRows) :=
+    hfinrank₁.symm ▸ le_refl _
+  have hN₂ : Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) ≤
+      Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀₂).toBodyHinge.rigidityRows) :=
+    hfinrank₂.symm ▸ le_refl _
+  -- hends helper: (G.induce Vᵢ)-links have (G.endsOf e) endpoints in G.induce Vᵢ.
+  have hends₁ : ∀ e u v, (G.induce V₁).IsLink e u v →
+      (G.induce V₁).IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
+    intro e u v he
+    have hGlink : G.IsLink e u v := he.1
+    rcases G.endsOf_eq_or_swap hGlink with h | h
+    · rw [h]; exact (Graph.induce_isLink G V₁ e u v).mpr ⟨hGlink, he.2.1, he.2.2⟩
+    · rw [h]; exact (Graph.induce_isLink G V₁ e v u).mpr ⟨hGlink.symm, he.2.2, he.2.1⟩
+  have hends₂ : ∀ e u v, (G.induce V₂).IsLink e u v →
+      (G.induce V₂).IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
+    intro e u v he
+    have hGlink : G.IsLink e u v := he.1
+    rcases G.endsOf_eq_or_swap hGlink with h | h
+    · rw [h]; exact (Graph.induce_isLink G V₂ e u v).mpr ⟨hGlink, he.2.1, he.2.2⟩
+    · rw [h]; exact (Graph.induce_isLink G V₂ e v u).mpr ⟨hGlink.symm, he.2.2, he.2.1⟩
+  -- Per-side rank polynomials.
+  obtain ⟨Q₁_rank, hQ₁ne, hQ₁rat, hQ₁trans⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
+      (G.induce V₁) G.endsOf hends₁ hne₁ hN₁
+  obtain ⟨Q₂_rank, hQ₂ne, hQ₂rat, hQ₂trans⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
+      (G.induce V₂) G.endsOf hends₂ hne₂ hN₂
+  -- ── Step 9: GP polynomial ──────────────────────────────────────────────────────────────────
+  obtain ⟨Q_gp, hQgpne_witness, hQgprat, hQgp_pos⟩ :=
+    PanelHingeFramework.exists_generalPosition_polynomial (k := 2) G G.endsOf
+  -- ── Step 10: Fresh combined seed (non-root of Q₁_rank · Q₂_rank · Q_gp) ─────────────────────
+  have hQ₁rane : Q₁_rank ≠ 0 := fun h => hQ₁ne (by rw [h, map_zero])
+  have hQ₂rane : Q₂_rank ≠ 0 := fun h => hQ₂ne (by rw [h, map_zero])
+  have hQgpne : Q_gp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    intro h
+    exact hQgpne_witness (fun a => (f a : ℝ)) (fun a b hab => hf (Nat.cast_injective hab))
+      (by rw [h, map_zero])
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (2 + 2))
+  have hq₀₁ : MvPolynomial.eval q₀ Q₁_rank ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQ₁rat hQ₁rane
+  have hq₀₂ : MvPolynomial.eval q₀ Q₂_rank ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQ₂rat hQ₂rane
+  have hq₀gp : MvPolynomial.eval q₀ Q_gp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
+  -- ── Step 11: The combined framework at q₀ ─────────────────────────────────────────────────
+  -- QF = ofNormals G G.endsOf q₀ : PanelHingeFramework 2 α β
+  -- Global GP from Q_gp non-root.
+  have hQFgp : (PanelHingeFramework.ofNormals G G.endsOf q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  -- For any G-link, the combined framework's extensor is nonzero (GP + looplessness).
+  have hQFext : ∀ e u v, G.IsLink e u v →
+      (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e u v he
+    apply (PanelHingeFramework.ofNormals G G.endsOf q₀).supportExtensor_ne_zero_of_isGeneralPosition
+      hQFgp
+    rw [PanelHingeFramework.ofNormals_ends]
+    exact G.endsOf_fst_ne_snd he.edge_mem
+  -- ── Step 12: Side span equalities ─────────────────────────────────────────────────────────
+  -- The rigidity rows of ⟨G.induce Vᵢ, (ofNormals G G.endsOf q₀).toBodyHinge.supportExtensor⟩
+  -- equal those of ofNormals (G.induce Vᵢ) G.endsOf q₀, since both use the same extensor function
+  -- panelSupportExtensor (q₀ (G.endsOf e).1) (q₀ (G.endsOf e).2) on edges in G.induce Vᵢ.
+  have hF₁span : Submodule.span ℝ
+        (⟨G.induce V₁, (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge.supportExtensor⟩
+          : BodyHingeFramework 2 α β).rigidityRows
+      = Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀).toBodyHinge.rigidityRows := by
+    congr 1
+  have hF₂span : Submodule.span ℝ
+        (⟨G.induce V₂, (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge.supportExtensor⟩
+          : BodyHingeFramework 2 α β).rigidityRows
+      = Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀).toBodyHinge.rigidityRows := by
+    congr 1
+  -- ── Step 13: Side rank lower bounds at q₀ ─────────────────────────────────────────────────
+  -- From the rank transfer polynomials evaluated at q₀.
+  have hrank₁_bound : Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) ≤
+      Module.finrank ℝ
+        (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀).toBodyHinge.rigidityRows) :=
+    hQ₁trans q₀ hq₀₁
+  have hrank₂_bound : Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) ≤
+      Module.finrank ℝ
+        (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀).toBodyHinge.rigidityRows) :=
+    hQ₂trans q₀ hq₀₂
+  -- ── Step 14: Apply the L4a brick ─────────────────────────────────────────────────────────
+  -- F := (ofNormals G G.endsOf q₀).toBodyHinge
+  set F := (PanelHingeFramework.ofNormals G G.endsOf q₀).toBodyHinge
+  have hFgraph : F.graph = G := by simp [F, PanelHingeFramework.ofNormals_graph]
+  -- The FE₁ and Fcut hypotheses for the brick.
+  have hFE₁ : ∀ e u v, F.graph.IsLink e u v → e ∉ G.cutEdges V₁ →
+      u ∈ V₁ ∧ v ∈ V₁ ∨ u ∉ V₁ ∧ v ∉ V₁ := by
+    intro e u v hl hnotcut
+    simp only [Graph.cutEdges, not_and, Set.mem_setOf_eq] at hnotcut
+    rw [hFgraph] at hl
+    by_cases hu₁ : u ∈ V₁
+    · left; refine ⟨hu₁, ?_⟩
+      by_contra hv₁
+      exact (hnotcut hl.edge_mem) ⟨u, v, hl, hu₁, hv₁⟩
+    · right; refine ⟨hu₁, ?_⟩
+      by_contra hv₁
+      exact (hnotcut hl.edge_mem) ⟨v, u, hl.symm, hv₁, hu₁⟩
+  have hFext' : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
+    intro e u v hl
+    rw [hFgraph] at hl
+    exact hQFext e u v hl
+  rcases Set.eq_empty_or_nonempty (G.cutEdges V₁) with hC0 | ⟨e_c, he_c⟩
+  · -- ── Case |C| = 0 ─────────────────────────────────────────────────────────────────────
+    have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
+      intro e he; simp [hC0] at he
+    have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext'
+      (fun e u v hl he => hFE₁ e u v hl he) hFcut
+    rw [hFgraph] at hbrick
+    rw [hF₁span, hF₂span] at hbrick
+    -- Rank equalities from the side IH.
+    have hrank₁eq : (Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 2 * ((V₁.ncard : ℤ) - 1) - k₁ := by
+      have := hQF₁rank; rw [hVeq₁, hG₁.1] at this; exact this
+    have hrank₂eq : (Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 2 * ((V₂.ncard : ℤ) - 1) - k₂ := by
+      have := hQF₂rank; rw [hVeq₂, hG₂.1] at this; exact this
+    -- Combined lower bound from the brick + side ranks.
+    have hFVne : V(F.graph).Nonempty := by
+      rw [hFgraph]; exact ⟨hV₁ne.choose, hV₁sub.subset hV₁ne.choose_spec⟩
+    have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext'
+    have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+        ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+      rw [hFgraph] at hB2
+      have := hB2; rw [hG.1] at this; linarith
+    have hlb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
+        (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
+      let R₁ := Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀).toBodyHinge.rigidityRows)
+      let R₂ := Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀).toBodyHinge.rigidityRows)
+      have hbrickZ : (R₁ : ℤ) + (screwDim 2 - 1) * (G.cutEdges V₁).ncard + (R₂ : ℤ) ≤
+          (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by exact_mod_cast hbrick
+      have h₁ : (Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) : ℤ) ≤
+          (R₁ : ℤ) := by exact_mod_cast hrank₁_bound
+      have h₂ : (Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) : ℤ) ≤
+          (R₂ : ℤ) := by exact_mod_cast hrank₂_bound
+      rw [hn] at hk_eq
+      simp only [hC0, Set.ncard_empty] at hbrickZ hk_eq
+      have hscrew : 1 ≤ screwDim 2 := by rw [← hn]; omega
+      push_cast [Nat.sub_add_cancel hscrew] at hbrickZ hk_eq h₁ h₂ ⊢
+      simp only [mul_zero, add_zero, sub_zero] at hbrickZ hk_eq
+      have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
+      nlinarith [hrank₁eq, hrank₂eq]
+    have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
+    -- Conclude: ofNormals G G.endsOf q₀ is the GP realization.
+    rw [← hG.1] at hrank_eq
+    exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq,
+      PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀,
+      by simpa only [PanelHingeFramework.ofNormals_normal] using halg⟩
+  · -- ── Case |C| = 1 ─────────────────────────────────────────────────────────────────────
+    -- he_c : e_c ∈ G.cutEdges V₁ directly (from Set.eq_empty_or_nonempty)
+    have hFcut : ∀ e ∈ G.cutEdges V₁, ∃ a b, F.graph.IsLink e a b ∧ a ∈ V₁ ∧ b ∉ V₁ := by
+      intro e he; simp only [Graph.cutEdges, Set.mem_setOf_eq] at he
+      obtain ⟨_, a, b, hlab, ha, hb⟩ := he
+      exact ⟨a, b, by simp [F, hlab], ha, hb⟩
+    have hbrick := BodyHingeFramework.le_finrank_span_rigidityRows_of_cut F hcut_le hFext'
+      (fun e u v hl he => hFE₁ e u v hl he) hFcut
+    rw [hFgraph] at hbrick
+    rw [hF₁span, hF₂span] at hbrick
+    have hrank₁eq : (Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 2 * ((V₁.ncard : ℤ) - 1) - k₁ := by
+      have := hQF₁rank; rw [hVeq₁, hG₁.1] at this; exact this
+    have hrank₂eq : (Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) : ℤ)
+        = screwDim 2 * ((V₂.ncard : ℤ) - 1) - k₂ := by
+      have := hQF₂rank; rw [hVeq₂, hG₂.1] at this; exact this
+    have hcardC1 : (G.cutEdges V₁).ncard = 1 :=
+      Nat.le_antisymm hcut_le ((Set.ncard_pos (Set.toFinite _)).2 ⟨e_c, he_c⟩)
+    have hFVne : V(F.graph).Nonempty := by
+      rw [hFgraph]; exact ⟨hV₁ne.choose, hV₁sub.subset hV₁ne.choose_spec⟩
+    have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext'
+    have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+        ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+      rw [hFgraph] at hB2
+      have := hB2; rw [hG.1] at this; linarith
+    have hlb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
+        (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
+      let R₁ := Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₁) G.endsOf q₀).toBodyHinge.rigidityRows)
+      let R₂ := Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.induce V₂) G.endsOf q₀).toBodyHinge.rigidityRows)
+      have hbrickZ : (R₁ : ℤ) + (screwDim 2 - 1) * (G.cutEdges V₁).ncard + (R₂ : ℤ) ≤
+          (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by exact_mod_cast hbrick
+      have h₁ : (Module.finrank ℝ (Submodule.span ℝ QF₁.toBodyHinge.rigidityRows) : ℤ) ≤
+          (R₁ : ℤ) := by exact_mod_cast hrank₁_bound
+      have h₂ : (Module.finrank ℝ (Submodule.span ℝ QF₂.toBodyHinge.rigidityRows) : ℤ) ≤
+          (R₂ : ℤ) := by exact_mod_cast hrank₂_bound
+      rw [hn] at hk_eq
+      rw [hcardC1] at hbrickZ hk_eq
+      have hscrew : 1 ≤ screwDim 2 := by rw [← hn]; omega
+      simp only [Nat.cast_sub hscrew, Nat.cast_one, mul_one] at hbrickZ hk_eq
+      have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
+      nlinarith [hrank₁eq, hrank₂eq]
+    have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
+    rw [← hG.1] at hrank_eq
+    exact ⟨PanelHingeFramework.ofNormals G G.endsOf q₀, rfl, hQFgp, hrank_eq,
+      PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀,
+      by simpa only [PanelHingeFramework.ofNormals_normal] using halg⟩
+
 end CombinatorialRigidity.Molecular

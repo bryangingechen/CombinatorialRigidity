@@ -1850,3 +1850,29 @@ open Classical
 The `set_option` applies to all subsequent commands in the same section/file scope and
 suppresses the linter warning; `open Classical` persists normally.
 Phase 22i L4a (`RigidityMatrix.lean`, `section CutEdgeBrick`).
+
+---
+
+## 53. `set F := expr` does not fold `F.graph` in conclusions of theorems applied to `F`
+
+**Symptom.** After `set F := PanelHingeFramework.ofNormals G ends q`, a theorem
+`le_finrank_span_rigidityRows_of_cut F …` returns a hypothesis `hbrick` that mentions
+`(PanelHingeFramework.ofNormals G ends q).graph[V₁]` (the full unfolded form) rather than
+`F.graph[V₁]`. A subsequent `rw [hF₁span] at hbrick` (where `hF₁span : F.graph[V₁] = …`)
+fails because the LHS `F.graph` does not match the literal expanded expression.
+
+**Cause.** `set` substitutes `F` for `expr` in the *current* hypotheses and goal, but
+theorem calls after the `set` elaborate to `expr`'s expanded form in their conclusions;
+`set` does not post-process those results.  This is distinct from §43 (which is about
+pre-existing hypotheses that `set` *has* folded).
+
+**Fix.** Introduce the graph-equality hypothesis explicitly right after `set`:
+```lean
+set F := PanelHingeFramework.ofNormals G ends q with hF_def
+have hFgraph : F.graph = G := by simp [F, PanelHingeFramework.ofNormals_graph]
+```
+Then use `rw [hFgraph] at hbrick` (or whichever field is exposed) before the downstream
+rewrites that expect the folded form.  The same pattern applies to any structure field
+(`F.supportExtensor`, `F.toBodyHinge`, etc.) that a theorem's conclusion mentions unfolded.
+
+Phase 22i L4b-2 (`CaseI.lean`, `case_cut_edge_realization_gp`).

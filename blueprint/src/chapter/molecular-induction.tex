@@ -1323,6 +1323,45 @@ route that bypasses the deferred forest surgery
   $k = k_1 + k_2 + D - (D-1)|C|$ and $|V| = |V_1| + |V_2|$ close equality.
 \end{proof}
 
+\begin{lemma}[L4b-2 GP-conjunct producer: cut-edge case; KT Lemma 6.1]
+  \label{lem:case-cut-edge-realization-gp}
+  \lean{CombinatorialRigidity.Molecular.case_cut_edge_realization_gp}
+  \leanok
+  \uses{def:genuine-hinge-realization, lem:cut-edge-decomposition,
+        thm:minimal-kdof-reduction-all-k, lem:block-rank-cut,
+        lem:trivial-motions-rank-bound, lem:rank-polynomial-of-le-finrank,
+        lem:genericity-device}
+  Let $G$ be a minimal $k$-dof simple graph with $|V(G)| \ge 3$ that is not
+  $2$-edge-connected, and suppose every strictly-smaller nonempty minimal
+  $k'$-dof simple graph has a generic full-rank realization
+  \textup{(}\cref{def:genuine-hinge-realization}\textup{)}.  Then $G$ has a
+  generic full-rank realization.  This is the
+  $\mathtt{HasGenericFullRankRealization}$ conjunct of the cut-edge arm of the
+  all-$k$ induction \textup{(}\cref{thm:minimal-kdof-reduction-all-k},
+  case~(ii)\textup{)}.  Katoh--Tanigawa's Lemma~6.1~\cite[\S6.1]{katohTanigawa2011}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:cut-edge-decomposition, lem:block-rank-cut,
+        lem:trivial-motions-rank-bound, lem:rank-polynomial-of-le-finrank,
+        lem:genericity-device}
+  Cut decomposition as in \cref{lem:case-cut-edge-realization}, yielding sides
+  $V_1$, $V_2 = V(G)\setminus V_1$.  Each side is a simple induced subgraph, so
+  the conditioned induction hypothesis supplies a side GP framework $Q_i$ at full
+  rank for $G[V_i]$.  Apply \cref{lem:rank-polynomial-of-le-finrank} per side to
+  produce rational rank polynomials $Q_{1,\mathrm{rank}}$, $Q_{2,\mathrm{rank}}$
+  transferring each side's rank bound.  Apply \cref{lem:genericity-device} for
+  the combined GP polynomial $Q_{\mathrm{gp}}$.  Choose a fresh injective
+  algebraically-independent seed $q_0$ that is a simultaneous non-root of
+  $Q_{1,\mathrm{rank}} \cdot Q_{2,\mathrm{rank}} \cdot Q_{\mathrm{gp}}$; set
+  $QF := \mathrm{ofNormals}\,G\,(\mathrm{endsOf}\,G)\,q_0$.  General position of
+  $QF$ follows from the non-vanishing of $Q_{\mathrm{gp}}$.  The per-side rank
+  bounds at $q_0$ follow from the non-vanishing of the rank polynomials; the
+  L4a brick \cref{lem:block-rank-cut} plus arithmetic give the combined lower
+  bound; bridge~B2 (\cref{lem:trivial-motions-rank-bound}) gives the upper bound;
+  antisymmetry closes rank equality.
+\end{proof}
+
 \subsection{Simplicity and the adjacent-degree-2-pair lemma ($d=3$)}
 \label{sec:simplicity-and-adjacent-pair}
 

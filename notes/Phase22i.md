@@ -15,28 +15,15 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3a + L3b complete (`hbase` carry fully discharged at KT strength); L4 next.** L2 landed
-`minimal_kdof_reduction_all_k` in `ForestSurgery.lean`; `thm:minimal-kdof-reduction-all-k` is green.
-L3a landed the geometric brick (`exists_linearIndependent_extensor_pair_perp` etc.);
-`lem:extensor-pair-in-panel` green. **L3b complete:** the trichotomy-dispatch
-`theorem_55_base_producer` now concludes the §1.60(a) **strong pair**
-`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` — the L9 spine's
-conditioned motive `Pc`. The GP conjunct's real arms landed: `theorem_55_base_producer_empty_gp`
-(single-body/empty GP framework at an alg-indep seed, rank 0) and
-`theorem_55_base_producer_single_edge_gp` (§1.60(e)'s genuine `def=1` GP realization at rank `D−1`
-— `ofNormals` at an injective alg-indep seed that is a non-root of the GP polynomial, single hinge's
-extensor forced nonzero by general position, single-row rank); the parallel-pair arm stays vacuous
-by simplicity. `lem:theorem-55-base-producer` green at the strong-pair conclusion; the `.2` rewire of
-`theorem_55_d3` + its `hbaseGP`-vacuity discharge are unchanged and still consume the bare conjunct.
-**Four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** **L4a complete**: both the
-block-rank brick (`le_finrank_span_rigidityRows_of_cut`, `RigidityMatrix.lean §CutEdgeBrick`)
-and the bare-conjunct producer (`case_cut_edge_realization`, `CaseI.lean`) are Lean-green;
-`lem:block-rank-cut` and `lem:case-cut-edge-realization` are green blueprint nodes.
-The bare-conjunct producer proves only the `HasPanelRealization` half of the `hcut` slot's `Pc`;
-the GP conjunct (L4b) completes the full slot-filler (no current consumer — wires at L9).
-**L4b-1 complete**: `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` (GenericityDevice.lean)
-Lean-green, axiom-clean; `lem:rank-polynomial-of-le-finrank` (genericity-and-count.tex) green.
-**Next: L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean, §1.62(d)), the GP producer for the cut-edge case.
+**L2 + L3 + L4 complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.** L2 landed
+`minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
+`(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
+**L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
+polynomial extractor, and GP producer are all Lean-green; `lem:block-rank-cut`,
+`lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`, and
+`lem:case-cut-edge-realization-gp` are all green blueprint nodes.
+**Next: L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
+`case_I_realization` (`hcontract` carry discharged).
 **L0 is fully complete** (motives M1–M5 live on the conditioned spine;
 bridges B1/B2 landed; `def:genuine-hinge-realization` green — per-slice detail in the
 layer plan below and §1.57). **The L1 signature pin is landed (§1.58):** V2 resolved
@@ -115,7 +102,9 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   `lem:rank-polynomial-of-le-finrank` green. Two-swap copy of `exists_rankPolynomial_of_rigidOn_linking`:
   (i) W6e `exists_independent_panelRow_subfamily_of_le_finrank` replaces the rigid N7b-0; (ii) conclusion
   rephrased to `N ≤ finrank rigidityRows` via `finrank_span_eq_card` + `Submodule.finrank_mono`.
-- [ ] **L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean), the GP producer. Canonical: §1.62(d).
+- [x] **L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean), the GP producer. Lean-green, axiom-clean,
+  build+lint clean. Blueprint: `lem:case-cut-edge-realization-gp` (molecular-induction.tex) green.
+  Canonical: §1.62(d).
 - [ ] **L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5 all-`k` restate of
   `case_I_realization` (`hcontract` carry discharged).
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
@@ -171,15 +160,13 @@ and bare-conjunct producer (`case_cut_edge_realization`, `CaseI.lean`):
 both Lean-green, axiom-clean, build+lint clean. Blueprint: `lem:block-rank-cut` (`rigidity-matrix.tex`)
 and `lem:case-cut-edge-realization` (`molecular-induction.tex`) both green.
 
-**L4b-1 complete.** `PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking` Lean-green,
-`lem:rank-polynomial-of-le-finrank` blueprint-green.
+**L4 fully complete.** All four L4 deliverables Lean-green and blueprint-green:
+`lem:block-rank-cut`, `lem:case-cut-edge-realization`, `lem:rank-polynomial-of-le-finrank`,
+`lem:case-cut-edge-realization-gp`.
 
-**Smallest next forward commit: L4b-2** — `case_cut_edge_realization_gp` (CaseI.lean, §1.62(d)):
-the GP producer for the cut-edge case. Body: cut decomposition (as L4a); side IH GP frameworks
-`Qᵢ` from `(hIH kᵢ (G.induce Vᵢ) …).1 hSimpleᵢ`; per-side W6e +
-`exists_rankPolynomial_of_le_finrank_linking` → `Qᵢ_rank`; GP polynomial; fresh combined seed
-non-root of triple; combined rank ≥ D(|V|−1)−k from L4a brick + arithmetic; B2 closes ≤; antisymmetry.
-After L4b: L5 (`hcontract`, Lemma 6.2 + the 6.3/6.5 all-`k` restate).
+**Smallest next forward commit: L5** — Lemma 6.2 (non-simple Case I, V6) + the 6.3/6.5
+all-`k` restate of `case_I_realization` (`hcontract` carry discharged). Design canonical: §1.56
+carries table + §1.62 V6 entry.
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -318,3 +305,9 @@ the Lean docstrings, the FRICTION/TACTICS lifts, and git history.)
   count `N = Nat.card s`; its span ≤ rigidity-row span; monotonicity closes `N ≤ finrank rigidityRows`).
   The single type mismatch (`hsupp ⟨(e', t₁, t₂), hi⟩` → `hsupp (e', t₁, t₂)`) caught at first build;
   clean on second. `lem:rank-polynomial-of-le-finrank` (genericity-and-count.tex) green.
+- **L4b-2 build (2026-06-13, sonnet):** `case_cut_edge_realization_gp` (CaseI.lean). Route GP-2 per
+  §1.62(d): cut decomposition; side IH `.1 hSimpleᵢ` → side GP frameworks; `set F := ofNormals ...`
+  then `hFgraph : F.graph = G` for normalizing brick output → TACTICS-QUIRKS §53; `hmotQF₁`/`hmotQF₂`
+  via `infinitesimalMotions_eq_of_isLink_supportExtensor` WITHOUT `.symm`; `hF₁span`/`hF₂span` by
+  `congr 1` alone; `let R₁/R₂` to shorten finrank expressions; `set_option maxHeartbeats 800000`.
+  `lem:case-cut-edge-realization-gp` green.
