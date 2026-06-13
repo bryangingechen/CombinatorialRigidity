@@ -447,11 +447,22 @@ and the generic-rank argument are in hand.
   property of the normals alone, unchanged by the selector.
 \end{proof}
 
-\begin{lemma}[Deficiency-aware rank polynomial for the relabeled contraction leg; L5b-i completion]
+\begin{lemma}[Deficiency-aware rank polynomial for the relabeled contraction leg; L5b-i completion (superseded, route-2 leaf)]
   \label{lem:rank-polynomial-IH-relabel}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking}
   \leanok
   \uses{lem:rank-transport-relabel-of-le-finrank, lem:rank-polynomial-of-le-finrank}
+  \emph{Superseded (route-2 leaf, no live consumer).}  This produces the
+  contraction framework's \emph{full-span} surviving rank — the input the
+  \emph{splice brick} (\cref{lem:rigidityRows-splice-rank-add}) was to consume.
+  The all-$k$ simple Case-I producer cannot use the splice brick (its
+  surviving-edge support-extensor parallelism is impossible for the
+  general-position framework $\operatorname{ofNormals}$), so the producer routes
+  instead through the block-triangular coupler reading the
+  \emph{exterior-projected} surviving rows
+  (\cref{lem:rank-polynomial-IH-relabel-proj}).  This node states a true fact
+  and its shared core survives; it is kept inert for the audit trail.
+
   Under the setup of \cref{lem:rank-transport-relabel-of-le-finrank} (with $f(G_c)$ loopless),
   there exists a natural number $N$ with
   $(N : \mathbb{Z}) = D(|V(f(G_c))| - 1) - \operatorname{def}(f(G_c))$
@@ -477,6 +488,51 @@ and the generic-rank argument are in hand.
   and looplessness ensures distinct endpoints.  The resulting polynomial $Q$ is nonzero
   (its evaluation at $q_0$ is nonzero) and rational, and it transfers the rank lower bound $N$
   to every non-root seed.
+\end{proof}
+
+\begin{lemma}[Deficiency-aware exterior-projected rank polynomial for the surviving block; L5b-ii-b V6-b leaf]
+  \label{lem:rank-polynomial-IH-relabel-proj}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter, lem:rank-polynomial-of-le-finrank}
+  Let $H \le G$ be a proper rigid subgraph with representative body
+  $r \in V(H) \subseteq V(G)$, and let the contraction $G/E(H)$ be a minimal
+  $k'$-dof-graph carrying its inductive general-position realization (the
+  deficiency $k' > 0$ permitted).  Write $D = (\operatorname{extProj} V(H))^{\!*}$
+  for the dual of the projection zeroing the $V(H)$-columns and
+  $\mathrm{sc} = (V(G) \setminus V(H)) \cup \{r\}$ for the surviving body set.
+  Then there is a nonzero rational polynomial $Q$ over the body-normal
+  parameters of $G$ such that at every $Q$-non-root seed $q$, the
+  $D$-projected surviving-edge panel rows of $\operatorname{ofNormals}(G
+  \setminus E(H), \text{ends}, q)$ contain a linearly independent subfamily of
+  size at least $D(|\mathrm{sc}|-1) - k'$.
+  This is the surviving-leg input the all-$k$ simple Case-I producer feeds the
+  block-triangular coupler's projected-independence slot.  It is the
+  deficiency-aware twin of the rigid contraction-leg transport
+  (\cref{lem:claim-6-4}): where the rigid form derives the surviving rank from
+  rigidity and reads it off the un-relabeled rows, this carries the
+  contraction's possibly-deficient rank across the collapse relabel, projecting
+  away the rigid block's columns.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-transport-relabel-of-le-finrank, lem:extProj-preserves-rank-of-inter, lem:rank-polynomial-of-le-finrank}
+  The shared-core transport (\cref{lem:rank-transport-relabel-of-le-finrank})
+  supplies a general-position witness placement at which the relabel-leg
+  framework's rigidity-row rank equals $N$ exactly, where
+  $(N : \mathbb{Z}) = D(|\mathrm{sc}|-1) - k'$ (the contraction's vertex set is
+  $\mathrm{sc}$ and its deficiency is $k'$).  At that placement, feed $N$ as a
+  rank input to the deficiency-aware exterior-projected extractor (the
+  $\le$-finrank analogue of the rigid projected-subfamily extraction, using the
+  rigidity-free injectivity core
+  \cref{lem:extProj-preserves-rank-of-inter} in place of rigidity): it yields a
+  subfamily of relabel-leg links whose $D$-projected collapsed rows are
+  independent, of size $\ge N$.  The per-edge collapse correspondence carries
+  that projected independence back to the projected rows of the uncollapsed
+  framework at the degenerate placement (KT's $p_2$), giving a single-placement
+  witness.  The bounded packaging (the projected sibling of
+  \cref{lem:rank-polynomial-of-le-finrank}) then lifts the witness to the
+  $Q$-non-root rank polynomial.
 \end{proof}
 
 \begin{lemma}[Block-rank addition for cut decompositions; L4a block-rank brick]

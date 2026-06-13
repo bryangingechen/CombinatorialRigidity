@@ -15,8 +15,8 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3 + L4 + L5a-i + L5a-ii + L5b-i + L5b-ii-a complete; four carries remain: `h622`, `h65`,
-`hsplit`, `hcontract`.**
+**L2 + L3 + L4 + L5a-i + L5a-ii + L5b-i + L5b-ii-a + L5b-ii-b complete; four carries remain: `h622`,
+`h65`, `hsplit`, `hcontract`.**
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
 **L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
@@ -213,11 +213,17 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
         (CaseI.lean:1311, beside the rigid sibling at :1259): the rigid extractor verbatim with two landed swaps —
         W6e `_le_finrank` for the un-projected source + `injOn_..._of_inter_eq_singleton` (L5a-ii) for the
         rigidity gate. No blueprint node (churn-prone `_proj` infra, like its rigid sibling). Build+lint clean.
-      - [ ] **L5b-ii-b** — deficient `_proj` rank polynomial `exists_rankPolynomial_of_IH_relabel_linking_set_proj`
-        (`P≈3`, the V6-b leaf in corrected form): mirror `rigidContract_exterior_rank_transport_htransport`
-        (CaseI:1903) at the deficient leg — landed shared core gives `D(|sc|−1)−k`; L5b-ii-a + U2
-        `panelRow_collapseTo_comp_extProj_dualMap` (CaseI:940) carry projected independence to the degenerate
-        witness; L4b-1-style packaging lifts to a polynomial. Mints `lem:rank-polynomial-IH-relabel-proj`.
+      - [x] **L5b-ii-b** — deficient `_proj` rank polynomial `exists_rankPolynomial_of_IH_relabel_linking_set_proj`
+        (CaseI.lean, beside the rigid `rigidContract_exterior_rank_transport_htransport`): mirrors that rigid
+        chain at the deficient leg — landed shared core `finrank_span_rigidityRows_ofNormals_relabel_eq` gives the
+        witness placement `nrm` (GP) + the exact deficient rank `N` (`(N:ℤ) = D(|sc|−1)−k'` via `hF'sc` +
+        `hKmin.1`); L5b-ii-a `_proj` extractor (rank input `N`, `hinter` from `rigidContract_vertexSet_inter_eq_singleton`)
+        gives the projected-collapsed independent subfamily; U2 `panelRow_collapseTo_comp_extProj_dualMap` carries it
+        to `degeneratePlacement r V(H) nrm'`; the landed bounded packaging `exists_rankPolynomial_of_rigidOn_linking_set_proj`
+        (generic in the projected family — reused, not re-derived) lifts the single-placement witness to the `Q`-non-root
+        rank polynomial. Mints `lem:rank-polynomial-IH-relabel-proj` (rigidity-matrix.tex, green). The route-2 leaf
+        `lem:rank-polynomial-IH-relabel` is now marked `superseded` in its blueprint title (inert, audit-trail only).
+        All gates clean (build+lint+blueprint-verify; axiom-clean).
       - [ ] **L5b-ii-c** — deficiency-aware coupler restate
         `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof` (`P≈2`, mechanical): the
         landed coupler (CaseI:2119) with `hdef=0`→`def=k`, surviving target `D(|sc|−1)`→`D(|sc|−1)−k`, M2 →
@@ -345,17 +351,27 @@ restate (`−k` lowering). Canonical: §1.66 (signatures + proofs sketched there
 landed (CaseI.lean:1311). Two-swap mirror: W6e `_le_finrank` replaces the rigidity-gated un-projected extractor;
 `injOn_..._of_inter_eq_singleton` (L5a-ii) replaces the rigidity-gated `injOn`. No blueprint node. Build+lint clean.
 
-**Smallest next forward commit: L5b-ii-b** — the deficient `_proj` rank polynomial
-`exists_rankPolynomial_of_IH_relabel_linking_set_proj` (`P≈3`, mints `lem:rank-polynomial-IH-relabel-proj`):
-assemble the landed shared core `finrank_span_rigidityRows_ofNormals_relabel_eq` + the new L5b-ii-a extractor +
-U2 `panelRow_collapseTo_comp_extProj_dualMap` into a rank polynomial, mirroring
-`rigidContract_exterior_rank_transport_htransport` at the deficient leg. See §1.66(e)/(g).
+**L5b-ii-b complete (2026-06-13).** `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj`
+(CaseI.lean, beside the rigid `rigidContract_exterior_rank_transport_htransport`). The deficient-leg mirror of that
+rigid chain: shared core `finrank_span_rigidityRows_ofNormals_relabel_eq` → L5b-ii-a `_proj` extractor (rank input
+`N := finrank (span F'.rigidityRows)`, `(N:ℤ) = D(|sc|−1)−k'`) → U2 `panelRow_collapseTo_comp_extProj_dualMap`
+(degenerate placement) → the landed bounded packaging `exists_rankPolynomial_of_rigidOn_linking_set_proj` (reused
+verbatim — generic in the projected family). Mints `lem:rank-polynomial-IH-relabel-proj` (green); the route-2 leaf
+`lem:rank-polynomial-IH-relabel` now marked `superseded` in its title. Build+lint+blueprint-verify clean; axiom-clean.
+**The V6-b leaf is now fully RESOLVED in its route-1 form** (the genuinely-new linear algebra of L5b is landed).
 
-**Flag for the coordinator (surfaced, no hard adjudication needed):** route 1 adds **three new decls**
-(extractor + `_proj` rank polynomial + deficient coupler restate) — more Lean surface than §1.65
-projected, but it is the *only* surface that produces the GP conjunct (route 2 structurally cannot). No
-motive / IH statement-level change. The landed route-2 leaf `exists_rankPolynomial_of_IH_relabel_linking`
-is dead (delete-at-L5b-close, harmless until then).
+**Smallest next forward commit: L5b-ii-c** — the deficiency-aware coupler restate
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof` (`P≈2`, mechanical): the landed coupler
+(CaseI:2119, after my insertion the line shifts — grep `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`)
+with `hdef=0`→`G.deficiency n = k`, surviving target `D(|sc|−1)`→`D(|sc|−1)−k`, M2 conclusion `D(|V|−1)`→`D(|V|−1)−k`
+— the row-counting + B2-antisymmetry arithmetic of the coupler body restated with `−k`. May fold into L5b-ii-d. See
+§1.66(f)/(g). After that: L5b-ii-d (`case_I_realization_all_k` assembly, statement-grep gate) → L5b-iii (dispatch).
+
+**Flag for the coordinator (surfaced, no hard adjudication needed):** route 1 adds three new decls (extractor +
+`_proj` rank polynomial + deficient coupler restate); the first two are now landed, only the coupler restate +
+assembly + dispatch remain. No motive / IH statement-level change. The landed route-2 leaf
+`exists_rankPolynomial_of_IH_relabel_linking` is dead (delete-at-L5b-close, harmless until then; now marked
+`superseded` in its blueprint title).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
@@ -463,3 +479,10 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
   (CaseI.lean). Two-swap mirror of the rigid extractor: W6e `_le_finrank` replaces `_rigidOn_linking` (dropping
   `hnev`/`hrig`/`hr`, adding `hN`); `injOn_..._of_inter_eq_singleton` (L5a-ii) replaces `injOn_..._rigidityRows`
   (dropping `hrig`/`hr`). No blueprint node. Build+lint+axiom-clean.
+- **L5b-ii-b build (2026-06-13):** `PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking_set_proj`
+  (CaseI.lean) — the deficient-leg mirror of `rigidContract_exterior_rank_transport_htransport` then
+  `exists_rankPolynomial_of_rigidOn_linking_set_proj`. Shared core (placement `nrm` + rank `N`, `(N:ℤ)=D(|sc|−1)−k'`)
+  → L5b-ii-a `_proj` extractor → U2 → landed bounded packaging (reused, generic in the projected family). Took
+  `[DecidableEq β]` (forced by `IsMinimalKDof`); ℤ count via `Nat.cast_sub` on `1 ≤ |sc|`. `set N` ordering trap
+  avoided per TACTICS-QUIRKS §43. Mints `lem:rank-polynomial-IH-relabel-proj`; route-2 leaf
+  `lem:rank-polynomial-IH-relabel` marked `superseded`. V6-b RESOLVED (route-1 form). Canonical: §1.66(e)/(g).
