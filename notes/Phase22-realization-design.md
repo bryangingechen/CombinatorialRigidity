@@ -5815,6 +5815,320 @@ piece is the deficiency-aware extractor (c). No residual open sub-question for L
 
 ---
 
+### 1.63 The L5 signature pin — Lemma 6.2, the non-simple Case-I branch (`hcontract`): the `hcontract` slot is a `by_cases` dispatch on `G.Simple` (the §1.55(c) precedent generalized to all-`k`), simple → forgetful M4 ∘ the all-`k`-restated GP `case_I_realization` (6.5 sub-arm carried as `h65`, L8), non-simple → the NEW KT Lemma 6.2 coincident-panel splice; V6 RESOLVED — the landed N6a `hasFullRankRealization_of_splice_of_supportExtensor` cannot be re-aimed (it concludes the *deleted* `HasFullRankRealization` and is `PanelHingeFramework`/`ofNormals`-bound), so L5's non-simple branch is a fresh `BodyHingeFramework`-native bare producer mirroring the landed L4a `case_cut_edge_realization` shape, with the coincident-panel cut hinge supplied by the already-landed `exists_extensor_in_two_panels` (which works AT `n=n`); sliced L5a (the non-simple bare producer) → L5b (the simple-branch all-`k` GP restate + the dispatch) (2026-06-13)
+
+> **Docs-only design pass (the L5 pin).** Lean read this pass (declarations + current line numbers, all
+> verified this pass): GenericityDevice.lean — `hasFullRankRealization_of_splice_of_supportExtensor` (:915,
+> N6a, the bare splice; **concludes `PanelHingeFramework.HasFullRankRealization k G`** — the M5-deleted weak
+> motive — with `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` and `hsupp : ∀ e, (ofNormals G ends
+> q₀).toBodyHinge.supportExtensor e ≠ 0` quantified over ALL `e : β`, the two legs as `withGraph GH`/`withGraph
+> Gc` of the *parent* `ofNormals G ends q₀`, rigid on `V(GH)`/`V(Gc)`), `…_of_supportExtensor_ofNormals` (:1095,
+> the leg-native bare variant — same `HasFullRankRealization` conclusion, legs as `ofNormals GH/Gc ends q₀`),
+> `hasGenericFullRankRealization_of_splice_ofNormals` (:1045, the GP splice, concludes the *legacy* M3 shape
+> with `hdef : G.deficiency n = 0`), `hasPanelRealization_of_generic` (:1903, M4 forgetful: `[G.Loopless]`,
+> `2 ≤ V(G).ncard`, `HasGenericFullRankRealization 2 n G → HasPanelRealization 2 n G`),
+> `finrank_span_rigidityRows_add_deficiency_le` (:562, B2, the free `V(G)`-relative `≤`); CaseI.lean —
+> `case_I_realization` (:2155 — `{n k : ℕ}`, `hD : 3 ≤ bodyBarDim n`, `hG : G.IsMinimalKDof n 0`, `{H} hH :
+> IsProperRigidSubgraph`, `{r} hr : r ∈ V(H)`, `hVH2 : 2 ≤ V(H).ncard`, `hSimple : G.Simple`, **`hcSimple :
+> (G.rigidContract H r).Simple`**, conditioned `hIH` over `IsMinimalKDof n 0`/`2 ≤ ncard`; concludes
+> `HasGenericFullRankRealization k n G` — the **simple-and-simple-contraction Lemma-6.3 arm only**, NOT the 6.5
+> arm), `couple_geometry_of_isProperRigidSubgraph` (:560 — yields `H ≤ G`, `G.deleteEdges E(H) ≤ G`, `r ∈ V(H)`,
+> `r ∈ V(G ＼ E(H))`, the cover, both nonempty), `case_cut_edge_realization` (:7588, the landed L4a *bare* all-`k`
+> producer — `{k : ℤ}`, `IsMinimalKDof n k`, `.2`-projected IH, concludes `HasPanelRealization 2 n G`; the L5a
+> shape precedent), `case_cut_edge_realization_gp` (:7979, the landed L4b GP producer — full conditioned IH;
+> the L5b shape precedent); PanelHinge.lean — `HasPanelRealization` (M2, :1090), `HasGenericFullRankRealization`
+> (M3, :1035), `theorem_55_generic` (:1168 — the *legacy 0-dof* spine, `hcontract`/`hcontractGP` slots at
+> :1185/:1190; the all-`k` spine `theorem_55_all_k` is L9 and **does not yet exist**, so the L5 producer stands
+> alone until L9 wires the `hcontract` slot — confirmed by grep, exactly the L4 situation), the `hcontractGP`
+> slot lambda (:1212, `fun … hrig hSimple hIH => ⟨fun hSimple => hcontractGP …, hcontract …⟩`); Deficiency.lean —
+> `isKDof_zero_of_parallel_pair` (:606 — a two-vertex two-parallel-edge multigraph is `0`-dof for `D ≥ 2`),
+> `IsProperRigidSubgraph` (:428, the G5-repaired `2 ≤ V(H).ncard` is `.2.1`), `loopless_of_isMinimalKDof`
+> (:370); ReducibleVertex.lean — `simple_of_isMinimalKDof_of_noRigid` (:625, G0); Contraction.lean —
+> `rigidContract_isMinimalKDof` (:696, **the N4 bridge IS all-`k`: `{k : ℤ}`, `IsMinimalKDof n k →
+> IsProperRigidSubgraph → (G.rigidContract H r).IsMinimalKDof n k`** — V4 already discharged in the landed Lean,
+> no generalization needed), `rigidContract_simple` (:144 — conditional on `hloop`/`hpar`, NOT derivable from
+> `IsProperRigidSubgraph + G.Simple`; KT takes `G/E'` simple as a *case hypothesis*); PanelLayer.lean —
+> `exists_extensor_in_two_panels` (:631 — **the coincident-panel construction: a nonzero `C : ScrewSpace 2`
+> with `ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂` for ANY `n₁ n₂`, including `n₁ = n₂`** — built for L4a's cut
+> hinge, exactly the genuine-`(d−2)`-flat-in-a-common-panel KT 6.2 needs). KT 2011 read **against the PDF this
+> pass** (offset `printed p.N = pdf page (N − 647)`): **p. 673 §6.2 Lemma 6.2 verbatim** (proof sketch: `G' =
+> (V', E')` proper rigid in minimal `k`-dof `G`, `G'` minimal-`0`-dof with `1 < |V'| < |V|` by Lemma 3.3, `G/E'`
+> minimal-`k`-dof with `|(V∖V')∪{v*}| < |V|` by Lemma 3.5; IH gives `(G', p₁)` at `rank D(|V'|−1)` and
+> `(G/E', p₂)` at `rank D(|V∖V'∪{v*}|−1) − k`; "replace the body associated with `v*` by `(G', p₁)`"; **Lemma
+> 6.2 statement** = "minimal `k`-dof, `|V| ≥ 3`, NOT simple, (6.1) ⟹ a panel-hinge realization at `rank
+> R(G,p) = D(|V|−1) − k`"; **proof**: `e, f` multiple edges joining `a, b`; `G[{e,f}]` is a proper rigid
+> subgraph since `ẽ ∪ f̃` carries `D` edge-disjoint spanning trees on `{a,b}`; take `G' = G[{e,f}] = (V'={a,b},
+> E'={e,f})`; **Lemma 5.3** gives `(G', p₁)` with `rank R(G',p₁) = D` and **coincident panels** `Π_{G',p₁}(a) =
+> Π_{G',p₁}(b)`; (6.1) gives `(G/E', p₂)` at `rank R(G/E',p₂) = D(|V|−2) − k`; "since the choices of `p₁` and
+> `p₂` are independent" take `Π_{G/E',p₂}(v*) = Π_{G',p₁}(a) = Π_{G',p₁}(b)` — **the coincident-panel splice at
+> the contraction's panel**; (6.2) the spliced map `p|E' = p₁`, `p|E∖E' = p₂`; (6.3) the block-triangular matrix
+> `[[R(G',p₁), 0],[∗, R(G,p;E∖E',V∖V')]]`), **p. 674** (the rank chain: (6.4)/(6.5) `rank R(G,p;E∖E',V∖V') =
+> rank R(G/E',p₂)` via the deleted-`v*`-columns identity + **Lemma 5.1** pin-a-body; (6.3)+(6.5) ⟹ `rank R(G,p)
+> ≥ rank R(G',p₁) + rank R(G/E',p₂) = D + D(|V|−2) − k = D(|V|−1) − k`; **Lemma 6.3** statement = the simple +
+> `G/E'`-simple arm, "nonparallel" realization, same rank, via the (6.6) intersection-hinge map — confirms 6.3
+> is the L5b simple arm and **6.5 is the rest**, deferred to L8). No `.lean`/`.tex` edits this pass.
+
+**Citation.** Katoh–Tanigawa 2011, *Discrete Comput. Geom.* **45**, 647–700; **Lemma 6.2**, §6.2, p. 673–674
+(the non-simple sub-case of the proper-rigid-subgraph case of the all-`k` Theorem 5.5 induction). The
+parallel-pair `G[{e,f}]` proper-rigidity uses `ẽ ∪ f̃` carrying `D` edge-disjoint spanning trees (KT's
+multiplied-graph criterion, §3); the coincident-panel base realization `(G', p₁)` with `Π(a) = Π(b)` is
+**Lemma 5.3**, p. 670; the deleted-`v*`-columns rank invariance `rank R(G/E',p₂;E∖E',V∖V') = rank R(G/E',p₂)`
+is **Lemma 5.1** (the [29] = Tay–Whiteley pin-a-body fact), p. 668; the contraction `G/E'` minimal-`k`-dof
+with `|V(G/E')| < |V|` is **Lemma 3.5**, p. 658. The IH (6.1) is KT's all-`k` inductive hypothesis, p. 671.
+All verified against the PDF this pass.
+
+**Red-node consistency gate (run on the L5 inputs).** L5 *mints* its non-simple producer node — there is **no
+existing all-`k` Lemma-6.2 realization node** in the dep-graph (structural-edit mode). The two relevant existing
+nodes were re-read end-to-end: `lem:case-I-dispatch` (case-i.tex, the `h65` red node) — statement and proof
+route through the 6.3-vs-6.5 dispatch on `(G.rigidContract H r).Simple` and the Lemma-6.5 vertex-removal arm;
+no `\uses` at a superseded node; **L5 does NOT touch it** (the 6.5 arm is L8, and L5's non-simple branch is
+Lemma 6.2, a *different* KT sub-case — non-simplicity of `G` itself, not non-simplicity of the contraction).
+`lem:case-I-realization` (the simple Lemma-6.3 arm, pinned to `case_I_realization`, green at the GP conclusion):
+its statement carries `hSimple`/`hcSimple` and concludes `HasGenericFullRankRealization` — the L5b simple arm
+consumes it verbatim (all-`k`-restated). `blueprint/lint.sh` expected green (no edits this pass; L5's nodes
+mint at the build). All self-consistent; the L5 producer family plugs into the `hcontract` slot at L9.
+
+**The slot the producer family fills.** L2's `hcontract` slot (§1.56(c) `minimal_kdof_reduction_all_k`), at
+`P G = Pc G := (G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` (§1.56(b) M4):
+
+```text
+hcontract : ∀ (k : ℤ) (G), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+  (∃ H, H.IsProperRigidSubgraph G n) →
+  (∀ (k' : ℤ) (G'), G'.IsMinimalKDof n k' → V(G').Nonempty → V(G').ncard < V(G).ncard → Pc G') →
+  Pc G
+```
+
+So the slot-filler receives `hG`, `3 ≤ ncard`, `⟨H, hH⟩`, and the guarded conditioned IH; it must conclude the
+pair `Pc G = ⟨gp, bare⟩`. This is exactly the L4 `hcut`-slot shape with `¬ TwoEdgeConnected` replaced by
+`∃ H, IsProperRigidSubgraph G n` — so L5 reuses L4's slot-filler architecture (the `.2` bare conjunct and the
+`.1` GP conjunct as *separate* producers, mirroring how `theorem_55_generic` keeps `hcontract`/`hcontractGP`
+as separate slots), differing only in the case math inside each conjunct.
+
+**(a) The two-way dispatch — KT's trifurcation collapses to a `by_cases` on `G.Simple`.** KT p. 673 splits the
+proper-rigid-subgraph case into **three** sub-cases: Lemma 6.2 (`G` not simple), Lemma 6.3 (`G` simple, `G/E'`
+simple), Lemma 6.5 (the rest = `G` simple but *no* `(H, r)` has a simple contraction). The §1.56(d) `hcontract`
+plan dispatches on `G.Simple` at the **top** level, folding 6.3 and 6.5 together as "the simple branch":
+
+* **simple branch (`hSimple : G.Simple`)** → the §1.55(c) `hcontractGP`-dispatch precedent, generalized to
+  all-`k`: forgetful M4 (`hasPanelRealization_of_generic`) ∘ the all-`k`-restated GP `case_I_realization`. The
+  GP `case_I_realization` is itself the 6.3-vs-6.5 dispatch (the landed 22h `theorem_55_d3` wiring inlines a
+  `by_cases` on `(G.rigidContract H r).Simple`: positive → `case_I_realization` directly = Lemma 6.3; negative →
+  the carried `h65` = Lemma 6.5). **L5's simple branch leaves the 6.5 sub-arm carried as `h65` (= L8); it does
+  NOT build Claim 6.6 / the Π°-placement.** What L5 builds in the simple branch is the *all-`k` restate* of
+  `case_I_realization` (it is currently `0`-dof-only: `hG : G.IsMinimalKDof n 0`, `hIH` over `IsMinimalKDof n 0`)
+  plus the M4-forgetful wrap to the bare conjunct.
+* **non-simple branch (`¬ G.Simple`)** → **KT Lemma 6.2 (NEW math)**: the coincident-panel splice. This is the
+  L5a deliverable, the genuinely new content of L5. It concludes the **bare `HasPanelRealization` conjunct only**
+  (KT 6.2 produces no nonparallel realization — coincident panels mean GP fails); its GP conjunct is
+  *vacuously discharged* because the `.1` conjunct `G.Simple → HasGenericFullRankRealization` has an
+  unsatisfiable antecedent on this branch (`¬ G.Simple`, so `fun hSimple => absurd hSimple hnsimple`).
+
+So the slot-filler is, schematically:
+```text
+hcontract := fun k G hG hV3 hex hIH =>
+  by_cases hSimple : G.Simple
+  · ⟨fun _ => case_I_realization_all_k_gp … hSimple … (hIH·full),     -- L5b: 6.3 arm + h65 carry
+     hasPanelRealization_of_generic … (case_I_realization_all_k_gp … hSimple …)⟩  -- M4 forgetful
+  · ⟨fun hS => absurd hS hSimple,                                      -- GP vacuous on ¬Simple
+     case_I_realization_nonsimple … hG hex (fun … => (hIH …).2)⟩       -- L5a: KT Lemma 6.2, bare
+```
+(Exact wiring at L5b; the GP-vacuity on the non-simple branch is the same `not_simple`-absurd idiom as
+`hbaseGP`'s parallel-pair vacuity, §1.54(a1).)
+
+**(b) V6 RESOLVED — N6a cannot be re-aimed; the non-simple branch is a fresh `BodyHingeFramework`-native
+producer.** The carries table (§1.56(d)) flagged V6 as "read N6a's exact statement at the L5 pin and re-aim at
+the honest carrier (its `hends`/`hsupp` shape was built for the weak motive)." Reading the landed N6a family
+(GenericityDevice.lean:891–1107) settles V6 **against** a re-aim, for three independent reasons:
+
+1. **N6a concludes the deleted motive.** `hasFullRankRealization_of_splice_of_supportExtensor` (:915) and its
+   leg-native sibling (:1095) both conclude `PanelHingeFramework.HasFullRankRealization k G` — the M5-deleted
+   weak motive (Decision 1, §1.55(a): "no weak form survives to be cited"). They cannot be re-pointed at M2
+   `HasPanelRealization` by a signature edit: `HasFullRankRealization` is `∃ Q, Q.graph = G ∧
+   Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)` (rigidity-on-`V(G)`), whereas M2 demands a *deficiency-aware
+   rank equality* + genuine hinges + containment + nonzero panels — a strictly richer conclusion that the
+   N6a proof (which routes through the genericity *device* `hasFullRankRealization_of_independent_panelRow`)
+   does not establish.
+2. **N6a is `PanelHingeFramework`/`ofNormals`-bound; M2 is `BodyHingeFramework`-native.** N6a's legs and seed
+   live on `ofNormals G ends q₀` (derived hinges = the meet of two selected normals) — exactly the carrier the
+   §1.56(a) expressiveness finding rules out for the coincident-panel case (`panelSupportExtensor n n = 0`, so
+   a derived-hinge framework cannot carry a genuine hinge in a *coincident* panel). M2 is on the free-hinge
+   `BodyHingeFramework` precisely so the cut/splice hinge can be a genuine `(d−2)`-flat chosen *inside* the
+   common panel even when the two panels coincide.
+3. **The honest non-simple producer already has its precedent — L4a.** The landed `case_cut_edge_realization`
+   (CaseI.lean:7588) is the `BodyHingeFramework`-native bare producer for the *other* reduction case (the cut),
+   assembled from IH `HasPanelRealization` side frameworks + a coincident-panel-tolerant cut hinge
+   (`exists_extensor_in_two_panels`) + the block-rank brick `le_finrank_span_rigidityRows_of_cut` + B2. **KT
+   Lemma 6.2 is structurally the same assembly** — two legs (`G' = G[{e,f}]` and `G/E'`) glued over a single
+   shared/cut structure, block-triangular rank addition, B2 closing. So V6's resolution is: **N6a is dead
+   infrastructure for the honest motive; L5a builds the Lemma-6.2 producer fresh in the L4a idiom, on the
+   `BodyHingeFramework` carrier, reusing `exists_extensor_in_two_panels` for the coincident-panel hinge.**
+
+   *The block-rank brick fit (the one item to confirm at the L5a build).* L4a's `le_finrank_span_rigidityRows_of_cut`
+   adds two *vertex-disjoint* side blocks over a cut with `≤ 1` crossing edge. KT 6.2's two legs are `G' =
+   G[{e,f}]` on `V' = {a, b}` and `G/E'` on `(V∖V')∪{v*}`, which **share** the contracted body `v*`/`{a,b}` — they
+   are *not* vertex-disjoint (they overlap in the splice body). So the lower-bound engine for L5a is **not** the
+   L4a disjoint-block brick verbatim; it is the **shared-body splice** pattern KT eq. (6.3)–(6.5) describes (the
+   `G'` block is rigid on `V' = {a,b}` and the `G/E'` block reads `R(G/E',p₂)` after deleting the `v*`-columns).
+   The landed splice-glue infrastructure for *this* shape is `isInfinitesimallyRigidOn_of_splice` (used by N6a at
+   :929–931) — but that glue establishes *rigidity*, which is only the `def = 0` instance. For general
+   `k`-dof legs (the non-simple branch has `def(G̃) = k`, possibly `> 0`), the splice produces a *rank lower
+   bound*, not rigidity, so L5a needs the **rank-additive form of the splice over a shared body** — the L5a
+   block-rank brick. **This is the one genuinely-new linear-algebra piece of L5** (the §1.56(d) "eq. (6.3)–(6.5)
+   rank addition"), the shared-body sibling of L4a's disjoint-body `le_finrank_span_rigidityRows_of_cut`. See
+   (c)'s `le_finrank_span_rigidityRows_of_splice` pin.
+
+**(c) The L5a non-simple producer + its block-rank brick (the NEW Lean).** Two declarations, the brick first.
+
+*The shared-body splice block-rank brick* (`lem:rigidityRows-splice-rank-add`; KT Lemma 6.2 eq. (6.3)–(6.5)
+block-triangular core; the shared-body sibling of L4a's disjoint-body brick). For a body-hinge framework `F`
+whose links partition over a proper rigid subgraph `H ≤ F.graph` (the `E(H)` rows) and its edge-complement
+`F.graph ＼ E(H)` (the remaining rows), sharing the contracted body, the rigidity-row span's dimension is at
+least the `H`-block (rigid, `D(|V(H)|−1)`) plus the contraction block (`= rank R(G/E')` by the deleted-columns
+Lemma 5.1 identity):
+```lean
+/-- **Shared-body splice block-rank addition** (`lem:rigidityRows-splice-rank-add`; KT Lemma 6.2
+eq. (6.3)–(6.5); Phase 22i L5a). For a body-hinge framework `F` on `G`, a proper rigid subgraph
+`H ≤ G` with representative `r ∈ V(H)`, the rigidity-row span dimension is at least the `H`-leg span
+plus the contraction-leg span (the rows carried by `E(G) ∖ E(H)`, read on the surviving body set
+`(V(G) ∖ V(H)) ∪ {r}`). -/
+theorem BodyHingeFramework.le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
+    (F : BodyHingeFramework k α β) {H : Graph α β} {r : α}
+    (hH : H ≤ F.graph) (hr : r ∈ V(H))
+    (hC : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0)
+    (… leg/shared-body classification hypotheses …) :
+    Module.finrank ℝ (Submodule.span ℝ (F.restrictTo V(H)).rigidityRows)
+      + Module.finrank ℝ (Submodule.span ℝ (F.restrictTo ((V(F.graph) \ V(H)) ∪ {r})).rigidityRows)
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+```
+Design notes: **(i)** the structural reason is KT (6.3)'s block-triangular shape — the `E(H)` rows read only
+the `V(H)` bodies (top-left block `R(G', p₁)`, the `0` off-block), and the `E∖E(H)` rows are `R(G,p;E∖E',V∖V')`
+which by (6.4)/(6.5) has the same rank as `R(G/E',p₂)` (the deleted-`v*`-columns Lemma-5.1 identity, the
+already-landed pin-a-body machinery `finrank_span_rigidityRows_of_rigidOn`/the pinned-block suite). The legs
+**share** the body `r`/`v*`, so unlike L4a this is *not* a disjoint-block direct sum; the additivity comes from
+the block-triangular `0` in the top-right, the same `Submodule.finrank_sup` argument restricted to the
+upper-triangular structure (the surviving-body span of the contraction leg meets the `V(H)`-block span only in
+the shared `r`-coordinates, which the IH rank accounting already nets out). **(ii)** `restrictTo` is the landed
+side-framework constructor (used by L4a). **(iii)** `buildable`, not research-shaped — it is KT's elementary
+block-triangular argument, and the device-direct precedent `isInfinitesimallyRigidOn_of_splice` (the `def=0`
+instance) already establishes the splice glue; L5a generalizes it from *rigidity* to a *rank lower bound* the
+same way L4a generalized the cut split from B1 to the `≥`-then-B2 pattern. **Flag V6-a:** confirm at the L5a
+build whether the shared-body block-triangular additivity reuses `isInfinitesimallyRigidOn_of_splice`'s span
+decomposition directly (likely — it is the same glue, read as a span-`⊔` rather than a rigidity conclusion) or
+needs the explicit `Submodule.finrank_sup`/block-triangular `0`-block argument.
+
+*The L5a non-simple bare producer* (`lem:case-I-realization-nonsimple`; KT Lemma 6.2; the L4a `case_cut_edge_realization`
+analogue for the proper-rigid-subgraph case). It receives the `hcontract` slot's `⟨H, hH⟩` and the `.2`-projected
+conditioned IH:
+```lean
+theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+    {H : Graph α β} (hH : H.IsProperRigidSubgraph G n)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
+    HasPanelRealization 2 n G
+```
+Body: from `hH` choose the representative `r ∈ V(H)` (`hH.vertexSet_nonempty`); `couple_geometry_of_isProperRigidSubgraph
+hH hr` gives the two legs `H ≤ G` and `G ＼ E(H) ≤ G` sharing `r`, with the cover. The contraction `G.rigidContract
+H r` is `IsMinimalKDof n k` and strictly smaller by **`rigidContract_isMinimalKDof`** (V4 — *already all-`k` in
+the landed Lean*, no generalization) + `rigidContract_vertexSet_ncard` (`|V(G/E')| = |V(G)| − |V(H)| + 1 < |V|`
+since `|V(H)| ≥ 2`); the `H`-leg is minimal-`0`-dof and smaller (`IsProperRigidSubgraph` ⟹ `H.IsMinimalKDof n 0`,
+`|V(H)| < |V|`). So the IH applies to both legs, giving `HasPanelRealization` side frameworks `F_H`, `F_c`.
+Assemble `F : BodyHingeFramework` and `normal` by edge dispatch (`E(H)` rows from `F_H`, `E∖E(H)` rows from `F_c`,
+exactly KT (6.2)), with the splice/shared body `r`'s panel **coincident** (`normal r` shared, `Π(a) = Π(b) =
+Π(v*)`); the splice hinge in the common panel is `exists_extensor_in_two_panels (normal a) (normal b)` **at
+coincident normals** (`a, b` the parallel-pair endpoints both carry the contraction's panel — this is exactly
+the `n₁ = n₂` use the L4a brick already supports). Rank: `≥` from `le_finrank_span_rigidityRows_of_splice` (the
+(b) brick) + the two IH rank conjuncts + the deficiency arithmetic `k = k` (the `H`-leg contributes `D(|V(H)|−1)`
+since `def(H̃) = 0`, the contraction leg `D(|V(G/E')|−1) − k = D(|V|−|V(H)|) − k`, summing to `D(|V|−1) − k` by
+`|V(G/E')| = |V|−|V(H)|+1`); `≤` from B2 (`finrank_span_rigidityRows_add_deficiency_le`); antisymmetry closes the
+M2 equality. *Buildable from the (b) brick + IH + B2,* transversality-free (the coincident-panel hinge is the
+whole point — no GP needed; this is why the non-simple branch concludes only the bare conjunct).
+
+**(d) The L5b simple-branch all-`k` GP restate + the dispatch.** L5b restates `case_I_realization` (CaseI.lean:2155)
+from `0`-dof-only to all-`k`, then assembles the full `hcontract` slot-filler. Two pieces:
+
+*The all-`k` GP restate of `case_I_realization`.* The landed `case_I_realization` is `0`-dof-bound (`hG :
+G.IsMinimalKDof n 0`, `hIH` over `IsMinimalKDof n 0`, concludes `HasGenericFullRankRealization k n G` at `def =
+0`). The all-`k` form takes `{k : ℤ}`, `hG : G.IsMinimalKDof n k`, the all-`k` conditioned IH, and concludes the
+GP motive at the graph's own deficiency:
+```lean
+theorem case_I_realization_all_k [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 3 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+    {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
+    (hSimple : G.Simple) (hcSimple : (G.rigidContract H r).Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G
+```
+This still carries `hcSimple` (the Lemma-6.3 case hypothesis) — it is the **6.3 arm**. The restate from `0`-dof
+to all-`k` is **V-restate-shaped, not research-shaped**: the landed proof's rank arithmetic threads `def = 0`
+through `couple_geometry`/`rigidContract_exterior_rank_transport_htransport`/the device; the all-`k` form replaces
+each `def = 0` use with the graph's `def(G̃) = k` (the M2/M3 ℤ-cast rank conjuncts already carry the deficiency
+term), exactly the `0`-dof → all-`k` thread the L4 producers (`case_cut_edge_realization{,_gp}`) already
+demonstrate. **Flag V6-b:** confirm at the L5b build that the landed `case_I_realization`'s rank-transport leg
+(`rigidContract_exterior_rank_transport_htransport`, CaseI.lean:1642 — currently `hdef : (G.rigidContract H
+r).deficiency n = 0`) generalizes to the contraction's actual `def = k`; expected mechanical (the transport is
+a rank *identity*, deficiency-agnostic in its core), but it is the one all-`k` thread L5b must verify.
+
+*The dispatch* (the `hcontract` slot-filler), wiring (a)'s schematic: `by_cases hSimple : G.Simple`; positive
+arm `⟨fun _ => case_I_realization_all_k … hSimple hcSimple (hIH·full), hasPanelRealization_of_generic …
+(case_I_realization_all_k …)⟩` where `hcSimple` comes from the inner `by_cases` on `(G.rigidContract H r).Simple`
+(positive → Lemma 6.3 = `case_I_realization_all_k`; negative → the carried `h65`, L8); negative arm `⟨fun hS =>
+absurd hS hSimple, case_I_realization_nonsimple … (fun … => (hIH …).2)⟩`. The `h65` carry on the simple branch's
+non-simple-contraction sub-case is **unchanged from 22h** (it stays a named hypothesis until L8); L5 does not
+discharge it. The M4 forgetful wrap needs `[G.Loopless]` (from `hSimple.toLoopless`) and `2 ≤ V(G).ncard` (from
+`_hV3`).
+
+**(e) Blueprint disposition.** Mirrors §1.62(e)'s green-bare + GP-sibling split, for the proper-rigid-subgraph
+case. L5a mints **one new node** `lem:case-I-realization-nonsimple` (case-i.tex, beside `lem:case-I-realization`)
+for the non-simple branch's bare `HasPanelRealization`, `\uses`-ing `def:genuine-hinge-realization` (M2),
+`lem:cut-edge-decomposition`'s sibling for the splice decomposition (or the proper-rigid-subgraph bricks directly),
+`def:rank-hypothesis`, `prop:rigidity-matrix-prop11` (B2's hub), and a small new node
+`lem:rigidityRows-splice-rank-add` for the (c) shared-body brick (rigidity-matrix.tex, beside L4a's
+`lem:rigidityRows-cut-rank-add`) if it earns one (else fold into the producer's `\uses`). L5b restates
+`lem:case-I-realization` in place to the all-`k` form (`\lean{…case_I_realization_all_k}` — a statement change,
+so **grep `blueprint/src` for `case_I_realization` per the structural-edit gate** before committing L5b;
+`lem:case-I-dispatch` (the `h65` node) keeps its `\lean{}` and stays red, unchanged). The L9 spine consumes the
+conjunction `⟨gp, bare⟩` at the `hcontract` slot. No statement-grep ripple from L5a (additive node; the legacy
+`theorem_55_d3` spine reaches Case I only at `0`-dof via `case_I_realization`, which L5b restates, not L5a).
+
+**(f) The L5 slice cut (exact-signature build leaves, build order).** Two layers, the non-simple bare producer
+first (it is the new math and carries no `h65`/restate entanglement):
+
+* **L5a** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (the shared-body block-rank brick, (c))
+  + `case_I_realization_nonsimple` (the non-simple bare producer, (c)) in CaseI.lean (beside
+  `case_cut_edge_realization`) + RigidityMatrix.lean (the brick, beside L4a's `le_finrank_span_rigidityRows_of_cut`).
+  The brick is the only genuinely-new math; the producer is IH-plumbing + the brick + B2 + the landed
+  `exists_extensor_in_two_panels`. Mints `lem:case-I-realization-nonsimple` (+ optionally
+  `lem:rigidityRows-splice-rank-add`). **First concrete L5 commit.** *Buildable* (V6-a, the brick's reuse of
+  `isInfinitesimallyRigidOn_of_splice`'s decomposition, resolves at this build).
+* **L5b** — `case_I_realization_all_k` (the all-`k` GP restate of `case_I_realization`, (d)) + the `hcontract`
+  slot-filler dispatch (the (a) `by_cases`, wiring the simple arm via M4 ∘ `case_I_realization_all_k` and the
+  non-simple arm via L5a, with the `h65` carry threaded unchanged). In CaseI.lean. Statement change to
+  `case_I_realization` → **grep `blueprint/src` per the structural-edit gate**; restates `lem:case-I-realization`
+  to the all-`k` form. Completes the full `Pc` slot-filler `⟨gp, bare⟩` for the `hcontract` slot. *Buildable on
+  L5a* (V6-b, the rank-transport leg's all-`k` thread, resolves at this build).
+
+If the full pin won't fit one sitting at build time: L5a alone is a clean stopping point (the new math + the
+non-simple node green); L5b (the restate + dispatch) is then a separate sitting. The `h65` carry is **L8** and
+is out of L5's scope on both leaves.
+
+*Verification items L5 resolves:* **V6** (N6a's statement vs the honest carrier) — **RESOLVED**: N6a is dead
+infrastructure for the M2 motive (it concludes the deleted `HasFullRankRealization` and is `ofNormals`-bound),
+so L5a builds the Lemma-6.2 producer fresh on the `BodyHingeFramework` carrier in the L4a idiom, reusing
+`exists_extensor_in_two_panels` for the coincident-panel hinge; V4 (`rigidContract_isMinimalKDof` all-`k`)
+confirmed **already discharged** in the landed Lean. *Verification items L5 adds:* **V6-a** (the shared-body
+block-rank brick's reuse of the landed splice-glue span decomposition; bounded, resolve at L5a's build);
+**V6-b** (the all-`k` thread through `case_I_realization`'s rank-transport leg; expected mechanical, resolve at
+L5b's build). Both `buildable`; neither is a research-shaped open question (the only NEW math in L5 is the
+(c) shared-body block-rank brick, and it is KT's elementary (6.3)–(6.5) block-triangular argument).
+
+---
+
 ## 3. Per-case producer structure, node list, build order
 
 Honesty gate applied: each node tagged **buildable** (math settled, arithmetic
