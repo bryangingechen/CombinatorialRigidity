@@ -7318,18 +7318,38 @@ distinction, not a missing unification.
 Case III consumes. Brick B (`case_III_old_new_blocks`) is **kept** (different conclusion shape); its
 deficiency-aware generalization (rank input + `hleG` transport) is **S3, deferred to 22k** (medium risk —
 must not break `case_III_old_new_blocks_of_line`'s literal device-feed; speculative until 22k pins what
-its rank path needs). **L6a retires** (dead). The rigid `case_II_placement_eq612` has no live Lean
-caller but **must stay** — it is the `\leanok` witness for `lem:case-II-realization-placement`
-(genericity-and-count.tex:248), `\uses`'d across `case-iii.tex` (the 22k Case-III chain); re-prove its
-body through Brick A (option (i)), keeping the node green (checkdecls + honesty gate; its `hGv ≤ G`
-stays a genuine hypothesis discharging `hold_span` via `subset_span`). One new blueprint node
+its rank path needs). **L6a (`case_II_placement_eq612_kdof`, CaseI.lean:3723–3910) retires** (dead — no
+live Lean caller; its sole consumer `case_II_realization_all_k` inlines the steps, CaseI.lean:3921).
+The rigid `case_II_placement_eq612` (CaseI.lean:3520) also has no live Lean caller but **must stay** —
+it is the `\leanok` witness for `lem:case-II-realization-placement` (genericity-and-count.tex:248),
+`\uses`'d across `case-iii.tex` (the 22k Case-III chain). **It is left untouched** — already green,
+axiom-clean, and it is *not* re-routed through Brick A.
+
+*Why no Brick-A re-route (the "option (i)" shape error, settled by recon 2026-06-14, verified against
+the landed source).* Brick A's conclusion is **shape (A)** — a bare `N ≤ finrank(span F.rigidityRows)`
+that *discards* the subfamily `finrank_span_eq_card` consumed internally. `case_II_placement_eq612`'s
+conclusion is **shape (B)** — it *exposes* a literal independent `panelRow` subfamily `∃ s` of literal
+`rigidityRows` (CaseI.lean:3546–3551), plus the companion `supportExtensor e_a ≠ 0` conjunct. Feeding
+the rigid placement's blocks into Brick A yields only the finrank bound, **losing the `∃ s`** the
+conclusion requires — Brick A's output is strictly weaker (and `card ≤ finrank` is the wrong direction
+for the `Nat.card s ≥` lower bound). Recovering shape (B) needs the chain **Brick A →
+`exists_independent_panelRow_subfamily_of_le_finrank`** (W6e, GenericityDevice.lean:718 — the
+finrank→literal-subfamily extractor, which *does* exist and is exactly what the dead L6a used). But
+that chain is **net worse**: a *double* extraction (Brick A throws away the family W6e re-extracts),
+yielding a *less-structured* `s` (a fresh `Fin`-cut spanning family, not the current proof's structured
+NEW(`e_b`-row)+OLD(IH-linking-rows) block decomposition), while still needing all the `q₀`-shear front
+matter (`hane`/`hnewne`/`hgab`) for the `supportExtensor e_a ≠ 0` conjunct and for W6e's transversality
+`hne` — so it adds work and removes structure, contradicting Brick A's "remove duplication" aim. The
+§1.68(a) literal-brick anti-pattern (forcing a *caller* to re-derive) does not bite `case_II_placement_eq612`
+either, since it has no caller. So the rigid decl stays on its current proof. One new blueprint node
 `lem:rigidityRows-pinned-placement-rank-add` (rigidity-matrix.tex, beside the splice node
 `lem:rigidityRows-splice-rank-add`).
 
 **(g) Slice plan + open risks** (full layer plan + per-slice dispatch shape in `notes/Phase22j.md`):
 S1 build Brick A (+`_augment`) → S2 blueprint node → S4 refactor L6b onto Brick A, extracting
-`he₀_rows_mem` as the named `hold_span`-discharge helper (the one new-math slice) → S5 retire L6a +
-re-prove rigid `case_II_placement_eq612` through Brick A → cleanup bundle (drop the L6b
+`he₀_rows_mem` as the named `hold_span`-discharge helper (the one new-math slice) → S5 retire L6a
+(delete the dead `case_II_placement_eq612_kdof`; the rigid `case_II_placement_eq612` is **left
+untouched** — see (f): the "through Brick A" re-route was a shape error) → cleanup bundle (drop the L6b
 `maxHeartbeats 3200000`/`longLine` suppressions; delete dead `hso_ne_sn` :4613 + stale comment block
 :4628–4640 + stale TODO :4656; refresh the §C long-proof note). **Open risks** (need a build):
 (i) Brick A's `Nat.card`/`Fintype` instance resolution across both call sites (L6b uses `Set`-subtype

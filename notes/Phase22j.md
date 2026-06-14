@@ -4,12 +4,16 @@
 
 ## Current state
 
-**Next: S5 — retire L6a + re-express the rigid `case_II_placement_eq612` through Brick A** (CaseI.lean):
-delete the dead `case_II_placement_eq612_kdof` (:3735); re-prove `case_II_placement_eq612` (:3520)
-through `le_finrank_span_rigidityRows_of_pinned_placement` (option (i), §1.68(f)), discharging
-`hold_span` via `subset_span ∘ panelRow_mem_rigidityRows` under the genuine `hGv ≤ G` hypothesis —
-**keeping `lem:case-II-realization-placement` green** (checkdecls + the `\leanok` honesty gate). Touches
-a blueprint pin → run `blueprint/verify.sh`. Then the cleanup bundle, then 22j closes.
+**Next: S5 — retire L6a (delete-only; the rigid placement is left untouched)** (CaseI.lean): delete the
+dead `case_II_placement_eq612_kdof` (doc-comment + decl, :3723–3910). **Leave `case_II_placement_eq612`
+(:3520) untouched** — it is already green and axiom-clean, and the §1.68(f) "re-prove through Brick A
+(option (i))" route is a **shape error** (recon-settled 2026-06-14): Brick A returns a bare `finrank`
+bound (shape A), but the decl's conclusion exposes a literal `∃ s` panel-row subfamily (shape B) — Brick A
+loses the `∃ s`. Recovering it via Brick A → W6e (`exists_independent_panelRow_subfamily_of_le_finrank`)
+is net more work + a less-structured `s` (full verdict in §1.68(f)). So S5 is delete-only; the
+`\leanok` witness `lem:case-II-realization-placement` stays green untouched (no blueprint pin moves —
+`_kdof` has no pin). *No blueprint pin changes in S5; `lake build` + `lake lint` warning-clean +
+axiom-clean only. P≈1.* Then the cleanup bundle, then 22j closes.
 
 **S4b SKIPPED (coordinator re-scope, 2026-06-14).** The optional `he₀_rows_mem` top-level extraction is
 **not worth doing** and is dropped: per §1.68(d) the `e₀`-decomposition is consumed by *only*
@@ -56,9 +60,11 @@ separate, the retrofit/blueprint impact). Point at it; do not duplicate. Load-be
 - **Brick A is span-level** (NEW-pinned + OLD-in-span interface → a `finrank` lower bound); its proof
   is L6b's `hrank_lb` skeleton lifted out — **no new math**. The genuinely-new content is the
   *callers'* discharge of `hold_span` (L6b's `e₀ = e_a + e_b` row decomposition).
-- **DO NOT delete the rigid `case_II_placement_eq612`** — it is the `\leanok` witness for
-  `lem:case-II-realization-placement` (`\uses`'d across `case-iii.tex` = 22k's Case-III chain).
-  Re-express it through Brick A, keeping the node green.
+- **DO NOT delete OR re-prove the rigid `case_II_placement_eq612`** — it is the `\leanok` witness for
+  `lem:case-II-realization-placement` (`\uses`'d across `case-iii.tex` = 22k's Case-III chain). Leave it
+  **untouched** (already green + axiom-clean). The original §1.68(f) "re-express through Brick A" was a
+  **shape error**: Brick A returns a bare `finrank` bound (shape A), but the decl exposes a literal `∃ s`
+  panel-row subfamily (shape B) — Brick A loses the `∃ s` (recon-settled 2026-06-14; full verdict §1.68(f)).
 - **Brick B** (`case_III_old_new_blocks`, the literal-`panelRow` device-feed shape) is NOT unified
   with Brick A and is left untouched here; its deficiency-aware generalization (S3) is **22k's**.
 
@@ -89,11 +95,14 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   `case_II_realization_all_k`, so a top-level helper would be a ~7-arg / one-call-site net-negative
   abstraction; the design's "named discharge" goal is already met by the inline named `have`. Stays
   inline; the Brick-A *value* of S4 landed in S4a.
-- [ ] **S5 — retire L6a + re-express the rigid placement.** Delete the dead
-  `case_II_placement_eq612_kdof` (CaseI.lean:3735). Re-prove `case_II_placement_eq612` (:3520) through
-  Brick A (option (i), §1.68(f)), **keeping `lem:case-II-realization-placement` green** (checkdecls +
-  honesty gate; its `hGv ≤ G` stays a genuine hypothesis discharging `hold_span` via `subset_span`).
-  *Standard build dispatch — the blueprint pin survives, so `verify.sh`; P≈2.*
+- [ ] **S5 — retire L6a (delete-only).** Delete the dead `case_II_placement_eq612_kdof` (CaseI.lean,
+  doc-comment + decl, :3723–3910; no live caller — `case_II_realization_all_k` inlines its steps).
+  **Leave `case_II_placement_eq612` (:3520) untouched** — already green + axiom-clean; the §1.68(f)
+  "re-prove through Brick A (option (i))" route is a **shape error** (Brick A returns a bare `finrank`
+  bound, but the decl exposes a literal `∃ s` subfamily — recon-settled 2026-06-14, full verdict in
+  §1.68(f)). `lem:case-II-realization-placement` stays green untouched. *Standard build dispatch; **no
+  blueprint pin moves** (`_kdof` has no pin, rigid decl untouched) so no `verify.sh` needed — `lake build`
+  + `lake lint` warning-clean + axiom-clean only; P≈1.*
 - [ ] **Cleanup bundle.** Drop the L6b `set_option maxHeartbeats 3200000` (:3911) +
   `linter.style.longLine false` (:3915) suppressions (retry post-S4); delete dead `hso_ne_sn` (:4613)
   + the stale comment block (:4628–4640) + the stale TODO (:4656); refresh the `CLEANUP.md` §C
@@ -115,22 +124,25 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Hand-off / next phase
 
-**Next concrete commit: S5 — retire L6a + re-express the rigid `case_II_placement_eq612` through
-Brick A** (`CaseI.lean`): delete the dead `case_II_placement_eq612_kdof` (:3735); re-prove
-`case_II_placement_eq612` (:3520) through `le_finrank_span_rigidityRows_of_pinned_placement`
-(option (i), §1.68(f)), discharging `hold_span` via `subset_span ∘ panelRow_mem_rigidityRows` under
-its genuine `hGv ≤ G` hypothesis — **keeping the `\leanok` witness `lem:case-II-realization-placement`
-green** (checkdecls + the honesty gate). Touches a blueprint pin → run `blueprint/verify.sh`. Standard
-build dispatch (P≈2). Then the cleanup bundle (S1 + S2 + S4a landed; **S4b skipped** — see
-*Current state*), which closes 22j. At 22j close: open **Phase 22k** (completing the honest all-`k`
+**Next concrete commit: S5 — retire L6a (delete-only)** (`CaseI.lean`): delete the dead
+`case_II_placement_eq612_kdof` (doc-comment + decl, :3723–3910; no live caller). **Leave
+`case_II_placement_eq612` (:3520) untouched** — already green + axiom-clean; the original §1.68(f)
+"re-prove through Brick A (option (i))" route was a **shape error** (Brick A → bare `finrank` bound vs
+the decl's literal `∃ s` subfamily; recovering it via Brick A → W6e is net more work + less structure —
+recon-settled 2026-06-14, full verdict in §1.68(f)). The `\leanok` witness
+`lem:case-II-realization-placement` stays green untouched. **No blueprint pin moves** (`_kdof` has no
+pin; rigid decl untouched), so `lake build` + `lake lint` warning-clean + axiom-clean only — no
+`verify.sh`. Standard build dispatch (P≈1). Then the cleanup bundle (S1 + S2 + S4a landed; **S4b
+skipped** — see *Current state*), which closes 22j. At 22j close: open **Phase 22k** (completing the honest all-`k`
 Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming Brick A; S3 = the
 deficiency-aware Brick B lands there), then Phase 23 (general `d`).
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
 Drives this log via the *Hand-off* pivot. **Dispatch shapes:** S1/S4/S5 + the cleanup `.lean` edits are
-**standard build dispatch** (the fixed prompt; subagent commits); S2 and S5 touch a blueprint pointer
-(the subagent runs `verify.sh`); the §C-note refresh is **coordinator-authored** (rescue §6). The
+**standard build dispatch** (the fixed prompt; subagent commits); only S2 touched a blueprint pointer
+(the subagent runs `verify.sh`) — **S5 no longer does** (delete-only, rigid decl untouched, `_kdof` has
+no pin); the §C-note refresh is **coordinator-authored** (rescue §6). The
 model-experiment is **running** — rate S/P/B per slice (difficulties pre-rated above; honor any
 standing rung override). S1 is a build (design settled in §1.68), so the step-1 research-shape trigger
 should **not** fire — if it seems to, re-read §1.68 rather than dispatching a recon.
