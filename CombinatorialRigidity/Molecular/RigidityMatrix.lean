@@ -3263,6 +3263,118 @@ theorem le_finrank_span_rigidityRows_of_splice [Finite α] [Finite β]
 
 end SpliceBrick
 
+section PinnedPlacementBrick
+
+variable {α β : Type*} {k : ℕ}
+
+/-- **Span-level pinned-placement block-rank lower bound**
+(`lem:rigidityRows-pinned-placement-rank-add`; the eq.~(6.12) placement core shared by KT Lemma 6.8
+(Case II / `k > 0` split) and Lemma 6.10 (Case III); Phase 22j). The span-transport analogue of the
+splice brick (`le_finrank_span_rigidityRows_of_splice`), for the *pin-a-body* (splitting) geometry
+rather than the *collapse* (`extProj`-projected-column) geometry: given a body-hinge framework `F`,
+a body `v`, a **new block** of functionals `rn : ιn → Module.Dual ℝ (α → ScrewSpace k)` independent
+through `v`'s screw column (`hnewpin`) and lying in `span F.rigidityRows` (`hnew_span`), and an
+**old block** `ro : ιo → …` that (a) vanishes on `v`'s screw column (`hold`), (b) is independent
+(`holdindep`), and (c) lies in `span F.rigidityRows` (`hold_span`), the two block sizes satisfy
+
+  `Nat.card ιn + Nat.card ιo ≤ finrank (span F.rigidityRows)`.
+
+The proof is the `hrank_lb` skeleton of the KT Lemma 6.8 producer `case_II_realization_all_k` lifted
+out (Phase 22i L6b, CaseI.lean): the block-triangular pin-a-body split
+(`linearIndependent_sum_pinned_block`) makes the combined family `Sum.elim rn ro` independent; its
+span lies in `span F.rigidityRows` (`hnew_span`/`hold_span`); and `finrank_span_eq_card` +
+`Submodule.finrank_mono` of the combined span give the count. **No new linear algebra** — the
+abstraction's value is in the *callers'* discharge of `hold_span` (the genuinely-new content): the
+`splitOff` `e₀ = e_a + e_b` row decomposition for Lemma 6.8, the `removeVertex`+relabel
+`hingeRow ∈ span` interface for Case III, and `Submodule.subset_span ∘ panelRow_mem_rigidityRows`
+under a literal `Gv ≤ G`. Unlike the literal placement bricks (`case_II_placement_eq612`), the
+conclusion keys on `span F.rigidityRows` membership, **not** literal `F.rigidityRows` membership, so
+every real reduction graph (collapse / `splitOff` / relabel — which land rows only in the span)
+fits. Carrier-free at the block level (the row functionals are arbitrary duals); the
+`ofNormals`/`withGraph` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem le_finrank_span_rigidityRows_of_pinned_placement [Finite α] [Finite β]
+    [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework k α β) {v : α}
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (hnewpin : LinearIndependent ℝ
+      (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (holdindep : LinearIndependent ℝ ro)
+    (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows)
+    (hold_span : ∀ j : ιo, ro j ∈ Submodule.span ℝ F.rigidityRows) :
+    Nat.card ιn + Nat.card ιo ≤ Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype ιn := Fintype.ofFinite ιn
+  haveI : Fintype ιo := Fintype.ofFinite ιo
+  -- The combined family `Sum.elim rn ro` is independent by the pin-a-body block split.
+  have hunion : LinearIndependent ℝ (Sum.elim rn ro) :=
+    linearIndependent_sum_pinned_block (v := v) hold hnewpin holdindep
+  -- Its span lies in `span F.rigidityRows` (both blocks are span members).
+  have hcomb_le : Submodule.span ℝ (Set.range (Sum.elim rn ro)) ≤
+      Submodule.span ℝ F.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨(i | j), rfl⟩
+    · exact hnew_span i
+    · exact hold_span j
+  -- `finrank (combined span) = |ιn ⊕ ιo|`, then monotonicity gives the count bound.
+  have hmono := Submodule.finrank_mono hcomb_le
+  rw [finrank_span_eq_card hunion, Fintype.card_sum,
+    ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card] at hmono
+  exact hmono
+
+/-- **The `+1` augment of the pinned-placement block-rank lower bound**
+(`lem:rigidityRows-pinned-placement-rank-add`; the Case-III variant routing through the augmented
+pin-a-body split `linearIndependent_sum_pinned_block_augment`, KT eq.~(6.29) shape; Phase 22j). The
+sibling of `le_finrank_span_rigidityRows_of_pinned_placement` that lifts the new block by one extra
+candidate row `w` pinned through body `v`'s screw column (`hnewpinaug`, the augmented top-left
+`D × D` full-rank block), supplying Case III's `+1` over the stratum-1
+`D(|V|−1) − 1` count. With `w` lying in `span F.rigidityRows` (`hw_span`) the count becomes
+
+  `Nat.card ιn + 1 + Nat.card ιo ≤ finrank (span F.rigidityRows)`.
+
+Proof: the augmented combined family `Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro` is independent
+by `linearIndependent_sum_pinned_block_augment`; its span lies in `span F.rigidityRows`; and
+`finrank_span_eq_card` + `Submodule.finrank_mono` give the count
+(`Nat.card (ιn ⊕ Unit) + Nat.card ιo = Nat.card ιn + 1 + Nat.card ιo`). The `Unit` summand is the
+extra candidate row. Same span-transport interface, callers, and carrier-freeness as the unaugmented
+brick. -/
+theorem le_finrank_span_rigidityRows_of_pinned_placement_augment [Finite α] [Finite β]
+    [DecidableEq α] {ιn ιo : Type*} [Finite ιn] [Finite ιo] (F : BodyHingeFramework k α β) {v : α}
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {w : Module.Dual ℝ (α → ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (hnewpinaug : LinearIndependent ℝ (Sum.elim
+      (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      (fun _ : Unit => w.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))))
+    (holdindep : LinearIndependent ℝ ro)
+    (hnew_span : ∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows)
+    (hw_span : w ∈ Submodule.span ℝ F.rigidityRows)
+    (hold_span : ∀ j : ιo, ro j ∈ Submodule.span ℝ F.rigidityRows) :
+    Nat.card ιn + 1 + Nat.card ιo ≤ Module.finrank ℝ ↥(Submodule.span ℝ F.rigidityRows) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype ιn := Fintype.ofFinite ιn
+  haveI : Fintype ιo := Fintype.ofFinite ιo
+  -- The augmented combined family is independent by the augmented pin-a-body split.
+  have hunion : LinearIndependent ℝ (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro) :=
+    linearIndependent_sum_pinned_block_augment (v := v) hold hnewpinaug holdindep
+  -- Its span lies in `span F.rigidityRows` (`rn`, `w`, and `ro` are all span members).
+  have hcomb_le : Submodule.span ℝ
+      (Set.range (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro)) ≤
+      Submodule.span ℝ F.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨((i | _) | j), rfl⟩
+    · exact hnew_span i
+    · exact hw_span
+    · exact hold_span j
+  -- `finrank (combined span) = |(ιn ⊕ Unit) ⊕ ιo|`, then monotonicity gives the count bound.
+  have hmono := Submodule.finrank_mono hcomb_le
+  rw [finrank_span_eq_card hunion, Fintype.card_sum, Fintype.card_sum, Fintype.card_unit,
+    ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card] at hmono
+  exact hmono
+
+end PinnedPlacementBrick
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

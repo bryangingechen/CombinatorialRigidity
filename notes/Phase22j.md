@@ -4,14 +4,23 @@
 
 ## Current state
 
-**Next: S1 — build Brick A** (`le_finrank_span_rigidityRows_of_pinned_placement` in
-`RigidityMatrix.lean`). The design is settled (`notes/Phase22-realization-design.md` §1.68, verified
-read-only against the landed signatures); this is a **fully-specified build, not a recon**. 22j
-introduces the span-transport "pinned placement" rank brick the Case-II / Lemma-6.8 producers should
-have shared — the L6b producer `case_II_realization_all_k` inlined a ≈1010-line placement because no
-shared brick fit the split-off `Gab = G.splitOff v a b e₀ ⋬ G` — then refactors L6b + the rigid
-placement onto it, retires the dead L6a, and lands the bundled cleanup. **22k's Case III consumes
-Brick A**, so the abstraction lands first.
+**Next: S2 — the blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in
+`rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` + `\leanok` + `\uses` (the
+pin-a-body block-independence node `linearIndependent_sum_pinned_block`). Touches a blueprint pointer
+→ run `blueprint/verify.sh`.
+
+**S1 — Brick A — DONE** (this commit): `le_finrank_span_rigidityRows_of_pinned_placement` +
+`_augment` landed in `RigidityMatrix.lean` (`section PinnedPlacementBrick`, beside the splice brick),
+build + lint warning-clean, axiom-clean (the three standard axioms only). The §1.68(g)(i)
+`Nat.card`/`Fintype` open risk resolved cleanly — the established `Nat.card_eq_fintype_card` +
+`Fintype.card_sum` bridge (the CaseI.lean:4745 idiom). The `_augment` variant routes through
+`linearIndependent_sum_pinned_block_augment` for Case III's `+1`.
+
+22j introduces the span-transport "pinned placement" rank brick the Case-II / Lemma-6.8 producers
+should have shared — the L6b producer `case_II_realization_all_k` inlined a ≈1010-line placement
+because no shared brick fit the split-off `Gab = G.splitOff v a b e₀ ⋬ G` — then refactors L6b + the
+rigid placement onto it, retires the dead L6a, and lands the bundled cleanup. **22k's Case III
+consumes Brick A**, so the abstraction lands first.
 
 ## Architectural choices made up front
 
@@ -33,13 +42,13 @@ Full task list, populated before any build (CLEANUP.md discipline). Difficulty P
 model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clean** + axiom-clean
 (+ `blueprint/verify.sh` where a blueprint pointer is touched).
 
-- [ ] **S1 — build Brick A** `le_finrank_span_rigidityRows_of_pinned_placement` (+ an `_augment`
-  variant for Case III's `+1`) in `RigidityMatrix.lean` (`section SpliceBrick`, beside
-  `le_finrank_span_rigidityRows_of_splice`). Lift L6b's `hrank_lb` skeleton (CaseI.lean:4708–4749) to
-  the abstract span-transport interface (§1.68(c)): `linearIndependent_sum_pinned_block` →
-  `finrank_span_eq_card` → `Submodule.finrank_mono`. *Standard build dispatch; P≈2 (mechanical — the
-  proof exists inline). Open risk: `Nat.card`/`Fintype` resolution across the two call sites
-  (§1.68(g)(i)).*
+- [x] **S1 — build Brick A** `le_finrank_span_rigidityRows_of_pinned_placement` (+ the `_augment`
+  variant for Case III's `+1`) in `RigidityMatrix.lean` (`section PinnedPlacementBrick`, beside
+  `le_finrank_span_rigidityRows_of_splice`). **DONE.** Lifted L6b's `hrank_lb` skeleton
+  (CaseI.lean:4708–4749) to the abstract span-transport interface (§1.68(c)):
+  `linearIndependent_sum_pinned_block`(`_augment`) → `finrank_span_eq_card` → `Submodule.finrank_mono`.
+  Open risk (`Nat.card`/`Fintype`, §1.68(g)(i)) resolved cleanly via the standard
+  `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge.
 - [ ] **S2 — blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in `rigidity-matrix.tex`,
   beside `lem:rigidityRows-splice-rank-add`; `\lean{}` + `\leanok` + `\uses` (the pin-a-body
   block-independence node). *Standard build dispatch — touches a blueprint pointer, so runs
@@ -66,19 +75,21 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Blockers / open questions
 
-- **S1 `Nat.card`/`Fintype` resolution** across L6b's `Set`-subtype indices vs W6b's `Fin` indices
-  (§1.68(g)(i)) — confirm at the S1 build; low-medium.
+- ~~**S1 `Nat.card`/`Fintype` resolution**~~ — RESOLVED at the S1 build (standard
+  `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; Brick A's interface keys on `Nat.card`, both
+  call sites supply `[Finite ιn] [Finite ιo]`).
 - **S4 orientation case-split** must survive the `he₀_rows_mem` extraction (§1.68(g)(ii)).
 - **Cleanup is gated on S4** having slimmed the proof — sequence the suppression removal after S4.
 
 ## Hand-off / next phase
 
-**Next concrete commit: S1 — build Brick A** (`le_finrank_span_rigidityRows_of_pinned_placement` +
-`_augment`) in `RigidityMatrix.lean`, lifting L6b's `hrank_lb` skeleton to the abstract span-transport
-interface (§1.68(c)). Fully specified by §1.68; **not** research-shaped. Then S2 → S4 → S5 → cleanup,
-in order. At 22j close: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10
-layer plan in `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there),
-then Phase 23 (general `d`).
+**Next concrete commit: S2 — the blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in
+`rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both
+`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) + `\leanok` + `\uses` (the pin-a-body
+block-independence node). Touches a blueprint pointer → run `blueprint/verify.sh` (+ `checkdecls`).
+Then S4 → S5 → cleanup, in order (S1 — Brick A — landed). At 22j close: open **Phase 22k** (completing
+the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming Brick A; S3 =
+the deficiency-aware Brick B lands there), then Phase 23 (general `d`).
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
@@ -95,3 +106,9 @@ should **not** fire — if it seems to, re-read §1.68 rather than dispatching a
 - **Phase open (2026-06-14):** the §1.68 recon verdict — a TWO-brick family (Brick A span-rank new +
   Brick B device-feed kept; Case I stays separate). Canonical: §1.68. Verified read-only against the
   landed signatures before opening.
+- **S1 — Brick A landed (2026-06-14):** `le_finrank_span_rigidityRows_of_pinned_placement` +
+  `_augment` in `RigidityMatrix.lean` (`section PinnedPlacementBrick`). The proof is L6b's `hrank_lb`
+  skeleton lifted verbatim — span-transport interface (`hold`/`hnewpin`/`holdindep` +
+  `hnew_span`/`hold_span`), conclusion `Nat.card ιn + Nat.card ιo ≤ finrank (span F.rigidityRows)` (no
+  literal-`rigidityRows` membership), no new math. `_augment` reuses
+  `linearIndependent_sum_pinned_block_augment` for the `+1`.
