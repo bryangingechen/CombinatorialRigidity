@@ -4,14 +4,21 @@
 
 ## Current state
 
-**Next: S4b — extract `he₀_rows_mem` as a named top-level helper** (`…case_II_placement_e0_row_in_span`
-or similar, `CaseI.lean`): the `splitOff` `e₀ = e_a + e_b` row-decomposition currently inline at the
-`he₀_rows_mem` `have` (~CaseI.lean:4380–4431) — the genuinely-new `hold_span` content (§1.68(d)). It is
-deeply coupled to local `have`s (`hrow_a_eq`/`hrow_b_eq`/`hFG_{ea,eb}_mem`, `n_a`/`n_b`, `Q.ends`,
-`hrec'`, `he₀ab`), so the extraction threads a sizeable signature; preserve the `Q.ends e₀ = (a,b)` vs
-`(b,a)` orientation case-split (§1.68(g)(ii)). Standard build dispatch. **Optional re-scope:** if the
-threaded signature proves unwieldy, keep `he₀_rows_mem` as the (already-named) inline `have` and move
-straight to S5 — the design's S4 *value* (the Brick-A rank consolidation) has landed.
+**Next: S5 — retire L6a + re-express the rigid `case_II_placement_eq612` through Brick A** (CaseI.lean):
+delete the dead `case_II_placement_eq612_kdof` (:3735); re-prove `case_II_placement_eq612` (:3520)
+through `le_finrank_span_rigidityRows_of_pinned_placement` (option (i), §1.68(f)), discharging
+`hold_span` via `subset_span ∘ panelRow_mem_rigidityRows` under the genuine `hGv ≤ G` hypothesis —
+**keeping `lem:case-II-realization-placement` green** (checkdecls + the `\leanok` honesty gate). Touches
+a blueprint pin → run `blueprint/verify.sh`. Then the cleanup bundle, then 22j closes.
+
+**S4b SKIPPED (coordinator re-scope, 2026-06-14).** The optional `he₀_rows_mem` top-level extraction is
+**not worth doing** and is dropped: per §1.68(d) the `e₀`-decomposition is consumed by *only*
+`case_II_realization_all_k` (Case III/22k uses a different already-isolated discharge, the
+`hρGv`/`hwmem` interface; the rigid placement uses `subset_span`), so a top-level helper would be a
+~7-arg-signature decl with exactly one call site — a net-negative abstraction. The design's "named
+`hold_span` discharge" goal is already met by the inline named `have`, and S4a already brought the
+producer under the heartbeat budget (86s), so S4b is not a cleanup prerequisite either. The Brick-A
+*value* of S4 landed in S4a.
 
 **S4a — Brick-A rank consolidation — DONE** (this commit): `case_II_realization_all_k`'s `hrank_lb`
 now calls `le_finrank_span_rigidityRows_of_pinned_placement` (NEW block = e_b pinned through `v`'s
@@ -77,12 +84,11 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   IH's N Gab-rows via `hso_span`); dead inline `hN_FG` + intermediate `hunion` deleted. **DONE.** Gates
   green; §38 *row-family* `isDefEq` blowup fixed by `set rn`/`set ro` + explicit `hbrick` type (no
   `clear_value` — explicit named args; FRICTION + TACTICS-QUIRKS §38 *Abstract-brick call-site*).
-- [ ] **S4b — extract `he₀_rows_mem` as a named top-level helper**
-  (`…case_II_placement_e0_row_in_span` or similar) discharging the e₀ part of `hold_span` — the
-  genuinely-new `splitOff` `e₀ = e_a + e_b` decomposition (§1.68(d), ≈130 lines inline, CaseI.lean
-  ~:4380–4431). *Standard build dispatch; P≈3 (preserve the `Q.ends e₀ = (a,b)`/`(b,a)` orientation
-  case-split, §1.68(g)(ii); deep local coupling — see Current state for the optional re-scope to skip
-  to S5 keeping the inline `have`).*
+- [~] **S4b — extract `he₀_rows_mem` as a named top-level helper — SKIPPED** (coordinator re-scope
+  2026-06-14; rationale in *Current state*): the `e₀ = e_a + e_b` decomposition is consumed by only
+  `case_II_realization_all_k`, so a top-level helper would be a ~7-arg / one-call-site net-negative
+  abstraction; the design's "named discharge" goal is already met by the inline named `have`. Stays
+  inline; the Brick-A *value* of S4 landed in S4a.
 - [ ] **S5 — retire L6a + re-express the rigid placement.** Delete the dead
   `case_II_placement_eq612_kdof` (CaseI.lean:3735). Re-prove `case_II_placement_eq612` (:3520) through
   Brick A (option (i), §1.68(f)), **keeping `lem:case-II-realization-placement` green** (checkdecls +
@@ -103,25 +109,22 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 - ~~**S1 `Nat.card`/`Fintype` resolution**~~ — RESOLVED at the S1 build (standard
   `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; Brick A's interface keys on `Nat.card`, both
   call sites supply `[Finite ιn] [Finite ιo]`).
-- **S4b orientation case-split** must survive the `he₀_rows_mem` extraction (§1.68(g)(ii)).
-- **Cleanup is gated on the producer slimming** — sequence the `maxHeartbeats`/`longLine` suppression
-  removal after S4b (S4a's Brick-A call already builds well under the 3.2M budget at 86s, so the
-  suppression-drop retry is now plausible; confirm once S4b lands or is re-scoped away).
+- **Cleanup suppression-drop** (the `maxHeartbeats 3200000`/`longLine` removal) is now unblocked —
+  S4a's Brick-A call builds well under the 3.2M budget at 86s; confirm the drop builds clean in the
+  cleanup bundle.
 
 ## Hand-off / next phase
 
-**Next concrete commit: S4b — extract `he₀_rows_mem` as a named top-level helper**
-(`…case_II_placement_e0_row_in_span` or similar, `CaseI.lean`): lift the inline `he₀_rows_mem`
-`have` (the `splitOff` `e₀ = e_a + e_b` decomposition, §1.68(d), ~:4380–4431) to a named lemma
-discharging the e₀ part of Brick A's `hold_span`; preserve the `Q.ends e₀ = (a,b)`/`(b,a)` orientation
-case-split (§1.68(g)(ii)). **Re-scope option:** the inline `have` is deeply coupled to local
-context (`hrow_a_eq`/`hrow_b_eq`/`hFG_{ea,eb}_mem`, `n_a`/`n_b`, `Q.ends`, `hrec'`, `he₀ab`); if
-threading the signature is unwieldy, skip S4b (keep the named inline `have`) and go straight to S5 —
-S4's design *value* (the Brick-A rank consolidation) landed in S4a. Standard build dispatch (gates:
-`lake build` + `lake lint` warning-clean + axiom-clean). Then S5 → cleanup bundle, in order (S1 + S2 +
-S4a landed). At 22j close: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10
-layer plan in `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there),
-then Phase 23 (general `d`).
+**Next concrete commit: S5 — retire L6a + re-express the rigid `case_II_placement_eq612` through
+Brick A** (`CaseI.lean`): delete the dead `case_II_placement_eq612_kdof` (:3735); re-prove
+`case_II_placement_eq612` (:3520) through `le_finrank_span_rigidityRows_of_pinned_placement`
+(option (i), §1.68(f)), discharging `hold_span` via `subset_span ∘ panelRow_mem_rigidityRows` under
+its genuine `hGv ≤ G` hypothesis — **keeping the `\leanok` witness `lem:case-II-realization-placement`
+green** (checkdecls + the honesty gate). Touches a blueprint pin → run `blueprint/verify.sh`. Standard
+build dispatch (P≈2). Then the cleanup bundle (S1 + S2 + S4a landed; **S4b skipped** — see
+*Current state*), which closes 22j. At 22j close: open **Phase 22k** (completing the honest all-`k`
+Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming Brick A; S3 = the
+deficiency-aware Brick B lands there), then Phase 23 (general `d`).
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
