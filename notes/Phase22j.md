@@ -4,16 +4,24 @@
 
 ## Current state
 
-**Next: S5 — retire L6a (delete-only; the rigid placement is left untouched)** (CaseI.lean): delete the
-dead `case_II_placement_eq612_kdof` (doc-comment + decl, :3723–3910). **Leave `case_II_placement_eq612`
-(:3520) untouched** — it is already green and axiom-clean, and the §1.68(f) "re-prove through Brick A
-(option (i))" route is a **shape error** (recon-settled 2026-06-14): Brick A returns a bare `finrank`
-bound (shape A), but the decl's conclusion exposes a literal `∃ s` panel-row subfamily (shape B) — Brick A
-loses the `∃ s`. Recovering it via Brick A → W6e (`exists_independent_panelRow_subfamily_of_le_finrank`)
-is net more work + a less-structured `s` (full verdict in §1.68(f)). So S5 is delete-only; the
-`\leanok` witness `lem:case-II-realization-placement` stays green untouched (no blueprint pin moves —
-`_kdof` has no pin). *No blueprint pin changes in S5; `lake build` + `lake lint` warning-clean +
-axiom-clean only. P≈1.* Then the cleanup bundle, then 22j closes.
+**Next: the cleanup bundle (closes 22j).** Drop the L6b `set_option maxHeartbeats 3200000` + `linter.
+style.longLine false` suppressions (retry post-S4a — S4a's Brick-A call builds at 86s, well under the
+budget), delete the dead `hso_ne_sn` + the stale comment block + the stale TODO in
+`case_II_realization_all_k`, and refresh the `CLEANUP.md` §C long-proof note for the slimmed producer.
+(Line numbers below predate the S5 delete — the producer shifted up ≈190 lines; re-grep before editing.)
+*Standard build dispatch for the `.lean` edits (`lake build` + `lake lint` warning-clean + axiom-clean);
+the §C-note refresh is coordinator-authored. P≈1.* When it lands, 22j closes.
+
+**S5 — retire L6a (delete-only) — DONE** (this commit): deleted the dead `case_II_placement_eq612_kdof`
+(doc-comment + decl) from CaseI.lean — no live caller (`case_II_realization_all_k` inlines its steps).
+Reworded the two now-dangling `_kdof` references in the producer's docstring to describe the inline
+eq.-(6.12) placement + why a `case_II_placement_eq612`-shaped brick (`hGv : Gv ≤ G`) cannot be reused
+for the split-off `Gab ⋬ G`, with no prose pointing at the deleted decl. `case_II_placement_eq612`
+(:3520, the rigid sibling) left untouched — already green + axiom-clean; the §1.68(f) "re-prove through
+Brick A" route is a shape error (Brick A → bare `finrank` bound vs the decl's literal `∃ s` subfamily;
+recon-settled 2026-06-14). `lem:case-II-realization-placement` stays green; no blueprint pin moved
+(`_kdof` had no pin). Gates green: build warning-clean, `lake lint`, producer axiom-clean (the three
+standard axioms).
 
 **S4b SKIPPED (coordinator re-scope, 2026-06-14).** The optional `he₀_rows_mem` top-level extraction is
 **not worth doing** and is dropped: per §1.68(d) the `e₀`-decomposition is consumed by *only*
@@ -95,16 +103,13 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   `case_II_realization_all_k`, so a top-level helper would be a ~7-arg / one-call-site net-negative
   abstraction; the design's "named discharge" goal is already met by the inline named `have`. Stays
   inline; the Brick-A *value* of S4 landed in S4a.
-- [ ] **S5 — retire L6a (delete-only).** Delete the dead `case_II_placement_eq612_kdof` (CaseI.lean,
-  doc-comment + decl, :3723–3910; no live caller — `case_II_realization_all_k` inlines its steps).
-  **Also tidy the two now-dangling `_kdof` references** in the producer's docstring (:3921, :3927,
-  which survive the delete range) so no prose points at a deleted decl.
-  **Leave `case_II_placement_eq612` (:3520) untouched** — already green + axiom-clean; the §1.68(f)
-  "re-prove through Brick A (option (i))" route is a **shape error** (Brick A returns a bare `finrank`
-  bound, but the decl exposes a literal `∃ s` subfamily — recon-settled 2026-06-14, full verdict in
-  §1.68(f)). `lem:case-II-realization-placement` stays green untouched. *Standard build dispatch; **no
-  blueprint pin moves** (`_kdof` has no pin, rigid decl untouched) so no `verify.sh` needed — `lake build`
-  + `lake lint` warning-clean + axiom-clean only; P≈1.*
+- [x] **S5 — retire L6a (delete-only) — DONE** (this commit): deleted the dead
+  `case_II_placement_eq612_kdof` (doc-comment + decl; no live caller — `case_II_realization_all_k`
+  inlines its steps) and reworded the two now-dangling `_kdof` references in the producer's docstring
+  so no prose points at a deleted decl. `case_II_placement_eq612` (:3520) left untouched (already green
+  + axiom-clean; the §1.68(f) "re-prove through Brick A" route is a shape error — bare `finrank` bound
+  vs the decl's literal `∃ s` subfamily). No blueprint pin moved (`_kdof` had no pin, rigid decl
+  untouched); gates green (build warning-clean, `lake lint`, producer axiom-clean).
 - [ ] **Cleanup bundle.** Drop the L6b `set_option maxHeartbeats 3200000` (:3911) +
   `linter.style.longLine false` (:3915) suppressions (retry post-S4); delete dead `hso_ne_sn` (:4613)
   + the stale comment block (:4628–4640) + the stale TODO (:4656); refresh the `CLEANUP.md` §C
@@ -126,18 +131,18 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Hand-off / next phase
 
-**Next concrete commit: S5 — retire L6a (delete-only)** (`CaseI.lean`): delete the dead
-`case_II_placement_eq612_kdof` (doc-comment + decl, :3723–3910; no live caller). **Leave
-`case_II_placement_eq612` (:3520) untouched** — already green + axiom-clean; the original §1.68(f)
-"re-prove through Brick A (option (i))" route was a **shape error** (Brick A → bare `finrank` bound vs
-the decl's literal `∃ s` subfamily; recovering it via Brick A → W6e is net more work + less structure —
-recon-settled 2026-06-14, full verdict in §1.68(f)). The `\leanok` witness
-`lem:case-II-realization-placement` stays green untouched. **No blueprint pin moves** (`_kdof` has no
-pin; rigid decl untouched), so `lake build` + `lake lint` warning-clean + axiom-clean only — no
-`verify.sh`. Standard build dispatch (P≈1). Then the cleanup bundle (S1 + S2 + S4a landed; **S4b
-skipped** — see *Current state*), which closes 22j. At 22j close: open **Phase 22k** (completing the honest all-`k`
-Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming Brick A; S3 = the
-deficiency-aware Brick B lands there), then Phase 23 (general `d`).
+**Next concrete commit: the cleanup bundle (closes 22j)** (`CaseI.lean` + `CLEANUP.md`). In
+`case_II_realization_all_k`: (1) drop the `set_option maxHeartbeats 3200000` + `linter.style.longLine
+false` suppressions now riding above the producer docstring (retry post-S4a — S4a's Brick-A call builds
+at 86s, well under the 3.2M budget), and (2) delete the dead `hso_ne_sn`, the stale comment block, and
+the stale TODO inside the producer body. (Line numbers in the *Layer plan* predate the S5 delete — the
+producer shifted up ≈190 lines; re-grep before editing.) Then refresh the `CLEANUP.md` §C long-proof
+note for the slimmed producer (coordinator-authored). Standard build dispatch for the `.lean` edits —
+`lake build` + `lake lint` warning-clean + axiom-clean; **no `verify.sh`** (no blueprint pin moves).
+P≈1. (S1 + S2 + S4a landed; **S4b skipped** — see *Current state*; S5 done this commit.) At 22j close:
+open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
+`notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23
+(general `d`).
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
@@ -177,3 +182,11 @@ should **not** fire — if it seems to, re-read §1.68 rather than dispatching a
   it). **Lifted to:** TACTICS-QUIRKS §38 *Abstract-brick call-site* / FRICTION (the §38 row-family
   `isDefEq` blowup recurred at the abstract-brick call; `set rn`/`set ro` fvars + explicit `hbrick`
   type fix it — `set` alone, no `clear_value`, since the brick takes the families as explicit args).
+- **S5 — L6a retired (delete-only, 2026-06-14):** deleted the dead `case_II_placement_eq612_kdof`
+  (CaseI.lean) — no live caller (`case_II_realization_all_k` inlines its steps). Reworded the producer
+  docstring's two `_kdof` references to describe the inline eq.-(6.12) placement + why a
+  `case_II_placement_eq612`-shaped brick (needs `hGv : Gv ≤ G`) cannot be reused for the split-off
+  `Gab ⋬ G`. The rigid `case_II_placement_eq612` (:3520) left untouched (already green + axiom-clean;
+  the §1.68(f) "re-prove through Brick A" route is a shape error — bare `finrank` bound vs the decl's
+  literal `∃ s` subfamily). No blueprint pin moved (`_kdof` had no pin). Gates green (build
+  warning-clean, `lake lint`, producer axiom-clean). No friction (pure delete + docstring tidy).
