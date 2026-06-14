@@ -250,11 +250,27 @@ quality / blueprint sync / notes discipline / commit message
 | 113 | L5b-ii-d `case_I_realization_all_k` producer, a709c17 | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 111k tok / 101 tools / 1162s (~19 min) | the post-infra producer assembly (rows 104/109 sizing-BLOCKED *here* pre-infra; a/b/c now landed → genuinely P=2, no hidden prerequisite). Sonnet clean. **Route 1 composed at the consumer** → closes the rows-107–109 episode (→ Findings addendum). **Design-faithfulness call:** followed the considered §1.65(d)/§1.66(f) "restate `lem:case-I-realization` in place" over the hand-off's loose "Mints …-all-k" shorthand; coordinator verified the repoint against §1.65(d) + statement-grep gate (rigid `case_I_realization` stays live/node-less per plan, L9 rewires). Full-diff read, warning-clean rebuild + lint re-run, sorry-grep clean, trailer correct |
 | 114 | L5b-iii `case_I_dispatch` hcontract slot-filler, 41eefff | 2/2/1 | sonnet | normal | clean | ✓✓✓✓✓✓ | 85k tok / 88 tools / 1329s (~22 min) | the `Pc`-conjunction dispatch (`by_cases G.Simple` + inner 6.3-vs-6.5 `by_cases`, carried `h65` threaded by contrapositive). Rated **P=2 over the design's optimistic "P≈1"** (the L5b under-rating history, rows 104/109) — landed clean, exact design shape, honest blueprint (`\lean` + no-`\leanok`, the node is the `h65` tracker). `hcontract` math discharged (spine-rewire = L9). Clean plumbing at sonnet ⇒ the *haiku-for-heavy-zone-plumbing* probe stays open (held off this spine-adjacent carry-discharge). Full-diff read, warning-clean rebuild + lint, sorry-grep clean, trailer correct |
 | 115 | L6 signature pin §1.67 (KT Lemma 6.8 `k>0` split), 57c46d1 | 3/3/1 | opus | normal | clean | —✓——✓✓ | 190k tok / 40 tools / 414s (~7 min) | fable-mapped design-settle (→ opus sub, fable unavailable). Resolved V7 + decomposed L6 → L6a/L6b (verdict lives in §1.67). **Pin-audit clean** — coordinator re-verified the load-bearing reuse claims against landed source (`case_II_placement_eq612` rigidity-gated at :3596; shear suite LI-driven; the rank arithmetic `D(|V|−2)−(k−1)+(D−1)=D(|V|−1)−k`), no error (contrast the §1.63 unprimed-pin revert). Flag-don't-force honored: no motive change; the named-object check (`splitOff`-vs-`removeVertex` `Gv` wiring) honestly deferred to the build. **fable-vs-opus open Q:** opus produced a sound re-route-*dissolving* (V7) pin — but with no error to catch (vs row 84's two), so not yet the harder-design-pass datapoint the question wants |
+| 116 | L6a `case_II_placement_eq612_kdof` (no commit) | 2/2/1 | haiku | probe | BLOCKED | —————— | 147k tok / 93 tools / 2112s (~35 min) | probe one rung below map (sonnet) on the cleanest mechanical single-determined-route leaf (additive infra, rigid sibling to diff). **Capability fail, not a pin gap** (coordinator-verified): correctly spotted that the deficient W6e `_of_le_finrank` swap needs a finrank bound at the `withNormal` placement `q₀`, but sorry'd the transport instead of assembling the two LANDED helpers (`toBodyHinge_withNormal_infinitesimalMotions_eq` PanelHinge:660 + `span_rigidityRows_eq_of_infinitesimalMotions_eq` RigidityMatrix:1038) the rigid body's `hZeq` (CaseI:3574) points straight at. Also left the sorry'd tree uncommitted (probe-discipline lapse — the bail-clause says revert; coordinator reverted). → escalate to sonnet (row 117); → Findings 2026-06-13 (haiku probe) |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- (2026-06-13, row 116, first real haiku probe in this repo) **haiku, probed one rung
+  below the map on a clean mechanical "swap-in-a-landed-helper" leaf (L6a), correctly
+  DIAGNOSED the gap but could not ASSEMBLE the landed reuse to close it.** It localized the
+  obstruction (the W6e `_of_le_finrank` swap needs a finrank bound at the `withNormal`
+  placement, which the rigid `_of_rigidOn_linking` got from rigidity directly) but sorry'd
+  the transport rather than finding the two landed helpers
+  (`toBodyHinge_withNormal_infinitesimalMotions_eq` + `span_rigidityRows_eq_of_infinitesimalMotions_eq`)
+  the rigid sibling's own `hZeq` step points straight at. haiku is still thin (now 0/2
+  graded, both honest BLOCKs — no fabrication this time, contrast the cross-repo row-12) but
+  the shape is consistent: haiku can localize an obstruction but not do the landed-helper
+  lemma-hunt + multi-piece assembly a P=2 leaf needs in the heavy zone. Discipline gap too: it
+  left the sorry'd tree uncommitted instead of reverting (the fixed prompt's bail-clause).
+  Escalated to sonnet (row 117). **Net: the map's haiku cell (S=1/P=1/B=1) is right to be
+  narrow — a "mechanical" leaf that still needs a lemma-hunt is P=2, not P=1.**
 
 - (2026-06-13, rows 107–108, L5b-i boundary pair) **First 22i sonnet/opus
   boundary pair — closes the 22h zero-pair gap at this profile.** The
