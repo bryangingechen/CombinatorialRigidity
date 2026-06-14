@@ -97,6 +97,8 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   inline; the Brick-A *value* of S4 landed in S4a.
 - [ ] **S5 — retire L6a (delete-only).** Delete the dead `case_II_placement_eq612_kdof` (CaseI.lean,
   doc-comment + decl, :3723–3910; no live caller — `case_II_realization_all_k` inlines its steps).
+  **Also tidy the two now-dangling `_kdof` references** in the producer's docstring (:3921, :3927,
+  which survive the delete range) so no prose points at a deleted decl.
   **Leave `case_II_placement_eq612` (:3520) untouched** — already green + axiom-clean; the §1.68(f)
   "re-prove through Brick A (option (i))" route is a **shape error** (Brick A returns a bare `finrank`
   bound, but the decl exposes a literal `∃ s` subfamily — recon-settled 2026-06-14, full verdict in
