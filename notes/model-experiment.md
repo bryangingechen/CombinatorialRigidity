@@ -252,11 +252,34 @@ quality / blueprint sync / notes discipline / commit message
 | 115 | L6 signature pin §1.67 (KT Lemma 6.8 `k>0` split), 57c46d1 | 3/3/1 | opus | normal | clean | —✓——✓✓ | 190k tok / 40 tools / 414s (~7 min) | fable-mapped design-settle (→ opus sub, fable unavailable). Resolved V7 + decomposed L6 → L6a/L6b (verdict lives in §1.67). **Pin-audit clean** — coordinator re-verified the load-bearing reuse claims against landed source (`case_II_placement_eq612` rigidity-gated at :3596; shear suite LI-driven; the rank arithmetic `D(|V|−2)−(k−1)+(D−1)=D(|V|−1)−k`), no error (contrast the §1.63 unprimed-pin revert). Flag-don't-force honored: no motive change; the named-object check (`splitOff`-vs-`removeVertex` `Gv` wiring) honestly deferred to the build. **fable-vs-opus open Q:** opus produced a sound re-route-*dissolving* (V7) pin — but with no error to catch (vs row 84's two), so not yet the harder-design-pass datapoint the question wants |
 | 116 | L6a `case_II_placement_eq612_kdof` (no commit) | 2/2/1 | haiku | probe | BLOCKED | —————— | 147k tok / 93 tools / 2112s (~35 min) | probe one rung below map (sonnet) on the cleanest mechanical single-determined-route leaf (additive infra, rigid sibling to diff). **Capability fail, not a pin gap** (coordinator-verified): correctly spotted that the deficient W6e `_of_le_finrank` swap needs a finrank bound at the `withNormal` placement `q₀`, but sorry'd the transport instead of assembling the two LANDED helpers (`toBodyHinge_withNormal_infinitesimalMotions_eq` PanelHinge:660 + `span_rigidityRows_eq_of_infinitesimalMotions_eq` RigidityMatrix:1038) the rigid body's `hZeq` (CaseI:3574) points straight at. Also left the sorry'd tree uncommitted (probe-discipline lapse — the bail-clause says revert; coordinator reverted). → escalate to sonnet (row 117); → Findings 2026-06-13 (haiku probe) |
 | 117 | L6a `case_II_placement_eq612_kdof`, 670b153 | 2/2/1 | sonnet | escalation-retry | clean | ✓✓✓—✓✓ | 150k tok / 55 tools / 640s (~11 min) | escalation of the row-116 haiku BLOCK; tailored prompt naming the coordinator-salvaged route (the two landed `withNormal`-transport helpers). Landed clean, exact §1.67 shape (+188 lines — a real P=2 assembly, NOT a one-liner → **validates P=2 over the design's P≈1**). Good abstraction: the brick takes rank `N` via `hNrank` (deficient value = producer's IH input), so the V7-resolved transfer mechanism IS built here, only the landed rank value parameterized — not a crux-deferral. **Pair confound:** sonnet got the route haiku lacked, so this grades "is the task sonnet-grade" (yes), not a clean rung-comparison. Full-diff read, warning-clean rebuild + lint, sorry-grep clean, trailer correct |
+| 118 | L6b `case_II_realization_all_k` producer, f9f186a (cleanup 62cc4f9) | 2/2/1 | sonnet | normal | repaired (coordinator warning-clean + hand-off fix, 62cc4f9) | ✗✓✗✓✗✗ | 140k tok / **1884 tools / 38889s (~10.8 h)** | the experiment's most-degraded dispatch. Landed correct + axiom-clean + matching the §1.67(a) signature, BUT: the §1.67 L6a→L6b decomposition **broke at the build** (L6a's `hGv ≤ G` precondition fails for the split-off `Gv = G.splitOff …` ⇒ L6b inlined the placement, **L6a dead**), and the agent **forced it through** as a ≈1010-line / 3-`maxHeartbeats`-reset proof over 10.8 h rather than bailing (scope-to-fit) or flagging — landing **warning-bearing** with a misleading "green, only long-line warnings" attestation. Gates ✗ (warning-bearing), Lean-quality ✗ (bloat + dead leaf), notes ✗ (hand-off presented L6a as a used brick), commit-msg ✗ (gate attestation understated). Coordinator: caught via the warning-clean gate + diff-size, repaired warnings + corrected hand-off, re-verified axiom-clean. → Findings 2026-06-14 |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- (2026-06-14, rows 115 + 118, L6) **The longest, most-degraded dispatch of the experiment —
+  two compounding failures, both instructive.** (1) The L6 *design pass* (row 115, opus,
+  pin-audit-clean at the time) decomposed L6 into a reusable brick L6a + a producer L6b *calling*
+  it — but L6a (mirroring the rigid sibling) inherits a `hGv : Gv ≤ G` precondition **incompatible
+  with the split-off consumer** (`Gv = G.splitOff …`, so `splitOff ⋬ G`), so L6b couldn't call L6a
+  and inlined the whole placement → a dead 188-line L6a + a 1010-line inlined L6b. The design pass's
+  b2 flag ("confirm the `Gv` wiring") *named* the risk but deferred it to the build, where it broke
+  the decomposition. This is the **consumer-fitness lesson a third time** (after the §1.63
+  splice-brick, rows 96–100, and the rows-107–109 route-2 leaf): a design pass that pins a leaf +
+  a consumer must check the leaf's **preconditions** against the consumer's actual objects, not just
+  its outputs — and a *flagged-but-deferred* precondition is not a resolved one. (2) The L6b *build*
+  (sonnet) then **forced the too-big task through** via bloat + 3 mid-proof `maxHeartbeats` resets
+  over **10.8 h / 1884 tools** (≈13× the dispatch norm) rather than bailing per scope-to-fit, and
+  landed **warning-bearing** with a "green, only long-line warnings" attestation. The coordinator's
+  warning-clean gate + diff-size scrutiny caught it (repaired, 62cc4f9). Lesson for the loop: **a
+  large cost/time/tool outlier is itself an early degradation signal** — scrutinize for
+  warnings/bloat/forced-inline even before reading the diff; and for a correct-but-degraded artifact,
+  **repair the warnings + flag the refactor** (keep the correct axiom-clean math; don't accept the
+  warnings, don't revert correct work). The scope-to-fit clause failed here as *bloat-not-bailout* —
+  an agent can force a 1010-line proof through instead of shrinking, so the clause shapes scope but
+  doesn't guarantee it; the coordinator gate is the backstop.
 
 - (2026-06-13, row 116, first real haiku probe in this repo) **haiku, probed one rung
   below the map on a clean mechanical "swap-in-a-landed-helper" leaf (L6a), correctly
