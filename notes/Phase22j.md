@@ -12,53 +12,17 @@ budget), delete the dead `hso_ne_sn` + the stale comment block + the stale TODO 
 *Standard build dispatch for the `.lean` edits (`lake build` + `lake lint` warning-clean + axiom-clean);
 the §C-note refresh is coordinator-authored. P≈1.* When it lands, 22j closes.
 
-**S5 — retire L6a (delete-only) — DONE** (this commit): deleted the dead `case_II_placement_eq612_kdof`
-(doc-comment + decl) from CaseI.lean — no live caller (`case_II_realization_all_k` inlines its steps).
-Reworded the two now-dangling `_kdof` references in the producer's docstring to describe the inline
-eq.-(6.12) placement + why a `case_II_placement_eq612`-shaped brick (`hGv : Gv ≤ G`) cannot be reused
-for the split-off `Gab ⋬ G`, with no prose pointing at the deleted decl. `case_II_placement_eq612`
-(:3520, the rigid sibling) left untouched — already green + axiom-clean; the §1.68(f) "re-prove through
-Brick A" route is a shape error (Brick A → bare `finrank` bound vs the decl's literal `∃ s` subfamily;
-recon-settled 2026-06-14). `lem:case-II-realization-placement` stays green; no blueprint pin moved
-(`_kdof` had no pin). Gates green: build warning-clean, `lake lint`, producer axiom-clean (the three
-standard axioms).
+**Landed** (per-slice detail in the *Layer plan* checklist + *Decisions made* below; the design is
+§1.68): S1 Brick A (`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) → S2 its blueprint
+node → S4a consolidated the L6b producer's `hrank_lb` onto Brick A → **S4b skipped** (a net-negative
+one-call-site extraction) → S5 retired the dead L6a (`case_II_placement_eq612_kdof`), leaving the rigid
+witness `case_II_placement_eq612` untouched (§1.68(f)'s "re-prove through Brick A" was a shape error —
+the load-bearing invariant below). Only the cleanup bundle remains.
 
-**S4b SKIPPED (coordinator re-scope, 2026-06-14).** The optional `he₀_rows_mem` top-level extraction is
-**not worth doing** and is dropped: per §1.68(d) the `e₀`-decomposition is consumed by *only*
-`case_II_realization_all_k` (Case III/22k uses a different already-isolated discharge, the
-`hρGv`/`hwmem` interface; the rigid placement uses `subset_span`), so a top-level helper would be a
-~7-arg-signature decl with exactly one call site — a net-negative abstraction. The design's "named
-`hold_span` discharge" goal is already met by the inline named `have`, and S4a already brought the
-producer under the heartbeat budget (86s), so S4b is not a cleanup prerequisite either. The Brick-A
-*value* of S4 landed in S4a.
-
-**S4a — Brick-A rank consolidation — DONE** (this commit): `case_II_realization_all_k`'s `hrank_lb`
-now calls `le_finrank_span_rigidityRows_of_pinned_placement` (NEW block = e_b pinned through `v`'s
-screw column, OLD block = the IH's N Gab-rows via `hso_span`); the dead inline `hN_FG` and the
-intermediate `hunion` are deleted. Gates green (build warning-clean, `lake lint`, axiom-clean — the
-three standard axioms). The §38 *row-family* `isDefEq` blowup recurred (6.4M timed out); fixed by
-`set rn`/`set ro` (fvars) + explicit `hbrick` type — **no `clear_value` needed** here since the brick
-takes the families as explicit named args (FRICTION + TACTICS-QUIRKS §38 *Abstract-brick call-site*).
-
-**S2 — blueprint node — DONE** (this commit): `lem:rigidityRows-pinned-placement-rank-add` landed in
-`rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both
-`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) + `\leanok` + `\uses` (the pin-a-body
-block-independence nodes `lem:case-II-placement-block-independent` for the base half,
-`lem:case-III-conditional-block` for the augment). All gates green (`blueprint/verify.sh` — lint +
-checkdecls + TeX build).
-
-**S1 — Brick A — DONE:** `le_finrank_span_rigidityRows_of_pinned_placement` +
-`_augment` landed in `RigidityMatrix.lean` (`section PinnedPlacementBrick`, beside the splice brick),
-build + lint warning-clean, axiom-clean (the three standard axioms only). The §1.68(g)(i)
-`Nat.card`/`Fintype` open risk resolved cleanly — the established `Nat.card_eq_fintype_card` +
-`Fintype.card_sum` bridge (the CaseI.lean:4745 idiom). The `_augment` variant routes through
-`linearIndependent_sum_pinned_block_augment` for Case III's `+1`.
-
-22j introduces the span-transport "pinned placement" rank brick the Case-II / Lemma-6.8 producers
-should have shared — the L6b producer `case_II_realization_all_k` inlined a ≈1010-line placement
-because no shared brick fit the split-off `Gab = G.splitOff v a b e₀ ⋬ G` — then refactors L6b + the
-rigid placement onto it, retires the dead L6a, and lands the bundled cleanup. **22k's Case III
-consumes Brick A**, so the abstraction lands first.
+22j's arc: introduce the shared span-transport "pinned placement" rank brick (Brick A) the
+Case-II / Lemma-6.8 producers should have shared — the L6b producer inlined a ≈1010-line placement
+because no shared brick fit the split-off `Gab ⋬ G` — refactor L6b's rank half onto it, retire the
+dead L6a, land the cleanup. **22k's Case III consumes Brick A**, so the abstraction lands first.
 
 ## Architectural choices made up front
 
@@ -146,13 +110,17 @@ open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 l
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
-Drives this log via the *Hand-off* pivot. **Dispatch shapes:** S1/S4/S5 + the cleanup `.lean` edits are
-**standard build dispatch** (the fixed prompt; subagent commits); only S2 touched a blueprint pointer
-(the subagent runs `verify.sh`) — **S5 no longer does** (delete-only, rigid decl untouched, `_kdof` has
-no pin); the §C-note refresh is **coordinator-authored** (rescue §6). The
-model-experiment is **running** — rate S/P/B per slice (difficulties pre-rated above; honor any
-standing rung override). S1 is a build (design settled in §1.68), so the step-1 research-shape trigger
-should **not** fire — if it seems to, re-read §1.68 rather than dispatching a recon.
+Drives this log via the *Hand-off* pivot. **Only the cleanup bundle remains.** It is a **standard
+build dispatch** for the `.lean` edits (drop the suppressions + delete dead `hso_ne_sn`/stale
+comment/TODO; **no blueprint pin moves → no `verify.sh`**) plus a **coordinator-authored** `CLEANUP.md`
+§C-note refresh (rescue §6) — so it may land as one build commit + one coordinator commit, or bundled.
+The cleanup is a fully-specified mechanical slice (P≈1); the step-1 research-shape trigger should
+**not** fire. The model-experiment is **running** — at session start re-run the availability check and
+record any substitution/override in the log's repo-local config (the prior session's opus-only override
+expired at its session end), then rate S/P/B (cleanup P≈1 → haiku per the map) and dispatch per that.
+When the cleanup lands, run the **phase-close checklist** (flip 22j ✓ across ROADMAP / README /
+home_page / intro.tex / MolecularConjecture; compress ROADMAP §22j; write the model-experiment
+*Findings* for 22j; then open **Phase 22k**).
 
 ## Decisions made during this phase
 

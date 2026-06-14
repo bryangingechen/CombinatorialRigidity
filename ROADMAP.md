@@ -960,12 +960,15 @@ reduction graph (collapse / `splitOff` / relabel land rows only in `span`), so t
 a ≈1010-line placement; and that the right abstraction is a **two-brick family** — Brick A (NEW,
 span-rank: `le_finrank_span_rigidityRows_of_pinned_placement`) + Brick B (the existing
 literal-`panelRow` device-feed `case_III_old_new_blocks`, kept), with Case I staying on its splice
-brick + coupler. 22j builds Brick A (S1) + its blueprint node (S2), refactors the L6b producer onto it
-extracting the `e₀ = e_a + e_b` decomposition (S4, the one new-math slice), retires the dead L6a +
-re-expresses the rigid `case_II_placement_eq612` through Brick A keeping its
-`lem:case-II-realization-placement` pin green (S5), and lands the bundled cleanup (drop the L6b
-heartbeat / long-line suppressions; delete the dead `hso_ne_sn` + stale comments). 22k's Case III
-consumes Brick A, so 22j lands first. Slice plan + per-slice dispatch shapes: `notes/Phase22j.md`;
+brick + coupler. 22j builds Brick A (S1) + its blueprint node (S2), consolidates the L6b producer's
+rank half onto it (S4a; the `e₀ = e_a + e_b` `hold_span` discharge stays inline — a top-level
+extraction would be a net-negative one-call-site helper), and retires the dead L6a
+`case_II_placement_eq612_kdof` (S5). The rigid `case_II_placement_eq612` is **left untouched** — a recon
+found re-routing it through Brick A to be a shape error (Brick A returns a bare `finrank` bound, but the
+decl exposes a literal `∃ s` subfamily), so its `lem:case-II-realization-placement` pin stays green
+as-is. The bundled cleanup (drop the L6b heartbeat / long-line suppressions; delete the dead
+`hso_ne_sn` + stale comments) closes the phase. 22k's Case III consumes Brick A, so 22j lands first.
+Slice plan + per-slice dispatch shapes: `notes/Phase22j.md`;
 design verdict: §1.68. (S3 — the deficiency-aware Brick B generalization — is deferred to 22k.)
 
 ## Engineering conventions
