@@ -39,7 +39,15 @@ Loop:
    deficiency-aware] variant of [a landed lemma]" and you cannot confirm
    that variant already exists in tree (grep it — a missing variant is a
    hidden genuinely-new prerequisite, a P≈3 leaf, NOT a P=2 "mechanical
-   restate"; the L5b sizing-BLOCKED then design-decomposed, rows 104–105)
+   restate"; the L5b sizing-BLOCKED then design-decomposed, rows 104–105),
+   OR the hand-off says "re-express / re-prove an existing decl X
+   *through* a landed lemma/brick Y" and you have not confirmed Y's
+   **conclusion shape** can produce X's (read X's landed conclusion
+   *before* dispatching — a `finrank`-*bound* brick cannot yield an
+   ∃-*literal-subfamily* decl; the 22j S5 §1.68(f) shape error, where a
+   design verdict named a route between two mismatched conclusion shapes
+   and a build would have faithfully implemented the wrong one — a
+   mismatch is a design error to settle by recon, not a build)
    — the next commit is a **recon / design-pass**, not a build: dispatch a
    read-only Plan-agent recon, or a docs/blueprint design-pass commit
    that decomposes the core into buildable leaves with exact signatures.
