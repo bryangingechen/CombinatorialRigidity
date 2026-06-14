@@ -1,8 +1,8 @@
 # Molecular Conjecture — cross-phase program plan
 
 **Status:** IN PROGRESS. Phases 17–22i (+ 21a/21b) complete; the current frontier is
-**sub-phase 22j, the shared eq.-(6.12) placement abstraction** (◷ next; design basis in
-`notes/Phase22i.md` *Hand-off*, to be written up as `notes/Phase22-realization-design.md` §1.68):
+**sub-phase 22j, the shared eq.-(6.12) placement abstraction** (◷ in progress, opened 2026-06-14;
+`notes/Phase22j.md`; design verdict `notes/Phase22-realization-design.md` §1.68):
 a span-transport "pinned placement" rank brick the Case-II / Lemma-6.8 producers refactor onto,
 which **22k** then consumes to complete the honest all-`k` Theorem 5.5 (Case III / `h622`, Lemma 6.5
 / `h65`, the zero-carry spine / `hsplit`) + Theorem 5.6 at `d = 3`, unblocking Phases 24–26. 22i
@@ -223,7 +223,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22g ✓ | **The `d=3` assembly: design program + leaf infrastructure** (closed 2026-06-09, `notes/Phase22g.md`; the 22c→22d stratum precedent — banner flips moved to 22h). Pinned the Case-III crux architecture: `case_III_claim612` restated to the premise-free six-join **existential** (the three-fixed disjunction is undischargeable, dim 3 < 6; the producer builds its candidate at the witness join's line). Landed ~15 axiom-clean leaves (the join↔meet bridge, the line-indexed candidate placement, the homogeneous-vector Lemma 2.1 core + consumer restate, splitOff simplicity at `|V|≥4`, the graph-free producer pieces, the GAP-2 bare→generic upgrade). The recon program (design §1.44–§1.49) surfaced + scoped the corrected remaining work — GAPs 1–5: the `|V|=3` triangle base (T1–T4), the `M₃` third-panel dispatch (G4a–G4e, branch-interface verdict (β) = full conditioned IH), the bounded good-`t`, the landed upgrade, and the `IsProperRigidSubgraph` single-vertex predicate repair (G5, first) — all handed to 22h with signatures in design §1.48–§1.49. | §5.1, §6.4.1 | 5 |
 | 22h ✓ | **The corrected `d=3` assembly** (closed 2026-06-11, `notes/Phase22h.md`). Took `lem:case-II-realization` / `lem:case-III` green at `d=3` (both pinned to `case_III_realization`): G5 predicate repair, the (β) full-conditioned-IH restate, the `\|V\|=3` triangle floor T1–T4, the `hsplit` producer + the full candidate-placement discharge (W1–W10b), `theorem_55_d3` with the 6.3-vs-6.5 dispatch, the `def=0` Thm 5.5→5.6 stratum, the blueprint close (`thm:theorem-55-d3-instance` green). **Closed green-modulo the named carry family** {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (user-adjudicated; design §1.50–§1.55); postmortem: `DESIGN.md` *Statement faithfulness to the source*. | §5.1–5.2, §6.4.1 | 5 |
 | 22i ✓ | **All-`k` genuine-hinge motive + reduction-case producers** (closed 2026-06-14, `notes/Phase22i.md`; opened as "the honest all-`k` Theorem 5.5"). Delivered L0–L6: the genuine-hinge all-`k` motive (free-hinge carrier + extensor-in-panel containment — KT's coincident-panel Lemmas 5.3/6.2 are inexpressible with a derived hinge-as-meet), the four-case all-`k` induction (NEW cases: Lemma 6.1 not-2-edge-connected, Lemma 6.8 `k>0` split), and the base / cut-edge / Case-I / Lemma-6.8 producers (`hbase`/`hcontract` discharged). **Re-scoped at close by a deliberate split**; the rest → 22j + 22k. | §3, §5.2, §6.1–6.4 | 5 |
-| 22j ◷ | **The shared eq.-(6.12) placement abstraction** (next; design basis `notes/Phase22i.md` *Hand-off* → §1.68 at open). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement`) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Plus bundled cleanup; retires the dead L6a. | §6.3, §6.4.1 | — |
+| 22j ◷ | **The shared eq.-(6.12) placement abstraction** (in progress, opened 2026-06-14, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement`) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Plus bundled cleanup; retires the dead L6a. | §6.3, §6.4.1 | — |
 | 22k ◷ | **Completing the honest all-`k` Theorem 5.5** (after 22j; layer detail = the L7–L10 entries in `notes/Phase22i.md`). Case III rewire (`h622` from the all-`k` IH), the Lemma-6.5 arm (`h65`), the zero-carry spine (`hsplit`; `theorem_55_d3` restated), and the Thm-5.6 `d=3` push (`prop:rigidity-matrix-prop11` at `def>0`). Consumes 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
@@ -641,9 +641,9 @@ assembly — Theorem 5.5 at `d=3`, ✓ 2026-06-11 green-modulo the named carry f
 ✓ 2026-06-14 — opened as "the honest all-`k` Theorem 5.5", re-scoped at close by a deliberate split;
 `notes/Phase22i.md`). Sub-lettering keeps the integer phase numbers 23–26 stable.
 
-**Current cut: sub-phase 22j, "the shared eq.-(6.12) placement abstraction"** (◷ next; design
-basis in `notes/Phase22i.md` *Hand-off*, to be written up as
-`notes/Phase22-realization-design.md` §1.68 at open). 22i delivered the all-`k` genuine-hinge
+**Current cut: sub-phase 22j, "the shared eq.-(6.12) placement abstraction"** (◷ in progress,
+opened 2026-06-14; `notes/Phase22j.md`; design verdict
+`notes/Phase22-realization-design.md` §1.68). 22i delivered the all-`k` genuine-hinge
 motive + the reduction-case producers (L0–L6), discharging 2 of the 5 inherited 22h carries
 (`hbase`, `hcontract`); but its L6b producer inlined a ≈1010-line eq.-(6.12) placement because no
 shared brick fit the split-off. A verified read-only recon found the missing abstraction — a
