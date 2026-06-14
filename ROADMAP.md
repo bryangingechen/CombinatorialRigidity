@@ -773,27 +773,21 @@ generic-motive induction G2a–c / G3a–c), the decision history, and the hand-
 live in `notes/Phase22a.md`; dep-graph `algebraic-induction.tex`
 `sec:molecular-algebraic-induction`.
 
-#### Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge, KT §6.2/§5.1) — ◷ In progress
+#### Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge, KT §6.2/§5.1) — ✓ Complete
 
-**Status (◷ In progress; opened 2026-06-05, opening recon landed 2026-06-05; see
-`notes/Phase22b.md`).** Scope: *just* KT Claim 6.4 — the single dischargeable
-hypothesis Phase 22a left green-modulo. 22a's composer `case_I_realization` /
-`lem:case-I-realization` carries it as `hclaim64`, tracked by the red node
-`lem:claim-6-4`. The target is the `Qc`-non-root / exterior-projected-rank form (the
-surviving block of `G ＼ E(H)`, projected to the surviving columns `V(G)∖V(H)` via
-`(extProj V(H)).dualMap`, attains independent rank `≥ D(|sc|−1)` at a generic locus;
-KT eqs. (6.5)/(6.9), §5.1). The **opening recon (landed)** decomposed the verified
-discharge path (design doc §1.16) into the node cut: **N-22b-2** (bounded, the *first
-buildable* — a `D∘panelRow` variant of `exists_rankPolynomial_of_rigidOn_linking_set`,
-feasibility re-verified against the generic engine
-`exists_polynomial_ne_zero_of_linearIndependent_at`) → **N-22b-1** (research-shaped —
-the rank-transport across the collapse map from the contraction's generic IH via
-algebraic independence) → **N-22b-3** (the wire-up that discharges `hclaim64` + the
-flip). Same green-modulo → discharge pattern as Phase 21 → 21b; flips `lem:claim-6-4`
-green and `lem:case-I-realization` to fully green. The recon also settled the
-renumber of the parked Case-III/assembly territory from `22b+` to `22c+` (so each
-sub-letter names one distinct sub-phase). Full target + path + KT grounding:
-`notes/Phase22b.md`; design doc §1.13–§1.16.
+**Status (✓ Complete; opened + closed 2026-06-05; see `notes/Phase22b.md`).** Scope:
+*just* KT Claim 6.4 — the single dischargeable hypothesis Phase 22a left green-modulo
+(22a's composer `case_I_realization` carried it as `hclaim64`, tracked by the red node
+`lem:claim-6-4`; target the `Qc`-non-root / exterior-projected-rank form — the surviving
+block of `G ＼ E(H)`, projected to `V(G)∖V(H)` via `(extProj V(H)).dualMap`, attains
+independent rank `≥ D(|sc|−1)` at a generic locus; KT eqs. (6.5)/(6.9), §5.1).
+Discharged via the recon's node cut — **N-22b-2** (the bounded `D∘panelRow`
+rank-polynomial variant of `exists_rankPolynomial_of_rigidOn_linking_set`) →
+**N-22b-1** (the research-shaped rank-transport across the collapse map via algebraic
+independence) → **N-22b-3** (the wire-up) — flipping `lem:claim-6-4` green and
+`lem:case-I-realization` to fully green (same green-modulo → discharge pattern as
+Phase 21 → 21b). The recon also renumbered the parked Case-III/assembly territory
+`22b+` → `22c+`. Full record: `notes/Phase22b.md`; design doc §1.13–§1.16.
 
 #### Phase 22c — Case III at `d=3`, stratum 1 (KT §6.4.1, Lemma 6.10, the eq. (6.12) `+(D−1)` placement) — ✓ Stratum-1 complete
 
