@@ -81,26 +81,29 @@ deferred-route-hinges-on-consumer clause added to
 
 ## Repo-local config
 
-- **Testbed:** Phase 22i (the active phase — the honest all-`k`
-  Theorem 5.5), continuing into successor phases of the molecular
-  program until concluded.
+- **Testbed:** Phase 22j (the active phase — the shared eq.-(6.12)
+  placement abstraction; opened 2026-06-14 at the 22i close),
+  continuing into successor phases of the molecular program until
+  concluded.
 - **Rungs available:** haiku → sonnet → opus → fable (the Agent
   tool's `model` parameter).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md`
   model-tier step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase22i.md` *Decisions made* / *Hand-off*.
+- **Phase-side pointer:** `notes/Phase22j.md` *Decisions made* / *Hand-off*.
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-13, fresh coordinator session, re-confirmed at session
-  start — supersedes the prior same-date notes, each expired at its own session end).** fable **unavailable**
-  this session (user-confirmed at session start); the reachable rungs are
-  haiku / sonnet / opus, dispatched per the S/P/B → map. Per the *Unavailable rung*
-  substitution rule, every fable-mapped pass (design-settle / phase-boundary / S=3 /
-  recon-by-stakes) substitutes **opus** (logged in the row). Not a map change;
-  **expires at session end** — a fresh coordinator re-runs the availability check and
-  reverts to the full map (substituting again only if fable is still unavailable that
-  session). **Run modifications this session (user-set at session start):** the 10-run
+- **Session availability (2026-06-14, fresh coordinator session, re-confirmed at session
+  start — supersedes the prior 2026-06-13 note, which expired at its session end).** fable
+  **unavailable** this session (user-confirmed at session start). **Standing rung override
+  for all of Phase 22j (user-set at session start): dispatch every commit at `opus`,
+  regardless of the S/P/B → map.** S/P/B is still rated per slice for the log/data, but the
+  rung is fixed at opus, so this phase contributes no cross-rung comparison data — the
+  rung-tier experiment is effectively suspended for 22j (all rows run opus; no probes; a
+  boundary pair to an adjacent rung would violate the override, so pairs, if run, are
+  pin-audit-only and at opus). **Expires at session end** — a fresh coordinator re-runs the
+  availability check and reverts to the full map (and would need a fresh override to repeat
+  opus-only). **Run modifications this session (user-set at session start):** the 10-run
   check-in cap is **lifted** (the loop runs to phase close or a surfaced concern), and
   step-4 mechanical fixups (wrong branch / author / co-author trailer) are
   **pre-authorized** (apply without stopping to ask). The coordinator is Opus 4.8
@@ -123,9 +126,12 @@ deferred-route-hinges-on-consumer clause added to
   `lake exe cache get` itself; the protocol's APFS `.lake`-seeding default is no longer
   *required* (still a fine fast path) and its unseeded `cache get` fallback now works
   agent-side. The worktree-location point (1) is the standing repo-local constraint.
-- **No rung override currently active.** (Prior zone-scoped overrides — opus-minimum
-  for the §38-trap `hcand`-discharge zone and the KT-4.2 fiber-bookkeeping zone — all
-  expired by their own terms; see the collapsed-overrides bullet above and *Findings*.)
+- **Standing rung override active this session: opus-only for all of Phase 22j**
+  (user-set at session start — see the *Session availability* bullet above). Supersedes the
+  S/P/B → map for the duration of 22j; expires at session end. (Prior zone-scoped
+  overrides — opus-minimum for the §38-trap `hcand`-discharge zone and the KT-4.2
+  fiber-bookkeeping zone — all expired by their own terms; see the collapsed-overrides
+  bullet above and *Findings*.)
 
 ## Log
 
