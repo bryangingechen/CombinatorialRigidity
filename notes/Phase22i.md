@@ -372,11 +372,11 @@ coupler + the rigid H-leg polynomial. **Statement-grep gate required before comm
 grep `blueprint/src/` for `case_I_realization_all_k` / `lem:case-I-realization-all-k` and restate any stale node).
 After that: L5b-iii dispatch → L6 → L7 → L8 → L9 → L10.
 
-**Flag for the coordinator (surfaced, no hard adjudication needed):** route 1 adds three new decls (extractor +
-`_proj` rank polynomial + deficient coupler restate); the first two are now landed, only the coupler restate +
-assembly + dispatch remain. No motive / IH statement-level change. The landed route-2 leaf
-`exists_rankPolynomial_of_IH_relabel_linking` is dead (delete-at-L5b-close, harmless until then; now marked
-`superseded` in its blueprint title).
+**Flag for the coordinator (surfaced, no hard adjudication needed):** route 1's three new infra decls
+(extractor + `_proj` rank polynomial + deficient coupler restate) are **all landed** (L5b-ii-a/b/c); only the
+producer **assembly (L5b-ii-d)** + the **dispatch (L5b-iii)** remain. No motive / IH statement-level change. The
+landed route-2 leaf `exists_rankPolynomial_of_IH_relabel_linking` is dead (delete-at-L5b-close, harmless until
+then; now marked `superseded` in its blueprint title).
 
 At phase close:
 Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)–(6.67) vs the
