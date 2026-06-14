@@ -1,9 +1,9 @@
 # Phase 22c — Case III at `d=3`, first chunk (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) (work log)
 
-**Status:** in progress (opened 2026-06-05; scope re-cut to the *first
-tractable chunk* 2026-06-05; **stratum 1 LEAN-COMPLETE** 2026-06-05 —
-`case_II_placement_eq612` green, the eq. (6.12) `+(D−1)` lower-bound brick;
-next is the D-candidate crux sub-phase). **Design-pass-first** — this phase opened
+**Status:** ✓ Stratum-1 complete (closed 2026-06-05; opened the same day, scope re-cut to the
+*first tractable chunk*). **Stratum 1 LEAN-COMPLETE** — `case_II_placement_eq612` green, the
+eq. (6.12) `+(D−1)` lower-bound brick; the D-candidate crux (Claims 6.11/6.12) split out to
+22d+ (landed across 22d–22h). **Design-pass-first** — this phase opened
 on a *layer-level design recon* of the whole Case-III-at-`d=3` argument
 (KT §6.4.1, Lemma 6.10, Claims 6.11/6.12) against the green Phase-17
 Lemma 2.1 and the green Phase-21b/22a/22b infra, **before** any Lean

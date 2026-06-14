@@ -1,6 +1,7 @@
 # Phase 2 — Laman graphs (work log)
 
-**Status:** in progress.
+**Status:** ✓ Complete (part of the Phases 1–6 Laman arc; Phases 1–16 are complete and
+`sorry`-free). Archived work log.
 
 This file is the per-phase work record. See `../ROADMAP.md` for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
