@@ -574,67 +574,72 @@
   zero-rank-loss of the exterior-column projection on a rigid block.
 \end{proof}
 
-\begin{lemma}[Case I realization: the contraction producer, simple-contraction case; KT Lemma~6.3]
+\begin{lemma}[Case I realization: the contraction producer, simple-contraction case (all-$k$); KT Lemma~6.3]
   \label{lem:case-I-realization}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_all_k}
   \leanok
   \uses{def:panel-hinge-framework, lem:case-I, lem:rigidContract-isMinimalKDof,
-        lem:claim-6-4, lem:genericity-device, lem:rows-polynomial-in-normals,
-        lem:isInfRigidOn-of-relative-count}
+        lem:rank-polynomial-IH-relabel-proj, lem:genericity-device,
+        lem:rows-polynomial-in-normals, lem:isInfRigidOn-of-relative-count}
   The (strengthened, general-position) realization motive of
   \cref{thm:theorem-55} is closed under contracting a proper rigid subgraph,
   \emph{in the case that the contraction is simple}
   ($\mathtt{hcSimple} : (G.\mathrm{rigidContract}\,H\,r).\mathrm{Simple}$ ---
   KT Lemma~6.3's case hypothesis; the non-simple-contraction case is
   \cref{lem:case-I-dispatch}).
-  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
-  $s = V(H)$ ($2 \le |V(H)|$) and representative body $r \in V(H)$; assume
-  additionally that the contraction $G/E(H)$ (with $r$ as the representative
-  body) is itself simple.  The (conditioned, generic) induction hypothesis
-  supplies generic realizations of both $H$ and the contraction $G/E(H)$ at
-  their target ranks.  Then $G$ carries a generic realization at rank
-  $D(|V(G)|-1)$, discharging the Case~I premise ($\mathtt{hcontract}$) of
-  \cref{thm:theorem-55} for this stratum.
+  Let $G$ be a simple minimal $k$-dof-graph with $|V(G)| \ge 3$, a proper rigid
+  subgraph $H$ on $s = V(H)$ and representative body $r \in V(H)$, such that
+  the contraction $G/E(H)$ (with $r$ as the representative body) is itself
+  simple.  The (conditioned, all-$k$ generic) induction hypothesis supplies
+  generic realizations of both $H$ (at deficiency $0$, since $H$ is rigid) and
+  the contraction $G/E(H)$ (at deficiency $k$, minimal $k$-dof by
+  \cref{lem:rigidContract-isMinimalKDof}).  Then $G$ carries a generic
+  realization at rank $D(|V(G)|-1)$, discharging the Case~I premise
+  ($\mathtt{hcontract}$) of \cref{thm:theorem-55} for this stratum.
 
   The proof is KT eq.\ (6.3)'s \emph{block-triangular rank-addition} over a
   \emph{single} common framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
   at a general-position seed $q_0$: it exhibits $D(|V(G)|-1)$ independent
   rigidity rows of $F$, split as the rigid-block rows ($E(H)$, from the
   $H$-leg's rank polynomial \cref{lem:rows-polynomial-in-normals}) $\sqcup$ the
-  surviving-edge rows ($E(G) \setminus E(H)$, from \cref{lem:claim-6-4}).
+  surviving-edge rows ($E(G) \setminus E(H)$, from the deficiency-aware
+  exterior-projected rank polynomial \cref{lem:rank-polynomial-IH-relabel-proj}).
   Projecting onto the exterior columns $V(G) \setminus V(H)$ makes the union
   independent --- the $H$-block vanishes there (KT's top-right $0$), so the two
   row-blocks are jointly independent. The device's row-count closure
   (\cref{lem:genericity-device}) then reads rigidity on $V(G)$ off the
   $D(|V(G)|-1)$-row count via the relative-count adapter
   (\cref{lem:isInfRigidOn-of-relative-count}), \emph{at $q_0$ itself}; since
-  $q_0$ is general position the strengthened motive holds. This needs \emph{no}
-  common placement rigid on both legs (the obstruction the prior common-seed
-  splice could not cross): the device counts independent \emph{rows}, never
-  rigidity of one framework on a leg at a shared seed.
+  $q_0$ is general position the strengthened motive holds.  The $k > 0$
+  deficiency of the contraction is absorbed by
+  \cref{lem:rank-polynomial-IH-relabel-proj}: the surviving-block lower bound
+  $D(|s_c|-1) - k$ together with the rigid-block $D(|s_H|-1)$ sum to
+  $D(|V(G)|-1)$ (the $D(|s_c|-1)+D(|s_H|-1)-D(0)$ count with $|s_H \cap s_c| =
+  1$, less $k$, equalling $D(|V(G)|-1)-k+k = D(|V(G)|-1)$, since $G$ is $k$-dof).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rows-polynomial-in-normals, lem:claim-6-4, lem:genericity-device,
-        lem:case-I, lem:rigidContract-isMinimalKDof,
+  \uses{lem:rows-polynomial-in-normals, lem:rank-polynomial-IH-relabel-proj,
+        lem:genericity-device, lem:case-I, lem:rigidContract-isMinimalKDof,
         lem:isInfRigidOn-of-relative-count}
   Work on the one framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ at a
   general-position seed $q_0$. The rigid-block rows $s_H$ (the edges $E(H)$) are
   independent and $D(|V(H)|-1)$ in number, from the $H$-leg's inductive generic
-  realization fed through the row coordinatization
-  \cref{lem:rows-polynomial-in-normals}. The surviving-edge rows $s_c$ (the
-  edges $E(G) \setminus E(H)$, on $s_c = (V(G) \setminus V(H)) \cup \{r\}$) are
-  $D(|s_c|-1)$ in number and, after the exterior-column projection $D$ killing
-  the $V(H)$ columns, independent --- this is KT Claim~6.4
-  (\cref{lem:claim-6-4}, now fully discharged from the contraction's generic
-  induction hypothesis, \cref{lem:rigidContract-isMinimalKDof}), supplied at the
-  Zariski-open locus of a contraction rank polynomial's non-roots via its bounded
-  $D \circ \mathrm{panelRow}$ packaging into the $Q_c$-non-root form. The
-  $H$-block rows vanish under $D$ (KT's top-right $0$), so $\operatorname{span}
-  s_H \subseteq \ker D$ while $s_c$ is independent off $\ker D$; the two blocks
-  are disjoint and their union gives the $D(|V(G)|-1)$ independent rows the
-  device consumes. The device-row closure (\cref{lem:genericity-device}) bounds
-  $\dim Z(F)$ and the relative-count adapter
+  realization (applied at $k' = 0$, since $H$ is rigid, i.e.\ $0$-dof) fed
+  through the row coordinatization \cref{lem:rows-polynomial-in-normals}.
+  The surviving-edge rows $s_c$ (the edges $E(G) \setminus E(H)$, on
+  $s_c = (V(G) \setminus V(H)) \cup \{r\}$) are $D(|s_c|-1) - k$ in number
+  and, after the exterior-column projection $D$ killing the $V(H)$ columns,
+  independent --- this is \cref{lem:rank-polynomial-IH-relabel-proj}, the
+  deficiency-aware exterior-projected rank polynomial for the surviving block,
+  derived from the contraction's generic induction hypothesis (at $k' = k$,
+  the contraction being minimal $k$-dof by \cref{lem:rigidContract-isMinimalKDof}).
+  The $H$-block rows vanish under $D$ (KT's top-right $0$), so
+  $\operatorname{span} s_H \subseteq \ker D$ while $s_c$ is independent off
+  $\ker D$; the two blocks are disjoint and their union gives the $D(|V(G)|-1)$
+  independent rows the device consumes (the deficiency $-k$ from $s_c$ cancels
+  the $G$'s $k$-dof deficit). The device-row closure (\cref{lem:genericity-device})
+  bounds $\dim Z(F)$ and the relative-count adapter
   (\cref{lem:isInfRigidOn-of-relative-count}) converts it to rigidity on $V(G)$
   (\cref{lem:case-I}); general position of $q_0$ delivers the strengthened
   motive.

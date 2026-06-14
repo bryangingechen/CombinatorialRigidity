@@ -15,7 +15,7 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2 + L3 + L4 + L5a-i + L5a-ii + L5b-i + L5b-ii-a + L5b-ii-b + L5b-ii-c complete; four carries remain: `h622`,
+**L2 + L3 + L4 + L5a-i + L5a-ii + L5b-i + L5b-ii-a + L5b-ii-b + L5b-ii-c + L5b-ii-d complete; four carries remain: `h622`,
 `h65`, `hsplit`, `hcontract`.**
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
@@ -230,9 +230,14 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
         upper bound: B2 (`finrank_span_rigidityRows_add_deficiency_le`) via `supportExtensor_ne_zero_of_isGeneralPosition`
         + `hne_G`; `le_antisymm` closes. Two new hypotheses vs the `= 0` coupler: `hn` (B2) + `hne_G` (extensor nonzero).
         `set_option linter.style.longLine false in` guards the 102-char name. Build+lint clean.
-      - [ ] **L5b-ii-d** — `case_I_realization_all_k`: assembly of the H-leg rigid polynomial + L5b-ii-b +
-        L5b-ii-c, mirroring the rigid `case_I_realization` body (`P≈2`). Mints `lem:case-I-realization-all-k`.
-        Statement-grep gate before commit.
+      - [x] **L5b-ii-d** — `case_I_realization_all_k` (CaseI.lean:9272): assembly mirroring the rigid
+        `case_I_realization` body — H-leg at `k'=0` (IH gives generic realization, rigidity extracted from
+        `hQHrank` with `hKDof`-rewrite), contraction leg at `k'=k` (IH gives `hQcf`), L5b-ii-b
+        `exists_rankPolynomial_of_IH_relabel_linking_set_proj` produces `Qc`, L5b-ii-c
+        `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof` assembles. Restates
+        `lem:case-I-realization` in blueprint to `\lean{...case_I_realization_all_k}` with all-`k` statement
+        prose (`\uses` updated: `lem:claim-6-4` → `lem:rank-polynomial-IH-relabel-proj`). Build+lint+blueprint-
+        verify clean; statement-grep gate passed.
     - [ ] **L5b-iii** — the `hcontract` slot-filler dispatch (`by_cases G.Simple`): plumbing (`P≈1`); the 6.5
       sub-arm stays red → L8. Updates `lem:case-I-dispatch`.
   V6 RESOLVED — N6a is dead infrastructure (deleted-motive-bound, `ofNormals`-bound); V4
@@ -300,10 +305,10 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L5a complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
+**L0–L5b-ii-d complete; four carries remain: `h622`, `h65`, `hsplit`, `hcontract`.**
 
-L5a-ii is done: `case_I_realization_nonsimple` (CaseI.lean) + `lem:case-I-realization-nonsimple`
-(case-i.tex) both green; blueprint-verify clean. V6-a fully RESOLVED; §1.64 canonical.
+L5b-ii-d done: `case_I_realization_all_k` (CaseI.lean:9272) + `lem:case-I-realization` restated in
+blueprint to the all-`k` form; build+lint+blueprint-verify clean. L5a-ii canonical (V6-a RESOLVED; §1.64).
 
 **L5b design-pass complete (§1.65, 2026-06-13, opus; tree clean, docs-only).** The row-104 BLOCK's
 structural diagnosis was **re-verified against the landed source** (every load-bearing decl opened, not
@@ -366,11 +371,10 @@ verbatim — generic in the projected family). Mints `lem:rank-polynomial-IH-rel
 landed (CaseI.lean, after the rigid coupler). Lower/upper bound closed by `finrank_span_eq_card` + B2 + `le_antisymm`.
 Build+lint clean; `set_option linter.style.longLine false in` guards the 102-char name.
 
-**Smallest next forward commit: L5b-ii-d** — `case_I_realization_all_k` assembly (see §1.66(g)):
-mirror the rigid `case_I_realization` body using the landed L5b-ii-b `_proj` rank polynomial + L5b-ii-c deficient
-coupler + the rigid H-leg polynomial. **Statement-grep gate required before commit** (structural-edit phase:
-grep `blueprint/src/` for `case_I_realization_all_k` / `lem:case-I-realization-all-k` and restate any stale node).
-After that: L5b-iii dispatch → L6 → L7 → L8 → L9 → L10.
+**Smallest next forward commit: L5b-iii** — the `hcontract` slot-filler dispatch (`by_cases G.Simple`
+routing to `case_I_realization_nonsimple` / `case_I_realization_all_k`; see §1.66(g)). Updates
+`lem:case-I-dispatch` in blueprint. Completes the full `hcontract` discharge (the 6.5 sub-arm stays red → L8).
+After that: L6 → L7 → L8 → L9 → L10.
 
 **Flag for the coordinator (surfaced, no hard adjudication needed):** route 1's three new infra decls
 (extractor + `_proj` rank polynomial + deficient coupler restate) are **all landed** (L5b-ii-a/b/c); only the
@@ -417,50 +421,22 @@ Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon (KT eqs. (6.46)�
   genuinely-new linear algebra — a real brick (its own L5a-i slice), not a one-liner; no decision needs
   adjudication. L5b caveat (§1.64(f)): the simple all-`k` restate also needs the brick's GP variant (V6-b
   re-scoped, not mechanical). Re-cut to L5a-i (brick) → L5a-ii (producer) → L5b. Docs-only.
-- **L5a-i build (2026-06-13, sonnet):** `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` in
-  `RigidityMatrix.lean` (`section SpliceBrick`). Proof: `letI hSAG : AddCommGroup ↥S := S.addCommGroup`
-  to shadow the global `S.addCommMonoid` instance (needed because `domRestrict`/`finrank_quotient_add_finrank`
-  live in the Ring/AddCommGroup world, while submodule ops default to the Semiring/AddCommMonoid path — these
-  two `AddCommMonoid ↥S` instances are NOT definitionally equal; `letI` shadows where `haveI` does not);
-  then `(D.domRestrict S).ker.finrank_quotient_add_finrank` for quotient rank-nullity; `quotKerEquivRange` +
-  `range_domRestrict` for the quotient ≅ image identification; `ker_domRestrict` + `finrank_map_subtype_eq` +
-  `map_comap_subtype` for the kernel ≅ `S ⊓ ker D`; outer `linarith`. Brick is ABSTRACT over `D` + the four
-  interface hyps incl. `hInj` (the genuinely-new content relocated to the next slice). Key quirk →
-  TACTICS-QUIRKS §54. `lem:rigidityRows-splice-rank-add` (rigidity-matrix.tex) green.
-- **L5a-ii `hInj` discharge (2026-06-13, opus):** the §1.64(c) genuinely-new column-deletion math, split out of
-  the producer (§1.64(f) sanctioned splitting the rank-nullity / Lemma-5.1 halves). Three lemmas in `CaseI.lean`
-  beside the rigid Claim-6.4 versions. The crux `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`
-  proves the general-rank `Z ⊔ W = ⊤` by an **explicit decomposition, no rank count, no rigidity**: any `S` =
-  `z + (S−z)` with `z a = if a ∈ V(G) then S r else S a` (a motion — constraints have both endpoints in `V(G)`
-  where `z` is the constant `S r`) and `S − z` vanishing on `proj = {r} ∪ (proj∖V(G))`. The rigid sibling's count
-  route (`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_...`) was NOT reusable (rigidity propagates `S r = 0`
-  to all of `V(G)`, false at `def > 0`) — the explicit-`z` route sidesteps it. Then dual-API mirror →
-  `injOn_…_of_inter_eq_singleton` (swap `Z ⊔ W = ⊤` input only), `hInj`-form via rank-nullity on `D|Sc`. Mints
-  `lem:extProj-preserves-rank-of-inter`. Axiom-clean. V6-a fully RESOLVED. FRICTION: `disjoint_ker_iff_injOn`
-  (not deprecated `disjoint_ker'`).
-- **L5a-ii producer (2026-06-13, sonnet):** `case_I_realization_nonsimple` (CaseI.lean). Proof: `¬G.Simple` +
-  looplessness → parallel pair `(e, f, a, b)`; `H' = G[{a,b}] ↾ {e,f}` with `V(H') = {a,b}`, `E(H') = {e,f}`;
-  `isKDof_zero_of_parallel_pair` + ssubset proof from `|V(G)| ≥ 3` → `H'.IsProperRigidSubgraph`; IH on
-  `G.rigidContract H' a`; `normal := Fc_normal ∘ collapseTo a V(H')` (coincident panels); LI extensors
-  `Ce, Cf ∈ (normal a)^⊥` via `exists_linearIndependent_extensor_pair_perp`; assemble `F`/`FH`; four
-  splice-brick hyps discharged (`hFH_le`: row inclusion; `hFH_ker`: `change`+`simp [dualMap_apply']`+
-  `hingeRow_comp_extProj_eq_zero`; `hInj`: `finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`
-  + `rigidContract_vertexSet_inter_eq_singleton`; `hFc_surv_le`: `simp [dualMap_apply']+
-  hingeRow_collapseTo_comp_extProj_eq`); B2 closes upper bound; arithmetic `D + (D(|V|−2)−k) = D(|V|−1)−k`.
-  Key quirks: `set H'` with `hH'_def`; `simp only [ht_def]` to see through the `set`-defined `t` for
-  `hlink.left_mem`; `change` (not `show`) for goals that differ up to definitional equality; `rw [hFcg,
-  Graph.rigidContract, Graph.map_isLink]` to unpack contraction links in `hFc_surv_le`. Mints
-  `lem:case-I-realization-nonsimple` (case-i.tex) green.
-- **L5b design-pass (2026-06-13, opus; §1.65):** decomposed the BLOCKED all-`k` simple GP restate into three
-  leaves (L5b-i V6-b brick → L5b-ii `case_I_realization_all_k` producer → L5b-iii dispatch); every load-bearing
-  decl re-verified against the landed source (the BLOCK's diagnosis confirmed: `case_I_realization`'s surviving
-  block + final coupler are `0`-dof-gated, CaseI:1682/:1506/:1988). Target shape = the **splice analogue of
-  L4b-2's `case_cut_edge_realization_gp`** (NOT the rigid coupler). **V6-b re-rated `P≈3`** (a real new brick,
-  the deficient `_le_finrank` reconstruction of the rigid U3a/U3b/U2-proj + rank-polynomial-proj chain — no
-  landed `_proj` tool is deficiency-aware). **Flagged open decision (not forced):** the V6-b internal route
-  (route-1 `_proj` mirror vs route-2 pulled-back full-span + the landed L5a-ii `hInj`) is left unpinned — both
-  need a deficiency-aware relabel transport; resolve at the L5b-i build with the goal state open. No motive/IH
-  change. Canonical: §1.65.
+- **L5a-i build (2026-06-13, sonnet):** `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice`
+  (`RigidityMatrix.lean`, `section SpliceBrick`). `letI` (not `haveI`) to shadow `AddCommMonoid ↥S` with
+  `AddCommGroup ↥S` for `domRestrict`/`finrank_quotient_add_finrank` (TACTICS-QUIRKS §54).
+  `lem:rigidityRows-splice-rank-add` green.
+- **L5a-ii `hInj` discharge (2026-06-13, opus):** three lemmas in `CaseI.lean` (beside rigid Claim-6.4). Crux
+  `infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton`: `Z ⊔ W = ⊤` by explicit `z a = if a ∈
+  V(G) then S r else S a` decomposition — no rank count, no rigidity (the rigid sibling's count route is
+  `0`-dof-gated). Then dual-API mirror → `injOn`, then rank-nullity → `hInj`-form. `lem:extProj-preserves-rank-of-inter`.
+  V6-a fully RESOLVED. FRICTION: `disjoint_ker_iff_injOn`.
+- **L5a-ii producer (2026-06-13, sonnet):** `case_I_realization_nonsimple` (CaseI.lean). `¬G.Simple` →
+  parallel pair `H'`; IH on `rigidContract`; coincident-panel `normal`; four splice-brick hyps; B2 upper bound;
+  key quirks: `set H'`/`hH'_def`; `change` not `show`; `rw [hFcg, rigidContract, map_isLink]` for `hFc_surv_le`.
+  `lem:case-I-realization-nonsimple` green.
+- **L5b design-pass (2026-06-13, opus; §1.65):** decomposed BLOCKED all-`k` simple GP restate → L5b-i
+  (V6-b brick) + L5b-ii (producer) + L5b-iii (dispatch). V6-b re-rated `P≈3`. Internal route left unpinned
+  (§1.65(c)). Canonical: §1.65.
 - **L5b-i shared core (2026-06-13, opus):** the deficiency-aware relabel transport
   `PanelHingeFramework.finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI.lean) — the §1.65(g)-sanctioned
   sub-commit split of the `P≈3` V6-b leaf. The "exact rank invariant" §1.65(c) flagged as the real uncertainty
