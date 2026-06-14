@@ -175,7 +175,15 @@ Loop:
      boundary pair both took route 2 clean, then the producer BLOCKED because
      route 2 couldn't supply its `hFc_surv_le` containment — forcing a §1.66
      re-route to route 1 and a dead leaf (the churn a consumer-grounded
-     design-settle would have avoided).
+     design-settle would have avoided). **Same for a leaf's carried
+     PRECONDITIONS, not just its route (L6, rows 115/118):** the §1.67 pin
+     split L6 into a brick + a producer-that-calls-it, but the brick (a mirror
+     of its rigid sibling) demanded `hGv : Gv ≤ G`, incompatible with the
+     producer's `Gv = G.splitOff …` (`splitOff ⋬ G`) — so the producer had to
+     inline the brick (dead leaf, ~1010-line bloat). A design-pass flag that
+     *names* but *defers* a precondition ("confirm the `Gv` wiring") is not a
+     resolved one; before building a pinned leaf+consumer split, confirm the
+     leaf's carried hypotheses actually hold for the consumer's graph objects.
    - **An abstraction that defers the crux as a hypothesis is not progress
      on the crux.** When a build *abstracts* a pinned lemma — taking a
      genuinely-new fact as a hypothesis rather than proving it (22i L5a-i
@@ -190,6 +198,18 @@ Loop:
      The tell: a fact the design doc called "genuinely-new" appearing as a
      `h…` argument of a landed lemma — grep it, confirm where it is
      discharged.
+   - **A large cost/size outlier is an early degradation signal.** A dispatch
+     whose wall-time / tool-uses / diff-size runs far past the norm (L6b:
+     10.8 h / 1884 tools / a ~1010-line proof for a P=2 producer, row 118) has
+     usually *forced* a too-big task through — bloat, mid-proof `maxHeartbeats`
+     resets, inlining instead of decomposing — rather than bailing per
+     scope-to-fit (the clause shapes scope but can't guarantee it; it fails as
+     *bloat-not-bailout*). Scrutinize hardest (full warning scan, bloat/inline
+     check) even when the agent attests green — a "green, only long-line
+     warnings" attestation understated a warning-bearing, deprecation-carrying
+     commit. For a correct-but-degraded artifact (compiles, axiom-clean,
+     matches the pin), **repair the warnings + flag a refactor: keep the
+     correct math, don't accept the warnings, don't revert correct work.**
    - Re-read the updated "Hand-off / next phase". (Returns with neither
      LANDED nor BLOCKED, killed dispatches, plan-label deviations →
      rescue §§2–4.)
