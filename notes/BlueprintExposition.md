@@ -61,8 +61,9 @@ up — each was written once the argument was `sorry`-free, so the clean account
 stable. The remaining `pending` entries write at their own phase-close; the
 Case-III assembly family (`lem:case-II-realization` eq.-(6.12), the one-row
 shortfall, p3/eq-(6.44)) is green-*modulo* the carried `h622`, so per the
-green-modulo rule it writes at **22i-close**, when the carries discharge and the
-assembly account is final (Lemma 2.1 + Prop 1.1 likewise; Phase-20 forest-surgery
+green-modulo rule it writes at **22k-close**, when `h622` discharges and the
+assembly account is final (the eq.-(6.12) placement reaches its final shared-brick
+form earlier, in the 22j placement-abstraction refactor; Lemma 2.1 + Prop 1.1 likewise; Phase-20 forest-surgery
 on its next touch).
 
 ## Format

@@ -1,7 +1,19 @@
-# Phase 22i — the honest all-`k` Theorem 5.5 (work log)
+# Phase 22i — the all-`k` genuine-hinge motive + reduction-case producers (work log)
 
-**Status:** in progress (opened 2026-06-11 at the 22h close, per `notes/Phase22h.md`
-*Hand-off*).
+**Status:** ✓ Complete (closed 2026-06-14; opened 2026-06-11 at the 22h close). **Re-scoped at
+close by a deliberate phase split** (user-adjudicated, to keep one work log active at a time): 22i
+delivered **L0–L6** — the all-`k` genuine-hinge motive + the reduction-case producers — discharging
+2 of the 5 inherited 22h carries (`hbase` via L3, `hcontract` via L5). The remaining work split into
+two successor phases:
+- **Phase 22j** — the shared eq.-(6.12) **placement abstraction** (the span-transport "pinned
+  placement" rank brick) + refactor the Case-II / Lemma-6.8 producers onto it + bundled cleanup.
+  Lands first because 22k's Case III consumes it. Design basis: the placement-recon verdict
+  (summarized in *Hand-off* below; to be written up as design §1.68 at 22j-open).
+- **Phase 22k** — completing the honest all-`k` Theorem 5.5: L7 Case III (`h622`), L8 Lemma 6.5
+  (`h65`), L9 zero-carry spine (`hsplit`), L10 Theorem 5.6 at `d=3`.
+
+The original phase title was "the honest all-`k` Theorem 5.5"; that deliverable now spans 22i + 22k
+(with the 22j abstraction between). The text below is the L0–L6 archive ROADMAP §22i points at.
 
 Discharges the five 22h carries {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} by restating
 the realization motive at KT's strength — **genuine hinges** (the free-hinge carrier + panel
@@ -15,8 +27,12 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2–L5b-iii + L6 complete (L6b producer green + axiom-clean; L6a turned out dead — see Hand-off);
-three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
+**CLOSED at L0–L6 (all green + axiom-clean).** 22i delivered the all-`k` genuine-hinge motive (L0)
++ the combinatorial bricks (L1) + the four-case reduction principle (L2) + the base / cut-edge /
+Case-I / Lemma-6.8 reduction producers (L3–L6), discharging `hbase` (L3) and `hcontract` (L5).
+The remaining three carries (`h622`, `h65`, `hsplit`) + Thm 5.6 `d=3` are **Phase 22k**, after the
+**Phase 22j** placement-abstraction refactor (the L6b producer inlined its eq.-(6.12) placement; see
+*Hand-off*). The detail below is the L0–L6 archive.
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
 **L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
@@ -173,7 +189,7 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   buildable, NO IH/motive change, but the projected-image-rank step is genuinely-new math (its own slice).
   V6-a re-aimed; V6-b re-scoped (the simple all-`k` restate needs the brick's GP variant). Re-cut to three
   leaves. Canonical: §1.64.
-- [ ] **L5** — Lemma 6.2 (non-simple Case I) + the 6.3 all-`k` restate of `case_I_realization`
+- [x] **L5** — Lemma 6.2 (non-simple Case I) + the 6.3 all-`k` restate of `case_I_realization`
   (`hcontract` carry discharged; the 6.5 sub-arm stays carried as `h65` → L8). Sliced **L5a-i** → **L5a-ii**
   → **L5b** (§1.64(f)):
   - [x] **L5a-i** — `BodyHingeFramework.le_finrank_span_rigidityRows_of_splice` (the general-rank shared-body
@@ -241,7 +257,7 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     - [x] **L5b-iii** — `case_I_dispatch` (CaseI.lean): `by_cases G.Simple` → non-simple `case_I_realization_nonsimple`; simple → inner `by_cases` on `∃ H r, ... (G.rigidContract H r).Simple` → 6.3 arm `case_I_realization_all_k` + M4 forgetful; 6.5 arm `h65` (stays red → L8). Updates `lem:case-I-dispatch` (`\lean{}`, no `\leanok`). Build+lint+checkdecls clean.
   V6 RESOLVED — N6a is dead infrastructure (deleted-motive-bound, `ofNormals`-bound); V4
   (`rigidContract_isMinimalKDof` all-`k`) confirmed already-landed; **V6-a re-aimed + V6-b re-scoped (§1.64)**.
-- [ ] **L6** — Lemma 6.8, the `k > 0` split (`hsplitPos`); signature pinned §1.67, sliced **L6a** → **L6b**.
+- [x] **L6** — Lemma 6.8, the `k > 0` split (`hsplitPos`); signature pinned §1.67, sliced **L6a** → **L6b**.
   V7 RESOLVED. Two residual build checks (§1.67(d)): (b1) `G_v^{ab}` simple from `hnoRigid`; (b2) `Gv` = `splitOff`.
   - [x] **L6a** — `PanelHingeFramework.case_II_placement_eq612_kdof` (CaseI.lean, beside the rigid sibling).
     **DEAD: no consumer** — L6b had to inline the placement instead (L6a's `hGv : Gv ≤ G` fails for the
@@ -257,6 +273,9 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     Key quirks: `hendsDef` (lower-case, not `hEndsDef`); `hse_eq` needs `Prod.ext` after `congr 1 <;> ext i
     <;> congr 1`; `hZ_eq` cast-arithmetic needs `(screwDim 2 : ℤ)` + `(V(G).ncard : ℤ)` explicit and
     `norm_cast` after `rw [Nat.cast_sub, Nat.cast_mul, Nat.cast_sub, hk_cast]`.
+**L7–L10 below are now Phase 22k** (after the Phase 22j placement abstraction; see *Hand-off*).
+The layer descriptions are retained here as 22k's design basis (with §1.56 carries table + §1.67).
+
 - [ ] **L7** — the Case-III rewire: `case_III_realization` restated, `h622` derived from
   the all-`k` IH (V8) (`h622` carry discharged).
 - [ ] **L8** — the Lemma-6.5 arm: Claim 6.6 + the Π°-placement (§1.54(a3)) (`h65` carry
@@ -318,29 +337,63 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L5b-iii + L6 complete; three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
+**22i is closed (L0–L6). Next: open Phase 22j (the placement abstraction); then Phase 22k
+(completion). One active log at a time.**
 
-`case_I_dispatch` (CaseI.lean:9362) landed; `lem:case-I-dispatch` has `\lean{}` (no `\leanok` — `h65` untracked);
-build+lint+checkdecls clean. The 6.5 sub-arm stays `h65` → L8.
+### Phase 22j — the placement abstraction (open this next)
 
-**L6 landed but DEGRADED — a refactor is the first cleanup-round item.** `case_II_realization_all_k`
-(CaseI.lean, `lem:case-II-realization` green) is correct + axiom-clean, but a ≈1010-line, heartbeat-heavy
-single proof from a 10.8 h / 1884-tool dispatch. It **inlines** the eq.-(6.12) placement rather than calling
-L6a `case_II_placement_eq612_kdof`, because L6a (mirroring the rigid sibling) requires `hGv : Gv ≤ G`, which
-**fails for the split-off** `Gv = G.splitOff v a b e₀` (`e₀ ∉ E(G)` ⇒ `splitOff ⋬ G`). **L6a is therefore
-dead code** (no consumer — delete-or-adapt at the refactor, cf. the L5b-i route-2 leaf). The coordinator
-follow-up (commit after the L6b feat) made it warning-clean (3 mid-proof `maxHeartbeats` resets → one
-commented declaration-level bump; `longLine` suppressed; deprecation + unused simps fixed). **Cleanup-round
-TODO: factor the inlined placement into helper lemmas; revive L6a (drop the `hGv ≤ G` precondition for the
-split-off case) or delete it.**
+The L6b producer (`case_II_realization_all_k`) inlined a ≈1010-line eq.-(6.12) placement because no
+shared brick fit the split-off `Gab = G.splitOff v a b e₀ ⋬ G` (the dead `case_II_placement_eq612_kdof`
+"L6a" demanded `hGv : Gv ≤ G`, which the split-off cannot satisfy). A read-only Plan-agent recon,
+verified against the landed signatures, found the missing abstraction — and that it is a **two-brick
+family, not one**. Verdict (write up as design **§1.68** at 22j-open):
 
-**Smallest next forward commit: L7** — `case_III_realization` rewire: replace the `h622`
-hypothesis with a derivation from the all-`k` IH at `G_v` (IH gives the generic realization at rank
-`D(m−1) − k'`; extract the rational rank-polynomial witness `V8`; transfer to the given `(ends, q)` via
-`lem:case-III-seed-rank-bridge`). Design: §1.56 carries table (L7 row).
+- **Common cause of the inlining:** the placement bricks (`case_II_placement_eq612`, the dead L6a
+  `_kdof`) key their conclusion on *literal* `G.rigidityRows` membership, which forces `Gv ≤ G`. Every
+  real reduction graph is a collapse / `splitOff` / relabel (not a subgraph), so its rows only land in
+  `span(G.rigidityRows)`. The project already built the right span-level shape for Case I
+  (`le_finrank_span_rigidityRows_of_splice`, RigidityMatrix.lean:3213); the Case-II/III/Lemma-6.8 family
+  never got the analogue.
+- **Brick A (new, S1):** `le_finrank_span_rigidityRows_of_pinned_placement` (+ an `_augment` variant for
+  Case III's `+1`), in `RigidityMatrix.lean` beside the splice brick — span-level / framework-agnostic.
+  Interface: NEW block pinned through `single v`'s column + OLD block vanishing on `v`'s column **and in
+  `span F.rigidityRows`** ⇒ `Nat.card ιn + Nat.card ιo ≤ finrank(span F.rigidityRows)`. Its proof is
+  L6b's `hrank_lb` skeleton lifted out (`linearIndependent_sum_pinned_block` → `finrank_span_eq_card` →
+  `Submodule.finrank_mono`; CaseI.lean:4708–4749).
+- **Brick B (already exists):** `case_III_old_new_blocks` (CaseI.lean:5571) — the literal-`panelRow`
+  device-feed shape. **Cannot** unify with Brick A: the genericity device
+  (`hasFullRankRealization_of_independent_panelRow_index`) needs literal panel rows, not span members
+  (verified — Case III's *rank* path `case_III_rank_certification` :6261 is already span-transport via
+  `hρGv`/`hwmem`, and does NOT consume `case_III_old_new_blocks`).
+- **Case I stays on its splice brick + coupler** — not unified: contraction (`rigidContract`) is
+  `extProj` projected-column geometry; a split is `single v` pin-a-body geometry (KT's own Lemma 6.2
+  vs 6.8 distinction).
+- **Slices (S3 — generalizing Brick B — deferred to 22k):** S1 build Brick A → S2 blueprint node
+  `lem:rigidityRows-pinned-placement-rank-add` (rigidity-matrix.tex, beside the splice node) → S4 refactor
+  L6b onto Brick A, extracting the `e₀ = e_a + e_b` row decomposition (`he₀_rows_mem`, CaseI.lean:4380–4509)
+  as the named helper that discharges Brick A's OLD-in-span interface — *the one genuinely-new bit* → S5
+  retire L6a (`case_II_placement_eq612_kdof` :3735) + re-prove the rigid `case_II_placement_eq612` (:3520)
+  through Brick A, **keeping its `lem:case-II-realization-placement` pin green** (checkdecls + honesty gate)
+  → cleanup bundle: drop the L6b `maxHeartbeats 3200000` (:3911) + `linter.style.longLine false` (:3915)
+  suppressions; delete dead `hso_ne_sn` (:4613) + stale comment block (:4628–4640) + stale TODO (:4656);
+  refresh the §C long-proof note.
+- **DO NOT delete** the rigid `case_II_placement_eq612` (blueprint witness for
+  `lem:case-II-realization-placement`, `\uses`'d across `case-iii.tex` = 22k's Case III) — re-express it
+  through Brick A instead.
+- **coordinate-phase fit (verify at 22j-open):** mixed-shape sub-phase — build slices S1/S4/S5 use the
+  standard dispatch (subagent commits); pure-cleanup edits use rescue §6 (scoped no-git editor, coordinator
+  commits). The work log must mark each slice's dispatch shape. Model-experiment is **running**. Filename:
+  `coordinate-phase 22j` → `notes/Phase22j.md`.
 
-At phase close: Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon and adds the general-`d` row to
-`notes/AlgebraicIndependence.md`.
+### Phase 22k — completing the honest all-`k` Theorem 5.5 (after 22j)
+
+L7 Case-III rewire (`h622` derived from the all-`k` IH at `G_v` — IH gives the generic realization at
+rank `D(m−1) − k'`; extract the rational rank-polynomial witness V8; transfer via
+`lem:case-III-seed-rank-bridge`; `lem:case-III-nested-rank-lower`), L8 Lemma 6.5 arm (`h65`;
+`lem:case-I-dispatch`), L9 zero-carry spine (`hsplit`; `theorem_55_d3` restated, `theorem_55` re-pinned),
+L10 Theorem 5.6 at `d=3`. **22k's Case III consumes Brick A.** Layer detail: the L7–L10 entries in the
+layer plan above + §1.56 carries table + §1.67. Then Phase 23 (general `d`, KT Lemma 6.13) opens with its
+own recon, adding the general-`d` row to `notes/AlgebraicIndependence.md`.
 
 ## Decisions made during this phase
 
