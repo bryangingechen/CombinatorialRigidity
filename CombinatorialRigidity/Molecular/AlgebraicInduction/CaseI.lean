@@ -2470,6 +2470,167 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
   zify [h1] at hW2 ⊢
   exact_mod_cast hW2
 
+set_option linter.style.longLine false in
+/-- **Case I shared-seed coupling, *deficiency-aware* block-triangular body-set form** (Phase 22i
+L5b-ii-c). The deficiency-aware restate of
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` for the all-`k` Case-I arm.
+The only two changes are: the surviving-block count hypothesis `hsc_proj_indep` is lowered from
+`D(|sc|−1)` to `D(|sc|−1) − k'` (the deficient contraction's surviving-row count), and the
+deficiency hypothesis `hdef` allows `G.deficiency n = k'` (not only `= 0`).
+
+Proof: the block-triangular construction is identical up through the union-independence of the `H`
+and surviving-edge rows. The final step diverges: instead of deriving rigidity from the ℕ row count
+and reading off rank via W2, we use:
+* **Lower bound** — the `hunion` family is LI and lies in `span rigidityRows`, so
+  `finrank (span rigidityRows) ≥ |rsH ⊕ rsc| ≥ D(|V(G)|−1) − k'` (ℤ arithmetic).
+* **Upper bound** — B2 (`finrank_span_rigidityRows_add_deficiency_le` + `hdef`) gives
+  `finrank (span rigidityRows) ≤ D(|V(G)|−1) − k'`.
+* `le_antisymm` closes the equality. Requires two new hypotheses not in the `= 0` coupler:
+  `hn : bodyBarDim n = screwDim k` (B2) and `hne_G` (endpoints differ, for extensor nonzero). -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
+    (hneG : V(G).Nonempty) (hnesH : sH.Nonempty) (hsHV : V(GH) ⊆ sH)
+    {qH : α × Fin (k + 2) → ℝ}
+    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
+    (hrigH :
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
+    (Qc : MvPolynomial (α × Fin (k + 2)) ℝ) (hQc_ne : Qc ≠ 0)
+    (hQc_rat : (Qc.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ))
+    -- Deficiency-aware surviving-block count: `D(|sc|−1) − k' ≤ |rsc|` (ℤ).
+    (k' : ℤ)
+    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Qc ≠ 0 →
+      ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+        (∀ i ∈ rsc, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+          (ends (i : β × _ × _).1).2) ∧
+        screwDim k * (sc.ncard - 1) - k' ≤ (Nat.card rsc : ℤ) ∧
+        LinearIndependent ℝ (fun i : rsc => (extProj (k := k) sH).dualMap
+          ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends (i : β × _ × _))))
+    (n : ℕ) (hn : Graph.bodyBarDim n = screwDim k)
+    (hne_G : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2)
+    (hdef : G.deficiency n = k') :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
+      (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hQHrat, hLIH⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
+  obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
+    exists_generalPosition_polynomial (k := k) G ends
+  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQHrat hQHne
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQc_rat hQc_ne
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  set D := (extProj (k := k) sH).dualMap with hD
+  have hLIH₀ : LinearIndependent ℝ (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
+  obtain ⟨rsc, hsuppc, hcardc, hprojc⟩ := hsc_proj_indep q₀ hq₀c
+  have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      G.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows := by
+    rintro ⟨e', t₁, t₂⟩ hlink
+    exact ⟨e', (ends e').1, (ends e').2, hlink,
+      annihRow (F.supportExtensor e') t₁ t₂, by
+        rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+        intro x hx
+        rw [Submodule.mem_span_singleton] at hx
+        obtain ⟨ρ, rfl⟩ := hx
+        rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
+  have hH_ker : ∀ i : rsH, D (F.panelRow ends (i : β × _ × _)) = 0 := by
+    rintro ⟨⟨e', t₁, t₂⟩, hi⟩
+    have hlink := hsuppH _ hi
+    rw [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
+      hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
+  have hcindep : LinearIndependent ℝ (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
+    LinearIndependent.of_comp D hprojc
+  have hcdisj : Disjoint (Submodule.span ℝ (Set.range
+      (fun i : rsc => F.panelRow ends (i : β × _ × _)))) (LinearMap.ker D) :=
+    Submodule.range_ker_disjoint hprojc
+  have hHspan : Submodule.span ℝ (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
+      ≤ LinearMap.ker D :=
+    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ LinearMap.mem_ker.2 (hH_ker i))
+  have hdisj : Disjoint (Submodule.span ℝ (Set.range
+      (fun i : rsH => F.panelRow ends (i : β × _ × _))))
+      (Submodule.span ℝ (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
+    Disjoint.mono_left hHspan hcdisj.symm
+  have hunion : LinearIndependent ℝ
+      (Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
+        (fun i : rsc => F.panelRow ends (i : β × _ × _))) :=
+    hLIH₀.sum_type hcindep hdisj
+  have hmem : ∀ i : rsH ⊕ rsc, Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
+      (fun i : rsc => F.panelRow ends (i : β × _ × _)) i ∈ F.rigidityRows := by
+    rintro (⟨i, hi⟩ | ⟨i, hi⟩)
+    · exact hrow_mem _ ((Graph.IsSubgraph.isLink_iff hGH (hsuppH _ hi).edge_mem).mp (hsuppH _ hi))
+    · exact hrow_mem _ ((Graph.IsSubgraph.isLink_iff hGc (hsuppc _ hi).edge_mem).mp (hsuppc _ hi))
+  -- The two blocks sum to `≥ D(|V(G)|−1) − k'` rows (cover + shared body `c`, ℤ arithmetic).
+  have hcard : screwDim k * (V(G).ncard - 1) - k' ≤ (Nat.card (rsH ⊕ rsc) : ℤ) := by
+    rw [Nat.card_sum]
+    have hunion_card := Set.ncard_union_add_ncard_inter sH sc
+    have hinter : 1 ≤ (sH ∩ sc).ncard :=
+      (Set.ncard_pos (Set.toFinite _)).2 ⟨c, hcH, hcc⟩
+    have hcov : V(G).ncard ≤ (sH ∪ sc).ncard := Set.ncard_le_ncard hcover (Set.toFinite _)
+    have h1H : 1 ≤ sH.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnesH
+    -- ℕ key: `D(|sH|−1) + D(|sc|−1) ≥ D(|V(G)|−1)`.
+    have hkey : screwDim k * (V(G).ncard - 1) ≤
+        screwDim k * (sH.ncard - 1) + screwDim k * (sc.ncard - 1) := by
+      rw [← Nat.mul_add]; apply Nat.mul_le_mul_left; omega
+    -- Cast and combine: `D(|V(G)|−1) − k' ≤ D(|sH|−1) + (D(|sc|−1) − k') ≤ |rsH| + |rsc|`.
+    have hkey_Z : (screwDim k * (V(G).ncard - 1) : ℤ) ≤
+        screwDim k * (sH.ncard - 1) + screwDim k * (sc.ncard - 1) := by exact_mod_cast hkey
+    have hcardH_Z : (screwDim k * (sH.ncard - 1) : ℤ) ≤ (Nat.card rsH : ℤ) := by
+      exact_mod_cast hcardH
+    push_cast [Nat.cast_add]
+    linarith
+  -- (v) The witness is `F = ofNormals G ends q₀`; construct the rank equality.
+  refine ⟨PanelHingeFramework.ofNormals G ends q₀,
+    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_,
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends, halg⟩
+  have hFgraph : F.graph = G := by
+    rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hFG : F.graph.vertexSet = V(G) := by rw [hFgraph]
+  have hne' : F.graph.vertexSet.Nonempty := by rw [hFG]; exact hneG
+  -- Lower bound: the `hunion` family is LI and lies in `span rigidityRows` (via `hmem`).
+  have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - k' ≤
+      (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
+    haveI : Fintype (↑rsH ⊕ ↑rsc) := Fintype.ofFinite _
+    have hli_lb : Nat.card (rsH ⊕ rsc) ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+      rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hunion]
+      exact Submodule.finrank_mono (Submodule.span_le.2 (fun _ ⟨i, hi⟩ =>
+        hi ▸ Submodule.subset_span (hmem i)))
+    have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hneG
+    zify [h1] at hcard
+    linarith [hcard, (Nat.cast_le.mpr hli_lb : (Nat.card (rsH ⊕ rsc) : ℤ) ≤ _)]
+  -- Upper bound: B2 (`finrank_span_rigidityRows_add_deficiency_le`) + `hdef`.
+  have hFext : ∀ e u v, F.graph.IsLink e u v → F.supportExtensor e ≠ 0 := by
+    intro e u v hlink
+    have hGlink : G.IsLink e u v := hFgraph ▸ hlink
+    have hne : (ends e).1 ≠ (ends e).2 :=
+      hne_G e (hends e u v hGlink)
+    rw [hF]
+    exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition
+      (PanelHingeFramework.ofNormals G ends q₀) hgp
+      (by rw [PanelHingeFramework.ofNormals_ends]; exact hne)
+  have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hne' hFext
+  have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
+      ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - k' := by
+    rw [hFgraph, hdef] at hB2; linarith
+  rw [← hF, hdef]
+  exact le_antisymm hB2' hlb
+
 /-- **The single-graph bare→generic upgrade** (`lem:case-III-claim612-line-in-panel-union` /
 `lem:case-III-realization`, the GAP-2 keystone of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011
 §6.2, Lemma 5.2 "convert to a nonparallel realization without decreasing rank" (printed p. 678,
