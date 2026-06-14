@@ -163,7 +163,19 @@ Loop:
      disguise — verify it against what the design doc *actually proposed*
      before dispatching a build on it (22h rows 38–39). When the design
      doc itself defers a shape ("pin at the X moment"), that moment IS the
-     next dispatch — a design-settle pass, not a build.
+     next dispatch — a design-settle pass, not a build. **This holds even
+     when the design pass says "resolve at the build, soft-rec X":** if the
+     deferred route's correctness depends on a *not-yet-built downstream
+     consumer*'s obligations (interface hyps the leaf can't see), the leaf
+     build — and a boundary pair on the leaf — validate the route *as a
+     lemma*, not its *fitness for the consumer*. Settle such a route against
+     the consumer (a design pass that reads the consumer's hyps), or pin it
+     at the consumer's build, not the leaf's. The L5b episode (22i): §1.65
+     deferred route-1-vs-2 "to the build, soft-rec route 2"; the leaf + a
+     boundary pair both took route 2 clean, then the producer BLOCKED because
+     route 2 couldn't supply its `hFc_surv_le` containment — forcing a §1.66
+     re-route to route 1 and a dead leaf (the churn a consumer-grounded
+     design-settle would have avoided).
    - **An abstraction that defers the crux as a hypothesis is not progress
      on the crux.** When a build *abstracts* a pinned lemma — taking a
      genuinely-new fact as a hypothesis rather than proving it (22i L5a-i

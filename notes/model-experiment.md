@@ -69,7 +69,15 @@ is P ≥ 2 / usually P = 3 — a genuinely-new sibling unless the variant
 demonstrably exists; grep before rating — added after the row-104 L5b
 sizing-BLOCKED, where §1.64(f)'s "buildable GP variant" read P≈2 and was
 re-rated P≈3 by the row-105 design pass; companion research-shaped
-trigger added to `.claude/commands/coordinate-phase.md` step 1, repo-local).
+trigger added to `.claude/commands/coordinate-phase.md` step 1, repo-local);
+and the 2026-06-13 boundary-pair *consumer-fitness* caveat (a pair audits the
+leaf's pin / internal correctness, NOT its fitness for a not-yet-built
+downstream consumer — both members can pass and the leaf still be the wrong
+route, surfaced only at the consumer's build; added to the protocol's
+*Boundary pairs* after the L5b rows-107–109 episode, where a route-2 leaf
+passed a pair then its producer BLOCKED on `hFc_surv_le`; companion
+deferred-route-hinges-on-consumer clause added to
+`.claude/commands/coordinate-phase.md` step 4, repo-local).
 
 ## Repo-local config
 
@@ -238,6 +246,7 @@ quality / blueprint sync / notes discipline / commit message
 | 109 | L5b-ii `case_I_realization_all_k` (no commit) | 2/2/1 | sonnet | normal | BLOCKED | —————— | 37k tok / 69 tools / 1754s (~29 min) | **sizing-BLOCKED, correct + coordinator-verified diagnosis** (good outcome, not a capability fail): L5b-ii needs the splice brick's `hFc_surv_le` *containment*, which the L5b-i route-2 leaf (rank only, generic seed) cannot supply — containment needs a collapse/degenerate placement (as the non-simple producer used), conflicting with the GP builder's generic seed. My 2/2/1 P=2 repeated the row-104-class under-scope; the real obstacle is the §1.65 core P≈3 difficulty. HEAD unchanged → §1.66 design-pass trigger (decompose, not escalate). → Findings 2026-06-13 (rows 107–108 addendum) |
 | 110 | L5b-ii-a `_proj` extractor `exists_independent_panelRow_subfamily_of_le_finrank_proj`, f62b468 | 2/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 125k tok / 47 tools / 539s (~9 min) | first route-1 (§1.66) leaf, the most mechanical (rigid sibling CaseI:1259 body + two landed swaps: W6e extractor + L5a-ii rigidity-free `injOn`); matched §1.66(e) exactly (`hinter`+`hN`, no `hrig`). Also self-initiated the due notes compression (568→465, settled L5a tail; forward anchors preserved) — the sanctioned tripwire fix the §1.66 pass had deferred. Warning-clean rebuild + lint re-run green; no blueprint node (churn-prone `_proj` infra, per design). Trailer correct |
 | 111 | L5b-ii-b deficient `_proj` rank polynomial `exists_rankPolynomial_of_IH_relabel_linking_set_proj`, ca779c8 | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 236k tok / 74 tools / 1354s (~23 min) | the genuinely-new **P≈3 crux** leaf of route 1 (§1.66) — the V6-b hard linear algebra in route-1 form. Mirrored the rigid `rigidContract_exterior_rank_transport_htransport` chain at the deficient leg from landed inputs (shared core + L5b-ii-a extractor + U2); projected-LI rank-polynomial conclusion. Also marked the dead route-2 node `lem:rank-polynomial-IH-relabel` superseded (true-fact-kept, no live consumer; supersession gate green). Coordinator: warning-clean build + lint + blueprint lint.sh all re-run green, full-diff read, axiom-clean. Trailer correct |
+| 112 | L5b-ii-c deficient coupler restate `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`, f85098d | 2/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 129k tok / 119 tools / 1628s (~27 min) | third route-1 infra decl, the `−k` lowering of the rigid coupler (design-rated P≈2 mechanical): lower bound via block-rank-addition over `rsH ⊕ rsc` + upper bound via B2, `le_antisymm`; two new hyps (`hn`, `hne_G`). Matched §1.66(f)/(g). Warning-clean rebuild + lint re-run green; no blueprint node. Trailer correct. All three route-1 infra decls (a/b/c) now landed; only the producer assembly L5b-ii-d + dispatch L5b-iii remain |
 
 ## Findings
 

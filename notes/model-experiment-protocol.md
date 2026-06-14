@@ -127,6 +127,16 @@ Published function of the profile, so assignment is reproducible:
   implemented the pin). Verify the diagnosis against the landed source,
   then correct the pin (precedent: a pin error a pair caught *after* the
   coordinator had approved it).
+  **Caveat — a pair audits the leaf's pin, not its fitness for a not-yet-
+  built consumer.** Both members build the leaf in isolation; if the leaf's
+  *route choice* hinges on a downstream consumer's obligations (interface
+  hyps not yet in tree), the pair can both pass — validating the leaf *as a
+  lemma* — and still be the *wrong route*, surfaced only when the consumer
+  is built. Precedent: a route-2 leaf passed a boundary pair, then its
+  producer BLOCKED on a containment route 2 structurally couldn't supply
+  (→ re-route + a dead leaf). When a leaf's route hinges on an unbuilt
+  consumer, settle the route against the consumer first — a pair does not
+  substitute for that.
   *Worktree build caveat (Lean repos):* a fresh worktree has no
   `.lake/` — a bare `lake build` there recompiles mathlib from
   source (expensive; on shared machines a known OOM risk). **The
