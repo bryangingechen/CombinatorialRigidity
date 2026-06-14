@@ -163,55 +163,33 @@
   Phase~21b).
 \end{proof}
 
-\begin{lemma}[Case II realization at $k = 0$: the splitting-off producer; KT Lemmas 6.8, 6.10]
+\begin{lemma}[Case II realization, all $k \ge 0$: the splitting-off producer; KT Lemma 6.8]
   \label{lem:case-II-realization}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_II_realization_all_k}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
-        lem:case-II-realization-placement, lem:case-III-nested-rank-lower}
-  The realization motive of \cref{thm:theorem-55} is closed under splitting
-  off a reducible degree-2 vertex. The project's splitting-off premise
-  ($\mathtt{hsplit}$/$\mathtt{hsplitGP}$) is the $k = 0$ split, so this
-  producer \emph{is} KT Case~III: by Lemma~4.8(i) the splitting-off
-  $G_v^{ab}$ is again minimal $0$-dof (\cref{lem:reduction-step}) and the
-  realization must reach \emph{full} rank $D(|V|-1)$ --- one row beyond
-  what the $1$-extension placement supplies. KT's construction
-  (Lemma~6.8, eq.~(6.12)) is a \emph{degenerate} placement:
-  $p_1(va) = L \subset \Pi_q(a)$ a $(d-2)$-hinge and $p_1(vb) = q(ab)$
-  (the $vb$-hinge placed at the very $e_0 = ab$ hinge of the inductive
-  realization $q$, so its row \emph{reproduces} the $e_0$-row of
-  $R(G_v^{ab}, q)$); column operations make $R(G, p_1)$ block-triangular
-  with $R(G_v^{ab}, q)$ a submatrix, giving $\operatorname{rank} R(G, p_1)
-  \ge (D-1) + D(|V|-2) = D(|V|-1) - 1$, and the missing $+1$ is the
-  Case-III redundant-row argument. Reading the transversal $ab$-hinge
-  $L = \Pi_q(a) \cap \Pi_q(b)$ off $(G_v^{ab}, q)$ needs $q$ nonparallel,
-  so the producer consumes the \emph{general-position} inductive
-  realization through the conditioned motive's $\mathtt{hsplitGP}$ branch
-  and carries the eq.-(6.22) nested-IH bound
-  (\cref{lem:case-III-nested-rank-lower}, red). The formalized producer is
-  the same Lean theorem as the Case-III node; \cref{lem:case-III} states
-  it at the branch interface and carries the assembly. This node records
-  the eq.-(6.12) placement mechanism --- the producer counterpart to the
-  $k > 0$ accounting iff \cref{lem:case-II}, whose span-membership
-  hypothesis the constructed placement discharges. Two earlier dead-ends
-  are \emph{off} the live route, retained for the audit trail: the
-  row-side $e_0$-recovery node N7b-4
-  (\cref{lem:case-II-placement-e0-recovery}; an $e_0$-free old block of
-  full count does not exist --- the $e_0$-free $G - v$ is not rigid) and
-  the motion-side assembly M1--M3
-  (\cref{lem:case-II-placement-motion-side-assembly}; not KT's argument).
-  Full record: \texttt{notes/Phase21b.md} \emph{Finding A/B}.
+  \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step-pos,
+        lem:rank-polynomial-of-le-finrank}
+  The generic-realization motive is closed under splitting off a
+  degree-2 vertex at deficiency $k > 0$. By \cref{lem:reduction-step-pos}
+  the splitting-off graph $G_v^{ab}$ is minimal $(k-1)$-dof; the all-$k$
+  inductive hypothesis supplies a panel realization $Q$ with
+  $\operatorname{rank} R(G_v^{ab}, Q) = D(|V|-2) - (k-1)$.  The
+  deficiency-aware eq.-(6.12) placement brick places $v$'s normal at the
+  shear $n_a + t\,n_b$ and produces a combined normal assignment $q_0$
+  with $N = D(|V|-1) - k$ rows linearly independent in $R(G, q_0)$.  The
+  W-suite shear argument (\cref{lem:case-III}) certifies one of the
+  candidate $t$-values; the genericity device
+  (\cref{lem:rank-polynomial-of-le-finrank}) re-realizes the attained rank
+  at a general-position, algebraically-independent seed.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:case-III, lem:case-II-realization-placement}
-  The producer is \cref{lem:case-III}: the eq.~(6.12) degenerate placement
-  (\cref{lem:case-II-realization-placement}) supplies the one-row-short
-  stratum, the redundant-row/candidate-completion/Claim-6.12 chain
-  supplies the missing row at one of KT's three candidate placements, and
-  the genericity device re-realizes the attained rank at a
-  general-position, algebraically-independent seed --- the conditioned
-  motive's general-position conjunct, whose bare half the reduction
-  projects.
+  \uses{lem:case-III, lem:rank-polynomial-of-le-finrank}
+  The deficiency-aware placement brick (analogous to
+  \cref{lem:case-II-realization-placement} at $k > 0$) supplies $N \le
+  \operatorname{rank} R(G, q_0)$.  The W-suite (\cref{lem:case-III}) finds
+  a good shear parameter; \cref{lem:rank-polynomial-of-le-finrank} lifts
+  the rank lower bound to a nonzero rational polynomial whose non-roots
+  realize deficiency $k$.
 \end{proof}
 

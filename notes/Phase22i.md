@@ -15,7 +15,7 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2–L5b-iii + L6a complete; three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
+**L2–L5b-iii + L6a + L6b complete; three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
 **L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
@@ -246,8 +246,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     the rigid brick's body verbatim with two swaps — W6e `_of_le_finrank` for the OLD block + `k−1`-lowered
     count bound `N + (screwDim k − 1) ≤ Nat.card s`. Rank transport at `withNormal` via `toBodyHinge_withNormal_infinitesimalMotions_eq`
     + `span_rigidityRows_eq_of_infinitesimalMotions_eq`. No blueprint node. Build+lint clean (2026-06-13).
-  - [ ] **L6b** — `PanelHingeFramework.case_II_realization_all_k` (producer, mints `lem:case-II-realization`
-    at the `k>0` content). Assembly: degree-2 split + deficient IH + L6a brick + W-suite shear.
+  - [x] **L6b** — `PanelHingeFramework.case_II_realization_all_k` (CaseI.lean, beside the rigid sibling,
+    mints `lem:case-II-realization` restated at `k>0` content). Assembly: degree-2 split + deficient IH +
+    L6a brick + W-suite shear (`caseIIICandidate_exists_good_shear`). Build+lint clean (2026-06-14).
+    Key quirks: `hendsDef` (lower-case, not `hEndsDef`); `hse_eq` needs `Prod.ext` after `congr 1 <;> ext i
+    <;> congr 1`; `hZ_eq` cast-arithmetic needs `(screwDim 2 : ℤ)` + `(V(G).ncard : ℤ)` explicit and
+    `norm_cast` after `rw [Nat.cast_sub, Nat.cast_mul, Nat.cast_sub, hk_cast]`.
 - [ ] **L7** — the Case-III rewire: `case_III_realization` restated, `h622` derived from
   the all-`k` IH (V8) (`h622` carry discharged).
 - [ ] **L8** — the Lemma-6.5 arm: Claim 6.6 + the Π°-placement (§1.54(a3)) (`h65` carry
@@ -309,18 +313,18 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 
 ## Hand-off / next phase
 
-**L0–L5b-iii + L6a complete; three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
+**L0–L5b-iii + L6 complete; three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
 
 `case_I_dispatch` (CaseI.lean:9362) landed; `lem:case-I-dispatch` has `\lean{}` (no `\leanok` — `h65` untracked);
 build+lint+checkdecls clean. The 6.5 sub-arm stays `h65` → L8.
 
-**L6a landed**: `PanelHingeFramework.case_II_placement_eq612_kdof` (CaseI.lean, after the rigid sibling). Build+lint clean, no blueprint node. The route-verified §1.67 transport: `hZeq` (`toBodyHinge_withNormal_infinitesimalMotions_eq`) + `span_rigidityRows_eq_of_infinitesimalMotions_eq` carries `hNrank` from `q` to `q₀`; W6e `_le_finrank` replaces `_of_rigidOn_linking`; count `N + (screwDim k − 1) ≤ Nat.card s`.
+**L6 fully landed**: L6a `case_II_placement_eq612_kdof` (brick) + L6b `case_II_realization_all_k` (producer).
+Blueprint: `lem:case-II-realization` restated at `k>0` content (flip `\leanok` in same commit — see blueprint note).
 
-**Smallest next forward commit: L6b** — `PanelHingeFramework.case_II_realization_all_k` (CaseI.lean, beside
-`case_III_realization`): assembles degree-2 split (`exists_degree_eq_two`) + dof-decrement
-(`splitOff_isMinimalKDof_of_pos`) + deficient IH + L6a brick + W-suite shear conversion
-(`caseIIICandidate_exists_good_shear`). Mints `lem:case-II-realization` (restate at `k>0` content).
-Statement-grep gate before commit. Design: §1.67(a)/(b)/(e).
+**Smallest next forward commit: L7** — `case_III_realization` rewire: replace the `h622`
+hypothesis with a derivation from the all-`k` IH at `G_v` (IH gives the generic realization at rank
+`D(m−1) − k'`; extract the rational rank-polynomial witness `V8`; transfer to the given `(ends, q)` via
+`lem:case-III-seed-rank-bridge`). Design: §1.56 carries table (L7 row).
 
 At phase close: Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon and adds the general-`d` row to
 `notes/AlgebraicIndependence.md`.
@@ -431,3 +435,11 @@ At phase close: Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon a
   (`toBodyHinge_withNormal_infinitesimalMotions_eq`) + `span_rigidityRows_eq_of_infinitesimalMotions_eq`
   carries `hNrank` from seed `q` to shared seed `q₀`. `omega` closes count (no `hVcard` → `_hVcard`).
   Build+lint clean; no blueprint node.
+- **L6b build (2026-06-14, sonnet):** `PanelHingeFramework.case_II_realization_all_k` (CaseI.lean). Mirrors
+  the rigid `case_II_realization` with deficient IH; assembles degree-2 split + L6a brick + W-suite shear.
+  Three cast-arithmetic quirks: (1) `hendsDef` (lower-case — `hEndsDef` is wrong capitalization for the local
+  `let`-binding alias); (2) after `congr 1 <;> ext i <;> congr 1`, the subgoals are `((ends e).1, i) = ((Q.ends
+  e).1, i)` — close with `Prod.ext (show ... from congrArg Prod.fst hendse) rfl`; (3) the ℤ equality
+  `screwDim 2 * (V - 1 : ℤ) − k = ↑(sd * (V−1) − k.toNat)` needs explicit `(screwDim 2 : ℤ)` + `(V(G).ncard :
+  ℤ)` in the `have` type, then `rw [Nat.cast_sub ..., Nat.cast_mul, Nat.cast_sub ..., hk_cast]` + `norm_cast`
+  (leaving just `↑1 = 1` gap that `norm_cast` closes). Build+lint clean; `lem:case-II-realization` minted.
