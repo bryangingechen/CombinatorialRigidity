@@ -240,8 +240,12 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
     - [x] **L5b-iii** — `case_I_dispatch` (CaseI.lean): `by_cases G.Simple` → non-simple `case_I_realization_nonsimple`; simple → inner `by_cases` on `∃ H r, ... (G.rigidContract H r).Simple` → 6.3 arm `case_I_realization_all_k` + M4 forgetful; 6.5 arm `h65` (stays red → L8). Updates `lem:case-I-dispatch` (`\lean{}`, no `\leanok`). Build+lint+checkdecls clean.
   V6 RESOLVED — N6a is dead infrastructure (deleted-motive-bound, `ofNormals`-bound); V4
   (`rigidContract_isMinimalKDof` all-`k`) confirmed already-landed; **V6-a re-aimed + V6-b re-scoped (§1.64)**.
-- [ ] **L6** — Lemma 6.8, the `k > 0` split (reuses `case_II_placement_eq612` = KT eqs.
-  (6.13)–(6.17); the Lemma-5.2 shear transfer via the 22h W-suite, V7).
+- [ ] **L6** — Lemma 6.8, the `k > 0` split (`hsplitPos`); signature pinned §1.67, sliced **L6a** (the
+  deficient eq.-(6.12) placement brick `case_II_placement_eq612_kdof`, the W6e swap of the rigid
+  `case_II_placement_eq612`) → **L6b** (the producer `case_II_realization_all_k`, mints `lem:case-II-realization`
+  at the `k>0` content). V7 RESOLVED (W-suite transfers wholesale; L6 simpler than `k=0` Case III — no `h622`,
+  no Claim-6.11/6.12). Two residual build-time checks (§1.67(d)): (b1) `G_v^{ab}` simple from `hnoRigid`;
+  (b2) `case_II_placement_eq612`'s `Gv` = `splitOff` (not `removeVertex`).
 - [ ] **L7** — the Case-III rewire: `case_III_realization` restated, `h622` derived from
   the all-`k` IH (V8) (`h622` carry discharged).
 - [ ] **L8** — the Lemma-6.5 arm: Claim 6.6 + the Π°-placement (§1.54(a3)) (`h65` carry
@@ -308,8 +312,19 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 `case_I_dispatch` (CaseI.lean:9362) landed; `lem:case-I-dispatch` has `\lean{}` (no `\leanok` — `h65` untracked);
 build+lint+checkdecls clean. The 6.5 sub-arm stays `h65` → L8.
 
-**Smallest next forward commit: L6** — the `k > 0` split (KT Lemma 6.8, §1.56(c) arm 3); signature pin first
-(`notes/Phase22-realization-design.md` §1.67 or new §). Reuses `case_II_placement_eq612` + the 22h W-suite (V7).
+**L6 signature pin landed (§1.67):** V7 RESOLVED — the W-suite (`t=0` certify-then-rebase +
+`exists_shear_linearIndependent_pair` + `caseIIICandidate_exists_good_shear`) transfers wholesale (rank-driven,
+not rigidity-driven), and L6 is **strictly simpler** than the `k=0` Case III (the deficient `(k−1)`-dof IH
+already supplies the full target rank `D(|V|−1)−k`, so NO Claim-6.11/6.12 redundant-row machinery, NO `h622`).
+The one reuse delta: `case_II_placement_eq612` is built at a *rigid* IH, so its OLD-block step needs the
+deficiency-aware swap (`_of_rigidOn_linking` → `_of_le_finrank` at rank `N := D(|V(Gv)|−1)−(k−1)`). No motive/IH
+change. L6 sliced **L6a** (the deficient placement brick) → **L6b** (the producer).
+
+**Smallest next forward commit: L6a** — `PanelHingeFramework.case_II_placement_eq612_kdof` (CaseI.lean, beside
+`case_II_placement_eq612`): the rigid eq.-(6.12)–(6.17) brick's body verbatim with two swaps — W6e
+`exists_independent_panelRow_subfamily_of_le_finrank` for the OLD block + the `k−1`-lowered count arithmetic. No
+blueprint node (churn-prone `_kdof` infra, like the L5b-ii-a `_proj` sibling). `P≈2`. Build order + the L6b
+producer signature: §1.67(a)/(e).
 
 At phase close: Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon and adds the general-`d` row to
 `notes/AlgebraicIndependence.md`.
@@ -408,3 +423,9 @@ At phase close: Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon a
   `case_I_realization_all_k` + `hasPanelRealization_of_generic` (M4); 6.5 arm `h65`. `haveI hloop` from
   `loopless_of_isMinimalKDof` for M4's `[G.Loopless]` instance. `hcontract` carry discharged; `h65` stays → L8.
   `lem:case-I-dispatch` gets `\lean{}` (no `\leanok` — `h65` untracked load-bearing hypothesis). Axiom-clean.
+- **L6 signature pin (2026-06-13, opus; §1.67):** `case_II_realization_all_k` (`hsplitPos`) pinned against the
+  settled §1.56(c) all-`k` IH. V7 RESOLVED: the W-suite (`t=0` certify-then-rebase, shear lemmas,
+  `caseIIICandidate_exists_good_shear`) is rank-driven so it transfers wholesale; L6 is strictly simpler than
+  `k=0` Case III (deficient IH supplies the full rank `D(|V|−1)−k` — no `h622`, no Claim-6.11/6.12). One reuse
+  delta: deficiency-aware `case_II_placement_eq612_kdof` (W6e swap, L5b-ii-a precedent). No motive/IH change.
+  Sliced L6a (brick) → L6b (producer). Two residual build checks (§1.67(d)). Docs-only.

@@ -6900,6 +6900,198 @@ producer Lean was written on the wrong foundation. The L5a-i boundary-pair lesso
 on master) is the one this avoided: had L5b-ii been dispatched on the route-2 soft-rec, it would have BLOCKED again
 (as row 109 did) or — worse — produced a splice-brick assembly that cannot close.
 
+### 1.67 The L6 signature pin — Lemma 6.8, the `k > 0` split (`hsplitPos`): the `hsplitPos` producer pins against the SETTLED §1.56(c) all-`k` IH; the eq. (6.12)–(6.17) placement reuses the landed `case_II_placement_eq612` but at a DEFICIENT `(k−1)`-dof IH, so its one rigidity-gated step (the OLD block) needs the deficiency-aware swap (`_of_rigidOn_linking` → `_of_le_finrank` at rank input `N := D(|V(Gv)|−1)−(k−1)`) — V7 RESOLVED: the W-suite (the `t=0` certify-then-rebase, `exists_shear_linearIndependent_pair`, `caseIIICandidate_exists_good_shear`) transfers WHOLESALE because it is rank-driven, not rigidity-driven, and L6 is STRICTLY SIMPLER than the `k=0` Case III (the deficient IH already supplies the full target rank `D(|V|−1)−k`, so NO Claim-6.11/6.12 redundant-row machinery, NO `h622`); no motive/IH change (2026-06-13)
+
+> **Docs-only design pass (the L6 pin), opus.** Lean read this pass, every load-bearing decl opened
+> to its `def`/`theorem` body and verified against the cited claim (clause (i) of the dispatch):
+> CaseI.lean — `case_I_realization_all_k` (:9275, the all-`k` GP producer TEMPLATE this mirrors:
+> manufacture `ends = G.endsOf`, IH at the smaller graph, feed the deficiency-aware coupler),
+> `case_III_realization` (:7514) + `case_III_candidate_dispatch` (:7172, the `k=0` analog — its
+> `h622lb` carry + `caseIIICandidate`/`caseIIICandidate_exists_good_shear` shear tail at :5346–:5390
+> are the W-suite at the harder `k=0`; READ to confirm L6 needs *less*),
+> `PanelHingeFramework.case_II_placement_eq612` (:3520, the eq.-(6.12)–(6.17) brick — its `hrig` +
+> `exists_independent_panelRow_subfamily_of_rigidOn_linking` OLD-block at :3595, the *one*
+> rigidity-gated step; everything else — NEW `e_b`-block via `exists_independent_panelRow_subfamily_of_edge`
+> :3631, pin-a-body split `linearIndependent_sum_pinned_block` :3659, the `D(|V|−1)−1 = (D−1)+D(|V(Gv)|−1)`
+> count arithmetic :3683–:3697 — is rigidity-agnostic);
+> GenericityDevice.lean — `BodyHingeFramework.exists_independent_panelRow_subfamily_of_le_finrank`
+> (:718, W6e, the rank-input extractor the deficient OLD block swaps in — `hN : N ≤ finrank (span
+> rigidityRows)`, NO rigidity) and `…_of_rigidOn_linking` (:788, just the `N := D(|V|−1)` corollary of
+> it via `finrank_span_rigidityRows_of_rigidOn`); PanelLayer.lean —
+> `setOf_not_shear_linearIndependent_subsingleton` (:714, the bad-shear-set bound, uses ONLY
+> `hgab : LinearIndependent ![n_a, n_b]`, dof-agnostic) + `exists_shear_linearIndependent_pair` (:773);
+> ForestSurgery.lean — `splitOff_isMinimalKDof_of_pos` (:3472, KT Lemma 4.8: `G.splitOff v a b e₀` is
+> minimal `(k−1)`-dof given `0 < k` + no proper rigid subgraph — the dof-DECREMENT engine, distinct
+> from the landed 0-dof `splitOff_isMinimalKDof`), `splitOff_removeVertex_minimalKDof` (:3198);
+> ReducibleVertex.lean — `exists_degree_eq_two` (:673, KT Lemma 4.6, the degree-2 vertex);
+> PanelHinge.lean — `HasGenericFullRankRealization` (M3, :1035 — GP + ℤ-rank + link-recording +
+> `AlgebraicIndependent ℚ`, the L6 conclusion). KT 2011 §6.3 read end-to-end against the PDF this pass
+> (pp. 677–679): Lemma 6.7 (`G_v^{ab}` simple), Lemma 6.8 + its full proof (eqs. (6.11)–(6.17), the
+> column ops, the Lemma-5.2 nonparallel conversion), and p. 680's explicit `k=0`-vs-`k>0` contrast
+> ("we only have `rank ≥ 5 + 6(|V∖v|−1) = 6(|V|−1)−1` in the current [`k=0`] situation, which does not
+> complete the proof" — i.e. the `h622`/redundant-row machinery exists *only* because `k=0`). No
+> `.lean`/`.tex` edits this pass; the L2 `hsplitPos` slot (§1.59(a)) is the producer's contract.
+
+**The slot the L6 producer fills.** L2's `hsplitPos` slot (`minimal_kdof_reduction_all_k`, §1.59(a)),
+at `P G = Pc G := (G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G`
+(§1.56(b) M4):
+
+```lean
+(hsplitPos : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 0 < k →
+  3 ≤ V(G).ncard → G.TwoEdgeConnected →
+  (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+  (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+    V(G').ncard < V(G).ncard → P G') → P G)
+```
+
+L6 discharges this exactly as L5 discharged `hcontract` (§1.56(c)/(d)): the bare conjunct is **free**
+(G0 `simple_of_isMinimalKDof_of_noRigid` gives `G.Simple` from `hnp`, so the GP conjunct's hypothesis
+`G.Simple` always fires, and `HasPanelRealization` is M4-forgetful of `HasGenericFullRankRealization`
+— `hasPanelRealization_of_generic`). So the *content* is the **GP conjunct producer**: a
+`HasGenericFullRankRealization 2 n G` builder under the slot's hypotheses + the all-`k` IH. This
+mirrors `case_I_realization_all_k`'s structure (§1.66(g) L5b-ii-d) at a *splitting* reduction instead
+of a *contraction*.
+
+**(a) The pinned L6 producer.** CaseI.lean, beside `case_III_realization` (the `k=0` sibling; L6 is
+the `k>0` sibling, sharing the eq.-(6.12) placement). One GP producer:
+
+```lean
+/-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
+Phase 22i L6). Katoh–Tanigawa 2011 §6.3, p. 677. A 2-edge-connected minimal `k`-dof-graph
+(`k > 0`, `|V| ≥ 3`) with no proper rigid subgraph carries a generic full-rank realization. -/
+theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (hk : 0 < k) (hV3 : 3 ≤ V(G).ncard)
+    (htec : G.TwoEdgeConnected)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G
+```
+
+Design notes:
+
+* **`hD : 6 ≤ bodyBarDim n` + `hn : bodyBarDim n = screwDim 2`** match `case_I_realization_all_k`
+  (:9276) and `case_III_realization` (:7515 has `hD`; the `hn` B2 input is the L5b-ii-c addition).
+  `hfresh` supplies the fresh split-off edge `e₀ ∉ E(G)` (as `case_III_realization` carries it for
+  the splitting case; `case_I_realization_all_k` does not need it because contraction adds no edge).
+  `k : ℤ` comes from the L2 `hsplitPos` binder; the four typeclasses are the slot context.
+* **`hsplitPos` slot → producer hypotheses.** The slot supplies `hG`, `0 < k` (`hk`), `3 ≤ ncard`
+  (`hV3`), `htec`, `hnoRigid`, and the all-`k` IH. The producer adds `hD`/`hn`/`hfresh` (ambient data
+  it carries itself, as `theorem_55_d3` already does — the principle has none, §1.59(b) audit row
+  `hsplitPos`). `htec` is **not consumed** by the rank argument (KT uses 2EC only to get Lemma 6.7's
+  simplicity of `G_v^{ab}` — which the producer re-derives from `hnoRigid` directly via the
+  triangle-forces-rigid-subgraph argument, KT Lemma 6.7(ii)); it is carried to match the slot and is
+  ignorable, exactly the §1.59(b) note.
+* **The bare conjunct is free (the `hsplit`-style discharge).** This producer concludes
+  `HasGenericFullRankRealization` (the GP conjunct) directly; the slot's *pair* is closed at L9 by
+  G0 (`simple_of_isMinimalKDof_of_noRigid hG hnoRigid` gives `G.Simple`, firing the conditioned GP
+  arm) ∘ M4 forgetful (`hasPanelRealization_of_generic`). L6 itself need only build the GP conjunct.
+
+**(b) The construction (KT eqs. (6.11)–(6.17), all reuse verified against the landed Lean).**
+
+1. **Degree-2 vertex + dof-decrement split (graph side).** `exists_degree_eq_two`
+   (ReducibleVertex:673, KT 4.6) under `htec`/`hnoRigid`/`hV3` gives `v` of degree 2 with
+   `N_G(v) = {a, b}`; `splitOff_isMinimalKDof_of_pos` (ForestSurgery:3472, KT 4.8) under `hk`/`hnoRigid`
+   gives `G_v^{ab} := G.splitOff v a b e₀` minimal `(k−1)`-dof. `G_v^{ab}` is **simple** by KT 6.7(ii)
+   (no proper rigid subgraph rules out the `ab` parallel edge; the landed `Graph.splitOff` simplicity
+   facts + `hnoRigid` discharge it — confirm the exact lemma at the build, V7-residual (b1), expected
+   the same `loopless_of_isMinimalKDof`/`splitOff` simplicity facts the 0-dof Case-III uses).
+2. **IH at the deficient split-off.** The all-`k` IH at `k' = k−1`, `G' = G_v^{ab}` (nonempty —
+   contains `a`; smaller — `|V∖v| = |V|−1`) gives the conditioned pair; its `.1` (at `G_v^{ab}` simple)
+   gives `HasGenericFullRankRealization 2 n (G_v^{ab})` — a generic realization `(G_v^{ab}, q)` at
+   ℤ-rank `D(|V∖v|−1) − (k−1)` (eq. 6.11). This is the **deficient** IH (rank `< D(|V∖v|−1)` for
+   `k > 1`), the single substantive departure from the `k=0` Case III where the IH is rigid.
+   Transversality of the IH `ab`-hinge — `hgab : LinearIndependent ![q(a,·), q(b,·)]` — comes from
+   the IH realization's general position (`IsGeneralPosition` at the distinct `a ≠ b ∈ V(G_v^{ab})`),
+   exactly as `case_III_candidate_dispatch` extracts it.
+3. **The eq. (6.12) placement — `case_II_placement_eq612` AT A DEFICIENT IH (the one reuse delta).**
+   The landed `case_II_placement_eq612` (CaseI:3520) is the eq.-(6.12)–(6.17) brick: it places `v`'s
+   normal at `n_a + t·n_b` (`t ≠ 0`), reproduces the `vb`-row as the `ab`-row (shear identity
+   `panelSupportExtensor_add_smul_right`), keeps the `va`-hinge a nondegenerate line `L ⊂ Π(a)`, and
+   the block-triangular column ops (eq. 6.16) give the rigidity-row family. **Its OLD block is the
+   *only* rigidity-dependent step**: it consumes `hrig : ...IsInfinitesimallyRigidOn V(Gv)` ONLY to
+   feed `exists_independent_panelRow_subfamily_of_rigidOn_linking` (:3595), producing `D(|V(Gv)|−1)`
+   rows. At `k > 0` the IH is deficient, so L6 needs a **deficiency-aware variant**
+   `case_II_placement_eq612_kdof` (CaseI.lean, beside the rigid one) — `case_II_placement_eq612`'s body
+   *verbatim* with two swaps (the V7 delta, exactly the L4b-1→L5b-ii-a precedent):
+   - (i) replace `hrig` + `_of_rigidOn_linking` with the rank input `hNrank :
+     screwDim k * (V(Gv).ncard − 1) − (k−1) ≤ finrank (span (ofNormals Gv ends q).rigidityRows)` fed
+     to the deficiency-aware `exists_independent_panelRow_subfamily_of_le_finrank` (W6e, :718, NO
+     rigidity), giving `D(|V(Gv)|−1) − (k−1)` OLD rows;
+   - (ii) shift the count arithmetic (:3683–:3697) from `D(|V(G)|−1)−1 = (D−1)+D(|V(Gv)|−1)` to
+     `D(|V(G)|−1)−k = (D−1)+[D(|V(Gv)|−1)−(k−1)]` (the same `Nat.mul_succ` identity, lowered by `k−1`).
+   Everything else — the NEW `e_b`-block, the pin-a-body split, the `hane`/`hnewne` transversality —
+   is rigidity-agnostic and copies unchanged. The deficient rank input `hNrank` is the IH's ℤ-rank
+   eq. (6.11) (`HasGenericFullRankRealization`'s rank conjunct at `G_v^{ab}`), transported to the
+   shared seed `q₀` exactly as the rigid brick transports `hrig` (the `withNormal`/`infinitesimalMotions_eq`
+   override of the unhinged `v`, :3561–3590, is rigidity-free — it transports a *motion space* and
+   hence any rank, not just rigidity).
+4. **The Lemma-5.2 nonparallel conversion → the GP conjunct (V7, the W-suite at `k > 0`).** The
+   eq.-(6.12) placement gives `rank R(G,p₁) ≥ D(|V|−1) − k` at the *parallel* candidate (panels `Π(v)`,
+   `Π(a)` parallel). KT converts to nonparallel by Lemma 5.2 "without decreasing the rank"; the project
+   does this by the **certify-then-rebase W-suite the `k=0` Case III already uses** (`case_III_candidate_dispatch`
+   :5346–5390), which is **rank-driven, not rigidity-driven**, so it transfers WHOLESALE:
+   `exists_independent_panelRow_subfamily_of_le_finrank` re-extracts a literal `t=0` family of the
+   certified rank; `setOf_not_shear_linearIndependent_subsingleton` (PanelLayer:714, uses ONLY `hgab`)
+   bounds the bad-shear set; `caseIIICandidate_exists_good_shear` (CaseI:4639) picks a `t* ≠ 0` outside
+   it; the sheared seed `q₀ : v ↦ n_a + t*·n_b` realizes `(G, p₁)` nonparallel at the same rank.
+   The general-position + `AlgebraicIndependent ℚ` conjuncts of M3 come from the same fresh-shared-seed
+   genericity device the rigid producers use (the seed is alg-indep + general-position by construction;
+   the rank polynomial's non-root supplies both). **V7 verdict: substantial reuse confirmed (KT built
+   the W-suite for the *harder* `k=0` case; the `k>0` case is a strict sub-problem of it).**
+
+**(c) Why L6 is STRICTLY SIMPLER than the `k=0` Case III (the V7 crux, machine-checked against KT
+p. 680).** At `k = 0` the IH `(G_v^{ab}, q)` is rigid (`rank = D(|V∖v|−1)`), so eq. (6.12) gives only
+`(D−1) + D(|V∖v|−1) = D(|V|−1) − 1` — **one row short** of the `k=0` target `D(|V|−1)`. Closing that
+gap is the entire Claim-6.11/6.12 redundant-`ab`-row machinery (the largest proof in KT) and is what
+`case_III_candidate_dispatch` carries as `h622lb`. At `k > 0` the IH is deficient (`rank =
+D(|V∖v|−1) − (k−1)`), so eq. (6.12) gives `(D−1) + [D(|V∖v|−1) − (k−1)] = D(|V|−1) − k` — **exactly the
+target**, no row short. KT states this verbatim (p. 680): for `k = 0` "we only have `rank ≥ 5 +
+6(|V∖v|−1) = 6(|V|−1) − 1` … which does not complete the proof", whereas Lemma 6.8 "[obtains] the
+desired rank". So **L6 reuses NONE of the Case-III crux**: no `h622`, no `caseIIICandidate` candidate
+dispatch over `D` candidates, no redundant-row extraction. It uses only the eq.-(6.12) placement (at
+the deficient IH) + the single-candidate shear conversion. This is why §1.56(d) called it "NEW
+assembly, mostly landed parts" and the prompt called it the tractable `k > 0` arm.
+
+**(d) Verification items.** **V7 RESOLVED** (this pass): the W-suite transfers wholesale (it is
+rank-driven); the one delta is the deficiency-aware `case_II_placement_eq612_kdof` swap (V6-b /
+L5b-ii-a precedent, near-mechanical). **No motive/IH change, no user adjudication needed** — clause
+(ii) of the dispatch: the pin is honest and buildable from landed parts. Two **residual build-time
+verification items** (not blockers, not motive-level — settle at the leaf's design recon, the
+project's standing per-layer discipline): **(b1)** the exact landed lemma for "`G_v^{ab}` simple from
+`hnoRigid`" (KT 6.7(ii)) — expected the `splitOff`-simplicity + `loopless_of_isMinimalKDof` facts the
+0-dof dispatch already uses; **(b2)** whether `case_II_placement_eq612`'s `Gv` parameter (abstract
+`Gv ≤ G`, `v ∉ V(Gv)`) is fed `G_v^{ab} = G.splitOff v a b e₀` (which contains the `ab` edge so `hgab`
+is realized) vs `G.removeVertex v` — KT's `(G_v^{ab}, q)` is the split-off (eq. 6.17's `ab`-row), and
+the brick reproduces `q(ab)` via `panelSupportExtensor_add_smul_right`, so `Gv = splitOff`; confirm
+the `removeVertex`-vs-`splitOff` selector wiring at the build (the rigid dispatch threads both via
+`hle : Gv.IsLink → Gab.IsLink`, :7235).
+
+**(e) The L6 slice cut (build order, all `buildable`).** Mirrors the L5b-ii cut (§1.66(g)): the
+deficiency-aware placement brick first, then the producer.
+
+* **L6a** — `PanelHingeFramework.case_II_placement_eq612_kdof` (CaseI.lean, beside
+  `case_II_placement_eq612`): the deficient eq.-(6.12)–(6.17) brick. **`P≈2`** — the rigid brick's body
+  verbatim with the two (b)(3) swaps (W6e for the OLD block, `k−1`-lowered count). The first concrete
+  L6 commit. **No blueprint node** (it is the `_kdof` infra sibling of `case_II_placement_eq612`, which
+  itself mints `lem:case-II-realization-placement` — restate-or-leave the rigid node, decide at build;
+  the `_kdof` variant is churn-prone infra like the L5b-ii-a `_proj` extractor, so default no node).
+* **L6b** — `PanelHingeFramework.case_II_realization_all_k` (the (a) producer), assembling: the
+  degree-2 split (b1), the deficient IH (b2), `case_II_placement_eq612_kdof` (L6a), and the W-suite
+  shear conversion (b4). **`P≈3`** (the genuinely-new assembly — the deficient placement + shear tail,
+  the L6 analog of `case_III_realization`'s body but *without* the candidate dispatch). Mints
+  `lem:case-II-realization` (restating it green at the `k > 0` content; the node currently red — its
+  `k=0` half is Case III / L7). Statement-grep gate before commit (the `\lean{...}` survives a content
+  flip; grep `blueprint/src` per `CLAUDE.md` *Structural-edit phases*).
+
+**Estimate: ~2–3 commits.** L6a is near-mechanical; L6b is the assembly. The 6.5 sub-arm does NOT
+enter L6 (it is the `hcontract`/Case-I arm, carried as `h65` → L8); L6 is purely the `hsplitPos`
+splitting case. *Buildable, no motive/IH change.*
+
 ---
 
 ## 3. Per-case producer structure, node list, build order
