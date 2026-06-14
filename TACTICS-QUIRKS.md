@@ -1516,6 +1516,15 @@ the `clear_value` removes). Worked case: `case_III_arm_realization` (W7, the `d 
 `Molecular/AlgebraicInduction/CaseI.lean`). As always: **the `set`/`clear_value` is the fix, not a
 `maxHeartbeats` bump** (4M still timed out).
 
+*Abstract-brick call-site sub-case (Phase 22j).* When the lemma is an **abstract span-transport
+brick** taking the row families as *explicit named arguments* (`le_finrank_span_rigidityRows_of_
+pinned_placement`, with `rn`/`ro` explicit), passing inline `fun i => FG.panelRow …` families still
+`isDefEq`-times-out (6.4M), but **`set rn := …` / `set ro := …` alone fixes it — no `clear_value`
+needed** (the explicit-named-arg position is matched against the opaque fvar syntactically, not
+inferred, so the `let`-value never has to be reduced). Also state the brick result's `Nat.card … ≤
+finrank …` type explicitly on the `have`. Worked case: `case_II_realization_all_k`'s `hrank_lb`
+(Phase 22j S4, `Molecular/AlgebraicInduction/CaseI.lean`).
+
 **`span_induction` variant (Phase 22h).** A `Submodule.span_induction` whose *conclusion* lives in a
 heavy `Module.Dual ℝ (α → ScrewSpace k)` span and whose generator case dispatches on several
 endpoint sub-cases (`by_cases x = a` / `y = a` / else) hits the *cumulative*-budget timeout (the

@@ -139,6 +139,15 @@ housekeeping pass once their resolution is fully indexed.
   family's `LinearIndependent`/span hypotheses auto-fold onto `f`); apply the lemma at the *concrete*
   `(ofNormals G ends q₀).toBodyHinge`, not a `set`-bound abbrev. **Lifted to:** TACTICS-QUIRKS § 38
   (*Row-family-argument variant*). Same medicine as the rest of §38: opacity, not a heartbeat bump.
+- **Recurrence (Phase 22j S4, `case_II_realization_all_k`):** the new abstract span-transport brick
+  `le_finrank_span_rigidityRows_of_pinned_placement` applied to the heavy `FG`/`FGab` `ofNormals`
+  frameworks with inline `fun i => FG.panelRow …` / `fun i => FGab.panelRow Q.ends …` families
+  `isDefEq`-timed-out even at `maxHeartbeats 6400000`. Fix: `set rn := …` / `set ro := …` (fvars) for
+  the two families, then pass them by `(rn := rn) (ro := ro)`. Here **`set` alone sufficed — no
+  `clear_value`** — because the brick takes the families as *explicit named args*, so the opaque fvar
+  is matched syntactically rather than inferred. Stating `hbrick`'s `Nat.card … ≤ finrank …` type
+  explicitly also helps. The original inline `hrank_lb` dodged this by never unifying a lemma
+  *parameter* against `FG.rigidityRows` (`Submodule.finrank_mono hcomb_le` had it syntactically).
 
 ### [resolved] `AlgHom.map_det` (not `RingHom.map_det`) for `aeval`-based matrix-det bridges; `mvPolynomialX_mapMatrix_aeval` closes the matrix equation
 - **Where it bit:** Phase 22h `linearIndependent_normals_of_algebraicIndependent` (`CaseI.lean`),

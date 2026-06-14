@@ -4,11 +4,22 @@
 
 ## Current state
 
-**Next: S4 — refactor L6b onto Brick A** (`case_II_realization_all_k`, CaseI.lean): replace the inlined
-`hN_FG` (:4513–4526) + `hrank_lb` (:4708–4749) with a Brick A call, and **extract `he₀_rows_mem`
-(:4380–4509) as a named helper** discharging Brick A's `hold_span`. The one genuinely-new slice;
-preserve the orientation case-split (§1.68(g)(ii)); trace `D(|V|−1)−k` closes (§1.68(c)). Standard
-build dispatch.
+**Next: S4b — extract `he₀_rows_mem` as a named top-level helper** (`…case_II_placement_e0_row_in_span`
+or similar, `CaseI.lean`): the `splitOff` `e₀ = e_a + e_b` row-decomposition currently inline at the
+`he₀_rows_mem` `have` (~CaseI.lean:4380–4431) — the genuinely-new `hold_span` content (§1.68(d)). It is
+deeply coupled to local `have`s (`hrow_a_eq`/`hrow_b_eq`/`hFG_{ea,eb}_mem`, `n_a`/`n_b`, `Q.ends`,
+`hrec'`, `he₀ab`), so the extraction threads a sizeable signature; preserve the `Q.ends e₀ = (a,b)` vs
+`(b,a)` orientation case-split (§1.68(g)(ii)). Standard build dispatch. **Optional re-scope:** if the
+threaded signature proves unwieldy, keep `he₀_rows_mem` as the (already-named) inline `have` and move
+straight to S5 — the design's S4 *value* (the Brick-A rank consolidation) has landed.
+
+**S4a — Brick-A rank consolidation — DONE** (this commit): `case_II_realization_all_k`'s `hrank_lb`
+now calls `le_finrank_span_rigidityRows_of_pinned_placement` (NEW block = e_b pinned through `v`'s
+screw column, OLD block = the IH's N Gab-rows via `hso_span`); the dead inline `hN_FG` and the
+intermediate `hunion` are deleted. Gates green (build warning-clean, `lake lint`, axiom-clean — the
+three standard axioms). The §38 *row-family* `isDefEq` blowup recurred (6.4M timed out); fixed by
+`set rn`/`set ro` (fvars) + explicit `hbrick` type — **no `clear_value` needed** here since the brick
+takes the families as explicit named args (FRICTION + TACTICS-QUIRKS §38 *Abstract-brick call-site*).
 
 **S2 — blueprint node — DONE** (this commit): `lem:rigidityRows-pinned-placement-rank-add` landed in
 `rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both
@@ -61,11 +72,17 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both bricks) + `\leanok` + `\uses`
   (`lem:case-II-placement-block-independent` base, `lem:case-III-conditional-block` augment, plus
   `def:rigidity-matrix`). **DONE.** All `verify.sh` gates green.
-- [ ] **S4 — refactor L6b onto Brick A** (`case_II_realization_all_k`, CaseI.lean): replace the inlined
-  `hN_FG` (:4513–4526) + `hrank_lb` (:4708–4749) with a Brick A call, and **extract `he₀_rows_mem`
-  (:4380–4509) as a named helper** (`…case_II_placement_e0_row_in_span` or similar) discharging Brick
-  A's `hold_span`. *The one genuinely-new slice. Standard build dispatch; P≈3 (preserve the
-  orientation case-split, §1.68(g)(ii); trace `D(|V|−1)−k` closes, §1.68(c)).*
+- [x] **S4a — Brick-A rank consolidation** (`case_II_realization_all_k`, CaseI.lean): `hrank_lb` now
+  calls `le_finrank_span_rigidityRows_of_pinned_placement` (NEW = e_b pinned through `v`, OLD = the
+  IH's N Gab-rows via `hso_span`); dead inline `hN_FG` + intermediate `hunion` deleted. **DONE.** Gates
+  green; §38 *row-family* `isDefEq` blowup fixed by `set rn`/`set ro` + explicit `hbrick` type (no
+  `clear_value` — explicit named args; FRICTION + TACTICS-QUIRKS §38 *Abstract-brick call-site*).
+- [ ] **S4b — extract `he₀_rows_mem` as a named top-level helper**
+  (`…case_II_placement_e0_row_in_span` or similar) discharging the e₀ part of `hold_span` — the
+  genuinely-new `splitOff` `e₀ = e_a + e_b` decomposition (§1.68(d), ≈130 lines inline, CaseI.lean
+  ~:4380–4431). *Standard build dispatch; P≈3 (preserve the `Q.ends e₀ = (a,b)`/`(b,a)` orientation
+  case-split, §1.68(g)(ii); deep local coupling — see Current state for the optional re-scope to skip
+  to S5 keeping the inline `have`).*
 - [ ] **S5 — retire L6a + re-express the rigid placement.** Delete the dead
   `case_II_placement_eq612_kdof` (CaseI.lean:3735). Re-prove `case_II_placement_eq612` (:3520) through
   Brick A (option (i), §1.68(f)), **keeping `lem:case-II-realization-placement` green** (checkdecls +
@@ -86,20 +103,25 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 - ~~**S1 `Nat.card`/`Fintype` resolution**~~ — RESOLVED at the S1 build (standard
   `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; Brick A's interface keys on `Nat.card`, both
   call sites supply `[Finite ιn] [Finite ιo]`).
-- **S4 orientation case-split** must survive the `he₀_rows_mem` extraction (§1.68(g)(ii)).
-- **Cleanup is gated on S4** having slimmed the proof — sequence the suppression removal after S4.
+- **S4b orientation case-split** must survive the `he₀_rows_mem` extraction (§1.68(g)(ii)).
+- **Cleanup is gated on the producer slimming** — sequence the `maxHeartbeats`/`longLine` suppression
+  removal after S4b (S4a's Brick-A call already builds well under the 3.2M budget at 86s, so the
+  suppression-drop retry is now plausible; confirm once S4b lands or is re-scoped away).
 
 ## Hand-off / next phase
 
-**Next concrete commit: S4 — refactor L6b onto Brick A** (`case_II_realization_all_k`, CaseI.lean):
-replace the inlined `hN_FG` (:4513–4526) + `hrank_lb` (:4708–4749) with a
-`le_finrank_span_rigidityRows_of_pinned_placement` call, and **extract `he₀_rows_mem` (:4380–4509) as
-a named helper** (`…case_II_placement_e0_row_in_span` or similar) discharging Brick A's `hold_span`.
-The one genuinely-new slice — preserve the orientation case-split (§1.68(g)(ii)); trace `D(|V|−1)−k`
-closes (§1.68(c)). Standard build dispatch (gates: `lake build` + `lake lint` warning-clean +
-axiom-clean). Then S5 → cleanup bundle, in order (S1 + S2 landed). At 22j close: open **Phase 22k**
-(completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming
-Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23 (general `d`).
+**Next concrete commit: S4b — extract `he₀_rows_mem` as a named top-level helper**
+(`…case_II_placement_e0_row_in_span` or similar, `CaseI.lean`): lift the inline `he₀_rows_mem`
+`have` (the `splitOff` `e₀ = e_a + e_b` decomposition, §1.68(d), ~:4380–4431) to a named lemma
+discharging the e₀ part of Brick A's `hold_span`; preserve the `Q.ends e₀ = (a,b)`/`(b,a)` orientation
+case-split (§1.68(g)(ii)). **Re-scope option:** the inline `have` is deeply coupled to local
+context (`hrow_a_eq`/`hrow_b_eq`/`hFG_{ea,eb}_mem`, `n_a`/`n_b`, `Q.ends`, `hrec'`, `he₀ab`); if
+threading the signature is unwieldy, skip S4b (keep the named inline `have`) and go straight to S5 —
+S4's design *value* (the Brick-A rank consolidation) landed in S4a. Standard build dispatch (gates:
+`lake build` + `lake lint` warning-clean + axiom-clean). Then S5 → cleanup bundle, in order (S1 + S2 +
+S4a landed). At 22j close: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10
+layer plan in `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there),
+then Phase 23 (general `d`).
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
@@ -129,3 +151,12 @@ should **not** fire — if it seems to, re-read §1.68 rather than dispatching a
   `lem:case-III-conditional-block` (augment, = `linearIndependent_sum_pinned_block_augment`) + `def:
   rigidity-matrix`. Prose frames it as the pin-a-body (split) analogue of the collapse-geometry
   splice brick (KT Lemma 6.2 vs 6.8). All `verify.sh` gates green.
+- **S4a — Brick-A rank consolidation landed (2026-06-14):** `case_II_realization_all_k`'s `hrank_lb`
+  now calls `le_finrank_span_rigidityRows_of_pinned_placement FG` (NEW = e_b pinned through `v`'s screw
+  column `hnewpin_eb`, OLD = the IH's N Gab-rows, `hold`/`hso_indep`/`hso_span`); deleted the dead
+  inline `hN_FG` and the intermediate `hunion` (the brick computes the pin-a-body split internally).
+  `Nat.card sn + Nat.card so = (D−1)+N` then closes via `hsn_card`/`hso_card`/`hNpD` (§1.68(c)).
+  Axiom-clean; the inline `he₀_rows_mem`/`hso_span` `hold_span` discharge is untouched (S4b extracts
+  it). **Lifted to:** TACTICS-QUIRKS §38 *Abstract-brick call-site* / FRICTION (the §38 row-family
+  `isDefEq` blowup recurred at the abstract-brick call; `set rn`/`set ro` fvars + explicit `hbrick`
+  type fix it — `set` alone, no `clear_value`, since the brick takes the families as explicit args).

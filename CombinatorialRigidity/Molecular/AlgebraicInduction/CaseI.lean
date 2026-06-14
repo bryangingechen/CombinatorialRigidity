@@ -4507,23 +4507,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
           rw [hFGab_se, hFG_se, h_swap]
           exact panelSupportExtensor_swap _ _
         rw [hse_swap, map_neg, hFGab_se, annihRow_apply_self, neg_zero]
-  -- ── hso_span established. Now assemble the rank lower bound and the generic realization. ─────────
-  -- From hso_span + hso_indep: the N independent Gab-rows lie in span(FG.rigidityRows at q₀).
-  -- Subspace.span is monotone, so N ≤ finrank(span(FG.rigidityRows)).
-  have hN_FG : N ≤ Module.finrank ℝ (Submodule.span ℝ FG.rigidityRows) := by
-    have hspan_sub : Submodule.span ℝ (Set.range (fun i : so => FGab.panelRow Q.ends (i : β × _ × _)))
-        ≤ Submodule.span ℝ FG.rigidityRows := by
-      rw [Submodule.span_le]
-      rintro _ ⟨i, rfl⟩
-      exact hso_span i
-    have hfinrank_so : Module.finrank ℝ (Submodule.span ℝ
-        (Set.range (fun i : so => FGab.panelRow Q.ends (i : β × _ × _)))) = N := by
-      haveI : Fintype so := Fintype.ofFinite so
-      rw [finrank_span_eq_card hso_indep, ← Nat.card_eq_fintype_card]
-      exact hso_card
-    calc N = Module.finrank ℝ (Submodule.span ℝ
-              (Set.range (fun i : so => FGab.panelRow Q.ends (i : β × _ × _)))) := hfinrank_so.symm
-      _ ≤ Module.finrank ℝ (Submodule.span ℝ FG.rigidityRows) := Submodule.finrank_mono hspan_sub
+  -- ── hso_span established. (The OLD-block span-transport discharge for Brick A's `hold_span`.) ────
   -- ── Step 12 (cont): Compute that N = D*(|V(G)|-1) - k - (D-1). ───────────────────────────────
   -- N = D*(|V(Gab)|-1) - (k-1) = D*(|V(G)|-2) - k + 1.
   -- Required rank for G: D*(|V(G)|-1) - k.
@@ -4691,62 +4675,40 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
           map_neg]
       rw [this]
       exact hnewpin.neg
-  -- The old block uses FGab.panelRow Q.ends (which hso_indep, hold, and hso_span all address).
-  have hunion : LinearIndependent ℝ (Sum.elim
-      (fun i : sn => FG.panelRow ends (i : β × _ × _))
-      (fun i : so => FGab.panelRow Q.ends (i : β × _ × _))) :=
-    BodyHingeFramework.linearIndependent_sum_pinned_block (v := v) hold hnewpin_eb hso_indep
-  -- ── Package into a single set and compute rank. ──────────────────────────────────────────────────
-  -- The combined set s = sn ∪ so (indexed by sn ⊕ so) gives N + (D-1) rows of FG.rigidityRows.
-  -- Count: |s| = Nat.card sn + Nat.card so = (D-1) + N = D*(|V(G)|-1) - k.
-  -- Each row in s is in FG.rigidityRows (sn by panelRow_mem_rigidityRows, so by hso_span).
-  -- They're independent (hunion).
-  -- This gives: D*(|V(G)|-1) - k ≤ finrank(span FG.rigidityRows).
-  -- ── Total rank bound: D*(|V(G)|-1) - k ≤ finrank(span FG.rigidityRows at q₀). ──────────────────
-  -- The combined family sn ⊕ so has size N + (D-1) and is LI in FG.rigidityRows.
-  -- We establish the rank bound via Submodule.finrank_mono applied to the combined span.
+  -- ── Total rank bound via Brick A (`le_finrank_span_rigidityRows_of_pinned_placement`). ─────────
+  -- The NEW block (sn, the e_b hinge through v's screw column, `hnewpin_eb`) + the OLD block (so,
+  -- the IH's N Gab-rows, vanishing at v by `hold`, in `span FG.rigidityRows` by `hso_span`) feed the
+  -- shared span-transport pinned-placement brick: `Nat.card sn + Nat.card so ≤ finrank`. With
+  -- `hsn_card : Nat.card sn = D−1`, `hso_card : Nat.card so = N`, and `hNpD : N + (D−1) = D(|V|−1)−k`,
+  -- this is the required ℤ rank lower bound for G.
   have hrank_lb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
       Module.finrank ℝ ↥(Submodule.span ℝ FG.rigidityRows) := by
-    -- Step 1: combined family is LI (hunion). Establish Fintype instances.
     haveI : Fintype sn := Fintype.ofFinite sn
     haveI : Fintype so := Fintype.ofFinite so
-    -- Step 2: combined span ≤ FG.rigidityRows span.
-    have hcomb_le : Submodule.span ℝ (Set.range (Sum.elim
-        (fun i : sn => FG.panelRow ends (i : β × _ × _))
-        (fun i : so => FGab.panelRow Q.ends (i : β × _ × _)))) ≤ Submodule.span ℝ FG.rigidityRows := by
-      rw [Submodule.span_le]
-      rintro _ ⟨(⟨i, hi⟩ | ⟨i, hi⟩), rfl⟩
-      · simp only [Sum.elim_inl]
-        apply Submodule.subset_span
-        apply FG.panelRow_mem_rigidityRows
-        rw [hsn_e _ hi]
-        rcases hends_eb with h | h <;> rw [h]
-        · exact hG_eb
-        · exact hG_eb.symm
-      · simp only [Sum.elim_inr]
-        exact hso_span ⟨i, hi⟩
-    -- Step 3: finrank of combined span = |sn ⊕ so| (by LI + span).
-    -- Use := (term-mode) to avoid type annotation with N (let-binding transparency issue).
-    have hcomb_rank := finrank_span_eq_card hunion
-    -- hcomb_rank : finrank ℝ ↥(span ℝ (range (Sum.elim ...))) = Fintype.card (↑sn ⊕ ↑so)
-    -- Steps 4–6: combined.
-    -- hcomb_rank : finrank(comb span) = Fintype.card (↑sn ⊕ ↑so)
-    -- We need: D*(|V|-1)-k ≤ finrank(FG.rigidityRows span).
-    -- Bridge: hcomb_rank + finrank_mono give Fintype.card (sn ⊕ so) ≤ finrank(FG.rigidityRows span).
-    -- Then rewrite card via hsn_card/hso_card/hNpD to get the ℤ bound.
+    -- Name the NEW (e_b, pinned through v) and OLD (so, the IH's N Gab-rows) blocks as fvars so the
+    -- brick application unifies against opaque families rather than the heavy `ofNormals` lambdas.
+    set rn : sn → Module.Dual ℝ (α → ScrewSpace 2) :=
+      fun i => FG.panelRow ends (i : β × _ × _) with hrn
+    set ro : so → Module.Dual ℝ (α → ScrewSpace 2) :=
+      fun i => FGab.panelRow Q.ends (i : β × _ × _) with hro
+    -- The NEW (e_b) rows are literal `FG.panelRow`s, hence in `span FG.rigidityRows` (`hnew_span`).
+    have hnew_span : ∀ i : sn, rn i ∈ Submodule.span ℝ FG.rigidityRows := by
+      rintro ⟨i, hi⟩
+      refine Submodule.subset_span (FG.panelRow_mem_rigidityRows ?_)
+      rw [hsn_e _ hi]
+      rcases hends_eb with h | h <;> rw [h]
+      · exact hG_eb
+      · exact hG_eb.symm
+    -- Brick A: `Nat.card sn + Nat.card so ≤ finrank`.
+    have hbrick : Nat.card sn + Nat.card so ≤
+        Module.finrank ℝ ↥(Submodule.span ℝ FG.rigidityRows) :=
+      BodyHingeFramework.le_finrank_span_rigidityRows_of_pinned_placement FG (v := v)
+        (rn := rn) (ro := ro) hold hnewpin_eb hso_indep hnew_span hso_span
+    -- `Nat.card sn + Nat.card so = (D−1) + N`; with `hNpD` this is the ℤ bound.
+    rw [hsn_card, hso_card] at hbrick
     rw [← hNpD]
-    -- Goal: ↑(N) + ↑(screwDim 2 - 1) ≤ ↑(finrank(FG.rigidityRows span))
-    have hmono := Submodule.finrank_mono hcomb_le
-    -- hmono : finrank(comb span) ≤ finrank(FG.rigidityRows span)
-    -- rewrite via hcomb_rank: Fintype.card(sn ⊕ so) ≤ finrank(FG.rigidityRows span)
-    rw [hcomb_rank] at hmono
-    -- now: Fintype.card(sn ⊕ so) ≤ finrank(FG.rigidityRows span)
-    -- rewrite card: Fintype.card(sn ⊕ so) = Fintype.card sn + Fintype.card so
-    rw [Fintype.card_sum, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
-        hsn_card, hso_card] at hmono
-    -- hmono : screwDim 2 - 1 + N ≤ finrank(FG.rigidityRows span)
-    -- Goal: ↑N + ↑(screwDim 2 - 1) ≤ ↑(finrank(FG.rigidityRows span))
-    exact_mod_cast Nat.add_comm (screwDim 2 - 1) N ▸ hmono
+    -- hbrick : (D−1) + N ≤ finrank ; goal (ℤ) : ↑N + ↑(D−1) ≤ ↑finrank
+    exact_mod_cast Nat.add_comm (screwDim 2 - 1) N ▸ hbrick
   -- ── Apply exists_rankPolynomial_of_le_finrank_linking to transfer to generic q. ────────────────────
   -- hN: D*(|V(G)|-1) - k ≤ finrank(span FG.rigidityRows). Convert to ℕ.
   have h1V : 1 ≤ V(G).ncard := by
