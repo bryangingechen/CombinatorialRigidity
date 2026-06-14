@@ -3908,7 +3908,12 @@ theorem PanelHingeFramework.case_II_placement_eq612_kdof [DecidableEq α] [Finit
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
     exact h
 
-set_option maxHeartbeats 800000 in
+set_option maxHeartbeats 3200000 in
+-- `case_II_realization_all_k` is a large, heartbeat-heavy proof flagged for a refactor (factor into
+-- helper lemmas — see `notes/Phase22i.md` L6b): the repeated `ScrewSpace 2` typeclass elaboration is
+-- expensive, so the whole-declaration budget is raised once here, replacing several mid-proof resets.
+set_option linter.style.longLine false in
+-- The as-landed proof also carries many over-length lines; suppression is a stopgap pending refactor.
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
 Phase 22i L6b). Katoh–Tanigawa 2011 §6.3, p. 677. A 2-edge-connected minimal `k`-dof-graph
 (`k > 0`, `|V| ≥ 3`) with no proper rigid subgraph carries a generic full-rank realization.
@@ -4076,8 +4081,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   set n_b : Fin (2 + 2) → ℝ := fun i => q (b, i) with hn_b
   have hgab : LinearIndependent ℝ ![n_a, n_b] := by
     have := hQgp a b hab
-    simp only [PanelHingeFramework.ofNormals_normal, hq_def, hn_a, hn_b] at *
-    convert this using 2 <;> simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    simp only [hq_def, hn_a, hn_b] at *
+    convert this using 2
   -- ── Step 6: Inhabited α (needed for G.endsOf). ───────────────────────────────────────────────
   haveI : Inhabited α := ⟨v⟩
   set ends := G.endsOf with hendsDef
@@ -4109,7 +4114,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   have hk1 : 0 ≤ k - 1 := by omega
   have hNZ : (screwDim 2 * (V(Gab).ncard - 1) : ℤ) - (k - 1) ≥ 0 := by
     have h0 : (0 : ℤ) ≤ Module.finrank ℝ (Submodule.span ℝ Q.toBodyHinge.rigidityRows) :=
-      Int.ofNat_nonneg _
+      Int.natCast_nonneg _
     push_cast [h1Gab] at hQrank ⊢
     linarith [hQrank, h0]
   set N : ℕ := (screwDim 2 * (V(Gab).ncard - 1) - (k - 1)).toNat with hN_def
@@ -4137,7 +4142,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- Override v's normal in ofNormals Gab doesn't change the motion space (v ∉ V(Gab)).
   have hvVGab : v ∉ V(Gab) := by
     rw [hGab_def, Graph.vertexSet_splitOff]
-    simp [hav]
+    simp
   have hQ_ends_Gab : ∀ e u w, Gab.IsLink e u w → Gab.IsLink e (Q.ends e).1 (Q.ends e).2 := by
     intro e u w he
     rcases hrec' e u w he with he' | he' <;> rw [he']
@@ -4290,8 +4295,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     fun t₁ t₂ => FG.panelRow_mem_rigidityRows (i := (e_b, t₁, t₂))
       (hFG_graph ▸ hends_G e_b v b hG_eb)
   -- hingeRow v b ρ = FG.panelRow ends (e_b, t₁, t₂) in both orientations.
-  -- ScrewSpace 2 typeclass elaboration is expensive; raise the heartbeat limit here.
-  set_option maxHeartbeats 400000 in
   have hrow_b_eq : ∀ (t₁ t₂ : Set.powersetCard (Fin (2 + 2)) 2),
       BodyHingeFramework.hingeRow v b (annihRow (panelSupportExtensor n_a n_b) t₁ t₂)
         = FG.panelRow ends (e_b, t₁, t₂) := by
@@ -4328,8 +4331,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
         module
       symm; rw [hann, BodyHingeFramework.hingeRow_swap, neg_neg]
   -- -hingeRow v a ρ = FG.panelRow ends (e_a, t₁, t₂) in both orientations.
-  -- ScrewSpace 2 typeclass elaboration is expensive; raise the heartbeat limit here.
-  set_option maxHeartbeats 400000 in
   have hrow_a_eq : ∀ (t₁ t₂ : Set.powersetCard (Fin (2 + 2)) 2),
       -(BodyHingeFramework.hingeRow v a (annihRow (panelSupportExtensor n_a n_b) t₁ t₂))
         = FG.panelRow ends (e_a, t₁, t₂) := by
@@ -4376,8 +4377,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       -- goal: -(r (S v - S a)) = r (S a - S v)
       rw [← neg_sub, map_neg, neg_neg]
   -- ── Step 14: e₀-rows in span(FG.rigidityRows). ───────────────────────────────────────────────
-  -- ScrewSpace 2 typeclass elaboration is expensive; raise the heartbeat limit here.
-  set_option maxHeartbeats 400000 in
   have he₀_rows_mem : ∀ (t₁ t₂ : Set.powersetCard (Fin (2 + 2)) 2),
       FGab.panelRow Q.ends (e₀, t₁, t₂) ∈ Submodule.span ℝ FG.rigidityRows := by
     intro t₁ t₂
@@ -4506,7 +4505,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
         simp only [← hendsDef] at h_swap
         have hse_swap : FG.supportExtensor e = -FGab.supportExtensor e := by
           rw [hFGab_se, hFG_se, h_swap]
-          simp only [Prod.fst, Prod.snd]
           exact panelSupportExtensor_swap _ _
         rw [hse_swap, map_neg, hFGab_se, annihRow_apply_self, neg_zero]
   -- ── hso_span established. Now assemble the rank lower bound and the generic realization. ─────────

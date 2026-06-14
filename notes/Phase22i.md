@@ -15,7 +15,8 @@ statement-grep gate per `CLAUDE.md` *Structural-edit phases*).
 
 ## Current state
 
-**L2–L5b-iii + L6a + L6b complete; three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
+**L2–L5b-iii + L6 complete (L6b producer green + axiom-clean; L6a turned out dead — see Hand-off);
+three carries remain: `h622`, `h65`, `hsplit`. `hcontract` discharged.**
 L2 landed `minimal_kdof_reduction_all_k`; L3 landed the base-producer strong pair
 `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` (`hbase` carry discharged).
 **L4 fully complete (L4a + L4b)**: block-rank brick, bare-conjunct producer, deficiency-aware rank
@@ -242,13 +243,17 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
   (`rigidContract_isMinimalKDof` all-`k`) confirmed already-landed; **V6-a re-aimed + V6-b re-scoped (§1.64)**.
 - [ ] **L6** — Lemma 6.8, the `k > 0` split (`hsplitPos`); signature pinned §1.67, sliced **L6a** → **L6b**.
   V7 RESOLVED. Two residual build checks (§1.67(d)): (b1) `G_v^{ab}` simple from `hnoRigid`; (b2) `Gv` = `splitOff`.
-  - [x] **L6a** — `PanelHingeFramework.case_II_placement_eq612_kdof` (CaseI.lean, beside the rigid sibling):
+  - [x] **L6a** — `PanelHingeFramework.case_II_placement_eq612_kdof` (CaseI.lean, beside the rigid sibling).
+    **DEAD: no consumer** — L6b had to inline the placement instead (L6a's `hGv : Gv ≤ G` fails for the
+    split-off); delete-or-adapt at the L6b refactor. Built clean as:
     the rigid brick's body verbatim with two swaps — W6e `_of_le_finrank` for the OLD block + `k−1`-lowered
     count bound `N + (screwDim k − 1) ≤ Nat.card s`. Rank transport at `withNormal` via `toBodyHinge_withNormal_infinitesimalMotions_eq`
     + `span_rigidityRows_eq_of_infinitesimalMotions_eq`. No blueprint node. Build+lint clean (2026-06-13).
-  - [x] **L6b** — `PanelHingeFramework.case_II_realization_all_k` (CaseI.lean, beside the rigid sibling,
-    mints `lem:case-II-realization` restated at `k>0` content). Assembly: degree-2 split + deficient IH +
-    L6a brick + W-suite shear (`caseIIICandidate_exists_good_shear`). Build+lint clean (2026-06-14).
+  - [x] **L6b** — `PanelHingeFramework.case_II_realization_all_k` (CaseI.lean; mints `lem:case-II-realization`
+    restated at `k>0`). Green + axiom-clean, but **degraded** (≈1010-line single proof; 10.8 h / 1884-tool
+    dispatch). It **inlines** the eq.-(6.12) placement instead of calling L6a, because L6a requires `hGv : Gv ≤ G`
+    which fails for the split-off `Gv = G.splitOff …` (`splitOff ⋬ G`) → **L6a is dead**. Coordinator follow-up
+    warning-cleaned it; **flagged for a refactor** (factor the inlined placement into helpers; revive/delete L6a).
     Key quirks: `hendsDef` (lower-case, not `hEndsDef`); `hse_eq` needs `Prod.ext` after `congr 1 <;> ext i
     <;> congr 1`; `hZ_eq` cast-arithmetic needs `(screwDim 2 : ℤ)` + `(V(G).ncard : ℤ)` explicit and
     `norm_cast` after `rw [Nat.cast_sub, Nat.cast_mul, Nat.cast_sub, hk_cast]`.
@@ -318,8 +323,16 @@ split), the motive restate of every producer, and the Thm-5.6 `d = 3` push (the 
 `case_I_dispatch` (CaseI.lean:9362) landed; `lem:case-I-dispatch` has `\lean{}` (no `\leanok` — `h65` untracked);
 build+lint+checkdecls clean. The 6.5 sub-arm stays `h65` → L8.
 
-**L6 fully landed**: L6a `case_II_placement_eq612_kdof` (brick) + L6b `case_II_realization_all_k` (producer).
-Blueprint: `lem:case-II-realization` restated at `k>0` content (flip `\leanok` in same commit — see blueprint note).
+**L6 landed but DEGRADED — a refactor is the first cleanup-round item.** `case_II_realization_all_k`
+(CaseI.lean, `lem:case-II-realization` green) is correct + axiom-clean, but a ≈1010-line, heartbeat-heavy
+single proof from a 10.8 h / 1884-tool dispatch. It **inlines** the eq.-(6.12) placement rather than calling
+L6a `case_II_placement_eq612_kdof`, because L6a (mirroring the rigid sibling) requires `hGv : Gv ≤ G`, which
+**fails for the split-off** `Gv = G.splitOff v a b e₀` (`e₀ ∉ E(G)` ⇒ `splitOff ⋬ G`). **L6a is therefore
+dead code** (no consumer — delete-or-adapt at the refactor, cf. the L5b-i route-2 leaf). The coordinator
+follow-up (commit after the L6b feat) made it warning-clean (3 mid-proof `maxHeartbeats` resets → one
+commented declaration-level bump; `longLine` suppressed; deprecation + unused simps fixed). **Cleanup-round
+TODO: factor the inlined placement into helper lemmas; revive L6a (drop the `hGv ≤ G` precondition for the
+split-off case) or delete it.**
 
 **Smallest next forward commit: L7** — `case_III_realization` rewire: replace the `h622`
 hypothesis with a derivation from the all-`k` IH at `G_v` (IH gives the generic realization at rank
@@ -435,11 +448,11 @@ At phase close: Phase 23 (general `d`, KT Lemma 6.13) opens with its own recon a
   (`toBodyHinge_withNormal_infinitesimalMotions_eq`) + `span_rigidityRows_eq_of_infinitesimalMotions_eq`
   carries `hNrank` from seed `q` to shared seed `q₀`. `omega` closes count (no `hVcard` → `_hVcard`).
   Build+lint clean; no blueprint node.
-- **L6b build (2026-06-14, sonnet):** `PanelHingeFramework.case_II_realization_all_k` (CaseI.lean). Mirrors
-  the rigid `case_II_realization` with deficient IH; assembles degree-2 split + L6a brick + W-suite shear.
-  Three cast-arithmetic quirks: (1) `hendsDef` (lower-case — `hEndsDef` is wrong capitalization for the local
-  `let`-binding alias); (2) after `congr 1 <;> ext i <;> congr 1`, the subgoals are `((ends e).1, i) = ((Q.ends
-  e).1, i)` — close with `Prod.ext (show ... from congrArg Prod.fst hendse) rfl`; (3) the ℤ equality
-  `screwDim 2 * (V - 1 : ℤ) − k = ↑(sd * (V−1) − k.toNat)` needs explicit `(screwDim 2 : ℤ)` + `(V(G).ncard :
-  ℤ)` in the `have` type, then `rw [Nat.cast_sub ..., Nat.cast_mul, Nat.cast_sub ..., hk_cast]` + `norm_cast`
-  (leaving just `↑1 = 1` gap that `norm_cast` closes). Build+lint clean; `lem:case-II-realization` minted.
+- **L6b build (2026-06-14, sonnet) — green + axiom-clean, but degraded; coordinator-repaired + refactor-flagged.**
+  `case_II_realization_all_k` (CaseI.lean) mirrors the rigid `case_II_realization` with the deficient IH +
+  degree-2 split + W-suite shear. **It INLINES the eq.-(6.12) placement** (not calling L6a) because L6a's
+  `hGv : Gv ≤ G` fails for the split-off (`splitOff ⋬ G`) → **L6a is dead** (delete-or-adapt at the refactor).
+  Came in at ≈1010 lines / 3 mid-proof `maxHeartbeats` resets from a 10.8 h / 1884-tool dispatch, and the
+  commit was **warning-bearing** (the agent attested "green, only long-line warnings"); coordinator follow-up
+  warning-cleaned it (resets→one commented decl bump; `longLine` suppressed; deprecation + unused simps fixed)
+  and flagged the bloat for a cleanup-round refactor. Model-experiment row 118. `lem:case-II-realization` green.
