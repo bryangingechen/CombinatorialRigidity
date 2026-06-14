@@ -4,12 +4,20 @@
 
 ## Current state
 
-**Next: S2 — the blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in
-`rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` + `\leanok` + `\uses` (the
-pin-a-body block-independence node `linearIndependent_sum_pinned_block`). Touches a blueprint pointer
-→ run `blueprint/verify.sh`.
+**Next: S4 — refactor L6b onto Brick A** (`case_II_realization_all_k`, CaseI.lean): replace the inlined
+`hN_FG` (:4513–4526) + `hrank_lb` (:4708–4749) with a Brick A call, and **extract `he₀_rows_mem`
+(:4380–4509) as a named helper** discharging Brick A's `hold_span`. The one genuinely-new slice;
+preserve the orientation case-split (§1.68(g)(ii)); trace `D(|V|−1)−k` closes (§1.68(c)). Standard
+build dispatch.
 
-**S1 — Brick A — DONE** (this commit): `le_finrank_span_rigidityRows_of_pinned_placement` +
+**S2 — blueprint node — DONE** (this commit): `lem:rigidityRows-pinned-placement-rank-add` landed in
+`rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both
+`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) + `\leanok` + `\uses` (the pin-a-body
+block-independence nodes `lem:case-II-placement-block-independent` for the base half,
+`lem:case-III-conditional-block` for the augment). All gates green (`blueprint/verify.sh` — lint +
+checkdecls + TeX build).
+
+**S1 — Brick A — DONE:** `le_finrank_span_rigidityRows_of_pinned_placement` +
 `_augment` landed in `RigidityMatrix.lean` (`section PinnedPlacementBrick`, beside the splice brick),
 build + lint warning-clean, axiom-clean (the three standard axioms only). The §1.68(g)(i)
 `Nat.card`/`Fintype` open risk resolved cleanly — the established `Nat.card_eq_fintype_card` +
@@ -49,10 +57,10 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   `linearIndependent_sum_pinned_block`(`_augment`) → `finrank_span_eq_card` → `Submodule.finrank_mono`.
   Open risk (`Nat.card`/`Fintype`, §1.68(g)(i)) resolved cleanly via the standard
   `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge.
-- [ ] **S2 — blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in `rigidity-matrix.tex`,
-  beside `lem:rigidityRows-splice-rank-add`; `\lean{}` + `\leanok` + `\uses` (the pin-a-body
-  block-independence node). *Standard build dispatch — touches a blueprint pointer, so runs
-  `verify.sh`; P≈1.*
+- [x] **S2 — blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in `rigidity-matrix.tex`,
+  beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both bricks) + `\leanok` + `\uses`
+  (`lem:case-II-placement-block-independent` base, `lem:case-III-conditional-block` augment, plus
+  `def:rigidity-matrix`). **DONE.** All `verify.sh` gates green.
 - [ ] **S4 — refactor L6b onto Brick A** (`case_II_realization_all_k`, CaseI.lean): replace the inlined
   `hN_FG` (:4513–4526) + `hrank_lb` (:4708–4749) with a Brick A call, and **extract `he₀_rows_mem`
   (:4380–4509) as a named helper** (`…case_II_placement_e0_row_in_span` or similar) discharging Brick
@@ -83,13 +91,15 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Hand-off / next phase
 
-**Next concrete commit: S2 — the blueprint node** `lem:rigidityRows-pinned-placement-rank-add` in
-`rigidity-matrix.tex`, beside `lem:rigidityRows-splice-rank-add`; `\lean{}` (both
-`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) + `\leanok` + `\uses` (the pin-a-body
-block-independence node). Touches a blueprint pointer → run `blueprint/verify.sh` (+ `checkdecls`).
-Then S4 → S5 → cleanup, in order (S1 — Brick A — landed). At 22j close: open **Phase 22k** (completing
-the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming Brick A; S3 =
-the deficiency-aware Brick B lands there), then Phase 23 (general `d`).
+**Next concrete commit: S4 — refactor L6b onto Brick A** (`case_II_realization_all_k`, CaseI.lean):
+replace the inlined `hN_FG` (:4513–4526) + `hrank_lb` (:4708–4749) with a
+`le_finrank_span_rigidityRows_of_pinned_placement` call, and **extract `he₀_rows_mem` (:4380–4509) as
+a named helper** (`…case_II_placement_e0_row_in_span` or similar) discharging Brick A's `hold_span`.
+The one genuinely-new slice — preserve the orientation case-split (§1.68(g)(ii)); trace `D(|V|−1)−k`
+closes (§1.68(c)). Standard build dispatch (gates: `lake build` + `lake lint` warning-clean +
+axiom-clean). Then S5 → cleanup bundle, in order (S1 + S2 landed). At 22j close: open **Phase 22k**
+(completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in `notes/Phase22i.md`, consuming
+Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23 (general `d`).
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
@@ -112,3 +122,10 @@ should **not** fire — if it seems to, re-read §1.68 rather than dispatching a
   `hnew_span`/`hold_span`), conclusion `Nat.card ιn + Nat.card ιo ≤ finrank (span F.rigidityRows)` (no
   literal-`rigidityRows` membership), no new math. `_augment` reuses
   `linearIndependent_sum_pinned_block_augment` for the `+1`.
+- **S2 — blueprint node landed (2026-06-14):** `lem:rigidityRows-pinned-placement-rank-add` in
+  `rigidity-matrix.tex`, beside the splice node. Both bricks (`…of_pinned_placement` + `_augment`)
+  under one `\lean{}` (corner-case grouping); `\uses` the existing pin-a-body block-independence
+  nodes — `lem:case-II-placement-block-independent` (base, = `linearIndependent_sum_pinned_block`) +
+  `lem:case-III-conditional-block` (augment, = `linearIndependent_sum_pinned_block_augment`) + `def:
+  rigidity-matrix`. Prose frames it as the pin-a-body (split) analogue of the collapse-geometry
+  splice brick (KT Lemma 6.2 vs 6.8). All `verify.sh` gates green.

@@ -351,6 +351,51 @@ and the generic-rank argument are in hand.
   Adding the two inequalities and using rank-nullity gives the bound.
 \end{proof}
 
+\begin{lemma}[Span-level pinned-placement block-rank lower bound; the shared eq.\ (6.12) placement brick]
+  \label{lem:rigidityRows-pinned-placement-rank-add}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_pinned_placement,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.le_finrank_span_rigidityRows_of_pinned_placement_augment}
+  \leanok
+  \uses{def:rigidity-matrix, lem:case-II-placement-block-independent, lem:case-III-conditional-block}
+  The span-transport analogue of the splice brick
+  (\cref{lem:rigidityRows-splice-rank-add}) for the \emph{pin-a-body} (vertex-splitting)
+  geometry, as opposed to the splice brick's \emph{collapse} (projected-column)
+  geometry --- this is KT's own Lemma~6.2 (contraction) versus Lemma~6.8 (splitting)
+  distinction. Let $F$ be a body-hinge framework, $v$ a body, and write $S =
+  \operatorname{span}(R(F))$ for its rigidity-row span. Let $\{r_n^i\}_{i \in \iota_n}$
+  be a \emph{new block} of row functionals and $\{r_o^j\}_{j \in \iota_o}$ an \emph{old
+  block}, with:
+  \begin{enumerate}
+    \item $r_n$ is independent through body $v$'s screw column (the composites $r_n^i
+      \circ \operatorname{single}_v$ are independent);
+    \item $r_o$ vanishes on $v$'s screw column ($r_o^j(\operatorname{update}\,0\,v\,x) = 0$);
+    \item $r_o$ is independent;
+    \item every $r_n^i \in S$ and every $r_o^j \in S$.
+  \end{enumerate}
+  Then $|\iota_n| + |\iota_o| \le \operatorname{rank}(S)$. The $+1$ augment variant adds one
+  further candidate row $w \in S$ to the new block, independent through $v$'s column alongside
+  $r_n$, and concludes $|\iota_n| + 1 + |\iota_o| \le \operatorname{rank}(S)$ --- the extra
+  row supplying Case~III's lift of the stratum-1 count $D(|V|-1)-1$ to full $D(|V|-1)$ (KT
+  eq.~(6.29)).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-II-placement-block-independent, lem:case-III-conditional-block}
+  The block-triangular pin-a-body split
+  (\cref{lem:case-II-placement-block-independent}; for the augment,
+  \cref{lem:case-III-conditional-block}) makes the combined family
+  $\operatorname{Sum.elim}\,r_n\,r_o$ linearly independent. Its span lies in $S$ by
+  hypothesis~(4), so $\operatorname{finrank}$ of the combined span equals the block-size sum
+  ($\mathtt{finrank\_span\_eq\_card}$) and is bounded by $\operatorname{rank}(S)$
+  ($\mathtt{Submodule.finrank\_mono}$). This is the rank skeleton of the KT Lemma~6.8 producer
+  lifted out of its inlined placement; no new linear algebra --- the abstraction's value is in
+  the callers' discharge of hypothesis~(4) (the split-off $e_0 = e_a + e_b$ row decomposition
+  for Lemma~6.8, the relabel hinge-row span interface for Case~III). Unlike the literal
+  placement bricks, the conclusion keys on \emph{membership in} $S$ rather than literal
+  rigidity-row membership, so every real reduction graph (collapse, split-off, or relabel ---
+  which land rows only in $S$) fits. See \cite[\S6.3]{katohTanigawa2011}.
+\end{proof}
+
 \begin{lemma}[The exterior-column projection preserves the rigidity-row rank at any rank; the splice brick's injectivity input]
   \label{lem:extProj-preserves-rank-of-inter}
   \lean{CombinatorialRigidity.Molecular.infinitesimalMotions_sup_range_extProj_eq_top_of_inter_eq_singleton,
