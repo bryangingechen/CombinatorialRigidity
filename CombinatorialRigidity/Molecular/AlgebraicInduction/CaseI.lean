@@ -9358,4 +9358,50 @@ theorem PanelHingeFramework.case_I_realization_all_k [DecidableEq β] [Finite α
       hcover ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hQc_rat k
       hsc_proj_indep n hn hne_ends hG.1
 
+/-- **Case I dispatch: simple vs non-simple contraction** (`lem:case-I-dispatch`,
+the `hcontract` slot-filler for `minimal_kdof_reduction_all_k`; KT Lemmas~6.2/6.3/6.5;
+Phase 22i L5b-iii).
+
+Dispatches on `G.Simple`:
+- non-simple → `case_I_realization_nonsimple` (KT Lemma 6.2, bare motive);
+- simple → inner dispatch on whether some `(H, r)` has simple contraction
+  `(G.rigidContract H r).Simple`:
+  - 6.3 arm (simple contraction): `case_I_realization_all_k` + M4 forgetful map;
+  - 6.5 arm (all contractions non-simple): carried hypothesis `h65` (→ L8). -/
+theorem case_I_dispatch [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (h65 : ∀ (k : ℤ) (G : Graph α β), G.IsMinimalKDof n k → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
+      (∀ (H : Graph α β), H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
+          ¬ (G.rigidContract H r).Simple) →
+      (∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+          HasPanelRealization 2 n G') →
+      PanelHingeFramework.HasGenericFullRankRealization 2 n G)
+    (k : ℤ) (G : Graph α β) (hG : G.IsMinimalKDof n k) (hV3 : 3 ≤ V(G).ncard)
+    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
+      HasPanelRealization 2 n G := by
+  classical
+  haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
+  by_cases hSimple : G.Simple
+  · -- simple branch: GP conjunct + M4 forgetful bare
+    have hGP : PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+      by_cases hd : ∃ H : Graph α β, ∃ r : α,
+          H.IsProperRigidSubgraph G n ∧ r ∈ V(H) ∧ (G.rigidContract H r).Simple
+      · obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
+        exact PanelHingeFramework.case_I_realization_all_k hD hn G hG hV3 hSimple hH hr hcSimple hIH
+      · exact h65 k G hG hV3 hrig hSimple
+            (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩) hIH
+    exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩
+  · -- non-simple branch: GP vacuous, bare via case_I_realization_nonsimple
+    exact ⟨fun hS => absurd hS hSimple,
+           case_I_realization_nonsimple hD hn G hG hV3 hSimple
+             (fun k' G' hG' hne' hlt => (hIH k' G' hG' hne' hlt).2)⟩
+
 end CombinatorialRigidity.Molecular
