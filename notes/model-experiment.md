@@ -81,34 +81,33 @@ deferred-route-hinges-on-consumer clause added to
 
 ## Repo-local config
 
-- **Testbed:** the molecular program — Phase 22j (the shared eq.-(6.12)
-  placement abstraction) closed 2026-06-15; the active testbed is now the
-  **post-22j perf round** (`CaseI.lean` file split, `notes/Phase22j-perf.md`),
-  continuing into successor phases (22k onward) until concluded.
+- **Testbed:** the molecular program — Phase 22j + the post-22j perf round
+  (`CaseI.lean` 5-file split) closed 2026-06-15; the active testbed is now
+  **Phase 22k** (completing the honest all-`k` Theorem 5.5: Case III / spine
+  + Thm 5.6 at `d=3`; `notes/Phase22k.md`), continuing into successor phases
+  until concluded.
 - **Rungs available:** haiku → sonnet → opus → fable (the Agent
   tool's `model` parameter).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md`
   model-tier step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase22j-perf.md` *Layer plan* / *Hand-off*.
+- **Phase-side pointer:** `notes/Phase22k.md` *Layer plan* / *Hand-off* (the L7–L10
+  design basis lives in `notes/Phase22i.md` *Hand-off* until 22k-open transcribes it).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-15, fresh coordinator session for the post-22j perf
-  round — supersedes the prior same-date 22j-close note, which expired at that session's
-  end).** fable **unavailable** this session (user-confirmed at session start; any
-  fable-mapped pass substitutes opus, logged). **Standing rung override for the whole
-  perf round (user-set at session start): dispatch every slice at `opus`, regardless of
-  the S/P/B → map.** S/P/B is still rated per slice for the log/data (a file carve is
-  typically 1/1/2 → sonnet on the map), but the rung is fixed at opus, so this round
-  contributes no cross-rung comparison data — the rung-tier experiment is effectively
-  suspended for the perf round (all rows run opus; no probes; a boundary pair to an
-  adjacent rung would violate the override, so pairs, if run, are pin-audit-only and at
-  opus). **Expires at session end** — a fresh coordinator re-runs the availability check
-  and reverts to the full map (and would need a fresh override to repeat opus-only).
-  **Run modifications this session (user-set at session start):** the 10-run check-in cap
-  is **lifted** (the loop runs to round close or a surfaced concern), and step-4
-  mechanical fixups (wrong branch / author / co-author trailer) are **pre-authorized**
-  (apply without stopping to ask). The coordinator is Opus 4.8 (1M context).
+- **Session availability (2026-06-15, fresh coordinator session for Phase 22k —
+  supersedes the prior same-date perf-round note, which expired at that session's end).**
+  fable **unavailable** this session (user-confirmed at session start; any fable-mapped
+  pass — phase-open/close, design-settle, S=3 — substitutes **opus**, logged as a
+  substitution). **Rung policy: reverted to the full S/P/B → map** (user-confirmed at
+  session start) — the perf-round opus-only override expired with the perf round; 22k is a
+  real math phase, so the per-task map runs and produces genuine cross-rung data (probes
+  and boundary pairs are back in play). **Run modifications this session (user-set at
+  session start):** the 10-run check-in cap is **lifted** (the loop runs to phase close or
+  a surfaced concern), and step-4 mechanical fixups (wrong branch / author / co-author
+  trailer) are **pre-authorized** (apply without stopping to ask). The coordinator is
+  Opus 4.8 (1M context). **Expires at session end** — a fresh coordinator re-runs the
+  availability check.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13} session-local rung overrides and availability constraints — all
   expired by their own terms. A fresh coordinator reverts to the S/P/B → map
@@ -127,11 +126,11 @@ deferred-route-hinges-on-consumer clause added to
   `lake exe cache get` itself; the protocol's APFS `.lake`-seeding default is no longer
   *required* (still a fine fast path) and its unseeded `cache get` fallback now works
   agent-side. The worktree-location point (1) is the standing repo-local constraint.
-- **Standing rung override active this session: opus-only for the whole post-22j perf
-  round** (user-set at session start — see the *Session availability* bullet above).
-  Supersedes the S/P/B → map for the duration of the perf round; expires at session end.
-  (Prior zone-scoped overrides — opus-minimum for the §38-trap `hcand`-discharge zone and
-  the KT-4.2 fiber-bookkeeping zone — all expired by their own terms; see the
+- **No standing rung override this session (Phase 22k): the full S/P/B → map is in
+  effect** (user-confirmed at session start — see the *Session availability* bullet
+  above). The prior perf-round opus-only override expired with the perf round. (Earlier
+  zone-scoped overrides — opus-minimum for the §38-trap `hcand`-discharge zone and the
+  KT-4.2 fiber-bookkeeping zone — all expired by their own terms; see the
   collapsed-overrides bullet above and *Findings*.)
 
 ## Log
