@@ -104,7 +104,11 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   build warning-clean 67s, `lake lint`, producer axiom-clean propext/Classical.choice/Quot.sound).
 - [ ] **(B) follow-up — CaseI.lean file split (NOT 22j; user sign-off after close).** 10,346 lines →
   5-file `AlgebraicInduction/` chain. Plan + verified DAG + leverage in the PERFORMANCE.md recon.
-- [ ] **`CLEANUP.md` §C-note refresh** (coordinator-authored) for the slimmed producer.
+- [x] **`CLEANUP.md` §C-note refresh — DONE** (2026-06-15, coordinator-authored): added a §C
+  *Long-proof audit* calibration entry for the L6b producer — only one small sub-lemma was extractable
+  (the rank-cast bridge), the rest is diffuse / non-factoring, so the lever is a **file split** (ranked
+  in `notes/PERFORMANCE.md`), not sub-lemma extraction. **User decision (option a):** close 22j now;
+  the CaseI.lean file split (B) + C candidates land in a dedicated follow-up perf round.
 
 **S3 is 22k, not 22j:** generalizing Brick B (`case_III_old_new_blocks` → rank input + `hleG`
 transport) is deferred — Case III's rank path consumes the `hρGv`/`hwmem` span-interface, and S3 risks

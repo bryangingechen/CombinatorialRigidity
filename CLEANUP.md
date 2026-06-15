@@ -170,6 +170,25 @@ refactor candidates. When C does surface a refactor, it tends to
 come from outside the top-10 — a smaller proof whose shape
 matches one already known to be unifiable.
 
+**Calibration (Phase 22j, the L6b producer
+`case_II_realization_all_k`).** The molecular layer's largest single
+proof (~900 lines, formerly carrying a `maxHeartbeats 3200000`
+budget) was walked in a dedicated design-pass (`notes/PERFORMANCE.md`
+*Molecular `CaseI.lean` perf recon*). Only **one** small
+self-contained sub-lemma was cleanly extractable — the duplicated
+ℤ/ℕ rank-cast bridge (→ `toNat_le_of_add_pred_eq` /
+`sub_toNat_eq_of_add_pred_eq` in `RigidityMatrix.lean`), which
+removed the dominant `CoeT` typeclass load and let the whole-decl
+budget drop 3.2M → 600000. The rest of the cost is *diffuse* across a
+geometric middle whose ~15–20-local dependency surface makes
+sub-lemma extraction a net-negative (the "S4b trap",
+`notes/Phase22j.md`). This confirms the no-extract default above and
+adds the lever the four-question walk doesn't name: **when a long
+proof's cost is diffuse and its locals don't factor, the win is a
+*file* split** (carry the whole proof to its own file), not sub-lemma
+extraction. That file-split candidate (`CaseI.lean` at 10,346 lines)
+is ranked in `notes/PERFORMANCE.md` for a follow-up perf round.
+
 ### D. Project-organization compression
 
 Compression is **primarily a per-commit constraint** now (`CLAUDE.md`
