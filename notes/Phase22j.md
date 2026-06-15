@@ -4,11 +4,17 @@
 
 ## Current state
 
-**Next: drop the two L6b suppressions — but only after a real refactor (NOT a mechanical drop).** The
-dead-code half of the cleanup bundle landed (deleted `hso_ne_sn` + its trailing stale comment block +
-the stale `h_hnewpin_v`/TODO lines in `case_II_realization_all_k`). The **suppression drops are both
-infeasible as a mechanical P≈1 cleanup** — empirically verified 2026-06-15, the note's "retry post-S4a"
-premise was wrong:
+**Next: a recon/design-pass to scope the split-refactor plan (then execute).** User decision
+(2026-06-15, `coordinate-phase` option c): do BOTH suppression refactors within 22j, then assess
+whether the molecular-conjecture files/proofs warrant further splitting (build-time / unwieldiness).
+The heartbeats refactor = split the L6b producer into helper lemmas, which is a concrete instance of the
+wider split question — so the recon scopes both at once; the longLine reflow lands *after* the split (it
+changes line counts). Coordinator-measured: **CaseI.lean is 10,346 lines** (the prime split candidate;
+next-largest molecular files ≈3.4–3.8k) with four raised heartbeat budgets (:3723 3.2M above the
+producer, plus 400k/800k/800k for later decls). The dead-code half of the cleanup bundle landed (deleted
+`hso_ne_sn` + its trailing stale comment block + the stale `h_hnewpin_v`/TODO lines in
+`case_II_realization_all_k`). The **suppression drops are both infeasible as a mechanical P≈1 cleanup** —
+empirically verified 2026-06-15, the note's "retry post-S4a" premise was wrong:
 - **`maxHeartbeats 3200000` drop FAILS the build.** Reverting to the default 200000 ceiling times out at
   three positions in the producer (`isDefEq` ~:4205, tactic exec ~:4189, `whnf` at the decl head). The
   86s wall-clock figure does *not* mean it fits the default heartbeat budget — wall-clock ≠ heartbeats.
@@ -110,16 +116,17 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Hand-off / next phase
 
-**Cleanup bundle's dead-code half landed (2026-06-15); the two suppression drops are deferred refactors
-(not P≈1 — see *Current state* / *Blockers*).** This is a **coordinator decision point** on how to
-close 22j: the dead-code deletion is done, but the named "drop both suppressions" deliverable is
-empirically infeasible as a mechanical drop. Options for the coordinator: (a) treat 22j as effectively
-done on its Brick-A-abstraction arc (S1/S2/S4a/S5 + the dead-code cleanup) and close it, re-homing the
-two suppression-drop refactors as a tracked item under Phase 22k (or a dedicated perf/style pass); or
-(b) keep 22j open to land one or both refactors first. Recommend (a) — the suppression drops are pure
-hygiene with no bearing on 22k's Case III consuming Brick A, and the heartbeats one is a genuine
-perf-profiling sub-step better batched with other producer-perf work. The `CLEANUP.md` §C-note refresh
-(coordinator-authored) for the slimmed producer is still pending.
+**Next concrete step: a recon/design-pass (docs) scoping the split-refactor plan** — written to
+`notes/PERFORMANCE.md` (beside its *Split candidates ranked by leverage* / *Factors to weigh when
+ranking splits* / *Import graph* sections), covering (1) the L6b producer heartbeats split (profile →
+named helper lemmas with signatures, to drop/lower `maxHeartbeats`), (2) a CaseI.lean file split (10,346
+lines — the prime candidate), and (3) a ranked survey of other molecular split candidates for a
+follow-up perf round. **User decision (2026-06-15, `coordinate-phase` option c):** do both suppression
+refactors within 22j, then assess wider splitting. After the recon, the execution order is: the producer
+helper-split (drop/lower `maxHeartbeats`) → longLine reflow on the lines that remain (drop
+`linter.style.longLine false`) → the wider file-split recommendation goes to the user for sign-off →
+`CLEANUP.md` §C-note refresh + the phase-close checklist. (S1/S2/S4a/S5 + the dead-code cleanup landed;
+S4b skipped.)
 
 After 22j: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
 `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23
@@ -128,16 +135,18 @@ done.)
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
-Drives this log via the *Hand-off* pivot. **The cleanup bundle's dead-code half landed; the two
-suppression drops turned out to be deferred refactors, not the mechanical P≈1 slice this note
-assumed** (the "retry post-S4a / 86s" premise was a wall-clock-≠-heartbeats error — see *Current
-state* / *Blockers*). The coordinator now has a **decision point** (recorded in *Hand-off*): close 22j
-on its Brick-A arc + dead-code cleanup and re-home the suppression refactors (recommended), or keep it
-open to land them. If closing: run the **phase-close checklist** (flip 22j ✓ across ROADMAP / README /
-home_page / intro.tex / MolecularConjecture; compress ROADMAP §22j; write the model-experiment
-*Findings* for 22j; refresh the `CLEANUP.md` §C-note; re-home the two suppression-drop refactors as a
-tracked item; then open **Phase 22k**). The model-experiment is **running** — re-run the availability
-check at session start and record any substitution/override in the log's repo-local config.
+Drives this log via the *Hand-off* pivot. **User decided (2026-06-15, option c): do both suppression
+refactors within 22j, then assess wider molecular-files splitting.** The cleanup bundle's dead-code half
+landed; the two suppression drops are refactors, not mechanical (the "retry post-S4a / 86s" premise was
+a wall-clock-≠-heartbeats error). **Next dispatch = a recon/design-pass** (docs design-pass commit to
+`notes/PERFORMANCE.md`; opus per override, design-settle): scope the producer heartbeats split + a
+CaseI.lean (10,346-line) file split + a ranked survey of other molecular split candidates, with buildable
+slices and 22j-vs-follow-up scope. Then execute the producer split → longLine reflow → surface the wider
+file-split recommendation to the user → `CLEANUP.md` §C refresh + phase-close. **Phase-close checklist**
+(when 22j actually closes): flip 22j ✓ across ROADMAP / README / home_page / intro.tex /
+MolecularConjecture; compress ROADMAP §22j; write the model-experiment *Findings* for 22j; then (after
+user confirm) open **Phase 22k**. The model-experiment is **running** (opus-only override this session;
+availability check recorded 2026-06-15 in the log's repo-local config).
 
 ## Decisions made during this phase
 
