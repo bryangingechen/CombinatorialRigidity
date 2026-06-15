@@ -3,7 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
+import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII
 
 /-!
 # The algebraic induction — Theorem 5.5 base producers + cut-edge + dispatch
@@ -11,8 +11,8 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
 Phase 22 (molecular-conjecture program; see `notes/MolecularConjecture.md`). The tail of the
 algebraic-induction realization layer, carved off `AlgebraicInduction/CaseI.lean` in the
 post-Phase-22j perf pass (`notes/Phase22j-perf.md`; pure semantics-preserving file split, no decl
-renamed). On top of the Case-I / Case-II / Case-III producers in `AlgebraicInduction/CaseI`, this
-file carries:
+renamed). On top of the Case-I / Case-II producers in `AlgebraicInduction/CaseI` and the Claim-6.11
+/ Case-III producers in `AlgebraicInduction/CaseIII`, this file carries:
 
 * the **Theorem 5.5 base producers** (`theorem_55_base_producer_*` — the `|V| = 2`, `k = 0`
   parallel-pair / empty / single-edge arms and their general-position forms, plus the trichotomy

@@ -6,12 +6,14 @@ file carved off per slice, build-verified between. **No new math, no decl rename
 
 ## Current state
 
-**Next: P2 — carve `CaseIII.lean`** (Claim 6.11 + Case III). **P1 landed** — the
-`Theorem55.lean` tail block (base producers + cut-edge + dispatch) is carved into its own file
-importing the monolith; the aggregator now imports `…AlgebraicInduction.Theorem55` (drop the
-`…CaseI` line). CaseI shrank 10,366 → 8,504 lines; the new chain head is `…CaseI ← Theorem55`. Build
-+ lint warning-clean, the moved producers axiom-clean (`propext, Classical.choice, Quot.sound`), all
-50 blueprint name-only pins unaffected. The round splits `Molecular/AlgebraicInduction/CaseI.lean`
+**Next: P3 — carve `CaseII.lean`** (the L6b producer block). **P1 + P2 landed** — the
+`Theorem55.lean` tail (base producers + cut-edge + dispatch) and the `CaseIII.lean` block (Claim 6.11
++ Case III) are carved into their own files; the chain is now `…CaseI ← CaseIII ← Theorem55` and the
+aggregator imports `…AlgebraicInduction.Theorem55` (unchanged from P1). CaseI shrank 8,504 → 4,683
+lines; `CaseIII.lean` = 3,859 LoC (still ~2.5× cap — a later sub-split candidate per plan B). Build
++ lint warning-clean, the moved Case-III producers axiom-clean (`propext, Classical.choice,
+Quot.sound`), all 50 blueprint name-only pins unaffected (`checkdecls` green). The round splits
+`Molecular/AlgebraicInduction/CaseI.lean`
 into a 5-file `AlgebraicInduction/` chain. The ranked plan — target files, the verified intra-file
 dependency DAG, the cut-line map, the leverage analysis, and the rename-free / blueprint-pin-safe
 argument — is the **canonical** recon output in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf
@@ -53,7 +55,13 @@ slice, when its head splits into `Coupling.lean` + the trimmed `CaseI.lean`):
   cut at CaseI's old :8503/:8504 (after `case_III_realization`, before `theorem_55_base_producer_parallel_pair`);
   1862 decl-lines moved verbatim (head→tail, `case_III_realization` is the last head decl);
   Theorem55 = 1899 LoC, CaseI now 8504. Axiom-clean, lint-clean, 50 pins intact.
-- [ ] **P2 — carve `CaseIII.lean`** (Claim 6.11 + Case III); rewire `Theorem55` to import it. Build.
+- [x] **P2 — carve `CaseIII.lean`** (Claim 6.11 + Case III) into a new file importing the monolith;
+  rewire `Theorem55` to import `…CaseIII`. Build + lint warning-clean. **Done** — cut at CaseI's
+  old :4683/:8502 (the `exists_redundant_panelRow_of_edge_of_finrank_lt` Claim-6.11 docstring/decl
+  through `case_III_realization`, the last head decl); 3820 decl-lines moved verbatim (head→tail);
+  CaseIII = 3859 LoC, CaseI now 4683. Axiom-clean, lint-clean, 50 pins intact (`checkdecls` green).
+  The only backward "reference" was a docstring cross-mention of `case_III_realization_of_line` at
+  the old CaseI:2654 (prose, not code) — no compile edge, carve is clean.
 - [ ] **P3 — carve `CaseII.lean`** (the L6b producer block); rewire `CaseIII` to import it. Build.
 - [ ] **P4 — split the head**: carve `Coupling.lean` (foundations) off the monolith, leaving the
   trimmed `CaseI.lean` (Case I + rank-poly) importing it. Build. (Confirms the final 5-file chain.)
@@ -103,18 +111,21 @@ root-caused and fixed in the monolith (see *Blockers*); standard `open scoped Gr
 
 ## Hand-off / next phase
 
-**P1 landed (2026-06-15).** `Theorem55.lean` carved off; aggregator rewired; build/lint/axioms clean
-(detail in *Current state* + the P1 checklist item). The import-poison that stalled three P1 attempts
-stays fixed and transparent — slice boilerplate is just `namespace`/`variable`/`open scoped Graph`
-(no `local notation` / `_root_`); mechanism in *Blockers*.
+**P1 + P2 landed (2026-06-15).** `Theorem55.lean` and `CaseIII.lean` carved off; chain is
+`…CaseI ← CaseIII ← Theorem55`, aggregator imports `…Theorem55`; build/lint/axioms/`checkdecls` clean
+(detail in *Current state* + the P1/P2 checklist items). The import-poison that stalled three P1
+attempts stays fixed and transparent — slice boilerplate is just `namespace`/`variable`/`open scoped
+Graph` (no `local notation` / `_root_`); mechanism in *Blockers*.
 
-**Next concrete commit: P2 — carve `CaseIII.lean`** (the Claim 6.11 + Case III block: from the head of
-the trimmed `CaseI.lean`, the `case_III_*` / `caseIIICandidate` / Claim-6.11 decls down to and
-including `case_III_realization`, currently CaseI's last decl ending at :8502). New file imports the
-monolith (`…CaseI`); rewire `Theorem55` to import `…CaseIII` instead of `…CaseI`; re-derive the cut
-line against the current file. Watch the forward edge `case_III_*` → `case_II_placement_eq612` (a
-Case-II decl earlier in CaseI), which keeps CaseIII importing the monolith. Gate: `lake build` +
-`lake lint` warning-clean + axiom-clean. Then P3→P4 per the *Layer plan*. Full target + DAG + cut map
+**Next concrete commit: P3 — carve `CaseII.lean`** (the L6b producer block, now the tail of the
+trimmed `CaseI.lean`: `case_II_placement_eq612` at :3530 through `case_II_realization_all_k`, CaseI's
+last decl ending at :4681 — **move the `set_option maxHeartbeats 600000 in` at :3733 with the producer**).
+New file imports the monolith (`…CaseI`); rewire `CaseIII` to import `…CaseII` instead of `…CaseI`;
+re-derive the cut line against the current file. The Case-II block depends on the Case-I / rank-poly
+head (`rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` etc.), which keeps CaseII
+importing the monolith; `CaseIII` already references `case_II_placement_eq612` (a forward edge from the
+old monolith), so CaseIII → CaseII is the natural rewire. Gate: `lake build` + `lake lint`
+warning-clean + axiom-clean. Then P4 (head split) per the *Layer plan*. Full target + DAG + cut map
 + leverage: `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon* plan (B).
 
 After this round closes: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — Case III +
