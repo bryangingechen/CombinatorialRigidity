@@ -10,6 +10,9 @@
 #      bib entry is cited somewhere.
 #   3. Supersession gate: no live (non-superseded) node's \uses{...}
 #      reaches a node whose environment title carries `superseded`.
+#   4. Hanging-pin gate: no theorem-like node carries a statement \leanok
+#      without a \lean{...} pin (an uncheckable "green" — checkdecls only
+#      verifies names that ARE pinned, so this class slips through it).
 #
 # Needs no venv / TeX / lake — pure text checks, runs in well under a
 # second. It does NOT replace verify.sh (inv bp + inv web +
@@ -104,6 +107,31 @@ VIOLATIONS="$(comm -12 "$TMP/sup-labels.txt" "$TMP/live-uses.txt")"
 if [ -n "$VIOLATIONS" ]; then
     echo "lint.sh: live nodes \\uses-depend on superseded nodes:" >&2
     echo "$VIOLATIONS" | sed 's/^/  /' >&2
+    FAIL=1
+fi
+
+# --- 4. Hanging-pin gate: \leanok statement with no \lean{} ------------
+# A theorem-like node marked formalized (\leanok on the statement) must
+# pin to a real declaration (\lean{...}); otherwise checkdecls cannot
+# verify it (it checks only names that ARE pinned) — an uncheckable
+# "green" that falls through every other gate. The statement block runs
+# from \begin{env} to the node's \begin{proof} or \end{env}; a \leanok on
+# the proof is separate and not counted here.
+# shellcheck disable=SC2086
+awk '
+ /\\begin\{(lemma|theorem|proposition|corollary|definition)\}/{
+   inenv=1;haveok=0;havelean=0;lab="";
+   if($0~/\\leanok/)haveok=1; if($0~/\\lean\{/)havelean=1; next}
+ inenv&&(/\\begin\{proof\}/||/\\end\{(lemma|theorem|proposition|corollary|definition)\}/){
+   if(haveok&&!havelean)print (lab==""?"(unlabeled)":lab);
+   inenv=0;haveok=0;havelean=0;lab="";next}
+ inenv{
+   if($0~/\\leanok/)haveok=1; if($0~/\\lean\{/)havelean=1;
+   if(match($0,/\\label\{[^}]+\}/)){lab=substr($0,RSTART,RLENGTH);gsub(/\\label\{|\}/,"",lab)}}
+ ' $TEXFILES | sort -u > "$TMP/hanging.txt"
+if [ -s "$TMP/hanging.txt" ]; then
+    echo "lint.sh: \\leanok nodes with no \\lean{} pin (uncheckable green):" >&2
+    sed 's/^/  /' "$TMP/hanging.txt" >&2
     FAIL=1
 fi
 

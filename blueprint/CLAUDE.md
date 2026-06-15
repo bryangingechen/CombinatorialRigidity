@@ -315,14 +315,27 @@ pointer (`SimpleGraph.Henneberg.IsLaman.foo`, not
 
 **The other scriptable gates are bundled in `blueprint/lint.sh`** —
 run it (from any cwd; sub-second, no venv/TeX/lake needed) on any
-commit touching a `\label` / `\uses` / `\cref` / `\cite` or a
-supersession marker. It checks:
+commit touching a `\label` / `\uses` / `\cref` / `\cite` / `\leanok`
+or a supersession marker. It checks:
 
 - every `\uses{...}` and `\cref`/`\Cref{...}` target has a
   `\label{...}`;
 - every `\cite{...}` key has a `bibliography.bib` entry, and every
   bib entry is cited somewhere;
-- the supersession gate below.
+- the supersession gate below;
+- the **hanging-pin gate**: no theorem-like node carries a statement
+  `\leanok` without a `\lean{...}` pin. Such a node is an *uncheckable
+  green* — `checkdecls` verifies only names that **are** pinned, so a
+  `\leanok`-without-`\lean{}` node slips through it (and through the
+  honesty gate, which reads hypotheses, not the `\leanok`/`\lean`
+  pairing). The scriptable form keys on the statement block (`\begin{env}`
+  → the node's `\begin{proof}` or `\end{env}`), so a `\leanok` on the
+  *proof* alone is not flagged. This is the scriptable companion to the
+  honesty gate's no-pin variant; the calibration case
+  (`lem:case-III-nested-rank-lower`, Phase 22k L7b — its `h622lb` discharge
+  was folded inline into `case_III_realization` with no standalone decl to
+  pin, fixed by extracting `case_III_nested_rank_lower`) is why the gate
+  exists.
 
 It prints the offending names and exits non-zero on failure;
 `blueprint/lint.sh: all static reference checks passed.` is green.
