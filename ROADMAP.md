@@ -127,6 +127,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22h. the corrected `d=3` assembly (Theorem 5.5 at `d=3`, green-modulo the named carry family) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ Complete (closed 2026-06-11; see `notes/Phase22h.md`) |
 | 22i. all-`k` genuine-hinge motive + reduction-case producers (L0–L6) | `Molecular/` | ✓ Complete (closed 2026-06-14, re-scoped at a phase split; see `notes/Phase22i.md`) |
 | 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ✓ Complete (see `notes/Phase22j.md`) |
+| ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split + ranked candidates | ◷ In progress (the agreed pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ◷ Planning (see `notes/Phase22i.md` *Hand-off*) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
