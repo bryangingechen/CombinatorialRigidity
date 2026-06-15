@@ -7600,7 +7600,7 @@ specializes cleanly to `f = id` vs needs a fresh selector-agreement argument).
   at `k=0` — exactly the nested-IH input shape (the `k' ≤ D−2` is what makes `h622lb`'s
   `−(D−2)` lower bound the *weakest* of the family `−k'`). ✓
 
-### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge (2026-06-15)
+### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge. **Loop-case refinement (c′), 2026-06-15:** the L8a-step-2 build surfaced that the maximal `G'` must be taken INDUCED (`G.induce V(G₀)`) to kill the contraction's loop mode — KT's silent edge-saturation; one more NEW brick `deficiency_le_deficiency_of_le_vertexSet_eq` (def antitone under edge addition at fixed vertex set). No definitional change (2026-06-15)
 
 > **Docs-only design pass (the L8 pin), opus.** Every load-bearing decl below opened to its
 > `def`/`theorem` body and verified against the cited claim (clause (i)). Landed source read this
@@ -7734,19 +7734,20 @@ theorem Graph.exists_degree_two_removeVertex_of_no_simple_contraction
 ```
 
 *The proof (KT Claim 6.6, pdf p. 30, faithful):*
-1. **Take a vertex-inclusionwise maximal proper rigid subgraph `G'`.** This is the NEW existence lemma —
-   no landed analogue (grep: zero `exists.*maximal.*RigidSubgraph`). Since `α` is `Finite`, the proper rigid
-   subgraphs are a finite nonempty (`hrig`) family; pick one of maximal `|V(H)|` (`Finset.exists_max_image`
-   or `Set.Finite.exists_maximal_wrt` on the vertex-set-cardinality measure). `G'` is minimal 0-dof
+1. **Take a vertex-inclusionwise maximal proper rigid subgraph `G'`.** *(LANDED + amended by (c′): the
+   existence is `exists_maximal_isProperRigidSubgraph`, `Deficiency.lean:718`; (c′) replaces it by its
+   INDUCED saturation `G' := G.induce V(G₀)` to kill the loop case — read (c′) for the live step 1.)*
+   Since `α` is `Finite`, the proper rigid subgraphs are a finite nonempty (`hrig`) family; pick one of
+   maximal `|V(H)|` (the landed `Nat.findGreatest`-bounded existence). `G'` is minimal 0-dof
    (`IsProperRigidSubgraph` ⟹ `IsKDof n 0`; minimality via `subgraph_minimality`/KT 3.3 since `G' ≤ G`).
-2. **`G/E(G')` non-simple ⟹ a vertex `v ∈ V∖V'` with two edges into `V'`.** From `hnoSimpleContr` at `(G', r)`
-   for any `r ∈ V(G')`: `¬(G.rigidContract G' r).Simple`. Non-simplicity of the contraction yields the
-   parallel/loop pair, which (since `G` itself is simple, so the multiplicity is created by the collapse)
+2. **`G/E(G')` non-simple ⟹ a vertex `v ∈ V∖V'` with two edges into `V'`.** *(Bottom leaf LANDED
+   (`rigidContract_not_simple`, `Contraction.lean:189`) + loop disjunct discharged by (c′)'s induced `G'`;
+   read (c′) for the live step 2.)* From `hnoSimpleContr` at `(G', r)` for any `r ∈ V(G')`:
+   `¬(G.rigidContract G' r).Simple`. `rigidContract_not_simple` unpacks this into a loop OR a parallel
+   disjunct; on the INDUCED `G'` the loop disjunct is vacuous (`edgeSet_induce`, (c′)), so only the
+   parallel disjunct — which (since `G` itself is simple, the multiplicity is created by the collapse)
    pulls back to a vertex `v ∉ V'` incident to two distinct edges `e, f` whose other endpoints lie in `V'`.
-   *(This step reads the `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))` definition: a non-simple
-   contraction means two `G∖E(G')`-edges collapse to a parallel pair at `r`, i.e. two edges from a common
-   `v ∉ V'` into `V'`. — confirm the exact `rigidContract`-non-simple ⟹ shared-`v` extraction at build;
-   this is the fiddliest sub-step, P≈3.)*
+   *(The parallel-disjunct ⟹ shared-`v` extraction is the fiddliest sub-step, P≈3.)*
 3. **`G'' = G' + v + {e,f}` is 0-dof (rigid) by KT Lemma 4.4.** `G''.removeVertex v = G'` (the two `v`-edges
    `e,f` and `v` are exactly what `G''` adds over `G'`). `removeVertex_deficiency_ge` (SplitOffDeficiency:405,
    the LANDED Lemma 4.4) at `G := G''`, `v := v` gives `G''.deficiency n ≤ (G''.removeVertex v).deficiency n
@@ -7768,6 +7769,91 @@ theorem Graph.exists_degree_two_removeVertex_of_no_simple_contraction
    bricks (Lemma 4.4, `subgraph_minimality`, `Simple.mono`) + minimality bookkeeping. Bounded, research-free
    (no rigidity matrix, no genericity). The single P≈3 sub-step is step 2's contraction-non-simplicity
    unpacking; the rest is P≈2.*
+
+**(c′) Loop-case resolution — take `G'` INDUCED (the L8a-build DESIGN-SETTLE, 2026-06-15, opus).**
+The L8a-step-2-bottom-leaf build (commit 3693540, the landed `rigidContract_not_simple`,
+`Contraction.lean:189`) surfaced that step 2 above is **incomplete as written**: it reads
+"non-simplicity ⟹ a vertex `v ∈ V∖V'` with two edges into `V'`" (the *parallel* mode) and treats the
+loop mode as not arising, but the landed brick exposes a genuine **second mode** that the
+vertex-inclusionwise-maximal `G'` does NOT exclude. This subsection settles the route; it amends
+step 2 — it does **not** open a new leaf inventory (the (f) slice cut stands).
+
+*The gap, re-verified against landed source (clause (i)).* `rigidContract_not_simple` (the
+contrapositive of `rigidContract_simple`, via the abstract `map_not_simple`, all in `Contraction.lean`)
+unpacks `¬(G.rigidContract H r).Simple` into **two** disjuncts on the surviving graph
+`G.deleteEdges E(H)` (whose links are `G`-links off `E(H)`, `deleteEdges_isLink`):
+* **loop**: `∃ e x y, (G ＼ E(H)).IsLink e x y ∧ collapseTo r V(H) x = collapseTo r V(H) y`;
+* **parallel**: two *distinct* surviving edges with collapsed-equal end-pairs.
+
+`collapseTo r V(H) = fun x => if x ∈ V(H) then r else x` (`ReducibleVertex.lean:1042`, verified). So
+for a surviving-edge link with `x ≠ y` (a *simple* `G` supplies `x ≠ y` from `IsLink.ne`),
+`collapseTo x = collapseTo y` ⟺ **both `x, y ∈ V(H)`** (the only fiber `collapseTo` merges two distinct
+points into is `r`, reached exactly from inside `V(H)`; the mixed and both-outside cases are
+contradictory). The loop case is therefore *precisely* a `G`-edge with both endpoints in `V(G')` that is
+**not** in `E(G')` — and it IS reachable, because `IsRigidSubgraph`/`IsProperRigidSubgraph`
+(`Deficiency.lean:417/428`, `H ≤ G ∧ H.IsKDof n 0` — re-read this pass) are **plain subgraphs, NOT
+induced**: an edge of `G` inside `V(G')` need not lie in `E(G')`. KT's own proof (pdf p. 30, re-read this
+pass — offset `paper p.N = pdf page N−646`) takes `G'` *vertex-inclusionwise maximal* and asserts the
+parallel conclusion ("a vertex `v ∈ V∖V'` and two edges `e, f` incident to `v` and some other vertices of
+`V'`") **directly** — silently assuming the loop mode away. The hole in KT-as-literally-written: if a
+`G`-edge `g` lies inside `V(G')` off `E(G')`, then `G' + g` (edge-augment, *same vertex set*) is also a
+rigid (def antitone under edge addition, below) proper subgraph, so KT's `G'' = G' + v + {e,f}` is not the
+only larger rigid subgraph — `G' + g` is one too, at the *same* vertex cardinality, which neither
+vertex-inclusionwise nor vertex-cardinality maximality forbids. So **the parallel-only reading needs the
+maximal `G'` to be edge-saturated within its vertex set, i.e. INDUCED.** This is also why
+`exists_maximal_isProperRigidSubgraph` (`Deficiency.lean:718`, the landed step 1) does not by itself close
+the gap: it returns a vertex-cardinality-maximal proper rigid *subgraph*, and `G'+g` is rigid, proper, and
+of the same vertex cardinality, so maximality is silent on it.
+
+*The resolution: route through the INDUCED saturation `G' := G.induce V(G₀)`.* `G.induce X` carries
+**exactly** the `G`-edges with both ends in `X` (`Delete.lean:151`, `IsLink e x y := G.IsLink e x y ∧ x ∈
+X ∧ y ∈ X`, verified) — so for an induced `G'` there is **no** surviving edge `∈ E(G) ∖ E(G')` with both
+ends in `V(G')`, and the loop disjunct of `rigidContract_not_simple` becomes vacuous. Concretely Leaf 1's
+step 1 is amended to a **two-move** opener:
+1a. `exists_maximal_isProperRigidSubgraph hrig` (landed, **reused as-is, no restrengthening**) gives a
+   vertex-cardinality-maximal proper rigid subgraph `G₀`.
+1b. Replace `G₀` by its **induced saturation** `G' := G.induce V(G₀)`. Then (i) `V(G') = V(G₀)`
+   (`induce_vertexSet`/`vertexSet_induce`), so `G'` keeps `G₀`'s cardinality-maximality and properness
+   (`2 ≤ |V| `, `V(G') ⊊ V(G)`); (ii) `G₀ ≤ G'` (same vertex set, every `G₀`-edge lies inside `V(G₀)`,
+   hence in `E(G')`); (iii) `G'` is rigid via the **NEW brick** (def antitone under edge addition at a
+   fixed vertex set): `def(G'̃) ≤ def(G₀̃) = 0`, and `≥ 0` (`deficiency_nonneg`), so `= 0`.
+With `G'` induced, step 2 takes ONLY the parallel disjunct — the loop disjunct is discharged by
+"`G.IsLink g x y ∧ g ∉ E(G') ∧ x,y ∈ V(G')`" contradicting `edgeSet_induce` (every such `g ∈ E(G')`).
+The parallel disjunct then yields a vertex `v ∉ V(G')` with two distinct edges into `V(G')` *exactly as
+step 2 originally claimed*. Steps 3–5 are UNCHANGED (they consume `G'` only through its vertex set + the
+two `v`-edges; the maximal-subgraph maximality used in step 4 is `G'`'s, inherited from `G₀`'s in 1a).
+
+*The NEW brick (pin its exact signature — it is genuinely new, grep clean: no `deficiency`-antitone-
+under-edge-addition / `induce`-`IsKDof` lemma in tree).* Lives in `Deficiency.lean` (it is about
+`deficiency`, beside `subgraph_minimality`):
+```lean
+theorem Graph.deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] {H H' : Graph α β} {n : ℕ}
+    (hle : H ≤ H') (hV : V(H) = V(H')) :
+    H'.deficiency n ≤ H.deficiency n
+```
+*Proof (small, ~P≈2):* for every labeling `f`, `numParts H' f = numParts H f` (equal vertex sets, the
+`f '' V(·)` images agree), while `crossingEdges H f ⊆ crossingEdges H' f` (an `H`-edge crossing `f` is an
+`H'`-edge crossing `f`, since `H ≤ H'`; `H'` may have *more* crossing edges) ⟹ since `partitionDef G n f =
+D(numParts−1) − (D−1)·|crossingEdges|` is **decreasing in the crossing count**, `partitionDef H' n f ≤
+partitionDef H n f`; take `ciSup` (`bddAbove_range_partitionDef` + `partitionDef_le_deficiency`) to get
+`def(H') ≤ def(H)`. (`D = bodyBarDim n ≥ 1` keeps the `(D−1)` coefficient `≥ 0`; the molecular regime
+`D ≥ 3` is available but only `D ≥ 1` is needed.) The induced wrapper feeds it `H := G₀`, `H' := G' =
+G.induce V(G₀)`, `hle := G₀ ≤ G.induce V(G₀)` (the same-vertex-set edge containment), `hV` from
+`vertexSet_induce`.
+
+*Leaf-1 signature delta.* The pinned signature in (c) is **unchanged** — the conclusion's
+`(G.removeVertex v).IsMinimalKDof n 0` etc. still hold (with `G−v = G'` the *induced* maximal subgraph). The
+only change is internal: step 1 becomes 1a+1b, and step 2 discharges the loop disjunct via
+`edgeSet_induce`. No new hypothesis on the lemma; `exists_maximal_isProperRigidSubgraph` is reused as-is.
+
+*Clause (ii) — what is NOT triggered.* This is **not** a definitional change to `IsRigidSubgraph` (the
+fix takes a *particular* induced rigid subgraph; the predicate stays the plain-subgraph one, so no existing
+consumer of `IsRigidSubgraph`/`IsProperRigidSubgraph` is touched). The NEW brick is bounded project-side
+linear-counting, not research-shaped. KT's argument is matched (induced = KT's silent edge-saturation of
+the maximal `G'`); no open decision for the coordinator/user. **One ordering consequence:** the NEW brick
+`deficiency_le_deficiency_of_le_vertexSet_eq` is a `Deficiency.lean` leaf with no `rigidContract`/rigidity
+dependency, so — like step 1's `exists_maximal_isProperRigidSubgraph` — it can land FIRST as its own
+commit (the next concrete commit; see *Hand-off*), before the full Leaf-1 assembly that consumes it.
 
 **(d) Leaf 2 — the Π°-placement producer (geometric side, the L6 template widened).** Pinned signature
 (lives in `Theorem55.lean`, beside `case_I_realization_all_k`/`case_I_dispatch`, so it threads into the
@@ -7860,11 +7946,19 @@ there; (ii) re-mirroring the bridge duplicates a 30-line det-polynomial proof. D
 minimal, clean fix.)* No `set_option backward.privateInPublic` needed (the bridge is a `lemma`, not in an
 exposed body). Same-commit grep: the only `private` reference is the def + the :3658 call.
 
-**(f) Ordered leaf list + dependencies.**
+**(f) Ordered leaf list + dependencies.** *(L8a refined by (c′): step 1 of Leaf 1 now consumes the NEW
+def-antitone brick + an induced saturation; the two landed L8a sub-leaves — `exists_maximal_isProperRigidSubgraph`,
+`rigidContract_not_simple` — stand.)*
+* **L8a-0 — the def-antitone brick** `deficiency_le_deficiency_of_le_vertexSet_eq` (Deficiency.lean). The
+  (c′) loop-case fix's one new piece: `H ≤ H'` at equal vertex sets ⟹ `def(H'̃) ≤ def(H̃)`. **The next
+  concrete commit** — a small `partitionDef`-monotone-in-crossing-count + `ciSup` lemma, no rigidity, no
+  dependency on anything else L8 needs. Mints no node (a `\uses`-only brick).
 * **L8a — Leaf 1, `exists_degree_two_removeVertex_of_no_simple_contraction`** (ReducibleVertex.lean or
-  Contraction.lean). The NEW combinatorics. **First concrete commit** — pure graph theory, no rigidity, no
-  dependency on L8b. Mints a green node (or folds into `lem:case-I-dispatch`'s proof `\uses`). *Buildable;
-  the one P≈3 sub-step (contraction-non-simplicity ⟹ shared-`v`) resolves at this build.*
+  Contraction.lean). The NEW combinatorics. Consumes the two landed L8a sub-leaves
+  (`exists_maximal_isProperRigidSubgraph`, `rigidContract_not_simple`) + L8a-0 + `edgeSet_induce` (the
+  (c′) induced saturation). Pure graph theory, no rigidity, no dependency on L8b. Mints a green node (or
+  folds into `lem:case-I-dispatch`'s proof `\uses`). *Buildable; the one P≈3 sub-step (parallel-disjunct
+  ⟹ shared-`v`; the loop disjunct is now vacuous on the induced `G'`) resolves at this build.*
 * **L8b — the privacy fix** (CaseIII.lean): drop `private` on :3407. A trivial one-token edit; can ride in
   L8c's commit. (Listed separately because it is a CaseIII edit, not a Theorem55 one — but it is gating for
   L8c, not standalone.)
@@ -7915,18 +8009,24 @@ The `case_I_dispatch:1867` all-`k` `h65` is **L9's** to drop (the spine wiring);
 **(h) Clause (ii) verdict — what's flagged, what's open.** NO motive/IH change (L8 reuses the §1.56 all-`k`
 `Pc` IH unchanged; the `theorem_55_d3` `h65` discharge uses only the `k=0` IH). NO user adjudication: the
 two `h65` shapes reconcile to one producer (the `k=0` derivation is internal, forced by Claim 6.6), and the
-privacy issue resolves to a clean de-privatization. **NO genuinely-new lemma beyond two flagged build-time
-leaves**, both buildable-from-landed-parts, not research-shaped:
-* *Leaf 1 step 2* (contraction-non-simplicity ⟹ shared-`v` extraction, P≈3) — the fiddly graph unpacking of
-  `rigidContract`'s collapse; bounded.
+privacy issue resolves to a clean de-privatization. The **loop-case gap** the L8a-step-2 build surfaced is
+**SETTLED in (c′)** — route through the induced saturation `G' := G.induce V(G₀)`, which makes the loop
+disjunct vacuous; matches KT (= KT's silent edge-saturation of the maximal `G'`), no definitional change.
+**Genuinely-new lemmas: ONE new brick + two flagged build-time leaves**, all buildable-from-landed-parts,
+not research-shaped:
+* *L8a-0, the def-antitone brick* `deficiency_le_deficiency_of_le_vertexSet_eq` (P≈2, NEW — (c′)): `H ≤ H'`
+  at equal vertex sets ⟹ `def(H'̃) ≤ def(H̃)`; the loop-case fix's one new piece, lands first.
+* *Leaf 1 step 2* (parallel-disjunct ⟹ shared-`v` extraction, P≈3) — the fiddly graph unpacking of
+  `rigidContract`'s collapse; bounded. The loop disjunct is now discharged by `edgeSet_induce` (vacuous on
+  the induced `G'`), so step 2 handles only the parallel mode.
 * *Leaf 2 step 4* (the Lemma-5.3-at-distinct-endpoints `hnewpin` brick, P≈3) — two hinge rows at a common
   body `v` with LI extensors spanning the full `D` through `v`'s column; the `eq_of_hingeConstraint_two_parallel`
   same-pair form does not apply, so this is either a clean assembly of `finrank_hingeRowBlock` + the LI
   extensors or a small new brick (the build-time uncertainty leaf, L8's analogue of L7a/V8-a).
-The honest residual: **Leaf 2 step 2's "G_v is 0-dof"** rests on Leaf 1's `G−v = G'` (the maximal subgraph),
-which makes the `k=0`-only IH suffice — IF Leaf 1's step-2 extraction is harder than expected (the P≈3 flag),
-Leaf 2's structure is unaffected (it consumes Leaf 1's conclusion as a black box). No open decision for the
-coordinator/user.
+The honest residual: **Leaf 2 step 2's "G_v is 0-dof"** rests on Leaf 1's `G−v = G'` (the induced maximal
+subgraph), which makes the `k=0`-only IH suffice — IF Leaf 1's step-2 extraction is harder than expected (the
+P≈3 flag), Leaf 2's structure is unaffected (it consumes Leaf 1's conclusion as a black box). No open
+decision for the coordinator/user.
 
 **Estimate: ~3–4 commits** (L8a graph side ~1–2; L8c producer + wiring ~1–2; L8b privacy folds in). L8 is
 **simpler than L7** (no rank-polynomial transfer — same-seed `def=0`) but carries **more new combinatorics**
