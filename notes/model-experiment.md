@@ -281,6 +281,7 @@ quality / blueprint sync / notes discipline / commit message
 | 138 | 22k phase-open (notes/Phase22k.md + ROADMAP §22k + surfaces + red-node gate), 8e33130 | 2/2/1 | opus | normal | clean | ✓✓——✓✓ | 200k tok / 42 tools / 375s (~6 min) | Phase-open (fable-mapped → opus; fable down this session). Docs-only: open-a-phase checklist + red-node consistency gate (L7–L10 targets read end-to-end, no superseded-route ref; lint.sh green). Carries table re-located into the post-22j-perf 5-file chain (decl file:lines grep-verified); surfaces re-summarized (README/intro pre-staged at the 22j close → confirm-only). One finding deferred: blueprint prose mis-attributes the h65 discharge to "22i" (recorded in Blockers, → L7/L8 restate). Coordinator verified mechanics/no-.lean/surface syncs. |
 | 139 | L7 signature pin — design §1.69 (case_III_realization all-`k` IH restate + h622lb derivation + L7a/L7b leaves), 1a8743d | 3/3/1 | opus | normal | repaired (header) | —✓——✗✓ | 215k tok / 47 tools / 493s (~8 min) | Design-settle (fable-mapped → opus). Substance strong: verified every load-bearing decl vs the landed chain (clause i) — caught the prior pin's mis-citation (h622 transfer = the def-aware rank-poly idiom §1.62, NOT the def=0 seed-rank bridge; its blueprint prose flagged for the L7b green-flip), resolved V8 to L7a (P≈3 non-relabel rank-poly brick) with an honest flag, no motive change / no adjudication (clause ii). Notes ✗: the §1.69 HEADER line contradicted its own body (claimed "seed-coincidence, NOT polynomial transfer" — conflated L7 with L6); body + hand-off + leaf sigs were correct. Coordinator follow-up 95558d8 fixed the header only. |
 | 140 | L7a — V8-a rank-polynomial brick `exists_rankPolynomial_of_IH_linking` + core `finrank_span_rigidityRows_ofNormals_eq`, e53a1c3 | 1/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 133k tok / 44 tools / 668s (~11 min) | First L7 build; the only genuinely-new math of L7 (P=3 → opus). Landed signature matches §1.69(d) exactly; body = non-relabel shared core (the `f=id` mirror of the relabel sibling) → §1.62 rank-poly extraction. The §1.69(c) P≈3 residual risk (does the relabel core specialize cleanly to `f=id`?) resolved FAVORABLY — clean mirror, agent reports first-try/zero-friction, no FRICTION entry warranted. Additive (no consumer until L7b). Coordinator verified mechanics/sig-match/sorry-grep/build-warning-clean. |
+| 141 | L7b — `case_III_realization` all-`k` restate + `h622lb` discharge, 7b63f16 | 1/2/2 | sonnet | normal | repaired (warnings + blueprint pin) | ✗✓✓✗✓✓ | 26k tok / 167 tools / 3414s (~57 min) | Correct discharge matching §1.69(a)/(b); F1 caller-staging (`case_III_realization_0dof` wrapper) clean; confirms L7a consumer-fitness. Gates ✗ + Blueprint ✗, both coordinator-repaired: warning-bearing (5 `longLine`, false "all clean") → reflow `5b6cf9a`; node flipped `\leanok` with no `\lean{}` pin (hanging green) → extracted `case_III_nested_rank_lower` `5492158` + lint.sh hanging-pin gate `52c3175`. The 57min/167-tool cost outlier is honest ℕ/ℤ cast-arithmetic iteration, NOT bloat (correct 145-line body). → Findings 22k. |
 
 ## Findings
 
@@ -671,3 +672,28 @@ postmortem's write-time consumer-fit gate now target exactly this.
   recompiles mathlib — the OOM-risk shape). Boundary pairs at the
   sonnet/opus boundary remain the open data need; none were run
   this session.
+
+### Phase 22k (2026-06-15; rows 138–)
+
+- **(rows 138–140) Phase-open + L7 pin + L7a all ran opus, clean.** The fable-mapped
+  phase-open (138) and design-settle L7 pin (139) substituted opus (fable down); L7a (140) was
+  P=3 → opus. The L7 pin (139) needed a coordinator header-fix (`95558d8`): its §1.69 §-title
+  one-liner contradicted its own (correct) body — a summary-vs-body drift, *not* a verdict error
+  (the body, hand-off, and leaf signatures were sound). Lesson for the loop: scrutinize a design
+  pass's scannable §-title against its body, not only the verdict's reasoning.
+- **(row 141) The longLine-attestation gap recurs (3rd time: rows 17, 118, 141).** A
+  below-top-rung dispatch attested "lake build + lake lint clean" having run `lake lint`
+  (runLinter) but NOT grepped the build output for `warning:` — so compile-time
+  `linter.style.longLine` warnings rode in. The two linter families are disjoint
+  (`CombinatorialRigidity/CLAUDE.md` *build and lint gates*); the coordinator step-5 gate
+  ("warning-clean, not merely green") is the designed backstop and caught it (`5b6cf9a`). Not a
+  prompt change — the fixed prompt already forbids warning-carrying commits and the experiment
+  holds it byte-fixed; the coordinator re-grep is the control.
+- **(row 141) New gate class — the hanging pin (`\leanok` without `\lean{}`).** L7b flipped
+  `lem:case-III-nested-rank-lower` green with its `h622lb` discharge folded inline into
+  `case_III_realization` (no standalone decl to pin), so the node carried `\leanok` with no
+  `\lean{}`: an *uncheckable green* that falls through `checkdecls` (name-only), the honesty gate
+  (hypotheses-only), and the old `lint.sh`. Fixed by extracting `case_III_nested_rank_lower`
+  (`5492158`) so the node pins, plus a scriptable **hanging-pin gate** in `blueprint/lint.sh`
+  (`52c3175`, check 4). Audit: it was the only such node project-wide (358/358 others pinned); the
+  gate catches the class going forward. Promoted to `blueprint/CLAUDE.md` *Static checks before commit*.
