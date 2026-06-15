@@ -288,8 +288,7 @@ whole induction.
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
         lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III,
-        lem:case-III-nested-rank-lower}
+        lem:case-II-realization, lem:case-III}
   The $d = 3$ ($D = 6$) instance of \cref{thm:theorem-55}, run against the
   simplicity-conditioned motive: every minimal $0$-dof-graph $G$ with
   $|V| \ge 2$ satisfies the pair --- if $G$ is simple, a general-position,
@@ -306,14 +305,13 @@ whole induction.
   A fresh-edge supply (every graph leaves some edge name unused, the
   splitting-off's short-circuit edge) rides as ambient data.
 
-  \emph{The carried family.} The instance holds modulo four named
-  hypotheses, each with a tracked artifact: $\mathtt{h622}$, the nested
-  eq.-(6.22) rank bound (\cref{lem:case-III-nested-rank-lower}); $\mathtt{h65}$,
-  the Lemma-6.5 vertex-removal arm of the Case-I dispatch
-  (\cref{lem:case-I-dispatch}); and the two genuine-hinge slots
-  $\mathtt{hsplit}$/$\mathtt{hcontract}$ (the no-rigid-subgraph and
+  \emph{The carried family.} The instance holds modulo three named
+  hypotheses: $\mathtt{h65}$, the Lemma-6.5 vertex-removal arm of the
+  Case-I dispatch (\cref{lem:case-I-dispatch}); and the two genuine-hinge
+  slots $\mathtt{hsplit}$/$\mathtt{hcontract}$ (the no-rigid-subgraph and
   contraction realization producers, typed at \cref{def:genuine-hinge-realization}).
-  The $\mathtt{hbase}$ slot is now discharged by \cref{lem:theorem-55-base-producer}.
+  The $\mathtt{hbase}$ slot is now discharged by \cref{lem:theorem-55-base-producer};
+  $\mathtt{h622}$ is discharged internally to \cref{lem:case-III} (Phase~22k~L7b).
   The delivered content is the general-position conjunct --- it is all the
   $d = 3$ capstone (Theorem~5.6 / Corollary~5.7) consumes.
 

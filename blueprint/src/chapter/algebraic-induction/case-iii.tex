@@ -159,8 +159,8 @@ below.
 
 \begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
   \label{lem:case-III-nested-rank-lower}
-  \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof,
-        lem:case-III-seed-rank-bridge}
+  \leanok
+  \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
   Let $G$ be a minimal $0$-dof-graph with a degree-2 vertex $v$ (neighbours
   $a, b$, fresh edge $e_0$), let $\mathit{ends}$ be an endpoint selector
   recording every link of the splitting-off $G_v^{ab}$, and let $q$ be a seed
@@ -174,20 +174,21 @@ below.
   the nested subgraph $G_v$ --- minimal $k'$-dof with $k' \le D - 2$
   (\cref{lem:case-III-gap3-minimalKDof}) --- attains at the inductively-fixed
   seed at least the rank $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1)
-  predicts for it. \emph{Red --- the adjudicated carry.} This is KT's
-  \emph{nested} use of the induction (Claim~6.11, eq.~(6.22)), unreachable from
-  the $0$-dof-only motive; it rides through the realization assembly as the
-  quantified hypothesis $\mathtt{h622}$ on \cref{lem:case-III} and
-  \cref{thm:theorem-55-d3-instance}. Its discharge is the all-$k$ motive
-  restructure of the successor sub-phase (22i), which proves hypothesis (6.1)
-  at every $k$ and then feeds this node by a single wiring step.
+  predicts for it. Discharged at Phase~22k~L7b via the all-$k$ IH and the
+  rank-polynomial extractor of \cref{lem:case-III-rank-attainment}.
 \end{lemma}
 \begin{proof}
-  Apply the all-$k$ Theorem~5.5 to the minimal $k'$-dof-graph $G_v$
-  (\cref{lem:case-III-gap3-minimalKDof}) to obtain a realization at rank
-  $D(|V_v| - 1) - k' \ge D(|V_v| - 1) - (D - 2)$, then transfer the attained
-  rank to the inductively-fixed algebraically-independent seed by the
-  footnote-6 seed-transfer device (\cref{lem:case-III-seed-rank-bridge}).
+  The all-$k$ induction hypothesis supplies a
+  $\mathtt{HasGenericFullRankRealization}$ at $G_v$ (minimal $k'$-dof, simple,
+  nonempty, strictly smaller than $G$).  The rank-polynomial extractor
+  (\cref{lem:case-III-rank-attainment}, \texttt{exists\_rankPolynomial\_of\_IH\_linking})
+  produces a nonzero rational polynomial $P$ in the seed variables such that
+  $N \le \dim\operatorname{span}(\text{rows at }q')$ for every $q'$ with
+  $P(q') \ne 0$, where $(N : \Z) = D(|V_v|-1) - k'$.  Since $q$ is
+  algebraically independent over $\Q$ and $P$ has rational coefficients,
+  $q$ is not a root of $P$ (footnote-6 non-root device,
+  \cref{lem:case-III-rank-attainment}).  The bound $k' \le D-2$ and
+  $|V(G_v^{ab})| = |V_v|$ close the arithmetic.
 \end{proof}
 
 The upper bound earlier is the last \emph{leaf}; the two analytic halves now assemble. The nested
@@ -1333,22 +1334,21 @@ Lemma~5.4 short-cycle family but not consuming the general-$m$ cycle node.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_realization}
   \leanok
   \uses{def:panel-hinge-framework, def:rank-hypothesis,
-        lem:simple-minimal-noRigid, lem:reduction-step,
-        lem:case-III-nested-rank-lower}
+        lem:simple-minimal-noRigid, lem:reduction-step}
   Let $G$ be a simple minimal $0$-dof-graph on $|V| \ge 3$ bodies with no
-  proper rigid subgraph ($d = 3$, $D = 6$), and suppose the conditioned
-  induction hypothesis at every smaller minimal $0$-dof-graph: a
-  general-position, link-recording realization at an
-  algebraically-independent seed when the smaller graph is simple, and a
-  bare full-rank realization (\cref{def:rank-hypothesis}) in all cases.
+  proper rigid subgraph ($d = 3$, $D = 6$), and suppose the all-$k$
+  induction hypothesis at every strictly smaller minimal $k'$-dof-graph
+  ($k' \ge 0$ arbitrary): the graph is nonempty, it carries a
+  general-position, link-recording realization at an algebraically-independent
+  seed when it is simple, and a bare full-rank realization
+  (\cref{def:rank-hypothesis}) in all cases.
   Then $G$ carries a general-position full-rank realization at rank
   $D(|V|-1)$ --- the splitting-off premise ($\mathtt{hsplitGP}$) of the
-  formalized Theorem~5.5 instance (\cref{thm:theorem-55-d3-instance}).
-  Two hypotheses ride explicitly: a fresh-edge supply (every graph leaves
-  some edge name unused --- the splitting-off's short-circuit edge $e_0$),
-  and the eq.-(6.22) nested-IH rank lower bound $\mathtt{h622}$
-  (\cref{lem:case-III-nested-rank-lower}, red), the one Case-III input
-  that lies outside the $0$-dof-only induction motive.
+  all-$k$ Theorem~5.5 instance. One hypothesis rides explicitly: a
+  fresh-edge supply (every graph leaves some edge name unused --- the
+  splitting-off's short-circuit edge $e_0$). The eq.-(6.22) nested-IH rank
+  bound is now discharged internally from the all-$k$ IH
+  (\cref{lem:case-III-nested-rank-lower}), not carried.
 \end{lemma}
 \begin{proof}
   \leanok

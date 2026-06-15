@@ -537,8 +537,10 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
     (fun G hG hV2 hSimple =>
       absurd hSimple (Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) hG hV2))
     hsplit
+    -- Phase 22k L7b (Flag F1): call `case_III_realization_0dof` (old h622-carrying shape) until
+    -- L9 replaces this spine with `theorem_55_all_k` wired to the all-`k` `case_III_realization`.
     (fun G hG hV3 hnoRigid hSimple hIH =>
-      PanelHingeFramework.case_III_realization hD hfresh h622 G hG hV3 hnoRigid hSimple hIH)
+      PanelHingeFramework.case_III_realization_0dof hD hfresh h622 G hG hV3 hnoRigid hSimple hIH)
     hcontract
     -- `hcontractGP`: KT 6.3-vs-6.5 dispatch (L5c′). Classical case split on whether some
     -- proper rigid subgraph has a simple contraction.
