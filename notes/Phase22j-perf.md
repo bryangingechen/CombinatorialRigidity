@@ -67,6 +67,16 @@ sitting.
   exact cut lines + the slicing order against the *current* file before the first carve (the recon's
   cut map is at the block level; line numbers shifted). The coordinator decides per the
   `coordinate-phase` step-1 research-shape trigger.
+- **Import-context concern — investigated, NOT a blocker (2026-06-15).** A P1 dispatch returned BLOCKED
+  claiming `import CaseI`/`RigidityMatrix` into the new file breaks `V(G)`/`E(G)`/`↾` notation and the
+  `(screwDim k - 1)` `binop%` cast (forcing proof-body edits). The coordinator disproved it with a
+  scratch build: a file with `import …CaseI` + the **faithful preamble** (`namespace
+  CombinatorialRigidity.Molecular` / `open scoped Graph` / `variable {k : ℕ}` / `variable {α β :
+  Type*}`, exactly CaseI.lean's header lines 31–37) parses `V(G)` and elaborates `(screwDim 2 - 1)` as
+  ℤ-subtraction with `exact_mod_cast` succeeding — because `CaseI` already transitively imports
+  RigidityMatrix/Matroid, so importing it adds nothing new in scope. **Lesson:** each carved file must
+  replicate CaseI.lean's full header preamble verbatim; do **not** add `local notation` re-assertions
+  or edit any proof body — that is what cascaded into the false binop% diagnosis.
 
 ## Hand-off / next phase
 
