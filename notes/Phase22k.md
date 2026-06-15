@@ -19,23 +19,15 @@ design is canonical in `notes/Phase22-realization-design.md` §1.56 — point at
 
 ## Current state
 
-**L7 complete; L8a step 1 + the step-2 non-simplicity-unpacking brick landed; the loop-case gap is
-DESIGN-SETTLED (§1.70(c′)); next concrete commit: the def-antitone brick L8a-0.** The two landed L8a
-sub-leaves stand: step 1 `exists_maximal_isProperRigidSubgraph` (`Deficiency.lean:718`, a
-vertex-cardinality-maximal proper rigid subgraph) and the step-2 bottom leaf `rigidContract_not_simple`
-(`Contraction.lean:189`, the contrapositive of `rigidContract_simple` via `map_not_simple`, unpacking
-`¬(G/E(H)).Simple` into a loop OR a parallel disjunct). **The loop-case gap that build surfaced is now
-settled, not open:** because `IsProperRigidSubgraph` is a plain subgraph (`Deficiency.lean:428`, NOT
-induced), the contraction's loop mode = a `G`-edge inside `V(G')` off `E(G')` IS reachable, and
-vertex-maximality alone does not exclude it (`G'+e` is rigid+proper at the same cardinality). **Fix
-(§1.70(c′)): take the maximal `G'` INDUCED** — `G' := G.induce V(G₀)` carries every `G`-edge inside its
-vertex set (`edgeSet_induce`), so the loop disjunct is vacuous and step 2 takes only the parallel mode →
-the `v ∉ V'` with two `V'`-edges. This needs ONE new brick, `deficiency_le_deficiency_of_le_vertexSet_eq`
-(def antitone under edge addition at fixed vertex set; verified absent from tree), to lift `G₀`'s rigidity
-to `G' = G.induce V(G₀)`. Matches KT (pdf p. 30 = KT's silent edge-saturation of the maximal `G'`); NO
-definitional change to `IsRigidSubgraph`. The **L8 signature pin (§1.70)** is done. `lake build`
-(warning-clean) + `lake lint` green; no blueprint pointer touched (`lem:case-I-dispatch` stays red — flips
-at L8c). **L8a-0 (def-antitone brick), L8a Leaf-1 assembly, L8b–L8c, L9–L10 open.**
+**L7 complete; L8a-0 (def-antitone brick) ✓; L8a Leaf-1 assembly + L8b–L8c + L9–L10 open.**
+The three landed L8a sub-steps: step 1 `exists_maximal_isProperRigidSubgraph` (`Deficiency.lean:718`),
+the step-2 bottom leaf `rigidContract_not_simple` (`Contraction.lean:189`), and the new **L8a-0 brick
+`deficiency_le_deficiency_of_le_vertexSet_eq` (`Deficiency.lean:751`, ✓ warning-clean, landed this
+session)**: `H ≤ H'` + `V(H) = V(H')` → `def(H̃') ≤ def(H̃)`. Actual signature uses `[Finite β]` +
+`(hD : 1 ≤ bodyBarDim n)` (both needed: β-finiteness for `ncard_le_ncard` on `crossingEdges H' f`; hD for
+`D−1 ≥ 0`). The hand-off spec had `[Finite α]` only; the stronger instance is compatible with all callers
+(the `exists_degree_two_removeVertex_of_no_simple_contraction` caller already has `[Finite β]` + `hD : 2 ≤
+bodyBarDim n`). **Next commit: Leaf-1 `exists_degree_two_removeVertex_of_no_simple_contraction`.**
 
 ## Layer plan (L7–L10; each layer opens with its own §1.69+ signature pin)
 
@@ -52,17 +44,12 @@ Transcribed from `notes/Phase22i.md` *Layer plan* (the L7–L10 entries) + the �
   carry discharged. **Signature-pinned in §1.70.** Slice cut: **L8a** the Claim 6.6 graph-side
   lemma `exists_degree_two_removeVertex_of_no_simple_contraction` (NEW combinatorics: maximal
   proper rigid subgraph + Lemma-4.4 +`v` step via the landed `removeVertex_deficiency_ge`).
-  **L8a step 1 ✓** — `exists_maximal_isProperRigidSubgraph` (`Deficiency.lean`): the
-  vertex-cardinality-maximal proper rigid subgraph exists (finite-maximum via `Nat.findGreatest`,
-  `α` finite). **L8a step-2 bottom leaf ✓** — `rigidContract_not_simple` (`Contraction.lean`, the
-  contrapositive of `rigidContract_simple` via the abstract `map_not_simple`): unpacks
-  `¬(G/E(H)).Simple` into a loop or a parallel disjunct. **Loop-case DESIGN-SETTLED (§1.70(c′)):** take
-  the maximal `G'` INDUCED (`G.induce V(G₀)`) — `edgeSet_induce` makes the loop disjunct vacuous — so step 2
-  takes only the parallel mode. **L8a-0 (next commit) + Leaf-1 assembly open**: the new def-antitone brick
-  `deficiency_le_deficiency_of_le_vertexSet_eq` first (lifts `G₀`'s rigidity to the induced `G'`), then the
-  parallel-disjunct shared-`v` extraction + the `G''=G'+v+{e,f}` rigid-by-Lemma-4.4 +
-  maximality-forces-`G=G''` assembly, concluding the full
-  `exists_degree_two_removeVertex_of_no_simple_contraction`. Then **L8b** de-privatize
+  **L8a step 1 ✓** — `exists_maximal_isProperRigidSubgraph` (`Deficiency.lean`). **L8a step-2
+  bottom leaf ✓** — `rigidContract_not_simple` (`Contraction.lean`): unpacks `¬(G/E(H)).Simple`
+  into a loop or parallel disjunct. **L8a-0 ✓** — `deficiency_le_deficiency_of_le_vertexSet_eq`
+  (`Deficiency.lean:751`, `[Finite α] [Finite β]`, `(hD : 1 ≤ bodyBarDim n)`): `H ≤ H'` + `V(H) =
+  V(H')` → `def(H̃') ≤ def(H̃)`. Lifts `G₀`'s rigidity to `G.induce V(G₀)`. **Leaf-1 assembly (next
+  commit)**: `exists_degree_two_removeVertex_of_no_simple_contraction`. Then **L8b** de-privatize
   CaseIII's triple-LI bridge → **L8c** the producer `case_I_realization_h65` (the L6 Case-II
   template via Brick A, NEW block = two `v`-edges spanning `D`) + wiring (drop `theorem_55_d3:516`'s
   `h65` carry) + the node flip. Claim 6.6 concludes inside `k = 0`, **no all-`k` generality needed**
@@ -103,22 +90,10 @@ so the decl names are unchanged — only the file:line moved).
 
 ## Blockers / open questions
 
-- **L7 done; L8a step 1 + step-2 bottom leaf landed; loop-case gap SETTLED (§1.70(c′)); L8a-0 brick +
-  Leaf-1 assembly + L8b–L8c + L9–L10 open.** V9 (L10, the `def>0` homogeneous projective move for Thm 5.6
-  `d=3`) still gates to its layer's design pass (carried over from `notes/Phase22i.md` *Blockers*). No
-  open decision on the L8 *shape* — both `h65` shapes reconcile to one producer; the privacy issue
-  resolves to a clean de-privatization (§1.70(a)/(e)); the loop case resolves to an induced `G'`
-  (§1.70(c′)), no definitional change.
-- **The loop-case gap is RESOLVED, not open (§1.70(c′)).** The `rigidContract_not_simple` build surfaced
-  that the contraction can be non-simple via a loop (a `G`-edge inside `V(G')` off `E(G')`), reachable
-  because `IsProperRigidSubgraph` is a plain (not induced) subgraph, and not excluded by vertex-maximality
-  (`G'+e` is rigid+proper at the same cardinality). Settled by taking the maximal `G'` **induced**
-  (`G' := G.induce V(G₀)`, the vertex-cardinality-maximal `G₀` from `exists_maximal_isProperRigidSubgraph`,
-  saturated): `edgeSet_induce` makes the loop disjunct vacuous, leaving only the parallel mode → the
-  `v ∉ V'` with two `V'`-edges. The one new piece is the def-antitone brick L8a-0
-  `deficiency_le_deficiency_of_le_vertexSet_eq` (verified absent from tree). Matches KT's argument
-  (= its silent edge-saturation of the maximal `G'`); no change to `IsRigidSubgraph`. Full route in
-  §1.70(c′); this is the next build, NOT an open decision.
+- **L8a-0 ✓; L8a Leaf-1 + L8b–L8c + L9–L10 open.** V9 (L10, the `def>0` homogeneous projective move
+  for Thm 5.6 `d=3`) still gates to its layer's design pass. No open decisions on L8 shape: `h65`
+  shapes reconcile to one producer; privacy resolves to de-privatization (§1.70(a)/(e)); loop case
+  resolved to induced `G'` (§1.70(c′), no definitional change).
 - **One L8c build-time leaf flagged (P≈3, buildable, not research-shaped):** Leaf 2 step 4 — the
   Lemma-5.3-at-distinct-endpoints `hnewpin` brick (`eq_of_hingeConstraint_two_parallel:2672` is the
   SAME-pair form, NOT the `va`/`vb` distinct-endpoint shape). Resolve at the L8c build. §1.70(h).
@@ -127,18 +102,10 @@ so the decl names are unchanged — only the file:line moved).
 
 ## Hand-off / next phase
 
-**Next commit: L8a-0 — the def-antitone brick** `deficiency_le_deficiency_of_le_vertexSet_eq`
-(`Deficiency.lean`, beside `subgraph_minimality`): `H ≤ H'` at equal vertex sets ⟹ `def(H'̃) ≤ def(H̃)`.
-The (c′) loop-case fix's one new piece — a small `partitionDef`-monotone-in-crossing-count + `ciSup`
-lemma (numParts equal at equal vertex sets, crossingEdges monotone in edges, `partitionDef` decreasing in
-the crossing count), no rigidity, P≈2. Target signature:
-```lean
-theorem Graph.deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] {H H' : Graph α β} {n : ℕ}
-    (hle : H ≤ H') (hV : V(H) = V(H')) :
-    H'.deficiency n ≤ H.deficiency n
-```
-**Then the full Leaf-1 `exists_degree_two_removeVertex_of_no_simple_contraction`** (signature unchanged,
-below), consuming the two landed L8a sub-leaves + L8a-0 + `edgeSet_induce`. Opener (§1.70(c′)): get the
+**Next commit: L8a Leaf-1** — the full `exists_degree_two_removeVertex_of_no_simple_contraction`,
+consuming the three landed L8a sub-steps (step 1 `exists_maximal_isProperRigidSubgraph`, step-2 bottom
+leaf `rigidContract_not_simple`, L8a-0 `deficiency_le_deficiency_of_le_vertexSet_eq`) + `edgeSet_induce`.
+Opener (§1.70(c′)): get the
 vertex-cardinality-maximal `G₀` from `exists_maximal_isProperRigidSubgraph`, saturate to `G' :=
 G.induce V(G₀)` (rigid by L8a-0 + `deficiency_nonneg`, proper since `V(G') = V(G₀)`). Step 2: from
 `hnoSimpleContr` at `G'` and any `r ∈ V(G')`, `rigidContract_not_simple` gives a loop or parallel
@@ -173,6 +140,13 @@ carries `h65`); the full Leaf-1, then L8c, are separate sittings.
 
 (One-line verdicts; full proof-technique detail in §1.56–§1.70 design sections, docstrings, git.)
 
+- **L8a-0 — def-antitone brick (2026-06-15, sonnet, clean):** `deficiency_le_deficiency_of_le_vertexSet_eq`
+  (`Deficiency.lean:751`): `[Finite α] [Finite β]`, `(hD : 1 ≤ bodyBarDim n)`, `H ≤ H'`, `V(H) = V(H')` →
+  `def(H̃') ≤ def(H̃)`. Proof: `numParts` equal (same image `f '' V(H) = f '' V(H')`); `crossingEdges H f ⊆
+  crossingEdges H' f` (subgraph monotone via `IsLink.mono`); `ncard_le_ncard` (needs `[Finite β]` for
+  `(H'.crossingEdges f).Finite`); `partitionDef` antitone by `D−1 ≥ 0` (needs `hD`). Both `[Finite β]`
+  and `hD` absent from hand-off spec — both genuinely needed; compatible with all callers (full Leaf-1
+  has `[DecidableEq β] [Finite α] [Finite β]` + `hD : 2 ≤ bodyBarDim n`).
 - **L8a loop-case DESIGN-SETTLE (§1.70(c′), 2026-06-15, opus, docs-only):** the loop disjunct the
   `rigidContract_not_simple` build surfaced is resolved — take the maximal `G'` **induced**
   (`G' := G.induce V(G₀)`), making the loop mode (a `G`-edge inside `V(G')` off `E(G')`) vacuous by

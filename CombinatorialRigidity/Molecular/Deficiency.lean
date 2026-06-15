@@ -735,6 +735,46 @@ theorem exists_maximal_isProperRigidSubgraph [Finite α] {G : Graph α β} {n : 
   rw [hG'card, hm]
   exact Nat.le_findGreatest (hbound H hH) ⟨H, hH, rfl⟩
 
+/-- **Deficiency is antitone under edge addition at fixed vertex set** (`def:D-deficiency`):
+if `H ≤ H'` (a subgraph relation) and `V(H) = V(H')` (equal vertex sets), then
+`def(H̃') ≤ def(H̃)`. More edges at the same vertex set can only *increase* crossing counts,
+which *decreases* each partition's deficiency `D(|P|−1) − (D−1)·d(P)` (since `D−1 ≥ 0`).
+
+Concretely: the vertex-set equality gives `numParts H f = numParts H' f` (same image
+`f '' V(H) = f '' V(H')`), and the subgraph relation gives `crossingEdges H f ⊆
+crossingEdges H' f` (every `H`-link is an `H'`-link). So `partitionDef H' n f ≤
+partitionDef H n f` for every labeling `f`, and the supremum respects this order.
+
+This is the one new brick the loop-case fix (§1.70(c′)) needs: it lifts `G₀`'s rigidity
+(`IsKDof n 0`) to the induced subgraph `G' := G.induce V(G₀)`, which carries every
+`G`-edge inside `V(G₀)` by `edgeSet_induce`, making `G' ≥ G₀` at equal vertex sets. -/
+theorem deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] [Finite β]
+    {H H' : Graph α β} {n : ℕ} (hD : 1 ≤ bodyBarDim n)
+    (hle : H ≤ H') (hV : V(H) = V(H')) :
+    H'.deficiency n ≤ H.deficiency n := by
+  -- The key: for every labeling `f`, `partitionDef H' n f ≤ partitionDef H n f`.
+  -- Then `deficiency = ⨆ f, partitionDef n f` is antitone.
+  haveI : Nonempty (α → α) := ⟨id⟩
+  rw [deficiency]
+  refine ciSup_le fun f ↦ ?_
+  -- Step 1: crossing counts satisfy `|crossingEdges H f| ≤ |crossingEdges H' f|`.
+  have hcross_mono : H.crossingEdges f ⊆ H'.crossingEdges f := fun e ⟨he, x, y, hlink, hne⟩ ↦
+    ⟨hle.edgeSet_mono he, x, y, hlink.mono hle, hne⟩
+  have hcross_le : (H.crossingEdges f).ncard ≤ (H'.crossingEdges f).ncard :=
+    Set.ncard_le_ncard hcross_mono (Set.toFinite _)
+  -- Step 2: `numParts` agrees (same vertex set → same image under `f`).
+  have hparts : H.numParts f = H'.numParts f := by simp only [numParts, hV]
+  -- Step 3: `partitionDef H' n f ≤ partitionDef H n f` by the crossing-count bound.
+  have hpd : H'.partitionDef n f ≤ H.partitionDef n f := by
+    simp only [partitionDef, ← hparts]
+    have hD1 : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1 :=
+      by exact_mod_cast (by omega : 0 ≤ bodyBarDim n - 1)
+    have hle_z : ((H.crossingEdges f).ncard : ℤ) ≤ ((H'.crossingEdges f).ncard : ℤ) :=
+      Int.ofNat_le.mpr hcross_le
+    linarith [mul_le_mul_of_nonneg_left hle_z hD1]
+  -- Step 4: `⨆ f, partitionDef H' n f ≤ H.deficiency n` via `partitionDef_le_deficiency`.
+  exact hpd.trans (H.partitionDef_le_deficiency n f)
+
 /-! ## A circuit yields a rigid subgraph (`lem:circuit-rigid`; KT Lemma 3.4) -/
 
 /-- **A circuit minus an edge is a maximal sparse subset** (`lem:circuit-rigid`;
