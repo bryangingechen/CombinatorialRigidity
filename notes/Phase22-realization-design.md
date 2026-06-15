@@ -7355,3 +7355,247 @@ untouched** — see (f): the "through Brick A" re-route was a shape error) → c
 (i) Brick A's `Nat.card`/`Fintype` instance resolution across both call sites (L6b uses `Set`-subtype
 indices, W6b uses `Fin`); (ii) S4 must preserve the `e₀`-decomposition's orientation case-split when
 extracted. Both low-medium; S3's `_of_line`-preservation risk is 22k's, not 22j's.
+
+### 1.69 The L7 signature pin — the Case-III rewire, `h622` *derived* from the all-`k` IH (`hsplitZero`): `case_III_realization` restates to carry the all-`k`-conditioned IH (mirroring 22i's reduction-case producers), the IH at the nested `k'`-dof `G_v` (`k' ≤ D−2`, `lem:case-III-gap3-minimalKDof` green) supplies the eq.-(6.22) lower bound `h622lb` at the split realization's own seed; V8 RESOLVED to the L6 seed-coincidence pattern (the bound is read off the IH rank conjunct at the SAME seed, NOT a footnote-6 polynomial transfer) — but with one genuinely-new wiring sub-leaf flagged (the IH-at-`G_v` selector/seed must be threaded into the dispatch's `Q`-seed, P≈3); no motive change beyond the §1.56 all-`k` IH restate (2026-06-15)
+
+> **Docs-only design pass (the L7 pin), opus.** Every load-bearing decl below opened to its
+> `def`/`theorem` body and verified against the cited claim (clause (i) of the dispatch). Landed
+> source read this pass (post-22j-perf 5-file chain, current line numbers):
+> CaseIII.lean — `case_III_realization` (:3831 — the **target**; its carried `h622` (:3835, the
+> `∀ G v a b e₀ ends q, hrec → hgp → halg → finrank ≥ …` shape) and its **`k=0`-conditioned** IH
+> `hIH` (:3847, `∀ G', G'.IsMinimalKDof n 0 → 2 ≤ ncard → smaller → Pc G'`); the body threads
+> `h622` into `case_III_candidate_dispatch` (:3858) via `case_III_hsplit_producer`),
+> `case_III_candidate_dispatch` (:3489 — its `h622lb` carry (:3504), instantiated at `(Q.ends, q)`
+> with `q := fun p => Q.normal p.1 p.2` of the **split** realization `Q : Gab` (:3524, :3612), fed
+> to W6b `exists_candidateRow_bottomRows_of_rigidOn`), the Claim-6.11 row helpers
+> `exists_redundant_panelRow_ab_lam_of_rigidOn` (:304 — the **derivation engine**: it takes the
+> *lower* bound `h622lb` (:315) and constructs the *equality* `h622` by setting
+> `k' := D(m−1) − finrank(span R(G_v)-rows)` (:349) + the free upper bound via
+> `span_rigidityRows_eq_sup_span_panelRow_edge` + `finrank_mono` (:347–352)) and
+> `exists_candidateRow_bottomRows_of_rigidOn` (:385, the W6b consumer carrying `h622lb` :396);
+> Theorem55.lean — `theorem_55_d3` (:483, the spine instance carrying `h622`/`h65`/`hsplit`/
+> `hcontract` and threading `h622` into `case_III_realization` at :541; its `hsplitGP` slot of
+> `theorem_55_generic`), `case_I_realization_all_k` (:1767 — the all-`k` GP producer TEMPLATE this
+> mirrors: manufacture `ends = G.endsOf`, IH at the smaller graph at `k'`, read the deficient rank
+> conjunct off the IH realization);
+> CaseII.lean — `case_II_realization_all_k` (:297 — the **closest precedent**, L6: IH at the
+> deficient `(k−1)`-dof split-off `Gab`, then it reads `N ≤ finrank(span R(Gab, q)-rows)` *directly*
+> off the IH rank conjunct at `Q`'s own seed `q := Q.normal` (:440–495), realizing `G` at
+> `q₀ = q[v ↦ shear]` — the SAME seed, NO polynomial transfer);
+> CaseI.lean — the seed-rank bridge `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`
+> (:2013, `lem:case-III-seed-rank-bridge`; transfers *full rigidity* `def=0`, eq. (6.18), between
+> alg-indep seeds via the footnote-6 non-root device), `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`
+> (:2057, the `def>0` *upper*-bound counterpart), `exists_rankPolynomial_of_le_finrank_linking`
+> (the L4b-1 rank-input rank-polynomial extractor; `GenericityDevice.lean:1488`, NO rigidity —
+> `hN : N ≤ finrank(span …at q₀)` ⇒ a rational `Q` with `eval q₀ Q ≠ 0` and `∀ q, eval q Q ≠ 0 →
+> N ≤ finrank(…at q)`), `exists_rankPolynomial_of_IH_relabel_linking` (:254 — the L5b-i
+> *relabel* shared-core, `f`-mapped; takes `HasGenericFullRankRealization (Gc.map f)` and yields
+> the rank polynomial for the `endsᵐ := f∘ends` selector via `finrank_span_rigidityRows_ofNormals_relabel_eq`
+> :190 + `recordsLinks_agree_swap` :73 + `infinitesimalMotions_ofNormals_eq_of_ends_swap`),
+> the selector-swap transport `recordsLinks_agree_swap` (:73);
+> GenericityDevice.lean — `exists_independent_panelRow_subfamily_of_le_finrank` (:718, W6e, the
+> finrank→literal-subfamily extractor `_of_le_finrank_linking` calls);
+> ForestSurgery.lean — `splitOff_removeVertex_minimalKDof` (:3198, `lem:case-III-gap3-minimalKDof`:
+> `G_v = G.removeVertex v` minimal `k'`-dof with `0 ≤ k' = def(G̃_v) ≤ D−2`, at `k=0`).
+> PanelHinge.lean — `HasGenericFullRankRealization` (:1035 — `∃ Q, Q.graph = G ∧ GP ∧
+> (finrank(span R) : ℤ) = screwDim k·(|V|−1) − G.deficiency ∧ link-recording ∧ AlgIndep ℚ q`).
+> Blueprint read: `case-iii.tex` — `lem:case-III-nested-rank-lower` (:160, **red**, the L7 target;
+> its proof prose already states the route: "Apply the all-`k` Theorem 5.5 to … `G_v` … then
+> transfer the attained rank to the inductively-fixed seed"), `lem:case-III-gap3-minimalKDof`
+> (:58, green), `lem:case-III-seed-rank-bridge` (:97, green), `lem:case-III` /
+> `lem:case-II-realization` (:167). KT 2011 §6.4.1 read end-to-end against the PDF this pass
+> (pp. 684–686): Claim 6.11, the nested IH (6.1) at `G_v`, eqs. (6.22)/(6.23); p. 680's `k=0`
+> contrast confirming the redundant-`ab`-row machinery exists only because the `k=0` IH is rigid.
+> No `.lean`/`.tex` edits this pass.
+
+**The slot the L7 producer fills.** L7 is the `hsplitZero` arm of `theorem_55_generic` — the
+landed 22h Case-III producer, restated. It is the `k=0` sibling of L6 (`case_II_realization_all_k`,
+the `k>0` `hsplitPos` arm): both reduce by splitting off a degree-2 vertex, both reuse the
+eq.-(6.12) placement; the difference is that the `k=0` IH at the split-off `Gab` is **rigid**
+(`def=0`), giving only `(D−1) + D(|V∖v|−1) = D(|V|−1) − 1` — **one row short** (KT p. 680), so the
+`k=0` Case III alone runs the whole Claim-6.11/6.12 redundant-`ab`-row machinery. That machinery is
+already landed (22h, green-modulo `h622lb`); L7 does **not** rebuild it. L7's *only* job is to
+**discharge the one carried inequality `h622lb`** by an all-`k` IH application at the nested `G_v`.
+
+**(a) The corrected `case_III_realization` signature.** CaseIII.lean, restating the landed :3831.
+The change is exactly two-fold: **drop the `h622` carry** and **promote the `k=0` IH to the all-`k`
+IH** (the §1.56(c) motive shape, identical to `case_I_realization_all_k`'s/`case_II_realization_all_k`'s
+`hIH`). Everything else (the `hD`/`hfresh` ambient data, the `hG`/`hV3`/`hnoRigid`/`hSimple`
+hypotheses, the conclusion) is unchanged.
+
+```lean
+theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hSimple : G.Simple)
+    -- the all-`k` IH (was: `∀ G', G'.IsMinimalKDof n 0 → …`); identical to L5/L6's `hIH`.
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G
+```
+
+Design notes: **(i)** `G` itself stays `IsMinimalKDof n 0` — L7 is the **`hsplitZero` slot**, the
+`k=0` arm; the all-`k`-ness is needed only for the *nested* IH at `G_v` (which is `k'>0`-dof in
+general), which the `k=0`-only IH cannot reach. **(ii)** the IH is the **conditioned pair** `Pc`
+(GP-if-simple ∧ bare); L7 consumes its `.1` (GP) arm at `G_v` simple. **(iii)** consequential
+**caller change at `theorem_55_d3` (:541) and `theorem_55_generic`'s `hsplitGP` slot**: the
+`hsplitGP` slot of `theorem_55_generic` is currently `k=0`-IH-shaped — see (e)/§1.56(e); L7 either
+(α) is invoked from a *new* all-`k` spine `theorem_55_all_k` (L9, where the `hsplitZero` slot's IH
+IS the all-`k` `Pc`), or (β) `case_III_realization` is wrapped to down-cast the all-`k` IH it needs
+from `theorem_55_d3`'s `k=0` IH — **impossible**, the `k=0` IH cannot supply `k'>0` instances. So
+**L7 forces the spine to be all-`k`-conditioned at the `hsplitZero` slot**: this is the §1.56(e)
+`theorem_55_all_k` spine, whose `hsplitZero` slot already hands the all-`k` `Pc` IH (L2's
+`minimal_kdof_reduction_all_k` `hsplitZero` binder, §1.56(c)). **L7 lands the producer; L9 wires it
+into `theorem_55_all_k`** (the spine restate is L9's job, §1.56(e)). At the L7 commit, the producer
+stands alone with its all-`k` IH hypothesis; `theorem_55_d3` keeps carrying `h622` until L9 deletes
+that carry by routing through `theorem_55_all_k`. *Flag F1 (not a blocker): if the L7 commit must
+keep `theorem_55_d3` building, it threads `case_III_realization`'s old `h622`-carrying shape via a
+thin `h622`-carrying wrapper until L9; the clean restate lands when L9 swaps the spine.* This is the
+same staging L5/L6 used (the producer landed before its spine slot at L9).
+
+**(b) The `h622lb` derivation (the heart of L7, KT eq. (6.22) at the nested IH).** Inside
+`case_III_candidate_dispatch` (:3504), `h622lb` is the quantified obligation
+```lean
+∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
+  (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+  (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+  AlgebraicIndependent ℚ q →
+  screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+    ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows)
+```
+i.e. (writing `Gv := G − v`, `Gab := G.splitOff v a b e₀`, `m := |V(Gab)| = |V(Gv)|`, `D = screwDim 2 = 6`):
+at any link-recording selector `ends` and any pairwise-LI, alg-indep seed `q`, the `Gv`-row span has
+finrank `≥ D(m−1) − (D−2)`. Note the consumer instantiates this at `(Q.ends, q)` of the **split
+realization** `Q : Gab` (:3612), where `q := fun p => Q.normal p.1 p.2` — so the `(ends, q)` is the
+GP-Case-III producer's *own* construction, and `q` is alg-indep (`hQalg`) and pairwise-LI (`hQgp` GP).
+
+The derivation, faithful to the green blueprint proof of `lem:case-III-nested-rank-lower` (:185):
+1. **`Gv` is minimal `k'`-dof, `k' ≤ D−2`** — `splitOff_removeVertex_minimalKDof`
+   (`lem:case-III-gap3-minimalKDof`, green) at `k=0`: `Gv.IsMinimalKDof n k'` with
+   `k' := Gv.deficiency n`, `0 ≤ k' ≤ D−2`. (`Gv` nonempty: contains `a`; smaller: `|V(Gv)| = |V|−1`.)
+2. **All-`k` IH at `Gv`.** `hIH k' Gv hk'min hGvne hGvlt` gives the conditioned pair; its `.1` at
+   `Gv.Simple` (KT 6.7(ii) / `splitOff` simplicity from `hnoRigid`, residual leaf (b1)) gives
+   `HasGenericFullRankRealization 2 n Gv` — a realization `Q_v : Gv` at rank
+   `(finrank(span R(Gv, Q_v.normal)-rows) : ℤ) = D(m−1) − k'` (the rank conjunct), hence `≥ D(m−1) − (D−2)`.
+3. **Transfer the attained rank to the given `(ends, q)`.** This is V8 — the rank `≥ D(m−1) − k'` at
+   `Q_v`'s *own* seed must move to the *given* `(ends, q)` (the split realization's seed). The
+   blueprint route (`lem:case-III-nested-rank-lower` proof) names "transfer by the footnote-6
+   seed-transfer device" — but the seed-rank bridge `lem:case-III-seed-rank-bridge`
+   (`isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`) transfers **full rigidity**
+   (`def=0`), which `Gv` at `k'>0` does **not** have. The honest rank-level transfer is the landed
+   **deficiency-aware rank-polynomial** machinery (the §1.62 idiom, used by L4b/L5/L6):
+   `exists_rankPolynomial_of_le_finrank_linking` (GenericityDevice:1488, NO rigidity) extracts from
+   the `Q_v`-seed bound `N ≤ finrank(…at Q_v.normal)` (with `N := (D(m−1) − k').toNat`) a *rational*
+   `Q_v`-rank-polynomial `P` with `∀ q', eval q' P ≠ 0 → N ≤ finrank(…at q')`; the given `q` is
+   alg-indep, hence a non-root of the nonzero rational `P` (footnote 6,
+   `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`); so `N ≤ finrank(…at q)`.
+
+**(c) V8 — the one item with real proof-shape uncertainty, RESOLVED to a leaf, with a flagged
+sub-leaf.** The verdict: V8 is **buildable from landed parts, no motive change** — but it carries
+one genuinely-new wiring sub-leaf (P≈3), pinned below. The two halves:
+* *The transfer mechanism is settled (the `exists_rankPolynomial_of_le_finrank_linking` chain of
+  (b)3).* This is exactly the §1.62 deficiency-aware rank-polynomial idiom that L4b/L5/L6 already
+  run; it is **rank-driven, not rigidity-driven**, so it tolerates the deficient `Gv`. The brick
+  exists and is landed. (The seed-rank bridge `lem:case-III-seed-rank-bridge` is its `def=0`
+  special case and is NOT the right tool here — flag this; the blueprint prose of
+  `lem:case-III-nested-rank-lower` will need the citation corrected from "footnote-6 seed-transfer
+  device" to the rank-polynomial extractor when the node flips green at L7, since the seed bridge
+  only carries `def=0`.)
+* *The selector mismatch is the genuinely-new sub-leaf (`V8-a`, P≈3).* `Q_v`'s rank conjunct is at
+  `Q_v.ends` (records `Gv`'s links) and `Q_v.normal`; the obligation wants the bound at the *given*
+  `ends` (records `Gab`'s links, hence `Gv`'s since `Gv ≤ Gab`) and `q`. Two adapters compose:
+  (i) **selector swap** `Q_v.ends ↔ ends` — both record `Gv`'s links, so they agree up to swap;
+  `recordsLinks_agree_swap` (CaseI:73) + `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the
+  motion-space-equality transport) carry the rank across, exactly the
+  `finrank_span_rigidityRows_ofNormals_relabel_eq` (CaseI:190) shared-core pattern at `f = id`;
+  (ii) **seed transfer** `Q_v.normal → q` — the (b)3 rank-polynomial non-root. The relabel core
+  `finrank_span_rigidityRows_ofNormals_relabel_eq` does (i) and feeds (ii) for the *contraction*
+  (`Gc.map f`, `f` the collapse); L7 needs the **`removeVertex`/plain-subgraph** analogue
+  (`f = id`, `Gv ≤ Gab` a genuine subgraph). This is the V8-a leaf: a *non-relabel* rank-polynomial
+  brick mirroring `exists_rankPolynomial_of_IH_relabel_linking` (CaseI:254) but at the identity map
+  / plain selector. **Flag:** `Gv.map id = Gv` has no landed `map_id` reduction (grep found none),
+  so the cleanest path is the dedicated non-relabel brick, not `f := id` into the relabel one.
+  P≈3 — genuinely-new (the brick does not yet exist), but a near-mechanical mirror of the landed
+  relabel one (route 2 of §1.62; the shared core + W6e + footnote-6 all landed). *Honest naming:
+  this is the "real proof-shape uncertainty" the 22i hand-off flagged; the uncertainty is now
+  localized to whether the non-relabel brick is a clean mirror (expected yes) vs needs a fresh
+  selector-agreement argument (the residual risk).*
+
+**(d) The L7 slice cut (build order).** Mirrors the L5b-ii / L6 cut: the new rank-transfer brick
+first, then the producer restate.
+
+* **L7a** — `PanelHingeFramework.exists_rankPolynomial_of_IH_linking` (CaseI.lean, beside the
+  relabel sibling `exists_rankPolynomial_of_IH_relabel_linking` :254): the **non-relabel** (plain
+  subgraph / `f = id`) deficiency-aware rank polynomial. **P≈3** (V8-a, genuinely-new but a
+  near-mechanical mirror). Signature (the `f = id` specialization of :254 — drops the `Gc.map f`/
+  `endsᵐ` machinery, keeps a parent link-recording `hends`):
+  ```lean
+  theorem PanelHingeFramework.exists_rankPolynomial_of_IH_linking
+      [Finite α] [Finite β] (Gv : Graph α β) (ends : β → α × α)
+      {n : ℕ} (hQvf : PanelHingeFramework.HasGenericFullRankRealization k n Gv)
+      (hloop : Gv.Loopless)
+      (hends : ∀ e u v, Gv.IsLink e u v → Gv.IsLink e (ends e).1 (ends e).2) :
+      ∃ N : ℕ,
+        (N : ℤ) = screwDim k * ((V(Gv).ncard : ℤ) - 1) - Gv.deficiency n ∧
+        ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
+          Q ≠ 0 ∧ (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+          ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+            N ≤ Module.finrank ℝ (Submodule.span ℝ
+              (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+  ```
+  Body: the relabel core at `f = id` — a witness seed `nrm` (from `Q_v` via the selector-swap
+  motion-space transport, the `_relabel_eq` :190 pattern specialized to `id`) where the finrank
+  equals `N`, then `exists_rankPolynomial_of_le_finrank_linking` (GenericityDevice:1488) at
+  `hN := le_refl N`. **No blueprint node** (churn-prone rank-polynomial infra, like the relabel
+  sibling, which also has none). *Alternative if the witness-seed extraction is awkward at `id`:
+  build `exists_rankPolynomial_of_IH_linking` directly from `Q_v`'s rank conjunct via the
+  selector-swap span equality, skipping the `nrm`-witness detour — decide at the L7a build.*
+* **L7b** — `PanelHingeFramework.case_III_realization` restated (the (a) signature), discharging
+  `h622lb` by the (b) chain via L7a. **P≈2** (assembly: the `h622lb` lambda is L7a's `N`-bound →
+  footnote-6 non-root → `≥ D(m−1) − (D−2)` via `k' ≤ D−2` arithmetic; everything else — the
+  candidate dispatch, the Claim-6.11/6.12 machinery — is the **unchanged landed body**, since
+  `case_III_candidate_dispatch` already consumes `h622lb` and L7 only changes how `h622lb` is
+  *produced*). Restates `lem:case-III-nested-rank-lower` green (flip `\leanok`; correct the proof
+  prose's seed-transfer citation per (c)) and drops the carried `h622` from `lem:case-III`'s pin.
+  Statement-grep gate before commit (the `\lean{…case_III_realization}` survives the carry-drop;
+  grep `blueprint/src` per `CLAUDE.md` *Structural-edit phases* — `lem:case-III` /
+  `thm:theorem-55-d3-instance` state the `h622` carry, restate in the same commit).
+
+**(e) What stays carried / what moves where.** L7 discharges `h622` (the `hsplitZero` carry,
+`lem:case-III-nested-rank-lower`). It does **not** touch `h65` (L8, the Lemma-6.5 `hcontract` sub-arm)
+or the spine wiring (L9 deletes the `h622`/`hsplit` carries from `theorem_55_d3` by routing through
+`theorem_55_all_k`). The `b1` residual ("`Gv` simple from `hnoRigid`", KT 6.7(ii)) is a build-time
+leaf, expected the same `splitOff`/`loopless` simplicity facts L6 uses (`case_II_realization_all_k`
+:352–356 `splitOff_simple_of_noRigid` — but L7's `Gv = removeVertex`, so the simplicity is `G.Simple
+→ (G − v).Simple`, immediate from `hSimple` via subgraph; *simpler than L6's*). At `k=0`, `Gv`'s
+deficiency `k' = def(G̃_v)` can be `0` (then the IH leg is rigid and the transfer is the seed bridge's
+`def=0` case) or `>0` — the rank-polynomial route (b)3 covers both uniformly, so no case split on `k'`.
+
+**Estimate: ~2–3 commits.** L7a is the one genuinely-new brick (V8-a, the non-relabel rank
+polynomial); L7b is the producer restate + the `h622lb` discharge assembly + the blueprint flip.
+*Clause (ii) verdict: no motive/IH change beyond the §1.56 all-`k` IH restate (which L7 inherits
+from the settled motive); no user adjudication needed.* The one honest flag is V8-a (P≈3, the
+non-relabel rank-polynomial brick) — buildable from landed parts, not a research-shaped open
+problem, but it is the leaf with the most build-time uncertainty (whether the relabel core
+specializes cleanly to `f = id` vs needs a fresh selector-agreement argument).
+
+**(f) Shape-match verification (clause (i)).** Confirmed against the landed source:
+* The IH conclusion `HasGenericFullRankRealization` (:1035) carries the rank conjunct
+  `(finrank(span R) : ℤ) = D(|V|−1) − deficiency` — a **`finrank` equality**, which yields the
+  `finrank` *lower bound* `h622lb` requires (`≥ D(m−1) − (D−2)` via `k' ≤ D−2`). ✓ — the IH
+  produces a `finrank` bound, `h622lb` consumes a `finrank` bound; no ∃-literal ⇄ `finrank`-bound
+  mismatch. (The literal-`panelRow` ∃-subfamily that the *device* `hasFullRankRealization_of_independent_panelRow_index`
+  needs is W6e's job *downstream* of `h622lb`, inside the unchanged `case_III_candidate_dispatch`
+  body — L7 does not touch it.)
+* `h622lb`'s RHS `finrank(span (ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows)` is
+  exactly the span L7a's rank-polynomial brick bounds (same `ofNormals Gv ends q` shape). ✓
+* The split realization's seed `q := fun p => Q.normal p.1 p.2` (:3524) is alg-indep (`hQalg`,
+  `HasGenericFullRankRealization`'s :1042 conjunct) — the footnote-6 non-root input. ✓
+* `splitOff_removeVertex_minimalKDof` (:3198) concludes `Gv.IsMinimalKDof n k' ∧ 0 ≤ k' ∧ k' ≤ D−2`
+  at `k=0` — exactly the nested-IH input shape (the `k' ≤ D−2` is what makes `h622lb`'s
+  `−(D−2)` lower bound the *weakest* of the family `−k'`). ✓
