@@ -159,6 +159,7 @@ below.
 
 \begin{lemma}[Eq.~(6.22) rank lower bound at the nested $k'$-dof subgraph; KT eq.\ (6.22), nested hypothesis (6.1)]
   \label{lem:case-III-nested-rank-lower}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_III_nested_rank_lower}
   \leanok
   \uses{def:rank-hypothesis, lem:case-III-gap3-minimalKDof}
   Let $G$ be a minimal $0$-dof-graph with a degree-2 vertex $v$ (neighbours
@@ -174,21 +175,22 @@ below.
   the nested subgraph $G_v$ --- minimal $k'$-dof with $k' \le D - 2$
   (\cref{lem:case-III-gap3-minimalKDof}) --- attains at the inductively-fixed
   seed at least the rank $D(|V_v| - 1) - k'$ that KT's hypothesis (6.1)
-  predicts for it. Discharged at Phase~22k~L7b via the all-$k$ IH and the
-  rank-polynomial extractor of \cref{lem:case-III-rank-attainment}.
+  predicts for it. Discharged at Phase~22k~L7b via the all-$k$ IH and the L7a
+  rank-polynomial extractor \texttt{exists\_rankPolynomial\_of\_IH\_linking}.
 \end{lemma}
 \begin{proof}
+  \leanok
   The all-$k$ induction hypothesis supplies a
   $\mathtt{HasGenericFullRankRealization}$ at $G_v$ (minimal $k'$-dof, simple,
-  nonempty, strictly smaller than $G$).  The rank-polynomial extractor
-  (\cref{lem:case-III-rank-attainment}, \texttt{exists\_rankPolynomial\_of\_IH\_linking})
-  produces a nonzero rational polynomial $P$ in the seed variables such that
+  nonempty, strictly smaller than $G$).  The L7a rank-polynomial extractor
+  \texttt{exists\_rankPolynomial\_of\_IH\_linking} (the non-relabel $f = \mathrm{id}$
+  mirror of the relabel sibling) produces a nonzero rational polynomial $P$ in the
+  seed variables such that
   $N \le \dim\operatorname{span}(\text{rows at }q')$ for every $q'$ with
   $P(q') \ne 0$, where $(N : \Z) = D(|V_v|-1) - k'$.  Since $q$ is
   algebraically independent over $\Q$ and $P$ has rational coefficients,
-  $q$ is not a root of $P$ (footnote-6 non-root device,
-  \cref{lem:case-III-rank-attainment}).  The bound $k' \le D-2$ and
-  $|V(G_v^{ab})| = |V_v|$ close the arithmetic.
+  $q$ is not a root of $P$ (KT footnote-6 non-root device).  The bound $k' \le D-2$
+  and $|V(G_v^{ab})| = |V_v|$ close the arithmetic.
 \end{proof}
 
 The upper bound earlier is the last \emph{leaf}; the two analytic halves now assemble. The nested

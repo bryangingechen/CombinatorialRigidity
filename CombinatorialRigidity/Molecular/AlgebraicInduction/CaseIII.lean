@@ -3853,23 +3853,123 @@ theorem PanelHingeFramework.case_III_realization_0dof [DecidableEq β] [Finite �
         (h622 G v a b e₀)
         hdef_Gab hG.1 hsplitGP')
 
+/-- **Eq.-(6.22) nested rank lower bound** (`lem:case-III-nested-rank-lower`; Katoh–Tanigawa 2011
+eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b). For a simple minimal `0`-dof-graph `G` with a
+degree-2 vertex `v` (its two `v`-edges are `eₐ : v—a`, `e_b : v—b`, and no others) and a fresh edge
+`e₀ ∉ E(G)`, the free-normal panel framework on the vertex-removal `Gv = G − v` attains, at any
+link-recording selector and any pairwise-LI, algebraically-independent seed, at least the rank
+`D(|V(G.splitOff v a b e₀)| − 1) − (D − 2)` that KT's hypothesis (6.1) predicts.
+
+This is KT's *nested* use of the induction (Claim 6.11, eq. (6.22)), discharged from the **all-`k`
+IH** — not the `0`-dof-only motive: the nested subgraph `Gv` is minimal `k'`-dof with `k' ≤ D − 2`
+(`splitOff_removeVertex_minimalKDof`), so the IH realizes it at rank `D(|Vᵥ| − 1) − k'`, and the
+landed L7a rank-polynomial extractor (`exists_rankPolynomial_of_IH_linking`) plus the footnote-6
+non-root device transfer that rank to the given seed; `k' ≤ D − 2` closes the arithmetic. The bound
+holds at `|V(Gᵃᵇ)| = |V(G)| − 1 ≥ 2` (from `hV3`), so it needs no fourth vertex. -/
+theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hba : b ≠ a) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G))
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    ∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows) := by
+  intro ends q hrecEnds _hgp_seed hQalg
+  -- `hle`: every `(G.removeVertex v)`-link is a `(G.splitOff v a b e₀)`-link.
+  have hle : ∀ e u w, (G.removeVertex v).IsLink e u w → (G.splitOff v a b e₀).IsLink e u w := by
+    intro e u w hlink
+    rw [Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ hGlink.edge_mem)
+    rw [Graph.splitOff_isLink]
+    exact Or.inl ⟨hee₀, hGlink, hunev, hwnev⟩
+  -- `hends'`: `ends` records links of `G.removeVertex v`.
+  have hends' : ∀ e u w, (G.removeVertex v).IsLink e u w →
+      (G.removeVertex v).IsLink e (ends e).1 (ends e).2 := by
+    intro e u w hlink
+    rcases hrecEnds e u w (hle e u w hlink) with h | h
+    · rw [h]; exact hlink
+    · rw [h]; exact hlink.symm
+  -- `hcard`: `V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard`.
+  have hcard : V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard := by
+    rw [Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
+  -- `Graph.splitOff_removeVertex_minimalKDof`: `G.removeVertex v` is minimal `k'`-dof
+  -- with `k' ≤ D−2`.
+  obtain ⟨hGvmin, _hk'nn, hk'le⟩ :=
+    Graph.splitOff_removeVertex_minimalKDof (by omega : 2 ≤ Graph.bodyBarDim n)
+      hba.symm hav hbv heab hlea hleb hclv he₀ hG
+  -- `G.removeVertex v` is simple, nonempty, and strictly smaller than `G`.
+  have hGvSimple : (G.removeVertex v).Simple := hSimple.mono (Graph.removeVertex_le G v)
+  have hGvne : V(G.removeVertex v).Nonempty :=
+    ⟨a, by rw [Graph.vertexSet_removeVertex]; exact ⟨hlea.right_mem, hav⟩⟩
+  have hGvlt : V(G.removeVertex v).ncard < V(G).ncard := by
+    rw [Graph.vertexSet_removeVertex,
+      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
+  -- All-`k` IH at `G.removeVertex v`.
+  have hQv : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.removeVertex v) :=
+    (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
+  haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
+  -- L7a: extract rank polynomial `P` with rational coefficients.
+  obtain ⟨N, hNeq, P, hPne, hPrat, hPtrans⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
+      hGvloop hends'
+  -- Footnote-6: `q` (algebraically independent) is not a root of the nonzero rational `P`.
+  have hPeval : MvPolynomial.eval q P ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent hQalg hPrat hPne
+  -- `N ≤ finrank`.
+  have hNle : N ≤ Module.finrank ℝ (Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows) :=
+    hPtrans q hPeval
+  -- Arithmetic: `D(|Gab|−1)−(D−2) ≤ N ≤ finrank`. With `|Gab| = |Gv|` (hcard), `k' ≤ D−2`
+  -- (hk'le), `hn : D = screwDim 2`, and `N = D(|Gv|−1) − k'` (hNeq):
+  -- `D(|Gab|−1) − (D−2) = D(|Gv|−1) − (D−2) ≤ D(|Gv|−1) − k' = N`.
+  have hGvne1 : 1 ≤ V(G.splitOff v a b e₀).ncard :=
+    hcard ▸ (Set.ncard_pos (Set.toFinite _)).2 hGvne
+  have hDge2 : 2 ≤ screwDim 2 := by decide
+  -- `|Gab| = |Gv| = |V(G)| − 1 ≥ 2` (one vertex `v` removed from `|V(G)| ≥ 3`).
+  have hGab2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
+    rw [hcard, Graph.vertexSet_removeVertex,
+      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
+  have hcardZ : (V(G.splitOff v a b e₀).ncard : ℤ) = V(G.removeVertex v).ncard := by
+    exact_mod_cast hcard
+  have hD_eq : (screwDim 2 : ℤ) = Graph.bodyBarDim n := by omega
+  -- `LHS ≤ N` (ℕ): with `|Gab| ≥ 2` the ℕ-subtractions are safe; compare via ℤ.
+  have hDsub : screwDim 2 - 2 ≤ screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) := by
+    have h1 : 1 ≤ V(G.splitOff v a b e₀).ncard - 1 := by omega
+    exact le_trans (by decide) (Nat.mul_le_mul_left _ h1)
+  have hLHSN : screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2) ≤ N := by
+    apply Nat.cast_le (α := ℤ) |>.mp
+    rw [Nat.cast_sub hDsub, Nat.cast_mul, Nat.cast_sub hGvne1, Nat.cast_sub hDge2]
+    simp only [Nat.cast_one, Nat.cast_ofNat]
+    rw [← hcardZ] at hNeq
+    linarith [hNeq, hk'le, hD_eq]
+  exact le_trans hLHSN hNle
+
 /-- **The Case-III `d = 3` realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b). The `hsplitGP`-shaped producer for `theorem_55_all_k`
-(the L9 all-`k` spine), discharging `h622` by deriving `h622lb` from the all-`k` IH via the
-landed L7a rank-polynomial brick (`exists_rankPolynomial_of_IH_linking`,
-`lem:case-III-nested-rank-lower`).
+(the L9 all-`k` spine), discharging `h622` by deriving the eq.-(6.22) lower bound from the all-`k`
+IH via `case_III_nested_rank_lower` (`lem:case-III-nested-rank-lower`).
 
 **Signature change vs. the old `case_III_realization_0dof`:** `h622` is dropped; `hIH` is upgraded
 to the all-`k` form (`∀ k' G', G'.IsMinimalKDof n k' → V(G').Nonempty → ...`); `hn` is added
 (bridging `bodyBarDim n = screwDim 2` for the `h622lb` arithmetic, matching
 `case_II_realization_all_k`).
 
-The body adapts the `k=0` IH for `case_III_hsplit_producer`, then inside the `hcand` callback
-derives `h622lb` as follows: (1) `splitOff_removeVertex_minimalKDof` gives `Gv = G − v` minimal
-`k'`-dof with `k' ≤ D−2`; (2) all-`k` IH at `Gv.Simple` gives
-`HasGenericFullRankRealization 2 n Gv`;
-(3) `exists_rankPolynomial_of_IH_linking` extracts a rank polynomial; (4) algebraic independence of
-the split realization's seed + footnote-6 non-root gives the bound. -/
+The body adapts the `k=0` IH for `case_III_hsplit_producer`; the `h622lb` slot of
+`case_III_candidate_dispatch` is filled by `case_III_nested_rank_lower` applied to the chain
+data. -/
 theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
@@ -3890,102 +3990,11 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
     hfresh
     (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
         hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' => by
-      -- Derive `h622lb` from the all-`k` IH via the L7a rank-polynomial brick.
-      apply PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
-          hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-          hlea hleb hlec hclv hcla he₀ _ hdef_Gab hG.1 hsplitGP'
-      -- Build `h622lb`: discharge via L7a rank-polynomial brick.
-      intro ends q hrecEnds hgp_seed hQalg
-      -- `hle`: every `(G.removeVertex v)`-link is a `(G.splitOff v a b e₀)`-link.
-      have hle : ∀ e u w, (G.removeVertex v).IsLink e u w → (G.splitOff v a b e₀).IsLink e u w := by
-        intro e u w hlink
-        rw [Graph.removeVertex_isLink] at hlink
-        obtain ⟨hGlink, hunev, hwnev⟩ := hlink
-        have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ hGlink.edge_mem)
-        rw [Graph.splitOff_isLink]
-        exact Or.inl ⟨hee₀, hGlink, hunev, hwnev⟩
-      -- `hends'`: `ends` records links of `G.removeVertex v`.
-      have hends' : ∀ e u w, (G.removeVertex v).IsLink e u w →
-          (G.removeVertex v).IsLink e (ends e).1 (ends e).2 := by
-        intro e u w hlink
-        rcases hrecEnds e u w (hle e u w hlink) with h | h
-        · rw [h]; exact hlink
-        · rw [h]; exact hlink.symm
-      -- `hcard`: `V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard`.
-      have hcard : V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard := by
-        rw [Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
-      -- `Graph.splitOff_removeVertex_minimalKDof`: `G.removeVertex v` is minimal `k'`-dof
-      -- with `k' ≤ D−2`.
-      obtain ⟨hGvmin, _hk'nn, hk'le⟩ :=
-        Graph.splitOff_removeVertex_minimalKDof (by omega : 2 ≤ Graph.bodyBarDim n)
-          hba.symm hav hbv heab hlea hleb hclv he₀ hG
-      -- `G.removeVertex v` is simple, nonempty, and strictly smaller than `G`.
-      have hGvSimple : (G.removeVertex v).Simple := hSimple.mono (Graph.removeVertex_le G v)
-      have hGvne : V(G.removeVertex v).Nonempty :=
-        ⟨a, by rw [Graph.vertexSet_removeVertex]; exact ⟨hlea.right_mem, hav⟩⟩
-      have hGvlt : V(G.removeVertex v).ncard < V(G).ncard := by
-        rw [Graph.vertexSet_removeVertex,
-          Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
-      -- All-`k` IH at `G.removeVertex v`.
-      have hQv : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.removeVertex v) :=
-        (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
-      haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
-      -- L7a: extract rank polynomial `P` with rational coefficients.
-      obtain ⟨N, hNeq, P, hPne, hPrat, hPtrans⟩ :=
-        PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
-          hGvloop hends'
-      -- Footnote-6: `q` (algebraically independent) is not a root of the nonzero rational `P`.
-      have hPeval : MvPolynomial.eval q P ≠ 0 :=
-        MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent hQalg hPrat hPne
-      -- `N ≤ finrank`.
-      have hNle : N ≤ Module.finrank ℝ (Submodule.span ℝ
-          (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows) :=
-        hPtrans q hPeval
-      -- Arithmetic: `D(|Gab|−1)−(D−2) ≤ N ≤ finrank`.
-      -- Since `|Gab| = |Gv|` (hcard), `k' ≤ D−2` (hk'le), `hn : D = screwDim 2`,
-      -- and `N = D(|Gv|−1) − k'` (hNeq):
-      -- `D(|Gab|−1) − (D−2) = D(|Gv|−1) − (D−2) ≤ D(|Gv|−1) − k' = N`.
-      have hGvne1 : 1 ≤ V(G.splitOff v a b e₀).ncard :=
-        hcard ▸ (Set.ncard_pos (Set.toFinite _)).2 hGvne
-      have hDge2 : 2 ≤ screwDim 2 := by decide
-      -- The callback is only reached from the chain arm of `case_III_hsplit_producer`,
-      -- which requires 4 distinct vertices (v, a, b, c ∈ V(G)), so |Gab| ≥ 3.
-      have hGab3 : 3 ≤ V(G.splitOff v a b e₀).ncard := by
-        rw [hcard, Graph.vertexSet_removeVertex]
-        have hvV : v ∈ V(G) := hlea.left_mem
-        rw [Set.ncard_diff_singleton_of_mem hvV]
-        -- Four distinct vertices v, a, b, c in V(G) give |V(G)| ≥ 4.
-        have h4G : 4 ≤ V(G).ncard := by
-          have hmem : ({v, a, b, c} : Set α) ⊆ V(G) :=
-            Set.insert_subset hvG (Set.insert_subset haG (Set.insert_subset hbG
-              (Set.singleton_subset_iff.mpr hcG)))
-          calc 4 = ({v, a, b, c} : Set α).ncard := by
-                rw [Set.ncard_insert_of_notMem (by simp [hav.symm, hbv.symm, hcv.symm]),
-                  Set.ncard_insert_of_notMem (by simp [hba.symm, hca.symm]),
-                  Set.ncard_insert_of_notMem (by simp [hbc]),
-                  Set.ncard_singleton]
-            _ ≤ V(G).ncard := Set.ncard_le_ncard hmem
-        omega
-      -- Cast everything to ℤ; with |Gab| ≥ 3, the ℕ-subtraction `|Gab| - 1` and
-      -- `screwDim 2 * (|Gab| - 1) - (screwDim 2 - 2)` are safe.
-      have hcardZ : (V(G.splitOff v a b e₀).ncard : ℤ) = V(G.removeVertex v).ncard := by
-        exact_mod_cast hcard
-      have hD_eq : (screwDim 2 : ℤ) = Graph.bodyBarDim n := by omega
-      -- Goal (ℕ): screwDim 2 * (|Gab| - 1) - (screwDim 2 - 2) ≤ finrank.
-      -- Chain via N: LHS ≤ N ≤ finrank.
-      -- Step: LHS ≤ N (ℕ), proved by comparing via ℤ.
-      have hDsub : screwDim 2 - 2 ≤ screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) := by
-        have : 2 ≤ V(G.splitOff v a b e₀).ncard - 1 := by omega
-        exact le_trans (by decide) (Nat.mul_le_mul_left _ this)
-      have hLHSN : screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2) ≤ N := by
-        -- Cast the ℕ inequality to ℤ; expand ℕ-subtractions via safe-lower-bound hints.
-        apply Nat.cast_le (α := ℤ) |>.mp
-        rw [Nat.cast_sub hDsub, Nat.cast_mul, Nat.cast_sub hGvne1, Nat.cast_sub hDge2]
-        simp only [Nat.cast_one, Nat.cast_ofNat]
-        -- Goal (ℤ): ↑(screwDim 2) * (↑|Gab| - 1) - (↑(screwDim 2) - 2) ≤ ↑N.
-        -- Substitute ↑|Gv| = ↑|Gab| in hNeq, then use hk'le + hD_eq.
-        rw [← hcardZ] at hNeq
-        linarith [hNeq, hk'le, hD_eq]
-      exact le_trans hLHSN hNle)
+      exact PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
+        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀
+        (PanelHingeFramework.case_III_nested_rank_lower hD hn G v a b eₐ e_b e₀
+          hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH)
+        hdef_Gab hG.1 hsplitGP')
 
 end CombinatorialRigidity.Molecular
