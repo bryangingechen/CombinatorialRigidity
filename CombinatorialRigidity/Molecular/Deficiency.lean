@@ -702,6 +702,39 @@ theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Grap
   obtain ⟨p, hp⟩ := hG.2 B hB e (h.edgeSet_mono he)
   exact ⟨p, by rw [hBeq]; exact ⟨⟨hp.1, hfiber hp.2⟩, hp.2⟩⟩
 
+/-- **A vertex-cardinality-maximal proper rigid subgraph exists** (the existence half of
+Katoh–Tanigawa 2011 Claim 6.6, p. 676–677; the leaf the Lemma-6.5 vertex-removal arm of the
+Case-I dispatch bottoms out on). If `G` has *any* proper rigid subgraph, then it has one,
+`G'`, whose vertex set is of maximal cardinality among all proper rigid subgraphs. Maximality
+is recorded against `V(·).ncard`; since `V(H) ⊆ V(G)` for every subgraph, a strict
+vertex-superset would have strictly larger cardinality, so the cardinality-maximal witness is
+also vertex-inclusionwise maximal — the form Claim 6.6 consumes when it extends `G'` by the
+removed vertex `v` and forces `V(G) = V(G') ∪ {v}`.
+
+The pick is a finite-maximum argument: with `α` finite, the achievable vertex-cardinalities
+form a nonempty (`hrig`) set of naturals bounded above by `|V(G)|`, so `Nat.findGreatest`
+locates the largest one and a witnessing subgraph. No rigidity-matrix or genericity content —
+purely the bounded-maximum existence. -/
+theorem exists_maximal_isProperRigidSubgraph [Finite α] {G : Graph α β} {n : ℕ}
+    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) :
+    ∃ G' : Graph α β, G'.IsProperRigidSubgraph G n ∧
+      ∀ H : Graph α β, H.IsProperRigidSubgraph G n → V(H).ncard ≤ V(G').ncard := by
+  classical
+  -- The predicate "cardinality `m` is achieved by some proper rigid subgraph".
+  set P : ℕ → Prop := fun m => ∃ H : Graph α β, H.IsProperRigidSubgraph G n ∧ V(H).ncard = m
+    with hP
+  -- Every proper rigid subgraph has `|V(H)| ≤ |V(G)|`, so `|V(G)|` bounds the search.
+  have hbound : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → V(H).ncard ≤ V(G).ncard :=
+    fun H hH => Set.ncard_le_ncard hH.2.2.subset (Set.toFinite _)
+  obtain ⟨H₀, hH₀⟩ := hrig
+  -- `Nat.findGreatest P (|V(G)|)` is the maximal achieved cardinality.
+  set m := Nat.findGreatest P V(G).ncard with hm
+  have hPm : P m := Nat.findGreatest_spec (hbound H₀ hH₀) ⟨H₀, hH₀, rfl⟩
+  obtain ⟨G', hG', hG'card⟩ := hPm
+  refine ⟨G', hG', fun H hH => ?_⟩
+  rw [hG'card, hm]
+  exact Nat.le_findGreatest (hbound H hH) ⟨H, hH, rfl⟩
+
 /-! ## A circuit yields a rigid subgraph (`lem:circuit-rigid`; KT Lemma 3.4) -/
 
 /-- **A circuit minus an edge is a maximal sparse subset** (`lem:circuit-rigid`;
