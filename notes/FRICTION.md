@@ -101,6 +101,26 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved (workaround); fork-side notation fix not attempted.
 - **Lifted to:** TACTICS-QUIRKS § 48.
 
+### [resolved] Bare `Graph.`-prefix in the `Molecular` namespace — `Graph.rigidContract_vertexSet_inter_eq_singleton` landed in `CombinatorialRigidity.Molecular.Graph`, poisoning downstream `import CaseI`
+- **Where it bit:** the post-22j `CaseI.lean` file-split blocker. A downstream file that
+  `import`s `CaseI` and re-enters the working namespace (`namespace CombinatorialRigidity.Molecular`
+  + `open scoped Graph`) could not parse `V(`/`E(`/`↾`, and `exact_mod_cast` failed in the 4 cut-edge
+  `hbrickZ` `have`s (`case_cut_edge_realization{,_gp}`) because bare-ℕ `screwDim k - 1` elaborated as
+  `Int.subNatNat` rather than `↑(screwDim k - 1)`.
+- **Friction:** the lemma `CaseI.lean:1909` was written `theorem Graph.rigidContract_vertexSet_inter_eq_singleton`
+  *inside* `namespace CombinatorialRigidity.Molecular`, so it landed in a **sub-namespace**
+  `CombinatorialRigidity.Molecular.Graph` (not root `Graph`). That sub-namespace then captured a
+  downstream `open scoped Graph` (resolves `Graph` to the nearest match), so mathlib's root-`Graph`
+  scoped notations never activated — hence both the notation parse failure and the `binop%` cast flip.
+  The monolith escaped it because its file-head `open scoped Graph` ran before the offending decl.
+- **Fix (landed):** pin the decl to `_root_.Graph.rigidContract_vertexSet_inter_eq_singleton`. It is
+  the only `Graph.`-prefixed decl in the whole `Molecular` tree and is referenced only inside
+  `CaseI` by the relative name `Graph.rigidContract_…` (which now resolves to root `Graph`); no
+  blueprint pin, no external caller — the namespace move is self-contained. Standard
+  `open scoped Graph` is now transparent downstream (no per-file `_root_`/`local notation` boilerplate).
+- **Status:** resolved (root-cause fix in the monolith).
+- **Lifted to:** TACTICS-QUIRKS § 56.
+
 ### [resolved] `subst h` (h : x = a) eliminates the section body `a`, not the local `x` — use the named-variable form `subst x` to control direction
 - **Where it bit:** Phase 22h `case_III_bottom_relabel` (W9b, `CaseI.lean`); after
   `by_cases hxa : x = a` on a destructured-link local `x`, `subst hxa` eliminated the section

@@ -1906,7 +1906,17 @@ subgraph `H ≤ G` with `r ∈ V(H) ⊆ V(G)`, the contraction's vertex set
 is the representative `r ∈ V(H)`. This is the `hinter` hypothesis the U3b projected-subfamily
 extraction `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` needs of the
 relabel-leg framework (whose graph is the contraction), proj `= V(H)`. -/
-theorem Graph.rigidContract_vertexSet_inter_eq_singleton {α β : Type*}
+-- `_root_.Graph` (not bare `Graph`) is load-bearing: this is the *only* `Graph.`-prefixed decl in
+-- the `CombinatorialRigidity.Molecular` namespace, so a bare `Graph.` prefix would land it in a
+-- sub-namespace `CombinatorialRigidity.Molecular.Graph`. That sub-namespace then captures
+-- `open scoped Graph` in any *downstream* file (a `namespace CombinatorialRigidity.Molecular` +
+-- `open scoped Graph` resolves `Graph` to the nearest match, the sub-namespace), so mathlib's
+-- root-`Graph` scoped notations `V(`/`E(`/`↾` never activate there — breaking `V(G)` parsing and
+-- flipping `binop%` leaf coercions (bare-ℕ `screwDim k - 1` → ℤ-subtraction). The monolith escaped
+-- this only because its `open scoped Graph` (file head) preceded this decl. Pinning the decl to
+-- `_root_.Graph` keeps the project-`Graph`-API home it was always meant to have and makes `import`s
+-- of this file transparent. See `notes/Phase22j-perf.md` *Blockers* and TACTICS-QUIRKS § 56.
+theorem _root_.Graph.rigidContract_vertexSet_inter_eq_singleton {α β : Type*}
     (G H : Graph α β) {r : α} (hr : r ∈ V(H)) (hHsub : V(H) ⊆ V(G)) :
     V(G.rigidContract H r) ∩ V(H) = {r} := by
   classical

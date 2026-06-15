@@ -1991,3 +1991,37 @@ natural delimiter (a `rw [a, b, c]` after a `,`; a long dotted prefix
 require restructuring a proof.
 
 Phase 22j A2 (`CaseI.lean`, the `case_II_realization_all_k` longLine drop).
+
+
+## 56. A bare-`Graph.`-prefixed decl *inside* `namespace Foo` creates a `Foo.Graph` sub-namespace that captures downstream `open scoped Graph` — `V(G)`/`E(G)`/`↾` stop parsing and `binop%` flips ℕ-sub→ℤ-sub
+
+**Symptom.** A downstream file that `import`s a module `M` (here `…AlgebraicInduction.CaseI`) and
+opens its working namespace — `namespace CombinatorialRigidity.Molecular` then `open scoped Graph` —
+suddenly cannot parse the mathlib one-arg graph notations: `V(G)` fails with
+`unexpected token ')'; expected ','` (the `apnelson1/Matroid` *global* two-arg `V(" G ", " e ")"`
+wins), and `E(G)`/`↾` likewise. **In the same scope**, `binop%` also flips its leaf-coercion choice:
+a bare-ℕ `screwDim k - 1` in a ℤ context elaborates as `Int.subNatNat (screwDim k) 1` (ℤ-subtraction)
+instead of `↑(screwDim k - 1)` (ℕ-sub-then-cast), so an `exact_mod_cast` from a ℕ inequality fails
+with `… has type r₁ + (screwDim 2 - 1) * … but is expected to have type ↑r₁ + Int.subNatNat … * …`.
+The *defining* module `M` itself builds fine (it uses `V(G)` throughout); only files that `import M`
+and re-enter the namespace see it. Using `open Foo` (not `namespace Foo`) makes both symptoms vanish.
+
+**Cause.** Somewhere in `M` (or its imports), inside `namespace Foo`, a decl is declared with a bare
+`Graph.`-prefixed name (`theorem Graph.foo …`). Relative to the open `Foo`, that name resolves to a
+**new sub-namespace `Foo.Graph`** — the decl's full name becomes `Foo.Graph.foo`, *not* `_root_.Graph.foo`.
+Once `Foo.Graph` exists in the imported environment, a downstream `namespace Foo` + `open scoped Graph`
+resolves `Graph` to the **nearest** match — the sub-namespace `Foo.Graph` — so mathlib's *root*-`Graph`
+scoped notations (`scoped notation "V(" G ")"`, `E(`, the `↾` restrict / `G - S` deleteVerts infixes)
+are never activated. With root-`Graph` scope absent, the global two-arg `V(G, e)` is the only `V(`
+parser (notation failure), and the `-`-notation environment that drives `binop%`'s coercion choice
+differs (cast flip). `M` itself escapes both because its `open scoped Graph` (at the file head) runs
+*before* the offending decl creates `Foo.Graph`, so it correctly opens root `Graph`.
+
+**Fix.** Pin the decl to the root namespace explicitly: `theorem _root_.Graph.foo …` (or wrap it in a
+top-level `namespace Graph … end Graph` outside the `Foo` block). This puts it in the project-`Graph`-API
+home it was meant to have, removes the `Foo.Graph` sub-namespace, and makes `import M` transparent — no
+per-file `open scoped _root_.Graph` or `local notation` re-assertion needed downstream. *Diagnose* by
+`#check @Foo.Graph.foo` (if it resolves, the sub-namespace exists) or by confirming `open scoped
+_root_.Graph` (forcing the root) fixes the downstream parse. Phase 22j-perf
+(`CaseI.lean`, `Graph.rigidContract_vertexSet_inter_eq_singleton` → `_root_.Graph.…`); the
+`CaseI.lean`-split blocker. See FRICTION [resolved] *Bare `Graph.`-prefix in `Molecular` namespace*.

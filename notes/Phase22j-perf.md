@@ -6,8 +6,11 @@ file carved off per slice, build-verified between. **No new math, no decl rename
 
 ## Current state
 
-**Next: a structural-edit round splitting `Molecular/AlgebraicInduction/CaseI.lean` (10,346 lines) into a
-5-file `AlgebraicInduction/` chain.** The ranked plan — target files, the verified intra-file
+**Next: P1 — the first carve (`Theorem55.lean`).** The import-poison blocker that stalled three P1
+attempts is **root-caused and fixed** (the `CaseI.lean:1909` `_root_.Graph.` re-pin; *Blockers* +
+*Hand-off*) — `import CaseI` is now transparent and the split is once again the pure pin-safe move it
+was scoped as. The round splits `Molecular/AlgebraicInduction/CaseI.lean` (now 10,366 lines) into a
+5-file `AlgebraicInduction/` chain. The ranked plan — target files, the verified intra-file
 dependency DAG, the cut-line map, the leverage analysis, and the rename-free / blueprint-pin-safe
 argument — is the **canonical** recon output in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf
 recon (2026-06-15)* plan (B). This log carries only the slice state + hand-off; do not duplicate the
@@ -52,11 +55,11 @@ slice, when its head splits into `Coupling.lean` + the trimmed `CaseI.lean`):
 
 Each slice: pure semantics-preserving move + per-file boilerplate (`namespace` / `variable {k}` /
 `open scoped Graph` / `variable {α β}` — cf. the F1 `SparsityIComponents` `variable {V}` gotcha,
-`notes/PERFORMANCE.md` — **plus the three `local` notation re-assertions** for any file importing a
-poisoned `CaseI`-or-later file, see *Blockers* "Notation-poison blocker"); gate = `lake build` +
-`lake lint` **warning-clean** + axiom-clean on the touched modules. The new files inherit **non-`module`** status (the molecular chain is non-`module`,
+`notes/PERFORMANCE.md`); gate = `lake build` + `lake lint` **warning-clean** + axiom-clean on the
+touched modules. The new files inherit **non-`module`** status (the molecular chain is non-`module`,
 PERFORMANCE.md *Module system*). A slice may be split finer if a single carve is too large for one
-sitting.
+sitting. **No special notation/cast boilerplate is needed** — the import-poison blocker was
+root-caused and fixed in the monolith (see *Blockers*); standard `open scoped Graph` is transparent.
 
 ## Blockers / open questions
 
@@ -68,61 +71,47 @@ sitting.
   exact cut lines + the slicing order against the *current* file before the first carve (the recon's
   cut map is at the block level; line numbers shifted). The coordinator decides per the
   `coordinate-phase` step-1 research-shape trigger.
-- **Notation-poison blocker — REAL; proven per-file fix (2026-06-15).** A new file that `import`s
-  `CaseI` (or any later file in the chain that does) cannot parse the `V(`/`E(`/`↾` notations: a
-  **body decl inside `CaseI`** serializes an olean parser-priority effect that lets the
-  `apnelson1/Matroid` package's *global* two-arg `V(" G ", " e ")"` / `E(" G ", " e ")"` and *scoped*
-  `↾` (`Graph.restrict`) win over mathlib's *scoped* one-arg `V(`/`E(`. `import CaseI` + `open scoped
-  Graph` → `V(G)` fails with `unexpected token ')'; expected ','`; `import GenericityDevice` + the same
-  preamble parses fine, and `CaseI`'s 4 imports with an **empty body** parse fine — so it is a body
-  decl, not the imports. (An earlier coordinator "probe-artifact" dismissal was wrong: a `tail -30`
-  truncation had hidden the parse error; full-output re-test confirms it. The dispatch-1 `binop%`/cast
-  claim was a confounded cascade off the parse failure, not a separate issue — once the notation parses,
-  `(screwDim k - 1)` elaborates correctly.) **Proven fix (coordinator scratch-build-verified):** each
-  carved file that imports a poisoned file adds, right after `open scoped Graph`:
-  ```
-  local notation "V(" G ")" => Graph.vertexSet G
-  local notation "E(" G ")" => Graph.edgeSet G
-  local infixl:65 " ↾ " => Graph.restrict
-  ```
-  These re-assert the intended one-arg/graph notations verbatim from their source `=>` RHS; they are
-  **pin-safe** (no decl renamed/re-namespaced), elaborate identically to the scoped originals, and are
-  per-file boilerplate (same category as `open scoped Graph`). If any *other* shadowed notation
-  surfaces in a slice, re-assert it the same way from its source definition. The trimmed `CaseI` head
-  imports `GenericityDevice` (clean) → it needs no re-assertion; only files importing `CaseI`-or-later do.
-- **SECOND poison — `binop%` coercion (NOT per-file-fixable); breaks the "pure move" premise
-  (2026-06-15).** After the notation fix, the carved `Theorem55` still fails: `import CaseI` also flips
-  `binop%`'s leaf-coercion decision, so bare-ℕ `(screwDim k - 1)` inside a ℤ context elaborates as
-  ℤ-subtraction (`Int.subNatNat`) instead of the ℕ-sub-then-cast (`↑(screwDim k - 1)`) the monolith
-  produces — so the 4 cut-edge `hbrickZ` `have` statements (`case_cut_edge_realization{,_gp}`) fail their
-  `exact_mod_cast hbrick`. Confirmed via `lean_run_code` on the **unmodified** tree (the snippet succeeds
-  under `import GenericityDevice` and even under all 4 of CaseI's imports together, fails under `import
-  CaseI`) — same CaseI-body-decl mechanism, but the elaboration-state does **not** transfer through the
-  import, and there is no `local`-style per-file fix (unlike the notation poison). CaseI has **no**
-  `instance`/`Coe`/`OfNat`/`default_instance`/`notation`/`macro` construct (only one `@[simp]`), so the
-  mechanism is opaque. Only the bare `(screwDim k - 1)` pattern is at risk; the many `screwDim k * ((… :
-  ℤ) - 1)` sites have explicit ℤ ascriptions and are safe. **This means importing CaseI is not
-  semantics-transparent — the split cannot be the guaranteed pure pin-safe move it was scoped as.**
-  Surfaced to the user as a strategic fork (2026-06-15): (a) allow minimal cast-ascription proof-body
-  touch-ups at affected sites; (c) root-cause-investigate/neutralize the poison decl first; (d) defer the
-  split (its only leverage is build-incrementality — import-surface benefit is nil — and 22k is the math
-  frontier). Awaiting the user's call before any further P1 dispatch.
+- **Import-poison blocker — ROOT-CAUSED and FIXED in the monolith (2026-06-15).** Both reported
+  poisons (notation: a downstream `import CaseI` file could not parse `V(`/`E(`/`↾`; and `binop%`:
+  bare-ℕ `screwDim k - 1` in a ℤ context elaborated as `Int.subNatNat` not `↑(screwDim k - 1)`, so the
+  4 cut-edge `hbrickZ` `exact_mod_cast`s failed) share **one** cause and **one** fix. The cause: the
+  lemma at `CaseI.lean:1909` was declared `theorem Graph.rigidContract_vertexSet_inter_eq_singleton`
+  **inside** `namespace CombinatorialRigidity.Molecular`, so its bare `Graph.` prefix made it land in
+  a *sub-namespace* `CombinatorialRigidity.Molecular.Graph` (verified: `#check
+  @CombinatorialRigidity.Molecular.Graph.rigidContract_…` resolved). A downstream `namespace
+  CombinatorialRigidity.Molecular` + `open scoped Graph` then resolves `Graph` to that **nearest**
+  sub-namespace, so mathlib's *root*-`Graph` scoped notations (`V(`/`E(`/`↾`/the `-` deleteVerts infix)
+  never activate — which both leaves only the Matroid *global* two-arg `V(G, e)` (parse failure) and
+  changes the `-`-notation environment that drives `binop%`'s leaf-coercion (cast flip). The monolith
+  escaped both because its file-head `open scoped Graph` ran *before* this decl created the sub-namespace.
+  `open CombinatorialRigidity.Molecular` (vs `namespace …`) sidesteps it; `open scoped _root_.Graph`
+  forces the root scope — both confirm the diagnosis. **Fix (landed):** pin the decl to
+  `_root_.Graph.rigidContract_vertexSet_inter_eq_singleton` (its rightful project-`Graph`-API home,
+  matching every sibling `Graph.foo` rigidity lemma). It has no blueprint pin and is referenced only
+  inside `CaseI` by the relative name `Graph.rigidContract_…` (now resolving to root `Graph`); no
+  external caller — self-contained. Scratch-verified: a downstream `namespace … Molecular` +
+  **standard** `open scoped Graph` file now parses `V(`/`E(`/`↾` and elaborates the cut-edge
+  `exact_mod_cast`s, with no `local notation`/`_root_` per-file boilerplate. Monolith + full library
+  build warning-clean, lint-clean, axiom-clean (the cut-edge producers `#print axioms` show only
+  `propext, Classical.choice, Quot.sound`). The split is again a guaranteed pure semantics-preserving
+  move. See TACTICS-QUIRKS § 56 + FRICTION [resolved] *Bare `Graph.`-prefix in the `Molecular` namespace*.
 
 ## Hand-off / next phase
 
-**BLOCKED pending a user decision (2026-06-15).** P1 (carve `Theorem55.lean`) was attempted three times;
-the carve mechanics are clean (cut line re-derived, zero backward edges, trimmed `CaseI` builds), but
-`import CaseI` poisons downstream elaboration in two ways — notation (fixed per-file) and `binop%`
-coercion (NOT per-file-fixable) — so the split is **not** the guaranteed pure semantics-preserving
-move it was scoped as. See *Blockers* "SECOND poison" for the strategic fork (a/c/d) surfaced to the
-user. **Do not re-dispatch P1 until that fork is resolved.**
+**UNBLOCKED — import-poison root-caused and fixed (2026-06-15).** The two-poison blocker that stalled
+P1 was diagnosed to a single misplaced decl and fixed in the monolith (option (c) of the surfaced
+fork): `CaseI.lean:1909` re-pinned `Graph.…` → `_root_.Graph.rigidContract_vertexSet_inter_eq_singleton`
+(self-contained namespace correction; no pin, no external caller; full build + lint + axioms clean).
+`import CaseI` is now semantics-transparent — the split is again the guaranteed pure pin-safe move it
+was scoped as, and the slice boilerplate is just `namespace`/`variable`/`open scoped Graph` (no
+`local notation` / `_root_` re-assertions). See *Blockers* for the mechanism.
 
-Once resolved, the original plan: **P1 — carve `Theorem55.lean`** (the base-producer + cut-edge +
-dispatch tail of `CaseI.lean`) into a new file importing the monolith (with the 3 `local` notation
-re-assertions per *Blockers*), point the aggregator (`CombinatorialRigidity.lean`) at
-`…AlgebraicInduction.Theorem55` instead of `…AlgebraicInduction.CaseI`, re-derive the cut line. Gate:
-`lake build` + `lake lint` warning-clean + axiom-clean. Then P2→P3→P4 per the *Layer plan*. The full target + DAG + cut map + leverage is in
-`notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon* plan (B).
+**Next concrete commit: P1 — carve `Theorem55.lean`** (the base-producer + cut-edge + dispatch tail of
+`CaseI.lean`) into a new file importing the monolith, point the aggregator (`CombinatorialRigidity.lean`)
+at `…AlgebraicInduction.Theorem55` instead of `…AlgebraicInduction.CaseI`, re-derive the cut line
+against the *current* file. Gate: `lake build` + `lake lint` warning-clean + axiom-clean. Then
+P2→P3→P4 per the *Layer plan*. The full target + DAG + cut map + leverage is in `notes/PERFORMANCE.md`
+*Molecular `CaseI.lean` perf recon* plan (B).
 
 After this round closes: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — Case III +
 the zero-carry spine; the L7–L10 layer plan in `notes/Phase22i.md` *Hand-off*, consuming Brick A), then
