@@ -93,8 +93,8 @@ deferred-route-hinges-on-consumer clause added to
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-14, fresh coordinator session, re-confirmed at session
-  start — supersedes the prior 2026-06-13 note, which expired at its session end).** fable
+- **Session availability (2026-06-15, fresh coordinator session, re-confirmed at session
+  start — supersedes the prior 2026-06-14 note, which expired at its session end).** fable
   **unavailable** this session (user-confirmed at session start). **Standing rung override
   for all of Phase 22j (user-set at session start): dispatch every commit at `opus`,
   regardless of the S/P/B → map.** S/P/B is still rated per slice for the log/data, but the
