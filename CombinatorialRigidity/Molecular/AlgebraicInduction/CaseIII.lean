@@ -3404,7 +3404,7 @@ Fin.castSucc j)` (first three coordinates of each row). Show `B.det ≠ 0` by:
 (v) `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` certifies `B.det ≠ 0`.
 Then `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp` (projection to
 first 3 coordinates) lifts to the full 4-coordinate rows. -/
-private lemma linearIndependent_normals_of_algebraicIndependent
+lemma linearIndependent_normals_of_algebraicIndependent
     {α : Type*} {q : α × Fin 4 → ℝ}
     (hq : AlgebraicIndependent ℚ q)
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
