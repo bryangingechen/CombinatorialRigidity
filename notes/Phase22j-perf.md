@@ -1,21 +1,20 @@
 # Perf pass (post-Phase-22j) — `CaseI.lean` file split (work log)
 
-**Status:** in progress (opened 2026-06-15 at the 22j close; the agreed pre-22k internal step).
+**Status:** ✓ Complete (closed 2026-06-15; the agreed pre-22k internal step).
 **Round type:** structural-edit perf pass (file split), driven like a `coordinate-phase` loop — one
 file carved off per slice, build-verified between. **No new math, no decl renamed.**
 
 ## Current state
 
-**Next: P4 — split the head** (carve `Coupling.lean` foundations off the trimmed `CaseI.lean`).
-**P1 + P2 + P3 landed** — the `Theorem55.lean` tail (base producers + cut-edge + dispatch), the
-`CaseIII.lean` block (Claim 6.11 + Case III), and the `CaseII.lean` block (the L6b producer:
-`case_II_placement_eq612` + `case_II_realization_all_k`) are carved into their own files; the chain
-is now `…CaseI ← CaseII ← CaseIII ← Theorem55` and the aggregator imports
-`…AlgebraicInduction.Theorem55` (unchanged from P1). CaseI shrank 4,683 → 3,496 lines;
-`CaseII.lean` = 1,223 LoC; `CaseIII.lean` = 3,860 LoC (still ~2.5× cap — a later sub-split candidate
-per plan B). Build + lint warning-clean, the moved Case-II producers axiom-clean (`propext,
-Classical.choice, Quot.sound`), all 50 blueprint name-only pins unaffected (`checkdecls` green; the
-two moved pins `case_II_placement_eq612` / `case_II_realization_all_k` are name-only). The round splits
+**Round closed — the 5-file `AlgebraicInduction/` chain is confirmed.** All four slices landed; the
+monolith `CaseI.lean` (originally 4,683 LoC) is now a linear chain matching the verified DAG:
+`GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55`, aggregator imports
+`…AlgebraicInduction.Theorem55`. Final LoC: `Coupling.lean` = 1,349 (foundations: coupling +
+`extProj` + projection bridges), `CaseI.lean` = 2,187 (Case I + rank-polynomial suite),
+`CaseII.lean` = 1,223 (L6b producer), `CaseIII.lean` = 3,861 (Claim 6.11 + Case III — still ~2.5×
+cap, a later sub-split candidate per plan B), `Theorem55.lean` = 1,899 (base producers + cut-edge +
+dispatch). Full build + lint warning-clean, moved foundations decls axiom-clean (`propext,
+Classical.choice, Quot.sound`), all 50 blueprint name-only pins unaffected (`checkdecls` green). The round split
 `Molecular/AlgebraicInduction/CaseI.lean`
 into a 5-file `AlgebraicInduction/` chain. The ranked plan — target files, the verified intra-file
 dependency DAG, the cut-line map, the leverage analysis, and the rename-free / blueprint-pin-safe
@@ -73,8 +72,19 @@ slice, when its head splits into `Coupling.lean` + the trimmed `CaseI.lean`):
   `CaseIII.lean` rewired to import `…CaseII`. Axiom-clean, build + lint warning-clean, 50 pins intact
   (`checkdecls` unaffected — name-only). No backward compile edge from trimmed CaseI; the residual
   Case-II/III prose mentions at CaseI :819/:2647/:2654 are docstring cross-mentions, not code.
-- [ ] **P4 — split the head**: carve `Coupling.lean` (foundations) off the monolith, leaving the
+- [x] **P4 — split the head**: carve `Coupling.lean` (foundations) off the monolith, leaving the
   trimmed `CaseI.lean` (Case I + rank-poly) importing it. Build. (Confirms the final 5-file chain.)
+  **Done** — cut at CaseI's old :1345/:1347 (foundations end at `exists_independent_panelRow_subfamily_of_le_finrank_proj`,
+  before the `recordsLinks_map_of_records` docstring); 1,307 decl-lines moved verbatim (head→head:
+  the foundations are the dependency-earliest *head*, so this is the mirror of P1–P3's tail carves).
+  `Coupling.lean` = 1,349 LoC imports `…GenericityDevice` + the 3 mathlib imports the foundations
+  need; the trimmed `CaseI.lean` = 2,187 LoC imports only `…Coupling` (transitive visibility through
+  the non-`module` chain, matching the P3 import pattern). Backward-edge check: the foundations block
+  references **no** Case-I decl (the only "hit" was the file-head docstring's prose mention of
+  `case_I_realization`, which stays with CaseI) — foundations are the base, exactly per the recon DAG.
+  Axiom-clean, build + lint warning-clean, `checkdecls` green (the moved `extProj` /
+  `injOn_extProj_dualMap_rigidityRows` pins resolve by name). CaseII import line unchanged (still
+  `…CaseI`); no downstream rewire needed.
 
 Each slice: pure semantics-preserving move + per-file boilerplate (`namespace` / `variable {k}` /
 `open scoped Graph` / `variable {α β}` — cf. the F1 `SparsityIComponents` `variable {V}` gotcha,
@@ -121,25 +131,16 @@ root-caused and fixed in the monolith (see *Blockers*); standard `open scoped Gr
 
 ## Hand-off / next phase
 
-**P1 + P2 + P3 landed (2026-06-15).** `Theorem55.lean`, `CaseIII.lean`, and `CaseII.lean` carved off;
-chain is `…CaseI ← CaseII ← CaseIII ← Theorem55`, aggregator imports `…Theorem55`;
-build/lint/axioms/`checkdecls` clean (detail in *Current state* + the P1/P2/P3 checklist items). The
-import-poison that stalled three P1 attempts stays fixed and transparent — slice boilerplate is just
-`namespace`/`variable`/`open scoped Graph` (no `local notation` / `_root_`); mechanism in *Blockers*.
+**Round closed — all four slices landed (2026-06-15).** `Theorem55.lean`, `CaseIII.lean`,
+`CaseII.lean`, and (P4) `Coupling.lean` carved off the original `CaseI.lean` monolith; the final
+chain is `GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55`, aggregator imports
+`…Theorem55`; full build/lint/axioms/`checkdecls` clean (detail in *Current state* + the
+P1–P4 checklist items). The import-poison that stalled three P1 attempts stayed fixed and transparent
+throughout — slice boilerplate was just `namespace`/`variable`/`open scoped Graph` (no
+`local notation` / `_root_`); mechanism in *Blockers*.
 
-**Next concrete commit: P4 — split the head**: carve `Coupling.lean` (the foundations block — the
-shared-seed / block-triangular coupling producers + the `extProj` exterior-column projection) off the
-*head* of the trimmed `CaseI.lean` (3,496 LoC), leaving `CaseI.lean` = Case I + the rank-polynomial
-suite importing `…Coupling`. This is the **head split** (P1–P3 carved dependency-latest *tails*; P4
-carves the dependency-earliest *head*), so the new `Coupling.lean` imports `…GenericityDevice` and
-the trimmed `CaseI.lean` imports `…Coupling` — re-derive the cut line against the current file (the
-foundations end where Case I proper begins; the recon's ~1300-LoC `Coupling` block is the
-`hasFullRankRealization_of_couple…` / `…_blockTriangular_…` / `extProj` cluster). Gate: `lake build`
-+ `lake lint` warning-clean + axiom-clean. P4 closes the round (confirms the final 5-file chain).
-Full target + DAG + cut map + leverage: `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon*
-plan (B).
-
-After this round closes: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — Case III +
+**Next concrete commit: open Phase 22k.** This perf round is the last pre-22k internal step; with the
+`AlgebraicInduction/` chain now navigable and incremental-rebuild-cheap, open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — Case III +
 the zero-carry spine; the L7–L10 layer plan in `notes/Phase22i.md` *Hand-off*, consuming Brick A), then
 Phase 23 (general `d`). The other ranked split candidates (recon plan C — `RigidityMatrix.lean` 3380 with
 a possible downstream-import benefit; `ForestSurgery.lean` 3783 in the stable Induction subtree; the

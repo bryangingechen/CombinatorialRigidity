@@ -127,7 +127,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22h. the corrected `d=3` assembly (Theorem 5.5 at `d=3`, green-modulo the named carry family) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ Complete (closed 2026-06-11; see `notes/Phase22h.md`) |
 | 22i. all-`k` genuine-hinge motive + reduction-case producers (L0–L6) | `Molecular/` | ✓ Complete (closed 2026-06-14, re-scoped at a phase split; see `notes/Phase22i.md`) |
 | 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ✓ Complete (see `notes/Phase22j.md`) |
-| ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split + ranked candidates | ◷ In progress (the agreed pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
+| ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split into a 5-file chain | ✓ Complete (the pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ◷ Planning (see `notes/Phase22i.md` *Hand-off*) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
@@ -958,8 +958,10 @@ producers should have shared — the pin-a-body analogue of the landed Case-I sp
 blueprint node, consolidated the L6b producer's rank half onto it, retired the dead L6a, and landed the
 producer cleanup (dead-code deletion plus dropping both stopgap suppressions: heartbeats refactored
 3.2M → 600000 via two extracted scalar rank-cast helpers, and the over-100-codepoint lines reflowed).
-22k's Case III consumes Brick A, so the abstraction landed first. The internal step before 22k is a
-dedicated `CaseI.lean` file-split perf round (ranked plan in `notes/PERFORMANCE.md`). Slice plan, the
+22k's Case III consumes Brick A, so the abstraction landed first. The internal step before 22k — a
+dedicated `CaseI.lean` file-split perf round (ranked plan in `notes/PERFORMANCE.md`) — is **complete**:
+the 10,346-line monolith is now the 5-file chain `GenericityDevice ← Coupling ← CaseI ← CaseII ←
+CaseIII ← Theorem55` (rename-free, all 50 blueprint pins intact). Slice plan, the
 two-brick design rationale (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed kept,
 Case I separate), and decisions: `notes/Phase22j.md`; design verdict
 `notes/Phase22-realization-design.md` §1.68.

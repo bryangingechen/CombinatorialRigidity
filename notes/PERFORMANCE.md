@@ -804,6 +804,13 @@ Lessons:
 
 ## Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j design-pass)
 
+> **Plan (B) LANDED (2026-06-15).** The file split below was executed across four slices (P1–P4,
+> `notes/Phase22j-perf.md`): the 10,346-line `CaseI.lean` monolith is now the 5-file chain
+> `GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55` (Coupling 1,349 / CaseI 2,187 /
+> CaseII 1,223 / CaseIII 3,861 / Theorem55 1,899 LoC). Rename-free; full build/lint/axioms/`checkdecls`
+> clean. `CaseIII.lean` (~2.5× cap) remains a clean second-round sub-split candidate. Plan (C) — the
+> `RigidityMatrix.lean` / `ForestSurgery.lean` candidates — is assessed, not scheduled.
+
 A ranked split/refactor plan for the molecular `AlgebraicInduction/`
 giants, opened by the Phase-22j suppression-drop cleanup (the
 `maxHeartbeats 3200000` + `linter.style.longLine false` drops above

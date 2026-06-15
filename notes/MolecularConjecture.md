@@ -8,9 +8,11 @@ discharged of the five 22h carries); **22j** (closed; `notes/Phase22j.md`; desig
 the shared span-transport "pinned placement" rank brick
 (`le_finrank_span_rigidityRows_of_pinned_placement`) the Case-II / Lemma-6.8 producers refactor onto
 (which 22k consumes), consolidated the L6b producer onto it, retired the dead L6a, and landed the
-producer cleanup. **The agreed next internal step before 22k is a dedicated `CaseI.lean` file-split
-perf round** (CaseI.lean is 10,346 lines; ranked plan in `notes/PERFORMANCE.md` *Molecular `CaseI.lean`
-perf recon*). Then **Phase 23** (general `d`, KT Lemma 6.13). Phases 23–26 planned. The per-phase record lives in the phase table and per-phase detail
+producer cleanup. **The pre-22k internal step — a dedicated `CaseI.lean` file-split perf round — is
+complete:** the 10,346-line monolith is now the 5-file `AlgebraicInduction/` chain
+`GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55` (rename-free; ranked plan in
+`notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon*). **Phase 22k** (honest all-`k` Theorem 5.5)
+is next, then **Phase 23** (general `d`, KT Lemma 6.13). Phases 23–26 planned. The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§22j, and `notes/PhaseN.md` — this Status paragraph is a pointer,
 not a log (*One canonical home per content type*, `notes/CLAUDE.md`). This file is the
 program design for Phases 17–26 and the runbook for threading the remaining phases.
@@ -645,11 +647,12 @@ design §1.68 — Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + a
 consolidated onto it, the dead L6a retired, the producer cleanup). Sub-lettering keeps the integer
 phase numbers 23–26 stable.
 
-**Agreed next internal step before 22k: a dedicated `CaseI.lean` file-split perf round.** CaseI.lean is
-10,346 lines; the ranked split plan (a 5-file `AlgebraicInduction/` chain — rename-free, so blueprint
-pins / `checkdecls` are unaffected) is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon
-(2026-06-15, Phase 22j design-pass)*. This is an internal perf pass, not a reader-facing milestone; the
-coordinator opens it (and then 22k) after a user confirmation.
+**The pre-22k internal step — a dedicated `CaseI.lean` file-split perf round — is complete
+(2026-06-15).** The 10,346-line monolith is now a 5-file `AlgebraicInduction/` chain
+(`GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55`) — rename-free, so the 50
+blueprint pins / `checkdecls` are unaffected; ranked plan + slice log in `notes/PERFORMANCE.md`
+*Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j design-pass)* and `notes/Phase22j-perf.md`.
+This was an internal perf pass, not a reader-facing milestone.
 
 **Next cut: sub-phase 22k**, completing the honest all-`k` Theorem 5.5 — Case III rewire (`h622` from
 the all-`k` IH; `lem:case-III-nested-rank-lower`), the Lemma-6.5 arm (`h65`; `lem:case-I-dispatch`), the
