@@ -7600,7 +7600,7 @@ specializes cleanly to `f = id` vs needs a fresh selector-agreement argument).
   at `k=0` — exactly the nested-IH input shape (the `k' ≤ D−2` is what makes `h622lb`'s
   `−(D−2)` lower bound the *weakest* of the family `−k'`). ✓
 
-### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge. **Loop-case refinement (c′), 2026-06-15:** the L8a-step-2 build surfaced that the maximal `G'` must be taken INDUCED (`G.induce V(G₀)`) to kill the contraction's loop mode — KT's silent edge-saturation; one more NEW brick `deficiency_le_deficiency_of_le_vertexSet_eq` (def antitone under edge addition at fixed vertex set). No definitional change. **Steps-3–5 pin (c″), 2026-06-15:** the `G''` carrier is `addEdge`-twice (`(G'.addEdge eₐ v a).addEdge e_b v b`, no bespoke def); step 4's minimality→graph-equality is ONE new brick `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof` (a near-clone of the landed `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` body), buildable, no motive/user decision (2026-06-15)
+### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge. **Loop-case refinement (c′), 2026-06-15:** the L8a-step-2 build surfaced that the maximal `G'` must be taken INDUCED (`G.induce V(G₀)`) to kill the contraction's loop mode — KT's silent edge-saturation; one more NEW brick `deficiency_le_deficiency_of_le_vertexSet_eq` (def antitone under edge addition at fixed vertex set). No definitional change. **Steps-3–5 pin (c″), 2026-06-15:** the `G''` carrier is `addEdge`-twice (`(G'.addEdge eₐ v a).addEdge e_b v b`, no bespoke def); step 4's minimality→graph-equality is ONE new brick `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof` (a near-clone of the landed `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` body), buildable, no motive/user decision (2026-06-15). **L8c geometric-core pin (i), 2026-06-15:** the Leaf-2 step-4 `hnewpin` (TWO `v`-edges spanning `D`) RE-RATED from (d)/(h)'s "build-time uncertainty leaf" to a pinned NEW `RigidityMatrix.lean` brick `exists_independent_pinned_two_edge_span_full` (P≈3.5, route via `finrank_sup_add_finrank_inf_eq` + the AVAILABLE `dualAnnihilator_sup_eq` + `exists_fun_fin_finrank_span_eq`; the reverse `(U⊓V)^⊥=U^⊥⊔V^⊥` is NOT in mathlib), and the `case_I_realization_h65` producer's exact Brick-A assembly pinned against Brick A's verbatim signature — template is `case_II_realization_all_k` (NOT `case_I_realization_all_k`, which uses the high-level coupler), OLD-block `hold_span` genuinely simpler (`G_v ≤ G` literal subgraph, one named seed-restriction `funext` flag), producer FORCES `ends eₐ=(v,a)`/`ends e_b=(v,b)` to avoid L6's swap branch. Buildable leaf sequence: L8c-1 `hnewpin` brick → L8c-2 producer + privacy + wiring. See §1.70(i)
 
 > **Docs-only design pass (the L8 pin), opus.** Every load-bearing decl below opened to its
 > `def`/`theorem` body and verified against the cited claim (clause (i)). Landed source read this
@@ -8151,3 +8151,154 @@ decision for the coordinator/user.
 **simpler than L7** (no rank-polynomial transfer — same-seed `def=0`) but carries **more new combinatorics**
 (the maximal-subgraph existence + contraction-non-simplicity unpacking, which L7 had landed in
 `splitOff_removeVertex_minimalKDof`).
+
+### 1.70(i) The L8c geometric-core pin — the Leaf-2 step-4 `hnewpin` brick (RE-RATED to a pinned NEW brick) + the `case_I_realization_h65` exact Brick-A assembly (DESIGN-SETTLE, 2026-06-15, opus, docs-only)
+
+The (d)/(h) "build-time uncertainty leaf" (step-4 `hnewpin`: clean assembly OR small brick — TBD at build)
+is now **settled to a pinned NEW brick** with an exact route, and the producer's Brick-A instantiation is
+pinned against Brick A's ACTUAL signature. Every load-bearing decl opened to its `theorem`/`def` body this
+pass (clause (i)), and the two mathlib tools verified by loogle. **Net verdict (clause (ii)): no motive/IH
+change, no user adjudication; one honest flag** (the OLD-block seed-restriction step, named in (i.2) below).
+**The §1.70(d)-step-4 framing "the `eq_of_hingeConstraint_two_parallel` SAME-pair form does not apply, so
+either a clean assembly or a small new brick" RESOLVES to: a small NEW brick, route fully pinned — re-rate
+from "build-time uncertainty" to **buildable, P≈3.5**.**
+
+**Finding 0 — the structural template is `case_II_realization_all_k` (CaseII:297), NOT `case_I_realization_all_k`.**
+Verified: `case_I_realization_all_k` (Theorem55:1769) assembles its two legs through the HIGH-level coupler
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof` (Theorem55:1850) — it does **not**
+call Brick A directly. The decl that consumes Brick A is `case_II_realization_all_k` (Brick A at CaseII:1063).
+So §1.70(d)'s "the L6 Case-II template widened" is the right reading: `case_I_realization_h65` mirrors
+**`case_II_realization_all_k`'s geometric core (CaseII:937–1069)**, not the Case-I producer it sits beside.
+
+**(i.1) The step-4 `hnewpin` brick — PINNED (genuinely new; no single landed lemma assembles it).** The need:
+Brick A's `hnewpin : LinearIndependent ℝ (fun i : ιn => (rn i).comp (single ℝ _ v))` with `Nat.card ιn = D`
+(`screwSpace_finrank:98`, `= screwDim 2 = 6`). L6 fills its `ιn` from a SINGLE edge `e_b` via
+`linearIndependent_panelRow_comp_single_of_edge` (Pinning:503, the `D−1` block). L8's NEW block is the TWO
+`v`-edges `va, vb` and must reach the FULL `D`. The per-edge tools each give only `D−1`:
+* `exists_independent_panelRow_subfamily_of_edge` (Pinning:442) — `D−1` independent panel rows for one edge;
+* `linearIndependent_panelRow_comp_single_of_edge` (Pinning:503) — those, pinned at `(ends e).1`, stay LI;
+* `span_panelRow_comp_single_of_edge` (Pinning:547) — those pinned rows **span** `F.hingeRowBlock e = (span C(e))^⊥`.
+
+So the pinned `va`-block spans `hingeRowBlock e_a` and the pinned `vb`-block spans `hingeRowBlock e_b`, each
+`finrank D−1` (`finrank_hingeRowBlock:1129`). **The combined span is `hingeRowBlock e_a ⊔ hingeRowBlock e_b`,
+and it has finrank exactly `D` iff the two supporting extensors are LI** — NOT a single landed lemma. Route
+(all parts verified present):
+* `finrank(U ⊔ W) = finrank U + finrank W − finrank(U ⊓ W)` via `Submodule.finrank_sup_add_finrank_inf_eq`
+  (mathlib `FiniteDimensional/Lemmas:53`, verified by loogle).
+* `U ⊓ W = (span C_a)^⊥ ⊓ (span C_b)^⊥ = (span C_a ⊔ span C_b)^⊥` via `Submodule.dualAnnihilator_sup_eq`
+  (mathlib `Dual/Defs`, **the AVAILABLE direction** — `(U⊔V)^⊥ = U^⊥⊓V^⊥`; verified) + `hingeRowBlock_apply:807`
+  (`hingeRowBlock e = (span {C(e)}).dualAnnihilator`). **Caveat the design must honor:** the *reverse*
+  `(U⊓V)^⊥ = U^⊥⊔V^⊥` is **NOT in mathlib** (only `Submodule.sup_dualAnnihilator_le_inf`, the `≤` direction,
+  verified by loogle) — so the route must go through `dualAnnihilator_sup_eq` on `span C_a ⊔ span C_b`, never
+  the reverse on `hingeRowBlock_a ⊓ hingeRowBlock_b`.
+* `finrank(span C_a ⊔ span C_b) = 2` (two LI extensors) ⟹ `finrank((span C_a ⊔ span C_b)^⊥) = D − 2` via
+  `Subspace.finrank_add_finrank_dualAnnihilator_eq` (mathlib `Dual/Lemmas:539`, the lemma `finrank_hingeRowBlock`
+  already uses). So `finrank(U ⊔ W) = (D−1)+(D−1)−(D−2) = D`.
+* Extract a `Fin D`-indexed LI subfamily of the union of pinned rows via `Submodule.exists_fun_fin_finrank_span_eq`
+  (mathlib `Dimension/StrongRankCondition:651`, verified — same tool `exists_independent_panelRow_subfamily_of_edge`
+  uses at Pinning:456). Each extracted row lies in the SET of pinned `(panelRow ends i).comp(single v)` rows of
+  the two `v`-edges, so its un-pinned `panelRow ends i` is a member of `span F.rigidityRows` (`hnew_span`,
+  via `panelRow_mem_rigidityRows`). **Brick-fit subtlety to discharge at build:** Brick A wants `rn : ιn → Dual`
+  with `hnewpin : LI (rn · ∘ single v)`. `exists_fun_fin_finrank_span_eq` hands the PINNED rows directly; the
+  `rn` are the un-pinned panel rows of the chosen `(edge, ⋀²-pair)` indices, and `hnewpin` is exactly the
+  extracted LI. So the brick should conclude in the Brick-A-ready shape — return `ιn`, `rn`, `hnewpin`,
+  `hnew_span` together. **Pin (lives in `RigidityMatrix.lean`, beside `linearIndependent_panelRow_comp_single_of_edge`
+  / the pinned-placement bricks; name indicative):**
+```lean
+-- Two v-edges va, vb with LI supporting extensors: their hinge rows, pinned through v's screw column,
+-- contain a D-element LI subfamily spanning the full D (KT Lemma 5.3, distinct-endpoint form).
+theorem BodyHingeFramework.exists_independent_pinned_two_edge_span_full [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ends : β → α × α} {v a b : α} {eₐ e_b : β}
+    (hva : (ends eₐ) = (v, a)) (hvb : (ends e_b) = (v, b))   -- producer FORCES this orientation, see (i.2)
+    (haₐ : a ≠ v) (hbb : b ≠ v)
+    (hne_a : F.supportExtensor eₐ ≠ 0) (hne_b : F.supportExtensor e_b ≠ 0)
+    (hgen : LinearIndependent ℝ ![F.supportExtensor eₐ, F.supportExtensor e_b]) :
+    ∃ (ιn : Type) (_ : Fintype ιn) (rn : ιn → Module.Dual ℝ (α → ScrewSpace k)),
+      Nat.card ιn = screwDim k ∧
+      LinearIndependent ℝ
+        (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) ∧
+      (∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows)
+```
+*S/P/B:* genuinely new, but every sub-fact is landed/mathlib — **P≈3.5, buildable, not research-shaped.** The
+`Fin D` ⟹ `Nat.card ιn = D` and the unpinning are bookkeeping; the mathematical content is the `finrank = D`
+chain above. **NOTE the orientation hypotheses** `(ends eₐ) = (v,a)`, `(ends e_b) = (v,b)` — the producer
+supplies them by *construction* (see (i.2)), so the brick avoids L6's `hnewpin_eb` swap gymnastics
+(CaseII:983–1035, the `(ends e_b) = (b,v)` reorientation) entirely.
+
+**The two-LI-extensors hypothesis `hgen` is supplied, not assumed.** `C(va) = panelSupportExtensor(q(v,·),q(a,·))`,
+`C(vb) = panelSupportExtensor(q(v,·),q(b,·))`. From the triple-LI `![q(v,·),q(a,·),q(b,·)]` (the de-privatized
+L8b bridge `linearIndependent_normals_of_algebraicIndependent` at `(a,b,c):=(v,a,b)`), the two joins
+`join(n_v,n_a)`, `join(n_v,n_b)` are LI in `⋀²` — established via `panelSupportExtensor_linearIndependent_iff`
+(PanelLayer:810, `LI panelSupportExtensor ↔ LI normalsJoin`). This is the geometric heart "two edges through a
+common body, non-collinear normals ⟹ independent extensors"; it is what KT Lemma 5.3 needs in the distinct-
+endpoint form, and it is the only place L8b's triple-LI bridge enters the geometric side.
+
+**(i.2) The producer `case_I_realization_h65` — exact assembly route, pinned against Brick A's actual signature.**
+Brick A (`le_finrank_span_rigidityRows_of_pinned_placement`, RigidityMatrix:3344, **verbatim** this pass):
+takes `(F : BodyHingeFramework k α β) {v} {rn : ιn → Dual} {ro : ιo → Dual}`, hypotheses
+`hold : ∀ j x, ro j (update 0 v x) = 0`, `hnewpin : LI (rn · ∘ single v)`, `holdindep : LI ro`,
+`hnew_span : ∀ i, rn i ∈ span F.rigidityRows`, `hold_span : ∀ j, ro j ∈ span F.rigidityRows`; concludes
+`Nat.card ιn + Nat.card ιo ≤ finrank (span F.rigidityRows)`. The producer instantiates it as the L6 template
+(CaseII:1036–1069) with `ιn` = the (i.1) brick's `D`-element NEW index and `ιo` = the IH's `G_v`-row OLD index.
+The body (matches `theorem_55_d3:516`'s `h65` carry exactly — re-verified: hyps `hD hn hfresh G hG hV3 hrig
+hSimple hnoSimpleContr hIH`, conclusion `HasGenericFullRankRealization 2 n G`, §1.70(d) pin unchanged):
+
+1. **Graph side (Leaf 1, L8a, LANDED).** `exists_degree_two_removeVertex_of_no_simple_contraction` → `v, a, b,
+   eₐ, e_b`; `v` degree-2; `G_v := G.removeVertex v` minimal 0-dof + simple; `a ≠ b`, `a,b ≠ v`, `eₐ ≠ e_b`.
+2. **IH at `G_v` (`k=0` arm).** `(hIH G_v hG_v hV_v hlt).1 hG_v.Simple : HasGenericFullRankRealization 2 n G_v`
+   → `Q_v`, GP, rank `= D(|V_v|−1)` (`def=0`), link-recording, **alg-indep seed `q := fun p => Q_v.normal p.1 p.2`**
+   (the `HasGenericFullRankRealization` motive's five conjuncts, PanelHinge:1035 verified). `G_v` is 0-dof, so
+   the `k=0`-only IH suffices — the L8-not-all-`k` finding.
+3. **Build `Q := ofNormals G ends q'` on the extended seed.** `q'` = `q` extended at `v` by a fresh Π° normal
+   (the §1.53 free-normal extension keeping alg-indep + pairwise-LI; `v`'s normal makes `![q'(v,·),q'(a,·),
+   q'(b,·)]` triple-LI). **`ends` is CHOSEN so `ends eₐ = (v,a)`, `ends e_b = (v,b)`** (first endpoint `v` on
+   both `v`-edges; off the two, `ends = G.endsOf`/the IH's selector) — this is what feeds (i.1)'s orientation
+   hyps and removes L6's swap branch. `Q.graph = G` (`ofNormals_graph`); link-recording via
+   `ofNormals_recordsLinks_of_hends` (PanelHinge:1057).
+4. **Rank `≥ D(|V|−1)` via Brick A.** NEW block `(ιn, rn)` from (i.1)'s brick (`hnewpin` + `hnew_span` +
+   `Nat.card ιn = D`); OLD block `(ιo, ro)` = `Q_v`'s `D(|V_v|−1)` panel rows. Discharges:
+   * `holdindep` — the IH realization's rows are independent (from `Q_v`'s rank-`D(|V_v|−1)` realization, the
+     `exists_independent_*` family the IH carries; same as L6's `hso_indep`).
+   * `hold : ∀ j x, ro j (update 0 v x) = 0` — every OLD row is an `eᵢ`-hinge at a `G_v`-link, whose endpoints
+     are in `V(G_v)` and so `≠ v` (`v ∉ V(G_v)`); `hingeRow … (update 0 v x) = annih(0−0) = 0`. EXACTLY L6's
+     `hold` (CaseII:963–977) — `Q_v`-rows avoid `v`.
+   * `hold_span : ∀ j, ro j ∈ span Q.toBodyHinge.rigidityRows` — **the genuinely-simpler-than-L6 step.** L6's
+     OLD block came from a SPLIT-OFF `Gab = G.splitOff v a b e₀` (CaseII `hso_span`, 70 lines, the extensor-
+     agreement-up-to-swap argument at :827–895). Here `G_v ≤ G` is a GENUINE subgraph (`removeVertex_le`) and
+     `Q` is built on the SAME seed `q'` whose restriction to `V(G_v)` IS `q` (the `ofNormals`-same-seed identity).
+     So each `G_v`-link is a `G`-link with the IDENTICAL supporting extensor, and `ro j = Q_v.panelRow …` is
+     LITERALLY a `Q.panelRow …` ⟹ `∈ span Q.rigidityRows` by `Submodule.subset_span ∘ panelRow_mem_rigidityRows`
+     (the §1.68(d) TRIVIAL `Gv ≤ G` case). **Honest flag (the one named step, not a blocker):** this needs the
+     *seed-restriction* fact "`Q`'s normals on `V(G_v)` = `Q_v`'s normals" — mechanically true by the
+     extended-seed construction (`q'` agrees with `q` off `v`, and `G_v`-vertices are `≠ v`), but the build must
+     state it (a `funext` + `Function.update_of_ne`); it is the one place where "extend the seed at `v`" has a
+     proof obligation. P≈2, no design risk.
+   * `hnew_span` — (i.1) returns it.
+   `le_finrank_span_rigidityRows_of_pinned_placement Q.toBodyHinge (v:=v) hold hnewpin holdindep hnew_span
+   hold_span : D + D(|V_v|−1) ≤ finrank`, i.e. `D(|V|−1) ≤ finrank` (`|V_v| = |V|−1`, `vertexSet_removeVertex`
+   + `ncard_diff_singleton`). **No rank-polynomial transfer** (unlike L6/L7): same-seed, both 0-dof.
+5. **`≤` + antisymmetry ⟹ rank `= D(|V|−1) − 0`.** `finrank_span_rigidityRows_add_deficiency_le` (B2) at
+   `def(G̃)=0` (`hG.1`) gives `finrank ≤ D(|V|−1)`; antisymmetry closes the rank conjunct.
+6. **GP / link-recording / alg-indep / extensor-nonzero conjuncts.** GP (pairwise normal-LI): `Q_v`'s GP off
+   `v` + the Π° normal making `v`'s pairs LI (triple-LI ⟹ each pair LI). Link-recording: step 3. Alg-indep:
+   the extended seed `q'`. Extensor-nonzero (every `G`-link has nonzero supporting extensor): mirrors
+   `case_II_realization_all_k:1088` `hne_G` — the two `v`-edges nonzero by `panelSupportExtensor_ne_zero_iff`
+   on the triple-LI, the rest off the IH.
+
+**Steps 1–3, 5–6 COMPOSE (confirmed against the L6 template).** Steps 1–2 are the landed Leaf-1 + the
+`HasGenericFullRankRealization` destructure; step 3 is the `ofNormals` + chosen-`ends` build (the seed-extension
+is the §1.53 landed idiom); step 5 is one B2 call + `le_antisymm`; step 6 mirrors L6's conjunct discharges
+verbatim. The only NEW Lean content beyond assembly is the (i.1) `hnewpin` brick and the (i.2) step-4
+`hold_span` seed-restriction `funext` (P≈2). **No step fails to compose; no motive/IH change; no user decision.**
+
+**(i.3) Resulting buildable leaf sequence (the L8c slice, exact signatures).**
+* **L8c-1 — the `hnewpin` brick** `BodyHingeFramework.exists_independent_pinned_two_edge_span_full`
+  (RigidityMatrix.lean, signature in (i.1)). Self-contained finrank/dual-annihilator + extract-LI; no
+  `ofNormals`/producer dependency. **The next concrete commit** — a `RigidityMatrix.lean` leaf, lands first.
+  Mints no node (a `\uses`-only brick).
+* **L8c-2 — the producer** `PanelHingeFramework.case_I_realization_h65` (Theorem55.lean, signature §1.70(d)
+  UNCHANGED) + L8b privacy fix (drop `private` on CaseIII:3407, folds in) + wiring (rewrite
+  `theorem_55_d3`'s `:555` lambda to call the producer, drop the `h65` signature carry at :516–:524). Restates
+  `lem:case-I-dispatch` green (flip `\leanok` on statement + proof; reword the stale "obligation of sub-phase
+  22i" prose to 22k). **Statement-grep gate:** `theorem_55_d3`'s `h65` carry-drop is a statement change — grep
+  `blueprint/src` for `theorem_55_d3` per the `CLAUDE.md` *Structural-edit phases* per-slice gate.
