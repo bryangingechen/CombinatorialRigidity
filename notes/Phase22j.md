@@ -4,13 +4,23 @@
 
 ## Current state
 
-**Next: the cleanup bundle (closes 22j).** Drop the L6b `set_option maxHeartbeats 3200000` + `linter.
-style.longLine false` suppressions (retry post-S4a — S4a's Brick-A call builds at 86s, well under the
-budget), delete the dead `hso_ne_sn` + the stale comment block + the stale TODO in
-`case_II_realization_all_k`, and refresh the `CLEANUP.md` §C long-proof note for the slimmed producer.
-(Line numbers below predate the S5 delete — the producer shifted up ≈190 lines; re-grep before editing.)
-*Standard build dispatch for the `.lean` edits (`lake build` + `lake lint` warning-clean + axiom-clean);
-the §C-note refresh is coordinator-authored. P≈1.* When it lands, 22j closes.
+**Next: drop the two L6b suppressions — but only after a real refactor (NOT a mechanical drop).** The
+dead-code half of the cleanup bundle landed (deleted `hso_ne_sn` + its trailing stale comment block +
+the stale `h_hnewpin_v`/TODO lines in `case_II_realization_all_k`). The **suppression drops are both
+infeasible as a mechanical P≈1 cleanup** — empirically verified 2026-06-15, the note's "retry post-S4a"
+premise was wrong:
+- **`maxHeartbeats 3200000` drop FAILS the build.** Reverting to the default 200000 ceiling times out at
+  three positions in the producer (`isDefEq` ~:4205, tactic exec ~:4189, `whnf` at the decl head). The
+  86s wall-clock figure does *not* mean it fits the default heartbeat budget — wall-clock ≠ heartbeats.
+  Dropping this needs profiling + optimizing the hot tactic blocks (or splitting the producer into
+  helper lemmas) to fit a smaller budget.
+- **`linter.style.longLine false` drop would emit ~80 warnings.** The producer body still has ≈80
+  over-length (>100-char) lines — section-divider comments padded with `─`, long explanatory comments,
+  and several genuine code lines. Dropping the suppression needs reflowing all ~80 lines (not mechanical;
+  the code lines must wrap without breaking proofs).
+
+Both are real refactor sub-steps, not P≈1 drops. The `CLEANUP.md` §C-note refresh (coordinator-authored)
+still applies for the slimmed producer.
 
 **Landed** (per-slice detail in the *Layer plan* checklist + *Decisions made* below; the design is
 §1.68): S1 Brick A (`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) → S2 its blueprint
@@ -74,11 +84,15 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   + axiom-clean; the §1.68(f) "re-prove through Brick A" route is a shape error — bare `finrank` bound
   vs the decl's literal `∃ s` subfamily). No blueprint pin moved (`_kdof` had no pin, rigid decl
   untouched); gates green (build warning-clean, `lake lint`, producer axiom-clean).
-- [ ] **Cleanup bundle.** Drop the L6b `set_option maxHeartbeats 3200000` (:3911) +
-  `linter.style.longLine false` (:3915) suppressions (retry post-S4); delete dead `hso_ne_sn` (:4613)
-  + the stale comment block (:4628–4640) + the stale TODO (:4656); refresh the `CLEANUP.md` §C
-  long-proof note for the slimmed producer. *Standard build dispatch for the `.lean` edits (gates);
-  the §C-note refresh is coordinator-authored. P≈1.*
+- [x] **Cleanup bundle — dead-code half DONE** (2026-06-15): deleted the dead `hso_ne_sn` have + its
+  trailing stale "Hmm, we need a lemma…" comment block + the stale `h_hnewpin_v`/`TODO: pin direction`
+  lines inside `case_II_realization_all_k` (31 lines). Gates green (build warning-clean, `lake lint`,
+  producer axiom-clean: `propext`/`Classical.choice`/`Quot.sound` only).
+- [ ] **Suppression drops — DEFERRED, need a real refactor (NOT mechanical).** See *Current state*: the
+  `maxHeartbeats 3200000` drop fails the build (default-200000 timeout at 3 positions); the
+  `linter.style.longLine false` drop would emit ~80 over-length-line warnings. Each is a refactor
+  sub-step (profile/split the producer for heartbeats; reflow ~80 lines for longLine), not a P≈1 drop.
+- [ ] **`CLEANUP.md` §C-note refresh** (coordinator-authored) for the slimmed producer.
 
 **S3 is 22k, not 22j:** generalizing Brick B (`case_III_old_new_blocks` → rank input + `hleG`
 transport) is deferred — Case III's rank path consumes the `hρGv`/`hwmem` span-interface, and S3 risks
@@ -89,38 +103,41 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 - ~~**S1 `Nat.card`/`Fintype` resolution**~~ — RESOLVED at the S1 build (standard
   `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; Brick A's interface keys on `Nat.card`, both
   call sites supply `[Finite ιn] [Finite ιo]`).
-- **Cleanup suppression-drop** (the `maxHeartbeats 3200000`/`longLine` removal) is now unblocked —
-  S4a's Brick-A call builds well under the 3.2M budget at 86s; confirm the drop builds clean in the
-  cleanup bundle.
+- **Cleanup suppression-drop is BLOCKED on a refactor** (re-assessed 2026-06-15; the prior "now
+  unblocked at 86s" claim was wrong — wall-clock ≠ heartbeats). Dropping `maxHeartbeats 3200000` times
+  out at the default 200000 ceiling (3 positions); dropping `linter.style.longLine false` emits ~80
+  warnings. Neither is a mechanical drop — see *Current state* for the two refactor sub-steps required.
 
 ## Hand-off / next phase
 
-**Next concrete commit: the cleanup bundle (closes 22j)** (`CaseI.lean` + `CLEANUP.md`). In
-`case_II_realization_all_k`: (1) drop the `set_option maxHeartbeats 3200000` + `linter.style.longLine
-false` suppressions now riding above the producer docstring (retry post-S4a — S4a's Brick-A call builds
-at 86s, well under the 3.2M budget), and (2) delete the dead `hso_ne_sn`, the stale comment block, and
-the stale TODO inside the producer body. (Line numbers in the *Layer plan* predate the S5 delete — the
-producer shifted up ≈190 lines; re-grep before editing.) Then refresh the `CLEANUP.md` §C long-proof
-note for the slimmed producer (coordinator-authored). Standard build dispatch for the `.lean` edits —
-`lake build` + `lake lint` warning-clean + axiom-clean; **no `verify.sh`** (no blueprint pin moves).
-P≈1. (S1 + S2 + S4a landed; **S4b skipped** — see *Current state*; S5 done this commit.) At 22j close:
-open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
+**Cleanup bundle's dead-code half landed (2026-06-15); the two suppression drops are deferred refactors
+(not P≈1 — see *Current state* / *Blockers*).** This is a **coordinator decision point** on how to
+close 22j: the dead-code deletion is done, but the named "drop both suppressions" deliverable is
+empirically infeasible as a mechanical drop. Options for the coordinator: (a) treat 22j as effectively
+done on its Brick-A-abstraction arc (S1/S2/S4a/S5 + the dead-code cleanup) and close it, re-homing the
+two suppression-drop refactors as a tracked item under Phase 22k (or a dedicated perf/style pass); or
+(b) keep 22j open to land one or both refactors first. Recommend (a) — the suppression drops are pure
+hygiene with no bearing on 22k's Case III consuming Brick A, and the heartbeats one is a genuine
+perf-profiling sub-step better batched with other producer-perf work. The `CLEANUP.md` §C-note refresh
+(coordinator-authored) for the slimmed producer is still pending.
+
+After 22j: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
 `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23
-(general `d`).
+(general `d`). (S1 + S2 + S4a landed; **S4b skipped** — see *Current state*; S5 + the dead-code cleanup
+done.)
 
 ### coordinate-phase note (`coordinate-phase 22j`)
 
-Drives this log via the *Hand-off* pivot. **Only the cleanup bundle remains.** It is a **standard
-build dispatch** for the `.lean` edits (drop the suppressions + delete dead `hso_ne_sn`/stale
-comment/TODO; **no blueprint pin moves → no `verify.sh`**) plus a **coordinator-authored** `CLEANUP.md`
-§C-note refresh (rescue §6) — so it may land as one build commit + one coordinator commit, or bundled.
-The cleanup is a fully-specified mechanical slice (P≈1); the step-1 research-shape trigger should
-**not** fire. The model-experiment is **running** — at session start re-run the availability check and
-record any substitution/override in the log's repo-local config (the prior session's opus-only override
-expired at its session end), then rate S/P/B (cleanup P≈1 → haiku per the map) and dispatch per that.
-When the cleanup lands, run the **phase-close checklist** (flip 22j ✓ across ROADMAP / README /
+Drives this log via the *Hand-off* pivot. **The cleanup bundle's dead-code half landed; the two
+suppression drops turned out to be deferred refactors, not the mechanical P≈1 slice this note
+assumed** (the "retry post-S4a / 86s" premise was a wall-clock-≠-heartbeats error — see *Current
+state* / *Blockers*). The coordinator now has a **decision point** (recorded in *Hand-off*): close 22j
+on its Brick-A arc + dead-code cleanup and re-home the suppression refactors (recommended), or keep it
+open to land them. If closing: run the **phase-close checklist** (flip 22j ✓ across ROADMAP / README /
 home_page / intro.tex / MolecularConjecture; compress ROADMAP §22j; write the model-experiment
-*Findings* for 22j; then open **Phase 22k**).
+*Findings* for 22j; refresh the `CLEANUP.md` §C-note; re-home the two suppression-drop refactors as a
+tracked item; then open **Phase 22k**). The model-experiment is **running** — re-run the availability
+check at session start and record any substitution/override in the log's repo-local config.
 
 ## Decisions made during this phase
 
@@ -158,3 +175,13 @@ home_page / intro.tex / MolecularConjecture; compress ROADMAP §22j; write the m
   the §1.68(f) "re-prove through Brick A" route is a shape error — bare `finrank` bound vs the decl's
   literal `∃ s` subfamily). No blueprint pin moved (`_kdof` had no pin). Gates green (build
   warning-clean, `lake lint`, producer axiom-clean). No friction (pure delete + docstring tidy).
+- **Cleanup bundle — dead-code half landed; suppression drops found infeasible (2026-06-15):** deleted
+  the dead `hso_ne_sn` have + its trailing "Hmm, we need a lemma…" comment block + the stale
+  `h_hnewpin_v`/`TODO: pin direction` lines in `case_II_realization_all_k` (31 lines; gates green —
+  warning-clean build, `lake lint`, producer axiom-clean). The two suppression drops are **NOT** the
+  mechanical P≈1 the note assumed: dropping `maxHeartbeats 3200000` times out at the default-200000
+  ceiling (3 positions — empirically verified, `whnf`/`isDefEq`/tactic-exec), and dropping
+  `linter.style.longLine false` emits ~80 warnings (the producer still has ≈80 >100-char lines). Each is
+  a refactor sub-step (perf-profile/split for heartbeats; reflow ~80 lines for longLine), deferred.
+  **Lesson:** an 86s wall-clock build does not imply fitting the default heartbeat budget — verify a
+  `maxHeartbeats` drop with an actual build, never infer it from build time.

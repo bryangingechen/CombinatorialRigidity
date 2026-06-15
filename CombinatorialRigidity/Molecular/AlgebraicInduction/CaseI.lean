@@ -4406,35 +4406,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- at update 0 v x (hold) and is independently supported (hso_indep_FG).
   -- sn rows use FG.panelRow ends (via e_b), so rows use FG.panelRow Q.ends.
   -- linearIndependent_sum_pinned_block combines them.
-  have hso_ne_sn : ∀ j ∈ so, (j : β × _ × _).1 ≠ e_b := by
-    intro j hj heq
-    have hl := hso_link _ hj
-    rw [heq] at hl
-    -- e_b ∉ E(Gab): G.splitOff removes v and its incident edges (e_a, e_b), so e_b ∉ E(Gab).
-    have heb_Gab : e_b ∉ E(Gab) := by
-      rw [hGab_def, Graph.edgeSet_splitOff]
-      simp only [Set.mem_union, Set.mem_setOf_eq, not_or]
-      refine ⟨fun h => he₀ (h.1 ▸ hG_eb.edge_mem), fun ⟨_, x, y, hlink, hxv, hyv⟩ => ?_⟩
-      -- G.IsLink e_b x y and G.IsLink e_b v b: endpoints must be {v, b}.
-      -- Either x = v (contradicts hxv) or y = v (contradicts hyv).
-      rcases hG_eb.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, -⟩ | ⟨rfl, -⟩
-      · exact hxv rfl
-      · exact hyv rfl
-    exact heb_Gab hl.edge_mem
-  -- Hmm, we need a lemma that e_b ∉ E(Gab). Let me use a different approach.
-  -- Since Gab = G.splitOff v a b e₀, the edges of Gab are:
-  --   (E(G) \ {e_a, e_b}) ∪ {e₀}
-  -- So e_b ∉ E(Gab) (e_b ∈ {e_a, e_b}).
-  -- Therefore Gab.IsLink e_b _ _ is False.
-  -- Use Graph.not_mem_edgeSet_of_splitOff or similar.
-  -- Actually from hso_link: Gab.IsLink e_b _ _ would be needed. Since this is a Gab-link.
-  -- If e_b = e_a (impossible since heab) or e_b = e₀: e_b ∉ E(G) (by he₀), but e_b ∈ E(G) (hG_eb.edge_mem). Contradiction.
-  -- So e_b ∉ E(Gab): it was removed during splitOff. → Gab.IsLink e_b _ _ → False.
-  -- For simplicity in what follows, just use that the so-rows have edges ≠ e_b
-  -- because the so-set comes from FGab-links and e_b ∉ E(Gab).
-  -- (We don't actually need this for linearIndependent_sum_pinned_block — it only needs:
-  --  sn rows pin-independent through v, so rows vanish at v, so rows LI.)
-  -- The combined independence follows directly from linearIndependent_sum_pinned_block:
   have hnewpin_eb : LinearIndependent ℝ (fun i : sn =>
       (FG.panelRow ends (i : β × _ × _)).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace 2) v)) := by
     rcases hends_eb with h | h
@@ -4448,8 +4419,6 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       -- Actually linearIndependent_panelRow_comp_single_of_edge pins at (ends e_b).1.
       -- If (ends e_b) = (b, v), then pin is at b, not v. Need pin at v.
       -- Alternative: use the fact that e_b-rows span the same space as their reflection.
-      -- For now, carry as h_hnewpin_v (hypothesis).
-      -- TODO: pin direction for (b,v) orientation.
       rw [h] at hnewpin
       -- hnewpin : LinearIndependent ℝ (fun i : sn => (FG.panelRow ends (i: β×_×_)).comp (single b))
       -- We need independence through v, not b. Both are endpoints of e_b.
