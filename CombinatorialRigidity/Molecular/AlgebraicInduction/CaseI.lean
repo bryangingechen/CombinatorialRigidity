@@ -3720,11 +3720,14 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
     exact h
 
-set_option maxHeartbeats 800000 in
--- `case_II_realization_all_k` is a large, heartbeat-heavy proof flagged for a refactor (factor into
--- helper lemmas — see `notes/Phase22i.md` L6b): the repeated `ScrewSpace 2` typeclass elaboration is
--- expensive, so the whole-declaration budget is raised once here (4× default), replacing several
--- mid-proof resets.
+set_option maxHeartbeats 600000 in
+-- `case_II_realization_all_k` is heartbeat-heavy: its cost is *diffuse* `ScrewSpace 2` typeclass
+-- re-elaboration spread across the ~16 geometric Steps (not one hot block), so the whole-declaration
+-- budget is raised once here (3× default). Phase 22j A1 lowered it from 16× → 3× by extracting the
+-- duplicated ℤ/ℕ rank-cast `CoeT` load to `toNat_le_of_add_pred_eq` / `sub_toNat_eq_of_add_pred_eq`
+-- (`RigidityMatrix.lean`); the residual over-budget sites are the Brick-A `isDefEq` and the Step
+-- 12–15 geometric middle, both §38-class defeq blowups, not missing lemmas (`notes/PERFORMANCE.md`
+-- *Producer helper-split design*).
 set_option linter.style.longLine false in
 -- The as-landed proof also carries many over-length lines; suppression is a stopgap pending refactor.
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
@@ -4495,6 +4498,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- hN: D*(|V(G)|-1) - k ≤ finrank(span FG.rigidityRows). Convert to ℕ.
   have h1V : 1 ≤ V(G).ncard := by
     exact (Set.ncard_pos (Set.toFinite _)).2 ⟨v, hvG⟩
+  have hD1 : 1 ≤ screwDim 2 := by omega
   have hrank_lb_nat : (screwDim 2 * (V(G).ncard - 1) - k.toNat) ≤
       Module.finrank ℝ (Submodule.span ℝ FG.rigidityRows) := by
     -- First: N + (D-1) ≤ finrank (ℕ) from hrank_lb via hNpD.
@@ -4502,25 +4506,9 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       have hrank_lb_Z := hrank_lb
       rw [← hNpD] at hrank_lb_Z
       exact_mod_cast hrank_lb_Z
-    -- Key: (k.toNat : ℤ) = k since k > 0 ≥ 0.
-    have hk_cast : (k.toNat : ℤ) = k := Int.toNat_of_nonneg (Int.le_of_lt hk)
-    -- Then D*(V-1) - k.toNat = N + (D-1) (ℕ).
-    -- Prove the ℤ cast equality, then exact_mod_cast.
-    have hk_toNat_le : k.toNat ≤ screwDim 2 * (V(G).ncard - 1) := by
-      have : (k.toNat : ℤ) ≤ ↑(screwDim 2 * (V(G).ncard - 1)) := by
-        rw [hk_cast]
-        push_cast [Nat.cast_sub h1V]
-        linarith [hNpD]
-      exact_mod_cast this
-    have heq : screwDim 2 * (V(G).ncard - 1) - k.toNat = N + (screwDim 2 - 1) := by
-      have hZ : (↑(screwDim 2 * (V(G).ncard - 1) - k.toNat) : ℤ) =
-               ↑(N + (screwDim 2 - 1)) := by
-        rw [Nat.cast_sub hk_toNat_le]
-        push_cast [Nat.cast_sub h1V]
-        rw [hk_cast]
-        linarith [hNpD]
-      exact_mod_cast hZ
-    linarith [heq ▸ hbound]
+    -- `D*(V-1) - k.toNat = N + (D-1)` (ℕ) by the shared rank-equation cast bridge.
+    rw [sub_toNat_eq_of_add_pred_eq hk h1V hD1 hNpD]
+    exact hbound
   -- hne_G : ∀ e, G.IsLink e (ends e).1 (ends e).2 → FG.supportExtensor e ≠ 0
   -- Proved by case split: e = e_b (hFG_eb_ne), e = e_a (hFG_ea + nonzero panelSupport),
   -- otherwise (e is a non-v, non-e₀ Gab-link → FG.supportExtensor e = ±FGab.supportExtensor e ≠ 0).
@@ -4636,17 +4624,13 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
         (Module.finrank ℝ (Submodule.span ℝ
           (PanelHingeFramework.ofNormals G ends q').toBodyHinge.rigidityRows) : ℤ) := by
       -- hrankge_q' : screwDim 2 * (V(G).ncard - 1) - k.toNat ≤ finrank (ℕ)
-      -- Cast to ℤ via the same bridge as hrank_lb_nat.
-      have hk_cast : (k.toNat : ℤ) = k := Int.toNat_of_nonneg (Int.le_of_lt hk)
-      have hk_toNat_le' : k.toNat ≤ screwDim 2 * (V(G).ncard - 1) := by
-        have : (k.toNat : ℤ) ≤ ↑(screwDim 2 * (V(G).ncard - 1)) := by
-          rw [hk_cast]
-          push_cast [Nat.cast_sub h1V]
-          linarith [hNpD]
-        exact_mod_cast this
+      -- Cast to ℤ via the shared rank-equation cast bridge (same as hrank_lb_nat).
+      have hk_toNat_le' : k.toNat ≤ screwDim 2 * (V(G).ncard - 1) :=
+        toNat_le_of_add_pred_eq h1V hD1 hNpD
       have hZ_eq : (screwDim 2 : ℤ) * ((V(G).ncard : ℤ) - 1) - k =
           ↑(screwDim 2 * (V(G).ncard - 1) - k.toNat) := by
-        rw [Nat.cast_sub hk_toNat_le', Nat.cast_mul, Nat.cast_sub h1V, hk_cast]
+        rw [Nat.cast_sub hk_toNat_le', Nat.cast_mul, Nat.cast_sub h1V,
+          Int.toNat_of_nonneg (Int.le_of_lt hk)]
         norm_cast
       calc screwDim 2 * ((V(G).ncard : ℤ) - 1) - k
           = ↑(screwDim 2 * (V(G).ncard - 1) - k.toNat) := hZ_eq

@@ -1830,6 +1830,11 @@ Phase 22i L4a (`RigidityMatrix.lean`, `flowSum_hingeRow_mem_not_mem`).
 inclusion, causing a type mismatch or a false goal. Use `Subtype.coe_injective` directly, which
 elaborates unambiguously. Phase 22i L4a (`RigidityMatrix.lean`, `hSc_rk`).
 
+**`le_or_lt` renamed to `le_or_gt`.** The total-order trichotomy split `le_or_lt a b : a ≤ b ∨ b < a`
+is `le_or_gt` in the current mathlib (`a ≤ b ∨ a > b`, the same disjunction). Use
+`rcases le_or_gt k 0 with hk0 | hk0`. Phase 22j A1 (`RigidityMatrix.lean`,
+`toNat_le_of_add_pred_eq`).
+
 
 ## 51. `set_option ... in` before a docstring-decorated declaration
 

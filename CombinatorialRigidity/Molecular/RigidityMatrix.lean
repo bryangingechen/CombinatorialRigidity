@@ -691,6 +691,55 @@ structure BodyHingeFramework (k : ℕ) (α β : Type*) where
   hinge is genuine (a `(k-1)`-dimensional affine subspace, resp. two transversal panels). -/
   supportExtensor : β → ScrewSpace k
 
+section RankArithmetic
+
+/-! ### Rank-equation `ℤ`/`ℕ` cast plumbing
+
+Two self-contained scalar bridges shared by the `k > 0`-split rank producer
+(`PanelHingeFramework.case_II_realization_all_k`, CaseI.lean): both the lower-bound transfer
+(`hrank_lb_nat`) and the rank-equality transfer (`hrankge_int`) re-run the *same* `Int.toNat` ↔
+`ℕ`-subtraction bridge to move `D·(V−1) − k` between its `ℤ` form (from Brick A's `finrank` bound,
+`D = screwDim 2`, `V = |V(G)|`) and its `ℕ`-`toNat` form (for the rank-polynomial transfer). Both
+factor through the rank equation `N + (D−1) = D·(V−1) − k` (KT eq.~(6.12), `hNpD` in the producer:
+`N` IH-old rows + `(D−1)` new rows = the target rank). Extracting them removes the dominant `CoeT`
+typeclass-inference load the duplicated casts incurred (Phase 22j A1; `notes/PERFORMANCE.md`
+*Producer helper-split design*). Pure scalar arithmetic — no rigidity content. -/
+
+/-- **Side fact: `k.toNat ≤ D·(V−1)`** from the rank equation `N + (D−1) = D·(V−1) − k`
+(Phase 22j A1; see the section preamble). With `N : ℕ` and `1 ≤ D` the right side `N + (D−1)`
+is `ℤ`-nonnegative, so `k ≤ D·(V−1)`; the `ℕ`-`toNat` form follows. -/
+theorem toNat_le_of_add_pred_eq {D V N : ℕ} {k : ℤ} (hV : 1 ≤ V) (hD : 1 ≤ D)
+    (hNpD : (N : ℤ) + (D - 1) = D * ((V : ℤ) - 1) - k) :
+    k.toNat ≤ D * (V - 1) := by
+  have hk_le : (k.toNat : ℤ) ≤ ↑(D * (V - 1)) := by
+    have hND : (0 : ℤ) ≤ (N : ℤ) + (D - 1) := by
+      have : (1 : ℤ) ≤ D := by exact_mod_cast hD
+      positivity
+    rcases le_or_gt k 0 with hk0 | hk0
+    · rw [Int.toNat_of_nonpos hk0]; positivity
+    · rw [Int.toNat_of_nonneg (le_of_lt hk0)]
+      push_cast [Nat.cast_sub hV]
+      linarith [hNpD, hND]
+  exact_mod_cast hk_le
+
+/-- **`D·(V−1) − k.toNat = N + (D−1)`** from the rank equation `N + (D−1) = D·(V−1) − k`
+(Phase 22j A1; see the section preamble). The `ℕ`-side identity feeding the rank-polynomial
+transfer; `hk : 0 < k` pins `(k.toNat : ℤ) = k`, then both sides cast through
+`toNat_le_of_add_pred_eq` and `hNpD`. -/
+theorem sub_toNat_eq_of_add_pred_eq {D V N : ℕ} {k : ℤ} (hk : 0 < k) (hV : 1 ≤ V) (hD : 1 ≤ D)
+    (hNpD : (N : ℤ) + (D - 1) = D * ((V : ℤ) - 1) - k) :
+    D * (V - 1) - k.toNat = N + (D - 1) := by
+  have hk_cast : (k.toNat : ℤ) = k := Int.toNat_of_nonneg (Int.le_of_lt hk)
+  have hk_toNat_le : k.toNat ≤ D * (V - 1) := toNat_le_of_add_pred_eq hV hD hNpD
+  have hZ : (↑(D * (V - 1) - k.toNat) : ℤ) = ↑(N + (D - 1)) := by
+    rw [Nat.cast_sub hk_toNat_le]
+    push_cast [Nat.cast_sub hV, Nat.cast_sub hD]
+    rw [hk_cast]
+    linarith [hNpD]
+  exact_mod_cast hZ
+
+end RankArithmetic
+
 namespace BodyHingeFramework
 
 variable {k : ℕ} {α β : Type*}
