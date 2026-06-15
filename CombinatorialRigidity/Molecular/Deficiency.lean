@@ -775,6 +775,59 @@ theorem deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] [Finite β]
   -- Step 4: `⨆ f, partitionDef H' n f ≤ H.deficiency n` via `partitionDef_le_deficiency`.
   exact hpd.trans (H.partitionDef_le_deficiency n f)
 
+/-- **A vertex-cardinality-maximal *induced* proper rigid subgraph exists** (the
+induced-saturation opener of Katoh–Tanigawa 2011 Claim 6.6, the §1.70(c′) loop-case fix of
+the Lemma-6.5 vertex-removal arm of the Case-I dispatch). The plain
+`exists_maximal_isProperRigidSubgraph` returns a vertex-maximal proper rigid *subgraph* `G₀`,
+but `IsProperRigidSubgraph` is the plain-subgraph relation — a `G`-edge with both ends in
+`V(G₀)` need not lie in `E(G₀)`. KT's argument silently assumes the maximal subgraph is
+edge-saturated within its vertex set; that is exactly the *induced* subgraph.
+
+This lemma supplies the saturated form directly: a proper rigid subgraph `G'` that is (a)
+vertex-cardinality-maximal among all proper rigid subgraphs and (b) **induced-saturated** —
+every `G`-edge with both ends in `V(G')` already lies in `E(G')`. The saturation conjunct is
+the `hHsat` hypothesis of `exists_isLink_pair_of_rigidContract_not_simple`, so a caller fed
+`G'` here can take the contraction-non-simplicity straight to its parallel disjunct (the loop
+disjunct being vacuous on a saturated subgraph).
+
+Construction: take the plain maximal `G₀` (`exists_maximal_isProperRigidSubgraph`) and replace
+it by its induced saturation `G' := G.induce V(G₀)`. Then `V(G') = V(G₀)`, so `G'` inherits
+`G₀`'s cardinality-maximality and properness; `G₀ ≤ G'` at the same vertex set lifts `G₀`'s
+rigidity to `G'` via `deficiency_le_deficiency_of_le_vertexSet_eq` (more edges at the same
+vertices only lower the deficiency, and `deficiency_nonneg` pins it back to `0`); and saturation
+is the defining property of `induce` (`edgeSet_induce`). -/
+theorem exists_maximal_induced_isProperRigidSubgraph [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) :
+    ∃ G' : Graph α β, G'.IsProperRigidSubgraph G n ∧
+      (∀ H : Graph α β, H.IsProperRigidSubgraph G n → V(H).ncard ≤ V(G').ncard) ∧
+      (∀ e x y, G.IsLink e x y → x ∈ V(G') → y ∈ V(G') → e ∈ E(G')) := by
+  -- Step 1a: a plain vertex-cardinality-maximal proper rigid subgraph `G₀`.
+  obtain ⟨G₀, hG₀, hmax⟩ := exists_maximal_isProperRigidSubgraph hrig
+  -- `V(G') = V(G₀)`, used throughout.
+  have hVeq : V(G.induce V(G₀)) = V(G₀) := vertexSet_induce ..
+  -- `V(G₀) ⊆ V(G)` (from `G₀ ≤ G`), so `G' ≤ G`.
+  have hsub : V(G₀) ⊆ V(G) := hG₀.1.1.vertexSet_mono
+  -- `G₀ ≤ G'`: same vertex set, and every `G₀`-link lies inside `V(G₀)` so survives `induce`.
+  have hG₀le : G₀ ≤ G.induce V(G₀) :=
+    ⟨hVeq ▸ le_rfl, fun e x y h ↦ ⟨h.mono hG₀.1.1, h.left_mem, h.right_mem⟩⟩
+  -- Step 1b: replace `G₀` by its induced saturation `G' := G[V(G₀)]`.
+  refine ⟨G.induce V(G₀), ?_, ?_, ?_⟩
+  · -- `G'.IsProperRigidSubgraph G n`.
+    refine ⟨⟨induce_le hsub, ?_⟩, ?_, ?_⟩
+    · -- `def(G̃') = 0`: `≤ def(G̃₀) = 0` (more edges at fixed vertices) and `≥ 0`.
+      refine le_antisymm ?_ ((G.induce V(G₀)).deficiency_nonneg n ?_)
+      · refine (deficiency_le_deficiency_of_le_vertexSet_eq hD hG₀le hVeq.symm).trans ?_
+        exact le_of_eq hG₀.1.2
+      · exact hVeq ▸ hG₀.vertexSet_nonempty
+    · rw [hVeq]; exact hG₀.2.1
+    · rw [hVeq]; exact hG₀.2.2
+  · -- Cardinality-maximality, transported through `V(G') = V(G₀)`.
+    intro H hH; rw [hVeq]; exact hmax H hH
+  · -- Induced-saturation: every `G`-edge inside `V(G') = V(G₀)` is an `E(G')`-edge.
+    intro e x y h hx hy
+    rw [hVeq] at hx hy
+    exact ⟨x, y, h, hx, hy⟩
+
 /-! ## A circuit yields a rigid subgraph (`lem:circuit-rigid`; KT Lemma 3.4) -/
 
 /-- **A circuit minus an edge is a maximal sparse subset** (`lem:circuit-rigid`;

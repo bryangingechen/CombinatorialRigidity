@@ -7851,6 +7851,15 @@ G.induce V(G₀)`, `hle := G₀ ≤ G.induce V(G₀)` (the same-vertex-set edge 
 only change is internal: step 1 becomes 1a+1b, and step 2 discharges the loop disjunct via
 `edgeSet_induce`. No new hypothesis on the lemma; `exists_maximal_isProperRigidSubgraph` is reused as-is.
 
+*LANDED (2026-06-15): steps 1a+1b packaged as `exists_maximal_induced_isProperRigidSubgraph`
+(`Deficiency.lean:798`, axiom+warning+lint clean) — returns a vertex-maximal AND induced-saturated
+proper rigid `G'` (saturation = step 2's `hHsat`), so the Leaf-1 thread takes the opener as a single
+call. The remaining steps 3–5 surfaced a NOT-yet-landed brick the (c) prose glossed: step 4's
+"minimality of `G` ⟹ `G = G''`" needs an `IsMinimalKDof` → graph-equality bridge (minimality is
+matroid-base-meets-fiber, not "no edge removable") — a removable `G`-edge off `E(G'')` would give an
+`M(G̃)`-base avoiding its fiber, contradicting minimality. P≈3 matroid-counting, design before the
+steps-3–5 build (`Deficiency.lean`, beside `subgraph_minimality`).*
+
 *Clause (ii) — what is NOT triggered.* This is **not** a definitional change to `IsRigidSubgraph` (the
 fix takes a *particular* induced rigid subgraph; the predicate stays the plain-subgraph one, so no existing
 consumer of `IsRigidSubgraph`/`IsProperRigidSubgraph` is touched). The NEW brick is bounded project-side
