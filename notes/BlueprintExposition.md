@@ -175,6 +175,26 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `G/E′` simple is a genuine *case hypothesis* (Lemma 6.3), its failure routed to
   Lemma 6.5's vertex-*removal* (which does preserve simplicity). Pointer:
   `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`.
+- **`lem:case-I-dispatch` / Claim 6.6 (the Lemma-6.5 arm) — the maximal rigid
+  subgraph must be edge-saturated (Phase 22k L8a)** — [pending] **(a)** the
+  L8a-step-2 build surfaced it (2026-06-15). **Stable insight (a benign gap in
+  KT-as-written):** KT's Lemma 6.5 / Claim 6.6 takes a *vertex-inclusionwise
+  maximal* proper rigid subgraph `G'` and reads the degree-2 vertex `v` off the
+  non-simplicity of the contraction `G/E(G')`. But contraction-non-simplicity has
+  *two* modes (`rigidContract_not_simple`): a **parallel pair** — two surviving
+  edges collapsing together, ⟹ the wanted `v ∉ V(G')` with two edges into
+  `V(G')` — and a **loop** — a single `G`-edge with both ends in `V(G')` that
+  survived `＼E(G')`, i.e. `G'` is *not* edge-saturated (an internal non-edge of
+  `G'`). KT asserts the parallel conclusion directly, *silently assuming* `G'` is
+  edge-saturated; the loop mode is reachable precisely because a rigid subgraph
+  (`IsRigidSubgraph := H ≤ G ∧ H.IsKDof 0`) need not be induced. The faithful fix
+  makes the saturation explicit: take `G'` *induced* — `G.induce V(G₀)` for the
+  cardinality-maximal `G₀` — which kills the loop mode (`induce` carries exactly
+  the internal edges, `IsLink.mem_induce_iff`), at the cost of one extra fact,
+  *deficiency is antitone under edge addition at a fixed vertex set*
+  (`deficiency_le_deficiency_of_le_vertexSet_eq`), to keep the induced subgraph
+  rigid. Pointer: `notes/Phase22-realization-design.md` §1.70(c′);
+  `notes/Phase22k.md`.
 - **`lem:case-III` / `theorem_55.hsplit` (Case-naming + one-row shortfall)** —
   [pending] **(a)**. **Stable insight (the decisive distinction):** KT's cases key
   on the dof `k`, *not* the graph operation — **Case II (Lemma 6.8) is `k>0`**
