@@ -52,8 +52,9 @@ slice, when its head splits into `Coupling.lean` + the trimmed `CaseI.lean`):
 
 Each slice: pure semantics-preserving move + per-file boilerplate (`namespace` / `variable {k}` /
 `open scoped Graph` / `variable {α β}` — cf. the F1 `SparsityIComponents` `variable {V}` gotcha,
-`notes/PERFORMANCE.md`); gate = `lake build` + `lake lint` **warning-clean** + axiom-clean on the
-touched modules. The new files inherit **non-`module`** status (the molecular chain is non-`module`,
+`notes/PERFORMANCE.md` — **plus the three `local` notation re-assertions** for any file importing a
+poisoned `CaseI`-or-later file, see *Blockers* "Notation-poison blocker"); gate = `lake build` +
+`lake lint` **warning-clean** + axiom-clean on the touched modules. The new files inherit **non-`module`** status (the molecular chain is non-`module`,
 PERFORMANCE.md *Module system*). A slice may be split finer if a single carve is too large for one
 sitting.
 
@@ -67,16 +68,28 @@ sitting.
   exact cut lines + the slicing order against the *current* file before the first carve (the recon's
   cut map is at the block level; line numbers shifted). The coordinator decides per the
   `coordinate-phase` step-1 research-shape trigger.
-- **Import-context concern — investigated, NOT a blocker (2026-06-15).** A P1 dispatch returned BLOCKED
-  claiming `import CaseI`/`RigidityMatrix` into the new file breaks `V(G)`/`E(G)`/`↾` notation and the
-  `(screwDim k - 1)` `binop%` cast (forcing proof-body edits). The coordinator disproved it with a
-  scratch build: a file with `import …CaseI` + the **faithful preamble** (`namespace
-  CombinatorialRigidity.Molecular` / `open scoped Graph` / `variable {k : ℕ}` / `variable {α β :
-  Type*}`, exactly CaseI.lean's header lines 31–37) parses `V(G)` and elaborates `(screwDim 2 - 1)` as
-  ℤ-subtraction with `exact_mod_cast` succeeding — because `CaseI` already transitively imports
-  RigidityMatrix/Matroid, so importing it adds nothing new in scope. **Lesson:** each carved file must
-  replicate CaseI.lean's full header preamble verbatim; do **not** add `local notation` re-assertions
-  or edit any proof body — that is what cascaded into the false binop% diagnosis.
+- **Notation-poison blocker — REAL; proven per-file fix (2026-06-15).** A new file that `import`s
+  `CaseI` (or any later file in the chain that does) cannot parse the `V(`/`E(`/`↾` notations: a
+  **body decl inside `CaseI`** serializes an olean parser-priority effect that lets the
+  `apnelson1/Matroid` package's *global* two-arg `V(" G ", " e ")"` / `E(" G ", " e ")"` and *scoped*
+  `↾` (`Graph.restrict`) win over mathlib's *scoped* one-arg `V(`/`E(`. `import CaseI` + `open scoped
+  Graph` → `V(G)` fails with `unexpected token ')'; expected ','`; `import GenericityDevice` + the same
+  preamble parses fine, and `CaseI`'s 4 imports with an **empty body** parse fine — so it is a body
+  decl, not the imports. (An earlier coordinator "probe-artifact" dismissal was wrong: a `tail -30`
+  truncation had hidden the parse error; full-output re-test confirms it. The dispatch-1 `binop%`/cast
+  claim was a confounded cascade off the parse failure, not a separate issue — once the notation parses,
+  `(screwDim k - 1)` elaborates correctly.) **Proven fix (coordinator scratch-build-verified):** each
+  carved file that imports a poisoned file adds, right after `open scoped Graph`:
+  ```
+  local notation "V(" G ")" => Graph.vertexSet G
+  local notation "E(" G ")" => Graph.edgeSet G
+  local infixl:65 " ↾ " => Graph.restrict
+  ```
+  These re-assert the intended one-arg/graph notations verbatim from their source `=>` RHS; they are
+  **pin-safe** (no decl renamed/re-namespaced), elaborate identically to the scoped originals, and are
+  per-file boilerplate (same category as `open scoped Graph`). If any *other* shadowed notation
+  surfaces in a slice, re-assert it the same way from its source definition. The trimmed `CaseI` head
+  imports `GenericityDevice` (clean) → it needs no re-assertion; only files importing `CaseI`-or-later do.
 
 ## Hand-off / next phase
 

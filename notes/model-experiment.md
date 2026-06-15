@@ -271,7 +271,8 @@ quality / blueprint sync / notes discipline / commit message
 | 127 | 22j A2 — longLine reflow + drop the producer suppression, 5a7fcea | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 153k tok / 112 tools / 856s (~14 min) | opus per override (map says haiku). Pure reflow of the 37 over-codepoint lines + dropped `linter.style.longLine false`; no proof restructured (line-breaks at delimiters + comment rewrap). Refined the recon's "72 lines" → 37: the longLine linter flags by Unicode **codepoint**, so `awk length` byte-counting over-reports on this glyph-heavy file (lifted TACTICS-QUIRKS §55 + quirks-index). Coordinator: re-built **warning-clean WITHOUT the suppression** (no longLine leaked — the decisive test), diff confirmed pure line-breaking, suppression gone. Both 22j suppression refactors now done |
 | 128 | 22j phase-close (initial dispatch, API socket death) | 3/1/2 | opus | normal | killed | —————— | 0k tok / 15 tools / 178s (reported; died mid-edit) | API socket error mid-dispatch (harness death, no agent fault). Had read the surfaces + made one correct uncommitted edit (ROADMAP 22j row → ✓); resumed the SAME agent via SendMessage to its agentId per the protocol resume-first rule (→ row 129), read phase preserved. → Findings 2026-06-15 |
 | 129 | 22j phase-close — flip ✓ across surfaces + compress §22j, 3629e1f | 3/1/2 | opus | resume | clean | ✓✓—✓✓✓ | 138k tok / 30 tools / 361s (~6 min) | resume of the row-128 killed agent (context + read phase + the in-progress ROADMAP edit intact — no re-read of the 6 surfaces). Completed the close cleanly: reader surfaces (README/home_page/intro.tex) re-summarized jargon-free with frontier=22k, the CaseI file-split perf interlude kept agent-facing only (ROADMAP §22j / MolecularConjecture); ROADMAP row ✓ + §22j compressed. Coordinator verified all 6 surfaces + scope guard (no .lean / no model-experiment touched), blueprint verify.sh+lint.sh green (no `\lean{}` pin moved). Resume-first rule paid off — saved re-reading the surfaces. → Findings 2026-06-15 |
-| 130 | 22j-perf P1 carve `Theorem55.lean` (no commit) | 1/1/2 | opus | normal | BLOCKED | —————— | 181k tok / 98 tools / 1752s (~29 min) | BLOCKED diagnosis (importing `CaseI`/`RigidityMatrix` breaks `V(G)` notation + `screwDim-1` `binop%` cast → needs proof-body edits / a user decision a/b/c) was **incorrect** — a probe/preamble artifact. Coordinator scratch-build (`import CaseI` + faithful preamble `open scoped Graph`) reproduced neither: `V(G)` parses, `(screwDim 2-1)` elaborates ℤ-sub + `exact_mod_cast` works. Root: `CaseI` already transitively imports RigidityMatrix/Matroid, so the new file adds nothing new in scope; the agent's file lacked a faithful preamble. Re-dispatched corrective faithful-preamble prompt → row 131. Tree left clean. → Findings 2026-06-15 |
+| 130 | 22j-perf P1 carve `Theorem55.lean` (no commit) | 1/1/2 | opus | normal | BLOCKED | —————— | 181k tok / 98 tools / 1752s (~29 min) | BLOCKED on a notation-parse break (`import CaseI` poisons downstream `V(`/`E(`/`↾`). **Diagnosis core was CORRECT** — the notation poison is real (confirmed row 131 + full-output re-test); only its `binop%`/cast framing (a confounded cascade off the parse failure) and its "needs user decision a/b/c" (the per-file `local`-notation fix is in scope) were off. The coordinator's initial "probe-artifact" dismissal *here* was WRONG — a `tail -30` truncation hid the `V(G)` parse error; corrected at row 131. → Findings 2026-06-15 |
+| 131 | 22j-perf P1 carve `Theorem55.lean` corrective re-dispatch (no commit) | 1/1/2 | opus | escalation-retry | BLOCKED | —————— | 109k tok / 56 tools / 876s (~15 min) | Same-rung corrective (opus override → can't escalate higher). **Correctly diagnosed the real blocker my row-130 scratch wrongly dismissed:** `import CaseI` + faithful preamble fails to parse `V(`/`E(` (`unexpected token ')'`), isolated to a CaseI *body* decl (empty-body + 4-imports parses; full CaseI poisons) — not imports, not the split. High-value precise diagnosis; the BLOCKED was the right call. Coordinator then verified end-to-end (full-output re-test) and found the proven in-scope fix — 3 `local` re-assertions (V(/E(/↾) → row 132 re-dispatch. → Findings 2026-06-15 |
 
 ## Findings
 
@@ -313,6 +314,29 @@ the protocol)
   cleanly with no re-read. Coordinator checked the tree state first (HEAD unmoved,
   one sane uncommitted edit) before resuming. The wasted cost was ~15 tool-uses,
   not a full re-dispatch.
+
+### Post-22j perf round (2026-06-15; rows 130–)
+
+- **(rows 130–131, the `CaseI` notation-poison blocker) A coordinator's quick scratch
+  verification can be *worse* than none when its output is truncated — and a model's
+  careful, reproducible BLOCKED deserves more weight than a fast contradicting probe.**
+  P1 (carve `Theorem55.lean`) BLOCKED twice on the same real cause: a *body decl* in
+  `CaseI` serializes an olean parser-priority effect that poisons downstream parsing of
+  the `V(`/`E(`/`↾` notations (mathlib's scoped one-arg `V(`/`E(` lose to the
+  `apnelson1/Matroid` package's global two-arg forms; `↾` to its scoped `Graph.restrict`).
+  `import CaseI` breaks it; `import GenericityDevice` and `CaseI`'s 4 imports with an empty
+  body do **not** → it is a body decl, not the imports/the split. The coordinator's first
+  scratch test (row 130) ran `lake build … | tail -30`, which **hid the `V(G)` parse
+  error** behind an unrelated test-proof bug, yielding a confidently-wrong "probe-artifact"
+  dismissal of a correct BLOCKED. The corrective re-dispatch (row 131) re-diagnosed it
+  precisely; a **full-output** re-test then confirmed the poison and a scratch-built **fix**:
+  three pin-safe per-file `local` re-assertions (`V(`/`E(`/`↾`) after `open scoped Graph`.
+  Lessons for the loop: (i) never verify a model's diagnosis with truncated output — read
+  the full build log, especially when the verdict contradicts a careful BLOCKED; (ii) a
+  reproducible, mechanism-level BLOCKED is high-value data, not a failure to route around;
+  (iii) the coordinator resolved this recon-shaped blocker inline (scratch builds → proven
+  fix) and re-dispatched the build (row 132) with the fix baked in, rather than surfacing
+  half-understood options to the user.
 
 - (2026-06-14, rows 115 + 118, L6) **The longest, most-degraded dispatch of the experiment —
   two compounding failures, both instructive.** (1) The L6 *design pass* (row 115, opus,
