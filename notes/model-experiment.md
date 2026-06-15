@@ -268,11 +268,49 @@ quality / blueprint sync / notes discipline / commit message
 | 125 | 22j recon/design-pass — ranked CaseI.lean split/refactor plan, 34ec9f4 | 3/2/1 | opus | normal | clean | —✓——✓✓ | 180k tok / 55 tools / 1207s (~20 min) | opus (design-settle maps fable→unavail→opus; also override). User-requested wider-split assessment after the row-124 hidden-refactor surfaced. Empirically profiled + `maxHeartbeats`-bisected (real builds, reverted) to scope the heartbeats refactor: found it's a **free** budget-lowering (3.2M→800k, bisection-verified) + one small scalar cast-bridge helper, NOT the feared deep producer decomposition; flagged the geometric middle as the S4b net-negative trap and the CaseI.lean (10,346-line) file split as a separate follow-up round (mandate ii honored). Coordinator verified: docs-only/no-.lean-touched/budget-reverted, Helper-1 duplication real (:4497/:4634 spot-check), file-split DAG plausible. High-value recon — de-escalated the scope |
 | 126 | 22j A0+A1 — heartbeat budget 3.2M→600k via two scalar cast-bridge helpers, a8f7c93+f043e17 | 1/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 155k tok / 79 tools / 1400s (~23 min) | opus per override (map: max=2→sonnet). A0 (free 3.2M→800k) + A1 (two helpers `toNat_le_of_add_pred_eq`/`sub_toNat_eq_of_add_pred_eq` in RigidityMatrix `section RankArithmetic`, ~50 lines duplication removed; budget→600k). **Empirically corrected the recon's "target default 200000"**: cost is diffuse across the geometric middle (the recon's flagged-non-extractable zone), which times out at default even with a localized brick-call budget — so whole-decl 600000 is the honest bisected minimum (not →200k). Clean two-lemma split matching the Helper-1 design; logged the `le_or_lt`→`le_or_gt` mathlib rename (TACTICS-QUIRKS §50). Coordinator: build warning-clean/lint/sorry-grep re-verified, budget=600k, both call sites rewired |
 | 127 | 22j A2 — longLine reflow + drop the producer suppression, 5a7fcea | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 153k tok / 112 tools / 856s (~14 min) | opus per override (map says haiku). Pure reflow of the 37 over-codepoint lines + dropped `linter.style.longLine false`; no proof restructured (line-breaks at delimiters + comment rewrap). Refined the recon's "72 lines" → 37: the longLine linter flags by Unicode **codepoint**, so `awk length` byte-counting over-reports on this glyph-heavy file (lifted TACTICS-QUIRKS §55 + quirks-index). Coordinator: re-built **warning-clean WITHOUT the suppression** (no longLine leaked — the decisive test), diff confirmed pure line-breaking, suppression gone. Both 22j suppression refactors now done |
+| 128 | 22j phase-close (initial dispatch, API socket death) | 3/1/2 | opus | normal | killed | —————— | 0k tok / 15 tools / 178s (reported; died mid-edit) | API socket error mid-dispatch (harness death, no agent fault). Had read the surfaces + made one correct uncommitted edit (ROADMAP 22j row → ✓); resumed the SAME agent via SendMessage to its agentId per the protocol resume-first rule (→ row 129), read phase preserved. → Findings 2026-06-15 |
+| 129 | 22j phase-close — flip ✓ across surfaces + compress §22j, 3629e1f | 3/1/2 | opus | resume | clean | ✓✓—✓✓✓ | 138k tok / 30 tools / 361s (~6 min) | resume of the row-128 killed agent (context + read phase + the in-progress ROADMAP edit intact — no re-read of the 6 surfaces). Completed the close cleanly: reader surfaces (README/home_page/intro.tex) re-summarized jargon-free with frontier=22k, the CaseI file-split perf interlude kept agent-facing only (ROADMAP §22j / MolecularConjecture); ROADMAP row ✓ + §22j compressed. Coordinator verified all 6 surfaces + scope guard (no .lean / no model-experiment touched), blueprint verify.sh+lint.sh green (no `\lean{}` pin moved). Resume-first rule paid off — saved re-reading the surfaces. → Findings 2026-06-15 |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Phase 22j close-out (2026-06-14/15; rows 119–129)
+
+- **22j ran opus-only (user override) — no cross-rung data.** All 11 dispatches
+  (rows 119–129) ran at opus, so 22j contributes zero rung-comparison data; the
+  rung-tier experiment was effectively suspended for the phase (S/P/B still rated
+  per slice for the log). The phase's value to the experiment is therefore in the
+  *outcome shapes*, not the rung axis.
+- **(2026-06-15, rows 124 + 126) The fallible part was the written PLAN, not the
+  model's execution — and top-rung empirical verification (build / bisect) is what
+  caught each premise error.** Twice, opus was handed a step the notes/recon had
+  mis-scoped and empirically corrected it rather than implementing the wrong plan:
+  row 124 found the "mechanical P≈1 suppression drop" was a hidden refactor (the
+  note's "86s, well under the 3.2M budget" conflated wall-clock seconds with
+  elaboration *heartbeats* — a category error), shrank to the complete dead-code
+  half, and surfaced a coordinator decision; row 126 then corrected the *recon's
+  own* optimistic "target default 200000" by bisection (the cost is diffuse across
+  a non-extractable geometric middle, so 600000 is the honest minimum). The lesson
+  is for the **coordinator**: a hand-off premise stated in wall-clock/optimism is
+  not evidence; the model's empirical check is. Cf. row 17's compaction cliff —
+  but here the model was *not* degraded; it actively caught the plan's error.
+- **(2026-06-15, row 125) Recon de-escalation.** A docs design-pass (profiled +
+  `maxHeartbeats`-bisected, real reverted builds) shrank a feared "split the
+  ~900-line producer" refactor to a free budget-lowering + one small scalar helper,
+  and correctly flagged the rest as the S4b net-negative trap + routed the real
+  leverage (the 10,346-line `CaseI.lean` file split) to a follow-up perf round.
+  Confirms recon-before-build as the highest-leverage move even for a perf/cleanup
+  phase, not just a producer build.
+- **(2026-06-15, rows 128 + 129) Resume-first paid off on an infra death.** The
+  phase-close dispatch died mid-edit to an API socket error (harness, no agent
+  fault) after reading all 6 surfaces + making one correct uncommitted edit.
+  Resuming the *same* agent via SendMessage to its agentId (protocol resume-first
+  rule) preserved the read phase and the in-progress edit — it finished the close
+  cleanly with no re-read. Coordinator checked the tree state first (HEAD unmoved,
+  one sane uncommitted edit) before resuming. The wasted cost was ~15 tool-uses,
+  not a full re-dispatch.
 
 - (2026-06-14, rows 115 + 118, L6) **The longest, most-degraded dispatch of the experiment —
   two compounding failures, both instructive.** (1) The L6 *design pass* (row 115, opus,
