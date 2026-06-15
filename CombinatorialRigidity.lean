@@ -12,7 +12,7 @@ import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.Defs
 import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
 import CombinatorialRigidity.Mathlib.RingTheory.MvPolynomial.Tower
 import CombinatorialRigidity.MatroidIdentification
-import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
+import CombinatorialRigidity.Molecular.AlgebraicInduction.Theorem55
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery
