@@ -51,13 +51,14 @@ matroid `M(G̃)`, the combinatorial induction (Theorem 4.9), and the
 algebraic induction realizing that reduction at the rigidity-matrix rank
 (phases 17–22) are built. All three cases of the realization theorem
 (Theorem 5.5) are now formalized at `d=3`, including the hardest,
-Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid subgraph); the
-formalized instance holds modulo a small, explicitly tracked family of
-carried hypotheses — chiefly the nested use of the induction at every
-degree of freedom. The current frontier — now in progress — is
-discharging those carries by restating the induction at full
-Katoh–Tanigawa strength (all `k`, genuine hinges), then general `d`. The
-table below and `ROADMAP.md` carry the fine-grained, live status.
+Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid subgraph). The
+induction has been restated at full Katoh–Tanigawa strength (all degrees
+of freedom, genuine hinges), with its reduction-case realizations and the
+shared rank machinery they build on now in place. The current frontier —
+now in progress — is completing that honest all-`k` Theorem 5.5 (the
+remaining Case III and the zero-carry spine) and Theorem 5.6 at `d=3`,
+then general `d`. The table below and `ROADMAP.md` carry the fine-grained,
+live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
 |------:|-----------------------------|------------------------------------------------------------------|:------:|
@@ -93,7 +94,7 @@ table below and `ROADMAP.md` carry the fine-grained, live status.
 |   22g | `d=3` realization assembly: design + leaf infrastructure (the existential Claim 6.12 architecture) | `Molecular/AlgebraicInduction/` | ✓ |
 |   22h | the corrected `d=3` assembly (the `hsplit` producer + Theorem 5.5 at `d=3`, completing Case III there) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ |
 |   22i | all-`k` genuine-hinge induction + the reduction-case realizations (base, cut-edge, Case I, degree-2 split) | `Molecular/` | ✓ |
-|   22j | the shared eq.-(6.12) placement brick + Case-II/split refactor | `Molecular/` | ◷ |
+|   22j | the shared eq.-(6.12) placement brick + Case-II/split refactor | `Molecular/` | ✓ |
 |   22k | completing the all-`k` Theorem 5.5 (Case III, the spine) + Theorem 5.6 at `d=3` | `Molecular/` | ◷ |
 |   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 

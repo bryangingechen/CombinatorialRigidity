@@ -126,7 +126,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22g. `d=3` realization assembly: design program + leaf infrastructure | `Molecular/AlgebraicInduction/` | ✓ Complete — banner flips moved to 22h (see `notes/Phase22g.md`) |
 | 22h. the corrected `d=3` assembly (Theorem 5.5 at `d=3`, green-modulo the named carry family) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ Complete (closed 2026-06-11; see `notes/Phase22h.md`) |
 | 22i. all-`k` genuine-hinge motive + reduction-case producers (L0–L6) | `Molecular/` | ✓ Complete (closed 2026-06-14, re-scoped at a phase split; see `notes/Phase22i.md`) |
-| 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ◷ In progress (opened 2026-06-14; see `notes/Phase22j.md`) |
+| 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ✓ Complete (see `notes/Phase22j.md`) |
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ◷ Planning (see `notes/Phase22i.md` *Hand-off*) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
@@ -552,9 +552,9 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–22i (+ 21a/21b) complete; sub-phase 22j (the shared
-eq.-(6.12) placement abstraction) is in progress, then 22k (completing the
-honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`); Phases 23–26 planned.** The
+**Status: Phases 17–22j (+ 21a/21b) complete; sub-phase 22k (completing the
+honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`) is next; Phases 23–26
+planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -948,28 +948,20 @@ the remaining work split out — the shared **placement abstraction** + Case-II/
 between); general `d` is Phase 23. Carries table, layer plan (L0–L10), and the 22j recon verdict:
 `notes/Phase22i.md` *Hand-off*.
 
-#### Phase 22j — the shared eq.-(6.12) placement abstraction (KT §6.3, §6.4.1) — ◷ In progress
+#### Phase 22j — the shared eq.-(6.12) placement abstraction (KT §6.3, §6.4.1) — ✓ Complete
 
-**Status (◷ opened 2026-06-14; see `notes/Phase22j.md`).** A refactor sub-phase between the
-reduction-producer work (22i) and its completion (22k): introduce the **span-transport "pinned
-placement" rank brick** the Case-II / Lemma-6.8 producers should have shared — the Case-II/III/6.8
-analogue of the landed Case-I splice brick `le_finrank_span_rigidityRows_of_splice`. A verified
-read-only recon (design `notes/Phase22-realization-design.md` §1.68) found that the placement bricks
-keyed their conclusion on *literal* `G.rigidityRows` membership (forcing `Gv ≤ G`), which fits no real
-reduction graph (collapse / `splitOff` / relabel land rows only in `span`), so the L6b producer inlined
-a ≈1010-line placement; and that the right abstraction is a **two-brick family** — Brick A (NEW,
-span-rank: `le_finrank_span_rigidityRows_of_pinned_placement`) + Brick B (the existing
-literal-`panelRow` device-feed `case_III_old_new_blocks`, kept), with Case I staying on its splice
-brick + coupler. 22j builds Brick A (S1) + its blueprint node (S2), consolidates the L6b producer's
-rank half onto it (S4a; the `e₀ = e_a + e_b` `hold_span` discharge stays inline — a top-level
-extraction would be a net-negative one-call-site helper), and retires the dead L6a
-`case_II_placement_eq612_kdof` (S5). The rigid `case_II_placement_eq612` is **left untouched** — a recon
-found re-routing it through Brick A to be a shape error (Brick A returns a bare `finrank` bound, but the
-decl exposes a literal `∃ s` subfamily), so its `lem:case-II-realization-placement` pin stays green
-as-is. The bundled cleanup (drop the L6b heartbeat / long-line suppressions; delete the dead
-`hso_ne_sn` + stale comments) closes the phase. 22k's Case III consumes Brick A, so 22j lands first.
-Slice plan + per-slice dispatch shapes: `notes/Phase22j.md`;
-design verdict: §1.68. (S3 — the deficiency-aware Brick B generalization — is deferred to 22k.)
+**Status (✓ complete; see `notes/Phase22j.md`).** A refactor sub-phase between the reduction-producer
+work (22i) and its completion (22k): introduced the **span-transport "pinned placement" rank brick**
+`le_finrank_span_rigidityRows_of_pinned_placement` (+ its `+1` augment) that the Case-II / Lemma-6.8
+producers should have shared — the pin-a-body analogue of the landed Case-I splice brick — plus its
+blueprint node, consolidated the L6b producer's rank half onto it, retired the dead L6a, and landed the
+producer cleanup (dead-code deletion plus dropping both stopgap suppressions: heartbeats refactored
+3.2M → 600000 via two extracted scalar rank-cast helpers, and the over-100-codepoint lines reflowed).
+22k's Case III consumes Brick A, so the abstraction landed first. The internal step before 22k is a
+dedicated `CaseI.lean` file-split perf round (ranked plan in `notes/PERFORMANCE.md`). Slice plan, the
+two-brick design rationale (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed kept,
+Case I separate), and decisions: `notes/Phase22j.md`; design verdict
+`notes/Phase22-realization-design.md` §1.68.
 
 ## Engineering conventions
 

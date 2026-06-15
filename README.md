@@ -60,12 +60,13 @@ panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
 induction, and the algebraic induction realizing that reduction at the
 rigidity-matrix rank. All three cases of the realization theorem (Theorem
 5.5) are now formalized at `d=3`, including the hardest, Katoh–Tanigawa's
-**Case III** (`k=0`, no proper rigid subgraph); the formalized instance
-holds modulo a small, explicitly tracked family of carried hypotheses —
-chiefly the nested use of the induction at every degree of freedom. The
-current frontier — now in progress — is discharging those carries by
-restating the induction at full Katoh–Tanigawa strength (all `k`, genuine
-hinges), then general `d`. The per-phase status table is on the
+**Case III** (`k=0`, no proper rigid subgraph). The induction has been
+restated at full Katoh–Tanigawa strength (all degrees of freedom, genuine
+hinges), with its reduction-case realizations and the shared rank machinery
+they build on now in place. The current frontier — now in progress — is
+completing that honest all-`k` Theorem 5.5 (the remaining Case III and the
+zero-carry spine) and Theorem 5.6 at `d=3`, then general `d`. The per-phase
+status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 

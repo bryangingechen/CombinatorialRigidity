@@ -1,14 +1,18 @@
 # Phase 22j — the shared eq.-(6.12) placement abstraction (work log)
 
-**Status:** in progress (opened 2026-06-14 at the 22i close; one work log active at a time).
+**Status:** ✓ complete (closed 2026-06-15; opened 2026-06-14 at the 22i close).
 
 ## Current state
 
-**A0+A1+A2 LANDED (2026-06-15); BOTH suppression refactors now done. Next = A3 (`CLEANUP.md` §C-note
-refresh, coordinator-authored) → phase-close, then surface file-split plan (B) to the user.** The
-ranked split-refactor plan is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon
-(2026-06-15…)*. User decision (2026-06-15, `coordinate-phase` option c): do BOTH suppression refactors
-within 22j, then assess wider splitting.
+**CLOSED (2026-06-15).** All slices landed (S1 Brick A → S2 blueprint node → S4a L6b consolidation →
+S5 retire L6a → cleanup bundle = dead-code half + A0/A1 heartbeats refactor + A2 longLine reflow → A3
+§C-note refresh), and this commit is the phase-close: ROADMAP §22j compressed + row flipped ✓, the
+user-facing surfaces (README / home_page / intro.tex / MolecularConjecture) synced to frontier = 22k.
+**S4b skipped** (net-negative one-call-site extraction). **The agreed next internal step before 22k is
+a dedicated `CaseI.lean` file-split perf round** (plan B; ranked in `notes/PERFORMANCE.md` *Molecular
+`CaseI.lean` perf recon*) — the coordinator surfaces it (and opens 22k) after a user confirmation.
+User decision (2026-06-15, `coordinate-phase` option c): do BOTH suppression refactors within 22j, then
+assess wider splitting.
 
 The L6b producer `PanelHingeFramework.case_II_realization_all_k` now carries **neither suppression** as
 a stopgap: A0+A1 cut its `maxHeartbeats` budget 3.2M (16×) → **600000 (3×)** (A0 free 3.2M→800000, A1
@@ -116,45 +120,27 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Blockers / open questions
 
-None open. All resolved: S1 `Nat.card`/`Fintype` (standard `Nat.card_eq_fintype_card`+`Fintype.card_sum`
-bridge); the suppression-drop "blocker" (was a refactor, now both done — A0+A1 heartbeats, A2 longLine);
-and the flagged "localized vs whole-decl budget" decision (A1 confirmed *diffuse* cost → whole-decl
-600000, no localized per-`have` budget). Only A3 (§C-note refresh) + phase-close remain — see *Hand-off*.
+None open. All resolved during the phase: S1 `Nat.card`/`Fintype` (standard
+`Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge); both suppression drops (A0+A1 heartbeats, A2
+longLine); and the "localized vs whole-decl budget" decision (A1 confirmed *diffuse* cost → whole-decl
+600000, no localized per-`have` budget).
 
 ## Hand-off / next phase
 
-**A0+A1+A2 LANDED (2026-06-15); both suppression refactors done; next concrete step = A3
-(`CLEANUP.md` §C-note refresh, coordinator-authored) → phase-close checklist.** The split-refactor
-plan is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j
-design-pass)*. The producer now carries only the justified `maxHeartbeats 600000` (its diffuse-cost
-bisected minimum) and no longLine suppression.
+**22j is CLOSED.** The producer now carries only the justified `maxHeartbeats 600000` (its diffuse-cost
+bisected minimum, with a justifying comment) and no longLine suppression. The next agent does **not**
+pick up inside 22j.
 
-**A3 — `CLEANUP.md` §C-note refresh** (coordinator-authored) → phase-close checklist.
-**Plan (B)** — the `CaseI.lean` 10,346-line file split into a 5-file `AlgebraicInduction/` chain
-(`Coupling`/`CaseI`/`CaseII`/`CaseIII`/`Theorem55`; verified clean forward DAG, zero downstream-import
-benefit but very high factor-2/3/4 leverage, pure rename-free move so blueprint pins/`checkdecls`
-unaffected) — is a **separate follow-up perf round**: surface to the user for sign-off after 22j closes,
-do not fold into 22j. (S1/S2/S4a/S5 + the dead-code cleanup + A0/A1/A2 landed; S4b skipped.)
+**Next internal step: the `CaseI.lean` file-split perf round (plan B)** — CaseI.lean (10,346 lines) →
+a 5-file `AlgebraicInduction/` chain (`Coupling`/`CaseI`/`CaseII`/`CaseIII`/`Theorem55`; verified clean
+forward DAG, zero downstream-import benefit but high factor-2/3/4 leverage, pure rename-free move so
+blueprint pins / `checkdecls` are unaffected). Ranked plan: `notes/PERFORMANCE.md` *Molecular `CaseI.lean`
+perf recon (2026-06-15, Phase 22j design-pass)*. The coordinator surfaces it (and opens 22k) after a user
+confirmation — it is an internal perf pass, not a reader-facing milestone.
 
-After 22j: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
-`notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23
-(general `d`). (S1 + S2 + S4a landed; **S4b skipped** — see *Current state*; S5 + the dead-code cleanup
-done.)
-
-### coordinate-phase note (`coordinate-phase 22j`)
-
-Drives this log via the *Hand-off* pivot. **User decided (2026-06-15, option c): do both suppression
-refactors within 22j, then assess wider molecular-files splitting.** Both suppression refactors are
-**DONE**: the heartbeats refactor (A0 free 3.2M→800000 + A1 the scalar rank-cast helpers, dropping the
-budget to 600000 = 3× default; the residual is diffuse-cost defeq, not a missing lemma, so the budget
-stays — a localized per-`have` budget was tried and does not suffice) and the longLine reflow (A2,
-37 codepoint-over-100 lines reflowed, suppression dropped). **Next dispatch = A3** (`CLEANUP.md` §C
-refresh, coordinator-authored). Then surface the file-split recommendation (B) to the user →
-phase-close. **Phase-close checklist**
-(when 22j actually closes): flip 22j ✓ across ROADMAP / README / home_page / intro.tex /
-MolecularConjecture; compress ROADMAP §22j; write the model-experiment *Findings* for 22j; then (after
-user confirm) open **Phase 22k**. The model-experiment is **running** (opus-only override this session;
-availability check recorded 2026-06-15 in the log's repo-local config).
+**Then Phase 22k** — completing the honest all-`k` Theorem 5.5 (the L7–L10 layer plan in
+`notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B generalization lands there),
+then Phase 23 (general `d`).
 
 ## Decisions made during this phase
 
