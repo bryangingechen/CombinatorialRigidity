@@ -3720,10 +3720,11 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
     exact h
 
-set_option maxHeartbeats 3200000 in
+set_option maxHeartbeats 800000 in
 -- `case_II_realization_all_k` is a large, heartbeat-heavy proof flagged for a refactor (factor into
 -- helper lemmas — see `notes/Phase22i.md` L6b): the repeated `ScrewSpace 2` typeclass elaboration is
--- expensive, so the whole-declaration budget is raised once here, replacing several mid-proof resets.
+-- expensive, so the whole-declaration budget is raised once here (4× default), replacing several
+-- mid-proof resets.
 set_option linter.style.longLine false in
 -- The as-landed proof also carries many over-length lines; suppression is a stopgap pending refactor.
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,

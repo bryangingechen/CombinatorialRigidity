@@ -4,7 +4,7 @@
 
 ## Current state
 
-**Recon/design-pass DONE (2026-06-15); next = execute plan (A) starting with A0+A1.** The ranked
+**A0 LANDED (2026-06-15); next = A1 (Helper 1, the heartbeats refactor).** The ranked
 split-refactor plan is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon (2026-06-15…)*; the
 *Hand-off* section below names the first buildable slice. User decision (2026-06-15, `coordinate-phase`
 option c): do BOTH suppression refactors within 22j, then assess wider splitting — the recon found the
@@ -98,8 +98,9 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   trailing stale "Hmm, we need a lemma…" comment block + the stale `h_hnewpin_v`/`TODO: pin direction`
   lines inside `case_II_realization_all_k` (31 lines). Gates green (build warning-clean, `lake lint`,
   producer axiom-clean: `propext`/`Classical.choice`/`Quot.sound` only).
-- [ ] **A0 — free budget lower** `maxHeartbeats 3200000` → `800000` (:3723), no other change
-  (bisection-verified to pass; shrinks the suppression 16× → 4×). Gates green.
+- [x] **A0 — free budget lower** `maxHeartbeats 3200000` → `800000` (:3723), no other change.
+  **DONE** (2026-06-15): bisection confirmed — 800000 builds clean (68s, warning-free), `lake lint`
+  clean, producer axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Suppression now 4× default.
 - [ ] **A1 — Helper 1 (the heartbeats refactor)** `toNat_screwDim_mul_pred_sub_eq` (+ `…_le`) in
   `RigidityMatrix.lean`/`Deficiency.lean`; rewrite `hrank_lb_nat` (:4497) + `hrankge_int` (:4634) to
   call it; re-bisect + lower the producer budget to the smallest passing (target default 200000, else a
