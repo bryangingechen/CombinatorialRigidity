@@ -90,14 +90,38 @@ sitting.
   per-file boilerplate (same category as `open scoped Graph`). If any *other* shadowed notation
   surfaces in a slice, re-assert it the same way from its source definition. The trimmed `CaseI` head
   imports `GenericityDevice` (clean) → it needs no re-assertion; only files importing `CaseI`-or-later do.
+- **SECOND poison — `binop%` coercion (NOT per-file-fixable); breaks the "pure move" premise
+  (2026-06-15).** After the notation fix, the carved `Theorem55` still fails: `import CaseI` also flips
+  `binop%`'s leaf-coercion decision, so bare-ℕ `(screwDim k - 1)` inside a ℤ context elaborates as
+  ℤ-subtraction (`Int.subNatNat`) instead of the ℕ-sub-then-cast (`↑(screwDim k - 1)`) the monolith
+  produces — so the 4 cut-edge `hbrickZ` `have` statements (`case_cut_edge_realization{,_gp}`) fail their
+  `exact_mod_cast hbrick`. Confirmed via `lean_run_code` on the **unmodified** tree (the snippet succeeds
+  under `import GenericityDevice` and even under all 4 of CaseI's imports together, fails under `import
+  CaseI`) — same CaseI-body-decl mechanism, but the elaboration-state does **not** transfer through the
+  import, and there is no `local`-style per-file fix (unlike the notation poison). CaseI has **no**
+  `instance`/`Coe`/`OfNat`/`default_instance`/`notation`/`macro` construct (only one `@[simp]`), so the
+  mechanism is opaque. Only the bare `(screwDim k - 1)` pattern is at risk; the many `screwDim k * ((… :
+  ℤ) - 1)` sites have explicit ℤ ascriptions and are safe. **This means importing CaseI is not
+  semantics-transparent — the split cannot be the guaranteed pure pin-safe move it was scoped as.**
+  Surfaced to the user as a strategic fork (2026-06-15): (a) allow minimal cast-ascription proof-body
+  touch-ups at affected sites; (c) root-cause-investigate/neutralize the poison decl first; (d) defer the
+  split (its only leverage is build-incrementality — import-surface benefit is nil — and 22k is the math
+  frontier). Awaiting the user's call before any further P1 dispatch.
 
 ## Hand-off / next phase
 
-**First buildable slice: P1 — carve `Theorem55.lean`** (the base-producer + cut-edge + dispatch tail of
-`CaseI.lean`) into a new file importing the monolith, and point the top-level aggregator
-(`CombinatorialRigidity.lean`) at `…AlgebraicInduction.Theorem55` instead of `…AlgebraicInduction.CaseI`.
-Re-derive the cut line against the current file. Gate: `lake build` + `lake lint` warning-clean +
-axiom-clean. Then P2→P3→P4 per the *Layer plan*. The full target + DAG + cut map + leverage is in
+**BLOCKED pending a user decision (2026-06-15).** P1 (carve `Theorem55.lean`) was attempted three times;
+the carve mechanics are clean (cut line re-derived, zero backward edges, trimmed `CaseI` builds), but
+`import CaseI` poisons downstream elaboration in two ways — notation (fixed per-file) and `binop%`
+coercion (NOT per-file-fixable) — so the split is **not** the guaranteed pure semantics-preserving
+move it was scoped as. See *Blockers* "SECOND poison" for the strategic fork (a/c/d) surfaced to the
+user. **Do not re-dispatch P1 until that fork is resolved.**
+
+Once resolved, the original plan: **P1 — carve `Theorem55.lean`** (the base-producer + cut-edge +
+dispatch tail of `CaseI.lean`) into a new file importing the monolith (with the 3 `local` notation
+re-assertions per *Blockers*), point the aggregator (`CombinatorialRigidity.lean`) at
+`…AlgebraicInduction.Theorem55` instead of `…AlgebraicInduction.CaseI`, re-derive the cut line. Gate:
+`lake build` + `lake lint` warning-clean + axiom-clean. Then P2→P3→P4 per the *Layer plan*. The full target + DAG + cut map + leverage is in
 `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon* plan (B).
 
 After this round closes: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — Case III +
