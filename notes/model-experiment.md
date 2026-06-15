@@ -95,9 +95,10 @@ deferred-route-hinges-on-consumer clause added to
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-15, fresh coordinator session re-confirmed at L8-open —
-  supersedes the prior same-date L7 session note, which expired at that session's end; same
-  parameters, re-run per the protocol's session-start check).**
+- **Session availability (2026-06-15, fresh coordinator session re-confirmed at L8c-open /
+  post-row-152, L8a+L8b landed — supersedes the prior same-date L8-open session note, which
+  expired at that session's end; same parameters, user-re-confirmed at this session's start
+  per the protocol's session-start check).**
   fable **unavailable** this session (user-confirmed at session start; any fable-mapped
   pass — phase-open/close, design-settle, S=3 — substitutes **opus**, logged as a
   substitution). **Rung policy: reverted to the full S/P/B → map** (user-confirmed at
@@ -294,6 +295,7 @@ quality / blueprint sync / notes discipline / commit message
 | 150 | L8a steps 3–5 design-settle — §1.70(c″) (addEdge carrier + minimality→equality brick), 3b10edb | 3/3/1 | opus | normal | clean | —✓——✓✓ | 167k tok / 58 tools / 504s (~8 min) | Design-settle (fable-mapped → opus). De-risked steps 3–5: the `G''` carrier resolves to `addEdge`-twice (four facts API-verified), and the "P≈3 matroid-counting" minimality→equality brick is a NEAR-CLONE of the landed `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` (:2253) — coordinator confirmed :2253 uses the exact rank-eq⟹base⟹fiber-meet pattern (`isBase_ncard_add_deficiency_eq`/`matroidMG_restrict_mulTilde`/`rank_add_deficiency_eq`) the new brick needs, so it's buildable not research-shaped. Also pinned the induced-`G'` subtlety (`removeVertex v = G'` needs `G'` induced — opener supplies it). No motive/defn change, no adjudication (clause ii). → Findings 22k. |
 | 151 | minimality→equality brick `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof` (L8a step-4 bridge), 71580d5 | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 139k tok / 75 tools / 1005s (~17 min) | P=2 near-clone of `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` (:2253) → sonnet (mapped). Landed the full named brick (NO shrink, unlike the opus L8a sub-commits) matching the §1.70(c″) pin exactly; idiomatic `ext_of_le_le` + restriction-base-meets-fiber. Coordinator full-diff read + step-5 gate warning-clean (2768 jobs) + `lake lint` + sorry-grep. Sonnet held at P=2 matroid-counting — consistent with the L8a-0 boundary-pair finding. → Findings 22k. |
 | 152 | L8a Leaf-1 assembly `exists_degree_two_removeVertex_of_no_simple_contraction` (Claim 6.6 graph side COMPLETE), 8edf52c | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 93k tok / 151 tools / 1444s (~24 min) | P=2 assembly → sonnet (mapped). Landed the full Leaf-1 (NO shrink) — **L8a complete**. Idiomatic assembly using EXISTING package `addEdge` API (`le_addEdge`/`addEdge_le`/`addEdge_isLink_iff_of_notMem` — confirmed none new this commit), not bloated. The 151-tool/24-min cost outlier = API-search on the `addEdge` bookkeeping (LOW 93k tokens, proportionate +182-line diff), NOT bloat-not-bailout. Coordinator: full-diff read + bloat/inline check + step-5 warning-clean (2768) + lint + sorry-grep + ROADMAP-edit scope check (legit in-progress status-honesty update, not creep). Sonnet held at the more-complex P=2 assembly. → Findings 22k. |
+| 153 | L8b — de-privatize CaseIII's triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (private→public), 0ff5041 | 1/1/1 | haiku | normal | repaired (note over-claim) | ✓✓✓—✗✓ | tokens/tools n/a (went idle, no cost report); ~2 min wall (commit timestamps + idle notif) | First landed haiku COMMIT in this repo (prior haiku 0/2, both honest BLOCKs). True 1/1/1 (drop `private`, no proof). Coordinator re-ran build (warning-clean, 2768 jobs) + lint + sorry-grep + full-diff — Lean exact, matches §1.70(e). Notes ✗ (repaired): split into feat+docs commits, and the docs commit (21760fd) flipped Layer-plan `L8`→`✓`/"h65 discharged" while L8c (the producer that discharges h65) is still open — internal contradiction with its own "Next: L8c". → Findings 22k. |
 
 ## Findings
 
@@ -725,3 +727,17 @@ postmortem's write-time consumer-fit gate now target exactly this.
   the monotonicity) — diagnosis confirmed against landed source, the design-doc pin corrected. A
   faithful-but-incomplete pin caught by the pair, not the coordinator's pre-dispatch scrutiny — the
   rows-96–100 pattern, now at the sonnet/opus boundary.
+
+- **(row 153) First landed haiku COMMIT in this repo — a true 1/1/1 (de-privatize one lemma).**
+  Prior haiku were 0/2, both honest BLOCKs (rows 3, 116) on tasks that secretly needed a lemma-hunt
+  or file-placement judgment. On a genuinely mechanical task — drop the `private` keyword, no proof,
+  no assembly — haiku produced correct, warning-clean Lean matching the §1.70(e) pin exactly. The
+  slip was in the discipline layer, as the whole-experiment pattern predicts (cheap-rung failures
+  concentrate in notes/shape, not the math): it split the work into feat+docs commits and the docs
+  commit over-claimed Layer-plan `L8` ✓ / "h65 discharged" while L8c (the producer that actually
+  discharges h65) is still open — an internal contradiction with the same entry's "Next: L8c". The
+  coordinator's notes-honesty gate caught and repaired it. Process artifact (not a model grade): the
+  named-agent dispatch went idle without emitting its `LANDED <sha>` return or cost figures, and a
+  SendMessage follow-up drew only another idle notification — so tokens/tool-uses are unavailable for
+  this row (wall time recovered from commit timestamps). The 1/1/1 cell remains haiku's by the map,
+  with the coordinator gate as the necessary backstop for the discipline layer.
