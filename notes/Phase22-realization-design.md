@@ -7599,3 +7599,336 @@ specializes cleanly to `f = id` vs needs a fresh selector-agreement argument).
 * `splitOff_removeVertex_minimalKDof` (:3198) concludes `Gv.IsMinimalKDof n k' ∧ 0 ≤ k' ∧ k' ≤ D−2`
   at `k=0` — exactly the nested-IH input shape (the `k' ≤ D−2` is what makes `h622lb`'s
   `−(D−2)` lower bound the *weakest* of the family `−k'`). ✓
+
+### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge (2026-06-15)
+
+> **Docs-only design pass (the L8 pin), opus.** Every load-bearing decl below opened to its
+> `def`/`theorem` body and verified against the cited claim (clause (i)). Landed source read this
+> pass (post-22j-perf chain, current line numbers):
+> Theorem55.lean — `theorem_55_d3` (:483; its 0-dof `h65` carry at :516–:524, the **L8 discharge
+> target**; the `hcontractGP` slot inlines the 6.3-vs-6.5 dispatch at :547–:556, the negative branch
+> carrying `h65` at :555), `case_I_dispatch` (:1865; the **all-`k`** `h65` carry at :1867–:1875,
+> consumed at :1893 in the simple branch's inner `by_cases hd` negative arm; this decl has NO live
+> caller yet — it is the L9 spine's dispatch, the all-`k` sibling of `theorem_55_d3`'s inlined one),
+> `case_I_realization_all_k` (:1769, the **template producer** the geometric side mirrors — IH at
+> the smaller graph, Brick A for the rank, the §1.62 rank-polynomial transfer), `case_I_realization_nonsimple`
+> (:1474, the L5a bare producer; the BodyHingeFramework-native assembly idiom), the `reaim`
+> off-edge-selector micro-brick (:564);
+> CaseII.lean — `case_II_realization_all_k` (:297, the **CLOSEST precedent**, L6: it consumes Brick A
+> at :1063 with `Nat.card sn = D−1` NEW + `Nat.card so = N` OLD, then `exists_rankPolynomial_of_le_finrank_linking`
+> for the seed transfer, then the `hne_G` extensor-nonzero discharge at :1088 — L8's geometric side
+> is this template with the NEW block widened from `D−1` to `D`);
+> RigidityMatrix.lean — `le_finrank_span_rigidityRows_of_pinned_placement` (:3344, **Brick A**, span-level
+> `Nat.card ιn + Nat.card ιo ≤ finrank(span F.rigidityRows)`: NEW block `rn` independent through `v`'s
+> column `hnewpin`, OLD block `ro` vanishing on `v`'s column `hold` + independent + in `span`; the L8
+> geometric workhorse, KT eq. (6.10) shape), `finrank_hingeRowBlock` (:1129, each hinge block has
+> finrank `D−1`), `eq_of_hingeConstraint_two_parallel` (:2672, takes `F : BodyHingeFramework k`, two
+> edges `e₁ e₂` joining the SAME pair `u v` with LI extensors → `S u = S v`; Lemma 5.3 base, **but
+> the SAME-pair shape — NOT directly the Π° distinct-endpoint shape**, see (d)), `span_inf_span_eq_bot_of_linearIndependent`
+> (:2653, the `span C₁ ⊓ span C₂ = ⊥` core), `screwSpace_finrank` (:98, `finrank (ScrewSpace k) = screwDim k = D`),
+> `exists_homogeneousIncidence_of_normals` (:456, the `d=3` homogeneous-incidence point builder
+> consuming a `Fin 3 → Fin 4 → ℝ` triple-LI input);
+> CaseIII.lean — `linearIndependent_normals_of_algebraicIndependent` (:3407, **`private`** — the
+> triple-LI bridge `AlgebraicIndependent ℚ q → a,b,c distinct → LinearIndependent ℝ ![q(a,·),q(b,·),q(c,·)]`;
+> consumed at :3658; the privacy is the one structural blocker, see (e)), `case_III_realization` (:3973,
+> the L7-landed all-`k` Case-III producer — the parallel structural pattern: all-`k` IH + Brick-A-family
+> rank + rank-polynomial transfer);
+> SplitOffDeficiency.lean — `removeVertex_deficiency_ge` (:405, **KT Lemma 4.4**: degree-2 `v`,
+> `D = bodyBarDim n ≥ 2` ⇒ `G.deficiency n ≤ (G.removeVertex v).deficiency n`; "vertex removal RAISES
+> deficiency" — the exact direction Claim 6.6 needs, see (c) step 4);
+> ForestSurgery.lean — `splitOff_removeVertex_minimalKDof` (:3198, `G−v` minimal `k'`-dof with `0 ≤ k' ≤ D−2`,
+> at `k=0`; in Claim 6.6 `k' = 0` specifically since `G−v = G'` rigid);
+> Deficiency.lean — `IsRigidSubgraph` (:417, `H ≤ G ∧ H.IsKDof n 0`), `IsProperRigidSubgraph` (:428,
+> `IsRigidSubgraph ∧ 2 ≤ |V(H)| ∧ V(H) ⊂ V(G)`), `IsProperRigidSubgraph.vertexSet_nonempty` (:433);
+> ReducibleVertex.lean — `simple_of_isMinimalKDof_of_noRigid` (:625, G0), `exists_adjacent_degree_two_pair`
+> (:828, KT Lemma **4.6** — adjacent degree-2 *pair*; NOT Claim 6.6's single-vertex `v`, which comes
+> from the maximal-subgraph construction, see (c) step 5);
+> Operations.lean — `removeVertex` (:536), `removeVertex_le` (:553, `G−v ≤ G`), `vertexSet_removeVertex`,
+> `removeVertex_isLink`;
+> PanelHinge.lean — `HasGenericFullRankRealization` (:1035, the GP motive, conclusion of both `h65` shapes),
+> `theorem_55_generic` (:1168, the 0-dof spine; its `hcontractGP` slot at :1190 is `k=0`-IH-shaped —
+> the inlined dispatch lives here at the instance, NOT `case_I_dispatch`).
+> Blueprint read: `case-i.tex` — `lem:case-I-dispatch` (:685, the **L8 target node, red**; its proof
+> prose already names "Claim 6.6 + the Π°-placement … the obligation of sub-phase 22i" — the staleness
+> the L8 commit reword fixes, `notes/Phase22k.md` *Blockers*), `lem:case-I-realization` (:589, green,
+> the 6.3 arm), `lem:case-I-realization-nonsimple` (L5a, green). KT 2011 §6.2 read **against the PDF
+> this pass** (pp. 676–677, pdf pages 30–31): **Lemma 6.5** statement (`k`-dof, `|V|≥3`, simple, has
+> proper rigid subgraph, no proper rigid subgraph with simple contraction, (6.1) ⟹ a nonparallel
+> realization at `rank = D(|V|−1) − k`); **Claim 6.6** (the maximal-subgraph argument forcing `G` 0-dof
+> + the degree-2 `v` with `G−v` minimal 0-dof simple); the **Π°-placement** map `p` (= `q` off `{va,vb}`,
+> `Π°∩Π(a)`/`Π°∩Π(b)` at the two `v`-edges where `Π°` is the non-parallel slack flat) and the **(6.10)
+> block-triangular** rank chain (top `R(G,p;{va,vb},v)` rank `D` by Lemma 5.3, bottom `= R(G_v,q)` rank
+> `D(|V∖v|−1)`, summing to `D(|V|−1)`). No `.lean`/`.tex` edits this pass.
+
+**The slot the L8 producer fills.** L8 discharges `h65`, the negative arm of the Case-I dispatch's inner
+`by_cases (G.rigidContract H r).Simple`: `G` is a *simple* minimal-dof-graph that *has* a proper rigid
+subgraph but *no* proper rigid subgraph `H` (with rep `r`) whose contraction `G.rigidContract H r` is
+simple. KT routes this (the Lemma-6.3 case-split failure) to **Lemma 6.5**, the vertex-removal argument.
+L8 is the unchanged §1.54(a3) plan, re-validated against the landed all-`k` state below.
+
+**(a) The two `h65` shapes RECONCILED — both target the SAME producer, the `k=0` derivation is internal.**
+The coordinator flagged two distinct carried `h65` shapes. Read in full, they are:
+
+* `theorem_55_d3:516` (**0-dof**): `∀ G, G.IsMinimalKDof n 0 → 3 ≤ |V| → (∃H, IsProperRigidSubgraph) →
+  G.Simple → (∀H, IsProperRigidSubgraph → ∀r∈V(H), ¬(rigidContract H r).Simple) →
+  (∀G', IsMinimalKDof n 0 → 2≤|V'| → smaller → Pc G') → HasGenericFullRankRealization 2 n G`.
+  The conditioned IH is **`k=0`-only** (`G'.IsMinimalKDof n 0`).
+* `case_I_dispatch:1867` (**all-`k`**): `∀ (k:ℤ) (G), G.IsMinimalKDof n k → 3 ≤ |V| → (∃H, …) → G.Simple →
+  (∀H, … → ∀r∈V(H), ¬(rigidContract H r).Simple) → (∀ (k':ℤ) (G'), IsMinimalKDof n k' → Nonempty →
+  smaller → Pc G') → HasGenericFullRankRealization 2 n G`. The IH is the **all-`k` `Pc`**, and the carried
+  graph is `IsMinimalKDof n k` for an arbitrary `k`.
+
+**The hand-off assertion "Claim 6.6 concludes inside the `k = 0` stratum, no all-`k` generality needed" is
+CONFIRMED against KT.** Claim 6.6's *proof* (pdf p. 30): the maximal proper rigid subgraph `G'` is 0-dof
+(Lemma 3.3); `G'' = G' + v + {e,f}` has `def(G̃'') ≤ def(G̃') = 0` by **Lemma 4.4**; maximality + minimality
+force `V = V'∪{v}`, `G = G''`, so **`G` is a 0-dof-graph**. I.e. the `h65` hypothesis package (simple,
+has-proper-rigid, all-contractions-non-simple) is *only satisfiable when `def(G̃) = 0`*. Consequence for
+the all-`k` `case_I_dispatch:1867` `h65`: its carried `k` is forced `= G.deficiency n = 0` whenever the
+hypotheses hold, so the producer's **first step derives `k = 0`** (from `hG : G.IsMinimalKDof n k` and the
+Claim-6.6 graph conclusion `G.IsKDof n 0`, via the def-determines-`k` uniqueness of `IsMinimalKDof`) and
+then runs the `k=0` argument. There is **no mismatch and no blocker**: one producer, `case_I_realization_h65`
+(name indicative), discharges BOTH carries —
+* `theorem_55_d3:516` calls it directly (the carry is already `k=0`-shaped; the IH it hands is `k=0`-only,
+  which suffices because the *nested* IH application in L8 is at `G_v = G−v` which **is also 0-dof** here —
+  unlike L7's Case III, where `G_v` is `k'`-dof and forced the all-`k` IH; see (d) step 3).
+* `case_I_dispatch:1867` (when L9 wires it) calls the same producer after the internal `k = 0` derivation;
+  the all-`k` IH it carries restricts to the `k'=0` instance the producer needs.
+
+**This is the key structural finding distinguishing L8 from L7: L8 does NOT force the spine to be all-`k`.**
+The `theorem_55_d3:516` `h65` is dischargeable *with only the `k=0` IH it already carries*, because both `G`
+and `G_v` are 0-dof in Claim 6.6's stratum. So L8 lands a producer callable from BOTH the current
+`theorem_55_d3` inlined dispatch (immediately, dropping that carry) and the future all-`k` `case_I_dispatch`
+(at L9). *Decision for the coordinator/user: none forced* — the two shapes reconcile to one producer; L8
+discharges `theorem_55_d3`'s `h65` now and leaves `case_I_dispatch`'s `h65` for L9's spine wiring (the same
+staging L5/L6/L7 used: producer lands before its spine slot). **Flag (not a blocker):** if L8 wants to drop
+`theorem_55_d3:516`'s `h65` carry in the same commit (cleaner), it rewrites the `:555` negative-branch lambda
+to call `case_I_realization_h65` instead of the carried `h65` — a one-line wiring change. Recommended: do it,
+since the producer concludes exactly the branch's `HasGenericFullRankRealization 2 n G`.
+
+**(b) The L8 leaf decomposition (the §1.54(a3) steps 1–2, re-validated).** Two leaves + a wiring commit:
+1. **Claim 6.6 graph side** (`exists_degree_two_removeVertex_of_no_simple_contraction`, name indicative)
+   — NEW combinatorics, ~1–2 commits.
+2. **The Π°-placement producer** (`case_I_realization_h65`) — geometric side, ~1–2 commits + a privacy fix.
+3. **Wiring** — drop `theorem_55_d3:516`'s `h65` carry (rewrite the `:555` lambda); restate the
+   `lem:case-I-dispatch` node green; reword the stale "obligation of sub-phase 22i" prose to 22k.
+
+**(c) Leaf 1 — the Claim 6.6 graph-side lemma (NEW combinatorics).** This is the one genuinely-new
+combinatorial content of L8. Pinned signature (lives in `ReducibleVertex.lean`, beside the other
+degree-2/no-rigid existence lemmas, OR `Contraction.lean`; it is graph-only, no rigidity):
+
+```lean
+theorem Graph.exists_degree_two_removeVertex_of_no_simple_contraction
+    [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hV3 : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0)                          -- NOTE: 0-dof; the all-`k` caller derives k=0 first
+    (hSimple : G.Simple)
+    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
+    (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
+      ¬ (G.rigidContract H r).Simple) :
+    ∃ (v a b : α) (eₐ e_b : β),
+      a ≠ v ∧ b ≠ v ∧ a ≠ b ∧ eₐ ≠ e_b ∧
+      G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧
+      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧     -- `v` has degree exactly 2, with neighbours a,b
+      (G.removeVertex v).IsMinimalKDof n 0 ∧            -- `G_v` minimal 0-dof (= the maximal subgraph G')
+      (G.removeVertex v).Simple                          -- `G_v` simple (immediate from hSimple via removeVertex_le)
+```
+
+*The proof (KT Claim 6.6, pdf p. 30, faithful):*
+1. **Take a vertex-inclusionwise maximal proper rigid subgraph `G'`.** This is the NEW existence lemma —
+   no landed analogue (grep: zero `exists.*maximal.*RigidSubgraph`). Since `α` is `Finite`, the proper rigid
+   subgraphs are a finite nonempty (`hrig`) family; pick one of maximal `|V(H)|` (`Finset.exists_max_image`
+   or `Set.Finite.exists_maximal_wrt` on the vertex-set-cardinality measure). `G'` is minimal 0-dof
+   (`IsProperRigidSubgraph` ⟹ `IsKDof n 0`; minimality via `subgraph_minimality`/KT 3.3 since `G' ≤ G`).
+2. **`G/E(G')` non-simple ⟹ a vertex `v ∈ V∖V'` with two edges into `V'`.** From `hnoSimpleContr` at `(G', r)`
+   for any `r ∈ V(G')`: `¬(G.rigidContract G' r).Simple`. Non-simplicity of the contraction yields the
+   parallel/loop pair, which (since `G` itself is simple, so the multiplicity is created by the collapse)
+   pulls back to a vertex `v ∉ V'` incident to two distinct edges `e, f` whose other endpoints lie in `V'`.
+   *(This step reads the `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))` definition: a non-simple
+   contraction means two `G∖E(G')`-edges collapse to a parallel pair at `r`, i.e. two edges from a common
+   `v ∉ V'` into `V'`. — confirm the exact `rigidContract`-non-simple ⟹ shared-`v` extraction at build;
+   this is the fiddliest sub-step, P≈3.)*
+3. **`G'' = G' + v + {e,f}` is 0-dof (rigid) by KT Lemma 4.4.** `G''.removeVertex v = G'` (the two `v`-edges
+   `e,f` and `v` are exactly what `G''` adds over `G'`). `removeVertex_deficiency_ge` (SplitOffDeficiency:405,
+   the LANDED Lemma 4.4) at `G := G''`, `v := v` gives `G''.deficiency n ≤ (G''.removeVertex v).deficiency n
+   = G'.deficiency n = 0`; with `deficiency_nonneg`, `def(G̃'') = 0`, so `G''.IsKDof n 0` — a rigid subgraph.
+   **DIRECTION CONFIRMED:** Claim 6.6 wants `def(G̃'') ≤ def(G̃')` (adding `v`+2 edges does not raise
+   deficiency); `removeVertex_deficiency_ge` states `def(G̃) ≤ def(G̃−v)`, i.e. with `G := G''` exactly
+   `def(G̃'') ≤ def(G̃''−v) = def(G̃')`. The landed lemma is the right direction — NOT the converse.
+   *(`removeVertex_deficiency_ge` needs `hdeg2`: `e,f` are the ONLY `v`-edges of `G''` — true by construction
+   since `G''` adds only `e,f` at `v`.)*
+4. **Maximality + minimality force `V = V'∪{v}` and `G = G''`.** `G''` is a rigid subgraph of `G` strictly
+   larger than `G'` in vertices (`V'' = V'∪{v} ⊋ V'`); were `V'' ⊊ V`, `G''` would be a *proper* rigid
+   subgraph larger than the maximal `G'` — contradiction. So `V'' = V`, i.e. `V = V'∪{v}`. Minimality of `G`
+   (no edge removable) + `G'' ≤ G` + `def(G̃'') = 0 = def(G̃)` + same vertex set ⟹ `G = G''`. So `G` is 0-dof.
+5. **`v` is degree-2, `G_v = G−v = G'` minimal 0-dof, simple.** `v`'s only `G''`-edges are `e,f` (degree 2);
+   `G−v = G'' − v = G'`, the maximal subgraph, minimal 0-dof (step 1); simple by `hSimple.mono
+   (G.removeVertex_le v)`. □
+   *S/P/B note: Leaf 1 is **genuinely-new combinatorics** — the maximal-subgraph existence (step 1) and the
+   non-simple-contraction ⟹ shared-`v` extraction (step 2) are the two real pieces; steps 3–5 are landed
+   bricks (Lemma 4.4, `subgraph_minimality`, `Simple.mono`) + minimality bookkeeping. Bounded, research-free
+   (no rigidity matrix, no genericity). The single P≈3 sub-step is step 2's contraction-non-simplicity
+   unpacking; the rest is P≈2.*
+
+**(d) Leaf 2 — the Π°-placement producer (geometric side, the L6 template widened).** Pinned signature
+(lives in `Theorem55.lean`, beside `case_I_realization_all_k`/`case_I_dispatch`, so it threads into the
+dispatch's negative branch; needs the (e) privacy fix to call the triple-LI bridge):
+
+```lean
+theorem PanelHingeFramework.case_I_realization_h65
+    [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) (hSimple : G.Simple)
+    (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
+      ¬ (G.rigidContract H r).Simple)
+    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G
+```
+
+This matches `theorem_55_d3:516`'s `h65` carry *exactly* (same hypotheses, same conclusion) — so the L8
+wiring is `theorem_55_d3`'s `:555` lambda calling `case_I_realization_h65 hD hn hfresh G hG hV3 hrig hSimple
+(fun H hH r hr hcs => …) hIH` (the `hnoSimpleContr` repackaged from the dispatch's `(fun H hH r hr hcs =>
+hd ⟨…⟩)`). The IH is the **`k=0`-only** form (matching `theorem_55_d3`'s carry); for the all-`k`
+`case_I_dispatch:1867` caller, a thin wrapper restricts the all-`k` `Pc` IH to its `k'=0` instances and
+derives `k = 0` first.
+
+*The body (KT Lemma 6.5 + (6.10), faithful — the L6 `case_II_realization_all_k` template widened):*
+1. **Claim 6.6 graph side (Leaf 1).** `exists_degree_two_removeVertex_of_no_simple_contraction hD'.le hV3 hG
+   hSimple hrig hnoSimpleContr` gives `v, a, b, eₐ, e_b` with `v` degree-2, `G_v := G−v` minimal 0-dof,
+   simple. (`hD' : 2 ≤ bodyBarDim n` by `omega` from `hD : 6 ≤`.)
+2. **IH at `G_v` (the `k=0` arm).** `G_v` is minimal 0-dof, smaller (`|V(G_v)| = |V|−1 < |V|`, via
+   `vertexSet_removeVertex` + `Set.ncard_diff_singleton`), `2 ≤ |V(G_v)|` (`= |V|−1 ≥ 2` from `hV3`), and
+   simple (Leaf 1). So `(hIH G_v hG_v hV_v hlt).1 hG_v.Simple` gives `HasGenericFullRankRealization 2 n G_v`
+   — a realization `Q_v : G_v` at rank `D(|V_v|−1) − G_v.deficiency = D(|V_v|−1)` (since `G_v` 0-dof), with
+   GP (pairwise-LI normals) + alg-indep seed `q_v := fun p => Q_v.normal p.1 p.2`.
+   *Note: UNLIKE L7's Case III — where the nested `G_v` is `k'`-dof and forced the all-`k` IH — here `G_v`
+   is **0-dof** (it equals the maximal rigid subgraph `G'`), so the `k=0`-only IH suffices. This is why L8
+   does not force the all-`k` spine.*
+3. **Build `Q : G` at the SAME seed, with `v`'s two normals via the Π° slack flat.** Realize `G` on
+   `q := q_v` extended at `v`: set `Q.normal v := <the Π° normal>`, a fresh normal making the triple
+   `![q(v,·), q(a,·), q(b,·)]` LI (KT's `Π°`: a `(d−1)`-flat not parallel to any `Π_{G_v,q}(u)` and not
+   containing `Π(a)∩Π(b)`). The seed `q` extended at `v` stays alg-indep / pairwise-LI; the triple-LI is
+   the §1.53 bridge `linearIndependent_normals_of_algebraicIndependent` at `(a,b,c) := (v,a,b)` (this is
+   why the privacy fix (e) is needed). Selector `Q.ends` overridden at `eₐ, e_b` (the `reaim`/`Function.update`
+   pattern at :564) to record `(v,a)`, `(v,b)`; off the two `v`-edges, `Q.ends = Q_v.ends` (records `G_v`'s
+   links, hence `G`'s away from `v`).
+4. **Rank `≥ D(|V|−1)` via Brick A** (KT (6.10) block-triangular). The NEW block `rn` = the two `v`-edge
+   hinge rows (`va`, `vb`), an independent subfamily of size `D` through `v`'s screw column (`hnewpin`,
+   `Nat.card ιn = D`); the OLD block `ro` = `Q_v`'s `D(|V_v|−1)` rows, vanishing on `v`'s column (`hold`:
+   `G_v`-rows don't touch `v`) + independent + in `span Q.toBodyHinge.rigidityRows` (`hold_span`: the
+   `removeVertex_le` subgraph membership, `Submodule.subset_span ∘ panelRow_mem_rigidityRows`, the TRIVIAL
+   `Gv ≤ G` discharge of §1.68(d) — `G_v ≤ G` is a genuine subgraph, NOT a collapse/splitOff, so the OLD-row
+   transport is the *easy* case). `le_finrank_span_rigidityRows_of_pinned_placement Q.toBodyHinge (v := v)
+   hold hnewpin holdindep hnew_span hold_span` gives `D + D(|V_v|−1) ≤ finrank`, i.e. `D(|V|−1) ≤ finrank`.
+   *No rank-polynomial transfer needed at `def = 0`: `G_v` and `G` are both 0-dof and `Q_v` is realized at
+   the SAME seed `q` that `Q` uses (no separate-seed transfer, unlike L7) — the `hold_span` is the direct
+   subgraph membership. So L8 is SIMPLER than L7 (no V8/V8-a rank-polynomial sub-leaf).*
+5. **`≤` from B2 + antisymmetry ⟹ rank `= D(|V|−1) − 0`.** `finrank_span_rigidityRows_add_deficiency_le`
+   (B2, the free `≤`) at `def(G̃) = 0` gives `finrank ≤ D(|V|−1)`; antisymmetry closes the `HasGenericFullRankRealization`
+   rank conjunct.
+6. **GP / link-recording / alg-indep conjuncts.** GP (pairwise normal-LI): `Q_v`'s GP off `v` + the Π°
+   normal making `v`'s pairs LI (the triple-LI ⟹ each pair LI). Link-recording: by selector construction.
+   Alg-indep: same seed `q` (alg-indep extended at `v`). The extensor-nonzero conjunct (every `G`-link has
+   nonzero supporting extensor): the `hne_G` discharge mirroring `case_II_realization_all_k:1088` — the two
+   `v`-edges nonzero by the triple-LI (`panelSupportExtensor (Π°) (n_a) ≠ 0` etc.), the rest off the IH. □
+
+*S/P/B note: Leaf 2 is **mostly mechanical assembly** of the L6 Case-II template — Brick A, B2, the seed
+extension, the `hne_G` discharge are all landed patterns. The one genuinely-new geometric piece is **step 4's
+`hnewpin`**: KT Lemma 5.3's "the two `v`-edge rows span rank `D` through `v`'s column" (a `D`-element
+independent subfamily of the `2(D−1)` hinge rows). The two-LI-extensors-span-`D` fact is the Lemma-5.3 core;
+`eq_of_hingeConstraint_two_parallel` (:2672) is the SAME-pair (`u,v` on both edges) form, but here the two
+edges are `va` and `vb` (DISTINCT endpoints `a ≠ b`) sharing only `v` — so that lemma does NOT apply directly.
+The needed fact is "two hinge rows at a common body `v`, with LI supporting extensors, are independent through
+`v`'s column and together span the full `D`" — verify at build whether `finrank_hingeRowBlock` (`D−1` each) +
+the LI-extensors + the `single v` projection assemble this, or whether a small new Lemma-5.3-at-distinct-
+endpoints brick is needed (P≈3, the build-time uncertainty leaf — analogous to L7a). Steps 1–3, 5–6 are P≈2.*
+
+**(e) The privacy fix (the one structural blocker, RESOLVED).** `linearIndependent_normals_of_algebraicIndependent`
+is `private` in `CaseIII.lean:3407` (verified). Leaf 2 lives in `Theorem55.lean` (downstream of CaseIII in
+the import chain `… ← CaseIII ← Theorem55`), so it cannot call a `private` CaseIII lemma. **Resolution:
+de-privatize the bridge** — drop the `private` keyword on CaseIII:3407 (make it a public `lemma`/`theorem`).
+It is a clean, general, reusable triple-LI fact (`AlgebraicIndependent ℚ q → 3 distinct vertices →
+LinearIndependent ℝ ![q(a,·),q(b,·),q(c,·)]`), not churn-prone internal infrastructure — exactly the kind of
+fact the project keeps public. Its existing CaseIII caller (:3658) is unaffected. *(Alternatives rejected:
+(i) placing Leaf 2 in CaseIII.lean separates it from the dispatch it wires into — Theorem55 is where
+`case_I_dispatch`/`case_I_realization_all_k`/`case_I_realization_nonsimple` live, so the producer belongs
+there; (ii) re-mirroring the bridge duplicates a 30-line det-polynomial proof. De-privatizing is the
+minimal, clean fix.)* No `set_option backward.privateInPublic` needed (the bridge is a `lemma`, not in an
+exposed body). Same-commit grep: the only `private` reference is the def + the :3658 call.
+
+**(f) Ordered leaf list + dependencies.**
+* **L8a — Leaf 1, `exists_degree_two_removeVertex_of_no_simple_contraction`** (ReducibleVertex.lean or
+  Contraction.lean). The NEW combinatorics. **First concrete commit** — pure graph theory, no rigidity, no
+  dependency on L8b. Mints a green node (or folds into `lem:case-I-dispatch`'s proof `\uses`). *Buildable;
+  the one P≈3 sub-step (contraction-non-simplicity ⟹ shared-`v`) resolves at this build.*
+* **L8b — the privacy fix** (CaseIII.lean): drop `private` on :3407. A trivial one-token edit; can ride in
+  L8c's commit. (Listed separately because it is a CaseIII edit, not a Theorem55 one — but it is gating for
+  L8c, not standalone.)
+* **L8c — Leaf 2, `case_I_realization_h65`** (Theorem55.lean) + the wiring (drop `theorem_55_d3:516`'s `h65`
+  carry, rewrite the `:555` lambda). Depends on L8a (the graph side) + L8b (the bridge). Restates
+  `lem:case-I-dispatch` green (flip `\leanok` on statement + proof; reword the stale "22i" prose to 22k);
+  drops `h65` from any blueprint pin that states the carry. **Statement-grep gate** before commit: grep
+  `blueprint/src` for `case_I_dispatch` / `theorem_55_d3` (the `lem:case-I-dispatch` `\lean{}` is
+  `case_I_dispatch`, which is *unchanged*; `theorem_55_d3`'s `h65` carry-drop is a statement change — grep
+  per `CLAUDE.md` *Structural-edit phases*). The P≈3 step-4 `hnewpin` Lemma-5.3-at-distinct-endpoints brick
+  resolves at this build.
+
+If the full pin won't fit one sitting: **L8a alone is a clean stopping point** (the new combinatorics +
+its node green; `theorem_55_d3` still carries `h65`). L8c (the producer + wiring) is then a separate sitting.
+The `case_I_dispatch:1867` all-`k` `h65` is **L9's** to drop (the spine wiring); L8 only discharges
+`theorem_55_d3:516`'s carry.
+
+**(g) Brick-by-brick load-bearing confirmation (clause (i)).** Every fact opened to its landed `def`/`theorem`:
+* `removeVertex_deficiency_ge` (SplitOffDeficiency:405) — KT Lemma 4.4, **exact direction** `def(G̃) ≤
+  def(G̃−v)`. ✓ (The §1.54(a3)-era "audit Phase-20; none surfaced" is now superseded: it HAS landed, and at
+  the direction Claim 6.6 needs — NOT the converse. Confirmed step-by-step in (c) step 3.)
+* `le_finrank_span_rigidityRows_of_pinned_placement` (RigidityMatrix:3344, **Brick A**) — span-level pin-a-body
+  rank addition; conclusion `Nat.card ιn + Nat.card ιo ≤ finrank(span F.rigidityRows)`. ✓ (The KT (6.10)
+  block-triangular workhorse; the `_augment` `+1` variant at :3390 is NOT needed — Claim 6.6 has no redundant
+  `+1` row, unlike Case III stratum-1.)
+* `case_II_realization_all_k` (CaseII:297) — the template: Brick A at :1063 + `exists_rankPolynomial_of_le_finrank_linking`
+  + `hne_G` at :1088. ✓ L8 mirrors all but the rank-polynomial step (not needed at same-seed `def=0`).
+* `linearIndependent_normals_of_algebraicIndependent` (CaseIII:3407) — triple-LI bridge, `private`. ✓ shape
+  matches `(a,b,c) := (v,a,b)`; privacy resolved in (e).
+* `eq_of_hingeConstraint_two_parallel` (RigidityMatrix:2672) — SAME-pair (`u,v` on both edges) Lemma-5.3 form.
+  ✓ exists, **but flagged in (d) step 4**: NOT directly the distinct-endpoint Π° shape; the needed `hnewpin`
+  fact is the two-hinges-at-common-body span-`D` form (P≈3, build-time).
+* `finrank_hingeRowBlock` (:1129, each block `D−1`), `screwSpace_finrank` (:98, `= D`) — the rank arithmetic
+  pieces for step 4. ✓
+* `splitOff_removeVertex_minimalKDof` (ForestSurgery:3198) — `G−v` minimal `k'`-dof, `0 ≤ k' ≤ D−2`; in
+  Claim 6.6 `k' = 0` (since `G−v = G'` rigid). ✓ Available but **not directly needed** — Leaf 1 establishes
+  `G−v` minimal 0-dof via the maximal-subgraph identity `G−v = G'`, which is *stronger* (`k'=0`, not `≤ D−2`).
+* `exists_adjacent_degree_two_pair` (ReducibleVertex:828) — KT Lemma **4.6**, adjacent degree-2 *pair*. ✓
+  exists, **but NOT Claim 6.6's `v`**: Claim 6.6's degree-2 `v` comes from the maximal-subgraph construction
+  (Leaf 1), not from Lemma 4.6. Flag: do not confuse the two — Lemma 4.6 feeds Case II/III splitting, not
+  the Lemma-6.5 arm.
+* `IsProperRigidSubgraph` (Deficiency:428) / `.vertexSet_nonempty` (:433) / `subgraph_minimality` (KT 3.3)
+  / `simple_of_isMinimalKDof_of_noRigid` (ReducibleVertex:625) / `removeVertex_le` (Operations:553) /
+  `Simple.mono` — the graph-side bookkeeping. ✓ all landed.
+* `HasGenericFullRankRealization` (PanelHinge:1035) — the conclusion of both `h65` shapes and the IH `.1`
+  conjunct; carries the rank-equality + GP + link-recording + alg-indep conjuncts L8 produces. ✓
+
+**(h) Clause (ii) verdict — what's flagged, what's open.** NO motive/IH change (L8 reuses the §1.56 all-`k`
+`Pc` IH unchanged; the `theorem_55_d3` `h65` discharge uses only the `k=0` IH). NO user adjudication: the
+two `h65` shapes reconcile to one producer (the `k=0` derivation is internal, forced by Claim 6.6), and the
+privacy issue resolves to a clean de-privatization. **NO genuinely-new lemma beyond two flagged build-time
+leaves**, both buildable-from-landed-parts, not research-shaped:
+* *Leaf 1 step 2* (contraction-non-simplicity ⟹ shared-`v` extraction, P≈3) — the fiddly graph unpacking of
+  `rigidContract`'s collapse; bounded.
+* *Leaf 2 step 4* (the Lemma-5.3-at-distinct-endpoints `hnewpin` brick, P≈3) — two hinge rows at a common
+  body `v` with LI extensors spanning the full `D` through `v`'s column; the `eq_of_hingeConstraint_two_parallel`
+  same-pair form does not apply, so this is either a clean assembly of `finrank_hingeRowBlock` + the LI
+  extensors or a small new brick (the build-time uncertainty leaf, L8's analogue of L7a/V8-a).
+The honest residual: **Leaf 2 step 2's "G_v is 0-dof"** rests on Leaf 1's `G−v = G'` (the maximal subgraph),
+which makes the `k=0`-only IH suffice — IF Leaf 1's step-2 extraction is harder than expected (the P≈3 flag),
+Leaf 2's structure is unaffected (it consumes Leaf 1's conclusion as a black box). No open decision for the
+coordinator/user.
+
+**Estimate: ~3–4 commits** (L8a graph side ~1–2; L8c producer + wiring ~1–2; L8b privacy folds in). L8 is
+**simpler than L7** (no rank-polynomial transfer — same-seed `def=0`) but carries **more new combinatorics**
+(the maximal-subgraph existence + contraction-non-simplicity unpacking, which L7 had landed in
+`splitOff_removeVertex_minimalKDof`).
