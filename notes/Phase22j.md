@@ -4,14 +4,18 @@
 
 ## Current state
 
-**Next: a recon/design-pass to scope the split-refactor plan (then execute).** User decision
-(2026-06-15, `coordinate-phase` option c): do BOTH suppression refactors within 22j, then assess
-whether the molecular-conjecture files/proofs warrant further splitting (build-time / unwieldiness).
-The heartbeats refactor = split the L6b producer into helper lemmas, which is a concrete instance of the
-wider split question — so the recon scopes both at once; the longLine reflow lands *after* the split (it
-changes line counts). Coordinator-measured: **CaseI.lean is 10,346 lines** (the prime split candidate;
-next-largest molecular files ≈3.4–3.8k) with four raised heartbeat budgets (:3723 3.2M above the
-producer, plus 400k/800k/800k for later decls). The dead-code half of the cleanup bundle landed (deleted
+**Recon/design-pass DONE (2026-06-15); next = execute plan (A) starting with A0+A1.** The ranked
+split-refactor plan is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon (2026-06-15…)*; the
+*Hand-off* section below names the first buildable slice. User decision (2026-06-15, `coordinate-phase`
+option c): do BOTH suppression refactors within 22j, then assess wider splitting — the recon found the
+heartbeats fix needs only **one** small extractable scalar helper (Helper 1 = the ℤ/ℕ rank-cast bridge)
+plus a free budget-lowering (3.2M → 800000 fits with zero change; bisection-verified), NOT a deep
+producer decomposition (the geometric middle is the S4b net-negative trap). The longLine reflow lands
+*after* the helper-split (it changes line counts). The wider **CaseI.lean file split** (10,346 lines →
+a 5-file `AlgebraicInduction/` chain) is recommended as a **separate follow-up perf round** for user
+sign-off, not folded into 22j. Coordinator-measured: **CaseI.lean is 10,346 lines** (the prime split
+candidate; next-largest molecular files ≈3.4–3.8k) with four raised heartbeat budgets (:3723 3.2M above
+the producer, plus 400k/800k/800k for later decls). The dead-code half of the cleanup bundle landed (deleted
 `hso_ne_sn` + its trailing stale comment block + the stale `h_hnewpin_v`/TODO lines in
 `case_II_realization_all_k`). The **suppression drops are both infeasible as a mechanical P≈1 cleanup** —
 empirically verified 2026-06-15, the note's "retry post-S4a" premise was wrong:
@@ -94,10 +98,18 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   trailing stale "Hmm, we need a lemma…" comment block + the stale `h_hnewpin_v`/`TODO: pin direction`
   lines inside `case_II_realization_all_k` (31 lines). Gates green (build warning-clean, `lake lint`,
   producer axiom-clean: `propext`/`Classical.choice`/`Quot.sound` only).
-- [ ] **Suppression drops — DEFERRED, need a real refactor (NOT mechanical).** See *Current state*: the
-  `maxHeartbeats 3200000` drop fails the build (default-200000 timeout at 3 positions); the
-  `linter.style.longLine false` drop would emit ~80 over-length-line warnings. Each is a refactor
-  sub-step (profile/split the producer for heartbeats; reflow ~80 lines for longLine), not a P≈1 drop.
+- [ ] **A0 — free budget lower** `maxHeartbeats 3200000` → `800000` (:3723), no other change
+  (bisection-verified to pass; shrinks the suppression 16× → 4×). Gates green.
+- [ ] **A1 — Helper 1 (the heartbeats refactor)** `toNat_screwDim_mul_pred_sub_eq` (+ `…_le`) in
+  `RigidityMatrix.lean`/`Deficiency.lean`; rewrite `hrank_lb_nat` (:4497) + `hrankge_int` (:4634) to
+  call it; re-bisect + lower the producer budget to the smallest passing (target default 200000, else a
+  small documented local budget on the brick-call `have`). Then drop `maxHeartbeats` if it reaches
+  default. Signature/rationale: `notes/PERFORMANCE.md` recon §*Producer helper-split design*.
+- [ ] **A2 — longLine reflow** the producer's 72 long lines (49 comment/divider + 23 code, all
+  mechanically wrappable), then drop `linter.style.longLine false` (:3727). **After A1** (line numbers
+  shift). The geometric Step 12–15 middle stays inline (S4b trap — do NOT extract).
+- [ ] **(B) follow-up — CaseI.lean file split (NOT 22j; user sign-off after close).** 10,346 lines →
+  5-file `AlgebraicInduction/` chain. Plan + verified DAG + leverage in the PERFORMANCE.md recon.
 - [ ] **`CLEANUP.md` §C-note refresh** (coordinator-authored) for the slimmed producer.
 
 **S3 is 22k, not 22j:** generalizing Brick B (`case_III_old_new_blocks` → rank input + `hleG`
@@ -109,24 +121,42 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 - ~~**S1 `Nat.card`/`Fintype` resolution**~~ — RESOLVED at the S1 build (standard
   `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; Brick A's interface keys on `Nat.card`, both
   call sites supply `[Finite ιn] [Finite ιo]`).
-- **Cleanup suppression-drop is BLOCKED on a refactor** (re-assessed 2026-06-15; the prior "now
-  unblocked at 86s" claim was wrong — wall-clock ≠ heartbeats). Dropping `maxHeartbeats 3200000` times
-  out at the default 200000 ceiling (3 positions); dropping `linter.style.longLine false` emits ~80
-  warnings. Neither is a mechanical drop — see *Current state* for the two refactor sub-steps required.
+- ~~**Cleanup suppression-drop is BLOCKED on a refactor**~~ — RECON DONE (2026-06-15), now a concrete
+  plan (A0+A1+A2; `notes/PERFORMANCE.md` recon + *Hand-off* above), no longer a blocker. The
+  heartbeats fix is one small scalar helper + a bisection-verified budget lower (3.2M→800000 free,
+  then →default after the helper), NOT a deep producer decomposition. The longLine drop is a mechanical
+  reflow of 72 lines after the helper lands.
+- **Open decision (flagged, not forced):** after A1 lands Helper 1, if the Brick-A call site (:4473)
+  still needs > default budget, it is a §38-class `isDefEq` blowup, not a missing lemma — keep a small
+  *localized* `set_option maxHeartbeats` on that one `have` rather than the whole decl. Confirm at A1.
 
 ## Hand-off / next phase
 
-**Next concrete step: a recon/design-pass (docs) scoping the split-refactor plan** — written to
-`notes/PERFORMANCE.md` (beside its *Split candidates ranked by leverage* / *Factors to weigh when
-ranking splits* / *Import graph* sections), covering (1) the L6b producer heartbeats split (profile →
-named helper lemmas with signatures, to drop/lower `maxHeartbeats`), (2) a CaseI.lean file split (10,346
-lines — the prime candidate), and (3) a ranked survey of other molecular split candidates for a
-follow-up perf round. **User decision (2026-06-15, `coordinate-phase` option c):** do both suppression
-refactors within 22j, then assess wider splitting. After the recon, the execution order is: the producer
-helper-split (drop/lower `maxHeartbeats`) → longLine reflow on the lines that remain (drop
-`linter.style.longLine false`) → the wider file-split recommendation goes to the user for sign-off →
-`CLEANUP.md` §C-note refresh + the phase-close checklist. (S1/S2/S4a/S5 + the dead-code cleanup landed;
-S4b skipped.)
+**Recon DONE (2026-06-15).** The split-refactor plan is in `notes/PERFORMANCE.md` *Molecular
+`CaseI.lean` perf recon (2026-06-15, Phase 22j design-pass)* — verified against the landed source.
+Headline findings: the L6b producer's cost is **diffuse typeclass inference** (`CoeT` casts ~7.7 s,
+total typeclass 21 s; not one hot block); a `maxHeartbeats` bisection shows it actually needs **between
+600000 and 800000** (so 3.2M → 800000 is a free zero-change win); the two budget-defining sites are
+:4473 (the Brick-A `set ro` call) and :4522 (the ℤ/ℕ rank-cast `hrank_lb_nat`), and **only those two
+are cleanly extractable** — the geometric Step 12–15 middle is the S4b ~15-arg net-negative trap, leave
+inline. The producer body has 72 long lines (49 comment/divider + 23 code), all mechanically wrappable.
+
+**Next concrete step (first buildable slice of plan (A)): A0 + A1.**
+- **A0 (free):** in `CaseI.lean` drop the producer budget `set_option maxHeartbeats 3200000` → `800000`
+  (:3723), no other change — confirms the bisection, shrinks the suppression 16× → 4×. Gates green.
+- **A1:** land **Helper 1** = `toNat_screwDim_mul_pred_sub_eq` (+ a `…_le` companion) in
+  `RigidityMatrix.lean` (or `Deficiency.lean` — scalar ℤ/ℕ rank-cast plumbing; see PERFORMANCE.md for
+  the proposed signature), rewrite `hrank_lb_nat` (:4497) and the `hrankge_int` block inside
+  `hrank_eq_q'` (:4634) to call it, then re-bisect and lower the producer budget to the smallest
+  passing value (target: default 200000; else a small documented local budget on the brick-call `have`).
+
+Then **A2** (longLine reflow of the 72 lines → drop `linter.style.longLine false` at :3727 — MUST land
+after A1, which shifts line numbers) → **A3** `CLEANUP.md` §C-note refresh → phase-close checklist.
+**Plan (B)** — the `CaseI.lean` 10,346-line file split into a 5-file `AlgebraicInduction/` chain
+(`Coupling`/`CaseI`/`CaseII`/`CaseIII`/`Theorem55`; verified clean forward DAG, zero downstream-import
+benefit but very high factor-2/3/4 leverage, pure rename-free move so blueprint pins/`checkdecls`
+unaffected) — is a **separate follow-up perf round**: surface to the user for sign-off after 22j closes,
+do not fold into 22j. (S1/S2/S4a/S5 + the dead-code cleanup landed; S4b skipped.)
 
 After 22j: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
 `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23
@@ -138,11 +168,13 @@ done.)
 Drives this log via the *Hand-off* pivot. **User decided (2026-06-15, option c): do both suppression
 refactors within 22j, then assess wider molecular-files splitting.** The cleanup bundle's dead-code half
 landed; the two suppression drops are refactors, not mechanical (the "retry post-S4a / 86s" premise was
-a wall-clock-≠-heartbeats error). **Next dispatch = a recon/design-pass** (docs design-pass commit to
-`notes/PERFORMANCE.md`; opus per override, design-settle): scope the producer heartbeats split + a
-CaseI.lean (10,346-line) file split + a ranked survey of other molecular split candidates, with buildable
-slices and 22j-vs-follow-up scope. Then execute the producer split → longLine reflow → surface the wider
-file-split recommendation to the user → `CLEANUP.md` §C refresh + phase-close. **Phase-close checklist**
+a wall-clock-≠-heartbeats error). **Recon/design-pass DONE** (this commit, docs-only to
+`notes/PERFORMANCE.md`): the heartbeats fix is A0 (free 3.2M→800000) + A1 (one scalar helper
+`toNat_screwDim_mul_pred_sub_eq`), then A2 longLine reflow; the geometric middle is the S4b net-negative
+trap (leave inline); the wider CaseI.lean file split is a separate follow-up round for user sign-off.
+**Next dispatch = A0+A1** (a Lean build slice; see *Hand-off* + PERFORMANCE.md recon for the helper
+signature). Then A2 reflow → surface the file-split recommendation (B) to the user → `CLEANUP.md` §C
+refresh + phase-close. **Phase-close checklist**
 (when 22j actually closes): flip 22j ✓ across ROADMAP / README / home_page / intro.tex /
 MolecularConjecture; compress ROADMAP §22j; write the model-experiment *Findings* for 22j; then (after
 user confirm) open **Phase 22k**. The model-experiment is **running** (opus-only override this session;
@@ -194,3 +226,16 @@ availability check recorded 2026-06-15 in the log's repo-local config).
   a refactor sub-step (perf-profile/split for heartbeats; reflow ~80 lines for longLine), deferred.
   **Lesson:** an 86s wall-clock build does not imply fitting the default heartbeat budget — verify a
   `maxHeartbeats` drop with an actual build, never infer it from build time.
+- **Recon/design-pass landed (2026-06-15, docs-only):** the ranked split-refactor plan is in
+  `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon (2026-06-15…)* — verified against landed
+  source (decl bodies + import edges, profiler, `maxHeartbeats` bisection, all reverted). Findings: (1)
+  the L6b producer's cost is **diffuse `CoeT`/typeclass inference** (~7.7 s `CoeT`, 21 s typeclass), not
+  one hot block; it needs ∈(600000, 800000] heartbeats → 3.2M can drop to 800000 free, and to default
+  after extracting **one** scalar helper (the ℤ/ℕ rank-cast bridge `toNat_screwDim_mul_pred_sub_eq`,
+  the :4522 site); the :4473 Brick-A call site is §38-defeq, localize not extract; the geometric Step
+  12–15 middle is the S4b ~15-arg net-negative trap (leave inline). (2) The 72 long lines (49
+  comment/divider + 23 code) wrap mechanically. (3) **CaseI.lean (10,346 LoC) file split** = a clean
+  forward-DAG 5-file `AlgebraicInduction/` chain, zero downstream-import benefit but top factor-2/3/4
+  leverage, rename-free move (pins/`checkdecls` unaffected) — recommended as a **separate follow-up
+  round** for user sign-off, not folded into 22j. Plan (A) execution order: A0 (free budget lower) → A1
+  (helper) → A2 (reflow) → A3 (§C refresh).

@@ -802,6 +802,293 @@ Lessons:
   up as *"Not a definitional equality"* with the *"definitions were
   not unfolded"* note.
 
+## Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j design-pass)
+
+A ranked split/refactor plan for the molecular `AlgebraicInduction/`
+giants, opened by the Phase-22j suppression-drop cleanup (the
+`maxHeartbeats 3200000` + `linter.style.longLine false` drops above
+`PanelHingeFramework.case_II_realization_all_k` turned out to be
+refactors, not mechanical drops — `notes/Phase22j.md`). The recon
+profiled the L6b producer, mapped `CaseI.lean`'s structure and its
+real intra-file / import-graph edges, and surveyed the other
+raised-budget decls. **All claims below were verified against the
+landed source** (decl bodies + import edges, not prior prose) on
+2026-06-15.
+
+The recommendation splits into **(A) within-Phase-22j now** (the two
+sanctioned suppression refactors) and **(B) a follow-up perf round**
+(the larger file split, for the coordinator to put to the user).
+
+### Profile of the L6b producer `case_II_realization_all_k`
+
+The producer is `CaseI.lean:3744–4660` (~917 lines), a single
+`theorem` carrying `set_option maxHeartbeats 3200000 in` (16×
+default) + `set_option linter.style.longLine false in` (the :3727
+suppression, `in`-scoped to this decl only). It has **zero intra-file
+consumers** (referenced only in its own docstring — it is a leaf
+producer the dispatch consumes in a later phase). Its body is a clean
+linear sequence of ~16 numbered `-- ── Step N ──` blocks, each a
+self-contained `have`, building a long dependent chain of locals
+(`v,a,b,e_a,e_b,e₀,Gab,Q,q,q₀,N,FG,FGab,so,sn,…`).
+
+**Cost profile** (`set_option profiler true` over the decl, reverted
+after measurement; cumulative block for the file, dominated by this
+decl since it was the only profiler-on declaration):
+- `typeclass inference` **21 s** (the top category) — of which
+  `CoeT` coercion inference alone is **~7.7 s across just 20 logged
+  ≥50 ms hits** (the ℤ/ℕ casts `↑N`, `↑(screwDim 2 · )`, `↑finrank`
+  re-elaborated through the rank-arithmetic blocks; many sub-50 ms
+  hits uncounted). The standing comment's "repeated `ScrewSpace 2`
+  typeclass elaboration is expensive" is confirmed.
+- `tactic execution` **19 s** (~26 `rewriteSeq` ≥50 ms = 4.5 s;
+  several `linarith`; one `tauto` at 578 ms).
+- `simp` **2 s**.
+
+**The cost is diffuse, not one hot block** — spread across the ~16
+Steps as repeated typeclass re-elaboration of the heavy
+`ScrewSpace 2` / `Module.Dual ℝ (α → ScrewSpace 2)` / `finrank`
+stacks. A `maxHeartbeats` bisection (each tested with a real build,
+reverted) pins the actual requirement:
+
+| budget | result | first timeout site |
+|---|---|---|
+| 200000 (default) | FAIL | `whnf`/`isDefEq`/tactic-exec (3 sites; per `notes/Phase22j.md`) |
+| 400000 (2×) | FAIL | `isDefEq` at **:4473** (the `set ro := fun i => FGab.panelRow Q.ends …` in the Brick-A call site) |
+| 600000 (3×) | FAIL | `whnf` at **:4522** (the `hrank_lb_nat` ℤ/ℕ rank-cast `linarith`) |
+| **800000 (4×)** | **PASS, clean** | — |
+
+So the budget can be lowered from 3.2M → **800000 (4× default)
+immediately, with zero proof change** — a free first win. The two
+budget-defining sites are exactly the two extractable clusters below.
+
+### Producer helper-split design (the heartbeats refactor)
+
+The diffuse-cost finding sets expectations: extracting helpers will
+**not** be a from-scratch wall-clock win (cf. the `kerRestrict`
+revert and the *Experiments that didn't pay* table — helper
+extraction routinely sits in the noise band). Its value is **(i)
+bringing the per-helper budget under or near the default so the
+3.2M / 800k whole-decl suppression goes away**, and (ii)
+edit-friction / incremental-rebuild. The two budget-defining sites
+are the only cleanly-extractable clusters; the geometric middle is
+**not** extractable (see *Flagged* below).
+
+The two timeout sites are both **pure ℤ/ℕ rank-arithmetic + one
+abstract-brick call**, depending on a *small* set of locals — unlike
+the geometric middle, which transitively needs ~15–20 locals (the
+S4b net-negative trap, `notes/Phase22j.md`). Concretely:
+
+- **Helper 1 — the rank-arithmetic cast bridge.** The `hrank_lb_nat`
+  block (:4497–4522) and the `hrankge_int` block inside `hrank_eq_q'`
+  (:4634–4653) run the *same* `Nat.cast_sub` / `push_cast [Nat.cast_sub h1V]`
+  / `Int.toNat_of_nonneg` / `linarith [hNpD]` pattern verbatim, to
+  bridge `screwDim 2 * (V(G).ncard − 1) − k` between its ℤ form (from
+  Brick A) and its ℕ-`toNat` form (for the rank-polynomial transfer).
+  This is a self-contained scalar lemma over `screwDim 2`,
+  `V(G).ncard`, `k`, `N` with hypotheses `hk : 0 < k`,
+  `h1V : 1 ≤ V(G).ncard`, `hNpD : (N:ℤ) + (screwDim 2 − 1) = screwDim 2 * (↑V − 1) − k`.
+  Proposed signature (target file: `RigidityMatrix.lean`, beside the
+  Brick-A bricks, since it is rigidity-free scalar plumbing — or
+  `Deficiency.lean` if it should sit with the `bodyBarDim`/`deficiency`
+  arithmetic):
+
+  ```lean
+  theorem toNat_screwDim_mul_pred_sub_eq {D V N : ℕ} {k : ℤ}
+      (hk : 0 < k) (hV : 1 ≤ V) (hD : 1 ≤ D)
+      (hNpD : (N : ℤ) + (D - 1) = D * ((V : ℤ) - 1) - k) :
+      D * (V - 1) - k.toNat = N + (D - 1)
+  ```
+
+  with a companion `…_le` for the `k.toNat ≤ D * (V − 1)` side fact.
+  Both `hrank_lb_nat` and `hrankge_int` then become one `rw`/`linarith`
+  each. This removes the :4522 (600k) timeout site and most of the
+  `CoeT` cost (the casts are the dominant typeclass load).
+
+- **Helper 2 — the Brick-A call-site shape.** The :4473 (400k)
+  `isDefEq` timeout is the `set rn`/`set ro` over the
+  `FG.panelRow ends` / `FGab.panelRow Q.ends` lambdas feeding
+  `le_finrank_span_rigidityRows_of_pinned_placement` (already
+  TACTICS-QUIRKS §38 *Abstract-brick call-site*). This is **already
+  factored** — Brick A is the helper. The residual cost is the
+  defeq of the two opaque `ofNormals` families at the call. The
+  honest lever here is **not** a new helper but feeding the brick
+  through the §38 `set rn`/`set ro` fvars with an *explicit* `hbrick`
+  type (already done) — and, if still over budget, `letI`-pinning the
+  `Fintype sn`/`Fintype so` instances and `clear`-ing unused heavy
+  locals before the call to shrink the `isDefEq` search. **Flag:** if
+  after Helper 1 lands the brick call still needs > default budget,
+  this is a §38-class defeq blowup, not a missing lemma — keep a
+  local `set_option maxHeartbeats` *on the brick-call `have`* (a
+  small, documented, localized budget) rather than the whole-decl 3.2M.
+
+**Expected outcome of the helper-split:** the whole-decl budget drops
+from 3.2M to either the default 200000 (if Helper 1 removes enough
+`CoeT` load that the brick call also fits) or a small documented
+local budget on the brick-call `have` only. Either way the 16×
+suppression is replaced by a justified, localized one.
+
+**Flagged, not forced (mandate ii):** the geometric middle of the
+producer — the Step 12–15 cluster (`hFG_ea`/`hFG_eb`/`hrow_b_eq`/
+`hrow_a_eq`/`he₀_rows_mem`/`hso_span`, :4029–4322, ~230 lines) — is
+**not** cleanly extractable. Its dependency surface (verified) spans
+`FG`, `FGab`, `q₀`, `q`, `Q` (with `Q.ends`, `Q.normal`), `Gab`,
+`e_a/e_b/e₀`, `n_a/n_b`, `v/a/b`, `ends`, plus ~15 derived
+hypotheses — a ~15–20-arg helper, the exact S4b net-negative trap
+(`notes/Phase22j.md`). Leave it inline. If the producer must shrink
+further, the right move is the *file* split (B) carrying the whole
+producer to its own file, not sub-lemma extraction of the middle.
+
+### Long-line reflow (the `linter.style.longLine` refactor)
+
+Drop `set_option linter.style.longLine false in` (:3727) — it
+`in`-scopes to the producer only. **Must land AFTER the helper-split**
+(the split changes line numbers/counts). In the producer body
+(:3744–4660) there are **72 over-length (>100-char) lines = 49
+comment/divider + 23 genuine code lines** (the note's "~80" was a
+slight over-count). The 49 comment/divider lines reflow trivially
+(rewrap text; shorten the `─` section dividers). The 23 code lines
+all break at natural delimiters — `rw [a, b, c]` chains split after a
+`,`; `have … := by` breaks before `by`; lambdas break at the binder;
+one is a `--` comment. None require restructuring a proof. (The
+*other* `linter.style.longLine false` at :2473, on
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`,
+is a separate decl and out of 22j scope.)
+
+### (A) Within Phase 22j now — buildable slices
+
+In order (each gate: `lake build` warning-clean + `lake lint` +
+producer axiom-clean):
+
+1. **A0 (free, optional pre-step):** drop the budget 3.2M → 800000
+   with no other change. Confirms the bisection and shrinks the
+   suppression 16× → 4× immediately. Payoff: removes the most
+   alarming magic number; zero risk.
+2. **A1 — land Helper 1** (`toNat_screwDim_mul_pred_sub_eq` + `…_le`)
+   in `RigidityMatrix.lean` (or `Deficiency.lean`), rewrite
+   `hrank_lb_nat` (:4497) and `hrankge_int` (:4634) to call it, add
+   its blueprint node if a `\lean{}` pin is wanted (scalar plumbing —
+   likely no node). Re-bisect the producer budget; lower the
+   `set_option` to the smallest passing value (target: default
+   200000, else a small documented local budget on the brick-call
+   `have`). Payoff: removes the :4522 timeout site + most `CoeT`
+   cost; the whole-decl suppression shrinks or disappears.
+3. **A2 — longLine reflow** of the producer's 72 long lines (49
+   comment/divider + 23 code), then drop the :3727 suppression.
+   **After A1** (line numbers shift). Payoff: removes the second
+   suppression; pure readability.
+4. **A3 — `CLEANUP.md` §C-note refresh** (coordinator-authored) for
+   the slimmed producer.
+
+### (B) Follow-up perf round — the `CaseI.lean` file split
+
+`CaseI.lean` at **10,346 lines is the prime split candidate** (6.9×
+the ~1500-LoC soft cap; next-largest molecular file is
+`Induction/ForestSurgery.lean` at 3783). It is mis-named: it carries
+*all five* KT cases plus the dispatch, not just Case I. Verified
+internal structure (single `namespace`, no `section` markers — split
+by decl ranges):
+
+| Block | lines | content |
+|---|---|---|
+| Coupling / `extProj` / projection foundations | ~73–1360 | shared-seed coupling, `extProj`, projection-into-pinned-motions bridges |
+| Case I + rank-polynomial machinery | ~1361–3519 | `case_I_realization`, the `exists_rankPolynomial_*` suite |
+| Case II | ~3520–4660 | `case_II_placement_eq612`, `case_II_realization_all_k` (the L6b producer) |
+| Claim 6.11 + Case III | ~4662–8498 | the largest coherent block (~3.8k LoC): `case_III_*`, `caseIIICandidate` |
+| Theorem 5.5 base producers + cut-edge + dispatch | ~8500–10346 | `theorem_55_base_producer_*`, `case_cut_edge_realization`, `case_I_realization_{nonsimple,all_k}`, `case_I_dispatch` |
+
+**Verified intra-file dependency DAG (no cycle):** foundations →
+Case I → Case II → Case III → base producers → cut-edge → dispatch.
+The two edges that matter: the Case III block uses
+`case_II_placement_eq612` (a Case II decl, earlier — forward edge);
+the base-producer block's `theorem_55_d3` (:8930) uses
+`case_III_realization` (:8453, earlier — forward edge). `theorem_55_base`
+itself is **upstream** in `Pinning.lean`, not in CaseI, so it adds no
+within-file edge. No backward edge from a lower block into a higher
+one — a clean forward chain.
+
+**Leverage (per *Factors to weigh when ranking splits*):**
+- *Factor 1 (downstream-consumer benefit): nil.* Verified —
+  `CaseI.lean` is imported only by the top-level
+  `CombinatorialRigidity.lean` aggregator (the AlgebraicInduction
+  subdir is a linear chain `PanelLayer ← Pinning ← PanelHinge ←
+  GenericityDevice ← CaseI`, and CaseI is the terminal leaf). A split
+  saves **zero transitive-import surface** — exactly the
+  `PebbleGame.lean` situation (item 5), which split anyway on factors
+  2/3/4.
+- *Factors 2 + 3 + 4: very high.* 6.9× the soft cap; the active
+  realization-layer file (per-edit incremental rebuilds churn through
+  10k lines of unrelated cases); and the block boundaries map
+  one-to-one onto KT's case structure / the
+  `algebraic-induction.tex` + `case-iii.tex` chapter split. This is
+  the strongest factor-2/3/4 case in the project's history.
+
+**Proposed split (mathlib subdirectory pattern, no `Defs.lean` —
+the definitional surface is thin and interleaved):** convert
+`CaseI.lean` → keep the `AlgebraicInduction/` directory, replace the
+one file with a linear chain matching the DAG. Indicative target
+(the exact cut lines get re-derived at execution against the
+then-current file, since A1/A2 shift them):
+
+| New file | ~LoC | from block |
+|---|---|---|
+| `AlgebraicInduction/Coupling.lean` | ~1300 | foundations (coupling + `extProj`) |
+| `AlgebraicInduction/CaseI.lean` | ~2150 | Case I + rank-polynomial suite |
+| `AlgebraicInduction/CaseII.lean` | ~1150 | Case II (the L6b producer) |
+| `AlgebraicInduction/CaseIII.lean` | ~3850 | Claim 6.11 + Case III (still ~2.5× cap — could sub-split later) |
+| `AlgebraicInduction/Theorem55.lean` | ~1850 | base producers + cut-edge + dispatch |
+
+Import chain `GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII
+← Theorem55`; top-level aggregator imports `…Theorem55` (drop the
+`…CaseI` import line). **Cost/risk (low):** the split is a pure
+semantics-preserving move — **no decl renamed**, so all 50 blueprint
+`\lean{…}` pins into CaseI's decls (verified count) stay valid by
+name and `checkdecls` is unaffected (the pre-Phase-22b structure pass
+established exactly this). Each new file inherits non-`module` status
+(the molecular chain is non-`module`, *Module system* above). The
+boilerplate cost is the usual per-file `namespace` / `variable {k}` /
+`open scoped Graph` / `variable {α β}` redeclaration (cf. the F1
+`SparsityIComponents` `variable {V}` gotcha). The `CaseIII.lean`
+piece stays over the cap; a second-round sub-split (e.g. carve the
+Claim-6.11 + `caseIIICandidate` device off the `case_III_*`
+producers) is a clean follow-up.
+
+**Recommendation:** B is a high-leverage follow-up worth doing, but
+it is a multi-slice structural-edit round of its own (5 new files,
+the aggregator edit, per-file boilerplate, a full re-build), distinct
+from the 22j cleanup. Surface to the user as the perf round to open
+after 22j closes — not folded into 22j. Do A (the two sanctioned
+suppression refactors) within 22j first; A0/A1 also de-risk B by
+shrinking the producer's budget before it moves files.
+
+### (C) Other molecular split candidates (ranked, for the same round)
+
+Surveyed the other raised-budget decls and next-largest files:
+
+1. **`Induction/ForestSurgery.lean` (3783 LoC) — medium.** 2.5× cap,
+   no raised budgets. Next-biggest after CaseI; a file-size/navigability
+   split (factor 2), but it is in the *stable* Induction subtree (not
+   active), so factor-3 (incremental-rebuild) leverage is low. Defer
+   to a dedicated round.
+2. **`RigidityMatrix.lean` (3380 LoC, two `maxHeartbeats 400000` at
+   :3009 + :3187) — medium.** 2.25× cap and it *is* imported
+   downstream (it owns Brick A + the panel-row API the whole
+   molecular chain consumes), so a split *could* carry factor-1
+   benefit — worth a dedicated downstream-import analysis. The two
+   400k budgets are candidates for the same profile-then-localize
+   treatment as the L6b producer, independently of any split.
+3. **`Deficiency.lean` (2295) / `AlgebraicInduction/PanelLayer.lean`
+   (2027) / `GenericityDevice.lean` (1950) / `Pinning.lean` (1751) —
+   low.** Each modestly over the cap; no raised budgets;
+   single-consumer chain. Style-grounds splits only — not worth a
+   round on their own.
+4. **The three other CaseI budgets (:9142 400k, :9528 800k, :9896
+   800k)** — in the cut-edge / Case-I-nonsimple producers
+   (`case_cut_edge_realization{,_gp}`, `case_I_realization_nonsimple`).
+   Same diffuse-`CoeT` shape as L6b is likely; each could get the
+   profile-then-Helper-1-then-localize treatment in the B round once
+   those producers land in `CaseII.lean` / `Theorem55.lean`. Lower
+   priority than the L6b 3.2M (the largest, most alarming budget).
+
 ## Recommendations for future perf work
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare
