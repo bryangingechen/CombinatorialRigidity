@@ -297,6 +297,125 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_IH_relabel_linking
       (Gc.map f) endsM hendsM_link hne (le_refl N)
   exact ⟨Q, fun hQ0 => hQne (by rw [hQ0, map_zero]), hQrat, hQtrans⟩
 
+/-- **A nested subgraph leg's IH rank transports to a parent link-recording selector — at any
+deficiency, no rigidity** (`lem:case-III-nested-rank-lower`, the V8-a non-relabel transport;
+Katoh–Tanigawa 2011 §6.4.1, eq. (6.22), Phase 22k L7a). The **plain-subgraph** (`f = id`) sibling of
+`finrank_span_rigidityRows_ofNormals_relabel_eq`: where the relabel version carries the contraction
+IH's rank across the collapse map `Gv = Gc.map f` and its relabel selector, this carries a nested
+subgraph's IH rank across a swap from its own selector `Q.ends` to a *given* parent selector `ends`
+(both record `Gv`'s links, so they agree up to swap), as a plain `finrank` equality — available at
+`def = k' > 0` where the rigidity-carrying seed-rank bridge (`def = 0` only) is not.
+
+The transport is rigidity-free for exactly the relabel sibling's reason, minus the collapse map: the
+given selector `ends` and the IH realization's own selector `Q.ends` record the same unordered link
+of every edge of `Gv` (`recordsLinks_agree_swap` of `Q`'s link-recording conjunct `hQrec` and the
+given `hends`, read through the canonical-record helper `ofNormals_recordsLinks_of_hends`), so the
+selector-swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` equates the motion spaces of
+`Q = ofNormals Q.graph Q.ends nrm` and `ofNormals Gv ends nrm`; equal motion spaces give equal
+rigidity-row spans (`span_rigidityRows_eq_of_infinitesimalMotions_eq`), hence equal finrank. General
+position transfers verbatim (a property of the normals alone). The output framework
+`ofNormals Gv ends nrm` is the row family L7's `h622lb` bounds at the nested `G_v`; its rank equals
+the nested IH's, so it inherits the deficient nested rank `D(|V(Gv)|−1) − def(Gv)` directly — the
+shared core the L7a rank polynomial needs. -/
+theorem PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq
+    [Finite α] (Gv : Graph α β) (ends : β → α × α)
+    {n : ℕ} (hQv : PanelHingeFramework.HasGenericFullRankRealization k n Gv)
+    (hends : ∀ e u v, Gv.IsLink e u v → Gv.IsLink e (ends e).1 (ends e).2) :
+    ∃ nrm : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals Gv ends nrm).IsGeneralPosition ∧
+      (Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows) : ℤ)
+        = screwDim k * ((V(Gv).ncard : ℤ) - 1) - Gv.deficiency n := by
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, _⟩ := hQv
+  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
+  -- General position transfers to `ofNormals Gv ends nrm` verbatim (the normals are `Q.normal`,
+  -- unchanged by the selector; `IsGeneralPosition` reads only the normals).
+  have hgp' : (PanelHingeFramework.ofNormals Gv ends nrm).IsGeneralPosition := by
+    intro a b hab
+    simpa only [hnrm, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
+  refine ⟨nrm, hgp', ?_⟩
+  -- The two selectors `Q.ends` and `ends` both record `Q.graph = Gv`'s links (`hQrec` and `hends`
+  -- via the canonical-record helper), so they agree up to swap; the swap brick then equates the
+  -- motion spaces of `Q = ofNormals Q.graph Q.ends nrm` and `ofNormals Q.graph ends nrm`.
+  have hswap : ∀ e u v, Q.graph.IsLink e u v →
+      ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
+      ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1) := by
+    rw [hQg]
+    refine PanelHingeFramework.recordsLinks_agree_swap Q.ends ends hQrec ?_
+    intro e u v he
+    exact (hends e u v he).eq_and_eq_or_eq_and_eq he
+  have hmot : (PanelHingeFramework.ofNormals Q.graph ends nrm).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
+      Q.graph ends Q.ends nrm hswap
+  -- Equal motion spaces ⟹ equal rigidity-row spans ⟹ equal finrank. `Q = ofNormals Q.graph Q.ends
+  -- nrm` definitionally (structure eta + `nrm = Q.normal`-pullback), and `Q.graph = Gv`.
+  have hspan : Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows
+      = Submodule.span ℝ Q.toBodyHinge.rigidityRows := by
+    rw [← hQg]
+    exact BodyHingeFramework.span_rigidityRows_eq_of_infinitesimalMotions_eq _ _ hmot
+  rw [hspan, hQrank]
+
+/-- **Rank polynomial for a nested subgraph leg — deficiency-aware, non-relabel** (Phase 22k L7a,
+V8-a leaf via the §1.62 route 2; KT §6.4.1 eq. (6.22)). The **plain-subgraph** (`f = id`) sibling of
+`exists_rankPolynomial_of_IH_relabel_linking`. From a generic full-rank realization of a nested
+subgraph `Gv` (the all-`k` IH at the possibly-deficient `G_v = G − v`), a Loopless hypothesis on
+`Gv`, and a parent link-recording selector `hends`, produces:
+* a natural number `N` satisfying the ℤ-identity
+  `(N : ℤ) = screwDim k * (|V(Gv)| − 1) − def(Gv, n)`;
+* a nonzero rational polynomial `Q` such that at every `Q`-non-root seed `q`,
+  `N ≤ finrank (span rigidityRows of ofNormals Gv ends q)`.
+
+This is the nested-IH rank input the Case-III candidate dispatch's eq.-(6.22) lower bound `h622lb`
+needs at the split realization's inductively-fixed alg-indep seed: the seed is alg-independent, so
+it is a non-root of the nonzero rational `Q` (footnote 6,
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`), so the bound transfers.
+Unlike the `def = 0`-only seed-rank bridge (which carries *full rigidity*), this is rank-driven, so
+it tolerates the deficient nested `Gv` at `k' = def(G̃_v) > 0`.
+
+Route 2 (the relabel sibling's, minus the collapse map): call the non-relabel shared core
+`finrank_span_rigidityRows_ofNormals_eq` to obtain a witness seed `nrm` where the finrank already
+equals `N`; supply this to the L4b-1 deficiency-aware rank polynomial
+`exists_rankPolynomial_of_le_finrank_linking` with `hN := le_refl` (the rank bound at `nrm` is
+exact). The `hne` (support extensor nonzero at `nrm`) comes from GP (transferred by the shared core
+from `hQv`) + `hloop` (looplessness of `Gv` gives `(ends e).1 ≠ (ends e).2` for every link `e` of
+`Gv`, via the link-recording `hends`). -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_IH_linking
+    [Finite α] [Finite β] (Gv : Graph α β) (ends : β → α × α)
+    {n : ℕ} (hQv : PanelHingeFramework.HasGenericFullRankRealization k n Gv)
+    (hloop : Gv.Loopless)
+    (hends : ∀ e u v, Gv.IsLink e u v → Gv.IsLink e (ends e).1 (ends e).2) :
+    ∃ N : ℕ,
+      (N : ℤ) = screwDim k * ((V(Gv).ncard : ℤ) - 1) - Gv.deficiency n ∧
+      ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
+        Q ≠ 0 ∧ (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
+        ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+          N ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows) := by
+  -- Step 1: non-relabel shared core — witness seed `nrm` with GP and the ℤ-rank equality.
+  obtain ⟨nrm, hgp, hrank_eq⟩ :=
+    PanelHingeFramework.finrank_span_rigidityRows_ofNormals_eq Gv ends hQv hends
+  -- Let `N` be the finrank at `nrm`; the core's ℤ-equality gives `(N : ℤ) = ...`.
+  set N := Module.finrank ℝ (Submodule.span ℝ
+    (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.rigidityRows) with hN_def
+  refine ⟨N, ?_, ?_⟩
+  · exact_mod_cast hrank_eq
+  -- Step 2: `ends` records `Gv`'s links at the single-link form (directly `hends`).
+  -- Step 3: `hne` — support extensor nonzero at `nrm` for every `Gv`-link at `ends`.
+  have hne : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends nrm).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e he
+    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp
+    rw [PanelHingeFramework.ofNormals_ends]
+    haveI : Gv.Loopless := hloop
+    exact he.ne
+  -- Step 4: apply the L4b-1 deficiency-aware rank polynomial at `nrm` with `hN := le_refl`.
+  obtain ⟨Q, hQne, hQrat, hQtrans⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking
+      Gv ends hends hne (le_refl N)
+  exact ⟨Q, fun hQ0 => hQne (by rw [hQ0, map_zero]), hQrat, hQtrans⟩
+
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,
