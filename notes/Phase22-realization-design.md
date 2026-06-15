@@ -7827,7 +7827,12 @@ two `v`-edges; the maximal-subgraph maximality used in step 4 is `G'`'s, inherit
 under-edge-addition / `induce`-`IsKDof` lemma in tree).* Lives in `Deficiency.lean` (it is about
 `deficiency`, beside `subgraph_minimality`):
 ```lean
-theorem Graph.deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] {H H' : Graph α β} {n : ℕ}
+-- LANDED (04a5330): the pin below omitted `[Finite β]` + `hD : 1 ≤ bodyBarDim n`; both added at
+-- the build (the L8a-0 boundary pair, sonnet+opus, independently corrected to this — `[Finite β]`
+-- for the larger crossing-set `ncard`, `hD` for `D−1 ≥ 0`, the conclusion being false at `n=0`).
+-- Both already present on every caller (Leaf-1 has `[Finite β]` + `hD : 2 ≤ …`).
+theorem Graph.deficiency_le_deficiency_of_le_vertexSet_eq [Finite α] [Finite β]
+    {H H' : Graph α β} {n : ℕ} (hD : 1 ≤ bodyBarDim n)
     (hle : H ≤ H') (hV : V(H) = V(H')) :
     H'.deficiency n ≤ H.deficiency n
 ```

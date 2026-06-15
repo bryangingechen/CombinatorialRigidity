@@ -287,6 +287,8 @@ quality / blueprint sync / notes discipline / commit message
 | 143 | L8a step 1 — `exists_maximal_isProperRigidSubgraph` (Claim 6.6 maximal-subgraph existence), e2b05c0 | 1/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 175k tok / 74 tools / 642s (~11 min) | P=3 (genuinely-new combinatorics) → opus. Self-shrank to the §1.70(f)-sanctioned step-1 stopping point (`Nat.findGreatest` finite-maximum existence) instead of forcing the full Leaf 1 — scope-to-fit working as intended (cf. row 18). Coordinator independently re-ran the step-5 build gate (touch Deficiency.lean + Theorem55, warning-clean, 2768 jobs), sorry-grep, and shape-checked the statement vs §1.70(c) step 1 (cardinality-max ⟹ inclusion-max). Clean. → Findings 22k. |
 | 144 | L8a step-2 leaf — `map_not_simple` + `rigidContract_not_simple` (contraction-non-simplicity unpacking), 3693540 | 1/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 160k tok / 59 tools / 645s (~11 min) | P=3 build (the fiddly §1.70(c)-step-2 unpacking). Self-shrank to the certain bottom leaf (the two-mode loop∨parallel case-split, clean contrapositives of `map_simple`) AND surfaced a real design gap — the loop mode (an inside-`V(G')` edge off `E(G')`, reachable since rigid subgraphs aren't induced) that §1.70(c)'s parallel-only framing missed — rather than forcing a resolution under uncertainty. High-value scope-to-fit + gap-surfacing; the gap drove the row-145 design-settle. Landed lemmas correct/durable; FRICTION appended (not duplicated). Coordinator verified mechanics + the gap's reality before re-planning. → Findings 22k. |
 | 145 | L8a loop-case design-settle — §1.70(c′), the induced-`G'` fix (resolving the gap the row-144 build surfaced), aa35fae | 3/3/1 | opus | normal | clean | —✓——✓✓ | 184k tok / 67 tools / 528s (~9 min) | Design-settle (fable-mapped → opus, fable down), clean. Triggered by the row-144 build surfacing the loop-case gap — a build-recorded route claim, verified before acting (step-4). Resolved faithfully: route the maximal `G'` through its induced saturation `G.induce V(G₀)` (loop disjunct vacuous). Coordinator confirmed the keystone `IsLink.mem_induce_iff` (Subgraph/Delete.lean:334) + the new-brick direction against landed source. Found KT-as-written has the same benign edge-saturation gap (→ BlueprintExposition ledger). One new P≈2 brick pinned; clause-(ii) honored (no defn change / no adjudication). → Findings 22k. |
+| 146 | L8a-0 def-antitone brick `deficiency_le_deficiency_of_le_vertexSet_eq` (boundary-pair PRIMARY), 04a5330 | 1/2/1 | sonnet | boundary-pair-primary | clean | ✓✓✓—✓✓ | 139k tok / 73 tools / 857s (~14 min) | First boundary pair of the phase (the open sonnet/opus need). Clean idiomatic proof; coordinator re-ran the full step-5 gate (touch + Theorem55 warning-clean, 2768 jobs) + `lake lint` (passed) + full-diff read + sorry-grep. Both members added `[Finite β]` + `hD : 1 ≤ bodyBarDim n` beyond the §1.70(c′) pin (caller-compatible). → Findings 22k (boundary pair). |
+| 147 | L8a-0 (boundary-pair DUPLICATE, opus, worktree-discarded), d5dce3c | 1/2/1 | opus | boundary-pair-duplicate | clean | ✓✓✓——✓ | 115k tok / 44 tools / 584s (~10 min) | Opus duplicate in the seeded worktree; landed EQUIVALENT to the sonnet primary (same signature, same proof skeleton), attested build+lint+axiom-clean. Pair verdict: no quality gap at 1/2/1 — sonnet held. Pin-audit: both members independently corrected §1.70(c′)'s incomplete pinned signature (→ pin note added). No harvest (equivalent). Notes — (worktree note discarded). → Findings 22k (boundary pair). |
 
 ## Findings
 
@@ -702,3 +704,19 @@ postmortem's write-time consumer-fit gate now target exactly this.
   (`5492158`) so the node pins, plus a scriptable **hanging-pin gate** in `blueprint/lint.sh`
   (`52c3175`, check 4). Audit: it was the only such node project-wide (358/358 others pinned); the
   gate catches the class going forward. Promoted to `blueprint/CLAUDE.md` *Static checks before commit*.
+
+- **(rows 146–147) First boundary pair of the phase — and the first sonnet/opus boundary data
+  the experiment has had** (zero ran in 22h/22i; the standing top open need). Task: L8a-0, the
+  def-antitone brick (1/2/1, sonnet-mapped — a P=2 graph-counting lemma). Sonnet primary (master) +
+  opus duplicate (seeded worktree, `cp -Rc` `.lake`, sequential builds for OOM-safety). **Both
+  landed CLEAN and EQUIVALENT** — identical signature, same proof skeleton (`ciSup_le` /
+  `numParts`-agrees-at-equal-vertex-sets / `crossingEdges`-monotone / `partitionDef`-antitone-via-
+  `D−1≥0` / `partitionDef_le_deficiency`); the opus docstring was marginally richer (KT-edge-saturation
+  tie-in) but that insight already lives in the ledger, so no harvest. **Verdict: no quality gap at
+  1/2/1 — sonnet held the boundary**, the first paired evidence for the map's sonnet rating outside
+  the §38 carrier-weight zone. **The pair also doubled as a pin-audit:** both members *independently*
+  corrected §1.70(c′)'s pinned signature, which omitted `[Finite β]` (needed for the larger
+  crossing-set `ncard`) and `hD : 1 ≤ bodyBarDim n` (the conclusion is false at `n=0`, `D=0` flipping
+  the monotonicity) — diagnosis confirmed against landed source, the design-doc pin corrected. A
+  faithful-but-incomplete pin caught by the pair, not the coordinator's pre-dispatch scrutiny — the
+  rows-96–100 pattern, now at the sonnet/opus boundary.
