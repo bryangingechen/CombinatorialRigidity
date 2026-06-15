@@ -128,7 +128,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22i. all-`k` genuine-hinge motive + reduction-case producers (L0–L6) | `Molecular/` | ✓ Complete (closed 2026-06-14, re-scoped at a phase split; see `notes/Phase22i.md`) |
 | 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ✓ Complete (see `notes/Phase22j.md`) |
 | ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split into a 5-file chain | ✓ Complete (the pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
-| 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ◷ Planning (see `notes/Phase22i.md` *Hand-off*) |
+| 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ⌛ In progress (see `notes/Phase22k.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -554,7 +554,7 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 ### Phase 17+ — The Molecular Conjecture program
 
 **Status: Phases 17–22j (+ 21a/21b) complete; sub-phase 22k (completing the
-honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`) is next; Phases 23–26
+honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`) is in progress; Phases 23–26
 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
@@ -965,6 +965,24 @@ CaseIII ← Theorem55` (rename-free, all 50 blueprint pins intact). Slice plan, 
 two-brick design rationale (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed kept,
 Case I separate), and decisions: `notes/Phase22j.md`; design verdict
 `notes/Phase22-realization-design.md` §1.68.
+
+#### Phase 22k — completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` (KT §5.2, §6.1–6.4) — ⌛ In progress
+
+**Status (⌛ in progress, opened 2026-06-15; see `notes/Phase22k.md`).** The completion of the
+honest all-`k` Theorem 5.5 the 22i→22j→22k arc set up: the three remaining 22h carries
+(`h622`, `h65`, `hsplit`) + Theorem 5.6 at `d = 3`. Layers **L7–L10**: L7 rewires Case III,
+*deriving* the eq.-(6.22) nested-IH rank bound `h622` from the all-`k` IH at the nested
+`k'`-dof subgraph (extract the rational rank-polynomial witness, transfer via the landed
+footnote-6 seed-rank bridge); L8 discharges the Lemma-6.5 vertex-removal arm `h65` (KT Claim 6.6
++ the Π°-placement); L9 wires the zero-carry spine (`hsplit` by `G.Simple` ∘ the GP Case-III
+producer; `theorem_55`/`theorem_55_d3` restated with no carries); L10 pushes to Theorem 5.6 at
+`d = 3` (the deficiency-preserving spanning-strip brick + the `def > 0`
+`prop:rigidity-matrix-prop11` feed). **Consumes 22j's Brick A** (`le_finrank_span_rigidityRows_of_pinned_placement`).
+The next concrete commit is the **L7 signature pin** — a design pass, not a build. Carries table
+(with consumption sites relocated into the post-22j-perf 5-file `AlgebraicInduction/` chain),
+the L7–L10 layer plan, and the design basis: `notes/Phase22k.md` + `notes/Phase22i.md` *Hand-off*
++ `notes/Phase22-realization-design.md` §1.56. After 22k closes, the KT-strength Thm 5.5 → 5.6 at
+`d = 3` lands (Cor 5.7 in Phase 26); general `d` (KT Lemma 6.13) is Phase 23.
 
 ## Engineering conventions
 

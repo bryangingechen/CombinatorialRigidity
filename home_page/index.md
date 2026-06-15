@@ -95,7 +95,7 @@ live status.
 |   22h | the corrected `d=3` assembly (the `hsplit` producer + Theorem 5.5 at `d=3`, completing Case III there) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ |
 |   22i | all-`k` genuine-hinge induction + the reduction-case realizations (base, cut-edge, Case I, degree-2 split) | `Molecular/` | ✓ |
 |   22j | the shared eq.-(6.12) placement brick + Case-II/split refactor | `Molecular/` | ✓ |
-|   22k | completing the all-`k` Theorem 5.5 (Case III, the spine) + Theorem 5.6 at `d=3` | `Molecular/` | ◷ |
+|   22k | completing the all-`k` Theorem 5.5 (Case III, the spine) + Theorem 5.6 at `d=3` | `Molecular/` | ⌛ |
 |   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
