@@ -6,13 +6,16 @@ file carved off per slice, build-verified between. **No new math, no decl rename
 
 ## Current state
 
-**Next: P3 — carve `CaseII.lean`** (the L6b producer block). **P1 + P2 landed** — the
-`Theorem55.lean` tail (base producers + cut-edge + dispatch) and the `CaseIII.lean` block (Claim 6.11
-+ Case III) are carved into their own files; the chain is now `…CaseI ← CaseIII ← Theorem55` and the
-aggregator imports `…AlgebraicInduction.Theorem55` (unchanged from P1). CaseI shrank 8,504 → 4,683
-lines; `CaseIII.lean` = 3,859 LoC (still ~2.5× cap — a later sub-split candidate per plan B). Build
-+ lint warning-clean, the moved Case-III producers axiom-clean (`propext, Classical.choice,
-Quot.sound`), all 50 blueprint name-only pins unaffected (`checkdecls` green). The round splits
+**Next: P4 — split the head** (carve `Coupling.lean` foundations off the trimmed `CaseI.lean`).
+**P1 + P2 + P3 landed** — the `Theorem55.lean` tail (base producers + cut-edge + dispatch), the
+`CaseIII.lean` block (Claim 6.11 + Case III), and the `CaseII.lean` block (the L6b producer:
+`case_II_placement_eq612` + `case_II_realization_all_k`) are carved into their own files; the chain
+is now `…CaseI ← CaseII ← CaseIII ← Theorem55` and the aggregator imports
+`…AlgebraicInduction.Theorem55` (unchanged from P1). CaseI shrank 4,683 → 3,496 lines;
+`CaseII.lean` = 1,223 LoC; `CaseIII.lean` = 3,860 LoC (still ~2.5× cap — a later sub-split candidate
+per plan B). Build + lint warning-clean, the moved Case-II producers axiom-clean (`propext,
+Classical.choice, Quot.sound`), all 50 blueprint name-only pins unaffected (`checkdecls` green; the
+two moved pins `case_II_placement_eq612` / `case_II_realization_all_k` are name-only). The round splits
 `Molecular/AlgebraicInduction/CaseI.lean`
 into a 5-file `AlgebraicInduction/` chain. The ranked plan — target files, the verified intra-file
 dependency DAG, the cut-line map, the leverage analysis, and the rename-free / blueprint-pin-safe
@@ -62,7 +65,14 @@ slice, when its head splits into `Coupling.lean` + the trimmed `CaseI.lean`):
   CaseIII = 3859 LoC, CaseI now 4683. Axiom-clean, lint-clean, 50 pins intact (`checkdecls` green).
   The only backward "reference" was a docstring cross-mention of `case_III_realization_of_line` at
   the old CaseI:2654 (prose, not code) — no compile edge, carve is clean.
-- [ ] **P3 — carve `CaseII.lean`** (the L6b producer block); rewire `CaseIII` to import it. Build.
+- [x] **P3 — carve `CaseII.lean`** (the L6b producer block); rewire `CaseIII` to import it. Build.
+  **Done** — cut at CaseI's old :3496/:4681 (the `case_II_placement_eq612` eq.-(6.12)-placement
+  docstring/decl through `case_II_realization_all_k`, the trimmed CaseI's last decl); 1186 decl-lines
+  moved verbatim (byte-identical), including the `set_option maxHeartbeats 600000 in` that precedes
+  `case_II_realization_all_k` (kept with the producer). `CaseII.lean` = 1,223 LoC; CaseI now 3,496.
+  `CaseIII.lean` rewired to import `…CaseII`. Axiom-clean, build + lint warning-clean, 50 pins intact
+  (`checkdecls` unaffected — name-only). No backward compile edge from trimmed CaseI; the residual
+  Case-II/III prose mentions at CaseI :819/:2647/:2654 are docstring cross-mentions, not code.
 - [ ] **P4 — split the head**: carve `Coupling.lean` (foundations) off the monolith, leaving the
   trimmed `CaseI.lean` (Case I + rank-poly) importing it. Build. (Confirms the final 5-file chain.)
 
@@ -111,22 +121,23 @@ root-caused and fixed in the monolith (see *Blockers*); standard `open scoped Gr
 
 ## Hand-off / next phase
 
-**P1 + P2 landed (2026-06-15).** `Theorem55.lean` and `CaseIII.lean` carved off; chain is
-`…CaseI ← CaseIII ← Theorem55`, aggregator imports `…Theorem55`; build/lint/axioms/`checkdecls` clean
-(detail in *Current state* + the P1/P2 checklist items). The import-poison that stalled three P1
-attempts stays fixed and transparent — slice boilerplate is just `namespace`/`variable`/`open scoped
-Graph` (no `local notation` / `_root_`); mechanism in *Blockers*.
+**P1 + P2 + P3 landed (2026-06-15).** `Theorem55.lean`, `CaseIII.lean`, and `CaseII.lean` carved off;
+chain is `…CaseI ← CaseII ← CaseIII ← Theorem55`, aggregator imports `…Theorem55`;
+build/lint/axioms/`checkdecls` clean (detail in *Current state* + the P1/P2/P3 checklist items). The
+import-poison that stalled three P1 attempts stays fixed and transparent — slice boilerplate is just
+`namespace`/`variable`/`open scoped Graph` (no `local notation` / `_root_`); mechanism in *Blockers*.
 
-**Next concrete commit: P3 — carve `CaseII.lean`** (the L6b producer block, now the tail of the
-trimmed `CaseI.lean`: `case_II_placement_eq612` at :3530 through `case_II_realization_all_k`, CaseI's
-last decl ending at :4681 — **move the `set_option maxHeartbeats 600000 in` at :3733 with the producer**).
-New file imports the monolith (`…CaseI`); rewire `CaseIII` to import `…CaseII` instead of `…CaseI`;
-re-derive the cut line against the current file. The Case-II block depends on the Case-I / rank-poly
-head (`rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` etc.), which keeps CaseII
-importing the monolith; `CaseIII` already references `case_II_placement_eq612` (a forward edge from the
-old monolith), so CaseIII → CaseII is the natural rewire. Gate: `lake build` + `lake lint`
-warning-clean + axiom-clean. Then P4 (head split) per the *Layer plan*. Full target + DAG + cut map
-+ leverage: `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon* plan (B).
+**Next concrete commit: P4 — split the head**: carve `Coupling.lean` (the foundations block — the
+shared-seed / block-triangular coupling producers + the `extProj` exterior-column projection) off the
+*head* of the trimmed `CaseI.lean` (3,496 LoC), leaving `CaseI.lean` = Case I + the rank-polynomial
+suite importing `…Coupling`. This is the **head split** (P1–P3 carved dependency-latest *tails*; P4
+carves the dependency-earliest *head*), so the new `Coupling.lean` imports `…GenericityDevice` and
+the trimmed `CaseI.lean` imports `…Coupling` — re-derive the cut line against the current file (the
+foundations end where Case I proper begins; the recon's ~1300-LoC `Coupling` block is the
+`hasFullRankRealization_of_couple…` / `…_blockTriangular_…` / `extProj` cluster). Gate: `lake build`
++ `lake lint` warning-clean + axiom-clean. P4 closes the round (confirms the final 5-file chain).
+Full target + DAG + cut map + leverage: `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon*
+plan (B).
 
 After this round closes: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — Case III +
 the zero-carry spine; the L7–L10 layer plan in `notes/Phase22i.md` *Hand-off*, consuming Brick A), then
