@@ -274,6 +274,7 @@ quality / blueprint sync / notes discipline / commit message
 | 130 | 22j-perf P1 carve `Theorem55.lean` (no commit) | 1/1/2 | opus | normal | BLOCKED | —————— | 181k tok / 98 tools / 1752s (~29 min) | BLOCKED on a notation-parse break (`import CaseI` poisons downstream `V(`/`E(`/`↾`). **Diagnosis core was CORRECT** — the notation poison is real (confirmed row 131 + full-output re-test); only its `binop%`/cast framing (a confounded cascade off the parse failure) and its "needs user decision a/b/c" (the per-file `local`-notation fix is in scope) were off. The coordinator's initial "probe-artifact" dismissal *here* was WRONG — a `tail -30` truncation hid the `V(G)` parse error; corrected at row 131. → Findings 2026-06-15 |
 | 131 | 22j-perf P1 carve `Theorem55.lean` corrective re-dispatch (no commit) | 1/1/2 | opus | escalation-retry | BLOCKED | —————— | 109k tok / 56 tools / 876s (~15 min) | Same-rung corrective (opus override → can't escalate higher). **Correctly diagnosed the real blocker my row-130 scratch wrongly dismissed:** `import CaseI` + faithful preamble fails to parse `V(`/`E(` (`unexpected token ')'`), isolated to a CaseI *body* decl (empty-body + 4-imports parses; full CaseI poisons) — not imports, not the split. High-value precise diagnosis; the BLOCKED was the right call. Coordinator then verified end-to-end (full-output re-test) and found the proven in-scope fix — 3 `local` re-assertions (V(/E(/↾) → row 132 re-dispatch. → Findings 2026-06-15 |
 | 132 | 22j-perf P1 carve `Theorem55.lean` with notation fix (no commit) | 1/1/2 | opus | escalation-retry | BLOCKED | —————— | 89k tok / 38 tools / 748s (~12 min) | Carved cleanly (cut line re-derived, zero backward edges, trimmed CaseI builds); the 3 `local` re-assertions **fixed the notation poison** (V(/E(/↾ parse). BLOCKED on a **second, distinct poison**: `import CaseI` also flips `binop%`'s coercion decision, so `(screwDim 2-1)` in the 4 cut-edge `hbrickZ` statements elaborates ℤ-sub instead of the ℕ-sub-then-cast the `exact_mod_cast hbrick` proofs need → 4 build errors. Isolated via `lean_run_code` on the unmodified tree (succeeds under GenericityDevice / all 4 imports; fails under `import CaseI`); same body-decl mechanism, NOT notation-fixable. High-value precise diagnosis; the BLOCKED was the right call — the split's "pure semantics-preserving move" premise is broken. Coordinator surfaced the strategic fork (a/c/d) to the user. → Findings 2026-06-15 |
+| 133 | 22j-perf recon — root-cause + fix the CaseI import-poison, 25d3793 | recon (stakes) | opus | recon | clean | ✓✓✓✓✓✓ | 159k tok / 126 tools / 1536s (~26 min) | High-value recon resolving the rows 130–132 blocker (user chose (c) root-fix). Root-caused BOTH poisons to ONE cause — a `Graph.`-prefixed decl declared inside `namespace …Molecular` (CaseI:1909) creating a sub-namespace that shadows root `Graph` downstream; fix = re-pin to `_root_.Graph.…` (no pin, no external caller, semantics unchanged). Resolved the CaseI≠GenericityDevice crux the coordinator couldn't. Coordinator re-verified end-to-end (full-output scratch parses V(/E(/↾ + cut-edge cast; CaseI + library warning-clean; verify.sh all pins resolve). Supersedes the row-131/132 "two poisons" framing. → Findings 2026-06-15 |
 
 ## Findings
 
@@ -334,10 +335,27 @@ the protocol)
   three pin-safe per-file `local` re-assertions (`V(`/`E(`/`↾`) after `open scoped Graph`.
   Lessons for the loop: (i) never verify a model's diagnosis with truncated output — read
   the full build log, especially when the verdict contradicts a careful BLOCKED; (ii) a
-  reproducible, mechanism-level BLOCKED is high-value data, not a failure to route around;
-  (iii) the coordinator resolved this recon-shaped blocker inline (scratch builds → proven
-  fix) and re-dispatched the build (row 132) with the fix baked in, rather than surfacing
-  half-understood options to the user.
+  reproducible, mechanism-level BLOCKED is high-value data, not a failure to route around.
+
+- **(rows 132–133, the root cause) Both poisons were ONE latent bug, and a recon root-fix
+  (the user's option (c)) resolved them more cleanly than the per-site workarounds.** Row 132
+  (P1 with the notation fix) found a *second* poison — `import CaseI` also flips `binop%`'s
+  coercion, so the local-notation workaround alone was insufficient — and the coordinator
+  surfaced an (a) cast-touch-ups / (c) root-fix / (d) defer fork; the user chose (c). The
+  row-133 recon then found BOTH poisons share **one** cause: `CaseI:1909` declared `theorem
+  Graph.rigidContract_…` **inside** `namespace …Molecular`, creating a sub-namespace
+  `Molecular.Graph` that shadows root `Graph` for any downstream `namespace …Molecular` +
+  `open scoped Graph`, so mathlib's root-`Graph` scoped notations (`V(`/`E(`/`↾`/the `-`
+  deleteVerts infix) never activate — producing the parse failure *and* the `binop%` cast
+  flip. This resolved the crux the coordinator couldn't (`import CaseI` ≠ `import
+  GenericityDevice`: only CaseI has a `Graph.`-prefixed-in-`Molecular` decl) and superseded
+  the row-131/132 "two separate poisons" framing. Fix: re-pin to `_root_.Graph.…` (pin-safe,
+  no external caller, semantics unchanged); coordinator re-verified end-to-end (full-output
+  scratch with the *standard* preamble parses + casts; CaseI + library warning-clean;
+  verify.sh all pins resolve). Lessons: a bare `T.`-prefixed decl inside a non-root namespace
+  silently sub-namespaces and can shadow root scoped notations downstream (now TACTICS-QUIRKS
+  §56); and a single recon root-fix can beat N per-site workarounds — recon-before-build
+  earns its keep even mid-blocker.
 
 - (2026-06-14, rows 115 + 118, L6) **The longest, most-degraded dispatch of the experiment —
   two compounding failures, both instructive.** (1) The L6 *design pass* (row 115, opus,
