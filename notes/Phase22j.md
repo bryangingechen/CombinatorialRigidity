@@ -4,20 +4,19 @@
 
 ## Current state
 
-**A0+A1 LANDED (2026-06-15); next = A2 (longLine reflow), then A3 §C refresh + phase-close.** The
+**A0+A1+A2 LANDED (2026-06-15); BOTH suppression refactors now done. Next = A3 (`CLEANUP.md` §C-note
+refresh, coordinator-authored) → phase-close, then surface file-split plan (B) to the user.** The
 ranked split-refactor plan is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon
-(2026-06-15…)*; the *Hand-off* section below names the next buildable slice. User decision (2026-06-15,
-`coordinate-phase` option c): do BOTH suppression refactors within 22j, then assess wider splitting.
+(2026-06-15…)*. User decision (2026-06-15, `coordinate-phase` option c): do BOTH suppression refactors
+within 22j, then assess wider splitting.
 
-The **heartbeats refactor is done** (A0+A1): the L6b producer
-`PanelHingeFramework.case_II_realization_all_k`'s budget is down from 3.2M (16×) → **600000 (3×)** — A0
-the free 3.2M→800000, A1 extracting the two ℤ/ℕ rank-cast bridges (`toNat_le_of_add_pred_eq` +
-`sub_toNat_eq_of_add_pred_eq` in `RigidityMatrix.lean`) which lowered it to 600000. It does **not** reach
-default: the cost is *diffuse* (3 over-budget sites, recon-confirmed), so the whole-decl 600000 is the
-honest bisected minimum (a localized per-`have` budget was tried and fails). The **longLine drop (A2)
-remains** — the producer still carries `set_option linter.style.longLine false in` with ~70 over-length
-lines (re-count against the landed source; A1 shifted them). The `CLEANUP.md` §C-note refresh (A3,
-coordinator-authored) then applies for the slimmed producer.
+The L6b producer `PanelHingeFramework.case_II_realization_all_k` now carries **neither suppression** as
+a stopgap: A0+A1 cut its `maxHeartbeats` budget 3.2M (16×) → **600000 (3×)** (A0 free 3.2M→800000, A1
+extracting the two ℤ/ℕ rank-cast bridges `toNat_le_of_add_pred_eq` + `sub_toNat_eq_of_add_pred_eq` in
+`RigidityMatrix.lean`); A2 reflowed its 37 over-100-codepoint lines and dropped
+`set_option linter.style.longLine false in`. The 600000 budget stays (NOT a stopgap): the cost is
+*diffuse* (3 over-budget sites, recon-confirmed), so it is the honest bisected minimum, with a
+documented justifying comment. Only A3 (the §C-note refresh) and phase-close remain.
 
 **Landed before this session** (per-slice detail in the *Layer plan* checklist + *Decisions made* below;
 the design is §1.68): S1 Brick A (`le_finrank_span_rigidityRows_of_pinned_placement` + `_augment`) → S2
@@ -97,9 +96,12 @@ model-experiment. Each slice's gate is `lake build` + `lake lint` **warning-clea
   per-`have` localized budget on the Brick-A call does NOT suffice (the cost is **diffuse** across the
   geometric Steps, recon-confirmed; the localized-only build still timed out at :4209/:4193). Gates
   green (build warning-clean 67s, full project warning-clean, `lake lint`, all three decls axiom-clean).
-- [ ] **A2 — longLine reflow** the producer's 72 long lines (49 comment/divider + 23 code, all
-  mechanically wrappable), then drop `linter.style.longLine false` (:3727). **After A1** (line numbers
-  shift). The geometric Step 12–15 middle stays inline (S4b trap — do NOT extract).
+- [x] **A2 — longLine reflow — DONE** (2026-06-15): reflowed the producer's **37** over-100-codepoint
+  lines (comment/divider rewrap + code breaks at natural delimiters) and dropped the producer's
+  `set_option linter.style.longLine false in` (+ its now-stale stopgap comment). The recon's "72 long
+  lines" was a byte-count over-report — the longLine linter counts **codepoints** (lifted: TACTICS-
+  QUIRKS §55). Geometric Step 12–15 middle left inline (S4b trap). Gates green (CaseI + full project
+  build warning-clean 67s, `lake lint`, producer axiom-clean propext/Classical.choice/Quot.sound).
 - [ ] **(B) follow-up — CaseI.lean file split (NOT 22j; user sign-off after close).** 10,346 lines →
   5-file `AlgebraicInduction/` chain. Plan + verified DAG + leverage in the PERFORMANCE.md recon.
 - [ ] **`CLEANUP.md` §C-note refresh** (coordinator-authored) for the slimmed producer.
@@ -110,39 +112,25 @@ the `_of_line` device-feed; settle it against 22k's Case III (§1.68(f)).
 
 ## Blockers / open questions
 
-- ~~**S1 `Nat.card`/`Fintype` resolution**~~ — RESOLVED at the S1 build (standard
-  `Nat.card_eq_fintype_card`+`Fintype.card_sum` bridge; Brick A's interface keys on `Nat.card`, both
-  call sites supply `[Finite ιn] [Finite ιo]`).
-- ~~**Cleanup suppression-drop is BLOCKED on a refactor**~~ — RECON DONE (2026-06-15), now a concrete
-  plan (A0+A1+A2; `notes/PERFORMANCE.md` recon + *Hand-off* above), no longer a blocker. The
-  heartbeats fix is one small scalar helper + a bisection-verified budget lower (3.2M→800000 free,
-  then →default after the helper), NOT a deep producer decomposition. The longLine drop is a mechanical
-  reflow of 72 lines after the helper lands.
-- **Open decision (flagged, not forced):** after A1 lands Helper 1, if the Brick-A call site (:4473)
-  still needs > default budget, it is a §38-class `isDefEq` blowup, not a missing lemma — keep a small
-  *localized* `set_option maxHeartbeats` on that one `have` rather than the whole decl. Confirm at A1.
+None open. All resolved: S1 `Nat.card`/`Fintype` (standard `Nat.card_eq_fintype_card`+`Fintype.card_sum`
+bridge); the suppression-drop "blocker" (was a refactor, now both done — A0+A1 heartbeats, A2 longLine);
+and the flagged "localized vs whole-decl budget" decision (A1 confirmed *diffuse* cost → whole-decl
+600000, no localized per-`have` budget). Only A3 (§C-note refresh) + phase-close remain — see *Hand-off*.
 
 ## Hand-off / next phase
 
-**A0+A1 LANDED (2026-06-15); next concrete step = A2 (longLine reflow).** The split-refactor plan is
-in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j design-pass)*.
+**A0+A1+A2 LANDED (2026-06-15); both suppression refactors done; next concrete step = A3
+(`CLEANUP.md` §C-note refresh, coordinator-authored) → phase-close checklist.** The split-refactor
+plan is in `notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j
+design-pass)*. The producer now carries only the justified `maxHeartbeats 600000` (its diffuse-cost
+bisected minimum) and no longLine suppression.
 
-**A2 — longLine reflow.** In the producer body, reflow the over-length (>100-char) lines, then drop
-`set_option linter.style.longLine false in` above the producer. The recon counted 72 long lines (49
-comment/divider + 23 code) **at the pre-A1 source**; A1 already wrapped a few (helper-call rewrites),
-so **re-count against the landed source first** (`awk 'length>100'` over the producer's line range, ~the
-`set_option maxHeartbeats 600000 in … exact ⟨…⟩` decl). Comment/divider lines reflow trivially (rewrap
-text, shorten `─` dividers); code lines break at natural delimiters (`rw [a, b, c]` after a `,`;
-`have … := by` before `by`; lambdas at the binder) — none require restructuring a proof. The geometric
-Step 12–15 middle stays inline (S4b ~15-arg net-negative trap). Gate as usual (build warning-clean +
-`lake lint` + producer axiom-clean).
-
-Then **A3** `CLEANUP.md` §C-note refresh (coordinator-authored) → phase-close checklist.
+**A3 — `CLEANUP.md` §C-note refresh** (coordinator-authored) → phase-close checklist.
 **Plan (B)** — the `CaseI.lean` 10,346-line file split into a 5-file `AlgebraicInduction/` chain
 (`Coupling`/`CaseI`/`CaseII`/`CaseIII`/`Theorem55`; verified clean forward DAG, zero downstream-import
 benefit but very high factor-2/3/4 leverage, pure rename-free move so blueprint pins/`checkdecls`
 unaffected) — is a **separate follow-up perf round**: surface to the user for sign-off after 22j closes,
-do not fold into 22j. (S1/S2/S4a/S5 + the dead-code cleanup + A0/A1 landed; S4b skipped.)
+do not fold into 22j. (S1/S2/S4a/S5 + the dead-code cleanup + A0/A1/A2 landed; S4b skipped.)
 
 After 22j: open **Phase 22k** (completing the honest all-`k` Theorem 5.5 — the L7–L10 layer plan in
 `notes/Phase22i.md`, consuming Brick A; S3 = the deficiency-aware Brick B lands there), then Phase 23
@@ -152,13 +140,13 @@ done.)
 ### coordinate-phase note (`coordinate-phase 22j`)
 
 Drives this log via the *Hand-off* pivot. **User decided (2026-06-15, option c): do both suppression
-refactors within 22j, then assess wider molecular-files splitting.** The heartbeats refactor is **DONE**
-(A0 free 3.2M→800000 + A1 the scalar rank-cast helpers, dropping the budget to 600000 = 3× default;
-the residual is diffuse-cost defeq, not a missing lemma, so the budget stays — a localized per-`have`
-budget was tried and does not suffice). **Next dispatch = A2** (longLine reflow → drop
-`linter.style.longLine false`; a Lean build slice — re-count the long lines against the landed source
-first, A1 shifted them; see *Hand-off*). Then surface the file-split recommendation (B) to the user →
-`CLEANUP.md` §C refresh + phase-close. **Phase-close checklist**
+refactors within 22j, then assess wider molecular-files splitting.** Both suppression refactors are
+**DONE**: the heartbeats refactor (A0 free 3.2M→800000 + A1 the scalar rank-cast helpers, dropping the
+budget to 600000 = 3× default; the residual is diffuse-cost defeq, not a missing lemma, so the budget
+stays — a localized per-`have` budget was tried and does not suffice) and the longLine reflow (A2,
+37 codepoint-over-100 lines reflowed, suppression dropped). **Next dispatch = A3** (`CLEANUP.md` §C
+refresh, coordinator-authored). Then surface the file-split recommendation (B) to the user →
+phase-close. **Phase-close checklist**
 (when 22j actually closes): flip 22j ✓ across ROADMAP / README / home_page / intro.tex /
 MolecularConjecture; compress ROADMAP §22j; write the model-experiment *Findings* for 22j; then (after
 user confirm) open **Phase 22k**. The model-experiment is **running** (opus-only override this session;
@@ -234,3 +222,11 @@ availability check recorded 2026-06-15 in the log's repo-local config).
   (lifted):** a `maxHeartbeats` drop blocked by *diffuse* cost can't be rescued by a localized per-`have`
   budget — lower the whole-decl budget to the bisected minimum. Rename `le_or_lt`→`le_or_gt` → TACTICS-
   QUIRKS §50.
+- **A2 — longLine reflow landed (2026-06-15):** reflowed the producer's **37** over-100-codepoint lines
+  (comment/divider rewrap, `─`-divider trims, code breaks at natural delimiters — dotted-prefix breaks
+  `(Foo.bar baz\n  q).method`, `rw [a,\n b, c]`, type `have h :\n T := by`) and dropped its
+  `set_option linter.style.longLine false in` + the stale stopgap comment. No proof restructured; the
+  geometric Step 12–15 middle stays inline. The recon's "72 lines" was a **byte over-count** — the
+  longLine linter flags by Unicode codepoint (strict `column > 100`), so `awk length` over-reports on
+  this glyph-heavy file (lifted → TACTICS-QUIRKS §55). Gates green (CaseI + full project build
+  warning-clean, `lake lint`, producer axiom-clean).

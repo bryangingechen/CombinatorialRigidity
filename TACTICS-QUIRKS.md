@@ -1960,3 +1960,34 @@ requires a comment explaining the heartbeat increase — `linter.style.maxHeartb
 flags the option without one.
 
 Phase 22i L5a-i (`RigidityMatrix.lean`, `le_finrank_span_rigidityRows_of_splice`).
+
+## 55. `linter.style.longLine` counts Unicode codepoints, not bytes — `awk 'length>100'` over-counts
+
+**Symptom.** Reflowing a proof to drop a `set_option linter.style.longLine false in`, you
+list the over-length lines with `awk 'length>100'`. On a UTF-8-heavy molecular file (`ℝ`,
+`₀`, `─`, `→`, `≤`, `•`, …) this reports far more lines than the linter actually flags
+(e.g. 80 vs 37 in `case_II_realization_all_k`), and some lines `awk` flags are fine.
+
+**Cause.** The longLine linter (`Mathlib/Tactic/Linter/Style.lean`) flags a line when its
+*column* — i.e. its **Unicode codepoint count** — exceeds `maxLineLength` (default 100,
+strict `<`, so exactly 100 is allowed). `awk length` defaults to **bytes**, and a math
+glyph is 2–3 bytes (`─` = 3), so byte-length wildly over-reports. The linter also exempts
+any line containing `http`.
+
+**Fix.** Count codepoints. Use Python:
+
+```python
+with open(path, encoding='utf-8') as f:
+    for i, line in enumerate(f, 1):
+        s = line.rstrip('\n')
+        if len(s) > 100:  # codepoints; matches the linter's `100 < column`
+            print(i, len(s))
+```
+
+Reflow comment/divider lines by rewrapping text (shorten the trailing `─` run on a
+`-- ── Step N: … ────` divider; an exactly-100 result is fine); break code lines at a
+natural delimiter (a `rw [a, b, c]` after a `,`; a long dotted prefix
+`(Foo.bar baz\n  q).method`; a `have h : T := by` before `:= by` or inside `T`). None
+require restructuring a proof.
+
+Phase 22j A2 (`CaseI.lean`, the `case_II_realization_all_k` longLine drop).

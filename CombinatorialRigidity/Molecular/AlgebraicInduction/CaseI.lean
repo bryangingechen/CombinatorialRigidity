@@ -3722,14 +3722,12 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
 
 set_option maxHeartbeats 600000 in
 -- `case_II_realization_all_k` is heartbeat-heavy: its cost is *diffuse* `ScrewSpace 2` typeclass
--- re-elaboration spread across the ~16 geometric Steps (not one hot block), so the whole-declaration
--- budget is raised once here (3× default). Phase 22j A1 lowered it from 16× → 3× by extracting the
--- duplicated ℤ/ℕ rank-cast `CoeT` load to `toNat_le_of_add_pred_eq` / `sub_toNat_eq_of_add_pred_eq`
--- (`RigidityMatrix.lean`); the residual over-budget sites are the Brick-A `isDefEq` and the Step
--- 12–15 geometric middle, both §38-class defeq blowups, not missing lemmas (`notes/PERFORMANCE.md`
--- *Producer helper-split design*).
-set_option linter.style.longLine false in
--- The as-landed proof also carries many over-length lines; suppression is a stopgap pending refactor.
+-- re-elaboration spread across the ~16 geometric Steps (not one hot block), so the
+-- whole-declaration budget is raised once here (3× default). Phase 22j A1 lowered it from 16× → 3×
+-- by extracting the duplicated ℤ/ℕ rank-cast `CoeT` load to `toNat_le_of_add_pred_eq` /
+-- `sub_toNat_eq_of_add_pred_eq` (`RigidityMatrix.lean`); the residual over-budget sites are the
+-- Brick-A `isDefEq` and the Step 12–15 geometric middle, both §38-class defeq blowups, not missing
+-- lemmas (`notes/PERFORMANCE.md` *Producer helper-split design*).
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
 Phase 22i L6b). Katoh–Tanigawa 2011 §6.3, p. 677. A 2-edge-connected minimal `k`-dof-graph
 (`k > 0`, `|V| ≥ 3`) with no proper rigid subgraph carries a generic full-rank realization.
@@ -3740,8 +3738,9 @@ conversion. The key departure from the `k = 0` Case III: the deficient IH suppli
 `D(|V|-1) − k` rows (no Claim 6.11 gap-filling needed), so the eq. (6.12) placement closes
 the rank exactly on its own.
 
-A `case_II_placement_eq612`-shaped brick cannot be reused here: such a brick requires `hGv : Gv ≤ G`,
-which fails for `Gv = G.splitOff v a b e₀` (`e₀ ∉ E(G)` but `e₀ ∈ E(Gab)`). Instead, OLD `e₀`-rows
+A `case_II_placement_eq612`-shaped brick cannot be reused here: such a brick requires
+`hGv : Gv ≤ G`, which fails for `Gv = G.splitOff v a b e₀` (`e₀ ∉ E(G)` but `e₀ ∈ E(Gab)`).
+Instead, OLD `e₀`-rows
 are shown to lie in `span(G.rigidityRows)` via the identity
 `panelRow(e₀, t₁, t₂) = panelRow(e_b, t₁, t₂) + panelRow(e_a, t₁, t₂)` at `q₀ = q[v ↦ nₐ + n_b]`
 (from `panelSupportExtensor_add_smul_right`/`_left` + `hingeRow_sub_hingeRow_eq`). -/
@@ -3802,8 +3801,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   set Gab := G.splitOff v a b e₀ with hGab_def
   -- Gab is simple: use splitOff_simple_of_noRigid with htri vacuously true.
   -- For k > 0, no G-edge f : a-b can exist:
-  --  · If |V(G)| ≥ 4: the triangle G[{v,a,b}] is a proper rigid subgraph (triangle_isProperRigidSubgraph),
-  --    contradicting hnoRigid.
+  --  · If |V(G)| ≥ 4: the triangle G[{v,a,b}] is a proper rigid subgraph
+  --    (triangle_isProperRigidSubgraph), contradicting hnoRigid.
   --  · If |V(G)| = 3: G is the triangle K₃ and is 0-dof (isKDof_zero_of_triangle),
   --    contradicting hG.1 with k > 0. [hK3_htri, carried as h_no_fab below]
   -- h_no_fab : ∀ f, ¬ G.IsLink f a b
@@ -3885,9 +3884,11 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   have hGab_lt : V(Gab).ncard < V(G).ncard := by
     rw [hGab_def]; exact Graph.splitOff_vertexSet_ncard_lt hvG
   -- Gab is nonempty (a ∈ V(Gab)).
-  have hGab_ne : V(Gab).Nonempty := ⟨a, by rw [hGab_def, Graph.vertexSet_splitOff]; exact ⟨haG, hav⟩⟩
+  have hGab_ne : V(Gab).Nonempty :=
+    ⟨a, by rw [hGab_def, Graph.vertexSet_splitOff]; exact ⟨haG, hav⟩⟩
   -- ── Step 4: Apply IH at (k-1, Gab). ─────────────────────────────────────────────────────────
-  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := (hIH (k - 1) Gab hGab hGab_ne hGab_lt).1 hGab_simple
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ :=
+    (hIH (k - 1) Gab hGab hGab_ne hGab_lt).1 hGab_simple
   -- Set up the IH normal function q := Q.normal.
   set q : α × Fin (2 + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq_def
   -- ── Step 5: Extract hgab (GP at distinct a ≠ b ∈ V(Gab)). ───────────────────────────────────
@@ -3980,8 +3981,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   have hZeq : (PanelHingeFramework.ofNormals Gab Q.ends q₀).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.infinitesimalMotions := by
     rw [hwN]
-    exact (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge_withNormal_infinitesimalMotions_eq
-      v (n_a + n_b) hvedge
+    exact (PanelHingeFramework.ofNormals Gab Q.ends
+      q).toBodyHinge_withNormal_infinitesimalMotions_eq v (n_a + n_b) hvedge
   have hspan_eq :
       Submodule.span ℝ (PanelHingeFramework.ofNormals Gab Q.ends q₀).toBodyHinge.rigidityRows
       = Submodule.span ℝ (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.rigidityRows :=
@@ -4000,10 +4001,12 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     haveI : Gab.Loopless := hGab_simple.toLoopless
     exact (hQ_ends_Gab e _ _ he).ne
   have hne₀ : ∀ e, Gab.IsLink e (Q.ends e).1 (Q.ends e).2 →
-      (PanelHingeFramework.ofNormals Gab Q.ends q₀).toBodyHinge.supportExtensor e ≠ 0 := by
+      (PanelHingeFramework.ofNormals Gab Q.ends
+        q₀).toBodyHinge.supportExtensor e ≠ 0 := by
     intro e he
     obtain ⟨h₁, h₂⟩ := hvedge e _ _ he
-    rw [hwN, (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge_withNormal_supportExtensor_of_ne
+    rw [hwN, (PanelHingeFramework.ofNormals Gab Q.ends
+        q).toBodyHinge_withNormal_supportExtensor_of_ne
       v (n_a + n_b) e (by simpa using h₁) (by simpa using h₂)]
     exact hne_q e he
   -- ── Step 11: OLD block (W6e): N independent Gab-linking rows at q₀. ─────────────────────────
@@ -4017,8 +4020,10 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       (by simpa [hFGab_def] using hN₀)
   -- ── Step 12: e₀-row identity at q₀. ─────────────────────────────────────────────────────────
   -- At q₀ = q[v ↦ n_a + n_b]:
-  --   C(e_b) = panelSupportExtensor(n_a + n_b, n_b) = panelSupportExtensor(n_a, n_b)  [add_smul_right]
-  --   C(e_a) = panelSupportExtensor(n_a + n_b, n_a) = (-1) • panelSupportExtensor(n_a, n_b)  [add_smul_left]
+  --   C(e_b) = panelSupportExtensor(n_a + n_b, n_b) = panelSupportExtensor(n_a, n_b)
+  --     [add_smul_right]
+  --   C(e_a) = panelSupportExtensor(n_a + n_b, n_a) = (-1) • panelSupportExtensor(n_a, n_b)
+  --     [add_smul_left]
   -- For e₀, ends e₀ = (a, b) or (b, a) from hQrec at Gab.IsLink e₀ a b.
   -- We need to unify using G.endsOf.
   -- At G.endsOf, the ends of e_a and e_b are recorded from G.endsOf:
@@ -4031,8 +4036,10 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     simp only [hendsDef]; exact G.endsOf_eq_or_swap hG_eb
   -- Compute the extensors for FG at e_a, e_b.
   -- hFG_ea: FG.supportExtensor e_a = (-1) • panelSupportExtensor n_a n_b
-  --   (case (v,a): panelSupportExtensor (n_a+n_b) n_a = (-1) • panelSupportExtensor n_a n_b via add_smul_left)
-  --   (case (a,v): panelSupportExtensor n_a (n_a+n_b); via panelSupportExtensor_swap then add_smul_left: = (1) • ...)
+  --   (case (v,a): panelSupportExtensor (n_a+n_b) n_a = (-1) • panelSupportExtensor n_a n_b
+  --     via add_smul_left)
+  --   (case (a,v): panelSupportExtensor n_a (n_a+n_b); via panelSupportExtensor_swap then
+  --     add_smul_left: = (1) • ...)
   -- We handle both cases; the result may be ±1 • panelSupportExtensor n_a n_b.
   -- For hne_G we only need ≠ 0; for he₀_rows_mem we need the exact sign.
   -- We'll prove the statement using the actual orientation.
@@ -4041,21 +4048,24 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     rw [hFG_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   -- Compute FG.supportExtensor for e_a and e_b at each possible orientation.
   -- hFG_ea: FG.supportExtensor e_a = (-1) • panelSupportExtensor n_a n_b  (when ends e_a = (v,a))
-  --                                 OR = panelSupportExtensor n_a n_b        (when ends e_a = (a,v))
+  --   OR = panelSupportExtensor n_a n_b  (when ends e_a = (a,v))
   have hFG_ea : FG.supportExtensor e_a = (-1 : ℝ) • panelSupportExtensor n_a n_b ∨
       FG.supportExtensor e_a = panelSupportExtensor n_a n_b := by
     rcases hends_ea with h | h
     · left
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀v, hq₀a]
       rw [show n_a + n_b = n_a + (1 : ℝ) • n_b from by rw [one_smul]]
       exact panelSupportExtensor_add_smul_left n_a n_b 1
     · right
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀a, hq₀v]
       -- goal: panelSupportExtensor n_a (n_a + n_b) = panelSupportExtensor n_a n_b
       -- panelSupportExtensor n_a (n_a + n_b)
-      --   = -panelSupportExtensor (n_a + n_b) n_a  [panelSupportExtensor_swap with n₂=n_a, n₁=n_a+n_b]
+      --   = -panelSupportExtensor (n_a + n_b) n_a
+      --     [panelSupportExtensor_swap with n₂=n_a, n₁=n_a+n_b]
       --   = -panelSupportExtensor (n_a + 1•n_b) n_a
       --   = -(-1 • panelSupportExtensor n_a n_b)   [panelSupportExtensor_add_smul_left]
       --   = panelSupportExtensor n_a n_b
@@ -4070,13 +4080,15 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       FG.supportExtensor e_b = -panelSupportExtensor n_a n_b := by
     rcases hends_eb with h | h
     · left
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀v, hq₀b]
       rw [show n_a + n_b = n_a + (1 : ℝ) • n_b from by rw [one_smul]]
       -- goal: panelSupportExtensor (n_a + 1•n_b) n_b = panelSupportExtensor n_a n_b
       exact panelSupportExtensor_add_smul_right n_a n_b 1
     · right
-      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      rw [hFG_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_ends,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal, h, hq₀b, hq₀v]
       -- goal: panelSupportExtensor n_b (n_a + n_b) = -panelSupportExtensor n_a n_b
       -- panelSupportExtensor n_b (n_a + n_b)
@@ -4091,14 +4103,18 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     rw [hGab_def, Graph.splitOff_isLink]
     exact Or.inr ⟨rfl, hav, hbv, haG, hbG, Or.inl ⟨rfl, rfl⟩⟩
   -- ── Step 13: e₀-rows in span(FG.rigidityRows). ───────────────────────────────────────────────
-  -- FGab.panelRow Q.ends (e₀, t₁, t₂) = hingeRow (Q.ends e₀).1 (Q.ends e₀).2 (annihRow C(e₀) t₁ t₂).
-  -- Case Q.ends e₀ = (a, b): C(e₀) = panelSupportExtensor n_a n_b, hingeRow a b ρ = hingeRow v b ρ - hingeRow v a ρ.
+  -- FGab.panelRow Q.ends (e₀, t₁, t₂)
+  --   = hingeRow (Q.ends e₀).1 (Q.ends e₀).2 (annihRow C(e₀) t₁ t₂).
+  -- Case Q.ends e₀ = (a, b): C(e₀) = panelSupportExtensor n_a n_b,
+  --   hingeRow a b ρ = hingeRow v b ρ - hingeRow v a ρ.
   -- Case Q.ends e₀ = (b, a): C(e₀) = panelSupportExtensor n_b n_a = -panelSupportExtensor n_a n_b,
   --   annihRow (-C) = -annihRow C, hingeRow b a (-ρ) = hingeRow a b ρ via hingeRow_swap.
   --   Either way the row reduces to a sum/difference of FG-rows at e_a and e_b.
   -- Helpful: FG.panelRow ends (e_b, t₁, t₂) = hingeRow v b ρ regardless of orientation:
-  --   • (v, b): FG.panelRow = hingeRow v b (annihRow C_b t₁ t₂) with C_b = panelSupportExtensor n_a n_b, = ρ. ✓
-  --   • (b, v): FG.panelRow = hingeRow b v (annihRow C_b t₁ t₂) with C_b = -panelSupportExtensor n_a n_b,
+  --   • (v, b): FG.panelRow = hingeRow v b (annihRow C_b t₁ t₂)
+  --       with C_b = panelSupportExtensor n_a n_b, = ρ. ✓
+  --   • (b, v): FG.panelRow = hingeRow b v (annihRow C_b t₁ t₂)
+  --       with C_b = -panelSupportExtensor n_a n_b,
   --       = hingeRow b v (-ρ) = hingeRow v b ρ by hingeRow_swap.
   -- Similarly FG.panelRow ends (e_a, t₁, t₂) = -hingeRow v a ρ in both orientations.
   -- Helper for the universal FG-row membership (needed regardless of ends orientation):
@@ -4161,7 +4177,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
           PanelHingeFramework.ofNormals_normal, ha, hq₀v, hq₀a,
           show n_a + n_b = n_a + (1 : ℝ) • n_b from by rw [one_smul]]
         exact panelSupportExtensor_add_smul_left n_a n_b 1
-      -- goal: -(hingeRow v a ρ) = hingeRow v a (annihRow ((-1:ℝ) • panelSupportExtensor n_a n_b) t₁ t₂)
+      -- goal: -(hingeRow v a ρ)
+      --   = hingeRow v a (annihRow ((-1:ℝ) • panelSupportExtensor n_a n_b) t₁ t₂)
       -- = hingeRow v a ((-1:ℝ) • ρ)  [annihRow_smul]
       -- = (-1:ℝ) • hingeRow v a ρ    [map_smul via dualMap linearity]
       -- = -(hingeRow v a ρ)            [neg_one_smul]
@@ -4205,7 +4222,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
           PanelHingeFramework.ofNormals_normal, he]
         simp only [hq₀a, hq₀b]
       rw [FGab.panelRow_eq_hingeRow_annihRow_of_ends Q.ends he t₁ t₂, hC]
-      -- goal: hingeRow a b ρ ∈ span(FG.rigidityRows), where ρ = annihRow (panelSupportExtensor n_a n_b) t₁ t₂
+      -- goal: hingeRow a b ρ ∈ span(FG.rigidityRows),
+      --   where ρ = annihRow (panelSupportExtensor n_a n_b) t₁ t₂
       set ρ := annihRow (panelSupportExtensor n_a n_b) t₁ t₂ with hρ_def
       -- hingeRow a b ρ = hingeRow v b ρ - hingeRow v a ρ  [hingeRow_sub_hingeRow_eq]
       -- = FG.panelRow ends (e_b, ...) + FG.panelRow ends (e_a, ...)  [hrow_b_eq + hrow_a_eq]
@@ -4288,7 +4306,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       rw [FGab.panelRow_eq_hingeRow_annihRow_of_ends Q.ends (by rfl) t₁ t₂]
       apply Submodule.subset_span
       apply FG.hingeRow_mem_rigidityRows hGlink_e
-      -- ρ_FGab ∈ FG.hingeRowBlock e: need annihRow(FGab.supportExtensor e)(FG.supportExtensor e) = 0
+      -- ρ_FGab ∈ FG.hingeRowBlock e: need
+      --   annihRow(FGab.supportExtensor e)(FG.supportExtensor e) = 0
       rw [FG.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
       intro x hx
       rw [Submodule.mem_span_singleton] at hx
@@ -4317,13 +4336,14 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
           rw [hFGab_se, hFG_se, h_eq]
         rw [hse_eq, hFGab_se]
         exact annihRow_apply_self _ t₁ t₂
-      · -- Swapped: ends e = ((Q.ends e).2, (Q.ends e).1) → FG.supportExtensor e = -FGab.supportExtensor e.
+      · -- Swapped: ends e = ((Q.ends e).2, (Q.ends e).1)
+        --   → FG.supportExtensor e = -FGab.supportExtensor e.
         simp only [← hendsDef] at h_swap
         have hse_swap : FG.supportExtensor e = -FGab.supportExtensor e := by
           rw [hFGab_se, hFG_se, h_swap]
           exact panelSupportExtensor_swap _ _
         rw [hse_swap, map_neg, hFGab_se, annihRow_apply_self, neg_zero]
-  -- ── hso_span established. (The OLD-block span-transport discharge for Brick A's `hold_span`.) ────
+  -- ── hso_span established. (The OLD-block span-transport discharge for Brick A's `hold_span`.) ─
   -- ── Step 12 (cont): Compute that N = D*(|V(G)|-1) - k - (D-1). ───────────────────────────────
   -- N = D*(|V(Gab)|-1) - (k-1) = D*(|V(G)|-2) - k + 1.
   -- Required rank for G: D*(|V(G)|-1) - k.
@@ -4405,13 +4425,14 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
       Function.update_of_ne h₁, Function.update_of_ne h₂,
       Pi.zero_apply, Pi.zero_apply, sub_zero, map_zero]
-  -- ── Block-triangular independence: NEW (sn) + OLD (so) at FG. ───────────────────────────────────
+  -- ── Block-triangular independence: NEW (sn) + OLD (so) at FG. ──────────────────────────────────
   -- NEW block (sn) is independent through v's screw column (hnewpin); OLD block (so) vanishes
   -- at update 0 v x (hold) and is independently supported (hso_indep_FG).
   -- sn rows use FG.panelRow ends (via e_b), so rows use FG.panelRow Q.ends.
   -- linearIndependent_sum_pinned_block combines them.
   have hnewpin_eb : LinearIndependent ℝ (fun i : sn =>
-      (FG.panelRow ends (i : β × _ × _)).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace 2) v)) := by
+      (FG.panelRow ends (i : β × _ × _)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace 2) v)) := by
     rcases hends_eb with h | h
     · rw [h] at hnewpin; simpa using hnewpin
     · -- ends e_b = (b, v), so v = (ends e_b).2, not .1; need to adjust hnewpin.
@@ -4430,7 +4451,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       -- Use that FG.panelRow ends (e_b, t₁, t₂) = ±FG.panelRow ends[swap(e_b)] (e_b, t₁, t₂).
       -- Actually panelRow ends (e, t₁, t₂) = hingeRow (ends e).1 (ends e).2 (annihRow C t₁ t₂).
       -- For ends e_b = (b, v): = hingeRow b v (annihRow C t₁ t₂).
-      -- (hingeRow b v r).comp (single v) x = (hingeRow b v r) (update 0 v x) = r (update 0 v x).b - r (update 0 v x).v = -r x.
+      -- (hingeRow b v r).comp (single v) x = (hingeRow b v r) (update 0 v x)
+      --   = r (update 0 v x).b - r (update 0 v x).v = -r x.
       -- So (FG.panelRow ends (e_b, t₁, t₂)).comp (single v) = neg of the b-pin.
       -- The b-pin family is LI (hnewpin); negation preserves LI.
       -- This requires BodyHingeFramework.linearIndependent_panelRow_comp_single_of_edge to apply
@@ -4442,7 +4464,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       --   = hingeRow b v (annihRow C t₁ t₂) (update 0 v s)
       --   = (annihRow C t₁ t₂) ((update 0 v s) b - (update 0 v s) v)
       --   = (annihRow C t₁ t₂) (0 - s) = -(annihRow C t₁ t₂ s).
-      -- So (FG.panelRow ends (e_b, t₁, t₂)).comp (single v) = -(FG.panelRow ends (e_b, t₁, t₂)).comp (single b).
+      -- So (FG.panelRow ends (e_b, t₁, t₂)).comp (single v)
+      --   = -(FG.panelRow ends (e_b, t₁, t₂)).comp (single b).
       -- Thus the v-pin family = neg of the b-pin family, and neg preserves LI.
       have : (fun i : sn => (FG.panelRow ends (i : β × _ × _)).comp
             (LinearMap.single ℝ (fun _ : α => ScrewSpace 2) v)) =
@@ -4462,10 +4485,10 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
       exact hnewpin.neg
   -- ── Total rank bound via Brick A (`le_finrank_span_rigidityRows_of_pinned_placement`). ─────────
   -- The NEW block (sn, the e_b hinge through v's screw column, `hnewpin_eb`) + the OLD block (so,
-  -- the IH's N Gab-rows, vanishing at v by `hold`, in `span FG.rigidityRows` by `hso_span`) feed the
-  -- shared span-transport pinned-placement brick: `Nat.card sn + Nat.card so ≤ finrank`. With
-  -- `hsn_card : Nat.card sn = D−1`, `hso_card : Nat.card so = N`, and `hNpD : N + (D−1) = D(|V|−1)−k`,
-  -- this is the required ℤ rank lower bound for G.
+  -- the IH's N Gab-rows, vanishing at v by `hold`, in `span FG.rigidityRows` by `hso_span`) feed
+  -- the shared span-transport pinned-placement brick: `Nat.card sn + Nat.card so ≤ finrank`. With
+  -- `hsn_card : Nat.card sn = D−1`, `hso_card : Nat.card so = N`, and
+  -- `hNpD : N + (D−1) = D(|V|−1)−k`, this is the required ℤ rank lower bound for G.
   have hrank_lb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
       Module.finrank ℝ ↥(Submodule.span ℝ FG.rigidityRows) := by
     haveI : Fintype sn := Fintype.ofFinite sn
@@ -4494,7 +4517,7 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
     rw [← hNpD]
     -- hbrick : (D−1) + N ≤ finrank ; goal (ℤ) : ↑N + ↑(D−1) ≤ ↑finrank
     exact_mod_cast Nat.add_comm (screwDim 2 - 1) N ▸ hbrick
-  -- ── Apply exists_rankPolynomial_of_le_finrank_linking to transfer to generic q. ────────────────────
+  -- ── Apply exists_rankPolynomial_of_le_finrank_linking to transfer to generic q. ────────────────
   -- hN: D*(|V(G)|-1) - k ≤ finrank(span FG.rigidityRows). Convert to ℕ.
   have h1V : 1 ≤ V(G).ncard := by
     exact (Set.ncard_pos (Set.toFinite _)).2 ⟨v, hvG⟩
@@ -4545,7 +4568,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
         have hFGab_ne : FGab.supportExtensor e ≠ 0 := hne₀ e hQGab_e
         -- FG.supportExtensor e = ±FGab.supportExtensor e
         have hFGab_se : FGab.supportExtensor e =
-            panelSupportExtensor (fun i => q₀ ((Q.ends e).1, i)) (fun i => q₀ ((Q.ends e).2, i)) := by
+            panelSupportExtensor (fun i => q₀ ((Q.ends e).1, i))
+              (fun i => q₀ ((Q.ends e).2, i)) := by
           rw [hFGab_def, PanelHingeFramework.toBodyHinge_supportExtensor,
             PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
             PanelHingeFramework.ofNormals_normal]
@@ -4575,7 +4599,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   -- Use exists_rankPolynomial_of_le_finrank_linking to transfer the rank lower bound to a
   -- generic q'. Then combine with GP polynomial and algebraic independence.
   obtain ⟨Q_rk, hQ_rk0, hQ_rkrat, hQ_rk⟩ :=
-    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends_G hne_G hrank_lb_nat
+    PanelHingeFramework.exists_rankPolynomial_of_le_finrank_linking G ends hends_G hne_G
+      hrank_lb_nat
   obtain ⟨Q_gp, hQ_gp_ne, hQ_gprat, hQ_gp⟩ :=
     exists_generalPosition_polynomial (k := 2) G ends
   have hQ_rk_ne : Q_rk ≠ 0 := fun h => hQ_rk0 (by rw [h, map_zero])
@@ -4604,7 +4629,8 @@ theorem PanelHingeFramework.case_II_realization_all_k [DecidableEq β] [Finite �
   have hB2_q' : (Module.finrank ℝ (Submodule.span ℝ
       (PanelHingeFramework.ofNormals G ends q').toBodyHinge.rigidityRows) : ℤ)
       ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - G.deficiency n := by
-    have hVGne' : (PanelHingeFramework.ofNormals G ends q').toBodyHinge.graph.vertexSet.Nonempty := by
+    have hVGne' :
+        (PanelHingeFramework.ofNormals G ends q').toBodyHinge.graph.vertexSet.Nonempty := by
       rw [hFG'_graph]; exact hVGne
     have hCq' : ∀ e u w,
         (PanelHingeFramework.ofNormals G ends q').toBodyHinge.graph.IsLink e u w →
