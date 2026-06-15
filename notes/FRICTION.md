@@ -597,8 +597,17 @@ housekeeping pass once their resolution is fully indexed.
   `rw [map_isLink]` then `rintro`/`obtain` and apply the hypothesis. Lives project-side in `Induction/`
   (alongside `rigidContract`) per *prefer the project-side route*; **upstream-eligible** as a fork-side
   `Graph.map_simple` if the fork's `Simple` API is revisited.
-- **Status:** resolved (project-side `map_simple` + `rigidContract_simple` consumer; fork-API gap noted
-  for potential upstream).
+- **Contrapositive companion (Phase 22k, L8a):** the Lemma-6.5 arm needs to *unpack* a
+  non-simple contraction, so the negative form `map_not_simple` / `rigidContract_not_simple` joined
+  the positive criterion (same file, just after `rigidContract_simple`). It is the mechanical
+  `by_contra` + `map_simple` of the two disjuncts (loop: `∃ e x y, IsLink ∧ f x = f y`; parallel:
+  `∃ … e₁ ≠ e₂` with collapsed-equal end-pairs). **Caveat:** the loop disjunct cannot carry `x ≠ y`
+  — a `map`-level statement makes *no* looplessness assumption on the source `G`, so the underlying
+  `G`-edge may be a genuine loop; a caller with `G.Simple` recovers `x ≠ y` from `IsLink.ne` itself.
+  (General lesson: a `map`/relabel-level lemma must not bake in a source-graph `Loopless`/`Simple`
+  hypothesis the statement doesn't take — push that recovery to the simple-graph caller.)
+- **Status:** resolved (project-side `map_simple`/`map_not_simple` + `rigidContract_simple`/
+  `rigidContract_not_simple` consumers; fork-API gap noted for potential upstream).
 
 ### [resolved] Transferring `IsInfinitesimallyRigidOn` across an `infinitesimalMotions` *equality* — round-trip through `mem_infinitesimalMotions`, there is no `IsInfinitesimallyRigidOn`-congruence lemma
 - **Where it bit:** `hasGenericRealization_transport_ends` (Phase 22, the N6-composer `ends`-swap

@@ -152,6 +152,50 @@ lemma rigidContract_simple {G H : Graph α β} {r : α}
   rw [rigidContract]
   exact map_simple hloop hpar
 
+/-- **The non-simplicity unpacking for a vertex relabel** (the contrapositive of `map_simple`;
+the genuinely-new graph input the Lemma-6.5 vertex-removal arm of the Case-I dispatch bottoms
+out on). If a relabelled graph `f ''ᴳ G` is *not* simple, then `f` either manufactures a
+**loop** — an edge `e` whose two ends collapse (`f x = f y`) — or a **parallel pair** —
+two *distinct* edges `e₁ ≠ e₂` whose end-pairs collapse to a common collapsed pair
+(`f x₁ = f x₂`, `f y₁ = f y₂`). This is exactly the two failure modes `map_simple` rules out, so
+the proof is the contrapositive: were both disjuncts false, the `map_simple` hypotheses would
+hold and force simplicity. The loop alternative does *not* carry `x ≠ y` — `map_not_simple`
+makes no looplessness assumption on `G`, so the underlying `G`-edge may itself be a loop; a
+caller in a *simple* `G` recovers `x ≠ y` from the link's `IsLink.ne`. -/
+lemma map_not_simple {α' : Type*} {f : α → α'} {G : Graph α β}
+    (h : ¬ (f ''ᴳ G).Simple) :
+    (∃ e x y, G.IsLink e x y ∧ f x = f y) ∨
+      (∃ e₁ e₂ x₁ y₁ x₂ y₂, G.IsLink e₁ x₁ y₁ ∧ G.IsLink e₂ x₂ y₂ ∧
+        f x₁ = f x₂ ∧ f y₁ = f y₂ ∧ e₁ ≠ e₂) := by
+  by_contra hcon
+  push Not at hcon
+  obtain ⟨hloop, hpar⟩ := hcon
+  refine h (map_simple (fun e x y hxy hfxy => ?_) (fun e₁ e₂ x₁ y₁ x₂ y₂ h₁ h₂ hx hy => ?_))
+  · exact hloop e x y hxy hfxy
+  · by_contra hne
+    exact hne (hpar e₁ e₂ x₁ y₁ x₂ y₂ h₁ h₂ hx hy)
+
+/-- **The non-simplicity unpacking for a rigid-subgraph contraction** (the contrapositive of
+`rigidContract_simple`; specializing `map_not_simple` to `rigidContract = (G ＼ E(H)).map
+(collapseTo r V(H))`). If `G / E(H)` is not simple, then either a surviving edge
+`e ∈ E(G) ＼ E(H)` has its two ends collapsed together (`collapseTo r V(H) x =
+collapseTo r V(H) y`, a loop at the representative), or two *distinct* surviving edges
+`e₁ ≠ e₂` collapse to a common end-pair (a parallel pair). This is the exact two-mode
+case-split KT Claim 6.6 (p. 676–677) reads off the contraction-non-simplicity hypothesis of
+the Lemma-6.5 arm: a parallel pair pulls back to a vertex outside `V(H)` with two edges into
+`V(H)`. The surviving-edge data is delivered against `G.deleteEdges E(H)` (whose links are
+`G`-links off `E(H)`, `deleteEdges_isLink`), matching `rigidContract_simple`'s hypothesis
+shape; a caller with `G.Simple` recovers `x ≠ y` in the loop case from `IsLink.ne`. -/
+lemma rigidContract_not_simple {G H : Graph α β} {r : α}
+    (h : ¬ (G.rigidContract H r).Simple) :
+    (∃ e x y, (G.deleteEdges E(H)).IsLink e x y ∧
+        collapseTo r V(H) x = collapseTo r V(H) y) ∨
+      (∃ e₁ e₂ x₁ y₁ x₂ y₂, (G.deleteEdges E(H)).IsLink e₁ x₁ y₁ ∧
+        (G.deleteEdges E(H)).IsLink e₂ x₂ y₂ ∧
+        collapseTo r V(H) x₁ = collapseTo r V(H) x₂ ∧
+        collapseTo r V(H) y₁ = collapseTo r V(H) y₂ ∧ e₁ ≠ e₂) :=
+  map_not_simple (f := collapseTo r V(H)) (by rwa [rigidContract] at h)
+
 /-- **The cycle matroid of a contracted multiplied graph** (N4b, the per-cycle-matroid step;
 `lem:rigidContract-isMinimalKDof`). For a subgraph `H ≤ G` whose multiplied graph `H̃` is
 preconnected (`mulTilde_preconnected_of_isKDof_zero`, N4a) with representative `r ∈ V(H)`, the
