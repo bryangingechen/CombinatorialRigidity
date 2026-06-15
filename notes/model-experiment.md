@@ -95,8 +95,9 @@ deferred-route-hinges-on-consumer clause added to
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-15, fresh coordinator session for Phase 22k —
-  supersedes the prior same-date perf-round note, which expired at that session's end).**
+- **Session availability (2026-06-15, fresh coordinator session re-confirmed at L8-open —
+  supersedes the prior same-date L7 session note, which expired at that session's end; same
+  parameters, re-run per the protocol's session-start check).**
   fable **unavailable** this session (user-confirmed at session start; any fable-mapped
   pass — phase-open/close, design-settle, S=3 — substitutes **opus**, logged as a
   substitution). **Rung policy: reverted to the full S/P/B → map** (user-confirmed at
