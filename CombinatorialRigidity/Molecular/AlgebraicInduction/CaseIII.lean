@@ -3856,15 +3856,18 @@ theorem PanelHingeFramework.case_III_realization_0dof [DecidableEq β] [Finite �
 /-- **The Case-III `d = 3` realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b). The `hsplitGP`-shaped producer for `theorem_55_all_k`
 (the L9 all-`k` spine), discharging `h622` by deriving `h622lb` from the all-`k` IH via the
-landed L7a rank-polynomial brick (`exists_rankPolynomial_of_IH_linking`, `lem:case-III-nested-rank-lower`).
+landed L7a rank-polynomial brick (`exists_rankPolynomial_of_IH_linking`,
+`lem:case-III-nested-rank-lower`).
 
 **Signature change vs. the old `case_III_realization_0dof`:** `h622` is dropped; `hIH` is upgraded
 to the all-`k` form (`∀ k' G', G'.IsMinimalKDof n k' → V(G').Nonempty → ...`); `hn` is added
-(bridging `bodyBarDim n = screwDim 2` for the `h622lb` arithmetic, matching `case_II_realization_all_k`).
+(bridging `bodyBarDim n = screwDim 2` for the `h622lb` arithmetic, matching
+`case_II_realization_all_k`).
 
 The body adapts the `k=0` IH for `case_III_hsplit_producer`, then inside the `hcand` callback
 derives `h622lb` as follows: (1) `splitOff_removeVertex_minimalKDof` gives `Gv = G − v` minimal
-`k'`-dof with `k' ≤ D−2`; (2) all-`k` IH at `Gv.Simple` gives `HasGenericFullRankRealization 2 n Gv`;
+`k'`-dof with `k' ≤ D−2`; (2) all-`k` IH at `Gv.Simple` gives
+`HasGenericFullRankRealization 2 n Gv`;
 (3) `exists_rankPolynomial_of_IH_linking` extracts a rank polynomial; (4) algebraic independence of
 the split realization's seed + footnote-6 non-root gives the bound. -/
 theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
@@ -3911,7 +3914,8 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
       -- `hcard`: `V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard`.
       have hcard : V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard := by
         rw [Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
-      -- `Graph.splitOff_removeVertex_minimalKDof`: `G.removeVertex v` is minimal `k'`-dof with `k' ≤ D−2`.
+      -- `Graph.splitOff_removeVertex_minimalKDof`: `G.removeVertex v` is minimal `k'`-dof
+      -- with `k' ≤ D−2`.
       obtain ⟨hGvmin, _hk'nn, hk'le⟩ :=
         Graph.splitOff_removeVertex_minimalKDof (by omega : 2 ≤ Graph.bodyBarDim n)
           hba.symm hav hbv heab hlea hleb hclv he₀ hG
@@ -3928,7 +3932,8 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
       haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
       -- L7a: extract rank polynomial `P` with rational coefficients.
       obtain ⟨N, hNeq, P, hPne, hPrat, hPtrans⟩ :=
-        PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv hGvloop hends'
+        PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
+          hGvloop hends'
       -- Footnote-6: `q` (algebraically independent) is not a root of the nonzero rational `P`.
       have hPeval : MvPolynomial.eval q P ≠ 0 :=
         MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent hQalg hPrat hPne
