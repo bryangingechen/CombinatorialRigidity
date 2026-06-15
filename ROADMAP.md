@@ -970,19 +970,12 @@ Case I separate), and decisions: `notes/Phase22j.md`; design verdict
 
 **Status (⌛ in progress, opened 2026-06-15; see `notes/Phase22k.md`).** The completion of the
 honest all-`k` Theorem 5.5 the 22i→22j→22k arc set up: the three remaining 22h carries
-(`h622`, `h65`, `hsplit`) + Theorem 5.6 at `d = 3`. Layers **L7–L10**: L7 rewires Case III,
-*deriving* the eq.-(6.22) nested-IH rank bound `h622` from the all-`k` IH at the nested
-`k'`-dof subgraph (extract the rational rank-polynomial witness, transfer via the landed
-footnote-6 seed-rank bridge); L8 discharges the Lemma-6.5 vertex-removal arm `h65` (KT Claim 6.6
-+ the Π°-placement); L9 wires the zero-carry spine (`hsplit` by `G.Simple` ∘ the GP Case-III
-producer; `theorem_55`/`theorem_55_d3` restated with no carries); L10 pushes to Theorem 5.6 at
-`d = 3` (the deficiency-preserving spanning-strip brick + the `def > 0`
-`prop:rigidity-matrix-prop11` feed). **Consumes 22j's Brick A** (`le_finrank_span_rigidityRows_of_pinned_placement`).
-The next concrete commit is the **L7 signature pin** — a design pass, not a build. Carries table
-(with consumption sites relocated into the post-22j-perf 5-file `AlgebraicInduction/` chain),
-the L7–L10 layer plan, and the design basis: `notes/Phase22k.md` + `notes/Phase22i.md` *Hand-off*
-+ `notes/Phase22-realization-design.md` §1.56. After 22k closes, the KT-strength Thm 5.5 → 5.6 at
-`d = 3` lands (Cor 5.7 in Phase 26); general `d` (KT Lemma 6.13) is Phase 23.
+(`h622`, `h65`, `hsplit`) + Theorem 5.6 at `d = 3`. Layers L7–L10: **L7 ✓** (Case-III rewire,
+`h622` discharged); **L8a ✓** (KT Claim 6.6 graph side — all pieces including the Leaf-1 assembly
+`exists_degree_two_removeVertex_of_no_simple_contraction`); **L8b–L8c open** (de-privatize triple-LI
+bridge; build `case_I_realization_h65` + wiring + flip `lem:case-I-dispatch` green); **L9** (zero-carry
+spine, `hsplit` wiring); **L10** (Thm 5.6 `d=3`, spanning-strip + `def>0` feed). Design basis:
+`notes/Phase22k.md`. After 22k closes: KT-strength Thm 5.5 → 5.6 at `d=3`; general `d` is Phase 23.
 
 ## Engineering conventions
 

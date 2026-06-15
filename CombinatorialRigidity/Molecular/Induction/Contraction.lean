@@ -919,4 +919,186 @@ lemma exists_isLink_pair_of_rigidContract_not_simple {G H : Graph α β} [G.Simp
       rintro rfl
       exact hee (hl₁'.unique_edge hl₂')
 
+/-! ## The Leaf-1 assembly: degree-2 vertex with minimal `0`-dof removal (KT Claim 6.6, full) -/
+
+/-- **A non-simple contraction forces a degree-2 vertex whose removal is minimal `0`-dof**
+(Katoh–Tanigawa 2011 Claim 6.6, p. 676–677; the full Leaf-1 assembly of the Lemma-6.5
+vertex-removal arm of the Case-I dispatch, Phase 22k L8a).
+
+Given a minimal `0`-dof simple graph `G` on at least 3 vertices with a proper rigid
+subgraph, but where **every** proper rigid subgraph has a non-simple contraction at every
+representative, there exists a vertex `v` of degree exactly 2 in `G` (incident to two
+distinct edges `eₐ`, `e_b` with endpoints `a`, `b ∈ V(G)`, `a ≠ b`, `a, b ≠ v`) such
+that `G.removeVertex v` is a minimal `0`-dof simple graph.
+
+**Proof sketch.** Take `G'` = the vertex-cardinality-maximal *induced-saturated* proper
+rigid subgraph (`exists_maximal_induced_isProperRigidSubgraph`). Pick any `r ∈ V(G')` and
+apply `exists_isLink_pair_of_rigidContract_not_simple` (the hypothesis `hnoSimpleContr` at
+`G'`) to get `v ∉ V(G')` with two edges `eₐ : v–a`, `e_b : v–b`, `a, b ∈ V(G')`.
+Build `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`. Then:
+* `G'' ≤ G` (by `addEdge_le` twice, using `G.IsLink eₐ v a` and `G.IsLink e_b v b`);
+* `v` has degree exactly 2 in `G''` (the only `v`-links are the two new edges);
+* `G''.removeVertex v = G'` (links avoiding `v` are exactly the links of `G'`);
+* `def(G'') = 0` (by `removeVertex_deficiency_ge` at `G'' / v` → `def(G'') ≤ def(G') = 0`);
+* maximality of `G'` forces `V(G'') = V(G)` (else `G''` beats `G'` in cardinality);
+* `G = G''` by `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`.
+With `G = G''`, `v` has degree exactly 2 in `G`, and `G − v = G'.removeVertex v = G'` is
+minimal `0`-dof (by `subgraph_minimality`) and simple (`hSimple.mono`). -/
+theorem exists_degree_two_removeVertex_of_no_simple_contraction [DecidableEq β] [Finite α]
+    [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) (_hV3 : 3 ≤ V(G).ncard)
+    (hG : G.IsMinimalKDof n 0) (hSimple : G.Simple)
+    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n)
+    (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
+      ¬ (G.rigidContract H r).Simple) :
+    ∃ (v a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ≠ b ∧ eₐ ≠ e_b ∧
+      G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) ∧
+      (G.removeVertex v).IsMinimalKDof n 0 ∧ (G.removeVertex v).Simple := by
+  classical
+  have hD' : 1 ≤ bodyBarDim n := Nat.le_of_succ_le hD
+  -- Step 1: take the vertex-cardinality-maximal induced-saturated proper rigid subgraph.
+  obtain ⟨G', hG'rig, hG'max, hG'sat⟩ := exists_maximal_induced_isProperRigidSubgraph hD' hrig
+  -- Pick any representative `r ∈ V(G')`.
+  obtain ⟨r, hr⟩ := hG'rig.vertexSet_nonempty
+  -- Step 2: the non-simple contraction yields `v, a, b, eₐ, e_b`.
+  obtain ⟨v, a, b, eₐ, e_b, hav, hbv, hab, hee, hla, hlb, haH, hbH, hvH⟩ :=
+    exists_isLink_pair_of_rigidContract_not_simple hr hG'sat (hnoSimpleContr G' hG'rig r hr)
+  -- `G' ≤ G` (from `hG'rig`).
+  have hG'le : G' ≤ G := hG'rig.1.1
+  -- `eₐ ∉ E(G')`: any `G'`-link via `eₐ` would put `v ∈ V(G')`, contradicting `hvH`.
+  have hea_notG' : eₐ ∉ E(G') := by
+    intro h
+    obtain ⟨x, y, hxy⟩ := G'.exists_isLink_of_mem_edgeSet h
+    rcases hla.eq_and_eq_or_eq_and_eq (hxy.of_le hG'le) with ⟨h1, _⟩ | ⟨h2, _⟩
+    · exact hvH (h1 ▸ hxy.left_mem)
+    · exact hvH (h2 ▸ hxy.right_mem)
+  -- `e_b ∉ E(G')`: same argument with `hlb`.
+  have heb_notG' : e_b ∉ E(G') := by
+    intro h
+    obtain ⟨x, y, hxy⟩ := G'.exists_isLink_of_mem_edgeSet h
+    rcases hlb.eq_and_eq_or_eq_and_eq (hxy.of_le hG'le) with ⟨h1, _⟩ | ⟨h2, _⟩
+    · exact hvH (h1 ▸ hxy.left_mem)
+    · exact hvH (h2 ▸ hxy.right_mem)
+  -- Step 3: build the carrier `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`.
+  set G1 := G'.addEdge eₐ v a with hG1
+  -- `e_b ∉ E(G1)`: `e_b ∉ E(G')` and `e_b ≠ eₐ`.
+  have heb_notG1 : e_b ∉ E(G1) := by
+    rw [hG1]
+    simp only [Graph.addEdge, Graph.edgeSet_union, Graph.edgeSet_singleEdge,
+      Set.mem_union, Set.mem_singleton_iff]
+    rintro (rfl | h)
+    · exact hee rfl
+    · exact heb_notG' h
+  set G'' := G1.addEdge e_b v b with hG''
+  -- `G' ≤ G'.addEdge eₐ v a ≤ G''`.
+  have hG'G1 : G' ≤ G1 := le_addEdge hea_notG'
+  have hG1G'' : G1 ≤ G'' := le_addEdge heb_notG1
+  have hG'G'' : G' ≤ G'' := hG'G1.trans hG1G''
+  -- `G'' ≤ G` by `addEdge_le` twice.
+  have hG1G : G1 ≤ G := addEdge_le hG'le hla
+  have hG''le : G'' ≤ G := addEdge_le hG1G hlb
+  -- `G''.IsLink eₐ v a` and `G''.IsLink e_b v b`.
+  have hla'' : G''.IsLink eₐ v a :=
+    addEdge_isLink_of_ne (addEdge_isLink G' eₐ v a) hee v b
+  have hlb'' : G''.IsLink e_b v b := addEdge_isLink G1 e_b v b
+  -- `v ∈ V(G'')` and `a ∈ V(G'')`.
+  have hvG'' : v ∈ V(G'') := hla''.left_mem
+  -- Degree-exactly-2 for `v` in `G''`: only `eₐ` and `e_b` are `v`-incident in `G''`.
+  have hdeg2'' : ∀ e x, G''.IsLink e v x → e = eₐ ∨ e = e_b := by
+    intro e x hlink
+    rw [hG'', addEdge_isLink_iff_of_notMem heb_notG1] at hlink
+    rcases hlink with ⟨rfl, hmatch⟩ | hlink
+    · exact Or.inr rfl
+    · -- `hlink : G1.IsLink e v x`
+      rw [hG1, addEdge_isLink_iff_of_notMem hea_notG'] at hlink
+      rcases hlink with ⟨rfl, _⟩ | hlink
+      · exact Or.inl rfl
+      · -- `hlink : G'.IsLink e v x`, but `v ∉ V(G')`.
+        exact absurd hlink.left_mem hvH
+  -- `G''.removeVertex v = G'`: links of `G''` avoiding `v` are exactly `G'`-links.
+  have hG''rv : G''.removeVertex v = G' := by
+    apply le_antisymm
+    · -- `G''.removeVertex v ≤ G'`.
+      rw [le_iff]
+      refine ⟨fun x hx => ?_, fun e x y hlink => ?_⟩
+      · rw [vertexSet_removeVertex] at hx
+        have hxv : x ≠ v := by simpa using hx.2
+        have hxV'' : x ∈ V(G'') := hx.1
+        simp only [hG'', hG1, vertexSet_addEdge, Set.mem_union] at hxV''
+        rcases hxV'' with ((rfl | rfl) | (rfl | rfl) | hxG')
+        · exact absurd rfl hxv
+        · exact hbH
+        · exact absurd rfl hxv
+        · exact haH
+        · exact hxG'
+      · rw [removeVertex_isLink] at hlink
+        obtain ⟨hGlink, hxv, hyv⟩ := hlink
+        rw [hG'', addEdge_isLink_iff_of_notMem heb_notG1] at hGlink
+        rcases hGlink with ⟨rfl, hmatch⟩ | hGlink
+        · -- `e = e_b`, endpoints `{v, b}`. But `x ≠ v` and `y ≠ v`.
+          simp only [Sym2.eq, Sym2.rel_iff', Prod.mk.injEq, Prod.swap_prod_mk] at hmatch
+          rcases hmatch with ⟨rfl, _⟩ | ⟨rfl, _⟩
+          · exact absurd rfl hxv
+          · exact absurd rfl hyv
+        · rw [hG1, addEdge_isLink_iff_of_notMem hea_notG'] at hGlink
+          rcases hGlink with ⟨rfl, hmatch⟩ | hGlink
+          · -- `e = eₐ`, endpoints `{v, a}`. But `x ≠ v` and `y ≠ v`.
+            simp only [Sym2.eq, Sym2.rel_iff', Prod.mk.injEq, Prod.swap_prod_mk] at hmatch
+            rcases hmatch with ⟨rfl, _⟩ | ⟨rfl, _⟩
+            · exact absurd rfl hxv
+            · exact absurd rfl hyv
+          · exact hGlink
+    · -- `G' ≤ G''.removeVertex v`.
+      rw [le_iff]
+      refine ⟨fun x hx => ?_, fun e x y hlink => ?_⟩
+      · rw [vertexSet_removeVertex]
+        exact ⟨hG'G''.vertexSet_mono hx, fun h => hvH (h ▸ hx)⟩
+      · rw [removeVertex_isLink]
+        exact ⟨hG'G''.isLink_mono hlink, fun h => hvH (h ▸ hlink.left_mem),
+          fun h => hvH (h ▸ hlink.right_mem)⟩
+  -- `def(G̃'') = 0`: by `removeVertex_deficiency_ge` applied at `G'' / v`.
+  have hV''ne : V(G'').Nonempty := ⟨v, hvG''⟩
+  have hG''0 : G''.deficiency n = 0 := by
+    refine le_antisymm ?_ (G''.deficiency_nonneg n hV''ne)
+    calc G''.deficiency n
+        ≤ (G''.removeVertex v).deficiency n :=
+          removeVertex_deficiency_ge hD hav hbv hee hla'' hlb'' hdeg2''
+      _ = G'.deficiency n := by rw [hG''rv]
+      _ = 0 := hG'rig.1.2
+  -- Step 4: maximality of `G'` forces `V(G'') = V(G)`.
+  -- `V(G'')` properly contains `V(G')` (has `v` extra).
+  have hG'ssG'' : V(G') ⊂ V(G'') := by
+    rw [Set.ssubset_def]
+    exact ⟨hG'G''.vertexSet_mono, fun h => hvH (h hvG'')⟩
+  have hG'ltG'' : V(G').ncard < V(G'').ncard :=
+    Set.ncard_lt_ncard hG'ssG'' (Set.toFinite _)
+  -- If `V(G'') ⊂ V(G)`, then `G''` is a proper rigid subgraph of `G` beating `G'` — contradiction.
+  have hVG''G : V(G'') = V(G) := by
+    by_contra hne
+    have hss : V(G'') ⊂ V(G) := ssubset_of_ne_of_subset hne hG''le.vertexSet_mono
+    have hG''2 : 2 ≤ V(G'').ncard := by
+      have : 2 ≤ V(G').ncard := hG'rig.2.1; omega
+    have hG''prop : G''.IsProperRigidSubgraph G n :=
+      ⟨⟨hG''le, hG''0⟩, hG''2, hss⟩
+    linarith [hG'max G'' hG''prop]
+  -- Step 4b: `G = G''` by the minimality-equality brick.
+  have hGeq : G = G'' :=
+    eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof hD' hG hG''le hVG''G hG''0
+  -- Step 5: conclude. With `G = G''`, `v` has degree exactly 2 in `G`, and `G − v = G'`.
+  have hG'min : G'.IsMinimalKDof n 0 := subgraph_minimality hG'le hG hG'rig.1.2
+  have hGrv : G.removeVertex v = G' := by rw [hGeq]; exact hG''rv
+  refine ⟨v, a, b, eₐ, e_b, hav, hbv, hab, hee, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `G.IsLink eₐ v a`
+    exact hla
+  · -- `G.IsLink e_b v b`
+    exact hlb
+  · -- degree-2: `∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b`
+    intro e x hlink
+    rw [hGeq] at hlink
+    exact hdeg2'' e x hlink
+  · -- `(G.removeVertex v).IsMinimalKDof n 0`
+    rw [hGrv]; exact hG'min
+  · -- `(G.removeVertex v).Simple`
+    rw [hGrv]; exact hSimple.mono hG'le
+
 end Graph
