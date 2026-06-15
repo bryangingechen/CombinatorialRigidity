@@ -7600,7 +7600,7 @@ specializes cleanly to `f = id` vs needs a fresh selector-agreement argument).
   at `k=0` — exactly the nested-IH input shape (the `k' ≤ D−2` is what makes `h622lb`'s
   `−(D−2)` lower bound the *weakest* of the family `−k'`). ✓
 
-### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge. **Loop-case refinement (c′), 2026-06-15:** the L8a-step-2 build surfaced that the maximal `G'` must be taken INDUCED (`G.induce V(G₀)`) to kill the contraction's loop mode — KT's silent edge-saturation; one more NEW brick `deficiency_le_deficiency_of_le_vertexSet_eq` (def antitone under edge addition at fixed vertex set). No definitional change (2026-06-15)
+### 1.70 The L8 signature pin — the Lemma-6.5 arm, `h65` *discharged* via KT Claim 6.6 (graph side) + the Π°-placement producer (geometric side): the two-vertex-removal arm of the Case-I dispatch. KT Claim 6.6 FORCES `k = 0` (the hypotheses make `G` a 0-dof-graph), so the producer concludes inside the `k=0` stratum and discharges the `theorem_55_d3:516` 0-dof `h65` directly; the all-`k` `case_I_dispatch:1867` `h65` is discharged by the SAME producer after an internal `k = 0` derivation (its hypotheses force `def(G̃) = 0`). The geometric side IS the L6 Case-II template (Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + the §1.62 deficiency-aware rank-polynomial transfer), with the NEW block being the TWO `v`-edges spanning the full `D` (KT Lemma 5.3, the one genuinely-new geometric sub-leaf) instead of L6's single split-off edge spanning `D−1`. V11 RESOLVED — buildable, NO motive/IH change: Claim 6.6 needs a NEW maximal-proper-rigid-subgraph existence lemma (genuinely-new combinatorics, bounded by `α` finite) and KT-Lemma-4.4 reused in the +`v` direction (the landed `removeVertex_deficiency_ge` is EXACTLY that direction). One privacy fix: de-privatize CaseIII's triple-LI bridge. **Loop-case refinement (c′), 2026-06-15:** the L8a-step-2 build surfaced that the maximal `G'` must be taken INDUCED (`G.induce V(G₀)`) to kill the contraction's loop mode — KT's silent edge-saturation; one more NEW brick `deficiency_le_deficiency_of_le_vertexSet_eq` (def antitone under edge addition at fixed vertex set). No definitional change. **Steps-3–5 pin (c″), 2026-06-15:** the `G''` carrier is `addEdge`-twice (`(G'.addEdge eₐ v a).addEdge e_b v b`, no bespoke def); step 4's minimality→graph-equality is ONE new brick `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof` (a near-clone of the landed `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` body), buildable, no motive/user decision (2026-06-15)
 
 > **Docs-only design pass (the L8 pin), opus.** Every load-bearing decl below opened to its
 > `def`/`theorem` body and verified against the cited claim (clause (i)). Landed source read this
@@ -7868,6 +7868,101 @@ the maximal `G'`); no open decision for the coordinator/user. **One ordering con
 `deficiency_le_deficiency_of_le_vertexSet_eq` is a `Deficiency.lean` leaf with no `rigidContract`/rigidity
 dependency, so — like step 1's `exists_maximal_isProperRigidSubgraph` — it can land FIRST as its own
 commit (the next concrete commit; see *Hand-off*), before the full Leaf-1 assembly that consumes it.
+
+**(c″) Leaf-1 steps 3–5 pin — the carrier `G''` + the minimality→equality brick + the assembly
+(DESIGN-SETTLE, 2026-06-15, opus, docs-only).** The opener (1a+1b, `exists_maximal_induced_isProperRigidSubgraph`)
+and the extraction (step 2, `exists_isLink_pair_of_rigidContract_not_simple`) are landed, so steps 3–5 are
+the remaining build. The (c) prose glossed two things — the `G''` *carrier* (`G' + v + {eₐ, e_b}` has no
+add-vertex-and-edges in the Graph API) and step 4's *minimality→graph-equality* bridge. Both are settled
+below, every load-bearing decl opened to its body this pass (clause (i)).
+
+*The carrier — `addEdge`-twice, no bespoke def needed.* The package has `Graph.addEdge (G : Graph α β)
+(e : β) (a b : α) := singleEdge a b e ∪ G` (`.lake/packages/Matroid/…/Subgraph/Defs.lean:551`,
+`@[simps! edgeSet vertexSet]`). Pin
+```lean
+G'' := (G'.addEdge eₐ v a).addEdge e_b v b
+```
+where `G'` is the opener's induced-saturated maximal proper rigid subgraph and `v, a, b, eₐ, e_b` come from
+the extraction. Verified semantics (the four (c) facts):
+- **(i) `V(G'') = V(G') ∪ {v}`.** `addEdge` is `singleEdge a b e ∪ G`, and `vertexSet_union` (Defs.lean:461,
+  `rfl`) + `singleEdge`'s `vertexSet = {a,b}` (Constructions/Basic.lean:48–49) give
+  `V(G'') = {v,b} ∪ ({v,a} ∪ V(G'))`. With `a, b ∈ V(G')` (extraction) this is `V(G') ∪ {v}`. The `simps!`-generated
+  `addEdge_vertexSet` automates it.
+- **(ii) `v` has degree EXACTLY 2 in `G''` (only `eₐ, e_b`).** `eₐ ∉ E(G')` and `e_b ∉ E(G')` because each is a
+  `v`-edge and `v ∉ V(G')` (extraction) — so an `E(G')`-edge can't be incident to `v`, and `eₐ ≠ e_b` (extraction)
+  means the second `addEdge`'s base `(G'.addEdge eₐ v a)` carries `eₐ ∉` its-edge-set-minus-`{e_b}` cleanly. A
+  `G''`-link `f v x` is, by `addEdge_isLink_iff_of_notMem` (Defs.lean:566, **no `DecidableEq` needed**) applied
+  twice, either `f = e_b ∧ {v,b}=…`, or `f = eₐ ∧ {v,a}=…`, or a `G'`-link at `v` (impossible, `v ∉ V(G')`). So
+  `∀ f x, G''.IsLink f v x → f = eₐ ∨ f = e_b` — exactly `removeVertex_deficiency_ge`'s `hdeg2` at `G := G''`.
+- **(iii) `G''.removeVertex v = G'`.** `removeVertex v = G'' - {v} = G''[V(G'')∖{v}]` (`deleteVerts_def`); since
+  `v ∉ V(G')`, `V(G'')∖{v} = V(G')`. Prove by `ext_of_le_le` (Subgraph/Basic.lean:65, `≤`+`V`-eq+`E`-eq ⟹ eq)
+  OR directly `Graph.ext`: vertex sets agree (`deleteVerts_vertexSet`); a `(G''-{v})`-link `f x y` is a `G''`-link
+  with `x,y ≠ v` (`deleteVerts_isLink_iff`, Defs.lean:86) — the two added edges are `v`-incident so are dropped,
+  leaving exactly the `G'`-links, and conversely every `G'`-link survives (its ends ≠ `v`). **This direction is
+  the one place saturation is load-bearing:** `G''[V(G')]` keeps every `G''`-edge inside `V(G')`, which are the
+  `G'`-edges *only because `G'` is induced* (`G' = G[V(G₀)]`, so `G'[V(G')] = G'` by
+  `IsInducedSubgraph.vertexSet_induce_eq`, Delete.lean:399) — a non-saturated maximal `G₀` would let a `G`-edge
+  inside `V(G₀)` off `E(G₀)` leak in. The opener's saturation conjunct is consumed here, not only at step 2.
+- **(iv) `G'' ≤ G`.** `addEdge_le (hle : H ≤ G) (he : G.IsLink e x y) : H.addEdge e x y ≤ G` (Defs.lean:581),
+  twice: `eₐ, e_b` are real `G`-edges (`G.IsLink eₐ v a`, `G.IsLink e_b v b` from the extraction), and `G' ≤ G`
+  (opener). No label collision (`eₐ, e_b ∉ E(G')`, and `eₐ ≠ e_b`).
+
+*The minimality→graph-equality brick (genuinely new, but a near-CLONE of a landed lemma — buildable, NOT
+research-shaped).* Step 4 needs `E(G) = E(G'')` (then `G = G''` by `ext_of_le_le` from `G'' ≤ G` + `V(G) =
+V(G'')`). `IsMinimalKDof`'s minimality is matroid-base-meets-every-edge-fiber (`Deficiency.lean:359`,
+re-read), not "no edge removable". **Decisive finding:** the EXACT argument is already in tree as
+`edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` (`Deficiency.lean:2253`) — the new brick is its body with
+the avoided edge generalized from "the 3rd of three parallel edges" to "any `g ∈ E(G) ∖ E(G'')`". Pin (lives in
+`Deficiency.lean`, beside `subgraph_minimality`; conclude `G = G''` directly so the caller gets the assembly's
+hinge fact in one step):
+```lean
+theorem Graph.eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof
+    [DecidableEq β] [Finite α] [Finite β] {G G'' : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hle : G'' ≤ G)
+    (hV : V(G'') = V(G)) (h0 : G''.IsKDof n 0) : G = G''
+```
+*Proof route (verified, every step has its lemma):* `V(G).Nonempty` from `hV3`/`hG`. Suppose `g ∈ E(G)`,
+`g ∉ E(G'')`. Get a base `B'' of M(G̃'')` (`exists_isBase`); `|B''| = D(|V''|−1)` via
+`isBase_ncard_add_deficiency_eq` at `def(G̃'')=0` (`h0`). `B''` is `M(G̃)`-independent via
+`matroidMG_restrict_mulTilde hle` + `restrict_indep_iff` (the precedent's `hBindep` step). rank `M(G̃)` =
+`D(|V|−1)` via `rank_add_deficiency_eq` at `def(G̃)=0` (`hG.1`); with `V'' = V` (`hV`), `|B''| = rank M(G̃)`, so
+`B''` is an `M(G̃)`-base (`Indep.isBase_of_ncard`, using `Indep.ncard_le_rank` + the size equality, exactly the
+precedent's `hBbase`). `hG.2 B'' hBbase g (hg_mem)` forces `B'' ∩ edgeFiber g ≠ ∅`; but `B'' ⊆ E(G̃'')`
+(`IsBase.subset_ground`) and `edgeFiber g` is disjoint from `E(G̃'')` (a copy `p` with `p.1 = g ∉ E(G'')` is not
+in `E(G̃'') = mem_edgeSet_mulTilde`), contradiction (the precedent's final `simp_all`). So `E(G) ⊆ E(G'')`;
+with `hle.edgeSet_mono` (`E(G'') ⊆ E(G)`) get `E(G) = E(G'')`, then `ext_of_le_le hle le_rfl hV.symm hEeq.symm`.
+**No fact absent from tree** — `isBase_ncard_add_deficiency_eq`, `matroidMG_restrict_mulTilde`,
+`rank_add_deficiency_eq`, `Indep.isBase_of_ncard`, `Indep.ncard_le_rank`, `mem_edgeSet_mulTilde`, `edgeFiber`,
+`ext_of_le_le` all confirmed present this pass. (`[Finite α] [Finite β] [DecidableEq β]` + `hD` all on every
+caller; the precedent carries the same.)
+
+*The steps-3–5 assembly (how it composes to the Leaf-1 conclusion).* Inside
+`exists_degree_two_removeVertex_of_no_simple_contraction`:
+1. **Opener (step 1):** `exists_maximal_induced_isProperRigidSubgraph hD'.le hrig` (`hD' : 1 ≤ bodyBarDim n` by
+   `omega` from `hD : 2 ≤`) → `G'` proper rigid, vertex-cardinality-maximal, induced-saturated.
+2. **Extraction (step 2):** `V(G').Nonempty` (from `2 ≤ |V(G')|`) gives an `r ∈ V(G')`;
+   `exists_isLink_pair_of_rigidContract_not_simple hr hHsat (hnoSimpleContr G' hG'prop r hr)` (its `hHsat` = the
+   opener's saturation conjunct; `[G.Simple]` from `hSimple`) → `v ∉ V(G')`, distinct `eₐ:v–a`, `e_b:v–b`,
+   `a, b ∈ V(G')`, `a ≠ b`, `a ≠ v`, `b ≠ v`, `eₐ ≠ e_b`.
+3. **Carrier (step 3):** set `G''` (above). `def(G̃'') = 0`: `removeVertex_deficiency_ge hD … hdeg2` (carrier
+   (ii)) at `G := G''` gives `def(G̃'') ≤ def(G̃''−v) = def(G̃') = 0` (carrier (iii) + `G'` rigid), and
+   `deficiency_nonneg` pins `= 0`. So `G''.IsKDof n 0`.
+4. **Maximality forces `V(G'') = V(G)` (step 4a).** `G''` is rigid (step 3), `V(G'') = V(G')∪{v} ⊋ V(G')`
+   (carrier (i)). If `V(G'') ⊊ V(G)` then `G''.IsProperRigidSubgraph G n` with `|V(G'')| = |V(G')|+1 >
+   |V(G')|` — contradicting the opener's cardinality-maximality. So `V(G'') = V(G)` (`Set.eq_of_subset_of_ncard_le`
+   / the `⊂`-vs-`=` dichotomy on `V(G'') ⊆ V(G)`). **Then the new brick (step 4b):**
+   `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof hD'.le hG (addEdge_le-twice) hVeq h0` → `G = G''`.
+5. **Conclusion (step 5).** With `G = G''`: `v` degree-exactly-2 (carrier (ii), transported `G''→G`);
+   `G.removeVertex v = G''.removeVertex v = G'` (carrier (iii)), which is minimal 0-dof
+   (`subgraph_minimality (removeVertex_le ..) hG (G'.IsKDof n 0)`) and simple (`hSimple.mono (removeVertex_le ..)`).
+   Pack `v, a, b, eₐ, e_b` + the conjuncts.
+
+*S/P/B note.* Steps 3–5 are now ALL landed-brick + bookkeeping: the carrier is `addEdge`+package lemmas, the
+new brick is a near-clone of `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` (P≈3 but copy-shaped, not
+research), and the assembly is composition. **Nothing forces a motive/definitional change or a user decision**
+(clause (ii) not triggered). The one ordering call: land the new brick
+`eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof` FIRST as its own `Deficiency.lean` commit (self-contained
+matroid-counting, no `rigidContract`/carrier dependency), then the full Leaf-1 assembly.
 
 **(d) Leaf 2 — the Π°-placement producer (geometric side, the L6 template widened).** Pinned signature
 (lives in `Theorem55.lean`, beside `case_I_realization_all_k`/`case_I_dispatch`, so it threads into the
