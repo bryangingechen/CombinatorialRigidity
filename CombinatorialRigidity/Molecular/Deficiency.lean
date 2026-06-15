@@ -2094,6 +2094,69 @@ theorem isBase_ncard_add_deficiency_eq [DecidableEq β] [Finite α] [Finite β] 
     (B.ncard : ℤ) + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
   rw [hB.ncard]; exact G.rank_add_deficiency_eq n hD hne
 
+/-- **Minimality + subgraph + equal vertex set + 0-dof ⟹ equality** (`lem:subgraph-minimality`;
+KT Lemma 3.3 corollary): if `G` is a minimal `0`-dof-graph, `G'' ≤ G` is a subgraph with
+`V(G'') = V(G)` and `G''` is also `0`-dof, then `G = G''`.
+
+Proof: assume for contradiction that there is a `g ∈ E(G) ∖ E(G'')`. Get a base `B''` of
+`M(G̃'')`. By the restriction identity `M(G̃) ↾ E(G̃'') = M(G̃'')` (`matroidMG_restrict_mulTilde`),
+`B''` is `M(G̃)`-independent. Since `G''` is `0`-dof and `V(G'') = V(G)`,
+`|B''| = D(|V(G)| - 1)` (`isBase_ncard_add_deficiency_eq`). Since `G` is `0`-dof,
+`rank M(G̃) = D(|V(G)| - 1)`, so `B''` is a base of `M(G̃)`. Minimality of `G` (`hG.2`)
+gives `p ∈ B'' ∩ ẽ_g ≠ ∅`; but `p ∈ E(G̃'')` forces `p.1 ∈ E(G'')`,
+contradicting `g = p.1 ∉ E(G'')`.
+
+This is the **step-4 bridge** the Lemma-6.5 arm of the Case-I dispatch (KT Claim 6.6,
+Phase 22k L8a) uses after building `G'' := (G'.addEdge eₐ v a).addEdge e_b v b`: maximality
+of `G'` forces `V(G'') = V(G)`, and `G''` is `0`-dof by the vertex-removal deficiency count
+(`removeVertex_deficiency_ge`), so `G = G''` and `v` has degree exactly 2 in `G`. -/
+theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Finite α]
+    [Finite β] {G G'' : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n 0) (hle : G'' ≤ G)
+    (hV : V(G'') = V(G)) (h0 : G''.IsKDof n 0) : G = G'' := by
+  -- Apply `ext_of_le_le`: it suffices to show `E(G) = E(G'')`.
+  refine ext_of_le_le le_rfl hle hV.symm ?_
+  -- `E(G'') ⊆ E(G)` from `hle`; prove `E(G) ⊆ E(G'')` by contradiction.
+  apply (Set.Subset.antisymm hle.edgeSet_mono _).symm
+  by_contra hlt
+  -- There exists `g ∈ E(G) ∖ E(G'')`.
+  obtain ⟨g, hg, hgne⟩ := Set.not_subset.mp hlt
+  -- `V(G).Nonempty`: derive from `g ∈ E(G)`.
+  have hne_G : V(G).Nonempty := by
+    obtain ⟨x, _, hlink⟩ := G.exists_isLink_of_mem_edgeSet hg
+    exact ⟨x, hlink.left_mem⟩
+  have hne_G'' : V(G'').Nonempty := hV ▸ hne_G
+  -- Get a base `B''` of `M(G̃'')`.
+  haveI hMFin : (G.matroidMG n).Finite := Matroid.finite_of_finite (M := G.matroidMG n)
+  obtain ⟨B'', hB''⟩ := (G''.matroidMG n).exists_isBase
+  -- `B''` is `M(G̃)`-independent via the restriction identity `M(G̃) ↾ E(G̃'') = M(G̃'')`.
+  have hBindep : (G.matroidMG n).Indep B'' := by
+    have hrestr : ((G.matroidMG n) ↾ E(G''.mulTilde n)).Indep B'' := by
+      rw [matroidMG_restrict_mulTilde hle]; exact hB''.indep
+    exact (restrict_indep_iff.mp hrestr).1
+  -- `|B''| = D·(|V(G)| − 1)`: the 0-dof size count on `G''` with `|V(G'')| = |V(G)|`.
+  have hBsize : (B''.ncard : ℤ) = (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by
+    have heq := G''.isBase_ncard_add_deficiency_eq n hD hne_G'' hB''
+    rw [h0, hV] at heq; linarith
+  -- `rank M(G̃) = D·(|V(G)| − 1)` since `G` is `0`-dof.
+  have hrank_D : (G.matroidMG n).rank + (0 : ℤ) =
+      bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+    have heq' := G.rank_add_deficiency_eq n hD hne_G
+    rw [hG.1] at heq'; linarith
+  -- `B''` is a base of `M(G̃)`.
+  have hBbase : (G.matroidMG n).IsBase B'' := by
+    apply hBindep.isBase_of_ncard
+    have hpos : 0 ≤ (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := by linarith [hrank_D]
+    zify [Int.toNat_of_nonneg hpos]
+    linarith [hBsize, hrank_D]
+  -- Minimality of `G`: `B'' ∩ ẽ_g ≠ ∅`.
+  obtain ⟨p, hpB'', hpe⟩ := hG.2 B'' hBbase g hg
+  -- But `p ∈ B'' ⊆ E(G̃'')`, so `p.1 ∈ E(G'')`, contradicting `g ∉ E(G'')`.
+  have hpGS : p ∈ E(G''.mulTilde n) := hB''.subset_ground hpB''
+  rw [mem_edgeSet_mulTilde] at hpGS
+  rw [edgeFiber, Set.mem_setOf_eq] at hpe
+  exact hgne (hpe ▸ hpGS)
+
 /-- **A rigid subgraph's multiplied graph packs `D` edge-disjoint forests on a base**
 (`thm:def-eq-corank` Cor 6.2; Jackson–Jordán 2009, Katoh–Tanigawa 2011 §6.2). The
 combinatorial substrate of the Case-I realization producer (`lem:case-I-realization`, Phase 22,
