@@ -606,8 +606,17 @@ housekeeping pass once their resolution is fully indexed.
   `G`-edge may be a genuine loop; a caller with `G.Simple` recovers `x ≠ y` from `IsLink.ne` itself.
   (General lesson: a `map`/relabel-level lemma must not bake in a source-graph `Loopless`/`Simple`
   hypothesis the statement doesn't take — push that recovery to the simple-graph caller.)
+- **Step-2 extraction consumer (Phase 22k, L8a):** `exists_isLink_pair_of_rigidContract_not_simple`
+  (same file) turns `rigidContract_not_simple`'s two-disjunct unpacking into Claim 6.6's
+  conclusion — a vertex `v ∉ V(H)` with two distinct edges into `V(H)` — given `G.Simple` + the
+  edge-saturation hyp `hHsat` (every `G`-edge inside `V(H)` lies in `E(H)`). The loop disjunct is
+  vacuous (a both-ends-in-`V(H)` surviving edge would be in `E(H)`); the parallel disjunct's
+  shared-`v` extraction reads off the auxiliary brick `collapseTo_eq_imp_mem_of_ne` (with the
+  representative `r ∈ V(H)`, `collapseTo r V(H)` merges two *distinct* vertices only when both lie
+  in `V(H)`). Caller supplies `hHsat` from `induce` (the §1.70(c′) saturation).
 - **Status:** resolved (project-side `map_simple`/`map_not_simple` + `rigidContract_simple`/
-  `rigidContract_not_simple` consumers; fork-API gap noted for potential upstream).
+  `rigidContract_not_simple` + `exists_isLink_pair_of_rigidContract_not_simple` consumers;
+  fork-API gap noted for potential upstream).
 
 ### [resolved] Transferring `IsInfinitesimallyRigidOn` across an `infinitesimalMotions` *equality* — round-trip through `mem_infinitesimalMotions`, there is no `IsInfinitesimallyRigidOn`-congruence lemma
 - **Where it bit:** `hasGenericRealization_transport_ends` (Phase 22, the N6-composer `ends`-swap

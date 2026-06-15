@@ -7958,12 +7958,22 @@ def-antitone brick + an induced saturation; the two landed L8a sub-leaves — `e
   (c′) loop-case fix's one new piece: `H ≤ H'` at equal vertex sets ⟹ `def(H'̃) ≤ def(H̃)`. **The next
   concrete commit** — a small `partitionDef`-monotone-in-crossing-count + `ciSup` lemma, no rigidity, no
   dependency on anything else L8 needs. Mints no node (a `\uses`-only brick).
+* **L8a step 2 — the shared-`v` extraction** `exists_isLink_pair_of_rigidContract_not_simple`
+  (Contraction.lean, **LANDED** beside `rigidContract_not_simple`). The P≈3 sub-step, now discharged:
+  given `G.Simple` + `hHsat` (every `G`-edge inside `V(H)` lies in `E(H)` — the (c′) induced-saturation
+  abstraction) + `¬(G/E(H)).Simple` at `r ∈ V(H)`, produces `v ∉ V(H)` with two distinct edges `eₐ, e_b`
+  into `V(H)` (other ends `a ≠ b ∈ V(H)`). Loop disjunct vacuous by `hHsat`; parallel disjunct's
+  shared-`v` read off the auxiliary `collapseTo_eq_imp_mem_of_ne` (`r ∈ V(H)` ⟹ `collapseTo` merges two
+  distinct vertices only inside `V(H)`). Axiom-clean. No rigidity, no `induce` (the caller supplies
+  `hHsat`).
 * **L8a — Leaf 1, `exists_degree_two_removeVertex_of_no_simple_contraction`** (ReducibleVertex.lean or
-  Contraction.lean). The NEW combinatorics. Consumes the two landed L8a sub-leaves
-  (`exists_maximal_isProperRigidSubgraph`, `rigidContract_not_simple`) + L8a-0 + `edgeSet_induce` (the
-  (c′) induced saturation). Pure graph theory, no rigidity, no dependency on L8b. Mints a green node (or
-  folds into `lem:case-I-dispatch`'s proof `\uses`). *Buildable; the one P≈3 sub-step (parallel-disjunct
-  ⟹ shared-`v`; the loop disjunct is now vacuous on the induced `G'`) resolves at this build.*
+  Contraction.lean). The NEW combinatorics. Consumes the landed L8a sub-leaves
+  (`exists_maximal_isProperRigidSubgraph`, `rigidContract_not_simple`, **`exists_isLink_pair_of_rigidContract_not_simple`**) +
+  L8a-0 + `edgeSet_induce` (the (c′) induced saturation). Pure graph theory, no rigidity, no dependency on
+  L8b. Mints a green node (or folds into `lem:case-I-dispatch`'s proof `\uses`). *Remaining: the
+  induced-saturation opener (1a/1b) + the `G''=G'+v+{e,f}` build (steps 3–5, `removeVertex_deficiency_ge`
+  + maximality/minimality). The shared-`v` extraction (step 2) is landed; `hHsat` is fed from
+  `edgeSet_induce`.*
 * **L8b — the privacy fix** (CaseIII.lean): drop `private` on :3407. A trivial one-token edit; can ride in
   L8c's commit. (Listed separately because it is a CaseIII edit, not a Theorem55 one — but it is gating for
   L8c, not standalone.)

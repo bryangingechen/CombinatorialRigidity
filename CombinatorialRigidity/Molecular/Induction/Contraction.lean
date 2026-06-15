@@ -774,4 +774,149 @@ theorem rigidContract_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H 
     rw [edgeSet_rigidContract] at heK
     exact hmin B (hN4c ▸ hB) e heK.1 heK.2
 
+/-! ## The shared-vertex extraction of Claim 6.6 (the Lemma-6.5 arm, step 2) -/
+
+/-- **The collapse map merges two distinct vertices only inside `V(H)`** (the auxiliary fact the
+shared-vertex extraction reads off). With the representative `r ∈ V(H)`, the only fiber of
+`collapseTo r V(H)` carrying more than one vertex is `r`'s, reached exactly from `V(H)`: if
+`collapseTo r V(H) x = collapseTo r V(H) y` with `x ≠ y`, then both `x, y ∈ V(H)`. (The mixed
+case `x ∈ V(H)`, `y ∉ V(H)` forces `y = r ∈ V(H)`, a contradiction; the both-outside case forces
+`x = y`.) -/
+lemma collapseTo_eq_imp_mem_of_ne {r : α} {S : Set α} (hr : r ∈ S) {x y : α}
+    (heq : collapseTo r S x = collapseTo r S y) (hne : x ≠ y) : x ∈ S ∧ y ∈ S := by
+  classical
+  simp only [collapseTo] at heq
+  by_cases hx : x ∈ S <;> by_cases hy : y ∈ S
+  · exact ⟨hx, hy⟩
+  · simp only [if_pos hx, if_neg hy] at heq; exact absurd (heq ▸ hr) hy
+  · simp only [if_neg hx, if_pos hy] at heq; exact absurd (heq ▸ hr) hx
+  · simp only [if_neg hx, if_neg hy] at heq; exact absurd heq hne
+
+/-- **A non-simple rigid-subgraph contraction of an induced rigid subgraph yields a vertex with
+two edges into the subgraph** (Katoh–Tanigawa 2011 Claim 6.6, p. 676–677, step 2; the genuinely
+new combinatorial content of the Lemma-6.5 vertex-removal arm of the Case-I dispatch). When `G`
+is simple, `H` is edge-saturated within its vertex set (`hHsat` — every `G`-edge with both ends in
+`V(H)` already lies in `E(H)`, which holds e.g. for an *induced* `H`), and the contraction
+`G / E(H)` is *not* simple at representative `r ∈ V(H)`, then there is a vertex `v ∉ V(H)`
+incident to two distinct edges `eₐ, e_b` whose other endpoints `a, b` lie in `V(H)` (with
+`a ≠ b`, forced by `G`-simplicity since `eₐ ≠ e_b`).
+
+The proof reads `rigidContract_not_simple`: its loop disjunct is killed by `hHsat` (a surviving
+edge with both collapsed-equal ends would, by `collapseTo_eq_imp_mem_of_ne` on the simple `G`,
+have both endpoints in `V(H)`, hence lie in `E(H)` — but surviving edges are off `E(H)`); its
+parallel disjunct supplies two distinct surviving edges with collapsed-equal end-pairs. Each
+surviving edge, being off `E(H)`, has a non-`V(H)` endpoint (`hHsat`); were both its endpoints
+outside `V(H)` the collapse would fix the pair, and the matched second edge would share that pair,
+contradicting `G`-simplicity. So each edge has exactly one endpoint in `V(H)` (collapsed to `r`)
+and one outside; the ordered-pair match forces the two outside endpoints to coincide — the
+common `v`. -/
+lemma exists_isLink_pair_of_rigidContract_not_simple {G H : Graph α β} [G.Simple] {r : α}
+    (hr : r ∈ V(H))
+    (hHsat : ∀ e x y, G.IsLink e x y → x ∈ V(H) → y ∈ V(H) → e ∈ E(H))
+    (hns : ¬ (G.rigidContract H r).Simple) :
+    ∃ (v a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ≠ b ∧ eₐ ≠ e_b ∧
+      G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ a ∈ V(H) ∧ b ∈ V(H) ∧ v ∉ V(H) := by
+  classical
+  set c := collapseTo r V(H) with hc
+  -- The surviving-edge facts: a `G ＼ E(H)`-link is a `G`-link off `E(H)`.
+  have hsurv : ∀ {e x y}, (G.deleteEdges E(H)).IsLink e x y → G.IsLink e x y ∧ e ∉ E(H) := by
+    intro e x y h; rw [deleteEdges_isLink] at h; exact h
+  -- Each surviving edge has a non-`V(H)` endpoint (else `hHsat` puts it in `E(H)`).
+  have hout : ∀ {e x y}, G.IsLink e x y → e ∉ E(H) → x ∉ V(H) ∨ y ∉ V(H) := by
+    intro e x y hlink hne
+    by_contra hcon; rw [not_or, not_not, not_not] at hcon
+    exact hne (hHsat e x y hlink hcon.1 hcon.2)
+  -- `c` fixes a non-`V(H)` vertex and it is `≠ r` (since `r ∈ V(H)`).
+  have hcfix : ∀ {z}, z ∉ V(H) → c z = z := fun {z} hz => by simp [hc, collapseTo, hz]
+  have hcmem : ∀ {z}, z ∈ V(H) → c z = r := fun {z} hz => by simp [hc, collapseTo, hz]
+  rcases rigidContract_not_simple hns with ⟨e, x, y, hl, hxy⟩ | hpar
+  · -- Loop disjunct: vacuous on a saturated `H`.
+    obtain ⟨hlink, hnotH⟩ := hsurv hl
+    rw [← hc] at hxy
+    obtain ⟨hxH, hyH⟩ := collapseTo_eq_imp_mem_of_ne hr hxy hlink.ne
+    exact absurd (hHsat e x y hlink hxH hyH) hnotH
+  · -- Parallel disjunct: two distinct surviving edges with collapsed-equal end-pairs.
+    obtain ⟨e₁, e₂, x₁, y₁, x₂, y₂, hl₁, hl₂, hcx, hcy, hee⟩ := hpar
+    rw [← hc] at hcx hcy
+    obtain ⟨hlink₁, hnotH₁⟩ := hsurv hl₁
+    obtain ⟨hlink₂, hnotH₂⟩ := hsurv hl₂
+    -- A fixed non-`V(H)` vertex is `≠ r` (since `r ∈ V(H)`).
+    have hne_r : ∀ {z}, z ∉ V(H) → z ≠ r := fun {z} hz => by rintro rfl; exact hz hr
+    -- A surviving edge whose collapsed end-pair is fixed (both ends outside `V(H)`) coincides with
+    -- the other surviving edge — contradicting `e₁ ≠ e₂`. Formalized as: not both ends of edge 1
+    -- are outside `V(H)` (and symmetrically; we apply it to whichever edge needs it).
+    have hnotbothout : x₁ ∈ V(H) ∨ y₁ ∈ V(H) := by
+      by_contra hcon
+      rw [not_or] at hcon
+      obtain ⟨hx₁, hy₁⟩ := hcon
+      -- `c x₁ = x₁`, `c y₁ = y₁`; matching forces `x₂ = x₁`, `y₂ = y₁`, then `e₁ = e₂`.
+      rw [hcfix hx₁] at hcx
+      rw [hcfix hy₁] at hcy
+      have hx₂ : x₂ ∉ V(H) := fun h => hne_r hx₁ (hcx.trans (hcmem h))
+      have hy₂ : y₂ ∉ V(H) := fun h => hne_r hy₁ (hcy.trans (hcmem h))
+      rw [hcfix hx₂] at hcx
+      rw [hcfix hy₂] at hcy
+      subst hcx; subst hcy
+      exact hee (hlink₁.unique_edge hlink₂)
+    have hnotbothout₂ : x₂ ∈ V(H) ∨ y₂ ∈ V(H) := by
+      by_contra hcon
+      rw [not_or] at hcon
+      obtain ⟨hx₂, hy₂⟩ := hcon
+      rw [hcfix hx₂] at hcx
+      rw [hcfix hy₂] at hcy
+      have hx₁ : x₁ ∉ V(H) := fun h => hne_r hx₂ (hcx.symm.trans (hcmem h))
+      have hy₁ : y₁ ∉ V(H) := fun h => hne_r hy₂ (hcy.symm.trans (hcmem h))
+      rw [hcfix hx₁] at hcx
+      rw [hcfix hy₁] at hcy
+      subst hcx; subst hcy
+      exact hee (hlink₁.unique_edge hlink₂)
+    -- Each edge has *exactly* one endpoint in `V(H)` (not both: `hHsat`; not none: above).
+    -- Normalize each to `G.IsLink eᵢ vᵢ aᵢ` with `vᵢ ∉ V(H)`, `aᵢ ∈ V(H)`.
+    obtain ⟨v₁, a₁, hl₁', hv₁, ha₁, hcv₁, hca₁⟩ :
+        ∃ v a, G.IsLink e₁ v a ∧ v ∉ V(H) ∧ a ∈ V(H) ∧ c v = v ∧ c a = r := by
+      rcases hnotbothout with hx₁ | hy₁
+      · obtain hy₁ := (hout hlink₁ hnotH₁).resolve_left (not_not.mpr hx₁)
+        exact ⟨y₁, x₁, hlink₁.symm, hy₁, hx₁, hcfix hy₁, hcmem hx₁⟩
+      · obtain hx₁ := (hout hlink₁ hnotH₁).resolve_right (not_not.mpr hy₁)
+        exact ⟨x₁, y₁, hlink₁, hx₁, hy₁, hcfix hx₁, hcmem hy₁⟩
+    obtain ⟨v₂, a₂, hl₂', hv₂, ha₂, hcv₂, hca₂⟩ :
+        ∃ v a, G.IsLink e₂ v a ∧ v ∉ V(H) ∧ a ∈ V(H) ∧ c v = v ∧ c a = r := by
+      rcases hnotbothout₂ with hx₂ | hy₂
+      · obtain hy₂ := (hout hlink₂ hnotH₂).resolve_left (not_not.mpr hx₂)
+        exact ⟨y₂, x₂, hlink₂.symm, hy₂, hx₂, hcfix hy₂, hcmem hx₂⟩
+      · obtain hx₂ := (hout hlink₂ hnotH₂).resolve_right (not_not.mpr hy₂)
+        exact ⟨x₂, y₂, hlink₂, hx₂, hy₂, hcfix hx₂, hcmem hy₂⟩
+    -- The two outside endpoints coincide. The reoriented links carry the original `c`-pairs up to
+    -- swap; in all orientations the matched `c`-coordinates force `v₁ = v₂` (the common `v`).
+    have hv : v₁ = v₂ := by
+      -- `c v₁ = v₁ ∈ {c x₁, c y₁} = {c x₂, c y₂} = {c v₂, c a₂} = {v₂, r}`, and `v₁ ≠ r`.
+      -- Place `c v₁` among `{c x₂, c y₂}` via the reorientation of edge 1, then read off `{v₂, r}`.
+      have h1 : c v₁ = c x₂ ∨ c v₁ = c y₂ := by
+        rcases hlink₁.eq_and_eq_or_eq_and_eq hl₁' with ⟨hx, _⟩ | ⟨_, hy⟩
+        · exact Or.inl (by rw [← hx, hcx])
+        · exact Or.inr (by rw [← hy, hcy])
+      have h2 : c x₂ = v₂ ∨ c x₂ = r := by
+        rcases hlink₂.eq_and_eq_or_eq_and_eq hl₂' with ⟨hx, _⟩ | ⟨hx, _⟩
+        · exact Or.inl (by rw [hx, hcv₂])
+        · exact Or.inr (by rw [hx, hca₂])
+      have h3 : c y₂ = v₂ ∨ c y₂ = r := by
+        rcases hlink₂.eq_and_eq_or_eq_and_eq hl₂' with ⟨_, hy⟩ | ⟨_, hy⟩
+        · exact Or.inr (by rw [hy, hca₂])
+        · exact Or.inl (by rw [hy, hcv₂])
+      rw [hcv₁] at h1
+      rcases h1 with h1 | h1
+      · rcases h2 with h2 | h2
+        · rw [h1, h2]
+        · exact absurd (h1.trans h2) (hne_r hv₁)
+      · rcases h3 with h3 | h3
+        · rw [h1, h3]
+        · exact absurd (h1.trans h3) (hne_r hv₁)
+    subst hv
+    refine ⟨v₁, a₁, a₂, e₁, e₂, ?_, ?_, ?_, hee, hl₁', hl₂', ha₁, ha₂, hv₁⟩
+    · exact fun h => hv₁ (h ▸ ha₁)
+    · exact fun h => hv₁ (h ▸ ha₂)
+    · -- `a₁ ≠ a₂`: else both edges link `v₁, a₁` in simple `G`, so `e₁ = e₂`, contradiction.
+      rintro rfl
+      exact hee (hl₁'.unique_edge hl₂')
+
 end Graph
