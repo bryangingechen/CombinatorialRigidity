@@ -13,15 +13,30 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**Next concrete step: L3 — `PanelHinge.lean`.** L2 closed: an *opacity probe* (local flip → scoped
-build → revert; now the standing per-layer method, see below) confirmed `Pinning.lean` needs **zero
-migration** (all its `ScrewSpace` reach-ins are opacity-neutral — type ascriptions, `annihRow`/abstract-
-basis API, `inferInstance` resolving via the named instances, `iInfKerProjEquiv`/`single`/`proj`
-module-level machinery), but the probe *also* surfaced three opacity-readiness gaps the prior layers'
-green-on-`abbrev` builds were blind to — all closed in the same commit (still on the `abbrev`). L3
-defines `supportExtensor` (the producer of every `ScrewSpace`-typed value) and the realization
-predicates `HasPanelRealization`/`HasGenericFullRankRealization` — open it with the opacity probe, then
-recon. Each commit keeps the project green (carrier still `abbrev`); the **FLIP lands LAST**.
+**Next concrete step: L4 — `GenericityDevice.lean`.** L3 closed: the opacity probe confirmed
+`PanelHinge.lean` is **migration-free** (like `Pinning.lean` at L2) — its realization predicates
+(`HasPanelRealization`/`HasGenericFullRankRealization`) and `PanelHingeFramework` API embed `ScrewSpace`
+only *structurally* (via `supportExtensor`/`panelSupportExtensor`-valued fields, consumed abstractly),
+with the only carrier-touching sites all opacity-neutral (a type ascription, module-level
+`Submodule.span ℝ {…}`, and `Function.update` over the plain normal functions). No new gaps surfaced in
+the lower layers. L4 is the first probe expected to *break*: it holds the 5× near-identical
+`change … (Pi.single a (screwBasis k t)) = …` basis blocks (`GenericityDevice.lean:220`) — OQ3 says a
+`change`/`rfl` onto the direct basis vector still lands at default transparency, but the probe will
+confirm and drive whether each becomes a `rw`/`simp`. Each commit keeps the project green (carrier still
+`abbrev`); the **FLIP lands LAST**.
+
+**L3 landed (2026-06-16): `PanelHinge.lean` verified migration-free, project green (docs-only).** The
+opacity probe (local flip + 3 named instances → scoped `lake build` of the PanelHinge module → revert)
+built the whole spine-to-PanelHinge green on the *opaque* carrier with zero errors/warnings. The file's
+`ScrewSpace` reach-ins are all opacity-neutral (design-doc categories (b)-type-ascription and (c)-span,
+no (a)/(d)/(e)): `{S : α → ScrewSpace k}` type ascription (Case-II `hnew`), `Submodule.span ℝ {…}`
+membership over `supportExtensor`-valued sets (module-level), and `Function.update P.normal v n` over
+the plain `α → Fin (k+2) → ℝ` normals — `withNormal` updates a *normal*, not a `ScrewSpace`. The
+realization predicates that *structurally embed* the carrier (`HasPanelRealization`,
+`HasGenericFullRankRealization`, `HasFullRankRealization`) quantify a `BodyHingeFramework`/normal
+assignment and read its `ScrewSpace`-typed fields abstractly, never constructing or coordinate-accessing
+a carrier value. No new gaps surfaced in the migrated lower layers (RigidityMatrix/PanelLayer/Pinning).
+No blueprint pin changed.
 
 **L2 landed (2026-06-16): `Pinning.lean` verified migration-free + three L0/L1 opacity gaps closed,
 project green.** The probe-surfaced gaps (canonical in `notes/ScrewSpaceCarrier-design.md` §5 *L2
@@ -144,8 +159,14 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
   `screwSpace_finrank` `change`-expose; `noncomputable` on 5 carrier-valued defs; the
   `exists_linearIndependent_extensor_pair_perp` LI-transport via `equivExteriorPower`. **Done
   2026-06-16** — whole project builds + lints clean.
-- [ ] **L3 — `PanelHinge.lean`** (defines `supportExtensor`; the realization predicates
-  `HasPanelRealization` / `HasGenericFullRankRealization` that structurally embed `ScrewSpace`).
+- [x] **L3 — `PanelHinge.lean`.** Probe confirmed **migration-free** (like `Pinning.lean`): the
+  realization predicates `HasPanelRealization` / `HasGenericFullRankRealization` and the
+  `PanelHingeFramework` API embed `ScrewSpace` only *structurally* (through
+  `supportExtensor`/`panelSupportExtensor`-valued fields, abstractly consumed) — no carrier reach-in.
+  Its `ScrewSpace`-touching sites are all opacity-neutral: type ascription (`{S : α → ScrewSpace k}`),
+  module-level `Submodule.span ℝ {…}` membership, and `Function.update P.normal …` over the plain
+  `α → Fin (k+2) → ℝ` normals (not carrier-valued). Probe surfaced **zero** new gaps in the
+  already-migrated lower layers. **Done 2026-06-16** — whole project builds + lints clean (docs-only commit).
 - [ ] **L4 — `GenericityDevice.lean`** (the 5× near-identical `change … (Pi.single a (screwBasis k t))`
   basis blocks → `rw`/`simp` once the basis vector is no longer defeq-transparent; OQ3 confirms a
   `change`/`rfl` onto the direct basis vector still lands at default transparency).
@@ -180,27 +201,33 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
 
 ## Hand-off / next phase
 
-**Smallest next commit: L3 — `PanelHinge.lean`.** L0a/L0b/L1/L2 (RigidityMatrix, PanelLayer,
-Pinning) are now opacity-ready and on the API. L3 is the next geometry file down the spine and the
-first that *defines* a `ScrewSpace`-typed producer (`supportExtensor`) plus the realization
-predicates that structurally embed the carrier. **Open it with the opacity probe** (local flip +
-3 instances → `lake build CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge` → revert);
-the probe drives the recon and catches the four gap classes (design doc §5 *L2 refinement*). Then
-pre-migrate on the `abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` /
-`(C : ExteriorAlgebra)`→`C.val`, add `noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ`
-def, route `.val`-arithmetic through `val_smul`/`val_add`/`val_zero`, and route LI/`ker`-transport
-through `equivExteriorPower`. Each commit keeps the project green on the `abbrev`. The API shape is
-fixed (L0a/L1/L2) — every later layer is the probe + mechanical pre-migration.
+**Smallest next commit: L4 — `GenericityDevice.lean`.** L0a/L0b/L1/L2/L3 (RigidityMatrix, PanelLayer,
+Pinning, PanelHinge) are now opacity-ready (L2/L3 were both migration-free; only L0a/L0b/L1 needed
+edits). L4 is the next geometry file down the spine and the **first probe expected to break**: it
+holds the 5× near-identical `change … (Pi.single a (screwBasis k t)) = …` basis blocks
+(`GenericityDevice.lean:220`), category (d). **Open it with the opacity probe** (local flip + 3
+instances → `lake build CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice` →
+revert); the probe drives the recon and catches the four gap classes (design doc §5 *L2 refinement*).
+OQ3 predicts the `change`/`rfl` onto the direct basis vector still lands at default transparency
+(transport is defeq-free), so the blocks likely survive verbatim — the probe confirms. Then pre-migrate
+on the `abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` / `(C : ExteriorAlgebra)`→`C.val`, add
+`noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ` def, route `.val`-arithmetic through
+`val_smul`/`val_add`/`val_zero`, and route LI/`ker`-transport through `equivExteriorPower`. Each commit
+keeps the project green on the `abbrev`. The API shape is fixed (L0a/L1/L2) — every later layer is the
+probe + mechanical pre-migration.
 
-**L2 calibration of the per-layer method.** L2's lesson is the *method*, not a site count:
+**L2/L3 calibration of the per-layer method.** The lesson is the *method*, not a site count:
 green-on-`abbrev` is **blind to opacity-readiness**, so each remaining layer must run the opacity
 probe up front (L1 had skipped it and left three `PanelLayer.lean` breaks the probe then caught). The
-four recurring gap classes are now catalogued (design doc §5). Note also the L1 idiom that still
-recurs: after migrating a `(⟨v,h⟩ : ScrewSpace).val`/coercion onto `mk`/`val`, a trailing `rfl`-close
-may need an explicit `ScrewSpace.val_mk` rewrite — `mk`/`val` are semireducible `def`s, so `rw`'s
-auto-`rfl` (reducible transparency) does not unfold them. The `abbrev`→opaque-`def` **FLIP lands
-last**, after the whole spine adopts the API, as a single small commit that banks the perf win and
-resolves OQ1.
+four recurring gap classes are catalogued (design doc §5). The probe also has a *negative* outcome —
+a layer that builds clean on the opaque carrier needs **no migration** (L2 `Pinning.lean`, L3
+`PanelHinge.lean`): a file that only *consumes* `ScrewSpace`-typed values abstractly (type ascription,
+module-level span, predicates embedding the carrier through framework fields) reaches into the carrier
+nowhere and is opacity-neutral. Note also the L1 idiom that recurs in files that *do* migrate: after
+moving a `(⟨v,h⟩ : ScrewSpace).val`/coercion onto `mk`/`val`, a trailing `rfl`-close may need an
+explicit `ScrewSpace.val_mk` rewrite — `mk`/`val` are semireducible `def`s, so `rw`'s auto-`rfl`
+(reducible transparency) does not unfold them. The `abbrev`→opaque-`def` **FLIP lands last**, after the
+whole spine adopts the API, as a single small commit that banks the perf win and resolves OQ1.
 
 **At phase close:** the d=3 tree builds on the opaque `ScrewSpace` carrier; the three
 `maxHeartbeats` survivors are dropped/lowered (OQ1 resolved); the general-`d` API is *not* frozen,
@@ -280,3 +307,17 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   instances are `noncomputable`); (4) composed `exists_linearIndependent_extensor_pair_perp`'s
   LI-transport with `equivExteriorPower`. Gap classes + method recorded in
   `notes/ScrewSpaceCarrier-design.md` §5 *L2 refinement* (canonical) + the *Layer plan* preamble.
+
+- **L3 — `PanelHinge.lean` (no migration) (2026-06-16, opus).** The opacity probe built the whole
+  spine-to-PanelHinge green on the *opaque* carrier (zero errors/warnings), confirming the file is
+  **migration-free** — the second negative-probe outcome after L2's `Pinning.lean`. Its `ScrewSpace`
+  reach-ins are all opacity-neutral: a type ascription (`{S : α → ScrewSpace k}` in Case-II `hnew`),
+  module-level `Submodule.span ℝ {…}` over `supportExtensor`-valued sets (category (c)), and
+  `Function.update P.normal v n` — `withNormal` overrides a *normal* (`α → Fin (k+2) → ℝ`), not a
+  carrier value. The realization predicates that *structurally embed* the carrier
+  (`HasPanelRealization`/`HasGenericFullRankRealization`/`HasFullRankRealization`) quantify a
+  `BodyHingeFramework` + normal assignment and read its `ScrewSpace`-typed fields abstractly — never
+  constructing or coordinate-accessing one — so the structural embedding is opacity-neutral too.
+  Docs-only commit; no Lean/blueprint touched. The recon's predicted-mechanical Shape-2 estimate
+  holds: PanelHinge had no category (a)/(d)/(e) reach-in despite *defining* the predicates that thread
+  the carrier through the whole import chain.

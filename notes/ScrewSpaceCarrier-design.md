@@ -223,6 +223,19 @@ remaining layer* — green-on-`abbrev` alone is blind to all four gap classes ab
 uncaught `PanelLayer.lean` breaks because it skipped this. The probe is cheap (one local flip + a
 scoped build of the layer's module + revert) and is the only pre-FLIP signal for opacity-readiness.
 
+**L3 refinement (2026-06-16, `PanelHinge.lean` — second negative-probe outcome):** the probe also
+discriminates the *negative* case — a layer whose module builds clean on the opaque carrier needs **no
+migration** (L2 `Pinning.lean`, L3 `PanelHinge.lean`). The discriminator is structural: a file that only
+*consumes* `ScrewSpace`-typed values abstractly — type ascriptions, module-level `Submodule.span ℝ {…}`,
+`Function.update` over the plain normal functions, and `Prop`-predicates that *structurally embed* the
+carrier through a framework's fields (`HasPanelRealization`/`HasGenericFullRankRealization`, which
+quantify a `BodyHingeFramework` and read its `supportExtensor`/`rigidityRows` fields without
+constructing or coordinate-accessing a carrier value) — reaches into the carrier *nowhere* and is
+opacity-neutral. Only files with category (a) `⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or
+(e) `Module.Dual`-through-the-carrier reach-ins migrate; (b)-coercion and (c)-span are neutral. So
+*defining* a carrier-threading predicate is not itself a migration trigger — only cracking the carrier
+open is.
+
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
 
