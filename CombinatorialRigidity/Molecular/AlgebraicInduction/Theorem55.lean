@@ -546,10 +546,7 @@ private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph 
   rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
     PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
 
-set_option maxHeartbeats 800000 in
--- Heartbeat-heavy like `case_II_realization_all_k`: diffuse `ScrewSpace 2` typeclass re-elaboration
--- across the placement steps + the pinned-placement brick `isDefEq` exhaust the 200000 default even
--- after the `case_I_h65_*` geometric blocks are extracted (TACTICS-QUIRKS §38).
+-- Note: previously needed 800000; now fits the default 200000 after geometric-block extraction.
 /-- **KT Lemma 6.5 arm: the Π°-placement producer** (`lem:case-I-dispatch`, the Lemma-6.5
 vertex-removal arm of `case_I_dispatch`; Katoh–Tanigawa 2011 §6, Lemma 6.5 / Claim 6.6; Phase 22k
 L8c-2). When every proper rigid subgraph of the simple minimal `0`-dof-graph `G` has a non-simple
@@ -1320,7 +1317,7 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
     rw [← hG.1] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
-set_option maxHeartbeats 800000 in
+set_option maxHeartbeats 600000 in
 -- The combined seed + per-side rank polynomials + |C|=0/1 case analysis exhausts the 200000 limit.
 /-- **L4b-2 GP-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization-gp`,
 GP conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` GP arm; Phase 22i).
@@ -1688,8 +1685,7 @@ theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n
       PanelHingeFramework.ofNormals_endsOf_recordsLinks G q₀,
       by simpa only [PanelHingeFramework.ofNormals_normal] using halg⟩
 
-set_option maxHeartbeats 800000 in
--- The splice-brick assembly (Step 9) is elaboration-heavy; 800000 suffices in practice.
+-- Note: previously needed 800000; now fits the default 200000.
 /-- **L5a-ii producer: non-simple Case I arm** (`lem:case-I-realization-nonsimple`;
 KT Lemma 6.2, the parallel-edge contraction arm; Phase 22i).
 

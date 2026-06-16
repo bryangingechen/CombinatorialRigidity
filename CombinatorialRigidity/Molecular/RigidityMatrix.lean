@@ -3233,7 +3233,6 @@ section SpliceBrick
 
 variable {α β : Type*} {k : ℕ}
 
-set_option maxHeartbeats 400000 in
 -- letI instance-shadowing for AddCommGroup ↥S in the h_rn subproof is elaboration-heavy
 -- (the Semiring/AddCommMonoid vs. Ring/AddCommGroup instance diamond for submodule subtypes);
 /-- **General-rank shared-body splice block-rank addition** (`lem:rigidityRows-splice-rank-add`;
