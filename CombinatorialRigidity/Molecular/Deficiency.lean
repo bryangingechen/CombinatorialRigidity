@@ -2157,6 +2157,103 @@ theorem eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof [DecidableEq β] [Fi
   rw [edgeFiber, Set.mem_setOf_eq] at hpe
   exact hgne (hpe ▸ hpGS)
 
+/-- **A deficiency-preserving spanning minimal `k`-dof subgraph exists** (`lem:subgraph-minimality`
+direction, the strip brick of the `d = 3` Theorem 5.6 feed, Phase 22k L10a; Katoh–Tanigawa 2011
+p. 670, the "delete edges keeping the rank" half). Every graph `G` (with `D = bodyBarDim n ≥ 1`
+and a nonempty vertex set) has a *spanning* subgraph `G'` (`V(G') = V(G)`) that is a **minimal**
+`def(G̃)`-dof-graph: `G' ≤ G`, `def(G̃') = def(G̃)`, and no edge of `G'` can be deleted without
+raising the deficiency. This is the converse direction to `subgraph_minimality` (which needs `G`
+*already* minimal); the strip starts from an arbitrary `G` and removes deficiency-irrelevant edges.
+
+Construction (a finite minimum, not a well-founded recursion): among all edge subsets `F ⊆ E(G)`
+whose restriction `G ↾ F` has the same deficiency as `G` (`G` itself witnesses `F = E(G)`), pick one
+of minimal cardinality (`Set.exists_min_image`, finite because `[Finite β]`). Set `G' := G ↾ F₀`.
+Then `V(G') = V(G)` (`restrict` fixes vertices) and `def(G̃') = def(G̃)` by choice; the
+base/fiber-meeting minimality is the contrapositive of the minimum: a base `B` of `M(G̃')` missing
+the fiber `ẽ` of some `e ∈ E(G')` lives in `E((G ↾ (F₀ ∖ {e}))~)`, where it is independent of full
+size, so deleting `e` preserves the deficiency (`isBase_ncard_add_deficiency_eq` on both graphs +
+`deficiency_le_deficiency_of_le_vertexSet_eq` for the `≥` bound) — contradicting minimality of
+`|F₀|`.
+
+The strip mints no blueprint node; it is `\uses`-only infrastructure for the `def > 0`
+`prop:rigidity-matrix-prop11` producer. -/
+theorem exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Finite β]
+    (G : Graph α β) (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
+    ∃ G' : Graph α β, G' ≤ G ∧ V(G') = V(G) ∧
+      G'.IsMinimalKDof n (G.deficiency n) := by
+  classical
+  -- Edge subsets of `E(G)` whose restriction keeps the deficiency. `F = E(G)` is in the set.
+  set S : Set (Set β) := {F | F ⊆ E(G) ∧ (G ↾ F).deficiency n = G.deficiency n} with hS_def
+  have hEG : (G ↾ E(G)).deficiency n = G.deficiency n := by rw [restrict_self]
+  have hSne : S.Nonempty := ⟨E(G), subset_rfl, hEG⟩
+  -- Pick `F₀ ∈ S` of minimal cardinality.
+  obtain ⟨F₀, ⟨hF₀sub, hF₀def⟩, hF₀min⟩ :=
+    Set.exists_min_image S Set.ncard (Set.toFinite S) hSne
+  refine ⟨G ↾ F₀, restrict_le, vertexSet_restrict .., ?_, fun B hB e he ↦ ?_⟩
+  · -- `def((G ↾ F₀)~) = def(G̃)` is the selection predicate.
+    exact hF₀def
+  -- Base/fiber meeting: a base `B` of `M((G ↾ F₀)~)` meets the fiber of every edge `e ∈ F₀`.
+  set G' := G ↾ F₀ with hG'_def
+  have hG'le : G' ≤ G := restrict_le
+  have hVG' : V(G') = V(G) := vertexSet_restrict ..
+  have hEG' : E(G') = F₀ := by rw [hG'_def, edgeSet_restrict, Set.inter_eq_right.mpr hF₀sub]
+  have hne' : V(G').Nonempty := hVG' ▸ hne
+  -- Suppose for contradiction `B` avoids the fiber `ẽ`.
+  by_contra hBe
+  rw [Set.not_nonempty_iff_eq_empty] at hBe
+  -- The de-edged graph `G'' := G' ↾ (F₀ ∖ {e})`, a subgraph of `G'` whose edge set drops `e`.
+  set F₁ : Set β := F₀ \ {e} with hF₁_def
+  have heF₀ : e ∈ F₀ := hEG' ▸ he
+  set G'' := G' ↾ F₁ with hG''_def
+  have hG''le : G'' ≤ G' := restrict_le
+  have hVG'' : V(G'') = V(G) := by rw [hG''_def, vertexSet_restrict, hVG']
+  have hne'' : V(G'').Nonempty := hVG'' ▸ hne
+  have hEG'' : E(G'') = F₁ := by
+    rw [hG''_def, edgeSet_restrict, hEG', Set.inter_eq_right.mpr Set.diff_subset]
+  -- `B ⊆ E(G̃'')`: every `p ∈ B` has `p.1 ∈ F₀` (ground) and `p.1 ≠ e` (avoids the fiber).
+  have hBfiber : ∀ p ∈ B, p ∉ edgeFiber e n := fun p hp hpf ↦ by
+    rw [Set.eq_empty_iff_forall_notMem] at hBe; exact hBe p ⟨hp, hpf⟩
+  have hBsub'' : B ⊆ E(G''.mulTilde n) := by
+    intro p hp
+    have hpG' : p ∈ E(G'.mulTilde n) := hB.subset_ground hp
+    rw [mem_edgeSet_mulTilde] at hpG' ⊢
+    rw [hEG''] at *
+    refine ⟨hEG' ▸ hpG', fun (hpe : p.1 = e) ↦ ?_⟩
+    exact hBfiber p hp (by rw [edgeFiber, Set.mem_setOf_eq]; exact hpe)
+  -- `B` is `M(G̃'')`-independent via the restriction identity `M(G̃') ↾ E(G̃'') = M(G̃'')`.
+  have hBindep'' : (G''.matroidMG n).Indep B := by
+    have hrestr : ((G'.matroidMG n) ↾ E(G''.mulTilde n)).Indep B :=
+      restrict_indep_iff.mpr ⟨hB.indep, hBsub''⟩
+    rwa [matroidMG_restrict_mulTilde hG''le] at hrestr
+  -- `|B| = rank M(G̃') = D(|V| − 1) − def(G̃')`.
+  have hBcard : (B.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) - G'.deficiency n := by
+    have := G'.isBase_ncard_add_deficiency_eq n hD hne' hB
+    rw [hVG'] at this; linarith
+  -- `def(G̃'') ≥ def(G̃')` (fewer edges at fixed vertex set raise the deficiency).
+  have hdef_ge : G'.deficiency n ≤ G''.deficiency n :=
+    deficiency_le_deficiency_of_le_vertexSet_eq hD hG''le (hVG''.trans hVG'.symm)
+  -- `|B| ≤ rank M(G̃'') = D(|V| − 1) − def(G̃'')`, so `def(G̃'') ≤ def(G̃')`, forcing equality.
+  haveI : (G''.matroidMG n).Finite := Matroid.finite_of_finite (M := G''.matroidMG n)
+  have hBrank : (B.ncard : ℤ) ≤ (G''.matroidMG n).rank := by exact_mod_cast hBindep''.ncard_le_rank
+  have hrankdef'' : ((G''.matroidMG n).rank : ℤ) + G''.deficiency n =
+      bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+    have := G''.rank_add_deficiency_eq n hD hne''; rw [hVG''] at this; exact this
+  have hdef_le : G''.deficiency n ≤ G'.deficiency n := by
+    have : (B.ncard : ℤ) ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) - G''.deficiency n := by
+      linarith [hBrank, hrankdef'']
+    linarith [hBcard]
+  have hdef_eq : G''.deficiency n = G'.deficiency n := le_antisymm hdef_le hdef_ge
+  -- So `F₁ = F₀ ∖ {e} ∈ S` with strictly smaller cardinality — contradicting minimality.
+  have hF₁S : F₁ ∈ S := by
+    refine ⟨Set.diff_subset.trans hF₀sub, ?_⟩
+    have : (G ↾ F₁).deficiency n = G''.deficiency n := by
+      rw [hG''_def, hG'_def, restrict_restrict, Set.inter_eq_right.mpr Set.diff_subset]
+    rw [this, hdef_eq, hF₀def]
+  have hlt : F₁.ncard < F₀.ncard := by
+    rw [hF₁_def]
+    exact Set.ncard_diff_singleton_lt_of_mem heF₀ (Set.toFinite F₀)
+  exact absurd (hF₀min F₁ hF₁S) (not_le.mpr hlt)
+
 /-- **A rigid subgraph's multiplied graph packs `D` edge-disjoint forests on a base**
 (`thm:def-eq-corank` Cor 6.2; Jackson–Jordán 2009, Katoh–Tanigawa 2011 §6.2). The
 combinatorial substrate of the Case-I realization producer (`lem:case-I-realization`, Phase 22,

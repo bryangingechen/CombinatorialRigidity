@@ -19,25 +19,25 @@ design is canonical in `notes/Phase22-realization-design.md` §1.56 — point at
 
 ## Current state
 
-**L7–L9 complete; §1.56(e) cleanup landed; L10 DESIGN-SETTLED (§1.71); L10a is the next build.**
-L9 landed: `theorem_55_all_k` + `theorem_55_d3` (zero-carry spine, no new build);
-`deficiency_eq_zero_of_simple_rigid_no_simpleContraction` (new lemma, Contraction.lean) discharges
-the all-`k` `h65` arm vacuously (k>0 contradicted by carrier construction); blueprint nodes
-`thm:theorem-55` + `thm:theorem-55-d3-instance` flipped green.
-§1.56(e) cleanup landed: deleted orphaned `theorem_55` + `theorem_55_generic` from PanelHinge.lean;
-re-pinned `thm:theorem-55` to `theorem_55_all_k` only; updated all prose references in
-GenericityDevice/Coupling/CaseI/CaseII/CaseIII/ForestSurgery. Build + lint + verify.sh green.
-**L10 design pass landed (§1.71):** V9 **RESOLVED FREE** — the homogeneous projective move's
-enabling brick `exists_extensor_in_two_panels` is ALREADY landed (`PanelLayer.lean:631`, no
-transversality needed), and the rank lower bound is the already-green `lem:motions-mono-of-graph-le`
-(`finrank_infinitesimalMotions_le_of_graph_le`). Two flags surfaced for the build (NOT design
-blockers): (i) the no-deletable-edge ⟺ `IsMinimalKDof` matroid step in the strip brick (P≈3.5,
-not a one-liner); (ii) **the load-bearing one** — `theorem_55_all_k` is exposed at `IsMinimalKDof n 0`
-(0-dof), but the `def>0` feed needs Thm 5.5 at a `k>0`-dof minimal graph; L10b must first confirm the
-all-`k` spine re-exposes at general `k` (likely a near-free wrapper since the producers are named
-all-`k`, but a build-time check, not a design-pass certainty). Sub-layer plan: L10a (strip brick) →
-L10b (all-`k` re-expose, settle flag (ii) FIRST) → L10c (`def>0` prop11 producer) → L10d (blueprint).
-**Next commit: L10a** — the deficiency-preserving spanning-strip brick (see *Hand-off*).
+**L7–L9 + L10a complete; L10 DESIGN-SETTLED (§1.71); L10b is the next build.**
+L10a landed: `exists_isMinimalKDof_spanning_subgraph` (Deficiency.lean, beside the near-clone
+`eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`) — every `G` has a spanning subgraph `G'` that
+is a minimal `def(G̃)`-dof-graph. **Flag (i) RESOLVED cleanly** (the no-deletable-edge ⟺ `IsMinimalKDof`
+step was *not* the cost the design feared): a finite-minimum selection (`Set.exists_min_image` over
+edge subsets `F ⊆ E(G)` keeping the deficiency, finite by `[Finite β]`) + the rank-equality⟹base⟹
+deficiency-equality engine of the near-clone, contradicting minimality of `|F₀|` when a base avoids a
+fiber. No WF recursion needed; build + lint clean, axiom-clean (propext/choice/Quot.sound).
+L9 landed: `theorem_55_all_k` + `theorem_55_d3` (zero-carry spine);
+`deficiency_eq_zero_of_simple_rigid_no_simpleContraction` discharges the all-`k` `h65` arm vacuously;
+nodes `thm:theorem-55` + `thm:theorem-55-d3-instance` green.
+**L10 design pass (§1.71):** V9 **RESOLVED FREE** — `exists_extensor_in_two_panels` (PanelLayer.lean:631)
+already landed; rank lower bound is the green `lem:motions-mono-of-graph-le`. One flag remains for the
+build: **flag (ii), load-bearing** — `theorem_55_all_k` is exposed at `IsMinimalKDof n 0` (0-dof), but
+the `def>0` feed needs Thm 5.5 at a `k>0`-dof minimal graph; L10b must confirm the all-`k` spine
+re-exposes at general `k` (likely a near-free wrapper since the producers are named all-`k`, but a
+build-time check, not a design certainty). Sub-layer plan: L10b (all-`k` re-expose, settle flag (ii)
+FIRST) → L10c (`def>0` prop11 producer) → L10d (blueprint).
+**Next commit: L10b** — re-expose the all-`k` spine at general `k` (see *Hand-off*).
 
 ## Layer plan (L7–L10; each layer opens with its own §1.69+ signature pin)
 
@@ -70,9 +70,11 @@ Transcribed from `notes/Phase22i.md` *Layer plan* (the L7–L10 entries) + the �
   re-add edges (rank only grows) + the `def > 0` `prop:rigidity-matrix-prop11` feed.
   **DESIGN-SETTLED (§1.71): V9 free; sliced L10a–L10d.** The `def = 0` feed already landed in 22h
   (`rankHypothesis_deficiency_of_theorem_55_d3`). Sub-layers (each its own build):
-  - [ ] **L10a** — `Graph.exists_isMinimalKDof_spanning_subgraph` (NEW, Deficiency.lean; greedy
-    edge-deletion under matroid-rank descent; P≈3.5 — the no-deletable-edge ⟺ `IsMinimalKDof`
-    matroid step is the cost). `\uses`-only brick, mints no node.
+  - [x] **L10a** ✓ — `Graph.exists_isMinimalKDof_spanning_subgraph` (NEW, Deficiency.lean). Built
+    via a **finite minimum** (`Set.exists_min_image` over deficiency-preserving edge subsets), NOT a
+    WF recursion; flag (i) dissolved — the no-deletable-edge ⟺ `IsMinimalKDof` step is the
+    contrapositive of minimality of `|F₀|`, routed through the existing rank-equality⟹base⟹def-equality
+    engine. `\uses`-only brick, mints no node. Build + lint clean, axiom-clean.
   - [ ] **L10b** — re-expose the all-`k` spine at general `k` (`theorem_55_all_k` is at
     `IsMinimalKDof n 0`; the `def>0` feed needs a `k>0`-dof minimal graph). **Settle flag (ii)
     FIRST** against `minimal_kdof_reduction_all_k` + the producers' `k`-quantification.
@@ -104,12 +106,12 @@ so the decl names are unchanged — only the file:line moved).
 
 ## Blockers / open questions
 
-- **L9 COMPLETE; L10 DESIGN-SETTLED (§1.71); L10a is the next build.** V9 RESOLVED FREE
-  (the projective-move brick `exists_extensor_in_two_panels` is already landed). Two **build-time**
-  flags (NOT design blockers, both flagged honestly per clause (ii)):
-  - **Flag (i)** — the strip brick's no-deletable-edge ⟺ `IsMinimalKDof` matroid step (P≈3.5);
-    confident in the shape (contrapositive of `subgraph_minimality`'s engine), uncertain whether it
-    falls out of the landed `matroidMG`/`isBase` API in one pass or needs its own micro-pin.
+- **L10a COMPLETE; L10 DESIGN-SETTLED (§1.71); L10b is the next build.** V9 RESOLVED FREE
+  (the projective-move brick `exists_extensor_in_two_panels` is already landed). One **build-time**
+  flag remains (NOT a design blocker):
+  - **Flag (i) RESOLVED (L10a)** — the strip brick built without a separate no-deletable-edge ⟺
+    `IsMinimalKDof` micro-pin: the finite-minimum framing makes the fiber-meeting condition the
+    contrapositive of `|F₀|`-minimality directly, reusing the near-clone's rank engine.
   - **Flag (ii), load-bearing** — `theorem_55_all_k` is exposed at `IsMinimalKDof n 0` (0-dof), but
     the `def>0` Thm-5.6 feed needs Thm 5.5 at a `k>0`-dof minimal graph. The all-`k` *induction* is
     inside the proof; whether the *exposed theorem* re-exposes at general `k` as a near-free wrapper
@@ -119,35 +121,41 @@ so the decl names are unchanged — only the file:line moved).
 
 ## Hand-off / next phase
 
-**L10 DESIGN PASS LANDED (2026-06-16, §1.71):** V9 RESOLVED FREE; L10 sliced L10a–L10d with exact
-signatures; two build-time flags surfaced (strip matroid step P≈3.5; the load-bearing all-`k`
-re-expose flag (ii)). No `.lean`/`.tex` edits this commit. Build/lint/verify.sh unaffected
-(docs-only).
+**L10a LANDED (2026-06-16):** `exists_isMinimalKDof_spanning_subgraph` (Deficiency.lean). Flag (i)
+dissolved — a finite-minimum framing avoided the feared standalone matroid micro-pin. Build + lint
+clean, axiom-clean. Clean handoff point.
 
-**Next commit: L10a** — the deficiency-preserving spanning-strip brick (§1.71(b)):
+**Next commit: L10b** — re-expose the all-`k` spine at general `k`. `theorem_55_all_k`
+(`Theorem55.lean:2126`) is exposed at `G.IsMinimalKDof n 0` (0-dof), but the `def>0` Thm-5.6 feed
+(L10c) needs Thm 5.5 at a `k>0`-dof minimal graph. **Settle flag (ii) FIRST:** check whether
+`minimal_kdof_reduction_all_k` (the §1.59 principle) is genuinely stated/instantiated for all `k`
+and whether the producers (`theorem_55_base_producer`, `case_I_realization_all_k`,
+`case_II_realization_all_k`, `case_III_realization`) carry their `k`-quantification, OR silently
+assume `k=0` somewhere (e.g. a rigidity-gated step). If the wrapper is free (likely — producers are
+named all-`k`), extract `theorem_55_minimalKDof_k` concluding `(G.Simple → HasGenericFullRankRealization
+2 n G) ∧ HasPanelRealization 2 n G` from `G.IsMinimalKDof n k` for general `k` (drop the `0`), a
+near-free generalization of `theorem_55_all_k`'s final-argument. Statement-grep gate: grep
+`blueprint/src` for `theorem_55_all_k` before committing if the exposed shape changes. If a producer
+turns out to assume `k=0`, the L10 estimate changes (the phase-close-estimate risk).
 
-```lean
-theorem Graph.exists_isMinimalKDof_spanning_subgraph [DecidableEq β] [Finite α] [Finite β]
-    (G : Graph α β) (n : ℕ) (hD : 1 ≤ Graph.bodyBarDim n) (hne : V(G).Nonempty) :
-    ∃ G' : Graph α β, G' ≤ G ∧ V(G') = V(G) ∧
-      G'.IsMinimalKDof n (G.deficiency n)
-```
-
-in `Deficiency.lean` (beside `subgraph_minimality`). Greedy edge-deletion under matroid-rank descent:
-`def = D(|V|−1) − rank M(G̃)` (`rank_add_deficiency_eq`) at fixed `V` (`deleteEdges` preserves `V`),
-so delete any edge keeping `rank M(G̃)` and recurse on `|E|` (WF, `[Finite β]`); stop when no edge is
-deletable keeping rank — which is `IsMinimalKDof` (the **flag (i)** matroid step: convert
-no-deletable-edge to base/fiber-meeting via `matroidMG`/`isBase`, P≈3.5). `\uses`-only brick (mints no
-node). Self-contained unless the flag (i) step needs adjudication.
-
-After L10a: L10b (settle flag (ii) — the all-`k` re-expose) → L10c (`def>0` prop11 producer
-`rankHypothesis_of_theorem_55_d3`) → L10d (blueprint flip). Then 22k closes; then Phase 23
-(general `d`, KT Lemma 6.13).
+After L10b: L10c (`def>0` prop11 producer `rankHypothesis_of_theorem_55_d3`, the §1.71(c) 6-step
+assembly: strip ∘ L10b ∘ `withGraph` ∘ monotonicity ∘ prop11) → L10d (blueprint flip
+`prop:rigidity-matrix-prop11` red→green + mint `thm:theorem-55-6-d3`). Then 22k closes; then
+Phase 23 (general `d`, KT Lemma 6.13).
 
 ## Decisions made during this phase
 
 (One-line verdicts; full proof-technique detail in §1.56–§1.71 design sections, docstrings, git.)
 
+- **L10a strip brick landed (2026-06-16, opus, clean):** `exists_isMinimalKDof_spanning_subgraph`
+  (Deficiency.lean). Built via a **finite minimum** over deficiency-preserving edge subsets
+  (`Set.exists_min_image`, finite by `[Finite β]`), NOT the design's WF edge-deletion recursion.
+  **Flag (i) dissolved:** no standalone no-deletable-edge ⟺ `IsMinimalKDof` matroid micro-pin was
+  needed — the fiber-meeting minimality is the contrapositive of `|F₀|`-minimality, routed through
+  the near-clone `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`'s rank-equality⟹base⟹
+  def-equality engine (`isBase_ncard_add_deficiency_eq` + `matroidMG_restrict_mulTilde` +
+  `deficiency_le_deficiency_of_le_vertexSet_eq` for the `≥` bound). Stays in the `restrict` idiom
+  (`G ↾ F`, `restrict_self`, `restrict_restrict`) — no `deleteEdges`. Build + lint + axiom-clean.
 - **L10 design pass landed (2026-06-16, opus, docs-only; §1.71):** Thm 5.6 at `d=3` sliced
   L10a–L10d with exact signatures. **V9 RESOLVED FREE** — the homogeneous projective move's brick
   `exists_extensor_in_two_panels` (PanelLayer.lean:631, no transversality) is already landed, and the
