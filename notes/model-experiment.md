@@ -296,6 +296,7 @@ quality / blueprint sync / notes discipline / commit message
 | 151 | minimality→equality brick `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof` (L8a step-4 bridge), 71580d5 | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 139k tok / 75 tools / 1005s (~17 min) | P=2 near-clone of `edgeSet_ncard_le_two_of_isMinimalKDof_of_ncard_two` (:2253) → sonnet (mapped). Landed the full named brick (NO shrink, unlike the opus L8a sub-commits) matching the §1.70(c″) pin exactly; idiomatic `ext_of_le_le` + restriction-base-meets-fiber. Coordinator full-diff read + step-5 gate warning-clean (2768 jobs) + `lake lint` + sorry-grep. Sonnet held at P=2 matroid-counting — consistent with the L8a-0 boundary-pair finding. → Findings 22k. |
 | 152 | L8a Leaf-1 assembly `exists_degree_two_removeVertex_of_no_simple_contraction` (Claim 6.6 graph side COMPLETE), 8edf52c | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 93k tok / 151 tools / 1444s (~24 min) | P=2 assembly → sonnet (mapped). Landed the full Leaf-1 (NO shrink) — **L8a complete**. Idiomatic assembly using EXISTING package `addEdge` API (`le_addEdge`/`addEdge_le`/`addEdge_isLink_iff_of_notMem` — confirmed none new this commit), not bloated. The 151-tool/24-min cost outlier = API-search on the `addEdge` bookkeeping (LOW 93k tokens, proportionate +182-line diff), NOT bloat-not-bailout. Coordinator: full-diff read + bloat/inline check + step-5 warning-clean (2768) + lint + sorry-grep + ROADMAP-edit scope check (legit in-progress status-honesty update, not creep). Sonnet held at the more-complex P=2 assembly. → Findings 22k. |
 | 153 | L8b — de-privatize CaseIII's triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (private→public), 0ff5041 | 1/1/1 | haiku | normal | repaired (note over-claim) | ✓✓✓—✗✓ | tokens/tools n/a (went idle, no cost report); ~2 min wall (commit timestamps + idle notif) | First landed haiku COMMIT in this repo (prior haiku 0/2, both honest BLOCKs). True 1/1/1 (drop `private`, no proof). Coordinator re-ran build (warning-clean, 2768 jobs) + lint + sorry-grep + full-diff — Lean exact, matches §1.70(e). Notes ✗ (repaired): split into feat+docs commits, and the docs commit (21760fd) flipped Layer-plan `L8`→`✓`/"h65 discharged" while L8c (the producer that discharges h65) is still open — internal contradiction with its own "Next: L8c". → Findings 22k. |
+| 154 | L8c geometric-core design-settle (§1.70(i)): hnewpin brick `exists_independent_pinned_two_edge_span_full` + producer Brick-A route, 200e4a2 | 3/3/1 | opus | normal | repaired (prose: false not-in-mathlib claim) | —✓——✗✓ | tokens/tools n/a (idle, no report); ~15 min wall (dispatch→commit) | Design-settle (fable→opus, fable down). High-value re-rate of (d)/(h)'s punted "build-time uncertainty" hnewpin → a PINNED consumer-fit NEW brick. Coordinator verified consumer-fit vs Brick A's VERBATIM `hnewpin`/`hnew_span` (exact) + all base lemmas (Pinning :442/:503/:547, PanelLayer :810/:242, `hingeRowBlock_apply` rfl) + the finrank route's mathlib tools. Notes ✗ (repaired): one false non-load-bearing aside ("reverse `(U⊓V)^⊥=U^⊥⊔V^⊥` not in mathlib" — `Subspace.dualAnnihilator_inf_eq` IS it for field subspaces); route unaffected (uses `dualAnnihilator_sup_eq`), coordinator corrected the caveat. → Findings 22k. |
 
 ## Findings
 
@@ -741,3 +742,16 @@ postmortem's write-time consumer-fit gate now target exactly this.
   SendMessage follow-up drew only another idle notification — so tokens/tool-uses are unavailable for
   this row (wall time recovered from commit timestamps). The 1/1/1 cell remains haiku's by the map,
   with the coordinator gate as the necessary backstop for the discipline layer.
+
+- **(row 154) A top-rung design recon was substantively CORRECT (route + consumer-fit) but made a
+  false negative-existence claim — caught by against-source verification.** The L8c geometric-core pin
+  re-rated §1.70(d)/(h)'s punted "build-time uncertainty" hnewpin to a pinned, Brick-A-consumer-fit NEW
+  brick with a fully-pinned finrank route — exactly the "split/pin the hard kernel first" move (rows
+  91/100), and consumer-fit checked out against Brick A's verbatim signature. The one blemish: a
+  peripheral caveat asserting a mathlib fact "is NOT in mathlib" (the reverse `(U⊓V)^⊥=U^⊥⊔V^⊥`), which
+  is false for field subspaces (`Subspace.dualAnnihilator_inf_eq`, Dual/Lemmas:860); the pinned route
+  doesn't use it, so buildability is unaffected, but the coordinator's grep against mathlib caught the
+  false claim and corrected the doc. Reinforces rows-96–100 ("single-pass design output is fallible even
+  at the top rung") and the step-4 rule ("a new gap is cheaply verifiable — check it against the source
+  before re-planning"): here the "gap" was illusory, and a 30-second grep settled it. Net: the recon
+  stands; only the non-load-bearing aside needed repair.
