@@ -77,7 +77,14 @@ route, surfaced only at the consumer's build; added to the protocol's
 *Boundary pairs* after the L5b rows-107–109 episode, where a route-2 leaf
 passed a pair then its producer BLOCKED on `hFc_surv_le`; companion
 deferred-route-hinges-on-consumer clause added to
-`.claude/commands/coordinate-phase.md` step 4, repo-local).
+`.claude/commands/coordinate-phase.md` step 4, repo-local); and the 2026-06-16
+`salvaged` Outcome value (a user interrupt that catches **complete, gate-passing**
+work → coordinator verify-in-full + finalize the pre-empted notes/commit + commit
+the salvage, NOT resume/relaunch — distinct from `killed`; the agent's artifact is
+graded, Notes/Commit `—` as coordinator-supplied; row 164 precedent); and the
+2026-06-16 supersession-deletion check (a step-4 verification sub-bullet, repo-local
+to `.claude/commands/coordinate-phase.md`: a "delete/supersede X" verdict is violated
+by an *absence* the statement-shape check misses — grep that X is gone; row 160).
 
 ## Repo-local config
 
