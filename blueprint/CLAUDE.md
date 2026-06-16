@@ -451,7 +451,7 @@ a debt deferred to a cleanup round.
 When a producer is built one conjunct at a time (the molecular program's
 recurring bare-`HasPanelRealization` / GP-`HasGenericFullRankRealization`
 split — the L3 base producer, the L4 cut-edge producer,
-`theorem_55_generic`'s `hsplit`/`hsplitGP`), the *intermediate* commit
+`theorem_55_all_k`'s `hsplitPos`/`hsplitZero` branches), the *intermediate* commit
 lands only one half. Represent that as a **green node whose statement
 *and* role-prose are scoped to the conjunct actually proven**, plus a
 separate sibling (or red) node for the unbuilt conjunct — **never one
@@ -464,8 +464,8 @@ the bare `HasPanelRealization` conjunct is built; `checkdecls` and the
 hypothesis-honesty gate both pass, so only a design-§ re-read of the
 role-prose catches it). The clean structure (settled at
 `notes/Phase22-realization-design.md` §1.62(e)): green-bare node + a
-sibling for the GP conjunct, mirroring how `theorem_55_generic` keeps
-`hsplit`/`hsplitGP` as separate slots.
+sibling for the GP conjunct, mirroring how `theorem_55_all_k` keeps
+`hsplitPos`/`hsplitZero` as separate branches.
 
 The gate has a *second half*, and it is the one that bites producers:
 even with every hypothesis honest, the intended **proof step may not

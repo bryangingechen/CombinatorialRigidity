@@ -153,10 +153,10 @@ bare motive), the generic coupling splices through the genericity-device-free
 `hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1), which realizes at the GP seed `q₀`
 *itself* and so keeps both the rigidity (from the block-triangular glue) and the general position
 (`hgp`). This is the producer the simple Case I (KT Lemma 6.3/6.5) consumes to discharge
-`theorem_55_generic`'s `hcontractGP` GP conjunct: the composer (N6-G3 / G2c) supplies the two leg
+`theorem_55_all_k`'s `hcontract` GP conjunct: the composer (N6-G3 / G2c) supplies the two leg
 rigidities from the conditioned IH (transported to the parent selector by
 `hasGenericRealization_transport_ends`) and this lemma lands the `G.Simple → GP G` conjunct of
-`theorem_55_generic`'s motive. -/
+`theorem_55_all_k`'s motive. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [Finite α] [Finite β]
     (G : Graph α β) (ends : β → α × α)
     (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
@@ -629,7 +629,7 @@ coupling G3c-ii (`hasFullRankRealization_of_couple_ofNormals_set`): it threads p
 the *generic* body-set splice `hasGenericFullRankRealization_of_splice_set_ofNormals` (realizing at
 the shared GP seed `q₀` directly, keeping general position) instead of the device-routing bare
 body-set splice. This is the producer the simple Case-I composer feeds to discharge
-`theorem_55_generic`'s `hcontractGP` GP conjunct, with the contraction leg rigid only on the
+`theorem_55_all_k`'s `hcontract` GP conjunct, with the contraction leg rigid only on the
 surviving bodies `sc = (V(G)∖V(H)) ∪ {r}`. The complement-isolation equalities `hpinH`/`hpinc` are
 discharged per-leg at the composer call site (see `couple_ofNormals_set`).
 

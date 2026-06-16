@@ -19,11 +19,14 @@ design is canonical in `notes/Phase22-realization-design.md` §1.56 — point at
 
 ## Current state
 
-**L7–L9 complete; L10 open.**
+**L7–L9 complete; §1.56(e) cleanup landed; L10 open.**
 L9 landed: `theorem_55_all_k` + `theorem_55_d3` (zero-carry spine, no new build);
 `deficiency_eq_zero_of_simple_rigid_no_simpleContraction` (new lemma, Contraction.lean) discharges
 the all-`k` `h65` arm vacuously (k>0 contradicted by carrier construction); blueprint nodes
 `thm:theorem-55` + `thm:theorem-55-d3-instance` flipped green.
+§1.56(e) cleanup landed: deleted orphaned `theorem_55` + `theorem_55_generic` from PanelHinge.lean;
+re-pinned `thm:theorem-55` to `theorem_55_all_k` only; updated all prose references in
+GenericityDevice/Coupling/CaseI/CaseII/CaseIII/ForestSurgery. Build + lint + verify.sh green.
 **Next commit: L10** — Thm 5.6 at `d = 3` (deficiency-preserving spanning-strip brick + `def>0`
 feed, V9). Requires design pass before build (see *Blockers*).
 
@@ -106,6 +109,9 @@ After L10: 22k closes; then Phase 23 (general `d`, KT Lemma 6.13).
 
 (One-line verdicts; full proof-technique detail in §1.56–§1.70 design sections, docstrings, git.)
 
+- **§1.56(e) cleanup landed (2026-06-16, sonnet, clean):** deleted orphaned legacy spines
+  `theorem_55` + `theorem_55_generic` (PanelHinge.lean); re-pinned `thm:theorem-55` to
+  `theorem_55_all_k` only; updated prose in 6 files. No callers confirmed before deletion.
 - **L9 zero-carry spine landed (2026-06-16, sonnet, clean):** `theorem_55_all_k` +
   `theorem_55_d3` placed at END of Theorem55.lean (after all producers). New lemma
   `deficiency_eq_zero_of_simple_rigid_no_simpleContraction` (Contraction.lean) handles the k>0

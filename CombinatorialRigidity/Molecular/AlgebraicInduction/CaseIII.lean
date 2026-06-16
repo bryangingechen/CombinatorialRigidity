@@ -2241,10 +2241,10 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
 
 
 /-- **The `d = 3` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
-(`lem:case-II-realization` / `lem:case-III`, the `theorem_55_generic.hsplitGP` branch at `k = 2`;
+(`lem:case-II-realization` / `lem:case-III`, the `theorem_55_all_k.hsplitZero` branch at `k = 0`;
 Katoh–Tanigawa 2011 §6.4.1,
 Lemma 6.10, Phases 22g–22h). The conjecture's crux at `d = 3`, stated at the **generic-motive
-callback interface** that `theorem_55_generic`'s `hsplitGP` premise threads (the R2 verdict (B),
+callback interface** that `theorem_55_all_k`'s `hsplitZero` premise threads (the R2 verdict (B),
 `notes/Phase22-realization-design.md` §1.41(5)): the producer receives `hnoRigid`, `G.Simple`, and
 the **full conditioned induction hypothesis** `hIH` (the `(G'.Simple → generic) ∧ bare` pair over
 all smaller minimal `0`-dof-graphs, mirroring `hcontractGP`), **chooses its own adjacent degree-2
@@ -2281,7 +2281,7 @@ producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring bu
 rest of the producer. -/
 theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
-    -- the `theorem_55_generic.hsplit` premise data (at `n`, `k = 2`)
+    -- the `theorem_55_all_k.hsplitZero` premise data (at `n`, `k = 0`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hsimple : G.Simple)
@@ -2625,7 +2625,7 @@ existential motive** (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31); Phas
 consequence of the fixed-seed `ofNormals_relabel`: a generic full-rank realization of the `v`-split
 `G.splitOff v a b e₀` (`G_v^{ab}`) transports to one of the `a`-split `G.splitOff a v c e₁`
 (`G_a^{vc}`) at the relabelled seed `q₀ ∘ ρ`. This is the *producer's* direction (it consumes the
-IH at the `v`-split, the form `theorem_55_generic`'s `hsplit` branch supplies, and yields the
+IH at the `v`-split, the form `theorem_55_all_k`'s `hsplitZero` branch supplies, and yields the
 `a`-split datum the `M₃` arm needs); the fixed-seed form above is the load-bearing one, since the
 producer reads the concrete `ofNormals` framework and its row-space correspondence
 (`rigidityRows_ofNormals_relabel`), not the bare existential. -/

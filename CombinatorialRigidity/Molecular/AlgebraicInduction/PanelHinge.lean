@@ -997,7 +997,7 @@ hypothesis lands on the wrong graph at the splitting-off step) — the general-p
 localized to this second motive, carried only through the simple cases, with a one-line forgetful
 map (derived via B1,
 `isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`) to the bare motive.
-`theorem_55`'s bare-motive statement is
+`theorem_55_all_k`'s bare-motive statement is
 untouched. This dissolves gap (G1) (the splice/rank-polynomial producers
 `hasFullRankRealization_of_splice_ofNormals` / `exists_rankPolynomial_of_rigidOn` need a
 *general-position* rigid seed, which a bare rigid IH does not supply) at the source: a
@@ -1013,7 +1013,7 @@ selector: rigidity alone does not force a *free* `ends` to agree with another se
 link-recording selectors pin the same pair on every link and so agree up to swap. Every producer
 builds `ofNormals G ends q₀` with a link-recording `ends` and supplies the conjunct for free
 (`ofNormals_recordsLinks_of_hends`); the composer manufactures the canonical link-recording
-`G.endsOf`. The bare motive `HasFullRankRealization` and `theorem_55` are untouched — the
+`G.endsOf`. The bare motive `HasFullRankRealization` and `theorem_55_all_k` are untouched — the
 strengthening is generic-motive only (only the Case-I generic flow transports across `ends`).
 
 **Algebraic-independence conjunct (Phase 22d, kernel sub-phase (ii-a)).** The motive additionally
@@ -1030,7 +1030,7 @@ The moment curve is *not* algebraically independent over `ℚ`, so the producers
 transcendence-basis seed `exists_injective_algebraicIndependent_real` (an injective
 alg-indep-over-`ℚ` `q : α × Fin (k+2) → ℝ`), which is simultaneously a non-root of every rigid leg's
 *rational* rank polynomial — so the same seed lands rigidity, general position, and the
-alg-independence conjunct at once. The bare motive and `theorem_55` remain untouched (the
+alg-independence conjunct at once. The bare motive and `theorem_55_all_k` remain untouched (the
 strengthening is generic-motive only). -/
 def HasGenericFullRankRealization (k n : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β,
@@ -1097,122 +1097,6 @@ def HasPanelRealization (k n : ℕ) (G : Graph α β) : Prop :=
     (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
       = screwDim k * ((V(G).ncard : ℤ) - 1) - G.deficiency n
 
-/-- **Theorem 5.5: every minimal `0`-dof-graph has a full-rank panel realization**
-(`thm:theorem-55`; Katoh–Tanigawa 2011 §5, Theorem 5.5, at `k = 0`). For the molecular regime
-`D = bodyBarDim n ≥ 3` (so `n ≥ 2`) and a freshness supply of edge labels (`hfresh`), every
-minimal `0`-dof-graph `G` with `2 ≤ |V(G)|` admits a panel-hinge framework `Q` on `G` whose
-body-hinge interpretation is infinitesimally rigid
-(`PanelHingeFramework.HasFullRankRealization k G` — full rank `D(|V|−1)`).
-
-This is the genericity-free assembly over Phase 20's reduction dichotomy
-(`Graph.minimal_kdof_reduction`): the realization motive `HasFullRankRealization k` is closed
-under the two-vertex base case (`hbase`, `lem:theorem-55-base`), splitting off a reducible
-degree-2 vertex (`hsplit`, Case II `lem:case-II`), and contracting a proper rigid subgraph
-(`hcontract`, Case I `lem:case-I`). Each inductive case is GREEN-modulo-21b — its iff-realization
-(`PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` for Case II,
-`PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn` for Case I) takes the
-general-position panel normals of Claim 6.9/6.4 (the Phase-21b genericity device) as an explicit
-hypothesis — so the three realization steps are taken here as hypotheses and the induction itself
-is genericity-free, inheriting the Phase-21b citation transitively. Case III (`k = 0`, no proper
-rigid subgraph) closes the dichotomy combinatorially inside `minimal_kdof_reduction` and is
-realized in Phases 22–23. -/
-theorem theorem_55 [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
-    (hD : 3 ≤ Graph.bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
-      PanelHingeFramework.HasFullRankRealization k G)
-    (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
-      G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      v ∈ V(G) → a ≠ v → b ≠ v → a ∈ V(G) → b ∈ V(G) → eₐ ≠ e_b →
-      G.IsLink eₐ v a → G.IsLink e_b v b → (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
-      e₀ ∉ E(G) →
-      PanelHingeFramework.HasFullRankRealization k (G.splitOff v a b e₀) →
-      PanelHingeFramework.HasFullRankRealization k G)
-    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization k G') →
-      PanelHingeFramework.HasFullRankRealization k G)
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
-    PanelHingeFramework.HasFullRankRealization k G :=
-  Graph.minimal_kdof_reduction hD hfresh hbase hsplit hcontract G hG hV
-
-/-- **Theorem 5.5, conditioned-motive (generic) reduction skeleton** (`thm:theorem-55`,
-the generic-motive reduction N6-G2-G2a; Katoh–Tanigawa 2011 §5–§6.2, the "nonparallel, if `G`
-is simple" strengthening). The generic sibling of `theorem_55`: it runs the `|V|`-strong-induction
-reduction dichotomy `Graph.minimal_kdof_reduction_full` (the full-IH interface), against the
-**conditioned motive** `Pc G := (G.Simple → HasGenericFullRankRealization k n G) ∧
-HasPanelRealization k n G` — the honest formalization of KT's conclusion "there exists a
-(nonparallel, if `G` is simple) realization" (printed p. 669). The general-position
-(`HasGenericFullRankRealization`) conjunct is **conditioned on `G.Simple`** because unconditional
-general position genuinely fails at the non-simple leaves (the parallel-K₂ base and the
-non-simple Lemma-6.2 branch want *equal* panels, p. 670).
-
-Conclusion `Pc G` for every minimal `0`-dof-graph `G` with `2 ≤ |V(G)|`. The
-`HasPanelRealization` conjunct is threaded through `hbase`/`hsplit`/`hcontract`, each now
-typed at `HasPanelRealization k n G` (Phase 22i L0e pair-swap). The
-**`G.Simple → general-position`** conjunct is discharged per branch:
-
-* `hbaseGP` — the simple two-vertex base (KT Lemma 5.3, two non-parallel bodies);
-* `hsplitGP` — the simple no-rigid-subgraph branch (KT Case III, `k = 0`, Lemma 6.10). It
-  receives the **full conditioned induction hypothesis** `∀ G', … → Pc G'` (mirroring
-  `hcontractGP`) so the producer can re-choose its own adjacent degree-2 pair (Lemma 4.6 chain
-  data, G4a) and apply the IH to `G.splitOff v a b e₀` inside the producer, rather than being
-  handed a fixed split IH value. Carried as an explicit hypothesis (the Phase-21b green-modulo
-  `h…` idiom), to be discharged by the Track-B producer of Phase 22h+;
-* `hcontractGP` — the simple Case-I branch (KT Lemma 6.3/6.5, the proper-rigid-subgraph
-  contraction). Receives the full conditioned IH so the Case-I assembly (N6-G3, Phase 22a) can
-  extract GP realizations of both legs and conclude `G.Simple → GP G`.
-
-Uses `Graph.minimal_kdof_reduction_full` (the (β)-interface: no `hD`/`hfresh`/`[DecidableEq β]`
-in the `hsplit`/`hsplitGP` callbacks). -/
-theorem theorem_55_generic [DecidableEq β] [Finite α] {n k : ℕ}
-    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
-      HasPanelRealization k n G)
-    (hbaseGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → G.Simple →
-      PanelHingeFramework.HasGenericFullRankRealization k n G)
-    (hsplit : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → HasPanelRealization k n G') →
-      HasPanelRealization k n G)
-    (hsplitGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) → G.Simple →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-          HasPanelRealization k n G') →
-      PanelHingeFramework.HasGenericFullRankRealization k n G)
-    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard → HasPanelRealization k n G') →
-      HasPanelRealization k n G)
-    (hcontractGP : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
-          HasPanelRealization k n G') →
-      PanelHingeFramework.HasGenericFullRankRealization k n G)
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
-      HasPanelRealization k n G :=
-  Graph.minimal_kdof_reduction_full (P := fun G =>
-      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
-        HasPanelRealization k n G)
-    -- base: bare from `hbase`; the simple two-vertex base from `hbaseGP`.
-    (fun G hG hV2 => ⟨fun hSimple => hbaseGP G hG hV2 hSimple, hbase G hG hV2⟩)
-    -- no-rigid-subgraph branch (Case III): bare from `hsplit`, GP carried (`hsplitGP`).
-    -- Both callbacks receive the full conditioned IH; `hsplit` projects its `.2` (bare) part.
-    (fun G hG hV3 hnp hIH =>
-      ⟨fun hSimple => hsplitGP G hG hV3 hnp hSimple hIH,
-        hsplit G hG hV3 hnp (fun G' hG' hG'2 hlt => (hIH G' hG' hG'2 hlt).2)⟩)
-    -- contract a rigid subgraph (Case I): bare from `hcontract`, simple Case-I `hcontractGP`.
-    (fun G hG hV3 hrig hIH =>
-      ⟨fun hSimple => hcontractGP G hG hV3 hrig hSimple hIH,
-        hcontract G hG hV3 hrig (fun G' hG' hG'2 hlt => (hIH G' hG' hG'2 hlt).2)⟩)
-    G hG hV
-
 /-! ## Proposition 1.1, analytic half: generic rank `= D(|V|−1) − def(G̃)`
 (`prop:rigidity-matrix-prop11`)
 
@@ -1244,9 +1128,9 @@ pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
   Phase-19 partition machinery), so the only inputs are the dimension fixing `n = k + 1` and the
   genuine-hinge condition `C(e) ≠ 0` the partition cut needs.
 * *From Phase 21b (cited)* `hgen` (`rank R(G,p) ≥ D(|V|−1) − def(G̃)`, equivalently `dim Z(G,p) ≤ D
-  + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55`) pushed from minimal
-  `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning subgraph and
-  observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`). The
+  + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55_all_k`) pushed from
+  minimal `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning subgraph
+  and observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`). The
   generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
   device. -/
 theorem rigidityMatrix_prop11 [Nonempty α] [Finite α] [Finite β]

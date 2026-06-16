@@ -2349,7 +2349,7 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
         (IH _ hsmaller _ rfl hsplitMin hsplit2)
 
 /-- **Full-IH reduction of minimal `0`-dof-graphs** (the (β)-interface variant of
-`minimal_kdof_reduction`, used by `theorem_55_generic`'s Case-III producer). The same
+`minimal_kdof_reduction`, used by `theorem_55_all_k`'s Case-III producer). The same
 `|V|`-strong-induction as `minimal_kdof_reduction`, but the **`hsplit` branch is handed the full
 conditioned induction hypothesis** (all strictly-smaller minimal `0`-dof-graphs satisfy `P`)
 rather than only the IH value at the specific splitting `G.splitOff v a b e₀`. This mirrors the
