@@ -1096,6 +1096,83 @@ Surveyed the other raised-budget decls and next-largest files:
    those producers land in `CaseII.lean` / `Theorem55.lean`. Lower
    priority than the L6b 3.2M (the largest, most alarming budget).
 
+## `ScrewSpace` carrier opacity — spike findings + structural option (2026-06-16)
+
+**Context.** The post-22k `maxHeartbeats` audit left three elevated overrides
+(`case_cut_edge_realization` 400k, `case_cut_edge_realization_gp` 600k,
+`case_II_realization_all_k` 600k); the FRICTION diagnosis traced each to *diffuse
+typeclass re-elaboration* over `ScrewSpace k` (`RigidityMatrix.lean:88`), a
+reducible `abbrev` `= ↥(⋀^k (Fin (k+2) → ℝ))`. An `abbrev` is `@[reducible]`, so
+every `simp`/`rw`/defeq motive over `ScrewSpace k` (and `α → ScrewSpace k`,
+`Module.Dual ℝ (α → ScrewSpace k)`) re-unfolds the heavy exterior-power
+expression. Hypothesis: an **opaque `def`** (distinct non-reducing head, instances
+re-declared on it) stops the re-unfolding.
+
+**Spike (2026-06-16, opus, throwaway seeded worktree; not committed). Verdict
+MIXED — positive mechanism, prohibitive blast radius.**
+
+- *Mechanism confirmed.* Controlled synthetic benches (identical proofs, abbrev vs
+  opaque `def`), measured by `maxHeartbeats` cap-descent (the `#count_heartbeats
+  in` *command* is unreliable in this toolchain — near-constant regardless of real
+  cost; use cap-descent): pure-`finrank` chains that never crack the carrier open
+  are flat (cheap both); **`Module.Dual` / `LinearMap.ext` / `≃ₗ`-automorphism over
+  the carrier drop ~5–60×** (`dual_ext` 8–16k→1.5–2k; `columnOp` 8–16k→200–500).
+  Those are exactly the constructs the survivor producers are built from (CaseII's
+  in-source note attributes its 600k to "diffuse `ScrewSpace 2` re-elaboration
+  across ~16 Steps"). The win is instance synthesis matching a *named*
+  `Module`/`AddCommGroup`/`FiniteDimensional` instance on the distinct opaque head
+  rather than re-deriving through `↥(⋀…)`. Three `inferInstanceAs` instances
+  sufficed (no `fast_instance%` needed) + a `ScrewSpace_def : ScrewSpace k = ↥(⋀…)
+  := rfl` bridge for genuine-unfold sites.
+- *Blast radius prohibitive.* Opacity breaks the pervasive `⟨val, proof⟩ :
+  ScrewSpace` anonymous-constructor idiom (build an element from a membership
+  proof) and the surrounding `rw [Submodule.mem_span_singleton]` / `Subtype.val` /
+  `screwBasis`-coordinate chains, which need the carrier to be a *transparent*
+  Subtype. The home file (RigidityMatrix.lean) breaks at only ~3 mechanical sites,
+  but the **5 geometry files** that *construct* screw-space elements (PanelLayer,
+  Pinning, GenericityDevice, CaseIII, RigidityMatrix) break at hundreds of sites,
+  ~15–25 % needing genuine thought. Adversarial topology: the cost win lives in the
+  *assembly* files (CaseI/II/Theorem55 — ~0 break-prone constructs, migrate
+  near-free *and* hold the survivor caps), but they sit strictly *behind* the
+  geometry rework. The spike could not reach a survivor to confirm an end-to-end
+  drop — that blockage is the headline.
+
+**Recommendation: do NOT pursue the full opaque refactor as a big-bang.** Payoff
+(relax/drop 3 overrides) is real but modest; cost (redesign the `⟨val,proof⟩`
+element-construction API across 5 geometry files, bottom-up, several-hundred edit
+sites with `rw`-rescue churn) is poor risk/reward. The three overrides stay
+documented-inherent in FRICTION; revisit only if the perf pain grows (Phase 23's
+general-`d` work multiplies heavy producers, or a build-time regression bites).
+
+**If revisited, the shape** (recorded so the next investigator needn't re-spike):
+1. *Localized wrapper, not named-instances-on-abbrev.* The spike floated "just add
+   named instances to the `abbrev`" as the cheap path, but it is theoretically
+   shaky — an `abbrev` reduces *before* instance search, so a named instance on it
+   likely collapses to the `↥(⋀…)` head and captures none of the win (the distinct
+   *opaque* head is what the instance cache keys on). The plausible surgical
+   variant is a separate opaque `def ScrewSpaceModule` used *only* in the assembly
+   files (CaseI/II/Theorem55) with a `≃ₗ` to `ScrewSpace` at the boundary — puts
+   the opaque head exactly where the caps live, without touching the geometry
+   files. Confirm by re-measuring one survivor's cap before committing.
+2. *Full refactor (only if the localized variant is insufficient).* `abbrev` → `def`
+   + 3 `inferInstanceAs` instances + the `_def` bridge; replace `⟨val,proof⟩` with a
+   `ScrewSpace.mk`/`.val` coercion API; migrate bottom-up (RigidityMatrix →
+   PanelLayer → Pinning/GenericityDevice → CaseIII → CaseI → CaseII → Theorem55),
+   one file green at a time.
+
+**Sibling `abbrev` carriers** (same diagnostic if the pattern is ever adopted):
+`Framework`/`Motion` (function types over `EuclideanSpace`) and `KFrameField`
+(`FractionRing (MvPolynomial …)`). (`screwDim` is a ℕ value, `screwBasis` a term —
+not carriers.)
+
+**Mathlib convention (reference).** Opaque `def`/`structure` carriers are
+mathlib's pattern when a type needs *controlled* instances not leaking through the
+underlying type (`OrderDual`, `Lex` — `def`; `WithLp` — `structure`; `Matrix m n α
+:= m → n → α` — `def`); reducible `abbrev` when it should inherit everything
+transparently (`Module.Dual`, `ExteriorAlgebra`). `fast_instance%` (513 mathlib
+uses) makes a re-declared opaque-carrier instance defeq-cheap — though the spike
+found plain `inferInstanceAs` sufficient here.
+
 ## Recommendations for future perf work
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare
