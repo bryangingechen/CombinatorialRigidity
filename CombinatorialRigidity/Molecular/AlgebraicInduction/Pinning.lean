@@ -582,6 +582,152 @@ theorem span_panelRow_comp_single_of_edge [DecidableEq α]
     rw [finrank_span_eq_card hpinindep, ← Nat.card_eq_fintype_card, hcard,
       F.finrank_hingeRowBlock hne]
 
+/-- **Two `v`-edges with linearly-independent supporting extensors contribute a full `D`-element
+pinned-independent new block spanning the rigidity rows** (`lem:case-I-dispatch`, the `hnewpin`
+brick of the KT Lemma-6.5 vertex-removal arm; Katoh–Tanigawa 2011 §6, Claim 6.6 / Lemma 5.3,
+distinct-endpoint form; Phase 22k L8c). The geometric heart of the two-vertex-removal producer
+`case_I_realization_h65`: when the re-inserted degree-2 body `v` carries two incident edges
+`eₐ = va`, `e_b = vb` whose supporting extensors are linearly independent (the general-position
+input from the triple-LI normals, `linearIndependent_normals_of_algebraicIndependent`), their two
+hinge-row blocks — each `(D−1)`-dimensional (`finrank_hingeRowBlock`) — together span the *full*
+`D`-dimensional screw dual through `v`'s screw column. This supplies the `hnewpin` input of the
+pinned-placement block-rank brick `le_finrank_span_rigidityRows_of_pinned_placement` (Brick A)
+with a `D`-element new block, against the IH realization's `D(|V|−1)` old block — the count that
+forces the re-inserted vertex's full `D` degrees of freedom.
+
+Where the single-split-off edge of Case II (`exists_independent_panelRow_subfamily_of_edge` +
+`span_panelRow_comp_single_of_edge`) reaches only `D−1`, the two `v`-edges reach `D`: each
+edge's pinned subfamily spans its hinge-row block `r(p(e)) = (span C(p(e)))^⊥`
+(`span_panelRow_comp_single_of_edge`), so the combined pinned span is `r(p(eₐ)) ⊔ r(p(e_b))`,
+whose dimension is exactly `D`. The dimension count is `finrank_sup_add_finrank_inf_eq`:
+`finrank(Bₐ ⊔ B_b) = finrank Bₐ + finrank B_b − finrank(Bₐ ⊓ B_b) = (D−1) + (D−1) − (D−2) = D`,
+where `Bₐ ⊓ B_b = (span Cₐ ⊔ span C_b)^⊥` (`dualAnnihilator_sup_eq` + `hingeRowBlock_apply`) has
+codimension `finrank(span Cₐ ⊔ span C_b) = 2` (the two linearly-independent extensors, via
+`span_inf_span_eq_bot_of_linearIndependent` + `finrank_span_singleton`). A `Fin D`-indexed
+independent subfamily of *actual* pinned panel rows is then extracted from the span by
+`Submodule.exists_fun_fin_finrank_span_eq` (the same extraction
+`exists_independent_panelRow_subfamily_of_edge` uses); each extracted pinned row is a panel row of
+one of the two `v`-edges, so its un-pinned panel row is a rigidity row (`panelRow_mem_rigidityRows`,
+fed by the two edge links `hlink_a`/`hlink_b` the producer supplies by construction). The result is
+returned in Brick A's `hnewpin`/`hnew_span` shape: index `ιn` of cardinality `D`, un-pinned rows
+`rn` in `span F.rigidityRows`, and their `v`-pinned images linearly independent.
+
+The orientation hypotheses `ends eₐ = (v, a)`, `ends e_b = (v, b)` (first endpoint `v` on both
+edges) are supplied by the producer by *construction* of its endpoint selector, so the brick reads
+both pinned families through the common screw column `single v` directly, avoiding the swap
+reorientation the Case-II placement needs for its second edge. -/
+theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ends : β → α × α} {v a b : α} {eₐ e_b : β}
+    (hva : ends eₐ = (v, a)) (hvb : ends e_b = (v, b))
+    (haₐ : a ≠ v) (hbb : b ≠ v)
+    (hlink_a : F.graph.IsLink eₐ v a) (hlink_b : F.graph.IsLink e_b v b)
+    (hne_a : F.supportExtensor eₐ ≠ 0) (hne_b : F.supportExtensor e_b ≠ 0)
+    (hgen : LinearIndependent ℝ ![F.supportExtensor eₐ, F.supportExtensor e_b]) :
+    ∃ (ιn : Type) (_ : Fintype ιn) (rn : ιn → Module.Dual ℝ (α → ScrewSpace k)),
+      Nat.card ιn = screwDim k ∧
+      LinearIndependent ℝ
+        (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) ∧
+      (∀ i : ιn, rn i ∈ Submodule.span ℝ F.rigidityRows) := by
+  classical
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  -- Endpoint orientation facts: both edges have first endpoint `v`, distinct from the other end.
+  have hea1 : (ends eₐ).1 = v := by rw [hva]
+  have hea2 : (ends eₐ).2 = a := by rw [hva]
+  have heb1 : (ends e_b).1 = v := by rw [hvb]
+  have heb2 : (ends e_b).2 = b := by rw [hvb]
+  have hev_a : (ends eₐ).2 ≠ (ends eₐ).1 := by rw [hea1, hea2]; exact haₐ
+  have hev_b : (ends e_b).2 ≠ (ends e_b).1 := by rw [heb1, heb2]; exact hbb
+  -- Per-edge `D − 1` independent panel-row subfamilies, all using their own edge.
+  obtain ⟨sₐ, hsₐe, hsₐcard, hsₐindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_edge (e := eₐ) (by rw [hea1, hea2]; exact haₐ.symm)
+      hne_a
+  obtain ⟨s_b, hsbe, hsbcard, hsbindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_edge (e := e_b) (by rw [heb1, heb2]; exact hbb.symm)
+      hne_b
+  -- The two pinned families span their hinge-row blocks.
+  have hspanₐ : Submodule.span ℝ (Set.range (fun i : sₐ =>
+      (F.panelRow ends (i : β × _ × _)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends eₐ).1))) = F.hingeRowBlock eₐ :=
+    F.span_panelRow_comp_single_of_edge hev_a hne_a hsₐe hsₐcard hsₐindep
+  have hspanb : Submodule.span ℝ (Set.range (fun i : s_b =>
+      (F.panelRow ends (i : β × _ × _)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e_b).1))) = F.hingeRowBlock e_b :=
+    F.span_panelRow_comp_single_of_edge hev_b hne_b hsbe hsbcard hsbindep
+  -- Rewrite the pin to the common body `v`.
+  rw [hea1] at hspanₐ; rw [heb1] at hspanb
+  -- The combined pinned family, indexed by the disjoint union of the two subfamilies.
+  set runp : (sₐ ⊕ s_b) → Module.Dual ℝ (α → ScrewSpace k) :=
+    Sum.elim (fun i : sₐ => F.panelRow ends (i : β × _ × _))
+      (fun i : s_b => F.panelRow ends (i : β × _ × _)) with hrunp
+  set Ppin : (sₐ ⊕ s_b) → Module.Dual ℝ (ScrewSpace k) :=
+    fun x => (runp x).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) with hPpin
+  -- The combined pinned family is literally the `Sum.elim` of the two per-edge pinned families.
+  have hPpin_elim : Ppin = Sum.elim
+      (fun i : sₐ => (F.panelRow ends (i : β × _ × _)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      (fun i : s_b => (F.panelRow ends (i : β × _ × _)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+    funext x; rcases x with j | j <;> rfl
+  -- The combined pinned span is `r(p(eₐ)) ⊔ r(p(e_b))`.
+  have hTspan : Submodule.span ℝ (Set.range Ppin) = F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b := by
+    rw [hPpin_elim, Set.Sum.elim_range, Submodule.span_union, hspanₐ, hspanb]
+  -- The combined pinned span has dimension exactly `D = screwDim k`.
+  have hC2 : Module.finrank ℝ ↥(Submodule.span ℝ {F.supportExtensor eₐ} ⊔
+      Submodule.span ℝ {F.supportExtensor e_b}) = 2 := by
+    have hsum := Submodule.finrank_sup_add_finrank_inf_eq
+      (Submodule.span ℝ {F.supportExtensor eₐ}) (Submodule.span ℝ {F.supportExtensor e_b})
+    rw [span_inf_span_eq_bot_of_linearIndependent hgen, finrank_bot,
+      finrank_span_singleton hne_a, finrank_span_singleton hne_b] at hsum
+    omega
+  have hinf : Module.finrank ℝ ↥(F.hingeRowBlock eₐ ⊓ F.hingeRowBlock e_b) = screwDim k - 2 := by
+    have hdual := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := ℝ)
+      (Submodule.span ℝ {F.supportExtensor eₐ} ⊔ Submodule.span ℝ {F.supportExtensor e_b})
+    rw [hC2, screwSpace_finrank] at hdual
+    have hrw : F.hingeRowBlock eₐ ⊓ F.hingeRowBlock e_b
+        = (Submodule.span ℝ {F.supportExtensor eₐ} ⊔
+            Submodule.span ℝ {F.supportExtensor e_b}).dualAnnihilator := by
+      rw [Submodule.dualAnnihilator_sup_eq, hingeRowBlock_apply, hingeRowBlock_apply]
+    rw [hrw]; omega
+  have hsup : Module.finrank ℝ ↥(F.hingeRowBlock eₐ ⊔ F.hingeRowBlock e_b) = screwDim k := by
+    have hsum := Submodule.finrank_sup_add_finrank_inf_eq (F.hingeRowBlock eₐ) (F.hingeRowBlock e_b)
+    rw [hinf, F.finrank_hingeRowBlock hne_a, F.finrank_hingeRowBlock hne_b] at hsum
+    -- `2 ≤ D` from the two linearly-independent extensors.
+    have h2D : 2 ≤ screwDim k := by
+      have hle : Module.finrank ℝ ↥(Submodule.span ℝ {F.supportExtensor eₐ} ⊔
+          Submodule.span ℝ {F.supportExtensor e_b}) ≤ Module.finrank ℝ (ScrewSpace k) :=
+        Submodule.finrank_le _
+      rw [hC2, screwSpace_finrank] at hle; exact hle
+    omega
+  -- The span of the combined pinned family has dimension `D`.
+  have hfin : Module.finrank ℝ ↥(Submodule.span ℝ (Set.range Ppin)) = screwDim k := by
+    rw [hTspan]; exact hsup
+  -- Extract a `Fin D`-indexed independent subfamily of *actual* pinned rows from the span.
+  obtain ⟨f, hfmem, hfspan, hfindep⟩ :=
+    Submodule.exists_fun_fin_finrank_span_eq ℝ (Set.range Ppin)
+  -- Each extracted pinned row is some `Ppin x`; record the un-pinned panel row as the new block.
+  choose x hx using hfmem
+  refine ⟨Fin (Module.finrank ℝ ↥(Submodule.span ℝ (Set.range Ppin))), inferInstance,
+    fun i => runp (x i), ?_, ?_, ?_⟩
+  · rw [Nat.card_eq_fintype_card, Fintype.card_fin]; exact hfin
+  · -- `hnewpin`: the pinned new-block family is `f`, which is linearly independent.
+    have hpin_eq : (fun i => (runp (x i)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) = f := by
+      funext i; exact hx i
+    rw [hpin_eq]; exact hfindep
+  · -- `hnew_span`: each `runp (x i)` is a panel row of a `v`-edge, hence a rigidity row.
+    intro i
+    refine Submodule.subset_span ?_
+    change runp (x i) ∈ F.rigidityRows
+    rcases x i with ⟨⟨e', t₁, t₂⟩, hj⟩ | ⟨⟨e', t₁, t₂⟩, hj⟩
+    · rw [hrunp, Sum.elim_inl]
+      have he' : e' = eₐ := hsₐe _ hj
+      subst he'
+      exact F.panelRow_mem_rigidityRows_of_link ends hva hlink_a t₁ t₂
+    · rw [hrunp, Sum.elim_inr]
+      have he' : e' = e_b := hsbe _ hj
+      subst he'
+      exact F.panelRow_mem_rigidityRows_of_link ends hvb hlink_b t₁ t₂
+
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
 `dim Z(G,p) = D + k`, i.e. `rank R(G,p) = D|V| − dim Z(G,p) = D(|V|−1) − k`

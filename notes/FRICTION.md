@@ -933,6 +933,12 @@ housekeeping pass once their resolution is fully indexed.
   index* `q : {q // q.1 < q.2}` feeding a heavy `omitTwoExtensor (ne_of_lt q.2)` conclusion in
   `exists_hduality_witness_of_panel_incidence` (`Molecular/RigidityMatrix.lean`). Remedy: `fin_cases q`
   then pass `q` as an explicit subtype literal (`⟨(0,1), by decide⟩`) per branch — `q := _` timed out.
+- **Recurred (Phase 22k):** a `panelRow ends ↑j ∈ F.rigidityRows` goal where `↑j` is a *coerced
+  subtype index* `j : ↥s` — `show … ∈ rigidityRows` / `panelRow_mem_rigidityRows (i := ↑j)` both
+  whnf-time-out (the §38 membership-witness variant). Remedy: `rcases x i with ⟨⟨e',t₁,t₂⟩,hj⟩`
+  (destructure the index to expose `e'`), `subst (e' = eₐ)`, then `panelRow_mem_rigidityRows_of_link
+  ends hva hlink_a t₁ t₂` — the *of_link* form takes `ends e = (u,w)` + the link explicitly, so the
+  match is syntactic. Landed in `exists_independent_pinned_two_edge_span_full` (`Pinning.lean`, L8c-1).
 - **Status:** resolved — explicit args in the landed proof.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
 

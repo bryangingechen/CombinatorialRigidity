@@ -8298,9 +8298,16 @@ verbatim. The only NEW Lean content beyond assembly is the (i.1) `hnewpin` brick
 
 **(i.3) Resulting buildable leaf sequence (the L8c slice, exact signatures).**
 * **L8c-1 — the `hnewpin` brick** `BodyHingeFramework.exists_independent_pinned_two_edge_span_full`
-  (RigidityMatrix.lean, signature in (i.1)). Self-contained finrank/dual-annihilator + extract-LI; no
-  `ofNormals`/producer dependency. **The next concrete commit** — a `RigidityMatrix.lean` leaf, lands first.
-  Mints no node (a `\uses`-only brick).
+  — **LANDED (2026-06-15).** **Two pin corrections forced by landed source (no math change):** the file
+  is **`Pinning.lean`** (beside `span_panelRow_comp_single_of_edge`), NOT `RigidityMatrix.lean` — the
+  brick consumes `panelRow`/the per-edge tools (`exists_independent_panelRow_subfamily_of_edge`,
+  `span_panelRow_comp_single_of_edge`), all of which are downstream of `RigidityMatrix` (Pinning ←
+  PanelLayer ← RigidityMatrix), so `RigidityMatrix.lean` placement is a circular import. And the
+  signature gains two link hyps `hlink_a : F.graph.IsLink eₐ v a`, `hlink_b : F.graph.IsLink e_b v b`
+  (the (i.1) pin omitted them — `hnew_span`'s `panelRow_mem_rigidityRows` needs the link; the L8c-2
+  producer supplies them by construction via `ofNormals_recordsLinks`). Self-contained
+  finrank/dual-annihilator + extract-LI; no `ofNormals`/producer dependency. Mints no node (a
+  `\uses`-only brick).
 * **L8c-2 — the producer** `PanelHingeFramework.case_I_realization_h65` (Theorem55.lean, signature §1.70(d)
   UNCHANGED) + L8b privacy fix (drop `private` on CaseIII:3407, folds in) + wiring (rewrite
   `theorem_55_d3`'s `:555` lambda to call the producer, drop the `h65` signature carry at :516–:524). Restates

@@ -19,7 +19,7 @@ design is canonical in `notes/Phase22-realization-design.md` §1.56 — point at
 
 ## Current state
 
-**L7 complete; L8a fully landed; L8b complete (de-privatize ✓); L8c geometric core PINNED (§1.70(i)); L8c–L10 open.**
+**L7 complete; L8a fully landed; L8b complete (de-privatize ✓); L8c-1 `hnewpin` brick LANDED; L8c-2 + L9–L10 open.**
 All L8a pieces landed (all in `Contraction.lean`/`Deficiency.lean`): step 1
 `exists_maximal_isProperRigidSubgraph`, step-2 bottom leaf `rigidContract_not_simple`,
 L8a-0 `deficiency_le_deficiency_of_le_vertexSet_eq`, step-2 extraction
@@ -29,10 +29,13 @@ induced-saturation opener `exists_maximal_induced_isProperRigidSubgraph`, step-4
 `exists_degree_two_removeVertex_of_no_simple_contraction`** (`Contraction.lean`, ✓).
 L8b complete: **de-privatize `linearIndependent_normals_of_algebraicIndependent`** 
 (`CaseIII.lean`, the triple-LI bridge for the Π°-placement, `0ff5041`).
-L8c geometric core design-settled (§1.70(i)): the `hnewpin` brick + the producer's Brick-A route pinned
-against landed signatures.
-**Next: L8c-1 — the `hnewpin` brick `exists_independent_pinned_two_edge_span_full` (`RigidityMatrix.lean`),
-then L8c-2 the producer + wiring + node flip.**
+**L8c-1 ✓ — the `hnewpin` brick `exists_independent_pinned_two_edge_span_full`** landed in
+**`Pinning.lean`** (NOT `RigidityMatrix.lean` — its `panelRow`-based deps are downstream of
+RigidityMatrix; the §1.70(i.1) file placement was infeasible by import direction). Two `v`-edges
+with LI extensors → a `D`-element pinned-LI subfamily in `span F.rigidityRows`. Mints no blueprint
+node. Build + lint + axiom-clean.
+**Next: L8c-2 — the producer `PanelHingeFramework.case_I_realization_h65` (Theorem55.lean) consuming the
+L8c-1 brick + Brick A, then wiring (drop `theorem_55_d3:516`'s `h65` carry) + flip `lem:case-I-dispatch` green.**
 
 ## Layer plan (L7–L10; each layer opens with its own §1.69+ signature pin)
 
@@ -52,17 +55,15 @@ Transcribed from `notes/Phase22i.md` *Layer plan* (the L7–L10 entries) + the �
   `exists_maximal_induced_isProperRigidSubgraph`, `eq_of_isMinimalKDof_of_le_of_vertexSet_eq_of_isKDof`,
   and **`exists_degree_two_removeVertex_of_no_simple_contraction`** (Leaf-1 assembly, `Contraction.lean`).
   **L8b ✓** de-privatize `linearIndependent_normals_of_algebraicIndependent` (`CaseIII.lean`). 
-  **L8c geometric core PINNED (§1.70(i)):** the `hnewpin` brick + the producer's Brick-A route settled.
-  **Next: L8c-1** the `hnewpin` brick `exists_independent_pinned_two_edge_span_full` (`RigidityMatrix.lean`),
-  then **L8c-2** the producer `case_I_realization_h65` (the `case_II_realization_all_k` template via Brick A,
-  NEW block = two `v`-edges spanning `D`) + wiring (drop `theorem_55_d3:516`'s `h65` carry) + the node flip. 
-  Claim 6.6 concludes inside `k = 0`, **no all-`k` generality needed** (verified against KT pp. 
-  676–677, §1.70(a)). **L8c geometric core PINNED (§1.70(i)):** the step-4 `hnewpin` re-rated to a NEW
-  `RigidityMatrix.lean` brick `exists_independent_pinned_two_edge_span_full` (P≈3.5), and the producer's
-  exact Brick-A route pinned (template = `case_II_realization_all_k`). Buildable leaf sequence: **L8c-1**
-  the `hnewpin` brick (RigidityMatrix.lean, next commit) → **L8c-2** the producer `case_I_realization_h65`
-  + L8b privacy + wiring + node flip. Target node: `lem:case-I-dispatch` (flip red→green; flip `\leanok`;
-  reword the stale "22i" prose to 22k).
+  **L8c-1 ✓** the `hnewpin` brick `exists_independent_pinned_two_edge_span_full` landed in
+  **`Pinning.lean`** (file-placement correction — see Decisions). **L8c-2 (next)** the producer
+  `case_I_realization_h65` (the `case_II_realization_all_k` template via Brick A, NEW block = two
+  `v`-edges spanning `D`) + wiring (drop `theorem_55_d3:516`'s `h65` carry) + the node flip.
+  Claim 6.6 concludes inside `k = 0`, **no all-`k` generality needed** (verified against KT pp.
+  676–677, §1.70(a)). The producer's exact Brick-A route pinned (template = `case_II_realization_all_k`,
+  §1.70(i.2)). Buildable leaf sequence: ~~L8c-1 the `hnewpin` brick~~ ✓ → **L8c-2** the producer
+  `case_I_realization_h65` + L8b privacy + wiring + node flip. Target node: `lem:case-I-dispatch`
+  (flip red→green; flip `\leanok`; reword the stale "22i" prose to 22k).
 - [ ] **L9** — the zero-carry spine + instance: `theorem_55_all_k`, `theorem_55_d3` restated with
   **zero carries** (`hsplit` discharged here by wiring — G0 `simple_of_isMinimalKDof_of_noRigid`
   gives `G.Simple`, then forgetful M4 ∘ the GP Case-III producer; no new build), `theorem_55`
@@ -91,33 +92,33 @@ so the decl names are unchanged — only the file:line moved).
 | Carry | Blueprint red node | Lean consumption site (post-22j-perf chain) | Discharge sub-plan (§1.56) |
 |---|---|---|---|
 | `h622` (KT eq. (6.22), the nested-IH rank lower bound at the `k'`-dof `G_v`) | `lem:case-III-nested-rank-lower` (case-iii.tex) | **DISCHARGED (22k L7)**: `case_III_realization` carries the all-`k` IH; the `h622lb` slot is filled by the standalone `case_III_nested_rank_lower`; `theorem_55_d3` calls thin wrapper `case_III_realization_0dof` (Flag F1). `lem:case-III-nested-rank-lower` green-and-pinned. | **L7 complete** (22k): all-`k` IH at `G_v` → `exists_rankPolynomial_of_IH_linking` → footnote-6 non-root → arithmetic; discharge extracted as `case_III_nested_rank_lower`. |
-| `h65` (the KT Lemma-6.5 vertex-removal arm of the Case-I dispatch) | `lem:case-I-dispatch` (case-i.tex) | **0-dof** form: signature hyp of `theorem_55_d3` (`Theorem55.lean:516`), negative branch of the inlined dispatch (`:555`); **all-`k`** form: signature hyp of `case_I_dispatch` (`:1867`, consumed `:1893`; NO live caller yet — it is L9's spine dispatch) | **L8a ✓ (22k)**: all KT Claim 6.6 graph-side pieces landed — `exists_degree_two_removeVertex_of_no_simple_contraction` (`Contraction.lean`) is the Leaf-1 assembly. **L8b ✓** (de-privatize triple-LI bridge, `0ff5041`); **L8c geometric core PINNED** (§1.70(i)): `hnewpin` brick + producer Brick-A route. **L8c build open**: L8c-1 `exists_independent_pinned_two_edge_span_full` (`RigidityMatrix.lean`) → L8c-2 `case_I_realization_h65` + wiring + flip `lem:case-I-dispatch` green. **Both `h65` shapes → ONE producer**: Claim 6.6 forces `k = 0`; `theorem_55_d3:516`'s 0-dof `h65` drops in L8c; `case_I_dispatch:1867`'s all-`k` `h65` drops in L9. |
+| `h65` (the KT Lemma-6.5 vertex-removal arm of the Case-I dispatch) | `lem:case-I-dispatch` (case-i.tex) | **0-dof** form: signature hyp of `theorem_55_d3` (`Theorem55.lean:516`), negative branch of the inlined dispatch (`:555`); **all-`k`** form: signature hyp of `case_I_dispatch` (`:1867`, consumed `:1893`; NO live caller yet — it is L9's spine dispatch) | **L8a ✓ (22k)**: all KT Claim 6.6 graph-side pieces landed — `exists_degree_two_removeVertex_of_no_simple_contraction` (`Contraction.lean`) is the Leaf-1 assembly. **L8b ✓** (de-privatize triple-LI bridge, `0ff5041`); **L8c-1 ✓** the `hnewpin` brick `exists_independent_pinned_two_edge_span_full` landed in `Pinning.lean` (file-placement correction). **L8c-2 open**: `case_I_realization_h65` + wiring + flip `lem:case-I-dispatch` green. **Both `h65` shapes → ONE producer**: Claim 6.6 forces `k = 0`; `theorem_55_d3:516`'s 0-dof `h65` drops in L8c-2; `case_I_dispatch:1867`'s all-`k` `h65` drops in L9. |
 | `hbase` (the bare two-vertex base) | `def:genuine-hinge-realization` + `def:rank-hypothesis`; `lem:theorem-55-base-producer` green at the strong pair | **DISCHARGED (22i L3)**: `theorem_55_base_producer` (`Theorem55.lean:436`) supplies `.2`; `hbase` dropped from the `theorem_55_d3` signature (`Theorem55.lean:498` comment) | **L3 complete** (22i): the producer concludes the §1.60(a) strong pair `(G.Simple → HasGenericFullRankRealization) ∧ HasPanelRealization` |
 | `hsplit` (the bare no-rigid-subgraph branch) | `def:genuine-hinge-realization` (via `lem:case-III`) | signature hyp of `theorem_55_d3` (`Theorem55.lean:489`); the `hsplitGP` wiring threads `case_III_realization` at `Theorem55.lean:541` | **L9 wiring, no new build**: G0 (`simple_of_isMinimalKDof_of_noRigid`) gives `G.Simple`; forgetful (M4) ∘ the GP Case-III producer |
 | `hcontract` (the bare Case-I branch) | `def:genuine-hinge-realization` | **DISCHARGED (22i L5)**: signature hyp of `theorem_55_d3` (`Theorem55.lean:494`) now wired through the `by_cases G.Simple` dispatch `case_I_dispatch` (`Theorem55.lean:1863`) → non-simple `case_I_realization_nonsimple` / simple `case_I_realization_all_k`; the negative-contraction sub-arm stays `h65` → L8 | **L5 complete** (22i) — split by motive; the 6.5 sub-arm stays `h65` → L8 |
 
 ## Blockers / open questions
 
-- **L8a ✓; L8b ✓; L8c geometric core PINNED (§1.70(i)); L8c build + L9–L10 open.**
+- **L8a ✓; L8b ✓; L8c-1 ✓ (`hnewpin` brick landed); L8c-2 + L9–L10 open.**
   V9 (L10, the `def>0` homogeneous projective move for Thm 5.6 `d=3`) still gates to its layer's design
   pass. No open decisions on L8 shape: all settled (§1.70(a)/(c′)/(c″)/(e)/(i)).
-- **The L8c step-4 `hnewpin` is now PINNED (§1.70(i)), no longer a build-time uncertainty:** re-rated from
-  (d)/(h)'s "clean assembly OR small brick — TBD" to a pinned NEW `RigidityMatrix.lean` brick
-  `exists_independent_pinned_two_edge_span_full` (P≈3.5, full route via `finrank_sup_add_finrank_inf_eq`
-  + the AVAILABLE `dualAnnihilator_sup_eq` — the reverse `(U⊓V)^⊥=U^⊥⊔V^⊥` is NOT in mathlib —
-  + `exists_fun_fin_finrank_span_eq`). `eq_of_hingeConstraint_two_parallel:2672` (SAME-pair form) confirmed
-  not applicable; the distinct-endpoint route is the brick. One honest P≈2 flag inside the producer (the
-  OLD-block `hold_span` seed-restriction `funext`), not a blocker.
+- **L8c-2 producer carries one honest P≈2 flag** (NOT a blocker): the OLD-block `hold_span`
+  seed-restriction `funext` (`Q`'s normals on `V(G_v)` = `Q_v`'s normals, §1.70(i.2) step 4).
 - **`lem:case-I-dispatch` prose staleness** (NOT a gate failure): case-i.tex still says "the
-  obligation of sub-phase 22i" — reword to 22k at the L8c node flip (the natural same-commit moment).
+  obligation of sub-phase 22i" — reword to 22k at the L8c-2 node flip (the natural same-commit moment).
 
 ## Hand-off / next phase
 
-**L8c geometric core design-settled (2026-06-15, §1.70(i)):** the step-4 `hnewpin` and the producer's
-exact Brick-A route are pinned against landed signatures. **Next commit: L8c-1** — the `hnewpin` brick
-`BodyHingeFramework.exists_independent_pinned_two_edge_span_full` (`RigidityMatrix.lean`, signature §1.70(i.1);
-two `v`-edges with LI extensors → a `D`-element pinned-LI subfamily in `span F.rigidityRows`). Self-contained
-finrank/dual-annihilator + extract-LI; no producer dependency; lands first. **Then L8c-2** — the producer
+**L8c-1 LANDED (2026-06-15):** the `hnewpin` brick
+`BodyHingeFramework.exists_independent_pinned_two_edge_span_full` is in **`Pinning.lean`** (beside
+`span_panelRow_comp_single_of_edge`; NOT RigidityMatrix.lean — its `panelRow`-based deps are
+downstream of RigidityMatrix, so the §1.70(i.1) file placement was infeasible by import direction).
+Signature = §1.70(i.1) **plus two link hypotheses** `hlink_a : F.graph.IsLink eₐ v a`,
+`hlink_b : F.graph.IsLink e_b v b` (needed for `hnew_span` via `panelRow_mem_rigidityRows`; the §1.70(i.1)
+pin omitted them — the producer supplies them by construction via `ofNormals_recordsLinks`). Mints no
+blueprint node. Build + lint + axiom-clean.
+
+**Next commit: L8c-2** — the producer
 `PanelHingeFramework.case_I_realization_h65` (Theorem55.lean, signature §1.70(d) unchanged; the
 `case_II_realization_all_k` geometric template widened, consuming the L8c-1 brick + Brick A) + the L8b privacy
 fix (folds in) + wiring (drop `theorem_55_d3:516`'s `h65` hypothesis, rewrite the `:555` lambda) + flip
@@ -135,6 +136,17 @@ After L7–L10: 22k closes delivering KT-strength Thm 5.5 → 5.6 at `d = 3`; th
 
 (One-line verdicts; full proof-technique detail in §1.56–§1.70 design sections, docstrings, git.)
 
+- **L8c-1 `hnewpin` brick landed (2026-06-15, opus, clean):**
+  `exists_independent_pinned_two_edge_span_full` in **`Pinning.lean`** (the §1.70(i.1) finrank chain:
+  per-edge pinned subfamilies span `r(p(eₐ))`/`r(p(e_b))`, `finrank_sup_add_finrank_inf_eq` +
+  `dualAnnihilator_sup_eq` give `finrank(sup) = D`, `exists_fun_fin_finrank_span_eq` extracts the
+  `Fin D` LI subfamily, un-pinned rows are rigidity rows by `panelRow_mem_rigidityRows_of_link`).
+  **Two §1.70(i.1) pin corrections (both forced by landed source, no math change):** (1) file is
+  `Pinning.lean` not `RigidityMatrix.lean` — the brick's `panelRow`/per-edge deps are downstream of
+  RigidityMatrix, so RigidityMatrix placement is a circular import; (2) signature gains
+  `hlink_a`/`hlink_b` link hyps the pin omitted (the producer supplies them). `hnew_span` `whnf`
+  timeout over coerced subtype index → destructure + `_of_link` (FRICTION §38-family *Recurred 22k*).
+  Build + lint + axiom-clean.
 - **L8a Leaf-1 assembly landed (2026-06-15, sonnet, clean):** `exists_degree_two_removeVertex_of_no_simple_contraction`
   (`Contraction.lean`). Full KT Claim 6.6 graph-side assembly: maximal induced-saturated proper rigid `G'`,
   two distinct `v`-edges via the extraction, carrier `G'' = addEdge-twice`, `G''.removeVertex v = G'`
