@@ -674,10 +674,10 @@ theorem exists_independent_pinned_two_edge_span_full [DecidableEq α]
   -- The combined pinned span has dimension exactly `D = screwDim k`.
   have hC2 : Module.finrank ℝ ↥(Submodule.span ℝ {F.supportExtensor eₐ} ⊔
       Submodule.span ℝ {F.supportExtensor e_b}) = 2 := by
-    have hsum := Submodule.finrank_sup_add_finrank_inf_eq
+    have hsum := Submodule.finrank_sup_of_inf_eq_bot
       (Submodule.span ℝ {F.supportExtensor eₐ}) (Submodule.span ℝ {F.supportExtensor e_b})
-    rw [span_inf_span_eq_bot_of_linearIndependent hgen, finrank_bot,
-      finrank_span_singleton hne_a, finrank_span_singleton hne_b] at hsum
+      (span_inf_span_eq_bot_of_linearIndependent hgen)
+    rw [finrank_span_singleton hne_a, finrank_span_singleton hne_b] at hsum
     omega
   have hinf : Module.finrank ℝ ↥(F.hingeRowBlock eₐ ⊓ F.hingeRowBlock e_b) = screwDim k - 2 := by
     have hdual := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := ℝ)
@@ -1154,8 +1154,8 @@ theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
     F.trivialMotions_inf_pinnedMotionsOn_eq_bot hs
   have hle : F.trivialMotions ⊔ F.pinnedMotionsOn s ≤ F.infinitesimalMotions :=
     sup_le F.trivialMotions_le_infinitesimalMotions fun _ hS => hS.1
-  have key := Submodule.finrank_sup_add_finrank_inf_eq F.trivialMotions (F.pinnedMotionsOn s)
-  rw [hdisj, finrank_bot, add_zero, F.finrank_trivialMotions] at key
+  have key := Submodule.finrank_sup_of_inf_eq_bot F.trivialMotions (F.pinnedMotionsOn s) hdisj
+  rw [F.finrank_trivialMotions] at key
   have := Submodule.finrank_mono hle
   omega
 

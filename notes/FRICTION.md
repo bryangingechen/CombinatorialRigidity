@@ -146,7 +146,7 @@ but not the dominant typeclass load. -->
 - **Status:** open (inherent diffuse §38-class cost; residual `CoeT` already minimized. Cross-ref
   TACTICS-QUIRKS §38 abstract-brick variant; `notes/PERFORMANCE.md` *Producer helper-split design*).
 
-### [open] `le_finrank_span_rigidityRows_of_cut` (400000) — `span_induction` + ×3 `finrank_sup_add_finrank_inf_eq` over `Module.Dual` submodules; the source comment's §54 `letI` attribution is for the *splice* brick, not this one
+### [resolved] `le_finrank_span_rigidityRows_of_cut` — fused `finrank_sup_of_inf_eq_bot` dropped the `span_induction + finrank_sup` cost below the 200000 default
 - **Where it bit:** `RigidityMatrix.lean:3070` (Phase 22i L4a block-triangular rank-addition brick).
 - **Mechanism (profiled).** The whole-file `lean --profile` (cut + splice + pinned bricks) is
   `rewriteSeq`-dominated (~7.8s) with a broad algebraic-TC spread (~15s summed) over
@@ -161,21 +161,21 @@ but not the dominant typeclass load. -->
   83d5c5c (now builds at default). The cut brick uses **no** `letI`/`domRestrict`/`AddCommGroup`-diamond
   — its in-source cost comment (3059) is the accurate one (`span_induction + finrank_sup + omega over
   Module.Dual submodules`). So §54 is *not* the lever here.
-- **Candidate fix.** Partial / modest. The disjoint-sup finrank idiom
-  (`finrank_sup_add_finrank_inf_eq` + `rw [hdisj, finrank_bot, add_zero]`, used 3× here and **17×**
-  across `Molecular/`) has no fused form in the project *or* mathlib (loogle: no
-  `Disjoint p q → finrank ↥(p ⊔ q) = finrank p + finrank q`). A fused helper
-  `finrank_sup_of_inf_eq_bot (h : p ⊓ q = ⊥) : finrank ↥(p ⊔ q) = finrank ↥p + finrank ↥q`
-  (upstream-eligible, would live under `Mathlib/LinearAlgebra/Finrank` or project-side
-  `RigidityMatrix.lean`) would collapse each 3-step site to one `rw`. Difficulty ~P1 to write. **But**
-  it shaves `rewriteSeq`/proof-term cost, *not* the dominant submodule-subtype typeclass resolution
-  (paid regardless of which lemma drives the arithmetic), so confidence it alone drops the brick under
-  200000 is *low–medium*. It is worth doing for the 17 call-sites' readability independent of the
-  heartbeat question. Verdict: leave 400000; optionally land the fused finrank-disjoint-sup helper as a
-  standalone cleanup and re-measure.
-- **Status:** open (mostly-inherent diffuse cost; one modest fused-lemma candidate
-  `finrank_sup_of_inf_eq_bot`, 17 call-sites. The source §54 comment is mis-scoped to the splice brick,
-  not this one — see TACTICS-QUIRKS §54, which correctly cites `le_finrank_span_rigidityRows_of_splice`).
+- **Resolution.** Mirrored `Submodule.finrank_sup_of_inf_eq_bot` in
+  `CombinatorialRigidity/Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean` (the fused equality
+  `p ⊓ q = ⊥ → finrank ↥(p ⊔ q) = finrank ↥p + finrank ↥q`, proved in two lines via
+  `finrank_sup_add_finrank_inf_eq` + `rw [h, finrank_bot, add_zero] + omega`). Refactored 6 disjoint-sup
+  call-sites across `RigidityMatrix.lean` (4 sites) and `Pinning.lean` (2 sites); collapsed each
+  `have h := finrank_sup_add_finrank_inf_eq …; rw [hdisj, finrank_bot, add_zero]` to a single term.
+  The `step1`/`step2` two-branch assembly in the |C|=1 arm became direct `have step := finrank_sup_of_inf_eq_bot …`
+  without a `by` block. **Heartbeat result: the 400000 override on `le_finrank_span_rigidityRows_of_cut`
+  was removed and the brick builds clean at the default 200000.** The diagnosis's "low–medium confidence"
+  was over-cautious — the three `rw`-chain reductions plus eliminating the intermediate `h12`/`hc12`
+  `have`s together brought the proof term below budget.
+- **Status:** resolved — `set_option maxHeartbeats 400000` removed from
+  `le_finrank_span_rigidityRows_of_cut`; the fused lemma is mirrored and its FRICTION entry promoted to
+  the Mirrored section below.
+- **Mirror file:** `CombinatorialRigidity/Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`.
 
 ### [resolved] `disjoint Sc (ker f) ↔ InjOn f Sc` is `LinearMap.disjoint_ker_iff_injOn`, not `disjoint_ker'` (deprecated)
 - **Where it bit:** `CaseI.lean` L5a-ii (`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`),
@@ -3197,6 +3197,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (Phase 22h W6d).
 
 ## Mirrored
+
+### [mirrored] `Submodule.finrank_sup_of_inf_eq_bot` — fused finrank equality for disjoint submodules
+- **Where it bit:** `le_finrank_span_rigidityRows_of_cut` (`RigidityMatrix.lean`) and
+  `finrank_pinnedMotionsOn_le` / `hC2` (`Pinning.lean`); the 3-step idiom
+  `have h := finrank_sup_add_finrank_inf_eq p q; rw [hdisj, finrank_bot, add_zero] at h`
+  appeared 6× across the disjoint-sup sites in `RigidityMatrix.lean` + `Pinning.lean`.
+- **Friction:** mathlib has `Submodule.finrank_sup_add_finrank_inf_eq` (inclusion-exclusion) and
+  `finrank_add_finrank_le_of_disjoint` (inequality form), but no fused *equality* for the
+  `p ⊓ q = ⊥` special case. The 3-step idiom was repeated at every disjoint-sup finrank site.
+- **Resolution:** mirrored `Submodule.finrank_sup_of_inf_eq_bot` —
+  `(h : p ⊓ q = ⊥) : finrank ↥(p ⊔ q) = finrank ↥p + finrank ↥q`, proved in two lines via
+  `finrank_sup_add_finrank_inf_eq + rw [h, finrank_bot, add_zero] + omega`. Upstream this lives
+  beside `finrank_sup_add_finrank_inf_eq` in `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`.
+  Refactored 6 call-sites; removed the `set_option maxHeartbeats 400000` override from
+  `le_finrank_span_rigidityRows_of_cut` (now builds at default 200000).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean` (new mirror file).
 
 ### [mirrored] `Matrix.finite_setOf_not_linearIndependent_rows_of_polynomial` + `LinearIndependent.exists_notMem_of_polynomial_repr` (general polynomial-entry Gram-det engine + basis-coordinate transfer)
 - **Where it bit:** Phase 22h W3 (leaf B, the KT-Lemma-5.2 one-variable rank

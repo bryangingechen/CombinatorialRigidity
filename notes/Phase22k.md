@@ -112,6 +112,13 @@ so the decl names are unchanged — only the file:line moved).
     vs `reaimSub_withGraph_infinitesimalMotions` — the latter uses `withGraph G'`), so extracting
     a shared helper would only collapse the two-line `def` bodies while leaving two distinct theorems.
     Not worth the contortion; skipped as planned.
+  - **(3) ✓ Done** — fused `Submodule.finrank_sup_of_inf_eq_bot` mirror +
+    `le_finrank_span_rigidityRows_of_cut` call-site refactor (2026-06-16):
+    mirrored `finrank_sup_of_inf_eq_bot` in
+    `CombinatorialRigidity/Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`; refactored 6
+    disjoint-sup call-sites in `RigidityMatrix.lean` (4) + `Pinning.lean` (2);
+    **removed the 400000 override** from `le_finrank_span_rigidityRows_of_cut` — now builds at
+    default 200000. FRICTION entry updated to `[resolved]` + mirrored section. Build + lint + warning-clean.
 
 ## Hand-off / next phase
 

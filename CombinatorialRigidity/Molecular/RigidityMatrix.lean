@@ -11,6 +11,7 @@ public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.Matrix.Rank
 public import CombinatorialRigidity.Mathlib.Algebra.MvPolynomial.Funext
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import CombinatorialRigidity.Molecular.Extensor
 public import CombinatorialRigidity.Molecular.Meet
@@ -2779,8 +2780,8 @@ theorem finrank_pinnedMotions_add_screwDim [Nonempty α] [Finite α]
     F.trivialMotions_inf_pinnedMotions_eq_bot v
   have hsup : F.trivialMotions ⊔ F.pinnedMotions v = F.infinitesimalMotions :=
     F.trivialMotions_sup_pinnedMotions v
-  have key := Submodule.finrank_sup_add_finrank_inf_eq F.trivialMotions (F.pinnedMotions v)
-  rw [hdisj, hsup, finrank_bot, add_zero, F.finrank_trivialMotions] at key
+  have key := Submodule.finrank_sup_of_inf_eq_bot F.trivialMotions (F.pinnedMotions v) hdisj
+  rw [hsup, F.finrank_trivialMotions] at key
   omega
 
 /-- **Refining the hinge spans shrinks the motion space** (`lem:rank-rotation-semicont`,
@@ -3055,8 +3056,6 @@ private lemma flowSum_mem_span_induce_V₂_eq_zero [Fintype α]
   | smul a x _ hx =>
     rw [map_smul, hx, smul_zero]
 
-set_option maxHeartbeats 400000 in
--- span_induction + finrank_sup + omega over Module.Dual submodules is elaboration-heavy;
 /-- **Vertex-disjoint block-rank addition** (`lem:rigidityRows-cut-rank-add`; KT Lemma 6.1
 block-triangular core; Phase 22i L4a). For a body-hinge framework `F` whose link set
 partitions over a cut `V₁ ⊂ V(F.graph)` with at most one crossing edge, the rigidity-row
@@ -3066,7 +3065,7 @@ bound underlying the not-2-edge-connected induction case.
 
 Proof: the two side-spans are disjoint (V₁/V₂ projection argument), the cut block is
 disjoint from their join (flow-sum argument). The three pieces jointly embed into the full
-span, giving the rank lower bound by `finrank_sup_add_finrank_inf_eq` + disjointness. -/
+span, giving the rank lower bound by `Submodule.finrank_sup_of_inf_eq_bot` (disjoint sups). -/
 theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
     (F : BodyHingeFramework k α β) {V₁ : Set α} {C : Set β}
     (hC_ncard : C.ncard ≤ 1)
@@ -3106,8 +3105,7 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
       simp only [F₂, Graph.induce_isLink] at he
       exact Submodule.subset_span ⟨e, u, v, he.1, r, hr, rfl⟩
     have hdisj : S₁ ⊓ S₂ = ⊥ := span_rigidityRows_induce_inf_eq_bot V₁
-    have hstep := Submodule.finrank_sup_add_finrank_inf_eq S₁ S₂
-    rw [hdisj, finrank_bot, add_zero] at hstep
+    have hstep := Submodule.finrank_sup_of_inf_eq_bot S₁ S₂ hdisj
     calc Module.finrank ℝ ↥S₁ + Module.finrank ℝ ↥S₂
         = Module.finrank ℝ ↥(S₁ ⊔ S₂) := hstep.symm
       _ ≤ Module.finrank ℝ ↥S := Submodule.finrank_mono (sup_le hS₁S hS₂S)
@@ -3213,13 +3211,11 @@ theorem le_finrank_span_rigidityRows_of_cut [Finite α] [Finite β]
       rw [hkey_id φ hφSc, hflow0]
       simp [hingeRow_eq_dualMap, map_zero]
     -- Combine: finrank(S₁) + (D-1) + finrank(S₂) ≤ finrank(S).
-    have step1 : Module.finrank ℝ ↥(S₁ ⊔ S₂) = Module.finrank ℝ ↥S₁ + Module.finrank ℝ ↥S₂ := by
-      have h12 := Submodule.finrank_sup_add_finrank_inf_eq S₁ S₂
-      rw [hdisj12, finrank_bot, add_zero] at h12; omega
+    have step1 : Module.finrank ℝ ↥(S₁ ⊔ S₂) = Module.finrank ℝ ↥S₁ + Module.finrank ℝ ↥S₂ :=
+      Submodule.finrank_sup_of_inf_eq_bot S₁ S₂ hdisj12
     have step2 : Module.finrank ℝ ↥(Sc ⊔ (S₁ ⊔ S₂)) =
-        Module.finrank ℝ ↥Sc + Module.finrank ℝ ↥(S₁ ⊔ S₂) := by
-      have hc12 := Submodule.finrank_sup_add_finrank_inf_eq Sc (S₁ ⊔ S₂)
-      rw [hdisjc12, finrank_bot, add_zero] at hc12; omega
+        Module.finrank ℝ ↥Sc + Module.finrank ℝ ↥(S₁ ⊔ S₂) :=
+      Submodule.finrank_sup_of_inf_eq_bot Sc (S₁ ⊔ S₂) hdisjc12
     rw [hcut_eq, Nat.mul_one]
     calc Module.finrank ℝ ↥S₁ + (screwDim k - 1) + Module.finrank ℝ ↥S₂
         = (screwDim k - 1) + Module.finrank ℝ ↥(S₁ ⊔ S₂) := by rw [step1]; ring
