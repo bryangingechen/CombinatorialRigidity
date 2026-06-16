@@ -76,6 +76,107 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+<!-- The four entries below are the post-22k `maxHeartbeats`-audit diagnosis (commit 83d5c5c
+minimized 7→4 overrides; this is a *why-each-survivor-is-heavy* recon, no Lean change). Each
+records the root mechanism + whether a concrete API/helper fix would let it build at default
+200000. Verdict summary: three are inherent diffuse §38-class typeclass cost (no single
+extractable hotspot); one carries a modest fused-lemma candidate that would shave rw chains
+but not the dominant typeclass load. -->
+
+### [open] `case_cut_edge_realization` (400000) — diffuse `ScrewSpace 2` typeclass re-elaboration across a two-branch `|C|=0/1` assembly; no single hotspot, no cheap removal
+- **Where it bit:** `Theorem55.lean:949` (Phase 22i L4a, the not-2EC bare conjunct).
+- **Mechanism (profiled).** `lean --profile` on `Theorem55.lean` (whole-file) shows the cost is
+  *diffuse typeclass inference* — summed across `MonoidWithZeroHomClass`/`AddMonoid`/`AddCommMonoid`/
+  `AddGroup`/`AddZeroClass`/`ZeroHomClass` it totals ~16s, no one family > 0.8s — interleaved with
+  `simp only [F, extF, normal, …]` (~5s) and `rw [hF₁span, hF₂span]`/`push_cast`/`nlinarith` chains
+  (~5s `rewriteSeq`). This is the §38 signature: the algebraic-structure instances for
+  `Module.Dual ℝ (α → ScrewSpace 2)` / `BodyHingeFramework 2 α β` re-resolve at every `simp`/`rw`
+  motive over the heavy carrier. The proof duplicates a ~140-line block across the `|C|=0` and `|C|=1`
+  branches (each with its own `hlinks`, `hF₁span`/`hF₂span` `congr 1; ext φ` span equalities, the
+  `le_finrank_span_rigidityRows_of_cut` brick call, and a B2 + `le_antisymm` rank close), so the
+  diffuse cost is paid ~2×.
+- **Candidate fix.** Inherent — no single extractable hotspot. The structural lever is the
+  duplicated branch body: a shared `have`-helper computing `hlinks`/`hF₁span`/`hF₂span`/the rank
+  arithmetic once (parameterized by the cut-edge data, vacuous when `|C|=0`) would halve the diffuse
+  cost and *might* reach default, but it is a non-trivial refactor of a 180-line two-arm proof, not a
+  missing lemma. Difficulty ~P3; confidence the refactor alone drops it under 200000 is *low* (the
+  per-branch cost itself may already exceed 200000 given the file-level TC totals). Verdict: leave the
+  400000; if revisited, factor the shared branch body, don't chase a single instance.
+- **Status:** open (inherent diffuse §38-class cost; cross-ref TACTICS-QUIRKS §38, `notes/PERFORMANCE.md`
+  *Producer helper-split design*).
+
+### [open] `case_cut_edge_realization_gp` (600000) — same diffuse §38 cost as L4a's bare arm, compounded by the GP seed + per-side rank-polynomial transfer + `ofNormals` motion-space equalities
+- **Where it bit:** `Theorem55.lean:1340` (Phase 22i L4b-2, the not-2EC GP conjunct).
+- **Mechanism (profiled).** A ~350-line proof (1340–1686) layering, on top of L4a's diffuse-typeclass
+  cut assembly: (1) per-side IH→GP transfer with `infinitesimalMotions_ofNormals_eq_of_ends_swap` +
+  `infinitesimalMotions_eq_of_isLink_supportExtensor` + the complement-finrank identity (Steps 6–7,
+  each touching `(ofNormals (G.induce Vᵢ) … qᵢ).toBodyHinge` over the heavy carrier); (2) a fresh
+  combined alg-indep seed `q₀` with rank-polynomial non-root transfer (`exists_rankPolynomial_*`,
+  `exists_generalPosition_polynomial`); (3) the *same* `|C|=0/1` brick-call + rank-arithmetic close as
+  L4a, now over `(ofNormals G G.endsOf q₀).toBodyHinge`. The whole-file profile (shared with L4a) is
+  diffuse typeclass + `simp`/`rewriteSeq`; the extra GP layers add more heavy-`ofNormals`-carrier
+  motive abstractions, which is why it needs 600000 where the bare arm needs 400000 (audit 83d5c5c
+  reduced it 800000→600000; 400000 times out).
+- **Candidate fix.** Inherent — diffuse, no single hotspot. The final `∃`-witness is *already* routed
+  through the consumer pattern (`exact ⟨ofNormals G G.endsOf q₀, rfl, …⟩` with the rank facts
+  pre-built), so the §38 *final-`∃`-witness-assembly* fix (the one that dropped `case_I_realization_h65`
+  800000→default) does **not** apply — there is no hand-assembled `⟨Q,…⟩` against an unfolded `def`
+  here to reroute. The `|C|=0/1` branch duplication is the same refactor lever as L4a (shared, ~P3,
+  low confidence it alone reaches default). Verdict: leave 600000.
+- **Status:** open (inherent diffuse §38-class cost; cross-ref TACTICS-QUIRKS §38 incl. the
+  final-`∃`-witness variant — *checked and N/A here*).
+
+### [open] `case_II_realization_all_k` (600000) — residual `CoeT` rank-cast load + Step 12–15 geometric `isDefEq`; already audited 16×→3×, residual is inherent §38 defeq
+- **Where it bit:** `CaseII.lean:298` (Phase 22i L6b / 22j A1, KT Lemma 6.8 `k>0` split).
+- **Mechanism (profiled).** `lean --profile` on `CaseII.lean` puts the single largest category at
+  **`typeclass inference of CoeT` ≈ 3.9s ×21** — the ℤ/ℕ rank-cast `CoeT` coercions in the eq.-(6.12)
+  rank arithmetic — followed by `rewriteSeq` ~3.1s and the diffuse algebraic-TC spread
+  (`AddGroup`/`Semiring`/`AddCommGroup`/`ZeroHomClass`/…). The cost is genuinely *spread across the
+  ~16 geometric Steps* (the Step 12–15 `panelRow`/`hingeRow` translation over the heavy carrier and the
+  Brick-A `le_finrank_span_rigidityRows_of_pinned_placement` `isDefEq`), matching the existing source
+  comment. Phase 22j A1 *already* cut it 16×→3× by extracting the duplicated cast load to
+  `toNat_le_of_add_pred_eq` / `sub_toNat_eq_of_add_pred_eq`, and applied the §38 *abstract-brick*
+  `set rn`/`set ro` fix at `hrank_lb`.
+- **Candidate fix.** Inherent for the remaining budget. The `CoeT` residual is the leading single
+  cost, but it is already a deliberately-extracted-and-minimized load, not a fresh missing lemma; the
+  geometric Step 12–15 defeq is §38-class diffuse with no isolable hotspot. Squeezing further would
+  mean a structural re-cut of the eq.-(6.12) placement Steps (large, ~P4) with low confidence of
+  reaching default. Verdict: leave 600000; the in-source comment already documents this — no new
+  source change warranted.
+- **Status:** open (inherent diffuse §38-class cost; residual `CoeT` already minimized. Cross-ref
+  TACTICS-QUIRKS §38 abstract-brick variant; `notes/PERFORMANCE.md` *Producer helper-split design*).
+
+### [open] `le_finrank_span_rigidityRows_of_cut` (400000) — `span_induction` + ×3 `finrank_sup_add_finrank_inf_eq` over `Module.Dual` submodules; the source comment's §54 `letI` attribution is for the *splice* brick, not this one
+- **Where it bit:** `RigidityMatrix.lean:3070` (Phase 22i L4a block-triangular rank-addition brick).
+- **Mechanism (profiled).** The whole-file `lean --profile` (cut + splice + pinned bricks) is
+  `rewriteSeq`-dominated (~7.8s) with a broad algebraic-TC spread (~15s summed) over
+  `Module.Dual ℝ (α → ScrewSpace k)` submodule subtypes, plus `FiniteDimensional` resolution for the
+  `finrank_sup`/`finrank_mono` chain. Inside the cut brick specifically the over-budget drivers are:
+  (a) the `hkey_id` `Submodule.span_induction` over `Sc` with a `hingeRow_eq_dualMap`/`flowSum`
+  `conv_rhs` rewrite per case; (b) the disjoint-sup finrank arithmetic run *three times*
+  (`S₁⊓S₂`, then `Sc ⊓ (S₁⊔S₂)`, via `finrank_sup_add_finrank_inf_eq` + `rw [hdisj, finrank_bot,
+  add_zero]` + `Submodule.finrank_mono`). **Diagnostic correction:** the task brief quoted the §54
+  `letI` instance-diamond comment for this decl, but that comment (`RigidityMatrix.lean:3236`) actually
+  precedes `le_finrank_span_rigidityRows_of_splice` (3261), whose override was *removed* by audit
+  83d5c5c (now builds at default). The cut brick uses **no** `letI`/`domRestrict`/`AddCommGroup`-diamond
+  — its in-source cost comment (3059) is the accurate one (`span_induction + finrank_sup + omega over
+  Module.Dual submodules`). So §54 is *not* the lever here.
+- **Candidate fix.** Partial / modest. The disjoint-sup finrank idiom
+  (`finrank_sup_add_finrank_inf_eq` + `rw [hdisj, finrank_bot, add_zero]`, used 3× here and **17×**
+  across `Molecular/`) has no fused form in the project *or* mathlib (loogle: no
+  `Disjoint p q → finrank ↥(p ⊔ q) = finrank p + finrank q`). A fused helper
+  `finrank_sup_of_inf_eq_bot (h : p ⊓ q = ⊥) : finrank ↥(p ⊔ q) = finrank ↥p + finrank ↥q`
+  (upstream-eligible, would live under `Mathlib/LinearAlgebra/Finrank` or project-side
+  `RigidityMatrix.lean`) would collapse each 3-step site to one `rw`. Difficulty ~P1 to write. **But**
+  it shaves `rewriteSeq`/proof-term cost, *not* the dominant submodule-subtype typeclass resolution
+  (paid regardless of which lemma drives the arithmetic), so confidence it alone drops the brick under
+  200000 is *low–medium*. It is worth doing for the 17 call-sites' readability independent of the
+  heartbeat question. Verdict: leave 400000; optionally land the fused finrank-disjoint-sup helper as a
+  standalone cleanup and re-measure.
+- **Status:** open (mostly-inherent diffuse cost; one modest fused-lemma candidate
+  `finrank_sup_of_inf_eq_bot`, 17 call-sites. The source §54 comment is mis-scoped to the splice brick,
+  not this one — see TACTICS-QUIRKS §54, which correctly cites `le_finrank_span_rigidityRows_of_splice`).
+
 ### [resolved] `disjoint Sc (ker f) ↔ InjOn f Sc` is `LinearMap.disjoint_ker_iff_injOn`, not `disjoint_ker'` (deprecated)
 - **Where it bit:** `CaseI.lean` L5a-ii (`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton`),
   deriving `Sc ⊓ ker D = ⊥` from the `InjOn` I had just proved.
