@@ -224,62 +224,48 @@ whole induction.
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
-  \lean{CombinatorialRigidity.Molecular.theorem_55}
+  \lean{CombinatorialRigidity.Molecular.theorem_55,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_all_k}
+  \leanok
   \uses{def:rank-hypothesis, thm:minimal-kdof-reduction, lem:case-I,
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III, lem:theorem-55-base}
+        lem:case-II-realization, lem:case-III, lem:theorem-55-base,
+        lem:case-III-nested-rank-lower}
   Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
   realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V(G)|-1)$ ---
   an infinitesimally rigid (on $V(G)$) panel-hinge framework
   (\cref{def:rank-hypothesis}, at $k' = 0$). (The molecular conjecture needs
-  only the $0$-dof instance stated here. Note, however, that the proof is not
-  self-contained in $k$: Katoh--Tanigawa's induction runs over minimal
-  $k$-dof-graphs for \emph{all} $k$, and the Case~III argument applies the
-  inductive statement to an auxiliary minimal $k'$-dof graph with
-  $0 \le k' \le D-2$ (Claim~6.11, eq.~(6.22)). This nested use is tracked by
-  \cref{lem:case-III-nested-rank-lower} and rides through the formalized
-  $d = 3$ instance (\cref{thm:theorem-55-d3-instance}) as an explicitly
-  carried hypothesis.)
+  only the $0$-dof instance stated here. The proof is not self-contained in
+  $k$: Katoh--Tanigawa's induction runs over minimal $k$-dof-graphs for
+  \emph{all} $k$, and the Case~III argument applies the inductive statement to
+  an auxiliary minimal $k'$-dof graph with $0 \le k' \le D-2$ (Claim~6.11,
+  eq.~(6.22)), discharged at $d = 3$ by \cref{lem:case-III-nested-rank-lower}.)
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,
         lem:case-II, lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III}
+        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
   Induction on $|V(G)|$, driven by the combinatorial reduction
-  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): run its well-founded
-  induction principle against the realization motive ``$G$ carries a
-  panel realization at rank $D(|V(G)|-1)$'' (\cref{def:rank-hypothesis}).
-  Because the motive is read $V(G)$-relative it composes: the inductive
-  subgraphs carry fewer bodies, and each step's target rank is measured
-  against its own $|V(\cdot)|$, unaffected by the ambient body type. The
-  base case $|V(G)| = 2$ is \cref{lem:theorem-55-base}. The inductive step
-  splits three ways on the reduction dichotomy: Case~I (a proper rigid
-  subgraph, premise $\mathtt{hcontract}$, produced by
-  \cref{lem:case-I-realization} under the 6.3-vs-6.5 dispatch
-  \cref{lem:case-I-dispatch}), Case~II (splitting off a reducible
-  degree-2 vertex, premise $\mathtt{hsplit}$, produced by
-  \cref{lem:case-II-realization}), and Case~III (no proper rigid subgraph,
-  the $k = 0$ split, \cref{lem:case-III}).
-
-  The well-founded recursion itself is a one-line application of
-  \cref{thm:minimal-kdof-reduction} taking the three case-producers as
-  premises; the genericity-free content is the recursion. The motive
-  $\mathrm{HasFullRankRealization}$ carries the $V(G)$-relative form
-  $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (\cref{def:rank-hypothesis}), and
-  the recursion compiles motive-agnostically against it. The node stays
-  \emph{red} on two counts: the general-$d$ argument (KT Lemma~6.13,
-  Phase~23), and the all-$k$ motive --- the formalized recursion is
-  $0$-dof-only, so the nested Case-III input rides as the carried
-  hypothesis of \cref{lem:case-III-nested-rank-lower}, and the bare motive
-  is weaker than KT's genuine-hinge realization
-  (\cref{def:genuine-hinge-realization}). The formalized $d = 3$ state of
-  the dichotomy --- all three case-producers built, modulo a named family
-  of carried hypotheses --- is \cref{thm:theorem-55-d3-instance}.
+  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): the all-$k$ well-founded
+  induction principle (\texttt{minimal\_kdof\_reduction\_all\_k}) is run
+  against the simplicity-conditioned motive
+  ``$(G.\mathrm{Simple} \Rightarrow \mathrm{GP}) \wedge
+    \mathrm{HasPanelRealization}$'' (\cref{def:rank-hypothesis}). The base
+  case $|V(G)| = 2$ is \cref{lem:theorem-55-base}. The inductive step splits
+  on: a cut edge (Case~0, \cref{lem:case-II-realization}); a proper rigid
+  subgraph (Case~I, \cref{lem:case-I-dispatch}); $k > 0$ with no rigid
+  subgraph (Case~II, \cref{lem:case-II-realization}); and $k = 0$ with no
+  rigid subgraph (Case~III, \cref{lem:case-III}). The nested all-$k$ IH
+  carries through all branches; Case~III's nested rank bound is
+  \cref{lem:case-III-nested-rank-lower}. The $d = 3$ formalization is
+  \cref{thm:theorem-55-d3-instance}; the general-$d$ argument
+  (KT Lemma~6.13) is Phase~23.
 \end{proof}
 
-\begin{theorem}[Theorem 5.5 at $d = 3$: the formalized instance; KT Theorem 5.5, \S6.4.1]
+\begin{theorem}[Theorem 5.5 at $d = 3$: the zero-carry instance; KT Theorem 5.5, \S6.4.1]
   \label{thm:theorem-55-d3-instance}
-  \lean{CombinatorialRigidity.Molecular.theorem_55_generic,
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_all_k,
         CombinatorialRigidity.Molecular.theorem_55_base_producer,
         CombinatorialRigidity.Molecular.PanelHingeFramework.theorem_55_d3,
         Graph.not_simple_of_isMinimalKDof_of_ncard_two,
@@ -288,62 +274,44 @@ whole induction.
   \uses{def:rank-hypothesis, def:genuine-hinge-realization,
         thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
         lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III}
+        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower}
   The $d = 3$ ($D = 6$) instance of \cref{thm:theorem-55}, run against the
   simplicity-conditioned motive: every minimal $0$-dof-graph $G$ with
   $|V| \ge 2$ satisfies the pair --- if $G$ is simple, a general-position,
   link-recording realization at an algebraically-independent seed of rank
   $D(|V|-1)$; and in all cases a genuine-hinge panel realization at rank
-  $D(|V|-1)$ (\cref{def:genuine-hinge-realization}). The recursion is
-  \cref{thm:minimal-kdof-reduction} against the conditioned motive; the
-  two-vertex base is \cref{lem:theorem-55-base-producer} (the all-$k$ base
-  dispatch; its general-position half is vacuous: only the parallel pair is
-  $0$-dof, and parallel-pair graphs cannot be simple); the contraction
-  branch is \cref{lem:case-I-realization} under the 6.3-vs-6.5 dispatch
-  (\cref{lem:case-I-dispatch}); and the splitting-off branch is the
-  Case-III producer (\cref{lem:case-II-realization}, \cref{lem:case-III}).
-  A fresh-edge supply (every graph leaves some edge name unused, the
-  splitting-off's short-circuit edge) rides as ambient data.
+  $D(|V|-1)$ (\cref{def:genuine-hinge-realization}). The all-$k$ recursion
+  (\texttt{minimal\_kdof\_reduction\_all\_k}) is run against the conditioned
+  motive; all three adjudicated carries ($\mathtt{h622}$, $\mathtt{hsplit}$,
+  $\mathtt{hcontract}$) are now discharged (Phase~22k~L7--L9): $\mathtt{h622}$
+  via \cref{lem:case-III-nested-rank-lower}; $\mathtt{hsplit}$ by
+  \cref{lem:simple-minimal-noRigid} (G0) $+$ Case-III
+  (\cref{lem:case-III}); $\mathtt{hcontract}$ by \cref{lem:case-I-dispatch}.
+  A fresh-edge supply rides as ambient data.
 
-  \emph{The carried family.} The instance holds modulo three named
-  hypotheses: $\mathtt{h65}$, the Lemma-6.5 vertex-removal arm of the
-  Case-I dispatch (\cref{lem:case-I-dispatch}); and the two genuine-hinge
-  slots $\mathtt{hsplit}$/$\mathtt{hcontract}$ (the no-rigid-subgraph and
-  contraction realization producers, typed at \cref{def:genuine-hinge-realization}).
-  The $\mathtt{hbase}$ slot is now discharged by \cref{lem:theorem-55-base-producer};
-  $\mathtt{h622}$ is discharged internally to \cref{lem:case-III} (Phase~22k~L7b).
-  The delivered content is the general-position conjunct --- it is all the
-  $d = 3$ capstone (Theorem~5.6 / Corollary~5.7) consumes.
-
-  \emph{The first push toward Theorem 5.6.} In the same Lean group: for a
-  \emph{spanning} simple minimal $0$-dof-graph ($V(G)$ the whole body
-  type), the general-position conjunct yields a panel-hinge framework
-  realizing the rank hypothesis at $\operatorname{def}(\tilde G) = 0$ ---
-  the first genuine generic-rank feed of the Proposition-1.1
-  reconciliation (\cref{prop:rigidity-matrix-prop11}); its
-  $\operatorname{def} > 0$ form is the all-$k$ successor's territory.
+  \emph{The first push toward Theorem 5.6.} For a \emph{spanning} simple
+  minimal $0$-dof-graph ($V(G)$ the whole body type), the general-position
+  conjunct yields a panel-hinge framework realizing the rank hypothesis at
+  $\operatorname{def}(\tilde G) = 0$ --- the first genuine generic-rank feed of
+  the Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}); its
+  $\operatorname{def} > 0$ form is the L10 territory.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base-producer,
         lem:case-I-realization, lem:case-I-dispatch,
-        lem:case-II-realization, lem:case-III,
+        lem:case-II-realization, lem:case-III, lem:case-III-nested-rank-lower,
         prop:rigidity-matrix-prop11}
-  Instantiate the conditioned-motive reduction at $D = 6$. The two-vertex
-  base is \cref{lem:theorem-55-base-producer}; its simple conjunct is
-  vacuous (a simple two-vertex minimal $0$-dof-graph does not exist). The
-  no-rigid-subgraph branch is \cref{lem:case-III}; the contraction branch
-  cases classically on whether some proper rigid subgraph has a simple
-  contraction --- positive to \cref{lem:case-I-realization}, negative to
-  the $\Pi^\circ$-placement producer of \cref{lem:case-I-dispatch} (the
-  $\mathtt{h65}$ carry is now discharged, Phase 22k L8c-2). For the
-  spanning stratum corollary, re-aim the realization's endpoint selector
-  at a fixed pair of distinct bodies on non-edges (the motion space reads
-  only links, so rigidity and general position survive, and every
-  supporting extensor is nonzero); the spanning condition kills the
-  motion-space complement, and the Proposition-1.1 rank form
-  (\cref{prop:rigidity-matrix-prop11}) reads the deficiency-$0$ rank
-  hypothesis off the count.
+  Instantiate \texttt{theorem\_55\_all\_k} at $D = 6$. The two-vertex base is
+  \cref{lem:theorem-55-base-producer}. The no-rigid-subgraph branches
+  ($k = 0$: \cref{lem:case-III}; $k > 0$: \cref{lem:case-II-realization}) each
+  start with G0 to get $G.\mathrm{Simple}$, then apply the GP producer and
+  M4 for the bare conjunct. The contraction branch dispatches on $k$:
+  at $k = 0$, use \cref{lem:case-I-dispatch}; at $k > 0$, the 6.5 arm is
+  vacuous (the carrier construction forces $k = 0$), and the remaining arms
+  use \cref{lem:case-I-realization}. For the spanning stratum corollary,
+  re-aim the endpoint selector at a fixed distinct pair on non-edges and apply
+  the Proposition-1.1 rank count (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]
