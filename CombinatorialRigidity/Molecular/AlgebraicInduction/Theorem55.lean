@@ -62,8 +62,8 @@ theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
   -- The L3a geometric brick: two point-pairs in `n₀^⊥` with linearly-independent extensors.
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp n₀
-  set Ce : ScrewSpace 2 := ⟨extensor p, extensor_mem_exteriorPower _⟩ with hCe
-  set Cf : ScrewSpace 2 := ⟨extensor q, extensor_mem_exteriorPower _⟩ with hCf
+  set Ce : ScrewSpace 2 := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hCe
+  set Cf : ScrewSpace 2 := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _) with hCf
   -- The two-hinge framework: `e ↦ Ce`, `f ↦ Cf`, all other edges `0`.
   set F : BodyHingeFramework 2 α β :=
     { graph := G
@@ -186,7 +186,7 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
   -- The L3a brick: two point-pairs in `n₀^⊥` with LI extensors; take the first pair.
   obtain ⟨p, _, hp_perp, _, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp n₀
-  set C : ScrewSpace 2 := ⟨extensor p, extensor_mem_exteriorPower _⟩ with hC_def
+  set C : ScrewSpace 2 := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hC_def
   have hC_ne : C ≠ 0 := by simpa [hC_def] using hpq_li.ne_zero 0
   -- `C` lies in `n₀^⊥` (as an extensor of two points in `n₀^⊥`).
   have hCin : ExtensorInPanel C n₀ := ⟨p, rfl, hp_perp⟩
@@ -1799,8 +1799,8 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   -- ── Step 6: LI extensors Ce, Cf in (normal a)^⊥ ────────────────────────────────────────
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ :=
     exists_linearIndependent_extensor_pair_perp (normal a)
-  set Ce : ScrewSpace 2 := ⟨extensor p, extensor_mem_exteriorPower _⟩
-  set Cf : ScrewSpace 2 := ⟨extensor q, extensor_mem_exteriorPower _⟩
+  set Ce : ScrewSpace 2 := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _)
+  set Cf : ScrewSpace 2 := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)
   have hCe_ne : Ce ≠ 0 := by simpa using hpq_li.ne_zero 0
   have hCf_ne : Cf ≠ 0 := by simpa using hpq_li.ne_zero 1
   have hCe_perp : ExtensorInPanel Ce (normal a) := ⟨p, rfl, hp_perp⟩

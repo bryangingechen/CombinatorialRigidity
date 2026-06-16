@@ -13,33 +13,32 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**L0b landed (2026-06-16): `RigidityMatrix.lean`'s remaining carrier-coercion idioms migrated onto
-`.val`, project green.** The two category-(b)/(e) carrier reach-ins in the file — `ExtensorInPanel`'s
-defining equation `(C : ExteriorAlgebra …) = extensor p` (now `C.val = extensor p`) and the
-`ofHinge_supportExtensor_coe` API lemma (renamed `ofHinge_supportExtensor_val`, LHS now `.val`) — are
-the only `(C : ExteriorAlgebra …)` coercions over a `ScrewSpace`-typed `C` in this file (the
-`⋀[ℝ]^2`-Subtype anonymous constructors at the `complementIso` inputs are NOT `ScrewSpace`-typed and
-stay). **Whole project builds + lints clean**: `.val` is defeq to the old coercion while the carrier
-is still an `abbrev`, so every downstream `ExtensorInPanel` witness (`⟨p, rfl, hp_perp⟩` at
-`Theorem55.lean` 93/94/192/1806/1807; the `exists_extensor_eq_panelSupportExtensor`-fed pair at
-`PanelLayer.lean`:621) typechecks unchanged. `ExtensorInPanel` is blueprint-pinned
-(`panel-layer.tex`:207) but only its *implementation* changed, not its statement — pin survives,
-no restate.
+**Next concrete step: L2 — `Pinning.lean`.** `RigidityMatrix.lean` (L0a/L0b) and `PanelLayer.lean`
+(L1) are now fully on the API. L2 continues down the spine; recon its reach-ins on open (expected
+mostly mechanical `⟨v,h⟩`→`mk` / coercion→`.val`, plus whatever `screwBasis`/`annihRow` consumption
+it carries — bridge through `screwBasis_repr_apply` as L1 did). Each commit keeps the project green
+(carrier still `abbrev`); the **FLIP lands LAST**.
 
-**L0a landed (2026-06-16): the carrier API foundation is in `RigidityMatrix.lean`, project green.**
+**L1 landed (2026-06-16): `PanelLayer.lean` migrated, project green.** `screwBasis` flipped from a
+reducible `abbrev` to a `def` transporting the direct exterior basis through `equivExteriorPower`
+(`.map (equivExteriorPower k).symm`); a `rfl` bridge `screwBasis_repr_apply` reconciles the
+`panelSupportPoly` machinery (stated in the *direct* exterior basis) with the `annihRow`/`screwBasis`
+machinery — used in `panelSupportPoly_eval`→`annihRowPoly_eval`. The `annihRow` + `@[simp]` family is
+opacity-neutral (abstract `Module.Basis` API, no carrier reach-in) and ported verbatim. The five
+construction reach-ins migrated `⟨extensor …⟩ : ScrewSpace 2`→`ScrewSpace.mk` and the
+`exists_extensor_eq_panelSupportExtensor` coercion→`.val`; the `complementIso`-input `⟨extensor …⟩ :
+⋀[ℝ]^2` anonymous constructors stay (not `ScrewSpace`-typed). **Forced consumer fixups in
+`Theorem55.lean`** (L9 territory, but `exists_linearIndependent_extensor_pair_perp`'s statement
+changed): the three `set Ce/Cf/C := ⟨extensor …⟩`→`ScrewSpace.mk` swaps at lines 65/66, 189,
+1802/1803 (`simpa … hpq_li.ne_zero` matches the producer's new `mk`-form). No blueprint pin changed
+(implementation-only; `screwBasis`/`annihRow` *types* stable).
+
+**L0a + L0b landed (2026-06-16): the carrier API + `RigidityMatrix.lean` migration, project green.**
 `ScrewSpace.mk` / `.val` / `val_mk` / `val_mem` / `mk_val` / `val_injective` / `@[ext]` +
-`equivExteriorPower` (+ its `_apply`/`_symm_apply` simp) are landed on the carrier; this file's two
-genuine `ScrewSpace`-anonymous-constructor sites (`span_omitTwoExtensor_eq_top`, `ofHinge`) are
-migrated onto `mk`, and the former's LI transport now routes through `equivExteriorPower`.
-
-**Next concrete step: L1 — `PanelLayer.lean`.** With `RigidityMatrix.lean` fully on the API,
-proceed down the spine. L1 transports `screwBasis` through `equivExteriorPower` (defeq-free per OQ3
-→ mechanical), the `annihRow` + `@[simp]` family on `.repr`/`.coord`, and the file's construction
-reach-ins (incl. `exists_extensor_eq_panelSupportExtensor`'s `(panelSupportExtensor … : ScrewSpace 2
-: ExteriorAlgebra …)` coercion → `.val`, and the `⟨extensor …, _⟩ : ScrewSpace 2` anonymous
-constructors → `mk`). **Hard-part (d) lives here** — de-risked to mechanical by OQ3. Each commit
-keeps the project green (the carrier is still an `abbrev`). **The `abbrev`→opaque-`def` flip lands
-LAST**, after the whole spine adopts the API (see *Architectural choices*).
+`equivExteriorPower` (+ `_apply`/`_symm_apply` simp) on the still-`abbrev` carrier; this file's two
+`ScrewSpace`-constructor sites onto `mk`, its two `(C : ExteriorAlgebra …)` coercion idioms
+(`ExtensorInPanel`'s defining equation, `ofHinge_supportExtensor_coe`→`_val`) onto `.val`. The
+`⋀[ℝ]^2`-Subtype anonymous constructors at `complementIso` inputs are NOT `ScrewSpace`-typed and stay.
 
 The design recon (`notes/ScrewSpaceCarrier-design.md` §5) is complete and **killed the surgical
 "localized wrapper" option** (Shape 1): the realization predicates the capped decls return *and*
@@ -113,10 +112,11 @@ spine + the hard-part concentrations + the exit criterion.
 - [ ] **FLIP (last) — `abbrev ScrewSpace`→opaque `def` + 3 `inferInstanceAs` instances.** Lands
   after the whole spine has adopted the API; a single mechanical commit. **Phase exit + OQ1
   resolution.** (Was "L0, first" in the original plan — see *Architectural choices*.)
-- [ ] **L1 — `PanelLayer.lean`.** Transport `screwBasis` through `equivExteriorPower` (defeq-free
-  per OQ3 → mechanical), the `annihRow` + `@[simp]` family (`annihRow_apply`, `_apply_self`,
-  `_add`, …) on `.repr`/`.coord`, the construction reach-ins. **Hard-part (d) lives here** —
-  de-risked to mechanical by OQ3.
+- [x] **L1 — `PanelLayer.lean`.** `screwBasis` `abbrev`→`def` (`.map (equivExteriorPower k).symm`)
+  + `rfl` bridge `screwBasis_repr_apply`; `annihRow` + `@[simp]` family ported verbatim
+  (opacity-neutral); five construction reach-ins `⟨extensor …⟩`→`mk` / coercion→`.val`; forced
+  `Theorem55.lean` consumer fixups (3× `set … := ⟨extensor …⟩`→`mk`). **Hard-part (d) confirmed
+  mechanical (OQ3 held).** **Done 2026-06-16** — whole project builds + lints clean.
 - [ ] **L2 — `Pinning.lean`.**
 - [ ] **L3 — `PanelHinge.lean`** (defines `supportExtensor`; the realization predicates
   `HasPanelRealization` / `HasGenericFullRankRealization` that structurally embed `ScrewSpace`).
@@ -154,18 +154,22 @@ spine + the hard-part concentrations + the exit criterion.
 
 ## Hand-off / next phase
 
-**Smallest next commit: L1 — `PanelLayer.lean`.** `RigidityMatrix.lean` is now fully on the API
-(L0a + L0b). L1 is the first geometry file down the spine: transport `screwBasis` through
-`equivExteriorPower` (defeq-free per OQ3 → mechanical), migrate the `annihRow` + `@[simp]` family on
-`.repr`/`.coord`, and swap the construction reach-ins
-(`exists_extensor_eq_panelSupportExtensor`'s `(panelSupportExtensor … : ScrewSpace 2 :
-ExteriorAlgebra …)` coercion → `.val`; the `⟨extensor …, _⟩ : ScrewSpace 2` anonymous constructors →
-`ScrewSpace.mk`). **Hard-part (d) lives here** — de-risked to mechanical by OQ3. Each commit keeps
-the project green (the carrier is still an `abbrev`, so partial migration builds). The API shape is
-fixed (L0a) — every later layer is the mechanical `⟨v,h⟩`→`ScrewSpace.mk v h` /
-`(C : ExteriorAlgebra)`→`C.val` swap. The `abbrev`→opaque-`def` **FLIP lands last**, after the whole
-spine adopts the API, as a single small commit that banks the perf win and resolves OQ1. Reassess the
-per-layer estimate against the first real (non-synthetic) reach-in counts as L1 lands.
+**Smallest next commit: L2 — `Pinning.lean`.** `RigidityMatrix.lean` (L0a/L0b) and `PanelLayer.lean`
+(L1) are now fully on the API. L2 is the next geometry file down the spine: open with its reach-in
+recon, then swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` and `(C : ExteriorAlgebra)`→`C.val`, plus
+any `screwBasis`/`annihRow` consumption (bridge through `screwBasis_repr_apply` as L1 did). Each
+commit keeps the project green (the carrier is still an `abbrev`, so partial migration builds). The
+API shape is fixed (L0a/L1) — every later layer is the mechanical swap.
+
+**L1 calibration of the per-layer estimate.** L1's real (non-synthetic) reach-in count was small —
+five `mk`/`val` swaps + the `screwBasis` def-flip + one `rfl` bridge + three forced `Theorem55.lean`
+consumer fixups — and the `screwBasis` transport held exactly as OQ3 predicted (defeq-free, the
+direct-basis coordinate lemmas port verbatim through the `rfl` bridge). Migration idiom that recurs:
+after migrating a `(⟨v,h⟩ : ScrewSpace).val`/coercion onto `mk`/`val`, a trailing `rfl`-close may need
+an explicit `ScrewSpace.val_mk` rewrite — `mk`/`val` are semireducible `def`s, not the reducible
+`Subtype` operations, so `rw`'s auto-`rfl` (reducible transparency) does not unfold them. The
+`abbrev`→opaque-`def` **FLIP lands last**, after the whole spine adopts the API, as a single small
+commit that banks the perf win and resolves OQ1.
 
 **At phase close:** the d=3 tree builds on the opaque `ScrewSpace` carrier; the three
 `maxHeartbeats` survivors are dropped/lowered (OQ1 resolved); the general-`d` API is *not* frozen,
@@ -213,3 +217,19 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   the `exists_extensor_eq_panelSupportExtensor`-fed pair at PanelLayer:621) typecheck unchanged.
   `ExtensorInPanel`'s blueprint pin survives (implementation-only change). No friction surfaced —
   the planned mechanical swap behaved exactly as the design recon predicted.
+
+- **L1 — `PanelLayer.lean` migration (2026-06-16, opus).** Flipped `screwBasis` from a reducible
+  `abbrev` (`(Pi.basisFun …).exteriorPower k`, accepted as a basis *of* `ScrewSpace k` only by
+  reducible defeq) to a `def` transporting it through the boundary `≃ₗ`
+  (`.map (equivExteriorPower k).symm`) — the §5-drafted shape. OQ3 held: the transport is defeq-free,
+  so a single `rfl` bridge `screwBasis_repr_apply` ((`screwBasis k).repr = (direct exterior
+  basis).repr`) reconciles the two coordinate vocabularies — `panelSupportPoly`/`panelSupportPoly_eval`
+  stay stated in the *direct* exterior basis (they precede `screwBasis` in the file), while
+  `annihRow`/`annihRowPoly_eval` use `screwBasis`; the bridge closes the one mixed proof
+  (`annihRowPoly_eval`). `annihRow` + its `@[simp]` family (`annihRow_apply`, `_self`, `_add`,
+  `_smul`, `span_…`) are abstract `Module.Basis` API — opacity-neutral, ported verbatim. Five
+  construction reach-ins → `mk`/`.val`; the `complementIso`-input `⟨extensor …⟩ : ⋀[ℝ]^2` constructors
+  stay. Forced consumer fixups in `Theorem55.lean` (producer statement changed): 3× `set … :=
+  ⟨extensor …⟩`→`ScrewSpace.mk`. Migration idiom (recurs L2+): a `(⟨v,h⟩ : ScrewSpace).val` migrated
+  to `mk`/`val` may need an explicit `ScrewSpace.val_mk` to close a trailing `rfl`-step, since
+  `mk`/`val` are semireducible `def`s (unlike the reducible `Subtype` ops `rw`'s auto-`rfl` unfolds).

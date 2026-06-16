@@ -179,8 +179,19 @@ noncomputable def ScrewSpace.equivExteriorPower (k) : ScrewSpace k ≃ₗ[ℝ] �
 -- screwBasis transported across the equiv (replaces the .exteriorPower-direct definition):
 noncomputable def screwBasis (k) : Module.Basis _ ℝ (ScrewSpace k) :=
   ((Pi.basisFun ℝ (Fin (k+2))).exteriorPower k).map (ScrewSpace.equivExteriorPower k).symm
-@[simp] theorem screwBasis_repr_apply …  ;  @[simp] theorem screwBasis_coord_apply …  -- behaviour through the iso
+theorem screwBasis_repr_apply …  -- := rfl; the direct-↔-screwBasis coordinate bridge (NOT @[simp])
 ```
+
+**L1 refinement (2026-06-16, landed in `PanelLayer.lean`):** `screwBasis` flipped to the
+`.map (equivExteriorPower k).symm` form above. The realized bridge is a *single* lemma
+`screwBasis_repr_apply : (screwBasis k).repr C t = ((Pi.basisFun …).exteriorPower k).repr C t := rfl`
+(OQ3 held — the transport is defeq-free). It is **not** `@[simp]` (the design draft's tentative
+`@[simp]` is dropped): `simp`-ing it would rewrite the canonical `screwBasis` *away* to the direct
+basis everywhere (wrong direction) and trips `simpNF` (reducible LHS). The drafted `screwBasis_coord_apply`
+was unneeded — `annihRow`'s `.coord` use is abstract `Module.Basis` API, opacity-neutral. The bridge's
+only consumer is the one proof (`annihRowPoly_eval`) that mixes the direct-basis `panelSupportPoly`
+vocabulary with the `screwBasis` `annihRow` vocabulary; `panelSupportPoly`/`_eval` stay stated in the
+direct basis (they precede `screwBasis` in the file).
 
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
