@@ -99,10 +99,10 @@ so the decl names are unchanged — only the file:line moved).
 
 ## Blockers / open questions
 
-- **L10a–L10b COMPLETE; L10 DESIGN-SETTLED (§1.71); L10c is the next build.** All flags resolved:
-  - **Flag (i) RESOLVED (L10a)** — strip brick built without a separate micro-pin.
-  - **Flag (ii) RESOLVED (L10b)** — `theorem_55_minimalKDof_k` built as a near-free wrapper;
-    all producers genuinely all-`k`. No remaining design-time blockers for L10.
+- **L10a–L10c COMPLETE; L10 DESIGN-SETTLED (§1.71); L10d (the blueprint flip) is the last step.**
+  Both §1.71 build-time flags resolved (i: L10a strip brick, no separate micro-pin; ii: L10b
+  `theorem_55_minimalKDof_k`, near-free wrapper). **No open blockers** — L10d is a docs/TeX commit
+  (flip `prop:rigidity-matrix-prop11` red→green + mint `thm:theorem-55-6-d3`) + the phase-close checklist.
 
 ## Hand-off / next phase
 
