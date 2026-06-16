@@ -311,11 +311,54 @@ quality / blueprint sync / notes discipline / commit message
 | 162 | L10a spanning-strip brick `exists_isMinimalKDof_spanning_subgraph`, 22b8365 | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 179k tok / 59 tools / 698s | Clean opus build; statement matches §1.71(b) EXACTLY. The design's feared flag-(i) matroid micro-pin (P≈3.5) DISSOLVED — opus took a cleaner route than pinned: a finite minimum (`Set.exists_min_image` over deficiency-preserving edge subsets) where base/fiber-meeting minimality is the contrapositive of `|F₀|`-minimality through the existing rank engine, no WF recursion. Proof-route deviation from the design (greedy→finite-min), statement identical + sound (coordinator full-diff read + warning-clean build + sorry-grep). `\uses`-only brick, mints no node (Blueprint —). Load-bearing flag (ii) (k>0 re-expose) remains for L10b. |
 | 163 | L10b general-`k` re-expose `theorem_55_minimalKDof_k`, 360b409 | 2/2/2 | sonnet | normal | clean | ✓✓✓—✓✓ | 110k tok / 49 tools / 447s | Load-bearing flag (ii) RESOLVED FREE, as the coordinator's trace predicted: identical callback map to `theorem_55_all_k`, only `0 G hG`→`k G hG` in the final application; no producer assumes k=0 (k=0-only ones gated by the principle's own hcontract-k=0/hsplitZero slots). Additive SIBLING (B=1; `theorem_55_all_k`/`_d3` intact, no caller repair). Coordinator full-diff (no k=0 leak) + warning-clean build + lint + sorry-grep. Two non-blocking follow-ups: (1) 76-line callback-map dup vs `theorem_55_all_k` → collapse to k=0 corollary at phase close; (2) the hand-off's L10c inline "Brick A" step DIVERGES from §1.71(c)'s monotonicity route → coordinator points L10c at §1.71(c). |
 | 164 | L10c `def>0` prop11 producer `rankHypothesis_of_theorem_55_d3` (+ `reaimSub` micro-bricks), 17b4ed8 | 2/3/1 | opus | normal | salvaged (user-interrupt mid-dispatch → coordinator reflowed 1 longLine + committed) | ✓✓✓——— | interrupted; no agent return (cost unavailable) | User interrupted the dispatch (loop stop) AFTER opus had written a COMPLETE producer following §1.71(c) exactly (strip → `theorem_55_minimalKDof_k` → `reaimSub` → `withGraph` monotonicity `hgen` → `rigidityMatrix_prop11`, + a `|V|=1` case): green, no sorry, one cosmetic longLine, and correctly took the tailored prompt's "monotonicity NOT Brick A" route. Not an agent fault — complete + correct as written (positive opus P=3 signal). Coordinator verified (warning-clean after reflow + full-diff vs §1.71(c) + lint + sorry-grep), finalized the interrupted notes/hand-off, committed. Notes/Commit rubric `—` = coordinator-supplied (agent interrupted before its turn end). → Findings 22k. |
+| 165 | L10d phase-close — flip `prop:rigidity-matrix-prop11` green + mint `thm:theorem-55-6-d3` (Phase 22k closed), 7c9fea0 | 2/1/2 | opus | normal | clean | ✓✓—✓✓✓ | 229k tok / 101 tools / 992s | Fable-mapped (phase-close) → opus (fable unavailable this session); clean, no coordinator repair. Gates re-run green (lint.sh + verify.sh incl. checkdecls); shape matches §1.71(d); full phase-close checklist verified. **Experiment signal (above the written spec):** caught that §1.71(d)'s literal edge (prop↔Thm-5.6 *mutual* `\uses`) cycles → blows plastex's `ancestors` recursion, and re-routed to the honest acyclic direction (Thm-5.6 *proof* `\uses` prop; prop `\uses` thm:theorem-55) matching the Lean call graph — a structural call the written plan lacked. Benign improvement: pinned the new node to BOTH `def>0`/`def=0` feeds (plan named one). Another clean opus-for-fable phase-boundary point → Findings 22k. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Phase 22k close-out (2026-06-16; rows 138–165)
+
+22k ran the **full S/P/B map** (the perf-round opus-only override expired);
+fable unavailable throughout, so every fable-mapped commit (phase-open, the six
+design-settles, phase-close) ran at **opus**. **28 dispatches: 18 opus / 9 sonnet
+/ 1 haiku → 20 clean, 5 repaired, 1 interrupted→escalated, 1 salvaged; zero
+BLOCKED, zero reverted-for-wrong-math.**
+
+- **The 22j finding held a third phase: the fallible part was the written
+  PLAN/PROSE, never the model's mathematics — and the coordinator's empirical
+  gate is what caught it.** All 5 repairs were plan/prose/notes defects: row 141
+  (sonnet L7b warning-bearing + false "all clean" attestation + a hanging
+  blueprint pin) → **prompted the lint.sh hanging-pin gate**; row 159 (sonnet L9
+  left the superseded legacy spines orphaned) → the row-160 cleanup + **prompted
+  the step-4 supersession-deletion check**; rows 139/153/154 minor (header
+  attribution; haiku note over-claim; an opus design-pass false "not-in-mathlib"
+  claim). Two NEW gate classes promoted to standing checks this phase.
+- **Boundary pairs (2, both clean in both members):** row 146/147 (1/2/1,
+  sonnet-primary/opus-dup) and **row 155/156 (1/3/1, opus-primary/sonnet-dup) —
+  the sonnet duplicate matched opus on a P=3 brick.** Both pairs validated their
+  pins (no pin-error surfaced). The 1/3/1 result is the phase's one map-relevant
+  signal: **a P=3 brick with an EXACT spec (S=1, the §1.70(i.1) hnewpin pin) was
+  within sonnet's reach** — the P=3→opus cell may be conservative when S=1. n=1
+  and the heavy-zone evidence below cuts the other way, so **no map change
+  proposed**; flag for more S=1/P=3 pairs in Phase 23.
+- **Escalation (rows 157→158):** sonnet wedged ≈2 h on an elaboration wall
+  building the L8c-2 Π°-placement producer (1/2/2, the §38 heavy-`whnf` zone),
+  interrupted; opus escalation-retry landed it clean via decomposition + the
+  genericity-transfer keystone. Consistent with prior heavy-zone clusters: a P=2
+  producer in the `whnf`-fragile zone can wedge sonnet even when shape is known.
+- **`salvaged` first use (row 164):** the new outcome value worked as designed —
+  a user interrupt caught a COMPLETE, gate-passing opus producer; coordinator
+  verified in full + finalized the pre-empted notes, no resume/relaunch. Positive
+  opus P=3 signal. The haiku 1/1/1 cell (row 153) held (mechanical task clean,
+  only a minor note repair) — the narrow haiku cell stays right.
+- **opus-for-fable, open question unchanged:** opus handled all six 22k
+  design-settles — incl. genuine re-routes (§1.70 reconciling both `h65` shapes;
+  §1.71 V9-resolved-free) and the row-165 phase-close dep-graph cycle-fix —
+  correctly. With no fable to compare, **whether fable adds value over opus on the
+  harder (re-route / new-gap) design passes stays open** (the rows-84–86 question;
+  now more opus-for-fable design-pass successes, still zero fable data).
 
 ### Phase 22j close-out (2026-06-14/15; rows 119–129)
 
