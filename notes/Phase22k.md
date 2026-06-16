@@ -1,6 +1,6 @@
 # Phase 22k — completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` (work log)
 
-**Status:** in progress (opened 2026-06-15 at the 22j close).
+**Status:** ✓ Complete (closed 2026-06-16 on the L10d blueprint flip).
 
 22k completes the honest all-`k` Theorem 5.5 the 22i→22j→22k arc set up: the three remaining
 22h carries (`h622`, `h65`, `hsplit`) + Theorem 5.6 at `d = 3`. 22i delivered the all-`k`
@@ -19,17 +19,13 @@ design is canonical in `notes/Phase22-realization-design.md` §1.56 — point at
 
 ## Current state
 
-**L7–L10c complete; L10 DESIGN-SETTLED (§1.71); L10d (the blueprint flip) is the last step.**
-L10c landed: `rankHypothesis_of_theorem_55_d3` (Theorem55.lean) — the `def>0`
-`prop:rigidity-matrix-prop11` producer (strip → `theorem_55_minimalKDof_k` → `reaimSub` re-add →
-`withGraph` monotonicity `hgen` → `rigidityMatrix_prop11`; + a `|V|=1` single-body case). Salvaged
-from an interrupted dispatch: complete + green, coordinator reflowed one long line; build + lint +
-warning-clean. L10b: `theorem_55_minimalKDof_k` (general-`k` re-expose, flag (ii) free). L10a:
-`exists_isMinimalKDof_spanning_subgraph` (strip brick, flag (i) dissolved). L9: `theorem_55_all_k` +
-`theorem_55_d3` (zero-carry spine).
-**Next commit: L10d** — the blueprint flip (NO new Lean): flip `prop:rigidity-matrix-prop11`
-red→green (its `hgen` now has a discharging producer `rankHypothesis_of_theorem_55_d3`) + mint the
-new `thm:theorem-55-6-d3` node. This is the final commit; then 22k closes.
+**✓ All layers L7–L10 complete.** Katoh–Tanigawa's Theorem 5.5 and Theorem 5.6 are now formalized at
+`d = 3` at full KT strength. The three remaining 22h carries (`h622`/`h65`/`hsplit`) are discharged,
+leaving a zero-carry Theorem-5.5 spine (`theorem_55_all_k`, `theorem_55_d3`); Theorem 5.6 at `d = 3`
+(`rankHypothesis_of_theorem_55_d3`) lifts the minimal-`0`-dof realization to arbitrary deficiency
+(strip → realize → re-add edges), completing the analytic half of KT Proposition 1.1
+(`rigidityMatrix_prop11`, green). L10d (this close): flipped `prop:rigidity-matrix-prop11` red→green and
+minted `thm:theorem-55-6-d3`. **Next phase: Phase 23** (Case III general `d`, KT Lemma 6.13).
 
 ## Layer plan (L7–L10; each layer opens with its own §1.69+ signature pin)
 
@@ -58,9 +54,9 @@ Transcribed from `notes/Phase22i.md` *Layer plan* (the L7–L10 entries) + the �
   with **zero carries**; new lemma `deficiency_eq_zero_of_simple_rigid_no_simpleContraction`
   (Contraction.lean) discharges the all-`k` `h65` arm; `hsplit` discharged by G0 + M4 wiring.
   Blueprint nodes `thm:theorem-55` + `thm:theorem-55-d3-instance` green.
-- [ ] **L10** — Theorem 5.6 at `d = 3`: the deficiency-preserving spanning-strip brick +
+- [x] **L10** ✓ — Theorem 5.6 at `d = 3`: the deficiency-preserving spanning-strip brick +
   re-add edges (rank only grows) + the `def > 0` `prop:rigidity-matrix-prop11` feed.
-  **DESIGN-SETTLED (§1.71): V9 free; sliced L10a–L10d.** The `def = 0` feed already landed in 22h
+  **§1.71: V9 free; sliced L10a–L10d.** The `def = 0` feed already landed in 22h
   (`rankHypothesis_deficiency_of_theorem_55_d3`). Sub-layers (each its own build):
   - [x] **L10a** ✓ — `Graph.exists_isMinimalKDof_spanning_subgraph` (NEW, Deficiency.lean). Built
     via a **finite minimum** (`Set.exists_min_image` over deficiency-preserving edge subsets), NOT a
@@ -74,8 +70,14 @@ Transcribed from `notes/Phase22i.md` *Layer plan* (the L7–L10 entries) + the �
     strip → `theorem_55_minimalKDof_k` → `reaimSub` re-add → `withGraph` monotonicity `hgen` →
     `rigidityMatrix_prop11`, + a `|V|=1` single-body case. Micro-bricks `reaimSub` /
     `reaimSub_withGraph_infinitesimalMotions` (the `def>0` `reaim` variant). Build + lint + warning-clean.
-  - [ ] **L10d** — blueprint: flip `prop:rigidity-matrix-prop11` red→green + mint NEW
-    `thm:theorem-55-6-d3` node. PLAN per §1.71(d), not flipped at the design pass.
+  - [x] **L10d** ✓ — blueprint (2026-06-16, opus, docs-only): flipped `prop:rigidity-matrix-prop11`
+    red→green (`\leanok` on statement + proof; proof re-routed onto `thm:theorem-55` +
+    `lem:motions-mono-of-graph-le` as the honest `hgen` discharge, the dead "Red:" paragraph dropped) +
+    minted `thm:theorem-55-6-d3` (pinned to `rankHypothesis_of_theorem_55_d3` + the `def=0` feed
+    `rankHypothesis_deficiency_of_theorem_55_d3`). To avoid a dep-graph cycle the prop↔Thm-5.6 edge
+    runs one way: Thm-5.6's *proof* `\uses` the prop (the producer calls the rank bridge), the prop
+    `\uses` only `thm:theorem-55` + monotonicity. Stale "stays red"/"modulo carries" prose fixed in
+    `algebraic-induction.tex` + `intro.tex`. checkdecls + lint.sh + verify.sh green.
 
 **Beyond the carries**, the all-`k` restructure adds the structural deliverables of §1.56(c)/(e)
 — but those (the new reduction cases, the motive restate of every producer) landed in 22i; 22k's
@@ -99,44 +101,39 @@ so the decl names are unchanged — only the file:line moved).
 
 ## Blockers / open questions
 
-- **L10a–L10c COMPLETE; L10 DESIGN-SETTLED (§1.71); L10d (the blueprint flip) is the last step.**
-  Both §1.71 build-time flags resolved (i: L10a strip brick, no separate micro-pin; ii: L10b
-  `theorem_55_minimalKDof_k`, near-free wrapper). **No open blockers** — L10d is a docs/TeX commit
-  (flip `prop:rigidity-matrix-prop11` red→green + mint `thm:theorem-55-6-d3`) + the phase-close checklist.
+- **None — phase complete.** All layers L7–L10 landed; both §1.71 build-time flags resolved favorably
+  (i: L10a strip brick, no separate micro-pin; ii: L10b `theorem_55_minimalKDof_k`, near-free wrapper).
+  Two non-blocking Lean cleanups seed a later post-22k cleanup round (NOT this phase): (1) the
+  `theorem_55_all_k` / `theorem_55_minimalKDof_k` callback-map duplication (collapse the former to a
+  `k=0` corollary of the latter); (2) `reaimSub` / `reaim` could share a helper.
 
 ## Hand-off / next phase
 
-**L10c LANDED (2026-06-16, salvaged from an interrupted dispatch):**
-`PanelHingeFramework.rankHypothesis_of_theorem_55_d3` (Theorem55.lean) — the `def>0`
-`prop:rigidity-matrix-prop11` producer, following §1.71(c) (strip → `theorem_55_minimalKDof_k` →
-`reaimSub` re-add → `withGraph` monotonicity `hgen` → `rigidityMatrix_prop11`) + a `|V|=1`
-single-body case. Build + lint + warning-clean, no sorry. Clean handoff point.
+**22k closed 2026-06-16 (L10d).** Deliverable met: Katoh–Tanigawa's Theorem 5.5 and Theorem 5.6 are
+formalized at `d = 3` at full KT strength, and the analytic half of KT Proposition 1.1
+(`rigidityMatrix_prop11`) is green. Tree clean, all gates green (build + lint + `verify.sh`).
 
-**Next commit: L10d — the blueprint flip (NO new Lean; the FINAL build of 22k).**
-1. Flip `prop:rigidity-matrix-prop11` (`panel-layer.tex:~100`) red→green: its `hgen` premise now has
-   discharging producers — `rankHypothesis_of_theorem_55_d3` (the `def>0` feed, L10c) + the landed
-   `rankHypothesis_deficiency_of_theorem_55_d3` (the `def=0` feed, 22h); drop the
-   `\uses{thm:theorem-55,…}`-on-red, re-route to the now-green feeds, add `\leanok`.
-2. Mint a NEW node `thm:theorem-55-6-d3` (KT Theorem 5.6 at `d=3`), pinned to
-   `rankHypothesis_of_theorem_55_d3`, per §1.71(d). Run `checkdecls` + `lint.sh` + `verify.sh`.
+**Next phase: Phase 23 — Case III general `d`** (KT Lemma 6.13) → Thm 5.5 complete → Thm 5.6 →
+Conjecture 1.2. Open it with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean), per the program
+map (`notes/MolecularConjecture.md` *Opening the next phase*); the general-`d` reuse map is
+`notes/Phase22-realization-design.md` §1.33 (C). The first concrete commit is the Phase-23 opening (a
+design/recon pass, not a build): create `notes/Phase23.md`, add the general-`d` row to
+`notes/AlgebraicIndependence.md`, and scope the Lemma-6.13 layer plan.
 
-Then run the **phase-close checklist** (`CLAUDE.md` *When this commit closes a phase*): flip the 22k
-ROADMAP row to ✓ + compress §22k; sync README / home_page / intro.tex + `notes/MolecularConjecture.md`;
-the broadened blueprint re-read + exposition-ledger pass; project-organization re-skim. After 22k:
-Phase 23 (Case III general `d`, KT Lemma 6.13).
-
-**Loop stopped here (2026-06-16, coordinator).** The `/coordinate-phase` loop was paused by the user
-during the L10c dispatch; that dispatch had already written a complete, green L10c producer, so the
-coordinator reflowed its one long line and committed it (salvage). A fresh session resumes at **L10d**
-(a docs/TeX commit + the phase-close checklist — 22k closes on it). Tree clean. Two non-blocking Lean
-cleanups for the phase-close pass: (1) the 76-line callback-map duplication between `theorem_55_all_k`
-and `theorem_55_minimalKDof_k` (collapse `theorem_55_all_k` to a `k=0` corollary of the latter);
-(2) `reaimSub` and `reaim` could share a helper (minor).
+Two non-blocking Lean cleanups seed a later post-22k cleanup round (see *Blockers*).
 
 ## Decisions made during this phase
 
 (One-line verdicts; full proof-technique detail in §1.56–§1.71 design sections, docstrings, git.)
 
+- **L10d blueprint flip — 22k closed (2026-06-16, opus, docs-only):** flipped
+  `prop:rigidity-matrix-prop11` red→green and minted `thm:theorem-55-6-d3` (KT Theorem 5.6 at `d=3`),
+  pinned to `rankHypothesis_of_theorem_55_d3` (L10c, `def>0`) + `rankHypothesis_deficiency_of_theorem_55_d3`
+  (22h, `def=0`). The prop's proof re-routes its `hgen` discharge onto `thm:theorem-55` +
+  `lem:motions-mono-of-graph-le` (the honest realize-subgraph-then-re-add argument); the dep-graph
+  prop↔Thm-5.6 edge is one-way (Thm-5.6's proof `\uses` the prop, not vice versa) to keep the graph
+  acyclic — a mutual `\uses` blew plastex's `ancestors` recursion. Stale "stays red"/"modulo carries"
+  prose corrected in `algebraic-induction.tex` + `intro.tex`; phase-close surfaces synced. All gates green.
 - **L10c `def>0` prop11 producer landed (2026-06-16, opus, salvaged-interrupted + coordinator-reflowed):**
   `rankHypothesis_of_theorem_55_d3` + micro-bricks `reaimSub` / `reaimSub_withGraph_infinitesimalMotions`
   (the `def>0` `reaim` variant, keyed on `G'`-links), Theorem55.lean tail. The §1.71(c) route: strip

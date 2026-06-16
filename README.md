@@ -58,14 +58,14 @@ green through the body-hinge Tay–Whiteley theorem
 molecular-conjecture program, phases 17–22 build the extensor algebra, the
 panel-hinge rigidity matrix, the deficiency matroid, the combinatorial
 induction, and the algebraic induction realizing that reduction at the
-rigidity-matrix rank. All three cases of the realization theorem (Theorem
-5.5) are now formalized at `d=3`, including the hardest, Katoh–Tanigawa's
-**Case III** (`k=0`, no proper rigid subgraph). The induction has been
-restated at full Katoh–Tanigawa strength (all degrees of freedom, genuine
-hinges), with its reduction-case realizations and the shared rank machinery
-they build on now in place. The current frontier — now in progress — is
-completing that honest all-`k` Theorem 5.5 (the remaining Case III and the
-zero-carry spine) and Theorem 5.6 at `d=3`, then general `d`. The per-phase
+rigidity-matrix rank. At full Katoh–Tanigawa strength (all degrees of
+freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all three
+cases including the hardest, Case III: `k=0`, no proper rigid subgraph) and
+**Theorem 5.6** (every multigraph realizes the deficiency rank, reconciling
+the rigidity-matrix rank with the combinatorial deficiency) are now both
+formalized at `d=3`. The current frontier is the general-`d` argument
+(phase 23, Katoh–Tanigawa Lemma 6.13), then the projective-invariance and
+molecule-application capstones (phases 24–26). The per-phase
 status table is on the
 [project website](https://bryangingechen.github.io/CombinatorialRigidity/);
 `ROADMAP.md` and the per-phase logs under `notes/` carry the detail.

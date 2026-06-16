@@ -58,13 +58,14 @@ nodes), `blueprint/CLAUDE.md` *Proof verbosity* (the crux-node carve-out), and
 `lem:claim-6-4` three-brick assembly), 22d-close (the `lem:case-III-claim-6-11`
 Gap-2→3→1 chain), and 22h-close (the triangle floor). The write-late timing held
 up — each was written once the argument was `sorry`-free, so the clean account was
-stable. The remaining `pending` entries write at their own phase-close; the
-Case-III assembly family (`lem:case-II-realization` eq.-(6.12), the one-row
-shortfall, p3/eq-(6.44)) is green-*modulo* the carried `h622`, so per the
-green-modulo rule it writes at **22k-close**, when `h622` discharges and the
-assembly account is final (the eq.-(6.12) placement reaches its final shared-brick
-form earlier, in the 22j placement-abstraction refactor; Lemma 2.1 + Prop 1.1 likewise; Phase-20 forest-surgery
-on its next touch).
+stable. **At 22k-close** the carry family discharged (`h622` in L7, `hsplit`/`h65`
+in L8/L9), so the Case-III assembly family's accounts are now final: their detailed
+expositions live in the `case-ii.tex` / `case-iii.tex` node+proof prose (written
+incrementally 22c–22h and stable since each became `sorry`-free), and the
+`prop:rigidity-matrix-prop11` / `thm:theorem-55-6-d3` two-halves account landed in
+`panel-layer.tex` (22k L10d) — those markers are flipped to `done` below. The
+remaining `pending` entries write at their own phase-close (Lemma 2.1 on its next
+touch; Phase-20 forest-surgery likewise).
 
 ## Format
 
@@ -98,13 +99,22 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 
 ### `rigidity-matrix.tex` — Phase 18 (R(G,p), rank Lemmas 5.1–5.3)
 
-- **`prop:rigidity-matrix-prop11` (KT Prop 1.1)** — [pending] **(a)** scoped to
-  18 → deferred to 19 → relocated forward to 21+. **Stable insight:** Prop 1.1
-  is *two genuinely separate halves* KT presents as one — the **matroidal**
-  `def = corank M(G̃)` (combinatorial, JJ09 min–max) and the **analytic**
-  `rank R(G,p) = D(|V|−1) − def(G̃)` (generic, needs the genericity device).
-  Closing the matroidal half does not touch the analytic half. Pointer:
-  `notes/Phase18.md` *Hand-off*; `notes/Phase19.md` *Hand-off*.
+- **`prop:rigidity-matrix-prop11` (KT Prop 1.1)** — [done (`panel-layer.tex`,
+  22k-close)] **(a)** scoped to 18 → deferred to 19 → relocated forward to 21+.
+  **Stable insight:** Prop 1.1 is *two genuinely separate halves* KT presents
+  as one — the **matroidal** `def = corank M(G̃)` (combinatorial, JJ09 min–max)
+  and the **analytic** `rank R(G,p) = D(|V|−1) − def(G̃)` (generic, needs the
+  genericity device). Closing the matroidal half does not touch the analytic
+  half. The analytic half is *itself* pinned by two inequalities of opposite
+  character: a **genericity-free** lower bound on the motion space (`hub`, the
+  Phase-19 partition machinery — *every* realization has at least `D + def`
+  motions) and a **generic** upper bound (`hgen`, supplied by Theorem 5.5 +
+  re-add monotonicity — a generic point attains at most that many). The
+  `def > 0` feed (`thm:theorem-55-6-d3`, 22k) is the one that needed the
+  spanning-strip lift; the `def = 0` feed landed in 22h. The full two-by-two
+  account is in the `prop:rigidity-matrix-prop11` and `thm:theorem-55-6-d3` prose
+  of `panel-layer.tex`. Pointer: `notes/Phase18.md` / `notes/Phase19.md`
+  *Hand-off*; `notes/Phase22k.md`.
 
 ### `deficiency.tex` — Phase 19 (M(G̃), deficiency, k-dof)
 
@@ -176,7 +186,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   Lemma 6.5's vertex-*removal* (which does preserve simplicity). Pointer:
   `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`.
 - **`lem:case-I-dispatch` / Claim 6.6 (the Lemma-6.5 arm) — the maximal rigid
-  subgraph must be edge-saturated (Phase 22k L8a)** — [pending] **(a)** the
+  subgraph must be edge-saturated (Phase 22k L8a)** — [done (`case-i.tex`
+  `lem:case-I-dispatch` + this ledger insight; flipped 22k-close)] **(a)** the
   L8a-step-2 build surfaced it (2026-06-15). **Stable insight (a benign gap in
   KT-as-written):** KT's Lemma 6.5 / Claim 6.6 takes a *vertex-inclusionwise
   maximal* proper rigid subgraph `G'` and reads the degree-2 vertex `v` off the
@@ -196,7 +207,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   rigid. Pointer: `notes/Phase22-realization-design.md` §1.70(c′);
   `notes/Phase22k.md`.
 - **`lem:case-III` / `theorem_55.hsplit` (Case-naming + one-row shortfall)** —
-  [pending] **(a)**. **Stable insight (the decisive distinction):** KT's cases key
+  [done (`DESIGN.md` *Phase Case-naming…* + `case-iii.tex`; flipped 22k-close)]
+  **(a)**. **Stable insight (the decisive distinction):** KT's cases key
   on the dof `k`, *not* the graph operation — **Case II (Lemma 6.8) is `k>0`**
   (`+(D−1)` rows suffice for the lower target `D(|V|−1)−k`), while the **`k=0`
   split is Case III**: eq. (6.12) reaches only `D(|V|−1)−1`, *one rigidity row
@@ -233,7 +245,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   the missing `+1` full-rank row (eq. (6.24)→(6.29)) + the Claim-6.12 disjunction. Pointer:
   `notes/Phase22d.md`; ROADMAP §22d; KT pp. 684–685, eq. (6.22) + footnote 6.
 - **`lem:case-III-candidate-row` / `lem:case-III-columnop` — the eq. (6.27) transport's off-`v`
-  vanishing is the eqs. (6.14)–(6.16) *column operation*, not the seam + eq. (6.43)** — [pending]
+  vanishing is the eqs. (6.14)–(6.16) *column operation*, not the seam + eq. (6.43)** — [done
+  (`case-iii.tex`, prose final since 22e; flipped 22k-close)]
   **(c)** (Phase 22e capture — a reroute correcting a mis-identified mechanism). **Stable insight:**
   KT eqs. (6.27)→(6.28) claim the transported row `w`'s `V∖{v}` part vanishes; a Phase-22e recon
   found *which* fact makes it vanish was mis-read. The transported row collapses (using the eq.-(6.24)
@@ -251,7 +264,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   to `w = hingeRow v a ρ`, with `hingeRow v b ρ` the genuine transported `(vb)i*` rigidity row.
   Pointer: `notes/Phase22e.md` *Decisions*; KT pp. 683–686 (eqs. 6.14–6.16); `lem:case-III-columnop`
   + `lem:case-III-candidate-row` proof + `lem:case-III-candidate-row-construction`.
-- **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
+- **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [done
+  (`case-ii.tex` / `case-iii.tex`, prose final since 22h; markers flipped 22k-close)]
   **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
   hinge *at the* `e₀=ab` *hinge of the inductive realization*, so column ops make
@@ -395,7 +409,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `notes/Phase22-realization-design.md` §0, §1.1; `notes/Phase22a.md` *Decisions*
   — (G2) / N6b–N6c.
 - **`lem:case-III-claim612-p3-placement` — the third candidate via the graph iso
-  `Gᵥᵃᵇ ≅ Gₐᵛᶜ` (KT eqs. (6.31)–(6.41))** — [pending] **(a)** (Phase 22e capture). **Stable
+  `Gᵥᵃᵇ ≅ Gₐᵛᶜ` (KT eqs. (6.31)–(6.41))** — [done (`case-iii.tex`, prose final since 22h;
+  marker flipped 22k-close)] **(a)** (Phase 22e capture). **Stable
   insight:** Claim 6.12's third candidate `p₃` exists *because `a` is also a degree-2 vertex* — KT
   splits off at `a` along `vc`, and `Gₐᵛᶜ` is isomorphic to `Gᵥᵃᵇ` (via `ρ(v)=a`, `ρ(u)=u`), so the
   whole eq.-(6.29) candidate-completion machine reruns at the swapped roles. KT compresses this into a
@@ -411,7 +426,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   branch the full conditioned IH rather than pre-split data. Pointer:
   KT pp. 687–689, eqs. (6.31)–(6.41); `notes/Phase22e.md` *Lemma checklist* N7;
   `notes/Phase22-realization-design.md` §1.48–§1.49.
-- **`lem:case-III-claim612-eq644` — eq. (6.44) routes `M₃` onto the same `r`** — [pending] **(a)**
+- **`lem:case-III-claim612-eq644` — eq. (6.44) routes `M₃` onto the same `r`** — [done (`case-iii.tex`,
+  prose final since 22h; marker flipped 22k-close)] **(a)**
   (Phase 22e capture). **Stable insight:** the three candidates `M₁/M₂/M₃` only collapse to a *single*
   contradiction because they all test the **same** vector `r`. `M₁/M₂` share `r := Σⱼ λ_{(ab)j} rⱼ(q(ab))`
   by construction; `M₃`'s row is `Σⱼ λ_{(ac)j} rⱼ(q(ac))`, a priori different. Eq. (6.44) identifies it as

@@ -8326,8 +8326,10 @@ verbatim. The only NEW Lean content beyond assembly is the (i.1) `hnewpin` brick
 > is closed. L10c (the §1.71(c) producer `rankHypothesis_of_theorem_55_d3`) is the next build; its
 > `hgen` comes from `withGraph` monotonicity (step 4), not from "Brick A". **L10c LANDED** (the
 > §1.71(c) producer `rankHypothesis_of_theorem_55_d3` + the `reaimSub` micro-bricks, salvaged +
-> warning-clean); only **L10d** (the blueprint flip of `prop:rigidity-matrix-prop11` red→green + minting
-> `thm:theorem-55-6-d3`) remains, then 22k closes.
+> warning-clean). **L10d LANDED + 22k CLOSED (2026-06-16):** `prop:rigidity-matrix-prop11` flipped
+> red→green, `thm:theorem-55-6-d3` minted (pinned to the L10c `def>0` + 22h `def=0` feeds); the
+> prop↔Thm-5.6 dep edge runs one-way (Thm-5.6 proof `\uses` the prop) to keep the dep-graph acyclic.
+> KT Thm 5.5 + Thm 5.6 are formalized at `d = 3`. Next: Phase 23 (general `d`, KT Lemma 6.13).
 
 > **Docs-only design pass (the L10 build-out).** Lean re-read this pass against the LANDED source
 > (the actual `def`/`theorem`/API, not the prior prose's optimism, per the mandatory clause (i)):

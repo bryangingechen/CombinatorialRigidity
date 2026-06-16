@@ -1,21 +1,15 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS. Phases 17–22j (+ 21a/21b) complete; the current frontier is
-**sub-phase 22k, completing the honest all-`k` Theorem 5.5** (in progress, opened 2026-06-15;
-`notes/Phase22k.md`) — Case III / `h622`, Lemma 6.5 / `h65`, the zero-carry spine / `hsplit`,
-+ Theorem 5.6 at `d = 3`, unblocking Phases 24–26. 22i
-delivered the all-`k` genuine-hinge motive + the reduction-case producers (`hbase`/`hcontract`
-discharged of the five 22h carries); **22j** (closed; `notes/Phase22j.md`; design §1.68) introduced
-the shared span-transport "pinned placement" rank brick
-(`le_finrank_span_rigidityRows_of_pinned_placement`) the Case-II / Lemma-6.8 producers refactor onto
-(which 22k consumes), consolidated the L6b producer onto it, retired the dead L6a, and landed the
-producer cleanup. **The pre-22k internal step — a dedicated `CaseI.lean` file-split perf round — is
-complete:** the 10,346-line monolith is now the 5-file `AlgebraicInduction/` chain
-`GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55` (rename-free; ranked plan in
-`notes/PERFORMANCE.md` *Molecular `CaseI.lean` perf recon*). **Phase 22k** (honest all-`k` Theorem 5.5)
-is the open frontier; the L7 signature pin is its next concrete commit. Then **Phase 23** (general `d`,
-KT Lemma 6.13). Phases 23–26 planned. The per-phase record lives in the phase table and per-phase detail
-blocks below, ROADMAP §17–§22j, and `notes/PhaseN.md` — this Status paragraph is a pointer,
+**Status:** IN PROGRESS. Phases 17–22k (+ 21a/21b) complete; **Katoh–Tanigawa's Theorem 5.5 and
+Theorem 5.6 are now formalized at `d = 3` at full KT strength** (all degrees of freedom, genuine
+hinges). 22k (closed 2026-06-16; `notes/Phase22k.md`) discharged the last three 22h carries
+(`h622`/`h65`/`hsplit`), giving a zero-carry Theorem-5.5 spine, then pushed through to Theorem 5.6 at
+`d = 3` (strip to a minimal spanning subgraph, realize, re-add edges — the rank only grows), which
+completes the analytic half of KT Proposition 1.1 (`rigidityMatrix_prop11`, now green). The current
+frontier is **Phase 23** (Case III general `d`, KT Lemma 6.13 → Thm 5.5/5.6 → Conjecture 1.2). Phases
+24–26 planned (the 3-D bar-joint matroid, projective invariance + the modelling equivalence, and the
+molecule-application capstone). The per-phase record lives in the phase table and per-phase detail
+blocks below, ROADMAP §17–§22k, and `notes/PhaseN.md` — this Status paragraph is a pointer,
 not a log (*One canonical home per content type*, `notes/CLAUDE.md`). This file is the
 program design for Phases 17–26 and the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
@@ -229,7 +223,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22h ✓ | **The corrected `d=3` assembly** (closed 2026-06-11, `notes/Phase22h.md`). Took `lem:case-II-realization` / `lem:case-III` green at `d=3` (both pinned to `case_III_realization`): G5 predicate repair, the (β) full-conditioned-IH restate, the `\|V\|=3` triangle floor T1–T4, the `hsplit` producer + the full candidate-placement discharge (W1–W10b), `theorem_55_d3` with the 6.3-vs-6.5 dispatch, the `def=0` Thm 5.5→5.6 stratum, the blueprint close (`thm:theorem-55-d3-instance` green). **Closed green-modulo the named carry family** {`h622`, `h65`, `hbase`, `hsplit`, `hcontract`} (user-adjudicated; design §1.50–§1.55); postmortem: `DESIGN.md` *Statement faithfulness to the source*. | §5.1–5.2, §6.4.1 | 5 |
 | 22i ✓ | **All-`k` genuine-hinge motive + reduction-case producers** (closed 2026-06-14, `notes/Phase22i.md`; opened as "the honest all-`k` Theorem 5.5"). Delivered L0–L6: the genuine-hinge all-`k` motive (free-hinge carrier + extensor-in-panel containment — KT's coincident-panel Lemmas 5.3/6.2 are inexpressible with a derived hinge-as-meet), the four-case all-`k` induction (NEW cases: Lemma 6.1 not-2-edge-connected, Lemma 6.8 `k>0` split), and the base / cut-edge / Case-I / Lemma-6.8 producers (`hbase`/`hcontract` discharged). **Re-scoped at close by a deliberate split**; the rest → 22j + 22k. | §3, §5.2, §6.1–6.4 | 5 |
 | 22j ✓ | **The shared eq.-(6.12) placement abstraction** (closed, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement` + augment) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer had inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Consolidated the L6b producer onto it, retired the dead L6a, landed the producer cleanup (dead-code + both stopgap suppressions dropped). | §6.3, §6.4.1 | — |
-| 22k ⌛ | **Completing the honest all-`k` Theorem 5.5** (in progress, opened 2026-06-15; `notes/Phase22k.md`; layer detail = the L7–L10 entries transcribed there from `notes/Phase22i.md`). Case III rewire (`h622` from the all-`k` IH), the Lemma-6.5 arm (`h65`), the zero-carry spine (`hsplit`; `theorem_55_d3` restated), and the Thm-5.6 `d=3` push (`prop:rigidity-matrix-prop11` at `def>0`). Consumes 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
+| 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -349,7 +343,7 @@ leaves, the GAPs-1–5 recon program), **22h** = the corrected `d=3` assembly (�
 genuine-hinge motive + reduction-case producers (✓ complete, closed 2026-06-14, re-scoped at a
 deliberate split; `notes/Phase22i.md`), **22j** = the shared eq.-(6.12) placement abstraction
 (✓ complete; `notes/Phase22j.md`), and **22k** = completing the honest all-`k` Theorem 5.5 (Case III,
-the spine) + Thm 5.6 at `d=3` (⌛ in progress, opened 2026-06-15; see *Opening the next phase* below).
+the spine) + Thm 5.6 at `d=3` (✓ complete, closed 2026-06-16; `notes/Phase22k.md`).
 Math worked out in `notes/Phase21b.md` *Finding A/B* +
 `notes/Phase22-realization-design.md` §1.39–§1.56; the green Phase-21b/22c–22h infra feeds it.
 
@@ -650,22 +644,15 @@ design §1.68 — Brick A `le_finrank_span_rigidityRows_of_pinned_placement` + a
 consolidated onto it, the dead L6a retired, the producer cleanup). Sub-lettering keeps the integer
 phase numbers 23–26 stable.
 
-**The pre-22k internal step — a dedicated `CaseI.lean` file-split perf round — is complete
-(2026-06-15).** The 10,346-line monolith is now a 5-file `AlgebraicInduction/` chain
-(`GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55`) — rename-free, so the 50
-blueprint pins / `checkdecls` are unaffected; ranked plan + slice log in `notes/PERFORMANCE.md`
-*Molecular `CaseI.lean` perf recon (2026-06-15, Phase 22j design-pass)* and `notes/Phase22j-perf.md`.
-This was an internal perf pass, not a reader-facing milestone.
+**Sub-phase 22k is complete** (closed 2026-06-16; `notes/Phase22k.md`): the last three 22h carries
+(`h622`/`h65`/`hsplit`) discharged for a zero-carry Theorem-5.5 spine, then Theorem 5.6 at `d=3`
+(`rankHypothesis_of_theorem_55_d3`) lifting to arbitrary deficiency and greening
+`prop:rigidity-matrix-prop11` + minting `thm:theorem-55-6-d3`. The all-`k` Thm 5.5 → 5.6 deliverable
+spanned 22i + 22k (with the 22j Brick-A abstraction between them). KT-strength Thm 5.5 and Thm 5.6 are
+now formalized at `d=3` (Cor 5.7 lands in Phase 26).
 
-**Now open: sub-phase 22k** (opened 2026-06-15; `notes/Phase22k.md`), completing the honest all-`k`
-Theorem 5.5 — Case III rewire (`h622` from the all-`k` IH; `lem:case-III-nested-rank-lower`), the
-Lemma-6.5 arm (`h65`; `lem:case-I-dispatch`), the zero-carry spine (`hsplit`; `theorem_55_d3` restated),
-and the Thm-5.6 `d=3` push (`prop:rigidity-matrix-prop11` at `def>0`) — consuming 22j's Brick A
-(`le_finrank_span_rigidityRows_of_pinned_placement`). The next concrete commit is the **L7 signature
-pin** (a design pass, not a build). Deliverable boundary: KT-strength Thm 5.5 + Thm 5.6
-at `d=3` (Cor 5.7 lands in Phase 26), unblocking Phases 24–26. The motive design is pinned in
-`notes/Phase22-realization-design.md` §1.56; the carries table (consumption sites relocated into the
-post-22j-perf 5-file chain) + layer plan (L7–L10) are in `notes/Phase22k.md` (transcribed from
-`notes/Phase22i.md` *Hand-off*). **Then general-`d`** (Lemma 6.13, reuse map in §1.33 (C)) is
-**Phase 23** — open it with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the
-general-`d` row to `notes/AlgebraicIndependence.md`.
+**Now open: Phase 23 — Case III general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 →
+Conjecture 1.2**. The reuse map is §1.33 (C) of `notes/Phase22-realization-design.md`. Open it with its
+own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` row to
+`notes/AlgebraicIndependence.md`. The integer phase numbers 23–26 were kept stable by the Phase-22
+sub-lettering.

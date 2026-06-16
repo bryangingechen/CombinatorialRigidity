@@ -100,6 +100,7 @@ whole induction.
 \begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
+  \leanok
   \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic, lem:genericity-device}
   For a generic panel-hinge realization $(G,p)$,
   \[
@@ -114,6 +115,7 @@ whole induction.
   \cite{jacksonJordan2009}.
 \end{proposition}
 \begin{proof}
+  \leanok
   \uses{thm:theorem-55, lem:trivial-motions-rank-bound,
         lem:motions-mono-of-graph-le}
   The deficiency is the corank of $M(\tilde G)$
@@ -126,20 +128,21 @@ whole induction.
   \cref{lem:trivial-motions-rank-bound} together with the deficiency count: a
   partition $P$ attaining $\operatorname{def}(\tilde G)$ contributes
   $\operatorname{def}$ independent motions beyond the $D$ trivial ones --- this
-  holds for \emph{every} realization, no genericity. The reverse (generic
-  max-rank) bound is exactly Theorem~5.5 (\cref{thm:theorem-55}), pushed from
-  minimal $k$-dof-graphs to all multigraphs by deleting down to a minimal
-  $k$-dof spanning subgraph and observing that re-adding edges only grows the
-  rank (\cref{lem:motions-mono-of-graph-le}); the Claim~6.4 generic-rank
-  argument selects the point attaining it. The genericity-free upper bound
-  $\mathtt{hub}$ is now discharged from the partition machinery
-  (\cref{lem:trivial-motions-rank-bound}); the proposition's only inputs beyond
-  the generic max-rank bound are the dimension fixing $n = k+1$ and the
-  genuine-hinge condition $C(e) \neq 0$ the partition cut needs. \emph{Red:} it
-  still depends on \cref{thm:theorem-55}, whose $V(G)$-relative motive
-  (\cref{def:rank-hypothesis}) it inherits (here $V(G) = V_\alpha$, since the
-  proposition is applied to a spanning $G$, so the relative form coincides with
-  the absolute $\dim Z = D + \operatorname{def}$).
+  holds for \emph{every} realization, no genericity, and is discharged in-proof
+  from the Phase-19 partition machinery. The reverse (generic max-rank) bound
+  $\operatorname{rank} R(G,p) \ge D(|V|-1) - \operatorname{def}$ --- equivalently
+  $\dim Z(G,p) \le D + \operatorname{def}$, carried as the hypothesis
+  $\mathtt{hgen}$ --- holds at a generic realization: delete $G$ down to a
+  minimal $k$-dof spanning subgraph, realize it at full generic rank by
+  Theorem~5.5 (\cref{thm:theorem-55}, the Claim~6.4 generic-rank argument
+  selecting the attaining point), then re-add the deleted edges, which only
+  grows the rank (\cref{lem:motions-mono-of-graph-le}). The proposition's only
+  further inputs are the dimension fixing $n = k+1$ and the genuine-hinge
+  condition $C(e) \neq 0$ the partition cut needs. The construction supplying
+  $\mathtt{hgen}$ at every deficiency is Theorem~5.6 at $d = 3$
+  (\cref{thm:theorem-55-6-d3}). Applied to a spanning $G$ ($V(G) = V_\alpha$),
+  the $V(G)$-relative motive of \cref{def:rank-hypothesis} coincides with the
+  absolute $\dim Z = D + \operatorname{def}$.
 \end{proof}
 
 \subsection{The induction skeleton and base case}
@@ -291,9 +294,10 @@ whole induction.
   \emph{The first push toward Theorem 5.6.} For a \emph{spanning} simple
   minimal $0$-dof-graph ($V(G)$ the whole body type), the general-position
   conjunct yields a panel-hinge framework realizing the rank hypothesis at
-  $\operatorname{def}(\tilde G) = 0$ --- the first genuine generic-rank feed of
-  the Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}); its
-  $\operatorname{def} > 0$ form is the L10 territory.
+  $\operatorname{def}(\tilde G) = 0$ --- the $\operatorname{def} = 0$ generic-rank
+  feed of the Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}).
+  The $\operatorname{def} > 0$ form is the next theorem
+  (\cref{thm:theorem-55-6-d3}).
 \end{theorem}
 \begin{proof}
   \leanok
@@ -311,6 +315,50 @@ whole induction.
   use \cref{lem:case-I-realization}. For the spanning stratum corollary,
   re-aim the endpoint selector at a fixed distinct pair on non-edges and apply
   the Proposition-1.1 rank count (\cref{prop:rigidity-matrix-prop11}).
+\end{proof}
+
+\begin{theorem}[Theorem 5.6 at $d = 3$: every multigraph attains the deficiency rank; KT Theorem 5.6, \S5.2]
+  \label{thm:theorem-55-6-d3}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_of_theorem_55_d3,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_deficiency_of_theorem_55_d3}
+  \leanok
+  \uses{thm:theorem-55-d3-instance, lem:motions-mono-of-graph-le,
+        lem:subgraph-minimality, def:rank-hypothesis}
+  At $d = 3$ ($D = 6$), every simple spanning multigraph $G$ has a
+  panel-hinge realization $(G,p)$ attaining the deficiency rank
+  \[
+    \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G),
+  \]
+  i.e.\ a framework realizing the rank hypothesis
+  (\cref{def:rank-hypothesis}) at $k' = \operatorname{def}(\tilde G)$. This is
+  Katoh--Tanigawa's Theorem~5.6 specialized to $d = 3$, lifting the
+  minimal-$0$-dof realization of \cref{thm:theorem-55-d3-instance} to an
+  arbitrary deficiency. It is the genuine $\operatorname{def} > 0$ feed of the
+  Proposition-1.1 reconciliation (\cref{prop:rigidity-matrix-prop11}); the
+  $\operatorname{def} = 0$ stratum is \cref{thm:theorem-55-d3-instance}.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:theorem-55-d3-instance, lem:motions-mono-of-graph-le,
+        lem:subgraph-minimality, prop:rigidity-matrix-prop11}
+  Following Katoh--Tanigawa (p.~670). When $|V| = 1$ the framework is trivially
+  rigid and $\operatorname{def}(\tilde G) = 0$, settled directly. Otherwise:
+  delete edges of $G$ down to a minimal $k$-dof spanning subgraph $G' \le G$
+  with $V(G') = V(G)$ and $\operatorname{def}(\tilde{G'}) =
+  \operatorname{def}(\tilde G) =: k$ (the deficiency-preserving strip; the
+  matroid engine behind \cref{lem:subgraph-minimality}). Realize $G'$ at its own
+  deficiency $k$ by Theorem~5.5 (\cref{thm:theorem-55-d3-instance}, the all-$k$
+  spine: $G'$ is simple as a subgraph of a simple $G$), yielding a generic
+  full-rank realization $q$ on $G'$ with $\dim Z(G',q) = D + k$. Re-aim $q$ to
+  the full graph $G$, keeping the supporting extensors on every $G'$-link
+  unchanged and placing a genuine in-panel hinge on each re-added edge --- in
+  the homogeneous model two distinct hyperplanes through the origin always meet,
+  so KT's projective-invariance move is free. Re-adding edges only shrinks the
+  motion space (\cref{lem:motions-mono-of-graph-le}), so
+  $\dim Z(G,p) \le \dim Z(G',q) = D + k = D + \operatorname{def}(\tilde G)$. This
+  is exactly the upper bound $\mathtt{hgen}$, which together with the
+  genericity-free lower bound discharges the rank hypothesis via the
+  Proposition-1.1 rank bridge (\cref{prop:rigidity-matrix-prop11}).
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]

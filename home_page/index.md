@@ -49,16 +49,15 @@ molecular-conjecture program, the Grassmann–Cayley extensor algebra
 (Lemma 2.1), the panel-hinge rigidity matrix `R(G,p)`, the deficiency
 matroid `M(G̃)`, the combinatorial induction (Theorem 4.9), and the
 algebraic induction realizing that reduction at the rigidity-matrix rank
-(phases 17–22) are built. All three cases of the realization theorem
-(Theorem 5.5) are now formalized at `d=3`, including the hardest,
-Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid subgraph). The
-induction has been restated at full Katoh–Tanigawa strength (all degrees
-of freedom, genuine hinges), with its reduction-case realizations and the
-shared rank machinery they build on now in place. The current frontier —
-now in progress — is completing that honest all-`k` Theorem 5.5 (the
-remaining Case III and the zero-carry spine) and Theorem 5.6 at `d=3`,
-then general `d`. The table below and `ROADMAP.md` carry the fine-grained,
-live status.
+(phases 17–22) are built. At full Katoh–Tanigawa strength (all degrees of
+freedom, genuine hinges), **Theorem 5.5** (the realization theorem, all
+three cases including the hardest, Case III: `k=0`, no proper rigid
+subgraph) and **Theorem 5.6** (every multigraph realizes the deficiency
+rank, reconciling the rigidity-matrix rank with the combinatorial
+deficiency) are now both formalized at `d=3`. The current frontier is the
+general-`d` argument (phase 23, Katoh–Tanigawa Lemma 6.13), then the
+projective-invariance and molecule-application capstones (phases 24–26).
+The table below and `ROADMAP.md` carry the fine-grained, live status.
 
 | Phase | Topic                       | File(s)                                                          | Status |
 |------:|-----------------------------|------------------------------------------------------------------|:------:|
@@ -95,7 +94,7 @@ live status.
 |   22h | the corrected `d=3` assembly (the `hsplit` producer + Theorem 5.5 at `d=3`, completing Case III there) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ |
 |   22i | all-`k` genuine-hinge induction + the reduction-case realizations (base, cut-edge, Case I, degree-2 split) | `Molecular/` | ✓ |
 |   22j | the shared eq.-(6.12) placement brick + Case-II/split refactor | `Molecular/` | ✓ |
-|   22k | completing the all-`k` Theorem 5.5 (Case III, the spine) + Theorem 5.6 at `d=3` | `Molecular/` | ⌛ |
+|   22k | completing the all-`k` Theorem 5.5 (Case III, the spine) + Theorem 5.6 at `d=3` | `Molecular/` | ✓ |
 |   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

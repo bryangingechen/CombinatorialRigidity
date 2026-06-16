@@ -128,7 +128,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22i. all-`k` genuine-hinge motive + reduction-case producers (L0–L6) | `Molecular/` | ✓ Complete (closed 2026-06-14, re-scoped at a phase split; see `notes/Phase22i.md`) |
 | 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ✓ Complete (see `notes/Phase22j.md`) |
 | ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split into a 5-file chain | ✓ Complete (the pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
-| 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ⌛ In progress (see `notes/Phase22k.md`) |
+| 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -553,9 +553,9 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–22j (+ 21a/21b) complete; sub-phase 22k (completing the
-honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`) is in progress; Phases 23–26
-planned.** The
+**Status: Phases 17–22k (+ 21a/21b) complete — Katoh–Tanigawa's Theorem 5.5
+and Theorem 5.6 are formalized at `d = 3` at full KT strength; Phases 23–26
+planned (general `d` is Phase 23).** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -966,16 +966,20 @@ two-brick design rationale (Brick A span-rank + the existing `case_III_old_new_b
 Case I separate), and decisions: `notes/Phase22j.md`; design verdict
 `notes/Phase22-realization-design.md` §1.68.
 
-#### Phase 22k — completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` (KT §5.2, §6.1–6.4) — ⌛ In progress
+#### Phase 22k — completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` (KT §5.2, §6.1–6.4) — ✓ Complete
 
-**Status (⌛ in progress, opened 2026-06-15; see `notes/Phase22k.md`).** The completion of the
-honest all-`k` Theorem 5.5 the 22i→22j→22k arc set up: the three remaining 22h carries
-(`h622`, `h65`, `hsplit`) + Theorem 5.6 at `d = 3`. Layers L7–L10: **L7 ✓** (Case-III rewire,
-`h622` discharged); **L8a ✓** (KT Claim 6.6 graph side — all pieces including the Leaf-1 assembly
-`exists_degree_two_removeVertex_of_no_simple_contraction`); **L8b–L8c open** (de-privatize triple-LI
-bridge; build `case_I_realization_h65` + wiring + flip `lem:case-I-dispatch` green); **L9** (zero-carry
-spine, `hsplit` wiring); **L10** (Thm 5.6 `d=3`, spanning-strip + `def>0` feed). Design basis:
-`notes/Phase22k.md`. After 22k closes: KT-strength Thm 5.5 → 5.6 at `d=3`; general `d` is Phase 23.
+**Status (✓ Complete; closed 2026-06-16; see `notes/Phase22k.md`).** Completed the honest all-`k`
+Theorem 5.5 the 22i→22j→22k arc set up and pushed through to Theorem 5.6 at `d = 3`. The three
+remaining 22h carries (`h622`, `h65`, `hsplit`) were discharged (Case-III rewire deriving the nested
+rank bound from the all-`k` IH; the KT Lemma-6.5 vertex-removal arm via Claim 6.6 plus a vacuity
+argument forcing `def = 0`; the no-rigid-subgraph branch wired through Case III), leaving a zero-carry
+Theorem-5.5 spine `theorem_55_all_k` and its `d = 3` instance, both green. Theorem 5.6 at `d = 3`
+(`rankHypothesis_of_theorem_55_d3`) then lifts the minimal-`0`-dof realization to an arbitrary
+deficiency — strip `G` to a minimal `k`-dof spanning subgraph, realize it, and re-add edges (the rank
+only grows; the homogeneous re-add is projective-move-free) — completing the analytic half of KT
+Proposition 1.1 (`rigidityMatrix_prop11`, now green) at `d = 3`. Per-layer lemma map + decisions:
+`notes/Phase22k.md`; dep-graph `algebraic-induction.tex` `sec:molecular-algebraic-induction`. Unblocks
+Phase 23 (Case III general `d`, KT Lemma 6.13).
 
 ## Engineering conventions
 
