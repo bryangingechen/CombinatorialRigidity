@@ -168,6 +168,18 @@ housekeeping pass once their resolution is fully indexed.
   is matched syntactically rather than inferred. Stating `hbrick`'s `Nat.card … ≤ finrank …` type
   explicitly also helps. The original inline `hrank_lb` dodged this by never unifying a lemma
   *parameter* against `FG.rigidityRows` (`Submodule.finrank_mono hcomb_le` had it syntactically).
+- **Recurrence + new variant (Phase 22k L8c-2, `case_I_realization_h65`):** the dominant `whnf`
+  blowup was NOT a row-family argument but the **final `∃`-witness assembly** — hand-building the
+  `HasGenericFullRankRealization` motive as `⟨Q, …, hrank_eq, …⟩` over the heavy `Q = ofNormals G ends q`
+  (+ B2 + `le_antisymm` + `▸`/`set`-fold bookkeeping) `whnf`-timed-out even at 6M, and extracting the
+  upstream geometric blocks into helpers did not fix it. Fix: **route the witness through the keystone
+  `hasGenericFullRankRealization_of_rigidOn_ofNormals`** (takes the data positionally, builds the `∃`
+  internally) — feed it a plain "rigid on `V(G)`" obtained from the combined `Sum.elim` block via
+  `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`. 6M timeout → 55s clean at 800000.
+  Also: `convert h using 1; funext; fin_cases <;> simp` on `Fin`-sub-pair LIs hits *max recursion
+  depth* inside the 40-hypothesis producer context — extract to a small-context lemma
+  (`triLI_subpairs`) where `funext; fin_cases <;> rfl` is cheap. **Lifted to:** TACTICS-QUIRKS § 38
+  (*Final-`∃`-witness-assembly variant*).
 
 ### [resolved] `AlgHom.map_det` (not `RingHom.map_det`) for `aeval`-based matrix-det bridges; `mvPolynomialX_mapMatrix_aeval` closes the matrix equation
 - **Where it bit:** Phase 22h `linearIndependent_normals_of_algebraicIndependent` (`CaseI.lean`),

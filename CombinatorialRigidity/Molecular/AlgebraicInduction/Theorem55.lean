@@ -460,7 +460,311 @@ theorem theorem_55_base_producer [DecidableEq β] [Finite α] [Finite β] {n : �
     have hprod := theorem_55_base_producer_parallel_pair G hxy hef hVG hEG hle hlf hdef
     exact ⟨fun hSimple => absurd hSimple hnotSimple, hprod⟩
 
-/-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,`h65`,
+/-! ## L8c-2 — the KT Lemma-6.5 arm producer `case_I_realization_h65`
+
+The producer's elaboration-heavy geometric blocks are extracted as `private` helpers so each
+elaborates in isolation (the diffuse `ScrewSpace 2` typeclass re-elaboration of the inline form
+overflows even a large heartbeat budget — TACTICS-QUIRKS §38, the generic-helper-extraction
+pattern). The main body (`case_I_realization_h65`) does only graph bookkeeping, the IH call, the
+seed/selector setup, and the final assembly, delegating each geometric block to a helper below. -/
+
+/-- **L8c-2 helper: the two `v`-edge supporting extensors are independent** (the `hgen` block of
+`case_I_realization_h65`). Isolates the `panelSupportExtensor_linearIndependent_iff` rewrite and the
+join-pair lemma `normalsJoin_pair_linearIndependent_of_triLI` from the producer's main body. -/
+private theorem case_I_h65_extensor_pair_LI {α β : Type*} (FG : BodyHingeFramework 2 α β)
+    {q : α × Fin 4 → ℝ} {v a b : α} {eₐ e_b : β}
+    (hFGea : FG.supportExtensor eₐ = panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)))
+    (hFGeb : FG.supportExtensor e_b = panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i)))
+    (htriLI : LinearIndependent ℝ
+      (![fun i => q (v, i), fun i => q (a, i), fun i => q (b, i)] : Fin 3 → Fin 4 → ℝ))
+    (hLI_va : LinearIndependent ℝ (![fun i => q (v, i), fun i => q (a, i)] : Fin 2 → Fin 4 → ℝ))
+    (hLI_ab : LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i)] : Fin 2 → Fin 4 → ℝ)) :
+    LinearIndependent ℝ ![FG.supportExtensor eₐ, FG.supportExtensor e_b] := by
+  rw [hFGea, hFGeb,
+    show (![panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)),
+            panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i))] : Fin 2 → ScrewSpace 2) =
+         fun i => panelSupportExtensor (fun j => q (v, j))
+           (![fun j => q (a, j), fun j => q (b, j)] i) from by funext i; fin_cases i <;> simp,
+    panelSupportExtensor_linearIndependent_iff,
+    show (fun i : Fin 2 => normalsJoin (k := 2) (fun j => q (v, j))
+              (![fun j => q (a, j), fun j => q (b, j)] i)) =
+         ![normalsJoin (k := 2) (fun i => q (v, i)) (fun i => q (a, i)),
+           normalsJoin (k := 2) (fun i => q (v, i)) (fun i => q (b, i))] from by
+         funext i; fin_cases i <;> simp]
+  exact normalsJoin_pair_linearIndependent_of_triLI _ _ _ htriLI hLI_va hLI_ab
+
+/-- **L8c-2 helper: the OLD `G_v`-rows vanish on `v`'s screw column** (the `hold` block of
+`case_I_realization_h65`). A `G_v`-link has both endpoints in `V(G_v)`, hence `≠ v` (as
+`v ∉ V(G_v)`), so its `panelRow` — a `hingeRow` on the two endpoints — vanishes when only `v`'s
+screw coordinate is set. Isolates the `panelRow`/`hingeRow` unfolding over `Function.update`. -/
+private theorem case_I_h65_old_vanish {α β : Type*} [DecidableEq α] (Fv : BodyHingeFramework 2 α β)
+    (endsv : β → α × α) {v : α}
+    (hvVc : v ∉ V(Fv.graph))
+    (so : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2))
+    (hso_link : ∀ i ∈ so,
+      Fv.graph.IsLink (i : β × _ × _).1 (endsv (i : β × _ × _).1).1 (endsv (i : β × _ × _).1).2) :
+    ∀ (j : so) (x : ScrewSpace 2),
+      Fv.panelRow endsv (j : β × _ × _) (Function.update (0 : α → ScrewSpace 2) v x) = 0 := by
+  rintro ⟨⟨e, t₁, t₂⟩, hj⟩ x
+  have hlink : Fv.graph.IsLink e (endsv e).1 (endsv e).2 := hso_link _ hj
+  have h1 : (endsv e).1 ≠ v := fun h => hvVc (h ▸ hlink.left_mem)
+  have h2 : (endsv e).2 ≠ v := fun h => hvVc (h ▸ hlink.right_mem)
+  simp only [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+    Function.update_of_ne h1, Function.update_of_ne h2, Pi.zero_apply, sub_self, map_zero]
+
+/-- **L8c-2 helper: the OLD `G_v`-rows lie in `span FG.rigidityRows`** (the `hold_span` block of
+`case_I_realization_h65`). Since `FG` and `Fv` share the seed and selector on `G_v`-links and
+`G_v ≤ G`, each OLD `Fv`-panel-row equals the corresponding `FG`-panel-row of a genuine `G`-link,
+hence a rigidity row. The per-row data — the recorded link `(u, w)`, the parent link `FG.graph`,
+the extensor agreement, and the matching selector value `endsv = (u, w)` — is supplied by `hrow`.
+Isolates the `panelRow_eq_hingeRow_annihRow_of_ends` rewrite + the extensor-agreement transport. -/
+private theorem case_I_h65_old_span {α β : Type*} (FG Fv : BodyHingeFramework 2 α β)
+    (ends endsv : β → α × α)
+    (so : Set (β × Set.powersetCard (Fin 4) 2 × Set.powersetCard (Fin 4) 2))
+    (hrow : ∀ i ∈ so, ∃ u w, ends (i : β × _ × _).1 = (u, w) ∧
+      FG.graph.IsLink (i : β × _ × _).1 u w ∧
+      FG.supportExtensor (i : β × _ × _).1 = Fv.supportExtensor (i : β × _ × _).1 ∧
+      endsv (i : β × _ × _).1 = (u, w)) :
+    ∀ j : so, Fv.panelRow endsv (j : β × _ × _) ∈ Submodule.span ℝ FG.rigidityRows := by
+  rintro ⟨⟨e, t₁, t₂⟩, hj⟩
+  obtain ⟨u, w, hends_e, hGlink, hext_eq, hendsv_e⟩ := hrow _ hj
+  have hrow_eq : Fv.panelRow endsv (e, t₁, t₂) = FG.panelRow ends (e, t₁, t₂) := by
+    rw [BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends Fv endsv hendsv_e t₁ t₂,
+      BodyHingeFramework.panelRow_eq_hingeRow_annihRow_of_ends FG ends hends_e t₁ t₂, hext_eq]
+  rw [hrow_eq]
+  exact Submodule.subset_span (FG.panelRow_mem_rigidityRows_of_link ends hends_e hGlink t₁ t₂)
+
+/-- **L8c-2 helper: the supporting extensor of `ofNormals` at an edge** (the `hFGea`/`hFGeb` and
+extensor-agreement blocks of `case_I_realization_h65`). Pure unfolding of
+`toBodyHinge_supportExtensor` / `ofNormals_ends` / `ofNormals_normal`; the value depends only on the
+selector and seed, not on the graph. Isolated so the producer does not re-run this `ofNormals`
+unfolding inline (each instance re-elaborates the `ScrewSpace 2` carrier). -/
+private theorem case_I_h65_ofNormals_supportExtensor {α β : Type*} (G : Graph α β)
+    (ends : β → α × α) (q : α × Fin 4 → ℝ) (e : β) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e =
+      panelSupportExtensor (fun i => q ((ends e).1, i)) (fun i => q ((ends e).2, i)) := by
+  rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+
+set_option maxHeartbeats 800000 in
+-- Heartbeat-heavy like `case_II_realization_all_k`: diffuse `ScrewSpace 2` typeclass re-elaboration
+-- across the placement steps + the pinned-placement brick `isDefEq` exhaust the 200000 default even
+-- after the `case_I_h65_*` geometric blocks are extracted (TACTICS-QUIRKS §38).
+/-- **KT Lemma 6.5 arm: the Π°-placement producer** (`lem:case-I-dispatch`, the Lemma-6.5
+vertex-removal arm of `case_I_dispatch`; Katoh–Tanigawa 2011 §6, Lemma 6.5 / Claim 6.6; Phase 22k
+L8c-2). When every proper rigid subgraph of the simple minimal `0`-dof-graph `G` has a non-simple
+contraction, KT Claim 6.6 (the L8a graph-side assembly
+`exists_degree_two_removeVertex_of_no_simple_contraction`) supplies a degree-2 vertex `v` with
+two incident edges `eₐ = va`, `e_b = vb` such that `G − v` is minimal `0`-dof and simple.
+
+The IH at `G − v` gives a generic full-rank realization `Q_v` with algebraically-independent seed
+`q := Q_v.normal`. The Π°-placement re-attaches `v` on the **same seed** (the selector `ends`
+overrides `Q_v.ends` only at `eₐ, e_b`, recording `(v, a)`, `(v, b)`): off `{eₐ, e_b}` the framework
+restricts to `Q_v`, so the IH's `D(|V_v|−1)` rigid rows transport into `span (ofNormals G ends q)`
+verbatim (the OLD block, vanishing on `v`'s screw column since `G_v`-endpoints avoid `v`), while the
+two `v`-hinges contribute a full `D`-dimensional NEW block pinned through `v`'s screw column (the
+L8c-1 brick `exists_independent_pinned_two_edge_span_full`, fed the two independent supporting
+extensors `panelSupportExtensor (q v) (q a)`, `panelSupportExtensor (q v) (q b)` — independent
+because the triple `![q v, q a, q b]` is, by `linearIndependent_normals_of_algebraicIndependent` on
+the IH seed). The combined `Sum.elim` of the two blocks is independent
+(`linearIndependent_sum_pinned_block`) and lies in `span (rigidityRows)` with `D + D(|V_v|−1) =
+D(|V|−1)` members, so `isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` makes the
+same-seed framework infinitesimally rigid on `V(G)`; the genericity-transfer keystone
+`hasGenericFullRankRealization_of_rigidOn_ofNormals` then upgrades this degenerate-seed rigidity to
+the generic motive (general position + alg-independence at a fresh seed), no separate
+rank-polynomial transfer needed (both `G` and `G_v` are `0`-dof). KT Claim 6.6 forces `k = 0`, so
+the `k = 0`-only IH suffices (the L8 not-all-`k` finding; the nested `G − v` is also `0`-dof).
+Geometric blocks extracted as the `case_I_h65_*` helpers above (TACTICS-QUIRKS §38). -/
+theorem PanelHingeFramework.case_I_realization_h65 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n) (hSimple : G.Simple)
+    (hnoSimpleContr : ∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
+      ¬ (G.rigidContract H r).Simple)
+    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- Step 1 (L8a / KT Claim 6.6): degree-2 vertex `v` with `G − v` minimal `0`-dof + simple.
+  obtain ⟨v, a, b, eₐ, e_b, hav, hbv, hab, heab, hlea, hleb, hclv, hGvmin, hGvSimple⟩ :=
+    Graph.exists_degree_two_removeVertex_of_no_simple_contraction (by omega) hV3 hG hSimple hrig
+      hnoSimpleContr
+  set Gv := G.removeVertex v with hGv_def
+  have hvG : v ∈ V(G) := hlea.left_mem
+  have haG : a ∈ V(G) := hlea.right_mem
+  have hbG : b ∈ V(G) := hleb.right_mem
+  have hvVGv : v ∉ V(Gv) := by
+    rw [hGv_def, Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+  have haVGv : a ∈ V(Gv) := by
+    rw [hGv_def, Graph.vertexSet_removeVertex]; exact ⟨haG, hav⟩
+  have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
+    rw [hGv_def, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+  have hGvlt : V(Gv).ncard < V(G).ncard := by omega
+  have hGvV2 : 2 ≤ V(Gv).ncard := by omega
+  have hGvne : V(Gv).Nonempty := ⟨a, haVGv⟩
+  have hGle : Gv ≤ G := hGv_def ▸ Graph.removeVertex_le G v
+  -- Step 2: IH at `G_v` → `Q_v`; its rigidity on `V(G_v)`.
+  obtain ⟨Q_v, hQvg, hQvgp, hQvrank, hQvrec, hQvalg⟩ := (hIH Gv hGvmin hGvV2 hGvlt).1 hGvSimple
+  have hGvdef : Gv.deficiency n = 0 := hGvmin.1
+  have h1Gv : 1 ≤ V(Gv).ncard := (Set.ncard_pos (Set.toFinite _)).2 hGvne
+  have hQvg_graph : Q_v.toBodyHinge.graph = Gv := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQvg]
+  have hQvrig : Q_v.toBodyHinge.IsInfinitesimallyRigidOn V(Gv) := by
+    have hiff := BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
+      Q_v.toBodyHinge ⟨a, hQvg_graph ▸ haVGv⟩
+    rw [hQvg_graph] at hiff
+    rw [hiff]
+    have hdefz : (Gv.deficiency n : ℤ) = 0 := by exact_mod_cast hGvdef
+    zify [h1Gv]; linarith [hQvrank, hdefz]
+  -- `Q_v` extensors nonzero at its links (general position + looplessness).
+  have hQvne : ∀ e, Q_v.toBodyHinge.graph.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 →
+      Q_v.toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e he
+    have hne_ends : (Q_v.ends e).1 ≠ (Q_v.ends e).2 := by
+      intro heq
+      have hloop := Graph.isLink_self_iff.mp (heq ▸ he)
+      exact (hQvg_graph ▸ hGvSimple).toLoopless.not_isLoopAt e _ hloop
+    exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition Q_v hQvgp hne_ends
+  -- Step 3: the seed `q := Q_v.normal` and the selector `ends` (overriding only at `eₐ, e_b`).
+  set q : α × Fin 4 → ℝ := fun p => Q_v.normal p.1 p.2 with hq_def
+  set ends : β → α × α :=
+    Function.update (Function.update Q_v.ends eₐ (v, a)) e_b (v, b) with hends_def
+  have hends_ea : ends eₐ = (v, a) := by
+    rw [hends_def, Function.update_of_ne heab, Function.update_self]
+  have hends_eb : ends e_b = (v, b) := by rw [hends_def, Function.update_self]
+  -- `ends` agrees with `Q_v.ends` on `G_v`-recorded edges (both `≠ eₐ, e_b`).
+  have hGvOff : ∀ e u w, Gv.IsLink e u w → e ≠ eₐ ∧ e ≠ e_b := by
+    intro e u w hlink
+    have hune : u ≠ v := fun h => hvVGv (h ▸ hlink.left_mem)
+    have hwne : w ≠ v := fun h => hvVGv (h ▸ hlink.right_mem)
+    have hGlink := hlink.of_le hGle
+    refine ⟨fun he => ?_, fun he => ?_⟩
+    · subst he; rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨h1, _⟩ | ⟨h1, _⟩
+      exacts [hune h1.symm, hwne h1.symm]
+    · subst he; rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨h1, _⟩ | ⟨h1, _⟩
+      exacts [hune h1.symm, hwne h1.symm]
+  have hends_off : ∀ e, e ≠ eₐ → e ≠ e_b → ends e = Q_v.ends e := by
+    intro e hea heb; rw [hends_def, Function.update_of_ne heb, Function.update_of_ne hea]
+  -- `ends` records every `G`-link (up to swap, via the producer's link witnesses).
+  have hends_G : ∀ e u w, G.IsLink e u w → G.IsLink e (ends e).1 (ends e).2 := by
+    intro e u w hlink
+    by_cases hea : e = eₐ
+    · subst hea; rw [hends_ea]; exact hlea
+    by_cases heb : e = e_b
+    · subst heb; rw [hends_eb]; exact hleb
+    -- otherwise `e` is a `G_v`-link (its endpoints avoid `v` by the degree-2 closure `hclv`).
+    have hGvlink : Gv.IsLink e u w := by
+      rw [hGv_def, Graph.removeVertex_isLink]
+      refine ⟨hlink, ?_, ?_⟩
+      · intro hu; subst hu; rcases hclv e w hlink with rfl | rfl
+        exacts [hea rfl, heb rfl]
+      · intro hw; subst hw; rcases hclv e u hlink.symm with rfl | rfl
+        exacts [hea rfl, heb rfl]
+    rw [hends_off e hea heb]
+    rcases hQvrec e u w hGvlink with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · rw [h1, h2]; exact hlink
+    · rw [h1, h2]; exact hlink.symm
+  -- Step 4: the framework `Q = ofNormals G ends q` and its general position (`Q_v`'s normals).
+  set Q := PanelHingeFramework.ofNormals G ends q with hQ_def
+  set FG := Q.toBodyHinge with hFG_def
+  have hFG_graph : FG.graph = G := by
+    rw [hFG_def, hQ_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hQgp : Q.IsGeneralPosition := fun x y hxy => by
+    rw [hQ_def, PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+    exact hQvgp x y hxy
+  -- Step 5: triple-LI of the panel normals at `v, a, b`, the two `v`-edge extensor values + LI.
+  have htriLI : LinearIndependent ℝ
+      (![fun i => q (v, i), fun i => q (a, i), fun i => q (b, i)] : Fin 3 → Fin 4 → ℝ) :=
+    linearIndependent_normals_of_algebraicIndependent hQvalg hav.symm hbv.symm hab
+  have hFGea : FG.supportExtensor eₐ =
+      panelSupportExtensor (fun i => q (v, i)) (fun i => q (a, i)) := by
+    rw [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_ea]
+  have hFGeb : FG.supportExtensor e_b =
+      panelSupportExtensor (fun i => q (v, i)) (fun i => q (b, i)) := by
+    rw [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor, hends_eb]
+  obtain ⟨hLI_va, hLI_vb, hLI_ab⟩ := triLI_subpairs _ _ _ htriLI
+  have hne_a : FG.supportExtensor eₐ ≠ 0 := by
+    rw [hFGea, panelSupportExtensor_ne_zero_iff]; exact hLI_va
+  have hne_b : FG.supportExtensor e_b ≠ 0 := by
+    rw [hFGeb, panelSupportExtensor_ne_zero_iff]; exact hLI_vb
+  have hgen : LinearIndependent ℝ ![FG.supportExtensor eₐ, FG.supportExtensor e_b] :=
+    case_I_h65_extensor_pair_LI FG hFGea hFGeb htriLI hLI_va hLI_ab
+  -- Step 6: the NEW block — the two `v`-hinges span the full `D` (L8c-1 brick).
+  obtain ⟨ιn, _, rn, hιn_card, hnewpin, hnew_span⟩ :=
+    FG.exists_independent_pinned_two_edge_span_full (ends := ends) (v := v) (a := a) (b := b)
+      hends_ea hends_eb hav hbv (hFG_graph ▸ hlea) (hFG_graph ▸ hleb) hne_a hne_b hgen
+  -- Step 7: the OLD block — `D(|V_v|−1)` rigid `G_v`-rows (W6e on `Q_v`), recast into `FG`.
+  have hQvne' : ∀ e, Q_v.toBodyHinge.graph.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 →
+      Q_v.toBodyHinge.supportExtensor e ≠ 0 := hQvne
+  have hQvrec' : ∀ e u w, Q_v.toBodyHinge.graph.IsLink e u w →
+      Q_v.toBodyHinge.graph.IsLink e (Q_v.ends e).1 (Q_v.ends e).2 := by
+    intro e u w hlink
+    rw [hQvg_graph] at hlink ⊢
+    rcases hQvrec e u w hlink with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · rw [h1, h2]; exact hlink
+    · rw [h1, h2]; exact hlink.symm
+  obtain ⟨so, hso_link, hso_card, hso_indep⟩ :=
+    Q_v.toBodyHinge.exists_independent_panelRow_subfamily_of_rigidOn_linking
+      hQvrec' hQvne' ⟨a, hQvg_graph ▸ haVGv⟩ (hQvg_graph ▸ hQvrig)
+  rw [hQvg_graph] at hso_card hso_link
+  -- `hold` (helper H3): the OLD rows vanish on `v`'s screw column.
+  have hold := case_I_h65_old_vanish Q_v.toBodyHinge Q_v.ends (v := v) (hQvg_graph ▸ hvVGv) so
+    (by intro i hi; rw [hQvg_graph]; exact hso_link i hi)
+  -- `hold_span` (helper H4): the OLD rows lie in `span FG.rigidityRows`.
+  have hold_span := case_I_h65_old_span FG Q_v.toBodyHinge ends Q_v.ends so (by
+    intro i hi
+    have hGvlink : Gv.IsLink (i : β × _ × _).1 (Q_v.ends (i : β × _ × _).1).1
+        (Q_v.ends (i : β × _ × _).1).2 := hso_link i hi
+    refine ⟨(Q_v.ends (i : β × _ × _).1).1, (Q_v.ends (i : β × _ × _).1).2, ?_, ?_, ?_, ?_⟩
+    · rw [hends_off _ (hGvOff _ _ _ hGvlink).1 (hGvOff _ _ _ hGvlink).2]
+    · rw [hFG_graph]; exact hGvlink.of_le hGle
+    · -- extensor agreement: same seed, and `ends = Q_v.ends` on this `G_v`-edge.
+      rw [hFG_def, hQ_def, case_I_h65_ofNormals_supportExtensor,
+        hends_off _ (hGvOff _ _ _ hGvlink).1 (hGvOff _ _ _ hGvlink).2,
+        PanelHingeFramework.toBodyHinge_supportExtensor]
+    · rfl)
+  -- `hne_q`: every `G`-link has a nonzero supporting extensor at the seed (general position).
+  have hne_q : ∀ e, G.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e he
+    have hQends : Q.ends e = ends e := by rw [hQ_def, PanelHingeFramework.ofNormals_ends]
+    have hne_ends : (Q.ends e).1 ≠ (Q.ends e).2 := by
+      rw [hQends]; intro heq
+      exact hSimple.toLoopless.not_isLoopAt e _ (Graph.isLink_self_iff.mp (heq ▸ he))
+    exact PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition Q hQgp hne_ends
+  -- Step 8: the combined block `Sum.elim rn ro` is independent (the pin-a-body block split) and
+  -- lies in `span FG.rigidityRows`; it has size `D + D(|V_v|−1) = D(|V|−1)`.
+  set ro : so → Module.Dual ℝ (α → ScrewSpace 2) :=
+    fun j => Q_v.toBodyHinge.panelRow Q_v.ends (j : β × _ × _) with hro_def
+  have hcomb_LI : LinearIndependent ℝ (Sum.elim rn ro) :=
+    BodyHingeFramework.linearIndependent_sum_pinned_block (v := v) hold hnewpin hso_indep
+  have hcomb_sub : Submodule.span ℝ (Set.range (Sum.elim rn ro)) ≤
+      Submodule.span ℝ FG.rigidityRows := by
+    rw [Submodule.span_le]; rintro _ ⟨(i | j), rfl⟩
+    exacts [hnew_span i, hold_span j]
+  -- Step 9: the combined family forces rigidity on `V(G)`.
+  have hFGne : FG.graph.vertexSet.Nonempty := hFG_graph ▸ ⟨v, hvG⟩
+  haveI : Finite ιn := inferInstance
+  haveI : Finite so := Set.Finite.to_subtype (Set.toFinite so)
+  have hcard : screwDim 2 * (FG.graph.vertexSet.ncard - 1) ≤ Nat.card (ιn ⊕ so) := by
+    rw [Nat.card_sum, hιn_card, hso_card, hFG_graph, hVcard, Nat.add_sub_cancel]
+    have hD1 : 1 ≤ screwDim 2 := by omega
+    obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
+    rw [hm', Nat.add_sub_cancel, Nat.mul_succ]; omega
+  have hrig : FG.IsInfinitesimallyRigidOn FG.graph.vertexSet :=
+    FG.isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows hcomb_LI hcomb_sub hFGne hcard
+  rw [hFG_graph] at hrig
+  -- Step 10: the genericity-transfer keystone upgrades the degenerate-seed rigidity to the motive.
+  have hrig' :
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G) := by
+    rw [← hQ_def, ← hFG_def]; exact hrig
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_G
+    hne_q ⟨v, hvG⟩ hrig' n hG.1
+
+/-- **Theorem 5.5 at `d = 3`, full conditioned-motive form, green-modulo-{`h622`,
 `hsplit`,`hcontract`}** (`thm:theorem-55`, the `n`-parameter-`d = 3` instance over the
 (β)-shape reduction; Katoh–Tanigawa 2011 Theorem 5.5, §6.4.1, Phase 22h L5c′).
 
@@ -473,13 +777,13 @@ The `hcontractGP` slot is discharged by the **KT 6.3-vs-6.5 dispatch** (Phase 22
 by classical cases on whether some proper rigid subgraph `H` of `G` has a simple contraction
 `G.rigidContract H r` (KT Lemma 6.3 / Lemma 6.5 dichotomy at p. 673).
 - **Positive (KT Lemma 6.3 arm):** extract `(H, r, hcSimple)` and apply `case_I_realization`.
-- **Negative (KT Lemma 6.5 arm, unformalized):** carried as the explicit `h65` hypothesis
-  (the 6.5-stratum instance; adjudicated carry; Lemma-6.5 arm lands in successor sub-phase 22i).
+- **Negative (KT Lemma 6.5 arm, Phase 22k L8c-2):** discharged by the Π°-placement producer
+  `case_I_realization_h65` (the `h65` carry is now eliminated).
 
 Conclusion is the **full conditioned pair** `(G.Simple → GP) ∧ HasPanelRealization 2 n G` —
-`hbase` discharged; `hsplit`/`hcontract` and `h622`/`h65` remain as named hypotheses
-(adjudicated carries; discharged at the 22i all-`k` restructure per
-`notes/Phase22h.md` *Blockers*). -/
+`hbase`/`h65` discharged; `hsplit`/`hcontract` and `h622` remain as named hypotheses
+(adjudicated carries; discharged at the 22k all-`k` restructure per
+`notes/Phase22k.md` *Layer plan*). -/
 theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (hD : 6 ≤ Graph.bodyBarDim n)
     -- `hn` threads the `d = 3` / `D = screwDim 2 = 6` constraint into the base producer's
@@ -508,20 +812,6 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
         ≤ Module.finrank ℝ (Submodule.span ℝ
             (PanelHingeFramework.ofNormals (G.removeVertex v) ends
               q).toBodyHinge.rigidityRows))
-    -- GAP 5 / h65 (adjudicated carry): KT Lemma 6.5 arm — every proper rigid subgraph of `G`
-    -- has non-simple contraction; discharged in successor sub-phase 22i alongside the all-`k`
-    -- motive restructure.  Quantified form: for each `G` in the induction, given `G.Simple` and
-    -- the evidence that every `IsProperRigidSubgraph`'s contraction is non-simple, produce the
-    -- generic realization.  (`\uses{lem:case-I-dispatch}` in the blueprint instance node.)
-    (h65 : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
-      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) → G.Simple →
-      (∀ H : Graph α β, H.IsProperRigidSubgraph G n → ∀ r ∈ V(H),
-          ¬ (G.rigidContract H r).Simple) →
-      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-        V(G').ncard < V(G).ncard →
-        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-          HasPanelRealization 2 n G') →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n G)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
@@ -551,8 +841,8 @@ theorem PanelHingeFramework.theorem_55_d3 [DecidableEq β] [Finite α] [Finite �
         obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
         exact PanelHingeFramework.case_I_realization (by omega) G hG hH hr hH.2.1 hSimple
           hcSimple hIH
-      · -- KT Lemma 6.5 arm (unformalized): carry `h65`.
-        exact h65 G hG hV3 hrig hSimple
+      · -- KT Lemma 6.5 arm (Phase 22k L8c-2): the Π°-placement producer `case_I_realization_h65`.
+        exact PanelHingeFramework.case_I_realization_h65 hD hn G hG hV3 hrig hSimple
           (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩) hIH)
     G hG hV
 

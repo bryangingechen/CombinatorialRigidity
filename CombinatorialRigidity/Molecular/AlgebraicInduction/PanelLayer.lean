@@ -885,6 +885,93 @@ theorem exists_independent_panelSupportExtensor {m : ℕ} (hm : m ≤ screwDim k
   obtain ⟨n₁, n₂, h⟩ := exists_independent_normalsJoin (k := k) hm
   exact ⟨n₁, n₂, (panelSupportExtensor_linearIndependent_iff n₁ n₂).mpr h⟩
 
+/-- **Two hinges through a common body with non-collinear normals have independent joins**
+(`lem:case-I-dispatch`, the geometric heart of the KT Lemma-6.5 vertex-removal arm; Katoh–Tanigawa
+2011 §6, Claim 6.6 / Lemma 5.3, distinct-endpoint form). From a *triple* of linearly-independent
+normals `![n_v, n_a, n_b]` (the panel normals at a re-inserted body `v` and its two neighbours `a`,
+`b`), the two grade-2 joins `normalsJoin n_v n_a`, `normalsJoin n_v n_b` — the supporting extensors
+of the two `v`-hinges `va`, `vb` — are linearly independent in `⋀² ℝ^(k+2)`. Carried across
+`panelSupportExtensor_linearIndependent_iff` this gives the two-independent-supporting-extensors
+input the `hnewpin` brick (`exists_independent_pinned_two_edge_span_full`) needs to reach the full
+`D`-dimensional new block.
+
+The proof is the bilinearity of `normalsJoin`: a relation `c₁·(n_v ∨ n_a) + c₂·(n_v ∨ n_b) = 0`
+rewrites (second-argument linearity, via `normalsJoin_swap` + the first-argument additivity /
+homogeneity lemmas) to `n_v ∨ (c₁·n_a + c₂·n_b) = 0`. If `c₁·n_a + c₂·n_b = 0` then `c₁ = c₂ = 0`
+by the `(n_a, n_b)` pair-independence; otherwise the vanishing join forces `n_v` and
+`c₁·n_a + c₂·n_b` collinear (`normalsJoin_ne_zero_iff`), contradicting the triple-independence of
+`![n_v, n_a, n_b]`. Extracted as a standalone lemma (no framework/graph data) so the producer
+`case_I_realization_h65` does not re-elaborate this exterior-algebra block inline. -/
+theorem normalsJoin_pair_linearIndependent_of_triLI
+    (n_v n_a n_b : Fin (k + 2) → ℝ)
+    (htriLI : LinearIndependent ℝ (![n_v, n_a, n_b] : Fin 3 → Fin (k + 2) → ℝ))
+    (hLI_va : LinearIndependent ℝ (![n_v, n_a] : Fin 2 → Fin (k + 2) → ℝ))
+    (hLI_ab : LinearIndependent ℝ (![n_a, n_b] : Fin 2 → Fin (k + 2) → ℝ)) :
+    LinearIndependent ℝ
+      (![normalsJoin (k := k) n_v n_a, normalsJoin (k := k) n_v n_b] : Fin 2 → _) := by
+  rw [LinearIndependent.pair_iff]
+  intro c₁ c₂ hcomb
+  -- `hcomb : c₁ • normalsJoin n_v n_a + c₂ • normalsJoin n_v n_b = 0`; rewrite to a single join.
+  have hjoin : normalsJoin (k := k) n_v (c₁ • n_a + c₂ • n_b) = 0 := by
+    have hrw : normalsJoin (k := k) n_v (c₁ • n_a + c₂ • n_b)
+        = c₁ • normalsJoin (k := k) n_v n_a + c₂ • normalsJoin (k := k) n_v n_b := by
+      simp only [normalsJoin_swap (c₁ • n_a + c₂ • n_b) n_v, normalsJoin_add_left,
+        normalsJoin_smul_left, normalsJoin_swap n_a n_v, normalsJoin_swap n_b n_v,
+        smul_neg, neg_add_rev]
+      abel
+    rw [hrw]; exact hcomb
+  by_cases hcomb0 : c₁ • n_a + c₂ • n_b = (0 : Fin (k + 2) → ℝ)
+  · exact LinearIndependent.pair_iff.mp hLI_ab c₁ c₂ hcomb0
+  · exfalso
+    have hnotLI : ¬LinearIndependent ℝ (![n_v, c₁ • n_a + c₂ • n_b] : Fin 2 → Fin (k + 2) → ℝ) := by
+      intro hLI
+      exact absurd ((normalsJoin_ne_zero_iff n_v _).mpr hLI) (by rwa [ne_eq, not_not])
+    rw [LinearIndependent.pair_iff] at hnotLI
+    push Not at hnotLI
+    obtain ⟨s₁, s₂, hscomb, hne⟩ := hnotLI
+    have hsc₂ : s₂ ≠ 0 := by
+      intro h
+      rw [h, zero_smul, add_zero] at hscomb
+      have hn_v_ne : n_v ≠ 0 := LinearIndependent.ne_zero (i := (0 : Fin 2)) hLI_va
+      exact hne ((smul_eq_zero.mp hscomb).resolve_right hn_v_ne) h
+    have htri_dep : s₁ • n_v + (s₂ * c₁) • n_a + (s₂ * c₂) • n_b = (0 : Fin (k + 2) → ℝ) := by
+      funext i
+      have hi := congr_fun hscomb i
+      simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul] at hi ⊢
+      linarith [mul_add s₂ (c₁ * n_a i) (c₂ * n_b i)]
+    have htriLI_iff := Fintype.linearIndependent_iff.mp htriLI
+    have hcoeffs_zero := htriLI_iff (![s₁, s₂ * c₁, s₂ * c₂]) (by
+      simp only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one]
+      exact htri_dep)
+    have hc₁ : c₁ = 0 :=
+      (mul_eq_zero.mp (by have := hcoeffs_zero 1; simpa using this)).resolve_left hsc₂
+    have hc₂ : c₂ = 0 :=
+      (mul_eq_zero.mp (by have := hcoeffs_zero 2; simpa using this)).resolve_left hsc₂
+    exact hcomb0 (by rw [hc₁, hc₂]; simp)
+
+/-- **The three two-element sub-families of a linearly-independent triple are independent**
+(`lem:case-I-dispatch` infra). From `LinearIndependent ℝ ![n₀, n₁, n₂]`, each of the three pairs
+`![n₀, n₁]`, `![n₀, n₂]`, `![n₁, n₂]` is independent — the `LinearIndependent.comp` reindexings
+along `![0,1]`, `![0,2]`, `![1,2]`. Extracted as a standalone lemma (small context) so the producer
+`case_I_realization_h65` does not pay the `Fin`-reindexing defeq cost inside its heavy local
+context (where `simp_all`/`fin_cases` overflow the recursion budget). -/
+theorem triLI_subpairs (n₀ n₁ n₂ : Fin (k + 2) → ℝ)
+    (htriLI : LinearIndependent ℝ (![n₀, n₁, n₂] : Fin 3 → Fin (k + 2) → ℝ)) :
+    LinearIndependent ℝ (![n₀, n₁] : Fin 2 → Fin (k + 2) → ℝ) ∧
+      LinearIndependent ℝ (![n₀, n₂] : Fin 2 → Fin (k + 2) → ℝ) ∧
+      LinearIndependent ℝ (![n₁, n₂] : Fin 2 → Fin (k + 2) → ℝ) := by
+  set T : Fin 3 → Fin (k + 2) → ℝ := ![n₀, n₁, n₂] with hT
+  refine ⟨?_, ?_, ?_⟩
+  · have h := htriLI.comp (![0, 1] : Fin 2 → Fin 3) (by decide)
+    have he : T ∘ (![0, 1] : Fin 2 → Fin 3) = ![n₀, n₁] := by funext i; fin_cases i <;> rfl
+    rwa [he] at h
+  · have h := htriLI.comp (![0, 2] : Fin 2 → Fin 3) (by decide)
+    have he : T ∘ (![0, 2] : Fin 2 → Fin 3) = ![n₀, n₂] := by funext i; fin_cases i <;> rfl
+    rwa [he] at h
+  · have h := htriLI.comp (![1, 2] : Fin 2 → Fin 3) (by decide)
+    have he : T ∘ (![1, 2] : Fin 2 → Fin 3) = ![n₁, n₂] := by funext i; fin_cases i <;> rfl
+    rwa [he] at h
+
 -- Private helpers for `exists_triangle_normals` below.
 -- Extracted as standalone lemmas to avoid context-explosion timeouts in the main proof.
 

@@ -684,7 +684,8 @@
 
 \begin{lemma}[Case I dispatch: simple vs non-simple contraction; KT Lemmas~6.3, 6.5]
   \label{lem:case-I-dispatch}
-  \lean{CombinatorialRigidity.Molecular.case_I_dispatch}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization_h65}
+  \leanok
   \uses{def:panel-hinge-framework, lem:case-I}
   Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph.  The
   full Case~I realization --- discharging $\mathtt{hcontract}$ for all such $G$
@@ -701,15 +702,22 @@
   --- the two hinge constraints at $v$, with linearly independent supporting
   extensors, weld $v$ to the rest (KT pp.~676--677).
 
-  \emph{Status.}  The simple-contraction branch (\cref{lem:case-I-realization})
-  is green.  The Lemma~6.5 arm (Claim~6.6 + the $\Pi^\circ$-placement) is the
-  obligation of sub-phase 22i; it rides as the named hypothesis $\mathtt{h65}$
-  on the current formalized Theorem~5.5.
+  \emph{Status.}  Both arms are now formalized (Phase 22k L8c-2): the
+  simple-contraction branch is \cref{lem:case-I-realization}, and the
+  Lemma~6.5 vertex-removal arm is the $\Pi^\circ$-placement producer
+  \texttt{case\_I\_realization\_h65}, which discharges the $\mathtt{h65}$
+  hypothesis the $0$-dof Theorem~5.5 spine previously carried.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:case-I-realization, lem:case-I-realization-nonsimple}
   Case on whether some $(H, r)$ has $(G/E(H))$ simple: if yes, apply
-  \cref{lem:case-I-realization}; otherwise the Claim~6.6 + $\Pi^\circ$
-  vertex-removal arm (22i).
+  \cref{lem:case-I-realization} (KT Lemma~6.3); otherwise the Claim~6.6 +
+  $\Pi^\circ$ vertex-removal arm: the graph-side Claim~6.6 assembly
+  \texttt{exists\_degree\_two\_removeVertex\_of\_no\_simple\_contraction}
+  produces the degree-two vertex $v$, and the inductive realization of $G - v$
+  is re-attached on the same seed --- the two $v$-hinges, with independent
+  supporting extensors, span the full screw block through $v$'s column, so
+  Brick~A plus the deficiency bound close the rank at $D(|V(G)|-1)$.
 \end{proof}
 

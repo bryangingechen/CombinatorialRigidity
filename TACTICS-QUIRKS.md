@@ -1549,6 +1549,23 @@ relabel transport, `Molecular/AlgebraicInduction/CaseI.lean`). **No `maxHeartbea
 whole Molecular subsystem carries zero overrides; the `T`-bundle + `simp only` keeps it under the
 default 200000.
 
+**Final-`∃`-witness-assembly variant (Phase 22k).** When a producer ends by *hand-assembling* the
+existential motive (`HasGenericFullRankRealization`, a `def` unfolding to a 5-conjunct `∃ Q, …`) as
+the anonymous constructor `⟨Q, …, hrank_eq, …⟩` over a heavy `Q = ofNormals G ends q` — plus the
+`B2 ≤` + `le_antisymm` rank-equality and the `▸`/`set`-fold bookkeeping to make `hrank_eq` match the
+motive's `Q.toBodyHinge.rigidityRows` — the *assembly itself* is the dominant `whnf` site: it
+`whnf`s the heavy carrier to unify each conjunct against `Q`'s projections. It times out **even at 6M
+heartbeats**, and extracting the *upstream* geometric blocks into helpers does **not** fix it (they
+were never the bottleneck). Fix: **don't hand-assemble — route the witness through the existing
+keystone lemma that takes the data as explicit arguments and builds the `∃` internally.** Here
+`hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends hne hnev hrig n hdef` consumes a
+plain "rigid on `V(G)` at the seed" fact (itself obtained from the combined row family via
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows`, no carrier defeq) and emits the motive
+— turning a 6M-heartbeat `whnf` blowup into a 55s clean build at `maxHeartbeats 800000`. The general
+lesson: an existence-motive producer should bottom out on a *consumer* lemma that takes the witness
+data positionally, never on a bare `⟨…⟩` against the unfolded `def`. Worked case:
+`PanelHingeFramework.case_I_realization_h65` (Phase 22k L8c-2, `Molecular/AlgebraicInduction/Theorem55.lean`).
+
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 
 **Symptom.** A rank-nullity step `LinearMap.finrank_range_add_finrank_ker g` (or
