@@ -95,18 +95,15 @@ deferred-route-hinges-on-consumer clause added to
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-15, fresh coordinator session re-confirmed at L8c-open /
-  post-row-152, L8a+L8b landed — supersedes the prior same-date L8-open session note, which
-  expired at that session's end; same parameters, user-re-confirmed at this session's start
-  per the protocol's session-start check).**
+- **Session availability (2026-06-16, fresh coordinator session at L9-open; supersedes the
+  expired 2026-06-15 L8c note — same parameters, user-confirmed at this session's start per
+  the protocol's session-start check).**
   fable **unavailable** this session (user-confirmed at session start; any fable-mapped
   pass — phase-open/close, design-settle, S=3 — substitutes **opus**, logged as a
-  substitution). **Rung policy: reverted to the full S/P/B → map** (user-confirmed at
-  session start) — the perf-round opus-only override expired with the perf round; 22k is a
-  real math phase, so the per-task map runs and produces genuine cross-rung data (probes
-  and boundary pairs are back in play). **Run modifications this session (user-set at
-  session start):** the 10-run check-in cap is **lifted** (the loop runs to phase close or
-  a surfaced concern), and step-4 mechanical fixups (wrong branch / author / co-author
+  substitution). **Rung policy: full S/P/B → map** (user-confirmed at session start; probes
+  and boundary pairs in play). **Run modifications this session (user-set at session
+  start):** the 10-run check-in cap is **lifted** (the loop runs to phase close or a
+  surfaced concern), and step-4 mechanical fixups (wrong branch / author / co-author
   trailer) are **pre-authorized** (apply without stopping to ask). The coordinator is
   Opus 4.8 (1M context). **Expires at session end** — a fresh coordinator re-runs the
   availability check.
