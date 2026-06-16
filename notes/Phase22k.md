@@ -103,9 +103,15 @@ so the decl names are unchanged — only the file:line moved).
 
 - **None — phase complete.** All layers L7–L10 landed; both §1.71 build-time flags resolved favorably
   (i: L10a strip brick, no separate micro-pin; ii: L10b `theorem_55_minimalKDof_k`, near-free wrapper).
-  Two non-blocking Lean cleanups seed a later post-22k cleanup round (NOT this phase): (1) the
-  `theorem_55_all_k` / `theorem_55_minimalKDof_k` callback-map duplication (collapse the former to a
-  `k=0` corollary of the latter); (2) `reaimSub` / `reaim` could share a helper.
+  Post-22k cleanup (landed 2026-06-16):
+  - **(1) ✓ Done** — collapsed `theorem_55_all_k` to a one-liner `k = 0` corollary of
+    `theorem_55_minimalKDof_k`; moved `theorem_55_minimalKDof_k` (the full-proof general version)
+    immediately before `theorem_55_all_k`; updated both docstrings. Build + lint + warning-clean.
+  - **(2) Skipped** — `reaimSub` / `reaim` share structure (both key on a graph's `IsLink` for the
+    selector), but their companion theorems are genuinely different (`reaim_infinitesimalMotions`
+    vs `reaimSub_withGraph_infinitesimalMotions` — the latter uses `withGraph G'`), so extracting
+    a shared helper would only collapse the two-line `def` bodies while leaving two distinct theorems.
+    Not worth the contortion; skipped as planned.
 
 ## Hand-off / next phase
 
