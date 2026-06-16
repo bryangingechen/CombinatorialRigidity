@@ -495,9 +495,11 @@ theorem exists_linearIndependent_extensor_pair_perp (n : Fin 4 → ℝ) :
       rw [heq]; exact hvli
     have hpair : LinearIndependent ℝ ![extensor ![v 0, v 1], extensor ![v 0, v 2]] :=
       linearIndependent_pair_extensor_of_li3 hv3
-    -- Transport through the injective inclusion `⋀[ℝ]^2 (Fin 4 → ℝ) ↪ ExteriorAlgebra`.
-    rw [← LinearMap.linearIndependent_iff (⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype
-      (Submodule.ker_subtype _)]
+    -- Transport through the injective inclusion `ScrewSpace 2 ↪ ExteriorAlgebra` (the carrier
+    -- equiv composed with the graded-piece subtype; `ker = ⊥`, so it reflects independence).
+    rw [← LinearMap.linearIndependent_iff
+      ((⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower 2).toLinearMap)
+      (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
     convert hpair using 1
     ext i; fin_cases i <;> rfl
 
@@ -592,7 +594,7 @@ theorem exists_extensor_eq_panelSupportExtensor {n₁ n₂ : Fin 4 → ℝ}
     have hval : (ScrewSpace.mk (extensor ![q₀, q₁]) (extensor_mem_exteriorPower _) :
         ScrewSpace 2).val = c • (panelSupportExtensor n₁ n₂).val := by
       have := congr_arg ScrewSpace.val hc
-      simp only [ScrewSpace.val, Submodule.coe_smul] at this ⊢
+      simp only [ScrewSpace.val_mk, ScrewSpace.val_smul] at this ⊢
       exact this.symm
     rw [hext]
     rw [show (panelSupportExtensor (k := 2) n₁ n₂).val =
@@ -1624,7 +1626,7 @@ motions of `F` that are additionally constant on each part of the partition `f` 
 `partitionMotions f = infinitesimalMotions ⊓ partitionConstant f`. This is the intersection out of
 which the deficiency-attaining partition carves the `D + def(G̃)` motions witnessing the
 genericity-free lower bound `hub` of Katoh–Tanigawa Proposition 1.1. -/
-def partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
+noncomputable def partitionMotions (F : BodyHingeFramework k α β) (f : α → α) :
     Submodule ℝ (α → ScrewSpace k) :=
   F.infinitesimalMotions ⊓ partitionConstant f
 

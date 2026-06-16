@@ -121,6 +121,17 @@ theorem ScrewSpace.val_mem {k : ℕ} (C : ScrewSpace k) :
   (C : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ))).property
 
 @[simp]
+theorem ScrewSpace.val_smul {k : ℕ} (c : ℝ) (C : ScrewSpace k) :
+    (c • C).val = c • C.val := rfl
+
+@[simp]
+theorem ScrewSpace.val_add {k : ℕ} (C D : ScrewSpace k) :
+    (C + D).val = C.val + D.val := rfl
+
+@[simp]
+theorem ScrewSpace.val_zero {k : ℕ} : (0 : ScrewSpace k).val = 0 := rfl
+
+@[simp]
 theorem ScrewSpace.mk_val {k : ℕ} (C : ScrewSpace k) :
     ScrewSpace.mk C.val C.val_mem = C := rfl
 
@@ -157,6 +168,7 @@ graded piece of the exterior algebra of `ℝ^(k+2)`, its dimension is `(k+2).cho
 basis — and is the gate for every numeric rank count (`lem:trivial-motions-rank-bound`'s
 `rank R ≤ D(|V|-1)`, the degree of freedom of `def:dof-generic`). -/
 theorem screwSpace_finrank (k : ℕ) : Module.finrank ℝ (ScrewSpace k) = screwDim k := by
+  change Module.finrank ℝ ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ)) = screwDim k
   rw [exteriorPower.finrank_eq, Module.finrank_pi, Fintype.card_fin, screwDim,
     ← Nat.choose_symm (Nat.le_add_left 2 k)]
   congr 1
@@ -864,7 +876,7 @@ node. The dot products `(S u - S v) · r_i(p(e))` of the blueprint become the
 functional applications `r (S u - S v)`, and the orthogonality `v ⟂ span C ↔ r v = 0
 ∀ r ∈ (span C)^⊥` is exactly the field-level double-annihilator identity
 `Subspace.dualAnnihilator_dualCoannihilator_eq`. -/
-def hingeRowBlock (F : BodyHingeFramework k α β) (e : β) :
+noncomputable def hingeRowBlock (F : BodyHingeFramework k α β) (e : β) :
     Submodule ℝ (Module.Dual ℝ (ScrewSpace k)) :=
   (Submodule.span ℝ {F.supportExtensor e}).dualAnnihilator
 
@@ -897,7 +909,7 @@ theorem hingeConstraint_iff_hingeRowBlock (F : BodyHingeFramework k α β)
 center `S u - S v` of the bodies `u, v`. It is the difference of the two coordinate projections
 `proj u − proj v`; the per-edge hinge constraint (`def:hinge-constraint`) and the row functionals
 of `R(G,p)` (`hingeRow`) are built from it. -/
-def screwDiff (u v : α) : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k :=
+noncomputable def screwDiff (u v : α) : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k :=
   (LinearMap.proj u : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) - LinearMap.proj v
 
 @[simp]
@@ -917,7 +929,7 @@ the relative-screw evaluation `screwDiff` with the hinge-row-block functional `r
 (`infinitesimalMotions_eq_dualCoannihilator`). It depends only on the endpoints `u v` and the row
 `r`, not on which edge `e` carries the hinge; the edge is recorded only at the family level
 (`rigidityRows`, which pairs `u v` with the rows of the edge's hinge-row block). -/
-def hingeRow (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
+noncomputable def hingeRow (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
     Module.Dual ℝ (α → ScrewSpace k) :=
   r ∘ₗ screwDiff (k := k) u v
 
@@ -1265,7 +1277,7 @@ with a `≃ₗ`), so it certifies the candidate row's vanishing without changing
 device that makes the transported `(vb)i^*`-row `hingeRow v a ρ` (supported on *both* columns `v`
 and `a`) into a pure `v`-column row in the operated frame — see `hingeRow_comp_columnOp_apply`. -/
 @[simps! apply]
-def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
+noncomputable def columnOp [DecidableEq α] {v a : α} (hva : v ≠ a) :
     (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k) where
   toFun S := Function.update S v (S v + S a)
   invFun S := Function.update S v (S v - S a)

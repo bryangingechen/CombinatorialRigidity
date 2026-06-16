@@ -193,6 +193,36 @@ only consumer is the one proof (`annihRowPoly_eval`) that mixes the direct-basis
 vocabulary with the `screwBasis` `annihRow` vocabulary; `panelSupportPoly`/`_eval` stay stated in the
 direct basis (they precede `screwBasis` in the file).
 
+**L2 refinement (2026-06-16, landed in `RigidityMatrix.lean` + `PanelLayer.lean`):** an *opacity
+probe* (flip the carrier to opaque locally, build up the spine, observe breaks, revert) — run before
+the L2 reach-in recon — surfaced three opacity-readiness gaps the prior layers' green-on-`abbrev`
+builds could not catch (the `abbrev` keeps the breaking defeqs alive). All three are pre-migratable on
+the still-`abbrev` carrier and now land:
+- **`.val` module-hom simp lemmas.** The API needs `@[simp] ScrewSpace.val_smul`/`val_add`/`val_zero`
+  (`(c • C).val = c • C.val`, etc., all `:= rfl`). Without them the `.val`-pushing idiom
+  `simp only [ScrewSpace.val, Submodule.coe_smul]` (which fired on the `abbrev` because `.val` was
+  `Subtype.val` and `Submodule.coe_smul` matched) leaves `Submodule.coe_smul` *unused* under opacity
+  (a warning — blocks commits) and fails to push `.val` through the smul. Route such sites through
+  `simp only [ScrewSpace.val_mk, ScrewSpace.val_smul]` instead (`exists_extensor_eq_panelSupportExtensor`).
+- **`change`-expose for carrier-head `rw`s.** `screwSpace_finrank`'s `rw [exteriorPower.finrank_eq, …]`
+  needs a leading `change Module.finrank ℝ ↥(⋀[ℝ]^k …) = …` to expose the graded-piece head the
+  mathlib lemma keys on (the opaque head does not reduce to it at `rw`'s reducible transparency). Use
+  `change`, not `show` (the `linter.style.show` style linter rejects a goal-changing `show`).
+- **`noncomputable` propagation.** The three named carrier instances are `noncomputable instance`, so
+  every `Submodule`/`Module.Dual`/`≃ₗ`-valued `def` *over the carrier* must become `noncomputable def`
+  (`hingeRowBlock`, `screwDiff`, `hingeRow`, `columnOp` in `RigidityMatrix.lean`; `partitionMotions` in
+  `PanelLayer.lean`). These defs are noncomputable-by-nature (`dualAnnihilator`, `LinearMap.proj` over a
+  noncomputable module), so adding `noncomputable` is a no-op on the `abbrev` and required under opacity.
+- **LI-transport through the carrier subtype** must compose with `equivExteriorPower` (the L0a idiom):
+  `(⋀[ℝ]^2 …).subtype` alone keys on `↥(⋀…)`, not the opaque `ScrewSpace 2`, so
+  `LinearMap.linearIndependent_iff` is fed `(…).subtype.comp (equivExteriorPower 2).toLinearMap`
+  (`exists_linearIndependent_extensor_pair_perp`).
+
+**Process correction (records into the layer method):** *run the opacity probe at the top of each
+remaining layer* — green-on-`abbrev` alone is blind to all four gap classes above, and L1 shipped three
+uncaught `PanelLayer.lean` breaks because it skipped this. The probe is cheap (one local flip + a
+scoped build of the layer's module + revert) and is the only pre-FLIP signal for opacity-readiness.
+
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
 

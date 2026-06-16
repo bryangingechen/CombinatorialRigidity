@@ -13,11 +13,26 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**Next concrete step: L2 — `Pinning.lean`.** `RigidityMatrix.lean` (L0a/L0b) and `PanelLayer.lean`
-(L1) are now fully on the API. L2 continues down the spine; recon its reach-ins on open (expected
-mostly mechanical `⟨v,h⟩`→`mk` / coercion→`.val`, plus whatever `screwBasis`/`annihRow` consumption
-it carries — bridge through `screwBasis_repr_apply` as L1 did). Each commit keeps the project green
-(carrier still `abbrev`); the **FLIP lands LAST**.
+**Next concrete step: L3 — `PanelHinge.lean`.** L2 closed: an *opacity probe* (local flip → scoped
+build → revert; now the standing per-layer method, see below) confirmed `Pinning.lean` needs **zero
+migration** (all its `ScrewSpace` reach-ins are opacity-neutral — type ascriptions, `annihRow`/abstract-
+basis API, `inferInstance` resolving via the named instances, `iInfKerProjEquiv`/`single`/`proj`
+module-level machinery), but the probe *also* surfaced three opacity-readiness gaps the prior layers'
+green-on-`abbrev` builds were blind to — all closed in the same commit (still on the `abbrev`). L3
+defines `supportExtensor` (the producer of every `ScrewSpace`-typed value) and the realization
+predicates `HasPanelRealization`/`HasGenericFullRankRealization` — open it with the opacity probe, then
+recon. Each commit keeps the project green (carrier still `abbrev`); the **FLIP lands LAST**.
+
+**L2 landed (2026-06-16): `Pinning.lean` verified migration-free + three L0/L1 opacity gaps closed,
+project green.** The probe-surfaced gaps (canonical in `notes/ScrewSpaceCarrier-design.md` §5 *L2
+refinement*): (1) carrier API gained `@[simp] ScrewSpace.val_smul`/`val_add`/`val_zero` (`:= rfl`) so
+the `.val`-through-smul idiom survives opacity (`PanelLayer.exists_extensor_eq_panelSupportExtensor`
+re-routed off the now-opacity-dead `simp [ScrewSpace.val, Submodule.coe_smul]`); (2) `screwSpace_finrank`
+got a leading `change … ↥(⋀[ℝ]^k …) …` to expose the graded-piece head for `exteriorPower.finrank_eq`;
+(3) `noncomputable` propagated onto the carrier-valued `Submodule`/`Dual`/`≃ₗ` defs (`hingeRowBlock`,
+`screwDiff`, `hingeRow`, `columnOp`, `partitionMotions`) since the named instances are `noncomputable`;
+plus `PanelLayer.exists_linearIndependent_extensor_pair_perp`'s LI-transport composed with
+`equivExteriorPower` (the L0a idiom). No blueprint pin changed.
 
 **L1 landed (2026-06-16): `PanelLayer.lean` migrated, project green.** `screwBasis` flipped from a
 reducible `abbrev` to a `def` transporting the direct exterior basis through `equivExteriorPower`
@@ -90,10 +105,16 @@ recon's feared-hardest category (hard-part (d)) is essentially mechanical.
 
 ## Layer plan (structural-edit; this is the to-do list)
 
-Build order = the import spine. Each layer opens with its own reach-in recon of that file (the
-mechanical-vs-needs-thought split per the design doc's category map (a)–(e)) and ends with the
-file building green. The opening commit does **not** enumerate all ~150–200 sites — it pins the
-spine + the hard-part concentrations + the exit criterion.
+Build order = the import spine. Each layer opens with an **opacity probe** (local `abbrev`→opaque
+flip + the 3 named instances in `RigidityMatrix.lean`, scoped `lake build` of that layer's module,
+then revert) — established at L2 as the only pre-FLIP signal for opacity-readiness; green-on-`abbrev`
+alone is blind to it (L1 shipped three uncaught `PanelLayer.lean` breaks). The probe drives the
+reach-in recon (mechanical-vs-needs-thought split per the design doc's category map (a)–(e)); the
+layer ends with the file building green **on the `abbrev`** after the probe-surfaced gaps are
+pre-migrated. The opening commit does **not** enumerate all ~150–200 sites — it pins the spine + the
+hard-part concentrations + the exit criterion. The four recurring gap classes the probe catches
+(`.val`-smul/add/zero simp lemmas, `change`-expose, `noncomputable` propagation, `equivExteriorPower`
+LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refinement*.
 
 - [x] **L0a — `RigidityMatrix.lean`: the carrier API foundation (project-green).** `ScrewSpace.mk`/
   `.val`/`val_mk`/`val_mem`/`mk_val`/`val_injective`/`@[ext]` + `equivExteriorPower` (+ `_apply`/
@@ -117,7 +138,12 @@ spine + the hard-part concentrations + the exit criterion.
   (opacity-neutral); five construction reach-ins `⟨extensor …⟩`→`mk` / coercion→`.val`; forced
   `Theorem55.lean` consumer fixups (3× `set … := ⟨extensor …⟩`→`mk`). **Hard-part (d) confirmed
   mechanical (OQ3 held).** **Done 2026-06-16** — whole project builds + lints clean.
-- [ ] **L2 — `Pinning.lean`.**
+- [x] **L2 — `Pinning.lean`.** Probe confirmed `Pinning.lean` **migration-free** (all reach-ins
+  opacity-neutral). Closed three probe-surfaced L0/L1 gaps on the `abbrev`: carrier `val_smul`/
+  `val_add`/`val_zero` API + the `exists_extensor_eq_panelSupportExtensor` re-route; the
+  `screwSpace_finrank` `change`-expose; `noncomputable` on 5 carrier-valued defs; the
+  `exists_linearIndependent_extensor_pair_perp` LI-transport via `equivExteriorPower`. **Done
+  2026-06-16** — whole project builds + lints clean.
 - [ ] **L3 — `PanelHinge.lean`** (defines `supportExtensor`; the realization predicates
   `HasPanelRealization` / `HasGenericFullRankRealization` that structurally embed `ScrewSpace`).
 - [ ] **L4 — `GenericityDevice.lean`** (the 5× near-identical `change … (Pi.single a (screwBasis k t))`
@@ -154,22 +180,27 @@ spine + the hard-part concentrations + the exit criterion.
 
 ## Hand-off / next phase
 
-**Smallest next commit: L2 — `Pinning.lean`.** `RigidityMatrix.lean` (L0a/L0b) and `PanelLayer.lean`
-(L1) are now fully on the API. L2 is the next geometry file down the spine: open with its reach-in
-recon, then swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` and `(C : ExteriorAlgebra)`→`C.val`, plus
-any `screwBasis`/`annihRow` consumption (bridge through `screwBasis_repr_apply` as L1 did). Each
-commit keeps the project green (the carrier is still an `abbrev`, so partial migration builds). The
-API shape is fixed (L0a/L1) — every later layer is the mechanical swap.
+**Smallest next commit: L3 — `PanelHinge.lean`.** L0a/L0b/L1/L2 (RigidityMatrix, PanelLayer,
+Pinning) are now opacity-ready and on the API. L3 is the next geometry file down the spine and the
+first that *defines* a `ScrewSpace`-typed producer (`supportExtensor`) plus the realization
+predicates that structurally embed the carrier. **Open it with the opacity probe** (local flip +
+3 instances → `lake build CombinatorialRigidity.Molecular.AlgebraicInduction.PanelHinge` → revert);
+the probe drives the recon and catches the four gap classes (design doc §5 *L2 refinement*). Then
+pre-migrate on the `abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` /
+`(C : ExteriorAlgebra)`→`C.val`, add `noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ`
+def, route `.val`-arithmetic through `val_smul`/`val_add`/`val_zero`, and route LI/`ker`-transport
+through `equivExteriorPower`. Each commit keeps the project green on the `abbrev`. The API shape is
+fixed (L0a/L1/L2) — every later layer is the probe + mechanical pre-migration.
 
-**L1 calibration of the per-layer estimate.** L1's real (non-synthetic) reach-in count was small —
-five `mk`/`val` swaps + the `screwBasis` def-flip + one `rfl` bridge + three forced `Theorem55.lean`
-consumer fixups — and the `screwBasis` transport held exactly as OQ3 predicted (defeq-free, the
-direct-basis coordinate lemmas port verbatim through the `rfl` bridge). Migration idiom that recurs:
-after migrating a `(⟨v,h⟩ : ScrewSpace).val`/coercion onto `mk`/`val`, a trailing `rfl`-close may need
-an explicit `ScrewSpace.val_mk` rewrite — `mk`/`val` are semireducible `def`s, not the reducible
-`Subtype` operations, so `rw`'s auto-`rfl` (reducible transparency) does not unfold them. The
-`abbrev`→opaque-`def` **FLIP lands last**, after the whole spine adopts the API, as a single small
-commit that banks the perf win and resolves OQ1.
+**L2 calibration of the per-layer method.** L2's lesson is the *method*, not a site count:
+green-on-`abbrev` is **blind to opacity-readiness**, so each remaining layer must run the opacity
+probe up front (L1 had skipped it and left three `PanelLayer.lean` breaks the probe then caught). The
+four recurring gap classes are now catalogued (design doc §5). Note also the L1 idiom that still
+recurs: after migrating a `(⟨v,h⟩ : ScrewSpace).val`/coercion onto `mk`/`val`, a trailing `rfl`-close
+may need an explicit `ScrewSpace.val_mk` rewrite — `mk`/`val` are semireducible `def`s, so `rw`'s
+auto-`rfl` (reducible transparency) does not unfold them. The `abbrev`→opaque-`def` **FLIP lands
+last**, after the whole spine adopts the API, as a single small commit that banks the perf win and
+resolves OQ1.
 
 **At phase close:** the d=3 tree builds on the opaque `ScrewSpace` carrier; the three
 `maxHeartbeats` survivors are dropped/lowered (OQ1 resolved); the general-`d` API is *not* frozen,
@@ -233,3 +264,19 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   ⟨extensor …⟩`→`ScrewSpace.mk`. Migration idiom (recurs L2+): a `(⟨v,h⟩ : ScrewSpace).val` migrated
   to `mk`/`val` may need an explicit `ScrewSpace.val_mk` to close a trailing `rfl`-step, since
   `mk`/`val` are semireducible `def`s (unlike the reducible `Subtype` ops `rw`'s auto-`rfl` unfolds).
+
+- **L2 — `Pinning.lean` (no migration) + the opacity-probe method + three L0/L1 gap closures
+  (2026-06-16, opus).** Introduced the **opacity probe** (local `abbrev`→opaque flip + 3
+  `inferInstanceAs` instances, scoped `lake build` of the layer module, revert) as the standing
+  per-layer opening step — the only pre-FLIP signal for opacity-readiness, since green-on-`abbrev` is
+  blind to it (L1 had skipped it). The probe confirmed `Pinning.lean` is **migration-free** (every
+  `ScrewSpace` reach-in opacity-neutral: type ascriptions, `annihRow`/abstract-basis API,
+  `inferInstance`→named instance, `iInfKerProjEquiv`/`single`/`proj` module-level), and surfaced three
+  gaps in the already-"migrated" L0/L1 files — all pre-migrated on the `abbrev` this commit:
+  (1) added `@[simp] ScrewSpace.{val_smul,val_add,val_zero}` (`:= rfl`) and re-routed
+  `exists_extensor_eq_panelSupportExtensor` off the opacity-dead `simp [ScrewSpace.val,
+  Submodule.coe_smul]`; (2) `change`-exposed `screwSpace_finrank`'s carrier head (`change`, not `show`
+  — style linter); (3) `noncomputable`-tagged 5 carrier-valued `Submodule`/`Dual`/`≃ₗ` defs (the named
+  instances are `noncomputable`); (4) composed `exists_linearIndependent_extensor_pair_perp`'s
+  LI-transport with `equivExteriorPower`. Gap classes + method recorded in
+  `notes/ScrewSpaceCarrier-design.md` §5 *L2 refinement* (canonical) + the *Layer plan* preamble.
