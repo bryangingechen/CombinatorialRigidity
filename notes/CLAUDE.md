@@ -27,6 +27,13 @@ for *organizing* this directory is here.
 - **`PERFORMANCE.md`** — performance investigations and structural
   options (Lean module system, import boundaries). Its own header
   explains the format.
+- **`ScrewSpaceCarrier-design.md`** — prep / design doc for a possible
+  future *carrier-opacity* refactor (the `ScrewSpace` `abbrev` →
+  diffuse-typeclass `maxHeartbeats` cost, the opacity spike, mathlib
+  precedents, and the design-recon-first refactor plan). **Currently
+  deferred** (now-vs-later open; do in a fresh session) — see its
+  *Status* header. Consolidates what `PERFORMANCE.md` / `FRICTION.md`
+  point at.
 - **`VersoPort.md`** — cross-phase coordination plan for a possible
   future port of the LaTeX/plastex blueprint to
   `leanprover/verso-blueprint`. **Currently deferred** (Stage 0 spike
