@@ -236,6 +236,16 @@ opacity-neutral. Only files with category (a) `⟨v,h⟩`-construction, (d) `scr
 *defining* a carrier-threading predicate is not itself a migration trigger — only cracking the carrier
 open is.
 
+**L4 refinement (2026-06-16, `GenericityDevice.lean` — OQ3 confirmed operationally).** The probe broke
+at *exactly two* sites, both the (b)-coercion idiom `(C : ExteriorAlgebra ℝ _) = extensor p` proved via
+`congr_arg Subtype.val …` (the M4 forgetful map `hasPanelRealization_of_generic`); migrated onto
+`(C).val = … / congr_arg ScrewSpace.val …`, the L0b idiom. **OQ3's prediction held operationally at
+d=3:** the file's 5× `change … (Pi.single a (screwBasis k t)) = …` category-(d) blocks built *verbatim*
+on the opaque carrier — zero edits — confirming the micro-spike's defeq-free transport on the real
+GenericityDevice site, not just the scratch file. So at d=3 the feared-hardest category (d) is not merely
+"essentially mechanical" but a *no-op*; the only edits a migrating file needs are the (b)-coercion / (e)
+reach-ins. (General-`d` may still stress (d) symbolically — §6 — but that is part-2 work.)
+
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
 

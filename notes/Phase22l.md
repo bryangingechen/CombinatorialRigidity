@@ -13,17 +13,24 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**Next concrete step: L4 — `GenericityDevice.lean`.** L3 closed: the opacity probe confirmed
-`PanelHinge.lean` is **migration-free** (like `Pinning.lean` at L2) — its realization predicates
-(`HasPanelRealization`/`HasGenericFullRankRealization`) and `PanelHingeFramework` API embed `ScrewSpace`
-only *structurally* (via `supportExtensor`/`panelSupportExtensor`-valued fields, consumed abstractly),
-with the only carrier-touching sites all opacity-neutral (a type ascription, module-level
-`Submodule.span ℝ {…}`, and `Function.update` over the plain normal functions). No new gaps surfaced in
-the lower layers. L4 is the first probe expected to *break*: it holds the 5× near-identical
-`change … (Pi.single a (screwBasis k t)) = …` basis blocks (`GenericityDevice.lean:220`) — OQ3 says a
-`change`/`rfl` onto the direct basis vector still lands at default transparency, but the probe will
-confirm and drive whether each becomes a `rw`/`simp`. Each commit keeps the project green (carrier still
-`abbrev`); the **FLIP lands LAST**.
+**Next concrete step: L5 — `Coupling.lean`.** L4 closed: the opacity probe on `GenericityDevice.lean`
+broke at **exactly two sites** (lines 1937–1938 + 1946–1947, both in the M4 forgetful map
+`hasPanelRealization_of_generic`'s proof body) — the L0b carrier-coercion idiom
+`(C : ExteriorAlgebra ℝ _) = extensor p` proved via `congr_arg Subtype.val …` — migrated onto
+`(C).val = … / congr_arg ScrewSpace.val …`. **OQ3 confirmed (the headline L4 result):** every one of
+the 5× near-identical `change … (Pi.single a (screwBasis k t)) = …` basis blocks survives *verbatim* on
+the opaque carrier (default-transparency defeq holds), so category (d) at d=3 needed **zero** edits; the
+file's module-level `Module.Dual` / `Submodule.span` work (category (c)) is opacity-neutral as expected.
+Each commit keeps the project green (carrier still `abbrev`); the **FLIP lands LAST**.
+
+**L4 landed (2026-06-16): `GenericityDevice.lean` migrated (2 sites), project green.** The opacity
+probe broke at exactly two sites — both the L0b coercion idiom in the M4 forgetful map
+`hasPanelRealization_of_generic`: `(Q.toBodyHinge.supportExtensor e : ExteriorAlgebra ℝ _) = extensor p`
+proved via `congr_arg Subtype.val hsupp ▸ hp`. Migrated each to `(…).val = extensor p` /
+`congr_arg ScrewSpace.val hsupp ▸ hp` (the `ExtensorInPanel` witness's first conjunct is `C.val =
+extensor p`). **OQ3 held at d=3:** the 5× `change … (Pi.single a (screwBasis k t)) = …` basis blocks and
+all the module-level `Module.Dual`/`Submodule.span` work built clean on the opaque carrier, no edits.
+Implementation-only (proof body of a forgetful map); no statement, no consumer, no blueprint pin changed.
 
 **L3 landed (2026-06-16): `PanelHinge.lean` verified migration-free, project green (docs-only).** The
 opacity probe (local flip + 3 named instances → scoped `lake build` of the PanelHinge module → revert)
@@ -167,9 +174,12 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
   module-level `Submodule.span ℝ {…}` membership, and `Function.update P.normal …` over the plain
   `α → Fin (k+2) → ℝ` normals (not carrier-valued). Probe surfaced **zero** new gaps in the
   already-migrated lower layers. **Done 2026-06-16** — whole project builds + lints clean (docs-only commit).
-- [ ] **L4 — `GenericityDevice.lean`** (the 5× near-identical `change … (Pi.single a (screwBasis k t))`
-  basis blocks → `rw`/`simp` once the basis vector is no longer defeq-transparent; OQ3 confirms a
-  `change`/`rfl` onto the direct basis vector still lands at default transparency).
+- [x] **L4 — `GenericityDevice.lean`.** Probe broke at exactly 2 sites (the M4 forgetful map
+  `hasPanelRealization_of_generic`'s L0b coercion idiom `(C : ExteriorAlgebra ℝ _) = extensor p` via
+  `congr_arg Subtype.val …` → `(C).val = … / congr_arg ScrewSpace.val …`). **OQ3 held at d=3**: the 5×
+  `change … (Pi.single a (screwBasis k t)) = …` basis blocks survived *verbatim* on the opaque carrier
+  (category (d) needed zero edits), as did the module-level `Module.Dual`/`Submodule.span` work (category
+  (c), opacity-neutral). **Done 2026-06-16** — whole project builds + lints clean.
 - [ ] **L5 — `Coupling.lean`.**
 - [ ] **L6 — `CaseI.lean`.**
 - [ ] **L7 — `CaseII.lean`** — holds `case_II_realization_all_k` (`maxHeartbeats 600000`). Confirm
@@ -201,32 +211,32 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
 
 ## Hand-off / next phase
 
-**Smallest next commit: L4 — `GenericityDevice.lean`.** L0a/L0b/L1/L2/L3 (RigidityMatrix, PanelLayer,
-Pinning, PanelHinge) are now opacity-ready (L2/L3 were both migration-free; only L0a/L0b/L1 needed
-edits). L4 is the next geometry file down the spine and the **first probe expected to break**: it
-holds the 5× near-identical `change … (Pi.single a (screwBasis k t)) = …` basis blocks
-(`GenericityDevice.lean:220`), category (d). **Open it with the opacity probe** (local flip + 3
-instances → `lake build CombinatorialRigidity.Molecular.AlgebraicInduction.GenericityDevice` →
-revert); the probe drives the recon and catches the four gap classes (design doc §5 *L2 refinement*).
-OQ3 predicts the `change`/`rfl` onto the direct basis vector still lands at default transparency
-(transport is defeq-free), so the blocks likely survive verbatim — the probe confirms. Then pre-migrate
-on the `abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` / `(C : ExteriorAlgebra)`→`C.val`, add
-`noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ` def, route `.val`-arithmetic through
-`val_smul`/`val_add`/`val_zero`, and route LI/`ker`-transport through `equivExteriorPower`. Each commit
-keeps the project green on the `abbrev`. The API shape is fixed (L0a/L1/L2) — every later layer is the
-probe + mechanical pre-migration.
+**Smallest next commit: L5 — `Coupling.lean`.** L0a/L0b/L1/L2/L3/L4 (RigidityMatrix, PanelLayer,
+Pinning, PanelHinge, GenericityDevice) are now opacity-ready (L2/L3 were migration-free; L0a/L0b/L1/L4
+needed edits, L4 just the 2-site L0b idiom). L5 is the next file down the spine — the shared-seed /
+block-triangular coupling. **Open it with the opacity probe** (local flip + 3 instances → `lake build
+CombinatorialRigidity.Molecular.AlgebraicInduction.Coupling` → revert); the probe drives the recon and
+catches the four gap classes (design doc §5 *L2 refinement*). Then pre-migrate on the `abbrev`: swap
+`⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` / `(C : ExteriorAlgebra)`→`C.val` / `congr_arg Subtype.val
+…`→`congr_arg ScrewSpace.val …`, add `noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ` def,
+route `.val`-arithmetic through `val_smul`/`val_add`/`val_zero`, and LI/`ker`-transport through
+`equivExteriorPower`. Each commit keeps the project green on the `abbrev`. The API shape is fixed
+(L0a/L1/L2) — every later layer is the probe + mechanical pre-migration.
 
-**L2/L3 calibration of the per-layer method.** The lesson is the *method*, not a site count:
+**L2/L3/L4 calibration of the per-layer method.** The lesson is the *method*, not a site count:
 green-on-`abbrev` is **blind to opacity-readiness**, so each remaining layer must run the opacity
 probe up front (L1 had skipped it and left three `PanelLayer.lean` breaks the probe then caught). The
 four recurring gap classes are catalogued (design doc §5). The probe also has a *negative* outcome —
 a layer that builds clean on the opaque carrier needs **no migration** (L2 `Pinning.lean`, L3
 `PanelHinge.lean`): a file that only *consumes* `ScrewSpace`-typed values abstractly (type ascription,
 module-level span, predicates embedding the carrier through framework fields) reaches into the carrier
-nowhere and is opacity-neutral. Note also the L1 idiom that recurs in files that *do* migrate: after
-moving a `(⟨v,h⟩ : ScrewSpace).val`/coercion onto `mk`/`val`, a trailing `rfl`-close may need an
-explicit `ScrewSpace.val_mk` rewrite — `mk`/`val` are semireducible `def`s, so `rw`'s auto-`rfl`
-(reducible transparency) does not unfold them. The `abbrev`→opaque-`def` **FLIP lands last**, after the
+nowhere and is opacity-neutral. The L0b/L4 idiom that recurs in files that *do* migrate: route
+`(C : ExteriorAlgebra ℝ _)` coercions and `congr_arg Subtype.val` onto `C.val` / `congr_arg
+ScrewSpace.val` (the `.val` projection); and after moving a `(⟨v,h⟩ : ScrewSpace).val` onto `mk`/`val`,
+a trailing `rfl`-close may need an explicit `ScrewSpace.val_mk` rewrite (`mk`/`val` are semireducible
+`def`s, so `rw`'s auto-`rfl` does not unfold them). L4 also confirmed OQ3 *operationally* at d=3: the
+`change … (screwBasis k t) …` category-(d) blocks survive verbatim, so the recon's feared-hardest
+category needs no edits in the existing tree. The `abbrev`→opaque-`def` **FLIP lands last**, after the
 whole spine adopts the API, as a single small commit that banks the perf win and resolves OQ1.
 
 **At phase close:** the d=3 tree builds on the opaque `ScrewSpace` carrier; the three
@@ -321,3 +331,15 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   Docs-only commit; no Lean/blueprint touched. The recon's predicted-mechanical Shape-2 estimate
   holds: PanelHinge had no category (a)/(d)/(e) reach-in despite *defining* the predicates that thread
   the carrier through the whole import chain.
+
+- **L4 — `GenericityDevice.lean` (2-site migration; OQ3 confirmed operationally) (2026-06-16, opus).**
+  The opacity probe broke at *exactly two* sites, both the L0b carrier-coercion idiom in the M4
+  forgetful map `hasPanelRealization_of_generic`'s proof body: `hval : (Q.toBodyHinge.supportExtensor e
+  : ExteriorAlgebra ℝ _) = extensor p := congr_arg Subtype.val hsupp ▸ hp`. Migrated each to
+  `(…).val = extensor p / congr_arg ScrewSpace.val hsupp ▸ hp` — the `ExtensorInPanel` witness's first
+  conjunct is `C.val = extensor p`, so `.val` is the right projection and `hsupp` (a `ScrewSpace 2`
+  equation) is mapped through `ScrewSpace.val` rather than `Subtype.val`. **OQ3 confirmed at d=3 (the
+  headline):** the 5× `change … (Pi.single a (screwBasis k t)) = …` basis blocks — the recon's
+  feared-hardest category (d) — built *verbatim* on the opaque carrier (default-transparency defeq
+  holds), needing zero edits; the file's `Module.Dual`/`Submodule.span` work (category (c)) is
+  opacity-neutral. Implementation-only (proof body); no statement, consumer, or blueprint pin changed.

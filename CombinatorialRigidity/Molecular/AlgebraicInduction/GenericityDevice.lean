@@ -1934,8 +1934,8 @@ theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] 
           panelSupportExtensor (Q.normal u) (Q.normal v) := by
         rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
       obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor (hQgp u v he.ne)
-      have hval : (Q.toBodyHinge.supportExtensor e : ExteriorAlgebra ℝ _) = extensor p :=
-        congr_arg Subtype.val hsupp ▸ hp
+      have hval : (Q.toBodyHinge.supportExtensor e).val = extensor p :=
+        congr_arg ScrewSpace.val hsupp ▸ hp
       exact ⟨⟨p, hval, fun i => (hperp i).1⟩, ⟨p, hval, fun i => (hperp i).2⟩⟩
     · -- Case: (Q.ends e).1 = v, (Q.ends e).2 = u
       -- supportExtensor e = panelSupportExtensor (Q.normal v) (Q.normal u)
@@ -1943,8 +1943,8 @@ theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] 
           panelSupportExtensor (Q.normal v) (Q.normal u) := by
         rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
       obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor (hQgp v u he.ne.symm)
-      have hval : (Q.toBodyHinge.supportExtensor e : ExteriorAlgebra ℝ _) = extensor p :=
-        congr_arg Subtype.val hsupp ▸ hp
+      have hval : (Q.toBodyHinge.supportExtensor e).val = extensor p :=
+        congr_arg ScrewSpace.val hsupp ▸ hp
       exact ⟨⟨p, hval, fun i => (hperp i).2⟩, ⟨p, hval, fun i => (hperp i).1⟩⟩
   · -- Rank: direct from hQrank.
     exact hQrank
