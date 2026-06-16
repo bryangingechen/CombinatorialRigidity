@@ -297,6 +297,8 @@ quality / blueprint sync / notes discipline / commit message
 | 152 | L8a Leaf-1 assembly `exists_degree_two_removeVertex_of_no_simple_contraction` (Claim 6.6 graph side COMPLETE), 8edf52c | 1/2/1 | sonnet | normal | clean | ✓✓✓—✓✓ | 93k tok / 151 tools / 1444s (~24 min) | P=2 assembly → sonnet (mapped). Landed the full Leaf-1 (NO shrink) — **L8a complete**. Idiomatic assembly using EXISTING package `addEdge` API (`le_addEdge`/`addEdge_le`/`addEdge_isLink_iff_of_notMem` — confirmed none new this commit), not bloated. The 151-tool/24-min cost outlier = API-search on the `addEdge` bookkeeping (LOW 93k tokens, proportionate +182-line diff), NOT bloat-not-bailout. Coordinator: full-diff read + bloat/inline check + step-5 warning-clean (2768) + lint + sorry-grep + ROADMAP-edit scope check (legit in-progress status-honesty update, not creep). Sonnet held at the more-complex P=2 assembly. → Findings 22k. |
 | 153 | L8b — de-privatize CaseIII's triple-LI bridge `linearIndependent_normals_of_algebraicIndependent` (private→public), 0ff5041 | 1/1/1 | haiku | normal | repaired (note over-claim) | ✓✓✓—✗✓ | tokens/tools n/a (went idle, no cost report); ~2 min wall (commit timestamps + idle notif) | First landed haiku COMMIT in this repo (prior haiku 0/2, both honest BLOCKs). True 1/1/1 (drop `private`, no proof). Coordinator re-ran build (warning-clean, 2768 jobs) + lint + sorry-grep + full-diff — Lean exact, matches §1.70(e). Notes ✗ (repaired): split into feat+docs commits, and the docs commit (21760fd) flipped Layer-plan `L8`→`✓`/"h65 discharged" while L8c (the producer that discharges h65) is still open — internal contradiction with its own "Next: L8c". → Findings 22k. |
 | 154 | L8c geometric-core design-settle (§1.70(i)): hnewpin brick `exists_independent_pinned_two_edge_span_full` + producer Brick-A route, 200e4a2 | 3/3/1 | opus | normal | repaired (prose: false not-in-mathlib claim) | —✓——✗✓ | tokens/tools n/a (idle, no report); ~15 min wall (dispatch→commit) | Design-settle (fable→opus, fable down). High-value re-rate of (d)/(h)'s punted "build-time uncertainty" hnewpin → a PINNED consumer-fit NEW brick. Coordinator verified consumer-fit vs Brick A's VERBATIM `hnewpin`/`hnew_span` (exact) + all base lemmas (Pinning :442/:503/:547, PanelLayer :810/:242, `hingeRowBlock_apply` rfl) + the finrank route's mathlib tools. Notes ✗ (repaired): one false non-load-bearing aside ("reverse `(U⊓V)^⊥=U^⊥⊔V^⊥` not in mathlib" — `Subspace.dualAnnihilator_inf_eq` IS it for field subspaces); route unaffected (uses `dualAnnihilator_sup_eq`), coordinator corrected the caveat. → Findings 22k. |
+| 155 | L8c-1 hnewpin brick `exists_independent_pinned_two_edge_span_full` (boundary-pair PRIMARY), 1f55f34 | 1/3/1 | opus | boundary-pair-primary | clean | ✓✓✓—✓✓ | tokens/tools n/a (idle, no report); ~15–20 min wall | First boundary pair of the phase, at the long-open sonnet/opus boundary on a genuinely-new linear-algebra brick (the rows-91/100/101–102 question). Faithful pinned route, concise (+146 lines), consumer-fit verified vs Brick A. Two §1.70(i.1) pin corrections, both honest+disclosed+forced-by-source (file→Pinning.lean to avoid a circular import; +`hlink_a`/`hlink_b` link hyps `hnew_span` needs) — coordinator confirmed neither weakens the conclusion. Coordinator re-ran build (warning-clean, 2768) + sorry-grep. → Findings 22k (boundary pair). |
+| 156 | L8c-1 hnewpin brick (boundary-pair DUPLICATE, sonnet, worktree-discarded), a7edb02 | 1/3/1 | sonnet | boundary-pair-duplicate | clean | ✓✓✓——✓ | tokens/tools n/a (idle, no report); ~17 min wall | Sonnet duplicate (seeded worktree, `cp -Rc` 8G `.lake`). Landed EQUIVALENT — IDENTICAL signature (incl. BOTH §1.70(i.1) pin corrections, independently) + same route; coordinator re-ran build (warning-clean, 2768) + `lake lint` + full-diff + sorry-grep. Verdict: NO correctness/discipline gap at the boundary — sonnet HELD on the pinned genuinely-new brick (no BLOCK, no kernel-abstraction, did NOT drop a node — the brick mints none). Only delta: +184 vs primary +146 (more verbose). No harvest (opus more concise). Pin-audit PASS (both made the same forced corrections). Notes — (worktree Phase22k.md edit discarded). → Findings 22k (boundary pair). |
 
 ## Findings
 
@@ -755,3 +757,23 @@ postmortem's write-time consumer-fit gate now target exactly this.
   at the top rung") and the step-4 rule ("a new gap is cheaply verifiable — check it against the source
   before re-planning"): here the "gap" was illusory, and a 30-second grep settled it. Net: the recon
   stands; only the non-load-bearing aside needed repair.
+
+- **(rows 155–156, L8c-1 boundary pair) The long-open "genuinely-new linear-algebra brick at the
+  sonnet/opus boundary" question (rows 91/100/101–102) resolves toward: with a pinned signature,
+  sonnet HOLDS — equal correctness, ~26% more verbose.** The hnewpin brick (P≈3.5, the finrank/
+  dual-annihilator span-`D` fact) ran opus primary (+146 lines) + sonnet duplicate (+184). Both landed
+  clean (build + lint + warning-clean, both coordinator-re-verified), with the IDENTICAL signature and
+  route. Neither BLOCKed or abstracted the kernel — refining rows 101–102 (sonnet confronts an
+  irreducible kernel when forced): with §1.70(i.1)'s signature pinned, sonnet built the full brick
+  directly, and — notably — did NOT drop a blueprint node (the recurring sonnet discipline gap, rows
+  87/88/100/101–102), because this brick mints none, removing that failure surface entirely. The only
+  delta was verbosity. **Pin-audit PASS (the pair's second value, realized):** both members
+  INDEPENDENTLY made the same two §1.70(i.1) corrections — Pinning.lean placement (RigidityMatrix would
+  be a circular import) and the omitted `hlink_a`/`hlink_b` link hyps `hnew_span` needs — independent
+  convergence confirming those forced-by-source corrections are sound. The opus design-pass (row 154)
+  had punted the file/hyps; the two builders both fixed them the same way. **Process caveat:** every
+  dispatch this session (rows 153–156) ran as a named/mailbox agent that went idle without emitting its
+  `LANDED <sha>`/cost return, so token + tool-use figures are unavailable for all four — wall times are
+  coarse timestamp estimates (here ~15–20 min each, which does NOT reproduce the rows-101–102 ~3× sonnet
+  slowdown, but treat as weak given the measurement). The durable signal is the +26% line delta and
+  equal correctness/discipline.
