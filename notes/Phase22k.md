@@ -103,13 +103,6 @@ red→green), `thm:theorem-55-d3-instance` (drop the carried `h622`/`hsplit`/`hc
 After L9: **L10** — Thm 5.6 `d=3` (deficiency-preserving spanning-strip brick + `def>0` feed, V9).
 After L7–L10: 22k closes delivering KT-strength Thm 5.5 → 5.6 at `d = 3`; then Phase 23 (general `d`).
 
-After L8c lands:
-- **L9** — zero-carry spine: `theorem_55_all_k` restate + wire `case_III_realization` + drop
-  `case_I_dispatch`'s all-`k` `h65`. Target nodes: `thm:theorem-55`, `thm:theorem-55-d3-instance`.
-- **L10** — Thm 5.6 `d=3`: deficiency-preserving spanning-strip brick + `def>0` feed (V9).
-
-After L7–L10: 22k closes delivering KT-strength Thm 5.5 → 5.6 at `d = 3`; then Phase 23 (general `d`).
-
 ## Decisions made during this phase
 
 (One-line verdicts; full proof-technique detail in §1.56–§1.70 design sections, docstrings, git.)

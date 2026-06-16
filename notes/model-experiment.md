@@ -299,6 +299,8 @@ quality / blueprint sync / notes discipline / commit message
 | 154 | L8c geometric-core design-settle (§1.70(i)): hnewpin brick `exists_independent_pinned_two_edge_span_full` + producer Brick-A route, 200e4a2 | 3/3/1 | opus | normal | repaired (prose: false not-in-mathlib claim) | —✓——✗✓ | tokens/tools n/a (idle, no report); ~15 min wall (dispatch→commit) | Design-settle (fable→opus, fable down). High-value re-rate of (d)/(h)'s punted "build-time uncertainty" hnewpin → a PINNED consumer-fit NEW brick. Coordinator verified consumer-fit vs Brick A's VERBATIM `hnewpin`/`hnew_span` (exact) + all base lemmas (Pinning :442/:503/:547, PanelLayer :810/:242, `hingeRowBlock_apply` rfl) + the finrank route's mathlib tools. Notes ✗ (repaired): one false non-load-bearing aside ("reverse `(U⊓V)^⊥=U^⊥⊔V^⊥` not in mathlib" — `Subspace.dualAnnihilator_inf_eq` IS it for field subspaces); route unaffected (uses `dualAnnihilator_sup_eq`), coordinator corrected the caveat. → Findings 22k. |
 | 155 | L8c-1 hnewpin brick `exists_independent_pinned_two_edge_span_full` (boundary-pair PRIMARY), 1f55f34 | 1/3/1 | opus | boundary-pair-primary | clean | ✓✓✓—✓✓ | tokens/tools n/a (idle, no report); ~15–20 min wall | First boundary pair of the phase, at the long-open sonnet/opus boundary on a genuinely-new linear-algebra brick (the rows-91/100/101–102 question). Faithful pinned route, concise (+146 lines), consumer-fit verified vs Brick A. Two §1.70(i.1) pin corrections, both honest+disclosed+forced-by-source (file→Pinning.lean to avoid a circular import; +`hlink_a`/`hlink_b` link hyps `hnew_span` needs) — coordinator confirmed neither weakens the conclusion. Coordinator re-ran build (warning-clean, 2768) + sorry-grep. → Findings 22k (boundary pair). |
 | 156 | L8c-1 hnewpin brick (boundary-pair DUPLICATE, sonnet, worktree-discarded), a7edb02 | 1/3/1 | sonnet | boundary-pair-duplicate | clean | ✓✓✓——✓ | tokens/tools n/a (idle, no report); ~17 min wall | Sonnet duplicate (seeded worktree, `cp -Rc` 8G `.lake`). Landed EQUIVALENT — IDENTICAL signature (incl. BOTH §1.70(i.1) pin corrections, independently) + same route; coordinator re-ran build (warning-clean, 2768) + `lake lint` + full-diff + sorry-grep. Verdict: NO correctness/discipline gap at the boundary — sonnet HELD on the pinned genuinely-new brick (no BLOCK, no kernel-abstraction, did NOT drop a node — the brick mints none). Only delta: +184 vs primary +146 (more verbose). No harvest (opus more concise). Pin-audit PASS (both made the same forced corrections). Notes — (worktree Phase22k.md edit discarded). → Findings 22k (boundary pair). |
+| 157 | L8c-2 producer `case_I_realization_h65` (first attempt — wedged, interrupted, no commit) | 1/2/2 | sonnet | normal | interrupted (≈2h elaboration-wall wedge) | —————— | ~2h wall; tokens/tools n/a (async/idle) | No commit (tree reverted clean). Sonnet correctly DIAGNOSED the wall — proof logically complete (empty goals verified), pure elaboration cost — but MIS-RESOLVED it: extracted one helper, then cranked `maxHeartbeats` (4M timed out ~172s, about to try 8M) instead of decomposing. Coordinator caught the cost-outlier (~2h vs ~15–25 min norm), had the user interrupt, recovered the complete WIP to /tmp (diagnostic + head-start), reverted clean. → Findings 22k; rescue §7. |
+| 158 | L8c-2 producer `case_I_realization_h65` + wiring + `lem:case-I-dispatch` flip (escalation, L8 COMPLETE), 0f40c44 | 1/2/2 | opus | escalation-retry | clean | ✓✓✓✓✓✓ | ~73 min wall (incl. redirect); tokens/tools n/a (async/idle) | Escalation of #157, seeded with the recovered WIP + a decompose-don't-crank mandate. Opus found the SHARPER fix: the dominant `whnf` cost was the manual `∃`-witness assembly (B2+antisymmetry+`⟨Q,…⟩` over the GP motive — failed even at 6M HB), not just monolithic-ness; routing the final step through the keystone `hasGenericFullRankRealization_of_rigidOn_ofNormals` + 4 extracted helpers fit at 800000. Honest node-flip judgment: re-pinned `lem:case-I-dispatch` to the green producer, AVOIDING the false-green of the design's intended `case_I_dispatch` pin (still carries `h65`). Coordinator: build warning-clean (2768) + lint + sorry-grep + full-diff + shape-check (theorem_55_d3 wiring / node honesty / pin resolves) + lint.sh. → Findings 22k; rescue §7. |
 
 ## Findings
 
@@ -777,3 +779,29 @@ postmortem's write-time consumer-fit gate now target exactly this.
   coarse timestamp estimates (here ~15–20 min each, which does NOT reproduce the rows-101–102 ~3× sonnet
   slowdown, but treat as weak given the measurement). The durable signal is the +26% line delta and
   equal correctness/discipline.
+
+- **(rows 157–158, L8c-2) An elaboration-cost wall is not a model-strength problem and is not fixed by
+  cranking heartbeats — it needs DECOMPOSITION plus finding the dominant `whnf` term.** The L8c-2
+  producer's proof was logically complete (sonnet verified empty goals throughout) but timed out purely
+  on elaboration cost. Sonnet (1/2/2 → mapped) diagnosed this correctly yet mis-resolved it — extracted
+  one helper, then escalated `maxHeartbeats` (4M→8M) and wedged ~2 h. The coordinator caught the
+  cost-outlier (the rows-115/118 signal), interrupted, recovered the complete proof to /tmp (diagnostic +
+  head-start), and escalated to opus with a decompose-don't-crank mandate seeded with the WIP. Opus found
+  the sharper fix: the dominant cost was the **manual `∃`-witness assembly** (B2+antisymmetry+`⟨Q,…⟩` over
+  `HasGenericFullRankRealization` — failed even at 6M HB), not merely the body's size; routing the final
+  step through a landed genericity-transfer keystone (`hasGenericFullRankRealization_of_rigidOn_ofNormals`)
+  + four extracted helpers fit at 800000. Opus also showed honest blueprint judgment, re-pinning the node
+  to the green producer rather than the design's `case_I_dispatch` (which still carries `h65` — a
+  would-be false green). Lesson promoted to `coordinate-phase-rescue.md` §7. Note: a stronger model alone
+  would likely have hit the same wall — the escalation *worked* because it carried the decomposition
+  mandate + the recovered WIP, not because opus > sonnet.
+
+- **(rows 153–158, process) Named/async dispatches this session emitted idle notifications, not
+  tool-result returns — so cost figures are unavailable and steering needs a user interrupt.** Every
+  named Agent dispatch returned `{idle_notification, available}` instead of `LANDED <sha>`/cost; token +
+  tool-use figures are therefore missing for all of rows 153–158 (wall time from commit timestamps is the
+  only metric). And a running named agent did not read coordinator `SendMessage`s until the user
+  interrupted it (the stop + WIP-recovery messages landed only on interrupt). For a fresh coordinator:
+  dispatch **un-named** for synchronous `LANDED`+cost returns; reserve named agents for boundary-pair
+  duplicates / addressable resume, and expect to ask the user to interrupt when steering one. Promoted to
+  `coordinate-phase-rescue.md` §2.
