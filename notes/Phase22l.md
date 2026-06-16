@@ -13,20 +13,33 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
+**L0b landed (2026-06-16): `RigidityMatrix.lean`'s remaining carrier-coercion idioms migrated onto
+`.val`, project green.** The two category-(b)/(e) carrier reach-ins in the file — `ExtensorInPanel`'s
+defining equation `(C : ExteriorAlgebra …) = extensor p` (now `C.val = extensor p`) and the
+`ofHinge_supportExtensor_coe` API lemma (renamed `ofHinge_supportExtensor_val`, LHS now `.val`) — are
+the only `(C : ExteriorAlgebra …)` coercions over a `ScrewSpace`-typed `C` in this file (the
+`⋀[ℝ]^2`-Subtype anonymous constructors at the `complementIso` inputs are NOT `ScrewSpace`-typed and
+stay). **Whole project builds + lints clean**: `.val` is defeq to the old coercion while the carrier
+is still an `abbrev`, so every downstream `ExtensorInPanel` witness (`⟨p, rfl, hp_perp⟩` at
+`Theorem55.lean` 93/94/192/1806/1807; the `exists_extensor_eq_panelSupportExtensor`-fed pair at
+`PanelLayer.lean`:621) typechecks unchanged. `ExtensorInPanel` is blueprint-pinned
+(`panel-layer.tex`:207) but only its *implementation* changed, not its statement — pin survives,
+no restate.
+
 **L0a landed (2026-06-16): the carrier API foundation is in `RigidityMatrix.lean`, project green.**
 `ScrewSpace.mk` / `.val` / `val_mk` / `val_mem` / `mk_val` / `val_injective` / `@[ext]` +
 `equivExteriorPower` (+ its `_apply`/`_symm_apply` simp) are landed on the carrier; this file's two
 genuine `ScrewSpace`-anonymous-constructor sites (`span_omitTwoExtensor_eq_top`, `ofHinge`) are
-migrated onto `mk`, and the former's LI transport now routes through `equivExteriorPower`. **Whole
-project builds + lints clean** (the carrier is still an `abbrev`, so `mk`/`val` are defeq-thin and
-the API is purely additive — downstream untouched and green).
+migrated onto `mk`, and the former's LI transport now routes through `equivExteriorPower`.
 
-**Next concrete step: L0b — migrate `RigidityMatrix.lean`'s remaining carrier-touch idioms** that
-are *not* anonymous-constructor sites onto the API where it sharpens (the `Module.Dual`-ext lemmas
-that close by unfolding `.val` through the carrier), then proceed down the spine (L1…) migrating
-each file's `⟨val,proof⟩`/`(C : ExteriorAlgebra)`/`Subtype.ext` reach-ins onto `mk`/`val`. **The
-`abbrev`→opaque-`def` flip lands LAST**, not first (see *Architectural choices* — the original
-"flip-first, bottom-up" order could not keep the project green; the API-first order does).
+**Next concrete step: L1 — `PanelLayer.lean`.** With `RigidityMatrix.lean` fully on the API,
+proceed down the spine. L1 transports `screwBasis` through `equivExteriorPower` (defeq-free per OQ3
+→ mechanical), the `annihRow` + `@[simp]` family on `.repr`/`.coord`, and the file's construction
+reach-ins (incl. `exists_extensor_eq_panelSupportExtensor`'s `(panelSupportExtensor … : ScrewSpace 2
+: ExteriorAlgebra …)` coercion → `.val`, and the `⟨extensor …, _⟩ : ScrewSpace 2` anonymous
+constructors → `mk`). **Hard-part (d) lives here** — de-risked to mechanical by OQ3. Each commit
+keeps the project green (the carrier is still an `abbrev`). **The `abbrev`→opaque-`def` flip lands
+LAST**, after the whole spine adopts the API (see *Architectural choices*).
 
 The design recon (`notes/ScrewSpaceCarrier-design.md` §5) is complete and **killed the surgical
 "localized wrapper" option** (Shape 1): the realization predicates the capped decls return *and*
@@ -88,11 +101,15 @@ spine + the hard-part concentrations + the exit criterion.
   `_symm_apply`), all on the still-`abbrev` carrier; migrated this file's two genuine
   `ScrewSpace`-constructor sites (`span_omitTwoExtensor_eq_top`, `ofHinge`) onto `mk`. **Done
   2026-06-16** — whole project builds + lints clean.
-- [ ] **L0b — `RigidityMatrix.lean`: remaining-idiom migration.** Migrate the file's
-  `Module.Dual`-ext lemmas / `(C : ExteriorAlgebra)` coercion idioms onto `.val`/`equivExteriorPower`
-  where it sharpens (category (e), the §38 cost site) so they survive the eventual flip. The
+- [x] **L0b — `RigidityMatrix.lean`: remaining-idiom migration.** Migrated the file's two
+  `(C : ExteriorAlgebra)` carrier-coercion idioms over a `ScrewSpace`-typed `C` onto `.val`:
+  `ExtensorInPanel`'s defining equation and `ofHinge_supportExtensor_coe`→`_val`. (The
+  `Module.Dual`-ext lemmas — `dualMap_eq_comp_single_proj_of_vanish_off`, `comp_columnOp_comp_single`,
+  `columnOp`, … — are category (c): they operate at the `α → ScrewSpace k` *module* level via
+  `LinearMap.ext`/`single`/`proj`, opacity-neutral, no carrier reach-in, so no migration needed.) The
   `complementIso`-input anonymous constructors (`⟨extensor …, extensor_mem_exteriorPower _⟩ :
-  ⋀[ℝ]^2 …`) are NOT `ScrewSpace`-typed and need no migration.
+  ⋀[ℝ]^2 …`) are NOT `ScrewSpace`-typed and stay. **Done 2026-06-16** — whole project builds + lints
+  clean.
 - [ ] **FLIP (last) — `abbrev ScrewSpace`→opaque `def` + 3 `inferInstanceAs` instances.** Lands
   after the whole spine has adopted the API; a single mechanical commit. **Phase exit + OQ1
   resolution.** (Was "L0, first" in the original plan — see *Architectural choices*.)
@@ -137,14 +154,18 @@ spine + the hard-part concentrations + the exit criterion.
 
 ## Hand-off / next phase
 
-**Smallest next commit: L0b** — migrate `RigidityMatrix.lean`'s remaining `Module.Dual`-ext /
-coercion idioms (category (e)) onto `.val`/`equivExteriorPower` where it sharpens, then start down
-the spine (L1 `PanelLayer.lean`). Each commit keeps the project green (the carrier is still an
-`abbrev`, so partial migration builds). The API shape is now fixed (L0a) — every later layer is the
-mechanical `⟨v,h⟩`→`ScrewSpace.mk v h` / `(C : ExteriorAlgebra)`→`C.val` swap. The
-`abbrev`→opaque-`def` **FLIP lands last**, after the whole spine adopts the API, as a single small
-commit that banks the perf win and resolves OQ1. Reassess the per-layer estimate against the first
-real (non-synthetic) reach-in counts as L1 lands.
+**Smallest next commit: L1 — `PanelLayer.lean`.** `RigidityMatrix.lean` is now fully on the API
+(L0a + L0b). L1 is the first geometry file down the spine: transport `screwBasis` through
+`equivExteriorPower` (defeq-free per OQ3 → mechanical), migrate the `annihRow` + `@[simp]` family on
+`.repr`/`.coord`, and swap the construction reach-ins
+(`exists_extensor_eq_panelSupportExtensor`'s `(panelSupportExtensor … : ScrewSpace 2 :
+ExteriorAlgebra …)` coercion → `.val`; the `⟨extensor …, _⟩ : ScrewSpace 2` anonymous constructors →
+`ScrewSpace.mk`). **Hard-part (d) lives here** — de-risked to mechanical by OQ3. Each commit keeps
+the project green (the carrier is still an `abbrev`, so partial migration builds). The API shape is
+fixed (L0a) — every later layer is the mechanical `⟨v,h⟩`→`ScrewSpace.mk v h` /
+`(C : ExteriorAlgebra)`→`C.val` swap. The `abbrev`→opaque-`def` **FLIP lands last**, after the whole
+spine adopts the API, as a single small commit that banks the perf win and resolves OQ1. Reassess the
+per-layer estimate against the first real (non-synthetic) reach-in counts as L1 lands.
 
 **At phase close:** the d=3 tree builds on the opaque `ScrewSpace` carrier; the three
 `maxHeartbeats` survivors are dropped/lowered (OQ1 resolved); the general-`d` API is *not* frozen,
@@ -180,3 +201,15 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   abbrev). The LI-through-the-carrier transport now routes through
   `equivExteriorPower` (`ker (subtype.comp equiv) = ⊥` via `ker_comp`/`comap_bot`/`LinearEquiv.ker`)
   — the forward-compatible idiom later layers reuse.
+
+- **L0b — `RigidityMatrix.lean` carrier-coercion migration (2026-06-16, opus).** Migrated the
+  file's two `(C : ExteriorAlgebra …)` carrier-coercion idioms over a `ScrewSpace`-typed `C` onto
+  `.val`: `ExtensorInPanel`'s defining equation and `ofHinge_supportExtensor_coe` (renamed
+  `_val`, no external consumers). Found these are the file's *only* such reach-ins; the file's
+  `Module.Dual`-ext lemmas (`dualMap_eq_comp_single_proj_of_vanish_off`, `comp_columnOp_comp_single`,
+  `columnOp`) are category (c) — `α → ScrewSpace k` *module*-level `LinearMap.ext`/`single`/`proj`,
+  opacity-neutral, no migration. Project-green because `.val` is defeq to the old coercion while the
+  carrier is `abbrev`, so all downstream `ExtensorInPanel` witnesses (`⟨p, rfl, …⟩` at Theorem55,
+  the `exists_extensor_eq_panelSupportExtensor`-fed pair at PanelLayer:621) typecheck unchanged.
+  `ExtensorInPanel`'s blueprint pin survives (implementation-only change). No friction surfaced —
+  the planned mechanical swap behaved exactly as the design recon predicted.

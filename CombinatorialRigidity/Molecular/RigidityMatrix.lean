@@ -729,7 +729,7 @@ Scalars in the first slot absorb: `c • extensor p = extensor (update p 0 (c �
 (`AlternatingMap.map_update_smul`). -/
 def ExtensorInPanel {k : ℕ} (C : ScrewSpace k) (n : Fin (k + 2) → ℝ) : Prop :=
   ∃ p : Fin k → Fin (k + 2) → ℝ,
-    (C : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
+    C.val = extensor p ∧ ∀ i, p i ⬝ᵥ n = 0
 
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
@@ -826,10 +826,9 @@ def ofHinge (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
 theorem ofHinge_graph (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
     (ofHinge G hinge).graph = G := rfl
 
-theorem ofHinge_supportExtensor_coe (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ)
+theorem ofHinge_supportExtensor_val (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ)
     (e : β) :
-    ((ofHinge G hinge).supportExtensor e : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
-      affineSubspaceExtensor (hinge e) := rfl
+    ((ofHinge G hinge).supportExtensor e).val = affineSubspaceExtensor (hinge e) := rfl
 
 /-- The **hinge constraint** at an edge `e = uv` (`def:hinge-constraint`): a screw
 assignment `S : α → ScrewSpace k` meets the hinge constraint at `e` between
