@@ -1,16 +1,20 @@
-# ScrewSpace carrier opacity — design / prep doc for a future refactor
+# ScrewSpace carrier opacity — design / prep doc for the refactor
 
-**Status: PREP / DEFERRED — design-recon complete (2026-06-16).** This is the single
-canonical home for the post-22k investigation into the `maxHeartbeats` cost of the
-`ScrewSpace` carrier (and its `abbrev` siblings) and the *carrier-opacity* refactor
-option. The opacity **spike** (§3) and the **design-recon** (§5) are both done: the recon
-killed the surgical "localized wrapper" option, leaving a full-carrier migration (Shape 2,
-~3–5 sessions) as the only coherent path. A follow-up **micro-spike** (§5 OQ3) then confirmed
-the `screwBasis` transport is *defeq-free* — downgrading the recon's hardest category to
-mechanical and leaving the unconfirmable end-to-end cap drop (§5 OQ1) as the dominant residual
-risk. **No migration is scheduled** — the now-vs-later call (now three-way; §6) is open.
-`notes/PERFORMANCE.md` and `notes/FRICTION.md` point here; the opacity-spike dispatch records
-live in `notes/model-experiment.md` (rows 167–170).
+**Status: d=3 part SCHEDULED as Phase 22l (2026-06-16); design-recon + spike + micro-spike complete.**
+This is the single canonical home (the API spec, spike, recon, now-vs-later analysis) for the
+post-22k investigation into the `maxHeartbeats` cost of the `ScrewSpace` carrier (and its `abbrev`
+siblings) and the *carrier-opacity* refactor. The opacity **spike** (§3) and the **design-recon** (§5)
+are both done: the recon killed the surgical "localized wrapper" option, leaving a full-carrier
+migration (Shape 2, ~3–5 sessions) as the only coherent path. A follow-up **micro-spike** (§5 OQ3)
+confirmed the `screwBasis` transport is *defeq-free* — downgrading the recon's hardest category to
+mechanical and leaving the unconfirmable end-to-end cap drop (§5 OQ1) as the dominant residual risk.
+**Decision (2026-06-16, §6): the d=3-scoped first part is now scheduled as Phase 22l** (`notes/Phase22l.md`)
+— build the opaque-carrier API + migrate the existing d=3 tree now (banks the perf win and *resolves*
+OQ1 by greening the cap-holding spine end-to-end), while **deferring the general-`d` API** to the
+Phase-23 design boundary (this neutralizes §6's chief objection — freezing an API against d=3-only
+usage — by not freezing the general-`d` surface). This doc remains the live spec 22l follows; refine
+the API surface (§5) here as the migration lands. `notes/PERFORMANCE.md` and `notes/FRICTION.md` point
+here; the opacity-spike dispatch records live in `notes/model-experiment.md` (rows 167–170).
 
 **TL;DR.** `ScrewSpace k` (`Molecular/RigidityMatrix.lean:88`) is a reducible
 `abbrev = ↥(⋀^k (Fin (k+2) → ℝ))`. Reducibility means every defeq / `simp` / `rw`
@@ -21,11 +25,13 @@ the carrier **opaque** cuts that cost ~5–60× on the relevant patterns, but th
 refactor's blast radius is prohibitive as a big-bang. **The design-recon converted the open
 "is it worth it?" into a concrete go/no-go: Shape 2 (full carrier) is the only coherent path,
 GO-able but a 3–5 session commitment; design-risk is ~0 *for the current d=3 usage* but
-unknown for the unbuilt general-`d` work (§6). Recommendation: bank the 7→3 win, lean toward
-deferring the full migration to the Phase-23 design boundary or post-program (§6). The
-`screwBasis`-transport micro-spike (§5 OQ3) is done — it confirmed the transport is defeq-free
-(the hardest category → mechanical), leaving the unconfirmable end-to-end cap drop (§5 OQ1) as
-the dominant residual risk.**
+unknown for the unbuilt general-`d` work (§6). **Resolution (2026-06-16): split the call — do the
+d=3 part now (Phase 22l), defer the general-`d` API to the Phase-23 design boundary.** Doing only
+the d=3 API + migration banks the perf win and resolves OQ1 (greens the cap-holding spine
+end-to-end) without freezing the general-`d` surface — exactly the §6 concern that argued for
+waiting. The `screwBasis`-transport micro-spike (§5 OQ3) is done — it confirmed the transport is
+defeq-free (the hardest category → mechanical), leaving the unconfirmable end-to-end cap drop (§5
+OQ1) as the dominant residual risk, now resolved *by* 22l rather than left open.**
 
 ## 1. The problem — three surviving `maxHeartbeats` overrides
 
@@ -262,9 +268,21 @@ So the binary is really three-way:
 - **Post-program** — usage fully crystallised, design-risk genuinely zero; but all of 23–26 built on the
   transparent carrier, accreting *more* §38 workarounds and paying the perf cost throughout.
 
-**Recommendation.** Bank the 7→3 win and keep the three caps documented-inherent. The unbuilt-work
-dependency materially strengthens *waiting* over *now* — lean toward the **Phase-23 design boundary** (or
-post-program). The **`screwBasis`-transport micro-spike is done** (§5 OQ3): it confirmed the transport is
-defeq-free, so the recon's hardest category (d) is mechanical and design-risk for the *known* surface is
-genuinely low — the residual risks are the unconfirmable end-to-end cap drop (OQ1) and the unbuilt
-general-`d` surface (above). **Decide the full-migration timing at the Phase-23 design boundary.**
+**Recommendation → Decision (2026-06-16).** The three-way call was resolved by **splitting it along
+the d=3 / general-`d` boundary**, which dissolves the tension the recommendation was hedging:
+
+- **Do the d=3 part now — Phase 22l** (`notes/Phase22l.md`): the opaque-carrier API + migrating the
+  *existing* (all-d=3) tree. This banks the perf win and — because the three caps sit at the *top* of
+  the spine (CaseII, Theorem55) and 22l greens that exact spine — **resolves OQ1** (the end-to-end cap
+  drop the spike could only proxy) rather than leaving it open. Design-risk for the *known* d=3 surface
+  is genuinely low: the recon mined the call sites, and the micro-spike (§5 OQ3) downgraded the
+  feared-hardest category (d) to mechanical.
+- **Defer the general-`d` API to the Phase-23 design boundary.** The unbuilt-work dependency above
+  argued for *waiting* only because freezing an API against d=3-only usage risks a Phase-23 reshape —
+  but that risk attaches **only to the general-`d` surface**, which 22l does not touch. Phase 23's
+  design recon (general-`k` reach-in surface known) is where the general-`d` carrier API gets shaped;
+  the general-`d` migration ("part 2") lands with or after it.
+
+This keeps the 7→3 win banked, gets the d=3 perf payoff + OQ1 confirmation now, and pays the
+general-`d` freeze risk only once the surface has crystallised — the best of both ends of the
+original three-way call.

@@ -5,8 +5,11 @@ Theorem 5.6 are now formalized at `d = 3` at full KT strength** (all degrees of 
 hinges). 22k (closed 2026-06-16; `notes/Phase22k.md`) discharged the last three 22h carries
 (`h622`/`h65`/`hsplit`), giving a zero-carry Theorem-5.5 spine, then pushed through to Theorem 5.6 at
 `d = 3` (strip to a minimal spanning subgraph, realize, re-add edges — the rank only grows), which
-completes the analytic half of KT Proposition 1.1 (`rigidityMatrix_prop11`, now green). The current
-frontier is **Phase 23** (Case III general `d`, KT Lemma 6.13 → Thm 5.5/5.6 → Conjecture 1.2). Phases
+completes the analytic half of KT Proposition 1.1 (`rigidityMatrix_prop11`, now green). A build-time
+**structural-edit refactor sub-phase 22l** (opaque `ScrewSpace` carrier for the d=3 material;
+`notes/Phase22l.md`, recon in `notes/ScrewSpaceCarrier-design.md`) is in progress and **does not move
+the math frontier**. The current math frontier is **Phase 23** (Case III general `d`, KT Lemma 6.13 →
+Thm 5.5/5.6 → Conjecture 1.2). Phases
 24–26 planned (the 3-D bar-joint matroid, projective invariance + the modelling equivalence, and the
 molecule-application capstone). The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§22k, and `notes/PhaseN.md` — this Status paragraph is a pointer,
@@ -224,6 +227,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22i ✓ | **All-`k` genuine-hinge motive + reduction-case producers** (closed 2026-06-14, `notes/Phase22i.md`; opened as "the honest all-`k` Theorem 5.5"). Delivered L0–L6: the genuine-hinge all-`k` motive (free-hinge carrier + extensor-in-panel containment — KT's coincident-panel Lemmas 5.3/6.2 are inexpressible with a derived hinge-as-meet), the four-case all-`k` induction (NEW cases: Lemma 6.1 not-2-edge-connected, Lemma 6.8 `k>0` split), and the base / cut-edge / Case-I / Lemma-6.8 producers (`hbase`/`hcontract` discharged). **Re-scoped at close by a deliberate split**; the rest → 22j + 22k. | §3, §5.2, §6.1–6.4 | 5 |
 | 22j ✓ | **The shared eq.-(6.12) placement abstraction** (closed, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement` + augment) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer had inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Consolidated the L6b producer onto it, retired the dead L6a, landed the producer cleanup (dead-code + both stopgap suppressions dropped). | §6.3, §6.4.1 | — |
 | 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
+| 22l ◷ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; in progress, `notes/Phase22l.md`). `ScrewSpace` `abbrev`→opaque `def` + `mk`/`val`/`≃ₗ` API, migrating the d=3 tree bottom-up along the import spine to cut the diffuse-typeclass cost behind the three surviving `maxHeartbeats` overrides. d=3 scope only; general-`d` API deferred to the Phase-23 boundary. Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -651,8 +655,18 @@ phase numbers 23–26 stable.
 spanned 22i + 22k (with the 22j Brick-A abstraction between them). KT-strength Thm 5.5 and Thm 5.6 are
 now formalized at `d=3` (Cor 5.7 lands in Phase 26).
 
-**Now open: Phase 23 — Case III general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 →
+**In progress: sub-phase 22l — ScrewSpace carrier opacity** (build-time structural-edit refactor of
+the d=3 material; opened 2026-06-16, `notes/Phase22l.md`). `ScrewSpace` `abbrev`→opaque `def` + a
+`mk`/`val`/`≃ₗ` API, migrating the d=3 tree bottom-up along the import spine (RigidityMatrix → … →
+Theorem55) to cut the diffuse-typeclass cost behind the three surviving `maxHeartbeats` overrides.
+d=3 scope only — the general-`d` API ("part 2") is deferred to the Phase-23 design boundary. Recon
+canonical in `notes/ScrewSpaceCarrier-design.md`; the now-vs-later decision is recorded there (§6).
+**This is engineering, not math** — it does not advance the conjecture; Phase 23 remains the next
+math phase.
+
+**Next math phase: Phase 23 — Case III general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 →
 Conjecture 1.2**. The reuse map is §1.33 (C) of `notes/Phase22-realization-design.md`. Open it with its
 own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` row to
 `notes/AlgebraicIndependence.md`. The integer phase numbers 23–26 were kept stable by the Phase-22
-sub-lettering.
+sub-lettering. (If 22l is still open when Phase 23 starts, the Phase-23 design recon is also where the
+general-`d` carrier API is shaped — the deferred "part 2" of the refactor.)
