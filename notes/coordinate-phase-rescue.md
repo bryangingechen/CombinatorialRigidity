@@ -12,11 +12,12 @@ orientation.) Row numbers cite `model-experiment.md`.
 ## Index (symptom → §)
 
 - Wrong branch / author / co-author trailer on a landed commit → §1
-- Return shows **neither** LANDED nor BLOCKED → §2
+- Return shows **neither** LANDED nor BLOCKED; named/async dispatch idles instead of returning → §2
 - Dispatch **killed** by a session/usage limit → §3
 - Plan-label deviation (destructive→additive, slice re-size) → §4
 - BLOCKED return — which resolutions stay in-workflow → §5
 - Non-build dispatch shapes (cleanup round; coordinator-authored) → §6
+- Subagent wedged for hours on a proof timeout (elaboration wall) → §7
 
 ## §1 — Mechanical fixups (a fixup, never a stop)
 
@@ -41,6 +42,21 @@ finished-but-uncommitted work (twice on 22h's G5). **Don't
 blind-redispatch** (a fresh "continue" agent re-reads everything and may
 park the same way): verify the tree diff against the hand-off yourself,
 run the gates, commit with the project identity.
+
+**Named/async dispatches surface as an idle notification, not a tool
+result** (this session, rows 153–158: every named Agent dispatch emitted
+`{type: idle_notification, idleReason: available}` instead of returning
+`LANDED <sha>`/cost). Treat that notification as "the agent finished its
+turn but delivered no return" — verify via git as above. Two
+consequences for the loop: **(a) cost figures (tokens / tool-uses) are
+unavailable** — wall time from commit timestamps is the only metric; to
+get a synchronous `LANDED`+cost return, dispatch the agent **un-named**
+(naming it routes it to the async mailbox). **(b) A running named agent
+does not read your `SendMessage` until it is interrupted** — to stop or
+steer one, have the *user* interrupt it so the queued message lands
+(rows 157–158: the stop and the WIP-recovery messages took effect only
+on the user's interrupt). Reserve named dispatches for boundary-pair
+duplicates / cases that need an addressable resume.
 
 ## §3 — Killed dispatch (session/usage limit) → resume-first
 
@@ -106,3 +122,36 @@ moved it into the hand-off).
   reconstruct that context from a prompt, lossily. Same per-commit
   checklists, project author identity, and the coordinator's *actual*
   model in the trailer (the §1.55 + postmortem commits).
+
+## §7 — Subagent wedged for hours on a proof timeout (elaboration wall)
+
+A dispatch running far past the norm on a proof that won't compile (rows
+157–158: ~2 h vs the ~15–25 min L8 norm) is usually an **elaboration-cost
+wall**, distinct from proof-discovery: the proof is *logically complete*
+(every goal closes — the agent can confirm via `lean_goal`) but the term
+is too heavy to elaborate within the heartbeat budget. The cost-outlier
+is itself the intervention trigger — don't wait it out (the rows-115/118
+degradation-signal lesson); surface to the user early.
+
+Procedure:
+1. **Interrupt and recover the WIP before reverting.** Interrupting needs
+   the user (per §2 — a running named agent won't read messages
+   otherwise). Have the agent dump its in-progress proof to
+   `/tmp/<name>-wip.lean` (NOT the repo — a replacement agent may already
+   be editing it) and report a diagnostic: which decl/step, the verbatim
+   timeout, and discovery-vs-elaboration read. The recovered proof is
+   both the diagnostic *and* a head-start for the retry.
+2. **Don't just escalate to a stronger model or crank `maxHeartbeats`.**
+   A heartbeat wall is largely model-independent — a bigger model writes
+   a similarly-heavy term. (Sonnet's L8c-2 attempt extracted one helper,
+   then tried 4M→8M heartbeats, and still wedged.)
+3. **Escalate one rung up with a decompose-don't-crank mandate, seeded
+   with the recovered WIP.** The fix is to *break the elaboration*:
+   extract heavy steps as standalone helper lemmas (TACTICS-QUIRKS §38),
+   AND — the sharper lesson — **hunt the dominant `whnf` term, which is
+   often a manual `∃`-witness / structure assembly over a heavy motive**,
+   and route it through a landed keystone instead. (22k L8c-2: the manual
+   `⟨Q,…⟩` assembly of `HasGenericFullRankRealization` was the dominant
+   cost — it failed even at 6M heartbeats; routing the final step through
+   the keystone `hasGenericFullRankRealization_of_rigidOn_ofNormals` +
+   four extracted helpers fit at 800000.)

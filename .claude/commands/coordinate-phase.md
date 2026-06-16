@@ -5,8 +5,9 @@ looks off.
 
 **Rare / explicit-trigger detail lives in
 `notes/coordinate-phase-rescue.md`, symptom-indexed** (mechanical
-fixups, neither-return, killed-dispatch resume, plan-label deviations,
-BLOCKED resolution, non-build dispatch shapes). Consult it when a trigger
+fixups, neither-return / async-mailbox dispatch mechanics, killed-dispatch
+resume, plan-label deviations, BLOCKED resolution, non-build dispatch
+shapes, hours-long elaboration-wall wedge). Consult it when a trigger
 below points there (`→ rescue §N`); this body carries the every-iteration
 core.
 
