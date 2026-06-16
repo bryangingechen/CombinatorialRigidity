@@ -102,18 +102,22 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-16, fresh coordinator session at L10d-open / phase-close;
-  supersedes the expired earlier-2026-06-16 L9-open note — same parameters, re-confirmed by
-  this fresh coordinator at session start per the protocol's session-start check).**
-  fable **unavailable** this session (user-confirmed at session start; any fable-mapped
-  pass — phase-open/close, design-settle, S=3 — substitutes **opus**, logged as a
-  substitution). **Rung policy: full S/P/B → map** (user-confirmed at session start; probes
-  and boundary pairs in play). **Run modifications this session (user-set at session
-  start):** the 10-run check-in cap is **lifted** (the loop runs to phase close or a
-  surfaced concern), and step-4 mechanical fixups (wrong branch / author / co-author
-  trailer) are **pre-authorized** (apply without stopping to ask). The coordinator is
-  Opus 4.8 (1M context). **Expires at session end** — a fresh coordinator re-runs the
-  availability check.
+- **Session availability (2026-06-16, fresh coordinator session — Phase 22l L0-open;
+  supersedes the expired 22k-close/22l-open note above).** fable **unavailable** this
+  session (user-confirmed at session start; the few fable-mapped passes that arise —
+  phase-open/close, design-settle, S=3 — fold into the opus-only override below). **Rung
+  policy: STANDING OPUS-ONLY OVERRIDE for the whole of Phase 22l** (user-set at session
+  start: "use opus subagents only since sonnet and below seem to struggle with tasks like
+  these" — the carrier-opacity refactor is defeq-fragile §38-class work, the exact zone of
+  the documented sonnet §38-trap failure clusters). S/P/B is still **rated and logged** per
+  dispatch (experiment data), but the rung is **opus regardless of the map**; probes are
+  off (they would dispatch below opus); boundary pairs, if run, pair opus against opus or
+  are skipped. **Run modifications this session (user-set at session start):** the 10-run
+  check-in cap is **lifted** (the loop runs to phase close or a surfaced concern), and
+  step-4 mechanical fixups (wrong branch / author / co-author trailer) are **pre-authorized**
+  (apply without stopping to ask). The coordinator is Opus 4.8 (1M context). **Expires at
+  session end** — a fresh coordinator re-runs the availability check and reverts to the map
+  unless the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13} session-local rung overrides and availability constraints — all
   expired by their own terms. A fresh coordinator reverts to the S/P/B → map
@@ -132,11 +136,12 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
   `lake exe cache get` itself; the protocol's APFS `.lake`-seeding default is no longer
   *required* (still a fine fast path) and its unseeded `cache get` fallback now works
   agent-side. The worktree-location point (1) is the standing repo-local constraint.
-- **No standing rung override this session (Phase 22k): the full S/P/B → map is in
-  effect** (user-confirmed at session start — see the *Session availability* bullet
-  above). The prior perf-round opus-only override expired with the perf round. (Earlier
-  zone-scoped overrides — opus-minimum for the §38-trap `hcand`-discharge zone and the
-  KT-4.2 fiber-bookkeeping zone — all expired by their own terms; see the
+- **Standing rung override this session (Phase 22l): OPUS-ONLY** (user-set at session
+  start — see the *Session availability* bullet above). The carrier-opacity refactor sits
+  squarely in the §38 defeq-fragility zone where sonnet has repeatedly failed; the user
+  scoped the override to the whole phase rather than per-zone. S/P/B is still rated/logged
+  for the experiment record, but every commit-producing dispatch runs at opus. (Earlier
+  zone-scoped and perf-round opus overrides all expired by their own terms; see the
   collapsed-overrides bullet above and *Findings*.)
 
 ## Log
