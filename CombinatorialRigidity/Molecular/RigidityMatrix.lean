@@ -84,9 +84,69 @@ extensors `C(·) = affineSubspaceExtensor` of the hinges live
 of the full exterior algebra) rather than a coordinate vector in `ℝ^D`, so `span C(p(e))` is
 literally a `Submodule` of it (`def:hinge-constraint`); the `⋀^k ℝ^(k+2) ≅ ℝ^D` identification
 of the blueprint is realized by the `finrank` equality `screwSpace_finrank` rather than an
-explicit basis. -/
+explicit basis.
+
+## Carrier API (Phase 22l, part 1 — pre-opacity)
+
+The `mk` / `val` / `equivExteriorPower` API below is the stable boundary surface that the
+forthcoming carrier-opacity flip (`abbrev` → opaque `def`; `notes/Phase22l.md`,
+`notes/ScrewSpaceCarrier-design.md`) needs every reach-in routed through: it replaces the
+bare `⟨val, proof⟩` anonymous-constructor and `Subtype.val` coercion idioms that an opaque
+head would block. The carrier is still a reducible `abbrev` here, so this API is defeq-thin
+(`mk`/`val` are the constructor/projection, `equivExteriorPower` is `LinearEquiv.refl`) and
+adopting it is behaviour-preserving; the file-by-file migration of all reach-ins onto it is
+what lets the eventual flip land project-green in one mechanical commit. -/
 abbrev ScrewSpace (k : ℕ) : Type :=
   ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ))
+
+/-- **Constructor for the `ScrewSpace` carrier** from an exterior-algebra element with a
+membership proof — the named replacement for the bare `⟨v, h⟩ : ScrewSpace k` anonymous
+constructor, kept building once the carrier becomes an opaque `def` (Phase 22l). -/
+def ScrewSpace.mk {k : ℕ} (v : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ))
+    (h : v ∈ ⋀[ℝ]^k (Fin (k + 2) → ℝ)) : ScrewSpace k :=
+  (⟨v, h⟩ : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ)))
+
+/-- **The underlying exterior-algebra element of a `ScrewSpace` carrier** — the named
+replacement for the `Subtype.val` coercion `(C : ⋀[ℝ]^k …)`, kept building once the carrier
+becomes an opaque `def` (Phase 22l). -/
+def ScrewSpace.val {k : ℕ} (C : ScrewSpace k) : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ) :=
+  Subtype.val (C : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ)))
+
+@[simp]
+theorem ScrewSpace.val_mk {k : ℕ} (v : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ))
+    (h : v ∈ ⋀[ℝ]^k (Fin (k + 2) → ℝ)) : (ScrewSpace.mk v h).val = v := rfl
+
+theorem ScrewSpace.val_mem {k : ℕ} (C : ScrewSpace k) :
+    C.val ∈ ⋀[ℝ]^k (Fin (k + 2) → ℝ) :=
+  (C : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ))).property
+
+@[simp]
+theorem ScrewSpace.mk_val {k : ℕ} (C : ScrewSpace k) :
+    ScrewSpace.mk C.val C.val_mem = C := rfl
+
+theorem ScrewSpace.val_injective {k : ℕ} : Function.Injective (ScrewSpace.val (k := k)) :=
+  fun _ _ h => Subtype.ext h
+
+@[ext]
+theorem ScrewSpace.ext {k : ℕ} {C D : ScrewSpace k} (h : C.val = D.val) : C = D :=
+  ScrewSpace.val_injective h
+
+/-- **The linear equivalence between the `ScrewSpace` carrier and the graded piece.** The
+boundary `≃ₗ` for the basis / dual work; because the carrier is (and stays, through the
+opacity flip) definitionally the graded piece, this is `LinearEquiv.refl`, so transports
+across it are definitional no-ops (`notes/ScrewSpaceCarrier-design.md` §5 OQ3). -/
+noncomputable def ScrewSpace.equivExteriorPower (k : ℕ) :
+    ScrewSpace k ≃ₗ[ℝ] ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ)) :=
+  LinearEquiv.refl ℝ (ScrewSpace k)
+
+@[simp]
+theorem ScrewSpace.equivExteriorPower_apply {k : ℕ} (C : ScrewSpace k) :
+    ScrewSpace.equivExteriorPower k C = C := rfl
+
+@[simp]
+theorem ScrewSpace.equivExteriorPower_symm_apply {k : ℕ}
+    (C : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ))) :
+    (ScrewSpace.equivExteriorPower k).symm C = C := rfl
 
 /-- **The screw-center space has dimension `D = (k+2 choose 2)`** (`def:rigidity-matrix`,
 the deferred `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization). Since `ScrewSpace k` is the degree-`k`
@@ -129,20 +189,23 @@ sparing the de-homogenization to affine points (`notes/Phase22-realization-desig
 theorem span_omitTwoExtensor_eq_top {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar) :
     Submodule.span ℝ
         (Set.range (fun q : {q : Fin 4 × Fin 4 // q.1 < q.2} =>
-          (⟨omitTwoExtensor pbar (ne_of_lt q.2),
-            extensor_mem_exteriorPower _⟩ : ScrewSpace 2))) = ⊤ := by
+          (ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
+            (extensor_mem_exteriorPower _) : ScrewSpace 2))) = ⊤ := by
   set c : {q : Fin 4 × Fin 4 // q.1 < q.2} → ScrewSpace 2 :=
-    fun q => ⟨omitTwoExtensor pbar (ne_of_lt q.2),
-      extensor_mem_exteriorPower _⟩
+    fun q => ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
+      (extensor_mem_exteriorPower _)
   -- The coerced family is the Lemma-2.1 omit-two family, linearly independent; transport
-  -- the independence through the (injective) submodule inclusion.
+  -- the independence through the (injective) submodule inclusion (the opaque carrier's
+  -- `.val` is the underlying exterior-algebra element).
   have hcoe : LinearIndependent ℝ
       (fun q : {q : Fin 4 × Fin 4 // q.1 < q.2} =>
         omitTwoExtensor pbar (ne_of_lt q.2)) :=
     omitTwoExtensor_linearIndependent_of_li pbar hp
   have hLI : LinearIndependent ℝ c :=
-    (LinearMap.linearIndependent_iff (⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype
-      (Submodule.ker_subtype _)).1 hcoe
+    (LinearMap.linearIndependent_iff
+      ((⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower 2).toLinearMap)
+      (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot,
+        LinearEquiv.ker])).1 hcoe
   -- `6 = finrank ℝ (ScrewSpace 2)`, so the LI family is a basis and spans.
   have hcard : Fintype.card {q : Fin 4 × Fin 4 // q.1 < q.2} = Module.finrank ℝ (ScrewSpace 2) := by
     rw [screwSpace_finrank]
@@ -756,7 +819,8 @@ def ofHinge (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
     BodyHingeFramework k α β where
   graph := G
   supportExtensor e :=
-    ⟨affineSubspaceExtensor (hinge e), affineSubspaceExtensor_mem_exteriorPower (hinge e)⟩
+    ScrewSpace.mk (affineSubspaceExtensor (hinge e))
+      (affineSubspaceExtensor_mem_exteriorPower (hinge e))
 
 @[simp]
 theorem ofHinge_graph (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
