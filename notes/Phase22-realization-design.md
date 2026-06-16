@@ -8317,6 +8317,18 @@ verbatim. The only NEW Lean content beyond assembly is the (i.1) `hnewpin` brick
 
 ### 1.71 The L10 signature pin — Theorem 5.6 at `d = 3` (the `def > 0` `prop:rigidity-matrix-prop11` feed): **V9 RESOLVED FREE** (the homogeneous projective move is already landed as `exists_extensor_in_two_panels`), the deficiency-preserving spanning-strip is a NEW greedy edge-deletion brick (verified absent in tree), the `def > 0` `hgen` feed assembles strip → `theorem_55_all_k` (after `subgraph_minimality`) → `withGraph` re-add (`finrank_infinitesimalMotions_le_of_graph_le`, landed) → `rigidityMatrix_prop11`; sliced L10a–L10d (2026-06-16, opus, docs-only)
 
+> **STATUS (2026-06-16, post-L10a/L10b/L10c — only L10d remains).** Flag (i) DISSOLVED (L10a:
+> the strip brick `exists_isMinimalKDof_spanning_subgraph` landed via a finite minimum over
+> deficiency-preserving edge subsets — no separate no-deletable-edge⟺`IsMinimalKDof` micro-pin).
+> Flag (ii) RESOLVED FREE (L10b: `theorem_55_minimalKDof_k` landed — the general-`k` re-expose,
+> same callback map as `theorem_55_all_k`, only `0 G hG`→`k G hG`). **So (c) step 2 below now uses
+> `theorem_55_minimalKDof_k`, NOT `theorem_55_all_k`** — the step-2 "FLAG: needs `IsMinimalKDof n 0`"
+> is closed. L10c (the §1.71(c) producer `rankHypothesis_of_theorem_55_d3`) is the next build; its
+> `hgen` comes from `withGraph` monotonicity (step 4), not from "Brick A". **L10c LANDED** (the
+> §1.71(c) producer `rankHypothesis_of_theorem_55_d3` + the `reaimSub` micro-bricks, salvaged +
+> warning-clean); only **L10d** (the blueprint flip of `prop:rigidity-matrix-prop11` red→green + minting
+> `thm:theorem-55-6-d3`) remains, then 22k closes.
+
 > **Docs-only design pass (the L10 build-out).** Lean re-read this pass against the LANDED source
 > (the actual `def`/`theorem`/API, not the prior prose's optimism, per the mandatory clause (i)):
 > RigidityMatrix.lean — `BodyHingeFramework` (`:685`, `supportExtensor : β → ScrewSpace k` a field),
