@@ -102,9 +102,9 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-16, fresh coordinator session at L9-open; supersedes the
-  expired 2026-06-15 L8c note — same parameters, user-confirmed at this session's start per
-  the protocol's session-start check).**
+- **Session availability (2026-06-16, fresh coordinator session at L10d-open / phase-close;
+  supersedes the expired earlier-2026-06-16 L9-open note — same parameters, re-confirmed by
+  this fresh coordinator at session start per the protocol's session-start check).**
   fable **unavailable** this session (user-confirmed at session start; any fable-mapped
   pass — phase-open/close, design-settle, S=3 — substitutes **opus**, logged as a
   substitution). **Rung policy: full S/P/B → map** (user-confirmed at session start; probes
