@@ -147,6 +147,22 @@ Loop:
      silently dropping pinned sub-clauses (row 46). Same for **prose
      routes**: a red-node / deferred-route commit gets its route diffed
      against the canonical design § exactly like a Lean statement (row 50).
+   - **Supersession-deletion check (the shape check's blind spot):** when the
+     pinned verdict mandates **deleting or superseding** a decl (not just
+     restating it), the shape check is incomplete until you confirm the decl
+     is actually **gone** — grep it. A build that adds the replacement but
+     leaves the superseded decl orphaned passes gates *and* the
+     statement-shape check (the new decl IS correct) yet violates the design,
+     because the deviation is an *absence*, not a wrong shape. 22k L9 created
+     the zero-carry spine `theorem_55_all_k` but left the superseded
+     `theorem_55` / `theorem_55_generic` in tree, co-pinning the dead
+     `theorem_55` on the just-greened node — caught only by re-reading the
+     design's "superseded and deleted" verdict (row 160 cleanup). The tell:
+     a "restate X, delete superseded Y" verdict where the diff shows the
+     restate but no deletion (the legacy decl often survives because deleting
+     it would break a blueprint `\lean{}` pin the builder leaves dual-pinned).
+     Fix with a follow-up cleanup (delete + re-pin + reword stale prose), not
+     a discharge-on-top.
    - **Recon verdicts get reasoning scrutiny, not just mechanics** — a
      mechanically clean recon can be wrong, and building on it re-incurs
      the churn it was meant to end. Scrutinize hardest a recon that
