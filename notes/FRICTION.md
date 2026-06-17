@@ -202,6 +202,19 @@ to be re-derived by re-reading entries later.
   Standard "hoist a higher-order proof-arg to a typed `have`" pattern; one build cycle. Below the bar
   for a TACTICS lift (the idiom is already pervasive in the codebase).
 
+### [idiom] `Set.powersetCard.compl` inside a hypothesis (no expected `powersetCard _ m` type) leaves the target cardinality `m` a stuck metavariable — pin `(m := …)` explicitly
+- **Where it bit:** `complementIso_exteriorPower_basis_mem_range_map_subtype` (`Meet.lean`, CHAIN-3
+  standard-frame membership), in the `hW` hypothesis `∀ t ∈ (Set.powersetCard.compl … S : Finset _), …`.
+- **Friction:** `Set.powersetCard.compl (hm : m + n = card) : powersetCard α n ≃ powersetCard α m`
+  infers the *target* cardinality `m` from the expected `powersetCard _ m` type. Coerced to a `Finset`
+  inside a hypothesis there is no such expected type, so `m` stays open and the `by`-proof of
+  `m + 2 = Fintype.card (Fin (k+2))` is "tactic execution is stuck, goal contains metavariables
+  `?m t + 2 = …`". (In a *conclusion* with an expected `⋀^(k+2-j)` type — e.g. the base case — `m` is
+  forced and `(by rw [Fintype.card_fin]; omega)` just works.)
+- **Resolution:** pass `(m := k)` explicitly (`Set.powersetCard.compl (n := 2) (m := k) …`); with `m`
+  pinned the `card` goal closes by `rw [Fintype.card_fin]` alone. One build cycle. Below the bar for a
+  TACTICS lift (a one-off of the pervasive "name the implicit the elaborator can't infer" idiom).
+
 ### [process] A red-node re-classification: re-verify against the source — but classify by what the *formalization* must prove, which can be weaker than the source's *stated* mechanism
 - **Where it bit:** Phase 22e N3a (`lem:case-III-claim612-points-affineIndep`, KT eq. (6.45) point
   choice), over three passes. (1) The 2026-06-06 N3-design-pass *weakened* N3a from genericity to

@@ -1369,4 +1369,45 @@ theorem complementIso_exteriorPower_basis_eq_smul_compl {j : ℕ} (hj : j ≤ k 
       exteriorPower.basis_apply, exteriorPower.basis_apply,
       wedgePairing_ιMulti_family_eq_zero_of_ne_compl hj S t ht]
 
+/-! ## The standard-frame range-membership of a `complementIso`'d coordinate blade
+(`def:meet-complement-iso`)
+
+The range-membership packaging of the base case `complementIso_exteriorPower_basis_eq_smul_compl`,
+the standard-frame (coordinate-subspace) instance of the OD-8 panel-meet range-membership leaf
+`complementIso_extensor_mem_range_map_subtype` (CHAIN-3, the `j = 2` form feeding CHAIN-4). The
+general-decomposable lift (an arbitrary grade-2 `extensor n` with `W = {n₀, n₁}^⊥`) is the
+remaining content of route (α). -/
+
+/-- **The `complementIso` of a coordinate `2`-blade lands in `⋀^k W` for any `W` containing the
+complementary coordinate vectors** (`def:meet-complement-iso`, CHAIN-3 — the standard-frame
+range-membership packaging of `complementIso_exteriorPower_basis_eq_smul_compl`). For a coordinate
+`2`-subset `S` of `Fin (k+2)` and any submodule `W ⊆ ℝ^{k+2}` containing every complementary
+standard basis vector `eₜ` (`t ∈ Sᶜ`), the `complementIso (j := 2)` image of the basis blade `e_S`
+lies in the range of the inclusion `exteriorPower.map k W.subtype : ⋀^k W →ₗ ⋀^k ℝ^{k+2}`. Immediate
+from the base case (`complementIso e_S = (±1) • e_{Sᶜ}`): the complementary blade `e_{Sᶜ}` is the
+`k`-extensor of the standard basis vectors indexed by `Sᶜ`, each in `W` by hypothesis, so it lies in
+the range by `extensor_mem_range_map_subtype_of_mem_grade`, and a scalar multiple stays in the range
+(a submodule is closed under `•`). This is the coordinate-subspace instance of the OD-8 panel-meet
+range-membership; the general-`W = {n₀, n₁}^⊥` case (an arbitrary grade-2 decomposable) is the
+remaining route-(α) content. -/
+theorem complementIso_exteriorPower_basis_mem_range_map_subtype
+    (S : Set.powersetCard (Fin (k + 2)) 2) (W : Submodule ℝ (Fin (k + 2) → ℝ))
+    (hW : ∀ t ∈ (Set.powersetCard.compl (n := 2) (m := k) (by rw [Fintype.card_fin]) S :
+        Finset (Fin (k + 2))), Pi.basisFun ℝ (Fin (k + 2)) t ∈ W) :
+    complementIso (k := k) (j := 2) (by omega)
+        ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S)
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) := by
+  rw [complementIso_exteriorPower_basis_eq_smul_compl (by omega) S]
+  refine Submodule.smul_mem _ _ ?_
+  have hmem : ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - 2)
+        (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S) :
+        ⋀[ℝ]^(k + 2 - 2) (Fin (k + 2) → ℝ))
+      = ⟨extensor (Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm
+          (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S)),
+          extensor_mem_exteriorPower _⟩ := by
+    rw [exteriorPower.basis_apply]; rfl
+  rw [hmem]
+  refine extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W _ fun i => ?_
+  exact hW _ ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem _ _).mp ⟨i, rfl⟩)
+
 end CombinatorialRigidity.Molecular

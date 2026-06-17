@@ -1,21 +1,21 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. CHAIN-3's first three sub-leaves landed (the membership brick
+**Status:** open. CHAIN-3's three `_grade` bricks landed (the membership brick
 `extensor_mem_range_map_subtype_of_mem_grade`, the **proportionality engine**
 `exists_smul_eq_of_mem_range_map_subtype_grade`, the **`toDual=Gram` bridge**
-`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`), and CHAIN-3's last brick
-`complementIso_smul_eq_extensor_join` is being chipped: its `wedgeFixedLeft` building
-block (`def` + facts) and (2026-06-17) the **decomposable intersection**
-`inf_range_wedgeFixedLeft` are lifted `Fin 4` → ambient `{d} (Fin (d+1))` (all `Meet.lean`)
-— BUT the **CHAIN-3-finish recon** (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17)
-then established these are part of the **dead d=3-only `Φ̃` route**: it does NOT generalize
-(`dim Ω = C(d−1,2) = 1` only at `d=3`). **What remains of the last brick** is the
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`). CHAIN-3's finish is the
 **`⋀^{d−1}W`-is-a-line** route — point-join (`d−1` points) + panel-meet (`complementIso
-(k:=d−1)(j:=2)`, **2** normals) both in the line `range(⋀^{d−1}W ↪)`. The one genuinely-new
-leaf is the **panel-meet range-membership** `complementIso_extensor_mem_range_map_subtype`
-(route OPEN, OD-8); the assembly then reuses the THREE landed `_grade` bricks (zero new
-count). The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator
-owns the sub-phase boundary; codes-until-open).
+(k:=d−1)(j:=2)`, **2** normals) both in the line `range(⋀^{d−1}W ↪)` — established by the
+**CHAIN-3-finish recon** (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17), which
+**withdrew** the dead d=3-only `Φ̃` route (`finrank_sup_range_wedgeFixedLeft` /
+`extensor_toDual_extensor_eq_zero_of_perp` + the lifted `wedgeFixedLeft` / `inf_range_wedgeFixedLeft`
+infrastructure stay green at d=3, do NOT generalize: `dim Ω = C(d−1,2) = 1` only at `d=3`). The one
+genuinely-new leaf is the **panel-meet range-membership** `complementIso_extensor_mem_range_map_subtype`
+(route OPEN, OD-8); its **standard-frame** base case `complementIso_exteriorPower_basis_eq_smul_compl`
+and standard-frame **range-membership** `complementIso_exteriorPower_basis_mem_range_map_subtype` have
+landed (2026-06-17), leaving the **general-decomposable** (non-coordinate `W = {n₀,n₁}^⊥`) lift; the
+assembly then reuses the THREE landed `_grade` bricks (zero new count). The integer Phase 23 stays
+**in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -31,23 +31,23 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) base case `complementIso_exteriorPower_basis_eq_smul_compl` has landed
-(2026-06-17):** `complementIso hj (e_S) = (wedgePairing e_S e_{Sᶜ}) • e_{Sᶜ}` — the complement of a
-standard coordinate blade `e_S` is a `±1` multiple of the complementary blade `e_{Sᶜ}`. Fully general
-(`{k}`, `{j}`, any `S`), no `d=3` pin, additive (no blueprint pointer). Proof: the `t`-coordinate of
-`complementIso hj e_S` is `wedgePairing e_S e_t` (the dual-basis reading
-`Module.Basis.coord_toDualEquiv_symm_apply`, same chain as `complementIso_exteriorPower_repr_mem_range
-_intCast`), which vanishes off the diagonal `t = Sᶜ` by `wedgePairing_ιMulti_family_eq_zero_of_ne_compl`,
-so only the `Sᶜ` term survives. This is the **standard-frame base case** of the OD-8 panel-meet
-range-membership leaf `complementIso_extensor_mem_range_map_subtype` — "the projective dual of a
-coordinate decomposable is the complementary coordinate decomposable".
-**Next, to finish OD-8 route (α):** lift this base case to an **arbitrary decomposable** `extensor n`
-(`n : Fin 2`): extend `{n₀,n₁}` to a basis of `ℝ^{k+2}`, transport `complementIso` across the change
-of frame, and land `complementIso ⟨extensor n,_⟩ ∈ range(⋀^k W ↪)` for `W = {n₀,n₁}^⊥`. Then the
-assembly `extensor_join_proportional_complementIso_meet` via the `⋀^{d−1}W`-is-a-line route
-(reusing the three landed `_grade` bricks; zero new count). **NOT** `finrank_sup_range_wedge
-FixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` — the CHAIN-3-finish recon withdrew
-those (dead d=3-only `Φ̃` route; see checklist + Hand-off + §"CHAIN"(f)).
+**CHAIN-3's OD-8 route-(α) standard-frame range-membership
+`complementIso_exteriorPower_basis_mem_range_map_subtype` has landed (2026-06-17):** for a coordinate
+`2`-subset `S` of `Fin (k+2)` and any `W` containing every complementary coordinate vector `eₜ`
+(`t ∈ Sᶜ`), `complementIso (j:=2) e_S ∈ range(⋀^k W ↪)`. The range-membership packaging of the just-
+prior base case `complementIso_exteriorPower_basis_eq_smul_compl` (`= (±1) • e_{Sᶜ}`): the
+complementary blade `e_{Sᶜ}` is the `k`-extensor of the `Sᶜ` standard basis vectors, each in `W`, so
+it lands in `range` by `extensor_mem_range_map_subtype_of_mem_grade (d:=k+1)`, and a scalar multiple
+stays in the submodule. This is the **coordinate-subspace instance** of the OD-8 panel-meet range-
+membership leaf `complementIso_extensor_mem_range_map_subtype`. **Next, to finish OD-8 route (α):**
+the **general-decomposable** step — `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(⋀^k W ↪)` for an
+arbitrary grade-2 `extensor n` and `W = {n₀,n₁}^⊥` (a non-coordinate 2-codim subspace). This is **not**
+reducible to the standard-frame membership by `complementIso`-equivariance (`complementIso` is built
+off the standard `Pi.basisFun`, not `GL`-natural), so it needs the genuine change-of-frame / annihilator
+argument (still OD-8-open). Then the assembly `extensor_join_proportional_complementIso_meet` via the
+`⋀^{d−1}W`-is-a-line route (reusing the three landed `_grade` bricks; zero new count). **NOT**
+`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` — the CHAIN-3-finish
+recon withdrew those (dead d=3-only `Φ̃` route; see checklist + Hand-off + §"CHAIN"(f)).
 The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
@@ -132,10 +132,20 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
             `{j}`, any `S`), no `d=3` pin. Off-diagonal coords vanish
             (`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`) so only the `Sᶜ` term survives.
             Landed 2026-06-17.
-          - [ ] the **general-decomposable** step: lift the base case to an arbitrary decomposable
-            `extensor n` (`n : Fin 2`) by extending `{n₀,n₁}` to a basis + transporting
-            `complementIso` across the change of frame, landing `complementIso ⟨extensor n,_⟩` in
-            `range(⋀^k W ↪)`. The remaining content of OD-8 route (α).
+          - [x] `complementIso_exteriorPower_basis_mem_range_map_subtype` — the **route-(α)
+            standard-frame range-membership** (`j=2`): for `W` containing every complementary
+            coordinate vector `eₜ` (`t ∈ Sᶜ`), `complementIso (j:=2) e_S ∈ range(⋀^k W ↪)`. The
+            range-membership packaging of the base case (`= (±1) • e_{Sᶜ}`, `e_{Sᶜ}` is the
+            `k`-extensor of the `Sᶜ` standard basis vectors, in `range` by
+            `extensor_mem_range_map_subtype_of_mem_grade (d:=k+1)`; scalar stays in the submodule).
+            The coordinate-subspace instance of the OD-8 leaf. Landed 2026-06-17.
+          - [ ] the **general-decomposable** step: lift to an arbitrary grade-2 decomposable
+            `extensor n` (`n : Fin 2`) with `W = {n₀,n₁}^⊥` (not a coordinate subspace) by extending
+            `{n₀,n₁}` to a basis + transporting `complementIso` across the change of frame, landing
+            `complementIso ⟨extensor n,_⟩` in `range(⋀^k W ↪)`. The remaining content of OD-8 route
+            (α) — **NOT** reducible to the standard-frame membership above by `complementIso`-
+            equivariance (`complementIso` is built off the standard `Pi.basisFun`, not `GL`-natural);
+            needs the genuine change-of-frame / annihilator argument (still OD-8-open).
         - [ ] `extensor_join_proportional_complementIso_meet` — the general-`d` assembly
           (replaces `complementIso_smul_eq_extensor_join`; d=3 line stays as wrapper). The
           **`⋀^{d−1}W`-is-a-line** route: point-join (`d−1` points) + panel-meet (**2**
@@ -217,16 +227,18 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = the general-decomposable step of OD-8 route (α)** — lift the
-just-landed standard-frame base case `complementIso_exteriorPower_basis_eq_smul_compl` to an
+**Next buildable sub-step = the general-decomposable step of OD-8 route (α)** — the full
+`complementIso_extensor_mem_range_map_subtype` (signature in §(f) item 2): lift the now-landed
+standard-frame range-membership `complementIso_exteriorPower_basis_mem_range_map_subtype` to an
 arbitrary grade-2 decomposable `extensor n` (`n : Fin 2 → Fin (k+2) → ℝ`), concluding
-`complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`
-(the full `complementIso_extensor_mem_range_map_subtype`, signature in §(f) item 2). Route: extend
-`{n₀,n₁}` to a basis of `ℝ^{k+2}` (its tail spans a complement; `W = {n₀,n₁}^⊥` has the right
-`dim = k`), and transport the base case across the change of frame — `complementIso` of the
-decomposable is the decomposable of the complementary frame, which lands in `⋀^k W`. (`Meet.lean`;
-still no ENTRY-contract dependency.) **In hand for the case split:** when `extensor n = 0` (i.e.
-`n` dependent), `complementIso 0 = 0 ∈ range` trivially; the work is the `n`-independent case.
+`complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`.
+**The standard-frame membership does NOT discharge this by equivariance** — `complementIso` is built
+off the standard `Pi.basisFun` (via `wedgePairing`), so it is **not** `GL`-natural and a non-coordinate
+`W` does not transport. The genuine route: extend `{n₀,n₁}` to a basis of `ℝ^{k+2}` (its tail spans a
+complement; `W = {n₀,n₁}^⊥` has the right `dim = k`), and prove the change-of-frame fact directly —
+this is the genuinely-open OD-8 design call (α vs β at build). (`Meet.lean`; still no ENTRY-contract
+dependency.) **In hand for the case split:** when `extensor n = 0` (i.e. `n` dependent),
+`complementIso 0 = 0 ∈ range` trivially; the work is the `n`-independent case.
 The CHAIN-3-finish recon (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17, source-verified
 against KT §6.4.1/§6.4.2 + the landed bodies) **overturned the prior pin** and corrected the
 geometry:
@@ -245,14 +257,16 @@ geometry:
 
 Leaf sequence (§(f)): (1) `complementIso_extensor_mem_range_map_subtype` — the new leaf,
 route (α) chosen (the recommended one). Its **standard-frame base case
-`complementIso_exteriorPower_basis_eq_smul_compl` has now LANDED** (2026-06-17); the remaining
-content is the general-decomposable lift (extend `{n₀,n₁}` to a basis + transport
-`complementIso`). The route-(β) annihilator=range fallback is unused (it would re-introduce the
-withdrawn `dim Φ̃` count). Then (2) `extensor_join_proportional_complementIso_meet` —
-the assembly (zero new count, consumes (1) + the three bricks); (3) the d=3 wrapper stays
-green. Closing (1)+(2) closes CHAIN-3 and feeds CHAIN-4's discriminator. **The general-decomposable
-lift of (1) is the only remaining genuinely-new content of the CHAIN-3 finish; it needs no new
-mathlib-level fact (the base case + standard basis-extension API).**
+`complementIso_exteriorPower_basis_eq_smul_compl` and the standard-frame range-membership
+`complementIso_exteriorPower_basis_mem_range_map_subtype` have now LANDED** (2026-06-17); the
+remaining content is the general-decomposable lift to a non-coordinate `W = {n₀,n₁}^⊥` (the genuine
+change-of-frame step — **not** an equivariance corollary of the standard-frame membership, since
+`complementIso` is built off `Pi.basisFun`). The route-(β) annihilator=range fallback is unused (it
+would re-introduce the withdrawn `dim Φ̃` count). Then (2)
+`extensor_join_proportional_complementIso_meet` — the assembly (zero new count, consumes (1) + the
+three bricks); (3) the d=3 wrapper stays green. Closing (1)+(2) closes CHAIN-3 and feeds CHAIN-4's
+discriminator. **The general-decomposable lift of (1) is the only remaining genuinely-new content of
+the CHAIN-3 finish.**
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -293,6 +307,18 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3 OD-8 route-(α) standard-frame range-membership
+  `complementIso_exteriorPower_basis_mem_range_map_subtype`: package the base case as range-
+  membership before the general-decomposable lift.** `complementIso (j:=2) e_S ∈ range(⋀^k W ↪)` for
+  any `W ⊇ {eₜ : t ∈ Sᶜ}` — `rw` the base case (`= (±1) • e_{Sᶜ}`), `Submodule.smul_mem`, then
+  `exteriorPower.basis_apply; rfl` bridges the complementary blade to `⟨extensor (Pi.basisFun ∘
+  ofFinEmbEquiv.symm Sᶜ),_⟩` and `extensor_mem_range_map_subtype_of_mem_grade (d:=k+1)` closes
+  (`mem_range_ofFinEmbEquiv_symm_iff_mem` gives `eₜ ∈ W`). **Deliberate shrink of the OD-8 leaf:** the
+  full `complementIso_extensor_mem_range_map_subtype` (general decomposable, `W = {n₀,n₁}^⊥` a
+  non-coordinate subspace) is **not** an equivariance corollary of this — `complementIso` is built off
+  the standard `Pi.basisFun` (via `wedgePairing`), so it is not `GL`-natural; the general lift needs
+  the genuine change-of-frame argument (still OD-8-open). This is the complete coordinate-subspace
+  (`j=2`) instance. One friction → FRICTION ([idiom] `powersetCard.compl` stuck-`m`).
 - **CHAIN-3 OD-8 route-(α) base case `complementIso_exteriorPower_basis_eq_smul_compl`: land the
   standard-frame fact first, then lift to general decomposables.** `complementIso hj (e_S) =
   (wedgePairing e_S e_{Sᶜ}) • e_{Sᶜ}` — fully general (`{k}`/`{j}`/any `S`), additive, no `d=3`
@@ -404,3 +430,6 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
   (free-variable counterexample, never reads the bridging hyp) — use `linarith` /
   `simpa using h`* → TACTICS-QUIRKS § 58 / FRICTION [idiom] *Generalizing an in-place
   numeral-pinned `def`…*.
+- *`Set.powersetCard.compl` inside a hypothesis (no expected `powersetCard _ m` type)
+  leaves the target cardinality `m` a stuck metavariable — pin `(m := …)` explicitly*
+  → FRICTION [idiom] *`Set.powersetCard.compl` inside a hypothesis…*.
