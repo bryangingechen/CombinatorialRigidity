@@ -13,32 +13,34 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**Next concrete step: L8 — `CaseIII.lean`.** L7 closed: the opacity probe on `CaseII.lean` built the whole
-spine-to-CaseII **green with zero errors/warnings** on the opaque carrier — `CaseII.lean` is
-**migration-free** (the fifth negative-probe outcome after L2 `Pinning.lean` / L3 `PanelHinge.lean` /
-L5 `Coupling.lean` / L6 `CaseI.lean`), exactly as the design doc §3 predicted for an *assembly* file and
-as L6's hand-off anticipated for the Case-II split assembly. **OQ1 first measurable signal:** with the
-probe flip live, `case_II_realization_all_k` re-elaborated green at the **default `maxHeartbeats 200000`**
-(the committed `abbrev` carries a 3× `600000` override) — the carrier-opacity cap drop OQ1 hoped for,
-banked only at the FLIP. The probe also surfaced the one remaining **FLIP-API piece** the design doc §5
-left as `…`: `ScrewSpace.equivExteriorPower` cannot be `LinearEquiv.refl` on the opaque head; it becomes
-a `cast (ScrewSpace_def k)` equiv and its `_apply`/`_symm_apply` simp lemmas restate to `cast` form
-(canonical in `notes/ScrewSpaceCarrier-design.md` §5 *L7 refinement*). Each commit keeps the project
-green (carrier still `abbrev`); the **FLIP lands LAST**.
+**Next concrete step: L9 — `Theorem55.lean`** (the last file before the FLIP). L8 closed: the opacity
+probe on `CaseIII.lean` built the whole spine-to-CaseIII **green with zero errors/warnings** on the
+opaque carrier — `CaseIII.lean` is **migration-free** (the sixth negative-probe outcome, and the first
+*non-assembly* file since L4 `GenericityDevice.lean` to confirm it). Despite carrying the Case-III
+geometric construction, CaseIII's ~113 `ScrewSpace` mentions are all opacity-neutral: `Module.Dual ℝ
+(α → ScrewSpace k)` row functionals / spans (b)/(c)/(e), `LinearMap.single`/`proj`/`id` column maps,
+`Function.update (0 : α → ScrewSpace k) v x` over carrier-typed updates (module-level, not a carrier
+reach-in), and `ScrewSpace k` / `Module.Dual ℝ (ScrewSpace k)` type ascriptions (b). **No category (a)
+`⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or carrier-`.val`/`congr_arg Subtype.val` site** — the
+Case-III geometry consumes carriers abstractly, with the carrier-constructing sites all in the lower
+layers (RigidityMatrix L0a/L0b, PanelLayer L1). Each commit keeps the project green (carrier still
+`abbrev`); the **FLIP lands LAST** (after L9).
 
-**L7 landed (2026-06-16): `CaseII.lean` verified migration-free + OQ1 cap-drop measured, project green
-(docs-only).** Opacity probe (local flip + 3 named instances + the FLIP-`equivExteriorPower` fix → scoped
-`lake build` of the CaseII module rebuilds the full spine-to-CaseII → revert) built **green with zero
-errors/warnings** on the opaque carrier — fifth negative-probe outcome. CaseII's `ScrewSpace` reach-ins
-are all opacity-neutral (assembly-file abstract consumption; no category (a)/(b)-coercion carrier
-construction). At the default cap (200000) `case_II_realization_all_k` still elaborated green on the
-opaque carrier: the OQ1 cap drop is real but cannot be banked until the FLIP.
+**L8 landed (2026-06-16): `CaseIII.lean` verified migration-free, project green (docs-only).** Opacity
+probe (local flip + 3 named instances + the FLIP-`equivExteriorPower` fix → scoped `lake build` of the
+CaseIII module rebuilds the full spine-to-CaseIII → revert) built **green with zero errors/warnings** on
+the opaque carrier — sixth negative-probe outcome, and the **first non-assembly file since L4** to confirm
+it. CaseIII's `ScrewSpace` reach-ins are all opacity-neutral (`Module.Dual`/span row functionals,
+`single`/`proj`/`id`/`update` module-level maps, type ascriptions); no category (a)/(d)/(b)-coercion
+carrier-construction or coordinate site despite carrying the Case-III geometric construction. Only L9
+(`Theorem55.lean`) and the FLIP remain.
 
-**L0a–L6 landed (2026-06-16):** carrier API + `RigidityMatrix.lean` migration (L0a/L0b), `PanelLayer.lean`
+**L0a–L7 landed (2026-06-16):** carrier API + `RigidityMatrix.lean` migration (L0a/L0b), `PanelLayer.lean`
 migration + `screwBasis` transport (L1), and the migration-free / 2-site probes down the spine —
 `Pinning.lean` (L2, + three L0/L1 gap closures), `PanelHinge.lean` (L3), `GenericityDevice.lean` (L4,
-2-site), `Coupling.lean` (L5), `CaseI.lean` (L6). Per-layer detail in *Decisions made* below; the
-recurring gap classes + probe method in `notes/ScrewSpaceCarrier-design.md` §5. Each project-green on the
+2-site), `Coupling.lean` (L5), `CaseI.lean` (L6), `CaseII.lean` (L7, + OQ1 cap-drop first measured +
+FLIP-`equivExteriorPower` form pinned). Per-layer detail in *Decisions made* below; the recurring gap
+classes + probe method + FLIP recipe in `notes/ScrewSpaceCarrier-design.md` §5. Each project-green on the
 `abbrev`; no blueprint pin changed.
 
 The design recon (`notes/ScrewSpaceCarrier-design.md` §5) is complete and **killed the surgical
@@ -165,7 +167,15 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
   green at the default `200000` (vs. the committed 3× `600000`). The probe also pinned down the FLIP's
   `equivExteriorPower` opaque-head form (design doc §5 *L7 refinement*). **Done 2026-06-16** — whole
   project builds + lints clean (docs-only commit).
-- [ ] **L8 — `CaseIII.lean`** (Case-III geometry/construction reach-ins).
+- [x] **L8 — `CaseIII.lean`** — the Case-III geometry/construction layer, first non-assembly file since
+  L4. Probe confirmed **migration-free** (sixth negative outcome): the ~113 `ScrewSpace` mentions are all
+  opacity-neutral — `Module.Dual ℝ (α → ScrewSpace k)` row functionals + `Submodule.span`/`⊔`
+  membership (b)/(c)/(e), `LinearMap.single`/`proj`/`id` and `Function.update (0 : α → ScrewSpace k) v x`
+  module-level maps over carrier-typed values, and `ScrewSpace k`/`Module.Dual ℝ (ScrewSpace k)` type
+  ascriptions (b). No category (a) `⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or
+  carrier-`.val`/`congr_arg Subtype.val` site — the Case-III geometry consumes carriers abstractly, with
+  the constructing sites all in the lower layers. **Done 2026-06-16** — whole spine-to-CaseIII builds
+  clean on the opaque carrier; docs-only commit.
 - [ ] **L9 — `Theorem55.lean`** — holds `case_cut_edge_realization` (400000) +
   `case_cut_edge_realization_gp` (600000). Last file to adopt the API; once it does, the **FLIP**
   step above lands. **Phase exit criterion:** the full d=3 spine builds on the opaque carrier *and*
@@ -195,22 +205,22 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
 
 ## Hand-off / next phase
 
-**Smallest next commit: L8 — `CaseIII.lean`.** L0a/L0b/L1/L2/L3/L4/L5/L6/L7 (RigidityMatrix, PanelLayer,
-Pinning, PanelHinge, GenericityDevice, Coupling, CaseI, CaseII) are now opacity-ready (L2/L3/L5/L6/L7 were
-migration-free; L0a/L0b/L1/L4 needed edits, L4 just the 2-site L0b idiom). L8 is the next file down the
-spine — the Case-III geometry/construction layer, the **first non-assembly file since GenericityDevice**:
-unlike the CaseI/CaseII split assemblies, CaseIII carries the Case-III geometric construction, so it is a
-*candidate migrating file* (category (a) `⟨v,h⟩`-construction or (d) `screwBasis`-coordinate reach-ins
-may surface — though L4's OQ3 makes (d) a no-op at d=3, so only (a)/(b)-coercion/(e) sites would migrate).
-**Open it with the opacity probe** (local flip + 3 instances + the FLIP-`equivExteriorPower` fix →
-`lake build CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII` → revert); the probe drives the
-recon and catches the four gap classes (design doc §5 *L2 refinement*). If it breaks, pre-migrate on the
-`abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` / `(C : ExteriorAlgebra)`→`C.val` /
-`congr_arg Subtype.val …`→`congr_arg ScrewSpace.val …`, add `noncomputable` to any carrier-valued
-`Submodule`/`Dual`/`≃ₗ` def, route `.val`-arithmetic through `val_smul`/`val_add`/`val_zero`, and
-LI/`ker`-transport through `equivExteriorPower`. Each commit keeps the project green on the `abbrev`. The
-API shape is fixed (L0a/L1/L2; FLIP-`equivExteriorPower` form pinned at L7) — every later layer is the
-probe + mechanical pre-migration.
+**Smallest next commit: L9 — `Theorem55.lean`** (the last file before the FLIP). L0a–L8 (RigidityMatrix,
+PanelLayer, Pinning, PanelHinge, GenericityDevice, Coupling, CaseI, CaseII, CaseIII) are now
+opacity-ready (L2/L3/L5/L6/L7/L8 were migration-free; L0a/L0b/L1/L4 needed edits, L4 just the 2-site L0b
+idiom). L9 is the top of the spine — `Theorem55.lean`, holding the two surviving caps
+`case_cut_edge_realization` (400000) + `case_cut_edge_realization_gp` (600000). It is a *candidate
+migrating file* (it already took L1's 3× forced `set … := ScrewSpace.mk …` consumer fixups, so it does
+hold carrier-construction sites), so the probe may break. **Open it with the opacity probe** (local flip
++ 3 instances + the FLIP-`equivExteriorPower` fix → `lake build CombinatorialRigidity.Molecular.Theorem55`
+→ revert); the probe drives the recon and catches the four gap classes (design doc §5 *L2 refinement*).
+If it breaks, pre-migrate on the `abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` /
+`(C : ExteriorAlgebra)`→`C.val` / `congr_arg Subtype.val …`→`congr_arg ScrewSpace.val …`, add
+`noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ` def, route `.val`-arithmetic through
+`val_smul`/`val_add`/`val_zero`, and LI/`ker`-transport through `equivExteriorPower`. Each commit keeps
+the project green on the `abbrev`. The API shape is fixed (L0a/L1/L2; FLIP-`equivExteriorPower` form
+pinned at L7) — L9 is the probe + mechanical pre-migration, then the **FLIP** (the next-next commit) banks
+the perf win and resolves OQ1 by dropping the two Theorem55 caps measured under the FLIP.
 
 **The probe flip is now fully specified.** L7 pinned the last `…`-left FLIP-API piece: the local probe
 flip is (1) `abbrev ScrewSpace`→`def` + `ScrewSpace_def := rfl` + 3 `inferInstanceAs` instances
@@ -221,13 +231,13 @@ coercion through `ScrewSpace_def k ▸ …`; (3) `equivExteriorPower` becomes th
 RHS — `RigidityMatrix.lean` then builds clean and the spine builds up from there. (Details in design doc
 §5 *L7 refinement*; this is also the FLIP commit's RigidityMatrix recipe.)
 
-**L2/L3/L4/L5/L6/L7 calibration of the per-layer method.** The lesson is the *method*, not a site count:
+**L2–L8 calibration of the per-layer method.** The lesson is the *method*, not a site count:
 green-on-`abbrev` is **blind to opacity-readiness**, so each remaining layer must run the opacity
 probe up front (L1 had skipped it and left three `PanelLayer.lean` breaks the probe then caught). The
 four recurring gap classes are catalogued (design doc §5). The probe also has a *negative* outcome —
 a layer that builds clean on the opaque carrier needs **no migration** (L2 `Pinning.lean`, L3
-`PanelHinge.lean`, L5 `Coupling.lean`, L6 `CaseI.lean`, L7 `CaseII.lean`): a file that only *consumes* `ScrewSpace`-typed
-values abstractly
+`PanelHinge.lean`, L5 `Coupling.lean`, L6 `CaseI.lean`, L7 `CaseII.lean`, L8 `CaseIII.lean`): a file that
+only *consumes* `ScrewSpace`-typed values abstractly
 (type ascription, module-level span/`Module.Dual` row functionals, `LinearMap.pi`/`proj`/`comp` column
 maps, predicates embedding the carrier through framework fields) reaches into the carrier nowhere and is
 opacity-neutral. The L0b/L4 idiom that recurs in files that *do* migrate: route
@@ -356,6 +366,18 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   `val_mem` route their coercion through `ScrewSpace_def k ▸ …`). With that fix `RigidityMatrix.lean` and
   the whole spine build clean. Docs-only commit; no Lean/blueprint touched (probe reverted). Design doc
   §5 *L7 refinement* carries the FLIP recipe.
+
+- **L8 — `CaseIII.lean` (no migration) (2026-06-16, opus).** The opacity probe built the whole
+  spine-to-CaseIII green on the *opaque* carrier (zero errors/warnings) — the **sixth** negative-probe
+  outcome, and the **first non-assembly file since L4 `GenericityDevice.lean`** to confirm it (the
+  Case-III geometric-construction layer). All ~113 `ScrewSpace` reach-ins opacity-neutral: `Module.Dual ℝ
+  (α → ScrewSpace k)` row functionals + `Submodule.span`/`⊔` membership (b)/(c)/(e),
+  `LinearMap.single`/`proj`/`id` and `Function.update (0 : α → ScrewSpace k) v x` module-level maps over
+  carrier-typed values, and `ScrewSpace k`/`Module.Dual ℝ (ScrewSpace k)` type ascriptions (b). **No
+  category (a) `⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or carrier-`.val`/`congr_arg
+  Subtype.val` site** — the carrier-constructing sites all live in the lower layers (RigidityMatrix
+  L0a/L0b, PanelLayer L1). Probe surfaced zero new gaps in the migrated lower layers. Docs-only commit; no
+  Lean/blueprint touched (probe reverted).
 
 - **L6 — `CaseI.lean` (no migration) (2026-06-16, opus).** The opacity probe built the whole
   spine-to-CaseI green on the *opaque* carrier (zero errors/warnings) — the **fourth** negative-probe

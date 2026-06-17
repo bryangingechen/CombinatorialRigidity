@@ -274,6 +274,15 @@ reach-ins. (General-`d` may still stress (d) symbolically — §6 — but that i
   the only `…`-left piece of the §5 draft now concrete. (`val_mk`/`mk_val`/`val_smul`/`val_add`/`val_zero`
   stay `:= rfl`; they survive the flip because `mk`/`val` route through the `rfl` bridge.)
 
+**L8 refinement (2026-06-16, `CaseIII.lean` — sixth negative probe).** The probe built spine-to-CaseIII
+green on the opaque carrier — `CaseIII.lean` **migration-free**, the *first non-assembly file since L4*
+to confirm it (it carries the Case-III geometric construction). This sharpens the L3 discriminator: even
+a geometry/construction layer is opacity-neutral when its carrier touch is confined to `Module.Dual ℝ
+(α → ScrewSpace k)` row functionals, `Submodule.span`/`⊔` membership, `LinearMap.single`/`proj`/`id` and
+`Function.update (0 : α → ScrewSpace k) v x` module-level maps, and type ascriptions — the carrier-
+*constructing* sites (category (a)/(b)-coercion) all sit in the lower layers (RigidityMatrix L0a/L0b,
+PanelLayer L1), so the higher layers consume carriers abstractly and crack none open.
+
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
 
