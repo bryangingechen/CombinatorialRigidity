@@ -6,7 +6,7 @@ two-stage recon (a later dispatch does the leaf-level recon of the FIRST
 sub-phase before any build). It sketches the cut-points, their dependency
 order, hard cores, and the reuse/replace/add map; it does **not** attempt
 full leaf-level signatures for every sub-phase. Authoritative recon for
-Phase 23; `notes/Phase23.md` is the work log and points here.
+Phase 23; `notes/Phase23a.md` is the work log and points here.
 
 **Audience:** the agent opening the first Phase-23 sub-phase (and the
 detailed-recon dispatch that decomposes it into buildable leaves).
@@ -101,13 +101,24 @@ speculatively.
 
 ## 2. The sub-phase division
 
-Four sub-phases (23a–23d), dependency-ordered. The cut isolates the
-**mechanical carrier lift** (23a) from the **new chain argument** (23b),
-puts the **base ingredients** the chain entry needs (23c) where they
-actually block, and ends with **assembly + Thm 5.6 + Conjecture 1.2** (23d).
-The first sub-phase is 23a; rationale in §3.
+Four layers, dependency-ordered, tracked by **stable codes** —
+**`CARRIER`**, **`CHAIN`**, **`ENTRY`**, **`ASSEMBLY`**. The cut isolates the
+**mechanical carrier lift** (`CARRIER`) from the **new chain argument**
+(`CHAIN`), puts the **base ingredients** the chain entry needs (`ENTRY`) where
+they actually block, and ends with **assembly + Thm 5.6 + Conjecture 1.2**
+(`ASSEMBLY`). The first layer is `CARRIER`; rationale in §3.
 
-### 23a — General-`d` carrier lift of the spine (the mechanical-but-large lift)
+> **Naming convention (set 2026-06-17).** Layers are referred to by these
+> codes until they open; a **letter (23a, 23b, …) plus a `notes/Phase23X.md`
+> work log are minted only when a layer is about to open**, so a later split
+> (e.g. `CHAIN` into two) does not renumber-churn the rest. **`CARRIER` is the
+> opening layer = the minted `23a`** (its leaf-level recon is §"23a" below, its
+> work log is `notes/Phase23a.md`); `CHAIN`/`ENTRY`/`ASSEMBLY` stay code-only
+> until their turn. This is the project's standing "mint a sub-letter only when
+> its turn comes" discipline (`notes/MolecularConjecture.md`; top-level
+> `CLAUDE.md` *When this commit opens a phase*), refined to use codes meanwhile.
+
+### `CARRIER` (the opening layer = sub-phase 23a) — General-`d` carrier lift of the spine
 
 **Scope.** Lift the `screwDim 2`/`ScrewSpace 2`/`Fin 4`-pinned realization
 spine to symbolic `screwDim k`, and complete the ScrewSpaceCarrier §6
@@ -122,7 +133,7 @@ GenericityDevice / Coupling / CaseI consumers, replacing `Fin 4` →
 (RigidityMatrix → PanelLayer → Pinning → PanelHinge → GenericityDevice →
 Coupling → CaseI → CaseII → CaseIII → Theorem55). The Case-III *graph
 dispatch* (`case_III_candidate_dispatch`) is **out of 23a scope** — it is
-replaced wholesale in 23b, so 23a leaves the Case-III `hsplit` arm carrying
+replaced wholesale in CHAIN, so 23a leaves the Case-III `hsplit` arm carrying
 the `d=3` dispatch as an explicit hypothesis (green-modulo, the project's
 standing idiom) and lifts everything else.
 
@@ -135,7 +146,7 @@ general-`k` coordinate transport is unproven at symbolic grade; the d=3
 probe found it defeq-free at `k=2` only).
 
 **Dependency position.** First — everything downstream is stated over the
-carrier, so the chain dispatch (23b) and the duality (also 23b) must be
+carrier, so the chain dispatch (CHAIN) and the duality (also CHAIN) must be
 written at general grade, which presupposes the spine is general grade.
 
 **Reuse/replace/add map** (keyed to §1.33(C), source-corrected):
@@ -150,7 +161,7 @@ written at general grade, which presupposes the spine is general grade.
 - *Re-state at general grade (lift, this sub-phase):* the spine table in §1.
 - *Add:* the general-`k` consumer migration (ScrewSpaceCarrier §6).
 
-### 23b — The general-`d` Case-III chain dispatch + the `⋀^{d−1}` duality
+### CHAIN — The general-`d` Case-III chain dispatch + the `⋀^{d−1}` duality
 
 **Scope.** Replace the fixed-3-candidate `case_III_candidate_dispatch` with
 the general-`d` chain dispatch of Lemma 6.13: given the base framework
@@ -198,8 +209,8 @@ rank.
 **Dependency position.** After 23a (needs the general-grade carrier + spine
 to state its conclusion `HasGenericFullRankRealization k n G`). The two
 hard cores are largely independent of each other and could be two leaves
-within 23b, or 23b could split into 23b (chain bookkeeping) + 23c′
-(duality) on contact — flag this at 23b open (the detailed recon decides).
+within CHAIN, or CHAIN could split into CHAIN (chain bookkeeping) + ENTRY′
+(duality) on contact — flag this at CHAIN open (the detailed recon decides).
 
 **Reuse/replace/add map:**
 - *Reuse verbatim:* Claim 6.11 (the chain's redundant `(v₀v₂)_{i*}` row is
@@ -215,7 +226,7 @@ within 23b, or 23b could split into 23b (chain bookkeeping) + 23c′
   panel coefficients are alg-indep over ℚ so any `j` hyperplanes meet in a
   `(d−j)`-flat; AlgebraicIndependence.md row, see OD-4).
 
-### 23c — Chain-entry ingredients: Lemma 4.6 dichotomy + Lemma 5.4 short-cycle base + Lemma 4.8 split-off
+### ENTRY — Chain-entry ingredients: Lemma 4.6 dichotomy + Lemma 5.4 short-cycle base + Lemma 4.8 split-off
 
 **Scope.** The three ingredients KT's general-`d` Case III invokes *to
 enter* the chain argument, which `d=3` did not need on the load-bearing
@@ -225,7 +236,7 @@ chain), (5.4) the short-cycle base (a cycle of length `3≤|V|≤D` realizes as
 an infinitesimally rigid nonparallel panel-hinge framework — Crapo–Whiteley
 [4]/[34]), and (4.8) the chain-interior split-off minimality (`Gᵢ = splitOff
 at vᵢ` is minimal 0-dof). **Whether this is a standalone sub-phase or folds
-into 23b is an open decision (OD-1/OD-2/OD-3)** — it hinges on whether 4.6/
+into CHAIN is an open decision (OD-1/OD-2/OD-3)** — it hinges on whether 4.6/
 4.8 already exist subsumed in the green Phase-20 `minimal_kdof_reduction`
 machinery and whether 5.4 is genuinely on the Lean-load-bearing path or a
 KT-narrative dependency (the `d=3` Case III dodged 5.4 entirely — §1.33(B.1)).
@@ -237,9 +248,9 @@ Crapo–Whiteley projective fact), the one piece here that is real new panel
 content rather than a Phase-20 graph fact. 4.6/4.8 are combinatorial and may
 already be in tree.
 
-**Dependency position.** Feeds 23b's chain entry (the dispatch needs to know
+**Dependency position.** Feeds CHAIN's chain entry (the dispatch needs to know
 it is in the chain case, with a valid length-`d` chain and the base
-framework on `G₁`). Could land *before* 23b if 5.4 is the bottleneck, or
+framework on `G₁`). Could land *before* CHAIN if 5.4 is the bottleneck, or
 *concurrently* if 4.6/4.8 are subsumed and 5.4 is narrative-only — see OD.
 
 **Reuse/replace/add map:**
@@ -251,10 +262,10 @@ framework on `G₁`). Could land *before* 23b if 5.4 is the bottleneck, or
   (risk #4; the project decided 2026-06-03 to *formalize, not cite* it as
   genuine panel content).
 
-### 23d — Assembly: Theorem 5.5 (general `d`) → Theorem 5.6 → Conjecture 1.2
+### ASSEMBLY — Assembly: Theorem 5.5 (general `d`) → Theorem 5.6 → Conjecture 1.2
 
-**Scope.** With 23a–23c green, compose: complete `theorem_55` at general `d`
-(the Case-III arm now discharged by the 23b chain dispatch + 23c entry),
+**Scope.** With `CARRIER`–`ENTRY` green, compose: complete `theorem_55` at general `d`
+(the Case-III arm now discharged by the CHAIN chain dispatch + ENTRY entry),
 re-green `prop:rigidity-matrix-prop11` + its `hub` at general grade, derive
 **Theorem 5.6** (KT §5.2: strip `G` to a minimal `k`-dof spanning subgraph,
 realize via Thm 5.5, re-add the deleted edges — the rank only grows, using
@@ -265,7 +276,7 @@ versions of the Thm 5.5→5.6 push (`rankHypothesis_of_theorem_55_d3`,
 `theorem_55_6_d3`) are the templates — mostly carrier-lift + dropping the
 `hn : bodyBarDim n = screwDim 2` specialization.
 
-**Hard core.** Mostly composition once 23a–23c land; the genuine content is
+**Hard core.** Mostly composition once `CARRIER`–`ENTRY` land; the genuine content is
 the general-`d` `hub` partition brick of `prop:rigidity-matrix-prop11` (a
 Phase-19-partition obligation, **Track-independent**, already noted
 multi-commit in the `d=3` case) and the projective-invariance step of
@@ -288,22 +299,22 @@ don't gate on the rank theorem until Cor 5.7.
 
 ## 3. Recommended sequence — and why 23a is first
 
-**Sequence: 23a → {23b, 23c interleaved} → 23d.** 23c may lead 23b if
-Lemma 5.4 turns out to be the long pole; 23b may split on contact.
+**Sequence: 23a → {CHAIN, ENTRY interleaved} → ASSEMBLY.** ENTRY may lead CHAIN if
+Lemma 5.4 turns out to be the long pole; CHAIN may split on contact.
 
-**Why 23a (the carrier lift) is first, not 23b (the chain argument):**
+**Why 23a (the carrier lift) is first, not CHAIN (the chain argument):**
 1. *Everything downstream is stated over the carrier.* The chain dispatch
-   (23b) concludes `HasGenericFullRankRealization k n G` and consumes
+   (CHAIN) concludes `HasGenericFullRankRealization k n G` and consumes
    `screwDim k` rank bounds; the `⋀^{d−1}` duality is stated over
    `Fin (k+2) → ℝ`. Both must be *written* at general grade, which is only
-   coherent once the spine they plug into is general grade. Building 23b
+   coherent once the spine they plug into is general grade. Building CHAIN
    first would force every new lemma to carry a private `screwDim 2`→`k`
    bridge, exactly the friction the carrier lift removes once.
 2. *It is the largest mechanical surface and the one most likely to surface
    a blocking transport.* ScrewSpaceCarrier §6 explicitly flags the
    symbolic-`k` `screwBasis`/`annihRow` transport as unconfirmed at general
    grade (the d=3 probe found it defeq-free only at `k=2`). Doing 23a first
-   surfaces any such blocker before the hard *new* mathematics of 23b is
+   surfaces any such blocker before the hard *new* mathematics of CHAIN is
    built on top — the project's design-pass-first discipline (don't grind
    research-shaped work over an unverified foundation).
 3. *It is the natural home for the deferred carrier "part 2."* 22l deferred
@@ -345,15 +356,15 @@ not settle from the source)
   length-`d` chain `v₀…v_d`. *Unsettled:* whether `minimal_kdof_reduction`
   (Phase 20) already produces a chain of the needed length, or only the
   single degree-2 split. **The detailed recon must check this in tree
-  before scoping 23c.**
+  before scoping ENTRY.**
 
 - **OD-3. Do Lemmas 4.6 / 4.8 already exist (subsumed) in the green
   Phase-20 `minimal_kdof_reduction`, or are they new nodes?** §1.33(C)
   flagged "no explicit node found; may be subsumed." The recon could not
-  confirm from prose alone. If subsumed, 23c shrinks to "Lemma 5.4 (modulo
+  confirm from prose alone. If subsumed, ENTRY shrinks to "Lemma 5.4 (modulo
   OD-1)"; if not, 4.6/4.8 are new combinatorial leaves. **`lean_local_search`
   for the chain dichotomy / split-off-minimality lemmas is the first
-  detailed-recon task for 23c.**
+  detailed-recon task for ENTRY.**
 
 - **OD-4. Does the general-`d` N3a (the `d+1` points in general position,
   eq. 6.67) take the existence/Zariski route like the `d=3` N3a, or does it
@@ -383,10 +394,10 @@ not settle from the source)
   23a detailed recon's opacity-readiness probe at symbolic `k` settles
   this** — and it is the load-bearing reason 23a is first.
 
-- **OD-6. Does 23b split (chain bookkeeping vs duality) on contact?** The
+- **OD-6. Does CHAIN split (chain bookkeeping vs duality) on contact?** The
   two hard cores (eqs. 6.59–6.64 chain bookkeeping; the `⋀^{d−1}` duality
   finish, eq. 6.67) are largely independent. Whether they are two leaves of
-  one sub-phase or warrant a split is a contact decision for the 23b open,
+  one sub-phase or warrant a split is a contact decision for the CHAIN open,
   not settleable now.
 
 ---
@@ -424,7 +435,7 @@ not settle from the source)
 LSP-probed against the landed tree). Decomposes 23a (§2) into buildable
 leaves with exact target signatures, settles **OD-5**, and resolves the
 cheap **OD-2/OD-3** in passing. The general-recon §1–§5 above is the parent;
-this section is the leaf plan `notes/Phase23.md` hands off to.
+this section is the leaf plan `notes/Phase23a.md` hands off to.
 
 ### (a) Per-file reach-in enumeration along the import spine
 
@@ -445,7 +456,7 @@ Per-file, dependency-ordered (this ordering IS the leaf sequence):
 |---|---|---|
 | **RigidityMatrix/Basic** | `screwDim`=`(k+2).choose 2` (general); `ScrewSpace`/`mk`/`val`/`equivExteriorPower`/3 instances all `(k:ℕ)`; `screwSpace_finrank` uses `change`+`exteriorPower.finrank_eq` (general, no `decide`). 1×`screwDim 2`/`ScrewSpace 2` in a doc-comment only. | **already general.** Add only the `screwDim k` arithmetic kit (below). |
 | **RigidityMatrix/Bricks** | none | none |
-| **RigidityMatrix/Claim612** | 68×`Fin 4`, 15×`ScrewSpace 2`. **Two families:** (i) general-`k` `{k:ℕ}` algebra (`eq_zero_of_annihilates_span_top`, `mem_hingeRowBlock_iff`, `linearIndependent_sum*_candidateRow*`, `candidateRow_ne_zero`, …) — done; (ii) **`Fin 4` panel-geometry/duality** (`span_omitTwoExtensor_eq_top`, `omitTwoExtensor_*`, `exists_independent_perp_pair`, `exists_homogeneousIncidence_of_normals`, `exists_*complementIso*`, `exists_hduality_witness*`). | family (ii) splits: the **incidence/extensor** lemmas feeding the spine lift in 23a; the **`⋀²ℝ⁴` duality** lemmas (`exists_homogeneousIncidence_of_normals`, `exists_complementIso_ne_zero_of_homogeneousIncidence`, `exists_hduality_witness*`) are **consumed only inside `case_III_candidate_dispatch`** → 23b. |
+| **RigidityMatrix/Claim612** | 68×`Fin 4`, 15×`ScrewSpace 2`. **Two families:** (i) general-`k` `{k:ℕ}` algebra (`eq_zero_of_annihilates_span_top`, `mem_hingeRowBlock_iff`, `linearIndependent_sum*_candidateRow*`, `candidateRow_ne_zero`, …) — done; (ii) **`Fin 4` panel-geometry/duality** (`span_omitTwoExtensor_eq_top`, `omitTwoExtensor_*`, `exists_independent_perp_pair`, `exists_homogeneousIncidence_of_normals`, `exists_*complementIso*`, `exists_hduality_witness*`). | family (ii) splits: the **incidence/extensor** lemmas feeding the spine lift in 23a; the **`⋀²ℝ⁴` duality** lemmas (`exists_homogeneousIncidence_of_normals`, `exists_complementIso_ne_zero_of_homogeneousIncidence`, `exists_hduality_witness*`) are **consumed only inside `case_III_candidate_dispatch`** → CHAIN. |
 | **PanelLayer** | 46×`Fin 4` vs **174×`Fin (k+2)`** — mostly general. `Fin 4` cluster is the `d=3` **panel-incidence geometry** (≈ll.357–838): `exists_two_perp_of_linearIndependent_normals`, `exists_three_perp`, `exists_linearIndependent_extensor_pair_perp`, `exists_extensor_eq_panelSupportExtensor`, `exists_extensor_in_two_panels`. The `fin_cases`/`decide` (33) are all in this band. | **`screwBasis`/`annihRow`/`annihRowPoly`/`panelSupportExtensor`/`panelSupportPoly`/`triLI_subpairs`/`exists_triangle_normals` are ALL already `(k:ℕ)`** (ll.232,960,1091,1164,1252,1271,1408). Lift only the `Fin 4` incidence band (the dimension count `finrank ℝ (Fin 4→ℝ)=4` → `=k+2`). |
 | **Pinning** | 0 `Fin 4`/`screwDim 2`; 1 `fin_cases` (general). | none (general). |
 | **PanelHinge** | 0. `PanelHingeFramework (k:ℕ)`, `HasGenericFullRankRealization (k n:ℕ)`, `HasPanelRealization (k n:ℕ)`, `ofNormals (q:α×Fin (k+2)→ℝ)`, `IsGeneralPosition` all parametric. | none (general — and opacity-neutral, L3 probe). |
@@ -453,12 +464,12 @@ Per-file, dependency-ordered (this ordering IS the leaf sequence):
 | **Coupling** | **0 `screwDim 2`/`Fin 4`/`…2`** — fully general (`extProj`, `degeneratePlacement (nrm:α→Fin (k+2)→ℝ)`, all coupling producers `ScrewSpace k`). | **none.** |
 | **CaseI** | **0 `screwDim 2`/`Fin 4`/`…2`** — fully general (`case_I_realization {n k:ℕ}` is dof-`k`; dimension general). | **none.** |
 | **CaseII** | 26×`screwDim 2`, 8×`ScrewSpace 2`, 4×`…Realization 2`. All in `case_II_realization_all_k`'s **rank arithmetic** (`screwDim 2 * (|V|-1) - (k-1)`, the eq.-(6.12) ℤ/ℕ-cast plumbing) + the conclusion numeral. No `decide`/`fin_cases`. | lift: numeral pass + the `screwDim k` arithmetic kit (the cast plumbing is `toNat_le_of_add_pred_eq`-style, already `{D V N:ℕ}`-parametric in Basic). |
-| **CaseIII/{Arms,Candidate,Relabel}** | Arms: 8×`…Realization 2` (incl. `case_III_hsplit_producer`, which calls `hasGenericFullRankRealization_of_triangle (k:=2)` — the triangle brick is **already `(k)`-parametric**) + 8 `fin_cases`/`decide` in the M2/M3-arm geometry. Candidate: 0 literal pins, but the Claim-6.11 family is `ScrewSpace k`/`Fin (k+2)` (general); `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification` consume the `q : α × Fin 4` dispatch shape. Relabel: 0 pins (general `ofNormals_relabel` machinery). | numeral pass on Arms' `…Realization 2`; the M2/M3 geometry + `caseIIICandidate` chain bookkeeping is **23b** (it is the dispatch internals). 23a stops at the producer *skeleton* `case_III_hsplit_producer` shape, leaving `hcand` explicit. |
-| **CaseIII/Realization** | 13×`Fin 4`, 12×`screwDim 2`, 11×`…Realization 2`, 7×`fin_cases`/`decide`. **`case_III_candidate_dispatch` (181–517)** is the structurally-fixed-3-candidate body (`q:α×Fin 4`, fixed `v,a,b,c`, the `linearIndependent_normals_of_algebraicIndependent` (l.99, `Fin 4`-pinned) + `exists_homogeneousIncidence`+`exists_complementIso` `⋀²ℝ⁴` discriminator at ll.351–353) → **23b replace.** `case_III_nested_rank_lower` (561), `case_III_realization_0dof` (518), `case_III_realization` (665) are `screwDim 2`/`q:α×Fin 4`-pinned **spine** decls. | lift `_nested_rank_lower`/`_realization`/`_0dof` (numeral + arithmetic kit); their proofs compose general bricks **except** the `case_III_candidate_dispatch` call → that call becomes the green-modulo `hcand` hypothesis (boundary (d) below). |
-| **Theorem55** | 27×`Fin 4`, 73×`screwDim 2`, 40×`…Realization 2`, 21×`…Framework 2`, 6 `decide`. `theorem_55_minimalKDof_k` (2176) is the dof-`k` induction spine, **dimension-pinned at `screwDim 2`** via `hn`; its callback map wires base/cut/CaseI/CaseII/CaseIII bricks at `(k:=2)`. The `theorem_55_d3`/`_all_k` wrappers discharge `hD`/`hn` by `decide`. The cut/coupling helpers carry the assembly `q:α×Fin 4` / `Pi.single 0 1 : Fin 4→ℝ` / `Set.powersetCard (Fin 4) 2`. | the **largest numeral surface**; lift `theorem_55_minimalKDof_k` to `HasGenericFullRankRealization k`, restate `hn:bodyBarDim n = screwDim k` + an `hD` floor giving `screwDim k ≥ 2` (see kit), thread the green-modulo `hcand` up. `rankHypothesis_of_theorem_55_d3` / Thm-5.6 push is **23d** (not 23a). |
+| **CaseIII/{Arms,Candidate,Relabel}** | Arms: 8×`…Realization 2` (incl. `case_III_hsplit_producer`, which calls `hasGenericFullRankRealization_of_triangle (k:=2)` — the triangle brick is **already `(k)`-parametric**) + 8 `fin_cases`/`decide` in the M2/M3-arm geometry. Candidate: 0 literal pins, but the Claim-6.11 family is `ScrewSpace k`/`Fin (k+2)` (general); `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification` consume the `q : α × Fin 4` dispatch shape. Relabel: 0 pins (general `ofNormals_relabel` machinery). | numeral pass on Arms' `…Realization 2`; the M2/M3 geometry + `caseIIICandidate` chain bookkeeping is **CHAIN** (it is the dispatch internals). 23a stops at the producer *skeleton* `case_III_hsplit_producer` shape, leaving `hcand` explicit. |
+| **CaseIII/Realization** | 13×`Fin 4`, 12×`screwDim 2`, 11×`…Realization 2`, 7×`fin_cases`/`decide`. **`case_III_candidate_dispatch` (181–517)** is the structurally-fixed-3-candidate body (`q:α×Fin 4`, fixed `v,a,b,c`, the `linearIndependent_normals_of_algebraicIndependent` (l.99, `Fin 4`-pinned) + `exists_homogeneousIncidence`+`exists_complementIso` `⋀²ℝ⁴` discriminator at ll.351–353) → **CHAIN replace.** `case_III_nested_rank_lower` (561), `case_III_realization_0dof` (518), `case_III_realization` (665) are `screwDim 2`/`q:α×Fin 4`-pinned **spine** decls. | lift `_nested_rank_lower`/`_realization`/`_0dof` (numeral + arithmetic kit); their proofs compose general bricks **except** the `case_III_candidate_dispatch` call → that call becomes the green-modulo `hcand` hypothesis (boundary (d) below). |
+| **Theorem55** | 27×`Fin 4`, 73×`screwDim 2`, 40×`…Realization 2`, 21×`…Framework 2`, 6 `decide`. `theorem_55_minimalKDof_k` (2176) is the dof-`k` induction spine, **dimension-pinned at `screwDim 2`** via `hn`; its callback map wires base/cut/CaseI/CaseII/CaseIII bricks at `(k:=2)`. The `theorem_55_d3`/`_all_k` wrappers discharge `hD`/`hn` by `decide`. The cut/coupling helpers carry the assembly `q:α×Fin 4` / `Pi.single 0 1 : Fin 4→ℝ` / `Set.powersetCard (Fin 4) 2`. | the **largest numeral surface**; lift `theorem_55_minimalKDof_k` to `HasGenericFullRankRealization k`, restate `hn:bodyBarDim n = screwDim k` + an `hD` floor giving `screwDim k ≥ 2` (see kit), thread the green-modulo `hcand` up. `rankHypothesis_of_theorem_55_d3` / Thm-5.6 push is **ASSEMBLY** (not 23a). |
 
 `linearIndependent_normals_of_algebraicIndependent` (Realization l.99,
-`Fin 4`-pinned) is consumed **both** inside the dispatch (23b) **and** by
+`Fin 4`-pinned) is consumed **both** inside the dispatch (CHAIN) **and** by
 `Theorem55.lean:565/678` (cut/base spine) and `Pinning` — so it is a **shared
 brick 23a must lift** to `Fin (k+2)` (it is the "any `k`+1 distinct-body
 normals are LI from alg-indep" fact; generalizes by the same Vandermonde/
@@ -553,7 +564,7 @@ on the still-green tree (the lift is additive/restating, not deleting).
   (`exists_homogeneousIncidence_of_normals`,
   `exists_complementIso_ne_zero_of_homogeneousIncidence`,
   `exists_hduality_witness_of_panel_incidence`) at `Fin 4` — they are
-  dispatch-only (23b).** Re-green Claim612 (the general-`k` family is
+  dispatch-only (CHAIN).** Re-green Claim612 (the general-`k` family is
   untouched). **23a-OD-B:** `span_omitTwoExtensor_eq_top` is stated
   `{pbar : Fin 4 → Fin 4 → ℝ}` (a *square* `(k+2)×(k+2)` system) — confirm its
   proof generalizes (it should: it is `omitTwoExtensor_linearIndependent_of_li {e:ℕ}`
@@ -577,7 +588,7 @@ on the still-green tree (the lift is additive/restating, not deleting).
   with `hn : bodyBarDim n = screwDim k` + the `k≥1`/`hD`-floor, lift its
   base/cut/CaseI/CaseII/CaseIII callback wiring numeral-wise, and **thread the
   green-modulo `hcand` hypothesis** through to `theorem_55_minimalKDof_k`'s
-  own signature (its callers 23b discharges). Keep a `theorem_55_d3` wrapper
+  own signature (its callers CHAIN discharges). Keep a `theorem_55_d3` wrapper
   that specializes `k:=2` and discharges the dispatch via the *existing*
   `case_III_candidate_dispatch` (so the `d=3` line stays fully green through
   23a — no regression). Re-green Theorem55. **This leaf closes 23a.**
@@ -586,10 +597,10 @@ Carrier-API additions preceding consumers: **none** (OD-5 verbatim). The only
 "add" is Leaf-0's three `screwDim` arithmetic lemmas — not carrier API, pure
 `Nat.choose`.
 
-### (d) Green-modulo boundary 23a leaves for 23b
+### (d) Green-modulo boundary 23a leaves for CHAIN
 
 `case_III_realization` (and through it `theorem_55_minimalKDof_k`) **cannot be
-closed at general `k` until 23b supplies the chain dispatch**, because the body
+closed at general `k` until CHAIN supplies the chain dispatch**, because the body
 calls `case_III_candidate_dispatch` (the fixed-3-candidate `d=3` argument).
 23a's boundary: lift `case_III_realization` / `theorem_55_minimalKDof_k` to
 carry the dispatch as an **explicit `hcand`/`hdispatch` hypothesis** of the
@@ -598,7 +609,7 @@ data + a fresh `e₀` + the IH-generic `v`-split realization at dimension `k`,
 produce `HasGenericFullRankRealization k n G`."* (The standing explicit-`h…`
 crux idiom; never a `sorry`.) The **`d=3` line stays fully green** because the
 `theorem_55_d3` wrapper specializes `k:=2` and fills `hcand` from the existing
-`case_III_candidate_dispatch`. 23b replaces the fixed-3-candidate dispatch with
+`case_III_candidate_dispatch`. CHAIN replaces the fixed-3-candidate dispatch with
 the length-`d` chain dispatch + `⋀^{d-1}(ℝ^{d+1})` duality, discharging the
 hypothesis at general `k`.
 
@@ -619,7 +630,7 @@ hypothesis at general `k`.
   local `maxHeartbeats` bump at that decl (standing idiom), not an OD-5
   reopening. Not a blocker.
 
-### OD-2 / OD-3 resolution (secondary; for 23c scoping)
+### OD-2 / OD-3 resolution (secondary; for ENTRY scoping)
 
 In tree under `Molecular/Induction/`:
 - **KT Lemma 4.6** (chain-or-cycle / degree-2 vertex): `exists_low_degree_vertex`
@@ -634,10 +645,10 @@ In tree under `Molecular/Induction/`:
 form** — `exists_chain_data_of_noRigid` produces a **fixed `v,a,b,c` 4-tuple**
 (`exists_adjacent_degree_two_pair` + two `exists_splitOff_data_of_degree_eq_two`),
 **not** a length-`d` chain `v₀…v_d`. So the general-`d` chain producer is a
-**new combinatorial leaf for 23c**, *not* subsumed; OD-2's "does Phase-20
+**new combinatorial leaf for ENTRY**, *not* subsumed; OD-2's "does Phase-20
 produce a length-`d` chain?" answer is **no — only the single degree-2 split**.
 **Verdict (OD-1, corroborating):** no dedicated Lemma 5.4 short-cycle decl
 exists; the `d=3` Case III handles its `|V|=3` floor via the triangle base
 `hasGenericFullRankRealization_of_triangle` (Arms.lean), confirming the `d=3`
 assembly **dodged 5.4** — whether the general-`d` formalization can likewise
-dodge it stays open for 23c.
+dodge it stays open for ENTRY.

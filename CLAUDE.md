@@ -235,6 +235,23 @@ checklists:
   per-phase summary home (ROADMAP *Status* preamble states this); never
   restate the §N summary inside the cell.
 - Create `notes/PhaseN.md` from the template in `notes/CLAUDE.md`.
+- **Sub-lettered phases (the molecular program's pattern, Phase 22+) —
+  codes until open, no umbrella note.** When a phase is large enough to break
+  into sub-phases, do **not** pre-assign letters to the not-yet-opened ones: a
+  premature letter renumber-churns every cross-reference the moment a layer
+  splits (e.g. a `CHAIN` layer into two). Instead — (a) track the layers by
+  **stable codes** (e.g. `CARRIER`/`CHAIN`/`ENTRY`/`ASSEMBLY`) in the phase's
+  **design doc** `notes/PhaseN-design.md`, which is the cross-phase plan/recon
+  home (the `Phase22-realization-design.md` / `Phase23-design.md` pattern);
+  (b) **mint a letter (`NaX`) + a per-sub-phase work log `notes/PhaseNx.md`
+  only when a sub-phase is about to open** — so the first commit of a
+  sub-lettered phase creates `notes/PhaseNa.md` (the opening sub-phase), **not**
+  an umbrella `notes/PhaseN.md`. The program map stays `notes/MolecularConjecture.md`.
+  This is the standing "a sub-letter is minted only when its turn comes"
+  discipline; the notes file-structure mechanics are in `notes/CLAUDE.md`.
+  (Calibration: Phase 23 opened 2026-06-17 with a general recon sketching
+  23a–23d; the labels were recoded to `CARRIER`/`CHAIN`/`ENTRY`/`ASSEMBLY` and
+  `Phase23.md`→`Phase23a.md` the same day, minting only `23a`, the open layer.)
 - **Sync the user-facing status surfaces** so the project's
   externally-visible state reflects that Phase N is now in progress:
   - `README.md` — *Project status*.

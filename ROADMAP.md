@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered 23a–23d) | ◐ In progress — opened on a design recon (see `notes/Phase23.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — opened on a design recon (see `notes/Phase23a.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1002,7 +1002,7 @@ Layer plan + decisions: `notes/Phase22l.md`.
 #### Phase 23 — Case III general `d` (KT Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 (§6.4.2, §5.2)
 
 **Status (◐ In progress; opened 2026-06-17 on a general design recon — docs
-only; see `notes/Phase23.md`).** The conjecture's crux generalization: lift
+only; see `notes/Phase23a.md`).** The conjecture's crux generalization: lift
 the `d = 3` Case III (Lemma 6.10) to general `d` (Lemma 6.13 — a length-`d`
 chain `v₀…v_d` with `d` candidate frameworks and isomorphisms `ρᵢ`, eqs.
 6.46–6.67), complete Theorem 5.5, derive Theorem 5.6, and state Conjecture
@@ -1010,15 +1010,16 @@ chain `v₀…v_d` with `d` candidate frameworks and isomorphisms `ρᵢ`, eqs.
 (`theorem_55_*`, `case_III_realization*`, `case_III_candidate_dispatch`) is
 `screwDim 2`/`ScrewSpace 2`/`Fin 4`-**pinned** at `d = 3`, not "`k`-free" — so
 the work splits along that fault line into a *mechanical carrier lift* and a
-*genuinely new chain argument*. **Sub-lettered 23a–23d** (keeping the integer
-phases 24–26 stable, as Phase 22 did): **23a** = the general-`d` carrier lift
-of the spine to symbolic `screwDim k` (folding in the deferred
-ScrewSpaceCarrier §6 "part 2" migration — the first sub-phase); **23b** = the
-general-`d` Case-III chain dispatch (eqs. 6.49–6.64) + the
+*genuinely new chain argument*. **Sub-lettered, codes-until-open** (a letter +
+`notes/Phase23X.md` minted only when a layer opens, keeping the integer phases
+24–26 stable, as Phase 22 did): **`CARRIER`** (= the minted **23a**) = the
+general-`d` carrier lift of the spine to symbolic `screwDim k` (folding in the
+deferred ScrewSpaceCarrier §6 "part 2" migration — the first sub-phase);
+**`CHAIN`** = the general-`d` Case-III chain dispatch (eqs. 6.49–6.64) + the
 `⋀^{d−1}(ℝ^{d+1})` duality finish (eq. 6.67, replacing the bespoke `⋀²ℝ⁴`
-route); **23c** = the chain-entry ingredients (Lemma 4.6 chain-or-cycle
+route); **`ENTRY`** = the chain-entry ingredients (Lemma 4.6 chain-or-cycle
 dichotomy, Lemma 5.4 short-cycle base, Lemma 4.8 split-off — standalone-vs-
-folded is an open decision); **23d** = assembly (Theorem 5.5 → re-green
+folded is an open decision); **`ASSEMBLY`** = assembly (Theorem 5.5 → re-green
 `prop:rigidity-matrix-prop11` → Theorem 5.6 → Conjecture 1.2). Reuse verbatim
 (source-verified general & green): Lemma 2.1, Claim 6.11
 (`exists_redundant_panelRow_ab_of_finrank_eq`),
@@ -1029,10 +1030,10 @@ open decisions — is `notes/Phase23-design.md` (the general §1–§5 plus the
 detailed §"23a"). The 23a recon settled OD-5 (the symbolic-`k` coordinate
 transport **ports verbatim** — already general in HEAD — so no carrier-API
 addition and no build-spike) and OD-2/OD-3 (Lemmas 4.6/4.8 exist only in
-fixed-tuple `d=3` form; the length-`d` chain producer is a new 23c leaf).
+fixed-tuple `d=3` form; the length-`d` chain producer is a new `ENTRY` leaf).
 Next concrete commit: **23a Leaf 0** — the `screwDim` arithmetic kit in
 `RigidityMatrix/Basic.lean` (the `Nat.choose` lemmas replacing the `d=3`
-`decide` calls); see `notes/Phase23.md` *Hand-off*.
+`decide` calls); see `notes/Phase23a.md` *Hand-off*.
 
 ## Engineering conventions
 

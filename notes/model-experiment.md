@@ -91,14 +91,16 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
 - **Testbed:** the molecular program — Phases 22k/22l + the post-22l perf round
   (`RigidityMatrix/` + `CaseIII/` + `ForestSurgery/` splits) closed 2026-06-16;
   the active testbed is now **Phase 23** (Case III general `d`, KT Lemma 6.13 →
-  Thm 5.5 complete → Thm 5.6 → Conjecture 1.2; `notes/Phase23.md`), continuing
-  into successor phases until concluded.
+  Thm 5.5 complete → Thm 5.6 → Conjecture 1.2; sub-lettered, codes-until-open —
+  the open sub-phase is `CARRIER` = 23a, `notes/Phase23a.md`), continuing into
+  successor phases until concluded.
 - **Rungs available:** haiku → sonnet → opus → fable (the Agent
   tool's `model` parameter).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md`
   model-tier step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase23.md` *Hand-off* + the Phase-23 design recon
-  (`notes/Phase23-design.md` once opened); the general-`d` reuse map is §1.33 (C) of
+- **Phase-side pointer:** `notes/Phase23a.md` *Hand-off* (the open `CARRIER` sub-phase
+  work log) + the authoritative recon `notes/Phase23-design.md` (general §1–§5 + the
+  detailed §"23a"); the general-`d` reuse map is §1.33 (C) of
   `notes/Phase22-realization-design.md`.
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model

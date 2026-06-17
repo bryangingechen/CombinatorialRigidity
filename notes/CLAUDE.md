@@ -91,6 +91,17 @@ phase note's *Decisions made*.
 `notes/PhaseN.md` is a working log, not an essay. The hand-off
 contract holds only if the file stays scannable.
 
+> **Sub-lettered phases have no umbrella `PhaseN.md`.** For a phase broken
+> into sub-phases (the molecular program, Phase 22+), the rolling work log is
+> **per-sub-phase** (`notes/PhaseNa.md`, `notes/PhaseNb.md`, … — one created
+> when its sub-phase opens), and the **cross-phase plan/recon** lives in a
+> single `notes/PhaseN-design.md` (e.g. `Phase22-realization-design.md`,
+> `Phase23-design.md`). Not-yet-opened sub-phases are referred to by **stable
+> codes** in the design doc; a **letter is minted only when the sub-phase is
+> about to open** (so a later split costs no renumber-churn). The phase-opening
+> trigger for this is in top-level `CLAUDE.md` *When this commit opens a phase*;
+> this is the file-structure half.
+
 - **One-screen-per-entry rule.** Each "Decisions made" entry runs at
   most ~8 lines. If you find yourself writing more, the
   implementation specifics are leaking in; lift them to FRICTION

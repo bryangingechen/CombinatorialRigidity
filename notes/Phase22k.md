@@ -130,7 +130,8 @@ formalized at `d = 3` at full KT strength, and the analytic half of KT Propositi
 Conjecture 1.2. Open it with its own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean), per the program
 map (`notes/MolecularConjecture.md` *Opening the next phase*); the general-`d` reuse map is
 `notes/Phase22-realization-design.md` §1.33 (C). The first concrete commit is the Phase-23 opening (a
-design/recon pass, not a build): create `notes/Phase23.md`, add the general-`d` row to
+design/recon pass, not a build): create the Phase-23 work log (now `notes/Phase23a.md` —
+Phase 23 is sub-lettered, codes-until-open), add the general-`d` row to
 `notes/AlgebraicIndependence.md`, and scope the Lemma-6.13 layer plan.
 
 Two non-blocking Lean cleanups seed a later post-22k cleanup round (see *Blockers*).

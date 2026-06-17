@@ -1,7 +1,20 @@
-# Phase 23 — Case III general `d` (KT Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 (work log)
+# Phase 23a — General-`d` carrier lift of the spine [CARRIER] (work log)
 
-**Status:** in progress (opened 2026-06-17 with a general, layer-level
-design recon — docs only, no Lean).
+**Status:** in progress (opened 2026-06-17; Phase 23 opened with a general,
+layer-level design recon, then this 23a leaf-level recon — both docs only, no
+Lean yet).
+
+**Orientation.** This is the **23a (CARRIER layer)** sub-phase work log — the
+*rolling* state + hand-off for the active sub-phase only. The cross-phase
+**plan/guidance** (sub-phase division, sequence, open decisions, sources) is
+the canonical job of `notes/Phase23-design.md`; the program map is
+`notes/MolecularConjecture.md`. **Sub-phase naming convention** (set
+2026-06-17): the layers are tracked by stable **codes** — `CARRIER`, `CHAIN`,
+`ENTRY`, `ASSEMBLY` (see the design doc §2) — and a **letter (23a, 23b, …) plus
+a `notes/Phase23X.md` work log are minted only when a layer is about to open**,
+so a later split (e.g. `CHAIN` into two) does not renumber-churn the rest.
+`23a` is the minted letter for the opening `CARRIER` layer; the other three
+stay code-only until their turn.
 
 ## Current state
 
@@ -29,16 +42,19 @@ The recon's single most consequential finding: the §1.33(C) sketch's
 `case_III_candidate_dispatch`) carries `screwDim 2`/`ScrewSpace 2`/`Fin 4`
 literally. Two distinct lifts are bundled: a *mechanical carrier lift* of
 the spine (23a) and a *genuinely new* general-`d` chain dispatch +
-`⋀^{d−1}(ℝ^{d+1})` duality (23b). The cut runs along that fault line.
+`⋀^{d−1}(ℝ^{d+1})` duality (CHAIN). The cut runs along that fault line.
 
 ## Architectural choices made up front
 
-- **Sub-lettering 23a/23b/… (not integer phases)** to keep the integer
-  phases 24–26 stable, exactly as Phase 22 did. The division (recon
-  §2): 23a carrier lift, 23b chain dispatch + duality, 23c chain-entry
-  ingredients (4.6/5.4/4.8), 23d assembly + Thm 5.6 + Conjecture 1.2.
+- **Sub-lettering (not integer phases)** to keep the integer phases 24–26
+  stable, exactly as Phase 22 did — but tracked by **stable codes** until
+  open (see the *Orientation* convention above). The division (recon §2):
+  `CARRIER` carrier lift (= the minted **23a**), `CHAIN` chain dispatch +
+  duality, `ENTRY` chain-entry ingredients (4.6/5.4/4.8), `ASSEMBLY`
+  assembly + Thm 5.6 + Conjecture 1.2. Letters for `CHAIN`/`ENTRY`/`ASSEMBLY`
+  are minted when they open (a `CHAIN` split then costs no renumber-churn).
 - **23a is first** (recon §3): everything downstream is stated over the
-  carrier, so the new mathematics of 23b must be written at general grade,
+  carrier, so the new mathematics of CHAIN must be written at general grade,
   which presupposes the spine is general grade; and the symbolic-`k`
   carrier transport (ScrewSpaceCarrier §6) is the most likely blocker — best
   surfaced before the hard new work builds on it.
@@ -56,7 +72,8 @@ the spine (23a) and a *genuinely new* general-`d` chain dispatch +
 The layer-level division, with hard cores and dependency order, is in
 `notes/Phase23-design.md` §2–§3 (authoritative). Summary:
 
-- [ ] **23a — general-`d` carrier lift of the spine** (FIRST). Lift the
+- [ ] **23a [CARRIER] — general-`d` carrier lift of the spine** (FIRST, the
+      one minted letter). Lift the
       `screwDim 2`-pinned realization spine to symbolic `screwDim k`. OD-5
       settled (transport already general). **6-leaf sequence**
       (`notes/Phase23-design.md` §"23a"(c)): Leaf 0 `screwDim` arithmetic kit
@@ -67,18 +84,20 @@ The layer-level division, with hard cores and dependency order, is in
       (closes 23a). Carrier files (RigidityMatrix/Basic, PanelHinge,
       Pinning, GenericityDevice, Coupling, CaseI) need **no lift** — already
       general. Green-modulo boundary: the Case-III dispatch becomes an
-      explicit `hcand` hypothesis for 23b (§"23a"(d)).
-- [ ] **23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality**.
-      Replace the fixed-3-candidate `case_III_candidate_dispatch` with the
+      explicit `hcand` hypothesis for CHAIN (§"23a"(d)).
+- [ ] **CHAIN — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality**
+      (code; letter minted at open). Replace the fixed-3-candidate
+      `case_III_candidate_dispatch` with the
       `d`-chain dispatch (eqs. 6.46–6.64) + the `⋀^{d−1}(ℝ^{d+1})` duality
       finish (eq. 6.67, the N3b analog; re-state the `Fin 4`-pinned 22f
       `extensor_mem_range_map_subtype_of_mem` route at general grade). May
       split on contact (OD-6).
-- [ ] **23c — chain-entry ingredients**: Lemma 4.6 dichotomy, Lemma 5.4
-      short-cycle base, Lemma 4.8 split-off. Standalone-vs-folded is open
-      (OD-1/2/3). Lemma 5.4 (if load-bearing) is its own panel-content leaf
-      (risk #4).
-- [ ] **23d — assembly**: Theorem 5.5 (general `d`) → re-green
+- [ ] **ENTRY — chain-entry ingredients** (code; letter minted at open):
+      Lemma 4.6 dichotomy, Lemma 5.4 short-cycle base, Lemma 4.8 split-off.
+      Standalone-vs-folded is open (OD-1/2/3). Lemma 5.4 (if load-bearing) is
+      its own panel-content leaf (risk #4).
+- [ ] **ASSEMBLY — assembly** (code; letter minted at open): Theorem 5.5
+      (general `d`) → re-green
       `prop:rigidity-matrix-prop11` + `hub` → Theorem 5.6 (§5.2 strip +
       re-add) → state Conjecture 1.2 as a theorem. Gates Cor 5.7 (Phase 26);
       Phases 24–25 can proceed in parallel.
@@ -92,7 +111,7 @@ The clause-(ii) flags the recon could not settle from the source live in
   `d`, or dodgeable as the `d=3` assembly dodged it?
 - **OD-2/OD-3** — does the general-`d` chain entry (Lemma 4.6) reduce to the
   green Phase-20 `minimal_kdof_reduction`, and do 4.6/4.8 already exist
-  subsumed there? (First detailed-recon task for 23c.)
+  subsumed there? (First detailed-recon task for ENTRY.)
 - **OD-4** — does the general-`d` N3a (the `d+1` points, eq. 6.67) take the
   existence/Zariski route like `d=3`, or force the alg-independence hammer?
   (Tracked in `AlgebraicIndependence.md`; see *Decisions made*.)
@@ -120,7 +139,7 @@ is the `Fin 4`→`Fin (k+2)` panel-incidence band in `PanelLayer.lean`.
 The detailed 23a recon (this commit, docs-only) settled OD-5 (ports verbatim,
 no API addition, no spike — the coordinate transport is already general in
 HEAD) and resolved OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple `d=3` form;
-the length-`d` chain producer is a new 23c leaf). See §"23a".
+the length-`d` chain producer is a new ENTRY leaf). See §"23a".
 
 **Tracked follow-up (deferred from this commit, not Phase-23 math):**
 - **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now
@@ -140,7 +159,7 @@ the length-`d` chain producer is a new 23c leaf). See §"23a".
 - **The §1.33(C) "spine is `k`-free" cell is wrong; corrected in the recon.**
   Source-verified the spine decls are `screwDim 2`/`ScrewSpace 2`/`Fin 4`-
   pinned (`Theorem55.lean:2248/2266`, `CaseIII/Realization.lean:181/518/561/665`).
-  The carrier lift (23a) is mechanical-but-large; the chain dispatch (23b) is
+  The carrier lift (23a) is mechanical-but-large; the chain dispatch (CHAIN) is
   the new argument. Full grade table: `notes/Phase23-design.md` §1.
 - **The 22f `⋀²ℝ⁴` duality "happy accident" is a TEMPLATE, not a verbatim
   reuse.** `extensor_mem_range_map_subtype_of_mem` /
@@ -162,7 +181,7 @@ the length-`d` chain producer is a new 23c leaf). See §"23a".
   23a is a **mechanical numeral-replacement + a `Fin 4` panel-incidence lift +
   a `screwDim k` arithmetic kit**, not a structure redefine. The `Fin 4`
   cluster is the `d=3` panel-geometry band (PanelLayer ll.357–838) + the
-  dispatch-only `⋀²ℝ⁴` duality (Claim612, 23b). Full per-file map +
+  dispatch-only `⋀²ℝ⁴` duality (Claim612, CHAIN). Full per-file map +
   6-leaf plan: `notes/Phase23-design.md` §"23a"(a),(c).
 - **OD-5 = ports verbatim (no API addition, no spike).** Hard-part (d) is
   already symbolic in HEAD (`PanelLayer` coordinate layer +
@@ -174,7 +193,7 @@ the length-`d` chain producer is a new 23c leaf). See §"23a".
   `exists_chain_data_of_noRigid` (`ForestSurgery/Reduction.lean:383`) yields a
   fixed `v,a,b,c` 4-tuple, not a length-`d` chain; `splitOff_removeVertex_minimalKDof`
   (:1492) = Lemma 4.8(i). The general-`d` length-`d` chain producer is a **new
-  23c leaf** (not subsumed). No Lemma-5.4 short-cycle decl exists (the `d=3`
+  ENTRY leaf** (not subsumed). No Lemma-5.4 short-cycle decl exists (the `d=3`
   Case III dodged it via the triangle base, corroborating OD-1).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
