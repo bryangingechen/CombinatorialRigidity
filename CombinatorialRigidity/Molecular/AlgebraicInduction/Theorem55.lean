@@ -931,10 +931,12 @@ private lemma mem_V₁_of_induce_isLink_right {α β : Type*} {G : Graph α β} 
     v ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
--- `case_cut_edge_realization` builds at the **default** `maxHeartbeats` since the Phase-22l
--- opacity flip: the `|C|=1` subcase's diffuse `ScrewSpace 2` re-elaboration — formerly a 2×
--- (`400000`) budget — is gone now that the opaque carrier head no longer re-unfolds the heavy
--- `↥(⋀² ℝ⁴)` type-expression at every motive (`notes/ScrewSpaceCarrier-design.md` OQ1).
+-- `case_cut_edge_realization` builds at the **default** `maxHeartbeats`. Two costs were removed.
+-- The Phase-22l opacity flip cleared the diffuse `ScrewSpace 2` re-elaboration (the opaque carrier
+-- head no longer re-unfolds the heavy `↥(⋀² ℝ⁴)` type-expression at every motive). And its two
+-- `|C|=0/1` lower-bound arms now use the same `linarith` + explicit `screwDim 2·(|V|−1)` product
+-- idiom as `_gp` below (the `hkey` helpers), instead of an `nlinarith` that blind-squares over the
+-- heavy `finrank` atoms (`notes/ScrewSpaceCarrier-design.md` OQ1).
 /-- **L4a bare-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization`,
 bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` branch; Phase 22i).
 
@@ -1119,7 +1121,10 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
       push_cast [Nat.sub_add_cancel hscrew] at hbrickZ hk_eq ⊢
       simp only [mul_zero, add_zero, sub_zero] at hbrickZ hk_eq
       have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-      nlinarith
+      have hkey : screwDim 2 * ((V(G).ncard : ℤ) - 1)
+          = screwDim 2 * ((V₁.ncard : ℤ) - 1) + screwDim 2 * ((V₂.ncard : ℤ) - 1) + screwDim 2 := by
+        rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
+      linarith [hkey]
     have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
         = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
     have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
@@ -1304,7 +1309,10 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
       have hscrew : 1 ≤ screwDim 2 := by rw [← hn]; omega
       simp only [Nat.cast_sub hscrew, Nat.cast_one, mul_one] at hbrickZ hk_eq
       have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-      nlinarith
+      have hkey : screwDim 2 * ((V(G).ncard : ℤ) - 1)
+          = screwDim 2 * ((V₁.ncard : ℤ) - 1) + screwDim 2 * ((V₂.ncard : ℤ) - 1) + screwDim 2 := by
+        rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
+      linarith [hkey]
     have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
         = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
     have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
@@ -1319,11 +1327,12 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
     rw [← hG.1] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
-set_option maxHeartbeats 400000 in
--- The combined seed + per-side rank polynomials + |C|=0/1 case analysis exhausts the default
--- 200000 limit. The Phase-22l opacity flip dropped this one step (formerly 600000) but not to
--- default — the residual cost is partly intrinsic to the GP seed + per-side rank-polynomial case
--- analysis, not solely the carrier-whnf re-unfolding (`notes/ScrewSpaceCarrier-design.md` OQ1).
+-- Builds at the **default** `maxHeartbeats` (no override). The former 400000 cost was a diffuse
+-- `nlinarith` in the two `|C|=0/1` lower-bound arms: it blind-squares hypothesis pairs over the
+-- heavy `finrank (span … rigidityRows)` atoms, while the goal is linear once the single
+-- `screwDim 2 · (|V|−1)` product is distributed across the cut. The `hkey` helpers below feed that
+-- product to `linarith` explicitly; the Phase-22l opacity flip had already cleared the separate
+-- carrier-whnf component (`notes/ScrewSpaceCarrier-design.md` OQ1).
 /-- **L4b-2 GP-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization-gp`,
 GP conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` GP arm; Phase 22i).
 
@@ -1632,7 +1641,10 @@ theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n
       push_cast [Nat.sub_add_cancel hscrew] at hbrickZ hk_eq h₁ h₂ ⊢
       simp only [mul_zero, add_zero, sub_zero] at hbrickZ hk_eq
       have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-      nlinarith [hrank₁eq, hrank₂eq]
+      have hkey : screwDim 2 * ((V(G).ncard : ℤ) - 1)
+          = screwDim 2 * ((V₁.ncard : ℤ) - 1) + screwDim 2 * ((V₂.ncard : ℤ) - 1) + screwDim 2 := by
+        rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
+      linarith [hrank₁eq, hrank₂eq, hkey]
     have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
         = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
     -- Conclude: ofNormals G G.endsOf q₀ is the GP realization.
@@ -1682,7 +1694,10 @@ theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n
       have hscrew : 1 ≤ screwDim 2 := by rw [← hn]; omega
       simp only [Nat.cast_sub hscrew, Nat.cast_one, mul_one] at hbrickZ hk_eq
       have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-      nlinarith [hrank₁eq, hrank₂eq]
+      have hkey : screwDim 2 * ((V(G).ncard : ℤ) - 1)
+          = screwDim 2 * ((V₁.ncard : ℤ) - 1) + screwDim 2 * ((V₂.ncard : ℤ) - 1) + screwDim 2 := by
+        rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
+      linarith [hrank₁eq, hrank₂eq, hkey]
     have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
         = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
     rw [← hG.1] at hrank_eq

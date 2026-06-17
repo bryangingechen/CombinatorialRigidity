@@ -10,7 +10,10 @@ confirmed the `screwBasis` transport is *defeq-free*. **Phase 22l (`notes/Phase2
 d=3-scoped first part:** built the opaque-carrier API + migrated the existing d=3 tree (L0a–L9), then
 flipped `abbrev ScrewSpace`→opaque `def` in one mechanical commit — **resolving OQ1** (molecular
 `maxHeartbeats` count 3→1: `case_II_realization_all_k` + `case_cut_edge_realization` to default,
-`case_cut_edge_realization_gp` 600000→400000). The §5 *L7 refinement* recipe (the `cast`-form
+`case_cut_edge_realization_gp` 600000→400000). A **2026-06-16 follow-up** then took `_gp` to default as
+well — the residual 400000 was not "intrinsic" (as first read) but a `nlinarith` hotspot in its
+`|C|=0/1` lower-bound arms, removed by `linarith` + an explicit `screwDim 2·(|V|−1)` product hint — so
+the count is now **3→0, zero overrides project-wide** (see the OQ1 follow-up in §5). The §5 *L7 refinement* recipe (the `cast`-form
 `equivExteriorPower`, `mk`/`val`/`val_mem` through `ScrewSpace_def k ▸ …`) is the as-built FLIP. **The
 general-`d` API ("part 2") is deferred to the Phase-23 design boundary** (§6 — don't freeze an API
 against d=3-only usage); this doc stays the live spec part 2 follows. `notes/PERFORMANCE.md` and
@@ -48,6 +51,11 @@ overrides 7→4; the fused `finrank_sup_of_inf_eq_bot` mirror (`ae77b36`) took i
 
 All three: diffuse §38-class typeclass cost over the carrier, **no single extractable
 hotspot** (so the cheap "mark one heavy def irreducible" lever does not apply — see §4).
+**(Correction, 2026-06-16:** this "no extractable hotspot" diagnosis held for the carrier-whnf cost
+but missed a *second* component in the two cut-decomposition decls — a `nlinarith` blind-squaring over
+the `finrank` atoms, which **was** extractable. Opacity cleared the carrier cost; replacing `nlinarith`
+with `linarith` + an explicit product hint cleared the rest, taking all caps to default — see the OQ1
+follow-up in §5. The CaseII `CoeT` cost was genuinely diffuse and opacity-only.)
 The fourth original survivor, `le_finrank_span_rigidityRows_of_cut`, was **resolved**
 by the fused `finrank_sup_of_inf_eq_bot` mirror (now builds at default 200000; see
 `notes/FRICTION.md` *Mirrored*).
@@ -296,8 +304,19 @@ FLIP remains. Two findings:
   isDefEq` at Theorem55.lean:1680) and passes at **400000** — so opacity drops it one step (600000→400000)
   but not all the way to default. So the FLIP keeps `_gp` at 400000 while dropping the other two caps to
   default. OQ1's claim ("opacity drops the survivors") holds for all three caps; the one not reaching
-  default shows the cap is partly intrinsic to that decl's seed+per-side rank-polynomial case analysis,
-  not solely the carrier-whnf cost.
+  default shows the cap had a second component beyond the carrier-whnf cost.
+  - **Follow-up (2026-06-16) — the residual was NOT intrinsic; `_gp` now builds at default too (3→0).**
+    The "partly intrinsic to the seed+per-side rank-polynomial case analysis" reading above was **wrong**.
+    Profiling `_gp` (`trace.profiler`) found the residual was a single extractable hotspot: the
+    `nlinarith [hrank₁eq, hrank₂eq]` in each `|C|=0/1` lower-bound arm (~5.8 s each; `linarith`'s
+    `linearFormsAndMaxVar` ~3.6 s of it). `nlinarith` blind-squares hypothesis pairs over the heavy
+    `finrank (span … rigidityRows)` atoms, but the goal is linear once the single `screwDim 2·(|V|−1)`
+    product is distributed across the cut. Replacing it with `linarith` + that one explicit product
+    (`hkey`) drops the proof 13.8 s→3.7 s and **under default 200000** — override removed. The same idiom
+    applied to the bare `case_cut_edge_realization` arms (same pattern, were comfortably under budget). So
+    opacity cleared the carrier-whnf component and this fix cleared the `nlinarith` component:
+    **molecular `maxHeartbeats` count is now 3→0 (zero overrides project-wide).** Lifted to
+    `TACTICS-GOLF.md` (nlinarith-over-huge-atoms → explicit product + `linarith`).
 - **The FLIP RigidityMatrix recipe exercised live.** The L9 probe applied exactly the L7-pinned
   RigidityMatrix recipe (flip `abbrev`→`def`, `ScrewSpace_def := rfl`, 3 `inferInstanceAs`, `mk`/`val`/
   `val_mem` through `ScrewSpace_def k ▸ …`, `equivExteriorPower` as the `cast`-form `≃ₗ` with `cast`-RHS

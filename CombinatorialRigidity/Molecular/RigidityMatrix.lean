@@ -93,8 +93,10 @@ every `ScrewSpace`-typed reach-in: it replaces the bare `⟨val, proof⟩` anony
 and `Subtype.val` coercion idioms that the opaque head blocks. The carrier is now an **opaque
 `def`** (Phase 22l flip, 2026-06-16) — a distinct, non-reducing head over the graded piece, so
 the heavy `↥(⋀^k …)` type-expression no longer re-unfolds during defeq / `simp` / `rw` motives
-over it (the diffuse `maxHeartbeats` cost behind the three former survivors; `notes/Phase22l.md`,
-`notes/ScrewSpaceCarrier-design.md`). The defeq bridge to the graded piece is `ScrewSpace_def`
+over it (a diffuse `maxHeartbeats` cost behind the three former survivors — opacity cleared this
+component; a follow-up `nlinarith`→`linarith` fix cleared the rest, so **0** overrides now remain;
+`notes/Phase22l.md`, `notes/ScrewSpaceCarrier-design.md`). The defeq bridge to the graded piece is
+`ScrewSpace_def`
 (default-transparency `rfl`); the three module instances are `inferInstanceAs` over that bridge.
 The carrier stays defeq to the graded piece at *default* transparency (so the spike's
 coordinate transports are no-ops) but not at the *reducible/instance* transparency that drove

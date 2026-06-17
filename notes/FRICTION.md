@@ -84,14 +84,18 @@ housekeeping pass once their resolution is fully indexed.
   (was 600000, `CaseII.lean`) carried elevated `set_option maxHeartbeats` because of *diffuse
   typeclass re-elaboration* over the reducible-`abbrev` `ScrewSpace` carrier (§38-class;
   no single extractable hotspot).
-- **Status.** **Resolved by Phase 22l** (closed 2026-06-16): flipping `abbrev ScrewSpace`→opaque
-  `def` gives the carrier a distinct non-reducing head, so the heavy `↥(⋀^k …)` type-expression no
-  longer re-unfolds at every defeq/`simp`/`rw` motive. Two caps dropped to default,
-  `case_cut_edge_realization_gp` 600000→400000 (one step — its residual is partly intrinsic to the GP
-  seed + per-side rank-polynomial case analysis). Molecular `maxHeartbeats` count 3→1. The full
-  per-override diagnosis, opacity spike, mathlib precedents, and the as-built FLIP recipe are in
-  **`notes/ScrewSpaceCarrier-design.md`** (the general-`d` "part 2" is deferred to Phase 23). Cross-ref
-  TACTICS-QUIRKS §38; dispatch records `notes/model-experiment.md` rows 167–170.
+- **Status.** **Resolved — 0 overrides remain.** Two halves: (1) **Phase 22l** (closed 2026-06-16)
+  flipped `abbrev ScrewSpace`→opaque `def`, giving the carrier a distinct non-reducing head so the heavy
+  `↥(⋀^k …)` type-expression no longer re-unfolds at every defeq/`simp`/`rw` motive — two caps to
+  default, `_gp` 600000→400000. (2) **Follow-up (2026-06-16):** the `_gp` residual was *not* "intrinsic"
+  (the §38 "no extractable hotspot" diagnosis was wrong for the cut-decomposition pair) — profiling
+  found a single `nlinarith [hrank₁eq, hrank₂eq]` per `|C|=0/1` arm blind-squaring over the heavy
+  `finrank (span …)` atoms (~5.8 s). Feeding `linarith` the one `screwDim 2·(|V|−1)` product explicitly
+  (`hkey`) dropped `_gp` 13.8 s→3.7 s and under default; same idiom applied to bare
+  `case_cut_edge_realization`. **Molecular `maxHeartbeats` count 3→0.** Diagnosis/spike/FLIP recipe in
+  **`notes/ScrewSpaceCarrier-design.md`** (general-`d` "part 2" deferred to Phase 23). **Lifted to:**
+  TACTICS-GOLF §17 (nlinarith-over-huge-atoms); cross-ref TACTICS-QUIRKS §38; dispatch records
+  `notes/model-experiment.md` rows 167–170.
 
 ### [resolved] `le_finrank_span_rigidityRows_of_cut` — fused `finrank_sup_of_inf_eq_bot` dropped the `span_induction + finrank_sup` cost below the 200000 default
 - **Where it bit:** `RigidityMatrix.lean:3070` (Phase 22i L4a block-triangular rank-addition brick).

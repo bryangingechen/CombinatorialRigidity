@@ -19,11 +19,19 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 `ScrewSpace_def k ▸ …`; `equivExteriorPower` is now the `cast (ScrewSpace_def k)` `≃ₗ` with `cast`-RHS
 `_apply`/`_symm_apply` (design doc §5 *L7 refinement*). The whole d=3 spine builds + lints clean on the
 opaque carrier. **OQ1 banked:** `case_II_realization_all_k` 600000→default, `case_cut_edge_realization`
-400000→default, `case_cut_edge_realization_gp` 600000→400000 (one step, not droppable to default). The
-`screwSpace_finrank` `change`-expose was re-tested and **kept** (still needed: the opaque head does not
-reduce to the graded-piece head at `rw`'s reducible transparency). The molecular `maxHeartbeats` count is
-now **3→1** (the only survivor is `_gp` at 400000). Blueprint untouched (pure implementation refactor;
-all statements/types stable).
+400000→default, `case_cut_edge_realization_gp` 600000→400000 (opacity alone; the rest cleared by the
+follow-up below). The `screwSpace_finrank` `change`-expose was re-tested and **kept** (still needed: the
+opaque head does not reduce to the graded-piece head at `rw`'s reducible transparency). Blueprint
+untouched (pure implementation refactor; all statements/types stable).
+
+**Follow-up (2026-06-16) — `_gp` to default; molecular `maxHeartbeats` count 3→0 (zero overrides).**
+Profiling `_gp` showed its residual 400000 was *not* "intrinsic" but a `nlinarith` hotspot: each
+`|C|=0/1` lower-bound arm ran `nlinarith [hrank₁eq, hrank₂eq]` (~5.8 s, blind-squaring hypothesis pairs
+over the heavy `finrank (span … rigidityRows)` atoms), where the goal is linear once the single
+`screwDim 2·(|V|−1)` product is distributed across the cut. Replaced with `linarith` + that explicit
+product (`hkey`): proof drops 13.8 s→3.7 s, builds at default, override removed. Same idiom applied to
+the bare `case_cut_edge_realization` arms (same latent pattern). The project now has **0** `maxHeartbeats`
+overrides. Promoted to `TACTICS-GOLF.md`.
 
 The FLIP was mechanical because L0a–L9 made the whole spine opacity-ready (L2/L3/L5/L6/L7/L8/L9
 migration-free; L0a/L0b/L1/L4 needed edits), and the L9 probe had already exercised the exact RigidityMatrix

@@ -69,6 +69,11 @@ symptom-indexed and lighter.
 16. **`(∑ i, f i).comp g` — go pointwise** — no `LinearMap.sum_comp` exists and
     `map_sum` won't fire on `· ∘ₗ g`; discharge a `∘ₗ`-outside-`Finset.sum`
     identity with `LinearMap.ext` + `LinearMap.congr_fun` + `LinearMap.sum_apply`.
+17. **`nlinarith` over huge atoms — feed `linarith` the one product** — when a goal is
+    linear except for one product of two atoms (`D * (n−1)`) and the atoms are large
+    structured terms (`finrank (span …)`), supply that product as a `have` and call
+    `linarith [it]`; `nlinarith` blind-squares all hypothesis pairs and its
+    `linearFormsAndMaxVar` pays a quadratic cost over the huge atoms. Profile first.
 
 ---
 
@@ -979,3 +984,30 @@ endpoint side conditions). Concrete instance (`candidateRow_ac_eq_neg`,
 `Molecular/RigidityMatrix.lean`, Phase 22e — KT eq. (6.44)): the eq.-(6.43) column
 combination's `ab`/`ac`-sums collapse to their block-functional sums via
 `hingeRow_comp_single_tail` evaluated pointwise.
+
+## 17. `nlinarith` over huge atoms — feed `linarith` the one product, don't blind-square
+
+When a goal is *linear except for one product of two atoms* — e.g. `D * (n − 1)` for a
+symbolic `D` (`screwDim 2`) and cardinality `n` — reach for `linarith` with that product
+supplied explicitly, **not** `nlinarith`. `nlinarith` forms *all* pairwise products of the
+hypotheses and then linearizes; when the atoms are large structured terms (here
+`Module.finrank ℝ (Submodule.span ℝ (…ofNormals…).rigidityRows)`) its
+`linearFormsAndMaxVar` preprocessing pays a quadratic atom-comparison cost over those huge
+terms — multiple seconds, and the dominant driver of an elevated `maxHeartbeats` cap.
+
+**Pattern.** Derive the single needed product identity as a `have`, then `linarith [it]`:
+
+```lean
+have hkey : D * ((n : ℤ) - 1) = D * ((n₁ : ℤ) - 1) + D * ((n₂ : ℤ) - 1) + D := by
+  rw [show ((n : ℤ)) = n₁ + n₂ from hsum.symm]; ring
+linarith [hkey]   -- linarith reads the rest from context
+```
+
+`linarith` then treats each `D * (·)` as its own atom linked by the one linear equation, and
+the proof is linear. Concrete instance: the four `|C|=0/1` cut-decomposition lower-bound arms
+in `case_cut_edge_realization` / `case_cut_edge_realization_gp` (`Theorem55.lean`, Phase 22l
+follow-up) — swapping `nlinarith` for this dropped `_gp` from 13.8 s→3.7 s and removed the
+project's last `maxHeartbeats` override. **Profile first** (`trace.profiler` /
+`lean_profile_proof`): if `linarith.detail: linearFormsAndMaxVar` dominates an `nlinarith`,
+this is the fix. (A `(deterministic) timeout at whnf/isDefEq` at some unrelated cheap line is
+a red herring — it's just where the heartbeat budget ran dry; profile to find the real cost.)
