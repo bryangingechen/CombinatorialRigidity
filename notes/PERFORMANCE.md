@@ -578,6 +578,50 @@ from F2) is simpler and is what the project's existing splits use.
    `Sparsity` / `CountMatroid` (the heavier `SimpleGraph` /
    `(k, ℓ)`-count chain).
 
+### Post-Phase-22 split candidates (the current giants)
+
+The pre-Phase-22b structure pass (above) split the two molecular
+monoliths into the `AlgebraicInduction/` and `Induction/` 5-file
+chains; the realization layer (22c–22l) then grew three of those
+leaves — plus `RigidityMatrix.lean` — back over ~3500 LoC (2.3×+ the
+~1500-LoC soft cap). These are the current candidates, ranked by
+**seam quality** (the actionable axis here: all three sit alone on the
+import spine, so factor 1 is perf-neutral and the drivers are factor 3
+incremental-rebuild and factor 4 navigability). Like the earlier
+molecular splits, any cut here is a pure semantics-preserving move (no
+decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
+
+6. **`Molecular/RigidityMatrix.lean` (3527 LoC) — cleanest seams,
+   medium leverage.** Named sections already isolate the tail:
+   `section RankArithmetic` (L798–845, self-contained ℤ/ℕ cast
+   plumbing) and the three rank-addition bricks
+   `section {CutEdgeBrick (L2949–3329), SpliceBrick (L3331–3411),
+   PinnedPlacementBrick (L3413–3523)}` (~575 LoC together). Carving
+   the bricks into a `RigidityMatrix/Bricks.lean` leaf is the clean
+   cut. Caveat: the core `namespace BodyHingeFramework` body
+   (L847–2935, ~2090 LoC — screw space, hinge constraint, trivial
+   motions, rank Lemmas 5.1–5.3) is un-sectioned and stays monolithic,
+   so this is a partial win unless that core is sub-sectioned first.
+
+7. **`Molecular/Induction/ForestSurgery.lean` (3783 LoC) — medium
+   leverage, medium effort.** All in `namespace Graph`, organized by
+   ~20 `/-! ##` doc sections keyed to KT lemmas. Natural 2-way cut
+   between the **KT 4.2 forest core** (acyclicity transport +
+   edge-splitting, L37–~1741) and the **KT 4.1 / 4.9 / reduction /
+   4.3(ii)–4.7 material** (L1742–3783: the surgery count + Theorem 4.9
+   + the Case-III chain data + the splitting-off `k`-dof descent).
+   Navigable, but the two arcs may share private helpers — confirm
+   before cutting.
+
+8. **`Molecular/AlgebraicInduction/CaseIII.lean` (4000 LoC) — highest
+   effort, do last.** Flat `namespace CombinatorialRigidity.Molecular`
+   with **no internal section markers** and 44 top-level decls — no
+   seam to grep for. A split needs a read-pass to group the decls
+   (stratum-1 placement / candidate-completion / Claims 6.11–6.12 /
+   the `d=3` assembly) first; cheapest first step is to add `/-! ##`
+   section headers (factor 4 navigability) and defer the file cut
+   until the grouping is explicit.
+
 ### Module-system conversion: now ripe
 
 Mathlib `v4.30.0-rc2` (the project's current pin) is essentially
