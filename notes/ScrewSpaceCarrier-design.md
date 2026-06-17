@@ -174,8 +174,8 @@ noncomputable instance (k) : FiniteDimensional ℝ (ScrewSpace k) := inferInstan
 def ScrewSpace.mk  {k} (v : ExteriorAlgebra ℝ (Fin (k+2) → ℝ)) (h : v ∈ ⋀[ℝ]^k _) : ScrewSpace k := ScrewSpace_def k ▸ ⟨v, h⟩
 def ScrewSpace.val {k} (C : ScrewSpace k) : ExteriorAlgebra ℝ (Fin (k+2) → ℝ) := (ScrewSpace_def k ▸ C : ↥_)
 @[simp] theorem ScrewSpace.val_mk …  ;  @[simp] theorem ScrewSpace.mk_val …  ;  theorem ScrewSpace.val_injective …
--- a linear-equiv form, cleaner for the basis/dual work:
-noncomputable def ScrewSpace.equivExteriorPower (k) : ScrewSpace k ≃ₗ[ℝ] ↥(⋀[ℝ]^k _) := … -- via ScrewSpace_def
+-- a linear-equiv form, cleaner for the basis/dual work (concrete opaque-head form: L7 refinement below):
+noncomputable def ScrewSpace.equivExteriorPower (k) : ScrewSpace k ≃ₗ[ℝ] ↥(⋀[ℝ]^k _) := … -- cast (ScrewSpace_def k); see L7
 -- screwBasis transported across the equiv (replaces the .exteriorPower-direct definition):
 noncomputable def screwBasis (k) : Module.Basis _ ℝ (ScrewSpace k) :=
   ((Pi.basisFun ℝ (Fin (k+2))).exteriorPower k).map (ScrewSpace.equivExteriorPower k).symm
@@ -245,6 +245,34 @@ on the opaque carrier — zero edits — confirming the micro-spike's defeq-free
 GenericityDevice site, not just the scratch file. So at d=3 the feared-hardest category (d) is not merely
 "essentially mechanical" but a *no-op*; the only edits a migrating file needs are the (b)-coercion / (e)
 reach-ins. (General-`d` may still stress (d) symbolically — §6 — but that is part-2 work.)
+
+**L7 refinement (2026-06-16, `CaseII.lean` — fifth negative probe; OQ1 first measured; the FLIP
+`equivExteriorPower` form pinned).** The probe built spine-to-CaseII green on the opaque carrier (CaseII
+**migration-free**, fifth negative outcome, assembly file). Two things landed:
+- **OQ1 first measurement.** With the probe flip live, `case_II_realization_all_k` re-elaborated green at
+  the **default `maxHeartbeats 200000`** — the committed `abbrev` carries a 3× `600000` override. So the
+  opacity cap drop OQ1 hoped for is *real and observable* at the first capped survivor; it is banked only
+  at the FLIP (the probe is reverted, and on the `abbrev` the lowered cap would fail).
+- **The FLIP `equivExteriorPower` form (the §5-drafted `…`).** On the opaque head `equivExteriorPower`
+  **cannot** be `LinearEquiv.refl ℝ (ScrewSpace k)` — its `_apply`/`_symm_apply` simp lemmas lose `rfl`
+  (the opaque head is not defeq to `↥(⋀…)` at the reducible transparency `LinearEquiv.refl` needs). The
+  working form is a `cast`-based `≃ₗ`:
+  ```lean
+  noncomputable def ScrewSpace.equivExteriorPower (k : ℕ) : ScrewSpace k ≃ₗ[ℝ] ↥(⋀[ℝ]^k (Fin (k+2) → ℝ)) where
+    toFun C := cast (ScrewSpace_def k) C
+    invFun C := cast (ScrewSpace_def k).symm C
+    left_inv C := by simp [ScrewSpace_def]
+    right_inv C := by simp [ScrewSpace_def]
+    map_add' C D := rfl
+    map_smul' c C := rfl
+  ```
+  with `_apply : equivExteriorPower k C = cast (ScrewSpace_def k) C := rfl` and the symmetric
+  `_symm_apply` (both `:= rfl`, RHS restated to the `cast`). Likewise `mk`/`val`/`val_mem` route their
+  Subtype coercion through `ScrewSpace_def k ▸ …`. With these, `RigidityMatrix.lean`'s
+  `span_omitTwoExtensor_eq_top` LI-transport (`(⋀…).subtype.comp (equivExteriorPower 2).toLinearMap`)
+  still closes, and the whole spine builds. **This is the FLIP commit's `RigidityMatrix.lean` recipe** —
+  the only `…`-left piece of the §5 draft now concrete. (`val_mk`/`mk_val`/`val_smul`/`val_add`/`val_zero`
+  stay `:= rfl`; they survive the flip because `mk`/`val` route through the `rfl` bridge.)
 
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
