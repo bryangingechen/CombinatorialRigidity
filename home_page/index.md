@@ -86,8 +86,8 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |   21b | Genericity device (Claim 6.4/6.9) + accounting bridges | `Molecular/AlgebraicInduction/` | ✓ |
 |   22a | Case I realization (rigid-subgraph splice) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
 |   22b | KT Claim 6.4 (discharges the Case I obligation) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
-|   22c | Case III at `d=3`, stratum 1 (KT Lemma 6.10; the crux) | `Molecular/AlgebraicInduction/` | ✓ |
-|   22d | KT Claim 6.11 (the missing `+1` row) + its green-machinery prerequisites | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ✓ |
+|   22c | Case III at `d=3` (KT Lemma 6.10; the crux) | `Molecular/AlgebraicInduction/` | ✓ |
+|   22d | KT Claim 6.11 (the missing `+1` row) + its supporting lemmas | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ✓ |
 |   22e | candidate-completion + Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ |
 |   22f | point-join↔panel-meet duality (the exterior-algebra leaf completing Case III at `d=3`) | `Molecular/Meet.lean` | ✓ |
 |   22g | `d=3` realization assembly: design + leaf infrastructure (the existential Claim 6.12 architecture) | `Molecular/AlgebraicInduction/` | ✓ |
