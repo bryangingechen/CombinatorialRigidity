@@ -105,23 +105,24 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-17, fresh coordinator session #3 — Phase 23a open, recon +
-  Leaves 0/1a/1b landed; re-confirms the identical prior-session config, which expired at its
-  own session end).** fable not verified this session (the fable-mapped passes —
-  phase-open/close, design-settle, S=3 — fold into the opus-only override below regardless).
-  opus **reachable** (coordinator session is Opus 4.8; user-confirmed). **Rung policy: STANDING
-  OPUS-ONLY OVERRIDE for the whole of Phase 23** (user-re-confirmed at session start: Phase 23 =
-  Case III general `d`, the hardest remaining KT math and squarely in the §38 defeq-fragility
-  zone where sonnet-and-below have repeatedly failed). S/P/B is still **rated and logged** per
-  dispatch (experiment data), but the rung is **opus regardless of the map**; probes are off
-  (they would dispatch below opus); boundary pairs, if run, pair opus against opus or are
-  skipped. **Run modifications this session (user-re-confirmed at session start):** the 10-run
-  check-in cap is **lifted** (the loop runs to phase close or a surfaced concern), and step-4
-  mechanical fixups (wrong branch / author / co-author trailer) are **pre-authorized** (apply
-  without stopping to ask). The phase is in the **build-leaves** stretch: 23a Leaf 0 (`screwDim`
-  kit) + Leaf 1a (perp-space brick) + Leaf 1b (grade-`k` extensor bricks) are green; **Leaf 2**
-  (the `Fin 4` → `Fin (k+2)` incidence/extensor brick lift in `RigidityMatrix/Claim612.lean` +
-  the shared LI brick in `CaseIII/Realization.lean`) is next. The coordinator is Opus 4.8 (1M
+- **Session availability (2026-06-17, fresh coordinator session #4 — 23a/CARRIER closed;
+  opening CHAIN = the minted sub-letter `23b`; re-confirms the identical prior-session config,
+  which expired at its own session end).** fable not verified this session (the fable-mapped
+  passes — phase-open/close, design-settle, S=3 — fold into the opus-only override below
+  regardless). opus **reachable** (coordinator session is Opus 4.8; user-confirmed). Starting
+  `lake build` warning-clean (2821 jobs). **Rung policy: STANDING OPUS-ONLY OVERRIDE for the
+  whole of Phase 23** (user-re-confirmed at session start: Phase 23 = Case III general `d`, the
+  hardest remaining KT math and squarely in the §38 defeq-fragility zone where sonnet-and-below
+  have repeatedly failed). S/P/B is still **rated and logged** per dispatch (experiment data),
+  but the rung is **opus regardless of the map**; probes are off (they would dispatch below
+  opus); boundary pairs, if run, pair opus against opus or are skipped. **Run modifications this
+  session (user-re-confirmed at session start):** the 10-run check-in cap is **lifted** (the
+  loop runs to phase close or a surfaced concern), and step-4 mechanical fixups (wrong branch /
+  author / co-author trailer) are **pre-authorized** (apply without stopping to ask). The phase
+  is at a **sub-phase boundary**: 23a (CARRIER) is closed (Leaves 0–5 green); the next dispatch
+  is the **CHAIN-open recon design-pass** (phase-open + the detailed leaf-level recon that cuts
+  CHAIN into buildable leaves and decides OD-6 chain-vs-duality split) — fable-mapped
+  (phase-open + design-settle) → opus under the override. The coordinator is Opus 4.8 (1M
   context). **Expires at session end** — a fresh coordinator re-runs the availability check and
   reverts to the map unless the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
