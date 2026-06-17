@@ -5,14 +5,17 @@
 `exists_smul_eq_of_mem_range_map_subtype_grade`, the **`toDual=Gram` bridge**
 `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`), and CHAIN-3's last brick
 `complementIso_smul_eq_extensor_join` is being chipped: its `wedgeFixedLeft` building
-block (`def` + facts) and now (2026-06-17) the **decomposable intersection**
-`inf_range_wedgeFixedLeft` (`a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} = span{a∧b}`) are lifted `Fin 4` →
-ambient `{d} (Fin (d+1))` (all `Meet.lean`). **What remains of the last brick** is the
-genuinely-new `Φ̃`-count `finrank_sup_range_wedgeFixedLeft` (the 2-summand `3+3−1` →
-`(d−1)`-summand inclusion–exclusion, NOT a verbatim lift), then
-`extensor_toDual_extensor_eq_zero_of_perp` + the assembly itself. The integer Phase 23
-stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
-boundary; codes-until-open).
+block (`def` + facts) and (2026-06-17) the **decomposable intersection**
+`inf_range_wedgeFixedLeft` are lifted `Fin 4` → ambient `{d} (Fin (d+1))` (all `Meet.lean`)
+— BUT the **CHAIN-3-finish recon** (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17)
+then established these are part of the **dead d=3-only `Φ̃` route**: it does NOT generalize
+(`dim Ω = C(d−1,2) = 1` only at `d=3`). **What remains of the last brick** is the
+**`⋀^{d−1}W`-is-a-line** route — point-join (`d−1` points) + panel-meet (`complementIso
+(k:=d−1)(j:=2)`, **2** normals) both in the line `range(⋀^{d−1}W ↪)`. The one genuinely-new
+leaf is the **panel-meet range-membership** `complementIso_extensor_mem_range_map_subtype`
+(route OPEN, OD-8); the assembly then reuses the THREE landed `_grade` bricks (zero new
+count). The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator
+owns the sub-phase boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -36,10 +39,12 @@ sitting. Ambient-generic verbatim: the family arities the proof leans on (`Fin 2
 Implicit `{d}`, no `d=3` instance — the still-`Fin 4` consumer `finrank_sup_range_wedgeFixedLeft`
 unifies `d=3` by defeq (the `inf_range_wedgeFixedLeft a b hab` call site forces `d+1 = 4`).
 This is the second sub-step of CHAIN-3's last brick `complementIso_smul_eq_extensor_join`.**
-**Next, still inside that last brick (the heavy one, NOT a verbatim lift):** lift
-`finrank_sup_range_wedgeFixedLeft` — its `dim Φ̃` count goes from the 2-summand `3+3−1=5` to a
-`(d−1)`-summand inclusion–exclusion (a panel `Π(u)` has `d−1` normals): **the recon's "real new
-lemma here"** — then `extensor_toDual_extensor_eq_zero_of_perp` and the assembly itself.
+**Next, still inside that last brick:** build `complementIso_extensor_mem_range_map_subtype`
+(the panel-meet range-membership, the one genuinely-new leaf — route OPEN per OD-8), then the
+assembly `extensor_join_proportional_complementIso_meet` via the `⋀^{d−1}W`-is-a-line route
+(reusing the three landed `_grade` bricks; zero new count). **NOT** `finrank_sup_range_wedge
+FixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` — the CHAIN-3-finish recon withdrew
+those (dead d=3-only `Φ̃` route; see checklist + Hand-off + §"CHAIN"(f)).
 The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
@@ -107,11 +112,23 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
           `linearIndependent_finSnoc` are fixed family arities, `d` enters only the ambient type.
           Implicit `{d}`, no `d=3` instance (the in-file consumer unifies `d=3` by defeq).
           Landed 2026-06-17.
-        - [ ] `finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` count → a `(d−1)`-summand
-          inclusion–exclusion, the recon's "real new lemma"; consumes the now-general
-          `finrank_range_wedgeFixedLeft = d`).
-        - [ ] `extensor_toDual_extensor_eq_zero_of_perp`, and the `dim Ω = D − (D−1) = 1`
-          count, then the assembly. The `toDual=Gram` brick (above) is in hand.
+        - [~] **WITHDRAWN — `finrank_sup_range_wedgeFixedLeft` does NOT generalize and is
+          NOT needed** (CHAIN-3-finish recon, `notes/Phase23-design.md` §"CHAIN"(f),
+          2026-06-17). Its `Φ̃ = dualAnnihilator`/`dim Ω = 1` route is sound only at
+          `d=3` (`dim Ω = C(d−1,2) = 1` ⟺ `d=3`). The d=3 lemma stays as the GREEN d=3
+          route — do NOT touch. Same for `extensor_toDual_extensor_eq_zero_of_perp`.
+        - [ ] `complementIso_extensor_mem_range_map_subtype` — **the one genuinely-new leaf**
+          (panel-meet `complementIso(k:=d−1)(j:=2)⟨n_u∧n',_⟩ ∈ range(⋀^{d−1}W ↪)`, the
+          never-completed N3b-2b-α). Route is OPEN — OD-8 §(g) (α Hodge-direct vs. β
+          annihilator=range; neither needs a new mathlib fact). Consumes the LANDED
+          general `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` + `finrank_exteriorPower
+          _self_eq_one`.
+        - [ ] `extensor_join_proportional_complementIso_meet` — the general-`d` assembly
+          (replaces `complementIso_smul_eq_extensor_join`; d=3 line stays as wrapper). The
+          **`⋀^{d−1}W`-is-a-line** route: point-join (`d−1` points) + panel-meet (**2**
+          normals), both in `range(⋀^{d−1}W ↪)` a line, proportional. Consumes the new leaf
+          above + the THREE LANDED `_grade` bricks (`extensor_mem_range_…_grade`,
+          `exists_smul_eq_…_grade`, `exteriorPower_map_subtype_injective_grade`). Zero new count.
 - [ ] **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
       Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`) to a
       `Fin d`-indexed augment. Graph-free over `ScrewSpace k`; no `d=3` content.
@@ -141,8 +158,18 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
 
 ## Blockers / open questions
 
-The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
+The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
+- **OD-8 — FLAGGED (the one open piece of the CHAIN-3 finish; do NOT pre-commit).**
+  The panel-meet range-membership `complementIso(k:=d−1)(j:=2)⟨n_u∧n',_⟩ ∈
+  range(⋀^{d−1}W ↪)` for `W = {n_u,n'}^⊥`. In hand: the general
+  `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` gives the *annihilation*; the
+  upgrade to *membership* has two candidate routes — (α) a small `complementIso`-image
+  API leaf (`complementIso` of `⋀²(span{n_u,n'})` lands in `⋀^{d−1}({n_u,n'}^⊥)`,
+  cleanest, geometric) vs. (β) annihilator-=-range by a dimension match. **Neither
+  needs a new mathlib-level fact** (the count is the LANDED `finrank_exteriorPower
+  _self_eq_one`, not a `finrank_sup`). Recommend α first, fall back to β; settle at
+  build. Full text: `notes/Phase23-design.md` §"CHAIN"(g).
 - **OD-6 — DECIDED: five leaves within ONE sub-phase 23b** (no separate duality
   letter). The arm-realization engine they feed is already general-`k`, so
   neither hard core stands alone as a deliverable. Split at contact only if
@@ -177,24 +204,33 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = `finrank_sup_range_wedgeFixedLeft` at general ambient**
-(`Meet.lean`, still inside CHAIN-3's last brick `complementIso_smul_eq_extensor_join`;
-the `wedgeFixedLeft` building block + its three facts and now the decomposable
-intersection `inf_range_wedgeFixedLeft` are all lifted `Fin 4` → `{d} (Fin (d+1))`,
-joining the `toDual=Gram` bridge / membership brick / proportionality engine from prior
-sittings; still no ENTRY-contract dependency). The genuinely-new count (the "real new
-lemma"):
-- `finrank_sup_range_wedgeFixedLeft` (`Meet.lean:~1131`, the `dim Φ̃ = 3+3−1 = 5`
-  count) → a `(d−1)`-summand inclusion–exclusion at general `d` (the panel `Π(u)` has
-  `d−1` normals, not 2). The `wedgeFixedLeft` range count `= d` and the decomposable
-  intersection (`= span{a∧b}`, `finrank 1`) it consumes are now general; the new
-  content is the multi-summand inclusion–exclusion shape (`Fin 4` 2-summand `omega`
-  closer → a `(d−1)`-fold sum). NOT a verbatim lift — the recon's flagged new lemma.
-Then `extensor_toDual_extensor_eq_zero_of_perp` (`Meet.lean:~1027`, `Fin 2`/`Fin 4`)
-and the assembly `complementIso_smul_eq_extensor_join` (`Meet.lean:~1170`): the
-`dim Ω = D − dim Φ̃ = D − (D−1) = 1` count + `complementIso (k:=d−1)(j:=d−1)`. The
-`toDual=Gram` brick is in hand to feed the Gram-determinant orthogonality (fact 2)
-at general grade. Completing all of this closes CHAIN-3 and feeds CHAIN-4's discriminator.
+**Next buildable sub-step = `complementIso_extensor_mem_range_map_subtype`** — the
+panel-meet range-membership, the **one genuinely-new leaf** of the CHAIN-3 finish
+(`Meet.lean`; still no ENTRY-contract dependency). The CHAIN-3-finish recon
+(`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17, source-verified against KT
+§6.4.1/§6.4.2 + the landed bodies) **overturned the prior pin** and corrected the
+geometry:
+- **`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` do
+  NOT generalize and are NOT needed.** They are the d=3-only `Φ̃ = dualAnnihilator` /
+  `dim Ω = 1` route; `Φ̃` is built from the **2** line-normals, so `dim Ω = C(d−1,2)`,
+  which is `1` only at `d=3`. The d=3 lemmas stay as the GREEN d=3 route — do NOT touch.
+- **The route that DOES generalize: `⋀^{d−1}W`-is-a-line.** Point-join (the `(d−1)`-
+  extensor of the **`d−1`** points spanning the line `L`) and panel-meet (`complementIso
+  (k:=d−1)(j:=2)` of the **2** hyperplane normals — `j=2`, not `j=d−1`) both lie in
+  `range(⋀^{d−1}W ↪ ⋀^{d−1}ℝ^{d+1})` for `W = span(L) = {n_u,n'}^⊥` (`dim W = d−1`), a
+  **line** (`finrank_exteriorPower_self_eq_one`). This is exactly what the THREE landed
+  `_grade` bricks (`extensor_mem_range_…_grade`, `exists_smul_eq_…_grade`,
+  `exteriorPower_map_subtype_injective_grade`) were built for — they have NO consumers in
+  tree (grep-confirmed), landed forward for this.
+
+Leaf sequence (§(f)): (1) `complementIso_extensor_mem_range_map_subtype` — the new leaf,
+route OPEN (OD-8: α Hodge-direct vs. β annihilator=range; in hand: the general
+`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` gives the *annihilation*, the upgrade
+to *membership* is the call); then (2) `extensor_join_proportional_complementIso_meet` —
+the assembly (zero new count, consumes (1) + the three bricks); (3) the d=3 wrapper stays
+green. Closing (1)+(2) closes CHAIN-3 and feeds CHAIN-4's discriminator. **OD-8 is the
+only genuinely-open piece — flagged, not pre-committed; neither route needs a new
+mathlib-level fact.**
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -235,6 +271,17 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3-finish recon (2026-06-17, docs-only): the duality finish uses the
+  `⋀^{d−1}W`-is-a-line route, NOT the d=3 `Φ̃` route — overturning the prior pin.**
+  Source-verified: a line `L` has **2** normals at every `d` (not `d−1`) and **`d−1`**
+  points; point-join + panel-meet both lie in the **line** `range(⋀^{d−1}W ↪)`
+  (`W = span L`), what the THREE landed `_grade` bricks (no in-tree consumers) were built
+  for. **Withdrawn** (dead d=3-only, `dim Ω = C(d−1,2) = 1` ⟺ `d=3`; kept green as the d=3
+  wrapper): generalizing `finrank_sup_range_wedgeFixedLeft` /
+  `extensor_toDual_extensor_eq_zero_of_perp`. One open piece: the panel-meet range-
+  membership (OD-8). Verified buildable: both `_grade` bricks instantiate at `(d := k+1)`
+  to the `k`-parametric assembly (panel-meet `complementIso(k:=d−1)(j:=2)`, `j=2`). Full
+  recon + signatures: `notes/Phase23-design.md` §"CHAIN"(f)/(g).
 - **CHAIN-3 `inf_range_wedgeFixedLeft` (decomposable intersection): ambient-generic
   verbatim lift, implicit `{d}`, no `d=3` instance.** `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} =
   span{a∧b}` lifted `Fin 4` → ambient `{d} (Fin (d+1))` with the proof body verbatim:

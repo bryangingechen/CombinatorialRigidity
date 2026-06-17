@@ -755,7 +755,7 @@ isolate as the new argument. Source-verified per-decl:
 | `case_III_claim612` | `Claim612.lean` | `Fin 4`/`ScrewSpace 2`, the six-join existential via `span_omitTwoExtensor_eq_top` (general `k`, landed Leaf 2) + the join↔meet duality | re-state at `ScrewSpace (d−1)`/`Fin (d+1)`; **N1 brick `span_omitTwoExtensor_eq_top` already general** |
 | `omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`, `exists_independent_perp_pair` | `Claim612.lean:482/283/319` | `Fin 4`-pinned incidence/extensor bricks (dispatch-internal, 23a moved to CHAIN) | re-state at `Fin (d+1)` (mechanical; the `Fin 4`-arity geometry → `Fin (d+1)`) |
 | `extensor_mem_range_map_subtype_of_mem`, `exists_smul_eq_of_mem_range_map_subtype` | `Meet.lean:648/676` | `W : Submodule ℝ (Fin 4 → ℝ)`, `⋀[ℝ]^2`, `finrank_exteriorPower_two_eq_one`, `finrank(range)=2.choose 2=1` | **re-state at** `⋀[ℝ]^{d−1}(Fin (d+1)→ℝ)` with `finrank(⋀^{d−1}W)=(dim W choose d−1)` (W of `dim = d−1` ⟹ `=1`); the route is general mathlib, the lemmas re-state at concrete grade |
-| `complementIso_smul_eq_extensor_join` | `Meet.lean:1075` | `n_u n' pi pj : Fin 4 → ℝ`, `complementIso(k:=2)(j:=2)`, `Φ̃ = wedgeFixedLeft n_u ⊔ wedgeFixedLeft n'` `dim 5`, `Ω = dualAnnihilator Φ̃` `dim 1`, `extensor ![…]` (2-extensors) | re-state at `⋀^{d−1}(ℝ^{d+1})`: `pi…` = `d−1` points, `n_u n'` → the `d−1` panel normals of `Π(u)`; the `dim Ω = 1` count generalizes (`finrank ⋀^{d−1} = D`, `Φ̃` codim 1) |
+| `complementIso_smul_eq_extensor_join` | `Meet.lean:1075` | `n_u n' pi pj : Fin 4 → ℝ`, `complementIso(k:=2)(j:=2)`, `Φ̃ = wedgeFixedLeft n_u ⊔ wedgeFixedLeft n'` `dim 5`, `Ω = dualAnnihilator Φ̃` `dim 1`, `extensor ![…]` (2-extensors) | **re-prove** at `⋀^{d−1}(ℝ^{d+1})` via the **`⋀^{d−1}W`-is-a-line** route (§(f), NOT the `Φ̃` lift): `n_u, n'` stay **2** normals (`complementIso(k:=d−1)(j:=2)`), `pi…` → **`d−1`** points; both members in `range(⋀^{d−1}W ↪)`, a line. `Φ̃`/`Ω`/`finrank_sup_range` route is **dead at `d≥4`** — keep d=3 body as the wrapper |
 | `exteriorPower_basis_toDual_eq_pairingDual_comp_map` | `Meet.lean:866` | `(Pi.basisFun ℝ (Fin 4)).exteriorPower n` — `Fin 4`-pinned base | re-state at `Fin (d+1)` (the proof is `Module.Basis.ext` + `pairingDual_ιMulti_ιMulti`, dimension-generic) |
 | `exists_extensor_eq_panelSupportExtensor` | `PanelLayer.lean` (23a Leaf-1b DROP) | the `⋀²ℝ⁴` point-join↔panel-meet bridge consumer; **the M4-forget unblocker** | lift **with** the duality finish (the four-producer lift, §"CHAIN"(d)) |
 | `case_III_arm_realization`, `_M2`, `_M3` | `Arms.lean:72`, `Relabel.lean` | **ALREADY general `k`** (`q : α × Fin (k+2)`, `ScrewSpace k`, `screwDim k`) — the per-candidate certify-then-rebase + relabel transport | **reuse verbatim** as the per-candidate engine the `d`-chain dispatch feeds |
@@ -851,12 +851,18 @@ signature depends on the ENTRY chain-data contract.
   (`exteriorPower.finrank_eq`; at `dim W = d−1` this is `1`). The route is
   general mathlib (`exteriorPower.map_injective_field`, `map_apply_ιMulti`,
   `pairingDual_ιMulti_ιMulti`, `topEquiv`/`pairingDualEquiv` mirrors); the
-  `dim Φ̃ = D−1` / `dim Ω = 1` count generalizes from `wedgeFixedLeft`'s range
-  count. **Build LAZILY at concrete grade `(d−1, d+1)` — do NOT build a general
-  Hodge-star / regressive-product API (KT never needs it; §1/§"CHAIN" hard
-  core 2).** *Risk:* `finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` at
-  `d=3`) is the most `d=3`-specific count; its general form (`dim` of the sum
-  of `d−1` fixed-vector-wedge ranges) is the real new lemma here.
+  the proportionality lives in the line `⋀^{d−1}W` (`dim W = d−1`). **Build
+  LAZILY at concrete grade `(d−1, d+1)` — do NOT build a general Hodge-star /
+  regressive-product API (KT never needs it; §1/§"CHAIN" hard core 2).**
+  **CORRECTED by the CHAIN-3-finish recon §(f) (2026-06-17):** the route is the
+  **`⋀^{d−1}W`-is-a-line** route (point-join + panel-meet both in `range(⋀^{d−1}W
+  ↪)`, a line), NOT the d=3 `Φ̃ = dualAnnihilator` route. The panel-meet is
+  `complementIso (k:=d−1)(j:=2)` (`j=2` — a line has **2** normals at every `d`,
+  not `d−1`). **`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq
+  _zero_of_perp` do NOT generalize and are NOT needed** (they are the d=3-only
+  `Φ̃`/`Ω` route, sound only because `dim Ω = C(d−1,2) = 1` at `d=3`). The one
+  genuinely-new leaf is the **panel-meet range-membership** (OD-8). Pinned
+  signatures + leaf sequence: §(f); the open route choice: OD-8 §(g).
 - **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
   (`Claim612.lean`). Re-state `exists_homogeneousIncidence_of_normals`
   (the `d+1`-point incidence pattern of eq. 6.67), the dispatch-internal
@@ -965,6 +971,179 @@ predicted — see (e) OD-7 for the fold-vs-successor decision. What CHAIN does
   (triangle floor handled inline). Whether CHAIN's dispatch can assume the chain
   branch (ENTRY discharging the cycle branch separately) or must handle a degenerate
   chain is an ENTRY-contract question — flag at CHAIN open, do not pre-commit.
+
+### (f) CHAIN-3-finish recon — the `⋀^{d−1}W`-is-a-line route (corrects the `Φ̃` pin)
+
+**Status:** detailed-build recon, docs-only, 2026-06-17, source-verified against
+KT §6.4.1/§6.4.2 (eqs. 6.45–6.67 read end-to-end, page 698 the eq.-6.67 finish)
++ the landed `Meet.lean` bodies + the three already-landed `_grade` bricks. This
+sub-section settles the route for CHAIN-3's two remaining pieces
+(`finrank_sup_range_wedgeFixedLeft` and `complementIso_smul_eq_extensor_join` at
+general `d`) and **overturns the prior pin** (checklist + *Hand-off*) on both.
+
+**The geometry, corrected (the load-bearing fact the prior pin got wrong).** The
+per-line duality is about a single line `L = Lᵢ` — KT's `(d−2)`-dimensional
+affine subspace, homogeneous span `dim = d−1` in `ℝ^{d+1}`. Two counts follow
+and they are **fixed across `d`, not growing**:
+- **Normals: exactly 2 at every `d`.** `dim L^⊥ = (d+1) − (d−1) = 2`. The panel-
+  meet is the meet of the **2** hyperplanes through `L`: `complementIso(extensor
+  ![n_u, n']) ∈ ⋀^{d−1}`, input grade `j = 2` (NOT `j = d−1`), output grade
+  `(d+1) − 2 = d−1`. *The prior pin's `complementIso (k:=d−1)(j:=d−1)` is wrong;*
+  it is `complementIso (k:=d−1)(j:=2)` (`k=2,j=2` at `d=3` by `d−1=2`, masking
+  the error). The d=3 `exists_independent_perp_pair` (find the 2nd normal in
+  `L^⊥`) lifts cleanly (ambient `Fin (d+1)`, point family `Fin (d−1)`; the common
+  perp has `dim ≥ 2`, so a 2nd independent normal always exists).
+- **Points: `d−1` (not 2).** `L` is spanned by `d−1` points; the point-join is
+  the **`(d−1)`-extensor** `extensor (p : Fin (d−1) → ℝ^{d+1}) ∈ ⋀^{d−1}` (KT
+  p. 698 verbatim: *"any `(d−1)`-extensor obtained from `d−1` points"*). At `d=3`,
+  `d−1 = 2` — the two points `![pᵢ, pⱼ]` of the d=3 code.
+
+Both the point-join and the panel-meet are grade `d−1` (NOT grade 2 — at `d=3`
+the coincidence `d−1 = 2` collapses them). For `d ≥ 4` a grade-2 point-join and a
+grade-`(d−1)` panel-meet **cannot** be proportional — so the d=3 framing where
+both are grade-2 is a `d−1=2` artifact.
+
+**The route that DOES generalize (and the dead-end it replaces).** Both members
+are the Plücker coordinate of the same `(d−1)`-dim subspace `W = span(L) =
+{n_u, n'}^⊥`, i.e. both lie in **`⋀^{d−1}W`, which is a line** (`dim ⋀^{d−1}W =
+(d−1).choose (d−1) = 1`). With the point-join nonzero, the two are proportional.
+This is **exactly the route the three already-landed `_grade` bricks were built
+for** (they have NO consumers in tree — grep-confirmed — they were landed
+*forward* for this): `extensor_mem_range_map_subtype_of_mem_grade` (point-join ∈
+`range(⋀^{d−1}W ↪ ⋀^{d−1}ℝ^{d+1})`), `exteriorPower_map_subtype_injective_grade`
++ `finrank_exteriorPower_self_eq_one` (that range is a line), and
+`exists_smul_eq_of_mem_range_map_subtype_grade` (two members of it are
+proportional). The `exists_smul_…_grade` docstring already says the
+proportionality *"lives in `⋀^{d−1}(ℝ^{d+1})` itself, so no pull-back … is
+needed."*
+
+**Consequence — the two prior-pinned leaves are DEAD ENDS at general `d`:**
+- **`finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` count) does NOT
+  generalize and is NOT needed.** Its `Φ̃ = n_u ∧ ℝ⁴ ⊔ n' ∧ ℝ⁴` /
+  `Ω = dualAnnihilator Φ̃` machinery is the **d=3-only "route A-corrected"
+  (Phase 22f)**. `Φ̃` is built from the **2** normals, so `dim Φ̃ =
+  dim(span{n_u,n'} ∧ ℝ^{d+1}) = C(d+1,2) − C(d−1,2)`, giving `dim Ω = C(d−1,2)`,
+  which is `1` **only at `d=3`** (`C(2,2)=1`); for `d≥4` it is `> 1`, so the
+  `Ω`-is-a-line argument breaks. The prior pin's "`(d−1)`-summand inclusion–
+  exclusion / `A ∧ ℝ^{d+1}` codimension `D−1`" both rest on the false `dim A =
+  d−1` (`A` has dim 2, not `d−1`). **Do not generalize this lemma.** Leave the
+  d=3 `finrank_sup_range_wedgeFixedLeft` / `inf_range_wedgeFixedLeft` /
+  `wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` /
+  `complementIso_toDual_extensor_eq_zero_of_shared_vector` as the green d=3
+  route (the `d=3` `complementIso_smul_eq_extensor_join` keeps using them).
+- **`extensor_toDual_extensor_eq_zero_of_perp` does NOT lift either** — it is the
+  Gram-determinant orthogonality feeding the dead `Ω`-route; the general-`d`
+  finish never calls it.
+
+**The one genuinely-new leaf: the panel-meet range-membership** `complementIso
+(k:=d−1)(j:=2) ⟨extensor ![n_u, n'], _⟩ ∈ range(⋀^{d−1}W ↪ ⋀^{d−1}ℝ^{d+1})` for
+`W = {n_u, n'}^⊥` (`dim W = d−1`). This is the never-completed **N3b-2b-α** (at
+`d=3` the assembly bypassed it via the `Φ̃`/`Ω` route, so it was *never proved at
+any `d`*). Geometrically true (the complement of the decomposable `n_u ∧ n'` is
+the `(d−1)`-extensor of `(n_u ∧ n')^⊥ = W`). **Two candidate sub-routes, OD-8
+below — flagged, not pre-committed.** What IS in hand: the general
+`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` ({j} hj, LANDED) gives
+`toDual`-*annihilation* of the panel-meet by any `(d−1)`-extensor sharing a
+factor with `n_u ∧ n'`; range-*membership* is the upgrade.
+
+**Pinned signatures (the CHAIN-3 finish).**
+**Phrase `k`-parametrically (`k = d−1`), ambient `Fin (k+2)`, conclusion `⋀^k`.**
+This matches the all-`k` engine convention (`ScrewSpace k`, `complementIso (k:=…)`,
+`screwDim k`) AND **dodges a real cast trap** (verified in scratch): with `k` written
+as `d−1`, the ambient `Fin ((d−1)+2)` is NOT defeq to `Fin (d+1)` for a *variable* `d`
+(`(d−1)+2` reduces only under `d ≥ 1`), so `extensor n` (typed `Fin (d+1)`) clashes with
+`complementIso (k:=d−1)`'s `Fin ((d−1)+2)` domain. Writing the lemma in `k` with ambient
+`Fin (k+2)` makes `k+2−2 = k` and the domains defeq; the `d=3` wrapper instantiates
+`k := 2` (then `k+2 = 4 = 3+1` defeq). The `d−1` points spanning `L`, with `k = d−1`, are
+the family `p : Fin k → Fin (k+2) → ℝ`; the point-join `extensor p ∈ ⋀^k (Fin (k+2))` — grade
+`k`, matching the panel-meet's output grade `(k+2)−2 = k`. ✓
+1. The general-`d` per-line duality (replaces the d=3
+   `complementIso_smul_eq_extensor_join`; the d=3 line becomes the `k=2` wrapper):
+   ```
+   theorem extensor_join_proportional_complementIso_meet {k : ℕ}
+       (n : Fin 2 → Fin (k + 2) → ℝ)         -- the two line-normals n_u, n'
+       (p : Fin k → Fin (k + 2) → ℝ)         -- the k = d−1 points spanning L
+       (hp  : LinearIndependent ℝ p)         -- so the point-join ≠ 0
+       (hpair : LinearIndependent ℝ n)
+       (hperp : ∀ i j, (Pi.basisFun ℝ (Fin (k+2))).toDual (p i) (n j) = 0) :
+       ∃ c : ℝ, c • (complementIso (k := k) (j := 2) (by omega)
+           ⟨extensor n, extensor_mem_exteriorPower n⟩)
+         = (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k+2) → ℝ))
+   ```
+   Body: set `W = {n_u,n'}^⊥` (`dim W = (k+2)−2 = k` by rank–nullity on the 2
+   functionals `⟨·,n_u⟩,⟨·,n'⟩`, `= k` since the `k` independent points `p` lie in it);
+   point-join ∈ `range(⋀^k W)` by `extensor_mem_range_map_subtype_of_mem_grade`
+   (each `p i ∈ W` from `hperp`; **note** that brick is stated at grade `d−1`/ambient
+   `d+1` — its `k`-form is `(d := k+1)`, `d−1 = k`, `d+1 = k+2`, defeq); panel-meet ∈
+   `range(⋀^k W)` by the new leaf (2); point-join ≠ 0 by `hp` +
+   `extensor_ne_zero_iff_linearIndependent`; close by
+   `exists_smul_eq_of_mem_range_map_subtype_grade` (its `(d := k+1)` form). The d=3
+   `complementIso_smul_eq_extensor_join` becomes `:= …_meet (k := 2) …` (`k = 2`,
+   `Fin 4`, the 2-point case `p = ![pi, pj]`).
+2. The new range-membership leaf (the one genuinely-new piece):
+   ```
+   theorem complementIso_extensor_mem_range_map_subtype {k : ℕ}
+       (n : Fin 2 → Fin (k + 2) → ℝ) (W : Submodule ℝ (Fin (k + 2) → ℝ))
+       (hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun ℝ (Fin (k+2))).toDual w (n j) = 0)
+       (hWdim : Module.finrank ℝ W = k) :
+       (complementIso (k := k) (j := 2) (by omega)
+           ⟨extensor n, extensor_mem_exteriorPower n⟩)
+         ∈ LinearMap.range (exteriorPower.map k W.subtype)
+   ```
+
+**Buildable-leaf sequence (CHAIN-3 finish), dependency-ordered:**
+1. *(no-op)* confirm the d=3 `finrank_sup_range_wedgeFixedLeft` /
+   `extensor_toDual_extensor_eq_zero_of_perp` stay as the **green d=3** route —
+   do NOT touch (the prior checklist's "generalize these" items are withdrawn).
+2. `complementIso_extensor_mem_range_map_subtype` — **the new leaf** (route per
+   OD-8). Consumes the general `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`
+   (LANDED) + `finrank_exteriorPower_self_eq_one` (LANDED).
+3. `extensor_join_proportional_complementIso_meet` — the assembly; consumes (2) +
+   the three landed `_grade` bricks. **Zero new count work.**
+4. The `d=3` wrapper (zero regression): the existing
+   `complementIso_smul_eq_extensor_join` (the `Φ̃`-route body) stays as-is and the
+   d=3 discriminator keeps calling it; OR re-point the discriminator at the new
+   general lemma's `d=3` instance once (2)/(3) land. *Recommend keeping the d=3
+   body* (it is green and the new route needs (2) first) — re-point is a CHAIN-4
+   decision, not forced here.
+
+**Hands to CHAIN-4.** CHAIN-4's discriminator
+(`exists_complementIso_ne_zero_of_homogeneousIncidence`, the contrapositive that
+some `Mᵢ` has full rank) consumes the per-line duality (3) the way the d=3
+`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` consumes the d=3
+`complementIso_smul_eq_extensor_join`. The eq.-(6.67) `D`-span (the `d+1`-point /
+Lemma-2.1 argument, which IS the `dim = D` count — and is **separate** from the
+per-line `Φ̃`) stays CHAIN-4's, gated by **OD-4** (the alg-independence route,
+still flagged open).
+
+### (g) CHAIN-specific open decision OD-8 (the panel-meet range-membership route)
+
+- **OD-8 — FLAGGED (genuinely open; the one design call the CHAIN-3 finish
+  cannot settle from the source alone).** `complementIso (j:=2) ⟨n_u ∧ n', _⟩ ∈
+  range(⋀^{d−1}W ↪)` for `W = {n_u, n'}^⊥`. In hand:
+  `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` gives the *annihilation*
+  (the panel-meet is `toDual`-killed by every `(d−1)`-extensor sharing a factor
+  with `n_u ∧ n'`). Two candidate routes to upgrade annihilation → membership:
+  - **(α) Hodge/complement-direct.** Prove `complementIso (k:=d−1)(j:=2)` carries
+    `⋀²(span{n_u,n'})` into `⋀^{d−1}({n_u,n'}^⊥) = ⋀^{d−1}W` — a "the complement
+    of a decomposable lives in the exterior power of its orthogonal complement"
+    fact. Cleanest geometrically; needs a `complementIso`-image-of-`⋀²S` lemma
+    not currently in `Meet.lean` (a small new `complementIso` API leaf, NOT a new
+    mathlib-level fact — built from the landed `complementIso_toDual` dictionary).
+  - **(β) annihilator = range, via the perfect pairing.** `range(⋀^{d−1}W ↪)` is
+    a line (LANDED bricks); show it *equals* the annihilator subspace the
+    panel-meet is known (by the in-hand annihilation) to lie in, by a dimension match
+    (`dim range = 1 = dim {Z : ⋀^{d−1} | Z ⊥ …}`). Reuses the landed annihilator-
+    count machinery but needs the right "`⋀^{d−1}W` = annihilator of `⋀^{d−1}` of
+    the `wedge-with-n` images" identification — closer to the d=3 `Φ̃` idea but
+    in the correct grade `d−1` with `dim W = d−1`.
+  - *Recommendation:* (α) is the cleaner target (a 1–2-decl `complementIso` API
+    addition); attempt (α) first, fall back to (β). **Neither needs a new
+    mathlib-level fact** (clause (ii) clear: no missing `dim(A∧V)` lemma, no
+    Hodge-star API — the count is the LANDED `finrank_exteriorPower_self_eq_one`,
+    not a `finrank_sup`). The decision is the *internal* `complementIso`-image
+    characterization, settled at build. **This is the only genuinely-open piece
+    of the CHAIN-3 finish.**
 
 ---
 
