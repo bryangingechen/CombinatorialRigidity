@@ -1116,6 +1116,24 @@ Lemma-2.1 argument, which IS the `dim = D` count — and is **separate** from th
 per-line `Φ̃`) stays CHAIN-4's, gated by **OD-4** (the alg-independence route,
 still flagged open).
 
+**Coordinator KT-route check (2026-06-17, against KT p. 697–698, eqs. 6.65–6.67
+read end-to-end).** Confirmed the `⋀^{d−1}W`-is-a-line route IS KT's argument, not
+a convenient substitute. KT proves (6.65) some `Mᵢ` is full rank by: (6.66) `Mᵢ`
+fails full rank ⟺ `r ⊥ span C(Lᵢ)`, where `C(Lᵢ)` is *the `(d−1)`-extensor of the
+flat `Lᵢ`*; (6.67) so none is full rank ⟺ `r ⊥ span(⋃ᵢ C(Lᵢ))`, and
+`dim span(⋃ C(Lᵢ)) = C(d+1, d−1) = D` via `d+1` affinely-independent points (any
+`(d−1)`-extensor of `d−1` of them is some `C(Lᵢ)`) **by Lemma 2.1**. The faithfulness
+point: **KT writes `C(Lᵢ)` agnostically** — as the *meet* of the 2 panels cutting
+out `Lᵢ` (the rank side, 6.66 / CHAIN-2) AND as the *join* of `d−1` points spanning
+`Lᵢ` (the `D`-span side, 6.67 / CHAIN-4). **CHAIN-3's
+`extensor_join_proportional_complementIso_meet` formalizes the join=meet equality KT
+leaves implicit** — the one step the Lean must spell out (a BlueprintExposition-grade
+node). The withdrawn `Φ̃`/`finrank_sup_range`/`Ω = dualAnnihilator` machinery is a
+`d=3`-only *formalization* artifact (Phase 22f's "route A-corrected"), **not** in KT
+— KT works directly with the `C(Lᵢ)` extensors, so the re-route moves the
+formalization *toward* KT. (The per-line rank↔orthogonality ±r chain, 6.66, is
+CHAIN-2; the `D`-span, 6.67's `d+1` points + Lemma 2.1, is CHAIN-4 / OD-4.)
+
 ### (g) CHAIN-specific open decision OD-8 (the panel-meet range-membership route)
 
 - **OD-8 — FLAGGED (genuinely open; the one design call the CHAIN-3 finish
