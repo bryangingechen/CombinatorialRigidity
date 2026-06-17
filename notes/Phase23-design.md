@@ -529,13 +529,18 @@ spine's `hn`/`hD` hypotheses must thread a `k ≥ 1` floor (the body-bar regime
 Smallest-buildable commits, dependency-ordered. Each re-greens its file(s)
 on the still-green tree (the lift is additive/restating, not deleting).
 
-- **Leaf 0 — `screwDim` arithmetic kit** (`RigidityMatrix/Basic.lean`).
-  Add `one_le_screwDim {k} : 1 ≤ screwDim k`,
+- **Leaf 0 — `screwDim` arithmetic kit** (`RigidityMatrix/Basic.lean`). **DONE
+  (c2669b3).** Added `one_le_screwDim {k} : 1 ≤ screwDim k`,
   `two_le_screwDim {k} (hk : 1 ≤ k) : 2 ≤ screwDim k` (the floor-conditioned
-  `≥2`), and `screwDim_sub_two_le_mul {k m} (hk) (hm : 1 ≤ m) : screwDim k - 2 ≤ screwDim k * (m-1)`
+  `≥2`), and `screwDim_sub_two_le_mul {k m} (hm : 2 ≤ m) : screwDim k - 2 ≤ screwDim k * (m-1)`
   (the `_nested_rank_lower` l.641/643 `decide` replacements). Tiny `Nat.choose`
   lemmas; no carrier content. Touches Basic only; no consumers yet, so
-  trivially green.
+  trivially green. **Two corrections to this recon spec at build:**
+  `screwDim_sub_two_le_mul` takes **`2 ≤ m`**, not the `1 ≤ m` originally
+  written — the latter is *provably false* at `m = 1` (RHS `= D·0 = 0 < D−2`
+  for `k ≥ 1`); the call site (`case_III_nested_rank_lower`) has `2 ≤ |V'|` in
+  scope. And its `(hk)` is unused (`D−2 ≤ D = D·1 ≤ D·(m−1)` needs nothing
+  about `k`), so dropped.
 - **Leaf 1 — `Fin 4` panel-incidence geometry → `Fin (k+2)`** (`PanelLayer.lean`,
   ll.357–838 band). Lift `exists_two_perp_of_linearIndependent_normals`,
   `exists_three_perp`, `exists_linearIndependent_extensor_pair_perp`,
