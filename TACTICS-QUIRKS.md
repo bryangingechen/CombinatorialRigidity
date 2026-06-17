@@ -9,14 +9,78 @@ For **golfing / improvement** patterns (turning a verbose proof into
 an idiomatic one), see `TACTICS-GOLF.md` instead — read at cleanup
 time, not first-draft.
 
-> **`CombinatorialRigidity/CLAUDE.md`** carries an inline
-> symptom-indexed pointer table at the top — when a build fails,
-> that table is the first place to skim. The table's bullets point
-> at the sections below for the fix.
+> The **Symptom index** just below is the first place to skim when a
+> build fails — scan the symptom, jump to the named §.
+> `CombinatorialRigidity/CLAUDE.md` points here.
 
 > **Friction vs. idiom.** Cross-cutting rules — "if you see pattern
 > X, prefer Y" — live here. One-shot frictions (a specific lemma we
 > needed and mirrored) live in `notes/FRICTION.md`.
+
+## Symptom index (scan this first on a build failure)
+
+When a `lake build` fails with an unfamiliar Lean error, scan these symptoms
+and jump to the named § below for the fix (the § titles are listed under
+*Sections*). **No match here, or the same issue bites a second time in one
+session? Grep `notes/FRICTION.md` (and `FRICTION-archive.md`)** for a keyword
+from the error or the API you're fighting before brute-forcing another
+attempt — FRICTION is written at friction-review time precisely so a repeat
+encounter doesn't re-pay the discovery cost, and many entries carry the exact
+failing pattern and the working fix.
+
+- *"motive is not type correct"* after `simp only` citing a hypothesis not in the goal → § 5
+- *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` / `subst` between two free vars → § 4
+- `interval_cases (Fintype.card V)` won't close by `rfl` → § 7
+- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2)
+- `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
+- `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
+- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8
+- *"Application type mismatch"* on `congr_fun h` over `EuclideanSpace` → § 9; over `LinearMap`/`Module.Dual`/bundled morphisms → § 12
+- `(deterministic) timeout at whnf` / *"Invalid `⟨...⟩`"* after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V` over `[Finite V]` → § 14
+- `simp_all` confusing residual with a hypothesis you expected gone → § 10
+- `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a match → § 11
+- `set V₊` / `let V₊` (subscript `₊ ₋ ₌`) → *"expected token"* → § 13
+- *"typeclass … stuck: Semiring/Monoid/Module ?m"* on a `let`/`set` of a `Polynomial` with bare `X`/`0`/`1` → § 15
+- *"MVar does not look like a recursive call"* / *"Unknown identifier `visited`"* / unused-`if h:` / *"failed to synthesize Fintype ι"* around `termination_by`/`decreasing_by` (`Finset.univ` measure) → § 16
+- *"Application type mismatch: heq has type X = some ⟨…⟩"* in a `some` branch of `match heq : … with` → § 17
+- *"rewrite … motive is not type correct"* on `rw [h]`, `h : D.field = …`, where a local's *type* references `D.field` → § 18
+- *"Application type mismatch"* / *"Did not find … pattern"* in a `case` after `induction … using funName.induct` on a function with `let` in its body → § 19
+- *"rewrite … motive is not type correct"* on `rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern endpoint, with a sibling walk holding that endpoint in its type → § 20
+- `ring` *"unsolved goals"* on `Σ + B = B + Σ'` with alpha-renamed `Finset.sum`s → § 21
+- *"failed to synthesize Decidable (a ≤ b)"* / *"DecidableRel"* / `fast_instance%` defeq, on a `LinearOrder.lift'` over a `SetLike` type → § 22
+- *"Invalid `meta` definition … consider `public meta import`"* on `#eval (decide P)` from a sibling `module` file → § 23
+- *"Type mismatch … `A ↔ ?` vs `A' ↔ …`"* on `refine h.trans ?_` / `Iff.trans` with `A'` only defeq to `A` → § 25
+- *"motive is not type correct"* / *"Did not find … `(?G ↾ ?E₀).IsLink`"* after `rw [deleteEdges]` (or any `.copy`-defined `Graph` op) → § 27
+- *"Did not find … pattern"* on `rw [if_pos rfl]` over a `(fun i ↦ if i = j then …) j` goal → § 28
+- *"unknown constant `WList.deleteEdges_isWalk_iff`"* / `simp` no-progress on `WList.IsClosed` / `rw [cons_edge]` on `.edgeSet`, lifting a graph cycle by edge-substitution → § 29
+- *"typeclass … stuck `(i : α) → Module ?m (?φ i)`"* on `def f : (α → W) →ₗ[ℝ] W := proj u - proj v` → § 30
+- *"typeclass … stuck `HSMul ?m W W`"* at `t • x` under an unascribed `∀ t, …` binder → § 31
+- *"Application type mismatch: x has type `Fin k → …`"* / *"numerals are data"* after `ext x` on a `Module.Dual ℝ (ScrewSpace k)` equation → § 32
+- *"rewrite … motive is not type correct"* on `rw [hsub]` (a `Submodule` eq) under `finrank ℝ ↥(…)` → § 33
+- *"Did not find … `?g (∑ …)`"* / *"AddMonoidHomClass (M ≃ₗ …)"* on `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate → § 34
+- *"Invalid field `foo`"* on `g.foo` where `Graph.foo` resolves by name but not by projection (file-local re-namespace) → § 35
+- *"… does not contain field `Exists.foo`"* on `h.foo`, where `h`'s *type* is a `def : Prop` unfolding to `∃ …` (a motive like `HasGenericFullRankRealization`) → § 35 (variant — call the pkg lemma by qualified name, `∃`-hyp positional)
+- *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
+- *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
+- `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper)
+- *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
+- `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
+- `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
+- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43
+- `rw [map_neg]` fails *"Did not find … `?f (-?a)`"* on `(-f) x` (negation on the *map*, not the argument) → § 44 (use `LinearMap.neg_apply`)
+- `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
+- *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
+- `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
+- *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`)
+- `Pi.single w y u` type-inference failure, or `▸` in a `fun h => …` lambda for `Pi.single_eq_of_ne` can't infer `h`'s type → § 49 (annotate: `(Pi.single w y : α → T) u`; `show u ≠ w from fun (h : u = w) => …`)
+- *"unknown identifier `Function.update_same`"* → § 50 (renamed to `Function.update_self` in current mathlib)
+- `Submodule.subtype_injective` elaborates as the identity in some call sites → § 50 (use `Subtype.coe_injective` directly)
+- *"unexpected token 'set_option'; expected 'lemma'"* when placing `set_option … in` between a docstring and `theorem` → § 51 (put `set_option … in` *before* the docstring)
+- `set_option linter.style.openClassical false in open Classical` breaks section-wide `Classical` availability → § 52 (use two standalone commands, not `in`-wrapped)
+- `set F := expr`; theorem applied to `F` returns `F.graph` (or another field) unfolded — downstream `rw [hField]` fails → § 53 (introduce `hFgraph : F.graph = G` explicitly, `rw [hFgraph] at …` first)
+- *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
+- `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
+- downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
 
 ## Sections
 

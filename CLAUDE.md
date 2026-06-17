@@ -48,8 +48,9 @@ Every session, in order:
    triggers `notes/CLAUDE.md` auto-load.
 4. **`CombinatorialRigidity/CLAUDE.md`** — auto-loads when an agent
    reads any `.lean` file under the subtree. Carries Lean-specific
-   discipline; its inline *Quirks index* is the first place to look
-   when a `lake build` fails with an unfamiliar error.
+   discipline; the symptom→§ *Symptom index* it points to (in
+   `TACTICS-QUIRKS.md`) is the first place to look when a `lake build`
+   fails with an unfamiliar error.
 5. **DESIGN.md** — only when you're about to question a
    cross-cutting decision. The default answer is *don't*.
 6. **`notes/FRICTION.md`** — optional skim for an open

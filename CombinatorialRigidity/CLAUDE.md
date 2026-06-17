@@ -18,85 +18,28 @@ see `../notes/CLAUDE.md`.
 In addition to the project-wide reading order in `../CLAUDE.md`:
 
 - **`../TACTICS-QUIRKS.md`** — rescue reference, symptom-indexed.
-  Skim the section titles at session start (they're enumerated in
-  the [Quirks index](#quirks-index-skim-this-first) below). When a
-  build fails with an unfamiliar Lean error, the inline index below
-  is the first place to look.
+  Its **Symptom index** (top of the file) is the first place to skim
+  when a build fails with an unfamiliar Lean error — scan the symptom,
+  jump to the named §. (The *Quirks index* pointer below routes here.)
 - **`../TACTICS-GOLF.md`** — golfing / improvement reference. Read
   at cleanup time (when the `simplify` skill fires, or when
   shrinking/polishing a proof before commit), **not** during
   first-draft writing.
 - **`../notes/FRICTION.md`** — optional skim for an open
   upstream-eligible item to land alongside the session's main work.
+- **`LEAN-OPS.md`** — read-on-demand Lean-source ops: the module-system
+  conversion how-to and the `apnelson1/Matroid` fork-editing protocol
+  (consult when converting a file or patching the fork — both rare).
 
-## Quirks index (skim this first)
+## Quirks index → `../TACTICS-QUIRKS.md` *Symptom index*
 
-When a `lake build` fails with an unfamiliar Lean error, scan these
-symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
-(The fix lives in §N — these are match-keys only.)
-
-**No match here, or the same issue bites a second time in one
-session? Grep `../notes/FRICTION.md` (and `FRICTION-archive.md`) for
-a keyword from the error or the API you're fighting** before
-brute-forcing another attempt. FRICTION is written at friction-review
-time precisely so a repeat encounter doesn't re-pay the discovery
-cost — but it only pays off if it's *read* on the second hit, not
-just appended to at commit time. Many entries carry the exact failing
-pattern and the working fix.
-
-- *"motive is not type correct"* after `simp only` citing a hypothesis not in the goal → § 5
-- *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` / `subst` between two free vars → § 4
-- `interval_cases (Fintype.card V)` won't close by `rfl` → § 7
-- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2)
-- `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
-- `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
-- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8
-- *"Application type mismatch"* on `congr_fun h` over `EuclideanSpace` → § 9; over `LinearMap`/`Module.Dual`/bundled morphisms → § 12
-- `(deterministic) timeout at whnf` / *"Invalid `⟨...⟩`"* after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V` over `[Finite V]` → § 14
-- `simp_all` confusing residual with a hypothesis you expected gone → § 10
-- `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a match → § 11
-- `set V₊` / `let V₊` (subscript `₊ ₋ ₌`) → *"expected token"* → § 13
-- *"typeclass … stuck: Semiring/Monoid/Module ?m"* on a `let`/`set` of a `Polynomial` with bare `X`/`0`/`1` → § 15
-- *"MVar does not look like a recursive call"* / *"Unknown identifier `visited`"* / unused-`if h:` / *"failed to synthesize Fintype ι"* around `termination_by`/`decreasing_by` (`Finset.univ` measure) → § 16
-- *"Application type mismatch: heq has type X = some ⟨…⟩"* in a `some` branch of `match heq : … with` → § 17
-- *"rewrite … motive is not type correct"* on `rw [h]`, `h : D.field = …`, where a local's *type* references `D.field` → § 18
-- *"Application type mismatch"* / *"Did not find … pattern"* in a `case` after `induction … using funName.induct` on a function with `let` in its body → § 19
-- *"rewrite … motive is not type correct"* on `rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern endpoint, with a sibling walk holding that endpoint in its type → § 20
-- `ring` *"unsolved goals"* on `Σ + B = B + Σ'` with alpha-renamed `Finset.sum`s → § 21
-- *"failed to synthesize Decidable (a ≤ b)"* / *"DecidableRel"* / `fast_instance%` defeq, on a `LinearOrder.lift'` over a `SetLike` type → § 22
-- *"Invalid `meta` definition … consider `public meta import`"* on `#eval (decide P)` from a sibling `module` file → § 23
-- *"Type mismatch … `A ↔ ?` vs `A' ↔ …`"* on `refine h.trans ?_` / `Iff.trans` with `A'` only defeq to `A` → § 25
-- *"motive is not type correct"* / *"Did not find … `(?G ↾ ?E₀).IsLink`"* after `rw [deleteEdges]` (or any `.copy`-defined `Graph` op) → § 27
-- *"Did not find … pattern"* on `rw [if_pos rfl]` over a `(fun i ↦ if i = j then …) j` goal → § 28
-- *"unknown constant `WList.deleteEdges_isWalk_iff`"* / `simp` no-progress on `WList.IsClosed` / `rw [cons_edge]` on `.edgeSet`, lifting a graph cycle by edge-substitution → § 29
-- *"typeclass … stuck `(i : α) → Module ?m (?φ i)`"* on `def f : (α → W) →ₗ[ℝ] W := proj u - proj v` → § 30
-- *"typeclass … stuck `HSMul ?m W W`"* at `t • x` under an unascribed `∀ t, …` binder → § 31
-- *"Application type mismatch: x has type `Fin k → …`"* / *"numerals are data"* after `ext x` on a `Module.Dual ℝ (ScrewSpace k)` equation → § 32
-- *"rewrite … motive is not type correct"* on `rw [hsub]` (a `Submodule` eq) under `finrank ℝ ↥(…)` → § 33
-- *"Did not find … `?g (∑ …)`"* / *"AddMonoidHomClass (M ≃ₗ …)"* on `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate → § 34
-- *"Invalid field `foo`"* on `g.foo` where `Graph.foo` resolves by name but not by projection (file-local re-namespace) → § 35
-- *"… does not contain field `Exists.foo`"* on `h.foo`, where `h`'s *type* is a `def : Prop` unfolding to `∃ …` (a motive like `HasGenericFullRankRealization`) → § 35 (variant — call the pkg lemma by qualified name, `∃`-hyp positional)
-- *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
-- *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
-- `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper)
-- *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
-- `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
-- `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
-- *"rewrite … Did not find an occurrence of the pattern"* on `rw [h]` whose LHS was `e`, after a `set X := e` ran between obtaining `h` and the `rw` (the `set` folded `e → X` in `h` too) → § 43
-- `rw [map_neg]` fails *"Did not find … `?f (-?a)`"* on `(-f) x` (negation on the *map*, not the argument) → § 44 (use `LinearMap.neg_apply`)
-- `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
-- *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
-- `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
-- *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`)
-- `Pi.single w y u` type-inference failure, or `▸` in a `fun h => …` lambda for `Pi.single_eq_of_ne` can't infer `h`'s type → § 49 (annotate: `(Pi.single w y : α → T) u`; `show u ≠ w from fun (h : u = w) => …`)
-- *"unknown identifier `Function.update_same`"* → § 50 (renamed to `Function.update_self` in current mathlib)
-- `Submodule.subtype_injective` elaborates as the identity in some call sites → § 50 (use `Subtype.coe_injective` directly)
-- *"unexpected token 'set_option'; expected 'lemma'"* when placing `set_option … in` between a docstring and `theorem` → § 51 (put `set_option … in` *before* the docstring)
-- `set_option linter.style.openClassical false in open Classical` breaks section-wide `Classical` availability → § 52 (use two standalone commands, not `in`-wrapped)
-- `set F := expr`; theorem applied to `F` returns `F.graph` (or another field) unfolded — downstream `rw [hField]` fails → § 53 (introduce `hFgraph : F.graph = G` explicitly, `rw [hFgraph] at …` first)
-- *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
-- `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
-- downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
+When a `lake build` fails with an unfamiliar Lean error, the
+**symptom → § lookup table** is the first place to skim — it lives at the
+top of `../TACTICS-QUIRKS.md` (*Symptom index*), the read-on-demand rescue
+file the fixes are in. **No match there, or the same issue bites a second
+time in one session? Grep `../notes/FRICTION.md` (and `FRICTION-archive.md`)**
+for a keyword from the error or the API you're fighting before brute-forcing
+another attempt — FRICTION often carries the exact failing pattern and fix.
 
 ## Starting a Lean-touching session
 
@@ -141,69 +84,24 @@ decidability, etc. — the authoritative list is in
   lex-sorts above any `YYYY-MM-DD` bound, so mathlib's
   `#clear_deprecations` date-range tooling can never delete the shim.
 
-## Module-system conversion
+## Module-system conversion → `LEAN-OPS.md`
 
 Project files use Lean's module system (`module` + `public import` +
-`@[expose] public section`) so downstream files see only an imported
-module's public interface, not its full elaboration state (as mathlib
-does). Landed in the Phase 8-perf pass across all 28 files; reference
-shape: `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
+`@[expose] public section`); the conversion is **done across all 28
+files**. The how-to — converting a file, the `module`/`@[expose]`/
+`public section` constraints, the zero `backward.privateInPublic` opt-ins
+(do not add one) — is in **`LEAN-OPS.md`** *Module-system conversion*;
+per-file dispositions are in `../notes/PERFORMANCE.md`.
 
-**Converting a file:** (1) blank line then bare `module` after the
-copyright block (the keyword *is* the marker — no `import`); (2) every
-`import X` → `public import X`; (3) an unnamed `@[expose] public section`
-between the `/-! … -/` doc block and the first declaration (closes
-implicitly at EOF; existing `namespace/end` pairs unchanged).
+## Editing the `apnelson1/Matroid` fork → `LEAN-OPS.md`
 
-**Constraints:**
-- A `module` file can only `import` (or `public import`) other `module`
-  files — build error *"cannot import non-`module` X"*. Mathlib is
-  ~98.6% converted; the holdout that matters is
-  `Matroid.Representation.Map` (`apnelson1/Matroid`), which keeps
-  `LinearRigidityMatroid.lean` non-`module`. Non-`module` files import
-  `module` files freely, so the rest of the project is unaffected.
-- `public section` hides `def` bodies for defeq *intra*-module too
-  (≈ `@[irreducible]`). Symptom: *"Not a definitional equality"* on a
-  `:= rfl` projection, or *"definitions were not unfolded … not
-  exposed"*. Fix: promote that `def` to `@[expose] def`. Default a new
-  file to `public section`; reach for `@[expose] public section` only
-  when most defs need exposure (cf. `Framework.lean`).
-- `set_option backward.privateInPublic` is debt: the project carries
-  **zero** opt-ins — do not add one. It's only needed when a `private`
-  decl sits in an *exposed* (`@[expose]`) body or is an attribute-tagged
-  (`@[simp]`/`@[fun_prop]`) helper resolved by name cross-module; the
-  cleaner fix is demoting the helper from `private`. (`theorem`/`lemma`
-  proof bodies are private scope regardless, so a private helper used
-  only there needs nothing.)
-
-Per-file `@[expose]`/`public` dispositions, the conversion audit, and
-the eliminated opt-ins: `notes/PERFORMANCE.md` *Module system* / *F3.4–F3.5*.
-
-## Editing the `apnelson1/Matroid` fork
-
-The project's `Matroid` dependency is **the user's fork**
-(`github.com/bryangingechen/Matroid`, pinned by `lake-manifest.json` +
-`lakefile.toml`, checked out at `.lake/packages/Matroid/`) — *not* upstream
-`apnelson1/Matroid` — maintained precisely so the project can patch it. **You
-are authorized to edit it** when a proof genuinely needs a `cycleMatroid` /
-`Matroid.Graph` / union API that does not yet exist there. (This is distinct
-from the *local* vendored mirror under `CombinatorialRigidity/Matroid/`, which
-is plain project source — see top-level `CLAUDE.md` *Vendored provenance*.)
-
-- **Prefer the project-side route first.** A new lemma in
-  `CombinatorialRigidity/Matroid/` or a `Mathlib/<exact path>` mirror travels
-  with the project and needs no cross-repo step. Reach into the fork only when
-  the project-side route genuinely can't reach the internals you need. (Often
-  it can: Phase 22's N4b looked like it needed a fork-side `cycleMatroid`-under-
-  collapse lemma, but the vendored `cycleMatroid_contract` applied directly.)
-- **Mechanics — it is a separate git repo.** Edit + commit under
-  `.lake/packages/Matroid/` in *that* repo's own history. Do **not** push the
-  fork or bump its `rev`/`inputRev` in `lake-manifest.json` / `lakefile.toml`
-  unprompted — both are outward-facing, cross-repo steps; surface them to the
-  user as a follow-up. **Flag any pending fork edit** in the commit summary and
-  the active `notes/PhaseN.md`: a local-only fork edit will not travel with a
-  `git push` of this repo until the pin is bumped, so an unflagged one silently
-  breaks the build for the next checkout.
+The `Matroid` dependency is the user's editable fork; you may edit it when
+a proof needs a `cycleMatroid`/`Graph`/union API that isn't there. **Two
+non-negotiables:** prefer the project-side route (a `CombinatorialRigidity/Matroid/`
+or `Mathlib/<path>` mirror) first, and **never push the fork or bump its
+`rev` in `lake-manifest.json`/`lakefile.toml` unprompted** (flag any pending
+fork edit in the commit summary + `notes/PhaseN.md`, or the next checkout
+breaks). Full mechanics: **`LEAN-OPS.md`** *Editing the Matroid fork*.
 
 ## Lean LSP MCP — reach for it
 
