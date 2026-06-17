@@ -371,159 +371,46 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
-- **CHAIN-3 OD-8 (h-1) the wedge-pairing covariance core: land the join/volume half
-  of the `complementIso` equivariance as `wedgeProd_map` / `wedgePairing_map`, deferring
-  the dot-product Gram-O-invariance.** `wedgeProd_map` (`wedgeProd (map f A)(map f B)
-  = map f (wedgeProd A B)`) pushes `ExteriorAlgebra.map f`'s multiplicativity through the
-  underlying `↑A*↑B` via the new mirror `exteriorPower.map_coe_eq_exteriorAlgebra_map`
-  (`↑(map n f X) = ExteriorAlgebra.map f ↑X`, span-on-`ιMulti` + `ext_on`); `wedgePairing_map`
-  (`wedgePairing (map f A)(map f B) = det f • wedgePairing A B`) composes it with (h-0).
-  **Deliberate shrink of (h-1):** the full `complementIso` equivariance also needs the
-  exterior-power Gram pairing's O-invariance (`b.toDual` is the dot product via
-  `Pi.basisFun.toDual`), an O-orthogonality fact that is from-scratch and did not fit this
-  sitting — `complementIso` is the Hodge `⋆`, O(n)- not GL-natural, so this dot-product side
-  is irreducible. The covariance lemmas are the complete, no-placeholder algebraic core.
-  One mirror → FRICTION ([mirrored] `exteriorPower.map_coe_eq_exteriorAlgebra_map`).
-- **CHAIN-3 OD-8 (h-0) volume-form-by-determinant: land the general fact in the
-  mirror, expose the `screwAlgebraTopEquiv` corollary in `Meet.lean`.** The new
-  `exteriorPower.topEquiv_map_eq_det_smul` (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`,
-  upstream-eligible — a fact about `topEquiv`/`map`/`LinearMap.det`) proves
-  `topEquiv (map n f X) = det f • topEquiv X`: both sides linear in `X`, agree on the
-  single top-power generator by `Basis.ext`, where the generator value is
-  `topEquiv (ιMulti_family (f∘e) default) = det f` via `topEquiv_eq_repr_default` →
-  `basis_repr_apply`/`ιMultiDual_apply_ιMulti` (the matrix is `(toMatrix' f)ᵀ`, det by
-  `det_toMatrix'` + `det_transpose`; the index reorder `ofFinEmbEquiv.symm default = id`
-  via the mirrored `Finset.univ_orderEmbOfFin`). Added `LinearMap.Determinant` +
-  `Mathlib/Data/Finset/Sort` imports to the mirror (both cheap/cycle-free). The
-  `Meet.lean` corollary `screwAlgebraTopEquiv_map_eq_det_smul` is the `N=k+2`
-  one-liner. One friction → FRICTION ([idiom] `↑default = univ` surfacing).
-- **OD-8 route DECIDED (docs-only design-pass, 2026-06-17): route α via
-  `complementIso` O(n)-equivariance; β rejected** → `notes/Phase23-design.md`
-  §"CHAIN"(h). Source-verified against the landed `Meet.lean`: `complementIso` IS
-  the Hodge `⋆` (standard volume form `screwAlgebraTopEquiv = topEquiv` + dot
-  product `Pi.basisFun.toDual`), so the panel-meet membership is the Hodge fact
-  "`⋆` of a decomposable = decomposable of the orthogonal complement" — O(n)- but
-  NOT GL-natural. The in-hand annihilation does **not** give membership for free
-  (the annihilator=range dimension match is the withdrawn `dim Φ̃` count, `=
-  C(d−1,2) > 1` for `d≥4`), so **β is rejected, not a fallback**. Pinned α leaves
-  h-0…h-4; **(h-1) the O(n)-equivariance `complementIso_map_orthogonal_eq` is the
-  one genuinely-open math obligation + the clause-(ii) flag** (a substantial new
-  project sub-lemma, NOT the §(g) "1–2-decl API addition"; no missing mathlib API).
-  Fallback: carry (h-3) green-modulo if (h-1) is a long pole.
-- **CHAIN-3 OD-8 route-(α) standard-frame range-membership
-  `complementIso_exteriorPower_basis_mem_range_map_subtype`: package the base case as range-
-  membership before the general-decomposable lift.** `complementIso (j:=2) e_S ∈ range(⋀^k W ↪)` for
-  any `W ⊇ {eₜ : t ∈ Sᶜ}` — `rw` the base case (`= (±1) • e_{Sᶜ}`), `Submodule.smul_mem`, then
-  `exteriorPower.basis_apply; rfl` bridges the complementary blade to `⟨extensor (Pi.basisFun ∘
-  ofFinEmbEquiv.symm Sᶜ),_⟩` and `extensor_mem_range_map_subtype_of_mem_grade (d:=k+1)` closes
-  (`mem_range_ofFinEmbEquiv_symm_iff_mem` gives `eₜ ∈ W`). **Deliberate shrink of the OD-8 leaf:** the
-  full `complementIso_extensor_mem_range_map_subtype` (general decomposable, `W = {n₀,n₁}^⊥` a
-  non-coordinate subspace) is **not** an equivariance corollary of this — `complementIso` is built off
-  the standard `Pi.basisFun` (via `wedgePairing`), so it is not `GL`-natural; the general lift needs
-  the genuine **orthogonal** change-of-frame argument (OD-8 route α (h-1), §"CHAIN"(h)). This is the
-  complete coordinate-subspace (`j=2`) instance. One friction → FRICTION ([idiom] `powersetCard.compl`
-  stuck-`m`).
-- **CHAIN-3 OD-8 route-(α) base case `complementIso_exteriorPower_basis_eq_smul_compl`: land the
-  standard-frame fact first, then lift to general decomposables.** `complementIso hj (e_S) =
-  (wedgePairing e_S e_{Sᶜ}) • e_{Sᶜ}` — fully general (`{k}`/`{j}`/any `S`), additive, no `d=3`
-  pin, no blueprint pointer. Built straight off landed infra: the coordinate readout
-  `b.repr (complementIso hj e_S) t = wedgePairing e_S e_t` (the
-  `complementIso_exteriorPower_repr_mem_range_intCast` chain) + off-diagonal vanishing
-  `wedgePairing_ιMulti_family_eq_zero_of_ne_compl`. **Deliberate shrink of the OD-8 leaf:** the full
-  `complementIso_extensor_mem_range_map_subtype` (general decomposable) needs a basis-extension +
-  `complementIso`-transport step that does not close in one sitting; the base case is the complete,
-  no-placeholder sub-step on the route-(α) path. Route (β) stays unused (re-introduces the
-  withdrawn `dim Φ̃` count). Two minor frictions → FRICTION ([idiom] coordinate-chain reuse;
-  [idiom] `Finsupp.single_eq_of_ne` orientation).
-- **CHAIN-3-finish recon (2026-06-17, docs-only): the duality finish uses the
-  `⋀^{d−1}W`-is-a-line route, NOT the d=3 `Φ̃` route — overturning the prior pin.**
-  Source-verified: a line `L` has **2** normals at every `d` (not `d−1`) and **`d−1`**
-  points; point-join + panel-meet both lie in the **line** `range(⋀^{d−1}W ↪)`
-  (`W = span L`), what the THREE landed `_grade` bricks (no in-tree consumers) were built
-  for. **Withdrawn** (dead d=3-only, `dim Ω = C(d−1,2) = 1` ⟺ `d=3`; kept green as the d=3
-  wrapper): generalizing `finrank_sup_range_wedgeFixedLeft` /
-  `extensor_toDual_extensor_eq_zero_of_perp`. One open piece: the panel-meet range-
-  membership (OD-8). Verified buildable: both `_grade` bricks instantiate at `(d := k+1)`
-  to the `k`-parametric assembly (panel-meet `complementIso(k:=d−1)(j:=2)`, `j=2`). Full
-  recon + signatures: `notes/Phase23-design.md` §"CHAIN"(f)/(g).
-- **CHAIN-3 `inf_range_wedgeFixedLeft` (decomposable intersection): ambient-generic
-  verbatim lift, implicit `{d}`, no `d=3` instance.** `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} =
-  span{a∧b}` lifted `Fin 4` → ambient `{d} (Fin (d+1))` with the proof body verbatim:
-  the only `Fin n`-arity tactics (`decide`/`fin_cases` on `![b,a,v]`/`Fin.append`,
-  `linearIndependent_finSnoc`) are over the *fixed* family arities `Fin 2`/`Fin 3`,
-  not the ambient — `d` enters only the carrier type. Like the `wedgeFixedLeft` block
-  (no external consumers), implicit `{d}`: the in-file consumer
-  `finrank_sup_range_wedgeFixedLeft` (`d=3`) unifies its `inf_range_wedgeFixedLeft a b
-  hab` call by defeq (`a,b : Fin 4 → ℝ` force `d+1=4`). Clean lift, no friction; only
-  three widened docstring/signature lines needed reflow for the 100-col limit.
-- **CHAIN-3 `wedgeFixedLeft` building block: lift the `def` + facts in place to
-  implicit `{d}`, no `d=3` instance decls (no external consumers).** `wedgeFixedLeft`
-  (`def`) + `coe_`/`ker_`/`finrank_range_` were `Fin 4`-pinned; lifted to ambient
-  `{d} (Fin (d+1))`, grade `2`, range count `3 → d` (`= (d+1)−1`). Unlike the prior
-  three CHAIN-3 bricks (which kept a `(d:=3)` instance under the old name), these have
-  **no consumers outside `Meet.lean`** (grep-confirmed), and the in-file consumers
-  (`inf_range`/`finrank_sup_range`/the assembly) still pass `Fin 4` values that unify
-  `d=3` by defeq — so generalizing the `def` + facts directly is the lighter touch
-  (no instance boilerplate). All four proofs are ambient-generic verbatim (the
-  `extensor` API is already `{d}`-generic). The numeral consumer
-  `finrank_sup_range_wedgeFixedLeft` (`d=3`, out of scope) needed `(d:=3)` on its
-  `finrank_range_` rewrites + `omega → simpa using hsum` (QUIRKS § 58). No blueprint
-  pin on any of the four.
-- **CHAIN-3 `toDual=Gram` bridge: verbatim grade-/ambient-lift, `d=3` name kept as
-  the instance.** `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade {d}`
-  re-states the `Meet.lean` coordinate-`toDual` = `pairingDual ∘ map` bridge over
-  `Fin (d+1)` at any grade `n`; its proof is the `Fin 4` body verbatim
-  (`Module.Basis.ext` ×2 → Kronecker-delta collapse → determinant diagonal/off-
-  diagonal split, only `Set.powersetCard.card_eq` + `Fintype.card_fin`, no
-  `Fin 4`-arity). The `d=3` `exteriorPower_basis_toDual_eq_pairingDual_comp_map`
-  survives as `:= …_grade (d := 3) n` (`3+1` reduces defeq to `4`), so its internal
-  consumer (`extensor_toDual_extensor_eq_zero_of_perp`, line 1003) is untouched and
-  no blueprint pointer moves (no pin on this decl). Confirms recon (a): the
-  `toDual`/Gram half of the duality is ambient-generic, only the
-  `complementIso`-`Φ̃`-count half (the next brick) is genuinely new at general `d`.
-  *Authoring trap hit twice:* `-/` inside the docstring words `grade-/ambient` /
-  `the grade-/` closed the doc comment early → TACTICS-QUIRKS § 57.
-- **CHAIN-3 proportionality engine: same lift pattern, two new grade-generic
-  bricks for the count.** `exists_smul_eq_of_mem_range_map_subtype_grade {d}`
-  re-states the `Meet.lean` line-identity at grade `d−1` / ambient `Fin (d+1)`
-  with hypothesis `finrank W = d − 1`; the `d=3` `exists_smul_eq_of_mem_range_map_subtype`
-  survives as `:= …_grade (d := 3) …` (defeq `3−1=2`/`3+1=4`, no `decide`). The
-  count it rests on splits into two new grade-generic lemmas, each with the `d=3`
-  name kept as a `(d:=3)`/`n:=2` instance: `finrank_exteriorPower_self_eq_one`
-  (`exteriorPower.finrank_eq`+`Nat.choose_self`, generalizing
-  `finrank_exteriorPower_two_eq_one`) and `exteriorPower_map_subtype_injective_grade`
-  (`exteriorPower.map_injective_field`, generalizing the grade-2 pin). All proofs
-  verbatim-lift (the route is general mathlib); blueprint pins on the two `d=3`
-  names untouched, so no `checkdecls` / blueprint edit. The `complementIso`/`toDual`
-  tail bricks are NOT verbatim-liftable (built over `k+2`/`Fin 4`) — flagged in
-  the checklist for the next sitting.
-- **CHAIN-3 membership brick: lift, don't re-author — keep the `d=3` name as the
-  instance.** `extensor_mem_range_map_subtype_of_mem_grade {d}` re-states the
-  `Meet.lean` membership at grade `d−1` / ambient `Fin (d+1)`; its proof is the
-  `d=3` body verbatim (grade enters nothing). The old `Fin 4`/`⋀²`-pinned
-  `extensor_mem_range_map_subtype_of_mem` survives as a one-line corollary
-  `:= …_grade (d := 3) W v hv` (`3−1`/`3+1` reduce defeq to `2`/`4`, so no
-  coercion/`decide`) — zero regression to its downstream consumers, no blueprint
-  pointer touched. Confirms recon (D)'s "template, not verbatim reuse" call: the
-  *route* is grade-generic, only the lemma statements need re-pinning.
-- **Opened on a detailed leaf-level recon, not a build** (the design-pass-first
-  discipline, `DESIGN.md` *Scale-up: design the LAYER*; the Case-I node-by-node
-  precedent). The recon source-verified the central scoping fact — the
-  arm-realization engine is already general-`k`, only the dispatch is `d=3` —
-  and surfaced the producer-shape flag (b) before any leaf builds.
-- **CHAIN↔ENTRY chain-data contract settled (docs-only design-settle pass,
-  2026-06-17)** → `notes/Phase23-design.md` §"CHAIN↔ENTRY contract". Froze the
-  shared interface flag (b) left open: a `G.ChainData n` `structure` (length-`d`
-  chain `vtx : Fin (d+1) → α` / `edge : Fin d → β` / `e₀` + the degree-2 closures,
-  grounded in KT eqs. 6.46–6.59 + the landed `splitOff` API), the reshaped
-  producer-side extractor (C.2, an ENTRY obligation), the CHAIN-5 consumer
-  `hdispatch` (C.3, now frozen), the zero-regression `d=3` wrapper map (C.4,
-  chain `v₀v₁v₂v₃ = b—v—a—c`), and the OD-1 chain/cycle division (C.5: the
-  dispatch always consumes a `ChainData`, never the cycle branch). Clause-(ii)
-  verdict (C.6): **no motive/IH change forced** — chain data is combinatorial,
-  base `(G₁,q₁)` is the existing general-`k` premise, candidate splits are
-  smaller 0-dof graphs; the only routed unknowns are OD-1 (ENTRY's dichotomy
-  shape) and OD-4 (CHAIN-4's alg-independence route), both build-time.
+Settled entries are one-line verdicts (decision + Lean name); proof techniques live
+in git + `notes/FRICTION.md` + the design doc §"CHAIN"(f)/(g)/(h) + §"CHAIN↔ENTRY
+contract". The forward detail (route to close the open leaves) is in *Current state*
+/ *Hand-off* above.
+
+**Recons / design decisions (detail in `notes/Phase23-design.md`):**
+- **Opened on a leaf-level recon, not a build** — found the arm-engine already
+  general-`k`, only the dispatch `d=3`; surfaced flag (b) → §"CHAIN"(a)–(e).
+- **CHAIN↔ENTRY chain-data contract settled** — `G.ChainData n` structure +
+  producer/`hdispatch` signatures; no motive/IH change forced (clause ii) →
+  §"CHAIN↔ENTRY contract" C.0–C.6.
+- **CHAIN-3-finish recon: the `⋀^{d−1}W`-is-a-line route, NOT the d=3 `Φ̃` route**
+  (a line has **2** normals at every `d`, **d−1** points); `finrank_sup_range_wedgeFixedLeft`
+  / `extensor_toDual_extensor_eq_zero_of_perp` **withdrawn** (dead d=3-only, kept green
+  as the d=3 wrapper) → §"CHAIN"(f). KT-route-checked (the join=meet duality KT leaves
+  implicit) → §"CHAIN"(f) *Coordinator KT-route check*.
+- **OD-8 route DECIDED: route α via `complementIso` O(n)-equivariance; β + γ rejected**
+  — `complementIso` IS the Hodge `⋆`; β rests on the withdrawn `dim Φ̃` count. (h-1)
+  the O(n)-equivariance is the one genuinely-open obligation (green-modulo escape: carry
+  h-3) → §"CHAIN"(h).
+
+**Landed CHAIN-3 bricks** (all keep the `d=3` name as a `(d:=3)` instance or unify
+`d=3` by defeq; no blueprint pin moved; the `_grade` lifts are verbatim — the route is
+general mathlib, grade enters nothing):
+- membership `extensor_mem_range_map_subtype_of_mem_grade`; proportionality
+  `exists_smul_eq_of_mem_range_map_subtype_grade` + the count
+  `finrank_exteriorPower_self_eq_one` / `exteriorPower_map_subtype_injective_grade`;
+  `toDual=Gram` `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`.
+- `wedgeFixedLeft` block (`def`+`coe`/`ker`/`finrank_range`, range count 3→d) +
+  `inf_range_wedgeFixedLeft` — ambient-generic verbatim, implicit `{d}`, no instance
+  (no external consumers). **Dead-route machinery** (the `Φ̃` count the CHAIN-3-finish
+  recon withdrew): harmlessly over-general (d=3 instances still used) — **cleanup-round
+  candidate to revert to `Fin 4`**.
+- OD-8 route-α sub-leaves: base case `complementIso_exteriorPower_basis_eq_smul_compl`
+  (complement of a coordinate blade = the complementary blade) → coordinate-`W`
+  membership `complementIso_exteriorPower_basis_mem_range_map_subtype` → (h-0)
+  `exteriorPower.topEquiv_map_eq_det_smul` (mirror) + `screwAlgebraTopEquiv_map_eq_det_smul`
+  → (h-1a) `wedgeProd_map`/`wedgePairing_map` (on mirror `map_coe_eq_exteriorAlgebra_map`).
+  The general-decomposable case is NOT a GL-equivariance corollary (`complementIso` is
+  Hodge, O(n)- not GL-natural) — needs h-1b (dot-product Gram-O-invariance), the next step.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

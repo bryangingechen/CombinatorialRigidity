@@ -125,13 +125,16 @@ mid-phase).
   opus); boundary pairs, if run, pair opus against opus or are skipped. **Run modifications this
   session (user-re-confirmed at session start):** the 10-run check-in cap is **lifted** (the
   loop runs to phase close or a surfaced concern), and step-4 mechanical fixups (wrong branch /
-  author / co-author trailer) are **pre-authorized** (apply without stopping to ask). The phase
-  is at a **sub-phase boundary**: 23a (CARRIER) is closed (Leaves 0–5 green); the next dispatch
-  is the **CHAIN-open recon design-pass** (phase-open + the detailed leaf-level recon that cuts
-  CHAIN into buildable leaves and decides OD-6 chain-vs-duality split) — fable-mapped
-  (phase-open + design-settle) → opus under the override. The coordinator is Opus 4.8 (1M
-  context). **Expires at session end** — a fresh coordinator re-runs the availability check and
-  reverts to the map unless the override is re-set.
+  author / co-author trailer) are **pre-authorized** (apply without stopping to ask). **Session
+  #4 end-state (loop stopped by user request after row 203):** ran rows 191–203 — the CHAIN-open
+  recon (191), the CHAIN↔ENTRY chain-data contract (192), the CHAIN-3 grade-lift bricks
+  (193–197), the CHAIN-3-finish recon that re-routed off the dead `Φ̃` route (198), and the
+  OD-8 route-α sub-leaves down through (h-1a) (199–203); all clean at opus. **Next dispatch (a
+  fresh coordinator picks up here): (h-1b) the dot-product Gram-O-invariance** — the metric half
+  of `complementIso`'s O(n)-equivariance — per `notes/Phase23b.md` *Hand-off* (which carries the
+  exact closing route for `complementIso_map_orthogonal_eq` once h-1b is in hand). The coordinator
+  is Opus 4.8 (1M context). **Expires at session end** — a fresh coordinator re-runs the
+  availability check and reverts to the map unless the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13,16} session-local rung overrides and availability constraints — all
   expired by their own terms (the 2026-06-16 one scoped the OPUS-ONLY override to the whole

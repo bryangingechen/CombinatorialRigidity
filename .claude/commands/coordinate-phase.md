@@ -48,7 +48,16 @@ Loop:
    ∃-*literal-subfamily* decl; the 22j S5 §1.68(f) shape error, where a
    design verdict named a route between two mismatched conclusion shapes
    and a build would have faithfully implemented the wrong one — a
-   mismatch is a design error to settle by recon, not a build)
+   mismatch is a design error to settle by recon, not a build),
+   OR a **build agent's own hand-off flags the *next* piece as genuinely-new**
+   ("the real new lemma", "not a verbatim lift", "the genuine open design
+   call") — that flag IS the recon trigger: recon the **route** before
+   dispatching the dependency-chain prerequisites the flag names, because the
+   chain a build extrapolates from a special-case (e.g. `d=3`) body can itself
+   be the wrong route, and those prerequisites may serve a route the recon then
+   dissolves (rows 195–198: two leaves lifted dead-`Φ̃`-route machinery before
+   the recon re-routed to the `⋀^{d−1}W`-line argument, leaving the dead lemmas
+   as green-`d=3`-wrappers)
    — the next commit is a **recon / design-pass**, not a build: dispatch a
    read-only Plan-agent recon, or a docs/blueprint design-pass commit
    that decomposes the core into buildable leaves with exact signatures.
