@@ -88,43 +88,48 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
 
 ## Repo-local config
 
-- **Testbed:** the molecular program — Phase 22j + the post-22j perf round
-  (`CaseI.lean` 5-file split) closed 2026-06-15; the active testbed is now
-  **Phase 22k** (completing the honest all-`k` Theorem 5.5: Case III / spine
-  + Thm 5.6 at `d=3`; `notes/Phase22k.md`), continuing into successor phases
-  until concluded.
+- **Testbed:** the molecular program — Phases 22k/22l + the post-22l perf round
+  (`RigidityMatrix/` + `CaseIII/` + `ForestSurgery/` splits) closed 2026-06-16;
+  the active testbed is now **Phase 23** (Case III general `d`, KT Lemma 6.13 →
+  Thm 5.5 complete → Thm 5.6 → Conjecture 1.2; `notes/Phase23.md`), continuing
+  into successor phases until concluded.
 - **Rungs available:** haiku → sonnet → opus → fable (the Agent
   tool's `model` parameter).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md`
   model-tier step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase22k.md` *Layer plan* / *Hand-off* (the L7–L10
-  design basis lives in `notes/Phase22i.md` *Hand-off* until 22k-open transcribes it).
+- **Phase-side pointer:** `notes/Phase23.md` *Hand-off* + the Phase-23 design recon
+  (`notes/Phase23-design.md` once opened); the general-`d` reuse map is §1.33 (C) of
+  `notes/Phase22-realization-design.md`.
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-16, fresh coordinator session — Phase 22l L0-open;
-  supersedes the expired 22k-close/22l-open note above).** fable **unavailable** this
-  session (user-confirmed at session start; the few fable-mapped passes that arise —
+- **Session availability (2026-06-17, fresh coordinator session — Phase 23 open;
+  supersedes the expired 22l note, now folded into the audit-trail bullet below).** fable
+  **unavailable** this session (user-confirmed at session start; the fable-mapped passes —
   phase-open/close, design-settle, S=3 — fold into the opus-only override below). **Rung
-  policy: STANDING OPUS-ONLY OVERRIDE for the whole of Phase 22l** (user-set at session
-  start: "use opus subagents only since sonnet and below seem to struggle with tasks like
-  these" — the carrier-opacity refactor is defeq-fragile §38-class work, the exact zone of
-  the documented sonnet §38-trap failure clusters). S/P/B is still **rated and logged** per
-  dispatch (experiment data), but the rung is **opus regardless of the map**; probes are
-  off (they would dispatch below opus); boundary pairs, if run, pair opus against opus or
-  are skipped. **Run modifications this session (user-set at session start):** the 10-run
-  check-in cap is **lifted** (the loop runs to phase close or a surfaced concern), and
-  step-4 mechanical fixups (wrong branch / author / co-author trailer) are **pre-authorized**
-  (apply without stopping to ask). The coordinator is Opus 4.8 (1M context). **Expires at
-  session end** — a fresh coordinator re-runs the availability check and reverts to the map
-  unless the override is re-set.
+  policy: STANDING OPUS-ONLY OVERRIDE for the whole of Phase 23** (user-set at session
+  start: Phase 23 = Case III general `d`, the hardest remaining KT math and squarely in the
+  §38 defeq-fragility zone where sonnet-and-below have repeatedly failed). S/P/B is still
+  **rated and logged** per dispatch (experiment data), but the rung is **opus regardless of
+  the map**; probes are off (they would dispatch below opus); boundary pairs, if run, pair
+  opus against opus or are skipped. **Run modifications this session (user-set at session
+  start):** the 10-run check-in cap is **lifted** (the loop runs to phase close or a
+  surfaced concern), step-4 mechanical fixups (wrong branch / author / co-author trailer)
+  are **pre-authorized** (apply without stopping to ask), and the user directed a
+  **two-stage design recon up front** — a *general* recon sketching the Phase-23 sub-phase
+  division (à la Phase 22's sub-lettering), then a *first-sub-phase* recon decomposing into
+  buildable leaves — **before any build dispatch**, with recon subagents prompted for
+  maximally detailed plans. The coordinator is Opus 4.8 (1M context). **Expires at session
+  end** — a fresh coordinator re-runs the availability check and reverts to the map unless
+  the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
-  2026-06-{10,12,13} session-local rung overrides and availability constraints — all
-  expired by their own terms. A fresh coordinator reverts to the S/P/B → map
-  (substituting opus when fable is unavailable that session, as above). Their grounds
-  live in *Findings* (the §38-trap and KT-4.2-fiber-zone sonnet-failure clusters) and
-  the cited Log rows; the prior same-date availability note matched this session's
-  (fable down, cap lifted, fixups pre-authorized).
+  2026-06-{10,12,13,16} session-local rung overrides and availability constraints — all
+  expired by their own terms (the 2026-06-16 one scoped the OPUS-ONLY override to the whole
+  of Phase 22l). A fresh coordinator reverts to the S/P/B → map (substituting opus when
+  fable is unavailable that session, as above). Their grounds live in *Findings* (the
+  §38-trap and KT-4.2-fiber-zone sonnet-failure clusters) and the cited Log rows; each
+  prior same-date availability note matched this session's pattern (fable down, cap lifted,
+  fixups pre-authorized).
 - **Boundary-pair worktree environment (2026-06-13, repo-local).** Two sandbox facts
   from running the rows 87–88 pair: (1) git worktrees *outside* the project dir fail
   (`could not create leading directories … Operation not permitted`) — create the
@@ -136,13 +141,13 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
   `lake exe cache get` itself; the protocol's APFS `.lake`-seeding default is no longer
   *required* (still a fine fast path) and its unseeded `cache get` fallback now works
   agent-side. The worktree-location point (1) is the standing repo-local constraint.
-- **Standing rung override this session (Phase 22l): OPUS-ONLY** (user-set at session
-  start — see the *Session availability* bullet above). The carrier-opacity refactor sits
-  squarely in the §38 defeq-fragility zone where sonnet has repeatedly failed; the user
-  scoped the override to the whole phase rather than per-zone. S/P/B is still rated/logged
-  for the experiment record, but every commit-producing dispatch runs at opus. (Earlier
-  zone-scoped and perf-round opus overrides all expired by their own terms; see the
-  collapsed-overrides bullet above and *Findings*.)
+- **Standing rung override this session (Phase 23): OPUS-ONLY** (user-set at session
+  start — see the *Session availability* bullet above). Phase 23 (Case III general `d`) is
+  the conjecture's crux generalization and sits squarely in the §38 defeq-fragility zone
+  where sonnet has repeatedly failed; the user scoped the override to the whole phase rather
+  than per-zone. S/P/B is still rated/logged for the experiment record, but every
+  commit-producing dispatch runs at opus. (Earlier zone-scoped and perf-round opus overrides
+  all expired by their own terms; see the collapsed-overrides bullet above and *Findings*.)
 
 ## Log
 
