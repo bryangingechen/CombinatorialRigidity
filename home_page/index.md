@@ -81,22 +81,10 @@ The table below and `ROADMAP.md` carry the fine-grained, live status.
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction/` | ✓ |
-|    21 | Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction/` | ✓ |
-|   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
-|   21b | Genericity device (Claim 6.4/6.9) + accounting bridges | `Molecular/AlgebraicInduction/` | ✓ |
-|   22a | Case I realization (rigid-subgraph splice) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
-|   22b | KT Claim 6.4 (discharges the Case I obligation) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
-|   22c | Case III at `d=3` (KT Lemma 6.10; the crux) | `Molecular/AlgebraicInduction/` | ✓ |
-|   22d | KT Claim 6.11 (the missing `+1` row) + its supporting lemmas | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ✓ |
-|   22e | candidate-completion + Claim 6.12 (Case III at `d=3`) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ✓ |
-|   22f | point-join↔panel-meet duality (the exterior-algebra leaf completing Case III at `d=3`) | `Molecular/Meet.lean` | ✓ |
-|   22g | `d=3` realization assembly: design + leaf infrastructure (the existential Claim 6.12 architecture) | `Molecular/AlgebraicInduction/` | ✓ |
-|   22h | the corrected `d=3` assembly (the `hsplit` producer + Theorem 5.5 at `d=3`, completing Case III there) | `Molecular/{Induction,AlgebraicInduction}/` | ✓ |
-|   22i | all-`k` genuine-hinge induction + the reduction-case realizations (base, cut-edge, Case I, degree-2 split) | `Molecular/` | ✓ |
-|   22j | the shared eq.-(6.12) placement brick + Case-II/split refactor | `Molecular/` | ✓ |
-|   22k | completing the all-`k` Theorem 5.5 (Case III, the spine) + Theorem 5.6 at `d=3` | `Molecular/` | ✓ |
-|   22l | build-time refactor: an opaque screw-space carrier (d=3) | `Molecular/` | ✓ |
-|   ⋯ | general `d` (Lemma 6.13) + the molecule application (Cor 5.7) | `Molecular/` | ◷ |
+|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (+ the Grassmann–Cayley meet and the generic-max-rank device) | `Molecular/{Meet,AlgebraicInduction}/` | ✓ |
+|    22 | The algebraic-induction realization layer at `d=3`: Cases I & III, Theorem 5.5 and Theorem 5.6 at full strength | `Molecular/` | ✓ |
+|    23 | Case III at general `d` (Lemma 6.13) → Theorem 5.5/5.6 → the conjecture | `Molecular/` | ◐ |
+|   24–26 | the 3-D bar-joint matroid, projective invariance, and the molecule application (Cor 5.7) | `Molecular/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
