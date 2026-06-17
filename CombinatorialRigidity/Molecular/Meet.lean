@@ -70,6 +70,23 @@ noncomputable def screwAlgebraTopEquiv :
     ⋀[ℝ]^(k + 2) (Fin (k + 2) → ℝ) ≃ₗ[ℝ] ℝ :=
   exteriorPower.topEquiv (k + 2)
 
+/-- **The volume form transforms by the determinant under `exteriorPower.map`** (OD-8
+sub-leaf (h-0), the change-of-variables fact behind the `complementIso`
+O(n)-equivariance (h-1)). For an endomorphism `f` of `ℝ^{k+2}`, the screw-algebra
+volume form `screwAlgebraTopEquiv` post-composed with the induced top-power map
+`exteriorPower.map (k+2) f` scales by `LinearMap.det f`:
+`screwAlgebraTopEquiv (map (k+2) f X) = (det f) • screwAlgebraTopEquiv X`. The `N = k+2`
+specialization of the general mirror `exteriorPower.topEquiv_map_eq_det_smul`. Since
+`complementIso` is built from `screwAlgebraTopEquiv` (the volume form) and the standard
+dot product (`Pi.basisFun.toDual`) — i.e. it *is* the Hodge star `⋆` — this is one of
+the two transformation laws (volume-by-det and dot-product O-invariance) from which the
+panel-meet `complementIso` inherits its O(n)-equivariance. -/
+theorem screwAlgebraTopEquiv_map_eq_det_smul (f : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (X : ⋀[ℝ]^(k + 2) (Fin (k + 2) → ℝ)) :
+    screwAlgebraTopEquiv k (exteriorPower.map (k + 2) f X)
+      = (LinearMap.det f) • screwAlgebraTopEquiv k X :=
+  exteriorPower.topEquiv_map_eq_det_smul (k + 2) f X
+
 /-- The projective-duality dictionary iso on the screw-algebra carrier:
 `⋀ʲ((Fin (k+2) → ℝ)*) ≃ₗ (⋀ʲ (Fin (k+2) → ℝ))*`, the `j`-graded specialization of the
 general mirror `exteriorPower.pairingDualEquiv` at the standard basis. This is the

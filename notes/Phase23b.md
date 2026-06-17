@@ -31,26 +31,23 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) standard-frame range-membership
-`complementIso_exteriorPower_basis_mem_range_map_subtype` has landed (2026-06-17):** for a coordinate
-`2`-subset `S` of `Fin (k+2)` and any `W` containing every complementary coordinate vector `eₜ`
-(`t ∈ Sᶜ`), `complementIso (j:=2) e_S ∈ range(⋀^k W ↪)`. The range-membership packaging of the just-
-prior base case `complementIso_exteriorPower_basis_eq_smul_compl` (`= (±1) • e_{Sᶜ}`): the
-complementary blade `e_{Sᶜ}` is the `k`-extensor of the `Sᶜ` standard basis vectors, each in `W`, so
-it lands in `range` by `extensor_mem_range_map_subtype_of_mem_grade (d:=k+1)`, and a scalar multiple
-stays in the submodule. This is the **coordinate-subspace instance** of the OD-8 panel-meet range-
-membership leaf `complementIso_extensor_mem_range_map_subtype`. **Next, to finish OD-8 route (α) —
-route now DECIDED** (`notes/Phase23-design.md` §"CHAIN"(h), 2026-06-17 OD-8 design-pass): the
-**general-decomposable** step `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(⋀^k W ↪)` for an arbitrary
-grade-2 `extensor n` and `W = {n₀,n₁}^⊥`. **`complementIso` IS the Hodge star `⋆`** (standard volume
-form `screwAlgebraTopEquiv = topEquiv` + dot product `Pi.basisFun.toDual`), so this is the genuine
-Hodge fact — **O(n)-natural but NOT GL-natural**. The lift is an **orthogonal** change of frame:
-(h-0) volume-form-by-determinant, **(h-1) `complementIso_map_orthogonal_eq` the O(n)-equivariance
-(the substantive new leaf + clause-(ii) flag, the next buildable sub-step)**, (h-2) Gram–Schmidt
-alignment, (h-3) assemble with the LANDED standard-frame membership. **Route β rejected** (the
-annihilation→membership upgrade is the withdrawn `dim Φ̃` count, not a free dimension match). Then the
-assembly `extensor_join_proportional_complementIso_meet` (h-4) via the `⋀^k W`-is-a-line route
-(reusing the three landed `_grade` bricks; zero new count). **NOT**
+**CHAIN-3's OD-8 route-(α) sub-leaf (h-0) the volume-form-by-determinant fact has landed
+(2026-06-17):** `screwAlgebraTopEquiv k (map (k+2) f X) = (LinearMap.det f) • screwAlgebraTopEquiv k X`
+(`Meet.lean`), the `N=k+2` corollary of the new general mirror
+`exteriorPower.topEquiv_map_eq_det_smul` (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`: both sides
+linear in `X`, agree on the top-power generator by `Basis.ext`, where the generator value is `det f`
+via `topEquiv_eq_repr_default` → `ιMultiDual_apply_ιMulti` → the matrix is `(toMatrix' f)ᵀ`). This is
+the change-of-variables half (h-0) of the `complementIso` O(n)-equivariance (h-1). **Next buildable
+sub-step = (h-1) `complementIso_map_orthogonal_eq`**, the O(n)-equivariance (its (h-0) prerequisite is
+now in hand). **`complementIso` IS the Hodge star `⋆`** (standard volume form `screwAlgebraTopEquiv =
+topEquiv` + dot product `Pi.basisFun.toDual`), O(n)-natural but NOT GL-natural; (h-1) is the genuine
+Hodge fact "`⋆(map O X) = det O • map O (⋆X)`" for orthogonal `O`, resting on (h-0) [landed] + the
+dot-product O-invariance. Route then: (h-2) Gram–Schmidt alignment, (h-3) assemble with the LANDED
+standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype`, closing
+`complementIso_extensor_mem_range_map_subtype`; then the assembly
+`extensor_join_proportional_complementIso_meet` (h-4) via the `⋀^k W`-is-a-line route (reusing the
+three landed `_grade` bricks; zero new count). **Route β rejected** (the annihilation→membership
+upgrade is the withdrawn `dim Φ̃` count, not a free dimension match). **NOT**
 `finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` — the CHAIN-3-finish
 recon withdrew those (dead d=3-only `Φ̃` route; see checklist + Hand-off + §"CHAIN"(f)/(h)).
 The recon
@@ -144,17 +141,24 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
             `k`-extensor of the `Sᶜ` standard basis vectors, in `range` by
             `extensor_mem_range_map_subtype_of_mem_grade (d:=k+1)`; scalar stays in the submodule).
             The coordinate-subspace instance of the OD-8 leaf. Landed 2026-06-17.
-          - [ ] the **general-decomposable** step `complementIso_extensor_mem_range_map_subtype`:
+          - [◐] the **general-decomposable** step `complementIso_extensor_mem_range_map_subtype`:
             lift to an arbitrary grade-2 decomposable `extensor n` (`n : Fin 2`) with
             `W = {n₀,n₁}^⊥`. **Route DECIDED (OD-8, `notes/Phase23-design.md` §"CHAIN"(h)): route α
             via `complementIso` O(n)-equivariance.** `complementIso` IS the Hodge `⋆` (standard
             volume form + dot product), O(n)-natural but NOT GL-natural — so the lift is a genuine
-            **orthogonal** change of frame, not a GL transport. Sub-leaves: (h-0) volume-form-by-det,
-            **(h-1) `complementIso_map_orthogonal_eq` — the substantive new leaf + clause-(ii) flag**,
-            (h-2) Gram–Schmidt alignment of `span{n₀,n₁}` to a coordinate plane, (h-3) assemble with
-            the LANDED standard-frame membership. Route β (annihilator=range) is **rejected** (it
-            re-introduces the withdrawn `dim Φ̃` count). Fallback: carry (h-3) green-modulo if (h-1) is
-            a long pole. The one genuinely-open math obligation of the CHAIN-3 finish.
+            **orthogonal** change of frame, not a GL transport. Sub-leaves:
+            - [x] **(h-0)** `screwAlgebraTopEquiv_map_eq_det_smul` — the volume-form-by-det fact
+              `screwAlgebraTopEquiv (map (k+2) f X) = (det f) • screwAlgebraTopEquiv X` (`Meet.lean`),
+              the `N=k+2` corollary of the new general mirror `exteriorPower.topEquiv_map_eq_det_smul`
+              (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`; `Basis.ext` to the top-power generator
+              + the `det = (toMatrix' f)ᵀ` computation). Landed 2026-06-17.
+            - [ ] **(h-1) `complementIso_map_orthogonal_eq` — the substantive new leaf + clause-(ii)
+              flag** (the next buildable sub-step; consumes (h-0) + dot-product O-invariance).
+            - [ ] (h-2) Gram–Schmidt alignment of `span{n₀,n₁}` to a coordinate plane.
+            - [ ] (h-3) assemble (h-1)+(h-2)+the LANDED standard-frame membership.
+            Route β (annihilator=range) is **rejected** (it re-introduces the withdrawn `dim Φ̃`
+            count). Fallback: carry (h-3) green-modulo if (h-1) is a long pole. (h-1) is the one
+            genuinely-open math obligation of the CHAIN-3 finish.
         - [ ] `extensor_join_proportional_complementIso_meet` — the general-`d` assembly
           (replaces `complementIso_smul_eq_extensor_join`; d=3 line stays as wrapper). The
           **`⋀^{d−1}W`-is-a-line** route: point-join (`d−1` points) + panel-meet (**2**
@@ -246,18 +250,22 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **Next buildable sub-step = (h-1) `complementIso_map_orthogonal_eq`, the O(n)-equivariance** — the
-first substantive leaf of OD-8 route (α), now **DECIDED** (`notes/Phase23-design.md` §"CHAIN"(h),
-2026-06-17). The target leaf `complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
+substantive leaf of OD-8 route (α) (`notes/Phase23-design.md` §"CHAIN"(h), 2026-06-17); **its (h-0)
+prerequisite is now landed** (`screwAlgebraTopEquiv_map_eq_det_smul`, this commit). The target leaf
+`complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
 `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`.
 **Route decision (§(h)):** `complementIso` IS the Hodge star `⋆` for the standard volume form
 (`screwAlgebraTopEquiv = topEquiv`) + dot product (`Pi.basisFun.toDual`) — so the target is the
 genuine Hodge fact "`⋆` of a decomposable = decomposable of the orthogonal complement", which is
 **O(n)-natural but NOT GL-natural**. The route lifts via an **orthogonal** change of frame:
-- **(h-0)** volume-form-by-determinant (`screwAlgebraTopEquiv (map f ·) = det f · …`; mathlib has the
-  pieces — `exteriorPower.map`/`topEquiv`/`LinearMap.det` — not the fused lemma; confirm the handle).
-- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf + the clause-(ii) flag.**
-  For orthogonal `O` (`det O = ±1`), `complementIso (map 2 O X) = det O • map k O (complementIso X)`;
-  rests on (h-0) + dot-product O-invariance. *This is the one genuinely-open math obligation.*
+- **(h-0)** volume-form-by-determinant — **LANDED** this commit as
+  `screwAlgebraTopEquiv_map_eq_det_smul` (`Meet.lean`) + the general mirror
+  `exteriorPower.topEquiv_map_eq_det_smul` (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`):
+  `screwAlgebraTopEquiv (map (k+2) f X) = det f • screwAlgebraTopEquiv X`.
+- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf + the clause-(ii) flag,
+  the next buildable sub-step.** For orthogonal `O` (`det O = ±1`), `complementIso (map 2 O X) =
+  det O • map k O (complementIso X)`; rests on (h-0) [landed] + dot-product O-invariance. *This is the
+  one genuinely-open math obligation.*
 - **(h-2)** `exists_orthogonal_map_span_pair_eq_coordPlane` — Gram–Schmidt alignment of `span{n₀,n₁}`
   to a coordinate `2`-plane (mathlib orthonormal-extension API), carrying `W` to a coordinate subspace.
 - **(h-3)** the target leaf — assemble (h-1)+(h-2)+the LANDED
@@ -338,6 +346,19 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3 OD-8 (h-0) volume-form-by-determinant: land the general fact in the
+  mirror, expose the `screwAlgebraTopEquiv` corollary in `Meet.lean`.** The new
+  `exteriorPower.topEquiv_map_eq_det_smul` (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`,
+  upstream-eligible — a fact about `topEquiv`/`map`/`LinearMap.det`) proves
+  `topEquiv (map n f X) = det f • topEquiv X`: both sides linear in `X`, agree on the
+  single top-power generator by `Basis.ext`, where the generator value is
+  `topEquiv (ιMulti_family (f∘e) default) = det f` via `topEquiv_eq_repr_default` →
+  `basis_repr_apply`/`ιMultiDual_apply_ιMulti` (the matrix is `(toMatrix' f)ᵀ`, det by
+  `det_toMatrix'` + `det_transpose`; the index reorder `ofFinEmbEquiv.symm default = id`
+  via the mirrored `Finset.univ_orderEmbOfFin`). Added `LinearMap.Determinant` +
+  `Mathlib/Data/Finset/Sort` imports to the mirror (both cheap/cycle-free). The
+  `Meet.lean` corollary `screwAlgebraTopEquiv_map_eq_det_smul` is the `N=k+2`
+  one-liner. One friction → FRICTION ([idiom] `↑default = univ` surfacing).
 - **OD-8 route DECIDED (docs-only design-pass, 2026-06-17): route α via
   `complementIso` O(n)-equivariance; β rejected** → `notes/Phase23-design.md`
   §"CHAIN"(h). Source-verified against the landed `Meet.lean`: `complementIso` IS
@@ -468,6 +489,9 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *To use the mirrored `Finset.univ_orderEmbOfFin` on a `powersetCard` `default` index,
+  surface `↑default = univ` with a `rfl`-`have` first (it won't `simp` out on its own)*
+  → FRICTION [idiom] *To use the mirrored `Finset.univ_orderEmbOfFin` on a `powersetCard`…*.
 - *A `-/` inside a docstring word (`grade-/ambient`) closes the doc comment early
   → "unexpected identifier; expected 'lemma'" inside the prose* → TACTICS-QUIRKS § 57.
 - *After lifting an in-place numeral-pinned `def` to implicit `{d}`, a numeral

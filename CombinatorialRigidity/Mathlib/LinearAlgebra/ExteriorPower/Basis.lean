@@ -8,6 +8,8 @@ module
 public import Mathlib.LinearAlgebra.ExteriorPower.Basis
 public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.LinearAlgebra.Dual.Basis
+public import Mathlib.LinearAlgebra.Determinant
+public import CombinatorialRigidity.Mathlib.Data.Finset.Sort
 
 /-!
 # Upstream candidates: the top exterior power iso and the `pairingDual` iso
@@ -56,11 +58,12 @@ coordinate forms of `b.exteriorPower n`). This file packages that as
 This is Phase 21a's second deliverable, the projective-duality dictionary entry
 `⋀ʲ(V*) ≃ (⋀ʲ V)*` reused by the Crapo–Whiteley invariance of Phase 25.
 
-Promotion to mathlib: the `Unique` instance, `topEquiv`, and `pairingDualEquiv`
-copy-paste into `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` (which already
-supplies `Module.Basis.exteriorPower`, `finrank_eq`, and the `pairingDual` /
-`ιMultiDual` API); the Lean namespaces (`Set.powersetCard`, `exteriorPower`) match
-upstream conventions.
+Promotion to mathlib: the `Unique` instance, `topEquiv`, `pairingDualEquiv`, and the
+volume-form change-of-variables fact `topEquiv_map_eq_det_smul` (`topEquiv (map n f X)
+= det f • topEquiv X`, the standard "`⋀ⁿ f = det f`" identity on `Fin n → R`) copy-paste
+into `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` (which already supplies
+`Module.Basis.exteriorPower`, `finrank_eq`, and the `pairingDual` / `ιMultiDual` API);
+the Lean namespaces (`Set.powersetCard`, `exteriorPower`) match upstream conventions.
 
 See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
 -/
@@ -103,6 +106,69 @@ theorem topEquiv_ιMulti_family_default :
         (exteriorPower.ιMulti_family R n (Pi.basisFun R (Fin n)) default) = 1 := by
   unfold topEquiv
   simp [LinearEquiv.funUnique, Basis.equivFun_apply]
+
+/-- `topEquiv` reads off the single coordinate of its argument with respect to the
+top-power basis `(Pi.basisFun R (Fin n)).exteriorPower n` (whose index
+`Set.powersetCard (Fin n) n` is a singleton, `default = Finset.univ`): it is the
+`default`-coordinate of the basis representation. Definitional unfolding of
+`topEquiv = equivFun ≪≫ funUnique`. -/
+theorem topEquiv_eq_repr_default (X : ⋀[R]^n (Fin n → R)) :
+    topEquiv (R := R) n X = ((Pi.basisFun R (Fin n)).exteriorPower n).repr X default := by
+  unfold topEquiv; rfl
+
+/-- `topEquiv` sends the image under `exteriorPower.map n f` of the canonical
+top-power generator `e₀ ∧ ⋯ ∧ e_{n−1}` to the determinant of `f`. Computed by
+unfolding `topEquiv` to the `default`-coordinate (`topEquiv_eq_repr_default`,
+`basis_repr_apply`, `ιMultiDual_apply_ιMulti`), at which point the coordinate is the
+determinant of the matrix `(eₛⱼ-coordinate of f(eₛᵢ))` (with `s = default`, so the
+index reordering `Set.powersetCard.ofFinEmbEquiv.symm default` is the identity by
+`Finset.orderEmbOfFin_unique`); that matrix is the transpose of `LinearMap.toMatrix' f`,
+whose determinant is `LinearMap.det f` (`LinearMap.det_toMatrix'`, `Matrix.det_transpose`).
+The generator computation behind the linear-extension `topEquiv_map_eq_det_smul`. -/
+theorem topEquiv_map_ιMulti_family_default_eq_det
+    (f : (Fin n → R) →ₗ[R] (Fin n → R)) :
+    topEquiv (R := R) n
+        (exteriorPower.map n f
+          (exteriorPower.ιMulti_family R n (Pi.basisFun R (Fin n)) default))
+      = LinearMap.det f := by
+  rw [map_apply_ιMulti_family, topEquiv_eq_repr_default, basis_repr_apply,
+    ιMulti_family, ιMultiDual_apply_ιMulti]
+  have hsig : ∀ i : Fin n,
+      (Set.powersetCard.ofFinEmbEquiv.symm (default : Set.powersetCard (Fin n) n)) i = i := by
+    intro i
+    rw [Set.powersetCard.ofFinEmbEquiv_symm_apply]
+    -- `↑default = univ` is `rfl` but not syntactically present; surface it, then the
+    -- mirrored `Finset.univ_orderEmbOfFin` collapses the increasing enumeration to `id`.
+    have hd : ((default : Set.powersetCard (Fin n) n) : Finset (Fin n)) = Finset.univ := rfl
+    simp only [hd, Finset.univ_orderEmbOfFin, id_eq]
+  rw [← LinearMap.det_toMatrix' f, ← Matrix.det_transpose]
+  congr 1
+  ext i j
+  simp only [Matrix.of_apply, Function.comp_apply, hsig, Matrix.transpose_apply,
+    LinearMap.toMatrix'_apply, Basis.coord_apply, Pi.basisFun_apply, Pi.basisFun_repr]
+
+/-- **The top exterior power transforms by the determinant** (the volume-form change-
+of-variables fact, OD-8 sub-leaf (h-0) of the `complementIso` O(n)-equivariance). For
+an endomorphism `f` of `Fin n → R`, the induced map on the top exterior power
+`exteriorPower.map n f` followed by the volume form `topEquiv` scales by the
+determinant of `f`: `topEquiv (map n f X) = (det f) • topEquiv X` for every
+`X : ⋀ⁿ (Fin n → R)`. Both sides are `R`-linear in `X`; they agree on the single
+top-power basis generator (`topEquiv_map_ιMulti_family_default_eq_det` plus
+`topEquiv_ιMulti_family_default = 1`), hence everywhere by `Basis.ext`. The classical
+"`⋀ⁿ f = det f`" identity, specialised to the standard carrier. -/
+theorem topEquiv_map_eq_det_smul (f : (Fin n → R) →ₗ[R] (Fin n → R))
+    (X : ⋀[R]^n (Fin n → R)) :
+    topEquiv (R := R) n (exteriorPower.map n f X)
+      = (LinearMap.det f) • topEquiv (R := R) n X := by
+  suffices h : (topEquiv (R := R) n).toLinearMap ∘ₗ exteriorPower.map n f
+      = (LinearMap.det f) • (topEquiv (R := R) n).toLinearMap by
+    have := LinearMap.congr_fun h X; simpa using this
+  apply Basis.ext ((Pi.basisFun R (Fin n)).exteriorPower n)
+  intro s
+  obtain rfl := Subsingleton.elim s default
+  simp only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, basis_apply,
+    LinearMap.smul_apply, smul_eq_mul]
+  rw [topEquiv_map_ιMulti_family_default_eq_det, topEquiv_ιMulti_family_default, mul_one]
 
 /-- Two `ExteriorAlgebra.ιMulti_family` wedges over the same family `v` agree whenever
 their cardinalities and their underlying finsets agree. The `m = n` cardinality cast

@@ -188,6 +188,24 @@ to be re-derived by re-reading entries later.
   it, but two callsites is below the mirror bar.
 - **Status:** resolved (no fix needed; logged so a third callsite triggers the helper).
 
+### [idiom] To use the mirrored `Finset.univ_orderEmbOfFin` on a `powersetCard` `default` index, surface `↑default = univ` with a `rfl`-`have` first — it won't `simp` out on its own
+- **Where it bit:** `topEquiv_map_ιMulti_family_default_eq_det` (mirror
+  `ExteriorPower/Basis.lean`, OD-8 (h-0) generator), proving the top-power index
+  reordering `Set.powersetCard.ofFinEmbEquiv.symm (default : powersetCard (Fin n) n)`
+  equals `id` so the determinant matrix `(eₛⱼ-coord of f(eₛᵢ))` (with `s = default`)
+  simplifies to `LinearMap.toMatrix' f`'s transpose.
+- **Friction:** `ofFinEmbEquiv_symm_apply` rewrites the reordering to
+  `(↑default).orderEmbOfFin _`, and the mirrored `@[simp] Finset.univ_orderEmbOfFin`
+  (the "increasing enumeration of `univ` is `id`" fact, already in
+  `Mathlib/Data/Finset/Sort.lean`) is stated for `Finset.univ.orderEmbOfFin`. But the
+  `↑default` (the `instUniqueTop`-default's coe) does **not** reduce to `Finset.univ`
+  for the simp lemma to fire on its own.
+- **Resolution:** add `have hd : (↑(default : powersetCard (Fin n) n) : Finset _) =
+  Finset.univ := rfl` (it *is* `rfl`, just not syntactically present), then
+  `simp only [hd, Finset.univ_orderEmbOfFin, id_eq]`. One build cycle. No new helper —
+  the existing mirror covers it once `↑default` is surfaced; below any TACTICS bar (a
+  one-off of the pervasive "the simp lemma's LHS isn't syntactically present" idiom).
+
 ### [idiom] An inline `by`-tactic-block passed as the `hcoord` higher-order argument of `exists_good_realization` left the goal an unresolved metavariable (`?m x✝`) — hoist it to a typed `have`
 - **Where it bit:** Phase 22g C1, weakening `exists_good_realization_const`'s `hspanrows` from `=`
   to `≤` (`CaseI.lean`) — the `hcoord` leg became `dualCoannihilator_anti hspanrows` after a `rw`,
