@@ -264,6 +264,21 @@ that runs to a full paragraph is almost always recapping. (Calibration:
 rows 84–93 ballooned to 1.4–2.8k chars each by recapping the math, and
 were compressed to signal-only on 2026-06-13.)
 
+**Write each row to the discipline, not to its neighbors.** Bloated
+*earlier* rows are **not** a template — anchoring on the verbosity
+visible above is exactly how a freshly-compressed log re-inflates, one
+matched row at a time. Judge every new row against the signal-only bar
+and the ~600-char cue **on its own**, even when the rows above it violate
+both; **never commit a row carrying extraneous detail, or content that
+belongs in `notes/PhaseN.md`'s *Decisions made* / the design section,
+merely because the surrounding rows do.** If writing to the discipline
+makes a new row look conspicuously terser than its neighbors, that is
+*correct* — the neighbors are the defect; compressing them is a separate
+cleanup pass, never a license to match them. (Calibration: added after a
+coordinator's fresh rows re-bloated to 1.0–1.5k chars mid-phase while the
+prior session's rows sat at 1.3–2.2k; the fresh rows were re-compressed
+to signal-only and the prior ones deferred to a future pass.)
+
 **Episode lessons live in *Findings*, not in every row.** A multi-row
 episode (a boundary pair, an escalation, a re-route later caught wrong)
 yields *one* durable lesson — write it **once** in the sibling log's

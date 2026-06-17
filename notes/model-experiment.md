@@ -84,7 +84,14 @@ the salvage, NOT resume/relaunch — distinct from `killed`; the agent's artifac
 graded, Notes/Commit `—` as coordinator-supplied; row 164 precedent); and the
 2026-06-16 supersession-deletion check (a step-4 verification sub-bullet, repo-local
 to `.claude/commands/coordinate-phase.md`: a "delete/supersede X" verdict is violated
-by an *absence* the statement-shape check misses — grep that X is gone; row 160).
+by an *absence* the statement-shape check misses — grep that X is gone; row 160);
+and the 2026-06-17 *write-each-row-to-the-discipline-not-its-neighbors* amendment
+(a new paragraph in the protocol's *Per-dispatch record* Notes discipline: bloated
+*earlier* rows are not a template — judge each new row signal-only on its own and
+never commit extraneous / phase-notes-belonging content just because neighbors do;
+the anchoring trap is how a compressed log re-inflates one matched row at a time —
+user-requested after this session's rows 191–194 re-bloated to 1.0–1.5k chars
+mid-phase).
 
 ## Repo-local config
 
