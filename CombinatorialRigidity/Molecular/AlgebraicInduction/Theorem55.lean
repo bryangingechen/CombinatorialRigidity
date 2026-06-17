@@ -2149,57 +2149,163 @@ theorem case_I_dispatch [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
            case_I_realization_nonsimple (by omega) hn G hG hV3 hSimple
              (fun k' G' hG' hne' hlt => (hIH k' G' hG' hne' hlt).2)⟩
 
-/-- **KT Theorem 5.5 at `d = 3`, general-`k` spine** (`thm:theorem-55`; Katoh–Tanigawa 2011
-Theorem 5.5, Phase 22k L10b). For a minimal `k`-dof graph on ≥ 2 vertices in `d = 3`
-(`bodyBarDim n = screwDim 2 = 6`), the conditioned pair holds:
+/-- **KT Theorem 5.5, general-`k` (all-dimension) spine** (`thm:theorem-55`; Katoh–Tanigawa 2011
+Theorem 5.5, Phase 22k L10b base, Phase 23a Leaf 5 general-`k` lift). For a minimal `c`-dof graph
+on ≥ 2 vertices at body-bar dimension `bodyBarDim n = screwDim k` (`k ≥ 1`), the conditioned pair
+holds at grade `k`:
 - *GP conjunct*: if `G.Simple`, then `G` has a generic full-rank panel-hinge realization;
 - *Bare*: `G` has a panel-hinge realization.
 
-This is the **zero-carry** form: carries `h622`, `hsplit`, `hcontract` are all discharged
-by wiring the all-`k` producers (`case_cut_edge_realization_gp`, `case_II_realization_all_k`,
-`case_III_realization`, `case_I_dispatch`).
+The induction skeleton (`minimal_kdof_reduction_all_k`) and the **Case-II / Case-III split arms**
+are lifted to general grade `k` here, wiring the general-`k` producers `case_II_realization_all_k`
+(23a Leaf 3) and `case_III_realization_all_k` (23a Leaf 4). The remaining arms — the base producer,
+the cut producer, and the Case-I (rigid-subgraph) dispatch — together with the **M4 forgetful map**
+(GP → bare `HasPanelRealization`) are **still `d = 3`-pinned** in the landed tree (they bottom out
+in the `Fin 4`/`q : α × Fin 4` panel geometry and the `⋀²ℝ⁴`-duality
+`exists_extensor_eq_panelSupportExtensor`, both CHAIN scope — see the 23a Leaf-5 recon
+correction). 23a therefore carries them as **explicit
+producer-shaped hypotheses** at general grade `k` (the standing "carry the analytic crux as `h…`,
+keep the node red" idiom, Phase 21b — never a `sorry`), plus the Case-III chain dispatch `hdispatch`
+(CHAIN) and the `hD : 6 ≤ bodyBarDim n` chain-extraction floor (Phase-20 chain extractors are
+`6`-pinned; ENTRY lifts it). The `d = 3` line stays fully green through the `k = 2` wrapper
+`theorem_55_minimalKDof_k` below, which fills every carry from the existing `d = 3` machinery
+(`theorem_55_base_producer`, `case_cut_edge_realization*`, `case_I_dispatch` + the `k > 0` manual
+dispatch, `hasPanelRealization_of_generic`, `case_III_candidate_dispatch`).
 
-**Callback map** for `minimal_kdof_reduction_all_k`:
-- `hbase`: `theorem_55_base_producer` (any `k`, `|V| ≤ 2`);
-- `hcut`: GP from `case_cut_edge_realization_gp` + bare from `case_cut_edge_realization`;
-- `hcontract` (Case I, rigid subgraph): dispatches `k = 0` vs `k > 0`:
-  - `k = 0`: `case_I_dispatch`;
-  - `k > 0`: non-simple → `case_I_realization_nonsimple` + vacuous GP;
-    simple + simple contraction → `case_I_realization_all_k` + M4;
-    simple + all contractions non-simple → `False` via
-    `deficiency_eq_zero_of_simple_rigid_no_simpleContraction` (the `k > 0` 6.5 arm is vacuous);
-- `hsplitPos` (Case II, `k > 0`, 2EC, no rigid): G0 → `G.Simple`; `case_II_realization_all_k` + M4;
-- `hsplitZero` (Case III, `k = 0`, 2EC, no rigid): G0 → `G.Simple`; `case_III_realization` + M4;
-  `hsplit` carry discharged here by wiring.
+**Carry map** (general-grade producers, all at the conditioned-pair motive
+`P G := (G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G`):
+- `hbase_k`: the `theorem_55_base_producer` shape (any dof, `|V| ≤ 2`);
+- `hcut_k`: the cut producer's conditioned pair
+  (`case_cut_edge_realization_gp` + `case_cut_edge_realization`);
+- `hcontract_k`: the Case-I (rigid-subgraph) conditioned-pair dispatch
+  (`case_I_dispatch` + the `c > 0` arm);
+- `hforget_k`: the M4 forgetful map (`hasPanelRealization_of_generic`);
+- `hdispatch`: the Case-III chain dispatch (CHAIN; `case_III_realization_all_k`'s shape).
 
-`theorem_55_all_k` is the `k = 0` corollary of this general-`k` spine. -/
+**Liftable split arms** (wired here):
+- `hsplitPos` (Case II, `c > 0`, 2EC, no rigid): G0 → `G.Simple`;
+  `case_II_realization_all_k` + `hforget_k`;
+- `hsplitZero` (Case III, `c = 0`, 2EC, no rigid): G0 → `G.Simple`;
+  `case_III_realization_all_k` (+ `hdispatch`) + `hforget_k`.
+
+`theorem_55_all_k` is the `c = 0` corollary of this general-`k` spine at `k = 2`. -/
+theorem PanelHingeFramework.theorem_55_minimalKDof_k_all_k [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    -- base producer (any dof, `|V| ≤ 2`), `d = 3`-pinned in the landed tree → carried.
+    (hbase_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → V(G).Nonempty →
+      V(G).ncard ≤ 2 →
+      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+        HasPanelRealization k n G)
+    -- cut producer's conditioned pair, `d = 3`-pinned (`q : α × Fin 4`) → carried.
+    (hcut_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → 3 ≤ V(G).ncard →
+      ¬ G.TwoEdgeConnected →
+      (∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+          HasPanelRealization k n G') →
+      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+        HasPanelRealization k n G)
+    -- Case-I (rigid-subgraph) conditioned-pair dispatch, `d = 3`-pinned (`Fin 4`) → carried.
+    (hcontract_k : ∀ (c : ℤ) (G : Graph α β), G.IsMinimalKDof n c → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+          HasPanelRealization k n G') →
+      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+        HasPanelRealization k n G)
+    -- M4 forgetful map (GP → bare), `d = 3`-pinned (`exists_extensor_eq_panelSupportExtensor`) →
+    -- carried. `G.Loopless` is supplied at each call site (both split arms establish it).
+    (hforget_k : ∀ (G : Graph α β), G.Loopless → 2 ≤ V(G).ncard →
+      PanelHingeFramework.HasGenericFullRankRealization k n G → HasPanelRealization k n G)
+    -- Case-III chain dispatch (CHAIN); the `case_III_realization_all_k.hdispatch` shape, supplied
+    -- per `G` from the `hsplitZero` arm's local data (`hG`/`hV3`/`hSimple`/`hIH`) so the `k = 2`
+    -- wrapper can fill it through `case_III_nested_rank_lower` (which needs exactly that data).
+    (hdispatch : ∀ (G : Graph α β), G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard → G.Simple →
+      (∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+        V(G').ncard < V(G).ncard →
+        (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+          HasPanelRealization k n G') →
+      (∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
+        v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
+        a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
+        eₐ ≠ e_b → eₐ ≠ e_c →
+        G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
+        (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
+        (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
+        e₀ ∉ E(G) →
+        (G.splitOff v a b e₀).deficiency n = 0 →
+        PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
+        PanelHingeFramework.HasGenericFullRankRealization k n G))
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+      HasPanelRealization k n G :=
+  Graph.minimal_kdof_reduction_all_k
+    (P := fun G =>
+      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+        HasPanelRealization k n G)
+    -- hbase: carried producer.
+    hbase_k
+    -- hcut: carried producer.
+    hcut_k
+    -- hcontract: carried producer (Case-I rigid-subgraph dispatch, any dof).
+    hcontract_k
+    -- hsplitPos: Case II (c > 0, 2EC, no rigid). G0 → simple; `case_II_realization_all_k` + M4.
+    (fun c G hG hcpos hV3 htec hnoRigid hIH => by
+      haveI hSimple : G.Simple :=
+        Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
+      haveI hloop : G.Loopless := hSimple.toLoopless
+      have hGP := PanelHingeFramework.case_II_realization_all_k hk1 hn hfresh
+        G hG hcpos hV3 htec hnoRigid hIH
+      exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
+    -- hsplitZero: Case III (c = 0, 2EC, no rigid). G0 → simple; `case_III_realization_all_k` + M4.
+    (fun G hG hV3 _htec hnoRigid hIH => by
+      haveI hSimple : G.Simple :=
+        Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
+      haveI hloop : G.Loopless := hSimple.toLoopless
+      have hGP := PanelHingeFramework.case_III_realization_all_k hk1 hD hfresh G hG hV3
+        hnoRigid hSimple hIH (hdispatch G hG hV3 hSimple hIH)
+      exact ⟨fun _ => hGP, hforget_k G hloop (by omega) hGP⟩)
+    c G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
+
+/-- **KT Theorem 5.5 at `d = 3`, general-`c`-dof spine (the `k = 2` wrapper)** (`thm:theorem-55`;
+Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L10b; the `k = 2` specialization of
+`theorem_55_minimalKDof_k_all_k`, Phase 23a Leaf 5). For a minimal `c`-dof graph on ≥ 2 vertices in
+`d = 3` (`bodyBarDim n = screwDim 2 = 6`), the conditioned pair holds.
+
+This is the **zero-carry** `d = 3` form: it fills every general-grade carry of
+`theorem_55_minimalKDof_k_all_k` from the landed `d = 3` machinery — `theorem_55_base_producer`
+(`hbase_k`), `case_cut_edge_realization_gp` + `case_cut_edge_realization` (`hcut_k`), the
+`case_I_dispatch` + `k > 0` manual dispatch (`hcontract_k`), `hasPanelRealization_of_generic`
+(`hforget_k`), and the fixed-3-candidate `case_III_candidate_dispatch` (`hdispatch`, exactly as
+the `case_III_realization` `k = 2` wrapper does). The dimension is pinned to `2` via the return
+type, so the `1 ≤ k` floor is `by norm_num`. Phase 23 CHAIN discharges `hdispatch` at general
+`k`; ENTRY lifts the `hD` floor; later sub-phases lift the base/cut/Case-I/M4 producers off `d = 3`.
+
+`theorem_55_all_k` is the `c = 0` corollary of this spine. -/
 theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α] [Finite β]
     {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (hV : 2 ≤ V(G).ncard) :
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV : 2 ≤ V(G).ncard) :
     (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
       HasPanelRealization 2 n G :=
-  Graph.minimal_kdof_reduction_all_k
-    (P := fun G =>
-      (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
-        HasPanelRealization 2 n G)
-    -- hbase: `theorem_55_base_producer` (any k, |V| ≤ 2).
-    (fun k G hG hne hV2 => theorem_55_base_producer (by omega) hn G hG hne hV2)
-    -- hcut: GP from `case_cut_edge_realization_gp` + bare from `case_cut_edge_realization`.
-    (fun k G hG hV3 hntec hIH => ⟨
+  PanelHingeFramework.theorem_55_minimalKDof_k_all_k (k := 2) (by norm_num) hD hn hfresh
+    -- hbase_k: `theorem_55_base_producer` (any dof, |V| ≤ 2).
+    (fun c G hG hne hV2 => theorem_55_base_producer (by omega) hn G hG hne hV2)
+    -- hcut_k: GP from `case_cut_edge_realization_gp` + bare from `case_cut_edge_realization`.
+    (fun c G hG hV3 hntec hIH => ⟨
       fun hSimple => case_cut_edge_realization_gp (by omega) hn G hG hV3 hntec hSimple hIH,
       case_cut_edge_realization (by omega) hn G hG hV3 hntec
-        (fun k' G' hG' hne' hlt => (hIH k' G' hG' hne' hlt).2)⟩)
-    -- hcontract: Case I dispatch (k = 0) or manual dispatch (k > 0).
-    (fun k G hG hV3 hrig hIH => by
+        (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
+    -- hcontract_k: Case I dispatch (c = 0) or manual dispatch (c > 0).
+    (fun c G hG hV3 hrig hIH => by
       classical
       haveI hloop : G.Loopless := Graph.loopless_of_isMinimalKDof hG
-      by_cases hk : k = 0
-      · -- k = 0: `case_I_dispatch`.
-        exact case_I_dispatch hD hn G (hk ▸ hG) hV3 hrig hIH
-      · -- k > 0: manual dispatch.
-        have hkpos : 0 < k := lt_of_le_of_ne (hG.1 ▸
-          G.deficiency_nonneg n ((Set.ncard_pos (Set.toFinite _)).mp (by omega))) (Ne.symm hk)
+      by_cases hc : c = 0
+      · -- c = 0: `case_I_dispatch`.
+        exact case_I_dispatch hD hn G (hc ▸ hG) hV3 hrig hIH
+      · -- c > 0: manual dispatch.
         by_cases hSimple : G.Simple
         · -- Simple: dispatch on simple contraction.
           have hGP : PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
@@ -2208,37 +2314,30 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α
             · obtain ⟨H, r, hH, hr, hcSimple⟩ := hd
               exact PanelHingeFramework.case_I_realization_all_k (by omega) hn G hG hV3
                 hSimple hH hr hcSimple hIH
-            · -- All contractions non-simple + k > 0 → False (k must be 0 by the carrier argument).
-              have hk0 : k = 0 := Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction
+            · -- All contractions non-simple + c > 0 → False (c must be 0 by the carrier argument).
+              have hc0 : c = 0 := Graph.deficiency_eq_zero_of_simple_rigid_no_simpleContraction
                 (by omega) hV3 hG hSimple hrig
                 (fun H hH r hr hcs => hd ⟨H, r, hH, hr, hcs⟩)
-              exact absurd hk0 hk
+              exact absurd hc0 hc
           exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩
         · -- Non-simple: GP vacuous, bare via `case_I_realization_nonsimple`.
           exact ⟨fun hS => absurd hS hSimple,
                  case_I_realization_nonsimple (by omega) hn G hG hV3 hSimple
-                   (fun k' G' hG' hne' hlt => (hIH k' G' hG' hne' hlt).2)⟩)
-    -- hsplitPos: Case II (k > 0, 2EC, no rigid). G0 → simple; `case_II_realization_all_k` + M4.
-    (fun k G hG hkpos hV3 _htec hnoRigid hIH => by
-      haveI hSimple : G.Simple :=
-        Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
-      haveI hloop : G.Loopless := hSimple.toLoopless
-      -- `case_II_realization_all_k` is now general-`k` (23a Leaf 3); the `d = 3` spine pins the
-      -- dimension to `2` via the return type, discharging the `1 ≤ k` floor at `2`.
-      have hGP := PanelHingeFramework.case_II_realization_all_k (k := 2) (by norm_num) hn hfresh
-        G hG hkpos hV3 _htec hnoRigid hIH
-      exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩)
-    -- hsplitZero: Case III (k = 0, 2EC, no rigid). G0 → simple; `case_III_realization` + M4.
-    -- `hsplit` carry discharged here: G0 (`simple_of_isMinimalKDof_of_noRigid`) gives `G.Simple`,
-    -- then M4 ∘ the GP Case-III producer; no new build.
-    (fun G hG hV3 _htec hnoRigid hIH => by
-      haveI hSimple : G.Simple :=
-        Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
-      haveI hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_III_realization hD hn hfresh G hG hV3
-        hnoRigid hSimple hIH
-      exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩)
-    k G hG ((Set.ncard_pos (Set.toFinite _)).mp (by omega))
+                   (fun c' G' hG' hne' hlt => (hIH c' G' hG' hne' hlt).2)⟩)
+    -- hforget_k: M4 forgetful map `hasPanelRealization_of_generic` (loopless supplied at the arm).
+    (fun G hloop hV2 hGP => by haveI := hloop; exact hasPanelRealization_of_generic hV2 hGP)
+    -- hdispatch: the fixed-3-candidate `case_III_candidate_dispatch` + `case_III_nested_rank_lower`
+    -- (exactly as the `case_III_realization` `k = 2` wrapper fills it; the per-`G` `hG`/`hV3`/
+    -- `hSimple`/`hIH` arrive as carry arguments rather than closure).
+    (fun G hG hV3 hSimple hIH v a b cc eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc
+        heab heac hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' =>
+      PanelHingeFramework.case_III_candidate_dispatch G v a b cc eₐ e_b e_c e₀
+        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀
+        (PanelHingeFramework.case_III_nested_rank_lower hn G v a b eₐ e_b e₀
+          hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH)
+        hdef_Gab hG.1 hsplitGP')
+    G hG hV
 
 /-- **KT Theorem 5.5 at `d = 3`, zero-carry spine (`k = 0` corollary)** (`thm:theorem-55`;
 Katoh–Tanigawa 2011 Theorem 5.5, Phase 22k L9). For a minimal `0`-dof graph on ≥ 2 vertices

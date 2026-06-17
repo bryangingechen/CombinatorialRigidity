@@ -1,8 +1,9 @@
 # Phase 23a — General-`d` carrier lift of the spine [CARRIER] (work log)
 
-**Status:** in progress (opened 2026-06-17; Phase 23 opened with a general,
-layer-level design recon, then this 23a leaf-level recon — both docs only, no
-Lean yet).
+**Status:** **CARRIER/23a Lean complete** (closed 2026-06-17; Leaves 0–5 all
+green, full project warning-clean + `lake lint` clean). The integer Phase 23
+stays **in progress** — CHAIN / ENTRY / ASSEMBLY remain (coordinator owns the
+sub-phase boundary). Next layer: **CHAIN** (see *Hand-off*).
 
 **Orientation.** This is the **23a (CARRIER layer)** sub-phase work log — the
 *rolling* state + hand-off for the active sub-phase only. The cross-phase
@@ -18,20 +19,23 @@ stay code-only until their turn.
 
 ## Current state
 
-Phase 23 is **open with both recon stages landed** and **Leaves 0–4 green**:
-Leaf 0 (the `screwDim` arithmetic kit, incl. `three_le_screwDim`), Leaf 1 (1a
-rank-nullity core; 1b grade-`k` extensor bricks), Leaf 2 (the N1 spanning brick
-`span_omitTwoExtensor_eq_top`, re-scoped, on the new mirror
-`Fintype.card_subtype_fst_lt_snd`), Leaf 2b (the shared-spine LI brick), Leaf 3
-(the CaseII rank-arithmetic numeral pass, `case_II_realization_all_k`), and **Leaf 4
-(this commit)** — the Case-III spine lift with the chain dispatch left explicit:
-`case_III_hsplit_producer`/`case_III_nested_rank_lower`/`case_III_realization` each
-got a general-`k` `_all_k` partner (`screwDim k`/`Fin (k+2)`/`…Realization k`), the
-legacy `d=3` names kept as thin `k=2` wrappers, the chain dispatch carried as
-`case_III_realization_all_k`'s **explicit `hdispatch`** (the CHAIN green-modulo
-boundary, filled at `k=2` from `case_III_candidate_dispatch`). The **only** remaining
-23a leaf is **Leaf 5** (the Theorem55 spine lift; closes 23a) — see *Hand-off*. The
-general sub-phase division (§2–§3) and the 23a leaf recon (§"23a") live in
+**23a Lean is done — all 6 leaves green.** Leaf 0 (the `screwDim` arithmetic kit,
+incl. `three_le_screwDim`), Leaf 1 (1a rank-nullity core; 1b grade-`k` extensor
+bricks), Leaf 2 (the N1 spanning brick `span_omitTwoExtensor_eq_top`, re-scoped, on
+the new mirror `Fintype.card_subtype_fst_lt_snd`), Leaf 2b (the shared-spine LI
+brick), Leaf 3 (the CaseII rank-arithmetic numeral pass, `case_II_realization_all_k`),
+Leaf 4 (the Case-III spine lift with the chain dispatch left explicit), and **Leaf 5
+(this commit)** — the **Theorem55 spine lift**: `theorem_55_minimalKDof_k_all_k`
+(general grade `k`, `bodyBarDim n = screwDim k`, `1 ≤ k` floor) lifts the
+`minimal_kdof_reduction_all_k` induction skeleton and wires the two **liftable** split
+arms numeral-wise (`case_II_realization_all_k` / `case_III_realization_all_k`); the
+legacy `theorem_55_minimalKDof_k` is kept as the `k=2` wrapper filling every carry from
+the landed `d=3` machinery, so `theorem_55_all_k`/`theorem_55_d3`/`rankHypothesis_of_theorem_55_d3`
+and the whole `d=3` line stay fully green. The **green-modulo boundary 23a hands CHAIN**:
+the Case-III chain dispatch `hdispatch` (CHAIN) and four still-`d=3`-pinned producers
+(base/cut/Case-I + the M4 forgetful map) are carried as explicit `h…` hypotheses (never
+`sorry`), plus the `hD : 6 ≤ bodyBarDim n` chain-extraction floor (ENTRY). The general
+sub-phase division (§2–§3) and the 23a leaf recon (§"23a") live in
 `notes/Phase23-design.md` (the authoritative recon).
 
 **Leaf 2/2b re-scope (settled).** Of the five decls the Leaf-2 recon listed,
@@ -92,24 +96,21 @@ the spine (23a) and a *genuinely new* general-`d` chain dispatch +
 The layer-level division, with hard cores and dependency order, is in
 `notes/Phase23-design.md` §2–§3 (authoritative). Summary:
 
-- [ ] **23a [CARRIER] — general-`d` carrier lift of the spine** (FIRST, the
-      one minted letter). Lift the
+- [x] **23a [CARRIER] — general-`d` carrier lift of the spine** (DONE, closed
+      2026-06-17). Lifted the
       `screwDim 2`-pinned realization spine to symbolic `screwDim k`. OD-5
-      settled (transport already general). **6-leaf sequence**
+      settled (transport already general). **6-leaf sequence** all green
       (`notes/Phase23-design.md` §"23a"(c)): Leaf 0 `screwDim` arithmetic kit
       (Basic ✓) → Leaf 1 `Fin 4` panel-incidence geometry (PanelLayer; **split
       at build**: 1a duality-free rank-nullity core ✓, 1b grade-`k` extensor
       bricks ✓; `exists_extensor_eq_panelSupportExtensor` dropped to CHAIN)
-      → Leaf 2 N1 spanning brick `span_omitTwoExtensor_eq_top` ✓ (the three
-      other Claim612 incidence bricks are dispatch-only → CHAIN) → Leaf 2b
+      → Leaf 2 N1 spanning brick `span_omitTwoExtensor_eq_top` ✓ → Leaf 2b
       the shared LI brick `linearIndependent_normals_of_algebraicIndependent_general`
-      ✓ (general `k`; `k=2` wrapper for the still-`k=2` spine consumers)
-      → Leaf 3 CaseII rank-arithmetic numeral pass ✓ → Leaf 4 Case-III spine,
-      dispatch left explicit ✓ → Leaf 5 Theorem55 spine, dispatch threaded up
-      (closes 23a). Carrier files (RigidityMatrix/Basic, PanelHinge,
-      Pinning, GenericityDevice, Coupling, CaseI) need **no lift** — already
-      general. Green-modulo boundary: the Case-III dispatch becomes an
-      explicit `hcand` hypothesis for CHAIN (§"23a"(d)).
+      ✓ → Leaf 3 CaseII rank-arithmetic numeral pass ✓ → Leaf 4 Case-III spine,
+      dispatch left explicit ✓ → Leaf 5 Theorem55 spine ✓ (`theorem_55_minimalKDof_k_all_k`;
+      closes 23a). Green-modulo boundary 23a hands CHAIN: the Case-III chain
+      dispatch + four still-`d=3`-pinned producers (base/cut/Case-I/M4 — a Leaf-5
+      recon correction, see *Decisions*) carried as explicit `h…`; `hD` floor → ENTRY.
 - [ ] **CHAIN — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality**
       (code; letter minted at open). Replace the fixed-3-candidate
       `case_III_candidate_dispatch` with the
@@ -149,22 +150,33 @@ The clause-(ii) flags the recon could not settle from the source live in
 
 ## Hand-off / next phase
 
-**Next concrete commit: Leaf 5** (`notes/Phase23-design.md` §"23a"(c)) — the Theorem55 spine
-lift, dispatch threaded up; **closes 23a** (`Theorem55.lean`). Lift `theorem_55_minimalKDof_k`
-(currently `screwDim 2`/`HasGenericFullRankRealization 2`-pinned, `:2179`) to general `k` with
-`hn : bodyBarDim n = screwDim k` + a `1 ≤ k` floor (the `case_II_realization_all_k` /
-`case_III_realization_all_k` shape); lift its base/cut/CaseI/CaseII/CaseIII callback wiring
-(the `minimal_kdof_reduction_all_k` `P`, `hbase`/`hcut`/`hcontract`/`hsplit` producers at `:2182`)
-numeral-wise; and **thread the green-modulo `hdispatch` hypothesis** (the
-`case_III_realization_all_k` chain dispatch) through to `theorem_55_minimalKDof_k`'s own
-signature — its caller fills it. Keep a `theorem_55_d3` / `theorem_55_all_k` `k=2` wrapper that
-specializes `k:=2` and discharges `hdispatch` via the existing `case_III_candidate_dispatch`
-(filled exactly as the `case_III_realization` `k=2` wrapper does), so the `d=3` line stays fully
-green. **The `d=3` graph-side `6 ≤ bodyBarDim n` floor stays an explicit hypothesis** — the chain
-extractors (`exists_chain_data_of_noRigid` / `exists_adjacent_degree_two_pair`, Phase 20) are
-`6`-pinned, so the `screwDim k` floor (`three_le_screwDim`) does **not** discharge it; ENTRY lifts
-that floor. **The still-`Fin 4` dispatch internals** (`case_III_candidate_dispatch` and the three
-dispatch-only Leaf-2 bricks) stay at `Fin 4` → CHAIN; do **not** re-attempt them in 23a.
+**23a (CARRIER) Lean is closed. Next layer: CHAIN** (code-only until it opens; the
+coordinator mints its letter + work log). CHAIN's job (`notes/Phase23-design.md`
+§"CHAIN", §"23a"(d)): replace the fixed-3-candidate `case_III_candidate_dispatch` with
+the length-`d` chain dispatch (eqs. 6.46–6.64) + the `⋀^{d−1}(ℝ^{d+1})` duality finish
+(eq. 6.67, the N3b analog) — i.e. **discharge `case_III_realization_all_k`'s `hdispatch`
+hypothesis at general `k`**. The still-`Fin 4` dispatch internals (`case_III_candidate_dispatch`
+and the three dispatch-only Leaf-2 bricks `omitTwoExtensor_eq_extensor_kept` /
+`…_homogenize_…` / `exists_independent_perp_pair`, plus the `Meet.lean` `⋀²ℝ⁴` duality
+route `extensor_mem_range_map_subtype_of_mem`) are the CHAIN surface.
+
+**Green-modulo boundary 23a leaves for downstream** (all explicit `h…`, never `sorry`):
+- **CHAIN** discharges `theorem_55_minimalKDof_k_all_k`'s `hdispatch` (the Case-III chain
+  dispatch) at general `k`.
+- **ENTRY** lifts the `hD : 6 ≤ bodyBarDim n` chain-extraction floor (Phase-20 extractors
+  `exists_chain_data_of_noRigid` / `exists_adjacent_degree_two_pair` are `6`-pinned).
+- **A later sub-phase lifts the four still-`d=3`-pinned producers** carried by
+  `theorem_55_minimalKDof_k_all_k` — `hbase_k` (`theorem_55_base_producer`), `hcut_k`
+  (`case_cut_edge_realization*`), `hcontract_k` (`case_I_dispatch` + the `c>0` arm), and
+  `hforget_k` (the M4 forgetful map `hasPanelRealization_of_generic`). The recon assumed
+  these were liftable numeral-wise; they are **not** at 23a (they bottom out in the `Fin 4`/
+  `q : α × Fin 4` panel geometry + the `⋀²ℝ⁴`-duality `exists_extensor_eq_panelSupportExtensor`,
+  all CHAIN-grade) — see the Leaf-5 *Decisions* entry. CHAIN's duality finish is the
+  prerequisite that unblocks lifting `hforget_k` (M4) and through it base/cut/Case-I.
+
+ASSEMBLY then composes the honest general-`d` Theorem 5.5 once CHAIN+ENTRY land and the
+carried producers are lifted; the `d=3` instance feeds (`rankHypothesis_of_theorem_55_d3`,
+the Thm-5.6 push) are ASSEMBLY, untouched here.
 
 **Earlier commits (settled).** Leaf 0 — `screwDim`-arithmetic kit (`RigidityMatrix/Basic.lean`:
 `one_le_screwDim` / `two_le_screwDim` / `three_le_screwDim` / `screwDim_sub_two_le_mul`). Leaf 1a
@@ -173,12 +185,15 @@ dispatch-only Leaf-2 bricks) stay at `Fin 4` → CHAIN; do **not** re-attempt th
 (grade-`k` extensor bricks, `k=2` wrappers). Leaf 2 — `span_omitTwoExtensor_eq_top` to general `k`,
 on the mirror `Fintype.card_subtype_fst_lt_snd`. Leaf 2b —
 `linearIndependent_normals_of_algebraicIndependent_general` (`k=2` wrapper kept). Leaf 3 —
-`case_II_realization_all_k` (dof rename `k:ℤ → c:ℤ`, `1 ≤ k` floor). Leaf 4 (this commit) —
+`case_II_realization_all_k` (dof rename `k:ℤ → c:ℤ`, `1 ≤ k` floor). Leaf 4 —
 `case_III_{hsplit_producer,nested_rank_lower,realization}_all_k` (general `k`; legacy `d=3` names
 kept as `k=2` wrappers; `case_III_realization_all_k`'s chain dispatch carried as explicit
 `hdispatch`, filled at `k=2` from `case_III_candidate_dispatch`; dead `case_III_realization_0dof`
-deleted). The detailed 23a recon settled OD-5 (ports verbatim) and resolved OD-2/OD-3 (4.6/4.8
-exist only in fixed-tuple `d=3` form). See §"23a".
+deleted). Leaf 5 (this commit) — `theorem_55_minimalKDof_k_all_k` (the general-`k` Theorem55
+spine; `theorem_55_minimalKDof_k` kept as the `k=2` wrapper; five general-grade carries
+`hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`/`hdispatch` + the `hD` floor, all filled at `k=2`
+from the landed `d=3` machinery). The detailed 23a recon settled OD-5 (ports verbatim) and
+resolved OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple `d=3` form). See §"23a".
 
 **Tracked follow-up (deferred from this commit, not Phase-23 math):**
 - **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now
@@ -315,6 +330,27 @@ exist only in fixed-tuple `d=3` form). See §"23a".
   `case_III_candidate_dispatch`. **Boundary findings:** (i) the producer's `6 ≤ bodyBarDim n` floor
   is **not** `screwDim k`-derivable (Phase-20 chain extractors are `6`-pinned) → stays an explicit
   carry, ENTRY lifts it; (ii) dead `case_III_realization_0dof` (no consumers) deleted, not wrapped.
+
+- **Leaf 5 — Theorem55 spine lift; `theorem_55_minimalKDof_k_all_k` + `k=2` wrapper.** Lifted the
+  spine to general grade `k` (`bodyBarDim n = screwDim k`, `1 ≤ k`, dof rename `k:ℤ → c:ℤ` per
+  Leaf 3), reusing the `n`-fixed `P`-polymorphic `minimal_kdof_reduction_all_k` induction skeleton.
+  The two **liftable** split arms (Case II / Case III) are wired numeral-wise via the Leaf-3/4
+  `case_{II,III}_realization_all_k`. The legacy `theorem_55_minimalKDof_k` is the `k=2` wrapper
+  filling every carry from the landed `d=3` machinery, so `theorem_55_{all_k,d3}` and
+  `rankHypothesis_of_theorem_55_d3` (whose call sites are unaffected by the implicit dof rename) and
+  the whole `d=3` line stay green.
+  **Recon correction (the consequential Leaf-5 finding).** The recon (§"23a"(c) Leaf 5, table row
+  *Theorem55*) said to lift the base/cut/CaseI callback wiring *numeral-wise*. That is **wrong**:
+  the spine-local producers `theorem_55_base_producer`, `case_cut_edge_realization{,_gp}`,
+  `case_I_dispatch`/`case_I_realization_h65`, and the **M4 forgetful map**
+  `hasPanelRealization_of_generic` are all genuinely `d=3`-pinned — they bottom out in `q : α × Fin 4`
+  panel geometry and the `⋀²ℝ⁴`-duality `exists_extensor_eq_panelSupportExtensor` (the latter
+  explicitly dropped to CHAIN at Leaf 1b). So the task's "two carries" (`hdispatch` + `hD`) is short
+  by **four**: 23a carries them too, as explicit producer-shaped hypotheses `hbase_k`/`hcut_k`/
+  `hcontract_k`/`hforget_k` at general grade `k`. CHAIN's `⋀^{d−1}` duality finish is the
+  prerequisite that unblocks M4 (and through it base/cut/CaseI). Same explicit-`h…`-crux idiom as
+  Leaf 4; no `sorry`. (`hforget_k` carries `G.Loopless` as a plain hypothesis — both split arms
+  establish it — since `hasGenericFullRankRealization` has no landed loopless-extraction lemma.)
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
