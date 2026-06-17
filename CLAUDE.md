@@ -155,6 +155,23 @@ hand-off — and points at the blueprint chapter.)
   have been authored by a different model). Write the model name in
   display form (`Claude Sonnet 4.6 <noreply@anthropic.com>`), not
   the model-id form (`claude-sonnet-4-6`).
+- **Never commit local machine paths** — not in tracked file content
+  and not in commit messages. Absolute or home-relative paths to a
+  developer's machine (`/Users/<name>/…`, `~/…`, `~/.claude*`, agent /
+  tooling log dirs, scratch checkouts, worktree paths) are
+  session-local noise that leaks one machine's layout into shared,
+  often-published history. When you need to *reference* such a source
+  — e.g. reconstructing a subagent's cost from local logs, or pointing
+  at a tool's output — describe it **generically** ("the local
+  agent-teams logs", "the subagent transcript", "the blueprint venv")
+  rather than by absolute path. Paths *inside the repo* (relative
+  paths like `notes/PhaseN.md`, `CombinatorialRigidity/…`) are fine
+  and encouraged. Pre-commit check: scan the staged diff **and** the
+  commit-message draft for `/Users/`, `~/`, or a home-dir fragment;
+  if found, reword before committing. (A local path slipped into a
+  log row's cost cell and its commit message on 2026-06-17 and had to
+  be scrubbed by a history rewrite — cheap to avoid up front, costly
+  to remove after the fact, impossible once pushed.)
 - **Pushing to `master` triggers a Pages deploy** (blueprint, docs,
   upstreaming dashboard via `leanprover-community/docgen-action`).
   PRs run the same build but skip the deploy step. There is no
