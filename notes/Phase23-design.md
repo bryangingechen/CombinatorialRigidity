@@ -176,6 +176,26 @@ incidence pattern), whose `(d−1)`-extensors of `d−1`-subsets span a
 `(d+1 choose d−1) = D`-dimensional space, forcing some `Mᵢ` to have full
 rank.
 
+**Scope expansion (23a Leaf-5 build-contact finding — corrects §"23a"(a)/(d)
+and §1).** The recon assumed the realization spine was "general & GREEN" modulo
+*only* this chain dispatch. False: lifting the spine (23a Leaf 5,
+`theorem_55_minimalKDof_k_all_k`) found that the **base / cut / Case-I / M4-
+forgetful-map** realization producers — `theorem_55_base_producer`,
+`case_cut_edge_realization{,_gp}`, `case_I_dispatch` (+ `case_I_realization_h65`),
+and `hasPanelRealization_of_generic` — are **also `d=3`-pinned**: each bottoms
+out in `Fin 4` panel geometry and the `⋀²ℝ⁴` duality
+`exists_extensor_eq_panelSupportExtensor` (the forget map provably calls it,
+`GenericityDevice.lean:1936/1945`; every conditioned-pair producer routes
+through the forget map for its bare `HasPanelRealization` half). They are **not**
+liftable by 23a's numeral pass (unlike the inductive CaseII/CaseIII arms, which
+transport the IH realization additively). 23a therefore carries them as four
+further explicit `h…` hypotheses (`hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`,
+all green-modulo, never `sorry`; the `d=3` wrapper fills them zero-carry). **So
+CHAIN's `⋀^{d−1}(ℝ^{d+1})` duality is the prerequisite to lift these four
+producers off `Fin 4`** — that lift is added to CHAIN's deliverables (or a
+dedicated sub-phase using CHAIN's duality), on top of the chain dispatch below.
+Detail: `notes/Phase23a.md` *Hand-off* + Leaf-5 *Decisions* entry.
+
 **Hard core.** Two parts, both genuinely new:
 1. **The `d`-fold chain bookkeeping (eqs. 6.59–6.64).** Index-heavy but
    KT calls it "exactly the same as `d=3`." The reusable graph-free
@@ -626,6 +646,14 @@ crux idiom; never a `sorry`.) The **`d=3` line stays fully green** because the
 `case_III_candidate_dispatch`. CHAIN replaces the fixed-3-candidate dispatch with
 the length-`d` chain dispatch + `⋀^{d-1}(ℝ^{d+1})` duality, discharging the
 hypothesis at general `k`.
+
+**Boundary as actually built (23a Leaf 5 — wider than this (d) anticipated).**
+The dispatch is only one of **six** green-modulo carries `theorem_55_minimalKDof_k_all_k`
+takes; the others (base/cut/Case-I/M4-forget producers `d=3`-pinned → CHAIN's
+duality; the `6 ≤ bodyBarDim n` chain-extraction floor → ENTRY) are recorded in
+the **Scope expansion** note under §"CHAIN" above and in `notes/Phase23a.md`
+*Hand-off*. (a)'s per-file claims that base/cut/Case-I and the forgetful map
+"lift with the numeral pass" are **superseded** by that finding.
 
 ### (e) 23a-specific open decisions
 

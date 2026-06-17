@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — opened on a design recon (see `notes/Phase23a.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/CARRIER spine complete (green-modulo CHAIN+ENTRY); CHAIN/ENTRY/ASSEMBLY remain (see `notes/Phase23a.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -1031,9 +1031,19 @@ detailed §"23a"). The 23a recon settled OD-5 (the symbolic-`k` coordinate
 transport **ports verbatim** — already general in HEAD — so no carrier-API
 addition and no build-spike) and OD-2/OD-3 (Lemmas 4.6/4.8 exist only in
 fixed-tuple `d=3` form; the length-`d` chain producer is a new `ENTRY` leaf).
-Next concrete commit: **23a Leaf 0** — the `screwDim` arithmetic kit in
-`RigidityMatrix/Basic.lean` (the `Nat.choose` lemmas replacing the `d=3`
-`decide` calls); see `notes/Phase23a.md` *Hand-off*.
+**`CARRIER`/23a is complete** (closed 2026-06-17, Leaves 0–5; the general-`k`
+Theorem 5.5 spine `theorem_55_minimalKDof_k_all_k` is green-modulo the
+CHAIN+ENTRY boundary, with the `d=3` line fully green via a zero-carry `k=2`
+wrapper). A Leaf-5 build-contact finding **expanded that boundary** beyond the
+recon: besides the chain dispatch (→ `CHAIN`) and the `6 ≤ bodyBarDim n`
+chain-extraction floor (→ `ENTRY`), the base / cut / Case-I / M4-forgetful-map
+realization producers are **also** `d=3`-pinned — they bottom out in the
+`⋀²ℝ⁴` duality `exists_extensor_eq_panelSupportExtensor` (CHAIN-grade), not
+liftable by the numeral pass — so the spine carries them as four further
+explicit hypotheses; `CHAIN`'s `⋀^{d−1}` duality finish is the prerequisite to
+lift them. Next concrete commit: the **`CHAIN`** design recon (re-scoped for
+the expanded boundary); see `notes/Phase23a.md` *Hand-off* and
+`notes/Phase23-design.md` §"CHAIN".
 
 ## Engineering conventions
 
