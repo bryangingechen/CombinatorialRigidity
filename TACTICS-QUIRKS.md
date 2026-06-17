@@ -1757,7 +1757,13 @@ before the `set` silently becomes `h : X = rhs`. A later `rw [h]` (intending to 
 pattern `X` is absent and the `rw` fails — or, dually, `rw [h]` over-fires on an unexpected `X`.
 (Worked case: Phase 22h W6b, `CaseI.lean` — `set Eb := Submodule.span ℝ (Set.range r)` folded W5's
 `hrspan : span (range r) = …` into `hrspan : Eb = …`, so the subsequent `rw [hEb, hrspan]` chain
-could not find `span (range r)`.)
+could not find `span (range r)`.) **Goal-side / library-lemma variant (same mechanism):** the fold
+also hides `e` *in the goal*, so a later `rw`/`simp only [lib_lemma]` whose LHS *pattern* mentions
+`e` (not your local `hX`) silently fails to fire — `simp only` reports its args "unused" rather than
+erroring. (Phase 23b CHAIN-3 OD-8: `set b := Pi.basisFun ℝ (Fin (d+1))` folded the goal to
+`(b.exteriorPower n).toDual …`, so the library rewrite `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`
+— LHS `(Pi.basisFun …).exteriorPower n).toDual` — never matched; dropping the `set` and writing
+`Pi.basisFun` explicitly fixed it.)
 
 **Fix.** Track that the `set` already rewrote your old hypotheses, and drop the now-redundant
 `rw [hX]` / `rw [h]` step. Two reliable shapes:

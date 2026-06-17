@@ -1045,6 +1045,58 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
         (exteriorPower.map n (Pi.basisFun ℝ (Fin 4)).toDual) :=
   exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade (d := 3) n
 
+/-- **The exterior-power Gram pairing is O(n)-invariant** (OD-8 sub-leaf (h-1), the
+dot-product half of the `complementIso` O(n)-equivariance). Let `b = Pi.basisFun ℝ (Fin (d+1))`
+and let `O : ℝ^{d+1} →ₗ ℝ^{d+1}` be *orthogonal* — i.e. it preserves the standard dot product
+`b.toDual` on `ℝ^{d+1}` (`hO : ∀ x y, b.toDual (O x) (O y) = b.toDual x y`). Then the induced
+Gram pairing on `⋀ⁿ(ℝ^{d+1})` (the coordinate `toDual` of the exterior-power basis,
+`b.exteriorPower n`) is invariant under transporting both slots by `exteriorPower.map n O`:
+`(b.exteriorPower n).toDual (map O Z) (map O B) = (b.exteriorPower n).toDual Z B`. This is the
+metric-free reason the Hodge `⋆` (= `complementIso`) is O(n)-natural: it is the *only*
+transformation law where the orthogonal frame change enters non-trivially (the join/volume half
+scales by `det O`, `wedgePairing_map`). Through the N3b-recon reconciliation
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`
+(`b.toDual = pairingDual ∘ map b.toDual`) the pairing is a **Gram determinant**
+`det (b.toDual (O Zⱼ) (O Bᵢ))` on decomposables (`pairingDual_ιMulti_ιMulti`); orthogonality
+collapses each entry to `b.toDual Zⱼ Bᵢ`, so the determinant — hence the pairing — is unchanged.
+The decomposable identity lifts to all of `⋀ⁿ` by a double `LinearMap.ext_on` over the
+spanning `ιMulti` generators (`exteriorPower.ιMulti_span`). -/
+theorem exteriorPower_basis_toDual_map_orthogonal_eq {d : ℕ} (n : ℕ)
+    (O : (Fin (d + 1) → ℝ) →ₗ[ℝ] (Fin (d + 1) → ℝ))
+    (hO : ∀ x y, (Pi.basisFun ℝ (Fin (d + 1))).toDual (O x) (O y)
+      = (Pi.basisFun ℝ (Fin (d + 1))).toDual x y)
+    (Z B : ⋀[ℝ]^n (Fin (d + 1) → ℝ)) :
+    ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
+        (exteriorPower.map n O Z) (exteriorPower.map n O B)
+      = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual Z B := by
+  -- The decomposable identity (over `ιMulti` generators): the Gram determinant
+  -- `det (b.toDual (O vⱼ) (O wᵢ))` collapses entry-wise to `det (b.toDual vⱼ wᵢ)` by `hO`.
+  have hgen : ∀ v w : Fin n → (Fin (d + 1) → ℝ),
+      ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
+          (exteriorPower.map n O (exteriorPower.ιMulti ℝ n v))
+          (exteriorPower.map n O (exteriorPower.ιMulti ℝ n w))
+        = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual
+          (exteriorPower.ιMulti ℝ n v) (exteriorPower.ιMulti ℝ n w) := by
+    intro v w
+    simp only [exteriorPower.map_apply_ιMulti,
+      exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade, LinearMap.comp_apply,
+      exteriorPower.pairingDual_ιMulti_ιMulti]
+    congr 1
+    ext i j
+    simp only [Matrix.of_apply, Function.comp_apply, hO]
+  -- Lift to all of `⋀ⁿ` by a double `LinearMap.ext_on` over the spanning `ιMulti` generators:
+  -- for fixed first slot the two `Dual`-functionals agree, and the assignment is linear in it.
+  have key : (((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual.comp
+        (exteriorPower.map n O)).flip.comp (exteriorPower.map n O)
+      = ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual.flip := by
+    refine LinearMap.ext_on (exteriorPower.ιMulti_span ℝ n _) ?_
+    rintro _ ⟨w, rfl⟩
+    refine LinearMap.ext_on (exteriorPower.ιMulti_span ℝ n _) ?_
+    rintro _ ⟨v, rfl⟩
+    simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using hgen v w
+  have := LinearMap.congr_fun (LinearMap.congr_fun key B) Z
+  simpa only [LinearMap.comp_apply, LinearMap.flip_apply] using this
+
 /-! ## Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor
 (`lem:case-III-claim612-line-in-panel-union`)
 
