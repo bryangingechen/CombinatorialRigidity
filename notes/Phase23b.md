@@ -18,7 +18,8 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN is open on a detailed leaf-level recon (no build).** The recon
+**The CHAIN↔ENTRY chain-data contract is settled (docs-only, 2026-06-17); next
+is CHAIN-3 (buildable now, no contract dependency).** The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
 engine is already general-`k`** (the M₁/M₂/M₃ closers `case_III_arm_realization`
@@ -29,17 +30,20 @@ genuinely-`d=3` surface is **only the dispatch** (`case_III_candidate_dispatch`,
 the `Meet.lean` duality lemmas). CHAIN's job: replace that dispatch with the
 `d`-candidate chain dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality finish.
 
-**The load-bearing flag (recon (b)).** The 23a-carried `hdispatch`
-(`Theorem55.lean:2225`) takes a **fixed `v,a,b,c` 4-tuple**, faithful at `d=3`
-(the chain `v₀v₁v₂v₃` *is* `c—a—v—b`) but **too short at `d≥4`** — KT's general-`d`
-Lemma 6.13 needs the whole length-`d` chain. So CHAIN is **not** a pure
-"discharge `hdispatch` at general `k`": the producer/extractor supplying its
-premises (`exists_chain_data_of_noRigid` → `case_III_hsplit_producer_all_k`) must
-be reshaped to extract+pass a length-`d` chain, which **couples CHAIN to ENTRY**
-(the chain-data record is the CHAIN↔ENTRY contract). Co-design the
-`hdispatch`/`hcand` signature with ENTRY; do **not** freeze the dispatch
-signature before the chain-data shape is agreed. This is a genuine motive/
-producer-shape change, surfaced for coordinator/user adjudication (recon (b)).
+**The load-bearing flag (recon (b)) — SETTLED 2026-06-17.** The 23a-carried
+`hdispatch` (`Theorem55.lean:2225`) takes a **fixed `v,a,b,c` 4-tuple**, faithful
+at `d=3` (the chain `v₀v₁v₂v₃` *is* `b—v—a—c`) but **too short at `d≥4`** — KT's
+general-`d` Lemma 6.13 needs the whole length-`d` chain. The CHAIN↔ENTRY
+chain-data contract is now **frozen** (`notes/Phase23-design.md` §"CHAIN↔ENTRY
+contract"): a `G.ChainData n` `structure` (length-`d` chain `vtx`/`edge`/`e₀` +
+degree-2 closures) is the shared shape; the reshape is **three decls in
+lockstep** — the ENTRY extractor (`exists_chain_data_of_noRigid` → a `ChainData`
+producer), the producer `case_III_hsplit_producer_all_k.hcand` (which calls the
+extractor inline, C.0), and the CHAIN-5 dispatch `hdispatch`. **No motive/IH
+change forced** (clause (ii), C.6): the chain data is combinatorial, the base
+`(G₁,q₁)` stays the existing general-`k` realization premise from the same 0-dof
+IH conjunct, the `d` candidate splits are smaller 0-dof graphs. CHAIN-5's
+signature is now authorable; the `d=3` line is a zero-regression wrapper (C.4).
 
 ## CHAIN leaf checklist
 
@@ -72,8 +76,11 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
       (general & GREEN). Heaviest mechanical leaf ("exactly the same as `d=3`").
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
-      **Gated by the (b) flag** — signature = CHAIN↔ENTRY contract. Keep the
-      `d=3` dispatch as a `k=2`/length-3 wrapper (no `d=3` regression).
+      **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
+      §"CHAIN↔ENTRY contract" C.3): `hdispatch` consumes a `G.ChainData n` record
+      (the length-`d` chain) + the `splitOff (vtx 1)(vtx 0)(vtx 2) e₀` deficiency-0
+      fact + the IH-generic base realization on that split. Keep the `d=3` dispatch
+      as a `k=2`/length-3 wrapper (no `d=3` regression — C.4 zero-regression map).
 - [ ] **CHAIN tail — lift the four 23a-carried producers** (OD-7 fold). After
       CHAIN-3: `hforget_k` (M4 forget, `exists_extensor_eq_panelSupportExtensor`
       routes through CHAIN-3's duality), then through it `hbase_k`/`hcut_k`/
@@ -100,11 +107,17 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
   CHAIN-4 detailed-build recon decides. Cross-checked `AlgebraicIndependence.md`
   row #107(b) (already scopes this as "uncertain whether a NEW site", defers to
   CHAIN open); this recon confirms the question is real and routes it to build.
-- **(b) producer-shape mismatch — FLAGGED (motive/producer-level).** The
-  `hdispatch` carry is a fixed 4-tuple; general `d` needs a length-`d` chain →
-  the producer/extractor must reshape, coupling CHAIN to ENTRY. The dispatch
-  signature is the CHAIN↔ENTRY contract; co-design it at CHAIN open. *For
-  coordinator/user adjudication* (recon (b)/(e)OD-1).
+- **(b) producer-shape mismatch — SETTLED 2026-06-17** (the docs-only
+  contract-settle pass). The CHAIN↔ENTRY interface is frozen in
+  `notes/Phase23-design.md` §"CHAIN↔ENTRY contract": a `G.ChainData n` `structure`
+  (length-`d` chain `vtx : Fin (d+1) → α`, `edge : Fin d → β`, `e₀`, the deg-2
+  closures) is the shared shape. **No motive/IH change forced** (C.6): the chain
+  data is purely combinatorial, the base `(G₁,q₁)` is the existing general-`k`
+  `HasGenericFullRankRealization` premise pulled from the same 0-dof IH conjunct,
+  the `d` candidate splits are smaller 0-dof graphs (no higher-dof `G_v` GAP-6).
+  The reshape is **three decls in lockstep** (extractor / producer-`hcand` /
+  dispatch-`hdispatch`); the `d=3` line is a zero-regression wrapper (C.4 map:
+  chain `v₀v₁v₂v₃ = b—v—a—c`). CHAIN-5's signature is now authorable.
 - **OD-1 (re-confirmed for CHAIN/ENTRY).** KT Lemma 5.4 short-cycle base is a
   real branch of the general-`d` chain entry (unlike `d=3`'s inline triangle
   floor); whether CHAIN's dispatch assumes the chain branch (ENTRY discharging
@@ -135,17 +148,34 @@ the symbolic-grade exterior-algebra surface. Then the proportionality engine
 `finrank(⋀^{d−1}W) = (finrank W).choose (d−1)` (`exteriorPower.finrank_eq`; at
 `finrank W = d−1`, `= 1`) — the real arithmetic of CHAIN-3.
 
-**Build-recon gate before CHAIN-5 (the dispatch):** the detailed-build recon
-must first agree the **length-`d` chain-data record** with ENTRY (the (b) flag);
-CHAIN-5's `hdispatch`/`hcand` signature is that contract, so do not author it
-before. CHAIN-1/3/4 are buildable independently of that contract.
+**The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
+§"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
+CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
+record (C.1/C.3), so it is now authorable. The next buildable leaf is still
+**CHAIN-3** (unchanged — it has no chain-data dependency; unblocks CHAIN-4 + the
+four-producer lift), first commit the `Meet.lean:648` membership brick at general
+grade (the snippet above). CHAIN-1/3/4 remain buildable independently of the
+contract; CHAIN-5 is unblocked once CHAIN-1/2/4 land **and** ENTRY's extractor
+is reshaped.
+
+**ENTRY obligation — PINNED (signature frozen; minted/built when its turn
+comes).** ENTRY reshapes `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`)
+from the fixed `v,a,b,c` 4-tuple to the `G.ChainData n` producer
+`exists_chainData_of_noRigid` (contract C.2 — KT Lemma 4.6 chain + Lemma 4.8
+split-off minimality at general `d`, the "new combinatorial leaf" of the
+OD-2/OD-3 verdict), and lifts the `6 ≤ bodyBarDim n` floor to the general
+chain-length floor. The chain/cycle dichotomy (OD-1, KT Lemma 4.6 / Lemma 5.4)
+is **ENTRY's to resolve at build** (contract C.5): the dispatch always consumes
+a `ChainData` and never sees the cycle branch, so ENTRY's choice between
+"chain-only extractor + cycle folded into base" (default) vs. "disjunction +
+Lemma 5.4 short-cycle realization brick" is invariant for CHAIN-5's signature.
+**The producer `case_III_hsplit_producer_all_k` (`Arms.lean:777`) is the chain
+extractor's only consumer** (it calls the extractor inline at the `|V|≥4` arm,
+Arms.lean:828–857) — its `hcand` slot is the third lockstep decl (C.0).
 
 **Green-modulo boundary CHAIN hands downstream** (`notes/Phase23-design.md`
-§"CHAIN"(d)): CHAIN discharges the general-`k` `hdispatch` (modulo the (b)
-reshape it co-owns with ENTRY) and lifts the four producers (OD-7). **ENTRY**
-owns the length-`d` chain extraction (reshaped `exists_chain_data_of_noRigid`,
-Lemma 4.6/4.8 + the Lemma 5.4 cycle branch) + the `hD : 6 ≤ bodyBarDim n` floor
-lift; the chain-data record is the CHAIN↔ENTRY contract. **ASSEMBLY** composes
+§"CHAIN"(d)): CHAIN discharges the general-`k` `hdispatch` (now against the frozen
+`ChainData` contract) and lifts the four producers (OD-7). **ASSEMBLY** composes
 the honest general-`d` Theorem 5.5, re-greens `prop:rigidity-matrix-prop11` +
 `hub`, derives Thm 5.6, states Conjecture 1.2.
 
@@ -153,8 +183,8 @@ the honest general-`d` Theorem 5.5, re-greens `prop:rigidity-matrix-prop11` +
 
 (Phase-local choices land here as CHAIN leaves build. The opening recon's
 decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
-`notes/Phase23-design.md` §"CHAIN"(e); this section stays a pointer until the
-first leaf lands.)
+`notes/Phase23-design.md` §"CHAIN"(e); the chain-data contract lives in its
+§"CHAIN↔ENTRY contract".)
 
 ### Phase-local choices and proof techniques
 
@@ -163,3 +193,16 @@ first leaf lands.)
   precedent). The recon source-verified the central scoping fact — the
   arm-realization engine is already general-`k`, only the dispatch is `d=3` —
   and surfaced the producer-shape flag (b) before any leaf builds.
+- **CHAIN↔ENTRY chain-data contract settled (docs-only design-settle pass,
+  2026-06-17)** → `notes/Phase23-design.md` §"CHAIN↔ENTRY contract". Froze the
+  shared interface flag (b) left open: a `G.ChainData n` `structure` (length-`d`
+  chain `vtx : Fin (d+1) → α` / `edge : Fin d → β` / `e₀` + the degree-2 closures,
+  grounded in KT eqs. 6.46–6.59 + the landed `splitOff` API), the reshaped
+  producer-side extractor (C.2, an ENTRY obligation), the CHAIN-5 consumer
+  `hdispatch` (C.3, now frozen), the zero-regression `d=3` wrapper map (C.4,
+  chain `v₀v₁v₂v₃ = b—v—a—c`), and the OD-1 chain/cycle division (C.5: the
+  dispatch always consumes a `ChainData`, never the cycle branch). Clause-(ii)
+  verdict (C.6): **no motive/IH change forced** — chain data is combinatorial,
+  base `(G₁,q₁)` is the existing general-`k` premise, candidate splits are
+  smaller 0-dof graphs; the only routed unknowns are OD-1 (ENTRY's dichotomy
+  shape) and OD-4 (CHAIN-4's alg-independence route), both build-time.

@@ -965,3 +965,241 @@ predicted — see (e) OD-7 for the fold-vs-successor decision. What CHAIN does
   (triangle floor handled inline). Whether CHAIN's dispatch can assume the chain
   branch (ENTRY discharging the cycle branch separately) or must handle a degenerate
   chain is an ENTRY-contract question — flag at CHAIN open, do not pre-commit.
+
+---
+
+## CHAIN↔ENTRY chain-data contract
+
+**Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
+against KT §6.4.2 eqs. 6.46–6.67 read end-to-end + the landed `d=3` producer/
+consumer/dispatch in tree). This section freezes the **shared interface** the
+recon's flag (b) (§"CHAIN"(b)) left open: the length-`d` chain-data shape that
+the ENTRY extractor produces and the CHAIN-5 dispatch consumes. **Authoritative
+for the interface only** — it does NOT build any leaf, does NOT decide OD-4 (the
+eq.-6.67 alg-independence route), and does NOT mint ENTRY. Every CHAIN leaf and
+the ENTRY extractor is to be authored against the frozen shape below.
+
+### C.0 — Where the chain data actually flows (the producer reshape, verified)
+
+The recon's flag (b) located the carried `hdispatch` shape, but the
+**load-bearing structural fact for the contract is one level deeper**: the chain
+*extraction* does **not** live in a separate ENTRY lemma feeding the dispatch —
+it lives **inside the producer** `case_III_hsplit_producer_all_k`
+(`CaseIII/Arms.lean:777`). Verified in tree (Arms.lean:828–857, the `|V(G)| ≥ 4`
+arm): the producer (i) calls `Graph.exists_chain_data_of_noRigid`
+(`Reduction.lean:383`) to get the 4-tuple `v,a,b,c` + edges, (ii) picks a fresh
+`e₀`, (iii) proves `G.splitOff v a b e₀` is a smaller minimal-0-dof graph + is
+simple, (iv) pulls its **generic** realization `hsplitGP` from the IH's GP
+conjunct, and (v) feeds all of that to `hcand`. So the **producer is the chain
+extractor's only consumer**, and the `hcand`/`hdispatch` premise bundle is the
+*output type of the extractor* re-expressed as the *input type of the dispatch*.
+
+**Consequence for the contract.** The reshape is **three decls changing in
+lockstep, all carrying the identical premise bundle** (verified byte-identical
+across the three):
+1. `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) — the **producer
+   side** (ENTRY): its `∃`-output tuple is the record.
+2. `case_III_hsplit_producer_all_k.hcand` (`Arms.lean:797–807`) **and** the
+   identical extraction-arm body (Arms.lean:828–857) — the **producer** threads
+   the record into `hcand`.
+3. `case_III_realization_all_k.hdispatch` (`Realization.lean:699–709`) and
+   `theorem_55_minimalKDof_k_all_k.hdispatch` (`Theorem55.lean:2230–2240`,
+   wrapped under a per-`G` `∀`) — the **consumer side** (CHAIN-5): the carried
+   crux hypothesis whose shape must be the record.
+
+The `d=3` premise bundle, verbatim (the four files agree):
+```
+(v a b c : α) (eₐ e_b e_c e₀ : β)
+v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
+a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
+eₐ ≠ e_b → eₐ ≠ e_c →
+G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
+(∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
+(∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
+e₀ ∉ E(G) →
+(G.splitOff v a b e₀).deficiency n = 0 →
+HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
+HasGenericFullRankRealization k n G
+```
+
+### C.1 — The length-`d` chain-data record (item 1)
+
+KT §6.4.2 (eqs. 6.46–6.59, p. 692–694) needs the **whole chain `v₀v₁…v_d`** with
+`d_G(vᵢ)=2` for `1≤i≤d−1`, the base framework on `G₁ = splitOff at v₁` (KT's
+`G^{v₀v₂}_{v₁}`), and the redundant-`(v₀v₂)` row of Claim 6.11. The recommended
+shape is a **`structure`** (not an anonymous `∃`-tuple — at `d=3` the tuple is
+already 17 fields; at general `d` the vertex/edge sequences are `Fin`-indexed
+families and an anonymous tuple is unmaintainable). Grounded field-by-field in
+the KT chain definition + the landed `splitOff` API (`Operations.lean:579`,
+`splitOff_isLink` 619):
+
+```
+/-- Length-`d` Case-III chain data (KT §6.4.2, the chain v₀v₁…v_d). -/
+structure ChainData (G : Graph α β) (n : ℕ) where
+  d        : ℕ                         -- the chain length = the body-bar dim index (d = k+1)
+  hd       : 1 ≤ d                     -- nondegenerate chain (d ≥ 1; d=3 ⟹ 2)
+  vtx      : Fin (d + 1) → α           -- v₀ … v_d  (KT 6.46: the chain vertices)
+  edge     : Fin d → β                 -- the chain edges: edge i = vᵢvᵢ₊₁
+  e₀       : β                         -- the fresh short-circuit label for the v₁-split (6.46)
+  -- KT chain conditions:
+  vtx_mem    : ∀ i, vtx i ∈ V(G)
+  vtx_inj    : Function.Injective vtx                       -- the vᵢ are distinct (6.67 affine-indep prep)
+  link       : ∀ i : Fin d, G.IsLink (edge i) (vtx i.castSucc) (vtx i.succ)
+  edge_inj   : Function.Injective edge
+  deg_two    : ∀ i : Fin d, 1 ≤ (i : ℕ) → (i : ℕ) ≤ d - 1 → -- d_G(vᵢ)=2 for 1≤i≤d−1 (6.46):
+                 (∀ e x, G.IsLink e (vtx i.castSucc?) x →    -- every vᵢ-edge is edge(i−1) or edge(i)
+                   e = edge (prev i) ∨ e = edge i)            -- (the degree-2 closure, KT's two-edge fact)
+  e₀_fresh   : e₀ ∉ E(G)
+```
+(The `deg_two` field is sketched against the `splitOff_isLink` two-edge-closure
+pattern the `d=3` `hclv`/`hcla` carry; the exact `Fin`-arithmetic of "the two
+edges incident to `vᵢ` are `edge (i−1)` and `edge i`" is a build detail for
+ENTRY — the *content* is "interior chain vertices have degree exactly two, with
+their two edges being the two chain edges at that index", which is precisely
+KT's `d_G(vᵢ)=2`.) **The base framework `(G₁,q₁)` is NOT a record field** — it is
+produced *inside* the dispatch from the IH (as the `d=3` producer does at
+Arms.lean:854, pulling `hsplitGP` from `(hIH …).1`); the record carries only the
+*combinatorial* chain. The `splitOff` that builds `G₁` is `G.splitOff v₁ v₀ v₂ e₀`
+(splice the `v₀v₂` edge, delete `v₁`), matching the landed `splitOff v a b e₀`
+with `(v,a,b) = (v₁,v₀,v₂)` — see C.4.
+
+**Carried minimality / conditioned-IH hypotheses** stay *outside* the record, on
+the producer/dispatch signature exactly as the `d=3` bundle has them: `hG :
+G.IsMinimalKDof n 0`, `hnoRigid`, `hSimple`, the IH conjunction `hIH`, and the
+per-split `(G.splitOff …).deficiency n = 0`. The record is the *chain witness*;
+the realization/minimality data is the surrounding induction context (this
+matches the `d=3` split: `exists_chain_data_of_noRigid` returns only the
+combinatorial tuple, and `case_III_hsplit_producer_all_k` supplies `hG`/`hIH`/
+`hsplitGP` from its own context).
+
+### C.2 — Producer-side signature (item 2): the reshaped extractor
+
+ENTRY reshapes `exists_chain_data_of_noRigid` from the fixed 4-tuple to a
+`ChainData` producer. Target signature (general `d`, against the record):
+```
+theorem Graph.exists_chainData_of_noRigid [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : (some-D-floor) ≤ bodyBarDim n)        -- ENTRY lifts the d=3 `6 ≤ bodyBarDim n` floor
+    (hV : (d + 1) ≤ V(G).ncard)                 -- enough vertices for a length-d chain
+    (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    G.ChainData n                                -- the record (or the cycle-branch disjunct, OD-1)
+```
+This is KT **Lemma 4.6 (chain) + Lemma 4.8 (split-off minimality)** at general
+`d` — the "new combinatorial leaf for ENTRY" the OD-2/OD-3 verdict named (not
+subsumed in Phase-20, which produces only the single degree-2 split). The
+`d=3` `exists_chain_data_of_noRigid` becomes the `d=3` instance / a wrapper that
+fills `ChainData` with `d = 3` and `(vtx 0,1,2,3) = (b,v,a,c)` (C.4). **The
+hD floor is ENTRY's to lift** (the `6 ≤ bodyBarDim n` of the `d=3` extractor is
+the `d=3` regime; the general floor is the body-bar-dim ↔ chain-length relation,
+a separate ENTRY obligation — see §"CHAIN"(d), `hD`-floor lift).
+
+### C.3 — Consumer-side signature (item 3): the CHAIN-5 dispatch
+
+CHAIN-5's dispatch (`hdispatch`/`hcand`) takes the record + the surrounding
+induction context and produces the realization. Target shape:
+```
+(hdispatch : ∀ (cd : G.ChainData n),
+    (G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀).deficiency n = 0 →
+    HasGenericFullRankRealization k n
+        (G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀) →   -- the base (G₁,q₁) seed
+    HasGenericFullRankRealization k n G)
+```
+i.e. *"given the length-`d` chain, the deficiency-0 fact on `G₁ = splitOff at v₁`,
+and the IH-generic base realization on `G₁`, build the `d` candidate frameworks
+(CHAIN-2, eqs. 6.47/6.48/6.57/6.59), apply the `⋀^{d−1}`-duality discriminator
+(CHAIN-3/4, eq. 6.67) to find a full-rank `Mᵢ`, and close via the (already
+general-`k`) arm closer for that `i`."* The `G₁` here is `splitOff (vtx 1) (vtx
+0) (vtx 2) e₀` — the `v₁`-split splicing `v₀v₂` — which is the *single* split the
+`d=3` bundle's `(G.splitOff v a b e₀)` already names (C.4). The remaining `d−2`
+candidate splits `Gᵢ = splitOff at vᵢ` (KT 6.54–6.56) are built *internally* by
+the dispatch from `cd` and the isos `ρᵢ` (which are *derived* from the chain by
+eq. 6.54, not carried — see C.5). **CHAIN-5's signature is frozen as this shape**
+(per the (b) co-design gate); the only build-time latitude is the exact `Fin`
+arithmetic of indexing `cd.vtx`/`cd.edge`.
+
+### C.4 — The `d=3` specialization (item 4): zero-regression wrapper
+
+At `d=3` the chain `v₀v₁v₂v₃` **is** `b—v—a—c` (verified against the `d=3`
+extractor `exists_chain_data_of_noRigid`, which returns `v,a,b,c` with `v`,`a`
+the adjacent degree-2 pair via `eₐ`, `b` the other `v`-neighbour, `c` the other
+`a`-neighbour). The record-to-tuple map:
+
+| Record (`ChainData`, general `d`) | `d=3` value | `d=3` tuple field |
+|---|---|---|
+| `d` | `3` (= `k+1` at `k=2`) | — |
+| `vtx 0` | `b` | `b` (the `v₀` endpoint) |
+| `vtx 1` | `v` | `v` (interior, deg 2) |
+| `vtx 2` | `a` | `a` (interior, deg 2 in `G₁`) |
+| `vtx 3` | `c` | `c` (the `v₃` endpoint) |
+| `edge 0` (= `v₀v₁` = `bv`) | `e_b` | `e_b` |
+| `edge 1` (= `v₁v₂` = `va`) | `eₐ` | `eₐ` (the shared edge) |
+| `edge 2` (= `v₂v₃` = `ac`) | `e_c` | `e_c` |
+| `e₀` | `e₀` | `e₀` |
+
+So **`G₁ = splitOff (vtx 1) (vtx 0) (vtx 2) e₀ = splitOff v b a e₀`** — but the
+landed `d=3` bundle uses `splitOff v a b e₀` (note `a`,`b` swapped). `splitOff`
+is symmetric in its `a,b` arguments (verified: `splitOff_isLink`,
+`Operations.lean:619`, makes `v₀v₂` and `v₂v₀` the same `e₀`-link via the
+`(x=a∧y=b) ∨ (x=b∧y=a)` disjunct), so `splitOff v a b e₀ = splitOff v b a e₀` as
+graphs — the `d=3` wrapper instantiates cleanly either way. The degree-2 closures
+`hclv` (every `v`-edge is `eₐ` or `e_b`) and `hcla` (every `a`-edge is `eₐ` or
+`e_c`) are exactly `ChainData.deg_two` at `i=1` (vtx 1 = v: edges `edge 0 = e_b`,
+`edge 1 = eₐ`) and `i=2` (vtx 2 = a: edges `edge 1 = eₐ`, `edge 2 = e_c`). **The
+`d=3` line stays a zero-regression wrapper**: `exists_chain_data_of_noRigid`
+(the existing 4-tuple lemma) becomes the `d=3` `ChainData` constructor, and the
+`theorem_55_d3`/`case_III_realization` wrappers fill `hdispatch` from the
+existing `case_III_candidate_dispatch` via this map — no `d=3` proof changes,
+only an adapter from the 4-tuple to the `ChainData` projection.
+
+### C.5 — OD-1 reconciliation (item 5): the chain/cycle division of labor
+
+KT p. 692: *"By Lemma 4.6, either `G` is a cycle of length at most `d` or `G`
+has a chain of length `d`. If `G` is a cycle of length at most `d`, then we are
+done by Lemma 5.4."* So the **dichotomy is upstream of the dispatch**. Pinned
+division of labor:
+
+- **The extractor (ENTRY) owns the dichotomy.** `exists_chainData_of_noRigid`
+  (C.2) is where Lemma 4.6 fires. It has two honest shapes, and **OD-1 chooses
+  between them at ENTRY-build, not now** — the contract is written so CHAIN-5
+  works under **either**:
+  1. *Extractor returns the chain only, ENTRY discharges the cycle branch
+     separately* (preferred if Lemma 5.4 can be folded into the base/short-cycle
+     case the way the `d=3` triangle floor was, §"23a"-OD verdict that `d=3`
+     dodged 5.4). Then `exists_chainData_of_noRigid : G.ChainData n` returns a
+     genuine chain, and CHAIN-5 **assumes the chain branch** — the cycle case
+     never reaches the dispatch. **This is the contract's default assumption**:
+     CHAIN-5's `hdispatch` consumes a `ChainData` and is *not* responsible for
+     the cycle branch.
+  2. *Extractor returns a disjunction* `G.ChainData n ⊕ (G is a short cycle,
+     |V| ≤ D)`, and the producer routes the cycle disjunct to a **Lemma 5.4
+     short-cycle realization** brick (a genuine new ENTRY leaf, risk #4, the
+     Crapo–Whiteley cycle realization). CHAIN-5 still only sees `ChainData`.
+- **CHAIN never handles the cycle branch.** Under both shapes, CHAIN-5's input
+  is a `ChainData`; the cycle realization (if load-bearing) is ENTRY's. This is
+  the safe pin: it does not pre-commit OD-1 (whether 5.4 is needed at all), and
+  it keeps the dispatch signature stable regardless of how the dichotomy
+  resolves. **ENTRY decides at build** whether the cycle branch is vacuous /
+  base-folded (shape 1) or needs the 5.4 brick (shape 2); the dispatch contract
+  is invariant under that choice.
+
+### C.6 — Clause (ii): no motive/IH-level change forced by the interface
+
+Pinning the contract did **not** surface a motive/IH-level blocker. The chain
+data is purely combinatorial (`ChainData` carries no realization, no nested-IH
+seed); the base framework `(G₁,q₁)` is supplied to the dispatch as the
+**existing** `HasGenericFullRankRealization k n (G.splitOff …)` premise (the
+`d=3` `hsplitGP` shape, already general-`k` from 23a), pulled from the *same*
+0-dof IH conjunct the `d=3` producer uses (Arms.lean:854). The `d`-candidate
+splits `Gᵢ` are *smaller* minimal-0-dof graphs realized by the same IH at the
+same dof — **no higher-dof `G_v` GAP-6 pattern, no conditioned-pair data the
+0-dof motive cannot supply**. The one genuine open question the interface
+*touches* but does **not** resolve is **OD-4** (the eq.-6.67 `d+1`-points step:
+existence route vs. the alg-independence hammer) — that is a CHAIN-4 *internal*
+build decision, not an interface field, and the contract is invariant under it
+(the record carries the chain; OD-4 concerns how the dispatch *uses* the
+generic base `(G₁,q₁)`, whose `AlgebraicIndependent ℚ` data the 23a-lifted
+`case_III_nested_rank_lower` already consumes). **The interface is frozen; the
+two honest unknowns it routes downstream are OD-1 (ENTRY's dichotomy shape, C.5)
+and OD-4 (CHAIN-4's alg-independence route), both build-time, neither a motive
+change.**
