@@ -9,9 +9,10 @@ completes the analytic half of KT Proposition 1.1 (`rigidityMatrix_prop11`, now 
 **structural-edit refactor sub-phase 22l** (closed 2026-06-16; `notes/Phase22l.md`, recon in
 `notes/ScrewSpaceCarrier-design.md`) then made the `ScrewSpace` carrier an opaque `def`, cutting the
 diffuse-typeclass cost (molecular `maxHeartbeats` count 3→1) — a pure implementation change that **does
-not move the math frontier**. **Phase 23 is now open** (Case III general `d`, KT Lemma 6.13 → Thm
-5.5/5.6 → Conjecture 1.2; opened 2026-06-17 on a general design recon, sub-lettered (codes-until-open), authoritative
-recon `notes/Phase23-design.md`). Phases
+not move the math frontier**. **Phase 23 is in progress** (Case III general `d`, KT Lemma 6.13 → Thm
+5.5/5.6 → Conjecture 1.2; sub-lettered, codes-until-open, authoritative recon `notes/Phase23-design.md`):
+**`CARRIER`=23a closed** (the spine lifted to `screwDim k`, green-modulo CHAIN+ENTRY; `notes/Phase23a.md`),
+**`CHAIN`=23b open** on a detailed leaf recon (no build; `notes/Phase23b.md`), `ENTRY`/`ASSEMBLY` code-only. Phases
 24–26 planned (the 3-D bar-joint matroid, projective invariance + the modelling equivalence, and the
 molecule-application capstone). The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§22k, and `notes/PhaseN.md` — this Status paragraph is a pointer,
@@ -230,7 +231,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22j ✓ | **The shared eq.-(6.12) placement abstraction** (closed, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement` + augment) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer had inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Consolidated the L6b producer onto it, retired the dead L6a, landed the producer cleanup (dead-code + both stopgap suppressions dropped). | §6.3, §6.4.1 | — |
 | 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 22l ✓ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; closed 2026-06-16, `notes/Phase22l.md`). Flipped `ScrewSpace` `abbrev`→opaque `def` with a `mk`/`val`/`≃ₗ` API, after migrating the d=3 tree bottom-up along the import spine, cutting the diffuse-typeclass cost behind the surviving `maxHeartbeats` overrides (molecular count 3→1: two caps to default, one 600000→400000). d=3 scope only; general-`d` API deferred to the Phase-23 boundary (unblocks but does not start the "part 2" migration). Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
-| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; opened on a design recon (`notes/Phase23-design.md`), sub-lettered, codes-until-open (`CARRIER`=23a / `CHAIN` / `ENTRY` / `ASSEMBLY`) | §6.4.2, §5.2, §7 | 5 |
+| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a closed**; `CHAIN`=**23b open** on a detailed leaf recon (no build); `ENTRY`/`ASSEMBLY` code-only | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
@@ -511,10 +512,29 @@ and Lemma 2.1 verbatim, generalize the matrix bookkeeping (index-heavy).
 Then complete **Theorem 5.5**, derive **Theorem 5.6** (edge-strip to a
 minimal `k`-dof subgraph; re-add edges only grows rank; projective
 invariance to arrange panels), and state **Conjecture 1.2** as a
-theorem.
+theorem. Sub-lettered (codes-until-open); the layer division, leaf
+recons, and open decisions are canonical in `notes/Phase23-design.md`
+(§2 division, §"23a" + §"CHAIN" detailed leaf recons, §4/(e) OD ledger).
 
-- **Hard core:** the `d`-fold chain bookkeeping (eqs. 6.59–6.64); the
-  genericity/Lemma-2.1 step generalizes cleanly.
+- **`CARRIER` (23a, ✓ closed 2026-06-17, `notes/Phase23a.md`):** the
+  `screwDim 2`-pinned realization spine lifted to symbolic `screwDim k`;
+  green-modulo the Case-III chain dispatch + four `d=3`-pinned producers
+  (carried as explicit `h…`) + the `hD` floor.
+- **`CHAIN` (23b, ◐ open 2026-06-17 on a detailed recon, `notes/Phase23b.md`):**
+  the `d`-candidate chain dispatch (eqs. 6.46–6.67) + the `⋀^{d−1}(ℝ^{d+1})`
+  duality. **Recon central finding:** the arm-realization engine is *already*
+  general-`k`; only the dispatch (candidate count + `⋀²ℝ⁴` discriminator) is
+  `d=3`-fixed. **Flagged (b):** the carried `hdispatch` is a fixed `v,a,b,c`
+  4-tuple, faithful at `d=3` but too short at `d≥4` — the producer/extractor
+  must reshape to a length-`d` chain, coupling CHAIN to ENTRY (the chain-data
+  record is their contract). OD-4 (eq. 6.67 alg-independence vs. existence)
+  flagged open.
+- **`ENTRY` / `ASSEMBLY` (code-only):** chain extraction (Lemma 4.6/4.8 +
+  the Lemma 5.4 cycle branch) + the `hD` floor; then Thm 5.5 → 5.6 →
+  Conjecture 1.2.
+- **Hard core:** the `d`-fold chain bookkeeping (eqs. 6.59–6.64) + the
+  `⋀^{d−1}` duality finish (eq. 6.67), both genuinely new (CHAIN); the
+  arm-realization layer they feed is reuse.
 
 #### Phase 24 — 3-D generic bar-joint rigidity matroid
 

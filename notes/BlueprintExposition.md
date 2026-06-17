@@ -492,6 +492,25 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `lem:triangle-third-edge`) spells out why the floor exists and how the four leaves T1–T4
   assemble. Pointer: `notes/Phase22-realization-design.md` §1.46–§1.48 (T1–T4 signatures);
   `notes/Phase22g.md`.
+- **`lem:case-III` general `d` (Lemma 6.13) — the `d`-chain dispatch + the `⋀^{d−1}(ℝ^{d+1})`
+  duality finish (eq. 6.67)** — [pending] **(c)** (Phase 23b/CHAIN-open capture, 2026-06-17).
+  **Stable insight:** KT's general-`d` Case III (p. 692, "exactly the same as `d=3`") compresses two
+  genuinely-hard moves the `d=3` Lemma 6.10 makes concrete-by-`fin_cases`. (i) The fixed-3-candidate
+  dispatch becomes a **length-`d` chain** `v₀…v_d` with `d` candidate frameworks `(G,pᵢ)` tied by
+  the isos `ρᵢ` (6.54/6.56); the matrix bookkeeping (6.50/6.53/6.64) reduces each `R(G,pᵢ)` to a
+  top-left `D×D` block `Mᵢ` plus the always-redundant-row-trimmed `R(G₁∖(v₀v₂)_{i*},q₁)` (Claim
+  6.11), and the ±r chain (6.66 — the degree-2 fact "similar to (6.44)") makes "`Mᵢ` fails full rank
+  ⟺ `r ⊥ C(Lᵢ)`" for *every* `i` at once. (ii) The finish (6.67) is **Lemma 2.1 at general grade**:
+  the `(d−1)`-extensors of the `(d−1)`-subsets of `d+1` points `p₀…p_d` (one per panel-incidence
+  pattern) span a `(d+1 choose d−1) = D`-dim space, forcing some `Mᵢ` full-rank. The `d=3`
+  bespoke `⋀²ℝ⁴` join↔meet duality (`complementIso_smul_eq_extensor_join`) is a **template** for the
+  `⋀^{d−1}(ℝ^{d+1})` version — KT needs no Hodge star, only "top power is 1-dim." **Two
+  formalization-forced details worth the exposition:** the producer-shape subtlety (the `d=3`
+  fixed-4-tuple `v,a,b,c` *is* the length-3 chain, so the carried `hdispatch` is faithful at `d=3`
+  but must grow to a length-`d` chain at `d≥4` — the CHAIN↔ENTRY contract), and the eq.-(6.67)
+  alg-independence step (KT states the `d+1` points' general position via alg-independence; the
+  `d=3` formalization avoided it via an explicit construction that does not obviously generalize —
+  OD-4). Pointer: KT §6.4.2 eqs. (6.46)–(6.67); `notes/Phase23-design.md` §"CHAIN"; `notes/Phase23b.md`.
 
 ## Retroactive coverage
 

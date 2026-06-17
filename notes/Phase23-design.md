@@ -6,7 +6,10 @@ two-stage recon (a later dispatch does the leaf-level recon of the FIRST
 sub-phase before any build). It sketches the cut-points, their dependency
 order, hard cores, and the reuse/replace/add map; it does **not** attempt
 full leaf-level signatures for every sub-phase. Authoritative recon for
-Phase 23; `notes/Phase23a.md` is the work log and points here.
+Phase 23; `notes/Phase23a.md` / `notes/Phase23b.md` are the per-layer work logs
+and point here. **Detailed leaf-level recons done so far:** §"23a" (CARRIER,
+closed) and §"CHAIN — detailed leaf-level recon" (the minted **23b**, open
+2026-06-17 — decides OD-6/OD-7, flags OD-4 + the producer-shape mismatch (b)).
 
 **Audience:** the agent opening the first Phase-23 sub-phase (and the
 detailed-recon dispatch that decomposes it into buildable leaves).
@@ -192,9 +195,13 @@ transport the IH realization additively). 23a therefore carries them as four
 further explicit `h…` hypotheses (`hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`,
 all green-modulo, never `sorry`; the `d=3` wrapper fills them zero-carry). **So
 CHAIN's `⋀^{d−1}(ℝ^{d+1})` duality is the prerequisite to lift these four
-producers off `Fin 4`** — that lift is added to CHAIN's deliverables (or a
-dedicated sub-phase using CHAIN's duality), on top of the chain dispatch below.
-Detail: `notes/Phase23a.md` *Hand-off* + Leaf-5 *Decisions* entry.
+producers off `Fin 4`** — that lift is added to CHAIN's deliverables (**OD-7
+decided 2026-06-17: fold into CHAIN's tail after the duality CHAIN-3, not a
+dedicated successor — they are a direct corollary of the duality lift; caveat
+flagged in §"CHAIN — detailed leaf-level recon" (e)**), on top of the chain
+dispatch below. Detail: `notes/Phase23a.md` *Hand-off* + Leaf-5 *Decisions*
+entry; the leaf plan + the producer-shape flag (b) are §"CHAIN — detailed
+leaf-level recon".
 
 **Hard core.** Two parts, both genuinely new:
 1. **The `d`-fold chain bookkeeping (eqs. 6.59–6.64).** Index-heavy but
@@ -227,10 +234,12 @@ Detail: `notes/Phase23a.md` *Hand-off* + Leaf-5 *Decisions* entry.
    the (D) cell "ALREADY PARTLY LANDED" is true only as a *template*.
 
 **Dependency position.** After 23a (needs the general-grade carrier + spine
-to state its conclusion `HasGenericFullRankRealization k n G`). The two
-hard cores are largely independent of each other and could be two leaves
-within CHAIN, or CHAIN could split into CHAIN (chain bookkeeping) + ENTRY′
-(duality) on contact — flag this at CHAIN open (the detailed recon decides).
+to state its conclusion `HasGenericFullRankRealization k n G`). **OD-6 decided
+at the CHAIN open (23b, 2026-06-17): five leaves within ONE sub-phase** (the
+arm-realization engine they feed is already general-`k`, so neither hard core
+stands alone as a deliverable; split at contact only if the chain bookkeeping
+proves larger than estimated). The detailed leaf plan + the load-bearing
+producer-shape flag are §"CHAIN — detailed leaf-level recon" below.
 
 **Reuse/replace/add map:**
 - *Reuse verbatim:* Claim 6.11 (the chain's redundant `(v₀v₂)_{i*}` row is
@@ -699,3 +708,260 @@ exists; the `d=3` Case III handles its `|V|=3` floor via the triangle base
 `hasGenericFullRankRealization_of_triangle` (Arms.lean), confirming the `d=3`
 assembly **dodged 5.4** — whether the general-`d` formalization can likewise
 dodge it stays open for ENTRY.
+
+---
+
+## CHAIN — detailed leaf-level recon
+
+**Status:** detailed-recon done (docs only, 2026-06-17, source-verified +
+KT §6.4.2 read end-to-end against the landed tree; the minted letter is
+**23b**, work log `notes/Phase23b.md`). Decomposes the CHAIN layer (§2) into
+buildable leaves with exact target signatures, decides **OD-6**, settles/flags
+**OD-4**, and scopes the lift of the four 23a-carried producers + the
+`hdispatch` carry. The general-recon §1–§5 and the §"CHAIN" scope note are the
+parent; this section is the leaf plan `notes/Phase23b.md` hands off to.
+
+**KT §6.4.2 read (verified 2026-06-17, PDF pp. 692–698 = pdf pages 45–51,
+offset −647).** The general-`d` argument, eqs. (6.46)–(6.67): a chain
+`v₀v₁…v_d` with `d_G(vᵢ)=2` for `1≤i≤d−1`; one base framework `(G₁,q₁)` on the
+split-off `G₁ = G^{v₀v₂}_{v₁}` with `R(G₁,q₁)=D(|V|−2)` (6.46); `d` candidate
+frameworks `(G,p₀),…,(G,p_{d−1})` (6.47/6.48/6.57/6.59) built from `(G₁,q₁)`
+and the isos `ρᵢ` (6.54)/(6.56); each `R(G,pᵢ)` reduced by column+row ops to a
+top-left `D×D` block `Mᵢ` plus `R(G₁∖(v₀v₂)_{i*}, q₁)` (6.50/6.53/6.64), using
+the **always-existing redundant `(v₀v₂)_{i*}` row from Claim 6.11** (6.51/6.52);
+the ±r chain `∑ⱼλ rⱼ(q(vᵢvᵢ₊₁)) = ±r` for `2≤i≤d−1` (6.66, "in a manner
+similar to (6.44)", the degree-2 fact); whence `Mᵢ` fails full rank iff
+`r ⊥ C(Lᵢ)`. The eq. (6.67) finish: take `d+1` points `p₀…p_d` with `pᵢ ∈
+⋂_{j≠i}Πⱼ ∖ Πᵢ` and `p_d = ⋂ⱼΠⱼ`; they are affinely independent, every
+`(d−1)`-subset's `(d−2)`-flat lies in `⋃ⱼΠⱼ`, so the `(d−1)`-extensors of
+`(d−1)`-subsets span a `(d+1 choose d−1) = D`-dim space by **Lemma 2.1**,
+forcing some `Mᵢ` to have full rank, i.e. `rank R(G,pᵢ) = D + D(|V|−2) =
+D(|V|−1)`. KT, p. 692: *"The proof strategy is exactly the same as `d = 3`."*
+
+### (a) Per-file reach-in enumeration along the CHAIN surface
+
+The carrier + arm-realization layer **is already general-`k`** (23a lifted the
+spine; the M₁/M₂/M₃ arm closers were authored `(k:ℕ)` from Phase 22h). The
+`Fin 4`/`⋀²ℝ⁴`/`screwDim 2`/`Fin 3`-pins that remain are concentrated in **the
+dispatch and its `⋀²ℝ⁴` discriminator** — exactly the surface §1/§"CHAIN"
+isolate as the new argument. Source-verified per-decl:
+
+| Decl | File:line | Grade as landed | CHAIN action |
+|---|---|---|---|
+| `case_III_candidate_dispatch` | `CaseIII/Realization.lean:201` | `q : α × Fin 4 → ℝ`, fixed `v,a,b,c`, `na/nb/nc`, `ScrewSpace 2`, `screwDim 2`, `Fin 3` dispatch (`fin_cases u`), `h622lb` over `Fin 4` — **`d=3`-pinned AND structurally fixed-3-candidate** | **REPLACE** by the `d`-chain dispatch (eqs. 6.46–6.67) |
+| `exists_homogeneousIncidence_of_normals` | `Claim612.lean:393` | `n : Fin 3 → Fin 4 → ℝ`, returns `pbar : Fin 4 → Fin 4 → ℝ` with the **`d+1`(=4)-point incidence pattern** (`pbar 0 ⊥ all`, `pbar i+1 ⊥ all but n i`) | re-state at `Fin d → Fin (d+1) → ℝ` → `pbar : Fin (d+1) → Fin (d+1) → ℝ` (the eq. 6.67 `d+1` points) |
+| `exists_complementIso_ne_zero_of_homogeneousIncidence` | `Claim612.lean:1179` | `r : Dual ℝ (ScrewSpace 2)`, `n : Fin 3`, returns `u : Fin 3` + `n'` with `r(complementIso(k:=2)(j:=2) ⟨extensor ![n u, n'], …⟩) ≠ 0` | re-state at `ScrewSpace (d−1)`, `Fin d`, `complementIso(k:=d−1)(j:=d−1)`, `(d−1)`-extensor `extensor (Fin.cons (n u) n' …)` |
+| `exists_line_data_of_homogeneousIncidence` | `Claim612.lean:522` | `Fin 4` joins, `omitTwoExtensor pbar`, `exists_independent_perp_pair`, `omitTwoExtensor_eq_extensor_kept` | re-state at `Fin (d+1)`; routes through the duality leaves below |
+| `case_III_claim612` | `Claim612.lean` | `Fin 4`/`ScrewSpace 2`, the six-join existential via `span_omitTwoExtensor_eq_top` (general `k`, landed Leaf 2) + the join↔meet duality | re-state at `ScrewSpace (d−1)`/`Fin (d+1)`; **N1 brick `span_omitTwoExtensor_eq_top` already general** |
+| `omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`, `exists_independent_perp_pair` | `Claim612.lean:482/283/319` | `Fin 4`-pinned incidence/extensor bricks (dispatch-internal, 23a moved to CHAIN) | re-state at `Fin (d+1)` (mechanical; the `Fin 4`-arity geometry → `Fin (d+1)`) |
+| `extensor_mem_range_map_subtype_of_mem`, `exists_smul_eq_of_mem_range_map_subtype` | `Meet.lean:648/676` | `W : Submodule ℝ (Fin 4 → ℝ)`, `⋀[ℝ]^2`, `finrank_exteriorPower_two_eq_one`, `finrank(range)=2.choose 2=1` | **re-state at** `⋀[ℝ]^{d−1}(Fin (d+1)→ℝ)` with `finrank(⋀^{d−1}W)=(dim W choose d−1)` (W of `dim = d−1` ⟹ `=1`); the route is general mathlib, the lemmas re-state at concrete grade |
+| `complementIso_smul_eq_extensor_join` | `Meet.lean:1075` | `n_u n' pi pj : Fin 4 → ℝ`, `complementIso(k:=2)(j:=2)`, `Φ̃ = wedgeFixedLeft n_u ⊔ wedgeFixedLeft n'` `dim 5`, `Ω = dualAnnihilator Φ̃` `dim 1`, `extensor ![…]` (2-extensors) | re-state at `⋀^{d−1}(ℝ^{d+1})`: `pi…` = `d−1` points, `n_u n'` → the `d−1` panel normals of `Π(u)`; the `dim Ω = 1` count generalizes (`finrank ⋀^{d−1} = D`, `Φ̃` codim 1) |
+| `exteriorPower_basis_toDual_eq_pairingDual_comp_map` | `Meet.lean:866` | `(Pi.basisFun ℝ (Fin 4)).exteriorPower n` — `Fin 4`-pinned base | re-state at `Fin (d+1)` (the proof is `Module.Basis.ext` + `pairingDual_ιMulti_ιMulti`, dimension-generic) |
+| `exists_extensor_eq_panelSupportExtensor` | `PanelLayer.lean` (23a Leaf-1b DROP) | the `⋀²ℝ⁴` point-join↔panel-meet bridge consumer; **the M4-forget unblocker** | lift **with** the duality finish (the four-producer lift, §"CHAIN"(d)) |
+| `case_III_arm_realization`, `_M2`, `_M3` | `Arms.lean:72`, `Relabel.lean` | **ALREADY general `k`** (`q : α × Fin (k+2)`, `ScrewSpace k`, `screwDim k`) — the per-candidate certify-then-rebase + relabel transport | **reuse verbatim** as the per-candidate engine the `d`-chain dispatch feeds |
+| `linearIndependent_sum_augment_candidateRow` | `RigidityMatrix/Basic.lean:1231` | **general `k`, graph-free**; augments by **one** `Unit` candidate | **generalize** to a `d`-fold `Sum`/`Fin d`-indexed augment (CHAIN-1) |
+
+**The central structural finding (verified, reshapes the cut): the
+arm-realization engine is general-grade; only the DISPATCH (candidate count +
+`⋀²ℝ⁴` discriminator) is `d=3`-fixed.** The `d=3` dispatch
+(`case_III_candidate_dispatch`) builds the three normals `na,nb,nc`, runs the
+`Fin 3`-discriminator (`exists_homogeneousIncidence_of_normals` →
+`exists_complementIso_ne_zero_of_homogeneousIncidence`) to pick a discriminating
+panel `u : Fin 3` and transversal `n'`, then `fin_cases u` dispatches to the
+three (already general-`k`) arm closers W7/W8/W9c. So CHAIN's new content is the
+`d`-candidate generalization of *that dispatch shell* + the `⋀^{d−1}` duality
+the discriminator rests on — **not** a rewrite of the arm-realization layer.
+
+### (b) The producer-shape mismatch — the load-bearing flag (clause (ii))
+
+**FLAG (motive/producer-level; do NOT force a leaf signature past it).** The
+23a-carried `hdispatch` (`Theorem55.lean:2225`, =
+`case_III_realization_all_k.hdispatch`, = `case_III_hsplit_producer_all_k.hcand`)
+takes a **fixed `v,a,b,c` 4-tuple** with the `d=3` chain shape (`eₐ:va`,
+`e_b:vb`, `e_c:ac`, the two degree-2 closures `hclv`/`hcla`). This is the data
+`case_III_hsplit_producer_all_k` extracts via `exists_chain_data_of_noRigid`
+(`Reduction.lean:383`) — which, verified, produces **only a fixed 4-tuple, not a
+length-`d` chain** (the OD-2/OD-3 verdict). But KT's general-`d` Lemma 6.13
+**needs the whole length-`d` chain `v₀…v_d`** to build the `d` candidates
+(6.54/6.56/6.57). At `d=3` the chain `v₀v₁v₂v₃` *is* exactly `c—a—v—b` (the
+4-tuple `v,a,b,c` with `v₁=v` deg-2, `v₂=a` deg-2 in `G₁`, `v₀=b`, `v₃=c`
+endpoints), so the fixed-4-tuple dispatch *is* the length-3 chain dispatch and
+the carried shape is faithful. At `d≥4` it is **not**: the fixed 4-tuple is too
+short, and the carried `hdispatch` cannot be discharged from it.
+
+**Consequence.** CHAIN cannot be a pure "discharge the carried `hdispatch` at
+general `k`" — the *producer/extractor that supplies `hdispatch`'s premises must
+be reshaped* to extract and pass a length-`d` chain. Concretely, three coupled
+changes:
+1. **the chain extractor** (`exists_chain_data_of_noRigid`) must produce a
+   length-`d` chain `v₀…v_d` (a Phase-20-shape combinatorial lemma — KT Lemma
+   4.6/4.8; the **ENTRY** layer, OD-2/OD-3 verdict: "new combinatorial leaf");
+2. **the producer** (`case_III_hsplit_producer_all_k`) must thread that chain
+   into its `hcand` slot (its `hcand`/`hdispatch` shape changes from fixed
+   4-tuple to length-`d` chain);
+3. **the dispatch** (CHAIN's deliverable) consumes the chain.
+This is a genuine **motive/producer-shape change**, not a numeral lift, and it
+**couples CHAIN to ENTRY**: the dispatch's input shape is the chain extractor's
+output shape. **Recommendation:** CHAIN and ENTRY co-design the chain-data shape
+at CHAIN open (the `hdispatch`/`hcand` signature is the contract between them);
+23b should not freeze the dispatch signature before the chain-data record is
+agreed with ENTRY. The 23a `hdispatch` carry is **correct as the `d=3` instance
+contract** (the `k=2` wrapper fills it from `case_III_candidate_dispatch`), and
+stays green through 23a/ASSEMBLY-at-`d=3`; it is the *general-`d`* shape that
+must grow. This is exactly the "honest open decision the coordinator/user
+adjudicates" clause-(ii) calls for — see OD-6 / OD-7 below.
+
+### (c) Buildable-leaf sequence for CHAIN
+
+Smallest-buildable, dependency-ordered. The two hard cores (chain bookkeeping
+CHAIN-1/2; duality CHAIN-3/4) are **largely independent** and feed the dispatch
+assembly CHAIN-5. Each leaf re-greens its file on the still-green tree (additive
+restating; the `Fin 4`/`d=3` decls stay as `d=3` wrappers so the `d=3` line
+never regresses). **CHAIN-0/CHAIN-5 are gated by the (b) flag** — the dispatch
+signature depends on the ENTRY chain-data contract.
+
+- **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
+  Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`
+  candidate) to a `Fin d`-indexed / `d`-fold `Sum` augment: given the base
+  family `Sum.elim rn ro` independent and `d` candidate rows each differing
+  from a genuine row by a span-member, the augmented family is independent.
+  Graph-free over `ScrewSpace k`; the `linearIndependent_sumElim_unit_iff`
+  row-space criterion generalizes to a finite-iterated form. *Signature
+  (target):* `linearIndependent_sum_augment_candidateRow_chain {d}
+  (hindep : LinearIndependent ℝ (Sum.elim (Sum.elim rn cand) ro)) … :
+  LinearIndependent ℝ (Sum.elim (Sum.elim rn cand') ro)` where `cand : Fin d →
+  Dual ℝ (α → ScrewSpace k)`. No `d=3` content; pure linear algebra.
+- **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`, new
+  file or extend `Candidate`). The per-candidate-`i` reduction of `R(G,pᵢ)`
+  (6.60) to the `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` form (6.64), via the column op
+  (add `vᵢ`-cols to `vᵢ₊₁`-cols), the substitution (6.59), the row
+  correspondence (6.62), and the redundant-row weights `λ` (6.52, the Claim
+  6.11 redundancy — **reuse `exists_redundant_panelRow_ab_of_finrank_eq`,
+  general & GREEN**). The ±r chain (6.66) is the degree-2 fact "in a manner
+  similar to (6.44)". *This is the index-heavy generalization of the
+  `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification`
+  chain (now `q : α × Fin 4`-shaped) to a `Fin d`-indexed candidate family.*
+  Heaviest mechanical leaf; KT calls it "exactly the same as `d=3`."
+- **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks** (`Meet.lean`).
+  Re-state `extensor_mem_range_map_subtype_of_mem`,
+  `exists_smul_eq_of_mem_range_map_subtype`,
+  `exteriorPower_basis_toDual_eq_pairingDual_comp_map`,
+  `complementIso_smul_eq_extensor_join` at `⋀[ℝ]^{d−1}(Fin (d+1)→ℝ)` with the
+  general `finrank(⋀^{d−1}W) = (finrank W).choose (d−1)`
+  (`exteriorPower.finrank_eq`; at `dim W = d−1` this is `1`). The route is
+  general mathlib (`exteriorPower.map_injective_field`, `map_apply_ιMulti`,
+  `pairingDual_ιMulti_ιMulti`, `topEquiv`/`pairingDualEquiv` mirrors); the
+  `dim Φ̃ = D−1` / `dim Ω = 1` count generalizes from `wedgeFixedLeft`'s range
+  count. **Build LAZILY at concrete grade `(d−1, d+1)` — do NOT build a general
+  Hodge-star / regressive-product API (KT never needs it; §1/§"CHAIN" hard
+  core 2).** *Risk:* `finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` at
+  `d=3`) is the most `d=3`-specific count; its general form (`dim` of the sum
+  of `d−1` fixed-vector-wedge ranges) is the real new lemma here.
+- **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
+  (`Claim612.lean`). Re-state `exists_homogeneousIncidence_of_normals`
+  (the `d+1`-point incidence pattern of eq. 6.67), the dispatch-internal
+  bricks (`omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`,
+  `exists_independent_perp_pair`, `exists_line_data_of_homogeneousIncidence`),
+  `case_III_claim612` (the span-`D` existential, **reusing the general
+  `span_omitTwoExtensor_eq_top` (landed 23a Leaf 2) + Lemma 2.1
+  `omitTwoExtensor_linearIndependent_of_li` (general & GREEN)**), and
+  `exists_complementIso_ne_zero_of_homogeneousIncidence` at `ScrewSpace (d−1)`,
+  `Fin d` candidates, `complementIso (k:=d−1)(j:=d−1)`. Consumes CHAIN-3.
+  *This is the eq. (6.67) finish + the `Mᵢ`-fails-iff-`r⊥C(Lᵢ)` disjunction.*
+- **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
+  Replace `case_III_candidate_dispatch`: given the length-`d` chain data +
+  fresh `e₀` + the IH-generic base realization `(G₁,q₁)`, build the `d`
+  candidates (CHAIN-2), apply the discriminator (CHAIN-4) to pick a
+  full-rank `Mᵢ`, and close via the (already general-`k`) arm closer for that
+  `i` (the `ρᵢ`-relabel chain generalizing W9c's single `a↔v` swap). **Gated
+  by the (b) flag** — its `hdispatch`/`hcand` signature is the
+  CHAIN↔ENTRY contract (the length-`d` chain record). Discharges the
+  general-`d` `hdispatch` carried by `theorem_55_minimalKDof_k_all_k` (once that
+  carry's shape grows to the length-`d` chain, (b)). Keep the `d=3` dispatch as
+  a `k=2`/length-3 wrapper so the `d=3` line stays green.
+
+### (d) Green-modulo boundary CHAIN hands downstream
+
+After CHAIN, the carried `hdispatch` is **discharged at general `k`** (modulo
+the (b) producer reshape, which CHAIN co-owns with ENTRY). CHAIN additionally
+**unblocks the M4-forget producer** `exists_extensor_eq_panelSupportExtensor`
+(it routes through the `⋀²ℝ⁴` duality `complementIso_smul_eq_extensor_join`,
+CHAIN-3) — so once CHAIN-3 lands, **`hforget_k`** (the M4 forget map,
+`hasPanelRealization_of_generic`, `GenericityDevice.lean:1936/1945`) lifts to
+general `k`, and **through it `hbase_k`/`hcut_k`/`hcontract_k`** (every
+conditioned-pair producer routes its bare `HasPanelRealization` half through the
+forget map — the 23a Leaf-5 finding). **So the four 23a-carried producers fold
+into CHAIN's tail** (after CHAIN-3's duality), as the §"CHAIN" scope expansion
+predicted — see (e) OD-7 for the fold-vs-successor decision. What CHAIN does
+**not** discharge, leaving to downstream:
+- **ENTRY** owns the length-`d` chain *extraction* (the reshaped
+  `exists_chain_data_of_noRigid` → chain; Lemma 4.6 dichotomy + Lemma 4.8
+  split-off + the short-cycle base Lemma 5.4 branch) and the `hD : 6 ≤
+  bodyBarDim n` floor lift. The chain-data record shape is the CHAIN↔ENTRY
+  contract ((b)).
+- **ASSEMBLY** composes the honest general-`d` Theorem 5.5 (the `hdispatch`/
+  four-producer carries now discharged), re-greens `prop:rigidity-matrix-prop11`
+  + `hub`, derives Thm 5.6, states Conjecture 1.2.
+
+### (e) CHAIN-specific open decisions
+
+- **OD-6 — DECIDED: two leaves within one CHAIN sub-phase (no new letter for
+  the duality), but with a CHAIN/ENTRY co-design dependency.** The two hard
+  cores are dependency-ordered into one layer: the `⋀^{d−1}` duality (CHAIN-3)
+  is *consumed by* the Claim-6.12 discriminator (CHAIN-4), which is *consumed
+  by* the dispatch assembly (CHAIN-5); the chain bookkeeping (CHAIN-1/2) feeds
+  CHAIN-5 in parallel. They are five leaves of **one** sub-phase 23b, not a
+  split — the arm-realization engine they all feed is already general-`k`
+  (verified (a)), so neither core stands alone as a deliverable. *Rationale for
+  not minting a separate duality letter:* the duality is not a self-contained
+  target (it has no consumer outside CHAIN-4/5 and the M4-forget lift), unlike
+  21a's meet foundations (which seeded the whole panel layer). If CHAIN-2's
+  index bookkeeping proves larger than estimated, **split at contact** into 23b
+  (duality + discriminator CHAIN-3/4, which also unblocks the four producers)
+  + a later-minted letter (chain bookkeeping CHAIN-1/2/5) — but open as one.
+- **OD-7 — DECIDED: the four 23a-carried producers fold into CHAIN's tail
+  (after CHAIN-3), not a dedicated successor sub-phase.** Verified ((d)): the
+  M4-forget `exists_extensor_eq_panelSupportExtensor` is *the same `⋀²ℝ⁴`
+  duality* CHAIN-3 lifts, and `hbase_k`/`hcut_k`/`hcontract_k` route through M4
+  for their bare half. So the producer lift is a **direct corollary of CHAIN-3**
+  (numeral pass on the producers once their one `Fin 4`-duality reach-in lifts),
+  not new mathematics — folding it avoids a successor sub-phase that would
+  re-open the same files. *Caveat:* the producers also carry `Fin 4` panel
+  geometry beyond the forget call (the 23a Leaf-5 finding said they "bottom out
+  in `q : α × Fin 4` panel geometry **and** the duality"); the detailed-build
+  recon at CHAIN open must confirm the *only* genuinely-`d=3` reach-in is the
+  duality (i.e. the rest is the numeral pass), else the fold is larger than a
+  corollary. Present as a fold with this caveat flagged.
+- **OD-4 — FLAGGED (genuinely open; do NOT pre-commit a route).** KT's eq.
+  (6.67) `d+1`-points step is stated **via algebraic independence** (p. 698,
+  verbatim: *"the set of the coefficients … is algebraically independent over
+  the rational field. Therefore, for any `j` hyperplanes among them, their
+  intersection forms a `(d−j)`-dimensional affine space."*). The `d=3` N3a was
+  **AVOIDED** (existence/Zariski route — one explicit seed with the 4 points
+  affinely independent, via explicit triple-intersection + cross-products,
+  `AlgebraicIndependence.md` row #106). *Unsettled at general `d`:* whether an
+  explicit `d+1`-point construction exists (existence route again) or the
+  symbolic `j`-hyperplanes-meet-in-`(d−j)`-flat genuinely forces the
+  alg-independence hammer. The `d=3` explicit construction (`p₁` = triple
+  intersection, `pᵢ = p₁ + sᵢ·(nⱼ×nₖ)`) does **not** obviously generalize: at
+  `d+1` panels in `ℝ^d` the "intersection of `d−1` of them is a line" needs the
+  `j`-hyperplanes-meet-in-`(d−j)`-flat fact, which is *exactly* the
+  alg-independence consequence KT states. **Cross-check `AlgebraicIndependence.md`
+  row #107(b):** that row already scopes this as "uncertain whether a NEW site"
+  and defers the confirm to CHAIN open — this recon **does not resolve it**;
+  it confirms the question is real (the `d=3` explicit route is not obviously
+  liftable) and routes the decision to the CHAIN detailed-build recon. *If the
+  symbolic route is forced,* it is a new alg-independence site (a `Fin (d+1)`
+  generalization of the existence brick `exists_affineIndependent_of_det_…`,
+  possibly needing `AlgebraicIndependent`-driven non-vanishing of the `d+1`
+  homogenization determinants) — a CHAIN-4 sub-leaf, not new infra (the
+  alg-independence machinery is live from 22d). **Note (b) interaction:** the
+  seed `q` is the IH-generic base `(G₁,q₁)` realization, already
+  `AlgebraicIndependent ℚ`-carrying (the 23a-lifted `case_III_nested_rank_lower`
+  consumes it), so the symbolic route's hypothesis is in hand if needed.
+- **OD-1 (carried from §4, re-confirmed for CHAIN/ENTRY).** The short-cycle
+  base (KT Lemma 5.4, "if `G` is a cycle of length ≤ `d`, done by Lemma 5.4")
+  is a **real branch of the general-`d` chain entry** (KT p. 692), unlike `d=3`
+  (triangle floor handled inline). Whether CHAIN's dispatch can assume the chain
+  branch (ENTRY discharging the cycle branch separately) or must handle a degenerate
+  chain is an ENTRY-contract question — flag at CHAIN open, do not pre-commit.

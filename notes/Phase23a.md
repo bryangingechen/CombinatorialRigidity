@@ -150,9 +150,11 @@ The clause-(ii) flags the recon could not settle from the source live in
 
 ## Hand-off / next phase
 
-**23a (CARRIER) Lean is closed. Next layer: CHAIN** (code-only until it opens; the
-coordinator mints its letter + work log). CHAIN's job (`notes/Phase23-design.md`
-§"CHAIN", §"23a"(d)): replace the fixed-3-candidate `case_III_candidate_dispatch` with
+**23a (CARRIER) Lean is closed. Next layer: CHAIN — now OPEN as the minted `23b`**
+(opened 2026-06-17 on a detailed leaf recon, no build; work log `notes/Phase23b.md`,
+detailed recon `notes/Phase23-design.md` §"CHAIN — detailed leaf-level recon").
+CHAIN's job (`notes/Phase23-design.md` §"CHAIN", §"23a"(d)): replace the fixed-3-candidate
+`case_III_candidate_dispatch` with
 the length-`d` chain dispatch (eqs. 6.46–6.64) + the `⋀^{d−1}(ℝ^{d+1})` duality finish
 (eq. 6.67, the N3b analog) — i.e. **discharge `case_III_realization_all_k`'s `hdispatch`
 hypothesis at general `k`**. The still-`Fin 4` dispatch internals (`case_III_candidate_dispatch`
