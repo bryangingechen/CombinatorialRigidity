@@ -1054,44 +1054,48 @@ coannihilator `Ω = dualCoannihilator Φ̃` to a line. The shared-direction span
 `dim Ω = 6 − 5 = 1`, so the panel-meet (green step (i)) and the point-join (fact 2), both in `Ω`,
 are proportional. -/
 
-/-- **The decomposable intersection: `n_u ∧ ℝ⁴ ⊓ n' ∧ ℝ⁴ = span{n_u ∧ n'}`**
-(`lem:case-III-claim612-line-in-panel-union`). The genuine sub-content of the `5`-dim span count
-(fact 3 of the membership route). For two linearly-independent vectors `a, b ∈ ℝ⁴`, the wedge-with-a
-range `a ∧ ℝ⁴` (`range (wedgeFixedLeft a)`) and `b ∧ ℝ⁴` meet exactly in the line `span{a ∧ b}`.
-`⊇` is direct: `a ∧ b = wedgeFixedLeft a b` lies in `range (wedgeFixedLeft a)`, and `= b ∧ (−a) =
-wedgeFixedLeft b (−a)` (anticommutativity `ExteriorAlgebra.ι_add_mul_swap`) lies in
-`range (wedgeFixedLeft b)`. `⊆`: an element `a ∧ v = b ∧ w` in both ranges, left-multiplied by `b`,
-gives `b ∧ a ∧ v = b ∧ b ∧ w = 0` (repeated factor), so `extensor ![b, a, v] = 0`, i.e. `{b, a, v}`
-is dependent; with `{a, b}` independent (`linearIndependent_finSnoc`) this forces `v ∈ span{a, b}`,
-whence `a ∧ v = β · (a ∧ b) ∈ span{a ∧ b}` (`a ∧ a = 0`). -/
-theorem inf_range_wedgeFixedLeft (a b : Fin 4 → ℝ) (hab : LinearIndependent ℝ ![a, b]) :
+/-- **The decomposable intersection: `n_u ∧ ℝ^{d+1} ⊓ n' ∧ ℝ^{d+1} = span{n_u ∧ n'}`**
+(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — ambient-generic over `Fin (d+1)`; the `d=3`
+instance recovers the `Fin 4` statement by `d+1 = 4`). The genuine sub-content of the span count
+(fact 3 of the membership route). For two linearly-independent vectors `a, b ∈ ℝ^{d+1}`, the
+wedge-with-a range `a ∧ ℝ^{d+1}` (`range (wedgeFixedLeft a)`) and `b ∧ ℝ^{d+1}` meet exactly in the
+line `span{a ∧ b}`. `⊇` is direct: `a ∧ b = wedgeFixedLeft a b` lies in `range (wedgeFixedLeft a)`,
+and `= b ∧ (−a) = wedgeFixedLeft b (−a)` (anticommutativity `ExteriorAlgebra.ι_add_mul_swap`) lies
+in `range (wedgeFixedLeft b)`. `⊆`: an element `a ∧ v = b ∧ w` in both ranges, left-multiplied by
+`b`, gives `b ∧ a ∧ v = b ∧ b ∧ w = 0` (repeated factor), so `extensor ![b, a, v] = 0`, i.e.
+`{b, a, v}` is dependent; with `{a, b}` independent (`linearIndependent_finSnoc`) this forces
+`v ∈ span{a, b}`, whence `a ∧ v = β · (a ∧ b) ∈ span{a ∧ b}` (`a ∧ a = 0`). The proof is
+ambient-generic verbatim — `d` enters only the ambient type, the family arities (`Fin 2`, `Fin 3`)
+are fixed. -/
+theorem inf_range_wedgeFixedLeft {d : ℕ} (a b : Fin (d + 1) → ℝ)
+    (hab : LinearIndependent ℝ ![a, b]) :
     LinearMap.range (wedgeFixedLeft a) ⊓ LinearMap.range (wedgeFixedLeft b)
       = Submodule.span ℝ {wedgeFixedLeft a b} := by
   apply le_antisymm
   · rintro z ⟨⟨v, hv⟩, ⟨w, hw⟩⟩
     -- `z = a ∧ v = b ∧ w`; left-multiplying by `b` gives `b ∧ a ∧ v = b ∧ b ∧ w = 0`,
     -- so `{b, a, v}` is dependent, hence `v ∈ span{a, b}`.
-    have hbav : extensor (![b, a, v] : Fin 3 → Fin 4 → ℝ) = 0 := by
+    have hbav : extensor (![b, a, v] : Fin 3 → Fin (d + 1) → ℝ) = 0 := by
       have key : extensor ![b] ∨ₑ extensor ![a, v] = extensor ![b] ∨ₑ extensor ![b, w] := by
         rw [← Subtype.coe_inj, coe_wedgeFixedLeft] at hv hw; rw [hv, hw]
       rw [join_extensor, join_extensor,
-        show Fin.append (![b] : Fin 1 → Fin 4 → ℝ) ![a, v] = ![b, a, v] by
+        show Fin.append (![b] : Fin 1 → Fin (d + 1) → ℝ) ![a, v] = ![b, a, v] by
           ext i x; fin_cases i <;> rfl,
-        extensor_eq_zero_of_eq (Fin.append (![b] : Fin 1 → Fin 4 → ℝ) ![b, w])
+        extensor_eq_zero_of_eq (Fin.append (![b] : Fin 1 → Fin (d + 1) → ℝ) ![b, w])
           (a := 0) (b := 1) rfl (by decide)] at key
       exact key
     have hba : LinearIndependent ℝ ![b, a] := by
       rw [LinearIndependent.pair_iff] at hab ⊢
       exact fun s t h => (hab t s (by rw [← h]; ring)).symm
     have hvmem : v ∈ Submodule.span ℝ {a, b} := by
-      have hvn : v ∈ Submodule.span ℝ (Set.range (![b, a] : Fin 2 → Fin 4 → ℝ)) := by
+      have hvn : v ∈ Submodule.span ℝ (Set.range (![b, a] : Fin 2 → Fin (d + 1) → ℝ)) := by
         by_contra hvn
         refine (extensor_ne_zero_iff_linearIndependent _).mpr
           ((linearIndependent_finSnoc (x := v)).mpr ⟨hba, hvn⟩) ?_
-        rw [show Fin.snoc ![b, a] v = (![b, a, v] : Fin 3 → Fin 4 → ℝ) by
+        rw [show Fin.snoc ![b, a] v = (![b, a, v] : Fin 3 → Fin (d + 1) → ℝ) by
           ext i x; fin_cases i <;> rfl]
         exact hbav
-      rwa [show (Set.range (![b, a] : Fin 2 → Fin 4 → ℝ)) = {a, b} by
+      rwa [show (Set.range (![b, a] : Fin 2 → Fin (d + 1) → ℝ)) = {a, b} by
         rw [Matrix.range_cons, Matrix.range_cons, Matrix.range_empty, Set.union_empty,
           Set.singleton_union, Set.pair_comm]] at hvn
     -- `a ∧ v` for `v = α • a + β • b` is `β • (a ∧ b) ∈ span{a ∧ b}`.

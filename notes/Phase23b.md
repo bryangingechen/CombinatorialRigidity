@@ -1,17 +1,18 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. CHAIN-3's first three sub-leaves landed: the membership brick
+**Status:** open. CHAIN-3's first three sub-leaves landed (the membership brick
 `extensor_mem_range_map_subtype_of_mem_grade`, the **proportionality engine**
-`exists_smul_eq_of_mem_range_map_subtype_grade`, and now (2026-06-17) the
-**`toDual=Gram` bridge** `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`
-(all `Meet.lean`) — the grade-/ambient-generic restatements of the `Fin 4`/`⋀²`-
-pinned `d=3` lemmas, each derived as the `(d:=3)` instance. The proportionality
-engine carries the leaf's genuine new count via two further grade-generic bricks
-(`finrank_exteriorPower_self_eq_one`, `exteriorPower_map_subtype_injective_grade`).
-**One CHAIN-3 brick remains** — the heavy assembly `complementIso_smul_eq_extensor_join`
-(its `Φ̃`-count dependency chain is genuinely new at general `d`, NOT a verbatim
-lift). The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain
-(coordinator owns the sub-phase boundary; codes-until-open).
+`exists_smul_eq_of_mem_range_map_subtype_grade`, the **`toDual=Gram` bridge**
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`), and CHAIN-3's last brick
+`complementIso_smul_eq_extensor_join` is being chipped: its `wedgeFixedLeft` building
+block (`def` + facts) and now (2026-06-17) the **decomposable intersection**
+`inf_range_wedgeFixedLeft` (`a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} = span{a∧b}`) are lifted `Fin 4` →
+ambient `{d} (Fin (d+1))` (all `Meet.lean`). **What remains of the last brick** is the
+genuinely-new `Φ̃`-count `finrank_sup_range_wedgeFixedLeft` (the 2-summand `3+3−1` →
+`(d−1)`-summand inclusion–exclusion, NOT a verbatim lift), then
+`extensor_toDual_extensor_eq_zero_of_perp` + the assembly itself. The integer Phase 23
+stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
+boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -27,22 +28,18 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's `wedgeFixedLeft` building block has landed (2026-06-17): `wedgeFixedLeft`
-(the `def`) + its three immediate facts `coe_wedgeFixedLeft` / `ker_wedgeFixedLeft` /
-`finrank_range_wedgeFixedLeft` are lifted from `Fin 4` to ambient `{d} (Fin (d+1))`,
-grade fixed at `2`. The range count generalizes `3 → d` (`= (d+1) − 1`). All four
-were ambient-generic verbatim (`extensor` API is already `{d}`-generic); the `def`
-+ facts carry implicit `{d}`, so the still-`Fin 4` consumers
-(`inf_range_wedgeFixedLeft`, `finrank_sup_range_wedgeFixedLeft`, the assembly) unify
-`d = 3` by defeq — no separate `d=3` instance decls needed (lighter than the prior
-bricks' `_grade`/instance split, because there are no external consumers). This is
-the *first sub-step* of CHAIN-3's last brick `complementIso_smul_eq_extensor_join`.**
+**CHAIN-3's decomposable intersection `inf_range_wedgeFixedLeft` has landed (2026-06-17):
+`a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} = span{a∧b}` lifted `Fin 4` → ambient `{d} (Fin (d+1))`, joining the
+`wedgeFixedLeft` building block (`def` + `coe_`/`ker_`/`finrank_range_` facts) from the prior
+sitting. Ambient-generic verbatim: the family arities the proof leans on (`Fin 2`/`Fin 3`
+`decide`/`fin_cases`/`linearIndependent_finSnoc`) are fixed; `d` enters only the ambient type.
+Implicit `{d}`, no `d=3` instance — the still-`Fin 4` consumer `finrank_sup_range_wedgeFixedLeft`
+unifies `d=3` by defeq (the `inf_range_wedgeFixedLeft a b hab` call site forces `d+1 = 4`).
+This is the second sub-step of CHAIN-3's last brick `complementIso_smul_eq_extensor_join`.**
 **Next, still inside that last brick (the heavy one, NOT a verbatim lift):** lift
-`inf_range_wedgeFixedLeft` (the decomposable intersection `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} =
-span{a∧b}`, ambient-generic) and then `finrank_sup_range_wedgeFixedLeft` — its `dim Φ̃`
-count goes from the 2-summand `3+3−1=5` to a `(d−1)`-summand inclusion–exclusion (a
-panel `Π(u)` has `d−1` normals): **the recon's "real new lemma here"** — then
-`extensor_toDual_extensor_eq_zero_of_perp` and the assembly itself.
+`finrank_sup_range_wedgeFixedLeft` — its `dim Φ̃` count goes from the 2-summand `3+3−1=5` to a
+`(d−1)`-summand inclusion–exclusion (a panel `Π(u)` has `d−1` normals): **the recon's "real new
+lemma here"** — then `extensor_toDual_extensor_eq_zero_of_perp` and the assembly itself.
 The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
@@ -105,8 +102,11 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
           the `Fin 4` consumers unify `d=3` by defeq (no instance decls). Landed
           2026-06-17. (One friction: `finrank_sup_range`'s `omega` mis-atomized the
           `(d:=3)`-vs-`Fin 4` elaborations → `simpa using hsum`; QUIRKS § 58.)
-        - [ ] `inf_range_wedgeFixedLeft` (`Fin 4`, `Fin 3`-arity `decide`/`fin_cases`)
-          → ambient `{d}` (the decomposable intersection, verbatim-liftable).
+        - [x] `inf_range_wedgeFixedLeft` (`Fin 4` → ambient `{d}`, the decomposable intersection)
+          — ambient-generic verbatim; the `Fin 2`/`Fin 3` `decide`/`fin_cases`/
+          `linearIndependent_finSnoc` are fixed family arities, `d` enters only the ambient type.
+          Implicit `{d}`, no `d=3` instance (the in-file consumer unifies `d=3` by defeq).
+          Landed 2026-06-17.
         - [ ] `finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` count → a `(d−1)`-summand
           inclusion–exclusion, the recon's "real new lemma"; consumes the now-general
           `finrank_range_wedgeFixedLeft = d`).
@@ -177,22 +177,20 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = `inf_range_wedgeFixedLeft` → `finrank_sup_range_wedgeFixedLeft`
-at general ambient** (`Meet.lean`, still inside CHAIN-3's last brick
-`complementIso_smul_eq_extensor_join`; the `wedgeFixedLeft` building block + its
-three facts landed 2026-06-17 lifted `Fin 4` → `{d} (Fin (d+1))`, joining the
-`toDual=Gram` bridge / membership brick / proportionality engine from prior
-sittings; still no ENTRY-contract dependency). The smallest next commit:
-- `inf_range_wedgeFixedLeft` (`Meet.lean:~1068`, the decomposable intersection
-  `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} = span{a∧b}`) — `Fin 4` → ambient `{d}`. The `d=3` proof
-  uses `Fin 3`-arity `decide`/`fin_cases`/`linearIndependent_finSnoc` on `![b,a,v]`,
-  all ambient-generic (grade-3 extensor over `Fin (d+1)`); likely a verbatim lift.
-Then, the genuinely-new count (a second commit, the "real new lemma"):
-- `finrank_sup_range_wedgeFixedLeft` (`Meet.lean:~1128`, the `dim Φ̃ = 3+3−1 = 5`
+**Next buildable sub-step = `finrank_sup_range_wedgeFixedLeft` at general ambient**
+(`Meet.lean`, still inside CHAIN-3's last brick `complementIso_smul_eq_extensor_join`;
+the `wedgeFixedLeft` building block + its three facts and now the decomposable
+intersection `inf_range_wedgeFixedLeft` are all lifted `Fin 4` → `{d} (Fin (d+1))`,
+joining the `toDual=Gram` bridge / membership brick / proportionality engine from prior
+sittings; still no ENTRY-contract dependency). The genuinely-new count (the "real new
+lemma"):
+- `finrank_sup_range_wedgeFixedLeft` (`Meet.lean:~1131`, the `dim Φ̃ = 3+3−1 = 5`
   count) → a `(d−1)`-summand inclusion–exclusion at general `d` (the panel `Π(u)` has
-  `d−1` normals, not 2). The `wedgeFixedLeft` range count `= d` it consumes is now
-  general; the new content is the multi-summand inclusion–exclusion shape.
-Then `extensor_toDual_extensor_eq_zero_of_perp` (`Meet.lean:~1023`, `Fin 2`/`Fin 4`)
+  `d−1` normals, not 2). The `wedgeFixedLeft` range count `= d` and the decomposable
+  intersection (`= span{a∧b}`, `finrank 1`) it consumes are now general; the new
+  content is the multi-summand inclusion–exclusion shape (`Fin 4` 2-summand `omega`
+  closer → a `(d−1)`-fold sum). NOT a verbatim lift — the recon's flagged new lemma.
+Then `extensor_toDual_extensor_eq_zero_of_perp` (`Meet.lean:~1027`, `Fin 2`/`Fin 4`)
 and the assembly `complementIso_smul_eq_extensor_join` (`Meet.lean:~1170`): the
 `dim Ω = D − dim Φ̃ = D − (D−1) = 1` count + `complementIso (k:=d−1)(j:=d−1)`. The
 `toDual=Gram` brick is in hand to feed the Gram-determinant orthogonality (fact 2)
@@ -237,6 +235,16 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3 `inf_range_wedgeFixedLeft` (decomposable intersection): ambient-generic
+  verbatim lift, implicit `{d}`, no `d=3` instance.** `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} =
+  span{a∧b}` lifted `Fin 4` → ambient `{d} (Fin (d+1))` with the proof body verbatim:
+  the only `Fin n`-arity tactics (`decide`/`fin_cases` on `![b,a,v]`/`Fin.append`,
+  `linearIndependent_finSnoc`) are over the *fixed* family arities `Fin 2`/`Fin 3`,
+  not the ambient — `d` enters only the carrier type. Like the `wedgeFixedLeft` block
+  (no external consumers), implicit `{d}`: the in-file consumer
+  `finrank_sup_range_wedgeFixedLeft` (`d=3`) unifies its `inf_range_wedgeFixedLeft a b
+  hab` call by defeq (`a,b : Fin 4 → ℝ` force `d+1=4`). Clean lift, no friction; only
+  three widened docstring/signature lines needed reflow for the 100-col limit.
 - **CHAIN-3 `wedgeFixedLeft` building block: lift the `def` + facts in place to
   implicit `{d}`, no `d=3` instance decls (no external consumers).** `wedgeFixedLeft`
   (`def`) + `coe_`/`ker_`/`finrank_range_` were `Fin 4`-pinned; lifted to ambient
