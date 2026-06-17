@@ -283,6 +283,26 @@ a geometry/construction layer is opacity-neutral when its carrier touch is confi
 *constructing* sites (category (a)/(b)-coercion) all sit in the lower layers (RigidityMatrix L0a/L0b,
 PanelLayer L1), so the higher layers consume carriers abstractly and crack none open.
 
+**L9 refinement (2026-06-16, `Theorem55.lean` — seventh and final negative probe; both Theorem55 caps
+measured; OQ1 fully resolved).** The probe built spine-to-Theorem55 green on the opaque carrier —
+`Theorem55.lean` **migration-free**, despite holding the two surviving caps and the L1 forced
+`ScrewSpace.mk` consumer fixups (already migrated). Every spine file is now opacity-ready, so only the
+FLIP remains. Two findings:
+- **OQ1 fully measured (positive, partial on one cap).** With the flip live and the caps temporarily
+  lowered, `case_cut_edge_realization` (committed `maxHeartbeats 400000`) re-elaborated green at the
+  **default 200000** — a full drop, like CaseII's L7 result. But `case_cut_edge_realization_gp`
+  (committed 600000) **still times out at 200000** on the opaque carrier (`(deterministic) timeout at
+  isDefEq` at Theorem55.lean:1680) and passes at **400000** — so opacity drops it one step (600000→400000)
+  but not all the way to default. So the FLIP keeps `_gp` at 400000 while dropping the other two caps to
+  default. OQ1's claim ("opacity drops the survivors") holds for all three caps; the one not reaching
+  default shows the cap is partly intrinsic to that decl's seed+per-side rank-polynomial case analysis,
+  not solely the carrier-whnf cost.
+- **The FLIP RigidityMatrix recipe exercised live.** The L9 probe applied exactly the L7-pinned
+  RigidityMatrix recipe (flip `abbrev`→`def`, `ScrewSpace_def := rfl`, 3 `inferInstanceAs`, `mk`/`val`/
+  `val_mem` through `ScrewSpace_def k ▸ …`, `equivExteriorPower` as the `cast`-form `≃ₗ` with `cast`-RHS
+  `_apply`/`_symm_apply`) and the whole spine built clean — so the recipe is no longer just pinned but
+  *verified end-to-end* against the real top-of-spine file. The FLIP is now purely mechanical.
+
 Every reach-in category maps onto this; the two categories where the mapping is *not* clean are the hard
 parts below.
 

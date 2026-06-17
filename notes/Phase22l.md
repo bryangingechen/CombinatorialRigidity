@@ -13,27 +13,32 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**Next concrete step: L9 — `Theorem55.lean`** (the last file before the FLIP). L8 closed: the opacity
-probe on `CaseIII.lean` built the whole spine-to-CaseIII **green with zero errors/warnings** on the
-opaque carrier — `CaseIII.lean` is **migration-free** (the sixth negative-probe outcome, and the first
-*non-assembly* file since L4 `GenericityDevice.lean` to confirm it). Despite carrying the Case-III
-geometric construction, CaseIII's ~113 `ScrewSpace` mentions are all opacity-neutral: `Module.Dual ℝ
-(α → ScrewSpace k)` row functionals / spans (b)/(c)/(e), `LinearMap.single`/`proj`/`id` column maps,
-`Function.update (0 : α → ScrewSpace k) v x` over carrier-typed updates (module-level, not a carrier
-reach-in), and `ScrewSpace k` / `Module.Dual ℝ (ScrewSpace k)` type ascriptions (b). **No category (a)
-`⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or carrier-`.val`/`congr_arg Subtype.val` site** — the
-Case-III geometry consumes carriers abstractly, with the carrier-constructing sites all in the lower
-layers (RigidityMatrix L0a/L0b, PanelLayer L1). Each commit keeps the project green (carrier still
-`abbrev`); the **FLIP lands LAST** (after L9).
+**Next concrete step: the FLIP** — every spine file (L0a–L9) is now opacity-ready, so the only remaining
+work is the single mechanical `abbrev ScrewSpace`→opaque `def` commit (recipe pinned at L7, design doc §5
+*L7 refinement*; the RigidityMatrix part exercised live at L9). L9 closed: the opacity probe on
+`Theorem55.lean` (with the two surviving caps temporarily lowered) built the whole spine-to-Theorem55
+**green with zero errors/warnings** on the opaque carrier — `Theorem55.lean` is **migration-free** (the
+seventh, and last, negative-probe outcome). Its only carrier-construction sites already route through
+`ScrewSpace.mk` (the L1 forced consumer fixups, lines 65/66/189/1802/1803), and the rest are
+opacity-neutral — `Module.Dual ℝ (α → ScrewSpace 2)` row functionals (line 737), `Function.update
+(0 : α → ScrewSpace 2) v x` module-level maps (line 507), `set extF : β → ScrewSpace 2 := fun e => …`
+built from `supportExtensor` / `.choose` carrier accessors (no bare `⟨v,h⟩`), and `: ScrewSpace 2` type
+ascriptions. No category (a) `⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or carrier-`.val`/`congr_arg
+Subtype.val` site. **OQ1 cap-drop measured at L9 (probe-live):** on the opaque carrier
+`case_cut_edge_realization` re-elaborated green at the **default 200000** (committed 400000 — full drop),
+and `case_cut_edge_realization_gp` at **400000** (committed 600000 — drops one step, *not* all the way to
+default). Each commit keeps the project green (carrier still `abbrev`); the **FLIP lands LAST** and banks
+these two drops + the L7-measured CaseII drop.
 
-**L8 landed (2026-06-16): `CaseIII.lean` verified migration-free, project green (docs-only).** Opacity
-probe (local flip + 3 named instances + the FLIP-`equivExteriorPower` fix → scoped `lake build` of the
-CaseIII module rebuilds the full spine-to-CaseIII → revert) built **green with zero errors/warnings** on
-the opaque carrier — sixth negative-probe outcome, and the **first non-assembly file since L4** to confirm
-it. CaseIII's `ScrewSpace` reach-ins are all opacity-neutral (`Module.Dual`/span row functionals,
-`single`/`proj`/`id`/`update` module-level maps, type ascriptions); no category (a)/(d)/(b)-coercion
-carrier-construction or coordinate site despite carrying the Case-III geometric construction. Only L9
-(`Theorem55.lean`) and the FLIP remain.
+**L9 landed (2026-06-16): `Theorem55.lean` verified migration-free + the two Theorem55 caps measured,
+project green (docs-only).** Opacity probe (local flip + 3 named instances + the FLIP-`equivExteriorPower`
+`cast`-form fix → scoped `lake build` of the Theorem55 module rebuilds the full spine-to-Theorem55 →
+revert) built **green with zero errors/warnings** on the opaque carrier — seventh (and final)
+negative-probe outcome. Despite holding the two surviving caps and the L1 `ScrewSpace.mk` consumer
+fixups, `Theorem55.lean` reaches into the carrier nowhere new: the `mk` sites are already migrated and
+everything else is opacity-neutral module-level work. **OQ1 (the dominant residual risk) is now fully
+measured:** the CaseII cap drops to default (L7), `case_cut_edge_realization` drops to default,
+`case_cut_edge_realization_gp` drops 600000→400000 — all banked at the FLIP. Only the FLIP remains.
 
 **L0a–L7 landed (2026-06-16):** carrier API + `RigidityMatrix.lean` migration (L0a/L0b), `PanelLayer.lean`
 migration + `screwBasis` transport (L1), and the migration-free / 2-site probes down the spine —
@@ -119,11 +124,13 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
   ⋀[ℝ]^2 …`) are NOT `ScrewSpace`-typed and stay. **Done 2026-06-16** — whole project builds + lints
   clean.
 - [ ] **FLIP (last) — `abbrev ScrewSpace`→opaque `def` + `ScrewSpace_def` bridge + 3 `inferInstanceAs`
-  instances + the `cast`-form `equivExteriorPower` (recipe pinned at L7, design doc §5 *L7 refinement*).**
-  Lands after the whole spine has adopted the API; a single mechanical commit. **Phase exit + OQ1
-  resolution** (drop the `case_II_realization_all_k` 600000 override + the Theorem55 caps; L7 measured the
-  CaseII cap dropping to default on the opaque carrier). (Was "L0, first" in the original plan — see
-  *Architectural choices*.)
+  instances + the `cast`-form `equivExteriorPower` (recipe pinned at L7, design doc §5 *L7 refinement*;
+  the RigidityMatrix part exercised live during the L9 probe).** Lands after the whole spine has adopted
+  the API (now done — L0a–L9 all opacity-ready); a single mechanical commit. **Phase exit + OQ1
+  resolution.** Cap drops measured probe-live and banked here: `case_II_realization_all_k` 600000→**200000**
+  (default, L7); `case_cut_edge_realization` 400000→**200000** (default, L9); `case_cut_edge_realization_gp`
+  600000→**400000** (partial, L9 — keep at 400000, not droppable to default). (Was "L0, first" in the
+  original plan — see *Architectural choices*.)
 - [x] **L1 — `PanelLayer.lean`.** `screwBasis` `abbrev`→`def` (`.map (equivExteriorPower k).symm`)
   + `rfl` bridge `screwBasis_repr_apply`; `annihRow` + `@[simp]` family ported verbatim
   (opacity-neutral); five construction reach-ins `⟨extensor …⟩`→`mk` / coercion→`.val`; forced
@@ -176,24 +183,27 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
   carrier-`.val`/`congr_arg Subtype.val` site — the Case-III geometry consumes carriers abstractly, with
   the constructing sites all in the lower layers. **Done 2026-06-16** — whole spine-to-CaseIII builds
   clean on the opaque carrier; docs-only commit.
-- [ ] **L9 — `Theorem55.lean`** — holds `case_cut_edge_realization` (400000) +
-  `case_cut_edge_realization_gp` (600000). Last file to adopt the API; once it does, the **FLIP**
-  step above lands. **Phase exit criterion:** the full d=3 spine builds on the opaque carrier *and*
-  the three surviving `maxHeartbeats` overrides (`notes/ScrewSpaceCarrier-design.md` §1) are dropped
-  or lowered toward default — the end-to-end cap drop that OQ1 could not confirm on synthetic
-  benches.
+- [x] **L9 — `Theorem55.lean`** — holds `case_cut_edge_realization` (400000) +
+  `case_cut_edge_realization_gp` (600000). Probe confirmed **migration-free** (seventh, last
+  negative outcome): its `ScrewSpace.mk` construction sites are already migrated (L1 consumer
+  fixups) and the rest are opacity-neutral (`Module.Dual` row functionals, `Function.update`
+  module-level maps, `supportExtensor`/`.choose`-built `extF`, type ascriptions). **Both caps
+  measured probe-live on the opaque carrier:** `case_cut_edge_realization` drops to the **default
+  200000** (committed 400000); `case_cut_edge_realization_gp` drops to **400000** (committed 600000)
+  — partial, not all the way to default. Banked at the FLIP. **Done 2026-06-16** — whole project
+  builds + lints clean on the `abbrev` (docs-only commit).
 
 ## Blockers / open questions
 
-- **OQ1 (the dominant residual risk) — cap drop FIRST MEASURED at L7, positive.** The opacity
-  spike got 5–60× on *synthetic* benches but could not reach a survivor; the three caps sit at the
-  *top* of the spine (CaseII, Theorem55). This phase greens that exact spine, so **22l is the
-  resolution of OQ1** — the cap audit at L7/L9 is the payoff measurement, not a separate task. **L7
-  measurement (probe-live, not banked):** `case_II_realization_all_k` re-elaborated green at the
-  **default `200000`** on the opaque carrier (vs. the committed 3× `600000`) — the cap drop is real and
-  observable at the first capped survivor. It is banked only at the FLIP (the probe reverts; on the
-  `abbrev` the lowered cap fails). Remaining to measure: the two Theorem55 caps at L9. Risk now low
-  for CaseII; Theorem55's `case_cut_edge_realization`/`_gp` (400000/600000) still to confirm.
+- **OQ1 (the dominant residual risk) — FULLY MEASURED at L7/L9, positive (partial on one cap).** The
+  opacity spike got 5–60× on *synthetic* benches but could not reach a survivor; the three caps sit at
+  the *top* of the spine (CaseII, Theorem55). This phase greens that exact spine, so **22l is the
+  resolution of OQ1** — the cap audit at L7/L9 is the payoff measurement, not a separate task. All three
+  caps now measured probe-live on the opaque carrier (banked at the FLIP, since the probe reverts and on
+  the `abbrev` the lowered caps fail): `case_II_realization_all_k` 600000→**200000** (default, L7);
+  `case_cut_edge_realization` 400000→**200000** (default, L9); `case_cut_edge_realization_gp`
+  600000→**400000** (partial — drops one step, still above default; L9). So OQ1 resolves positive: two of
+  three caps drop to default, the third drops 33%. The FLIP commit banks all three.
 - **OQ2 (deferred sub-fork) — remove the §38 workarounds, or leave them?** Default: leave (see
   *Architectural choices*). Revisit only if a layer forces a specific removal, or schedule as a
   follow-up cleanup.
@@ -205,41 +215,41 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
 
 ## Hand-off / next phase
 
-**Smallest next commit: L9 — `Theorem55.lean`** (the last file before the FLIP). L0a–L8 (RigidityMatrix,
-PanelLayer, Pinning, PanelHinge, GenericityDevice, Coupling, CaseI, CaseII, CaseIII) are now
-opacity-ready (L2/L3/L5/L6/L7/L8 were migration-free; L0a/L0b/L1/L4 needed edits, L4 just the 2-site L0b
-idiom). L9 is the top of the spine — `Theorem55.lean`, holding the two surviving caps
-`case_cut_edge_realization` (400000) + `case_cut_edge_realization_gp` (600000). It is a *candidate
-migrating file* (it already took L1's 3× forced `set … := ScrewSpace.mk …` consumer fixups, so it does
-hold carrier-construction sites), so the probe may break. **Open it with the opacity probe** (local flip
-+ 3 instances + the FLIP-`equivExteriorPower` fix → `lake build CombinatorialRigidity.Molecular.Theorem55`
-→ revert); the probe drives the recon and catches the four gap classes (design doc §5 *L2 refinement*).
-If it breaks, pre-migrate on the `abbrev`: swap `⟨v,h⟩ : ScrewSpace k`→`ScrewSpace.mk v h` /
-`(C : ExteriorAlgebra)`→`C.val` / `congr_arg Subtype.val …`→`congr_arg ScrewSpace.val …`, add
-`noncomputable` to any carrier-valued `Submodule`/`Dual`/`≃ₗ` def, route `.val`-arithmetic through
-`val_smul`/`val_add`/`val_zero`, and LI/`ker`-transport through `equivExteriorPower`. Each commit keeps
-the project green on the `abbrev`. The API shape is fixed (L0a/L1/L2; FLIP-`equivExteriorPower` form
-pinned at L7) — L9 is the probe + mechanical pre-migration, then the **FLIP** (the next-next commit) banks
-the perf win and resolves OQ1 by dropping the two Theorem55 caps measured under the FLIP.
+**Smallest next commit: the FLIP** (and phase close). Every spine file is now opacity-ready — L0a–L9 all
+landed (L2/L3/L5/L6/L7/L8/L9 migration-free; L0a/L0b/L1/L4 needed edits, L4 just the 2-site L0b idiom),
+and L9's probe confirmed `Theorem55.lean` (the last file, top of the spine) reaches into the carrier
+nowhere new. So no migration work remains: the only commit left flips the carrier and banks the perf win.
 
-**The probe flip is now fully specified.** L7 pinned the last `…`-left FLIP-API piece: the local probe
-flip is (1) `abbrev ScrewSpace`→`def` + `ScrewSpace_def := rfl` + 3 `inferInstanceAs` instances
-(`AddCommGroup`/`Module`/`FiniteDimensional`); (2) `mk`/`val`/`val_mem` bodies route their Subtype
-coercion through `ScrewSpace_def k ▸ …`; (3) `equivExteriorPower` becomes the `cast (ScrewSpace_def k)`
-`≃ₗ` (LinearEquiv literal with `cast`/`cast …symm` to/from, `rfl` for `map_add'`/`map_smul'`,
-`simp [ScrewSpace_def]` for `left_inv`/`right_inv`) and its `_apply`/`_symm_apply` restate to the `cast`
-RHS — `RigidityMatrix.lean` then builds clean and the spine builds up from there. (Details in design doc
-§5 *L7 refinement*; this is also the FLIP commit's RigidityMatrix recipe.)
+**The FLIP commit, fully specified (recipe in design doc §5 *L7 refinement*, RigidityMatrix part already
+exercised live during the L9 probe):**
+1. In `RigidityMatrix.lean`: `abbrev ScrewSpace`→`def` + `theorem ScrewSpace_def (k) : ScrewSpace k =
+   ↥(⋀…) := rfl` + 3 `noncomputable instance … := inferInstanceAs …`
+   (`AddCommGroup`/`Module`/`FiniteDimensional`).
+2. `mk`/`val`/`val_mem` bodies route their Subtype coercion through `ScrewSpace_def k ▸ …`
+   (`mk` uses `(ScrewSpace_def k).symm ▸ ⟨v, h⟩`; `val`/`val_mem` use `ScrewSpace_def k ▸ C`).
+3. `equivExteriorPower` becomes the `cast (ScrewSpace_def k)` `≃ₗ` (anonymous-constructor literal:
+   `toFun := cast (ScrewSpace_def k)`, `invFun := cast (ScrewSpace_def k).symm`, `rfl` for
+   `map_add'`/`map_smul'`, `simp [ScrewSpace_def]` for `left_inv`/`right_inv`); `_apply`/`_symm_apply`
+   restate `:= rfl` to the `cast` RHS. (`val_mk`/`mk_val`/`val_smul`/`val_add`/`val_zero` stay `:= rfl`.)
+4. Drop/lower the three measured caps: `case_II_realization_all_k` 600000→200000 (CaseII.lean);
+   `case_cut_edge_realization` 400000→200000; `case_cut_edge_realization_gp` 600000→**400000** (NOT to
+   default — L9 measured it still times out at 200000 on the opaque carrier). Drop the
+   `screwSpace_finrank` `change`-expose only if it's no longer needed (re-test).
+The L9 probe already built the whole spine green on exactly this RigidityMatrix recipe, so the FLIP is
+mechanical: apply (1)–(3) once, lower the caps per (4), full `lake build` + `lake lint`, scan for
+warnings, commit. This is the **last commit of Phase 22l** — fire the phase-close checklist (ROADMAP §22l
+compress + table flip to ✓; sync README / home_page / intro.tex / `notes/MolecularConjecture.md`; the
+blueprint is untouched by this phase, statements unchanged).
 
-**L2–L8 calibration of the per-layer method.** The lesson is the *method*, not a site count:
-green-on-`abbrev` is **blind to opacity-readiness**, so each remaining layer must run the opacity
-probe up front (L1 had skipped it and left three `PanelLayer.lean` breaks the probe then caught). The
-four recurring gap classes are catalogued (design doc §5). The probe also has a *negative* outcome —
-a layer that builds clean on the opaque carrier needs **no migration** (L2 `Pinning.lean`, L3
-`PanelHinge.lean`, L5 `Coupling.lean`, L6 `CaseI.lean`, L7 `CaseII.lean`, L8 `CaseIII.lean`): a file that
-only *consumes* `ScrewSpace`-typed values abstractly
-(type ascription, module-level span/`Module.Dual` row functionals, `LinearMap.pi`/`proj`/`comp` column
-maps, predicates embedding the carrier through framework fields) reaches into the carrier nowhere and is
+**L2–L9 calibration of the per-layer method.** The lesson is the *method*, not a site count:
+green-on-`abbrev` is **blind to opacity-readiness**, so each layer ran the opacity probe up front (L1 had
+skipped it and left three `PanelLayer.lean` breaks the probe then caught). The four recurring gap classes
+are catalogued (design doc §5). The probe also has a *negative* outcome — a layer that builds clean on
+the opaque carrier needs **no migration** (L2 `Pinning.lean`, L3 `PanelHinge.lean`, L5 `Coupling.lean`,
+L6 `CaseI.lean`, L7 `CaseII.lean`, L8 `CaseIII.lean`, L9 `Theorem55.lean`): a file that only *consumes*
+`ScrewSpace`-typed values abstractly (type ascription, module-level span/`Module.Dual` row functionals,
+`LinearMap.pi`/`proj`/`comp` column maps, predicates embedding the carrier through framework fields, and
+`ScrewSpace.mk`-already-migrated construction sites) reaches into the carrier nowhere and is
 opacity-neutral. The L0b/L4 idiom that recurs in files that *do* migrate: route
 `(C : ExteriorAlgebra ℝ _)` coercions and `congr_arg Subtype.val` onto `C.val` / `congr_arg
 ScrewSpace.val` (the `.val` projection); and after moving a `(⟨v,h⟩ : ScrewSpace).val` onto `mk`/`val`,
@@ -378,6 +388,21 @@ general-`d` "part 2" migration, which lands with/after Phase 23. The math fronti
   Subtype.val` site** — the carrier-constructing sites all live in the lower layers (RigidityMatrix
   L0a/L0b, PanelLayer L1). Probe surfaced zero new gaps in the migrated lower layers. Docs-only commit; no
   Lean/blueprint touched (probe reverted).
+
+- **L9 — `Theorem55.lean` (no migration; both Theorem55 caps measured; OQ1 fully resolved) (2026-06-16,
+  opus).** The opacity probe built the whole spine-to-Theorem55 green on the *opaque* carrier (zero
+  errors/warnings) — the **seventh and final** negative-probe outcome, despite `Theorem55.lean` holding
+  the two surviving caps and the L1 forced `ScrewSpace.mk` consumer fixups. Those `mk` construction sites
+  (lines 65/66/189/1802/1803) are already migrated; every other carrier touch is opacity-neutral —
+  `Module.Dual ℝ (α → ScrewSpace 2)` row functionals, `Function.update (0 : α → ScrewSpace 2) v x`
+  module-level maps, `set extF : β → ScrewSpace 2 := fun e => …` built from `supportExtensor`/`.choose`
+  carrier accessors (no bare `⟨v,h⟩`), and `: ScrewSpace 2` type ascriptions; no category (a)/(d)/(b)-
+  coercion or `congr_arg Subtype.val` site. **OQ1 cap-drop measured probe-live (banked at the FLIP):**
+  with the two caps temporarily lowered and the flip live, `case_cut_edge_realization` re-elaborated
+  green at the **default 200000** (committed 400000 — full drop), and `case_cut_edge_realization_gp` at
+  **400000** (committed 600000 — drops one step but still times out at 200000, so it stays at 400000 in
+  the FLIP). With CaseII's L7 drop-to-default, OQ1 is now fully measured: 2/3 caps to default, the third
+  −33%. Docs-only commit; no Lean/blueprint touched (probe reverted).
 
 - **L6 — `CaseI.lean` (no migration) (2026-06-16, opus).** The opacity probe built the whole
   spine-to-CaseI green on the *opaque* carrier (zero errors/warnings) — the **fourth** negative-probe
