@@ -63,6 +63,7 @@ failing pattern and the working fix.
 - *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
 - *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
 - `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper)
+- `(deterministic) timeout at whnf` in a *pre-existing, untouched* exterior-algebra proof right after adding an `InnerProductSpace`/`EuclideanSpace` import → § 59 (the metric `PiLp` instances poison `⋀`-elaboration; keep the bridge in a mirror / a downstream file)
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
 - `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
 - `exact helper h` fails / times out because `h` at the call site and `h` in the helper's conclusion are two separate `by tac` elaborations (proof-term mismatch) → § 42 (use `let`-bound params in the statement)
@@ -2154,3 +2155,28 @@ ordered-field / `simp` level where the two finrank views collapse under defeq, t
 atom. (Alternatively, pre-`rw` the goal's term into the `hsum` form so the atoms coincide before
 `omega`.) Phase 23b CHAIN-3 (`Meet.lean`, `finrank_sup_range_wedgeFixedLeft`); see FRICTION [idiom]
 *Generalizing an in-place numeral-pinned `def`…*.
+
+## 59. A new `Mathlib.Analysis.InnerProductSpace` import regresses a *pre-existing* exterior-algebra proof to `(deterministic) timeout at whnf` — the metric `PiLp`/`EuclideanSpace` instances poison `⋀`-term elaboration
+
+**Symptom.** Adding `public import Mathlib.Analysis.InnerProductSpace.PiL2` (or any
+`EuclideanSpace`/`InnerProductSpace`-bearing import) to a metric-free exterior-algebra file
+(`Meet.lean`) — to use an orthonormal/inner-product construction in a *new* lemma — makes a
+**previously-green, untouched** declaration elsewhere in the file fail with `(deterministic)
+timeout at whnf, maximum number of heartbeats (200000)`. The new lemma itself may be fine; the
+regression is at an unrelated `complementIso`/`⋀`-term proof.
+
+**Cause.** `EuclideanSpace ℝ ι = PiLp 2 (fun _ => ℝ)` is *reducibly defeq* to the bare carrier
+`ι → ℝ` the exterior algebra is built on, so the import's `PiLp 2` inner-product / norm instances on
+`Fin (k+2) → ℝ` become **defeq-visible to `whnf`** of the `⋀[ℝ]^j (Fin (k+2) → ℝ)` terms. The
+elaborator now considers them while normalizing exterior-power expressions, exploding the
+heartbeat budget. This is the diffuse-typeclass cost `notes/ScrewSpaceCarrier-design.md` warns
+about — here triggered by an *import*, not a carrier `abbrev`.
+
+**Fix.** Do **not** import the metric layer into the metric-free exterior-algebra file. Two clean
+homes for the bridge: (a) put any pure `EuclideanSpace`↔`Module.Basis.toDual` glue in a `Mathlib/`
+mirror (mathlib-only deps, no exterior-algebra import) — e.g.
+`Mathlib/Analysis/InnerProductSpace/PiL2.lean`'s `EuclideanSpace.inner_eq_basisFun_toDual` /
+`toDualOrthogonal_ofLinearIsometryEquiv`; (b) house the metric-*using* leaves (the Hodge-star
+frame-alignment / range-membership steps) in a **new downstream file** that imports both the
+exterior-algebra file and the metric layer, so the metric instances never touch the upstream `⋀`
+elaboration. Phase 23b CHAIN-3 OD-8 (h-2); see FRICTION [mirrored] *`EuclideanSpace.inner_eq_basisFun_toDual`…*.

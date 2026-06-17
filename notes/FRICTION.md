@@ -1918,6 +1918,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dual/Basis.lean` (alongside the sibling
   `Pi.basisFun_dualBasis`).
 
+### [mirrored] `EuclideanSpace.inner_eq_basisFun_toDual` + `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` — the L²-inner-product-is-the-`toDual`-pairing bridge and its isometry-transport corollary
+- **Where it bit:** Phase 23b CHAIN-3 OD-8 sub-leaf (h-2) infrastructure (the frame-alignment leaf
+  feeding `complementIso_map_orthogonal_eq`, Meet.lean). The (h-1) O(n)-equivariance hypothesis is
+  *`toDual`-orthogonality* — `O` preserves `(Pi.basisFun ℝ ι).toDual` (the algebraic dot product on
+  the bare carrier `ι → ℝ`); but the frame-alignment `O` is built from an orthonormal-basis change
+  of frame, which mathlib supplies as an L²-`LinearIsometryEquiv` on `EuclideanSpace ℝ ι`. The two
+  "orthogonal" notions must be reconciled.
+- **Friction:** mathlib has `EuclideanSpace.inner_eq_star_dotProduct` (inner = dot product) and
+  `Module.Basis.toDual_apply_left` (single basis arg) but no lemma equating the L² inner product
+  with the `toDual` pairing through the carrier iso `EuclideanSpace.equiv`. The transport corollary
+  then reads an L²-isometry's `inner_map_map` off as `toDual`-preservation via the carrier
+  round-trip (`ε.symm_apply_apply`).
+- **Architectural gotcha (cost a build cycle — Lifted to: TACTICS-QUIRKS):** `public import
+  Mathlib.Analysis.InnerProductSpace.PiL2` into the *metric-free* `Meet.lean` poisons its
+  exterior-algebra elaboration — a pre-existing `complementIso_smul_eq_extensor_join` regressed to a
+  `(deterministic) timeout at whnf` (200k heartbeats), because the `PiLp 2` / `EuclideanSpace`
+  instances on `Fin (k+2) → ℝ` become defeq-visible to `whnf` of the `⋀`-terms. The fix is to keep
+  the bridge in a `Mathlib/` mirror (pure mathlib deps, no `Meet.lean` import) and house the
+  metric-using Hodge leaves ((h-2)/(h-3)) in a *new downstream* file, never in `Meet.lean`.
+- **Status:** mirrored, axiom-clean (only `propext`/`Classical.choice`/`Quot.sound`). Stated over
+  `ℝ` (matches the consumer; `toDual` is real-bilinear). Self-contained — does not import the sibling
+  `Pi.basisFun_toDual_apply`, so it stays copy-paste-promotable.
+- **Mirror file:** `Mathlib/Analysis/InnerProductSpace/PiL2.lean` (new — first Analysis mirror).
+
 ### [mirrored] `linearIndependent_sumElim_unit_iff` — appending one vector to an independent family stays LI iff the vector is fresh
 - **Where it bit:** Phase 22e N4 (`lem:case-III-claim612-block-iff-perp`, KT eq. (6.42)
   row-space criterion). The `D`-functional family (`D−1` `va`-block rows plus the candidate

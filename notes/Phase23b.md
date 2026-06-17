@@ -12,11 +12,14 @@
 infrastructure stay green at d=3, do NOT generalize: `dim Ω = C(d−1,2) = 1` only at `d=3`). The one
 genuinely-new leaf is the **panel-meet range-membership** `complementIso_extensor_mem_range_map_subtype`
 (route OPEN, OD-8); its **standard-frame** base case `complementIso_exteriorPower_basis_eq_smul_compl`,
-standard-frame **range-membership** `complementIso_exteriorPower_basis_mem_range_map_subtype`, and the
-**O(n)-equivariance** `complementIso_map_orthogonal_eq` (h-1) have landed (2026-06-17), leaving the
-**frame alignment** (h-2) + **general-decomposable assembly** (h-3) of the lift; the final assembly
-then reuses the THREE landed `_grade` bricks (zero new count). The integer Phase 23 stays
-**in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
+standard-frame **range-membership** `complementIso_exteriorPower_basis_mem_range_map_subtype`, the
+**O(n)-equivariance** `complementIso_map_orthogonal_eq` (h-1), and the **frame-alignment transport
+bridge** `EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}` (h-2,
+new Analysis mirror) have landed (2026-06-17), leaving the **(h-2) Gram–Schmidt span-control
+existence** + **general-decomposable assembly** (h-3) of the lift — both to live in a NEW DOWNSTREAM
+file (`PiL2` poisons metric-free `Meet.lean`, QUIRKS § 59); the final assembly then reuses the THREE
+landed `_grade` bricks (zero new count). The integer Phase 23 stays **in progress** — ENTRY /
+ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -32,23 +35,38 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) (h-1) `complementIso_map_orthogonal_eq` has LANDED (2026-06-17, this
-commit).** The O(n)-equivariance of `complementIso` (the Hodge `⋆`) is now a complete leaf in
-`Meet.lean`: for orthogonal `O` (one preserving the standard dot product `b.toDual`,
-`hO : ∀ x y, b.toDual (O x)(O y) = b.toDual x y`),
-`complementIso hj (map j O X) = det O • map (k+2−j) O (complementIso hj X)`. The two transformation
-halves had already landed (prior commits — the *join/volume* half `wedgeProd_map`/`wedgePairing_map`
-scaling by `det O`, and the *dot-product* half `exteriorPower_basis_toDual_map_orthogonal_eq`, the
-Gram-O-invariance); this commit is the **assembly** by `(b.exteriorPower (k+2−j)).toDual`-injectivity
-(`Module.Basis.toDual_injective`). `O` orthogonal ⟹ injective (`hO` + `toDual_injective`) ⟹ surjective
-(`LinearMap.surjective_of_injective`, finite-dim) ⟹ `map (k+2−j) O` surjective
-(`exteriorPower.map_surjective`), so it suffices to pair against `B = map (k+2−j) O B'`: LHS =
-`complementIso_toDual`+`wedgePairing_map` (`= det O • wedgePairing X B'`), RHS = Gram-O-invariance +
-`complementIso_toDual` (likewise). Grade-generic `{j}`; no `d=3` pin, no new mathlib fact (only the
-two landed halves + three mathlib facts).
-**Next buildable sub-step = (h-2) `exists_orthogonal_map_span_pair_eq_coordPlane`** — the
-Gram–Schmidt / orthonormal-extension construction of an orthogonal `O` carrying `span{n₀,n₁}` to the
-coordinate `2`-plane `span{e₀,e₁}` (so `W = {n₀,n₁}^⊥` maps to a coordinate subspace). Then (h-3) the
+**CHAIN-3's OD-8 route-(α) (h-2) metric→`toDual` transport bridge has LANDED (2026-06-17, this
+commit) as a `Mathlib/` mirror.** `EuclideanSpace.inner_eq_basisFun_toDual` (the L² inner product
+on `EuclideanSpace ℝ ι` IS the standard-basis `toDual` dot-product pairing through the carrier iso)
++ its corollary `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` (an L²-`LinearIsometryEquiv`
+transports along `EuclideanSpace.equiv` to a `toDual`-orthogonal linear *equiv* of `ι → ℝ`) now sit
+in `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/PiL2.lean` (new — first Analysis
+mirror). This is the metric-side reconciliation the frame-alignment leaf needs: (h-2)'s orthogonal
+`O` is built from an *orthonormal-basis change of frame* (mathlib's `OrthonormalBasis.repr`, an
+L²-isometry), and (h-1) `complementIso_map_orthogonal_eq`'s `hO`-hypothesis wants
+*`toDual`-orthogonality* — this bridge is exactly that conversion. Axiom-clean, gates green.
+
+**Architectural finding (cost a build cycle; → TACTICS-QUIRKS § 59 + FRICTION).** Importing
+`Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean` **regresses a
+pre-existing untouched proof** (`complementIso_smul_eq_extensor_join`) to a `whnf` timeout — the
+`PiLp 2`/`EuclideanSpace` instances on `Fin (k+2) → ℝ` become defeq-visible to `⋀`-term
+elaboration. **Decision: the metric-using Hodge leaves ((h-2) Gram–Schmidt construction, (h-3))
+must live in a NEW DOWNSTREAM file** (imports `Meet.lean` + the metric layer), never in `Meet.lean`;
+pure `EuclideanSpace`↔`toDual` glue stays in the mirror. The (h-1) O(n)-equivariance
+`complementIso_map_orthogonal_eq` stays green in `Meet.lean` (landed prior commit).
+
+**(h-1) recap (landed prior commit).** O(n)-equivariance of `complementIso` (the Hodge `⋆`): for
+orthogonal `O` (`hO : ∀ x y, b.toDual (O x)(O y) = b.toDual x y`),
+`complementIso hj (map j O X) = det O • map (k+2−j) O (complementIso hj X)`, assembled by
+`(b.exteriorPower (k+2−j)).toDual`-injectivity from the two transformation halves.
+
+**Next buildable sub-step = (h-2) the Gram–Schmidt span-control existence** — an
+`OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace ℝ (Fin (k+2)))` whose first two vectors span a
+prescribed independent pair `{n₀,n₁}` (so `b.repr` is the frame-alignment isometry, and
+`EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` converts it to the `toDual`-orthogonal `O`).
+Build via `gramSchmidtOrthonormalBasis` on a family whose first two entries are `n₀,n₁`
+(`span_gramSchmidt_Iic` + `gramSchmidtOrthonormalBasis_apply` on the nonzero-`gramSchmidtNormed`
+initial segment); **must live in the new downstream file** per the finding above. Then (h-3) the
 target leaf `complementIso_extensor_mem_range_map_subtype` assembles (h-1)+(h-2)+the LANDED
 standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype`; then the assembly
 `extensor_join_proportional_complementIso_meet` (h-4) via the `⋀^k W`-is-a-line route (reusing the
@@ -168,9 +186,18 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
               (`hO`+`toDual_injective`) ⟹ surjective ⟹ `map O` surjective, so pair against
               `B = map O B'`; both sides collapse to `det O • wedgePairing X B'` via `complementIso_toDual`.
               Grade-generic `{j}`; no `d=3` pin, no new mathlib fact.
-            - [ ] (h-2) `exists_orthogonal_map_span_pair_eq_coordPlane` — Gram–Schmidt / orthonormal-
-              extension alignment of `span{n₀,n₁}` to a coordinate `2`-plane (mathlib `Basis`/
-              orthonormal API). **The next buildable sub-step.**
+            - [◐] (h-2) frame alignment — split into the metric→`toDual` transport bridge (LANDED
+              2026-06-17) + the Gram–Schmidt span-control existence (next).
+              - [x] **transport bridge** `EuclideanSpace.inner_eq_basisFun_toDual` +
+                `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` (new mirror
+                `Mathlib/Analysis/InnerProductSpace/PiL2.lean`): L²-inner = `toDual` dot-product
+                pairing, so an L²-`LinearIsometryEquiv` transports to a `toDual`-orthogonal equiv of
+                `ι → ℝ` — the `hO`-feeder for (h-1). Axiom-clean. Landed 2026-06-17.
+              - [ ] **span-control existence** — an `OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace …)`
+                whose first two vectors span `{n₀,n₁}` (via `gramSchmidtOrthonormalBasis` +
+                `span_gramSchmidt_Iic`). **The next buildable sub-step.** Must live in a NEW
+                DOWNSTREAM file (importing `Meet.lean` + the metric layer) — `PiL2` cannot be imported
+                into metric-free `Meet.lean` (TACTICS-QUIRKS § 59).
             - [ ] (h-3) `complementIso_extensor_mem_range_map_subtype` — assemble (h-1)+(h-2)+the LANDED
               standard-frame membership; the `extensor n = 0` case is trivial, the work is the
               `n`-independent case (`dim W = k` by rank–nullity on the 2 functionals).
@@ -267,12 +294,21 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = (h-2) `exists_orthogonal_map_span_pair_eq_coordPlane`** — Gram–Schmidt /
-orthonormal-extension construction of an orthogonal `O` carrying `span{n₀,n₁}` to the coordinate
-`2`-plane `span{e₀,e₁}` (mathlib `Basis` / orthonormal-extension API), so that `W = {n₀,n₁}^⊥` maps to
-a coordinate subspace `span{e₂,…,e_{k+1}}` and `extensor ![n₀,n₁]` maps (up to scalar) to the
-coordinate blade `e_{01}`. Combinatorial-geometry leaf, no `complementIso`. After (h-2), the target
-leaf `complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
+**Next buildable sub-step = (h-2) the Gram–Schmidt span-control existence** — an
+`OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace ℝ (Fin (k+2)))` whose first two vectors span the
+prescribed independent pair `{n₀,n₁}`, so its `b.repr` is the frame-alignment L²-isometry and the
+**LANDED** transport bridge `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` converts it to
+the `toDual`-orthogonal `O` that (h-1) consumes. Construction: `gramSchmidtOrthonormalBasis hcard g`
+on a family `g : Fin (k+2) → E` with `g 0 = n₀, g 1 = n₁` (rest std basis); `span{b 0, b 1} =
+span{n₀,n₁}` via `gramSchmidtOrthonormalBasis_apply` (the initial-segment `gramSchmidtNormed` nonzero
+by `gramSchmidt_ne_zero_coe` on the `Iic 1`-independent segment) + `span_gramSchmidtNormed` +
+`span_gramSchmidt_Iic`. **Must live in a NEW DOWNSTREAM FILE** (e.g. `Molecular/MeetHodge.lean`,
+importing `Meet.lean` + `Mathlib.Analysis.InnerProductSpace.PiL2`) — `PiL2` cannot be imported into
+metric-free `Meet.lean` (TACTICS-QUIRKS § 59; that regression already cost a build cycle this
+session). Watch the `Fin (k+2)` numeral-`val` / `Set.Iic 1 = {0,1}` friction (`Fin.val_one'` +
+`Nat.mod_eq_of_lt`; the existence-lemma scratch hit it repeatedly).
+
+After (h-2), the target leaf `complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
 `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`.
 **Route decision (§(h)):** `complementIso` IS the Hodge star `⋆` for the standard volume form
 (`screwAlgebraTopEquiv = topEquiv`) + dot product (`Pi.basisFun.toDual`) — so the target is the
@@ -280,23 +316,23 @@ genuine Hodge fact "`⋆` of a decomposable = decomposable of the orthogonal com
 **O(n)-natural but NOT GL-natural**. The route lifts via an **orthogonal** change of frame:
 - **(h-0)** volume-form-by-determinant — **LANDED** (`screwAlgebraTopEquiv_map_eq_det_smul` + mirror
   `exteriorPower.topEquiv_map_eq_det_smul`).
-- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf — LANDED.** For orthogonal
-  `O`, `complementIso hj (map j O X) = det O • map (k+2−j) O (complementIso hj X)`; assembled from the
-  two transformation halves (volume/join `wedgePairing_map` + dot-product Gram-O-invariance
-  `exteriorPower_basis_toDual_map_orthogonal_eq`) by `(b.exteriorPower (k+2−j)).toDual`-injectivity (`O`
-  orthogonal ⟹ injective ⟹ surjective ⟹ `map O` surjective, pair against `B = map O B'`).
-- **(h-2)** `exists_orthogonal_map_span_pair_eq_coordPlane` — **the next open leaf** (see lead above).
+- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf — LANDED** (`Meet.lean`).
+- **(h-2)** frame alignment — **transport bridge LANDED** (mirror
+  `EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}`); the
+  **span-control existence is the next open leaf** (see lead above; new downstream file).
 - **(h-3)** the target leaf — assemble (h-1)+(h-2)+the LANDED
   `complementIso_exteriorPower_basis_mem_range_map_subtype`. **In hand for the case split:** when
   `extensor n = 0` (dependent `n`), `complementIso 0 = 0 ∈ range` trivially; the work is the
-  `n`-independent case, where `dim W = k` (rank–nullity on the 2 functionals).
+  `n`-independent case, where `dim W = k` (rank–nullity on the 2 functionals). **Lives in the new
+  downstream file** (consumes both `complementIso` from `Meet.lean` and the metric layer).
 
 **Why NOT route β:** the in-hand annihilation (`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`)
 puts `complementIso n` in an annihilator `Ann(Φ)`; upgrading that to range-membership needs
 `dim Ann(Φ) = 1`, i.e. the **withdrawn `dim Φ̃` count** (`= C(d−1,2) > 1` for `d≥4`). So β is
-**rejected, not a fallback**. **Genuine fallback if (h-1) is a long pole:** carry (h-3) as an
-explicit green-modulo `h…` premise on CHAIN-4's discriminator (standing idiom), land (h-1) in a
-dedicated sitting — never a `sorry`. (`Meet.lean`; still no ENTRY-contract dependency.)
+**rejected, not a fallback**. **Genuine fallback if the (h-2) span-control existence is a long
+pole:** carry (h-3) as an explicit green-modulo `h…` premise on CHAIN-4's discriminator (standing
+idiom), land (h-2)/(h-3) in a dedicated sitting — never a `sorry`. (New downstream file; still no
+ENTRY-contract dependency.)
 The CHAIN-3-finish recon (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17, source-verified
 against KT §6.4.1/§6.4.2 + the landed bodies) **overturned the prior pin** and corrected the
 geometry:
@@ -410,6 +446,14 @@ general mathlib, grade enters nothing):
   `O` orthogonal ⟹ injective ⟹ surjective ⟹ `map O` surjective; grade-generic `{j}`). The
   general-decomposable case (h-3) is NOT a GL-equivariance corollary (`complementIso` is Hodge, O(n)-
   not GL-natural) — the remaining route is (h-2) frame alignment + (h-3) the assembly.
+- (h-2) **metric→`toDual` transport bridge** (new mirror
+  `Mathlib/Analysis/InnerProductSpace/PiL2.lean`): `EuclideanSpace.inner_eq_basisFun_toDual` (L²
+  inner = standard-basis `toDual` dot-product pairing through `EuclideanSpace.equiv`) +
+  `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` (an L²-`LinearIsometryEquiv` transports to
+  a `toDual`-orthogonal equiv of `ι → ℝ` — the `hO`-feeder for (h-1)). Axiom-clean, self-contained
+  (no exterior-algebra dep, copy-paste-promotable). The metric-vs-algebraic "orthogonal"
+  reconciliation; the remaining (h-2) content is the Gram–Schmidt span-control existence, **in a new
+  downstream file** (see Hand-off + the import finding below).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -430,3 +474,7 @@ general mathlib, grade enters nothing):
   whose LHS pattern mentions `e` silently fails (`simp only` reports args "unused") —
   the goal-side / library-lemma variant of the `set` fold; drop the `set`* →
   TACTICS-QUIRKS § 43 (goal-side / library-lemma variant).
+- *A new `InnerProductSpace`/`EuclideanSpace` import poisons a pre-existing exterior-algebra proof
+  in the same file to a `whnf` timeout (the `PiLp 2` instances become defeq-visible to `⋀`-term
+  elaboration) — keep the bridge in a `Mathlib/` mirror, house metric-using leaves in a downstream
+  file* → TACTICS-QUIRKS § 59 / FRICTION [mirrored] *`EuclideanSpace.inner_eq_basisFun_toDual`…*.
