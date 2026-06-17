@@ -482,12 +482,19 @@ decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
    (~589 LoC together). The bricks were carved into a new leaf
    `Molecular/RigidityMatrix/Bricks.lean` (634 LoC); core dropped 3527 →
    2937 LoC. The `RankArithmetic` cast plumbing stayed in core (tiny;
-   different namespace). Confirmed partial win: the core
-   `namespace BodyHingeFramework` body (~2090 LoC — screw space, hinge
-   constraint, trivial motions, rank Lemmas 5.1–5.3) is un-sectioned and
-   stays monolithic, so a deeper cut needs that core sub-sectioned first
-   (not pursued). The carve is justified on factors 2/4 (navigability +
-   partial size), **not** factor 1 — see the (C)#2 correction below.
+   different namespace). The carve is justified on factors 2/4
+   (navigability + partial size), **not** factor 1 — see the (C)#2
+   correction below. **The 2937-LoC core was then sectioned (slice 6):**
+   10 `/-! ##` headers across the `Molecular` head (ScrewSpace carrier;
+   Claim-6.12 panel geometry; the `BodyHingeFramework` structure) and the
+   body (hinge constraint; rigidity rows; infinitesimal motions;
+   candidate-completion `columnOp`; Claim 6.12 disjunction; multi-edge
+   forest independence; trivial motions + rank Lemmas 5.1–5.3). That
+   exposed a clean **core → Claim-6.12** file-split seam (zero back-edges,
+   matching the blueprint `rigidity-matrix.tex` / `case-iii.tex` chapter
+   boundary) — realizable but *non-contiguous* (two ranges + a namespace
+   re-open), so it's more surgery than a tail-cut. The core split itself
+   is the open slice-7 decision (`notes/Phase22l-perf.md`).
 
 7. **`Molecular/Induction/ForestSurgery.lean` (3783 LoC) — ✓ 2-way cut
    into `ForestSurgery/` (post-Phase-22l perf pass; `notes/Phase22l-perf.md`).**

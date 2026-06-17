@@ -1,6 +1,6 @@
 # Perf pass (post-Phase-22l) — molecular file splits (work log)
 
-**Status:** complete (all three split candidates done).
+**Status:** in progress (reopened — sectioning + splitting the `RigidityMatrix` core, slices 6+).
 
 The post-Phase-22 molecular split round: tackling the over-cap molecular
 giants logged in `notes/PERFORMANCE.md` *Post-Phase-22 split candidates* /
@@ -13,11 +13,15 @@ files (`AlgebraicInduction/Case*`), not the stable ones.
 
 ## Current state
 
-**Round complete** — all three `PERFORMANCE.md` split candidates done; every commit
-build + lint + checkdecls green, warning-clean. No over-cap molecular *split*
-candidates remain (what's left in `PERFORMANCE.md` is non-split: the
-profile-then-localize `maxHeartbeats` budgets, and the low-priority style-only files
-`Deficiency`/`PanelLayer`/`GenericityDevice`/`Pinning` — out of this round's scope).
+**Next step:** slice 7 (decision pending) — the `RigidityMatrix` core *file split*
+along the now-explicit seam (core rank-theory vs. Claim-6.12 / candidate-row machinery,
+matching the blueprint `rigidity-matrix.tex` / `case-iii.tex` chapter boundary), OR stop at
+the sectioning. The seam is clean dependency-wise (zero core→downstream back-edges) but
+**non-contiguous** — two separated ranges + a namespace re-open (see *Decisions → Slice 6*).
+Slices 1–6 landed; build + lint + checkdecls green, warning-clean. (The three original
+`PERFORMANCE.md` split candidates were all done in slices 1–5; what else remains there is
+*non-split*: the profile-then-localize `maxHeartbeats` budgets and the low-priority
+style-only files `Deficiency`/`PanelLayer`/`GenericityDevice`/`Pinning`.)
 
 - **Slice 1 (`fd0ccd2`):** `RigidityMatrix.lean` 3527 → 2937 LoC; the three
   rank-addition bricks → new leaf `Molecular/RigidityMatrix/Bricks.lean` (634).
@@ -29,10 +33,12 @@ profile-then-localize `maxHeartbeats` budgets, and the low-priority style-only f
   subdirectory of 4 files — `Candidate` (1564) / `Arms` (859) / `Relabel` (1016) /
   `Realization` (692). Chain `CaseII ← .Candidate ← .Arms ← .Relabel ← .Realization
   ← Theorem55`.
-- **Slice 5 (`Induction/ForestSurgery/` subdirectory):** `ForestSurgery.lean`
-  (3783 LoC) → 2-way cut into `ForestSurgery/EdgeSplitting.lean` (1736, KT 4.2) +
-  `ForestSurgery/Reduction.lean` (2077, KT 4.1/4.9). Both stay over cap (no single
-  dominant sub-block) — accepted for a stable, low-leverage file.
+- **Slice 5 (`2c30c02`):** `ForestSurgery.lean` (3783 LoC) → 2-way cut into
+  `ForestSurgery/EdgeSplitting.lean` (1736, KT 4.2) + `ForestSurgery/Reduction.lean`
+  (2077, KT 4.1/4.9). Both stay over cap — accepted (stable, low-leverage).
+- **Slice 6 (RigidityMatrix core sectioning):** added 10 `/-! ##` section headers to the
+  2937-LoC core (comment-only), exposing the clean-but-non-contiguous core-vs-Claim-6.12
+  file-split seam.
 
 ## Slice plan / candidate ranking
 
@@ -52,10 +58,14 @@ profile-then-localize `maxHeartbeats` budgets, and the low-priority style-only f
   subdirectory.** 2-way cut at L1742 (the only `private` helper `vfiber_inc_iff` is
   downstream of the seam → clean): `EdgeSplitting.lean` (KT 4.2) +
   `Reduction.lean` (KT 4.1/4.9). Both over cap — accepted (stable, low-leverage).
-
-(`RigidityMatrix.lean` core itself stays ~2937 LoC after slice 1 — a partial
-win; the un-sectioned `BodyHingeFramework` core would need sub-sectioning for a
-deeper split. Not pursued; navigability/size of the carved bricks is the win.)
+- [x] **Slice 6 — `RigidityMatrix.lean` core sectioning.** Slice 1 only carved the
+  brick tail; the ~2937-LoC core stayed un-sectioned. Added 10 `/-! ##` headers (the
+  read-pass, comment-only) across the `Molecular` head + the `BodyHingeFramework` body,
+  exposing the core-vs-Claim-6.12 seam. See *Decisions → Slice 6*.
+- [ ] **Slice 7 (decision pending) — `RigidityMatrix.lean` core file split.** Cut the
+  core rank-theory from the Claim-6.12 / candidate-row machinery (≈1500 + ≈1400 LoC,
+  matching the blueprint chapter split). Clean dependency-wise but **non-contiguous**
+  (two ranges + a namespace re-open) — more surgery than a tail-cut.
 
 ## Decisions made during this phase
 
@@ -144,13 +154,30 @@ deeper split. Not pursued; navigability/size of the carved bricks is the win.)
   *stable, lowest-leverage* file (factor-3 ≈ 0). Subdirectory chosen over flat
   siblings for parity with `CaseIII/` (user call).
 
+### Slice 6 — RigidityMatrix core sectioning + the split-seam analysis
+
+- **10 `/-! ##` sections** (subagent read-pass) across the two un-sectioned regions —
+  the `Molecular` head (ScrewSpace carrier; Claim-6.12 panel geometry; `ExtensorInPanel`
+  + the `BodyHingeFramework` structure) and the body (hinge constraint; rigidity rows;
+  infinitesimal motions; candidate-completion `columnOp`/pinned-block; Claim 6.12
+  disjunction; multi-edge forest independence; trivial motions + rank Lemmas 5.1–5.3).
+  Comment-only; warning-clean after a 3-line longLine reflow.
+- **The split seam (for slice 7): clean but non-contiguous.** Dependency flow is strictly
+  core → Claim-6.12 (zero back-edges — no core decl, incl. the rank lemmas, references the
+  candidate-row / geometry / `case_III_claim612` layer). So a `RigidityMatrix` (core) +
+  `RigidityMatrixClaim612` (downstream) cut is realizable and matches the blueprint
+  `rigidity-matrix.tex` / `case-iii.tex` chapter boundary. **Caveat:** the downstream half
+  is *two separated ranges* — the geometry (top-level `Molecular`) + the candidate-row /
+  Claim-6.12 block (extracted from the *middle* of `BodyHingeFramework`) — so the new file
+  reopens two namespace blocks. More surgery than a tail-cut; unlike ForestSurgery it's a
+  genuine seam, not a "sectioning-only" case.
+
 ## Hand-off / next step
 
-**Round complete.** The three over-cap molecular split candidates are done
-(`RigidityMatrix` bricks; `CaseIII/` 4-file subdir; `ForestSurgery/` 2-file subdir).
-What remains in `PERFORMANCE.md` is *non-split* work, for a future round if wanted:
-the profile-then-localize `maxHeartbeats` budgets in the CaseI/Theorem55 producers,
-and the low-priority style-only files (`Deficiency`/`PanelLayer`/`GenericityDevice`/
-`Pinning`, each modestly over cap). The `RigidityMatrix.lean` core (2937 LoC) could
-also take a deeper split once its un-sectioned `BodyHingeFramework` body is
-sub-sectioned (see *Decisions → Slice 1*).
+**Slice 7 decision pending** (the only open item): split the `RigidityMatrix` core along
+the slice-6 seam (≈1500 core + ≈1400 Claim-6.12, matching the blueprint chapters), or stop
+at the sectioning. Clean dependency-wise but non-contiguous (two ranges + namespace re-open);
+`RigidityMatrix` is a stable file (factor-3 low), so it's a navigability/size call, not a
+build-perf one. Beyond that, what remains in `PERFORMANCE.md` is *non-split* work for a
+future round (the profile-then-localize `maxHeartbeats` budgets; the low-priority style-only
+files `Deficiency`/`PanelLayer`/`GenericityDevice`/`Pinning`).
