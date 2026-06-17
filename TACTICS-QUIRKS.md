@@ -76,6 +76,7 @@ failing pattern and the working fix.
 - *"unknown identifier `Function.update_same`"* → § 50 (renamed to `Function.update_self` in current mathlib)
 - `Submodule.subtype_injective` elaborates as the identity in some call sites → § 50 (use `Subtype.coe_injective` directly)
 - *"unexpected token 'set_option'; expected 'lemma'"* when placing `set_option … in` between a docstring and `theorem` → § 51 (put `set_option … in` *before* the docstring)
+- *"unexpected identifier; expected 'lemma'"* pointing *inside* a `/-- … -/` docstring's prose (not at the decl) → § 57 (a `-/` inside a word, e.g. `grade-/ambient`, closes the doc comment early; reword to avoid the `-/` adjacency)
 - `set_option linter.style.openClassical false in open Classical` breaks section-wide `Classical` availability → § 52 (use two standalone commands, not `in`-wrapped)
 - `set F := expr`; theorem applied to `F` returns `F.graph` (or another field) unfolded — downstream `rw [hField]` fails → § 53 (introduce `hFgraph : F.graph = G` explicitly, `rw [hFgraph] at …` first)
 - *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
@@ -2106,3 +2107,23 @@ per-file `open scoped _root_.Graph` or `local notation` re-assertion needed down
 _root_.Graph` (forcing the root) fixes the downstream parse. Phase 22j-perf
 (`CaseI.lean`, `Graph.rigidContract_vertexSet_inter_eq_singleton` → `_root_.Graph.…`); the
 `CaseI.lean`-split blocker. See FRICTION [resolved] *Bare `Graph.`-prefix in `Molecular` namespace*.
+
+
+## 57. A `-/` *inside a word* in a docstring (e.g. `grade-/ambient`) terminates the doc comment early — *"unexpected identifier; expected 'lemma'"*
+
+**Symptom.** Editing a `/-- … -/` docstring, a `lake build` fails with `unexpected identifier;
+expected 'lemma'` (or `unexpected token; expected ':'`) pointing at a column *inside the prose* of
+the docstring, several lines *above* the `theorem`/`lemma` keyword — not at the declaration itself.
+The same docstring with the offending word reworded parses fine.
+
+**Cause.** Lean's block-comment/doc-comment lexer closes on the first literal `-/` *anywhere*,
+including mid-word: prose like `grade-/ambient-generic` or `the grade-/` contains the substring
+`-/`, which terminates the `/--` doc comment right there. The rest of the intended docstring then
+parses as ordinary tokens, so the `theorem` keyword is reached in an unexpected state (a stray
+identifier where a declaration was expected).
+
+**Fix.** Never write `-/` (or `/-`) inside docstring prose. Reword to avoid the slash-dash adjacency
+— `grade- and ambient-generic` instead of `grade-/ambient-generic`, `the d=3 case` instead of any
+`…-/…`. (Only the two-character sequence `-/` bites; a lone `/` or `-` is fine.)
+Phase 23b CHAIN-3 (`Meet.lean`, the `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`
+docstring; bit twice — once per `grade-/` occurrence).

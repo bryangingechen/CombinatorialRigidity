@@ -927,12 +927,26 @@ Both sides are linear maps `⋀ⁿℝ⁴ →ₗ Dual ⋀ⁿℝ⁴`; equality is 
 exterior-power basis, after which the coordinate pairing collapses to a Kronecker delta
 (`Module.Basis.toDual_apply`) and the `pairingDual`/`map` side collapses to the determinant of
 that same Kronecker matrix (`map_apply_ιMulti_family` + `pairingDual_ιMulti_ιMulti`). -/
-theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
-    ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).toDual =
-      (exteriorPower.pairingDual ℝ (Fin 4 → ℝ) n).comp
-        (exteriorPower.map n (Pi.basisFun ℝ (Fin 4)).toDual) := by
-  refine ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).ext fun s => ?_
-  refine ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).ext fun t => ?_
+
+/-- **N3b-recon at general grade and ambient: the coordinate `toDual` of `⋀ⁿ(ℝ^{d+1})` is the
+Gram-determinant pairing** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the grade- and
+ambient-generic restatement of the `Fin 4`-pinned `d=3`
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map`). For the standard basis
+`b = Pi.basisFun ℝ (Fin (d+1))` and any grade `n`, the `Module.Basis` coordinate pairing
+`(b.exteriorPower n).toDual` on `⋀ⁿ(ℝ^{d+1})` equals the computable
+`exteriorPower.pairingDual ∘ exteriorPower.map n b.toDual` (the Gram-determinant pairing). The proof
+is **ambient- and grade-generic verbatim** (`Module.Basis.ext` ×2, then `Module.Basis.toDual_apply`
+collapses the coordinate side to a Kronecker delta and `map_apply_ιMulti_family` +
+`pairingDual_ιMulti_ιMulti` collapse the other side to the determinant of that same Kronecker
+matrix; the diagonal/off-diagonal split uses only the equal-cardinality fact
+`Set.powersetCard.card_eq`, no `Fin 4`-arity). The `d=3` instance recovers
+`exteriorPower_basis_toDual_eq_pairingDual_comp_map` (`d+1 = 4`). -/
+theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade {d : ℕ} (n : ℕ) :
+    ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).toDual =
+      (exteriorPower.pairingDual ℝ (Fin (d + 1) → ℝ) n).comp
+        (exteriorPower.map n (Pi.basisFun ℝ (Fin (d + 1))).toDual) := by
+  refine ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).ext fun s => ?_
+  refine ((Pi.basisFun ℝ (Fin (d + 1))).exteriorPower n).ext fun t => ?_
   rw [Module.Basis.toDual_apply, LinearMap.comp_apply, exteriorPower.basis_apply,
     exteriorPower.basis_apply, exteriorPower.map_apply_ιMulti_family, exteriorPower.ιMulti_family,
     exteriorPower.ιMulti_family, exteriorPower.pairingDual_ιMulti_ιMulti]
@@ -945,7 +959,8 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
     ext i j
     simp only [Matrix.of_apply, Matrix.one_apply, EmbeddingLike.apply_eq_iff_eq, eq_comm]
   · -- Off-diagonal: `s ≠ t`, equal cardinality forces an element of `t` outside `s`, a zero row.
-    obtain ⟨x, hxt, hxs⟩ : ∃ x, x ∈ (↑t : Finset (Fin 4)) ∧ x ∉ (↑s : Finset (Fin 4)) := by
+    obtain ⟨x, hxt, hxs⟩ :
+        ∃ x, x ∈ (↑t : Finset (Fin (d + 1))) ∧ x ∉ (↑s : Finset (Fin (d + 1))) := by
       refine Finset.not_subset.1 fun hsub => hst ?_
       exact Subtype.ext (Finset.eq_of_subset_of_card_le hsub
         (by rw [Set.powersetCard.card_eq, Set.powersetCard.card_eq])).symm
@@ -954,6 +969,22 @@ theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
     refine (Matrix.det_eq_zero_of_row_eq_zero i₀ fun j => ?_).symm
     simp only [Matrix.of_apply, hi₀]
     exact if_neg fun h => hxs ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem s x).1 ⟨j, h⟩)
+
+/-- **N3b-recon (`d=3` instance): the coordinate `toDual` of `⋀ⁿℝ⁴` is the Gram-determinant
+pairing** (`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (ambient `Fin 4`) of the
+grade- and ambient-generic `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade` (`d+1 = 4`).
+The `Module.Basis` coordinate pairing `(b.exteriorPower n).toDual` on `⋀ⁿℝ⁴` is reconciled with the
+computable `exteriorPower.pairingDual` evaluated on dual coordinates — the latter expands, via
+`exteriorPower.pairingDual_ιMulti_ιMulti`, as a **Gram determinant** of dot products. This is what
+turns `b.toDual (w₀ ∧ w₁) (extensor c)` into `det [[w₀·c₀, w₀·c₁], [w₁·c₀, w₁·c₁]]`, so the
+incidence `wᵢ · c₀ = 0` (both in `{n_u,n'}^⊥`) zeros a column and kills the point-join — fact 2 of
+route A-corrected — and likewise pins `dim (dualCoannihilator Φ̃) = 6 − 5 = 1` (fact 3), since
+`b.toDual` is a perfect pairing. -/
+theorem exteriorPower_basis_toDual_eq_pairingDual_comp_map (n : ℕ) :
+    ((Pi.basisFun ℝ (Fin 4)).exteriorPower n).toDual =
+      (exteriorPower.pairingDual ℝ (Fin 4 → ℝ) n).comp
+        (exteriorPower.map n (Pi.basisFun ℝ (Fin 4)).toDual) :=
+  exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade (d := 3) n
 
 /-! ## Fact 2 of the membership route: the point-join is `toDual`-orthogonal to a shared extensor
 (`lem:case-III-claim612-line-in-panel-union`)
