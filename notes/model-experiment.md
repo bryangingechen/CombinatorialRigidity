@@ -112,29 +112,27 @@ mid-phase).
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-17, fresh coordinator session #4 — 23a/CARRIER closed;
-  opening CHAIN = the minted sub-letter `23b`; re-confirms the identical prior-session config,
-  which expired at its own session end).** fable not verified this session (the fable-mapped
-  passes — phase-open/close, design-settle, S=3 — fold into the opus-only override below
-  regardless). opus **reachable** (coordinator session is Opus 4.8; user-confirmed). Starting
-  `lake build` warning-clean (2821 jobs). **Rung policy: STANDING OPUS-ONLY OVERRIDE for the
-  whole of Phase 23** (user-re-confirmed at session start: Phase 23 = Case III general `d`, the
-  hardest remaining KT math and squarely in the §38 defeq-fragility zone where sonnet-and-below
-  have repeatedly failed). S/P/B is still **rated and logged** per dispatch (experiment data),
-  but the rung is **opus regardless of the map**; probes are off (they would dispatch below
-  opus); boundary pairs, if run, pair opus against opus or are skipped. **Run modifications this
-  session (user-re-confirmed at session start):** the 10-run check-in cap is **lifted** (the
-  loop runs to phase close or a surfaced concern), and step-4 mechanical fixups (wrong branch /
-  author / co-author trailer) are **pre-authorized** (apply without stopping to ask). **Session
-  #4 end-state (loop stopped by user request after row 203):** ran rows 191–203 — the CHAIN-open
-  recon (191), the CHAIN↔ENTRY chain-data contract (192), the CHAIN-3 grade-lift bricks
-  (193–197), the CHAIN-3-finish recon that re-routed off the dead `Φ̃` route (198), and the
-  OD-8 route-α sub-leaves down through (h-1a) (199–203); all clean at opus. **Next dispatch (a
-  fresh coordinator picks up here): (h-1b) the dot-product Gram-O-invariance** — the metric half
-  of `complementIso`'s O(n)-equivariance — per `notes/Phase23b.md` *Hand-off* (which carries the
-  exact closing route for `complementIso_map_orthogonal_eq` once h-1b is in hand). The coordinator
-  is Opus 4.8 (1M context). **Expires at session end** — a fresh coordinator re-runs the
-  availability check and reverts to the map unless the override is re-set.
+- **Session availability (2026-06-17, fresh coordinator session #5 — picks up at the row-203
+  hand-off; re-confirms the identical session-#4 config, which expired at its own session end).**
+  fable not verified this session (the fable-mapped passes — phase-open/close, design-settle, S=3 —
+  fold into the opus-only override below regardless). opus **reachable** (coordinator session is
+  Opus 4.8; user-confirmed). Starting `lake build` of the leftmost active module
+  (`CombinatorialRigidity.Molecular.Meet`) warning-clean. **Rung policy: STANDING OPUS-ONLY OVERRIDE
+  for the whole of Phase 23** (user-re-confirmed at session start: Phase 23 = Case III general `d`,
+  the hardest remaining KT math and squarely in the §38 defeq-fragility zone where sonnet-and-below
+  have repeatedly failed). S/P/B is still **rated and logged** per dispatch (experiment data), but
+  the rung is **opus regardless of the map**; probes are off (they would dispatch below opus);
+  boundary pairs, if run, pair opus against opus or are skipped. **Run modifications this session
+  (user-confirmed at session start):** the 10-run check-in cap is **lifted** (the loop runs to phase
+  close or a surfaced concern), and step-4 mechanical fixups (wrong branch / author / co-author
+  trailer) are **pre-authorized** (apply without stopping to ask). **Next dispatch: (h-1b) the
+  dot-product Gram-O-invariance** — the metric half of `complementIso`'s O(n)-equivariance — per
+  `notes/Phase23b.md` *Hand-off* (which carries the exact closing route for
+  `complementIso_map_orthogonal_eq` once h-1b is in hand). Session #4 (rows 191–203) closed clean at
+  opus: CHAIN-open recon, CHAIN↔ENTRY contract, the CHAIN-3 grade-lift bricks, the CHAIN-3-finish
+  re-route off the dead `Φ̃` route, and OD-8 route-α down through (h-1a). The coordinator is Opus 4.8
+  (1M context). **Expires at session end** — a fresh coordinator re-runs the availability check and
+  reverts to the map unless the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13,16} session-local rung overrides and availability constraints — all
   expired by their own terms (the 2026-06-16 one scoped the OPUS-ONLY override to the whole
