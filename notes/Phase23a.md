@@ -19,15 +19,12 @@ stay code-only until their turn.
 ## Current state
 
 Phase 23 is **open with both recon stages landed**, **23a Leaf 0 (the
-`screwDim` arithmetic kit) green**, and **23a Leaf 1's duality-free core
-landed** — the general-`k` rank-nullity perp-space brick
-`exists_linearIndependent_perp_of_normals` (`PanelLayer.lean`), onto which the
-three `d=3` helpers (`exists_two_perp_of_linearIndependent_normals`,
-`exists_three_perp`, `exists_extensor_in_two_panels`) now reduce as
-`r`/`m`-instances (removing a triplicated rank-nullity argument). **The
-recon's Leaf-1 scope was over-broad** (two corrections below); the **next
-concrete commit is the rescoped Leaf-1 remainder** — see *Hand-off*. The
-general sub-phase division (§2–§3) and the 23a leaf recon (§"23a") live in
+`screwDim` arithmetic kit) green**, and **23a Leaf 1 fully landed** (1a the
+duality-free rank-nullity core; 1b the grade-`k` extensor bricks). The next
+concrete commit is **Leaf 2** (the `Fin 4` incidence/extensor bricks in
+`Claim612.lean` + the shared LI brick `linearIndependent_normals_of_algebraicIndependent`
+in `CaseIII/Realization.lean` l.99) — see *Hand-off*. The general sub-phase
+division (§2–§3) and the 23a leaf recon (§"23a") live in
 `notes/Phase23-design.md` (the authoritative recon).
 
 **OD-5 settled (ports verbatim, no API addition, no spike).** The 23a recon
@@ -84,8 +81,8 @@ The layer-level division, with hard cores and dependency order, is in
       settled (transport already general). **6-leaf sequence**
       (`notes/Phase23-design.md` §"23a"(c)): Leaf 0 `screwDim` arithmetic kit
       (Basic ✓) → Leaf 1 `Fin 4` panel-incidence geometry (PanelLayer; **split
-      at build**: duality-free rank-nullity core ✓, grade-`k` extensor remainder
-      + drop `exists_extensor_eq_panelSupportExtensor` to CHAIN — see *Hand-off*)
+      at build**: 1a duality-free rank-nullity core ✓, 1b grade-`k` extensor
+      bricks ✓; `exists_extensor_eq_panelSupportExtensor` dropped to CHAIN)
       → Leaf 2
       `Fin 4` incidence bricks + shared LI brick (Claim612, Realization l.99)
       → Leaf 3 CaseII rank-arithmetic numeral pass → Leaf 4 Case-III spine,
@@ -133,56 +130,30 @@ The clause-(ii) flags the recon could not settle from the source live in
 
 ## Hand-off / next phase
 
-**Next concrete commit: the rescoped Leaf-1 remainder** — lift the two
-*extensor-bearing* panel-incidence bricks `exists_linearIndependent_extensor_pair_perp`
-and `exists_extensor_in_two_panels` from grade-`2` to grade-`k` (so they
-produce `ScrewSpace k` extensors of `Fin k`-tuples of perp points). The
-duality-free rank-nullity foundation they sit on is already general (this
-commit's `exists_linearIndependent_perp_of_normals`), so the remaining work is
-the **`Fin k`-arity extensor construction**, not the rank count:
-- `exists_linearIndependent_extensor_pair_perp` at grade `k`: from `k+1` LI
-  vectors in the single panel `n^⊥` (dim `k+1`,
-  `exists_linearIndependent_perp_of_normals (r:=1) (m:=k+1)`), build two
-  grade-`k` extensors sharing `k-1` vectors and prove them LI (the `d=3`
-  `linearIndependent_pair_extensor_of_li3` is the `k=2` base; the general case
-  needs the "two distinct `k`-subsets of an LI family give LI exterior-power
-  elements" fact — search mathlib `exteriorPower.ιMulti_family_linearIndependent`
-  first, it may subsume this).
-- `exists_extensor_in_two_panels` at grade `k`: from `k` LI vectors in the
-  codim-2 meet `n₁^⊥ ∩ n₂^⊥` (dim `≥ k`,
-  `exists_linearIndependent_perp_of_normals (r:=2) (m:=k)`), the single
-  grade-`k` extensor; `≠ 0` via `extensor_ne_zero_iff_linearIndependent`.
+**Next concrete commit: Leaf 2** (`notes/Phase23-design.md` §"23a"(c)) — lift
+the `Fin 4` incidence/extensor bricks in `RigidityMatrix/Claim612.lean`
+(`span_omitTwoExtensor_eq_top`, `omitTwoExtensor_eq_extensor_kept`,
+`omitTwoExtensor_homogenize_eq_extensor_kept`, `exists_independent_perp_pair`)
+and the shared LI brick `linearIndependent_normals_of_algebraicIndependent`
+(`CaseIII/Realization.lean` l.99, also consumed by the `Theorem55` cut/base
+spine + `Pinning`) from `Fin 4` to `Fin (k+2)`. **Leave the `⋀²ℝ⁴`-duality
+lemmas** (`exists_homogeneousIncidence_of_normals`,
+`exists_complementIso_ne_zero_of_homogeneousIncidence`,
+`exists_hduality_witness_of_panel_incidence`) at `Fin 4` — dispatch-only,
+CHAIN. **23a-OD-B** (`span_omitTwoExtensor_eq_top`'s `Fin 4×Fin 4` square
+system): confirm the `span=top` dimension count ports to `(k+2)×(k+2)` (off the
+already-general `omitTwoExtensor_linearIndependent_of_li {e:ℕ}`); expected clean.
+Keep `k=2` wrappers where the still-`k=2` consumers in `Theorem55.lean` need the
+old signature (Leaf 4/5 lifts them).
 
-Keep a `k=2`-specializing wrapper for each (matching the Leaf-5 `_d3`-wrapper
-pattern) so the spine consumers (`theorem_55_base`, the cut-edge producer in
-`Theorem55.lean`, both still at `k=2`) stay green until Leaf 4/5 lifts them.
-
-**Two corrections to the recon's Leaf-1 scope, found at build contact** (both
-in *Decisions made*):
-- **23a-OD-A's "ambient-only, keep point-pairs at `Fin 2`" recommendation is
-  WRONG.** `ExtensorInPanel C n` (`Basic.lean:276`) requires `C.val = extensor
-  p` with `p : Fin k → Fin (k+2) → ℝ` — the extensor grade is `k`, so at
-  general `k` the perp-point tuples are `Fin k`/`Fin (k+1)`, *not* `Fin 2`. The
-  arity IS `d`-dependent (it's the extensor grade, not the hinge codimension).
-- **`exists_extensor_eq_panelSupportExtensor` is NOT a Leaf-1 lemma — it is
-  CHAIN.** Its helper `panelSupportExtensor_join_eq_zero_of_eq_zero`
-  (`PanelLayer.lean`) routes through `Meet.lean`'s
-  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` →
-  `complementIso_smul_eq_extensor_join`, the `⋀²ℝ⁴` point-join↔panel-meet
-  duality the recon *itself* assigns to CHAIN (§"23a"(d), CHAIN replace-list).
-  So `exists_extensor_eq_panelSupportExtensor` and its corollary
-  `extensorInPanel_panelSupportExtensor` lift only *with* the `⋀^{d−1}(ℝ^{d+1})`
-  duality — drop them from Leaf 1 into CHAIN.
-
-**Leaf 1 duality-free core (this commit) — DONE.** `exists_linearIndependent_perp_of_normals
-{r m} (N : Fin r → Fin (k+2) → ℝ) (hmr : m + r ≤ k + 2)` in `PanelLayer.lean`
-(the general rank-nullity perp-space brick); the three `d=3` helpers reduce to
-it. Full project green + warning-clean + lint-clean. No `sorry`.
-
-**Earlier commits.** Leaf 0 — the `screwDim`-arithmetic kit (`one_le_screwDim`,
-`two_le_screwDim`, `screwDim_sub_two_le_mul`) in `RigidityMatrix/Basic.lean`.
-The detailed 23a recon settled OD-5 (ports verbatim) and resolved OD-2/OD-3
-(4.6/4.8 exist only in fixed-tuple `d=3` form). See §"23a".
+**Earlier commits (settled).** Leaf 0 — the `screwDim`-arithmetic kit in
+`RigidityMatrix/Basic.lean`. Leaf 1a — `exists_linearIndependent_perp_of_normals`
+(general rank-nullity perp-space brick; the three `d=3` helpers reduce to it).
+Leaf 1b (this commit) — `exists_linearIndependent_extensor_pair_perp_grade` /
+`exists_extensor_in_two_panels_grade` (grade-`k` extensor bricks, with `k=2`
+wrappers keeping the `Theorem55` spine green). The detailed 23a recon settled
+OD-5 (ports verbatim) and resolved OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple
+`d=3` form). See §"23a".
 
 **Tracked follow-up (deferred from this commit, not Phase-23 math):**
 - **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now
@@ -251,22 +222,30 @@ The detailed 23a recon settled OD-5 (ports verbatim) and resolved OD-2/OD-3
   its `k ≥ 1` floor (false at `k = 0`, `screwDim 0 = 1`). No consumers yet
   (Leaf 3–5 wire them); banks the one genuinely-new symbolic obligation first.
 
-- **Leaf 1 split at build; two recon-scope corrections.** Landed the
-  duality-free core only: `exists_linearIndependent_perp_of_normals {r m} (N :
-  Fin r → Fin (k+2) → ℝ) (hmr : m + r ≤ k + 2)` (PanelLayer) — the general-`k`
-  rank-nullity perp-space brick (`m` LI vectors in `⋂ⱼ Nⱼ^⊥`, `mulVecLin`
-  kernel + `finrank_range_add_finrank_ker`). The three `d=3` helpers
-  (`exists_two_perp…`, `exists_three_perp`, `exists_extensor_in_two_panels`)
-  reduce to it as `r`/`m`-instances, deleting a triplicated rank-nullity proof.
-  (i) **23a-OD-A wrong:** `ExtensorInPanel`'s `p : Fin k → …` means the perp
-  arity is the extensor grade `k`, not codim-2 `Fin 2` — so the two
-  extensor-bearing bricks genuinely need `Fin k`/`Fin (k+1)` tuples (next
-  commit). (ii) **`exists_extensor_eq_panelSupportExtensor` is CHAIN, not Leaf
-  1:** it routes through the `⋀²ℝ⁴` point-join↔panel-meet duality
-  (`Meet.lean`, recon's own CHAIN replace-list). Both detailed in *Hand-off*.
+- **Leaf 1a — rank-nullity perp-space brick.** `exists_linearIndependent_perp_of_normals
+  {r m} (N : Fin r → Fin (k+2) → ℝ) (hmr : m + r ≤ k + 2)` (PanelLayer): `m` LI
+  vectors in `⋂ⱼ Nⱼ^⊥` (`mulVecLin` kernel + `finrank_range_add_finrank_ker`); the
+  three `d=3` helpers reduce to it as `r`/`m`-instances (triplicated proof deleted).
+  Two recon-scope corrections settled here: **23a-OD-A wrong** —
+  `ExtensorInPanel`'s `p : Fin k → …` makes the perp arity the extensor grade `k`,
+  not `Fin 2`, so the extensor bricks need `Fin k`/`Fin (k+1)` tuples (Leaf 1b);
+  and **`exists_extensor_eq_panelSupportExtensor` is CHAIN** (routes through the
+  `⋀²ℝ⁴` point-join↔panel-meet duality), dropped from Leaf 1.
+- **Leaf 1b — grade-`k` extensor bricks.** `exists_linearIndependent_extensor_pair_perp_grade
+  (hk : 1 ≤ k) (n : Fin (k+2) → ℝ)` (two LI `ScrewSpace k` extensors of `Fin k`-tuples
+  in one panel: `k+1` LI panel vectors → two distinct `k`-subsets' extensors are LI by
+  `exteriorPower.ιMulti_family_linearIndependent_field`, the principled replacement for
+  the `k=2`-only `linearIndependent_pair_extensor_of_li3` isolation argument; needs `1≤k`
+  so the two subsets differ) and `exists_extensor_in_two_panels_grade` (one nonzero
+  `ScrewSpace k` extensor in two panels, `r=2,m=k`, no transversality). Each keeps a `k=2`
+  wrapper (`exists_linearIndependent_extensor_pair_perp` / `exists_extensor_in_two_panels`,
+  unchanged signatures) so the still-`k=2` `Theorem55` spine stays green until Leaf 4/5.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *`2 ≤ screwDim k` — `omega` can't see through `Nat.choose 2`; `Nat.choose_mono`
   route + the `k ≥ 1` floor (false at `k=0`)* → FRICTION [idiom] *`2 ≤ screwDim k`
   (and the rest of the general-`d` `screwDim`-arithmetic kit)*.
+- *LI of two grade-`k` extensors of overlapping `Fin k`-tuples — restrict
+  `ιMulti_family_linearIndependent_field` to the two subsets, don't isolate* →
+  TACTICS-GOLF § 18 / FRICTION [idiom].

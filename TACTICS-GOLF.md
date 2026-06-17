@@ -74,6 +74,10 @@ symptom-indexed and lighter.
     structured terms (`finrank (span …)`), supply that product as a `have` and call
     `linarith [it]`; `nlinarith` blind-squares all hypothesis pairs and its
     `linearFormsAndMaxVar` pays a quadratic cost over the huge atoms. Profile first.
+18. **Distinct `k`-subsets of an LI family give LI exterior-power elements** — for the LI of
+    two grade-`k` extensors built from overlapping `Fin k`-tuples, restrict
+    `exteriorPower.ιMulti_family_linearIndependent_field` to the wanted subsets via `.comp`;
+    don't hand-roll a left-multiplication argument (it doesn't generalize off `k = 2`).
 
 ---
 
@@ -1011,3 +1015,33 @@ project's last `maxHeartbeats` override. **Profile first** (`trace.profiler` /
 `lean_profile_proof`): if `linarith.detail: linearFormsAndMaxVar` dominates an `nlinarith`,
 this is the fix. (A `(deterministic) timeout at whnf/isDefEq` at some unrelated cheap line is
 a red herring — it's just where the heartbeat budget ran dry; profile to find the real cost.)
+
+## 18. Distinct `k`-subsets of an LI family give LI exterior-power elements
+
+To prove that two grade-`k` extensors built from *overlapping* `Fin k`-tuples (e.g. the
+first `k` and last `k` of `k+1` independent panel vectors) are linearly independent, do **not**
+hand-roll a left-multiplication / isolation argument. That works at `k = 2`
+(`linearIndependent_pair_extensor_of_li3`: left-join with the leftover vector to kill the
+cross term) but does not generalize — the general fact is one mathlib lemma.
+
+**Pattern.** Each `k`-extensor is `ExteriorAlgebra.ιMulti_family ℝ k v s` for a `k`-subset
+`s : Set.powersetCard (Fin (k+1)) k` (via `ofFinEmbEquiv` of an `OrderEmbedding` —
+`Fin.castSuccOrderEmb` is `{0,…,k-1}`, `Fin.succOrderEmb` is `{1,…,k}`).
+`exteriorPower.ιMulti_family_linearIndependent_field` gives LI of the *whole* `powersetCard`-
+indexed family from `LinearIndependent ℝ v`; `.comp _ hidx_inj` restricts it to the
+two-element `Fin 2 → powersetCard` selection (`![s₁, s₂]`, injective iff `s₁ ≠ s₂`).
+
+```lean
+have hfam := exteriorPower.ιMulti_family_linearIndependent_field (K := ℝ) (n := k) (v := v) hvli
+have hpair := hfam.comp ![s₁, s₂] hidx_inj      -- LI of the two chosen subsets
+```
+
+Three glue facts close it: `s₁ ≠ s₂` reduces to embedding inequality via
+`Set.powersetCard.ofFinEmbEquiv.apply_eq_iff_eq` (then evaluate both at index `0`);
+`(ιMulti_family ℝ k v (ofFinEmbEquiv f)).val = extensor (v ∘ f)` via
+`ιMulti_family_apply_coe` + `ExteriorAlgebra.ιMulti_family` (an abbrev) +
+`ofFinEmbEquiv.symm_apply_apply` + `rfl`; and the `⋀^k`→`ScrewSpace k` carrier transport is
+the `LinearMap.linearIndependent_iff` idiom (§7-adjacent: the injective
+`(⋀^k …).subtype ∘ₗ (ScrewSpace.equivExteriorPower k)`, `ker = ⊥`). Concrete instance:
+`exists_linearIndependent_extensor_pair_perp_grade` (`PanelLayer.lean`, Phase 23a Leaf 1b),
+the general-grade replacement for the `d = 3` `linearIndependent_pair_extensor_of_li3`.

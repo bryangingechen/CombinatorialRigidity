@@ -443,48 +443,113 @@ theorem exists_three_perp (n : Fin 4 → ℝ) :
     exists_linearIndependent_perp_of_normals (k := 2) ![n] (m := 3) (le_refl 4)
   exact ⟨v, hvli, fun i => by simpa using hperp i 0⟩
 
-/-- **Two linearly-independent extensors inside a common panel `n^⊥ ⊆ ℝ⁴`**
-(`def:genuine-hinge-realization`, the base producer's coincident-panel geometric brick; Phase 22i
-L3a). For a nonzero normal `n : Fin 4 → ℝ`, there are two point-pairs `p, q : Fin 2 → Fin 4 → ℝ`,
-each lying in the panel `n^⊥` (`p i ⬝ᵥ n = 0`, `q i ⬝ᵥ n = 0`), whose `ScrewSpace 2` extensors are
-linearly independent. This is the two-non-proportional-extensors-in-a-common-hyperplane device of
-Katoh–Tanigawa's `|V| = 2` parallel-pair realization (Lemma 5.3, KT 2011 p. 670): two hinges whose
-panels coincide (`Π(u) = Π(v) = n^⊥`) but whose supporting extensors are independent give the full
-`ScrewSpace 2` rank `D = 6`, which the base producer feeds to `theorem_55_base`.
+/-- **Two linearly-independent grade-`k` extensors inside a common panel `n^⊥ ⊆ ℝ^(k+2)`**
+(`def:genuine-hinge-realization`, the base producer's coincident-panel geometric brick at general
+grade; Phase 23a Leaf 1b). For a normal `n : Fin (k+2) → ℝ` and `1 ≤ k`, there are two `k`-tuples
+`p, q : Fin k → Fin (k+2) → ℝ`, each lying in the panel `n^⊥` (`p i ⬝ᵥ n = 0`, `q i ⬝ᵥ n = 0`),
+whose `ScrewSpace k` extensors are linearly independent. This is the two-non-proportional-extensors-
+in-a-common-hyperplane device of Katoh–Tanigawa's `|V| = 2` parallel-pair realization (Lemma 5.3,
+KT 2011 p. 670): two hinges whose panels coincide (`Π(u) = Π(v) = n^⊥`) but whose supporting
+extensors are independent give the full `ScrewSpace k` rank `D = screwDim k`, which the base
+producer feeds to `theorem_55_base`. (The grade-`k` extensor lives over `Fin k`-tuples by the
+extensor arity of `ExtensorInPanel`; the `d = 3` consumer is the `k = 2` wrapper
+`exists_linearIndependent_extensor_pair_perp`.)
 
-The construction: pick three LI vectors `a, b, c` spanning `n^⊥` (`exists_three_perp`), set
-`p := ![a, b]`, `q := ![a, c]`; the LI of `![a ∧ b, a ∧ c]` follows from the LI of `![a, b, c]`
-(`linearIndependent_pair_extensor_of_li3`), and transports through the injective `⋀[ℝ]^2`-inclusion
-to `ScrewSpace 2`. (The result holds for any `n`, since `n^⊥` is at least `3`-dimensional even at
-`n = 0`; the base producer instantiates it at a chosen nonzero panel normal.) -/
+The construction: extract `k+1` linearly independent vectors `v : Fin (k+1) → ℝ^(k+2)` of the
+panel `n^⊥` (`exists_linearIndependent_perp_of_normals (r := 1) (m := k+1)`, `(k+1)+1 ≤ k+2`), and
+take the two grade-`k` extensors of its two distinct `k`-subsets `{0,…,k-1}` (`Fin.castSucc`) and
+`{1,…,k}` (`Fin.succ`). These are linearly independent because *distinct `k`-subsets of a linearly
+independent family give linearly independent exterior-power elements*
+(`exteriorPower.ιMulti_family_linearIndependent_field`); the result transports through the injective
+`⋀[ℝ]^k`-inclusion to `ScrewSpace k`. The two subsets are distinct exactly when `1 ≤ k` (at `k = 0`
+both are empty). -/
+theorem exists_linearIndependent_extensor_pair_perp_grade (hk : 1 ≤ k) (n : Fin (k + 2) → ℝ) :
+    ∃ p q : Fin k → Fin (k + 2) → ℝ,
+      (∀ i, p i ⬝ᵥ n = 0) ∧ (∀ i, q i ⬝ᵥ n = 0) ∧
+      LinearIndependent ℝ
+        ![(ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) : ScrewSpace k),
+          ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)] := by
+  classical
+  -- `k+1` LI vectors in the single panel `n^⊥` (`r = 1, m = k+1`, `(k+1)+1 ≤ k+2`).
+  obtain ⟨v, hvli, hvperp⟩ :=
+    exists_linearIndependent_perp_of_normals (k := k) ![n] (m := k + 1) (by omega)
+  refine ⟨v ∘ Fin.castSucc, v ∘ Fin.succ, ?_, ?_, ?_⟩
+  · intro i; simpa using hvperp _ 0
+  · intro i; simpa using hvperp _ 0
+  · -- The two distinct `k`-subsets of `Fin (k+1)`: `{0,…,k-1}` (castSucc) and `{1,…,k}` (succ).
+    set sc : Set.powersetCard (Fin (k + 1)) k :=
+      Set.powersetCard.ofFinEmbEquiv Fin.castSuccOrderEmb with hsc
+    set ss : Set.powersetCard (Fin (k + 1)) k :=
+      Set.powersetCard.ofFinEmbEquiv (Fin.succOrderEmb k) with hss
+    -- The whole `ιMulti_family` is LI; restrict to the two-element index family `![sc, ss]`.
+    have hfam := exteriorPower.ιMulti_family_linearIndependent_field
+      (K := ℝ) (n := k) (v := v) hvli
+    have hscss : sc ≠ ss := by
+      rw [hsc, hss, Ne, Set.powersetCard.ofFinEmbEquiv.apply_eq_iff_eq]
+      intro he
+      -- The two embeddings differ at index `0`: `castSucc 0 = 0 ≠ 1 = succ 0` (needs `1 ≤ k`).
+      have := congrArg (fun f => (f : Fin k ↪o Fin (k + 1)) ⟨0, hk⟩) he
+      simp [Fin.castSuccOrderEmb, Fin.succOrderEmb, Fin.castSucc, Fin.succ,
+        Fin.castAdd, Fin.castLE, Fin.ext_iff] at this
+    have hidx_inj : Function.Injective (![sc, ss] : Fin 2 → Set.powersetCard (Fin (k + 1)) k) := by
+      intro a b hab
+      fin_cases a <;> fin_cases b <;> simp_all
+    have hpair := hfam.comp _ hidx_inj
+    -- Identify `ιMulti_family v sc/ss` (as `⋀^k`-members) with the goal's two extensors.
+    have hval_c : (exteriorPower.ιMulti_family ℝ k v sc
+        : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ)))
+        = ⟨extensor (v ∘ Fin.castSucc), extensor_mem_exteriorPower _⟩ := by
+      apply Subtype.ext
+      rw [exteriorPower.ιMulti_family_apply_coe, hsc, ExteriorAlgebra.ιMulti_family,
+        Set.powersetCard.ofFinEmbEquiv.symm_apply_apply]
+      rfl
+    have hval_s : (exteriorPower.ιMulti_family ℝ k v ss
+        : ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ)))
+        = ⟨extensor (v ∘ Fin.succ), extensor_mem_exteriorPower _⟩ := by
+      apply Subtype.ext
+      rw [exteriorPower.ιMulti_family_apply_coe, hss, ExteriorAlgebra.ιMulti_family,
+        Set.powersetCard.ofFinEmbEquiv.symm_apply_apply]
+      rfl
+    -- Transport LI through the injective inclusion `ScrewSpace k ↪ ExteriorAlgebra`.
+    rw [← LinearMap.linearIndependent_iff
+      ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower k).toLinearMap)
+      (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
+    -- `Subtype.val ∘ equivExteriorPower = ScrewSpace.val`, so the transported `mk`-extensor's
+    -- ambient value is just its `extensor`.
+    have hcoe : ∀ C : ScrewSpace k,
+        ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp
+          (ScrewSpace.equivExteriorPower k).toLinearMap) C = C.val := fun _ => rfl
+    -- The transported family equals `Subtype.val ∘ ιMulti_family v ∘ ![sc, ss]`.
+    have hfun : ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp
+        (ScrewSpace.equivExteriorPower k).toLinearMap) ∘
+        ![(ScrewSpace.mk (extensor (v ∘ Fin.castSucc))
+            (extensor_mem_exteriorPower _) : ScrewSpace k),
+          ScrewSpace.mk (extensor (v ∘ Fin.succ)) (extensor_mem_exteriorPower _)]
+        = (Subtype.val ∘ exteriorPower.ιMulti_family ℝ k v) ∘ ![sc, ss] := by
+      ext i
+      fin_cases i
+      · simp only [Function.comp_apply, hcoe]
+        exact (congrArg Subtype.val hval_c).symm
+      · simp only [Function.comp_apply, hcoe]
+        exact (congrArg Subtype.val hval_s).symm
+    rw [hfun, Function.comp_assoc]
+    -- LI of the subtype-valued `hpair` lifts through the injective `Submodule.subtype`.
+    exact hpair.map' (⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype (Submodule.ker_subtype _)
+
+/-- **Two linearly-independent extensors inside a common panel `n^⊥ ⊆ ℝ⁴`** (the `k = 2`
+specialization of `exists_linearIndependent_extensor_pair_perp_grade`;
+`def:genuine-hinge-realization`,
+Phase 22i L3a). For a normal `n : Fin 4 → ℝ`, there are two point-pairs `p, q : Fin 2 → Fin 4 → ℝ`,
+each lying in the panel `n^⊥`, whose `ScrewSpace 2` extensors are linearly independent. The `d = 3`
+wrapper feeding `theorem_55_base` (kept while the spine consumers in `Theorem55.lean` are still
+`k = 2`; Leaf 5 lifts them). -/
 theorem exists_linearIndependent_extensor_pair_perp (n : Fin 4 → ℝ) :
     ∃ p q : Fin 2 → Fin 4 → ℝ,
       (∀ i, p i ⬝ᵥ n = 0) ∧ (∀ i, q i ⬝ᵥ n = 0) ∧
       LinearIndependent ℝ
         ![(ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) : ScrewSpace 2),
-          ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)] := by
-  obtain ⟨v, hvli, hvperp⟩ := exists_three_perp n
-  refine ⟨![v 0, v 1], ![v 0, v 2], ?_, ?_, ?_⟩
-  · intro i; fin_cases i
-    · exact hvperp 0
-    · exact hvperp 1
-  · intro i; fin_cases i
-    · exact hvperp 0
-    · exact hvperp 2
-  · -- LI of the two `ScrewSpace 2` extensors, transported from the ambient exterior algebra.
-    have hv3 : LinearIndependent ℝ ![v 0, v 1, v 2] := by
-      have heq : (![v 0, v 1, v 2] : Fin 3 → Fin 4 → ℝ) = v := by
-        ext i; fin_cases i <;> rfl
-      rw [heq]; exact hvli
-    have hpair : LinearIndependent ℝ ![extensor ![v 0, v 1], extensor ![v 0, v 2]] :=
-      linearIndependent_pair_extensor_of_li3 hv3
-    -- Transport through the injective inclusion `ScrewSpace 2 ↪ ExteriorAlgebra` (the carrier
-    -- equiv composed with the graded-piece subtype; `ker = ⊥`, so it reflects independence).
-    rw [← LinearMap.linearIndependent_iff
-      ((⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower 2).toLinearMap)
-      (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot, LinearEquiv.ker])]
-    convert hpair using 1
-    ext i; fin_cases i <;> rfl
+          ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)] :=
+  exists_linearIndependent_extensor_pair_perp_grade (k := 2) (by norm_num) n
 
 /-- **The meet of two transversal panels is the extensor of two common-perp points**
 (`def:genuine-hinge-realization`, the M4 engine; Phase 22i L0a). For two linearly independent
@@ -604,30 +669,41 @@ theorem extensorInPanel_panelSupportExtensor {n₁ n₂ : Fin 4 → ℝ}
   obtain ⟨p, heq, hperp⟩ := exists_extensor_eq_panelSupportExtensor h
   exact ⟨⟨p, heq, fun i => (hperp i).1⟩, ⟨p, heq, fun i => (hperp i).2⟩⟩
 
-/-- **A nonzero extensor lying in two panels simultaneously** (Phase 22i L4a cut-edge brick).
-For any two normals `n₁ n₂ : Fin 4 → ℝ`, there exists a nonzero `C : ScrewSpace 2` with
-`ExtensorInPanel C n₁` and `ExtensorInPanel C n₂`. The extensor rows lie in `n₁^⊥ ∩ n₂^⊥`;
-this intersection has dimension `≥ 2` by rank–nullity applied to the pairing map `x ↦ (x ⬝ᵥ n₁,
-x ⬝ᵥ n₂)`, regardless of whether `n₁` and `n₂` are linearly independent.
+/-- **A nonzero grade-`k` extensor lying in two panels simultaneously** (the general-grade cut-edge
+brick; Phase 23a Leaf 1b). For any two normals `n₁ n₂ : Fin (k+2) → ℝ`, there exists a nonzero
+`C : ScrewSpace k` with `ExtensorInPanel C n₁` and `ExtensorInPanel C n₂`. The extensor's `k` points
+lie in the meet `n₁^⊥ ∩ n₂^⊥`; this intersection has dimension `≥ k` by rank–nullity applied to the
+pairing map `x ↦ (x ⬝ᵥ n₁, x ⬝ᵥ n₂)`, regardless of whether `n₁` and `n₂` are linearly independent.
 
-The two common-perp points are the `r = 2, m = 2` extraction of the general-`k` brick
-`exists_linearIndependent_perp_of_normals` (`2 + 2 ≤ 4`, *no* transversality hypothesis); their
-`2`-extensor is the desired `C`. Used by the cut-edge bare-conjunct producer
-(`case_cut_edge_realization`) to supply the cut hinge extensor when no transversality is
-available. -/
-theorem exists_extensor_in_two_panels (n₁ n₂ : Fin 4 → ℝ) :
-    ∃ C : ScrewSpace 2, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
-  -- Two LI common-perp points in `n₁^⊥ ∩ n₂^⊥` (dim ≥ 2), with no transversality needed.
+The `k` common-perp points are the `r = 2, m = k` extraction of the rank–nullity brick
+`exists_linearIndependent_perp_of_normals` (`k + 2 ≤ k + 2`, *no* transversality hypothesis); their
+grade-`k` extensor is the desired `C`, nonzero by `extensor_ne_zero_iff_linearIndependent`. Used by
+the cut-edge bare-conjunct producer (`case_cut_edge_realization`) to supply the cut hinge extensor
+when no transversality is available; the `d = 3` consumer is the `k = 2` wrapper
+`exists_extensor_in_two_panels`. -/
+theorem exists_extensor_in_two_panels_grade (n₁ n₂ : Fin (k + 2) → ℝ) :
+    ∃ C : ScrewSpace k, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
+  -- `k` LI common-perp points in `n₁^⊥ ∩ n₂^⊥` (dim ≥ k), with no transversality needed.
   obtain ⟨p, hpli, hperp⟩ :=
-    exists_linearIndependent_perp_of_normals (k := 2) ![n₁, n₂] (m := 2) (le_refl 4)
+    exists_linearIndependent_perp_of_normals (k := k) ![n₁, n₂] (m := k) (by omega)
   have hp_perp : ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 :=
     fun i => ⟨by simpa using hperp i 0, by simpa using hperp i 1⟩
-  -- Build `C = mk (extensor p) _ : ScrewSpace 2`.
+  -- Build `C = mk (extensor p) _ : ScrewSpace k`.
   refine ⟨ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _), ?_,
          ⟨p, rfl, fun i => (hp_perp i).1⟩, ⟨p, rfl, fun i => (hp_perp i).2⟩⟩
   -- `C ≠ 0` because `extensor p ≠ 0`, which follows from `hpli`.
   intro heq
   exact (extensor_ne_zero_iff_linearIndependent p).mpr hpli (congr_arg ScrewSpace.val heq)
+
+/-- **A nonzero extensor lying in two panels simultaneously** (the `k = 2` specialization of
+`exists_extensor_in_two_panels_grade`; Phase 22i L4a cut-edge brick). For any two normals
+`n₁ n₂ : Fin 4 → ℝ`, there exists a nonzero `C : ScrewSpace 2` with `ExtensorInPanel C n₁` and
+`ExtensorInPanel C n₂`. The `d = 3` wrapper feeding the cut-edge producer
+`case_cut_edge_realization` (kept while the spine consumers in `Theorem55.lean` are still `k = 2`;
+Leaf 5 lifts them). -/
+theorem exists_extensor_in_two_panels (n₁ n₂ : Fin 4 → ℝ) :
+    ∃ C : ScrewSpace 2, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ :=
+  exists_extensor_in_two_panels_grade (k := 2) n₁ n₂
 
 /-- **The eq. (6.12) candidate's `va`-hinge support carries the existential join witness**
 (`lem:case-III-claim612-line-in-panel-union`, the Leaf-2b seed-from-line transfer; Katoh–Tanigawa

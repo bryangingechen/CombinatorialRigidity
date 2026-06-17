@@ -554,6 +554,20 @@ to be re-derived by re-reading entries later.
   lines); the entry now has both the `InjOn` and the `ker = ⊥` forms.
 - **Status:** resolved (idiom recorded, both forms; mirror deferred — 2 callsites, both two-line).
 
+### [idiom] LI of two grade-`k` extensors of overlapping `Fin k`-tuples — restrict `ιMulti_family_linearIndependent_field` to the two subsets, don't isolate
+- **Where it bit:** `exists_linearIndependent_extensor_pair_perp_grade` (`PanelLayer.lean`,
+  Phase 23a Leaf 1b) — the general-grade lift of the `d = 3`
+  `linearIndependent_pair_extensor_of_li3`.
+- **Friction:** the `d = 3` proof proves `![a∧b, a∧c]` LI by left-joining with the leftover
+  vector to kill the cross term; that does not generalize to grade `k` (no single leftover).
+- **Fix (idiom):** the two extensors are `ExteriorAlgebra.ιMulti_family ℝ k v sᵢ` for two
+  distinct `k`-subsets `sᵢ : powersetCard (Fin (k+1)) k` (`ofFinEmbEquiv` of
+  `Fin.castSuccOrderEmb` / `Fin.succOrderEmb`); restrict
+  `exteriorPower.ιMulti_family_linearIndependent_field` via `.comp ![s₁,s₂] hidx_inj`. The
+  `sᵢ`-to-`extensor` glue is `ιMulti_family_apply_coe` + `ofFinEmbEquiv.symm_apply_apply` +
+  `rfl`; the `⋀^k`→`ScrewSpace k` step is the `LinearMap.linearIndependent_iff` transport above.
+- **Status:** resolved (idiom). **Lifted to:** TACTICS-GOLF § 18.
+
 ### [idiom] No mathlib `g ∘ Fin.append a b = Fin.append (g∘a) (g∘b)`; diagonal wedge-pairing nonzero via injective-append + LI, not via the permutation sign
 - **Where it bit:** `wedgePairing_ιMulti_family_compl_ne_zero` in `Molecular/Meet.lean`
   (Phase 21a ingredient (c), diagonal half): the value of the standard-basis wedge
