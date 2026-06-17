@@ -118,6 +118,16 @@ decidability, etc. — the authoritative list is in
   relevant *definition*, not the file that first uses it. (Lemma
   about `IsSparse` → `Sparsity.lean`, even if first invoked in
   `Laman.lean`.)
+- **Section files as you author; treat ~1500 LoC as a live tripwire.**
+  Group declarations under `/-! ## …` headers by sub-argument *as you add
+  them* — never let a file accrue as a flat run of decls. When a file nears
+  mathlib's ~1500-LoC soft cap it should *already* be cleanly sectioned, so a
+  split is a mechanical cut along the headers; a flat multi-thousand-line
+  monolith instead forces a full structure-recovery read-pass before it can be
+  split (the post-Phase-22l perf round paid exactly this on the flat 4000-line
+  `CaseIII.lean` and the 2937-line `RigidityMatrix` core, while the already-
+  sectioned files split cheaply). The *when/how* of splitting — the ranking
+  factors and the `Foo/` subdirectory pattern — is in `../notes/PERFORMANCE.md`.
 - The `@[deprecated <general-form> (since := "narrative-bridge")]`
   attribute carries a **second project meaning**: it marks
   **narrative-bridge shims** — one-line composition lemmas existing only

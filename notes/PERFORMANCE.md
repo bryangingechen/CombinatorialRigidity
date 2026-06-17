@@ -352,7 +352,11 @@ weight; the audit is qualitative, not formula-driven.
    navigate, search, and reason about as a unit; per-edit
    incremental rebuilds churn through unrelated halves; the
    blueprint chapter structure usually already suggests a cleaner
-   subdivision.
+   subdivision. **Proactive complement (authoring discipline):** keep
+   files sectioned under `/-! ## …` headers *as they grow* and treat
+   the cap as a live tripwire, so a split is a mechanical cut along the
+   headers rather than a structure-recovery read-pass — see
+   `CombinatorialRigidity/CLAUDE.md` *Engineering conventions*.
 3. **Incremental-rebuild speed during active development.** Even
    within a single-consumer transitive-import graph, splitting a
    large file lets the next agent iterate on one half without
