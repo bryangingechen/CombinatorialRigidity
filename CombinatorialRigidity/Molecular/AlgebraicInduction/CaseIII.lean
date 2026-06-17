@@ -37,6 +37,12 @@ open scoped Graph
 
 variable {α β : Type*}
 
+/-! ## Claim 6.11: the redundant `ab`-row (KT §6.4.1, eqs. (6.18)–(6.25), (6.43))
+
+The corank pigeonhole forcing one `ab`-block panel row redundant, packaged with the `D(m−1)`
+bottom rows into the `ρ`/`w` data the three arms (M₁/M₂/M₃) consume (`lem:case-III-claim-6-11`,
+`lem:case-III-redundant-decomposition`, `lem:case-III-acolumn-zero`). -/
+
 /-- **The Claim~6.11 redundant `ab`-row: a small corank over the `ab`-block forces one of its
 `D − 1` rows redundant** (`lem:case-III-claim-6-11-redundant-row`, the linear-algebra core of KT
 Claim~6.11's eq. (6.23); Katoh–Tanigawa 2011 §6.4.1, eq. (6.23), Phase 22d). The geometric
@@ -551,6 +557,12 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_ze
   refine ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum, fun a => ?_⟩
   rw [hsum, sub_self, LinearMap.zero_comp]
 
+/-! ## The candidate-completion: the redundant row → the missing `+1` (KT eqs. (6.24)–(6.29))
+
+The eq. (6.27) per-row transport collapse and the combination-level threading that builds the
+candidate row (`lem:case-III-transport-collapse`, `lem:case-III-candidate-row-construction`), plus
+the fixed-`n_b` old/new block split it routes through. -/
+
 /-- **The eq. (6.27) per-row transport collapse: the `vb`-row minus the `ab`-row is a `va`-hinge
 row** (`lem:case-III-candidate-row`, the eqs. (6.26)–(6.27) transport step; Katoh–Tanigawa 2011
 §6.4.1, eq. (6.27), Phase 22e). At the degenerate eq. (6.12) placement `q₀` — `v`'s normal placed
@@ -837,6 +849,11 @@ theorem PanelHingeFramework.case_III_old_new_blocks [DecidableEq α] [Finite α]
   exact ⟨hane, hnewne, so, hso_card, hso_indep_G, hold, hso_ne_eb, sn, hsn_e, hsn_card, hsn_indep,
     hnewpin⟩
 
+/-! ## The `caseIIICandidate` shear-family device (the eq. (6.12) candidate `t`-family)
+
+The candidate framework as a one-parameter `t`-shear (defined directly via `supportExtensor`), its
+support-extensor calculus, and the W6a/W6f rank-transfer facts the M₁ arm rebases on. -/
+
 /-- **The eq. (6.12) candidate `t`-family** (KT's `p₁` at shear `t`, hinge-level and
 role-parametric; Katoh–Tanigawa 2011 §6.4.1, Phase 22h). The candidate framework the W6
 certify-then-rebase route varies over: it starts from the seed framework
@@ -986,6 +1003,11 @@ theorem PanelHingeFramework.caseIIICandidate_exists_good_shear [DecidableEq β] 
   obtain ⟨t, ht_bad, ht_ne, ht_li⟩ :=
     LinearIndependent.exists_notMem_of_polynomial_repr b g P hP h0 bad
   exact ⟨t, ht_bad, ht_ne, ht_li⟩
+
+/-! ## Per-line / restriction candidate families and the `t = 0` rank certification
+
+The line-indexed and restriction-form full `D(|V|−1)` candidate families (W6c) and the eq. (6.29)
+rank lower bound certified at the `t = 0` framework `F₀` (W6d) — the "certify" half of the route. -/
 
 /-- **L2b-place (seed-from-line) — the inductive old/new blocks of the *line-indexed* candidate
 placement** (`lem:case-III-claim612-line-in-panel-union`, the producer-direction generalization of
@@ -1539,6 +1561,12 @@ theorem PanelHingeFramework.case_III_rank_certification
     omega
   rw [← hcard, Nat.card_eq_fintype_card, ← finrank_span_eq_card hfam]
   exact Submodule.finrank_mono hsub
+
+/-! ## Case III arms M₁ / M₂, the triangle base, and the producer spine
+
+The certify-then-rebase arm closers (W7 = M₁, W8 = M₂), the `Sum.elim` index/packaging glue, the
+per-line realization, the `|V| = 3` triangle base (`lem:triangle-realization`), and the
+triangle-vs-chain producer dichotomy. -/
 
 /-- **W7 — the M₁ arm closer: certify-then-rebase realizes the `d = 3` candidate at full rank**
 (`lem:case-II-realization` / `lem:case-III`, the role-parametric arm of the `hcand` discharge;
@@ -2361,6 +2389,12 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
     exact hcand v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
       hlea hleb hlec hclv hcla he₀ hGv.1 hsplitGP
 
+
+/-! ## Relabel / split-off transport (the M₃ machinery)
+
+The `ρ = (av)` relabel apparatus (`lem:splitOff-ofNormals-relabel`,
+`lem:splitOff-rigidityRows-relabel`) transporting the `ρ`/`w` data across the `a ↔ v` swap, the
+`a`-column span bridges, and the M₃ arm closer (W9c, built on the M₁ engine W7). -/
 
 /-- The edge permutation `σ = Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` of the `ρ = (av)` relabel is
 an involution. The two transpositions have disjoint supports (`{e_b, e₀}` and `{e₁, e_c}` are
@@ -3340,6 +3374,12 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
       (fun e x y hlink => ⟨(Graph.removeVertex_isLink.mp hlink).2.1,
         (Graph.removeVertex_isLink.mp hlink).2.2⟩)
       (fun e x y hlink => hrecGv e x y hlink) hends₃_eb hends₃_off (hwmem j)
+
+/-! ## The discharge dispatch and the final Case III realization
+
+The M₁/M₂/M₃ dispatch discharging the candidate obligation `hcand` (W10), the eq. (6.22) nested-IH
+rank bound (`lem:case-III-nested-rank-lower`), and the all-`k` capstone `case_III_realization`
+(`lem:case-III`). -/
 
 /-- **W10a — the ends-congruence pre-brick** (design §1.53(b); Phase 22h). Two free-normal panel
 frameworks on the *same* graph `G` and seed `q` whose endpoint selectors `ends`, `ends'` agree on

@@ -13,31 +13,37 @@ files (`AlgebraicInduction/Case*`), not the stable ones.
 
 ## Current state
 
-**Next step:** decide whether to continue with the next candidate
-(`ForestSurgery.lean` or `CaseIII.lean`) or pause. Slice 1 (RigidityMatrix
-bricks) is landed, build + lint green, warning-clean.
+**Next step:** the CaseIII *file cut* (slice 3) — split `CaseIII.lean` at the
+clean 2-way seam (after `case_III_rank_certification`, before
+`case_III_arm_realization`; see *Decisions → Slice 2*). Or take
+`ForestSurgery.lean` instead. Slices 1–2 are landed, build + lint green,
+warning-clean.
 
-Slice 1 landed: `Molecular/RigidityMatrix.lean` (3527 LoC) → carved the three
-rank-addition brick sections (`CutEdgeBrick`/`SpliceBrick`/`PinnedPlacementBrick`,
-the old L2935–3523) into a new leaf `Molecular/RigidityMatrix/Bricks.lean`
-(634 LoC). Core drops to 2937 LoC. Rename-free.
+- **Slice 1 (committed `fd0ccd2`):** `RigidityMatrix.lean` (3527 LoC) → carved
+  the three rank-addition brick sections into a new leaf
+  `Molecular/RigidityMatrix/Bricks.lean` (634 LoC); core drops to 2937 LoC.
+- **Slice 2 (CaseIII section headers):** added 7 `/-! ##` section headers to the
+  flat 4000-line `CaseIII.lean` (comment-only — the sanctioned first step before
+  its file cut, per `PERFORMANCE.md` item 8). The grouping is now explicit and a
+  clean 2-way file-split seam is identified.
 
 ## Slice plan / candidate ranking
 
-- [x] **Slice 1 — `RigidityMatrix.lean` brick-carve.** Most straightforward
-  (cleanest seams). The three bricks sat in clearly-marked `section`s at the
-  file tail inside `namespace BodyHingeFramework`, with a clean forward
-  dependency (bricks → core API; core does not use the bricks). Carved to
-  `RigidityMatrix/Bricks.lean` (`module`, `public import`s the core).
-- [ ] **Slice 2 (candidate) — `Induction/ForestSurgery.lean` (3783 LoC).**
+- [x] **Slice 1 — `RigidityMatrix.lean` brick-carve.** Carved the three
+  rank-addition brick `section`s (clean forward dependency: bricks → core API)
+  to `RigidityMatrix/Bricks.lean` (`module`, `public import`s the core).
+- [x] **Slice 2 — `AlgebraicInduction/CaseIII.lean` (4000 LoC) section headers.**
+  The flat 44-decl namespace got 7 `/-! ##` headers grouping the decls by KT §6.4
+  sub-argument (the read-pass item 8 calls for; comment-only, warning-clean after
+  a 2-line longLine reflow). Active realization subtree → factor-3 high.
+- [ ] **Slice 3 — `CaseIII.lean` file cut at the 2-way seam.** Now teed up: a
+  clean cut after `case_III_rank_certification` / before `case_III_arm_realization`
+  (the §1–§4 single-framework infrastructure | §5–§7 arms + relabel + dispatch +
+  capstone). See *Decisions → Slice 2* for the seam + the carry-across caveat.
+- [ ] **Slice 4 (candidate) — `Induction/ForestSurgery.lean` (3783 LoC).**
   2.5× cap; ~20 `/-! ##` doc sections keyed to KT lemmas; natural 2-way cut
-  (KT 4.2 forest core | KT 4.1/4.9/reduction material). *Stable* Induction
-  subtree → factor-3 low. Confirm the two arcs don't share private helpers
-  before cutting.
-- [ ] **Slice 3 (candidate) — `AlgebraicInduction/CaseIII.lean` (4000 LoC).**
-  Highest effort: flat namespace, no section markers, 44 top-level decls.
-  Needs a read-pass to group the decls (or at minimum add `/-! ##` headers)
-  before any file cut. Active realization subtree → factor-3 high.
+  (KT 4.2 forest core | KT 4.1/4.9/reduction material). *Stable* Induction subtree
+  → factor-3 low. Confirm the two arcs don't share private helpers before cutting.
 
 (`RigidityMatrix.lean` core itself stays ~2937 LoC after slice 1 — a partial
 win; the un-sectioned `BodyHingeFramework` core would need sub-sectioning for a
@@ -70,9 +76,28 @@ deeper split. Not pursued; navigability/size of the carved bricks is the win.)
   `Bricks.lean` and open a separate terminology-faithfulness sweep. Flagged:
   `notes/FRICTION.md` *[process] "Brick" is a project mnemonic…*.
 
+### Slice 2 — CaseIII section headers + the file-split seam
+
+- **7-section grouping** (mapped via a subagent read-pass against `case-iii.tex`'s
+  milestone skeleton; only ~11 of the 44 decls are blueprint-pinned, the rest are
+  helpers): (1) Claim 6.11 redundant `ab`-row (L64–); (2) candidate-completion +
+  old/new block split (L578–); (3) the `caseIIICandidate` shear-family device
+  (L854–); (4) per-line/restriction families + `t=0` rank certification (L1018–);
+  (5) arms M₁/M₂ + triangle base + producer spine (L1577–); (6) relabel/split-off
+  transport, the M₃ machinery (L2369–); (7) the dispatch + final
+  `case_III_realization` (L3357–). (Pre-header line numbers.)
+- **Clean 2-way file-split seam (for slice 3):** after `case_III_rank_certification`,
+  before `case_III_arm_realization`. §1–§4 (L64–~1576) is pure single-framework
+  infrastructure that nothing downstream reaches into; §5–§7 (arms + relabel +
+  dispatch + capstone) consumes it. **Carry-across caveat:**
+  `exists_candidateRow_bottomRows_of_rigidOn` (§1, the W6b `ρ`/`w` feed) is consumed
+  by the §7 dispatch — it travels with the upstream file fine, but must not be
+  orphaned. A 3-way is *not* clean: M₃ (§6) reuses the M₁ engine
+  `case_III_arm_realization` (§5), so §5/§6 can't separate.
+
 ## Hand-off / next step
 
-Slice 1 is a clean handoff point. Next concrete commit: either slice 2
-(`ForestSurgery.lean` 2-way cut — confirm no shared private helpers first) or
-slice 3 (`CaseIII.lean` — add `/-! ##` section headers as a cheap first step
-before any file cut). Both are independent of slice 1.
+Slices 1–2 are a clean handoff point. Next concrete commit: slice 3 — cut
+`CaseIII.lean` into two files at the seam above (`module`-status, import-chain, and
+blueprint-pin discipline as in slice 1; the cut is rename-free). Alternatively
+slice 4 (`ForestSurgery.lean`). Both are independent of slices 1–2.
