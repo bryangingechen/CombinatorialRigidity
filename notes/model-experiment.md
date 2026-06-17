@@ -105,25 +105,25 @@ by an *absence* the statement-shape check misses — grep that X is gone; row 16
 - **Attribution rule at source:** top-level `CLAUDE.md` *Working*
   bullet *Commit attribution* (exact author string + actual-model
   trailer).
-- **Session availability (2026-06-17, fresh coordinator session — Phase 23 open;
-  supersedes the expired 22l note, now folded into the audit-trail bullet below).** fable
-  **unavailable** this session (user-confirmed at session start; the fable-mapped passes —
-  phase-open/close, design-settle, S=3 — fold into the opus-only override below). **Rung
-  policy: STANDING OPUS-ONLY OVERRIDE for the whole of Phase 23** (user-set at session
-  start: Phase 23 = Case III general `d`, the hardest remaining KT math and squarely in the
-  §38 defeq-fragility zone where sonnet-and-below have repeatedly failed). S/P/B is still
-  **rated and logged** per dispatch (experiment data), but the rung is **opus regardless of
-  the map**; probes are off (they would dispatch below opus); boundary pairs, if run, pair
-  opus against opus or are skipped. **Run modifications this session (user-set at session
-  start):** the 10-run check-in cap is **lifted** (the loop runs to phase close or a
-  surfaced concern), step-4 mechanical fixups (wrong branch / author / co-author trailer)
-  are **pre-authorized** (apply without stopping to ask), and the user directed a
-  **two-stage design recon up front** — a *general* recon sketching the Phase-23 sub-phase
-  division (à la Phase 22's sub-lettering), then a *first-sub-phase* recon decomposing into
-  buildable leaves — **before any build dispatch**, with recon subagents prompted for
-  maximally detailed plans. The coordinator is Opus 4.8 (1M context). **Expires at session
-  end** — a fresh coordinator re-runs the availability check and reverts to the map unless
-  the override is re-set.
+- **Session availability (2026-06-17, fresh coordinator session #2 — Phase 23a open, both
+  recon stages landed; re-confirms the identical prior-session config, which expired at its
+  own session end).** fable **unavailable** this session (user-confirmed at session start;
+  the fable-mapped passes — phase-open/close, design-settle, S=3 — fold into the opus-only
+  override below). opus **reachable** (user-confirmed). **Rung policy: STANDING OPUS-ONLY
+  OVERRIDE for the whole of Phase 23** (user-set at session start: Phase 23 = Case III
+  general `d`, the hardest remaining KT math and squarely in the §38 defeq-fragility zone
+  where sonnet-and-below have repeatedly failed). S/P/B is still **rated and logged** per
+  dispatch (experiment data), but the rung is **opus regardless of the map**; probes are off
+  (they would dispatch below opus); boundary pairs, if run, pair opus against opus or are
+  skipped. **Run modifications this session (user-set at session start):** the 10-run
+  check-in cap is **lifted** (the loop runs to phase close or a surfaced concern), and step-4
+  mechanical fixups (wrong branch / author / co-author trailer) are **pre-authorized** (apply
+  without stopping to ask). The prior session's directed **two-stage design recon up front**
+  has **landed** (general §2–§3 + the detailed §"23a" in `notes/Phase23-design.md`, commits
+  6ea8a69 / 11036a7 / cc8e76c), so this session is in the **build-leaves** stretch (23a Leaf
+  0 next). The coordinator is Opus 4.8 (1M context). **Expires at session end** — a fresh
+  coordinator re-runs the availability check and reverts to the map unless the override is
+  re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13,16} session-local rung overrides and availability constraints — all
   expired by their own terms (the 2026-06-16 one scoped the OPUS-ONLY override to the whole
