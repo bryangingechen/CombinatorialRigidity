@@ -207,9 +207,11 @@ has gone unlifted:
 - **Compress** the multi-session plan to a commit-log pointer + a
   brief summary once the phase is closed (the plan stops being
   plan-relevant the moment the phase ships).
-- **Re-skim** `notes/FRICTION.md` status sections — resolved
-  project-internal entries with their resolution fully indexed
-  elsewhere migrate to `FRICTION-archive.md`.
+- **Sweep** `notes/FRICTION.md` — `[resolved]`-tagged entries are
+  archive-ready by construction (the `[resolved]` vs `[idiom]` split
+  records indexed-vs-inline at filing time), so migrating them to
+  `FRICTION-archive.md` is a mechanical `grep '^### \[resolved\]'`;
+  `[idiom]` entries stay put. See FRICTION.md's filing rule.
 
 This category is essentially a structured re-run of `CLAUDE.md`
 *When this commit closes a phase* → *Review project organization*,
