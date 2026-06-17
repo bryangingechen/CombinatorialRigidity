@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.RigidityMatrix
 import CombinatorialRigidity.Molecular.Meet
-import CombinatorialRigidity.Molecular.Induction.ForestSurgery
+import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Mathlib.Data.Countable.Defs
 import Mathlib.Combinatorics.Graph.Subgraph
 import Mathlib.LinearAlgebra.Quotient.Pi

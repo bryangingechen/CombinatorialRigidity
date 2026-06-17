@@ -489,15 +489,15 @@ decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
    (not pursued). The carve is justified on factors 2/4 (navigability +
    partial size), **not** factor 1 — see the (C)#2 correction below.
 
-7. **`Molecular/Induction/ForestSurgery.lean` (3783 LoC) — medium
-   leverage, medium effort.** All in `namespace Graph`, organized by
-   ~20 `/-! ##` doc sections keyed to KT lemmas. Natural 2-way cut
-   between the **KT 4.2 forest core** (acyclicity transport +
-   edge-splitting, L37–~1741) and the **KT 4.1 / 4.9 / reduction /
-   4.3(ii)–4.7 material** (L1742–3783: the surgery count + Theorem 4.9
-   + the Case-III chain data + the splitting-off `k`-dof descent).
-   Navigable, but the two arcs may share private helpers — confirm
-   before cutting.
+7. **`Molecular/Induction/ForestSurgery.lean` (3783 LoC) — ✓ 2-way cut
+   into `ForestSurgery/` (post-Phase-22l perf pass; `notes/Phase22l-perf.md`).**
+   Cut at L1742 between the **KT 4.2 forest core** (acyclicity transport +
+   edge-splitting) → `ForestSurgery/EdgeSplitting.lean` (1736) and the **KT 4.1 /
+   4.9 / reduction / 4.3(ii)–4.7 material** → `ForestSurgery/Reduction.lean` (2077).
+   The shared-private-helper risk flagged here was checked clean: the sole `private`
+   helper `vfiber_inc_iff` is downstream of the seam, so it doesn't cross. Both halves
+   stay over cap (no single dominant sub-block) — accepted for this *stable,
+   lowest-leverage* file (factor-3 ≈ 0); a deeper split wasn't worth it.
 
 8. **`Molecular/AlgebraicInduction/CaseIII.lean` (4000 LoC) — ✓ split into a
    4-file `CaseIII/` subdirectory (post-Phase-22l perf pass;
@@ -1010,11 +1010,10 @@ shrinking the producer's budget before it moves files.
 
 Surveyed the other raised-budget decls and next-largest files:
 
-1. **`Induction/ForestSurgery.lean` (3783 LoC) — medium.** 2.5× cap,
-   no raised budgets. Next-biggest after CaseI; a file-size/navigability
-   split (factor 2), but it is in the *stable* Induction subtree (not
-   active), so factor-3 (incremental-rebuild) leverage is low. Defer
-   to a dedicated round.
+1. **`Induction/ForestSurgery.lean` (3783 LoC) — ✓ 2-way cut into
+   `ForestSurgery/` (post-Phase-22l perf pass; see item 7).** A
+   file-size/navigability split (factor 2) in the *stable* Induction subtree
+   (factor-3 ≈ 0); done as `EdgeSplitting.lean` (1736) + `Reduction.lean` (2077).
 2. **`RigidityMatrix.lean` — ✓ bricks carved (post-Phase-22l perf
    pass; see item 6 + `notes/Phase22l-perf.md`).** The downstream-import
    analysis this entry called for was done and **factor-1 is nil**: the

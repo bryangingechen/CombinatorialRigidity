@@ -1,6 +1,6 @@
 # Perf pass (post-Phase-22l) — molecular file splits (work log)
 
-**Status:** in progress.
+**Status:** complete (all three split candidates done).
 
 The post-Phase-22 molecular split round: tackling the over-cap molecular
 giants logged in `notes/PERFORMANCE.md` *Post-Phase-22 split candidates* /
@@ -13,9 +13,11 @@ files (`AlgebraicInduction/Case*`), not the stable ones.
 
 ## Current state
 
-**Next step:** slice 5 (optional) — `Induction/ForestSurgery.lean` (3783 LoC), the
-last remaining over-cap molecular giant; or close the round. Slices 1–4 are landed,
-build + lint + checkdecls green, warning-clean.
+**Round complete** — all three `PERFORMANCE.md` split candidates done; every commit
+build + lint + checkdecls green, warning-clean. No over-cap molecular *split*
+candidates remain (what's left in `PERFORMANCE.md` is non-split: the
+profile-then-localize `maxHeartbeats` budgets, and the low-priority style-only files
+`Deficiency`/`PanelLayer`/`GenericityDevice`/`Pinning` — out of this round's scope).
 
 - **Slice 1 (`fd0ccd2`):** `RigidityMatrix.lean` 3527 → 2937 LoC; the three
   rank-addition bricks → new leaf `Molecular/RigidityMatrix/Bricks.lean` (634).
@@ -23,11 +25,14 @@ build + lint + checkdecls green, warning-clean.
   (comment-only) — making the grouping + a clean 2-way seam explicit.
 - **Slice 3 (`39a6a8e`):** `CaseIII.lean` (4040 LoC) 2-way cut at that seam into
   flat `CaseIIICandidate.lean` (§1–§4) + `CaseIII.lean` (§5–§7).
-- **Slice 4 (`CaseIII/` subdirectory):** reorganized the Case-III block into a
-  `CaseIII/` subdirectory of 4 files — `Candidate` (1564) / `Arms` (859) /
-  `Relabel` (1016) / `Realization` (692) — sub-splitting the realization half
-  (§5 arms / §6 relabel-M₃ / §7 dispatch+capstone) along the way. Chain:
-  `CaseII ← CaseIII.Candidate ← .Arms ← .Relabel ← .Realization ← Theorem55`.
+- **Slice 4 (`6088c94`):** reorganized the Case-III block into a `CaseIII/`
+  subdirectory of 4 files — `Candidate` (1564) / `Arms` (859) / `Relabel` (1016) /
+  `Realization` (692). Chain `CaseII ← .Candidate ← .Arms ← .Relabel ← .Realization
+  ← Theorem55`.
+- **Slice 5 (`Induction/ForestSurgery/` subdirectory):** `ForestSurgery.lean`
+  (3783 LoC) → 2-way cut into `ForestSurgery/EdgeSplitting.lean` (1736, KT 4.2) +
+  `ForestSurgery/Reduction.lean` (2077, KT 4.1/4.9). Both stay over cap (no single
+  dominant sub-block) — accepted for a stable, low-leverage file.
 
 ## Slice plan / candidate ranking
 
@@ -43,10 +48,10 @@ build + lint + checkdecls green, warning-clean.
 - [x] **Slice 4 — `CaseIII/` subdirectory (4 files).** Reorganized the flat cut +
   sub-split the realization: `Candidate`/`Arms`/`Relabel`/`Realization` under
   `AlgebraicInduction/CaseIII/`. See *Decisions → Slices 3–4*.
-- [ ] **Slice 5 (candidate) — `Induction/ForestSurgery.lean` (3783 LoC).**
-  2.5× cap; ~20 `/-! ##` doc sections keyed to KT lemmas; natural 2-way cut
-  (KT 4.2 forest core | KT 4.1/4.9/reduction material). *Stable* Induction subtree
-  → factor-3 low. Confirm the two arcs don't share private helpers before cutting.
+- [x] **Slice 5 — `Induction/ForestSurgery.lean` (3783 LoC) → `ForestSurgery/`
+  subdirectory.** 2-way cut at L1742 (the only `private` helper `vfiber_inc_iff` is
+  downstream of the seam → clean): `EdgeSplitting.lean` (KT 4.2) +
+  `Reduction.lean` (KT 4.1/4.9). Both over cap — accepted (stable, low-leverage).
 
 (`RigidityMatrix.lean` core itself stays ~2937 LoC after slice 1 — a partial
 win; the un-sectioned `BodyHingeFramework` core would need sub-sectioning for a
@@ -124,9 +129,28 @@ deeper split. Not pursued; navigability/size of the carved bricks is the win.)
   subdirectory pattern*. No `Defs.lean`/`Basic.lean` — Case III divides by KT
   sub-argument, not defs-vs-API, so the files carry descriptive KT-aligned names.
 
+### Slice 5 — ForestSurgery 2-way cut into a `ForestSurgery/` subdirectory
+
+- **The cut.** `Induction/ForestSurgery.lean` (3783 LoC) → `Induction/ForestSurgery/`:
+  `EdgeSplitting.lean` (1736, KT Lemma 4.2 — acyclicity transport + reroute +
+  edge-splitting extension) + `Reduction.lean` (2077, KT 4.1/4.9 — reduction-step +
+  Theorem 4.9 + repacking + forest-surgery count/assembly + 4.3(ii)/4.4/4.7).
+- **Clean seam (verified):** the only `private` helper `vfiber_inc_iff` (L2486) is
+  used only at L2532 — both downstream of the L1742 seam, so it doesn't cross; the
+  file is in dependency order so the upstream half is self-contained. Consumers
+  (`PanelLayer`, the aggregator) switched `import …ForestSurgery` → `…ForestSurgery.Reduction`.
+- **Partial win, accepted.** Both halves stay over the ~1500 cap (~1736 / ~2077) — no
+  single dominant sub-block to carve, and a deeper split isn't worth it for the
+  *stable, lowest-leverage* file (factor-3 ≈ 0). Subdirectory chosen over flat
+  siblings for parity with `CaseIII/` (user call).
+
 ## Hand-off / next step
 
-Slices 1–4 are a clean handoff point. The remaining over-cap molecular giant is
-`Induction/ForestSurgery.lean` (3783 LoC, slice 5 — a stable subtree, lower factor-3;
-2-way KT-4.2-core | KT-4.1/4.9 cut, confirm no shared private helpers first). Either
-take it as the next commit or close the round here.
+**Round complete.** The three over-cap molecular split candidates are done
+(`RigidityMatrix` bricks; `CaseIII/` 4-file subdir; `ForestSurgery/` 2-file subdir).
+What remains in `PERFORMANCE.md` is *non-split* work, for a future round if wanted:
+the profile-then-localize `maxHeartbeats` budgets in the CaseI/Theorem55 producers,
+and the low-priority style-only files (`Deficiency`/`PanelLayer`/`GenericityDevice`/
+`Pinning`, each modestly over cap). The `RigidityMatrix.lean` core (2937 LoC) could
+also take a deeper split once its un-sectioned `BodyHingeFramework` body is
+sub-sectioned (see *Decisions → Slice 1*).
