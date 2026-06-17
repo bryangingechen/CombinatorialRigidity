@@ -18,11 +18,12 @@ stay code-only until their turn.
 
 ## Current state
 
-Phase 23 is **open with both recon stages landed** — the general sub-phase
-division (§2–§3) and the **23a detailed leaf-level recon** (§"23a") both live
-in `notes/Phase23-design.md` (the authoritative recon). No Lean yet. The next
-concrete commit is **23a Leaf 0** (a build): the `screwDim` arithmetic kit in
-`RigidityMatrix/Basic.lean` — see *Hand-off*.
+Phase 23 is **open with both recon stages landed** and **23a Leaf 0 (the
+`screwDim` arithmetic kit) built green** — the next concrete commit is **23a
+Leaf 1** (a build): the `Fin 4 → Fin (k+2)` panel-incidence band in
+`PanelLayer.lean` (ll.357–838) — see *Hand-off*. The general sub-phase
+division (§2–§3) and the **23a detailed leaf-level recon** (§"23a") live in
+`notes/Phase23-design.md` (the authoritative recon).
 
 **OD-5 settled (ports verbatim, no API addition, no spike).** The 23a recon
 verified against the landed source that the `screwBasis`/`annihRow` coordinate
@@ -124,17 +125,28 @@ The clause-(ii) flags the recon could not settle from the source live in
 
 ## Hand-off / next phase
 
-**Next concrete commit: 23a Leaf 0 — the `screwDim` arithmetic kit**
-(`CombinatorialRigidity/Molecular/RigidityMatrix/Basic.lean`, a build). Add
-the three tiny `Nat.choose` lemmas the symbolic-`k` spine needs in place of
-the `d=3` `decide` calls: `one_le_screwDim {k} : 1 ≤ screwDim k`,
-`two_le_screwDim {k} (hk : 1 ≤ k) : 2 ≤ screwDim k` (floor-conditioned —
-`screwDim 0 = 1`, so the `≥2` facts need `k ≥ 1`), and
-`screwDim_sub_two_le_mul` for the `case_III_nested_rank_lower` arithmetic. No
-carrier content, no consumers yet → trivially green; banks the one genuinely-
-new symbolic obligation before any spine restate. Full 6-leaf sequence +
-exact signatures: `notes/Phase23-design.md` §"23a"(c). After Leaf 0, Leaf 1
-is the `Fin 4`→`Fin (k+2)` panel-incidence band in `PanelLayer.lean`.
+**Next concrete commit: 23a Leaf 1 — the `Fin 4 → Fin (k+2)` panel-incidence
+band** (`CombinatorialRigidity/Molecular/AlgebraicInduction/PanelLayer.lean`,
+ll.357–838, a build). Lift `exists_two_perp_of_linearIndependent_normals`,
+`exists_three_perp`, `exists_linearIndependent_extensor_pair_perp`,
+`exists_extensor_eq_panelSupportExtensor`, `exists_extensor_in_two_panels` to
+`{n : Fin (k+2) → ℝ}`: replace the `finrank ℝ (Fin 4 → ℝ) = 4` count with
+`Module.finrank_pi` + `Fintype.card_fin` at `k+2`, and the `fin_cases i`
+matrix-row checks with the general `Fin (k+2)`/`Fin (k+1)` forms. **At the
+Leaf-1 build, confirm 23a-OD-A** (`notes/Phase23-design.md` §"23a"(e)): the
+recommendation is to lift only the *ambient* `Fin 4 → Fin (k+2)` and keep the
+point-pairs at `Fin 2` (a hinge is codim-2 ⇒ two normals regardless of `d`;
+`panelSupportExtensor` is already two-normal/general) — check no arity is
+secretly `4`-pinned. The `screwBasis`/`annihRow` half is already general (Leaf
+1 is purely the incidence band). Full 6-leaf sequence + exact signatures:
+`notes/Phase23-design.md` §"23a"(c).
+
+**Leaf 0 (this commit) — DONE.** The three `screwDim`-arithmetic lemmas landed
+in `RigidityMatrix/Basic.lean` (`one_le_screwDim`, `two_le_screwDim`,
+`screwDim_sub_two_le_mul`); full project green + lint-clean. Two recon-vs-landed
+deltas (recorded under *Decisions made*): `screwDim_sub_two_le_mul` takes
+`2 ≤ m` (the recon's `1 ≤ m` is false-making at `m=1`) and drops the recon's
+unused `hk`.
 
 The detailed 23a recon (this commit, docs-only) settled OD-5 (ports verbatim,
 no API addition, no spike — the coordinate transport is already general in
@@ -196,6 +208,20 @@ the length-`d` chain producer is a new ENTRY leaf). See §"23a".
   ENTRY leaf** (not subsumed). No Lemma-5.4 short-cycle decl exists (the `d=3`
   Case III dodged it via the triangle base, corroborating OD-1).
 
+- **Leaf 0 landed: the `screwDim`-arithmetic kit, with two recon corrections.**
+  `one_le_screwDim` / `two_le_screwDim (hk : 1 ≤ k)` / `screwDim_sub_two_le_mul`
+  in `RigidityMatrix/Basic.lean` (the `decide`-replacement facts for the
+  symbolic-`k` spine). Two deltas from the recon spec (`§"23a"(c)`):
+  `screwDim_sub_two_le_mul` takes **`2 ≤ m`**, not the recon's `1 ≤ m` — the
+  latter is *false* at `m = 1` (RHS `= D·0 = 0 < D-2 = 1` at `k = 1`); the call
+  site (`case_III_nested_rank_lower` l.642) has `2 ≤ |V'|` (`hGab2`) in scope.
+  And the recon's `(hk)` on `screwDim_sub_two_le_mul` is **unused** (`D-2 ≤ D =
+  D·1 ≤ D·(m-1)` needs nothing about `k`), so dropped. `two_le_screwDim` keeps
+  its `k ≥ 1` floor (false at `k = 0`, `screwDim 0 = 1`). No consumers yet
+  (Leaf 3–5 wire them); banks the one genuinely-new symbolic obligation first.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
-- (none this commit — design recon only.)
+- *`2 ≤ screwDim k` — `omega` can't see through `Nat.choose 2`; `Nat.choose_mono`
+  route + the `k ≥ 1` floor (false at `k=0`)* → FRICTION [idiom] *`2 ≤ screwDim k`
+  (and the rest of the general-`d` `screwDim`-arithmetic kit)*.

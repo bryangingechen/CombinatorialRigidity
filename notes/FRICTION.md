@@ -655,6 +655,23 @@ to be re-derived by re-reading entries later.
   Confirmed in seconds via `lean_multi_attempt`.
 - **Status:** resolved (no lift — narrow; the two `D` conventions only meet at this one panel-layer
   reconciliation. If a second callsite appears, promote to a named `bodyBarDim_succ_eq_screwDim` mirror).
+  *Sibling (2026-06-17):* the `≥`/`-`-flavored `screwDim k` facts the general-`d` spine needs are now a
+  named kit in `RigidityMatrix/Basic.lean` — see the entry just below.
+
+### [idiom] `2 ≤ screwDim k` (and the rest of the general-`d` `screwDim`-arithmetic kit) — `omega` can't, `Nat.choose_mono` can
+- **Where it bit:** Phase-23a Leaf 0 (the `screwDim`-arithmetic kit, `RigidityMatrix/Basic.lean`):
+  lifting the `d = 3` spine's `2 ≤ screwDim 2` / `screwDim 2 - 2 ≤ screwDim 2 * (m-1)` `decide` calls
+  to symbolic `k`. Sibling root cause to the `bodyBarDim`-equality entry above (`omega` can't see
+  through `Nat.choose 2`'s `/2`), but inequalities, not an equality — so the `ring`-normalize fix
+  there doesn't apply.
+- **Friction / fix:** `2 ≤ screwDim k` is **false at `k = 0`** (`screwDim 0 = (2).choose 2 = 1`); it
+  holds only from the body-hinge floor `k ≥ 1` (`d = k+1 ≥ 2`). `omega` fails after `unfold screwDim`;
+  the working route is monotonicity — `le_trans (by decide : 2 ≤ (1+2).choose 2) (Nat.choose_mono 2 …)`.
+  The lower-bound `D - 2 ≤ D(m-1)` (eq. (6.22)) is pure `Nat`: `le_trans (Nat.sub_le ..) (Nat.le_mul_of_pos_right .. (by omega))`, `m ≥ 2`.
+- **Status:** resolved — kit landed as `one_le_screwDim` / `two_le_screwDim` / `screwDim_sub_two_le_mul`
+  (no lift: `screwDim`-specific, project-internal; lives with the `screwDim` def). Consumed by the
+  Leaf 3–5 numeral passes. Note `screwDim_sub_two_le_mul` takes `2 ≤ m` (not the recon's `1 ≤ m`, which
+  is false-making at `m=1`) and drops the recon's unused `hk` — call site has `2 ≤ |V'|` (`hGab2`) in scope.
 
 ### [idiom] `Set.ncard_iUnion_of_finite` returns a `finsum` (`∑ᶠ`), not a `Finset.sum` — bridge with `finsum_eq_sum_of_fintype`
 - **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction/`

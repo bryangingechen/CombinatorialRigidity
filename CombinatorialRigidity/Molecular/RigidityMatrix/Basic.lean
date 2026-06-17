@@ -224,6 +224,40 @@ theorem card_le_screwDim_of_linearIndependent {k m : ℕ} (c : Fin m → ScrewSp
   have := h.fintype_card_le_finrank
   rwa [Fintype.card_fin, screwSpace_finrank] at this
 
+/-! ## `screwDim k` numeric arithmetic (general-`d` rank-count kit)
+
+The three `Nat.choose` facts the symbolic-`k` realization spine needs in place of the
+`d = 3` (`screwDim 2 = 6`) `decide` calls: the dimension is never zero
+(`one_le_screwDim`), is at least `2` once the dimension floor `k ≥ 1` (i.e. `d = k+1 ≥ 2`)
+holds (`two_le_screwDim`), and the `case_III_nested_rank_lower` eq.-(6.22) lower-bound
+arithmetic `D − 2 ≤ D(|V'| − 1)` (`screwDim_sub_two_le_mul`). At `k = 0` the screw space is
+the degenerate `⋀^0 = ℝ` with `screwDim 0 = (2).choose 2 = 1`, so the `≥ 2` facts genuinely
+need the floor; the body-hinge regime always supplies `d = k + 1 ≥ 2`. -/
+
+/-- **The screw dimension is positive** (`def:rigidity-matrix`): `D = screwDim k ≥ 1` for every
+`k`. Immediate from `(k+2).choose 2 ≠ 0` (`Nat.choose_eq_zero_iff`: `2 ≤ k + 2`). The `k`-free
+base fact the rank counts lean on; the floor-conditioned `2 ≤ screwDim k` is `two_le_screwDim`. -/
+theorem one_le_screwDim {k : ℕ} : 1 ≤ screwDim k :=
+  Nat.one_le_iff_ne_zero.mpr (by simp [screwDim, Nat.choose_eq_zero_iff])
+
+/-- **The screw dimension is at least `2` in the body-hinge regime** (`def:rigidity-matrix`):
+`D = screwDim k ≥ 2` once `k ≥ 1` (i.e. the ambient dimension `d = k + 1 ≥ 2`). The general-`d`
+replacement for the `d = 3` `(2 : ℕ) ≤ screwDim 2` `decide`. Conditioned on the floor because
+`screwDim 0 = (2).choose 2 = 1 < 2`; for `k ≥ 1` it follows from `screwDim 1 = (3).choose 2 = 3`
+by monotonicity of `(· .choose 2)` (`Nat.choose_mono`). -/
+theorem two_le_screwDim {k : ℕ} (hk : 1 ≤ k) : 2 ≤ screwDim k := by
+  have h := Nat.choose_mono 2 (show 1 + 2 ≤ k + 2 by omega)
+  simpa [screwDim] using le_trans (by decide) h
+
+/-- **The eq.-(6.22) lower-bound arithmetic** (`lem:case-III-nested-rank-lower`,
+Katoh–Tanigawa 2011 §6.4.1 eq. (6.22)): `D − 2 ≤ D(m − 1)` whenever `m ≥ 2`. The general-`d`
+replacement for the `d = 3` `screwDim 2 - 2 ≤ screwDim 2 * (|V'| − 1)` `decide`-led step in
+`case_III_nested_rank_lower`, where `m = |V(G.splitOff …)|` is the (post-split, `≥ 2`) vertex
+count. Pure `ℕ`-arithmetic: `D − 2 ≤ D = D · 1 ≤ D · (m − 1)` since `1 ≤ m − 1`. -/
+theorem screwDim_sub_two_le_mul {k m : ℕ} (hm : 2 ≤ m) :
+    screwDim k - 2 ≤ screwDim k * (m - 1) :=
+  le_trans (Nat.sub_le _ _) (Nat.le_mul_of_pos_right _ (by omega))
+
 /-! ## The panel-in-extensor predicate and the `BodyHingeFramework` carrier
 
 `ExtensorInPanel` (a screw-space element lies in a hyperplane `n^⊥`) and the framework structure
