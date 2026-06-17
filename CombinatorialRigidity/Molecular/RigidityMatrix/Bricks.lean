@@ -5,7 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 module
 
-public import CombinatorialRigidity.Molecular.RigidityMatrix
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 
 /-!
 # Body-hinge block-rank addition bricks (`sec:molecular-rigidity-matrix`)

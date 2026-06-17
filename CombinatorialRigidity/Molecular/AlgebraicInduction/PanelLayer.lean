@@ -3,7 +3,8 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Molecular.RigidityMatrix
+import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Mathlib.Data.Countable.Defs

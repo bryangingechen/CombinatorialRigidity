@@ -492,9 +492,15 @@ decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
    forest independence; trivial motions + rank Lemmas 5.1–5.3). That
    exposed a clean **core → Claim-6.12** file-split seam (zero back-edges,
    matching the blueprint `rigidity-matrix.tex` / `case-iii.tex` chapter
-   boundary) — realizable but *non-contiguous* (two ranges + a namespace
-   re-open), so it's more surgery than a tail-cut. The core split itself
-   is the open slice-7 decision (`notes/Phase22l-perf.md`).
+   boundary), executed in slice 7 as a **3-file `RigidityMatrix/`
+   subdirectory** (the slice-1 hybrid folded in; `RigidityMatrix.lean`
+   deleted): `Basic` (1839 — core API + rank Lemmas 5.1–5.3 + the shared
+   `columnOp`/pinned-block §7 infra), `Bricks` (634), `Claim612` (1202 —
+   §2 panel geometry + §8 candidate-row machinery, two nested namespaces).
+   **§7 stayed in `Basic`** because `Bricks` consumes its pinned-block
+   lemmas (shared infra) — so it's a clean *partial* win (core 2937 →
+   1839, ~1.2× cap), not the ~1500 a full Claim-6.12 extraction would give.
+   A deeper core split would need §7 itself subdivided — not pursued.
 
 7. **`Molecular/Induction/ForestSurgery.lean` (3783 LoC) — ✓ 2-way cut
    into `ForestSurgery/` (post-Phase-22l perf pass; `notes/Phase22l-perf.md`).**
