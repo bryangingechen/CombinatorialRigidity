@@ -2106,6 +2106,27 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits
   naturally alongside `Module.Basis.exteriorPower` and `finrank_eq`.
 
+### [mirrored] `exteriorPower.map_coe_eq_exteriorAlgebra_map` — the functorial `exteriorPower.map` is the restriction of the algebra morphism `ExteriorAlgebra.map`
+- **Where it bit:** Phase 23b CHAIN-3 OD-8, the covariance step behind the
+  `complementIso` O(n)-equivariance (h-1): proving the graded wedge product is
+  covariant under `exteriorPower.map` (`wedgeProd_map` / `wedgePairing_map`,
+  `Molecular/Meet.lean`) needs to push the *multiplicativity* of `ExteriorAlgebra.map f`
+  (an `AlgHom`) through `wedgeProd`'s underlying product `↑A * ↑B`.
+- **Friction:** mathlib relates `exteriorPower.map n f` and `ExteriorAlgebra.map f`
+  only on the `ιMulti` generators (`map_apply_ιMulti` on each side) — there is no
+  lemma identifying the *coercion* `↑(exteriorPower.map n f X)` with
+  `ExteriorAlgebra.map f ↑X` for an arbitrary element `X`, which is what lets a
+  product `↑A * ↑B` factor through the single algebra hom.
+- **Resolution:** mirrored `map_coe_eq_exteriorAlgebra_map (f) (X) :
+  ↑(exteriorPower.map n f X) = ExteriorAlgebra.map f ↑X` — both sides are linear in
+  `X`, agree on the `ιMulti` span (`ιMulti_span` + `ext_on`) via
+  `map_apply_ιMulti` / `ιMulti_apply_coe` (LHS) and `ExteriorAlgebra.map_apply_ιMulti`
+  (RHS). No new general idiom (the standard "two linear maps agreeing on a spanning
+  set" pattern).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits alongside
+  `topEquiv_map_eq_det_smul` (the (h-0) volume-by-det fact this covariance pairs with).
+
 ### [mirrored] `ExteriorAlgebra.ιMulti_family_congr` — cardinality-cast congruence for `ιMulti_family`
 - **Where it bit:** Phase 22d `wedgePairing_ιMulti_family_mem_range_intCast`
   (`Molecular/Meet.lean`): the diagonal wedge-pairing value uses

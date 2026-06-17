@@ -170,6 +170,33 @@ theorem topEquiv_map_eq_det_smul (f : (Fin n → R) →ₗ[R] (Fin n → R))
     LinearMap.smul_apply, smul_eq_mul]
   rw [topEquiv_map_ιMulti_family_default_eq_det, topEquiv_ιMulti_family_default, mul_one]
 
+/-- **The exterior-power functorial map agrees with the exterior-algebra map on the
+underlying element.** The induced map `exteriorPower.map n f : ⋀ⁿ M →ₗ ⋀ⁿ N`, read in
+the ambient `ExteriorAlgebra`, is the restriction of the algebra morphism
+`ExteriorAlgebra.map f`: `↑(exteriorPower.map n f X) = ExteriorAlgebra.map f ↑X` for
+every `X : ⋀ⁿ M`. Both sides are `R`-linear in `X` and agree on the `ιMulti`
+generators (`exteriorPower.map_apply_ιMulti` / `ιMulti_apply_coe` on the left,
+`ExteriorAlgebra.map_apply_ιMulti` on the right), which span `⋀ⁿ M`
+(`exteriorPower.span`). The bridge that lets the multiplicativity of
+`ExteriorAlgebra.map f` (an `AlgHom`) push through the graded wedge product `wedgeProd`
+of the screw algebra. -/
+theorem map_coe_eq_exteriorAlgebra_map {R : Type*} [CommRing R] {n : ℕ}
+    {M : Type*} [AddCommGroup M] [Module R M] {N : Type*} [AddCommGroup N] [Module R N]
+    (f : M →ₗ[R] N) (X : ⋀[R]^n M) :
+    (exteriorPower.map n f X : ExteriorAlgebra R N)
+      = ExteriorAlgebra.map f (X : ExteriorAlgebra R M) := by
+  -- Both `X ↦ ↑(map n f X)` and `X ↦ ExteriorAlgebra.map f ↑X` are linear maps
+  -- `⋀ⁿ M →ₗ ExteriorAlgebra R N`; show they agree on the spanning `ιMulti` generators.
+  have hL : ((⋀[R]^n N).subtype ∘ₗ exteriorPower.map n f :
+      ⋀[R]^n M →ₗ[R] ExteriorAlgebra R N)
+      = (ExteriorAlgebra.map f).toLinearMap ∘ₗ (⋀[R]^n M).subtype := by
+    apply LinearMap.ext_on (exteriorPower.ιMulti_span (R := R) (n := n) (M := M))
+    rintro _ ⟨m, rfl⟩
+    simp only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype,
+      exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe, AlgHom.toLinearMap_apply,
+      ExteriorAlgebra.map_apply_ιMulti]
+  exact LinearMap.congr_fun hL X
+
 /-- Two `ExteriorAlgebra.ιMulti_family` wedges over the same family `v` agree whenever
 their cardinalities and their underlying finsets agree. The `m = n` cardinality cast
 (absent from the bare `ιMulti_family` API, whose index `s` lives in

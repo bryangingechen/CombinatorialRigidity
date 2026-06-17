@@ -210,6 +210,44 @@ theorem wedgePairing_apply {j : ℕ} (hj : j ≤ k + 2)
     wedgePairing k hj A B = screwAlgebraTopEquiv k (wedgeProd hj A B) :=
   rfl
 
+/-- **The graded wedge product is covariant under `exteriorPower.map`** (OD-8 sub-leaf,
+the change-of-frame step behind the `complementIso` O(n)-equivariance (h-1)). For an
+endomorphism `f` of `ℝ^{k+2}`, transporting both factors of the graded wedge product by
+the induced exterior-power maps and then taking the product is the same as taking the
+product first and transporting by the top exterior-power map:
+`wedgeProd (map j f A) (map (N−j) f B) = map N f (wedgeProd A B)`. The underlying
+exterior-algebra elements are products `↑A * ↑B`, and the exterior-algebra morphism
+`ExteriorAlgebra.map f` is multiplicative; the bridge `map_coe_eq_exteriorAlgebra_map`
+pushes the per-grade `exteriorPower.map` through the product. -/
+theorem wedgeProd_map {j : ℕ} (hj : j ≤ k + 2)
+    (f : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgeProd hj (exteriorPower.map j f A) (exteriorPower.map (k + 2 - j) f B)
+      = exteriorPower.map (k + 2) f (wedgeProd hj A B) := by
+  apply Subtype.ext
+  rw [coe_wedgeProd, join_def, exteriorPower.map_coe_eq_exteriorAlgebra_map,
+    exteriorPower.map_coe_eq_exteriorAlgebra_map, ← map_mul,
+    exteriorPower.map_coe_eq_exteriorAlgebra_map, coe_wedgeProd, join_def]
+
+/-- **The perfect wedge pairing transforms by the determinant under `exteriorPower.map`**
+(OD-8 sub-leaf, the algebraic core of the `complementIso` O(n)-equivariance (h-1)). For an
+endomorphism `f` of `ℝ^{k+2}`, transporting both factors of the wedge pairing by the
+induced exterior-power maps scales the pairing by `LinearMap.det f`:
+`wedgePairing (map j f A) (map (N−j) f B) = det f • wedgePairing A B`. Immediate from the
+covariance of the graded wedge product (`wedgeProd_map`, the join transforms covariantly)
+composed with the volume form's change-of-variables law
+(`screwAlgebraTopEquiv_map_eq_det_smul`, sub-leaf (h-0)). Since `complementIso` is built
+from this pairing and the standard dot product (`Pi.basisFun.toDual`), this is one of the
+two transformation laws (volume-by-det and dot-product O-invariance) the panel-meet
+`complementIso` inherits its O(n)-equivariance from. -/
+theorem wedgePairing_map {j : ℕ} (hj : j ≤ k + 2)
+    (f : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgePairing k hj (exteriorPower.map j f A) (exteriorPower.map (k + 2 - j) f B)
+      = (LinearMap.det f) • wedgePairing k hj A B := by
+  rw [wedgePairing_apply, wedgeProd_map, screwAlgebraTopEquiv_map_eq_det_smul,
+    wedgePairing_apply, smul_eq_mul]
+
 /-! ## Nondegeneracy of the wedge pairing on the standard basis (ingredient (c))
 
 The third ingredient of `complementIso` (`def:meet-complement-iso`): the perfect
