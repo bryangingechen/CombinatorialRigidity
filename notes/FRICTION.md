@@ -2857,6 +2857,24 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/Data/Fintype/Card.lean` (beside `Finset.card_compl_singleton`; upstream
   it belongs near `Fintype.card_finset_len` in `Mathlib/Data/Fintype/Powerset.lean`).
 
+### [idiom] `(screwDim k - 1)` in a `ℤ`-equation breaks unification with a `{D : ℕ}` cast-bridge helper — write `((screwDim k : ℤ) - 1)`
+- **Where it bit:** the eq.-(6.12) rank equation `hNpD : (N : ℤ) + (screwDim k - 1) = …` in the
+  Phase-23a Leaf-3 numeral lift of `case_II_realization_all_k` (`AlgebraicInduction/CaseII.lean`),
+  feeding the `{D V N : ℕ}` cast-bridge helpers `sub_toNat_eq_of_add_pred_eq` /
+  `toNat_le_of_add_pred_eq` (whose statement is `(N : ℤ) + (↑D - 1) = ↑D * (↑V - 1) - k`).
+- **Friction:** at `d = 3` the *literal* `screwDim 2` made `(screwDim 2 - 1)` elaborate to the
+  `ℤ`-subtraction; with the symbolic `screwDim k` Lean parsed `screwDim k - 1` as `ℕ`-truncated
+  subtraction then coerced (`↑(screwDim k - 1)`, i.e. `Int.subNatNat`), so `D := screwDim k` failed
+  to unify against the helper's `(↑D - 1)`, and the downstream `exact_mod_cast` from the `ℕ`-`hbrick`
+  could not equate `↑(screwDim k - 1)` with `(↑(screwDim k) - 1)`.
+- **Resolution:** state `hNpD` with the explicit `((screwDim k : ℤ) - 1)` (helper applications then
+  unify; the `hNpD` proof loses its no-longer-needed `zify` and closes by `rw [hN_val]; ring`); the
+  one downstream `exact_mod_cast` is replaced by a `zify [one_le_screwDim]` bridge on the `ℕ`-`hbrick`.
+  Same root cause as TACTICS-QUIRKS § 47 (the `ring`-after-`push_cast` symptom), here surfacing as a
+  *helper-unification* failure under the literal→symbolic numeral substitution.
+- **Status:** resolved (project-internal). **Lifted to:** TACTICS-QUIRKS § 47 (cast the base before
+  subtracting in `ℤ`-valued equations).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

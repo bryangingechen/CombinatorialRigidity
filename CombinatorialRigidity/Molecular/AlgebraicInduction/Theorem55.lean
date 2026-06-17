@@ -2223,8 +2223,10 @@ theorem PanelHingeFramework.theorem_55_minimalKDof_k [DecidableEq β] [Finite α
       haveI hSimple : G.Simple :=
         Graph.simple_of_isMinimalKDof_of_noRigid (by omega) hV3 hG hnoRigid
       haveI hloop : G.Loopless := hSimple.toLoopless
-      have hGP := PanelHingeFramework.case_II_realization_all_k hD hn hfresh G hG hkpos hV3
-        _htec hnoRigid hIH
+      -- `case_II_realization_all_k` is now general-`k` (23a Leaf 3); the `d = 3` spine pins the
+      -- dimension to `2` via the return type, discharging the `1 ≤ k` floor at `2`.
+      have hGP := PanelHingeFramework.case_II_realization_all_k (k := 2) (by norm_num) hn hfresh
+        G hG hkpos hV3 _htec hnoRigid hIH
       exact ⟨fun _ => hGP, hasPanelRealization_of_generic (by omega) hGP⟩)
     -- hsplitZero: Case III (k = 0, 2EC, no rigid). G0 → simple; `case_III_realization` + M4.
     -- `hsplit` carry discharged here: G0 (`simple_of_isMinimalKDof_of_noRigid`) gives `G.Simple`,

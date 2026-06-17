@@ -249,6 +249,18 @@ theorem two_le_screwDim {k : ℕ} (hk : 1 ≤ k) : 2 ≤ screwDim k := by
   have h := Nat.choose_mono 2 (show 1 + 2 ≤ k + 2 by omega)
   simpa [screwDim] using le_trans (by decide) h
 
+/-- **The screw dimension is at least `3` in the body-hinge regime** (`def:rigidity-matrix`):
+`D = screwDim k ≥ 3` once `k ≥ 1` (i.e. the ambient dimension `d = k + 1 ≥ 2`). The general-`d`
+floor the Case-II / Case-III spine producers need (their graph-side hypotheses
+`3 ≤ bodyBarDim n` were `screwDim 2 = 6`-discharged at `d = 3`): with
+`hn : bodyBarDim n = screwDim k`, `3 ≤ bodyBarDim n` follows from this. Same `Nat.choose_mono`
+route as `two_le_screwDim` (it is
+exactly `screwDim 1 = (3).choose 2 = 3 ≤ screwDim k`); conditioned on the floor because
+`screwDim 0 = 1 < 3`. -/
+theorem three_le_screwDim {k : ℕ} (hk : 1 ≤ k) : 3 ≤ screwDim k := by
+  have h := Nat.choose_mono 2 (show 1 + 2 ≤ k + 2 by omega)
+  simpa [screwDim] using h
+
 /-- **The eq.-(6.22) lower-bound arithmetic** (`lem:case-III-nested-rank-lower`,
 Katoh–Tanigawa 2011 §6.4.1 eq. (6.22)): `D − 2 ≤ D(m − 1)` whenever `m ≥ 2`. The general-`d`
 replacement for the `d = 3` `screwDim 2 - 2 ≤ screwDim 2 * (|V'| − 1)` `decide`-led step in
