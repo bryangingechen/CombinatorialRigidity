@@ -1,8 +1,11 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open (docs-only phase-open + detailed leaf-level recon, 2026-06-17).
-No CHAIN Lean leaf built yet. The integer Phase 23 stays **in progress** —
-ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
+**Status:** open. First CHAIN Lean leaf landed (2026-06-17): CHAIN-3's
+membership sub-leaf `extensor_mem_range_map_subtype_of_mem_grade` (`Meet.lean`)
+— the grade-generic restatement of the `Fin 4`/`⋀²`-pinned
+`extensor_mem_range_map_subtype_of_mem`, now derived as its `d=3` instance. The
+integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator
+owns the sub-phase boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -18,8 +21,10 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**The CHAIN↔ENTRY chain-data contract is settled (docs-only, 2026-06-17); next
-is CHAIN-3 (buildable now, no contract dependency).** The recon
+**CHAIN-3's membership sub-leaf has landed (2026-06-17); next is CHAIN-3's
+proportionality engine `exists_smul_eq_of_mem_range_map_subtype` at general grade
+— the leaf's genuine `finrank(⋀^{d−1}W) = (finrank W).choose (d−1)` arithmetic.**
+The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
 engine is already general-`k`** (the M₁/M₂/M₃ closers `case_III_arm_realization`
@@ -52,14 +57,18 @@ The buildable-leaf sequence (exact signatures + dependency order in
 CHAIN-1/3 are buildable now (no ENTRY-contract dependency); CHAIN-5 is gated by
 the (b) flag (its signature is the CHAIN↔ENTRY contract).
 
-- [ ] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks** (`Meet.lean`).
-      Re-state `extensor_mem_range_map_subtype_of_mem`,
-      `exists_smul_eq_of_mem_range_map_subtype`,
-      `exteriorPower_basis_toDual_eq_pairingDual_comp_map`,
-      `complementIso_smul_eq_extensor_join` at `⋀[ℝ]^{d−1}(Fin (d+1)→ℝ)` with the
-      general `finrank(⋀^{d−1}W)=(finrank W).choose (d−1)`. Build LAZILY at
-      concrete grade — NO general Hodge-star. **First buildable leaf (see
-      Hand-off);** unblocks CHAIN-4 + the four-producer lift (OD-7).
+- [◐] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks** (`Meet.lean`).
+      Re-state at `⋀[ℝ]^{d−1}(Fin (d+1)→ℝ)` with the general
+      `finrank(⋀^{d−1}W)=(finrank W).choose (d−1)`. Build LAZILY at concrete grade
+      — NO general Hodge-star. Unblocks CHAIN-4 + the four-producer lift (OD-7).
+      - [x] `extensor_mem_range_map_subtype_of_mem_grade` — the membership brick
+        (grade-generic verbatim; `d=3` `extensor_mem_range_map_subtype_of_mem`
+        re-derived as the `(d:=3)` instance). Landed 2026-06-17.
+      - [ ] `exists_smul_eq_of_mem_range_map_subtype` at general grade — the
+        proportionality engine, the genuine `finrank` count
+        (`exteriorPower.finrank_eq` at `finrank W = d−1` ⇒ `= 1`).
+      - [ ] `exteriorPower_basis_toDual_eq_pairingDual_comp_map`,
+        `complementIso_smul_eq_extensor_join` at general grade.
 - [ ] **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
       Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`) to a
       `Fin d`-indexed augment. Graph-free over `ScrewSpace k`; no `d=3` content.
@@ -125,28 +134,18 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
 
 ## Hand-off / next phase
 
-**First buildable CHAIN leaf = CHAIN-3, sub-leaf the dimension-generic range
-membership** (no ENTRY-contract dependency; unblocks CHAIN-4 + the four-producer
-lift). The cleanest grounded first commit re-states the `Meet.lean:648`
-membership brick at general grade:
-
-```
-theorem extensor_mem_range_map_subtype_of_mem_grade {d : ℕ}
-    (W : Submodule ℝ (Fin (d + 1) → ℝ)) (v : Fin (d - 1) → Fin (d + 1) → ℝ)
-    (hv : ∀ i, v i ∈ W) :
-    (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^(d - 1) (Fin (d + 1) → ℝ))
-      ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype)
-```
-
-The `d=3` `extensor_mem_range_map_subtype_of_mem` (`W : Submodule ℝ (Fin 4 → ℝ)`,
-`v : Fin 2 → …`, `⋀[ℝ]^2`) becomes the `d=3` instance (`d−1 = 2`, `d+1 = 4`).
-The proof is grade-generic verbatim (`exteriorPower.map_apply_ιMulti` +
-`exteriorPower.ιMulti_apply_coe` + `Subtype.ext`/`rfl`; no `finrank` count, no
-`fin_cases`) — it is the easiest CHAIN-3 sub-leaf and a clean first contact with
-the symbolic-grade exterior-algebra surface. Then the proportionality engine
-`exists_smul_eq_of_mem_range_map_subtype` needs the genuine new count
-`finrank(⋀^{d−1}W) = (finrank W).choose (d−1)` (`exteriorPower.finrank_eq`; at
-`finrank W = d−1`, `= 1`) — the real arithmetic of CHAIN-3.
+**Next buildable CHAIN leaf = CHAIN-3's proportionality engine** (the membership
+sub-leaf `extensor_mem_range_map_subtype_of_mem_grade` landed 2026-06-17; still no
+ENTRY-contract dependency). Re-state `exists_smul_eq_of_mem_range_map_subtype`
+(`Meet.lean`) at general grade `⋀[ℝ]^(d−1) (Fin (d+1)→ℝ)`. Unlike the membership
+brick this needs the genuine new count
+`finrank(⋀^{d−1}W) = (finrank W).choose (d−1)` (`exteriorPower.finrank_eq`; at the
+proportionality site `finrank W = d−1`, so `= (d−1).choose (d−1) = 1`) replacing
+the `d=3` `finrank_exteriorPower_two_eq_one`. The two supporting bricks
+`exteriorPower_map_subtype_injective` (already `map_injective_field`, grade-generic
+— just drop the `Fin 4`/`2` pins) and the range line-identity reuse the same count.
+Then `exteriorPower_basis_toDual_eq_pairingDual_comp_map` /
+`complementIso_smul_eq_extensor_join` at general grade close CHAIN-3.
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -188,6 +187,15 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3 membership brick: lift, don't re-author — keep the `d=3` name as the
+  instance.** `extensor_mem_range_map_subtype_of_mem_grade {d}` re-states the
+  `Meet.lean` membership at grade `d−1` / ambient `Fin (d+1)`; its proof is the
+  `d=3` body verbatim (grade enters nothing). The old `Fin 4`/`⋀²`-pinned
+  `extensor_mem_range_map_subtype_of_mem` survives as a one-line corollary
+  `:= …_grade (d := 3) W v hv` (`3−1`/`3+1` reduce defeq to `2`/`4`, so no
+  coercion/`decide`) — zero regression to its downstream consumers, no blueprint
+  pointer touched. Confirms recon (D)'s "template, not verbatim reuse" call: the
+  *route* is grade-generic, only the lemma statements need re-pinning.
 - **Opened on a detailed leaf-level recon, not a build** (the design-pass-first
   discipline, `DESIGN.md` *Scale-up: design the LAYER*; the Case-I node-by-node
   precedent). The recon source-verified the central scoping fact — the
