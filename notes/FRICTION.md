@@ -145,6 +145,27 @@ to be re-derived by re-reading entries later.
   New perp-space callsites should instantiate it (`r` = #normals, `m` = #points)
   rather than re-roll the `mulVec`/`dotProduct_comm` unfold.
 
+### [idiom] bridging a general indexed family `fun i j => f (b i, j)` to a `![…]` row literal needs `ext i j; fin_cases i <;> rfl`
+- **Where it bit:** Phase 23a Leaf 2b `linearIndependent_normals_of_algebraicIndependent`
+  (`CaseIII/Realization.lean`), the `k = 2` wrapper over the general-`k`
+  `…_general` lemma. The general statement carries the row family
+  `fun (i : Fin (k+1)) j => q (b i, j)` over an injective selector `b`; the
+  still-`k=2` spine consumers want the *literal* `![fun i => q (a,i), …]`.
+- **Friction:** `fun (i : Fin 3) j => q (![a,b,c] i, j)` and
+  `![fun i => q (a,i), fun i => q (b,i), fun i => q (c,i)]` are propositionally
+  but **not** definitionally equal (the `Matrix.of`/`vecCons` literal does not
+  reduce to the `apply`-on-`![a,b,c]` form without case-splitting the index), so
+  `rwa`-ing the general result into the literal goal needs an explicit
+  `have heq : … = … := by ext i j; fin_cases i <;> rfl` first. The dual
+  direction (proving the selector `![a,b,c]` injective from three pairwise `≠`)
+  is the same shape: `fin_cases i <;> fin_cases j <;> simp_all [.symm forms]`.
+  No build cycle; this is the standing cost of keeping a `![…]`-literal wrapper
+  over a general-selector lemma (and the general body itself then closes its own
+  `LinearMap.pi … ∘ family` step by a bare `rfl`, the literal-free win).
+- **Status:** idiom. Expected whenever a `Fin n`-literal consumer sits over a
+  general-`k` family lemma; restate the family→literal equality with
+  `ext _ _; fin_cases · <;> rfl` rather than fighting defeq.
+
 ### [idiom] "`{i,j}ᶜ.orderEmbOfFin` lands outside `{i,j}`" is a 4-`rw` unfold (`mem_compl`/`mem_insert`/`mem_singleton`/`not_or`) every time
 - **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`),
   proving the kept indices `emb 0, emb 1` of `{i,j}ᶜ.orderEmbOfFin` differ from `i, j`. The identical

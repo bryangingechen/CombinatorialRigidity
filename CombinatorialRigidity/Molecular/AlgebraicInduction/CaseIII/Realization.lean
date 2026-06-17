@@ -74,88 +74,108 @@ theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends
     refine ⟨e, u, v, hlink, r, ?_, rfl⟩
     rwa [hblock e u v hlink]
 
+/-- **Normals linear independence from algebraic independence** (§1.48(2), the LI-normals bridge;
+Phase 22h base, Phase 23a general-`k` lift). For `k + 1` distinct bodies `b : Fin (k+1) → α`
+(injective) in an algebraically-independent-over-`ℚ` family `q : α × Fin (k+2) → ℝ`, the `k + 1`
+normal row vectors `fun i j => q (b i, j)` are `ℝ`-linearly independent.
+
+This is the bridge the spine's reduction cases need: the IH carries
+`AlgebraicIndependent ℚ (fun p => Q.normal p.1 p.2)`, and the placement uses `k + 1` distinct
+normals as input to the panel-incidence discriminator (KT Case III) / the degree-`(k)` cut arm
+(KT Lemma 6.5). General position (`IsGeneralPosition Q`, pairwise LI, §1.41(2)) gives the pairwise
+data; this lemma provides the full `(k+1)`-tuple LI.
+
+**Proof route** (det-polynomial, §1.48(2)): form the `(k+1)×(k+1)` submatrix
+`B i j = q (b i, Fin.castSucc j)` (first `k + 1` coordinates of each row). Show `B.det ≠ 0` by:
+(i) `B = (aeval (q ∘ f)).mapMatrix (mvPolynomialX (Fin (k+1)) (Fin (k+1)) ℚ)`
+    where `f (i,j) = (b i, Fin.castSucc j)` (by `mvPolynomialX_mapMatrix_aeval`);
+(ii) `B.det = aeval (q ∘ f) (det (mvPolynomialX ...))` (by `AlgHom.map_det`);
+(iii) `det (mvPolynomialX (Fin (k+1)) (Fin (k+1)) ℚ) ≠ 0` (`Matrix.det_mvPolynomialX_ne_zero`);
+(iv) `q ∘ f` is alg-indep over ℚ (`AlgebraicIndependent.comp`, since `f` is injective by `b`
+     injective and `Fin.castSucc` injective);
+(v) `AlgebraicIndependent.aeval_ne_zero` certifies `B.det ≠ 0`.
+Then `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp` (projection to
+first `k + 1` coordinates) lifts to the full `(k+2)`-coordinate rows. No `d = 3` content: the same
+Vandermonde/projection argument runs at every grade. -/
+lemma linearIndependent_normals_of_algebraicIndependent_general
+    {k : ℕ} {α : Type*} {q : α × Fin (k + 2) → ℝ}
+    (hq : AlgebraicIndependent ℚ q)
+    {b : Fin (k + 1) → α} (hb : Function.Injective b) :
+    LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (b i, j)) := by
+  classical
+  -- Suffices: the projection to the first `k + 1` coordinates is also independent.
+  -- If the full-row family is dependent, so is the projected family; so we prove LI of the
+  -- projected family (rows of the (k+1)×(k+1) matrix B) and lift back.
+  apply LinearIndependent.of_comp
+    (LinearMap.pi (fun j : Fin (k + 1) =>
+      (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ)))
+  -- The composed family equals the rows of the matrix B i j = q (b i, Fin.castSucc j).
+  have hcomp_eq : (LinearMap.pi
+        (fun j : Fin (k + 1) =>
+          (LinearMap.proj (Fin.castSucc j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ))) ∘
+      (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (b i, j)) =
+      fun (i : Fin (k + 1)) (j : Fin (k + 1)) => q (b i, Fin.castSucc j) := rfl
+  rw [hcomp_eq]
+  -- Show the matrix B has nonzero determinant (rows are then linearly independent).
+  apply Matrix.linearIndependent_rows_of_det_ne_zero
+  -- Set up the injection f : Fin (k+1) × Fin (k+1) → α × Fin (k+2).
+  set f : Fin (k + 1) × Fin (k + 1) → α × Fin (k + 2) :=
+    fun p => (b p.1, Fin.castSucc p.2) with hf_def
+  have hfinj : Function.Injective f := by
+    intro ⟨i, j⟩ ⟨i', j'⟩ heq
+    simp only [hf_def, Prod.mk.injEq] at heq
+    exact Prod.ext (hb heq.1) (Fin.castSucc_injective _ heq.2)
+  -- q∘f is algebraically independent over ℚ (injective precomposition of an alg-indep family).
+  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
+  -- The generic (k+1)×(k+1) det polynomial P = det(mvPolynomialX) is nonzero over ℚ.
+  have hP_ne : (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det ≠ 0 :=
+    Matrix.det_mvPolynomialX_ne_zero (Fin (k + 1)) ℚ
+  -- B.det = aeval(q∘f) P.  Use mvPolynomialX_mapMatrix_aeval: aeval(A.·) (mvPolynomialX) = A,
+  -- then take .det and apply AlgHom.map_det.
+  suffices hBdet :
+      Matrix.det (fun i j => q (b i, Fin.castSucc j)) =
+      MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)
+        (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ).det by
+    rw [hBdet]
+    exact hqf.aeval_ne_zero hP_ne
+  -- Prove B.det = aeval(q∘f) det(mvPolynomialX).
+  -- Step 1: (aeval (fun p => (q∘f) p)).mapMatrix (mvPolynomialX) = B
+  --         (by mvPolynomialX_mapMatrix_aeval, since (q∘f) p = B p.1 p.2 definitionally).
+  have hφB : (MvPolynomial.aeval (fun p : Fin (k + 1) × Fin (k + 1) => (q ∘ f) p)).mapMatrix
+      (Matrix.mvPolynomialX (Fin (k + 1)) (Fin (k + 1)) ℚ) =
+      (fun i j => q (b i, Fin.castSucc j)) := by
+    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
+      (Matrix.of (fun i j : Fin (k + 1) => q (b i, Fin.castSucc j)))
+    simp only [Matrix.of_apply] at this
+    convert this using 2
+  -- Step 2: aeval(q∘f) (det mvPolynomialX) = (aeval(q∘f).mapMatrix (mvPolynomialX)).det
+  --         by AlgHom.map_det (reversed direction).
+  rw [← hφB, AlgHom.map_det]
+
 /-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
 Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
-`q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.
-
-This is the bridge the Case-III `hcand` discharge needs: the IH carries
-`AlgebraicIndependent ℚ (fun p => Q.normal p.1 p.2)`, and the `d = 3` placement uses three
-distinct normals `n_a = q(a,·)`, `n_b = q(b,·)`, `n_c = q(c,·)` as input to
-`exists_homogeneousIncidence_of_normals`. General position (`IsGeneralPosition Q`, pairwise LI,
-§1.41(2)) gives the pairwise `hgab`; this lemma provides the triple LI.
-
-**Proof route** (det-polynomial, §1.48(2)): form the `3×3` submatrix `B i j = q([a,b,c][i],
-Fin.castSucc j)` (first three coordinates of each row). Show `B.det ≠ 0` by:
-(i) `B = (mvPolynomialX Fin3 Fin3 ℚ).map (eval₂ (algebraMap ℚ ℝ) (q ∘ f))`
-    where `f (i,j) = ([a,b,c][i], Fin.castSucc j)` (by `mvPolynomialX_map_eval₂`);
-(ii) `B.det = eval₂ (algebraMap ℚ ℝ) (q ∘ f) (det (mvPolynomialX ...))`
-    (by `RingHom.map_det`);
-(iii) `det (mvPolynomialX Fin3 Fin3 ℚ) ≠ 0` (`Matrix.det_mvPolynomialX_ne_zero`);
-(iv) `q ∘ f` is alg-indep over ℚ (`AlgebraicIndependent.comp`, since `f` is injective by `a,b,c`
-     distinct and `Fin.castSucc` injective);
-(v) `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` certifies `B.det ≠ 0`.
-Then `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp` (projection to
-first 3 coordinates) lifts to the full 4-coordinate rows. -/
+`q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly
+independent. The `d = 3` (`k = 2`) specialization of
+`linearIndependent_normals_of_algebraicIndependent_general` at the `b := ![a, b, c]` selector
+(its injectivity packaged from the three pairwise-distinctness hypotheses); kept at the `![…]`
+literal signature for the still-`k = 2` spine consumers (`case_III_candidate_dispatch`,
+`case_I_realization_h65`). -/
 lemma linearIndependent_normals_of_algebraicIndependent
     {α : Type*} {q : α × Fin 4 → ℝ}
     (hq : AlgebraicIndependent ℚ q)
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
       Fin 3 → Fin 4 → ℝ) := by
-  classical
-  -- Suffices: the projection to the first 3 coordinates is also independent.
-  -- If the full-row family is dependent, so is the projected family; so we prove LI of the
-  -- projected family (rows of the 3×3 matrix B) and lift back.
-  apply LinearIndependent.of_comp
-    (LinearMap.pi (fun j : Fin 3 => (LinearMap.proj (Fin.castSucc j) : (Fin 4 → ℝ) →ₗ[ℝ] ℝ)))
-  -- The composed family equals the rows of the 3×3 matrix B i j = q([a,b,c][i], Fin.castSucc j).
-  have hcomp_eq : (LinearMap.pi
-        (fun j : Fin 3 => (LinearMap.proj (Fin.castSucc j) : (Fin 4 → ℝ) →ₗ[ℝ] ℝ))) ∘
-      (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] : Fin 3 → Fin 4 → ℝ) =
-      fun (i : Fin 3) (j : Fin 3) => q (![a, b, c] i, Fin.castSucc j) := by
+  have hbinj : Function.Injective (![a, b, c] : Fin 3 → α) := by
+    intro i j heq
+    fin_cases i <;> fin_cases j <;>
+      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, hab.symm, hac.symm, hbc.symm]
+  have hgen := linearIndependent_normals_of_algebraicIndependent_general (k := 2) hq hbinj
+  -- The general family `fun i j => q (![a,b,c] i, j)` equals the `![…]` literal row family.
+  have heq : (fun (i : Fin 3) (j : Fin 4) => q (![a, b, c] i, j)) =
+      (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] : Fin 3 → Fin 4 → ℝ) := by
     ext i j; fin_cases i <;> rfl
-  rw [hcomp_eq]
-  -- Show the 3×3 matrix B has nonzero determinant (rows are then linearly independent).
-  apply Matrix.linearIndependent_rows_of_det_ne_zero
-  -- Set up the injection f : Fin 3 × Fin 3 → α × Fin 4.
-  set f : Fin 3 × Fin 3 → α × Fin 4 := fun p => (![a, b, c] p.1, Fin.castSucc p.2) with hf_def
-  have hfinj : Function.Injective f := by
-    intro ⟨i, j⟩ ⟨i', j'⟩ heq
-    simp only [hf_def, Prod.mk.injEq] at heq
-    have hjeq : j = j' := Fin.castSucc_injective _ heq.2
-    subst hjeq
-    suffices hi : i = i' by exact Prod.ext hi rfl
-    fin_cases i <;> fin_cases i' <;>
-      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
-  -- q∘f is algebraically independent over ℚ (injective precomposition of an alg-indep family).
-  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
-  -- The generic 3×3 det polynomial P = det(mvPolynomialX) is nonzero over ℚ.
-  have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det ≠ 0 :=
-    Matrix.det_mvPolynomialX_ne_zero (Fin 3) ℚ
-  -- B.det = aeval(q∘f) P.  Use mvPolynomialX_mapMatrix_aeval: aeval(A.·) (mvPolynomialX) = A,
-  -- then take .det and apply RingHom.map_det.
-  suffices hBdet :
-      Matrix.det (fun i j => q (![a, b, c] i, Fin.castSucc j)) =
-      MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
-        (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det by
-    rw [hBdet]
-    exact hqf.aeval_ne_zero hP_ne
-  -- Prove B.det = aeval(q∘f) det(mvPolynomialX).
-  -- B = (aeval (q∘f)).mapMatrix (mvPolynomialX) by mvPolynomialX_mapMatrix_aeval;
-  -- B.det = (aeval (q∘f)) (mvPolynomialX.det) by AlgHom.map_det.
-  -- B.det = aeval(q∘f) (det mvPolynomialX).
-  -- Step 1: (aeval (fun p => (q∘f) p)).mapMatrix (mvPolynomialX) = B
-  --         (by mvPolynomialX_mapMatrix_aeval, since (q∘f) p = B p.1 p.2 definitionally).
-  have hφB : (MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
-      (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ) =
-      (fun i j => q (![a, b, c] i, Fin.castSucc j)) := by
-    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
-      (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castSucc j)))
-    simp only [Matrix.of_apply] at this
-    convert this using 2
-  -- Step 2: aeval(q∘f) (det mvPolynomialX) = (aeval(q∘f).mapMatrix (mvPolynomialX)).det
-  --         by AlgHom.map_det (reversed direction).
-  rw [← hφB, AlgHom.map_det]
+  rwa [heq] at hgen
 
 /-- **W10b — the candidate-placement dispatch + discharge assembly** (`lem:case-II-realization` /
 `lem:case-III`, the `hcand` discharge of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011

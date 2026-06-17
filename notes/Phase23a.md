@@ -20,40 +20,28 @@ stay code-only until their turn.
 
 Phase 23 is **open with both recon stages landed**, **Leaf 0 (the `screwDim`
 arithmetic kit) green**, **Leaf 1 fully landed** (1a rank-nullity core; 1b
-grade-`k` extensor bricks), and **Leaf 2 landed (re-scoped — see below)**: the
-N1 spanning brick `span_omitTwoExtensor_eq_top` lifted to general `k`, on a new
-upstream mirror `Fintype.card_subtype_fst_lt_snd`. The next concrete commit is
-**Leaf 2b** — lift the shared-spine LI brick
-`linearIndependent_normals_of_algebraicIndependent` that the Leaf-2 re-scope
-mis-dropped to CHAIN (it is consumed by the KT-6.5 cut arm
-`case_I_realization_h65`, a genuine general-`k` spine decl) — then **Leaf 3**
+grade-`k` extensor bricks), **Leaf 2 landed (re-scoped)** (the N1 spanning brick
+`span_omitTwoExtensor_eq_top` lifted to general `k`, on a new upstream mirror
+`Fintype.card_subtype_fst_lt_snd`), and **Leaf 2b landed**: the shared-spine LI
+brick `linearIndependent_normals_of_algebraicIndependent_general` (any `k+1`
+distinct-body normals are LI from `AlgebraicIndependent ℚ q`) lifted to
+`Fin (k+2)`, with the original `Fin 4` lemma kept as a thin `k=2` wrapper so the
+two still-`k=2` spine consumers (`case_III_candidate_dispatch`,
+`case_I_realization_h65`) are untouched. The next concrete commit is **Leaf 3**
 (the CaseII rank-arithmetic numeral pass — `case_II_realization_all_k` and its
 lemmas to `screwDim k` / `HasGenericFullRankRealization k`) — see *Hand-off*.
 The general sub-phase division (§2–§3) and the 23a leaf recon (§"23a") live in
 `notes/Phase23-design.md` (the authoritative recon).
 
-**Leaf 2 re-scope (recon correction — itself corrected by the coordinator).**
-The Leaf-2 recon listed five decls to lift. A build-time consumer trace
-correctly found **three** of them — `omitTwoExtensor_eq_extensor_kept`,
-`omitTwoExtensor_homogenize_eq_extensor_kept`, `exists_independent_perp_pair` —
-**dispatch-internal**: each is consumed only inside the `⋀²ℝ⁴` duality decls
-`exists_line_data_of_homogeneousIncidence` (Claim612:522) /
-`exists_hduality_witness_of_panel_incidence` (Claim612:1075), which feed only
-`case_III_candidate_dispatch` and which CHAIN replaces wholesale; and they are
-`k=2`/`d=3`-inherent in *shape* (the 2-element kept-complement tabulation; the
-fixed 3-normal `3×3` det). They move to CHAIN, lifted at the grade CHAIN needs.
-**But the trace mis-classified the fourth**, `linearIndependent_normals_of_algebraicIndependent`
-(Realization:99): it is consumed **not only** inside the dispatch
-(Realization:350, CHAIN) **but also** by `case_I_realization_h65` (Theorem55:678),
-the KT-Lemma-6.5 degree-2-cut arm producer the dof induction
-`theorem_55_minimalKDof_k` calls at Theorem55:2143. That arm is a genuine
-reduction case of the spine — **not** the Case-III candidate dispatch — and
-Leaf 5 lifts it to general `k`, so the brick must be available at `Fin (k+2)`.
-This matches the authoritative recon (`notes/Phase23-design.md` §"23a"(a),
-ll.471–476: a "shared brick 23a must lift"). So the brick is **re-instated as
-Leaf 2b** (next); the actual content of the landed Leaf-2 commit was only the
-genuine N1 brick `span_omitTwoExtensor_eq_top` (KT Lemma 2.1's spanning result;
-23a-OD-B `(k+2)×(k+2)` squareness confirmed clean) + its supporting card count.
+**Leaf 2/2b re-scope (settled).** Of the five decls the Leaf-2 recon listed,
+**three** are genuinely dispatch-internal (`omitTwoExtensor_eq_extensor_kept`,
+`…_homogenize_…`, `exists_independent_perp_pair` — consumed only by the `⋀²ℝ⁴`
+duality decls feeding `case_III_candidate_dispatch`, and `k=2`/`d=3`-inherent in
+shape) → moved to CHAIN; one is the genuine N1 brick `span_omitTwoExtensor_eq_top`
+(landed Leaf 2); and the fifth, `linearIndependent_normals_of_algebraicIndependent`,
+is **shared-spine** (also consumed by `case_I_realization_h65`, the KT-Lemma-6.5
+cut arm) → re-instated as Leaf 2b (landed; the general-`k`
+`…_general` lemma + a `k=2` literal wrapper).
 
 **OD-5 settled (ports verbatim, no API addition, no spike).** The 23a recon
 verified against the landed source that the `screwBasis`/`annihRow` coordinate
@@ -112,9 +100,9 @@ The layer-level division, with hard cores and dependency order, is in
       at build**: 1a duality-free rank-nullity core ✓, 1b grade-`k` extensor
       bricks ✓; `exists_extensor_eq_panelSupportExtensor` dropped to CHAIN)
       → Leaf 2 N1 spanning brick `span_omitTwoExtensor_eq_top` ✓ (the three
-      other Claim612 incidence bricks are dispatch-only → CHAIN) → **Leaf 2b**
-      the shared LI brick `linearIndependent_normals_of_algebraicIndependent`
-      (Realization l.99; spine-consumed via `case_I_realization_h65`)
+      other Claim612 incidence bricks are dispatch-only → CHAIN) → Leaf 2b
+      the shared LI brick `linearIndependent_normals_of_algebraicIndependent_general`
+      ✓ (general `k`; `k=2` wrapper for the still-`k=2` spine consumers)
       → Leaf 3 CaseII rank-arithmetic numeral pass → Leaf 4 Case-III spine,
       dispatch left explicit → Leaf 5 Theorem55 spine, dispatch threaded up
       (closes 23a). Carrier files (RigidityMatrix/Basic, PanelHinge,
@@ -160,20 +148,7 @@ The clause-(ii) flags the recon could not settle from the source live in
 
 ## Hand-off / next phase
 
-**Next concrete commit: Leaf 2b** — lift the shared-spine LI brick
-`linearIndependent_normals_of_algebraicIndependent` (`CaseIII/Realization.lean:99`)
-from `Fin 4` to `Fin (k+2)`: the "any `k+1` distinct-body normals are LI from
-`AlgebraicIndependent ℚ q`" fact (a Vandermonde/projection argument, no `d=3`
-content — recon `notes/Phase23-design.md` §"23a"(a) ll.471–476). The Leaf-2
-re-scope wrongly dropped this to CHAIN; it is consumed by the KT-6.5 cut arm
-`case_I_realization_h65` (Theorem55:678), a genuine general-`k` spine decl, not
-just by `case_III_candidate_dispatch` (see *Current state*). Its still-`k=2`
-consumers (`case_I_realization_h65`; the Realization:350 dispatch) should unify
-at `k:=2` by defeq (`Fin 4` = `Fin (2+2)`, as `span_omitTwoExtensor_eq_top`'s
-consumer did); add a `k=2` wrapper only if a consumer's elaboration needs the
-literal signature. Re-green Realization (+ Theorem55 if a consumer touches).
-
-**Then Leaf 3** (`notes/Phase23-design.md` §"23a"(c)) — the CaseII
+**Next concrete commit: Leaf 3** (`notes/Phase23-design.md` §"23a"(c)) — the CaseII
 rank-arithmetic numeral pass (`AlgebraicInduction/CaseII.lean`): restate
 `case_II_realization_all_k` and its lemmas at `screwDim k` /
 `HasGenericFullRankRealization k`, routing the eq.-(6.12) ℤ/ℕ cast plumbing
@@ -188,15 +163,19 @@ re-attempt those as part of 23a's spine lift.
 (general rank-nullity perp-space brick; the three `d=3` helpers reduce to it).
 Leaf 1b — `exists_linearIndependent_extensor_pair_perp_grade` /
 `exists_extensor_in_two_panels_grade` (grade-`k` extensor bricks, with `k=2`
-wrappers keeping the `Theorem55` spine green). Leaf 2 (this commit) —
+wrappers keeping the `Theorem55` spine green). Leaf 2 —
 `span_omitTwoExtensor_eq_top` lifted to general `k` (the N1 Lemma-2.1 spanning
 fact; 23a-OD-B squareness confirmed clean), on the new mirror
 `Fintype.card_subtype_fst_lt_snd` (`Mathlib/Data/Fintype/Card.lean`,
-FRICTION-logged). Three of the four other recon-listed bricks correctly
-re-scoped to CHAIN; the fourth (`linearIndependent_normals_of_algebraicIndependent`)
-is shared-spine and re-instated as Leaf 2b (see *Current state*). The
-detailed 23a recon settled OD-5 (ports verbatim) and resolved OD-2/OD-3 (4.6/4.8
-exist only in fixed-tuple `d=3` form). See §"23a".
+FRICTION-logged); three other recon-listed bricks re-scoped to CHAIN. Leaf 2b
+(this commit) — the shared-spine LI brick lifted to general `k` as
+`linearIndependent_normals_of_algebraicIndependent_general` (any `k+1`
+distinct-body normals are LI from `AlgebraicIndependent ℚ q`; det-polynomial /
+Vandermonde route, no `d=3` content), with the `Fin 4`
+`linearIndependent_normals_of_algebraicIndependent` kept as a thin `k=2` wrapper
+(its two spine consumers — `case_III_candidate_dispatch`, `case_I_realization_h65`
+— untouched). The detailed 23a recon settled OD-5 (ports verbatim) and resolved
+OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple `d=3` form). See §"23a".
 
 **Tracked follow-up (deferred from this commit, not Phase-23 math):**
 - **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now
@@ -300,6 +279,19 @@ exist only in fixed-tuple `d=3` form). See §"23a".
   the KT-6.5 cut arm at Theorem55:678, lifted general-`k` in Leaf 5) → re-instated
   as Leaf 2b. Landed Leaf 2 = the one clean N1 brick `span_omitTwoExtensor_eq_top`.
 
+- **Leaf 2b — the shared-spine LI-normals brick to general `k`.**
+  `linearIndependent_normals_of_algebraicIndependent_general {k α} (hq : AlgebraicIndependent ℚ q)
+  {b : Fin (k+1) → α} (hb : Injective b)`: the `k+1` normal rows `fun i j => q (b i, j)` are LI.
+  Same det-polynomial route as the `d=3` original (`Matrix.linearIndependent_rows_of_det_ne_zero`
+  on the first-`(k+1)`-coordinate submatrix; `mvPolynomialX_mapMatrix_aeval` + `AlgHom.map_det` +
+  `det_mvPolynomialX_ne_zero` + `AlgebraicIndependent.aeval_ne_zero`), all `m`-generic mathlib —
+  no `d=3` content. The general body is *shorter*: with `b` an opaque injective selector the
+  `LinearMap.pi … ∘ family` step closes by a bare `rfl` and `hfinj` is one line
+  (`Prod.ext (hb …) (Fin.castSucc_injective …)`), vs the `![…]`-literal's `fin_cases`. The
+  original `Fin 4` `linearIndependent_normals_of_algebraicIndependent` is kept verbatim-signature
+  as a `k=2` wrapper (selector `![a,b,c]`, injectivity from the three `≠`, family→literal bridged
+  by `ext; fin_cases <;> rfl`) so the two still-`k=2` consumers are untouched until Leaf 4/5.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *`2 ≤ screwDim k` — `omega` can't see through `Nat.choose 2`; `Nat.choose_mono`
@@ -311,3 +303,6 @@ exist only in fixed-tuple `d=3` form). See §"23a".
 - *`Fintype.card {q : α × α // q.1 < q.2} = (card α).choose 2` (off-diagonal ordered
   pairs); the subtype-Fintype instance needs `Mathlib.Data.Fintype.Prod`* → FRICTION
   [mirrored] *`Fintype.card_subtype_fst_lt_snd`* (`Mathlib/Data/Fintype/Card.lean`).
+- *bridging a general indexed family `fun i j => f (b i, j)` to a `![…]` row literal
+  needs `ext i j; fin_cases i <;> rfl` (the cost of a `k=2` literal wrapper over a
+  general-selector lemma)* → FRICTION [idiom].
