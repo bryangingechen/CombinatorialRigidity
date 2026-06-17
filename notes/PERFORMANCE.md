@@ -474,16 +474,20 @@ molecular splits, any cut here is a pure semantics-preserving move (no
 decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
 
 6. **`Molecular/RigidityMatrix.lean` (3527 LoC) — cleanest seams,
-   medium leverage.** Named sections already isolate the tail:
+   medium leverage. ✓ Bricks carved in the post-Phase-22l perf pass**
+   (`notes/Phase22l-perf.md`). Named sections already isolated the tail:
    `section RankArithmetic` (L798–845, self-contained ℤ/ℕ cast
    plumbing) and the three rank-addition bricks
-   `section {CutEdgeBrick (L2949–3329), SpliceBrick (L3331–3411),
-   PinnedPlacementBrick (L3413–3523)}` (~575 LoC together). Carving
-   the bricks into a `RigidityMatrix/Bricks.lean` leaf is the clean
-   cut. Caveat: the core `namespace BodyHingeFramework` body
-   (L847–2935, ~2090 LoC — screw space, hinge constraint, trivial
-   motions, rank Lemmas 5.1–5.3) is un-sectioned and stays monolithic,
-   so this is a partial win unless that core is sub-sectioned first.
+   `section {CutEdgeBrick, SpliceBrick, PinnedPlacementBrick}`
+   (~589 LoC together). The bricks were carved into a new leaf
+   `Molecular/RigidityMatrix/Bricks.lean` (634 LoC); core dropped 3527 →
+   2937 LoC. The `RankArithmetic` cast plumbing stayed in core (tiny;
+   different namespace). Confirmed partial win: the core
+   `namespace BodyHingeFramework` body (~2090 LoC — screw space, hinge
+   constraint, trivial motions, rank Lemmas 5.1–5.3) is un-sectioned and
+   stays monolithic, so a deeper cut needs that core sub-sectioned first
+   (not pursued). The carve is justified on factors 2/4 (navigability +
+   partial size), **not** factor 1 — see the (C)#2 correction below.
 
 7. **`Molecular/Induction/ForestSurgery.lean` (3783 LoC) — medium
    leverage, medium effort.** All in `namespace Graph`, organized by
@@ -1002,13 +1006,17 @@ Surveyed the other raised-budget decls and next-largest files:
    split (factor 2), but it is in the *stable* Induction subtree (not
    active), so factor-3 (incremental-rebuild) leverage is low. Defer
    to a dedicated round.
-2. **`RigidityMatrix.lean` (3380 LoC, two `maxHeartbeats 400000` at
-   :3009 + :3187) — medium.** 2.25× cap and it *is* imported
-   downstream (it owns Brick A + the panel-row API the whole
-   molecular chain consumes), so a split *could* carry factor-1
-   benefit — worth a dedicated downstream-import analysis. The two
-   400k budgets are candidates for the same profile-then-localize
-   treatment as the L6b producer, independently of any split.
+2. **`RigidityMatrix.lean` — ✓ bricks carved (post-Phase-22l perf
+   pass; see item 6 + `notes/Phase22l-perf.md`).** The downstream-import
+   analysis this entry called for was done and **factor-1 is nil**: the
+   earliest brick consumer is `Pinning.lean` (2nd in the `RigidityMatrix
+   ← PanelLayer ← Pinning ← …` chain), so carving the bricks saves import
+   surface only for `PanelLayer`. The split landed on factors 2/4. (Both
+   the stale "two `maxHeartbeats 400000` at :3009/:3187" budgets this
+   entry cited were dropped to default by Phase 22l's opacity refactor;
+   core + `Bricks.lean` are now budget-clean.) Core is still 2937 LoC
+   (un-sectioned `BodyHingeFramework` body) — a deeper cut needs that
+   core sub-sectioned first.
 3. **`Deficiency.lean` (2295) / `AlgebraicInduction/PanelLayer.lean`
    (2027) / `GenericityDevice.lean` (1950) / `Pinning.lean` (1751) —
    low.** Each modestly over the cap; no raised budgets;

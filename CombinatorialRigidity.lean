@@ -18,6 +18,7 @@ import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.RigidityMatrix
+import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 import CombinatorialRigidity.PebbleGame.Correctness
 import CombinatorialRigidity.PebbleGame.Examples
 import CombinatorialRigidity.PebbleGame.Exec

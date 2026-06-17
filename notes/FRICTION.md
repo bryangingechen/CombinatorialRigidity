@@ -98,6 +98,23 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [process] "Brick" is a project mnemonic, not KT's term — a terminology-faithfulness sweep is open
+- **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
+  sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.
+- **Friction:** "brick" occurs in KT 2011 *exactly once* — a bibliography entry citing
+  Jackson–Jordán *"Brick partitions of graphs"* (2008), an unrelated concept; KT's §6.1 rank
+  argument is never "brick" anything (and "block-triangular", which the blueprint pairs with
+  it, has 0 hits in KT — also project framing). The term is nonetheless established project
+  shorthand: section names `CutEdgeBrick`/`SpliceBrick`/`PinnedPlacementBrick`, "brick" in
+  `rigidity-matrix.tex` lemma *titles*, and ~25 notes/source files. The *formal* lemma names
+  are KT-faithful (`le_finrank_span_rigidityRows_of_{cut,splice,pinned_placement}`); "brick"
+  only ever rides as an informal label.
+- **Proposed fix:** a dedicated terminology pass deciding whether to keep "brick" as
+  sanctioned informal shorthand (documented as such) or migrate the section names + blueprint
+  titles to a source-faithful term (KT §6.1 *rank-addition*). Out of scope for a
+  semantics-preserving split; `Bricks.lean` kept for now (it matches the `*Brick` sections it holds).
+- **Status:** open (user-flagged, 2026-06-17).
+
 ### [idiom] Collapsing a 3-element `Set.insert` to a pair under a non-adjacent equality (`{a, b, c}` with `a = c`) — `rw [← h]; simp` doesn't close; use `ext w; simp only [mem_insert_iff, mem_singleton_iff, ← h]; tauto`
 - **Where it bit:** Phase 22g `isKDof_zero_of_triangle` (`Deficiency.lean`), the two-part-count
   `({f x, f y, f z} : Set α).ncard = 2` in the `f x = f z` branch (collapse `{f x, f y, f z}` to
