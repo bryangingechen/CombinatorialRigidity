@@ -13,19 +13,21 @@ files (`AlgebraicInduction/Case*`), not the stable ones.
 
 ## Current state
 
-**Next step:** slice 4 (optional) — `Induction/ForestSurgery.lean` (3783 LoC), the
-last remaining over-cap molecular giant; or close the round. Slices 1–3 are landed,
+**Next step:** slice 5 (optional) — `Induction/ForestSurgery.lean` (3783 LoC), the
+last remaining over-cap molecular giant; or close the round. Slices 1–4 are landed,
 build + lint + checkdecls green, warning-clean.
 
 - **Slice 1 (`fd0ccd2`):** `RigidityMatrix.lean` 3527 → 2937 LoC; the three
   rank-addition bricks → new leaf `Molecular/RigidityMatrix/Bricks.lean` (634).
 - **Slice 2 (`8d2c8fc`):** `CaseIII.lean` gained 7 `/-! ##` section headers
-  (comment-only; the sanctioned first step before its file cut, `PERFORMANCE.md`
-  item 8) — making the grouping + a clean 2-way seam explicit.
-- **Slice 3 (CaseIII file cut):** `CaseIII.lean` (4040 LoC) split at that seam into
-  `CaseIIICandidate.lean` (1564 LoC, §1–§4 infra: Claim 6.11 + candidate-completion
-  + the `caseIIICandidate` device + certification) and `CaseIII.lean` (2515 LoC,
-  §5–§7: arms + relabel + dispatch + capstone). Rename-free.
+  (comment-only) — making the grouping + a clean 2-way seam explicit.
+- **Slice 3 (`39a6a8e`):** `CaseIII.lean` (4040 LoC) 2-way cut at that seam into
+  flat `CaseIIICandidate.lean` (§1–§4) + `CaseIII.lean` (§5–§7).
+- **Slice 4 (`CaseIII/` subdirectory):** reorganized the Case-III block into a
+  `CaseIII/` subdirectory of 4 files — `Candidate` (1564) / `Arms` (859) /
+  `Relabel` (1016) / `Realization` (692) — sub-splitting the realization half
+  (§5 arms / §6 relabel-M₃ / §7 dispatch+capstone) along the way. Chain:
+  `CaseII ← CaseIII.Candidate ← .Arms ← .Relabel ← .Realization ← Theorem55`.
 
 ## Slice plan / candidate ranking
 
@@ -36,11 +38,12 @@ build + lint + checkdecls green, warning-clean.
   The flat 44-decl namespace got 7 `/-! ##` headers grouping the decls by KT §6.4
   sub-argument (the read-pass item 8 calls for; comment-only, warning-clean after
   a 2-line longLine reflow). Active realization subtree → factor-3 high.
-- [x] **Slice 3 — `CaseIII.lean` file cut at the 2-way seam.** Cut after
-  `case_III_rank_certification` / before `case_III_arm_realization` into
-  `CaseIIICandidate.lean` (§1–§4 infra) + `CaseIII.lean` (§5–§7 realization).
-  Rename-free; inserted as a flat sibling in the chain. See *Decisions → Slice 3*.
-- [ ] **Slice 4 (candidate) — `Induction/ForestSurgery.lean` (3783 LoC).**
+- [x] **Slice 3 — `CaseIII.lean` 2-way cut at the seam** (`39a6a8e`): flat
+  `CaseIIICandidate.lean` (§1–§4) + `CaseIII.lean` (§5–§7).
+- [x] **Slice 4 — `CaseIII/` subdirectory (4 files).** Reorganized the flat cut +
+  sub-split the realization: `Candidate`/`Arms`/`Relabel`/`Realization` under
+  `AlgebraicInduction/CaseIII/`. See *Decisions → Slices 3–4*.
+- [ ] **Slice 5 (candidate) — `Induction/ForestSurgery.lean` (3783 LoC).**
   2.5× cap; ~20 `/-! ##` doc sections keyed to KT lemmas; natural 2-way cut
   (KT 4.2 forest core | KT 4.1/4.9/reduction material). *Stable* Induction subtree
   → factor-3 low. Confirm the two arcs don't share private helpers before cutting.
@@ -95,27 +98,35 @@ deeper split. Not pursued; navigability/size of the carved bricks is the win.)
   orphaned. A 3-way is *not* clean: M₃ (§6) reuses the M₁ engine
   `case_III_arm_realization` (§5), so §5/§6 can't separate.
 
-### Slice 3 — CaseIII file cut
+### Slices 3–4 — CaseIII split into the `CaseIII/` subdirectory
 
-- **The cut.** Split `CaseIII.lean` (4040 LoC) at the slice-2 seam into a new flat
-  sibling `CaseIIICandidate.lean` (1564 LoC, §1–§4: Claim 6.11 + candidate-completion
-  + `caseIIICandidate` device + `t=0` certification) and `CaseIII.lean` (2515 LoC,
-  §5–§7: arms + relabel/M₃ + dispatch + capstone). Chain insertion:
-  `CaseII ← CaseIIICandidate ← CaseIII ← Theorem55`; `CaseIII` now imports
-  `CaseIIICandidate` instead of `CaseII` (which it gets transitively). `Theorem55`'s
-  `import …CaseIII` is unchanged; the aggregator pulls the new file transitively.
-- **Rename-free, non-`module`.** No decl renamed (blueprint `\lean{}` pins +
-  `checkdecls` unaffected — verified). Both halves are non-`module` (plain `import`),
-  matching the molecular chain. The new file redeclares the namespace + `variable {k}`
-  / `open scoped Graph` / `variable {α β}` preamble. Safety-checked: no `private` decl
-  and no backward dependency crosses the seam.
-- **Still over cap.** The realization half is ~1.6× the ~1500-LoC soft cap; a
-  second-round sub-split (e.g. splitting the relabel/M₃ machinery off the arms) is a
-  clean follow-up if wanted, but the 4040 → 1564 + 2515 drop is the bulk of the win.
+- **End state: a 4-file `AlgebraicInduction/CaseIII/` subdirectory** (the flat
+  `CaseIIICandidate.lean` + `CaseIII.lean` of slice 3 were a stepping stone; slice 4
+  reorganized them + sub-split the realization). The decl namespace stays flat
+  `CombinatorialRigidity.Molecular` (the directory is file organization, not
+  namespacing — mathlib-normal):
+  - `Candidate.lean` (1564) — §1–§4: Claim 6.11 + candidate-completion +
+    `caseIIICandidate` device + `t=0` certification.
+  - `Arms.lean` (859) — §5: M₁/M₂ arm closers + triangle base + producer spine.
+  - `Relabel.lean` (1016) — §6: the `ρ=(av)` relabel transport + M₃ arm closer.
+  - `Realization.lean` (692) — §7: the M₁/M₂/M₃ dispatch + `case_III_realization`
+    capstone (the chain terminal `Theorem55` imports).
+- **Cut chain (forward, clean):** `CaseII ← CaseIII.Candidate ← .Arms ← .Relabel ←
+  .Realization ← Theorem55`. Seam between §4 and §5 was the slice-2 finding; the
+  §5/§6/§7 sub-seams are the §5→§6→§7 forward chain (M₃ reuses the M₁ engine, so
+  Relabel imports Arms; the dispatch consumes all arms, so Realization imports
+  Relabel). Rename-free, non-`module`; safety-checked (no `private` decl / backward
+  dependency crosses any seam). Only `CaseIII/` is promoted to a subdirectory —
+  `CaseI`/`CaseII` stay flat single files (mathlib convention: only the oversized
+  case gets a directory).
+- **Why a subdirectory** (user call): groups the largest case's 4 files instead of
+  accumulating `CaseIII*`-prefixed flat siblings; matches `PERFORMANCE.md` *Mathlib
+  subdirectory pattern*. No `Defs.lean`/`Basic.lean` — Case III divides by KT
+  sub-argument, not defs-vs-API, so the files carry descriptive KT-aligned names.
 
 ## Hand-off / next step
 
-Slices 1–3 are a clean handoff point. The remaining over-cap molecular giant is
-`Induction/ForestSurgery.lean` (3783 LoC, slice 4 — a stable subtree, lower factor-3;
+Slices 1–4 are a clean handoff point. The remaining over-cap molecular giant is
+`Induction/ForestSurgery.lean` (3783 LoC, slice 5 — a stable subtree, lower factor-3;
 2-way KT-4.2-core | KT-4.1/4.9 cut, confirm no shared private helpers first). Either
 take it as the next commit or close the round here.

@@ -130,7 +130,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split into a 5-file chain | ✓ Complete (the pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
-| ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/Bricks.lean` carve + `CaseIII` sectioning & 2-way cut (+ `ForestSurgery` candidate) | ◷ In progress (slices 1–3 landed; see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
+| ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/Bricks.lean` carve + `CaseIII/` 4-file subdirectory (+ `ForestSurgery` candidate) | ◷ In progress (slices 1–4 landed; see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus

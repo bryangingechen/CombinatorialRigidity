@@ -1,0 +1,692 @@
+/-
+Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Bryan Gin-ge Chen
+-/
+import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseIII.Relabel
+
+/-!
+# The algebraic induction — Case III realization (dispatch + capstone)
+
+Phase 22 (molecular-conjecture program). The terminal layer of the Case-III block (`CaseIII/`
+subdirectory; the post-Phase-22l molecular split round, `notes/Phase22l-perf.md`). The M₁/M₂/M₃
+candidate dispatch `case_III_candidate_dispatch` (W10) discharging the `hcand` obligation via the
+three arm closers (`CaseIII/Arms`, `CaseIII/Relabel`), the eq. (6.22) nested-IH rank bound
+`case_III_nested_rank_lower`, and the all-`k` Case-III composer `case_III_realization` — the
+capstone consumed by `AlgebraicInduction/Theorem55`.
+
+See `ROADMAP.md` §22 and the `sec:molecular-algebraic-induction-caseIII` dep-graph in
+`blueprint/src/chapter/algebraic-induction/case-iii.tex`.
+-/
+
+namespace CombinatorialRigidity.Molecular
+
+variable {k : ℕ}
+
+open scoped Graph
+
+variable {α β : Type*}
+
+/-! ## The discharge dispatch and the final Case III realization
+
+The M₁/M₂/M₃ dispatch discharging the candidate obligation `hcand` (W10), the eq. (6.22) nested-IH
+rank bound (`lem:case-III-nested-rank-lower`), and the all-`k` capstone `case_III_realization`
+(`lem:case-III`). -/
+
+/-- **W10a — the ends-congruence pre-brick** (design §1.53(b); Phase 22h). Two free-normal panel
+frameworks on the *same* graph `G` and seed `q` whose endpoint selectors `ends`, `ends'` agree on
+every link of `G` have *equal* rigidity-row sets. The dispatch lemma (W10b) builds the `M₁`/`M₂`
+arm selector `ends₁` by overriding `Q.ends` at the two re-inserted hinges `e_a`, `e_b`; this brick
+rewrites the W6b outputs (stated at `Q.ends`) into the `ends₁`-row span those arms consume.
+
+Both `rigidityRows` sets quantify over links `G.IsLink e u v` and read `ends` only through the
+support extensor `panelSupportExtensor (q ((ends e).1, ·)) (q ((ends e).2, ·))` (via
+`toBodyHinge_supportExtensor` + `ofNormals_ends`/`ofNormals_normal`); the generator
+`hingeRow u v r` is itself `ends`-free. So on links the support extensor — hence the hinge-row
+block `(span C)^⊥` — coincides between the two frameworks, and the row sets are equal. Graph-free
+over the carrier (no `whnf`; the established eval-lemma discipline, TACTICS-QUIRKS §38). No `\lean`
+pin (internal infra). -/
+theorem PanelHingeFramework.rigidityRows_ofNormals_congr_ends
+    {G : Graph α β} {ends ends' : β → α × α} (q : α × Fin (k + 2) → ℝ)
+    (hagree : ∀ e u v, G.IsLink e u v → ends e = ends' e) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.rigidityRows
+      = (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.rigidityRows := by
+  -- On any link `e u v`, the support extensors coincide (`ends e = ends' e`), so the hinge-row
+  -- blocks coincide; the generator `hingeRow u v r` is `ends`-free. Each membership re-provides
+  -- the same `⟨e, u, v, hlink, r, …⟩` witness.
+  have hsupp : ∀ e u v, G.IsLink e u v →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.supportExtensor e =
+        (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.supportExtensor e := by
+    intro e u v hlink
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      hagree e u v hlink]
+  have hblock : ∀ e u v, G.IsLink e u v →
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.hingeRowBlock e =
+        (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.hingeRowBlock e := by
+    intro e u v hlink
+    simp only [BodyHingeFramework.hingeRowBlock, hsupp e u v hlink]
+  apply Set.eq_of_subset_of_subset
+  · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
+    refine ⟨e, u, v, hlink, r, ?_, rfl⟩
+    rwa [← hblock e u v hlink]
+  · rintro φ ⟨e, u, v, hlink, r, hr, rfl⟩
+    refine ⟨e, u, v, hlink, r, ?_, rfl⟩
+    rwa [hblock e u v hlink]
+
+/-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
+Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
+`q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.
+
+This is the bridge the Case-III `hcand` discharge needs: the IH carries
+`AlgebraicIndependent ℚ (fun p => Q.normal p.1 p.2)`, and the `d = 3` placement uses three
+distinct normals `n_a = q(a,·)`, `n_b = q(b,·)`, `n_c = q(c,·)` as input to
+`exists_homogeneousIncidence_of_normals`. General position (`IsGeneralPosition Q`, pairwise LI,
+§1.41(2)) gives the pairwise `hgab`; this lemma provides the triple LI.
+
+**Proof route** (det-polynomial, §1.48(2)): form the `3×3` submatrix `B i j = q([a,b,c][i],
+Fin.castSucc j)` (first three coordinates of each row). Show `B.det ≠ 0` by:
+(i) `B = (mvPolynomialX Fin3 Fin3 ℚ).map (eval₂ (algebraMap ℚ ℝ) (q ∘ f))`
+    where `f (i,j) = ([a,b,c][i], Fin.castSucc j)` (by `mvPolynomialX_map_eval₂`);
+(ii) `B.det = eval₂ (algebraMap ℚ ℝ) (q ∘ f) (det (mvPolynomialX ...))`
+    (by `RingHom.map_det`);
+(iii) `det (mvPolynomialX Fin3 Fin3 ℚ) ≠ 0` (`Matrix.det_mvPolynomialX_ne_zero`);
+(iv) `q ∘ f` is alg-indep over ℚ (`AlgebraicIndependent.comp`, since `f` is injective by `a,b,c`
+     distinct and `Fin.castSucc` injective);
+(v) `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` certifies `B.det ≠ 0`.
+Then `Matrix.linearIndependent_rows_of_det_ne_zero` + `LinearIndependent.of_comp` (projection to
+first 3 coordinates) lifts to the full 4-coordinate rows. -/
+lemma linearIndependent_normals_of_algebraicIndependent
+    {α : Type*} {q : α × Fin 4 → ℝ}
+    (hq : AlgebraicIndependent ℚ q)
+    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
+      Fin 3 → Fin 4 → ℝ) := by
+  classical
+  -- Suffices: the projection to the first 3 coordinates is also independent.
+  -- If the full-row family is dependent, so is the projected family; so we prove LI of the
+  -- projected family (rows of the 3×3 matrix B) and lift back.
+  apply LinearIndependent.of_comp
+    (LinearMap.pi (fun j : Fin 3 => (LinearMap.proj (Fin.castSucc j) : (Fin 4 → ℝ) →ₗ[ℝ] ℝ)))
+  -- The composed family equals the rows of the 3×3 matrix B i j = q([a,b,c][i], Fin.castSucc j).
+  have hcomp_eq : (LinearMap.pi
+        (fun j : Fin 3 => (LinearMap.proj (Fin.castSucc j) : (Fin 4 → ℝ) →ₗ[ℝ] ℝ))) ∘
+      (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] : Fin 3 → Fin 4 → ℝ) =
+      fun (i : Fin 3) (j : Fin 3) => q (![a, b, c] i, Fin.castSucc j) := by
+    ext i j; fin_cases i <;> rfl
+  rw [hcomp_eq]
+  -- Show the 3×3 matrix B has nonzero determinant (rows are then linearly independent).
+  apply Matrix.linearIndependent_rows_of_det_ne_zero
+  -- Set up the injection f : Fin 3 × Fin 3 → α × Fin 4.
+  set f : Fin 3 × Fin 3 → α × Fin 4 := fun p => (![a, b, c] p.1, Fin.castSucc p.2) with hf_def
+  have hfinj : Function.Injective f := by
+    intro ⟨i, j⟩ ⟨i', j'⟩ heq
+    simp only [hf_def, Prod.mk.injEq] at heq
+    have hjeq : j = j' := Fin.castSucc_injective _ heq.2
+    subst hjeq
+    suffices hi : i = i' by exact Prod.ext hi rfl
+    fin_cases i <;> fin_cases i' <;>
+      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one]
+  -- q∘f is algebraically independent over ℚ (injective precomposition of an alg-indep family).
+  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
+  -- The generic 3×3 det polynomial P = det(mvPolynomialX) is nonzero over ℚ.
+  have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det ≠ 0 :=
+    Matrix.det_mvPolynomialX_ne_zero (Fin 3) ℚ
+  -- B.det = aeval(q∘f) P.  Use mvPolynomialX_mapMatrix_aeval: aeval(A.·) (mvPolynomialX) = A,
+  -- then take .det and apply RingHom.map_det.
+  suffices hBdet :
+      Matrix.det (fun i j => q (![a, b, c] i, Fin.castSucc j)) =
+      MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
+        (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det by
+    rw [hBdet]
+    exact hqf.aeval_ne_zero hP_ne
+  -- Prove B.det = aeval(q∘f) det(mvPolynomialX).
+  -- B = (aeval (q∘f)).mapMatrix (mvPolynomialX) by mvPolynomialX_mapMatrix_aeval;
+  -- B.det = (aeval (q∘f)) (mvPolynomialX.det) by AlgHom.map_det.
+  -- B.det = aeval(q∘f) (det mvPolynomialX).
+  -- Step 1: (aeval (fun p => (q∘f) p)).mapMatrix (mvPolynomialX) = B
+  --         (by mvPolynomialX_mapMatrix_aeval, since (q∘f) p = B p.1 p.2 definitionally).
+  have hφB : (MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
+      (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ) =
+      (fun i j => q (![a, b, c] i, Fin.castSucc j)) := by
+    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
+      (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castSucc j)))
+    simp only [Matrix.of_apply] at this
+    convert this using 2
+  -- Step 2: aeval(q∘f) (det mvPolynomialX) = (aeval(q∘f).mapMatrix (mvPolynomialX)).det
+  --         by AlgHom.map_det (reversed direction).
+  rw [← hφB, AlgHom.map_det]
+
+/-- **W10b — the candidate-placement dispatch + discharge assembly** (`lem:case-II-realization` /
+`lem:case-III`, the `hcand` discharge of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011
+§6.4.1, eqs.~(6.24)–(6.44), design §1.53(c)/(d), Phase 22h). This is the assembly that matches the
+producer's `hcand` parameter shape (`case_III_hsplit_producer`) and discharges it: from the chain
+data, a fresh `e₀`, and the IH-derived **generic** `v`-split realization `hsplitGP`, it produces
+the generic realization of `G`.
+
+The route (KT p. 686): one invocation of the W6b packaging
+(`exists_candidateRow_bottomRows_of_rigidOn`) at the `v`-split extracts the candidate functional
+`ρ`, its annihilation `ρ(C(e₀)) = 0`, its span membership, and the bottom family `w` — *one*
+redundancy, *one* GAP-6 consumption (carried as `h622lb`, instantiated at the IH seed/selector
+`(Q.ends, q)`). After normalizing the W6b outputs to the chain order `(a, b)` (the landed W8
+sign-swap pattern), the discriminator (`exists_homogeneousIncidence_of_normals` +
+`exists_complementIso_ne_zero_of_homogeneousIncidence`) picks the discriminating panel `u : Fin 3`
+and a transversal normal `n'` with `ρ(panelSupportExtensor (![n_a,n_b,n_c] u) n') ≠ 0`.
+`fin_cases u` dispatches to the three arm closers: `u = 0 ↦` W7 (the `a`-side line `L ⊂ Π(a)`),
+`u = 1 ↦` W8 (the `b`-side line, the swapped-role W7), `u = 2 ↦` W9c (the `c`-side line, the
+relabel-instantiation of W7 at `G − a`). The M₁/M₂ arms consume the W6b row-set outputs at the
+override selector `ends₁`; the W10a congruence pre-brick (`rigidityRows_ofNormals_congr_ends`)
+rewrites the `Q.ends`-stated outputs into `ends₁`-row span those arms expect. The M₃ arm consumes
+at `Q.ends` directly. No leftover obligations beyond the carried `h622lb` (never a `sorry`). -/
+theorem PanelHingeFramework.case_III_candidate_dispatch
+    [Finite α] [Finite β]
+    (G : Graph α β) (v a b c : α) (e_a e_b e_c e₀ : β)
+    (hsimple : G.Simple)
+    (hvG : v ∈ V(G)) (haG : a ∈ V(G)) (hbG : b ∈ V(G)) (hcG : c ∈ V(G))
+    (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a) (hcv : c ≠ v) (hca : c ≠ a) (hbc : b ≠ c)
+    (heab : e_a ≠ e_b) (heac : e_a ≠ e_c)
+    (hlea : G.IsLink e_a v a) (hleb : G.IsLink e_b v b) (hlec : G.IsLink e_c a c)
+    (hclv : ∀ e x, G.IsLink e v x → e = e_a ∨ e = e_b)
+    (hcla : ∀ e x, G.IsLink e a x → e = e_a ∨ e = e_c)
+    (he₀ : e₀ ∉ E(G))
+    -- GAP 6 (adjudicated carry, §1.50(b) option (ii)): the eq.-(6.22) nested-IH rank bound at
+    -- `G − v`, quantified over the (existentially bound) IH selector/seed and conditioned on the
+    -- IH-suppliable facts (§1.53(a)2). Instantiated inside the proof at `(Q.ends, q)`; fed to W6b
+    -- as its `h622lb`. An explicit named hypothesis, never a `sorry`.
+    (h622lb : ∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows))
+    {n : ℕ} (hdef_Gab : (G.splitOff v a b e₀).deficiency n = 0)
+    (hdef : G.deficiency n = 0)
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.splitOff v a b e₀)) :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI hGloop : G.Loopless := hsimple.toLoopless
+  set Gab := G.splitOff v a b e₀ with hGab
+  set Gv := G.removeVertex v with hGv
+  haveI : Gv.Loopless := hGloop.mono (hGv ▸ Graph.removeVertex_le G v)
+  -- 1. Unpack the generic `v`-split realization; re-express `Q` as `ofNormals Gab Q.ends q`.
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := hsplitGP
+  set q : α × Fin 4 → ℝ := fun p => Q.normal p.1 p.2 with hq
+  have hQeq : PanelHingeFramework.ofNormals Gab Q.ends q = Q := by rw [hq, ← hQg]; rfl
+  have hgp' : (PanelHingeFramework.ofNormals Gab Q.ends q).IsGeneralPosition := by
+    rw [hQeq]; exact hQgp
+  have hne' : V(Gab).Nonempty := ⟨a, by rw [hGab, Graph.vertexSet_splitOff]; exact ⟨haG, by
+    simp [hav]⟩⟩
+  have hne_Q : Q.toBodyHinge.graph.vertexSet.Nonempty := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne'
+  rw [hdef_Gab, sub_zero] at hQrank
+  have hVeq_Gab : V(Gab) = Q.toBodyHinge.graph.vertexSet := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]
+  have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
+  have hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(Gab) := by
+    rw [hVeq_Gab,
+      BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
+        Q.toBodyHinge hne_Q, ← hVeq_Gab]
+    zify [h1_Gab] at hQrank ⊢; exact_mod_cast hQrank
+  have hrig' : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.IsInfinitesimallyRigidOn
+      V(Gab) := by rw [hQeq]; exact hQrig
+  have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
+    intro e u w he
+    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact Or.inl (Prod.ext h1 h2)
+    · exact Or.inr (Prod.ext h1 h2)
+  -- 2. Inline graph facts.
+  have he₀ab : Gab.IsLink e₀ a b := by
+    rw [hGab, Graph.splitOff_isLink]
+    exact Or.inr ⟨rfl, hav, hbv, haG, hbG, Or.inl ⟨rfl, rfl⟩⟩
+  have hle : ∀ e u w, Gv.IsLink e u w → Gab.IsLink e u w := by
+    intro e u w hlink
+    rw [hGv, Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ hGlink.edge_mem)
+    rw [hGab, Graph.splitOff_isLink]
+    exact Or.inl ⟨hee₀, hGlink, hunev, hwnev⟩
+  have hsplit : ∀ e u w, Gab.IsLink e u w → Gv.IsLink e u w ∨ e = e₀ := by
+    intro e u w hlink
+    rw [hGab, Graph.splitOff_isLink] at hlink
+    rcases hlink with ⟨hee₀, hGlink, hunev, hwnev⟩ | ⟨he, _⟩
+    · exact Or.inl (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hGlink, hunev, hwnev⟩)
+    · exact Or.inr he
+  have hGv_off : ∀ {e u w}, Gv.IsLink e u w → e ≠ e_a ∧ e ≠ e_b := by
+    intro e u w hlink
+    rw [hGv, Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    refine ⟨fun he => ?_, fun he => ?_⟩
+    · subst he
+      rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hunev hh.symm
+      · exact hwnev hh.symm
+    · subst he
+      rcases hleb.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hunev hh.symm
+      · exact hwnev hh.symm
+  have hV4 : 4 ≤ V(G).ncard := by
+    have h1 : ({v, a, b, c} : Set α) ⊆ V(G) := by
+      intro x hx; simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+      rcases hx with rfl | rfl | rfl | rfl <;> assumption
+    have h2 : ({v, a, b, c} : Set α).ncard = 4 := by
+      rw [Set.ncard_insert_of_notMem (by simp [hav.symm, hbv.symm, hcv.symm]),
+        Set.ncard_insert_of_notMem (by simp [hba.symm, hca.symm]),
+        Set.ncard_insert_of_notMem (by simp [hbc]), Set.ncard_singleton]
+    calc 4 = ({v, a, b, c} : Set α).ncard := h2.symm
+      _ ≤ V(G).ncard := Set.ncard_le_ncard h1 (Set.toFinite _)
+  have hcard : V(Gab).ncard = V(Gv).ncard := by
+    rw [hGab, hGv, Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
+  have hgp_seed : ∀ x y : α, x ≠ y →
+      LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)] := by
+    intro x y hxy
+    have := hgp' x y hxy
+    rw [PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at this
+    exact this
+  -- 3. W6b: one invocation extracting the candidate / bottom data.
+  have hD : (2 : ℕ) ≤ screwDim 2 := by decide
+  have huv : (Q.ends e₀).1 ≠ (Q.ends e₀).2 := by
+    rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
+    · exact hba.symm
+    · exact hba
+  have hne₀ : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e₀ ≠ 0 := by
+    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp'
+    rw [PanelHingeFramework.ofNormals_ends]; exact huv
+  have he₀' : Gab.IsLink e₀ (Q.ends e₀).1 (Q.ends e₀).2 := by
+    rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
+    · exact he₀ab
+    · exact he₀ab.symm
+  obtain ⟨ρ, w, hρne, hρe₀', hρGv', hw, hwmem'⟩ :=
+    BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
+      (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
+      (h622lb Q.ends q hrec' hgp_seed hQalg)
+  -- 4. Normalize the W6b outputs to chain order `(a, b)` (the W8 sign-swap pattern).
+  set na := (fun i => q (a, i)) with hna
+  set nb := (fun i => q (b, i)) with hnb
+  set nc := (fun i => q (c, i)) with hnc
+  -- The `supportExtensor e₀`-form annihilation in `panelSupportExtensor` form.
+  have hsupp_e₀ : ∀ (r : Module.Dual ℝ (ScrewSpace 2)),
+      r ((PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e₀) =
+        r (panelSupportExtensor (fun i => q ((Q.ends e₀).1, i))
+          (fun i => q ((Q.ends e₀).2, i))) := by
+    intro r
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+  obtain ⟨ρ0, hρ0ne, hρ0e₀, hρ0Gv, hw0mem⟩ :
+      ∃ ρ0 : Module.Dual ℝ (ScrewSpace 2), ρ0 ≠ 0 ∧
+        ρ0 (panelSupportExtensor na nb) = 0 ∧
+        BodyHingeFramework.hingeRow a b ρ0 ∈ Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv Q.ends q).toBodyHinge.rigidityRows ∧
+        (∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv Q.ends q).toBodyHinge.rigidityRows ∨
+          ∃ ρ' : Module.Dual ℝ (ScrewSpace 2),
+            ρ' (panelSupportExtensor na nb) = 0 ∧ w j = BodyHingeFramework.hingeRow a b ρ') := by
+    rcases hrec' e₀ a b he₀ab with he | he
+    · -- recorded `(a, b)`: take `ρ0 := ρ`.
+      refine ⟨ρ, hρne, ?_, ?_, ?_⟩
+      · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
+      · rw [he] at hρGv'; exact hρGv'
+      · intro j
+        rcases hwmem' j with hgen | ⟨ρ', hρ'e₀, hwj⟩
+        · exact Or.inl hgen
+        · refine Or.inr ⟨ρ', ?_, by rw [hwj, he]⟩
+          rw [hsupp_e₀, he] at hρ'e₀; exact hρ'e₀
+    · -- recorded `(b, a)`: take `ρ0 := -ρ` (`hingeRow b a (-ρ) = hingeRow a b ρ`).
+      refine ⟨-ρ, neg_ne_zero.mpr hρne, ?_, ?_, ?_⟩
+      · rw [hsupp_e₀, he] at hρe₀'
+        rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
+      · rw [he] at hρGv'
+        rwa [← BodyHingeFramework.hingeRow_swap]
+      · intro j
+        rcases hwmem' j with hgen | ⟨ρ', hρ'e₀, hwj⟩
+        · exact Or.inl hgen
+        · refine Or.inr ⟨-ρ', ?_, ?_⟩
+          · rw [hsupp_e₀, he] at hρ'e₀
+            rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ'e₀, neg_zero, neg_zero]
+          · rw [hwj, he, ← BodyHingeFramework.hingeRow_swap]
+  -- 5. The discriminator: pick the discriminating panel `u : Fin 3` and transversal normal `n'`.
+  have hn : LinearIndependent ℝ ![na, nb, nc] :=
+    linearIndependent_normals_of_algebraicIndependent hQalg hba.symm hca.symm hbc
+  obtain ⟨pbar, hp, h0, h1, h2, h3⟩ := exists_homogeneousIncidence_of_normals hn
+  obtain ⟨u, n', hpair, hgate⟩ :=
+    BodyHingeFramework.exists_complementIso_ne_zero_of_homogeneousIncidence
+      hρ0ne hp hn h0 ⟨h1.1, h1.2.1⟩ ⟨h2.1, h2.2.1⟩ ⟨h3.1, h3.2.1⟩
+  rw [← panelSupportExtensor_eq_complementIso_extensor] at hgate
+  -- The M₁/M₂ override selector `ends₁` and the M₃ override selector `ends₃`.
+  set ends₁ : β → α × α := Function.update (Function.update Q.ends e_a (v, a)) e_b (v, b)
+    with hends₁
+  -- `ends₁` reduces to `Q.ends` off `{e_a, e_b}`, used by the W10a congruence on `Gv`-links.
+  have hends₁_off : ∀ {e}, e ≠ e_a → e ≠ e_b → ends₁ e = Q.ends e := by
+    intro e hea heb
+    rw [hends₁, Function.update_of_ne heb, Function.update_of_ne hea]
+  have hcongr : (PanelHingeFramework.ofNormals Gv Q.ends q).toBodyHinge.rigidityRows
+      = (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.rigidityRows :=
+    PanelHingeFramework.rigidityRows_ofNormals_congr_ends q
+      (fun e u w hlink => (hends₁_off (hGv_off hlink).1 (hGv_off hlink).2).symm)
+  -- Common `Gv`/`G` facts shared by the M₁/M₂ arms.
+  have hvVc : v ∉ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+  have haVc : a ∈ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact ⟨haG, hav⟩
+  have hbVc : b ∈ V(Gv) := by rw [hGv, Graph.vertexSet_removeVertex]; exact ⟨hbG, hbv⟩
+  have hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w := by
+    intro e u w hlink; rw [hGv, Graph.removeVertex_isLink] at hlink; exact hlink.1
+  have hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w := by
+    intro e u w hlink
+    by_cases hu : u = v
+    · subst u; rcases hclv e w hlink with rfl | rfl
+      · exact Or.inl rfl
+      · exact Or.inr (Or.inl rfl)
+    · by_cases hw : w = v
+      · subst w; rcases hclv e u hlink.symm with rfl | rfl
+        · exact Or.inl rfl
+        · exact Or.inr (Or.inl rfl)
+      · exact Or.inr (Or.inr (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hlink, hu, hw⟩))
+  have hVone : 1 ≤ V(Gv).ncard := by
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+  have hVcard : V(G).ncard = V(Gv).ncard + 1 := by
+    rw [hGv, Graph.vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]; omega
+  -- The M₁/M₂ arm `ends₁`-stated selector facts.
+  have hends_ea₁ : ends₁ e_a = (v, a) := by
+    rw [hends₁, Function.update_of_ne heab, Function.update_self]
+  have hends_eb₁ : ends₁ e_b = (v, b) := by rw [hends₁, Function.update_self]
+  have hends_Gv₁ : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends₁ e).1 (ends₁ e).2 := by
+    intro e u w hlink
+    obtain ⟨hne_a, hne_b⟩ := hGv_off hlink
+    rw [hends₁_off hne_a hne_b]
+    rcases hrec' e u w (hle e u w hlink) with he | he <;> rw [he]
+    · exact hlink
+    · exact hlink.symm
+  have hne_Gv₁ : ∀ e, Gv.IsLink e (ends₁ e).1 (ends₁ e).2 →
+      (PanelHingeFramework.ofNormals Gv ends₁ q).toBodyHinge.supportExtensor e ≠ 0 := by
+    intro e hlink
+    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition
+    · intro x y hxy
+      rw [PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+      exact hgp_seed x y hxy
+    · rw [PanelHingeFramework.ofNormals_ends]; exact hlink.ne
+  -- 6. Dispatch on `u`.
+  fin_cases u
+  · -- `u = 0` → W7 (the `a`-side line).
+    simp only [show (⟨0, by omega⟩ : Fin 3) = 0 from rfl, Matrix.cons_val_zero] at hpair hgate
+    refine PanelHingeFramework.case_III_arm_realization (k := 2) G Gv ends₁ (q := q)
+      (v := v) (a := a) (b := b) (e_a := e_a) (e_b := e_b) (n' := n')
+      hvVc haVc hbVc hlea hleb hends_ea₁ hends_eb₁ heab hleG hsplitG hends_Gv₁ hne_Gv₁
+      hVone hVcard hpair (hgp_seed a b hba.symm) hgate hρ0e₀ ?_ (ιb := _) (w := w) ?_ hw ?_ hdef
+    · rw [← hcongr]; exact hρ0Gv
+    · rw [Nat.card_fin, hcard]
+    · intro j
+      rcases hw0mem j with hgen | hcand
+      · exact Or.inl (by rw [← hcongr]; exact hgen)
+      · exact Or.inr hcand
+  · -- `u = 1` → W8 (the `b`-side line).
+    simp only [show (⟨1, by omega⟩ : Fin 3) = 1 from rfl, Matrix.cons_val_one] at hpair hgate
+    refine PanelHingeFramework.case_III_arm_realization_M2 (k := 2) G Gv ends₁ (q := q)
+      (v := v) (a := a) (b := b) (e_a := e_a) (e_b := e_b) (n'' := n')
+      hvVc haVc hbVc hlea hleb hends_ea₁ hends_eb₁ heab hleG hsplitG hends_Gv₁ hne_Gv₁
+      hVone hVcard hpair (hgp_seed a b hba.symm) hgate hρ0e₀ ?_ (ιb := _) (w := w) ?_ hw ?_ hdef
+    · rw [← hcongr]; exact hρ0Gv
+    · rw [Nat.card_fin, hcard]
+    · intro j
+      rcases hw0mem j with hgen | hcand
+      · exact Or.inl (by rw [← hcongr]; exact hgen)
+      · exact Or.inr hcand
+  · -- `u = 2` → W9c (the `c`-side line, the relabel-instantiation at `G − a`).
+    simp only [show (⟨2, by omega⟩ : Fin 3) = 2 from rfl, Matrix.cons_val_two,
+      Matrix.tail_cons, Matrix.head_cons] at hpair hgate
+    have hebc : e_b ≠ e_c := by
+      intro he; subst he
+      rcases hleb.eq_and_eq_or_eq_and_eq hlec with ⟨hh, _⟩ | ⟨_, hh⟩
+      · exact hav hh.symm
+      · exact hba hh
+    set ends₃ : β → α × α :=
+      Function.update (Function.update (Function.update Q.ends e_c (a, c)) e_a (a, v)) e_b (v, b)
+      with hends₃
+    have hends₃_ec : ends₃ e_c = (a, c) := by
+      rw [hends₃, Function.update_of_ne hebc.symm, Function.update_of_ne heac.symm,
+        Function.update_self]
+    have hends₃_ea : ends₃ e_a = (a, v) := by
+      rw [hends₃, Function.update_of_ne heab, Function.update_self]
+    have hends₃_eb : ends₃ e_b = (v, b) := by rw [hends₃, Function.update_self]
+    have hends₃_off : ∀ e, e ≠ e_a → e ≠ e_b → e ≠ e_c → ends₃ e = Q.ends e := by
+      intro e hea heb hec
+      rw [hends₃, Function.update_of_ne heb, Function.update_of_ne hea, Function.update_of_ne hec]
+    haveI : (G.removeVertex a).Loopless := hGloop.mono (Graph.removeVertex_le G a)
+    set qρ : α × Fin 4 → ℝ := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
+    have hrecGv : ∀ e x y, Gv.IsLink e x y → Q.ends e = (x, y) ∨ Q.ends e = (y, x) :=
+      fun e x y hlink => hrec' e x y (hle e x y hlink)
+    -- `hends_Gva` / `hne_Gva` for the `G − a` framework `ofNormals (G − a) ends₃ qρ`.
+    have hca_mem : a ∈ V(G) := haG
+    have hends_Gva : ∀ e x y, (G.removeVertex a).IsLink e x y →
+        (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2 := by
+      intro e x y hlink
+      obtain ⟨hGlink, hxa, hya⟩ := Graph.removeVertex_isLink.mp hlink
+      by_cases hee_b : e = e_b
+      · subst e; rw [hends₃_eb]
+        exact Graph.removeVertex_isLink.mpr ⟨hleb, hav.symm, hba⟩
+      · -- `e ≠ e_a` and `e ≠ e_c` since both touch `a`.
+        have hee_a : e ≠ e_a := by
+          intro he; subst e
+          rcases hlea.eq_and_eq_or_eq_and_eq hGlink with ⟨_, hh⟩ | ⟨_, hh⟩
+          · exact hya hh.symm
+          · exact hxa hh.symm
+        have hee_c : e ≠ e_c := by
+          intro he; subst e
+          rcases hlec.eq_and_eq_or_eq_and_eq hGlink with ⟨hh, _⟩ | ⟨hh, _⟩
+          · exact hxa hh.symm
+          · exact hya hh.symm
+        rw [hends₃_off e hee_a hee_b hee_c]
+        -- the link avoids `v` (via `hclv`, since `e ∉ {e_a, e_b}`), so it is a `Gv`-link.
+        have hxv : x ≠ v := by
+          intro h; subst x
+          rcases hclv e y hGlink with rfl | rfl <;> [exact hee_a rfl; exact hee_b rfl]
+        have hyv : y ≠ v := by
+          intro h; subst y
+          rcases hclv e x hGlink.symm with rfl | rfl <;> [exact hee_a rfl; exact hee_b rfl]
+        have hGvl : Gv.IsLink e x y := by
+          rw [hGv, Graph.removeVertex_isLink]; exact ⟨hGlink, hxv, hyv⟩
+        rcases hrecGv e x y hGvl with he | he <;> rw [he]
+        · exact Graph.removeVertex_isLink.mpr ⟨hGlink, hxa, hya⟩
+        · exact Graph.removeVertex_isLink.mpr ⟨hGlink.symm, hya, hxa⟩
+    have hGPva : (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃ qρ).IsGeneralPosition := by
+      intro x y hxy
+      simp only [PanelHingeFramework.ofNormals_normal, hqρ]
+      exact hgp_seed _ _ (fun h => hxy ((Equiv.swap a v).injective h))
+    have hne_Gva : ∀ e, (G.removeVertex a).IsLink e (ends₃ e).1 (ends₃ e).2 →
+        (PanelHingeFramework.ofNormals (G.removeVertex a) ends₃ qρ).toBodyHinge.supportExtensor
+          e ≠ 0 := by
+      intro e hlink
+      refine PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hGPva ?_
+      rw [PanelHingeFramework.ofNormals_ends]; exact hlink.ne
+    have hV3 : 3 ≤ V(G).ncard := by omega
+    refine PanelHingeFramework.case_III_arm_realization_M3 (k := 2) G Q.ends ends₃ (q := q)
+      (v := v) (a := a) (b := b) (c := c) (e_a := e_a) (e_b := e_b) (e_c := e_c) (n''' := n')
+      hav.symm hba.symm hbv.symm hca hcv hlea hleb hlec heac hcla hrecGv
+      hends₃_ec hends₃_ea hends₃_eb hends₃_off hends_Gva hne_Gva hV3 hpair (hgp_seed c a hca)
+      hgate hρ0e₀ hρ0Gv (ιb := _) (w := w) ?_ hw ?_ hdef
+    · have hGabcard : V(Gab).ncard = V(G).ncard - 1 := by
+        rw [hGab, Graph.vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+      rw [Nat.card_fin, hGabcard, Nat.sub_sub]
+    · intro j
+      rcases hw0mem j with hgen | hcand
+      · exact Or.inl hgen
+      · exact Or.inr hcand
+
+/-- **The Case-III `d = 3` realization, 0-dof spine wrapper** (Phase 22k L7b thin wrapper,
+Flag F1; the old `h622`-carrying shape retained so `theorem_55_d3` keeps building until
+the L9 spine replaces it with `theorem_55_all_k`). See `case_III_realization` below for the
+discharged all-`k` form. -/
+theorem PanelHingeFramework.case_III_realization_0dof [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    -- GAP 6 (adjudicated carry): see `theorem_55_d3`.
+    (h622 : ∀ (G : Graph α β) (v a b : α) (e₀ : β)
+        (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hSimple : G.Simple)
+    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
+  PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple hIH hfresh
+    (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' =>
+      PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
+        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀
+        (h622 G v a b e₀)
+        hdef_Gab hG.1 hsplitGP')
+
+/-- **Eq.-(6.22) nested rank lower bound** (`lem:case-III-nested-rank-lower`; Katoh–Tanigawa 2011
+eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b). For a simple minimal `0`-dof-graph `G` with a
+degree-2 vertex `v` (its two `v`-edges are `eₐ : v—a`, `e_b : v—b`, and no others) and a fresh edge
+`e₀ ∉ E(G)`, the free-normal panel framework on the vertex-removal `Gv = G − v` attains, at any
+link-recording selector and any pairwise-LI, algebraically-independent seed, at least the rank
+`D(|V(G.splitOff v a b e₀)| − 1) − (D − 2)` that KT's hypothesis (6.1) predicts.
+
+This is KT's *nested* use of the induction (Claim 6.11, eq. (6.22)), discharged from the **all-`k`
+IH** — not the `0`-dof-only motive: the nested subgraph `Gv` is minimal `k'`-dof with `k' ≤ D − 2`
+(`splitOff_removeVertex_minimalKDof`), so the IH realizes it at rank `D(|Vᵥ| − 1) − k'`, and the
+landed L7a rank-polynomial extractor (`exists_rankPolynomial_of_IH_linking`) plus the footnote-6
+non-root device transfer that rank to the given seed; `k' ≤ D − 2` closes the arithmetic. The bound
+holds at `|V(Gᵃᵇ)| = |V(G)| − 1 ≥ 2` (from `hV3`), so it needs no fourth vertex. -/
+theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hba : b ≠ a) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G))
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    ∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows) := by
+  intro ends q hrecEnds _hgp_seed hQalg
+  -- `hle`: every `(G.removeVertex v)`-link is a `(G.splitOff v a b e₀)`-link.
+  have hle : ∀ e u w, (G.removeVertex v).IsLink e u w → (G.splitOff v a b e₀).IsLink e u w := by
+    intro e u w hlink
+    rw [Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ hGlink.edge_mem)
+    rw [Graph.splitOff_isLink]
+    exact Or.inl ⟨hee₀, hGlink, hunev, hwnev⟩
+  -- `hends'`: `ends` records links of `G.removeVertex v`.
+  have hends' : ∀ e u w, (G.removeVertex v).IsLink e u w →
+      (G.removeVertex v).IsLink e (ends e).1 (ends e).2 := by
+    intro e u w hlink
+    rcases hrecEnds e u w (hle e u w hlink) with h | h
+    · rw [h]; exact hlink
+    · rw [h]; exact hlink.symm
+  -- `hcard`: `V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard`.
+  have hcard : V(G.splitOff v a b e₀).ncard = V(G.removeVertex v).ncard := by
+    rw [Graph.vertexSet_splitOff, Graph.vertexSet_removeVertex]
+  -- `Graph.splitOff_removeVertex_minimalKDof`: `G.removeVertex v` is minimal `k'`-dof
+  -- with `k' ≤ D−2`.
+  obtain ⟨hGvmin, _hk'nn, hk'le⟩ :=
+    Graph.splitOff_removeVertex_minimalKDof (by omega : 2 ≤ Graph.bodyBarDim n)
+      hba.symm hav hbv heab hlea hleb hclv he₀ hG
+  -- `G.removeVertex v` is simple, nonempty, and strictly smaller than `G`.
+  have hGvSimple : (G.removeVertex v).Simple := hSimple.mono (Graph.removeVertex_le G v)
+  have hGvne : V(G.removeVertex v).Nonempty :=
+    ⟨a, by rw [Graph.vertexSet_removeVertex]; exact ⟨hlea.right_mem, hav⟩⟩
+  have hGvlt : V(G.removeVertex v).ncard < V(G).ncard := by
+    rw [Graph.vertexSet_removeVertex,
+      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
+  -- All-`k` IH at `G.removeVertex v`.
+  have hQv : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.removeVertex v) :=
+    (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
+  haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
+  -- L7a: extract rank polynomial `P` with rational coefficients.
+  obtain ⟨N, hNeq, P, hPne, hPrat, hPtrans⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_IH_linking (G.removeVertex v) ends hQv
+      hGvloop hends'
+  -- Footnote-6: `q` (algebraically independent) is not a root of the nonzero rational `P`.
+  have hPeval : MvPolynomial.eval q P ≠ 0 :=
+    MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent hQalg hPrat hPne
+  -- `N ≤ finrank`.
+  have hNle : N ≤ Module.finrank ℝ (Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows) :=
+    hPtrans q hPeval
+  -- Arithmetic: `D(|Gab|−1)−(D−2) ≤ N ≤ finrank`. With `|Gab| = |Gv|` (hcard), `k' ≤ D−2`
+  -- (hk'le), `hn : D = screwDim 2`, and `N = D(|Gv|−1) − k'` (hNeq):
+  -- `D(|Gab|−1) − (D−2) = D(|Gv|−1) − (D−2) ≤ D(|Gv|−1) − k' = N`.
+  have hGvne1 : 1 ≤ V(G.splitOff v a b e₀).ncard :=
+    hcard ▸ (Set.ncard_pos (Set.toFinite _)).2 hGvne
+  have hDge2 : 2 ≤ screwDim 2 := by decide
+  -- `|Gab| = |Gv| = |V(G)| − 1 ≥ 2` (one vertex `v` removed from `|V(G)| ≥ 3`).
+  have hGab2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
+    rw [hcard, Graph.vertexSet_removeVertex,
+      Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
+  have hcardZ : (V(G.splitOff v a b e₀).ncard : ℤ) = V(G.removeVertex v).ncard := by
+    exact_mod_cast hcard
+  have hD_eq : (screwDim 2 : ℤ) = Graph.bodyBarDim n := by omega
+  -- `LHS ≤ N` (ℕ): with `|Gab| ≥ 2` the ℕ-subtractions are safe; compare via ℤ.
+  have hDsub : screwDim 2 - 2 ≤ screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) := by
+    have h1 : 1 ≤ V(G.splitOff v a b e₀).ncard - 1 := by omega
+    exact le_trans (by decide) (Nat.mul_le_mul_left _ h1)
+  have hLHSN : screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2) ≤ N := by
+    apply Nat.cast_le (α := ℤ) |>.mp
+    rw [Nat.cast_sub hDsub, Nat.cast_mul, Nat.cast_sub hGvne1, Nat.cast_sub hDge2]
+    simp only [Nat.cast_one, Nat.cast_ofNat]
+    rw [← hcardZ] at hNeq
+    linarith [hNeq, hk'le, hD_eq]
+  exact le_trans hLHSN hNle
+
+/-- **The Case-III `d = 3` realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
+2011 §6.4.1, Lemma 6.10; Phase 22k L7b). The `hsplitGP`-shaped producer for `theorem_55_all_k`
+(the L9 all-`k` spine), discharging `h622` by deriving the eq.-(6.22) lower bound from the all-`k`
+IH via `case_III_nested_rank_lower` (`lem:case-III-nested-rank-lower`).
+
+**Signature change vs. the old `case_III_realization_0dof`:** `h622` is dropped; `hIH` is upgraded
+to the all-`k` form (`∀ k' G', G'.IsMinimalKDof n k' → V(G').Nonempty → ...`); `hn` is added
+(bridging `bodyBarDim n = screwDim 2` for the `h622lb` arithmetic, matching
+`case_II_realization_all_k`).
+
+The body adapts the `k=0` IH for `case_III_hsplit_producer`; the `h622lb` slot of
+`case_III_candidate_dispatch` is filled by `case_III_nested_rank_lower` applied to the chain
+data. -/
+theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hSimple : G.Simple)
+    -- All-`k` IH: `case_II_realization_all_k` shape (L5/L6 motive), dropping the `k=0`-only
+    -- restriction.
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
+  -- Adapt the all-`k` IH to the `k=0`-only form that `case_III_hsplit_producer` expects.
+  PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple
+    (fun G' hG' hV2 hlt =>
+      hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
+    hfresh
+    (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' => by
+      exact PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
+        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
+        hlea hleb hlec hclv hcla he₀
+        (PanelHingeFramework.case_III_nested_rank_lower hD hn G v a b eₐ e_b e₀
+          hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH)
+        hdef_Gab hG.1 hsplitGP')
+
+end CombinatorialRigidity.Molecular

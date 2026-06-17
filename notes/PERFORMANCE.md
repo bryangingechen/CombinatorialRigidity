@@ -499,19 +499,20 @@ decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
    Navigable, but the two arcs may share private helpers — confirm
    before cutting.
 
-8. **`Molecular/AlgebraicInduction/CaseIII.lean` (4000 LoC) — ✓ sectioned
-   + 2-way cut (post-Phase-22l perf pass; `notes/Phase22l-perf.md`).** Was a
-   flat `namespace` with no section markers and 44 top-level decls — no seam
-   to grep for. A subagent read-pass (anchored to `case-iii.tex`'s milestone
-   skeleton; only ~11 of 44 decls are blueprint-pinned) grouped the decls into
-   7 `/-! ##` sections (slice 2, comment-only), which exposed a **clean 2-way
-   file seam** after `case_III_rank_certification` / before
-   `case_III_arm_realization`: the §1–§4 single-framework infrastructure carves
-   off cleanly (nothing downstream reaches into it). Slice 3 cut it into
-   `CaseIIICandidate.lean` (1564 LoC) + `CaseIII.lean` (2515 LoC). The
-   realization half is still ~1.6× cap — a second-round sub-split (relabel/M₃
-   off the arms) is a clean follow-up. The staged "headers first, defer the
-   cut" recipe (factor 4 navigability before the cut) worked as planned.
+8. **`Molecular/AlgebraicInduction/CaseIII.lean` (4000 LoC) — ✓ split into a
+   4-file `CaseIII/` subdirectory (post-Phase-22l perf pass;
+   `notes/Phase22l-perf.md`).** Was a flat `namespace` with no section markers and
+   44 top-level decls — no seam to grep for. A subagent read-pass (anchored to
+   `case-iii.tex`'s milestone skeleton; only ~11 of 44 decls are blueprint-pinned)
+   grouped the decls into 7 `/-! ##` sections (slice 2, comment-only), which exposed
+   a **clean 2-way file seam** after `case_III_rank_certification` / before
+   `case_III_arm_realization`. The block was then split into
+   `AlgebraicInduction/CaseIII/{Candidate (1564), Arms (859), Relabel (1016),
+   Realization (692)}.lean` (chain `CaseII ← Candidate ← Arms ← Relabel ←
+   Realization ← Theorem55`; the §5→§6→§7 sub-seams are forward — M₃ reuses the M₁
+   engine, the dispatch consumes all arms). Only the oversized case is promoted to a
+   subdirectory (`CaseI`/`CaseII` stay flat). The staged "headers first, then cut"
+   recipe (factor-4 navigability before the file cut) worked as planned.
 
 ### Module-system conversion: now ripe
 
@@ -744,9 +745,10 @@ Lessons:
 > `GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55` (Coupling 1,349 / CaseI 2,187 /
 > CaseII 1,223 / CaseIII 3,861 / Theorem55 1,899 LoC). Rename-free; full build/lint/axioms/`checkdecls`
 > clean. `CaseIII.lean` (then ~2.5× cap) was the second-round sub-split candidate — **done in the
-> post-Phase-22l round** (`notes/Phase22l-perf.md`): sectioned (7 `/-! ##` headers) then 2-way cut into
-> `CaseIIICandidate.lean` (1,564) + `CaseIII.lean` (2,515). Plan (C) — the `RigidityMatrix.lean`
-> (bricks carved, also post-22l) / `ForestSurgery.lean` (open) candidates.
+> post-Phase-22l round** (`notes/Phase22l-perf.md`): sectioned (7 `/-! ##` headers), then split into a
+> 4-file `CaseIII/` subdirectory (`Candidate` 1,564 / `Arms` 859 / `Relabel` 1,016 / `Realization`
+> 692). Plan (C) — the `RigidityMatrix.lean` (bricks carved, also post-22l) / `ForestSurgery.lean`
+> (open) candidates.
 
 A ranked split/refactor plan for the molecular `AlgebraicInduction/`
 giants, opened by the Phase-22j suppression-drop cleanup (the

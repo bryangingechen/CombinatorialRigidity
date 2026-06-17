@@ -9,10 +9,10 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseII
 # The algebraic induction — Claim 6.11 + the Case III candidate (construction & certification)
 
 Phase 22 (molecular-conjecture program; see `notes/MolecularConjecture.md`). The single-framework
-*infrastructure* half of the Case-III block, split off `AlgebraicInduction/CaseIII.lean` in the
-post-Phase-22l molecular split round (`notes/Phase22l-perf.md`; pure semantics-preserving file
-split, no decl renamed). On top of the Case-II producers in `AlgebraicInduction/CaseII`, this file
-builds and certifies the Case-III candidate row, up to (but not including) the arm realizations:
+*infrastructure* layer of the Case-III block (`CaseIII/` subdirectory; the post-Phase-22l molecular
+split round, `notes/Phase22l-perf.md`; pure semantics-preserving file splits, no decl renamed). On
+top of the Case-II producers in `AlgebraicInduction/CaseII`, this file builds and certifies the
+Case-III candidate row, up to (but not including) the arm realizations:
 
 * the **Claim 6.11** redundant-row machinery (`exists_redundant_panelRow_*`,
   `exists_candidateRow_bottomRows_of_rigidOn`) — KT's eq. (6.18)–(6.25)/(6.43) linear-algebra core;
@@ -22,8 +22,8 @@ builds and certifies the Case-III candidate row, up to (but not including) the a
 * the **candidate families + `t = 0` rank certification** (`case_III_full_family_*`,
   `case_III_rank_certification`).
 
-The downstream arm realizations + dispatch + Case-III composer consume this file via
-`AlgebraicInduction/CaseIII`. See `ROADMAP.md` §22 / `notes/Phase22i.md` and the
+The downstream arm realizations consume this file via `CaseIII/Arms` → `CaseIII/Relabel` →
+`CaseIII/Realization`. See `ROADMAP.md` §22 / `notes/Phase22i.md` and the
 `sec:molecular-algebraic-induction-caseIII` dep-graph in
 `blueprint/src/chapter/algebraic-induction/case-iii.tex`.
 -/
