@@ -531,42 +531,10 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
       · exact Or.inl hgen
       · exact Or.inr hcand
 
-/-- **The Case-III `d = 3` realization, 0-dof spine wrapper** (Phase 22k L7b thin wrapper,
-Flag F1; the old `h622`-carrying shape retained so `theorem_55_d3` keeps building until
-the L9 spine replaces it with `theorem_55_all_k`). See `case_III_realization` below for the
-discharged all-`k` form. -/
-theorem PanelHingeFramework.case_III_realization_0dof [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n)
-    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
-    -- GAP 6 (adjudicated carry): see `theorem_55_d3`.
-    (h622 : ∀ (G : Graph α β) (v a b : α) (e₀ : β)
-        (ends : β → α × α) (q : α × Fin 4 → ℝ),
-      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
-      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
-      AlgebraicIndependent ℚ q →
-      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
-        ≤ Module.finrank ℝ (Submodule.span ℝ
-            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
-              q).toBodyHinge.rigidityRows))
-    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
-    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
-    (hSimple : G.Simple)
-    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
-      V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G') :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple hIH hfresh
-    (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-        hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' =>
-      PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
-        hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-        hlea hleb hlec hclv hcla he₀
-        (h622 G v a b e₀)
-        hdef_Gab hG.1 hsplitGP')
-
-/-- **Eq.-(6.22) nested rank lower bound** (`lem:case-III-nested-rank-lower`; Katoh–Tanigawa 2011
-eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b). For a simple minimal `0`-dof-graph `G` with a
+/-- **Eq.-(6.22) nested rank lower bound — all-`k` form** (`lem:case-III-nested-rank-lower`;
+Katoh–Tanigawa 2011
+eq.\ (6.22), nested hypothesis (6.1); Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). For a
+simple minimal `0`-dof-graph `G` with a
 degree-2 vertex `v` (its two `v`-edges are `eₐ : v—a`, `e_b : v—b`, and no others) and a fresh edge
 `e₀ ∉ E(G)`, the free-normal panel framework on the vertex-removal `Gv = G − v` attains, at any
 link-recording selector and any pairwise-LI, algebraically-independent seed, at least the rank
@@ -578,8 +546,9 @@ IH** — not the `0`-dof-only motive: the nested subgraph `Gv` is minimal `k'`-d
 landed L7a rank-polynomial extractor (`exists_rankPolynomial_of_IH_linking`) plus the footnote-6
 non-root device transfer that rank to the given seed; `k' ≤ D − 2` closes the arithmetic. The bound
 holds at `|V(Gᵃᵇ)| = |V(G)| − 1 ≥ 2` (from `hV3`), so it needs no fourth vertex. -/
-theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+theorem PanelHingeFramework.case_III_nested_rank_lower_all_k
+    [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
     (hba : b ≠ a) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
@@ -588,17 +557,18 @@ theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite 
     (he₀ : e₀ ∉ E(G))
     (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
       V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G') :
-    ∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G') :
+    ∀ (ends : β → α × α) (q : α × Fin (k + 2) → ℝ),
       (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
       (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
       AlgebraicIndependent ℚ q →
-      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+      screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
         ≤ Module.finrank ℝ (Submodule.span ℝ
             (PanelHingeFramework.ofNormals (G.removeVertex v) ends
               q).toBodyHinge.rigidityRows) := by
   intro ends q hrecEnds _hgp_seed hQalg
+  have hD3 : 3 ≤ Graph.bodyBarDim n := hn ▸ three_le_screwDim hk1
   -- `hle`: every `(G.removeVertex v)`-link is a `(G.splitOff v a b e₀)`-link.
   have hle : ∀ e u w, (G.removeVertex v).IsLink e u w → (G.splitOff v a b e₀).IsLink e u w := by
     intro e u w hlink
@@ -630,7 +600,7 @@ theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite 
     rw [Graph.vertexSet_removeVertex,
       Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
   -- All-`k` IH at `G.removeVertex v`.
-  have hQv : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.removeVertex v) :=
+  have hQv : PanelHingeFramework.HasGenericFullRankRealization k n (G.removeVertex v) :=
     (hIH _ (G.removeVertex v) hGvmin hGvne hGvlt).1 hGvSimple
   haveI hGvloop : (G.removeVertex v).Loopless := hGvSimple.toLoopless
   -- L7a: extract rank polynomial `P` with rational coefficients.
@@ -645,23 +615,24 @@ theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite 
       (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows) :=
     hPtrans q hPeval
   -- Arithmetic: `D(|Gab|−1)−(D−2) ≤ N ≤ finrank`. With `|Gab| = |Gv|` (hcard), `k' ≤ D−2`
-  -- (hk'le), `hn : D = screwDim 2`, and `N = D(|Gv|−1) − k'` (hNeq):
-  -- `D(|Gab|−1) − (D−2) = D(|Gv|−1) − (D−2) ≤ D(|Gv|−1) − k' = N`.
+  -- (hk'le), `hn : D = screwDim k`, and `N = D(|Gv|−1) − k'` (hNeq):
+  -- `D(|Gab|−1) − (D−2) = D(|Gv|−1) − (D−2) ≤ D(|Gv|−1) − k' = N`. The two `screwDim 2`-only
+  -- `decide` facts the `d = 3` proof used are now Leaf-0 kit calls (`two_le_screwDim`,
+  -- `screwDim_sub_two_le_mul`).
   have hGvne1 : 1 ≤ V(G.splitOff v a b e₀).ncard :=
     hcard ▸ (Set.ncard_pos (Set.toFinite _)).2 hGvne
-  have hDge2 : 2 ≤ screwDim 2 := by decide
+  have hDge2 : 2 ≤ screwDim k := two_le_screwDim hk1
   -- `|Gab| = |Gv| = |V(G)| − 1 ≥ 2` (one vertex `v` removed from `|V(G)| ≥ 3`).
   have hGab2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
     rw [hcard, Graph.vertexSet_removeVertex,
       Set.ncard_diff_singleton_of_mem (hlea.left_mem : v ∈ V(G))]; omega
   have hcardZ : (V(G.splitOff v a b e₀).ncard : ℤ) = V(G.removeVertex v).ncard := by
     exact_mod_cast hcard
-  have hD_eq : (screwDim 2 : ℤ) = Graph.bodyBarDim n := by omega
+  have hD_eq : (screwDim k : ℤ) = Graph.bodyBarDim n := by omega
   -- `LHS ≤ N` (ℕ): with `|Gab| ≥ 2` the ℕ-subtractions are safe; compare via ℤ.
-  have hDsub : screwDim 2 - 2 ≤ screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) := by
-    have h1 : 1 ≤ V(G.splitOff v a b e₀).ncard - 1 := by omega
-    exact le_trans (by decide) (Nat.mul_le_mul_left _ h1)
-  have hLHSN : screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2) ≤ N := by
+  have hDsub : screwDim k - 2 ≤ screwDim k * (V(G.splitOff v a b e₀).ncard - 1) :=
+    screwDim_sub_two_le_mul hGab2
+  have hLHSN : screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2) ≤ N := by
     apply Nat.cast_le (α := ℤ) |>.mp
     rw [Nat.cast_sub hDsub, Nat.cast_mul, Nat.cast_sub hGvne1, Nat.cast_sub hDge2]
     simp only [Nat.cast_one, Nat.cast_ofNat]
@@ -669,21 +640,50 @@ theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite 
     linarith [hNeq, hk'le, hD_eq]
   exact le_trans hLHSN hNle
 
-/-- **The Case-III `d = 3` realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
-2011 §6.4.1, Lemma 6.10; Phase 22k L7b). The `hsplitGP`-shaped producer for `theorem_55_all_k`
-(the L9 all-`k` spine), discharging `h622` by deriving the eq.-(6.22) lower bound from the all-`k`
-IH via `case_III_nested_rank_lower` (`lem:case-III-nested-rank-lower`).
+/-- **Eq.-(6.22) nested rank lower bound, `d = 3`** (`lem:case-III-nested-rank-lower`; the `k = 2`
+specialization of `case_III_nested_rank_lower_all_k`, Phase 23a Leaf 4). Thin wrapper at
+`Fin 4`/`screwDim 2`/`HasGenericFullRankRealization 2`, discharging the `1 ≤ k` floor at `2` by
+`norm_num`; the `d = 3` candidate dispatch's `h622lb` slot consumes this shape. -/
+theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hn : Graph.bodyBarDim n = screwDim 2)
+    (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hba : b ≠ a) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hlea : G.IsLink eₐ v a) (hleb : G.IsLink e_b v b)
+    (hclv : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G))
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    ∀ (ends : β → α × α) (q : α × Fin 4 → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim 2 * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim 2 - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows) :=
+  PanelHingeFramework.case_III_nested_rank_lower_all_k (k := 2) (by norm_num) hn G v a b eₐ e_b e₀
+    hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
 
-**Signature change vs. the old `case_III_realization_0dof`:** `h622` is dropped; `hIH` is upgraded
-to the all-`k` form (`∀ k' G', G'.IsMinimalKDof n k' → V(G').Nonempty → ...`); `hn` is added
-(bridging `bodyBarDim n = screwDim 2` for the `h622lb` arithmetic, matching
-`case_II_realization_all_k`).
+/-- **The Case-III realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
+2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
+`hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
 
-The body adapts the `k=0` IH for `case_III_hsplit_producer`; the `h622lb` slot of
-`case_III_candidate_dispatch` is filled by `case_III_nested_rank_lower` applied to the chain
-data. -/
-theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+The genuinely-new Case-III chain argument — KT's fixed-3-candidate `d = 3` dispatch
+(`case_III_candidate_dispatch`) replaced by the length-`d` chain dispatch + `⋀^{d−1}(ℝ^{d+1})`
+duality — is **not** lifted here: it routes through the `Fin 4`/`⋀²ℝ⁴` duality (Phase 23 CHAIN, the
+green-modulo boundary). 23a leaves it as the **explicit `hdispatch` hypothesis** of the producer's
+`hcand`-shape (`case_III_hsplit_producer_all_k`), in the standing "carry the analytic crux as `h…`"
+idiom (Phase 21b) — never a `sorry`. The `d = 3` line stays fully green through the `k = 2` wrapper
+`case_III_realization` below, which fills `hdispatch` from the landed `case_III_candidate_dispatch`
+(its `h622lb` slot from `case_III_nested_rank_lower`).
+
+The body adapts the all-`k` IH to the `k = 0`-only form `case_III_hsplit_producer_all_k` expects and
+threads `hdispatch` through. -/
+theorem PanelHingeFramework.case_III_realization_all_k [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n)
     (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
@@ -692,20 +692,54 @@ theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [F
     -- restriction.
     (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
       V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G')
+    -- the Case-III chain dispatch (Phase 23 CHAIN), carried as the producer's `hcand`-shaped
+    -- hypothesis at general grade `k` (the green-modulo boundary; never a `sorry`).
+    (hdispatch : ∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
+      v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
+      a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
+      eₐ ≠ e_b → eₐ ≠ e_c →
+      G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
+      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
+      (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
+      e₀ ∉ E(G) →
+      (G.splitOff v a b e₀).deficiency n = 0 →
+      PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
+      PanelHingeFramework.HasGenericFullRankRealization k n G) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G :=
+  -- Adapt the all-`k` IH to the `k=0`-only form that `case_III_hsplit_producer_all_k` expects.
+  PanelHingeFramework.case_III_hsplit_producer_all_k hk1 hD G hG hV3 hnoRigid hSimple
+    (fun G' hG' hV2 hlt =>
+      hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
+    hfresh hdispatch
+
+/-- **The Case-III `d = 3` realization** (`lem:case-III`; the `k = 2` specialization of
+`case_III_realization_all_k`, Phase 23a Leaf 4). Thin wrapper pinning the grade to `k = 2`, filling
+the chain-dispatch hypothesis `hdispatch` from the landed `d = 3` dispatch
+`case_III_candidate_dispatch` (its `h622lb` slot from `case_III_nested_rank_lower`). This keeps the
+`theorem_55_all_k`/`theorem_55_minimalKDof_k` spine call site (the `hsplitZero` branch) green
+unchanged through 23a; Phase 23 CHAIN discharges `hdispatch` at general `k`, ASSEMBLY threads it up
+the spine. -/
+theorem PanelHingeFramework.case_III_realization [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hSimple : G.Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
         HasPanelRealization 2 n G') :
     PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
-  -- Adapt the all-`k` IH to the `k=0`-only form that `case_III_hsplit_producer` expects.
-  PanelHingeFramework.case_III_hsplit_producer hD G hG hV3 hnoRigid hSimple
-    (fun G' hG' hV2 hlt =>
-      hIH 0 G' hG' ((Set.ncard_pos (Set.toFinite _)).mp (by omega)) hlt)
-    hfresh
+  PanelHingeFramework.case_III_realization_all_k (by norm_num) hD hfresh G hG hV3 hnoRigid hSimple
+    hIH
     (fun v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
-        hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' => by
-      exact PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
+        hlea hleb hlec hclv hcla he₀ hdef_Gab hsplitGP' =>
+      PanelHingeFramework.case_III_candidate_dispatch G v a b c eₐ e_b e_c e₀
         hSimple hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
         hlea hleb hlec hclv hcla he₀
-        (PanelHingeFramework.case_III_nested_rank_lower hD hn G v a b eₐ e_b e₀
+        (PanelHingeFramework.case_III_nested_rank_lower hn G v a b eₐ e_b e₀
           hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH)
         hdef_Gab hG.1 hsplitGP')
 

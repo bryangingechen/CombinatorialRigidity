@@ -18,23 +18,21 @@ stay code-only until their turn.
 
 ## Current state
 
-Phase 23 is **open with both recon stages landed**, **Leaf 0 (the `screwDim`
-arithmetic kit) green** (now also `three_le_screwDim`, added at Leaf 3), **Leaf 1
-fully landed** (1a rank-nullity core; 1b grade-`k` extensor bricks), **Leaf 2
-landed (re-scoped)** (the N1 spanning brick `span_omitTwoExtensor_eq_top` lifted to
-general `k`, on a new upstream mirror `Fintype.card_subtype_fst_lt_snd`), **Leaf 2b
-landed** (the shared-spine LI brick lifted to general `k`), and **Leaf 3 landed**:
-the CaseII rank-arithmetic numeral pass — `case_II_realization_all_k` (and the
-already-general `case_II_placement_eq612`, untouched) lifted from `screwDim 2`/
-`ScrewSpace 2`/`Fin (2+2)` to symbolic `screwDim k`/`ScrewSpace k`/`Fin (k+2)` at
-`HasGenericFullRankRealization k`, with the dof renamed `k:ℤ → c:ℤ` to free the
-dimension letter and a `1 ≤ k` floor replacing the `screwDim 2`-specific
-`6 ≤ bodyBarDim n` hypothesis (the graph-side `3 ≤ bodyBarDim n` now comes from
-`hn ▸ three_le_screwDim`). The `d=3` Theorem55 spine call site is kept green by
-pinning `(k := 2)` and discharging the floor with `norm_num`. The next concrete
-commit is **Leaf 4** (the Case-III spine lift, dispatch left explicit) — see
-*Hand-off*. The general sub-phase division (§2–§3) and the 23a leaf recon (§"23a")
-live in `notes/Phase23-design.md` (the authoritative recon).
+Phase 23 is **open with both recon stages landed** and **Leaves 0–4 green**:
+Leaf 0 (the `screwDim` arithmetic kit, incl. `three_le_screwDim`), Leaf 1 (1a
+rank-nullity core; 1b grade-`k` extensor bricks), Leaf 2 (the N1 spanning brick
+`span_omitTwoExtensor_eq_top`, re-scoped, on the new mirror
+`Fintype.card_subtype_fst_lt_snd`), Leaf 2b (the shared-spine LI brick), Leaf 3
+(the CaseII rank-arithmetic numeral pass, `case_II_realization_all_k`), and **Leaf 4
+(this commit)** — the Case-III spine lift with the chain dispatch left explicit:
+`case_III_hsplit_producer`/`case_III_nested_rank_lower`/`case_III_realization` each
+got a general-`k` `_all_k` partner (`screwDim k`/`Fin (k+2)`/`…Realization k`), the
+legacy `d=3` names kept as thin `k=2` wrappers, the chain dispatch carried as
+`case_III_realization_all_k`'s **explicit `hdispatch`** (the CHAIN green-modulo
+boundary, filled at `k=2` from `case_III_candidate_dispatch`). The **only** remaining
+23a leaf is **Leaf 5** (the Theorem55 spine lift; closes 23a) — see *Hand-off*. The
+general sub-phase division (§2–§3) and the 23a leaf recon (§"23a") live in
+`notes/Phase23-design.md` (the authoritative recon).
 
 **Leaf 2/2b re-scope (settled).** Of the five decls the Leaf-2 recon listed,
 **three** are genuinely dispatch-internal (`omitTwoExtensor_eq_extensor_kept`,
@@ -107,7 +105,7 @@ The layer-level division, with hard cores and dependency order, is in
       the shared LI brick `linearIndependent_normals_of_algebraicIndependent_general`
       ✓ (general `k`; `k=2` wrapper for the still-`k=2` spine consumers)
       → Leaf 3 CaseII rank-arithmetic numeral pass ✓ → Leaf 4 Case-III spine,
-      dispatch left explicit → Leaf 5 Theorem55 spine, dispatch threaded up
+      dispatch left explicit ✓ → Leaf 5 Theorem55 spine, dispatch threaded up
       (closes 23a). Carrier files (RigidityMatrix/Basic, PanelHinge,
       Pinning, GenericityDevice, Coupling, CaseI) need **no lift** — already
       general. Green-modulo boundary: the Case-III dispatch becomes an
@@ -151,43 +149,36 @@ The clause-(ii) flags the recon could not settle from the source live in
 
 ## Hand-off / next phase
 
-**Next concrete commit: Leaf 4** (`notes/Phase23-design.md` §"23a"(c)) — the Case-III
-spine lift with the dispatch left explicit (`CaseIII/Realization.lean` + `CaseIII/Arms.lean`):
-restate `case_III_nested_rank_lower`, `case_III_realization_0dof`, `case_III_realization`
-at `screwDim k`/`Fin (k+2)`/`… k` (proofs compose general bricks + the Leaf-0 kit, incl.
-the new `three_le_screwDim` and `screwDim_sub_two_le_mul`), **except** the
-`case_III_candidate_dispatch` call: re-state `case_III_realization` (and
-`case_III_hsplit_producer`'s `hcand` slot) to take the chain dispatch as an explicit
-`hcand`/`hdispatch` hypothesis of the general-`k` shape (green-modulo boundary (d)). Keep
-the `d=3` line green via a `(k:=2)` specialization filling `hcand` from the existing
-`case_III_candidate_dispatch`. **The three genuinely dispatch-internal Leaf-2 bricks**
-(`omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`, `exists_independent_perp_pair`)
-stay at `Fin 4` and move to CHAIN — do **not** re-attempt those as part of 23a's spine lift.
+**Next concrete commit: Leaf 5** (`notes/Phase23-design.md` §"23a"(c)) — the Theorem55 spine
+lift, dispatch threaded up; **closes 23a** (`Theorem55.lean`). Lift `theorem_55_minimalKDof_k`
+(currently `screwDim 2`/`HasGenericFullRankRealization 2`-pinned, `:2179`) to general `k` with
+`hn : bodyBarDim n = screwDim k` + a `1 ≤ k` floor (the `case_II_realization_all_k` /
+`case_III_realization_all_k` shape); lift its base/cut/CaseI/CaseII/CaseIII callback wiring
+(the `minimal_kdof_reduction_all_k` `P`, `hbase`/`hcut`/`hcontract`/`hsplit` producers at `:2182`)
+numeral-wise; and **thread the green-modulo `hdispatch` hypothesis** (the
+`case_III_realization_all_k` chain dispatch) through to `theorem_55_minimalKDof_k`'s own
+signature — its caller fills it. Keep a `theorem_55_d3` / `theorem_55_all_k` `k=2` wrapper that
+specializes `k:=2` and discharges `hdispatch` via the existing `case_III_candidate_dispatch`
+(filled exactly as the `case_III_realization` `k=2` wrapper does), so the `d=3` line stays fully
+green. **The `d=3` graph-side `6 ≤ bodyBarDim n` floor stays an explicit hypothesis** — the chain
+extractors (`exists_chain_data_of_noRigid` / `exists_adjacent_degree_two_pair`, Phase 20) are
+`6`-pinned, so the `screwDim k` floor (`three_le_screwDim`) does **not** discharge it; ENTRY lifts
+that floor. **The still-`Fin 4` dispatch internals** (`case_III_candidate_dispatch` and the three
+dispatch-only Leaf-2 bricks) stay at `Fin 4` → CHAIN; do **not** re-attempt them in 23a.
 
-**Earlier commits (settled).** Leaf 0 — the `screwDim`-arithmetic kit in
-`RigidityMatrix/Basic.lean` (Leaf 3 added `three_le_screwDim {k} (hk : 1 ≤ k) : 3 ≤ screwDim k`,
-the `bodyBarDim`-floor fact for the spine producers, same `Nat.choose_mono` route). Leaf 3 —
-`case_II_realization_all_k` lifted to symbolic `screwDim k`/`ScrewSpace k`/`Fin (k+2)` at
-`HasGenericFullRankRealization k` (`case_II_placement_eq612` was already general; the
-mechanical numeral pass + dof rename `k:ℤ → c:ℤ` + the `1 ≤ k` floor replacing
-`6 ≤ bodyBarDim n`; the eq.-(6.12) `hNpD` rank equation needed the explicit
-`((screwDim k : ℤ) - 1)` cast — see *Promoted*). Leaf 1a — `exists_linearIndependent_perp_of_normals`
-(general rank-nullity perp-space brick; the three `d=3` helpers reduce to it).
-Leaf 1b — `exists_linearIndependent_extensor_pair_perp_grade` /
-`exists_extensor_in_two_panels_grade` (grade-`k` extensor bricks, with `k=2`
-wrappers keeping the `Theorem55` spine green). Leaf 2 —
-`span_omitTwoExtensor_eq_top` lifted to general `k` (the N1 Lemma-2.1 spanning
-fact; 23a-OD-B squareness confirmed clean), on the new mirror
-`Fintype.card_subtype_fst_lt_snd` (`Mathlib/Data/Fintype/Card.lean`,
-FRICTION-logged); three other recon-listed bricks re-scoped to CHAIN. Leaf 2b
-(this commit) — the shared-spine LI brick lifted to general `k` as
-`linearIndependent_normals_of_algebraicIndependent_general` (any `k+1`
-distinct-body normals are LI from `AlgebraicIndependent ℚ q`; det-polynomial /
-Vandermonde route, no `d=3` content), with the `Fin 4`
-`linearIndependent_normals_of_algebraicIndependent` kept as a thin `k=2` wrapper
-(its two spine consumers — `case_III_candidate_dispatch`, `case_I_realization_h65`
-— untouched). The detailed 23a recon settled OD-5 (ports verbatim) and resolved
-OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple `d=3` form). See §"23a".
+**Earlier commits (settled).** Leaf 0 — `screwDim`-arithmetic kit (`RigidityMatrix/Basic.lean`:
+`one_le_screwDim` / `two_le_screwDim` / `three_le_screwDim` / `screwDim_sub_two_le_mul`). Leaf 1a
+— `exists_linearIndependent_perp_of_normals` (rank-nullity perp-space brick). Leaf 1b —
+`exists_linearIndependent_extensor_pair_perp_grade` / `exists_extensor_in_two_panels_grade`
+(grade-`k` extensor bricks, `k=2` wrappers). Leaf 2 — `span_omitTwoExtensor_eq_top` to general `k`,
+on the mirror `Fintype.card_subtype_fst_lt_snd`. Leaf 2b —
+`linearIndependent_normals_of_algebraicIndependent_general` (`k=2` wrapper kept). Leaf 3 —
+`case_II_realization_all_k` (dof rename `k:ℤ → c:ℤ`, `1 ≤ k` floor). Leaf 4 (this commit) —
+`case_III_{hsplit_producer,nested_rank_lower,realization}_all_k` (general `k`; legacy `d=3` names
+kept as `k=2` wrappers; `case_III_realization_all_k`'s chain dispatch carried as explicit
+`hdispatch`, filled at `k=2` from `case_III_candidate_dispatch`; dead `case_III_realization_0dof`
+deleted). The detailed 23a recon settled OD-5 (ports verbatim) and resolved OD-2/OD-3 (4.6/4.8
+exist only in fixed-tuple `d=3` form). See §"23a".
 
 **Tracked follow-up (deferred from this commit, not Phase-23 math):**
 - **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now
@@ -314,6 +305,16 @@ OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple `d=3` form). See §"23a".
   fact). `1 ≤ screwDim k` calls go from `by omega` to `one_le_screwDim`. The `d=3` Theorem55 spine
   call site stays green via `(k := 2) (by norm_num) …` (Leaf 5 threads the floor up). No new
   `maxHeartbeats` regression (23a-OD-C); builds at default budget.
+
+- **Leaf 4 — Case-III spine lift; `_all_k` + `k=2`-wrapper, dispatch left explicit.** Each of
+  `case_III_{hsplit_producer,nested_rank_lower,realization}` got a general-`k` `_all_k` partner
+  (`screwDim k`/`Fin (k+2)`/`…Realization k`); the `decide` arithmetic routed through the Leaf-0 kit
+  (`two_le_screwDim`, `screwDim_sub_two_le_mul`); legacy `d=3` names kept as thin `k=2` wrappers, so
+  `Theorem55` is untouched. The chain dispatch is `case_III_realization_all_k`'s **explicit
+  `hdispatch`** (producer `hcand`-shape at `k`; CHAIN boundary), filled at `k=2` from
+  `case_III_candidate_dispatch`. **Boundary findings:** (i) the producer's `6 ≤ bodyBarDim n` floor
+  is **not** `screwDim k`-derivable (Phase-20 chain extractors are `6`-pinned) → stays an explicit
+  carry, ENTRY lifts it; (ii) dead `case_III_realization_0dof` (no consumers) deleted, not wrapped.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

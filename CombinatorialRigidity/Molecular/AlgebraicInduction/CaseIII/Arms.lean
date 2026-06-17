@@ -735,16 +735,16 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_triangle
     ⟨v, hG_ea.left_mem⟩ hrig n hG.1
 
 
-/-- **The `d = 3` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
+/-- **The general-`d` Case-III (`hsplit`) producer, `hsplitGP` callback shape**
 (`lem:case-II-realization` / `lem:case-III`, the `theorem_55_all_k.hsplitZero` branch at `k = 0`;
-Katoh–Tanigawa 2011 §6.4.1,
-Lemma 6.10, Phases 22g–22h). The conjecture's crux at `d = 3`, stated at the **generic-motive
+Katoh–Tanigawa 2011 §6.4.1, Lemma 6.10, Phases 22g–22h; Phase 23a Leaf 4 general-`k` lift). The
+conjecture's crux at general grade `k`, stated at the **generic-motive
 callback interface** that `theorem_55_all_k`'s `hsplitZero` premise threads (the R2 verdict (B),
 `notes/Phase22-realization-design.md` §1.41(5)): the producer receives `hnoRigid`, `G.Simple`, and
 the **full conditioned induction hypothesis** `hIH` (the `(G'.Simple → generic) ∧ bare` pair over
 all smaller minimal `0`-dof-graphs, mirroring `hcontractGP`), **chooses its own adjacent degree-2
-pair** via the `d = 3` chain dichotomy (§1.49(1), verdict (β)), and concludes the **generic** motive
-`HasGenericFullRankRealization 2 G`. No split-vertex data is handed in — the producer re-selects
+pair** via the chain dichotomy (§1.49(1), verdict (β)), and concludes the **generic** motive
+`HasGenericFullRankRealization k G`. No split-vertex data is handed in — the producer re-selects
 it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
 
 **Dichotomy spine (G4a).** On `|V(G)|`:
@@ -767,23 +767,23 @@ it, exactly as KT's Lemma 6.10 invokes Lemma 4.6 inside its own proof.
 `hcand` is the single *explicit* hypothesis carrying the genuinely-hard remaining work, in the
 established "carry the analytic crux as `h…`, keep the node red" idiom (Phase 21b): it consumes the
 chosen chain data and the IH-derived **generic** `v`-split realization and yields
-`HasGenericFullRankRealization 2 G` — internally its `M₁/M₂/M₃` dispatch arms end in the bare
+`HasGenericFullRankRealization k G` — internally its `M₁/M₂/M₃` dispatch arms end in the bare
 realization of `G`, and the discharge composes the landed GAP-2 upgrade
 `hasGenericFullRankRealization_of_rigidOn_ofNormals` onto the concrete candidate (§1.49(5)). The
 §1.49(5) producer-assembly leaf discharges it (Leaf 2/3 + the G4c/G4d/G4e dispatch + the GAP-3
 good-`t` choice); `G.Simple`, `hnoRigid`, and `hfresh` remain available to that leaf as
 producer-level hypotheses. The dichotomy spine and the IH-at-`v`-split wiring built here are the
 rest of the producer. -/
-theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
-    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
-    -- the `theorem_55_all_k.hsplitZero` premise data (at `n`, `k = 0`)
+theorem PanelHingeFramework.case_III_hsplit_producer_all_k [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hk1 : 1 ≤ k) (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
+    -- the `theorem_55_all_k.hsplitZero` premise data (at `n`, dof `0`)
     (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
     (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
     (hsimple : G.Simple)
     (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
       V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G')
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G')
     -- a fresh edge label for the chain arm's short-circuit `ab`-edge (the (β) reduction
     -- `minimal_kdof_reduction_full` does no splitting internally, so the producer owns it; the
     -- shape `minimal_kdof_reduction`'s `hfresh` carried, moved here at the (β) interface, §1.49(1))
@@ -803,9 +803,9 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
       e₀ ∉ E(G) →
       (G.splitOff v a b e₀).deficiency n = 0 →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n (G.splitOff v a b e₀) →
-      PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+      PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) →
+      PanelHingeFramework.HasGenericFullRankRealization k n G) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
   have hD3 : 3 ≤ Graph.bodyBarDim n := by omega
   have hD2 : 2 ≤ Graph.bodyBarDim n := by omega
@@ -823,8 +823,8 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
       Graph.exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG haG hav hdegv
     -- The splitOff data at `v` supplies two distinct `v`-edges `eₐ'`, `e_b` with distinct far
     -- endpoints `a'`, `b` (`a' ≠ v`, `b ≠ v`); T4 needs exactly two such edges to pin the triangle.
-    exact PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := 2)
-      G hD3 (by norm_num) hG hcard3 hlea' hleb ha'v hbv heab'
+    exact PanelHingeFramework.hasGenericFullRankRealization_of_triangle (n := n) (k := k)
+      G hD3 hk1 hG hcard3 hlea' hleb ha'v hbv heab'
   · -- **Chain arm (`|V(G)| ≥ 4`).** Extract the chain data, build the `v`-split (a smaller minimal
     -- `0`-dof-graph by `splitOff_isMinimalKDof`, simple by R3), pull its **generic** realization
     -- from the IH's GP `.1` conjunct, and feed `hcand`.
@@ -851,9 +851,40 @@ theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α
     -- The IH's GP `.1` conjunct: the generic `v`-split realization (the placement seed `q`, whose
     -- `IsGeneralPosition` conjunct is `hgab` and whose alg-indep conjunct feeds the triple-LI
     -- bridge — the data the bare `.2` conjunct cannot supply, §1.41(1)–(2)).
-    have hsplitGP : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.splitOff v a b e₀) :=
+    have hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀) :=
       (hIH _ hGv hGv2 hGvlt).1 hGvSimple
     exact hcand v a b c eₐ e_b e_c e₀ hvG haG hbG hcG hav hbv hba hcv hca hbc heab heac
       hlea hleb hlec hclv hcla he₀ hGv.1 hsplitGP
+
+/-- **The `d = 3` Case-III (`hsplit`) producer** (`lem:case-III`; the `k = 2` specialization of
+`case_III_hsplit_producer_all_k`, Phase 23a Leaf 4). Thin wrapper pinning the grade to `k = 2` so
+the `d = 3` spine consumer `case_III_realization` keeps its existing shape; the `1 ≤ k` floor is
+discharged at `2` by `norm_num`. The `hD : 6 ≤ bodyBarDim n` floor is the `d = 3` graph-side chain
+extraction's requirement (Phase 20's `exists_chain_data_of_noRigid` /
+`exists_adjacent_degree_two_pair` are `6`-pinned); ENTRY lifts that floor. -/
+theorem PanelHingeFramework.case_III_hsplit_producer [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ} (hD : 6 ≤ Graph.bodyBarDim n) (G : Graph α β)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard)
+    (hnoRigid : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    (hsimple : G.Simple)
+    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G')
+    (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hcand : ∀ (v a b c : α) (eₐ e_b e_c e₀ : β),
+      v ∈ V(G) → a ∈ V(G) → b ∈ V(G) → c ∈ V(G) →
+      a ≠ v → b ≠ v → b ≠ a → c ≠ v → c ≠ a → b ≠ c →
+      eₐ ≠ e_b → eₐ ≠ e_c →
+      G.IsLink eₐ v a → G.IsLink e_b v b → G.IsLink e_c a c →
+      (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
+      (∀ e x, G.IsLink e a x → e = eₐ ∨ e = e_c) →
+      e₀ ∉ E(G) →
+      (G.splitOff v a b e₀).deficiency n = 0 →
+      PanelHingeFramework.HasGenericFullRankRealization 2 n (G.splitOff v a b e₀) →
+      PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
+  PanelHingeFramework.case_III_hsplit_producer_all_k (by norm_num) hD G hG hV3 hnoRigid
+    hsimple hIH hfresh hcand
 
 end CombinatorialRigidity.Molecular
