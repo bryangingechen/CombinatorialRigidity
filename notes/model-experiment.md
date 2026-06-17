@@ -364,6 +364,7 @@ quality / blueprint sync / notes discipline / commit message
 | 195 | CHAIN-3 toDual=Gram bridge `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade` (Meet.lean), fe5ff4f | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 148k tok / 52 tools / 8.8min (synchronous, un-named) | Opus-only override; 2/3/1 → opus (mapped opus). A-priori P=3 (prior agent flagged the duality tail not-verbatim) → realized verbatim: agent correctly split off the verbatim `toDual=Gram` bridge and deferred the genuinely-new `complementIso` Φ̃-count assembly (good scope-shrink). Friction lift: TACTICS-QUIRKS §57 (`-/`-in-docstring trap). Coordinator verified full (mechanics + full diff + sorry-grep + warning-clean rebuild + §57); d=3 instance preserved. Next = the heavier `complementIso_smul_eq_extensor_join`. |
 | 196 | CHAIN-3 `wedgeFixedLeft` building-block lift (`def`+`coe`/`ker`/`finrank_range`) to ambient `Fin (d+1)` (Meet.lean), 28869af | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 148k tok / 59 tools / 11.1min (synchronous, un-named) | Opus-only override; 2/3/1 → opus. Correct scope-shrink: a-priori P=3 (the heavy `complementIso` brick) → landed only the foundational `wedgeFixedLeft` API arity-lift, deferring the genuinely-new `(d−1)`-summand inclusion–exclusion count. Lean-quality call: internal-only decls → in-file consumers unify d=3 by defeq (no instance decls, unlike the externally-consumed earlier bricks). Friction logged (FRICTION + QUIRKS §58). Coordinator verified full + project lint clean. |
 | 197 | CHAIN-3 `inf_range_wedgeFixedLeft` (pairwise decomposable intersection) to ambient `Fin (d+1)` (Meet.lean), 28e11c3 | 2/3/1 | opus | normal | clean | ✓✓✓✓✓✓ | 113k tok / 31 tools / 4.6min (synchronous, un-named) | Opus-only override; 2/3/1 → opus. Verbatim arity-lift (3rd dependency-chain brick); the in-file d=3 consumer unifies by defeq, no instance decl. **Exhausts the verbatim CHAIN-3 prerequisites** — the genuinely-new `finrank_sup_range_wedgeFixedLeft` count (the recon's flagged "real new lemma", `dim Φ̃ = D−1` over `d−1` summands) is the next piece, and its d=3 pairwise route likely won't generalize → coordinator triggering an early recon (5 leaves now feed the unbuilt `complementIso` core). Coordinator verified full + warning-clean rebuild. |
+| 198 | CHAIN-3-finish recon — the `⋀^{d−1}W`-is-a-line route (corrects the `Φ̃` pin), 3cb633c | 3/3/1 | opus | normal | clean | —✓——✓✓ | 240k tok / 79 tools / 20.0min (synchronous, un-named) | Opus-only override; design-settle/recon → fable-mapped → opus. **High-value recon — overturned the prior CHAIN-3-finish pin** (verdict + signatures: §"CHAIN"(f)/(g)). Caught two source-verified pin errors: the panel-meet is `complementIso(j:=2)` not `(j:=d−1)` (d=3's `d−1=2` masked it), and the `finrank_sup_range`/`Φ̃` inclusion–exclusion is a DEAD d=3 artifact (`dim Ω = C(d−1,2)`, =1 only at d=3), withdrawn not lifted — correct route is `⋀^{d−1}W`-is-a-line via the forward-landed 193/194 bricks. Flag-don't-force: OD-8 (α/β) left open, no new mathlib fact. Coordinator verified the geometry + dimensional arithmetic + the route uses landed bricks + no orphaned obligation. Coordination-timing lesson → Findings 2026-06-17. |
 
 ## Findings
 
@@ -960,3 +961,22 @@ postmortem's write-time consumer-fit gate now target exactly this.
   dispatch **un-named** for synchronous `LANDED`+cost returns; reserve named agents for boundary-pair
   duplicates / addressable resume, and expect to ask the user to interrupt when steering one. Promoted to
   `coordinate-phase-rescue.md` §2.
+
+### CHAIN-3 recon-trigger timing (2026-06-17; rows 195–198)
+
+A build agent's hand-off flag that the *next* piece is genuinely-new ("the real
+new lemma", "NOT a verbatim lift") is itself the **recon trigger** — recon the
+ROUTE before dispatching the dependency-chain prerequisites the flag names. Row
+195 flagged `finrank_sup_range_wedgeFixedLeft` (general `d`) as "the real new
+lemma"; the coordinator instead dispatched two more build leaves (rows 196/197)
+that cleanly lifted *its* dependency machinery (`wedgeFixedLeft` / `inf_range`)
+to general `d` — then the row-198 recon found that whole route is a **dead `d=3`
+artifact** (the line has exactly 2 normals at every `d`, so the correct route is
+`⋀^{d−1}W`-is-a-line via *earlier* forward-landed bricks, not the `Φ̃`
+inclusion–exclusion). Cost: two harmless over-general lemma lifts (the bigger
+waste — building the dead `finrank_sup_range` at general `d` — was averted by the
+recon). **Lesson:** the dependency chain a build agent extrapolates from a `d=3`
+body can itself be the wrong route; the step-1 "genuinely-new variant flag →
+recon" trigger applies even when the immediate next leaves look like mechanical
+verbatim lifts, *because they may be prerequisites for a route the recon
+dissolves*. Recon the route, then build its prerequisites.
