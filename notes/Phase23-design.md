@@ -1163,6 +1163,137 @@ CHAIN-2; the `D`-span, 6.67's `d+1` points + Lemma 2.1, is CHAIN-4 / OD-4.)
     characterization, settled at build. **This is the only genuinely-open piece
     of the CHAIN-3 finish.**
 
+  > **OD-8 SETTLED by §(h) below (2026-06-17 OD-8 design-pass).** The §(g)
+  > recommendation is **superseded**: (α) is the right route but is **NOT** "a
+  > 1–2-decl `complementIso` API addition" — its load-bearing step is
+  > `complementIso`'s **O(n)-equivariance**, a substantial new sub-lemma flagged
+  > as its own leaf. (β) is **not** a safe fallback (its dimension count is the
+  > grade-2-vs-grade-`k` `dim Φ̃` trap §(f) already withdrew). See §(h) for the
+  > pinned decomposition and the clause-(ii) flag.
+
+### (h) OD-8 design-pass — the route decision for the panel-meet range-membership
+
+**Status:** OD-8 design-pass, docs-only, 2026-06-17. Source-verified against the
+**landed** `Meet.lean` bodies (the `complementIso` `def`/`wedgePairing`/
+`screwAlgebraTopEquiv` construction read end-to-end, the in-hand annihilation
+`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`, the three landed `_grade`
+bricks, the landed base case + standard-frame membership) and against mathlib
+(`lean_loogle`/`lean_leanfinder`: no Hodge-star / decomposable-complement API).
+LSP-probed: the proportionality engine `exists_smul_eq_of_mem_range_map_subtype_grade`
+and the line count `finrank (range (⋀^k W ↪)) = 1` for `dim W = k` both close at
+general `k` (scratch, reverted) — **so the entire OD-8 crux reduces to one
+membership: `complementIso (j:=2) n ∈ range(⋀^k W.subtype)`.** Everything else of
+the CHAIN-3 finish is free once that lands.
+
+**The decisive structural fact (verified against the landed `def`).**
+`complementIso` is built as `(wedgePairing as equiv) ≪≫ toDualEquiv.symm`, where
+`wedgePairing k hj A B = screwAlgebraTopEquiv (A ∨ₑ B)` and `screwAlgebraTopEquiv
+= exteriorPower.topEquiv (k+2)` is the **standard volume form**, and the dual side
+uses `(Pi.basisFun …).exteriorPower (…).toDual`, whose `Pi.basisFun.toDual` is the
+**standard dot product** (`Module.Basis.toDual_apply` = Kronecker δ). So
+`complementIso` **is the Hodge star `⋆` for the standard Euclidean structure on
+`ℝ^{k+2}`** (volume form + dot product), up to the unit volume normalization. The
+target `complementIso (n₀∧n₁) ∈ ⋀^k W` for `W = {n₀,n₁}^⊥` is therefore the
+genuine **Hodge fact**: *`⋆` of a decomposable is the decomposable of the
+orthogonal complement* (`⋆(n₀∧n₁) = ±` the `k`-extensor of an oriented orthonormal
+basis of `(span{n₀,n₁})^⊥ = W`). This is **true and standard**, but it is the
+central nontrivial content — the §(g) framing "cleanest geometrically; a small
+`complementIso`-image leaf" **understated it** by reading the in-hand
+*annihilation* as if it already were *membership* (it is not — see below).
+
+**Why the in-hand annihilation does NOT directly give membership.** The LANDED
+`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` gives: `b.toDual (complementIso
+n) B = vol(n ∨ₑ B) = 0` whenever `n ∨ₑ B = 0`. Equivalently `complementIso n`
+lies in the `b.toDual`-annihilator `Ann(Φ)` of `Φ := span{B ∈ ⋀^k : n ∨ₑ B = 0}`
+(the `B` sharing a factor with `span{n₀,n₁}`). The point-join `x = extensor(w)`
+(`w` a basis of `W`) also lies in `Ann(Φ)` and in the line `L = range(⋀^k W ↪)`.
+**To conclude `complementIso n ∈ L` from this one needs `L = Ann(Φ)`, i.e.
+`dim Ann(Φ) = 1`, i.e. `dim Φ = D − 1`.** That count is exactly the
+**withdrawn `finrank_sup_range_wedgeFixedLeft`/`dim Φ̃` family** — §(f) proved it
+does NOT generalize off `d=3` (at grade `k`, `dim Ann(Φ) = C(d−1,2) > 1` for
+`d ≥ 4` if `Φ` is taken the d=3 way). **So the annihilation→membership upgrade is
+NOT a free dimension match; it is the Hodge fact itself.** This kills the §(g)
+"(β) is a clean fallback" sentence — restated honestly below.
+
+**Route decision: (α), via `complementIso`'s O(n)-equivariance.** The route that
+genuinely closes — and the only one not re-introducing a withdrawn count — is:
+
+1. **`complementIso` is O(n)-equivariant** (the new sub-leaf, flagged clause (ii)).
+   For `O : Fin (k+2) → ℝ` an orthogonal change of frame (preserves the standard
+   dot product, so `det O = ±1`), `complementIso (j:=2)` intertwines
+   `exteriorPower.map 2 O` and `exteriorPower.map k O` up to the sign `det O`:
+   `complementIso (exteriorPower.map 2 O X) = (det O) • exteriorPower.map k O
+   (complementIso X)`. This rests on two transformation facts: the volume form
+   transforms by the determinant (`screwAlgebraTopEquiv (map (k+2) O · ) = det O ·
+   screwAlgebraTopEquiv`, **no ready mathlib lemma** — build from
+   `exteriorPower.map`/`topEquiv` + `det`; cf. `LinearMap.det` /
+   `exteriorPower.alternatingMapToDual_apply_ιMulti`) and the dot product is
+   O-invariant (`Pi.basisFun.toDual (O w) (O v) = Pi.basisFun.toDual w v`,
+   `O` orthogonal). This is the substantive new mathematics; it is **not** a
+   1–2-decl API addition — it is the genuine reason `complementIso` (Hodge `⋆`)
+   is *O(n)*-natural but **not** *GL*-natural (the §(g)/checklist warning).
+2. **Frame alignment.** Build an orthogonal `O` carrying `span{n₀,n₁}` to the
+   coordinate `2`-plane `span{e₀,e₁}` (Gram–Schmidt on `n₀,n₁`, extend to an
+   orthonormal basis of `ℝ^{k+2}`; mathlib `Basis`/orthonormal-extension API).
+   Under `O`, `W = {n₀,n₁}^⊥` maps to `span{e₂,…,e_{k+1}}` (a coordinate
+   subspace), `extensor n` maps (up to scalar) to the coordinate blade `e_{01}`.
+3. **Invoke the LANDED standard-frame membership.**
+   `complementIso_exteriorPower_basis_mem_range_map_subtype` gives the conclusion
+   for the coordinate blade `e_{01}` and the coordinate `W' = O(W)`; transport
+   back along `O` (a linear iso, so `range(⋀^k W ↪)` transports) by (1)+(2).
+
+This honestly names a remaining obstacle (the O(n)-equivariance + the
+volume-form-determinant fact) rather than asserting a one-liner a build would
+faithfully mis-scope. **It needs no new *mathlib-level* fact** in the sense of a
+missing Hodge-star *API* — every ingredient (`exteriorPower.map`, `topEquiv`,
+`LinearMap.det`, orthonormal extension) is in mathlib — **but it does need a
+genuine new *project-side* sub-lemma** (the equivariance), which is itself the
+crux. Clause (ii) verdict: **flag the O(n)-equivariance as its own buildable leaf
+(`complementIso_map_orthogonal_eq`-shaped); do not pre-commit it as cheap.**
+
+**Pinned leaf sequence for OD-8 (route α), dependency-ordered:**
+- **(h-0)** `screwAlgebraTopEquiv_map_eq_det_smul` (or inline) — the volume form
+  transforms by the determinant under `exteriorPower.map (k+2) f`. New; mathlib
+  has the pieces, not the fused lemma. *Flagged: confirm the cleanest mathlib
+  handle at build (`exteriorPower.map`+`topEquiv`+`det`).*
+- **(h-1)** `complementIso_map_orthogonal_eq` — `complementIso`'s O(n)-equivariance
+  (the substantive leaf). Consumes (h-0) + dot-product O-invariance. **The OD-8
+  clause-(ii) flag lives here.**
+- **(h-2)** `exists_orthogonal_map_span_pair_eq_coordPlane` — orthonormal
+  alignment carrying `span{n₀,n₁}` to `span{e₀,e₁}` (Gram–Schmidt / orthonormal
+  extension; mathlib `Basis` API). Combinatorial-geometry, no `complementIso`.
+- **(h-3)** `complementIso_extensor_mem_range_map_subtype` — the target leaf
+  (signature §(f) item 2): assemble (h-1)+(h-2)+the LANDED
+  `complementIso_exteriorPower_basis_mem_range_map_subtype`. The `extensor n = 0`
+  (dependent `n`) case is trivial (`complementIso 0 = 0 ∈ range`); the work is the
+  `n`-independent case, where `dim W = k` holds (rank–nullity on the 2 functionals).
+- **(h-4)** `extensor_join_proportional_complementIso_meet` — the assembly
+  (signature §(f) item 1): consumes (h-3) + the three LANDED `_grade` bricks. Zero
+  new count. **Hands the CHAIN-4 discriminator the join=meet proportionality**
+  (the step KT leaves implicit — a BlueprintExposition-grade node per the
+  coordinator KT-route check §(f)).
+- **(h-5)** the `d=3` wrapper `complementIso_smul_eq_extensor_join` stays green
+  (its `Φ̃`-route body unchanged; re-point is a CHAIN-4 decision, not forced).
+
+**Honest fallback if (h-1) proves a long pole.** Route (β) is **rejected as a
+fallback** (it re-introduces the withdrawn `dim Φ` count, §(f)). The genuine
+fallback is to **state (h-3) as an explicit green-modulo hypothesis** on the
+CHAIN-4 discriminator (the project's standing idiom) and land (h-1)/(h-3) in a
+dedicated follow-on sitting — i.e. if the O(n)-equivariance does not close in one
+build, it becomes its own leaf carried as an `h…` premise, never a `sorry`. This
+keeps CHAIN-1/2/4/5 unblocked while (h-1) is the one open math obligation.
+
+**What the finished OD-8 leaf hands the assembly.** `complementIso_extensor_mem_
+range_map_subtype` (h-3) places the panel-meet `complementIso (n₀∧n₁)` in the line
+`range(⋀^k W ↪)`; with the point-join already there (LANDED
+`extensor_mem_range_map_subtype_of_mem_grade`) and the proportionality engine
+(LANDED), (h-4) yields `extensor_join_proportional_complementIso_meet` — the
+per-line point-join↔panel-meet duality CHAIN-4's discriminator
+(`exists_complementIso_ne_zero_of_homogeneousIncidence`) consumes (the way the
+d=3 discriminator consumes `complementIso_smul_eq_extensor_join`). That closes
+CHAIN-3; the eq.-(6.67) `D`-span finish (the `d+1`-points / Lemma-2.1 argument)
+stays CHAIN-4, gated by OD-4.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
