@@ -31,7 +31,7 @@ failing pattern and the working fix.
 - *"motive is not type correct"* after `simp only` citing a hypothesis not in the goal → § 5
 - *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` / `subst` between two free vars → § 4
 - `interval_cases (Fintype.card V)` won't close by `rfl` → § 7
-- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2)
+- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2) or two `{d}`-vs-numeral elaborations of one term mis-atomized (§ 58)
 - `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
 - `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
 - `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8
@@ -2127,3 +2127,24 @@ identifier where a declaration was expected).
 `…-/…`. (Only the two-character sequence `-/` bites; a lone `/` or `-` is fine.)
 Phase 23b CHAIN-3 (`Meet.lean`, the `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`
 docstring; bit twice — once per `grade-/` occurrence).
+
+
+## 58. After lifting an in-place numeral-pinned `def` to implicit `{d}`, a numeral consumer's `omega` mis-atomizes two elaborations of the same applied term — use `linarith` / `simpa using h`
+
+**Symptom.** A `def` (or its facts) is generalized from a fixed numeral ambient (`Fin 4`) to an
+implicit `{d} (Fin (d+1))`, keeping a numeral-pinned consumer green by passing `(d := 3)` in its
+`rw`s. A trivial arithmetic close — `hsum : finrank(…) + 1 = 3 + 3`, goal `finrank(…) = 5` — then
+fails `omega` with a free-variable counterexample (`0 ≤ c ≤ 4`), as if `hsum` were never read.
+
+**Cause.** The term `finrank ℝ ↥((wedgeFixedLeft a).range ⊔ …)` appears in `hsum` carrying the
+`(d:=3)`-elaborated `wedgeFixedLeft a`, while the goal carries the *statement-unified* `Fin 4` one.
+The two are defeq (both `d = 3`) but **syntactically distinct** — the implicit `d` arrived by two
+different routes — so `omega`/`grind` register them as *separate* opaque atoms and cannot bridge.
+This is the §1 atom-split symptom *without* a `set` alias — the split is intrinsic to the
+mixed-elaboration term, not introduced by `set`.
+
+**Fix.** Close with `linarith` or `simpa using hsum` instead of `omega`: both work at the
+ordered-field / `simp` level where the two finrank views collapse under defeq, treating it as one
+atom. (Alternatively, pre-`rw` the goal's term into the `hsum` form so the atoms coincide before
+`omega`.) Phase 23b CHAIN-3 (`Meet.lean`, `finrank_sup_range_wedgeFixedLeft`); see FRICTION [idiom]
+*Generalizing an in-place numeral-pinned `def`…*.

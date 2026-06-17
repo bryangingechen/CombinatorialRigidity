@@ -27,16 +27,22 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's `toDual=Gram` bridge has landed (2026-06-17): the first of the two
-tail bricks, `exteriorPower_basis_toDual_eq_pairingDual_comp_map`, is lifted to
-general grade/ambient (`…_grade {d}` over `Fin (d+1)`, the `d=3` name kept as the
-`(d:=3)` instance) — a verbatim grade-lift exactly as the recon predicted.
-Next is CHAIN-3's last brick, the heavy one: `complementIso_smul_eq_extensor_join`
-at general grade (NOT a verbatim lift — its `Fin 4`-pinned dependency chain
-`finrank_sup_range_wedgeFixedLeft` / `inf_range_wedgeFixedLeft` /
-`extensor_toDual_extensor_eq_zero_of_perp` must be lifted first; the `dim Φ̃` count
-goes from a 2-summand to a `(d−1)`-summand inclusion–exclusion — the recon's "real
-new lemma here").**
+**CHAIN-3's `wedgeFixedLeft` building block has landed (2026-06-17): `wedgeFixedLeft`
+(the `def`) + its three immediate facts `coe_wedgeFixedLeft` / `ker_wedgeFixedLeft` /
+`finrank_range_wedgeFixedLeft` are lifted from `Fin 4` to ambient `{d} (Fin (d+1))`,
+grade fixed at `2`. The range count generalizes `3 → d` (`= (d+1) − 1`). All four
+were ambient-generic verbatim (`extensor` API is already `{d}`-generic); the `def`
++ facts carry implicit `{d}`, so the still-`Fin 4` consumers
+(`inf_range_wedgeFixedLeft`, `finrank_sup_range_wedgeFixedLeft`, the assembly) unify
+`d = 3` by defeq — no separate `d=3` instance decls needed (lighter than the prior
+bricks' `_grade`/instance split, because there are no external consumers). This is
+the *first sub-step* of CHAIN-3's last brick `complementIso_smul_eq_extensor_join`.**
+**Next, still inside that last brick (the heavy one, NOT a verbatim lift):** lift
+`inf_range_wedgeFixedLeft` (the decomposable intersection `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} =
+span{a∧b}`, ambient-generic) and then `finrank_sup_range_wedgeFixedLeft` — its `dim Φ̃`
+count goes from the 2-summand `3+3−1=5` to a `(d−1)`-summand inclusion–exclusion (a
+panel `Π(u)` has `d−1` normals): **the recon's "real new lemma here"** — then
+`extensor_toDual_extensor_eq_zero_of_perp` and the assembly itself.
 The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
@@ -90,14 +96,22 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
         grade-generic verbatim; the `d=3` name survives as the `(d:=3)` instance,
         line-1003 internal consumer untouched, no blueprint pin on this decl).
         Landed 2026-06-17.
-      - [ ] `complementIso_smul_eq_extensor_join` at general grade. **The heavier
+      - [◐] `complementIso_smul_eq_extensor_join` at general grade. **The heavier
         generalization** — `complementIso`/`toDual` built over `k+2` / `Fin 4`, not
         a verbatim grade-lift. Its dependency chain must lift first:
-        `inf_range_wedgeFixedLeft` (`Fin 4`, `Fin 3`-arity `decide`/`fin_cases`),
-        `finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` count → a `(d−1)`-summand
-        inclusion–exclusion, the recon's "real new lemma"),
-        `extensor_toDual_extensor_eq_zero_of_perp`, and the `dim Ω = D − (D−1) = 1`
-        count. The `toDual=Gram` brick above is now in hand for it.
+        - [x] `wedgeFixedLeft` (the `def`) + `coe_wedgeFixedLeft` / `ker_wedgeFixedLeft`
+          / `finrank_range_wedgeFixedLeft` lifted `Fin 4` → ambient `{d} (Fin (d+1))`,
+          grade `2`, range count `3 → d`. Ambient-generic verbatim; implicit `{d}` so
+          the `Fin 4` consumers unify `d=3` by defeq (no instance decls). Landed
+          2026-06-17. (One friction: `finrank_sup_range`'s `omega` mis-atomized the
+          `(d:=3)`-vs-`Fin 4` elaborations → `simpa using hsum`; QUIRKS § 58.)
+        - [ ] `inf_range_wedgeFixedLeft` (`Fin 4`, `Fin 3`-arity `decide`/`fin_cases`)
+          → ambient `{d}` (the decomposable intersection, verbatim-liftable).
+        - [ ] `finrank_sup_range_wedgeFixedLeft` (the `dim Φ̃ = 5` count → a `(d−1)`-summand
+          inclusion–exclusion, the recon's "real new lemma"; consumes the now-general
+          `finrank_range_wedgeFixedLeft = d`).
+        - [ ] `extensor_toDual_extensor_eq_zero_of_perp`, and the `dim Ω = D − (D−1) = 1`
+          count, then the assembly. The `toDual=Gram` brick (above) is in hand.
 - [ ] **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
       Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`) to a
       `Fin d`-indexed augment. Graph-free over `ScrewSpace k`; no `d=3` content.
@@ -163,25 +177,26 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
 
 ## Hand-off / next phase
 
-**Next buildable CHAIN leaf = CHAIN-3's last brick, `complementIso_smul_eq_extensor_join`
-at general grade** (the `toDual=Gram` bridge
-`exteriorPower_basis_toDual_eq_pairingDual_comp_map` landed 2026-06-17 as
-`…_grade {d}` over `Fin (d+1)`, joining the membership brick + proportionality
-engine `exists_smul_eq_of_mem_range_map_subtype_grade` from prior sittings; still
-no ENTRY-contract dependency). This last brick is the heavy one — **NOT a verbatim
-grade-lift**. Its `Fin 4`-pinned dependency chain must be lifted first, in
-`Meet.lean`:
-- `inf_range_wedgeFixedLeft` (`Meet.lean:1032`, `Fin 4` + `Fin 3`-arity
-  `decide`/`fin_cases`/`linearIndependent_finSnoc`),
-- `finrank_sup_range_wedgeFixedLeft` (`Meet.lean:1093`, the `dim Φ̃ = 3+3−1 = 5`
-  count → a `(d−1)`-summand inclusion–exclusion at general `d`: this is the
-  recon's flagged "real new lemma here", since the panel `Π(u)` has `d−1` normals,
-  not 2),
-- `extensor_toDual_extensor_eq_zero_of_perp` (`Meet.lean:992`, `Fin 2`/`Fin 4`),
-then the assembly `complementIso_smul_eq_extensor_join` (`Meet.lean:~1140`): the
+**Next buildable sub-step = `inf_range_wedgeFixedLeft` → `finrank_sup_range_wedgeFixedLeft`
+at general ambient** (`Meet.lean`, still inside CHAIN-3's last brick
+`complementIso_smul_eq_extensor_join`; the `wedgeFixedLeft` building block + its
+three facts landed 2026-06-17 lifted `Fin 4` → `{d} (Fin (d+1))`, joining the
+`toDual=Gram` bridge / membership brick / proportionality engine from prior
+sittings; still no ENTRY-contract dependency). The smallest next commit:
+- `inf_range_wedgeFixedLeft` (`Meet.lean:~1068`, the decomposable intersection
+  `a∧ℝ^{d+1} ⊓ b∧ℝ^{d+1} = span{a∧b}`) — `Fin 4` → ambient `{d}`. The `d=3` proof
+  uses `Fin 3`-arity `decide`/`fin_cases`/`linearIndependent_finSnoc` on `![b,a,v]`,
+  all ambient-generic (grade-3 extensor over `Fin (d+1)`); likely a verbatim lift.
+Then, the genuinely-new count (a second commit, the "real new lemma"):
+- `finrank_sup_range_wedgeFixedLeft` (`Meet.lean:~1128`, the `dim Φ̃ = 3+3−1 = 5`
+  count) → a `(d−1)`-summand inclusion–exclusion at general `d` (the panel `Π(u)` has
+  `d−1` normals, not 2). The `wedgeFixedLeft` range count `= d` it consumes is now
+  general; the new content is the multi-summand inclusion–exclusion shape.
+Then `extensor_toDual_extensor_eq_zero_of_perp` (`Meet.lean:~1023`, `Fin 2`/`Fin 4`)
+and the assembly `complementIso_smul_eq_extensor_join` (`Meet.lean:~1170`): the
 `dim Ω = D − dim Φ̃ = D − (D−1) = 1` count + `complementIso (k:=d−1)(j:=d−1)`. The
-`toDual=Gram` brick is now in hand to feed the Gram-determinant orthogonality
-(fact 2) at general grade. This closes CHAIN-3 and feeds CHAIN-4's discriminator.
+`toDual=Gram` brick is in hand to feed the Gram-determinant orthogonality (fact 2)
+at general grade. Completing all of this closes CHAIN-3 and feeds CHAIN-4's discriminator.
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -222,6 +237,19 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3 `wedgeFixedLeft` building block: lift the `def` + facts in place to
+  implicit `{d}`, no `d=3` instance decls (no external consumers).** `wedgeFixedLeft`
+  (`def`) + `coe_`/`ker_`/`finrank_range_` were `Fin 4`-pinned; lifted to ambient
+  `{d} (Fin (d+1))`, grade `2`, range count `3 → d` (`= (d+1)−1`). Unlike the prior
+  three CHAIN-3 bricks (which kept a `(d:=3)` instance under the old name), these have
+  **no consumers outside `Meet.lean`** (grep-confirmed), and the in-file consumers
+  (`inf_range`/`finrank_sup_range`/the assembly) still pass `Fin 4` values that unify
+  `d=3` by defeq — so generalizing the `def` + facts directly is the lighter touch
+  (no instance boilerplate). All four proofs are ambient-generic verbatim (the
+  `extensor` API is already `{d}`-generic). The numeral consumer
+  `finrank_sup_range_wedgeFixedLeft` (`d=3`, out of scope) needed `(d:=3)` on its
+  `finrank_range_` rewrites + `omega → simpa using hsum` (QUIRKS § 58). No blueprint
+  pin on any of the four.
 - **CHAIN-3 `toDual=Gram` bridge: verbatim grade-/ambient-lift, `d=3` name kept as
   the instance.** `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade {d}`
   re-states the `Meet.lean` coordinate-`toDual` = `pairingDual ∘ map` bridge over
@@ -282,3 +310,8 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 - *A `-/` inside a docstring word (`grade-/ambient`) closes the doc comment early
   → "unexpected identifier; expected 'lemma'" inside the prose* → TACTICS-QUIRKS § 57.
+- *After lifting an in-place numeral-pinned `def` to implicit `{d}`, a numeral
+  consumer's `omega` mis-atomizes the `(d:=3)`-vs-numeral elaborations of one term
+  (free-variable counterexample, never reads the bridging hyp) — use `linarith` /
+  `simpa using h`* → TACTICS-QUIRKS § 58 / FRICTION [idiom] *Generalizing an in-place
+  numeral-pinned `def`…*.

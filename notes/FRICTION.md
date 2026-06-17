@@ -115,6 +115,18 @@ to be re-derived by re-reading entries later.
   semantics-preserving split; `Bricks.lean` kept for now (it matches the `*Brick` sections it holds).
 - **Status:** open (user-flagged, 2026-06-17).
 
+### [idiom] Generalizing an in-place numeral-pinned `def` to implicit `{d}` and keeping a numeral consumer: `omega` mis-atomizes the two elaborations of the same applied term — use `linarith` / `simpa using h`
+- **Where it bit:** `finrank_sup_range_wedgeFixedLeft` (`Meet.lean`, CHAIN-3) after `wedgeFixedLeft`
+  + `finrank_range_wedgeFixedLeft` were lifted from `Fin 4` to ambient `{d} (Fin (d+1))`. The `d=3`
+  consumer rewrites with `finrank_range_wedgeFixedLeft (d := 3) ha`, so `hsum` carries a
+  `(d:=3)`-elaborated `wedgeFixedLeft a` while the goal carries the statement-unified `Fin 4` one.
+- **Friction:** `hsum : finrank(…) + 1 = 3 + 3`, goal `finrank(…) = 5` — trivial, yet `omega`
+  reports `0 ≤ c ≤ 4` (it never used `hsum`): the two `finrank ℝ ↥(range ⊔ range)` are defeq but
+  syntactically distinct (the implicit `d` differs), so `omega` makes them *separate* atoms.
+- **Proposed fix:** `linarith` or `simpa using hsum` (both ordered-field/`simp`-level, treat the
+  finrank as one atom and bridge across the defeq); or pre-`rw` the goal's term to the `hsum` form.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 58.
+
 ### [idiom] Collapsing a 3-element `Set.insert` to a pair under a non-adjacent equality (`{a, b, c}` with `a = c`) — `rw [← h]; simp` doesn't close; use `ext w; simp only [mem_insert_iff, mem_singleton_iff, ← h]; tauto`
 - **Where it bit:** Phase 22g `isKDof_zero_of_triangle` (`Deficiency.lean`), the two-part-count
   `({f x, f y, f z} : Set α).ncard = 2` in the `f x = f z` branch (collapse `{f x, f y, f z}` to
