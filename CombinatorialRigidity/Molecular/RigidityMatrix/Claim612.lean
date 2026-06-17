@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Mathlib.Data.Fintype.Card
 
 /-!
 # The panel-hinge rigidity matrix — Claim 6.12 panel geometry + candidate-row machinery
@@ -40,44 +41,49 @@ Standalone `Fin 4` / `⋀²ℝ⁴` panel-support geometry feeding the `d=3` Clai
 spanning result, the affine-independence producers, and the homogeneous-incidence / line-data
 witnesses. `BodyHingeFramework`-free (only `ScrewSpace` + the Phase 17 extensor / meet API). -/
 
-/-- **The `D` panel-support 2-extensors of `4` linearly-independent homogeneous vectors span
-`ScrewSpace 2`** (`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1).
-At `d = 3` (`D = 6`, `ScrewSpace 2 = ⋀²ℝ⁴`, `finrank = 6`), for four linearly-independent
-homogeneous vectors `pbar : Fin 4 → ℝ⁴` the `binom(4,2) = 6` panel-support `2`-extensors
-`omitTwoExtensor pbar`
-— one per pair, the join `pᵢ ∨ pⱼ` of the line through each pair — span all of
-`⋀²ℝ⁴ = ScrewSpace 2`. By Lemma 2.1 (`omitTwoExtensor_linearIndependent_of_li` at `e = 2`) the six
-are linearly independent in the `6`-dimensional `ScrewSpace 2`, and a linearly independent family of
-`6 = finrank ℝ (ScrewSpace 2)` vectors is a basis, hence spans. This is the spanning input to the
-Claim-6.12 contrapositive (`lem:case-III-claim612`): a single nonzero `r ∈ ScrewSpace 2`
-annihilating every supporting extensor in the union (6.45) is forced to be `0`. The bare-LI
-hypothesis is what the `d = 3` producer feeds directly (`exists_homogeneousIncidence_of_normals`),
-sparing the de-homogenization to affine points (`notes/Phase22-realization-design.md` §1.42). -/
-theorem span_omitTwoExtensor_eq_top {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar) :
+/-- **The `D` panel-support `k`-extensors of `k+2` linearly-independent homogeneous vectors span
+`ScrewSpace k`** (`lem:case-III-claim612-extensor-span`, Katoh–Tanigawa eq. (6.45) via Lemma 2.1).
+For `k + 2` linearly-independent homogeneous vectors `pbar : Fin (k+2) → ℝ^(k+2)` the
+`binom(k+2, 2) = D` panel-support `k`-extensors `omitTwoExtensor pbar` — one per pair, the join
+`pᵢ ∨ pⱼ` of the codim-2 panel through each pair — span all of `⋀^k ℝ^(k+2) = ScrewSpace k`. By
+Lemma 2.1 (`omitTwoExtensor_linearIndependent_of_li` at `e = k`) the `D` are linearly independent in
+the `D`-dimensional `ScrewSpace k` (`screwSpace_finrank`), and a linearly independent family of
+`D = finrank ℝ (ScrewSpace k)` vectors is a basis, hence spans (the card `(k+2 choose 2) = D` is
+`Fintype.card_subtype_fst_lt_snd`). This is the spanning input to the Claim-6.12 contrapositive
+(`lem:case-III-claim612`): a single nonzero `r ∈ ScrewSpace k` annihilating every supporting
+extensor in the union (6.45) is forced to be `0`. The bare-LI hypothesis is what the producer feeds
+directly (`exists_homogeneousIncidence_of_normals` at `d = 3`), sparing the de-homogenization to
+affine points (`notes/Phase22-realization-design.md` §1.42). General-`d` carrier lift (Phase 23a,
+Leaf 2). -/
+theorem span_omitTwoExtensor_eq_top {k : ℕ} {pbar : Fin (k + 2) → Fin (k + 2) → ℝ}
+    (hp : LinearIndependent ℝ pbar) :
     Submodule.span ℝ
-        (Set.range (fun q : {q : Fin 4 × Fin 4 // q.1 < q.2} =>
+        (Set.range (fun q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} =>
           (ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
-            (extensor_mem_exteriorPower _) : ScrewSpace 2))) = ⊤ := by
-  set c : {q : Fin 4 × Fin 4 // q.1 < q.2} → ScrewSpace 2 :=
+            (extensor_mem_exteriorPower _) : ScrewSpace k))) = ⊤ := by
+  set c : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} → ScrewSpace k :=
     fun q => ScrewSpace.mk (omitTwoExtensor pbar (ne_of_lt q.2))
       (extensor_mem_exteriorPower _)
   -- The coerced family is the Lemma-2.1 omit-two family, linearly independent; transport
   -- the independence through the (injective) submodule inclusion (the opaque carrier's
   -- `.val` is the underlying exterior-algebra element).
   have hcoe : LinearIndependent ℝ
-      (fun q : {q : Fin 4 × Fin 4 // q.1 < q.2} =>
+      (fun q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} =>
         omitTwoExtensor pbar (ne_of_lt q.2)) :=
     omitTwoExtensor_linearIndependent_of_li pbar hp
   have hLI : LinearIndependent ℝ c :=
     (LinearMap.linearIndependent_iff
-      ((⋀[ℝ]^2 (Fin (2 + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower 2).toLinearMap)
+      ((⋀[ℝ]^k (Fin (k + 2) → ℝ)).subtype.comp (ScrewSpace.equivExteriorPower k).toLinearMap)
       (by rw [LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot,
         LinearEquiv.ker])).1 hcoe
-  -- `6 = finrank ℝ (ScrewSpace 2)`, so the LI family is a basis and spans.
-  have hcard : Fintype.card {q : Fin 4 × Fin 4 // q.1 < q.2} = Module.finrank ℝ (ScrewSpace 2) := by
-    rw [screwSpace_finrank]
-    decide
-  haveI : Nonempty {q : Fin 4 × Fin 4 // q.1 < q.2} := ⟨⟨(0, 1), by decide⟩⟩
+  -- `D = finrank ℝ (ScrewSpace k)`, so the LI family is a basis and spans (the `(k+2 choose 2)`
+  -- count of strictly-increasing index pairs matches `screwDim k`,
+  -- `Fintype.card_subtype_fst_lt_snd`).
+  have hcard : Fintype.card {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2}
+      = Module.finrank ℝ (ScrewSpace k) := by
+    rw [screwSpace_finrank, Fintype.card_subtype_fst_lt_snd, Fintype.card_fin]
+  haveI : Nonempty {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2} :=
+    ⟨⟨(0, 1), by simp [Fin.lt_def]⟩⟩
   have hbasis := (basisOfLinearIndependentOfCardEqFinrank hLI hcard).span_eq
   rwa [coe_basisOfLinearIndependentOfCardEqFinrank] at hbasis
 

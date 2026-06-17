@@ -654,27 +654,30 @@ q}(u)$). The argument is a clean contrapositive: if all three fail, a single non
 $\bigl(r := \sum_j \lambda_{(ab)j}\, r_j(q(ab))\bigr)$ is orthogonal to every supporting extensor in
 the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a contradiction.
 
-\begin{lemma}[The $D$ panel-support extensors of $4$ linearly-independent homogeneous vectors span $\R^D$; KT eq.\ (6.45) via Lemma 2.1]
+\begin{lemma}[The $D$ panel-support extensors of $k+2$ linearly-independent homogeneous vectors span $\R^D$; KT eq.\ (6.45) via Lemma 2.1]
   \label{lem:case-III-claim612-extensor-span}
   \lean{CombinatorialRigidity.Molecular.span_omitTwoExtensor_eq_top}
   \leanok
   \uses{lem:extensor-independence, def:rigidity-matrix}
-  At $d = 3$ ($D = 6$, $\mathrm{ScrewSpace}\,2 = \bigwedge^2 \R^4$, $\operatorname{finrank} = 6$),
-  let $\bar p_1, \bar p_2, \bar p_3, \bar p_4 \in \R^4$ be linearly independent homogeneous vectors.
-  The $\binom{4}{2} = 6$ panel-support $2$-extensors $C(\bar p_i \bar p_j) = \bar p_i \vee \bar p_j$
-  of the line through each pair span $\bigwedge^2 \R^4$:
+  Let $\bar p_1, \dots, \bar p_{k+2} \in \R^{k+2}$ be linearly independent homogeneous vectors. The
+  $\binom{k+2}{2} = D$ panel-support $k$-extensors $C(\bar p_i \bar p_j) = \bar p_i \vee \bar p_j$ ---
+  one per pair, the codim-2 panel through each pair --- span $\bigwedge^k \R^{k+2} =
+  \mathrm{ScrewSpace}\,k$:
   \[
-    \operatorname{span}\{\, \bar p_i \vee \bar p_j \mid 1 \le i < j \le 4 \,\} = \bigwedge^2 \R^4
-    \quad (\text{finrank } 6).
+    \operatorname{span}\{\, \bar p_i \vee \bar p_j \mid 1 \le i < j \le k+2 \,\} = \bigwedge^k \R^{k+2}
+    \quad (\operatorname{finrank} D).
   \]
+  At $d = 3$ this is the $k = 2$ case ($D = 6$, $\bigwedge^2 \R^4$), the form the Case-III $d = 3$
+  argument consumes.
 \end{lemma}
 \begin{proof}
   \leanok
   By the affine-free Lemma~2.1 (\cref{lem:extensor-independence},
-  \texttt{omitTwoExtensor\_linearIndependent\_of\_li} at $e = 2$: any $4$ linearly-independent vectors
-  in $\R^4$) the six omit-two extensors $\bar p_i \vee \bar p_j$ are linearly independent in
-  $\bigwedge^2 \R^4$; a linearly independent family of $6 = \operatorname{finrank} \bigwedge^2 \R^4$
-  vectors is a basis, so it spans.
+  \texttt{omitTwoExtensor\_linearIndependent\_of\_li} at $e = k$: any $k+2$ linearly-independent
+  vectors in $\R^{k+2}$) the $D$ omit-two extensors $\bar p_i \vee \bar p_j$ are linearly independent
+  in $\bigwedge^k \R^{k+2}$; a linearly independent family of $D = \operatorname{finrank} \bigwedge^k
+  \R^{k+2}$ vectors is a basis, so it spans. (The count of strictly-increasing index pairs is
+  $\binom{k+2}{2} = D$, \texttt{Fintype.card\_subtype\_fst\_lt\_snd}.)
 \end{proof}
 
 \begin{lemma}[A functional annihilating a spanning set is zero]

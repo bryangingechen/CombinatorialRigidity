@@ -2818,6 +2818,24 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored. The callsite collapses to one `rw`.
 - **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
 
+### [mirrored] `Fintype.card_subtype_fst_lt_snd` (off-diagonal ordered pairs of a linearly-ordered fintype number `(card α).choose 2`)
+- **Where it bit:** `span_omitTwoExtensor_eq_top` (`RigidityMatrix/Claim612.lean`), the Phase-23a
+  general-`d` lift. The `d = 3` form discharged `Fintype.card {q : Fin 4 × Fin 4 // q.1 < q.2} = 6`
+  by `decide`; the symbolic-`k` form needs `(k+2 choose 2) = screwDim k`, which `decide` cannot do.
+- **Friction:** mathlib has `Sym2.card` (`= (card α + 1).choose 2`, includes the diagonal) and
+  `Fintype.card_finset_len` (`{s // s.card = k}`), but no count of the *off-diagonal ordered* pairs
+  `{q : α × α // q.1 < q.2}`. Two import gotchas in the mirror file: the subtype `Fintype` instance
+  needs `Mathlib.Data.Fintype.Prod` (not pulled by `Fintype.Card`), after which `LinearOrder`
+  supplies the decidable `<` (no separate `[DecidableLT α]`).
+- **Resolution:** mirrored `Fintype.card_subtype_fst_lt_snd` for `[Fintype α] [LinearOrder α]` via
+  the bijection with `{s : Finset α // s.card = 2}` (forward `(i,j) ↦ {i,j}`; back `s ↦
+  (orderEmbOfFin 0, orderEmbOfFin 1)`), then `Fintype.card_finset_len`. The pair's increasing
+  enumeration is `![i,j]` (`Finset.orderEmbOfFin_unique`); the range identity
+  `Finset.range_orderEmbOfFin` closes `right_inv`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Fintype/Card.lean` (beside `Finset.card_compl_singleton`; upstream
+  it belongs near `Fintype.card_finset_len` in `Mathlib/Data/Fintype/Powerset.lean`).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
