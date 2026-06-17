@@ -333,11 +333,57 @@ quality / blueprint sync / notes discipline / commit message
 | 179 | 22l L7 — CaseII.lean migration-free + OQ1 first cap-drop measured + FLIP equivExteriorPower pinned, d7d1b90 | 2/2/1 | opus | normal | clean | —✓——✓✓ | 139k tok / 52 tools / 1173s | Opus-only override (per config). Clean **docs-only** (5th negative-probe — CaseII migration-free, assembly file). **OQ1 first positive measurement:** during the probe, `case_II_realization_all_k` re-elaborated green at **default 200000** on the opaque carrier (vs the committed 600000 override) — the opacity cap drop is real and observable, banked at the FLIP. **FLIP recipe concretized (recon-grade bonus):** `equivExteriorPower` must be `cast (ScrewSpace_def k)`-based, NOT `LinearEquiv.refl` (refl loses `rfl` on `_apply`/`_symm_apply` at the reducible transparency it needs, once the head is opaque); `mk`/`val` route through `ScrewSpace_def ▸` — the last §5-draft `…` piece, probe-verified to build the whole spine. Notes compressed 433→383 (settled L0a–L6 blocks). Coordinator: docs-only verified (no `.lean`/toolchain), notes coherent + forward-weighted, hand-off → L8. |
 | 180 | 22l L8 — CaseIII.lean verified migration-free (opacity probe), 4b99dc1 | 2/2/1 | opus | normal | clean | —✓——✓✓ | 118k tok / 36 tools / 1018s | Opus-only override (per config). Clean **docs-only** (6th negative-probe — CaseIII migration-free despite ~113 `ScrewSpace` mentions, all opacity-neutral; first non-assembly file since L4 to come back migration-free). **FLIP recipe further validated:** this probe applied the *full* L7 FLIP recipe (opaque `def` + `ScrewSpace_def` + 3 instances + `mk`/`val` via `ScrewSpace_def ▸` + cast-form `equivExteriorPower`) and built spine-to-CaseIII green → the recipe is now probe-verified across 9 files, strong evidence the FLIP lands clean. Next L9 (`Theorem55.lean`) = last file + the other two capped survivors (`case_cut_edge_realization` 400000, `_gp` 600000), then the FLIP. A-priori 2/2/1 → realized migration-free. Coordinator: docs-only verified, hand-off → L9. |
 | 181 | 22l L9 — Theorem55.lean verified migration-free + both Theorem55 caps measured (OQ1 resolved), a8b0227 | 2/2/1 | opus | normal | clean | —✓——✓✓ | 125k tok / 46 tools / 582s | Opus-only override (per config). Clean **docs-only** (7th & final negative-probe — Theorem55 migration-free; its only carrier-construction sites already route through `ScrewSpace.mk` from L1's consumer fixups). **OQ1 fully resolved** (measured on the opaque carrier): `case_cut_edge_realization` 400000→default; `case_cut_edge_realization_gp` 600000→400000 (honest partial — still times out at default, stays 400000); with L7's CaseII→default that's net **2/3 caps to default + 1 −33%**. The probe exercised the full FLIP RigidityMatrix recipe end-to-end against the top-of-spine file → entire spine L0a–L9 probe-verified opacity-ready. Next = the FLIP (= phase close). A-priori 2/2/1 → realized migration-free. Coordinator: docs-only verified, hand-off fully specifies the FLIP recipe + phase-close checklist. |
+| 182 | 22l FLIP + phase close — opaque ScrewSpace carrier + cap drops (maxHeartbeats 3→1), b052ef9 | 1/1/2 | opus | normal | clean | ✓✓✓✓✓✓ | 164k tok / 67 tools / 842s | Phase-close (fable-mapped → opus; fable down + the opus-only override). Clean — **the FLIP landed fully mechanical, zero friction / zero build-failure iterations**, exactly as the probe-per-layer prep predicted: the big-bang carrier flip the design doc feared (OQ1's residual risk, §6's chief now-vs-later objection) became a one-commit no-op because every layer was probe-verified opacity-ready. Carrier now opaque `def` + `ScrewSpace_def` + cast-`equivExteriorPower` + `mk`/`val` via `ScrewSpace_def ▸`; caps 3→1 (CaseII + `case_cut_edge_realization` → default, `_gp` 600000→400000). Phase-close checklist fired: ROADMAP §22l ✓ + compressed, home_page table ✓, MolecularConjecture/PERFORMANCE/FRICTION (3-survivors → `[resolved]`)/design-doc synced; README/intro.tex correctly unchanged (math frontier = Phase 23, unchanged); blueprint/toolchain/manifest untouched. Coordinator verified FULL: whole-PROJECT build warning-clean (opaque carrier + lowered caps hold end-to-end) + `lake lint` + sorry-grep + carrier-is-`def`/cap-count(3→1) structural checks + ROADMAP/surfaces re-read. **Phase 22l closed.** |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Phase 22l close-out (2026-06-16; rows 171–182)
+
+22l ran **opus-only** (user override for the whole phase — the carrier-opacity
+refactor sits in the §38 defeq-fragility zone where sonnet has repeatedly
+wedged). So, like 22j, **zero cross-rung data** (S/P/B still rated per slice).
+**12 dispatches, all opus, all clean — zero repairs, zero BLOCKED, zero
+escalations, zero pairs.** The value is in the outcome shapes, not the rung axis.
+
+- **Opus ran a defeq-fragile structural refactor end-to-end with zero friction.**
+  The §38 `whnf`/`isDefEq`-over-carrier zone that wedged sonnet (rows 7, 157) and
+  motivated the override was migrated across 9 spine files + a carrier flip with no
+  repair, no wedge, no build-failure iteration. A clean confirmation of the user's
+  override rationale; not a map *change* (no comparison run), but a strong
+  "opus is reliable in the heavy zone" data point.
+- **The fallible part was again the written PLAN, not the model's work (3rd phase
+  running: cf. 22j/22k).** The phase-OPEN Layer plan said "L0 = flip the carrier
+  first," which **contradicted the design doc's own §3 spike finding** (opacity
+  breaks the `⟨val,proof⟩` idiom at ~300 sites across 7 files at once). Opus caught
+  it at L0a, empirically (flip → cascade → revert), and reordered to
+  **API-first / flip-last** so every commit stays project-green. The red-node
+  consistency gate at phase-open would ideally have caught the plan/spike conflict;
+  it didn't, the first builder did.
+- **Two methodology-level catches beyond the written hand-off (top-rung judgment
+  value).** (1) the API-first/flip-last reorder above; (2) L2's **opacity-probe-per-
+  layer** method — opus recognized that *green-on-the-`abbrev` is blind to
+  opacity-readiness* (the reducible abbrev keeps the breaking defeqs alive), so each
+  layer must temporarily flip the carrier, build, observe breaks, fix on the abbrev,
+  revert. The probe then retroactively surfaced 3 gaps L0/L1's green builds had
+  missed. This is the insight that **made the FLIP land mechanical** — the design
+  doc's feared big-bang (OQ1, §6's chief now-vs-later objection) became a one-commit
+  no-op because every layer was probe-verified. Process lesson for any future
+  carrier-opacity refactor.
+- **The recon's blast-radius estimate was a large overestimate for the d=3 tree.**
+  Design §5 estimated ~150–200 reach-ins, 30–45 needing thought; reality: 7 of 9
+  spine files were **migration-free** (all reach-ins opacity-neutral module-level
+  work — categories b/c/e), and the feared-hardest category (d, the `screwBasis`
+  `change`-blocks) was a **verbatim no-op** at d=3 (L4). Only L0a/L0b/L1/L4 needed
+  edits, L4 just a 2-site idiom. The recon mined *all* `ScrewSpace` mentions but
+  most are opacity-neutral; the genuine break-prone surface was far smaller.
+- **OQ1 resolved positive:** opacity dropped the molecular `maxHeartbeats` count
+  3→1 (CaseII + `case_cut_edge_realization` → default; `case_cut_edge_realization_gp`
+  600000→400000, honest partial). Measured per-survivor during each capped layer's
+  probe (L7/L9), banked at the FLIP. The perf payoff the spike could only proxy on
+  synthetic benches is now real and end-to-end.
 
 ### Phase 22k close-out (2026-06-16; rows 138–165)
 
