@@ -13,19 +13,19 @@ files (`AlgebraicInduction/Case*`), not the stable ones.
 
 ## Current state
 
-**Next step:** the CaseIII *file cut* (slice 3) — split `CaseIII.lean` at the
-clean 2-way seam (after `case_III_rank_certification`, before
-`case_III_arm_realization`; see *Decisions → Slice 2*). Or take
-`ForestSurgery.lean` instead. Slices 1–2 are landed, build + lint green,
-warning-clean.
+**Next step:** slice 4 (optional) — `Induction/ForestSurgery.lean` (3783 LoC), the
+last remaining over-cap molecular giant; or close the round. Slices 1–3 are landed,
+build + lint + checkdecls green, warning-clean.
 
-- **Slice 1 (committed `fd0ccd2`):** `RigidityMatrix.lean` (3527 LoC) → carved
-  the three rank-addition brick sections into a new leaf
-  `Molecular/RigidityMatrix/Bricks.lean` (634 LoC); core drops to 2937 LoC.
-- **Slice 2 (CaseIII section headers):** added 7 `/-! ##` section headers to the
-  flat 4000-line `CaseIII.lean` (comment-only — the sanctioned first step before
-  its file cut, per `PERFORMANCE.md` item 8). The grouping is now explicit and a
-  clean 2-way file-split seam is identified.
+- **Slice 1 (`fd0ccd2`):** `RigidityMatrix.lean` 3527 → 2937 LoC; the three
+  rank-addition bricks → new leaf `Molecular/RigidityMatrix/Bricks.lean` (634).
+- **Slice 2 (`8d2c8fc`):** `CaseIII.lean` gained 7 `/-! ##` section headers
+  (comment-only; the sanctioned first step before its file cut, `PERFORMANCE.md`
+  item 8) — making the grouping + a clean 2-way seam explicit.
+- **Slice 3 (CaseIII file cut):** `CaseIII.lean` (4040 LoC) split at that seam into
+  `CaseIIICandidate.lean` (1564 LoC, §1–§4 infra: Claim 6.11 + candidate-completion
+  + the `caseIIICandidate` device + certification) and `CaseIII.lean` (2515 LoC,
+  §5–§7: arms + relabel + dispatch + capstone). Rename-free.
 
 ## Slice plan / candidate ranking
 
@@ -36,10 +36,10 @@ warning-clean.
   The flat 44-decl namespace got 7 `/-! ##` headers grouping the decls by KT §6.4
   sub-argument (the read-pass item 8 calls for; comment-only, warning-clean after
   a 2-line longLine reflow). Active realization subtree → factor-3 high.
-- [ ] **Slice 3 — `CaseIII.lean` file cut at the 2-way seam.** Now teed up: a
-  clean cut after `case_III_rank_certification` / before `case_III_arm_realization`
-  (the §1–§4 single-framework infrastructure | §5–§7 arms + relabel + dispatch +
-  capstone). See *Decisions → Slice 2* for the seam + the carry-across caveat.
+- [x] **Slice 3 — `CaseIII.lean` file cut at the 2-way seam.** Cut after
+  `case_III_rank_certification` / before `case_III_arm_realization` into
+  `CaseIIICandidate.lean` (§1–§4 infra) + `CaseIII.lean` (§5–§7 realization).
+  Rename-free; inserted as a flat sibling in the chain. See *Decisions → Slice 3*.
 - [ ] **Slice 4 (candidate) — `Induction/ForestSurgery.lean` (3783 LoC).**
   2.5× cap; ~20 `/-! ##` doc sections keyed to KT lemmas; natural 2-way cut
   (KT 4.2 forest core | KT 4.1/4.9/reduction material). *Stable* Induction subtree
@@ -95,9 +95,27 @@ deeper split. Not pursued; navigability/size of the carved bricks is the win.)
   orphaned. A 3-way is *not* clean: M₃ (§6) reuses the M₁ engine
   `case_III_arm_realization` (§5), so §5/§6 can't separate.
 
+### Slice 3 — CaseIII file cut
+
+- **The cut.** Split `CaseIII.lean` (4040 LoC) at the slice-2 seam into a new flat
+  sibling `CaseIIICandidate.lean` (1564 LoC, §1–§4: Claim 6.11 + candidate-completion
+  + `caseIIICandidate` device + `t=0` certification) and `CaseIII.lean` (2515 LoC,
+  §5–§7: arms + relabel/M₃ + dispatch + capstone). Chain insertion:
+  `CaseII ← CaseIIICandidate ← CaseIII ← Theorem55`; `CaseIII` now imports
+  `CaseIIICandidate` instead of `CaseII` (which it gets transitively). `Theorem55`'s
+  `import …CaseIII` is unchanged; the aggregator pulls the new file transitively.
+- **Rename-free, non-`module`.** No decl renamed (blueprint `\lean{}` pins +
+  `checkdecls` unaffected — verified). Both halves are non-`module` (plain `import`),
+  matching the molecular chain. The new file redeclares the namespace + `variable {k}`
+  / `open scoped Graph` / `variable {α β}` preamble. Safety-checked: no `private` decl
+  and no backward dependency crosses the seam.
+- **Still over cap.** The realization half is ~1.6× the ~1500-LoC soft cap; a
+  second-round sub-split (e.g. splitting the relabel/M₃ machinery off the arms) is a
+  clean follow-up if wanted, but the 4040 → 1564 + 2515 drop is the bulk of the win.
+
 ## Hand-off / next step
 
-Slices 1–2 are a clean handoff point. Next concrete commit: slice 3 — cut
-`CaseIII.lean` into two files at the seam above (`module`-status, import-chain, and
-blueprint-pin discipline as in slice 1; the cut is rename-free). Alternatively
-slice 4 (`ForestSurgery.lean`). Both are independent of slices 1–2.
+Slices 1–3 are a clean handoff point. The remaining over-cap molecular giant is
+`Induction/ForestSurgery.lean` (3783 LoC, slice 4 — a stable subtree, lower factor-3;
+2-way KT-4.2-core | KT-4.1/4.9 cut, confirm no shared private helpers first). Either
+take it as the next commit or close the round here.

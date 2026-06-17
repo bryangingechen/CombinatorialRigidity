@@ -499,14 +499,19 @@ decl renamed → blueprint `\lean{}` pins and `checkdecls` unaffected).
    Navigable, but the two arcs may share private helpers — confirm
    before cutting.
 
-8. **`Molecular/AlgebraicInduction/CaseIII.lean` (4000 LoC) — highest
-   effort, do last.** Flat `namespace CombinatorialRigidity.Molecular`
-   with **no internal section markers** and 44 top-level decls — no
-   seam to grep for. A split needs a read-pass to group the decls
-   (stratum-1 placement / candidate-completion / Claims 6.11–6.12 /
-   the `d=3` assembly) first; cheapest first step is to add `/-! ##`
-   section headers (factor 4 navigability) and defer the file cut
-   until the grouping is explicit.
+8. **`Molecular/AlgebraicInduction/CaseIII.lean` (4000 LoC) — ✓ sectioned
+   + 2-way cut (post-Phase-22l perf pass; `notes/Phase22l-perf.md`).** Was a
+   flat `namespace` with no section markers and 44 top-level decls — no seam
+   to grep for. A subagent read-pass (anchored to `case-iii.tex`'s milestone
+   skeleton; only ~11 of 44 decls are blueprint-pinned) grouped the decls into
+   7 `/-! ##` sections (slice 2, comment-only), which exposed a **clean 2-way
+   file seam** after `case_III_rank_certification` / before
+   `case_III_arm_realization`: the §1–§4 single-framework infrastructure carves
+   off cleanly (nothing downstream reaches into it). Slice 3 cut it into
+   `CaseIIICandidate.lean` (1564 LoC) + `CaseIII.lean` (2515 LoC). The
+   realization half is still ~1.6× cap — a second-round sub-split (relabel/M₃
+   off the arms) is a clean follow-up. The staged "headers first, defer the
+   cut" recipe (factor 4 navigability before the cut) worked as planned.
 
 ### Module-system conversion: now ripe
 
@@ -738,8 +743,10 @@ Lessons:
 > `notes/Phase22j-perf.md`): the 10,346-line `CaseI.lean` monolith is now the 5-file chain
 > `GenericityDevice ← Coupling ← CaseI ← CaseII ← CaseIII ← Theorem55` (Coupling 1,349 / CaseI 2,187 /
 > CaseII 1,223 / CaseIII 3,861 / Theorem55 1,899 LoC). Rename-free; full build/lint/axioms/`checkdecls`
-> clean. `CaseIII.lean` (~2.5× cap) remains a clean second-round sub-split candidate. Plan (C) — the
-> `RigidityMatrix.lean` / `ForestSurgery.lean` candidates — is assessed, not scheduled.
+> clean. `CaseIII.lean` (then ~2.5× cap) was the second-round sub-split candidate — **done in the
+> post-Phase-22l round** (`notes/Phase22l-perf.md`): sectioned (7 `/-! ##` headers) then 2-way cut into
+> `CaseIIICandidate.lean` (1,564) + `CaseIII.lean` (2,515). Plan (C) — the `RigidityMatrix.lean`
+> (bricks carved, also post-22l) / `ForestSurgery.lean` (open) candidates.
 
 A ranked split/refactor plan for the molecular `AlgebraicInduction/`
 giants, opened by the Phase-22j suppression-drop cleanup (the
