@@ -1517,4 +1517,60 @@ theorem complementIso_exteriorPower_basis_mem_range_map_subtype
   refine extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W _ fun i => ?_
   exact hW _ ((Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem _ _).mp ⟨i, rfl⟩)
 
+/-! ## The O(n)-equivariance of `complementIso` (OD-8 sub-leaf (h-1))
+(`def:meet-complement-iso`)
+
+The substantive new leaf of the OD-8 route-(α): `complementIso` (the Hodge `⋆` for the
+standard volume form `screwAlgebraTopEquiv` + dot product `Pi.basisFun.toDual`) is
+**O(n)-natural but not GL-natural**. For an *orthogonal* change of frame `O` (one preserving
+the standard dot product `b.toDual`), `complementIso` intertwines `exteriorPower.map j O` and
+`exteriorPower.map (N−j) O` up to the sign `det O`. This is the from-frame lift that, composed
+with the LANDED standard-frame range-membership
+`complementIso_exteriorPower_basis_mem_range_map_subtype`, will close the general-decomposable
+panel-meet range-membership (h-3, `complementIso_extensor_mem_range_map_subtype`). -/
+
+/-- **`complementIso` is O(n)-equivariant** (`def:meet-complement-iso`, OD-8 sub-leaf (h-1) — the
+substantive new leaf of the route-(α) panel-meet range-membership). For an *orthogonal*
+endomorphism `O` of `ℝ^{k+2}` — one preserving the standard dot product `b.toDual`
+(`hO : ∀ x y, b.toDual (O x) (O y) = b.toDual x y`, `b = Pi.basisFun ℝ (Fin (k+2))`) —
+`complementIso hj` intertwines the induced exterior-power maps up to the sign `det O`:
+`complementIso hj (map j O X) = (det O) • map (N−j) O (complementIso hj X)`. This is the
+metric content of the Hodge `⋆` being O(n)-natural (but **not** GL-natural — the join/volume half
+`wedgePairing_map` scales by `det O`, while the dot-product half
+`exteriorPower_basis_toDual_map_orthogonal_eq` is *invariant*).
+
+Proof by `(b.exteriorPower (N−j)).toDual`-injectivity (`Module.Basis.toDual_injective`), pairing
+both sides against an arbitrary `B`. Since `O` is orthogonal it is injective (a vector with `O x`
+in the `b.toDual`-kernel is itself in the kernel, so zero by `toDual_injective`), hence — on the
+finite-dimensional `ℝ^{k+2}` — surjective, so `exteriorPower.map (N−j) O` is surjective
+(`exteriorPower.map_surjective`) and it suffices to pair against `B = map (N−j) O B'`. On that
+slot the LHS is `complementIso_toDual` + `wedgePairing_map` (`= det O • wedgePairing X B'`) and the
+RHS is the Gram-O-invariance (`exteriorPower_basis_toDual_map_orthogonal_eq`) plus
+`complementIso_toDual` (`= det O • wedgePairing X B'` likewise). -/
+theorem complementIso_map_orthogonal_eq {j : ℕ} (hj : j ≤ k + 2)
+    (O : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (hO : ∀ x y, (Pi.basisFun ℝ (Fin (k + 2))).toDual (O x) (O y)
+      = (Pi.basisFun ℝ (Fin (k + 2))).toDual x y)
+    (X : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) :
+    complementIso hj (exteriorPower.map j O X)
+      = (LinearMap.det O) • exteriorPower.map (k + 2 - j) O (complementIso hj X) := by
+  -- `O` is injective: if `O x = 0` then `b.toDual x = 0` (from `hO`), so `x = 0`.
+  have hOinj : Function.Injective O := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro x hx
+    apply (Pi.basisFun ℝ (Fin (k + 2))).toDual_injective
+    refine LinearMap.ext fun y => ?_
+    rw [map_zero, LinearMap.zero_apply, ← hO x y, hx, map_zero, LinearMap.zero_apply]
+  -- hence surjective (finite-dimensional endomorphism), so `map (N−j) O` is surjective.
+  have hOsurj : Function.Surjective O := LinearMap.surjective_of_injective hOinj
+  have hmapsurj : Function.Surjective (exteriorPower.map (k + 2 - j) O) :=
+    exteriorPower.map_surjective hOsurj
+  -- It suffices to pair both sides against an arbitrary `B = map (N−j) O B'`.
+  apply ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual_injective
+  refine LinearMap.ext fun B => ?_
+  obtain ⟨B', rfl⟩ := hmapsurj B
+  rw [complementIso_toDual, wedgePairing_map, map_smul, LinearMap.smul_apply,
+    exteriorPower_basis_toDual_map_orthogonal_eq (k + 2 - j) O hO, complementIso_toDual,
+    smul_eq_mul]
+
 end CombinatorialRigidity.Molecular

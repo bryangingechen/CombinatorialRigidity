@@ -11,10 +11,11 @@
 `extensor_toDual_extensor_eq_zero_of_perp` + the lifted `wedgeFixedLeft` / `inf_range_wedgeFixedLeft`
 infrastructure stay green at d=3, do NOT generalize: `dim Ω = C(d−1,2) = 1` only at `d=3`). The one
 genuinely-new leaf is the **panel-meet range-membership** `complementIso_extensor_mem_range_map_subtype`
-(route OPEN, OD-8); its **standard-frame** base case `complementIso_exteriorPower_basis_eq_smul_compl`
-and standard-frame **range-membership** `complementIso_exteriorPower_basis_mem_range_map_subtype` have
-landed (2026-06-17), leaving the **general-decomposable** (non-coordinate `W = {n₀,n₁}^⊥`) lift; the
-assembly then reuses the THREE landed `_grade` bricks (zero new count). The integer Phase 23 stays
+(route OPEN, OD-8); its **standard-frame** base case `complementIso_exteriorPower_basis_eq_smul_compl`,
+standard-frame **range-membership** `complementIso_exteriorPower_basis_mem_range_map_subtype`, and the
+**O(n)-equivariance** `complementIso_map_orthogonal_eq` (h-1) have landed (2026-06-17), leaving the
+**frame alignment** (h-2) + **general-decomposable assembly** (h-3) of the lift; the final assembly
+then reuses the THREE landed `_grade` bricks (zero new count). The integer Phase 23 stays
 **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
@@ -31,29 +32,25 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) (h-1) BOTH transformation halves have landed (2026-06-17, this commit
-the dot-product half):** (h-1) needs two change-of-frame laws and both are now in `Meet.lean` — the
-*join/volume* half (prior commit) `wedgeProd_map` / `wedgePairing_map` (the pairing scales by `det f`),
-and the *dot-product* half (this commit) `exteriorPower_basis_toDual_map_orthogonal_eq`: the
-exterior-power **Gram pairing is O(n)-invariant** — for `O` preserving the standard dot product
-(`hO : ∀ x y, b.toDual (O x)(O y) = b.toDual x y`, `b = Pi.basisFun ℝ (Fin (d+1))`),
-`(b.exteriorPower n).toDual (map O Z)(map O B) = (b.exteriorPower n).toDual Z B`. Proof: through the
-LANDED N3b-recon `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade` the pairing is a **Gram
-determinant** `det (b.toDual (O Zⱼ)(O Bᵢ))` on decomposables (`pairingDual_ιMulti_ιMulti`), which
-`hO` collapses entry-wise to `det (b.toDual Zⱼ Bᵢ)`; the decomposable identity lifts to all of `⋀ⁿ`
-by a **double `LinearMap.ext_on`** over the spanning `ιMulti` generators (`.flip.comp` bilinear-lift
-idiom). Grade- and ambient-generic over `Fin (d+1)`; no `d=3` pin, no new mathlib fact.
-**Next buildable sub-step = assemble (h-1) itself**, `complementIso_map_orthogonal_eq`
-(`complementIso (map₂ O X) = det O • map_k O (complementIso X)` for orthogonal `O`): pair both sides
-against `B = map_k O B'` via `(b.exteriorPower).toDual`-injectivity — LHS is `complementIso_toDual` +
-`wedgePairing_map` (= `det O • wedgePairing X B'`), RHS is `det O • toDual (map O (complementIso X))
-(map O B')` = (this commit's Gram-O-invariance) `det O • toDual (complementIso X) B'` =
-`complementIso_toDual` `det O • wedgePairing X B'`. **`complementIso` IS the Hodge star `⋆`** (standard
-volume form `screwAlgebraTopEquiv = topEquiv` + dot product `Pi.basisFun.toDual`), O(n)-natural but
-NOT GL-natural; (h-1)'s full statement is "`⋆(map O X) = det O • map O (⋆X)`" for orthogonal `O`.
-Then: (h-2) Gram–Schmidt alignment, (h-3) assemble with the LANDED standard-frame membership
-`complementIso_exteriorPower_basis_mem_range_map_subtype`, closing
-`complementIso_extensor_mem_range_map_subtype`; then the assembly
+**CHAIN-3's OD-8 route-(α) (h-1) `complementIso_map_orthogonal_eq` has LANDED (2026-06-17, this
+commit).** The O(n)-equivariance of `complementIso` (the Hodge `⋆`) is now a complete leaf in
+`Meet.lean`: for orthogonal `O` (one preserving the standard dot product `b.toDual`,
+`hO : ∀ x y, b.toDual (O x)(O y) = b.toDual x y`),
+`complementIso hj (map j O X) = det O • map (k+2−j) O (complementIso hj X)`. The two transformation
+halves had already landed (prior commits — the *join/volume* half `wedgeProd_map`/`wedgePairing_map`
+scaling by `det O`, and the *dot-product* half `exteriorPower_basis_toDual_map_orthogonal_eq`, the
+Gram-O-invariance); this commit is the **assembly** by `(b.exteriorPower (k+2−j)).toDual`-injectivity
+(`Module.Basis.toDual_injective`). `O` orthogonal ⟹ injective (`hO` + `toDual_injective`) ⟹ surjective
+(`LinearMap.surjective_of_injective`, finite-dim) ⟹ `map (k+2−j) O` surjective
+(`exteriorPower.map_surjective`), so it suffices to pair against `B = map (k+2−j) O B'`: LHS =
+`complementIso_toDual`+`wedgePairing_map` (`= det O • wedgePairing X B'`), RHS = Gram-O-invariance +
+`complementIso_toDual` (likewise). Grade-generic `{j}`; no `d=3` pin, no new mathlib fact (only the
+two landed halves + three mathlib facts).
+**Next buildable sub-step = (h-2) `exists_orthogonal_map_span_pair_eq_coordPlane`** — the
+Gram–Schmidt / orthonormal-extension construction of an orthogonal `O` carrying `span{n₀,n₁}` to the
+coordinate `2`-plane `span{e₀,e₁}` (so `W = {n₀,n₁}^⊥` maps to a coordinate subspace). Then (h-3) the
+target leaf `complementIso_extensor_mem_range_map_subtype` assembles (h-1)+(h-2)+the LANDED
+standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype`; then the assembly
 `extensor_join_proportional_complementIso_meet` (h-4) via the `⋀^k W`-is-a-line route (reusing the
 three landed `_grade` bricks; zero new count). **Route β rejected** (the annihilation→membership
 upgrade is the withdrawn `dim Φ̃` count, not a free dimension match). **NOT**
@@ -161,23 +158,24 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
               the `N=k+2` corollary of the new general mirror `exteriorPower.topEquiv_map_eq_det_smul`
               (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`; `Basis.ext` to the top-power generator
               + the `det = (toMatrix' f)ᵀ` computation). Landed 2026-06-17.
-            - [◐] **(h-1) `complementIso_map_orthogonal_eq` — the substantive new leaf + clause-(ii)
-              flag.** Its **two transformation halves have BOTH LANDED** (2026-06-17): the *join/volume*
-              half `wedgeProd_map` (graded wedge product is covariant, via the mirror
-              `exteriorPower.map_coe_eq_exteriorAlgebra_map`) + `wedgePairing_map` (pairing scales by
-              `det f`, = `wedgeProd_map` + (h-0)); and the *dot-product* half (this commit)
-              `exteriorPower_basis_toDual_map_orthogonal_eq` (the exterior-power Gram pairing's
-              O-invariance `(b.exteriorPower n).toDual (map O Z)(map O B) = …toDual Z B` for `O`
-              preserving `b.toDual`, via the N3b-recon Gram-determinant + `pairingDual_ιMulti_ιMulti` +
-              a double `LinearMap.ext_on` over the `ιMulti` generators; grade-/ambient-generic, no `d=3`
-              pin, no new mathlib fact). **Remaining:** assemble these two into `complementIso_map_orthogonal_eq`
-              itself by `(b.exteriorPower).toDual`-injectivity (pair both sides against `B = map O B'`;
-              LHS = `complementIso_toDual`+`wedgePairing_map`, RHS = Gram-O-invariance+`complementIso_toDual`).
-            - [ ] (h-2) Gram–Schmidt alignment of `span{n₀,n₁}` to a coordinate plane.
-            - [ ] (h-3) assemble (h-1)+(h-2)+the LANDED standard-frame membership.
+            - [x] **(h-1) `complementIso_map_orthogonal_eq` — the substantive new leaf + clause-(ii)
+              flag — LANDED 2026-06-17.** O(n)-equivariance of `complementIso` (the Hodge `⋆`):
+              `complementIso hj (map j O X) = det O • map (k+2−j) O (complementIso hj X)` for `O`
+              orthogonal (`hO : ∀ x y, b.toDual (O x)(O y) = b.toDual x y`). Assembled by
+              `(b.exteriorPower (k+2−j)).toDual`-injectivity from the two landed transformation halves
+              (the *join/volume* half `wedgePairing_map` scaling by `det O`, the *dot-product* Gram-
+              O-invariance `exteriorPower_basis_toDual_map_orthogonal_eq`): `O` orthogonal ⟹ injective
+              (`hO`+`toDual_injective`) ⟹ surjective ⟹ `map O` surjective, so pair against
+              `B = map O B'`; both sides collapse to `det O • wedgePairing X B'` via `complementIso_toDual`.
+              Grade-generic `{j}`; no `d=3` pin, no new mathlib fact.
+            - [ ] (h-2) `exists_orthogonal_map_span_pair_eq_coordPlane` — Gram–Schmidt / orthonormal-
+              extension alignment of `span{n₀,n₁}` to a coordinate `2`-plane (mathlib `Basis`/
+              orthonormal API). **The next buildable sub-step.**
+            - [ ] (h-3) `complementIso_extensor_mem_range_map_subtype` — assemble (h-1)+(h-2)+the LANDED
+              standard-frame membership; the `extensor n = 0` case is trivial, the work is the
+              `n`-independent case (`dim W = k` by rank–nullity on the 2 functionals).
             Route β (annihilator=range) is **rejected** (it re-introduces the withdrawn `dim Φ̃`
-            count). Fallback: carry (h-3) green-modulo if (h-1) is a long pole. (h-1) is the one
-            genuinely-open math obligation of the CHAIN-3 finish.
+            count). Fallback: carry (h-3) green-modulo if (h-2) is a long pole.
         - [ ] `extensor_join_proportional_complementIso_meet` — the general-`d` assembly
           (replaces `complementIso_smul_eq_extensor_join`; d=3 line stays as wrapper). The
           **`⋀^{d−1}W`-is-a-line** route: point-join (`d−1` points) + panel-meet (**2**
@@ -228,13 +226,12 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
   Route α leaf chain (h-0…h-4): (h-0) volume-form-by-determinant
   (`screwAlgebraTopEquiv (map f ·) = det f · …` — LANDED `screwAlgebraTopEquiv_map_eq_det_smul`),
   (h-1) `complementIso_map_orthogonal_eq` — **the O(n)-equivariance, the substantive new leaf +
-  clause-(ii) flag** (Hodge `⋆` is O(n)-natural not GL-natural); **both transformation halves now
-  LANDED** — the volume/join half (`wedgePairing_map`) + the dot-product Gram-O-invariance
-  (`exteriorPower_basis_toDual_map_orthogonal_eq`, this commit) — leaving only the
-  `toDual`-injectivity *assembly*, (h-2) orthonormal alignment of `span{n_u,n'}` to a coordinate
-  plane (Gram–Schmidt), (h-3) assemble with the LANDED standard-frame membership, (h-4) the assembly.
-  **No missing mathlib *API*** (clause (ii)), but a genuine new *project* sub-lemma (h-1).
-  **Genuine fallback if (h-1) is a long pole:** carry (h-3) as an explicit
+  clause-(ii) flag — now LANDED** (Hodge `⋆` is O(n)-natural not GL-natural; assembled from the two
+  transformation halves by `toDual`-injectivity), (h-2) orthonormal alignment of `span{n_u,n'}` to a
+  coordinate plane (Gram–Schmidt — **the next open leaf**), (h-3) assemble with the LANDED
+  standard-frame membership, (h-4) the assembly.
+  **No missing mathlib *API*** (clause (ii)); the one genuinely-new *project* sub-lemma (h-1) is now
+  closed. **Genuine fallback if (h-2) is a long pole:** carry (h-3) as an explicit
   green-modulo `h…` premise (standing idiom), never a `sorry`.
 - **OD-6 — DECIDED: five leaves within ONE sub-phase 23b** (no separate duality
   letter). The arm-realization engine they feed is already general-`k`, so
@@ -270,36 +267,25 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = assemble (h-1) itself, `complementIso_map_orthogonal_eq`** — BOTH its
-transformation halves now landed (`Meet.lean`): the volume/join half `wedgeProd_map` /
-`wedgePairing_map` (prior commit) and **the dot-product half this commit**, the exterior-power Gram
-pairing's O-invariance `exteriorPower_basis_toDual_map_orthogonal_eq`
-(`(b.exteriorPower n).toDual (map O Z) (map O B) = …toDual Z B` for `O` preserving `b.toDual`,
-`b = Pi.basisFun ℝ (Fin (d+1))`; grade-/ambient-generic, no `d=3` pin, no new mathlib fact). With both
-in hand, the `complementIso` equivariance `complementIso_map_orthogonal_eq`
-(`complementIso (map₂ O X) = det O • map_k O (complementIso X)`) closes by `b'.toDual`-injectivity:
-pair both sides against `B = map_k O B'`; the LHS is `complementIso_toDual`+`wedgePairing_map`
-(= `det O • wedgePairing X B'`) and the RHS is `det O • b.toDual (map O (complementIso X)) (map O B')`
-= `det O • wedgePairing X B'` by Gram-O-invariance + `complementIso_toDual`. After (h-1), the target leaf
-`complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
+**Next buildable sub-step = (h-2) `exists_orthogonal_map_span_pair_eq_coordPlane`** — Gram–Schmidt /
+orthonormal-extension construction of an orthogonal `O` carrying `span{n₀,n₁}` to the coordinate
+`2`-plane `span{e₀,e₁}` (mathlib `Basis` / orthonormal-extension API), so that `W = {n₀,n₁}^⊥` maps to
+a coordinate subspace `span{e₂,…,e_{k+1}}` and `extensor ![n₀,n₁]` maps (up to scalar) to the
+coordinate blade `e_{01}`. Combinatorial-geometry leaf, no `complementIso`. After (h-2), the target
+leaf `complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
 `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`.
 **Route decision (§(h)):** `complementIso` IS the Hodge star `⋆` for the standard volume form
 (`screwAlgebraTopEquiv = topEquiv`) + dot product (`Pi.basisFun.toDual`) — so the target is the
 genuine Hodge fact "`⋆` of a decomposable = decomposable of the orthogonal complement", which is
 **O(n)-natural but NOT GL-natural**. The route lifts via an **orthogonal** change of frame:
-- **(h-0)** volume-form-by-determinant — **LANDED** as
-  `screwAlgebraTopEquiv_map_eq_det_smul` (`Meet.lean`) + the general mirror
-  `exteriorPower.topEquiv_map_eq_det_smul` (`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`):
-  `screwAlgebraTopEquiv (map (k+2) f X) = det f • screwAlgebraTopEquiv X`.
-- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf + the clause-(ii) flag.**
-  For orthogonal `O` (`det O = ±1`), `complementIso (map 2 O X) = det O • map k O (complementIso X)`.
-  **BOTH its transformation halves now LANDED:** the volume/join half `wedgeProd_map` /
-  `wedgePairing_map` (prior commit, consuming (h-0)) and **the dot-product Gram-O-invariance
-  `exteriorPower_basis_toDual_map_orthogonal_eq` this commit.** What remains is the *assembly* of the
-  two halves into `complementIso_map_orthogonal_eq` (the `toDual`-injectivity pairing above) — no
-  longer a from-scratch math obligation, just the wiring.
-- **(h-2)** `exists_orthogonal_map_span_pair_eq_coordPlane` — Gram–Schmidt alignment of `span{n₀,n₁}`
-  to a coordinate `2`-plane (mathlib orthonormal-extension API), carrying `W` to a coordinate subspace.
+- **(h-0)** volume-form-by-determinant — **LANDED** (`screwAlgebraTopEquiv_map_eq_det_smul` + mirror
+  `exteriorPower.topEquiv_map_eq_det_smul`).
+- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf — LANDED.** For orthogonal
+  `O`, `complementIso hj (map j O X) = det O • map (k+2−j) O (complementIso hj X)`; assembled from the
+  two transformation halves (volume/join `wedgePairing_map` + dot-product Gram-O-invariance
+  `exteriorPower_basis_toDual_map_orthogonal_eq`) by `(b.exteriorPower (k+2−j)).toDual`-injectivity (`O`
+  orthogonal ⟹ injective ⟹ surjective ⟹ `map O` surjective, pair against `B = map O B'`).
+- **(h-2)** `exists_orthogonal_map_span_pair_eq_coordPlane` — **the next open leaf** (see lead above).
 - **(h-3)** the target leaf — assemble (h-1)+(h-2)+the LANDED
   `complementIso_exteriorPower_basis_mem_range_map_subtype`. **In hand for the case split:** when
   `extensor n = 0` (dependent `n`), `complementIso 0 = 0 ∈ range` trivially; the work is the
@@ -329,16 +315,15 @@ geometry:
 
 Leaf sequence (§(f)+§(h)): (1) `complementIso_extensor_mem_range_map_subtype` — the new leaf, route
 **(α) DECIDED** via O(n)-equivariance (§(h) leaves h-0…h-3). Its **standard-frame base case
-`complementIso_exteriorPower_basis_eq_smul_compl` and the standard-frame range-membership
-`complementIso_exteriorPower_basis_mem_range_map_subtype` have LANDED** (2026-06-17); the remaining
-content is the general-decomposable lift to a non-coordinate `W = {n₀,n₁}^⊥` — the genuine
-**orthogonal** change-of-frame step (h-1/h-2/h-3), **not** a GL-equivariance corollary (`complementIso`
-is the Hodge `⋆`, O(n)- but not GL-natural). Route (β) is **rejected** (re-introduces the withdrawn
-`dim Φ̃` count). Then (2) `extensor_join_proportional_complementIso_meet` — the assembly (h-4; zero
-new count, consumes (1) + the three `_grade` bricks); (3) the d=3 wrapper stays green (h-5). Closing
-(1)+(2) closes CHAIN-3 and feeds CHAIN-4's discriminator. **The O(n)-equivariance (h-1) has both its
-transformation halves landed; assembling them into `complementIso_map_orthogonal_eq` (wiring, not a
-new math obligation) is the next buildable step.**
+`complementIso_exteriorPower_basis_eq_smul_compl`, the standard-frame range-membership
+`complementIso_exteriorPower_basis_mem_range_map_subtype`, and the O(n)-equivariance
+`complementIso_map_orthogonal_eq` (h-1) have LANDED** (2026-06-17); the remaining content of (1) is the
+frame alignment (h-2, the **next open leaf**) + the general-decomposable assembly (h-3) — the genuine
+**orthogonal** change-of-frame route, **not** a GL-equivariance corollary (`complementIso` is the Hodge
+`⋆`, O(n)- but not GL-natural). Route (β) is **rejected** (re-introduces the withdrawn `dim Φ̃` count).
+Then (2) `extensor_join_proportional_complementIso_meet` — the assembly (h-4; zero new count, consumes
+(1) + the three `_grade` bricks); (3) the d=3 wrapper stays green (h-5). Closing (1)+(2) closes CHAIN-3
+and feeds CHAIN-4's discriminator.
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -420,10 +405,11 @@ general mathlib, grade enters nothing):
   `map_coe_eq_exteriorAlgebra_map`) → (h-1b) `exteriorPower_basis_toDual_map_orthogonal_eq` (the
   dot-product Gram-O-invariance: through the N3b-recon Gram determinant `pairingDual_ιMulti_ιMulti`,
   `hO` collapses each entry, lifted off decomposables by a double `LinearMap.ext_on` over the `ιMulti`
-  generators; grade-/ambient-generic, no new mathlib fact). Both (h-1) transformation halves now in
-  hand; the general-decomposable case is NOT a GL-equivariance corollary (`complementIso` is Hodge,
-  O(n)- not GL-natural) — the next step is the `toDual`-injectivity assembly into
-  `complementIso_map_orthogonal_eq`.
+  generators; grade-/ambient-generic, no new mathlib fact) → (h-1) `complementIso_map_orthogonal_eq`
+  (the O(n)-equivariance: assembled from h-1a+h-1b by `(b.exteriorPower (k+2−j)).toDual`-injectivity,
+  `O` orthogonal ⟹ injective ⟹ surjective ⟹ `map O` surjective; grade-generic `{j}`). The
+  general-decomposable case (h-3) is NOT a GL-equivariance corollary (`complementIso` is Hodge, O(n)-
+  not GL-natural) — the remaining route is (h-2) frame alignment + (h-3) the assembly.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
