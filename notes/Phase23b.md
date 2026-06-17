@@ -1,11 +1,15 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. First CHAIN Lean leaf landed (2026-06-17): CHAIN-3's
-membership sub-leaf `extensor_mem_range_map_subtype_of_mem_grade` (`Meet.lean`)
-— the grade-generic restatement of the `Fin 4`/`⋀²`-pinned
-`extensor_mem_range_map_subtype_of_mem`, now derived as its `d=3` instance. The
-integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator
-owns the sub-phase boundary; codes-until-open).
+**Status:** open. CHAIN-3's first two sub-leaves landed (2026-06-17): the
+membership brick `extensor_mem_range_map_subtype_of_mem_grade` and the
+**proportionality engine** `exists_smul_eq_of_mem_range_map_subtype_grade`
+(both `Meet.lean`) — the grade-generic restatements of the `Fin 4`/`⋀²`-pinned
+`d=3` lemmas, each derived as the `(d:=3)` instance. The proportionality engine
+carries the leaf's genuine new count via two further grade-generic bricks:
+`finrank_exteriorPower_self_eq_one` (top-grade `⋀^n W` is a line for `dim W = n`)
+and `exteriorPower_map_subtype_injective_grade`. The integer Phase 23 stays
+**in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
+boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -21,9 +25,10 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's membership sub-leaf has landed (2026-06-17); next is CHAIN-3's
-proportionality engine `exists_smul_eq_of_mem_range_map_subtype` at general grade
-— the leaf's genuine `finrank(⋀^{d−1}W) = (finrank W).choose (d−1)` arithmetic.**
+**CHAIN-3's membership + proportionality sub-leaves have landed (2026-06-17);
+next is CHAIN-3's tail — the two `complementIso`/`toDual` duality bricks
+(`exteriorPower_basis_toDual_eq_pairingDual_comp_map`,
+`complementIso_smul_eq_extensor_join`) at general grade.**
 The recon
 (`notes/Phase23-design.md` §"CHAIN") source-verified — against KT §6.4.2 (eqs.
 6.46–6.67, read end-to-end) and the landed tree — that **the arm-realization
@@ -64,11 +69,18 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
       - [x] `extensor_mem_range_map_subtype_of_mem_grade` — the membership brick
         (grade-generic verbatim; `d=3` `extensor_mem_range_map_subtype_of_mem`
         re-derived as the `(d:=3)` instance). Landed 2026-06-17.
-      - [ ] `exists_smul_eq_of_mem_range_map_subtype` at general grade — the
-        proportionality engine, the genuine `finrank` count
-        (`exteriorPower.finrank_eq` at `finrank W = d−1` ⇒ `= 1`).
+      - [x] `exists_smul_eq_of_mem_range_map_subtype_grade` — the proportionality
+        engine at general grade, the genuine `finrank` count via two further
+        grade-generic bricks `finrank_exteriorPower_self_eq_one` (top-grade `⋀^n W`
+        is a line for `dim W = n`, `exteriorPower.finrank_eq`+`Nat.choose_self`)
+        and `exteriorPower_map_subtype_injective_grade`. The three `d=3` names
+        (`exists_smul_…`, `finrank_exteriorPower_two_eq_one`,
+        `exteriorPower_map_subtype_injective`) survive as `(d:=3)` instances
+        (blueprint pins on the latter two untouched). Landed 2026-06-17.
       - [ ] `exteriorPower_basis_toDual_eq_pairingDual_comp_map`,
-        `complementIso_smul_eq_extensor_join` at general grade.
+        `complementIso_smul_eq_extensor_join` at general grade. **These are the
+        heavier generalizations** — `complementIso`/`toDual` are built over `k+2`
+        ambient / `Fin 4`, not a verbatim grade-lift like the first two.
 - [ ] **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
       Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`) to a
       `Fin d`-indexed augment. Graph-free over `ScrewSpace k`; no `d=3` content.
@@ -134,28 +146,29 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)):
 
 ## Hand-off / next phase
 
-**Next buildable CHAIN leaf = CHAIN-3's proportionality engine** (the membership
-sub-leaf `extensor_mem_range_map_subtype_of_mem_grade` landed 2026-06-17; still no
-ENTRY-contract dependency). Re-state `exists_smul_eq_of_mem_range_map_subtype`
-(`Meet.lean`) at general grade `⋀[ℝ]^(d−1) (Fin (d+1)→ℝ)`. Unlike the membership
-brick this needs the genuine new count
-`finrank(⋀^{d−1}W) = (finrank W).choose (d−1)` (`exteriorPower.finrank_eq`; at the
-proportionality site `finrank W = d−1`, so `= (d−1).choose (d−1) = 1`) replacing
-the `d=3` `finrank_exteriorPower_two_eq_one`. The two supporting bricks
-`exteriorPower_map_subtype_injective` (already `map_injective_field`, grade-generic
-— just drop the `Fin 4`/`2` pins) and the range line-identity reuse the same count.
-Then `exteriorPower_basis_toDual_eq_pairingDual_comp_map` /
-`complementIso_smul_eq_extensor_join` at general grade close CHAIN-3.
+**Next buildable CHAIN leaf = CHAIN-3's tail, the `complementIso`/`toDual`
+duality bricks** (the membership brick + the proportionality engine
+`exists_smul_eq_of_mem_range_map_subtype_grade` both landed 2026-06-17, with the
+genuine new count `finrank(⋀^{d−1}W) = (d−1).choose (d−1) = 1` carried by the
+grade-generic `finrank_exteriorPower_self_eq_one` +
+`exteriorPower_map_subtype_injective_grade`; still no ENTRY-contract dependency).
+Re-state `exteriorPower_basis_toDual_eq_pairingDual_comp_map` (`Meet.lean:930`,
+currently `Fin 4`-pinned: the coordinate-`toDual` = Gram-det `pairingDual` bridge)
+and `complementIso_smul_eq_extensor_join` (`Meet.lean:~1100`) at general grade.
+**Caveat — these are NOT a verbatim grade-lift** (unlike the first two CHAIN-3
+sub-leaves): `complementIso (k:=…)(j:=…)` is built over `k+2` ambient and the
+`toDual` bridge over `Fin 4`, so they need a genuine `Fin (d+1)`/`ScrewSpace (d−1)`
+re-pinning, not just dropping the numerals. They close CHAIN-3 and feed CHAIN-4's
+discriminator.
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
 CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
-record (C.1/C.3), so it is now authorable. The next buildable leaf is still
-**CHAIN-3** (unchanged — it has no chain-data dependency; unblocks CHAIN-4 + the
-four-producer lift), first commit the `Meet.lean:648` membership brick at general
-grade (the snippet above). CHAIN-1/3/4 remain buildable independently of the
-contract; CHAIN-5 is unblocked once CHAIN-1/2/4 land **and** ENTRY's extractor
-is reshaped.
+record (C.1/C.3), so it is now authorable. The next buildable leaf is still in
+**CHAIN-3** (its `complementIso`/`toDual` tail — no chain-data dependency;
+finishing CHAIN-3 unblocks CHAIN-4 + the four-producer lift). CHAIN-1/3/4 remain
+buildable independently of the contract; CHAIN-5 is unblocked once CHAIN-1/2/4
+land **and** ENTRY's extractor is reshaped.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn
 comes).** ENTRY reshapes `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`)
@@ -187,6 +200,20 @@ decisions — OD-6/OD-7 resolved, OD-4 + (b) flagged — live in
 
 ### Phase-local choices and proof techniques
 
+- **CHAIN-3 proportionality engine: same lift pattern, two new grade-generic
+  bricks for the count.** `exists_smul_eq_of_mem_range_map_subtype_grade {d}`
+  re-states the `Meet.lean` line-identity at grade `d−1` / ambient `Fin (d+1)`
+  with hypothesis `finrank W = d − 1`; the `d=3` `exists_smul_eq_of_mem_range_map_subtype`
+  survives as `:= …_grade (d := 3) …` (defeq `3−1=2`/`3+1=4`, no `decide`). The
+  count it rests on splits into two new grade-generic lemmas, each with the `d=3`
+  name kept as a `(d:=3)`/`n:=2` instance: `finrank_exteriorPower_self_eq_one`
+  (`exteriorPower.finrank_eq`+`Nat.choose_self`, generalizing
+  `finrank_exteriorPower_two_eq_one`) and `exteriorPower_map_subtype_injective_grade`
+  (`exteriorPower.map_injective_field`, generalizing the grade-2 pin). All proofs
+  verbatim-lift (the route is general mathlib); blueprint pins on the two `d=3`
+  names untouched, so no `checkdecls` / blueprint edit. The `complementIso`/`toDual`
+  tail bricks are NOT verbatim-liftable (built over `k+2`/`Fin 4`) — flagged in
+  the checklist for the next sitting.
 - **CHAIN-3 membership brick: lift, don't re-author — keep the `d=3` name as the
   instance.** `extensor_mem_range_map_subtype_of_mem_grade {d}` re-states the
   `Meet.lean` membership at grade `d−1` / ambient `Fin (d+1)`; its proof is the

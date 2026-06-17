@@ -580,17 +580,31 @@ the line), the proportionality on which the annihilation transfer `r(C(L)) = 0 �
 rests. The proportionality itself is the general `finrank_eq_one_iff_of_nonzero'`; the
 exterior-square dimension count is the genuinely new content here. -/
 
+/-- **Step (ii) at general grade, the top-grade dimension count: `⋀^n W` is `1`-dimensional for an
+`n`-dimensional `W`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the general-`d`
+restatement of `finrank_exteriorPower_two_eq_one`, replacing the `⋀²`-pinned `d=3` route). For a
+finite free `ℝ`-module `W` of dimension `n`, its top exterior power `⋀^n W` has dimension
+`(dim W).choose n = n.choose n = 1` by `exteriorPower.finrank_eq` + `Nat.choose_self` — the grade is
+free here, the count is the genuinely-general content. At the CHAIN proportionality site
+`W = {n_u}^⊥ ∩ ⋯` is the `(d−1)`-dimensional span of the chain points and the grade is `d−1`, so
+`⋀^{d−1}W` is the line carrying both the point-join and the panel-meet; the `d=3` instance recovers
+`finrank_exteriorPower_two_eq_one` (`n = 2`). -/
+theorem finrank_exteriorPower_self_eq_one {W : Type*} [AddCommGroup W] [Module ℝ W]
+    [Module.Free ℝ W] [Module.Finite ℝ W] {n : ℕ} (hW : Module.finrank ℝ W = n) :
+    Module.finrank ℝ (⋀[ℝ]^n W) = 1 := by
+  rw [exteriorPower.finrank_eq, hW, Nat.choose_self]
+
 /-- **Step (ii), the dimension count: `⋀²W` is `1`-dimensional for a `2`-dimensional `W`**
-(`lem:case-III-claim612-line-in-panel-union`). For a finite free `ℝ`-module `W` of dimension `2`,
-its exterior square `⋀²W` has dimension `(dim W).choose 2 = 2.choose 2 = 1` by
-`exteriorPower.finrank_eq`. Geometrically, the supporting extensors of a projective line — written
-either as the join of two points on it or as the meet of two hyperplanes through it — live in this
-`1`-dimensional exterior square, so any two nonzero ones are proportional
-(`exteriorPower_finrank_eq_one_proportional`). -/
+(`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (grade `2`) of the grade-generic
+`finrank_exteriorPower_self_eq_one`. For a finite free `ℝ`-module `W` of dimension `2`, its exterior
+square `⋀²W` has dimension `(dim W).choose 2 = 2.choose 2 = 1`. Geometrically, the supporting
+extensors of a projective line — written either as the join of two points on it or as the meet of
+two hyperplanes through it — live in this `1`-dimensional exterior square, so any two nonzero ones
+are proportional (`exteriorPower_finrank_eq_one_proportional`). -/
 theorem finrank_exteriorPower_two_eq_one {W : Type*} [AddCommGroup W] [Module ℝ W]
     [Module.Free ℝ W] [Module.Finite ℝ W] (hW : Module.finrank ℝ W = 2) :
-    Module.finrank ℝ (⋀[ℝ]^2 W) = 1 := by
-  rw [exteriorPower.finrank_eq, hW, Nat.choose_self]
+    Module.finrank ℝ (⋀[ℝ]^2 W) = 1 :=
+  finrank_exteriorPower_self_eq_one hW
 
 /-- **Step (ii), the proportionality: two nonzero members of `⋀²W` are scalar multiples**
 (`lem:case-III-claim612-line-in-panel-union`). For a `2`-dimensional `W`, `⋀²W` is a line
@@ -618,18 +632,31 @@ the inclusion `⋀²W ↪ ⋀²ℝ⁴` follows from injectivity of `W.subtype` b
 `exteriorPower.map_injective` requiring an explicit retraction is the fallback, unused over a
 field). -/
 
+/-- **N3b-1 at general grade: the inclusion `⋀^g W ↪ ⋀^g (ℝ^{d+1})` is injective**
+(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the grade-generic restatement of the
+`⋀²`-pinned `d=3` `exteriorPower_map_subtype_injective`). For a submodule `W` of `ℝ^{d+1}` and any
+grade `g`, the exterior-power map `exteriorPower.map g W.subtype : ⋀^g W →ₗ ⋀^g (ℝ^{d+1})` induced
+by the (injective) inclusion `W.subtype` is injective. Over the field `ℝ` this is immediate from
+injectivity of `W.subtype` (`Submodule.injective_subtype`) via `exteriorPower.map_injective_field`
+— the grade enters nothing. This is the pull-back map of the CHAIN proportionality: it transports
+the two `⋀^{d−1}(ℝ^{d+1})` members (the point-join and the panel-meet, both lying in the image
+`⋀^{d−1}W` by `extensor_mem_range_map_subtype_of_mem_grade`) into the line `⋀^{d−1}W`, where the
+top-grade count (`finrank_exteriorPower_self_eq_one`) makes them proportional. -/
+theorem exteriorPower_map_subtype_injective_grade {d : ℕ} (g : ℕ)
+    (W : Submodule ℝ (Fin (d + 1) → ℝ)) :
+    Function.Injective (exteriorPower.map g W.subtype) :=
+  exteriorPower.map_injective_field W.injective_subtype
+
 /-- **N3b-1 of the point-join ↔ panel-meet duality assembly: the inclusion `⋀²W ↪ ⋀²ℝ⁴` is
-injective** (`lem:case-III-claim612-line-in-panel-union`). For a submodule `W` of `ℝ⁴`, the
-exterior-power map
-`exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴` induced by the (injective) inclusion `W.subtype` is
-injective. Over the field `ℝ` this is immediate from injectivity of `W.subtype`
-(`Submodule.injective_subtype`) via `exteriorPower.map_injective_field`. This is the pull-back map
-of the assembly: it transports the two `⋀²ℝ⁴` members (the point-join `p̄ᵢ ∨ p̄ⱼ` and the panel-meet
-`C(L)`, both lying in the image `⋀²W` by N3b-2) back into the line `⋀²W`, where step (ii)
-(`exteriorPower_finrank_eq_one_proportional`) makes them proportional. -/
+injective** (`lem:case-III-claim612-line-in-panel-union`). The `d=3` instance (grade `2`,
+ambient `Fin 4`) of the grade-generic `exteriorPower_map_subtype_injective_grade`. For a submodule
+`W` of `ℝ⁴`, the exterior-power map `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴` is injective. This
+is the pull-back map of the assembly: it transports the two `⋀²ℝ⁴` members (the point-join
+`p̄ᵢ ∨ p̄ⱼ` and the panel-meet `C(L)`, both lying in the image `⋀²W` by N3b-2) back into the line
+`⋀²W`, where step (ii) (`exteriorPower_finrank_eq_one_proportional`) makes them proportional. -/
 theorem exteriorPower_map_subtype_injective (W : Submodule ℝ (Fin 4 → ℝ)) :
     Function.Injective (exteriorPower.map 2 W.subtype) :=
-  exteriorPower.map_injective_field W.injective_subtype
+  exteriorPower_map_subtype_injective_grade (d := 3) 2 W
 
 /-- **N3b-2 at general grade: a `(d−1)`-extensor of vectors in `W` lies in
 `⋀^{d−1}W ↪ ⋀^{d−1}(ℝ^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the
@@ -669,16 +696,46 @@ theorem extensor_mem_range_map_subtype_of_mem
       ∈ LinearMap.range (exteriorPower.map 2 W.subtype) :=
   extensor_mem_range_map_subtype_of_mem_grade (d := 3) W v hv
 
+/-- **N3b-2b-line at general grade, the proportionality engine: `range (⋀^{d−1}W ↪ ⋀^{d−1}ℝ^{d+1})`
+is the line `span{x}` of any nonzero member, so two of its members are proportional**
+(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the grade-generic restatement of the
+`⋀²`-pinned `d=3` `exists_smul_eq_of_mem_range_map_subtype`; the leaf's genuine new count).
+For a `(d−1)`-dimensional `W ⊆ ℝ^{d+1}`, the range of the injective inclusion
+`exteriorPower.map (d−1) W.subtype : ⋀^{d−1}W →ₗ ⋀^{d−1}(ℝ^{d+1})`
+(`exteriorPower_map_subtype_injective_grade`, N3b-1) is `1`-dimensional: `finrank (range) =
+finrank ⋀^{d−1}W = (d−1).choose (d−1) = 1` (`LinearMap.finrank_range_of_inj` +
+`finrank_exteriorPower_self_eq_one` at the *top* grade `d−1` of `W` — the general count for
+the `d=3` `finrank_exteriorPower_two_eq_one`). Hence for any nonzero member `x` of the range,
+`span{x}` already exhausts it (`Submodule.eq_of_le_of_finrank_eq`, two `1`-dim subspaces with
+`span{x} ≤ range`), so every other member `y` is a scalar multiple `c • x = y`
+(`Submodule.mem_span_singleton`).
+
+This is the proportionality engine of the CHAIN duality *in `⋀^{d−1}(ℝ^{d+1})`*: with the point-join
+of the chain points placed in the range as the nonzero `x` (`W` = their `(d−1)`-dim span), once the
+panel-meet `C(L)` is also shown to be in the range (CHAIN-4's spanning leaf), this yields
+`C(L) = λ · (join)` directly — the proportionality lives in `⋀^{d−1}(ℝ^{d+1})` itself, so no
+pull-back into the pulled-back `⋀^{d−1}W` is needed. -/
+theorem exists_smul_eq_of_mem_range_map_subtype_grade {d : ℕ}
+    (W : Submodule ℝ (Fin (d + 1) → ℝ)) (hW : Module.finrank ℝ W = d - 1)
+    {x y : ⋀[ℝ]^(d - 1) (Fin (d + 1) → ℝ)}
+    (hx : x ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype)) (hxne : x ≠ 0)
+    (hy : y ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype)) :
+    ∃ c : ℝ, c • x = y := by
+  have hR : Module.finrank ℝ (LinearMap.range (exteriorPower.map (d - 1) W.subtype)) = 1 := by
+    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective_grade (d - 1) W),
+      finrank_exteriorPower_self_eq_one hW]
+  have hspan : (ℝ ∙ x) = LinearMap.range (exteriorPower.map (d - 1) W.subtype) :=
+    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 hx)
+      (by rw [finrank_span_singleton hxne, hR])
+  rw [← Submodule.mem_span_singleton, hspan]
+  exact hy
+
 /-- **N3b-2b-line, the line identity: `range (⋀²W ↪ ⋀²ℝ⁴)` is the line `span{x}` of any nonzero
 member, so two of its members are proportional** (`lem:case-III-claim612-line-in-panel-union`).
-Third sub-leaf of the point-join ↔ panel-meet duality assembly (Phase 22f). For a `2`-dimensional
-`W ⊆ ℝ⁴`, the range of the injective inclusion `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴`
-(`exteriorPower_map_subtype_injective`, N3b-1) is `1`-dimensional: `finrank (range) = finrank ⋀²W =
-2.choose 2 = 1` (`LinearMap.finrank_range_of_inj` + `finrank_exteriorPower_two_eq_one`,
-step (ii)'s dimension count). Hence for any nonzero member `x` of the range, `span{x}` already
-exhausts it (`Submodule.eq_of_le_of_finrank_eq`, two `1`-dimensional subspaces with `span{x} ≤
-range`), so every other member `y` is a scalar multiple `c • x = y`
-(`Submodule.mem_span_singleton`).
+The `d=3` instance (grade `2`, ambient `Fin 4`, `finrank W = 2`) of the grade-generic
+`exists_smul_eq_of_mem_range_map_subtype_grade`. For a `2`-dimensional `W ⊆ ℝ⁴`, the range of the
+injective inclusion `exteriorPower.map 2 W.subtype : ⋀²W →ₗ ⋀²ℝ⁴` is `1`-dimensional, so every two
+of its members are proportional.
 
 This is the proportionality engine of the assembly *in `⋀²ℝ⁴`*: with the point-join
 `p̄ᵢ ∨ p̄ⱼ = extensor ![p̄ᵢ, p̄ⱼ]` placed in the range as the nonzero `x` (N3b-2a,
@@ -692,15 +749,8 @@ theorem exists_smul_eq_of_mem_range_map_subtype
     {x y : ⋀[ℝ]^2 (Fin 4 → ℝ)}
     (hx : x ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) (hxne : x ≠ 0)
     (hy : y ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) :
-    ∃ c : ℝ, c • x = y := by
-  have hR : Module.finrank ℝ (LinearMap.range (exteriorPower.map 2 W.subtype)) = 1 := by
-    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective W),
-      finrank_exteriorPower_two_eq_one hW]
-  have hspan : (ℝ ∙ x) = LinearMap.range (exteriorPower.map 2 W.subtype) :=
-    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 hx)
-      (by rw [finrank_span_singleton hxne, hR])
-  rw [← Submodule.mem_span_singleton, hspan]
-  exact hy
+    ∃ c : ℝ, c • x = y :=
+  exists_smul_eq_of_mem_range_map_subtype_grade (d := 3) W hW hx hxne hy
 
 /-! ## N3b-2b-α building block: wedge-with-a-fixed-vector `⋀²ℝ⁴` and its 3-dim range
 (`lem:case-III-claim612-line-in-panel-union`)
