@@ -671,3 +671,16 @@ own recon (KT eqs. (6.46)–(6.67) vs the `d=3` Lean) and add the general-`d` ro
 `notes/AlgebraicIndependence.md`. The integer phase numbers 23–26 were kept stable by the Phase-22
 sub-lettering. **The Phase-23 design recon is also where the general-`d` carrier API is shaped** — the
 deferred "part 2" of the 22l refactor, which 22l unblocked but did not start.
+
+**Pre-Phase-23 doc-hygiene carryover (from the 2026-06-16 cleanup pass).** Two items were deferred to
+the Phase-23 *opening* rather than done early:
+- **Surface-sync the public phase table.** When syncing the user-facing status surfaces at phase-open
+  (top-level `CLAUDE.md` *When this commit opens a phase*), **collapse `home_page/index.md`'s sub-letter
+  rows (21a–22l) to arc/per-phase rows** — sub-phase blow-by-blow is banned on the public surfaces and
+  should not persist now that Phase 22 is closed. (`intro.tex` and `README.md` were de-jargoned in the
+  pass; the home_page table was left for this collapse, since phase-open re-summarizes it anyway.)
+- **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now back-references-only). Per
+  `notes/CLAUDE.md` *One canonical home per content type*, a design-support doc's closed arcs compress to
+  ≤3-line verdicts once the phase they served has closed. Do it as part of the design recon, not a blind
+  delete: first lift its §1.33 (C)–(E) reuse map into the *Reuse map* section above (the recon needs it
+  anyway — the *Next math phase* pointer already routes through §1.33 (C)), then compress/archive the rest.
