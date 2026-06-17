@@ -1315,4 +1315,58 @@ theorem extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n_u n' pi pj 
     (by rw [Pi.basisFun_toDual_apply]; exact hj_u) (by rw [Pi.basisFun_toDual_apply]; exact hj_u')
     r hr
 
+/-! ## The `complementIso` of a standard basis blade is the complementary blade
+(`def:meet-complement-iso`)
+
+The foundational `complementIso`-image fact, the base case of the route-(α) panel-meet
+range-membership (CHAIN-3, OD-8). The complement isomorphism `complementIso hj : ⋀ʲ V ≃ₗ ⋀^(N−j) V`
+(`N = k+2`) sends a standard exterior-power basis blade `e_S` (`S ⊆ Fin (k+2)`, `|S| = j`) to a
+scalar multiple of the complementary blade `e_{Sᶜ}` — the projective dual of a coordinate subspace
+is the complementary coordinate subspace. The scalar is the `±1` wedge pairing
+`wedgePairing k hj (e_S) (e_{Sᶜ})` (`wedgePairing_ιMulti_family_compl_ne_zero`, the
+signed-permutation diagonal). -/
+
+/-- **The `complementIso` of a standard basis blade is the complementary blade**
+(`def:meet-complement-iso`, CHAIN-3 — the foundational `complementIso`-image leaf for the OD-8
+route-(α) panel-meet range-membership). `complementIso hj` sends the standard `⋀ʲ` basis blade
+`e_S` to the scalar multiple `(wedgePairing k hj e_S e_{Sᶜ}) • e_{Sᶜ}` of the complementary
+`⋀^(N−j)` basis blade `e_{Sᶜ}` (`Sᶜ` via `Set.powersetCard.compl`), with the `±1` scalar the
+signed-permutation diagonal entry (`wedgePairing_ιMulti_family_compl_ne_zero` for its
+non-vanishing). Read off the change-of-basis matrix: the `t`-coordinate of `complementIso hj e_S`
+is `wedgePairing k hj e_S e_t` (the dual-basis reading `Module.Basis.coord_toDualEquiv_symm_apply`
+of `complementIso = wedgePairing ≪≫ toDualEquiv.symm`), which vanishes off the diagonal `t = Sᶜ`
+(`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`), so only the `Sᶜ` term survives. Geometrically
+the complement of the coordinate `j`-subspace `span{e_i : i ∈ S}` is the complementary coordinate
+`(N−j)`-subspace `span{e_i : i ∈ Sᶜ}` — the standard-frame instance of "the projective dual of a
+decomposable is the decomposable of the orthogonal complement". -/
+theorem complementIso_exteriorPower_basis_eq_smul_compl {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j) :
+    complementIso hj ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j S)
+      = (wedgePairing k hj ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j S)
+          ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)
+            (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S))) •
+        ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)
+          (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S)) := by
+  set b := (Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j) with hb
+  have hcard : (k + 2 - j) + j = Fintype.card (Fin (k + 2)) := by rw [Fintype.card_fin]; omega
+  -- Both sides agree in every `b`-coordinate: the `t`-coordinate of `complementIso hj e_S` is the
+  -- wedge pairing `wedgePairing e_S e_t`, which vanishes off the diagonal `t = Sᶜ`.
+  refine b.repr.injective (Finsupp.ext fun t => ?_)
+  have hcoord : b.repr (complementIso hj ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j S)) t
+      = wedgePairing k hj ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j S)
+          ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j) t) := by
+    rw [hb, ← Module.Basis.coord_apply, complementIso, LinearEquiv.trans_apply,
+      Module.Basis.coord_toDualEquiv_symm_apply, Module.Basis.coord_apply,
+      Module.Basis.dualBasis_repr, LinearMap.linearEquivOfInjective_apply,
+      exteriorPower.basis_apply, exteriorPower.basis_apply]
+  rw [hcoord, map_smul, Finsupp.smul_apply, smul_eq_mul]
+  by_cases ht : t = Set.powersetCard.compl hcard S
+  · subst ht
+    rw [hb, Module.Basis.repr_self, Finsupp.single_eq_same, mul_one]
+  · have hsingle : (Finsupp.single (Set.powersetCard.compl hcard S) (1 : ℝ)) t = 0 :=
+      Finsupp.single_eq_of_ne ht
+    rw [hb, Module.Basis.repr_self, hsingle, mul_zero,
+      exteriorPower.basis_apply, exteriorPower.basis_apply,
+      wedgePairing_ιMulti_family_eq_zero_of_ne_compl hj S t ht]
+
 end CombinatorialRigidity.Molecular

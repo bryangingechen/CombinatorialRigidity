@@ -439,6 +439,25 @@ to be re-derived by re-reading entries later.
   definitionally the application, so simp makes no progress and `rfl` is the right closer.
 - **Status:** resolved; idiom for any `Pi.basisFun` exterior-power coordinate readout.
 
+### [idiom] The `t`-coordinate of `complementIso hj (e_S)` is `wedgePairing e_S e_t` via a fixed 6-`rw` chain — reused verbatim twice now
+- **Where it bit:** `complementIso_exteriorPower_basis_eq_smul_compl` (Phase 23b, CHAIN-3) needed
+  `b.repr (complementIso hj e_S) t = wedgePairing k hj e_S e_t`; the chain is
+  `rw [← Module.Basis.coord_apply, complementIso, LinearEquiv.trans_apply,
+  Module.Basis.coord_toDualEquiv_symm_apply, Module.Basis.coord_apply, Module.Basis.dualBasis_repr,
+  LinearMap.linearEquivOfInjective_apply, exteriorPower.basis_apply, exteriorPower.basis_apply]`.
+  This is the exact chain inside `complementIso_exteriorPower_repr_mem_range_intCast` (which then
+  concludes `∈ intCast range` instead of returning the value).
+- **Fix:** inlined the chain again (only two call sites, different conclusions). If a third consumer
+  appears, factor a `complementIso_exteriorPower_repr_eq_wedgePairing` helper returning the value.
+- **Status:** open (latent refactor; 2 sites, below the rule-of-three).
+
+### [idiom] `Finsupp.single_eq_of_ne` for `(single a 1) t = 0` wants the ne in `t ≠ a` orientation, not `a ≠ t`
+- **Where it bit:** `complementIso_exteriorPower_basis_eq_smul_compl` off-diagonal case: closing
+  `(Finsupp.single (compl S) 1) t = 0`. Passing `hne : compl S ≠ t` errored "expected `t ≠ compl S`".
+- **Fix:** the in-scope `ht : t ≠ compl S` (from the `by_cases`) is exactly the right orientation —
+  `Finsupp.single_eq_of_ne ht`. Don't pre-flip.
+- **Status:** resolved; minor `Finsupp.single` orientation idiom.
+
 ### [idiom] `Module.Basis.repr_self_apply` (and `forall_coord_eq_zero_iff`) need the `Module.` prefix and an explicit `(i := …)` — dot-projection `b.repr_self_apply j` mis-binds `j` to the implicit `i`
 - **Where it bit:** B0 sub-commit 3 `span_annihRow_eq_dualAnnihilator` / `annihRowPoly_eval`
   (Phase 21b): the Kronecker-delta readout `b.repr (b i) j = if i = j then 1 else 0`. Bare
