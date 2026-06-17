@@ -1024,10 +1024,15 @@ folded is an open decision); **23d** = assembly (Theorem 5.5 → re-green
 (`exists_redundant_panelRow_ab_of_finrank_eq`),
 `linearIndependent_sum_augment_candidateRow`, the `complementIso` meet API.
 The authoritative recon — sub-phase scope/hard-core/sequence, the corrected
-reuse/replace/add map, and the open decisions (Lemma-5.4 load-bearingness,
-Phase-20 subsumption of 4.6/4.8, the general-`d` alg-independence site, the
-symbolic-`k` carrier transport) — is `notes/Phase23-design.md`. Next concrete
-commit: the **23a detailed leaf-level recon** (not a build).
+reuse/replace/add map, the per-file reach-in map + 23a 6-leaf plan, and the
+open decisions — is `notes/Phase23-design.md` (the general §1–§5 plus the
+detailed §"23a"). The 23a recon settled OD-5 (the symbolic-`k` coordinate
+transport **ports verbatim** — already general in HEAD — so no carrier-API
+addition and no build-spike) and OD-2/OD-3 (Lemmas 4.6/4.8 exist only in
+fixed-tuple `d=3` form; the length-`d` chain producer is a new 23c leaf).
+Next concrete commit: **23a Leaf 0** — the `screwDim` arithmetic kit in
+`RigidityMatrix/Basic.lean` (the `Nat.choose` lemmas replacing the `d=3`
+`decide` calls); see `notes/Phase23.md` *Hand-off*.
 
 ## Engineering conventions
 

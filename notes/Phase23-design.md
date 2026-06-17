@@ -415,3 +415,229 @@ not settle from the source)
 - **Deferred carrier API:** `notes/ScrewSpaceCarrier-design.md` §6.
 - **Alg-independence tracker:** `notes/AlgebraicIndependence.md` (Phase-23
   row, §2 risk (c)).
+
+---
+
+## 23a — detailed leaf-level recon
+
+**Status:** detailed-recon done (docs only, 2026-06-17, source-verified +
+LSP-probed against the landed tree). Decomposes 23a (§2) into buildable
+leaves with exact target signatures, settles **OD-5**, and resolves the
+cheap **OD-2/OD-3** in passing. The general-recon §1–§5 above is the parent;
+this section is the leaf plan `notes/Phase23.md` hands off to.
+
+### (a) Per-file reach-in enumeration along the import spine
+
+Spine order (`ScrewSpaceCarrier-design.md` §5): RigidityMatrix/{Basic,
+Bricks,Claim612} → PanelLayer → Pinning → PanelHinge → GenericityDevice →
+Coupling → CaseI → CaseII → CaseIII/{Arms,Candidate,Relabel,Realization} →
+Theorem55. The **central source-verified correction to §1**: the carrier
+*infrastructure* and most *bricks* are already general-`k`; the `screwDim 2`/
+`Fin 4`/`…2` pins are **numeral specializations at call sites**, not
+definitional pins. The lift is therefore mechanical numeral-replacement
+(`2`→`k`, `Fin 4`→`Fin (k+2)`, `screwDim 2`→`screwDim k`, `…Realization 2`→
+`… k`) **plus** a small symbolic-arithmetic kit and a `Fin 4` panel-geometry
+lift — *not* a structure redefinition.
+
+Per-file, dependency-ordered (this ordering IS the leaf sequence):
+
+| File | Pin reach-ins | Lift status for 23a |
+|---|---|---|
+| **RigidityMatrix/Basic** | `screwDim`=`(k+2).choose 2` (general); `ScrewSpace`/`mk`/`val`/`equivExteriorPower`/3 instances all `(k:ℕ)`; `screwSpace_finrank` uses `change`+`exteriorPower.finrank_eq` (general, no `decide`). 1×`screwDim 2`/`ScrewSpace 2` in a doc-comment only. | **already general.** Add only the `screwDim k` arithmetic kit (below). |
+| **RigidityMatrix/Bricks** | none | none |
+| **RigidityMatrix/Claim612** | 68×`Fin 4`, 15×`ScrewSpace 2`. **Two families:** (i) general-`k` `{k:ℕ}` algebra (`eq_zero_of_annihilates_span_top`, `mem_hingeRowBlock_iff`, `linearIndependent_sum*_candidateRow*`, `candidateRow_ne_zero`, …) — done; (ii) **`Fin 4` panel-geometry/duality** (`span_omitTwoExtensor_eq_top`, `omitTwoExtensor_*`, `exists_independent_perp_pair`, `exists_homogeneousIncidence_of_normals`, `exists_*complementIso*`, `exists_hduality_witness*`). | family (ii) splits: the **incidence/extensor** lemmas feeding the spine lift in 23a; the **`⋀²ℝ⁴` duality** lemmas (`exists_homogeneousIncidence_of_normals`, `exists_complementIso_ne_zero_of_homogeneousIncidence`, `exists_hduality_witness*`) are **consumed only inside `case_III_candidate_dispatch`** → 23b. |
+| **PanelLayer** | 46×`Fin 4` vs **174×`Fin (k+2)`** — mostly general. `Fin 4` cluster is the `d=3` **panel-incidence geometry** (≈ll.357–838): `exists_two_perp_of_linearIndependent_normals`, `exists_three_perp`, `exists_linearIndependent_extensor_pair_perp`, `exists_extensor_eq_panelSupportExtensor`, `exists_extensor_in_two_panels`. The `fin_cases`/`decide` (33) are all in this band. | **`screwBasis`/`annihRow`/`annihRowPoly`/`panelSupportExtensor`/`panelSupportPoly`/`triLI_subpairs`/`exists_triangle_normals` are ALL already `(k:ℕ)`** (ll.232,960,1091,1164,1252,1271,1408). Lift only the `Fin 4` incidence band (the dimension count `finrank ℝ (Fin 4→ℝ)=4` → `=k+2`). |
+| **Pinning** | 0 `Fin 4`/`screwDim 2`; 1 `fin_cases` (general). | none (general). |
+| **PanelHinge** | 0. `PanelHingeFramework (k:ℕ)`, `HasGenericFullRankRealization (k n:ℕ)`, `HasPanelRealization (k n:ℕ)`, `ofNormals (q:α×Fin (k+2)→ℝ)`, `IsGeneralPosition` all parametric. | none (general — and opacity-neutral, L3 probe). |
+| **GenericityDevice** | 0 `Fin 4`/`screwDim 2`; the 4×`…Realization 2` are in the forgetful map `hasPanelRealization_of_generic`. The 5× `change … (Pi.single a (screwBasis k t))` blocks (hard-part (d)) are **already `screwBasis k`**; `exists_good_realization_ofParam` is the device proof, stated `screwDim k * card α`. | none for the device; the forgetful-map `2`-pins lift with the `HasGenericFullRankRealization` numeral pass. |
+| **Coupling** | **0 `screwDim 2`/`Fin 4`/`…2`** — fully general (`extProj`, `degeneratePlacement (nrm:α→Fin (k+2)→ℝ)`, all coupling producers `ScrewSpace k`). | **none.** |
+| **CaseI** | **0 `screwDim 2`/`Fin 4`/`…2`** — fully general (`case_I_realization {n k:ℕ}` is dof-`k`; dimension general). | **none.** |
+| **CaseII** | 26×`screwDim 2`, 8×`ScrewSpace 2`, 4×`…Realization 2`. All in `case_II_realization_all_k`'s **rank arithmetic** (`screwDim 2 * (|V|-1) - (k-1)`, the eq.-(6.12) ℤ/ℕ-cast plumbing) + the conclusion numeral. No `decide`/`fin_cases`. | lift: numeral pass + the `screwDim k` arithmetic kit (the cast plumbing is `toNat_le_of_add_pred_eq`-style, already `{D V N:ℕ}`-parametric in Basic). |
+| **CaseIII/{Arms,Candidate,Relabel}** | Arms: 8×`…Realization 2` (incl. `case_III_hsplit_producer`, which calls `hasGenericFullRankRealization_of_triangle (k:=2)` — the triangle brick is **already `(k)`-parametric**) + 8 `fin_cases`/`decide` in the M2/M3-arm geometry. Candidate: 0 literal pins, but the Claim-6.11 family is `ScrewSpace k`/`Fin (k+2)` (general); `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification` consume the `q : α × Fin 4` dispatch shape. Relabel: 0 pins (general `ofNormals_relabel` machinery). | numeral pass on Arms' `…Realization 2`; the M2/M3 geometry + `caseIIICandidate` chain bookkeeping is **23b** (it is the dispatch internals). 23a stops at the producer *skeleton* `case_III_hsplit_producer` shape, leaving `hcand` explicit. |
+| **CaseIII/Realization** | 13×`Fin 4`, 12×`screwDim 2`, 11×`…Realization 2`, 7×`fin_cases`/`decide`. **`case_III_candidate_dispatch` (181–517)** is the structurally-fixed-3-candidate body (`q:α×Fin 4`, fixed `v,a,b,c`, the `linearIndependent_normals_of_algebraicIndependent` (l.99, `Fin 4`-pinned) + `exists_homogeneousIncidence`+`exists_complementIso` `⋀²ℝ⁴` discriminator at ll.351–353) → **23b replace.** `case_III_nested_rank_lower` (561), `case_III_realization_0dof` (518), `case_III_realization` (665) are `screwDim 2`/`q:α×Fin 4`-pinned **spine** decls. | lift `_nested_rank_lower`/`_realization`/`_0dof` (numeral + arithmetic kit); their proofs compose general bricks **except** the `case_III_candidate_dispatch` call → that call becomes the green-modulo `hcand` hypothesis (boundary (d) below). |
+| **Theorem55** | 27×`Fin 4`, 73×`screwDim 2`, 40×`…Realization 2`, 21×`…Framework 2`, 6 `decide`. `theorem_55_minimalKDof_k` (2176) is the dof-`k` induction spine, **dimension-pinned at `screwDim 2`** via `hn`; its callback map wires base/cut/CaseI/CaseII/CaseIII bricks at `(k:=2)`. The `theorem_55_d3`/`_all_k` wrappers discharge `hD`/`hn` by `decide`. The cut/coupling helpers carry the assembly `q:α×Fin 4` / `Pi.single 0 1 : Fin 4→ℝ` / `Set.powersetCard (Fin 4) 2`. | the **largest numeral surface**; lift `theorem_55_minimalKDof_k` to `HasGenericFullRankRealization k`, restate `hn:bodyBarDim n = screwDim k` + an `hD` floor giving `screwDim k ≥ 2` (see kit), thread the green-modulo `hcand` up. `rankHypothesis_of_theorem_55_d3` / Thm-5.6 push is **23d** (not 23a). |
+
+`linearIndependent_normals_of_algebraicIndependent` (Realization l.99,
+`Fin 4`-pinned) is consumed **both** inside the dispatch (23b) **and** by
+`Theorem55.lean:565/678` (cut/base spine) and `Pinning` — so it is a **shared
+brick 23a must lift** to `Fin (k+2)` (it is the "any `k`+1 distinct-body
+normals are LI from alg-indep" fact; generalizes by the same Vandermonde/
+projection argument, no `d=3` content).
+
+### (b) OD-5 verdict — **PORTS VERBATIM. No carrier-API addition; no spike.**
+
+The coordinate transport (hard-part (d): `screwBasis`/`annihRow`) **is already
+written at symbolic `k` in the landed tree and already compiles.** Three
+source facts, each verified, settle it:
+
+1. **`screwBasis (k:ℕ)`** (PanelLayer:1252)
+   `= (Pi.basisFun ℝ (Fin (k+2))).exteriorPower k |>.map (equivExteriorPower k).symm`;
+   **`screwBasis_repr_apply := rfl`** at general `k` (1261); the whole
+   `annihRow`/`_apply`/`_self`/`_add`/`_smul`/`span_annihRow_eq_dualAnnihilator`/
+   `annihRowPoly`/`_eval` family (1271–1419+) is `(k:ℕ)`, proved through
+   **abstract `Module.Basis` API** (`repr_self_apply`, `coord_apply`,
+   `Basis.ext`, `sum_repr`) — zero `k=2`-concreteness, zero `decide`/`fin_cases`.
+2. **`GenericityDevice.exists_good_realization_ofParam`** — the device proof
+   exercising the dual-basis coordinate machinery — is stated
+   `screwDim k * Fintype.card α` over `Set.powersetCard (Fin (k+2)) k` /
+   `Pi.basis (fun _ => screwBasis k)`, with the 5× hard-part-(d)
+   `change … (Pi.single a (screwBasis k t)) = …` blocks **already symbolic**
+   and green in HEAD.
+3. **Carrier API + instances** are `(k:ℕ)` with `inferInstanceAs`
+   (ScrewSpaceCarrier §5 OQ4 confirmed instances resolve symbolically);
+   `equivExteriorPower` is the `cast (ScrewSpace_def k)` form, `k`-parametric.
+
+So ScrewSpaceCarrier §6's worry — "hard-part (d) gets exercised symbolically
+*for the first time* in Phase 23" — is **already false in the landed source**:
+the coordinate layer was authored general from the start and the `d=3` usage
+only ever specialized the *numerals around it*, never the transport. **OD-5
+resolves to "ports verbatim"; 23a needs no carrier-API addition and no
+build-spike.** *Residual flag:* the LSP can't prove a clean cap stays at
+default under the full general-`k` numeral substitution end-to-end (the same
+class of unconfirmable as ScrewSpaceCarrier OQ1) — but that is a perf
+observation, not a correctness blocker, and every cap is already at default
+(0 overrides). If a lifted file regresses a cap, raise it locally (the
+standing idiom), do not treat it as an OD-5 reopening.
+
+**The genuinely-new symbolic surface 23a DOES introduce** is *not* the
+coordinate machinery but the **`screwDim k` numeric arithmetic**: at `k=2`
+the spine discharges `2 ≤ screwDim 2`, `screwDim 2 - 2 ≤ screwDim 2·(m-1)`,
+`screwDim 2 = 6` by `decide`; at symbolic `k` these become `screwDim k`
+obligations. **LSP-probed (2026-06-17):** `omega` does **not** close
+`2 ≤ screwDim k` after `unfold screwDim` (the `choose 2 = n(n-1)/2` integer
+division defeats it), and **`2 ≤ screwDim k` is FALSE at `k=0`**
+(`screwDim 0 = (2).choose 2 = 1`); it holds only from the dimension floor
+`k ≥ 1` (`screwDim 1 = 3`). `1 ≤ screwDim k` *does* close
+(`Nat.one_le_iff_ne_zero.mpr (by simp [screwDim, Nat.choose_eq_zero_iff])`).
+⟹ **23a's Leaf 0 is a tiny `screwDim`-arithmetic kit** (below), and the
+spine's `hn`/`hD` hypotheses must thread a `k ≥ 1` floor (the body-bar regime
+`d = k+1 ≥ 2`) so the `≥ 2` facts are derivable, not `decide`d.
+
+### (c) Buildable-leaf sequence for 23a
+
+Smallest-buildable commits, dependency-ordered. Each re-greens its file(s)
+on the still-green tree (the lift is additive/restating, not deleting).
+
+- **Leaf 0 — `screwDim` arithmetic kit** (`RigidityMatrix/Basic.lean`).
+  Add `one_le_screwDim {k} : 1 ≤ screwDim k`,
+  `two_le_screwDim {k} (hk : 1 ≤ k) : 2 ≤ screwDim k` (the floor-conditioned
+  `≥2`), and `screwDim_sub_two_le_mul {k m} (hk) (hm : 1 ≤ m) : screwDim k - 2 ≤ screwDim k * (m-1)`
+  (the `_nested_rank_lower` l.641/643 `decide` replacements). Tiny `Nat.choose`
+  lemmas; no carrier content. Touches Basic only; no consumers yet, so
+  trivially green.
+- **Leaf 1 — `Fin 4` panel-incidence geometry → `Fin (k+2)`** (`PanelLayer.lean`,
+  ll.357–838 band). Lift `exists_two_perp_of_linearIndependent_normals`,
+  `exists_three_perp`, `exists_linearIndependent_extensor_pair_perp`,
+  `exists_extensor_eq_panelSupportExtensor`, `exists_extensor_in_two_panels`
+  to `{n : Fin (k+2)→ℝ}`, replacing the `finrank ℝ (Fin 4→ℝ) = 4` count with
+  `Module.finrank_pi`+`Fintype.card_fin` at `k+2` and the `fin_cases i`
+  matrix-row checks with the general `Fin (k+2)`/`Fin (k+1)` forms. Re-green
+  PanelLayer. (The `screwBasis`/`annihRow` half is already general — Leaf 1
+  is purely the incidence band.) **23a-OD-A:** whether the `Fin 2`/`Fin 3`
+  point-arity in these (`p : Fin 2 → Fin 4 → ℝ`, the meet of *two* panels) is
+  itself `d`-arity-dependent — at general `d` a hinge is the meet of *more*
+  panels. **Recommendation:** lift only the **ambient** `Fin 4→Fin (k+2)`
+  (the meet stays a `k`-extensor = `ScrewSpace k`, point-pairs stay `Fin 2`
+  because a hinge is codim-2 regardless of `d` — `panelSupportExtensor` is
+  already `(n₁ n₂ : Fin (k+2)→ℝ)`, two normals); confirm at build that no
+  arity is secretly `4`-pinned. Low risk (the consumers
+  `exists_extensor_eq_panelSupportExtensor`/`panelSupportExtensor` are already
+  general in their *output*).
+- **Leaf 2 — `Fin 4` incidence/extensor bricks in Claim612 + the shared LI
+  brick** (`RigidityMatrix/Claim612.lean`, `CaseIII/Realization.lean` l.99).
+  Lift `span_omitTwoExtensor_eq_top`, `omitTwoExtensor_eq_extensor_kept`,
+  `omitTwoExtensor_homogenize_eq_extensor_kept`, `exists_independent_perp_pair`
+  (the incidence bricks the spine — not the dispatch duality — consumes) and
+  `linearIndependent_normals_of_algebraicIndependent` (Realization l.99) to
+  `Fin (k+2)`. **Leave the `⋀²ℝ⁴`-duality lemmas
+  (`exists_homogeneousIncidence_of_normals`,
+  `exists_complementIso_ne_zero_of_homogeneousIncidence`,
+  `exists_hduality_witness_of_panel_incidence`) at `Fin 4` — they are
+  dispatch-only (23b).** Re-green Claim612 (the general-`k` family is
+  untouched). **23a-OD-B:** `span_omitTwoExtensor_eq_top` is stated
+  `{pbar : Fin 4 → Fin 4 → ℝ}` (a *square* `(k+2)×(k+2)` system) — confirm its
+  proof generalizes (it should: it is `omitTwoExtensor_linearIndependent_of_li {e:ℕ}`
+  applied + a `span = top` dimension count, both already general).
+- **Leaf 3 — CaseII rank-arithmetic numeral pass** (`CaseII.lean`). Restate
+  `case_II_realization_all_k` and its lemmas at `screwDim k` /
+  `HasGenericFullRankRealization k`, routing the eq.-(6.12) ℤ/ℕ cast plumbing
+  through the (already `{D V N:ℕ}`-parametric) Basic helpers and the Leaf-0
+  kit for the `≥2` facts. Re-green CaseII.
+- **Leaf 4 — Case-III spine lift with the dispatch left explicit**
+  (`CaseIII/Realization.lean` + `CaseIII/Arms.lean`). Restate
+  `case_III_nested_rank_lower`, `case_III_realization_0dof`,
+  `case_III_realization` at `screwDim k`/`Fin (k+2)`/`… k`; their proofs
+  compose general bricks + the Leaf-0 kit, **except** the
+  `case_III_candidate_dispatch` call. **Re-state `case_III_realization` (and
+  `case_III_hsplit_producer`'s `hcand` slot) to take the chain dispatch as an
+  explicit hypothesis** `hcand`/`hdispatch` of the general-`k` shape (boundary
+  (d)). Re-green CaseIII.
+- **Leaf 5 — Theorem55 spine lift, dispatch threaded up** (`Theorem55.lean`).
+  Restate `theorem_55_minimalKDof_k` to `HasGenericFullRankRealization k`
+  with `hn : bodyBarDim n = screwDim k` + the `k≥1`/`hD`-floor, lift its
+  base/cut/CaseI/CaseII/CaseIII callback wiring numeral-wise, and **thread the
+  green-modulo `hcand` hypothesis** through to `theorem_55_minimalKDof_k`'s
+  own signature (its callers 23b discharges). Keep a `theorem_55_d3` wrapper
+  that specializes `k:=2` and discharges the dispatch via the *existing*
+  `case_III_candidate_dispatch` (so the `d=3` line stays fully green through
+  23a — no regression). Re-green Theorem55. **This leaf closes 23a.**
+
+Carrier-API additions preceding consumers: **none** (OD-5 verbatim). The only
+"add" is Leaf-0's three `screwDim` arithmetic lemmas — not carrier API, pure
+`Nat.choose`.
+
+### (d) Green-modulo boundary 23a leaves for 23b
+
+`case_III_realization` (and through it `theorem_55_minimalKDof_k`) **cannot be
+closed at general `k` until 23b supplies the chain dispatch**, because the body
+calls `case_III_candidate_dispatch` (the fixed-3-candidate `d=3` argument).
+23a's boundary: lift `case_III_realization` / `theorem_55_minimalKDof_k` to
+carry the dispatch as an **explicit `hcand`/`hdispatch` hypothesis** of the
+general-`k` `case_III_hsplit_producer.hcand` shape — i.e. *"given the chain
+data + a fresh `e₀` + the IH-generic `v`-split realization at dimension `k`,
+produce `HasGenericFullRankRealization k n G`."* (The standing explicit-`h…`
+crux idiom; never a `sorry`.) The **`d=3` line stays fully green** because the
+`theorem_55_d3` wrapper specializes `k:=2` and fills `hcand` from the existing
+`case_III_candidate_dispatch`. 23b replaces the fixed-3-candidate dispatch with
+the length-`d` chain dispatch + `⋀^{d-1}(ℝ^{d+1})` duality, discharging the
+hypothesis at general `k`.
+
+### (e) 23a-specific open decisions
+
+- **23a-OD-A (Leaf 1 point-arity).** Does the panel-incidence point-arity
+  (`Fin 2`/`Fin 3`) hide a `d`-dependence, or is only the ambient `Fin 4`
+  the dimension? *Recommendation:* ambient-only (a hinge is codim-2 ⇒ two
+  normals ⇒ `Fin 2` point-pairs regardless of `d`; `panelSupportExtensor` is
+  already two-normal/general). Confirm at Leaf-1 build; low risk.
+- **23a-OD-B (`span_omitTwoExtensor_eq_top` squareness).** Its `Fin 4×Fin 4`
+  system generalizes to `(k+2)×(k+2)` via the already-general
+  `omitTwoExtensor_linearIndependent_of_li {e:ℕ}` + a `span=top` count.
+  Confirm the dimension count ports; expected clean.
+- **23a-OD-C (cap regressions under symbolic `k`).** OD-5 is verbatim for
+  *correctness*; the LSP cannot confirm the 0-override perf state survives the
+  full numeral substitution. *Recommendation:* treat any regressed cap as a
+  local `maxHeartbeats` bump at that decl (standing idiom), not an OD-5
+  reopening. Not a blocker.
+
+### OD-2 / OD-3 resolution (secondary; for 23c scoping)
+
+In tree under `Molecular/Induction/`:
+- **KT Lemma 4.6** (chain-or-cycle / degree-2 vertex): `exists_low_degree_vertex`
+  + `exists_adjacent_degree_two_pair` (`ReducibleVertex.lean:620/814`, cited
+  "KT Lemma 4.6 at `d=3`") and `exists_chain_data_of_noRigid`
+  (`ForestSurgery/Reduction.lean:383`).
+- **KT Lemma 4.8** (split-off minimality): `splitOff_removeVertex_minimalKDof`
+  (`Reduction.lean:1492`) + `lem:reduction-step-pos` (1736), cited "KT Lemma
+  4.8(i)/(ii)".
+
+**Verdict (OD-3):** 4.6/4.8 **exist, but only in their fixed-tuple `d=3`
+form** — `exists_chain_data_of_noRigid` produces a **fixed `v,a,b,c` 4-tuple**
+(`exists_adjacent_degree_two_pair` + two `exists_splitOff_data_of_degree_eq_two`),
+**not** a length-`d` chain `v₀…v_d`. So the general-`d` chain producer is a
+**new combinatorial leaf for 23c**, *not* subsumed; OD-2's "does Phase-20
+produce a length-`d` chain?" answer is **no — only the single degree-2 split**.
+**Verdict (OD-1, corroborating):** no dedicated Lemma 5.4 short-cycle decl
+exists; the `d=3` Case III handles its `|V|=3` floor via the triangle base
+`hasGenericFullRankRealization_of_triangle` (Arms.lean), confirming the `d=3`
+assembly **dodged 5.4** — whether the general-`d` formalization can likewise
+dodge it stays open for 23c.
