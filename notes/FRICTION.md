@@ -136,7 +136,14 @@ to be re-derived by re-reading entries later.
   `dotProduct_comm` is needed to match `pi ⬝ᵥ x`). No build cycle; the `LinearMap.pi ![dual pi, dual
   pj]` framing would avoid the matrix detour but `mulVecLin` keeps the kernel a single `ker` for
   rank–nullity.
-- **Status:** resolved (no fix needed; one callsite, below the mirror bar).
+- **Status:** resolved. The pattern recurred (three more copies in
+  `PanelLayer.lean`: `exists_two_perp_of_linearIndependent_normals`,
+  `exists_three_perp`, `exists_extensor_in_two_panels`), so Phase 23a Leaf 1
+  factored it into the general brick `exists_linearIndependent_perp_of_normals
+  {r m} (N : Fin r → Fin (k+2) → ℝ) (hmr : m + r ≤ k + 2)` (PanelLayer) — `m` LI
+  vectors in `⋂ⱼ Nⱼ^⊥` via the one `Matrix.of N` `mulVecLin` kernel + rank–nullity.
+  New perp-space callsites should instantiate it (`r` = #normals, `m` = #points)
+  rather than re-roll the `mulVec`/`dotProduct_comm` unfold.
 
 ### [idiom] "`{i,j}ᶜ.orderEmbOfFin` lands outside `{i,j}`" is a 4-`rw` unfold (`mem_compl`/`mem_insert`/`mem_singleton`/`not_or`) every time
 - **Where it bit:** Phase 22g `omitTwoExtensor_homogenize_eq_extensor_kept` (`RigidityMatrix.lean`),

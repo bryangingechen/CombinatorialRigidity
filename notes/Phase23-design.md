@@ -542,23 +542,32 @@ on the still-green tree (the lift is additive/restating, not deleting).
   scope. And its `(hk)` is unused (`D−2 ≤ D = D·1 ≤ D·(m−1)` needs nothing
   about `k`), so dropped.
 - **Leaf 1 — `Fin 4` panel-incidence geometry → `Fin (k+2)`** (`PanelLayer.lean`,
-  ll.357–838 band). Lift `exists_two_perp_of_linearIndependent_normals`,
-  `exists_three_perp`, `exists_linearIndependent_extensor_pair_perp`,
-  `exists_extensor_eq_panelSupportExtensor`, `exists_extensor_in_two_panels`
-  to `{n : Fin (k+2)→ℝ}`, replacing the `finrank ℝ (Fin 4→ℝ) = 4` count with
-  `Module.finrank_pi`+`Fintype.card_fin` at `k+2` and the `fin_cases i`
-  matrix-row checks with the general `Fin (k+2)`/`Fin (k+1)` forms. Re-green
-  PanelLayer. (The `screwBasis`/`annihRow` half is already general — Leaf 1
-  is purely the incidence band.) **23a-OD-A:** whether the `Fin 2`/`Fin 3`
-  point-arity in these (`p : Fin 2 → Fin 4 → ℝ`, the meet of *two* panels) is
-  itself `d`-arity-dependent — at general `d` a hinge is the meet of *more*
-  panels. **Recommendation:** lift only the **ambient** `Fin 4→Fin (k+2)`
-  (the meet stays a `k`-extensor = `ScrewSpace k`, point-pairs stay `Fin 2`
-  because a hinge is codim-2 regardless of `d` — `panelSupportExtensor` is
-  already `(n₁ n₂ : Fin (k+2)→ℝ)`, two normals); confirm at build that no
-  arity is secretly `4`-pinned. Low risk (the consumers
-  `exists_extensor_eq_panelSupportExtensor`/`panelSupportExtensor` are already
-  general in their *output*).
+  ll.357–838 band). **Split at build into two commits** (see corrections below):
+  - **Leaf 1a (DONE)** — the duality-free rank-nullity core. Landed the general
+    brick `exists_linearIndependent_perp_of_normals {r m} (N : Fin r → Fin (k+2)
+    → ℝ) (hmr : m + r ≤ k + 2)` (`m` LI vectors in `⋂ⱼ Nⱼ^⊥`, `mulVecLin` kernel
+    + `finrank_range_add_finrank_ker`, `Module.finrank_pi`+`Fintype.card_fin` at
+    `k+2`); `exists_two_perp_of_linearIndependent_normals` (`r=2,m=2`),
+    `exists_three_perp` (`r=1,m=3`), and `exists_extensor_in_two_panels`
+    (`r=2,m=2`) now reduce to it (triplicated rank-nullity proof deleted).
+  - **Leaf 1b (next)** — the grade-`k` extensor remainder: lift
+    `exists_linearIndependent_extensor_pair_perp` and
+    `exists_extensor_in_two_panels` to produce `ScrewSpace k` extensors of
+    `Fin k`/`Fin (k+1)`-tuples (the `Fin k`-arity geometry, off
+    `exists_linearIndependent_perp_of_normals`), with `k=2` wrappers keeping
+    `theorem_55_base`/cut-edge green. Detail: `notes/Phase23a.md` *Hand-off*.
+  - **DROPPED to CHAIN:** `exists_extensor_eq_panelSupportExtensor` (+ its
+    corollary `extensorInPanel_panelSupportExtensor`, helper
+    `panelSupportExtensor_join_eq_zero_of_eq_zero`) — routes through `Meet.lean`'s
+    `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` →
+    `complementIso_smul_eq_extensor_join`, the `⋀²ℝ⁴` point-join↔panel-meet
+    duality this recon assigns to CHAIN. Lifts only *with* the `⋀^{d−1}(ℝ^{d+1})`
+    duality finish.
+  - **23a-OD-A — RESOLVED, recommendation was WRONG.** `ExtensorInPanel C n`
+    (`Basic.lean:276`) needs `C.val = extensor p` with `p : Fin k → Fin (k+2) →
+    ℝ`; the perp arity is the **extensor grade `k`**, not the codim-2 hinge. So
+    the extensor-bearing bricks need `Fin k`/`Fin (k+1)` tuples at general `k`
+    (Leaf 1b), *not* the ambient-only `Fin 2` the recommendation claimed.
 - **Leaf 2 — `Fin 4` incidence/extensor bricks in Claim612 + the shared LI
   brick** (`RigidityMatrix/Claim612.lean`, `CaseIII/Realization.lean` l.99).
   Lift `span_omitTwoExtensor_eq_top`, `omitTwoExtensor_eq_extensor_kept`,
@@ -620,11 +629,16 @@ hypothesis at general `k`.
 
 ### (e) 23a-specific open decisions
 
-- **23a-OD-A (Leaf 1 point-arity).** Does the panel-incidence point-arity
-  (`Fin 2`/`Fin 3`) hide a `d`-dependence, or is only the ambient `Fin 4`
-  the dimension? *Recommendation:* ambient-only (a hinge is codim-2 ⇒ two
-  normals ⇒ `Fin 2` point-pairs regardless of `d`; `panelSupportExtensor` is
-  already two-normal/general). Confirm at Leaf-1 build; low risk.
+- **23a-OD-A (Leaf 1 point-arity) — RESOLVED at the Leaf-1a build: the
+  point-arity IS `d`-dependent; the "ambient-only" recommendation was wrong.**
+  `ExtensorInPanel C n` (`Basic.lean:276`) requires `C.val = extensor p` with
+  `p : Fin k → Fin (k+2) → ℝ` — the perp tuple's length is the **extensor grade
+  `k`**, not the codim-2 hinge. So the extensor-bearing bricks
+  (`exists_linearIndependent_extensor_pair_perp`, `exists_extensor_in_two_panels`)
+  need `Fin k`/`Fin (k+1)` perp tuples at general `k` (Leaf 1b). The *ambient*
+  `Fin 4 → Fin (k+2)` lift and the rank-nullity count are arity-clean (the
+  general brick `exists_linearIndependent_perp_of_normals` carries them); only
+  the extensor construction is `k`-arity.
 - **23a-OD-B (`span_omitTwoExtensor_eq_top` squareness).** Its `Fin 4×Fin 4`
   system generalizes to `(k+2)×(k+2)` via the already-general
   `omitTwoExtensor_linearIndependent_of_li {e:ℕ}` + a `span=top` count.

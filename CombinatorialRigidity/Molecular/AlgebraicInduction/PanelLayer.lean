@@ -365,6 +365,52 @@ theorem panelSupportExtensor_join_eq_zero_of_eq_zero (n_u n' pi pj : Fin 4 → �
     hi_u hi_u' hj_u hj_u' r
     (by rw [← panelSupportExtensor_eq_complementIso_extensor]; exact hr)
 
+/-- **`m` linearly-independent common-perp vectors of `r` normals, `m + r ≤ k + 2`**
+(`def:genuine-hinge-realization`, the general-`d` rank-nullity perp-space brick; Phase 23a Leaf 1).
+Given `r` row-normals `N : Fin r → Fin (k+2) → ℝ` and a count `m` with `m + r ≤ k + 2`, there are
+`m` linearly independent vectors `p : Fin m → Fin (k+2) → ℝ` in the joint kernel
+`⋂ⱼ Nⱼ^⊥ = {x | ∀ j, x ⬝ᵥ Nⱼ = 0}`. These span the `m`-dimensional families of common-perp points
+the panel-incidence producers feed to the grade-`k` extensors (`ScrewSpace k`); the two/three-perp
+`d = 3` bricks below are the `r = 2, m = 2` and `r = 1, m = 3` instances.
+
+The construction: the pairing map `L x = (j ↦ Nⱼ ⬝ᵥ x) : ℝ^(k+2) → ℝ^r` is the `mulVecLin` of the
+`r × (k+2)` row matrix `Matrix.of N`; its kernel `W = ker L` has `finrank W = (k+2) - rank L ≥
+(k+2) - r ≥ m` (rank–nullity `finrank_range_add_finrank_ker`, `rank L ≤ r` from
+`Submodule.finrank_le` on the codomain `ℝ^r`). So `m ≤ finrank W`, and
+`exists_linearIndependent_of_le_finrank` extracts an LI family `f : Fin m → W`; set
+`p i = (f i).val`. -/
+theorem exists_linearIndependent_perp_of_normals {r m : ℕ} (N : Fin r → Fin (k + 2) → ℝ)
+    (hmr : m + r ≤ k + 2) :
+    ∃ p : Fin m → Fin (k + 2) → ℝ, LinearIndependent ℝ p ∧ ∀ i j, p i ⬝ᵥ N j = 0 := by
+  classical
+  -- The pairing map `L x = (j ↦ Nⱼ ⬝ᵥ x)` as the `mulVecLin` of the `r × (k+2)` row matrix.
+  set A : Matrix (Fin r) (Fin (k + 2)) ℝ := Matrix.of N with hA
+  set L : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin r → ℝ) := A.mulVecLin with hL
+  -- `hmemW`: `x ∈ ker L ↔ ∀ j, x ⬝ᵥ Nⱼ = 0`.
+  have hmemW : ∀ x : Fin (k + 2) → ℝ, x ∈ LinearMap.ker L ↔ ∀ j, x ⬝ᵥ N j = 0 := by
+    intro x
+    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
+    -- `(A.mulVec x) j = Nⱼ ⬝ᵥ x`, reducing `Matrix.of N j` to `Nⱼ` via `Matrix.of_apply`.
+    have hmv : ∀ j, A.mulVec x j = N j ⬝ᵥ x := fun j => by
+      simp [hA, Matrix.mulVec, dotProduct, Matrix.of_apply]
+    constructor
+    · intro hx j; rw [dotProduct_comm, ← hmv]; exact congrFun hx j
+    · intro hperp; ext j; simpa [hmv, dotProduct_comm] using hperp j
+  -- rank-nullity: `finrank (ker L) ≥ (k+2) - r ≥ m`.
+  have hrange : Module.finrank ℝ (LinearMap.range L) ≤ r := by
+    refine le_trans (Submodule.finrank_le _) ?_; simp
+  have hker : m ≤ Module.finrank ℝ (LinearMap.ker L) := by
+    have hrk := L.finrank_range_add_finrank_ker
+    rw [show Module.finrank ℝ (Fin (k + 2) → ℝ) = k + 2 from by
+      rw [Module.finrank_pi, Fintype.card_fin]] at hrk
+    omega
+  -- `exists_linearIndependent_of_le_finrank` extracts an LI family `f : Fin m → ker L`.
+  obtain ⟨f, hfli⟩ := exists_linearIndependent_of_le_finrank (R := ℝ) (M := LinearMap.ker L) hker
+  -- `p i = (f i).val`, which lies in `ker L` hence is orthogonal to every normal.
+  refine ⟨fun i => (f i).val, ?_, fun i j => (hmemW _).mp (f i).prop j⟩
+  -- LI of `f` in the subtype lifts to LI of `p = f.val` in the ambient space.
+  exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
+
 /-- **Two linearly-independent common-perp points of two independent normals**
 (`def:genuine-hinge-realization`, perp-pair sub-brick of the meet-decomposition lemma; Phase 22i
 L0a). Given two linearly independent normals `n₁ n₂ : Fin 4 → ℝ` (i.e. the panels `Π₁, Π₂` are
@@ -372,94 +418,30 @@ transversal), there exist two linearly independent points `p : Fin 2 → Fin 4 �
 *both* panels: `p i ⬝ᵥ n₁ = 0` and `p i ⬝ᵥ n₂ = 0` for `i = 0, 1`. These are the generators of
 the `2`-dimensional common-perp space (the intersection line `Π₁ ∩ Π₂` in `ℝ⁴`).
 
-The construction: the pairing map `L x = ![n₁ ⬝ᵥ x, n₂ ⬝ᵥ x] : ℝ⁴ → ℝ²` is the `mulVecLin` of
-the `2 × 4` matrix with rows `n₁, n₂`; its kernel `W = ker L` has `finrank W = 4 - rank L ≥ 4 - 2
-= 2` (rank–nullity, `finrank_range_add_finrank_ker`, `rank ≤ 2` from `Submodule.finrank_le`). So
-`2 ≤ finrank W`, and `exists_linearIndependent_of_le_finrank` at `n = 2` extracts an LI family
-`f : Fin 2 → W`; set `p i = (f i).val`. -/
+The `r = 2, m = 2` instance of the general-`k` brick
+`exists_linearIndependent_perp_of_normals` (`![n₁, n₂]` as the two row-normals; `2 + 2 ≤ 4`),
+reindexing the per-normal conjunction `∀ j, p i ⬝ᵥ (![n₁,n₂]) j = 0` to the pair `p i ⬝ᵥ n₁ = 0 ∧
+p i ⬝ᵥ n₂ = 0` by `fin_cases` on `j`. -/
 theorem exists_two_perp_of_linearIndependent_normals {n₁ n₂ : Fin 4 → ℝ}
     (_ : LinearIndependent ℝ ![n₁, n₂]) :
     ∃ p : Fin 2 → Fin 4 → ℝ, LinearIndependent ℝ p ∧
       ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 := by
-  classical
-  -- The pairing map `L x = ![n₁ ⬝ᵥ x, n₂ ⬝ᵥ x]` as the `mulVecLin` of the 2×4 row matrix.
-  set A : Matrix (Fin 2) (Fin 4) ℝ := Matrix.of ![n₁, n₂] with hA
-  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) := A.mulVecLin with hL
-  -- `hmemW`: `x ∈ ker L ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0`.
-  -- Proved by unfolding `mulVecLin`/`mulVec` and reducing `Matrix.of ![n₁, n₂] i` to `nᵢ`.
-  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0 := by
-    intro x
-    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
-    -- Goal: `A.mulVec x = 0 ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0`
-    -- Rewrite `A = Matrix.of ![n₁, n₂]` and use `Matrix.of_apply` to get row `i` = `![n₁,n₂] i`.
-    -- Then `(A.mulVec x) i = (![n₁, n₂] i) ⬝ᵥ x`.
-    have hrow0 : ∀ j : Fin 4, A 0 j = n₁ j := fun j => by
-      simp [hA, Matrix.of_apply]
-    have hrow1 : ∀ j : Fin 4, A 1 j = n₂ j := fun j => by
-      simp [hA, Matrix.of_apply]
-    have hmv0 : A.mulVec x 0 = n₁ ⬝ᵥ x := by
-      simp [Matrix.mulVec, dotProduct, hrow0]
-    have hmv1 : A.mulVec x 1 = n₂ ⬝ᵥ x := by
-      simp [Matrix.mulVec, dotProduct, hrow1]
-    constructor
-    · intro hx
-      exact ⟨by rw [dotProduct_comm]; rw [← hmv0]; exact congrFun hx 0,
-             by rw [dotProduct_comm]; rw [← hmv1]; exact congrFun hx 1⟩
-    · intro ⟨hn1, hn2⟩
-      ext i; fin_cases i
-      · simpa [hmv0, dotProduct_comm] using hn1
-      · simpa [hmv1, dotProduct_comm] using hn2
-  -- rank-nullity: `finrank (ker L) ≥ 4 - 2 = 2`.
-  have hrange : Module.finrank ℝ (LinearMap.range L) ≤ 2 := by
-    refine le_trans (Submodule.finrank_le _) ?_
-    simp
-  have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
-    have hrk := L.finrank_range_add_finrank_ker
-    rw [show Module.finrank ℝ (Fin 4 → ℝ) = 4 from by rw [Module.finrank_pi]; rfl] at hrk
-    omega
-  -- `exists_linearIndependent_of_le_finrank` extracts an LI family `f : Fin 2 → ker L`.
-  obtain ⟨f, hfli⟩ := exists_linearIndependent_of_le_finrank (R := ℝ) (M := LinearMap.ker L) hker
-  -- `p i = (f i).val`, which lies in `ker L` hence is orthogonal to both normals.
-  refine ⟨fun i => (f i).val, ?_, fun i => (hmemW _).mp (f i).prop⟩
-  -- LI of `f` in the subtype lifts to LI of `p = f.val` in the ambient space.
-  exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
+  obtain ⟨p, hpli, hperp⟩ :=
+    exists_linearIndependent_perp_of_normals (k := 2) ![n₁, n₂] (m := 2) (le_refl 4)
+  exact ⟨p, hpli, fun i => ⟨by simpa using hperp i 0, by simpa using hperp i 1⟩⟩
 
 /-- **Three linearly-independent vectors in a single panel `n^⊥ ⊆ ℝ⁴`**
 (`def:genuine-hinge-realization`, the spanning sub-brick of the base producer's coincident-panel
 construction; Phase 22i L3a). For any normal `n : Fin 4 → ℝ`, the panel `n^⊥ = {x : x ⬝ᵥ n = 0}`
 has dimension `≥ 3` in `ℝ⁴`, so it contains three linearly independent vectors (the bound holds
-even at `n = 0`, where `n^⊥ = ℝ⁴`). The construction mirrors
-`exists_two_perp_of_linearIndependent_normals` for a *single* normal: the pairing map
-`L x = n ⬝ᵥ x : ℝ⁴ → ℝ` is the `mulVecLin` of the `1 × 4` row matrix `![n]`;
-`finrank (ker L) ≥ 4 - 1 = 3` (rank–nullity), and `exists_linearIndependent_of_le_finrank` at `3`
-extracts the LI triple. -/
+even at `n = 0`, where `n^⊥ = ℝ⁴`). The `r = 1, m = 3` instance of the general-`k` brick
+`exists_linearIndependent_perp_of_normals` (the single row-normal `![n]`; `3 + 1 ≤ 4`), reading
+off the lone `j = 0` conjunct of the per-normal orthogonality. -/
 theorem exists_three_perp (n : Fin 4 → ℝ) :
     ∃ v : Fin 3 → Fin 4 → ℝ, LinearIndependent ℝ v ∧ ∀ i, v i ⬝ᵥ n = 0 := by
-  classical
-  -- The pairing map `L x = n ⬝ᵥ x` as the `mulVecLin` of the 1×4 row matrix `![n]`.
-  set A : Matrix (Fin 1) (Fin 4) ℝ := Matrix.of ![n] with hA
-  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 1 → ℝ) := A.mulVecLin with hL
-  -- `hmemW`: `x ∈ ker L ↔ x ⬝ᵥ n = 0`.
-  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ x ⬝ᵥ n = 0 := by
-    intro x
-    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
-    have hrow0 : ∀ j : Fin 4, A 0 j = n j := fun j => by simp [hA, Matrix.of_apply]
-    have hmv0 : A.mulVec x 0 = n ⬝ᵥ x := by simp [Matrix.mulVec, dotProduct, hrow0]
-    constructor
-    · intro hx; rw [dotProduct_comm]; rw [← hmv0]; exact congrFun hx 0
-    · intro hn0; ext i; fin_cases i; simpa [hmv0, dotProduct_comm] using hn0
-  -- rank-nullity: `finrank (ker L) ≥ 4 - 1 = 3`.
-  have hrange : Module.finrank ℝ (LinearMap.range L) ≤ 1 := by
-    refine le_trans (Submodule.finrank_le _) ?_
-    simp
-  have hker : 3 ≤ Module.finrank ℝ (LinearMap.ker L) := by
-    have hrk := L.finrank_range_add_finrank_ker
-    rw [show Module.finrank ℝ (Fin 4 → ℝ) = 4 from by rw [Module.finrank_pi]; rfl] at hrk
-    omega
-  -- `exists_linearIndependent_of_le_finrank` extracts an LI family `f : Fin 3 → ker L`.
-  obtain ⟨f, hfli⟩ := exists_linearIndependent_of_le_finrank (R := ℝ) (M := LinearMap.ker L) hker
-  refine ⟨fun i => (f i).val, ?_, fun i => (hmemW _).mp (f i).prop⟩
-  exact hfli.map' L.ker.subtype (Submodule.ker_subtype _)
+  obtain ⟨v, hvli, hperp⟩ :=
+    exists_linearIndependent_perp_of_normals (k := 2) ![n] (m := 3) (le_refl 4)
+  exact ⟨v, hvli, fun i => by simpa using hperp i 0⟩
 
 /-- **Two linearly-independent extensors inside a common panel `n^⊥ ⊆ ℝ⁴`**
 (`def:genuine-hinge-realization`, the base producer's coincident-panel geometric brick; Phase 22i
@@ -628,41 +610,18 @@ For any two normals `n₁ n₂ : Fin 4 → ℝ`, there exists a nonzero `C : Scr
 this intersection has dimension `≥ 2` by rank–nullity applied to the pairing map `x ↦ (x ⬝ᵥ n₁,
 x ⬝ᵥ n₂)`, regardless of whether `n₁` and `n₂` are linearly independent.
 
-Used by the cut-edge bare-conjunct producer (`case_cut_edge_realization`) to supply the cut hinge
-extensor when no transversality is available. -/
+The two common-perp points are the `r = 2, m = 2` extraction of the general-`k` brick
+`exists_linearIndependent_perp_of_normals` (`2 + 2 ≤ 4`, *no* transversality hypothesis); their
+`2`-extensor is the desired `C`. Used by the cut-edge bare-conjunct producer
+(`case_cut_edge_realization`) to supply the cut hinge extensor when no transversality is
+available. -/
 theorem exists_extensor_in_two_panels (n₁ n₂ : Fin 4 → ℝ) :
     ∃ C : ScrewSpace 2, C ≠ 0 ∧ ExtensorInPanel C n₁ ∧ ExtensorInPanel C n₂ := by
-  classical
-  set A : Matrix (Fin 2) (Fin 4) ℝ := Matrix.of ![n₁, n₂] with hA
-  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) := A.mulVecLin with hL
-  -- The kernel characterization: `x ∈ ker L ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0`.
-  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ x ⬝ᵥ n₁ = 0 ∧ x ⬝ᵥ n₂ = 0 := by
-    intro x
-    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
-    have hrow0 : ∀ j : Fin 4, A 0 j = n₁ j := fun j => by simp [hA, Matrix.of_apply]
-    have hrow1 : ∀ j : Fin 4, A 1 j = n₂ j := fun j => by simp [hA, Matrix.of_apply]
-    have hmv0 : A.mulVec x 0 = n₁ ⬝ᵥ x := by simp [Matrix.mulVec, dotProduct, hrow0]
-    have hmv1 : A.mulVec x 1 = n₂ ⬝ᵥ x := by simp [Matrix.mulVec, dotProduct, hrow1]
-    constructor
-    · intro hx
-      exact ⟨by rw [dotProduct_comm]; rw [← hmv0]; exact congrFun hx 0,
-             by rw [dotProduct_comm]; rw [← hmv1]; exact congrFun hx 1⟩
-    · intro ⟨hn1, hn2⟩
-      ext i; fin_cases i
-      · simpa [hmv0, dotProduct_comm] using hn1
-      · simpa [hmv1, dotProduct_comm] using hn2
-  -- rank(L) ≤ 2 (codomain is ℝ²); dim(ℝ⁴) = 4; rank–nullity gives dim(ker L) ≥ 2.
-  have hrange : Module.finrank ℝ (LinearMap.range L) ≤ 2 := by
-    refine le_trans (Submodule.finrank_le _) ?_; simp
-  have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
-    have hrk := L.finrank_range_add_finrank_ker
-    rw [show Module.finrank ℝ (Fin 4 → ℝ) = 4 from by rw [Module.finrank_pi]; rfl] at hrk
-    omega
-  -- Extract two LI vectors `p 0, p 1 ∈ ker L`.
-  obtain ⟨f, hfli⟩ := exists_linearIndependent_of_le_finrank (R := ℝ) (M := LinearMap.ker L) hker
-  set p : Fin 2 → Fin 4 → ℝ := fun i => (f i).val
-  have hp_perp : ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 := fun i => (hmemW _).mp (f i).prop
-  have hpli : LinearIndependent ℝ p := hfli.map' L.ker.subtype (Submodule.ker_subtype _)
+  -- Two LI common-perp points in `n₁^⊥ ∩ n₂^⊥` (dim ≥ 2), with no transversality needed.
+  obtain ⟨p, hpli, hperp⟩ :=
+    exists_linearIndependent_perp_of_normals (k := 2) ![n₁, n₂] (m := 2) (le_refl 4)
+  have hp_perp : ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 :=
+    fun i => ⟨by simpa using hperp i 0, by simpa using hperp i 1⟩
   -- Build `C = mk (extensor p) _ : ScrewSpace 2`.
   refine ⟨ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _), ?_,
          ⟨p, rfl, fun i => (hp_perp i).1⟩, ⟨p, rfl, fun i => (hp_perp i).2⟩⟩
