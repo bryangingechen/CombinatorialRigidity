@@ -271,14 +271,11 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
     exact h
 
-set_option maxHeartbeats 600000 in
--- `case_II_realization_all_k` is heartbeat-heavy: its cost is *diffuse* `ScrewSpace 2` typeclass
--- re-elaboration spread across the ~16 geometric Steps (not one hot block), so the
--- whole-declaration budget is raised once here (3× default). Phase 22j A1 lowered it from 16× → 3×
--- by extracting the duplicated ℤ/ℕ rank-cast `CoeT` load to `toNat_le_of_add_pred_eq` /
--- `sub_toNat_eq_of_add_pred_eq` (`RigidityMatrix.lean`); the residual over-budget sites are the
--- Brick-A `isDefEq` and the Step 12–15 geometric middle, both §38-class defeq blowups, not missing
--- lemmas (`notes/PERFORMANCE.md` *Producer helper-split design*).
+-- `case_II_realization_all_k` builds at the **default** `maxHeartbeats` since the Phase-22l
+-- opacity flip (`abbrev ScrewSpace` → opaque `def`, `RigidityMatrix.lean`): the diffuse
+-- `ScrewSpace 2` typeclass re-elaboration spread across its ~16 geometric Steps — formerly a 3×
+-- (`600000`) whole-declaration budget — is gone now that the carrier head no longer re-unfolds
+-- the heavy `↥(⋀² ℝ⁴)` type-expression at every motive (`notes/ScrewSpaceCarrier-design.md` OQ1).
 /-- **Lemma 6.8, the `k > 0` split** (`lem:case-II-realization` at `k > 0`; `hsplitPos` carry,
 Phase 22i L6b). Katoh–Tanigawa 2011 §6.3, p. 677. A 2-edge-connected minimal `k`-dof-graph
 (`k > 0`, `|V| ≥ 3`) with no proper rigid subgraph carries a generic full-rank realization.

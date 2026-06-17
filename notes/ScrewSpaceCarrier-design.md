@@ -1,20 +1,21 @@
 # ScrewSpace carrier opacity — design / prep doc for the refactor
 
-**Status: d=3 part SCHEDULED as Phase 22l (2026-06-16); design-recon + spike + micro-spike complete.**
-This is the single canonical home (the API spec, spike, recon, now-vs-later analysis) for the
-post-22k investigation into the `maxHeartbeats` cost of the `ScrewSpace` carrier (and its `abbrev`
-siblings) and the *carrier-opacity* refactor. The opacity **spike** (§3) and the **design-recon** (§5)
-are both done: the recon killed the surgical "localized wrapper" option, leaving a full-carrier
-migration (Shape 2, ~3–5 sessions) as the only coherent path. A follow-up **micro-spike** (§5 OQ3)
-confirmed the `screwBasis` transport is *defeq-free* — downgrading the recon's hardest category to
-mechanical and leaving the unconfirmable end-to-end cap drop (§5 OQ1) as the dominant residual risk.
-**Decision (2026-06-16, §6): the d=3-scoped first part is now scheduled as Phase 22l** (`notes/Phase22l.md`)
-— build the opaque-carrier API + migrate the existing d=3 tree now (banks the perf win and *resolves*
-OQ1 by greening the cap-holding spine end-to-end), while **deferring the general-`d` API** to the
-Phase-23 design boundary (this neutralizes §6's chief objection — freezing an API against d=3-only
-usage — by not freezing the general-`d` surface). This doc remains the live spec 22l follows; refine
-the API surface (§5) here as the migration lands. `notes/PERFORMANCE.md` and `notes/FRICTION.md` point
-here; the opacity-spike dispatch records live in `notes/model-experiment.md` (rows 167–170).
+**Status: d=3 part DONE (Phase 22l, closed 2026-06-16); general-`d` "part 2" deferred to the Phase-23
+design boundary.** This is the single canonical home (the API spec, spike, recon, now-vs-later analysis)
+for the post-22k investigation into the `maxHeartbeats` cost of the `ScrewSpace` carrier (and its
+`abbrev` siblings) and the *carrier-opacity* refactor. The opacity **spike** (§3) and the
+**design-recon** (§5) are both done: the recon killed the surgical "localized wrapper" option, leaving a
+full-carrier migration (Shape 2) as the only coherent path; a follow-up **micro-spike** (§5 OQ3)
+confirmed the `screwBasis` transport is *defeq-free*. **Phase 22l (`notes/Phase22l.md`) executed the
+d=3-scoped first part:** built the opaque-carrier API + migrated the existing d=3 tree (L0a–L9), then
+flipped `abbrev ScrewSpace`→opaque `def` in one mechanical commit — **resolving OQ1** (molecular
+`maxHeartbeats` count 3→1: `case_II_realization_all_k` + `case_cut_edge_realization` to default,
+`case_cut_edge_realization_gp` 600000→400000). The §5 *L7 refinement* recipe (the `cast`-form
+`equivExteriorPower`, `mk`/`val`/`val_mem` through `ScrewSpace_def k ▸ …`) is the as-built FLIP. **The
+general-`d` API ("part 2") is deferred to the Phase-23 design boundary** (§6 — don't freeze an API
+against d=3-only usage); this doc stays the live spec part 2 follows. `notes/PERFORMANCE.md` and
+`notes/FRICTION.md` point here; the opacity-spike dispatch records live in `notes/model-experiment.md`
+(rows 167–170).
 
 **TL;DR.** `ScrewSpace k` (`Molecular/RigidityMatrix.lean:88`) is a reducible
 `abbrev = ↥(⋀^k (Fin (k+2) → ℝ))`. Reducibility means every defeq / `simp` / `rw`

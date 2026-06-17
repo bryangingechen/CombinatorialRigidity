@@ -1,6 +1,6 @@
 # Phase 22l — ScrewSpace carrier opacity, part 1: the d=3 API + migration (work log)
 
-**Status:** in progress (opened 2026-06-16).
+**Status:** ✓ complete (opened + closed 2026-06-16).
 
 Structural-edit phase (no new math, no new blueprint chapter): reshape the `ScrewSpace`
 carrier from a reducible `abbrev` into an **opaque `def`** with a `mk`/`val`/`≃ₗ` API, then
@@ -13,47 +13,22 @@ there (the API spec is §5; the spike §3; the spine §5; the residual risks OQ1
 
 ## Current state
 
-**Next concrete step: the FLIP** — every spine file (L0a–L9) is now opacity-ready, so the only remaining
-work is the single mechanical `abbrev ScrewSpace`→opaque `def` commit (recipe pinned at L7, design doc §5
-*L7 refinement*; the RigidityMatrix part exercised live at L9). L9 closed: the opacity probe on
-`Theorem55.lean` (with the two surviving caps temporarily lowered) built the whole spine-to-Theorem55
-**green with zero errors/warnings** on the opaque carrier — `Theorem55.lean` is **migration-free** (the
-seventh, and last, negative-probe outcome). Its only carrier-construction sites already route through
-`ScrewSpace.mk` (the L1 forced consumer fixups, lines 65/66/189/1802/1803), and the rest are
-opacity-neutral — `Module.Dual ℝ (α → ScrewSpace 2)` row functionals (line 737), `Function.update
-(0 : α → ScrewSpace 2) v x` module-level maps (line 507), `set extF : β → ScrewSpace 2 := fun e => …`
-built from `supportExtensor` / `.choose` carrier accessors (no bare `⟨v,h⟩`), and `: ScrewSpace 2` type
-ascriptions. No category (a) `⟨v,h⟩`-construction, (d) `screwBasis`-coordinate, or carrier-`.val`/`congr_arg
-Subtype.val` site. **OQ1 cap-drop measured at L9 (probe-live):** on the opaque carrier
-`case_cut_edge_realization` re-elaborated green at the **default 200000** (committed 400000 — full drop),
-and `case_cut_edge_realization_gp` at **400000** (committed 600000 — drops one step, *not* all the way to
-default). Each commit keeps the project green (carrier still `abbrev`); the **FLIP lands LAST** and banks
-these two drops + the L7-measured CaseII drop.
+**✓ COMPLETE — the FLIP landed (2026-06-16).** `abbrev ScrewSpace` → opaque `def` in
+`RigidityMatrix.lean` + `ScrewSpace_def` rfl-bridge + 3 `inferInstanceAs` instances
+(`AddCommGroup`/`Module`/`FiniteDimensional`); `mk`/`val`/`val_mem` route their Subtype coercion through
+`ScrewSpace_def k ▸ …`; `equivExteriorPower` is now the `cast (ScrewSpace_def k)` `≃ₗ` with `cast`-RHS
+`_apply`/`_symm_apply` (design doc §5 *L7 refinement*). The whole d=3 spine builds + lints clean on the
+opaque carrier. **OQ1 banked:** `case_II_realization_all_k` 600000→default, `case_cut_edge_realization`
+400000→default, `case_cut_edge_realization_gp` 600000→400000 (one step, not droppable to default). The
+`screwSpace_finrank` `change`-expose was re-tested and **kept** (still needed: the opaque head does not
+reduce to the graded-piece head at `rw`'s reducible transparency). The molecular `maxHeartbeats` count is
+now **3→1** (the only survivor is `_gp` at 400000). Blueprint untouched (pure implementation refactor;
+all statements/types stable).
 
-**L9 landed (2026-06-16): `Theorem55.lean` verified migration-free + the two Theorem55 caps measured,
-project green (docs-only).** Opacity probe (local flip + 3 named instances + the FLIP-`equivExteriorPower`
-`cast`-form fix → scoped `lake build` of the Theorem55 module rebuilds the full spine-to-Theorem55 →
-revert) built **green with zero errors/warnings** on the opaque carrier — seventh (and final)
-negative-probe outcome. Despite holding the two surviving caps and the L1 `ScrewSpace.mk` consumer
-fixups, `Theorem55.lean` reaches into the carrier nowhere new: the `mk` sites are already migrated and
-everything else is opacity-neutral module-level work. **OQ1 (the dominant residual risk) is now fully
-measured:** the CaseII cap drops to default (L7), `case_cut_edge_realization` drops to default,
-`case_cut_edge_realization_gp` drops 600000→400000 — all banked at the FLIP. Only the FLIP remains.
-
-**L0a–L7 landed (2026-06-16):** carrier API + `RigidityMatrix.lean` migration (L0a/L0b), `PanelLayer.lean`
-migration + `screwBasis` transport (L1), and the migration-free / 2-site probes down the spine —
-`Pinning.lean` (L2, + three L0/L1 gap closures), `PanelHinge.lean` (L3), `GenericityDevice.lean` (L4,
-2-site), `Coupling.lean` (L5), `CaseI.lean` (L6), `CaseII.lean` (L7, + OQ1 cap-drop first measured +
-FLIP-`equivExteriorPower` form pinned). Per-layer detail in *Decisions made* below; the recurring gap
-classes + probe method + FLIP recipe in `notes/ScrewSpaceCarrier-design.md` §5. Each project-green on the
-`abbrev`; no blueprint pin changed.
-
-The design recon (`notes/ScrewSpaceCarrier-design.md` §5) is complete and **killed the surgical
-"localized wrapper" option** (Shape 1): the realization predicates the capped decls return *and*
-consume structurally embed `ScrewSpace k`, so the opaque head cannot be localized to the assembly
-files. The only coherent path is **Shape 2** (full opaque carrier, ~3–5 sessions). The
-`screwBasis`-transport micro-spike (§5 OQ3) confirmed the transport is **defeq-free**, so the
-recon's feared-hardest category (hard-part (d)) is essentially mechanical.
+The FLIP was mechanical because L0a–L9 made the whole spine opacity-ready (L2/L3/L5/L6/L7/L8/L9
+migration-free; L0a/L0b/L1/L4 needed edits), and the L9 probe had already exercised the exact RigidityMatrix
+recipe end-to-end. Per-layer detail in *Decisions made*; the recon (Shape-1 dead, Shape-2 the only path)
+and the recurring gap classes / probe method are canonical in `notes/ScrewSpaceCarrier-design.md` §5.
 
 ## Architectural choices made up front
 
@@ -123,14 +98,13 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
   `complementIso`-input anonymous constructors (`⟨extensor …, extensor_mem_exteriorPower _⟩ :
   ⋀[ℝ]^2 …`) are NOT `ScrewSpace`-typed and stay. **Done 2026-06-16** — whole project builds + lints
   clean.
-- [ ] **FLIP (last) — `abbrev ScrewSpace`→opaque `def` + `ScrewSpace_def` bridge + 3 `inferInstanceAs`
+- [x] **FLIP (last) — `abbrev ScrewSpace`→opaque `def` + `ScrewSpace_def` bridge + 3 `inferInstanceAs`
   instances + the `cast`-form `equivExteriorPower` (recipe pinned at L7, design doc §5 *L7 refinement*;
-  the RigidityMatrix part exercised live during the L9 probe).** Lands after the whole spine has adopted
-  the API (now done — L0a–L9 all opacity-ready); a single mechanical commit. **Phase exit + OQ1
-  resolution.** Cap drops measured probe-live and banked here: `case_II_realization_all_k` 600000→**200000**
-  (default, L7); `case_cut_edge_realization` 400000→**200000** (default, L9); `case_cut_edge_realization_gp`
-  600000→**400000** (partial, L9 — keep at 400000, not droppable to default). (Was "L0, first" in the
-  original plan — see *Architectural choices*.)
+  the RigidityMatrix part exercised live during the L9 probe).** Single mechanical commit; **phase exit +
+  OQ1 resolution.** Caps banked: `case_II_realization_all_k` 600000→default; `case_cut_edge_realization`
+  400000→default; `case_cut_edge_realization_gp` 600000→**400000** (partial — not droppable to default).
+  `screwSpace_finrank` `change`-expose re-tested + kept. **Done 2026-06-16** — whole project builds + lints
+  clean on the opaque carrier. (Was "L0, first" in the original plan — see *Architectural choices*.)
 - [x] **L1 — `PanelLayer.lean`.** `screwBasis` `abbrev`→`def` (`.map (equivExteriorPower k).symm`)
   + `rfl` bridge `screwBasis_repr_apply`; `annihRow` + `@[simp]` family ported verbatim
   (opacity-neutral); five construction reach-ins `⟨extensor …⟩`→`mk` / coercion→`.val`; forced
@@ -195,80 +169,60 @@ LI-transport) are catalogued in `notes/ScrewSpaceCarrier-design.md` §5 *L2 refi
 
 ## Blockers / open questions
 
-- **OQ1 (the dominant residual risk) — FULLY MEASURED at L7/L9, positive (partial on one cap).** The
-  opacity spike got 5–60× on *synthetic* benches but could not reach a survivor; the three caps sit at
-  the *top* of the spine (CaseII, Theorem55). This phase greens that exact spine, so **22l is the
-  resolution of OQ1** — the cap audit at L7/L9 is the payoff measurement, not a separate task. All three
-  caps now measured probe-live on the opaque carrier (banked at the FLIP, since the probe reverts and on
-  the `abbrev` the lowered caps fail): `case_II_realization_all_k` 600000→**200000** (default, L7);
-  `case_cut_edge_realization` 400000→**200000** (default, L9); `case_cut_edge_realization_gp`
-  600000→**400000** (partial — drops one step, still above default; L9). So OQ1 resolves positive: two of
-  three caps drop to default, the third drops 33%. The FLIP commit banks all three.
-- **OQ2 (deferred sub-fork) — remove the §38 workarounds, or leave them?** Default: leave (see
-  *Architectural choices*). Revisit only if a layer forces a specific removal, or schedule as a
-  follow-up cleanup.
-- **Per-slice blueprint grep gate.** Statements of blueprint-pinned decls don't change (carrier
-  flip is implementation-only; `screwSpace_finrank`, `screwBasis`'s *type* are stable). But if a
-  layer changes a *pinned* decl's statement (e.g. if `screwBasis`'s signature shifts), grep
-  `blueprint/src/` for that `\lean{...}` name and restate in the same commit (`CLAUDE.md`
-  *Structural-edit phases*). Expectation: the blueprint is untouched by this phase.
+- **OQ1 — RESOLVED at the FLIP (positive, partial on one cap).** The end-to-end cap drop the spike could
+  only proxy is now banked: `case_II_realization_all_k` 600000→default, `case_cut_edge_realization`
+  400000→default, `case_cut_edge_realization_gp` 600000→400000 (one step, not droppable to default — the
+  cap is partly intrinsic to its GP seed + per-side rank-polynomial case analysis, not solely
+  carrier-whnf). Molecular `maxHeartbeats` count 3→1.
+- **OQ2 (deferred sub-fork) — remove the §38 workarounds, or leave them?** Default: left (see
+  *Architectural choices*). The opaque carrier renders many of the ~10 §38 carrier-whnf workarounds
+  *unnecessary* but harmless; removing them is where much of the clarity payoff lives but is unbudgeted
+  needs-thought work — a follow-up cleanup, out of 22l scope.
+- **Blueprint untouched (confirmed).** The carrier flip is implementation-only; no blueprint-pinned decl's
+  statement or type changed (`screwSpace_finrank`, `screwBasis`, `ExtensorInPanel`, etc. all stable). No
+  `\lean{...}` restate needed; `blueprint/src/` not edited this phase.
 
 ## Hand-off / next phase
 
-**Smallest next commit: the FLIP** (and phase close). Every spine file is now opacity-ready — L0a–L9 all
-landed (L2/L3/L5/L6/L7/L8/L9 migration-free; L0a/L0b/L1/L4 needed edits, L4 just the 2-site L0b idiom),
-and L9's probe confirmed `Theorem55.lean` (the last file, top of the spine) reaches into the carrier
-nowhere new. So no migration work remains: the only commit left flips the carrier and banks the perf win.
+**Phase 22l is closed.** The math frontier (`notes/MolecularConjecture.md`) is **unchanged** by this
+phase: the next phase is **Phase 23 — Case III general `d`, KT Lemma 6.13** (entirely unbuilt). 22l was
+a pure implementation refactor (no math, no blueprint change).
 
-**The FLIP commit, fully specified (recipe in design doc §5 *L7 refinement*, RigidityMatrix part already
-exercised live during the L9 probe):**
-1. In `RigidityMatrix.lean`: `abbrev ScrewSpace`→`def` + `theorem ScrewSpace_def (k) : ScrewSpace k =
-   ↥(⋀…) := rfl` + 3 `noncomputable instance … := inferInstanceAs …`
-   (`AddCommGroup`/`Module`/`FiniteDimensional`).
-2. `mk`/`val`/`val_mem` bodies route their Subtype coercion through `ScrewSpace_def k ▸ …`
-   (`mk` uses `(ScrewSpace_def k).symm ▸ ⟨v, h⟩`; `val`/`val_mem` use `ScrewSpace_def k ▸ C`).
-3. `equivExteriorPower` becomes the `cast (ScrewSpace_def k)` `≃ₗ` (anonymous-constructor literal:
-   `toFun := cast (ScrewSpace_def k)`, `invFun := cast (ScrewSpace_def k).symm`, `rfl` for
-   `map_add'`/`map_smul'`, `simp [ScrewSpace_def]` for `left_inv`/`right_inv`); `_apply`/`_symm_apply`
-   restate `:= rfl` to the `cast` RHS. (`val_mk`/`mk_val`/`val_smul`/`val_add`/`val_zero` stay `:= rfl`.)
-4. Drop/lower the three measured caps: `case_II_realization_all_k` 600000→200000 (CaseII.lean);
-   `case_cut_edge_realization` 400000→200000; `case_cut_edge_realization_gp` 600000→**400000** (NOT to
-   default — L9 measured it still times out at 200000 on the opaque carrier). Drop the
-   `screwSpace_finrank` `change`-expose only if it's no longer needed (re-test).
-The L9 probe already built the whole spine green on exactly this RigidityMatrix recipe, so the FLIP is
-mechanical: apply (1)–(3) once, lower the caps per (4), full `lake build` + `lake lint`, scan for
-warnings, commit. This is the **last commit of Phase 22l** — fire the phase-close checklist (ROADMAP §22l
-compress + table flip to ✓; sync README / home_page / intro.tex / `notes/MolecularConjecture.md`; the
-blueprint is untouched by this phase, statements unchanged).
+**What 22l unlocks (but does not start): the general-`d` "part 2" carrier migration.** The opaque
+`ScrewSpace` API is frozen only against the *d=3* usage surface; the general-`d` API shape is deferred to
+the **Phase-23 design boundary** (once the general-`k` reach-in surface is known). The part-2 build lands
+with or after Phase 23. Concretely, Phase 23's design recon decides whether the d=3 opaque API extends
+unchanged to general `k` or needs reshaping (the `screwBasis`/`annihRow` coordinate machinery gets
+exercised symbolically for the first time at general `k` — design doc §6).
 
-**L2–L9 calibration of the per-layer method.** The lesson is the *method*, not a site count:
-green-on-`abbrev` is **blind to opacity-readiness**, so each layer ran the opacity probe up front (L1 had
-skipped it and left three `PanelLayer.lean` breaks the probe then caught). The four recurring gap classes
-are catalogued (design doc §5). The probe also has a *negative* outcome — a layer that builds clean on
-the opaque carrier needs **no migration** (L2 `Pinning.lean`, L3 `PanelHinge.lean`, L5 `Coupling.lean`,
-L6 `CaseI.lean`, L7 `CaseII.lean`, L8 `CaseIII.lean`, L9 `Theorem55.lean`): a file that only *consumes*
-`ScrewSpace`-typed values abstractly (type ascription, module-level span/`Module.Dual` row functionals,
-`LinearMap.pi`/`proj`/`comp` column maps, predicates embedding the carrier through framework fields, and
-`ScrewSpace.mk`-already-migrated construction sites) reaches into the carrier nowhere and is
-opacity-neutral. The L0b/L4 idiom that recurs in files that *do* migrate: route
-`(C : ExteriorAlgebra ℝ _)` coercions and `congr_arg Subtype.val` onto `C.val` / `congr_arg
-ScrewSpace.val` (the `.val` projection); and after moving a `(⟨v,h⟩ : ScrewSpace).val` onto `mk`/`val`,
-a trailing `rfl`-close may need an explicit `ScrewSpace.val_mk` rewrite (`mk`/`val` are semireducible
-`def`s, so `rw`'s auto-`rfl` does not unfold them). L4 also confirmed OQ3 *operationally* at d=3: the
-`change … (screwBasis k t) …` category-(d) blocks survive verbatim, so the recon's feared-hardest
-category needs no edits in the existing tree. The `abbrev`→opaque-`def` **FLIP lands last**, after the
-whole spine adopts the API, as a single small commit that banks the perf win and resolves OQ1.
-
-**At phase close:** the d=3 tree builds on the opaque `ScrewSpace` carrier; the three
-`maxHeartbeats` survivors are dropped/lowered (OQ1 resolved); the general-`d` API is *not* frozen,
-leaving Phase 23's design recon free to shape it. This unblocks — but does not start — the
-general-`d` "part 2" migration, which lands with/after Phase 23. The math frontier
-(`notes/MolecularConjecture.md`) is **unchanged** by this phase: still Phase 23 (Case III general
-`d`, KT Lemma 6.13).
+**L2–L9 calibration of the per-layer method** (kept as the durable lesson). Green-on-`abbrev` is **blind
+to opacity-readiness**, so each layer ran an opacity probe up front (L1 skipped it and left three
+`PanelLayer.lean` breaks the probe later caught). The probe's *negative* outcome — a layer that builds
+clean on the opaque carrier needs **no migration** — held for 7 of 10 spine files: a file that only
+*consumes* `ScrewSpace`-typed values abstractly (type ascription, module-level span / `Module.Dual` row
+functionals, `LinearMap.pi`/`proj`/`comp` column maps, predicates embedding the carrier through framework
+fields, and `ScrewSpace.mk`-already-migrated construction sites) cracks none open. The recurring migration
+idiom (L0b/L4): route `(C : ExteriorAlgebra ℝ _)` coercions and `congr_arg Subtype.val` onto `.val` /
+`congr_arg ScrewSpace.val`; a trailing `rfl`-close after moving `(⟨v,h⟩ : ScrewSpace).val` onto `mk`/`val`
+may need an explicit `ScrewSpace.val_mk` (the `def`s are semireducible). OQ3 held operationally at d=3: the
+category-(d) `change … (screwBasis k t) …` basis blocks survive verbatim on the opaque carrier (zero
+edits). The four recurring gap classes are catalogued in `notes/ScrewSpaceCarrier-design.md` §5.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **FLIP + phase close (2026-06-16, opus).** Flipped `abbrev ScrewSpace` → opaque `def` in
+  `RigidityMatrix.lean` + `ScrewSpace_def := rfl` bridge + 3 `noncomputable inferInstanceAs` instances;
+  `mk`/`val`/`val_mem` route their Subtype coercion through `ScrewSpace_def k ▸ …`; `equivExteriorPower`
+  became the `cast (ScrewSpace_def k)` `≃ₗ` (`map_add'`/`map_smul'` `rfl`, `simp [ScrewSpace_def]` for
+  the inverse laws) with `cast`-RHS `_apply`/`_symm_apply`. Whole d=3 spine builds + lints clean on the
+  opaque carrier in one mechanical commit — exactly as the L9 probe predicted (it had exercised this
+  RigidityMatrix recipe live). OQ1 banked: CaseII + `case_cut_edge_realization` caps dropped to default,
+  `_gp` 600000→400000 (molecular `maxHeartbeats` 3→1). The `screwSpace_finrank` `change`-expose was
+  re-tested and **kept** (no unused-warning; still needed — opaque head doesn't reduce to the graded-piece
+  head at `rw`'s reducible transparency). Blueprint untouched; no friction surfaced (the flip behaved
+  exactly as the design recon + L7/L9 probes predicted).
 
 - **Phase-open (2026-06-16, opus).** Opened 22l as the d=3-scoped first part of the
   carrier-opacity refactor, per the user's reordering of the design doc's three-way now-vs-later

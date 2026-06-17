@@ -1103,8 +1103,11 @@ carrier (the reducible-`abbrev` → diffuse-typeclass-re-elaboration story), the
 opacity spike (verdict MIXED: ~5–60× mechanism win, prohibitive full-refactor
 blast radius), the mathlib precedents (`Polynomial`/`Real`), and the
 design-recon-first refactor plan have their own canonical home:
-**`notes/ScrewSpaceCarrier-design.md`** (prep doc for a deferred future refactor).
-Dispatch records: `notes/model-experiment.md` rows 167–170.
+**`notes/ScrewSpaceCarrier-design.md`**. **The d=3 part landed as Phase 22l** (closed
+2026-06-16): `abbrev ScrewSpace`→opaque `def`, dropping the molecular `maxHeartbeats`
+count 3→1 (two former caps to default, `case_cut_edge_realization_gp` 600000→400000).
+The general-`d` "part 2" is deferred to the Phase-23 design boundary. Dispatch records:
+`notes/model-experiment.md` rows 167–170.
 
 ## Recommendations for future perf work
 

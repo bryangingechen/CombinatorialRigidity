@@ -78,16 +78,20 @@ housekeeping pass once their resolution is fully indexed.
 
 <!-- ScrewSpace-carrier `maxHeartbeats` overrides — split out to a dedicated doc. -->
 
-### [open→deferred] Three surviving `maxHeartbeats` overrides on the `ScrewSpace` carrier → `notes/ScrewSpaceCarrier-design.md`
-- **Symptom (index entry).** `case_cut_edge_realization` (400000, `Theorem55.lean`),
-  `case_cut_edge_realization_gp` (600000, `Theorem55.lean`), `case_II_realization_all_k`
-  (600000, `CaseII.lean`) carry elevated `set_option maxHeartbeats` because of *diffuse
+### [resolved] Three surviving `maxHeartbeats` overrides on the `ScrewSpace` carrier (Phase 22l opacity flip) → `notes/ScrewSpaceCarrier-design.md`
+- **Symptom (index entry).** `case_cut_edge_realization` (was 400000, `Theorem55.lean`),
+  `case_cut_edge_realization_gp` (was 600000, `Theorem55.lean`), `case_II_realization_all_k`
+  (was 600000, `CaseII.lean`) carried elevated `set_option maxHeartbeats` because of *diffuse
   typeclass re-elaboration* over the reducible-`abbrev` `ScrewSpace` carrier (§38-class;
   no single extractable hotspot).
-- **Status.** Diagnosed **inherent** and accepted (not an open action item). The full
-  per-override diagnosis, the opacity spike, the mathlib precedents, and the deferred
-  carrier-opacity refactor plan are consolidated in **`notes/ScrewSpaceCarrier-design.md`**.
-  Cross-ref TACTICS-QUIRKS §38; dispatch records `notes/model-experiment.md` rows 167–170.
+- **Status.** **Resolved by Phase 22l** (closed 2026-06-16): flipping `abbrev ScrewSpace`→opaque
+  `def` gives the carrier a distinct non-reducing head, so the heavy `↥(⋀^k …)` type-expression no
+  longer re-unfolds at every defeq/`simp`/`rw` motive. Two caps dropped to default,
+  `case_cut_edge_realization_gp` 600000→400000 (one step — its residual is partly intrinsic to the GP
+  seed + per-side rank-polynomial case analysis). Molecular `maxHeartbeats` count 3→1. The full
+  per-override diagnosis, opacity spike, mathlib precedents, and the as-built FLIP recipe are in
+  **`notes/ScrewSpaceCarrier-design.md`** (the general-`d` "part 2" is deferred to Phase 23). Cross-ref
+  TACTICS-QUIRKS §38; dispatch records `notes/model-experiment.md` rows 167–170.
 
 ### [resolved] `le_finrank_span_rigidityRows_of_cut` — fused `finrank_sup_of_inf_eq_bot` dropped the `span_induction + finrank_sup` cost below the 200000 default
 - **Where it bit:** `RigidityMatrix.lean:3070` (Phase 22i L4a block-triangular rank-addition brick).

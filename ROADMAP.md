@@ -129,7 +129,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22j. shared eq.-(6.12) placement abstraction + Case-II/split refactor + cleanup | `Molecular/{RigidityMatrix,AlgebraicInduction}/` | ✓ Complete (see `notes/Phase22j.md`) |
 | ⋮ Perf pass (post-Phase-22j) | `Molecular/AlgebraicInduction/CaseI.lean` (10,346-line) file split into a 5-file chain | ✓ Complete (the pre-22k internal step; see `notes/Phase22j-perf.md`; plan: `notes/PERFORMANCE.md`) |
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
-| 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ◷ In progress — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
+| 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -554,9 +554,10 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phases 17–22k (+ 21a/21b) complete — Katoh–Tanigawa's Theorem 5.5
-and Theorem 5.6 are formalized at `d = 3` at full KT strength; Phases 23–26
-planned (general `d` is Phase 23).** The
+**Status: Phases 17–22l (+ 21a/21b) complete — Katoh–Tanigawa's Theorem 5.5
+and Theorem 5.6 are formalized at `d = 3` at full KT strength (22l was a
+build-time carrier-opacity refactor, no math change); Phases 23–26 planned
+(general `d` is Phase 23).** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -982,22 +983,19 @@ Proposition 1.1 (`rigidityMatrix_prop11`, now green) at `d = 3`. Per-layer lemma
 `notes/Phase22k.md`; dep-graph `algebraic-induction.tex` `sec:molecular-algebraic-induction`. Unblocks
 Phase 23 (Case III general `d`, KT Lemma 6.13).
 
-#### Phase 22l — ScrewSpace carrier opacity: the d=3 API + migration — ◷ In progress
+#### Phase 22l — ScrewSpace carrier opacity: the d=3 API + migration — ✓ Complete
 
-**Status (◷ in progress; opened 2026-06-16; see `notes/Phase22l.md`).** A **structural-edit
-refactor** sub-phase (no new math, no new blueprint chapter) addressing the build-time cost behind
-the three surviving `maxHeartbeats` overrides: `ScrewSpace k` is a reducible `abbrev` for
-`↥(⋀^k ℝ^(k+2))`, so every defeq / `simp` / `≃ₗ` / `Module.Dual` motive over the carrier re-unfolds
-the heavy exterior-power expression (the diffuse-typeclass cost). The fix makes the carrier an
-**opaque `def`** with a `mk`/`val`/`≃ₗ` API (a spike measured 5–60× on the relevant patterns), then
-migrates the existing `d = 3` tree onto it bottom-up along the import spine **RigidityMatrix →
-PanelLayer → Pinning → PanelHinge → GenericityDevice → Coupling → CaseI → CaseII → CaseIII →
-Theorem55** (the cost lives in the assembly files at the *top* of the spine, so the end-to-end cap
-drop confirms only when the spine is green). **Scope is d = 3 only** — every existing reach-in is at
-`k = 2`; the general-`d` API is deferred to the Phase-23 design boundary (don't freeze an API against
-d=3-only usage). The full motivation, the opacity spike, the per-file recon, the drafted API surface,
-and the now-vs-later analysis are canonical in `notes/ScrewSpaceCarrier-design.md`; the Layer plan +
-decisions are in `notes/Phase22l.md`. The math frontier is unchanged — still Phase 23.
+**Status (✓ Complete; opened + closed 2026-06-16; see `notes/Phase22l.md`).** A **structural-edit
+refactor** (no new math, no blueprint change) addressing the build-time cost behind the surviving
+`maxHeartbeats` overrides: `ScrewSpace k` was a reducible `abbrev` for `↥(⋀^k ℝ^(k+2))`, so every
+defeq / `simp` / `≃ₗ` / `Module.Dual` motive over the carrier re-unfolded the heavy exterior-power
+expression (the diffuse-typeclass cost). The carrier is now an **opaque `def`** with a `mk`/`val`/`≃ₗ`
+API; the existing `d = 3` tree was migrated onto it bottom-up along the import spine and the flip
+landed in one mechanical commit, dropping the molecular `maxHeartbeats` count from 3 to 1 (two caps to
+default, one 600000→400000). Scope was d = 3 only; the general-`d` API is deferred to the Phase-23
+design boundary, so 22l unblocks but does not start the general-`d` "part 2" migration. The math
+frontier is unchanged — still Phase 23. Recon + spike + API spec: `notes/ScrewSpaceCarrier-design.md`;
+Layer plan + decisions: `notes/Phase22l.md`.
 
 ## Engineering conventions
 
