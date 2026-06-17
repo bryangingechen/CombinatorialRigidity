@@ -422,57 +422,16 @@ from F2) is simpler and is what the project's existing splits use.
 
 ### Split candidates ranked by leverage
 
-1. **`Sparsity.lean` split (highest leverage).** Natural cut at line
-   1267, splitting `Sparsity.lean` into:
-   - **`SparsityBase`** (~1266 LoC): `IsSparse` / `IsTight` defs,
-     monotonicity, global edge bound, low-degree-vertex, non-adjacent-
-     pair-among-three-neighbors, `Iso` transport, the tight-subset
-     lattice, matroidal-regime block closure, three-neighbor
-     contradiction templates, per-pair tight-blocker (sparse form),
-     flat-form Henneberg reverse decomposition.
-   - **`SparsityIComponents`** (~354 LoC): matroidal-regime maximal
-     I-blocks (`HasBlock`, `maxBlockSet`, `maxBlock`, `IsSparse.maxBlock_*`)
-     and the augmentation lemma `IsSparse.exists_aug_of_lt_two_mul`.
+1. **`Sparsity.lean` → `SparsityBase` / `SparsityIComponents`
+   (highest leverage). ✓ Executed in Phase 8-perf F1** — the
+   matroidal-regime I-block machinery (`maxBlock`, augmentation)
+   carved off (single downstream consumer, `CountMatroid`). Detail:
+   `notes/Phase8-perf.md`.
 
-   **The IComponents+Augmentation block has exactly one downstream
-   consumer**, verified by a project-wide grep: `CountMatroid.lean`
-   uses `IsSparse.exists_aug_of_lt_two_mul` once (line 77) for the
-   matroidal-regime augmentation axiom. After the split:
-   - `EdgesIn`, `Framework`, `Laman`, `Henneberg`, `HennebergRigidity`,
-     `TrivialMotions`, `RigidityMatroid`, `LamanTheorem` (8 files)
-     drop ~354 LoC of Phase-7 combinatorial machinery from their
-     transitive import set.
-   - `CountMatroid` (and downstream `MatroidIdentification`,
-     `LinearRigidityMatroid`) imports both halves — same load as
-     today.
-
-   Expected savings: hard to predict without measurement. The 354 LoC
-   moved are combinatorial / `Finset`-heavy (`maxBlock` is a
-   `Finset.sup`-based construction), so per-file elaboration savings
-   are modest. The TL;DR's "import loading is ~25–27 s of shared
-   overhead" pertains mostly to the analysis floor, not the
-   combinatorial subtree. Likely savings: 1–3 s per downstream file,
-   well within the noise band; the structural-clarity gain (Phase-7
-   matroid-side machinery sits in its own file, matching the chapter
-   structure in `chapter/sparsity.tex` vs `chapter/count-matroid.tex`)
-   may matter more than the wall-clock.
-
-2. **`Henneberg.lean` split (medium leverage).** Natural cut at line
-   444, splitting into:
-   - **`HennebergForward`** (~400 LoC): adjacency unfolding, sparsity
-     helpers, typeI/typeII move definitions, edge-set decomps, Laman
-     preservation per move.
-   - **`HennebergReverse`** (~200 LoC): iso constructors, flat-form
-     Henneberg reverse decomposition (Phase 7 Commit 6), K₄-minus-edge
-     example.
-
-   `HennebergRigidity.lean` (which is large + analysis-heavy + reused
-   by 3 downstream files) only needs the forward half. Splitting
-   would shave ~200 LoC of Phase-3+7 reverse-decomp machinery off
-   `HennebergRigidity`'s transitive import set (and indirectly its
-   downstream files `MatroidIdentification`, `LinearRigidityMatroid`).
-   But `MatroidIdentification` and `LamanTheorem` need both halves
-   directly. Modest leverage.
+2. **`Henneberg.lean` → `Henneberg` (forward) / `HennebergReverse`
+   (medium leverage). ✓ Executed in Phase 8-perf F2** — iso
+   constructors + flat-form reverse decomposition split off. Detail:
+   `notes/Phase8-perf.md`.
 
 3. **`MatroidIdentification.lean` split (low leverage).** Natural cut
    at line 776, splitting into:
@@ -495,88 +454,11 @@ from F2) is simpler and is what the project's existing splits use.
    halves. Per-move file organization is cleaner but provides
    minimal transitive-import savings.
 
-5. **`PebbleGame.lean` split (Phase 9-perf F2 audit + executed
-   post-Phase-9-perf under revised framework).** The original
-   2489-LoC file mapped cleanly onto 10+
-   named sections — natural cut lines at L274 (Reverse) → L605
-   (AddArc) → L821 (Reachability) → L1036 (TryReachPebble) → L1219
-   (TryAddEdge) → L1472 (RunPebbleGame) → L1755 (Soundness) → L1863
-   (Completeness) → L2390 (Correctness) → L2464 (Matroidal). The
-   strongest pair of candidate splits is *Reachability + the four
-   pebble-game invariants* (L821–L1014) carved out as a "core
-   theory" file, or *Soundness + Completeness + Correctness*
-   (L1755–L2453) carved out as a "correctness" file.
-
-   **Single-downstream-consumer verification:** `PebbleGame.lean` is
-   imported only by `CombinatorialRigidity.lean` (the top-level entry,
-   `import`-statements only). Verified by `grep -rn "import.*PebbleGame"`
-   over the project tree — exactly one hit. Splitting therefore saves
-   **zero transitive-import surface** for any consumer; the only
-   benefit is per-incremental-rebuild speed when iterating on one
-   half without touching the other.
-
-   **Recommendation under the original F2 framework: keep as a
-   single file.** The Phase 9-perf F2 framework weighed only the
-   downstream-import axis: splits without transitive-import savings
-   fell into the "structural-clarity gain, perf-neutral" bucket, and
-   the per-decl `@[expose]` audit (F1.2, above) was the cheaper
-   lever for the same per-rebuild outcome (3 per-decl opt-ins
-   demoted the section, narrowing exposure to just the three
-   `PartialOrientation`-producing defs).
-
-   **Executed under the revised framework (*Factors to weigh*
-   above): three-way split into `PebbleGame/` subdirectory.** Three
-   of the four framework factors recommended split: file size (2489
-   LoC ≈ 66 % over the ~1500-LoC soft cap, factor 2); incremental-
-   rebuild speed on the large analysis-heavy algorithm file (factor
-   3); structural-clarity / blueprint-chapter mapping
-   (`chapter/pebble-game.tex`'s 10+ named sections, factor 4). Only
-   the downstream-import axis (factor 1) was perf-neutral.
-
-   The split followed the *Mathlib subdirectory pattern* above:
-   `PebbleGame.lean` → `PebbleGame/` directory with three files at
-   the same level:
-
-   | File | LoC | Contents |
-   |---|---|---|
-   | `PebbleGame/Basic.lean` | 1024 | `PartialOrientation` struct, `empty` / `reverse` / `addArc` operations + accounting lemmas, `Reachable k ℓ` inductive + four pebble-game invariants |
-   | `PebbleGame/Algorithm.lean` | 771 | `TryReachPebble` + `TryAddEdge` + `RunPebbleGame` three-layer chain (computable workhorses + noncomputable math-layer wrappers) |
-   | `PebbleGame/Correctness.lean` | 815 | Soundness + Completeness + Correctness iff + matroidal-independence corollary |
-
-   All three files sit comfortably under the soft cap. Import
-   chain: `Basic` ← `Algorithm` ← `Correctness`; top-level
-   `CombinatorialRigidity.lean` imports `PebbleGame.Correctness`
-   transitively. No `Defs.lean` carve-out — `PartialOrientation`'s
-   definitional surface is tightly interleaved with the API and
-   wouldn't split cleanly.
-
-   **Section-marker disposition.** All three files use
-   `@[expose] public section` (matching `Framework.lean`'s F3.5
-   disposition, not the F1.2 narrowed `public section`-with-opt-ins
-   shape the pre-split single file carried). The cascading
-   exposure surface — once one downstream consumer needs body
-   defeq, every transitively-referenced helper does — pointed at
-   the file-wide marker as the cleaner equivalent. Trying the
-   demote-and-restore pattern from F3.5 forced ≥ 9 per-decl
-   opt-ins across Basic alone (`out`, `peb`, `span`, `outOn`,
-   `pebOn`, `underline`, plus reverse/addArc/empty already in
-   F1.2) and would have continued cascading into
-   `TryReachPebbleResult.newOrient`, `tryAddEdgeWith`, `tryAddEdge`,
-   `runPebbleGameWith`, `runPebbleGame` in Algorithm and likely
-   more in Correctness. The file-wide `@[expose] public section`
-   collapses that disposition table to a single per-file line; the
-   future per-decl narrowing audit (if it lands) can re-explore.
-
-   **Import surface narrowed per file.** Basic imports
-   `Mathlib.Algebra.BigOperators.Group.Finset.{Basic, Order.Group.Finset}`,
-   `Mathlib.Data.Finset.Basic`, `Mathlib.Data.Sym.Sym2`,
-   `CombinatorialRigidity.Search.DFS`; Algorithm imports
-   `Mathlib.Combinatorics.SimpleGraph.Finite` + Basic; Correctness
-   imports `CombinatorialRigidity.{Sparsity, CountMatroid}` +
-   Algorithm. The pre-split file pulled all of these into one
-   import set; the split lets Basic and Algorithm skip
-   `Sparsity` / `CountMatroid` (the heavier `SimpleGraph` /
-   `(k, ℓ)`-count chain).
+5. **`PebbleGame.lean` → `PebbleGame/{Basic,Algorithm,Correctness}`
+   (medium leverage). ✓ Executed post-Phase-9-perf** under the revised
+   *Factors to weigh* framework (file size + incremental-rebuild +
+   blueprint-chapter mapping drove it; the downstream-import axis was
+   perf-neutral). Detail: `notes/Phase9-perf.md` §F2.
 
 ### Post-Phase-22 split candidates (the current giants)
 

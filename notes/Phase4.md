@@ -198,9 +198,13 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
 - [x] `RigidityMap G p` — differential of edge-length-squared (no `sorry`)
 - [x] `IsInfinitesimallyRigid G p`
 - [x] `IsGenericallyRigid G d`
-- [ ] `RigidityMatrix G p` — matrix view via `LinearMap.toMatrix`
-- [ ] `trivialMotionAction p` — `(translation, skew) → motion`
-- [ ] `TrivialMotions G p` — `LinearMap.range (trivialMotionAction p)`
+- *Deferred — disposition at close:* `RigidityMatrix G p` (matrix view via
+  `LinearMap.toMatrix`) was deferred-until-needed and never required; the
+  development uses the `RigidityMap` linear map throughout (ROADMAP §4). The
+  trivial-motion layer landed in **Phase 6** (`TrivialMotions.lean`) under a
+  different shape — `trivialMotions p`, a `Submodule` built from
+  `translationMotion` / `infinitesimalRotation` / `trivialMotionFamily`, not a
+  single `trivialMotionAction` map.
 
 ### `RigidityMap` API
 
@@ -222,32 +226,19 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
 
 ### `TrivialMotions` API
 
-- [ ] `trivialMotions_le_ker` — `TrivialMotions G p ≤
-  LinearMap.ker (RigidityMap G p)`. The proof unfolds the action to
-  `t + A.mulVec (p v)`; in `RigidityMap`, the difference cancels the
-  `t`, and `⟪p u - p v, A.mulVec (p u) - A.mulVec (p v)⟫ = ⟪x, A x⟫ =
-  0` for `x = p u - p v` by the skew-symmetry of `A`.
-- [ ] `finrank_trivialMotions_le` — `Module.finrank ℝ (TrivialMotions
-  G p) ≤ d * (d + 1) / 2`. Always-true upper bound from the action's
-  domain dimension `d + d(d-1)/2 = d(d+1)/2` (the `d` is translations,
-  `d(d-1)/2` is skew-symmetric `d × d`). Mirror lemma needed: dim of
-  `skewAdjointMatricesSubmodule (1 : Matrix (Fin d) (Fin d) ℝ)` is
-  `d(d-1)/2`. **Likely upstream-eligible**; mirror under
-  `Mathlib/LinearAlgebra/Matrix/SesquilinearForm.lean`.
-- [ ] `finrank_trivialMotions_eq_of_affinelySpanning` — equality form
-  under `affineSpan ℝ (Set.range p) = ⊤`. The action is injective in
-  this case: if `t + A • (p v) = 0` for all `v`, then `A` annihilates
-  pairwise differences, hence the affine span direction subspace,
-  which is all of `ℝᵈ`; so `A = 0` and then `t = 0`.
+*Landed in Phase 6* (`TrivialMotions.lean`), deferred out of Phase 4 as off the
+Phase-5 critical path (ROADMAP §4): `trivialMotions_le_ker` (same name); the
+affinely-spanning finrank fact as `trivialMotions_finrank_ge_of_affinelySpanning`
+(+ `rigidityMap_ker_finrank_ge_of_affinelySpanning`), with the trivial-motion
+dimension counted through the explicit `trivialMotionFamily` basis
+(`trivialMotionFamily_linearIndependent`, `fintype_card_trivialMotionFamilyIndex`)
+rather than the planned `skewAdjointMatricesSubmodule` mirror.
 
 ### `IsInfinitesimallyRigid` API
 
-- [ ] `isInfinitesimallyRigid_iff_finrank_ker_le` — definitional
-  unfolding (named for discoverability, like `isLaman_iff`).
-- [ ] `isInfinitesimallyRigid_of_finrank_range` — equivalent
-  formulation via rank-nullity: `Module.finrank ℝ (LinearMap.range
-  (RigidityMap G p)) ≥ d * #V - d(d+1)/2 → IsInfinitesimallyRigid`.
-  Useful for the `#E ≥ 2n - 3` Laman direction.
+*Not built:* `IsInfinitesimallyRigid` is the finrank-ker bound by definition and
+is used directly downstream, so the `isInfinitesimallyRigid_iff_finrank_ker_le` /
+`isInfinitesimallyRigid_of_finrank_range` characterizations were never needed.
 
 ### `IsGenericallyRigid` API
 
@@ -280,15 +271,12 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
 These live in `Framework.lean` but don't touch `SimpleGraph`. Some
 may be upstream-eligible mirrors.
 
-- [ ] `Framework.finrank` — `Module.finrank ℝ (Framework V d) =
-  Fintype.card V * d`. Upstream-style proof through
-  `Module.finrank_pi_fintype` and `finrank_euclideanSpace`.
-- [ ] `EuclideanSpace.finrank_eq_card` — already exists upstream as
-  `finrank_euclideanSpace`. Just import.
-- [ ] (Mirror) `Module.finrank_skewAdjointMatricesSubmodule_one` —
-  dim of skew matrices = `d(d-1)/2`. **Open question:** does mathlib
-  have this? Search before mirroring. If not, prove via the explicit
-  basis indexed by `{(i, j) : Fin d × Fin d | i < j}`.
+- `Framework.finrank` — done (listed under `RigidityMap` API above).
+- `EuclideanSpace.finrank_eq_card` — upstream as `finrank_euclideanSpace`; used
+  by import, not a project deliverable.
+- `Module.finrank_skewAdjointMatricesSubmodule_one` mirror — not built: Phase 6's
+  `trivialMotionFamily` basis computes the trivial-motion dimension directly, so
+  the skew-matrices mirror was unnecessary.
 
 ## Decisions made during this phase
 
