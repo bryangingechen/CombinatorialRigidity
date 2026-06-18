@@ -28,22 +28,34 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-4 — second brick LANDED (2026-06-18, this commit): the general-`d` kept-points tabulation.**
+**Next build = CHAIN-4a** (`exists_homogeneousIncidence_of_normals_gen` at `Fin (k+1) → Fin (k+2)`,
+`RigidityMatrix/Claim612.lean`): the OD-4 sub-leaf, a **clean lift** of the d=3 body
+(`Claim612.lean:427`) — `(k+1) × (k+2)` row-matrix surjectivity (`LinearIndependent.rank_matrix` ⟹
+`mulVecLin` surjective ⟹ preimages of the `k+1` standard targets) gives the incidence pattern, the
+nonzero common-perp `pbar 0` from the **already-general** `exists_ne_zero_dotProduct_eq_zero` (m=k+1),
+and LI of `pbar` by the triangular pairing argument. **No genericity device, no alg-independence**
+(OD-4 verdict below). Exact signature + the three remaining CHAIN-4 leaves (4b/4c/4d) in
+`notes/Phase23-design.md` §(j); `Fin 4` lemma becomes the `k:=2` wrapper.
+
+**OD-4 — RESOLVED this commit (2026-06-18, design-pass): existence/homogeneous route, alg-independence
+NOT forced** (full verdict + KT p.698-vs-landed-source reasoning in `notes/Phase23-design.md` §(i);
+Decisions-made below). The eq.-(6.67) `dim span ⋃ C(Lᵢ) = D` finish lifts as a mechanical numeral
+generalization of the green d=3 bricks — `span_omitTwoExtensor_eq_top` (already general-`k`, only hyp
+`LinearIndependent ℝ pbar`, via Lemma 2.1) drives the D-span off **linear** independence of `d+1`
+**homogeneous** vectors, never KT's *affine*-independent points / `(d−j)`-flat-in-union (the
+alg-independence consequence KT states is on the route the formalization sidesteps, §1.42 R1-affine).
+The row #106 cross-product construction (whose non-generalization motivated the prior "forced" lean)
+is **dead — zero live call sites**. No new `AlgebraicIndependent` lemma needed; site (b)/eq.-(6.67)
+is **not** an alg-independence site (only site (a), the nested seed-rank transfer, stays live,
+unchanged). One build-time residual flagged (the per-join panel-membership must close combinatorially
+from the orthogonality hyps — CHAIN-4b's job).
+
+**Prior CHAIN-4 brick — LANDED 2026-06-18: the general-`d` kept-points tabulation.**
 `omitTwoExtensor_eq_extensor_kept_gen` (`RigidityMatrix/Claim612.lean`): ambient `Fin (e+2)`
 (`d = e+1`), for the omitted pair `q` the join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join
 `extensor (fun k => pbar (emb k))` of the `e = d−1` increasing complement indices
-`emb : Fin e ↪o Fin (e+2)`, each `≠ q.1, q.2` — the `d−1` points the line spans (KT p. 698; at `d=3`,
-`e=2`, the two-point pair). Proof is a one-line `refine ⟨…, rfl⟩` (the omit-two extensor is *by
-definition* the extensor along the complement enumeration) + the `orderEmbOfFin_mem`/`mem_compl`
-chain hoisted from the `Fin 4` body. **Both `Fin 4` lemmas** (`omitTwoExtensor_eq_extensor_kept`,
-`omitTwoExtensor_homogenize_eq_extensor_kept`) re-derived as `e := 2` wrappers (`emb 0 < emb 1` the
-pair, `heq.trans` a `![…]`-vs-`fun` `funext`); **no blueprint pin, both callers
-(`exists_line_data_of_homogeneousIncidence`, `case_III_claim612`) unchanged.** Gates green (full
-build 2824 jobs + lint clean, no warnings/sorry; axioms = the 3 standard). **CHAIN-4 remainder:** the
-`Fin (d+1)` incidence (`exists_homogeneousIncidence_of_normals`, the `d+1`-point pattern — carries
-OD-4), `exists_line_data_of_homogeneousIncidence`, `case_III_claim612` (reusing the general
-`span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1),
-`exists_complementIso_ne_zero_of_homogeneousIncidence` (consumes CHAIN-3's (h-4)).
+`emb : Fin e ↪o Fin (e+2)`, each `≠ q.1, q.2` (KT p. 698; at `d=3`, `e=2`, the two-point pair). Both
+`Fin 4` lemmas re-derived as `e := 2` wrappers; no blueprint pin, callers unchanged.
 
 **Prior CHAIN-4 brick (2026-06-18): the general-`d` "second normal through a line".**
 `exists_independent_perp_pair_gen` (`RigidityMatrix/Claim612.lean`): ambient `Fin (k+2)` (`k = d−1`),
@@ -146,13 +158,25 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       normal through a line", ambient `Fin (k+2)`, `2 ≤ k`) and
       `omitTwoExtensor_eq_extensor_kept_gen` (the general-`d` kept-points
       tabulation, ambient `Fin (e+2)`); both `Fin 4` lemmas now `e:=2`/`k:=2`
-      wrappers. **Remaining:** re-state
-      `exists_homogeneousIncidence_of_normals` (the `d+1`-point incidence
-      pattern, eq. 6.67 — **carries OD-4, flagged open**),
-      `exists_line_data_of_homogeneousIncidence`, `case_III_claim612` (reusing
-      the general `span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1), and
-      `exists_complementIso_ne_zero_…` at `ScrewSpace (d−1)` / `Fin d` candidates
-      (consumes CHAIN-3's (h-4) duality).
+      wrappers. **OD-4 RESOLVED 2026-06-18** (existence/homogeneous, not
+      alg-independence — Decisions-made + design §(i)). **Remaining = four leaves
+      with exact signatures in design §(j),** dependency-ordered:
+      - [ ] **CHAIN-4a** `exists_homogeneousIncidence_of_normals_gen` at `Fin (k+1)
+            → Fin (k+2)` (the OD-4 sub-leaf, **clean lift** — row-matrix
+            surjectivity, no genericity). **First buildable; the next build.**
+      - [ ] **CHAIN-4b** `exists_line_data_of_homogeneousIncidence_gen` (clean
+            lift; carries the §(i) one residual — per-join `Πᵢ`-membership iff
+            `i+1∈{a,b}` must close combinatorially from the orthogonality hyps).
+            Consumes 4a + landed `omitTwoExtensor_eq_extensor_kept_gen` +
+            `exists_independent_perp_pair_gen`.
+      - [ ] **CHAIN-4c** `case_III_claim612_gen` (the span-`D` existential; **pure
+            numeral lift** of the already-general `span_omitTwoExtensor_eq_top` +
+            `eq_zero_of_annihilates_span_top`). Buildable now in parallel with 4a.
+      - [ ] **CHAIN-4d** `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
+            at `ScrewSpace k`/`Fin (k+1)` candidates, `complementIso (k:=k)(j:=2)`
+            (the §(f)/§(i) `(j:=2)` correction — a line has 2 normals at every
+            `d`). The capstone: consumes 4b + 4c + the **landed CHAIN-3 (h-4)**
+            join=meet duality.
 - [ ] **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`).
       The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)`
       + the ±r chain (6.66). Reuses Claim 6.11 `exists_redundant_panelRow_…`
@@ -189,14 +213,16 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
   (after CHAIN-3), not a dedicated successor — the M4-forget reach-in *is*
   CHAIN-3's duality, and the conditioned-pair producers route through M4.
   Caveat: confirm at build that the duality is their *only* `d=3` reach-in.
-- **OD-4 — FLAGGED (genuinely open; do NOT pre-commit a route).** KT eq. (6.67)
-  states the `d+1`-points step **via algebraic independence** (p. 698 verbatim);
-  the `d=3` N3a was AVOIDED via an explicit construction (`AlgebraicIndependence.md`
-  row #106) that does **not** obviously generalize. Whether general `d` takes
-  the existence route or forces the alg-independence hammer is unresolved — the
-  CHAIN-4 detailed-build recon decides. Cross-checked `AlgebraicIndependence.md`
-  row #107(b) (already scopes this as "uncertain whether a NEW site", defers to
-  CHAIN open); this recon confirms the question is real and routes it to build.
+- **OD-4 — RESOLVED 2026-06-18 (design-pass): existence/homogeneous route,
+  alg-independence NOT forced.** Verdict + reasoning: Decisions-made below +
+  `notes/Phase23-design.md` §(i). KT eq. (6.67) phrases the `d+1`-points step via
+  alg-independence (p. 698 verbatim, confirmed against the `.refs/` PDF), but the
+  landed d=3 formalization sidesteps it: the D-span runs off the already-general
+  `span_omitTwoExtensor_eq_top` (only hyp `LinearIndependent ℝ pbar`, via Lemma
+  2.1), driven by **linear** independence of `d+1` **homogeneous** vectors, not
+  KT's affine points / `(d−j)`-flat fact. The row #106 cross-product construction
+  is **dead (zero live call sites)**. CHAIN-4 lifts as a numeral generalization of
+  green bricks; one build-time residual (per-join panel-membership, CHAIN-4b).
 - **(b) producer-shape mismatch — SETTLED 2026-06-17** (the docs-only
   contract-settle pass). The CHAIN↔ENTRY interface is frozen in
   `notes/Phase23-design.md` §"CHAIN↔ENTRY contract": a `G.ChainData n` `structure`
@@ -216,20 +242,24 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **CHAIN-1 + CHAIN-3 are CLOSED; CHAIN-4 is in progress** (two bricks landed:
-`exists_independent_perp_pair_gen` + `omitTwoExtensor_eq_extensor_kept_gen`, the latter this commit).
+`exists_independent_perp_pair_gen` + `omitTwoExtensor_eq_extensor_kept_gen`; **OD-4 resolved this
+commit**). **Next build = CHAIN-4a** — the OD-4 verdict (existence/homogeneous route) made concrete.
 Independent next leaves, all buildable now:
 
-- **CHAIN-4 (continue) — the rest of the `Fin (d+1)` incidence + Claim-6.12 discriminator**
-  (`RigidityMatrix/Claim612.lean`). The two mechanical kept-points/perp-pair bricks are now general;
-  the remaining incidence chain is **`exists_homogeneousIncidence_of_normals`** at
-  `Fin d → Fin (d+1) → ℝ` (the `d+1`-point pattern, eq. 6.67) — **carries OD-4 (flagged open, do NOT
-  pre-commit a route; the build decides existence-route vs. alg-independence hammer)** — then, off it,
-  `exists_line_data_of_homogeneousIncidence`, `case_III_claim612` (reusing the general
-  `span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1) and
-  `exists_complementIso_ne_zero_of_homogeneousIncidence` at `ScrewSpace (d−1)`/`Fin d` (its
-  discriminator consumes (h-4)'s join=meet duality the way the d=3
-  `extensor_join_eq_zero_of_complementIso_eq_zero` consumes the d=3 `complementIso_smul_eq_extensor_join`).
-  CHAIN-2 (consuming CHAIN-1) is an independent alternative if the OD-4 incidence is left for last.
+- **CHAIN-4a (the next build) — `exists_homogeneousIncidence_of_normals_gen`** at `Fin (k+1) →
+  Fin (k+2) → ℝ` (`RigidityMatrix/Claim612.lean`; exact signature in `notes/Phase23-design.md` §(j)).
+  A **clean lift** of the d=3 body (`Claim612.lean:427`): the `(k+1)×(k+2)` row-matrix surjectivity
+  (`LinearIndependent.rank_matrix` → `mulVecLin` surjective → preimages of the `k+1` standard targets)
+  gives the incidence pattern; `pbar 0` is the nonzero common-perp from the already-general
+  `exists_ne_zero_dotProduct_eq_zero` (m=k+1); LI of `pbar` is the triangular pairing argument. **No
+  genericity device, no alg-independence (OD-4 verdict).** `Fin 4` lemma → `k:=2` wrapper. Then off it:
+  CHAIN-4b `exists_line_data_…_gen` (clean lift; carries the §(i) one residual), CHAIN-4c
+  `case_III_claim612_gen` (pure numeral lift of the general `span_omitTwoExtensor_eq_top` + Lemma 2.1
+  — buildable now in parallel), CHAIN-4d `exists_complementIso_ne_zero_…_gen` at `ScrewSpace k`/
+  `Fin (k+1)`, `complementIso (k:=k)(j:=2)` (the §(f)/§(i) `(j:=2)` correction), consuming the landed
+  CHAIN-3 (h-4) join=meet duality the way the d=3
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` consumes `complementIso_smul_eq_extensor_join`.
+  CHAIN-2 (consuming CHAIN-1) is an independent alternative.
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
   bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
   (6.66): the index-heavy generalization of the `caseIIICandidate`/`case_III_old_new_blocks`/
@@ -304,6 +334,16 @@ contract". The forward detail (route to close the open leaves) is in *Current st
 - **OD-8 RESOLVED: route α (`complementIso` O(n)-equivariance); β rejected** — the whole
   leaf chain h-0…h-3 landed, the panel-meet range-membership is closed. `complementIso` IS the
   Hodge `⋆`; β rests on the withdrawn `dim Φ̃` count → §"CHAIN"(h).
+- **OD-4 RESOLVED 2026-06-18: existence/homogeneous route, alg-independence NOT forced**
+  (overturns the prior "forced" lean). The landed d=3 N3a works homogeneously (§1.42 R1-affine):
+  the eq.-(6.67) D-span runs off `span_omitTwoExtensor_eq_top` (already general-`k`, only hyp
+  `LinearIndependent ℝ pbar`, via Lemma 2.1) — **linear** independence of `d+1` **homogeneous**
+  vectors, never KT's affine points / `(d−j)`-flat-in-union (the alg-independence consequence is on
+  the route the formalization sidesteps). Source-verified: KT p.698 verbatim (`.refs/` PDF) vs. the
+  landed bodies; the row #106 cross-product construction is **dead (zero live call sites)**. No new
+  `AlgebraicIndependent` lemma; site (b) is not a site (only site (a), nested seed-rank, stays live).
+  Per-join panel-membership generalizes combinatorially (join `{a,b}`⊂`Πᵢ` iff `i+1∈{a,b}`). One
+  build residual flagged (CHAIN-4b). CHAIN-4 decomposed into 4a–4d → §"CHAIN"(i)/(j).
 
 **Landed CHAIN-3 bricks** (all keep the `d=3` name as a `(d:=3)` instance or unify
 `d=3` by defeq; no blueprint pin moved; the `_grade` lifts are verbatim — the route is

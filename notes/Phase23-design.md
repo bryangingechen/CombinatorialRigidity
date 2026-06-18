@@ -750,7 +750,7 @@ isolate as the new argument. Source-verified per-decl:
 |---|---|---|---|
 | `case_III_candidate_dispatch` | `CaseIII/Realization.lean:201` | `q : α × Fin 4 → ℝ`, fixed `v,a,b,c`, `na/nb/nc`, `ScrewSpace 2`, `screwDim 2`, `Fin 3` dispatch (`fin_cases u`), `h622lb` over `Fin 4` — **`d=3`-pinned AND structurally fixed-3-candidate** | **REPLACE** by the `d`-chain dispatch (eqs. 6.46–6.67) |
 | `exists_homogeneousIncidence_of_normals` | `Claim612.lean:393` | `n : Fin 3 → Fin 4 → ℝ`, returns `pbar : Fin 4 → Fin 4 → ℝ` with the **`d+1`(=4)-point incidence pattern** (`pbar 0 ⊥ all`, `pbar i+1 ⊥ all but n i`) | re-state at `Fin d → Fin (d+1) → ℝ` → `pbar : Fin (d+1) → Fin (d+1) → ℝ` (the eq. 6.67 `d+1` points) |
-| `exists_complementIso_ne_zero_of_homogeneousIncidence` | `Claim612.lean:1179` | `r : Dual ℝ (ScrewSpace 2)`, `n : Fin 3`, returns `u : Fin 3` + `n'` with `r(complementIso(k:=2)(j:=2) ⟨extensor ![n u, n'], …⟩) ≠ 0` | re-state at `ScrewSpace (d−1)`, `Fin d`, `complementIso(k:=d−1)(j:=d−1)`, `(d−1)`-extensor `extensor (Fin.cons (n u) n' …)` |
+| `exists_complementIso_ne_zero_of_homogeneousIncidence` | `Claim612.lean:1179` | `r : Dual ℝ (ScrewSpace 2)`, `n : Fin 3`, returns `u : Fin 3` + `n'` with `r(complementIso(k:=2)(j:=2) ⟨extensor ![n u, n'], …⟩) ≠ 0` | re-state at `ScrewSpace (d−1)`, `Fin d`, `complementIso(k:=d−1)`**`(j:=2)`** (a line has 2 normals at every `d` — §(f)/§(i) correction, NOT `(j:=d−1)`); 2-extensor `extensor ![n u, n']`. Full leaf §(j) CHAIN-4d |
 | `exists_line_data_of_homogeneousIncidence` | `Claim612.lean:522` | `Fin 4` joins, `omitTwoExtensor pbar`, `exists_independent_perp_pair`, `omitTwoExtensor_eq_extensor_kept` | re-state at `Fin (d+1)`; routes through the duality leaves below |
 | `case_III_claim612` | `Claim612.lean` | `Fin 4`/`ScrewSpace 2`, the six-join existential via `span_omitTwoExtensor_eq_top` (general `k`, landed Leaf 2) + the join↔meet duality | re-state at `ScrewSpace (d−1)`/`Fin (d+1)`; **N1 brick `span_omitTwoExtensor_eq_top` already general** |
 | `omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`, `exists_independent_perp_pair` | `Claim612.lean:482/283/319` | `Fin 4`-pinned incidence/extensor bricks (dispatch-internal, 23a moved to CHAIN) | re-state at `Fin (d+1)` (mechanical; the `Fin 4`-arity geometry → `Fin (d+1)`) |
@@ -868,16 +868,22 @@ signature depends on the ENTRY chain-data contract.
   genuinely-new leaf is the **panel-meet range-membership** (OD-8). Pinned
   signatures + leaf sequence: §(f); the open route choice: OD-8 §(g).
 - **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
-  (`Claim612.lean`). Re-state `exists_homogeneousIncidence_of_normals`
-  (the `d+1`-point incidence pattern of eq. 6.67), the dispatch-internal
-  bricks (`omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`,
-  `exists_independent_perp_pair`, `exists_line_data_of_homogeneousIncidence`),
-  `case_III_claim612` (the span-`D` existential, **reusing the general
-  `span_omitTwoExtensor_eq_top` (landed 23a Leaf 2) + Lemma 2.1
-  `omitTwoExtensor_linearIndependent_of_li` (general & GREEN)**), and
-  `exists_complementIso_ne_zero_of_homogeneousIncidence` at `ScrewSpace (d−1)`,
-  `Fin d` candidates, `complementIso (k:=d−1)(j:=d−1)`. Consumes CHAIN-3.
+  (`Claim612.lean`). **Two mechanical bricks LANDED 2026-06-18**
+  (`exists_independent_perp_pair_gen`, `omitTwoExtensor_eq_extensor_kept_gen`);
+  **OD-4 RESOLVED 2026-06-18 (§(i)): existence/homogeneous, alg-independence NOT
+  forced**. **Remainder decomposed into four leaves with exact signatures in
+  §(j):** CHAIN-4a `exists_homogeneousIncidence_of_normals` at `Fin (k+1) →
+  Fin (k+2)` (the OD-4 sub-leaf, clean lift), CHAIN-4b
+  `exists_line_data_of_homogeneousIncidence` (clean lift; carries the §(i)
+  one residual — the per-join panel-membership must close combinatorially),
+  CHAIN-4c `case_III_claim612` (the span-`D` existential, **reusing the general
+  `span_omitTwoExtensor_eq_top` (landed 23a Leaf 2) + Lemma 2.1** — pure numeral
+  lift), CHAIN-4d `exists_complementIso_ne_zero_of_homogeneousIncidence` at
+  `ScrewSpace (k)`/`Fin (k+1)` candidates, `complementIso (k:=k)(**j:=2**)` (the
+  §(f)/§(i) correction — a line has 2 normals at every `d`; **not** `(j:=d−1)`),
+  **consuming the landed CHAIN-3 (h-4)** `extensor_join_proportional_complementIso_meet`.
   *This is the eq. (6.67) finish + the `Mᵢ`-fails-iff-`r⊥C(Lᵢ)` disjunction.*
+  **First buildable OD-4 leaf = CHAIN-4a.**
 - **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
   Replace `case_III_candidate_dispatch`: given the length-`d` chain data +
   fresh `e₀` + the IH-generic base realization `(G₁,q₁)`, build the `d`
@@ -942,33 +948,25 @@ predicted — see (e) OD-7 for the fold-vs-successor decision. What CHAIN does
   recon at CHAIN open must confirm the *only* genuinely-`d=3` reach-in is the
   duality (i.e. the rest is the numeral pass), else the fold is larger than a
   corollary. Present as a fold with this caveat flagged.
-- **OD-4 — FLAGGED (genuinely open; do NOT pre-commit a route).** KT's eq.
-  (6.67) `d+1`-points step is stated **via algebraic independence** (p. 698,
-  verbatim: *"the set of the coefficients … is algebraically independent over
-  the rational field. Therefore, for any `j` hyperplanes among them, their
-  intersection forms a `(d−j)`-dimensional affine space."*). The `d=3` N3a was
-  **AVOIDED** (existence/Zariski route — one explicit seed with the 4 points
-  affinely independent, via explicit triple-intersection + cross-products,
-  `AlgebraicIndependence.md` row #106). *Unsettled at general `d`:* whether an
-  explicit `d+1`-point construction exists (existence route again) or the
-  symbolic `j`-hyperplanes-meet-in-`(d−j)`-flat genuinely forces the
-  alg-independence hammer. The `d=3` explicit construction (`p₁` = triple
-  intersection, `pᵢ = p₁ + sᵢ·(nⱼ×nₖ)`) does **not** obviously generalize: at
-  `d+1` panels in `ℝ^d` the "intersection of `d−1` of them is a line" needs the
-  `j`-hyperplanes-meet-in-`(d−j)`-flat fact, which is *exactly* the
-  alg-independence consequence KT states. **Cross-check `AlgebraicIndependence.md`
-  row #107(b):** that row already scopes this as "uncertain whether a NEW site"
-  and defers the confirm to CHAIN open — this recon **does not resolve it**;
-  it confirms the question is real (the `d=3` explicit route is not obviously
-  liftable) and routes the decision to the CHAIN detailed-build recon. *If the
-  symbolic route is forced,* it is a new alg-independence site (a `Fin (d+1)`
-  generalization of the existence brick `exists_affineIndependent_of_det_…`,
-  possibly needing `AlgebraicIndependent`-driven non-vanishing of the `d+1`
-  homogenization determinants) — a CHAIN-4 sub-leaf, not new infra (the
-  alg-independence machinery is live from 22d). **Note (b) interaction:** the
-  seed `q` is the IH-generic base `(G₁,q₁)` realization, already
-  `AlgebraicIndependent ℚ`-carrying (the 23a-lifted `case_III_nested_rank_lower`
-  consumes it), so the symbolic route's hypothesis is in hand if needed.
+- **OD-4 — RESOLVED 2026-06-18: existence/homogeneous route, alg-independence
+  NOT forced.** Full verdict + reasoning in §(i) below. The prior "forced" lean
+  followed KT's *affine* phrasing (p. 698: `d+1` affinely-independent points →
+  `(d−2)`-flats in `⋃Πⱼ` → "any `j` hyperplanes meet in a `(d−j)`-flat" by
+  alg-independence). But the **landed d=3 formalization never takes that route**:
+  it works homogeneously (§1.42 R1-affine), so the eq.-(6.67) `dim = D` is driven
+  by **linear independence of `d+1` homogeneous vectors** (`span_omitTwoExtensor_
+  eq_top`, already general-`k`, only hyp `LinearIndependent ℝ pbar`, via Lemma
+  2.1) — **no affine independence, no alg-independence, no `(d−j)`-flat fact.**
+  The row #106 cross-product construction (whose non-generalization motivated the
+  "forced" lean) is **dead — zero live call sites** (verified); the live d=3
+  dispatch consumes `exists_homogeneousIncidence_of_normals` (linear, only hyp
+  `LinearIndependent ℝ n`). The per-join panel-membership generalizes purely
+  combinatorially (join `{a,b}` ⊂ `Πᵢ` iff `i+1∈{a,b}`; §(i)). **No new
+  `AlgebraicIndependent`-driven lemma needed.** Alg-independence stays live only
+  at site (a) (the nested seed-rank transfer, `AlgebraicIndependence.md` row #107,
+  carrier-lifted, unchanged); site (b)/eq.-(6.67) is **not** a site. CHAIN-4
+  decomposition: §(j). One build-time residual flagged (the §(i) per-join
+  membership must close from the orthogonality hyps alone — CHAIN-4b's job).
 - **OD-1 (carried from §4, re-confirmed for CHAIN/ENTRY).** The short-cycle
   base (KT Lemma 5.4, "if `G` is a cycle of length ≤ `d`, done by Lemma 5.4")
   is a **real branch of the general-`d` chain entry** (KT p. 692), unlike `d=3`
@@ -1303,6 +1301,253 @@ per-line point-join↔panel-meet duality CHAIN-4's discriminator
 d=3 discriminator consumes `complementIso_smul_eq_extensor_join`). That closes
 CHAIN-3; the eq.-(6.67) `D`-span finish (the `d+1`-points / Lemma-2.1 argument)
 stays CHAIN-4, gated by OD-4.
+
+### (i) OD-4 design-pass — the eq.-(6.67) N3a route is RESOLVED: existence/homogeneous, NOT alg-independence
+
+**Status:** OD-4 detailed-build recon, docs-only, 2026-06-18, source-verified
+against (i) the KT 2011 PDF p. 698 (eq. 6.67, the `d+1`-points / alg-independence
+finish, read verbatim) and (ii) the **landed** `Claim612.lean` bodies —
+`exists_homogeneousIncidence_of_normals` (393), `span_omitTwoExtensor_eq_top`
+(58), `case_III_claim612` (1064), `exists_line_data_of_homogeneousIncidence`
+(549), the live d=3 dispatch call site (`Realization.lean:371`) — and the three
+existence-route bricks (`exists_ne_zero_dotProduct_eq_zero` 119,
+`exists_affineIndependent_of_det_polynomial_ne_zero` 161,
+`exists_detPolynomial_of_pointPolynomial` 190). The prior pin (OD-4 in §(e),
+`AlgebraicIndependence.md` row #107(b)) leaned **"forced"**; this pass **overturns
+that lean**: alg-independence is **NOT forced** — the formalization's d=3 route
+already sidesteps KT's alg-independence argument, and that re-route generalizes.
+
+**VERDICT: existence/homogeneous route — alg-independence is NOT a new site.**
+The eq.-(6.67) N3a step (showing `dim span ⋃ C(Lᵢ) = D`, forcing some `Mᵢ` full
+rank) lifts as a **mechanical numeral generalization of the already-green d=3
+bricks**, with no `AlgebraicIndependent` obligation. The only genuinely-new work
+is the `Fin (d+1)` re-statement of `exists_homogeneousIncidence_of_normals` and
+its line-data dispatch — both combinatorial/linear-algebra, no genericity device.
+
+**Why the prior "forced" lean was wrong (the decisive structural fact).** The
+prior reasoning followed **KT's affine phrasing** — KT (p. 698) takes `d+1`
+*affinely-independent points* `p₀…p_d`, observes any `(d−1)` of them span a
+`(d−2)`-flat lying in `⋃Πⱼ`, and gets `dim = D` "by Lemma 2.1" — and the
+`(d−2)`-flat-in-union step *is* where KT invokes alg-independence ("for any `j`
+hyperplanes their intersection forms a `(d−j)`-flat"). But the **landed d=3
+formalization never takes this route.** It works at the **homogeneous-vector
+layer** (the §1.42 R1-affine decision), and the D-span is driven by **linear
+independence of `d+1` homogeneous vectors**, not affine independence of `d+1`
+points:
+- `case_III_claim612` (the D-span existential) calls
+  `span_omitTwoExtensor_eq_top hp` whose **only** hypothesis is
+  `hp : LinearIndependent ℝ pbar` (pbar : Fin (k+2) → Fin (k+2) → ℝ). The `D =
+  (k+2 choose 2)` omit-two extensors of `k+2` LI homogeneous vectors are LI by
+  **Lemma 2.1** (`omitTwoExtensor_linearIndependent_of_li`, `{e:ℕ}`, general) and
+  hence a basis of the D-dim `ScrewSpace k` — they span. **`span_omitTwoExtensor_
+  eq_top` is ALREADY general-`k` (line 58); zero affine independence, zero
+  alg-independence, zero `(d−2)`-flat-in-union.**
+- The `pbar` itself comes from `exists_homogeneousIncidence_of_normals`, which
+  produces `LinearIndependent ℝ pbar` from the **row-matrix surjectivity** of the
+  `d × (d+1)` panel-normal matrix (`LinearIndependent.rank_matrix` ⟹ rank `d` ⟹
+  `mulVecLin` surjective onto `ℝ^d` ⟹ preimages of standard targets) plus a
+  triangular LI argument. Its **only** genericity input is `LinearIndependent ℝ n`
+  (the `d` chain-panel normals nonparallel) — read off the GP split-leg. **No
+  cross-products, no triple-intersection, no alg-independence.**
+
+So the row #106 explicit construction (`p₁` = triple-intersection via Cramer/
+cross-products, `pᵢ = p₁ + sᵢ·(nⱼ×nₖ)`) and the affine-route bricks
+(`exists_affineIndependent_panel_incidence`,
+`exists_affineIndependent_of_det_polynomial_ne_zero`,
+`exists_detPolynomial_of_pointPolynomial`,
+`omitTwoExtensor_homogenize_eq_extensor_kept`,
+`exists_hduality_witness_of_panel_incidence`) are **DEAD — verified zero live
+call sites** on the dispatch path (grep, 2026-06-18: they appear only in
+docstrings + their own defs; the live d=3 dispatch at `Realization.lean:371`
+consumes `exists_homogeneousIncidence_of_normals`). They are abandoned earlier-
+design scaffolding the §1.42 homogeneous re-route superseded. **The OD-4 question
+"does the cross-product construction generalize" is moot — that construction is
+not on the live route at d=3, so its non-generalization (correctly noted in row
+#107(b)) does not force anything.** The question that actually matters is whether
+the *homogeneous* route generalizes, and it does (below).
+
+**The per-line panel-membership generalizes purely combinatorially (the one place
+one might fear alg-independence re-enters).** The discriminator needs, for each of
+the `D` spanning joins, a panel `Πᵤ` the join's line lies in (CHAIN-3's per-line
+duality then transfers `r(join)≠0` to `r(C(Lᵤ))≠0`). At d=3 this is the finite
+`htwo`/`hone` dispatch in `exists_line_data_of_homogeneousIncidence`. It
+generalizes from the incidence pattern alone — **no `(d−2)`-flat-in-union fact
+needed.** Verified combinatorics (scratch, 2026-06-18): with the general pattern
+`pbar 0 ⊥` all `d` normals and `pbar (i+1) ⊥` all but `n i`, the unique point off
+`Πᵢ` is `pbar (i+1)`, so the line of join `{a,b}` (kept points = complement of
+the omitted pair) lies in `Πᵢ` **iff `i+1 ∈ {a,b}`**. Hence every join lies in
+**1 panel** (when `0 ∈ {a,b}`: `d` such joins, second normal from the landed
+general `exists_independent_perp_pair_gen`) or **2 panels** (when `a,b ≥ 1`:
+`C(d,2)` such joins) — exactly the d=3 `hone`/`htwo` split, scaled to `D = d +
+C(d,2)` joins (`d=3 ⟹ 3+3=6 ✓`; `d=4 ⟹ 4+6=10`). This panel-membership is a
+property of the **orthogonality hypotheses of `pbar` against `n`**, provable
+directly — it does **not** reconstruct KT's geometric `(d−2)`-flat-in-union claim.
+KT's affine phrasing and the homogeneous re-route are two proofs of the same
+`dim = D` fact; the homogeneous one (which is what the tree runs) needs only
+Lemma 2.1 + linear independence.
+
+**Where alg-independence DOES stay live (site (a), unchanged) — not site (b).**
+Per `AlgebraicIndependence.md` row #107, Phase 23 has two candidate sites: **(a)**
+the footnote-6 seed-rank transfer along the chain (the general-`d` lift of
+`case_III_nested_rank_lower`, which *already* consumes `AlgebraicIndependent ℚ q`
+at d=3) and **(b)** the eq.-(6.67) N3a points step. This pass resolves **(b) is
+NOT a site** (existence/homogeneous route). **(a) remains a live site** and is
+**unchanged by this verdict** — it is the carrier-lifted nested-rank bridge,
+already alg-independence-carrying from 22d, lifted in CARRIER(23a)/CHAIN; the
+seed `q` of the IH-generic base `(G₁,q₁)` carries `AlgebraicIndependent ℚ`
+regardless. The eq.-(6.67) finish does **not add** an alg-independence obligation
+on top of (a).
+
+**Clause (ii) — no genuinely-new math, no motive/IH change.** OD-4 needs **no**
+new `AlgebraicIndependent`-driven non-vanishing lemma and **no** `(d−j)`-flat-
+intersection lemma. The CARRIER lift already carries the seed's
+`AlgebraicIndependent ℚ` for site (a); the eq.-(6.67) finish reuses the already-
+general `span_omitTwoExtensor_eq_top` + Lemma 2.1. The CHAIN-4 work is the
+mechanical `Fin (d+1)` re-statement of the homogeneous-incidence chain (next
+section). This is the honest, source-grounded resolution: the existence route the
+pre-22d precedents (Claim 6.4/6.9) and the d=3 N3a used **does** carry to general
+`d`, because the formalization phrases N3a homogeneously rather than affinely.
+
+**Residual flag (the one honest caveat, not a blocker).** This verdict rests on
+the per-join panel-membership being establishable from the incidence pattern at
+general `d` *combinatorially* — verified at the *counting* level (the join↔panel
+incidence `i+1 ∈ {a,b}` and the `D = d + C(d,2)` split) but **not yet built**.
+The d=3 `exists_line_data_of_homogeneousIncidence` discharges it with a hand
+`fin_cases q` over the 6 joins; at general `d` the dispatch must be written as a
+**uniform** argument over the `Fin (d+1)`-pair index (two cases on whether `0` is
+in the omitted pair), not `fin_cases`. This is a writing obligation (a `Fin`-
+indexed reindex of the d=3 builders), not a math one — if it surfaces a genuine
+gap at build, *that* would be the place an alg-independence/geometric fact could
+sneak back in, so the CHAIN-4 builder must confirm the membership closes from the
+orthogonality hyps alone. **Pinned, not pre-committed away:** the verdict is
+"existence route; the only new work is the homogeneous-incidence re-statement,"
+with this one build-time confirmation flagged.
+
+### (j) CHAIN-4 remainder decomposition — buildable leaves with exact signatures
+
+**Status:** CHAIN-4 detailed-build recon, docs-only, 2026-06-18 (companion to the
+OD-4 verdict §(i)). CHAIN-4's two mechanical bricks landed 2026-06-18
+(`exists_independent_perp_pair_gen`, `omitTwoExtensor_eq_extensor_kept_gen`); this
+decomposes the **remainder** into buildable leaves with exact `Fin (k+2)`/`Fin
+(d+1)` signatures, dependency-ordered. Convention (matching §(f) and the all-`k`
+engine): phrase `k`-parametrically with `k = d − 1`, ambient `Fin (k+2) =
+Fin (d+1)`, the `d` chain normals `n : Fin (k+1) → Fin (k+2) → ℝ` (at d=3, `k=2`:
+`Fin 3 → Fin 4`), the `d+1` homogeneous witness vectors `pbar : Fin (k+2) →
+Fin (k+2) → ℝ`. Each leaf keeps the `Fin 4`/d=3 lemma as a `k:=2` wrapper (zero
+d=3 regression). The leaves below feed CHAIN-5's dispatch (§C.3).
+
+**Leaf CHAIN-4a — `exists_homogeneousIncidence_of_normals` at `Fin (k+1) →
+Fin (k+2)` (the OD-4 sub-leaf; clean lift, no residual openness).**
+```
+theorem exists_homogeneousIncidence_of_normals_gen {k : ℕ}
+    {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n) :
+    ∃ pbar : Fin (k + 2) → Fin (k + 2) → ℝ, LinearIndependent ℝ pbar ∧
+      (∀ u, pbar 0 ⬝ᵥ n u = 0) ∧
+      (∀ i : Fin (k + 1),
+        (∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) ∧ pbar i.succ ⬝ᵥ n i ≠ 0)
+```
+*Mechanism (verbatim lift of the d=3 body, lines 427–504).* The `(k+1) × (k+2)`
+row matrix `A = of n` has LI rows (`hn`), so `A.rank = k+1 = finrank ℝ^{k+1}`
+(`LinearIndependent.rank_matrix`); `A.mulVecLin` is surjective onto `ℝ^{k+1}`
+(`Submodule.eq_top_of_finrank_eq`); preimages of the `k+1` standard targets
+`e_i : Fin (k+1) → ℝ` give `pbar (i+1) ⊥ n j` for `j≠i` and `≠ 0` against `n i`;
+`pbar 0` is the nonzero common-perp of all `k+1` normals (`exists_ne_zero_
+dotProduct_eq_zero` at `m = k+1 < k+2`, **already general**, line 119). LI of
+`pbar` is the triangular argument: pairing `∑ gᵢ • pbar i = 0` against `n u`
+isolates `g (u+1)`, then `g 0 • pbar 0 = 0` with `pbar 0 ≠ 0`. **Clean lift** —
+the only d=3-specific tactics are `Fin.sum_univ_four`/`fin_cases`, which become
+`Fin.sum_univ_succ`/`Finset.sum_eq_single`-style over `Fin (k+2)`. **No residual
+openness** (this is the OD-4 §(i) verdict made concrete: existence/linear, no
+genericity device). The `Fin 4` `exists_homogeneousIncidence_of_normals` becomes
+the `k:=2` wrapper (a `Fin 3`-vs-`Fin (k+1)` reindex + the `∀ i, …` unpacked to
+the three explicit `hb1/hb2/hb3` conjuncts).
+
+**Leaf CHAIN-4b — `exists_line_data_of_homogeneousIncidence` at `Fin (k+2)`
+(clean lift; carries the §(i) residual flag).**
+```
+theorem exists_line_data_of_homogeneousIncidence_gen {k : ℕ}
+    {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n)
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ}
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (hi : ∀ i : Fin (k + 1), ∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) :
+    ∀ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
+      ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ)
+        (p : Fin k → Fin (k + 2) → ℝ),
+        LinearIndependent ℝ ![n u, n'] ∧ LinearIndependent ℝ p ∧
+        (∀ i, p i ⬝ᵥ n u = 0) ∧ (∀ i, p i ⬝ᵥ n' = 0) ∧
+        omitTwoExtensor pbar (ne_of_lt q.2) = extensor p
+```
+*Mechanism.* The `d=3` builders `htwo`/`hone` generalize via the §(i) join↔panel
+combinatorics: for omitted pair `q = {a,b}`, the kept points are the `k = d−1`
+increasing-complement indices (`omitTwoExtensor_eq_extensor_kept_gen`, **LANDED**),
+and the line lies in `Πᵢ` iff `i+1 ∈ {a,b}`. Two cases on `0 ∈ {a,b}`: if `0 ∉
+{a,b}` the line lies in the **two** panels `Π_{a−1},Π_{b−1}` (take `n' = n (b−1)`,
+both kept points ⊥ both normals — the `htwo` analog); if `0 ∈ {a,b}` it lies in
+the **single** panel `Π_{b−1}` (take `n'` from the landed
+`exists_independent_perp_pair_gen` on the `d−1 = k` kept points, needs `2 ≤ k`
+i.e. `d ≥ 3` — the `hone` analog). **Carries the §(i) residual flag:** the d=3
+body discharges the per-join dispatch by `fin_cases q` over 6 joins; the general
+form must be a **uniform** two-case argument over the `Fin (k+2)`-pair, and the
+"kept points ⊥ the shared normal(s)" step must close from `h0`/`hi`
+(orthogonality) + the kept-index complement membership alone. **This is the one
+leaf whose build must confirm the §(i) combinatorial claim** (the place a hidden
+geometric/alg-independence need would surface if §(i) is wrong). Note the points
+arity is now `Fin k` (the `k = d−1` points spanning the line), matching CHAIN-3's
+`extensor_join_proportional_complementIso_meet` point family `p : Fin k`.
+
+**Leaf CHAIN-4c — `case_III_claim612` at `ScrewSpace (d−1)`/`Fin (d+1)` (clean
+lift; the D-span existential).**
+```
+theorem case_III_claim612_gen {k : ℕ} {r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hp : LinearIndependent ℝ pbar) :
+    ∃ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
+      r ⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ ≠ 0
+```
+*Mechanism (verbatim lift of the d=3 body, lines 1064–1079).* Contrapositive:
+if `r` annihilated every one of the `D` joins it would annihilate their span
+`= ⊤` (the **already-general** `span_omitTwoExtensor_eq_top hp` (23a Leaf 2) via
+Lemma 2.1) hence be `0` (`eq_zero_of_annihilates_span_top`, **already general**,
+line 100). **Pure numeral lift — both bricks are already `{k:ℕ}`; this is the
+cleanest CHAIN-4 leaf.** No residual openness. (This is the §(i) D-span finish:
+it needs only LI of `pbar`, no affine independence.)
+
+**Leaf CHAIN-4d — `exists_complementIso_ne_zero_of_homogeneousIncidence` at
+`ScrewSpace (d−1)`/`Fin d` candidates (the discriminator; consumes CHAIN-3 (h-4)).**
+```
+theorem exists_complementIso_ne_zero_of_homogeneousIncidence_gen {k : ℕ}
+    {r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hp : LinearIndependent ℝ pbar)
+    {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n)
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (hi : ∀ i : Fin (k + 1), ∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) :
+    ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+      r (complementIso (k := k) (j := 2) (by omega)
+          ⟨extensor ![n u, n'], extensor_mem_exteriorPower _⟩) ≠ 0
+```
+*Mechanism.* Combine CHAIN-4c's witness join (`r(join q)≠0`) with CHAIN-4b's
+per-join line data (the panel `n u`, second normal `n'`, the `k` kept points `p`
+with `omitTwoExtensor pbar = extensor p`); the per-line **join=meet duality**
+`extensor_join_proportional_complementIso_meet` (**CHAIN-3 (h-4), LANDED**, the
+`k`-form) transfers `r(extensor p) = r(join q) ≠ 0` to `r(complementIso⟨extensor
+![n u,n'],_⟩) ≠ 0` (the contrapositive of the d=3
+`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`). **Note the
+discriminator's `complementIso` is `(j := 2)`, NOT `(j := d−1)`** — the §(f)/§(i)
+correction: a line has exactly 2 normals at every `d`, so the panel-meet is the
+meet of 2 hyperplanes (input grade 2, output grade `k`). The prior §(a)-table
+entry "`complementIso(k:=d−1)(j:=d−1)`" is wrong; it is `(j:=2)`. **Residual
+openness: none beyond CHAIN-4b's flag** — this leaf is the assembly of 4b+4c+(h-4),
+all of whose pieces are landed or clean lifts. The `Fin 3` discriminator becomes
+the `k:=2` wrapper; the d=3 `exists_complementIso_ne_zero_of_homogeneousIncidence`
+re-points at this general lemma's `k:=2` instance (or stays the green d=3 body —
+a CHAIN-4-internal call, h-5 territory, not forced).
+
+**Dependency order:** CHAIN-4a (independent) → CHAIN-4b (consumes 4a's incidence +
+landed `omitTwoExtensor_eq_extensor_kept_gen` + `exists_independent_perp_pair_gen`)
+→ CHAIN-4c (independent; consumes only the landed general N1) → CHAIN-4d (consumes
+4b + 4c + the landed CHAIN-3 (h-4) duality). 4a and 4c are buildable now in
+parallel (both clean lifts); 4b carries the one §(i) residual confirmation; 4d is
+the capstone. **First buildable OD-4 leaf = CHAIN-4a** (the OD-4 verdict made
+concrete; no dependency on un-landed work).
 
 ---
 
