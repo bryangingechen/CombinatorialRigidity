@@ -1047,35 +1047,42 @@ private lemma mem_V₁_of_induce_isLink_right {α β : Type*} {G : Graph α β} 
     v ∈ V₁ :=
   (G.eq_or_eq_of_isLink_of_isLink hl.symm hl₁.1).elim (· ▸ hl₁.2.1) (· ▸ hl₁.2.2)
 
--- `case_cut_edge_realization` builds at the **default** `maxHeartbeats`. Two costs were removed.
--- The Phase-22l opacity flip cleared the diffuse `ScrewSpace 2` re-elaboration (the opaque carrier
--- head no longer re-unfolds the heavy `↥(⋀² ℝ⁴)` type-expression at every motive). And its two
--- `|C|=0/1` lower-bound arms now use the same `linarith` + explicit `screwDim 2·(|V|−1)` product
+-- `case_cut_edge_realization_gen` builds at the **default** `maxHeartbeats`. Two costs removed.
+-- The Phase-22l opacity flip cleared the diffuse `ScrewSpace k` re-elaboration (the opaque carrier
+-- head no longer re-unfolds the heavy `↥(⋀ᵏ …)` type-expression at every motive). And its two
+-- `|C|=0/1` lower-bound arms now use the same `linarith` + explicit `screwDim k·(|V|−1)` product
 -- idiom as `_gp` below (the `hkey` helpers), instead of an `nlinarith` that blind-squares over the
 -- heavy `finrank` atoms (`notes/ScrewSpaceCarrier-design.md` OQ1).
-/-- **L4a bare-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization`,
-bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` branch; Phase 22i).
+/-- **L4a bare-conjunct producer: cut-edge case — general grade `k`**
+(`lem:case-cut-edge-realization`, bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the
+`not-2EC` branch; Phase 22i, Phase 23b OD-7 tail general-`k` lift).
 
-Given a minimal `k`-dof-graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
-bare panel-realization conjunct `HasPanelRealization 2 n G` holds.
+Given a minimal `c`-dof-graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
+bare panel-realization conjunct `HasPanelRealization k n G` holds.
 
 **Proof sketch.** `exists_cut_decomposition_of_not_twoEdgeConnected` yields a cut
-`V₁ ⊔ V₂ = V(G)`, `|cutEdges G V₁| ≤ 1`, and `k = k₁ + k₂ + D - (D-1)|C|`. Apply the
+`V₁ ⊔ V₂ = V(G)`, `|cutEdges G V₁| ≤ 1`, and `c = c₁ + c₂ + D - (D-1)|C|`. Apply the
 IH on each induced side. Assemble framework `F` with `supportExtensor` equal to `F₁`'s on
 edges inside `V₁`, `F₂`'s on edges inside `V₂`, and a nonzero element `C_cut` of
-`normal(u₀)^⊥ ∩ normal(v₀)^⊥` (from `exists_extensor_in_two_panels`) on any cut edge.
+`normal(u₀)^⊥ ∩ normal(v₀)^⊥` (from `exists_extensor_in_two_panels_grade`) on any cut edge.
 Rank lower bound: `le_finrank_span_rigidityRows_of_cut` + IH ranks. Rank upper bound: B2.
-The L1e arithmetic `k = k₁ + k₂ + D - (D-1)|C|` + `|V| = |V₁| + |V₂|` closes equality. -/
-theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+The L1e arithmetic `c = c₁ + c₂ + D - (D-1)|C|` + `|V| = |V₁| + |V₂|` closes equality.
+
+Verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`,
+`screwDim 2 → screwDim k`, `exists_extensor_in_two_panels → …_grade`; all reach-ins
+(`le_finrank_span_rigidityRows_of_cut`, `finrank_span_rigidityRows_add_deficiency_le`, the cut
+decomposition) are already grade-parametric. The d=3 `case_cut_edge_realization` is the `k := 2`
+wrapper below. -/
+theorem case_cut_edge_realization_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
     (hntec : ¬ G.TwoEdgeConnected)
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
-    HasPanelRealization 2 n G := by
+    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization k n G') :
+    HasPanelRealization k n G := by
   classical
   -- ── Step 1: Cut decomposition ─────────────────────────────────────────────────────────
-  obtain ⟨V₁, k₁, k₂, hV₁ne, hV₁sub, hV₂ne, hG₁, hG₂, hcut_le, hk_eq⟩ :=
+  obtain ⟨V₁, c₁, c₂, hV₁ne, hV₁sub, hV₂ne, hG₁, hG₂, hcut_le, hk_eq⟩ :=
     Graph.exists_cut_decomposition_of_not_twoEdgeConnected (by omega) hG hntec
   -- V₂ = V(G) \ V₁.  V(G.induce V₁) = V₁ definitionally.
   set V₂ := V(G) \ V₁
@@ -1093,14 +1100,14 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
     have hV₁pos : 0 < V₁.ncard := hV₁ne.ncard_pos
     omega
   obtain ⟨F₁, normal₁, hF₁g, hF₁ne, hF₁ext, hF₁rank⟩ :=
-    hIH k₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard
+    hIH c₁ (G.induce V₁) hG₁ hV₁ne hV₁ncard
   obtain ⟨F₂, normal₂, hF₂g, hF₂ne, hF₂ext, hF₂rank⟩ :=
-    hIH k₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard
+    hIH c₂ (G.induce V₂) hG₂ hV₂ne hV₂ncard
   -- ── Step 3: Assemble F ────────────────────────────────────────────────────────────────
   -- Pick a representative vertex from each side (for the normal junk value on off-V(G) verts).
   obtain ⟨u₀, hu₀⟩ := hV₁ne
   -- Normal: use side IH normals; off-V(G) vertices get normal₁ u₀ as junk.
-  set normal : α → Fin 4 → ℝ := fun v =>
+  set normal : α → Fin (k + 2) → ℝ := fun v =>
     if v ∈ V₁ then normal₁ v
     else if v ∈ V₂ then normal₂ v
     else normal₁ u₀
@@ -1110,11 +1117,11 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
   rcases Set.eq_empty_or_nonempty (G.cutEdges V₁) with hC0 | ⟨e_c, he_c⟩
   · -- ── Case |C| = 0 ─────────────────────────────────────────────────────────────────
     -- No cut edges: every graph edge is within V₁ or within V₂.
-    set extF : β → ScrewSpace 2 := fun e =>
+    set extF : β → ScrewSpace k := fun e =>
       if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
       else if ∃ a b, (G.induce V₂).IsLink e a b then F₂.supportExtensor e
-      else (exists_extensor_in_two_panels (normal₁ u₀) (normal₁ u₀)).choose
-    set F : BodyHingeFramework 2 α β := ⟨G, extF⟩
+      else (exists_extensor_in_two_panels_grade (normal₁ u₀) (normal₁ u₀)).choose
+    set F : BodyHingeFramework k α β := ⟨G, extF⟩
     have hlinks : ∀ e u v, G.IsLink e u v → F.supportExtensor e ≠ 0 ∧
         ExtensorInPanel (F.supportExtensor e) (normal u) ∧
         ExtensorInPanel (F.supportExtensor e) (normal v) := by
@@ -1158,7 +1165,7 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
     -- Continue with hlinks for Case |C| = 0.
     -- (hlinks proved, now re-establish the span equalities and rank arithmetic identically.)
     have hF₁span : Submodule.span ℝ
-        (⟨G.induce V₁, extF⟩ : BodyHingeFramework 2 α β).rigidityRows
+        (⟨G.induce V₁, extF⟩ : BodyHingeFramework k α β).rigidityRows
         = Submodule.span ℝ F₁.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1175,7 +1182,7 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
           show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁'⟩, ↓reduceIte]
         simpa [BodyHingeFramework.hingeRowBlock] using hr
     have hF₂span : Submodule.span ℝ
-        (⟨G.induce V₂, extF⟩ : BodyHingeFramework 2 α β).rigidityRows
+        (⟨G.induce V₂, extF⟩ : BodyHingeFramework k α β).rigidityRows
         = Submodule.span ℝ F₂.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1214,35 +1221,35 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
       (fun e u v hl he => hFE₁ e u v hl he) hFcut
     rw [hF₁span, hF₂span] at hbrick
     have hrank₁ : (Module.finrank ℝ (Submodule.span ℝ F₁.rigidityRows) : ℤ)
-        = screwDim 2 * ((V₁.ncard : ℤ) - 1) - k₁ := by
+        = screwDim k * ((V₁.ncard : ℤ) - 1) - c₁ := by
       rw [hVeq₁] at hF₁rank; rw [hF₁rank, hG₁.1]
     have hrank₂ : (Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) : ℤ)
-        = screwDim 2 * ((V₂.ncard : ℤ) - 1) - k₂ := by
+        = screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ := by
       rw [hVeq₂] at hF₂rank; rw [hF₂rank, hG₂.1]
     have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
     have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
     have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-        ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+        ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
       have := hB2; rw [hG.1] at this; linarith
-    have hlb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
+    have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
         (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
       have hbrickZ : (Module.finrank ℝ (Submodule.span ℝ F₁.rigidityRows) : ℤ) +
-          (screwDim 2 - 1) * (G.cutEdges V₁).ncard +
+          (screwDim k - 1) * (G.cutEdges V₁).ncard +
           (Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) : ℤ) ≤
           (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by exact_mod_cast hbrick
       rw [hrank₁, hrank₂] at hbrickZ
       rw [hn] at hk_eq
       simp only [hC0, Set.ncard_empty] at hbrickZ hk_eq
-      have hscrew : 1 ≤ screwDim 2 := by rw [← hn]; omega
+      have hscrew : 1 ≤ screwDim k := by rw [← hn]; omega
       push_cast [Nat.sub_add_cancel hscrew] at hbrickZ hk_eq ⊢
       simp only [mul_zero, add_zero, sub_zero] at hbrickZ hk_eq
       have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-      have hkey : screwDim 2 * ((V(G).ncard : ℤ) - 1)
-          = screwDim 2 * ((V₁.ncard : ℤ) - 1) + screwDim 2 * ((V₂.ncard : ℤ) - 1) + screwDim 2 := by
+      have hkey : screwDim k * ((V(G).ncard : ℤ) - 1)
+          = screwDim k * ((V₁.ncard : ℤ) - 1) + screwDim k * ((V₂.ncard : ℤ) - 1) + screwDim k := by
         rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
       linarith [hkey]
     have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
+        = screwDim k * ((V(G).ncard : ℤ) - 1) - c := le_antisymm hB2' hlb
     have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
       intro v hv
       simp only [normal]
@@ -1261,13 +1268,13 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
     -- The cut-edge count is exactly 1 (at most 1 by hcut_le, at least 1 by he_c nonempty).
     -- Pick C_cut in both endpoint normals.
     obtain ⟨C_cut, hCne, hC_u, hC_v⟩ :=
-      exists_extensor_in_two_panels (normal u_c) (normal v_c)
+      exists_extensor_in_two_panels_grade (normal u_c) (normal v_c)
     -- extF: use F₁/F₂ for within-side edges; C_cut for the (unique) cut edge and junk.
-    set extF : β → ScrewSpace 2 := fun e =>
+    set extF : β → ScrewSpace k := fun e =>
       if ∃ a b, (G.induce V₁).IsLink e a b then F₁.supportExtensor e
       else if ∃ a b, (G.induce V₂).IsLink e a b then F₂.supportExtensor e
       else C_cut
-    set F : BodyHingeFramework 2 α β := ⟨G, extF⟩
+    set F : BodyHingeFramework k α β := ⟨G, extF⟩
     -- For any cut edge e with G.IsLink e u v, since |C| ≤ 1 and e_c is the unique cut edge,
     -- e = e_c, so the endpoints are {u_c, v_c} up to swap.
     have hec_mem : e_c ∈ G.cutEdges V₁ := by
@@ -1342,7 +1349,7 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
               · exact hC_u  -- v = u_c: ExtensorInPanel C_cut (normal u_c)
     -- Continue with hlinks for Case |C| = 1.
     have hF₁span : Submodule.span ℝ
-        (⟨G.induce V₁, extF⟩ : BodyHingeFramework 2 α β).rigidityRows
+        (⟨G.induce V₁, extF⟩ : BodyHingeFramework k α β).rigidityRows
         = Submodule.span ℝ F₁.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1359,7 +1366,7 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
           show (∃ a b, (G.induce V₁).IsLink e a b) from ⟨u, v, hl₁'⟩, ↓reduceIte]
         simpa [BodyHingeFramework.hingeRowBlock] using hr
     have hF₂span : Submodule.span ℝ
-        (⟨G.induce V₂, extF⟩ : BodyHingeFramework 2 α β).rigidityRows
+        (⟨G.induce V₂, extF⟩ : BodyHingeFramework k α β).rigidityRows
         = Submodule.span ℝ F₂.rigidityRows := by
       congr 1; ext φ
       simp only [BodyHingeFramework.rigidityRows, Set.mem_setOf_eq]
@@ -1401,36 +1408,36 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
       (fun e u v hl he => hFE₁ e u v hl he) hFcut
     rw [hF₁span, hF₂span] at hbrick
     have hrank₁ : (Module.finrank ℝ (Submodule.span ℝ F₁.rigidityRows) : ℤ)
-        = screwDim 2 * ((V₁.ncard : ℤ) - 1) - k₁ := by
+        = screwDim k * ((V₁.ncard : ℤ) - 1) - c₁ := by
       rw [hVeq₁] at hF₁rank; rw [hF₁rank, hG₁.1]
     have hrank₂ : (Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) : ℤ)
-        = screwDim 2 * ((V₂.ncard : ℤ) - 1) - k₂ := by
+        = screwDim k * ((V₂.ncard : ℤ) - 1) - c₂ := by
       rw [hVeq₂] at hF₂rank; rw [hF₂rank, hG₂.1]
     have hFVne : V(F.graph).Nonempty := ⟨u₀, hV₁sub.subset hu₀⟩
     have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
     have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-        ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+        ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
       have := hB2; rw [hG.1] at this; linarith
     have hcardC1 : (G.cutEdges V₁).ncard = 1 :=
       Nat.le_antisymm hcut_le ((Set.ncard_pos (Set.toFinite _)).2 ⟨e_c, hec_mem⟩)
-    have hlb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
+    have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
         (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
       have hbrickZ : (Module.finrank ℝ (Submodule.span ℝ F₁.rigidityRows) : ℤ) +
-          (screwDim 2 - 1) * (G.cutEdges V₁).ncard +
+          (screwDim k - 1) * (G.cutEdges V₁).ncard +
           (Module.finrank ℝ (Submodule.span ℝ F₂.rigidityRows) : ℤ) ≤
           (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by exact_mod_cast hbrick
       rw [hrank₁, hrank₂] at hbrickZ
       rw [hn] at hk_eq
       rw [hcardC1] at hbrickZ hk_eq
-      have hscrew : 1 ≤ screwDim 2 := by rw [← hn]; omega
+      have hscrew : 1 ≤ screwDim k := by rw [← hn]; omega
       simp only [Nat.cast_sub hscrew, Nat.cast_one, mul_one] at hbrickZ hk_eq
       have hVcardZ : (V₁.ncard : ℤ) + V₂.ncard = V(G).ncard := by exact_mod_cast hVcard
-      have hkey : screwDim 2 * ((V(G).ncard : ℤ) - 1)
-          = screwDim 2 * ((V₁.ncard : ℤ) - 1) + screwDim 2 * ((V₂.ncard : ℤ) - 1) + screwDim 2 := by
+      have hkey : screwDim k * ((V(G).ncard : ℤ) - 1)
+          = screwDim k * ((V₁.ncard : ℤ) - 1) + screwDim k * ((V₂.ncard : ℤ) - 1) + screwDim k := by
         rw [show ((V(G).ncard : ℤ)) = V₁.ncard + V₂.ncard from hVcardZ.symm]; ring
       linarith [hkey]
     have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-        = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := le_antisymm hB2' hlb
+        = screwDim k * ((V(G).ncard : ℤ) - 1) - c := le_antisymm hB2' hlb
     have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
       intro v hv
       simp only [normal]
@@ -1442,6 +1449,23 @@ theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : 
         exact hF₂ne v h₂
     rw [← hG.1] at hrank_eq
     exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
+
+/-- **L4a bare-conjunct producer: cut-edge case** (`lem:case-cut-edge-realization`,
+bare conjunct; Katoh–Tanigawa 2011 §6.1, Lemma 6.1, the `not-2EC` branch; Phase 22i; the
+`k = 2` wrapper of the general-grade `case_cut_edge_realization_gen`).
+
+Given a minimal `c`-dof-graph `G` with `|V(G)| ≥ 3` that is not 2-edge-connected, the
+bare panel-realization conjunct `HasPanelRealization 2 n G` holds. The work is the
+grade-general `case_cut_edge_realization_gen`; this wrapper specializes `k := 2`
+(`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_minimalKDof_k`. -/
+theorem case_cut_edge_realization [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV3 : 3 ≤ V(G).ncard)
+    (hntec : ¬ G.TwoEdgeConnected)
+    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
+    HasPanelRealization 2 n G :=
+  case_cut_edge_realization_gen (k := 2) hD hn G hG hV3 hntec hIH
 
 -- Builds at the **default** `maxHeartbeats` (no override). The former 400000 cost was a diffuse
 -- `nlinarith` in the two `|C|=0/1` lower-bound arms: it blind-squares hypothesis pairs over the
