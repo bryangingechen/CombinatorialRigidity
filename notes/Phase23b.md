@@ -1,13 +1,13 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. **CHAIN-1 + CHAIN-3 are CLOSED.** CHAIN-4 is in progress: **four** bricks now
+**Status:** open. **CHAIN-1 + CHAIN-3 are CLOSED.** CHAIN-4 is in progress: **five** bricks now
 landed — `exists_independent_perp_pair_gen`, `omitTwoExtensor_eq_extensor_kept_gen`, **CHAIN-4a**
-`exists_homogeneousIncidence_of_normals_gen`, and this commit (2026-06-18) **CHAIN-4b**
-`exists_line_data_of_homogeneousIncidence_gen` (the general-`d` per-join line-data extractor,
-`RigidityMatrix/Claim612.lean`). **CHAIN-4b confirms the §(i) combinatorial claim** — the per-join
-panel membership closes purely combinatorially from the off-one-panel orthogonality hyps (no hidden
-genericity/alg-independence need surfaced), vindicating the OD-4 verdict. **Remaining: CHAIN-4c
-(parallel, clean numeral lift) + CHAIN-4d (capstone).** CHAIN-1 = the `ιc`-block candidate augment +
+`exists_homogeneousIncidence_of_normals_gen`, **CHAIN-4b** `exists_line_data_of_homogeneousIncidence_gen`,
+and this commit (2026-06-18) **CHAIN-4c** `case_III_claim612_gen` (the span-`D` existential, a clean
+numeral lift, `RigidityMatrix/Claim612.lean`). **CHAIN-4b confirmed the §(i) combinatorial claim** —
+the per-join panel membership closes purely combinatorially from the off-one-panel orthogonality hyps
+(no hidden genericity/alg-independence need surfaced), vindicating the OD-4 verdict. **Remaining:
+CHAIN-4d (capstone, off the landed 4b/4c + CHAIN-3 (h-4)).** CHAIN-1 = the `ιc`-block candidate augment +
 `…candidateBlock_swap` (`RigidityMatrix/Basic.lean`), graph-free over `ScrewSpace k`. CHAIN-3 = the
 general-`d` per-line join=meet duality `extensor_join_proportional_complementIso_meet`
 (`MeetHodge.lean`), the `⋀^{d−1}W`-is-a-line route (full per-leaf detail in *Decisions made* +
@@ -31,24 +31,24 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 ## Current state
 
 **Next build = CHAIN-4d** (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`,
-`RigidityMatrix/Claim612.lean`): the discriminator capstone, consuming the now-landed CHAIN-4b
-line data + CHAIN-4c span-`D` witness join + the **landed CHAIN-3 (h-4)**
+`RigidityMatrix/Claim612.lean`): the discriminator capstone, consuming the landed CHAIN-4b
+line data + **the now-landed CHAIN-4c** span-`D` witness join + the **landed CHAIN-3 (h-4)**
 `extensor_join_proportional_complementIso_meet` join=meet duality (the `k`-form). Exact signature
-in `notes/Phase23-design.md` §(j) Leaf CHAIN-4d (note the `complementIso (j:=2)` correction). **It is
-gated by CHAIN-4c** (`case_III_claim612_gen`, the pure numeral lift of the already-general
-`span_omitTwoExtensor_eq_top` + `eq_zero_of_annihilates_span_top`), which is buildable now with no
-residual — **land CHAIN-4c first, then CHAIN-4d off it.**
+in `notes/Phase23-design.md` §(j) Leaf CHAIN-4d (note the `complementIso (j:=2)` correction). **All
+its inputs are now landed** (4b, 4c, CHAIN-3 (h-4)) — it is the assembly, no residual openness.
+Wire it to CHAIN-4b's `_gen` directly (it carries the `hpbar`/`LinearIndependent ℝ p` shape 4d has
+and CHAIN-3 (h-4) needs), not via the d=3 `exists_line_data…`. CHAIN-2 (consuming CHAIN-1) and the
+four-producer tail (OD-7) are independent alternatives.
 
-**CHAIN-4b — LANDED this commit (2026-06-18): the general-`d` per-join line-data extractor.**
-`exists_line_data_of_homogeneousIncidence_gen` (`RigidityMatrix/Claim612.lean`): for the `k+1`
-panel normals `n` (LI), `k+2` points `pbar` (LI; off-one-panel incidence `h0`/`hi`), each omitted
-pair `q={a,b}` yields a discriminating panel `u`, second hyperplane `n'`, and the `k` kept points
-`p` (all `⊥ n u, n'`; `omitTwoExtensor pbar = extensor p`). **The §(i) claim is confirmed:**
-membership is uniform via the new helper `pbar_dotProduct_eq_zero_of_ne_succ` (`pbar v ⊥ n j` iff
-`v ≠ j.succ` — point `v` misses only panel `n (v−1)`); a kept index `v ∉ {a,b}` lies on panel `n u`
-iff `u.succ ∈ {a,b}`. Two cases on `0 ∈ {a,b}`: `0 ∉ {a,b}` ⟹ two real panels (`htwo`, `u=u_a`,
-`n'=n u_b`); `0 ∈ {a,b}` (so `a=0`) ⟹ one real panel + `n'` from the new `k`-point perp helper
-`exists_independent_perp_family` (`hone`). **No genericity, no alg-independence** (OD-4 vindicated).
+**CHAIN-4c — LANDED this commit (2026-06-18): the span-`D` existential, a clean numeral lift.**
+`case_III_claim612_gen` (`RigidityMatrix/Claim612.lean`): for `r : Dual (ScrewSpace k)`, `r ≠ 0`,
+and `pbar : Fin (k+2) → Fin (k+2) → ℝ` LI, some omitted pair `q` has `r⟨omitTwoExtensor pbar,_⟩ ≠ 0`.
+**Verbatim lift of the d=3 body** (`by_contra` + `push Not` + the contrapositive
+`eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp) (…)`): both bricks were **already
+`{k:ℕ}`** (`span_omitTwoExtensor_eq_top` = 23a Leaf 2 via Lemma 2.1; `eq_zero_of_annihilates_span_top`
+= line 100), so the proof is byte-for-byte the d=3 one. The d=3 `case_III_claim612` is now the
+`k:=2` wrapper (`Fin (2+2)` defeq `Fin 4`; blueprint pin unmoved, `case-iii.tex:1235`). Axiom-clean.
+**§(i) D-span finish: needs only LI of `pbar`, no affine independence.**
 
 **OD-4 — RESOLVED + CONFIRMED (2026-06-18): existence/homogeneous route, alg-independence NOT
 forced.** Verdict in `notes/Phase23-design.md` §(i) + Decisions-made; the eq.-(6.67) D-span runs off
@@ -165,14 +165,16 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
             off-one-panel incidence hyp, and the conclusion carries
             `LinearIndependent ℝ p` (needs the new `hpbar` hyp CHAIN-4d supplies).
             Detail in *Decisions made*.
-      - [ ] **CHAIN-4c** `case_III_claim612_gen` (the span-`D` existential; **pure
-            numeral lift** of the already-general `span_omitTwoExtensor_eq_top` +
-            `eq_zero_of_annihilates_span_top`). Buildable now, no residual.
+      - [x] **CHAIN-4c** `case_III_claim612_gen`. **LANDED 2026-06-18** — the span-`D`
+            existential, **verbatim numeral lift** of the d=3 body (both bricks
+            `span_omitTwoExtensor_eq_top` + `eq_zero_of_annihilates_span_top` already
+            `{k:ℕ}`). The d=3 `case_III_claim612` re-derived as the `k:=2` wrapper.
+            Axiom-clean; no friction. Detail in *Decisions made*.
       - [ ] **CHAIN-4d** `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
             at `ScrewSpace k`/`Fin (k+1)` candidates, `complementIso (k:=k)(j:=2)`
             (the §(f)/§(i) `(j:=2)` correction — a line has 2 normals at every
-            `d`). The capstone: consumes **landed 4b** + 4c + the **landed CHAIN-3
-            (h-4)** join=meet duality. **Gated by 4c.**
+            `d`). The capstone: consumes **landed 4b** + **landed 4c** + the **landed
+            CHAIN-3 (h-4)** join=meet duality. **All inputs landed.**
 - [ ] **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`).
       The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)`
       + the ±r chain (6.66). Reuses Claim 6.11 `exists_redundant_panelRow_…`
@@ -237,21 +239,17 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-1 + CHAIN-3 are CLOSED; CHAIN-4 is in progress** (**four** bricks landed:
+**CHAIN-1 + CHAIN-3 are CLOSED; CHAIN-4 is in progress** (**five** bricks landed:
 `exists_independent_perp_pair_gen` + `omitTwoExtensor_eq_extensor_kept_gen` + CHAIN-4a
-`exists_homogeneousIncidence_of_normals_gen` + **this commit's CHAIN-4b**
-`exists_line_data_of_homogeneousIncidence_gen`). **CHAIN-4b confirmed the §(i) combinatorial claim**
-— the last build-time risk in the OD-4 verdict is discharged. **Next build = CHAIN-4c, then 4d.**
+`exists_homogeneousIncidence_of_normals_gen` + CHAIN-4b `exists_line_data_of_homogeneousIncidence_gen`
++ **this commit's CHAIN-4c** `case_III_claim612_gen`). **Next build = CHAIN-4d, the capstone — all
+its inputs (4b, 4c, CHAIN-3 (h-4)) are now landed.**
 
-- **CHAIN-4c (the cleanest leaf, buildable now) — `case_III_claim612_gen`** (the span-`D`
-  existential; **pure numeral lift** of the already-general `span_omitTwoExtensor_eq_top` +
-  `eq_zero_of_annihilates_span_top`, both `{k:ℕ}`). Exact signature in `notes/Phase23-design.md` §(j)
-  Leaf CHAIN-4c. No residual openness. Buildable independently of the rest.
-- **CHAIN-4d (the capstone, off 4c) — `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`** at
-  `ScrewSpace k`/`Fin (k+1)`, `complementIso (k:=k)(j:=2)` (the §(f)/§(i) `(j:=2)` correction —
-  exact signature design §(j) Leaf CHAIN-4d). Consumes CHAIN-4c's witness join + **landed CHAIN-4b**'s
-  per-join line data + the **landed CHAIN-3 (h-4)** `extensor_join_proportional_complementIso_meet`
-  join=meet duality (the `k`-form), the way the d=3
+- **CHAIN-4d (the capstone, all inputs landed) — `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`**
+  at `ScrewSpace k`/`Fin (k+1)`, `complementIso (k:=k)(j:=2)` (the §(f)/§(i) `(j:=2)` correction —
+  exact signature design §(j) Leaf CHAIN-4d). Consumes **landed CHAIN-4c**'s witness join
+  (`case_III_claim612_gen`) + **landed CHAIN-4b**'s per-join line data + the **landed CHAIN-3 (h-4)**
+  `extensor_join_proportional_complementIso_meet` join=meet duality (the `k`-form), the way the d=3
   `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct` consumes `complementIso_smul_eq_extensor_join`.
   **Note:** CHAIN-4b's `_gen` carries `hpbar : LinearIndependent ℝ pbar` (which CHAIN-4d has) and
   concludes `LinearIndependent ℝ p` (what CHAIN-3 (h-4) needs) — both are *added* vs. the d=3 lemma's
@@ -351,6 +349,14 @@ git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the BlueprintExposition CHAIN
 KT leaves implicit (`extensor_join_proportional_complementIso_meet`) is the CHAIN-3 ledger entry.
 
 **Landed CHAIN-4 bricks** (CHAIN-4 in progress; `RigidityMatrix/Claim612.lean`):
+- `case_III_claim612_gen` (2026-06-18, CHAIN-4c) — the general-`d` span-`D` existential: `r ≠ 0`,
+  `pbar : Fin (k+2) → Fin (k+2) → ℝ` LI ⟹ some omitted pair `q` has `r⟨omitTwoExtensor pbar,_⟩ ≠ 0`.
+  **Verbatim lift of the d=3 body** (`by_contra`/`push Not`/the contrapositive
+  `eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp) (rintro x ⟨q,rfl⟩; exact h q)`):
+  both bricks were **already `{k:ℕ}`** (N1 `span_omitTwoExtensor_eq_top` = 23a Leaf 2 via Lemma 2.1;
+  N2 `eq_zero_of_annihilates_span_top`), so byte-for-byte the d=3 proof. The d=3 `case_III_claim612`
+  re-derived as the `k:=2` wrapper (`Fin (2+2)` defeq `Fin 4`; blueprint pin unmoved). §(i) D-span
+  finish: only LI of `pbar`, no affine independence. Axiom-clean; no friction (the cleanest CHAIN-4 leaf).
 - `exists_line_data_of_homogeneousIncidence_gen` (2026-06-18, CHAIN-4b) — the general-`d` per-join
   line-data extractor; **confirmed the §(i) combinatorial claim** (no hidden genericity need). Two
   new helpers: `pbar_dotProduct_eq_zero_of_ne_succ` (the off-one-panel incidence as one rule: `pbar v

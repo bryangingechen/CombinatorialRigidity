@@ -1244,22 +1244,33 @@ its hinge line *is* the witness join's line `L = p̄ᵢ p̄ⱼ`. The points ente
 **homogeneous-vector**
 layer (bare `LinearIndependent ℝ pbar`, fed by `exists_homogeneousIncidence_of_normals`); no affine
 de-homogenization is needed (`notes/Phase22-realization-design.md` §1.42, R1-affine). -/
+theorem case_III_claim612_gen {k : ℕ}
+    {r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hp : LinearIndependent ℝ pbar) :
+    ∃ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
+      r ⟨omitTwoExtensor pbar (ne_of_lt q.2),
+        extensor_mem_exteriorPower _⟩ ≠ 0 := by
+  -- Contrapositive of the existential (verbatim lift of the `d = 3` body): if `r̂` annihilated
+  -- *every* one of the `D` panel-support joins of the `k+2` linearly-independent homogeneous
+  -- vectors, it would annihilate their span `= ScrewSpace k` (`span_omitTwoExtensor_eq_top`, N1,
+  -- via Lemma 2.1 — already general) and so be `0` (`eq_zero_of_annihilates_span_top`, N2 —
+  -- already general), contradicting `r̂ ≠ 0` (N5). The annihilation `∀ q, r̂(join q) = 0` is the
+  -- internal `by_contra` negation — KT's union-(6.45) "for *every* choice of lines" hypothesis —
+  -- not a premise carried in. §(i) D-span finish: needs only LI of `pbar`, no affine independence.
+  by_contra h
+  push Not at h
+  exact hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)
+    (by rintro x ⟨q, rfl⟩; exact h q))
+
+/-- The `d = 3` instance of `case_III_claim612_gen` (`k := 2`, `ScrewSpace 2` on `Fin 4`); the
+GREEN d=3 wrapper its `exists_hduality_witness*` consumers see. -/
 theorem case_III_claim612
     {r : Module.Dual ℝ (ScrewSpace 2)} (hr : r ≠ 0)
     {pbar : Fin 4 → Fin 4 → ℝ} (hp : LinearIndependent ℝ pbar) :
     ∃ q : {q : Fin 4 × Fin 4 // q.1 < q.2},
       r ⟨omitTwoExtensor pbar (ne_of_lt q.2),
-        extensor_mem_exteriorPower _⟩ ≠ 0 := by
-  -- Contrapositive of the existential: if `r̂` annihilated *every* one of the six panel-support
-  -- joins of the four affinely-independent points, it would annihilate their span `= ⋀²ℝ⁴`
-  -- (`span_omitTwoExtensor_eq_top`, N1, via Lemma 2.1) and so be `0`
-  -- (`eq_zero_of_annihilates_span_top`, N2), contradicting `r̂ ≠ 0` (N5). The annihilation
-  -- `∀ q, r̂(join q) = 0` is the internal `by_contra` negation — KT's union-(6.45) "for *every*
-  -- choice of lines" hypothesis — not a premise carried in.
-  by_contra h
-  push Not at h
-  exact hr (eq_zero_of_annihilates_span_top (span_omitTwoExtensor_eq_top hp)
-    (by rintro x ⟨q, rfl⟩; exact h q))
+        extensor_mem_exteriorPower _⟩ ≠ 0 :=
+  case_III_claim612_gen (k := 2) hr hp
 
 /-- **The six-join `hduality` witness assembly from the panel-incidence data** (`lem:case-III`,
 the N3a → `hduality` glue of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1 eqs.
