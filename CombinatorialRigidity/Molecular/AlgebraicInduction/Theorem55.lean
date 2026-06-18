@@ -2170,37 +2170,45 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
 
 
-/-- **Case I realization: the contraction producer, all-`k` simple-contraction case**
-(`lem:case-I-realization`, the all-`k` GP restate of `case_I_realization`;
-KT Lemma~6.3 at general `k`-dof; Phase 22i L5b-ii-d).
+/-- **Case I realization: the contraction producer, all-dof simple-contraction case — general
+grade `k`** (`lem:case-I-realization`, the all-dof GP restate of `case_I_realization`;
+KT Lemma~6.3 at general `k`-dof; Phase 22i L5b-ii-d, Phase 23b OD-7 tail general-`k` lift).
 
-This is the all-`k` generalization of `case_I_realization`: the INTEGER deficiency `k : ℤ`
-replaces the rigid specialization `k = 0`. Given a simple minimal `k`-dof-graph `G` with a
-proper rigid subgraph `H` (hence `0`-dof) sharing representative body `r`, and a simple
-contraction `G/E(H)` (KT Lemma~6.3's case hypothesis), the conditioned all-`k` induction
+The all-dof generalization of `case_I_realization` (the INTEGER deficiency `c : ℤ` replaces the
+rigid specialization `c = 0`), lifted to general grade `k`. Given a simple minimal `c`-dof-graph
+`G` with a proper rigid subgraph `H` (hence `0`-dof) sharing representative body `r`, and a simple
+contraction `G/E(H)` (KT Lemma~6.3's case hypothesis), the conditioned all-dof induction
 hypothesis supplies:
 * the `H`-leg at `0`-dof (H is rigid, hence `0`-dof, and simple as a subgraph of `G`);
-* the contraction leg `G/E(H)` at deficiency `k` (minimal `k`-dof by
+* the contraction leg `G/E(H)` at deficiency `c` (minimal `c`-dof by
   `rigidContract_isMinimalKDof`).
 
 The block-triangular coupling is assembled from:
 * **`H`-leg**: `exists_rankPolynomial_of_rigidOn_linking_set` — same as the `0`-dof case;
 * **surviving block**: `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (L5b-ii-b) —
   the deficiency-tolerant mirror of `rigidContract_exterior_rank_transport` + `_proj` chain,
-  carrying the contraction IH's rank across the collapse-relabel selector swap with the `−k`
+  carrying the contraction IH's rank across the collapse-relabel selector swap with the `−c`
   deficiency;
 * **coupler**: `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`
-  (L5b-ii-c) — the `−k`-aware restate of the rigid coupler. -/
-theorem PanelHingeFramework.case_I_realization_all_k [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+  (L5b-ii-c) — the `−c`-aware restate of the rigid coupler.
+
+Verbatim numeral pass over the d=3 body — `screwDim 2 → screwDim k`,
+`HasGenericFullRankRealization 2 → … k`, dof `k → c`; all reach-ins
+(`couple_geometry_of_isProperRigidSubgraph`, `hasGenericRealization_transport_ends`,
+`exists_rankPolynomial_of_IH_relabel_linking_set_proj`,
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof`) are already
+grade-parametric. The d=3 `case_I_realization_all_k` is the `k := 2` wrapper below. -/
+theorem PanelHingeFramework.case_I_realization_all_k_gen [DecidableEq β] [Finite α] [Finite β]
+    {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
     (hSimple : G.Simple) {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
     (hcSimple : (G.rigidContract H r).Simple)
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
       V(G').ncard < V(G).ncard →
-      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
-        HasPanelRealization 2 n G') :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G') ∧
+        HasPanelRealization k n G') :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   obtain ⟨⟨hle, hKDof⟩, hVH2', hVHss⟩ := hH
@@ -2249,9 +2257,9 @@ theorem PanelHingeFramework.case_I_realization_all_k [DecidableEq β] [Finite α
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
       (PanelHingeFramework.recordsLinks_swap_endsOf hle QH.ends hQHrec)
       (fun e he => hne_ends e (he.of_le hle))
-  -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller minimal `k`-dof-graph.
-  -- Apply the all-`k` IH (at k' = k) to get `hQcf`.
-  have hKmin : (G.rigidContract H r).IsMinimalKDof n k :=
+  -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller minimal `c`-dof-graph.
+  -- Apply the all-dof IH (at c' = c) to get `hQcf`.
+  have hKmin : (G.rigidContract H r).IsMinimalKDof n c :=
     Graph.rigidContract_isMinimalKDof hG hHprop hr
   have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
     Graph.rigidContract_vertexSet_ncard_lt hHsub hVH2'
@@ -2260,8 +2268,8 @@ theorem PanelHingeFramework.case_I_realization_all_k [DecidableEq β] [Finite α
     rw [Graph.rigidContract_vertexSet_ncard hr hHsub]
     have hVHle : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
     omega
-  have hQcf : PanelHingeFramework.HasGenericFullRankRealization 2 n (G.rigidContract H r) :=
-    (hIH k (G.rigidContract H r) hKmin hKne hKlt).1 hcSimple
+  have hQcf : PanelHingeFramework.HasGenericFullRankRealization k n (G.rigidContract H r) :=
+    (hIH c (G.rigidContract H r) hKmin hKne hKlt).1 hcSimple
   -- (L5b-ii-b) The deficiency-aware `_proj` rank polynomial for the surviving block.
   -- Uses `exists_rankPolynomial_of_IH_relabel_linking_set_proj` (the all-k mirror of the rigid
   -- `rigidContract_exterior_rank_transport_htransport` + `_proj` packaging).
@@ -2274,8 +2282,29 @@ theorem PanelHingeFramework.case_I_realization_all_k [DecidableEq β] [Finite α
   exact
     PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set_kdof
       G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl)
-      hcover ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hQc_rat k
+      hcover ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH Qc hQc_ne hQc_rat c
       hsc_proj_indep n hn hne_ends hG.1
+
+/-- **Case I realization: the contraction producer, all-dof simple-contraction case**
+(`lem:case-I-realization`, the all-dof GP restate of `case_I_realization`;
+KT Lemma~6.3 at general `k`-dof; Phase 22i L5b-ii-d; the `k = 2` wrapper of the general-grade
+`case_I_realization_all_k_gen`).
+
+The all-dof generalization of `case_I_realization` at `d = 3`: the work is the grade-general
+`case_I_realization_all_k_gen`; this wrapper specializes `k := 2` (`screwDim 2 = 6`) for the
+`d = 3` Case-I dispatch consumer. -/
+theorem PanelHingeFramework.case_I_realization_all_k [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (hV3 : 3 ≤ V(G).ncard)
+    (hSimple : G.Simple) {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
+    (hcSimple : (G.rigidContract H r).Simple)
+    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G') ∧
+        HasPanelRealization 2 n G') :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
+  PanelHingeFramework.case_I_realization_all_k_gen (k := 2) hD hn G hG hV3 hSimple hH hr hcSimple
+    hIH
 
 /-- **Case I dispatch: simple vs non-simple contraction** (`lem:case-I-dispatch`,
 the `hcontract` slot-filler for the zero-carry spine `theorem_55_all_k`; KT Lemmas~6.2/6.3/6.5;
