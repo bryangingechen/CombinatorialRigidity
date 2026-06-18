@@ -49,12 +49,19 @@ file).
   session-end): opus confirmed (the coordinator runs on it); under the
   OPUS-ONLY override the other rungs are not probed (boundary pairs
   opus-vs-opus or skipped) — a fresh coordinator under the S/P/B map re-probes.
-- **Session #6 hand-off (2026-06-18; loop stopped by user after row 227).**
-  Closed CHAIN-1/3/4 (all general-`d`); the OD-4 recon dissolved the
-  alg-independence gap; opened the OD-7 four-producer tail (M4 + the all-`k`
-  `hbase_k` producer + the bare `hcut_k` conjunct landed). **Next dispatch:**
-  `case_cut_edge_realization_gp` (GP half of `hcut_k`), `hcontract_k`, or
-  CHAIN-2 — per `notes/Phase23b.md` *Hand-off*.
+- **Session #7 hand-off (2026-06-18; paused by user at a milestone after row 237).**
+  **Closed OD-7** (all four 23a producers `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`
+  + both M4 halves general-`k`; rows 228/230–234) and **opened CHAIN-2** — landed the
+  `G.ChainData n` record + 7 interior-split accessors (the zeroth leaf; rows 236/237).
+  Two recons: the `hcontract_k` decomposition (LEAF-0 triple-LI) and the CHAIN-2
+  decomposition (rows 229/235; the latter **overturned the design's §(c) framing** — the
+  named chain was already general-`k`). **Next dispatch: a DESIGN-PASS to decompose
+  CHAIN-2a's core** (NOT a direct build — an opus build self-shrank from it;
+  `case_III_rank_certification`'s ~20 `ρ`/`w`/gate hyps; the re-index-vs-construct open
+  question) — per `notes/Phase23b.md` *Hand-off* + design §(l). Findings: the build
+  agents are reliably clean on math+gates but under-invest in per-commit note
+  compression (coordinator absorbed it 3×); the `ChainData`/Fin-index infra leaves run
+  ~2× wall-time at normal token/tool counts.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map

@@ -1666,7 +1666,17 @@ augment** — genuinely-new *infrastructure*, but NOT a generalization of the na
 - **CHAIN-2a — the per-candidate single-`i` reduction** (the reusable core; heaviest single leaf). A
   re-INDEX (not re-grade) of `case_III_rank_certification` holding the split-body / redundant-row index
   fixed at `i`: `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*}, q₁)`. Consumes Claim 6.11 `exists_redundant_panelRow_…` (GREEN).
-  No grade-2 reach-in. Buildable now (modulo the `ChainData` flag below).
+  No grade-2 reach-in.
+  **Session-#7 finding (2026-06-18) — CHAIN-2a needs ITS OWN design-pass before a build.** The
+  `ChainData` record + the 7 interior-split accessors landed (rows 236/237, supplying the graph-side
+  `(v,a,b,e_a,e_b)` tuple), but `case_III_rank_certification` carries **~20 hypotheses** — the `ρ`
+  dual-functional gates (`hρgate`/`hρe₀`/`hρGv`) + the rank-certifying `w`-family
+  (`hwcard`/`hw`/`hwmem`) — and discharging them at the per-`i` index is the substantial part. An opus
+  build self-shrank from it to the accessors (2nd consecutive infra commit feeding the unbuilt core →
+  rows 27–29 design-pass trigger). **Key open question the design-pass must settle:** does the d=3
+  path's already-general arm closer `case_III_arm_realization` (`CaseIII/Arms.lean`) discharge those
+  certification hyps — so CHAIN-2a *re-indexes* it (clean) — or must `ρ`/`w`/the gates be constructed
+  per-`i` from scratch (large, several sub-leaves)? Decompose accordingly.
 - **CHAIN-2b — the ±r chain (eq. 6.66).** Genuinely-new structure (no d=3 ancestor — d=3 collapses it to
   the 2-index degree-2 fact): `r` is the same up to sign along the chain, so `Mᵢ` fails full rank iff
   `r ⊥ C(Lᵢ)`. `Fin`-induction over chain edges using the (general) degree-2 closures.

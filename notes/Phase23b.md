@@ -32,9 +32,18 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = CHAIN-2a's linear-algebra core** (the per-candidate single-`i` reduction = re-index of
-`case_III_rank_certification`; recon 2026-06-18, design §(l) — see *Hand-off*); or **CHAIN-5/ENTRY**
-(CHAIN-5 gated on CHAIN-2 + ENTRY's extractor reshape). **The `G.ChainData n` `structure` + its
+**Next = a DESIGN-PASS to decompose CHAIN-2a's core, NOT a direct build** (coordinator finding
+2026-06-18, session #7 close): CHAIN-2a re-indexes `case_III_rank_certification`, which carries **~20
+hypotheses** (the `ρ` dual-functional gates `hρgate`/`hρe₀`/`hρGv` + the rank-certifying `w`-family
+`hwcard`/`hw`/`hwmem`). The landed `ChainData` + interior-split accessors (rows 236/237) supply the
+*graph-side* `(v,a,b,e_a,e_b)` tuple, but discharging those *linear-algebra* hyps at the per-`i` index
+is substantial — an opus build already **self-shrank** from it to the accessors (the 2nd consecutive
+infra commit feeding the unbuilt core). So the next step is the rows 27–29 move: a design-pass pinning
+CHAIN-2a's sub-leaves — **key open question:** does the d=3 path's already-general arm closer
+`case_III_arm_realization` discharge the certification hyps (so CHAIN-2a *re-indexes* it, clean), or
+must `ρ`/`w`/the gates be constructed per-`i` from scratch (large)? Then **CHAIN-2a's core** (the
+re-index of `case_III_rank_certification`; design §(l)); or **CHAIN-5/ENTRY** (CHAIN-5 gated on CHAIN-2
++ ENTRY's extractor reshape). **The `G.ChainData n` `structure` + its
 interior-split accessors LANDED 2026-06-18** (`Induction/Operations.lean`, the zeroth CHAIN-2 leaf —
 the length-`d` chain record `vtx`/`edge`/`e₀` + `vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`;
 `deg_two` settled via `0 < (i:ℕ)` interior guard + the predecessor edge `edge ⟨(i:ℕ)-1, _⟩`, d=3-map
@@ -253,9 +262,13 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next build = CHAIN-2a's linear-algebra core** (the zeroth-leaf `ChainData` record + its
-interior-split geometry accessors both landed 2026-06-18; design §(l)), or **CHAIN-5/ENTRY**
-(CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
+**Next = a DESIGN-PASS to decompose CHAIN-2a's core** (NOT a direct build — see *Current state*: an
+opus build self-shrank from it; `case_III_rank_certification`'s ~20 `ρ`/`w`/gate hyps must be
+discharged per-`i`; the rows 27–29 precedent). The `ChainData` record + interior-split accessors
+(rows 236/237) are landed, so the graph-side tuple is in hand; the design-pass settles whether
+CHAIN-2a *re-indexes* the already-general arm closer `case_III_arm_realization` or constructs the
+gates from scratch, and pins the sub-leaves. Then CHAIN-2a's core; or **CHAIN-5/ENTRY** (CHAIN-5 gated
+on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`),
   **decomposed at recon (design §(l)), which corrected the §(c) framing:** the `caseIIICandidate` /
