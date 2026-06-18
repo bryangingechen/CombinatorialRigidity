@@ -1073,3 +1073,14 @@ term reports "did not find an occurrence", and `module` mis-atomizes `c • x` a
 goal to `c⁻¹ = 0`. `inv_smul_eq_iff₀` sidesteps the nested-smul matching by rewriting the
 whole equation instead. Concrete instance:
 `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`, Phase 23b CHAIN-3 (h-4)).
+
+**Companion: pushing a *functional* through `c • x`.** The dual problem — closing
+`r (c • x) = 0` from `r x = 0` (or `c • r x`) — has the same `rw` failure: `rw [map_smul]`
+reports "did not find `?f (?c • ?x)`" when `x`'s type is reached through an `abbrev`'d
+carrier (`ScrewSpace k = ⋀[ℝ]^k …`), because the smul instance on `x` and the one
+`r.map_smul` carries (through `r`'s domain `ScrewSpace k`) are defeq-but-distinct instances.
+Even a *concrete* `have hsmul := r.map_smul c x; rw [hsmul]` fails on the identical-printing
+pattern. Close with the **term** `exact (r.map_smul c _).trans (by rw [hC, smul_zero])` — term-mode
+`exact` unifies the smul instances up to defeq. Concrete instance:
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean`, Phase 23b CHAIN-4d).
+See FRICTION [idiom] *Pushing a functional through a `c • x` on an `abbrev`'d carrier…*.

@@ -127,6 +127,12 @@ to be re-derived by re-reading entries later.
 - **Proposed fix:** use the `ContinuousLinearEquiv.*` forms; to feed a `≃ₗ` API (`Submodule.{map, mem_map_equiv}`) coerce via `.toLinearEquiv` with an explicit `( … : A →ₗ[ℝ] B)` ascription.
 - **Status:** idiom.
 
+### [idiom] Pushing a functional through a `c • x` on an `abbrev`'d carrier (`ScrewSpace k = ⋀^k …`): `rw [map_smul]` mis-fires on the smul instance — close with `exact (r.map_smul c _).trans …`
+- **Where it bit:** `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean`, CHAIN-4d). After `rw [← hc]` (`hc : c • complementIso … = ⟨extensor p, …⟩`) the goal was `r (c • complementIso …) = 0` and the `r (extensor p)`-as-witness-join contradiction needed `r (c • x) = c • r x`.
+- **Friction:** `rw [map_smul]` reported "did not find an occurrence of `?f (?c • ?x)`", and even a *concrete* `have hsmul := r.map_smul c x; rw [hsmul]` failed on the literally-identical-printing pattern — the smul on `x : ⋀^k (Fin (k+2) → ℝ)` (from `← hc`) and the smul `r.map_smul` reaches through `r`'s domain `ScrewSpace k` are different `SMul` *instances*, defeq via the `abbrev` but not syntactically equal, so `rw` chokes.
+- **Fix:** close with the term `exact (r.map_smul c _).trans (by rw [hC, smul_zero])` — `exact`'s elaboration unifies the smul instances up to defeq where `rw`'s syntactic match cannot. Same family as the proof-irrelevant-arg case (the `exact lemma _ _`-over-trailing-`rw` idiom) and TACTICS-GOLF § 19 (the `⋀`-subtype nested-`•` `rw` mis-fire).
+- **Status:** idiom. **Lifted to:** TACTICS-GOLF § 19 (companion note).
+
 ### [idiom] Generalizing an in-place numeral-pinned `def` to implicit `{d}` and keeping a numeral consumer: `omega` mis-atomizes the two elaborations of the same applied term — use `linarith` / `simpa using h`
 - **Where it bit:** `finrank_sup_range_wedgeFixedLeft` (`Meet.lean`, CHAIN-3) after `wedgeFixedLeft`
   + `finrank_range_wedgeFixedLeft` were lifted from `Fin 4` to ambient `{d} (Fin (d+1))`. The `d=3`

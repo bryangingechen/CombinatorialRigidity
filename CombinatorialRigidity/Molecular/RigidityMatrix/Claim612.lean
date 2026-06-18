@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Molecular.MeetHodge
 public import CombinatorialRigidity.Mathlib.Data.Fintype.Card
 
 /-!
@@ -1423,6 +1424,72 @@ theorem exists_complementIso_ne_zero_of_homogeneousIncidence
       Subtype.ext hkept]
   exact extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct (n u) n' pi pj hpair
     hi_u hi_u' hj_u hj_u' r hC
+
+/-- **The witness panel-meet a nonzero screw functional fails to annihilate — the general-`d` form**
+(`lem:case-III-claim612-line-in-panel-union`, CHAIN-4d, the capstone of the Claim 6.12
+discriminator; Katoh–Tanigawa 2011 §6.4.1 eq. (6.45), Phase 23b). The `k = d − 1` generalization of
+the `d = 3` `exists_complementIso_ne_zero_of_homogeneousIncidence`: from a **nonzero** screw
+functional `r : Dual (ScrewSpace k)` and the homogeneous incidence data of `k + 2`
+linearly-independent homogeneous vectors `pbar` against `k + 1` independent panel normals `n`
+(`pbar 0` on every panel, `pbar i.succ` off panel `n i` only — the off-one-panel form
+`exists_homogeneousIncidence_of_normals_gen` emits), it produces a **discriminating index**
+`u : Fin (k + 1)` and a line `L` in panel `Π(n u)` whose **panel-meet** `C(L) = complementIso
+(n u ∧ n')` the functional `r` does *not* annihilate.
+
+The assembly of three landed pieces (no residual openness):
+* **CHAIN-4c** `case_III_claim612_gen` supplies a witness join `omitTwoExtensor pbar (ne_of_lt q.2)`
+  with `r(·) ≠ 0` (the `D`-span existential — only `LinearIndependent ℝ pbar` is used, no affine
+  independence, §(i) D-span finish).
+* **CHAIN-4b** `exists_line_data_of_homogeneousIncidence_gen` exhibits the join line `L = p̄ᵢ … p̄ⱼ`
+  inside panel `Π(n u)` with a second hyperplane `n'`: a discriminating index `u`, the second
+  normal `n'` (independent from `n u`), the `k` kept points `p : Fin k` spanning `L`
+  (`LinearIndependent ℝ p`, each `⬝ᵥ`-orthogonal to both `n u` and `n'`), and the join identity
+  `omitTwoExtensor pbar = extensor p`.
+* **CHAIN-3 (h-4)** `extensor_join_proportional_complementIso_meet` (the `k`-form, `MeetHodge.lean`)
+  is the per-line join=meet duality: `∃ c, c • complementIso ⟨extensor ![n u, n'], _⟩ = extensor p`.
+  So `r(complementIso ⟨extensor ![n u, n'], _⟩) = 0` forces `r(extensor p) = 0`, i.e. `r` kills
+  the witness join — contradicting CHAIN-4c. (The contrapositive of the `d = 3`
+  `extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, lifted to the `Fin k` point family.)
+
+Note the `complementIso` is `(j := 2)`, NOT `(j := d − 1)` — a line has exactly **2** normals at
+every `d` (the §(f)/§(i) correction), so the panel-meet is the meet of 2 hyperplanes. The
+dot-product incidence of CHAIN-4b is converted to the standard-basis pairing CHAIN-3 (h-4) takes via
+`Pi.basisFun_toDual_apply`. The `Fin 3` discriminator
+(`exists_complementIso_ne_zero_of_homogeneousIncidence`) stays its own green `d = 3` body
+(re-pointing it at this lemma's `k := 2` instance is the not-forced h-5 decision); the consumer
+`case_III_candidate_dispatch` is unchanged. Graph-free; the `r`/`pbar`/`n` data is supplied by the
+producer at instantiation. -/
+theorem exists_complementIso_ne_zero_of_homogeneousIncidence_gen {k : ℕ}
+    {r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hp : LinearIndependent ℝ pbar)
+    {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n)
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (hi : ∀ i : Fin (k + 1), ∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) :
+    ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ), LinearIndependent ℝ ![n u, n'] ∧
+      r (complementIso (k := k) (j := 2) (by omega)
+        ⟨extensor ![n u, n'], extensor_mem_exteriorPower _⟩) ≠ 0 := by
+  -- CHAIN-4c (Claim 6.12): a witness join `omitTwoExtensor pbar (ne_of_lt q.2)` with `r(·) ≠ 0`.
+  obtain ⟨q, hq⟩ := case_III_claim612_gen hr hp
+  -- CHAIN-4b: the per-join line data — the discriminating index `u`, second normal `n'`, and the
+  -- `k` kept points `p` (LI, each `⬝ᵥ`-orthogonal to both `n u`, `n'`) spanning the join line.
+  obtain ⟨u, n', p, hpair, hpLI, hpu, hpu', hkept⟩ :=
+    exists_line_data_of_homogeneousIncidence_gen hn hp h0 hi q
+  refine ⟨u, n', hpair, fun hC => hq ?_⟩
+  -- Contrapositive of the per-line join=meet duality (CHAIN-3 (h-4)): `r(C(L)) = 0` forces
+  -- `r(extensor p) = 0`, and `omitTwoExtensor pbar = extensor p`, so `r` kills the witness join.
+  obtain ⟨c, hc⟩ := extensor_join_proportional_complementIso_meet ![n u, n'] p hpLI hpair
+    (fun i j => by
+      rw [Pi.basisFun_toDual_apply]; fin_cases j
+      · exact hpu i
+      · exact hpu' i)
+  -- `r` applied to the proportionality `c • C(L) = extensor p` (`r.map_smul`) sends the witness
+  -- join `omitTwoExtensor pbar = extensor p` to `c • r(C(L)) = c • 0 = 0`. Close with the
+  -- `r.map_smul c _` term (`exact … .trans …`), not `rw [map_smul]`: the latter mis-fires on the
+  -- `⋀^k`↔`ScrewSpace k` smul instance (defeq carriers, but `rw` is syntactic).
+  rw [show (⟨omitTwoExtensor pbar (ne_of_lt q.2), extensor_mem_exteriorPower _⟩ :
+        ⋀[ℝ]^k (Fin (k + 2) → ℝ)) = ⟨extensor p, extensor_mem_exteriorPower _⟩ from
+      Subtype.ext hkept, ← hc]
+  exact (r.map_smul c _).trans (by rw [hC, smul_zero])
 
 end BodyHingeFramework
 
