@@ -1562,6 +1562,81 @@ concrete; no dependency on un-landed work).
 
 ---
 
+### (k) OD-7 `hcontract_k` decomposition — buildable leaves with exact signatures
+
+**Status:** recon 2026-06-18 (read-only Plan recon, coordinator-verified against the
+landed source — the actual `def`/`theorem` bodies in `Theorem55.lean`/`CaseI.lean`/
+`Coupling.lean`/`Pinning.lean`/`GenericityDevice.lean`/`PanelLayer.lean`/
+`CaseIII/Realization.lean`). `hcontract_k` is the **last** open OD-7 producer (the
+Case-I rigid-subgraph dispatch); its general-`k` lift is **5 leaf commits (6 if h65
+splits)**, of which exactly **one is genuinely-new** and the rest are numeral passes.
+
+The `hcontract_k` slot (`theorem_55_minimalKDof_k_all_k`, `Theorem55.lean:2379`) is
+filled at `k=2` (`:2471–2495`) by splitting `c=0` (→ `case_I_dispatch :2290`) vs
+`c>0` (manual: `case_I_realization_all_k :2194` simple / `case_I_realization_nonsimple
+:1899` non-simple / `deficiency_eq_zero… :Contraction:1114` + `hasPanelRealization_of_
+generic`). `case_I_dispatch` further routes to `all_k` + `case_I_realization_h65 :691`
+(KT Lemma 6.5 all-contractions-non-simple arm). So the FOUR grade-2-pinned producers
+(`hn : screwDim 2`, `HasGenericFullRankRealization 2`) are `all_k`/`nonsimple`/`h65`/
+`dispatch`. **The `_all_k` name is a TRAP** — its `{k:ℤ}` is the **dof** variable
+(all-dof, still grade-2), NOT grade-general.
+
+**Per-producer classification (all reach-ins read at source):**
+- `case_I_realization_all_k` → **verbatim numeral pass**, independent. Zero inline
+  `Fin 4`; every reach-in already grade-parametric — `couple_geometry_of_isProperRigid
+  Subgraph` (`Coupling:562`, grade-agnostic), the coupler `hasGenericFullRank
+  Realization_of_couple_blockTriangular_ofNormals_set_kdof` (`CaseI:1310`, `Fin (k+2)`/
+  `screwDim k`/`extProj (k:=k)`), `exists_rankPolynomial_of_IH_relabel_linking_set_
+  proj` (`CaseI:921`). Subst `screwDim 2→k`, `HGFRR 2→k`; add `hk:1≤k`, `[NeZero k]`
+  where threaded.
+- `case_I_realization_nonsimple` → numeral pass **+ one swap**: its `Fin 4`
+  `exists_linearIndependent_extensor_pair_perp` (`PanelLayer:546`) is itself the
+  `k:=2` wrapper of the landed grade-general `…_perp_grade` (`PanelLayer:466`) — swap
+  to `_grade`. All other reach-ins (`theorem_55_base`, the splice/coupling/B2 bricks)
+  already `BodyHingeFramework k`/`screwDim k`/`extProj (k:=k)`.
+- `case_I_realization_h65` → numeral pass over LEAF-0 + lifting the four private
+  `case_I_h65_*` helpers (`:590–664`, `BodyHingeFramework 2→k`); **may split** (the
+  helpers were extracted to dodge a §38 `ScrewSpace 2` elaboration budget — the
+  `ScrewSpace k` carrier can re-trip it). Its load-bearing bricks (`triLI_subpairs`,
+  `normalsJoin_pair_linearIndependent_of_triLI`, `exists_independent_pinned_two_edge_
+  span_full`, `hasGenericFullRankRealization_of_rigidOn_ofNormals`) are grade-general.
+- `case_I_dispatch` + the c>0 manual-dispatch logic → **verbatim numeral pass** (pure
+  `by_cases` plumbing over the three producers; pins in signature only).
+
+**LEAF-0 — the one genuinely-new piece (coordinator-verified gap):**
+`linearIndependent_normals_of_algebraicIndependent_triple` — a **fixed-3-row** LI at
+`Fin (k+2)`:
+```lean
+lemma linearIndependent_normals_of_algebraicIndependent_triple
+    {k : ℕ} {α : Type*} {q : α × Fin (k + 2) → ℝ} (hq : AlgebraicIndependent ℚ q)
+    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    LinearIndependent ℝ (![fun i => q (a,i), fun i => q (b,i), fun i => q (c,i)]
+      : Fin 3 → Fin (k+2) → ℝ)
+```
+**Why new, not a numeral pass:** the landed `…_general` (`Realization:100`) gives LI
+of a **`Fin (k+1)`-row** family from `k+1` injective vertices; the `Fin 4` triple
+(`:163`) is its `k:=2` instance (3 = k+1 at k=2). h65 has only a **degree-2 vertex +
+2 neighbours = 3 vertices**, so for `k≥3` the `k+1`-vertex selector is unavailable —
+the triple needs its OWN lemma. Proof: the same `AlgebraicIndependent.aeval_ne_zero`
++ minor-det technique as `…_general`, restricted to a fixed `Fin 3`/3×3 minor.
+Routine. Home: `CaseIII/Realization.lean` beside `…_general`; the `Fin 4`
+`linearIndependent_normals_of_algebraicIndependent` re-derives as its `k:=2` instance
+(so the still-`k=2` consumer `case_III_candidate_dispatch` is unaffected).
+
+**Build order + count:** `case_I_realization_all_k_gen` (1st, independent, cleanest
+numeral pass) → `case_I_realization_nonsimple_gen` (numeral pass + `_perp_grade`
+swap) → LEAF-0 triple-LI → `case_I_realization_h65_gen` (consumes LEAF-0; may split)
+→ `case_I_dispatch_gen` + the general `hcontract_k` wire-up (closes OD-7; the `k=2`
+`theorem_55_minimalKDof_k` filler stays green as the `k:=2` instance, blueprint pins
+unmoved). **5 commits min, 6 if h65 splits.** **Clause-(ii) flag:** exactly one
+genuinely-new leaf (LEAF-0, small/low-risk); **no motive/IH change, no grade-2-only
+splice/coupling/extensor brick** surfaced — the `Fin 4` literals in `nonsimple`/`h65`
+are presentation pins over grade-general bricks, the landed `hbase_k`/`hcut_k`
+pattern. Caveats: `[NeZero k]` where routing through `hasPanelRealization_of_generic`;
+h65 §38 `ScrewSpace k` budget may force a per-helper split.
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
