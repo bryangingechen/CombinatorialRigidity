@@ -311,23 +311,26 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     HasPanelRealization 2 n G :=
   theorem_55_base_producer_single_edge_gen (k := 2) (by norm_num) G hxy hVG hEG hl hG
 
-/-- **Theorem 5.5 base producer, empty arm — general-position form** (`lem:theorem-55-base`;
-`hbase` carry's GP conjunct, Phase 22i L3b). The GP-conjunct companion of
-`theorem_55_base_producer_empty`: a *simple* minimal-`k`-dof graph `G` with **empty edge set**
+/-- **Theorem 5.5 base producer, empty arm — general-position form, general grade `k`**
+(`lem:theorem-55-base`; `hbase` carry's GP conjunct, Phase 22i L3b / Phase 23b OD-7 tail). The
+general-grade lift of `theorem_55_base_producer_empty_gp`, the GP-conjunct companion of
+`theorem_55_base_producer_empty_gen`: a *simple* minimal-`k`-dof graph `G` with **empty edge set**
 (`E(G) = ∅`, trichotomy arm (i)) carries a *generic* full-rank panel realization
 (`HasGenericFullRankRealization`) at rank `D(|V|−1) − def = 0`.
 
 The framework `ofNormals G ends q₀` is built at an injective algebraically-independent seed `q₀`
 (`exists_injective_algebraicIndependent_real`), which is a non-root of the general-position
-polynomial (`exists_generalPosition_polynomial`), so the panel normals are in general position and
-algebraically independent. The rigidity-row span is `⊥` (no links fire, `E(G) = ∅`), so the rank is
-`0 = screwDim 2 * (|V|−1) − def` (the empty arm's `def = screwDim 2 * (|V|−1)`). Link-recording is
-vacuous (`E(G) = ∅`). -/
-theorem theorem_55_base_producer_empty_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hn : Graph.bodyBarDim n = screwDim 2)
+polynomial (`exists_generalPosition_polynomial`, already general-`k`), so the panel normals are in
+general position and algebraically independent. The rigidity-row span is `⊥` (no links fire,
+`E(G) = ∅`), so the rank is `0 = screwDim k * (|V|−1) − def` (the empty arm's
+`def = screwDim k * (|V|−1)`). Link-recording is vacuous (`E(G) = ∅`). **No `Fin 4`/`⋀²ℝ⁴`
+geometry** — verbatim numeral pass over the d=3 body (`Fin 4 → Fin (k + 2)`, `screwDim 2 → screwDim
+k`). The d=3 `theorem_55_base_producer_empty_gp` is now its `k := 2` wrapper. -/
+theorem theorem_55_base_producer_empty_gp_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hE : E(G) = ∅) (hne : V(G).Nonempty)
     (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
   -- No edge links in `G` (since `E(G) = ∅`).
   have hnoLink : ∀ e u v, ¬ G.IsLink e u v := by
@@ -339,17 +342,17 @@ theorem theorem_55_base_producer_empty_gp [DecidableEq β] [Finite α] [Finite �
   set ends : β → α × α := fun _ => (w, w) with hends_def
   -- The general-position polynomial and an algebraically-independent injective seed `q₀`.
   obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
-    PanelHingeFramework.exists_generalPosition_polynomial (k := 2) G ends
+    PanelHingeFramework.exists_generalPosition_polynomial (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
     exact fun a b hab => hf (Nat.cast_injective hab)
-  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (2 + 2))
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
   have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
     MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
-  have hgp : (PanelHingeFramework.ofNormals (k := 2) G ends q₀).IsGeneralPosition :=
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  set F := (PanelHingeFramework.ofNormals (k := 2) G ends q₀).toBodyHinge with hF
+  set F := (PanelHingeFramework.ofNormals (k := k) G ends q₀).toBodyHinge with hF
   have hFg : F.graph = G := rfl
   -- `rigidityRows F = ∅` (no links), so `span = ⊥` and `finrank = 0`.
   have hrows : F.rigidityRows = ∅ := by
@@ -358,7 +361,7 @@ theorem theorem_55_base_producer_empty_gp [DecidableEq β] [Finite α] [Finite �
     exact hnoLink e u v (hFg ▸ hlink)
   have hfinrank : Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) = 0 := by
     rw [hrows, Submodule.span_empty, finrank_bot]
-  refine ⟨PanelHingeFramework.ofNormals (k := 2) G ends q₀,
+  refine ⟨PanelHingeFramework.ofNormals (k := k) G ends q₀,
     PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_, ?_, halg⟩
   · -- Rank conjunct: target = 0.
     have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) := hG.1
@@ -369,41 +372,61 @@ theorem theorem_55_base_producer_empty_gp [DecidableEq β] [Finite α] [Finite �
     intro e u v hlink
     exact absurd hlink (hnoLink e u v)
 
-/-- **Theorem 5.5 base producer, single-edge arm — general-position form** (`lem:theorem-55-base`;
-`hbase` carry's GP conjunct, the one base arm where the GP conjunct does real work, Phase 22i L3b).
-The GP-conjunct companion of `theorem_55_base_producer_single_edge`: a *simple* minimal-`1`-dof
-graph `G` with `V(G) = {x, y}` (`x ≠ y`) and `E(G) = {e}` (a single hinge joining distinct bodies,
-trichotomy arm (ii)) carries a *generic* full-rank panel realization
-(`HasGenericFullRankRealization`) at rank `D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`).
+/-- **Theorem 5.5 base producer, empty arm — general-position form** (`lem:theorem-55-base`;
+`hbase` carry's GP conjunct, Phase 22i L3b; the `k = 2` wrapper of
+`theorem_55_base_producer_empty_gp_gen`). The GP-conjunct companion of
+`theorem_55_base_producer_empty`: a *simple* minimal-`k`-dof graph `G` with **empty edge set**
+(`E(G) = ∅`, trichotomy arm (i)) carries a *generic* full-rank panel realization
+(`HasGenericFullRankRealization`) at rank `D(|V|−1) − def = 0`. The work is the grade-general
+`theorem_55_base_producer_empty_gp_gen`; this wrapper specializes `k := 2` (`Fin 4`,
+`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+theorem theorem_55_base_producer_empty_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim 2)
+    (G : Graph α β) (hE : E(G) = ∅) (hne : V(G).Nonempty)
+    (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
+  theorem_55_base_producer_empty_gp_gen (k := 2) hn G hE hne hG
+
+/-- **Theorem 5.5 base producer, single-edge arm — general-position form, general grade `k`**
+(`lem:theorem-55-base`; `hbase` carry's GP conjunct, the one base arm where the GP conjunct does
+real work, Phase 22i L3b / Phase 23b OD-7 tail). The general-grade lift of
+`theorem_55_base_producer_single_edge_gp`, the GP-conjunct companion of
+`theorem_55_base_producer_single_edge_gen`: a *simple* minimal-`1`-dof graph `G` with
+`V(G) = {x, y}` (`x ≠ y`) and `E(G) = {e}` (a single hinge joining distinct bodies, trichotomy arm
+(ii)) carries a *generic* full-rank panel realization (`HasGenericFullRankRealization`) at rank
+`D(|V|−1) − def = D·1 − 1 = D − 1`.
 
 The genuine GP construction: the framework `ofNormals G ends q₀` (with `ends := fun _ => (x, y)`)
 is built at an injective algebraically-independent seed `q₀`
 (`exists_injective_algebraicIndependent_real`), a non-root of the general-position polynomial
-(`exists_generalPosition_polynomial`). General position forces the single hinge's supporting
-extensor nonzero (`supportExtensor_ne_zero_of_isGeneralPosition`, since `x ≠ y`), and the
-single-hinge-row block has rank `D − 1` (`span_panelRow_linking_eq_rigidityRows` +
-`finrank_span_panelRow_edge`). Link-recording holds since every link is at `e = xy` and `ends e =
-(x, y)`. -/
-theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+(`exists_generalPosition_polynomial`, already general-`k`). General position forces the single
+hinge's supporting extensor nonzero (`supportExtensor_ne_zero_of_isGeneralPosition`, since `x ≠ y`),
+and the single-hinge-row block has rank `D − 1` (`span_panelRow_linking_eq_rigidityRows` +
+`finrank_span_panelRow_edge`, both general-`k`). Link-recording holds since every link is at
+`e = xy` and `ends e = (x, y)`. Verbatim numeral pass over the d=3 body (`Fin 4 → Fin (k + 2)`,
+`Set.powersetCard (Fin 4) 2 → Set.powersetCard (Fin (k + 2)) k`, `screwDim 2 → screwDim k`), with
+`one_le_screwDim` replacing the d=3 `decide`-cast `1 ≤ screwDim 2`. The d=3
+`theorem_55_base_producer_single_edge_gp` is now its `k := 2` wrapper. -/
+theorem theorem_55_base_producer_single_edge_gp_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
     (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :
-    PanelHingeFramework.HasGenericFullRankRealization 2 n G := by
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
   set ends : β → α × α := fun _ => (x, y) with hends_def
   -- The general-position polynomial and an algebraically-independent injective seed `q₀`.
   obtain ⟨Qgp, hQgp_ne, hQgprat, hQgp_pos⟩ :=
-    PanelHingeFramework.exists_generalPosition_polynomial (k := 2) G ends
+    PanelHingeFramework.exists_generalPosition_polynomial (k := k) G ends
   have hQgpne : Qgp ≠ 0 := by
     obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
     refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
     exact fun a b hab => hf (Nat.cast_injective hab)
-  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (2 + 2))
+  obtain ⟨q₀, _, halg⟩ := exists_injective_algebraicIndependent_real (α × Fin (k + 2))
   have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 :=
     MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent halg hQgprat hQgpne
-  have hgp : (PanelHingeFramework.ofNormals (k := 2) G ends q₀).IsGeneralPosition :=
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
-  set Q := PanelHingeFramework.ofNormals (k := 2) G ends q₀ with hQ
+  set Q := PanelHingeFramework.ofNormals (k := k) G ends q₀ with hQ
   set F := Q.toBodyHinge with hF
   have hFg : F.graph = G := rfl
   -- Every link uses edge `e` (the only edge, `E(G) = {e}`).
@@ -442,11 +465,11 @@ theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Fi
     exact hFe_ne
   rw [← F.span_panelRow_linking_eq_rigidityRows hends hne_link]
   -- The linking subtype is exactly the `e`-rows (the only link is `e`).
-  have hrange : Set.range (fun i : {i : β × Set.powersetCard (Fin 4) 2
-        × Set.powersetCard (Fin 4) 2 //
+  have hrange : Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
+        × Set.powersetCard (Fin (k + 2)) k //
           F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} => F.panelRow ends i.val)
-      = Set.range (fun p : Set.powersetCard (Fin 4) 2
-          × Set.powersetCard (Fin 4) 2 => F.panelRow ends (e, p.1, p.2)) := by
+      = Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+          × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2)) := by
     ext φ; simp only [Set.mem_range]
     constructor
     · rintro ⟨⟨⟨e', t₁, t₂⟩, hlink⟩, rfl⟩
@@ -457,11 +480,27 @@ theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Fi
   conv_lhs => rw [hrange]
   rw [F.finrank_span_panelRow_edge (huv := by simp [hends_def, hxy])
       (hne := by simpa [hends_def] using hFe_ne)]
-  -- Target: `screwDim 2 * (ncard - 1 : ℤ) - deficiency n = screwDim 2 - 1`.
+  -- Target: `screwDim k * (ncard - 1 : ℤ) - deficiency n = screwDim k - 1`.
   have hdef : (G.deficiency n : ℤ) = 1 := hG.1
-  rw [Nat.cast_sub (by decide : 1 ≤ screwDim 2)]
+  rw [Nat.cast_sub one_le_screwDim]
   push_cast [hVcard, hdef]
   ring
+
+/-- **Theorem 5.5 base producer, single-edge arm — general-position form** (`lem:theorem-55-base`;
+`hbase` carry's GP conjunct, the one base arm where the GP conjunct does real work, Phase 22i L3b;
+the `k = 2` wrapper of `theorem_55_base_producer_single_edge_gp_gen`). The GP-conjunct companion of
+`theorem_55_base_producer_single_edge`: a *simple* minimal-`1`-dof graph `G` with `V(G) = {x, y}`
+(`x ≠ y`) and `E(G) = {e}` (a single hinge joining distinct bodies, trichotomy arm (ii)) carries a
+*generic* full-rank panel realization (`HasGenericFullRankRealization`) at rank
+`D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`). The work is the grade-general
+`theorem_55_base_producer_single_edge_gp_gen`; this wrapper specializes `k := 2` (`Fin 4`,
+`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (G : Graph α β) {x y : α} {e : β}
+    (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
+    (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :
+    PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
+  theorem_55_base_producer_single_edge_gp_gen (k := 2) G hxy hVG hEG hl hG
 
 /-- **Theorem 5.5 base producer, trichotomy dispatch** (`lem:theorem-55-base-producer`;
 `hbase` carry, Phase 22i L3b). For a minimal-`k`-dof-graph `G` with `|V(G)| ≤ 2` (the base
