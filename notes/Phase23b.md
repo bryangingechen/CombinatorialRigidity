@@ -407,44 +407,27 @@ checklist* `[x]` entry above (the canonical leaf-status home), and the construct
 git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the BlueprintExposition CHAIN-3 entry. The duality
 KT leaves implicit (`extensor_join_proportional_complementIso_meet`) is the CHAIN-3 ledger entry.
 
-**Landed OD-7 (four-producer tail) bricks** (`Theorem55.lean`/`PanelLayer.lean`/`Extensor.lean`/`GenericityDevice.lean`):
-- `case_I_realization_all_k_gen` (2026-06-18, the `hcontract_k` 1st leaf, general grade — opens the
-  Case-I dispatch decomposition). Verbatim numeral pass over the d=3 `case_I_realization_all_k`
-  (`screwDim 2 → screwDim k`, `HGFRR 2 → … k`, dof `k → c`); all four reach-ins
-  (`couple_geometry_of_isProperRigidSubgraph`, `hasGenericRealization_transport_ends`,
-  `exists_rankPolynomial_of_IH_relabel_linking_set_proj`, the coupler `…_kdof`) already
-  grade-parametric; no `[NeZero k]`/`hk` threaded. d=3 lemma now its `k:=2` wrapper, blueprint pin
-  `lem:case-I-realization` unmoved (consumers at `:2308`/`:2484`). Axiom-clean; §58 idiom.
-- `case_I_realization_nonsimple_gen` (2026-06-18, the `hcontract_k` 2nd leaf, general grade). Numeral
-  pass over the d=3 `case_I_realization_nonsimple` (dof `k → c`, `screwDim 2 → screwDim k`,
-  `Fin 4 → Fin (k+2)`, `ScrewSpace/BodyHingeFramework 2 → k`, `extProj (k:=2) → (k:=k)`) **plus the
-  single grade-2-only swap** `exists_linearIndependent_extensor_pair_perp → …_perp_grade hk` (adds
-  `hk : 1 ≤ k`; the `_grade` form returns `p q : Fin k → Fin (k+2) → ℝ`, matching `ExtensorInPanel`'s
-  `Fin k` point family). All other reach-ins (`theorem_55_base`, splice/coupling/B2 bricks) already
-  grade-parametric. d=3 lemma now its `k:=2` wrapper, blueprint pin
-  `lem:case-I-realization-nonsimple` unmoved (consumers at `:2347`/`:2523`). Axiom-clean; §58 idiom.
-- `linearIndependent_normals_of_algebraicIndependent_triple` (2026-06-18, the `hcontract_k` **LEAF-0** —
-  the *one* genuinely-new piece, `CaseIII/Realization.lean` beside `…_general`, `hk : 1 ≤ k`). Fixed-3-row
-  LI of `![q(a,·),q(b,·),q(c,·)] : Fin 3 → Fin (k+2) → ℝ` from alg-independence + three distinctnesses.
-  **New, not a numeral pass:** `…_general` gives `k+1` rows from `k+1` vertices, but h65 has only 3, so
-  for `k≥3` its selector is unavailable. Proof = the `…_general` det-polynomial route restricted to a
-  fixed `3×3` minor (`Fin.castLE (3≤k+2)` column selector; route detail in design §(k) + git). The `Fin 4`
-  d=3 `…_algebraicIndependent` is now its `k:=2` instance; no blueprint pin (dispatch-internal).
-  Axiom-clean; no friction (verbatim mirror of `…_general`).
-- `case_cut_edge_realization{,_gp}_gen` (2026-06-18, **completes `hcut_k`** — both conjuncts) — verbatim
-  numeral passes over the d=3 bodies (grade `2→k`, `Fin 4 → Fin (k+2)`, `ScrewSpace/screwDim 2 → k`,
-  `exists_extensor_in_two_panels → …_grade`, dof `k → c`); all reach-ins already grade-parametric, no
-  `[NeZero k]` (no slot-0 rescale). d=3 lemmas now `k:=2` wrappers, blueprint pins unmoved. §58 idiom.
-- `theorem_55_base_producer_gen` + the five `_gen` arms
-  `theorem_55_base_producer_{empty,single_edge,parallel_pair}{,_gp}_gen` (2026-06-18, completes
-  `hbase_k`) — trichotomy dispatch (`isMinimalKDof_ncard_le_two_trichotomy`) over verbatim numeral lifts
-  of the d=3 arms (grade `2→k`, dof `k→c`; parallel-pair is the only geometric arm, its GP conjunct
-  vacuous). d=3 lemmas all now `k:=2` wrappers, blueprint pins unmoved.
-- `hasPanelRealization_of_generic` (M4 consumer) + `exists_extensor_eq_panelSupportExtensor_gen` (the
-  M4-forget meet-decomposition reach-in), both 2026-06-18, `[NeZero k]` — the decomposition routes
-  through the CHAIN-3 (h-4) duality `extensor_join_proportional_complementIso_meet` (confirming caveat
-  (e): the duality *is* the only M4-forget d=3 reach-in), with slot-0 rescale `extensor_update_smul`
-  (new, `Extensor.lean`). d=3 lemmas now `k:=2` wrappers; both M4 halves general-`k`.
+**Landed OD-7 (four-producer tail) bricks** (all 2026-06-18, verbatim numeral passes over the d=3
+bodies unless noted — `screwDim/ScrewSpace 2→k`, `Fin 4→Fin (k+2)`, dof `k→c`; d=3 lemmas now `k:=2`
+wrappers, blueprint pins unmoved; axiom-clean, §58 idiom; route detail in git + commit messages +
+design §(k)):
+- **`hbase_k`** — `theorem_55_base_producer_gen` + its five `_gen` arms (`theorem_55_base_producer_
+  {empty,single_edge,parallel_pair}{,_gp}_gen`); trichotomy dispatch via `isMinimalKDof_ncard_le_two_
+  trichotomy` (parallel-pair the only geometric arm, its GP conjunct vacuous).
+- **`hcut_k`** — `case_cut_edge_realization{,_gp}_gen` (both conjuncts; GP routes through the GP-poly /
+  `ofNormals` machinery, already grade-parametric).
+- **M4** (`[NeZero k]`) — `hasPanelRealization_of_generic` (consumer) +
+  `exists_extensor_eq_panelSupportExtensor_gen` (forget reach-in), which routes through the CHAIN-3
+  (h-4) duality + new slot-0 rescale `extensor_update_smul` (confirming caveat (e): the duality *is*
+  the only M4-forget d=3 reach-in).
+- **`hcontract_k` leaves 1–2** — `case_I_realization_all_k_gen`; `case_I_realization_nonsimple_gen`
+  (the latter +1 swap `exists_linearIndependent_extensor_pair_perp → …_perp_grade hk`, adds `hk:1≤k`).
+- **`hcontract_k` LEAF-0** — `linearIndependent_normals_of_algebraicIndependent_triple` (`hk:1≤k`,
+  `CaseIII/Realization.lean`): the *one genuinely-new* brick (fixed-3-row LI `![q(a,·),q(b,·),q(c,·)] :
+  Fin 3 → Fin (k+2) → ℝ`; **not** a numeral pass — `…_general` gives `k+1` rows, h65 has only 3
+  vertices, so for `k≥3` its selector is unavailable). **Consumed by `h65` (next leaf).** Route = the
+  `…_general` det-poly argument on a fixed `3×3` minor (`Fin.castLE (3≤k+2)`; design §(k)). d=3 `Fin 4`
+  `…_algebraicIndependent` now its `k:=2` instance; no blueprint pin (dispatch-internal).
 
 **Landed CHAIN-4 bricks** (CHAIN-4 CLOSED 2026-06-18, `RigidityMatrix/Claim612.lean`; leaf names + per-leaf
 verdicts are the *CHAIN leaf checklist* `[x]` CHAIN-4a–4d entries above — the canonical home; construction
