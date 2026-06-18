@@ -264,6 +264,32 @@ theorem exists_affineIndependent_panel_incidence :
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
   · refine ⟨?_, ?_, ?_⟩ <;> simp [homogenize, Fin.snoc, dotProduct, Fin.sum_univ_succ]
 
+/-- **The kept-points tabulation of the `D` spanning joins, general `d`**
+(`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1
+eqs. (6.45)/(6.67), Phase 23b CHAIN-4). The general-`d` (`d = e + 1`, ambient `Fin (e+2)`) lift of
+the `Fin 4` `omitTwoExtensor_eq_extensor_kept`: for a homogeneous family
+`pbar : Fin (e+2) → Fin (e+2) → ℝ` and a join `q : {q // q.1 < q.2}` (the omitted pair), the
+spanning join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join `extensor (fun k => pbar
+(emb k))` of the `e = d − 1` increasing complement indices `emb : Fin e ↪o Fin (e+2)` of
+`{q.1, q.2}` — the `d − 1` points the join's line `L` actually spans (KT p. 698: a line's
+homogeneous span is `(d−1)`-dimensional, so the point-join is an `(d−1)`-extensor; at `d = 3`,
+`e = 2`, recovering the two-point `Fin 4` form). Each kept index differs from both omitted ones
+(`orderEmbOfFin_mem` lands in the complement). Graph-free; pure `Finset.orderEmbOfFin` arithmetic —
+the omit-two extensor is *by definition* the extensor along the complement enumeration, so the
+identity is `rfl`. -/
+theorem omitTwoExtensor_eq_extensor_kept_gen {e : ℕ} (pbar : Fin (e + 2) → Fin (e + 2) → ℝ)
+    (q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2}) :
+    ∃ emb : Fin e ↪o Fin (e + 2), (∀ k, emb k ≠ q.1.1 ∧ emb k ≠ q.1.2) ∧
+      omitTwoExtensor pbar (ne_of_lt q.2) = extensor (fun k => pbar (emb k)) := by
+  obtain ⟨⟨i, j⟩, hij⟩ := q
+  refine ⟨(({i, j} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair (ne_of_lt hij)),
+    fun k => ?_, rfl⟩
+  -- The increasing enumeration of `{i, j}ᶜ` lands in the complement, so it never equals `i` or `j`.
+  have h := Finset.orderEmbOfFin_mem (({i, j} : Finset (Fin (e + 2)))ᶜ)
+    (card_compl_pair (ne_of_lt hij)) k
+  rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
+  exact h
+
 /-- **The kept-points tabulation of the six spanning joins** (`lem:case-III-claim612`, N3a/N3b
 glue; Katoh–Tanigawa 2011 §6.4.1 eq. (6.45), Phase 22g). For the four affinely-independent points
 `p : Fin 4 → ℝ³` of `exists_affineIndependent_panel_incidence` (N3a) and a join
@@ -278,28 +304,22 @@ two normals `{n_u, n'}` the per-line transfer
 (`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`) consumes.
 
 The six joins and their kept (complement) pairs: `(0,1)↦(2,3)`, `(0,2)↦(1,3)`, `(0,3)↦(1,2)`,
-`(1,2)↦(0,3)`, `(1,3)↦(0,2)`, `(2,3)↦(0,1)`. Graph-free; pure `Finset.orderEmbOfFin` arithmetic
-(`Finset.orderEmbOfFin_unique`) on `Fin 4`. -/
+`(1,2)↦(0,3)`, `(1,3)↦(0,2)`, `(2,3)↦(0,1)`. The `d = 3` (`e = 2`) homogenize-form instance of
+`omitTwoExtensor_eq_extensor_kept_gen` at `fun i => homogenize (p i)`, kept as the zero-regression
+`Fin 4` wrapper its caller (`case_III_claim612`) consumes. Graph-free; pure `Finset.orderEmbOfFin`
+arithmetic on `Fin 4`. -/
 theorem omitTwoExtensor_homogenize_eq_extensor_kept (p : Fin 4 → Fin 3 → ℝ)
     (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
     ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
       omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)
         = extensor ![homogenize (p c), homogenize (p d)] := by
-  obtain ⟨⟨i, j⟩, hij⟩ := q
-  -- The kept pair is the increasing enumeration `emb 0 < emb 1` of `{i, j}ᶜ` (`orderEmbOfFin`,
-  -- `StrictMono`); both differ from `i, j` (`orderEmbOfFin_mem` lands in the complement). The join
-  -- identity `omitTwoExtensor v = extensor (v ∘ emb) = extensor ![v (emb 0), v (emb 1)]` is then a
-  -- `funext`.
-  set emb := (({i, j} : Finset (Fin 4))ᶜ).orderEmbOfFin (card_compl_pair (ne_of_lt hij)) with hemb
-  have hmem : ∀ k : Fin 2, emb k ≠ i ∧ emb k ≠ j := by
-    intro k
-    have h := Finset.orderEmbOfFin_mem (({i, j} : Finset (Fin 4))ᶜ)
-      (card_compl_pair (ne_of_lt hij)) k
-    rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
-    exact ⟨(hemb ▸ h).1, (hemb ▸ h).2⟩
+  -- The homogenized family `fun i => homogenize (p i) : Fin 4 → ℝ⁴` is the bare-vector input of the
+  -- general kept-points tabulation; at `e = 2` the two kept indices `emb 0 < emb 1` form the pair.
+  obtain ⟨emb, hmem, heq⟩ := omitTwoExtensor_eq_extensor_kept_gen (e := 2)
+    (fun i => homogenize (p i)) q
   refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
-    (hmem 1).2, ?_⟩
-  rw [omitTwoExtensor]; congr 1; ext k; fin_cases k <;> rfl
+    (hmem 1).2, heq.trans ?_⟩
+  congr 1; ext k; fin_cases k <;> rfl
 
 /-- **A second panel normal through a line in `ℝ^{k+2}`** (`lem:case-III-claim612`, N3a/N3b glue;
 the general-`d` form, `k = d − 1`, ambient `Fin (k+2) = Fin (d+1)`). Given two points `pi, pj`
@@ -485,29 +505,22 @@ theorem exists_homogeneousIncidence_of_normals {n : Fin 3 → Fin 4 → ℝ}
 
 /-- **The kept-points tabulation of the six spanning joins, at the homogeneous-vector layer**
 (`lem:case-III-claim612`, the producer-direction (R1-affine) form; Katoh–Tanigawa 2011 §6.4.1
-eq. (6.45), Phase 22g). The bare-`pbar` analogue of `omitTwoExtensor_homogenize_eq_extensor_kept`:
-for a homogeneous family `pbar : Fin 4 → ℝ⁴` and a join `q : {q // q.1 < q.2}` (the omitted pair),
-the spanning join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join
+eq. (6.45), Phase 22g). The `d = 3` (`e = 2`) instance of `omitTwoExtensor_eq_extensor_kept_gen`,
+kept as the zero-regression `Fin 4` wrapper its callers (`exists_line_data_of_homogeneousIncidence`)
+consume: for a homogeneous family `pbar : Fin 4 → ℝ⁴` and a join `q : {q // q.1 < q.2}` (the omitted
+pair), the spanning join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join
 `extensor ![pbar c, pbar d]` of the two increasing complement indices `c < d` of `{q.1, q.2}` — the
-two points the join's line `p̄_c p̄_d` actually spans. The producer feeds `pbar` directly from
-`exists_homogeneousIncidence_of_normals` (no affine de-homogenization, §1.42 R1-affine), so the
-join-line lookup is stated against the bare family rather than `homogenize ∘ p`. Graph-free; pure
-`Finset.orderEmbOfFin` arithmetic (same `orderEmbOfFin_unique` computation as the affine form). -/
+two points the join's line `p̄_c p̄_d` actually spans (at `d = 3` the `d − 1 = 2` kept points form a
+genuine pair). The producer feeds `pbar` directly from `exists_homogeneousIncidence_of_normals` (no
+affine de-homogenization, §1.42 R1-affine). -/
 theorem omitTwoExtensor_eq_extensor_kept (pbar : Fin 4 → Fin 4 → ℝ)
     (q : {q : Fin 4 × Fin 4 // q.1 < q.2}) :
     ∃ c d : Fin 4, c < d ∧ c ≠ q.1.1 ∧ c ≠ q.1.2 ∧ d ≠ q.1.1 ∧ d ≠ q.1.2 ∧
       omitTwoExtensor pbar (ne_of_lt q.2) = extensor ![pbar c, pbar d] := by
-  obtain ⟨⟨i, j⟩, hij⟩ := q
-  set emb := (({i, j} : Finset (Fin 4))ᶜ).orderEmbOfFin (card_compl_pair (ne_of_lt hij)) with hemb
-  have hmem : ∀ k : Fin 2, emb k ≠ i ∧ emb k ≠ j := by
-    intro k
-    have h := Finset.orderEmbOfFin_mem (({i, j} : Finset (Fin 4))ᶜ)
-      (card_compl_pair (ne_of_lt hij)) k
-    rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at h
-    exact ⟨(hemb ▸ h).1, (hemb ▸ h).2⟩
+  obtain ⟨emb, hmem, heq⟩ := omitTwoExtensor_eq_extensor_kept_gen (e := 2) pbar q
   refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
-    (hmem 1).2, ?_⟩
-  rw [omitTwoExtensor]; congr 1; ext k; fin_cases k <;> rfl
+    (hmem 1).2, heq.trans ?_⟩
+  congr 1; ext k; fin_cases k <;> rfl
 
 /-- **The per-join witness line data from the homogeneous incidence** (`lem:case-III-claim612`, the
 "extract the witness line `L`" leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1

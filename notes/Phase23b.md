@@ -1,10 +1,11 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. **CHAIN-1 + CHAIN-3 are CLOSED.** CHAIN-4 is now in progress: its first brick
-landed (2026-06-18, this commit) — `exists_independent_perp_pair_gen` (`RigidityMatrix/Claim612.lean`),
-the general-`d` (ambient `Fin (k+2)`, `2 ≤ k`) lift of the "second normal through a line" lemma, with
-the `Fin 4` `exists_independent_perp_pair` re-derived as the `k := 2` wrapper (no blueprint pin moved,
-both `Fin 4` callers unchanged). CHAIN-1 = the `ιc`-block candidate augment +
+**Status:** open. **CHAIN-1 + CHAIN-3 are CLOSED.** CHAIN-4 is in progress: two bricks now landed —
+`exists_independent_perp_pair_gen` (the general-`d` second-normal-through-a-line) and, this commit
+(2026-06-18), the general-`d` kept-points tabulation `omitTwoExtensor_eq_extensor_kept_gen`
+(`RigidityMatrix/Claim612.lean`), with both `Fin 4` lemmas (`omitTwoExtensor_eq_extensor_kept`,
+`omitTwoExtensor_homogenize_eq_extensor_kept`) re-derived as `e := 2` wrappers (no blueprint pin,
+both callers unchanged). CHAIN-1 = the `ιc`-block candidate augment +
 `…candidateBlock_swap` (`RigidityMatrix/Basic.lean`), graph-free over `ScrewSpace k`. CHAIN-3 = the
 general-`d` per-line join=meet duality `extensor_join_proportional_complementIso_meet`
 (`MeetHodge.lean`), the `⋀^{d−1}W`-is-a-line route (full per-leaf detail in *Decisions made* +
@@ -27,21 +28,28 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-4 — first brick LANDED (2026-06-18, this commit): the general-`d` "second normal through a
-line".** `exists_independent_perp_pair_gen` (`RigidityMatrix/Claim612.lean`): ambient `Fin (k+2)`
-(`k = d−1`), `2 ≤ k`, two points `pi pj` of a line `L` both `⬝ᵥ`-orthogonal to one normal `n_u ≠ 0`
-⟹ a second independent normal `n'` of `L` (the CHAIN-3-finish recon §(f) "a line has exactly **2**
-normals at every `d`" fact, here only the `≥ 2` direction). Rank–nullity on the two-functional kernel
-`finrank ≥ (k+2)−2 = k ≥ 2 > 1 = dim span{n_u}` ⟹ proper superspace (`SetLike.exists_of_lt` +
-`LinearIndependent.pair_iff'`). The `d=3` `exists_independent_perp_pair` is now the `k := 2` wrapper
-— **no blueprint pin (this brick has none), both `Fin 4` callers
-(`exists_line_data_of_homogeneousIncidence`, `case_III_claim612`) unchanged.** The proof is a verbatim
-lift (`Fin 4 → Fin (k+2)`, `+ 2 ≤ k`, `finrank_pi` via `simp` not `rfl` at the variable dim). Gates
-green (full build 2824 jobs + lint clean, no warnings/sorry; axioms = the 3 standard). **CHAIN-4
-remainder:** the `Fin (d+1)` incidence (`exists_homogeneousIncidence_of_normals`, the `d+1`-point
-pattern — carries OD-4), `omitTwoExtensor_eq_extensor_kept` / `…_homogenize_…`,
-`exists_line_data_of_homogeneousIncidence`, `case_III_claim612`,
+**CHAIN-4 — second brick LANDED (2026-06-18, this commit): the general-`d` kept-points tabulation.**
+`omitTwoExtensor_eq_extensor_kept_gen` (`RigidityMatrix/Claim612.lean`): ambient `Fin (e+2)`
+(`d = e+1`), for the omitted pair `q` the join `omitTwoExtensor pbar (ne_of_lt q.2)` is the point-join
+`extensor (fun k => pbar (emb k))` of the `e = d−1` increasing complement indices
+`emb : Fin e ↪o Fin (e+2)`, each `≠ q.1, q.2` — the `d−1` points the line spans (KT p. 698; at `d=3`,
+`e=2`, the two-point pair). Proof is a one-line `refine ⟨…, rfl⟩` (the omit-two extensor is *by
+definition* the extensor along the complement enumeration) + the `orderEmbOfFin_mem`/`mem_compl`
+chain hoisted from the `Fin 4` body. **Both `Fin 4` lemmas** (`omitTwoExtensor_eq_extensor_kept`,
+`omitTwoExtensor_homogenize_eq_extensor_kept`) re-derived as `e := 2` wrappers (`emb 0 < emb 1` the
+pair, `heq.trans` a `![…]`-vs-`fun` `funext`); **no blueprint pin, both callers
+(`exists_line_data_of_homogeneousIncidence`, `case_III_claim612`) unchanged.** Gates green (full
+build 2824 jobs + lint clean, no warnings/sorry; axioms = the 3 standard). **CHAIN-4 remainder:** the
+`Fin (d+1)` incidence (`exists_homogeneousIncidence_of_normals`, the `d+1`-point pattern — carries
+OD-4), `exists_line_data_of_homogeneousIncidence`, `case_III_claim612` (reusing the general
+`span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1),
 `exists_complementIso_ne_zero_of_homogeneousIncidence` (consumes CHAIN-3's (h-4)).
+
+**Prior CHAIN-4 brick (2026-06-18): the general-`d` "second normal through a line".**
+`exists_independent_perp_pair_gen` (`RigidityMatrix/Claim612.lean`): ambient `Fin (k+2)` (`k = d−1`),
+`2 ≤ k`, two points of a line both `⬝ᵥ`-⊥ to one normal `n_u ≠ 0` ⟹ a second independent normal `n'`
+(rank–nullity on the two-functional kernel `≥ k ≥ 2 > 1`, proper superspace via `SetLike.exists_of_lt`
++ `LinearIndependent.pair_iff'`). `Fin 4` `exists_independent_perp_pair` = the `k := 2` wrapper.
 
 **CHAIN-1 — CLOSED** (2026-06-18): the `ιc`-block candidate augment
 (`linearIndependent_sum_pinned_block_augment_block` + `…_augment_candidateRow_block`) + the eq.-6.62
@@ -133,13 +141,14 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       `ιc := Unit` corollaries; blueprint pins unmoved). The per-candidate column-op heterogeneity of
       the heterogeneous chain is CHAIN-2's bookkeeping (the augment fires one body at a time).
 - [~] **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
-      (`RigidityMatrix/Claim612.lean`). Consumes CHAIN-3. **First brick LANDED
+      (`RigidityMatrix/Claim612.lean`). Consumes CHAIN-3. **Two bricks LANDED
       2026-06-18:** `exists_independent_perp_pair_gen` (the general-`d` "second
-      normal through a line", ambient `Fin (k+2)`, `2 ≤ k`; `Fin 4` lemma now
-      the `k := 2` wrapper). **Remaining:** re-state
+      normal through a line", ambient `Fin (k+2)`, `2 ≤ k`) and
+      `omitTwoExtensor_eq_extensor_kept_gen` (the general-`d` kept-points
+      tabulation, ambient `Fin (e+2)`); both `Fin 4` lemmas now `e:=2`/`k:=2`
+      wrappers. **Remaining:** re-state
       `exists_homogeneousIncidence_of_normals` (the `d+1`-point incidence
       pattern, eq. 6.67 — **carries OD-4, flagged open**),
-      `omitTwoExtensor_eq_extensor_kept` / `…_homogenize_eq_extensor_kept`,
       `exists_line_data_of_homogeneousIncidence`, `case_III_claim612` (reusing
       the general `span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1), and
       `exists_complementIso_ne_zero_…` at `ScrewSpace (d−1)` / `Fin d` candidates
@@ -206,21 +215,21 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-1 + CHAIN-3 are CLOSED; CHAIN-4 is in progress** (its first brick `exists_independent_perp_pair_gen`
-landed this commit). Independent next leaves, all buildable now:
+**CHAIN-1 + CHAIN-3 are CLOSED; CHAIN-4 is in progress** (two bricks landed:
+`exists_independent_perp_pair_gen` + `omitTwoExtensor_eq_extensor_kept_gen`, the latter this commit).
+Independent next leaves, all buildable now:
 
 - **CHAIN-4 (continue) — the rest of the `Fin (d+1)` incidence + Claim-6.12 discriminator**
-  (`RigidityMatrix/Claim612.lean`). Smallest next concrete commit options, in roughly-mechanical-first
-  order: (1) **`omitTwoExtensor_eq_extensor_kept` + `omitTwoExtensor_homogenize_eq_extensor_kept`** at
-  `Fin (d+1)` — pure `Finset.orderEmbOfFin` arithmetic (`card_compl_pair` → general
-  `card_compl_pair`-shape), no OD-4, no CHAIN-3 reach-in; (2) **`exists_homogeneousIncidence_of_normals`**
-  at `Fin d → Fin (d+1) → ℝ` (the `d+1`-point pattern, eq. 6.67) — **carries OD-4 (flagged open, do NOT
-  pre-commit a route; the build decides existence-route vs. alg-independence hammer)**; (3)
+  (`RigidityMatrix/Claim612.lean`). The two mechanical kept-points/perp-pair bricks are now general;
+  the remaining incidence chain is **`exists_homogeneousIncidence_of_normals`** at
+  `Fin d → Fin (d+1) → ℝ` (the `d+1`-point pattern, eq. 6.67) — **carries OD-4 (flagged open, do NOT
+  pre-commit a route; the build decides existence-route vs. alg-independence hammer)** — then, off it,
   `exists_line_data_of_homogeneousIncidence`, `case_III_claim612` (reusing the general
-  `span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1), and
+  `span_omitTwoExtensor_eq_top` (23a Leaf 2) + Lemma 2.1) and
   `exists_complementIso_ne_zero_of_homogeneousIncidence` at `ScrewSpace (d−1)`/`Fin d` (its
   discriminator consumes (h-4)'s join=meet duality the way the d=3
   `extensor_join_eq_zero_of_complementIso_eq_zero` consumes the d=3 `complementIso_smul_eq_extensor_join`).
+  CHAIN-2 (consuming CHAIN-1) is an independent alternative if the OD-4 incidence is left for last.
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
   bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
   (6.66): the index-heavy generalization of the `caseIIICandidate`/`case_III_old_new_blocks`/
@@ -369,13 +378,18 @@ general mathlib, grade enters nothing):
   `finrank_toDualPerp_pair_eq` helper once both are green and stable.
 
 **Landed CHAIN-4 bricks** (CHAIN-4 in progress; `RigidityMatrix/Claim612.lean`):
+- `omitTwoExtensor_eq_extensor_kept_gen` (2026-06-18) — the general-`d` kept-points tabulation,
+  ambient `Fin (e+2)` (`d = e+1`): for the omitted pair `q`, `omitTwoExtensor pbar (ne_of_lt q.2) =
+  extensor (fun k => pbar (emb k))` with `emb : Fin e ↪o Fin (e+2)` the increasing complement of
+  `{q.1,q.2}`, each `≠ q.1,q.2`. Proof is `refine ⟨…, rfl⟩` (omit-two extensor is *by definition* the
+  complement-enumeration extensor) + the `orderEmbOfFin_mem`/`mem_compl` chain hoisted from the `Fin 4`
+  body. Both `Fin 4` lemmas (`omitTwoExtensor_eq_extensor_kept`, `…_homogenize_…`) re-derived as `e:=2`
+  wrappers (`emb 0 < emb 1`, `heq.trans` a `![…]`-vs-`fun` `funext`); no pin, callers untouched.
 - `exists_independent_perp_pair_gen` (2026-06-18) — the general-`d` "second normal through a line",
-  ambient `Fin (k+2)` (`k = d−1`), hypothesis `2 ≤ k`: two points `pi pj` of a line `L` both
-  `⬝ᵥ`-orthogonal to `n_u ≠ 0` ⟹ a second independent normal `n'`. Verbatim lift of the `Fin 4`
-  body (rank–nullity on the two-functional kernel ≥ `(k+2)−2 = k ≥ 2 > 1`, proper-superspace +
-  `LinearIndependent.pair_iff'`); only `Fin 4 → Fin (k+2)`, `+ 2 ≤ k`, and `finrank_pi` via `simp`
-  (not `rfl`) at the variable dim changed. The `Fin 4` `exists_independent_perp_pair` is now the
-  `k := 2` wrapper — no blueprint pin (this brick has none), both callers untouched. Axiom-clean.
+  ambient `Fin (k+2)` (`k = d−1`), `2 ≤ k`: two points of a line both `⬝ᵥ`-⊥ to `n_u ≠ 0` ⟹ a second
+  independent normal `n'`. Verbatim lift of the `Fin 4` body (rank–nullity on the two-functional kernel
+  `≥ k ≥ 2 > 1`, proper-superspace + `LinearIndependent.pair_iff'`; `finrank_pi` via `simp` at the
+  variable dim). `Fin 4` `exists_independent_perp_pair` = the `k := 2` wrapper. Axiom-clean.
 
 **Landed CHAIN-1 bricks** (closes CHAIN-1; all in `RigidityMatrix/Basic.lean`, graph-free over
 `ScrewSpace k`, axiom-clean, both single-`Unit` predecessors re-derived as the `ιc := Unit`
