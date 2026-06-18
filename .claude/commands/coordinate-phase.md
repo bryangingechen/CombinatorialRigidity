@@ -247,12 +247,18 @@ Loop:
    - Re-read the updated "Hand-off / next phase". (Returns with neither
      LANDED nor BLOCKED, killed dispatches, plan-label deviations →
      rescue §§2–4.)
-5. If the commit changed any `.lean` file: `touch` the changed file
+5. If the commit changed any `.lean` file: `touch` the changed file(s)
    (cached modules don't re-emit warnings), then `lake build
-   <leftmost active module> 2>&1 | grep -E 'warning:|error:'` —
-   **warning-clean, not merely green** (a sorry'd skeleton once rode
-   a green-but-warning build onto master, row 17). Red or
-   warning-bearing → stop and surface. Skip for docs-only commits.
+   <the changed module(s)> 2>&1 | grep -E 'warning:|error:'` — build
+   the module(s) the commit *touched* (the leftmost active phase file,
+   **or a new file the commit added** — a new downstream file is rightmost,
+   not "leftmost"), so warnings re-emit. **Warning-clean, not merely green**
+   (a sorry'd skeleton once rode a green-but-warning build onto master, row
+   17). Red or warning-bearing → stop and surface. Skip for docs-only
+   commits. (Run the gate in the foreground, or — if backgrounded to read
+   the diff in parallel — **wait for its completion notification**; re-reading
+   an unchanged background-output file is a wasted call, a recurring drain
+   across a long loop.)
 6. One sentence to the user: clean handoff, or the specific concern.
    Surface **phase-boundary decisions** — early close, sub-phase
    split, a green-modulo-X change to what "phase close" means — with

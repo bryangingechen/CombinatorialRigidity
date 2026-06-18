@@ -125,14 +125,18 @@ mid-phase).
   boundary pairs, if run, pair opus against opus or are skipped. **Run modifications this session
   (user-confirmed at session start):** the 10-run check-in cap is **lifted** (the loop runs to phase
   close or a surfaced concern), and step-4 mechanical fixups (wrong branch / author / co-author
-  trailer) are **pre-authorized** (apply without stopping to ask). **Next dispatch: (h-1b) the
-  dot-product Gram-O-invariance** — the metric half of `complementIso`'s O(n)-equivariance — per
-  `notes/Phase23b.md` *Hand-off* (which carries the exact closing route for
-  `complementIso_map_orthogonal_eq` once h-1b is in hand). Session #4 (rows 191–203) closed clean at
-  opus: CHAIN-open recon, CHAIN↔ENTRY contract, the CHAIN-3 grade-lift bricks, the CHAIN-3-finish
-  re-route off the dead `Φ̃` route, and OD-8 route-α down through (h-1a). The coordinator is Opus 4.8
-  (1M context). **Expires at session end** — a fresh coordinator re-runs the availability check and
-  reverts to the map unless the override is re-set.
+  trailer) are **pre-authorized** (apply without stopping to ask). **Session #5 end-state (loop
+  stopped by user request after row 210):** ran rows 204–210 — OD-8 (h-1b) the dot-product
+  Gram-O-invariance, (h-1) the `complementIso` O(n)-equivariance assembly, (h-2) the transport bridge
+  + Gram–Schmidt span-control, (h-3) the panel-meet membership crux, (h-4) the join=meet duality;
+  **CHAIN-3 is now CLOSED** (OD-8 resolved), all clean at opus (one cost-outlier-but-not-bloat, row
+  209). **Next dispatch (a fresh coordinator picks up here): CHAIN-1 (the `d`-fold candidate augment,
+  graph-free, no ENTRY-contract dependency) or CHAIN-4 (the `Fin (d+1)` incidence + Claim-6.12
+  discriminator, now unblocked, carries open OD-4)** — per `notes/Phase23b.md` *Hand-off*. Session #4
+  (rows 191–203) had closed the CHAIN-open recon, the CHAIN↔ENTRY contract, the grade-lift bricks, the
+  CHAIN-3-finish re-route off the dead `Φ̃` route, and OD-8 route-α through (h-1a). The coordinator is
+  Opus 4.8 (1M context). **Expires at session end** — a fresh coordinator re-runs the availability
+  check and reverts to the map unless the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13,16} session-local rung overrides and availability constraints — all
   expired by their own terms (the 2026-06-16 one scoped the OPUS-ONLY override to the whole
