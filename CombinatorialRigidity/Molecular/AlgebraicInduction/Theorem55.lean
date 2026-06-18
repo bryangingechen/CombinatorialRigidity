@@ -178,36 +178,42 @@ theorem theorem_55_base_producer_empty [DecidableEq β] [Finite α] {n : ℕ}
     HasPanelRealization 2 n G :=
   theorem_55_base_producer_empty_gen (k := 2) hn G hE hG
 
-/-- **Theorem 5.5 base producer, single-edge arm** (`lem:theorem-55-base-producer`; `hbase` carry,
-Phase 22i L3b). The second bookkeeping arm of the all-`k` base producer: a minimal-`1`-dof graph
+/-- **Theorem 5.5 base producer, single-edge arm — general grade** (`lem:theorem-55-base-producer`;
+`hbase_k` carry, Phase 23b OD-7 tail; the general-`k` lift of the d=3
+`theorem_55_base_producer_single_edge`). The second bookkeeping arm of the all-`k` base producer at
+general grade: a minimal-`1`-dof graph
 `G` with `V(G) = {x, y}` and `E(G) = {e}` (a single hinge joining distinct bodies; trichotomy arm
 (ii), `isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel realization at rank
-`D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`, `D = 6`).
+`D(|V|−1) − def = D·1 − 1 = D − 1` (`D = screwDim k`).
 
 The construction places one nonzero supporting extensor `C ∈ n₀^⊥` on the single edge (from the
-L3a brick `exists_linearIndependent_extensor_pair_perp`, first component), and the zero extensor on
-all other edges. The single hinge-row block has dimension `D − 1`
-(`finrank_span_panelRow_edge`), and via `span_panelRow_linking_eq_rigidityRows` this equals the
-full rigidity-row span. No upper-bound argument (B2) is needed: the equality follows directly from
-the single-edge span identity. -/
-theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : ℕ}
+already-general-`k` L3a brick `exists_linearIndependent_extensor_pair_perp_grade`, first component;
+its distinct-`k`-subsets device needs `1 ≤ k`), and the zero extensor on all other edges. The single
+hinge-row block has dimension `D − 1` (`finrank_span_panelRow_edge`, general-`k`), and via
+`span_panelRow_linking_eq_rigidityRows` (general-`k`) this equals the full rigidity-row span. No
+upper-bound argument (B2) is needed: the equality follows directly from the single-edge span
+identity. The whole proof is the verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k + 2)`,
+`ScrewSpace 2 → ScrewSpace k`, `screwDim 2 → screwDim k`, with the `1 ≤ screwDim k` cast supplied by
+`one_le_screwDim`. The d=3 `theorem_55_base_producer_single_edge` is now its `k := 2` wrapper. -/
+theorem theorem_55_base_producer_single_edge_gen [DecidableEq β] [Finite α] {n : ℕ}
+    (hk : 1 ≤ k)
     (G : Graph α β) {x y : α} {e : β}
     (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
     (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :
-    HasPanelRealization 2 n G := by
+    HasPanelRealization k n G := by
   classical
-  -- A fixed nonzero panel normal `n₀ : Fin 4 → ℝ`.
-  set n₀ : Fin 4 → ℝ := Pi.single 0 1 with hn₀
+  -- A fixed nonzero panel normal `n₀ : Fin (k + 2) → ℝ`.
+  set n₀ : Fin (k + 2) → ℝ := Pi.single 0 1 with hn₀
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
-  -- The L3a brick: two point-pairs in `n₀^⊥` with LI extensors; take the first pair.
-  obtain ⟨p, _, hp_perp, _, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp n₀
-  set C : ScrewSpace 2 := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hC_def
+  -- The L3a brick: two point-tuples in `n₀^⊥` with LI extensors; take the first tuple.
+  obtain ⟨p, _, hp_perp, _, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp_grade hk n₀
+  set C : ScrewSpace k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hC_def
   have hC_ne : C ≠ 0 := by simpa [hC_def] using hpq_li.ne_zero 0
-  -- `C` lies in `n₀^⊥` (as an extensor of two points in `n₀^⊥`).
+  -- `C` lies in `n₀^⊥` (as an extensor of `k` points in `n₀^⊥`).
   have hCin : ExtensorInPanel C n₀ := ⟨p, rfl, hp_perp⟩
   -- The single-edge framework: `e ↦ C`, all other edges `↦ 0`.
-  set F : BodyHingeFramework 2 α β :=
+  set F : BodyHingeFramework k α β :=
     { graph := G
       supportExtensor := fun e' => if e' = e then C else 0 } with hF
   have hFg : F.graph = G := rfl
@@ -219,8 +225,6 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     exact Set.mem_singleton_iff.mp this
   -- The vertex set has ncard 2.
   have hVcard : V(G).ncard = 2 := by rw [hVG, Set.ncard_pair hxy]
-  -- `V(F.graph)` is nonempty.
-  have hFne : F.graph.vertexSet.Nonempty := by rw [hFg, hVG]; exact ⟨x, Or.inl rfl⟩
   refine ⟨F, fun _ => n₀, rfl, ?_, ?_, ?_⟩
   · -- Every body has a nonzero panel normal.
     exact fun v _ => hn₀_ne
@@ -232,7 +236,7 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     · simp [hFe, hC_ne]
     · simp only [hFe]; exact hCin
     · simp only [hFe]; exact hCin
-  · -- Rank conjunct: `finrank (span rigidityRows) = screwDim 2 - 1 = D * 1 - 1`.
+  · -- Rank conjunct: `finrank (span rigidityRows) = screwDim k - 1 = D * 1 - 1`.
     -- Use `span_panelRow_linking_eq_rigidityRows` with `ends := fun _ => (x, y)`.
     set ends : β → α × α := fun _ => (x, y) with hends_def
     have hends : ∀ e' u v, F.graph.IsLink e' u v →
@@ -250,11 +254,11 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     rw [← F.span_panelRow_linking_eq_rigidityRows hends hne_link]
     -- The linking subtype is exactly the `e`-rows (the only link is `e`).
     -- The range of linking panel rows equals the range for the single edge `e`.
-    have hrange : Set.range (fun i : {i : β × Set.powersetCard (Fin 4) 2
-          × Set.powersetCard (Fin 4) 2 //
+    have hrange : Set.range (fun i : {i : β × Set.powersetCard (Fin (k + 2)) k
+          × Set.powersetCard (Fin (k + 2)) k //
             F.graph.IsLink i.1 (ends i.1).1 (ends i.1).2} => F.panelRow ends i.val)
-        = Set.range (fun p : Set.powersetCard (Fin 4) 2
-            × Set.powersetCard (Fin 4) 2 => F.panelRow ends (e, p.1, p.2)) := by
+        = Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+            × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2)) := by
       ext φ; simp only [Set.mem_range]
       constructor
       · rintro ⟨⟨⟨e', t₁, t₂⟩, hlink⟩, rfl⟩
@@ -266,11 +270,26 @@ theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : �
     conv_lhs => rw [hrange]
     rw [F.finrank_span_panelRow_edge (huv := by simp [hends_def, hxy])
         (hne := by simp [hFe, hC_ne])]
-    -- Target: `screwDim 2 * (ncard - 1 : ℤ) - deficiency n = screwDim 2 - 1`.
+    -- Target: `screwDim k * (ncard - 1 : ℤ) - deficiency n = screwDim k - 1`.
     have hdef : (G.deficiency n : ℤ) = 1 := hG.1
-    rw [Nat.cast_sub (by decide : 1 ≤ screwDim 2)]
+    rw [Nat.cast_sub one_le_screwDim]
     push_cast [hVcard, hdef]
     ring
+
+/-- **Theorem 5.5 base producer, single-edge arm** (`lem:theorem-55-base-producer`; `hbase` carry,
+Phase 22i L3b; the `k = 2` wrapper of `theorem_55_base_producer_single_edge_gen`). The second
+bookkeeping arm of the all-`k` base producer at `d = 3`: a minimal-`1`-dof graph `G` with
+`V(G) = {x, y}` and `E(G) = {e}` (a single hinge joining distinct bodies; trichotomy arm (ii),
+`isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel realization at rank
+`D(|V|−1) − def = D·1 − 1 = D − 1 = 5` (at `d = 3`, `D = 6`). The work is the grade-general
+`theorem_55_base_producer_single_edge_gen`; this wrapper specializes `k := 2` (`Fin 4`,
+`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+theorem theorem_55_base_producer_single_edge [DecidableEq β] [Finite α] {n : ℕ}
+    (G : Graph α β) {x y : α} {e : β}
+    (hxy : x ≠ y) (hVG : V(G) = {x, y}) (hEG : E(G) = {e})
+    (hl : G.IsLink e x y) (hG : G.IsMinimalKDof n 1) :
+    HasPanelRealization 2 n G :=
+  theorem_55_base_producer_single_edge_gen (k := 2) (by norm_num) G hxy hVG hEG hl hG
 
 /-- **Theorem 5.5 base producer, empty arm — general-position form** (`lem:theorem-55-base`;
 `hbase` carry's GP conjunct, Phase 22i L3b). The GP-conjunct companion of
