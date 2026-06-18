@@ -61,44 +61,17 @@ mechanical leaf). **CHAIN-5** (the `d`-chain dispatch assembly, `CaseIII/Realiza
 frozen signature (the CHAIN↔ENTRY contract) but is gated on CHAIN-2/4 landing **and** ENTRY's extractor
 reshape. See *Hand-off* for the per-leaf detail.
 
-**CHAIN-4d — LANDED the prior commit (2026-06-18): the discriminator capstone, closing CHAIN-4.**
-`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`RigidityMatrix/Claim612.lean`): from
-`r ≠ 0`, LI `pbar : Fin (k+2) → Fin (k+2) → ℝ`, LI normals `n : Fin (k+1) → Fin (k+2) → ℝ`, and the
-off-one-panel incidence (`h0`/`hi`), produces a discriminating index `u : Fin (k+1)` + second normal
-`n'` with `r(complementIso (j:=2) ⟨extensor ![n u, n'],_⟩) ≠ 0`. The assembly of **CHAIN-4c** (witness
-join `r⟨omitTwoExtensor pbar,_⟩ ≠ 0`) + **CHAIN-4b** (per-join line data: `u`, `n'`, the `k` kept points
-`p` LI ⊥ both, `omitTwoExtensor pbar = extensor p`) + **CHAIN-3 (h-4)** (the `∃ c, c • complementIso(…)
-= extensor p` proportionality, the `k`-form). Contrapositive: `r(complementIso) = 0` ⟹ `r(extensor p)
-= c • 0 = 0` ⟹ `r` kills the witness join, contradicting CHAIN-4c. Wired to CHAIN-4b's `_gen` directly
-(it carries `hpbar` → concludes `LinearIndependent ℝ p`, which CHAIN-3 (h-4) needs). The `MeetHodge`
-import did **not** regress the file's `⋀²ℝ⁴` proofs to a §59 whnf timeout (full build clean). Axiom-clean.
-**OD-4 verdict held end-to-end: no alg-independence / genericity surfaced** (only LI of `pbar`).
-
-**CHAIN-1 — CLOSED** (2026-06-18): the `ιc`-block candidate augment
-(`linearIndependent_sum_pinned_block_augment_block` + `…_augment_candidateRow_block`) + the eq.-6.62
-row-correspondence swap (`…candidateBlock_swap`), all `RigidityMatrix/Basic.lean`, graph-free over
-`ScrewSpace k`; the single-`Unit` predecessors re-derived as `ιc := Unit` corollaries (blueprint pins
-unmoved). Full detail in *Decisions made*.
-
-**CHAIN-3 is CLOSED** (2026-06-17): the general-`d` per-line join=meet duality
-`extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), `∃ c, c • complementIso(j:=2)
-⟨extensor n,_⟩ = ⟨extensor p,_⟩` — the `⋀^{d−1}W`-is-a-line route (`W = {n 0,n 1}^⊥`, both point-join
-and panel-meet in the line `range(⋀^k W ↪)`, proportionalized off the nonzero panel-meet). Full
-per-leaf detail (h-0…h-4) in *Decisions made* + `notes/Phase23-design.md` §"CHAIN"(f)/(h); the d=3
-`complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper.
-
-CHAIN-3's closure ALSO unblocks **CHAIN-4** (the `Fin (d+1)` incidence + Claim-6.12 discriminator
-`exists_complementIso_ne_zero_of_homogeneousIncidence`, which consumes (h-4)'s duality) and the
-**four-producer tail** (OD-7: `hforget_k` routes through (h-4), then `hbase_k`/`hcut_k`/
-`hcontract_k`) — any of these is a valid next leaf. See *Hand-off*.
-
-**Prior-commit recaps (one-line; full OD-8 route-(α) leaf chain h-0…h-3 LANDED, CHAIN-3 finished by
-(h-4) in the prior commit):** (h-0) `screwAlgebraTopEquiv_map_eq_det_smul`; (h-1)
-`complementIso_map_orthogonal_eq` (O(n)-equivariance); (h-2) `exists_orthonormalBasis_span_pair_eq`
-(Gram–Schmidt span-control) + transport bridge `EuclideanSpace.{inner_eq_basisFun_toDual,
-toDualOrthogonal_ofLinearIsometryEquiv}` (mirror); (h-3)-input `exists_smul_extensor_eq_of_mem_span_
-range` + `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`); (h-3) assembly
-`complementIso_extensor_mem_range_map_subtype` (panel-meet range-membership crux, `MeetHodge.lean`).
+**CHAIN-1/3/4 — all CLOSED** (2026-06-17/18; per-leaf detail in *Decisions made* → *Landed
+CHAIN-{1,3,4} bricks* + `notes/Phase23-design.md` §(f)/(h)/(i)/(j) + git):
+- **CHAIN-3** = the general-`d` per-line join=meet duality `extensor_join_proportional_complementIso_meet`
+  (`MeetHodge.lean`, the `⋀^{d−1}W`-is-a-line route; OD-8 leaf chain h-0…h-4); the d=3
+  `complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper.
+- **CHAIN-1** = the `ιc`-block candidate augment + the eq.-6.62 row-correspondence swap
+  (`RigidityMatrix/Basic.lean`, graph-free over `ScrewSpace k`).
+- **CHAIN-4** = the Claim-6.12 discriminator capstone
+  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean`, assembling
+  CHAIN-4c+4b+CHAIN-3 (h-4); **OD-4 held end-to-end** — only LI of `pbar`, no alg-independence).
+- Forward: **CHAIN-2** consumes CHAIN-1; **CHAIN-5** consumes CHAIN-3/4 (gated on CHAIN-2 + ENTRY).
 
 **Architectural constraint (standing).** The metric-using Hodge leaves live in `MeetHodge.lean`, never
 `Meet.lean`: importing `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean`
