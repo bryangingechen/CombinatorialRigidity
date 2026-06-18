@@ -1463,11 +1463,22 @@ the `k:=2` wrapper (a `Fin 3`-vs-`Fin (k+1)` reindex + the `∀ i, …` unpacked
 the three explicit `hb1/hb2/hb3` conjuncts).
 
 **Leaf CHAIN-4b — `exists_line_data_of_homogeneousIncidence` at `Fin (k+2)`
-(clean lift; carries the §(i) residual flag).**
+(clean lift; carries the §(i) residual flag). LANDED 2026-06-18 (8496d61).**
+**Signature correction at build:** the conclusion's `LinearIndependent ℝ p` (the
+kept-points subfamily, which CHAIN-3 (h-4) consumes) does **not** follow from
+`hn`/`h0`/`hi` alone — it needs `(hpbar : LinearIndependent ℝ pbar)` (the kept
+points are a `pbar`-subfamily, so LI by `LinearIndependent.comp`). `hpbar` is
+freely supplied by CHAIN-4a's first conjunct, so it is added as a hypothesis (the
+faithful pin completion). Because of this stronger conclusion + the off-one-panel
+incidence shape, the d=3 `exists_line_data_of_homogeneousIncidence` (weaker — no
+point-LI conclusion, cyclic `h1/h2/h3`) is **not** a clean `k:=2` wrapper; it
+stays its own green lemma (pin untouched), and re-pointing the d=3 CHAIN-4d at
+`_gen` is the not-forced h-5 decision. §(i) combinatorial claim **CONFIRMED** at
+build (no alg-independence resurfaced). Landed signature:
 ```
 theorem exists_line_data_of_homogeneousIncidence_gen {k : ℕ}
     {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n)
-    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ}
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hpbar : LinearIndependent ℝ pbar)
     (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
     (hi : ∀ i : Fin (k + 1), ∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) :
     ∀ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
