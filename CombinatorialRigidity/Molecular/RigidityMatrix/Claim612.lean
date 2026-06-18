@@ -392,6 +392,52 @@ theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
     ∃ n' : Fin 4 → ℝ, LinearIndependent ℝ ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 :=
   exists_independent_perp_pair_gen (k := 2) le_rfl pi pj n_u hi hj hn_u
 
+/-- **A second panel normal through the line spanned by a family of `m ≤ k` points in `ℝ^{k+2}`**
+(`lem:case-III-claim612`, the general-`d` `hone`-builder, `k = d − 1`, ambient `Fin (k+2)`). The
+multi-point generalization of `exists_independent_perp_pair_gen`: given `m` points `p : Fin m →
+ℝ^{k+2}` (`m ≤ k`) and one normal `n_u ≠ 0` orthogonal to all of them, there is a *second* normal
+`n'`, linearly independent from `n_u`, also orthogonal to all the points — a second hyperplane
+through the line the points span. At `m = k` (the CHAIN-4b "single shared panel" case, where the
+join's line is spanned by the `k = d − 1` kept points) the common perp `{x | ∀ i, p i ⬝ᵥ x = 0}`
+has `finrank ≥ (k+2) − m = (k+2) − k = 2 > 1 = finrank (span ℝ {n_u})`, so the span is a *proper*
+subspace and `SetLike.exists_of_lt` exhibits `n' ∉ span ℝ {n_u}` in it; the count
+`finrank (range (mulVecLin (of p))) ≤ m` makes this hold without an independence hypothesis on `p`.
+The `d = 3` two-point form is the `m := 2`/`k := 2` instance (callers feed the two kept points). -/
+theorem exists_independent_perp_family {k m : ℕ} (hm : m ≤ k)
+    (p : Fin m → Fin (k + 2) → ℝ) (n_u : Fin (k + 2) → ℝ)
+    (hp : ∀ i, p i ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
+    ∃ n' : Fin (k + 2) → ℝ, LinearIndependent ℝ ![n_u, n'] ∧ ∀ i, p i ⬝ᵥ n' = 0 := by
+  -- The common-perp space as the kernel of the family map `L x = (fun i => p i ⬝ᵥ x)`.
+  set L : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin m → ℝ) :=
+    Matrix.mulVecLin (Matrix.of p) with hL
+  have hmemW : ∀ x : Fin (k + 2) → ℝ, x ∈ LinearMap.ker L ↔ ∀ i, p i ⬝ᵥ x = 0 := by
+    intro x
+    rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply, funext_iff]
+    refine ⟨fun h i => ?_, fun h i => ?_⟩
+    · have := h i; simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using this
+    · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h i
+  -- Rank–nullity: `finrank (ker L) ≥ (k+2) − m ≥ 2`.
+  have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
+    have hrn := L.finrank_range_add_finrank_ker
+    have hdom : Module.finrank ℝ (Fin (k + 2) → ℝ) = k + 2 := by rw [Module.finrank_pi]; simp
+    have hcod : Module.finrank ℝ (LinearMap.range L) ≤ m := by
+      calc Module.finrank ℝ (LinearMap.range L)
+          ≤ Module.finrank ℝ (Fin m → ℝ) := Submodule.finrank_le _
+        _ = m := by rw [Module.finrank_pi]; simp
+    omega
+  -- `n_u ∈ ker L`, and `span ℝ {n_u}` is a *proper* subspace (its finrank is `1 < 2 ≤ finrank W`).
+  have hn_uW : n_u ∈ LinearMap.ker L := (hmemW n_u).2 hp
+  have hlt : Submodule.span ℝ {n_u} < LinearMap.ker L := by
+    refine lt_of_le_of_ne ((Submodule.span_singleton_le_iff_mem _ _).2 hn_uW) ?_
+    intro heq
+    have h1 : Module.finrank ℝ (Submodule.span ℝ {n_u}) = 1 := finrank_span_singleton hn_u
+    rw [heq] at h1
+    omega
+  obtain ⟨n', hn'W, hn'not⟩ := SetLike.exists_of_lt hlt
+  refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, (hmemW n').1 hn'W⟩
+  intro a heq
+  exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
+
 /-- **The homogeneous incidence core of the witness points, parameterized by the real panel
 normals, general `d`** (`lem:case-III-claim612-points-affineIndep`, the (R1) reconciliation core;
 Katoh–Tanigawa 2011 §6.4.1 eqs. (6.45)/(6.67), Phase 23b CHAIN-4a). The general-`d` (`k = d − 1`,
@@ -557,6 +603,107 @@ theorem omitTwoExtensor_eq_extensor_kept (pbar : Fin 4 → Fin 4 → ℝ)
   refine ⟨emb 0, emb 1, emb.strictMono (by decide), (hmem 0).1, (hmem 0).2, (hmem 1).1,
     (hmem 1).2, heq.trans ?_⟩
   congr 1; ext k; fin_cases k <;> rfl
+
+/-- **The off-one-panel incidence as a single membership rule, general `d`**
+(`lem:case-III-claim612`, the §(i) combinatorial core, `k = d − 1`, ambient `Fin (k+2)`). The two
+incidence hypotheses of
+`exists_homogeneousIncidence_of_normals_gen` — point `0` on every panel (`h0`), point `i.succ` on
+every panel except possibly `n i` (`hi`) — combine into one rule: **the homogeneous point `pbar v`
+lies on panel `n j` whenever `v ≠ j.succ`** (point `v` misses *only* the panel `n (v−1)`, if any).
+This is what makes the per-join membership of CHAIN-4b combinatorial: a kept index `v ∉ {a, b}` lies
+on a candidate panel `n j` as soon as `j.succ ∈ {a, b}` (so `v ≠ j.succ`). -/
+theorem pbar_dotProduct_eq_zero_of_ne_succ {k : ℕ} {n : Fin (k + 1) → Fin (k + 2) → ℝ}
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ}
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (hi : ∀ i : Fin (k + 1), ∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0)
+    (v : Fin (k + 2)) (j : Fin (k + 1)) (hvj : v ≠ j.succ) :
+    pbar v ⬝ᵥ n j = 0 := by
+  rcases Fin.eq_zero_or_eq_succ v with rfl | ⟨w, rfl⟩
+  · exact h0 j
+  · exact hi w j (by rintro rfl; exact hvj rfl)
+
+/-- **The per-join witness line data from the homogeneous incidence, general `d`** (CHAIN-4b,
+`lem:case-III-claim612`, `k = d − 1`, ambient `Fin (k+2) = Fin (d+1)`; Katoh–Tanigawa 2011 §6.4.2
+eqs. (6.46)–(6.67)). The general-`d` lift of the `Fin 4` `exists_line_data_of_homogeneousIncidence`:
+for the `k + 1 = d` real panel normals `n` (LI) and the `k + 2 = d + 1` homogeneous points `pbar`
+realizing the off-one-panel incidence (`h0`: point `0` on all panels; `hi`: point `i.succ` on all
+but possibly `n i`), each omitted pair `q = {a, b}` (`a < b`) yields a **discriminating panel
+index** `u : Fin (k+1)`, a **second hyperplane** `n'` through the join's line independent from
+`n u`, and the `k = d − 1` **kept points** `p` (the increasing complement of `{a, b}`,
+`omitTwoExtensor_eq_extensor_kept_gen`) the join spans — with all `k` kept points orthogonal to both
+`n u` and `n'`, and `omitTwoExtensor pbar = extensor p`.
+
+*The §(i) combinatorial dispatch.* Membership is uniform via `pbar_dotProduct_eq_zero_of_ne_succ`: a
+kept index `v ∉ {a, b}` lies on panel `n u` iff `u.succ ∈ {a, b}`. So the candidate panels are
+exactly those `u` with `u.succ ∈ {a, b}`, and the two cases are on whether `0 ∈ {a, b}`:
+
+* **`0 ∉ {a, b}`** (`a ≠ 0`, the two-panel case): both `a, b` are successors `a = u_a.succ`,
+  `b = u_b.succ` with `u_a ≠ u_b`, so the line lies in the **two** real panels `Π(u_a), Π(u_b)`;
+  take `u = u_a`, `n' = n u_b` (independent as a subfamily of `n`). This is the `htwo` analog.
+* **`0 ∈ {a, b}`** (`a = 0`, the one-panel case): only `b = u_b.succ` is a successor, so the line
+  lies in the **single** real panel `Π(u_b)`; take `u = u_b` and read the second normal `n'` off the
+  geometry of the `k` kept points via `exists_independent_perp_family` (needs `m = k ≤ k`, i.e. the
+  perp of `k` points in `ℝ^{k+2}` is `≥ 2`-dimensional). This is the `hone` analog.
+
+**This is the one CHAIN-4 leaf whose build confirms the §(i) claim** (where a hidden
+geometric/alg-independence need would surface if §(i) were wrong); the build closing means the
+per-join membership is purely combinatorial — no genericity device, matching the OD-4 verdict.
+
+Two faithful divergences from the `Fin 4` `exists_line_data_of_homogeneousIncidence` (so the `d = 3`
+body stays its own zero-regression green lemma rather than a `k := 2` wrapper — re-pointing is the
+not-forced "h-5" decision, `notes/Phase23b.md`): (1) the incidence is the **off-one-panel** form
+`hi` of `exists_homogeneousIncidence_of_normals_gen` (point `i.succ` off panel `n i` only), not the
+`d = 3` cyclic `h1/h2/h3`; (2) the conclusion now carries `LinearIndependent ℝ p`, which the line's
+own line data does not force — it is the subfamily LI of `pbar` (the new `hpbar` hypothesis, which
+CHAIN-4d supplies from its `LinearIndependent ℝ pbar`) along the injective complement `emb`.
+CHAIN-4d needs it: `extensor_join_proportional_complementIso_meet` (CHAIN-3 (h-4)) takes
+`LinearIndependent ℝ p`. Graph-free. -/
+theorem exists_line_data_of_homogeneousIncidence_gen {k : ℕ}
+    {n : Fin (k + 1) → Fin (k + 2) → ℝ} (hn : LinearIndependent ℝ n)
+    {pbar : Fin (k + 2) → Fin (k + 2) → ℝ} (hpbar : LinearIndependent ℝ pbar)
+    (h0 : ∀ u, pbar 0 ⬝ᵥ n u = 0)
+    (hi : ∀ i : Fin (k + 1), ∀ j, j ≠ i → pbar i.succ ⬝ᵥ n j = 0) :
+    ∀ q : {q : Fin (k + 2) × Fin (k + 2) // q.1 < q.2},
+      ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ)
+        (p : Fin k → Fin (k + 2) → ℝ),
+        LinearIndependent ℝ ![n u, n'] ∧ LinearIndependent ℝ p ∧
+        (∀ i, p i ⬝ᵥ n u = 0) ∧ (∀ i, p i ⬝ᵥ n' = 0) ∧
+        omitTwoExtensor pbar (ne_of_lt q.2) = extensor p := by
+  -- Two panel normals `n a, n b` are independent (subfamily of the independent `n`).
+  have hpair : ∀ a b : Fin (k + 1), a ≠ b → LinearIndependent ℝ ![n a, n b] := by
+    intro a b hab
+    have := hn.comp ![a, b] (by intro x y hxy; fin_cases x <;> fin_cases y <;> simp_all)
+    rwa [show (n ∘ ![a, b]) = ![n a, n b] from by ext x; fin_cases x <;> rfl] at this
+  rintro ⟨⟨a, b⟩, hab⟩
+  -- Kept points: the `k` increasing complement indices of `{a, b}`, each `≠ a, b`.
+  obtain ⟨emb, hmem, hkept⟩ := omitTwoExtensor_eq_extensor_kept_gen (e := k) pbar ⟨(a, b), hab⟩
+  set p : Fin k → Fin (k + 2) → ℝ := fun i => pbar (emb i) with hp
+  -- The `k` kept points are LI: a subfamily `pbar ∘ emb` of LI `pbar` along the injective `emb`.
+  have hpLI : LinearIndependent ℝ p := hpbar.comp emb emb.injective
+  -- A kept point `pbar (emb i)` lies on panel `n j` whenever `(emb i) ≠ j.succ`.
+  have hon : ∀ (i : Fin k) (j : Fin (k + 1)), emb i ≠ j.succ → p i ⬝ᵥ n j = 0 :=
+    fun i j h => pbar_dotProduct_eq_zero_of_ne_succ h0 hi (emb i) j h
+  by_cases ha0 : a = 0
+  · -- **One-panel case** `a = 0 < b`: `b = u_b.succ`; the single candidate panel is `n u_b`.
+    subst ha0
+    have hb0 : b ≠ 0 := Fin.ne_of_gt hab
+    obtain ⟨ub, hub⟩ := Fin.exists_succ_eq_of_ne_zero hb0
+    -- All kept points lie on `Π(u_b)`: `emb i ≠ b = u_b.succ`.
+    have hpu : ∀ i, p i ⬝ᵥ n ub = 0 := fun i => hon i ub (hub ▸ (hmem i).2 : emb i ≠ ub.succ)
+    -- The second normal comes off the `k` kept points (`exists_independent_perp_family`, `m = k`).
+    obtain ⟨n', hpair', hpn'⟩ :=
+      exists_independent_perp_family (m := k) le_rfl p (n ub) hpu (hn.ne_zero ub)
+    exact ⟨ub, n', p, hpair', hpLI, hpu, hpn', hkept⟩
+  · -- **Two-panel case** `0 < a < b`: `a = u_a.succ`, `b = u_b.succ`, `u_a ≠ u_b`.
+    obtain ⟨ua, hua⟩ := Fin.exists_succ_eq_of_ne_zero ha0
+    have hb0 : b ≠ 0 := Fin.ne_of_gt (lt_trans (Fin.pos_of_ne_zero ha0) hab)
+    obtain ⟨ub, hub⟩ := Fin.exists_succ_eq_of_ne_zero hb0
+    have huab : ua ≠ ub := by
+      rintro rfl; exact (ne_of_lt hab) (by rw [← hua, ← hub])
+    -- All kept points lie on both `Π(u_a)` (`emb i ≠ a = u_a.succ`) and `Π(u_b)` (`≠ b`).
+    have hpua : ∀ i, p i ⬝ᵥ n ua = 0 := fun i => hon i ua (hua ▸ (hmem i).1 : emb i ≠ ua.succ)
+    have hpub : ∀ i, p i ⬝ᵥ n ub = 0 := fun i => hon i ub (hub ▸ (hmem i).2 : emb i ≠ ub.succ)
+    exact ⟨ua, n ub, p, hpair ua ub huab, hpLI, hpua, hpub, hkept⟩
 
 /-- **The per-join witness line data from the homogeneous incidence** (`lem:case-III-claim612`, the
 "extract the witness line `L`" leaf of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011 §6.4.1
