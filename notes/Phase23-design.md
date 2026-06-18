@@ -759,7 +759,7 @@ isolate as the new argument. Source-verified per-decl:
 | `exteriorPower_basis_toDual_eq_pairingDual_comp_map` | `Meet.lean:866` | `(Pi.basisFun ℝ (Fin 4)).exteriorPower n` — `Fin 4`-pinned base | re-state at `Fin (d+1)` (the proof is `Module.Basis.ext` + `pairingDual_ιMulti_ιMulti`, dimension-generic) |
 | `exists_extensor_eq_panelSupportExtensor` | `PanelLayer.lean` (23a Leaf-1b DROP) | the `⋀²ℝ⁴` point-join↔panel-meet bridge consumer; **the M4-forget unblocker** | lift **with** the duality finish (the four-producer lift, §"CHAIN"(d)) |
 | `case_III_arm_realization`, `_M2`, `_M3` | `Arms.lean:72`, `Relabel.lean` | **ALREADY general `k`** (`q : α × Fin (k+2)`, `ScrewSpace k`, `screwDim k`) — the per-candidate certify-then-rebase + relabel transport | **reuse verbatim** as the per-candidate engine the `d`-chain dispatch feeds |
-| `linearIndependent_sum_augment_candidateRow` | `RigidityMatrix/Basic.lean:1231` | **general `k`, graph-free**; augments by **one** `Unit` candidate | **generalize** to a `d`-fold `Sum`/`Fin d`-indexed augment (CHAIN-1) |
+| `linearIndependent_sum_augment_candidateRow` | `RigidityMatrix/Basic.lean` | **general `k`, graph-free**; augmented by **one** `Unit` candidate | **DONE (CHAIN-1, 2026-06-18):** generalized to the `ιc`-block augment `linearIndependent_sum_augment_candidateRow_block` (+ the abstract `…_pinned_block_augment_block`); this is now the `ιc := Unit` corollary |
 
 **The central structural finding (verified, reshapes the cut): the
 arm-realization engine is general-grade; only the DISPATCH (candidate count +
@@ -820,17 +820,17 @@ restating; the `Fin 4`/`d=3` decls stay as `d=3` wrappers so the `d=3` line
 never regresses). **CHAIN-0/CHAIN-5 are gated by the (b) flag** — the dispatch
 signature depends on the ENTRY chain-data contract.
 
-- **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
-  Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`
-  candidate) to a `Fin d`-indexed / `d`-fold `Sum` augment: given the base
-  family `Sum.elim rn ro` independent and `d` candidate rows each differing
-  from a genuine row by a span-member, the augmented family is independent.
-  Graph-free over `ScrewSpace k`; the `linearIndependent_sumElim_unit_iff`
-  row-space criterion generalizes to a finite-iterated form. *Signature
-  (target):* `linearIndependent_sum_augment_candidateRow_chain {d}
-  (hindep : LinearIndependent ℝ (Sum.elim (Sum.elim rn cand) ro)) … :
-  LinearIndependent ℝ (Sum.elim (Sum.elim rn cand') ro)` where `cand : Fin d →
-  Dual ℝ (α → ScrewSpace k)`. No `d=3` content; pure linear algebra.
+- **CHAIN-1 — the `d`-fold candidate machinery** (`RigidityMatrix/Basic.lean`).
+  **CLOSED 2026-06-18** (Phase23b rows 211–212). Two bricks: (1) the
+  row-correspondence swap `linearIndependent_sumElim_candidateBlock_swap` + mirror
+  `linearIndependent_sumElim_block_swap` (KT eq. 6.62 — correct an `ιc`-block of
+  candidate rows by base-span members); (2) the `ιc`-block candidate augment
+  `linearIndependent_sum_pinned_block_augment_block` +
+  `linearIndependent_sum_augment_candidateRow_block` (the `+|ιc|` count lift; the
+  single-`Unit` `…_augment{,…_candidateRow}` re-derived as `ιc := Unit` corollaries,
+  blueprint pins unmoved). Graph-free over `ScrewSpace k`, no `d=3` content. The
+  heterogeneous-chain per-candidate column-op (each `i` its own `Φᵢ`) is **CHAIN-2's**
+  bookkeeping — the augment fires one body at a time at the chosen split body `v`.
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`, new
   file or extend `Candidate`). The per-candidate-`i` reduction of `R(G,pᵢ)`
   (6.60) to the `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` form (6.64), via the column op

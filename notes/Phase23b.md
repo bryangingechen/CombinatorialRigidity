@@ -1,17 +1,17 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. **CHAIN-1 first brick LANDED (2026-06-18, this commit): the `Fin d` chain
-row-correspondence (KT eq. 6.62)** — `linearIndependent_sumElim_candidateBlock_swap`
-(`RigidityMatrix/Basic.lean`) + its mirror `linearIndependent_sumElim_block_swap`
-(`Mathlib/.../LinearIndependent/Basic.lean`), the block generalization of the single-`Unit`
-`linearIndependent_sumElim_candidateRow_swap` (swap an arbitrary candidate block by base-span
-members, quotient route + `sumElim_of_quotient`). Graph-free, no `d=3` content, no ENTRY-contract
-dependency. **CHAIN-1's `Fin d` *augment* proper still open** (the per-candidate-column-op transport;
-see *Hand-off*). **CHAIN-3 is CLOSED** (prior commit, 2026-06-17): the general-`d` per-line
-join=meet duality `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), the
-`⋀^{d−1}W`-is-a-line route (full per-leaf detail in *Decisions made* + `notes/Phase23-design.md`
-§"CHAIN"(f)/(h); the d=3 `complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper).
-**CHAIN-1 (augment)/2/4/5 remain** (CHAIN-5 gated by the ENTRY-contract reshape). The integer
+**Status:** open. **CHAIN-1 is CLOSED (2026-06-18, this commit): the `ιc`-block candidate augment**
+— `linearIndependent_sum_pinned_block_augment_block` + `linearIndependent_sum_augment_candidateRow_block`
+(`RigidityMatrix/Basic.lean`), the `ιc`-indexed (`Fin d`-instantiable) generalizations of the
+single-`Unit` `linearIndependent_sum_pinned_block_augment{,…_candidateRow}`, which are now derived as
+the `ιc := Unit` corollaries (no body duplication, blueprint pins unmoved). This finishes the
+candidate-completion `+|ιc|` count lift the chain assembly (CHAIN-2/5) consumes one body at a time,
+on top of the prior commit's chain row-correspondence swap (`…candidateBlock_swap`). Graph-free over
+`ScrewSpace k`, no `d=3` content, no ENTRY-contract dependency. **CHAIN-3 is CLOSED** (2026-06-17):
+the general-`d` per-line join=meet duality `extensor_join_proportional_complementIso_meet`
+(`MeetHodge.lean`), the `⋀^{d−1}W`-is-a-line route (full per-leaf detail in *Decisions made* +
+`notes/Phase23-design.md` §"CHAIN"(f)/(h); the d=3 `complementIso_smul_eq_extensor_join` stays the
+GREEN d=3 wrapper). **CHAIN-2/4/5 remain** (CHAIN-5 gated by the ENTRY-contract reshape). The integer
 Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary;
 codes-until-open).
 
@@ -29,18 +29,20 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-1 — first brick LANDED (2026-06-18, this commit): the `Fin d` chain row-correspondence
-(KT eq. 6.62).** `linearIndependent_sumElim_candidateBlock_swap` (`RigidityMatrix/Basic.lean`) +
-its mirror `linearIndependent_sumElim_block_swap` (`Mathlib/.../LinearIndependent/Basic.lean`)
-generalize the single-`Unit` `linearIndependent_sumElim_candidateRow_swap` to an arbitrary
-candidate **block** `cand : ιc → Dual`: if `Sum.elim (Sum.elim rn cand) ro` is LI and each
-`cand' i - cand i ∈ span(range(Sum.elim rn ro))`, then `Sum.elim (Sum.elim rn cand') ro` is LI.
-Quotient route (`M ⧸ span(range base)` + `LinearIndependent.sumElim_of_quotient`), graph-free over
-`ScrewSpace k`, no `d=3` content, no ENTRY-contract dependency. Gates green (full build 2824 jobs +
-lint clean, no warnings/sorry). **CHAIN-1 still open**: the `Fin d` *augment* proper — generalizing
-`linearIndependent_sum_augment_candidateRow` (one `Unit`, with its per-candidate column-op
-`Φ = columnOp hva` transport) to a `Fin d`-indexed augment — remains (each chain candidate carries
-its own edge/column-op, so the augment is heavier than this swap brick; see *Hand-off*).
+**CHAIN-1 — CLOSED (2026-06-18, this commit): the `ιc`-block candidate augment.** Two lemmas in
+`RigidityMatrix/Basic.lean`: `linearIndependent_sum_pinned_block_augment_block` (the abstract
+pin-a-body augment by a whole pinned candidate block `wc : ιc → Dual`, generalizing the single-`Unit`
+`…_augment`) and `linearIndependent_sum_augment_candidateRow_block` (the column-operated form: the
+candidate block `wc` becomes pure-`v`-column under the shared `Φ = columnOp hva`, transports back
+through `Φ.dualMap`, generalizing `…_candidateRow`). The two prior single-`Unit` lemmas
+(`…_pinned_block_augment`, `…_augment_candidateRow`) are now derived as the `ιc := Unit` corollaries
+— **no body duplication, both blueprint `\lean{…}` pins unmoved** (the names/signatures survive). This
+is the `+|ιc|` count lift the chain assembly (CHAIN-2/5) consumes **one body at a time** (each
+candidate certified against the chosen split body `v`'s shared column op, so the per-candidate
+column-op heterogeneity is CHAIN-2's bookkeeping, not the augment's): combined with the prior commit's
+row-correspondence swap (`…candidateBlock_swap`, KT eq. 6.62), the `d`-fold candidate machinery
+(CHAIN-1) is complete. Gates green (full build 2824 jobs + lint clean, no warnings/sorry; axioms =
+the 3 standard).
 
 **CHAIN-3 is CLOSED** (prior commit, 2026-06-17): the general-`d` per-line join=meet duality
 `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), `∃ c, c • complementIso(j:=2)
@@ -95,9 +97,9 @@ signature is now authorable; the `d=3` line is a zero-regression wrapper (C.4).
 
 The buildable-leaf sequence (exact signatures + dependency order in
 `notes/Phase23-design.md` §"CHAIN"(c)). Five leaves, **one** sub-phase (OD-6).
-**CHAIN-3 is CLOSED** (2026-06-17). CHAIN-1 is buildable now (no ENTRY-contract
-dependency); CHAIN-4 + the four-producer tail are now unblocked (consume CHAIN-3);
-CHAIN-5 is gated by the (b) flag (its signature is the CHAIN↔ENTRY contract).
+**CHAIN-1 + CHAIN-3 are CLOSED**. CHAIN-4 + the four-producer tail are unblocked
+(consume CHAIN-3); CHAIN-2 is buildable now (consumes CHAIN-1); CHAIN-5 is gated
+by the (b) flag (its signature is the CHAIN↔ENTRY contract).
 
 - [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + the Hodge panel-meet membership**
       (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (rows 193–210; full per-leaf detail in
@@ -117,13 +119,14 @@ CHAIN-5 is gated by the (b) flag (its signature is the CHAIN↔ENTRY contract).
         do NOT generalize — `dim Ω = C(d−1,2) = 1` only at `d=3`; the d=3 lemmas stay GREEN, **do NOT
         touch**) — revert the lifted infra to `Fin 4`. (2) The `finrank {n}^⊥ = k` metric transport is
         duplicated between (h-3) and (h-4) — factor a shared `finrank_toDualPerp_pair_eq` helper.
-- [~] **CHAIN-1 — the `d`-fold candidate machinery** (`RigidityMatrix/Basic.lean`).
-      Graph-free over `ScrewSpace k`; no `d=3` content. **First brick LANDED 2026-06-18**:
-      the `Fin d` chain row-correspondence (KT eq. 6.62) — `linearIndependent_sumElim_
-      candidateBlock_swap` + mirror `linearIndependent_sumElim_block_swap`, the block
-      generalization of the single-`Unit` `…candidateRow_swap`. **Still open**: the `Fin d`
-      *augment* proper — generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`,
-      with its per-candidate column-op `Φ = columnOp hva`) to a `Fin d`-indexed augment.
+- [x] **CHAIN-1 — the `d`-fold candidate machinery** (`RigidityMatrix/Basic.lean`). **CLOSED
+      2026-06-18** (rows 211–212). Graph-free over `ScrewSpace k`; no `d=3` content. Two bricks:
+      (1) the row-correspondence swap (KT eq. 6.62) `linearIndependent_sumElim_candidateBlock_swap`
+      + mirror `linearIndependent_sumElim_block_swap`; (2) the `ιc`-block candidate augment
+      `linearIndependent_sum_pinned_block_augment_block` + `linearIndependent_sum_augment_candidateRow_block`,
+      the `+|ιc|` count lift (the single-`Unit` `…_augment{,…_candidateRow}` re-derived as the
+      `ιc := Unit` corollaries; blueprint pins unmoved). The per-candidate column-op heterogeneity of
+      the heterogeneous chain is CHAIN-2's bookkeeping (the augment fires one body at a time).
 - [ ] **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
       (`Claim612.lean`). Re-state `exists_homogeneousIncidence_of_normals` (the
       `d+1`-point incidence pattern, eq. 6.67), the dispatch-internal bricks,
@@ -193,16 +196,18 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-3 is CLOSED** (prior commit). **CHAIN-1's first brick — the `Fin d` chain row-correspondence
-(KT eq. 6.62) — LANDED this commit** (`linearIndependent_sumElim_candidateBlock_swap` + its mirror).
-Independent next leaves, all buildable now:
+**CHAIN-1 + CHAIN-3 are CLOSED.** CHAIN-1 finished this commit (the `ιc`-block candidate augment
+`linearIndependent_sum_pinned_block_augment_block` + `…_augment_candidateRow_block`, on top of the
+prior commit's `…candidateBlock_swap`). Independent next leaves, all buildable now:
 
-- **CHAIN-1 finish — the `Fin d` candidate *augment* proper** (`RigidityMatrix/Basic.lean`).
-  Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit` candidate, with its
-  per-candidate column-op `Φ = columnOp hva` transport via `linearIndependent_sum_pinned_block_
-  augment`) to a `Fin d`-indexed augment — each chain candidate carries its own edge/column-op, so
-  this is heavier than the just-landed swap brick (which corrects candidate rows by base-span
-  members only). Graph-free over `ScrewSpace k`, **no `d=3` content, no ENTRY-contract dependency**.
+- **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), now consuming CHAIN-1's
+  two bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r
+  chain (6.66): the index-heavy generalization of the `caseIIICandidate`/`case_III_old_new_blocks`/
+  `case_III_rank_certification` chain (now `q : α × Fin 4`-shaped) to a `Fin d`-indexed candidate
+  family. This is where the **per-candidate column-op heterogeneity** lives (each candidate `i`
+  applies its own `Φᵢ` before the CHAIN-1 augment fires one body at a time). Reuses Claim 6.11
+  `exists_redundant_panelRow_…` (general & GREEN). Heaviest mechanical leaf ("exactly the same as
+  `d=3`"); may split on contact.
 - **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator** (`Claim612.lean`), now unblocked
   by CHAIN-3. Re-state `exists_homogeneousIncidence_of_normals` (eq. 6.67) + `case_III_claim612` +
   `exists_complementIso_ne_zero_…` at `ScrewSpace (d−1)`/`Fin d`; its discriminator consumes (h-4)'s
@@ -222,9 +227,9 @@ BlueprintExposition ledger (the CHAIN-3 entry).
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
 CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
-record (C.1/C.3), so it is now authorable. CHAIN-1 (augment)/2/4 remain
-buildable independently of the contract; CHAIN-5 is unblocked once CHAIN-1/2/4
-land **and** ENTRY's extractor is reshaped.
+record (C.1/C.3), so it is now authorable. CHAIN-2/4 remain buildable
+independently of the contract (CHAIN-1/3 now closed); CHAIN-5 is unblocked once
+CHAIN-2/4 land **and** ENTRY's extractor is reshaped.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn
 comes).** ENTRY reshapes `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`)
@@ -348,15 +353,23 @@ general mathlib, grade enters nothing):
   metric transport is re-derived here near-verbatim from the (h-3) leaf — extract a shared
   `finrank_toDualPerp_pair_eq` helper once both are green and stable.
 
-**Landed CHAIN-1 brick** (2026-06-18, this commit):
+**Landed CHAIN-1 bricks** (closes CHAIN-1; all in `RigidityMatrix/Basic.lean`, graph-free over
+`ScrewSpace k`, axiom-clean, both single-`Unit` predecessors re-derived as the `ιc := Unit`
+corollaries so blueprint `\lean{…}` pins are unmoved):
 - the `Fin d` chain row-correspondence (KT eq. 6.62) `linearIndependent_sumElim_candidateBlock_swap`
-  (`RigidityMatrix/Basic.lean`) — swapping an arbitrary candidate **block** `cand : ιc → Dual` by
-  base-span members `cand' i - cand i ∈ span(range(Sum.elim rn ro))` preserves LI; the block
-  generalization of the single-`Unit` `linearIndependent_sumElim_candidateRow_swap` (reassociate
-  `(ιn⊕ιc)⊕ιo → (ιn⊕ιo)⊕ιc`, then the new mirror). Mirror `linearIndependent_sumElim_block_swap`
-  (`Mathlib/.../LinearIndependent/Basic.lean`): quotient route `M ⧸ span(range base)` (the
-  differences vanish in the quotient, `mkQ∘cand'=mkQ∘cand`) + `LinearIndependent.sumElim_of_quotient`
-  rebuild. Axiom-clean, graph-free. See FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…*.
+  — swapping a candidate **block** `cand : ιc → Dual` by base-span members
+  `cand' i - cand i ∈ span(range(Sum.elim rn ro))` preserves LI; the block generalization of the
+  single-`Unit` `…candidateRow_swap` (reassociate `(ιn⊕ιc)⊕ιo → (ιn⊕ιo)⊕ιc`, then the new mirror
+  `linearIndependent_sumElim_block_swap`: quotient route `M ⧸ span(range base)` +
+  `LinearIndependent.sumElim_of_quotient`). See FRICTION [mirrored] *`…sumElim_block_swap`…*.
+- the `ιc`-block candidate augment (2026-06-18, this commit) — `linearIndependent_sum_pinned_block_
+  augment_block` (the abstract pin-a-body `+|ιc|` augment: a whole pinned candidate block `wc : ιc →
+  Dual` joins the new `va`-block via `linearIndependent_sum_pinned_block` on `Sum.elim rn wc`) +
+  `linearIndependent_sum_augment_candidateRow_block` (the column-operated form: `wc` becomes pure-`v`
+  under the shared `Φ = columnOp hva`, transports back through `Φ.dualMap`). Mechanical `ιc`-lift of
+  the single-`Unit` `…_augment{,…_candidateRow}` (`Unit → wc`, `funext;cases;rfl` over `ιn ⊕ ιc`); no
+  new tactic friction. The chain's per-candidate column-op heterogeneity (each `i` has its own `Φᵢ`)
+  is **CHAIN-2's** bookkeeping — the augment fires one body at a time at the chosen split body `v`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
