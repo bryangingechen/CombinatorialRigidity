@@ -110,27 +110,30 @@ theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
     push_cast
     ring
 
-/-- **Theorem 5.5 base producer, empty arm** (`lem:theorem-55-base-producer`; `hbase` carry,
-Phase 22i L3b). The bookkeeping arm of the all-`k` base producer: a minimal-`k`-dof graph on
-`1 ≤ |V| ≤ 2` with **empty edge set** (`E(G) = ∅`, trichotomy arm (i),
-`isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel realization at rank
-`D(|V|−1) − def = D(|V|−1) − D(|V|−1) = 0`.
+/-- **Theorem 5.5 base producer, empty arm — general grade `k`** (`lem:theorem-55-base-producer`;
+`hbase_k` carry, Phase 23b OD-7 tail). The general-grade lift of the bookkeeping arm of the all-`k`
+base producer: a minimal-`c`-dof graph on `1 ≤ |V| ≤ 2` with **empty edge set** (`E(G) = ∅`,
+trichotomy arm (i), `isMinimalKDof_ncard_le_two_trichotomy`) carries a genuine-hinge panel
+realization at rank `D(|V|−1) − def = D(|V|−1) − D(|V|−1) = 0`, where `D = screwDim k`.
 
 The all-zero-extensor framework `F := ⟨G, fun _ => 0⟩` fires no hinge constraint (no links), so
 `rigidityRows F = ∅`, `span ∅ = ⊥`, and `finrank ⊥ = 0`. The per-link conjunct is vacuous
-(`E(G) = ∅`). A fixed nonzero normal `n₀ := Pi.single 0 1` supplies the panel-normal conjunct. -/
-theorem theorem_55_base_producer_empty [DecidableEq β] [Finite α] {n : ℕ}
-    (hn : Graph.bodyBarDim n = screwDim 2)
+(`E(G) = ∅`). A fixed nonzero normal `n₀ := Pi.single 0 1` (now in `Fin (k + 2) → ℝ`) supplies the
+panel-normal conjunct. No `Fin 4` / `⋀²ℝ⁴` geometry enters — the empty arm is pure bookkeeping, so
+the lift is a verbatim numeral pass (`Fin 4 → Fin (k + 2)`, `screwDim 2 → screwDim k`); the `hn`
+hypothesis carries the `bodyBarDim n = screwDim k` arithmetic the rank target needs. -/
+theorem theorem_55_base_producer_empty_gen [DecidableEq β] [Finite α] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim k)
     (G : Graph α β) (hE : E(G) = ∅)
     (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
-    HasPanelRealization 2 n G := by
+    HasPanelRealization k n G := by
   classical
-  -- A fixed nonzero panel normal `n₀ : Fin 4 → ℝ`.
-  set n₀ : Fin 4 → ℝ := Pi.single 0 1 with hn₀
+  -- A fixed nonzero panel normal `n₀ : Fin (k + 2) → ℝ`.
+  set n₀ : Fin (k + 2) → ℝ := Pi.single 0 1 with hn₀
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
   -- The all-zero framework: all supporting extensors are zero.
-  set F : BodyHingeFramework 2 α β :=
+  set F : BodyHingeFramework k α β :=
     { graph := G
       supportExtensor := fun _ => 0 } with hF
   have hFg : F.graph = G := rfl
@@ -157,10 +160,23 @@ theorem theorem_55_base_producer_empty [DecidableEq β] [Finite α] {n : ℕ}
     have hdef : (G.deficiency n : ℤ) = (Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1) :=
       hG.1
     rw [hfinrank]
-    -- `screwDim 2 * (ncard - 1) - def = screwDim 2 * (ncard - 1) - screwDim 2 * (ncard - 1) = 0`
+    -- `screwDim k * (ncard - 1) - def = screwDim k * (ncard - 1) - screwDim k * (ncard - 1) = 0`
     rw [hdef, hn]
     push_cast
     ring
+
+/-- **Theorem 5.5 base producer, empty arm** (`lem:theorem-55-base-producer`; `hbase` carry,
+Phase 22i L3b; the `k = 2` wrapper of `theorem_55_base_producer_empty_gen`). The bookkeeping arm of
+the all-`k` base producer at `d = 3`: a minimal-`k`-dof graph on `1 ≤ |V| ≤ 2` with **empty edge
+set** carries a genuine-hinge panel realization at rank `D(|V|−1) − def = 0`. The work is the
+grade-general `theorem_55_base_producer_empty_gen`; this wrapper specializes `k := 2` (`Fin 4`,
+`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+theorem theorem_55_base_producer_empty [DecidableEq β] [Finite α] {n : ℕ}
+    (hn : Graph.bodyBarDim n = screwDim 2)
+    (G : Graph α β) (hE : E(G) = ∅)
+    (hG : G.IsMinimalKDof n ((Graph.bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1))) :
+    HasPanelRealization 2 n G :=
+  theorem_55_base_producer_empty_gen (k := 2) hn G hE hG
 
 /-- **Theorem 5.5 base producer, single-edge arm** (`lem:theorem-55-base-producer`; `hbase` carry,
 Phase 22i L3b). The second bookkeeping arm of the all-`k` base producer: a minimal-`1`-dof graph
