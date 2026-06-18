@@ -33,39 +33,44 @@ open scoped Graph
 
 variable {α β : Type*}
 
-/-- **Theorem 5.5 base producer, parallel-pair arm** (`lem:theorem-55-base-producer-parallel`, the
-`|V| = 2`, `k = 0` arm; Katoh–Tanigawa 2011 §5/§6, Lemma 5.3, p. 670; Phase 22i L3b). The
+/-- **Theorem 5.5 base producer, parallel-pair arm — general grade `k`**
+(`lem:theorem-55-base-producer-parallel`, the `|V| = 2`, `k = 0` arm; Katoh–Tanigawa 2011 §5/§6,
+Lemma 5.3, p. 670; Phase 22i L3b / Phase 23b OD-7 tail). The general-grade lift of the
 genuinely-new geometric arm of the all-`k` base producer: a two-vertex minimal-`0`-dof-graph — a
 *parallel pair* of edges `e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and `def(G̃) = 0`
 (KT p. 671 case (iii), `isMinimalKDof_ncard_le_two_trichotomy`) — carries a genuine-hinge panel
-realization at the full target rank `D(|V|−1) − def = D·1 = 6`.
+realization at the full target rank `D(|V|−1) − def = D·1 = D` (`D = screwDim k`).
 
 The construction places *coincident panels* `Π(x) = Π(y) = n^⊥` at a fixed nonzero normal
 `n := Pi.single 0 1` and assigns the two parallel hinges two **linearly-independent** supporting
-extensors inside that common panel `n^⊥` (`exists_linearIndependent_extensor_pair_perp`, the L3a
-brick). The two independent extensors give the combined hinge-row blocks full rank `D = 6` on the
-relative screw `S x − S y`, so `theorem_55_base` makes the framework infinitesimally rigid on
-`{x, y} = V(G)`; bridge **B1**
-(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`) turns that into the M2 rank
-equality. This is the `|V| = 2`, `k = 0` leaf KT's p. 670 Lemma 5.3 realizes; it bottoms out on the
-two-independent-extensors-in-a-common-hyperplane device, the only new geometry the base producer
-needs (the empty and single-edge arms are bookkeeping / single-row counts). -/
-theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
+extensors inside that common panel `n^⊥` (`exists_linearIndependent_extensor_pair_perp_grade`, the
+already-general-`k` L3a brick; its distinct-`k`-subsets device needs `1 ≤ k`). The two independent
+extensors give the combined hinge-row blocks full rank `D` on the relative screw `S x − S y`, so
+`theorem_55_base` (already general-`k`) makes the framework infinitesimally rigid on `{x, y}`,
+i.e. on `V(G)`; bridge **B1**
+(`isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows`, general-`k`) turns
+that into the M2 rank equality. This is the `|V| = 2`, `k = 0` leaf KT's p. 670 Lemma 5.3 realizes;
+it bottoms out on the two-independent-extensors-in-a-common-hyperplane device, the only new geometry
+the base producer needs (the empty and single-edge arms are bookkeeping / single-row counts). The
+whole proof is the verbatim numeral pass over the d=3 body — `Fin 4 → Fin (k + 2)`,
+`ScrewSpace 2 → ScrewSpace k`. The d=3 `theorem_55_base_producer_parallel_pair` is now its `k := 2`
+wrapper. -/
+theorem theorem_55_base_producer_parallel_pair_gen [Finite α] {n : ℕ} (hk : 1 ≤ k)
     (G : Graph α β) {x y : α} {e f : β}
     (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
     (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) (hdef : G.deficiency n = 0) :
-    HasPanelRealization 2 n G := by
+    HasPanelRealization k n G := by
   classical
-  -- A fixed nonzero panel normal `n₀ : Fin 4 → ℝ`; both bodies share the panel `n₀^⊥`.
-  set n₀ : Fin 4 → ℝ := Pi.single 0 1 with hn₀
+  -- A fixed nonzero panel normal `n₀ : Fin (k + 2) → ℝ`; both bodies share the panel `n₀^⊥`.
+  set n₀ : Fin (k + 2) → ℝ := Pi.single 0 1 with hn₀
   have hn₀_ne : n₀ ≠ 0 := by
     intro h; have := congr_fun h 0; simp [hn₀, Pi.single_eq_same] at this
-  -- The L3a geometric brick: two point-pairs in `n₀^⊥` with linearly-independent extensors.
-  obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp n₀
-  set Ce : ScrewSpace 2 := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hCe
-  set Cf : ScrewSpace 2 := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _) with hCf
+  -- The L3a geometric brick: two point-tuples in `n₀^⊥` with linearly-independent extensors.
+  obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ := exists_linearIndependent_extensor_pair_perp_grade hk n₀
+  set Ce : ScrewSpace k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _) with hCe
+  set Cf : ScrewSpace k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _) with hCf
   -- The two-hinge framework: `e ↦ Ce`, `f ↦ Cf`, all other edges `0`.
-  set F : BodyHingeFramework 2 α β :=
+  set F : BodyHingeFramework k α β :=
     { graph := G
       supportExtensor := fun e' => if e' = e then Ce else if e' = f then Cf else 0 } with hF
   -- The two supporting extensors reduce to `Ce`, `Cf`.
@@ -109,6 +114,21 @@ theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
     rw [hB1, hVcard, hdef]
     push_cast
     ring
+
+/-- **Theorem 5.5 base producer, parallel-pair arm** (`lem:theorem-55-base-producer-parallel`, the
+`|V| = 2`, `k = 0` arm; Katoh–Tanigawa 2011 §5/§6, Lemma 5.3, p. 670; Phase 22i L3b; the `k = 2`
+wrapper of `theorem_55_base_producer_parallel_pair_gen`). The genuinely-new geometric arm of the
+all-`k` base producer at `d = 3`: a two-vertex minimal-`0`-dof-graph — a *parallel pair* of edges
+`e ≠ f` both linking `x ≠ y`, with `V(G) = {x, y}` and `def(G̃) = 0` — carries a genuine-hinge panel
+realization at the full target rank `D(|V|−1) − def = D·1 = 6`. The work is the grade-general
+`theorem_55_base_producer_parallel_pair_gen`; this wrapper specializes `k := 2` (`Fin 4`,
+`screwDim 2 = 6`) for the `d = 3` spine consumer `theorem_55_base_producer`. -/
+theorem theorem_55_base_producer_parallel_pair [Finite α] {n : ℕ}
+    (G : Graph α β) {x y : α} {e f : β}
+    (hxy : x ≠ y) (hef : e ≠ f) (hVG : V(G) = {x, y}) (hEG : E(G) = {e, f})
+    (hl_e : G.IsLink e x y) (hl_f : G.IsLink f x y) (hdef : G.deficiency n = 0) :
+    HasPanelRealization 2 n G :=
+  theorem_55_base_producer_parallel_pair_gen (k := 2) (by norm_num) G hxy hef hVG hEG hl_e hl_f hdef
 
 /-- **Theorem 5.5 base producer, empty arm — general grade `k`** (`lem:theorem-55-base-producer`;
 `hbase_k` carry, Phase 23b OD-7 tail). The general-grade lift of the bookkeeping arm of the all-`k`
