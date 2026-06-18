@@ -1,10 +1,13 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED.** This commit (2026-06-18) landed
-**CHAIN-4d** `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`RigidityMatrix/Claim612.lean`),
-the discriminator capstone — the assembly of CHAIN-4c (witness join) + CHAIN-4b (per-join line data)
-+ CHAIN-3 (h-4) (the join=meet duality), closing CHAIN-4. **Remaining: CHAIN-2 + CHAIN-5 + the
-four-producer tail (OD-7).** CHAIN-1 = the `ιc`-block candidate augment + `…candidateBlock_swap`
+**Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED.** This commit (2026-06-18) **opened the
+four-producer tail (OD-7)** with its foundational meet-decomposition brick
+`exists_extensor_eq_panelSupportExtensor_gen` (`PanelLayer.lean`), the general-`k` M4-forget reach-in
+lift routing through CHAIN-3 (h-4)'s join=meet duality (the d=3 lemma is now its `k:=2` wrapper;
+supporting brick `extensor_update_smul` in `Extensor.lean`). **CHAIN-4 was closed by the prior commit's
+CHAIN-4d** (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the discriminator capstone =
+assembly of CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the rest of the
+OD-7 tail.** CHAIN-1 = the `ιc`-block candidate augment + `…candidateBlock_swap`
 (`RigidityMatrix/Basic.lean`), graph-free over `ScrewSpace k`. CHAIN-3 = the general-`d` per-line
 join=meet duality `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), the
 `⋀^{d−1}W`-is-a-line route (the d=3 `complementIso_smul_eq_extensor_join` stays the GREEN d=3
@@ -40,7 +43,7 @@ eqs. 6.59–6.64, `CaseIII/`; consumes CHAIN-1, buildable now, heaviest mechanic
 contract) but is gated on CHAIN-2/4 landing **and** ENTRY's extractor reshape. See *Hand-off* for the
 per-leaf detail.
 
-**CHAIN-4d — LANDED this commit (2026-06-18): the discriminator capstone, closing CHAIN-4.**
+**CHAIN-4d — LANDED the prior commit (2026-06-18): the discriminator capstone, closing CHAIN-4.**
 `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`RigidityMatrix/Claim612.lean`): from
 `r ≠ 0`, LI `pbar : Fin (k+2) → Fin (k+2) → ℝ`, LI normals `n : Fin (k+1) → Fin (k+2) → ℝ`, and the
 off-one-panel incidence (`h0`/`hi`), produces a discriminating index `u : Fin (k+1)` + second normal
@@ -241,10 +244,12 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED** (CHAIN-4 closed this commit by CHAIN-4d, the discriminator
-capstone `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` — see *Current state* + *Decisions
-made*). **Next build = CHAIN-2 (heaviest mechanical leaf, buildable now) or the four-producer tail
-(OD-7); CHAIN-5 is gated on CHAIN-2 + ENTRY's extractor reshape.**
+**CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED** (CHAIN-4 closed by the prior commit's CHAIN-4d, the
+discriminator capstone `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`). **This commit
+opened the four-producer tail (OD-7)** — its foundational brick `exists_extensor_eq_panelSupportExtensor_gen`
+landed (see *Current state* + *Decisions made*). **Next build = the M4 consumer lift
+`hasPanelRealization_of_generic` (smallest), CHAIN-2 (heaviest mechanical leaf), or the rest of the
+OD-7 tail; CHAIN-5 is gated on CHAIN-2 + ENTRY's extractor reshape.**
 
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
   bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
