@@ -1623,9 +1623,10 @@ Routine. Home: `CaseIII/Realization.lean` beside `…_general`; the `Fin 4`
 `linearIndependent_normals_of_algebraicIndependent` re-derives as its `k:=2` instance
 (so the still-`k=2` consumer `case_III_candidate_dispatch` is unaffected).
 
-**Build order + count:** `case_I_realization_all_k_gen` (1st, independent, cleanest
-numeral pass) → `case_I_realization_nonsimple_gen` (numeral pass + `_perp_grade`
-swap) → LEAF-0 triple-LI → `case_I_realization_h65_gen` (consumes LEAF-0; may split)
+**Build order + count** (LANDED 2026-06-18: `all_k_gen`, `nonsimple_gen`, LEAF-0 triple-LI —
+with `hk : 1 ≤ k`, the `3×3`-minor restriction of `…_general`): `case_I_realization_all_k_gen` (1st,
+independent, cleanest numeral pass) → `case_I_realization_nonsimple_gen` (numeral pass + `_perp_grade`
+swap) → LEAF-0 triple-LI → **`case_I_realization_h65_gen`** (next; consumes LEAF-0; may split)
 → `case_I_dispatch_gen` + the general `hcontract_k` wire-up (closes OD-7; the `k=2`
 `theorem_55_minimalKDof_k` filler stays green as the `k:=2` instance, blueprint pins
 unmoved). **5 commits min, 6 if h65 splits.** **Clause-(ii) flag:** exactly one

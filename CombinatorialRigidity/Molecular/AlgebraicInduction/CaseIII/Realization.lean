@@ -152,30 +152,97 @@ lemma linearIndependent_normals_of_algebraicIndependent_general
   --         by AlgHom.map_det (reversed direction).
   rw [← hφB, AlgHom.map_det]
 
+/-- **Triple linear independence from algebraic independence — general grade** (§1.48(2), the
+triple-LI bridge; Phase 22h base, Phase 23b general-`k` lift, OD-7 `hcontract_k` LEAF-0). For three
+distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family `q : α × Fin (k+2) → ℝ`
+(grade `k ≥ 1`, so the rows live in a `≥ 3`-dimensional column space), the three row vectors
+`![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly independent.
+
+This is the **genuinely-new** brick of the Case-I dispatch lift (unlike the `_general` companion,
+which produces LI of a `k + 1`-row family from `k + 1` injective vertices): the KT Lemma 6.5 arm
+(`case_I_realization_h65`) has only a degree-2 vertex `v` plus its two neighbours `a, b` — three
+vertices, not `k + 1` — so for `k ≥ 3` the `k + 1`-vertex selector of `_general` is unavailable and
+the *fixed-three-row* statement needs its own proof. (The `d = 3`, i.e. `k = 2`, instance below is
+where the row count `3` happens to coincide with `k + 1`.)
+
+**Proof route** (det-polynomial, the `_general` argument restricted to a fixed `3 × 3` minor):
+project the `k + 2` columns onto the first three via `Fin.castLE (by omega : 3 ≤ k + 2)`, form the
+`3 × 3` matrix `B i j = q (![a,b,c] i, Fin.castLE … j)`, and show `B.det ≠ 0` by
+`AlgebraicIndependent.aeval_ne_zero` applied to the generic `det (mvPolynomialX (Fin 3) (Fin 3) ℚ)`
+(nonzero by `Matrix.det_mvPolynomialX_ne_zero`) along the injection
+`f (i, j) = (![a,b,c] i, Fin.castLE … j)` (injective: `![a,b,c]` from the three distinctnesses,
+`Fin.castLE` from `Fin.castLE_injective`). Then `Matrix.linearIndependent_rows_of_det_ne_zero` plus
+`LinearIndependent.of_comp` lift the `3 × 3`-minor independence to the full `(k+2)`-coordinate rows.
+No `d = 3` content; only `k ≥ 1` (the column space must be at least three-dimensional). -/
+lemma linearIndependent_normals_of_algebraicIndependent_triple
+    {k : ℕ} {α : Type*} (hk : 1 ≤ k) {q : α × Fin (k + 2) → ℝ}
+    (hq : AlgebraicIndependent ℚ q)
+    {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
+      Fin 3 → Fin (k + 2) → ℝ) := by
+  classical
+  have h3 : (3 : ℕ) ≤ k + 2 := by omega
+  have hbinj : Function.Injective (![a, b, c] : Fin 3 → α) := by
+    intro i j heq
+    fin_cases i <;> fin_cases j <;>
+      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, hab.symm, hac.symm, hbc.symm]
+  -- It suffices that the projection to three columns `Fin.castLE h3 : Fin 3 → Fin (k+2)` is LI.
+  -- The literal row family equals the selector family `fun i j => q (![a,b,c] i, j)`.
+  have hrows : (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
+        Fin 3 → Fin (k + 2) → ℝ) =
+      fun (i : Fin 3) (j : Fin (k + 2)) => q (![a, b, c] i, j) := by
+    ext i j; fin_cases i <;> rfl
+  rw [hrows]
+  apply LinearIndependent.of_comp
+    (LinearMap.pi (fun j : Fin 3 =>
+      (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ)))
+  -- The composed family is the rows of the 3×3 matrix B i j = q (![a,b,c] i, Fin.castLE h3 j).
+  have hcomp_eq : (LinearMap.pi
+        (fun j : Fin 3 =>
+          (LinearMap.proj (Fin.castLE h3 j) : (Fin (k + 2) → ℝ) →ₗ[ℝ] ℝ))) ∘
+      (fun (i : Fin 3) (j : Fin (k + 2)) => q (![a, b, c] i, j)) =
+      fun (i : Fin 3) (j : Fin 3) => q (![a, b, c] i, Fin.castLE h3 j) := rfl
+  rw [hcomp_eq]
+  apply Matrix.linearIndependent_rows_of_det_ne_zero
+  -- Injection f : Fin 3 × Fin 3 → α × Fin (k+2) selecting the three rows and three columns.
+  set f : Fin 3 × Fin 3 → α × Fin (k + 2) :=
+    fun p => (![a, b, c] p.1, Fin.castLE h3 p.2) with hf_def
+  have hfinj : Function.Injective f := by
+    intro ⟨i, j⟩ ⟨i', j'⟩ heq
+    simp only [hf_def, Prod.mk.injEq] at heq
+    exact Prod.ext (hbinj heq.1) (Fin.castLE_injective h3 heq.2)
+  have hqf : AlgebraicIndependent ℚ (q ∘ f) := hq.comp f hfinj
+  have hP_ne : (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det ≠ 0 :=
+    Matrix.det_mvPolynomialX_ne_zero (Fin 3) ℚ
+  suffices hBdet :
+      Matrix.det (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) =
+      MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)
+        (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ).det by
+    rw [hBdet]
+    exact hqf.aeval_ne_zero hP_ne
+  have hφB : (MvPolynomial.aeval (fun p : Fin 3 × Fin 3 => (q ∘ f) p)).mapMatrix
+      (Matrix.mvPolynomialX (Fin 3) (Fin 3) ℚ) =
+      (fun i j => q (![a, b, c] i, Fin.castLE h3 j)) := by
+    have := Matrix.mvPolynomialX_mapMatrix_aeval ℚ
+      (Matrix.of (fun i j : Fin 3 => q (![a, b, c] i, Fin.castLE h3 j)))
+    simp only [Matrix.of_apply] at this
+    convert this using 2
+  rw [← hφB, AlgHom.map_det]
+
 /-- **Triple linear independence from algebraic independence** (§1.48(2), the triple-LI bridge;
 Phase 22h). For three distinct vertices `a, b, c` in an algebraically-independent-over-`ℚ` family
 `q : α × Fin 4 → ℝ`, the three row vectors `![q(a,·), q(b,·), q(c,·)]` are `ℝ`-linearly
-independent. The `d = 3` (`k = 2`) specialization of
-`linearIndependent_normals_of_algebraicIndependent_general` at the `b := ![a, b, c]` selector
-(its injectivity packaged from the three pairwise-distinctness hypotheses); kept at the `![…]`
-literal signature for the still-`k = 2` spine consumers (`case_III_candidate_dispatch`,
+independent. The `d = 3` (`k = 2`) instance of
+`linearIndependent_normals_of_algebraicIndependent_triple`; kept at the `![…]` literal `Fin 4`
+signature for the still-`k = 2` spine consumers (`case_III_candidate_dispatch`,
 `case_I_realization_h65`). -/
 lemma linearIndependent_normals_of_algebraicIndependent
     {α : Type*} {q : α × Fin 4 → ℝ}
     (hq : AlgebraicIndependent ℚ q)
     {a b c : α} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     LinearIndependent ℝ (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] :
-      Fin 3 → Fin 4 → ℝ) := by
-  have hbinj : Function.Injective (![a, b, c] : Fin 3 → α) := by
-    intro i j heq
-    fin_cases i <;> fin_cases j <;>
-      simp_all [Matrix.cons_val_zero, Matrix.cons_val_one, hab.symm, hac.symm, hbc.symm]
-  have hgen := linearIndependent_normals_of_algebraicIndependent_general (k := 2) hq hbinj
-  -- The general family `fun i j => q (![a,b,c] i, j)` equals the `![…]` literal row family.
-  have heq : (fun (i : Fin 3) (j : Fin 4) => q (![a, b, c] i, j)) =
-      (![fun i => q (a, i), fun i => q (b, i), fun i => q (c, i)] : Fin 3 → Fin 4 → ℝ) := by
-    ext i j; fin_cases i <;> rfl
-  rwa [heq] at hgen
+      Fin 3 → Fin 4 → ℝ) :=
+  linearIndependent_normals_of_algebraicIndependent_triple (k := 2) (by norm_num) hq hab hac hbc
 
 /-- **W10b — the candidate-placement dispatch + discharge assembly** (`lem:case-II-realization` /
 `lem:case-III`, the `hcand` discharge of the `d = 3` `hsplit` producer; Katoh–Tanigawa 2011
