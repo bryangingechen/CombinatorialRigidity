@@ -1267,6 +1267,12 @@ crux. Clause (ii) verdict: **flag the O(n)-equivariance as its own buildable lea
   `complementIso_exteriorPower_basis_mem_range_map_subtype`. The `extensor n = 0`
   (dependent `n`) case is trivial (`complementIso 0 = 0 ∈ range`); the work is the
   `n`-independent case, where `dim W = k` holds (rank–nullity on the 2 functionals).
+  **The build surfaced an input step §(h) glossed** (`extensor n = c • blade`): it
+  needs a genuine grade-2 proportionality + a grade-decoupled membership brick, now
+  **LANDED** (`exists_smul_extensor_eq_of_mem_span_range` +
+  `extensor_mem_range_map_subtype_of_mem_jgrade`, `Meet.lean`, 2026-06-17). The remaining
+  (h-3) work is the metric composition; the `W = {n}^⊥` dimension step is the one untested
+  piece (rolling detail in `notes/Phase23b.md` *Hand-off*).
 - **(h-4)** `extensor_join_proportional_complementIso_meet` — the assembly
   (signature §(f) item 1): consumes (h-3) + the three LANDED `_grade` bricks. Zero
   new count. **Hands the CHAIN-4 discriminator the join=meet proportionality**

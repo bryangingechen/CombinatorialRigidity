@@ -35,22 +35,32 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) (h-2) Gram–Schmidt span-control existence has LANDED (2026-06-17, this
-commit) — the new downstream metric file `Molecular/MeetHodge.lean`.**
-`exists_orthonormalBasis_span_pair_eq`: for a linearly independent pair `n : Fin 2 →
-EuclideanSpace ℝ (Fin (k+2))`, there is an `OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace ℝ
-(Fin (k+2)))` whose first two vectors span `span{n 0, n 1}`. Built by Gram–Schmidt on the family `f`
-extending `n` by zeros (`gramSchmidtOrthonormalBasis`); the span chain is
-`{b 0, b 1} = gramSchmidtNormed f '' Iic 1` (each nonzero by the LANDED
-`gramSchmidtNormed_unit_length_coe`) → `span (gramSchmidt f '' Iic 1)` (`span_gramSchmidtNormed`)
-→ `span (f '' Iic 1)` (`span_gramSchmidt_Iic`) → `span{n 0, n 1}`. The per-index nonzero hypothesis
-(`LinearIndependent ℝ (f ∘ (Iic i ↪))`) comes from `LinearIndepOn ℝ f (Iic 1)`, itself the pair `hn`
-reindexed via `linearIndepOn_range_iff` (`Set.range ![0,1] = {0,1} = Iic 1`) + `linearIndependent_
-restrict_iff`. Its `b.repr` is the frame-alignment L²-isometry the LANDED transport bridge
+**CHAIN-3's OD-8 route-(α) (h-3) input-side proportionality has LANDED (2026-06-17, this commit) —
+two metric-free bricks in `Meet.lean`.** Building the (h-3) assembly surfaced a step the design
+doc's §(h) prose glossed (`extensor n = c • blade` as if trivial): the panel-meet input `extensor n`
+(grade-2 in ambient `Fin (k+2)`) must be matched — up to a nonzero scalar — to the `2`-extensor of
+the *orthonormal* pair an orthogonal change-of-frame carries to a coordinate blade, and that needed a
+genuine proportionality lemma plus a grade-decoupled membership brick:
+- `exists_smul_extensor_eq_of_mem_span_range` (the input proportionality leaf): for `v : Fin 2 →
+  Fin (d+1) → ℝ` independent and `u : Fin 2 → …` with both vectors in `span(range v)`,
+  `∃ c, c • extensor v = extensor u`. Both extensors lie in the line `range(map 2 P.subtype)`
+  (`P = span(range v)`, `dim 2`, so `⋀²P` is a line via `finrank_exteriorPower_self_eq_one`), with
+  `extensor v ≠ 0`; close by the same line-proportionality idiom as
+  `exists_smul_eq_of_mem_range_map_subtype_grade`. Grade-2-specific (count needs grade = `dim P = 2`);
+  ambient `Fin (d+1)` general (the `Fin (k+2)` site is `d := k+1`).
+- `extensor_mem_range_map_subtype_of_mem_jgrade` (the prerequisite): `extensor_mem_range_map_subtype_
+  of_mem_grade` with the grade `j` **decoupled** from the ambient `d` (the `_grade` form ties it to
+  `d − 1`; grade `2 ≠ (k+1)−1 = k`). Proof verbatim; `_grade` re-derived as the `j := d−1` instance
+  (signature unchanged, callers untouched — the line-1517/d:=k+1 + d=3 instances both still close).
+
+Both metric-free, in `Meet.lean`. Gates green (full build + lint clean, no warnings/sorry).
+
+**(h-2) recap (landed prior commit).** `exists_orthonormalBasis_span_pair_eq` (`MeetHodge.lean`): for
+a linearly independent pair `n : Fin 2 → EuclideanSpace ℝ (Fin (k+2))`, an `OrthonormalBasis` whose
+first two vectors span `span{n 0, n 1}` (Gram–Schmidt on the zero-extended family). Its `b.repr` is
+the frame-alignment L²-isometry the LANDED transport bridge
 `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` converts to the `toDual`-orthogonal `O` that
-(h-1) `complementIso_map_orthogonal_eq` consumes. Axiom-clean, gates green. **New file rationale:**
-`PiL2` cannot import into metric-free `Meet.lean` (TACTICS-QUIRKS § 59); `MeetHodge.lean` imports
-both `Meet.lean` and the metric layer, and is wired into the top-level `CombinatorialRigidity.lean`.
+(h-1) `complementIso_map_orthogonal_eq` consumes.
 
 **Architectural finding (cost a build cycle; → TACTICS-QUIRKS § 59 + FRICTION).** Importing
 `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean` **regresses a
@@ -206,11 +216,20 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
                 `linearIndependent_restrict_iff`). Lives in the NEW DOWNSTREAM file
                 `Molecular/MeetHodge.lean` (`PiL2` cannot import into metric-free `Meet.lean`,
                 TACTICS-QUIRKS § 59). Landed 2026-06-17.
-            - [ ] (h-3) `complementIso_extensor_mem_range_map_subtype` — assemble (h-1)+(h-2)+the LANDED
-              standard-frame membership; the `extensor n = 0` case is trivial, the work is the
-              `n`-independent case (`dim W = k` by rank–nullity on the 2 functionals).
-            Route β (annihilator=range) is **rejected** (it re-introduces the withdrawn `dim Φ̃`
-            count). Fallback: carry (h-3) green-modulo if (h-2) is a long pole.
+              - [x] **(h-3) input proportionality** `exists_smul_extensor_eq_of_mem_span_range` +
+                prerequisite `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`, this commit).
+                Lets `extensor n` be replaced (up to scalar) by the `2`-extensor of the orthonormal
+                frame pair spanning the same plane. Both metric-free. See *Current state*.
+            - [ ] (h-3) **assembly** `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`) —
+              compose the input proportionality (this commit) with (h-1) O(n)-equivariance + (h-2)
+              `exists_orthonormalBasis_span_pair_eq` + the LANDED standard-frame membership + the
+              range-pushforward (validated in scratch: `O(W')⊆W ⟹ map g O sends range(map g W'.subtype)
+              into range(map g W.subtype)`, via `LinearMap.subtype_comp_codRestrict` + `map_comp`).
+              **Remaining untested risk = the `W = {n}^⊥` dimension argument** (`hWperp` + `hWdim=k` ⟹
+              `W = {n}^⊥` so `b̄ i ∈ W` for `i ≥ 2`); the cleanest handle is
+              `Submodule.finrank_add_finrank_orthogonal` transported across `EuclideanSpace.equiv` via
+              `inner_eq_basisFun_toDual`. `extensor n = 0` case trivial. Route β rejected (withdrawn
+              `dim Φ̃` count).
         - [ ] `extensor_join_proportional_complementIso_meet` — the general-`d` assembly
           (replaces `complementIso_smul_eq_extensor_join`; d=3 line stays as wrapper). The
           **`⋀^{d−1}W`-is-a-line** route: point-join (`d−1` points) + panel-meet (**2**
@@ -302,33 +321,44 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = (h-3) the target leaf `complementIso_extensor_mem_range_map_subtype`**
-(signature §(f) item 2), in the now-existing downstream file `Molecular/MeetHodge.lean`:
-`complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`.
-Assemble from (a) the LANDED frame-alignment existence `exists_orthonormalBasis_span_pair_eq`
-(this commit) → an `OrthonormalBasis b` with `span{b 0, b 1} = span{n₀,n₁}`; (b) the LANDED transport
-bridge `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` on `b.repr` → the `toDual`-orthogonal
-`O := EuclideanSpace.ofLinearIsometryEquiv b.repr` (carrying the coordinate plane `{e₀,e₁}` to
-`span{n₀,n₁}`, the coordinate complement `{e₂,…}` to `W`); (c) the LANDED O(n)-equivariance (h-1)
-`complementIso_map_orthogonal_eq` to push `complementIso` through `O`; (d) the LANDED standard-frame
-membership `complementIso_exteriorPower_basis_mem_range_map_subtype` on the coordinate blade. **Case
-split in hand:** when `extensor n = 0` (dependent `n`), `complementIso 0 = 0 ∈ range` trivially; the
-work is the `n`-independent case, where `dim W = k` (rank–nullity on the 2 functionals). All four
-ingredients are LANDED — (h-3) is the assembly, no new math obligation. Lives in `MeetHodge.lean`
-(consumes both `complementIso` from `Meet.lean` and the metric layer). Watch the `EuclideanSpace`↔
-`Fin (k+2)→ℝ` carrier round-trip when feeding the orthogonal map `O` of type `(Fin (k+2)→ℝ) →ₗ
-(Fin (k+2)→ℝ)` into `complementIso_map_orthogonal_eq` (whose `hO` is `toDual`-orthogonality).
+**Next buildable sub-step = (h-3) the *assembly* `complementIso_extensor_mem_range_map_subtype`**
+(signature §(f) item 2), in `Molecular/MeetHodge.lean`:
+`complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W` with
+`hWperp : W ⊆ {n}^⊥` and `hWdim : finrank W = k`. The full leaf chain (h-0)…(h-2) **and** the (h-3)
+input proportionality (this commit) are LANDED; the remaining work is the metric composition. Plan,
+all ingredients in hand:
+1. `extensor n = 0` (dependent `n`): `complementIso 0 = 0 ∈ range` trivially.
+2. `n`-independent case. Get `b := exists_orthonormalBasis_span_pair_eq n` (`span{b 0,b 1} =
+   span{n}`); set `O := (EuclideanSpace.ofLinearIsometryEquiv b.repr.symm).toLinearMap` —
+   `O (Pi.basisFun _ i) = ⇑(b i)` (probed: `rw [EuclideanSpace.ofLinearIsometryEquiv]; simp` after
+   unfolding), `toDual`-orthogonal by the LANDED `toDualOrthogonal_ofLinearIsometryEquiv`.
+3. `W = {n}^⊥` (the one untested step): `hWperp` gives `W ⊆ {n}^⊥`, `hWdim` + `finrank {n}^⊥ = k`
+   (via `Submodule.finrank_add_finrank_orthogonal` transported across `EuclideanSpace.equiv` using
+   `inner_eq_basisFun_toDual`, `finrank span{n} = 2`) ⟹ `W = {n}^⊥`; hence `b̄ i ∈ W` for `i ≥ 2`
+   (`b i ⊥ b 0,b 1`, orthonormal). So `O(coordinate-complement) ⊆ W`.
+4. Input proportionality (this commit): `extensor n = c • map 2 O (e_{01})` (since
+   `map 2 O e_{01} = extensor ![b̄0,b̄1]`, same plane). `complementIso` linearity + submodule-`•`
+   absorb `c`.
+5. (h-1) `complementIso_map_orthogonal_eq` pushes `complementIso` through `O`; the LANDED
+   standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype` gives the
+   coordinate-blade case; the **range-pushforward** (validated in scratch this session, reusable —
+   consider lifting to `Meet.lean`: `O(W')⊆W ⟹ map g O sends range(map g W'.subtype) into
+   range(map g W.subtype)` via `LinearMap.subtype_comp_codRestrict` + `exteriorPower.map_comp`)
+   transports to `range(map k W.subtype)`.
+Watch the `EuclideanSpace`↔`Fin (k+2)→ℝ` carrier round-trip feeding `O` into (h-1) (whose `hO` is
+`toDual`-orthogonality).
 
-The full OD-8 route-(α) leaf chain (§(h)), now (h-0)…(h-2) all LANDED:
+The full OD-8 route-(α) leaf chain (§(h)), now (h-0)…(h-2) + (h-3)-input all LANDED:
 - **(h-0)** volume-form-by-determinant — **LANDED** (`screwAlgebraTopEquiv_map_eq_det_smul` + mirror
   `exteriorPower.topEquiv_map_eq_det_smul`).
 - **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf — LANDED** (`Meet.lean`).
-- **(h-2)** frame alignment — **transport bridge LANDED** (mirror
-  `EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}`) **+
-  span-control existence LANDED** (`exists_orthonormalBasis_span_pair_eq`, `MeetHodge.lean`, this
-  commit).
-- **(h-3)** the target leaf `complementIso_extensor_mem_range_map_subtype` — **the next open leaf**
-  (the assembly; all ingredients landed).
+- **(h-2)** frame alignment — **transport bridge + span-control existence LANDED**
+  (`EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}` mirror +
+  `exists_orthonormalBasis_span_pair_eq`, `MeetHodge.lean`).
+- **(h-3) input proportionality** — **LANDED this commit** (`exists_smul_extensor_eq_of_mem_span_range`
+  + `extensor_mem_range_map_subtype_of_mem_jgrade`, `Meet.lean`).
+- **(h-3) assembly** `complementIso_extensor_mem_range_map_subtype` — **the next open leaf** (the
+  metric composition; the `W = {n}^⊥` dimension step is the one untested piece).
 
 **Why NOT route β:** the in-hand annihilation (`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`)
 puts `complementIso n` in an annihilator `Ann(Φ)`; upgrading that to range-membership needs
@@ -337,33 +367,12 @@ puts `complementIso n` in an annihilator `Ann(Φ)`; upgrading that to range-memb
 pole:** carry (h-3) as an explicit green-modulo `h…` premise on CHAIN-4's discriminator (standing
 idiom), land it in a dedicated sitting — never a `sorry`. (`MeetHodge.lean`; still no
 ENTRY-contract dependency.)
-The CHAIN-3-finish recon (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17, source-verified
-against KT §6.4.1/§6.4.2 + the landed bodies) **overturned the prior pin** and corrected the
-geometry:
-- **`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` do
-  NOT generalize and are NOT needed.** They are the d=3-only `Φ̃ = dualAnnihilator` /
-  `dim Ω = 1` route; `Φ̃` is built from the **2** line-normals, so `dim Ω = C(d−1,2)`,
-  which is `1` only at `d=3`. The d=3 lemmas stay as the GREEN d=3 route — do NOT touch.
-- **The route that DOES generalize: `⋀^{d−1}W`-is-a-line.** Point-join (the `(d−1)`-
-  extensor of the **`d−1`** points spanning the line `L`) and panel-meet (`complementIso
-  (k:=d−1)(j:=2)` of the **2** hyperplane normals — `j=2`, not `j=d−1`) both lie in
-  `range(⋀^{d−1}W ↪ ⋀^{d−1}ℝ^{d+1})` for `W = span(L) = {n_u,n'}^⊥` (`dim W = d−1`), a
-  **line** (`finrank_exteriorPower_self_eq_one`). This is exactly what the THREE landed
-  `_grade` bricks (`extensor_mem_range_…_grade`, `exists_smul_eq_…_grade`,
-  `exteriorPower_map_subtype_injective_grade`) were built for — they have NO consumers in
-  tree (grep-confirmed), landed forward for this.
 
-Leaf sequence (§(f)+§(h)): (1) `complementIso_extensor_mem_range_map_subtype` — the new leaf, route
-**(α) DECIDED** via O(n)-equivariance (§(h) leaves h-0…h-3). Its **standard-frame base case
-`complementIso_exteriorPower_basis_eq_smul_compl`, the standard-frame range-membership
-`complementIso_exteriorPower_basis_mem_range_map_subtype`, and the O(n)-equivariance
-`complementIso_map_orthogonal_eq` (h-1) have LANDED** (2026-06-17); the remaining content of (1) is the
-frame alignment (h-2, the **next open leaf**) + the general-decomposable assembly (h-3) — the genuine
-**orthogonal** change-of-frame route, **not** a GL-equivariance corollary (`complementIso` is the Hodge
-`⋆`, O(n)- but not GL-natural). Route (β) is **rejected** (re-introduces the withdrawn `dim Φ̃` count).
-Then (2) `extensor_join_proportional_complementIso_meet` — the assembly (h-4; zero new count, consumes
-(1) + the three `_grade` bricks); (3) the d=3 wrapper stays green (h-5). Closing (1)+(2) closes CHAIN-3
-and feeds CHAIN-4's discriminator.
+The CHAIN-3-finish recon's geometry (the `⋀^{d−1}W`-is-a-line route, NOT the withdrawn d=3-only `Φ̃`
+route — a line has **2** normals + **d−1** points at every `d`) is recorded in *Decisions made* and
+lives canonically in `notes/Phase23-design.md` §"CHAIN"(f)/(h). Closing the (h-3) assembly + the
+(h-4) `extensor_join_proportional_complementIso_meet` (zero new count, consumes (h-3) + the three
+`_grade` bricks) closes CHAIN-3 and feeds CHAIN-4's discriminator; the d=3 wrapper stays green (h-5).
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -465,6 +474,14 @@ general mathlib, grade enters nothing):
   `→ span(f '' Iic 1)` (`span_gramSchmidt_Iic`) `→ span{n₀,n₁}`. Per-index nonzero hyp from
   `LinearIndepOn ℝ f (Iic 1)` = `hn` reindexed (`linearIndepOn_range_iff` on `![0,1]` +
   `linearIndependent_restrict_iff`). `MeetHodge.lean` wired into `CombinatorialRigidity.lean`.
+- (h-3) **input proportionality** `exists_smul_extensor_eq_of_mem_span_range` + prerequisite
+  `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`). Building the assembly surfaced a step
+  §(h) glossed: `extensor n` must be matched up-to-scalar to the `2`-extensor of the orthonormal frame
+  pair. The proportionality reuses the line-is-1-dim idiom (`finrank_exteriorPower_self_eq_one` at
+  grade 2 = `dim P`) of `exists_smul_eq_of_mem_range_map_subtype_grade`; the prerequisite **decouples**
+  the grade `j` from the ambient `d` in `extensor_mem_range_map_subtype_of_mem_grade` (which tied it to
+  `d−1`; grade `2 ≠ k`). `_grade` re-derived as the `j := d−1` instance, signature + callers untouched.
+  Both metric-free.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

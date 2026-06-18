@@ -713,29 +713,42 @@ theorem exteriorPower_map_subtype_injective (W : Submodule ℝ (Fin 4 → ℝ)) 
     Function.Injective (exteriorPower.map 2 W.subtype) :=
   exteriorPower_map_subtype_injective_grade (d := 3) 2 W
 
-/-- **N3b-2 at general grade: a `(d−1)`-extensor of vectors in `W` lies in
-`⋀^{d−1}W ↪ ⋀^{d−1}(ℝ^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3 — the
-first general-`d` duality brick, replacing the `Fin 4`-pinned `d=3` route). The grade-generic
-restatement of `extensor_mem_range_map_subtype_of_mem` below: if every vector of a family
-`v : Fin (d−1) → ℝ^{d+1}` lies in a subspace `W ⊆ ℝ^{d+1}`, the `(d−1)`-extensor `extensor v`
-(as an element of `⋀^{d−1}(ℝ^{d+1})`) lies in the range of the inclusion
-`exteriorPower.map (d−1) W.subtype : ⋀^{d−1}W →ₗ ⋀^{d−1}(ℝ^{d+1})` — it is the image of the
-abstract wedge `exteriorPower.ιMulti ℝ (d−1)` of the family lifted into `W` (`fun i ↦ ⟨v i, hv i⟩`).
-The proof is *grade-generic verbatim* (the same `exteriorPower.map_apply_ιMulti` +
+/-- **N3b-2 with the grade decoupled from the ambient dimension: a `j`-extensor of vectors in `W`
+lies in `⋀^j W ↪ ⋀^j (ℝ^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3, OD-8 — the
+first general-`d` duality brick, replacing the `Fin 4`-pinned `d=3` route). If every vector of a
+family `v : Fin j → ℝ^{d+1}` lies in a subspace `W ⊆ ℝ^{d+1}`, the `j`-extensor `extensor v` (as an
+element of `⋀^j (ℝ^{d+1})`) lies in the range of the inclusion
+`exteriorPower.map j W.subtype : ⋀^j W →ₗ ⋀^j (ℝ^{d+1})` — it is the image of the abstract wedge
+`exteriorPower.ιMulti ℝ j` of the family lifted into `W` (`fun i ↦ ⟨v i, hv i⟩`). The grade `j` is
+**decoupled** from the ambient `d` (the `_grade` form below ties it to `d − 1`): the OD-8 panel-meet
+membership needs the *grade-2* extensor `extensor ![n₀, n₁]` of the two line-normals in the ambient
+`Fin (k + 2) = Fin ((k+1)+1)`, grade `2 ≠ (k+1) − 1 = k`, so the grade must be a free parameter. The
+proof is *grade-generic verbatim* (the same `exteriorPower.map_apply_ιMulti` +
 `exteriorPower.ιMulti_apply_coe` + `Subtype.ext` chain — no `finrank` count, no `fin_cases`):
-nothing in it depends on the grade. The CHAIN finish — `⋀^{d−1}(ℝ^{d+1})` member-proportionality
-on the `(d+1).choose (d−1)`-dimensional range — rests on this membership; the `d=3` instance
+nothing in it depends on the grade. -/
+theorem extensor_mem_range_map_subtype_of_mem_jgrade {d j : ℕ}
+    (W : Submodule ℝ (Fin (d + 1) → ℝ)) (v : Fin j → Fin (d + 1) → ℝ)
+    (hv : ∀ i, v i ∈ W) :
+    (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^j (Fin (d + 1) → ℝ))
+      ∈ LinearMap.range (exteriorPower.map j W.subtype) := by
+  refine ⟨exteriorPower.ιMulti ℝ j (fun i => ⟨v i, hv i⟩), ?_⟩
+  rw [exteriorPower.map_apply_ιMulti]
+  apply Subtype.ext
+  rw [exteriorPower.ιMulti_apply_coe]
+  rfl
+
+/-- **N3b-2 at the grade `d − 1`: a `(d−1)`-extensor of vectors in `W` lies in
+`⋀^{d−1}W ↪ ⋀^{d−1}(ℝ^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3). The
+grade-and-ambient-coupled (`grade = d − 1`) instance of the decoupled
+`extensor_mem_range_map_subtype_of_mem_jgrade`, the form the point-join half of the duality
+consumes (`W` = the `(d−1)`-dim span of the chain points, grade `d − 1`). The `d=3` instance
 recovers `extensor_mem_range_map_subtype_of_mem` (`d−1 = 2`, `d+1 = 4`). -/
 theorem extensor_mem_range_map_subtype_of_mem_grade {d : ℕ}
     (W : Submodule ℝ (Fin (d + 1) → ℝ)) (v : Fin (d - 1) → Fin (d + 1) → ℝ)
     (hv : ∀ i, v i ∈ W) :
     (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^(d - 1) (Fin (d + 1) → ℝ))
-      ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype) := by
-  refine ⟨exteriorPower.ιMulti ℝ (d - 1) (fun i => ⟨v i, hv i⟩), ?_⟩
-  rw [exteriorPower.map_apply_ιMulti]
-  apply Subtype.ext
-  rw [exteriorPower.ιMulti_apply_coe]
-  rfl
+      ∈ LinearMap.range (exteriorPower.map (d - 1) W.subtype) :=
+  extensor_mem_range_map_subtype_of_mem_jgrade W v hv
 
 /-- **N3b-2, the point-join half (`d=3` instance): a `2`-extensor of vectors in `W` lies in
 `⋀²W ↪ ⋀²ℝ⁴`** (`lem:case-III-claim612-line-in-panel-union`). Second sub-leaf of the point-join ↔
@@ -806,6 +819,51 @@ theorem exists_smul_eq_of_mem_range_map_subtype
     (hy : y ∈ LinearMap.range (exteriorPower.map 2 W.subtype)) :
     ∃ c : ℝ, c • x = y :=
   exists_smul_eq_of_mem_range_map_subtype_grade (d := 3) W hW hx hxne hy
+
+/-- **Two `2`-extensors of pairs spanning the same plane are proportional**
+(`lem:case-III-claim612-line-in-panel-union`, CHAIN-3, OD-8 — the input-side proportionality of the
+panel-meet range-membership). For a linearly independent pair `v : Fin 2 → ℝ^{d+1}` and any pair
+`u : Fin 2 → ℝ^{d+1}` whose two vectors lie in the plane `P = span(range v)`, the `2`-extensor
+`extensor u` is a scalar multiple of `extensor v`. Both lie in the line
+`range (exteriorPower.map 2 P.subtype)` (`⋀²P` is `1`-dimensional, `P` being `2`-dimensional —
+`finrank_exteriorPower_self_eq_one`), and `extensor v ≠ 0` (`v` independent,
+`extensor_ne_zero_iff_linearIndependent`), so the line-proportionality engine yields the scalar.
+This is the input half of the OD-8 panel-meet range-membership: it lets the panel-meet `extensor n`
+(`n` the two line-normals) be replaced — up to a nonzero scalar, which `complementIso` linearity and
+the submodule-closed-under-`•` membership target both absorb — by the `2`-extensor of an
+*orthonormal* pair spanning the same plane, the pair an orthogonal change-of-frame carries to a
+coordinate blade (the standard-frame membership of OD-8 route-(α)). Grade-2-specific (the count
+`⋀²P` line needs grade = `finrank P = 2`); ambient `Fin (d+1)` general (the `Fin (k+2)` site is
+`d := k + 1`). -/
+theorem exists_smul_extensor_eq_of_mem_span_range
+    {d : ℕ} (u v : Fin 2 → Fin (d + 1) → ℝ) (hv : LinearIndependent ℝ v)
+    (hu : ∀ i, u i ∈ Submodule.span ℝ (Set.range v)) :
+    ∃ c : ℝ, c • (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin (d + 1) → ℝ))
+      = ⟨extensor u, extensor_mem_exteriorPower u⟩ := by
+  have hPdim : Module.finrank ℝ (Submodule.span ℝ (Set.range v)) = 2 := by
+    rw [finrank_span_eq_card hv]; simp
+  have hvmem : ∀ i, v i ∈ Submodule.span ℝ (Set.range v) := fun i =>
+    Submodule.subset_span ⟨i, rfl⟩
+  have hxv : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin (d + 1) → ℝ))
+      ∈ LinearMap.range (exteriorPower.map 2 (Submodule.span ℝ (Set.range v)).subtype) :=
+    extensor_mem_range_map_subtype_of_mem_jgrade _ v hvmem
+  have hxu : (⟨extensor u, extensor_mem_exteriorPower u⟩ : ⋀[ℝ]^2 (Fin (d + 1) → ℝ))
+      ∈ LinearMap.range (exteriorPower.map 2 (Submodule.span ℝ (Set.range v)).subtype) :=
+    extensor_mem_range_map_subtype_of_mem_jgrade _ u hu
+  have hvne : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin (d + 1) → ℝ)) ≠ 0 := by
+    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent v).2 hv
+  -- `range (map 2 P.subtype)` is a line; both extensors lie in it, so they are proportional.
+  have hR : Module.finrank ℝ
+      (LinearMap.range (exteriorPower.map 2 (Submodule.span ℝ (Set.range v)).subtype)) = 1 := by
+    rw [LinearMap.finrank_range_of_inj (exteriorPower_map_subtype_injective_grade (d := d) 2 _),
+      finrank_exteriorPower_self_eq_one hPdim]
+  obtain ⟨z, hz⟩ := hxv
+  have hspan : (ℝ ∙ (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin (d + 1) → ℝ)))
+      = LinearMap.range (exteriorPower.map 2 (Submodule.span ℝ (Set.range v)).subtype) :=
+    Submodule.eq_of_le_of_finrank_eq ((Submodule.span_singleton_le_iff_mem _ _).2 ⟨z, hz⟩)
+      (by rw [finrank_span_singleton hvne, hR])
+  rw [← Submodule.mem_span_singleton, hspan]
+  exact hxu
 
 /-! ## N3b-2b-α building block: wedge-with-a-fixed-vector `⋀²ℝ⁴` and its 3-dim range
 (`lem:case-III-claim612-line-in-panel-union`)
