@@ -502,57 +502,79 @@ theorem theorem_55_base_producer_single_edge_gp [DecidableEq β] [Finite α] [Fi
     PanelHingeFramework.HasGenericFullRankRealization 2 n G :=
   theorem_55_base_producer_single_edge_gp_gen (k := 2) G hxy hVG hEG hl hG
 
-/-- **Theorem 5.5 base producer, trichotomy dispatch** (`lem:theorem-55-base-producer`;
-`hbase` carry, Phase 22i L3b). For a minimal-`k`-dof-graph `G` with `|V(G)| ≤ 2` (the base
+/-- **Theorem 5.5 base producer, trichotomy dispatch — general grade `k`**
+(`lem:theorem-55-base-producer`; `hbase_k` carry, Phase 23b OD-7 tail; the general-`k` lift of
+the d=3 `theorem_55_base_producer`). For a minimal-`c`-dof-graph `G` with `|V(G)| ≤ 2` (the base
 region of `minimal_kdof_reduction_all_k`), the **conditioned pair**
-`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` — the L9 spine's
+`(G.Simple → HasGenericFullRankRealization k n G) ∧ HasPanelRealization k n G` — the L9 spine's
 conditioned motive `Pc G` (`def:rank-hypothesis`, M3 + M2) — holds.
 
-Dispatches via `isMinimalKDof_ncard_le_two_trichotomy` to the L3b arm lemmas. The bare
-`HasPanelRealization` conjunct (the `.2`) comes from the three bare arms; the conditioned
-`G.Simple → HasGenericFullRankRealization` conjunct (the `.1`) from the GP arms (the empty and
-single-edge GP arms do the real work, the parallel-pair arm is vacuous by simplicity):
+Dispatches via `isMinimalKDof_ncard_le_two_trichotomy` (grade-agnostic) to the L3b arm lemmas,
+now all general-`k`. The bare `HasPanelRealization` conjunct (the `.2`) comes from the three bare
+`_gen` arms; the conditioned `G.Simple → HasGenericFullRankRealization` conjunct (the `.1`) from
+the GP `_gen` arms (the empty and single-edge GP arms do the real work, the parallel-pair arm is
+vacuous by simplicity):
 * **(i) empty arm** (`E(G) = ∅`): the all-zero framework, rank 0 —
-  `theorem_55_base_producer_empty` (bare) / `theorem_55_base_producer_empty_gp` (the
+  `theorem_55_base_producer_empty_gen` (bare) / `theorem_55_base_producer_empty_gp_gen` (the
   single-body / empty GP framework at the alg-indep seed).
 * **(ii) single-edge arm** (`|V| = 2`, `|E| = 1`): rank `D − 1` —
-  `theorem_55_base_producer_single_edge` (bare, one nonzero extensor in `n₀^⊥`) /
-  `theorem_55_base_producer_single_edge_gp` (the genuine `def = 1 > 0` GP realization at the
+  `theorem_55_base_producer_single_edge_gen` (bare, one nonzero extensor in `n₀^⊥`) /
+  `theorem_55_base_producer_single_edge_gp_gen` (the genuine `def = 1 > 0` GP realization at the
   alg-indep seed — the one base arm where the GP conjunct does real work).
-* **(iii) parallel-pair arm** (`|V| = 2`, `|E| = 2`, `k = 0`): coincident panels + two LI
-  extensors, rank `D` — `theorem_55_base_producer_parallel_pair` (bare). GP conjunct: `G` cannot
-  be simple (`not_simple_of_isMinimalKDof_of_ncard_two`), so the `G.Simple →` antecedent is
-  vacuous.
+* **(iii) parallel-pair arm** (`|V| = 2`, `|E| = 2`, `c = 0`): coincident panels + two LI
+  extensors, rank `D` — `theorem_55_base_producer_parallel_pair_gen` (bare). GP conjunct: `G`
+  cannot be simple (`not_simple_of_isMinimalKDof_of_ncard_two`), so the `G.Simple →` antecedent
+  is vacuous.
 
-The `hn : bodyBarDim n = screwDim 2` hypothesis threads the `d = 3` / `n = 3` constraint
-into the empty arms' rank arithmetic (the empty arm's rank target needs the
-`deficiency = bodyBarDim n * (|V| − 1) = screwDim 2 * (|V| − 1)` equality). -/
-theorem theorem_55_base_producer [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k)
+The `hk : 1 ≤ k` floor feeds the single-edge and parallel-pair arms' distinct-`k`-subsets device.
+The `hn : bodyBarDim n = screwDim k` hypothesis threads the dimension constraint into the empty
+arms' rank arithmetic (the empty arm's rank target needs the
+`deficiency = bodyBarDim n * (|V| − 1) = screwDim k * (|V| − 1)` equality). The whole proof is the
+verbatim numeral pass over the d=3 body — `ScrewSpace 2 → ScrewSpace k`, the five arm lemmas to
+their `_gen` forms. The d=3 `theorem_55_base_producer` is now its `k := 2` wrapper. -/
+theorem theorem_55_base_producer_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hk : 1 ≤ k)
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim k)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
     (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
-    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
-      HasPanelRealization 2 n G := by
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization k n G) ∧
+      HasPanelRealization k n G := by
   rcases Graph.isMinimalKDof_ncard_le_two_trichotomy hD hG hne hV with
-    ⟨hE, hk⟩ | ⟨x, y, e, hxy, hVG, hEG, hl, hk⟩ | ⟨x, y, e, f, hxy, hef, hVG, hEG, hle, hlf, hk⟩
-  · -- (i) empty arm: `E(G) = ∅`, `k = bodyBarDim n * (ncard - 1)`.
+    ⟨hE, hc⟩ | ⟨x, y, e, hxy, hVG, hEG, hl, hc⟩ | ⟨x, y, e, f, hxy, hef, hVG, hEG, hle, hlf, hc⟩
+  · -- (i) empty arm: `E(G) = ∅`, `c = bodyBarDim n * (ncard - 1)`.
     -- Bare: all-zero framework, rank 0. GP (when `G.Simple`): empty GP framework at the seed.
-    exact ⟨fun _ => theorem_55_base_producer_empty_gp hn G hE hne (hk ▸ hG),
-      theorem_55_base_producer_empty hn G hE (hk ▸ hG)⟩
-  · -- (ii) single-edge arm: `|V| = 2`, `|E| = 1`, `G.IsLink e x y`, `k = 1`.
+    exact ⟨fun _ => theorem_55_base_producer_empty_gp_gen hn G hE hne (hc ▸ hG),
+      theorem_55_base_producer_empty_gen hn G hE (hc ▸ hG)⟩
+  · -- (ii) single-edge arm: `|V| = 2`, `|E| = 1`, `G.IsLink e x y`, `c = 1`.
     -- Bare: one nonzero extensor, rank `D − 1`. GP (when `G.Simple`): the genuine `def = 1` GP
     -- realization at the alg-indep seed.
-    exact ⟨fun _ => theorem_55_base_producer_single_edge_gp G hxy hVG hEG hl (hk ▸ hG),
-      theorem_55_base_producer_single_edge G hxy hVG hEG hl (hk ▸ hG)⟩
-  · -- (iii) parallel-pair arm: `|V| = 2`, `|E| = {e,f}`, `k = 0`.
+    exact ⟨fun _ => theorem_55_base_producer_single_edge_gp_gen G hxy hVG hEG hl (hc ▸ hG),
+      theorem_55_base_producer_single_edge_gen hk G hxy hVG hEG hl (hc ▸ hG)⟩
+  · -- (iii) parallel-pair arm: `|V| = 2`, `|E| = {e,f}`, `c = 0`.
     -- `G` is not simple (two parallel edges between the same pair), so the GP conjunct is vacuous.
     have hVcard : V(G).ncard = 2 := by rw [hVG, Set.ncard_pair hxy]
     have hnotSimple : ¬ G.Simple :=
-      Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hk ▸ hG) hVcard
-    -- `G.deficiency n = 0` from `IsMinimalKDof n k` and `k = 0`.
-    have hdef : G.deficiency n = 0 := by exact_mod_cast hG.1.trans hk
-    have hprod := theorem_55_base_producer_parallel_pair G hxy hef hVG hEG hle hlf hdef
+      Graph.not_simple_of_isMinimalKDof_of_ncard_two (by omega) (hc ▸ hG) hVcard
+    -- `G.deficiency n = 0` from `IsMinimalKDof n c` and `c = 0`.
+    have hdef : G.deficiency n = 0 := by exact_mod_cast hG.1.trans hc
+    have hprod := theorem_55_base_producer_parallel_pair_gen hk G hxy hef hVG hEG hle hlf hdef
     exact ⟨fun hSimple => absurd hSimple hnotSimple, hprod⟩
+
+/-- **Theorem 5.5 base producer, trichotomy dispatch** (`lem:theorem-55-base-producer`;
+`hbase` carry, Phase 22i L3b; the `k = 2` wrapper of `theorem_55_base_producer_gen`). For a
+minimal-`c`-dof-graph `G` with `|V(G)| ≤ 2` (the base region of `minimal_kdof_reduction_all_k`),
+the **conditioned pair**
+`(G.Simple → HasGenericFullRankRealization 2 n G) ∧ HasPanelRealization 2 n G` — the L9 spine's
+conditioned motive `Pc G` (`def:rank-hypothesis`, M3 + M2) — holds. The work is the grade-general
+`theorem_55_base_producer_gen`; this wrapper specializes `k := 2` (`screwDim 2 = 6`, the `1 ≤ k`
+floor `by norm_num`) for the `d = 3` spine consumer `theorem_55_minimalKDof_k`. -/
+theorem theorem_55_base_producer [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c)
+    (hne : V(G).Nonempty) (hV : V(G).ncard ≤ 2) :
+    (G.Simple → PanelHingeFramework.HasGenericFullRankRealization 2 n G) ∧
+      HasPanelRealization 2 n G :=
+  theorem_55_base_producer_gen (k := 2) (by norm_num) hD hn G hG hne hV
 
 /-! ## L8c-2 — the KT Lemma-6.5 arm producer `case_I_realization_h65`
 
