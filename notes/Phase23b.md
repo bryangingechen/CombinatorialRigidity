@@ -1,24 +1,18 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. CHAIN-3's three `_grade` bricks landed (the membership brick
-`extensor_mem_range_map_subtype_of_mem_grade`, the **proportionality engine**
-`exists_smul_eq_of_mem_range_map_subtype_grade`, the **`toDual=Gram` bridge**
-`exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`). CHAIN-3's finish is the
-**`⋀^{d−1}W`-is-a-line** route — point-join (`d−1` points) + panel-meet (`complementIso
-(k:=d−1)(j:=2)`, **2** normals) both in the line `range(⋀^{d−1}W ↪)` — established by the
-**CHAIN-3-finish recon** (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17), which
-**withdrew** the dead d=3-only `Φ̃` route (`finrank_sup_range_wedgeFixedLeft` /
-`extensor_toDual_extensor_eq_zero_of_perp` + the lifted `wedgeFixedLeft` / `inf_range_wedgeFixedLeft`
-infrastructure stay green at d=3, do NOT generalize: `dim Ω = C(d−1,2) = 1` only at `d=3`). The one
-genuinely-new leaf is the **panel-meet range-membership** `complementIso_extensor_mem_range_map_subtype`
-(route OPEN, OD-8); its **standard-frame** base case `complementIso_exteriorPower_basis_eq_smul_compl`,
-standard-frame **range-membership** `complementIso_exteriorPower_basis_mem_range_map_subtype`, the
-**O(n)-equivariance** `complementIso_map_orthogonal_eq` (h-1), and the **frame-alignment transport
-bridge** `EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}` (h-2,
-new Analysis mirror) have landed (2026-06-17), leaving the **(h-2) Gram–Schmidt span-control
-existence** + **general-decomposable assembly** (h-3) of the lift — both to live in a NEW DOWNSTREAM
-file (`PiL2` poisons metric-free `Meet.lean`, QUIRKS § 59); the final assembly then reuses the THREE
-landed `_grade` bricks (zero new count). The integer Phase 23 stays **in progress** — ENTRY /
+**Status:** open. CHAIN-3's three `_grade` bricks + the entire OD-8 route-(α) leaf chain (h-0…h-3)
+have landed. **The OD-8 crux — the panel-meet range-membership `complementIso_extensor_mem_range_map_
+subtype` (h-3, `MeetHodge.lean`) — is now CLOSED** (2026-06-17): `complementIso (j:=2) ⟨extensor n,_⟩
+∈ range(⋀^k W ↪)` for `W = {n 0, n 1}^⊥`, via the orthogonal change-of-frame route (`complementIso`
+is the Hodge `⋆`). The **only remaining CHAIN-3 leaf** is the assembly **(h-4)
+`extensor_join_proportional_complementIso_meet`** (the per-line join=meet duality, **zero new count**:
+reuses the three landed `_grade` bricks + the (h-3) leaf — point-join + panel-meet both in the line
+`range(⋀^{d−1}W ↪)`). CHAIN-3's route is the **`⋀^{d−1}W`-is-a-line** route (point-join `d−1` points +
+panel-meet 2 normals) of the CHAIN-3-finish recon (`notes/Phase23-design.md` §"CHAIN"(f)/(g)/(h)),
+which **withdrew** the dead d=3-only `Φ̃` route (`finrank_sup_range_wedgeFixedLeft` /
+`extensor_toDual_extensor_eq_zero_of_perp` + `wedgeFixedLeft` / `inf_range_wedgeFixedLeft` stay green
+at d=3, do NOT generalize: `dim Ω = C(d−1,2) = 1` only at `d=3`). After (h-4), CHAIN-1/2/4/5 remain
+(CHAIN-5 gated by the ENTRY-contract reshape). The integer Phase 23 stays **in progress** — ENTRY /
 ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
@@ -35,41 +29,41 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) (h-3) input-side proportionality has LANDED (2026-06-17, this commit) —
-two metric-free bricks in `Meet.lean`.** Building the (h-3) assembly surfaced a step the design
-doc's §(h) prose glossed (`extensor n = c • blade` as if trivial): the panel-meet input `extensor n`
-(grade-2 in ambient `Fin (k+2)`) must be matched — up to a nonzero scalar — to the `2`-extensor of
-the *orthonormal* pair an orthogonal change-of-frame carries to a coordinate blade, and that needed a
-genuine proportionality lemma plus a grade-decoupled membership brick:
-- `exists_smul_extensor_eq_of_mem_span_range` (the input proportionality leaf): for `v : Fin 2 →
-  Fin (d+1) → ℝ` independent and `u : Fin 2 → …` with both vectors in `span(range v)`,
-  `∃ c, c • extensor v = extensor u`. Both extensors lie in the line `range(map 2 P.subtype)`
-  (`P = span(range v)`, `dim 2`, so `⋀²P` is a line via `finrank_exteriorPower_self_eq_one`), with
-  `extensor v ≠ 0`; close by the same line-proportionality idiom as
-  `exists_smul_eq_of_mem_range_map_subtype_grade`. Grade-2-specific (count needs grade = `dim P = 2`);
-  ambient `Fin (d+1)` general (the `Fin (k+2)` site is `d := k+1`).
-- `extensor_mem_range_map_subtype_of_mem_jgrade` (the prerequisite): `extensor_mem_range_map_subtype_
-  of_mem_grade` with the grade `j` **decoupled** from the ambient `d` (the `_grade` form ties it to
-  `d − 1`; grade `2 ≠ (k+1)−1 = k`). Proof verbatim; `_grade` re-derived as the `j := d−1` instance
-  (signature unchanged, callers untouched — the line-1517/d:=k+1 + d=3 instances both still close).
+**CHAIN-3's OD-8 route-(α) (h-3) panel-meet range-membership leaf `complementIso_extensor_mem_range_
+map_subtype` has LANDED (2026-06-17, this commit) — the OD-8 crux is now fully closed.** This was the
+one genuinely-new leaf of the CHAIN-3 finish: `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(map k
+W.subtype)` for `W = {n 0, n 1}^⊥` (`hWperp` + `hWdim = k`). Proved in `MeetHodge.lean` by the
+orthogonal change-of-frame route (`complementIso` is the Hodge `⋆`, O(n)-natural not GL-natural):
+the Gram–Schmidt frame `b` (h-2) aligns `span{n 0, n 1}` to the coordinate `2`-plane, the frame map
+`O = ofLinearIsometryEquiv b.repr.symm` carries `extensor n` to the coordinate blade (up to scalar,
+via the input proportionality `exists_smul_extensor_eq_of_mem_span_range`) and the coordinate
+complement into `W`, so the LANDED standard-frame membership transports through `O` by (h-1)
+`complementIso_map_orthogonal_eq` + the new metric-free range-pushforward
+`exteriorPower_map_mem_range_map_subtype_of_mapsTo` (`Meet.lean`). The `W = {n 0,n 1}^⊥` dimension
+step: `W ≤ Q` (the `toDual`-perp), both `k`-dim (`Q` via `Submodule.finrank_add_finrank_orthogonal`
+transported across `EuclideanSpace.equiv` by `inner_eq_basisFun_toDual` + `real_inner_comm`), so
+`W = Q`. `extensor n = 0` (dependent) case trivial. Gates green (full build + lint clean,
+no warnings/sorry).
 
-Both metric-free, in `Meet.lean`. Gates green (full build + lint clean, no warnings/sorry).
+**Next buildable sub-step = (h-4) the assembly `extensor_join_proportional_complementIso_meet`**
+(signature §(f) item 1, `notes/Phase23-design.md`) — the per-line point-join↔panel-meet duality, in
+`MeetHodge.lean` (consumes the (h-3) leaf, so downstream of the metric layer). **Zero new count**: the
+`⋀^{d−1}W`-is-a-line route reuses the three LANDED `_grade` bricks (`extensor_mem_range_…_grade`,
+`exists_smul_eq_…_grade`, `exteriorPower_map_subtype_injective_grade`) — point-join (`k = d−1` points)
+and panel-meet (the (h-3) leaf) both land in the line `range(⋀^k W ↪)`, proportional. Closing (h-4)
+closes CHAIN-3 and feeds CHAIN-4's discriminator; the `d=3` `complementIso_smul_eq_extensor_join`
+stays green as the wrapper (h-5).
 
-**(h-2) recap (landed prior commit).** `exists_orthonormalBasis_span_pair_eq` (`MeetHodge.lean`): for
-a linearly independent pair `n : Fin 2 → EuclideanSpace ℝ (Fin (k+2))`, an `OrthonormalBasis` whose
-first two vectors span `span{n 0, n 1}` (Gram–Schmidt on the zero-extended family). Its `b.repr` is
-the frame-alignment L²-isometry the LANDED transport bridge
-`EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` converts to the `toDual`-orthogonal `O` that
-(h-1) `complementIso_map_orthogonal_eq` consumes.
+**Prior-commit recaps (one-line; full bricks landed):** (h-2) `exists_orthonormalBasis_span_pair_eq`
+(Gram–Schmidt span-control, `MeetHodge.lean`) + transport bridge `EuclideanSpace.{inner_eq_basisFun_
+toDual, toDualOrthogonal_ofLinearIsometryEquiv}` (mirror); (h-3)-input `exists_smul_extensor_eq_of_mem_
+span_range` + `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`); (h-1)
+`complementIso_map_orthogonal_eq`; (h-0) `screwAlgebraTopEquiv_map_eq_det_smul`.
 
-**Architectural finding (cost a build cycle; → TACTICS-QUIRKS § 59 + FRICTION).** Importing
-`Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean` **regresses a
-pre-existing untouched proof** (`complementIso_smul_eq_extensor_join`) to a `whnf` timeout — the
-`PiLp 2`/`EuclideanSpace` instances on `Fin (k+2) → ℝ` become defeq-visible to `⋀`-term
-elaboration. **Decision: the metric-using Hodge leaves ((h-2) Gram–Schmidt construction, (h-3))
-must live in a NEW DOWNSTREAM file** (imports `Meet.lean` + the metric layer), never in `Meet.lean`;
-pure `EuclideanSpace`↔`toDual` glue stays in the mirror. The (h-1) O(n)-equivariance
-`complementIso_map_orthogonal_eq` stays green in `Meet.lean` (landed prior commit).
+**Architectural constraint (standing).** The metric-using Hodge leaves live in `MeetHodge.lean`, never
+`Meet.lean`: importing `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean`
+regresses `complementIso_smul_eq_extensor_join` to a `whnf` timeout (TACTICS-QUIRKS § 59). Pure
+`EuclideanSpace`↔`toDual` glue stays in the `Mathlib/` mirror; (h-4) also belongs in `MeetHodge.lean`.
 
 **(h-1) recap (landed prior commit).** O(n)-equivariance of `complementIso` (the Hodge `⋆`): for
 orthogonal `O` (`hO : ∀ x y, b.toDual (O x)(O y) = b.toDual x y`),
@@ -220,16 +214,14 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
                 prerequisite `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`, this commit).
                 Lets `extensor n` be replaced (up to scalar) by the `2`-extensor of the orthonormal
                 frame pair spanning the same plane. Both metric-free. See *Current state*.
-            - [ ] (h-3) **assembly** `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`) —
-              compose the input proportionality (this commit) with (h-1) O(n)-equivariance + (h-2)
-              `exists_orthonormalBasis_span_pair_eq` + the LANDED standard-frame membership + the
-              range-pushforward (validated in scratch: `O(W')⊆W ⟹ map g O sends range(map g W'.subtype)
-              into range(map g W.subtype)`, via `LinearMap.subtype_comp_codRestrict` + `map_comp`).
-              **Remaining untested risk = the `W = {n}^⊥` dimension argument** (`hWperp` + `hWdim=k` ⟹
-              `W = {n}^⊥` so `b̄ i ∈ W` for `i ≥ 2`); the cleanest handle is
-              `Submodule.finrank_add_finrank_orthogonal` transported across `EuclideanSpace.equiv` via
-              `inner_eq_basisFun_toDual`. `extensor n = 0` case trivial. Route β rejected (withdrawn
-              `dim Φ̃` count).
+            - [x] (h-3) **assembly** `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`) —
+              LANDED 2026-06-17. Composes input proportionality + (h-1) O(n)-equivariance + (h-2)
+              `exists_orthonormalBasis_span_pair_eq` + the LANDED standard-frame membership + the new
+              metric-free range-pushforward `exteriorPower_map_mem_range_map_subtype_of_mapsTo`
+              (`Meet.lean`, `LinearMap.subtype_comp_codRestrict` + `exteriorPower.map_comp`). The
+              `W = {n}^⊥` dimension argument discharged via `Submodule.finrank_add_finrank_orthogonal`
+              transported to the `toDual`-perp `Q` across `EuclideanSpace.equiv` (`inner_eq_basisFun_toDual`
+              + `real_inner_comm`): `W ≤ Q`, both `k`-dim, so `W = Q`; `extensor n = 0` case trivial.
         - [ ] `extensor_join_proportional_complementIso_meet` — the general-`d` assembly
           (replaces `complementIso_smul_eq_extensor_join`; d=3 line stays as wrapper). The
           **`⋀^{d−1}W`-is-a-line** route: point-join (`d−1` points) + panel-meet (**2**
@@ -267,26 +259,13 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
 
 The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
-- **OD-8 — ROUTE DECIDED 2026-06-17 (route α via `complementIso` O(n)-equivariance;
-  the O(n)-equivariance is itself a flagged substantial leaf).** The panel-meet
-  range-membership `complementIso(j:=2)⟨n_u∧n',_⟩ ∈ range(⋀^k W ↪)` for
-  `W = {n_u,n'}^⊥`. **Decision (full text `notes/Phase23-design.md` §"CHAIN"(h)):**
-  `complementIso` IS the Hodge star `⋆` for the standard volume form
-  (`screwAlgebraTopEquiv = topEquiv`) + dot product (`Pi.basisFun.toDual`), so the
-  target is the genuine Hodge fact "`⋆` of a decomposable = decomposable of the
-  orthogonal complement". The in-hand annihilation does **NOT** give membership for
-  free — the annihilator-=-range dimension match (route β) is the **withdrawn
-  `dim Φ̃` count** (`= C(d−1,2) > 1` for `d≥4`), so **β is rejected, not a fallback**.
-  Route α leaf chain (h-0…h-4): (h-0) volume-form-by-determinant
-  (`screwAlgebraTopEquiv (map f ·) = det f · …` — LANDED `screwAlgebraTopEquiv_map_eq_det_smul`),
-  (h-1) `complementIso_map_orthogonal_eq` — **the O(n)-equivariance, the substantive new leaf +
-  clause-(ii) flag — now LANDED** (Hodge `⋆` is O(n)-natural not GL-natural; assembled from the two
-  transformation halves by `toDual`-injectivity), (h-2) orthonormal alignment of `span{n_u,n'}` to a
-  coordinate plane (Gram–Schmidt — **the next open leaf**), (h-3) assemble with the LANDED
-  standard-frame membership, (h-4) the assembly.
-  **No missing mathlib *API*** (clause (ii)); the one genuinely-new *project* sub-lemma (h-1) is now
-  closed. **Genuine fallback if (h-2) is a long pole:** carry (h-3) as an explicit
-  green-modulo `h…` premise (standing idiom), never a `sorry`.
+- **OD-8 — RESOLVED 2026-06-17.** The panel-meet range-membership
+  `complementIso(j:=2)⟨n_u∧n',_⟩ ∈ range(⋀^k W ↪)` for `W = {n_u,n'}^⊥` is CLOSED via route α
+  (the entire leaf chain h-0…h-3 LANDED): `complementIso` IS the Hodge `⋆`, O(n)-natural; the
+  target transports the standard-frame membership along an orthogonal change of frame. Route β
+  stays **rejected** (the annihilation→membership upgrade is the withdrawn `dim Φ̃` count
+  `= C(d−1,2) > 1` for `d≥4`). Full text `notes/Phase23-design.md` §"CHAIN"(h); landed leaf in
+  *Decisions made* below.
 - **OD-6 — DECIDED: five leaves within ONE sub-phase 23b** (no separate duality
   letter). The arm-realization engine they feed is already general-`k`, so
   neither hard core stands alone as a deliverable. Split at contact only if
@@ -321,58 +300,35 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = (h-3) the *assembly* `complementIso_extensor_mem_range_map_subtype`**
-(signature §(f) item 2), in `Molecular/MeetHodge.lean`:
-`complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W` with
-`hWperp : W ⊆ {n}^⊥` and `hWdim : finrank W = k`. The full leaf chain (h-0)…(h-2) **and** the (h-3)
-input proportionality (this commit) are LANDED; the remaining work is the metric composition. Plan,
-all ingredients in hand:
-1. `extensor n = 0` (dependent `n`): `complementIso 0 = 0 ∈ range` trivially.
-2. `n`-independent case. Get `b := exists_orthonormalBasis_span_pair_eq n` (`span{b 0,b 1} =
-   span{n}`); set `O := (EuclideanSpace.ofLinearIsometryEquiv b.repr.symm).toLinearMap` —
-   `O (Pi.basisFun _ i) = ⇑(b i)` (probed: `rw [EuclideanSpace.ofLinearIsometryEquiv]; simp` after
-   unfolding), `toDual`-orthogonal by the LANDED `toDualOrthogonal_ofLinearIsometryEquiv`.
-3. `W = {n}^⊥` (the one untested step): `hWperp` gives `W ⊆ {n}^⊥`, `hWdim` + `finrank {n}^⊥ = k`
-   (via `Submodule.finrank_add_finrank_orthogonal` transported across `EuclideanSpace.equiv` using
-   `inner_eq_basisFun_toDual`, `finrank span{n} = 2`) ⟹ `W = {n}^⊥`; hence `b̄ i ∈ W` for `i ≥ 2`
-   (`b i ⊥ b 0,b 1`, orthonormal). So `O(coordinate-complement) ⊆ W`.
-4. Input proportionality (this commit): `extensor n = c • map 2 O (e_{01})` (since
-   `map 2 O e_{01} = extensor ![b̄0,b̄1]`, same plane). `complementIso` linearity + submodule-`•`
-   absorb `c`.
-5. (h-1) `complementIso_map_orthogonal_eq` pushes `complementIso` through `O`; the LANDED
-   standard-frame membership `complementIso_exteriorPower_basis_mem_range_map_subtype` gives the
-   coordinate-blade case; the **range-pushforward** (validated in scratch this session, reusable —
-   consider lifting to `Meet.lean`: `O(W')⊆W ⟹ map g O sends range(map g W'.subtype) into
-   range(map g W.subtype)` via `LinearMap.subtype_comp_codRestrict` + `exteriorPower.map_comp`)
-   transports to `range(map k W.subtype)`.
-Watch the `EuclideanSpace`↔`Fin (k+2)→ℝ` carrier round-trip feeding `O` into (h-1) (whose `hO` is
-`toDual`-orthogonality).
+**Next buildable sub-step = (h-4) the assembly `extensor_join_proportional_complementIso_meet`**
+(signature §(f) item 1, `notes/Phase23-design.md`), in `Molecular/MeetHodge.lean` (consumes the (h-3)
+leaf, so downstream of the metric layer). The per-line point-join↔panel-meet duality:
+`∃ c, c • complementIso (j:=2) ⟨extensor n,_⟩ = ⟨extensor p,_⟩` for `n` the two line-normals and
+`p : Fin k → …` the `k = d−1` points spanning the line (`hperp : toDual (p i) (n j) = 0`). **Zero new
+count** — the `⋀^{d−1}W`-is-a-line route, all ingredients LANDED:
+1. `W := {n 0, n 1}^⊥` (`dim k`); point-join `⟨extensor p,_⟩ ∈ range(⋀^k W ↪)` by
+   `extensor_mem_range_map_subtype_of_mem_grade` (each `p i ∈ W` from `hperp`; `(d := k+1)` form).
+2. Panel-meet `complementIso ⟨extensor n,_⟩ ∈ range(⋀^k W ↪)` by **(h-3)
+   `complementIso_extensor_mem_range_map_subtype`** (this commit) — needs `hWperp` (`W ⊆ {n}^⊥`,
+   immediate) + `hWdim = k` (from `hperp` giving the `p` independent in `W`, `dim W = k`).
+3. Point-join `≠ 0` by `hp` + `extensor_ne_zero_iff_linearIndependent`; close by
+   `exists_smul_eq_of_mem_range_map_subtype_grade` (`(d := k+1)` form) — the line-proportionality.
+The `d=3` `complementIso_smul_eq_extensor_join` then becomes `:= …_meet (k := 2) …` (or stays as the
+green wrapper — re-point is a CHAIN-4 decision, not forced; h-5).
 
-The full OD-8 route-(α) leaf chain (§(h)), now (h-0)…(h-2) + (h-3)-input all LANDED:
-- **(h-0)** volume-form-by-determinant — **LANDED** (`screwAlgebraTopEquiv_map_eq_det_smul` + mirror
-  `exteriorPower.topEquiv_map_eq_det_smul`).
-- **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf — LANDED** (`Meet.lean`).
-- **(h-2)** frame alignment — **transport bridge + span-control existence LANDED**
-  (`EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}` mirror +
-  `exists_orthonormalBasis_span_pair_eq`, `MeetHodge.lean`).
-- **(h-3) input proportionality** — **LANDED this commit** (`exists_smul_extensor_eq_of_mem_span_range`
-  + `extensor_mem_range_map_subtype_of_mem_jgrade`, `Meet.lean`).
-- **(h-3) assembly** `complementIso_extensor_mem_range_map_subtype` — **the next open leaf** (the
-  metric composition; the `W = {n}^⊥` dimension step is the one untested piece).
+Closing (h-4) **closes CHAIN-3** and feeds CHAIN-4's discriminator
+(`exists_complementIso_ne_zero_of_homogeneousIncidence`) the join=meet proportionality (the step KT
+leaves implicit — a BlueprintExposition-grade node, ledger candidate). **Route β stays rejected**
+(the annihilation→membership upgrade is the withdrawn `dim Φ̃` count); **genuine fallback** if (h-4)
+is a long pole: carry it as an explicit green-modulo `h…` premise on CHAIN-4, never a `sorry`. Still
+no ENTRY-contract dependency.
 
-**Why NOT route β:** the in-hand annihilation (`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`)
-puts `complementIso n` in an annihilator `Ann(Φ)`; upgrading that to range-membership needs
-`dim Ann(Φ) = 1`, i.e. the **withdrawn `dim Φ̃` count** (`= C(d−1,2) > 1` for `d≥4`). So β is
-**rejected, not a fallback**. **Genuine fallback if the (h-3) assembly is a long
-pole:** carry (h-3) as an explicit green-modulo `h…` premise on CHAIN-4's discriminator (standing
-idiom), land it in a dedicated sitting — never a `sorry`. (`MeetHodge.lean`; still no
-ENTRY-contract dependency.)
-
-The CHAIN-3-finish recon's geometry (the `⋀^{d−1}W`-is-a-line route, NOT the withdrawn d=3-only `Φ̃`
-route — a line has **2** normals + **d−1** points at every `d`) is recorded in *Decisions made* and
-lives canonically in `notes/Phase23-design.md` §"CHAIN"(f)/(h). Closing the (h-3) assembly + the
-(h-4) `extensor_join_proportional_complementIso_meet` (zero new count, consumes (h-3) + the three
-`_grade` bricks) closes CHAIN-3 and feeds CHAIN-4's discriminator; the d=3 wrapper stays green (h-5).
+The full OD-8 route-(α) leaf chain (§(h)) is now **(h-0)…(h-3) all LANDED**: (h-0)
+`screwAlgebraTopEquiv_map_eq_det_smul`; (h-1) `complementIso_map_orthogonal_eq`; (h-2)
+`exists_orthonormalBasis_span_pair_eq` + transport bridge; (h-3)-input
+`exists_smul_extensor_eq_of_mem_span_range`; (h-3) assembly `complementIso_extensor_mem_range_map_subtype`
+(`MeetHodge.lean`, this commit). The CHAIN-3-finish geometry (the `⋀^{d−1}W`-is-a-line route, NOT the
+withdrawn d=3-only `Φ̃` route) lives canonically in `notes/Phase23-design.md` §"CHAIN"(f)/(h).
 
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
@@ -429,10 +385,9 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   / `extensor_toDual_extensor_eq_zero_of_perp` **withdrawn** (dead d=3-only, kept green
   as the d=3 wrapper) → §"CHAIN"(f). KT-route-checked (the join=meet duality KT leaves
   implicit) → §"CHAIN"(f) *Coordinator KT-route check*.
-- **OD-8 route DECIDED: route α via `complementIso` O(n)-equivariance; β + γ rejected**
-  — `complementIso` IS the Hodge `⋆`; β rests on the withdrawn `dim Φ̃` count. (h-1)
-  the O(n)-equivariance is the one genuinely-open obligation (green-modulo escape: carry
-  h-3) → §"CHAIN"(h).
+- **OD-8 RESOLVED: route α (`complementIso` O(n)-equivariance); β rejected** — the whole
+  leaf chain h-0…h-3 landed, the panel-meet range-membership is closed. `complementIso` IS the
+  Hodge `⋆`; β rests on the withdrawn `dim Φ̃` count → §"CHAIN"(h).
 
 **Landed CHAIN-3 bricks** (all keep the `d=3` name as a `(d:=3)` instance or unify
 `d=3` by defeq; no blueprint pin moved; the `_grade` lifts are verbatim — the route is
@@ -475,13 +430,24 @@ general mathlib, grade enters nothing):
   `LinearIndepOn ℝ f (Iic 1)` = `hn` reindexed (`linearIndepOn_range_iff` on `![0,1]` +
   `linearIndependent_restrict_iff`). `MeetHodge.lean` wired into `CombinatorialRigidity.lean`.
 - (h-3) **input proportionality** `exists_smul_extensor_eq_of_mem_span_range` + prerequisite
-  `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`). Building the assembly surfaced a step
-  §(h) glossed: `extensor n` must be matched up-to-scalar to the `2`-extensor of the orthonormal frame
-  pair. The proportionality reuses the line-is-1-dim idiom (`finrank_exteriorPower_self_eq_one` at
-  grade 2 = `dim P`) of `exists_smul_eq_of_mem_range_map_subtype_grade`; the prerequisite **decouples**
-  the grade `j` from the ambient `d` in `extensor_mem_range_map_subtype_of_mem_grade` (which tied it to
-  `d−1`; grade `2 ≠ k`). `_grade` re-derived as the `j := d−1` instance, signature + callers untouched.
-  Both metric-free.
+  `extensor_mem_range_map_subtype_of_mem_jgrade` (`Meet.lean`). `extensor n` matched up-to-scalar to
+  the `2`-extensor of the orthonormal frame pair (line-is-1-dim idiom `finrank_exteriorPower_self_eq_one`
+  at grade 2); prerequisite **decouples** the grade `j` from the ambient `d` in `…_of_mem_grade`
+  (`_grade` re-derived as the `j := d−1` instance, callers untouched). Both metric-free.
+- (h-3) **assembly** `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`, this commit) —
+  the OD-8 crux. `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(⋀^k W ↪)`, `W = {n 0,n 1}^⊥`. The
+  orthogonal change-of-frame: `b := exists_orthonormalBasis_span_pair_eq` aligns `span{n 0,n 1}` to the
+  coordinate plane, `O := ofLinearIsometryEquiv b.repr.symm` (`toDual`-orthogonal via the transport
+  bridge) sends the coordinate complement into `W` and the coordinate blade to `extensor ![bf 0,bf 1]`
+  (∝ `extensor n`); push the LANDED standard-frame membership through `O` by (h-1)
+  `complementIso_map_orthogonal_eq` + the new metric-free **range-pushforward**
+  `exteriorPower_map_mem_range_map_subtype_of_mapsTo` (`Meet.lean`,
+  `LinearMap.subtype_comp_codRestrict` + `exteriorPower.map_comp`). `W = {n 0,n 1}^⊥` dimension step:
+  `W ≤ Q` (the `toDual`-perp), both `k`-dim (`Q` via `finrank_add_finrank_orthogonal` transported across
+  `EuclideanSpace.equiv` by `inner_eq_basisFun_toDual` + `real_inner_comm`), so `W = Q`. Two FRICTION
+  idioms surfaced (`span_induction` on an applied subject; `EuclideanSpace.equiv` is a CLE). No
+  blueprint pin (intermediate brick; the duality node `lem:case-III-claim612-line-in-panel-union`
+  stays green via its d=3 route until (h-4) lands the general one).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -506,3 +472,9 @@ general mathlib, grade enters nothing):
   in the same file to a `whnf` timeout (the `PiLp 2` instances become defeq-visible to `⋀`-term
   elaboration) — keep the bridge in a `Mathlib/` mirror, house metric-using leaves in a downstream
   file* → TACTICS-QUIRKS § 59 / FRICTION [mirrored] *`EuclideanSpace.inner_eq_basisFun_toDual`…*.
+- *`induction h using Submodule.span_induction` fails on an applied membership subject (`n j`) —
+  hoist a `∀ y ∈ span, …` helper, induct on the bound `y`* → FRICTION [idiom] *`induction h using
+  Submodule.span_induction` fails …*.
+- *`EuclideanSpace.equiv` is a `ContinuousLinearEquiv`, not a `LinearEquiv` — round-trips need the
+  `ContinuousLinearEquiv.*` forms (a `LinearEquiv.apply_symm_apply` `simp only` no-ops)* → FRICTION
+  [idiom] *`EuclideanSpace.equiv` is a `ContinuousLinearEquiv`…*.

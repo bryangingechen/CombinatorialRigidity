@@ -115,6 +115,18 @@ to be re-derived by re-reading entries later.
   semantics-preserving split; `Bricks.lean` kept for now (it matches the `*Brick` sections it holds).
 - **Status:** open (user-flagged, 2026-06-17).
 
+### [idiom] `induction h using Submodule.span_induction` fails ("Index in target's type is not a variable") when the membership subject is an applied term (`n j`) — hoist a `∀ y ∈ span, …` helper, then apply it to `n j`
+- **Where it bit:** `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`, CHAIN-3 OD-8 h-3), the `hbfW`/`bf t ⊥ n j` step — the goal `toDual (bf t) (n j) = 0` carries `n j` (a fixed application, not a local), so `induction hnj using Submodule.span_induction` on `hnj : n j ∈ span{bf 0, bf 1}` cannot generalize the motive.
+- **Friction:** the span-induction tactic generalizes its *subject*; an applied non-variable subject blocks it.
+- **Proposed fix:** prove the helper `have hperp : ∀ y ∈ span{…}, toDual (bf t) y = 0` by `induction hy using Submodule.span_induction with | mem … | zero | add … | smul …` (subject now the bound `y`), then close with `exact hperp (n j) …`. Standing idiom for any "kill a pairing on a fixed element of a span".
+- **Status:** idiom.
+
+### [idiom] `EuclideanSpace.equiv` is a `ContinuousLinearEquiv`, not a `LinearEquiv` — round-trips need `ContinuousLinearEquiv.{apply_symm_apply, symm_symm}` (a `LinearEquiv.apply_symm_apply` `simp only` silently no-ops)
+- **Where it bit:** the `hsymm`/`hinner`/`hQmap` `toDual`-symmetry transport in `complementIso_extensor_mem_range_map_subtype` (`MeetHodge.lean`), bridging the L²-metric and the `Pi.basisFun.toDual` pairing through `EuclideanSpace.equiv`.
+- **Friction:** `EuclideanSpace.equiv ι 𝕜 : EuclideanSpace 𝕜 ι ≃L[𝕜] (ι → 𝕜)`, so `LinearEquiv`-keyed simp lemmas don't fire on its round-trips; the `simp only [LinearEquiv.apply_symm_apply]` reported its arg unused.
+- **Proposed fix:** use the `ContinuousLinearEquiv.*` forms; to feed a `≃ₗ` API (`Submodule.{map, mem_map_equiv}`) coerce via `.toLinearEquiv` with an explicit `( … : A →ₗ[ℝ] B)` ascription.
+- **Status:** idiom.
+
 ### [idiom] Generalizing an in-place numeral-pinned `def` to implicit `{d}` and keeping a numeral consumer: `omega` mis-atomizes the two elaborations of the same applied term — use `linarith` / `simpa using h`
 - **Where it bit:** `finrank_sup_range_wedgeFixedLeft` (`Meet.lean`, CHAIN-3) after `wedgeFixedLeft`
   + `finrank_range_wedgeFixedLeft` were lifted from `Fin 4` to ambient `{d} (Fin (d+1))`. The `d=3`

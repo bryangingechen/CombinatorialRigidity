@@ -115,4 +115,275 @@ theorem exists_orthonormalBasis_span_pair_eq {k : ℕ}
   rw [himg, InnerProductSpace.span_gramSchmidtNormed, InnerProductSpace.span_gramSchmidt_Iic,
     hrange]
 
+/-- **The `complementIso` of an arbitrary grade-2 decomposable `extensor n` lands in `⋀^k W` for
+`W` the `toDual`-orthogonal complement of `{n 0, n 1}`** (`def:meet-complement-iso`, CHAIN-3, OD-8
+(h-3), the panel-meet range-membership leaf). For two line-normals `n : Fin 2 → ℝ^{k+2}` and a
+submodule `W ⊆ ℝ^{k+2}` that is `toDual`-orthogonal to both (`hWperp`) and of dimension `k`
+(`hWdim`, forcing `W = {n 0, n 1}^⊥`), the `complementIso (j := 2)` image of the panel-meet
+`extensor n` lies in the range of the inclusion
+`exteriorPower.map k W.subtype : ⋀^k W →ₗ ⋀^k ℝ^{k+2}`.
+
+This is the genuine Hodge fact "`⋆` of a decomposable is the decomposable of the orthogonal
+complement", proved by an *orthogonal change of frame* (`complementIso` is the Hodge `⋆` —
+O(n)-natural but not GL-natural, `complementIso_map_orthogonal_eq`): a Gram–Schmidt orthonormal
+basis `b` aligns `span{n 0, n 1}` to the coordinate `2`-plane
+(`exists_orthonormalBasis_span_pair_eq`), the frame map `O = ofLinearIsometryEquiv b.repr.symm`
+carries the coordinate complement into
+`W = {n 0, n 1}^⊥` and the coordinate blade to `extensor ![b 0, b 1]` (proportional to
+`extensor n` by `exists_smul_extensor_eq_of_mem_span_range`, same plane), so the LANDED
+standard-frame membership
+`complementIso_exteriorPower_basis_mem_range_map_subtype` transports through `O` by the O(n)-
+equivariance and the range push-forward `exteriorPower_map_mem_range_map_subtype_of_mapsTo`. The
+dependent (`extensor n = 0`) case is trivial (`complementIso 0 = 0 ∈ range`). Feeds CHAIN-3's
+assembly `extensor_join_proportional_complementIso_meet` (the per-line join=meet duality KT leaves
+implicit). -/
+theorem complementIso_extensor_mem_range_map_subtype {k : ℕ}
+    (n : Fin 2 → Fin (k + 2) → ℝ)
+    (W : Submodule ℝ (Fin (k + 2) → ℝ))
+    (hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0)
+    (hWdim : Module.finrank ℝ W = k) :
+    complementIso (k := k) (j := 2) (by omega)
+        ⟨extensor n, extensor_mem_exteriorPower n⟩
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) := by
+  -- Dependent case: `extensor n = 0`, so `complementIso 0 = 0 ∈ range`.
+  by_cases hn : LinearIndependent ℝ n
+  swap
+  · have h0 : (⟨extensor n, extensor_mem_exteriorPower n⟩ : ⋀[ℝ]^2 (Fin (k + 2) → ℝ)) = 0 := by
+      rw [Subtype.ext_iff]; exact extensor_eq_zero_of_not_linearIndependent hn
+    rw [h0, map_zero]
+    exact Submodule.zero_mem _
+  set ne : Fin 2 → EuclideanSpace ℝ (Fin (k + 2)) :=
+    fun i => (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm (n i) with hne
+  -- The `toDual`-perp `Q` of `{n 0, n 1}` in the bare carrier.
+  set Q : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    ⨅ j, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j)) with hQ
+  have hWQ : W ≤ Q := by
+    intro w hw
+    simp only [hQ, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+    exact hWperp w hw
+  -- `finrank Q = k`: transport `Q` to the metric orthogonal complement `(span{ne 0, ne 1})ᗮ`.
+  set P' : Submodule ℝ (EuclideanSpace ℝ (Fin (k + 2))) := Submodule.span ℝ {ne 0, ne 1} with hP'
+  have hsymm : ∀ w v : Fin (k + 2) → ℝ,
+      (Pi.basisFun ℝ (Fin (k + 2))).toDual w v = (Pi.basisFun ℝ (Fin (k + 2))).toDual v w := by
+    intro w v
+    set ε := EuclideanSpace.equiv (Fin (k + 2)) ℝ
+    have h1 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm w) (ε.symm v)
+    have h2 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm v) (ε.symm w)
+    simp only [ε, ContinuousLinearEquiv.apply_symm_apply] at h1 h2
+    rw [← h1, ← h2, real_inner_comm]
+  -- `inner (ne j) x = toDual (equiv x) (n j)`.
+  have hinner : ∀ (x : EuclideanSpace ℝ (Fin (k + 2))) (j : Fin 2),
+      (inner ℝ (ne j) x : ℝ)
+        = (Pi.basisFun ℝ (Fin (k + 2))).toDual
+            ((EuclideanSpace.equiv (Fin (k + 2)) ℝ) x) (n j) := by
+    intro x j
+    rw [EuclideanSpace.inner_eq_basisFun_toDual,
+      show (EuclideanSpace.equiv (Fin (k + 2)) ℝ) (ne j) = n j from rfl, hsymm]
+  have hQmap : Submodule.map
+      (↑(EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearEquiv :
+        (Fin (k + 2) → ℝ) →ₗ[ℝ] EuclideanSpace ℝ (Fin (k + 2))) Q
+      = Submodule.orthogonal P' := by
+    ext x
+    rw [Submodule.mem_map_equiv, Submodule.mem_orthogonal]
+    simp only [hQ, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+    constructor
+    · intro hx u hu
+      induction hu using Submodule.span_induction with
+      | mem y hy =>
+          rcases hy with rfl | rfl
+          · rw [hinner]; exact hx 0
+          · rw [hinner]; exact hx 1
+      | zero => simp
+      | add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]
+      | smul c a _ ha => rw [inner_smul_left, ha, mul_zero]
+    · intro hx j
+      have := hx (ne j) (Submodule.subset_span (by fin_cases j <;> simp))
+      rw [hinner] at this
+      exact this
+  -- `ne` is linearly independent (transport `hn` across the carrier equiv).
+  have hni : LinearIndependent ℝ ne :=
+    hn.map' (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearMap
+      (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.ker
+  have hP'dim : Module.finrank ℝ P' = 2 := by
+    have hrange : (Set.range ne) = {ne 0, ne 1} := by
+      ext y; constructor
+      · rintro ⟨i, rfl⟩; fin_cases i <;> simp
+      · rintro (rfl | rfl); exacts [⟨0, rfl⟩, ⟨1, rfl⟩]
+    rw [hP', ← hrange, finrank_span_eq_card hni, Fintype.card_fin]
+  have hQdim : Module.finrank ℝ Q = k := by
+    have h1 : Module.finrank ℝ Q = Module.finrank ℝ (Submodule.orthogonal P') := by
+      rw [← hQmap, LinearEquiv.finrank_map_eq]
+    have h2 := Submodule.finrank_add_finrank_orthogonal P'
+    rw [hP'dim, finrank_euclideanSpace_fin] at h2
+    rw [h1]; omega
+  -- `W = Q` (both `k`-dim, `W ≤ Q`).
+  have hWQeq : W = Q := Submodule.eq_of_le_of_finrank_eq hWQ (by rw [hWdim, hQdim])
+  -- The orthonormal frame `b` aligning `span{n 0, n 1}` to the coordinate `2`-plane.
+  obtain ⟨b, hb⟩ := exists_orthonormalBasis_span_pair_eq ne hni
+  -- The frame map `O` on the bare carrier; `O (basisFun i) = bf i := equiv (b i)`.
+  set O : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ) :=
+    (EuclideanSpace.ofLinearIsometryEquiv b.repr.symm).toLinearMap with hO
+  set bf : Fin (k + 2) → Fin (k + 2) → ℝ :=
+    fun i => (EuclideanSpace.equiv (Fin (k + 2)) ℝ) (b i) with hbf
+  have hObasis : ∀ i, O (Pi.basisFun ℝ (Fin (k + 2)) i) = bf i := by
+    intro i
+    rw [hO, hbf, LinearEquiv.coe_coe, EuclideanSpace.ofLinearIsometryEquiv]
+    simp
+  -- `O` preserves the standard `toDual` pairing.
+  have hOorth : ∀ x y, (Pi.basisFun ℝ (Fin (k + 2))).toDual (O x) (O y)
+      = (Pi.basisFun ℝ (Fin (k + 2))).toDual x y :=
+    EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv b.repr.symm
+  -- `span{bf 0, bf 1} = span{n 0, n 1}` (transport `hb` across the carrier equiv).
+  have hspanbf : Submodule.span ℝ {bf 0, bf 1} = Submodule.span ℝ {n 0, n 1} := by
+    have key := congrArg (Submodule.map
+      (↑(EuclideanSpace.equiv (Fin (k + 2)) ℝ).toLinearEquiv :
+        EuclideanSpace ℝ (Fin (k + 2)) →ₗ[ℝ] (Fin (k + 2) → ℝ))) hb
+    rwa [Submodule.map_span, Submodule.map_span, Set.image_pair, Set.image_pair] at key
+  -- `![bf 0, bf 1]` is linearly independent.
+  have hbf01 : LinearIndependent ℝ ![bf 0, bf 1] := by
+    have hbli : LinearIndependent ℝ bf :=
+      (b.orthonormal.linearIndependent).map'
+        (EuclideanSpace.equiv (Fin (k + 2)) ℝ).toLinearMap
+        (EuclideanSpace.equiv (Fin (k + 2)) ℝ).ker
+    have : ![bf 0, bf 1] = bf ∘ ![0, 1] := by funext i; fin_cases i <;> rfl
+    rw [this]
+    refine hbli.comp _ (injective_pair_iff_ne.2 ?_)
+    simp only [Ne, Fin.ext_iff, Fin.val_zero, Fin.val_one]; omega
+  -- The coordinate `2`-subset `S = {0, 1}` and its enumerated frame vectors `vS`.
+  set S : Set.powersetCard (Fin (k + 2)) 2 :=
+    ⟨{0, 1}, by simp [Finset.card_insert_of_notMem, show (0 : Fin (k + 2)) ≠ 1 from by
+      simp only [Ne, Fin.ext_iff, Fin.val_zero, Fin.val_one]; omega]⟩ with hS
+  set vS : Fin 2 → Fin (k + 2) → ℝ :=
+    Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm S with hvS
+  -- `e_S = ⟨extensor (basisFun ∘ ofFinEmbEquiv.symm S), _⟩`.
+  have heS : ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S
+      : ⋀[ℝ]^2 (Fin (k + 2) → ℝ))
+      = ⟨extensor vS, extensor_mem_exteriorPower vS⟩ := by
+    rw [exteriorPower.basis_apply]; rfl
+  -- `wS := O ∘ vS = bf ∘ ofFinEmbEquiv.symm S`, the frame vectors enumerated by `S`.
+  set wS : Fin 2 → Fin (k + 2) → ℝ := fun j => O (vS j) with hwS
+  have hwSbf : ∀ j, wS j = bf (Set.powersetCard.ofFinEmbEquiv.symm S j) := by
+    intro j
+    change O (vS j) = _
+    rw [hvS]; exact hObasis _
+  -- The enumeration `e := ofFinEmbEquiv.symm S` of `S = {0, 1}` sends `0 ↦ 0`, `1 ↦ 1`
+  -- (the unique strictly-increasing enumeration of `{0, 1}`).
+  set e := Set.powersetCard.ofFinEmbEquiv.symm S with he
+  have hmemS : ∀ j : Fin 2, e j ∈ ({0, 1} : Finset (Fin (k + 2))) := by
+    intro j
+    have := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem S (e j)).mp ⟨j, rfl⟩
+    rwa [hS] at this
+  have hmem01 : ∀ x : Fin (k + 2), x ∈ ({0, 1} : Finset (Fin (k + 2))) → x = 0 ∨ x = 1 := by
+    intro x hx; simpa only [Finset.mem_insert, Finset.mem_singleton] using hx
+  have he01 : e 0 < e 1 := e.strictMono (by norm_num)
+  have he0 : e 0 = 0 := by
+    rcases hmem01 _ (hmemS 0) with h | h
+    · exact h
+    · exfalso
+      rcases hmem01 _ (hmemS 1) with h' | h'
+      · rw [h, h'] at he01; exact absurd he01 (by norm_num)
+      · rw [h, h'] at he01; exact absurd he01 (lt_irrefl _)
+  have he1 : e 1 = 1 := by
+    rcases hmem01 _ (hmemS 1) with h | h
+    · exfalso; rw [he0, h] at he01; exact absurd he01 (lt_irrefl _)
+    · exact h
+  have hwSeq : wS = ![bf 0, bf 1] := by
+    funext j
+    rw [hwSbf]
+    fin_cases j
+    · exact congrArg bf he0
+    · exact congrArg bf he1
+  -- `bf` is `toDual`-orthonormal (the orthonormal basis transported through the inner product).
+  have hbforth : ∀ i₁ i₂, (Pi.basisFun ℝ (Fin (k + 2))).toDual (bf i₁) (bf i₂)
+      = if i₁ = i₂ then 1 else 0 := by
+    intro i₁ i₂
+    rw [hbf, ← EuclideanSpace.inner_eq_basisFun_toDual]
+    exact b.inner_eq_ite i₁ i₂
+  -- Every complementary frame vector `bf t` (`t ∉ {0, 1}`) lies in `W`.
+  have hbfW : ∀ t ∈ (Set.powersetCard.compl (n := 2) (m := k)
+      (by rw [Fintype.card_fin]) S : Finset (Fin (k + 2))), bf t ∈ W := by
+    intro t ht
+    -- `t ∉ {0, 1}`, so `bf t ⊥ bf 0, bf 1`.
+    have htne : t ≠ 0 ∧ t ≠ 1 := by
+      have hnotS : t ∉ (S : Finset (Fin (k + 2))) := Set.powersetCard.mem_compl.mp ht
+      rw [hS] at hnotS
+      simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hnotS
+      exact hnotS
+    -- `bf t` is `toDual`-orthogonal to all of `span{bf 0, bf 1} = span{n 0, n 1}`.
+    have hperp : ∀ y ∈ Submodule.span ℝ {bf 0, bf 1},
+        (Pi.basisFun ℝ (Fin (k + 2))).toDual (bf t) y = 0 := by
+      intro y hy
+      induction hy using Submodule.span_induction with
+      | mem z hz =>
+          rcases hz with rfl | rfl
+          · rw [hbforth]; exact if_neg fun h => htne.1 h
+          · rw [hbforth]; exact if_neg fun h => htne.2 h
+      | zero => simp
+      | add a c _ _ ha hc => rw [map_add, ha, hc, add_zero]
+      | smul r a _ ha => rw [map_smul, ha, smul_zero]
+    rw [hWQeq, hQ, Submodule.mem_iInf]
+    intro j
+    rw [LinearMap.mem_ker, LinearMap.flip_apply]
+    exact hperp (n j) (by rw [hspanbf]; exact Submodule.subset_span (by fin_cases j <;> simp))
+  -- `map 2 O` pushes a `2`-extensor forward to the `2`-extensor of the image family.
+  have hmapextensor : ∀ v : Fin 2 → Fin (k + 2) → ℝ,
+      exteriorPower.map 2 O ⟨extensor v, extensor_mem_exteriorPower v⟩
+        = ⟨extensor (fun i => O (v i)), extensor_mem_exteriorPower _⟩ := by
+    intro v
+    have hv2 : (⟨extensor v, extensor_mem_exteriorPower v⟩ : ⋀[ℝ]^2 (Fin (k + 2) → ℝ))
+        = exteriorPower.ιMulti ℝ 2 v := by
+      apply Subtype.ext; rw [exteriorPower.ιMulti_apply_coe]; rfl
+    apply Subtype.ext
+    rw [hv2, exteriorPower.map_apply_ιMulti, exteriorPower.ιMulti_apply_coe]
+    rfl
+  -- `⟨extensor ![bf 0, bf 1], _⟩ = map 2 O (e_S)`.
+  have hmapeS : (exteriorPower.map 2 O) ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S)
+      = ⟨extensor ![bf 0, bf 1], extensor_mem_exteriorPower _⟩ := by
+    rw [heS, hmapextensor]
+    apply Subtype.ext
+    change extensor (fun i => O (vS i)) = extensor ![bf 0, bf 1]
+    have : (fun i => O (vS i)) = wS := rfl
+    rw [this, hwSeq]
+  -- The coordinate-complement subspace `W₀` (spanned by `basisFun t` for `t ∈ Sᶜ`), with
+  -- `O(W₀) ⊆ W` (each generator maps to `bf t ∈ W`).
+  set complS := (Set.powersetCard.compl (n := 2) (m := k) (by rw [Fintype.card_fin]) S :
+    Finset (Fin (k + 2))) with hcomplS
+  set W₀ : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    Submodule.span ℝ (↑(complS.image (Pi.basisFun ℝ (Fin (k + 2)))) :
+      Set (Fin (k + 2) → ℝ)) with hW₀
+  have hW₀mem : ∀ t ∈ complS, Pi.basisFun ℝ (Fin (k + 2)) t ∈ W₀ :=
+    fun t ht => Submodule.subset_span
+      (by rw [Finset.coe_image]; exact ⟨t, ht, rfl⟩)
+  have hOW₀ : ∀ w ∈ W₀, O w ∈ W := by
+    intro w hw
+    induction hw using Submodule.span_induction with
+    | mem x hx =>
+        simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hx
+        obtain ⟨t, ht, rfl⟩ := hx
+        rw [hObasis]; exact hbfW t ht
+    | zero => rw [map_zero]; exact Submodule.zero_mem _
+    | add a c _ _ ha hc => rw [map_add]; exact Submodule.add_mem _ ha hc
+    | smul r a _ ha => rw [map_smul]; exact Submodule.smul_mem _ _ ha
+  -- The standard-frame range-membership for the coordinate blade `e_S`.
+  have hstd : complementIso (k := k) (j := 2) (by omega)
+      ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 S)
+      ∈ LinearMap.range (exteriorPower.map k W₀.subtype) :=
+    complementIso_exteriorPower_basis_mem_range_map_subtype S W₀ hW₀mem
+  -- Input proportionality: `extensor n = c • extensor ![bf 0, bf 1]`.
+  have hrangebf : Set.range ![bf 0, bf 1] = {bf 0, bf 1} := by
+    ext z; constructor
+    · rintro ⟨j, rfl⟩; fin_cases j <;> simp
+    · rintro (rfl | rfl); exacts [⟨0, rfl⟩, ⟨1, rfl⟩]
+  have hu : ∀ i, n i ∈ Submodule.span ℝ (Set.range ![bf 0, bf 1]) := by
+    intro i
+    rw [hrangebf, hspanbf]
+    exact Submodule.subset_span (by fin_cases i <;> simp)
+  obtain ⟨c, hc⟩ := exists_smul_extensor_eq_of_mem_span_range n ![bf 0, bf 1] hbf01 hu
+  -- Assemble: rewrite the panel-meet by the proportionality, push `complementIso` through `O`.
+  rw [← hc, map_smul]
+  refine Submodule.smul_mem _ _ ?_
+  rw [← hmapeS, complementIso_map_orthogonal_eq (by omega) O hOorth]
+  refine Submodule.smul_mem _ _ ?_
+  exact exteriorPower_map_mem_range_map_subtype_of_mapsTo O W₀ W hOW₀ hstd
+
 end CombinatorialRigidity.Molecular

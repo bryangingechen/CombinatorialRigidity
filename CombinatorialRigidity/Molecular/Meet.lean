@@ -713,6 +713,28 @@ theorem exteriorPower_map_subtype_injective (W : Submodule ℝ (Fin 4 → ℝ)) 
     Function.Injective (exteriorPower.map 2 W.subtype) :=
   exteriorPower_map_subtype_injective_grade (d := 3) 2 W
 
+/-- **Range push-forward of `⋀^g` along an endomorphism carrying one submodule into another**
+(`def:meet-complement-iso`, the transport step of the OD-8 panel-meet range-membership). For an
+endomorphism `O` of `ℝ^{k+2}` and submodules `W'`, `W` with `O(W') ⊆ W`, the induced map
+`exteriorPower.map g O` carries the range of the inclusion `⋀^g W' ↪ ⋀^g (ℝ^{k+2})` into the range
+of the inclusion `⋀^g W ↪ ⋀^g (ℝ^{k+2})`: if `X` is the image of some `Y : ⋀^g W'`, then
+`map g O X` is the image of `map g f Y` where `f : W' →ₗ W` corestricts `O ∘ W'.subtype`.
+The metric-free transport lemma the Hodge-layer assembly composes with the O(n)-equivariance
+`complementIso_map_orthogonal_eq`: a coordinate-complement membership pushes forward along the
+orthogonal frame map `O` (with `O` sending the coordinate complement into `W = {n}^⊥`) to the
+target-`W` membership. -/
+theorem exteriorPower_map_mem_range_map_subtype_of_mapsTo {g : ℕ}
+    (O : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin (k + 2) → ℝ))
+    (W' W : Submodule ℝ (Fin (k + 2) → ℝ)) (hO : ∀ w ∈ W', O w ∈ W)
+    {X : ⋀[ℝ]^g (Fin (k + 2) → ℝ)} (hX : X ∈ LinearMap.range (exteriorPower.map g W'.subtype)) :
+    exteriorPower.map g O X ∈ LinearMap.range (exteriorPower.map g W.subtype) := by
+  obtain ⟨Y, rfl⟩ := hX
+  -- `f : W' →ₗ W`, the corestriction of `O ∘ₗ W'.subtype`; `W.subtype ∘ₗ f = O ∘ₗ W'.subtype`.
+  refine ⟨exteriorPower.map g
+      ((O ∘ₗ W'.subtype).codRestrict W fun x => hO _ x.2) Y, ?_⟩
+  rw [← LinearMap.comp_apply, ← exteriorPower.map_comp, ← LinearMap.comp_apply,
+    ← exteriorPower.map_comp, LinearMap.subtype_comp_codRestrict]
+
 /-- **N3b-2 with the grade decoupled from the ambient dimension: a `j`-extensor of vectors in `W`
 lies in `⋀^j W ↪ ⋀^j (ℝ^{d+1})`** (`lem:case-III-claim612-line-in-panel-union`, CHAIN-3, OD-8 — the
 first general-`d` duality brick, replacing the `Fin 4`-pinned `d=3` route). If every vector of a
