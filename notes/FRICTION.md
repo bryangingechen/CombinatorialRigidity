@@ -1513,7 +1513,29 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `(ExteriorAlgebra.ιMulti ℝ 2).map_update_smul` failed with *"failed to synthesize
   `Module ℝ (ExteriorAlgebra ℝ ?m)`"* — the base module type `M` is a free metavar.
 - **Fix:** annotate `(ExteriorAlgebra.ιMulti ℝ 2 (M := Fin 4 → ℝ)).map_update_smul`.
+- **Reused** Phase 23b: the general-`k` first-slot scalar-absorption brick
+  `extensor_update_smul` (`Extensor.lean`) hit the same; same `(M := Fin (d+1) → ℝ)`
+  annotation fix. Two follow-up wrinkles: (i) `rw [… .map_update_smul]` still left
+  `Module ℝ (ExteriorAlgebra …)` un-synthesized on the *rewrite-occurrence* match —
+  use the `have h := …map_update_smul v i c (v i)` term form, then `exact h`, not `rw`;
+  (ii) `map_update_smul` produces `f (update v i (v i))` on the RHS — clean it with
+  `rw [Function.update_eq_self] at h` before `exact`.
 - **Status:** resolved.
+
+### [idiom] Lifting a `Fin (k+2)`-point-family lemma to general `k` may need `[NeZero k]` (the `0 : Fin k` literal + a genuinely-`k=0`-false statement)
+- **Where it bit:** `exists_extensor_eq_panelSupportExtensor_gen` (`PanelLayer.lean`, Phase 23b
+  OD-7). Generalizing the `d=3` (`k=2`) meet-decomposition to `k` points `p : Fin k → Fin (k+2) → ℝ`,
+  the proof rescales slot `0 : Fin k` (`Function.update q 0 …`). At general `k`, `0 : Fin k` needs
+  `OfNat (Fin k) 0`, which requires `[NeZero k]` — *"failed to synthesize `OfNat (Fin k) 0`"*. The
+  in-branch `i : Fin k` does **not** auto-provide it.
+- **Root cause is mathematical, not just elaboration:** the lemma is *false* at `k=0`
+  (`extensor (Fin 0 → …) = 1`, but the panel meet is a nonzero scalar `≠ 1`), so the honest fix is
+  the hypothesis, not a workaround. Add `[NeZero k]` to the signature; the consumer `k=2` resolves it
+  automatically, and the eventual spine lift has `k = d−1 ≥ 1`.
+- **Lesson:** when generalizing a numeral-pinned point-family lemma whose conclusion mentions a
+  `0`-slot, check whether the `k=0` boundary is *true* before reaching for a tactic — if false, carry
+  `[NeZero k]` rather than fighting the `OfNat` synthesis.
+- **Status:** idiom.
 
 ### [idiom] `open Classical in` must precede the docstring, not follow it
 - **Where it bit:** Phase 22i L0c (`PanelLayer.lean`). Three `open Classical in theorem`s

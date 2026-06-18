@@ -551,6 +551,79 @@ theorem exists_linearIndependent_extensor_pair_perp (n : Fin 4 → ℝ) :
           ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)] :=
   exists_linearIndependent_extensor_pair_perp_grade (k := 2) (by norm_num) n
 
+/-- **The panel meet of two transversal panels is the extensor of `k` common-perp points, at
+general grade** (`def:genuine-hinge-realization`, the general-`d` meet-decomposition; the M4-forget
+unblocker, Phase 23b OD-7). For two linearly independent (= transversal) normals
+`n₁ n₂ : Fin (k+2) → ℝ`, the panel meet `panelSupportExtensor n₁ n₂` is the extensor of some `k`
+points `p : Fin k → Fin (k+2) → ℝ`, each lying in both panels:
+`(panelSupportExtensor n₁ n₂).val = extensor p ∧ ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0`.
+
+This is the general-grade lift of `exists_extensor_eq_panelSupportExtensor` (its `k = 2` instance),
+routing through the CHAIN-3 per-line join=meet duality
+`extensor_join_proportional_complementIso_meet`
+rather than the `d = 3` double-annihilator: that duality directly furnishes the proportionality
+`c • complementIso ⟨extensor ![n₁,n₂],_⟩ = ⟨extensor p,_⟩` for the `k` common-perp points `p`. The
+scalar is absorbed into the first slot of `p` (`extensor_update_smul`), giving an extensor *equal*
+to the panel meet (`panelSupportExtensor_eq_complementIso_extensor` rewrites the meet into the
+`complementIso`-of-an-`extensor` form the duality is stated against).
+
+Proof route:
+1. `k` LI common-perp points `q : Fin k → Fin (k+2) → ℝ` of `{n₁, n₂}`
+   (`exists_linearIndependent_perp_of_normals`, `k + 2 ≤ k + 2`, no transversality needed beyond
+   the count).
+2. The duality `extensor_join_proportional_complementIso_meet ![n₁,n₂] q` (perp hypotheses
+   converted `dotProduct ↔ toDual` via `Pi.basisFun_toDual_apply`) yields `c` with
+   `c • complementIso ⟨extensor ![n₁,n₂],_⟩ = ⟨extensor q,_⟩`; `c ≠ 0` because `extensor q ≠ 0`
+   (LI of `q`).
+3. Rescale `p = update q 0 (c⁻¹ • q 0)`: `extensor p = c⁻¹ • extensor q = c⁻¹ • c • (meet) = meet`
+   via `extensor_update_smul` + the duality re-oriented, and the first-slot rescale preserves the
+   orthogonality of each `p i` to both normals. -/
+theorem exists_extensor_eq_panelSupportExtensor_gen [NeZero k] {n₁ n₂ : Fin (k + 2) → ℝ}
+    (h : LinearIndependent ℝ ![n₁, n₂]) :
+    ∃ p : Fin k → Fin (k + 2) → ℝ,
+      (panelSupportExtensor (k := k) n₁ n₂).val = extensor p ∧
+      ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 := by
+  -- Step 1: `k` LI common-perp points of `![n₁, n₂]`.
+  obtain ⟨q, hqli, hqperp⟩ :=
+    exists_linearIndependent_perp_of_normals (k := k) ![n₁, n₂] (m := k) (le_refl _)
+  have hq_perp : ∀ i, q i ⬝ᵥ n₁ = 0 ∧ q i ⬝ᵥ n₂ = 0 :=
+    fun i => ⟨by simpa using hqperp i 0, by simpa using hqperp i 1⟩
+  -- Step 2: the CHAIN-3 duality. Convert the `dotProduct` perp hyps to the `toDual` form.
+  have htoDual : ∀ i j,
+      (Pi.basisFun ℝ (Fin (k + 2))).toDual (q i) ((![n₁, n₂] : Fin 2 → _) j) = 0 := by
+    intro i j
+    rw [Pi.basisFun_toDual_apply]
+    fin_cases j
+    · simpa [dotProduct] using (hq_perp i).1
+    · simpa [dotProduct] using (hq_perp i).2
+  obtain ⟨c, hc⟩ :=
+    extensor_join_proportional_complementIso_meet (k := k) ![n₁, n₂] q hqli h htoDual
+  -- `c ≠ 0`: `extensor q ≠ 0` (LI of `q`), so the proportionality scalar is invertible.
+  have hqne : (⟨extensor q, extensor_mem_exteriorPower q⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ)) ≠ 0 := by
+    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent q).2 hqli
+  have hcne : c ≠ 0 := by
+    rintro rfl; rw [zero_smul] at hc; exact hqne hc.symm
+  -- Step 3: rescale the first slot of `q` by `c⁻¹`. From `hc` (in `⋀^k`):
+  -- `c • complementIso X = ⟨extensor q⟩`, so `complementIso X = c⁻¹ • ⟨extensor q⟩`.
+  have hcomp : (panelSupportExtensor (k := k) n₁ n₂).val = c⁻¹ • extensor q := by
+    have hc' : (complementIso (k := k) (j := 2) (by omega)
+        ⟨extensor ![n₁, n₂], extensor_mem_exteriorPower _⟩ :
+          ⋀[ℝ]^k (Fin (k + 2) → ℝ))
+        = c⁻¹ • (⟨extensor q, extensor_mem_exteriorPower q⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ)) := by
+      rw [← hc]; exact (inv_smul_smul₀ hcne _).symm
+    rw [panelSupportExtensor_eq_complementIso_extensor]
+    have := congrArg (Subtype.val (p := fun x => x ∈ ⋀[ℝ]^k (Fin (k + 2) → ℝ))) hc'
+    simpa only [Submodule.coe_smul] using this
+  refine ⟨Function.update q 0 (c⁻¹ • q 0), ?_, fun i => ?_⟩
+  · -- `(panelSupportExtensor n₁ n₂).val = extensor (update q 0 (c⁻¹ • q 0))`.
+    rw [extensor_update_smul]; exact hcomp
+  · -- Orthogonality of `update q 0 (c⁻¹ • q 0)` to both normals.
+    rcases eq_or_ne i 0 with rfl | hi
+    · rw [Function.update_self]
+      exact ⟨by rw [smul_dotProduct, (hq_perp 0).1, smul_zero],
+        by rw [smul_dotProduct, (hq_perp 0).2, smul_zero]⟩
+    · rw [Function.update_of_ne hi]; exact hq_perp i
+
 /-- **The meet of two transversal panels is the extensor of two common-perp points**
 (`def:genuine-hinge-realization`, the M4 engine; Phase 22i L0a). For two linearly independent
 (= transversal) normals `n₁ n₂ : Fin 4 → ℝ`, the panel meet `panelSupportExtensor n₁ n₂` is the
@@ -566,95 +639,15 @@ This is the pointwise `ExtensorInPanel` decomposition of the panel meet — the 
 honest bare motive M2 `HasPanelRealization`, via the meet-decomposition applied at the `ends e`
 panel pair.
 
-Proof route:
-1. Perp-pair sub-brick `exists_two_perp_of_linearIndependent_normals`: extract two LI common-perp
-   points `p₀, p₁` of `{n₁, n₂}` (finrank `ker ≥ 2`).
-2. Double-annihilator: every `r : Dual(ScrewSpace 2)` killing `panelSupportExtensor n₁ n₂` also
-   kills `extensor ![p₀, p₁]` (by `panelSupportExtensor_join_eq_zero_of_eq_zero`), so
-   `⟨extensor ![p₀, p₁], _⟩ ∈ span {panelSupportExtensor n₁ n₂}` (by
-   `Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff`).
-3. Proportionality: `Submodule.mem_span_singleton` gives a scalar `c` and nonzero-ness
-   (`extensor_ne_zero_iff_linearIndependent` + LI of `p₀, p₁` + `panelSupportExtensor_ne_zero_iff`)
-   forces `c ≠ 0`.
-4. Rescale `p = ![c⁻¹ • p₀, p₁]`: the scalar absorbed by the first slot gives
-   `extensor ![c⁻¹ • p₀, p₁] = c⁻¹ • extensor ![p₀, p₁] = panelSupportExtensor n₁ n₂`. -/
+The `k = 2` instance of the general-grade `exists_extensor_eq_panelSupportExtensor_gen` (Phase 23b,
+which routes through the CHAIN-3 join=meet duality); kept as a named `d = 3` wrapper while the M4
+consumer `hasPanelRealization_of_generic` is still `k = 2`. -/
 theorem exists_extensor_eq_panelSupportExtensor {n₁ n₂ : Fin 4 → ℝ}
     (h : LinearIndependent ℝ ![n₁, n₂]) :
     ∃ p : Fin 2 → Fin 4 → ℝ,
       (panelSupportExtensor (k := 2) n₁ n₂).val = extensor p ∧
-      ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 := by
-  -- Step 1: two LI common-perp points.
-  obtain ⟨q, hqli, hqperp⟩ := exists_two_perp_of_linearIndependent_normals h
-  set q₀ := q 0; set q₁ := q 1
-  have hq0n1 : q₀ ⬝ᵥ n₁ = 0 := (hqperp 0).1
-  have hq0n2 : q₀ ⬝ᵥ n₂ = 0 := (hqperp 0).2
-  have hq1n1 : q₁ ⬝ᵥ n₁ = 0 := (hqperp 1).1
-  have hq1n2 : q₁ ⬝ᵥ n₂ = 0 := (hqperp 1).2
-  -- Step 2: double-annihilator gives `mk (extensor ![q₀, q₁]) _ ∈ span {C}`.
-  have hmem : (ScrewSpace.mk (extensor ![q₀, q₁]) (extensor_mem_exteriorPower _) : ScrewSpace 2)
-      ∈ Submodule.span ℝ {panelSupportExtensor n₁ n₂} := by
-    rw [← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]
-    intro r hr
-    -- `hr : r ∈ (ℝ ∙ panelSupportExtensor n₁ n₂).dualAnnihilator`.
-    -- Extract `r (panelSupportExtensor n₁ n₂) = 0` via the dualAnnihilator membership.
-    have hrC : r (panelSupportExtensor n₁ n₂) = 0 :=
-      (Submodule.mem_dualAnnihilator r).mp hr (panelSupportExtensor n₁ n₂)
-        (Submodule.mem_span_singleton_self _)
-    -- Then `r ⟨extensor ![q₀, q₁], _⟩ = 0` follows from the annihilation transfer.
-    exact panelSupportExtensor_join_eq_zero_of_eq_zero n₁ n₂ q₀ q₁ h
-      hq0n1 hq0n2 hq1n1 hq1n2 r hrC
-  -- Step 3: proportionality — get scalar `c` with `⟨extensor ![q₀, q₁], _⟩ = c • C`.
-  rw [Submodule.mem_span_singleton] at hmem
-  obtain ⟨c, hc⟩ := hmem
-  -- Both extensors are nonzero, so `c ≠ 0`.
-  have hqne : ScrewSpace.mk (extensor ![q₀, q₁]) (extensor_mem_exteriorPower _)
-      ≠ (0 : ScrewSpace 2) := by
-    intro heq
-    have hext0 : extensor (![q₀, q₁] : Fin 2 → Fin 4 → ℝ) = 0 :=
-      congr_arg ScrewSpace.val heq
-    -- `extensor v = 0 ↔ ¬ LinearIndependent ℝ v`: use the negation of the iff.
-    have hnotli : ¬ LinearIndependent ℝ (![q₀, q₁] : Fin 2 → Fin 4 → ℝ) := by
-      intro hli
-      exact (extensor_ne_zero_iff_linearIndependent _).mpr hli hext0
-    exact hnotli (by
-      have : (![q₀, q₁] : Fin 2 → Fin 4 → ℝ) = q := by funext i; fin_cases i <;> simp [q₀, q₁]
-      rw [this]; exact hqli)
-  have hCne : panelSupportExtensor (k := 2) n₁ n₂ ≠ 0 :=
-    (panelSupportExtensor_ne_zero_iff n₁ n₂).mpr h
-  have hcne : c ≠ 0 := by
-    intro hc0
-    rw [hc0, zero_smul] at hc
-    exact hqne hc.symm
-  -- Step 4: rescale `p = ![c⁻¹ • q₀, q₁]` to absorb the scalar in the first slot.
-  refine ⟨![c⁻¹ • q₀, q₁], ?_, fun i => ?_⟩
-  · -- `extensor ![c⁻¹ • q₀, q₁] = c⁻¹ • extensor ![q₀, q₁]`: first-slot scalar absorption.
-    have hext : extensor (![c⁻¹ • q₀, q₁] : Fin 2 → Fin 4 → ℝ) =
-        c⁻¹ • extensor (![q₀, q₁] : Fin 2 → Fin 4 → ℝ) := by
-      rw [extensor_apply, extensor_apply]
-      have : (![c⁻¹ • q₀, q₁] : Fin 2 → Fin 4 → ℝ) =
-          Function.update ![q₀, q₁] 0 (c⁻¹ • (![q₀, q₁] : Fin 2 → Fin 4 → ℝ) 0) := by
-        funext i; fin_cases i <;> simp [q₀]
-      rw [this, (ExteriorAlgebra.ιMulti ℝ 2 (M := Fin 4 → ℝ)).map_update_smul]
-      -- `update v 0 (c⁻¹ • v 0)` gives `c⁻¹ • v`, and `update v 0 (v 0) = v`.
-      -- Remaining: `c⁻¹ • ιMulti ... (update ![q₀,q₁] 0 (![q₀,q₁] 0)) = c⁻¹ • ιMulti ... ![q₀,q₁]`
-      congr 1
-    -- `c⁻¹ • extensor ![q₀, q₁] = (panelSupportExtensor n₁ n₂).val`.
-    have hval : (ScrewSpace.mk (extensor ![q₀, q₁]) (extensor_mem_exteriorPower _) :
-        ScrewSpace 2).val = c • (panelSupportExtensor n₁ n₂).val := by
-      have := congr_arg ScrewSpace.val hc
-      simp only [ScrewSpace.val_mk, ScrewSpace.val_smul] at this ⊢
-      exact this.symm
-    rw [hext]
-    rw [show (panelSupportExtensor (k := 2) n₁ n₂).val =
-        c⁻¹ • c • (panelSupportExtensor n₁ n₂).val from by
-      rw [inv_smul_smul₀ hcne]]
-    rw [← hval, ScrewSpace.val_mk]
-  · -- Orthogonality of `![c⁻¹ • q₀, q₁]` to both normals.
-    fin_cases i
-    · constructor
-      · simp [q₀, smul_dotProduct, hq0n1]
-      · simp [q₀, smul_dotProduct, hq0n2]
-    · exact ⟨hq1n1, hq1n2⟩
+      ∀ i, p i ⬝ᵥ n₁ = 0 ∧ p i ⬝ᵥ n₂ = 0 :=
+  exists_extensor_eq_panelSupportExtensor_gen (k := 2) h
 
 /-- **The panel meet is `ExtensorInPanel` each of its two panels** (corollary of
 `exists_extensor_eq_panelSupportExtensor`; `def:genuine-hinge-realization`; Phase 22i L0a). For

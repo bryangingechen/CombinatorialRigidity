@@ -218,6 +218,19 @@ theorem extensor_eq_zero_of_not_injective {d j : ℕ} {v : Fin j → Fin (d + 1)
     (hv : ¬Function.Injective v) : extensor v = 0 :=
   ExteriorAlgebra.ιMulti_eq_zero_of_not_inj hv
 
+/-- **Scaling a single slot of an extensor scales the whole extensor**
+(`def:extensor`, the multilinearity of the join in one factor): for any slot `i`,
+`extensor (Function.update v i (c • v i)) = c • extensor v`. The extensor is the
+alternating multilinear `ExteriorAlgebra.ιMulti`, homogeneous in each factor
+(`MultilinearMap.map_update_smul`). The producer-side rescaling brick: a
+proportionality `c • C = extensor v` is absorbed into the family by rescaling one
+slot, giving an extensor *equal* (not merely proportional) to `C`. -/
+theorem extensor_update_smul {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ) (i : Fin j)
+    (c : ℝ) : extensor (Function.update v i (c • v i)) = c • extensor v := by
+  have h := (ExteriorAlgebra.ιMulti ℝ j (M := Fin (d + 1) → ℝ)).map_update_smul v i c (v i)
+  rw [Function.update_eq_self] at h
+  rw [extensor_apply, extensor_apply]; exact h
+
 /-- **Join** (`def:join`). The join `A ∨ B` of two extensors is their exterior
 product `A * B` in `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`. Geometrically it
 represents the span of the two corresponding subspaces (when they meet only at
