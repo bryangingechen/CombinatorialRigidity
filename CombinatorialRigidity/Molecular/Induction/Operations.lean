@@ -1326,6 +1326,58 @@ a dot-accessible lemma). -/
 lemma isLink_edge (cd : G.ChainData n) (i : Fin cd.d) :
     G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.link i
 
+/-! ### Interior-vertex split data (the per-`i` `case_III_rank_certification` tuple)
+
+For an interior chain index `i` (`0 < i`, so `i ∈ {1, …, d−1}`), the chain pins the geometry the
+general-`d` Case-III per-candidate reduction (CHAIN-2a) feeds to
+`PanelHingeFramework.case_III_rank_certification`: the split body is the interior vertex
+`vtx i.castSucc`, its two chain edges are `edge i` (to the chain-successor `vtx i.succ`) and the
+predecessor `edge (i−1)` (from the chain-predecessor `vtx (i−1).castSucc`), and the interior
+degree-2 closure says every `G`-edge at the split body is one of those two. These accessors expose
+that geometry in the `(v, a, b, e_a, e_b)` shape `case_III_rank_certification` consumes, with the
+two chain edges already oriented *out of* the split body. -/
+
+/-- The predecessor chain edge `edge (i−1)` of an interior vertex `vtx i.castSucc` (`0 < i`) has
+that interior vertex as its *successor* endpoint: `(⟨i−1, _⟩ : Fin cd.d).succ = i.castSucc`. -/
+lemma pred_succ_eq_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).succ = i.castSucc :=
+  Fin.ext (by simp only [Fin.val_succ, Fin.val_castSucc]; omega)
+
+/-- The predecessor chain edge `edge (i−1)` at an interior vertex `vtx i.castSucc` (`0 < i`), as a
+`G`-link *out of* the interior vertex: `G.IsLink (edge (i−1)) (vtx i.castSucc) (vtx (i−1).castSucc)`
+(the `link` field at `⟨i−1, _⟩`, with its successor endpoint rewritten to `vtx i.castSucc` and then
+flipped). -/
+lemma isLink_pred_edge (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    G.IsLink (cd.edge ⟨(i : ℕ) - 1, by omega⟩) (cd.vtx i.castSucc)
+      (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) := by
+  have h := cd.isLink_edge ⟨(i : ℕ) - 1, by omega⟩
+  rw [cd.pred_succ_eq_castSucc hi] at h
+  exact h.symm
+
+/-- The successor chain edge `edge i` at an interior vertex `vtx i.castSucc` (`0 < i`), as a
+`G`-link *out of* the interior vertex: `G.IsLink (edge i) (vtx i.castSucc) (vtx i.succ)` (the
+`link` field at `i`). -/
+lemma isLink_succ_edge (cd : G.ChainData n) (i : Fin cd.d) :
+    G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.isLink_edge i
+
+/-- The two chain edges out of an interior vertex `vtx i.castSucc` (`0 < i`) land on distinct
+neighbors: `vtx i.succ ≠ vtx (i−1).castSucc` (immediate from `vtx_inj`, the two indices differ). -/
+lemma succ_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    cd.vtx i.succ ≠ cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc := by
+  intro h
+  have := congrArg Fin.val (cd.vtx_inj h)
+  simp only [Fin.val_succ, Fin.val_castSucc] at this
+  omega
+
+/-- The **interior degree-2 closure**, restated for the `(v, a, b, e_a, e_b)` split tuple at an
+interior vertex `vtx i.castSucc` (`0 < i`): every `G`-edge incident to the split body is the
+successor chain edge `edge i` or the predecessor chain edge `edge (i−1)`. (The `deg_two` field,
+read at `i`.) -/
+lemma deg_two_split (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    ∀ e x, G.IsLink e (cd.vtx i.castSucc) x →
+      e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ :=
+  fun e x hlink => (cd.deg_two i hi e x hlink).symm
+
 end ChainData
 
 end Graph

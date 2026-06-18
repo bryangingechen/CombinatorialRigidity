@@ -32,13 +32,21 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = CHAIN-2a** (the per-candidate single-`i` reduction; recon 2026-06-18, design §(l) — see
-*Hand-off*); or **CHAIN-5/ENTRY** (CHAIN-5 gated on CHAIN-2 + ENTRY's extractor reshape). **The
-`G.ChainData n` `structure` LANDED 2026-06-18** (`Induction/Operations.lean`, the zeroth CHAIN-2 leaf
-— the length-`d` chain record `vtx`/`edge`/`e₀` + `vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`;
+**Next build = CHAIN-2a's linear-algebra core** (the per-candidate single-`i` reduction = re-index of
+`case_III_rank_certification`; recon 2026-06-18, design §(l) — see *Hand-off*); or **CHAIN-5/ENTRY**
+(CHAIN-5 gated on CHAIN-2 + ENTRY's extractor reshape). **The `G.ChainData n` `structure` + its
+interior-split accessors LANDED 2026-06-18** (`Induction/Operations.lean`, the zeroth CHAIN-2 leaf —
+the length-`d` chain record `vtx`/`edge`/`e₀` + `vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`;
 `deg_two` settled via `0 < (i:ℕ)` interior guard + the predecessor edge `edge ⟨(i:ℕ)-1, _⟩`, d=3-map
-verified `vtx 1=v`/`vtx 2=a`, closures `edge 0=e_b`/`edge 1=eₐ`/`edge 2=e_c`; + the two accessors
-`ChainData.pred_edge_ne` / `isLink_edge`). So CHAIN-2a's signatures can now bind `cd : G.ChainData n`.
+verified `vtx 1=v`/`vtx 2=a`, closures `edge 0=e_b`/`edge 1=eₐ`/`edge 2=e_c`). **The interior-split
+geometry accessors LANDED 2026-06-18** — `ChainData.{pred_succ_eq_castSucc, isLink_pred_edge,
+isLink_succ_edge, succ_ne_pred_castSucc, deg_two_split}` (alongside the earlier `pred_edge_ne` /
+`isLink_edge`): for an interior index `i` (`0 < (i:ℕ)`) they expose the chain geometry in the
+`(v,a,b,e_a,e_b)` shape `case_III_rank_certification` consumes — split body `vtx i.castSucc`, the two
+chain edges `edge i` / `edge ⟨(i:ℕ)-1,_⟩` *oriented out of* the split body (`isLink_{succ,pred}_edge`,
+the latter via `pred_succ_eq_castSucc` + `.symm`), their distinct neighbors (`succ_ne_pred_castSucc`),
+and the degree-2 closure re-oriented (`deg_two_split`, `Or.symm` of the field). So CHAIN-2a's
+signature can bind `cd : G.ChainData n` *and* reach the per-`i` split tuple directly.
 **OD-7 is now CLOSED** — the last leaf `case_I_dispatch_gen` + the
 `hcontract_k` wire-up landed 2026-06-18 (a verbatim numeral pass over the d=3 `case_I_dispatch`
 `by_cases hSimple`/inner-`by_cases hd` plumbing, feeding the three landed `_gen` producers +
@@ -167,9 +175,12 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       general-`k`):** the `Fin d` reduction layer on top of the reused-verbatim certification chain +
       closed CHAIN-1 → CHAIN-2a (per-`i` reduction) / CHAIN-2b (±r chain 6.66) / CHAIN-2c (family
       assembly). Reuses Claim 6.11 `exists_redundant_panelRow_…` (GREEN). **Zeroth leaf — the
-      `G.ChainData n` `structure` (settling `deg_two`) — LANDED 2026-06-18** (`Induction/Operations.lean`;
-      contract C.1 record, d=3-map verified, + `ChainData.pred_edge_ne`/`isLink_edge`). The prereq is
-      now discharged; 2a/2b/2c remain. 3–4 commits.
+      `G.ChainData n` `structure` (settling `deg_two`) + the interior-split geometry accessors —
+      LANDED 2026-06-18** (`Induction/Operations.lean`; contract C.1 record, d=3-map verified, +
+      `ChainData.{pred_edge_ne, isLink_edge, pred_succ_eq_castSucc, isLink_pred_edge, isLink_succ_edge,
+      succ_ne_pred_castSucc, deg_two_split}` — the last five expose the per-`i` `(v,a,b,e_a,e_b)` split
+      tuple `case_III_rank_certification` consumes). The indexing + geometry prereq is now discharged;
+      2a/2b/2c remain. 3–4 commits.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -242,8 +253,9 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next build = CHAIN-2a** (the zeroth-leaf `ChainData` record landed 2026-06-18; design §(l)), or
-**CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
+**Next build = CHAIN-2a's linear-algebra core** (the zeroth-leaf `ChainData` record + its
+interior-split geometry accessors both landed 2026-06-18; design §(l)), or **CHAIN-5/ENTRY**
+(CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`),
   **decomposed at recon (design §(l)), which corrected the §(c) framing:** the `caseIIICandidate` /
@@ -253,11 +265,16 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
   `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction, the reusable core — re-index of
   `case_III_rank_certification`; heaviest single leaf) → **CHAIN-2b** (the ±r chain, eq. 6.66;
   genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly; consumes CHAIN-1). 3–4 commits
-  (the zeroth `ChainData` leaf is now done). **Zeroth-leaf prerequisite DISCHARGED:** the
-  `G.ChainData n` `structure` (contract C.1, `Induction/Operations.lean`) LANDED 2026-06-18 — the
-  ~15-field length-`d` chain record with `deg_two` settled (`0 < (i:ℕ)` interior guard; predecessor
-  edge `edge ⟨(i:ℕ)-1, _⟩`; d=3-map verified per C.4) + accessors `ChainData.pred_edge_ne`/`isLink_edge`.
-  CHAIN-2a's signatures can now bind `cd : G.ChainData n` and reach `cd.vtx`/`cd.edge`/`cd.deg_two`. The
+  (the zeroth `ChainData` leaf + the interior-split accessors are now done). **Zeroth-leaf
+  prerequisite DISCHARGED:** the `G.ChainData n` `structure` (contract C.1, `Induction/Operations.lean`)
+  LANDED 2026-06-18 — the ~15-field length-`d` chain record with `deg_two` settled (`0 < (i:ℕ)` interior
+  guard; predecessor edge `edge ⟨(i:ℕ)-1, _⟩`; d=3-map verified per C.4); the **interior-split geometry
+  accessors** `ChainData.{pred_succ_eq_castSucc, isLink_pred_edge, isLink_succ_edge,
+  succ_ne_pred_castSucc, deg_two_split}` (alongside `pred_edge_ne`/`isLink_edge`) then expose, for an
+  interior index `i` (`0 < (i:ℕ)`), the per-`i` `(v,a,b,e_a,e_b)` split tuple in the exact shape
+  `case_III_rank_certification` consumes — split body `vtx i.castSucc`, the two chain edges `edge i` /
+  `edge ⟨(i:ℕ)-1,_⟩` oriented out of it, their distinct neighbors, and the re-oriented degree-2 closure.
+  So CHAIN-2a's signatures can now bind `cd : G.ChainData n` and reach the split tuple directly. The
   record *definition* is the sharable half of the contract; ENTRY still owns the extractor that
   *produces* it (C.2).
 
@@ -353,6 +370,15 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   general `d`), predecessor edge as `edge ⟨(i:ℕ)-1, _⟩`; d=3-map (C.4) verified by `rfl`/`decide`
   (`vtx 1=v`, `vtx 2=a`; closures `edge 0=e_b`, `edge 1=eₐ`, `edge 2=e_c`). `n` is a phantom index
   (no field uses it) carried only so the contract can write `G.ChainData n`. Axiom-clean; no FRICTION.
+- **`ChainData` interior-split geometry accessors LANDED 2026-06-18 (CHAIN-2 zeroth leaf, part 2)** —
+  five `ChainData.{pred_succ_eq_castSucc, isLink_pred_edge, isLink_succ_edge, succ_ne_pred_castSucc,
+  deg_two_split}` lemmas (`Induction/Operations.lean`) exposing, for an interior index `i` (`0 < (i:ℕ)`),
+  the per-`i` `(v,a,b,e_a,e_b)` split tuple `case_III_rank_certification` consumes: split body
+  `vtx i.castSucc`; the two chain edges `edge i` / `edge ⟨(i:ℕ)-1,_⟩` oriented *out of* it (the
+  predecessor via `pred_succ_eq_castSucc` — `(⟨(i:ℕ)-1,_⟩).succ = i.castSucc` — then `.symm`); distinct
+  neighbors `vtx i.succ ≠ vtx (⟨(i:ℕ)-1,_⟩).castSucc`; and the degree-2 closure re-oriented (`Or.symm`
+  of the field). Same `0 < (i:ℕ)` + `congrArg Fin.val`/`omega` idiom as `pred_edge_ne`. Axiom-clean; no
+  FRICTION (the `Fin.coe_castSucc → val_castSucc` deprecation was a one-name swap).
 - **OD-7 `hcontract_k` decomposition (recon 2026-06-18, read-only Plan + coordinator source-verify):**
   5 leaves (6 if h65 splits) — `all_k`/`nonsimple`/`h65`/`dispatch` numeral passes (one `_perp_grade`
   swap; `_all_k` is all-*dof* not all-grade, a trap), the *one* genuinely-new piece LEAF-0
@@ -367,46 +393,16 @@ checklist* `[x]` entry above (the canonical leaf-status home), and the construct
 git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the BlueprintExposition CHAIN-3 entry. The duality
 KT leaves implicit (`extensor_join_proportional_complementIso_meet`) is the CHAIN-3 ledger entry.
 
-**Landed OD-7 (four-producer tail) bricks** (all 2026-06-18, verbatim numeral passes over the d=3
-bodies unless noted — `screwDim/ScrewSpace 2→k`, `Fin 4→Fin (k+2)`, dof `k→c`; d=3 lemmas now `k:=2`
-wrappers, blueprint pins unmoved; axiom-clean, §58 idiom; route detail in git + commit messages +
-design §(k)):
-- **`hbase_k`** — `theorem_55_base_producer_gen` + its five `_gen` arms (`theorem_55_base_producer_
-  {empty,single_edge,parallel_pair}{,_gp}_gen`); trichotomy dispatch via `isMinimalKDof_ncard_le_two_
-  trichotomy` (parallel-pair the only geometric arm, its GP conjunct vacuous).
-- **`hcut_k`** — `case_cut_edge_realization{,_gp}_gen` (both conjuncts; GP routes through the GP-poly /
-  `ofNormals` machinery, already grade-parametric).
-- **M4** (`[NeZero k]`) — `hasPanelRealization_of_generic` (consumer) +
-  `exists_extensor_eq_panelSupportExtensor_gen` (forget reach-in), which routes through the CHAIN-3
-  (h-4) duality + new slot-0 rescale `extensor_update_smul` (confirming caveat (e): the duality *is*
-  the only M4-forget d=3 reach-in).
-- **`hcontract_k` leaves 1–2** — `case_I_realization_all_k_gen`; `case_I_realization_nonsimple_gen`
-  (the latter +1 swap `exists_linearIndependent_extensor_pair_perp → …_perp_grade hk`, adds `hk:1≤k`).
-- **`hcontract_k` LEAF-0** — `linearIndependent_normals_of_algebraicIndependent_triple` (`hk:1≤k`,
-  `CaseIII/Realization.lean`): the *one genuinely-new* brick (fixed-3-row LI `![q(a,·),q(b,·),q(c,·)] :
-  Fin 3 → Fin (k+2) → ℝ`; **not** a numeral pass — `…_general` gives `k+1` rows, h65 has only 3
-  vertices, so for `k≥3` its selector is unavailable). **Consumed by `h65`.** Route = the
-  `…_general` det-poly argument on a fixed `3×3` minor (`Fin.castLE (3≤k+2)`; design §(k)). d=3 `Fin 4`
-  `…_algebraicIndependent` now its `k:=2` instance; no blueprint pin (dispatch-internal).
-- **`hcontract_k` leaf 4 (h65)** — `case_I_realization_h65_gen` (`hk:1≤k`, `Theorem55.lean`): the KT
-  Lemma-6.5 vertex-removal arm. The four private `case_I_h65_*` helpers lifted to `BodyHingeFramework
-  k` / `Fin (k+2)` / `ScrewSpace k` / `Set.powersetCard (Fin (k+2)) k`; the producer body a verbatim
-  numeral pass + the LEAF-0 swap (`…_triple hk`) + `one_le_screwDim` for the `1≤screwDim k` cast (§58
-  idiom). All load-bearing bricks already grade-general (`triLI_subpairs`,
-  `exists_independent_pinned_two_edge_span_full`, `hasGenericFullRankRealization_of_rigidOn_ofNormals`).
-  **No helper split needed** — the default 200000 budget held at `ScrewSpace k` (design §(k) caveat
-  did not bite). d=3 `case_I_realization_h65` now its `k:=2` wrapper; the still-`k=2` `case_I_dispatch`
-  consumer unchanged.
-- **`hcontract_k` last leaf (dispatch + wire-up) — CLOSES OD-7** — `case_I_dispatch_gen` (`hk:1≤k`,
-  `Theorem55.lean`; the `c=0` Case-I dispatch, verbatim numeral pass over the d=3 `case_I_dispatch`
-  `by_cases hSimple`/inner-`by_cases hd` plumbing feeding the three `_gen` producers +
-  `hasPanelRealization_of_generic`; `[NeZero k]` synthesized from `hk`) + `case_I_hcontract_gen`
-  (`hk:1≤k`; the general-`k` filler for the carried `hcontract_k` slot, lifting the d=3 wrapper's
-  `c=0`→`case_I_dispatch_gen` / `c>0`→manual-dispatch split, the `c>0` all-contractions-non-simple
-  sub-branch vacuous by `deficiency_eq_zero_of_simple_rigid_no_simpleContraction`). d=3
-  `case_I_dispatch` now its `k:=2` wrapper; `theorem_55_minimalKDof_k`'s inline `hcontract_k` filler
-  is `case_I_hcontract_gen (k:=2)`. Axiom-clean; no friction (no new FRICTION). Blueprint pins
-  unmoved (both new decls dispatch-internal).
+**Landed OD-7 (four-producer tail) bricks** (OD-7 CLOSED 2026-06-18; per-brick names + the `hcontract_k`
+five-leaf split are the *CHAIN leaf checklist* `[x]` "CHAIN tail" entry above — the canonical home;
+construction internals in git + commit messages + `notes/Phase23-design.md` §(k); all axiom-clean).
+All four producers + both M4 halves are now general-`k` via verbatim numeral passes over the d=3 bodies
+(`screwDim/ScrewSpace 2→k`, `Fin 4→Fin (k+2)`, dof `k→c`; d=3 lemmas now `k:=2` wrappers/instances,
+blueprint pins unmoved, §58 idiom). Two settled cross-cutting notes: the *one* genuinely-new piece was
+LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple` (fixed-3-row LI, **not** a numeral
+pass — the landed `…_general` gives `k+1` rows, h65 has only 3 vertices); the M4-forget reach-in routes
+solely through the CHAIN-3 (h-4) duality + the new slot-0 rescale `extensor_update_smul` (confirming
+caveat (e): the duality *is* the only M4-forget d=3 reach-in).
 
 **Landed CHAIN-4 bricks** (CHAIN-4 CLOSED 2026-06-18, `RigidityMatrix/Claim612.lean`; leaf names + per-leaf
 verdicts are the *CHAIN leaf checklist* `[x]` CHAIN-4a–4d entries above — the canonical home; construction
