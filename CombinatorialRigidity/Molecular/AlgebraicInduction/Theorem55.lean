@@ -1875,34 +1875,40 @@ theorem case_cut_edge_realization_gp [DecidableEq β] [Finite α] [Finite β] {n
   case_cut_edge_realization_gp_gen (k := 2) hD hn G hG hV3 hntec hSimple hIH
 
 -- Note: previously needed 800000; now fits the default 200000.
-/-- **L5a-ii producer: non-simple Case I arm** (`lem:case-I-realization-nonsimple`;
-KT Lemma 6.2, the parallel-edge contraction arm; Phase 22i).
+/-- **L5a-ii producer: non-simple Case I arm — general grade `k`**
+(`lem:case-I-realization-nonsimple`; KT Lemma 6.2, the parallel-edge contraction arm;
+Phase 22i, Phase 23b OD-7 tail general-`k` lift).
 
-Given a minimal `k`-dof graph `G` with `|V(G)| ≥ 3` that is **not simple** (has a parallel pair
+Given a minimal `c`-dof graph `G` with `|V(G)| ≥ 3` that is **not simple** (has a parallel pair
 `e, f` joining some vertices `a, b`), the genuine-hinge panel realization motive
-`HasPanelRealization 2 n G` holds.
+`HasPanelRealization k n G` holds (at body-bar dimension `bodyBarDim n = screwDim k`, `k ≥ 1`).
 
 **Proof sketch.** `¬G.Simple` + looplessness (from `IsMinimalKDof`) gives vertices `a, b` and
 parallel edges `e, f` with `G.IsLink e a b` and `G.IsLink f a b` and `e ≠ f`. Build
 `H' := G[{a, b}] ↾ {e, f}`, a proper rigid subgraph (`isKDof_zero_of_parallel_pair`, `{a,b}` has
-ncard 2, and `|V(G)| ≥ 3`). Contract: `G.rigidContract H' a` is minimal `k`-dof
+ncard 2, and `|V(G)| ≥ 3`). Contract: `G.rigidContract H' a` is minimal `c`-dof
 (`rigidContract_isMinimalKDof`) with `|V(G.rigidContract H' a)| < |V(G)|`; IH gives `Fc_fw`.
 Build the H'-leg framework `FH` with coincident panels at `a` and `b` (degenerate placement
 `Fc_normal ∘ collapseTo a V(H')`, so both panels equal `Fc_normal a`) and LI extensors `Ce, Cf`
-(`exists_linearIndependent_extensor_pair_perp`). Rigidity of `FH` on `{a,b}` (`theorem_55_base`)
-+ B1 gives `finrank FH = D`. Assemble `F` from `FH` for H'-edges, `Fc_fw` for surviving edges.
-Four splice-brick hypotheses: `hFH_ker` from `hingeRow_comp_extProj_eq_zero`; `hFc_surv_le` from
-`hingeRow_collapseTo_comp_extProj_eq`; `hInj` from
-`finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
+(`exists_linearIndependent_extensor_pair_perp_grade hk`, the only grade-2-only swap). Rigidity of
+`FH` on `{a,b}` (`theorem_55_base`) + B1 gives `finrank FH = D`. Assemble `F` from `FH` for
+H'-edges, `Fc_fw` for surviving edges. Four splice-brick hypotheses: `hFH_ker` from
+`hingeRow_comp_extProj_eq_zero`; `hFc_surv_le` from `hingeRow_collapseTo_comp_extProj_eq`; `hInj`
+from `finrank_span_rigidityRows_map_extProj_dualMap_of_inter_eq_singleton` +
 `rigidContract_vertexSet_inter_eq_singleton`. Brick gives `D + finrank Fc ≤ finrank F`; B2 gives
-`finrank F ≤ D(|V|−1) − k`; arithmetic (`D + (D(|V|−2)−k) = D(|V|−1)−k`) closes M2. -/
-theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
-    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
-    {k : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n k) (_hV3 : 3 ≤ V(G).ncard)
+`finrank F ≤ D(|V|−1) − c`; arithmetic (`D + (D(|V|−2)−c) = D(|V|−1)−c`) closes M2.
+
+Verbatim numeral pass over the d=3 `case_I_realization_nonsimple` (dof renamed `k → c` to free the
+section grade `k`; `screwDim 2 → screwDim k`, `Fin 4 → Fin (k+2)`, `ScrewSpace/BodyHingeFramework 2
+→ k`, `extProj (k := 2) → (k := k)`), plus the single `exists_linearIndependent_extensor_pair_perp
+→ …_perp_grade hk` swap. The d=3 lemma below is its `k := 2` wrapper. -/
+theorem case_I_realization_nonsimple_gen [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hk : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (_hV3 : 3 ≤ V(G).ncard)
     (hnsimple : ¬ G.Simple)
-    (hIH : ∀ (k' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n k' → V(G').Nonempty →
-      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
-    HasPanelRealization 2 n G := by
+    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization k n G') :
+    HasPanelRealization k n G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
   -- ── Step 1: Extract looplessness + parallel pair ─────────────────────────────────────────
@@ -1967,19 +1973,19 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   -- ── Step 4: IH on the contraction ────────────────────────────────────────────────────────
   have hKlt : V(G.rigidContract H' a).ncard < V(G).ncard :=
     Graph.rigidContract_vertexSet_ncard_lt hHsub (by rw [hVH'ncard])
-  have hKmin : (G.rigidContract H' a).IsMinimalKDof n k :=
+  have hKmin : (G.rigidContract H' a).IsMinimalKDof n c :=
     Graph.rigidContract_isMinimalKDof hG hH'proper hH'a
   have hKne : V(G.rigidContract H' a).Nonempty := by
     apply (Set.ncard_pos (Set.toFinite _)).mp
     rw [Graph.rigidContract_vertexSet_ncard hH'a hHsub, hVH'ncard]; omega
   obtain ⟨Fc_fw, Fc_normal, hFcg, hFcne, hFcext, hFcrank⟩ :=
-    hIH k (G.rigidContract H' a) hKmin hKne hKlt
+    hIH c (G.rigidContract H' a) hKmin hKne hKlt
   have hKcard : V(G.rigidContract H' a).ncard = V(G).ncard - 1 := by
     rw [Graph.rigidContract_vertexSet_ncard hH'a hHsub, hVH'ncard]; omega
   -- ── Step 5: Degenerate normals ───────────────────────────────────────────────────────────
   -- Both a and b get Fc_normal a
   -- (= Fc_normal (collapseTo a V(H') a) = Fc_normal (collapseTo a V(H') b)).
-  set normal : α → Fin 4 → ℝ := fun v => Fc_normal (Graph.collapseTo a V(H') v)
+  set normal : α → Fin (k + 2) → ℝ := fun v => Fc_normal (Graph.collapseTo a V(H') v)
   have hnorm_ne : ∀ v ∈ V(G), normal v ≠ 0 := by
     intro v hv; simp only [normal]
     apply hFcne
@@ -1987,9 +1993,9 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
     exact ⟨v, hv, rfl⟩
   -- ── Step 6: LI extensors Ce, Cf in (normal a)^⊥ ────────────────────────────────────────
   obtain ⟨p, q, hp_perp, hq_perp, hpq_li⟩ :=
-    exists_linearIndependent_extensor_pair_perp (normal a)
-  set Ce : ScrewSpace 2 := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _)
-  set Cf : ScrewSpace 2 := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)
+    exists_linearIndependent_extensor_pair_perp_grade hk (normal a)
+  set Ce : ScrewSpace k := ScrewSpace.mk (extensor p) (extensor_mem_exteriorPower _)
+  set Cf : ScrewSpace k := ScrewSpace.mk (extensor q) (extensor_mem_exteriorPower _)
   have hCe_ne : Ce ≠ 0 := by simpa using hpq_li.ne_zero 0
   have hCf_ne : Cf ≠ 0 := by simpa using hpq_li.ne_zero 1
   have hCe_perp : ExtensorInPanel Ce (normal a) := ⟨p, rfl, hp_perp⟩
@@ -1998,10 +2004,10 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   have hn_b_eq : normal b = normal a := by
     simp only [normal, Graph.collapseTo, hH'b, hH'a, ↓reduceIte]
   -- ── Step 7: Assemble F and FH ─────────────────────────────────────────────────────────────
-  set extF : β → ScrewSpace 2 := fun e =>
+  set extF : β → ScrewSpace k := fun e =>
     if e = e_edge then Ce else if e = f_edge then Cf else Fc_fw.supportExtensor e
-  set F : BodyHingeFramework 2 α β := { graph := G, supportExtensor := extF }
-  set FH : BodyHingeFramework 2 α β := { graph := H', supportExtensor := extF }
+  set F : BodyHingeFramework k α β := { graph := G, supportExtensor := extF }
+  set FH : BodyHingeFramework k α β := { graph := H', supportExtensor := extF }
   have hFg : F.graph = G := rfl
   have hFHg : FH.graph = H' := rfl
   have hFe : extF e_edge = Ce := by simp [extF]
@@ -2023,14 +2029,14 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   have hFH_rigV : FH.IsInfinitesimallyRigidOn FH.graph.vertexSet := by
     rw [hFHg, hVH']; exact hFH_rig
   have hFH_finrank_nat : Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows)
-      = screwDim 2 * (V(H').ncard - 1) :=
+      = screwDim k * (V(H').ncard - 1) :=
     (FH.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows hFHne).mp
       (hFHg ▸ hFH_rigV)
-  have hFH_finrank : (Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows) : ℤ) = screwDim 2 := by
+  have hFH_finrank : (Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows) : ℤ) = screwDim k := by
     rw [hFH_finrank_nat, hVH'ncard]; push_cast; ring
   -- ── Step 9: Splice brick hypotheses ─────────────────────────────────────────────────────
   set t := V(H') with ht_def
-  set Dmap := (extProj (k := 2) t).dualMap
+  set Dmap := (extProj (k := k) t).dualMap
   -- (i) hFH_le: FH rows ≤ F rows (same extensor; H' ≤ G).
   have hFH_le : Submodule.span ℝ FH.rigidityRows ≤ Submodule.span ℝ F.rigidityRows := by
     apply Submodule.span_mono
@@ -2078,7 +2084,7 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
     simp only [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hnotEH'
     obtain ⟨hne1, hne2⟩ := hnotEH'
     have hextEq : extF e' = Fc_fw.supportExtensor e' := hextF_surv e' hne1 hne2
-    have hr'F : r' ∈ (F : BodyHingeFramework 2 α β).hingeRowBlock e' := by
+    have hr'F : r' ∈ (F : BodyHingeFramework k α β).hingeRowBlock e' := by
       simpa [BodyHingeFramework.hingeRowBlock, F, hextEq] using hr'
     have ha_t : a ∈ t := hH'a
     have hrow_eq : Dmap (BodyHingeFramework.hingeRow (Graph.collapseTo a t u)
@@ -2115,21 +2121,21 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   have hB2 := F.finrank_span_rigidityRows_add_deficiency_le hn hFVne hFext
   -- ── Step 12: Fc finrank from IH ──────────────────────────────────────────────────────────
   have hFcfinrank : (Module.finrank ℝ (Submodule.span ℝ Fc_fw.rigidityRows) : ℤ)
-      = screwDim 2 * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - k := by
+      = screwDim k * ((V(G.rigidContract H' a).ncard : ℤ) - 1) - c := by
     rw [hFcrank]; congr 1; rw [hKmin.1]
-  -- ── Step 13: Arithmetic to get rank = D(|V|−1) − k ──────────────────────────────────────
+  -- ── Step 13: Arithmetic to get rank = D(|V|−1) − c ──────────────────────────────────────
   have hVcard : (V(G).ncard : ℤ) = (V(G.rigidContract H' a).ncard : ℤ) + 1 := by
     have := hKcard; omega
   have hrank_eq : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-      = screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+      = screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
     have hbrickZ : (Module.finrank ℝ (Submodule.span ℝ FH.rigidityRows) : ℤ) +
         (Module.finrank ℝ (Submodule.span ℝ Fc_fw.rigidityRows) : ℤ) ≤
         (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
       exact_mod_cast hbrick
     have hB2' : (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ)
-        ≤ screwDim 2 * ((V(G).ncard : ℤ) - 1) - k := by
+        ≤ screwDim k * ((V(G).ncard : ℤ) - 1) - c := by
       have := hB2; rw [hG.1, hFg] at this; linarith
-    have hlb : screwDim 2 * ((V(G).ncard : ℤ) - 1) - k ≤
+    have hlb : screwDim k * ((V(G).ncard : ℤ) - 1) - c ≤
         (Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) : ℤ) := by
       rw [hFH_finrank, hFcfinrank] at hbrickZ
       rw [hVcard]; linarith
@@ -2168,6 +2174,21 @@ theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n
   -- ── Step 15: Return the realization ──────────────────────────────────────────────────────
   rw [← hG.1] at hrank_eq
   exact ⟨F, normal, rfl, hnorm_ne, hlinks, hrank_eq⟩
+
+/-- **L5a-ii producer: non-simple Case I arm** (`lem:case-I-realization-nonsimple`;
+KT Lemma 6.2, the parallel-edge contraction arm; Phase 22i; the `k = 2` wrapper of the
+general-grade `case_I_realization_nonsimple_gen`).
+
+The `d = 3` specialization (`screwDim 2 = 6`) feeding the `d = 3` Case-I dispatch; the work is the
+grade-general `case_I_realization_nonsimple_gen`. -/
+theorem case_I_realization_nonsimple [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 2 ≤ Graph.bodyBarDim n) (hn : Graph.bodyBarDim n = screwDim 2)
+    {c : ℤ} (G : Graph α β) (hG : G.IsMinimalKDof n c) (hV3 : 3 ≤ V(G).ncard)
+    (hnsimple : ¬ G.Simple)
+    (hIH : ∀ (c' : ℤ) (G' : Graph α β), G'.IsMinimalKDof n c' → V(G').Nonempty →
+      V(G').ncard < V(G).ncard → HasPanelRealization 2 n G') :
+    HasPanelRealization 2 n G :=
+  case_I_realization_nonsimple_gen (k := 2) hD (by norm_num) hn G hG hV3 hnsimple hIH
 
 
 /-- **Case I realization: the contraction producer, all-dof simple-contraction case — general
