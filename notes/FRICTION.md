@@ -1537,6 +1537,22 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `[NeZero k]` rather than fighting the `OfNat` synthesis.
 - **Status:** idiom.
 
+### [idiom] `Fin d`-index *arithmetic* (general `d`): guard `0 < (i:ℕ)` + build `⟨(i:ℕ)-1, _⟩`, don't carry `[NeZero]`
+- **Where it bit:** the `G.ChainData n` `structure`'s `deg_two` field (`Induction/Operations.lean`,
+  Phase 23b CHAIN-2 zeroth leaf). The interior-vertex degree-2 closure naturally wants to say "`0 < i`"
+  and reference the predecessor edge "`edge (i - 1)`" for `i : Fin d` at *general* `d` (no `+1`). Both
+  `0 < i` and `i - 1` want `Fin d` numeral literals (`OfNat (Fin d) 0` / `… 1`), which **fail to synth**
+  at general `d` — same "failed to synthesize `OfNat (Fin d) 0`" as the `[NeZero k]` entry above.
+- **Fix (distinct from `[NeZero]`):** here the literal is *index bookkeeping*, not a load-bearing
+  `0`-slot whose `d=0` boundary is mathematically false — so **avoid the literal entirely** rather than
+  carrying a typeclass: write the interior guard as `0 < (i : ℕ)` (push to the `ℕ` value) and the
+  predecessor index as `edge ⟨(i : ℕ) - 1, by omega⟩` (an explicit `Fin d` via the `ℕ` value + bound).
+  No `[NeZero d]` needed; consumers/`rfl` resolve the d=3 instance cleanly.
+- **Lesson:** the `[NeZero k]` route (entry above) is for a genuinely-`k=0`-false *slot*; for plain
+  index arithmetic that just needs a `Fin`-predecessor, drop to `(i : ℕ)` and re-package — cheaper and
+  no spurious hypothesis. Decide which case you're in by asking whether `d=0` makes the *statement* false.
+- **Status:** idiom.
+
 ### [idiom] `open Classical in` must precede the docstring, not follow it
 - **Where it bit:** Phase 22i L0c (`PanelLayer.lean`). Three `open Classical in theorem`s
   placed *after* their `/-- ... -/` docstrings caused `"unexpected token 'open'; expected

@@ -1681,16 +1681,17 @@ augment** — genuinely-new *infrastructure*, but NOT a generalization of the na
 **Order:** CHAIN-2a → CHAIN-2b → CHAIN-2c. **First buildable = CHAIN-2a.** **Count: 3–5 commits**
 (most likely record + 2a + 2b + 2c).
 
-**Load-bearing prerequisite (clause (ii) flag) — the `ChainData` record is NOT in tree.** CHAIN-2a/b/c
-all index a length-`d` chain, so their signatures bind to the `G.ChainData n` record — which is **frozen
-in prose (contract C.1) but UNauthored in Lean** (grep: no `structure ChainData`; the landed extraction
-is the fixed-4-tuple `exists_chain_data_of_noRigid`, `Reduction.lean:383`). **This contradicts the
-Phase23b note's "CHAIN-2 buildable independently of the contract"** — the *linear algebra* is independent,
-but the *indexing* is contract-coupled. The record (a ~15-line pure-combinatorics `structure`:
-`vtx : Fin (d+1) → α`, `edge : Fin d → β`, `e₀`, the deg-2 closures) should be authored as a **zeroth
-leaf before CHAIN-2a**, and its `deg_two` `Fin`-arithmetic (which edges sit at `vtx i`) **settled** then —
-else CHAIN-2a and the ENTRY extractor diverge on the indexing. Contract C.1 assigns the record to ENTRY;
-the record *definition* (not the extractor) is sharable and can land with CHAIN-2.
+**Load-bearing prerequisite (clause (ii) flag) — the `ChainData` record — DISCHARGED 2026-06-18.**
+CHAIN-2a/b/c all index a length-`d` chain, so their signatures bind to the `G.ChainData n` record. That
+record is now **authored in Lean** (`Induction/Operations.lean`, the `splitOff` home — the zeroth
+CHAIN-2 leaf), so the *indexing* prereq is discharged. The shape is the contract-C.1 `structure`
+(`vtx : Fin (d+1) → α`, `edge : Fin d → β`, `e₀`, the deg-2 closures + `vtx_inj`/`link`/`edge_inj`/
+`e₀_fresh`), and its **`deg_two` `Fin`-arithmetic is settled**: interior vertices guarded by `0 < (i:ℕ)`,
+the predecessor edge as `edge ⟨(i:ℕ)-1, _⟩` (the `OfNat (Fin d)` literals don't synth at general `d`),
+verified against the d=3 map (C.4) by `rfl`/`decide`. Contract C.1 assigns the *extractor* (which
+produces a `ChainData`) to ENTRY; only the record *definition* landed here (the sharable half). So
+CHAIN-2a can bind `cd : G.ChainData n` directly and is the next build; the linear-algebra core is
+independent of the contract, the indexing now grounded.
 
 **KT "exactly the same as `d=3`" audit:** faithful for CHAIN-2a's linear-algebra core (a re-index of an
 already-general body); an honest **understatement** for CHAIN-2b/2c (the `Fin d` indexing layer has no

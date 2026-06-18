@@ -1251,4 +1251,81 @@ lemma induce_insert_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {S : Set
           exact Or.inr ⟨rfl, hav, hbv,
             Set.mem_insert_of_mem _ hyS, Set.mem_insert_of_mem _ hxS, Or.inr ⟨rfl, rfl⟩⟩
 
+/-! ## Length-`d` Case-III chain data (KT §6.4.2, the chain `v₀v₁…v_d`)
+
+The combinatorial witness the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2,
+eqs. 6.46–6.59) consumes: a length-`d` chain `v₀v₁…v_d` of distinct vertices, joined by chain
+edges `edge i = vᵢvᵢ₊₁`, whose interior vertices `v₁,…,v_{d−1}` have degree exactly two in `G`
+(their only edges are the two chain edges at that vertex), together with a fresh short-circuit
+label `e₀` for the `v₁`-split `G.splitOff v₁ v₀ v₂ e₀` (KT's `G^{v₀v₂}_{v₁}`).
+
+This is the **shared interface** between the chain *extractor* (KT Lemma 4.6 / Lemma 4.8, the
+ENTRY obligation reshaping `exists_chain_data_of_noRigid` from the fixed 4-tuple to a `ChainData`
+producer) and the chain *dispatch* (the general-`d` Case-III realization assembly, CHAIN-2/CHAIN-5
+in `AlgebraicInduction/CaseIII/`). It carries only the *combinatorial* chain — the base framework
+`(G₁,q₁)` on `G.splitOff (vtx 1) (vtx 0) (vtx 2) e₀` and the surrounding minimality / IH data stay
+on the producer/dispatch signatures (the chain-data contract; see `notes/Phase23-design.md`
+§"CHAIN↔ENTRY chain-data contract" C.1).
+
+**The `d=3` specialization** (the zero-regression wrapper of the contract C.4 map): the chain
+`v₀v₁v₂v₃` is `b—v—a—c`, i.e. `vtx = ![b, v, a, c]`, `edge = ![e_b, eₐ, e_c]`. The two degree-2
+closures `hclv` (every `v`-edge is `eₐ` or `e_b`) and `hcla` (every `a`-edge is `eₐ` or `e_c`) of
+the existing 4-tuple extractor are exactly `deg_two` at the interior indices `i = 1` (vertex
+`vtx 1 = v`, chain edges `edge 0 = e_b` and `edge 1 = eₐ`) and `i = 2` (vertex `vtx 2 = a`, chain
+edges `edge 1 = eₐ` and `edge 2 = e_c`). -/
+
+/-- **Length-`d` Case-III chain data** (Katoh–Tanigawa 2011 §6.4.2, the chain `v₀v₁…v_d`): a chain
+of `d + 1` distinct vertices `vtx 0, …, vtx d`, the `d` chain edges `edge i = vtx i — vtx (i+1)`, a
+fresh short-circuit label `e₀ ∉ E(G)`, and the degree-2 closure of the interior vertices
+`vtx 1, …, vtx (d−1)`. The phantom index `n` records the `k`-dof regime the chain lives in (the
+ambient `IsMinimalKDof n 0` hypothesis) so the contract signatures can write `G.ChainData n`; no
+field references it. See the section docstring for the `d=3` map. -/
+structure ChainData (G : Graph α β) (n : ℕ) where
+  /-- The chain length (= the body-bar dimension index; `d = 3` at the `d=3` regime). -/
+  d : ℕ
+  /-- The chain is nondegenerate: `d ≥ 1` (so there is at least one chain edge). -/
+  hd : 1 ≤ d
+  /-- The chain vertices `v₀, …, v_d` (KT eq. 6.46). -/
+  vtx : Fin (d + 1) → α
+  /-- The chain edges: `edge i` joins `vtx i` to `vtx (i+1)`. -/
+  edge : Fin d → β
+  /-- The fresh short-circuit label for the `v₁`-split (KT eq. 6.46). -/
+  e₀ : β
+  /-- Every chain vertex lies in `G`. -/
+  vtx_mem : ∀ i, vtx i ∈ V(G)
+  /-- The chain vertices are pairwise distinct (KT eq. 6.67 affine-independence prep). -/
+  vtx_inj : Function.Injective vtx
+  /-- `edge i` is a genuine `G`-link from `vtx i` to its successor `vtx (i+1)`. -/
+  link : ∀ i : Fin d, G.IsLink (edge i) (vtx i.castSucc) (vtx i.succ)
+  /-- The chain edges are pairwise distinct. -/
+  edge_inj : Function.Injective edge
+  /-- **Interior degree-2 closure** (KT eq. 6.46, `d_G(vᵢ) = 2` for `1 ≤ i ≤ d−1`): every edge of
+  `G` incident to an interior chain vertex `vtx i` (`0 < i`, so `i` ranges over `1, …, d−1` via
+  `i.castSucc`) is one of the two chain edges at that vertex, `edge (i−1)` or `edge i`. -/
+  deg_two : ∀ i : Fin d, 0 < (i : ℕ) →
+              (∀ e x, G.IsLink e (vtx i.castSucc) x →
+                e = edge ⟨(i : ℕ) - 1, by omega⟩ ∨ e = edge i)
+  /-- The short-circuit label is fresh: `e₀ ∉ E(G)`. -/
+  e₀_fresh : e₀ ∉ E(G)
+
+namespace ChainData
+
+variable {G : Graph α β} {n : ℕ}
+
+/-- The two chain edges `edge (i−1)` and `edge i` at an interior vertex `vtx i` (`0 < i`) named by
+`deg_two` are distinct (immediate from `edge_inj`). -/
+lemma pred_edge_ne (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    cd.edge ⟨(i : ℕ) - 1, by omega⟩ ≠ cd.edge i := by
+  intro h
+  have := congrArg Fin.val (cd.edge_inj h)
+  simp only at this
+  omega
+
+/-- The chain edge `edge i` links `vtx i` to its chain-successor `vtx (i+1)` (the `link` field, as
+a dot-accessible lemma). -/
+lemma isLink_edge (cd : G.ChainData n) (i : Fin cd.d) :
+    G.IsLink (cd.edge i) (cd.vtx i.castSucc) (cd.vtx i.succ) := cd.link i
+
+end ChainData
+
 end Graph

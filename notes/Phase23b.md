@@ -32,9 +32,14 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = CHAIN-2's prerequisite: author the `G.ChainData n` `structure`** (settling `deg_two`),
-then CHAIN-2a (recon 2026-06-18, design §(l) — see *Hand-off*); or **CHAIN-5/ENTRY** (CHAIN-5 gated on
-CHAIN-2 + ENTRY's extractor reshape). **OD-7 is now CLOSED** — the last leaf `case_I_dispatch_gen` + the
+**Next build = CHAIN-2a** (the per-candidate single-`i` reduction; recon 2026-06-18, design §(l) — see
+*Hand-off*); or **CHAIN-5/ENTRY** (CHAIN-5 gated on CHAIN-2 + ENTRY's extractor reshape). **The
+`G.ChainData n` `structure` LANDED 2026-06-18** (`Induction/Operations.lean`, the zeroth CHAIN-2 leaf
+— the length-`d` chain record `vtx`/`edge`/`e₀` + `vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`;
+`deg_two` settled via `0 < (i:ℕ)` interior guard + the predecessor edge `edge ⟨(i:ℕ)-1, _⟩`, d=3-map
+verified `vtx 1=v`/`vtx 2=a`, closures `edge 0=e_b`/`edge 1=eₐ`/`edge 2=e_c`; + the two accessors
+`ChainData.pred_edge_ne` / `isLink_edge`). So CHAIN-2a's signatures can now bind `cd : G.ChainData n`.
+**OD-7 is now CLOSED** — the last leaf `case_I_dispatch_gen` + the
 `hcontract_k` wire-up landed 2026-06-18 (a verbatim numeral pass over the d=3 `case_I_dispatch`
 `by_cases hSimple`/inner-`by_cases hd` plumbing, feeding the three landed `_gen` producers +
 `hasPanelRealization_of_generic`; plus `case_I_hcontract_gen`, the general-`k` filler for the carried
@@ -161,8 +166,10 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       **Decomposed (design §(l), which corrected §(c)'s framing — the named chain is already
       general-`k`):** the `Fin d` reduction layer on top of the reused-verbatim certification chain +
       closed CHAIN-1 → CHAIN-2a (per-`i` reduction) / CHAIN-2b (±r chain 6.66) / CHAIN-2c (family
-      assembly). Reuses Claim 6.11 `exists_redundant_panelRow_…` (GREEN). Prereq: author the
-      `G.ChainData n` `structure` (settling `deg_two`) first — contract-coupled with ENTRY. 3–5 commits.
+      assembly). Reuses Claim 6.11 `exists_redundant_panelRow_…` (GREEN). **Zeroth leaf — the
+      `G.ChainData n` `structure` (settling `deg_two`) — LANDED 2026-06-18** (`Induction/Operations.lean`;
+      contract C.1 record, d=3-map verified, + `ChainData.pred_edge_ne`/`isLink_edge`). The prereq is
+      now discharged; 2a/2b/2c remain. 3–4 commits.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -235,8 +242,8 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next build = CHAIN-2** (now decomposed — recon 2026-06-18, design §(l)), or **CHAIN-5/ENTRY** (CHAIN-5
-gated on CHAIN-2 + ENTRY's extractor reshape).
+**Next build = CHAIN-2a** (the zeroth-leaf `ChainData` record landed 2026-06-18; design §(l)), or
+**CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`),
   **decomposed at recon (design §(l)), which corrected the §(c) framing:** the `caseIIICandidate` /
@@ -245,12 +252,14 @@ gated on CHAIN-2 + ENTRY's extractor reshape).
   `Fin d`-indexed reduction LAYER *on top of* that (reused-verbatim) chain + the closed CHAIN-1
   `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction, the reusable core — re-index of
   `case_III_rank_certification`; heaviest single leaf) → **CHAIN-2b** (the ±r chain, eq. 6.66;
-  genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly; consumes CHAIN-1). 3–5 commits.
-  **Prerequisite (design §(l)):** CHAIN-2's signatures index a length-`d` chain via the `G.ChainData n`
-  record, which is **frozen in prose (C.1) but UNauthored in Lean** — author the ~15-line `structure`
-  (settling its `deg_two` `Fin`-arithmetic) as a zeroth leaf first; the indexing is **contract-coupled
-  with ENTRY** (so the note's old "CHAIN-2 independent of the contract" was wrong — the linear algebra
-  is independent, the indexing is not).
+  genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly; consumes CHAIN-1). 3–4 commits
+  (the zeroth `ChainData` leaf is now done). **Zeroth-leaf prerequisite DISCHARGED:** the
+  `G.ChainData n` `structure` (contract C.1, `Induction/Operations.lean`) LANDED 2026-06-18 — the
+  ~15-field length-`d` chain record with `deg_two` settled (`0 < (i:ℕ)` interior guard; predecessor
+  edge `edge ⟨(i:ℕ)-1, _⟩`; d=3-map verified per C.4) + accessors `ChainData.pred_edge_ne`/`isLink_edge`.
+  CHAIN-2a's signatures can now bind `cd : G.ChainData n` and reach `cd.vtx`/`cd.edge`/`cd.deg_two`. The
+  record *definition* is the sharable half of the contract; ENTRY still owns the extractor that
+  *produces* it (C.2).
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
@@ -265,8 +274,9 @@ BlueprintExposition ledger (the CHAIN-3 entry).
 CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
 record (C.1/C.3), so it is now authorable. **CHAIN-2's *linear algebra* is independent
 of the contract, but its *indexing* is contract-coupled** (recon §(l) overturned the
-old "CHAIN-2 fully independent" claim): the `ChainData` record it indexes is unauthored
-in Lean and must land first (settling `deg_two`). CHAIN-5 is unblocked once CHAIN-2 lands
+old "CHAIN-2 fully independent" claim): the `ChainData` record it indexes **is now authored
+in Lean** (`Induction/Operations.lean`, 2026-06-18, the zeroth leaf — `deg_two` settled), so
+the indexing prereq is discharged. CHAIN-5 is unblocked once the rest of CHAIN-2 lands
 **and** ENTRY's extractor is reshaped.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn
@@ -332,9 +342,17 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   §(c)'s framing.** The named `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification`
   chain is **already general-`k`** (the only `d=3`-pin in `CaseIII/` is `Realization.lean`'s dispatch =
   CHAIN-5); §(c)'s "(now `q : α × Fin 4`-shaped)" was false. CHAIN-2 = the `Fin d`-indexed reduction
-  *layer* (2a per-`i` / 2b ±r-chain / 2c family) on top of that chain + closed CHAIN-1. Prereq: the
-  `ChainData` `structure` is unauthored in Lean (frozen in prose C.1) and CHAIN-2's *indexing* is
-  contract-coupled with ENTRY — author it (settling `deg_two`) first → §"CHAIN"(l).
+  *layer* (2a per-`i` / 2b ±r-chain / 2c family) on top of that chain + closed CHAIN-1. The
+  zeroth-leaf prereq (the `ChainData` record) is now discharged (next entry); CHAIN-2a is the next
+  build → §"CHAIN"(l).
+- **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
+  chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
+  Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,
+  plus accessors `ChainData.pred_edge_ne`/`isLink_edge`. **`deg_two` settled:** interior vertices
+  guarded by `0 < (i:ℕ)` (no `OfNat (Fin d)` literal — the `0`/`1` `Fin d` literals fail to synth at
+  general `d`), predecessor edge as `edge ⟨(i:ℕ)-1, _⟩`; d=3-map (C.4) verified by `rfl`/`decide`
+  (`vtx 1=v`, `vtx 2=a`; closures `edge 0=e_b`, `edge 1=eₐ`, `edge 2=e_c`). `n` is a phantom index
+  (no field uses it) carried only so the contract can write `G.ChainData n`. Axiom-clean; no FRICTION.
 - **OD-7 `hcontract_k` decomposition (recon 2026-06-18, read-only Plan + coordinator source-verify):**
   5 leaves (6 if h65 splits) — `all_k`/`nonsimple`/`h65`/`dispatch` numeral passes (one `_perp_grade`
   swap; `_all_k` is all-*dof* not all-grade, a trap), the *one* genuinely-new piece LEAF-0
@@ -406,6 +424,10 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *`Fin d`-index arithmetic at general `d` (no `+1`): a `0 < i` guard / `i - 1` predecessor wants
+  `OfNat (Fin d)` literals that don't synth — for plain index bookkeeping (not a `d=0`-false slot),
+  guard `0 < (i:ℕ)` + build `⟨(i:ℕ)-1, _⟩` rather than carry `[NeZero d]`* → FRICTION [idiom]
+  *`Fin d`-index arithmetic (general `d`): guard `0 < (i:ℕ)`…*.
 - *Lifting a `Fin (k+2)`-point-family lemma to general `k` may need `[NeZero k]` (the `0 : Fin k`
   literal in a slot-`0` rescale; the statement is genuinely false at `k=0`) — carry the hypothesis,
   don't fight the `OfNat (Fin k) 0` synthesis* → FRICTION [idiom] *Lifting a `Fin (k+2)`-point-family
