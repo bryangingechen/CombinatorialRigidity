@@ -91,7 +91,11 @@ and the 2026-06-17 *write-each-row-to-the-discipline-not-its-neighbors* amendmen
 never commit extraneous / phase-notes-belonging content just because neighbors do;
 the anchoring trap is how a compressed log re-inflates one matched row at a time —
 user-requested after this session's rows 191–194 re-bloated to 1.0–1.5k chars
-mid-phase).
+mid-phase); and the 2026-06-18 `resume`-Mode widening (the Mode now covers a
+**user-interrupted** agent resumed via SendMessage, not only a usage-limit-killed
+one, plus the agentId-from-local-subagent-logs recovery when a user interrupt
+returns an error with no agentId — row 220 precedent; companion expansion in
+`notes/coordinate-phase-rescue.md` §3, repo-local).
 
 ## Repo-local config
 

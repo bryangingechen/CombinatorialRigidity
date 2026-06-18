@@ -13,7 +13,7 @@ orientation.) Row numbers cite `model-experiment.md`.
 
 - Wrong branch / author / co-author trailer on a landed commit → §1
 - Return shows **neither** LANDED nor BLOCKED; named/async dispatch idles instead of returning → §2
-- Dispatch **killed** by a session/usage limit → §3
+- Dispatch **killed** by a session/usage limit, **or user-interrupted** mid-task → §3
 - Plan-label deviation (destructive→additive, slice re-size) → §4
 - BLOCKED return — which resolutions stay in-workflow → §5
 - Non-build dispatch shapes (cleanup round; coordinator-authored) → §6
@@ -58,21 +58,42 @@ steer one, have the *user* interrupt it so the queued message lands
 on the user's interrupt). Reserve named dispatches for boundary-pair
 duplicates / cases that need an addressable resume.
 
-## §3 — Killed dispatch (session/usage limit) → resume-first
+## §3 — Killed dispatch (session/usage limit) or user-interrupt → resume-first
 
-A kill also returns neither LANDED nor BLOCKED (the return is the limit
-error itself). Check `git status` for stranded work, log it as outcome
-`killed` (the wasted cost), then:
+A kill returns neither LANDED nor BLOCKED (the return is the limit error
+itself); a **user interrupt** mid-dispatch is the same shape (the return is
+`[Request interrupted by user…]`). Check `git status` for stranded work, log
+it as outcome `killed` (the wasted cost), then:
+
+> **Interrupt vs. `salvaged`.** A user interrupt that catches **complete,
+> gate-passing** work → `salvaged` (verify + finalize the commit yourself, no
+> resume — protocol *Outcome*). An interrupt that catches **incomplete** work
+> (a half-built leaf) is `killed`-shaped → resume-first below.
 
 1. **First try resuming the same agent** — `SendMessage` to the
-   `agentId` from the Agent tool result, naming where it died and what
-   remains. Available under agent teams
-   (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`); the harness resumes from the
-   transcript, full context + read phase intact (rows 64→65: the resume
-   re-emitted an unwritten design block from context with zero
-   re-reading). If the tree was clean at the kill, say so explicitly so
-   the agent re-emits rather than assumes its edits survived. Log the
+   `agentId`, naming where it died and what remains. Available under agent
+   teams (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`); the harness resumes from
+   the transcript, full context + read phase intact (rows 64→65: re-emitted
+   an unwritten design block with zero re-reading; **row 220**: a
+   user-interrupted leaf resumed and completed cleanly — confirmed working
+   in this environment, contra the row-202 "unavailable" data point). Log the
    resume as its own row, Mode `resume`.
+   - **No agentId in the return?** A user interrupt / cancellation returns an
+     *error*, not the Agent tool's normal result, so you won't have the
+     `agentId`. Recover it from the **local subagent logs**: the most-recently-
+     modified `…/projects/<proj-slug>/<session>/subagents/agent-<id>.jsonl`
+     (+ `.meta.json`, which confirms the dispatch `description`); the `.jsonl`
+     tail shows where it died. (Reference the dir generically in any commit —
+     never paste the machine-absolute path, per top-level CLAUDE.md.)
+   - **Re-apply any fragment you reverted.** If you reverted the agent's
+     uncommitted edit while cleaning the tree during the interrupt, **re-apply
+     it before resuming** — the resumed agent's context believes its edit
+     landed (and may have built it), so a tree missing that decl makes its next
+     build fail (row 220: re-applied a built-but-uncommitted brick, then
+     resumed). Don't tell the agent about the revert/re-apply; just restore the
+     tree to match its context.
+   - If the tree was genuinely clean at the kill, say so explicitly so the
+     agent re-emits rather than assumes its edits survived.
 2. **Only if resume is unavailable or fails, relaunch fresh** — salvage
    the dead agent's read map (its transcript, at the path in the Agent
    tool result / task notification, e.g. `…/tasks/<agentId>.output`;
