@@ -386,4 +386,131 @@ theorem complementIso_extensor_mem_range_map_subtype {k : ℕ}
   refine Submodule.smul_mem _ _ ?_
   exact exteriorPower_map_mem_range_map_subtype_of_mapsTo O W₀ W hOW₀ hstd
 
+/-- **The per-line point-join ↔ panel-meet duality at general `d`** (`lem:case-III-claim612-line-in-
+panel-union`, CHAIN-3, OD-8 (h-4) — the assembly closing CHAIN-3). For the two normals
+`n : Fin 2 → ℝ^{k+2}` cutting out a line `L` (homogeneous span `dim k = d−1`) inside a panel and the
+`k = d−1` points `p : Fin k → ℝ^{k+2}` spanning `L` (each `toDual`-orthogonal to both normals,
+`hperp`), the panel-meet `complementIso (j := 2) ⟨extensor n, _⟩` and the point-join
+`⟨extensor p, _⟩` are proportional in `⋀^k (Fin (k+2) → ℝ)`: `∃ c, c • (panel-meet) = (point-join)`.
+
+This is the join=meet equality KT leave implicit reading eq. (6.45)/(6.66)/(6.67) — `C(Lᵢ)` is
+written agnostically as both the *meet* of the 2 panels cutting out `Lᵢ` (the rank side, CHAIN-2)
+and the *join* of the `d−1` points spanning `Lᵢ` (the `D`-span side, CHAIN-4); this lemma is the one
+step the Lean must spell out (a `BlueprintExposition`-grade node). Replaces the `d=3`-only
+`complementIso_smul_eq_extensor_join` (whose `Φ̃`/`Ω = dualAnnihilator` route is a `dim Ω = C(d−1,2)
+= 1`-at-`d=3` artifact, kept green as the `d=3` wrapper).
+
+The `⋀^{d−1}W`-is-a-line route (NOT the withdrawn `Φ̃` route): with `W = {n 0, n 1}^⊥` (`dim W = k`,
+the `toDual`-perp of the 2 independent normals via the metric transport of the (h-3) leaf), both the
+point-join (`p i ∈ W` from `hperp`, `extensor_mem_range_map_subtype_of_mem_grade`) and the
+panel-meet (`complementIso_extensor_mem_range_map_subtype`, the (h-3) leaf) land in the line
+`range (exteriorPower.map k W.subtype)` (`⋀^k W` is `1`-dimensional, by
+`finrank_exteriorPower_self_eq_one`);
+the point-join is nonzero (`hp` + `extensor_ne_zero_iff_linearIndependent`), so
+`exists_smul_eq_of_mem_range_map_subtype_grade` yields the scalar. Zero new count — the three landed
+`_grade` bricks plus the (h-3) leaf. Lives in `MeetHodge.lean` because the `finrank W = k` step uses
+the metric transport (TACTICS-QUIRKS § 59). Feeds CHAIN-4's discriminator. -/
+theorem extensor_join_proportional_complementIso_meet {k : ℕ}
+    (n : Fin 2 → Fin (k + 2) → ℝ)
+    (p : Fin k → Fin (k + 2) → ℝ)
+    (hp : LinearIndependent ℝ p)
+    (hpair : LinearIndependent ℝ n)
+    (hperp : ∀ i j, (Pi.basisFun ℝ (Fin (k + 2))).toDual (p i) (n j) = 0) :
+    ∃ c : ℝ, c • (complementIso (k := k) (j := 2) (by omega)
+        ⟨extensor n, extensor_mem_exteriorPower n⟩)
+      = (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ)) := by
+  classical
+  -- `W = {n 0, n 1}^⊥`, the `toDual`-perp of the two normals.
+  set W : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    ⨅ j, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j)) with hW
+  have hWmem : ∀ w, w ∈ W ↔ ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0 := by
+    intro w
+    simp only [hW, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+  -- `hWperp` for the (h-3) leaf is the membership characterization.
+  have hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0 :=
+    fun w hw => (hWmem w).1 hw
+  -- `finrank W = k`: transport `W` to the metric orthogonal complement `(span{ne 0, ne 1})ᗮ`.
+  set ne : Fin 2 → EuclideanSpace ℝ (Fin (k + 2)) :=
+    fun i => (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm (n i) with hne
+  set P' : Submodule ℝ (EuclideanSpace ℝ (Fin (k + 2))) := Submodule.span ℝ {ne 0, ne 1} with hP'
+  have hsymm : ∀ w v : Fin (k + 2) → ℝ,
+      (Pi.basisFun ℝ (Fin (k + 2))).toDual w v = (Pi.basisFun ℝ (Fin (k + 2))).toDual v w := by
+    intro w v
+    set ε := EuclideanSpace.equiv (Fin (k + 2)) ℝ
+    have h1 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm w) (ε.symm v)
+    have h2 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm v) (ε.symm w)
+    simp only [ε, ContinuousLinearEquiv.apply_symm_apply] at h1 h2
+    rw [← h1, ← h2, real_inner_comm]
+  have hinner : ∀ (x : EuclideanSpace ℝ (Fin (k + 2))) (j : Fin 2),
+      (inner ℝ (ne j) x : ℝ)
+        = (Pi.basisFun ℝ (Fin (k + 2))).toDual
+            ((EuclideanSpace.equiv (Fin (k + 2)) ℝ) x) (n j) := by
+    intro x j
+    rw [EuclideanSpace.inner_eq_basisFun_toDual,
+      show (EuclideanSpace.equiv (Fin (k + 2)) ℝ) (ne j) = n j from rfl, hsymm]
+  have hWmapEq : Submodule.map
+      (↑(EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearEquiv :
+        (Fin (k + 2) → ℝ) →ₗ[ℝ] EuclideanSpace ℝ (Fin (k + 2))) W
+      = Submodule.orthogonal P' := by
+    ext x
+    rw [Submodule.mem_map_equiv, Submodule.mem_orthogonal]
+    simp only [hW, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+    constructor
+    · intro hx u hu
+      induction hu using Submodule.span_induction with
+      | mem y hy =>
+          rcases hy with rfl | rfl
+          · rw [hinner]; exact hx 0
+          · rw [hinner]; exact hx 1
+      | zero => simp
+      | add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]
+      | smul c a _ ha => rw [inner_smul_left, ha, mul_zero]
+    · intro hx j
+      have := hx (ne j) (Submodule.subset_span (by fin_cases j <;> simp))
+      rw [hinner] at this
+      exact this
+  have hni : LinearIndependent ℝ ne :=
+    hpair.map' (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearMap
+      (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.ker
+  have hP'dim : Module.finrank ℝ P' = 2 := by
+    have hrange : (Set.range ne) = {ne 0, ne 1} := by
+      ext y; constructor
+      · rintro ⟨i, rfl⟩; fin_cases i <;> simp
+      · rintro (rfl | rfl); exacts [⟨0, rfl⟩, ⟨1, rfl⟩]
+    rw [hP', ← hrange, finrank_span_eq_card hni, Fintype.card_fin]
+  have hWdim : Module.finrank ℝ W = k := by
+    have h1 : Module.finrank ℝ W = Module.finrank ℝ (Submodule.orthogonal P') := by
+      rw [← hWmapEq, LinearEquiv.finrank_map_eq]
+    have h2 := Submodule.finrank_add_finrank_orthogonal P'
+    rw [hP'dim, finrank_euclideanSpace_fin] at h2
+    rw [h1]; omega
+  -- Panel-meet membership (the (h-3) leaf).
+  have hmeet : complementIso (k := k) (j := 2) (by omega)
+      ⟨extensor n, extensor_mem_exteriorPower n⟩
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) :=
+    complementIso_extensor_mem_range_map_subtype n W hWperp hWdim
+  -- Point-join membership (`p i ∈ W` from `hperp`).
+  have hjoin : (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ))
+      ∈ LinearMap.range (exteriorPower.map k W.subtype) :=
+    extensor_mem_range_map_subtype_of_mem_grade (d := k + 1) W p
+      fun i => (hWmem (p i)).2 (hperp i)
+  -- Point-join `≠ 0` (`hp`); panel-meet `≠ 0` (`complementIso` injective + `extensor n ≠ 0` from
+  -- `hpair`), so the proportionality scalar is invertible.
+  have hjoinne : (⟨extensor p, extensor_mem_exteriorPower p⟩ : ⋀[ℝ]^k (Fin (k + 2) → ℝ)) ≠ 0 := by
+    rw [Ne, Subtype.ext_iff]; exact (extensor_ne_zero_iff_linearIndependent p).2 hp
+  have hmeetne : complementIso (k := k) (j := 2) (by omega)
+      ⟨extensor n, extensor_mem_exteriorPower n⟩ ≠ 0 := by
+    rw [Ne, map_eq_zero_iff _ (complementIso (k := k) (j := 2) (by omega)).injective,
+      Subtype.ext_iff]
+    exact (extensor_ne_zero_iff_linearIndependent n).2 hpair
+  -- Both members of the line `range (⋀^k W ↪)`; the point-join is nonzero, so it generates the
+  -- line and the panel-meet is a multiple of it. Invert the (nonzero) scalar to orient the
+  -- proportionality `(panel-meet) ↦ (point-join)` (the form CHAIN-4's discriminator consumes).
+  obtain ⟨c, hc⟩ :=
+    exists_smul_eq_of_mem_range_map_subtype_grade (d := k + 1) W hWdim hjoin hjoinne hmeet
+  have hcne : c ≠ 0 := by
+    rintro rfl; rw [zero_smul] at hc; exact hmeetne hc.symm
+  refine ⟨c⁻¹, ?_⟩
+  rw [inv_smul_eq_iff₀ hcne]; exact hc.symm
+
 end CombinatorialRigidity.Molecular

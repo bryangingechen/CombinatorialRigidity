@@ -842,7 +842,11 @@ signature depends on the ENTRY chain-data contract.
   `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification`
   chain (now `q : α × Fin 4`-shaped) to a `Fin d`-indexed candidate family.*
   Heaviest mechanical leaf; KT calls it "exactly the same as `d=3`."
-- **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks** (`Meet.lean`).
+- **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks** (`Meet.lean` + `MeetHodge.lean`).
+  **CLOSED 2026-06-17** — the assembly `extensor_join_proportional_complementIso_meet`
+  (`MeetHodge.lean`) landed on the three `_grade` bricks + the OD-8 route-(α) leaf chain h-0…h-3;
+  the `⋀^{d−1}W`-is-a-line route as recon'd in §(f). The d=3 `complementIso_smul_eq_extensor_join`
+  stays the green d=3 wrapper. Original recon (kept for the CHAIN-4 reach-in reference):
   Re-state `extensor_mem_range_map_subtype_of_mem`,
   `exists_smul_eq_of_mem_range_map_subtype`,
   `exteriorPower_basis_toDual_eq_pairingDual_comp_map`,

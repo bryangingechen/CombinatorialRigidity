@@ -78,6 +78,10 @@ symptom-indexed and lighter.
     two grade-`k` extensors built from overlapping `Fin k`-tuples, restrict
     `exteriorPower.ιMulti_family_linearIndependent_field` to the wanted subsets via `.comp`;
     don't hand-roll a left-multiplication argument (it doesn't generalize off `k = 2`).
+19. **Re-orienting a proportionality `c • x = y` into `c⁻¹ • y = x`** — use the
+    equation-level `inv_smul_eq_iff₀ hcne` on the goal, not `rw [← hc, smul_smul, …]`;
+    the nested-`•` `rw` chain fails to find its pattern on `⋀`-subtype elements (and
+    `module` mis-atomizes the term).
 
 ---
 
@@ -1045,3 +1049,27 @@ the `LinearMap.linearIndependent_iff` idiom (§7-adjacent: the injective
 `(⋀^k …).subtype ∘ₗ (ScrewSpace.equivExteriorPower k)`, `ker = ⊥`). Concrete instance:
 `exists_linearIndependent_extensor_pair_perp_grade` (`PanelLayer.lean`, Phase 23a Leaf 1b),
 the general-grade replacement for the `d = 3` `linearIndependent_pair_extensor_of_li3`.
+
+## 19. Re-orienting a proportionality `c • x = y` into `c⁻¹ • y = x`
+
+A line-proportionality engine like `exists_smul_eq_of_mem_range_map_subtype_grade` returns
+`∃ c, c • x = y` with the *nonzero* member as `x`. When the downstream consumer wants the
+*other* orientation `∃ c', c' • y = x` (e.g. CHAIN-4's discriminator rewrites the panel-meet
+into a multiple of the point-join, but the engine made the point-join the nonzero generator),
+the scalar is invertible (both members nonzero ⟹ `c ≠ 0`), and the clean close is the
+**equation-level** rewrite:
+
+```lean
+obtain ⟨c, hc⟩ := …                          -- hc : c • x = y
+have hcne : c ≠ 0 := by rintro rfl; rw [zero_smul] at hc; exact hyne hc.symm
+refine ⟨c⁻¹, ?_⟩
+rw [inv_smul_eq_iff₀ hcne]; exact hc.symm     -- goal c⁻¹ • y = x ↦ y = c • x
+```
+
+**Do not** reach for `rw [← hc, smul_smul, inv_mul_cancel₀ hcne, one_smul]`. On `⋀`-subtype
+elements (`⟨extensor _, _⟩ : ⋀[ℝ]^k …`) the nested-`•` `rw` chain silently fails to find the
+`?a • ?b • ?c` pattern — even a literal `show c⁻¹ • c • ⟨extensor …⟩ = …` of the displayed
+term reports "did not find an occurrence", and `module` mis-atomizes `c • x` and reduces the
+goal to `c⁻¹ = 0`. `inv_smul_eq_iff₀` sidesteps the nested-smul matching by rewriting the
+whole equation instead. Concrete instance:
+`extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`, Phase 23b CHAIN-3 (h-4)).
