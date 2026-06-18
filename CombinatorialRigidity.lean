@@ -18,6 +18,7 @@ import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.Induction.ForestSurgery.Reduction
 import CombinatorialRigidity.Molecular.Meet
+import CombinatorialRigidity.Molecular.MeetHodge
 import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
 import CombinatorialRigidity.Molecular.RigidityMatrix.Bricks
 import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612

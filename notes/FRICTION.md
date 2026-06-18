@@ -637,6 +637,21 @@ to be re-derived by re-reading entries later.
   lines); the entry now has both the `InjOn` and the `ker = ⊥` forms.
 - **Status:** resolved (idiom recorded, both forms; mirror deferred — 2 callsites, both two-line).
 
+### [idiom] Feeding a `Fin m` independent family into `gramSchmidt_ne_zero_coe`'s `Set.Iic`-restriction hypothesis — `linearIndepOn_range_iff` (injective index map) + `linearIndependent_restrict_iff`
+- **Where it bit:** `exists_orthonormalBasis_span_pair_eq` (`Molecular/MeetHodge.lean`, Phase 23b
+  OD-8 (h-2)): the per-index nonzero hypotheses of `gramSchmidtOrthonormalBasis_apply` route through
+  `gramSchmidtNormed_unit_length_coe i (h : LinearIndependent ℝ (f ∘ ((↑) : Set.Iic i → ι)))`, but
+  what's in hand is a `Fin 2` pair `hn : LinearIndependent ℝ n` (and `f` agrees with `n` on `{0,1}`).
+- **Friction:** there is no one-shot "`Fin m` family ⟹ `Set.Iic`-restriction is independent". The
+  clean two-step: prove `LinearIndepOn ℝ f (Set.Iic 1)` once, then `linearIndependent_restrict_iff.2
+  (· .mono hsub)` per `i ≤ 1`. The `LinearIndepOn` itself is `hn` reindexed: `Set.range ![0,1] =
+  {0,1} = Set.Iic 1` (`Matrix.range_cons_cons_empty` + a `Set.Iic = {0,1}` `ext`/`omega`), so
+  `rw [← hrange, linearIndepOn_range_iff he_inj, hfe]` (with `he_inj : Injective ![0,1]` from
+  `injective_pair_iff_ne`, `hfe : f ∘ ![0,1] = n`) reduces the goal to `hn`.
+- **Status:** resolved (idiom recorded; the `linearIndepOn_range_iff` + `linearIndependent_restrict_iff`
+  + `injective_pair_iff_ne` chain is the reusable shape for the "Gram–Schmidt nonzero from a small
+  indexed pair" pattern).
+
 ### [idiom] LI of two grade-`k` extensors of overlapping `Fin k`-tuples — restrict `ιMulti_family_linearIndependent_field` to the two subsets, don't isolate
 - **Where it bit:** `exists_linearIndependent_extensor_pair_perp_grade` (`PanelLayer.lean`,
   Phase 23a Leaf 1b) — the general-grade lift of the `d = 3`

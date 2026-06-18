@@ -35,16 +35,22 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3's OD-8 route-(α) (h-2) metric→`toDual` transport bridge has LANDED (2026-06-17, this
-commit) as a `Mathlib/` mirror.** `EuclideanSpace.inner_eq_basisFun_toDual` (the L² inner product
-on `EuclideanSpace ℝ ι` IS the standard-basis `toDual` dot-product pairing through the carrier iso)
-+ its corollary `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` (an L²-`LinearIsometryEquiv`
-transports along `EuclideanSpace.equiv` to a `toDual`-orthogonal linear *equiv* of `ι → ℝ`) now sit
-in `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/PiL2.lean` (new — first Analysis
-mirror). This is the metric-side reconciliation the frame-alignment leaf needs: (h-2)'s orthogonal
-`O` is built from an *orthonormal-basis change of frame* (mathlib's `OrthonormalBasis.repr`, an
-L²-isometry), and (h-1) `complementIso_map_orthogonal_eq`'s `hO`-hypothesis wants
-*`toDual`-orthogonality* — this bridge is exactly that conversion. Axiom-clean, gates green.
+**CHAIN-3's OD-8 route-(α) (h-2) Gram–Schmidt span-control existence has LANDED (2026-06-17, this
+commit) — the new downstream metric file `Molecular/MeetHodge.lean`.**
+`exists_orthonormalBasis_span_pair_eq`: for a linearly independent pair `n : Fin 2 →
+EuclideanSpace ℝ (Fin (k+2))`, there is an `OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace ℝ
+(Fin (k+2)))` whose first two vectors span `span{n 0, n 1}`. Built by Gram–Schmidt on the family `f`
+extending `n` by zeros (`gramSchmidtOrthonormalBasis`); the span chain is
+`{b 0, b 1} = gramSchmidtNormed f '' Iic 1` (each nonzero by the LANDED
+`gramSchmidtNormed_unit_length_coe`) → `span (gramSchmidt f '' Iic 1)` (`span_gramSchmidtNormed`)
+→ `span (f '' Iic 1)` (`span_gramSchmidt_Iic`) → `span{n 0, n 1}`. The per-index nonzero hypothesis
+(`LinearIndependent ℝ (f ∘ (Iic i ↪))`) comes from `LinearIndepOn ℝ f (Iic 1)`, itself the pair `hn`
+reindexed via `linearIndepOn_range_iff` (`Set.range ![0,1] = {0,1} = Iic 1`) + `linearIndependent_
+restrict_iff`. Its `b.repr` is the frame-alignment L²-isometry the LANDED transport bridge
+`EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` converts to the `toDual`-orthogonal `O` that
+(h-1) `complementIso_map_orthogonal_eq` consumes. Axiom-clean, gates green. **New file rationale:**
+`PiL2` cannot import into metric-free `Meet.lean` (TACTICS-QUIRKS § 59); `MeetHodge.lean` imports
+both `Meet.lean` and the metric layer, and is wired into the top-level `CombinatorialRigidity.lean`.
 
 **Architectural finding (cost a build cycle; → TACTICS-QUIRKS § 59 + FRICTION).** Importing
 `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean` **regresses a
@@ -193,11 +199,13 @@ the (b) flag (its signature is the CHAIN↔ENTRY contract).
                 `Mathlib/Analysis/InnerProductSpace/PiL2.lean`): L²-inner = `toDual` dot-product
                 pairing, so an L²-`LinearIsometryEquiv` transports to a `toDual`-orthogonal equiv of
                 `ι → ℝ` — the `hO`-feeder for (h-1). Axiom-clean. Landed 2026-06-17.
-              - [ ] **span-control existence** — an `OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace …)`
-                whose first two vectors span `{n₀,n₁}` (via `gramSchmidtOrthonormalBasis` +
-                `span_gramSchmidt_Iic`). **The next buildable sub-step.** Must live in a NEW
-                DOWNSTREAM file (importing `Meet.lean` + the metric layer) — `PiL2` cannot be imported
-                into metric-free `Meet.lean` (TACTICS-QUIRKS § 59).
+              - [x] **span-control existence** `exists_orthonormalBasis_span_pair_eq` — an
+                `OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace …)` whose first two vectors span
+                `{n₀,n₁}` (via `gramSchmidtOrthonormalBasis` + `span_gramSchmidtNormed` +
+                `span_gramSchmidt_Iic`; per-index nonzero from `linearIndepOn_range_iff` +
+                `linearIndependent_restrict_iff`). Lives in the NEW DOWNSTREAM file
+                `Molecular/MeetHodge.lean` (`PiL2` cannot import into metric-free `Meet.lean`,
+                TACTICS-QUIRKS § 59). Landed 2026-06-17.
             - [ ] (h-3) `complementIso_extensor_mem_range_map_subtype` — assemble (h-1)+(h-2)+the LANDED
               standard-frame membership; the `extensor n = 0` case is trivial, the work is the
               `n`-independent case (`dim W = k` by rank–nullity on the 2 functionals).
@@ -294,44 +302,40 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Next buildable sub-step = (h-2) the Gram–Schmidt span-control existence** — an
-`OrthonormalBasis (Fin (k+2)) ℝ (EuclideanSpace ℝ (Fin (k+2)))` whose first two vectors span the
-prescribed independent pair `{n₀,n₁}`, so its `b.repr` is the frame-alignment L²-isometry and the
-**LANDED** transport bridge `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` converts it to
-the `toDual`-orthogonal `O` that (h-1) consumes. Construction: `gramSchmidtOrthonormalBasis hcard g`
-on a family `g : Fin (k+2) → E` with `g 0 = n₀, g 1 = n₁` (rest std basis); `span{b 0, b 1} =
-span{n₀,n₁}` via `gramSchmidtOrthonormalBasis_apply` (the initial-segment `gramSchmidtNormed` nonzero
-by `gramSchmidt_ne_zero_coe` on the `Iic 1`-independent segment) + `span_gramSchmidtNormed` +
-`span_gramSchmidt_Iic`. **Must live in a NEW DOWNSTREAM FILE** (e.g. `Molecular/MeetHodge.lean`,
-importing `Meet.lean` + `Mathlib.Analysis.InnerProductSpace.PiL2`) — `PiL2` cannot be imported into
-metric-free `Meet.lean` (TACTICS-QUIRKS § 59; that regression already cost a build cycle this
-session). Watch the `Fin (k+2)` numeral-`val` / `Set.Iic 1 = {0,1}` friction (`Fin.val_one'` +
-`Nat.mod_eq_of_lt`; the existence-lemma scratch hit it repeatedly).
-
-After (h-2), the target leaf `complementIso_extensor_mem_range_map_subtype` (signature §(f) item 2):
+**Next buildable sub-step = (h-3) the target leaf `complementIso_extensor_mem_range_map_subtype`**
+(signature §(f) item 2), in the now-existing downstream file `Molecular/MeetHodge.lean`:
 `complementIso (j:=2) ⟨extensor n,_⟩ ∈ range(exteriorPower.map k W.subtype)` for `W = {n₀,n₁}^⊥`.
-**Route decision (§(h)):** `complementIso` IS the Hodge star `⋆` for the standard volume form
-(`screwAlgebraTopEquiv = topEquiv`) + dot product (`Pi.basisFun.toDual`) — so the target is the
-genuine Hodge fact "`⋆` of a decomposable = decomposable of the orthogonal complement", which is
-**O(n)-natural but NOT GL-natural**. The route lifts via an **orthogonal** change of frame:
+Assemble from (a) the LANDED frame-alignment existence `exists_orthonormalBasis_span_pair_eq`
+(this commit) → an `OrthonormalBasis b` with `span{b 0, b 1} = span{n₀,n₁}`; (b) the LANDED transport
+bridge `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` on `b.repr` → the `toDual`-orthogonal
+`O := EuclideanSpace.ofLinearIsometryEquiv b.repr` (carrying the coordinate plane `{e₀,e₁}` to
+`span{n₀,n₁}`, the coordinate complement `{e₂,…}` to `W`); (c) the LANDED O(n)-equivariance (h-1)
+`complementIso_map_orthogonal_eq` to push `complementIso` through `O`; (d) the LANDED standard-frame
+membership `complementIso_exteriorPower_basis_mem_range_map_subtype` on the coordinate blade. **Case
+split in hand:** when `extensor n = 0` (dependent `n`), `complementIso 0 = 0 ∈ range` trivially; the
+work is the `n`-independent case, where `dim W = k` (rank–nullity on the 2 functionals). All four
+ingredients are LANDED — (h-3) is the assembly, no new math obligation. Lives in `MeetHodge.lean`
+(consumes both `complementIso` from `Meet.lean` and the metric layer). Watch the `EuclideanSpace`↔
+`Fin (k+2)→ℝ` carrier round-trip when feeding the orthogonal map `O` of type `(Fin (k+2)→ℝ) →ₗ
+(Fin (k+2)→ℝ)` into `complementIso_map_orthogonal_eq` (whose `hO` is `toDual`-orthogonality).
+
+The full OD-8 route-(α) leaf chain (§(h)), now (h-0)…(h-2) all LANDED:
 - **(h-0)** volume-form-by-determinant — **LANDED** (`screwAlgebraTopEquiv_map_eq_det_smul` + mirror
   `exteriorPower.topEquiv_map_eq_det_smul`).
 - **(h-1)** `complementIso_map_orthogonal_eq` — **the substantive new leaf — LANDED** (`Meet.lean`).
 - **(h-2)** frame alignment — **transport bridge LANDED** (mirror
-  `EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}`); the
-  **span-control existence is the next open leaf** (see lead above; new downstream file).
-- **(h-3)** the target leaf — assemble (h-1)+(h-2)+the LANDED
-  `complementIso_exteriorPower_basis_mem_range_map_subtype`. **In hand for the case split:** when
-  `extensor n = 0` (dependent `n`), `complementIso 0 = 0 ∈ range` trivially; the work is the
-  `n`-independent case, where `dim W = k` (rank–nullity on the 2 functionals). **Lives in the new
-  downstream file** (consumes both `complementIso` from `Meet.lean` and the metric layer).
+  `EuclideanSpace.{inner_eq_basisFun_toDual, toDualOrthogonal_ofLinearIsometryEquiv}`) **+
+  span-control existence LANDED** (`exists_orthonormalBasis_span_pair_eq`, `MeetHodge.lean`, this
+  commit).
+- **(h-3)** the target leaf `complementIso_extensor_mem_range_map_subtype` — **the next open leaf**
+  (the assembly; all ingredients landed).
 
 **Why NOT route β:** the in-hand annihilation (`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero`)
 puts `complementIso n` in an annihilator `Ann(Φ)`; upgrading that to range-membership needs
 `dim Ann(Φ) = 1`, i.e. the **withdrawn `dim Φ̃` count** (`= C(d−1,2) > 1` for `d≥4`). So β is
-**rejected, not a fallback**. **Genuine fallback if the (h-2) span-control existence is a long
+**rejected, not a fallback**. **Genuine fallback if the (h-3) assembly is a long
 pole:** carry (h-3) as an explicit green-modulo `h…` premise on CHAIN-4's discriminator (standing
-idiom), land (h-2)/(h-3) in a dedicated sitting — never a `sorry`. (New downstream file; still no
+idiom), land it in a dedicated sitting — never a `sorry`. (`MeetHodge.lean`; still no
 ENTRY-contract dependency.)
 The CHAIN-3-finish recon (`notes/Phase23-design.md` §"CHAIN"(f)/(g), 2026-06-17, source-verified
 against KT §6.4.1/§6.4.2 + the landed bodies) **overturned the prior pin** and corrected the
@@ -452,8 +456,15 @@ general mathlib, grade enters nothing):
   `EuclideanSpace.toDualOrthogonal_ofLinearIsometryEquiv` (an L²-`LinearIsometryEquiv` transports to
   a `toDual`-orthogonal equiv of `ι → ℝ` — the `hO`-feeder for (h-1)). Axiom-clean, self-contained
   (no exterior-algebra dep, copy-paste-promotable). The metric-vs-algebraic "orthogonal"
-  reconciliation; the remaining (h-2) content is the Gram–Schmidt span-control existence, **in a new
-  downstream file** (see Hand-off + the import finding below).
+  reconciliation.
+- (h-2) **Gram–Schmidt span-control existence** `exists_orthonormalBasis_span_pair_eq` (new
+  downstream file `Molecular/MeetHodge.lean`): an `OrthonormalBasis` of `EuclideanSpace ℝ (Fin (k+2))`
+  whose first two vectors span an independent pair `{n₀,n₁}`. `gramSchmidtOrthonormalBasis` on the
+  zero-extended family; the span chain runs `{b 0,b 1} → gramSchmidtNormed f '' Iic 1` (nonzero via
+  `gramSchmidtNormed_unit_length_coe`) `→ span(gramSchmidt f '' Iic 1)` (`span_gramSchmidtNormed`)
+  `→ span(f '' Iic 1)` (`span_gramSchmidt_Iic`) `→ span{n₀,n₁}`. Per-index nonzero hyp from
+  `LinearIndepOn ℝ f (Iic 1)` = `hn` reindexed (`linearIndepOn_range_iff` on `![0,1]` +
+  `linearIndependent_restrict_iff`). `MeetHodge.lean` wired into `CombinatorialRigidity.lean`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
