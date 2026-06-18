@@ -301,28 +301,34 @@ theorem omitTwoExtensor_homogenize_eq_extensor_kept (p : Fin 4 → Fin 3 → ℝ
     (hmem 1).2, ?_⟩
   rw [omitTwoExtensor]; congr 1; ext k; fin_cases k <;> rfl
 
-/-- **A second panel normal through a line in `ℝ⁴`** (`lem:case-III-claim612`, N3a/N3b glue;
-Phase 22g). Given two points `pi, pj : Fin 4 → ℝ` of a line `L = pi pj` and one normal `n_u`
-to which both are dot-orthogonal (`pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`), with `n_u ≠ 0`, there is a
-*second* normal `n'`, linearly independent from `n_u`, to which both points are also orthogonal —
-i.e. a second hyperplane through the line `L`. This is the constructed second normal KT's
-contrapositive needs for the three "opposite" joins `pᵢ ∨ pⱼ` (the joins through a single panel
-`Π(u)`, eq. (6.45)): the per-line transfer
-(`extensor_join_eq_zero_of_complementIso_eq_zero_dotProduct`, N3b) consumes a pair `{n_u, n'}` of
-independent normals, but a single-panel join supplies only one panel normal directly, so the second
-is read off the geometry here.
+/-- **A second panel normal through a line in `ℝ^{k+2}`** (`lem:case-III-claim612`, N3a/N3b glue;
+the general-`d` form, `k = d − 1`, ambient `Fin (k+2) = Fin (d+1)`). Given two points `pi, pj`
+of a line `L = pi pj` in `ℝ^{k+2}` and one normal `n_u` to which both are dot-orthogonal
+(`pi ⬝ᵥ n_u = pj ⬝ᵥ n_u = 0`), with `n_u ≠ 0` and `2 ≤ k`, there is a *second* normal `n'`,
+linearly independent from `n_u`, to which both points are also orthogonal — i.e. a second
+hyperplane through the line `L`. This is the constructed second normal KT's contrapositive needs
+for the "opposite" joins `pᵢ ∨ pⱼ` through a single panel `Π(u)` (eq. (6.45)): the per-line
+transfer (`extensor_join_proportional_complementIso_meet`, the join=meet duality) consumes a pair
+`{n_u, n'}` of independent normals, but a single-panel join supplies only one panel normal
+directly, so the second is read off the geometry here.
+
+The per-line normal space (CHAIN-3-finish recon, `notes/Phase23-design.md` §"CHAIN"(f)) is **always
+2-dimensional**: a line's homogeneous span has `dim = d − 1 = k`, so `dim L^⊥ = (k+2) − k = 2`.
+What this lemma needs is only that `L^⊥` is **at least** 2-dimensional, which the common-perp of the
+*two points* (a superspace of `L^⊥`, since they span `L`) supplies whenever `2 ≤ k`:
 
 The common-perp space `W = {x | pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0}` is the kernel of
-`x ↦ ![pi ⬝ᵥ x, pj ⬝ᵥ x] : ℝ⁴ → ℝ²`, so by rank–nullity `finrank W ≥ 4 − 2 = 2 > 1 = finrank
-(span ℝ {n_u})`; the span is therefore a *proper* subspace of `W`, and `SetLike.exists_of_lt`
-exhibits `n' ∈ W ∖ span ℝ {n_u}`, which `LinearIndependent.pair_iff'` upgrades to independence. -/
-theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
+`x ↦ ![pi ⬝ᵥ x, pj ⬝ᵥ x] : ℝ^{k+2} → ℝ²`, so by rank–nullity `finrank W ≥ (k+2) − 2 = k ≥ 2 > 1 =
+finrank (span ℝ {n_u})`; the span is therefore a *proper* subspace of `W`, and
+`SetLike.exists_of_lt` exhibits `n' ∈ W ∖ span ℝ {n_u}`, which `LinearIndependent.pair_iff'`
+upgrades to independence. -/
+theorem exists_independent_perp_pair_gen {k : ℕ} (hk : 2 ≤ k) (pi pj n_u : Fin (k + 2) → ℝ)
     (hi : pi ⬝ᵥ n_u = 0) (hj : pj ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
-    ∃ n' : Fin 4 → ℝ, LinearIndependent ℝ ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 := by
+    ∃ n' : Fin (k + 2) → ℝ, LinearIndependent ℝ ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 := by
   -- The common-perp space as the kernel of the two-functional map `L x = ![pi ⬝ᵥ x, pj ⬝ᵥ x]`.
-  set L : (Fin 4 → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) :=
+  set L : (Fin (k + 2) → ℝ) →ₗ[ℝ] (Fin 2 → ℝ) :=
     Matrix.mulVecLin (Matrix.of ![pi, pj]) with hL
-  have hmemW : ∀ x : Fin 4 → ℝ, x ∈ LinearMap.ker L ↔ pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0 := by
+  have hmemW : ∀ x : Fin (k + 2) → ℝ, x ∈ LinearMap.ker L ↔ pi ⬝ᵥ x = 0 ∧ pj ⬝ᵥ x = 0 := by
     intro x
     rw [LinearMap.mem_ker, hL, Matrix.mulVecLin_apply]
     rw [funext_iff]
@@ -335,10 +341,10 @@ theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
       fin_cases i
       · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h0
       · simpa [Matrix.mulVec, Matrix.of_apply, dotProduct_comm] using h1
-  -- Rank–nullity: `finrank (ker L) ≥ 4 − 2 = 2`.
+  -- Rank–nullity: `finrank (ker L) ≥ (k+2) − 2 = k ≥ 2`.
   have hker : 2 ≤ Module.finrank ℝ (LinearMap.ker L) := by
     have hrn := L.finrank_range_add_finrank_ker
-    have hdom : Module.finrank ℝ (Fin 4 → ℝ) = 4 := by rw [Module.finrank_pi]; rfl
+    have hdom : Module.finrank ℝ (Fin (k + 2) → ℝ) = k + 2 := by rw [Module.finrank_pi]; simp
     have hcod : Module.finrank ℝ (LinearMap.range L) ≤ 2 := by
       calc Module.finrank ℝ (LinearMap.range L)
           ≤ Module.finrank ℝ (Fin 2 → ℝ) := Submodule.finrank_le _
@@ -357,6 +363,14 @@ theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
   refine ⟨n', (LinearIndependent.pair_iff' hn_u).2 ?_, hi', hj'⟩
   intro a heq
   exact hn'not (heq ▸ Submodule.smul_mem _ a (Submodule.mem_span_singleton_self _))
+
+/-- **A second panel normal through a line in `ℝ⁴`** — the `d = 3` (`k = 2`) instance of
+`exists_independent_perp_pair_gen`, kept as the zero-regression `Fin 4` wrapper its callers
+(`exists_line_data_of_homogeneousIncidence`, `case_III_claim612`) consume. -/
+theorem exists_independent_perp_pair (pi pj n_u : Fin 4 → ℝ)
+    (hi : pi ⬝ᵥ n_u = 0) (hj : pj ⬝ᵥ n_u = 0) (hn_u : n_u ≠ 0) :
+    ∃ n' : Fin 4 → ℝ, LinearIndependent ℝ ![n_u, n'] ∧ pi ⬝ᵥ n' = 0 ∧ pj ⬝ᵥ n' = 0 :=
+  exists_independent_perp_pair_gen (k := 2) le_rfl pi pj n_u hi hj hn_u
 
 /-- **The homogeneous incidence core of the witness points, parameterized by the real panel
 normals** (`lem:case-III-claim612-points-affineIndep`, the (R1) reconciliation core; Katoh–Tanigawa
