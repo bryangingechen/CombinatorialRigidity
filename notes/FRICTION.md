@@ -3034,6 +3034,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (project-internal). **Lifted to:** TACTICS-QUIRKS § 47 (cast the base before
   subtracting in `ℤ`-valued equations).
 
+### [idiom] Recovering a *permuted*-incidence `Fin n` wrapper from a general `_gen` lemma — feed the reordered indexed family, don't re-prove
+- **Where it bit:** the `Fin 3 → Fin 4` `exists_homogeneousIncidence_of_normals` wrapper over the
+  CHAIN-4a general `exists_homogeneousIncidence_of_normals_gen` (`RigidityMatrix/Claim612.lean`). The
+  general lemma states a *canonical* off-one-panel incidence ("`pbar (i+1)` off `n i`"), but the d=3
+  consumer destructures the historical *cyclic* labeling (`pbar 1` off `n 2`, `pbar 2` off `n 0`,
+  `pbar 3` off `n 1`).
+- **Friction:** the two incidence patterns differ by a cyclic permutation of the normals, so a naive
+  `exact _gen hn` mismatches the conjunct order; re-proving the d=3 body inline would duplicate the
+  lift.
+- **Resolution:** apply `_gen` to the *reordered* family `m := ![n 2, n 0, n 1] (= n ∘ ![2, 0, 1])`
+  (LI via `hn.comp _ (by decide : Function.Injective ![2,0,1])`), then read the `m`-pairings back
+  through the (definitional) reorder — `m 0 = n 2` etc. hold by `rfl`, so `(hi 0).1 1 (by decide)`
+  *is* `pbar 1 ⬝ᵥ n 0 = 0`. The `∀ j, j ≠ i → …` conjunct form unpacks to the explicit per-normal
+  conjuncts by supplying the off-indices with `by decide`. Same shape recurs in every CHAIN-4 `_gen`
+  → `Fin 4` wrapper (cf. `omitTwoExtensor_eq_extensor_kept`, `exists_independent_perp_pair`).
+- **Status:** idiom (project-internal).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
