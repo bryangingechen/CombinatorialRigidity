@@ -42,10 +42,13 @@ file).
   S/P/B is still **rated and logged** per dispatch (experiment data), but the
   rung is **opus regardless of the map**; probes off; boundary pairs run
   opus-vs-opus or are skipped. Re-confirm (or lift) at session start.
-- **Per-session run modifications** (re-confirm at session start; session #6
+- **Per-session run modifications** (re-confirm at session start; sessions #6–#7
   set them): the 10-run check-in cap **lifted** (loop runs to phase close or a
   surfaced concern); step-4 mechanical fixups (wrong branch / author /
-  trailer) **pre-authorized**.
+  trailer) **pre-authorized**. Session-#7 availability (2026-06-18, expires
+  session-end): opus confirmed (the coordinator runs on it); under the
+  OPUS-ONLY override the other rungs are not probed (boundary pairs
+  opus-vs-opus or skipped) — a fresh coordinator under the S/P/B map re-probes.
 - **Session #6 hand-off (2026-06-18; loop stopped by user after row 227).**
   Closed CHAIN-1/3/4 (all general-`d`); the OD-4 recon dissolved the
   alg-independence gap; opened the OD-7 four-producer tail (M4 + the all-`k`
