@@ -2,18 +2,20 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED.** The OD-7 four-producer tail is **open**
 but advancing: both M4 halves are general-`k`, the **full base producer `hbase_k`** is general-`k`,
-and, **this commit (2026-06-18)**, the **`hcut_k` bare conjunct is now general-`k`** —
-`case_cut_edge_realization_gen` (`Theorem55.lean`), a verbatim numeral pass over the d=3 body
-(`Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`, `screwDim 2 → screwDim k`,
-`exists_extensor_in_two_panels → …_grade`, dof `k → c`); all reach-ins
-(`le_finrank_span_rigidityRows_of_cut`, `finrank_span_rigidityRows_add_deficiency_le`, the cut
-decomposition) were already grade-parametric. The d=3 `case_cut_edge_realization` is now its `k:=2`
-wrapper (blueprint pin `lem:case-cut-edge-realization` unmoved). **Remaining tail:**
-`case_cut_edge_realization_gp` (the heavier GP conjunct of `hcut_k`) + `hcontract_k`. **CHAIN-4 was
-closed by the CHAIN-4d commit**
+the **`hcut_k` bare conjunct** is general-`k`, and, **this commit (2026-06-18)**, the **`hcut_k` GP
+conjunct is now general-`k`** — `case_cut_edge_realization_gp_gen` (`Theorem55.lean`), a verbatim
+numeral pass over the d=3 GP body (`Fin 4 → Fin (k+2)` for the `q₀ᵢ` seeds + the combined
+`exists_injective_algebraicIndependent_real` seed type, `BodyHingeFramework 2 → … k`,
+`exists_generalPosition_polynomial (k := 2) → (k := k)`, `screwDim 2 → screwDim k`, dof `k → c`);
+all reach-ins (`ofNormals`, `exists_generalPosition_polynomial`,
+`exists_rankPolynomial_of_le_finrank_linking`, the two swap/recordsLinks bricks, the cut
+decomposition, B2) were already grade-parametric. **`hcut_k` is now fully general-`k`.** The d=3
+`case_cut_edge_realization_gp` is now its `k:=2` wrapper (blueprint pin
+`lem:case-cut-edge-realization-gp` unmoved). **Remaining tail: only `hcontract_k`** (the Case-I
+dispatch). **CHAIN-4 was closed by the CHAIN-4d commit**
 (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the discriminator capstone = assembly of
-CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the producers
-`hcut_k`/`hcontract_k` (`Theorem55.lean`, numeral pass; `hbase_k`/`hforget_k` done).** CHAIN-1 = the
+CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the producer `hcontract_k`
+(`Theorem55.lean`; `hbase_k`/`hcut_k`/`hforget_k` done).** CHAIN-1 = the
 `ιc`-block candidate augment + `…candidateBlock_swap`
 (`RigidityMatrix/Basic.lean`), graph-free over `ScrewSpace k`. CHAIN-3 = the general-`d` per-line
 join=meet duality `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), the
@@ -35,21 +37,23 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = `case_cut_edge_realization_gp` (the GP half of `hcut_k`), `hcontract_k`, CHAIN-2, or
+**Next build = `hcontract_k` (the Case-I dispatch — the last OD-7 producer), CHAIN-2, or
 CHAIN-5/ENTRY.** CHAIN-1/3/4 are CLOSED; the **four-producer tail (OD-7) is open** but advancing: both
 M4 halves are general-`k` (the reach-in `exists_extensor_eq_panelSupportExtensor_gen`
 (`PanelLayer.lean`) + the consumer `hasPanelRealization_of_generic` (`GenericityDevice.lean`)), **the
 full base producer `hbase_k` is general-`k`** (the trichotomy dispatch `theorem_55_base_producer_gen`
-assembling the five `_gen` arms), and — **this commit (2026-06-18)** — the **`hcut_k` bare conjunct
-`case_cut_edge_realization_gen`** (`Theorem55.lean`), the verbatim numeral pass over the d=3 body
-(`Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`, `screwDim 2 → screwDim k`,
-`exists_extensor_in_two_panels → …_grade`, dof `k → c`); all reach-ins were already grade-parametric.
-The d=3 `case_cut_edge_realization` is now its `k := 2` wrapper (blueprint pin
-`lem:case-cut-edge-realization` unmoved; node prose already general-`k`). **What remains in the tail:**
-`case_cut_edge_realization_gp` (the GP conjunct of `hcut_k` — heavier: `ofNormals`/GP-polynomial
-machinery, not a flat numeral pass) + `hcontract_k` (the Case-I dispatch); `hforget_k`'s `k=2` filler
-is already general-`k`. The `d=3` consumers in `Theorem55.lean` (`theorem_55_minimalKDof_k` at
-line ~2400, etc.) resolve `k:=2` by unification, unchanged. The other buildable leaves: **CHAIN-2**
+assembling the five `_gen` arms), and — **this commit (2026-06-18)** — **`hcut_k` is now FULLY
+general-`k`**: the bare conjunct `case_cut_edge_realization_gen` (prior commit) plus the GP conjunct
+`case_cut_edge_realization_gp_gen` (this commit, `Theorem55.lean`), a verbatim numeral pass over the
+d=3 GP body (`Fin 4 → Fin (k+2)` for the `q₀ᵢ` + combined seed types, `BodyHingeFramework 2 → … k`,
+`exists_generalPosition_polynomial (k := 2) → (k := k)`, `screwDim 2 → screwDim k`, dof `k → c`); all
+GP reach-ins (`ofNormals`, the two rank/GP polynomial producers, the swap/recordsLinks bricks, B2)
+were already grade-parametric. The d=3 `case_cut_edge_realization_gp` is now its `k := 2` wrapper
+(blueprint pin `lem:case-cut-edge-realization-gp` unmoved; node prose already general-`k`). **What
+remains in the tail: only `hcontract_k`** (the Case-I dispatch — `Fin 4` / `q : α × Fin 4` panel
+geometry off `d=3`); `hforget_k`'s `k=2` filler is already general-`k`. The `d=3` consumers in
+`Theorem55.lean` (`theorem_55_minimalKDof_k` at line ~2400 calling `case_cut_edge_realization_gp`,
+etc.) resolve `k:=2` by unification, unchanged. The other buildable leaves: **CHAIN-2**
 (the chain matrix bookkeeping, eqs. 6.59–6.64, `CaseIII/`; consumes CHAIN-1, buildable now, heaviest
 mechanical leaf). **CHAIN-5** (the `d`-chain dispatch assembly, `CaseIII/Realization.lean`) has a
 frozen signature (the CHAIN↔ENTRY contract) but is gated on CHAIN-2/4 landing **and** ENTRY's extractor
@@ -206,12 +210,11 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       `GenericityDevice.lean`, the consumer); **the full base producer `hbase_k`**
       (all three bare arms `theorem_55_base_producer_{empty,single_edge,parallel_pair}_gen`,
       both working GP arms `theorem_55_base_producer_{empty,single_edge}_gp_gen`, the
-      **trichotomy dispatch** `theorem_55_base_producer_gen`); and — this commit — the
-      **`hcut_k` bare conjunct** `case_cut_edge_realization_gen` (`Theorem55.lean`, the
-      verbatim numeral pass; all reach-ins already grade-parametric). All d=3 lemmas now
-      their `k:=2` wrappers, blueprint pins unmoved. **Remaining:**
-      `case_cut_edge_realization_gp` (the heavier GP conjunct of `hcut_k` — GP-polynomial
-      machinery, not a flat numeral pass) + `hcontract_k` (the Case-I dispatch);
+      **trichotomy dispatch** `theorem_55_base_producer_gen`); and **the full `hcut_k`** —
+      the bare conjunct `case_cut_edge_realization_gen` plus, this commit, the GP conjunct
+      `case_cut_edge_realization_gp_gen` (`Theorem55.lean`, verbatim numeral passes; all
+      reach-ins already grade-parametric). All d=3 lemmas now their `k:=2` wrappers,
+      blueprint pins unmoved. **Remaining: only `hcontract_k`** (the Case-I dispatch);
       `hforget_k`'s filler already general-`k`.
 
 ## Blockers / open questions
@@ -262,15 +265,16 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED** (CHAIN-4 closed by CHAIN-4d, the discriminator capstone
-`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`). **The four-producer tail (OD-7) is open**:
-both M4 halves are general-`k` (the reach-in `exists_extensor_eq_panelSupportExtensor_gen` + the
-consumer `hasPanelRealization_of_generic`), the full base producer `hbase_k` is general-`k` (the
-trichotomy dispatch `theorem_55_base_producer_gen`), and (this commit) **the `hcut_k` bare conjunct is
-general-`k`** — `case_cut_edge_realization_gen`, a verbatim numeral pass (see *Current state* +
-*Decisions made*). **Next build = `case_cut_edge_realization_gp` (the GP half of `hcut_k`; the
-smallest unblocked OD-7 step but heavier — GP-polynomial machinery, not a flat numeral pass),
-`hcontract_k` (the Case-I dispatch), CHAIN-2 (heaviest mechanical leaf), or CHAIN-5/ENTRY; CHAIN-5 is
-gated on CHAIN-2 + ENTRY's extractor reshape.**
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`). **The four-producer tail (OD-7) is open**
+but nearly done: both M4 halves are general-`k` (the reach-in
+`exists_extensor_eq_panelSupportExtensor_gen` + the consumer `hasPanelRealization_of_generic`), the
+full base producer `hbase_k` is general-`k` (the trichotomy dispatch `theorem_55_base_producer_gen`),
+and (this commit) **`hcut_k` is now FULLY general-`k`** — the bare conjunct
+`case_cut_edge_realization_gen` plus the GP conjunct `case_cut_edge_realization_gp_gen`, both verbatim
+numeral passes (see *Current state* + *Decisions made*). **Only `hcontract_k` remains in the tail.**
+**Next build = `hcontract_k` (the Case-I dispatch — the last OD-7 producer; its `Fin 4` / `q : α ×
+Fin 4` panel geometry must lift off `d=3`), CHAIN-2 (heaviest mechanical leaf), or CHAIN-5/ENTRY;
+CHAIN-5 is gated on CHAIN-2 + ENTRY's extractor reshape.**
 
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
   bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
@@ -281,15 +285,15 @@ gated on CHAIN-2 + ENTRY's extractor reshape.**
   `exists_redundant_panelRow_…` (general & GREEN). Heaviest mechanical leaf ("exactly the same as
   `d=3`"); may split on contact.
 - **The four-producer tail (OD-7) — both M4 halves general-`k`; the full base producer `hbase_k`
-  general-`k`; the `hcut_k` bare conjunct general-`k` (as of 2026-06-18).** The reach-in
+  general-`k`; `hcut_k` FULLY general-`k` (both conjuncts, as of 2026-06-18).** The reach-in
   `exists_extensor_eq_panelSupportExtensor_gen` and the consumer `hasPanelRealization_of_generic`
   (`GenericityDevice.lean`) are lifted; `hforget_k`'s `k=2` filler is *already* general-`k`. The base
   producer (three bare arms + two GP arms + the trichotomy dispatch `theorem_55_base_producer_gen`) is
-  general-`k`; this commit lifts the `hcut_k` bare conjunct `case_cut_edge_realization_gen`
-  (`Theorem55.lean`). All d=3 lemmas are now `k:=2` wrappers, blueprint pins unmoved. **Smallest next
-  step:** `case_cut_edge_realization_gp` (the GP conjunct of `hcut_k` — heavier, GP-polynomial
-  machinery / `ofNormals`, not a flat numeral pass) or `hcontract_k` (the Case-I dispatch), once their
-  `Fin 4` / `q : α × Fin 4` panel geometry lifts off `d = 3`. Fold into CHAIN, not a successor.
+  general-`k`; `hcut_k` is now both the bare conjunct `case_cut_edge_realization_gen` and (this commit)
+  the GP conjunct `case_cut_edge_realization_gp_gen` (`Theorem55.lean`). All d=3 lemmas are now `k:=2`
+  wrappers, blueprint pins unmoved. **Smallest next step:** `hcontract_k` (the Case-I dispatch — the
+  last OD-7 producer), once its `Fin 4` / `q : α × Fin 4` panel geometry lifts off `d = 3`. Fold into
+  CHAIN, not a successor.
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
@@ -375,58 +379,36 @@ git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the BlueprintExposition CHAIN
 KT leaves implicit (`extensor_join_proportional_complementIso_meet`) is the CHAIN-3 ledger entry.
 
 **Landed OD-7 (four-producer tail) bricks** (`Theorem55.lean`/`PanelLayer.lean`/`Extensor.lean`/`GenericityDevice.lean`):
-- `case_cut_edge_realization_gen` (2026-06-18, the `hcut_k` bare conjunct at general grade). Verbatim
-  numeral pass over the d=3 `case_cut_edge_realization`: `Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace
-  k`, `screwDim 2 → screwDim k`, `exists_extensor_in_two_panels → …_grade`, dof `k → c` (the obtain
-  binders `k₁/k₂ → c₁/c₂`). All reach-ins were already grade-parametric — the cut decomposition
-  (`exists_cut_decomposition_of_not_twoEdgeConnected`, graph-only, `hk_eq` in `bodyBarDim n`), the
-  block-diagonal rank bound `le_finrank_span_rigidityRows_of_cut`, the B2 upper bound
-  `finrank_span_rigidityRows_add_deficiency_le` (all `BodyHingeFramework k`/`screwDim k`), and the
-  cut-extensor brick `exists_extensor_in_two_panels_grade`; the `← hn` rank arithmetic (`hkey`/`hscrew`
-  helpers) is grade-agnostic. The d=3 `case_cut_edge_realization` is now its `k := 2` wrapper (blueprint
-  pin `lem:case-cut-edge-realization` unmoved; node prose already general-`k`). Axiom-clean; no new
-  friction (TACTICS-QUIRKS §58 numeral-lift idiom; same dof-`k`→`c` rename as
-  `theorem_55_base_producer_gen`). **Remaining `hcut_k`:** the GP conjunct `case_cut_edge_realization_gp`.
-- `theorem_55_base_producer_gen` (2026-06-18, the trichotomy dispatch — completes the `hbase_k`
-  producer at general grade). Verbatim numeral lift of the d=3 `theorem_55_base_producer`: dispatches
-  via the grade-agnostic `isMinimalKDof_ncard_le_two_trichotomy` to the five `_gen` arms (three bare +
-  two GP), dof variable `k → c` (the grade `k : ℕ` is now the generalized parameter), grade `2 → k`,
-  with `hk : 1 ≤ k` feeding the single-edge/parallel-pair distinct-`k`-subsets device and
-  `hn : bodyBarDim n = screwDim k` the empty arms' rank arithmetic. Parallel-pair GP conjunct vacuous
-  via `not_simple_of_isMinimalKDof_of_ncard_two`. The d=3 `theorem_55_base_producer` re-derived as the
-  `k:=2` wrapper (`by norm_num` floor); blueprint pin `lem:theorem-55-base-producer` unmoved (node
-  prose already stated the general-`k` motive). Axiom-clean; no new friction (TACTICS-QUIRKS §58
-  numeral-lift idiom — pure composition, built clean on the first try).
-- **The five `hbase_k` arms** `theorem_55_base_producer_{empty,single_edge,parallel_pair}_gen` (three
-  bare) + `theorem_55_base_producer_{empty,single_edge}_gp_gen` (the two GP) (2026-06-18) — verbatim
-  numeral lifts (`Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`, `one_le_screwDim` for the d=3
-  `decide`-cast) of the d=3 arm bodies over the already-general-`k` geometry (`theorem_55_base`,
-  `span_panelRow_linking_eq_rigidityRows`, `finrank_span_panelRow_edge`, bridge B1, the L3a brick
-  `exists_linearIndependent_extensor_pair_perp_grade`, the GP machinery `exists_generalPosition_polynomial`/
-  `ofNormals`); the parallel-pair arm is the only genuinely-geometric one (two LI extensors in a common
-  panel, rank `D`), its GP conjunct vacuous. d=3 arms all now `k:=2` wrappers, blueprint pins unmoved.
-  Axiom-clean; no new friction (TACTICS-QUIRKS §58 numeral-lift idiom).
-- `hasPanelRealization_of_generic` general-`k` lift (2026-06-18, the M4 consumer) — generalized from
-  `k=2` to any grade (`[NeZero k]`; the GP → bare `HasPanelRealization` forgetful map). The only `k=2`
-  content was the two `exists_extensor_eq_panelSupportExtensor` calls building the `ExtensorInPanel`
-  witnesses → swapped for `_gen`; the rest (panel-nonzeroness via `IsGeneralPosition`, genuine-hinge
-  via `supportExtensor_ne_zero_of_isGeneralPosition`, rank transfer) was already general-`k`. `[NeZero
-  k]` is `_gen`'s requirement (the slot-0 rescale); `Theorem55.lean`'s `k=2` consumers unify `k:=2`
-  with `NeZero 2` automatic, untouched. Blueprint `def:genuine-hinge-realization` already stated the
-  generic-`k` prose, so the node stays honestly green (statement strengthened, name + `\leanok` kept).
-  Axiom-clean; no friction (mechanical numeral lift over already-general infra).
-- `exists_extensor_eq_panelSupportExtensor_gen` (2026-06-18) — the general-`k` meet-decomposition,
-  the M4-forget reach-in lift. `[NeZero k]`, LI `![n₁,n₂] : Fin 2 → Fin (k+2) → ℝ` ⟹ `k` points
-  `p : Fin k → Fin (k+2) → ℝ` with `(panelSupportExtensor n₁ n₂).val = extensor p` + each `p i` ⊥
-  both normals. Route: `k` LI common-perp points (`exists_linearIndependent_perp_of_normals`, `m=k`)
-  → the CHAIN-3 (h-4) duality `extensor_join_proportional_complementIso_meet` (perp hyps dot↔`toDual`
-  via `Pi.basisFun_toDual_apply`) gives `c • complementIso⟨extensor ![n₁,n₂]⟩ = ⟨extensor p⟩` →
-  absorb `c⁻¹` into slot 0 (`extensor_update_smul`). **Confirms the caveat (e) OD-7 expectation:** the
-  duality *is* the M4-forget `d=3` reach-in (no other `d=3` geometry surfaced). The d=3
-  `exists_extensor_eq_panelSupportExtensor` is now its `k:=2` wrapper (`exists_two_perp_…`/double-
-  annihilator route retired). New supporting brick `extensor_update_smul` (`Extensor.lean`): first-slot
-  scalar absorption `extensor (update v i (c • v i)) = c • extensor v` (general, upstream-flavoured).
-  Axiom-clean. **Remaining tail:** the M4 *consumer* `hasPanelRealization_of_generic` is still `k=2`.
+- `case_cut_edge_realization_gp_gen` (2026-06-18, the `hcut_k` GP conjunct at general grade —
+  **completes `hcut_k`**). Verbatim numeral pass over the d=3 `case_cut_edge_realization_gp`:
+  `Fin 4 → Fin (k+2)` (the `q₀ᵢ` side seeds + the combined `exists_injective_algebraicIndependent_real`
+  seed type), `BodyHingeFramework 2 → BodyHingeFramework k` (the two side-span `congr` ascriptions),
+  `exists_generalPosition_polynomial (k := 2) → (k := k)`, `screwDim 2 → screwDim k`, dof `k → c`
+  (incl. the cut-decomposition binders `k₁/k₂ → c₁/c₂`). All GP reach-ins were already grade-parametric
+  — `ofNormals` (`Fin (k+2)`-normals), the two polynomial producers `exists_generalPosition_polynomial`
+  / `exists_rankPolynomial_of_le_finrank_linking`, the swap/recordsLinks bricks
+  (`recordsLinks_swap_endsOf`, `infinitesimalMotions_ofNormals_eq_of_ends_swap`,
+  `ofNormals_endsOf_recordsLinks`), the cut brick `le_finrank_span_rigidityRows_of_cut`, B2
+  `finrank_span_rigidityRows_add_deficiency_le`; the `|C|=0/1` lower-bound arms' `linarith` + `hkey`
+  explicit `screwDim k·(|V|−1)` product idiom is grade-agnostic. No `[NeZero k]` needed (no slot-0
+  rescale — unlike the M4 meet-decomposition). The d=3 `case_cut_edge_realization_gp` is now its `k:=2`
+  wrapper (blueprint pin `lem:case-cut-edge-realization-gp` unmoved; node prose already general-`k`).
+  Axiom-clean; no new friction (TACTICS-QUIRKS §58 numeral-lift idiom; same dof-`k`→`c` rename as the
+  bare conjunct). **`hcut_k` fully general-`k`; only `hcontract_k` remains in the OD-7 tail.**
+- `case_cut_edge_realization_gen` (2026-06-18, the `hcut_k` bare conjunct at general grade) — verbatim
+  numeral pass over the d=3 body (`Fin 4 → Fin (k+2)`, `ScrewSpace 2 → ScrewSpace k`, `screwDim 2 →
+  screwDim k`, `exists_extensor_in_two_panels → …_grade`, dof `k → c`); reach-ins all grade-parametric.
+  d=3 `case_cut_edge_realization` now the `k:=2` wrapper. The GP conjunct followed (above).
+- `theorem_55_base_producer_gen` + the five `_gen` arms
+  `theorem_55_base_producer_{empty,single_edge,parallel_pair}{,_gp}_gen` (2026-06-18, completes
+  `hbase_k`) — trichotomy dispatch (`isMinimalKDof_ncard_le_two_trichotomy`) over verbatim numeral lifts
+  of the d=3 arms (grade `2→k`, dof `k→c`; parallel-pair is the only geometric arm, its GP conjunct
+  vacuous). d=3 lemmas all now `k:=2` wrappers, blueprint pins unmoved.
+- `hasPanelRealization_of_generic` (M4 consumer) + `exists_extensor_eq_panelSupportExtensor_gen` (the
+  M4-forget meet-decomposition reach-in), both 2026-06-18, `[NeZero k]` — the decomposition routes
+  through the CHAIN-3 (h-4) duality `extensor_join_proportional_complementIso_meet` (confirming caveat
+  (e): the duality *is* the only M4-forget d=3 reach-in), with slot-0 rescale `extensor_update_smul`
+  (new, `Extensor.lean`). d=3 lemmas now `k:=2` wrappers; both M4 halves general-`k`.
 
 **Landed CHAIN-4 bricks** (CHAIN-4 CLOSED 2026-06-18, `RigidityMatrix/Claim612.lean`; leaf names + per-leaf
 verdicts are the *CHAIN leaf checklist* `[x]` CHAIN-4a–4d entries above — the canonical home; construction
