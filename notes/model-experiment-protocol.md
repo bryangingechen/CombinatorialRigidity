@@ -250,49 +250,34 @@ coordinator session before being caught).
 | Cost | tokens + tool uses + wall time, as reported by the Agent tool |
 | Notes | the experiment-relevant signal only — see *Notes discipline* |
 
-**Notes discipline (the column is signal, not a recap).** The Notes
-field records only what the *experiment* needs and what is found
-*nowhere else*: the outcome's cause, which rubric bit failed and why,
-confounds or cost anomalies that qualify the data point, and the
-escalation- / boundary-pair *verdict* (that verdict is the experiment's
-product — keep it). It is **not** a recap of the mathematics, the proof
-route, or the design verdict that landed — those live in the commit
-(`git show`), the design section the row cites, and `notes/PhaseN.md`'s
-*Decisions made*. The test: if a sentence restates what the *commit*
-did rather than how the *model* did, cut it. Target a few lines; a row
-that runs to a full paragraph is almost always recapping. (Calibration:
-rows 84–93 ballooned to 1.4–2.8k chars each by recapping the math, and
-were compressed to signal-only on 2026-06-13.)
+**Notes discipline — the column is the experiment-meta *delta*, not a recap,
+and a length gate enforces it.** The Notes field records only what the
+*experiment* needs and is found *nowhere else*: the outcome's cause, which
+rubric bit failed and why, confounds / cost anomalies that qualify the data
+point, and the escalation- / boundary-pair *verdict*. It is **not** a recap of
+the mathematics, the proof route, or the design verdict that landed — **the
+commit message is the recap** (`git show`), alongside the design § the row
+cites and `notes/PhaseN.md`'s *Decisions made*. The test: if a sentence
+restates what the *commit* did rather than how the *model* did, cut it.
 
-**Write each row to the discipline, not to its neighbors.** Bloated
-*earlier* rows are **not** a template — anchoring on the verbosity
-visible above is exactly how a freshly-compressed log re-inflates, one
-matched row at a time. Judge every new row against the signal-only bar
-and the ~600-char cue **on its own**, even when the rows above it violate
-both; **never commit a row carrying extraneous detail, or content that
-belongs in `notes/PhaseN.md`'s *Decisions made* / the design section,
-merely because the surrounding rows do.** If writing to the discipline
-makes a new row look conspicuously terser than its neighbors, that is
-*correct* — the neighbors are the defect; compressing them is a separate
-cleanup pass, never a license to match them. (Calibration: added after a
-coordinator's fresh rows re-bloated to 1.0–1.5k chars mid-phase while the
-prior session's rows sat at 1.3–2.2k; the fresh rows were re-compressed
-to signal-only and the prior ones deferred to a future pass.)
+**Enforced cap: ~600 chars (~4 lines) per Notes cell.** A repo-local commit
+gate checks every row a commit touches and *rejects* an over-cap row (in this
+repo, `notes/check-log-rows.py`, run in the coordinator's per-commit step;
+`--all` audits the whole table). The cap is a hard limit, not a target:
+strengthening the prose alone failed three times — rows 84–93, then 96–100, then
+191–194 each re-bloated by recapping the math or re-narrating an episode — so the
+gate, not exhortation, is the control. Two corollaries it makes mechanical:
 
-**Episode lessons live in *Findings*, not in every row.** A multi-row
-episode (a boundary pair, an escalation, a re-route later caught wrong)
-yields *one* durable lesson — write it **once** in the sibling log's
-*Findings* and have each participating row *cite* it ("→ Findings
-<date>") rather than restate it. The regrowth failure mode is each row of
-an episode re-narrating the shared lesson; that is how a freshly-
-compressed log reinflates within a single phase (it recurred once after
-the rows-84–93 compression above, on the very next multi-row episode).
-The per-row Notes then carries only that row's *own* signal: its outcome
-cause and its rubric-fail cause — the cross-row lesson is the *Findings*
-bullet's job. **Firm cue:** a Notes cell past ~4 lines / ~600 chars is
-almost certainly recapping the math or re-narrating an episode lesson —
-compress it in the same commit. The row is working memory; the episode's
-writeup is *Findings*.
+- **Episode lessons live in *Findings*, written once.** A multi-row episode (a
+  boundary pair, an escalation, a re-route later caught wrong) yields one durable
+  lesson; write it in *Findings* and have each participating row *cite* it ("→
+  Findings <date>") rather than restate it. A row pushing over the cap is usually
+  a row trying to re-narrate its episode's shared lesson.
+- **Write each row to the cap on its own, never to its neighbors.** A
+  grandfathered bloated row above is not a template — a new row that reads
+  conspicuously terser than its neighbors is *correct*. (Compressing the
+  grandfathered backlog is a separate `--all` cleanup pass, not a license to
+  match it.)
 
 **Cost caveat.** The reported token figure is noisy across runs (it
 does not obviously track tool-use count or wall time); record all

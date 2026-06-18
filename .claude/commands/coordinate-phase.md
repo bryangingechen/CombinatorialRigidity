@@ -71,8 +71,11 @@ Loop:
    parameter, prompt held fixed. Honor any **standing rung override** in
    the log's repo-local config. Log rows follow the protocol's
    *Per-dispatch record* rules (write-after-verification timing,
-   tail-only edit matching). If Status says concluded, follow the
-   promoted guideline. **Run boundary pairs when due** — when the log's
+   tail-only edit matching); before committing a log row, run `python3
+   notes/check-log-rows.py` — it enforces the ~600-char Notes cap on the
+   rows this commit touches; compress to pass (the commit message carries
+   the recap), never commit a row it rejects. If Status says concluded,
+   follow the promoted guideline. **Run boundary pairs when due** — when the log's
    findings name an open pair need and the profile fits, launch one
    without asking (the protocol's worktree procedure neutralizes the
    OOM/cost concern); pin a free-choice hand-off to one slice first so
