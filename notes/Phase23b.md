@@ -1,13 +1,16 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED.** This commit (2026-06-18) **opened the
-four-producer tail (OD-7)** with its foundational meet-decomposition brick
-`exists_extensor_eq_panelSupportExtensor_gen` (`PanelLayer.lean`), the general-`k` M4-forget reach-in
-lift routing through CHAIN-3 (h-4)'s join=meet duality (the d=3 lemma is now its `k:=2` wrapper;
-supporting brick `extensor_update_smul` in `Extensor.lean`). **CHAIN-4 was closed by the prior commit's
-CHAIN-4d** (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the discriminator capstone =
-assembly of CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the rest of the
-OD-7 tail.** CHAIN-1 = the `ιc`-block candidate augment + `…candidateBlock_swap`
+**Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED.** The OD-7 four-producer tail is **open**:
+its foundational meet-decomposition brick `exists_extensor_eq_panelSupportExtensor_gen` landed
+(`PanelLayer.lean`, the general-`k` M4-forget reach-in routing through CHAIN-3 (h-4)'s join=meet
+duality), and **this commit (2026-06-18) lifted the M4 *consumer*** `hasPanelRealization_of_generic`
+(`GenericityDevice.lean`) to general `k` (`[NeZero k]`; the forgetful map GP → bare `HasPanelRealization`
+now holds at every grade, routing through the `_gen` brick — the `d=3` consumers in `Theorem55.lean`
+resolve `k:=2` by unification, `NeZero 2` automatic). **CHAIN-4 was closed by the CHAIN-4d commit**
+(`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the discriminator capstone = assembly of
+CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the four producers
+(`hforget_k`/`hbase_k`/`hcut_k`/`hcontract_k`, `Theorem55.lean`, numeral pass).** CHAIN-1 = the
+`ιc`-block candidate augment + `…candidateBlock_swap`
 (`RigidityMatrix/Basic.lean`), graph-free over `ScrewSpace k`. CHAIN-3 = the general-`d` per-line
 join=meet duality `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), the
 `⋀^{d−1}W`-is-a-line route (the d=3 `complementIso_smul_eq_extensor_join` stays the GREEN d=3
@@ -28,20 +31,22 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = CHAIN-2, the M4 consumer lift, or CHAIN-5/ENTRY.** CHAIN-1/3/4 are CLOSED; the
-**four-producer tail (OD-7) is now opened** — its foundational meet-decomposition brick landed this
-commit (2026-06-18): **`exists_extensor_eq_panelSupportExtensor_gen`** (`PanelLayer.lean`), the
-general-`k` lift of the M4-forget reach-in `exists_extensor_eq_panelSupportExtensor`, routing through
-CHAIN-3 (h-4)'s join=meet duality `extensor_join_proportional_complementIso_meet` (not the d=3
-double-annihilator). The d=3 lemma is now its `k:=2` wrapper; supporting general-`k` brick
-`extensor_update_smul` (first-slot scalar absorption) added to `Extensor.lean`. **What remains in the
-tail:** lift the M4 *consumer* `hasPanelRealization_of_generic` (`GenericityDevice.lean`, still
-`k=2`/`Fin 4`) to general `k`, then `hforget_k`/`hbase_k`/`hcut_k`/`hcontract_k` (`Theorem55.lean`)
-follow as the numeral pass. The other buildable leaves: **CHAIN-2** (the chain matrix bookkeeping,
-eqs. 6.59–6.64, `CaseIII/`; consumes CHAIN-1, buildable now, heaviest mechanical leaf). **CHAIN-5**
-(the `d`-chain dispatch assembly, `CaseIII/Realization.lean`) has a frozen signature (the CHAIN↔ENTRY
-contract) but is gated on CHAIN-2/4 landing **and** ENTRY's extractor reshape. See *Hand-off* for the
-per-leaf detail.
+**Next build = CHAIN-2, the four producers' numeral pass, or CHAIN-5/ENTRY.** CHAIN-1/3/4 are CLOSED;
+the **four-producer tail (OD-7) is open** — its foundational meet-decomposition brick
+`exists_extensor_eq_panelSupportExtensor_gen` (`PanelLayer.lean`, the general-`k` M4-forget reach-in
+through CHAIN-3 (h-4)'s join=meet duality) AND the M4 **consumer** lift landed: this commit
+(2026-06-18) generalized **`hasPanelRealization_of_generic`** (`GenericityDevice.lean`) from `k=2` to
+general `k` (`[NeZero k]`), routing the `ExtensorInPanel` witnesses through `_gen` instead of the d=3
+wrapper; everything else in the proof was already general-`k`. The `d=3` consumers in `Theorem55.lean`
+(lines 2146/2322/2328) resolve `k:=2` by unification (`NeZero 2` automatic), unchanged. **What remains
+in the tail:** the four producers `hforget_k`/`hbase_k`/`hcut_k`/`hcontract_k` (`Theorem55.lean`) — now
+that both M4 halves are general-`k`, `hforget_k`'s `k=2` filler `hasPanelRealization_of_generic` is
+*already* general-`k`, so the remaining producer work is the numeral pass on the base/cut/Case-I arms
+(still `d=3`-pinned in `bbase`/`bcut`/`bcontract`). The other buildable leaves: **CHAIN-2** (the chain
+matrix bookkeeping, eqs. 6.59–6.64, `CaseIII/`; consumes CHAIN-1, buildable now, heaviest mechanical
+leaf). **CHAIN-5** (the `d`-chain dispatch assembly, `CaseIII/Realization.lean`) has a frozen signature
+(the CHAIN↔ENTRY contract) but is gated on CHAIN-2/4 landing **and** ENTRY's extractor reshape. See
+*Hand-off* for the per-leaf detail.
 
 **CHAIN-4d — LANDED the prior commit (2026-06-18): the discriminator capstone, closing CHAIN-4.**
 `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`RigidityMatrix/Claim612.lean`): from
@@ -187,15 +192,17 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       as a `k=2`/length-3 wrapper (no `d=3` regression — C.4 zero-regression map).
 - [~] **CHAIN tail — lift the four 23a-carried producers** (OD-7 fold). After
       CHAIN-3: `hforget_k` (M4 forget), then through it `hbase_k`/`hcut_k`/
-      `hcontract_k`. **OPENED 2026-06-18:** the foundational meet-decomposition
-      brick `exists_extensor_eq_panelSupportExtensor_gen` (`PanelLayer.lean`)
-      landed — the general-`k` lift of the M4-forget reach-in, routing through
-      CHAIN-3 (h-4) (confirms the caveat (e) OD-7 expectation: the duality *is*
-      the reach-in; +`extensor_update_smul`, a general first-slot scalar-absorption
-      brick in `Extensor.lean`). The d=3 `exists_extensor_eq_panelSupportExtensor`
-      is now its `k:=2` wrapper. **Remaining:** lift the M4 *consumer*
-      `hasPanelRealization_of_generic` (`GenericityDevice.lean`, still `k=2`) to
-      general `k`, then the four producers (`Theorem55.lean`) by numeral pass.
+      `hcontract_k`. **OPENED 2026-06-18:** both M4 halves now general-`k`. (1) the
+      foundational meet-decomposition brick `exists_extensor_eq_panelSupportExtensor_gen`
+      (`PanelLayer.lean`) — the M4-forget reach-in, routing through CHAIN-3 (h-4)
+      (confirms caveat (e): the duality *is* the reach-in; +`extensor_update_smul`,
+      `Extensor.lean`); d=3 lemma now its `k:=2` wrapper. (2) **2026-06-18: the M4
+      *consumer* `hasPanelRealization_of_generic` (`GenericityDevice.lean`) lifted to
+      general `k` (`[NeZero k]`)** — the forgetful map GP → bare holds at every grade,
+      routing through (1); rest of the proof was already general-`k`; `Theorem55.lean`
+      consumers resolve `k:=2` unchanged. **Remaining:** the four producers
+      (`Theorem55.lean` `hbase_k`/`hcut_k`/`hcontract_k`, still `d=3`-pinned arms)
+      by numeral pass — `hforget_k`'s filler is now already general-`k`.
 
 ## Blockers / open questions
 
@@ -244,12 +251,12 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED** (CHAIN-4 closed by the prior commit's CHAIN-4d, the
-discriminator capstone `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`). **This commit
-opened the four-producer tail (OD-7)** — its foundational brick `exists_extensor_eq_panelSupportExtensor_gen`
-landed (see *Current state* + *Decisions made*). **Next build = the M4 consumer lift
-`hasPanelRealization_of_generic` (smallest), CHAIN-2 (heaviest mechanical leaf), or the rest of the
-OD-7 tail; CHAIN-5 is gated on CHAIN-2 + ENTRY's extractor reshape.**
+**CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED** (CHAIN-4 closed by CHAIN-4d, the discriminator capstone
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`). **The four-producer tail (OD-7) is open**:
+both M4 halves are now general-`k` — the reach-in `exists_extensor_eq_panelSupportExtensor_gen` and (this
+commit) the consumer `hasPanelRealization_of_generic` (see *Current state* + *Decisions made*). **Next
+build = CHAIN-2 (heaviest mechanical leaf), the three remaining producers' numeral pass, or
+CHAIN-5/ENTRY; CHAIN-5 is gated on CHAIN-2 + ENTRY's extractor reshape.**
 
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
   bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
@@ -259,14 +266,12 @@ OD-7 tail; CHAIN-5 is gated on CHAIN-2 + ENTRY's extractor reshape.**
   its own `Φᵢ` before the CHAIN-1 augment fires one body at a time). Reuses Claim 6.11
   `exists_redundant_panelRow_…` (general & GREEN). Heaviest mechanical leaf ("exactly the same as
   `d=3`"); may split on contact.
-- **The four-producer tail (OD-7) — OPENED 2026-06-18.** Its foundational meet-decomposition brick
-  `exists_extensor_eq_panelSupportExtensor_gen` landed (general-`k`, routes through (h-4)'s duality;
-  the d=3 lemma is now its `k:=2` wrapper). **Smallest next concrete commit:** lift the M4 *consumer*
-  `hasPanelRealization_of_generic` (`GenericityDevice.lean:1905`, still `k=2`/`Fin 4` — it `refine`s
-  the `ExtensorInPanel` witnesses off the d=3 `exists_extensor_eq_panelSupportExtensor` at screw-grade
-  `2`) to general `k` using the new `_gen` brick; then `hforget_k`/`hbase_k`/`hcut_k`/`hcontract_k`
-  (`Theorem55.lean`, the M4-forget + conditioned-pair producers) follow as the numeral pass once the
-  spine they feed is general grade. Fold into CHAIN, not a successor.
+- **The four-producer tail (OD-7) — both M4 halves general-`k` as of 2026-06-18.** The reach-in
+  `exists_extensor_eq_panelSupportExtensor_gen` and the consumer `hasPanelRealization_of_generic`
+  (`GenericityDevice.lean`) are both lifted; `hforget_k`'s `k=2` filler is *already* general-`k`.
+  **Remaining producers:** `hbase_k`/`hcut_k`/`hcontract_k` (`Theorem55.lean` — the base/cut/Case-I
+  arms, still `d=3`-pinned in `theorem_55_base_producer`/`case_cut_edge_realization*`/`case_I_dispatch`)
+  follow as the numeral pass once their `Fin 4` panel geometry lifts. Fold into CHAIN, not a successor.
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
@@ -351,7 +356,16 @@ checklist* `[x]` entry above (the canonical leaf-status home), and the construct
 git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the BlueprintExposition CHAIN-3 entry. The duality
 KT leaves implicit (`extensor_join_proportional_complementIso_meet`) is the CHAIN-3 ledger entry.
 
-**Landed OD-7 (four-producer tail) brick** (opens the tail; `PanelLayer.lean` + `Extensor.lean`):
+**Landed OD-7 (four-producer tail) bricks** (`PanelLayer.lean`/`Extensor.lean`/`GenericityDevice.lean`):
+- `hasPanelRealization_of_generic` general-`k` lift (2026-06-18, the M4 consumer) — generalized from
+  `k=2` to any grade (`[NeZero k]`; the GP → bare `HasPanelRealization` forgetful map). The only `k=2`
+  content was the two `exists_extensor_eq_panelSupportExtensor` calls building the `ExtensorInPanel`
+  witnesses → swapped for `_gen`; the rest (panel-nonzeroness via `IsGeneralPosition`, genuine-hinge
+  via `supportExtensor_ne_zero_of_isGeneralPosition`, rank transfer) was already general-`k`. `[NeZero
+  k]` is `_gen`'s requirement (the slot-0 rescale); `Theorem55.lean`'s `k=2` consumers unify `k:=2`
+  with `NeZero 2` automatic, untouched. Blueprint `def:genuine-hinge-realization` already stated the
+  generic-`k` prose, so the node stays honestly green (statement strengthened, name + `\leanok` kept).
+  Axiom-clean; no friction (mechanical numeral lift over already-general infra).
 - `exists_extensor_eq_panelSupportExtensor_gen` (2026-06-18) — the general-`k` meet-decomposition,
   the M4-forget reach-in lift. `[NeZero k]`, LI `![n₁,n₂] : Fin 2 → Fin (k+2) → ℝ` ⟹ `k` points
   `p : Fin k → Fin (k+2) → ℝ` with `(panelSupportExtensor n₁ n₂).val = extensor p` + each `p i` ⊥

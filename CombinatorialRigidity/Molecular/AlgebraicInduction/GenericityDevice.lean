@@ -1890,22 +1890,28 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial
 (`def:genuine-hinge-realization`, Phase 22i L0e) -/
 
 /-- **M4: a generic realization is a genuine-hinge realization** (`def:genuine-hinge-realization`,
-Phase 22i L0e). Forgetful map from `PanelHingeFramework.HasGenericFullRankRealization 2 n G`
-(the GP-motive, L0e form with rank conjunct) to `HasPanelRealization 2 n G` (the honest bare
-motive M2).
+Phase 22i L0e; general-`k` lift, Phase 23b OD-7 tail). Forgetful map from
+`PanelHingeFramework.HasGenericFullRankRealization k n G` (the GP-motive, L0e form with rank
+conjunct) to `HasPanelRealization k n G` (the honest bare motive M2), at any grade `k ≥ 1`
+(`[NeZero k]`).
 
 The four conjunct bridges:
 * *Panel nonzeroness*: from `2 ≤ |V|` get a second body `w ≠ v`; GP at `(v, w)` +
   `LinearIndependent.ne_zero 0` gives `Q.normal v ≠ 0`.
 * *Genuine hinge*: link-recording recovers `(Q.ends e).1 ≠ (Q.ends e).2` via `IsLink.ne`
   (`[G.Loopless]`); then `supportExtensor_ne_zero_of_isGeneralPosition` closes.
-* *`ExtensorInPanel`*: `exists_extensor_eq_panelSupportExtensor` at the `ends e` order
+* *`ExtensorInPanel`*: `exists_extensor_eq_panelSupportExtensor_gen` (the general-`k`
+  meet-decomposition routing through the CHAIN-3 join=meet duality) at the `ends e` order
   (its two perp-ness conclusions cover `{normal u, normal v}` whichever disjunct falls).
-* *Rank*: direct transfer — M3's rank conjunct IS M2's ℤ form, no W2 round-trip needed. -/
-theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] [Finite α]
+* *Rank*: direct transfer — M3's rank conjunct IS M2's ℤ form, no W2 round-trip needed.
+
+`[NeZero k]` is required by `exists_extensor_eq_panelSupportExtensor_gen` (the `k`-point
+meet-decomposition rescales the first of `k` points, which needs `0 : Fin k` to be a real index).
+The `d = 3` consumers in `Theorem55.lean` instantiate `k := 2`, where `NeZero 2` is automatic. -/
+theorem hasPanelRealization_of_generic [NeZero k] {n : ℕ} {G : Graph α β} [G.Loopless] [Finite α]
     (hV : 2 ≤ V(G).ncard)
-    (h : PanelHingeFramework.HasGenericFullRankRealization 2 n G) :
-    HasPanelRealization 2 n G := by
+    (h : PanelHingeFramework.HasGenericFullRankRealization k n G) :
+    HasPanelRealization k n G := by
   obtain ⟨Q, hQg, hQgp, hQrank, hQrec, _⟩ := h
   have hne : V(G).Nonempty := (Set.ncard_pos (Set.toFinite _)).mp (by omega)
   refine ⟨Q.toBodyHinge, Q.normal, ?_, ?_, ?_, ?_⟩
@@ -1933,7 +1939,7 @@ theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] 
       have hsupp : Q.toBodyHinge.supportExtensor e =
           panelSupportExtensor (Q.normal u) (Q.normal v) := by
         rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
-      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor (hQgp u v he.ne)
+      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen (hQgp u v he.ne)
       have hval : (Q.toBodyHinge.supportExtensor e).val = extensor p :=
         congr_arg ScrewSpace.val hsupp ▸ hp
       exact ⟨⟨p, hval, fun i => (hperp i).1⟩, ⟨p, hval, fun i => (hperp i).2⟩⟩
@@ -1942,7 +1948,7 @@ theorem hasPanelRealization_of_generic {n : ℕ} {G : Graph α β} [G.Loopless] 
       have hsupp : Q.toBodyHinge.supportExtensor e =
           panelSupportExtensor (Q.normal v) (Q.normal u) := by
         rw [PanelHingeFramework.toBodyHinge_supportExtensor, h1, h2]
-      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor (hQgp v u he.ne.symm)
+      obtain ⟨p, hp, hperp⟩ := exists_extensor_eq_panelSupportExtensor_gen (hQgp v u he.ne.symm)
       have hval : (Q.toBodyHinge.supportExtensor e).val = extensor p :=
         congr_arg ScrewSpace.val hsupp ▸ hp
       exact ⟨⟨p, hval, fun i => (hperp i).2⟩, ⟨p, hval, fun i => (hperp i).1⟩⟩
