@@ -1251,6 +1251,43 @@ theorem linearIndependent_sumElim_candidateRow_swap {ιn ιo : Type*}
   rw [hreassoc w', linearIndependent_equiv]
   exact (linearIndependent_sumElim_unit_iff hbase w').2 hw'
 
+/-- **Swapping an entire `d`-fold candidate block by old/new-block combinations preserves
+independence** (`lem:case-III-candidate-row`, the general-`d` chain row-correspondence of KT
+eq.~(6.62); Katoh–Tanigawa 2011 §6.4.2, the CHAIN-1 generalization of the single-`Unit`
+`linearIndependent_sumElim_candidateRow_swap` to the length-`d` chain). The candidate-completion
+family is `Sum.elim (Sum.elim rn cand) ro` — the new block `rn`, the **block** of `d` candidate
+rows `cand : ιc → Dual`, and the old block `ro`. KT's general-`d` Case III corrects *each* of the
+`d` chain candidate rows by its own inductive `(ab)`-part (an element of the old/new blocks' span,
+eq.~(6.62)): if the family with candidate block `cand` is linearly independent and `cand' i` differs
+from `cand i` by an element of `span (range (Sum.elim rn ro))` for every chain index `i` (`hdiff`),
+then the family with the swapped block `cand'` is again linearly independent.
+
+The `Fin d`-indexed generalization of `linearIndependent_sumElim_candidateRow_swap` (the `Unit`
+single-candidate version): the proof reassociates the `(ιn ⊕ ιc) ⊕ ιo` index to `(ιn ⊕ ιo) ⊕ ιc`
+(the candidate block last) and applies the block row operation
+`linearIndependent_sumElim_block_swap` with base `Sum.elim rn ro`, where each candidate's
+correction `cand' i - cand i` lies in `span (range (Sum.elim rn ro))`. Graph-free and carrier-free
+(pure linear algebra on the dual space), so the recurring `ofNormals`/`withGraph` defeq trap
+(TACTICS-QUIRKS §38) does not bite. -/
+theorem linearIndependent_sumElim_candidateBlock_swap {ιn ιo ιc : Type*}
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {cand cand' : ιc → Module.Dual ℝ (α → ScrewSpace k)}
+    (hindep : LinearIndependent ℝ (Sum.elim (Sum.elim rn cand) ro))
+    (hdiff : ∀ i, cand' i - cand i ∈ Submodule.span ℝ (Set.range (Sum.elim rn ro))) :
+    LinearIndependent ℝ (Sum.elim (Sum.elim rn cand') ro) := by
+  -- Reassociate `(ιn ⊕ ιc) ⊕ ιo` to `(ιn ⊕ ιo) ⊕ ιc`, putting the candidate block last so the
+  -- block row operation `linearIndependent_sumElim_block_swap` (base first) applies.
+  set e : (ιn ⊕ ιc) ⊕ ιo ≃ (ιn ⊕ ιo) ⊕ ιc :=
+    ((Equiv.sumAssoc ιn ιc ιo).trans
+      ((Equiv.refl ιn).sumCongr (Equiv.sumComm ιc ιo))).trans
+      (Equiv.sumAssoc ιn ιo ιc).symm with he
+  have hreassoc : ∀ c : ιc → Module.Dual ℝ (α → ScrewSpace k),
+      Sum.elim (Sum.elim rn c) ro = Sum.elim (Sum.elim rn ro) c ∘ e := by
+    intro c; funext i; rcases i with (i | u) | j <;> rfl
+  rw [hreassoc cand', linearIndependent_equiv]
+  rw [hreassoc cand, linearIndependent_equiv] at hindep
+  exact linearIndependent_sumElim_block_swap hindep hdiff
+
 /-- **The candidate-completion full block assembly: the operated augment transports back to the
 original `D(|V|−1)`-size family** (`lem:case-III-candidate-row`, KT eqs.~(6.14)–(6.16), (6.29);
 Katoh–Tanigawa 2011 §6.4.1, the candidate-completion's column-operated block-triangular `+1`,

@@ -71,6 +71,7 @@ failing pattern and the working fix.
 - `rw [map_neg]` fails *"Did not find … `?f (-?a)`"* on `(-f) x` (negation on the *map*, not the argument) → § 44 (use `LinearMap.neg_apply`)
 - `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
 - *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
+- *"expected token"* at the `⧸` glyph of `M ⧸ P` even though `Submodule.mkQ`/`Quotient.mk_eq_zero` resolve by name → § 60 (the quotient *notation* needs a direct `import Mathlib.LinearAlgebra.Quotient.Basic`; or drop the ascription and let `set π := P.mkQ` infer the codomain)
 - `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
 - *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`)
 - `Pi.single w y u` type-inference failure, or `▸` in a `fun h => …` lambda for `Pi.single_eq_of_ne` can't infer `h`'s type → § 49 (annotate: `(Pi.single w y : α → T) u`; `show u ≠ w from fun (h : u = w) => …`)
@@ -2180,3 +2181,23 @@ mirror (mathlib-only deps, no exterior-algebra import) — e.g.
 frame-alignment / range-membership steps) in a **new downstream file** that imports both the
 exterior-algebra file and the metric layer, so the metric instances never touch the upstream `⋀`
 elaboration. Phase 23b CHAIN-3 OD-8 (h-2); see FRICTION [mirrored] *`EuclideanSpace.inner_eq_basisFun_toDual`…*.
+
+## 60. The `⧸` quotient notation (`M ⧸ P`) needs a *direct* `import Mathlib.LinearAlgebra.Quotient.Basic` — "expected token" even when `Submodule.mkQ` resolves
+
+**Symptom.** A type ascription or `set` using the quotient-module notation `M ⧸ P` fails to parse
+with `error: ... expected token` at the `⧸` glyph, in a file that nonetheless resolves
+`Submodule.mkQ`, `Submodule.ker_mkQ`, `Submodule.Quotient.mk_eq_zero` etc. by name. (Hit in the
+`Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` mirror when adding
+`linearIndependent_sumElim_block_swap`, which quotients by `span (range base)`.)
+
+**Cause.** The `M ⧸ P` notation (`HasQuotient.Quotient`) is declared in
+`Mathlib.LinearAlgebra.Quotient.Defs`/`.Basic`, which is **not** transitively re-exported through
+the `LinearIndependent`/`Span`/`Finsupp` import surface the mirror already had — the *declarations*
+`Submodule.mkQ` reach it transitively, but a notation must be *in scope* (imported directly) to
+parse.
+
+**Fix.** Add `public import Mathlib.LinearAlgebra.Quotient.Basic` directly. (If you also use
+`LinearIndependent.sumElim_of_quotient`, add `Mathlib.LinearAlgebra.Dimension.Constructions` too.)
+Alternatively, sidestep the notation entirely: let the quotient type be *inferred* — `set π :=
+P.mkQ` (no `: M →ₗ[K] (M ⧸ P)` ascription) elaborates `π`'s codomain without writing the glyph.
+Phase 23b CHAIN-1; see FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…*.

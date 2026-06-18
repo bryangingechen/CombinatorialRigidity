@@ -1993,6 +1993,31 @@ limitations. Worth a once-over so future agents don't re-litigate.
   upstream home of `linearIndependent_sum`). N4 proper (`mem_hingeRowBlock_iff` +
   `linearIndependent_sumElim_candidateRow_iff`) is project-internal, in `RigidityMatrix.lean`.
 
+### [mirrored] `linearIndependent_sumElim_block_swap` — swapping a candidate block by members of the base span preserves LI
+- **Where it bit:** Phase 23b CHAIN-1 (the general-`d` chain row-correspondence, KT eq. (6.62)).
+  KT's general-`d` Case III corrects *each* of the `d` chain candidate rows by its own inductive
+  `(ab)`-part (a member of the old/new blocks' span); the `Fin d`-block generalization of the
+  single-`Unit` `linearIndependent_sumElim_candidateRow_swap`.
+- **Friction:** mathlib has no "add to each candidate row a combination of the *base* rows
+  preserves rank" lemma at the `Sum.elim base cand` block granularity (only the per-element
+  `linearIndependent_iff_notMem_span` freshness criterion, which an inclusion-of-spans argument
+  cannot drive when a candidate's correction involves another candidate's row).
+- **Resolution:** mirrored `linearIndependent_sumElim_block_swap` — pass to the quotient
+  `M ⧸ span (range base)`, where `mkQ ∘ cand' = mkQ ∘ cand` (the differences vanish), the
+  `Sum.elim base cand` split makes `mkQ ∘ cand` LI (`linearIndependent_sum` disjointness), and
+  `LinearIndependent.sumElim_of_quotient` (`Dimension.Constructions`) rebuilds the base block (in
+  the submodule) plus the unchanged quotient block. Project-side `linearIndependent_sumElim_
+  candidateBlock_swap` (`RigidityMatrix/Basic.lean`) reassociates `(ιn⊕ιc)⊕ιo → (ιn⊕ιo)⊕ιc` to
+  fit the project's `(rn, cand, ro)` layout.
+- **Gotcha (cost a build cycle):** the `⧸`/`M ⧸ P` quotient notation needs a *direct* `public
+  import Mathlib.LinearAlgebra.Quotient.Basic` — `Submodule.mkQ`/`Quotient.mk_eq_zero` resolve
+  transitively but the *notation* token does not (it failed with "expected token"). **Lifted to:**
+  TACTICS-QUIRKS § 60.
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
+  `linearIndependent_sumElim_unit_iff`; lands downstream of `Quotient.Basic` +
+  `Dimension.Constructions` if promoted, not in upstream `Basic`).
+
 ### [mirrored] `linearIndependent_sum_smul_ne_zero` — a combination of an independent family with a nonzero coefficient is nonzero
 - **Where it bit:** Phase 22e N5 (`lem:case-III-claim612-r-nonzero`, KT eq. (6.42)). The
   common candidate row `r̂ = ∑_j λ_{(ab)j} r_j` of the `D`-candidate disjunction is nonzero,

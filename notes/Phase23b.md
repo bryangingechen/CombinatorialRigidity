@@ -1,23 +1,19 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. **CHAIN-3 is now CLOSED** (2026-06-17, this commit): the assembly (h-4)
-`extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`) — the general-`d` per-line
-point-join↔panel-meet duality `∃ c, c • complementIso(j:=2)⟨extensor n,_⟩ = ⟨extensor p,_⟩` — has
-LANDED on top of CHAIN-3's three `_grade` bricks + the (h-3) leaf. **Zero new count**: with
-`W = {n 0, n 1}^⊥` (`dim W = k`, the `toDual`-perp via the (h-3) metric transport), point-join
-(`extensor_mem_range_map_subtype_of_mem_grade`) and panel-meet (the (h-3) leaf
-`complementIso_extensor_mem_range_map_subtype`) both land in the line `range(⋀^k W ↪)`; the
-panel-meet is nonzero (`complementIso` injective + `extensor n ≠ 0`), so
-`exists_smul_eq_of_mem_range_map_subtype_grade` proportionalizes (oriented `(panel-meet)↦(point-join)`
-by inverting the nonzero scalar, the form CHAIN-4 consumes). CHAIN-3's route was the
-**`⋀^{d−1}W`-is-a-line** route (point-join `d−1` points + panel-meet 2 normals) of the CHAIN-3-finish
-recon (`notes/Phase23-design.md` §"CHAIN"(f)/(g)/(h)), which **withdrew** the dead d=3-only `Φ̃` route
-(`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp` + `wedgeFixedLeft` /
-`inf_range_wedgeFixedLeft` stay green at d=3, do NOT generalize: `dim Ω = C(d−1,2) = 1` only at
-`d=3`). The d=3 `complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper (re-pointing the
-discriminator at (h-4)'s `k=2` instance is a CHAIN-4 decision, not forced; h-5). **CHAIN-1/2/4/5
-remain** (CHAIN-5 gated by the ENTRY-contract reshape). The integer Phase 23 stays **in progress** —
-ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
+**Status:** open. **CHAIN-1 first brick LANDED (2026-06-18, this commit): the `Fin d` chain
+row-correspondence (KT eq. 6.62)** — `linearIndependent_sumElim_candidateBlock_swap`
+(`RigidityMatrix/Basic.lean`) + its mirror `linearIndependent_sumElim_block_swap`
+(`Mathlib/.../LinearIndependent/Basic.lean`), the block generalization of the single-`Unit`
+`linearIndependent_sumElim_candidateRow_swap` (swap an arbitrary candidate block by base-span
+members, quotient route + `sumElim_of_quotient`). Graph-free, no `d=3` content, no ENTRY-contract
+dependency. **CHAIN-1's `Fin d` *augment* proper still open** (the per-candidate-column-op transport;
+see *Hand-off*). **CHAIN-3 is CLOSED** (prior commit, 2026-06-17): the general-`d` per-line
+join=meet duality `extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), the
+`⋀^{d−1}W`-is-a-line route (full per-leaf detail in *Decisions made* + `notes/Phase23-design.md`
+§"CHAIN"(f)/(h); the d=3 `complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper).
+**CHAIN-1 (augment)/2/4/5 remain** (CHAIN-5 gated by the ENTRY-contract reshape). The integer
+Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary;
+codes-until-open).
 
 **Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
 *rolling* state + hand-off for the active layer only. The cross-phase
@@ -33,32 +29,33 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**CHAIN-3 is CLOSED (2026-06-17, this commit): the assembly (h-4)
-`extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`) has LANDED** — the general-`d`
-per-line point-join↔panel-meet duality `∃ c, c • complementIso(j:=2)⟨extensor n,_⟩ = ⟨extensor p,_⟩`
-for `n : Fin 2` the two line-normals and `p : Fin k` the `k = d−1` points spanning the line
-(`hperp : toDual (p i) (n j) = 0`). **Zero new count** (the `⋀^{d−1}W`-is-a-line route): set
-`W := {n 0, n 1}^⊥` (`= ⨅ j, ker (toDual.flip (n j))`); `finrank W = k` via the (h-3) metric transport
-(`W ≤ Q` the `toDual`-perp, both `k`-dim across `EuclideanSpace.equiv`, so `W = Q`); point-join
-`⟨extensor p,_⟩ ∈ range(⋀^k W ↪)` by `extensor_mem_range_map_subtype_of_mem_grade (d := k+1)` (each
-`p i ∈ W` from `hperp`); panel-meet `∈ range(⋀^k W ↪)` by the (h-3) leaf
-`complementIso_extensor_mem_range_map_subtype`; panel-meet `≠ 0` (`complementIso` injective +
-`extensor n ≠ 0` from `hpair`), so `exists_smul_eq_of_mem_range_map_subtype_grade (d := k+1)`
-proportionalizes — orient `(panel-meet)↦(point-join)` by inverting the nonzero scalar via
-`inv_smul_eq_iff₀` (the nested-`•` `rw [← hc, smul_smul]` chain fails on `⋀`-subtype elements →
-TACTICS-GOLF § 19). The d=3 `complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper (h-5).
-Gates green (full build + lint clean, no warnings/sorry).
+**CHAIN-1 — first brick LANDED (2026-06-18, this commit): the `Fin d` chain row-correspondence
+(KT eq. 6.62).** `linearIndependent_sumElim_candidateBlock_swap` (`RigidityMatrix/Basic.lean`) +
+its mirror `linearIndependent_sumElim_block_swap` (`Mathlib/.../LinearIndependent/Basic.lean`)
+generalize the single-`Unit` `linearIndependent_sumElim_candidateRow_swap` to an arbitrary
+candidate **block** `cand : ιc → Dual`: if `Sum.elim (Sum.elim rn cand) ro` is LI and each
+`cand' i - cand i ∈ span(range(Sum.elim rn ro))`, then `Sum.elim (Sum.elim rn cand') ro` is LI.
+Quotient route (`M ⧸ span(range base)` + `LinearIndependent.sumElim_of_quotient`), graph-free over
+`ScrewSpace k`, no `d=3` content, no ENTRY-contract dependency. Gates green (full build 2824 jobs +
+lint clean, no warnings/sorry). **CHAIN-1 still open**: the `Fin d` *augment* proper — generalizing
+`linearIndependent_sum_augment_candidateRow` (one `Unit`, with its per-candidate column-op
+`Φ = columnOp hva` transport) to a `Fin d`-indexed augment — remains (each chain candidate carries
+its own edge/column-op, so the augment is heavier than this swap brick; see *Hand-off*).
 
-**Next buildable sub-step = CHAIN-1, the `d`-fold candidate augment**
-(`RigidityMatrix/Basic.lean`) — generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`)
-to a `Fin d`-indexed augment. Graph-free over `ScrewSpace k`, no `d=3` content, no ENTRY-contract
-dependency (buildable independently). CHAIN-3's closure ALSO unblocks **CHAIN-4** (the `Fin (d+1)`
-incidence + Claim-6.12 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence`, which
-consumes (h-4)'s duality) and the **four-producer tail** (OD-7: `hforget_k` routes through (h-4),
-then `hbase_k`/`hcut_k`/`hcontract_k`) — either is a valid next leaf. See *Hand-off*.
+**CHAIN-3 is CLOSED** (prior commit, 2026-06-17): the general-`d` per-line join=meet duality
+`extensor_join_proportional_complementIso_meet` (`MeetHodge.lean`), `∃ c, c • complementIso(j:=2)
+⟨extensor n,_⟩ = ⟨extensor p,_⟩` — the `⋀^{d−1}W`-is-a-line route (`W = {n 0,n 1}^⊥`, both point-join
+and panel-meet in the line `range(⋀^k W ↪)`, proportionalized off the nonzero panel-meet). Full
+per-leaf detail (h-0…h-4) in *Decisions made* + `notes/Phase23-design.md` §"CHAIN"(f)/(h); the d=3
+`complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper.
+
+CHAIN-3's closure ALSO unblocks **CHAIN-4** (the `Fin (d+1)` incidence + Claim-6.12 discriminator
+`exists_complementIso_ne_zero_of_homogeneousIncidence`, which consumes (h-4)'s duality) and the
+**four-producer tail** (OD-7: `hforget_k` routes through (h-4), then `hbase_k`/`hcut_k`/
+`hcontract_k`) — any of these is a valid next leaf. See *Hand-off*.
 
 **Prior-commit recaps (one-line; full OD-8 route-(α) leaf chain h-0…h-3 LANDED, CHAIN-3 finished by
-(h-4) this commit):** (h-0) `screwAlgebraTopEquiv_map_eq_det_smul`; (h-1)
+(h-4) in the prior commit):** (h-0) `screwAlgebraTopEquiv_map_eq_det_smul`; (h-1)
 `complementIso_map_orthogonal_eq` (O(n)-equivariance); (h-2) `exists_orthonormalBasis_span_pair_eq`
 (Gram–Schmidt span-control) + transport bridge `EuclideanSpace.{inner_eq_basisFun_toDual,
 toDualOrthogonal_ofLinearIsometryEquiv}` (mirror); (h-3)-input `exists_smul_extensor_eq_of_mem_span_
@@ -120,9 +117,13 @@ CHAIN-5 is gated by the (b) flag (its signature is the CHAIN↔ENTRY contract).
         do NOT generalize — `dim Ω = C(d−1,2) = 1` only at `d=3`; the d=3 lemmas stay GREEN, **do NOT
         touch**) — revert the lifted infra to `Fin 4`. (2) The `finrank {n}^⊥ = k` metric transport is
         duplicated between (h-3) and (h-4) — factor a shared `finrank_toDualPerp_pair_eq` helper.
-- [ ] **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`).
-      Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`) to a
-      `Fin d`-indexed augment. Graph-free over `ScrewSpace k`; no `d=3` content.
+- [~] **CHAIN-1 — the `d`-fold candidate machinery** (`RigidityMatrix/Basic.lean`).
+      Graph-free over `ScrewSpace k`; no `d=3` content. **First brick LANDED 2026-06-18**:
+      the `Fin d` chain row-correspondence (KT eq. 6.62) — `linearIndependent_sumElim_
+      candidateBlock_swap` + mirror `linearIndependent_sumElim_block_swap`, the block
+      generalization of the single-`Unit` `…candidateRow_swap`. **Still open**: the `Fin d`
+      *augment* proper — generalize `linearIndependent_sum_augment_candidateRow` (one `Unit`,
+      with its per-candidate column-op `Φ = columnOp hva`) to a `Fin d`-indexed augment.
 - [ ] **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
       (`Claim612.lean`). Re-state `exists_homogeneousIncidence_of_normals` (the
       `d+1`-point incidence pattern, eq. 6.67), the dispatch-internal bricks,
@@ -192,13 +193,16 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-3 is CLOSED** (h-4 `extensor_join_proportional_complementIso_meet` landed this commit). Two
-independent next leaves, both buildable now:
+**CHAIN-3 is CLOSED** (prior commit). **CHAIN-1's first brick — the `Fin d` chain row-correspondence
+(KT eq. 6.62) — LANDED this commit** (`linearIndependent_sumElim_candidateBlock_swap` + its mirror).
+Independent next leaves, all buildable now:
 
-- **CHAIN-1 — the `d`-fold candidate augment** (`RigidityMatrix/Basic.lean`). Generalize
-  `linearIndependent_sum_augment_candidateRow` (one `Unit` candidate) to a `Fin d`-indexed augment.
-  Graph-free over `ScrewSpace k`, **no `d=3` content, no ENTRY-contract dependency** — the cleanest
-  smallest next commit (signature in `notes/Phase23-design.md` §"CHAIN"(c) / leaf checklist CHAIN-1).
+- **CHAIN-1 finish — the `Fin d` candidate *augment* proper** (`RigidityMatrix/Basic.lean`).
+  Generalize `linearIndependent_sum_augment_candidateRow` (one `Unit` candidate, with its
+  per-candidate column-op `Φ = columnOp hva` transport via `linearIndependent_sum_pinned_block_
+  augment`) to a `Fin d`-indexed augment — each chain candidate carries its own edge/column-op, so
+  this is heavier than the just-landed swap brick (which corrects candidate rows by base-span
+  members only). Graph-free over `ScrewSpace k`, **no `d=3` content, no ENTRY-contract dependency**.
 - **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator** (`Claim612.lean`), now unblocked
   by CHAIN-3. Re-state `exists_homogeneousIncidence_of_normals` (eq. 6.67) + `case_III_claim612` +
   `exists_complementIso_ne_zero_…` at `ScrewSpace (d−1)`/`Fin d`; its discriminator consumes (h-4)'s
@@ -346,8 +350,22 @@ general mathlib, grade enters nothing):
   metric transport is re-derived here near-verbatim from the (h-3) leaf — extract a shared
   `finrank_toDualPerp_pair_eq` helper once both are green and stable.
 
+**Landed CHAIN-1 brick** (2026-06-18, this commit):
+- the `Fin d` chain row-correspondence (KT eq. 6.62) `linearIndependent_sumElim_candidateBlock_swap`
+  (`RigidityMatrix/Basic.lean`) — swapping an arbitrary candidate **block** `cand : ιc → Dual` by
+  base-span members `cand' i - cand i ∈ span(range(Sum.elim rn ro))` preserves LI; the block
+  generalization of the single-`Unit` `linearIndependent_sumElim_candidateRow_swap` (reassociate
+  `(ιn⊕ιc)⊕ιo → (ιn⊕ιo)⊕ιc`, then the new mirror). Mirror `linearIndependent_sumElim_block_swap`
+  (`Mathlib/.../LinearIndependent/Basic.lean`): quotient route `M ⧸ span(range base)` (the
+  differences vanish in the quotient, `mkQ∘cand'=mkQ∘cand`) + `LinearIndependent.sumElim_of_quotient`
+  rebuild. Axiom-clean, graph-free. See FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…*.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *The `⧸` quotient notation (`M ⧸ P`) needs a direct `import Mathlib.LinearAlgebra.Quotient.Basic`
+  even when `Submodule.mkQ` resolves by name (a notation must be imported, not merely reachable) —
+  or drop the type ascription and let `set π := P.mkQ` infer the codomain* → TACTICS-QUIRKS § 60 /
+  FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…* (Gotcha).
 - *To use the mirrored `Finset.univ_orderEmbOfFin` on a `powersetCard` `default` index,
   surface `↑default = univ` with a `rfl`-`have` first (it won't `simp` out on its own)*
   → FRICTION [idiom] *To use the mirrored `Finset.univ_orderEmbOfFin` on a `powersetCard`…*.
