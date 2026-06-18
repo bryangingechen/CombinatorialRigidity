@@ -1638,6 +1638,67 @@ h65 §38 `ScrewSpace k` budget may force a per-helper split.
 
 ---
 
+### (l) CHAIN-2 decomposition — corrects the §(c) framing + buildable sub-leaves
+
+**Status:** recon 2026-06-18 (read-only Plan recon, coordinator source-verified). **It overturns the
+§(c) CHAIN-2 framing.**
+
+**Headline correction (verified against the landed source).** §(c) and the Phase23b checklist/hand-off
+say CHAIN-2 generalizes "the `caseIIICandidate` / `case_III_old_new_blocks` / `case_III_rank_certification`
+chain (now `q : α × Fin 4`-shaped)" to a `Fin d`-indexed family. **That parenthetical is FALSE:** all
+three decls live in `CaseIII/Candidate.lean` under `variable {k : ℕ}` at `q : α × Fin (k+2)` /
+`ScrewSpace k` / `screwDim k` — **already general-`k`, need no work.** A grade-2 grep over all four
+`CaseIII/` files hits **only `Realization.lean`** (the `case_III_candidate_dispatch` shell + the `Fin 4`
+`linearIndependent_normals_of_algebraicIndependent` bridge + `case_III_nested_rank_lower_d3`) — i.e. the
+only `d=3`-pinned surface in `CaseIII/` is the **dispatch**, which is **CHAIN-5's** target, not CHAIN-2's.
+(This is the same fact §(a) states; §(c) failed to propagate it.)
+
+**What CHAIN-2 actually is.** The candidate machinery is general per dof+grade but **structurally
+single-candidate** (every certification reduces ONE `caseIIICandidate` via ONE `Φ = columnOp` at the
+single split body, appending ONE `Unit`-tagged row; the dispatch picks ONE panel via `fin_cases`). KT
+eqs. 6.59–6.64 are a genuine **`d`-candidate** construction (each `R(G,pᵢ)` reduced via candidate `i`'s
+OWN `Φᵢ`, + the ±r chain 6.66). So CHAIN-2 = **build the `Fin d`-indexed reduction LAYER on top of the
+already-general (reused-verbatim) `case_III_rank_certification` chain + the closed CHAIN-1 `ιc`-block
+augment** — genuinely-new *infrastructure*, but NOT a generalization of the named trio.
+
+**Buildable sub-leaves** (all `{k}`-general, `CaseIII/Candidate.lean` or a new `CaseIII/Chain.lean` if
+>~1500 LoC):
+- **CHAIN-2a — the per-candidate single-`i` reduction** (the reusable core; heaviest single leaf). A
+  re-INDEX (not re-grade) of `case_III_rank_certification` holding the split-body / redundant-row index
+  fixed at `i`: `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*}, q₁)`. Consumes Claim 6.11 `exists_redundant_panelRow_…` (GREEN).
+  No grade-2 reach-in. Buildable now (modulo the `ChainData` flag below).
+- **CHAIN-2b — the ±r chain (eq. 6.66).** Genuinely-new structure (no d=3 ancestor — d=3 collapses it to
+  the 2-index degree-2 fact): `r` is the same up to sign along the chain, so `Mᵢ` fails full rank iff
+  `r ⊥ C(Lᵢ)`. `Fin`-induction over chain edges using the (general) degree-2 closures.
+- **CHAIN-2c — the `Fin d` candidate-family assembly** (where the per-candidate `Φᵢ` heterogeneity
+  lives). Assembles the `d` CHAIN-2a outputs + CHAIN-2b into the "some `Mᵢ` full-rank ⟺ ¬∀i r⊥C(Lᵢ)"
+  disjunction. Consumes the **closed CHAIN-1** `…_augment_candidateRow_block` / `…_pinned_block_augment_block`
+  / `…candidateBlock_swap` (the `ιc`-block tools, fire one body at a time).
+- (CHAIN-2d only if 2a over-grows: split the 6.59 col-op-subst + 6.62 row-correspondence into their own
+  bricks — but their d=3 ancestors `panelRow_vb_sub_panelRow_ab_eq_hingeRow_va` / `exists_candidate_row_eq612`
+  are already `{k}`-general, so re-index not re-grade; fold into 2a unless contact says otherwise.)
+
+**Order:** CHAIN-2a → CHAIN-2b → CHAIN-2c. **First buildable = CHAIN-2a.** **Count: 3–5 commits**
+(most likely record + 2a + 2b + 2c).
+
+**Load-bearing prerequisite (clause (ii) flag) — the `ChainData` record is NOT in tree.** CHAIN-2a/b/c
+all index a length-`d` chain, so their signatures bind to the `G.ChainData n` record — which is **frozen
+in prose (contract C.1) but UNauthored in Lean** (grep: no `structure ChainData`; the landed extraction
+is the fixed-4-tuple `exists_chain_data_of_noRigid`, `Reduction.lean:383`). **This contradicts the
+Phase23b note's "CHAIN-2 buildable independently of the contract"** — the *linear algebra* is independent,
+but the *indexing* is contract-coupled. The record (a ~15-line pure-combinatorics `structure`:
+`vtx : Fin (d+1) → α`, `edge : Fin d → β`, `e₀`, the deg-2 closures) should be authored as a **zeroth
+leaf before CHAIN-2a**, and its `deg_two` `Fin`-arithmetic (which edges sit at `vtx i`) **settled** then —
+else CHAIN-2a and the ENTRY extractor diverge on the indexing. Contract C.1 assigns the record to ENTRY;
+the record *definition* (not the extractor) is sharable and can land with CHAIN-2.
+
+**KT "exactly the same as `d=3`" audit:** faithful for CHAIN-2a's linear-algebra core (a re-index of an
+already-general body); an honest **understatement** for CHAIN-2b/2c (the `Fin d` indexing layer has no
+d=3 ancestor — mechanical, but new infrastructure to *write*, not *copy*). No motive/IH change; no
+grade-2-only reach-in blocks CHAIN-2.
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified

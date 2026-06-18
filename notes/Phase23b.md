@@ -32,8 +32,9 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = CHAIN-2** (the heaviest mechanical leaf), or **CHAIN-5/ENTRY** (CHAIN-5 gated on CHAIN-2
-+ ENTRY's extractor reshape). **OD-7 is now CLOSED** — the last leaf `case_I_dispatch_gen` + the
+**Next build = CHAIN-2's prerequisite: author the `G.ChainData n` `structure`** (settling `deg_two`),
+then CHAIN-2a (recon 2026-06-18, design §(l) — see *Hand-off*); or **CHAIN-5/ENTRY** (CHAIN-5 gated on
+CHAIN-2 + ENTRY's extractor reshape). **OD-7 is now CLOSED** — the last leaf `case_I_dispatch_gen` + the
 `hcontract_k` wire-up landed 2026-06-18 (a verbatim numeral pass over the d=3 `case_I_dispatch`
 `by_cases hSimple`/inner-`by_cases hd` plumbing, feeding the three landed `_gen` producers +
 `hasPanelRealization_of_generic`; plus `case_I_hcontract_gen`, the general-`k` filler for the carried
@@ -45,10 +46,12 @@ dispatch-internal, the pinned `lem:case-I-dispatch` → `case_I_realization_h65`
 (`case_cut_edge_realization{,_gp}_gen`), `hcontract_k` (`case_I_hcontract_gen`), `hforget_k`
 (`hasPanelRealization_of_generic`), plus both M4 halves. The `d=3` consumers
 (`theorem_55_minimalKDof_k`, etc.) resolve `k:=2` by unification, unchanged. CHAIN-1/3/4 CLOSED. The
-remaining buildable leaves: **CHAIN-2** (the chain matrix bookkeeping, eqs. 6.59–6.64, `CaseIII/`;
-consumes CHAIN-1, buildable now, heaviest mechanical leaf). **CHAIN-5** (the `d`-chain dispatch
-assembly, `CaseIII/Realization.lean`) has a frozen signature (the CHAIN↔ENTRY contract) but is gated on
-CHAIN-2 landing **and** ENTRY's extractor reshape. See *Hand-off* for the per-leaf detail.
+remaining buildable leaves: **CHAIN-2** — the `Fin d`-indexed candidate-reduction layer (eqs.
+6.59–6.64, `CaseIII/`), **decomposed** at recon into 2a/2b/2c on top of the *already-general* (recon
+§(l) corrected §(c)) certification chain + closed CHAIN-1, after authoring the `ChainData` record
+(3–5 commits). **CHAIN-5** (the `d`-chain dispatch assembly, `CaseIII/Realization.lean`) has a frozen
+signature (the CHAIN↔ENTRY contract) but is gated on CHAIN-2 landing **and** ENTRY's extractor reshape.
+See *Hand-off* for the per-leaf detail.
 
 **CHAIN-1/3/4 — all CLOSED** (2026-06-17/18; per-leaf detail in *Decisions made* → *Landed
 CHAIN-{1,3,4} bricks* + `notes/Phase23-design.md` §(f)/(h)/(i)/(j) + git):
@@ -154,10 +157,12 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
             contrapositive of the d=3 `…eq_zero_of_complementIso…` lifted to `Fin k`
             points. `MeetHodge` import did NOT trigger a §59 whnf regression on the
             file's `⋀²ℝ⁴` proofs. Detail in *Decisions made*. Axiom-clean.
-- [ ] **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`).
-      The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)`
-      + the ±r chain (6.66). Reuses Claim 6.11 `exists_redundant_panelRow_…`
-      (general & GREEN). Heaviest mechanical leaf ("exactly the same as `d=3`").
+- [ ] **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`).
+      **Decomposed (design §(l), which corrected §(c)'s framing — the named chain is already
+      general-`k`):** the `Fin d` reduction layer on top of the reused-verbatim certification chain +
+      closed CHAIN-1 → CHAIN-2a (per-`i` reduction) / CHAIN-2b (±r chain 6.66) / CHAIN-2c (family
+      assembly). Reuses Claim 6.11 `exists_redundant_panelRow_…` (GREEN). Prereq: author the
+      `G.ChainData n` `structure` (settling `deg_two`) first — contract-coupled with ENTRY. 3–5 commits.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -230,17 +235,22 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next build = CHAIN-2** (the heaviest mechanical leaf; buildable now), or **CHAIN-5/ENTRY** (CHAIN-5
+**Next build = CHAIN-2** (now decomposed — recon 2026-06-18, design §(l)), or **CHAIN-5/ENTRY** (CHAIN-5
 gated on CHAIN-2 + ENTRY's extractor reshape).
 
-- **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
-  bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
-  (6.66): the index-heavy generalization of the `caseIIICandidate`/`case_III_old_new_blocks`/
-  `case_III_rank_certification` chain (now `q : α × Fin 4`-shaped) to a `Fin d`-indexed candidate
-  family. This is where the **per-candidate column-op heterogeneity** lives (each candidate `i` applies
-  its own `Φᵢ` before the CHAIN-1 augment fires one body at a time). Reuses Claim 6.11
-  `exists_redundant_panelRow_…` (general & GREEN). Heaviest mechanical leaf ("exactly the same as
-  `d=3`"); may split on contact.
+- **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`),
+  **decomposed at recon (design §(l)), which corrected the §(c) framing:** the `caseIIICandidate` /
+  `case_III_old_new_blocks` / `case_III_rank_certification` chain is **already general-`k`** (the only
+  `d=3`-pin in `CaseIII/` is the `Realization.lean` dispatch shell = CHAIN-5). CHAIN-2 builds the
+  `Fin d`-indexed reduction LAYER *on top of* that (reused-verbatim) chain + the closed CHAIN-1
+  `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction, the reusable core — re-index of
+  `case_III_rank_certification`; heaviest single leaf) → **CHAIN-2b** (the ±r chain, eq. 6.66;
+  genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly; consumes CHAIN-1). 3–5 commits.
+  **Prerequisite (design §(l)):** CHAIN-2's signatures index a length-`d` chain via the `G.ChainData n`
+  record, which is **frozen in prose (C.1) but UNauthored in Lean** — author the ~15-line `structure`
+  (settling its `deg_two` `Fin`-arithmetic) as a zeroth leaf first; the indexing is **contract-coupled
+  with ENTRY** (so the note's old "CHAIN-2 independent of the contract" was wrong — the linear algebra
+  is independent, the indexing is not).
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
@@ -253,8 +263,10 @@ BlueprintExposition ledger (the CHAIN-3 entry).
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
 CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
-record (C.1/C.3), so it is now authorable. CHAIN-2 remains buildable independently
-of the contract (CHAIN-1/3/4 all closed); CHAIN-5 is unblocked once CHAIN-2 lands
+record (C.1/C.3), so it is now authorable. **CHAIN-2's *linear algebra* is independent
+of the contract, but its *indexing* is contract-coupled** (recon §(l) overturned the
+old "CHAIN-2 fully independent" claim): the `ChainData` record it indexes is unauthored
+in Lean and must land first (settling `deg_two`). CHAIN-5 is unblocked once CHAIN-2 lands
 **and** ENTRY's extractor is reshaped.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn
@@ -316,6 +328,13 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `AlgebraicIndependent` lemma; site (b) is not a site (only site (a), nested seed-rank, stays live).
   Per-join panel-membership generalizes combinatorially (join `{a,b}`⊂`Πᵢ` iff `i+1∈{a,b}`). One
   build residual flagged (CHAIN-4b). CHAIN-4 decomposed into 4a–4d → §"CHAIN"(i)/(j).
+- **CHAIN-2 decomposition (recon 2026-06-18, read-only Plan + coordinator source-verify) — overturns
+  §(c)'s framing.** The named `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification`
+  chain is **already general-`k`** (the only `d=3`-pin in `CaseIII/` is `Realization.lean`'s dispatch =
+  CHAIN-5); §(c)'s "(now `q : α × Fin 4`-shaped)" was false. CHAIN-2 = the `Fin d`-indexed reduction
+  *layer* (2a per-`i` / 2b ±r-chain / 2c family) on top of that chain + closed CHAIN-1. Prereq: the
+  `ChainData` `structure` is unauthored in Lean (frozen in prose C.1) and CHAIN-2's *indexing* is
+  contract-coupled with ENTRY — author it (settling `deg_two`) first → §"CHAIN"(l).
 - **OD-7 `hcontract_k` decomposition (recon 2026-06-18, read-only Plan + coordinator source-verify):**
   5 leaves (6 if h65 splits) — `all_k`/`nonsimple`/`h65`/`dispatch` numeral passes (one `_perp_grade`
   swap; `_all_k` is all-*dof* not all-grade, a trap), the *one* genuinely-new piece LEAF-0
