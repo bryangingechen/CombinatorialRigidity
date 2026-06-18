@@ -4,11 +4,13 @@
 but advancing: both M4 halves are general-`k`, the **full base producer `hbase_k`** is general-`k`,
 and **`hcut_k` is fully general-`k`** (bare + GP conjuncts, both verbatim numeral passes). **The last
 OD-7 producer, `hcontract_k`** (the Case-I dispatch), is **decomposed** into 5 leaves (recon
-2026-06-18, design §(k); 6 if h65 splits); its **1st leaf `case_I_realization_all_k_gen`, 2nd leaf
-`case_I_realization_nonsimple_gen`, and LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`
-(the *one* genuinely-new piece) all landed 2026-06-18** (numeral passes; nonsimple = +1 `_perp_grade`
-swap; LEAF-0 = the `_general` det-polynomial argument restricted to a fixed `3×3` minor), leaving
-**`h65` / `dispatch`**. **CHAIN-4 was
+2026-06-18, design §(k)); its **1st leaf `case_I_realization_all_k_gen`, 2nd leaf
+`case_I_realization_nonsimple_gen`, LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`
+(the *one* genuinely-new piece), and 4th leaf `case_I_realization_h65_gen` (the KT Lemma-6.5 arm) all
+landed 2026-06-18** (numeral passes; nonsimple = +1 `_perp_grade` swap; LEAF-0 = the `_general`
+det-polynomial argument restricted to a fixed `3×3` minor; h65 = the four `case_I_h65_*` helpers
+lifted to `BodyHingeFramework k` + the LEAF-0 swap + `one_le_screwDim` for the `1 ≤ screwDim k` cast,
+no split needed), leaving **only `case_I_dispatch_gen` + the `hcontract_k` wire-up**. **CHAIN-4 was
 closed by the CHAIN-4d commit**
 (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the discriminator capstone = assembly of
 CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the producer `hcontract_k`
@@ -34,18 +36,14 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next build = `case_I_realization_h65_gen`** (the KT Lemma-6.5 all-contractions-non-simple arm;
-consumes the now-landed LEAF-0; numeral pass + lift the four private `case_I_h65_*` helpers
-`BodyHingeFramework 2 → k`, **may split** per design §(k) on the §38 `ScrewSpace k` budget). The
-**LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`** (the *one* genuinely-new piece
-of the `hcontract_k` decomposition — fixed-3-row LI at `Fin (k+2)`, `hk : 1 ≤ k`; design §(k)/LEAF-0)
-is **LANDED 2026-06-18**: the det-polynomial `_general` argument restricted to a fixed `3×3` minor
-(`Fin.castLE (3 ≤ k+2)` column selector), the `d=3` `…_algebraicIndependent` (`Fin 4`) now its `k:=2`
-instance (no blueprint pin — dispatch-internal). The 1st + 2nd leaves were also **LANDED (2026-06-18)**:
-`case_I_realization_all_k_gen` (verbatim numeral pass) and `case_I_realization_nonsimple_gen` (numeral
-pass + the single `exists_linearIndependent_extensor_pair_perp → …_perp_grade hk` swap, dof renamed
-`k → c`); both d=3 lemmas are now their `k:=2` wrappers, blueprint pins unmoved. After `h65`:
-`case_I_dispatch_gen` + `hcontract_k` wire-up. Or **CHAIN-2**, or **CHAIN-5/ENTRY**.
+**Next build = `case_I_dispatch_gen` + the `hcontract_k` wire-up** (the LAST OD-7 producer leaf: a
+verbatim numeral pass over the `by_cases hSimple`/inner-`by_cases hd` plumbing of the d=3
+`case_I_dispatch :2340`, now feeding the three landed `_gen` producers + `hasPanelRealization_of_
+generic`; the `c>0` manual dispatch in `theorem_55_minimalKDof_k_all_k :2471` is the wire-up). After
+`dispatch`, OD-7 closes. The **4th leaf `case_I_realization_h65_gen`** (the KT Lemma-6.5 arm) **LANDED
+2026-06-18** — four `case_I_h65_*` helpers lifted + numeral pass + LEAF-0 swap + `one_le_screwDim`
+cast, no helper split needed (detail in *Decisions made* → *Landed OD-7 bricks* → `leaf 4 (h65)`);
+LEAF-0 + the 1st/2nd leaves landed earlier 2026-06-18. Or **CHAIN-2**, or **CHAIN-5/ENTRY**.
 CHAIN-1/3/4 are CLOSED; the **four-producer tail (OD-7) is open** but advancing: both
 M4 halves are general-`k` (the reach-in `exists_extensor_eq_panelSupportExtensor_gen`
 (`PanelLayer.lean`) + the consumer `hasPanelRealization_of_generic` (`GenericityDevice.lean`)), **the
@@ -53,10 +51,11 @@ full base producer `hbase_k` is general-`k`** (the trichotomy dispatch `theorem_
 assembling the five `_gen` arms), and — as of 2026-06-18 — **`hcut_k` is FULLY general-`k`** (the bare
 conjunct `case_cut_edge_realization_gen` + the GP conjunct `case_cut_edge_realization_gp_gen`, both
 verbatim numeral passes; detail in *Decisions made* → *Landed OD-7 bricks*; d=3 lemmas are `k:=2`
-wrappers, blueprint pins unmoved). **What remains in the tail: `hcontract_k`'s 2 remaining leaves**
-(`h65`/`dispatch`, design §(k); `all_k` + `nonsimple` + LEAF-0 LANDED 2026-06-18); `hforget_k`'s `k=2`
-filler is already general-`k`. The `d=3` consumers (`theorem_55_minimalKDof_k`, etc.) resolve `k:=2` by
-unification, unchanged. The other buildable leaves: **CHAIN-2**
+wrappers, blueprint pins unmoved). **What remains in the tail: `hcontract_k`'s last leaf**
+(`case_I_dispatch_gen` + the `hcontract_k` wire-up, design §(k); `all_k`/`nonsimple`/LEAF-0/`h65` all
+LANDED 2026-06-18); `hforget_k`'s `k=2` filler is already general-`k`. The `d=3` consumers
+(`theorem_55_minimalKDof_k`, etc.) resolve `k:=2` by unification, unchanged. The other buildable
+leaves: **CHAIN-2**
 (the chain matrix bookkeeping, eqs. 6.59–6.64, `CaseIII/`; consumes CHAIN-1, buildable now, heaviest
 mechanical leaf). **CHAIN-5** (the `d`-chain dispatch assembly, `CaseIII/Realization.lean`) has a
 frozen signature (the CHAIN↔ENTRY contract) but is gated on CHAIN-2/4 landing **and** ENTRY's extractor
@@ -217,18 +216,19 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       the bare conjunct `case_cut_edge_realization_gen` plus the GP conjunct
       `case_cut_edge_realization_gp_gen` (`Theorem55.lean`, verbatim numeral passes; all
       reach-ins already grade-parametric). All d=3 lemmas now their `k:=2` wrappers,
-      blueprint pins unmoved. **Remaining: `hcontract_k`** (the Case-I dispatch),
-      **decomposed** (recon 2026-06-18, design §(k)) into **5 leaves** (6 if h65 splits):
-      `case_I_realization_all_k_gen` (1st, verbatim numeral pass — **LANDED 2026-06-18**, the
-      d=3 `case_I_realization_all_k` now its `k:=2` wrapper) → `case_I_realization_nonsimple_gen`
-      (2nd — **LANDED 2026-06-18**, numeral pass + the single `_perp_grade hk` swap + dof `k → c`
-      rename; d=3 `case_I_realization_nonsimple` now its `k:=2` wrapper) → **LEAF-0
-      `linearIndependent_normals_of_algebraicIndependent_triple`** (**LANDED 2026-06-18**, the *one*
-      genuinely-new piece — fixed-3-row LI at `Fin (k+2)` with `hk : 1 ≤ k`; the det-polynomial
-      `…_general` argument restricted to a fixed `3×3` minor via a `Fin.castLE (3 ≤ k+2)` column
-      selector; the d=3 `…_algebraicIndependent` (`Fin 4`) now its `k:=2` instance) →
-      `case_I_realization_h65_gen` (next; consumes LEAF-0; may split) → `case_I_dispatch_gen` +
-      `hcontract_k` wire-up. `hforget_k`'s filler already general-`k`.
+      blueprint pins unmoved. **Remaining: `hcontract_k`'s last leaf** (the Case-I dispatch),
+      **decomposed** (recon 2026-06-18, design §(k)) into **5 leaves**, of which four are LANDED
+      2026-06-18: `case_I_realization_all_k_gen` (1st, verbatim numeral pass) →
+      `case_I_realization_nonsimple_gen` (2nd, numeral pass + the single `_perp_grade hk` swap + dof
+      `k → c` rename) → **LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`** (the
+      *one* genuinely-new piece — fixed-3-row LI at `Fin (k+2)`, `hk : 1 ≤ k`; det-polynomial
+      `…_general` restricted to a fixed `3×3` minor via a `Fin.castLE (3 ≤ k+2)` selector) →
+      `case_I_realization_h65_gen` (4th, the KT Lemma-6.5 arm — the four `case_I_h65_*` helpers
+      lifted to `BodyHingeFramework k`, the producer body a verbatim numeral pass + LEAF-0 swap +
+      `one_le_screwDim` cast; **no helper split needed**). Each d=3 lemma is now its `k:=2`
+      wrapper/instance, blueprint pins unmoved. **Last leaf: `case_I_dispatch_gen` + the
+      `hcontract_k` wire-up** (next; verbatim numeral pass over the `by_cases` plumbing).
+      `hforget_k`'s filler already general-`k`.
 
 ## Blockers / open questions
 
@@ -284,17 +284,20 @@ but nearly done: both M4 halves are general-`k` (the reach-in
 full base producer `hbase_k` is general-`k` (the trichotomy dispatch `theorem_55_base_producer_gen`),
 and **`hcut_k` is FULLY general-`k`** — the bare conjunct
 `case_cut_edge_realization_gen` plus the GP conjunct `case_cut_edge_realization_gp_gen`, both verbatim
-numeral passes (see *Current state* + *Decisions made*). **`hcontract_k` remains in the tail**,
-decomposed (recon 2026-06-18, design §(k)) into **5 leaves** (6 if h65 splits) — the 1st leaf
-`case_I_realization_all_k_gen`, the 2nd leaf `case_I_realization_nonsimple_gen`, and the *one*
-genuinely-new piece **LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`** are all
-**LANDED 2026-06-18** (the d=3 lemmas now their `k:=2` wrappers/instances). LEAF-0 is the fixed-3-row
-LI at `Fin (k+2)` (`hk : 1 ≤ k`) h65 needs (the landed `…_general` only gives `k+1`-vertex rows); the
-remaining producers (`h65`/`dispatch`) are numeral passes.
-**Next build = `case_I_realization_h65_gen`** (the KT Lemma-6.5 arm; consumes LEAF-0, numeral pass +
-lift the four private `case_I_h65_*` helpers `BodyHingeFramework 2 → k`, **may split** per design §(k)),
-then `case_I_dispatch_gen` + the `hcontract_k` wire-up; or CHAIN-2
-(heaviest mechanical leaf), or CHAIN-5/ENTRY (CHAIN-5 gated on CHAIN-2 + ENTRY's extractor reshape).
+numeral passes (see *Current state* + *Decisions made*). **`hcontract_k` is nearly done** — four of
+its five decomposition leaves (recon 2026-06-18, design §(k)) are **LANDED 2026-06-18**: the 1st leaf
+`case_I_realization_all_k_gen`, the 2nd leaf `case_I_realization_nonsimple_gen`, the *one*
+genuinely-new piece **LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`** (the
+fixed-3-row LI at `Fin (k+2)`, `hk : 1 ≤ k`, h65 needs — the landed `…_general` only gives
+`k+1`-vertex rows), and the 4th leaf **`case_I_realization_h65_gen`** (the KT Lemma-6.5 arm: the four
+`case_I_h65_*` helpers lifted to `BodyHingeFramework k`, the body a verbatim numeral pass + LEAF-0
+swap + `one_le_screwDim` cast, no helper split needed). Each d=3 lemma is now its `k:=2`
+wrapper/instance.
+**Next build = `case_I_dispatch_gen` + the `hcontract_k` wire-up** (the LAST OD-7 leaf; a verbatim
+numeral pass over the `by_cases hSimple`/inner-`by_cases hd` plumbing of the d=3 `case_I_dispatch`,
+now feeding the three landed `_gen` producers, + the `c>0` manual dispatch in
+`theorem_55_minimalKDof_k_all_k`); after it, OD-7 closes. Or CHAIN-2 (heaviest mechanical leaf), or
+CHAIN-5/ENTRY (CHAIN-5 gated on CHAIN-2 + ENTRY's extractor reshape).
 
 - **CHAIN-2 — the chain matrix bookkeeping (eqs. 6.59–6.64)** (`CaseIII/`), consuming CHAIN-1's two
   bricks. The per-candidate-`i` reduction of `R(G,pᵢ)` to `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*},q₁)` + the ±r chain
@@ -312,12 +315,12 @@ then `case_I_dispatch_gen` + the `hcontract_k` wire-up; or CHAIN-2
   general-`k`; `hcut_k` is now both the bare conjunct `case_cut_edge_realization_gen` and the GP
   conjunct `case_cut_edge_realization_gp_gen` (`Theorem55.lean`). All d=3 lemmas are now `k:=2`
   wrappers, blueprint pins unmoved. `hcontract_k`'s 1st leaf `case_I_realization_all_k_gen`, 2nd
-  leaf `case_I_realization_nonsimple_gen`, and the *one* genuinely-new piece LEAF-0
+  leaf `case_I_realization_nonsimple_gen`, the *one* genuinely-new piece LEAF-0
   `linearIndependent_normals_of_algebraicIndependent_triple` (fixed-3-row LI at `Fin (k+2)`,
-  `hk : 1 ≤ k`) are all **LANDED 2026-06-18** (the d=3 lemmas now their `k:=2` wrappers/instances).
-  **Smallest next step:** `case_I_realization_h65_gen` (the KT Lemma-6.5 arm; consumes LEAF-0, numeral
-  pass + lift the four `case_I_h65_*` helpers, may split); then `dispatch`. Fold into CHAIN, not a
-  successor.
+  `hk : 1 ≤ k`), and the 4th leaf `case_I_realization_h65_gen` (the KT Lemma-6.5 arm) are all
+  **LANDED 2026-06-18** (the d=3 lemmas now their `k:=2` wrappers/instances).
+  **Smallest next step:** `case_I_dispatch_gen` + the `hcontract_k` wire-up (the LAST OD-7 leaf;
+  verbatim numeral pass over the `by_cases` plumbing). Fold into CHAIN, not a successor.
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
@@ -425,9 +428,18 @@ design §(k)):
 - **`hcontract_k` LEAF-0** — `linearIndependent_normals_of_algebraicIndependent_triple` (`hk:1≤k`,
   `CaseIII/Realization.lean`): the *one genuinely-new* brick (fixed-3-row LI `![q(a,·),q(b,·),q(c,·)] :
   Fin 3 → Fin (k+2) → ℝ`; **not** a numeral pass — `…_general` gives `k+1` rows, h65 has only 3
-  vertices, so for `k≥3` its selector is unavailable). **Consumed by `h65` (next leaf).** Route = the
+  vertices, so for `k≥3` its selector is unavailable). **Consumed by `h65`.** Route = the
   `…_general` det-poly argument on a fixed `3×3` minor (`Fin.castLE (3≤k+2)`; design §(k)). d=3 `Fin 4`
   `…_algebraicIndependent` now its `k:=2` instance; no blueprint pin (dispatch-internal).
+- **`hcontract_k` leaf 4 (h65)** — `case_I_realization_h65_gen` (`hk:1≤k`, `Theorem55.lean`): the KT
+  Lemma-6.5 vertex-removal arm. The four private `case_I_h65_*` helpers lifted to `BodyHingeFramework
+  k` / `Fin (k+2)` / `ScrewSpace k` / `Set.powersetCard (Fin (k+2)) k`; the producer body a verbatim
+  numeral pass + the LEAF-0 swap (`…_triple hk`) + `one_le_screwDim` for the `1≤screwDim k` cast (§58
+  idiom). All load-bearing bricks already grade-general (`triLI_subpairs`,
+  `exists_independent_pinned_two_edge_span_full`, `hasGenericFullRankRealization_of_rigidOn_ofNormals`).
+  **No helper split needed** — the default 200000 budget held at `ScrewSpace k` (design §(k) caveat
+  did not bite). d=3 `case_I_realization_h65` now its `k:=2` wrapper; the still-`k=2` `case_I_dispatch`
+  consumer unchanged.
 
 **Landed CHAIN-4 bricks** (CHAIN-4 CLOSED 2026-06-18, `RigidityMatrix/Claim612.lean`; leaf names + per-leaf
 verdicts are the *CHAIN leaf checklist* `[x]` CHAIN-4a–4d entries above — the canonical home; construction
