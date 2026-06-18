@@ -129,8 +129,18 @@ mid-phase).
   CHAIN-1** (the `d`-fold candidate augment, graph-free, no ENTRY-contract dependency) — the hand-off's
   recommended cleanest-smallest leaf; CHAIN-4 (the `Fin (d+1)` incidence + Claim-6.12 discriminator,
   now unblocked, carries open OD-4) is the alternate. The coordinator is Opus 4.8 (1M context).
-  **Expires at session end** — a fresh coordinator re-runs the availability check and reverts to the
-  map unless the override is re-set.
+  **Session #6 end-state (loop stopped by user request after row 227).** Ran rows 211–227: 16 build
+  dispatches + 1 design-pass recon (row 215, OD-4) + 1 resume (row 220). **Closed CHAIN-1, CHAIN-3,
+  CHAIN-4** (all general-`d`); the OD-4 recon **dissolved the alg-independence gap** (eq.-6.67 N3a is
+  existence/homogeneous, verified at the CHAIN-4b build); **opened the OD-7 four-producer tail** — M4
+  both halves + the entire `hbase_k` base producer (all 5 arms + trichotomy dispatch) + the `hcut_k`
+  bare conjunct, all general-`k`. One user interrupt mid-loop was **resumed via SendMessage** (row 220,
+  the first successful resume this experiment — agentId recovered from the local agent logs; contrast
+  row 202). All 18 dispatches clean at opus (one notes-✗ coordinator-repair each on rows 211/217/220,
+  all "this commit" / canonical-home staleness). **Next dispatch (fresh coordinator): `case_cut_edge_
+  realization_gp` (the GP half of `hcut_k`), `hcontract_k`, or CHAIN-2** — per `notes/Phase23b.md`
+  *Hand-off*. **Expires at session end** — a fresh coordinator re-runs the availability check and
+  reverts to the map unless the override is re-set.
 - **Expired session overrides (audit trail in git history + the Log rows).** Earlier
   2026-06-{10,12,13,16} session-local rung overrides and availability constraints — all
   expired by their own terms (the 2026-06-16 one scoped the OPUS-ONLY override to the whole
@@ -392,6 +402,7 @@ quality / blueprint sync / notes discipline / commit message
 | 224 | OD-7 tail — lift the base producer's parallel-pair arm `theorem_55_base_producer_parallel_pair_gen`, d245d0f | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 126k tok / 43 tools / 8.8min | Opus-only override (1/1/1). Verbatim numeral lift of the base parallel-pair arm (`hk : 1≤k`, general bricks `exists_linearIndependent_extensor_pair_perp_grade`/`theorem_55_base`/B1). d=3 = `k:=2` wrapper, pin unmoved. **Completes all 3 bare `hbase_k` arms.** Verified full (diff + sorry-grep + warning-clean rebuild + lint). 5th consecutive OD-7 arm-lift; remaining: 3 GP arms + dispatch, then `hcut_k`/`hcontract_k`, then CHAIN-2. |
 | 225 | OD-7 tail — lift the two working GP base arms `theorem_55_base_producer_{empty,single_edge}_gp_gen`, 6abde06 | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 140k tok / 37 tools / 9.2min | Opus-only override (1/1/1). Two GP base arms general-`k` by numeral pass; agent first verified the GP machinery (`exists_generalPosition_polynomial`/`ofNormals`/`IsGeneralPosition`/…) is already `{k}`-implicit. **Faithful hand-off correction:** the parallel-pair GP form has no `_gp` lemma (vacuous conjunct, inline in the dispatch) → "three GP forms" was two. d=3 = `k:=2` wrappers, pins unmoved. Verified full (diff + sorry-grep + warning-clean rebuild + lint). Next = trichotomy dispatch `theorem_55_base_producer` (all arms now general-`k`), then `hcut_k`/`hcontract_k`, then CHAIN-2. |
 | 226 | OD-7 tail — lift the base-producer trichotomy dispatch `theorem_55_base_producer_gen`, a45fb93 | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 163k tok / 45 tools / 9.5min | Opus-only override (1/1/1). Verbatim numeral lift of the base-producer trichotomy dispatch — dispatches via `isMinimalKDof_ncard_le_two_trichotomy` to the 5 landed `_gen` arms (dof `k→c`, grade `2→k`, `hk:1≤k`, parallel-pair GP conjunct vacuous via `not_simple_…`). **Completes the all-`k` `hbase_k` producer.** d=3 = `k:=2` wrapper, pin unmoved (node prose already general). Note compressed 5 arm-entries → 1 verdict (476 lines). Verified full (diff + sorry-grep + warning-clean rebuild + lint). Next = `hcut_k`/`hcontract_k` (need their `Fin 4` panel geometry lifted), then CHAIN-2. |
+| 227 | OD-7 tail — lift the `hcut_k` bare conjunct `case_cut_edge_realization_gen`, ba60b55 | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 193k tok / 60 tools / 12.8min | Opus-only override (1/1/1). Sanctioned scope-shrink to the bare `hcut_k` conjunct (`case_cut_edge_realization`) — its GP conjunct + `hcontract_k` are heavier (GP carries `ofNormals`/GP-poly machinery, not a flat numeral pass). Verbatim numeral pass (`exists_extensor_in_two_panels`→`_grade`, dof `k→c`, grade `2→k`); d=3 = `k:=2` wrapper, pin unmoved. Verified full (diff + sorry-grep + warning-clean rebuild + lint). **Loop stopped by user request after this row.** Next = `case_cut_edge_realization_gp` (GP half) / `hcontract_k` / CHAIN-2. |
 
 ## Findings
 
