@@ -222,9 +222,7 @@ BlueprintExposition ledger (the CHAIN-3 entry).
 **The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
 §"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
 CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
-record (C.1/C.3), so it is now authorable. The next buildable leaf is still in
-**CHAIN-3** (its `complementIso`/`toDual` tail — no chain-data dependency;
-finishing CHAIN-3 unblocks CHAIN-4 + the four-producer lift). CHAIN-1/3/4 remain
+record (C.1/C.3), so it is now authorable. CHAIN-1 (augment)/2/4 remain
 buildable independently of the contract; CHAIN-5 is unblocked once CHAIN-1/2/4
 land **and** ENTRY's extractor is reshaped.
 
