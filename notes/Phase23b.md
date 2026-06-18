@@ -2,17 +2,12 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED.** The OD-7 four-producer tail is **open**
 but advancing: both M4 halves are general-`k`, the **full base producer `hbase_k`** is general-`k`,
-the **`hcut_k` bare conjunct** is general-`k`, and, **this commit (2026-06-18)**, the **`hcut_k` GP
-conjunct is now general-`k`** — `case_cut_edge_realization_gp_gen` (`Theorem55.lean`), a verbatim
-numeral pass over the d=3 GP body (`Fin 4 → Fin (k+2)` for the `q₀ᵢ` seeds + the combined
-`exists_injective_algebraicIndependent_real` seed type, `BodyHingeFramework 2 → … k`,
-`exists_generalPosition_polynomial (k := 2) → (k := k)`, `screwDim 2 → screwDim k`, dof `k → c`);
-all reach-ins (`ofNormals`, `exists_generalPosition_polynomial`,
-`exists_rankPolynomial_of_le_finrank_linking`, the two swap/recordsLinks bricks, the cut
-decomposition, B2) were already grade-parametric. **`hcut_k` is now fully general-`k`.** The d=3
-`case_cut_edge_realization_gp` is now its `k:=2` wrapper (blueprint pin
-`lem:case-cut-edge-realization-gp` unmoved). **Remaining tail: only `hcontract_k`** (the Case-I
-dispatch). **CHAIN-4 was closed by the CHAIN-4d commit**
+and **`hcut_k` is fully general-`k`** (bare + GP conjuncts, both verbatim numeral passes). **The last
+OD-7 producer, `hcontract_k`** (the Case-I dispatch), is **decomposed** into 5 leaves (recon
+2026-06-18, design §(k); 6 if h65 splits); its **1st leaf `case_I_realization_all_k_gen` landed
+2026-06-18** (verbatim numeral pass), leaving 4 — `nonsimple` / **LEAF-0** (the *one* genuinely-new
+piece, `linearIndependent_normals_of_algebraicIndependent_triple`) / `h65` / `dispatch`. **CHAIN-4 was
+closed by the CHAIN-4d commit**
 (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the discriminator capstone = assembly of
 CHAIN-4c + CHAIN-4b + CHAIN-3 (h-4)). **Remaining: CHAIN-2 + CHAIN-5 + the producer `hcontract_k`
 (`Theorem55.lean`; `hbase_k`/`hcut_k`/`hforget_k` done).** CHAIN-1 = the
@@ -39,7 +34,7 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 **Next build = `case_I_realization_nonsimple_gen`** — the 2nd leaf of the `hcontract_k` decomposition
 (recon 2026-06-18, design §(k): 5 leaves, 6 if h65 splits; numeral pass + one `_perp_grade` swap). The
-1st leaf **`case_I_realization_all_k_gen` is LANDED (this commit)** — verbatim numeral pass, the d=3
+1st leaf **`case_I_realization_all_k_gen` is LANDED (2026-06-18)** — verbatim numeral pass, the d=3
 `case_I_realization_all_k` now its `k:=2` wrapper. The *one* genuinely-new piece in the tail is LEAF-0
 `linearIndependent_normals_of_algebraicIndependent_triple` (consumed by `h65`). Or **CHAIN-2**,
 or **CHAIN-5/ENTRY**. CHAIN-1/3/4 are CLOSED; the **four-producer tail (OD-7) is open** but advancing: both
@@ -50,7 +45,7 @@ assembling the five `_gen` arms), and — as of 2026-06-18 — **`hcut_k` is FUL
 conjunct `case_cut_edge_realization_gen` + the GP conjunct `case_cut_edge_realization_gp_gen`, both
 verbatim numeral passes; detail in *Decisions made* → *Landed OD-7 bricks*; d=3 lemmas are `k:=2`
 wrappers, blueprint pins unmoved). **What remains in the tail: `hcontract_k`'s 4 remaining leaves**
-(`nonsimple`/LEAF-0/`h65`/`dispatch`, design §(k); `all_k` LANDED this commit); `hforget_k`'s `k=2`
+(`nonsimple`/LEAF-0/`h65`/`dispatch`, design §(k); `all_k` LANDED 2026-06-18); `hforget_k`'s `k=2`
 filler is already general-`k`. The `d=3` consumers (`theorem_55_minimalKDof_k`, etc.) resolve `k:=2` by
 unification, unchanged. The other buildable leaves: **CHAIN-2**
 (the chain matrix bookkeeping, eqs. 6.59–6.64, `CaseIII/`; consumes CHAIN-1, buildable now, heaviest
@@ -210,12 +205,12 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       (all three bare arms `theorem_55_base_producer_{empty,single_edge,parallel_pair}_gen`,
       both working GP arms `theorem_55_base_producer_{empty,single_edge}_gp_gen`, the
       **trichotomy dispatch** `theorem_55_base_producer_gen`); and **the full `hcut_k`** —
-      the bare conjunct `case_cut_edge_realization_gen` plus, this commit, the GP conjunct
+      the bare conjunct `case_cut_edge_realization_gen` plus the GP conjunct
       `case_cut_edge_realization_gp_gen` (`Theorem55.lean`, verbatim numeral passes; all
       reach-ins already grade-parametric). All d=3 lemmas now their `k:=2` wrappers,
       blueprint pins unmoved. **Remaining: `hcontract_k`** (the Case-I dispatch),
       **decomposed** (recon 2026-06-18, design §(k)) into **5 leaves** (6 if h65 splits):
-      `case_I_realization_all_k_gen` (1st, verbatim numeral pass — **LANDED this commit**, the
+      `case_I_realization_all_k_gen` (1st, verbatim numeral pass — **LANDED 2026-06-18**, the
       d=3 `case_I_realization_all_k` now its `k:=2` wrapper) → `case_I_realization_nonsimple_gen`
       (next; numeral pass + `_perp_grade` swap) → **LEAF-0
       `linearIndependent_normals_of_algebraicIndependent_triple`** (the *one* genuinely-new
@@ -279,7 +274,7 @@ and **`hcut_k` is FULLY general-`k`** — the bare conjunct
 `case_cut_edge_realization_gen` plus the GP conjunct `case_cut_edge_realization_gp_gen`, both verbatim
 numeral passes (see *Current state* + *Decisions made*). **`hcontract_k` remains in the tail**,
 decomposed (recon 2026-06-18, design §(k)) into **5 leaves** (6 if h65 splits) — the 1st leaf
-`case_I_realization_all_k_gen` is **LANDED this commit** (the d=3 `case_I_realization_all_k` now its
+`case_I_realization_all_k_gen` is **LANDED 2026-06-18** (the d=3 `case_I_realization_all_k` now its
 `k:=2` wrapper). The *one* genuinely-new piece is LEAF-0
 `linearIndependent_normals_of_algebraicIndependent_triple` (a fixed-3-row LI at `Fin (k+2)`, needed by
 h65 since the landed `…_general` only gives `k+1` rows); the remaining producers
@@ -301,10 +296,10 @@ swap), then LEAF-0/`h65`/`dispatch` per design §(k); or CHAIN-2
   `exists_extensor_eq_panelSupportExtensor_gen` and the consumer `hasPanelRealization_of_generic`
   (`GenericityDevice.lean`) are lifted; `hforget_k`'s `k=2` filler is *already* general-`k`. The base
   producer (three bare arms + two GP arms + the trichotomy dispatch `theorem_55_base_producer_gen`) is
-  general-`k`; `hcut_k` is now both the bare conjunct `case_cut_edge_realization_gen` and (this commit)
-  the GP conjunct `case_cut_edge_realization_gp_gen` (`Theorem55.lean`). All d=3 lemmas are now `k:=2`
+  general-`k`; `hcut_k` is now both the bare conjunct `case_cut_edge_realization_gen` and the GP
+  conjunct `case_cut_edge_realization_gp_gen` (`Theorem55.lean`). All d=3 lemmas are now `k:=2`
   wrappers, blueprint pins unmoved. `hcontract_k`'s 1st leaf `case_I_realization_all_k_gen` is
-  **LANDED this commit** (the d=3 lemma now its `k:=2` wrapper). **Smallest next step:**
+  **LANDED 2026-06-18** (the d=3 lemma now its `k:=2` wrapper). **Smallest next step:**
   `case_I_realization_nonsimple_gen` — the 2nd of the 5-leaf `hcontract_k` decomposition (recon
   2026-06-18, design §(k)): a numeral pass + the `_perp_grade` swap. The decomposition's *one*
   genuinely-new piece is LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple` (needed by
