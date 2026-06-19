@@ -2232,8 +2232,8 @@ dispatch consumes it. Four dependency-ordered buildable leaves:
   `shiftPerm_apply_off`, `shiftPerm_vtx_i` showing `vtx i` is the cycle's "removed"
   fixed-image). **§38-clean** (graph-free, pure `Equiv.Perm`/`Fin` arithmetic). This is
   the genuinely-new brick; it is **independent of all rigidity content** and is the
-  smallest self-contained piece. **NOT the first buildable** (see below) but the first
-  *new* one.
+  smallest self-contained piece — the first *new* brick, and (per *First buildable* below)
+  the recommended next commit.
 - **CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport.** Generalize
   `ofNormals_relabel` from `ρ = Equiv.swap a v` to an arbitrary `ρ : Equiv.Perm α` (and
   the edge side `σ : Equiv.Perm β`) carrying one interior split to another: drop the
