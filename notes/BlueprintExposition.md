@@ -511,6 +511,14 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   alg-independence step (KT states the `d+1` points' general position via alg-independence; the
   `d=3` formalization avoided it via an explicit construction that does not obviously generalize —
   OD-4). Pointer: KT §6.4.2 eqs. (6.46)–(6.67); `notes/Phase23-design.md` §"CHAIN"; `notes/Phase23b.md`.
+  **Route + clarity update (2026-06-18; route β locked, KT-source-verified, model-exp row 242).** The
+  `d` candidates are **re-views of ONE base** `(G₁,q₁)` — the single `v₁`-split (6.46) — related by the
+  index-shift isos `ρᵢ` (6.55, "exactly the same framework"), not `d` separate splits. The Lean (route
+  β) **absorbs** those isos (6.54–6.56) and the ±r chain (6.66) into a uniform `Fin d` relabel arm, so
+  **this node's exposition must materialize them explicitly** — the single-base construction, the
+  relabel isos `ρᵢ`, the single redundancy `r` carried ±-ly across the `d` panels, and the (6.67)
+  discriminator. **Owner-flagged 2026-06-18: this exposition must be absolutely clear** (the Lean
+  economizes; the prose must not). Sharpens the [pending] (c) write-target above — write at phase-close.
 
 ## Retroactive coverage
 

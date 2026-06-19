@@ -1922,6 +1922,17 @@ so the §(l) "3–5 commits" for all of CHAIN-2 holds (record landed + 2a-i + 2a
 
 ### (n) CHAIN-2b/2c design-pass — the `Fin d` family layer, source-verified against KT eqs. (6.46)–(6.67)
 
+**ROUTE β LOCKED (user-adjudicated 2026-06-18; KT-source-verified — model-exp row 242).** A read-only
+recon of KT 6.46–6.67 confirmed the single-base construction (ONE `v₁`-split; the other candidates are
+index-shift iso-copies, eq. 6.55 "exactly the same framework") and **refuted route α's per-`i`-splits
+premise** — KT does not split `d` times, so there is no per-`i` split to iso-transport. Build 2c on the
+single `v₁` base + the uniform `Fin (k+1)` relabel arm (2c-ii). **Blueprint-clarity obligation
+(owner-flagged, "absolutely clear"):** route β absorbs KT's explicit isos (6.54–6.56) + ±r chain (6.66)
+into the Lean relabel arm, so the `lem:case-III` general-`d` blueprint node's prose must materialize them
+— the single-base construction, the relabel isos `ρᵢ`, the single redundancy `r` carried ±-ly across the
+`d` panels, and the (6.67) discriminator (tracked in the BlueprintExposition ledger; written as
+2c-ii/CHAIN-5 land + at phase-close). The route-decision detail below is retained as the rationale.
+
 **Status:** CHAIN-2b/2c detailed design-pass, docs-only, 2026-06-18, source-verified
 against KT 2011 §6.4.2 (the `.refs/` published PDF, eqs. 6.46–6.67 read end-to-end,
 pp. 692–698) **and** the landed bodies (clause (i)): the discriminator

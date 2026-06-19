@@ -49,7 +49,7 @@ candidates are role-relabels (`_M2` sign-swap, `_M3` `swap a v`), NOT fresh spli
 lemma.** The landed `chainData_split_realization` is instead parameterized by a **per-`i` split** with
 a **per-`i` `htrans`** — a correct standalone per-candidate lemma + the `M₀`-arm, but **NOT the shape
 the family disjunction assembles** (the discriminator's single `r = ρ₀` is the `v₁` functional, not
-candidate `u`'s per-split `ρ`). **Recommended route β:** build CHAIN-2c as the `Fin (k+1)`-case
+candidate `u`'s per-split `ρ`). **Route β — LOCKED (user-adjudicated 2026-06-18, KT-source-verified row 242):** build CHAIN-2c as the `Fin (k+1)`-case
 generalization of the d=3 dispatch off the single `v₁`/`M₀` base (reusing the landed W6b +
 discriminator), reusing 2a-ii only at the `M₀` candidate; the genuinely-new crux is the **uniform
 `Fin d` relabel arm** (the eq.-6.54 iso transport of `ρ₀` to an arbitrary candidate `u`'s role —
@@ -236,19 +236,28 @@ the relabel-arm crux** deferred to CHAIN-2c-ii.
   zero-regression wrapper). ~3 build commits. The `G.ChainData n` record + 7 accessors
   (`Induction/Operations.lean`, C.1) are landed; ENTRY owns the extractor producing the record (C.2).
 
-  **Coordinator decision flagged (clause ii, NOT adjudicated here):** whether to (β) build 2c on the
-  single `v₁` base + reuse 2a-ii only at `M₀`, or (α) keep the per-`i`-split 2a-ii and add an
-  iso-transport lemma so the discriminator's `r` matches each candidate's per-split `ρ`. Route β is
-  recommended (faithful to the green d=3 dispatch, lowest risk, no new transport for the family glue);
-  the genuinely-new work either way is the **uniform `Fin d` relabel arm** (2c-ii), below the dispatch
-  — not a motive/IH change, not a spine carried-hypothesis change. The first 2c-ii build commit
-  settles it; carry the crux as the standing `h…` idiom if it can't close in one sitting (never a
-  `sorry`).
+  **CHAIN-2c route β LOCKED (user-adjudicated 2026-06-18; KT-source-verified, row 242).** Build 2c on
+  the single `v₁` base + reuse 2a-ii only at `M₀`; the other candidates via the uniform `Fin (k+1)`
+  relabel arm (2c-ii). The read-only verification of KT 6.46–6.67 **refuted route α's per-`i`-splits
+  premise** — KT performs ONE split-off (6.46), the candidates are index-shift iso-copies of that one
+  base (6.55, "exactly the same framework"), `r` is a single vector (6.66) — so there is no per-`i`
+  split to iso-transport and route α is off the table. The genuinely-new work is the uniform `Fin d`
+  relabel arm (2c-ii); not a motive/IH or spine carried-hypothesis change. Carry the crux as the
+  standing `h…` idiom if it can't close in one sitting (never a `sorry`).
+
+  **Blueprint-clarity obligation (owner-flagged 2026-06-18 — "absolutely clear").** Route β **absorbs**
+  KT's explicit index-shift isos (6.54–6.56) + ±r chain (6.66) into the Lean relabel arm — so the
+  `lem:case-III` general-`d` blueprint node's prose MUST materialize them explicitly: the single-`v₁`-base
+  construction, the relabel isos `ρᵢ`, the single redundancy `r` carried ±-ly across the `d` panels,
+  and the (6.67) discriminator. The Lean economizes; the exposition must not. Tracked in the
+  BlueprintExposition ledger (the `lem:case-III` general-`d` entry); written as 2c-ii/CHAIN-5 land + at
+  the phase-close re-read.
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
-`complementIso_smul_eq_extensor_join` wrapper stay green meanwhile; defer to ASSEMBLY/cleanup. **Route β
-stays rejected** (the annihilation→membership upgrade is the withdrawn `dim Φ̃` count). The CHAIN-3-finish
+`complementIso_smul_eq_extensor_join` wrapper stay green meanwhile; defer to ASSEMBLY/cleanup. **The
+OD-8 route β stays rejected** (the annihilation→membership upgrade is the withdrawn `dim Φ̃` count —
+distinct from the CHAIN-2c "route β" just locked above; this is the CHAIN-3/OD-8 duality route). The CHAIN-3-finish
 geometry (the `⋀^{d−1}W`-is-a-line route, NOT the withdrawn d=3-only `Φ̃` route) lives canonically in
 `notes/Phase23-design.md` §"CHAIN"(f)/(h); the join=meet duality KT leaves implicit is captured in the
 BlueprintExposition ledger (the CHAIN-3 entry).
