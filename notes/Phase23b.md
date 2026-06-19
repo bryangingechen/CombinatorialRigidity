@@ -127,23 +127,16 @@ signature is now authorable; the `d=3` line is a zero-regression wrapper (C.4).
 ## CHAIN leaf checklist
 
 The buildable-leaf sequence (exact signatures + dependency order in
-`notes/Phase23-design.md` §"CHAIN"(c)). Five leaves, **one** sub-phase (OD-6).
-**CHAIN-1 + CHAIN-3 are CLOSED**. CHAIN-4 + the four-producer tail are unblocked
-(consume CHAIN-3); CHAIN-2 is buildable now (consumes CHAIN-1); CHAIN-5 is gated
-by the (b) flag (its signature is the CHAIN↔ENTRY contract).
+`notes/Phase23-design.md` §"CHAIN"(c)/(l)/(m)). **CHAIN-1 + CHAIN-3 + CHAIN-4 + the four-producer
+tail (OD-7) are CLOSED.** Remaining: **CHAIN-2** (buildable — next leaf CHAIN-2a-i, design §(m)) and
+**CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
+extractor reshape).
 
-- [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + the Hodge panel-meet membership**
-      (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (rows 193–210; full per-leaf detail in
-      *Decisions made* below). Route = the **`⋀^{d−1}W`-is-a-line** one (CHAIN-3-finish recon,
-      `notes/Phase23-design.md` §"CHAIN"(f)/(g)/(h)), NOT the withdrawn d=3-only `Φ̃` route. Landed:
-      the three grade bricks (`extensor_mem_range_map_subtype_of_mem_grade` /
-      `exists_smul_eq_of_mem_range_map_subtype_grade` /
-      `exteriorPower_basis_toDual_eq_pairingDual_comp_map_grade`), then the OD-8 route-α chain — (h-0)
-      `screwAlgebraTopEquiv_map_eq_det_smul` → (h-1) `complementIso_map_orthogonal_eq` (the Hodge
-      O(n)-equivariance) → (h-2) the metric transport bridge (mirror `Mathlib/…/PiL2.lean`) +
-      Gram–Schmidt `exists_orthonormalBasis_span_pair_eq` (`MeetHodge.lean`) → (h-3)
-      `complementIso_extensor_mem_range_map_subtype` (the panel-meet membership crux) → (h-4)
-      `extensor_join_proportional_complementIso_meet` (the join=meet duality, closes CHAIN-3).
+- [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + Hodge panel-meet membership**
+      (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (route = `⋀^{d−1}W`-is-a-line, NOT the
+      withdrawn d=3-only `Φ̃`; the OD-8 route-α leaf chain h-0…h-4 closing on the join=meet duality
+      `extensor_join_proportional_complementIso_meet`). Detail: design §"CHAIN"(f)/(g)/(h) + git +
+      *Decisions made* → *Landed CHAIN-3 bricks*.
       - [~] **Cleanup-round candidates (forward, low-priority):** (1) the lifted `wedgeFixedLeft`
         block + `inf_range_wedgeFixedLeft` (ambient `{d}`) served the `Φ̃` route the CHAIN-3-finish
         recon **withdrew** (`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp`
@@ -151,42 +144,15 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
         touch**) — revert the lifted infra to `Fin 4`. (2) The `finrank {n}^⊥ = k` metric transport is
         duplicated between (h-3) and (h-4) — factor a shared `finrank_toDualPerp_pair_eq` helper.
 - [x] **CHAIN-1 — the `d`-fold candidate machinery** (`RigidityMatrix/Basic.lean`). **CLOSED
-      2026-06-18** (rows 211–212). Graph-free over `ScrewSpace k`; no `d=3` content. Two bricks:
-      (1) the row-correspondence swap (KT eq. 6.62) `linearIndependent_sumElim_candidateBlock_swap`
-      + mirror `linearIndependent_sumElim_block_swap`; (2) the `ιc`-block candidate augment
-      `linearIndependent_sum_pinned_block_augment_block` + `linearIndependent_sum_augment_candidateRow_block`,
-      the `+|ιc|` count lift (the single-`Unit` `…_augment{,…_candidateRow}` re-derived as the
-      `ιc := Unit` corollaries; blueprint pins unmoved). The per-candidate column-op heterogeneity of
-      the heterogeneous chain is CHAIN-2's bookkeeping (the augment fires one body at a time).
+      2026-06-18.** Graph-free over `ScrewSpace k`, no `d=3` content: the eq.-6.62 row-correspondence
+      swap + the `ιc`-block candidate augment (the per-candidate column-op heterogeneity is CHAIN-2's
+      bookkeeping). Detail: *Decisions made* → *Landed CHAIN-1 bricks* + git.
 - [x] **CHAIN-4 — the `Fin (d+1)` incidence + Claim-6.12 discriminator**
-      (`RigidityMatrix/Claim612.lean`). **CLOSED 2026-06-18** (4a–4d all landed).
-      Consumes CHAIN-3. **OD-4 RESOLVED + CONFIRMED** (existence/homogeneous, not
-      alg-independence; CHAIN-4b's build closed the last residual — Decisions-made +
-      design §(i)). The four sub-leaves (exact signatures in design §(j)):
-      - [x] **CHAIN-4a** `exists_homogeneousIncidence_of_normals_gen` at `Fin (k+1)
-            → Fin (k+2)`. **LANDED 2026-06-18** (the OD-4 sub-leaf, clean lift —
-            row-matrix surjectivity, no genericity). Detail in *Decisions made*.
-      - [x] **CHAIN-4b** `exists_line_data_of_homogeneousIncidence_gen` at
-            `Fin (k+2)`. **LANDED 2026-06-18** — confirmed the §(i) per-join
-            membership combinatorially (the uniform two-case dispatch on `0 ∈ {a,b}`,
-            via the new `pbar_dotProduct_eq_zero_of_ne_succ` + `k`-point perp helper
-            `exists_independent_perp_family`). **Two faithful divergences from the
-            d=3 lemma** (so the d=3 body stays its own green lemma, not a wrapper):
-            off-one-panel incidence hyp, and the conclusion carries
-            `LinearIndependent ℝ p` (needs the new `hpbar` hyp CHAIN-4d supplies).
-            Detail in *Decisions made*.
-      - [x] **CHAIN-4c** `case_III_claim612_gen`. **LANDED 2026-06-18** — the span-`D`
-            existential, **verbatim numeral lift** of the d=3 body (both bricks
-            `span_omitTwoExtensor_eq_top` + `eq_zero_of_annihilates_span_top` already
-            `{k:ℕ}`). The d=3 `case_III_claim612` re-derived as the `k:=2` wrapper.
-            Axiom-clean; no friction. Detail in *Decisions made*.
-      - [x] **CHAIN-4d** `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`.
-            **LANDED 2026-06-18 — closes CHAIN-4.** The discriminator capstone at
-            `ScrewSpace k`/`Fin (k+1)`, `complementIso (k:=k)(j:=2)`. Assembly of 4b
-            (line data) + 4c (witness join) + CHAIN-3 (h-4) (join=meet duality);
-            contrapositive of the d=3 `…eq_zero_of_complementIso…` lifted to `Fin k`
-            points. `MeetHodge` import did NOT trigger a §59 whnf regression on the
-            file's `⋀²ℝ⁴` proofs. Detail in *Decisions made*. Axiom-clean.
+      (`RigidityMatrix/Claim612.lean`). **CLOSED 2026-06-18** (4a–4d all landed; consumes CHAIN-3;
+      OD-4 RESOLVED — existence/homogeneous, not alg-independence). Capstone = the discriminator
+      `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (assembly of 4b line-data + 4c
+      witness-join + CHAIN-3 (h-4)). Detail: design §(i)/(j) + git + *Decisions made* → *Landed
+      CHAIN-4 bricks*.
 - [ ] **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`).
       **Decomposed (design §(l), which corrected §(c)'s framing — the named chain is already
       general-`k`):** the `Fin d` reduction layer on top of the reused-verbatim certification chain +
@@ -212,16 +178,10 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       fact + the IH-generic base realization on that split. Keep the `d=3` dispatch
       as a `k=2`/length-3 wrapper (no `d=3` regression — C.4 zero-regression map).
 - [x] **CHAIN tail — lift the four 23a-carried producers (OD-7 fold). CLOSED 2026-06-18.** After
-      CHAIN-3, all four 23a-carried producers + both M4 halves are general-`k` (per-brick detail in
-      *Decisions made* → *Landed OD-7 bricks*): `hforget_k` (`hasPanelRealization_of_generic`) + the
-      forget reach-in `exists_extensor_eq_panelSupportExtensor_gen` (through CHAIN-3 (h-4)), `hbase_k`
-      (`theorem_55_base_producer_gen`), `hcut_k` (`case_cut_edge_realization{,_gp}_gen`), and
-      `hcontract_k` — its five decomposition leaves (design §(k)) all landed:
-      `case_I_realization_all_k_gen`, `case_I_realization_nonsimple_gen`, LEAF-0
-      `linearIndependent_normals_of_algebraicIndependent_triple` (the *one* genuinely-new piece),
-      `case_I_realization_h65_gen`, and the last leaf `case_I_dispatch_gen` + `case_I_hcontract_gen`
-      (the general-`k` filler for the carried `hcontract_k` slot). All d=3 lemmas are now their `k:=2`
-      wrappers/instances, blueprint pins unmoved.
+      CHAIN-3, all four 23a-carried producers (`hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`) + both M4
+      halves are general-`k`; the *one* genuinely-new piece was LEAF-0
+      `linearIndependent_normals_of_algebraicIndependent_triple`. Detail: design §(k) + git +
+      *Decisions made* → *Landed OD-7 bricks*.
 
 ## Blockers / open questions
 
@@ -427,17 +387,16 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `linearIndependent_normals_of_algebraicIndependent_triple` (fixed-3-row LI at `Fin (k+2)`; landed
   `…_general` gives `k+1` rows, h65 has only 3 vertices). No motive/IH change → §"CHAIN"(k).
 
-**Landed CHAIN-3 bricks** (all keep the `d=3` name as a `(d:=3)` instance or unify
-`d=3` by defeq; no blueprint pin moved; the `_grade` lifts are verbatim — the route is
-general mathlib, grade enters nothing):
-CHAIN-3 is CLOSED; its leaf names + route + the two forward cleanup-candidates are in the *CHAIN leaf
-checklist* `[x]` entry above (the canonical leaf-status home), and the construction internals live in
-git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the BlueprintExposition CHAIN-3 entry. The duality
-KT leaves implicit (`extensor_join_proportional_complementIso_meet`) is the CHAIN-3 ledger entry.
+**Landed CHAIN-3 bricks** (the `_grade` lifts are verbatim — the route is general mathlib, grade
+enters nothing; `d=3` names kept as `(d:=3)` instances, no blueprint pin moved). CHAIN-3 is CLOSED;
+construction internals live in git + `notes/Phase23-design.md` §"CHAIN"(f)/(h) + the
+BlueprintExposition CHAIN-3 entry (the duality KT leaves implicit,
+`extensor_join_proportional_complementIso_meet`). The two forward cleanup-candidates are the `[~]`
+sub-bullet under the *CHAIN leaf checklist* CHAIN-3 entry.
 
 **Landed OD-7 (four-producer tail) bricks** (OD-7 CLOSED 2026-06-18; per-brick names + the `hcontract_k`
-five-leaf split are the *CHAIN leaf checklist* `[x]` "CHAIN tail" entry above — the canonical home;
-construction internals in git + commit messages + `notes/Phase23-design.md` §(k); all axiom-clean).
+five-leaf split + construction internals live in git + commit messages + `notes/Phase23-design.md`
+§(k), the canonical home; all axiom-clean).
 All four producers + both M4 halves are now general-`k` via verbatim numeral passes over the d=3 bodies
 (`screwDim/ScrewSpace 2→k`, `Fin 4→Fin (k+2)`, dof `k→c`; d=3 lemmas now `k:=2` wrappers/instances,
 blueprint pins unmoved, §58 idiom). Two settled cross-cutting notes: the *one* genuinely-new piece was
@@ -447,8 +406,8 @@ solely through the CHAIN-3 (h-4) duality + the new slot-0 rescale `extensor_upda
 caveat (e): the duality *is* the only M4-forget d=3 reach-in).
 
 **Landed CHAIN-4 bricks** (CHAIN-4 CLOSED 2026-06-18, `RigidityMatrix/Claim612.lean`; leaf names + per-leaf
-verdicts are the *CHAIN leaf checklist* `[x]` CHAIN-4a–4d entries above — the canonical home; construction
-internals in git + `notes/Phase23-design.md` §(i)/(j); all axiom-clean). Two settled cross-cutting notes:
+verdicts + construction internals live in git + `notes/Phase23-design.md` §(i)/(j), the canonical home;
+all axiom-clean). Two settled cross-cutting notes:
 4d's `MeetHodge` import did NOT regress the file's `⋀²ℝ⁴` proofs to a §59 whnf timeout; 4b has two faithful
 divergences from the d=3 body (off-one-panel hyp + `LinearIndependent ℝ p` conclusion via the new `hpbar`),
 so the d=3 lemma stays its own green body, not a `k:=2` wrapper.
