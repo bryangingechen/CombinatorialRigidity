@@ -2,10 +2,11 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
-**Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a LANDED, T-W9b single-step + fold core LANDED,
-**W9b membership next**) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).** The integer
-Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary;
-codes-until-open).
+**Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a LANDED, T-W9b single-step + fold core LANDED;
+the W9b-membership build BLOCKED on a missing degree-2 redundancy bridge — now pinned, **bridge
+`redundancy_panel_carry` next**) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
+The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
+boundary; codes-until-open).
 
 **Orientation.** The **23b (CHAIN layer)** rolling state + hand-off. Cross-phase plan/guidance + the
 detailed leaf-level recon live in `notes/Phase23-design.md` (§"CHAIN": (a) per-file reach-ins, (c)
@@ -16,24 +17,22 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). T-W9a LANDED; T-W9b STARTED — the single-step framework form + the fold core
-LANDED, next commit = (W9b membership).** T-W9b is the cycle bottom-tag transport (per-`i`
-generalization of the d=3 `case_III_bottom_relabel`); it has its OWN cycle treatment (a tagged-member
-transport, NOT a `wstep` fold reuse), so it decomposes (mirroring how T-W9a split into a
-framework-level step → fold core → membership half): **(W9b-step) LANDED** the framework-level
-single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean`, axiom-clean) — the
-abstract-`Fv`/`Fva` restatement of `case_III_bottom_relabel` (carrier facts as hypotheses, the W9b
-analogue of W9a's `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`) → **(W9b fold core) LANDED** the
-`List`-induction `bottomTag_foldr_mem_rigidityRows` (`Relabel.lean`, axiom-clean) — a per-step `Tag : ℕ
-→ Dual → Prop` threaded through the pure-relabel fold, iterating the single-step at each head-peel
-(mirrors `wstep_foldr_mem_span_rigidityRows`; pure relabel, no a-column) → **(W9b membership)** [next]
-the `ChainData`/`shiftBodyFramework` instantiation (the `Tag`-shape disjunction from the chain
-accessors, `getElem_shiftBodyList` triples + `shiftBodyFramework_supportExtensor` block extensors). The
-(T-W9a) membership half `shiftBodyList_foldr_mem_span_rigidityRows` (axiom-clean)
-transports `span (G − vᵢ)`-rows → `span (G − v₁)`-rows for `2 ≤ i`; **span-only** — the
-`funLeft (shiftPerm i)` relabel bridge stays separate for the arm. Endpoints are **removeVertex**
-frameworks, NOT splits (splits enter at the arm). After T-W9b: **2c-ii-arm** → **2c-iii** →
-**CHAIN-5** remain. Full decomposition: design §(o″).
+**Route B LOCKED (§(o″)). T-W9a LANDED; T-W9b single-step + fold core LANDED; W9b membership BLOCKED
+on a missing degree-2 redundancy bridge — diagnosed, pinned, and decomposed (§(o″) "THE DEGREE-2
+REDUNDANCY BRIDGE"); next commit = the bridge leaf `redundancy_panel_carry`.** The gap (build row 266,
+coordinator-verified): the fold's per-step `Tag` cannot be instantiated mechanically — the single-step
+OUTPUT block-tag annihilates the **predecessor** panel `C(edge s)`, but the next step's INPUT block-tag
+needs `⊥` the **successor** panel `C(edge s+1)` (distinct adjacent panels at the degree-2 body `vₛ₊₁`).
+The bridge is **NOT** an orthogonality implication between the two panels (that is too-strong/false);
+it is KT eq. (6.66)'s **±r vector carry** ("because `vᵢ` is degree two", cf. eq. 6.44) — an *equality*,
+source-verified KT p. 698 — and it **REUSES** the LANDED graph-free `candidateRow_ac_eq_neg`
+(`Claim612.lean:1194`, eq. 6.44, the degree-2 two-panel row identity `∑ lamAC • rac = −∑ lamAB • rab`):
+the bridge leaf is its chain-step instance, carrying the single `r` across one degree-2 body. So it is
+**NOT new math** (no motive/IH/spine-carry change; d=3 zero-regression — the bridge is vacuous at the
+M₃ arm `i=2`, which never chains). Per-leaf tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ →
+W9b-step ✓ → W9b fold core ✓ → **redundancy_panel_carry (bridge) [next]** → W9b membership → 2c-ii-arm →
+2c-iii → CHAIN-5. Full mechanism + leaf signatures + the `Tag`-pinned-to-±r membership shape: design
+§(o″) + *Hand-off* below.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -45,8 +44,8 @@ route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bul
 **T-W9a membership half COMPLETE** (`shiftBodyList_foldr_mem_span_rigidityRows`); **T-W9b single-step
 framework form + fold core COMPLETE** (`funLeft_dualMap_bottomTag_mem_rigidityRows` +
 `bottomTag_foldr_mem_rigidityRows`). Remaining in CHAIN-2c (full decomposition in the checklist +
-*Hand-off*): **2c-ii-transport** (route B: T-W9b membership) → **2c-ii-arm** → **2c-iii** → **CHAIN-5**
-+ the ENTRY extractor reshape.
+*Hand-off*): **2c-ii-transport** (route B: the degree-2 redundancy bridge `redundancy_panel_carry` →
+T-W9b membership) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
@@ -127,8 +126,17 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean`, axiom-clean; abstract `Fv`/`Fva`,
       carrier facts as hypotheses) → **(W9b fold core) COMPLETE 2026-06-19** — the `List`-induction
       `bottomTag_foldr_mem_rigidityRows` (`Relabel.lean`, axiom-clean; a per-step `Tag : ℕ → Dual →
-      Prop` threaded through the pure-relabel fold, head-peel iterating the single-step) → **(W9b
-      membership)** [next] the `ChainData`/`shiftBodyFramework` instantiation →
+      Prop` threaded through the pure-relabel fold, head-peel iterating the single-step) →
+      **(redundancy_panel_carry) [NEW, next] the degree-2 redundancy bridge** — the W9b-membership build
+      BLOCKED (row 266) on a missing panel-match: the fold's per-step `Tag` cannot chain because the
+      single-step OUTPUT block-tag annihilates `C(edge s)` (predecessor panel) but the next step's INPUT
+      needs `⊥ C(edge s+1)` (successor panel), distinct adjacent panels at the degree-2 body. Pinned
+      §(o″): the bridge is KT eq. 6.66's **±r vector carry** (NOT an orthogonality implication), and it
+      **REUSES** the LANDED graph-free `candidateRow_ac_eq_neg` (eq. 6.44) — its chain-step instance
+      carrying the single redundancy `r` across one degree-2 body. Shape B1 (additive: leaves the green
+      single-step/fold core untouched) → **(W9b membership)** the `ChainData`/`shiftBodyFramework`
+      instantiation, with `Tag`'s block-disjunct **pinned to ±r** (so each `hstep`'s panel-match is the
+      bridge's vector identity, not a free `∃ρ'⊥panel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
       the relabelled roles with `−ρ₀`; d=3 M₃ is the `i=2` instance) → **CHAIN-2c-iii**
       (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). Full signatures + decomposition:
@@ -194,35 +202,44 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). T-W9a LANDED;
-T-W9b STARTED — single-step framework form + fold core LANDED. next commit = (W9b membership)** the
-`ChainData`/`shiftBodyFramework` instantiation of the landed fold core. T-W9b is the cycle bottom-tag
-transport — the per-`i`-cycle generalization of the d=3 `case_III_bottom_relabel`
-(`CaseIII/Relabel.lean`), a *pure relabel* `(funLeft (shiftPerm i)).dualMap φ` (NO a-column
-subtraction) of a **tagged** bottom-family member (genuine `Gv`-row ∨ `(ab)`-block redundancy
-disjunct), so it cannot be a `wstep` fold; it is its OWN cycle treatment, re-tagging `(ab)`→`(cv)`
-**once per moved body** (KT eq. 6.62 row correspondence + the ±r carry eq. 6.66 — the shared `r`
-carried `±r` "because `vᵢ` is degree two", cf. 6.44). It decomposes (mirroring T-W9a's
-step→fold→membership): **(W9b-step) LANDED** the framework-level single-step
-`funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean`, axiom-clean) — the abstract-`Fv`/`Fva`
-restatement of `case_III_bottom_relabel` with the carrier facts (degree-2 closure, off-`v`, off-`a`
-`htrans`, the `e_c`/`e_b` support-extensor relations) lifted to hypotheses; the W9b analogue of W9a's
-`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` → **(W9b fold core) LANDED** the `List`-induction
-`bottomTag_foldr_mem_rigidityRows` (`Relabel.lean`, axiom-clean): a per-step `Tag : ℕ → Dual → Prop`
-threaded through the pure-relabel fold `bodies.foldr (fun b T => (funLeft (swap b.2.1 b.1)).dualMap.comp
-T) id` (the same swap product as `wstep`'s leading term, `wstep_foldr_funLeft_eq`-identifiable with
-`funLeft (shiftPerm i)`); the per-step `hstep` is "the single-step maps `Tag (s+1)` to `Tag s`", the
-chaining automatic, head-peel reusing the single-step (mirrors `wstep_foldr_mem_span_rigidityRows`,
-generalized over `Tag` instead of carrying `F`) → **(W9b membership)** [next] the
-`ChainData`/`shiftBodyFramework` instantiation: define `Tag s` as the bottom-tag disjunction at the
-chain step `s` (the `(ab)`/`(cv)` block extensors off `shiftBodyFramework_supportExtensor`, the body
-triples off `getElem_shiftBodyList`), supply each `hstep` by `funLeft_dualMap_bottomTag_mem_rigidityRows`
-reading the carrier facts off the landed graph/framework accessors. The genuine-row disjunct reuses
-T-W9a's `shiftBodyFramework` removeVertex chain. It feeds `case_III_arm_realization`'s `hwmem` slot at
-the relabelled roles; the arm closer 2c-ii-arm wires T-W9a's span half + its deferred relabel bridge
-(`wstep_foldr_funLeft_eq` + `shiftPerm_eq_prod_map_swap_shiftBodyList`, exposing `funLeft (shiftPerm
-i)`) + T-W9b's bottom tags into `chainData_relabel_arm`. **Per-leaf tracker** (checklist CHAIN-2):
-T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ → W9b membership → 2c-ii-arm → 2c-iii →
-CHAIN-5. Full decomposition: design §(o″).
+T-W9b single-step + fold core LANDED; W9b membership BLOCKED on a missing degree-2 redundancy bridge —
+diagnosed + pinned. next commit = the bridge leaf `redundancy_panel_carry`.** The W9b-membership build
+(row 266) found the fold's per-step `Tag` cannot be instantiated mechanically: the single-step OUTPUT
+block-tag annihilates the **predecessor** panel `C(edge s)`, but the next step's INPUT block-tag needs
+`⊥` the **successor** panel `C(edge s+1)` — distinct adjacent panels at the degree-2 body `vₛ₊₁`. The
+landed single-step/fold core supply no bridge between them. (The d=3 M₃ arm never chains —
+`shiftBodyList 2` has length 1, the block discharges to a genuine `e_b`-row in one step — so the gap
+is invisible at d=3; it first appears at `i ≥ 3`.) **The bridge is NOT route (a)** (the orthogonality
+implication `ρ'⊥C(edge s) ⟹ ρ'⊥C(edge s+1)` is too-strong/false — distinct subspaces); it is **KT eq.
+(6.66)'s ±-sign-flip carry of the single redundancy ROW VECTOR `r`** ("because `vᵢ` is degree two", cf.
+eq. 6.44; source-verified KT p. 698, an *equality* not an annihilation). **It REUSES a LANDED d=3
+lemma — NOT new math:** `candidateRow_ac_eq_neg` (`RigidityMatrix/Claim612.lean:1194`, eq. 6.44,
+graph-free/abstract over `ιab`/`ιac`/`a,b,c`) already encodes the degree-2 two-panel row identity
+`∑ lamAC • rac = −∑ lamAB • rab`; the bridge leaf is its chain-step instance, carrying `r` across one
+degree-2 body (at d=3 the same lemma is consumed at the *discriminator* level, `Claim612.lean:1034` —
+which is why the W9b single-step never needed it and the general-`d` fold exposes the gap).
+
+The decomposition (mirroring T-W9a's step→fold→membership): **(W9b-step) LANDED**
+`funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean`, axiom-clean; abstract `Fv`/`Fva`, carrier
+facts incl. the `e_c`/`e_b` support-extensor relations as hyps) → **(W9b fold core) LANDED**
+`bottomTag_foldr_mem_rigidityRows` (`Relabel.lean`, axiom-clean; per-step `Tag : ℕ → Dual → Prop`
+threaded through the pure-relabel fold, head-peel iterating the single-step) →
+**(redundancy_panel_carry) [next]** the bridge leaf (shape B1, recommended — additive, leaves the green
+single-step/fold core untouched; pinned signature design §(o″)), built by the eq.-(6.44) identity at
+body `vₛ₊₁` (the `candidateRow_ac_eq_neg` instance) → **(W9b membership)** the
+`ChainData`/`shiftBodyFramework` instantiation, defining `Tag s`'s block-disjunct with `ρ'` **pinned to
+the single ±r** (not a free `∃ρ'⊥panel`) so each `hstep`'s panel-match is the bridge's vector identity;
+the genuine-row disjunct reuses T-W9a's `shiftBodyFramework` removeVertex chain, the `(ab)`/`(cv)` block
+extensors off `shiftBodyFramework_supportExtensor`, body triples off `getElem_shiftBodyList`. The single
+`r` is the W6b candidate functional `ρ` from `chainData_split_w6b_gates` (`Realization.lean:1005`),
+reused across all candidates (route β, KT's one-`r` discipline), so it is in scope. W9b membership feeds
+`case_III_arm_realization`'s `hwmem` slot at the relabelled roles; the arm closer 2c-ii-arm wires
+T-W9a's span half + its deferred relabel bridge (`wstep_foldr_funLeft_eq` +
+`shiftPerm_eq_prod_map_swap_shiftBodyList`, exposing `funLeft (shiftPerm i)`) + T-W9b's bottom tags into
+`chainData_relabel_arm`. **`d=3` zero-regression preserved:** the bridge fires only for `s+1 < i` with
+`i ≥ 3`, vacuous at the M₃ arm (`i=2`, zero carries) — the M₃ body is untouched. **Per-leaf tracker**
+(checklist CHAIN-2): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ → redundancy_panel_carry
+(bridge) → W9b membership → 2c-ii-arm → 2c-iii → CHAIN-5. Full decomposition: design §(o″).
 
 **Two orphaned lemmas to confirm-and-delete at the 2c-ii-arm/cleanup commit** (both zero callers; full
 detail §(o″)): (1) `ofNormals_relabel_perm` (2c-ii-β, built for the REJECTED route A — route B is
@@ -364,20 +381,20 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   the §(o′)(B) fork → route B** (shared-`ρ₀` row-span); **route A REJECTED** (its eq.-6.66 identity
   equates two `Classical.choice` existentials — unprovable; KT p.698 carries ONE `r` + the ±r chain,
   the landed d=3 M₃ is route B). No motive/IH/spine-carry change. Detail §"CHAIN"(o)/(o′)/(o″).
-- **T-W9b decomposed 2026-06-19 (docs-only, §(o″) *T-W9b decomposition*; the stale §(o″)
-  pinned-signatures block corrected to the LANDED T-W9a shape).** VERDICT: T-W9b is a genuinely-new
-  cycle construction (~1–2 commits, NOT a numeral pass) that does **NOT** reuse the T-W9a `wstep` fold
-  core — W9b is a *pure relabel* of a *tagged* bottom member (genuine `Gv`-row ∨ `(ab)`-block), so it
-  is its OWN cycle induction on `shiftBodyList i`, re-tagging `(ab)`→`(cv)` once per moved body (KT
-  eq. 6.62/6.66 ±r carry, source-verified p.696–698). `chainData_relabel_arm` shape unchanged. The
-  dead `funLeft_shiftPerm_dualMap_sub_acolumns_…` pin (never built) is removed. Detail §(o″).
-- **T-W9b step + fold core LANDED 2026-06-19** (`Relabel.lean`, axiom-clean) — the single-step framework
-  form `funLeft_dualMap_bottomTag_mem_rigidityRows` (abstract-`Fv`/`Fva` restatement of
-  `case_III_bottom_relabel`, carrier facts incl. `e_c`/`e_b` support-extensor relations as hyps; the W9b
-  analogue of W9a's `funLeft_dualMap_sub_acolumn_…`) + the fold core `bottomTag_foldr_mem_rigidityRows`
-  (the `List`-induction iterating it, threading a per-step `Tag : ℕ → Dual → Prop` so the `(ab)`/`(cv)`
-  block-tag chaining is automatic; pure-relabel fold — no a-column — `funLeft (shiftPerm i)`-identifiable
-  via `wstep_foldr_funLeft_eq`). Next: W9b membership.
+- **T-W9b step + fold core LANDED 2026-06-19** (`Relabel.lean`, axiom-clean): the single-step
+  `funLeft_dualMap_bottomTag_mem_rigidityRows` (abstract-`Fv`/`Fva` restatement of
+  `case_III_bottom_relabel`) + the fold core `bottomTag_foldr_mem_rigidityRows` (`List`-induction
+  threading a per-step `Tag : ℕ → Dual → Prop`, pure-relabel — no a-column). Detail design §(o″).
+- **DEGREE-2 REDUNDANCY BRIDGE recon 2026-06-19 (docs-only; §(o″) "THE DEGREE-2 REDUNDANCY BRIDGE"; the
+  row-266 BLOCKED pin).** VERDICT: the W9b fold's per-step `Tag` cannot chain mechanically — the
+  single-step OUTPUT block-tag annihilates the predecessor panel `C(edge s)`, the next INPUT needs `⊥`
+  the successor panel `C(edge s+1)` (distinct adjacent panels at the degree-2 body). The bridge is **NOT**
+  route (a) (orthogonality implication — too-strong/false); it is **KT eq. (6.66)'s ±r vector carry**
+  (source-verified p.698), and it **REUSES** the LANDED graph-free `candidateRow_ac_eq_neg` (eq. 6.44,
+  `Claim612.lean:1194`) — its chain-step instance carrying the single `r` across one degree-2 body. NEW
+  leaf `redundancy_panel_carry` (shape B1, additive) slots before the W9b membership, which pins `Tag`'s
+  block-disjunct to ±r. No motive/IH (C.6) / spine-carry (C.3) change; d=3 zero-regression (bridge
+  vacuous at `i=2`). Detail §(o″).
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`

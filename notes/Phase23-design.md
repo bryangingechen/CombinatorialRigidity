@@ -2759,6 +2759,126 @@ disjunction shape (genuine-`Gv`-row ∨ `(ab)`-block) is what T-W9b must produce
 `(v,a,b) := (vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)` — confirming the arm's frozen shape and
 that no contract (C.3/C.6) moves.
 
+#### (o″) THE DEGREE-2 REDUNDANCY BRIDGE — the missing W9b-membership leaf (BLOCKED row 266 → pinned)
+
+**Status:** the W9b-membership build (HEAD 86a60be, row 266) hit a genuine gap and BLOCKED rather
+than force a wrong proof — a win. This sub-section pins the gap, decomposes it into a buildable leaf
+with the correct signature, and re-points. **Clause-(i): every load-bearing claim source-verified
+against the landed bodies** (file:line) **and KT 2011 §6.4.2** (pdf pp. 49–51 = paper pp. 696–698,
+eqs. 6.60–6.67, read end-to-end). **Clause-(ii): no motive/IH (C.6) or spine-carry (C.3) change; the
+bridge is a degree-2 row-identity leaf, NOT genuinely-new math** (it generalizes a LANDED d=3 lemma)
+— so the W9b/2c-ii-arm approach is structurally sound and stands.
+
+**The gap (build-found, coordinator-verified vs the single-step signature `Relabel.lean:1181`).**
+The fold core `bottomTag_foldr_mem_rigidityRows` (`Relabel.lean:1273`) threads a per-step
+`Tag : ℕ → Dual → Prop` whose `hstep s` is discharged by the single-step
+`funLeft_dualMap_bottomTag_mem_rigidityRows` at body `bodies[s] = (vₛ₊₂, vₛ₊₁, vₛ)`. Tracing the
+block-tag disjunct (worked at `i=3`, `shiftBodyList 3 = [(v₂,v₁,v₀),(v₃,v₂,v₁)]`): the single-step's
+INPUT block-tag at step `s` is `∃ρ', ρ' Cab = 0 ∧ φ = hingeRow a b ρ'` with
+`Cab = Fva.supportExtensor e_b` (`e_b` links `v=vₛ₊₂, b`, the **successor** panel), and its OUTPUT
+block-tag is `∃ρ', ρ' Cca = 0 ∧ … = hingeRow c v ρ'` with `Cca = Fv.supportExtensor e_c`
+(`e_c = edge s` links `a=vₛ₊₁, c=vₛ`, the **predecessor** panel). So a tag *produced* annihilating
+`C(edge s)` must be *consumed* annihilating `C(edge s+1)` at the next step — two **distinct** adjacent
+panels sharing the degree-2 vertex `vₛ₊₁`. The landed single-step ties `Cab`/`Cca` rigidly to specific
+edges and supplies **no bridge** between them. The `d=3` arm (`i=2`, `shiftBodyList 2` length 1) chains
+**zero** times — the block discharges to a genuine `e_b`-row in one step (single-step `(ab)`-block case,
+`Relabel.lean:1246–1252`) — so the gap is invisible there; it first appears at `i ≥ 3` (genuinely
+general-`d`).
+
+**WHAT EXACTLY IS THE BRIDGE (source-verified KT eqs. 6.64/6.66/6.44).** **Route (a) as the build
+stated it (`ρ'⊥C(edge s) ⟹ ρ'⊥C(edge s+1)`) is WRONG/too-strong** — the two panels are distinct
+subspaces of `ScrewSpace k` and no orthogonality *implication* holds between them. **The real
+mechanism is a ±-sign-flip carry of the redundancy ROW VECTOR, an EQUALITY, not an annihilation
+implication.** KT p. 698 verbatim: define the redundancy `r := ∑ⱼ λ_{(v₀v₂)j} rⱼ(q(v₀v₂)) ∈ ℝ^D`
+**once** off the base `(G₁,q₁)`; then (6.64) shows the carried redundant row at candidate `i` is
+`∑ⱼ λ_{(vᵢvᵢ₊₁)j} rⱼ(q₁(vᵢvᵢ₊₁))` (SAME `λ`s, panel `q₁(vᵢvᵢ₊₁)`), and (6.66): *"due to the fact that
+`vᵢ` is a vertex of degree two in `G₁` for all `2 ≤ i ≤ d−1`, we can easily show … (cf. (6.44)):
+`∑ⱼ λ_{(vᵢvᵢ₊₁)j} rⱼ(q(vᵢvᵢ₊₁)) = ±r`"*. So the carried row **equals ±r as a vector**; only THEN
+(6.66 continues) does "Mᵢ not full rank ⟺ `r` ⊥ C(Lᵢ)" follow — the orthogonality is read off the
+**single shared `r`**, never transported panel-to-panel. The precise Lean form of the mechanism: at a
+degree-2 body `a` (edges `ab`, `ac`), if the full `a`-column of the redundant `G_v`-row combination
+vanishes, then `∑ⱼ λ_{(ac)j} rac_j = −∑ⱼ λ_{(ab)j} rab_j` — i.e. the redundancy ROW computed at the
+`ac`-panel is `−` the row computed at the `ab`-panel.
+
+**A LANDED d=3 lemma ALREADY ENCODES THIS — the bridge REUSES/generalizes it, it is NOT new math.**
+`BodyHingeFramework.candidateRow_ac_eq_neg` (`RigidityMatrix/Claim612.lean:1194`,
+`lem:case-III-claim612-eq644`, KT eq. 6.44) is *exactly* the degree-2 two-panel row identity:
+from `hcol` (the `a`-column of `(∑ lamAB • hingeRow a b rab) + (∑ lamAC • hingeRow a c rac) + grest`
+vanishes) and `hrest` (the off-`a` rest vanishes on `a`'s column), it concludes
+`∑ⱼ lamAC j • rac j = −∑ⱼ lamAB j • rab j`. It is **graph-free, abstract over `ιab`/`ιac`/`a,b,c`**
+(no `d=3` pin), so it lifts to the chain verbatim. At `d=3` it is consumed at the **discriminator/
+criterion level** (`Claim612.lean:1034`: the `M₃` candidate functional `ρ_c` is `−r̂` restricted to
+the `c`-endpoint, so the Claim-6.12 capstone reads its criterion off the same `r̂`), **not** inside
+the W9b row-transport — which is *why* the W9b single-step never needed it and the general-`d` fold
+exposes the gap. The bridge leaf is the chain-step instance of `candidateRow_ac_eq_neg`: it carries
+the single redundancy `r` across one degree-2 body, flipping its sign, so the W9b membership can
+re-express each step's `(ab)`-tag input as the `(cv)`-tag output of the previous step. **This is the
+reuse, not new math** (clause-ii).
+
+**The buildable-leaf decomposition.** The fix is **not** to strengthen the single-step's orthogonality
+hypotheses (route a, unprovable); it is to **change what the W9b `Tag` carries**. The current
+`bottomTag` block-disjunct carries a *free existential* `∃ρ', ρ' ⊥ C(panel)` — which cannot chain
+because the panels differ. The correct `Tag` **pins the block functional to the single redundancy
+`±r`** (KT's one `r`), so the per-step carry is the eq.-(6.44) VECTOR identity, not a per-step
+orthogonality re-derivation. Two equivalent shapes (build picks at contact; both reuse
+`candidateRow_ac_eq_neg`):
+- **(B1, recommended) a bridge leaf BEFORE the fold instantiation**, slotting between the landed fold
+  core (`bottomTag_foldr_mem_rigidityRows`) and the W9b membership:
+  ```
+  -- working name: ChainData.redundancy_panel_carry (CaseIII/Relabel.lean, after the fold core)
+  theorem ChainData.redundancy_panel_carry [DecidableEq α] (cd : G.ChainData n) {i s : ℕ}
+      (hs : s + 1 < i) (hi : i < cd.d + 1) (q : α × Fin (k + 2) → ℝ)
+      {r : Module.Dual ℝ (ScrewSpace k)}
+      (hr : r (panelSupportExtensor (q at the edge-s/predecessor panel) …) = 0) :
+      r (panelSupportExtensor (q at the edge-(s+1)/successor panel) …) = 0   -- ⟸ via ±r equality
+  ```
+  built by the eq.-(6.44) identity at body `vₛ₊₁` (`candidateRow_ac_eq_neg` instance: the redundant
+  combination's `a`-column at `vₛ₊₁` vanishes, so its `(vₛ₊₁vₛ)`-panel row = `−` its
+  `(vₛ₊₁vₛ₊₂)`-panel row, hence `r ⊥ C(edge s) ⟺ r ⊥ C(edge s+1)` **for this one fixed `r`** — the
+  honest, provable form of "route a", scoped to the single carried `r`, not all `ρ'`). The W9b
+  membership then defines `Tag s` with the block-disjunct pinned to `r` and supplies each `hstep`'s
+  panel-match by this carry.
+- **(B2, alternative) absorb the carry into a strengthened single-step.** Re-state
+  `funLeft_dualMap_bottomTag_mem_rigidityRows` so its `(ab)`-block hypothesis carries the eq.-(6.44)
+  `a`-column-vanishing fact (the redundant combination decomposition,
+  `exists_redundant_panelRow_ab_decomposition_acolumn_zero`, `Candidate.lean:522`) and its output
+  block-tag re-pins to the SAME `r` at the shifted panel. Heavier (touches the landed single-step);
+  **prefer B1** (additive, leaves the green single-step/fold core untouched).
+
+**How the W9b membership then instantiates the fold's `Tag`** (the leaf row 266 BLOCKED on). Define
+`Tag s ψ := ψ ∈ span (shiftBodyFramework s)-rows ∨ (the block-disjunct, with ρ' pinned to ±r at the
+edge-s panel)`. The genuine-row disjunct's per-step `hstep` reuses T-W9a's
+`shiftBodyFramework`/`shiftBodyGraph` accessors (LANDED). The block-disjunct's per-step `hstep` is the
+single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` **plus** the (B1) `redundancy_panel_carry`
+discharging the panel-match `Cab(step s) = ±` of the predecessor `Cca(step s+1)` for the pinned `r`.
+The single redundancy `r` is the W6b candidate functional `ρ` from `chainData_split_w6b_gates`
+(`Realization.lean:1005`) — the SAME `ρ`/`w` reused across all candidates (route β, KT's one-`r`
+discipline), so it is in scope.
+
+**The rest of the W9b / 2c-ii-arm decomposition HOLDS once the bridge lands.** The arm closer
+`chainData_relabel_arm` shape is **unchanged** (pinned above, §(o″) check): it fills
+`case_III_arm_realization`'s `hwmem` slot with the (now-chainable) W9b membership output and `hρGv`
+with T-W9a span + the deferred relabel bridge, feeding the shared `ρ₀`/`w`. **`d=3` zero-regression is
+preserved**: the `d=3` arm routes through `case_III_arm_realization_M3` (`Relabel.lean:1423`) at `i=2`
+(chain length 1, zero carries), which does **not** call the bridge — `redundancy_panel_carry` is only
+invoked for `s+1 < i` with `i ≥ 3`, vacuous at `i=2`. So the d=3 M₃ body and its
+`complementIso_smul_eq_extensor_join` wrapper stay green, untouched.
+
+**Updated per-leaf tracker (CHAIN-2c-ii-transport):** T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold
+core ✓ → **redundancy_panel_carry (the bridge, NEXT BUILDABLE)** → W9b membership → 2c-ii-arm → 2c-iii
+→ CHAIN-5.
+
+**Salvaged build diagnosis (row 266, so it is not lost).** The W9b-membership build traced the `Tag`
+fixpoint at `i=3` and found the fold cannot be instantiated mechanically: the single-step output
+annihilates `C(edge s)` but the next step's input needs `⊥ C(edge s+1)` (distinct adjacent panels at
+the degree-2 vertex). Bridge = KT's ±r-via-degree-2 (eq. 6.66/6.44), not encoded by the landed
+single-step; gap first appears at chain length ≥ 2 (d=3 never chains). The diagnosis was
+coordinator-sanity-checked vs the single-step signature before BLOCKED — a high-value genuine-gap
+find, not a model failure. **The blueprint-clarity obligation (route β absorbs eqs. 6.54–6.56/6.66)
+gains a concrete anchor here:** the `lem:case-III` general-`d` prose's point (3) "the single
+redundancy `r` carried ±-ly across the `d` panels (eq. 6.66)" is exactly `redundancy_panel_carry`
+generalizing `candidateRow_ac_eq_neg`.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
