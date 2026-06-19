@@ -33,25 +33,14 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 ## Current state
 
 **Next = CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport** (the heavy leaf: re-derive
-`ofNormals_relabel` off `ρ.symm` not the `Equiv.swap` involution, carrying one interior `splitOff`
-to another via a general perm). **CHAIN-2c-ii-α LANDED 2026-06-18** — `ChainData.shiftPerm` (the
-KT eq. 6.54 index-shift iso) + its action lemmas, axiom-clean (`Induction/Operations.lean`); see
-*Decisions made*. The §(o) design-pass (2026-06-18, source-verified KT
-6.54–6.67 + the landed relabel bodies) **resolved the route-α-vs-β flag with a clause-(ii) finding:**
-the uniform relabel arm is a **genuinely-new construction, NOT a numeral pass** over the d=3
-`_M2`/`_M3`. KT's `ρᵢ` is a `(i−1)`-cycle; the landed transport engine (`ofNormals_relabel` /
-`hasGenericFullRankRealization_of_splitOff_relabel`) is **transposition-only** (hard-wired to
-`Equiv.swap a v` as an involution, transporting between two single-`splitOff` graphs) — the d=3 M₃
-is the bespoke `i=2` instance where the cycle degenerates to a swap. So 2c-ii decomposes into
-**2c-ii-α** (the cycle iso `shiftPerm` — first buildable, the only *new* self-contained brick) →
-**2c-ii-β** (the general-`Equiv.Perm` transport, re-deriving `ofNormals_relabel` off `ρ.symm` not
-the involution — the heavy leaf) → **2c-ii** (the uniform arm closer `chainData_relabel_arm`, the
-`Fin d` generalization of M₃'s body) → **2c-iii** (`chainData_dispatch` assembly). **No motive/IH or
-spine-carried-hypothesis change** — new infrastructure below the dispatch; route β stays LOCKED
-(single base, shared `ρ₀`, reuse 2a-ii only at the M₀/`i=1` candidate). Design `notes/Phase23-design.md`
-§(o). **CHAIN-2c-i (steps 1–3, the single-discriminator pick) LANDED 2026-06-18** —
-`exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean); the panel-LI + the
-one-shot discriminator pick off the shared `ρ`. Detail in *Decisions made* + design §(n).
+`ofNormals_relabel` off `ρ.symm`, not the `Equiv.swap` involution — design §(o)). **CHAIN-2c-ii-α
+LANDED 2026-06-18** — `ChainData.shiftPerm`, the KT eq. 6.54 index-shift `(i−1)`-cycle iso + action
+lemmas, axiom-clean (`Induction/Operations.lean`). **CHAIN-2c-i LANDED** —
+`exists_chainData_discriminator_pick`, the single-discriminator pick off the shared `ρ`. §(o)
+decomposed 2c-ii (the uniform relabel arm = genuinely-new, the landed relabel engine being
+transposition-only) into: 2c-ii-α (cycle iso, done) → **2c-ii-β** (general-perm transport, heavy,
+next) → 2c-ii (`chainData_relabel_arm`) → 2c-iii (assembly). Route β LOCKED; no motive/IH change.
+Detail: design §(o) + *Decisions made*.
 
 **CHAIN-2a CLOSED** (`chainData_split_w6b_gates` + `chainData_split_realization`). **Route β — LOCKED**
 (user-adjudicated 2026-06-18, KT-source-verified row 242): KT builds the `d` candidates as index-shift
@@ -81,20 +70,11 @@ the `⋀²ℝ⁴` discriminator (`exists_homogeneousIncidence_of_normals` / `…
 `Claim612.lean`, the `Meet.lean`/`MeetHodge.lean` duality lemmas). CHAIN's job: replace that
 dispatch with the `d`-candidate chain dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality finish (now LANDED).
 
-**The load-bearing flag (recon (b)) — SETTLED 2026-06-17.** The 23a-carried
-`hdispatch` (`Theorem55.lean:2225`) takes a **fixed `v,a,b,c` 4-tuple**, faithful
-at `d=3` (the chain `v₀v₁v₂v₃` *is* `b—v—a—c`) but **too short at `d≥4`** — KT's
-general-`d` Lemma 6.13 needs the whole length-`d` chain. The CHAIN↔ENTRY
-chain-data contract is now **frozen** (`notes/Phase23-design.md` §"CHAIN↔ENTRY
-contract"): a `G.ChainData n` `structure` (length-`d` chain `vtx`/`edge`/`e₀` +
-degree-2 closures) is the shared shape; the reshape is **three decls in
-lockstep** — the ENTRY extractor (`exists_chain_data_of_noRigid` → a `ChainData`
-producer), the producer `case_III_hsplit_producer_all_k.hcand` (which calls the
-extractor inline, C.0), and the CHAIN-5 dispatch `hdispatch`. **No motive/IH
-change forced** (clause (ii), C.6): the chain data is combinatorial, the base
-`(G₁,q₁)` stays the existing general-`k` realization premise from the same 0-dof
-IH conjunct, the `d` candidate splits are smaller 0-dof graphs. CHAIN-5's
-signature is now authorable; the `d=3` line is a zero-regression wrapper (C.4).
+**The load-bearing flag (recon (b)) — SETTLED 2026-06-17.** The CHAIN↔ENTRY chain-data contract is
+**frozen** (`notes/Phase23-design.md` §"CHAIN↔ENTRY contract"): the `G.ChainData n` structure is the
+shared shape, reshaped via three lockstep decls (ENTRY extractor / producer `case_III_hsplit_producer_all_k.hcand`
+/ CHAIN-5 `hdispatch`); no motive/IH change (C.6); CHAIN-5's signature authorable, the `d=3` line a
+zero-regression wrapper (C.4).
 
 ## CHAIN leaf checklist
 
