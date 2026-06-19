@@ -95,13 +95,9 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       `shiftPerm_eq_swap_mul` (`Operations.lean`, axiom-clean) — `shiftPerm i = swap (vtx 1)(vtx 2) *
       (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
       induction composes. Two leaves: **(T-W9a)** the cycle a-column span transport
-      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — fold core
-      (`wstep`/`wstep_foldr_mem_span_rigidityRows`), moved-body list `shiftBodyList`, relabel-side
-      perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` (off mirror `formPerm_eq_prod_zipWith_swap_tail`),
-      and the relabel-side fold identity `wstep_foldr_funLeft_eq` (the foldr's relabel composite =
-      `funLeft ⇑(∏ swaps)`) all LANDED, axiom-clean; next = the membership transport feeding
-      `shiftBodyList i` + the per-`i` split framework chain into the fold via `splitOff_isLink_shiftRelabel_iff`,
-      then rewriting the fold's relabel to `funLeft (shiftPerm i)` via `wstep_foldr_funLeft_eq` + the bridge]
+      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — all
+      prerequisites LANDED (fold core, `shiftBodyList`, perm bridge, fold identity `wstep_foldr_funLeft_eq`,
+      graphiso); next = the membership-half assembly (the 3 steps in *Current state*)]
       → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
@@ -168,40 +164,32 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Route B LOCKED (design §(o″)); the cycle-W9a `List`-fold transport core + `shiftBodyList` + the
-relabel-side perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` + the relabel-side fold identity
-`wstep_foldr_funLeft_eq` LANDED; next = the membership half of the `shiftPerm`-specific T-W9a
-instantiation `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (plug the cycle
-bodies + per-`i` split frameworks into the landed fold, discharge `hstep` via the graphiso, combine
-with the perm bridge + `wstep_foldr_funLeft_eq`).** The closed/landed leaf list is in *Current state*
-+ *Decisions made* + the checklist (CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; 2c-i/2c-ii-α/β/graphiso +
-head-peel + fold core + body list + perm bridge + relabel-side fold identity LANDED). The graphiso iff
-is the `(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of the candidate-`i` split with
-the `i:=1` base split, for interior `1 < i`.
+**Route B LOCKED (design §(o″)); all T-W9a transport prerequisites LANDED (fold core, `shiftBodyList`,
+perm bridge, the fold identity `wstep_foldr_funLeft_eq`, the graphiso iff — detail in *Current state* +
+*Decisions made* + the checklist); next = the membership half of the `shiftPerm`-specific T-W9a
+instantiation `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (the three-step
+assembly in *Current state*'s *Route B's genuinely-new piece*).** The graphiso iff is the
+`(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of the candidate-`i` split with the `i:=1`
+base split, for interior `1 < i`.
 
 **The route decision (design §(o″), canonical).** The §(o′)(B) arm-closer-transport fork is **resolved
 to route B** (the shared-`ρ₀` M₃-style row-span transport); **route A REJECTED as unprovable** (its
 eq.-(6.66) identity equates two independent `Classical.choice` existentials — KT p. 698 carries ONE `r`
 + the ±r chain, and the landed d=3 M₃ is route B at the degenerate `i=2`). Full argument: design §(o″).
 
-**Route B's genuinely-new piece — fold core + body list + perm bridge + relabel-side fold identity
-LANDED; what remains is the membership wiring.** The transport is the cycle-generalization of W9a
+**Route B's genuinely-new piece — all transport prerequisites LANDED; what remains is the membership
+wiring.** The transport is the cycle-generalization of W9a
 (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `Relabel.lean:546`) + W9b. Landed axiom-clean
-(detail in *Decisions made* + git): the abstract fold core (`wstep` + `wstep_foldr_mem_span_rigidityRows`,
-`Relabel.lean`), the cycle's moved-body list `ChainData.shiftBodyList i` (+ head-peel
-`shiftBodyList_eq_cons`), the **relabel-side perm bridge** `shiftPerm_eq_prod_map_swap_shiftBodyList`
-(`shiftPerm i = ∏ per-body swaps over shiftBodyList i`, off the new mirror
-`List.formPerm_eq_prod_zipWith_swap_tail`), and the **relabel-side fold identity**
-`BodyHingeFramework.wstep_foldr_funLeft_eq` (the foldr's relabel-only composite =
-`(funLeft ⇑(∏ swaps)).dualMap` — the linear-map companion of the perm bridge, the piece that lets the
-membership-half rewrite the fold's relabel to `funLeft (shiftPerm i)`); the §(o″) telescoping concern
-is retired. **What remains in T-W9a is the membership half of the `shiftPerm`-specific instantiation**:
-feed `shiftBodyList i` + the per-`i` interior-split framework chain into
-`wstep_foldr_mem_span_rigidityRows`, discharge the per-step `hstep` hypotheses via
-`splitOff_isLink_shiftRelabel_iff` (+ the `deg_two_split` machinery), and identify the resulting
-`foldr`'s relabel composite with `funLeft (shiftPerm i)` via `wstep_foldr_funLeft_eq` + the landed perm
-bridge. Leaves: **(T-W9a)** the `shiftPerm` instantiation [fold core + body list + perm bridge +
-relabel-side fold identity landed; membership wiring next] →
+(detail in *Decisions made* + git): the fold core (`wstep`/`wstep_foldr_mem_span_rigidityRows`), the
+moved-body list `shiftBodyList`, the relabel-side perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList`
+(off mirror `formPerm_eq_prod_zipWith_swap_tail`), and its linear-map companion `wstep_foldr_funLeft_eq`
+(the foldr's relabel-only composite = `(funLeft ⇑(∏ swaps)).dualMap`); the §(o″) telescoping concern is
+retired. **What remains in T-W9a is the membership half**: (1) construct the per-`i` interior-split
+framework chain `F : ℕ → BodyHingeFramework`; (2) feed `shiftBodyList i` + `F` into
+`wstep_foldr_mem_span_rigidityRows`, discharging the per-step `hstep` six-conjunct via
+`splitOff_isLink_shiftRelabel_iff` (+ `deg_two_split`); (3) rewrite the resulting `foldr`'s relabel to
+`funLeft (shiftPerm i)` via `wstep_foldr_funLeft_eq` + the perm bridge. Leaves: **(T-W9a)** the
+membership half [all prerequisites landed; assembly next] →
 **(T-W9b)** cycle bottom-tag transport → **2c-ii-arm** `chainData_relabel_arm` (`−ρ₀`, roles
 `(vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)`) → **CHAIN-2c-iii** (`chainData_dispatch`,
 `fin_cases u`: `i=1` arm = 2a-ii, interior = `chainData_relabel_arm`; d=3 a zero-regression wrapper) →
