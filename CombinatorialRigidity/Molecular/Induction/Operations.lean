@@ -1426,6 +1426,18 @@ lemma vtx_mem_shiftCycle_iff (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ}
   · rintro ⟨hm1, hmi⟩
     exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
 
+/-- A vertex `x` (of any shape) lies on the cycle `[vtx 1, …, vtx i]` iff it equals one of the
+chain vertices `vtx m` with `1 ≤ m ≤ i` (the general-`x` form of `vtx_mem_shiftCycle_iff`,
+unfolding `shiftCycle = List.ofFn …`). -/
+lemma mem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α} :
+    x ∈ cd.shiftCycle i ↔ ∃ m, ∃ h : m < cd.d + 1, 1 ≤ m ∧ m ≤ (i : ℕ) ∧ x = cd.vtx ⟨m, h⟩ := by
+  rw [shiftCycle, List.mem_ofFn]
+  constructor
+  · rintro ⟨j, rfl⟩
+    exact ⟨(j : ℕ) + 1, by omega, by omega, by omega, rfl⟩
+  · rintro ⟨m, hm, hm1, hmi, rfl⟩
+    exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
+
 variable [DecidableEq α]
 
 /-- The **index-shift permutation** `ρᵢ` (KT eq. 6.54): the `i`-cycle
@@ -1644,6 +1656,244 @@ lemma shiftEdgePerm_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j :
     cd.getElem_shiftEdgeCycle_tail i ((j - 1) + 1) (by rw [hlen]; omega)
   rw [shiftEdgePerm, ← hget, hstep, hget']
   congr 1; simp only [Fin.mk.injEq]; omega
+
+/-- `shiftEdgePerm i` sends the top chain edge `edge i` to the head chain edge `edge 1` (the
+closure-into-tail step of the cycle `… → edge i → edge 1 → …`). One of the two closure edges
+incident to the deleted top vertex `vtx i`; surfaced for the backward leg of the relabel brick
+(where a base-split survivor pulls back to a candidate-split link). -/
+lemma shiftEdgePerm_apply_edge_top (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
+    cd.shiftEdgePerm i (cd.edge i) = cd.edge ⟨1, by have := i.isLt; omega⟩ := by
+  have hi0 : 0 < (i : ℕ) := by omega
+  have hlen := cd.length_shiftEdgeCycle i hi0
+  have h2 : 2 + 1 < (cd.shiftEdgeCycle i).length := by rw [hlen]; omega
+  -- `edge i` sits at position 2; `formPerm` steps it to position 3 = `edge 1` (tail at `k = 0`).
+  have hget' : (cd.shiftEdgeCycle i)[0 + 3]'h2 = cd.edge ⟨1, by have := i.isLt; omega⟩ :=
+    cd.getElem_shiftEdgeCycle_tail i 0 (by rw [hlen]; omega)
+  rw [shiftEdgePerm, ← cd.getElem_shiftEdgeCycle_two i (by rw [hlen]; omega),
+    List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi0) 2 h2, hget']
+
+/-- `shiftEdgePerm i` sends the predecessor closure edge `edge (i−1)` back to the base chain edge
+`edge 0` (the cyclic-wrap step `edge (i−1) → edge 0`). The other closure edge incident to the
+deleted top vertex `vtx i`; surfaced for the backward leg of the relabel brick. -/
+lemma shiftEdgePerm_apply_edge_pred (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
+    cd.shiftEdgePerm i (cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩)
+      = cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ := by
+  have hi0 : 0 < (i : ℕ) := by omega
+  have hlen := cd.length_shiftEdgeCycle i hi0
+  -- `edge (i−1)` is the last cycle entry, at position `(i + 2) − 1 = i + 1`; `formPerm` wraps it
+  -- to position 0 = `edge 0`. Use the cyclic `formPerm_apply_getElem` (mod the length).
+  have hpos : ((i : ℕ) - 2) + 3 < (cd.shiftEdgeCycle i).length := by rw [hlen]; omega
+  have hget : (cd.shiftEdgeCycle i)[((i : ℕ) - 2) + 3]'hpos
+      = cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ := by
+    rw [cd.getElem_shiftEdgeCycle_tail i ((i : ℕ) - 2) (by rw [hlen]; omega)]
+    congr 1; simp only [Fin.mk.injEq]; omega
+  have hmod : ((((i : ℕ) - 2) + 3) + 1) % (cd.shiftEdgeCycle i).length = 0 := by
+    rw [hlen, show (((i : ℕ) - 2) + 3) + 1 = (i : ℕ) + 2 by omega, Nat.mod_self]
+  rw [shiftEdgePerm, ← hget,
+    List.formPerm_apply_getElem _ (cd.nodup_shiftEdgeCycle i hi0) (((i : ℕ) - 2) + 3) hpos]
+  simp only [hmod]
+  exact cd.getElem_shiftEdgeCycle_zero i (by rw [hlen]; omega)
+
+variable [DecidableEq α]
+
+/-! ### The `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick (CHAIN-2c-ii-graphiso)
+
+The general-`d` Case-III interior-candidate relabel arm (KT eq. 6.54) views the candidate-`i`
+interior split `Gᵢ = G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀` as the `v₁`-base split
+`G₁ = G.splitOff v₁ v₂ v₀ e₀` read through the index-shift isomorphism `(ρ, σ) = (shiftPerm i,
+shiftEdgePerm i)`. This brick is the graph-side intertwining the framework transport
+(`ofNormals_relabel_perm`, 2c-ii-β) consumes as its `hiso` hypothesis: a link of the candidate
+split corresponds, under `(ρ, σ)`, to a link of the base split. It is the d≥3 analogue of the
+d=3 single-transposition `splitOff_isLink_relabel`, with the cycle `v₁ → ⋯ → vᵢ → v₁` in place of
+the swap `a ↔ v`. Stated for an interior index `2 ≤ i ≤ d−1` (`1 < i`, so the cycle is
+nondegenerate; the `i = 1` instance is the base split itself, handled by the `M₀` arm). The
+`shiftPerm` is taken at `i.castSucc : Fin (cd.d + 1)` (lifting the candidate index `i : Fin cd.d`
+to a cycle top), matching `(i.castSucc : ℕ) = (i : ℕ)`. -/
+
+/-- **`shiftPerm`/`shiftEdgePerm`-relabel of a candidate-split link into the base split, forward
+direction** (CHAIN-2c-ii-graphiso, the survivor + fresh-edge ⇒ base-link half). A link of the
+candidate-`i` interior split, read through `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`,
+is a link of the `v₁`-base split. The proof expands `splitOff_isLink` on the candidate split,
+splits the survivor `e` by whether either endpoint lies on the index-shift cycle `[vtx 1, …, vtx i]`
+(forcing `e` to be a chain edge there, via the interior degree-2 closure) or both lie off it (so
+`ρ`/`σ` fix the data), and reads the resulting `G`-link into the base split. -/
+lemma splitOff_isLink_shiftRelabel_forward (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    {e : β} {x y : α}
+    (h : (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
+        (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink
+          e x y) :
+    (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+        (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).succ)
+        (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀).IsLink
+      (cd.shiftEdgePerm i e) (cd.shiftPerm i.castSucc x) (cd.shiftPerm i.castSucc y) := by
+  classical
+  have hid : (i : ℕ) < cd.d := i.isLt
+  have hicv : (i.castSucc : ℕ) = (i : ℕ) := rfl
+  have he₀ : cd.e₀ ∉ E(G) := cd.e₀_fresh
+  -- The candidate-split body / neighbours and the base-split body / neighbours as explicit
+  -- `Fin (cd.d + 1)`-indexed vertices `vtx ⟨m,_⟩` (all `rfl` index coercions of castSucc / succ).
+  have hci : cd.vtx i.castSucc = cd.vtx ⟨(i : ℕ), by omega⟩ := rfl
+  have hca : cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by omega⟩ := rfl
+  have hcb : cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc
+      = cd.vtx ⟨(i : ℕ) - 1, by omega⟩ := rfl
+  have hb1 : cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc = cd.vtx ⟨1, by omega⟩ := rfl
+  have hb2 : cd.vtx (⟨1, by omega⟩ : Fin cd.d).succ = cd.vtx ⟨2, by omega⟩ := rfl
+  have hb0 : cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc = cd.vtx ⟨0, by omega⟩ := rfl
+  rw [hb1, hb2, hb0]
+  rw [splitOff_isLink, hci, hca, hcb] at h
+  -- A chain vertex `vtx ⟨m,_⟩` is `≠ vtx 1` when `m ≠ 1` (via `vtx_inj`).
+  have hvtx_ne1 : ∀ {m : ℕ} (hm : m < cd.d + 1), m ≠ 1 → cd.vtx ⟨m, hm⟩ ≠ cd.vtx ⟨1, by omega⟩ :=
+    fun hm hm1 he => hm1 (by have := congrArg Fin.val (cd.vtx_inj he); simpa using this)
+  -- Two chain vertices `vtx ⟨a,_⟩`, `vtx ⟨b,_⟩` differ when their indices differ.
+  have hvtx_ne_of : ∀ {a b : ℕ} (ha : a < cd.d + 1) (hb : b < cd.d + 1), a ≠ b →
+      cd.vtx ⟨a, ha⟩ ≠ cd.vtx ⟨b, hb⟩ :=
+    fun ha hb hab he => hab (by have := congrArg Fin.val (cd.vtx_inj he); simpa using this)
+  -- `ρ` value on each chain vertex `vtx ⟨m,_⟩` (top wrap / interior shift / off-cycle fixity).
+  have hρtop : cd.shiftPerm i.castSucc (cd.vtx ⟨(i : ℕ), by omega⟩) = cd.vtx ⟨1, by omega⟩ :=
+    cd.shiftPerm_vtx_top (i := i.castSucc) (by simp only [Fin.val_castSucc]; omega)
+  have hρint : ∀ {m : ℕ} (hm : m < cd.d + 1) (hm1' : m + 1 < cd.d + 1), 1 ≤ m → m < (i : ℕ) →
+      cd.shiftPerm i.castSucc (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m + 1, hm1'⟩ := by
+    intro m hm hm1' hm1 hmi
+    refine cd.shiftPerm_apply_interior i.castSucc (j := m) hm1 ?_
+    simp only [Fin.val_castSucc]; omega
+  have hρoff : ∀ {m : ℕ} (hm : m < cd.d + 1), m = 0 ∨ (i : ℕ) < m →
+      cd.shiftPerm i.castSucc (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m, hm⟩ := by
+    intro m hm hoff
+    exact cd.shiftPerm_apply_vtx_off i.castSucc hm (by simpa only [Fin.val_castSucc] using hoff)
+  -- The candidate split body `v = vtx i`; its neighbours `a = vtx (i+1)`, `b = vtx (i−1)`.
+  rcases h with ⟨hne₀, hGe, hxv, hyv⟩ | ⟨rfl, _, _, _, _, hxy⟩
+  · -- **Survivor branch**: `e ≠ e₀`, `G.IsLink e x y`, `x ≠ vtx i`, `y ≠ vtx i`.
+    -- Whether either endpoint lies on the index-shift cycle `[vtx 1, …, vtx i]`.
+    by_cases hcyc : x ∈ cd.shiftCycle i.castSucc ∨ y ∈ cd.shiftCycle i.castSucc
+    · -- At least one endpoint (say `x'`) lies on the cycle ⇒ `e` is a chain edge at the interior
+      -- vertex `x' = vtx m` (`1 ≤ m ≤ i−1`, since `x' ≠ vtx i`), so `e = edge (m−1)` or `edge m`.
+      rw [splitOff_isLink]
+      -- A `key` handling the on-cycle endpoint, applied to `(x, y)` or — via symmetry — `(y, x)`.
+      have key : ∀ {x' y' : α}, G.IsLink e x' y' → x' ≠ cd.vtx ⟨(i : ℕ), by omega⟩ →
+          y' ≠ cd.vtx ⟨(i : ℕ), by omega⟩ → x' ∈ cd.shiftCycle i.castSucc →
+          (G.splitOff (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+            cd.e₀).IsLink (cd.shiftEdgePerm i e) (cd.shiftPerm i.castSucc x')
+              (cd.shiftPerm i.castSucc y') := by
+        intro x' y' hl hx'v hy'v hx'c
+        -- `x' = vtx (m'+1)` with `0 ≤ m' ≤ i−2` (survivor ⇒ `m'+1 ≠ i`); write `m = m'+1`.
+        obtain ⟨m, hm, hm1, hmi, rfl⟩ := (cd.mem_shiftCycle i.castSucc).mp hx'c
+        rw [hicv] at hmi
+        obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩
+        have hm'i : m' + 1 < (i : ℕ) :=
+          lt_of_le_of_ne hmi fun heq => hx'v (congrArg cd.vtx (by ext; exact heq))
+        -- `ρ x' = ρ (vtx (m'+1)) = vtx (m'+2)` (interior, `1 ≤ m'+1 < i`).
+        have hρx' : cd.shiftPerm i.castSucc (cd.vtx ⟨m' + 1, hm⟩) = cd.vtx ⟨m' + 2, by omega⟩ :=
+          hρint hm (by omega) (by omega) (by omega)
+        -- The edge `e` at the interior vertex `vtx (m'+1)` is `edge m'` or `edge (m'+1)`.
+        have hldm : G.IsLink e (cd.vtx (⟨m' + 1, by omega⟩ : Fin cd.d).castSucc) y' := hl
+        rcases cd.deg_two ⟨m' + 1, by omega⟩ (by simp) e y' hldm with hem | hem
+        · -- `e = edge m'` (links `vtx m'`–`vtx (m'+1)`) ⇒ `y' = vtx m'`.
+          rw [show (⟨(m' + 1) - 1, by omega⟩ : Fin cd.d) = ⟨m', by omega⟩ from rfl] at hem
+          have hlp : G.IsLink (cd.edge ⟨m', by omega⟩) (cd.vtx ⟨m', by omega⟩)
+              (cd.vtx ⟨m' + 1, by omega⟩) := cd.isLink_edge ⟨m', by omega⟩
+          rw [hem] at hl
+          have hy' : y' = cd.vtx ⟨m', by omega⟩ := by
+            rcases hlp.eq_and_eq_or_eq_and_eq hl with ⟨hx, _⟩ | ⟨hx, _⟩
+            · exact absurd hx (hvtx_ne_of (by omega) (by omega) (by omega))
+            · exact hx.symm
+          subst hy'
+          rw [hem, hρx']
+          by_cases hm2 : m' = 0
+          · -- `m' = 0`: `σ (edge 0) = e₀`; base FRESH edge `vtx 2`–`vtx 0`.
+            subst hm2
+            rw [cd.shiftEdgePerm_apply_edge_zero i (by omega), hρoff (by omega) (Or.inl rfl)]
+            exact Or.inr ⟨rfl, hvtx_ne1 (by omega) (by omega), hvtx_ne1 (by omega) (by omega),
+              cd.vtx_mem _, cd.vtx_mem _, Or.inl ⟨rfl, rfl⟩⟩
+          · -- `m' ≥ 1`: `σ (edge m') = edge (m'+1)`; base SURVIVOR `vtx (m'+2)`–`vtx (m'+1)`.
+            rw [cd.shiftEdgePerm_apply_edge_interior i (j := m') (by omega) (by omega),
+              hρint (m := m') (by omega) (by omega) (by omega) (by omega)]
+            exact Or.inl ⟨(cd.e₀_ne_edge ⟨m' + 1, by omega⟩).symm,
+              (cd.isLink_edge ⟨m' + 1, by omega⟩).symm,
+              hvtx_ne1 (by omega) (by omega), hvtx_ne1 (by omega) (by omega)⟩
+        · -- `e = edge (m'+1)` (links `vtx (m'+1)`–`vtx (m'+2)`) ⇒ `y' = vtx (m'+2)`; `m'+2 < i`.
+          have hls : G.IsLink (cd.edge ⟨m' + 1, by omega⟩) (cd.vtx ⟨m' + 1, by omega⟩)
+              (cd.vtx ⟨m' + 2, by omega⟩) := cd.isLink_edge ⟨m' + 1, by omega⟩
+          rw [hem] at hl
+          have hy' : y' = cd.vtx ⟨m' + 2, by omega⟩ := by
+            rcases hls.eq_and_eq_or_eq_and_eq hl with ⟨_, hy⟩ | ⟨_, hx2⟩
+            · exact hy.symm
+            · exact absurd hx2 (hvtx_ne_of (by omega) (by omega) (by omega))
+          subst hy'
+          have hmi2 : m' + 2 < (i : ℕ) :=
+            lt_of_le_of_ne (by omega) fun heq => hy'v (congrArg cd.vtx (by ext; exact heq))
+          rw [hem, hρx', cd.shiftEdgePerm_apply_edge_interior i (j := m' + 1) (by omega) (by omega),
+            hρint (m := m' + 2) (by omega) (by omega) (by omega) (by omega)]
+          exact Or.inl ⟨(cd.e₀_ne_edge ⟨m' + 2, by omega⟩).symm, cd.isLink_edge ⟨m' + 2, by omega⟩,
+            hvtx_ne1 (by omega) (by omega), hvtx_ne1 (by omega) (by omega)⟩
+      rcases hcyc with hx | hy
+      · exact key hGe hxv hyv hx
+      · exact (key hGe.symm hyv hxv hy).symm
+    · -- Both endpoints off the cycle ⇒ `ρ`/`σ` fix the data; the edge survives the base split.
+      rw [not_or] at hcyc
+      obtain ⟨hxc, hyc⟩ := hcyc
+      -- Helper: a chain vertex `vtx ⟨m,_⟩` with `1 ≤ m ≤ i` lies on the cycle.
+      have hmem_of : ∀ {m : ℕ} (hm : m < cd.d + 1), 1 ≤ m → m ≤ (i : ℕ) →
+          cd.vtx ⟨m, hm⟩ ∈ cd.shiftCycle i.castSucc := by
+        intro m hm hm1 hmi
+        exact (cd.vtx_mem_shiftCycle_iff i.castSucc hm).mpr
+          ⟨hm1, by simp only [Fin.val_castSucc]; omega⟩
+      have hσe : cd.shiftEdgePerm i e = e := by
+        refine cd.shiftEdgePerm_apply_off i fun hmem => ?_
+        -- `e ∈ shiftEdgeCycle` and `e ≠ e₀` ⇒ `e = edge m` for some `0 ≤ m ≤ i`, forcing an
+        -- endpoint onto the cycle (or onto the deleted `vtx i`) — both impossible.
+        rw [shiftEdgeCycle, List.mem_cons, List.mem_cons, List.mem_cons, List.mem_ofFn] at hmem
+        rcases hmem with rfl | rfl | rfl | ⟨j, rfl⟩
+        · -- `e = edge 0` links `vtx 0`–`vtx 1`; `vtx 1 ∈ cycle`.
+          have hl : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨0, by omega⟩)
+              (cd.vtx ⟨1, by omega⟩) := cd.isLink_edge ⟨0, by omega⟩
+          rcases hl.eq_and_eq_or_eq_and_eq hGe with ⟨_, rfl⟩ | ⟨_, rfl⟩
+          · exact hyc (hmem_of (by omega) (by omega) (by omega))
+          · exact hxc (hmem_of (by omega) (by omega) (by omega))
+        · exact hne₀ rfl
+        · -- `e = edge i` links `vtx i`–`vtx (i+1)`; `vtx i` is the deleted body.
+          have hl : G.IsLink (cd.edge i) (cd.vtx ⟨(i : ℕ), by omega⟩)
+              (cd.vtx ⟨(i : ℕ) + 1, by omega⟩) := by
+            have := cd.isLink_edge i; rwa [hci, hca] at this
+          rcases hl.eq_and_eq_or_eq_and_eq hGe with ⟨rfl, _⟩ | ⟨rfl, _⟩
+          · exact hxv rfl
+          · exact hyv rfl
+        · -- `e = edge (j+1)` (`1 ≤ j+1 ≤ i−1`) links `vtx (j+1)`–`vtx (j+2)`, both on the cycle.
+          have hjlt := j.isLt
+          have hl : G.IsLink (cd.edge ⟨(j : ℕ) + 1, by omega⟩) (cd.vtx ⟨(j : ℕ) + 1, by omega⟩)
+              (cd.vtx ⟨(j : ℕ) + 2, by omega⟩) := cd.isLink_edge ⟨(j : ℕ) + 1, by omega⟩
+          rcases hl.eq_and_eq_or_eq_and_eq hGe with ⟨_, rfl⟩ | ⟨_, rfl⟩
+          · exact hyc (hmem_of (by omega) (by omega) (by omega))
+          · exact hxc (hmem_of (by omega) (by omega) (by omega))
+      have hρx : cd.shiftPerm i.castSucc x = x := cd.shiftPerm_apply_off i.castSucc hxc
+      have hρy : cd.shiftPerm i.castSucc y = y := cd.shiftPerm_apply_off i.castSucc hyc
+      rw [hσe, hρx, hρy]
+      refine Or.inl ⟨hne₀, hGe, ?_, ?_⟩
+      · intro he; rw [he] at hxc; exact hxc (hmem_of (m := 1) (by omega) le_rfl (by omega))
+      · intro he; rw [he] at hyc; exact hyc (hmem_of (m := 1) (by omega) le_rfl (by omega))
+  · -- **Fresh-edge branch**: `e = e₀`, `{x, y} = {vtx (i+1), vtx (i−1)}`.
+    -- `σ e₀ = edge i`; `ρ (vtx (i+1)) = vtx (i+1)` (off); `ρ (vtx (i−1)) = vtx i`.
+    have hσ : cd.shiftEdgePerm i cd.e₀ = cd.edge i := cd.shiftEdgePerm_apply_e₀ i (by omega)
+    have hρa : cd.shiftPerm i.castSucc (cd.vtx ⟨(i : ℕ) + 1, by omega⟩)
+        = cd.vtx ⟨(i : ℕ) + 1, by omega⟩ := hρoff (by omega) (Or.inr (by omega))
+    have hρb : cd.shiftPerm i.castSucc (cd.vtx ⟨(i : ℕ) - 1, by omega⟩)
+        = cd.vtx ⟨(i : ℕ), by omega⟩ := by
+      rw [hρint (m := (i : ℕ) - 1) (by omega) (by omega) (by omega) (by omega)]
+      congr 1; ext; simp only; omega
+    -- The base-split link is `edge i` between `vtx (i+1)` and `vtx i` — a base survivor.
+    have hlink : G.IsLink (cd.edge i) (cd.vtx ⟨(i : ℕ) + 1, by omega⟩)
+        (cd.vtx ⟨(i : ℕ), by omega⟩) := by
+      have hl := cd.isLink_edge i
+      rw [hci, hca] at hl
+      exact hl.symm
+    rw [hσ]
+    have hedge_ne₀ : cd.edge i ≠ cd.e₀ := fun he => he₀ (he ▸ (cd.isLink_edge i).edge_mem)
+    rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · rw [hρa, hρb]
+      exact Or.inl ⟨hedge_ne₀, hlink, hvtx_ne1 (by omega) (by omega),
+        hvtx_ne1 (by omega) (by omega)⟩
+    · rw [hρa, hρb]
+      exact Or.inl ⟨hedge_ne₀, hlink.symm, hvtx_ne1 (by omega) (by omega),
+        hvtx_ne1 (by omega) (by omega)⟩
 
 end ChainData
 

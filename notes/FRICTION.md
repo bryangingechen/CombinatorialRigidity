@@ -1559,6 +1559,24 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   no spurious hypothesis. Decide which case you're in by asking whether `d=0` makes the *statement* false.
 - **Status:** idiom.
 
+### [idiom] A `Fin d`-index relabel proof over general `d`: destructure `m = m'+1` early, and bridge `(i.castSucc : ℕ)` to `(i : ℕ)` with `simp only [Fin.val_castSucc]`, not `show`/`rw [hicv]`
+- **Where it bit:** `ChainData.splitOff_isLink_shiftRelabel_forward` (`Induction/Operations.lean`, Phase
+  23b CHAIN-2c-ii-graphiso) — the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick, a cycle
+  generalization of the d=3 single-swap `splitOff_isLink_relabel`. The on-cycle endpoint is `vtx ⟨m,_⟩`
+  with `1 ≤ m ≤ i`; the predecessor chain edge is `edge ⟨m-1,_⟩`.
+- **Friction (two recurring snags):** (1) `edge ⟨m-1,_⟩` / `vtx ⟨m-1,_⟩` arithmetic forces repeated
+  `m-1+1 = m` index rewrites *inside* `edge`/`vtx ⟨…⟩`, which trip the §61 "motive not type correct"
+  trap. (2) The cycle perm is `shiftPerm i.castSucc` (lifting `i : Fin d` to `Fin (d+1)`); its action
+  lemmas carry `(i.castSucc : ℕ)`-typed bound hyps, but `omega` treats `↑i.castSucc` as an atom and
+  `rw [hicv]` where `hicv : (i.castSucc:ℕ) = (i:ℕ) := rfl` errors ("motive"/"nothing to rewrite").
+- **Fix:** (1) `obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩` at the top, so `m-1` becomes
+  `m'+1-1` which **reduces to `m'` by `rfl`** — every chain index is then `m'`/`m'+1`/`m'+2` with no `-1`
+  and no in-place index rewrite (action-lemma outputs land at the target index up to proof-irrelevant
+  defeq, or via a local `have … := by rw [actionLemma]; congr 1; ext; omega`). (2) bridge the coercion
+  with `by simp only [Fin.val_castSucc]; omega` (or `simpa only [Fin.val_castSucc] using h`); `Fin.ext`
+  for an off-cycle/contradiction vertex equality (`fun heq => habs (congrArg vtx (by ext; exact heq))`).
+- **Status:** idiom.
+
 ### [idiom] A `Fin n → α` indexed-family *cycle* as an `Equiv.Perm`: `List.formPerm (List.ofFn …)`, with `[DecidableEq α]`
 - **Where it bit:** `ChainData.shiftPerm` (`Induction/Operations.lean`, Phase 23b CHAIN-2c-ii-α) — KT
   eq. 6.54's index-shift iso `ρᵢ`, the `i`-cycle `vtx 1 → ⋯ → vtx i → vtx 1` over the chain-vertex
