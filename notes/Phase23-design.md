@@ -3376,6 +3376,47 @@ no live obligation (no sorries in CaseIII).
   will most likely be **re-consumed** by the new arm; re-check at the arm build rather than delete it
   blindly (fewer deletions than the orphan list claims — never an orphaned obligation).
 
+**(G) OPEN-FACT PAIR RECON — the (F) OPEN FACT DOES NOT CLOSE as stated; a fix-fork for adjudication (two
+independent read-only opus recons, 2026-06-19).** Run as a robustness pair (user-requested) on the crux.
+Both reads **converged** on a refutation neither §(o‴) nor (F) caught, and **diverged** on the fix.
+- **CONVERGED REFUTATION (coordinator-verified):** the (d)/(F)-pinned transport `funLeft (shiftPerm i)`
+  is the **WRONG DIRECTION for `i ≥ 3`**. `shiftPerm i` is **not an involution** for `i≥3`
+  (machine-checked: `formPerm[v₁v₂v₃]` applied twice to `v₂` = `v₁ ≠ v₂`). By `hingeRow_funLeft_dualMap`
+  (forward `(u,v)↦(ρu,ρv)`, coordinator-confirmed `Basic.lean:551`), a genuine base row `hingeRow x y r`
+  (`r ⊥ C(q x, q y)`) maps to `hingeRow (ρx)(ρy) r`, whose candidate extensor at seed `qᵢ=q∘ρ` reads
+  `C(q(ρ²x), q(ρ²y))` — equal to `C(q x, q y)` **only if `ρ²` fixes**, i.e. only for an involution. So
+  the annihilation does NOT transport for the cycle; the seed-coincidence over-shifts to `ρ²`. **d=3 M₃
+  closes ONLY because `shiftPerm 2 = swap a v` is an involution** (`ρ²=id`), which **masks** the
+  direction — the bug is invisible at `d=3`. KT (6.62)/(6.59) state the genuine correspondence with a
+  one-step-DOWN shift (candidate `vⱼ₋₁vⱼ ⇔ base vⱼvⱼ₊₁`), i.e. inherently `ρ⁻¹`. Building the forward
+  signature would be the **5th mis-pin**. (Traced concretely at `i=3,4` by both reads; the over-shift is
+  not an `i=3` artifact.)
+- **DIVERGED FIX — the fork to adjudicate:**
+  - **Fix A (Recon A) — CHAIN-2c-ii leaf, *invert the relabel*.** Use `(shiftPerm i)⁻¹` for the
+    `hwmem` transport + build a NEW **inverse-cycle action-lemma block** (`shiftPerm_inv_apply_interior`
+    / `_inv_vtx_one` wrap / `_inv_apply_off` / the `shiftEdgePerm`-inverse companions — quick `Fin`/
+    `formPerm` consequences of the forward lemmas) + the whole-cycle selector bookkeeping. Est. **~3–4
+    commits.** **Caveat (Recon A's own gating flag):** the landed T-W9a is oriented *candidate→base*
+    while the candidate-`i` `hρGv` slot needs *base→candidate* — the SAME direction tension may sit on
+    the "done" candidate-row half, possibly forcing T-W9a to be re-applied contravariantly. Reconcile the
+    T-W9a orientation against the `hρGv` slot BEFORE any build (Recon A calls this "the true gating
+    question").
+  - **Fix B (Recon B) — producer-reshape, *re-seed per-`i`*.** Don't transport the shared base `w` by a
+    relabel at all (for the genuine arm): invoke the W6b producer
+    (`exists_candidateRow_bottomRows_of_rigidOn`, `Candidate.lean:390`) **directly on the candidate-`i`
+    split `(Gᵢ, qᵢ)`** at its own seed `qᵢ=q∘ρᵢ`. By KT (6.55) each `(Gᵢ,qᵢ)` is "exactly the same
+    framework as `(G₁,q₁)`", so its bottom family `wᵢ` is genuine in its own split **by construction** —
+    no row-relabel / seed-coincidence needed for the genuine arm; only the redundant `±r` block (one
+    (6.44)/G4d-i at `vᵢ`) transports. **Caveats:** (i) confirm W6b's output type re-seeds at `qᵢ` keeping
+    the rank/independence counts (`hwcard`/`hw`) `case_III_arm_realization` needs; (ii) **interaction
+    with the locked route β** — §(n) pinned "ONE base, ONE W6b call"; a per-`i` W6b invocation may
+    tension with that lock (a user-adjudicated decision), so this fix is not purely a coordinator call.
+- **Verdict status:** the forward-direction pin of (d)/(F) is **WITHDRAWN** (do NOT build the forward
+  `chainData_relabel_hwmem`). The re-route's *core* (per-body fold dead; whole-relabel/per-`i` is KT's
+  structure; (A)/(B)/(C) of (F)) **stands** — only the *transport direction/shape* is the open fork.
+  This is a **design fork for user adjudication** (Fix B touches the locked route β + the producer; Fix A
+  touches the "done" T-W9a half) — surfaced 2026-06-19; not a coordinator-unilateral pick.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
