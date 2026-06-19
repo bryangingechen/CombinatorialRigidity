@@ -32,14 +32,16 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = CHAIN-2c-ii-graphiso *backward* direction, then package the iff.** The **forward** half
-**LANDED 2026-06-19** (`ChainData.splitOff_isLink_shiftRelabel_forward`, axiom-clean): a candidate-`i`
-split link, read through `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`, is a `v₁`-base-split link.
-Remaining: the **backward** direction (base-link ⇒ candidate-link, via `σ`/`ρ` pullback) + bundling both
-into the `hiso` iff `Gt.IsLink e x y ↔ Gs.IsLink (σ e)(ρ x)(ρ y)`. Same case machinery; the full `σ`/`ρ`
-action API is now landed (the backward leg needs `σ(edge i)=edge 1` / `σ(edge (i−1))=edge 0`, landed as
-`shiftEdgePerm_apply_edge_{top,pred}` — refining §(o′)(A)'s forward-only "closure values unneeded").
-Route-independent (prerequisite for both §(o′)(B) arm-closer routes).
+**CHAIN-2c-ii-graphiso is COMPLETE (the `hiso` supplier landed); next = the §(o′)(B) arm-closer
+transport route fork (2c-ii-transport).** The packaged iff **LANDED 2026-06-19**
+(`ChainData.splitOff_isLink_shiftRelabel_iff`, axiom-clean): for an interior `1 < i`, a candidate-`i`
+split link corresponds, link-for-link under `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`, to a
+`v₁`-base-split link — exactly the `hiso` shape `ofNormals_relabel_perm` (2c-ii-β) consumes. Bundles
+the forward leg (`…_forward`) with the new **backward** leg `…_backward` (base-link ⇒ candidate-link:
+expand `splitOff_isLink` on the base, on-cycle survivor ⇒ `σ e` a base chain edge via `deg_two`, pull
+`e`/`y` back through `σ⁻¹`/`ρ⁻¹` using the closure values `shiftEdgePerm_apply_edge_{top,pred}`;
+both-off ⇒ `σ e = e` via injectivity; fresh `e₀ ↦ edge 0`). Route-independent — the prerequisite for
+**both** §(o′)(B) arm-closer routes, so the fork is now the live decision.
 
 **§(o′) FLAGS a genuine route-A/B fork in the arm-closer transport** (NOT settled by 2c-ii-β; §(o)'s
 "M₃'s body" framing was wrong — the landed M₃ uses W9a/W9b/G4d-i row-span transport, not
@@ -53,11 +55,11 @@ obligation** (route β absorbs KT's isos 6.54–6.56 + the ±r chain 6.66, so th
 general-`d` prose must materialize them): *Hand-off* + design §(n)/§(o)/§(o′).
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors landed;
-**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** + **2c-ii-graphiso edge cycle
-(`shiftEdgePerm`) + closure action lemmas + forward direction** landed. Remaining in CHAIN-2c
-(decomposition + §(o′)(B) fork in the checklist + *Hand-off*): the graph-iso **backward + iff** →
-**2c-ii-transport** (route A/B) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor
-reshape.
+**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** + **2c-ii-graphiso COMPLETE**
+(`shiftEdgePerm` + 6 action lemmas + forward + backward + the packaged iff
+`splitOff_isLink_shiftRelabel_iff`) landed. Remaining in CHAIN-2c (decomposition + §(o′)(B) fork in
+the checklist + *Hand-off*): **2c-ii-transport** (route A/B) → **2c-ii-arm** → **2c-iii** →
+**CHAIN-5** + the ENTRY extractor reshape.
 
 **Architectural constraint (standing, CHAIN-3-era).** Metric-using Hodge leaves live in
 `MeetHodge.lean`, never the metric-free `Meet.lean` (the `PiL2` import regresses
@@ -118,10 +120,9 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       re-pinned by §(o′)): **2c-ii-α** `ChainData.shiftPerm` (the cycle iso — **LANDED**, axiom-clean)
       → **2c-ii-β** the general-`Equiv.Perm` framework-transport `ofNormals_relabel_perm` (**LANDED**,
       axiom-clean) → **2c-ii-graphiso** the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick
-      (§(o′)(A), the `hiso` supplier) — its **edge cycle `ChainData.shiftEdgePerm` + 6 action lemmas
-      (incl. the closure `apply_edge_{top,pred}`) + `mem_shiftCycle` + the FORWARD direction
-      `splitOff_isLink_shiftRelabel_forward` LANDED 2026-06-19** (axiom-clean); the **backward direction
-      + the packaged iff are next** (route-independent, same case machinery) →
+      (§(o′)(A), the `hiso` supplier) — **COMPLETE 2026-06-19** (axiom-clean): edge cycle
+      `ChainData.shiftEdgePerm` + 6 action lemmas (incl. the closure `apply_edge_{top,pred}`) +
+      `mem_shiftCycle` + forward + backward + the packaged iff `splitOff_isLink_shiftRelabel_iff` →
       **2c-ii-transport** (**§(o′)(B)
       fork:** route A's eq.-(6.66) functional identity `ρᵢ = shiftPerm`-image-of-`ρ₀`, or route B's
       cycle-generalized W9a/W9b — adjudicated at contact; each a genuinely-new piece, 2c-ii-β does
@@ -187,29 +188,17 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Forward direction of CHAIN-2c-ii-graphiso landed 2026-06-19 (`splitOff_isLink_shiftRelabel_forward`);
-the backward direction + the packaged iff are next.** CLOSED/LANDED so far (full detail in *Current
-state* + *Decisions made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; CHAIN-2c-i
-(`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
-(`ofNormals_relabel_perm`) + the 2c-ii-graphiso **edge cycle** (`ChainData.shiftEdgePerm` + 6 action
-lemmas, incl. the closure `apply_edge_{top,pred}`) + `mem_shiftCycle` + the **forward direction**
-LANDED, all axiom-clean.
+**CHAIN-2c-ii-graphiso COMPLETE 2026-06-19 (`splitOff_isLink_shiftRelabel_iff`, the `hiso` supplier);
+next = the §(o′)(B) arm-closer transport route fork (2c-ii-transport).** CLOSED/LANDED so far (full
+detail in *Current state* + *Decisions made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED;
+CHAIN-2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
+(`ofNormals_relabel_perm`) + 2c-ii-graphiso (`ChainData.shiftEdgePerm` + 6 action lemmas + forward
+`…_shiftRelabel_forward` + backward `…_shiftRelabel_backward` + the packaged iff
+`…_shiftRelabel_iff`, all in `Operations.lean`) LANDED, all axiom-clean. The iff is exactly the
+`hiso : ∀ e x y, Gt.IsLink e x y ↔ Gs.IsLink (σ e)(ρ x)(ρ y)` hypothesis `ofNormals_relabel_perm`
+(2c-ii-β) consumes, at `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` for interior `1 < i`.
 
-**Next = CHAIN-2c-ii-graphiso backward direction + iff** (the `hiso` supplier; `notes/Phase23-design.md`
-§(o′)(A) pins the iff signature). The forward direction `splitOff_isLink_shiftRelabel_forward`
-(`Operations.lean`, beside `splitOff_isLink_relabel`) discharges `(G.splitOff (vtx i.castSucc)(vtx
-i.succ)(vtx (i−1).castSucc) cd.e₀).IsLink e x y → (G.splitOff (vtx 1)(vtx 2)(vtx 0) cd.e₀).IsLink (σ e)
-(ρ x)(ρ y)` with `ρ = cd.shiftPerm i.castSucc`, `σ = cd.shiftEdgePerm i`, for `1 < (i:ℕ)` (the
-nondegenerate cycle; `i=1` is the `M₀` arm). It proceeds by expanding `splitOff_isLink`, splitting the
-survivor `e` on whether either endpoint lies on the index-shift cycle (on-cycle ⇒ `e` a chain edge via
-`deg_two`; off-cycle ⇒ `σ`/`ρ` fix the data), plus the fresh-edge case (`e₀ → edge i`). **The backward
-direction** (base-link ⇒ candidate-link) is the mirror: case on the base `splitOff_isLink`, pull `σ e`/
-`ρ x`/`ρ y` back through the (now total) `σ`/`ρ` action API. Then **package the iff**
-`Gt.IsLink e x y ↔ Gs.IsLink (σ e)(ρ x)(ρ y)` from the two halves (forward as-is; the source/target arg
-orders match 2a-ii's `i=1` split, `splitOff` is `a,b`-symmetric). Route-independent — **the prerequisite
-for BOTH arm-closer routes**, so it lands before the §(o′)(B) fork.
-
-**Then the §(o′)(B) architectural fork (FLAGGED — surface to the coordinator).** §(o′) corrected §(o)'s
+**Next = the §(o′)(B) architectural fork (FLAGGED — surface to the coordinator).** §(o′) corrected §(o)'s
 "`Fin d` generalization of M₃'s body" framing: the landed M₃ does **not** route through
 `ofNormals_relabel` (it keeps the shared `ρ₀`/`w`, transports row-memberships via **W9a/W9b/G4d-i**,
 `Relabel.lean:546`/`653`/`813`), and 2c-ii-β is a *different* mechanism. So the arm-closer transport
@@ -375,14 +364,15 @@ contract". The forward detail (route to close the open leaves) is in *Current st
 - **CHAIN-2c-ii-α LANDED 2026-06-18 — `ChainData.shiftPerm` (KT eq. 6.54)**, the vertex `i`-cycle
   `vtx 1 → ⋯ → vtx i → vtx 1` + action lemmas (`Induction/Operations.lean`, axiom-clean; `formPerm ∘
   ofFn` idiom in FRICTION). Git + §(o).
-- **CHAIN-2c-ii-graphiso edge cycle + forward direction LANDED 2026-06-19** (`Induction/Operations.lean`,
-  axiom-clean). `ChainData.shiftEdgePerm` (the `σ`, edge-side `i`-cycle, `formPerm` on a
-  `head::head::head::ofFn` list) + 6 action lemmas (4 interior/fresh + 2 **closure**
-  `apply_edge_{top,pred}`); `splitOff_isLink_shiftRelabel_forward` (candidate link → base link, the
-  cycle analogue of d=3 `splitOff_isLink_relabel`) + `mem_shiftCycle`. **Finding:** the 2 closure
-  values are forward-only-unneeded but the iff's *backward* leg needs them (`σ⁻¹` pullback on
-  `edge 1`/`edge 0`) — refining §(o′)(A). Proof internals + the `Fin d`-index relabel idiom → git +
-  FRICTION. Backward + iff packaging next.
+- **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the
+  `hiso` supplier. `ChainData.shiftEdgePerm` (`σ`, edge-side `i`-cycle, `formPerm` on a
+  `head::head::head::ofFn` list) + 6 action lemmas (4 interior/fresh + 2 closure `apply_edge_{top,pred}`)
+  + `mem_shiftCycle`; the forward leg `splitOff_isLink_shiftRelabel_forward` (candidate→base, cycle
+  analogue of d=3 `splitOff_isLink_relabel`), the backward leg `…_backward` (base→candidate: expand the
+  base `splitOff`, on-cycle survivor ⇒ `σ e` a base chain edge via `deg_two`, pull `e`/`y` back by
+  `σ⁻¹`/`ρ⁻¹` using the 2 closure values + `right_unique`; both-off ⇒ `σ e = e` by injectivity; fresh
+  `e₀ ↦ edge 0`), and the packaged iff `…_shiftRelabel_iff` = the §(o′)(A) `hiso`. Internals + 2 new
+  golf idioms (`IsLink.right_unique`; `subst`-fails-on-application) → FRICTION.
 - **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`**, the involution-free general-`Equiv.Perm`
   framework-transport (`CaseIII/Relabel.lean`, axiom-clean): graph layer abstracted to
   `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + `hρst` (the forced `ρ.symm`/`σ.symm`
@@ -432,6 +422,12 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *Recovering the other endpoint of a `Graph.IsLink` from a same-edge / same-left-endpoint pair: use
+  `IsLink.right_unique` (`y = z` from `IsLink e x y`/`IsLink e x z`), not `eq_and_eq_or_eq_and_eq` +
+  disjunct elimination* → FRICTION [idiom] *Recovering the other endpoint of a `Graph.IsLink`…*.
+- *`rcases … with rfl` / `subst` fails when the equation's subject is a function application
+  (`σ e = edge 0`), not a free local — name the eq and `rw … at` the link instead* → FRICTION [idiom]
+  *`rcases hmem with rfl | …` / `subst` fails when the equation's subject is a function application…*.
 - *A finite-`i`-cycle permutation over an indexed family `vtx : Fin n → α` as `Equiv.Perm α`:
   `List.formPerm (List.ofFn …)` (needs `[DecidableEq α]`); `Nodup` via `nodup_ofFn`, action lemmas
   via `formPerm_apply_lt_getElem` / `…_getElem` + `Nat.mod_self` / `…_of_notMem`* → FRICTION [idiom]

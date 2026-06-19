@@ -104,6 +104,17 @@ to be re-derived by re-reading entries later.
 - **Resolution:** for a non-involutive `ρ` the cancellations dictate the placement uniquely — **`qρ` keeps forward `ρ`, but `endsσρ` flips to `ρ.symm`** (so `Q'.normal (ρ.symm x) = q₀ (ρ (ρ.symm x), ·) = q₀ (x, ·)` via `Equiv.apply_symm_apply`). Symmetrically the rigidity pullback motion is `S ∘ ρ.symm` (a target link at `(ρ.symm p, ρ.symm p')` matches a source link `f p p'` via `hiso` at `σ.symm f`), while the *vertex-region* transport stays **forward** `ρ : u ∈ st → ρ u ∈ sr` (`Equiv.symm_apply_apply` carries the source-constancy back to `st`). Link-recording is the `.mp` of `hiso` undone by `ρ.symm`. With the swaps reinstated (`ρ.symm = ρ`, `σ.symm = σ`) it is verbatim `ofNormals_relabel`. The proof is otherwise a mechanical transcription of the swap body — `Equiv.{apply_symm_apply, symm_apply_apply}` wherever the swap body wrote `hρρ`/`hσσ`.
 - **Status:** idiom.
 
+### [idiom] Recovering the *other* endpoint of a `Graph.IsLink` from a same-edge, same-left-endpoint pair — use `IsLink.right_unique`, not `eq_and_eq_or_eq_and_eq`
+- **Where it bit:** the `key` of `Graph.ChainData.splitOff_isLink_shiftRelabel_backward` (`Induction/Operations.lean`, CHAIN-2c-ii-graphiso backward): from `hσy' : G.IsLink e P Q` and `hl : G.IsLink e P R` (a chain edge and the hypothesis link, both at the shifted body `P`), recover `R = Q`.
+- **Friction:** first reach was `hσy'.eq_and_eq_or_eq_and_eq hl` then discarding the second disjunct via a vertex-distinctness `absurd` — but the result is oriented `Q = R` (needs `.symm`) and the dead disjunct still costs a `hvtx_ne_of` line per call (×4 here).
+- **Resolution:** `hσy'.right_unique hl : Q = R` directly (one term; mathlib `Graph.IsLink.right_unique (h : IsLink e x y) (h' : IsLink e x z) : y = z`), then `.symm` for `R = Q`. Mirror `left_unique` exists for the same-right-endpoint case. Reach for `{left,right}_unique` whenever two links share an edge **and** one endpoint.
+- **Status:** idiom.
+
+### [idiom] `rcases hmem with rfl | …` / `subst` fails when the equation's subject is a function *application* (`σ e = edge 0`), not a variable — name it and `rw … at` the link instead
+- **Where it bit:** the both-off `hσoff` of `splitOff_isLink_shiftRelabel_backward` — after `rw [shiftEdgeCycle, mem_cons, …, mem_ofFn] at hmem`, `hmem : cd.shiftEdgePerm i e = cd.edge 0 ∨ …`; the FORWARD leg's analogous step had `e` (a local var) on the LHS so `rcases … with rfl` substituted, but here the LHS is `σ e` (an application), so `subst`/`rfl`-pattern errors with "not of the form `x = t` or `t = x`".
+- **Resolution:** `rcases hmem with heq | heq | heq | ⟨j, heq⟩` (name the equalities), then `rw [heq] at hGσe` (or `rw [← heq] at hGσe` for the `mem_ofFn` form `edge ⟨j+1⟩ = σ e`) to put the concrete chain edge into the link before matching. General: only `subst`/`rfl`-destructure an equation when one side is a free local.
+- **Status:** idiom.
+
 ### [process] "Brick" is a project mnemonic, not KT's term — a terminology-faithfulness sweep is open
 - **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
   sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.
