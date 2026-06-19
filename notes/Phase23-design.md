@@ -2140,6 +2140,190 @@ adjudicates route α vs β.
 
 ---
 
+### (o) CHAIN-2c-ii design-pass — the uniform `Fin d` relabel arm: the iso `ρᵢ` is a genuinely-new construction (FLAGGED)
+
+**Status:** CHAIN-2c-ii detailed design-pass, docs-only, 2026-06-18, source-verified
+(clause (i)) against KT 2011 §6.4.2 (the `.refs/` published PDF, eqs. 6.46–6.67 read
+**verbatim**, pp. 692–698) **and** the landed bodies: the d=3 relabel arms
+`case_III_arm_realization_M2` (`Arms.lean:318`) / `case_III_arm_realization_M3`
+(`Relabel.lean:811`), the relabel-transport engine `ofNormals_relabel`
+(`Relabel.lean:78`) / `rigidityRows_ofNormals_relabel` (`Relabel.lean:216`) /
+`hasGenericFullRankRealization_of_splitOff_relabel` (`Relabel.lean:304`), the M₀ arm
+`chainData_split_realization` (`Realization.lean:941`), the discriminator pick
+`exists_chainData_discriminator_pick` (`Realization.lean:1130`, 2c-i LANDED), and the
+whole d=3 dispatch `u`-match trace (`case_III_candidate_dispatch` lines 435–599, all
+three `fin_cases u` arms). **This pass FLAGS a genuinely-new construction (clause (ii)):
+KT's index-shift iso `ρᵢ` is a `(i−1)`-cycle, and the landed relabel machinery is
+transposition-only — it does NOT generalize uniformly. It does not force a motive/IH or
+spine-carried-hypothesis change; it is new infrastructure below the dispatch.**
+
+**KT eqs. 6.54–6.67 confirmed (verbatim).** The `d` candidates `(G,pᵢ)`, `0 ≤ i ≤ d−1`,
+all built from ONE base `(G₁,q₁)` = the `v₁`-split (eq. 6.46):
+- `M₀`/`(G,p₀)` (eq. 6.47): `L₀ ⊂ Π_{G₁,q₁}(v₀)` placed at `v₀v₁`. The `r` of eq. 6.66
+  is `r = Σⱼ λ(v₀v₂)ⱼ rⱼ(q₁(v₀v₂))` — the redundancy of the `(v₀v₂)ᵢ*` row of `R(G₁,q₁)`.
+- `M₁`/`(G,p₁)` (eq. 6.48): `L₁ ⊂ Π_{G₁,q₁}(v₂)` placed at `v₁v₂`. Symmetric to `M₀`.
+- `Mᵢ`/`(G,pᵢ)` for `2 ≤ i ≤ d−1` (eqs. 6.54–6.59): `Gᵢ = Gᵥᵢ` (split at `vᵢ`),
+  `(Gᵢ,qᵢ)` = "exactly the same framework as `(G₁,q₁)`" via the **index-shift iso**
+  `ρᵢ : V∖{vᵢ} → V∖{v₁}` (eq. 6.54): `ρᵢ(u) = u` off `{v₁,…,vᵢ}`, `ρᵢ(vⱼ) = vⱼ₊₁` for
+  `1 ≤ j ≤ i−1`. The ±r chain (eq. 6.66): `Σⱼ λ(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁)) = ±r`, so `Mᵢ`
+  full-rank-fails ⟺ `r ⊥ C(Lᵢ)`. The discriminator (eq. 6.67): none full-rank ⟺
+  `r ⊥ span ⋃ᵢ(⋃_{Lᵢ⊂Πᵢ} C(Lᵢ))` = `D`-dim by Lemma 2.1 ⇒ `r ≠ 0` ⇒ some `Mᵢ` full.
+
+**The d=3 ↔ general-`d` correspondence (clause i, the decisive structural fact).**
+At `d=3` the candidates are `i ∈ {0,1,2}` (`d−1 = 2`); the landed dispatch's three
+`fin_cases u` arms map to them as:
+- d=3 **M₁** = `case_III_arm_realization` at `(v,a,b) = (v₁,v₀,v₂)` ↔ KT `M₀` (the
+  `L₀ ⊂ Π(v₀)` candidate; the **direct** base arm, no relabel).
+- d=3 **M₂** = `case_III_arm_realization_M2` (`ρ := −ρ₀`, roles `a↔b`) ↔ KT `M₁` (the
+  `L₁ ⊂ Π(v₂)` candidate; the **sign-swap** of the base arm, eqs. 6.53/6.48).
+- d=3 **M₃** = `case_III_arm_realization_M3` (relabel at `G−a`, `qρ = q∘swap a v`,
+  `ρ := −ρ₀`) ↔ KT `M₂` (the lone `i=2` interior candidate via iso `ρ₂`).
+
+**`ρ₂` at `d=3` is a *transposition* — and that is exactly why M₃'s machinery works.**
+KT's `ρ₂(v₁) = v₂` (and identity elsewhere) is the single swap `swap v₁ v₂`. In the
+landed M₃ that is `Equiv.swap a v` (the dispatch's `a = v₀`… no: M₃ relabels at `G−a`
+swapping the split body `v=v₁` with `a=v₀`'s neighbour role — read directly,
+`ofNormals_relabel` sets `ρ := Equiv.swap a v`, a transposition, and `σ = swap e_b e₀ *
+swap e₁ e_c`, two edge-transpositions). For `i ≥ 3`, `ρᵢ` is a genuine `(i−1)`-cycle
+(`v₁→v₂→…→vᵢ`), **not** a transposition.
+
+**THE VERDICT (clause ii — a genuinely-new construction, FLAGGED, not forced).** The
+landed relabel-transport engine — `ofNormals_relabel` / `rigidityRows_ofNormals_relabel`
+/ `hasGenericFullRankRealization_of_splitOff_relabel` — does **NOT** generalize
+uniformly to KT's `ρᵢ`. The block is structural, not cosmetic, verified in the bodies:
+1. **It is hard-wired to `Equiv.swap a v` as an involution.** `ofNormals_relabel`'s
+   transport rests on `hρρ : ρ(ρ x) = x` (`Equiv.swap_apply_self`, `Relabel.lean:117`)
+   and `hσσ : σ(σ f) = f` (`hσσ_relabel`, two disjoint edge-swaps, `Relabel.lean:41`).
+   The rigidity pullback (a motion `S` of the relabelled framework ↦ `S∘ρ` of the base)
+   and the link-recording both fire the involution twice. A `(i−1)`-cycle `ρᵢ` is **not**
+   an involution for `i ≥ 3`, so this whole transport must be re-derived for a general
+   `Equiv.Perm α` — the swap-specific lemmas (`Equiv.swap_apply_left/right/of_ne_of_ne`)
+   that the body leans on throughout do not survive.
+2. **It transports between exactly TWO single-`splitOff` graphs.**
+   `hasGenericFullRankRealization_of_splitOff_relabel` goes
+   `HasGenericFullRankRealization (G.splitOff v a b e₀) → … (G.splitOff a v c e₁)` —
+   one source split, one target split, related by the one transposition. KT's `Gᵢ`
+   (`Gᵥᵢ`, eq. 6.54) is a *different* interior split for each `i`, reached from `G₁`
+   (the `v₁`-split) by the cumulative shift `ρᵢ`. There is no landed lemma taking
+   "the base `v₁`-split realization" to "the candidate-`i` framework `(G,pᵢ)`" for an
+   arbitrary interior `i`; the d=3 M₃ is the bespoke `i=2` instance.
+3. **The graph-iso the transport intertwines is `splitOff_isLink_relabel`** — itself
+   stated for the `swap a v` / `splitOff a v c e₁` pair (`Relabel.lean:165`). The
+   general-`d` analogue (a `Graph` iso `Gᵢ ≅ G₁` realizing eq. 6.54 as a Lean
+   `Equiv.Perm`-relabel between two interior splits) is **not in tree**.
+
+So **route α's `chain_redundancy_eq_pm` / iso-transport resurfaces here, inside the
+arm** — exactly the contingency §(n) flagged. The honest verdict: 2c-ii is the
+genuinely-new content, and it needs a new `Fin d` relabel construction, NOT a numeral
+pass over M₂/M₃. The economical d=3 trick (three hand-written arms, the cycle degenerate
+to a swap) is precisely what does **not** scale.
+
+**Recommended decomposition (route β still LOCKED; the relabel arm is its `i ≥ 2` tail).**
+Build the uniform arm as a `Fin d`-cycle generalization of the relabel engine, then the
+dispatch consumes it. Four dependency-ordered buildable leaves:
+
+- **CHAIN-2c-ii-α — the index-shift iso as a Lean `Equiv.Perm α` (KT eq. 6.54).** Author
+  `ChainData.shiftPerm` (working name): for an interior index `i` (`2 ≤ i`), the cyclic
+  permutation `ρᵢ` of `α` fixing everything off `{vtx 1,…,vtx i}` and sending
+  `vtx j ↦ vtx (j+1)` for `1 ≤ j ≤ i−1` (built from the `ChainData.vtx` family via
+  `Equiv.Perm` of a finite cycle, e.g. `List.formPerm` on `[vtx 1,…,vtx i]` or an
+  iterated `Equiv.swap` composition with the cycle decomposition proved by `decide`-free
+  index arithmetic). Plus its action lemmas (`shiftPerm_apply_interior`,
+  `shiftPerm_apply_off`, `shiftPerm_vtx_i` showing `vtx i` is the cycle's "removed"
+  fixed-image). **§38-clean** (graph-free, pure `Equiv.Perm`/`Fin` arithmetic). This is
+  the genuinely-new brick; it is **independent of all rigidity content** and is the
+  smallest self-contained piece. **NOT the first buildable** (see below) but the first
+  *new* one.
+- **CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport.** Generalize
+  `ofNormals_relabel` from `ρ = Equiv.swap a v` to an arbitrary `ρ : Equiv.Perm α` (and
+  the edge side `σ : Equiv.Perm β`) carrying one interior split to another: drop the
+  `hρρ`/`hσσ` involution dependence (use `ρ.symm`/`σ.symm` where the body used the
+  second application of the swap), restate `splitOff_isLink_relabel` for the
+  general-perm interior-split pair, and re-derive the four transport conjuncts (GP /
+  rigidity-pullback via `S∘ρ` / link-recording / AlgIndep — all four go through with
+  `ρ.symm` in place of the involution). **This is the heavy leaf** (it is the
+  re-derivation `ofNormals_relabel` does at one transposition, now at a general perm);
+  flag for the build whether it factors as `ofNormals_relabel` does (a `~200-line`
+  body) or needs further splitting. §38-aware (the `ofNormals`/`toBodyHinge` defeq trap
+  lives inside, as in the d=3 body).
+- **CHAIN-2c-ii — the uniform arm closer `chainData_relabel_arm` (working name).** For an
+  interior candidate index `i`, takes the shared base `(G₁,q₁)` realization + the shared
+  `ρ₀` (the `r` of eq. 6.66) + the discriminator's `(u, n')` matched to candidate `i`,
+  applies 2c-ii-β at `ρᵢ` (2c-ii-α) to transport the base to `(G,pᵢ)`, carries the ±r
+  identity (eq. 6.66) via the sign the transport induces (the `−ρ` of M₂/M₃, generalized
+  through `shiftPerm`'s parity), and feeds `case_III_arm_realization` at the relabelled
+  roles to close `HasGenericFullRankRealization k n G`. Structurally the `Fin d`
+  generalization of M₃'s body (`Relabel.lean:847`–1013), with `shiftPerm`/2c-ii-β where
+  M₃ has `swap a v`/`ofNormals_relabel`.
+- **CHAIN-2c-iii — `chainData_dispatch` assembly.** Steps 1–4 of §(n)'s sketch wired:
+  one W6b (`chainData_split_w6b_gates`, LANDED), the LI panel family + one discriminator
+  (`exists_chainData_discriminator_pick`, 2c-i LANDED), then **`Fin (k+1)`-case on `u`**
+  routing each candidate to its arm — `u = M₀-index` → `chainData_split_realization`
+  (the M₀ arm, 2a-ii) or `case_III_arm_realization` directly; `u = M₁-index` → the
+  sign-swap arm; all interior `u` → `chainData_relabel_arm` (2c-ii). The d=3 line is a
+  `k=2`/length-3 zero-regression wrapper (C.4). **This is the only leaf that consumes 2c-i.**
+
+**Whether the M₀ arm (2a-ii) is reused, or the uniform arm subsumes it (SETTLED here).**
+Reused, at exactly one candidate. `chainData_split_realization` (2a-ii) is the **M₀ /
+`v₁`-base arm** of the family: its per-`i` split `splitOff (vtx i.castSucc) (vtx i.succ)
+(vtx (i−1).castSucc) e₀` at `i = 1` **is** the `v₁`-split (`vtx 1`, `vtx 2`, `vtx 0`),
+i.e. KT's `G₁`. So the dispatch's `u`-case calls 2a-ii (or its inner `case_III_arm_realization`)
+at the `M₀`-candidate and `chainData_relabel_arm` (2c-ii) at the *interior* candidates
+`2 ≤ i ≤ d−1`. The uniform arm does **not** subsume 2a-ii — they are the `i=1` (direct)
+and `i ≥ 2` (relabel) tails of the same `fin_cases`. The `htrans` slot of 2a-ii is
+filled at the dispatch from the discriminator's `(u, n')` once `u` is matched to `i=1`;
+the relabel arm fills the analogous slot from the *same* `(u, n')` transported through
+`ρᵢ`. The d=3 M₂ arm (KT `M₁`) is the third leg — at d=3 it is a sign-swap of M₀; at
+general `d` it is the `i=1`-`L₁` candidate, also reachable as a relabel-arm instance (or
+kept as the dedicated `_M2`-style sign-swap; the build picks the cheaper).
+
+**Assembly coherence (confirmed).** `chainData_dispatch` (2c-iii) closes
+`HasGenericFullRankRealization k n G` for the discriminator's picked `u`: every
+`fin_cases u` leg lands that conclusion (the M₀ arm, the sign-swap arm, and the uniform
+relabel arm all return it), so the `Fin (k+1)`-case is exhaustive and the dispatch's
+return type is uniform across legs. CHAIN-5 then consumes `chainData_dispatch` as the
+contract's `hdispatch` against the frozen `G.ChainData n` shape (C.3) — unchanged by this
+pass (the contract is interface-only; 2c-ii is infrastructure *below* the dispatch).
+
+**Blueprint-clarity obligation (owner-flagged, "absolutely clear") — what the
+`lem:case-III` general-`d` node MUST spell out.** Route β absorbs KT's explicit isos +
+±r chain into Lean infrastructure, so the blueprint prose must materialize, in order:
+(1) the **single `v₁`-base** construction `(G₁,q₁)` (eq. 6.46) and that all `d`
+candidates `(G,pᵢ)` are built from it — *not* `d` independent splits; (2) the
+**index-shift iso `ρᵢ`** (eq. 6.54, the `(i−1)`-cycle `v₁→…→vᵢ`) and that `(Gᵢ,qᵢ)` is
+"exactly the same framework as `(G₁,q₁)`" read through `ρᵢ` (eqs. 6.55–6.56); (3) the
+**single redundancy `r`** (eq. 6.52, the `(v₀v₂)ᵢ*` row of `R(G₁,q₁)`) carried **±-ly**
+across all `d` panels (eq. 6.66), so `Mᵢ` fails full rank ⟺ `r ⊥ C(Lᵢ)`; (4) the
+**eq.-6.67 discriminator** — `r` cannot be ⊥ the `D`-dim span (Lemma 2.1 on the `d+1`
+points), so some `Mᵢ` is full rank. The Lean economizes the iso into a `shiftPerm`
+relabel arm and the ±r chain into the shared `ρ₀`; **the exposition must not.** Tracked
+in BlueprintExposition (the `lem:case-III` general-`d` entry); written as 2c-ii/CHAIN-5
+land + at phase-close. The CHAIN-2c-ii-α/β construction (the cycle iso + general-perm
+transport, which KT states in two lines) is itself a BlueprintExposition candidate (the
+project spells out a step KT compresses).
+
+**First buildable for the re-pointed hand-off (NOT 2c-ii's heavy leaf).** Because 2c-ii
+requires the genuinely-new `shiftPerm` iso + general-perm transport, the lowest-risk
+*next* commit is the **iso brick CHAIN-2c-ii-α** (`ChainData.shiftPerm` + its action
+lemmas) — it is graph-free, §38-clean, independent of all rigidity content, and is the
+foundation 2c-ii-β/2c-ii both consume. It is buildable now (all deps are `ChainData`
+accessors + mathlib `Equiv.Perm`/`Fin`). Carry the heavy transport (2c-ii-β) and the arm
+closer (2c-ii) as the standing `h…` idiom if they cannot close in one sitting — never a
+`sorry`. **Re-pointed hand-off next commit = CHAIN-2c-ii-α, the `ChainData.shiftPerm`
+index-shift iso.**
+
+**Clause-(ii) summary (the honest flag).** The uniform `Fin d` relabel arm is **not** a
+numeral pass over the landed M₂/M₃: KT's `ρᵢ` is a cycle, the landed engine is
+transposition-only, and the involution-based transport must be re-derived for a general
+`Equiv.Perm`. This is **new infrastructure** (the cycle iso + general-perm transport),
+**not** a motive/IH change (the IH is the unchanged all-`k` 0-dof conjunct, C.6) and
+**not** a spine carried-hypothesis change (the dispatch's `hdispatch` contract, C.3, is
+unmoved). Route β stays LOCKED — the single base, the shared `ρ₀`, reuse 2a-ii at `M₀`;
+the genuinely-new work is just the interior-candidate relabel, which §(n) named and this
+pass pins down as a real construction below the dispatch.
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
