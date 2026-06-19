@@ -170,20 +170,21 @@ tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *
 
 **LANDED 2026-06-19** (axiom-clean, gate-verified): the abstract base→candidate seed-advancing fold core
 `wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`), preceded by **CHAIN-2c-ii-inv** + the **H.10 de-risk
-gate** — detail in *Current state* tracker. **⚠ The top-step finding (⚠ *Current state*) gates the concrete
-instance:** the de-risk gate covers only interior steps; the fold's top step (moving the candidate vertex
-`vᵢ`) needs separate handling — de-risk it first.
+gate** — detail in *Current state* tracker (incl. the ⚠ top-step finding gating the concrete instance).
 
-**NEXT STEP — the concrete `ChainData` seed-advancing instance** that feeds the fold core. Build the
-chain `F s = (ofNormals (G − vtx(s+1)) ends qₛ).toBodyHinge` with the seed `qₛ` accumulating one swap per
-step (so `q_{i−1} = q ∘ shiftPerm i`, matching `shiftPerm_eq_prod_map_swap_shiftBodyList`), discharge the
-fold core's per-step `hstep` from the de-risk gate's structure (`hrec`/`hends'_off` via the
-`shiftBodyGraph` accessors) at the **interior** steps, and supply the **top step separately** (de-risk it
-first — its moved body is the candidate vertex itself, ⚠ above). Conclude membership in `span (G − vᵢ on
-q∘shiftPerm i).rigidityRows`. (Keeping `ends` *fixed* across the chain — only the seed advancing — makes
-`hends'_off` trivial; the de-risk gate already parametrizes `ends'`, so a fixed `ends` is the `ends' =
-ends` instance.) Then the `funLeft (shiftPerm i)`/seed bridge (reuse `wstep_foldl_funLeft_eq`-style
-`wstep_foldr_funLeft_eq` analogue + `shiftPerm_eq_prod_map_swap_shiftBodyList`).
+**NEXT STEP — the TOP-STEP de-risk lemma (the gating piece, ⚠).** The fold's top step `s = i−2` moves the
+candidate vertex `vᵢ` itself (into slot `vtx(i−1)`), NOT a passing degree-2 body — outside the de-risk
+gate's `s+2 < i` bound. Build/validate its base→candidate single-step transport (the candidate-vertex
+analogue of the interior de-risk gate; template = how the d=3 M₃ arm handles the candidate vertex) and
+confirm it closes BEFORE the concrete instance — it is the §(o‴)-class index/scope subtlety, so de-risk it
+standalone first.
+
+**THEN — the concrete `ChainData` seed-advancing instance** feeding the fold core: the chain
+`F s = (ofNormals (G − vtx(s+1)) ends qₛ).toBodyHinge`, seed `qₛ` accumulating one swap per step
+(`q_{i−1} = q ∘ shiftPerm i`, via `shiftPerm_eq_prod_map_swap_shiftBodyList`); interior steps via the
+de-risk gate, the top step via the new top-step lemma. Keeping `ends` *fixed* (only the seed advancing)
+makes `hends'_off` trivial. Conclude membership in `span (G − vᵢ on q∘shiftPerm i).rigidityRows`; then the
+`funLeft (shiftPerm i)`/seed bridge (`wstep_foldr_funLeft_eq` analogue + the perm bridge).
 
 **Then:** **2c-ii-arm** `chainData_relabel_arm` (signature in §(o‴)(H.6); instantiate
 `case_III_arm_realization` at the relabelled roles with seed `qρ = q∘shiftPerm i`, shared `±ρ₀`, the three
