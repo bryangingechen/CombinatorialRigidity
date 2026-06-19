@@ -2932,6 +2932,148 @@ not a `Tag` choice over the landed one.** Two structural facts, each verified ag
   single-step + M₃ are untouched). Per-leaf tracker gains a node: **redundancy_panel_carry ✓ →
   block-carrying single-step [NEXT] → W9b membership (fold) → 2c-ii-arm → …**.
 
+#### (o″) DESIGN-PASS — frozen carrying-step signature + the `hcol`-supply correction (2026-06-19)
+
+**Status:** the row-270-BLOCKED design pass, docs-only, source-verified against the landed bodies
+(file:line per claim) + KT §6.4.2 eqs. (6.24)/(6.43)/(6.44)/(6.62)/(6.66). **VERDICT: the carrying
+step is buildable AND its panel-match has a CLEANER supply than `redundancy_panel_carry` — the d=3 M₃
+already uses it (G4d-i, `acolumn_mem_hingeRowBlock_of_span_rigidityRows`), and the
+`redundancy_panel_carry`/`candidateRow_ac_eq_neg` route the BLOCKED agent named is NOT cleanly
+suppliable at the chain step (its `hcol`/`hrest` decomposition data is out of scope). Flag-don't-force:
+this reroutes the panel-match supply but does NOT block the carrying step — no motive/IH/spine change,
+d=3 zero-regression. The next buildable leaf is the carrying step, signature frozen below.**
+
+**(A) The frozen carrying-step signature** (`funLeft_dualMap_pinnedBlock_carry`, working name; in
+`CaseIII/Relabel.lean`, between the bridge `redundancy_panel_carry`/`bottomTag_foldr_mem_rigidityRows`
+fold core and the W9b membership fold instantiation). It is the chain-INTERIOR analogue of the landed
+*terminal* single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean:1181`, verified):
+same `Fv`/`Fva` abstract-carrier shape, same genuine-row arm, but the `(a,v)`-block input maps to a
+`(c,v)`-block OUTPUT re-pinned to `±ρ` (NOT terminated into an `e_b`-row). Roles at chain step `s`
+(`s + 1 < i`): moved body `a = vtx⟨s+1⟩`, post-swap position `v = vtx⟨s+2⟩` (via successor edge
+`e_b := edge(s+1)`), surviving predecessor `c = vtx⟨s⟩` (via predecessor edge `e_c := edge s`).
+```
+theorem BodyHingeFramework.funLeft_dualMap_pinnedBlock_carry
+    [DecidableEq α] {Fv Fva : BodyHingeFramework k α β}
+    {v a b c : α} {e_b e_c : β}                                  -- b := vtx⟨s+2⟩ = v's successor role
+    (hab : a ≠ b) (hvb : v ≠ b) (hca : c ≠ a) (hcv : c ≠ v) (hav : a ≠ v)
+    (hlink_ec : Fv.graph.IsLink e_c a c)                         -- predecessor panel, survives G−v
+    (hdeg2  : ∀ f x, Fv.graph.IsLink f a x → f = e_c)            -- a is degree 2 in Fv = G−vₛ₊₂
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
+    (hnov   : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v)
+    (htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
+      Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f)
+    -- the single carried redundancy functional ρ (KT's one r), pinned to BOTH adjacent panels.
+    -- (supportExtensor reads only ends/q, NOT graph membership — shiftBodyFramework_supportExtensor,
+    --  Relabel.lean:851 — so Fva.supportExtensor e_b is the SEED (a,v)-panel even though e_b ∉ Fva.graph;
+    --  these match the d=3 M₃ form `ρ (panelSupportExtensor (q(a,·)) (q(b,·)))` etc., Relabel.lean:1488–9.)
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρ_ab : ρ (Fva.supportExtensor e_b) = 0)   -- ⊥ successor (a,v)-panel C(edge s+1) — the W6b gate
+    (hρ_ac : ρ (Fv.supportExtensor e_c)  = 0)   -- ⊥ predecessor (a,c)-panel C(edge s) — from G4d-i
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Fv.rigidityRows ∨ φ = BodyHingeFramework.hingeRow a b ρ) :   -- block PINNED to ρ
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ ∈ Fva.rigidityRows ∨
+      (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+        = BodyHingeFramework.hingeRow c v ρ           -- (c,v)-block re-pinned to the SAME ρ
+```
+*Differences from the landed terminal step (line-verified):* (1) the input/output block disjunct is
+**pinned to the single `ρ`** (`φ = hingeRow a b ρ`), not a free `∃ρ', ρ' Cab = 0 ∧ φ = hingeRow a b ρ'`
+— this is what lets the `Tag` chain (the free existential cannot, §(o″) gap). (2) The `(a,v)`-block
+input arm produces a `(c,v)`-block (`hingeRow c v ρ`), NOT a genuine `e_b`-row — the landed step's
+`Or.inl ⟨e_b,v,b,hlink_eb,…⟩` termination (`:1246–1252`) is dropped (it is structurally impossible in
+the interior: `e_b = edge(s+1)` is incident to the removed `vₛ₊₁`, does not survive `Fva = G−vₛ₊₁`,
+*Sharpened recon*). (3) The proof: the genuine-row input arm is **verbatim the landed step's first case**
+(lines 1204–1245 — the `x=a`/`y=a`/off split producing the `(c,v)`-block via `e_c`, or a genuine
+`Fva`-row); the block-input arm is NEW — relabel `hingeRow a b ρ` under `swap a v`, giving
+`hingeRow v b ρ`, then convert to the `(c,v)`-block via `hingeRow v c`/`hingeRow_sub_hingeRow_eq`-style
+identities using `hρ_ab`/`hρ_ac`. (No `e_b`-link needed — that is exactly the structural fix.) The
+genuine-row arm needs `hnov`'s `y ≠ v` etc. exactly as the landed step.
+
+**(B) The `hcol`/`hrest` supply — VERIFIED, and the BLOCKED route is REPLACED.** The coordinator's
+caution holds: `exists_redundant_panelRow_ab_decomposition_acolumn_zero` (`Candidate.lean:522`) does
+**NOT** cleanly supply `redundancy_panel_carry`'s `hcol`/`hrest`. Three source-verified facts:
+- Its last conjunct `∀ a, (wGv + wOther − r i).comp (single a) = 0` is the **trivial zero-functional**
+  vanishing (`:557`, proof `rw [hsum, sub_self, LinearMap.zero_comp]`, since `r i = wGv + wOther`). It
+  is the column-vanishing of an **opaque** combination — `wGv` is *some* `Submodule.span` member, `wOther`
+  *some* member of `span (r '' {j≠i})` — NOT the per-edge-grouped
+  `∑ lamAB • hingeRow a b rab + ∑ lamAC • hingeRow a c rac + grest` shape that `candidateRow_ac_eq_neg`
+  (`Claim612.lean:1194`) / `redundancy_panel_carry` (`Relabel.lean:1318`) demand as `hcol`. **There is
+  no landed lemma re-expressing `wGv + wOther − r i` into that ab/ac/grest decomposition** (grep: no
+  caller regroups it by edge). So the decomposition mapping the coordinator asked to confirm **does not
+  exist** in the tree at the chain-body level.
+- `candidateRow_ac_eq_neg` + `_acolumn_zero` have **zero live call sites** (grep, verified): they appear
+  only in docstrings + the lemma defs + the new `redundancy_panel_carry` wrapper. The d=3 dispatch never
+  routes through them — confirming §(o″)'s "consumed at the discriminator/criterion level, not the W9b
+  row-transport." And `chainData_split_w6b_gates` (`Realization.lean:771`) outputs **only** `ρ`/`w` + the
+  gate facts (`:789–807`); the redundancy decomposition `lam`/`rab`/`rac`/`grest` is existentially
+  consumed *inside* `exists_candidateRow_bottomRows_of_rigidOn` (`:880`) and is **out of scope** at the
+  membership/arm. So `redundancy_panel_carry`'s premises **cannot be discharged** at the chain step.
+- **The d=3 M₃ arm ALREADY supplies the panel-match by the right route — G4d-i, not eq.-(6.44).** At
+  `Relabel.lean:1532` the M₃ arm derives `hρ_ac : ρ ⊥ C(q(ac)) = 0` from `hρGv` (the candidate's
+  `hingeRow a b ρ ∈ span (G−v)-rows`, in scope from W6b) via
+  `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (G4d-i, `Relabel.lean:1355`): the `a`-column of
+  `hingeRow a b ρ` is `ρ`, which the degree-2-at-`a` constraint inside `Fv` lands in `Fv.hingeRowBlock
+  e_c`, i.e. `ρ ⊥ Fv.supportExtensor e_c`. **This is the carrying step's `hρ_ac` supply** — it needs
+  only `hρGv` (W6b output, in scope) + the degree-2 geometry (chain accessors, landed), NOT any (6.24)
+  decomposition. `hρ_ab` (⊥ the successor panel) is the candidate's existing `ρ ⊥ C(q(ab))` gate
+  (`chainData_split_w6b_gates` `:799`) re-read at the step's successor panel.
+
+  **CONSEQUENCE (flag, not a blocker).** `redundancy_panel_carry` as landed (the eq.-(6.44) vector
+  identity carrying `lam`/`rab`/`rac`/`grest`) is the **wrong tool** for the carrying step — its data is
+  unavailable. The carrying step instead pins both `hρ_ac`/`hρ_ab` for the single `ρ` directly: `hρ_ab`
+  from the W6b gate, `hρ_ac` from **G4d-i** at the chain body. The eq.-(6.44) `±r` story is real KT math
+  (and the blueprint point (3) still anchors there), but the **provable Lean carry at the chain body is
+  G4d-i** (the candidate's own column-membership), exactly as d=3 M₃ does it — *simpler* than (6.44),
+  and it is why the d=3 W9b never needed (6.44). So `redundancy_panel_carry` is, on this verification,
+  an **orphan-in-waiting** (built row-268 for the route this pass replaces); confirm-and-delete at the
+  carrying-step / 2c-ii-arm build alongside the two existing orphans (route-A `ofNormals_relabel_perm`,
+  the binary `funLeft_dualMap_sub_acolumn_comp_…`). It is NOT new math missing — the replacement (G4d-i)
+  is **landed and already in d=3 use**; the carrying step wires the *known* d=3 supply into the interior
+  step shape. (Do not delete `redundancy_panel_carry` pre-emptively: 1% the fold's `Tag` plumbing finds
+  a use for the abstract `±r` identity; decide at the carrying-step build.)
+
+**(C) The W9b-membership fold-instantiation plan** (after the carrying step lands). Define the fold's
+`Tag s ψ := ψ ∈ span (cd.shiftBodyFramework s).rigidityRows ∨ ψ = hingeRow (vtx⟨s+1⟩) (vtx⟨s+2⟩) ρ`
+(block-disjunct **pinned to the single `ρ`**, the W6b candidate functional from
+`chainData_split_w6b_gates` `:799–801`, reused across all candidates — route β's one-`r` discipline, in
+scope). Feed `bottomTag_foldr_mem_rigidityRows` (`Relabel.lean:1273`, the landed fold core threading
+`Tag : ℕ → Dual → Prop`) with `F := shiftBodyFrameworkTotal` and `bodies := shiftBodyList i`:
+- each `hstep s` (`s < length = i−1`) is the **carrying step** at `bodies[s] = (vₛ₊₂, vₛ₊₁, vₛ)`
+  (`getElem_shiftBodyList`): genuine-row disjunct reuses T-W9a's `shiftBodyFramework_htrans`
+  (`Relabel.lean:874`) + the graph-layer accessors (`shiftBodyGraph_isLink_pred_edge`/`_deg_two(_right)`/
+  `_off_succ`, `Operations.lean:1698+`, all landed); block disjunct discharged by the carrying step with
+  `hρ_ab`/`hρ_ac` supplied as in (B). The `Tag (s+1)→Tag s` re-pinning to the *same* `ρ` is automatic
+  (both disjuncts name `ρ`); the supporting extensors are `s`-independent
+  (`shiftBodyFramework_supportExtensor`, `:851`).
+- the **terminal step** at the bottom (`s = 0`, the M₃-style block-at-bottom) is where the block tag
+  *can* terminate into a genuine row, but the fold's last step `s=0` lands `Tag 0` (the
+  `shiftBodyFramework 0 = G−v₁` span ∨ the bottom `(c,v)`-block); the arm's `hwmem` slot consumes the
+  disjunction shape directly (it does not need a genuine-row collapse — the M₃ `hwmem` at `:1495` is
+  exactly `Gv-row ∨ ∃ρ', ρ'⊥C(ab) ∧ = hingeRow a b ρ'`, and the cycle output is that with `ρ' := ρ`).
+- the `funLeft (shiftPerm i)` identification: the fold's leading swap-product
+  `(funLeft (swap …)).dualMap ∘ ⋯` is rewritten to `(funLeft (shiftPerm i)).dualMap` by the LANDED
+  bridge `wstep_foldr_funLeft_eq` + `shiftPerm_eq_prod_map_swap_shiftBodyList` (the W9b transport is
+  *pure relabel*, no a-column residue — `bottomTag_foldr` composes the bare relabels). This is the
+  same relabel bridge T-W9a's arm-closer half uses; applied at 2c-ii-arm.
+
+  **Sub-crux NOT yet a clean build (flagged):** the carrying step's **block-input arm** (the NEW case)
+  — converting `(funLeft (swap a v)).dualMap (hingeRow a b ρ) = hingeRow v b ρ` into the `(c,v)`-block
+  `hingeRow c v ρ` using `hρ_ab`/`hρ_ac`. The landed terminal step *terminates* here (into `e_b`); the
+  carry must instead emit the `(c,v)`-block. The exact identity chain (likely
+  `hingeRow_sub_hingeRow_eq` / `hingeRow_swap` against the two pinned annihilations) is build-discovered
+  — it is the irreducible new content. Everything else in (C) is wiring of landed bricks.
+
+**(D) d=3 zero-regression — CONFIRMED.** `shiftBodyList i` has length `i−1` (`length_shiftBodyList`,
+`Operations.lean:1564`). The M₃ arm is the `i=2` instance → length-1 list → the single step `s=0` is the
+*terminal* step (block already at the bottom), with **zero interior carrying steps** (`s+1 < i = 2`
+forces `s=0`, but `s+1=1 < length=1` is false — no `hstep` chains). So the carrying step fires only at
+chain length ≥ 2 / `i ≥ 3`, vacuous at `i=2`; the landed `case_III_arm_realization_M3` (`Relabel.lean:1465`)
++ `case_III_bottom_relabel` + the d=3 dispatch are **untouched**. The carrying step is purely additive.
+
+**Frozen next buildable leaf:** `funLeft_dualMap_pinnedBlock_carry` (signature (A) above), one build
+commit (the new block-input arm + the genuine-row arm reusing the landed terminal step's first case),
+THEN the W9b membership fold (C) + the relabel-bridge instantiation a second commit. No motive/IH (C.6)
+or spine-carry (C.3) change; route B holds; d=3 zero-regression preserved.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
