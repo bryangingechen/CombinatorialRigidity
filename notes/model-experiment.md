@@ -70,12 +70,25 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   (row 252) + two-step composition (row 253, telescoping settled) + the abstract `List`-fold core
   `wstep`/`wstep_foldr_mem_span_rigidityRows` (row 254). **Two orphaned lemmas tracked for
   confirm-and-delete** at the 2c-ii-arm/cleanup commit (`ofNormals_relabel_perm` ← route-A rejection;
-  the binary composition step ← subsumed by the fold) — `notes/Phase23b.md` *Hand-off*. **Next dispatch:
-  the `shiftPerm`-specific T-W9a instantiation** (`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`,
-  plug the cycle body-list + interior-split framework chain into the fold via `shiftPerm_eq_swap_mul` +
-  `splitOff_isLink_shiftRelabel_iff`) → T-W9b → 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY reshape
-  (`notes/Phase23b.md` *Hand-off* + design §(o″)). Session-#9 lesson: the note-bloat tax persisted
-  (every build left the note >500; coordinator structural-deduped each time) → *Findings*.
+  the binary composition step ← subsumed by the fold) — `notes/Phase23b.md` *Hand-off*. (Forward detail
+  superseded by the session #10+#11 close below.) Session-#9 lesson: the note-bloat tax persisted (every
+  build left the note >500; coordinator structural-deduped each time) → *Findings*.
+- **Session #10 + #11 close (2026-06-19; rows 255–272, all opus / OPUS-ONLY, all gate-verified; user
+  stopped the loop at the KT §6.4.2 crux for an approach decision).** **Landed:** the
+  CHAIN-2c-ii-transport machinery — T-W9a-chain framework layer + T-W9a membership + T-W9b
+  single-step/fold core + the degree-2 bridge (rows 259–265, 268). **The W9b MEMBERSHIP (KT §6.4.2, the
+  conjecture's hardest single argument) is BLOCKED on the fold-invariant shape:** 3 BLOCKEDs
+  (266/270/272) + 4 design-passes (263/267/269/271); the piecemeal recon→build loop mis-pinned the crux
+  **4×** (each local pin globally wrong — bridge `redundancy_panel_carry` orphan, the landed single-step
+  terminal-only, the iter-11 `Tag` non-telescoping). Row 272 verified KT eq. (6.66)'s ±r-chain
+  **TELESCOPES** — the fold-invariant must *accumulate* residuals (a block-row sum / span-membership
+  `Tag`), not a single pinned functional (iter-11 pin INVALIDATED, salvaged in `notes/Phase23b.md` +
+  §(o″)). **Next step USER-ADJUDICATED (2026-06-19):** a comprehensive telescoping-structure design-pass
+  first (the GLOBAL invariant, close KT §6.4.2 read, the two design-pass clauses), then resume builds
+  only if coordinator-verifiable — guidance in `notes/Phase23b.md` *Hand-off*. **The session-#11
+  availability override (OPUS-ONLY + cap-lift + fixups) expires session-end**; a fresh coordinator
+  re-runs the availability check and reverts to the S/P/B map as rungs return. Findings: the 4×-mis-pin
+  lesson → below.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -247,3 +260,24 @@ leaf is clean**, because the abstract-core-vs-concrete-supplier *shape mismatch*
 someone reads both signatures side by side. The coordinator's 6-shrink patience was ~2 commits too many;
 the 2-leaf-trigger floor would have fired the recon around row 254. Default to reconning the
 decomposition the moment a core starts receding, not after the Nth prerequisite.
+
+### W9b / KT §6.4.2 telescoping crux — global-accumulation arguments resist piecemeal local decomposition (2026-06-19; rows 263–272)
+
+The W9b-membership crux (KT §6.4.2, the conjecture's hardest single argument) was mis-pinned **4×** by
+successive design-passes (iters 3/7/9/11), each producing a *locally* plausible per-step structure that
+a *build* then proved *globally* wrong: (3) own-induction-not-fold-reuse ✓; (7) the eq.-6.44 bridge
+`redundancy_panel_carry` — landed (row 268) then found an **orphan** (its `hcol`/`hrest` unsuppliable at
+the chain step, row 271); (9) the landed single-step is **terminal-only**, not the interior carry; (11)
+the **single-pinned `Tag`** — frozen, then row 272 verified it is **unprovable** (`hingeRow_funLeft_dualMap`:
+the carry leaves an unconstrained residual `hingeRow vₛ₊₂ vₛ₊₃ ρ`). The genuine content: KT eq. (6.66)'s
+±r-chain **telescopes** — the right object is a GLOBAL *accumulating* fold-invariant, not any single
+per-step pin. **Lesson (3rd instance of rows-195–198 / T-W9a, sharpened):** when the source's argument is
+a *global accumulation* (a telescoping sum, an invariant carried across an induction), the local leaves
+cannot be soundly pinned **before** the global invariant is — a locally-plausible per-step signature
+keeps being globally wrong, invisible until a build reads the fold arithmetic end-to-end. For such cruxes,
+recon the GLOBAL structure FIRST (the whole-argument invariant, against a close source read), then
+decompose; and **scrutinize design-pass verdicts here by reading the proposed fold's arithmetic
+end-to-end, not just the cited APIs** (the coordinator's repeated mistake was verifying the *named lemma*
+the pin cited, while the *global chaining* was where each pin broke). Cost: ~2 dead leaves (the orphan
+bridge; the terminal-only framing) + 4 design-passes. The user stopped the loop here to commission a
+single comprehensive telescoping design (the global invariant) rather than a 5th local attempt.
