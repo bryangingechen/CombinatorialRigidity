@@ -2,10 +2,10 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
-**Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a/T-W9b transport machinery LANDED; the W9b
-MEMBERSHIP is BLOCKED on a fold-invariant reshape, the KT §6.4.2 telescoping crux — next is a
-comprehensive telescoping-structure DESIGN-PASS, **user-adjudicated 2026-06-19**; see *Hand-off* for the
-design-pass guidance) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
+**Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a span fold LANDED; the bottom-family transport
+FIX-FORK is SETTLED 2026-06-19 §(o‴)(H): corrected Fix A = invert the relabel to `(shiftPerm i)⁻¹` +
+shared `ρ₀`; Fix B infeasible. FIRST BUILDABLE = the inverse-cycle action-lemma block; see *Hand-off*)
++ CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
 
@@ -18,36 +18,33 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). Telescoping design-pass §(o‴) DONE + OPEN-FACT PAIR RECON §(o‴)(G) DONE
-(2026-06-19). The re-route's CORE STANDS — but a fix-fork is PENDING USER ADJUDICATION (see *Hand-off*).**
+**FIX-FORK SETTLED (§(o‴)(H), docs-only design-pass 2026-06-19, KT §6.4.2 read verbatim + landed bodies
+via lean-lsp). VERDICT: corrected Fix A (invert the relabel to `(shiftPerm i)⁻¹`, keep the shared `ρ₀`).
+Fix B is INFEASIBLE; the "reuse `chainData_split_realization` per-`i`" simplification does NOT hold.**
 
-The §(o‴) design-pass (KT §6.4.2 close-read + landed bodies + 2 machine-verified single-steps) ruled out
-every per-body fold-invariant (pinned-`Tag` residual / pure-span block-disjunct miss / accumulating-sum
-no-telescope; detail §(o‴)(b)/(c)) and diagnosed the **root cause:** KT carries the redundancy GLOBALLY
-(one (6.52) pushforward under the whole relabel `ρᵢ`, zero on `V∖{vᵢ}`, + one (6.44) at the single body
-`vᵢ`) — the per-body `shiftBodyList` fold is right for the *relabel* but WRONG for the *bottom family*.
-This core was independently **CONFIRMED** by an adversarial 2nd read (§(o‴)(F)).
+**Why Fix B / the per-`i` simplification fail (mathematical, in KT's structure — not a punt).** KT's
+full-rank existence (6.65–6.67) rests on **ONE** functional `r = ρ₀`, tested against ALL `d` panels (a
+single `r≠0` can't annihilate the `D`-dim span, Lemma 2.1). A per-`i` W6b produces an independent `ρᵢ`
+(`Classical.choice`, no provable bridge to `ρ₀`), so the shared-`ρ₀` discriminator's panel pick can't
+discharge candidate `i`'s `htrans` (quantified over `ρᵢ`) — and running the discriminator per-`i` loses
+KT's single-`r` disjunction. This is exactly §(o′) route A, already REJECTED (§(o″)(1)). Landed-body
+checks: the producer supplies ONLY the `v₁`-split realization (`Arms.lean:854`), the d=3 dispatch shares
+ONE `ρ₀` across all arms (`Realization.lean:404/439/495`), `chainData_split_realization` (the per-`i` arm)
+has ZERO live callers.
 
-**BUT the OPEN-FACT pair recon (§(o‴)(G), two independent opus reads) found the (d)/(F)-pinned forward
-transport `funLeft (shiftPerm i)` is the WRONG DIRECTION for `i≥3`** — `shiftPerm i` is not an involution
-(machine-checked), so composing it with the seed `qᵢ=q∘ρ` over-shifts the seed-extensor coincidence to
-`ρ²` and a genuine base row's annihilation does NOT transport. d=3 M₃ closes only because `shiftPerm 2 =
-swap` is an involution that **masks** the direction; KT (6.62) wants the one-step-down `ρ⁻¹`.
-Coordinator-verified vs `hingeRow_funLeft_dualMap` (forward `(u,v)↦(ρu,ρv)`, `Basic.lean:551`). **The
-forward `chainData_relabel_hwmem` pin is WITHDRAWN — building it = a 5th mis-pin.** A **fix-fork** is now
-pending adjudication (§(o‴)(G), *Hand-off*): **Fix A** (CHAIN-2c-ii leaf, invert to `(shiftPerm i)⁻¹` +
-new inverse-cycle API; ~3–4 commits; caveat — the "done" T-W9a candidate→base orientation may need
-reconciling with the `hρGv` slot) vs **Fix B** (producer-reshape: invoke W6b directly on the candidate-`i`
-split `(Gᵢ,qᵢ)` so its bottom family is genuine by construction, KT (6.55); caveat — touches the locked
-route β's "ONE W6b call").
+**Why corrected Fix A works.** Keep the shared `ρ₀`/`w`; transport row-memberships into candidate `i`'s
+role by the **inverse cycle** `(shiftPerm i)⁻¹`. The inversion cancels the seed: base row `hingeRow x y r`
+↦ `hingeRow (ρ⁻¹x)(ρ⁻¹y) r`, candidate extensor at `qᵢ=q∘ρᵢ` reads `C(q(ρ·ρ⁻¹x),…) = C(qx,qy)` — the seed
+`ρ` and relabel `ρ⁻¹` cancel, so the annihilation transports. This matches KT (6.62)'s one-step-DOWN
+correspondence `vⱼ₋₁ ⇐⇒ vⱼ` exactly (the forward `funLeft (shiftPerm i)` over-shifted to `ρ²`; `shiftPerm
+i` not an involution for `i≥3`, masked at d=3 by `shiftPerm 2 = swap`). The full verdict — KT deciding
+lines, the tear-up/keep lists, the buildable leaves, route-β + d=3 dispositions — is `notes/Phase23-design.md`
+§(o‴)(H).
 
-**The piecemeal recon→build loop mis-pinned this crux 4× (iter 3/7/9/11) — all per-body local pins.**
-Confirm-and-delete once the reshape lands (now extended): the orphan bridge `redundancy_panel_carry` +
-`candidateRow_ac_eq_neg`, AND (per §(o‴)) the per-body `bottomTag_foldr_mem_rigidityRows` +
-§(o″) single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (the wrong granularity; the whole-relabel
-transport replaces them). Tracker (CHAIN-2c-ii-transport): T-W9a ✓ (correct, stays) → per-body W9b chain
-✗ (wrong granularity, §(o‴)) → **bottom-family transport [FIX-FORK A/B pending adjudication — §(o‴)(G);
-the forward pin WITHDRAWN]** → 2c-ii-arm → 2c-iii → CHAIN-5.
+**Tracker (CHAIN-2c-ii-transport):** T-W9a ✓ (span fold stays; orientation reconcile pending, H.7) →
+per-body W9b chain ✗ (orphaned, wrong granularity §(o‴)) → **inverse-cycle action block (2c-ii-inv) =
+FIRST BUILDABLE** → 2c-ii-arm `chainData_relabel_arm` (inverse-cycle W9b; d=3 M₃ = `i=2` involution
+instance) → 2c-iii `chainData_dispatch` → CHAIN-5.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -109,13 +106,13 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       (`shiftBodyList_foldr_mem_span_rigidityRows`, transports the candidate row `hρGv` — STAYS, the
       candidate-row half is DONE) LANDED. The per-body W9b chain
       (`funLeft_dualMap_bottomTag_mem_rigidityRows` / `bottomTag_foldr_mem_rigidityRows` /
-      `redundancy_panel_carry`) is **the WRONG granularity for the bottom family** (§(o‴), 2026-06-19) →
-      **bottom-family transport — FIX-FORK PENDING ADJUDICATION** (§(o‴)(G): the forward `funLeft
-      (shiftPerm i)` pin is WITHDRAWN — wrong direction for `i≥3`, the d=3 involution masked it; **Fix A**
-      invert to `(shiftPerm i)⁻¹` + a new inverse-cycle API vs **Fix B** re-seed W6b per-`i` on
-      `(Gᵢ,qᵢ)`) → **2c-ii-arm** `chainData_relabel_arm`
-      (closer; d=3 M₃ = `i=2` instance) → **2c-iii** `chainData_dispatch`. Live status: *Current state*
-      tracker; full detail: design §(o‴) (the live verdict; §(o″) preserved as the invalidated record).
+      `redundancy_panel_carry`) is **the WRONG granularity** (§(o‴), 2026-06-19) → **bottom-family
+      transport — FIX-FORK SETTLED §(o‴)(H): corrected Fix A** (invert to `(shiftPerm i)⁻¹` + a new
+      inverse-cycle action block, keep shared `ρ₀`; Fix B / per-`i` re-seed INFEASIBLE — breaks KT's
+      single-`r` discriminator) → **2c-ii-inv** (inverse-cycle action lemmas, FIRST BUILDABLE) →
+      **2c-ii-arm** `chainData_relabel_arm` (closer; d=3 M₃ = `i=2` involution instance) → **2c-iii**
+      `chainData_dispatch`. Live status: *Current state* tracker; full detail: design §(o‴)(H) (the
+      verdict; §(o‴)(A)–(G)/§(o″) preserved as the recon record).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -176,57 +173,50 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Route B LOCKED; the re-route's CORE is settled (per-body fold dead; KT carries it via the whole
-relabel / per-`i`, §(o‴)(A)–(C)+(F)); no motive/IH/spine-carry change to the core (C.3/C.6). Telescoping
-design-pass §(o‴) DONE + OPEN-FACT pair recon §(o‴)(G) DONE (2026-06-19).**
+**FIX-FORK SETTLED (§(o‴)(H), 2026-06-19): corrected Fix A.** No motive/IH/spine-carry change (C.3/C.6);
+route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
+tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**NEXT STEP — USER ADJUDICATION of the §(o‴)(G) fix-fork (surfaced 2026-06-19). Do NOT build the forward
-`chainData_relabel_hwmem` — it is WITHDRAWN.** The OPEN-FACT pair recon (two independent opus reads)
-found the (d)/(F)-pinned forward transport `funLeft (shiftPerm i)` is the **WRONG DIRECTION for `i≥3`**:
-`shiftPerm i` is not an involution (machine-checked), so with seed `qᵢ=q∘ρ` a genuine base-row's
-annihilation over-shifts to `ρ²` and does NOT transport; d=3 M₃ closes only because `shiftPerm 2 = swap`
-is an involution masking it; KT (6.62) wants `ρ⁻¹` (one-step-down). Coordinator-verified vs
-`hingeRow_funLeft_dualMap`. Building forward = a 5th mis-pin.
+**NEXT STEP — FIRST BUILDABLE = CHAIN-2c-ii-inv, the inverse-cycle action-lemma block** (`Operations.lean`,
+beside `shiftPerm`): `shiftPerm_inv_apply_interior` (`(shiftPerm i)⁻¹ (vtx (j+1)) = vtx j`, `1≤j<i`),
+`shiftPerm_inv_vtx_one` (`(shiftPerm i)⁻¹ (vtx 1) = vtx i`), `shiftPerm_inv_apply_off`, + the
+`shiftEdgePerm`-inverse companions — all quick `Equiv.symm_apply_eq` rewrites of the landed forward action
+lemmas. Self-contained, graph-free, unblocks the arm. **Do NOT build `chainData_relabel_arm` until the
+T-W9a orientation reconcile (§(o‴)(H.7)) is done** (the one residual gating question — exactly the kind of
+"mechanically plausible" shape the 4× mis-pins were).
 
-**THE FORK (§(o‴)(G); present with estimates):**
-- **Fix A — CHAIN-2c-ii leaf, invert the relabel.** `(shiftPerm i)⁻¹` for `hwmem` + a NEW inverse-cycle
-  action-lemma block (`shiftPerm_inv_*`, quick `formPerm` consequences) + selector bookkeeping. Est.
-  **~3–4 commits.** Gating caveat (Recon A): reconcile the landed T-W9a's *candidate→base* orientation
-  with the `hρGv` slot's *base→candidate* need FIRST — the "done" candidate-row half may also need the
-  contravariant application.
-- **Fix B — producer-reshape, re-seed per-`i`.** Invoke W6b directly on the candidate-`i` split
-  `(Gᵢ,qᵢ)` (KT (6.55) "exactly the same framework"), so its bottom family is genuine by construction —
-  no genuine-arm relabel; only the `±r` block (one (6.44)/G4d-i) transports. Caveats: confirm W6b
-  re-seeds at `qᵢ` keeping the rank/independence counts; **touches the locked route β's "ONE W6b call"**
-  (a user-adjudicated decision).
-- **3rd option:** a further design-pass to settle the fork before committing to A or B. The re-route CORE
-  is NOT in question — only the bottom-family transport direction/shape.
+**Then:** **2c-ii-arm** `chainData_relabel_arm` (signature in §(o‴)(H.6); instantiate
+`case_III_arm_realization` at the relabelled roles with seed `qρ = q∘shiftPerm i`, shared `±ρ₀`, the three
+slots transported via the **inverse-cycle** generalization of W9a/W9b/G4d-i; est. ~3–5 commits; d=3 M₃ =
+`i=2` involution instance) → **2c-iii** `chainData_dispatch` (the `Fin (k+1)`-case dispatch, `M₀` = direct
+arm, interior = relabel arm; replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
 
-**Confirm-and-delete at the reshape** (orphans, zero live callers): (1) the per-body W9b chain —
-`bottomTag_foldr_mem_rigidityRows` + §(o″) single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` +
-bridge `redundancy_panel_carry` (wrong granularity, replaced by the whole-relabel transport);
-`candidateRow_ac_eq_neg` likely **re-consumed** by the new block arm (G4d-i/eq.6.44) — re-check at the
-arm build, don't blind-delete (§(o‴)(F)). (2) `ofNormals_relabel_perm` (2c-ii-β, REJECTED route A). (3)
-`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary composition, superseded by `wstep`).
-**STAYS (NOT orphaned):** the T-W9a span fold `shiftBodyList_foldr_mem_span_rigidityRows` (transports the
-candidate row `hρGv` — machine-verified DONE), the graph iso `splitOff_isLink_shiftRelabel_iff` (the
-whole-relabel genuine arm, consumed at the arm `chainData_relabel_arm`), G4d-i
-`acolumn_mem_hingeRowBlock_of_span_rigidityRows` (the `±r` block arm), the W6b `ρ ⊥ C(q(ab))` gate.
-**`d=3` zero-regression CONFIRMED:** `shiftPerm 2 = (v₁v₂)` single swap = landed `case_III_bottom_relabel`;
-reshape fires only `i≥3`; d=3 M₃ / `case_III_arm_realization_M3` / dispatch untouched. **Per-leaf
-tracker** (checklist CHAIN-2): T-W9a ✓ (stays, modulo Fix-A orientation caveat) → per-body W9b chain ✗
-(wrong granularity) → **bottom-family transport [FIX-FORK A/B pending adjudication — §(o‴)(G); forward
-pin WITHDRAWN]** → 2c-ii-arm → 2c-iii → CHAIN-5.
+**Confirm-and-delete at the reshape** (orphans, `git grep` zero live callers at the deleting commit; full
+list §(o‴)(H.5)): the per-body W9b chain `bottomTag_foldr_mem_rigidityRows` + §(o″) single-step
+`funLeft_dualMap_bottomTag_mem_rigidityRows` + `redundancy_panel_carry`,
+`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`, `ofNormals_relabel_perm` (2c-ii-β); and the
+per-`i` W6b architecture `chainData_split_realization` + `chainData_split_w6b_gates` (zero callers — Fix B
+would have used them; **re-check at the 2c-iii build** whether the dispatch reuses the `v₁`-split W6b via
+`chainData_split_w6b_gates` at `i=1` or inlines it as d=3 does). `candidateRow_ac_eq_neg` likely
+**re-consumed** by Fix A's `±r` block arm — re-check, don't blind-delete (§(o‴)(F)). **STAYS:** T-W9a span
+fold `shiftBodyList_foldr_mem_span_rigidityRows` (modulo the H.7 orientation reconcile), the graph iso
+`splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm`, G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`,
+the W6b `ρ⊥C(q(ab))` gate, 2c-i `exists_chainData_discriminator_pick`, the `ChainData` record + accessors.
+**`d=3` zero-regression:** at `i=2` the cycle is `shiftPerm 2 = (v₁v₂)`, an involution where
+`(shiftPerm 2)⁻¹ = shiftPerm 2`, so Fix A's inversion is a no-op and the arm reduces to the landed M₃
+engine verbatim; the current `case_III_candidate_dispatch` stays green untouched until CHAIN-5/ENTRY wrap
+it (C.4).
 
-- **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o′)).** Route β LOCKED
+- **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o‴)(H)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
   `ρ₀`, ONE W6b call, ONE discriminator call, then `fin_cases u`; eq. (6.66)'s ±r chain absorbed into
   reusing one `ρ₀`. The relabel arm (2c-ii) covers the interior candidates `2 ≤ i ≤ d−1` (a
   genuinely-new construction, NOT a numeral pass — KT's `ρᵢ` is a `(i−1)`-cycle, the d=3 engines are
-  transposition-only); **M₀-arm reuse SETTLED:** 2a-ii (`chainData_split_realization`) is the `i=1`/`M₀`
-  arm (its per-`i` split at `i=1` IS the `v₁`-split), the uniform arm does not subsume it (they are the
-  `fin_cases`'s direct / relabel legs). The 2c-ii leaf decomposition + the §(o′)(B) fork (**adjudicated
-  → route B**) live in **checklist CHAIN-2** (the single tracker) + design §(o″). No motive/IH or
+  transposition-only). **M₀-arm SETTLED (§(o‴)(H), corrects the prior "2a-ii is the M₀ arm" pin):** the
+  `M₀` candidate is the **direct** `case_III_arm_realization` with the shared `ρ₀` (as d=3 M₁), NOT
+  `chainData_split_realization` — the latter is the per-`i`-W6b (Fix B) architecture that does not
+  assemble against the single-`ρ₀` discriminator, so it joins the confirm-and-delete orphans. The 2c-ii
+  leaf decomposition (corrected Fix A) lives in **checklist CHAIN-2** + design §(o‴)(H). No motive/IH or
   spine-carry change. The `G.ChainData n` record + 7 accessors (C.1) are landed; ENTRY owns the
   extractor (C.2).
 
@@ -343,31 +333,22 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   clause-(ii) resolution in git/design §(m). No FRICTION.
 - **CHAIN-2b/2c design-pass (2026-06-18) — VERDICT: single-base `Fin (k+1)` dispatch (route β), ±r
   chain absorbed (no separate 2b lemma).** Single base `(G₁,q₁)` / one `ρ₀` / one discriminator /
-  `fin_cases u`; reuse 2a-ii only at `M₀`. Route β LOCKED (user-adjudicated, row 242). Detail
-  `notes/Phase23-design.md` §(n).
-- **CHAIN-2c-ii design-pass (§(o)/§(o′)/§(o″)) — route B (shared-`ρ₀` row-span); route A REJECTED**
-  (its eq.-6.66 identity equates two `Classical.choice` existentials). Superseded on the W9b-transport
-  granularity by §(o‴) (the whole-relabel verdict, entry below). Detail §"CHAIN"(o)/(o′)/(o″).
-- **TELESCOPING DESIGN-PASS 2026-06-19 (§(o‴), docs-only, supersedes the iter-3/7/9/11 per-body pins
-  incl. §(o″)) — VERDICT: FLAG-DON'T-FORCE STOP. The W9b membership is a bottom-family-transport reshape,
-  NOT a per-body fold.** Machine-verified (2 single-step compiles): the §(o″) pinned-`Tag` leaves the
-  residual `hingeRow v b ρ ≠ hingeRow c v ρ`; a pure-span `Tag` carries the genuine-row arm (= landed
-  T-W9a) but misses the `(ab)`-block (∉ `span (G−vᵢ)`, rank-provable `Candidate.lean:339–355`); an
-  accumulating sum doesn't telescope. Root cause: KT (6.62)/(6.52)/(6.66) carries the redundancy GLOBALLY
-  (whole relabel `ρᵢ`, zero on `V∖{vᵢ}` + one (6.44) at `vᵢ`) — the per-body `shiftBodyList` fold is right
-  for the *relabel* (T-W9a stays) but wrong for the *bottom family*. Honest transport = whole-relabel
-  graph-iso (cycle gen of d=3 M₃ `case_III_bottom_relabel`), GATED on one OPEN FACT (§(o‴)(E)). No
-  motive/IH/spine change. **2nd read §(o‴)(F): RE-ROUTE CONFIRMED** (adversarial recon, all 3 attacks
-  failed; OPEN FACT sharpened to the `shiftPerm`-fixed-point seed-coincidence identity). The per-body W9b
-  chain joins the confirm-and-delete orphans. Detail §(o‴).
-- **OPEN-FACT PAIR RECON 2026-06-19 (§(o‴)(G), two independent opus reads, user-requested) — the OPEN
-  FACT DOES NOT CLOSE as stated; FIX-FORK pending user adjudication.** Both converged: the forward
-  `funLeft (shiftPerm i)` transport is the WRONG direction for `i≥3` (`shiftPerm i` not an involution →
-  seed-coincidence over-shifts to `ρ²`; d=3 `swap` involution masked it; KT (6.62) wants `ρ⁻¹`).
-  Coordinator-verified vs `hingeRow_funLeft_dualMap`. The re-route CORE stands; the forward
-  `chainData_relabel_hwmem` pin is WITHDRAWN. Fork: Fix A (invert + inverse-cycle API, ~3–4 commits;
-  caveat — reconcile T-W9a orientation) vs Fix B (re-seed W6b per-`i`; caveat — touches route β). Detail
-  §(o‴)(G); surfaced to user.
+  `fin_cases u`. Route β LOCKED (user-adjudicated, row 242). Detail `notes/Phase23-design.md` §(n).
+- **The bottom-family-transport crux — recon trail (superseded by the §(o‴)(H) verdict, next entry).**
+  §(o)/(o′)/(o″) pinned route B (per-body `shiftBodyList` W9b fold); §(o‴) (telescoping pass + adversarial
+  2nd read) ruled the per-body fold dead (the `(ab)`-block disjunct ∉ `span (G−vᵢ)`, no per-body home —
+  KT carries the redundancy GLOBALLY by one whole relabel `ρᵢ` + one (6.44) at `vᵢ`); §(o‴)(G) (pair
+  recon) then refuted the *forward* whole-relabel direction. §(o‴)(H) is the settled verdict (next entry):
+  corrected Fix A. The intermediate routes are the recon record in the design doc, not live.
+- **FIX-FORK ADJUDICATION 2026-06-19 (§(o‴)(H), docs-only, KT §6.4.2 verbatim + landed bodies via
+  lean-lsp) — VERDICT: corrected Fix A; Fix B INFEASIBLE.** The §(o‴)(G) pair recon refuted the forward
+  `funLeft (shiftPerm i)` (over-shifts the seed to `ρ²`; `shiftPerm i` not an involution for `i≥3`, masked
+  at d=3 by `shiftPerm 2 = swap`; KT (6.62) is one-step-down `ρ⁻¹`). Fix B / the "reuse
+  `chainData_split_realization` per-`i`" simplification fail **fundamentally**: a per-`i` W6b gives an
+  independent `ρᵢ` with no bridge to the shared `ρ₀`, breaking KT's single-`r`-against-all-panels
+  existence (6.65–6.67) — = §(o′) route A, already rejected. Fix A keeps `ρ₀` + inverts to `(shiftPerm
+  i)⁻¹` (cancels the seed `ρ`, matches KT (6.62)); route β + d=3 preserved. First buildable =
+  `shiftPerm_inv_*` action block. Detail §(o‴)(H).
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
@@ -375,14 +356,16 @@ geometry accessors; `Fin d`-index idiom in FRICTION). **CHAIN-2c-i** `exists_cha
 (`Realization.lean`, the route-β single-discriminator pick, verbatim generalization of the d=3
 region). **2c-ii-α** `ChainData.shiftPerm` (KT eq. 6.54) + recursion handle
 `shiftCycle_eq_cons`/`shiftPerm_eq_swap_mul`. **2c-ii-graphiso** `splitOff_isLink_shiftRelabel_iff` +
-`shiftEdgePerm` (the `hiso` supplier, consumed at the **arm**). **2c-ii-transport-W9a** (route B, the
-genuinely-new crux — STAYS, transports the candidate row `hρGv`) `shiftBodyList_foldr_mem_span_rigidityRows`
-(fold core + `shiftBodyFramework`/`_htrans` removeVertex chain; span-only, endpoints removeVertex NOT
-splits). **⚠ Orphans (confirm-and-delete at the arm build — wrong-granularity per §(o‴); *Hand-off* flag):
-the per-body W9b chain** `funLeft_dualMap_bottomTag_mem_rigidityRows` + `bottomTag_foldr_mem_rigidityRows`
-+ `redundancy_panel_carry` (+ the route-A `ofNormals_relabel_perm`) — the §(o‴) whole-relabel transport
-replaces them. **OD-7 `hcontract_k`** = 5 leaves (mostly numeral passes; the
-one genuinely-new piece LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`).
+`shiftEdgePerm` (the `hiso` supplier, consumed at the **arm**). **2c-ii-transport-W9a** (the
+genuinely-new span crux — STAYS modulo the §(o‴)(H.7) orientation reconcile, transports the candidate row
+`hρGv`) `shiftBodyList_foldr_mem_span_rigidityRows` (fold core + `shiftBodyFramework`/`_htrans` removeVertex
+chain; span-only, endpoints removeVertex NOT splits). **⚠ Orphans (confirm-and-delete at the arm build per
+§(o‴)(H.5); *Hand-off* flag): the per-body W9b chain** `funLeft_dualMap_bottomTag_mem_rigidityRows` +
+`bottomTag_foldr_mem_rigidityRows` + `redundancy_panel_carry` (+ `ofNormals_relabel_perm`,
+`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`), and the per-`i`-W6b architecture
+`chainData_split_realization` + `chainData_split_w6b_gates` (Fix B's mechanism; re-check at 2c-iii) — the
+corrected Fix A (inverse-cycle, shared `ρ₀`) replaces them. **OD-7 `hcontract_k`** = 5 leaves (mostly
+numeral passes; the one genuinely-new piece LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`).
 
 **Landed CHAIN-1/3/4/OD-7 bricks (all CLOSED 2026-06-18, axiom-clean; canonical homes = git +
 `notes/Phase23-design.md` §(f)/(h)/(i)/(j)/(k) + the BlueprintExposition CHAIN-3 entry).** One-line

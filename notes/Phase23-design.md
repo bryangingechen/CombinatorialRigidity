@@ -3419,6 +3419,201 @@ Both reads **converged** on a refutation neither §(o‴) nor (F) caught, and **
 
 ---
 
+#### (o‴)(H) FIX-FORK ADJUDICATION — VERDICT: corrected Fix A (inverted relabel, shared `ρ₀`). Fix B is INFEASIBLE (2026-06-19)
+
+> **This settles the §(o‴)(G) fork.** Docs-only design-pass, user-steered (follow KT as closely as
+> possible; tear up wrong-direction landed work; take a truly-obvious simplification if one exists).
+> Clause-(i): every load-bearing claim verified against the **landed `def`/`theorem` bodies** (file:line
+> below) via reads + lean-lsp; clause-(ii) source: KT §6.4.2 pp. 693–698 (pdf 46–51, offset +646) read
+> **verbatim** end-to-end, eqs. (6.46)–(6.67). **VERDICT: settle on the corrected Fix A** (invert the
+> relabel to `(shiftPerm i)⁻¹`, keep the shared `ρ₀`). **Fix B (re-seed W6b per-`i`) is genuinely
+> infeasible** — it breaks KT's single-`r`/single-discriminator argument, the same fundamental obstruction
+> that already rejected §(o′) route A (§(o″)(1)). The likely-obvious simplification (reuse
+> `chainData_split_realization` per-`i`) **does not hold** for the same reason.
+
+**(H.1) What KT actually does — the deciding lines (clause ii).** KT §6.4.2 settles the math direction
+*against* the user's a-priori "works in each candidate's own framework" reading, and *for* a
+single-base relabel-transport:
+
+- **(6.55), p.694 — the SETUP (the "same framework" the user cited):** the candidate framework
+  `(Gᵢ, qᵢ)` for `2≤i≤d−1` is "**exactly the same framework as `(G₁,q₁)`**" with `ΠGi,qi(u) =
+  ΠG1,q1(ρᵢ(u))`, and (6.56) `qᵢ(uw) = q₁(ρᵢ(u)ρᵢ(w))` — i.e. `qᵢ` is the base seed `q₁`
+  **precomposed with `ρᵢ`** (`qᵢ = q₁∘ρᵢ`). This is the SETUP that justifies the substitution (6.59); it
+  is NOT a fresh independent realization.
+- **(6.60)→(6.64), pp.696–697 — the ACTUAL rank machinery (the deciding lines):** KT works with
+  `R(G,pᵢ)` (the FULL graph `G` at candidate placement `pᵢ`), and by column ops + substituting (6.59)
+  converts it to (6.61) whose bottom block "**contains `R(G₁,q₁)` as its submatrix**" — *"where we used
+  the following **row correspondence** between `R(G,pᵢ;E∖{vᵢvᵢ₊₁},V∖{vᵢ})` and `R(G₁,q₁)` derived from
+  (6.59)"* — **(6.62)**: candidate `vⱼ₋₁vⱼ ⇐⇒ base `vⱼvⱼ₊₁`** for `2≤j≤i` (and `v₀v₁ ⇐⇒ v₀v₂`,
+  `e ⇐⇒ e` else). **So KT's rank bookkeeping transports the SINGLE base matrix `R(G₁,q₁)` into each
+  candidate via the relabel `ρᵢ` — the (6.62) row correspondence IS that relabel-transport.** The
+  candidate edge index is **one less** than the base edge index (`j−1 ⇐⇒ j`), i.e. the correspondence is
+  inherently `ρ⁻¹` (one-step-DOWN).
+- **(6.52)+(6.66), pp.693/698 — ONE redundancy, the `±r` chain:** `r := ∑ⱼ λ(v₀v₂)ⱼ rⱼ(q(v₀v₂))` is
+  defined **once** off `(G₁,q₁)`; (6.66) is the *family* of `d−1` independent one-shot (6.44) facts
+  `∑ⱼ λ(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁)) = ±r` (one per candidate, at the single degree-2 body `vᵢ`).
+- **(6.65)–(6.67), p.698 — the SINGLE-`r` discriminator (the load-bearing argument):** "`Mᵢ` does not
+  have full rank **iff `r` is in the orthogonal complement of `C(Lᵢ)`**" — for the **one shared `r`**,
+  tested against EVERY candidate's panel-meet `C(Lᵢ)`. None of `M₀…M_{d−1}` full-rank iff the **single**
+  `r ⊥ ⋃ᵢ⋃_{Lᵢ⊂Πᵢ}C(Lᵢ)`, whose span is `D`-dim by Lemma 2.1 — so `r≠0` forces some `Mᵢ` full-rank.
+  **KT's full-rank existence rests on ONE functional `r` against all panels; this is irreducible.**
+
+**Verdict on the user's a-priori read:** KT's *setup* (6.55) works in each candidate's framework, but
+KT's *rank argument* (6.60)–(6.67) relabel-transports the single base `R(G₁,q₁)` (via (6.62)) and uses
+ONE shared `r`. The faithful Lean is "ONE base, ONE `ρ₀=r`, relabel-transport into each candidate, ONE
+discriminator over all panels" — exactly the landed d=3 dispatch's shape (verified H.2), NOT a per-`i`
+re-seed.
+
+**(H.2) The landed-body facts that decide it (clause i, file:line).**
+1. **The producer supplies ONLY the `v₁`-split realization** (`case_III_hsplit_producer_all_k`,
+   `Arms.lean:828–857`): it extracts the chain, builds **one** split `G.splitOff v a b e₀` (at `v=v₁`),
+   pulls its generic realization from the IH **once** (`:854`), feeds it to `hcand`. **Per-`i` split
+   realizations `(Gᵢ,qᵢ)` for `i≥2` are NOT produced** — Fix B would have to manufacture them, and the
+   only route is relabel-transport of the `v₁`-split (the over-shift problem) or a fresh IH pull on
+   `G.splitOff vᵢ…` (a DIFFERENT graph, no guarantee it equals `(G₁,q₁)`-relabelled without transport).
+2. **The d=3 dispatch shares ONE `ρ₀` across ALL arms** (`case_III_candidate_dispatch`,
+   `Realization.lean:404` one W6b → `ρ₀`; `:439–441` one discriminator on `ρ₀`; `:495` `fin_cases u`;
+   `:501/:513/:588` M₁/M₂/M₃ all consume the **same** `ρ₀`/`w`, M₃ negated to `−ρ₀`). It calls
+   `case_III_arm_realization` DIRECTLY with the shared `ρ₀` — it **never** calls
+   `chainData_split_realization`.
+3. **`chainData_split_realization` (2a-ii, the per-`i` arm = the prompt's "obvious simplification") has
+   ZERO live callers** (grep: mentioned only in docstrings) and its `htrans` slot (`Realization.lean:961–
+   970`) is quantified over candidate `i`'s **OWN** `ρᵢ` — it runs its own `chainData_split_w6b_gates`
+   at the per-`i` split (`:1005–1007`), producing an independent `ρᵢ`.
+4. **The W6b producer re-seeds at any `(Gab,Gv,ends,q)`** (`exists_candidateRow_bottomRows_of_rigidOn`,
+   `Candidate.lean:390`): `q` is a free parameter; its output `(ρ,w)` is genuine in `Gv`'s rows. So Fix B
+   *can* mechanically re-seed — but `ρ` is a choice-on-choice existential (`Candidate.lean:421/434`,
+   `Submodule.mem_map` + the triple-`∃` of `exists_redundant_panelRow_ab_lam_of_rigidOn`), with **no
+   provable relationship to the discriminator's shared `ρ₀`** (§(o″)(1), re-verified).
+5. **Both d=3 relabel engines rely on the swap being an involution:** `rigidityRows_ofNormals_relabel`
+   (`Relabel.lean:350`, `hρρ : ρ∘ρ = id`) and the W9b `case_III_bottom_relabel` (`Relabel.lean:1052`,
+   forward `funLeft (swap a v)`). The cycle `shiftPerm i` is **not an involution for `i≥3`**
+   (`shiftPerm_apply_interior`/`_vtx_top`, `Operations.lean:1485/1499`: `vⱼ↦vⱼ₊₁`, `vᵢ↦v₁`), so the
+   forward transport over-shifts the seed to `ρ²` (§(o‴)(G), coordinator-verified vs
+   `hingeRow_funLeft_dualMap`, the forward `(u,v)↦(ρu,ρv)`, `Basic.lean:549`).
+
+**(H.3) Why Fix B is INFEASIBLE — the irreducible obstruction.** Fix B re-seeds W6b on `(Gᵢ,qᵢ)` to get
+`wᵢ`, `ρᵢ` genuine in `Gᵢ`'s rows. Feasibility of the *re-seed itself* is fine (H.2.4). But the genuine
+arm closer needs an `htrans` (transversal gate) for the functional it actually uses — `ρᵢ` — while the
+discriminator picks its panel `u` off the **shared `ρ₀`** (the only way KT's single-`r`-against-all-panels
+existence argument runs, H.1). There is **no bridge `ρᵢ ↔ ρ₀`** (H.2.3/H.2.4 — independent existentials,
+KT's (6.66) `±r` identity is between *abstract sums*, not the Lean `Classical.choice` witnesses). Two
+escape attempts, both fail:
+- *Per-`i` discriminator (run the discriminator off `ρᵢ`):* finds SOME panel `uᵢ` for `ρᵢ`, but to close
+  candidate `i` you need `uᵢ = i` (the discriminator's panel must BE this candidate's). The discriminator
+  returns an arbitrary panel; the `uᵢ=i` match is exactly what fails. Worse, with `d` independent `ρᵢ`,
+  KT's "ONE `r` can't annihilate the `D`-dim span" existence is GONE — each `ρᵢ ⊥ C(Lᵢ)` is a separate
+  condition with no disjunction forcing some `Mᵢ` full-rank.
+- *Equate `ρᵢ = ±shiftPerm-image-of-ρ₀` (= §(o′) route A):* unprovable — choice-on-choice existentials
+  (§(o″)(1), re-confirmed). This is precisely the route already REJECTED.
+**So Fix B = §(o′) route A in disguise** ("re-seed / relabel-transport the split, then discharge the
+per-`i` `htrans`"), already adjudicated REJECTED for the fundamental reason that KT's argument is
+single-`r`. The user-flagged "obvious simplification" (reuse `chainData_split_realization`) is exactly
+this dead route. **Not a coordinator-side punt: the obstruction is mathematical, in KT's structure.**
+
+**(H.4) The corrected Fix A — the buildable path (KT-faithful, the (6.62) `ρ⁻¹` direction).** Keep the
+shared `ρ₀`/`w` (KT's single `r`); transport the candidate's row-memberships into candidate `i`'s role by
+the **inverse cycle** `(shiftPerm i)⁻¹`. The inversion fixes the over-shift: a base row `hingeRow x y r`
+(`r⊥C(qx,qy)`) maps under `(funLeft (shiftPerm i)⁻¹).dualMap` to `hingeRow (ρ⁻¹x)(ρ⁻¹y) r`, whose
+candidate extensor at seed `qᵢ=q∘ρᵢ` reads `C(q(ρ·ρ⁻¹x), q(ρ·ρ⁻¹y)) = C(qx,qy)` — the seed `ρ` and the
+relabel `ρ⁻¹` **cancel**, so the annihilation transports. This matches KT (6.62)'s one-step-down
+`vⱼ₋₁ ⇐⇒ vⱼ` correspondence exactly. The shared `ρ₀` stays the discriminator's functional (route β
+preserved); only the *row-membership transport into candidate `i`'s role* inverts.
+
+**(H.5) TEAR-UP list (orphaned by the verdict — confirm-and-delete; `git grep` to confirm zero live
+callers at the deleting commit).**
+- The per-body W9b chain (already orphaned per §(o‴), wrong granularity): `bottomTag_foldr_mem_rigidityRows`,
+  the §(o″) single-step `funLeft_dualMap_bottomTag_mem_rigidityRows`, `redundancy_panel_carry`
+  (`Relabel.lean`), and `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary, superseded by
+  `wstep`). `ofNormals_relabel_perm` (2c-ii-β, route A) — orphaned (Fix A is row-span, M₃-style, not
+  framework-transport).
+- **`chainData_split_realization` + `chainData_split_w6b_gates`** (CHAIN-2a-ii / the per-`i` W6b half):
+  zero live callers (H.2.3). They are the per-`i`-W6b architecture Fix B would have used; under Fix A the
+  family runs off the **single** `v₁`-split via `chainData_split_w6b_gates`'s sibling (the shared-`ρ₀`
+  W6b the dispatch already does inline). **Re-check at the CHAIN-2c-iii build:** if the dispatch reuses
+  the `v₁`-split W6b extraction by calling `chainData_split_w6b_gates` at `i=1`, keep it; if it inlines
+  (as the d=3 dispatch does), both become dead. **Do NOT blind-delete — verify at the dispatch build.**
+- `candidateRow_ac_eq_neg` likely **re-consumed** by Fix A's `±r` block arm (G4d-i/eq.6.44) — re-check,
+  don't delete (§(o‴)(F)).
+
+**KEEP list (NOT orphaned).** The graph iso `splitOff_isLink_shiftRelabel_iff` (`Operations.lean:2122`)
++ `shiftEdgePerm` (the `hiso` supplier — but its INVERSE companions are the new block, H.6); G4d-i
+`acolumn_mem_hingeRowBlock_of_span_rigidityRows` (the `±r` block arm); the W6b `ρ⊥C(q(ab))` gate; 2c-i
+`exists_chainData_discriminator_pick` (the shared-`ρ₀` discriminator, route β); the `ChainData` record +
+accessors. **The landed T-W9a span fold `shiftBodyList_foldr_mem_span_rigidityRows`** STAYS in shape, but
+**its orientation must be reconciled** (Recon A's gating caveat, H.7): it transports SPAN membership
+`span(G−vᵢ) → span(G−v₁)` (candidate→base); the `hρGv` slot needs base→candidate, so T-W9a will likely be
+applied via its inverse (the same `(shiftPerm i)⁻¹` inversion). Resolve this BEFORE the arm build.
+
+**(H.6) Buildable-leaf decomposition (dependency order; exact intended signatures).**
+1. **CHAIN-2c-ii-inv — the inverse-cycle action-lemma block** (`Operations.lean`, beside `shiftPerm`):
+   `shiftPerm_inv_apply_interior` (`(shiftPerm i)⁻¹ (vtx (j+1)) = vtx j` for `1≤j<i`),
+   `shiftPerm_inv_vtx_one` (`(shiftPerm i)⁻¹ (vtx 1) = vtx i`, the inverse wrap),
+   `shiftPerm_inv_apply_off` (fixes `vtx 0` + the tail), and the `shiftEdgePerm`-inverse companions —
+   all quick `Equiv.Perm.inv`/`formPerm` consequences of the landed forward lemmas (`Equiv.symm_apply_eq`
+   + the forward action). Graph-free over `ChainData`. **First buildable leaf.**
+2. **CHAIN-2c-ii-arm — `chainData_relabel_arm`** (`Relabel.lean`; the closer; d=3 M₃ = `i=2` instance):
+   ```
+   theorem PanelHingeFramework.chainData_relabel_arm
+       [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
+       {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+       (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+       (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+       (hIH : <the all-k IH conjunction, the chainData_dispatch hIH shape>)
+       -- the shared base W6b bundle from the v₁-split (ρ₀ ≠ 0, ρ₀ ⊥ C(base ab),
+       --   hingeRow … ρ₀ ∈ span (base-rows), w-bundle):
+       (base : <ρ₀ / w bundle at the v₁ split>)
+       -- the transversal gate from 2c-i's discriminator at this candidate i (the htrans contribution,
+       --   stated against the SHARED ρ₀ — route β preserved):
+       (htrans : ρ₀ (panelSupportExtensor (q(vtx i.succ,·)) n') ≠ 0 ∧ LI ![q(vtx i.succ,·), n'])
+       (hdef : G.deficiency n = 0) :
+       PanelHingeFramework.HasGenericFullRankRealization k n G
+   ```
+   Body: instantiate `case_III_arm_realization` at the relabelled roles `(v,a,b) := (vtx i.castSucc,
+   vtx i.succ, vtx (i−1).castSucc)`, seed `qρ = q ∘ (shiftPerm i)` (KT (6.56), `qᵢ = q₁∘ρᵢ`), `±ρ₀`,
+   transporting the three slots: `hρGv` via the landed T-W9a (applied through the INVERSE, H.5/H.7);
+   `hwmem` (the bottom family) via the **inverse-cycle** generalization of W9b `case_III_bottom_relabel`
+   (the genuine-row arm by the graph-iso correspondence + `hingeRow_funLeft_dualMap` at `(shiftPerm i)⁻¹`,
+   the block arm by G4d-i / one (6.44) at `vᵢ`); `hρe₀` via G4d-i. The genuinely-new piece beyond the
+   inverse action lemmas is the **cycle generalization of the W9b genuine-row + bottom-block transport**
+   (the d=3 single-swap `case_III_bottom_relabel` over the `(i−1)`-cycle). Honest estimate **~3–5
+   commits** (inverse block + cycle-W9b + the arm). NO motive/IH/spine-carry change (C.3/C.6).
+3. **CHAIN-2c-iii — `chainData_dispatch`** (`Realization.lean`; the assembly): one W6b at the `v₁` split
+   (shared `ρ₀`/`w`), the panel-LI producer, one discriminator (2c-i `exists_chainData_discriminator_pick`),
+   then **`Fin (k+1)`-case on `u`**: the `i=1`/`M₀` candidate is the direct `case_III_arm_realization`
+   arm (shared `ρ₀`, as d=3 M₁), the interior `2≤i≤d−1` candidates are `chainData_relabel_arm`. Replaces
+   `case_III_candidate_dispatch`; the d=3 line is the `k=2`/length-3 wrapper.
+4. **CHAIN-5** consumes `chainData_dispatch` as the contract's `hdispatch` (signature frozen, C.3).
+
+**(H.7) Route-β disposition (task 2β).** **Route β is PRESERVED, not touched.** Route β is about the
+genericity/discriminator structure (ONE base `(G₁,q₁)`, ONE `ρ₀`, ONE discriminator, `fin_cases u`),
+which Fix A keeps verbatim — the shared `ρ₀` IS the discriminator's functional, and the relabel transports
+its row-memberships (not a second W6b). **It was Fix B that would have broken route β** (a per-`i` W6b =
+a second functional `ρᵢ`, no shared discriminator) — another reason Fix B is rejected. The ONE caveat is
+internal to Fix A, not route β: the landed T-W9a's candidate→base orientation must be reconciled with the
+`hρGv` slot's base→candidate need (Recon A's "true gating question"); the inverse-cycle framing (H.4)
+resolves it directionally, but the build must confirm T-W9a composes through its inverse. **Resolve in
+the CHAIN-2c-ii-arm build, before pinning the arm signature.** No producer/route-β user-decision needed.
+
+**(H.8) `d=3` zero-regression (task 3) — PRESERVED.** The reshape fires only for the interior cycle arm
+`i≥3` (cycle length `i−1≥2`). At d=3 the only candidates are M₁ (`i=1`, direct), M₂ (`i=1` swapped), M₃
+(`i=2`, cycle length 1 = single swap = involution = the landed `case_III_bottom_relabel`). So
+`chainData_dispatch` at d=3 dispatches M₃ to the `i=2` instance of `chainData_relabel_arm`, whose cycle
+is `shiftPerm 2 = (v₁v₂)` — a single swap, where `(shiftPerm 2)⁻¹ = shiftPerm 2` (involution), so Fix A's
+inversion is a no-op and the arm reduces to the landed M₃ engine verbatim. **The current d=3 dispatch
+`case_III_candidate_dispatch` stays green untouched until CHAIN-5/ENTRY reshape it into the `ChainData`
+wrapper** (C.4); the reshape preserves it as a `k=2`/length-3 specialization (zero new linear algebra at
+`i=2`). The d=3 line — the conjecture at `d=3`, GREEN — does not regress.
+
+**(H.9) First concrete buildable leaf.** **CHAIN-2c-ii-inv** (H.6 leaf 1): the inverse-cycle action-lemma
+block in `Operations.lean`. It is buildable now (all forward `shiftPerm`/`shiftEdgePerm` action lemmas
+landed; the inverses are `Equiv.symm_apply_eq` rewrites of them), self-contained, graph-free, and
+unblocks the arm. **Do NOT build `chainData_relabel_arm` until the T-W9a orientation reconcile (H.7) is
+done** — that is the one residual gating question, and it is exactly the kind of "mechanically plausible"
+shape the 4× mis-pins were.
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
