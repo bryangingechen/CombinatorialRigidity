@@ -511,6 +511,25 @@ to be re-derived by re-reading entries later.
   defeq-vs-syntactic-match family.)
 - **Status:** resolved (tactic choice; no lemma needed).
 
+### [idiom] Feeding a partial proof-bearing-index family into a `ℕ → _` total-function-consuming fold/recursion: package via `dite` + a `dif_pos` `_eq` lemma, then `simp only` (not `rw`) the per-step resolutions
+- **Where it bit:** `Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows`
+  (CHAIN-2c-ii-transport-W9a membership half, `CaseIII/Relabel.lean`). The fold core
+  `wstep_foldr_mem_span_rigidityRows` consumes a *total* `F : ℕ → BodyHingeFramework`, but the
+  intermediate-framework chain `shiftBodyFramework` is defined only at valid chain-vertex indices
+  (`s + 1 < cd.d + 1`). Likewise the per-step edge selector `ec : ℕ → β` reads `cd.edge ⟨s, _⟩`,
+  whose `Fin` bound is only provable in range.
+- **Fix:** package both as a `dite` on the validity bound (out-of-range tail = the always-valid
+  `s = 0` member, `0 < cd.d` from `cd.hd`), with a `…_eq` lemma `F s = (partial s hs)` proved by
+  `dif_pos hs`. Then at each fold step, resolve `F (s+1)`/`F s`/`ec s` back to the partial family
+  with **`simp only [hFs1, hFs, hbody, hec]`** — *not* `rw`. `rw [hbody]` chokes here for two
+  compounding reasons: (1) the `getElem` `bodies[s]` carries the fold's own proof-irrelevant bound
+  proof (distinct syntax from the `_eq` lemma's), and (2) `ec s` is an un-beta-reduced redex
+  `(fun s ↦ dite …) s`. `simp only` beta-reduces and matches up to proof-irrelevance; `rw`'s
+  syntactic match does neither. (Sibling of the `exact lemma _ _`-over-trailing-`rw` entry above and
+  TACTICS-QUIRKS § 61 — same defeq-vs-syntactic family, here resolved by `simp only` because the step
+  *rewrites* the goal rather than closing it.)
+- **Status:** resolved (tactic choice + `dite`-packaging design; no mathlib gap).
+
 ### [idiom] A `⋀ⁿ` coordinate in a `Pi.basisFun` exterior-power basis is `basis_repr_apply` + `ιMultiDual_apply_ιMulti` + a `Matrix.det` — close the residual `coord`→application with `rfl`, not `Pi.basisFun_repr`
 - **Where it bit:** B0 keystone bilinearity `normalsJoin_basis_repr` (Phase 21b): the `s`-coordinate
   of `normalsJoin n₁ n₂ ∈ ⋀² ℝ^(k+2)` in the standard exterior-power basis. The clean chain is

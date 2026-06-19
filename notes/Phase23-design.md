@@ -2646,11 +2646,25 @@ and seed `q` *fixed across the chain* (only the graph shrinks). Its per-step `ht
 `s`-independent), so the blocks are *equal*. This is **simpler** than the d=3 `M₃` `htrans`, which
 changes the seed/selector (`q→qρ`, `ends→ends₃`) and so needs an off-`{e_a,e_b,e_c}` extensor-coincidence
 argument; here no edge-exclusion is needed. Declared with the `_root_.Graph.ChainData.` prefix (the
-in-`CombinatorialRigidity.Molecular`-namespace declaration trap, TACTICS-QUIRKS §56). **Next concrete
-commit:** the (T-W9a) membership half — assemble the total `F : ℕ → BodyHingeFramework` (out-of-range
-tail arbitrary), feed `shiftBodyList i` + `F` into `wstep_foldr_mem_span_rigidityRows` (its `hstep`
-`htrans` = `shiftBodyFramework_htrans`), and rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm
-bridge `shiftPerm_eq_prod_map_swap_shiftBodyList`.
+in-`CombinatorialRigidity.Molecular`-namespace declaration trap, TACTICS-QUIRKS §56).
+
+**T-W9a membership half LANDED 2026-06-19** (`CaseIII/Relabel.lean`, axiom-clean; the genuinely-new
+crux of route B). `Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows`: the iterated W9a
+transport over the moved-body list carries the source span `span (G − vᵢ)`-rows
+(`shiftBodyFramework (i−1)`, top of chain) down to the target `span (G − v₁)`-rows
+(`shiftBodyFramework 0`, bottom), for any `i : Fin (cd.d+1)` with `2 ≤ i`. The proof feeds the fold
+core `wstep_foldr_mem_span_rigidityRows` all six per-step `hstep` conjuncts off the landed
+graph-layer accessors (`shiftBodyGraph_isLink_pred_edge`/`_deg_two(_right)`/`_off_succ`) + the
+framework-layer `shiftBodyFramework_htrans`, reading the moved-body triple off
+`getElem_shiftBodyList`. The total `F : ℕ → BodyHingeFramework` the fold demands is the new
+`shiftBodyFrameworkTotal` (`dite` on the validity bound `s+1 < cd.d+1`, out-of-range tail = the
+always-valid `s=0` member from `cd.hd`) + `shiftBodyFrameworkTotal_eq` (`dif_pos`); the per-step
+`F (s+1)`/`F s`/`ec s` resolutions use `simp only` not `rw` (proof-irrelevant `getElem` bound +
+un-beta-reduced `dite` redex — FRICTION idiom). The relabel side (`funLeft`-of-swap-product →
+`funLeft (shiftPerm i)`, via `wstep_foldr_funLeft_eq` + `shiftPerm_eq_prod_map_swap_shiftBodyList`)
+stays a *separate* bridge applied by the arm closer — the membership half is span-only. **Next: (T-W9b)**
+the cycle bottom-tag transport (mirror `case_III_bottom_relabel`), then **2c-ii-arm**
+`chainData_relabel_arm`.
 
 ---
 

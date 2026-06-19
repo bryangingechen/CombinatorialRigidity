@@ -895,6 +895,110 @@ theorem _root_.Graph.ChainData.shiftBodyFramework_htrans {G : Graph α β} {n : 
     rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock,
       cd.shiftBodyFramework_supportExtensor, cd.shiftBodyFramework_supportExtensor]
 
+/-- **The total cycle-W9a intermediate-framework chain** (CHAIN-2c-ii-transport-W9a, the membership
+half; `notes/Phase23-design.md` §(o″)). The fold core `wstep_foldr_mem_span_rigidityRows` runs over
+a total `F : ℕ → BodyHingeFramework`; this packages the partial `shiftBodyFramework` (defined only
+at chain-vertex indices `s + 1 < cd.d + 1`) into that total function, filling the out-of-range tail
+with the always-valid `s = 0` framework (`0 + 1 < cd.d + 1` from `cd.hd`). On the in-range indices
+the fold touches (`0, …, i − 1` for a cycle top `i ≤ cd.d`) it agrees with `shiftBodyFramework` by
+`shiftBodyFrameworkTotal_eq`. -/
+noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkTotal {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+    ℕ → BodyHingeFramework k α β :=
+  fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFramework h ends q
+    else cd.shiftBodyFramework (s := 0) (by have := cd.hd; omega) ends q
+
+/-- On an in-range index `s + 1 < cd.d + 1`, the total chain `shiftBodyFrameworkTotal` agrees with
+the partial `shiftBodyFramework`. -/
+theorem _root_.Graph.ChainData.shiftBodyFrameworkTotal_eq {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) {s : ℕ}
+    (hs : s + 1 < cd.d + 1) :
+    cd.shiftBodyFrameworkTotal ends q s = cd.shiftBodyFramework hs ends q := by
+  rw [Graph.ChainData.shiftBodyFrameworkTotal, dif_pos hs]
+
+/-- **The cycle-W9a membership half** (CHAIN-2c-ii-transport-W9a route B, the genuinely-new crux;
+`notes/Phase23-design.md` §(o″)). The iterated W9a transport over the moved-body list
+`shiftBodyList i` carries the source row span at the top of the chain — `span (G − vᵢ)`-rows
+(`shiftBodyFramework (i − 1)`) — down to the target row span at the bottom — `span (G − v₁)`-rows
+(`shiftBodyFramework 0`). This is the membership content of KT eq.~(6.66): the index-shift cycle
+`ρᵢ = shiftPerm i` (the `(i − 1)`-cycle `v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent
+degree-2 bodies, and the `i − 1` per-body `a`-column subtractions compose along the chain.
+
+This is the cycle generalization of the d=3 `M₃` arm's *single* W9a step
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, whose endpoints are the `ofNormals (G − v)` /
+`ofNormals (G − a)` removeVertex frameworks at the single moved body `a`): here the chain endpoints
+are the removeVertex frameworks `F (i − 1) = ofNormals (G − vᵢ)` / `F 0 = ofNormals (G − v₁)`, and
+the moved bodies are the interior chain vertices `v₁, …, v_{i−1}`. The proof feeds the fold core all
+six per-step `hstep` conjuncts off the landed graph-layer accessors
+(`shiftBodyGraph_isLink_pred_edge`,
+`shiftBodyGraph_deg_two(_right)`, `shiftBodyGraph_off_succ`) and the framework-layer per-step
+`htrans` (`shiftBodyFramework_htrans`), reading the moved-body triple
+`(shiftBodyList i)[s] = (vₛ₊₂, vₛ₊₁, vₛ)` off `getElem_shiftBodyList`. The relabel side (rewriting
+the `wstep` fold's leading `funLeft`-of-swap product to `funLeft (shiftPerm i)`) is the separate
+`wstep_foldr_funLeft_eq` + `shiftPerm_eq_prod_map_swap_shiftBodyList` bridge, applied by the arm
+closer. Graph-free over the carrier, inheriting W9a's §38-clean discipline. -/
+theorem _root_.Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows
+    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1))
+    (hi : 2 ≤ (i : ℕ)) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ
+      (cd.shiftBodyFramework (s := (i : ℕ) - 1) (by omega) ends q).rigidityRows) :
+    ((cd.shiftBodyList i).foldr
+        (fun b T => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id) φ
+      ∈ Submodule.span ℝ (cd.shiftBodyFramework (s := 0) (by omega) ends q).rigidityRows := by
+  -- Feed the fold core the total chain `F = shiftBodyFrameworkTotal` and the per-step edge `ec s =
+  -- edge s` (out-of-range tail arbitrary; the fold touches only `s ≤ i − 1 ≤ cd.d`).
+  have hF0 : cd.shiftBodyFrameworkTotal ends q 0
+      = cd.shiftBodyFramework (s := 0) (by omega) ends q :=
+    cd.shiftBodyFrameworkTotal_eq ends q (by omega)
+  have hFlen : cd.shiftBodyFrameworkTotal ends q (cd.shiftBodyList i).length
+      = cd.shiftBodyFramework (s := (i : ℕ) - 1) (by omega) ends q := by
+    rw [cd.length_shiftBodyList, cd.shiftBodyFrameworkTotal_eq ends q (by omega)]
+  have hmem := BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
+    (F := cd.shiftBodyFrameworkTotal ends q)
+    (ec := fun s => if h : s < cd.d then cd.edge ⟨s, h⟩
+      else cd.edge ⟨0, by have := cd.hd; omega⟩)
+    (bodies := cd.shiftBodyList i)
+    (hstep := fun s hs => ?_) (hφ := hFlen ▸ hφ)
+  · rwa [hF0] at hmem
+  -- The per-step `hstep`. Each step `s < length = i − 1` moves the body `a = vₛ₊₁` (interior,
+  -- `s + 1 < i`) past its surviving predecessor `c = vₛ`, in the graph drop
+  -- `F (s+1) = G − vₛ₊₂ → F s = G − vₛ₊₁`. `hsi : s + 1 < i`, `hiv : i < cd.d + 1`.
+  rw [cd.length_shiftBodyList] at hs
+  have hiv : (i : ℕ) < cd.d + 1 := i.2
+  have hsi : s + 1 < (i : ℕ) := by omega
+  -- Resolve the total chain `F` to the partial `shiftBodyFramework` at the two consecutive indices,
+  -- and read the moved-body triple `(shiftBodyList i)[s] = (vₛ₊₂, vₛ₊₁, vₛ)`.
+  have hFs1 : cd.shiftBodyFrameworkTotal ends q (s + 1)
+      = cd.shiftBodyFramework (s := s + 1) (by omega) ends q :=
+    cd.shiftBodyFrameworkTotal_eq ends q (by omega)
+  have hFs : cd.shiftBodyFrameworkTotal ends q s
+      = cd.shiftBodyFramework (s := s) (by omega) ends q :=
+    cd.shiftBodyFrameworkTotal_eq ends q (by omega)
+  have hbody : (cd.shiftBodyList i)[s]'(by rw [cd.length_shiftBodyList]; omega)
+      = (cd.vtx ⟨s + 2, by omega⟩, cd.vtx ⟨s + 1, by omega⟩, cd.vtx ⟨s, by omega⟩) :=
+    cd.getElem_shiftBodyList i s (by rw [cd.length_shiftBodyList]; omega)
+  -- The per-step edge `ec s = edge s` (in range, `s < cd.d`): resolve the `dite` to the predecessor
+  -- edge `e_c = vₛ₊₁vₛ` of the W9a step.
+  have hec : (if h : s < cd.d then cd.edge ⟨s, h⟩
+      else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s, by omega⟩ := dif_pos (by omega)
+  simp only [hFs1, hFs, hbody, hec]
+  -- The six `hstep` conjuncts off the landed graph/framework accessors (the moved-body geometry).
+  refine ⟨⟨cd.shiftBody_pred_ne hsi hiv, cd.shiftBody_pred_ne_succ hsi hiv⟩, ?_, ?_, ?_, ?_, ?_⟩
+  · -- `F (s+1).graph.IsLink (edge s) vₛ₊₁ vₛ`: the surviving predecessor link.
+    rw [cd.shiftBodyFramework_graph]; exact cd.shiftBodyGraph_isLink_pred_edge hsi hiv
+  · -- hdeg2: the body `vₛ₊₁` is at degree 2 in `G − vₛ₊₂`, its only link is `edge s`.
+    intro f x hlink; rw [cd.shiftBodyFramework_graph] at hlink
+    exact cd.shiftBodyGraph_deg_two hsi hiv f x hlink
+  · -- hdeg2r: the right-side mirror.
+    intro f x hlink; rw [cd.shiftBodyFramework_graph] at hlink
+    exact cd.shiftBodyGraph_deg_two_right hsi hiv f x hlink
+  · -- hnov: every link of `G − vₛ₊₂` avoids `v = vₛ₊₂`.
+    intro f x y hlink; rw [cd.shiftBodyFramework_graph] at hlink
+    exact cd.shiftBodyGraph_off_succ hsi hiv f x y hlink
+  · -- htrans: a link off the moved body transports to `G − vₛ₊₁`, blocks agreeing.
+    exact cd.shiftBodyFramework_htrans hsi hiv ends q
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row
