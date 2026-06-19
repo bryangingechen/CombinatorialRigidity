@@ -1251,6 +1251,48 @@ theorem BodyHingeFramework.funLeft_dualMap_bottomTag_mem_rigidityRows
     refine Or.inl ⟨e_b, v, b, hlink_eb, ρ', ?_, rfl⟩
     rw [BodyHingeFramework.mem_hingeRowBlock_iff, heb_support]; exact hρ'e₀
 
+/-- **W9b iterates — the cycle-W9b `List`-fold bottom-tag transport** (the genuinely-new piece of
+route B's bottom-tag half, CHAIN-2c-ii-transport-W9b; `notes/Phase23-design.md` §(o″)). The
+single-step W9b bottom-tag transport `funLeft_dualMap_bottomTag_mem_rigidityRows` iterates over a
+*list* of degree-2 bodies along a chain of intermediate frameworks, threading a per-step **tag**
+`Tag : ℕ → Dual → Prop`: given a framework chain `F : ℕ → BodyHingeFramework k α β`, a list
+`bodies : List (α × α × α)` of `(v, a, c)` body triples, and a per-step relabel hypothesis `hstep`
+that the pure swap `(funLeft (aₛ vₛ)).dualMap` maps any tag-`(s+1)` member to a tag-`s` member
+(the `s`-th body `bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework drop `F (s+1) → F s`), the
+iterated *pure-relabel* fold `((funLeft (a₀ v₀)).dualMap ∘ ⋯ ∘ (funLeft (aₘ vₘ)).dualMap) φ` of any
+tag-`length` member `φ` (the source, top of the chain) is a tag-`0` member (the target, bottom).
+
+Unlike the W9a fold (`wstep_foldr_mem_span_rigidityRows`), the W9b transport is a **pure relabel**
+— there is no `a`-column subtraction — so the fold composes the bare relabels
+`(funLeft (swap aₛ vₛ)).dualMap` (`hingeRow_funLeft_dualMap`; the same swap product as `wstep`'s
+leading term, identified with `funLeft (shiftPerm i)` by `wstep_foldr_funLeft_eq`). The proof is the
+same clean `List` induction as the W9a fold: `nil` is the tag itself; `cons` transports `φ` through
+the tail's fold over the *shifted* chain `F (· + 1)`/`Tag (· + 1)` (landing in tag-`1` by the
+inductive hypothesis), then applies the head step's `hstep 0`, repackaging the head-first fold via
+`List.foldr_cons`. Graph-free over the carrier (it never opens `F`, only its `hstep` output). -/
+theorem BodyHingeFramework.bottomTag_foldr_mem_rigidityRows
+    [DecidableEq α] (bodies : List (α × α × α))
+    (Tag : ℕ → Module.Dual ℝ (α → ScrewSpace k) → Prop)
+    (hstep : ∀ s, (hs : s < bodies.length) → ∀ ψ, Tag (s + 1) ψ →
+      Tag s ((LinearMap.funLeft ℝ (ScrewSpace k)
+        (Equiv.swap bodies[s].2.1 bodies[s].1)).dualMap ψ))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)} (hφ : Tag bodies.length φ) :
+    Tag 0 ((bodies.foldr
+        (fun b T => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        LinearMap.id) φ) := by
+  induction bodies generalizing Tag with
+  | nil => simpa using hφ
+  | cons b rest ih =>
+    -- Head-first fold: `foldr (b :: rest) = (funLeft (swap b₀)).dualMap ∘ (foldr rest)`, head last.
+    -- The tail transports `φ` (top, `Tag (rest.length + 1)`) down through `rest` over the *shifted*
+    -- tag `Tag (· + 1)` to land in `Tag 1`, then the head step drops `Tag 1 → Tag 0`.
+    have htail := ih (fun s => Tag (s + 1))
+      (fun s hs ψ hψ => by simpa using hstep (s + 1) (by simpa using hs) ψ hψ)
+      (by simpa using hφ)
+    -- The head step's pure-relabel W9b transport `Tag 1 → Tag 0`, fed the tail output (`Tag 1`).
+    have hhead := hstep 0 (by simp) _ htail
+    simpa [List.foldr_cons] using hhead
+
 /-- **G4d-i — the `a`-column restriction of a `G_v`-row-span vector lies in `hingeRowBlock e_c`**
 (`lem:case-III-claim612-eq644`, §1.49(4), Phase 22h). Given `wGv` in the span of a framework
 `Fv`'s rigidity rows and the degree-2-at-`a` constraint that `e_c` is the *only* edge of `Fv`
