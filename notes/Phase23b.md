@@ -82,10 +82,10 @@ zero-regression wrapper (C.4).
 ## CHAIN leaf checklist
 
 The buildable-leaf sequence (exact signatures + dependency order in
-`notes/Phase23-design.md` §"CHAIN"(c)/(l)/(m)). **CHAIN-1 + CHAIN-3 + CHAIN-4 + the four-producer
-tail (OD-7) are CLOSED.** Remaining: **CHAIN-2** (buildable — next leaf CHAIN-2a-i, design §(m)) and
-**CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
-extractor reshape).
+`notes/Phase23-design.md` §"CHAIN"(c)/(l)/(m)/(n)/(o)). **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 + CHAIN-2a
+are CLOSED; CHAIN-2c-i + 2c-ii-α + 2c-ii-β are LANDED.** Remaining: **CHAIN-2c-ii** (the arm closer +
+its genuinely-new `shiftPerm` graph-iso — next), **CHAIN-2c-iii** (assembly), and **CHAIN-5** (signature
+frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + Hodge panel-meet membership**
       (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (route = `⋀^{d−1}W`-is-a-line, NOT the
@@ -185,39 +185,25 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**CHAIN-1 + CHAIN-3 + CHAIN-4 are CLOSED** (CHAIN-4 closed by CHAIN-4d, the discriminator capstone
-`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`), **and OD-7 (the four-producer tail) is
-CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (see *Current state* +
-*Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
-`hcontract_k` wire-up, landed 2026-06-18.
-
-**CHAIN-2c-ii-α/β LANDED 2026-06-18** — `ChainData.shiftPerm` (KT eq. 6.54, the index-shift `i`-cycle
-iso, `Induction/Operations.lean`) and `PanelHingeFramework.ofNormals_relabel_perm` (the general-perm
-framework-transport, `CaseIII/Relabel.lean`), both axiom-clean. The β leaf abstracts the graph layer
-into the iso hypothesis `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + forward vertex
-transport `hρst`; the four conjuncts transport with `ρ.symm`/`σ.symm` where the swap body fired the
-involution (the `.symm`-placement is forced — `qρ` keeps forward `ρ`, `endsσρ` + the rigidity-pullback
-motion `S∘ρ.symm` flip to `.symm`; FRICTION idiom). Specializes to the d=3 `ofNormals_relabel` at the
-swaps. See *Decisions made*.
+**Loop paused by the user 2026-06-18 after row 246 (CHAIN-2c-ii-β); a fresh `/coordinate-phase 23b`
+picks up at CHAIN-2c-ii below.** CLOSED/LANDED so far (full detail in *Current state* + *Decisions
+made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; CHAIN-2c-i
+(`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
+(`ofNormals_relabel_perm`, the general-perm framework-transport) LANDED, all axiom-clean.
 
 **Next = CHAIN-2c-ii — the uniform arm closer `chainData_relabel_arm`** (the `Fin d` generalization of
 M₃'s body, `Relabel.lean:847`–1013). For an interior candidate index `i`: instantiate
-`ofNormals_relabel_perm` at `ρ := cd.shiftPerm i` (2c-ii-α) to transport the shared base `(G₁,q₁)` to
-the candidate-`i` framework `(G,pᵢ)`, carry the ±r identity (eq. 6.66) via the sign `shiftPerm`'s
-parity induces, and feed `case_III_arm_realization` at the relabelled roles to close
-`HasGenericFullRankRealization k n G`. The remaining graph-combinatorial input is a `shiftPerm`-relabel
-graph-iso (a `splitOff_isLink_relabel` analogue for the interior-split pair) supplying `hiso`. **No
-motive/IH or spine-carried-hypothesis change** — infrastructure below the dispatch; route β stays
-LOCKED (single base, shared `ρ₀`, reuse 2a-ii only at the M₀/`i=1` candidate). Then **CHAIN-2c-iii**
-(`chainData_dispatch` assembly) → **CHAIN-5**. Carry the arm closer as the standing `h…` idiom if it
-cannot close in one sitting — never a `sorry`.
-
-**CHAIN-2c-i LANDED 2026-06-18** — `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`,
-axiom-clean): steps 1–3 of the single-base dispatch (the W6b → `ρ₀` is the already-landed
-`chainData_split_w6b_gates`; here is the `Fin (k+1)`-panel LI via the OD-7 LEAF-0 `_general` + the one
-discriminator call `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` → `(u, n')` with the
-gate bridged to `panelSupportExtensor` form). A verbatim `Fin (k+1)`-generalization of the green d=3
-discriminator region (lines 435–442); independent of the relabel-arm crux. See *Decisions made*.
+`ofNormals_relabel_perm` (2c-ii-β) at `ρ := cd.shiftPerm i` (2c-ii-α) to transport the shared base
+`(G₁,q₁)` to the candidate-`i` framework `(G,pᵢ)`, carry the ±r identity (eq. 6.66) via the sign
+`shiftPerm`'s parity induces, and feed `case_III_arm_realization` at the relabelled roles to close
+`HasGenericFullRankRealization k n G`. **2c-ii carries a genuinely-new graph-combinatorial piece:** a
+`shiftPerm`-relabel graph-iso (a `splitOff_isLink_relabel` analogue for the interior-split pair, **NOT
+in tree**) supplying `hiso`. A fresh coordinator should weigh a brief recon/decomposition of 2c-ii (the
+graph-iso brick + the arm closer) over a single build, and **rate it by that combinatorics, not as
+plumbing** (the 2c-ii-β `hiso` abstraction relocated this obligation here). **No motive/IH or
+spine-carried-hypothesis change** — infrastructure below the dispatch; route β stays LOCKED (single
+base, shared `ρ₀`, reuse 2a-ii only at the M₀/`i=1` candidate). Then **CHAIN-2c-iii**
+(`chainData_dispatch` assembly) → **CHAIN-5**.
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)+§(o)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): KT Lemma 6.13 / the landed d=3 dispatch build the
