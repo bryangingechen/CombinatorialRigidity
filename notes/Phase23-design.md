@@ -1855,8 +1855,11 @@ together exceed ~1500 LoC). The `n` is the phantom `ChainData` index.
   normals' LI, the discriminator's `hn : LinearIndependent ℝ n` over `Fin (k+1)`.
 
 - **CHAIN-2a-ii — `chainData_split_realization` (the per-`i` reduction core =
-  the `case_III_arm_realization` re-index).** Consumes 2a-i + the interior-split
-  accessors; the one-line-ish closer. Target shape:
+  the `case_III_arm_realization` re-index). LANDED 2026-06-18** (`CaseIII/Realization.lean`,
+  axiom-clean; the build picked `case_III_arm_realization` directly — no `_M3` relabel — and consumed
+  `chainData_split_w6b_gates` for the W6b half + `htrans` for the transversal half, the latter the
+  single-`i` slot CHAIN-2c fills). Consumes 2a-i + the interior-split
+  accessors; the one-line-ish closer. Target shape (as landed):
   ```
   theorem PanelHingeFramework.chainData_split_realization {k : ℕ}
       [Finite α] [Finite β] [DecidableEq β] [DecidableEq α]

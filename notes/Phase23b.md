@@ -32,36 +32,30 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = the discriminator half of the per-`i` gate-producer (now scoped INTO CHAIN-2c — see finding
-below) + CHAIN-2a-ii `chainData_split_realization`.** **The W6b half of CHAIN-2a-i —
-`chainData_split_w6b_gates` — LANDED 2026-06-18** (`CaseIII/Realization.lean`, axiom-clean): the
-first of the design's "two producer calls". A `{k}`-general flat-tuple producer lifting the d=3
-dispatch's W6b region (`case_III_candidate_dispatch` steps 3–4, lines 376–434) verbatim — from an
-interior chain split `(v,a,b)` + a fresh `e₀` + the IH-generic base `hsplitGP` on
-`Gab = splitOff v a b e₀` + the `∀ ends q` carry-shaped `h622lb`, it calls
-`exists_candidateRow_bottomRows_of_rigidOn` once and emits the **chain-order-normalized** W6b gate
-bundle: `ρ`/`w` + `ρ≠0` + `hρe₀` (`ρ(C(ab))=0`) + `hρGv` (`hingeRow a b ρ ∈ span R(Gᵥ)`) + `hw`/`hwmem`,
-plus the base `IsGeneralPosition` + `Gᵥ`-link-recording the consumer needs. The `(a,b)`-vs-`(b,a)`
-sign-swap (W8 pattern) is absorbed. `{k}`-general (`two_le_screwDim hk1`, no `d=3` reach-in).
-
-**Finding from the build (the §(m) sub-leaf boundary, refined): CHAIN-2a-i is NOT a single complete
-leaf — its discriminator half belongs in CHAIN-2c.** The design's §(m) sketch had
-`chainData_split_arm_gates` emit the *full* bundle including `hLn`/`hρgate` (the transversal gates).
-But the discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` needs the
-`Fin (k+1)` chain-panel-normal family `n` (LI) and *picks an arbitrary panel `u`* — and `hρgate` is
-about `n u`, NOT about the specific candidate `i`'s normal `na = q(a,·)`. Matching the discriminator's
-pick `u` to the candidate `i` IS the `Fin d` family disjunction (Phase23b line 50 / §(m) line 1808
-already assign "discriminator-picks-`i` glue" to CHAIN-2c). So the discriminator half cannot be a
-single-`i` producer; it threads through the family. **The W6b half is the complete, contract-free,
-single-`i` piece** — landed; the discriminator half folds into CHAIN-2c where the index match lives.
-The "two producer calls" are NOT both single-`i`: one (W6b) is, one (discriminator) is family-level.
+**Next = CHAIN-2b (the ±r chain, eq. 6.66; genuinely-new structure) or CHAIN-2c (the `Fin d` family
+assembly + discriminator-picks-`i` glue, which discharges 2a-ii's `htrans`).** **CHAIN-2a is the
+complete single-`i` reduction and both its leaves LANDED 2026-06-18.** The W6b half
+`chainData_split_w6b_gates` (the first producer call) landed earlier; the re-index core
+**`chainData_split_realization` landed this commit** (`CaseIII/Realization.lean`, axiom-clean): for an
+interior chain index `i` (`0 < i`), it reads the per-`i` `(v,a,b,e_a,e_b)` split tuple off the
+`ChainData` accessors (`v = vtx i.castSucc`, `a = vtx i.succ` via `edge i`, `b = vtx (i−1).castSucc`
+via `edge (i−1)`; `deg_two_split` gives `hclv`), produces `h622lb` from
+`case_III_nested_rank_lower_all_k`, calls `chainData_split_w6b_gates` for the W6b gate bundle, builds
+the `ends₁`-override congruence (`rigidityRows_ofNormals_congr_ends`, verbatim from the d=3 dispatch's
+M₁ arm), and **re-indexes `case_III_arm_realization`** at the split tuple to land
+`HasGenericFullRankRealization k n G`. The transversal half (`hLn`/`hρgate`) is carried as the single
+hypothesis `htrans` — the slot the Claim-6.12 discriminator fills once CHAIN-2c matches its panel `u`
+to candidate `i`. **Verdict CONFIRMED at build: re-index, not construct** — no new linear algebra, no
+`d=3` content, no motive/IH change; the one §(m) clause-(ii) flag resolved to `case_III_arm_realization`
+directly (no `_M3` relabel needed for the interior split — the chain orientation `v—a`/`v—b` matches
+the arm closer's `(v,a,b)` roles).
 
 **The genuinely-new `Fin d` *infrastructure* (±r chain, the `d`-candidate family + per-candidate `Φᵢ`
-heterogeneity + discriminator-picks-`i` glue) lives in CHAIN-2b/2c.** One clause-(ii) flag for 2a-ii
-(build-time wiring, not a blocker): which arm form (`_realization` vs `_M3` relabel) the interior
-split uses + the `h622lb`/`hIH` instantiation at the `vᵢ`-split — settled by the d=3 template at build
-(§(m)). Then CHAIN-2b/2c; or **CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's
-extractor reshape).
+heterogeneity + discriminator-picks-`i` glue) lives in CHAIN-2b/2c.** CHAIN-2c discharges 2a-ii's
+`htrans` (the single-`i` transversal slot) by running the discriminator
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` and matching its arbitrary panel `u` to the
+candidate `i`. Then **CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor
+reshape).
 
 **Context (closed/landed — full detail in the Status banner + checklist + Hand-off + *Decisions
 made*):** CHAIN-1/3/4 + OD-7 (all four 23a producers `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k` +
@@ -150,17 +144,16 @@ extractor reshape).
       `ChainData.{pred_edge_ne, isLink_edge, pred_succ_eq_castSucc, isLink_pred_edge, isLink_succ_edge,
       succ_ne_pred_castSucc, deg_two_split}` — the last five expose the per-`i` `(v,a,b,e_a,e_b)` split
       tuple `case_III_rank_certification` consumes). The indexing + geometry prereq is discharged.
-      **CHAIN-2a design-pass LANDED 2026-06-18 (design §(m)): VERDICT = re-index, not construct.**
-      CHAIN-2a = a `case_III_arm_realization` (general-`k`) re-index off the accessors, with the per-`i`
-      gates threaded from two general-`k` producers (W6b `exists_candidateRow_bottomRows_of_rigidOn` +
-      CHAIN-4d discriminator). **W6b half LANDED 2026-06-18** — `chainData_split_w6b_gates`
-      (`CaseIII/Realization.lean`, axiom-clean), the first producer call: a `{k}`-general flat-tuple
-      lift of the d=3 dispatch's W6b region producing the chain-order `hρe₀`/`hρGv`/`hw`/`hwmem` bundle.
-      **Build finding: the discriminator half is NOT single-`i`** (it picks an arbitrary panel `u`;
-      matching `u` to candidate `i` is the family glue) → folds into **CHAIN-2c**, not a 2a-i sub-leaf.
-      Remaining: **CHAIN-2a-ii `chainData_split_realization`** (the per-`i` reduction core = the
-      `case_III_arm_realization` re-index, consuming `chainData_split_w6b_gates` + a CHAIN-2c-supplied
-      transversal gate). Then CHAIN-2b/2c. ~3 build commits remaining.
+      **CHAIN-2a CLOSED 2026-06-18 (the complete single-`i` reduction; VERDICT = re-index, not
+      construct, CONFIRMED at build).** CHAIN-2a = a `case_III_arm_realization` (general-`k`) re-index
+      off the accessors, gates threaded from two general-`k` producers. Both leaves landed:
+      `chainData_split_w6b_gates` (W6b half, first producer call) and the re-index core
+      `chainData_split_realization` (`CaseIII/Realization.lean`, axiom-clean) — the latter reads the
+      per-`i` split tuple off the accessors, produces `h622lb` from `case_III_nested_rank_lower_all_k`,
+      consumes the W6b bundle, builds the `ends₁`-override congruence, and calls
+      `case_III_arm_realization`. The transversal half is the single hypothesis `htrans` (CHAIN-2c fills
+      it via the discriminator). Remaining: **CHAIN-2b** (±r chain) + **CHAIN-2c** (family assembly +
+      discriminator-picks-`i` glue, discharging `htrans`). ~2 build commits remaining.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -227,47 +220,36 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next = CHAIN-2a-ii `chainData_split_realization` (the per-`i` reduction core, the
-`case_III_arm_realization` re-index) — or CHAIN-2b/2c.** **The W6b half of the gate-producer LANDED
-2026-06-18** — `chainData_split_w6b_gates` (`CaseIII/Realization.lean`, axiom-clean): the first of
-the design's two producer calls, a `{k}`-general flat-tuple lift of the d=3 dispatch's W6b region
-emitting the chain-order W6b gate bundle (`ρ`/`w` + `hρe₀`/`hρGv`/`hw`/`hwmem` + the base
-genericity/link-recording). **Build finding refining §(m): the discriminator half of the gate-producer
-is NOT single-`i`** — `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` needs the `Fin (k+1)`
-chain-panel-normal family and *picks an arbitrary panel `u`*; matching `u` to candidate `i` is the
-family disjunction, so the discriminator half folds into **CHAIN-2c** (the "discriminator-picks-`i`
-glue" §(m)/line 50 already names), not a 2a-i sub-leaf. CHAIN-2a-ii then re-indexes
-`case_III_arm_realization` off the landed interior-split accessors, feeding it
-`chainData_split_w6b_gates` (W6b half) + a CHAIN-2c-supplied transversal gate (`hLn`/`hρgate`). The
-`ChainData` record + accessors are landed, so 2a-ii can bind `cd : G.ChainData n` and reach the split
-tuple directly. Then CHAIN-2b/2c; or **CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's
-extractor reshape). The one clause-(ii) flag (§(m)) is build-time wiring (which arm form + the
-`h622lb`/`hIH` instantiation at the `vᵢ`-split), not a motive/carried-hypothesis change.
+**Next = CHAIN-2b (the ±r chain, eq. 6.66) or CHAIN-2c (the `Fin d` family assembly + the
+discriminator-picks-`i` glue).** **CHAIN-2a CLOSED 2026-06-18** — both single-`i` leaves landed:
+`chainData_split_w6b_gates` (W6b half) and `chainData_split_realization` (the re-index core, this
+commit). The latter is the per-`i` reduction: read the split tuple off the `ChainData` accessors,
+produce `h622lb` from `case_III_nested_rank_lower_all_k`, consume the W6b bundle, build the
+`ends₁`-override congruence, call `case_III_arm_realization`. The transversal half is carried as the
+single hypothesis `htrans : ∀ q ends ρ, (ofNormals Gab ends q).IsGeneralPosition → ρ ≠ 0 →
+ρ(C(ab)) = 0 → ∃ n', ![na,n'] LI ∧ ρ(C(a,n')) ≠ 0` — the single-`i` slot **CHAIN-2c** discharges by
+running `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` and matching its arbitrary panel
+`u` to candidate `i`. So the smallest next commit is either CHAIN-2b (the ±r chain, genuinely-new
+`Fin d` structure relating `r` across chain indices) or CHAIN-2c (the family disjunction over the `d`
+candidates, consuming CHAIN-1's `ιc`-block augment + the CHAIN-4d discriminator, and discharging
+`htrans`). Then **CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
+The §(m) clause-(ii) flag resolved at build: `case_III_arm_realization` directly (no `_M3` relabel) —
+the chain `v—a`/`v—b` orientation matches the arm closer's `(v,a,b)` roles.
 
 - **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`),
   **decomposed at recon (design §(l)), which corrected the §(c) framing:** the `caseIIICandidate` /
   `case_III_old_new_blocks` / `case_III_rank_certification` chain is **already general-`k`** (the only
   `d=3`-pin in `CaseIII/` is the `Realization.lean` dispatch shell = CHAIN-5). CHAIN-2 builds the
   `Fin d`-indexed reduction LAYER *on top of* that (reused-verbatim) chain + the closed CHAIN-1
-  `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction — design-pass §(m) verdict: a
-  `case_III_arm_realization` re-index, gates threaded from two producers; **W6b half LANDED** as
-  `chainData_split_w6b_gates`, the discriminator half folded into CHAIN-2c per the build finding;
-  remaining 2a-ii `chainData_split_realization` re-indexes the arm closer) → **CHAIN-2b**
-  (the ±r chain, eq. 6.66; genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly +
-  the discriminator-picks-`i` glue; consumes CHAIN-1 + the CHAIN-4d discriminator). ~3 build commits
-  (the zeroth `ChainData` leaf + interior-split accessors + W6b-half are done; the 2a design-pass is
-  done). **Zeroth-leaf
-  prerequisite DISCHARGED:** the `G.ChainData n` `structure` (contract C.1, `Induction/Operations.lean`)
-  LANDED 2026-06-18 — the ~15-field length-`d` chain record with `deg_two` settled (`0 < (i:ℕ)` interior
-  guard; predecessor edge `edge ⟨(i:ℕ)-1, _⟩`; d=3-map verified per C.4); the **interior-split geometry
-  accessors** `ChainData.{pred_succ_eq_castSucc, isLink_pred_edge, isLink_succ_edge,
-  succ_ne_pred_castSucc, deg_two_split}` (alongside `pred_edge_ne`/`isLink_edge`) then expose, for an
-  interior index `i` (`0 < (i:ℕ)`), the per-`i` `(v,a,b,e_a,e_b)` split tuple in the exact shape
-  `case_III_rank_certification` consumes — split body `vtx i.castSucc`, the two chain edges `edge i` /
-  `edge ⟨(i:ℕ)-1,_⟩` oriented out of it, their distinct neighbors, and the re-oriented degree-2 closure.
-  So CHAIN-2a's signatures can now bind `cd : G.ChainData n` and reach the split tuple directly. The
-  record *definition* is the sharable half of the contract; ENTRY still owns the extractor that
-  *produces* it (C.2).
+  `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction, **CLOSED 2026-06-18** —
+  `chainData_split_w6b_gates` W6b half + `chainData_split_realization` re-index core, both axiom-clean;
+  the §(m) re-index verdict confirmed at build) → **CHAIN-2b** (the ±r chain, eq. 6.66; genuinely-new
+  structure) → **CHAIN-2c** (the `Fin d` family assembly + the discriminator-picks-`i` glue;
+  consumes CHAIN-1 + the CHAIN-4d discriminator, discharging 2a-ii's `htrans`). ~2 build commits
+  remaining. The `G.ChainData n` `structure` + the seven interior-split accessors
+  (`Induction/Operations.lean`, contract C.1) are landed, so the per-`i` `(v,a,b,e_a,e_b)` split tuple
+  is reachable directly from `cd : G.ChainData n`; ENTRY still owns the extractor that *produces* the
+  record (C.2).
 
 Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
 `k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
@@ -361,21 +343,19 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `case_III_nested_rank_lower_all_k`). Sub-leaves: CHAIN-2a-i `chainData_split_arm_gates` (the two
   producer calls) → CHAIN-2a-ii `chainData_split_realization` (the arm-closer re-index). One
   build-time wiring flag (arm form + `h622lb`/`hIH` instantiation), no motive change → §"CHAIN"(m).
-- **CHAIN-2a-i W6b half LANDED 2026-06-18 + a sub-leaf-boundary refinement of §(m).**
-  `chainData_split_w6b_gates` (`CaseIII/Realization.lean`, axiom-clean): a `{k}`-general flat-tuple
-  lift of the d=3 dispatch's W6b region (`case_III_candidate_dispatch` steps 3–4) — one
-  `exists_candidateRow_bottomRows_of_rigidOn` call (fed the `∀ ends q` carry-shaped `h622lb` from
-  `case_III_nested_rank_lower_all_k`) producing the chain-order-normalized `ρ`/`w` +
-  `hρe₀`/`hρGv`/`hw`/`hwmem` bundle + the base `IsGeneralPosition`/`Gᵥ`-link-recording. Flat-tuple
-  (not `ChainData`-bound) so it is reusable by 2a-ii AND callable by the d=3 dispatch at `k=2`; the
-  d=3 dispatch left unchanged (the producer is a verbatim extraction, both green). **§(m) refinement
-  (build finding): the discriminator half is NOT a single-`i` sub-leaf** —
-  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` picks an *arbitrary* panel `u`, and the
-  gate `hρgate` is about `n u` not the candidate-`i` normal `na`; matching `u` to `i` is the family
-  disjunction, so the discriminator half folds into CHAIN-2c (the "discriminator-picks-`i` glue" §(m)
-  already names there), not 2a-i. The honest "two producer calls" are W6b (single-`i`, landed) +
-  discriminator (family-level, CHAIN-2c). Axiom-clean; no FRICTION (the only non-verbatim step,
-  `2 ≤ screwDim 2 := by decide` → `two_le_screwDim hk1`, is the landed §58 numeral-pass kit).
+- **CHAIN-2a CLOSED 2026-06-18 — the complete single-`i` reduction (re-index verdict CONFIRMED).**
+  Two axiom-clean leaves in `CaseIII/Realization.lean`: `chainData_split_w6b_gates` (the W6b half — a
+  `{k}`-general flat-tuple lift of the d=3 dispatch's W6b region: one
+  `exists_candidateRow_bottomRows_of_rigidOn` call fed `h622lb`, producing the chain-order
+  `hρe₀`/`hρGv`/`hw`/`hwmem` bundle; flat-tuple so it is reusable AND callable at `k=2`) and
+  `chainData_split_realization` (the re-index core — reads the per-`i` split tuple off the `ChainData`
+  accessors, produces `h622lb` from `case_III_nested_rank_lower_all_k`, consumes the W6b bundle, builds
+  the `ends₁`-override congruence, calls `case_III_arm_realization`). The §(m) clause-(ii) flag resolved
+  to `case_III_arm_realization` directly (no `_M3` relabel — chain `v—a`/`v—b` matches the arm closer's
+  `(v,a,b)` roles). **The transversal half stays a hypothesis `htrans`** (single-`i` slot CHAIN-2c
+  fills via the discriminator, whose arbitrary panel `u`↔candidate `i` match is the family glue). No
+  FRICTION (verbatim d=3-dispatch template re-use over the accessors; the `Fin d`-index `.symm`s and
+  the `Gv.Loopless` `haveI` are landed idioms).
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
   Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,
