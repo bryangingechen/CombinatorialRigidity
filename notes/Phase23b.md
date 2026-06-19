@@ -30,18 +30,14 @@ non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 concrete seed-advancing chain instance `shiftBodyListAsc_foldl_mem_span_rigidityRows`, through the H.10
 de-risk gate / `seedAdvance_wstep_hstep` bundle), and the **W9b base→candidate single-step**
 `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` LANDED (axiom-clean, 2026-06-19; detail in
-*Hand-off*). → **NEXT: the cycle-W9b fold** over the W9b single-step (the base→candidate bottom-tag
-fold, with the degree-2 redundancy panel-carry bridge for the block disjunct) → **2c-ii-arm**
-`chainData_relabel_arm` (the three slots transported via the W9a fold + the W9b fold + G4d-i; d=3 M₃ =
-`i=2` involution) → 2c-iii → CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds,
-§(o‴)(H.10).)
+*Hand-off*). → **NEXT: the cycle-W9b GENUINE-ROW fold** (map the W9b single-step over the chain) + **the
+block disjunct via G4d-i at `vᵢ`** (single row, NOT a per-body carry — ⚠ recon §(o‴)(H) FIRST, see
+*Hand-off*: this commit's hand-off mis-proposed a rejected per-body block carry) → **2c-ii-arm**
+`chainData_relabel_arm` (three slots = W9a fold + W9b genuine-row fold + G4d-i; d=3 M₃ = `i=2`) → 2c-iii →
+CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds, §(o‴)(H.10).)
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
-
-**Context (closed/landed):** CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; `ChainData` + 7 accessors; 2c-i +
-2c-ii-α/graphiso + 2c-ii-inv + the de-risk gate + the `foldl` core LANDED. Remaining: the concrete
-seed-advancing instance (incl. the top step, ⚠) → 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY's extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
@@ -62,10 +58,10 @@ concrete `ChainData` seed-advancing instance** `shiftBodyListAsc_foldl_mem_span_
 data `shiftBodyListAsc`/`shiftSeedSwap`/`shiftSeedAdv`/`shiftBodyFrameworkAsc`(`Total`)) COMPLETE; **the
 W9b-slot base→candidate single-step `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` LANDED**
 (2026-06-19, the W9b analogue of the W9a de-risk gate).**
-Remaining in **CHAIN-2c-ii**: the **cycle-W9b fold** over the new single-step (with the redundancy
-panel-carry bridge for the block disjunct), then **2c-ii-arm** `chainData_relabel_arm` (the closer —
-instantiate the arm engine at the relabelled roles, transport the three slots via the W9a fold + this
-W9b fold + G4d-i) — then
+Remaining in **CHAIN-2c-ii**: the **cycle-W9b GENUINE-ROW fold** over the new single-step + **the block
+disjunct via G4d-i at `vᵢ`** (⚠ NOT a per-body carry — recon §(o‴)(H) first, *Hand-off*), then
+**2c-ii-arm** `chainData_relabel_arm` (the closer — instantiate the arm engine at the relabelled roles,
+transport the three slots via the W9a fold + the W9b genuine-row fold + G4d-i) — then
 **CHAIN-2c-iii** (assembly), and **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the
 rest of CHAIN-2 + ENTRY's extractor reshape).
 
@@ -172,48 +168,46 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**LANDED 2026-06-19** (axiom-clean, gate+lint-verified): the **W9b-slot base→candidate single-step
-seed-advance** `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` (`Graph.ChainData`,
-`Relabel.lean`) — the chain-indexed instance of the framework-form W9b single-step
-`funLeft_dualMap_bottomTag_mem_rigidityRows` (now a **live** dependency, no longer an orphan), wiring its
-seven shared conjuncts off the just-reused `seedAdvance_wstep_hstep` bundle (the genuine-row disjunct
-shares the W9a `htrans`) and the W9b-only data (`a≠b`/`v≠b`/the genuine `e_b = edge s`-link of `Fva`,
-`b = vtx s`) off the chain accessors; the two block panels stay abstract (pinned to the support extensors
-of `e_b`/`e_c`, `rfl`). It is the W9b analogue of the landed W9a de-risk gate
-`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`, base→candidate (the *opposite* of the
-orphaned candidate→base `bottomTag_foldr`). **Prior LANDED:** the W9a-slot fold (concrete instance
-`shiftBodyListAsc_foldl_mem_span_rigidityRows` over the `wstep_foldl_mem_span_rigidityRows` core, through
-the de-risk gate / `seedAdvance_wstep_hstep` bundle).
+**LANDED 2026-06-19** (axiom-clean, gate+lint-verified): the **W9b-slot base→candidate single-step**
+`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` (the W9b analogue of the landed W9a de-risk gate,
+reusing the `seedAdvance_wstep_hstep` bundle + the framework-form W9b single-step — now live, no longer
+orphaned). **Prior LANDED:** the W9a-slot fold (the concrete instance `shiftBodyListAsc_foldl_…` over the
+`wstep_foldl` core, through the de-risk gate / `hstep` bundle).
 
-**NEXT STEP — the cycle-W9b fold** over the new base→candidate single-step (the W9b analogue of the
-landed W9a `shiftBodyListAsc_foldl_mem_span_rigidityRows`): a `foldl`/`foldr` over the chain of degree-2
-bodies threading the bottom-tag, with the **degree-2 redundancy panel-carry** bridge (`redundancy_panel_carry`
-/ `candidateRow_ac_eq_neg`, §(o″)) discharging the block disjunct's adjacent-panel mismatch — then
-**2c-ii-arm** `chainData_relabel_arm` (signature in §(o‴)(H.6); instantiate `case_III_arm_realization` at
-the relabelled roles with seed `qρ = q∘shiftPerm i`, shared `±ρ₀`, the three slots transported via the
-W9a fold + this W9b fold + G4d-i; est. ~2–4 commits remaining; d=3 M₃ = `i=2` involution instance) →
-**2c-iii** `chainData_dispatch` (the `Fin (k+1)`-case dispatch, `M₀` = direct arm, interior = relabel arm;
-replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
+**NEXT STEP — the cycle-W9b fold (GENUINE-ROW disjunct only) + the block disjunct via G4d-i.** The
+bottom family `w`'s **genuine-row** disjunct rides the base→candidate fold exactly like `hρGv` (map the
+landed W9b single-step over the chain, the family analogue of `shiftBodyListAsc_foldl_…`). The **block
+disjunct** is handled SEPARATELY — per §(o‴)(H)/(d) it is the whole-relabel image of `M₀`'s single
+redundant row → the ±r row at `vᵢ` via **G4d-i** (ONE (6.44) at the single body `vᵢ`), NOT a per-body
+carry.
 
-**Confirm-and-delete at the reshape** (orphans, `git grep` zero live callers at the deleting commit; full
-list §(o‴)(H.5)): the per-body W9b chain `bottomTag_foldr_mem_rigidityRows` (candidate→base, wrong
-orientation), `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`, `ofNormals_relabel_perm`
-(2c-ii-β); and the
-per-`i` W6b architecture `chainData_split_realization` + `chainData_split_w6b_gates` (zero callers — Fix B
-would have used them; **re-check at the 2c-iii build** whether the dispatch reuses the `v₁`-split W6b via
-`chainData_split_w6b_gates` at `i=1` or inlines it as d=3 does). `candidateRow_ac_eq_neg` likely
-**re-consumed** by Fix A's `±r` block arm — re-check, don't blind-delete (§(o‴)(F)). The landed
-candidate→base T-W9a span fold `shiftBodyList_foldr_mem_span_rigidityRows` is **orphaned-for-the-arm**
-(wrong orientation, §(o‴)(H.10) — it proves the converse implication; the base→candidate single-step
-`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` it folds over IS reused). **STAYS:** that single-step
-lemma, the **H.10 W9a de-risk gate** `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` and
-the **W9b base→candidate single-step** `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` (the two
-base→candidate single fold steps the W9a/W9b cycle folds iterate) together with the framework-form W9b
-single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (now live — consumed by the new chain instance),
-the graph iso `splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm`, the inverse-cycle action block, G4d-i
-`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, the W6b `ρ⊥C(q(ab))` gate, 2c-i
-`exists_chainData_discriminator_pick`, `redundancy_panel_carry`/`candidateRow_ac_eq_neg` (the cycle-W9b
-panel-carry bridge, NEXT), the `ChainData` record + accessors.
+⚠ **CRITICAL — RECON THE BLOCK DISJUNCT AGAINST §(o‴)(H)/(d) BEFORE BUILDING (the 4×-mis-pin guard).**
+The build agent's hand-off (this commit) proposed discharging the block disjunct with a **per-body
+`redundancy_panel_carry`/`candidateRow_ac_eq_neg` panel-carry bridge "across the chain of degree-2
+bodies"** — that is the per-body block carry §(o‴) REJECTED (the block has no per-body home; its
+residual is the machine-confirmed-unprovable telescoping crux mis-pinned 4× at iters 3/7/9/11). Do NOT
+build a per-body block carry. The authoritative route is §(o‴)(H)/(d): block → G4d-i at `vᵢ` (single
+row, whole-relabel). `redundancy_panel_carry`/`candidateRow_ac_eq_neg` are the eq.-(6.44) identity used
+ONCE at `vᵢ` (G4d-i-adjacent), not a per-body chain. **A fresh coordinator: recon the block-disjunct
+route against §(o‴)(H)/(d) — confirm the single-`vᵢ` G4d-i discharge — before any cycle-W9b/arm build.**
+
+**Then 2c-ii-arm** `chainData_relabel_arm` (signature §(o‴)(H.6); instantiate `case_III_arm_realization`
+at the relabelled roles, seed `qρ = q∘shiftPerm i`, shared `±ρ₀`; the three slots = the W9a fold (`hρGv`)
++ the W9b genuine-row fold + G4d-i (block); est. ~2–4 commits; d=3 M₃ = `i=2` involution) → **2c-iii**
+`chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm, interior = relabel arm; replaces
+`case_III_candidate_dispatch`) → **CHAIN-5**.
+
+**Confirm-and-delete / STAYS at the reshape** (full list §(o‴)(H.5); `git grep` zero callers at the
+delete commit). **Orphaned-for-the-arm (delete):** the candidate→base folds
+`shiftBodyList_foldr_mem_span_rigidityRows` (T-W9a) + `bottomTag_foldr_mem_rigidityRows` (wrong
+orientation — converse implication); `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`,
+`ofNormals_relabel_perm`; the per-`i` W6b architecture `chainData_split_realization`/`_w6b_gates`
+(re-check at 2c-iii — does the dispatch reuse the `v₁`-split W6b or inline it). **STAYS:** the
+base→candidate single-steps (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` + the H.10 W9a gate + the
+W9b single-step + the framework-form W9b single-step, now live), the W9a fold + concrete instance, the
+graph iso + `shiftEdgePerm`, the inverse-cycle action block, G4d-i, the W6b gate, 2c-i, `ChainData` +
+accessors. **⚠ `candidateRow_ac_eq_neg`** (eq.-(6.44)): likely used ONCE at `vᵢ` for the block via G4d-i
+— NOT a per-body `redundancy_panel_carry` carry (§(o‴)(H); re-check at the block build).
 **`d=3` zero-regression:** at `i=2` the cycle is `shiftPerm 2 = (v₁v₂)`, an involution where
 `(shiftPerm 2)⁻¹ = shiftPerm 2`, so Fix A's inversion is a no-op and the arm reduces to the landed M₃
 engine verbatim; the current `case_III_candidate_dispatch` stays green untouched until CHAIN-5/ENTRY wrap
