@@ -2617,9 +2617,23 @@ predecessor edge `edge s`→`vₛ`, the `G`-degree-2 closure at the body, and th
 distinctnesses, in the `(v,a,c) = (vₛ₊₂, vₛ₊₁, vₛ)` shape the fold core's `hstep` consumes) + the
 namespace `vtx_ne` helper (the graphiso bricks' local `hvtx_ne_of` have, hoisted). These are pure
 `ChainData.{link, deg_two, vtx_inj}` reads — no framework, no relabel — supplying the per-step
-degree-2/`cₛ`-link/off-`vₛ` conjuncts of the chain `hstep`. Next concrete commit: the framework chain
-`F : ℕ → BodyHingeFramework` itself (wired against these accessors) + its per-step un-relabelled link
-correspondence.
+degree-2/`cₛ`-link/off-`vₛ` conjuncts of the chain `hstep`.
+
+**T-W9a-chain intermediate-graph layer LANDED 2026-06-19** (`Operations.lean`, axiom-clean). The graph
+layer the framework chain lifts: the intermediate graph `ChainData.shiftBodyGraph s := G − vₛ₊₁`
+(indexed by the minimal chain-vertex bound `s + 1 < cd.d + 1`, decoupled from the cycle top `i` — it
+is a graph op, FRICTION) and the per-step `G`-level link correspondence between consecutive graphs
+`shiftBodyGraph (s+1) = G − vₛ₊₂` and `shiftBodyGraph s = G − vₛ₊₁` (`(v,a,c) = (vₛ₊₂, vₛ₊₁, vₛ)`):
+`shiftBodyGraph_isLink_pred_edge` (the surviving `e_c = edge s` link `a→c`), `shiftBodyGraph_deg_two`
+(+ `_right`) (the body `a` at degree 2 in `G − v`, its successor edge `edge (s+1)` cut by the removal,
+via `IsLink.right_unique`), `shiftBodyGraph_off_succ` (every link of `G − v` avoids `v`), and the
+un-relabelled inclusion `shiftBodyGraph_isLink_of_off_body` (a link of `G − v` off the body `a` is a
+link of `G − a` — the `htrans` graph shape `wstep_foldr_mem_span_rigidityRows`'s `hstep` consumes).
+This mirrors the d=3 `M₃` arm's single step `Fv/Fva = ofNormals (G − v)/(G − a)`
+(`case_III_arm_realization_M3`'s `htrans`, off `removeVertex_isLink`) at the cycle level. Next concrete
+commit: the framework chain `F = ofNormals ∘ shiftBodyGraph : ℕ → BodyHingeFramework` itself + its
+per-step un-relabelled link correspondence (lifting this graph layer through `ofNormals`, adding the
+`hingeRowBlock`-agreement second conjunct of W9a's `htrans`).
 
 ---
 

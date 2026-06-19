@@ -1657,6 +1657,99 @@ lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : 
     cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
   cd.vtx_ne (by omega) (by omega) (by omega)
 
+/-! ### The partially-shifted intermediate-graph chain (CHAIN-2c-ii-transport-W9a, graph layer)
+
+The cycle-W9a `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of
+*intermediate frameworks* `F : ℕ → BodyHingeFramework` (`F (i−1)` = the candidate-`i` split, `F 0` =
+the `v₁`-base split, one body moved per step), each `F s` an `ofNormals` framework over an
+intermediate *graph*. This block builds that graph chain and its per-step `G`-level geometry, the
+substrate the framework chain `F = ofNormals ∘ shiftBodyGraph` sits on.
+
+The intermediate graph at chain step `s` is `shiftBodyGraph s := G − vₛ₊₁` — the parent `G` with the
+chain vertex `vtx (s+1)` deleted. The step `s` of the cycle-W9a fold moves the degree-2 body
+`a = vₛ₊₁` to its post-swap position `v = vₛ₊₂` past its surviving chain-predecessor `c = vₛ`
+(`shiftBodyList`'s `s`-th triple `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)`); the W9a step is the framework drop
+`F (s+1) → F s`, i.e. the graph drop `(G − vₛ₊₂) → (G − vₛ₊₁)`. This mirrors the d=3 `M₃` arm's
+single step `Fv/Fva = ofNormals (G − v)/(G − a)` (`case_III_arm_realization_M3`,
+`CaseIII/Relabel.lean`): `F (s+1) = G − v` keeps the body `a` at degree 2 (its successor edge
+`edge (s+1)` to `v` is cut by the removal), and `F s = G − a` is the smaller graph the off-`a` links
+transport into. These accessors are graph-free of the rigidity layer (pure
+`ChainData`/`removeVertex` reads); the framework chain `F` + its `hingeRowBlock`-agreement half (the
+`htrans` block of W9a) build on top in `CaseIII/Relabel.lean`. -/
+
+/-- The intermediate graph at chain step `s` of the cycle-W9a transport: `G` with the chain vertex
+`vtx (s+1)` deleted (`G − vₛ₊₁`). Indexed only by the chain-vertex validity `s + 1 < cd.d + 1` (it
+is a graph operation, decoupled from the cycle top index `i`).
+`shiftBodyGraph (s+1) → shiftBodyGraph s` is the framework drop the `s`-th cycle step performs
+(`F (s+1) → F s`), moving the degree-2 body `a = vₛ₊₁` (still present, at degree 2, in
+`shiftBodyGraph (s+1) = G − vₛ₊₂`) to `v = vₛ₊₂` and dropping into `G − vₛ₊₁`. -/
+def shiftBodyGraph (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) : Graph α β :=
+  G.removeVertex (cd.vtx ⟨s + 1, hs⟩)
+
+/-- The **surviving (predecessor) chain edge** at the moved body in
+`shiftBodyGraph (s+1) = G − vₛ₊₂`:
+the predecessor edge `edge s` links the body `a = vₛ₊₁` to its chain-predecessor `c = vₛ`, and both
+endpoints survive removing `v = vₛ₊₂` (the `e_c`-link of the W9a step `F (s+1) → F s`). -/
+lemma shiftBodyGraph_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
+    (hi : i < cd.d + 1) :
+    (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink (cd.edge ⟨s, by omega⟩)
+      (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) := by
+  rw [shiftBodyGraph, removeVertex_isLink]
+  exact ⟨cd.shiftBody_isLink_pred_edge hs hi,
+    cd.vtx_ne (by omega) (by omega) (by omega), cd.vtx_ne (by omega) (by omega) (by omega)⟩
+
+/-- The **degree-2 closure at the moved body** in `shiftBodyGraph (s+1) = G − vₛ₊₂`: the only
+`shiftBodyGraph (s+1)`-link out of the body `a = vₛ₊₁` is the surviving predecessor edge `edge s`
+(its successor edge `edge (s+1)` to `vₛ₊₂` is cut by the removal). The `hdeg2` half of the W9a step.
+-/
+lemma shiftBodyGraph_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
+    ∀ f x, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f
+        (cd.vtx ⟨s + 1, by omega⟩) x →
+      f = cd.edge ⟨s, by omega⟩ := by
+  intro f x hlink
+  rw [shiftBodyGraph, removeVertex_isLink] at hlink
+  obtain ⟨hGlink, _, hxv⟩ := hlink
+  rcases cd.shiftBody_deg_two hs hi f x hGlink with rfl | rfl
+  · -- the successor edge `edge (s+1)` would link the body to `vₛ₊₂ = v`, which is deleted.
+    exact absurd ((cd.shiftBody_isLink_succ_edge hs hi).right_unique hGlink).symm hxv
+  · rfl
+
+/-- The mirror of `shiftBodyGraph_deg_two` for links with the moved body on the *right*. -/
+lemma shiftBodyGraph_deg_two_right (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
+    (hi : i < cd.d + 1) :
+    ∀ f x, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x
+        (cd.vtx ⟨s + 1, by omega⟩) → f = cd.edge ⟨s, by omega⟩ :=
+  fun f x hlink => cd.shiftBodyGraph_deg_two hs hi f x hlink.symm
+
+/-- **Off the post-swap position** in `shiftBodyGraph (s+1) = G − vₛ₊₂`: every link of the
+intermediate graph avoids `v = vₛ₊₂` at both endpoints (immediate from `removeVertex`). The `hnov`
+half of the W9a step. -/
+lemma shiftBodyGraph_off_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
+    ∀ f x y, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x y →
+      x ≠ cd.vtx ⟨s + 2, by omega⟩ ∧ y ≠ cd.vtx ⟨s + 2, by omega⟩ := by
+  intro f x y hlink
+  rw [shiftBodyGraph, removeVertex_isLink] at hlink
+  exact ⟨hlink.2.1, hlink.2.2⟩
+
+/-- **The per-step link correspondence** of the cycle-W9a chain (the graph layer of the W9a step's
+`htrans`): a link of `shiftBodyGraph (s+1) = G − vₛ₊₂` *off the moved body* `a = vₛ₊₁` is a link of
+`shiftBodyGraph s = G − vₛ₊₁`. (A link of `G − vₛ₊₂` is a `G`-link avoiding `vₛ₊₂`; with both
+endpoints `≠ vₛ₊₁` it then survives removing `vₛ₊₁`.) This is the un-relabelled inclusion the fold
+core `wstep_foldr_mem_span_rigidityRows`'s `hstep` consumes between consecutive intermediate
+graphs — the cycle generalization of the d=3 `M₃` arm's `Fv/Fva` agreement off `{a, v}`
+(`case_III_arm_realization_M3`'s `htrans`). The framework-level `hingeRowBlock` agreement (the
+second conjunct of W9a's `htrans`) builds on this once the framework chain
+`F = ofNormals ∘ shiftBodyGraph` is pinned. -/
+lemma shiftBodyGraph_isLink_of_off_body (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
+    (hi : i < cd.d + 1) :
+    ∀ f x y, (cd.shiftBodyGraph (s := s + 1) (by omega)).IsLink f x y →
+      x ≠ cd.vtx ⟨s + 1, by omega⟩ → y ≠ cd.vtx ⟨s + 1, by omega⟩ →
+      (cd.shiftBodyGraph (s := s) (by omega)).IsLink f x y := by
+  intro f x y hlink hxa hya
+  rw [shiftBodyGraph, removeVertex_isLink] at hlink
+  rw [shiftBodyGraph, removeVertex_isLink]
+  exact ⟨hlink.1, hxa, hya⟩
+
 /-- **`shiftPerm` is the product of the moved-body swaps** (the permutation-level identification of
 the cycle-W9a `List.foldr` with the named index-shift relabel, CHAIN-2c-ii-transport-W9a route B,
 `notes/Phase23-design.md` §(o″)). The index-shift cycle `shiftPerm i` factors as the left-to-right

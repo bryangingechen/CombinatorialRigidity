@@ -1600,6 +1600,24 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   for an off-cycle/contradiction vertex equality (`fun heq => habs (congrArg vtx (by ext; exact heq))`).
 - **Status:** idiom.
 
+### [idiom] Index a `Fin`-parametrized `def` by its *minimal* validity bound, not the looser consumer bound
+- **Where it bit:** `ChainData.shiftBodyGraph` (`Induction/Operations.lean`, Phase 23b
+  CHAIN-2c-ii-transport-W9a-chain graph layer) — the intermediate graph `G − vₛ₊₁` of the cycle-W9a
+  chain. First written with the consuming step's two hypotheses `(hs : s + 1 < i) (hi : i < cd.d + 1)`
+  carried into the `def` signature, the internal `vtx ⟨s + 1, by omega⟩` proof then needing
+  `s + 1 < cd.d + 1` (fine), but *instantiating* the `def` at `s := s + 1` (the W9a-step source graph)
+  forced the `hs` argument to `s + 2 < i`, which the lemma context only had `s + 1 < i` for — three
+  `omega` failures at the call sites.
+- **Fix:** the `def` is a graph operation depending only on the vertex index `s + 1` being valid, so
+  index it by the *minimal* bound `(hs : s + 1 < cd.d + 1)` alone — decoupled from the cycle top `i`.
+  Each consuming lemma then supplies that single bound via `(by omega)` from whichever of its own
+  hypotheses bound `s + 1` (`s + 1 < i < cd.d + 1` for the source, the looser `s < cd.d` for the
+  target), and the indices `s + 1` / `s + 2` no longer collide with the def's internal proof.
+- **Lesson:** a `def`'s hypothesis should be the weakest fact its body actually needs (here:
+  `Fin`-index validity), never a step-/cycle-level invariant the *callers* happen to carry — coupling
+  them re-derives the wrong arithmetic obligation at every instantiation offset.
+- **Status:** idiom.
+
 ### [idiom] A `Fin n → α` indexed-family *cycle* as an `Equiv.Perm`: `List.formPerm (List.ofFn …)`, with `[DecidableEq α]`
 - **Where it bit:** `ChainData.shiftPerm` (`Induction/Operations.lean`, Phase 23b CHAIN-2c-ii-α) — KT
   eq. 6.54's index-shift iso `ρᵢ`, the `i`-cycle `vtx 1 → ⋯ → vtx i → vtx 1` over the chain-vertex
