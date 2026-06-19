@@ -4,8 +4,8 @@
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
 **Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a/T-W9b transport machinery LANDED; the W9b
 MEMBERSHIP is BLOCKED on a fold-invariant reshape, the KT §6.4.2 telescoping crux — next is a
-comprehensive telescoping-structure design, approach pending coordinator/user adjudication, see
-*Current state* + *Hand-off*) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
+comprehensive telescoping-structure DESIGN-PASS, **user-adjudicated 2026-06-19**; see *Hand-off* for the
+design-pass guidance) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
 
@@ -20,8 +20,8 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 **Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core LANDED; the W9b MEMBERSHIP is BLOCKED on
 a fold-invariant reshape — the conjecture's hardest crux (KT §6.4.2, the "12-page proof"). Next = a
-comprehensive telescoping-structure design (approach pending coordinator/user adjudication — see
-*Hand-off*).**
+comprehensive telescoping-structure DESIGN-PASS (**user-adjudicated 2026-06-19**; the global
+accumulating-`Tag` invariant, NOT a local leaf — see *Hand-off* for the design-pass guidance + clauses).**
 
 The row-272 build found the iteration-11 *frozen* `Tag`-signature (design §(o″) *DESIGN-PASS*) is
 **UNPROVABLE — INVALIDATED**: with a single-pinned block tag `Tag s ψ := … ∨ ψ = hingeRow vₛ₊₁ vₛ₊₂ ρ`,
@@ -168,16 +168,28 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 **Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). T-W9a + T-W9b
 single-step/fold core LANDED. The W9b MEMBERSHIP is BLOCKED on a fold-invariant reshape (KT §6.4.2's
-telescoping ±r-chain — see *Current state*). NEXT = a comprehensive design of the telescoping
-fold-invariant (an accumulating block-row *sum* / span-membership `Tag`, NOT the invalidated
-single-pinned functional), against a close read of KT §6.4.2 — APPROACH PENDING coordinator/user
-adjudication: the piecemeal recon→build loop has mis-pinned this crux 4×, so a more global decomposition
-(or a user-pinned structure) is warranted.** ⚠ **The iteration-11 frozen signature + its §(o″)
-*DESIGN-PASS* (A)–(D) detail below are INVALIDATED** (row 272: the single-pinned `Tag` does not chain —
-the carry leaves a generically-nonzero residual `hingeRow vₛ₊₂ vₛ₊₃ ρ`) — retained only as the
-source-verified record of what the *terminal* single-step / the G4d-i panel-match / the d=3 M₃
-structure provide (still usable inputs to the reshape). The original (now-superseded) frozen-signature
-spec follows.
+telescoping ±r-chain — see *Current state*).**
+
+**NEXT STEP — USER-ADJUDICATED (2026-06-19): a comprehensive telescoping-structure DESIGN-PASS first,
+then resume builds only if its verdict is coordinator-verifiable.** Dispatch a docs-only design-pass
+(opus) whose deliverable is the **GLOBAL** fold-invariant for KT §6.4.2's ±r-chain — the accumulating
+block-row *sum* (or span-membership) `Tag` for the *whole* `shiftBodyList i` fold — **NOT** another
+local per-step leaf signature (a local pin is exactly what the piecemeal loop mis-pinned **4×**: iters
+3/7/9/11; each was mechanically plausible but globally wrong, caught only when a build read the fold's
+arithmetic end-to-end). The design-pass must: (a) be source-verified against a **close read of KT
+§6.4.2** (pp. 696–698, the eqs. (6.62)–(6.67) ±r-chain; REFS.md for the PDF page offset); (b) carry the
+two mandatory design-pass clauses — *verify every load-bearing claim against the landed Lean bodies*,
+and *flag-don't-force* (if the right invariant needs a motive/IH/carried-hypothesis change or
+genuinely-new math, SAY SO and stop for adjudication rather than pin a 5th wrong structure); (c) pin the
+exact `Tag`/invariant shape, how each `hstep` discharges, and how the accumulated residual telescopes
+to `0` (or into a genuine `F 0`-row) at the chain bottom. **Coordinator: scrutinize the verdict HARD
+before dispatching any build** — read the proposed fold's arithmetic end-to-end (the 4× mis-pin history
+is precisely that a plausible local pin keeps being globally wrong); a boundary-pair / second
+independent design read is warranted here.
+⚠ **The iteration-11 frozen signature + its §(o″) *DESIGN-PASS* (A)–(D) detail are INVALIDATED** (row
+272: the single-pinned `Tag` does not chain — the carry leaves a generically-nonzero residual
+`hingeRow vₛ₊₂ vₛ₊₃ ρ`) — preserved in §(o″) + git as the source-verified record of what the *terminal*
+single-step / the G4d-i panel-match / the d=3 M₃ structure provide (still-usable inputs, below).
 
 (The superseded iteration-11 spec — the block-carrying single-step's exact `(a,v)`→`(c,v)` arm, the
 G4d-i `hcol`-supply correction, and the single-pinned `Tag` membership fold — is preserved in §(o″)
