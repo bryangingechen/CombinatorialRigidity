@@ -21,28 +21,25 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Route B LOCKED; `shiftPerm` head-peel factorization LANDED (the cycle-W9a recursion handle); next =
-the cycle-W9a transport `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
-(2c-ii-transport-W9a, the genuinely-new a-column subtraction induction).** Design **§(o″)**
-(2026-06-19, source-verified + KT-cross-checked) decided the §(o′) route-A/B fork: **route B
-(shared-`ρ₀` row-span transport); route A REJECTED as unprovable.** Canonical verdict + the rejection
-argument + the route-B leaf decomposition + signatures are in *Hand-off* below + design §(o″). The
-graph-iso brick (A) + the head-peel factorization (`shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`,
-`Operations.lean`, axiom-clean) are LANDED — the latter is the `List.formPerm_cons_cons`-based
-single-transposition peel each cycle-W9a induction step composes (`shiftPerm i = swap (vtx 1)(vtx 2) *
-tail-formPerm`).
+**Route B LOCKED (§(o″)); `shiftPerm` head-peel factorization LANDED; next = the cycle-W9a transport
+`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (2c-ii-transport-W9a, the
+genuinely-new a-column subtraction induction).** The §(o′) route-A/B fork is resolved to **route B**
+(route A REJECTED unprovable) — canonical verdict + rejection argument + route-B leaf decomposition in
+*Hand-off* + design §(o″). LANDED, axiom-clean: the graph-iso brick (A) + the head-peel
+`shiftPerm_eq_swap_mul` (`shiftPerm i = swap (vtx 1)(vtx 2) * tail-formPerm`, the per-step peel each
+cycle-W9a induction step composes; *Decisions* + git).
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
 uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** route β. The
 **blueprint-clarity obligation** (route β absorbs KT's isos 6.54–6.56 + ±r chain 6.66, so the
 `lem:case-III` general-`d` prose must materialize them): *Hand-off* + design §(n)/§(o)/§(o′)/§(o″).
 
-**Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors landed;
+**Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors;
 **CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** + **2c-ii-graphiso COMPLETE**
 (`shiftEdgePerm` + 6 action lemmas + forward + backward + the packaged iff
-`splitOff_isLink_shiftRelabel_iff`) landed. Remaining in CHAIN-2c (decomposition + §(o′)(B) fork in
-the checklist + *Hand-off*): **2c-ii-transport** (route A/B) → **2c-ii-arm** → **2c-iii** →
-**CHAIN-5** + the ENTRY extractor reshape.
+`splitOff_isLink_shiftRelabel_iff`) + the head-peel handle landed. Remaining in CHAIN-2c (full
+decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a → T-W9b) →
+**2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
 
 **Architectural constraint (standing, CHAIN-3-era).** Metric-using Hodge leaves live in
 `MeetHodge.lean`, never the metric-free `Meet.lean` (the `PiL2` import regresses
