@@ -61,37 +61,14 @@ heterogeneity + discriminator-picks-`i` glue) lives in CHAIN-2b/2c.** One clause
 (build-time wiring, not a blocker): which arm form (`_realization` vs `_M3` relabel) the interior
 split uses + the `h622lb`/`hIH` instantiation at the `vᵢ`-split — settled by the d=3 template at build
 (§(m)). Then CHAIN-2b/2c; or **CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's
-extractor reshape). **The `G.ChainData n` `structure` + its
-interior-split accessors LANDED 2026-06-18** (`Induction/Operations.lean`, the zeroth CHAIN-2 leaf —
-the length-`d` chain record `vtx`/`edge`/`e₀` + `vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`;
-`deg_two` settled via `0 < (i:ℕ)` interior guard + the predecessor edge `edge ⟨(i:ℕ)-1, _⟩`, d=3-map
-verified `vtx 1=v`/`vtx 2=a`, closures `edge 0=e_b`/`edge 1=eₐ`/`edge 2=e_c`). **The interior-split
-geometry accessors LANDED 2026-06-18** — `ChainData.{pred_succ_eq_castSucc, isLink_pred_edge,
-isLink_succ_edge, succ_ne_pred_castSucc, deg_two_split}` (alongside the earlier `pred_edge_ne` /
-`isLink_edge`): for an interior index `i` (`0 < (i:ℕ)`) they expose the chain geometry in the
-`(v,a,b,e_a,e_b)` shape `case_III_rank_certification` consumes — split body `vtx i.castSucc`, the two
-chain edges `edge i` / `edge ⟨(i:ℕ)-1,_⟩` *oriented out of* the split body (`isLink_{succ,pred}_edge`,
-the latter via `pred_succ_eq_castSucc` + `.symm`), their distinct neighbors (`succ_ne_pred_castSucc`),
-and the degree-2 closure re-oriented (`deg_two_split`, `Or.symm` of the field). So CHAIN-2a's
-signature can bind `cd : G.ChainData n` *and* reach the per-`i` split tuple directly.
-**OD-7 is now CLOSED** — the last leaf `case_I_dispatch_gen` + the
-`hcontract_k` wire-up landed 2026-06-18 (a verbatim numeral pass over the d=3 `case_I_dispatch`
-`by_cases hSimple`/inner-`by_cases hd` plumbing, feeding the three landed `_gen` producers +
-`hasPanelRealization_of_generic`; plus `case_I_hcontract_gen`, the general-`k` filler for the carried
-`hcontract_k` slot, lifting the d=3 wrapper's `c=0`→`case_I_dispatch_gen` / `c>0`→manual-dispatch
-split). The d=3 `case_I_dispatch` is now its `k:=2` wrapper, and `theorem_55_minimalKDof_k`'s inline
-`hcontract_k` filler is `case_I_hcontract_gen (k:=2)`; blueprint pins unmoved (both new decls are
-dispatch-internal, the pinned `lem:case-I-dispatch` → `case_I_realization_h65` stays green). All four
-23a-carried producers are now general-`k`: `hbase_k` (`theorem_55_base_producer_gen`), `hcut_k`
-(`case_cut_edge_realization{,_gp}_gen`), `hcontract_k` (`case_I_hcontract_gen`), `hforget_k`
-(`hasPanelRealization_of_generic`), plus both M4 halves. The `d=3` consumers
-(`theorem_55_minimalKDof_k`, etc.) resolve `k:=2` by unification, unchanged. CHAIN-1/3/4 CLOSED. The
-remaining buildable leaves: **CHAIN-2** — the `Fin d`-indexed candidate-reduction layer (eqs.
-6.59–6.64, `CaseIII/`), **decomposed** at recon into 2a/2b/2c on top of the *already-general* (recon
-§(l) corrected §(c)) certification chain + closed CHAIN-1, after authoring the `ChainData` record
-(3–5 commits). **CHAIN-5** (the `d`-chain dispatch assembly, `CaseIII/Realization.lean`) has a frozen
-signature (the CHAIN↔ENTRY contract) but is gated on CHAIN-2 landing **and** ENTRY's extractor reshape.
-See *Hand-off* for the per-leaf detail.
+extractor reshape).
+
+**Context (closed/landed — full detail in the Status banner + checklist + Hand-off + *Decisions
+made*):** CHAIN-1/3/4 + OD-7 (all four 23a producers `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k` +
+both M4 halves general-`k`) CLOSED; the `G.ChainData n` record + the 7 interior-split accessors landed,
+so the per-`i` `(v,a,b,e_a,e_b)` split tuple is reachable directly from `cd : G.ChainData n`.
+Remaining: **CHAIN-2** (2a-ii → 2b → 2c) + **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract;
+gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 **CHAIN-1/3/4 — all CLOSED** (2026-06-17/18; per-leaf detail in *Decisions made* → *Landed
 CHAIN-{1,3,4} bricks* + `notes/Phase23-design.md` §(f)/(h)/(i)/(j) + git):
