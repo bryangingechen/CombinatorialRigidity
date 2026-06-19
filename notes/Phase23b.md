@@ -3,7 +3,8 @@
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
 **Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a LANDED, T-W9b single-step + fold core LANDED,
-the degree-2 redundancy bridge `redundancy_panel_carry` LANDED; **W9b membership next**) + CHAIN-5 (the
+the degree-2 redundancy bridge `redundancy_panel_carry` LANDED; **block-carrying single-step next**, then
+the W9b membership fold — see §(o″) *Sharpened recon*) + CHAIN-5 (the
 dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
@@ -17,19 +18,27 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core LANDED; the degree-2 redundancy bridge
-`redundancy_panel_carry` LANDED (axiom-clean, `Relabel.lean`); next commit = the W9b membership.**
-The bridge (the leaf the row-266 BLOCKED diagnosed) is the chain-step instance of the LANDED graph-free
+**Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core + the degree-2 redundancy bridge
+`redundancy_panel_carry` LANDED (axiom-clean, `Relabel.lean`); next commit = a NEW block-carrying
+single-step (the sharpened-recon find, below), THEN the W9b membership fold.**
+A read-only recon (2026-06-19, source-verified vs the landed single-step body) found the W9b membership
+is **not** a fold instantiation over the landed single-step `funLeft_dualMap_bottomTag_mem_rigidityRows`:
+that step's `(ab)`-block input arm always *terminates* the block into a genuine `e_b`-row
+(`Relabel.lean:1246–1252`, `Or.inl`), and that termination is structurally **impossible** in the chain
+interior — the successor edge `edge (s+1)` links `vₛ₊₁,vₛ₊₂` and so is cut by `removeVertex vₛ₊₁` (no
+surviving `e_b`). So the interior carry needs a **new block-carrying single-step** whose `(ab)`-block
+input maps to a `(cv)`-block OUTPUT re-pinned to `±r` (consuming the LANDED bridge for the panel-match),
+genuine-row arm reusing the landed step. The landed single-step is the *d=3 terminal* form (M₃/`i=2`,
+chain length 1, block already at the bottom — correct there, zero-regression). Detail: design §(o″)
+*Sharpened recon*. The bridge (LANDED) is the chain-step instance of the graph-free
 `candidateRow_ac_eq_neg` (`Claim612.lean`, eq. 6.44): at the interior degree-2 body `a = vtx⟨s+1⟩` with
 chain neighbors `b = vtx⟨s+2⟩` (successor) / `c = vtx⟨s⟩` (predecessor), the eq.-(6.44) `a`-column
 vanishing gives the `±r` vector identity `∑ⱼ λac_j • rac_j = −∑ⱼ λab_j • rab_j` — so the single carried
-redundancy `r` tests both adjacent panels (up to sign), the carry the W9b `Tag` chains on. **NOT new
-math** — the abstract row identity is reused verbatim, with the moved body + neighbors named off the
-`ChainData` accessors (`vtx_ne` for distinctness); no motive/IH/spine-carry change, d=3 zero-regression
-(vacuous at the M₃ arm `i=2`, where `shiftBodyList 2` has length 1 and chains zero times).
+redundancy `r` tests both adjacent panels (up to sign). **NOT new math** — abstract row identity reused
+verbatim; no motive/IH/spine-carry change, d=3 zero-regression.
 Tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ →
-**redundancy_panel_carry ✓** → **W9b membership [next]** → 2c-ii-arm → 2c-iii → CHAIN-5. Full detail:
-§(o″) + *Hand-off*.
+**redundancy_panel_carry ✓** → **block-carrying single-step [next]** → W9b membership fold → 2c-ii-arm
+→ 2c-iii → CHAIN-5. Full detail: §(o″) + *Hand-off*.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -95,7 +104,9 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       (`shiftBodyList_foldr_mem_span_rigidityRows`, span-only) + **T-W9b step + fold core**
       (`funLeft_dualMap_bottomTag_mem_rigidityRows` / `bottomTag_foldr_mem_rigidityRows`) + the degree-2
       bridge `redundancy_panel_carry` (chain-step instance of `candidateRow_ac_eq_neg`) all LANDED →
-      **W9b membership [next]** (`Tag` pinned to ±r) → **2c-ii-arm** `chainData_relabel_arm` (closer; d=3
+      **block-carrying single-step [next]** (the `(ab)`-block→`(cv)`-block carry the landed terminating
+      single-step cannot do in the chain interior — §(o″) *Sharpened recon*) → W9b membership fold
+      (`Tag` pinned to ±r) → **2c-ii-arm** `chainData_relabel_arm` (closer; d=3
       M₃ = `i=2` instance) → **2c-iii** `chainData_dispatch`. Live status: *Current state* tracker; full
       detail: design §(o″) + *Decisions made*.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
@@ -160,8 +171,14 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 **Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). T-W9a LANDED;
 T-W9b single-step + fold core LANDED; the degree-2 redundancy bridge `redundancy_panel_carry` LANDED
-(axiom-clean). next commit = the W9b membership** (the `ChainData`/`shiftBodyFramework` instantiation of
-the fold core, with `Tag` pinned to ±r). The bridge `redundancy_panel_carry` (`Relabel.lean`, after
+(axiom-clean). next commit = a NEW block-carrying single-step, THEN the W9b membership fold.** The
+sharpened recon (2026-06-19, design §(o″) *Sharpened recon*) found the landed single-step
+`funLeft_dualMap_bottomTag_mem_rigidityRows` *terminates* the `(ab)`-block into a genuine `e_b`-row
+(`Relabel.lean:1246–1252`), which is structurally impossible in the chain interior (the successor edge
+`edge (s+1)` is cut by `removeVertex vₛ₊₁`). So the membership is **not** a fold over the landed step;
+it needs a new block-CARRYING single-step (`(ab)`-block → `(cv)`-block re-pinned to `±r` via the LANDED
+bridge; genuine-row arm reusing the landed step), THEN the fold instantiation
+(`ChainData`/`shiftBodyFramework`, `Tag` pinned to ±r). The bridge `redundancy_panel_carry` (`Relabel.lean`, after
 `bottomTag_foldr_mem_rigidityRows`) is the chain-step instance of the LANDED graph-free
 `candidateRow_ac_eq_neg` (`RigidityMatrix/Claim612.lean`, eq. 6.44, abstract over `ιab`/`ιac`/`a,b,c`):
 at the interior degree-2 body `a = vtx⟨s+1⟩` (chain neighbors `b = vtx⟨s+2⟩` successor, `c = vtx⟨s⟩`
@@ -199,7 +216,8 @@ T-W9a's span half + its deferred relabel bridge (`wstep_foldr_funLeft_eq` +
 `chainData_relabel_arm`. **`d=3` zero-regression preserved:** the bridge fires only for `s+1 < i` with
 `i ≥ 3`, vacuous at the M₃ arm (`i=2`, zero carries) — the M₃ body is untouched. **Per-leaf tracker**
 (checklist CHAIN-2): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ → redundancy_panel_carry ✓
-→ W9b membership [next] → 2c-ii-arm → 2c-iii → CHAIN-5. Full decomposition: design §(o″).
+→ block-carrying single-step [next] → W9b membership fold → 2c-ii-arm → 2c-iii → CHAIN-5. Full
+decomposition: design §(o″).
 
 **Two orphaned lemmas to confirm-and-delete at the 2c-ii-arm/cleanup commit** (both zero callers; full
 detail §(o″)): (1) `ofNormals_relabel_perm` (2c-ii-β, built for the REJECTED route A — route B is
@@ -351,16 +369,18 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   giving the `±r` panel-row identity `∑ λac • rac = −∑ λab • rab`. Thin wrapper (the abstract row
   identity does all the work); discharges the row-266 gap, no motive/IH change, d=3 vacuous. Detail
   §(o″).
-- **DEGREE-2 REDUNDANCY BRIDGE recon 2026-06-19 (docs-only; §(o″) "THE DEGREE-2 REDUNDANCY BRIDGE"; the
-  row-266 BLOCKED pin).** VERDICT: the W9b fold's per-step `Tag` cannot chain mechanically — the
-  single-step OUTPUT block-tag annihilates the predecessor panel `C(edge s)`, the next INPUT needs `⊥`
-  the successor panel `C(edge s+1)` (distinct adjacent panels at the degree-2 body). The bridge is **NOT**
-  route (a) (orthogonality implication — too-strong/false); it is **KT eq. (6.66)'s ±r vector carry**
-  (source-verified p.698), and it **REUSES** the LANDED graph-free `candidateRow_ac_eq_neg` (eq. 6.44,
-  `Claim612.lean:1194`) — its chain-step instance carrying the single `r` across one degree-2 body. NEW
-  leaf `redundancy_panel_carry` (shape B1, additive) slots before the W9b membership, which pins `Tag`'s
-  block-disjunct to ±r. No motive/IH (C.6) / spine-carry (C.3) change; d=3 zero-regression (bridge
-  vacuous at `i=2`). Detail §(o″).
+- **W9b-MEMBERSHIP sharpened recon 2026-06-19 (docs-only; §(o″) *Sharpened recon*) — VERDICT: a NEW
+  block-carrying single-step is the irreducible next leaf, NOT a fold over the landed single-step.**
+  Source-verified vs `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean:1181`): its `(ab)`-block
+  arm *terminates* the block into a genuine `e_b`-row (`:1246–1252`, `Or.inl`), and that termination is
+  structurally impossible in the chain interior — the successor edge `edge (s+1)` links `vₛ₊₁,vₛ₊₂`, cut
+  by `removeVertex vₛ₊₁`, so no `e_b` survives. The carry needs a step mapping `(ab)`-block→`(cv)`-block
+  re-pinned to `±r` (via the LANDED bridge). The landed step is the *d=3 terminal* form (M₃/`i=2`,
+  zero-regression). This is §(o″)'s shape B2, sharpened. No motive/IH/spine-carry change. Detail §(o″).
+- **DEGREE-2 REDUNDANCY BRIDGE recon 2026-06-19 — SETTLED** (bridge landed): the row-266 BLOCKED
+  diagnosed the per-step `Tag` cannot chain mechanically (adjacent panels differ at the degree-2 body);
+  the carry is KT eq. (6.66)'s ±r vector identity (NOT a false orthogonality implication), discharged by
+  `redundancy_panel_carry` (the LANDED entry above). Detail §(o″) "THE DEGREE-2 REDUNDANCY BRIDGE".
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`

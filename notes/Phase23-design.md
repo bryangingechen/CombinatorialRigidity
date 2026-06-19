@@ -2865,8 +2865,10 @@ invoked for `s+1 < i` with `i ≥ 3`, vacuous at `i=2`. So the d=3 M₃ body and
 `complementIso_smul_eq_extensor_join` wrapper stay green, untouched.
 
 **Updated per-leaf tracker (CHAIN-2c-ii-transport):** T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold
-core ✓ → **redundancy_panel_carry ✓ (LANDED 2026-06-19, axiom-clean)** → **W9b membership (NEXT
-BUILDABLE)** → 2c-ii-arm → 2c-iii → CHAIN-5.
+core ✓ → **redundancy_panel_carry ✓ (LANDED 2026-06-19, axiom-clean)** → **block-carrying single-step
+(NEXT BUILDABLE — the irreducible piece; see *Sharpened recon* below: the landed single-step
+terminates the `(ab)`-block, the chain interior cannot)** → W9b membership (fold) → 2c-ii-arm → 2c-iii
+→ CHAIN-5.
 
 **As-landed bridge signature (shape B1, `Graph.ChainData.redundancy_panel_carry`, `Relabel.lean`).** The
 leaf landed in the *abstract eq.-(6.44) form* — it carries the redundant-combination decomposition data
@@ -2889,6 +2891,46 @@ find, not a model failure. **The blueprint-clarity obligation (route β absorbs 
 gains a concrete anchor here:** the `lem:case-III` general-`d` prose's point (3) "the single
 redundancy `r` carried ±-ly across the `d` panels (eq. 6.66)" is exactly `redundancy_panel_carry`
 generalizing `candidateRow_ac_eq_neg`.
+
+**Sharpened recon (2026-06-19, read-only, source-verified vs the landed single-step body
+`funLeft_dualMap_bottomTag_mem_rigidityRows`, `Relabel.lean:1181`): the landed single-step is NOT
+reusable for the fold's `(ab)`-block disjunct — W9b membership needs a NEW block-CARRYING single-step,
+not a `Tag` choice over the landed one.** Two structural facts, each verified against the body:
+
+  1. *The landed single-step's `(ab)`-block input arm always produces a GENUINE `e_b`-row, never a
+  `(cv)`-block carry.* At `Relabel.lean:1246–1252` the `φ = hingeRow a b ρ'` input is relabelled to
+  `hingeRow v b ρ'` and discharged by `Or.inl ⟨e_b, v, b, hlink_eb, ρ', …⟩` — i.e. it *terminates*
+  the block into the genuine `e_b`-row of `Fva`. (Only the *genuine-row* input arm, lines 1204–1245,
+  can emit a `(cv)`-block, via the degree-2 edge `e_c`.) So a `Tag` whose block-disjunct is pinned to
+  `±r` cannot chain across an interior step by feeding the landed single-step: the step would convert
+  the carried block into a genuine row.
+
+  2. *That termination is structurally IMPOSSIBLE in the interior chain frame* (so it is not merely
+  the wrong arm — the arm's `hlink_eb` premise is unsatisfiable at the natural successor edge). The
+  single-step's `(ab)`-block arm needs `hlink_eb : Fva.graph.IsLink e_b v b` with `Fva = F s =
+  G − vₛ₊₁` and `v = vₛ₊₂`. The natural successor edge `edge (s+1)` links `vₛ₊₁, vₛ₊₂` in `G`, so it
+  is incident to the *removed* vertex `vₛ₊₁` and does **not** survive `removeVertex vₛ₊₁`. Hence there
+  is no surviving `e_b` for the block to terminate into — the carried block MUST stay a `(cv)`-block
+  at the predecessor panel, exactly the carry `redundancy_panel_carry` was built to license. (At
+  `d=3`/`i=2` the chain has length 1 and the block is at the *bottom* already, so the M₃ single-step's
+  termination is correct there — which is why the gap is d≥4-only and the landed single-step is the
+  *d=3 terminal* form, not the chain-interior form.)
+
+  **Consequence for the next session.** The W9b membership is NOT "instantiate `bottomTag_foldr_mem_
+  rigidityRows` with a `±r`-pinned `Tag` over the landed single-step." It requires a **new
+  block-carrying single-step** `funLeft_dualMap_pinnedBlock_carry` (working name) whose `(ab)`-block
+  input maps to a `(cv)`-block OUTPUT re-pinned to `±r` at the predecessor panel (consuming
+  `redundancy_panel_carry` for the panel-match), with the genuine-row arm reusing the landed
+  single-step's first case. THEN the fold instantiation. This is the shape B2 of §(o″)
+  ("absorb the carry into a strengthened single-step") more precisely than B1 — B1's standalone bridge
+  lemma is landed but does not by itself let the *landed* single-step chain; the strengthened step is
+  the irreducible piece. Honest re-estimate: **the new carrying single-step is itself a build commit**
+  (the three-way case split with a `(cv)`-output block arm, the bridge wire-up, the per-step
+  coordinate bookkeeping `e_b = edge (s+1)` / `e_c = edge s` off `ChainData`), THEN the fold +
+  relabel-bridge instantiation a second. No motive/IH (C.6) / spine-carry (C.3) change (the new step
+  is below the dispatch, like the landed one); `d=3` zero-regression preserved (the landed terminal
+  single-step + M₃ are untouched). Per-leaf tracker gains a node: **redundancy_panel_carry ✓ →
+  block-carrying single-step [NEXT] → W9b membership (fold) → 2c-ii-arm → …**.
 
 ---
 
