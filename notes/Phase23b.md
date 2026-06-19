@@ -32,28 +32,31 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport** (the heavy leaf: re-derive
-`ofNormals_relabel` off `ρ.symm`, not the `Equiv.swap` involution — design §(o)). **CHAIN-2c-ii-α
-LANDED 2026-06-18** — `ChainData.shiftPerm`, the KT eq. 6.54 index-shift `(i−1)`-cycle iso + action
-lemmas, axiom-clean (`Induction/Operations.lean`). **CHAIN-2c-i LANDED** —
-`exists_chainData_discriminator_pick`, the single-discriminator pick off the shared `ρ`. §(o)
-decomposed 2c-ii (the uniform relabel arm = genuinely-new, the landed relabel engine being
-transposition-only) into: 2c-ii-α (cycle iso, done) → **2c-ii-β** (general-perm transport, heavy,
-next) → 2c-ii (`chainData_relabel_arm`) → 2c-iii (assembly). Route β LOCKED; no motive/IH change.
-Detail: design §(o) + *Decisions made*.
+**Next = CHAIN-2c-ii — the uniform arm closer `chainData_relabel_arm`** (the `Fin d` generalization
+of M₃'s body, `Relabel.lean:847`–1013): instantiate the landed transport `ofNormals_relabel_perm` at
+`ρ := cd.shiftPerm i` to carry the single base `(G₁,q₁)` to the candidate-`i` framework `(G,pᵢ)`,
+carry the ±r identity (eq. 6.66) via `shiftPerm`'s parity, and feed `case_III_arm_realization` at the
+relabelled roles. This consumes a `shiftPerm`-relabel graph-iso (a `splitOff_isLink_relabel` analogue
+for the interior-split pair, the only remaining graph-combinatorial input).
 
-**CHAIN-2a CLOSED** (`chainData_split_w6b_gates` + `chainData_split_realization`). **Route β — LOCKED**
-(user-adjudicated 2026-06-18, KT-source-verified row 242): KT builds the `d` candidates as index-shift
-re-views of ONE `v₁`-base (not `d` separate splits — the §(l)/§(m) per-`i` framing corrected); build 2c
-off the single base + the uniform `Fin (k+1)` relabel arm. Full rationale + the **blueprint-clarity
-obligation** (route β absorbs KT's isos 6.54–6.56 + the ±r chain 6.66, so the `lem:case-III` general-`d`
-prose must materialize them): *Hand-off* + design §(n).
+**CHAIN-2c-ii-β LANDED 2026-06-18** — `PanelHingeFramework.ofNormals_relabel_perm`
+(`CaseIII/Relabel.lean`, axiom-clean): the general-`Equiv.Perm` framework-transport, the
+involution-free generalization of `ofNormals_relabel`. Graph layer abstracted to the iso hypothesis
+`hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + the forward vertex transport `hρst`; the four
+conjuncts transport with `ρ.symm`/`σ.symm` where the swap body fired the involution (`.symm`-placement
+forced — FRICTION idiom). Specializes to the d=3 `ofNormals_relabel` when `ρ`/`σ` are the swaps. The
+landed transport engine, `ChainData.shiftPerm` (2c-ii-α), and `exists_chainData_discriminator_pick`
+(2c-i) are all in tree; only the arm closer (2c-ii) + assembly (2c-iii) remain in CHAIN-2c.
 
-**Context (closed/landed — detail in the Status banner + checklist + Hand-off + *Decisions made*):**
-CHAIN-1/3/4 + OD-7 (all four 23a producers + both M4 halves general-`k`) CLOSED; the `G.ChainData n`
-record + 7 interior-split accessors landed; **CHAIN-2a CLOSED**; **CHAIN-2c-i** (the discriminator pick)
-landed; **CHAIN-2c-ii-α** (`ChainData.shiftPerm` + action lemmas) landed. Remaining: **CHAIN-2c-ii-β**
-(the general-perm transport, heavy) → **2c-ii** (`chainData_relabel_arm`) → **2c-iii** (assembly) →
+**Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): KT builds the `d`
+candidates as index-shift re-views of ONE `v₁`-base; build 2c off the single base + the uniform
+`Fin (k+1)` relabel arm. The **blueprint-clarity obligation** (route β absorbs KT's isos 6.54–6.56 +
+the ±r chain 6.66, so the `lem:case-III` general-`d` prose must materialize them): *Hand-off* +
+design §(n)/§(o).
+
+**Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors landed;
+**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** landed. Remaining in CHAIN-2c:
+**2c-ii** (`chainData_relabel_arm`, next) → **2c-iii** (`chainData_dispatch` assembly) → then
 **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract) + the ENTRY extractor reshape.
 
 **Architectural constraint (standing).** The metric-using Hodge leaves live in `MeetHodge.lean`, never
@@ -115,12 +118,13 @@ extractor reshape).
       one-shot discriminator pick — **LANDED 2026-06-18**, axiom-clean) → **CHAIN-2c-ii** (the uniform
       `Fin d` relabel arm = the genuinely-new crux; **§(o) resolved the route flag: a genuinely-new
       construction, NOT a numeral pass** — KT's `ρᵢ` is a `(i−1)`-cycle, the landed transport engine is
-      transposition-only). 2c-ii itself decomposes: **2c-ii-α** `ChainData.shiftPerm` (the cycle iso,
-      first buildable / only new self-contained brick — **LANDED 2026-06-18**, axiom-clean) →
-      **2c-ii-β** the general-`Equiv.Perm` transport (heavy leaf, re-derives `ofNormals_relabel` off
-      `ρ.symm`) → **2c-ii** `chainData_relabel_arm` (the `Fin d` generalization of M₃) → **CHAIN-2c-iii**
-      (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). ~3 build commits remain (the
-      general-perm transport + arm closer are real new infra).
+      transposition-only). 2c-ii itself decomposes: **2c-ii-α** `ChainData.shiftPerm` (the cycle iso —
+      **LANDED 2026-06-18**, axiom-clean) → **2c-ii-β** the general-`Equiv.Perm` transport
+      `ofNormals_relabel_perm` (**LANDED 2026-06-18**, axiom-clean — the `ρ.symm` re-derivation of
+      `ofNormals_relabel`) → **2c-ii** `chainData_relabel_arm` (the `Fin d` generalization of M₃; the
+      arm closer, **next**) → **CHAIN-2c-iii** (`chainData_dispatch` assembly, d=3 a zero-regression
+      wrapper). ~2 build commits remain (the arm closer + its `shiftPerm`-relabel graph-iso + the
+      dispatch).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -187,27 +191,26 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**CHAIN-2c-ii-α LANDED 2026-06-18** — `ChainData.shiftPerm` (KT eq. 6.54, the index-shift `i`-cycle
-`vtx 1 → ⋯ → vtx i → vtx 1` as a Lean `Equiv.Perm α`) + its action lemmas
-(`shiftPerm_apply_{off,vtx_off,interior}`, `shiftPerm_vtx_top`) in `Induction/Operations.lean`,
-graph-free / axiom-clean, built `List.formPerm (List.ofFn …)` over the `vtx` family. See *Decisions
-made*.
+**CHAIN-2c-ii-α/β LANDED 2026-06-18** — `ChainData.shiftPerm` (KT eq. 6.54, the index-shift `i`-cycle
+iso, `Induction/Operations.lean`) and `PanelHingeFramework.ofNormals_relabel_perm` (the general-perm
+framework-transport, `CaseIII/Relabel.lean`), both axiom-clean. The β leaf abstracts the graph layer
+into the iso hypothesis `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + forward vertex
+transport `hρst`; the four conjuncts transport with `ρ.symm`/`σ.symm` where the swap body fired the
+involution (the `.symm`-placement is forced — `qρ` keeps forward `ρ`, `endsσρ` + the rigidity-pullback
+motion `S∘ρ.symm` flip to `.symm`; FRICTION idiom). Specializes to the d=3 `ofNormals_relabel` at the
+swaps. See *Decisions made*.
 
-**Next = CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport** (the heavy leaf). Generalize
-`ofNormals_relabel` (`Relabel.lean:78`) from `ρ = Equiv.swap a v` to an arbitrary `ρ : Equiv.Perm α`
-(+ edge side `σ : Equiv.Perm β`) carrying one interior `splitOff` to another: drop the `hρρ`/`hσσ`
-involution dependence (use `ρ.symm`/`σ.symm` where the body fired the second swap), restate
-`splitOff_isLink_relabel` for the general-perm interior-split pair, and re-derive the four transport
-conjuncts (GP / rigidity-pullback via `S∘ρ` / link-recording / AlgIndep). It will instantiate
-`ρ := cd.shiftPerm i` (2c-ii-α). **§(o) resolved the route-α-vs-β flag (clause ii):** the uniform
-relabel arm is a **genuinely-new construction, NOT a numeral pass** over the d=3 `_M2`/`_M3` — KT's
-`ρᵢ` is a `(i−1)`-cycle, the landed transport engine
-(`hasGenericFullRankRealization_of_splitOff_relabel`) is **transposition-only**. **No motive/IH or
-spine-carried-hypothesis change** — new infrastructure below the dispatch; route β stays LOCKED
-(single base, shared `ρ₀`, reuse 2a-ii only at the M₀/`i=1` candidate). Then **2c-ii**
-(`chainData_relabel_arm`, the `Fin d` generalization of M₃'s body) → **CHAIN-2c-iii**
-(`chainData_dispatch` assembly) → **CHAIN-5**. Carry the heavy transport + arm closer as the
-standing `h…` idiom if they cannot close in one sitting — never a `sorry`.
+**Next = CHAIN-2c-ii — the uniform arm closer `chainData_relabel_arm`** (the `Fin d` generalization of
+M₃'s body, `Relabel.lean:847`–1013). For an interior candidate index `i`: instantiate
+`ofNormals_relabel_perm` at `ρ := cd.shiftPerm i` (2c-ii-α) to transport the shared base `(G₁,q₁)` to
+the candidate-`i` framework `(G,pᵢ)`, carry the ±r identity (eq. 6.66) via the sign `shiftPerm`'s
+parity induces, and feed `case_III_arm_realization` at the relabelled roles to close
+`HasGenericFullRankRealization k n G`. The remaining graph-combinatorial input is a `shiftPerm`-relabel
+graph-iso (a `splitOff_isLink_relabel` analogue for the interior-split pair) supplying `hiso`. **No
+motive/IH or spine-carried-hypothesis change** — infrastructure below the dispatch; route β stays
+LOCKED (single base, shared `ρ₀`, reuse 2a-ii only at the M₀/`i=1` candidate). Then **CHAIN-2c-iii**
+(`chainData_dispatch` assembly) → **CHAIN-5**. Carry the arm closer as the standing `h…` idiom if it
+cannot close in one sitting — never a `sorry`.
 
 **CHAIN-2c-i LANDED 2026-06-18** — `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`,
 axiom-clean): steps 1–3 of the single-base dispatch (the W6b → `ρ₀` is the already-landed
@@ -363,20 +366,23 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   genuinely-new construction, NOT a numeral pass** (the landed engine is transposition-only; KT's `ρᵢ`
   is a cycle). Decompose 2c-ii-α (`shiftPerm`, LANDED below) → 2c-ii-β (general-perm transport) → 2c-ii
   → 2c-iii; M₀-arm (2a-ii) reused at `i=1` only; no motive/IH/spine-carry change. Detail §"CHAIN"(o).
-- **CHAIN-2c-i LANDED 2026-06-18 — the single-discriminator pick (steps 1–3, route β).**
-  `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean): the
-  `Fin (k+1)`-panel LI (OD-7 LEAF-0 `_general`) feeds the one discriminator call (CHAIN-4d) → `(u, n')`
-  with `ρ(panelSupportExtensor (q(cand u,·)) n') ≠ 0` (meet-form bridge). A verbatim
-  `Fin (k+1)`-generalization of the green d=3 discriminator region (`case_III_candidate_dispatch`
-  435–442); `u` arbitrary (the candidate match is 2c-ii). No FRICTION.
-- **CHAIN-2c-ii-α LANDED 2026-06-18 — the `ChainData.shiftPerm` index-shift iso (KT eq. 6.54).**
-  `ChainData.shiftPerm i : Equiv.Perm α` (`Induction/Operations.lean`, axiom-clean): the `i`-cycle
-  `vtx 1 → ⋯ → vtx i → vtx 1` over the chain-vertex family, built `List.formPerm (List.ofFn fun j :
-  Fin i => vtx ⟨j+1, _⟩)` (graph-free, `[DecidableEq α]`). Action lemmas: `shiftPerm_apply_off`
-  (off-cycle fixed), `shiftPerm_apply_vtx_off` (its `vtx`-keyed `m=0 ∨ i<m` corollary, via
-  `vtx_mem_shiftCycle_iff`), `shiftPerm_apply_interior` (`vtx j ↦ vtx (j+1)`, `1≤j<i`),
-  `shiftPerm_vtx_top` (the wrap `vtx i ↦ vtx 1`). Robust at the degenerate `i=1` single-element cycle
-  (`formPerm` is the identity). Promotions below.
+- **CHAIN-2c-i LANDED 2026-06-18 — the single-discriminator pick (steps 1–3, route β):**
+  `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean) — the `Fin (k+1)`-panel
+  LI feeds the one CHAIN-4d discriminator call → `(u, n')`; verbatim generalization of the green d=3
+  discriminator region (`case_III_candidate_dispatch` 435–442), `u` arbitrary. Detail in git + §(o).
+- **CHAIN-2c-ii-α LANDED 2026-06-18 — the `ChainData.shiftPerm` index-shift iso (KT eq. 6.54):**
+  the `i`-cycle `vtx 1 → ⋯ → vtx i → vtx 1` (`Induction/Operations.lean`, axiom-clean) + action lemmas
+  (`shiftPerm_apply_{off,vtx_off,interior}`, `shiftPerm_vtx_top`); `List.formPerm (List.ofFn …)` idiom
+  promoted below. Detail in git + §(o).
+- **CHAIN-2c-ii-β LANDED 2026-06-18 — the general-`Equiv.Perm` framework-transport.**
+  `PanelHingeFramework.ofNormals_relabel_perm` (`CaseIII/Relabel.lean`, axiom-clean): the
+  involution-free generalization of `ofNormals_relabel`. The graph layer is abstracted to one
+  hypothesis `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` (the `splitOff_isLink_relabel`
+  shape, supplied per candidate by the arm closer) + the forward vertex transport `hρst`; the four
+  conjuncts (GP / rigidity-pullback / link-recording / AlgIndep) transport with `ρ.symm`/`σ.symm`
+  where the swap body fired `hρρ`/`hσσ`. Specializes to the d=3 `ofNormals_relabel` at the swaps.
+  Mechanical transcription of the swap body (no build-failure iterations); the `.symm`-placement
+  insight (the only genuinely-new content) is promoted below.
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
   Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,
@@ -438,6 +444,10 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
   `List.formPerm (List.ofFn …)` (needs `[DecidableEq α]`); `Nodup` via `nodup_ofFn`, action lemmas
   via `formPerm_apply_lt_getElem` / `…_getElem` + `Nat.mod_self` / `…_of_notMem`* → FRICTION [idiom]
   *A `Fin n → α` indexed-family cycle as an `Equiv.Perm`…*.
+- *Dropping the involution from a `ρ = Equiv.swap`-relabel transport to a general `Equiv.Perm ρ`: the
+  `ρ`/`ρ.symm` placement is forced — `qρ` keeps forward `ρ`, but `endsσρ` + the rigidity-pullback
+  motion `S∘ρ.symm` flip to `.symm`; the vertex-region transport stays forward `ρ`* → FRICTION
+  [idiom] *Dropping the involution from a `ρ = Equiv.swap`-relabel transport…*.
 - *`rw [hidx]` on a `getElem` index `l[k]`/`l[k]'h` (the bounds proof depends on `k`) trips "motive
   is not type correct" — re-apply the indexing lemma at the new index, don't rewrite the index in
   place* → TACTICS-QUIRKS § 61.

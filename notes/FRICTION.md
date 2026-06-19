@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] Dropping the involution from a `ρ = Equiv.swap`-relabel transport to a general `Equiv.Perm ρ` — the `ρ`/`ρ.symm`-placement is forced, not free
+- **Where it bit:** `PanelHingeFramework.ofNormals_relabel_perm` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-β), generalizing the swap-only `ofNormals_relabel` to KT eq. (6.54)'s `(i−1)`-cycle `ρᵢ`.
+- **Friction:** the swap body has `ρ` in *both* the seed reindex (`qρ p = q₀ (ρ p.1, ·)`) *and* the endpoint selector (`endsσρ e = (ρ (ends₀ (σ e)).1, …)`); with `ρ = ρ.symm` the two `ρ`s cancel each other (e.g. in the support-extensor equality `Q'.supportExtensor f = Q.supportExtensor (σ f)`), so the body never reveals which slot needs `.symm`.
+- **Resolution:** for a non-involutive `ρ` the cancellations dictate the placement uniquely — **`qρ` keeps forward `ρ`, but `endsσρ` flips to `ρ.symm`** (so `Q'.normal (ρ.symm x) = q₀ (ρ (ρ.symm x), ·) = q₀ (x, ·)` via `Equiv.apply_symm_apply`). Symmetrically the rigidity pullback motion is `S ∘ ρ.symm` (a target link at `(ρ.symm p, ρ.symm p')` matches a source link `f p p'` via `hiso` at `σ.symm f`), while the *vertex-region* transport stays **forward** `ρ : u ∈ st → ρ u ∈ sr` (`Equiv.symm_apply_apply` carries the source-constancy back to `st`). Link-recording is the `.mp` of `hiso` undone by `ρ.symm`. With the swaps reinstated (`ρ.symm = ρ`, `σ.symm = σ`) it is verbatim `ofNormals_relabel`. The proof is otherwise a mechanical transcription of the swap body — `Equiv.{apply_symm_apply, symm_apply_apply}` wherever the swap body wrote `hρρ`/`hσσ`.
+- **Status:** idiom.
+
 ### [process] "Brick" is a project mnemonic, not KT's term — a terminology-faithfulness sweep is open
 - **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
   sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.

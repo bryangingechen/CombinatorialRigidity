@@ -2234,18 +2234,18 @@ dispatch consumes it. Four dependency-ordered buildable leaves:
   the genuinely-new brick; it is **independent of all rigidity content** and is the
   smallest self-contained piece — the first *new* brick, and (per *First buildable* below)
   the recommended next commit.
-- **CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport.** Generalize
-  `ofNormals_relabel` from `ρ = Equiv.swap a v` to an arbitrary `ρ : Equiv.Perm α` (and
-  the edge side `σ : Equiv.Perm β`) carrying one interior split to another: drop the
-  `hρρ`/`hσσ` involution dependence (use `ρ.symm`/`σ.symm` where the body used the
-  second application of the swap), restate `splitOff_isLink_relabel` for the
-  general-perm interior-split pair, and re-derive the four transport conjuncts (GP /
-  rigidity-pullback via `S∘ρ` / link-recording / AlgIndep — all four go through with
-  `ρ.symm` in place of the involution). **This is the heavy leaf** (it is the
-  re-derivation `ofNormals_relabel` does at one transposition, now at a general perm);
-  flag for the build whether it factors as `ofNormals_relabel` does (a `~200-line`
-  body) or needs further splitting. §38-aware (the `ofNormals`/`toBodyHinge` defeq trap
-  lives inside, as in the d=3 body).
+- **CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport. LANDED 2026-06-18**
+  (`PanelHingeFramework.ofNormals_relabel_perm`, `CaseIII/Relabel.lean`, axiom-clean). The
+  involution-free generalization of `ofNormals_relabel`. The graph layer is **abstracted into one
+  hypothesis** `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` (the `splitOff_isLink_relabel`
+  shape — supplied per candidate by the arm closer, so the heavy interior-split combinatorics stay
+  out of the transport) + the forward vertex-region transport `hρst : u ∈ st → ρ u ∈ sr`. The four
+  conjuncts (GP / rigidity-pullback via `S∘ρ.symm` / link-recording / AlgIndep) re-derive with
+  `ρ.symm`/`σ.symm` where the swap body fired `hρρ`/`hσσ`. The `.symm`-placement is **forced** (the
+  d=3 body hides it: with `ρ.symm = ρ` the two `ρ`s cancel): `qρ p := q₀ (ρ p.1, ·)` keeps forward
+  `ρ`, but `endsσρ e := (ρ.symm (ends₀ (σ e)).1, …)` flips to `.symm`; FRICTION idiom. Specializes to
+  the d=3 `ofNormals_relabel` at the swaps. No further splitting needed (one ~100-line body, a
+  mechanical transcription of the swap body — no build-failure iterations).
 - **CHAIN-2c-ii — the uniform arm closer `chainData_relabel_arm` (working name).** For an
   interior candidate index `i`, takes the shared base `(G₁,q₁)` realization + the shared
   `ρ₀` (the `r` of eq. 6.66) + the discriminator's `(u, n')` matched to candidate `i`,
@@ -2307,11 +2307,12 @@ requires the genuinely-new `shiftPerm` iso + general-perm transport, the lowest-
 brick was the **iso brick CHAIN-2c-ii-α** (`ChainData.shiftPerm` + its action
 lemmas) — graph-free, §38-clean, independent of all rigidity content, the
 foundation 2c-ii-β/2c-ii both consume. **CHAIN-2c-ii-α LANDED 2026-06-18**
-(`Induction/Operations.lean`, `List.formPerm (List.ofFn …)`, axiom-clean — see
-`notes/Phase23b.md` *Decisions made*). Carry the heavy transport (2c-ii-β) and the arm
-closer (2c-ii) as the standing `h…` idiom if they cannot close in one sitting — never a
-`sorry`. **Re-pointed hand-off next commit = CHAIN-2c-ii-β, the general-`Equiv.Perm`
-relabel transport (the heavy leaf, instantiated at `cd.shiftPerm i`).**
+(`Induction/Operations.lean`, `List.formPerm (List.ofFn …)`, axiom-clean), and
+**CHAIN-2c-ii-β LANDED 2026-06-18** (`ofNormals_relabel_perm`, the general-perm transport,
+axiom-clean — see `notes/Phase23b.md` *Decisions made*). Carry the arm closer (2c-ii) as the
+standing `h…` idiom if it cannot close in one sitting — never a `sorry`. **Re-pointed hand-off next
+commit = CHAIN-2c-ii, the uniform arm closer `chainData_relabel_arm` (instantiate
+`ofNormals_relabel_perm` at `ρ := cd.shiftPerm i`, feed `case_III_arm_realization`).**
 
 **Clause-(ii) summary (the honest flag).** The uniform `Fin d` relabel arm is **not** a
 numeral pass over the landed M₂/M₃: KT's `ρᵢ` is a cycle, the landed engine is

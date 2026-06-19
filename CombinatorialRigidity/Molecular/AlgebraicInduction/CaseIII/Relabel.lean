@@ -45,6 +45,118 @@ private theorem hσσ_relabel {β : Type*} [DecidableEq β] {e_b e_c e₀ e₁ :
   simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
   split_ifs <;> simp_all
 
+/-- **The general-`Equiv.Perm` framework-transport (CHAIN-2c-ii-β): an arbitrary vertex relabel
+`ρ : Equiv.Perm α` (with edge relabel `σ : Equiv.Perm β`) intertwining two graphs transports the
+`ofNormals` generic-realization data from one to the other** (`lem:case-III` general-`d`, KT 2011
+§6.4.2 the index-shift isos eqs.~(6.54)–(6.56); Phase 23b). This is the involution-free
+generalization of `ofNormals_relabel` (`ρ = Equiv.swap a v` / `σ = Equiv.swap e_b e₀ *
+Equiv.swap e₁ e_c`), the load-bearing brick the all-`d` candidate-reduction arm
+(`chainData_relabel_arm`, 2c-ii) instantiates at `ρ := cd.shiftPerm i` for each interior chain
+candidate `i` — where KT's `ρᵢ` is a genuine `(i−1)`-cycle, **not** a transposition, so the
+swap-specific transport must be re-derived for a general permutation.
+
+The graph layer is abstracted into a single hypothesis: the two graphs `Gs` (source, KT's
+`v₁`-base split) and `Gt` (target, the candidate-`i` split) are `(ρ, σ)`-related by
+`hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` — exactly the shape `splitOff_isLink_relabel`
+proves for the d=3 swap pair, and the shape the arm closer supplies per candidate (a
+`shiftPerm`-relabel between two interior `splitOff`s). The rigidity region is abstracted into
+`sr`/`st` with the forward vertex transport `hρst : u ∈ st → ρ u ∈ sr`.
+
+The relabelled framework reads the original seed `q₀` at the `ρ`-shifted body
+(`qρ p := q₀ (ρ p.1, p.2)`) and the original endpoints `ρ.symm`-shifted
+(`endsσρ e := (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)`); the two `.symm`/forward choices
+make the support extensors agree across the relabel (`Q'.supportExtensor f = Q.supportExtensor
+(σ f)`) without an involution. The four conjuncts transport: **GP** by the injective `ρ`-reindex of
+`q₀`; **rigidity** by pulling a motion `S` of the target back to `S ∘ ρ.symm` of the source (each
+target link at `(ρ.symm p, ρ.symm p')` matches a source link `f p p'` through `hiso` at `σ.symm f`),
+which `Q`'s rigidity on `sr` forces constant, then forward `ρ` carries the conclusion to `st`;
+**link-recording** by the `.mp` direction of `hiso` through `ρ.symm`; **AlgIndep** by the injective
+`ρ`-reindex. When `ρ`, `σ` are the d=3 swaps (`ρ.symm = ρ`, `σ.symm = σ`) this is exactly
+`ofNormals_relabel`. -/
+theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
+    (ρ : Equiv.Perm α) (σ : Equiv.Perm β) {sr st : Set α}
+    (hiso : ∀ e x y, Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y))
+    (hρst : ∀ u ∈ st, ρ u ∈ sr)
+    {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    (hQgp : (PanelHingeFramework.ofNormals Gs ends₀ q₀).IsGeneralPosition)
+    (hQrig :
+      (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.IsInfinitesimallyRigidOn sr)
+    (hQrec : ∀ e u w, Gs.IsLink e u w → ends₀ e = (u, w) ∨ ends₀ e = (w, u))
+    (hQalg : AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (p.1, p.2))) :
+    (PanelHingeFramework.ofNormals Gt
+        (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
+        (fun p => q₀ (ρ p.1, p.2))).IsGeneralPosition ∧
+    (PanelHingeFramework.ofNormals Gt
+        (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
+        (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.IsInfinitesimallyRigidOn st ∧
+    (∀ e u w, Gt.IsLink e u w →
+        (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2) = (u, w) ∨
+        (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2) = (w, u)) ∧
+    AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (ρ p.1, p.2)) := by
+  set endsσρ : β → α × α := fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)
+    with hendsσρ
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q₀ (ρ p.1, p.2) with hqρ
+  set Q := PanelHingeFramework.ofNormals Gs ends₀ q₀ with hQ_def
+  set Q' := PanelHingeFramework.ofNormals Gt endsσρ qρ with hQ'_def
+  -- Q'.supportExtensor f = Q.supportExtensor (σ f): the relabelled framework's hinge at f reads
+  -- q₀ at the ρ-shifted endpoints (the forward ρ in qρ cancelling the ρ.symm in endsσρ), i.e. the
+  -- original hinge at (σ f). No involution needed.
+  have h_supp : ∀ f : β,
+      Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := by
+    intro f
+    simp only [hQ_def, hQ'_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hendsσρ, hqρ,
+      Equiv.apply_symm_apply]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  -- (1) General position: Q'.normal x = q₀ (ρ x, ·), reindexed by injective ρ.
+  · intro x y hxy
+    change LinearIndependent ℝ ![fun i => qρ (x, i), fun i => qρ (y, i)]
+    have := hQgp (ρ x) (ρ y) (ρ.injective.ne hxy)
+    simpa only [hQ_def, PanelHingeFramework.ofNormals_normal, hqρ] using this
+  -- (2) Rigidity: any motion S of Q' yields the motion S ∘ ρ.symm of Q, constant on sr, hence
+  --     (carried forward by ρ) S constant on st.
+  · intro S hS u hu w hw
+    -- S ∘ ρ.symm is an infinitesimal motion of Q.
+    have hSmot : Q.toBodyHinge.IsInfinitesimalMotion (S ∘ ρ.symm) := by
+      intro f x y hf
+      simp only [hQ_def, PanelHingeFramework.toBodyHinge_graph,
+        PanelHingeFramework.ofNormals_graph] at hf
+      -- The source link f x y matches a target link at (ρ.symm x, ρ.symm y) via hiso at σ.symm f.
+      have hfQ' : Gt.IsLink (σ.symm f) (ρ.symm x) (ρ.symm y) :=
+        (hiso (σ.symm f) (ρ.symm x) (ρ.symm y)).mpr (by
+          simp only [Equiv.apply_symm_apply]; exact hf)
+      have harg : Q'.toBodyHinge.graph.IsLink (σ.symm f) (ρ.symm x) (ρ.symm y) := by
+        simp only [hQ'_def, PanelHingeFramework.toBodyHinge_graph,
+          PanelHingeFramework.ofNormals_graph]; exact hfQ'
+      have hSc : Q'.toBodyHinge.hingeConstraint S (σ.symm f) (ρ.symm x) (ρ.symm y) :=
+        hS (σ.symm f) (ρ.symm x) (ρ.symm y) harg
+      -- hSc : S (ρ.symm x) - S (ρ.symm y) ∈ span {Q'.supportExtensor (σ.symm f)}
+      --      = span {Q.supportExtensor f}.
+      change (S ∘ ρ.symm) x - (S ∘ ρ.symm) y ∈
+        Submodule.span ℝ {Q.toBodyHinge.supportExtensor f}
+      rw [show Q.toBodyHinge.supportExtensor f = Q'.toBodyHinge.supportExtensor (σ.symm f) by
+        rw [h_supp (σ.symm f), Equiv.apply_symm_apply]]
+      exact hSc
+    -- Apply Q's rigidity on sr at the forward-ρ images of u, w (which lie in sr by hρst).
+    have hSmotConst := hQrig (S ∘ ρ.symm) hSmot (ρ u) (hρst u hu) (ρ w) (hρst w hw)
+    simp only [Function.comp, Equiv.symm_apply_apply] at hSmotConst
+    exact hSmotConst
+  -- (3) Link-recording: every link of Gt has endpoints recorded by endsσρ.
+  · intro e' u w he'
+    have hfQ : Gs.IsLink (σ e') (ρ u) (ρ w) := (hiso e' u w).mp he'
+    rcases hQrec (σ e') (ρ u) (ρ w) hfQ with h1 | h1
+    · refine Or.inl ?_
+      change (ρ.symm (ends₀ (σ e')).1, ρ.symm (ends₀ (σ e')).2) = (u, w)
+      rw [h1]; exact Prod.ext (ρ.symm_apply_apply u) (ρ.symm_apply_apply w)
+    · refine Or.inr ?_
+      change (ρ.symm (ends₀ (σ e')).1, ρ.symm (ends₀ (σ e')).2) = (w, u)
+      rw [h1]; exact Prod.ext (ρ.symm_apply_apply w) (ρ.symm_apply_apply u)
+  -- (4) AlgebraicIndependent ℚ: qρ is an injective ρ-reindex of q₀.
+  · change AlgebraicIndependent ℚ (fun p : α × Fin (k + 2) => q₀ (ρ p.1, p.2))
+    have := hQalg.comp (fun p : α × Fin (k + 2) => (ρ p.1, p.2))
+        (fun p q h => Prod.ext (ρ.injective (Prod.ext_iff.mp h).1) (Prod.ext_iff.mp h).2)
+    simpa only [Function.comp] using this
+
 /-- **G4c-ii (fixed-seed form): the `ρ = (av)` relabel transports the concrete v-split `ofNormals`
 data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
 (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31) framework side, Phase 22h).
