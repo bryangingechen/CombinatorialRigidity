@@ -17,22 +17,18 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). T-W9a LANDED; T-W9b single-step + fold core LANDED; W9b membership BLOCKED
-on a missing degree-2 redundancy bridge — diagnosed, pinned, and decomposed (§(o″) "THE DEGREE-2
-REDUNDANCY BRIDGE"); next commit = the bridge leaf `redundancy_panel_carry`.** The gap (build row 266,
-coordinator-verified): the fold's per-step `Tag` cannot be instantiated mechanically — the single-step
-OUTPUT block-tag annihilates the **predecessor** panel `C(edge s)`, but the next step's INPUT block-tag
-needs `⊥` the **successor** panel `C(edge s+1)` (distinct adjacent panels at the degree-2 body `vₛ₊₁`).
-The bridge is **NOT** an orthogonality implication between the two panels (that is too-strong/false);
-it is KT eq. (6.66)'s **±r vector carry** ("because `vᵢ` is degree two", cf. eq. 6.44) — an *equality*,
-source-verified KT p. 698 — and it **REUSES** the LANDED graph-free `candidateRow_ac_eq_neg`
-(`Claim612.lean:1194`, eq. 6.44, the degree-2 two-panel row identity `∑ lamAC • rac = −∑ lamAB • rab`):
-the bridge leaf is its chain-step instance, carrying the single `r` across one degree-2 body. So it is
-**NOT new math** (no motive/IH/spine-carry change; d=3 zero-regression — the bridge is vacuous at the
-M₃ arm `i=2`, which never chains). Per-leaf tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ →
-W9b-step ✓ → W9b fold core ✓ → **redundancy_panel_carry (bridge) [next]** → W9b membership → 2c-ii-arm →
-2c-iii → CHAIN-5. Full mechanism + leaf signatures + the `Tag`-pinned-to-±r membership shape: design
-§(o″) + *Hand-off* below.
+**Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core LANDED; W9b membership BLOCKED on a
+missing degree-2 redundancy bridge — now pinned (§(o″) "THE DEGREE-2 REDUNDANCY BRIDGE"); next commit
+= the bridge leaf `redundancy_panel_carry`.** The gap (build row 266, coordinator-verified): the fold's
+per-step `Tag` can't chain mechanically — the single-step output annihilates the predecessor panel
+`C(edge s)` but the next step's input needs `⊥` the successor panel `C(edge s+1)` (adjacent panels at
+the degree-2 body `vₛ₊₁`). The bridge is **NOT** a cross-panel orthogonality implication (too strong)
+but KT eq. (6.66)'s **±r vector-carry equality** (degree-2, cf. eq. 6.44), which **REUSES the LANDED
+graph-free `candidateRow_ac_eq_neg`** (`Claim612.lean:1194`): the bridge leaf is its chain-step instance
+— **NOT new math**, no motive/IH/spine-carry change, d=3 zero-regression (vacuous at the M₃ arm `i=2`).
+Tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ →
+**redundancy_panel_carry [next]** → W9b membership → 2c-ii-arm → 2c-iii → CHAIN-5. Full detail: §(o″) +
+*Hand-off*.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -90,57 +86,17 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       Zeroth leaf (`G.ChainData n` record + 7 interior-split accessors, `Induction/Operations.lean`)
       + **CHAIN-2a** (per-candidate single-`i` reduction: `chainData_split_w6b_gates` +
       `chainData_split_realization`, both axiom-clean) **LANDED/CLOSED 2026-06-18.** Remaining:
-      **CHAIN-2c — the single-base `Fin (k+1)` family dispatch** (design §(n)+§(o)). KT/d=3 use ONE
-      base, ONE `ρ₀`, ONE discriminator → `fin_cases u`; eq. (6.66) is absorbed (no separate 2b under
-      route β). Sub-leaves: **CHAIN-2c-i** (`exists_chainData_discriminator_pick`, the panel-LI + the
-      one-shot discriminator pick — **LANDED 2026-06-18**, axiom-clean) → **CHAIN-2c-ii** (the uniform
-      `Fin d` relabel arm = the genuinely-new crux; **§(o)/§(o′) resolved the route flag: a
-      genuinely-new construction, NOT a numeral pass** — KT's `ρᵢ` is a `(i−1)`-cycle, the
-      transposition-only engine does not scale). 2c-ii itself decomposes (foundation LANDED, closer
-      re-pinned by §(o′)): **2c-ii-α** `ChainData.shiftPerm` (the cycle iso — **LANDED**, axiom-clean)
-      → **2c-ii-β** the general-`Equiv.Perm` framework-transport `ofNormals_relabel_perm` (**LANDED**,
-      axiom-clean) → **2c-ii-graphiso** the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick
-      (§(o′)(A), the `hiso` supplier) — **COMPLETE 2026-06-19** (axiom-clean): edge cycle
-      `ChainData.shiftEdgePerm` + 6 action lemmas (incl. the closure `apply_edge_{top,pred}`) +
-      `mem_shiftCycle` + forward + backward + the packaged iff `splitOff_isLink_shiftRelabel_iff` →
-      **2c-ii-transport** (**§(o″) ADJUDICATED → route B**, the shared-`ρ₀` row-span transport; route
-      A REJECTED as unprovable). Recursion handle **LANDED:** `ChainData.shiftCycle_eq_cons` +
-      `shiftPerm_eq_swap_mul` (`Operations.lean`, axiom-clean) — `shiftPerm i = swap (vtx 1)(vtx 2) *
-      (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
-      induction composes. T-W9a is now 2 leaves (corrected 2026-06-19 recon, §(o″) addendum): the
-      *linear-algebra* layer (fold core, `shiftBodyList`, perm bridge, `wstep_foldr_funLeft_eq`) is
-      LANDED; **(T-W9a-chain)** [NEW] — the removeVertex intermediate-framework chain
-      `F = ofNormals ∘ shiftBodyGraph` (`shiftBodyGraph s := G − vₛ₊₁`) + its per-step un-relabelled
-      link correspondence (the fold core's `hstep` shape) — is **COMPLETE** (`G`-level substrate +
-      intermediate-graph layer + the framework chain `shiftBodyFramework` + the per-step `htrans`
-      `shiftBodyFramework_htrans`, all LANDED, axiom-clean); **(T-W9a)** the membership half is
-      **COMPLETE 2026-06-19** (`shiftBodyList_foldr_mem_span_rigidityRows` + `shiftBodyFrameworkTotal`
-      (+ `_eq`), axiom-clean): the fold core gets the six per-step `hstep` conjuncts off the landed
-      accessors, transporting `span (G − vᵢ)`-rows → `span (G − v₁)`-rows for `2 ≤ i` (span-only; the
-      `funLeft (shiftPerm i)` relabel bridge stays separate for the arm closer)
-      → **(T-W9b)** the cycle bottom-tag transport (per-`i` generalization of
-      `case_III_bottom_relabel`; decomposed design §(o″): a pure-relabel `(funLeft (shiftPerm
-      i)).dualMap` of a *tagged* member, its OWN cycle induction on `shiftBodyList i` — NOT a `wstep`
-      fold reuse — re-tagging `(ab)`→`(cv)` per moved body). T-W9b decomposes (mirroring T-W9a's
-      step→fold→membership): **(W9b-step) COMPLETE 2026-06-19** — the framework-level single-step
-      `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean`, axiom-clean; abstract `Fv`/`Fva`,
-      carrier facts as hypotheses) → **(W9b fold core) COMPLETE 2026-06-19** — the `List`-induction
-      `bottomTag_foldr_mem_rigidityRows` (`Relabel.lean`, axiom-clean; a per-step `Tag : ℕ → Dual →
-      Prop` threaded through the pure-relabel fold, head-peel iterating the single-step) →
-      **(redundancy_panel_carry) [NEW, next] the degree-2 redundancy bridge** — the W9b-membership build
-      BLOCKED (row 266) on a missing panel-match: the fold's per-step `Tag` cannot chain because the
-      single-step OUTPUT block-tag annihilates `C(edge s)` (predecessor panel) but the next step's INPUT
-      needs `⊥ C(edge s+1)` (successor panel), distinct adjacent panels at the degree-2 body. Pinned
-      §(o″): the bridge is KT eq. 6.66's **±r vector carry** (NOT an orthogonality implication), and it
-      **REUSES** the LANDED graph-free `candidateRow_ac_eq_neg` (eq. 6.44) — its chain-step instance
-      carrying the single redundancy `r` across one degree-2 body. Shape B1 (additive: leaves the green
-      single-step/fold core untouched) → **(W9b membership)** the `ChainData`/`shiftBodyFramework`
-      instantiation, with `Tag`'s block-disjunct **pinned to ±r** (so each `hstep`'s panel-match is the
-      bridge's vector identity, not a free `∃ρ'⊥panel`) →
-      **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
-      the relabelled roles with `−ρ₀`; d=3 M₃ is the `i=2` instance) → **CHAIN-2c-iii**
-      (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). Full signatures + decomposition:
-      design §(o″).
+      **CHAIN-2c — the single-base `Fin (k+1)` family dispatch** (route β, design §(n)/(o)): ONE base,
+      ONE `ρ₀`, ONE discriminator → `fin_cases u`; eq. (6.66) absorbed. **2c-i**
+      (`exists_chainData_discriminator_pick`) LANDED. **2c-ii** (the genuinely-new relabel arm, NOT a
+      numeral pass — KT's `ρᵢ` is a `(i−1)`-cycle): foundation (`shiftPerm` / `ofNormals_relabel_perm` /
+      graphiso `splitOff_isLink_shiftRelabel_iff`) + transport **T-W9a**
+      (`shiftBodyList_foldr_mem_span_rigidityRows`, span-only) + **T-W9b step + fold core**
+      (`funLeft_dualMap_bottomTag_mem_rigidityRows` / `bottomTag_foldr_mem_rigidityRows`) all LANDED →
+      **`redundancy_panel_carry` (degree-2 bridge) [next]** (reuses landed `candidateRow_ac_eq_neg`) →
+      **W9b membership** (`Tag` pinned to ±r) → **2c-ii-arm** `chainData_relabel_arm` (closer; d=3 M₃ =
+      `i=2` instance) → **2c-iii** `chainData_dispatch`. Live status: *Current state* tracker; full
+      detail: design §(o″) + *Decisions made*.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
