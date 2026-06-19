@@ -50,10 +50,10 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   S/P/B is still **rated and logged** per dispatch (experiment data), but the
   rung is **opus regardless of the map**; probes off; boundary pairs run
   opus-vs-opus or are skipped. Re-confirm (or lift) at session start.
-- **Per-session run modifications** (re-confirm at session start; sessions #6–#10
+- **Per-session run modifications** (re-confirm at session start; sessions #6–#11
   set them): the 10-run check-in cap **lifted** (loop runs to phase close or a
   surfaced concern); step-4 mechanical fixups (wrong branch / author /
-  trailer) **pre-authorized**. Session-#10 availability (2026-06-19, re-confirmed
+  trailer) **pre-authorized**. Session-#11 availability (2026-06-19, re-confirmed
   by the user at session start: OPUS-ONLY kept, cap lifted, fixups
   pre-authorized; expires session-end): opus confirmed (the coordinator runs on
   it; reachable via the Agent `model` param); under the OPUS-ONLY override the
