@@ -1477,6 +1477,174 @@ lemma shiftPerm_vtx_top (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i
   congr 1
   simp only [hmod]
 
+/-! ### The index-shift edge permutation `shiftEdgePerm` (the edge side of KT eq. 6.54)
+
+The vertex cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) carries the candidate-`i` interior split
+`G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀` to the `v₁`-base split `G.splitOff v₁ v₂ v₀ e₀`. The accompanying
+*edge* relabel `σ = shiftEdgePerm i` is the bijection on `β` that puts the two splits' links in
+correspondence: it cycles the chain edges and the short-circuit label along the same cycle. Reading
+the candidate split's links into the base split's, it must send
+* the base-edge `edge 0` (= `v₀v₁`, surviving in the candidate split) to the fresh `e₀`
+  (the base split's short-circuit edge, joining `v₂` and `v₀`, since `shiftPerm` sends `v₁ ↦ v₂`);
+* the fresh `e₀` (the candidate split's short-circuit edge, joining `vᵢ₊₁` and `vᵢ₋₁`) to the
+  top chain edge `edge i` (= `vᵢvᵢ₊₁`, surviving in the base split, since `shiftPerm` sends
+  `vᵢ₋₁ ↦ vᵢ`);
+* each interior chain edge `edge j` (= `vⱼvⱼ₊₁`, `1 ≤ j ≤ i−2`) to its successor `edge (j+1)`
+  (since `shiftPerm` sends `vⱼ ↦ vⱼ₊₁`, `vⱼ₊₁ ↦ vⱼ₊₂`);
+* every other label to itself (in particular the two edges `edge (i−1)`, `edge i` incident to the
+  deleted vertex `vᵢ` complete the cycle but never appear as candidate-split links).
+
+Built as `List.formPerm` on the edge cycle `[edge 0, e₀, edge i, edge 1, …, edge (i−1)]`, mirroring
+`shiftPerm`/`shiftCycle` on the vertex side. The brick is graph-free (pure `Equiv.Perm`/`List`
+arithmetic over the `edge`/`e₀` data); it is consumed by the `shiftPerm`-relabel `splitOff_isLink`
+brick (the `hiso` supplier of the CHAIN-2c interior-candidate relabel arm). The d=3 `M₃` arm is the
+degenerate `i = 2` instance, where the cycle is the transposition piece of the bespoke
+`Equiv.swap e_b e₀ * Equiv.swap e₁ e_c`. -/
+
+-- The edge-relabel layer is on the *edge* type only; the vertex-side `DecidableEq α` from the
+-- `shiftPerm` block above is not used here. `DecidableEq β` is introduced just before
+-- `shiftEdgePerm` (only `List.formPerm` needs it; the cycle list + its `Nodup` do not).
+omit [DecidableEq α]
+
+/-- The edges of the index-shift cycle `[edge 0, e₀, edge i, edge 1, …, edge (i−1)]` (the support of
+`shiftEdgePerm i`), for an interior candidate index `i : Fin cd.d`. The head index `0` is in range
+because `Fin cd.d` is inhabited (`0 ≤ i < cd.d`); the tail indices satisfy `j + 1 ≤ i − 1 + 1 = i <
+cd.d`. -/
+def shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) : List β :=
+  cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ :: cd.e₀ :: cd.edge i ::
+    List.ofFn fun j : Fin ((i : ℕ) - 1) =>
+      cd.edge ⟨(j : ℕ) + 1, lt_of_le_of_lt (by have := j.isLt; omega) i.isLt⟩
+
+/-- Length of the edge cycle: `i + 2` (head `edge 0`, `e₀`, top `edge i`, then the `i − 1` interior
+edges `edge 1, …, edge (i−1)`); requires `0 < i` so the truncated count `i − 1` is exact. -/
+lemma length_shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
+    (cd.shiftEdgeCycle i).length = (i : ℕ) + 2 := by
+  simp only [shiftEdgeCycle, List.length_cons, List.length_ofFn]
+  omega
+
+lemma getElem_shiftEdgeCycle_zero (cd : G.ChainData n) (i : Fin cd.d)
+    (hl : 0 < (cd.shiftEdgeCycle i).length) :
+    (cd.shiftEdgeCycle i)[0] = cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ := rfl
+
+lemma getElem_shiftEdgeCycle_one (cd : G.ChainData n) (i : Fin cd.d)
+    (hl : 1 < (cd.shiftEdgeCycle i).length) :
+    (cd.shiftEdgeCycle i)[1] = cd.e₀ := rfl
+
+lemma getElem_shiftEdgeCycle_two (cd : G.ChainData n) (i : Fin cd.d)
+    (hl : 2 < (cd.shiftEdgeCycle i).length) :
+    (cd.shiftEdgeCycle i)[2] = cd.edge i := rfl
+
+/-- The tail entries of the edge cycle: position `k + 3` holds the interior chain edge
+`edge (k + 1)`. -/
+lemma getElem_shiftEdgeCycle_tail (cd : G.ChainData n) (i : Fin cd.d) (k : ℕ)
+    (hk : k + 3 < (cd.shiftEdgeCycle i).length) :
+    (cd.shiftEdgeCycle i)[k + 3] = cd.edge ⟨k + 1, by
+      simp only [shiftEdgeCycle, List.length_cons, List.length_ofFn] at hk
+      have := i.isLt; omega⟩ := by
+  simp only [shiftEdgeCycle, List.getElem_cons_succ, List.getElem_ofFn]
+
+/-- The short-circuit label `e₀` is distinct from every chain edge (it is fresh, the chain edges
+lie in `E(G)`). -/
+lemma e₀_ne_edge (cd : G.ChainData n) (j : Fin cd.d) : cd.e₀ ≠ cd.edge j :=
+  fun h => cd.e₀_fresh (h ▸ (cd.isLink_edge j).edge_mem)
+
+/-- The edge cycle has no repeated labels (the chain edges are distinct by `edge_inj`, and the fresh
+`e₀` lies off `E(G)`). -/
+lemma nodup_shiftEdgeCycle (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
+    (cd.shiftEdgeCycle i).Nodup := by
+  rw [shiftEdgeCycle]
+  -- The full list is `edge 0 :: e₀ :: edge i :: (edge 1, …, edge (i−1))`.
+  refine List.nodup_cons.mpr ⟨?_, List.nodup_cons.mpr ⟨?_, List.nodup_cons.mpr ⟨?_, ?_⟩⟩⟩
+  · -- `edge 0 ∉ e₀ :: edge i :: tail`.
+    simp only [List.mem_cons, List.mem_ofFn, not_or]
+    refine ⟨fun h => (cd.e₀_ne_edge _) h.symm, fun h => ?_, ?_⟩
+    · have := congrArg Fin.val (cd.edge_inj h); simp only at this; omega
+    · rintro ⟨j, hj⟩
+      have := congrArg Fin.val (cd.edge_inj hj); simp only at this; omega
+  · -- `e₀ ∉ edge i :: tail`.
+    simp only [List.mem_cons, List.mem_ofFn, not_or]
+    exact ⟨cd.e₀_ne_edge _, fun ⟨j, hj⟩ => cd.e₀_ne_edge _ hj.symm⟩
+  · -- `edge i ∉ tail` (`tail = edge 1, …, edge (i−1)`, all indices `< i`).
+    simp only [List.mem_ofFn, not_exists]
+    rintro j hj
+    have := congrArg Fin.val (cd.edge_inj hj); simp only at this; omega
+  · -- The tail `edge 1, …, edge (i−1)` is nodup (distinct indices via `edge_inj`).
+    rw [List.nodup_ofFn]
+    intro a b hab
+    have := congrArg Fin.val (cd.edge_inj hab)
+    simpa [Fin.ext_iff] using this
+
+variable [DecidableEq β]
+
+/-- The **index-shift edge permutation** `σ = shiftEdgePerm i` (the edge side of KT eq. 6.54): the
+cycle `edge 0 → e₀ → edge i → edge 1 → ⋯ → edge (i−1) → edge 0` on the chain edges and the
+short-circuit label. Built as `List.formPerm` on `shiftEdgeCycle i`. -/
+def shiftEdgePerm (cd : G.ChainData n) (i : Fin cd.d) : Equiv.Perm β :=
+  (cd.shiftEdgeCycle i).formPerm
+
+/-- `shiftEdgePerm i` fixes every label off the cycle
+`[edge 0, e₀, edge i, edge 1, …, edge (i−1)]`. -/
+lemma shiftEdgePerm_apply_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
+    (he : e ∉ cd.shiftEdgeCycle i) : cd.shiftEdgePerm i e = e :=
+  List.formPerm_apply_of_notMem he
+
+/-- `shiftEdgePerm i` fixes a label that is neither the fresh `e₀` nor one of the chain edges
+`edge 0, …, edge i` on the cycle (the off-support form of `shiftEdgePerm_apply_off`, stated against
+the edge data). -/
+lemma shiftEdgePerm_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
+    (he₀ : e ≠ cd.e₀) (hedge : ∀ m : ℕ, m ≤ (i : ℕ) → ∀ h : m < cd.d, e ≠ cd.edge ⟨m, h⟩) :
+    cd.shiftEdgePerm i e = e := by
+  have hid : (i : ℕ) < cd.d := i.isLt
+  refine cd.shiftEdgePerm_apply_off i fun hmem => ?_
+  rw [shiftEdgeCycle, List.mem_cons, List.mem_cons, List.mem_cons, List.mem_ofFn] at hmem
+  rcases hmem with h | h | h | ⟨j, h⟩
+  · exact hedge 0 (by omega) (by omega) h
+  · exact he₀ h
+  · exact hedge (i : ℕ) le_rfl i.isLt h
+  · exact hedge ((j : ℕ) + 1) (by omega) (by omega) h.symm
+
+/-- `shiftEdgePerm i` sends the base chain edge `edge 0` to the fresh short-circuit label `e₀`
+(the head step of the cycle). -/
+lemma shiftEdgePerm_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
+    cd.shiftEdgePerm i (cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩) = cd.e₀ := by
+  have hlen := cd.length_shiftEdgeCycle i hi
+  have h1 : 0 + 1 < (cd.shiftEdgeCycle i).length := by rw [hlen]; omega
+  rw [shiftEdgePerm, ← cd.getElem_shiftEdgeCycle_zero i (by rw [hlen]; omega),
+    List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi) 0 h1,
+    cd.getElem_shiftEdgeCycle_one i (by rw [hlen]; omega)]
+
+/-- `shiftEdgePerm i` sends the fresh short-circuit label `e₀` to the top chain edge `edge i`
+(the second step of the cycle). -/
+lemma shiftEdgePerm_apply_e₀ (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
+    cd.shiftEdgePerm i cd.e₀ = cd.edge i := by
+  have hlen := cd.length_shiftEdgeCycle i hi
+  have h1 : 1 + 1 < (cd.shiftEdgeCycle i).length := by rw [hlen]; omega
+  rw [shiftEdgePerm, ← cd.getElem_shiftEdgeCycle_one i (by rw [hlen]; omega),
+    List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi) 1 h1,
+    cd.getElem_shiftEdgeCycle_two i (by rw [hlen]; omega)]
+
+/-- `shiftEdgePerm i` sends an interior chain edge `edge j` (`1 ≤ j ≤ i − 2`) to its successor
+`edge (j + 1)` (KT eq. 6.54, the edge side of the interior shift `vⱼ ↦ vⱼ₊₁`). -/
+lemma shiftEdgePerm_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j : ℕ}
+    (hj1 : 1 ≤ j) (hji : j + 1 < (i : ℕ)) :
+    cd.shiftEdgePerm i (cd.edge ⟨j, by have := i.isLt; omega⟩)
+      = cd.edge ⟨j + 1, by have := i.isLt; omega⟩ := by
+  -- `edge j` sits at cycle position `(j − 1) + 3`; `formPerm` steps it to position `(j − 1) + 4`,
+  -- which holds `edge ((j − 1) + 2) = edge (j + 1)` by the tail accessor at `k = (j − 1) + 1`.
+  have hi1 : 0 < (i : ℕ) := by omega
+  have hlen := cd.length_shiftEdgeCycle i hi1
+  have hpos1 : ((j - 1) + 3) + 1 < (cd.shiftEdgeCycle i).length := by rw [hlen]; omega
+  have hget : (cd.shiftEdgeCycle i)[(j - 1) + 3] = cd.edge ⟨j, by have := i.isLt; omega⟩ := by
+    rw [cd.getElem_shiftEdgeCycle_tail i (j - 1) (by rw [hlen]; omega)]
+    congr 1; simp only [Fin.mk.injEq]; omega
+  have hstep := List.formPerm_apply_lt_getElem _ (cd.nodup_shiftEdgeCycle i hi1) ((j - 1) + 3) hpos1
+  -- The successor entry `xs[(j−1)+4]` = `xs[((j−1)+1)+3]` = `edge ((j−1)+1+1) = edge (j+1)`.
+  have hget' : (cd.shiftEdgeCycle i)[((j - 1) + 3) + 1]'hpos1
+      = cd.edge ⟨(j - 1) + 1 + 1, by have := i.isLt; omega⟩ :=
+    cd.getElem_shiftEdgeCycle_tail i ((j - 1) + 1) (by rw [hlen]; omega)
+  rw [shiftEdgePerm, ← hget, hstep, hget']
+  congr 1; simp only [Fin.mk.injEq]; omega
+
 end ChainData
 
 end Graph

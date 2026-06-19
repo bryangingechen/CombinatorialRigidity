@@ -32,16 +32,20 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = CHAIN-2c-ii-graphiso — the `shiftPerm`-relabel `splitOff_isLink` brick** (the `hiso`
-supplier; `notes/Phase23-design.md` §(o′)(A) pins it exactly). It relates source `Gs = G.splitOff
-(vtx 1)(vtx 2)(vtx 0) cd.e₀` (the `v₁`-base = 2a-ii's `i=1` split, **landed arg order**) to target
-`Gt = G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx (i−1).castSucc) cd.e₀` (the candidate-`i` interior
-split, same fresh edge `cd.e₀`; `splitOff` is `a,b`-symmetric so the (v₀v₂) endpoint order is
-immaterial to the graph) via
-`ρ := cd.shiftPerm i` + an edge perm `σ` (a product of transpositions along the cycle), mirroring
-`splitOff_isLink_relabel`'s hypotheses off the landed `ChainData` accessors. Graph-side
-(`Operations.lean`, beside `splitOff_isLink_relabel`), buildable now, route-independent — **the
-prerequisite for BOTH arm-closer routes** of the §(o′)(B) fork, so it lands first regardless.
+**Next = CHAIN-2c-ii-graphiso — the graph-level `splitOff_isLink` iff** (the `hiso` supplier; full
+signature + proof-shape caveat in *Hand-off* below + design §(o′)(A)). Both cycle halves are now
+landed — `ChainData.shiftPerm` (ρ, vertex side, 2c-ii-α) and **`ChainData.shiftEdgePerm` (σ, edge
+side, LANDED 2026-06-19)** — so the remaining work is the graph-level iff itself (a `Fin i`-cycle of
+edge/vertex case moves, genuinely longer than the d=3 single-swap `splitOff_isLink_relabel`),
+route-independent (prerequisite for both §(o′)(B) arm-closer routes).
+
+**`shiftEdgePerm` (the σ, LANDED).** `List.formPerm` on the edge cycle `[edge 0, e₀, edge i, edge 1,
+…, edge (i−1)]` (graph-free, `[DecidableEq β]`), with four action lemmas: `…apply_edge_zero`
+(`edge 0 ↦ e₀`), `…apply_e₀` (`e₀ ↦ edge i`), `…apply_edge_interior` (`edge j ↦ edge (j+1)`,
+`1 ≤ j`, `j+1 < i`), `…apply_edge_off` (fixes labels off `{e₀, edge 0, …, edge i}`). The two "closure"
+edges `edge (i−1)`, `edge i` complete the cycle but never appear as candidate-split links (both at the
+deleted `vᵢ`), so the brick won't need their action values. Same `formPerm ∘ ofFn` idiom as `shiftPerm`.
+Axiom-clean.
 
 **§(o′) FLAGS a genuine route-A/B fork in the arm-closer transport** (NOT settled by 2c-ii-β; §(o)'s
 "M₃'s body" framing was wrong — the landed M₃ uses W9a/W9b/G4d-i row-span transport, not
@@ -55,12 +59,13 @@ obligation** (route β absorbs KT's isos 6.54–6.56 + the ±r chain 6.66, so th
 general-`d` prose must materialize them): *Hand-off* + design §(n)/§(o)/§(o′).
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors landed;
-**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** landed. Remaining in CHAIN-2c:
-**2c-ii** — now decomposed (§(o′)) into **2c-ii-graphiso** (the `shiftPerm`-relabel `splitOff_isLink`
-brick, next) → **2c-ii-transport** (route A's eq.-(6.66) functional identity *or* route B's cycle
-W9a/W9b, adjudicated at contact) → **2c-ii-arm** (`chainData_relabel_arm`) — then **2c-iii**
-(`chainData_dispatch` assembly) → **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract) + the
-ENTRY extractor reshape.
+**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** + **2c-ii-graphiso edge half
+(`shiftEdgePerm`)** landed. Remaining in CHAIN-2c: **2c-ii** — decomposed (§(o′)) into
+**2c-ii-graphiso** (the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick; both cycle halves
+now landed, the graph-level iff itself is next) → **2c-ii-transport** (route A's eq.-(6.66) functional
+identity *or* route B's cycle W9a/W9b, adjudicated at contact) → **2c-ii-arm** (`chainData_relabel_arm`)
+— then **2c-iii** (`chainData_dispatch` assembly) → **CHAIN-5** (signature frozen by the CHAIN↔ENTRY
+contract) + the ENTRY extractor reshape.
 
 **Architectural constraint (standing).** The metric-using Hodge leaves live in `MeetHodge.lean`, never
 `Meet.lean`: importing `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean`
@@ -121,8 +126,10 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       transposition-only engine does not scale). 2c-ii itself decomposes (foundation LANDED, closer
       re-pinned by §(o′)): **2c-ii-α** `ChainData.shiftPerm` (the cycle iso — **LANDED**, axiom-clean)
       → **2c-ii-β** the general-`Equiv.Perm` framework-transport `ofNormals_relabel_perm` (**LANDED**,
-      axiom-clean) → **2c-ii-graphiso** the `shiftPerm`-relabel `splitOff_isLink` brick (§(o′)(A), the
-      `hiso` supplier, **next** — route-independent, buildable now) → **2c-ii-transport** (**§(o′)(B)
+      axiom-clean) → **2c-ii-graphiso** the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick
+      (§(o′)(A), the `hiso` supplier) — its **edge cycle `ChainData.shiftEdgePerm` + 4 action lemmas
+      LANDED 2026-06-19** (axiom-clean), the **graph-level iff itself is next** (route-independent) →
+      **2c-ii-transport** (**§(o′)(B)
       fork:** route A's eq.-(6.66) functional identity `ρᵢ = shiftPerm`-image-of-`ρ₀`, or route B's
       cycle-generalized W9a/W9b — adjudicated at contact; each a genuinely-new piece, 2c-ii-β does
       NOT settle it) → **2c-ii-arm** `chainData_relabel_arm` (the closer) → **CHAIN-2c-iii**
@@ -187,24 +194,27 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Loop paused by the user 2026-06-18 after row 246 (CHAIN-2c-ii-β), then a docs-only §(o′) design-pass
-re-pinned the arm-closer wiring; a fresh `/coordinate-phase 23b` picks up at CHAIN-2c-ii-graphiso
-below.** CLOSED/LANDED so far (full detail in *Current state* + *Decisions made* + the checklist):
-CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; CHAIN-2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α
-(`ChainData.shiftPerm`) + 2c-ii-β (`ofNormals_relabel_perm`, the general-perm framework-transport)
-LANDED, all axiom-clean.
+**Edge half of CHAIN-2c-ii-graphiso landed 2026-06-19 (`ChainData.shiftEdgePerm`); the graph-level
+`splitOff_isLink` iff itself is next.** CLOSED/LANDED so far (full detail in *Current state* +
+*Decisions made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; CHAIN-2c-i
+(`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
+(`ofNormals_relabel_perm`) + the 2c-ii-graphiso **edge cycle** (`ChainData.shiftEdgePerm` + 4 action
+lemmas) LANDED, all axiom-clean.
 
-**Next = CHAIN-2c-ii-graphiso — the `shiftPerm`-relabel `splitOff_isLink` brick** (the `hiso`
-supplier; `notes/Phase23-design.md` §(o′)(A) pins the exact signature). It relates source
-`Gs = G.splitOff (vtx 1)(vtx 2)(vtx 0) cd.e₀` (the `v₁`-base = 2a-ii's `i=1` split, landed arg order)
-to target `Gt = G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx (i−1).castSucc) cd.e₀` (the candidate-`i`
-interior split, same fresh edge `cd.e₀`; `splitOff` is `a,b`-symmetric)
-via `ρ := cd.shiftPerm i` + an edge perm `σ` (a product of cycle-step transpositions),
-mirroring `splitOff_isLink_relabel`'s hypotheses off the landed `ChainData` accessors. Graph-side
-(`Operations.lean`, beside `splitOff_isLink_relabel`), determinable now, route-independent — **the
-prerequisite for BOTH arm-closer routes**, so it lands first regardless of the §(o′)(B) fork. Its
-proof is genuinely longer than the d=3 swap version (a `Fin i`-cycle of edge/vertex moves, possibly
-by induction on cycle length); the *signature* is fixed.
+**Next = CHAIN-2c-ii-graphiso — the graph-level `splitOff_isLink` iff** (the `hiso` supplier;
+`notes/Phase23-design.md` §(o′)(A) pins the signature). Both cycle halves are now landed —
+`cd.shiftPerm i.castSucc` (ρ, vertex side, 2c-ii-α) and `cd.shiftEdgePerm i` (σ, edge side, just
+landed) — so the remaining work is the iff `(G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx
+(i−1).castSucc) cd.e₀).IsLink e x y ↔ (G.splitOff (vtx 1)(vtx 2)(vtx 0) cd.e₀).IsLink (σ e) (ρ x)
+(ρ y)` (source = the `v₁`-base = 2a-ii's `i=1` split, landed arg order; target = the candidate-`i`
+interior split, same fresh `cd.e₀`; `splitOff` is `a,b`-symmetric). Hypotheses mirror
+`splitOff_isLink_relabel`'s, read off the landed `ChainData` accessors (chain links, `vtx_inj`/
+`edge_inj`/`pred_edge_ne`, interior `deg_two_split` at each cycle index, `e₀_fresh`). Graph-side
+(`Operations.lean`, beside `splitOff_isLink_relabel`), route-independent — **the prerequisite for BOTH
+arm-closer routes**, so it lands before the §(o′)(B) fork. Its proof is genuinely longer than the d=3
+single-swap version (a `Fin i`-cycle of edge/vertex case moves, possibly by induction on cycle length
+or a careful `splitOff_isLink` expansion driven by the `shiftEdgePerm`/`shiftPerm` action lemmas); the
+*signature* is fixed.
 
 **Then the §(o′)(B) architectural fork (FLAGGED — surface to the coordinator).** §(o′) corrected §(o)'s
 "`Fin d` generalization of M₃'s body" framing: the landed M₃ does **not** route through
@@ -369,13 +379,21 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean) — the `Fin (k+1)`-panel
   LI feeds the one CHAIN-4d discriminator call → `(u, n')`; verbatim generalization of the green d=3
   discriminator region (`case_III_candidate_dispatch` 435–442), `u` arbitrary. Detail in git + §(o).
-- **CHAIN-2c-ii-α LANDED 2026-06-18 — `ChainData.shiftPerm` (KT eq. 6.54)**, the `i`-cycle
-  `vtx 1 → ⋯ → vtx i → vtx 1` + action lemmas (`Induction/Operations.lean`, axiom-clean;
-  `List.formPerm (List.ofFn …)` idiom promoted below). Detail git + §(o).
+- **CHAIN-2c-ii-α LANDED 2026-06-18 — `ChainData.shiftPerm` (KT eq. 6.54)**, the vertex `i`-cycle
+  `vtx 1 → ⋯ → vtx i → vtx 1` + action lemmas (`Induction/Operations.lean`, axiom-clean; `formPerm ∘
+  ofFn` idiom in FRICTION). Git + §(o).
+- **CHAIN-2c-ii-graphiso edge half LANDED 2026-06-19 — `ChainData.shiftEdgePerm` (the `σ`)**, the
+  edge-side `i`-cycle `edge 0 → e₀ → edge i → edge 1 → ⋯ → edge (i−1) → edge 0`
+  (`Induction/Operations.lean`, axiom-clean), the partner of `shiftPerm` the graph-iso brick's `σ`
+  slot wants. `List.formPerm` on a `head :: head :: head :: ofFn` cycle list, `[DecidableEq β]`-only;
+  4 action lemmas (`apply_edge_zero`/`apply_e₀`/`apply_edge_interior`/`apply_edge_off`). The closure
+  edges `edge (i−1)`/`edge i` are never candidate-split links (both at the deleted `vᵢ`), so their
+  action values are unneeded. Same `formPerm ∘ ofFn` idiom as 2c-ii-α (FRICTION entry extended with the
+  edge-side `0 < i` length / omega-`i.isLt` / defeq index-shift sub-lessons; no new entry).
 - **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`**, the involution-free general-`Equiv.Perm`
   framework-transport (`CaseIII/Relabel.lean`, axiom-clean): graph layer abstracted to
-  `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + `hρst`; the four conjuncts transport with
-  `ρ.symm`/`σ.symm` (the forced `.symm`-placement promoted to FRICTION below). Detail git + §(o)/§(o′).
+  `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + `hρst` (the forced `ρ.symm`/`σ.symm`
+  placement in FRICTION). Git + §(o)/§(o′).
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
   Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,

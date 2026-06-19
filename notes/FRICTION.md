@@ -1573,6 +1573,15 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Lesson:** for a finite-cycle permutation built from an indexed family, `formPerm ∘ ofFn` beats a
   hand-rolled iterated `Equiv.swap` — the action lemmas drop out of the `getElem`-indexed mathlib API;
   thread element-recompute (not index-`rw`) when folding the `% length` wrap index (QUIRKS § 61).
+- **Reuse (CHAIN-2c-ii-graphiso, `ChainData.shiftEdgePerm`, same file):** the edge-side cycle `edge 0
+  → e₀ → edge i → edge 1 → ⋯ → edge (i−1) → edge 0` is a `head :: head :: head :: List.ofFn tail`
+  list (not a pure `ofFn`), so `length`/`getElem`/`Nodup` decompose by `List.nodup_cons` /
+  `List.getElem_cons_succ`, and the `length = i + 2` lemma **needs `0 < (i:ℕ)`** (the nat-subtraction
+  tail count `i − 1` is only exact then). Two omega traps here: (a) `omega` does **not** auto-extract
+  `i.isLt` from `i : Fin cd.d` — surface `have := i.isLt` before any `by omega` index/bound proof; (b)
+  `formPerm_apply_lt_getElem` returns `xs[n+1]`, and re-applying the tail accessor at the shifted
+  index works **by defeq** (`(m+1)+3 ≡ (m+3)+1 ≡ succ⁴ m` as `Nat`), avoiding the QUIRKS § 61
+  index-`rw` motive trap entirely.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 61 (the `getElem`-index motive trap).
 
 ### [idiom] `open Classical in` must precede the docstring, not follow it
