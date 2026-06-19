@@ -3608,9 +3608,43 @@ wrapper** (C.4); the reshape preserves it as a `k=2`/length-3 specialization (ze
 **(H.9) First concrete buildable leaf.** **CHAIN-2c-ii-inv** (H.6 leaf 1): the inverse-cycle action-lemma
 block in `Operations.lean`. It is buildable now (all forward `shiftPerm`/`shiftEdgePerm` action lemmas
 landed; the inverses are `Equiv.symm_apply_eq` rewrites of them), self-contained, graph-free, and
-unblocks the arm. **Do NOT build `chainData_relabel_arm` until the T-W9a orientation reconcile (H.7) is
-done** — that is the one residual gating question, and it is exactly the kind of "mechanically plausible"
-shape the 4× mis-pins were.
+unblocks the arm. **Do NOT build `chainData_relabel_arm` until the H.10 base→candidate re-orientation is
+done** — that is the one structural gating question, and it is exactly the kind of "mechanically
+plausible" shape the 4× mis-pins were.
+
+**(H.10) ADVERSARIAL VERIFICATION of (H) — Fix-B rejection CONFIRMED; corrected-Fix-A algebra CONFIRMED;
+but H.5/H.7 "reuse T-W9a through its inverse" is REFUTED (read-only recon, opus, 2026-06-19).** An
+independent reader told to refute (H) against KT verbatim + the landed bodies:
+- **Fix-B rejection CONFIRMED sound.** KT's single-`r` existence (6.65–6.67) is irreducible; the W6b `ρ`
+  is a genuine choice-on-choice (`Candidate.lean:435` `mem_map` preimage of the triple-`∃`
+  `:309`), no provable bridge to `ρ₀`. The specific rescue — "construct `ρᵢ` as the relabel-image of
+  `ρ₀`" — does NOT rescue Fix B: it IS corrected Fix A (reuse the shared `ρ₀`, transport memberships).
+  Fix B *as defined* (re-seed W6b for an independent `ρᵢ`) stays dead.
+- **Corrected-Fix-A seed-cancellation CONFIRMED** (lean-verified via `lean_multi_attempt`: with relabel
+  `(shiftPerm i)⁻¹` + seed `qρ=q∘ρ`, `qρ(ρ⁻¹x)=q(x)`, goals `[]`). The d=3 involution case is its
+  degenerate instance.
+- **REFUTED — H.5/H.7's "apply the landed T-W9a through its inverse" does NOT close (structural, not a
+  residual caveat).** The landed T-W9a (`shiftBodyList_foldr_mem_span_rigidityRows`, `:940`) and W9b fold
+  (`bottomTag_foldr`, `:1273`) transport **candidate→base with the seed FIXED** (only the graph shrinks,
+  `:827/:890`; relabel = forward `funLeft (shiftPerm i)`, `wstep_foldr_funLeft_eq:808`). The arm's
+  `hρGv`/`hwmem` slots need **base→candidate with the seed jumping `q→qρ`** (as the d=3 M₃ arm
+  `case_III_arm_realization_M3:1465` does: source `Fv=ofNormals(G−v) q` → target `Fva=ofNormals(G−a) qρ`,
+  `:1627`). These are opposite, and **`wstep = (funLeft swap).dualMap − a-column` is NON-INVERTIBLE**
+  (the a-column subtraction is rank-degrading, its purpose — d=3 W9a `:592–604`), so a span-membership
+  implication `φ∈span(cand)→Tφ∈span(base)` does NOT yield its converse. You cannot "invert the fold." The
+  involution masked this at d=3 exactly as it masked the forward `ρ²` over-shift.
+- **Corrected build path (H.10):** re-author the transport **base→candidate directly** — source
+  `F 0 = G−v₁` seed `q`, target `F(i−1) = G−vᵢ` seed `q∘shiftPerm i`, per-step relabel `(shiftPerm)⁻¹`
+  head-peeled, the seed advancing one swap per step — the direct cycle generalization of the d=3 M₃
+  single W9a/W9b step. **Reuse** the base→candidate single-step
+  `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (already the right orientation), re-folded in the
+  opposite chain order. The **landed candidate→base T-W9a/W9b folds are orphaned *for the arm*** (they
+  prove the converse implication — real work, now superseded for this purpose; add to the tear-up
+  re-check). **The CHAIN-2c-ii-inv first leaf SURVIVES** (the `(shiftPerm)⁻¹` per-step relabels are still
+  needed). **De-risk gate:** write the base→candidate single-step seed-advance lemma at `i=3` (cycle
+  length 2, first non-involution case) and confirm it closes BEFORE pinning the arm / fold signature.
+  No motive/IH/spine-carry change (the correction is internal to the arm's transport). d=3 zero-regression
+  unaffected (H.8).
 
 ---
 
