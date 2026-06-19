@@ -1920,6 +1920,215 @@ so the §(l) "3–5 commits" for all of CHAIN-2 holds (record landed + 2a-i + 2a
 
 ---
 
+### (n) CHAIN-2b/2c design-pass — the `Fin d` family layer, source-verified against KT eqs. (6.46)–(6.67)
+
+**Status:** CHAIN-2b/2c detailed design-pass, docs-only, 2026-06-18, source-verified
+against KT 2011 §6.4.2 (the `.refs/` published PDF, eqs. 6.46–6.67 read end-to-end,
+pp. 692–698) **and** the landed bodies (clause (i)): the discriminator
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (CHAIN-4d,
+`Claim612.lean:1462`), its `pbar`/incidence producer `exists_homogeneousIncidence_of_normals_gen`
+(`Claim612.lean:470`), the panel bridge `panelSupportExtensor_eq_complementIso_extensor`
+(`PanelLayer.lean:331`), the landed `chainData_split_realization` + its `htrans`
+slot (`Realization.lean:941`–970), the CHAIN-1 augment
+(`Basic.lean:1175`/`1338`), and the **whole** `d=3` dispatch `u`-matching trace
+(`Realization.lean:435`–599, all three arms `case_III_arm_realization` /
+`_M2` / `_M3`). **This pass surfaces a load-bearing structural correction to the
+§(l)/§(m) framing of 2b/2c (clause ii); it pins 2b's *role* and re-scopes 2c, but
+flags ONE genuine design decision for the build/coordinator rather than forcing a
+confident wrong signature.**
+
+**KT route confirmed (eqs. 6.46–6.67).** Lemma 6.13 considers `d` candidate
+frameworks `(G, p₀), …, (G, p_{d−1})` built from **ONE** base realization
+`(G₁, q₁)` — the split at `v₁` (eq. 6.46, `G₁ = (V∖{v₁}, E∖{v₀v₁,v₁v₂}∪{v₀v₂})`).
+The other candidates `(Gᵢ, qᵢ)` (`2 ≤ i ≤ d−1`) are **isomorphic copies** of
+`(G₁, q₁)` via the index-shift iso `ρᵢ` (eqs. 6.54–6.56) — *not* fresh splits. The
+matrix bookkeeping (eqs. 6.49–6.64) embeds the **same** `R(G₁, q₁)` as a submatrix
+of each `R(G, pᵢ)`, reducing it to a top-left `D×D` block `Mᵢ` + `R(G₁∖(v₀v₂)_{i*}, q₁)`.
+Crucially the bottom row of *every* `Mᵢ` is `r = Σⱼ λ(v₀v₂)ⱼ rⱼ(q(v₀v₂))` (eq. 6.52,
+the **one** redundancy vector from `M₀`/the redundant row `(v₀v₂)_{i*}`), up to sign
+— **this is eq. (6.66), the "±r chain":** the degree-2 closure at each interior `vᵢ`
+forces `Σⱼ λ(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁)) = ±r`. So `Mᵢ` fails full rank ⟺ `r ⊥ C(Lᵢ)`
+(eq. 6.65 footnote), and (eq. 6.67) *none* of `M₀…M_{d−1}` is full rank for any `Lᵢ`
+⟺ `r ⊥ ⋃ᵢ (⋃_{Lᵢ⊂Πᵢ} C(Lᵢ))`, whose span is `D`-dimensional by Lemma 2.1 (the
+`d+1` points `p₀…p_d`, one per panel-incidence pattern). `r ≠ 0` then can't be ⊥
+everything ⇒ some `Mᵢ` is full rank.
+
+**The decisive landed fact (clause i — corrects §(l)/§(m)): the `d=3` dispatch uses
+ONE base split, ONE `ρ₀`, ONE W6b call, ONE discriminator call — the candidates are
+role-relabels of a single realization, NOT `d` separate splits.** Verified at
+`Realization.lean:388` (one `exists_candidateRow_bottomRows_of_rigidOn`), 439–441
+(one `exists_complementIso_ne_zero_of_homogeneousIncidence` on `ρ₀`), 495 (`fin_cases u`
+over the 3 *panels* `![na, nb, nc]`). All three arms consume the **same** `ρ₀`, the
+**same** `q`, the **same** base span `ofNormals (G.removeVertex v) ends₀ q` (the
+`v₁`-split `M₀`); `_M2` is the `(ρ := −ρ₀)`/`a↔b` swap, `_M3` the `qρ = q ∘ swap a v`
+relabel — both reference `G.removeVertex v` and `ρ₀` (Relabel.lean:838/839). **So
+eq. (6.66) is absorbed into the reuse of a single `ρ₀` across candidate roles, not
+materialized as a separate `r`-equality lemma.** This is the single biggest
+structural fact for 2b/2c, and it diverges from how §(l)/§(m) framed them.
+
+**The structural mismatch this surfaces (the flagged decision).** The **landed**
+`chainData_split_realization` (CHAIN-2a-ii) is parameterized by a **per-`i` split
+`splitOff (vtx i.castSucc) (vtx i.succ) (vtx (i−1).castSucc) e₀`** (the split at the
+interior vertex `vᵢ` *itself*) with a **per-`i` `htrans`** quantified over the `ρ`
+that candidate `i`'s OWN W6b call (on that per-`i` split) produces. That is a
+faithful standalone "candidate `i`'s `Mᵢ` full-rank ⇒ realization" lemma — but it is
+**NOT the shape KT's family disjunction (and the d=3 dispatch) assembles**, because:
+- KT/d=3 run W6b **once** on the `v₁` split to get the **one** `r = ρ₀`, then run the
+  discriminator **once** with that `r` against **all** `d` panels, picking `u`.
+- The landed 2a-ii instead wants, for the chosen candidate `i`, the `ρ` from
+  candidate `i`'s **own** split realization, and an `htrans` against *that* `ρ`.
+- For the discriminator's single `r = ρ₀` to discharge candidate `u`'s `htrans`,
+  either (α) candidate `u`'s per-`i` `ρ` must be shown **equal** to the shared `ρ₀`
+  (transported through the eq.-6.54 iso `ρ_u : G₁ ≅ G_u` and the ±r identity 6.66 —
+  the genuinely-new transport), **or** (β) the family assembly must be re-shaped to
+  run off the **single** `v₁`-split base (matching d=3 / KT exactly), in which case
+  the per-`i`-split parameterization of the landed 2a-ii is only used at the **one**
+  candidate `i = 1` (the `v₁` split = `M₀`), and the *other* candidates are reached
+  by the relabel arms (`_M2`/`_M3`-style), NOT by re-running 2a-ii at a fresh `vᵢ`
+  split.
+
+**Verdict on 2b (consumer-grounded, per the rule).** Reading 2c's need first: the
+"±r chain" content 2b was pinned to deliver (§(l): "`r` is the same up to sign along
+the chain, so `Mᵢ` fails full rank iff `r⊥C(Lᵢ)`") is, in the landed architecture,
+**the statement that ONE `ρ₀` (from the `v₁`/`M₀` W6b) serves as the discriminator's
+`r` for every candidate panel** — i.e. it is consumed as "the shared-`r` fact" inside
+2c, not as a standalone `Mᵢ`-bottom-row lemma. Two honest shapes, decided by which
+route (α)/(β) 2c takes:
+- Under **route β** (single base, matches d=3): 2b is **not a separate lemma** — the
+  ±r chain is discharged by the *same* mechanism the d=3 dispatch uses (one `ρ₀`,
+  the role-relabel arms carry the sign via `panelSupportExtensor_swap` /
+  `hingeRow_swap`, exactly as `case_III_candidate_dispatch` lines 412–434/507–519).
+  CHAIN-2b folds into 2c. **This is the recommended route** (it is a faithful
+  numeral/`Fin d`-generalization of the landed, green d=3 dispatch — lowest risk,
+  no new transport).
+- Under **route α** (per-`i` splits + iso transport): 2b is the genuinely-new lemma
+  `chain_redundancy_eq_pm` — for each interior `i`, the candidate-`i` W6b functional
+  `ρᵢ` equals `±ρ₁` (the `v₁`-split functional) transported through the eq.-6.54
+  index-shift iso. This needs the iso `ρᵢ : Gᵢ ≅ G₁` formalized (eq. 6.54) and the
+  rank-transport along it — a real new `Fin d` construction, larger than §(l)'s "1
+  commit" estimate.
+
+**Recommendation (route β) + the re-scope it implies for 2a-ii.** Build CHAIN-2c as
+a `Fin d`-generalization of `case_III_candidate_dispatch` that runs off the **single**
+`v₁`/`M₀` base split, exactly as d=3: one W6b call (`chainData_split_w6b_gates` at the
+`v₁` split — *already landed and reusable*), one discriminator call
+(`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` with `r := ρ₀`, panel
+normals `n := the d chain-candidate panels`, `hn` from the LI of `d` panel normals),
+then **`Fin (k+1)`-case** on `u` (replacing `fin_cases u : Fin 3`) into the per-`i`
+arm closer. Under this route, the landed `chainData_split_realization` (2a-ii) is
+re-used only as the **`i = 1` / `M₀`-candidate arm** (its per-`i` split *is* the
+`v₁` split there), and the other candidates reach the arm closer through the
+relabel transport — so **2a-ii's per-`i`-split parameterization is sound for the
+`M₀` candidate but is NOT the assembly path for the rest of the family.** This is
+the honest open item the build must settle; it does not invalidate the landed
+2a-ii (it is a correct standalone lemma and the `M₀`-arm of the family), but it
+means **2c is not "supply `htrans` to the landed 2a-ii at the discriminator's `u`"**
+— it is the `Fin (k+1)`-case dispatch, with the relabel arms carrying the non-`M₀`
+candidates as in d=3.
+
+**CHAIN-2c sketched signature (route β; the build pins the exact `cd`-accessor +
+relabel wiring).** Replaces / generalizes `case_III_candidate_dispatch`. Lives in
+`CaseIII/Realization.lean` (or `CaseIII/Chain.lean` if it + the relabel-`Fin d`
+plumbing exceed ~1500 LoC):
+```
+theorem PanelHingeFramework.chainData_dispatch {k : ℕ}
+    [DecidableEq α] [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n)
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+    (hG : G.IsMinimalKDof n 0) (hV3 : 3 ≤ V(G).ncard) (hSimple : G.Simple)
+    (hIH : <the all-k IH conjunction, the chainData_split_realization hIH shape>)
+    -- the M₀ base: the v₁-split deficiency-0 fact + its IH-generic realization
+    (hdef_G1 : (G.splitOff (cd.vtx 1) (cd.vtx 2) (cd.vtx 0) cd.e₀).deficiency n = 0)
+    (hdef : G.deficiency n = 0)
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n
+        (G.splitOff (cd.vtx 1) (cd.vtx 2) (cd.vtx 0) cd.e₀))
+    -- the d candidate panel normals are linearly independent (the eq.-6.67 prep;
+    -- supplied from the GP base realization's pairwise-LI normals + alg-indep, the
+    -- `linearIndependent_normals_of_algebraicIndependent_*` family OD-7 LEAF-0 lifted)
+    (hpanelLI : <LinearIndependent ℝ (the Fin (k+1)-family of chain-candidate normals)>) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G
+```
+Mechanism (the `Fin d`-generalization of the d=3 dispatch body):
+1. **One** W6b on the `v₁` split: `chainData_split_w6b_gates` (LANDED) → `ρ₀`, `w`,
+   the chain-order gate bundle (`hρe₀`/`hρGv`/`hw`/`hwmem`). This is the shared `r`.
+2. Build the `d`-panel normal family `n : Fin (k+1) → ℝ^{k+2}` from `q₁` at the
+   candidate vertices (KT's `Πᵢ`: `Π₀ = Π(v₀)`, `Πᵢ = Π(vᵢ₊₁)`), `hn := hpanelLI`.
+3. **One** discriminator: `exists_homogeneousIncidence_of_normals_gen hn` → `pbar` +
+   incidence, then `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` with
+   `r := ρ₀` → `(u, n', hpair, hgate)`; `rw [← panelSupportExtensor_eq_complementIso_extensor]`.
+   **This is eqs. (6.65)–(6.67) in one shot** (no separate 2b).
+4. **`Fin (k+1)`-case on `u`** (the `fin_cases u : Fin 3` generalization, the
+   genuinely-new `Fin d` family disjunction — the `u`↔candidate match): for each `u`,
+   call the arm closer at candidate `u`'s split tuple read off the `cd` accessors,
+   with the relabel/sign transport (the `_M2`/`_M3` pattern) carrying the
+   shared `ρ₀` to candidate `u`'s role. The `M₀` candidate (`u` = the `v₁`-split
+   index) is the `case_III_arm_realization` arm; the rest are relabel arms.
+
+**The genuinely-new crux (clause ii) and why it is NOT pre-committed.** Step 4 — the
+`Fin (k+1)`-case `u`↔candidate match — is the only part with **no d=3 ancestor of the
+right shape** (d=3 has a fixed 3-way `fin_cases`, hand-written per arm; the general
+`d` needs a *uniform* relabel transporting `ρ₀` to an arbitrary candidate `u`'s role).
+The honest open item: **does a uniform `Fin d` relabel arm exist, or does each `u`
+need bespoke role-swap plumbing?** The d=3 dispatch hand-writes three arms (M₁ direct,
+M₂ sign-swap, M₃ `swap a v` relabel) — there is *not* a single landed lemma that takes
+"candidate `u`" and produces the arm. **Building that uniform arm (the relabel iso
+`ρ_u` of eq. 6.54 + the rank/functional transport) is the real `Fin d` work**, and it
+is what 2c must produce. This is **flagged, not forced**: if the build finds the
+uniform relabel needs an iso-transport lemma (route α's `chain_redundancy_eq_pm`
+resurfacing inside the arm) or a `ChainData`-iso API (eq. 6.54 as a Lean
+`Graph` iso `Gᵤ ≅ G₁`), **that is the genuinely-new construction**, and 2c should be
+split (2c = the uniform relabel arm; 2c' = the dispatch). It is **not** a motive/IH
+change (the IH is the same all-`k` 0-dof conjunct, confirmed C.6) and **not** a
+carried-hypothesis change to the spine — it is new linear-algebra/`Graph`-iso
+*infrastructure* below the dispatch. No `sorry`; carried as the standing `h…` idiom
+if the build can't close it in one sitting.
+
+**One honest unknown for the coordinator (NOT adjudicated here).** The landed
+`chainData_split_realization`'s per-`i`-split shape was authored on the §(m) reading
+that 2c "supplies `htrans` to it at the discriminator's `u`." This pass finds that
+reading does not assemble (the discriminator's single `r = ρ₀` is the `v₁` functional,
+not candidate `u`'s per-split `ρ`). **2a-ii is not wrong** — it is a correct
+standalone per-candidate lemma and the `M₀`-arm — but **2c will likely NOT consume it
+as the design assumed**; 2c is the single-base dispatch above. Whether to (β) build
+2c on the single base and re-use 2a-ii only at `M₀`, or (α) keep the per-`i`-split
+2a-ii and add the iso-transport 2b so the discriminator's `r` matches each
+candidate's `ρ`, is the **route decision the first 2c build commit settles**. Route
+β is recommended (faithful to d=3, lowest risk). **First buildable below assumes β.**
+
+**Buildable-leaf sequence (route β; supersedes §(l)/§(m)'s 2b-then-2c order).**
+- **First buildable = CHAIN-2c-i — the `d`-panel-normal LI + the single-discriminator
+  pick.** Author the `hpanelLI` producer (the `Fin (k+1)` candidate-normal family is
+  LI — from the GP base's pairwise-LI normals + `AlgebraicIndependent ℚ q₁`, the
+  OD-7 LEAF-0 `linearIndependent_normals_of_algebraicIndependent_*` family lifted to
+  the `d`-normal family) and the one-shot discriminator call producing `(u, n', hgate)`
+  off the shared `ρ₀`. §38: graph-free past the `cd`-accessor reads; the discriminator
+  is already general-`k`. This is the smallest self-contained brick and is
+  **independent of the relabel-arm question** (it is steps 1–3 of `chainData_dispatch`).
+- **CHAIN-2c-ii — the uniform `Fin (k+1)` relabel arm (the genuinely-new crux).** The
+  step-4 `u`↔candidate dispatch + the relabel transport of `ρ₀` to candidate `u`'s
+  role. **This is where the flagged decision is resolved at build**; split off 2b
+  (the iso-transport) here if route α is forced.
+- **CHAIN-2c-iii — `chainData_dispatch` assembly** (steps 1–4 wired; the `d=3` line a
+  `k=2`/`fin_cases`-3 zero-regression wrapper, C.4).
+- Then **CHAIN-5** consumes `chainData_dispatch` (the contract's `hdispatch`).
+
+**KT "exactly the same as `d=3`" audit (clause ii).** Faithful for steps 1–3 (one
+W6b, one discriminator — verbatim `Fin d` generalization of the landed, green d=3
+body). An honest **understatement** for step 4: the d=3 dispatch's three hand-written
+arms hide that a *uniform* `Fin d` relabel arm is genuinely-new infrastructure (the
+eq.-6.54 iso transport KT states in one line, eqs. 6.54–6.56). No motive/IH change;
+no grade-2-only reach-in; the only `d`-dependence past the dispatch is the relabel.
+
+**First buildable for the re-pointed hand-off = CHAIN-2c-i** (`chainData_dispatch`
+steps 1–3: the `d`-panel-LI producer + the single-discriminator pick). It is buildable
+now (all dependencies landed: `chainData_split_w6b_gates`,
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, the `ChainData` accessors,
+the LEAF-0 normal-LI family), is the faithful d=3-generalization with the lowest risk,
+and defers the genuinely-new crux (the uniform relabel arm) to 2c-ii where the build
+adjudicates route α vs β.
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
