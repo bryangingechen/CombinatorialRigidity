@@ -34,27 +34,18 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 **Next = CHAIN-2c-ii-graphiso — the `shiftPerm`-relabel `splitOff_isLink` brick** (the `hiso`
 supplier; `notes/Phase23-design.md` §(o′)(A) pins it exactly). It relates source `Gs = G.splitOff
-(vtx 1)(vtx 0)(vtx 2) e₀` (the `v₁`-base = 2a-ii's `i=1` split) to target `Gt = G.splitOff
-(vtx i.castSucc)(vtx i.succ)(vtx (i−1).castSucc) e₀'` (the candidate-`i` interior split) via
+(vtx 1)(vtx 2)(vtx 0) cd.e₀` (the `v₁`-base = 2a-ii's `i=1` split, **landed arg order**) to target
+`Gt = G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx (i−1).castSucc) cd.e₀` (the candidate-`i` interior
+split, same fresh edge `cd.e₀`; `splitOff` is `a,b`-symmetric so the (v₀v₂) endpoint order is
+immaterial to the graph) via
 `ρ := cd.shiftPerm i` + an edge perm `σ` (a product of transpositions along the cycle), mirroring
 `splitOff_isLink_relabel`'s hypotheses off the landed `ChainData` accessors. Graph-side
 (`Operations.lean`, beside `splitOff_isLink_relabel`), buildable now, route-independent — **the
 prerequisite for BOTH arm-closer routes** of the §(o′)(B) fork, so it lands first regardless.
 
-**§(o′) FLAGS a genuine architectural fork in the arm closer (NOT settled by 2c-ii-β landing).** §(o)'s
-"`Fin d` generalization of M₃'s body" framing was wrong: the landed M₃ does **not** route through
-`ofNormals_relabel` (it keeps the shared `ρ₀`/`w` via W9a/W9b/G4d-i), and 2c-ii-β is a *different*
-mechanism — so the arm-closer transport has a route-A-vs-B fork, each with its own genuinely-new
-piece. Full statement + resolution in *Hand-off* (canonical) + design §(o′).
-
-**CHAIN-2c-ii-β LANDED 2026-06-18** — `PanelHingeFramework.ofNormals_relabel_perm`
-(`CaseIII/Relabel.lean`, axiom-clean): the general-`Equiv.Perm` framework-transport, the
-involution-free generalization of `ofNormals_relabel`. Graph layer abstracted to the iso hypothesis
-`hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + the forward vertex transport `hρst`; the four
-conjuncts transport with `ρ.symm`/`σ.symm` where the swap body fired the involution (`.symm`-placement
-forced — FRICTION idiom). Specializes to the d=3 `ofNormals_relabel` when `ρ`/`σ` are the swaps. The
-landed transport engine, `ChainData.shiftPerm` (2c-ii-α), and `exists_chainData_discriminator_pick`
-(2c-i) are all in tree; only the arm closer (2c-ii) + assembly (2c-iii) remain in CHAIN-2c.
+**§(o′) FLAGS a genuine route-A/B fork in the arm-closer transport** (NOT settled by 2c-ii-β; §(o)'s
+"M₃'s body" framing was wrong — the landed M₃ uses W9a/W9b/G4d-i row-span transport, not
+`ofNormals_relabel`). Full statement + resolution in *Hand-off* (canonical) + design §(o′).
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): KT builds the `d`
 candidates as index-shift re-views of ONE `v₁`-base; build 2c off the single base + the uniform
@@ -76,20 +67,15 @@ ENTRY extractor reshape.
 regresses `complementIso_smul_eq_extensor_join` to a `whnf` timeout (TACTICS-QUIRKS § 59). Pure
 `EuclideanSpace`↔`toDual` glue stays in the `Mathlib/` mirror; (h-4) also belongs in `MeetHodge.lean`.
 
-**CHAIN orientation (standing).** The recon (`notes/Phase23-design.md` §"CHAIN", source-verified
-against KT §6.4.2 eqs. 6.46–6.67 + the landed tree) found **the arm-realization engine is already
-general-`k`** (the M₁/M₂/M₃ closers `case_III_arm_realization` / `_M2` / `_M3` in
-`CaseIII/{Arms,Relabel}.lean` were authored `(k:ℕ)`); the genuinely-`d=3` surface is **only the
-dispatch** (`case_III_candidate_dispatch`, `Realization.lean:201`) — its fixed-3-candidate count +
-the `⋀²ℝ⁴` discriminator (`exists_homogeneousIncidence_of_normals` / `…complementIso…` in
-`Claim612.lean`, the `Meet.lean`/`MeetHodge.lean` duality lemmas). CHAIN's job: replace that
-dispatch with the `d`-candidate chain dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality finish (now LANDED).
+**CHAIN orientation (standing).** The arm-realization engine is already general-`k`; the only
+genuinely-`d=3` surface was the dispatch (`case_III_candidate_dispatch`) + its `⋀²ℝ⁴` discriminator —
+CHAIN replaces it with the `d`-candidate chain dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality finish (LANDED).
+Full source-verified orientation: design §"CHAIN".
 
 **The load-bearing flag (recon (b)) — SETTLED 2026-06-17.** The CHAIN↔ENTRY chain-data contract is
-**frozen** (`notes/Phase23-design.md` §"CHAIN↔ENTRY contract"): the `G.ChainData n` structure is the
-shared shape, reshaped via three lockstep decls (ENTRY extractor / producer `case_III_hsplit_producer_all_k.hcand`
-/ CHAIN-5 `hdispatch`); no motive/IH change (C.6); CHAIN-5's signature authorable, the `d=3` line a
-zero-regression wrapper (C.4).
+**frozen** (design §"CHAIN↔ENTRY contract"): `G.ChainData n` is the shared shape, reshaped via three
+lockstep decls (ENTRY extractor / producer `…hcand` / CHAIN-5 `hdispatch`); no motive/IH change (C.6);
+CHAIN-5's signature authorable, the `d=3` line a zero-regression wrapper (C.4).
 
 ## CHAIN leaf checklist
 
@@ -210,9 +196,10 @@ LANDED, all axiom-clean.
 
 **Next = CHAIN-2c-ii-graphiso — the `shiftPerm`-relabel `splitOff_isLink` brick** (the `hiso`
 supplier; `notes/Phase23-design.md` §(o′)(A) pins the exact signature). It relates source
-`Gs = G.splitOff (vtx 1)(vtx 0)(vtx 2) e₀` (the `v₁`-base = 2a-ii's `i=1` split) to target
-`Gt = G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx (i−1).castSucc) e₀'` (the candidate-`i` interior
-split) via `ρ := cd.shiftPerm i` + an edge perm `σ` (a product of cycle-step transpositions),
+`Gs = G.splitOff (vtx 1)(vtx 2)(vtx 0) cd.e₀` (the `v₁`-base = 2a-ii's `i=1` split, landed arg order)
+to target `Gt = G.splitOff (vtx i.castSucc)(vtx i.succ)(vtx (i−1).castSucc) cd.e₀` (the candidate-`i`
+interior split, same fresh edge `cd.e₀`; `splitOff` is `a,b`-symmetric)
+via `ρ := cd.shiftPerm i` + an edge perm `σ` (a product of cycle-step transpositions),
 mirroring `splitOff_isLink_relabel`'s hypotheses off the landed `ChainData` accessors. Graph-side
 (`Operations.lean`, beside `splitOff_isLink_relabel`), determinable now, route-independent — **the
 prerequisite for BOTH arm-closer routes**, so it lands first regardless of the §(o′)(B) fork. Its

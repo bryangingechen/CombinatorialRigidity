@@ -2367,11 +2367,16 @@ framework one.** §(o)'s "`Fin d` generalization of M₃'s body, with `shiftPerm
 is supplied by a `shiftPerm`-relabel analogue of `splitOff_isLink_relabel` (`Operations.lean:937`).
 Its shape is fully determinable from the landed `ChainData` accessors (no build-time discovery
 needed):
-- **Source `Gs`** = KT's `v₁`-base split = `G.splitOff (cd.vtx 1) (cd.vtx 0) (cd.vtx 2) cd.e₀` (the
-  `i=1` instance of 2a-ii's per-`i` split, contract C.3/C.4 verified).
+- **Source `Gs`** = KT's `v₁`-base split = `G.splitOff (cd.vtx 1) (cd.vtx 2) (cd.vtx 0) cd.e₀` (the
+  `i=1` instance of 2a-ii's per-`i` split, contract C.3/C.4 verified). **Arg order matches the landed
+  2a-ii body verbatim** (`v=vtx 1, a=vtx 2, b=vtx 0`; `Realization.lean:951`); `splitOff` is
+  **`a,b`-symmetric** (its `e₀`-clause is `(x=a∧y=b)∨(x=b∧y=a)`, `Operations.lean:583`–584), so the
+  new (v₀v₂)-edge endpoints are immaterial *to the graph* — but state the brick in the landed
+  `(succ, pred)` order so it composes with 2a-ii without an intervening `a,b`-symmetry rewrite.
 - **Target `Gt`** = the candidate-`i` interior split = `G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
-  (cd.vtx (i−1).castSucc) cd.e₀'` — the split at the interior vertex `vtx i`, exactly the per-`i`
-  split `chainData_split_realization` (2a-ii) names (`Realization.lean:951`).
+  (cd.vtx (i−1).castSucc) cd.e₀` — the split at the interior vertex `vtx i`, exactly the per-`i`
+  split `chainData_split_realization` (2a-ii) names (`Realization.lean:951`), using the **same** fresh
+  edge `cd.e₀` as `Gs` (2a-ii reuses `cd.e₀` for every `i`; there is no per-`i` primed edge).
 - **`ρ`** = `cd.shiftPerm i` (2c-ii-α, `Operations.lean:1434`); its action is pinned by
   `shiftPerm_apply_interior` (`vtx j ↦ vtx (j+1)`, `:1451`), `shiftPerm_vtx_top` (`vtx i ↦ vtx 1`,
   `:1465`), `shiftPerm_apply_vtx_off` (fixes `vtx 0` and the tail, `:1444`). This is the `(i−1)`-cycle
