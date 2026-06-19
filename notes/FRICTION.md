@@ -2111,6 +2111,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
   upstream home of `linearIndependent_sum`). N4 proper (`mem_hingeRowBlock_iff` +
   `linearIndependent_sumElim_candidateRow_iff`) is project-internal, in `RigidityMatrix.lean`.
 
+### [mirrored] `List.formPerm_eq_prod_zipWith_swap_tail` — `formPerm` is the product of adjacent-element transpositions
+- **Where it bit:** Phase 23b CHAIN-2c-ii-transport-W9a (identifying the cycle-W9a `List.foldr`
+  with the named `shiftPerm` relabel, route B, design §(o″)). The cycle `shiftPerm i = formPerm
+  [vtx 1, …, vtx i]` must be shown equal to the left-to-right product of the per-moved-body swaps
+  the W9a fold composes (`shiftPerm_eq_prod_map_swap_shiftBodyList`, `Operations.lean`).
+- **Friction:** mathlib has `List.formPerm_cons_cons` (the *one-step* peel `(x::y::l).formPerm =
+  swap x y * (y::l).formPerm`) but no closed iterated form spelling `formPerm` as the product over
+  the adjacent pairs `zipWith swap l l.tail`.
+- **Resolution:** mirrored `List.formPerm_eq_prod_zipWith_swap_tail` — a 6-line `induction l` with a
+  `cases xs` to expose the `cons_cons` shape, then `rw [formPerm_cons_cons, ih, tail_cons]; rfl`.
+- **Note (no manual `congr`/`omega` needed at the bridge):** after `rw [formPerm_eq_…]; congr 1`,
+  the per-element list equality closes by a single `simp only [getElem_zipWith, getElem_map,
+  getElem_shiftBodyList, getElem_tail, getElem_shiftCycle]` — the `shiftBodyList` window indices
+  `(s+1, s+2)` and the `shiftCycle`-tail adjacent pairs reduce to the *defeq* `Equiv.swap` terms
+  (the differing `Fin.mk` bound proofs are defeq), so `simp only` finishes without a `Fin.mk.injEq`
+  + `omega` step.
+- **Status:** mirrored, axiom-clean. Pure `List`/`Equiv.Perm`, no geometry.
+- **Mirror file:** `Mathlib/GroupTheory/Perm/List.lean` (new; matches the upstream home of
+  `List.formPerm`).
+
 ### [mirrored] `linearIndependent_sumElim_block_swap` — swapping a candidate block by members of the base span preserves LI
 - **Where it bit:** Phase 23b CHAIN-1 (the general-`d` chain row-correspondence, KT eq. (6.62)).
   KT's general-`d` Case III corrects *each* of the `d` chain candidate rows by its own inductive

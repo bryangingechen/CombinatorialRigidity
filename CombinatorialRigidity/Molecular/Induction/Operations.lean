@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Deficiency
+import CombinatorialRigidity.Mathlib.GroupTheory.Perm.List
 import Matroid.Graph.Minor.Defs
 
 /-!
@@ -1588,6 +1589,29 @@ lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
   match m with
   | 0 => simp
   | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
+
+/-- **`shiftPerm` is the product of the moved-body swaps** (the permutation-level identification of
+the cycle-W9a `List.foldr` with the named index-shift relabel, CHAIN-2c-ii-transport-W9a route B,
+`notes/Phase23-design.md` §(o″)). The index-shift cycle `shiftPerm i` factors as the left-to-right
+product `Equiv.swap v₁ v₂ * Equiv.swap v₂ v₃ * ⋯ * Equiv.swap v_{i−1} vᵢ` of the per-moved-body
+transpositions read off the moved-body list `shiftBodyList i`: the `s`-th body triple
+`(v, a, c) = (vtx (s+2), vtx (s+1), vtx s)` contributes the swap `Equiv.swap a v = Equiv.swap
+(vtx (s+1)) (vtx (s+2))`, the swap the single-step W9a transport `BodyHingeFramework.wstep v a c`
+applies on the `funLeft` side. This is exactly the relabel composite the cycle-W9a fold
+`wstep_foldr_mem_span_rigidityRows` builds (head body applied last, leftmost factor), so it is the
+bridge identifying that fold's relabel with `funLeft (shiftPerm i)`. The cycle is the iterated
+adjacent transposition `List.formPerm_eq_prod_zipWith_swap_tail` of the cycle
+`shiftCycle i = [vtx 1, …, vtx i]`, whose adjacent pairs `(vtx (s+1), vtx (s+2))` match the
+`shiftBodyList` swaps element-for-element. -/
+lemma shiftPerm_eq_prod_map_swap_shiftBodyList [DecidableEq α] (cd : G.ChainData n)
+    (i : Fin (cd.d + 1)) :
+    cd.shiftPerm i
+      = ((cd.shiftBodyList i).map (fun b => Equiv.swap b.2.1 b.1)).prod := by
+  rw [shiftPerm, List.formPerm_eq_prod_zipWith_swap_tail]
+  congr 1
+  refine List.ext_getElem (by simp [shiftCycle, shiftBodyList]) fun m h₁ h₂ => ?_
+  simp only [List.getElem_zipWith, List.getElem_map, getElem_shiftBodyList,
+    List.getElem_tail, getElem_shiftCycle]
 
 /-! ### The index-shift edge permutation `shiftEdgePerm` (the edge side of KT eq. 6.54)
 
