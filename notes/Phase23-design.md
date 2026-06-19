@@ -2430,27 +2430,21 @@ mechanical** — there are two architectures, and which one closes is the genuin
   **not** transcribe; the row-span transport must be re-derived for the cycle (an a-column subtraction
   *per cycle step*, or a different inductive transport).
 
-**Verdict (flag-don't-force).** Both routes carry a genuinely-new piece beyond the (A) graph-iso
-brick: route A needs the eq.-(6.66) `ρᵢ = shiftPerm`-image-of-`ρ₀` identity (a W6b-functional
-transport, distinct from the framework transport 2c-ii-β supplies); route B needs the
-cycle-generalization of the swap-hard-wired W9a/W9b. **2c-ii-β (landed) is route A's framework-transport
-half, but route A is NOT a one-step "feed 2a-ii" composition** — the `ρ₀`-matching gap is the catch.
-**Honest recommendation:** the first 2c-ii build commit should land **the (A) graph-iso brick**
-(`shiftPerm`-relabel `splitOff_isLink`, the only piece fully determinable now and a prerequisite for
-*both* routes), then adjudicate A-vs-B at contact. **This is a real research-shaped decision, not
-plumbing** — surface it to the coordinator as an open item, and split 2c-ii into the graph-iso brick
-(first buildable) + the eq.-(6.66) functional transport (route A) **or** the cycle-W9a/W9b
-(route B) + the arm closer. No motive/IH change (C.6) and no spine carried-hypothesis change (C.3) on
-either route — both are infrastructure below the dispatch.
+**Verdict (flag-don't-force) — superseded by the §(o″) adjudication below.** The fork was left open
+in this pass pending (1) a source-verify of *whether* route A's eq.-(6.66) identity is even provable
+and (2) a KT-structure cross-check. Both are now done in **§(o″)** (2026-06-19): **route A is
+REJECTED (unprovable as stated); route B is the verdict.** This block's framing — that the first
+build commit should land the (A) graph-iso brick, route-independent, then adjudicate — was correct
+and is now discharged: the (A) brick LANDED (graphiso COMPLETE, `splitOff_isLink_shiftRelabel_iff`),
+and §(o″) is the adjudication it deferred. The leaf decomposition (graphiso → transport → arm) below
+stands; only the *transport* leaf's route is now decided (B).
 
-**2c-ii is therefore (at least) two leaves, possibly three.** (1) **2c-ii-graphiso** — the
-`shiftPerm`-relabel `splitOff_isLink` brick (A), buildable now, route-independent. (2) **2c-ii-transport**
-— either the eq.-(6.66) W6b-functional identity (route A) or the cycle-W9a/W9b row-span transport
-(route B), adjudicated at the build of (1)→(2). (3) **2c-ii-arm** — `chainData_relabel_arm`, the
-closer wiring (1)+(2) into `case_III_arm_realization` at the relabelled roles, the
-`HasGenericFullRankRealization k n G` conclusion. The d=3 M₃ instance is route B at the degenerate
-`i=2` (cycle = single transposition); whether the general-`d` arm follows B (faithful to the landed
-dispatch) or A (faithful to 2c-ii-β's landed shape) is the fork.
+**2c-ii is three leaves.** (1) **2c-ii-graphiso** — `splitOff_isLink_shiftRelabel_iff` (A), **LANDED**
+2026-06-19, route-independent. (2) **2c-ii-transport** — the cycle-generalized W9a/W9b row-span
+transport (**route B**, §(o″)). (3) **2c-ii-arm** — `chainData_relabel_arm`, wiring (1)+(2) into
+`case_III_arm_realization` at the relabelled roles. The d=3 M₃ instance is route B at the degenerate
+`i=2` (cycle = single transposition `swap a v`); the general-`d` arm follows B (faithful to *both*
+the landed dispatch and KT's text — see §(o″)).
 
 **(C, completing the reconciliation) 2c-iii / dispatch unchanged.** `chainData_dispatch` (2c-iii) and
 `chainData_split_realization` (2a-ii, the `M₀` arm) are **unaffected** by which route 2c-ii takes —
@@ -2462,6 +2456,113 @@ chain 6.66 in the `lem:case-III` general-`d` prose) is **reinforced** by this pa
 eq.-(6.66) identity / route B's cycle-degree-2 mechanism is exactly the step KT compresses, and the
 BlueprintExposition ledger's `lem:case-III-claim612-eq644` entry already names it at d=3 — the
 general-`d` write-up extends it to the cycle.
+
+---
+
+### (o″) CHAIN-2c-ii-transport route adjudication — VERDICT: route B, route A REJECTED (FLAGGED for commit-count)
+
+**Status:** the §(o′)(B) fork adjudication, docs-only, 2026-06-19. Clause-(i) source-verified against
+the landed bodies (file:line per claim) **and** clause-(2) cross-checked against KT 2011 §6.4.2,
+eqs. (6.60)–(6.67), read end-to-end from the `.refs/` PDF (pdf pp. 50–52 = paper pp. 696–698). The
+graph-iso brick (A) **LANDED** since §(o′) (`splitOff_isLink_shiftRelabel_iff`, `Operations.lean:2122`,
+the `(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of the candidate-`i` split with the
+`i:=1` base split). What remains is **2c-ii-transport**, and the §(o′)(B) fork is now decided.
+
+**VERDICT: route B (the M₃-style shared-`ρ₀` row-span transport). Route A is REJECTED — its
+load-bearing eq.-(6.66) identity is unprovable as stated.**
+
+**(1) Route A is unprovable: `ρ` is a choice-on-choice existential, not a function of the framework.**
+Traced to source: the per-`i` W6b candidate functional `ρ` that route A would have to match to `ρ₀`
+is produced by `chainData_split_w6b_gates` (`Realization.lean:1005`) calling
+`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`), which **extracts `ρ` via
+`Submodule.mem_map`** (`Candidate.lean:434`–435, `obtain ⟨ρ, hρ_blk, hρ⟩ := hrhat_Eb`) as *some*
+preimage of `r̂ = ∑ⱼ λⱼ rⱼ` under the `screwDiff`-dualMap. And `r̂` itself is built from the **triple
+existential** `(r, lam, i*)` of `exists_redundant_panelRow_ab_lam_of_rigidOn` (`Candidate.lean:309`–332,
+`∃ r lam i, …`) — the independent `ab`-rows `r`, the unit-normalized coefficients `lam`, and the
+redundant index `i*` are all `Classical.choice` picks. So `ρ` is choice-on-choice with **no canonical
+or functional relationship** to `ρ₀` (the base split's independently-chosen pick). The eq.-(6.66)
+identity route A needs (`ρᵢ = shiftPerm`-image-of-`ρ₀`) is therefore **not a provable equation** — it
+equates two independent existential witnesses. Route A "feed the relabel-transported split as 2a-ii's
+`hsplitGP`, then discharge `htrans`" cannot close, because 2a-ii (`chainData_split_realization`,
+`Realization.lean:941`) runs its **own** W6b on `Gt` (`:1005`) producing candidate `i`'s own `ρᵢ`, and
+the `htrans` slot (`:961`–970) is quantified over **that** `ρᵢ`, not `ρ₀` — there is no bridge.
+
+**(2) KT does route B: ONE redundancy `r`, the ±r chain (6.66), no per-candidate W6b.** Verified at KT
+p. 698: `r := ∑ⱼ λ_{(v₀v₂)j} rⱼ(q(v₀v₂)) ∈ ℝ^D` is defined **once** off the single base `(G₁,q₁)`.
+KT then writes (6.66): *"due to the fact that `vᵢ` is a vertex of degree two in `G₁` for all
+`2 ≤ i ≤ d−1`, we can easily show the following fact in a manner similar to the previous lemma (cf.
+(6.44)): `∑ⱼ λ_{(vᵢvᵢ₊₁)j} rⱼ(q(vᵢvᵢ₊₁)) = ±r`"*, and concludes "`Mᵢ` does not have full rank iff
+`r` is in the orthogonal complement of `C(Lᵢ)`" — for the **single shared `r`**, tested against every
+candidate's panel-meet `C(Lᵢ)`. The discriminator (6.67) then asks for one `r`-non-annihilated line
+across `⋃ᵢ ⋃_{Lᵢ⊂Πᵢ} C(Lᵢ)`. KT runs **no** per-candidate redundancy extraction — the `±r` chain
+recycles the one `r`. **KT eq. (6.66) IS route B's content** (the degree-2/a-column fact of (6.44),
+chain-generalized), not a separate "route-A identity." This also matches the landed d=3 dispatch
+(`case_III_candidate_dispatch`): one `ρ0` produced at `Realization.lean:404`, fed unchanged (negated
+to `−ρ0` inside M₃) to all three arms (`:501`/`:513`/`:588`–592); M₃ relabels the *seed*
+`qρ = q ∘ swap a v` (`:541`), never the functional. So route B is faithful to **both** KT and the tree.
+
+**(3) Route B's genuinely-new piece + the leaf decomposition. FLAG: this is a real construction, ~2–4
+commits, not a numeral pass.** Route B keeps the shared `ρ₀` (the §(o′)(B) "shared-`ρ₀`" arm) and
+transports the candidate `hρGv` slot by the **cycle-generalization of W9a**
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `Relabel.lean:546`) + **G4d-i**
+(`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, `:813`) and the bottom `hwmem` slot by the
+cycle-generalization of **W9b** (`case_III_bottom_relabel`, `:653`). The d=3 W9a trick
+(`Relabel.lean:592`–626) is a **single a-column subtraction** `hingeRow v c (φ ∘ single a)` that
+cancels the lone surviving edge `e_c` of the *single* degree-2 body `a` (verified: the three-case
+split `x=a` / `y=a` / off forces `f = e_c` via `hdeg2`, and the cancellation is exactly KT's eq.
+(6.44) "`a` is degree 2"). KT's `ρᵢ` is the `(i−1)`-cycle `v₁→⋯→vᵢ→v₁`, moving a **chain of `i−1`
+degree-2 bodies** `v₁,…,v_{i−1}` (KT (6.66) ranges `2≤i≤d−1`). So the single-column subtraction must
+become a **per-cycle-step (or inductive) a-column subtraction** — one stripped column per moved
+degree-2 body. This is genuinely-new infrastructure; honest commit estimate **2–4 build commits** (a
+cycle-W9a, a cycle-W9b, plus the arm closer). The cleanest shape is likely an **induction on cycle
+length**: each step is one W9a-style transposition transport of an adjacent degree-2 body (the
+landed `shiftPerm` already factors as a `List.formPerm`, and the graphiso brick already proves the
+per-step link correspondence), composing `i−1` single-body subtractions. **No motive/IH change (C.6),
+no spine carried-hypothesis change (C.3)** — route B is infrastructure below the dispatch, exactly as
+M₃ is at d=3; the shared `ρ₀` is `chainData_split_w6b_gates`'s output reused, the same data flow as
+the landed dispatch (one W6b, three arms).
+
+**Pinned leaf signatures (route B, the first buildable is the cycle-W9a).** The transport lemma:
+```
+-- 2c-ii-transport-W9a (the cycle a-column transport): for φ ∈ span (base-split G₁-rows),
+-- (funLeft (shiftPerm i)).dualMap φ  −  Σ_{1≤s<i} (a-column subtraction at the s-th moved body)
+--   ∈ span (candidate-i split Gt-rows).
+-- Stated against the landed graphiso intertwiner; the per-step subtraction is the W9a
+-- `hingeRow v_{s+1} v_s (φ ∘ single v_s)` summed over the cycle's moved bodies.
+theorem ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows … (signature
+  build-discovered: mirror W9a's Fv/Fva/htrans/hdeg2 shape, one body per cycle index)
+-- 2c-ii-transport-W9b (the cycle bottom-tag transport): the per-member analogue, mirror
+-- `case_III_bottom_relabel` over the cycle.
+```
+The arm closer (2c-ii-arm), unchanged in shape from §(o′):
+```
+theorem PanelHingeFramework.chainData_relabel_arm
+    [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k) … (the G/IH/deficiency context) →
+    -- the shared base W6b bundle (ρ₀, w) from chainData_split_w6b_gates at the i:=1 base split:
+    (hρ0… : ρ₀ ≠ 0 ∧ ρ₀ ⊥ C(base ab) ∧ hingeRow … ρ₀ ∈ span (base-rows) ∧ w-bundle) →
+    -- the transversal gate from 2c-i's discriminator at this candidate i (the htrans contribution):
+    (htrans : ρ₀ (panelSupportExtensor (q(vtx i.succ,·)) n') ≠ 0 ∧ LI ![q(vtx i.succ,·), n']) →
+    PanelHingeFramework.HasGenericFullRankRealization k n G
+-- d=3 M₃ (case_III_arm_realization_M3, Relabel.lean:923) is the i=2 instance (cycle = swap a v).
+```
+**Decomposition of 2c-ii-transport + 2c-ii-arm into buildable leaves:** (T-W9a) the cycle a-column
+span transport [first buildable; the genuinely-new piece] → (T-W9b) the cycle bottom-tag transport →
+(2c-ii-arm) `chainData_relabel_arm` instantiating `case_III_arm_realization` at the relabelled roles
+`(v,a,b) := (vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)` with `−ρ₀`, the cycle-transported
+`hρGv`/`hwmem`, feeding 2c-i's `htrans`. Then 2c-iii (`chainData_dispatch`) `fin_cases u`-es over the
+discriminator's panel, `i=1`/`M₀` arm = 2a-ii (landed `chainData_split_realization`), interior
+`2≤i≤d−1` arm = `chainData_relabel_arm`.
+
+**Caveat (the one honest unknown, flagged not forced).** The cycle-W9a induction is **estimated**
+~2–4 commits but not yet *built*; if the per-step a-column subtraction does not compose cleanly along
+the cycle (e.g. an intermediate body's stripped column re-enters a later step's row span, breaking the
+clean telescoping), the cycle-W9a is a larger construction than the d=3 single transposition and may
+itself need to split further. This is the genuine research-shaped risk §(o′) flagged for route B; the
+verdict stands (route A is *impossible*, so route B is forced regardless of its cost), but the
+commit-count is an estimate to revisit at the build of (T-W9a). **It is NOT a motive/IH or
+spine-carry change** — that boundary (C.3/C.6) is unmoved on route B.
 
 ---
 
