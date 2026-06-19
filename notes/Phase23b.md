@@ -163,25 +163,14 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**CHAIN-2c-ii-inv (the inverse-cycle action block) is LANDED** (2026-06-19; `Operations.lean`, beside
-`shiftPerm`/`shiftEdgePerm`): the 4 `shiftPerm_inv_*` (`_apply_interior`/`_vtx_one`/`_apply_off`/
-`_apply_vtx_off`) + 7 `shiftEdgePerm_inv_*` (`_apply_off`/`_apply_edge_off`/`_apply_e₀`/
-`_apply_edge_top`/`_apply_edge_interior`/`_apply_edge_one`/`_apply_edge_zero`), all axiom-clean,
-each a one-liner `rw [Equiv.Perm.inv_eq_iff_eq, <forward action lemma>]` (the `inv_eq_iff_eq`
-idiom — FRICTION, under the `formPerm`-cycle entry). Self-contained, graph-free.
-
-**The H.10 de-risk gate is LANDED** (2026-06-19; `CaseIII/Relabel.lean`,
-`Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`, axiom-clean): the
-base→candidate single-step seed-advance W9a transport closes in the `ChainData` setting — at chain step
-`s` (`s+2 < i`, so `vtx (s+3)` is valid), a row of `ofNormals (G − vtx (s+1)) ends q` transports across
-`swap (vtx (s+2)) (vtx (s+1))` with the seed advancing to `q ∘ swap` into a row of
-`ofNormals (G − vtx (s+2)) ends' (q∘swap)` (minus the moved body's a-column). It **reuses** the landed
-single-step W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (already base→candidate) at the chain
-roles `(v,a,c) = (vtx (s+1), vtx (s+2), vtx (s+3))`; the only genuinely-new piece is the seed-advancing
-`htrans` (the d=3 M₃ `hρGv` extensor-coincidence, now chain-indexed). It carries an `hrec` hypothesis (the
-source selector records its link endpoints, the d=3 M₃ `hrecGv`) + an `hends'_off` (target selector agrees
-off the two moved edges) — both the arm caller supplies as in d=3. **This confirms corrected Fix A is
-buildable** (the orientation/seed-jump close); the 4×-mis-pin risk on the single step is discharged.
+**LANDED 2026-06-19 (corrected Fix A's first two leaves, both axiom-clean + gate-verified):**
+**CHAIN-2c-ii-inv** (11 `shiftPerm_inv_*`/`shiftEdgePerm_inv_*` action lemmas, `Operations.lean`,
+one-liner `inv_eq_iff_eq` rewrites of the forward cycle) + **the H.10 de-risk gate**
+`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`) — the
+base→candidate single-step seed-advance, reusing the landed single-step W9a at chain roles `(v,a,c) =
+(vtx (s+1), vtx (s+2), vtx (s+3))` with the seed-advancing `htrans` (the chain-indexed d=3 M₃
+extensor-coincidence, via `hrec`/`hends'_off`). **This validates corrected Fix A at the atomic step**
+(the 4×-mis-pin risk on the single step discharged).
 
 **NEXT STEP — the base→candidate cycle fold.** Re-fold the de-risk single step in **opposite chain order**
 (base `F 0 = G−v₁` up to candidate `F(i−1) = G−vᵢ`), the seed advancing one swap per step (`q → q∘shiftPerm i`
