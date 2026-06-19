@@ -21,25 +21,23 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Route B LOCKED (§(o″)); the cycle-W9a `List`-fold transport core LANDED, and its `ChainData`
-moved-body list `shiftBodyList` (+ `length_`/`getElem_`/`getElem_…_zero`/`shiftBodyList_eq_cons`)
-LANDED (axiom-clean, `Operations.lean`); next = the `shiftPerm`-specific T-W9a instantiation
+**Route B LOCKED (§(o″)); the cycle-W9a `List`-fold transport core + its `ChainData`
+moved-body list `shiftBodyList` (+ helper lemmas) LANDED (axiom-clean, `Relabel.lean`/`Operations.lean`);
+next = the `shiftPerm`-specific T-W9a instantiation
 (`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`, feeding `shiftBodyList i` + the per-`i`
 interior split framework chain into `wstep_foldr_mem_span_rigidityRows` via the
 `shiftPerm_eq_swap_mul` head-peel + the `splitOff_isLink_shiftRelabel_iff` graphiso) → T-W9b →
 arm.** Route-B verdict + decomposition + the route-A rejection: design §(o″).
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
-uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** route β. The
-**blueprint-clarity obligation** (route β absorbs KT's isos 6.54–6.56 + ±r chain 6.66, so the
-`lem:case-III` general-`d` prose must materialize them): *Hand-off* + design §(n)/§(o)/§(o′)/§(o″).
+uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** β. The **blueprint-clarity
+obligation** (β absorbs KT's isos 6.54–6.56 + ±r chain 6.66) is pinned in the *Hand-off* + design §(o″).
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors;
-**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α** + **2c-ii-β** + **2c-ii-graphiso COMPLETE**
-(`shiftEdgePerm` + 6 action lemmas + forward + backward + the packaged iff
-`splitOff_isLink_shiftRelabel_iff`) + the head-peel handle landed. Remaining in CHAIN-2c (full
-decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a → T-W9b) →
-**2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
+**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α/β** + **2c-ii-graphiso COMPLETE**
+(`splitOff_isLink_shiftRelabel_iff`) + head-peel + fold core + `shiftBodyList` landed. Remaining in
+CHAIN-2c (full decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a →
+T-W9b) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural (CHAIN-3-era):*
 metric-using Hodge leaves live in `MeetHodge.lean`, never the metric-free `Meet.lean` (a `PiL2` import
@@ -104,13 +102,10 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
       induction composes. Two leaves: **(T-W9a)** the cycle a-column span transport
       `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — the
-      abstract `List`-fold core **LANDED** (`wstep` + `wstep_foldr_mem_span_rigidityRows`, axiom-clean):
-      `List.foldr` of the single-step W9a transport `wstep` over a `(v,a,c)`-body list + framework chain
-      `F : ℕ → BodyHingeFramework`; the cycle's moved-body list **LANDED** (`ChainData.shiftBodyList` +
-      `length_`/`getElem_`/`getElem_…_zero`/`shiftBodyList_eq_cons`, `Operations.lean`, axiom-clean —
-      `[(vtx 2,vtx 1,vtx 0), …, (vtx i,vtx (i−1),vtx (i−2))]`, length `i−1`); next = the `shiftPerm`-specific
-      instantiation feeding `shiftBodyList i` + the per-`i` split framework chain into
-      `wstep_foldr_mem_span_rigidityRows` via `shiftPerm_eq_swap_mul` + `splitOff_isLink_shiftRelabel_iff`]
+      abstract `List`-fold core (`wstep` + `wstep_foldr_mem_span_rigidityRows`, `Relabel.lean`) + the
+      cycle moved-body list `ChainData.shiftBodyList` (+ helper lemmas, `Operations.lean`) both LANDED,
+      axiom-clean; next = the `shiftPerm`-specific instantiation feeding `shiftBodyList i` + the per-`i`
+      split framework chain into the fold via `shiftPerm_eq_swap_mul` + `splitOff_isLink_shiftRelabel_iff`]
       → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
@@ -177,38 +172,27 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Route B LOCKED (design §(o″)); the cycle-W9a `List`-fold transport core LANDED; next = the
-`shiftPerm`-specific T-W9a instantiation `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
-(plug the cycle bodies + per-`i` split frameworks into the landed fold).** CLOSED/LANDED so far (full
-detail in *Current state* + *Decisions made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED;
-CHAIN-2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
-(`ofNormals_relabel_perm`) + **2c-ii-graphiso** (`splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm`,
-`Operations.lean`) + **head-peel factorization** (`shiftPerm_eq_swap_mul`, `Operations.lean`) + the
-**cycle-W9a `List`-fold core** (`BodyHingeFramework.wstep` + `wstep_foldr_mem_span_rigidityRows`,
-`Relabel.lean`) LANDED, all axiom-clean. The graphiso iff is the `(ρ,σ) = (shiftPerm i.castSucc,
+**Route B LOCKED (design §(o″)); the cycle-W9a `List`-fold transport core + `shiftBodyList` LANDED;
+next = the `shiftPerm`-specific T-W9a instantiation
+`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (plug the cycle bodies +
+per-`i` split frameworks into the landed fold).** The closed/landed leaf list is in *Current state* +
+*Decisions made* + the checklist (CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; 2c-i/2c-ii-α/β/graphiso +
+head-peel + fold core + body list LANDED). The graphiso iff is the `(ρ,σ) = (shiftPerm i.castSucc,
 shiftEdgePerm i)` intertwiner of the candidate-`i` split with the `i:=1` base split, for interior
 `1 < i`.
 
-**The route decision (design §(o″), the canonical adjudication).** The §(o′)(B) arm-closer-transport
-fork is **resolved to route B** (the shared-`ρ₀` M₃-style row-span transport). **Route A REJECTED as
-unprovable** — its eq.-(6.66) identity `ρᵢ = shiftPerm`-image-of-`ρ₀` equates two independent
-`Classical.choice` existentials (the per-`i` candidate `ρᵢ` from 2a-ii's own W6b vs. the base `ρ₀`);
-KT (p. 698) carries ONE `r` + the ±r chain, and the landed d=3 M₃ is route B at the degenerate `i=2`.
-Full file:line argument + KT cross-check: design §(o″).
+**The route decision (design §(o″), canonical).** The §(o′)(B) arm-closer-transport fork is **resolved
+to route B** (the shared-`ρ₀` M₃-style row-span transport); **route A REJECTED as unprovable** (its
+eq.-(6.66) identity equates two independent `Classical.choice` existentials — KT p. 698 carries ONE `r`
++ the ±r chain, and the landed d=3 M₃ is route B at the degenerate `i=2`). Full argument: design §(o″).
 
-**Route B's genuinely-new piece — the abstract fold core LANDED; what remains is the wiring.** The
+**Route B's genuinely-new piece — fold core + body list LANDED; what remains is the wiring.** The
 transport is the cycle-generalization of W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
-`Relabel.lean:546`) + W9b. The abstract core is now built: `wstep v a c` packages the single-step W9a
-transport as a `Dual →ₗ Dual`, and `wstep_foldr_mem_span_rigidityRows` iterates it over a `(v,a,c)`-body
-list + a framework chain `F : ℕ → BodyHingeFramework` (source-at-top `F len` → target `F 0`, head
-applied last) by clean `List` induction — the §(o″) "telescoping may not compose cleanly" concern is
-fully settled (the per-step a-column subtractions accumulate cleanly through the `foldr`). The
-cycle's moved-body list is now landed as `ChainData.shiftBodyList i = [(vtx 2, vtx 1, vtx 0),
-(vtx 3, vtx 2, vtx 1), …, (vtx i, vtx (i−1), vtx (i−2))]` (length `i−1`, the `(v,a,c)` triple per
-moved degree-2 body — body `vtx (s+1)` moving to `vtx (s+2)` past predecessor `vtx s`; head
-`[0] = (v₂,v₁,v₀)` = the `shiftPerm_eq_swap_mul` leading transposition's body) with `length_`,
-`getElem_`, `getElem_…_zero`, and `shiftBodyList_eq_cons` (head-peel, mirrors `shiftCycle_eq_cons`),
-all axiom-clean in `Operations.lean`. **What remains in T-W9a is the `shiftPerm`-specific
+`Relabel.lean:546`) + W9b. The abstract fold core (`wstep` + `wstep_foldr_mem_span_rigidityRows`,
+`Relabel.lean`) and the cycle's moved-body list `ChainData.shiftBodyList i` (length `i−1`, one
+`(v,a,c)` triple per moved body; + `getElem_`/head-peel `shiftBodyList_eq_cons`, `Operations.lean`) are
+both landed, axiom-clean; the §(o″) telescoping concern is retired (per-step a-column subtractions
+compose cleanly through the `foldr`). **What remains in T-W9a is the `shiftPerm`-specific
 instantiation**: feed `shiftBodyList i` + the per-`i` interior-split framework chain into
 `wstep_foldr_mem_span_rigidityRows`, discharge the per-step `hstep` hypotheses via
 `splitOff_isLink_shiftRelabel_iff` (+ the `deg_two_split` / `shiftPerm_eq_swap_mul` machinery), and
@@ -372,18 +356,14 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   (`shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`, the single-transposition peel T-W9a iterates).
   `formPerm ∘ ofFn` + `ofFn = cons` (§61 motive trap, `List.ext_getElem`) idioms in FRICTION. Git + §(o).
 - **CHAIN-2c-ii-transport-W9a infra LANDED 2026-06-19** (axiom-clean) — the fold core
-  `BodyHingeFramework.wstep` (single-step W9a transport `φ ↦ funLeft(av).dualMap φ − hingeRow v c
-  (φ∘single a)` as a `Dual →ₗ Dual`) + `wstep_foldr_mem_span_rigidityRows` (`CaseIII/Relabel.lean`):
-  `List.foldr` of `wstep` over a `(v,a,c)`-body list + framework chain `F : ℕ → BodyHingeFramework`,
-  clean `List` induction shifting `F` to `F(·+1)`; **orientation forced by `foldr` head-applied-last:
-  source-at-top `F len` → target `F 0`, each step `F(s+1)→F s` = W9a's `Fv`(src)→`Fva`(tgt)** (subsumes
-  the prior binary composition step). Plus its moved-body list `ChainData.shiftBodyList`
-  (`Induction/Operations.lean`): `[(vtx 2,vtx 1,vtx 0), …, (vtx i,vtx (i−1),vtx (i−2))]` (length `i−1`,
-  body `vtx (s+1)` moving to `vtx (s+2)` past predecessor `vtx s`) + `length_`/`getElem_`/`…_zero`/
-  `shiftBodyList_eq_cons` (head-peel mirrors `shiftCycle_eq_cons`, the foldr recursion) — a verbatim
-  `List.ofFn` mirror of `shiftCycle`, `omit [DecidableEq α]` (pure `vtx` indexing). Next: feed
-  `shiftBodyList i` + the per-`i` split framework chain into the fold for the `shiftPerm` instantiation.
-  No FRICTION (clean idioms; `ofFn = cons` head-peel already in §61).
+  `BodyHingeFramework.wstep` (single-step W9a transport as a `Dual →ₗ Dual`) +
+  `wstep_foldr_mem_span_rigidityRows` (`CaseIII/Relabel.lean`): `List.foldr` of `wstep` over a
+  `(v,a,c)`-body list + framework chain `F : ℕ → BodyHingeFramework`, clean `List` induction
+  (orientation forced head-applied-last: source-at-top `F len` → target `F 0`; subsumes the prior binary
+  composition step). Plus the moved-body list `ChainData.shiftBodyList` (`Operations.lean`, + helper
+  lemmas incl. head-peel `shiftBodyList_eq_cons`) — a verbatim `List.ofFn` mirror of `shiftCycle`. Next:
+  feed `shiftBodyList i` + the per-`i` split framework chain into the fold for the `shiftPerm`
+  instantiation. No FRICTION (clean idioms; full detail in git/commit messages + §(o″)).
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
   + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
