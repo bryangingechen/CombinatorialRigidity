@@ -737,9 +737,9 @@ Phase-20-subsumption opens (`notes/Phase23-design.md` OD-2/OD-3) by `lean_local_
 - **Surface-sync the public phase table — DONE (2026-06-17, Phase-23 open).** `home_page/index.md`'s
   sub-letter rows (21a–22l) collapsed to arc/per-phase rows; `intro.tex` / `README.md` were de-jargoned
   in the 2026-06-16 pass and remain accurate (they already name Phase 23 / Lemma 6.13 as the frontier).
-- **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now back-references-only) — **still
-  deferred**, now a tightly-scoped doc-hygiene follow-up off the Phase-23 critical path (tracked in
-  `notes/Phase23a.md` *Hand-off*). The §1.33(C)–(E) reuse map it held is now **lifted** into the *Reuse
-  map → Phase 23* block below (this commit), so the Phase22-design doc carries no Phase-23 starting
-  material the recon still needs — it can be compressed/archived without loss. Do it as a deliberate
-  ≤3-line-verdict compression of its closed arcs, not a blind delete.
+- **`notes/Phase22-realization-design.md` archived in place — DONE (2026-06-19).** Frozen banner added;
+  the planned ≤3-line-verdict compression was found **inadvisable** (~40 inbound `§`-pointers from
+  `DESIGN.md`/`BlueprintExposition.md`/`ROADMAP.md` cite its sections as the sole detailed home — a blind
+  compression would orphan them). The §1.33(C)–(E) reuse map it held is **lifted** into the *Reuse map →
+  Phase 23* block below, so it carries no live Phase-23 material; it stays frozen as the cited archive.
+  Full detail in `notes/Phase23a.md` *Tracked follow-up*.

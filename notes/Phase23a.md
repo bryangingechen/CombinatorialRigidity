@@ -197,16 +197,16 @@ spine; `theorem_55_minimalKDof_k` kept as the `k=2` wrapper; five general-grade 
 from the landed `d=3` machinery). The detailed 23a recon settled OD-5 (ports verbatim) and
 resolved OD-2/OD-3 (4.6/4.8 exist only in fixed-tuple `d=3` form). See §"23a".
 
-**Tracked follow-up (deferred from this commit, not Phase-23 math):**
-- **Compress `notes/Phase22-realization-design.md`** (≈8.5k lines, now
-  back-references-only). Per `notes/CLAUDE.md` *One canonical home per
-  content type*, its closed arcs compress to ≤3-line verdicts now that
-  Phase 22 has closed. This commit lifted §1.33(C)–(E)'s reuse map into
-  `notes/MolecularConjecture.md`'s *Reuse map* (the recon needed it), so the
-  Phase22-design doc can now be compressed/archived without losing the
-  Phase-23 starting material. **Do this as a tightly-scoped doc-hygiene
-  commit, not a blind delete** — a self-contained follow-up, off the
-  Phase-23 critical path.
+**Tracked follow-up (resolved 2026-06-19, doc-hygiene):**
+- **`notes/Phase22-realization-design.md` archived in place** (frozen banner at
+  the top; not read on load). The originally-planned ≤3-line-verdict compression
+  was investigated and found **inadvisable as a blind pass**: ~40 inbound
+  `§`-pointers (`DESIGN.md`/`BlueprintExposition.md`/`ROADMAP.md`/`blueprint/CLAUDE.md`/
+  the Phase-22* notes) cite its sections as the *sole* canonical detailed-rationale
+  home, so compressing would orphan them. The live Phase-23 starting material (the
+  §1.33(C)–(E) reuse map) was already lifted to `notes/MolecularConjecture.md`
+  *Reuse map*. Any future compression must relocate-and-rewire those pointers,
+  not delete — so it stays frozen as the cited archive.
 
 ## Decisions made during this phase
 

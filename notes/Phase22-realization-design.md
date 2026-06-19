@@ -1,5 +1,18 @@
 # Phase 22 — realization-layer design (decision-support doc)
 
+> **ARCHIVED — closed-phase reference (Phase 22 closed; do not read whole).**
+> This is the full Phase-22 realization-layer design recon, kept frozen as the
+> canonical detailed-rationale home that **~40 inbound `§`-pointers** cite
+> (`DESIGN.md`, `BlueprintExposition.md`, `ROADMAP.md`, `blueprint/CLAUDE.md`,
+> the Phase-22* notes). **Reach a specific `§` via its inbound pointer and read
+> that section — do not read the file whole** (≈8.5k lines). No live Phase-23
+> working material lives here: the §1.33(C)–(E) reuse map was lifted to
+> `notes/MolecularConjecture.md` *Reuse map*, and distilled cross-cutting
+> lessons live in `DESIGN.md`. It is deliberately **not** compressed to
+> verdicts — those inbound pointers treat its sections as the sole detailed
+> home, so a compression would have to relocate-and-rewire them, not
+> blind-delete (see `notes/Phase23a.md` *Tracked follow-up*).
+
 > **File-layout note (pre-Phase-22b structure pass, `notes/Phase22-structure.md`).**
 > The single files this doc cites have since been split into subdirectories:
 > `AlgebraicInduction.lean` → `Molecular/AlgebraicInduction/`
