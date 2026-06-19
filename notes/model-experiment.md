@@ -42,13 +42,15 @@ file).
   S/P/B is still **rated and logged** per dispatch (experiment data), but the
   rung is **opus regardless of the map**; probes off; boundary pairs run
   opus-vs-opus or are skipped. Re-confirm (or lift) at session start.
-- **Per-session run modifications** (re-confirm at session start; sessions #6–#8
+- **Per-session run modifications** (re-confirm at session start; sessions #6–#9
   set them): the 10-run check-in cap **lifted** (loop runs to phase close or a
   surfaced concern); step-4 mechanical fixups (wrong branch / author /
-  trailer) **pre-authorized**. Session-#8 availability (2026-06-18, re-confirmed;
-  expires session-end): opus confirmed (the coordinator runs on it); under the
-  OPUS-ONLY override the other rungs are not probed (boundary pairs
-  opus-vs-opus or skipped) — a fresh coordinator under the S/P/B map re-probes.
+  trailer) **pre-authorized**. Session-#9 availability (2026-06-18, re-confirmed
+  by the user at session start: OPUS-ONLY kept, cap lifted, fixups
+  pre-authorized; expires session-end): opus confirmed (the coordinator runs on
+  it; reachable via the Agent `model` param); under the OPUS-ONLY override the
+  other rungs are not probed (boundary pairs opus-vs-opus or skipped) — a fresh
+  coordinator under the S/P/B map re-probes.
 - **Session #8 close (2026-06-18; paused by user after row 246; loop stopped).** **Closed CHAIN-2a**
   (`chainData_split_w6b_gates` + `chainData_split_realization`) and **landed the CHAIN-2c single-base
   dispatch chain** — 2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`, KT
