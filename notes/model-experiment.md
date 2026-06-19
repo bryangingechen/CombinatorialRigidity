@@ -51,18 +51,23 @@ file).
   it; reachable via the Agent `model` param); under the OPUS-ONLY override the
   other rungs are not probed (boundary pairs opus-vs-opus or skipped) — a fresh
   coordinator under the S/P/B map re-probes.
-- **Session #8 close (2026-06-18; paused by user after row 246; loop stopped).** **Closed CHAIN-2a**
-  (`chainData_split_w6b_gates` + `chainData_split_realization`) and **landed the CHAIN-2c single-base
-  dispatch chain** — 2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`, KT
-  eq. 6.54 cycle iso) + 2c-ii-β (`ofNormals_relabel_perm`, the general-perm transport); rows 238–246,
-  all axiom-clean. **Route β LOCKED** (user-adjudicated + KT-source-verified, rows 241/242: KT builds the
-  `d` candidates from ONE `v₁`-base, not `d` splits) + a standing **blueprint-clarity obligation**
-  (route β absorbs KT's isos/±r → the `lem:case-III` general-`d` prose must materialize them;
-  `notes/BlueprintExposition.md`). **Next dispatch: CHAIN-2c-ii** — the arm closer `chainData_relabel_arm`
-  + its **genuinely-new `shiftPerm` graph-iso** (a `splitOff_isLink_relabel` analogue, NOT in tree,
-  relocated by 2c-ii-β's `hiso` abstraction); weigh a recon/decomposition. Then 2c-iii → CHAIN-5 + the
-  ENTRY extractor reshape (`notes/Phase23b.md` *Hand-off* + design §(n)/§(o)). Session-#8 calibration
-  lessons (named-dispatch cost-blindness; recon-early 3× saves; the note-bloat tax) → *Findings*.
+- **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
+  chain (2c-i/2c-ii-α/2c-ii-β); Route β LOCKED. Detail subsumed by session-#9 progress below + git.
+- **Session #9 close (2026-06-19; paused by user after row 254, clean handoff; loop stopped).**
+  Rows 247–254, all opus (OPUS-ONLY), all gate-verified. **CHAIN-2c-ii-graphiso COMPLETE** (the `hiso`
+  supplier: `shiftEdgePerm` + forward/backward + the packaged iff `splitOff_isLink_shiftRelabel_iff`,
+  rows 248–250). **The §(o′)(B) arm-transport fork ADJUDICATED → route B** (§(o″), row 251): route A
+  REJECTED as *unprovable* (its eq.-6.66 identity equates two `Classical.choice` existentials), route B
+  is KT-faithful (the ±r chain, PDF pp. 696–698). **Route-B cycle-W9a de-risked**: head-peel handle
+  (row 252) + two-step composition (row 253, telescoping settled) + the abstract `List`-fold core
+  `wstep`/`wstep_foldr_mem_span_rigidityRows` (row 254). **Two orphaned lemmas tracked for
+  confirm-and-delete** at the 2c-ii-arm/cleanup commit (`ofNormals_relabel_perm` ← route-A rejection;
+  the binary composition step ← subsumed by the fold) — `notes/Phase23b.md` *Hand-off*. **Next dispatch:
+  the `shiftPerm`-specific T-W9a instantiation** (`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`,
+  plug the cycle body-list + interior-split framework chain into the fold via `shiftPerm_eq_swap_mul` +
+  `splitOff_isLink_shiftRelabel_iff`) → T-W9b → 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY reshape
+  (`notes/Phase23b.md` *Hand-off* + design §(o″)). Session-#9 lesson: the note-bloat tax persisted
+  (every build left the note >500; coordinator structural-deduped each time) → *Findings*.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
