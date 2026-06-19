@@ -186,7 +186,13 @@ panel-match is the bridge's vector identity; the genuine-row disjunct reuses T-W
 `shiftBodyFramework` removeVertex chain, the `(ab)`/`(cv)` block extensors off
 `shiftBodyFramework_supportExtensor`, body triples off `getElem_shiftBodyList`. The single `r` is the
 W6b candidate functional `ρ` from `chainData_split_w6b_gates` (`Realization.lean:1005`), reused across
-all candidates (route β, KT's one-`r` discipline), so it is in scope. W9b membership feeds
+all candidates (route β, KT's one-`r` discipline), so it is in scope. **Relocated crux re-flag
+(the bridge defers it as a hypothesis, L5a-i):** the bridge `redundancy_panel_carry` *carries* its
+`hcol`/`hrest` (the carried candidate row vanishes on `vtx⟨s+1⟩`'s screw-column — eq. 6.43 degree-2
+redundancy), so the membership must DISCHARGE them at each interior step. That column-vanishing — not
+the `Tag` plumbing — is the membership's genuinely-new content; first confirm whether it is a landed
+candidate-construction fact (CHAIN-1 augment / W6b `ρ`) or a fresh sub-obligation, and scope/rate by it
+(a missing column-vanishing is a recon trigger, not a "mechanical instantiate"). W9b membership feeds
 `case_III_arm_realization`'s `hwmem` slot at the relabelled roles; the arm closer 2c-ii-arm wires
 T-W9a's span half + its deferred relabel bridge (`wstep_foldr_funLeft_eq` +
 `shiftPerm_eq_prod_map_swap_shiftBodyList`, exposing `funLeft (shiftPerm i)`) + T-W9b's bottom tags into
