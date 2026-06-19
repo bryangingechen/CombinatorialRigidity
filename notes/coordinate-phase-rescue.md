@@ -16,7 +16,7 @@ orientation.) Row numbers cite `model-experiment.md`.
 - Dispatch **killed** by a session/usage limit, **or user-interrupted** mid-task → §3
 - Plan-label deviation (destructive→additive, slice re-size) → §4
 - BLOCKED return — which resolutions stay in-workflow → §5
-- Non-build dispatch shapes (cleanup round; coordinator-authored) → §6
+- Non-build dispatch shapes (cleanup round; coordinator-authored; source-verification recon) → §6
 - Subagent wedged for hours on a proof timeout (elaboration wall) → §7
 
 ## §1 — Mechanical fixups (a fixup, never a stop)
@@ -143,6 +143,17 @@ moved it into the hand-off).
   reconstruct that context from a prompt, lossily. Same per-commit
   checklists, project author identity, and the coordinator's *actual*
   model in the trailer (the §1.55 + postmortem commits).
+- **Source-verification recon** (read-only, no commit): when the open question is a
+  route's *faithfulness to the source* — typically a design-pass verdict that
+  re-routes against KT's construction, which the design pass cannot self-certify —
+  dispatch a read-only agent to read the load-bearing primary-source equations (the
+  `.refs/` PDF) and return a verdict, **framed adversarially** ("try to *refute* the
+  proposed reading; a refutation is more valuable than a confirmation"). It leaves
+  the tree untouched (a verify, not a build); the coordinator acts on the verdict and
+  locks the route. Used 2026-06-18 (row 242) to confirm route β's single-`v₁`-base
+  reading against KT eqs. (6.46)–(6.67) and **refute** the per-`i`-splits alternative
+  *before* committing the build — the highest-confidence way to settle a
+  "which route is KT-faithful" fork.
 
 ## §7 — Subagent wedged for hours on a proof timeout (elaboration wall)
 
