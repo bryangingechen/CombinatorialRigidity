@@ -2564,6 +2564,19 @@ verdict stands (route A is *impossible*, so route B is forced regardless of its 
 commit-count is an estimate to revisit at the build of (T-W9a). **It is NOT a motive/IH or
 spine-carry change** — that boundary (C.3/C.6) is unmoved on route B.
 
+**Coordinator addendum (2026-06-19) — the route-A rejection orphans `ofNormals_relabel_perm`
+(2c-ii-β, row 246).** The §(o″) decomposition (T-W9a → T-W9b → `chainData_relabel_arm`) is M₃-style
+row-span transport; the landed d=3 M₃ (`case_III_arm_realization_M3`) uses **no** `ofNormals_relabel`,
+so the cycle-generalized route B (very likely) uses **no** `ofNormals_relabel_perm` either. Grep
+confirms `ofNormals_relabel_perm` currently has **zero call sites** — it was built (row 246) for the
+now-rejected route-A whole-framework transport. It is the framework-transport `hiso`-consumer; the
+landed graph-iso `splitOff_isLink_shiftRelabel_iff` (rows 248–250) is **NOT** orphaned — route B's
+T-W9a is stated *against* it (the per-step link correspondence), so that work stands. **Action: at the
+2c-ii-arm build, confirm `chainData_relabel_arm` does not use `ofNormals_relabel_perm` (it should not,
+mirroring M₃), then delete `ofNormals_relabel_perm` + reword its two Operations.lean docstring
+references** (or, if the arm finds a GP/algindep use for it, keep + re-pin). Tracked as a checklist
+item; do not delete pre-emptively (1% the arm wants its GP/algindep conjuncts for the relabelled seed).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

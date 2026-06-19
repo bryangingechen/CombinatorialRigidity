@@ -209,6 +209,14 @@ roles `(vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)`) → **CHAIN-2c-iii**
 commit-count is an estimate — if the per-step subtraction does not telescope cleanly, (T-W9a) splits
 further. Full signatures + decomposition: design §(o″).
 
+**Route-A rejection orphans 2c-ii-β `ofNormals_relabel_perm` (row 246) — confirm-and-delete at the
+2c-ii-arm build.** Route B is M₃-style (the landed M₃ uses no `ofNormals_relabel`), so the whole-frame
+transport `ofNormals_relabel_perm` (built for route A) is very likely unused — grep shows zero callers.
+At 2c-ii-arm: confirm `chainData_relabel_arm` doesn't use it (mirroring M₃), then delete it + reword its
+2 Operations.lean docstring refs (or keep+re-pin if the arm wants its GP/algindep conjuncts). The
+graph-iso `splitOff_isLink_shiftRelabel_iff` (rows 248–250) is **NOT** orphaned — T-W9a is stated
+against it. Canonical: design §(o″) coordinator addendum.
+
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o′)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
   `ρ₀`, ONE W6b call, ONE discriminator call, then `fin_cases u`; eq. (6.66)'s ±r chain absorbed into
@@ -365,10 +373,11 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `σ⁻¹`/`ρ⁻¹` using the 2 closure values + `right_unique`; both-off ⇒ `σ e = e` by injectivity; fresh
   `e₀ ↦ edge 0`), and the packaged iff `…_shiftRelabel_iff` = the §(o′)(A) `hiso`. Internals + 2 new
   golf idioms (`IsLink.right_unique`; `subst`-fails-on-application) → FRICTION.
-- **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`**, the involution-free general-`Equiv.Perm`
-  framework-transport (`CaseIII/Relabel.lean`, axiom-clean): graph layer abstracted to
-  `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + `hρst` (the forced `ρ.symm`/`σ.symm`
-  placement in FRICTION). Git + §(o)/§(o′).
+- **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`** (the general-`Equiv.Perm`
+  framework-transport, `CaseIII/Relabel.lean`, axiom-clean). **⚠ Built for route A, which §(o″)
+  REJECTED — now very likely orphaned** (route B is M₃-style row-span, uses no whole-frame transport;
+  zero callers). Confirm-and-delete at the 2c-ii-arm build (*Hand-off* + design §(o″) addendum). Idiom
+  (the forced `ρ.symm`/`σ.symm` placement) preserved in FRICTION regardless. Git + §(o)/§(o″).
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` (`Induction/Operations.lean`, the `splitOff` home) + accessors `pred_edge_ne`/
   `isLink_edge`. `deg_two` interior vertices guarded by `0 < (i:ℕ)` (no `OfNat (Fin d)` literal),
