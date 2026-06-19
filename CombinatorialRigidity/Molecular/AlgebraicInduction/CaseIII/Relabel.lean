@@ -633,6 +633,73 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     intro t x _ hx
     rw [map_smul]; exact Submodule.smul_mem _ t hx
 
+/-- **W9a composes — the two-step relabel transport** (the cycle-W9a induction step, CHAIN-2c-ii
+route B, `notes/Phase23-design.md` §(o″)). Two single-swap W9a transports compose into one transport
+across the composite relabel `(a₂ v₂) ∘ (a₁ v₁)`, subtracting *two* a-columns — one per moved
+degree-2 body. Concretely: if W9a carries `span Fv.rigidityRows` to `span F₁.rigidityRows` across
+the swap `(a₁ v₁)` (stripping body `a₁`'s `e_{c₁} = a₁c₁` column), and a second W9a carries
+`span F₁.rigidityRows` to `span Fva.rigidityRows` across `(a₂ v₂)` (stripping `a₂`'s column), then
+for any `φ ∈ span Fv.rigidityRows`,
+$$(\mathrm{funLeft}\,((a_2\,v_2)\circ(a_1\,v_1))).\mathrm{dualMap}\,\varphi
+\;-\;\Bigl[(\mathrm{funLeft}\,(a_2\,v_2)).\mathrm{dualMap}
+       \bigl(\mathrm{hingeRow}\;v_1\;c_1\;(\varphi\circ\mathrm{single}\,a_1)\bigr)
+   \;+\;\mathrm{hingeRow}\;v_2\;c_2\;((T_1\varphi)\circ\mathrm{single}\,a_2)\Bigr]
+\;\in\;\mathrm{span}\;F_{va}.\mathrm{rigidityRows},$$
+where `T₁ φ := (funLeft (a₁ v₁)).dualMap φ − hingeRow v₁ c₁ (φ ∘ single a₁)` is the first step's
+output (the intermediate vector in `span F₁`). The proof is pure linearity over the two single-step
+memberships: feed `T₁ φ ∈ span F₁` (the first W9a) to the second W9a, then rewrite the nested
+`(funLeft (a₂ v₂)).dualMap ∘ (funLeft (a₁ v₁)).dualMap` to the composite relabel
+`(funLeft ((a₂ v₂) ∘ (a₁ v₁))).dualMap` via `LinearMap.funLeft_comp` (a `funLeft`-contravariance the
+dual map straightens). This is the genuinely-new content route B's cycle-W9a needs (the per-step
+a-column subtractions *do* compose cleanly — the design §(o″) telescoping concern); the cycle of
+`i − 1` adjacent degree-2 bodies iterates this step along the head-peel
+`shiftPerm i = (vtx 1 vtx 2) * (tail formPerm)` (`shiftPerm_eq_swap_mul`). Graph-free over the
+carrier, inheriting W9a's `§38`-clean discipline. -/
+theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows
+    [DecidableEq α] {Fv F₁ Fva : BodyHingeFramework k α β}
+    {v₁ a₁ c₁ v₂ a₂ c₂ : α} {e_c₁ e_c₂ : β}
+    (hca₁ : c₁ ≠ a₁) (hcv₁ : c₁ ≠ v₁)
+    (hlink_ec₁ : Fv.graph.IsLink e_c₁ a₁ c₁)
+    (hdeg2₁ : ∀ f x, Fv.graph.IsLink f a₁ x → f = e_c₁)
+    (hdeg2r₁ : ∀ f x, Fv.graph.IsLink f x a₁ → f = e_c₁)
+    (hnov₁ : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v₁ ∧ y ≠ v₁)
+    (htrans₁ : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a₁ → y ≠ a₁ →
+      F₁.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ F₁.hingeRowBlock f)
+    (hca₂ : c₂ ≠ a₂) (hcv₂ : c₂ ≠ v₂)
+    (hlink_ec₂ : F₁.graph.IsLink e_c₂ a₂ c₂)
+    (hdeg2₂ : ∀ f x, F₁.graph.IsLink f a₂ x → f = e_c₂)
+    (hdeg2r₂ : ∀ f x, F₁.graph.IsLink f x a₂ → f = e_c₂)
+    (hnov₂ : ∀ f x y, F₁.graph.IsLink f x y → x ≠ v₂ ∧ y ≠ v₂)
+    (htrans₂ : ∀ f x y, F₁.graph.IsLink f x y → x ≠ a₂ → y ≠ a₂ →
+      Fva.graph.IsLink f x y ∧ F₁.hingeRowBlock f ≤ Fva.hingeRowBlock f)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ Fv.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a₂ v₂ ∘ Equiv.swap a₁ v₁)).dualMap φ
+        - ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a₂ v₂)).dualMap
+              (BodyHingeFramework.hingeRow (k := k) (α := α) v₁ c₁
+                (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a₁)))
+            + BodyHingeFramework.hingeRow (k := k) (α := α) v₂ c₂
+                (((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a₁ v₁)).dualMap φ
+                    - BodyHingeFramework.hingeRow (k := k) (α := α) v₁ c₁
+                        (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a₁))).comp
+                  (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a₂)))
+      ∈ Submodule.span ℝ Fva.rigidityRows := by
+  -- The first W9a transport: `T₁ φ ∈ span F₁.rigidityRows`.
+  have h₁ := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+    (Fv := Fv) (Fva := F₁) hca₁ hcv₁ hlink_ec₁ hdeg2₁ hdeg2r₁ hnov₁ htrans₁ hφ
+  -- The second W9a transport, fed the intermediate vector `T₁ φ ∈ span F₁`.
+  have h₂ := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+    (Fv := F₁) (Fva := Fva) hca₂ hcv₂ hlink_ec₂ hdeg2₂ hdeg2r₂ hnov₂ htrans₂ h₁
+  -- `(funLeft (a₂ v₂)).dualMap` is linear, so it distributes over `T₁ φ`'s subtraction; the nested
+  -- `(funLeft (a₂ v₂)).dualMap ((funLeft (a₁ v₁)).dualMap φ)` straightens to the composite relabel
+  -- via `dualMap_comp_dualMap` (`f.dualMap ∘ₗ g.dualMap = (g ∘ₗ f).dualMap`) + `funLeft_comp`
+  -- (`funLeft (σ₂ ∘ σ₁) = funLeft σ₁ ∘ₗ funLeft σ₂`).
+  rw [map_sub, ← LinearMap.comp_apply, LinearMap.dualMap_comp_dualMap,
+    ← LinearMap.funLeft_comp] at h₂
+  -- The two subtractions group as the bracketed double a-column correction.
+  rw [sub_sub] at h₂
+  exact h₂
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row

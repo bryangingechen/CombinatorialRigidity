@@ -98,6 +98,12 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] Composing two `(funLeft σ).dualMap` relabel transports — `dualMap_comp_dualMap` reverses the order, then `funLeft_comp` reverses it back
+- **Where it bit:** `BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport route B): composing two single-swap W9a transports into one across `σ₂ ∘ σ₁`, the nested `(funLeft σ₂).dualMap ((funLeft σ₁).dualMap φ)` must straighten to `(funLeft (σ₂ ∘ σ₁)).dualMap φ`.
+- **Friction:** `funLeft` is *contravariant* (`LinearMap.funLeft_comp R M (f₁ ∘ f₂) = funLeft f₂ ∘ₗ funLeft f₁`) and `dualMap` is too (`LinearMap.dualMap_comp_dualMap f g : f.dualMap ∘ₗ g.dualMap = (g ∘ₗ f).dualMap`, **not** a `dualMap_comp`) — so guessing the rewrite direction is error-prone, and `← dualMap_comp` (the name one reaches for) does not exist.
+- **Resolution:** chain `← LinearMap.comp_apply` (re-bundle the application as `(_ ∘ₗ _) φ`), then `LinearMap.dualMap_comp_dualMap` (turns `(funLeft σ₂).dualMap ∘ₗ (funLeft σ₁).dualMap` into `(funLeft σ₁ ∘ₗ funLeft σ₂).dualMap`), then `← LinearMap.funLeft_comp` (turns `funLeft σ₁ ∘ₗ funLeft σ₂` into `funLeft (σ₂ ∘ σ₁)`). The two contravariances cancel: `(funLeft (σ₂ ∘ σ₁)).dualMap` is "apply `σ₁` first" — the same order the composite swap acts, so no further bookkeeping. Group the two a-column corrections with `sub_sub` (`a - b - c = a - (b + c)`) on the *hypothesis only* (state the goal already in `a - (b + c)` form so its side needs no rewrite).
+- **Status:** idiom (will recur in the full cycle-W9a `List`-fold, where each step composes one more swap onto the accumulated transport).
+
 ### [idiom] Dropping the involution from a `ρ = Equiv.swap`-relabel transport to a general `Equiv.Perm ρ` — the `ρ`/`ρ.symm`-placement is forced, not free
 - **Where it bit:** `PanelHingeFramework.ofNormals_relabel_perm` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-β), generalizing the swap-only `ofNormals_relabel` to KT eq. (6.54)'s `(i−1)`-cycle `ρᵢ`.
 - **Friction:** the swap body has `ρ` in *both* the seed reindex (`qρ p = q₀ (ρ p.1, ·)`) *and* the endpoint selector (`endsσρ e = (ρ (ends₀ (σ e)).1, …)`); with `ρ = ρ.symm` the two `ρ`s cancel each other (e.g. in the support-extensor equality `Q'.supportExtensor f = Q.supportExtensor (σ f)`), so the body never reveals which slot needs `.symm`.

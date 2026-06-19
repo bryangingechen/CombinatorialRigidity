@@ -21,13 +21,16 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Route B LOCKED (§(o″)); `shiftPerm` head-peel factorization LANDED; next = the cycle-W9a transport
-`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (2c-ii-transport-W9a, the
-genuinely-new a-column subtraction induction).** The §(o′) route-A/B fork is resolved to **route B**
-(route A REJECTED unprovable) — canonical verdict + rejection argument + route-B leaf decomposition in
-*Hand-off* + design §(o″). LANDED, axiom-clean: the graph-iso brick (A) + the head-peel
-`shiftPerm_eq_swap_mul` (`shiftPerm i = swap (vtx 1)(vtx 2) * tail-formPerm`, the per-step peel each
-cycle-W9a induction step composes; *Decisions* + git).
+**Route B LOCKED (§(o″)); the cycle-W9a *two-step composition* brick LANDED; next = the full
+cycle-W9a `List`-fold `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
+(2c-ii-transport-W9a, iterating the just-landed composition step along the head-peel).** The §(o′)
+route-A/B fork is resolved to **route B** (route A REJECTED unprovable) — canonical verdict +
+rejection argument + route-B leaf decomposition in *Hand-off* + design §(o″). LANDED, axiom-clean:
+the graph-iso brick (A); the head-peel `shiftPerm_eq_swap_mul`; and the **two-step composition**
+`BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` — two single-swap W9a
+transports compose across `σ₂ ∘ σ₁`, subtracting two a-columns (the per-step a-column subtractions
+*do* telescope cleanly; settles the §(o″) telescoping concern). The remaining T-W9a is the
+`List`/cycle iteration of this step over the `i−1` moved bodies (`Decisions` + git).
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
 uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** route β. The
@@ -108,10 +111,12 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       `shiftPerm_eq_swap_mul` (`Operations.lean`, axiom-clean) — `shiftPerm i = swap (vtx 1)(vtx 2) *
       (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
       induction composes. Two leaves: **(T-W9a)** the cycle a-column span transport
-      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [next; the
-      genuinely-new piece, ~2–4 commits — a cycle-induction generalization of W9a
-      `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` over the just-landed peel, one a-column
-      subtraction per moved degree-2 body] → **(T-W9b)** the cycle bottom-tag transport (mirror
+      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — a
+      cycle-induction generalization of W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, one
+      a-column subtraction per moved degree-2 body. **Composition step LANDED**
+      (`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`: two single-swap W9a transports
+      compose across `σ₂ ∘ σ₁`, two a-columns — telescoping de-risked; next = the `List`/cycle
+      iteration over the head-peel)] → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
       the relabelled roles with `−ρ₀`; d=3 M₃ is the `i=2` instance) → **CHAIN-2c-iii**
@@ -177,53 +182,54 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Route B LOCKED (design §(o″)); the `shiftPerm` head-peel factorization LANDED; next = the cycle-W9a
-transport `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (2c-ii-transport-W9a,
-the genuinely-new a-column subtraction induction, built over the just-landed peel).** CLOSED/LANDED so
-far (full detail in *Current state* + *Decisions made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a
-CLOSED; CHAIN-2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
-(`ofNormals_relabel_perm`) + **2c-ii-graphiso** (`splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm` +
-action lemmas, `Operations.lean`) + the **head-peel factorization** (`shiftCycle_eq_cons` /
-`shiftPerm_eq_swap_mul`, `Operations.lean`) LANDED, all axiom-clean. The graphiso iff is the
-`(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of the candidate-`i` split with the
-`i:=1` base split, for interior `1 < i`; the factorization gives `shiftPerm i = swap (vtx 1)(vtx 2) *
-(tail formPerm)` (`List.formPerm_cons_cons`), the per-step transposition T-W9a's induction peels.
+**Route B LOCKED (design §(o″)); the cycle-W9a *two-step composition* brick LANDED; next = the full
+cycle-W9a `List`-fold `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
+(2c-ii-transport-W9a, iterating the composition step along the head-peel over the `i−1` moved
+bodies).** CLOSED/LANDED so far (full detail in *Current state* + *Decisions made* + the checklist):
+CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; CHAIN-2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α
+(`ChainData.shiftPerm`) + 2c-ii-β (`ofNormals_relabel_perm`) + **2c-ii-graphiso**
+(`splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm` + action lemmas, `Operations.lean`) + the
+**head-peel factorization** (`shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`, `Operations.lean`) + the
+**cycle-W9a composition step** (`BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`,
+`Relabel.lean` — two single-swap W9a transports compose across `σ₂ ∘ σ₁`, subtracting two a-columns)
+LANDED, all axiom-clean. The graphiso iff is the `(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`
+intertwiner of the candidate-`i` split with the `i:=1` base split, for interior `1 < i`; the
+factorization gives `shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`, the per-step transposition
+T-W9a's induction peels and the composition step recombines.
 
 **The route decision (design §(o″), the canonical adjudication).** The §(o′)(B) arm-closer-transport
-fork is **resolved to route B** (the shared-`ρ₀` M₃-style row-span transport). **Route A REJECTED — it
-is unprovable as stated:** its required eq.-(6.66) identity `ρᵢ = shiftPerm`-image-of-`ρ₀` equates two
-independent `Classical.choice` existentials. The per-`i` candidate `ρ` is extracted via
-`Submodule.mem_map` (`Candidate.lean:434`) off the triple existential `(r,lam,i*)` of
-`exists_redundant_panelRow_ab_lam_of_rigidOn` (`Candidate.lean:309`); 2a-ii runs its **own** W6b on the
-candidate split (`Realization.lean:1005`) producing candidate `i`'s own `ρᵢ`, and `htrans`
-(`Realization.lean:961`) is quantified over **that** `ρᵢ` — there is no provable bridge to `ρ₀`. KT
-(p. 698, eqs. 6.66–6.67, `.refs/` PDF verified) carries **ONE** `r` and runs the **±r chain** (the
-degree-2 fact "similar to (6.44)") to test it against every candidate's panel-meet `C(Lᵢ)` — no
-per-candidate W6b. The landed d=3 M₃ (`case_III_arm_realization_M3`, `Relabel.lean:923`; dispatch call
-`Realization.lean:588`) is route B at the degenerate `i=2`: one `ρ0`, fed `−ρ0` to M₃, relabel on the
-*seed* `qρ = q ∘ swap a v`. **Route B is faithful to both KT and the tree.**
+fork is **resolved to route B** (the shared-`ρ₀` M₃-style row-span transport). **Route A REJECTED as
+unprovable** — its eq.-(6.66) identity `ρᵢ = shiftPerm`-image-of-`ρ₀` equates two independent
+`Classical.choice` existentials (the per-`i` candidate `ρᵢ` from 2a-ii's own W6b vs. the base `ρ₀`);
+KT (p. 698) carries ONE `r` + the ±r chain, and the landed d=3 M₃ is route B at the degenerate `i=2`.
+Full file:line argument + KT cross-check: design §(o″).
 
-**Route B's genuinely-new piece (FLAGGED — ~2–4 commits, a real construction).** Route B's transport is
-the **cycle-generalization of W9a** (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
+**Route B's genuinely-new piece (FLAGGED — a real construction; composition step de-risked).** Route
+B's transport is the **cycle-generalization of W9a** (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
 `Relabel.lean:546`) + W9b (`:653`). The d=3 W9a is a **single** a-column subtraction cancelling the lone
 surviving edge of the *single* degree-2 body `a`; KT's `ρᵢ` is the `(i−1)`-cycle moving a **chain of
 `i−1` degree-2 bodies**, so it needs a per-step (inductive) subtraction — one stripped column per moved
 body (cleanest shape: induction on cycle length; the `shiftPerm` is a `List.formPerm`, the graphiso
-brick proves the per-step link correspondence). Leaves: **(T-W9a)** cycle a-column transport [first
-buildable] → **(T-W9b)** cycle bottom-tag transport → **2c-ii-arm** `chainData_relabel_arm` (`−ρ₀`,
+brick proves the per-step link correspondence). **The composition step is LANDED**
+(`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`): two single-swap W9a transports compose
+across `σ₂ ∘ σ₁` by pure linearity over the two single-step memberships — the §(o″) "telescoping may
+not compose cleanly" concern is settled, the per-step a-column subtractions accumulate as a clean sum.
+What remains in T-W9a is the `List`/cycle iteration of this step (one swap per moved body, the
+head-peel supplying the leading transposition). Leaves: **(T-W9a)** cycle a-column transport [in
+progress; composition step landed] → **(T-W9b)** cycle bottom-tag transport → **2c-ii-arm**
+`chainData_relabel_arm` (`−ρ₀`,
 roles `(vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)`) → **CHAIN-2c-iii** (`chainData_dispatch`,
 `fin_cases u`: `i=1` arm = 2a-ii, interior = `chainData_relabel_arm`; d=3 a zero-regression wrapper) →
 **CHAIN-5**. **No motive/IH or spine-carry change (C.6/C.3 unmoved); route β LOCKED.** Caveat: the
 commit-count is an estimate — if the per-step subtraction does not telescope cleanly, (T-W9a) splits
 further. Full signatures + decomposition: design §(o″).
 
-**Route-A rejection orphans 2c-ii-β `ofNormals_relabel_perm` (row 246) — confirm-and-delete at the
-2c-ii-arm build.** Route B is M₃-style (the landed M₃ uses no `ofNormals_relabel`), so the whole-frame
-transport `ofNormals_relabel_perm` (built for route A) is very likely unused — grep shows zero callers.
-At 2c-ii-arm: confirm `chainData_relabel_arm` doesn't use it (mirroring M₃), then delete it + reword its
-2 Operations.lean docstring refs (or keep+re-pin if the arm wants its GP/algindep conjuncts). The
-graph-iso `splitOff_isLink_shiftRelabel_iff` (rows 248–250) is **NOT** orphaned — T-W9a is stated
-against it. Canonical: design §(o″) coordinator addendum.
+**Route-A rejection orphans 2c-ii-β `ofNormals_relabel_perm` — confirm-and-delete at the 2c-ii-arm
+build.** Route B is M₃-style (uses no `ofNormals_relabel`), so the whole-frame transport
+`ofNormals_relabel_perm` (built for route A, zero callers) is very likely unused: at 2c-ii-arm confirm
+`chainData_relabel_arm` doesn't use it, then delete + reword its 2 Operations.lean docstring refs (or
+keep+re-pin if the arm wants its GP/algindep conjuncts). The graph-iso `splitOff_isLink_shiftRelabel_iff`
+is **NOT** orphaned — T-W9a is stated against it. Canonical: design §(o″) coordinator addendum.
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o′)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
@@ -363,16 +369,20 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean) — the `Fin (k+1)`-panel
   LI feeds the one CHAIN-4d discriminator call → `(u, n')`; verbatim generalization of the green d=3
   discriminator region (`case_III_candidate_dispatch` 435–442), `u` arbitrary. Detail in git + §(o).
-- **CHAIN-2c-ii-α LANDED 2026-06-18 — `ChainData.shiftPerm` (KT eq. 6.54)**, the vertex `i`-cycle
-  `vtx 1 → ⋯ → vtx i → vtx 1` + action lemmas (`Induction/Operations.lean`, axiom-clean; `formPerm ∘
-  ofFn` idiom in FRICTION). Git + §(o).
-- **`shiftPerm` head-peel factorization LANDED 2026-06-19 (2c-ii-transport recursion handle)** —
-  `ChainData.shiftCycle_eq_cons` (`shiftCycle i = vtx 1 :: ofFn tail`) + `shiftPerm_eq_swap_mul`
-  (`shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`, via `List.formPerm_cons_cons`),
-  `Operations.lean`, axiom-clean. This is the single-transposition peel the cycle-W9a (T-W9a)
-  induction composes (route B, §(o″)); the `ofFn = cons` step hits the §61 motive trap, sidestepped
-  via `List.ext_getElem` (FRICTION + QUIRKS §61 variant). T-W9a (the a-column subtraction induction)
-  is next.
+- **CHAIN-2c-ii-α + head-peel factorization LANDED 2026-06-18/19** (`Induction/Operations.lean`,
+  axiom-clean) — `ChainData.shiftPerm` (KT eq. 6.54, the vertex `i`-cycle `vtx 1 → ⋯ → vtx i → vtx 1`)
+  + the recursion handle `shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`
+  (`shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`, the single-transposition peel T-W9a iterates).
+  `formPerm ∘ ofFn` + `ofFn = cons` (§61 motive trap, `List.ext_getElem`) idioms in FRICTION. Git + §(o).
+- **CHAIN-2c-ii-transport-W9a composition step LANDED 2026-06-19** —
+  `BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (`CaseIII/Relabel.lean`,
+  axiom-clean): two single-swap W9a transports compose into one across the composite relabel
+  `σ₂ ∘ σ₁`, subtracting two a-columns (one per moved degree-2 body). Pure linearity over the two
+  single-step memberships (feed `T₁ φ ∈ span F₁` to the second W9a, straighten the nested `dualMap`s
+  via `dualMap_comp_dualMap` + `funLeft_comp`). **Settles the §(o″) telescoping concern** — the
+  per-step a-column subtractions accumulate cleanly. Next in T-W9a: the `List`/cycle iteration over
+  the head-peel (`shiftPerm_eq_swap_mul`), one swap per moved body. FRICTION idiom on the
+  `dualMap`/`funLeft` contravariance composition.
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
   + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
@@ -380,8 +390,8 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   + git.
 - **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`** (general-`Equiv.Perm`
   framework-transport, `CaseIII/Relabel.lean`, axiom-clean). **⚠ Built for route A, §(o″) REJECTED —
-  likely orphaned (zero callers); confirm-and-delete at the 2c-ii-arm build** (canonical: *Hand-off* +
-  design §(o″) addendum). `ρ.symm`/`σ.symm`-placement idiom in FRICTION regardless.
+  likely orphaned; confirm-and-delete at the 2c-ii-arm build** (see *Hand-off* orphan flag).
+  `ρ.symm`/`σ.symm`-placement idiom in FRICTION regardless.
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` (`Induction/Operations.lean`, the `splitOff` home) + accessors `pred_edge_ne`/
   `isLink_edge`. `deg_two` interior vertices guarded by `0 < (i:ℕ)` (no `OfNat (Fin d)` literal),
@@ -427,6 +437,10 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *Composing two `(funLeft σ).dualMap` relabel transports: both `funLeft` and `dualMap` are
+  contravariant, so the rewrite chain is `← comp_apply` → `dualMap_comp_dualMap` → `← funLeft_comp`
+  (the two contravariances cancel to `funLeft (σ₂ ∘ σ₁)`); group the corrections with `sub_sub` on
+  the hypothesis only* → FRICTION [idiom] *Composing two `(funLeft σ).dualMap` relabel transports…*.
 - *Recovering the other endpoint of a `Graph.IsLink` from a same-edge / same-left-endpoint pair: use
   `IsLink.right_unique` (`y = z` from `IsLink e x y`/`IsLink e x z`), not `eq_and_eq_or_eq_and_eq` +
   disjunct elimination* → FRICTION [idiom] *Recovering the other endpoint of a `Graph.IsLink`…*.
