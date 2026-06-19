@@ -44,44 +44,18 @@ discriminator call (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, 
 `panelSupportExtensor_eq_complementIso_extensor`). A verbatim `Fin (k+1)`-generalization of the green
 d=3 discriminator region (`case_III_candidate_dispatch` lines 435–442); no FRICTION.
 
-**CHAIN-2a (the per-candidate single-`i` reduction) is CLOSED** — both leaves landed 2026-06-18:
-`chainData_split_w6b_gates` (W6b half) + `chainData_split_realization` (the per-`i`
-`case_III_arm_realization` re-index off the `ChainData` accessors, transversal half carried as
-`htrans`).
+**CHAIN-2a CLOSED** (`chainData_split_w6b_gates` + `chainData_split_realization`). **Route β — LOCKED**
+(user-adjudicated 2026-06-18, KT-source-verified row 242): KT builds the `d` candidates as index-shift
+re-views of ONE `v₁`-base (not `d` separate splits — the §(l)/§(m) per-`i` framing corrected); build 2c
+off the single base + the uniform `Fin (k+1)` relabel arm. Full rationale + the **blueprint-clarity
+obligation** (route β absorbs KT's isos 6.54–6.56 + the ±r chain 6.66, so the `lem:case-III` general-`d`
+prose must materialize them): *Hand-off* + design §(n).
 
-**The §(n) design-pass found a load-bearing structural correction to the §(l)/§(m) framing of 2b/2c
-(clause ii flag).** KT Lemma 6.13 (and the landed `d=3` dispatch `case_III_candidate_dispatch`) build
-the `d` candidates from **ONE** base realization `(G₁,q₁)` (the `v₁`-split = `M₀`), with **ONE** `ρ₀`,
-**ONE** W6b call, **ONE** discriminator call, then `fin_cases u : Fin 3` over the *panels* — the other
-candidates are role-relabels (`_M2` sign-swap, `_M3` `swap a v`), NOT fresh splits. So **eq. (6.66)
-(the ±r chain) is absorbed into the reuse of a single `ρ₀` across candidate roles, not a separate
-lemma.** The landed `chainData_split_realization` is instead parameterized by a **per-`i` split** with
-a **per-`i` `htrans`** — a correct standalone per-candidate lemma + the `M₀`-arm, but **NOT the shape
-the family disjunction assembles** (the discriminator's single `r = ρ₀` is the `v₁` functional, not
-candidate `u`'s per-split `ρ`). **Route β — LOCKED (user-adjudicated 2026-06-18, KT-source-verified row 242):** build CHAIN-2c as the `Fin (k+1)`-case
-generalization of the d=3 dispatch off the single `v₁`/`M₀` base (reusing the landed W6b +
-discriminator), reusing 2a-ii only at the `M₀` candidate; the genuinely-new crux is the **uniform
-`Fin d` relabel arm** (the eq.-6.54 iso transport of `ρ₀` to an arbitrary candidate `u`'s role —
-CHAIN-2c-ii, where the build adjudicates route α vs β). Then **CHAIN-5/ENTRY**.
-
-**Context (closed/landed — full detail in the Status banner + checklist + Hand-off + *Decisions
-made*):** CHAIN-1/3/4 + OD-7 (all four 23a producers `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k` +
-both M4 halves general-`k`) CLOSED; the `G.ChainData n` record + the 7 interior-split accessors landed,
-so the per-`i` `(v,a,b,e_a,e_b)` split tuple is reachable directly from `cd : G.ChainData n`.
-Remaining: **CHAIN-2** (2a-ii → 2b → 2c) + **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract;
-gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
-
-**CHAIN-1/3/4 — all CLOSED** (2026-06-17/18; per-leaf detail in *Decisions made* → *Landed
-CHAIN-{1,3,4} bricks* + `notes/Phase23-design.md` §(f)/(h)/(i)/(j) + git):
-- **CHAIN-3** = the general-`d` per-line join=meet duality `extensor_join_proportional_complementIso_meet`
-  (`MeetHodge.lean`, the `⋀^{d−1}W`-is-a-line route; OD-8 leaf chain h-0…h-4); the d=3
-  `complementIso_smul_eq_extensor_join` stays the GREEN d=3 wrapper.
-- **CHAIN-1** = the `ιc`-block candidate augment + the eq.-6.62 row-correspondence swap
-  (`RigidityMatrix/Basic.lean`, graph-free over `ScrewSpace k`).
-- **CHAIN-4** = the Claim-6.12 discriminator capstone
-  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean`, assembling
-  CHAIN-4c+4b+CHAIN-3 (h-4); **OD-4 held end-to-end** — only LI of `pbar`, no alg-independence).
-- Forward: **CHAIN-2** consumes CHAIN-1; **CHAIN-5** consumes CHAIN-3/4 (gated on CHAIN-2 + ENTRY).
+**Context (closed/landed — detail in the Status banner + checklist + Hand-off + *Decisions made*):**
+CHAIN-1/3/4 + OD-7 (all four 23a producers + both M4 halves general-`k`) CLOSED; the `G.ChainData n`
+record + 7 interior-split accessors landed; **CHAIN-2a CLOSED**; **CHAIN-2c-i** (the discriminator pick)
+landed. Remaining: **CHAIN-2c-ii** (the relabel-arm crux) → **2c-iii** (assembly) → **CHAIN-5**
+(signature frozen by the CHAIN↔ENTRY contract) + the ENTRY extractor reshape.
 
 **Architectural constraint (standing).** The metric-using Hodge leaves live in `MeetHodge.lean`, never
 `Meet.lean`: importing `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean`
