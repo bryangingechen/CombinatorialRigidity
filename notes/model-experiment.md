@@ -49,19 +49,18 @@ file).
   expires session-end): opus confirmed (the coordinator runs on it); under the
   OPUS-ONLY override the other rungs are not probed (boundary pairs
   opus-vs-opus or skipped) — a fresh coordinator under the S/P/B map re-probes.
-- **Session #7 hand-off (2026-06-18; paused by user at a milestone after row 237).**
-  **Closed OD-7** (all four 23a producers `hbase_k`/`hcut_k`/`hcontract_k`/`hforget_k`
-  + both M4 halves general-`k`; rows 228/230–234) and **opened CHAIN-2** — landed the
-  `G.ChainData n` record + 7 interior-split accessors (the zeroth leaf; rows 236/237).
-  Two recons: the `hcontract_k` decomposition (LEAF-0 triple-LI) and the CHAIN-2
-  decomposition (rows 229/235; the latter **overturned the design's §(c) framing** — the
-  named chain was already general-`k`). **Next dispatch: a DESIGN-PASS to decompose
-  CHAIN-2a's core** (NOT a direct build — an opus build self-shrank from it;
-  `case_III_rank_certification`'s ~20 `ρ`/`w`/gate hyps; the re-index-vs-construct open
-  question) — per `notes/Phase23b.md` *Hand-off* + design §(l). Findings: the build
-  agents are reliably clean on math+gates but under-invest in per-commit note
-  compression (coordinator absorbed it 3×); the `ChainData`/Fin-index infra leaves run
-  ~2× wall-time at normal token/tool counts.
+- **Session #8 close (2026-06-18; paused by user after row 246; loop stopped).** **Closed CHAIN-2a**
+  (`chainData_split_w6b_gates` + `chainData_split_realization`) and **landed the CHAIN-2c single-base
+  dispatch chain** — 2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`, KT
+  eq. 6.54 cycle iso) + 2c-ii-β (`ofNormals_relabel_perm`, the general-perm transport); rows 238–246,
+  all axiom-clean. **Route β LOCKED** (user-adjudicated + KT-source-verified, rows 241/242: KT builds the
+  `d` candidates from ONE `v₁`-base, not `d` splits) + a standing **blueprint-clarity obligation**
+  (route β absorbs KT's isos/±r → the `lem:case-III` general-`d` prose must materialize them;
+  `notes/BlueprintExposition.md`). **Next dispatch: CHAIN-2c-ii** — the arm closer `chainData_relabel_arm`
+  + its **genuinely-new `shiftPerm` graph-iso** (a `splitOff_isLink_relabel` analogue, NOT in tree,
+  relocated by 2c-ii-β's `hiso` abstraction); weigh a recon/decomposition. Then 2c-iii → CHAIN-5 + the
+  ENTRY extractor reshape (`notes/Phase23b.md` *Hand-off* + design §(n)/§(o)). Session-#8 calibration
+  lessons (named-dispatch cost-blindness; recon-early 3× saves; the note-bloat tax) → *Findings*.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -327,11 +326,36 @@ quality / blueprint sync / notes discipline / commit message
 | 243 | CHAIN-2c-i `exists_chainData_discriminator_pick` (single-discriminator pick, steps 1–3), ced2358 | 2/2/1 | opus | normal | clean | ✓✓✓—✗✓ | tools n/r (async); tok+wall not surfaced | Build leaf (OPUS-ONLY; 2/2/1). CHAIN-2c-i `exists_chainData_discriminator_pick` — a clean 5-line verbatim `Fin (k+1)`-gen of the green d=3 discriminator region: panel-LI (OD-7 LEAF-0 `_general`) → `exists_homogeneousIncidence_of_normals_gen` → CHAIN-4d discriminator → `panelSupportExtensor_eq_complementIso_extensor` bridge. Route-independent (panel pick `u` arbitrary; matching to a candidate = the deferred 2c-ii crux); feeds 2a-ii's `htrans`. Coordinator: build+lint clean, sorry-grep + full diff, axiom-clean. Notes ✗: left note 514 (>500) → coordinator compressed (e2aa525 →488). |
 | 244 | CHAIN-2c-ii design-pass §(o) — the uniform `Fin d` relabel arm is genuinely-new (FLAGGED), 9ddab9a (docs) | 3/3/1 | opus | normal | clean | —✓——✓✓ | tools n/r (async); tok+wall not surfaced | Design-pass (OPUS-ONLY; 3/3/1). FLAGGED genuinely-new finding (clause ii, correct): the uniform `Fin d` relabel arm is NOT a numeral pass over d=3 `_M2`/`_M3` — KT's iso `ρᵢ` is a `(i−1)`-cycle, but the landed relabel engine is transposition-only (hard-wired to `Equiv.swap a v`, one source/target split). Coordinator CONFIRMED vs the bodies + KT 6.54–6.67. Decomposed: 2c-ii-α `ChainData.shiftPerm` (cycle iso, first buildable, §38-clean) → 2c-ii-β (general-perm transport, heavy) → 2c-ii arm → 2c-iii. Route β LOCKED. Coordinator fixed a §(o) build-order self-contradiction (62d75e9). Note 498. |
 | 245 | CHAIN-2c-ii-α `ChainData.shiftPerm` (the index-shift cycle iso + action lemmas), ea2d8dc | 2/2/1 | opus | normal | clean | ✓✓✓—✗✓ | tools n/r (async); tok+wall not surfaced | Build leaf (OPUS-ONLY; 2/2/1). CHAIN-2c-ii-α `ChainData.shiftPerm` — KT eq. 6.54's index-shift `(i−1)`-cycle iso as an `Equiv.Perm α` via `List.formPerm ∘ ofFn` + 7 action lemmas, graph-free/§38-clean, robust at degenerate `i=1`. Coordinator: build+lint clean, sorry-grep + full diff, axiom-clean. **Exemplary friction:** FRICTION [idiom] (the `formPerm∘ofFn` cycle API) + TACTICS-QUIRKS §61 (`rw [hidx]` on a `getElem` index → "motive not type correct"). Notes ✗: left note 517 (>500) → coordinator compressed (aef13cf →497). |
+| 246 | CHAIN-2c-ii-β `ofNormals_relabel_perm` (the general-`Equiv.Perm` framework-transport), 4782bd8 | 3/2/2 | opus | normal | clean | ✓✓✓—✗✓ | tools n/r (async); tok+wall not surfaced | Build leaf (OPUS-ONLY; 3/2/2 — the heavy genuinely-new transport). `ofNormals_relabel_perm`: the involution-free general-`Equiv.Perm` generalization of `ofNormals_relabel` — 4 conjuncts re-derived with `ρ.symm`/`σ.symm` (forced `.symm`-placement; FRICTION idiom), specializes to the d=3 swaps. **Legitimate slice:** abstracts the graph layer into `hiso`, relocating the genuinely-new `shiftPerm` graph-iso to 2c-ii (re-flagged; the §(o) transport core IS done). Coordinator: build+lint clean, sorry-grep + full diff, axiom-clean. Notes ✗: left note 507 → coordinator compressed (cef57f9 →493). |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Session #8 close-out (2026-06-18; rows 238–246)
+
+All-opus (OPUS-ONLY override held); 9 commits — CHAIN-2a closed + the CHAIN-2c single-base dispatch
+chain (2c-i / 2c-ii-α / 2c-ii-β) landed + 4 design/recon passes + 1 user-adjudicated route lock. All
+Lean axiom-clean, gates green; no boundary pairs (OPUS-ONLY).
+
+- **Recon-early was the highest-leverage move (3 saves).** (a) §(n) caught that KT builds the `d`
+  candidates from ONE `v₁`-base + relabels, not `d` per-`i` splits — correcting the §(l)/§(m) framing
+  before a wrong CHAIN-2c build. (b) A read-only **source-verification recon** (row 242; now rescue §6)
+  confirmed that against KT 6.46–6.67 and refuted the per-`i`-splits alternative. (c) §(o) caught that
+  the landed relabel engine is transposition-only, so the uniform arm is genuinely-new — averting a
+  doomed numeral-pass of the d=3 `_M3`. Each averted a wrong/dead build for the cost of a docs pass.
+- **Named-dispatch cost-blindness (a coordinator miss, not a model fault).** Every dispatch was launched
+  **named** (for addressability), routing it to the async mailbox → idle notification, **no cost
+  surfaced** (`tok+wall not surfaced` on all 9 rows; tool-count only, and only when an idle agent
+  replied). Rescue §2 already prescribes the fix: dispatch **un-named** for a synchronous `LANDED`+cost
+  return; reserve named for boundary pairs / addressable resume. **A fresh coordinator should default to
+  un-named** to recover the cost axis.
+- **Note-bloat tax persists (~6× this session vs Session #7's 3×).** Build agents reliably tipped
+  `Phase23b.md` past the ~500 tripwire (the forward Current-state recap accrues atop the standing
+  reference blocks); the coordinator absorbed the compression each build. Durable-fix candidate: keep
+  the standing reference blocks (Architectural constraint / CHAIN orientation / the contract pointer)
+  maximally terse so per-build compression touches only the forward next-step.
 
 ### Phase 22l close-out (2026-06-16; rows 171–182)
 
