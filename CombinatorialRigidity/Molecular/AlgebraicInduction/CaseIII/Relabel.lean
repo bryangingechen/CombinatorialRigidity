@@ -1839,6 +1839,64 @@ theorem BodyHingeFramework.bottomTag_foldr_mem_rigidityRows
     have hhead := hstep 0 (by simp) _ htail
     simpa [List.foldr_cons] using hhead
 
+/-- **W9b iterates, base→candidate — the cycle-W9b `List.foldl` bottom-tag transport**
+(CHAIN-2c-ii-arm, the genuinely-new piece of the corrected-Fix-A bottom-family half;
+`notes/Phase23-design.md` §(o‴)(H.10), Leaf A). The base→candidate (`foldl`) analogue of
+`bottomTag_foldr_mem_rigidityRows`:
+the single-step W9b bottom-tag transport iterates **up** the chain of intermediate frameworks (one
+degree-2 body moved per step, the seed advancing one swap per step), threading a per-step **tag**
+`Tag : ℕ → Dual → Prop` in the *one-step-up* direction `Tag s ⇒ Tag (s+1)`.
+
+This is the W9b sibling of `wstep_foldl_mem_span_rigidityRows` (the W9a `foldl` core): the corrected
+Fix A re-orients both transports base→candidate (source `F 0 = G − v₁` at the *bottom*, target
+`F length = G − vᵢ` at the *top*; §(o‴)(H.10)), so the bottom-family `hwmem` slot's fold must run
+`foldl` like the candidate-row `hρGv` slot does — the *opposite* of the orphaned candidate→base
+`bottomTag_foldr` above. Given a per-step `hstep` that the pure swap `(funLeft (aₛ vₛ)).dualMap`
+maps any tag-`s` member to a tag-`(s+1)` member (`bodies[s] = (vₛ, aₛ, cₛ)`, moved over the
+framework rise `F s ⇒ F (s+1)`), the iterated pure-relabel `foldl` of swaps applied to a tag-`0` `φ`
+(the source, bottom of the chain) is a tag-`length` member (the target, top of the chain).
+
+The W9b transport is a **pure relabel** (no `a`-column subtraction; the chain-W9b sign is carried by
+the tag's block disjunct, not a row residue), so the fold composes the bare relabels. The proof is
+the same clean `List.reverseRec` induction as the W9a `foldl` core: `nil` is the tag itself;
+`append_singleton` transports `φ` (bottom, `Tag 0`) up through `rest` to land in `Tag rest.length`
+by the inductive hypothesis, then applies the last step's `hstep rest.length`
+(`Tag rest.length ⇒ Tag (rest.length + 1)`), repackaging the head-first `foldl` via
+`List.foldl_append`. Graph-free over the carrier (it never opens `F`, only its `hstep` output). -/
+theorem BodyHingeFramework.bottomTag_foldl_mem_rigidityRows
+    [DecidableEq α] (bodies : List (α × α × α))
+    (Tag : ℕ → Module.Dual ℝ (α → ScrewSpace k) → Prop)
+    (hstep : ∀ s, (hs : s < bodies.length) → ∀ ψ, Tag s ψ →
+      Tag (s + 1) ((LinearMap.funLeft ℝ (ScrewSpace k)
+        (Equiv.swap bodies[s].2.1 bodies[s].1)).dualMap ψ))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)} (hφ : Tag 0 φ) :
+    Tag bodies.length ((bodies.foldl
+        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        LinearMap.id) φ) := by
+  induction bodies using List.reverseRec with
+  | nil => simpa using hφ
+  | append_singleton rest b ih =>
+    -- Head-first fold: `foldl (rest ++ [b]) = (funLeft (swap b)).dualMap ∘ (foldl rest)`, the last
+    -- body `b` applied last (outermost). The inner fold transports `φ` (bottom, `Tag 0`) up through
+    -- `rest` to land in `Tag rest.length`, then the last step rises to `Tag (rest.length + 1)`.
+    rw [List.foldl_append]
+    simp only [List.foldl_cons, List.foldl_nil, LinearMap.comp_apply]
+    have hb : (rest ++ [b])[rest.length]'(by simp) = b := by simp
+    have hinner : Tag rest.length ((rest.foldl
+        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        LinearMap.id) φ) := by
+      refine ih (fun s hs ψ hψ => ?_)
+      -- the inner steps re-index off `rest ++ [b]` via `getElem_append_left`.
+      have hs' : s < (rest ++ [b]).length := by simp; omega
+      have hidx : (rest ++ [b])[s]'hs' = rest[s] := by rw [List.getElem_append_left hs]
+      have := hstep s hs' ψ hψ
+      rwa [hidx] at this
+    -- the last step's single-swap W9b transport `Tag rest.length → Tag (rest.length + 1)`.
+    have hlast := hstep rest.length (by simp) _ hinner
+    rw [hb] at hlast
+    rw [show (rest ++ [b]).length = rest.length + 1 by simp]
+    exact hlast
+
 /-- **The degree-2 redundancy panel-carry — the single carried row `r` crosses one interior chain
 body, flipping sign** (CHAIN-2c-ii-transport, the missing W9b-membership bridge;
 `notes/Phase23-design.md` §(o″), KT 2011 §6.4.2 eqs. (6.66)/(6.44)). This is the leaf that lets the

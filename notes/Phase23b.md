@@ -4,9 +4,11 @@
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
 **Remaining: CHAIN-2 (the `Fin d` reduction layer — corrected Fix A SETTLED §(o‴)(H); the W9a-slot fold
 COMPLETE (inverse-cycle action block + H.10 de-risk gate + `foldl` fold core + the concrete
-`shiftBodyListAsc_foldl_mem_span_rigidityRows`), and the W9b-slot **base→candidate single-step**
-`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` LANDED — 2026-06-19**. NEXT = the cycle-W9b
-fold over that single-step, then 2c-ii-arm `chainData_relabel_arm`; see *Hand-off*)
+`shiftBodyListAsc_foldl_mem_span_rigidityRows`), the W9b-slot base→candidate single-step
+`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows`, and the **abstract base→candidate W9b foldl
+core** `bottomTag_foldl_mem_rigidityRows` LANDED — 2026-06-19**. NEXT = Leaf B (the block disjunct via
+G4d-i at `vᵢ`) + the genuine-row arm (it reduces to the landed W9a span fold, §(o‴)(b)), then 2c-ii-arm
+`chainData_relabel_arm`; see *Hand-off*)
 + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
@@ -28,15 +30,19 @@ non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 
 **Tracker (CHAIN-2c-ii-transport):** the arm's **W9a slot is COMPLETE** (the `foldl` fold core + the
 concrete seed-advancing chain instance `shiftBodyListAsc_foldl_mem_span_rigidityRows`, through the H.10
-de-risk gate / `seedAdvance_wstep_hstep` bundle), and the **W9b base→candidate single-step**
-`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` LANDED (axiom-clean, 2026-06-19; detail in
-*Hand-off*). **Block-disjunct route RECON-DISCHARGED** (coordinator, session #13 — confirmed single-`vᵢ`
-G4d-i, NOT a per-body carry; full discharge in *Hand-off*). → **NEXT (Leaf A, greenlit): the cycle-W9b
-GENUINE-ROW fold** (map the landed W9b single-step over the chain, the family analogue of
-`shiftBodyListAsc_foldl_…`; genuine-row disjunct ONLY, independent of the block) → **Leaf B: the block
-disjunct via G4d-i at `vᵢ`** (the confirmed single-row route) → **2c-ii-arm**
-`chainData_relabel_arm` (three slots = W9a fold + W9b genuine-row fold + G4d-i; d=3 M₃ = `i=2`) → 2c-iii →
-CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds, §(o‴)(H.10).)
+de-risk gate / `seedAdvance_wstep_hstep` bundle); the **W9b base→candidate single-step**
+`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` and the **abstract base→candidate W9b foldl
+core** `bottomTag_foldl_mem_rigidityRows` (the `foldl` analogue of `bottomTag_foldr…`, threading a
+per-step disjunction `Tag`) LANDED (both axiom-clean, 2026-06-19; detail in *Hand-off*).
+**Leaf-A finding (genuine-row arm reduces to W9a):** building the W9b foldl core surfaced that the
+**genuine-row** disjunct of the bottom family is a *span* member, so it rides the **landed W9a span fold**
+`shiftBodyListAsc_foldl_mem_span_rigidityRows` verbatim (§(o‴)(b), machine-verified there) — there is no
+separate genuine-row W9b fold to build. The W9b foldl core is the infrastructure the **block** disjunct +
+the arm's `funLeft (shiftPerm i)` pure-relabel form need. **Block-disjunct route RECON-DISCHARGED**
+(coordinator, session #13 — confirmed single-`vᵢ` G4d-i, NOT a per-body carry; full discharge in
+*Hand-off*). → **NEXT: Leaf B — the block disjunct via G4d-i at `vᵢ`** (the confirmed single-row route)
+→ **2c-ii-arm** `chainData_relabel_arm` (three slots = W9a fold (genuine) + W9b foldl-core/G4d-i (block);
+d=3 M₃ = `i=2`) → 2c-iii → CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds, §(o‴)(H.10).)
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -58,14 +64,15 @@ covering interior AND top steps, single bound `s+2 < d`, factored into the reusa
 `seedAdvance_wstep_hstep`) + the abstract `foldl` fold core `wstep_foldl_mem_span_rigidityRows` + **the
 concrete `ChainData` seed-advancing instance** `shiftBodyListAsc_foldl_mem_span_rigidityRows` (with its
 data `shiftBodyListAsc`/`shiftSeedSwap`/`shiftSeedAdv`/`shiftBodyFrameworkAsc`(`Total`)) COMPLETE; **the
-W9b-slot base→candidate single-step `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` LANDED**
-(2026-06-19, the W9b analogue of the W9a de-risk gate).**
-Remaining in **CHAIN-2c-ii**: the **cycle-W9b GENUINE-ROW fold** over the new single-step + **the block
-disjunct via G4d-i at `vᵢ`** (⚠ NOT a per-body carry — recon §(o‴)(H) first, *Hand-off*), then
-**2c-ii-arm** `chainData_relabel_arm` (the closer — instantiate the arm engine at the relabelled roles,
-transport the three slots via the W9a fold + the W9b genuine-row fold + G4d-i) — then
-**CHAIN-2c-iii** (assembly), and **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the
-rest of CHAIN-2 + ENTRY's extractor reshape).
+W9b-slot base→candidate single-step `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` + the
+abstract base→candidate W9b `foldl` core `bottomTag_foldl_mem_rigidityRows` LANDED**
+(2026-06-19, the latter the `foldl` analogue of `bottomTag_foldr…`, threading a per-step disjunction `Tag`).**
+Remaining in **CHAIN-2c-ii**: **the block disjunct via G4d-i at `vᵢ`** (⚠ NOT a per-body carry — recon
+§(o‴)(H) first, *Hand-off*) — the genuine-row disjunct rides the **landed W9a span fold** (no separate
+W9b genuine-row fold; §(o‴)(b), the Leaf-A finding) — then **2c-ii-arm** `chainData_relabel_arm` (the
+closer — instantiate the arm engine at the relabelled roles, transport the three slots via the W9a fold
+(genuine) + the W9b foldl core/G4d-i (block)) — then **CHAIN-2c-iii** (assembly), and **CHAIN-5**
+(signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + Hodge panel-meet membership**
       (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (route = `⋀^{d−1}W`-is-a-line, NOT the
@@ -101,10 +108,12 @@ rest of CHAIN-2 + ENTRY's extractor reshape).
       advancing); Fix B / per-`i` re-seed INFEASIBLE (breaks KT's single-`r` discriminator). The landed
       candidate→base T-W9a fold + the per-body W9b chain are **orphaned-for-the-arm** (H.10) → **2c-ii-inv**
       (inverse-cycle action lemmas) + the **H.10 de-risk gate** (base→candidate single-step seed-advance,
-      now split into the reusable `hstep` bundle `seedAdvance_wstep_hstep` + wrapper) + the abstract
-      `foldl` fold core + **the concrete base→candidate cycle fold** `shiftBodyListAsc_foldl_mem_span_rigidityRows`
-      (the ascending body list + seed accumulator + seed-advancing chain) **LANDED 2026-06-19** → **NEXT:
-      2c-ii-arm** `chainData_relabel_arm` (d=3 M₃ = `i=2` involution) → **2c-iii** `chainData_dispatch`.
+      now split into the reusable `hstep` bundle `seedAdvance_wstep_hstep` + wrapper) + the abstract W9a
+      `foldl` fold core + **the concrete base→candidate W9a cycle fold** `shiftBodyListAsc_foldl_mem_span_rigidityRows`
+      + the W9b single-step `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` + the **abstract W9b
+      `foldl` core** `bottomTag_foldl_mem_rigidityRows` **LANDED 2026-06-19** → **NEXT: Leaf B** (block via
+      G4d-i at `vᵢ`; the genuine-row arm reuses the landed W9a span fold per §(o‴)(b)) → **2c-ii-arm**
+      `chainData_relabel_arm` (d=3 M₃ = `i=2` involution) → **2c-iii** `chainData_dispatch`.
       Full detail: design §(o‴)(H)/(H.10).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -170,36 +179,39 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**LANDED 2026-06-19** (axiom-clean, gate+lint-verified): the **W9b-slot base→candidate single-step**
-`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` (the W9b analogue of the landed W9a de-risk gate,
-reusing the `seedAdvance_wstep_hstep` bundle + the framework-form W9b single-step — now live, no longer
-orphaned). **Prior LANDED:** the W9a-slot fold (the concrete instance `shiftBodyListAsc_foldl_…` over the
-`wstep_foldl` core, through the de-risk gate / `hstep` bundle).
+**LANDED 2026-06-19** (axiom-clean, gate+lint-verified): the **abstract base→candidate W9b `foldl` core**
+`bottomTag_foldl_mem_rigidityRows` (`CaseIII/Relabel.lean`) — the `foldl`/base→candidate analogue of
+`bottomTag_foldr_mem_rigidityRows`, threading a per-step disjunction `Tag : ℕ → Dual → Prop` in the
+one-step-up direction via the same `List.reverseRec` skeleton as the W9a `foldl` core
+`wstep_foldl_mem_span_rigidityRows`. **Prior LANDED (same date):** the W9b-slot base→candidate single-step
+`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows`; the W9a-slot fold (concrete instance
+`shiftBodyListAsc_foldl_…` over the `wstep_foldl` core, through the de-risk gate / `hstep` bundle).
 
-**NEXT STEP — Leaf A (greenlit): the cycle-W9b GENUINE-ROW fold.** The bottom family `w`'s
-**genuine-row** disjunct rides the base→candidate fold exactly like `hρGv` (map the landed W9b single-step
-`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` over the chain, the family analogue of the landed
-W9a fold `shiftBodyListAsc_foldl_…`). This leaf is the **genuine-row disjunct ONLY** — independent of the
-block disjunct; do not touch the block in this commit. **Then Leaf B: the block disjunct via G4d-i** —
-per §(o‴)(H)/(d) the whole-relabel image of `M₀`'s single redundant row → the `±r` row at `vᵢ` via
-**G4d-i** (ONE (6.44) at the single body `vᵢ`), NOT a per-body carry.
+**LEAF-A FINDING (genuine-row arm reduces to the landed W9a fold — no separate W9b genuine-row fold).**
+The bottom family `w`'s **genuine-row** disjunct is a *span* member, so it rides the **landed W9a span
+fold** `shiftBodyListAsc_foldl_…` verbatim (`hρGv`-style; §(o‴)(b)). A *pure* W9b relabel does **not**
+preserve genuine-span membership (a body-`a` genuine row → a block row), and the block disjunct's
+annihilation panels sit at distinct adjacent frameworks per step (the §(o‴) panel-mismatch), so the
+disjunction `Tag` cannot thread the block by itself. Hence the W9b `foldl` core is the infra the **block**
+disjunct + the arm's `funLeft (shiftPerm i)` pure-relabel form consume — not a genuine-row fold.
 
-**RECON-DISCHARGED (coordinator, session #13) — the block-disjunct route is CONFIRMED; build it on the
-G4d-i route.** The row-284 build hand-off had mis-proposed a per-body
-`redundancy_panel_carry`/`candidateRow_ac_eq_neg` panel-carry "across the chain of degree-2 bodies" — the
-per-body block carry §(o‴) REJECTED (the block has no per-body home; mis-pinned 4× at iters 3/7/9/11).
-The coordinator re-read §(o‴)(H)/(d)/(F)/(H.10) and confirms the authoritative route: **block → G4d-i at
-`vᵢ` (single row, whole-relabel)**, adversarially verified (F attack-A: the block is genuinely not a
-`(G−vᵢ)`-span member and has no per-body home; H.10). `redundancy_panel_carry`/`candidateRow_ac_eq_neg`
-are the eq.-(6.44) identity used **ONCE** at `vᵢ` (G4d-i-adjacent), re-consumed by Leaf B — NOT a per-body
-chain (do NOT build a per-body block carry). Leaf A (genuine-row fold) is independent of all this and is
-the immediate buildable target.
+**NEXT STEP — Leaf B: the block disjunct via G4d-i.** Per §(o‴)(H)/(d) the whole-relabel image of `M₀`'s
+single redundant row → the `±r` row at `vᵢ` via **G4d-i** (ONE (6.44) at the single body `vᵢ`), NOT a
+per-body carry. (Leaf A's genuine-row arm is plain reuse of the landed W9a fold; nothing new to build.)
+
+**Leaf B route — CONFIRMED (coordinator recon, session #13; adversarially verified F attack-A + H.10):
+block → G4d-i at `vᵢ` (single row, whole-relabel).** The block is genuinely not a `(G−vᵢ)`-span member
+and has **no per-body home** — `redundancy_panel_carry`/`candidateRow_ac_eq_neg` are the eq.-(6.44)
+identity used **ONCE** at `vᵢ` (G4d-i-adjacent), NOT a per-body chain. Do **not** build a per-body block
+carry (the §(o‴)-rejected route, mis-pinned 4× at iters 3/7/9/11).
 
 **Then 2c-ii-arm** `chainData_relabel_arm` (signature §(o‴)(H.6); instantiate `case_III_arm_realization`
-at the relabelled roles, seed `qρ = q∘shiftPerm i`, shared `±ρ₀`; the three slots = the W9a fold (`hρGv`)
-+ the W9b genuine-row fold + G4d-i (block); est. ~2–4 commits; d=3 M₃ = `i=2` involution) → **2c-iii**
-`chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm, interior = relabel arm; replaces
-`case_III_candidate_dispatch`) → **CHAIN-5**.
+at the relabelled roles, seed `qρ = q∘shiftPerm i`, shared `±ρ₀`; the slots = the W9a fold (`hρGv` + the
+bottom family's genuine-row disjunct) + the W9b `foldl` core / G4d-i (the bottom family's block disjunct)
++ G4d-i (`hρe₀`); the arm also needs the `funLeft (shiftPerm i)` relabel bridge `wstep_foldl_funLeft_eq`
++ `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` — not yet built; est. ~2–4 commits; d=3 M₃ = `i=2`
+involution) → **2c-iii** `chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm, interior = relabel
+arm; replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
 
 **Confirm-and-delete / STAYS at the reshape** (full list §(o‴)(H.5); `git grep` zero callers at the
 delete commit). **Orphaned-for-the-arm (delete):** the candidate→base folds
@@ -376,7 +388,13 @@ de-risk gate): the chain-indexed instance of the framework-form W9b single-step
 `funLeft_dualMap_bottomTag_mem_rigidityRows` (now **live**), reusing the `seedAdvance_wstep_hstep`
 bundle's seven conjuncts (the genuine-row disjunct shares the W9a `htrans`) and reading the W9b-only data
 (`a≠b`/`v≠b`/the genuine `e_b = edge s`-link of `Fva`, `b = vtx s`) off the chain accessors; block panels
-abstract (support extensors, `rfl`). **⚠ Orphans-for-the-arm
+abstract (support extensors, `rfl`). **2c-ii abstract W9b `foldl` core**
+`bottomTag_foldl_mem_rigidityRows` (LANDED 2026-06-19): the base→candidate (`foldl`) analogue of
+`bottomTag_foldr_mem_rigidityRows`, threading a per-step disjunction `Tag : ℕ → Dual → Prop` one-step-up
+via the same `List.reverseRec` skeleton as the W9a `foldl` core (`List.foldl_append` + `getElem_append_left`
+re-index; reuses TACTICS-GOLF §20). It is the infra the **block** disjunct + the arm's `funLeft (shiftPerm
+i)` pure-relabel form need — **the genuine-row disjunct of `w` is a span member and rides the landed W9a
+span fold** (§(o‴)(b)), so no separate W9b genuine-row fold exists. **⚠ Orphans-for-the-arm
 (confirm-and-delete at the arm build per §(o‴)(H.5); *Hand-off* flag): the candidate→base T-W9a fold**
 `shiftBodyList_foldr_mem_span_rigidityRows` + its seed-fixed `shiftBodyFramework`/`_htrans` chain (wrong
 orientation — converse implication, H.10); **the candidate→base per-body W9b fold**
