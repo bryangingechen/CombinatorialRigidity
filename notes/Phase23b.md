@@ -1,40 +1,30 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
-detail in the checklist + *Decisions made* + git): all four 23a-carried producers + both M4 halves are
-general-`k`; CHAIN-4's discriminator capstone `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
-landed. **Remaining: CHAIN-2 (the `Fin d` reduction layer — 2c-ii-transport next) + CHAIN-5 (the
-dispatch assembly, gated by the ENTRY-contract reshape).** The integer Phase 23 stays **in progress** —
-ENTRY / ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
+detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
+**Remaining: CHAIN-2 (the `Fin d` reduction layer — 2c-ii-transport next) + CHAIN-5 (the dispatch
+assembly, gated by the ENTRY-contract reshape).** The integer Phase 23 stays **in progress** — ENTRY /
+ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
 
-**Orientation.** This is the **23b (CHAIN layer)** sub-phase work log — the
-*rolling* state + hand-off for the active layer only. The cross-phase
-**plan/guidance** (sub-phase division, sequence, open decisions, sources) is the
-canonical job of `notes/Phase23-design.md`; the **detailed leaf-level recon of
-CHAIN** is its §"CHAIN — detailed leaf-level recon" ((a) per-file reach-ins, (c)
-buildable-leaf sequence, (d) green-modulo boundary, (e) OD resolutions). The
-program map is `notes/MolecularConjecture.md`. **Sub-phase naming convention:**
-the layers are tracked by stable **codes** — `CARRIER`(=23a, closed), `CHAIN`(=
-this 23b), `ENTRY`, `ASSEMBLY`; a letter + work log is minted when a layer
-opens, so a later split costs no renumber-churn. `23b` is the minted letter for
-CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
+**Orientation.** The **23b (CHAIN layer)** rolling state + hand-off. Cross-phase plan/guidance + the
+detailed leaf-level recon live in `notes/Phase23-design.md` (§"CHAIN": (a) per-file reach-ins, (c)
+buildable-leaf sequence, (d) green-modulo boundary, (e) OD resolutions); program map
+`notes/MolecularConjecture.md`. **Sub-phase codes** (a letter + work log minted when a layer opens, so
+a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), `ENTRY`/`ASSEMBLY`
+(code-only until their turn).
 
 ## Current state
 
-**Route B LOCKED (§(o″)); the cycle-W9a `List`-fold transport core + its `ChainData`
-moved-body list `shiftBodyList` (+ helper lemmas) + the relabel-side **perm bridge**
-`shiftPerm_eq_prod_map_swap_shiftBodyList` (CHAIN-2c-ii-transport-W9a, LANDED axiom-clean,
-`Relabel.lean`/`Operations.lean` + the new mirror `Mathlib/GroupTheory/Perm/List.lean`);
-next = the rest of the `shiftPerm`-specific T-W9a instantiation
-(`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`, feeding `shiftBodyList i` + the per-`i`
-interior split framework chain into `wstep_foldr_mem_span_rigidityRows` via the
-`splitOff_isLink_shiftRelabel_iff` graphiso, then identifying the fold's relabel composite with
-`funLeft (shiftPerm i)` via the landed perm bridge) → T-W9b → arm.** Route-B verdict +
-decomposition + the route-A rejection: design §(o″).
+**Route B LOCKED (§(o″)); the cycle-W9a fold core + moved-body list `shiftBodyList` + relabel-side
+**perm bridge** `shiftPerm_eq_prod_map_swap_shiftBodyList` all LANDED axiom-clean
+(`Relabel.lean`/`Operations.lean` + new mirror `Mathlib/GroupTheory/Perm/List.lean`); next = the
+T-W9a membership half (`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`): feed `shiftBodyList i`
++ the per-`i` interior-split framework chain into `wstep_foldr_mem_span_rigidityRows` via the
+`splitOff_isLink_shiftRelabel_iff` graphiso, then match the fold's relabel composite to
+`funLeft (shiftPerm i)` via the perm bridge → T-W9b → arm.**
 
-**Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
-uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** β. The **blueprint-clarity
-obligation** (β absorbs KT's isos 6.54–6.56 + ±r chain 6.66) is pinned in the *Hand-off* + design §(o″).
+**Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
+route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors;
 **CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α/β** + **2c-ii-graphiso COMPLETE**
@@ -42,13 +32,12 @@ obligation** (β absorbs KT's isos 6.54–6.56 + ±r chain 6.66) is pinned in th
 CHAIN-2c (full decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a →
 T-W9b) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
 
-**Standing context (settled; full detail in the design doc).** (1) *Architectural (CHAIN-3-era):*
-metric-using Hodge leaves live in `MeetHodge.lean`, never the metric-free `Meet.lean` (a `PiL2` import
-regresses `complementIso_smul_eq_extensor_join` to a `whnf` timeout) — TACTICS-QUIRKS § 59. (2)
-*Orientation:* the arm-engine is already general-`k`; CHAIN replaced only the d=3 dispatch + its `⋀²ℝ⁴`
-discriminator with the `d`-candidate chain + `⋀^{d−1}` duality finish (design §"CHAIN"). (3) *Contract
-(SETTLED):* the CHAIN↔ENTRY `G.ChainData n` shape is frozen — three lockstep decls (ENTRY extractor /
-producer `…hcand` / CHAIN-5 `hdispatch`), no motive/IH change (C.6), `d=3` a zero-regression wrapper
+**Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
+leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
+TACTICS-QUIRKS § 59. (2) *Orientation:* the arm-engine is already general-`k`; CHAIN replaced only the
+d=3 dispatch + its `⋀²ℝ⁴` discriminator with the `d`-candidate chain + `⋀^{d−1}` duality finish. (3)
+*Contract (SETTLED):* the CHAIN↔ENTRY `G.ChainData n` shape is frozen — three lockstep decls (ENTRY
+extractor / producer `…hcand` / CHAIN-5 `hdispatch`), no motive/IH change (C.6), `d=3` zero-regression
 (design §"CHAIN↔ENTRY contract").
 
 ## CHAIN leaf checklist
@@ -104,15 +93,12 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       `shiftPerm_eq_swap_mul` (`Operations.lean`, axiom-clean) — `shiftPerm i = swap (vtx 1)(vtx 2) *
       (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
       induction composes. Two leaves: **(T-W9a)** the cycle a-column span transport
-      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — the
-      abstract `List`-fold core (`wstep` + `wstep_foldr_mem_span_rigidityRows`, `Relabel.lean`), the
-      cycle moved-body list `ChainData.shiftBodyList` (+ helper lemmas, `Operations.lean`), and the
-      relabel-side **perm bridge** `shiftPerm_eq_prod_map_swap_shiftBodyList` (`Operations.lean`,
-      `shiftPerm i = ∏ (swap per moved body) over shiftBodyList`, off the new general mirror
-      `List.formPerm_eq_prod_zipWith_swap_tail`) all LANDED, axiom-clean; next = the membership
-      transport feeding `shiftBodyList i` + the per-`i` split framework chain into the fold via
-      `splitOff_isLink_shiftRelabel_iff`, then matching the fold's relabel composite to
-      `funLeft (shiftPerm i)` via the perm bridge]
+      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — fold core
+      (`wstep`/`wstep_foldr_mem_span_rigidityRows`), moved-body list `shiftBodyList`, and relabel-side
+      perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` (off mirror `formPerm_eq_prod_zipWith_swap_tail`)
+      all LANDED, axiom-clean; next = the membership transport feeding `shiftBodyList i` + the per-`i`
+      split framework chain into the fold via `splitOff_isLink_shiftRelabel_iff`, then matching the
+      fold's relabel to `funLeft (shiftPerm i)` via the bridge]
       → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
@@ -197,16 +183,13 @@ eq.-(6.66) identity equates two independent `Classical.choice` existentials — 
 
 **Route B's genuinely-new piece — fold core + body list + perm bridge LANDED; what remains is the
 membership wiring.** The transport is the cycle-generalization of W9a
-(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `Relabel.lean:546`) + W9b. The abstract fold
-core (`wstep` + `wstep_foldr_mem_span_rigidityRows`, `Relabel.lean`), the cycle's moved-body list
-`ChainData.shiftBodyList i` (length `i−1`, one `(v,a,c)` triple per moved body; + `getElem_`/head-peel
-`shiftBodyList_eq_cons`, `Operations.lean`), and the **relabel-side perm bridge**
-`ChainData.shiftPerm_eq_prod_map_swap_shiftBodyList` (`Operations.lean`: `shiftPerm i = ∏ (Equiv.swap
-b.2.1 b.1) over shiftBodyList i`, the leftmost-factor product of the per-body swaps the fold composes,
-proved off the new general mirror `List.formPerm_eq_prod_zipWith_swap_tail`,
-`Mathlib/GroupTheory/Perm/List.lean`) are all landed, axiom-clean; the §(o″) telescoping concern is
-retired (per-step a-column subtractions compose cleanly through the `foldr`). **What remains in T-W9a
-is the membership half of the `shiftPerm`-specific instantiation**: feed `shiftBodyList i` + the
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `Relabel.lean:546`) + W9b. Landed axiom-clean
+(detail in *Decisions made* + git): the abstract fold core (`wstep` + `wstep_foldr_mem_span_rigidityRows`,
+`Relabel.lean`), the cycle's moved-body list `ChainData.shiftBodyList i` (+ head-peel
+`shiftBodyList_eq_cons`), and the **relabel-side perm bridge** `shiftPerm_eq_prod_map_swap_shiftBodyList`
+(`shiftPerm i = ∏ per-body swaps over shiftBodyList i`, off the new mirror
+`List.formPerm_eq_prod_zipWith_swap_tail`); the §(o″) telescoping concern is retired. **What remains in
+T-W9a is the membership half of the `shiftPerm`-specific instantiation**: feed `shiftBodyList i` + the
 per-`i` interior-split framework chain into `wstep_foldr_mem_span_rigidityRows`, discharge the per-step
 `hstep` hypotheses via `splitOff_isLink_shiftRelabel_iff` (+ the `deg_two_split` machinery), and
 identify the resulting `foldr`'s relabel composite with `funLeft (shiftPerm i)` via the landed perm
