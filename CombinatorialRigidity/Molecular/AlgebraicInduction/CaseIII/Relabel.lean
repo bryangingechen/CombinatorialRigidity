@@ -700,66 +700,54 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
   rw [sub_sub] at h₂
   exact h₂
 
-/-- **The base→candidate single-step seed-advance W9a transport** (CHAIN-2c-ii-arm de-risk gate,
-`notes/Phase23-design.md` §(o‴)(H.10), top-step generalization 2026-06-19). One step of the
-interior-candidate relabel arm's **base→candidate** row transport (KT 2011 §6.4.2 eq.~(6.62), the
-one-step-up correspondence `vⱼ ⇒ vⱼ₊₁`): at chain step `s` (bound `s + 2 < d`, so the moving body
-`vtx (s+2)` is itself an interior degree-2 chain vertex and its surviving neighbour `vtx (s+3)` is a
-valid chain vertex), a row of the source framework `Fv = ofNormals (G − vtx (s+1))`
-on seed `q` transports — across the swap `(a v) = (vtx (s+2) vtx (s+1))` with the seed *advancing*
-to `q' = q ∘ swap (vtx (s+2)) (vtx (s+1))` — into the target framework `Fva = ofNormals (G −
-vtx (s+2))` on `q'`, after the moved body `a = vtx (s+2)`'s `a`-column hinge row is subtracted.
-
-**Single bound `s + 2 < d` covers both interior and top steps** (the top-step de-risk outcome).
-The full base→candidate cycle fold for candidate `i` (`2 ≤ i ≤ d−1`) runs steps `s = 0, …, i−2`;
-the *interior* steps (`s + 2 < i`, the moving body a passing degree-2 body) and the *top* step
-(`s = i−2`, where `a = vtx (s+2) = vtx i` is the candidate vertex itself) both satisfy `s + 2 < d`
-— because the candidate `vᵢ` at `i ≤ d−1` is *itself* an interior degree-2 chain vertex (`vtx i`,
-`i < d`), so the candidate-vertex top step closes with the identical proof, off the same
-`deg_two`/`isLink_edge`/`vtx_ne` accessors. The §(o‴)-class concern that the top step is "different
-geometry" (the candidate vertex, not a passing body) dissolved: `i ≤ d−1` keeps `vtx i` interior.
-
-This is the chain-indexed, **seed-advancing** instance of `case_III_arm_realization_M3`'s `hρGv`
-slot (`CaseIII/Relabel.lean`, the d=3 M₃ arm): there the single step goes `Fv = ofNormals (G − v)
-ends q` → `Fva = ofNormals (G − a) ends₃ qρ` with `qρ = q ∘ swap a v`; here the same single step is
-indexed by the chain step `s`, with the W9a roles `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`
-read off the chain (the body `a = vtx (s+2)` is present at degree two in `G − vtx (s+1)`, moving
-into the freed slot `v = vtx (s+1)` past its surviving chain-successor `c = vtx (s+3)`, its
-predecessor edge to `vtx (s+1)` being cut by the removal). It is the **base→candidate** orientation
-the arm needs (source `G − vtx (s+1)` lower-index / base side, target `G − vtx (s+2)` higher-index /
-candidate side) — the *opposite* of the landed candidate→base fold
-`shiftBodyList_foldr_mem_span_rigidityRows`, and the building block the corrected-Fix-A cycle fold
-(re-folded in opposite chain order, seed advancing one swap per step) iterates.
-
-The seed-advancing `htrans` (the genuinely-new piece beyond the seed-fixed
-`shiftBodyFramework_htrans`'s `le_refl`) is the extensor-coincidence argument the d=3 M₃ `hρGv`
-slot runs: an off-`a` link survives `removeVertex (vtx (s+2))`, and its supporting extensor at the
-two seeds coincides because the swap `(a v)` fixes the recorded endpoints (`ends' f = ends f` off
-the moved edges, and the swap fixes the link's `≠ {a, v}` endpoints, so `q' = q` there). The
-de-risk gate (verify the single step closes before pinning the cycle fold / arm signature, H.10);
-graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only `graph`/`hingeRowBlock`), so
-the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
-theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows
+/-- **The six per-step W9a conjuncts of the base→candidate seed-advance step** (CHAIN-2c-ii-arm; the
+`hstep`-bundle factored out of `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`,
+`notes/Phase23-design.md` §(o‴)(H.10)). At chain step `s` (bound `s + 2 < cd.d`), this is the
+six-conjunct geometry of the W9a single step `Fv = ofNormals (G − vtx (s+1)) ends q` →
+`Fva = ofNormals (G − vtx (s+2)) ends' (q ∘ swap)` with roles
+`(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))` and `e_c = edge (s+2)`: the distinctness `c ≠ a ∧
+c ≠ v`, the surviving `a—c` link, the degree-2 closures at the moved body `a`, the off-`v` fact, and
+the **seed-advancing `htrans`** (the genuinely-new block agreement — an off-`a` link survives the
+removal and its supporting extensor coincides at the two seeds because the swap `(a v)` fixes the
+recorded endpoints `∉ {a, v}` and `ends' = ends` off the two moved edges). This is exactly the
+`hstep`-conjunct shape the `foldl` fold core `wstep_foldl_mem_span_rigidityRows` consumes at the
+ascending body triple `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`, so the concrete fold instance
+`shiftBodyListAsc_foldl_mem_span_rigidityRows` feeds it directly. **§38:** graph reads go through
+`toBodyHinge_graph`/`ofNormals_graph` and extensor reads through
+`toBodyHinge_supportExtensor`/`ofNormals_ends`/`ofNormals_normal` — never `whnf` on the `ofNormals`
+carrier. -/
+theorem _root_.Graph.ChainData.seedAdvance_wstep_hstep
     [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {s : ℕ}
     (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
     (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
       ends' f = ends f)
     (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
-      ends f = (x, y) ∨ ends f = (y, x))
-    {φ : Module.Dual ℝ (α → ScrewSpace k)}
-    (hφ : φ ∈ Submodule.span ℝ
+      ends f = (x, y) ∨ ends f = (y, x)) :
+    (cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ ∧
+        cd.vtx ⟨s + 3, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩) ∧
       (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
-          q).toBodyHinge.rigidityRows) :
-    (LinearMap.funLeft ℝ (ScrewSpace k)
-          (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩))).dualMap φ
-        - BodyHingeFramework.hingeRow (k := k) (α := α)
-            (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 3, by omega⟩)
-            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
-              (cd.vtx ⟨s + 2, by omega⟩)))
-      ∈ Submodule.span ℝ
+          q).toBodyHinge.graph.IsLink (cd.edge ⟨s + 2, by omega⟩)
+        (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 3, by omega⟩) ∧
+      (∀ f x, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.graph.IsLink f (cd.vtx ⟨s + 2, by omega⟩) x →
+          f = cd.edge ⟨s + 2, by omega⟩) ∧
+      (∀ f x, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.graph.IsLink f x (cd.vtx ⟨s + 2, by omega⟩) →
+          f = cd.edge ⟨s + 2, by omega⟩) ∧
+      (∀ f x y, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.graph.IsLink f x y →
+          x ≠ cd.vtx ⟨s + 1, by omega⟩ ∧ y ≠ cd.vtx ⟨s + 1, by omega⟩) ∧
+      (∀ f x y, (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.graph.IsLink f x y → x ≠ cd.vtx ⟨s + 2, by omega⟩ →
+          y ≠ cd.vtx ⟨s + 2, by omega⟩ →
           (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
             (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
-              p.2))).toBodyHinge.rigidityRows := by
+              p.2))).toBodyHinge.graph.IsLink f x y ∧
+            (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+              q).toBodyHinge.hingeRowBlock f ≤
+              (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
+                (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
+                  p.2))).toBodyHinge.hingeRowBlock f) := by
   classical
   -- The W9a roles: `v` the freed slot (removed in the source), `a` the moving body, `c` its
   -- surviving chain-successor; `e_c = edge (s+2)` the surviving `a—c` edge.
@@ -850,13 +838,73 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_
       rcases hrec f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
         simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
           Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
-  -- Conclude via the landed single-step W9a transport (already the base→candidate orientation).
-  have hlink_le : ∀ f x y, Fv.graph.IsLink f x y → (G.removeVertex v).IsLink f x y := by
-    intro f x y hlink
-    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
-    exact hlink
+  exact ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hdeg2r, hnov, htrans⟩
+
+/-- **The base→candidate single-step seed-advance W9a transport** (CHAIN-2c-ii-arm de-risk gate,
+`notes/Phase23-design.md` §(o‴)(H.10), top-step generalization 2026-06-19). One step of the
+interior-candidate relabel arm's **base→candidate** row transport (KT 2011 §6.4.2 eq.~(6.62), the
+one-step-up correspondence `vⱼ ⇒ vⱼ₊₁`): at chain step `s` (bound `s + 2 < d`, so the moving body
+`vtx (s+2)` is itself an interior degree-2 chain vertex and its surviving neighbour `vtx (s+3)` is a
+valid chain vertex), a row of the source framework `Fv = ofNormals (G − vtx (s+1))`
+on seed `q` transports — across the swap `(a v) = (vtx (s+2) vtx (s+1))` with the seed *advancing*
+to `q' = q ∘ swap (vtx (s+2)) (vtx (s+1))` — into the target framework `Fva = ofNormals (G −
+vtx (s+2))` on `q'`, after the moved body `a = vtx (s+2)`'s `a`-column hinge row is subtracted.
+
+**Single bound `s + 2 < d` covers both interior and top steps** (the top-step de-risk outcome).
+The full base→candidate cycle fold for candidate `i` (`2 ≤ i ≤ d−1`) runs steps `s = 0, …, i−2`;
+the *interior* steps (`s + 2 < i`, the moving body a passing degree-2 body) and the *top* step
+(`s = i−2`, where `a = vtx (s+2) = vtx i` is the candidate vertex itself) both satisfy `s + 2 < d`
+— because the candidate `vᵢ` at `i ≤ d−1` is *itself* an interior degree-2 chain vertex (`vtx i`,
+`i < d`), so the candidate-vertex top step closes with the identical proof, off the same
+`deg_two`/`isLink_edge`/`vtx_ne` accessors. The §(o‴)-class concern that the top step is "different
+geometry" (the candidate vertex, not a passing body) dissolved: `i ≤ d−1` keeps `vtx i` interior.
+
+This is the chain-indexed, **seed-advancing** instance of `case_III_arm_realization_M3`'s `hρGv`
+slot (`CaseIII/Relabel.lean`, the d=3 M₃ arm): there the single step goes `Fv = ofNormals (G − v)
+ends q` → `Fva = ofNormals (G − a) ends₃ qρ` with `qρ = q ∘ swap a v`; here the same single step is
+indexed by the chain step `s`, with the W9a roles `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`
+read off the chain (the body `a = vtx (s+2)` is present at degree two in `G − vtx (s+1)`, moving
+into the freed slot `v = vtx (s+1)` past its surviving chain-successor `c = vtx (s+3)`, its
+predecessor edge to `vtx (s+1)` being cut by the removal). It is the **base→candidate** orientation
+the arm needs (source `G − vtx (s+1)` lower-index / base side, target `G − vtx (s+2)` higher-index /
+candidate side) — the *opposite* of the landed candidate→base fold
+`shiftBodyList_foldr_mem_span_rigidityRows`, and the building block the corrected-Fix-A cycle fold
+(re-folded in opposite chain order, seed advancing one swap per step) iterates.
+
+The seed-advancing `htrans` (the genuinely-new piece beyond the seed-fixed
+`shiftBodyFramework_htrans`'s `le_refl`) is the extensor-coincidence argument the d=3 M₃ `hρGv`
+slot runs: an off-`a` link survives `removeVertex (vtx (s+2))`, and its supporting extensor at the
+two seeds coincides because the swap `(a v)` fixes the recorded endpoints (`ends' f = ends f` off
+the moved edges, and the swap fixes the link's `≠ {a, v}` endpoints, so `q' = q` there). The
+de-risk gate (verify the single step closes before pinning the cycle fold / arm signature, H.10);
+graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only `graph`/`hingeRowBlock`), so
+the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows
+    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {s : ℕ}
+    (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
+      ends' f = ends f)
+    (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
+      ends f = (x, y) ∨ ends f = (y, x))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k)
+          (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩))).dualMap φ
+        - BodyHingeFramework.hingeRow (k := k) (α := α)
+            (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 3, by omega⟩)
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+              (cd.vtx ⟨s + 2, by omega⟩)))
+      ∈ Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
+            (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
+              p.2))).toBodyHinge.rigidityRows := by
+  -- Obtain the six per-step W9a conjuncts (the `hstep` bundle) and conclude via the landed
+  -- single-step W9a transport (already the base→candidate orientation).
+  obtain ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hdeg2r, hnov, htrans⟩ :=
+    cd.seedAdvance_wstep_hstep hbound ends ends' q hends'_off hrec
   exact BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
-    (Fv := Fv) (Fva := Fva) (v := v) (a := a) (c := c) (e_c := e_c)
     hca hcv hFv_link_ec hdeg2 hdeg2r hnov htrans hφ
 
 /-- **The single-step W9a transport map** (the cycle-W9a building block, CHAIN-2c-ii route B,
@@ -1228,6 +1276,178 @@ theorem _root_.Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows
     exact cd.shiftBodyGraph_off_succ hsi hiv f x y hlink
   · -- htrans: a link off the moved body transports to `G − vₛ₊₁`, blocks agreeing.
     exact cd.shiftBodyFramework_htrans hsi hiv ends q
+
+/-! ### The ascending (base→candidate) seed-advancing chain (CHAIN-2c-ii-arm)
+
+The corrected-Fix-A relabel arm needs the cycle-W9a transport in the **base→candidate** orientation
+with the seed *advancing* one swap per step (`notes/Phase23-design.md` §(o‴)(H.10)) — the opposite
+of the seed-fixed candidate→base `shiftBodyFramework` chain above (which is orphaned for the arm: it
+proves the converse span implication). The single-step de-risk gate
+`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` already discharges one rise
+`F s = ofNormals (G − vₛ₊₁) ends qₛ` → `F (s+1) = ofNormals (G − vₛ₊₂) ends q_{s+1}` (single bound
+`s + 2 < cd.d`, covering every step — interior and the candidate-vertex top step). This block is the
+concrete seed-advancing chain it iterates: the seed `Q s = q ∘ (the first s cycle swaps)` advances
+one swap per step (`shiftSeedAdv`), the moved-body list is the ascending `shiftBodyListAsc i`, and
+the membership theorem `shiftBodyListAsc_foldl_mem_span_rigidityRows` feeds the `foldl` core
+`wstep_foldl_mem_span_rigidityRows`, with the per-step gate applied at the last element of each
+`reverseRec` step. The selector `ends` is **fixed** across the chain (only the seed advances), so
+the gate's `hends'_off` is trivially `rfl`. -/
+
+/-- The per-step seed swap of the ascending chain: at step `s` the swap `(vₛ₊₂ vₛ₊₁)` (the gate's
+`(a v)`), made total over `ℕ` by defaulting to the identity off the chain-vertex range
+(`s + 2 < cd.d + 1`). The seed accumulator `shiftSeedAdv` composes these. -/
+noncomputable def _root_.Graph.ChainData.shiftSeedSwap [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (s : ℕ) : Equiv.Perm α :=
+  if h : s + 2 < cd.d + 1 then
+    Equiv.swap (cd.vtx ⟨s + 2, h⟩) (cd.vtx ⟨s + 1, by omega⟩) else 1
+
+/-- On an in-range step `s + 2 < cd.d + 1`, the per-step seed swap resolves to `(vₛ₊₂ vₛ₊₁)`. -/
+theorem _root_.Graph.ChainData.shiftSeedSwap_eq [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) {s : ℕ} (hs : s + 2 < cd.d + 1) :
+    cd.shiftSeedSwap s = Equiv.swap (cd.vtx ⟨s + 2, hs⟩) (cd.vtx ⟨s + 1, by omega⟩) := by
+  rw [Graph.ChainData.shiftSeedSwap, dif_pos hs]
+
+/-- **The ascending (base→candidate) seed accumulator** (CHAIN-2c-ii-arm; KT 2011 §6.4.2 eq.~(6.62),
+the seed-advance recursion). The seed at chain step `s`: the base seed `q` post-composed (on the
+vertex slot `p.1`) with the
+first `s` cycle swaps `(v₂ v₁), …, (v_{s+1} vₛ)`, advancing one swap per step. `Q 0 = q`;
+`Q (s+1) p = (Q s) (shiftSeedSwap s p.1, p.2)` (the gate's `qρ = q ∘ swap` at one step). -/
+noncomputable def _root_.Graph.ChainData.shiftSeedAdv [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (q : α × Fin (k + 2) → ℝ) : ℕ → α × Fin (k + 2) → ℝ
+  | 0 => q
+  | s + 1 => fun p => cd.shiftSeedAdv q s (cd.shiftSeedSwap s p.1, p.2)
+
+@[simp] theorem _root_.Graph.ChainData.shiftSeedAdv_zero [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (q : α × Fin (k + 2) → ℝ) : cd.shiftSeedAdv q 0 = q := rfl
+
+theorem _root_.Graph.ChainData.shiftSeedAdv_succ [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (q : α × Fin (k + 2) → ℝ) (s : ℕ) :
+    cd.shiftSeedAdv q (s + 1)
+      = fun p => cd.shiftSeedAdv q s (cd.shiftSeedSwap s p.1, p.2) := rfl
+
+/-- **The ascending (base→candidate) seed-advancing chain** (CHAIN-2c-ii-arm, the framework layer;
+`notes/Phase23-design.md` §(o‴)(H.10)). The seed-advancing analogue of `shiftBodyFramework`: the
+panel framework `ofNormals (G − vₛ₊₁) ends (Q s)` (turned into a `BodyHingeFramework` via
+`toBodyHinge`) over the intermediate graph `shiftBodyGraph s = G − vₛ₊₁`, with the selector `ends`
+fixed but the seed `Q s = shiftSeedAdv q s` advancing one swap per step. The chain runs
+source-at-bottom `F 0 = ofNormals (G − v₁) ends q` up to target-at-top
+`F (i−1) = ofNormals (G − vᵢ) ends (Q (i−1))` — the orientation the relabel arm's `hρGv`/`hwmem`
+slots need (the seed-fixed `shiftBodyFramework` runs the converse direction). -/
+noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAsc [DecidableEq α] {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) :
+    BodyHingeFramework k α β :=
+  (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends (cd.shiftSeedAdv q s)).toBodyHinge
+
+/-- The graph of the ascending chain `shiftBodyFrameworkAsc s` is `shiftBodyGraph s = G − vₛ₊₁`
+(independent of the seed). -/
+@[simp]
+theorem _root_.Graph.ChainData.shiftBodyFrameworkAsc_graph [DecidableEq α] {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) :
+    (cd.shiftBodyFrameworkAsc hs ends q).graph = cd.shiftBodyGraph hs := rfl
+
+/-- **The total ascending seed-advancing chain** (the membership half; the `foldl` core
+`wstep_foldl_mem_span_rigidityRows` runs over a total `F : ℕ → BodyHingeFramework`). Packages the
+partial `shiftBodyFrameworkAsc` (valid at `s + 1 < cd.d + 1`) into that total function, filling the
+out-of-range tail with the always-valid `s = 0` member. On the in-range indices the fold touches
+(`0, …, i − 1` for a cycle top `i ≤ cd.d`) it agrees by `shiftBodyFrameworkAscTotal_eq`. -/
+noncomputable def _root_.Graph.ChainData.shiftBodyFrameworkAscTotal [DecidableEq α] {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+    ℕ → BodyHingeFramework k α β :=
+  fun s => if h : s + 1 < cd.d + 1 then cd.shiftBodyFrameworkAsc h ends q
+    else cd.shiftBodyFrameworkAsc (s := 0) (by have := cd.hd; omega) ends q
+
+/-- On an in-range index `s + 1 < cd.d + 1`, the total ascending chain agrees with the partial
+`shiftBodyFrameworkAsc`. -/
+theorem _root_.Graph.ChainData.shiftBodyFrameworkAscTotal_eq [DecidableEq α] {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) {s : ℕ}
+    (hs : s + 1 < cd.d + 1) :
+    cd.shiftBodyFrameworkAscTotal ends q s = cd.shiftBodyFrameworkAsc hs ends q := by
+  rw [Graph.ChainData.shiftBodyFrameworkAscTotal, dif_pos hs]
+
+/-- **The concrete ascending (base→candidate) seed-advancing fold** (CHAIN-2c-ii-arm, the membership
+half feeding the `foldl` core; `notes/Phase23-design.md` §(o‴)(H.10)). The seed-advancing analogue
+of `shiftBodyList_foldr_mem_span_rigidityRows` (which runs candidate→base, seed-fixed): the iterated
+W9a transport over the ascending moved-body list `shiftBodyListAsc i` carries a source row span at
+the **bottom** of the chain — `span (G − v₁)`-rows on seed `q` (`shiftBodyFrameworkAsc 0`) — **up**
+to the target row span at the **top** — `span (G − vᵢ)`-rows on the advanced seed `Q (i−1)`
+(`shiftBodyFrameworkAsc (i−1)`).
+
+This is the membership content of KT eq.~(6.62) in the base→candidate direction: the `i − 1`
+per-body `a`-column subtractions compose along the chain while the seed advances one swap per step
+(`Q s = q ∘ (the first s cycle swaps)`). The proof feeds the `foldl` fold core all six per-step
+`hstep` conjuncts by applying the **single-step de-risk gate**
+`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (which proves the full rise — graph
+inclusion, degree-2 closures, and the seed-advancing block agreement — at the single bound
+`s + 2 < cd.d`, covering both interior and top steps). The selector `ends` is fixed (so the gate's
+`hends'_off` is `rfl`), and the canonical `G`-link-recording hypothesis `hrec` weakens per step to
+the `removeVertex` form the gate needs. The relabel side (rewriting the `wstep` fold's leading
+`funLeft`-of-swap product to `funLeft (shiftPerm i)`) is the separate `wstep_foldl_funLeft_eq` +
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` bridge, applied by the arm closer. Graph-free over the
+carrier, inheriting W9a's §38-clean discipline. -/
+theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
+    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ
+      (cd.shiftBodyFrameworkAsc (s := 0) (by have := i.2; omega) ends q).rigidityRows) :
+    ((cd.shiftBodyListAsc i).foldl
+        (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id) φ
+      ∈ Submodule.span ℝ
+          (cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by have := i.2; omega) ends q).rigidityRows
+            := by
+  have hiv : (i : ℕ) < cd.d := i.2
+  -- Feed the `foldl` fold core the total ascending chain `F = shiftBodyFrameworkAscTotal` and the
+  -- per-step edge `ec s = edge (s+2)` (out-of-range tail arbitrary; the fold touches only
+  -- `s ≤ i − 2 < cd.d`).
+  have hF0 : cd.shiftBodyFrameworkAscTotal ends q 0
+      = cd.shiftBodyFrameworkAsc (s := 0) (by omega) ends q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)
+  have hFlen : cd.shiftBodyFrameworkAscTotal ends q (cd.shiftBodyListAsc i).length
+      = cd.shiftBodyFrameworkAsc (s := (i : ℕ) - 1) (by omega) ends q := by
+    rw [cd.length_shiftBodyListAsc, cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)]
+  rw [← hFlen]
+  refine BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
+    (F := cd.shiftBodyFrameworkAscTotal ends q)
+    (ec := fun s => if h : s + 2 < cd.d then cd.edge ⟨s + 2, h⟩
+      else cd.edge ⟨0, by have := cd.hd; omega⟩)
+    (bodies := cd.shiftBodyListAsc i) (hstep := fun s hs => ?_) (hφ := hF0 ▸ hφ)
+  -- The per-step `hstep` (step `s < length = i − 1`, so the body `vₛ₊₂` is interior, `s + 2 ≤ i`,
+  -- hence `s + 2 < cd.d` since `i < cd.d`). Resolve `F (s+1)`/`F s`/`ec s`/the moved-body triple to
+  -- the partial chain and the de-risk gate's roles, then apply the gate as the whole step.
+  rw [cd.length_shiftBodyListAsc] at hs
+  have hsd : s + 2 < cd.d := by omega
+  have hFs : cd.shiftBodyFrameworkAscTotal ends q s
+      = cd.shiftBodyFrameworkAsc (s := s) (by omega) ends q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)
+  have hFs1 : cd.shiftBodyFrameworkAscTotal ends q (s + 1)
+      = cd.shiftBodyFrameworkAsc (s := s + 1) (by omega) ends q :=
+    cd.shiftBodyFrameworkAscTotal_eq ends q (by omega)
+  have hbody : (cd.shiftBodyListAsc i)[s]'(by rw [cd.length_shiftBodyListAsc]; omega)
+      = (cd.vtx ⟨s + 1, by omega⟩, cd.vtx ⟨s + 2, by omega⟩, cd.vtx ⟨s + 3, by omega⟩) :=
+    cd.getElem_shiftBodyListAsc i s (by rw [cd.length_shiftBodyListAsc]; omega)
+  have hec : (if h : s + 2 < cd.d then cd.edge ⟨s + 2, h⟩
+      else cd.edge ⟨0, by have := cd.hd; omega⟩) = cd.edge ⟨s + 2, hsd⟩ := dif_pos hsd
+  -- Resolve the total chain `F (s+1)`/`F s`/`ec s` to the partial chain and read the moved-body
+  -- triple `(shiftBodyListAsc i)[s] = (vₛ₊₁, vₛ₊₂, vₛ₊₃)`. The `foldl` core's per-step `hstep` then
+  -- reads the gate's `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))` roles.
+  simp only [hFs1, hFs, hbody, hec]
+  -- `F (s+1) = shiftBodyFrameworkAsc (s+1) = ofNormals (G − vₛ₊₂) ends (Q (s+1))`, and
+  -- `Q (s+1) = fun p => (Q s)(shiftSeedSwap s p.1, p.2)`, with `shiftSeedSwap s = (vₛ₊₂ vₛ₊₁)`
+  -- in range (`hsd`) — so `Q (s+1)` is exactly the de-risk gate's `hstep`-bundle target seed.
+  have hQ : cd.shiftSeedAdv q (s + 1)
+      = fun p => cd.shiftSeedAdv q s
+          (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1, p.2) := by
+    rw [cd.shiftSeedAdv_succ, cd.shiftSeedSwap_eq (by omega)]
+  -- The six per-step W9a conjuncts (the gate's `hstep` bundle) at the chain step `s`: seed `Q s`,
+  -- fixed selector `ends` (so `hends'_off` is `rfl`), the `G`-link-recording `hrec` weakened to the
+  -- `removeVertex` form. Unfold the chain frameworks to the `ofNormals (G − vₛ₊₁)`/`(G − vₛ₊₂)`
+  -- forms the bundle states, rewriting `Q (s+1)` to the gate's target seed (`hQ`).
+  simp only [Graph.ChainData.shiftBodyFrameworkAsc, Graph.ChainData.shiftBodyGraph, hQ]
+  exact cd.seedAdvance_wstep_hstep hsd ends ends (cd.shiftSeedAdv q s) (fun _ _ _ => rfl)
+    (fun f x y hl => hrec f x y ((Graph.removeVertex_isLink.mp hl).1))
 
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row

@@ -1671,6 +1671,13 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Lesson:** a `def`'s hypothesis should be the weakest fact its body actually needs (here:
   `Fin`-index validity), never a step-/cycle-level invariant the *callers* happen to carry — coupling
   them re-derives the wrong arithmetic obligation at every instantiation offset.
+- **Reuse (Phase 23b CHAIN-2c-ii-arm, `shiftBodyListAsc`):** the *ascending* (base→candidate) body
+  list `[(v₁,v₂,v₃), …, (v_{i−1},vᵢ,v_{i+1})]` reaches `vtx ⟨s+3⟩` at its top step `s = i−2` — one
+  index *higher* than the descending `shiftBodyList`'s top `vtx ⟨s+2⟩` — so cloning the descending
+  list's `i : Fin (cd.d + 1)` parameter leaves the `vtx ⟨s+3⟩` bound (`i+1 < d+1`) unprovable at
+  `i = d` (three `omega` failures). Fix: parameterize the ascending list by `i : Fin cd.d` (so
+  `i < d`, hence `s+3 ≤ i+1 ≤ d < d+1`), which is also the honest interior-candidate regime
+  `2 ≤ i ≤ d−1`. Same lesson, list layer: index by the range the body triples actually validate.
 - **Status:** idiom.
 
 ### [idiom] A `Fin n → α` indexed-family *cycle* as an `Equiv.Perm`: `List.formPerm (List.ofFn …)`, with `[DecidableEq α]`

@@ -1636,6 +1636,41 @@ lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
   | 0 => simp
   | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
 
+/-! ### The ascending (base→candidate) moved-body list `shiftBodyListAsc` (CHAIN-2c-ii-arm)
+
+The corrected-Fix-A relabel arm transports row memberships **base→candidate** with the seed
+*advancing* one swap per step (`notes/Phase23-design.md` §(o‴)(H.10)), the opposite orientation of
+the (now orphaned-for-the-arm) candidate→base `shiftBodyList` fold. The single-step W9a transport
+`BodyHingeFramework.wstep v a c` is read in the `(v, a, c)` shape the de-risk gate
+`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` fixes: at chain step `s` the swap is
+`(a v) = (vtx (s+2) vtx (s+1))`, the surviving chain-successor is `c = vtx (s+3)`, so the step's
+body triple is `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`. This is that ascending body list,
+the forward analogue of `shiftBodyList`'s `(vtx (s+2), vtx (s+1), vtx s)`, with the chain running
+source-at-bottom `F 0 = G − v₁` up to target-at-top `F (i−1) = G − vᵢ` (the seed-advancing `foldl`
+core `wstep_foldl_mem_span_rigidityRows`). Graph-free over the chain vertices (pure `vtx` indexing),
+mirroring `shiftBodyList`. -/
+
+/-- The ascending (base→candidate) moved-body list `[(v₁, v₂, v₃), (v₂, v₃, v₄), …, (v_{i−1}, vᵢ,
+v_{i+1})]` of the corrected-Fix-A relabel arm (length `i − 1`, one `(v, a, c)` triple per cycle
+step, the seed-advancing `foldl` order). The `s`-th triple `(vtx (s+1), vtx (s+2), vtx (s+3))` is
+the de-risk gate's W9a step that moves the degree-2 body `vtx (s+2)` into the freed slot `vtx (s+1)`
+past its surviving chain-successor `vtx (s+3)`. -/
+def shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) : List (α × α × α) :=
+  List.ofFn fun s : Fin ((i : ℕ) - 1) =>
+    (cd.vtx ⟨(s : ℕ) + 1, by have := i.2; omega⟩, cd.vtx ⟨(s : ℕ) + 2, by have := i.2; omega⟩,
+      cd.vtx ⟨(s : ℕ) + 3, by have := i.2; omega⟩)
+
+@[simp] lemma length_shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) :
+    (cd.shiftBodyListAsc i).length = (i : ℕ) - 1 := by simp [shiftBodyListAsc]
+
+lemma getElem_shiftBodyListAsc (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ)
+    (hs : s < (cd.shiftBodyListAsc i).length) :
+    (cd.shiftBodyListAsc i)[s] =
+      (cd.vtx ⟨s + 1, by have := i.2; simp only [length_shiftBodyListAsc] at hs; omega⟩,
+        cd.vtx ⟨s + 2, by have := i.2; simp only [length_shiftBodyListAsc] at hs; omega⟩,
+        cd.vtx ⟨s + 3, by have := i.2; simp only [length_shiftBodyListAsc] at hs; omega⟩) := by
+  simp only [shiftBodyListAsc, List.getElem_ofFn]
+
 /-! ### Per-moved-body chain geometry (CHAIN-2c-ii-transport-W9a chain `hstep` conjuncts)
 
 The cycle-W9a `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over the moved-body
