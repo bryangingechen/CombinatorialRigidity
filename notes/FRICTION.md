@@ -1611,6 +1611,14 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `formPerm_apply_lt_getElem` returns `xs[n+1]`, and re-applying the tail accessor at the shifted
   index works **by defeq** (`(m+1)+3 ≡ (m+3)+1 ≡ succ⁴ m` as `Nat`), avoiding the QUIRKS § 61
   index-`rw` motive trap entirely.
+- **Reuse (CHAIN-2c-ii-transport prep, `ChainData.shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`, same
+  file):** the head-peel factorization `shiftPerm i = swap (vtx 1) (vtx 2) * (tail formPerm)` (the
+  recursion handle for the cycle-W9a induction) is `List.formPerm_cons_cons` after rewriting
+  `shiftCycle i` into `vtx 1 :: List.ofFn tail`. That `ofFn = cons` step is a *whole-list* equality
+  whose RHS re-indexes the `ofFn` body, so `rw [show (i:ℕ) = …, List.ofFn_succ]` trips the **same**
+  § 61 motive trap as an index-`rw` — sidestep with `List.ext_getElem` + `match` on the index (the
+  `m+1` arm closes by defeq, no `congr 1; omega` tail). **Lifted to:** TACTICS-QUIRKS § 61 (the
+  `List.ofFn = cons` variant).
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 61 (the `getElem`-index motive trap).
 
 ### [idiom] `open Classical in` must precede the docstring, not follow it

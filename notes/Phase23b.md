@@ -21,12 +21,16 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**§(o′)(B) fork ADJUDICATED → route B; next = the cycle-W9a transport
-`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (2c-ii-transport, first
-buildable).** Design **§(o″)** (2026-06-19, source-verified + KT-cross-checked) decides the §(o′)
-route-A/B fork: **route B (shared-`ρ₀` row-span transport); route A REJECTED as unprovable.** Canonical
-verdict + the rejection argument + the route-B leaf decomposition + signatures are in *Hand-off* below
-+ design §(o″); the graph-iso brick (A) LANDED (`splitOff_isLink_shiftRelabel_iff`, `Operations.lean:2122`).
+**Route B LOCKED; `shiftPerm` head-peel factorization LANDED (the cycle-W9a recursion handle); next =
+the cycle-W9a transport `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
+(2c-ii-transport-W9a, the genuinely-new a-column subtraction induction).** Design **§(o″)**
+(2026-06-19, source-verified + KT-cross-checked) decided the §(o′) route-A/B fork: **route B
+(shared-`ρ₀` row-span transport); route A REJECTED as unprovable.** Canonical verdict + the rejection
+argument + the route-B leaf decomposition + signatures are in *Hand-off* below + design §(o″). The
+graph-iso brick (A) + the head-peel factorization (`shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`,
+`Operations.lean`, axiom-clean) are LANDED — the latter is the `List.formPerm_cons_cons`-based
+single-transposition peel each cycle-W9a induction step composes (`shiftPerm i = swap (vtx 1)(vtx 2) *
+tail-formPerm`).
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
 uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** route β. The
@@ -103,11 +107,15 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       `ChainData.shiftEdgePerm` + 6 action lemmas (incl. the closure `apply_edge_{top,pred}`) +
       `mem_shiftCycle` + forward + backward + the packaged iff `splitOff_isLink_shiftRelabel_iff` →
       **2c-ii-transport** (**§(o″) ADJUDICATED → route B**, the shared-`ρ₀` row-span transport; route
-      A REJECTED as unprovable). Two leaves: **(T-W9a)** the cycle a-column span transport
-      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [first buildable; the
+      A REJECTED as unprovable). Recursion handle **LANDED:** `ChainData.shiftCycle_eq_cons` +
+      `shiftPerm_eq_swap_mul` (`Operations.lean`, axiom-clean) — `shiftPerm i = swap (vtx 1)(vtx 2) *
+      (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
+      induction composes. Two leaves: **(T-W9a)** the cycle a-column span transport
+      `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [next; the
       genuinely-new piece, ~2–4 commits — a cycle-induction generalization of W9a
-      `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, one a-column subtraction per moved degree-2
-      body] → **(T-W9b)** the cycle bottom-tag transport (mirror `case_III_bottom_relabel`) →
+      `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` over the just-landed peel, one a-column
+      subtraction per moved degree-2 body] → **(T-W9b)** the cycle bottom-tag transport (mirror
+      `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
       the relabelled roles with `−ρ₀`; d=3 M₃ is the `i=2` instance) → **CHAIN-2c-iii**
       (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). Full signatures + decomposition:
@@ -172,14 +180,17 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**§(o′)(B) fork ADJUDICATED 2026-06-19 → route B (design §(o″)); next = the cycle-W9a transport
-`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (2c-ii-transport, first
-buildable).** CLOSED/LANDED so far (full detail in *Current state* + *Decisions made* + the
-checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; CHAIN-2c-i (`exists_chainData_discriminator_pick`) +
-2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β (`ofNormals_relabel_perm`) + **2c-ii-graphiso**
-(`splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm` + action lemmas, `Operations.lean`) LANDED, all
-axiom-clean. The graphiso iff is the `(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of
-the candidate-`i` split with the `i:=1` base split, for interior `1 < i`.
+**Route B LOCKED (design §(o″)); the `shiftPerm` head-peel factorization LANDED; next = the cycle-W9a
+transport `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` (2c-ii-transport-W9a,
+the genuinely-new a-column subtraction induction, built over the just-landed peel).** CLOSED/LANDED so
+far (full detail in *Current state* + *Decisions made* + the checklist): CHAIN-1/3/4 + OD-7 + CHAIN-2a
+CLOSED; CHAIN-2c-i (`exists_chainData_discriminator_pick`) + 2c-ii-α (`ChainData.shiftPerm`) + 2c-ii-β
+(`ofNormals_relabel_perm`) + **2c-ii-graphiso** (`splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm` +
+action lemmas, `Operations.lean`) + the **head-peel factorization** (`shiftCycle_eq_cons` /
+`shiftPerm_eq_swap_mul`, `Operations.lean`) LANDED, all axiom-clean. The graphiso iff is the
+`(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of the candidate-`i` split with the
+`i:=1` base split, for interior `1 < i`; the factorization gives `shiftPerm i = swap (vtx 1)(vtx 2) *
+(tail formPerm)` (`List.formPerm_cons_cons`), the per-step transposition T-W9a's induction peels.
 
 **The route decision (design §(o″), the canonical adjudication).** The §(o′)(B) arm-closer-transport
 fork is **resolved to route B** (the shared-`ρ₀` M₃-style row-span transport). **Route A REJECTED — it
@@ -334,18 +345,12 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   producer calls) → CHAIN-2a-ii `chainData_split_realization` (the arm-closer re-index). One
   build-time wiring flag (arm form + `h622lb`/`hIH` instantiation), no motive change → §"CHAIN"(m).
 - **CHAIN-2a CLOSED 2026-06-18 — the complete single-`i` reduction (re-index verdict CONFIRMED).**
-  Two axiom-clean leaves in `CaseIII/Realization.lean`: `chainData_split_w6b_gates` (the W6b half — a
-  `{k}`-general flat-tuple lift of the d=3 dispatch's W6b region: one
-  `exists_candidateRow_bottomRows_of_rigidOn` call fed `h622lb`, producing the chain-order
-  `hρe₀`/`hρGv`/`hw`/`hwmem` bundle; flat-tuple so it is reusable AND callable at `k=2`) and
-  `chainData_split_realization` (the re-index core — reads the per-`i` split tuple off the `ChainData`
-  accessors, produces `h622lb` from `case_III_nested_rank_lower_all_k`, consumes the W6b bundle, builds
-  the `ends₁`-override congruence, calls `case_III_arm_realization`). The §(m) clause-(ii) flag resolved
-  to `case_III_arm_realization` directly (no `_M3` relabel — chain `v—a`/`v—b` matches the arm closer's
-  `(v,a,b)` roles). **The transversal half stays a hypothesis `htrans`** (single-`i` slot CHAIN-2c
-  fills via the discriminator, whose arbitrary panel `u`↔candidate `i` match is the family glue). No
-  FRICTION (verbatim d=3-dispatch template re-use over the accessors; the `Fin d`-index `.symm`s and
-  the `Gv.Loopless` `haveI` are landed idioms).
+  Two axiom-clean leaves in `CaseIII/Realization.lean`: `chainData_split_w6b_gates` (the `{k}`-general
+  flat-tuple W6b half) + `chainData_split_realization` (the re-index core, reads the per-`i` split off
+  the `ChainData` accessors and calls `case_III_arm_realization` directly — no `_M3` relabel). **The
+  transversal half stays a hypothesis `htrans`** — the single-`i` slot CHAIN-2c fills via the
+  discriminator (the arbitrary-panel `u`↔candidate `i` match is the family glue). Internals + §(m)
+  clause-(ii) resolution in git/design §(m). No FRICTION.
 - **CHAIN-2b/2c design-pass (2026-06-18) — VERDICT: single-base `Fin (k+1)` dispatch (route β), ±r
   chain absorbed (no separate 2b lemma).** Single base `(G₁,q₁)` / one `ρ₀` / one discriminator /
   `fin_cases u`; reuse 2a-ii only at `M₀`. Route β LOCKED (user-adjudicated, row 242). Detail
@@ -364,20 +369,22 @@ contract". The forward detail (route to close the open leaves) is in *Current st
 - **CHAIN-2c-ii-α LANDED 2026-06-18 — `ChainData.shiftPerm` (KT eq. 6.54)**, the vertex `i`-cycle
   `vtx 1 → ⋯ → vtx i → vtx 1` + action lemmas (`Induction/Operations.lean`, axiom-clean; `formPerm ∘
   ofFn` idiom in FRICTION). Git + §(o).
-- **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the
-  `hiso` supplier. `ChainData.shiftEdgePerm` (`σ`, edge-side `i`-cycle, `formPerm` on a
-  `head::head::head::ofFn` list) + 6 action lemmas (4 interior/fresh + 2 closure `apply_edge_{top,pred}`)
-  + `mem_shiftCycle`; the forward leg `splitOff_isLink_shiftRelabel_forward` (candidate→base, cycle
-  analogue of d=3 `splitOff_isLink_relabel`), the backward leg `…_backward` (base→candidate: expand the
-  base `splitOff`, on-cycle survivor ⇒ `σ e` a base chain edge via `deg_two`, pull `e`/`y` back by
-  `σ⁻¹`/`ρ⁻¹` using the 2 closure values + `right_unique`; both-off ⇒ `σ e = e` by injectivity; fresh
-  `e₀ ↦ edge 0`), and the packaged iff `…_shiftRelabel_iff` = the §(o′)(A) `hiso`. Internals + 2 new
-  golf idioms (`IsLink.right_unique`; `subst`-fails-on-application) → FRICTION.
-- **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`** (the general-`Equiv.Perm`
-  framework-transport, `CaseIII/Relabel.lean`, axiom-clean). **⚠ Built for route A, which §(o″)
-  REJECTED — now very likely orphaned** (route B is M₃-style row-span, uses no whole-frame transport;
-  zero callers). Confirm-and-delete at the 2c-ii-arm build (*Hand-off* + design §(o″) addendum). Idiom
-  (the forced `ρ.symm`/`σ.symm` placement) preserved in FRICTION regardless. Git + §(o)/§(o″).
+- **`shiftPerm` head-peel factorization LANDED 2026-06-19 (2c-ii-transport recursion handle)** —
+  `ChainData.shiftCycle_eq_cons` (`shiftCycle i = vtx 1 :: ofFn tail`) + `shiftPerm_eq_swap_mul`
+  (`shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`, via `List.formPerm_cons_cons`),
+  `Operations.lean`, axiom-clean. This is the single-transposition peel the cycle-W9a (T-W9a)
+  induction composes (route B, §(o″)); the `ofFn = cons` step hits the §61 motive trap, sidestepped
+  via `List.ext_getElem` (FRICTION + QUIRKS §61 variant). T-W9a (the a-column subtraction induction)
+  is next.
+- **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
+  `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
+  + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
+  intertwiner). Internals + 2 golf idioms (`IsLink.right_unique`; `subst`-fails-on-application) → FRICTION
+  + git.
+- **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`** (general-`Equiv.Perm`
+  framework-transport, `CaseIII/Relabel.lean`, axiom-clean). **⚠ Built for route A, §(o″) REJECTED —
+  likely orphaned (zero callers); confirm-and-delete at the 2c-ii-arm build** (canonical: *Hand-off* +
+  design §(o″) addendum). `ρ.symm`/`σ.symm`-placement idiom in FRICTION regardless.
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` (`Induction/Operations.lean`, the `splitOff` home) + accessors `pred_edge_ne`/
   `isLink_edge`. `deg_two` interior vertices guarded by `0 < (i:ℕ)` (no `OfNat (Fin d)` literal),
@@ -439,7 +446,8 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
   [idiom] *Dropping the involution from a `ρ = Equiv.swap`-relabel transport…*.
 - *`rw [hidx]` on a `getElem` index `l[k]`/`l[k]'h` (the bounds proof depends on `k`) trips "motive
   is not type correct" — re-apply the indexing lemma at the new index, don't rewrite the index in
-  place* → TACTICS-QUIRKS § 61.
+  place; the `List.ofFn _ = x :: …` head-peel sibling sidesteps it via `List.ext_getElem` + `match`*
+  → TACTICS-QUIRKS § 61 (+ variant).
 - *A `Fin d`-index relabel proof: destructure `m = m'+1` early so `m-1` reduces to `m'` by `rfl` (kills
   the §61 in-place index rewrites), and bridge `(i.castSucc:ℕ)` to `(i:ℕ)` in `omega` args with `simp
   only [Fin.val_castSucc]` — not `show` (style linter) or `rw [hicv]` (`hicv := rfl` errors)* → FRICTION

@@ -1438,6 +1438,19 @@ lemma mem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α} :
   · rintro ⟨m, hm, hm1, hmi, rfl⟩
     exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
 
+/-- The shift cycle `[vtx 1, …, vtx i]` head-peels into `vtx 1 :: [vtx 2, …, vtx i]`, where the tail
+`[vtx 2, …, vtx i]` is the `List.ofFn` of the chain vertices `vtx 2, …, vtx i` (the `cons`-on-head
+form of `shiftCycle`, available once the cycle is nondegenerate, `1 ≤ i`). -/
+lemma shiftCycle_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 1 ≤ (i : ℕ)) :
+    cd.shiftCycle i
+      = cd.vtx ⟨1, by omega⟩
+        :: List.ofFn fun j : Fin ((i : ℕ) - 1) => cd.vtx ⟨(j : ℕ) + 2, by omega⟩ := by
+  refine List.ext_getElem (by simp [shiftCycle]; omega) fun m h₁ h₂ => ?_
+  rw [getElem_shiftCycle]
+  match m with
+  | 0 => simp
+  | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
+
 variable [DecidableEq α]
 
 /-- The **index-shift permutation** `ρᵢ` (KT eq. 6.54): the `i`-cycle
@@ -1488,6 +1501,28 @@ lemma shiftPerm_vtx_top (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i
     cd.getElem_shiftCycle i ((((i : ℕ) - 1) + 1) % (cd.shiftCycle i).length) (by rw [hmod]; omega)]
   congr 1
   simp only [hmod]
+
+/-- **The `shiftPerm` head-peel factorization** (the recursion handle for the cycle-induction
+transport of the interior-candidate relabel arm, CHAIN-2c-ii). For a cycle of length `≥ 2`
+(`2 ≤ i`), the index-shift permutation `shiftPerm i = formPerm [vtx 1, …, vtx i]` factors as the
+leading transposition `Equiv.swap (vtx 1) (vtx 2)` composed with the `formPerm` of the cycle's tail
+`[vtx 2, …, vtx i]` (KT eq. 6.54 read step-by-step; `List.formPerm_cons_cons`). This is the
+single-transposition peel each step of the cycle-W9a transport (the genuinely-new piece of route B,
+`notes/Phase23-design.md` §(o″)) composes: the head transposition moves the one adjacent degree-2
+body `vtx 1`, the tail cycle is the same shift on the remaining bodies `vtx 2, …, vtx i`. -/
+lemma shiftPerm_eq_swap_mul (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ)) :
+    cd.shiftPerm i
+      = Equiv.swap (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩)
+          * (List.ofFn fun j : Fin ((i : ℕ) - 1) => cd.vtx ⟨(j : ℕ) + 2, by omega⟩).formPerm := by
+  have htail : (List.ofFn fun j : Fin ((i : ℕ) - 1) => cd.vtx ⟨(j : ℕ) + 2, by omega⟩)
+      = cd.vtx ⟨2, by omega⟩
+        :: List.ofFn fun j : Fin ((i : ℕ) - 2) => cd.vtx ⟨(j : ℕ) + 3, by omega⟩ := by
+    refine List.ext_getElem (by simp; omega) fun m h₁ h₂ => ?_
+    rw [List.getElem_ofFn]
+    match m with
+    | 0 => simp
+    | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
+  rw [shiftPerm, cd.shiftCycle_eq_cons i (by omega), htail, List.formPerm_cons_cons, ← htail]
 
 /-! ### The index-shift edge permutation `shiftEdgePerm` (the edge side of KT eq. 6.54)
 

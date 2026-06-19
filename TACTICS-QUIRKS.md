@@ -72,7 +72,7 @@ failing pattern and the working fix.
 - `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
 - *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
 - *"expected token"* at the `⧸` glyph of `M ⧸ P` even though `Submodule.mkQ`/`Quotient.mk_eq_zero` resolve by name → § 60 (the quotient *notation* needs a direct `import Mathlib.LinearAlgebra.Quotient.Basic`; or drop the ascription and let `set π := P.mkQ` infer the codomain)
-- *"rewrite … motive is not type correct"* on `rw [hidx]`, `hidx : k = k'`, rewriting the **index** of a `l[k]` / `l[k]'h` `getElem` (the bounds proof `h : k < l.length` depends on `k`) → § 61 (re-apply your indexing lemma at `k'` instead of rewriting the index in place)
+- *"rewrite … motive is not type correct"* on `rw [hidx]`, `hidx : k = k'`, rewriting the **index** of a `l[k]` / `l[k]'h` `getElem` (the bounds proof `h : k < l.length` depends on `k`) → § 61 (re-apply your indexing lemma at `k'` instead of rewriting the index in place; the `List.ofFn _ = x :: …` head-peel sibling — `rw [show …, List.ofFn_succ]` — is the §61 *variant*, use `List.ext_getElem`)
 - `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
 - *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`)
 - `Pi.single w y u` type-inference failure, or `▸` in a `fun h => …` lambda for `Pi.single_eq_of_ne` can't infer `h`'s type → § 49 (annotate: `(Pi.single w y : α → T) u`; `show u ≠ w from fun (h : u = w) => …`)
@@ -2227,3 +2227,14 @@ simp only [hmod]          -- now the index lives in a non-dependent `Fin.mk`, so
 Equivalently, `conv` into the index, or use a `getElem`-congruence lemma. The general rule: a
 `getElem` index is load-bearing for its own bounds proof — change it by *recomputing the element*,
 not by rewriting the index in the existing term.
+
+**Variant — proving `List.ofFn f = x :: …` (a `cons`/head-peel identity).** When the goal is a
+*whole-list* equality whose RHS re-indexes the `ofFn` body (`List.ofFn (fun j : Fin (i:ℕ) => vtx
+⟨j+1,_⟩) = vtx ⟨1,_⟩ :: List.ofFn (fun j : Fin ((i:ℕ)-1) => vtx ⟨j+2,_⟩)`), `rw [show (i:ℕ) =
+((i:ℕ)-1)+1 by omega, List.ofFn_succ]` trips the **same** §61 motive failure (the `ofFn` body's
+bounds `_proof` depends on `(i:ℕ)`). Sidestep it with **`List.ext_getElem`** + a `match` on the
+index, never rewriting the bound: `refine List.ext_getElem (by simp [defn]; omega) fun m h₁ h₂ =>
+?_; rw [getElem_X]; match m with | 0 => simp | m + 1 => rw [List.getElem_cons_succ,
+List.getElem_ofFn]`. The `m+1` arm closes by **defeq** (`vtx ⟨m+1+1,_⟩ ≡ vtx ⟨(m)+2,_⟩` as the
+`Nat` index reduces), so no `congr 1; omega` tail is needed. Hit in Phase 23b
+`ChainData.shiftCycle_eq_cons` (the `shiftPerm` head-peel factorization brick).
