@@ -72,6 +72,7 @@ failing pattern and the working fix.
 - `ring` *"unsolved goals"* after `push_cast` on a statement containing `↑(n - 1 : ℕ)` (ℕ-subtraction coerced to `ℤ`) — write `(↑n - 1 : ℤ)` in the statement instead → § 47
 - *"expected token"* on a `set`/`obtain`/`have` of an identifier like `ρ̂` (base char + a *combining* U+0302, not the precomposed glyph) → § 45 (rename to ASCII-decorated `ρ0`)
 - *"expected token"* at the `⧸` glyph of `M ⧸ P` even though `Submodule.mkQ`/`Quotient.mk_eq_zero` resolve by name → § 60 (the quotient *notation* needs a direct `import Mathlib.LinearAlgebra.Quotient.Basic`; or drop the ascription and let `set π := P.mkQ` infer the codomain)
+- *"rewrite … motive is not type correct"* on `rw [hidx]`, `hidx : k = k'`, rewriting the **index** of a `l[k]` / `l[k]'h` `getElem` (the bounds proof `h : k < l.length` depends on `k`) → § 61 (re-apply your indexing lemma at `k'` instead of rewriting the index in place)
 - `simp only [Matrix.cons_val_zero]` reports the arg *unused* / no progress on `![…] ⟨0, ⋯⟩` after `fin_cases` (a `Fin.mk`, not the literal) → § 46 (add `show (⟨0,_⟩ : Fin n) = 0 from rfl` first, per branch)
 - *"unexpected token '-'"* at the *second* minus of a chained `x - a - b` (single subtraction fine) in a Graph-package file → § 48 (the scoped `G - S` deleteVerts notation poisons `-` chains; parenthesize `(x - a) - b`)
 - `Pi.single w y u` type-inference failure, or `▸` in a `fun h => …` lambda for `Pi.single_eq_of_ne` can't infer `h`'s type → § 49 (annotate: `(Pi.single w y : α → T) u`; `show u ≠ w from fun (h : u = w) => …`)
@@ -2201,3 +2202,28 @@ parse.
 Alternatively, sidestep the notation entirely: let the quotient type be *inferred* — `set π :=
 P.mkQ` (no `: M →ₗ[K] (M ⧸ P)` ascription) elaborates `π`'s codomain without writing the glyph.
 Phase 23b CHAIN-1; see FRICTION [mirrored] *`linearIndependent_sumElim_block_swap`…*.
+
+## 61. `rw [hidx]` on a `getElem` *index* (`l[k]` / `l[k]'h`) trips "motive is not type correct" — re-apply the indexing lemma at the new index, don't rewrite the index in place
+
+**Symptom.** A `getElem` term `l[k]` (or `l[k]'h`) appears with an index `k` you have proved equal to
+some `k'` (`hidx : k = k'`); `rw [hidx]` fails with *"Tactic `rewrite` failed: motive is not type
+correct"*, citing an application-type-mismatch on the bounds proof (`Nat.mod_lt …` etc.). Hit in
+Phase 23b `ChainData.shiftPerm_vtx_top`, where `List.formPerm_apply_getElem` returns
+`l[(k+1) % l.length]` and the goal needed that index folded to `0`.
+
+**Cause.** `l[k]` desugars to `getElem l k h` with `h : k < l.length` — a proof whose *type*
+mentions `k`. Rewriting `k → k'` would leave `h` proving `k < l.length` where `k' < l.length` is
+expected; the motive `fun a => l[a] = …` is not type-correct because the implicit bounds argument
+can't follow the index. (This is the `getElem`-index sibling of the §§ 5/18/20 "motive" failures.)
+
+**Fix.** Don't `rw` the index. Instead **re-apply your indexing lemma at the new index expression**,
+discharging its bounds side-goal from `hidx`. For a project list with a `getElem_X` accessor
+(`getElem_shiftCycle i k h = vtx ⟨k+1, _⟩`):
+```lean
+rw [cd.getElem_shiftCycle i (((i:ℕ) - 1 + 1) % (cd.shiftCycle i).length) (by rw [hmod]; omega)]
+congr 1
+simp only [hmod]          -- now the index lives in a non-dependent `Fin.mk`, so `rw`/`simp` is fine
+```
+Equivalently, `conv` into the index, or use a `getElem`-congruence lemma. The general rule: a
+`getElem` index is load-bearing for its own bounds proof — change it by *recomputing the element*,
+not by rewriting the index in the existing term.

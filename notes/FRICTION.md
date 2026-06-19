@@ -1553,6 +1553,22 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   no spurious hypothesis. Decide which case you're in by asking whether `d=0` makes the *statement* false.
 - **Status:** idiom.
 
+### [idiom] A `Fin n → α` indexed-family *cycle* as an `Equiv.Perm`: `List.formPerm (List.ofFn …)`, with `[DecidableEq α]`
+- **Where it bit:** `ChainData.shiftPerm` (`Induction/Operations.lean`, Phase 23b CHAIN-2c-ii-α) — KT
+  eq. 6.54's index-shift iso `ρᵢ`, the `i`-cycle `vtx 1 → ⋯ → vtx i → vtx 1` over the chain-vertex
+  family `vtx : Fin (d+1) → α`, as a Lean `Equiv.Perm α`.
+- **Construction:** `List.formPerm (List.ofFn fun j : Fin (i:ℕ) => vtx ⟨(j:ℕ)+1, _⟩)` — `formPerm`
+  sends each list element to the next and wraps the last to the head, exactly the cycle. `Nodup`
+  (needed by every action lemma) is `List.nodup_ofFn.mpr` off the family's injectivity; the action
+  lemmas come from `List.formPerm_apply_lt_getElem` (interior step `vtx j ↦ vtx (j+1)`),
+  `List.formPerm_apply_getElem` + `Nat.mod_self` (the wrap `vtx i ↦ vtx 1`), and
+  `List.formPerm_apply_of_notMem` (fixes off-cycle vertices). `formPerm` needs `[DecidableEq α]` —
+  add it as a `variable` scoped to the perm decls (the `List`/`Fin` support lemmas need no instance).
+- **Lesson:** for a finite-cycle permutation built from an indexed family, `formPerm ∘ ofFn` beats a
+  hand-rolled iterated `Equiv.swap` — the action lemmas drop out of the `getElem`-indexed mathlib API;
+  thread element-recompute (not index-`rw`) when folding the `% length` wrap index (QUIRKS § 61).
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 61 (the `getElem`-index motive trap).
+
 ### [idiom] `open Classical in` must precede the docstring, not follow it
 - **Where it bit:** Phase 22i L0c (`PanelLayer.lean`). Three `open Classical in theorem`s
   placed *after* their `/-- ... -/` docstrings caused `"unexpected token 'open'; expected

@@ -1378,6 +1378,105 @@ lemma deg_two_split (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
       e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ :=
   fun e x hlink => (cd.deg_two i hi e x hlink).symm
 
+/-! ### The index-shift cycle `shiftPerm` (KT eq. 6.54)
+
+For an interior candidate, the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2, eq. 6.54)
+views the `i`-th candidate framework `(Gᵢ, qᵢ)` as the `v₁`-base framework `(G₁, q₁)` *read through*
+the index-shift isomorphism `ρᵢ`, the cyclic permutation `v₁ → v₂ → ⋯ → vᵢ → v₁` of the first `i`
+interior chain vertices (fixing everything else). These lemmas package `ρᵢ` as a Lean
+`Equiv.Perm α` (`shiftPerm i`, built from `List.formPerm` on `[vtx 1, …, vtx i]`) together with its
+action: it shifts each interior vertex `vtx j` (`1 ≤ j < i`) to its chain-successor `vtx (j+1)`,
+wraps the top vertex `vtx i` back to `vtx 1`, and fixes every vertex off the cycle.
+
+This brick is graph-free (pure `Equiv.Perm`/`List`/`Fin` arithmetic over the `vtx` family); it is
+the foundation the interior-candidate relabel arm of the dispatch (CHAIN-2c) consumes. The d=3 `M₃`
+arm is the bespoke `i = 2` instance, where the cycle `v₁ → v₂ → v₁` degenerates to the transposition
+`Equiv.swap (vtx 1) (vtx 2)`. -/
+
+/-- The vertices of the index-shift cycle `[vtx 1, vtx 2, …, vtx i]` (the support of `shiftPerm i`),
+for a top index `i : Fin (cd.d + 1)`. -/
+def shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) : List α :=
+  List.ofFn fun j : Fin (i : ℕ) => cd.vtx ⟨(j : ℕ) + 1, by omega⟩
+
+@[simp] lemma length_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) :
+    (cd.shiftCycle i).length = (i : ℕ) := by simp [shiftCycle]
+
+lemma getElem_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) (j : ℕ)
+    (hj : j < (cd.shiftCycle i).length) :
+    (cd.shiftCycle i)[j] = cd.vtx ⟨j + 1, by simp only [length_shiftCycle] at hj; omega⟩ := by
+  simp only [shiftCycle, List.getElem_ofFn]
+
+/-- The shift cycle has no repeated vertices (the chain vertices are distinct). -/
+lemma nodup_shiftCycle (cd : G.ChainData n) (i : Fin (cd.d + 1)) : (cd.shiftCycle i).Nodup := by
+  rw [shiftCycle, List.nodup_ofFn]
+  intro a b hab
+  have := cd.vtx_inj hab
+  simpa [Fin.ext_iff] using this
+
+/-- A chain vertex `vtx m` lies on the cycle `[vtx 1, …, vtx i]` iff `1 ≤ m ≤ i` (the chain vertices
+are distinct, so membership pins the index). -/
+lemma vtx_mem_shiftCycle_iff (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ} (hm : m < cd.d + 1) :
+    cd.vtx ⟨m, hm⟩ ∈ cd.shiftCycle i ↔ 1 ≤ m ∧ m ≤ (i : ℕ) := by
+  rw [shiftCycle, List.mem_ofFn]
+  constructor
+  · rintro ⟨j, hj⟩
+    have := cd.vtx_inj hj
+    simp only [Fin.mk.injEq] at this
+    omega
+  · rintro ⟨hm1, hmi⟩
+    exact ⟨⟨m - 1, by omega⟩, by congr 1; simp only [Fin.mk.injEq]; omega⟩
+
+variable [DecidableEq α]
+
+/-- The **index-shift permutation** `ρᵢ` (KT eq. 6.54): the `i`-cycle
+`vtx 1 → vtx 2 → ⋯ → vtx i → vtx 1` on the first `i` interior chain vertices, fixing every other
+vertex. Built as `List.formPerm` on `shiftCycle i = [vtx 1, …, vtx i]`. -/
+def shiftPerm (cd : G.ChainData n) (i : Fin (cd.d + 1)) : Equiv.Perm α :=
+  (cd.shiftCycle i).formPerm
+
+/-- `shiftPerm i` fixes every vertex off the cycle `[vtx 1, …, vtx i]`. -/
+lemma shiftPerm_apply_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α}
+    (hx : x ∉ cd.shiftCycle i) : cd.shiftPerm i x = x :=
+  List.formPerm_apply_of_notMem hx
+
+/-- `shiftPerm i` fixes a chain vertex `vtx m` whose index lies off the cycle range `1 ≤ m ≤ i`
+(i.e. the chain base `vtx 0` and the tail `vtx (i+1), …`). -/
+lemma shiftPerm_apply_vtx_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ} (hm : m < cd.d + 1)
+    (hoff : m = 0 ∨ (i : ℕ) < m) : cd.shiftPerm i (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m, hm⟩ :=
+  cd.shiftPerm_apply_off i fun hmem => by
+    rw [cd.vtx_mem_shiftCycle_iff i hm] at hmem; omega
+
+/-- `shiftPerm i` sends an interior vertex `vtx j` (`1 ≤ j < i`) to its chain-successor `vtx (j+1)`
+(KT eq. 6.54). -/
+lemma shiftPerm_apply_interior (cd : G.ChainData n) (i : Fin (cd.d + 1)) {j : ℕ}
+    (hj1 : 1 ≤ j) (hji : j < (i : ℕ)) :
+    cd.shiftPerm i (cd.vtx ⟨j, by omega⟩) = cd.vtx ⟨j + 1, by omega⟩ := by
+  have hlen : (cd.shiftCycle i).length = (i : ℕ) := cd.length_shiftCycle i
+  have hsucc : (j - 1) + 1 < (cd.shiftCycle i).length := by omega
+  have hget : (cd.shiftCycle i)[j - 1]'(by omega) = cd.vtx ⟨j, by omega⟩ := by
+    rw [cd.getElem_shiftCycle i (j - 1) (by omega)]; congr 1; simp only [Fin.mk.injEq]; omega
+  have hget' : (cd.shiftCycle i)[(j - 1) + 1]'hsucc = cd.vtx ⟨j + 1, by omega⟩ := by
+    rw [cd.getElem_shiftCycle i ((j - 1) + 1) hsucc]; congr 1; simp only [Fin.mk.injEq]; omega
+  rw [shiftPerm, ← hget,
+    List.formPerm_apply_lt_getElem _ (cd.nodup_shiftCycle i) (j - 1) hsucc, hget']
+
+/-- `shiftPerm i` wraps the top vertex `vtx i` back to the cycle head `vtx 1` (KT eq. 6.54, the
+cyclic closure), for a nondegenerate cycle (`1 ≤ i`). -/
+lemma shiftPerm_vtx_top (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i : ℕ)) :
+    cd.shiftPerm i (cd.vtx ⟨(i : ℕ), by omega⟩) = cd.vtx ⟨1, by omega⟩ := by
+  have hlen : (cd.shiftCycle i).length = (i : ℕ) := cd.length_shiftCycle i
+  have hidx : (i : ℕ) - 1 < (cd.shiftCycle i).length := by omega
+  have hget : (cd.shiftCycle i)[(i : ℕ) - 1]'hidx = cd.vtx ⟨(i : ℕ), by omega⟩ := by
+    rw [cd.getElem_shiftCycle i ((i : ℕ) - 1) hidx]; congr 1; simp only [Fin.mk.injEq]; omega
+  have hmod : (((i : ℕ) - 1) + 1) % (cd.shiftCycle i).length = 0 := by
+    have he : ((i : ℕ) - 1) + 1 = (i : ℕ) := by omega
+    rw [hlen, he, Nat.mod_self]
+  rw [shiftPerm, ← hget,
+    List.formPerm_apply_getElem _ (cd.nodup_shiftCycle i) ((i : ℕ) - 1) hidx,
+    cd.getElem_shiftCycle i ((((i : ℕ) - 1) + 1) % (cd.shiftCycle i).length) (by rw [hmod]; omega)]
+  congr 1
+  simp only [hmod]
+
 end ChainData
 
 end Graph

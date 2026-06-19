@@ -2304,13 +2304,14 @@ project spells out a step KT compresses).
 
 **First buildable for the re-pointed hand-off (NOT 2c-ii's heavy leaf).** Because 2c-ii
 requires the genuinely-new `shiftPerm` iso + general-perm transport, the lowest-risk
-*next* commit is the **iso brick CHAIN-2c-ii-α** (`ChainData.shiftPerm` + its action
-lemmas) — it is graph-free, §38-clean, independent of all rigidity content, and is the
-foundation 2c-ii-β/2c-ii both consume. It is buildable now (all deps are `ChainData`
-accessors + mathlib `Equiv.Perm`/`Fin`). Carry the heavy transport (2c-ii-β) and the arm
+brick was the **iso brick CHAIN-2c-ii-α** (`ChainData.shiftPerm` + its action
+lemmas) — graph-free, §38-clean, independent of all rigidity content, the
+foundation 2c-ii-β/2c-ii both consume. **CHAIN-2c-ii-α LANDED 2026-06-18**
+(`Induction/Operations.lean`, `List.formPerm (List.ofFn …)`, axiom-clean — see
+`notes/Phase23b.md` *Decisions made*). Carry the heavy transport (2c-ii-β) and the arm
 closer (2c-ii) as the standing `h…` idiom if they cannot close in one sitting — never a
-`sorry`. **Re-pointed hand-off next commit = CHAIN-2c-ii-α, the `ChainData.shiftPerm`
-index-shift iso.**
+`sorry`. **Re-pointed hand-off next commit = CHAIN-2c-ii-β, the general-`Equiv.Perm`
+relabel transport (the heavy leaf, instantiated at `cd.shiftPerm i`).**
 
 **Clause-(ii) summary (the honest flag).** The uniform `Fin d` relabel arm is **not** a
 numeral pass over the landed M₂/M₃: KT's `ρᵢ` is a cycle, the landed engine is

@@ -32,9 +32,11 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = CHAIN-2c-ii-α — the `ChainData.shiftPerm` index-shift iso** (KT eq. 6.54, the `(i−1)`-cycle
-`v₁→…→vᵢ` as a Lean `Equiv.Perm α` + its action lemmas; graph-free, §38-clean, the genuinely-new
-brick the relabel arm bottoms out on). The §(o) design-pass (2026-06-18, source-verified KT
+**Next = CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport** (the heavy leaf: re-derive
+`ofNormals_relabel` off `ρ.symm` not the `Equiv.swap` involution, carrying one interior `splitOff`
+to another via a general perm). **CHAIN-2c-ii-α LANDED 2026-06-18** — `ChainData.shiftPerm` (the
+KT eq. 6.54 index-shift iso) + its action lemmas, axiom-clean (`Induction/Operations.lean`); see
+*Decisions made*. The §(o) design-pass (2026-06-18, source-verified KT
 6.54–6.67 + the landed relabel bodies) **resolved the route-α-vs-β flag with a clause-(ii) finding:**
 the uniform relabel arm is a **genuinely-new construction, NOT a numeral pass** over the d=3
 `_M2`/`_M3`. KT's `ρᵢ` is a `(i−1)`-cycle; the landed transport engine (`ofNormals_relabel` /
@@ -61,8 +63,9 @@ prose must materialize them): *Hand-off* + design §(n).
 **Context (closed/landed — detail in the Status banner + checklist + Hand-off + *Decisions made*):**
 CHAIN-1/3/4 + OD-7 (all four 23a producers + both M4 halves general-`k`) CLOSED; the `G.ChainData n`
 record + 7 interior-split accessors landed; **CHAIN-2a CLOSED**; **CHAIN-2c-i** (the discriminator pick)
-landed. Remaining: **CHAIN-2c-ii** (the relabel-arm crux) → **2c-iii** (assembly) → **CHAIN-5**
-(signature frozen by the CHAIN↔ENTRY contract) + the ENTRY extractor reshape.
+landed; **CHAIN-2c-ii-α** (`ChainData.shiftPerm` + action lemmas) landed. Remaining: **CHAIN-2c-ii-β**
+(the general-perm transport, heavy) → **2c-ii** (`chainData_relabel_arm`) → **2c-iii** (assembly) →
+**CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract) + the ENTRY extractor reshape.
 
 **Architectural constraint (standing).** The metric-using Hodge leaves live in `MeetHodge.lean`, never
 `Meet.lean`: importing `Mathlib.Analysis.InnerProductSpace.PiL2` into the metric-free `Meet.lean`
@@ -133,10 +136,11 @@ extractor reshape).
       `Fin d` relabel arm = the genuinely-new crux; **§(o) resolved the route flag: a genuinely-new
       construction, NOT a numeral pass** — KT's `ρᵢ` is a `(i−1)`-cycle, the landed transport engine is
       transposition-only). 2c-ii itself decomposes: **2c-ii-α** `ChainData.shiftPerm` (the cycle iso,
-      first buildable / only new self-contained brick) → **2c-ii-β** the general-`Equiv.Perm` transport
-      (heavy leaf, re-derives `ofNormals_relabel` off `ρ.symm`) → **2c-ii** `chainData_relabel_arm` (the
-      `Fin d` generalization of M₃) → **CHAIN-2c-iii** (`chainData_dispatch` assembly, d=3 a
-      zero-regression wrapper). ~4 build commits remain (the relabel arm is real new infra).
+      first buildable / only new self-contained brick — **LANDED 2026-06-18**, axiom-clean) →
+      **2c-ii-β** the general-`Equiv.Perm` transport (heavy leaf, re-derives `ofNormals_relabel` off
+      `ρ.symm`) → **2c-ii** `chainData_relabel_arm` (the `Fin d` generalization of M₃) → **CHAIN-2c-iii**
+      (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). ~3 build commits remain (the
+      general-perm transport + arm closer are real new infra).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -203,23 +207,27 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next = CHAIN-2c-ii-α — the `ChainData.shiftPerm` index-shift iso** (KT eq. 6.54: the `(i−1)`-cycle
-`v₁→…→vᵢ` as a Lean `Equiv.Perm α`, plus its action lemmas; graph-free, §38-clean). Design
-`notes/Phase23-design.md` §(o). **§(o) resolved the route-α-vs-β flag (clause ii):** the uniform
+**CHAIN-2c-ii-α LANDED 2026-06-18** — `ChainData.shiftPerm` (KT eq. 6.54, the index-shift `i`-cycle
+`vtx 1 → ⋯ → vtx i → vtx 1` as a Lean `Equiv.Perm α`) + its action lemmas
+(`shiftPerm_apply_{off,vtx_off,interior}`, `shiftPerm_vtx_top`) in `Induction/Operations.lean`,
+graph-free / axiom-clean, built `List.formPerm (List.ofFn …)` over the `vtx` family. See *Decisions
+made*.
+
+**Next = CHAIN-2c-ii-β — the general-`Equiv.Perm` relabel transport** (the heavy leaf). Generalize
+`ofNormals_relabel` (`Relabel.lean:78`) from `ρ = Equiv.swap a v` to an arbitrary `ρ : Equiv.Perm α`
+(+ edge side `σ : Equiv.Perm β`) carrying one interior `splitOff` to another: drop the `hρρ`/`hσσ`
+involution dependence (use `ρ.symm`/`σ.symm` where the body fired the second swap), restate
+`splitOff_isLink_relabel` for the general-perm interior-split pair, and re-derive the four transport
+conjuncts (GP / rigidity-pullback via `S∘ρ` / link-recording / AlgIndep). It will instantiate
+`ρ := cd.shiftPerm i` (2c-ii-α). **§(o) resolved the route-α-vs-β flag (clause ii):** the uniform
 relabel arm is a **genuinely-new construction, NOT a numeral pass** over the d=3 `_M2`/`_M3` — KT's
-`ρᵢ` is a `(i−1)`-cycle, the landed transport engine (`ofNormals_relabel` /
-`hasGenericFullRankRealization_of_splitOff_relabel`) is **transposition-only** (hard-wired to
-`Equiv.swap a v` as an involution, between two single-`splitOff` graphs), so the involution-based
-transport must be re-derived for a general perm. The d=3 M₃ is the bespoke `i=2` instance where the
-cycle degenerates to a swap. **No motive/IH or spine-carried-hypothesis change** — new infrastructure
-below the dispatch; route β stays LOCKED (single base, shared `ρ₀`, reuse 2a-ii only at the
-M₀/`i=1` candidate). The smallest concrete commit: author `ChainData.shiftPerm` + its
-`shiftPerm_apply_{interior,off}` / `shiftPerm_vtx_i` action lemmas (the only *new* self-contained
-brick, all deps are `ChainData` accessors + mathlib `Equiv.Perm`/`Fin`). Then **2c-ii-β** (the
-general-`Equiv.Perm` transport, the heavy leaf — re-derive `ofNormals_relabel` off `ρ.symm` not the
-involution) → **2c-ii** (`chainData_relabel_arm`, the `Fin d` generalization of M₃'s body) →
-**CHAIN-2c-iii** (`chainData_dispatch` assembly) → **CHAIN-5**. Carry the heavy transport + arm
-closer as the standing `h…` idiom if they cannot close in one sitting — never a `sorry`.
+`ρᵢ` is a `(i−1)`-cycle, the landed transport engine
+(`hasGenericFullRankRealization_of_splitOff_relabel`) is **transposition-only**. **No motive/IH or
+spine-carried-hypothesis change** — new infrastructure below the dispatch; route β stays LOCKED
+(single base, shared `ρ₀`, reuse 2a-ii only at the M₀/`i=1` candidate). Then **2c-ii**
+(`chainData_relabel_arm`, the `Fin d` generalization of M₃'s body) → **CHAIN-2c-iii**
+(`chainData_dispatch` assembly) → **CHAIN-5**. Carry the heavy transport + arm closer as the
+standing `h…` idiom if they cannot close in one sitting — never a `sorry`.
 
 **CHAIN-2c-i LANDED 2026-06-18** — `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`,
 axiom-clean): steps 1–3 of the single-base dispatch (the W6b → `ρ₀` is the already-landed
@@ -372,19 +380,23 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `fin_cases u`; reuse 2a-ii only at `M₀`. Route β LOCKED (user-adjudicated, row 242). Detail
   `notes/Phase23-design.md` §(n).
 - **CHAIN-2c-ii design-pass (2026-06-18) — VERDICT (clause ii): the uniform `Fin d` relabel arm is a
-  genuinely-new construction, NOT a numeral pass over the d=3 `_M2`/`_M3`** (source-verified KT
-  6.54–6.67 + the landed relabel bodies → §"CHAIN"(o)). KT's iso `ρᵢ` is a `(i−1)`-cycle; the landed
-  transport engine (`ofNormals_relabel` / `…_splitOff_relabel`) is transposition-only (hard-wired to
-  `Equiv.swap a v` as an involution, between two single-`splitOff` graphs); the d=3 M₃ is the bespoke
-  `i=2` swap-degenerate instance. Decompose: 2c-ii-α `ChainData.shiftPerm` (cycle iso, the new brick) →
-  2c-ii-β general-`Equiv.Perm` transport (heavy) → 2c-ii `chainData_relabel_arm` → 2c-iii dispatch.
-  M₀-arm (2a-ii) reused at `i=1` only; no motive/IH/spine-carry change.
+  genuinely-new construction, NOT a numeral pass** (the landed engine is transposition-only; KT's `ρᵢ`
+  is a cycle). Decompose 2c-ii-α (`shiftPerm`, LANDED below) → 2c-ii-β (general-perm transport) → 2c-ii
+  → 2c-iii; M₀-arm (2a-ii) reused at `i=1` only; no motive/IH/spine-carry change. Detail §"CHAIN"(o).
 - **CHAIN-2c-i LANDED 2026-06-18 — the single-discriminator pick (steps 1–3, route β).**
   `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean): the
   `Fin (k+1)`-panel LI (OD-7 LEAF-0 `_general`) feeds the one discriminator call (CHAIN-4d) → `(u, n')`
   with `ρ(panelSupportExtensor (q(cand u,·)) n') ≠ 0` (meet-form bridge). A verbatim
   `Fin (k+1)`-generalization of the green d=3 discriminator region (`case_III_candidate_dispatch`
   435–442); `u` arbitrary (the candidate match is 2c-ii). No FRICTION.
+- **CHAIN-2c-ii-α LANDED 2026-06-18 — the `ChainData.shiftPerm` index-shift iso (KT eq. 6.54).**
+  `ChainData.shiftPerm i : Equiv.Perm α` (`Induction/Operations.lean`, axiom-clean): the `i`-cycle
+  `vtx 1 → ⋯ → vtx i → vtx 1` over the chain-vertex family, built `List.formPerm (List.ofFn fun j :
+  Fin i => vtx ⟨j+1, _⟩)` (graph-free, `[DecidableEq α]`). Action lemmas: `shiftPerm_apply_off`
+  (off-cycle fixed), `shiftPerm_apply_vtx_off` (its `vtx`-keyed `m=0 ∨ i<m` corollary, via
+  `vtx_mem_shiftCycle_iff`), `shiftPerm_apply_interior` (`vtx j ↦ vtx (j+1)`, `1≤j<i`),
+  `shiftPerm_vtx_top` (the wrap `vtx i ↦ vtx 1`). Robust at the degenerate `i=1` single-element cycle
+  (`formPerm` is the identity). Promotions below.
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
   Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,
@@ -442,6 +454,13 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *A finite-`i`-cycle permutation over an indexed family `vtx : Fin n → α` as `Equiv.Perm α`:
+  `List.formPerm (List.ofFn …)` (needs `[DecidableEq α]`); `Nodup` via `nodup_ofFn`, action lemmas
+  via `formPerm_apply_lt_getElem` / `…_getElem` + `Nat.mod_self` / `…_of_notMem`* → FRICTION [idiom]
+  *A `Fin n → α` indexed-family cycle as an `Equiv.Perm`…*.
+- *`rw [hidx]` on a `getElem` index `l[k]`/`l[k]'h` (the bounds proof depends on `k`) trips "motive
+  is not type correct" — re-apply the indexing lemma at the new index, don't rewrite the index in
+  place* → TACTICS-QUIRKS § 61.
 - *`Fin d`-index arithmetic at general `d` (no `+1`): a `0 < i` guard / `i - 1` predecessor wants
   `OfNat (Fin d)` literals that don't synth — for plain index bookkeeping (not a `d=0`-false slot),
   guard `0 < (i:ℕ)` + build `⟨(i:ℕ)-1, _⟩` rather than carry `[NeZero d]`* → FRICTION [idiom]
