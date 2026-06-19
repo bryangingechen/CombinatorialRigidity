@@ -339,25 +339,14 @@ contract". The forward detail (route to close the open leaves) is in *Current st
 - **CHAIN-2c-ii-α + head-peel factorization LANDED 2026-06-18/19** (`Induction/Operations.lean`,
   axiom-clean) — `ChainData.shiftPerm` (KT eq. 6.54, the vertex `i`-cycle) + the recursion handle
   `shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`. Idioms in FRICTION. Git + §(o).
-- **CHAIN-2c-ii-transport-W9a *linear-algebra* infra LANDED 2026-06-19** (axiom-clean;
-  `CaseIII/Relabel.lean` + `Operations.lean`) — fold core `wstep` + `wstep_foldr_mem_span_rigidityRows`,
-  `shiftBodyList`, perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList`, fold identity
-  `wstep_foldr_funLeft_eq`. Detail git + §(o″).
-- **CHAIN-2c-ii-transport-W9a-chain COMPLETE 2026-06-19** (`Operations.lean` graph layers +
-  `CaseIII/Relabel.lean` framework layer, axiom-clean). The removeVertex chain `F = ofNormals ∘
-  shiftBodyGraph` (`shiftBodyGraph s := G − vₛ₊₁`): graph layers (`shiftBody_*` substrate +
-  `shiftBodyGraph_*` link correspondence) + framework chain `shiftBodyFramework` + per-step `htrans`
-  `shiftBodyFramework_htrans` (the fold core's `hstep` second conjunct; `hingeRowBlock`-agreement is
-  `le_refl`, `ends`/`q` fixed across the chain). Endpoints removeVertex, NOT splits (§(o″)). Detail:
-  design §(o″).
-- **CHAIN-2c-ii-transport-W9a membership half COMPLETE 2026-06-19** (`CaseIII/Relabel.lean`,
-  axiom-clean; the genuinely-new crux of route B). `shiftBodyList_foldr_mem_span_rigidityRows`: feeds
-  the fold core the six per-step `hstep` conjuncts off the landed graph/framework accessors,
-  transporting `span (G − vᵢ)`-rows (top) → `span (G − v₁)`-rows (bottom) for `2 ≤ i` (span-only —
-  the `funLeft (shiftPerm i)` relabel bridge stays separate, for the arm). The fold's total
-  `F : ℕ → BodyHingeFramework` is the new `shiftBodyFrameworkTotal` (`dite` on the validity bound,
-  out-of-range tail = the always-valid `s=0` member) + `shiftBodyFrameworkTotal_eq` (`dif_pos`);
-  per-step `F`/`ec` resolutions by `simp only` not `rw` (FRICTION idiom). Next: (T-W9b).
+- **CHAIN-2c-ii-transport-W9a (route B) LANDED 2026-06-19** (`CaseIII/Relabel.lean` + `Operations.lean`,
+  axiom-clean; the genuinely-new crux of route B) — the iterated W9a row-span transport over the cycle
+  moved-body list: linear-algebra infra (fold core `wstep_foldr_mem_span_rigidityRows`, `shiftBodyList`,
+  perm bridge, fold identity `wstep_foldr_funLeft_eq`) + the removeVertex framework chain
+  `shiftBodyFramework = ofNormals ∘ shiftBodyGraph` + per-step `htrans` (`le_refl`, `ends`/`q` fixed) +
+  the membership half `shiftBodyList_foldr_mem_span_rigidityRows` (six `hstep` conjuncts off the landed
+  accessors, total `F` via `shiftBodyFrameworkTotal`; span-only — the `funLeft (shiftPerm i)` relabel
+  bridge stays separate, for the arm). Endpoints removeVertex, NOT splits (§(o″)). Detail: git + §(o″).
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
   intertwiner) + `ChainData.shiftEdgePerm` + action lemmas. Detail FRICTION + git.
