@@ -907,6 +907,7 @@ theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_
   exact BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
     hca hcv hFv_link_ec hdeg2 hdeg2r hnov htrans hφ
 
+
 /-- **The single-step W9a transport map** (the cycle-W9a building block, CHAIN-2c-ii route B,
 `notes/Phase23-design.md` §(o″)). The W9a relabel transport `φ ↦ (funLeft (a v)).dualMap φ −
 hingeRow v c (φ ∘ single a)` packaged as a single linear map `Dual ℝ (α → ScrewSpace k) →ₗ Dual`
@@ -1700,6 +1701,101 @@ theorem BodyHingeFramework.funLeft_dualMap_bottomTag_mem_rigidityRows
       Equiv.swap_apply_of_ne_of_ne hba hbv]
     refine Or.inl ⟨e_b, v, b, hlink_eb, ρ', ?_, rfl⟩
     rw [BodyHingeFramework.mem_hingeRowBlock_iff, heb_support]; exact hρ'e₀
+
+/-- **The base→candidate single-step seed-advance W9b bottom-tag transport** (CHAIN-2c-ii-arm; the
+W9b analogue of `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`,
+`notes/Phase23-design.md` §(o‴)(H.10)). One step of the interior-candidate relabel arm's
+**base→candidate** *bottom-family* transport (KT 2011 §6.4.2 eq.~(6.39) row correspondence, the
+one-step-up direction): at chain step `s` (bound `s + 2 < d`), a tagged bottom member of the source
+framework `Fv = ofNormals (G − vtx (s+1)) ends q` — either a genuine `Fv`-row or an `(ab)`-block row
+`hingeRow a b ρ'` (`ρ' ⊥ C(q(a),q(b))`, the candidate panel at `v`'s two chain neighbours
+`a = vtx (s+2)`, `b = vtx s`) — relabels under the pure swap `(a v)` (with the seed *advancing* to
+`q' = q ∘ swap (vtx (s+2)) (vtx (s+1))`) into a member tagged in the target framework
+`Fva = ofNormals (G − vtx (s+2)) ends' q'`'s shape: either a genuine `Fva`-row or a `(c, v)`-block
+row `hingeRow c v ρ'` (`ρ' ⊥ C(q(c),q(a))`, the successor panel `c = vtx (s+3)`).
+
+This is the chain-indexed, **seed-advancing** instance of `case_III_arm_realization_M3`'s `hwmem`
+slot (the d=3 M₃ arm's `case_III_bottom_relabel`): there the single step goes
+`Fv = ofNormals (G − v) ends q` → `Fva = ofNormals (G − a) ends₃ qρ` with `qρ = q ∘ swap a v`; here
+the same single step is indexed by the chain step `s`, with the W9b roles read off the chain — the
+moved body `a = vtx (s+2)` (degree two in `G − vtx (s+1)`) moving into the freed slot
+`v = vtx (s+1)` past its surviving chain-successor `c = vtx (s+3)`, the `(ab)`-block panel at `v`'s
+two chain neighbours, and the genuine `e_b = edge s`-link `v—b` of the target. It is the
+**base→candidate** orientation the arm's `hwmem` slot needs — the *opposite* of the landed
+candidate→base fold `bottomTag_foldr_mem_rigidityRows`, and the building block the corrected-Fix-A
+cycle bottom-tag fold (re-folded in opposite chain order, seed advancing one swap per step)
+iterates.
+
+The seven shared W9a/W9b conjuncts (`hca`/`hcv`/`hFv_link_ec`/`hdeg2`/`hdeg2r`/`hnov`/`htrans`) are
+reused verbatim from the `seedAdvance_wstep_hstep` bundle (the genuine-row disjunct consumes the
+same seed-advancing `htrans`); the W9b-only data (`a ≠ b`, `v ≠ b`, the genuine `e_b = edge s`-link
+of `Fva`) is read off the chain accessors here. The block panels stay **abstract** — the input-tag
+panel and the output-tag panel are pinned only to the two frameworks' support extensors of
+`e_b`/`e_c`, exactly as the framework-form single-step `funLeft_dualMap_bottomTag_mem_rigidityRows`
+keeps them; the concrete `panelSupportExtensor (q a) (q b)` / `panelSupportExtensor (q c) (q a)`
+identifications (which need the `ends'`-recording at `e_b` and the seed identity) are the fold/arm's
+bookkeeping, not this single step. **§38:** graph reads go through
+`toBodyHinge_graph`/`ofNormals_graph` — never `whnf` on the `ofNormals` carrier. -/
+theorem _root_.Graph.ChainData.funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows
+    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {s : ℕ}
+    (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
+      ends' f = ends f)
+    (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
+      ends f = (x, y) ∨ ends f = (y, x))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
+            (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
+              p.2))).toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 ∧
+        φ = BodyHingeFramework.hingeRow (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s, by omega⟩) ρ') :
+    (LinearMap.funLeft ℝ (ScrewSpace k)
+          (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩))).dualMap φ ∈
+        (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
+          (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
+            p.2))).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+            q).toBodyHinge.supportExtensor (cd.edge ⟨s + 2, by omega⟩)) = 0 ∧
+        (LinearMap.funLeft ℝ (ScrewSpace k)
+              (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩))).dualMap φ
+          = BodyHingeFramework.hingeRow (cd.vtx ⟨s + 3, by omega⟩)
+              (cd.vtx ⟨s + 1, by omega⟩) ρ' := by
+  classical
+  -- The W9a roles: `v` the freed slot, `a` the moving body, `c` its surviving chain-successor;
+  -- `b = vtx s` is `v`'s *other* chain neighbour (the candidate-panel pair `(a, b)` at `v`).
+  set v := cd.vtx ⟨s + 1, by omega⟩ with hv
+  set a := cd.vtx ⟨s + 2, by omega⟩ with ha
+  set c := cd.vtx ⟨s + 3, by omega⟩ with hc
+  set b := cd.vtx ⟨s, by omega⟩ with hb
+  set e_c := cd.edge ⟨s + 2, by omega⟩ with he_c
+  set e_b := cd.edge ⟨s, by omega⟩ with he_b
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
+  set Fv := (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge with hFv
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex a) ends' qρ).toBodyHinge with hFva
+  -- The seven shared W9a/W9b conjuncts from the `seedAdvance_wstep_hstep` bundle.
+  obtain ⟨⟨hca, hcv⟩, hFv_link_ec, hdeg2, hdeg2r, hnov, htrans⟩ :=
+    cd.seedAdvance_wstep_hstep hbound ends ends' q hends'_off hrec
+  -- The W9b-only data, read off the chain accessors.
+  have hab : a ≠ b := cd.vtx_ne (by omega) (by omega) (by omega)
+  have hvb : v ≠ b := cd.vtx_ne (by omega) (by omega) (by omega)
+  -- The genuine `e_b = edge s`-link `v—b` (= `vtx (s+1)—vtx s`) survives `removeVertex a`
+  -- (endpoints `v, b ≠ a = vtx (s+2)`).
+  have hG_eb : G.IsLink e_b v b := by
+    have h := cd.isLink_edge ⟨s, by omega⟩
+    simpa only [Fin.castSucc_mk, Fin.succ_mk] using h.symm
+  have hva : v ≠ a := cd.vtx_ne (by omega) (by omega) (by omega)
+  have hbma : b ≠ a := Ne.symm hab
+  have hlink_eb : Fva.graph.IsLink e_b v b := by
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hG_eb, hva, hbma⟩
+  -- The block panels stay abstract, pinned to the frameworks' support extensors (so the support
+  -- relations are `rfl`); the concrete panel identifications are the fold/arm's bookkeeping.
+  exact BodyHingeFramework.funLeft_dualMap_bottomTag_mem_rigidityRows hab hvb hca hcv
+    hFv_link_ec hdeg2 hdeg2r hnov htrans (Cca := Fv.supportExtensor e_c) rfl hlink_eb
+    (Cab := Fva.supportExtensor e_b) rfl hφ
 
 /-- **W9b iterates — the cycle-W9b `List`-fold bottom-tag transport** (the genuinely-new piece of
 route B's bottom-tag half, CHAIN-2c-ii-transport-W9b; `notes/Phase23-design.md` §(o″)). The
