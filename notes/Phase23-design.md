@@ -2577,6 +2577,38 @@ mirroring M₃), then delete `ofNormals_relabel_perm` + reword its two Operation
 references** (or, if the arm finds a GP/algindep use for it, keep + re-pin). Tracked as a checklist
 item; do not delete pre-emptively (1% the arm wants its GP/algindep conjuncts for the relabelled seed).
 
+**Coordinator addendum (2026-06-19) — T-W9a needs a NEW 7th prerequisite: the partially-shifted
+intermediate-framework chain (read-only recon, source-verified).** After 6 consecutive build commits
+front-loaded the T-W9a *linear-algebra* prerequisites (fold core `wstep_foldr_mem_span_rigidityRows`,
+body list `shiftBodyList`, perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList`, its linear-map
+companion `wstep_foldr_funLeft_eq`), a decomposition recon found the membership half is **not** the
+"3-step assembly with all prerequisites landed" the build hand-offs claimed. The gap (verified against
+source): the fold core's per-step `hstep` (`Relabel.lean:759-760`) demands an **un-relabelled** link
+inclusion `(F (s+1)).graph.IsLink f x y → (F s).graph.IsLink f x y` between *consecutive intermediate*
+frameworks `F : ℕ → BodyHingeFramework`, but the only landed graph-iso `splitOff_isLink_shiftRelabel_iff`
+(`Operations.lean:2246`) is a **whole-cycle, fully-relabelled** intertwiner between the two *endpoint*
+splits (candidate-`i` ↔ base, applying the entire `shiftPerm i.castSucc` to both endpoints). Wrong
+shape. The landed d=3 M₃ discharges its W9a `htrans` from `Fv/Fva = ofNormals (removeVertex v/a)`
+agreeing off `{a,v}` (`Relabel.lean:1232-1255`) — an un-relabelled inclusion, the swap living only on
+the `funLeft` side — confirming `F s` must be a chain of **un-relabelled** partially-shifted splits, not
+endpoint relabels. **This corrects line 2573 above** ("T-W9a is stated against `splitOff_isLink_shiftRelabel_iff`
+as the per-step link correspondence" — it is the whole-cycle iff, NOT the per-step correspondence) and
+the telescoping caveat (2558-2565): the a-column telescoping IS clean (settled by the fold core); the
+unresolved risk is the **graph correspondence**, not the algebra.
+
+Corrected decomposition (route B unchanged, no motive/IH/contract change): **(T-W9a-chain)** [NEW, the
+missing prerequisite] the partially-shifted intermediate-framework family `F` (`F (i−1)` = candidate-`i`
+split, `F 0` = base split, each step moving one body) + its per-step un-relabelled link correspondence
++ the per-step degree-2/`cₛ`-link/off-`vₛ` conjuncts (these from `deg_two_split` once `F s` is pinned)
+— ~190-line difficulty class (the same as `splitOff_isLink_shiftRelabel_forward`/`backward`, an
+induction on cycle length over the partial-shift family; may want its own accessor block mirroring
+`shiftCycle`/`shiftBodyList`); likely re-uses the `removeVertex`-agreement reasoning + the graphiso at
+shifted sub-indices → **(T-W9a)** the membership half proper [clean once the chain lands: feed
+`shiftBodyList i` + `F` into the fold core, rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm
+bridge]. **Estimate ≥2 build commits for the membership half (several sessions).** `splitOff_isLink_shiftRelabel_iff`
+is **not** orphaned (T-W9a-chain reaches for it at shifted sub-indices) but is **not** the direct
+per-step supplier either. Next concrete commit: **(T-W9a-chain)**.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
