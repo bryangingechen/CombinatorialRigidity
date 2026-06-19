@@ -3,9 +3,10 @@
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
 **Remaining: CHAIN-2 (the `Fin d` reduction layer — corrected Fix A SETTLED §(o‴)(H); inverse-cycle
-action block + the **H.10 de-risk gate (base→candidate single-step seed-advance) LANDED 2026-06-19**.
-NEXT = the base→candidate **cycle fold** (re-fold the single step opposite chain order, seed advancing),
-then 2c-ii-arm; see *Hand-off*)
+action block + the **H.10 de-risk gate + abstract `foldl` fold core LANDED, and the de-risk gate
+generalized to cover the candidate-vertex TOP STEP (single bound `s+2 < d`) — 2026-06-19**.
+NEXT = the concrete `ChainData` seed-advancing instance (every step covered by the one gate), then
+2c-ii-arm; see *Hand-off*)
 + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
@@ -26,19 +27,24 @@ existence). The landed candidate→base T-W9a/W9b folds are **orphaned-for-the-a
 non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 
 **Tracker (CHAIN-2c-ii-transport):** LANDED 2026-06-19 (all axiom-clean): 2c-ii-inv + the H.10 de-risk
-gate (interior single-step seed-advance) + the **abstract base→candidate fold core**
-`wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`; seed-advancing `List.foldl` analogue of the orphaned
-`wstep_foldr`, source-at-bottom up to target-at-top by `reverseRec`; end-agnostic — needs a single-step
-W9a per step from any source). → **NEXT: the concrete `ChainData` seed-advancing instance** feeding the
-core — **gated on the ⚠ TOP-STEP below** → 2c-ii-arm `chainData_relabel_arm` (d=3 M₃ = `i=2`) → 2c-iii →
-CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds + the per-body W9b chain, §(o‴)(H.10).)
+gate + the **abstract base→candidate fold core** `wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`;
+seed-advancing `List.foldl` analogue of the orphaned `wstep_foldr`, source-at-bottom up to target-at-top
+by `reverseRec`; end-agnostic — needs a single-step W9a per step from any source). **TOP-STEP DE-RISKED +
+RESOLVED 2026-06-19** (next entry). → **NEXT: the concrete `ChainData` seed-advancing instance** feeding
+the core (now every step covered by the one gate) → 2c-ii-arm `chainData_relabel_arm` (d=3 M₃ = `i=2`) →
+2c-iii → CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds + the per-body W9b chain,
+§(o‴)(H.10).)
 
-**⚠ TOP-STEP FINDING (surfaced building the fold core).** The H.10 de-risk gate covers only **interior**
-steps (`s+2 < i`). The full fold (`G−v₁` up to `G−vᵢ`, steps `s=0…i−2`) has a **top step `s=i−2`** moving
-the cycle *top* body `vtx i` (the candidate vertex `vᵢ` itself, not a passing degree-2 body — different
-geometry), NOT covered by the gate. The abstract core is end-agnostic (absorbs any per-step proof); the
-concrete instance must supply the top step **separately**. De-risk it before pinning the concrete chain —
-the same index/scope-subtlety class the §(o‴) saga hit.
+**TOP-STEP RESOLVED — the de-risk gate now covers ALL steps (single bound `s + 2 < d`).** The H.10
+de-risk gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`Relabel.lean`) was
+generalized from the cycle-coupled `(hs : s+2 < i)(hi : i < d+1)` to a single `(hbound : s + 2 < cd.d)`.
+**Finding (the de-risk outcome):** the worried "top step `s=i−2` moves the candidate vertex `vᵢ` — different
+geometry" *dissolved* — the interior candidates run `2 ≤ i ≤ d−1`, so the candidate `vᵢ` is **itself an
+interior degree-2 chain vertex** (`vtx i`, `i < d`), and the top step closes with the **identical** proof
+off the same `deg_two`/`isLink_edge`/`vtx_ne` accessors. Both interior (`s+2 < i`) and top (`s=i−2`,
+`s+2 = i < d`) steps satisfy `s + 2 < d`, so ONE gate covers the whole fold (`s = 0 … i−2`). `i` was a
+phantom signature parameter (only `omega`-bound use); dropping it for `hbound` is strictly cleaner. (No
+top-step special-case lemma needed — the §(o‴)-class concern was real to check, vacuous in outcome.)
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -59,12 +65,13 @@ extractor / producer `…hcand` / CHAIN-5 `hdispatch`), no motive/IH change (C.6
 
 The buildable-leaf sequence (exact signatures + dependency order in
 `notes/Phase23-design.md` §"CHAIN"(c)/(l)/(m)/(n)/(o)/(o′)/(o″)). **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 +
-CHAIN-2a CLOSED; CHAIN-2c-i + 2c-ii-α/β + 2c-ii-graphiso + 2c-ii-inv + the H.10 de-risk gate + the
-abstract `foldl` fold core `wstep_foldl_mem_span_rigidityRows` COMPLETE.** Remaining in
-**CHAIN-2c-ii**: **the concrete `ChainData` seed-advancing instance** that feeds the fold core (incl.
-the top-step the de-risk gate does not cover — ⚠ *Current state* top-step finding) → **2c-ii-arm** (the
-closer) — then **CHAIN-2c-iii** (assembly), and **CHAIN-5** (signature frozen by the CHAIN↔ENTRY
-contract; gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
+CHAIN-2a CLOSED; CHAIN-2c-i + 2c-ii-α/β + 2c-ii-graphiso + 2c-ii-inv + the H.10 de-risk gate (now
+covering interior AND top steps, single bound `s+2 < d`) + the abstract `foldl` fold core
+`wstep_foldl_mem_span_rigidityRows` COMPLETE.** Remaining in
+**CHAIN-2c-ii**: **the concrete `ChainData` seed-advancing instance** that feeds the fold core (every
+step `s = 0 … i−2` now covered by the one gate) → **2c-ii-arm** (the closer) — then **CHAIN-2c-iii**
+(assembly), and **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of
+CHAIN-2 + ENTRY's extractor reshape).
 
 - [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + Hodge panel-meet membership**
       (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (route = `⋀^{d−1}W`-is-a-line, NOT the
@@ -170,21 +177,18 @@ tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *
 
 **LANDED 2026-06-19** (axiom-clean, gate-verified): the abstract base→candidate seed-advancing fold core
 `wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`), preceded by **CHAIN-2c-ii-inv** + the **H.10 de-risk
-gate** — detail in *Current state* tracker (incl. the ⚠ top-step finding gating the concrete instance).
+gate**, and the de-risk gate generalized to cover the **candidate-vertex top step** (single bound
+`s + 2 < cd.d`; the top-step concern was de-risked and dissolved — *Current state* "TOP-STEP RESOLVED").
 
-**NEXT STEP — the TOP-STEP de-risk lemma (the gating piece, ⚠).** The fold's top step `s = i−2` moves the
-candidate vertex `vᵢ` itself (into slot `vtx(i−1)`), NOT a passing degree-2 body — outside the de-risk
-gate's `s+2 < i` bound. Build/validate its base→candidate single-step transport (the candidate-vertex
-analogue of the interior de-risk gate; template = how the d=3 M₃ arm handles the candidate vertex) and
-confirm it closes BEFORE the concrete instance — it is the §(o‴)-class index/scope subtlety, so de-risk it
-standalone first.
-
-**THEN — the concrete `ChainData` seed-advancing instance** feeding the fold core: the chain
+**NEXT STEP — the concrete `ChainData` seed-advancing instance** feeding the fold core: the chain
 `F s = (ofNormals (G − vtx(s+1)) ends qₛ).toBodyHinge`, seed `qₛ` accumulating one swap per step
-(`q_{i−1} = q ∘ shiftPerm i`, via `shiftPerm_eq_prod_map_swap_shiftBodyList`); interior steps via the
-de-risk gate, the top step via the new top-step lemma. Keeping `ends` *fixed* (only the seed advancing)
-makes `hends'_off` trivial. Conclude membership in `span (G − vᵢ on q∘shiftPerm i).rigidityRows`; then the
-`funLeft (shiftPerm i)`/seed bridge (`wstep_foldr_funLeft_eq` analogue + the perm bridge).
+(`q_{i−1} = q ∘ shiftPerm i`, via `shiftPerm_eq_prod_map_swap_shiftBodyList`). **Every step `s = 0 … i−2`
+(interior AND top) now closes through the ONE generalized de-risk gate** (its `hbound : s + 2 < cd.d` is
+discharged for each step from `i ≤ d−1`), so no separate top-step lemma is needed. Keeping `ends` *fixed*
+(only the seed advancing) makes `hends'_off` trivial. Conclude membership in
+`span (G − vᵢ on q∘shiftPerm i).rigidityRows`; then the `funLeft (shiftPerm i)`/seed bridge
+(`wstep_foldr_funLeft_eq` analogue + the perm bridge). **Build the concrete chain `F`/per-step `hstep`
+supplier next**, feeding `wstep_foldl_mem_span_rigidityRows` (the gate is its per-step proof).
 
 **Then:** **2c-ii-arm** `chainData_relabel_arm` (signature in §(o‴)(H.6); instantiate
 `case_III_arm_realization` at the relabelled roles with seed `qρ = q∘shiftPerm i`, shared `±ρ₀`, the three
@@ -351,16 +355,22 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   base→candidate single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, re-fold opposite order,
   seed advancing) — the landed candidate→base T-W9a/W9b folds are orphaned-for-the-arm (`wstep`
   non-invertible). No motive/IH/spine change; route β + d=3 preserved. Detail §(o‴)(H)/(H.10) + git.
-- **DE-RISK GATE + FOLD CORE LANDED 2026-06-19 (both axiom-clean) + TOP-STEP FINDING.** The H.10 gate
+- **DE-RISK GATE + FOLD CORE LANDED 2026-06-19 (both axiom-clean).** The H.10 gate
   `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (the base→candidate single step, reuses
   the landed single-step W9a at chain roles `(vtx(s+1),vtx(s+2),vtx(s+3))`, seed advancing, `htrans` =
   chain-indexed d=3 M₃ extensor-coincidence) + the abstract fold core
   `wstep_foldl_mem_span_rigidityRows` (the seed-advancing `List.foldl` over a free chain `F`, source-
   at-bottom `span (F 0)` up to target-at-top `span (F length)`, by `reverseRec`; the base→candidate
-  analogue of the orphaned `wstep_foldr`). **Finding:** the de-risk gate covers only **interior** steps
-  (`s + 2 < i`) — the full fold's *top* step (moving the candidate vertex `vtx i` itself) is uncovered,
-  so the concrete instance supplies it separately (the abstract core is end-agnostic). Recursor-matching
-  lesson promoted (TACTICS-GOLF § 20 / FRICTION).
+  analogue of the orphaned `wstep_foldr`). Recursor-matching lesson promoted (TACTICS-GOLF § 20 /
+  FRICTION).
+- **TOP-STEP DE-RISKED + RESOLVED 2026-06-19 — the gate covers ALL fold steps (no separate top-step
+  lemma).** Generalized the de-risk gate from `(hs : s+2 < i)(hi : i < d+1)` to a single
+  `(hbound : s + 2 < cd.d)`, dropping the phantom `i` (it appeared only in `omega`-bound proofs). The
+  worried candidate-vertex top step (`s = i−2`, `a = vtx i`) closes with the **identical** proof: the
+  interior candidates run `2 ≤ i ≤ d−1`, so `vᵢ` is itself an interior degree-2 chain vertex (`vtx i`,
+  `i < d`), reading the same `deg_two`/`isLink_edge`/`vtx_ne` accessors. Both interior (`s+2 < i`) and top
+  (`s+2 = i < d`) steps satisfy `s + 2 < d`, so the concrete fold instance closes every step `s = 0 … i−2`
+  through the one gate. §(o‴)-class concern: real to check, vacuous in outcome.
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
@@ -374,10 +384,11 @@ one-liner `rw [Equiv.Perm.inv_eq_iff_eq, <forward>]`; the base→candidate relab
 re-authored arm transport carries (FRICTION, under the `formPerm`-cycle entry). **2c-ii-arm de-risk gate
 (H.10)** `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, the live
 base→candidate single fold step — reuses the single-step W9a at the chain roles, seed advancing,
-seed-advancing `htrans` from the d=3 M₃ `hρGv` coincidence; covers **interior** steps only). **2c-ii fold
+seed-advancing `htrans` from the d=3 M₃ `hρGv` coincidence; **single bound `s + 2 < cd.d` covers every
+step — interior and the candidate-vertex top step**). **2c-ii fold
 core** `wstep_foldl_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, the seed-advancing `List.foldl`
-iteration of `wstep` over a free chain, by `reverseRec`; the concrete instance + the uncovered top step
-feed/extend it). **⚠ Orphans-for-the-arm
+iteration of `wstep` over a free chain, by `reverseRec`; the concrete instance feeds it, every step via
+the one gate). **⚠ Orphans-for-the-arm
 (confirm-and-delete at the arm build per §(o‴)(H.5); *Hand-off* flag): the candidate→base T-W9a fold**
 `shiftBodyList_foldr_mem_span_rigidityRows` + its seed-fixed `shiftBodyFramework`/`_htrans` chain (wrong
 orientation — converse implication, H.10); **the per-body W9b chain** `funLeft_dualMap_bottomTag_mem_rigidityRows` +

@@ -3646,6 +3646,18 @@ independent reader told to refute (H) against KT verbatim + the landed bodies:
   No motive/IH/spine-carry change (the correction is internal to the arm's transport). d=3 zero-regression
   unaffected (H.8).
 
+**(H.11) DE-RISK GATE + FOLD CORE LANDED, TOP STEP RESOLVED (2026-06-19).** The base→candidate single-step
+gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` and the abstract seed-advancing fold
+core `wstep_foldl_mem_span_rigidityRows` (both `CaseIII/Relabel.lean`, axiom-clean) landed. **The
+top-step worry (H.10's "build it separately" caveat) is resolved by generalizing the gate to a single
+bound `s + 2 < cd.d`** (the phantom `i` parameter, used only in `omega`-bound proofs, was dropped). The
+candidate-vertex top step `s = i−2` (moving `a = vtx i`) closes with the *identical* proof because the
+interior candidates run `2 ≤ i ≤ d−1` — so `vᵢ` is itself an interior degree-2 chain vertex (`vtx i`,
+`i < d`) reading the same `deg_two`/`isLink_edge`/`vtx_ne` accessors. Both interior (`s+2 < i`) and top
+(`s+2 = i < d`) steps satisfy `s + 2 < d`, so the concrete fold instance discharges every step `s = 0 …
+i−2` through the one gate; **no separate top-step lemma is needed.** NEXT = the concrete `ChainData`
+seed-advancing instance feeding the core.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

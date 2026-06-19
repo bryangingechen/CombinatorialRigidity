@@ -701,13 +701,23 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
   exact h₂
 
 /-- **The base→candidate single-step seed-advance W9a transport** (CHAIN-2c-ii-arm de-risk gate,
-`notes/Phase23-design.md` §(o‴)(H.10)). One step of the interior-candidate relabel arm's
-**base→candidate** row transport (KT 2011 §6.4.2 eq.~(6.62), the one-step-up correspondence
-`vⱼ ⇒ vⱼ₊₁`): at chain step `s` (`s + 2 < i ≤ d`, so the moving body's surviving neighbour
-`vtx (s+3)` is a valid chain vertex), a row of the source framework `Fv = ofNormals (G − vtx (s+1))`
+`notes/Phase23-design.md` §(o‴)(H.10), top-step generalization 2026-06-19). One step of the
+interior-candidate relabel arm's **base→candidate** row transport (KT 2011 §6.4.2 eq.~(6.62), the
+one-step-up correspondence `vⱼ ⇒ vⱼ₊₁`): at chain step `s` (bound `s + 2 < d`, so the moving body
+`vtx (s+2)` is itself an interior degree-2 chain vertex and its surviving neighbour `vtx (s+3)` is a
+valid chain vertex), a row of the source framework `Fv = ofNormals (G − vtx (s+1))`
 on seed `q` transports — across the swap `(a v) = (vtx (s+2) vtx (s+1))` with the seed *advancing*
 to `q' = q ∘ swap (vtx (s+2)) (vtx (s+1))` — into the target framework `Fva = ofNormals (G −
 vtx (s+2))` on `q'`, after the moved body `a = vtx (s+2)`'s `a`-column hinge row is subtracted.
+
+**Single bound `s + 2 < d` covers both interior and top steps** (the top-step de-risk outcome).
+The full base→candidate cycle fold for candidate `i` (`2 ≤ i ≤ d−1`) runs steps `s = 0, …, i−2`;
+the *interior* steps (`s + 2 < i`, the moving body a passing degree-2 body) and the *top* step
+(`s = i−2`, where `a = vtx (s+2) = vtx i` is the candidate vertex itself) both satisfy `s + 2 < d`
+— because the candidate `vᵢ` at `i ≤ d−1` is *itself* an interior degree-2 chain vertex (`vtx i`,
+`i < d`), so the candidate-vertex top step closes with the identical proof, off the same
+`deg_two`/`isLink_edge`/`vtx_ne` accessors. The §(o‴)-class concern that the top step is "different
+geometry" (the candidate vertex, not a passing body) dissolved: `i ≤ d−1` keeps `vtx i` interior.
 
 This is the chain-indexed, **seed-advancing** instance of `case_III_arm_realization_M3`'s `hρGv`
 slot (`CaseIII/Relabel.lean`, the d=3 M₃ arm): there the single step goes `Fv = ofNormals (G − v)
@@ -730,8 +740,8 @@ de-risk gate (verify the single step closes before pinning the cycle fold / arm 
 graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only `graph`/`hingeRowBlock`), so
 the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
 theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows
-    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i s : ℕ}
-    (hs : s + 2 < i) (hi : i < cd.d + 1) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {s : ℕ}
+    (hbound : s + 2 < cd.d) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
     (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
       ends' f = ends f)
     (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
