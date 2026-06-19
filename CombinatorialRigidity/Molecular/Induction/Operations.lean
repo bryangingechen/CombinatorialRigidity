@@ -1379,6 +1379,14 @@ lemma deg_two_split (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
       e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ :=
   fun e x hlink => (cd.deg_two i hi e x hlink).symm
 
+/-- Two chain vertices `vtx ⟨m,_⟩`, `vtx ⟨m',_⟩` are distinct when their `ℕ`-indices differ
+(`vtx_inj`, the namespace-level form of the local `hvtx_ne_of` haves in the graphiso bricks). The
+per-moved-body distinctness conjuncts of the cycle-W9a chain (CHAIN-2c-ii-transport-W9a) read off
+this. -/
+lemma vtx_ne {m m' : ℕ} (cd : G.ChainData n) (hm : m < cd.d + 1) (hm' : m' < cd.d + 1)
+    (hne : m ≠ m') : cd.vtx ⟨m, hm⟩ ≠ cd.vtx ⟨m', hm'⟩ :=
+  fun he => hne (by have := congrArg Fin.val (cd.vtx_inj he); simpa using this)
+
 /-! ### The index-shift cycle `shiftPerm` (KT eq. 6.54)
 
 For an interior candidate, the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2, eq. 6.54)
@@ -1589,6 +1597,65 @@ lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
   match m with
   | 0 => simp
   | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
+
+/-! ### Per-moved-body chain geometry (CHAIN-2c-ii-transport-W9a chain `hstep` conjuncts)
+
+The cycle-W9a `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over the moved-body
+list `shiftBodyList i = [(v₂,v₁,v₀), (v₃,v₂,v₁), …]` (`(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)` at step `s`,
+moving the degree-2 body `a = vₛ₊₁` to `vₛ₊₂` past its surviving chain-predecessor `c = vₛ`). Its
+per-step `hstep` hypothesis demands, for each step `s` (`s + 1 < i`, so the body `vₛ₊₁` is an
+interior chain vertex `1 ≤ s+1 ≤ i−1`), the combinatorial geometry of that body in `G`: its two
+chain edges (`edge s` to `vₛ`, `edge (s+1)` to `vₛ₊₂`), the degree-2 closure at it, and the
+distinctness of the three triple vertices. These accessors expose that geometry off the `ChainData`
+fields (`link`, `deg_two`, `vtx_inj`) in the `(v, a, c)` shape, so the chain `F`'s `hstep` reads
+them directly (the per-step framework-specific facts — the successor edge `edge (s+1)` *cut* in
+`F (s+1)`, leaving `edge s` the lone surviving link at the body — follow once `F (s+1)` is pinned,
+this being their `G`-level substrate). The body index `s+1` is interior (`⟨s+1,_⟩ : Fin cd.d`, since
+`s + 1 ≤ i − 1 < d`), so `deg_two`/`link` apply at it. -/
+
+/-- The successor chain edge `edge (s+1)` at the moved-body `vₛ₊₁` (step `s`, `s + 1 < i`): the
+`G`-link out of the body to its post-swap position `v = vₛ₊₂` (the link the chain step cuts). -/
+lemma shiftBody_isLink_succ_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
+    (hi : i < cd.d + 1) :
+    G.IsLink (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) := by
+  have h := cd.isLink_edge ⟨s + 1, by omega⟩
+  simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+
+/-- The predecessor chain edge `edge s` at the moved-body `vₛ₊₁` (step `s`, `s + 1 < i`): the
+`G`-link out of the body to its surviving chain-predecessor `c = vₛ` (the `e_c` of the W9a step). -/
+lemma shiftBody_isLink_pred_edge (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
+    (hi : i < cd.d + 1) :
+    G.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) := by
+  have h := cd.isLink_edge ⟨s, by omega⟩
+  simpa only [Fin.castSucc_mk, Fin.succ_mk] using h.symm
+
+/-- The **degree-2 closure at the moved-body** `vₛ₊₁` (step `s`, `s + 1 < i`): every `G`-edge
+incident to the body is its successor chain edge `edge (s+1)` or its predecessor chain edge
+`edge s` (the `deg_two` field at the interior index `⟨s+1,_⟩`). -/
+lemma shiftBody_deg_two (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
+    ∀ e x, G.IsLink e (cd.vtx ⟨s + 1, by omega⟩) x →
+      e = cd.edge ⟨s + 1, by omega⟩ ∨ e = cd.edge ⟨s, by omega⟩ := by
+  intro e x hlink
+  have hd := cd.deg_two ⟨s + 1, by omega⟩ (by simp) e x
+    (by simpa only [Fin.castSucc_mk] using hlink)
+  simpa only [show ((⟨s + 1, by omega⟩ : Fin cd.d) : ℕ) - 1 = s from rfl] using hd.symm
+
+/-- The moved-body `a = vₛ₊₁` and its surviving predecessor `c = vₛ` are distinct (`vtx_ne`). -/
+lemma shiftBody_pred_ne (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
+    cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨s + 1, by omega⟩ :=
+  cd.vtx_ne (by omega) (by omega) (by omega)
+
+/-- The post-swap position `v = vₛ₊₂` and the surviving predecessor `c = vₛ` are distinct
+(`vtx_ne`). -/
+lemma shiftBody_pred_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i)
+    (hi : i < cd.d + 1) :
+    cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
+  cd.vtx_ne (by omega) (by omega) (by omega)
+
+/-- The moved-body `a = vₛ₊₁` and its post-swap position `v = vₛ₊₂` are distinct (`vtx_ne`). -/
+lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) :
+    cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
+  cd.vtx_ne (by omega) (by omega) (by omega)
 
 /-- **`shiftPerm` is the product of the moved-body swaps** (the permutation-level identification of
 the cycle-W9a `List.foldr` with the named index-shift relabel, CHAIN-2c-ii-transport-W9a route B,

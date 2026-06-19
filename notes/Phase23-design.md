@@ -2607,7 +2607,19 @@ shifted sub-indices → **(T-W9a)** the membership half proper [clean once the c
 `shiftBodyList i` + `F` into the fold core, rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm
 bridge]. **Estimate ≥2 build commits for the membership half (several sessions).** `splitOff_isLink_shiftRelabel_iff`
 is **not** orphaned (T-W9a-chain reaches for it at shifted sub-indices) but is **not** the direct
-per-step supplier either. Next concrete commit: **(T-W9a-chain)**.
+per-step supplier either.
+
+**T-W9a-chain `G`-substrate LANDED 2026-06-19** (`Operations.lean`, axiom-clean). The first leaf of
+(T-W9a-chain) — the per-moved-body `G`-level geometry the chain's `hstep` reads — is built: the
+`ChainData.shiftBody_{isLink_succ_edge, isLink_pred_edge, deg_two, pred_ne, pred_ne_succ, ne_succ}`
+accessor block (for cycle step `s`, `s + 1 < i`: the body `vₛ₊₁`'s successor edge `edge (s+1)`→`vₛ₊₂`,
+predecessor edge `edge s`→`vₛ`, the `G`-degree-2 closure at the body, and the three triple-vertex
+distinctnesses, in the `(v,a,c) = (vₛ₊₂, vₛ₊₁, vₛ)` shape the fold core's `hstep` consumes) + the
+namespace `vtx_ne` helper (the graphiso bricks' local `hvtx_ne_of` have, hoisted). These are pure
+`ChainData.{link, deg_two, vtx_inj}` reads — no framework, no relabel — supplying the per-step
+degree-2/`cₛ`-link/off-`vₛ` conjuncts of the chain `hstep`. Next concrete commit: the framework chain
+`F : ℕ → BodyHingeFramework` itself (wired against these accessors) + its per-step un-relabelled link
+correspondence.
 
 ---
 

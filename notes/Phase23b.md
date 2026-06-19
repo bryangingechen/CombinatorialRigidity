@@ -17,15 +17,15 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 **Route B LOCKED (§(o″)). The T-W9a *linear-algebra* prerequisites all LANDED axiom-clean (fold core
 `wstep_foldr_mem_span_rigidityRows`, `shiftBodyList`, perm bridge, fold identity `wstep_foldr_funLeft_eq`;
-`Relabel.lean`/`Operations.lean`). But a 2026-06-19 decomposition recon found a NEW prerequisite: the
-fold core's per-step `hstep` needs an *un-relabelled* link inclusion between consecutive intermediate
-frameworks, whereas the landed graphiso `splitOff_isLink_shiftRelabel_iff` is a *whole-cycle*
-endpoint-to-endpoint intertwiner (wrong shape; verified vs source). next = (T-W9a-chain): the
-partially-shifted intermediate-framework chain `F : ℕ → BodyHingeFramework` (`F (i−1)` = candidate-`i`
-split, `F 0` = base, one body moved per step) + its per-step un-relabelled link correspondence
-(~190-line-class) → then (T-W9a) the membership half (clean once the chain lands: feed `shiftBodyList i`
-+ `F` into the fold, rewrite relabel via `wstep_foldr_funLeft_eq` + perm bridge) → T-W9b → arm.**
-Corrected decomposition + the source-verified gap: design §(o″) coordinator addendum (2026-06-19).
+`Relabel.lean`/`Operations.lean`). The (T-W9a-chain) prerequisite is being built bottom-up: its
+**per-moved-body `G`-level geometry substrate LANDED 2026-06-19 axiom-clean** (`Operations.lean`, the
+`shiftBody_*` accessor block + the `vtx_ne` namespace helper — the per-cycle-step chain-edge / degree-2
+/ distinctness conjuncts the fold core's `hstep` reads; detail in *Hand-off* + §(o″)). next = the
+chain `F : ℕ → BodyHingeFramework` itself (`F (i−1)` = candidate-`i` split, `F 0` = base, one body
+moved per step) wired against these accessors + its per-step un-relabelled link correspondence (the
+framework-graph layer) → then (T-W9a) the membership half (feed `shiftBodyList i` + `F` into the fold,
+rewrite relabel via `wstep_foldr_funLeft_eq` + perm bridge) → T-W9b → arm. Corrected decomposition +
+source-verified gap: design §(o″) (2026-06-19).
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -98,10 +98,13 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       (tail formPerm)` via `List.formPerm_cons_cons`, the single-transposition peel the cycle-W9a
       induction composes. T-W9a is now 2 leaves (corrected 2026-06-19 recon, §(o″) addendum): the
       *linear-algebra* layer (fold core, `shiftBodyList`, perm bridge, `wstep_foldr_funLeft_eq`) is
-      LANDED, but **(T-W9a-chain)** [NEW] — the partially-shifted intermediate-framework chain
+      LANDED; **(T-W9a-chain)** [NEW] — the partially-shifted intermediate-framework chain
       `F : ℕ → BodyHingeFramework` + its per-step un-relabelled link correspondence (the fold core's
-      `hstep` shape; landed graphiso is whole-cycle, not per-step) — is next, then **(T-W9a)** the
-      membership half (`funLeft_shiftPerm_dualMap_sub_acolumns_…`, clean once the chain lands)
+      `hstep` shape; landed graphiso is whole-cycle, not per-step) — has its **per-moved-body
+      `G`-level geometry substrate LANDED 2026-06-19** (`shiftBody_*` accessors + `vtx_ne`,
+      `Operations.lean`, axiom-clean); the framework chain `F` + its link correspondence is next,
+      then **(T-W9a)** the membership half (`funLeft_shiftPerm_dualMap_sub_acolumns_…`, clean once
+      the chain lands)
       → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
@@ -169,25 +172,32 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **Route B LOCKED (design §(o″)). T-W9a's *linear-algebra* prerequisites all LANDED (fold core,
-`shiftBodyList`, perm bridge, fold identity `wstep_foldr_funLeft_eq`); the 2026-06-19 decomposition
-recon found a NEW prerequisite — next = (T-W9a-chain): the partially-shifted intermediate-framework
-chain `F : ℕ → BodyHingeFramework` + its per-step un-relabelled link correspondence (the shape the fold
-core's `hstep` demands; the landed graphiso `splitOff_isLink_shiftRelabel_iff` is whole-cycle, NOT the
-per-step supplier). Corrected decomposition + source-verified gap: *Current state* + design §(o″)
-addendum (2026-06-19).** The graphiso iff is the `(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`
-intertwiner of the candidate-`i` split with the `i:=1` base split, for interior `1 < i`.
+`shiftBodyList`, perm bridge, fold identity `wstep_foldr_funLeft_eq`); the (T-W9a-chain) prerequisite's
+**per-moved-body `G`-level geometry substrate LANDED 2026-06-19** (the `shiftBody_*` accessor block +
+`vtx_ne` helper, `Operations.lean`, axiom-clean — per cycle step `s`: the body `vₛ₊₁`'s two chain edges
+`edge s`→`vₛ` / `edge (s+1)`→`vₛ₊₂`, the `G`-degree-2 closure at it, and the three triple-vertex
+distinctnesses, in the `(v,a,c)` shape the fold core's `hstep` consumes). next = the framework chain
+`F : ℕ → BodyHingeFramework` itself (`F (i−1)` = candidate-`i` split, `F 0` = base, one body moved per
+step) wired against those accessors + its per-step un-relabelled link correspondence (the
+framework-graph layer the substrate underlies). Corrected decomposition + source-verified gap:
+*Current state* + design §(o″) addendum (2026-06-19).** The graphiso iff is the
+`(ρ,σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner of the candidate-`i` split with the
+`i:=1` base split, for interior `1 < i`.
 
 **Route B's genuinely-new piece — the cycle-W9a transport (2 leaves, corrected 2026-06-19 recon).** The
 transport is the cycle-generalization of W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
 `Relabel.lean:546`) + W9b. Its *linear-algebra* layer is LANDED axiom-clean (detail in *Decisions made*
 + git): the fold core (`wstep`/`wstep_foldr_mem_span_rigidityRows`), `shiftBodyList`, the perm bridge
 `shiftPerm_eq_prod_map_swap_shiftBodyList` (off mirror `formPerm_eq_prod_zipWith_swap_tail`), and its
-linear-map companion `wstep_foldr_funLeft_eq`. Leaves: **(T-W9a-chain)** [NEW prerequisite] the
-partially-shifted intermediate-framework chain `F : ℕ → BodyHingeFramework` (`F (i−1)` = candidate-`i`
-split, `F 0` = base, one body moved per step) + its per-step *un-relabelled* link correspondence (the
-shape the fold core's `hstep` demands; `deg_two_split` supplies the per-step degree-2/`cₛ`/off-`vₛ`
-conjuncts once `F s` is pinned) — ~190-line-class, likely reusing the d=3 `removeVertex`-agreement
-reasoning + the graphiso at shifted sub-indices → **(T-W9a)** the membership half (clean once the chain
+linear-map companion `wstep_foldr_funLeft_eq`. Leaves: **(T-W9a-chain)** [NEW prerequisite, in
+progress] the partially-shifted intermediate-framework chain `F : ℕ → BodyHingeFramework`
+(`F (i−1)` = candidate-`i` split, `F 0` = base, one body moved per step) + its per-step *un-relabelled*
+link correspondence. **Its per-moved-body `G`-level geometry substrate LANDED 2026-06-19** (the
+`shiftBody_{isLink_succ_edge, isLink_pred_edge, deg_two, pred_ne, pred_ne_succ, ne_succ}` accessors +
+`vtx_ne`, `Operations.lean`, axiom-clean) — these supply the per-step degree-2/`cₛ`-link/off-`vₛ`
+conjuncts off `ChainData.{link, deg_two, vtx_inj}` once `F s` is pinned; the framework chain `F` +
+its link correspondence on top is next (likely reusing the d=3 `removeVertex`-agreement reasoning +
+the graphiso at shifted sub-indices) → **(T-W9a)** the membership half (clean once the chain
 lands: feed `shiftBodyList i` + `F` into the fold, rewrite the relabel via `wstep_foldr_funLeft_eq` +
 the perm bridge) →
 **(T-W9b)** cycle bottom-tag transport → **2c-ii-arm** `chainData_relabel_arm` (`−ρ₀`, roles
@@ -346,16 +356,19 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   axiom-clean) — `ChainData.shiftPerm` (KT eq. 6.54, the vertex `i`-cycle) + the recursion handle
   `shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul` (`shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`).
   `formPerm ∘ ofFn` + `ofFn = cons` (§61 motive trap) idioms in FRICTION. Git + §(o).
-- **CHAIN-2c-ii-transport-W9a infra LANDED 2026-06-19** (all axiom-clean; `CaseIII/Relabel.lean` +
-  `Operations.lean`) — four pieces: the fold core `BodyHingeFramework.wstep` (single-step W9a as
-  `Dual →ₗ Dual`) + `wstep_foldr_mem_span_rigidityRows` (`List.foldr` over a `(v,a,c)`-body list +
-  framework chain `F : ℕ → BodyHingeFramework`, head-applied-last, source `F len` → target `F 0`); the
-  moved-body list `ChainData.shiftBodyList` (+ head-peel `shiftBodyList_eq_cons`); the relabel-side
-  perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` (`shiftPerm i = ∏ swaps over shiftBodyList i`)
-  off the new general mirror `List.formPerm_eq_prod_zipWith_swap_tail` (FRICTION [mirrored]); and the
-  relabel-side fold identity `wstep_foldr_funLeft_eq` (the foldr's relabel-only composite =
-  `(funLeft ⇑(∏ swaps)).dualMap`, the linear-map companion of the perm bridge). Next: the T-W9a
-  membership half (see *Hand-off*). Detail git + §(o″).
+- **CHAIN-2c-ii-transport-W9a *linear-algebra* infra LANDED 2026-06-19** (axiom-clean;
+  `CaseIII/Relabel.lean` + `Operations.lean`) — fold core `wstep` + `wstep_foldr_mem_span_rigidityRows`
+  (`List.foldr` over a `(v,a,c)`-body list + framework chain `F`, head-applied-last, `F len` → `F 0`);
+  moved-body list `shiftBodyList` (+ `shiftBodyList_eq_cons`); perm bridge
+  `shiftPerm_eq_prod_map_swap_shiftBodyList` (off mirror `List.formPerm_eq_prod_zipWith_swap_tail`); and
+  fold identity `wstep_foldr_funLeft_eq`. Detail git + §(o″).
+- **CHAIN-2c-ii-transport-W9a-chain `G`-substrate LANDED 2026-06-19** (`Induction/Operations.lean`,
+  axiom-clean) — the per-moved-body `G`-level geometry the (T-W9a-chain) framework chain's `hstep`
+  reads: the `ChainData.shiftBody_{isLink_succ_edge, isLink_pred_edge, deg_two, pred_ne, pred_ne_succ,
+  ne_succ}` accessor block (for cycle step `s`, the body `vₛ₊₁`'s two chain edges, the `G`-degree-2
+  closure at it, the three triple distinctnesses, in the `(v,a,c) = (vₛ₊₂, vₛ₊₁, vₛ)` shape) + the
+  namespace `vtx_ne` helper (the local `hvtx_ne_of` have hoisted). Pure `ChainData.{link, deg_two,
+  vtx_inj}` reads; the framework chain `F` + per-step link correspondence sits on top (next). §(o″).
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
   + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
