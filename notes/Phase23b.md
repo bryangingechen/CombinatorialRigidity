@@ -124,9 +124,10 @@ extractor reshape).
       `foldl` fold core + **the concrete base→candidate W9a cycle fold** `shiftBodyListAsc_foldl_mem_span_rigidityRows`
       **LANDED 2026-06-19** (the W9b per-body chain — single-step + `foldl` core
       `bottomTag_foldl_mem_rigidityRows` — was landed then **DELETED 2026-06-19**, §(o‴)(I.1) dead infra)
-      → **NEXT: Leaf B** (block via
-      G4d-i at `vᵢ`; the genuine-row arm reuses the landed W9a span fold per §(o‴)(b)) → **2c-ii-arm**
-      `chainData_relabel_arm` (d=3 M₃ = `i=2` involution) → **2c-iii** `chainData_dispatch`.
+      → **NEXT: 2c-ii-arm** `chainData_relabel_arm` (gated by the flagged genuine-arm seed-coincidence
+      cycle gen; genuine-row disjunct via the inverse-cycle **graph-iso**, NOT the W9a span fold — that
+      carries the candidate row `hρGv` (§(o‴)(I.3)); block = inline Leaf B's single G4d-i; d=3 M₃ = `i=2`
+      involution) → **2c-iii** `chainData_dispatch`.
       Full detail: design §(o‴)(H)/(H.10).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
