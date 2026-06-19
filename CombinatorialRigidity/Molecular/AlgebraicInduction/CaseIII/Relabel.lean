@@ -700,6 +700,87 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
   rw [sub_sub] at h₂
   exact h₂
 
+/-- **The single-step W9a transport map** (the cycle-W9a building block, CHAIN-2c-ii route B,
+`notes/Phase23-design.md` §(o″)). The W9a relabel transport `φ ↦ (funLeft (a v)).dualMap φ −
+hingeRow v c (φ ∘ single a)` packaged as a single linear map `Dual ℝ (α → ScrewSpace k) →ₗ Dual`
+(the `T` of `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, named so the cycle fold over the
+chain of degree-2 bodies can iterate it). The subtracted `a`-column term `hingeRow v c (· ∘ single
+a)` is the linear composite `(screwDiff v c).dualMap ∘ₗ (single a).dualMap` (the `hTapply` form of
+W9a). -/
+noncomputable def BodyHingeFramework.wstep [DecidableEq α] (v a c : α) :
+    Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k) :=
+  (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap
+    - (screwDiff (k := k) (α := α) v c).dualMap.comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a).dualMap
+
+/-- `wstep v a c φ` is the W9a transported difference `(funLeft (a v)).dualMap φ − hingeRow v c
+(φ ∘ single a)`. -/
+theorem BodyHingeFramework.wstep_apply [DecidableEq α] (v a c : α)
+    (φ : Module.Dual ℝ (α → ScrewSpace k)) :
+    BodyHingeFramework.wstep (k := k) v a c φ
+      = (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+        - BodyHingeFramework.hingeRow (k := k) (α := α) v c
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)) := by
+  rw [BodyHingeFramework.wstep, LinearMap.sub_apply, LinearMap.comp_apply, hingeRow_eq_dualMap]; rfl
+
+/-- **W9a iterates — the cycle-W9a `List`-fold transport** (the genuinely-new piece of route B,
+CHAIN-2c-ii-transport-W9a; `notes/Phase23-design.md` §(o″)). The single-step W9a transport `wstep`
+composes over a *list* of degree-2 bodies along a chain of intermediate frameworks: given a
+framework chain `F : ℕ → BodyHingeFramework k α β` and a list `bodies : List (α × α × α)` of
+`(v, a, c)` body triples, if every step `s` is a valid single-swap W9a transport from `F (s+1)`
+*down to* `F s` (the per-step `htrans` / degree-2 / off-`v` hypotheses, the `s`-th body
+`bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework drop `F (s+1) → F s`), then the iterated
+transport `(wstep v₀ a₀ c₀ ∘ ⋯ ∘ wstep vₘ aₘ cₘ) φ` of any `φ ∈ span (F bodies.length).rigidityRows`
+(the source, top of the chain) lands in `span (F 0).rigidityRows` (the target, bottom).
+
+The `foldr` applies the list *head* last (outermost), so the head body `bodies[0]` is the final
+framework drop `F 1 → F 0` and the chain runs source-at-top `F (length)` down to target-at-bottom
+`F 0` — matching `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`'s `Fv` (source) → `Fva`
+(target) orientation per step. This is the cycle generalization of W9a's *single* `a`-column
+subtraction: KT's `ρᵢ` is the `(i−1)`-cycle moving a chain of `i−1` adjacent degree-2 bodies
+(KT 2011 eq.~(6.66), `2 ≤ i ≤ d−1`), and `shiftPerm i` factors head-first as
+`(vtx 1 vtx 2) * (tail formPerm)` (`ChainData.shiftPerm_eq_swap_mul`), so the cycle is the
+left-fold of single transpositions and the transport is the iterated `wstep`. The proof is a clean
+`List` induction on `bodies`: the base case is `φ ∈ span (F 0)` itself; the step transports `φ`
+through the tail's `(rest.length)`-fold over the *shifted* chain `F (· + 1)` (landing in
+`span (F 1)` by the inductive hypothesis), then applies the head step's single W9a transport
+`F 1 → F 0`. The per-step `a`-column subtractions *do* compose cleanly (the §(o″) telescoping
+concern, settled at the binary `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`). Graph-free
+over the carrier, inheriting W9a's §38-clean discipline. -/
+theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
+    [DecidableEq α] (F : ℕ → BodyHingeFramework k α β)
+    (ec : ℕ → β) (bodies : List (α × α × α))
+    (hstep : ∀ s, (hs : s < bodies.length) →
+      (bodies[s].2.2 ≠ bodies[s].2.1 ∧ bodies[s].2.2 ≠ bodies[s].1) ∧
+      (F (s + 1)).graph.IsLink (ec s) bodies[s].2.1 bodies[s].2.2 ∧
+      (∀ f x, (F (s + 1)).graph.IsLink f bodies[s].2.1 x → f = ec s) ∧
+      (∀ f x, (F (s + 1)).graph.IsLink f x bodies[s].2.1 → f = ec s) ∧
+      (∀ f x y, (F (s + 1)).graph.IsLink f x y → x ≠ bodies[s].1 ∧ y ≠ bodies[s].1) ∧
+      (∀ f x y, (F (s + 1)).graph.IsLink f x y → x ≠ bodies[s].2.1 → y ≠ bodies[s].2.1 →
+        (F s).graph.IsLink f x y ∧ (F (s + 1)).hingeRowBlock f ≤ (F s).hingeRowBlock f))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ (F bodies.length).rigidityRows) :
+    (bodies.foldr (fun b T => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T)
+        LinearMap.id) φ
+      ∈ Submodule.span ℝ (F 0).rigidityRows := by
+  induction bodies generalizing F ec with
+  | nil => simpa using hφ
+  | cons b rest ih =>
+    -- Head-first fold: `foldr (b :: rest) = (wstep b₀) ∘ (foldr rest)`, head applied last. The tail
+    -- transports `φ` (top of the chain, `span (F (rest.length + 1))`) down through `rest` over the
+    -- *shifted* chain `F (· + 1)` to land in `span (F 1)`, then the head step drops `F 1 → F 0`.
+    have htail := ih (fun s => F (s + 1)) (fun s => ec (s + 1))
+      (fun s hs => by simpa using hstep (s + 1) (by simpa using hs))
+      (by simpa using hφ)
+    -- The head step's single-swap W9a transport `F 1 → F 0`, fed the tail output (in `span (F 1)`).
+    obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hdeg2r, hnov, htrans⟩ := hstep 0 (by simp)
+    have hhead := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+      (Fv := F 1) (Fva := F 0) (v := b.1) (a := b.2.1) (c := b.2.2) hca hcv
+      (e_c := ec 0) hlink_ec hdeg2 hdeg2r hnov htrans htail
+    -- Repackage: `foldr (b :: rest) φ = wstep b₀ (foldr rest φ)`, `wstep`'s apply is W9a's
+    -- difference.
+    simpa [List.foldr_cons, BodyHingeFramework.wstep_apply] using hhead
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row
