@@ -30,9 +30,11 @@ non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 concrete seed-advancing chain instance `shiftBodyListAsc_foldl_mem_span_rigidityRows`, through the H.10
 de-risk gate / `seedAdvance_wstep_hstep` bundle), and the **W9b base→candidate single-step**
 `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` LANDED (axiom-clean, 2026-06-19; detail in
-*Hand-off*). → **NEXT: the cycle-W9b GENUINE-ROW fold** (map the W9b single-step over the chain) + **the
-block disjunct via G4d-i at `vᵢ`** (single row, NOT a per-body carry — ⚠ recon §(o‴)(H) FIRST, see
-*Hand-off*: this commit's hand-off mis-proposed a rejected per-body block carry) → **2c-ii-arm**
+*Hand-off*). **Block-disjunct route RECON-DISCHARGED** (coordinator, session #13 — confirmed single-`vᵢ`
+G4d-i, NOT a per-body carry; full discharge in *Hand-off*). → **NEXT (Leaf A, greenlit): the cycle-W9b
+GENUINE-ROW fold** (map the landed W9b single-step over the chain, the family analogue of
+`shiftBodyListAsc_foldl_…`; genuine-row disjunct ONLY, independent of the block) → **Leaf B: the block
+disjunct via G4d-i at `vᵢ`** (the confirmed single-row route) → **2c-ii-arm**
 `chainData_relabel_arm` (three slots = W9a fold + W9b genuine-row fold + G4d-i; d=3 M₃ = `i=2`) → 2c-iii →
 CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds, §(o‴)(H.10).)
 
@@ -174,22 +176,24 @@ reusing the `seedAdvance_wstep_hstep` bundle + the framework-form W9b single-ste
 orphaned). **Prior LANDED:** the W9a-slot fold (the concrete instance `shiftBodyListAsc_foldl_…` over the
 `wstep_foldl` core, through the de-risk gate / `hstep` bundle).
 
-**NEXT STEP — the cycle-W9b fold (GENUINE-ROW disjunct only) + the block disjunct via G4d-i.** The
-bottom family `w`'s **genuine-row** disjunct rides the base→candidate fold exactly like `hρGv` (map the
-landed W9b single-step over the chain, the family analogue of `shiftBodyListAsc_foldl_…`). The **block
-disjunct** is handled SEPARATELY — per §(o‴)(H)/(d) it is the whole-relabel image of `M₀`'s single
-redundant row → the ±r row at `vᵢ` via **G4d-i** (ONE (6.44) at the single body `vᵢ`), NOT a per-body
-carry.
+**NEXT STEP — Leaf A (greenlit): the cycle-W9b GENUINE-ROW fold.** The bottom family `w`'s
+**genuine-row** disjunct rides the base→candidate fold exactly like `hρGv` (map the landed W9b single-step
+`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` over the chain, the family analogue of the landed
+W9a fold `shiftBodyListAsc_foldl_…`). This leaf is the **genuine-row disjunct ONLY** — independent of the
+block disjunct; do not touch the block in this commit. **Then Leaf B: the block disjunct via G4d-i** —
+per §(o‴)(H)/(d) the whole-relabel image of `M₀`'s single redundant row → the `±r` row at `vᵢ` via
+**G4d-i** (ONE (6.44) at the single body `vᵢ`), NOT a per-body carry.
 
-⚠ **CRITICAL — RECON THE BLOCK DISJUNCT AGAINST §(o‴)(H)/(d) BEFORE BUILDING (the 4×-mis-pin guard).**
-The build agent's hand-off (this commit) proposed discharging the block disjunct with a **per-body
-`redundancy_panel_carry`/`candidateRow_ac_eq_neg` panel-carry bridge "across the chain of degree-2
-bodies"** — that is the per-body block carry §(o‴) REJECTED (the block has no per-body home; its
-residual is the machine-confirmed-unprovable telescoping crux mis-pinned 4× at iters 3/7/9/11). Do NOT
-build a per-body block carry. The authoritative route is §(o‴)(H)/(d): block → G4d-i at `vᵢ` (single
-row, whole-relabel). `redundancy_panel_carry`/`candidateRow_ac_eq_neg` are the eq.-(6.44) identity used
-ONCE at `vᵢ` (G4d-i-adjacent), not a per-body chain. **A fresh coordinator: recon the block-disjunct
-route against §(o‴)(H)/(d) — confirm the single-`vᵢ` G4d-i discharge — before any cycle-W9b/arm build.**
+**RECON-DISCHARGED (coordinator, session #13) — the block-disjunct route is CONFIRMED; build it on the
+G4d-i route.** The row-284 build hand-off had mis-proposed a per-body
+`redundancy_panel_carry`/`candidateRow_ac_eq_neg` panel-carry "across the chain of degree-2 bodies" — the
+per-body block carry §(o‴) REJECTED (the block has no per-body home; mis-pinned 4× at iters 3/7/9/11).
+The coordinator re-read §(o‴)(H)/(d)/(F)/(H.10) and confirms the authoritative route: **block → G4d-i at
+`vᵢ` (single row, whole-relabel)**, adversarially verified (F attack-A: the block is genuinely not a
+`(G−vᵢ)`-span member and has no per-body home; H.10). `redundancy_panel_carry`/`candidateRow_ac_eq_neg`
+are the eq.-(6.44) identity used **ONCE** at `vᵢ` (G4d-i-adjacent), re-consumed by Leaf B — NOT a per-body
+chain (do NOT build a per-body block carry). Leaf A (genuine-row fold) is independent of all this and is
+the immediate buildable target.
 
 **Then 2c-ii-arm** `chainData_relabel_arm` (signature §(o‴)(H.6); instantiate `case_III_arm_realization`
 at the relabelled roles, seed `qρ = q∘shiftPerm i`, shared `±ρ₀`; the three slots = the W9a fold (`hρGv`)

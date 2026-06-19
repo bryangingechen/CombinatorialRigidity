@@ -53,16 +53,13 @@ every-dispatch read stays small. When a phase closes, move its rows + its
 - **Per-session run modifications** (re-confirm at session start; sessions #6–#11
   set them): the 10-run check-in cap **lifted** (loop runs to phase close or a
   surfaced concern); step-4 mechanical fixups (wrong branch / author /
-  trailer) **pre-authorized**. Session-#11 availability (2026-06-19, re-confirmed
-  by the user at session start: OPUS-ONLY kept, cap lifted, fixups
-  pre-authorized; expires session-end): opus confirmed (the coordinator runs on
-  it; reachable via the Agent `model` param); under the OPUS-ONLY override the
-  other rungs are not probed (boundary pairs opus-vs-opus or skipped) — a fresh
-  coordinator under the S/P/B map re-probes. Session-#12 (2026-06-19, fresh
-  coordinator, re-confirmed by the user at session start: OPUS-ONLY kept, cap
-  lifted, fixups pre-authorized; expires session-end): opus confirmed (the
-  coordinator runs on it; reachable via the Agent `model` param); other rungs
-  not probed under OPUS-ONLY.
+  trailer) **pre-authorized**. Each session-start re-confirms the same triple
+  (OPUS-ONLY kept, cap lifted, fixups pre-authorized; expires session-end) and
+  the same availability (opus confirmed — the coordinator runs on it, reachable
+  via the Agent `model` param; other rungs not probed under OPUS-ONLY, so a
+  fresh coordinator reverting to the S/P/B map would re-probe): so set sessions
+  #11, #12, and **#13** (2026-06-19, fresh coordinator, user re-confirmed at
+  session start).
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
   chain (2c-i/2c-ii-α/2c-ii-β); Route β LOCKED. Detail subsumed by session-#9 progress below + git.
 - **Session #9 close (2026-06-19; paused by user after row 254, clean handoff; loop stopped).**
