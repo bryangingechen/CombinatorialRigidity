@@ -3660,6 +3660,138 @@ seed-advancing instance feeding the core.
 
 ---
 
+#### (o‴)(I) BUILD-PATH CONSOLIDATION — the `hwmem`-slot + Leaf-B path, re-verified against the landed bodies post-W9b-fold (2026-06-19)
+
+> **Design-settle / recon pass, docs-only, 2026-06-19.** Consolidates the CURRENT build path for
+> `chainData_relabel_arm`'s `hwmem` slot + the block-disjunct leaf (Leaf B) after the W9b single-step +
+> `bottomTag_foldl` core landed (b6c780f / caee6ab). Clause-(i): every load-bearing claim verified
+> against the **landed `def`/`theorem` bodies** (file:line below) via reads + `git grep`. **Net verdict:
+> the landed W9b per-body chain (`bottomTag_foldl_mem_rigidityRows`, the W9b single-steps,
+> `redundancy_panel_carry`) is OFF the critical path — it encodes the per-body block transport that
+> §(o‴)(b)/(c)/(d)/(H) machine-refuted; it is a confirm-and-delete orphan (Q1). The arm's `hwmem` slot is
+> the d=3 `case_III_bottom_relabel` per-member map (no fold), cycle-generalized to the whole `(shiftPerm
+> i)⁻¹` relabel; the block disjunct is a SINGLE G4d-i at `vᵢ`, not a fold instantiation (Q2/Q3).**
+
+**(I.0) The current callsite picture (the decisive `git grep`).** No arm/dispatch exists yet
+(`chainData_relabel_arm`, `chainData_dispatch`, `chainData_relabel_hwmem`: zero decls in tree), so the
+*entire* CHAIN-2c-ii fold stack is **unbuilt scaffolding with zero live consumers today** — including the
+W9a concrete fold `shiftBodyListAsc_foldl_mem_span_rigidityRows`, not just the W9b pieces. The live
+general-`d` critical path is still the d=3 wrapper: `Theorem55.lean:2635` → `case_III_candidate_dispatch`
+(`Realization.lean:1218`) → `case_III_arm_realization`(M₁) / `_M2` / `_M3`, and M₃ discharges its `hwmem`
+at `Relabel.lean:2264` by `intro j; … exact case_III_bottom_relabel … (hwmem j)` — a **per-member map over
+`w`, NO fold of any kind**. So "is X on the critical path" must be read as the *prospective* question:
+when `chainData_relabel_arm` is built per §(H.6)/§(H.10), will it consume X?
+
+**(I.1) Q1 — `bottomTag_foldl_mem_rigidityRows` is OFF the critical path (a confirm-and-delete orphan).**
+The body (`Relabel.lean:1866`) is exactly the abstract pure-relabel `List.reverseRec` `foldl` core the
+prompt describes: it threads a generic `Tag : ℕ → Dual → Prop` one-step-up `Tag s ⇒ Tag (s+1)` under
+bare swaps `(funLeft (swap bodies[s].2.1 bodies[s].1)).dualMap`, never opening a framework. It is sound
+and axiom-clean — but it is the *engine for a per-body block-disjunct chain*, and that chain is the route
+§(o‴)(b)/(c) machine-refuted. The refutation, re-confirmed against the landed single-step: the W9b
+single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean:1632`) maps the input block tag
+`hingeRow a b ρ'` to an OUTPUT block tag `hingeRow c v ρ'` (a `(c,v)`-block at the predecessor;
+`:1650–1653`), AND maps a genuine-row-at-the-moving-body to a `(c,v)`-block too (`:1672–1678`, the `x=a`
+branch). To *terminate* the carried block into a genuine row it needs the `e_b`-row of the target
+framework (`:1601`, the `(ab)`-tag → genuine `e_b`-row branch) — which exists in d=3 M₃ only because `b`
+is the OFF-chain neighbour so `e_b` survives `removeVertex a`. At the chain interior `e_b = edge(s+1)`
+links the removed vertex and is graph-structurally cut (`shiftBodyGraph_deg_two`, machine-verified
+§(o‴)(b)), so the per-step block residual `hingeRow vₛ₊₂ b ρ'` has **no home** — the chain cannot
+terminate. The `foldl` core would faithfully *compose* the single-steps, but composing a chain that
+cannot terminate produces nothing the arm can use. **Try-hard-to-refute outcome: I could not find a
+consumer, and the structural argument says there cannot be one** — `git grep bottomTag_foldl` returns
+ONLY its own def site + `notes/`. **b6c780f is dead infra** (the 5th-mis-pin-shape risk the prompt
+flagged); it joins the §(H.5) tear-up list with `bottomTag_foldr_mem_rigidityRows` (`:1819`, the
+converse-orientation sibling, also zero live callers), the two W9b single-steps
+(`funLeft_dualMap_bottomTag_mem_rigidityRows` `:1632`, used only by
+`funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` `:1739`, which is itself zero-consumer), and
+`redundancy_panel_carry` (`:1922`, zero callers). **Confirm-and-delete at the arm-build commit** (the
+existing §(H.5) discipline: `git grep` zero callers, delete in the same commit that lands the arm).
+Caveat unchanged from §(H.5): `candidateRow_ac_eq_neg` (the eq.-(6.44) primitive, `Claim612.lean`, its
+own home) is **kept** — Leaf B re-consumes it via G4d-i.
+
+**(I.2) Q2 — Leaf B is a SINGLE direct G4d-i at `vᵢ`, NOT a `bottomTag_foldl` instantiation.** The block
+disjunct is the whole-relabel image of `M₀`'s single redundant `(v₀v₂)i*`-row, which (6.66)/(6.44) reduce
+to the single `±r` row at the degree-2 body `vᵢ` — ONE application of eq.~(6.44) at ONE body, exactly as
+the d=3 Lemma-6.10 proof applies (6.44) once at the degree-2 body `a` (§(o‴)(a)/(d), KT p.698 verbatim).
+The landed G4d-i primitive is `acolumn_mem_hingeRowBlock_of_span_rigidityRows`
+(`Relabel.lean`, consumed already at `case_III_arm_realization_M3:2138` to get `ρ ⊥ C(q(ac))`). **Leaf B
+is therefore not a separate fold-bearing lemma at all** — it is the block-arm branch *inside*
+`chainData_relabel_arm`'s `hwmem` proof: for the bottom-family member tagged `w j = hingeRow a b ρ'`
+(`ρ' ⊥ C(base ab)`), produce `(funLeft (shiftPerm i)⁻¹).dualMap (w j) = hingeRow (ρ⁻¹a)(ρ⁻¹b) ρ'` (via
+`hingeRow_funLeft_dualMap`, `Basic.lean:549`) and discharge its annihilation against the candidate-`i`
+`±r` panel by the single (6.44) at `vᵢ` (`candidateRow_ac_eq_neg` / G4d-i). Concretely this is the
+**inverse-cycle generalization of the d=3 single-swap block branch** `case_III_bottom_relabel:1596–1611`
+(the `(ab)`-tag branch), where the single swap `(a v)` is replaced by `(shiftPerm i)⁻¹` — but since the
+block branch touches only the two bodies `a = vtx i` and its neighbours (the swap acts non-trivially only
+near `vᵢ`), it does NOT chain over the `i−1` cycle bodies. **Signature:** Leaf B is not minted as a
+standalone decl; it is the `Or.inr` arm of `chainData_relabel_arm`'s `hwmem` case-split, ~the size of
+`case_III_bottom_relabel:1596–1611` plus the inverse-swap evaluation bookkeeping (`shiftPerm_inv_*`
+action lemmas, the §(H.6) leaf-1 block — which **stays needed**, H.10). If a recon later prefers a named
+lemma, its shape is: `(cd : ChainData n)(i : Fin cd.d)(hi : 1 < i)(hρ'e₀ : ρ' (candidate-i ±r panel) =
+0) ⊢ (funLeft (shiftPerm i)⁻¹).dualMap (hingeRow a b ρ') ∈ (candidate-i split).rigidityRows` — but the
+default is inline.
+
+**(I.3) Q3 — the `hwmem` assembly: per-member `case_III_bottom_relabel`-shape, cycle-generalized; the
+genuine-row arm via the inverse-relabel graph-iso, the block arm via Leaf-B's single G4d-i.** The slot
+`case_III_arm_realization` (the engine, `Arms.lean:72`) demands is, per member `j`
+(`Arms.lean:96–99`, verbatim):
+```
+hwmem : ∀ j, w j ∈ (ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+  ∃ ρ', ρ' (panelSupportExtensor (q a) (q b)) = 0 ∧ w j = hingeRow a b ρ'
+```
+i.e. each bottom-family member is *either* a genuine `Gv`-row *or* an `(ab)`-block row. The arm
+`chainData_relabel_arm` instantiates the engine at the relabelled roles (`(v,a,b) := (vtx i.castSucc,
+vtx i.succ, vtx (i−1).castSucc)`, seed `qρ = q ∘ shiftPerm i`, shared `±ρ₀`; §(H.6) leaf-2), and its
+`hwmem` proof is `intro j; <transport the disjunction of (hwmem₀ j)>` — the **cycle generalization of the
+d=3 M₃ `hwmem` discharge** (`Relabel.lean:2264–2272`), where the shared base `w` is the v₁-split W6b
+family and `hwmem₀ j` is its base disjunction. **The two disjuncts transport differently and neither is a
+W9b fold:**
+- **Genuine-row disjunct (`w j ∈ base-split rows`):** transported by the WHOLE inverse relabel
+  `(funLeft (shiftPerm i)⁻¹).dualMap` as a graph-iso row correspondence (KT (6.62)) — a genuine base-row
+  maps to a genuine candidate-`i` row via `splitOff_isLink_shiftRelabel_iff` (`Operations.lean:2122`,
+  LANDED) + `hingeRow_funLeft_dualMap`, with the seed cancellation `qρ(ρ⁻¹x) = q(x)` (H.10
+  lean-verified). This is the cycle generalization of `case_III_bottom_relabel`'s genuine-row branch
+  (`:1499–1595`, the three-way `x=a`/`y=a`/neither split), NOT a span fold and NOT W9a. **Correction to
+  the prompt's coordinator paraphrase + the Phase23b tracker's "Leaf-A finding":** the bottom-family
+  *genuine-row* disjunct does **not** "ride the W9a span fold `shiftBodyListAsc_foldl…` verbatim". What
+  rides W9a is the *candidate row* `hρGv` (the redundant `±r` row that enters as `hingeRow a b ρ ∈ span
+  (G−vᵢ).rows`, a span member — §(o‴)(b) bullet 1, machine-verified). The bottom-family genuine-row
+  disjunct is a *literal row membership* (not a span membership), and a pure relabel does NOT preserve
+  genuine-span membership across the cycle (the W9b single-step sends a genuine-row-at-the-moving-body to
+  a `(c,v)`-block, `:1672`), so it needs the **graph-iso row correspondence**, transported by the whole
+  relabel at once — exactly as the d=3 M₃ genuine arm does (one swap), generalized to `(shiftPerm i)⁻¹`.
+  The W9a span fold and the bottom-family genuine-row arm are DIFFERENT mechanisms on DIFFERENT objects;
+  conflating them is a (harmless-but-misleading) tracker imprecision to fix. (The candidate-row half
+  `hρGv` IS the W9a-fold consumer — `shiftBodyListAsc_foldl_mem_span_rigidityRows`, transporting a *span*
+  membership; that fold stays, H.5 KEEP list.)
+- **Block disjunct (`w j = hingeRow a b ρ'`):** Leaf B (I.2) — the single G4d-i at `vᵢ`.
+
+So the `hwmem` assembly is **one per-member case-split, two non-fold arms** (graph-iso relabel +
+single G4d-i), structurally the d=3 M₃ `case_III_bottom_relabel` lifted from a single swap to
+`(shiftPerm i)⁻¹`. **No `bottomTag_foldl`, no `bottomTag` chain, no per-body block carry.** This reconciles
+with §(H.6) leaf-2 ("`hwmem` via the inverse-cycle generalization of W9b `case_III_bottom_relabel`") and
+§(H.10) (re-author base→candidate directly; the candidate→base folds are orphaned) — and it supersedes the
+Phase23b *Hand-off*'s earlier "the W9b foldl core is the infra the block disjunct + the arm's pure-relabel
+form need" reading: the block disjunct needs G4d-i (not the foldl core), and the genuine-row disjunct
+needs the graph-iso relabel (not the foldl core). The W9b foldl core needs nothing.
+
+**(I.4) MANDATE check — what is settled vs. what stays flagged.** Settled from the landed bodies: Q1
+(orphan, deletable), Q2 (single G4d-i), Q3 (per-member two-non-fold-arm assembly). **STILL FLAGGED (the
+§(o‴)(E)/(F)(D) open fact, un-discharged by this pass):** the genuine-row arm's *cycle generalization* of
+`case_III_bottom_relabel:1499–1595` over `(shiftPerm i)⁻¹` + seed `qρ` is the genuinely-new piece, and
+its difficulty is unknown until the seed/selector bookkeeping for the whole inverse relabel is written
+(the `shiftPerm`-fixed-point / seed-extensor-coincidence identity for non-chain edges, §(F)(D)). This pass
+does **not** build it and does **not** pin it past "it is the cycle generalization of the landed d=3
+single-swap genuine arm" — that is exactly the kind of mechanically-plausible shape the 4× mis-pins were,
+and the honest status is FLAG. **The §(H.6) leaf-1 CHAIN-2c-ii-inv (the inverse-cycle action lemmas) is
+already LANDED** (`Operations.lean:1550–2110`, the 4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*`), so the
+next build step is **`chainData_relabel_arm` itself** (§(H.6) leaf-2) — gated by writing the genuine-arm
+seed-coincidence bookkeeping (the flagged piece above) before pinning the arm signature. No
+motive/IH/spine-carry change (C.3/C.6); route β + d=3 zero-regression preserved (the d=3 M₃ `i=2` cycle is
+the single-swap involution, `(shiftPerm 2)⁻¹ = shiftPerm 2`).
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
