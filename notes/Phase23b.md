@@ -32,11 +32,20 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = CHAIN-2c-i — the single-discriminator pick** (`chainData_dispatch` steps 1–3: the `d`-panel-
-normal LI producer `hpanelLI` + the one-shot discriminator call off the shared `ρ₀`). Design
-`notes/Phase23-design.md` §(n), the CHAIN-2b/2c design-pass (source-verified against KT eqs. 6.46–6.67
-+ the landed bodies). **CHAIN-2a (the per-candidate single-`i` reduction) is CLOSED** — both leaves
-landed 2026-06-18: `chainData_split_w6b_gates` (W6b half) + `chainData_split_realization` (the per-`i`
+**Next = CHAIN-2c-ii — the uniform `Fin (k+1)` relabel arm** (the genuinely-new crux: the step-4
+`u`↔candidate dispatch transporting the shared `ρ₀` to candidate `u`'s role, eq. 6.54 iso transport;
+the build adjudicates route α vs β / whether the iso-transport "2b" resurfaces). Design
+`notes/Phase23-design.md` §(n). **CHAIN-2c-i (steps 1–3, the single-discriminator pick) LANDED
+2026-06-18** — `PanelHingeFramework.exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`,
+axiom-clean): from `AlgebraicIndependent ℚ q`, an injective `Fin (k+1) → α` candidate selector, and
+the shared `ρ ≠ 0`, the `Fin (k+1)`-panel-normal LI (via the OD-7 LEAF-0 `_general`) feeds the one
+discriminator call (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`, CHAIN-4d), picking
+`(u, n')` with `ρ(panelSupportExtensor (q(cand u,·)) n') ≠ 0` (bridged from the meet form by
+`panelSupportExtensor_eq_complementIso_extensor`). A verbatim `Fin (k+1)`-generalization of the green
+d=3 discriminator region (`case_III_candidate_dispatch` lines 435–442); no FRICTION.
+
+**CHAIN-2a (the per-candidate single-`i` reduction) is CLOSED** — both leaves landed 2026-06-18:
+`chainData_split_w6b_gates` (W6b half) + `chainData_split_realization` (the per-`i`
 `case_III_arm_realization` re-index off the `ChainData` accessors, transversal half carried as
 `htrans`).
 
@@ -139,10 +148,11 @@ extractor reshape).
       **CHAIN-2c — the single-base `Fin (k+1)` family dispatch** (design §(n)). The §(n) pass corrected
       the §(l)/§(m) 2b/2c framing (clause-ii flag, see *Current state*): KT/d=3 use ONE base, ONE `ρ₀`,
       ONE discriminator → `fin_cases u`; eq. (6.66) is absorbed (no separate 2b under the recommended
-      route β). Sub-leaves: **CHAIN-2c-i** (`hpanelLI` + the one-shot discriminator pick — first
-      buildable, all deps landed) → **CHAIN-2c-ii** (the uniform `Fin d` relabel arm = the
-      genuinely-new crux; build adjudicates route α vs β / whether 2b's iso-transport resurfaces) →
-      **CHAIN-2c-iii** (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). ~3 build commits.
+      route β). Sub-leaves: **CHAIN-2c-i** (`exists_chainData_discriminator_pick`, the panel-LI + the
+      one-shot discriminator pick — **LANDED 2026-06-18**, axiom-clean) → **CHAIN-2c-ii** (the uniform
+      `Fin d` relabel arm = the genuinely-new crux; build adjudicates route α vs β / whether 2b's
+      iso-transport resurfaces) → **CHAIN-2c-iii** (`chainData_dispatch` assembly, d=3 a zero-regression
+      wrapper). ~2 build commits remain.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -209,15 +219,22 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next = CHAIN-2c-i — `chainData_dispatch` steps 1–3** (the `d`-panel-normal LI producer `hpanelLI` +
-the one-shot discriminator pick off the shared `ρ₀`). Design `notes/Phase23-design.md` §(n). It is
-buildable now — all deps landed: the W6b half `chainData_split_w6b_gates` (the single `v₁`/`M₀` base
-call), the discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (CHAIN-4d), the
-`ChainData` accessors, and the OD-7 LEAF-0 `linearIndependent_normals_of_algebraicIndependent_*`
-normal-LI family (lifted to the `d`-normal family for `hpanelLI`). It is steps 1–3 of the
-single-base dispatch (one W6b → `ρ₀`; the `d`-panel normals; one discriminator → `(u, n', hgate)`),
-the faithful `Fin d` generalization of the green d=3 dispatch's lines 388–442, and is **independent of
-the relabel-arm crux** deferred to CHAIN-2c-ii.
+**Next = CHAIN-2c-ii — the uniform `Fin (k+1)` relabel arm** (the step-4 `u`↔candidate dispatch
+transporting the shared `ρ₀` to candidate `u`'s role; eq. 6.54 iso transport, the genuinely-new
+crux). Design `notes/Phase23-design.md` §(n). **The build adjudicates route α vs β here** (whether
+the iso-transport "2b" resurfaces inside the arm or a uniform relabel arm exists); if it cannot close
+in one sitting, carry the crux as the standing `h…` idiom — never a `sorry`. The smallest concrete
+commit: author the uniform `Fin (k+1)` arm closer that takes the discriminator's panel `u`
+(`exists_chainData_discriminator_pick`'s output) plus the shared `ρ₀` and produces the per-`u` arm
+realization (the `M₀` candidate via `chainData_split_realization`'s `htrans` slot, the rest via the
+relabel transport). Then **CHAIN-2c-iii** (`chainData_dispatch` assembly) → **CHAIN-5**.
+
+**CHAIN-2c-i LANDED 2026-06-18** — `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`,
+axiom-clean): steps 1–3 of the single-base dispatch (the W6b → `ρ₀` is the already-landed
+`chainData_split_w6b_gates`; here is the `Fin (k+1)`-panel LI via the OD-7 LEAF-0 `_general` + the one
+discriminator call `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` → `(u, n')` with the
+gate bridged to `panelSupportExtensor` form). A verbatim `Fin (k+1)`-generalization of the green d=3
+discriminator region (lines 435–442); independent of the relabel-arm crux. See *Decisions made*.
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)).** The §(n) design-pass
   (source-verified against KT eqs. 6.46–6.67 + the landed bodies) corrected the §(l)/§(m) framing of
@@ -229,12 +246,13 @@ the relabel-arm crux** deferred to CHAIN-2c-ii.
   `M₀`-arm) but does **NOT** assemble the family the way §(m) assumed (the discriminator's single
   `r = ρ₀` is the `v₁` functional, not candidate `u`'s per-split `ρ`). **Recommended route β:** build
   2c as the `Fin (k+1)`-case generalization of the d=3 dispatch off the single `v₁` base; reuse 2a-ii
-  only at `M₀`. Sub-leaves: **2c-i** (`hpanelLI` + single-discriminator pick — first buildable) →
-  **2c-ii** (the uniform `Fin d` relabel arm transporting `ρ₀` to candidate `u`'s role = the
-  genuinely-new crux, eq. 6.54 iso transport; **build adjudicates route α vs β** and whether the
-  iso-transport "2b" resurfaces here) → **2c-iii** (`chainData_dispatch` assembly, d=3 a
-  zero-regression wrapper). ~3 build commits. The `G.ChainData n` record + 7 accessors
-  (`Induction/Operations.lean`, C.1) are landed; ENTRY owns the extractor producing the record (C.2).
+  only at `M₀`. Sub-leaves: **2c-i** (`exists_chainData_discriminator_pick`, panel-LI +
+  single-discriminator pick — **LANDED 2026-06-18**) → **2c-ii** (the uniform `Fin d` relabel arm
+  transporting `ρ₀` to candidate `u`'s role = the genuinely-new crux, eq. 6.54 iso transport; **build
+  adjudicates route α vs β** and whether the iso-transport "2b" resurfaces here) → **2c-iii**
+  (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). ~2 build commits remain. The
+  `G.ChainData n` record + 7 accessors (`Induction/Operations.lean`, C.1) are landed; ENTRY owns the
+  extractor producing the record (C.2).
 
   **CHAIN-2c route β LOCKED (user-adjudicated 2026-06-18; KT-source-verified, row 242).** Build 2c on
   the single `v₁` base + reuse 2a-ii only at `M₀`; the other candidates via the uniform `Fin (k+1)`
@@ -368,11 +386,21 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `chainData_split_realization` (2a-ii) is per-`i`-split-shaped (correct as a standalone + the
   `M₀`-arm) but does NOT assemble the family the §(m) "supply `htrans` at the discriminator's `u`"
   reading assumed (the discriminator's single `r = ρ₀` is the `v₁` functional, not candidate `u`'s
-  per-split `ρ`). Sub-leaves: 2c-i (`hpanelLI` + single-discriminator pick, first buildable, deps
-  landed) → 2c-ii (the uniform `Fin d` relabel arm = genuinely-new crux, eq. 6.54 iso transport) →
-  2c-iii (assembly). **Clause-ii flag (coordinator decision, NOT adjudicated):** route β (single base
-  + reuse 2a-ii only at `M₀`, recommended) vs. α (per-`i` splits + iso-transport so `r` matches each
-  candidate's `ρ`); either way the new work is the relabel arm, no motive/IH/spine-carry change.
+  per-split `ρ`). Sub-leaves: 2c-i (single-discriminator pick, LANDED) → 2c-ii (the uniform `Fin d`
+  relabel arm = genuinely-new crux, eq. 6.54 iso transport) → 2c-iii (assembly). **Route β LOCKED**
+  (user-adjudicated 2026-06-18, row 242; the route-α-vs-β flag is resolved — single base, reuse 2a-ii
+  only at `M₀`, the other candidates via the uniform relabel arm); the new work is the relabel arm,
+  no motive/IH/spine-carry change.
+- **CHAIN-2c-i LANDED 2026-06-18 — the single-discriminator pick (steps 1–3, route β).**
+  `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean): from
+  `AlgebraicIndependent ℚ q`, an injective `Fin (k+1) → α` candidate selector, and the shared `ρ ≠ 0`,
+  the `Fin (k+1)`-panel-normal LI (OD-7 LEAF-0 `linearIndependent_normals_of_algebraicIndependent_general`)
+  feeds the **one** discriminator call (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`,
+  CHAIN-4d) → `(u, n')` with `ρ(panelSupportExtensor (q(cand u,·)) n') ≠ 0` (bridged from the meet form
+  by `panelSupportExtensor_eq_complementIso_extensor`). A verbatim `Fin (k+1)`-generalization of the
+  green d=3 discriminator region (`case_III_candidate_dispatch` 435–442); the panel index `u` is
+  arbitrary (matching it to a candidate is CHAIN-2c-ii). 4-line compose; no FRICTION (the `(hi i).1`
+  off-one-conjunct reshape is the landed d=3 `exists_homogeneousIncidence_of_normals` wrapper idiom).
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
   Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,

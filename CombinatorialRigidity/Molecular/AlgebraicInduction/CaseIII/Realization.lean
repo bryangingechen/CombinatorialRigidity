@@ -1094,6 +1094,58 @@ theorem PanelHingeFramework.chainData_split_realization
     hVone hVcard hLn hgab hρgate hρe₀ hρGv (ιb := _) (w := w) ?_ hw hwmem hdef
   rw [Nat.card_fin, hcard]
 
+/-- **CHAIN-2c-i — the single-discriminator pick off the shared `ρ₀`** (`lem:case-III` general-`d`;
+Katoh–Tanigawa 2011 §6.4.2, Lemma 6.13 eqs. (6.67), the `d`-panel discriminator; Phase 23b). The
+`Fin (k+1)`-family form of the `d = 3` dispatch's discriminator region
+(`case_III_candidate_dispatch` step 5, `Realization.lean:435`–442). From an
+algebraically-independent base normal family `q`, a `Fin (k+1)`-tuple `cand` of **distinct**
+candidate vertices (KT's panels `Πᵢ`, one per chain candidate — `Π₀ = Π(v₀)`, `Πᵢ = Π(vᵢ₊₁)`),
+and the **single** redundancy functional `ρ` of the `v₁`-split (`ρ ≠ 0`, the shared `r` produced
+once by `chainData_split_w6b_gates`), it picks a discriminating panel index `u : Fin (k+1)` and a
+transversal normal `n'` of `Π(cand u)` such that `ρ` does *not* annihilate the candidate
+`cand u`-hinge's supporting extensor `panelSupportExtensor (q(cand u, ·)) n'`.
+
+This is **steps 1–3 of the single-base chain dispatch** (`notes/Phase23-design.md` §(n), route β —
+the W6b call producing `ρ` is the already-landed `chainData_split_w6b_gates`; here is the panel-LI
++ the *one* discriminator call). It is the faithful `Fin (k+1)`-generalization of the green `d = 3`
+discriminator and is **independent of the relabel-arm crux** (the uniform `Fin (k+1)` `u`↔candidate
+match, CHAIN-2c-ii): the panel index `u` it returns is arbitrary; matching it to a chain candidate
+and transporting `ρ` to that candidate's role is the deferred step 4.
+
+Mechanism (the eqs. (6.65)–(6.67) one shot, no separate ±r-chain lemma — KT eq. (6.66) is absorbed
+into reusing the single `ρ` here, §(n) clause (i)):
+* The `k+1` panel normals `fun i j => q (cand i, j)` are `ℝ`-linearly independent — the OD-7 LEAF-0
+  `linearIndependent_normals_of_algebraicIndependent_general` at the injective selector `cand`.
+* `exists_homogeneousIncidence_of_normals_gen` exhibits the `k+2` homogeneous witness points `pbar`
+  (LI; `pbar 0` on every panel, `pbar i.succ` off panel `n i` only) — KT eq. (6.45)'s incidence
+  pattern, the OD-4 homogeneous route (no affine independence).
+* `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (CHAIN-4d, the Claim-6.12 capstone)
+  with `r := ρ` returns the discriminating `(u, n')` and the meet-form non-annihilation
+  `ρ(complementIso ⟨extensor ![n u, n'], _⟩) ≠ 0`; the bridge
+  `panelSupportExtensor_eq_complementIso_extensor` rewrites it into the `panelSupportExtensor` form
+  the per-`i` arm closer (`htrans` slot of `chainData_split_realization`) consumes.
+
+Graph-free over `ScrewSpace k` (no `d = 3` content; the discriminator is already general-`k`); no
+motive/IH change. No `\lean` pin (internal infra; the chain dispatch carries the blueprint node). -/
+theorem PanelHingeFramework.exists_chainData_discriminator_pick {k : ℕ}
+    {α : Type*} {q : α × Fin (k + 2) → ℝ} (hq : AlgebraicIndependent ℚ q)
+    {cand : Fin (k + 1) → α} (hcand : Function.Injective cand)
+    {ρ : Module.Dual ℝ (ScrewSpace k)} (hρ : ρ ≠ 0) :
+    ∃ (u : Fin (k + 1)) (n' : Fin (k + 2) → ℝ),
+      LinearIndependent ℝ ![fun j => q (cand u, j), n'] ∧
+      ρ (panelSupportExtensor (fun j => q (cand u, j)) n') ≠ 0 := by
+  -- The `k+1` panel normals are linearly independent (OD-7 LEAF-0 at the injective `cand`).
+  have hn : LinearIndependent ℝ (fun (i : Fin (k + 1)) (j : Fin (k + 2)) => q (cand i, j)) :=
+    linearIndependent_normals_of_algebraicIndependent_general hq hcand
+  -- The `k+2` homogeneous witness points (KT eq. (6.45) incidence; the OD-4 homogeneous route).
+  obtain ⟨pbar, hp, h0, hi⟩ := exists_homogeneousIncidence_of_normals_gen hn
+  -- The Claim-6.12 discriminator (CHAIN-4d): the discriminating `(u, n')` and meet-form gate.
+  obtain ⟨u, n', hpair, hgate⟩ :=
+    BodyHingeFramework.exists_complementIso_ne_zero_of_homogeneousIncidence_gen hρ hp hn h0
+      (fun i j hji => (hi i).1 j hji)
+  -- Bridge the meet form into the `panelSupportExtensor` form the arm closer consumes.
+  exact ⟨u, n', hpair, by rwa [panelSupportExtensor_eq_complementIso_extensor]⟩
+
 /-- **The Case-III realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
 `hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
