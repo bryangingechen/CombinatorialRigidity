@@ -1293,6 +1293,48 @@ theorem BodyHingeFramework.bottomTag_foldr_mem_rigidityRows
     have hhead := hstep 0 (by simp) _ htail
     simpa [List.foldr_cons] using hhead
 
+/-- **The degree-2 redundancy panel-carry — the single carried row `r` crosses one interior chain
+body, flipping sign** (CHAIN-2c-ii-transport, the missing W9b-membership bridge;
+`notes/Phase23-design.md` §(o″), KT 2011 §6.4.2 eqs. (6.66)/(6.44)). This is the leaf that lets the
+cycle-W9b fold's per-step `Tag` chain: the single-step transport produces a block tag annihilating
+the **predecessor** panel `C(edge s)` of the moved body `a = vₛ₊₁`, but the next step's input needs
+a tag annihilating the **successor** panel `C(edge s+1)` — two *distinct* adjacent panels sharing
+the degree-2 body. They do not carry by an orthogonality *implication* (the panels differ); they
+carry by KT's eq.~(6.66) **±-sign-flip equality of the single redundancy row** `r`: at the interior
+chain vertex `vₛ₊₁` (degree two in `G`, `1 ≤ s+1 ≤ i−1 ≤ d−1`), the redundancy's full screw-column
+at the body vanishes, so by eq.~(6.44) the redundancy row computed off the *successor* `ab`-panel
+(`r := ∑ⱼ λ_{(ab)j} rab j`) equals `−` the row computed off the *predecessor* `ac`-panel
+(`∑ⱼ λ_{(ac)j} rac j`). Hence for the **single** carried row `r` the annihilation of one panel
+extensor is exactly the annihilation of the other (up to sign), and the W9b `Tag` can pin its block
+functional to `±r` and chain.
+
+This is the chain-step instance of the LANDED graph-free `candidateRow_ac_eq_neg`
+(`RigidityMatrix/Claim612.lean`, eq.~(6.44)) — it is **not new math**: the abstract degree-2
+two-panel row identity is reused verbatim, with the moved body `a` and its two chain neighbors
+`b`/`c` named off the `ChainData` accessors (`a = vtx ⟨s+1⟩`, the successor `b = vtx ⟨s+2⟩` via
+`edge (s+1)`, the predecessor `c = vtx ⟨s⟩` via `edge s`) and the body distinctness supplied by
+`vtx_ne`. At `d = 3` the M₃ arm chains zero times (`shiftBodyList 2` has length 1), so this carry is
+never invoked there — the `d=3` body stays untouched (zero-regression). -/
+theorem _root_.Graph.ChainData.redundancy_panel_carry {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1)
+    {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
+    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    [DecidableEq α]
+    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α)
+          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) (rab j))
+        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α)
+          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) (rac j)) + grest).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
+    (hrest : grest.comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
+    ∑ j, lamAC j • rac j = -∑ j, lamAB j • rab j :=
+  CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg
+    (cd.vtx_ne (by omega) (by omega) (by omega))
+    (cd.vtx_ne (by omega) (by omega) (by omega))
+    lamAB rab lamAC rac grest hcol hrest
+
 /-- **G4d-i — the `a`-column restriction of a `G_v`-row-span vector lies in `hingeRowBlock e_c`**
 (`lem:case-III-claim612-eq644`, §1.49(4), Phase 22h). Given `wGv` in the span of a framework
 `Fv`'s rigidity rows and the degree-2-at-`a` constraint that `e_c` is the *only* edge of `Fv`

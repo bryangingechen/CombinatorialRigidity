@@ -2865,8 +2865,19 @@ invoked for `s+1 < i` with `i ≥ 3`, vacuous at `i=2`. So the d=3 M₃ body and
 `complementIso_smul_eq_extensor_join` wrapper stay green, untouched.
 
 **Updated per-leaf tracker (CHAIN-2c-ii-transport):** T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold
-core ✓ → **redundancy_panel_carry (the bridge, NEXT BUILDABLE)** → W9b membership → 2c-ii-arm → 2c-iii
-→ CHAIN-5.
+core ✓ → **redundancy_panel_carry ✓ (LANDED 2026-06-19, axiom-clean)** → **W9b membership (NEXT
+BUILDABLE)** → 2c-ii-arm → 2c-iii → CHAIN-5.
+
+**As-landed bridge signature (shape B1, `Graph.ChainData.redundancy_panel_carry`, `Relabel.lean`).** The
+leaf landed in the *abstract eq.-(6.44) form* — it carries the redundant-combination decomposition data
+(the `λ_{(ab)}`-weighted `ab`-`hingeRow`-sum, the `λ_{(ac)}`-weighted `ac`-`hingeRow`-sum, the `grest`
+remainder) with the `a`-column-vanishing hyps `hcol`/`hrest`, and concludes the `±r` *vector* identity
+`∑ⱼ λac_j • rac_j = −∑ⱼ λab_j • rab_j` (not a `panelSupportExtensor`-to-`panelSupportExtensor`
+annihilation transfer). This is the honest, fully-provable core; it is a thin chain-step wrapper of
+`candidateRow_ac_eq_neg` naming the moved body `a = vtx⟨s+1⟩` and its chain neighbors
+`b/c = vtx⟨s+2⟩/vtx⟨s⟩` (distinctness off `vtx_ne`). The W9b membership consumes the `±r` identity to
+pin `Tag`'s block functional to the single `r` (testing both adjacent panels up to sign), supplying the
+`hcol`/`hrest` from the W6b redundancy decomposition at instantiation.
 
 **Salvaged build diagnosis (row 266, so it is not lost).** The W9b-membership build traced the `Tag`
 fixpoint at `i=3` and found the fold cannot be instantiated mechanically: the single-step output

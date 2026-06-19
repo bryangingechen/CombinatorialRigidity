@@ -98,6 +98,11 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] Referencing a `CombinatorialRigidity.Molecular`-namespace lemma from inside a `_root_.Graph.ChainData` decl needs its *full* path, including the inner `BodyHingeFramework` namespace
+- **Where it bit:** `Graph.ChainData.redundancy_panel_carry` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport degree-2 bridge): a `_root_.Graph.ChainData.…`-declared lemma whose body applies `candidateRow_ac_eq_neg`.
+- **Friction:** inside a `_root_.`-prefixed declaration the ambient `namespace CombinatorialRigidity.Molecular` is *not* in scope for name resolution, so both the bare `candidateRow_ac_eq_neg` **and** `CombinatorialRigidity.Molecular.candidateRow_ac_eq_neg` fail with "Unknown identifier" — the lemma actually lives one namespace deeper, inside the `namespace BodyHingeFramework` block of `Claim612.lean`.
+- **Resolution:** spell the *full* path `CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ac_eq_neg` (confirm the inner namespace with `lean_hover_info` — the docstring "graph-free, abstract" prose hides that it sits under `BodyHingeFramework`). The same file already qualifies `BodyHingeFramework.hingeRow`/`.wstep` etc. inside its `_root_.Graph.ChainData` lemmas for the identical reason.
+
 ### [idiom] Composing two `(funLeft σ).dualMap` relabel transports — `dualMap_comp_dualMap` reverses the order, then `funLeft_comp` reverses it back
 - **Where it bit:** `BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport route B): composing two single-swap W9a transports into one across `σ₂ ∘ σ₁`, the nested `(funLeft σ₂).dualMap ((funLeft σ₁).dualMap φ)` must straighten to `(funLeft (σ₂ ∘ σ₁)).dualMap φ`.
 - **Friction:** `funLeft` is *contravariant* (`LinearMap.funLeft_comp R M (f₁ ∘ f₂) = funLeft f₂ ∘ₗ funLeft f₁`) and `dualMap` is too (`LinearMap.dualMap_comp_dualMap f g : f.dualMap ∘ₗ g.dualMap = (g ∘ₗ f).dualMap`, **not** a `dualMap_comp`) — so guessing the rewrite direction is error-prone, and `← dualMap_comp` (the name one reaches for) does not exist.
