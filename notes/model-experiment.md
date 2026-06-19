@@ -165,6 +165,7 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 255 | CHAIN-2c-ii-transport-W9a — the cycle moved-body list `ChainData.shiftBodyList` (+ helper lemmas), cdfb5cc | 2/2/1 | opus | normal | clean | ✓✓✓—✗✓ | 169k tok / 55 tools / 1177s | Build leaf (OPUS-ONLY; a-priori 2/2/1, route de-risked). **Self-shrank** to the cycle moved-body list `shiftBodyList` (+ `length_`/`getElem_`/head-peel `shiftBodyList_eq_cons`) — the substrate the T-W9a `shiftPerm` instantiation reads its `(v,a,c)` triples off — judging the full instantiation too large; sound on-route scope judgment, route-independent. Coordinator: build warning-clean (re-run) + lint + sorry-grep + full-diff, axiom-clean. Notes ✗: left note 520>500 + the fold-core Decisions entry 13 lines>8 → coordinator structural-deduped (this commit, →500). |
 | 256 | CHAIN-2c-ii-transport-W9a — the shiftPerm/shiftBodyList perm bridge + new mirror, 81918dc | 2/2/1 | opus | normal | clean | ✓✓✓—✗✓ | 205k tok / 81 tools / 1415s | Build leaf (OPUS-ONLY; a-priori 2/2/1). **Self-shrank** to the T-W9a relabel-side perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` + a new upstream mirror `List.formPerm_eq_prod_zipWith_swap_tail` (`Mathlib/GroupTheory/Perm/List.lean`); full instantiation too large, sound on-route. 5th consecutive self-shrink toward T-W9a (all real prerequisites; route §(o″)-locked). New mirror correctly placed + wired into the build graph. Coordinator: build warning-clean (re-run) + lint + sorry-grep + full-diff, axiom-clean. Notes ✗: 517>500 → structural-deduped (→500). |
 | 257 | CHAIN-2c-ii-transport-W9a — the relabel-side fold identity `wstep_foldr_funLeft_eq`, b7cc401 | 2/2/1 | opus | normal | clean | ✓✓✓—✗✓ | 172k tok / 63 tools / 784s | Build leaf (OPUS-ONLY; a-priori 2/2/1, the membership half). **6th consecutive self-shrink toward T-W9a** — landed the relabel-side fold identity `wstep_foldr_funLeft_eq` (linear-map companion of the perm bridge; the bridge alone can't push through the foldr-of-dualMaps — a genuinely-needed prerequisite §(o″) didn't enumerate). Clean `List` induction. Coordinator: build warning-clean (re-run) + lint + sorry-grep + full-diff, axiom-clean. **Trend: §(o″) est. 2–4 commits now at 6, core still receding → coordinator reconning the membership-half decomposition next.** Notes ✗: 512>500 → compressed. |
+| 258 | RECON (read-only): T-W9a membership-half decomposition — found a NEW prerequisite (T-W9a-chain), d9e57d5 (docs) | 3/3/1 | opus | recon | clean | —✓———— | not reported (read-only Plan) | Read-only Plan recon (OPUS-ONLY; design-settle→opus). **High-value gap-find, source-verified.** The 6-shrink T-W9a chain's "all prerequisites landed, 3-step assembly" hand-off is WRONG — the fold core's per-step `hstep` (`Relabel.lean:759`) needs an un-relabelled inter-framework inclusion, but the landed graphiso (`Operations.lean:2246`) is a whole-cycle endpoint intertwiner (wrong shape) → NEW T-W9a-chain prerequisite (~190-line-class), 2-leaf decomp. §(o″) addendum + Phase23b re-point coordinator-authored. → Findings 2026-06-19 (rows 252–258). |
 
 ## Findings
 
@@ -213,3 +214,22 @@ body can itself be the wrong route; the step-1 "genuinely-new variant flag →
 recon" trigger applies even when the immediate next leaves look like mechanical
 verbatim lifts, *because they may be prerequisites for a route the recon
 dissolves*. Recon the route, then build its prerequisites.
+
+### T-W9a decomposition recon (2026-06-19; rows 252–258) — 2nd instance of the rows-195–198 pattern
+
+Rows 252–257 were **6 consecutive build self-shrinks** toward the T-W9a transport core, each landing a
+clean axiom-clean prerequisite (head-peel, two-step, fold core, body list, perm bridge, fold identity),
+each hand-off claiming the core was nearly assembled (§(o″) estimate: 2–4 commits). At the 6th the
+coordinator fired a read-only decomposition recon (the step-1 "2+ leaf commits feeding a hard core not
+yet built" trigger). Source-verified, it found the build agents' "all prerequisites landed, 3-step
+assembly" was **wrong**: the abstract fold core `wstep_foldr_mem_span_rigidityRows` was built against an
+*idealized* per-step `hstep` interface (un-relabelled inclusions between intermediate frameworks), but
+the only landed graph-iso `splitOff_isLink_shiftRelabel_iff` speaks the *whole-cycle* language — the
+bridge (a partially-shifted intermediate-framework chain) is a genuinely-new ~190-line prerequisite
+(T-W9a-chain). **This is the 2nd instance of the rows-195–198 pattern** (a build extrapolates a
+prerequisite chain from a special-case/abstract interface; the chain is missing the actual bridge).
+Lesson reinforced — and sharpened: the trigger fires **even along a *locked* route and even when every
+leaf is clean**, because the abstract-core-vs-concrete-supplier *shape mismatch* is invisible until
+someone reads both signatures side by side. The coordinator's 6-shrink patience was ~2 commits too many;
+the 2-leaf-trigger floor would have fired the recon around row 254. Default to reconning the
+decomposition the moment a core starts receding, not after the Nth prerequisite.
