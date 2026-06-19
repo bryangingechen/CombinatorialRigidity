@@ -1679,6 +1679,13 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   § 61 motive trap as an index-`rw` — sidestep with `List.ext_getElem` + `match` on the index (the
   `m+1` arm closes by defeq, no `congr 1; omega` tail). **Lifted to:** TACTICS-QUIRKS § 61 (the
   `List.ofFn = cons` variant).
+- **Reuse (CHAIN-2c-ii-inv, the `(shiftPerm i)⁻¹` / `(shiftEdgePerm i)⁻¹` action block, same file):**
+  the *inverse*-cycle action (each step run backwards, for the base→candidate row transport, KT eq.
+  6.62) needs no fresh `formPerm` reasoning — every inverse-action lemma is a one-liner
+  `rw [Equiv.Perm.inv_eq_iff_eq, <forward action lemma>]`. `Equiv.Perm.inv_eq_iff_eq` turns the goal
+  `p⁻¹ x = y` into `p y = x`, which the matching forward lemma closes by `rfl`. So once the forward
+  cycle action is landed, its inverse is free — do not re-derive the wrap/interior/off-support cases
+  from `formPerm`.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 61 (the `getElem`-index motive trap).
 
 ### [idiom] `open Classical in` must precede the docstring, not follow it

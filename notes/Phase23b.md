@@ -4,7 +4,8 @@
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
 **Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a span fold LANDED; the bottom-family transport
 FIX-FORK is SETTLED 2026-06-19 §(o‴)(H): corrected Fix A = invert the relabel to `(shiftPerm i)⁻¹` +
-shared `ρ₀`; Fix B infeasible. FIRST BUILDABLE = the inverse-cycle action-lemma block; see *Hand-off*)
+shared `ρ₀`; Fix B infeasible. Inverse-cycle action block LANDED; NEXT = the `i=3` base→candidate
+single-step seed-advance de-risk gate; see *Hand-off*)
 + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
@@ -50,18 +51,20 @@ base→candidate directly (reuse the base→candidate single-step `funLeft_dualM
 re-fold in opposite order, seed advancing); the **landed candidate→base T-W9a/W9b are orphaned *for the
 arm***. **De-risk gate: write the base→candidate single-step seed-advance lemma at `i=3` first.**
 
-**Tracker (CHAIN-2c-ii-transport):** inverse-cycle action block (2c-ii-inv) = **FIRST BUILDABLE** (still
-needed, H.10) → base→candidate single-step seed-advance at `i=3` (de-risk) → base→candidate cycle fold →
-2c-ii-arm `chainData_relabel_arm` (d=3 M₃ = `i=2` involution instance) → 2c-iii `chainData_dispatch` →
-CHAIN-5. (Landed candidate→base T-W9a/W9b + per-body W9b chain = orphaned-for-the-arm, §(o‴)(H.10).)
+**Tracker (CHAIN-2c-ii-transport):** inverse-cycle action block (2c-ii-inv) **LANDED 2026-06-19**
+(11 axiom-clean `shiftPerm_inv_*`/`shiftEdgePerm_inv_*` lemmas, `Operations.lean`; one-liner
+`Equiv.Perm.inv_eq_iff_eq` rewrites of the forward action) → **NEXT: base→candidate single-step
+seed-advance at `i=3`** (de-risk gate, H.10) → base→candidate cycle fold → 2c-ii-arm
+`chainData_relabel_arm` (d=3 M₃ = `i=2` involution instance) → 2c-iii `chainData_dispatch` → CHAIN-5.
+(Landed candidate→base T-W9a/W9b + per-body W9b chain = orphaned-for-the-arm, §(o‴)(H.10).)
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` + 7 accessors; CHAIN-2a
-CLOSED; 2c-i + 2c-ii-α/graphiso LANDED. The landed candidate→base T-W9a span fold + the per-body W9b
-chain are **orphaned-for-the-arm** (wrong orientation/granularity, §(o‴)(H.10); confirm-and-delete at the
-arm build). Remaining (tracker above): inverse-cycle action block → base→candidate single-step seed
+CLOSED; 2c-i + 2c-ii-α/graphiso + 2c-ii-inv LANDED. The landed candidate→base T-W9a span fold + the
+per-body W9b chain are **orphaned-for-the-arm** (wrong orientation/granularity, §(o‴)(H.10);
+confirm-and-delete at the arm build). Remaining (tracker above): base→candidate single-step seed
 advance (`i=3` de-risk) → cycle fold → 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY's extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
@@ -115,9 +118,9 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       keep the shared `ρ₀`, transport memberships **base→candidate** (relabel `(shiftPerm i)⁻¹` + the seed
       advancing); Fix B / per-`i` re-seed INFEASIBLE (breaks KT's single-`r` discriminator). The landed
       candidate→base T-W9a fold + the per-body W9b chain are **orphaned-for-the-arm** (H.10) → **2c-ii-inv**
-      (inverse-cycle action lemmas, FIRST BUILDABLE) → base→candidate single-step seed-advance (`i=3`
-      de-risk) → cycle fold → **2c-ii-arm** `chainData_relabel_arm` (d=3 M₃ = `i=2` involution) →
-      **2c-iii** `chainData_dispatch`. Full detail: design §(o‴)(H)/(H.10).
+      (inverse-cycle action lemmas) **LANDED 2026-06-19** → **NEXT: base→candidate single-step
+      seed-advance (`i=3` de-risk)** → cycle fold → **2c-ii-arm** `chainData_relabel_arm` (d=3 M₃ =
+      `i=2` involution) → **2c-iii** `chainData_dispatch`. Full detail: design §(o‴)(H)/(H.10).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -182,18 +185,24 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**NEXT STEP — FIRST BUILDABLE = CHAIN-2c-ii-inv, the inverse-cycle action-lemma block** (`Operations.lean`,
-beside `shiftPerm`): `shiftPerm_inv_apply_interior` (`(shiftPerm i)⁻¹ (vtx (j+1)) = vtx j`, `1≤j<i`),
-`shiftPerm_inv_vtx_one` (`(shiftPerm i)⁻¹ (vtx 1) = vtx i`), `shiftPerm_inv_apply_off`, + the
-`shiftEdgePerm`-inverse companions — all quick `Equiv.symm_apply_eq` rewrites of the landed forward action
-lemmas. Self-contained, graph-free, unblocks the arm. **Do NOT build `chainData_relabel_arm` until the
-§(o‴)(H.10) base→candidate re-orientation is done** — the adversarial verification REFUTED H.5/H.7's
-"reuse the landed T-W9a *through its inverse*": the landed T-W9a/W9b folds are candidate→base/seed-fixed,
-the arm needs base→candidate/seed-jumping, and `wstep` is non-invertible. The arm transport must be
-**re-authored base→candidate** (reuse the base→candidate single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
-re-fold in opposite order, seed advancing). **De-risk gate: write the base→candidate single-step
-seed-advance lemma at `i=3` (first non-involution case) and confirm it closes BEFORE pinning the arm/fold
-signature** — exactly the kind of "mechanically plausible" shape the 4× mis-pins were.
+**CHAIN-2c-ii-inv (the inverse-cycle action block) is LANDED** (2026-06-19; `Operations.lean`, beside
+`shiftPerm`/`shiftEdgePerm`): the 4 `shiftPerm_inv_*` (`_apply_interior`/`_vtx_one`/`_apply_off`/
+`_apply_vtx_off`) + 7 `shiftEdgePerm_inv_*` (`_apply_off`/`_apply_edge_off`/`_apply_e₀`/
+`_apply_edge_top`/`_apply_edge_interior`/`_apply_edge_one`/`_apply_edge_zero`), all axiom-clean,
+each a one-liner `rw [Equiv.Perm.inv_eq_iff_eq, <forward action lemma>]` (the `inv_eq_iff_eq`
+idiom — FRICTION, under the `formPerm`-cycle entry). Self-contained, graph-free.
+
+**NEXT STEP — the H.10 de-risk gate: the base→candidate single-step seed-advance lemma at `i=3`**
+(first non-involution case, cycle length 2). **Do NOT build `chainData_relabel_arm` (or pin its
+signature / the cycle fold) until this single-step closes** — the §(o‴)(H.10) adversarial verification
+REFUTED H.5/H.7's "reuse the landed T-W9a *through its inverse*": the landed T-W9a/W9b folds are
+candidate→base/seed-fixed, the arm needs base→candidate/seed-jumping, and `wstep` is non-invertible
+(rank-degrading a-column subtraction). The arm transport must be **re-authored base→candidate**:
+source `F 0 = G−v₁` seed `q`, target `F(i−1) = G−vᵢ` seed `q∘shiftPerm i`, per-step relabel
+`(shiftPerm)⁻¹` (now landed), the seed advancing one swap per step — reuse the base→candidate
+single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, re-folded in opposite chain order.
+Write + close the `i=3` instance first — exactly the kind of "mechanically plausible" shape the 4×
+mis-pins were.
 
 **Then:** **2c-ii-arm** `chainData_relabel_arm` (signature in §(o‴)(H.6); instantiate
 `case_III_arm_realization` at the relabelled roles with seed `qρ = q∘shiftPerm i`, shared `±ρ₀`, the three
@@ -375,7 +384,10 @@ geometry accessors; `Fin d`-index idiom in FRICTION). **CHAIN-2c-i** `exists_cha
 (`Realization.lean`, the route-β single-discriminator pick, verbatim generalization of the d=3
 region). **2c-ii-α** `ChainData.shiftPerm` (KT eq. 6.54) + recursion handle
 `shiftCycle_eq_cons`/`shiftPerm_eq_swap_mul`. **2c-ii-graphiso** `splitOff_isLink_shiftRelabel_iff` +
-`shiftEdgePerm` (the `hiso` supplier, consumed at the **arm**). **2c-ii-transport-W9a** (the
+`shiftEdgePerm` (the `hiso` supplier, consumed at the **arm**). **2c-ii-inv** (the inverse-cycle action
+block, LANDED 2026-06-19) the 4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*` action lemmas — each a
+one-liner `rw [Equiv.Perm.inv_eq_iff_eq, <forward>]`; the base→candidate relabel `(shiftPerm i)⁻¹` the
+re-authored arm transport carries (FRICTION, under the `formPerm`-cycle entry). **2c-ii-transport-W9a** (the
 genuinely-new span crux — STAYS modulo the §(o‴)(H.7) orientation reconcile, transports the candidate row
 `hρGv`) `shiftBodyList_foldr_mem_span_rigidityRows` (fold core + `shiftBodyFramework`/`_htrans` removeVertex
 chain; span-only, endpoints removeVertex NOT splits). **⚠ Orphans (confirm-and-delete at the arm build per

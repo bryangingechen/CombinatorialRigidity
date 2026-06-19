@@ -1533,6 +1533,44 @@ lemma shiftPerm_eq_swap_mul (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
     | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
   rw [shiftPerm, cd.shiftCycle_eq_cons i (by omega), htail, List.formPerm_cons_cons, ← htail]
 
+/-! ### The inverse index-shift cycle `(shiftPerm i)⁻¹` (CHAIN-2c-ii-inv, vertex side)
+
+The interior-candidate relabel arm of the dispatch (CHAIN-2c) transports row-memberships
+**base→candidate** through the *inverse* cycle `(shiftPerm i)⁻¹` (KT §6.4.2 eq. 6.62, the
+one-step-down correspondence `vⱼ₋₁ ⇐⇒ vⱼ`): paired with the seed `qᵢ = q ∘ shiftPerm i`, the
+inversion cancels the seed shift (`qᵢ ((shiftPerm i)⁻¹ x) = q (shiftPerm i ((shiftPerm i)⁻¹ x))
+= q x`), so an annihilation of the base rows transports into candidate `i`'s role. These lemmas
+package the action of `(shiftPerm i)⁻¹`, the step-by-step inverses of the forward `shiftPerm`
+action: it sends each interior chain-successor `vtx (j+1)` back to its predecessor `vtx j`
+(`1 ≤ j < i`), wraps the head `vtx 1` to the top `vtx i`, and fixes every vertex off the cycle.
+Each is an `Equiv.Perm.inv_eq_iff_eq` rewrite of the corresponding forward lemma. -/
+
+/-- `(shiftPerm i)⁻¹` sends an interior chain-successor `vtx (j+1)` back to its chain-predecessor
+`vtx j` (`1 ≤ j < i`); the inverse of `shiftPerm_apply_interior` (KT eq. 6.54, read backwards). -/
+lemma shiftPerm_inv_apply_interior (cd : G.ChainData n) (i : Fin (cd.d + 1)) {j : ℕ}
+    (hj1 : 1 ≤ j) (hji : j < (i : ℕ)) :
+    (cd.shiftPerm i)⁻¹ (cd.vtx ⟨j + 1, by omega⟩) = cd.vtx ⟨j, by omega⟩ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_interior i hj1 hji]
+
+/-- `(shiftPerm i)⁻¹` wraps the cycle head `vtx 1` back to the top vertex `vtx i` (the inverse of
+the cyclic closure `shiftPerm_vtx_top`), for a nondegenerate cycle (`1 ≤ i`). -/
+lemma shiftPerm_inv_vtx_one (cd : G.ChainData n) {i : Fin (cd.d + 1)} (hi : 1 ≤ (i : ℕ)) :
+    (cd.shiftPerm i)⁻¹ (cd.vtx ⟨1, by omega⟩) = cd.vtx ⟨(i : ℕ), by omega⟩ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_vtx_top hi]
+
+/-- `(shiftPerm i)⁻¹` fixes every vertex off the cycle `[vtx 1, …, vtx i]` (inverse of
+`shiftPerm_apply_off`; a permutation and its inverse share their fixed points). -/
+lemma shiftPerm_inv_apply_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {x : α}
+    (hx : x ∉ cd.shiftCycle i) : (cd.shiftPerm i)⁻¹ x = x := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_off i hx]
+
+/-- `(shiftPerm i)⁻¹` fixes a chain vertex `vtx m` whose index lies off the cycle range `1 ≤ m ≤ i`
+(the chain base `vtx 0` and the tail `vtx (i+1), …`); inverse of `shiftPerm_apply_vtx_off`. -/
+lemma shiftPerm_inv_apply_vtx_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m : ℕ}
+    (hm : m < cd.d + 1) (hoff : m = 0 ∨ (i : ℕ) < m) :
+    (cd.shiftPerm i)⁻¹ (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m, hm⟩ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_vtx_off i hm hoff]
+
 /-! ### The cycle-W9a moved-body list `shiftBodyList` (CHAIN-2c-ii-transport-W9a)
 
 The cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent degree-2 bodies
@@ -1982,6 +2020,62 @@ lemma shiftEdgePerm_apply_edge_pred (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 
     List.formPerm_apply_getElem _ (cd.nodup_shiftEdgeCycle i hi0) (((i : ℕ) - 2) + 3) hpos]
   simp only [hmod]
   exact cd.getElem_shiftEdgeCycle_zero i (by rw [hlen]; omega)
+
+/-! ### The inverse index-shift edge permutation `(shiftEdgePerm i)⁻¹` (CHAIN-2c-ii-inv, edge side)
+
+The edge companions of the inverse vertex cycle (above): the relabel arm reads candidate-`i` split
+links back into the base split through `(shiftPerm i.castSucc, shiftEdgePerm i)⁻¹`, so it needs the
+inverse edge action alongside the inverse vertex action. These package `(shiftEdgePerm i)⁻¹` as the
+step-by-step inverses of the forward `shiftEdgePerm` action (KT eq. 6.54, edge side, read
+backwards): `e₀ ↦ edge 0`, `edge i ↦ e₀`, `edge (j+1) ↦ edge j` (interior),
+`edge 1 ↦ edge i` (the wrap into the top), and
+`edge 0 ↦ edge (i−1)` (the predecessor closure), plus the off-support fixers. Each is an
+`Equiv.Perm.inv_eq_iff_eq` rewrite of the matching forward lemma. -/
+
+/-- `(shiftEdgePerm i)⁻¹` fixes every label off the cycle (inverse of `shiftEdgePerm_apply_off`). -/
+lemma shiftEdgePerm_inv_apply_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
+    (he : e ∉ cd.shiftEdgeCycle i) : (cd.shiftEdgePerm i)⁻¹ e = e := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_off i he]
+
+/-- `(shiftEdgePerm i)⁻¹` fixes a label that is neither the fresh `e₀` nor a chain edge `edge 0, …,
+edge i` on the cycle (inverse of `shiftEdgePerm_apply_edge_off`, stated against the edge data). -/
+lemma shiftEdgePerm_inv_apply_edge_off (cd : G.ChainData n) (i : Fin cd.d) {e : β}
+    (he₀ : e ≠ cd.e₀) (hedge : ∀ m : ℕ, m ≤ (i : ℕ) → ∀ h : m < cd.d, e ≠ cd.edge ⟨m, h⟩) :
+    (cd.shiftEdgePerm i)⁻¹ e = e := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_off i he₀ hedge]
+
+/-- `(shiftEdgePerm i)⁻¹` sends the fresh short-circuit label `e₀` back to the base chain edge
+`edge 0` (inverse of `shiftEdgePerm_apply_edge_zero`). -/
+lemma shiftEdgePerm_inv_apply_e₀ (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
+    (cd.shiftEdgePerm i)⁻¹ cd.e₀ = cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_zero i hi]
+
+/-- `(shiftEdgePerm i)⁻¹` sends the top chain edge `edge i` back to the fresh short-circuit label
+`e₀` (inverse of `shiftEdgePerm_apply_e₀`). -/
+lemma shiftEdgePerm_inv_apply_edge_top (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ)) :
+    (cd.shiftEdgePerm i)⁻¹ (cd.edge i) = cd.e₀ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_e₀ i hi]
+
+/-- `(shiftEdgePerm i)⁻¹` sends an interior chain edge `edge (j+1)` back to its predecessor `edge j`
+(`1 ≤ j ≤ i − 2`); inverse of `shiftEdgePerm_apply_edge_interior`. -/
+lemma shiftEdgePerm_inv_apply_edge_interior (cd : G.ChainData n) (i : Fin cd.d) {j : ℕ}
+    (hj1 : 1 ≤ j) (hji : j + 1 < (i : ℕ)) :
+    (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨j + 1, by have := i.isLt; omega⟩)
+      = cd.edge ⟨j, by have := i.isLt; omega⟩ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_interior i hj1 hji]
+
+/-- `(shiftEdgePerm i)⁻¹` sends the head chain edge `edge 1` back to the top chain edge `edge i`
+(the wrap into the top; inverse of `shiftEdgePerm_apply_edge_top`). -/
+lemma shiftEdgePerm_inv_apply_edge_one (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
+    (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨1, by have := i.isLt; omega⟩) = cd.edge i := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_top i hi]
+
+/-- `(shiftEdgePerm i)⁻¹` sends the base chain edge `edge 0` back to the predecessor closure edge
+`edge (i−1)` (inverse of `shiftEdgePerm_apply_edge_pred`). -/
+lemma shiftEdgePerm_inv_apply_edge_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ)) :
+    (cd.shiftEdgePerm i)⁻¹ (cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) i.isLt⟩)
+      = cd.edge ⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ := by
+  rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftEdgePerm_apply_edge_pred i hi]
 
 variable [DecidableEq α]
 
