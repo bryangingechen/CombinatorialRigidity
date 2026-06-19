@@ -18,37 +18,49 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core LANDED; the W9b MEMBERSHIP is BLOCKED on
-a fold-invariant reshape — the conjecture's hardest crux (KT §6.4.2, the "12-page proof"). Next = a
-comprehensive telescoping-structure DESIGN-PASS (**user-adjudicated 2026-06-19**; the global
-accumulating-`Tag` invariant, NOT a local leaf — see *Hand-off* for the design-pass guidance + clauses).**
+**Route B LOCKED (§(o″)). Telescoping DESIGN-PASS DONE (§(o‴), 2026-06-19) — VERDICT: FLAG-DON'T-FORCE
+STOP. The W9b-membership crux is NOT a fold over the landed single-steps; it is a bottom-family-transport
+RESHAPE (the `chainData_relabel_arm` `hwmem` slot), gated on one OPEN structural fact (see *Hand-off*).
+No motive/IH/spine-carry change (C.3/C.6 unmoved).**
 
-The row-272 build found the iteration-11 *frozen* `Tag`-signature (design §(o″) *DESIGN-PASS*) is
-**UNPROVABLE — INVALIDATED**: with a single-pinned block tag `Tag s ψ := … ∨ ψ = hingeRow vₛ₊₁ vₛ₊₂ ρ`,
-the carry `(funLeft (swap vₛ₊₁ vₛ₊₂)).dualMap` sends `Tag(s+1)`'s block `hingeRow vₛ₊₂ vₛ₊₃ ρ ↦
-hingeRow vₛ₊₁ vₛ₊₃ ρ` (`hingeRow_funLeft_dualMap`, coordinator-verified), but the target tag is
-`hingeRow vₛ₊₁ vₛ₊₂ ρ` — they differ by a generically-nonzero residual `hingeRow vₛ₊₂ vₛ₊₃ ρ` no
-hypothesis constrains. So a single carried block row does **not** chain: **KT eq. (6.66)'s ±r-chain
-*telescopes*** — the residuals must accumulate in the fold-invariant (an accumulating *sum* of block
-rows, or a span-membership tag), NOT a single pinned functional. This reshape is design-decomposition
-work, not a one-sitting build.
+The §(o‴) design-pass (KT §6.4.2 pp.696–698 close-read + landed bodies + 2 machine-verified single-steps)
+established the GLOBAL structure end-to-end and **ruled out every per-body fold-invariant**: (1) the
+§(o″) single-pinned-`Tag` is dead — the carry `(funLeft (swap a v)).dualMap (hingeRow a b ρ) = hingeRow
+v b ρ ≠ hingeRow c v ρ` leaves a generically-nonzero residual (machine-confirmed). (2) A pure-span `Tag`
+`ψ ∈ span (G−vₛ).rows` carries the *genuine-row* disjunct (it IS the landed T-W9a) but **fails on the
+`(ab)`-block disjunct** — that block row lives in the `ab`-edge block `Eb ⊄ span (G−vᵢ).rows`
+(`Candidate.lean:448`), so the W9a step has no premise. (3) An accumulating-sum `Tag` fails identically
+(the residuals do NOT telescope — no pairwise cancellation; each `hingeRow vₛ₊₂ b ρ` sits at a distinct
+body pair with no later negative). **Root cause:** KT carries the redundancy GLOBALLY (one (6.52)
+pushforward under the whole relabel `ρᵢ`, zero on `V∖{vᵢ}`, + one (6.44) at the single body `vᵢ`) — the
+Lean per-body `shiftBodyList` fold is the right granularity for the *relabel* (T-W9a, done) but the WRONG
+granularity for the *bottom family*, whose per-body residuals have no per-body home.
 
-**The piecemeal recon→build loop has mis-pinned this crux 4× (iter 3/7/9/11 design-passes): the bridge
-`redundancy_panel_carry` is an orphan, the landed single-step is terminal-only, the `Tag` is
-non-telescoping.** Landed + still-usable: the transport machinery (T-W9a span-transport, the *terminal*
-single-step, the fold core `bottomTag_foldr_mem_rigidityRows` over an **abstract** `Tag` — reusable, the
-`Tag` shape is its parameter, G4d-i panel-match). To confirm-and-delete once the reshape lands: the
-orphan bridge `redundancy_panel_carry` + `candidateRow_ac_eq_neg` (both zero live callers).
-Tracker (CHAIN-2c-ii-transport): T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ (abstract `Tag`, reusable) →
-**telescoping fold-invariant reshape [next — design]** → W9b membership → 2c-ii-arm → 2c-iii → CHAIN-5.
+**The honest GLOBAL transport (§(o‴)(d))** is KT's (6.62) **whole-relabel row correspondence**: transport
+the SHARED `w` by ONE `funLeft (shiftPerm i)`, reading `hwmem` membership off the graph-iso
+`splitOff_isLink_shiftRelabel_iff` (genuine arm) + the single `±r` block at `vᵢ` via G4d-i (one (6.44)) —
+the cycle generalization of the d=3 M₃ `case_III_bottom_relabel` genuine-row arm, NOT a `bottomTag_foldr`.
+This abandons the per-body W9b chain; **the candidate-row `hρGv` T-W9a span half STAYS** (it transports
+the candidate row correctly, machine-verified). The §(o‴) **FLAG**: one OPEN FACT must be reconned before
+any build — whether the genuine `M₀`-row → genuine candidate-`i`-row correspondence closes against the
+whole `shiftPerm i` + seed `qᵢ = q₁∘ρᵢ` (6.56). See *Hand-off*.
+
+**The piecemeal recon→build loop mis-pinned this crux 4× (iter 3/7/9/11) — all per-body local pins.**
+Confirm-and-delete once the reshape lands (now extended): the orphan bridge `redundancy_panel_carry` +
+`candidateRow_ac_eq_neg`, AND (per §(o‴)) the per-body `bottomTag_foldr_mem_rigidityRows` +
+§(o″) single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (the wrong granularity; the whole-relabel
+transport replaces them). Tracker (CHAIN-2c-ii-transport): T-W9a ✓ (correct, stays) → per-body W9b chain
+✗ (wrong granularity, §(o‴)) → **bottom-family whole-relabel transport [next — gated on §(o‴) OPEN FACT
+recon]** → 2c-ii-arm → 2c-iii → CHAIN-5.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` + 7 accessors; CHAIN-2a
-CLOSED; 2c-i + 2c-ii-α/β/graphiso + T-W9a + T-W9b step/fold core + the bridge LANDED (the tracker
-above + *Decisions made* one-liners). Remaining (tracker): block-carrying single-step → W9b membership
-→ 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY's extractor reshape.
+CLOSED; 2c-i + 2c-ii-α/graphiso + T-W9a span fold LANDED (the candidate-row half — STAYS). The per-body
+W9b chain (step/fold core/bridge) is LANDED-but-orphaned (wrong granularity, §(o‴)). Remaining
+(tracker): the bottom-family whole-relabel transport [gated on the §(o‴) OPEN FACT recon] → 2c-ii-arm →
+2c-iii → CHAIN-5 + ENTRY's extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
@@ -96,16 +108,18 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       **CHAIN-2c — the single-base `Fin (k+1)` family dispatch** (route β, design §(n)/(o)): ONE base,
       ONE `ρ₀`, ONE discriminator → `fin_cases u`; eq. (6.66) absorbed. **2c-i**
       (`exists_chainData_discriminator_pick`) LANDED. **2c-ii** (the genuinely-new relabel arm, NOT a
-      numeral pass — KT's `ρᵢ` is a `(i−1)`-cycle): foundation (`shiftPerm` / `ofNormals_relabel_perm` /
-      graphiso `splitOff_isLink_shiftRelabel_iff`) + transport **T-W9a**
-      (`shiftBodyList_foldr_mem_span_rigidityRows`, span-only) + **T-W9b step + fold core**
-      (`funLeft_dualMap_bottomTag_mem_rigidityRows` / `bottomTag_foldr_mem_rigidityRows`) + the bridge
-      `redundancy_panel_carry` (now orphan-in-waiting) all LANDED →
-      **block-carrying single-step `funLeft_dualMap_pinnedBlock_carry` [next, SIGNATURE FROZEN]** (the
-      `(a,v)`-block→`(c,v)`-block carry the landed terminal step cannot do interior; panel-match via
-      G4d-i — §(o″) *DESIGN-PASS*) → W9b membership fold (`Tag` pinned to `ρ`) → **2c-ii-arm**
-      `chainData_relabel_arm` (closer; d=3 M₃ = `i=2` instance) → **2c-iii** `chainData_dispatch`. Live
-      status: *Current state* tracker; full detail: design §(o″) *DESIGN-PASS* + *Decisions made*.
+      numeral pass — KT's `ρᵢ` is a `(i−1)`-cycle): foundation (`shiftPerm` / graphiso
+      `splitOff_isLink_shiftRelabel_iff`) + transport **T-W9a** span fold
+      (`shiftBodyList_foldr_mem_span_rigidityRows`, transports the candidate row `hρGv` — STAYS, the
+      candidate-row half is DONE) LANDED. The per-body W9b chain
+      (`funLeft_dualMap_bottomTag_mem_rigidityRows` / `bottomTag_foldr_mem_rigidityRows` /
+      `redundancy_panel_carry`) is **the WRONG granularity for the bottom family** (§(o‴), 2026-06-19) →
+      **bottom-family whole-relabel transport [next — GATED on the §(o‴) OPEN FACT recon]** (KT (6.62):
+      transport the shared `w` by ONE `funLeft (shiftPerm i)`, `hwmem` off the graph-iso genuine arm +
+      the single `±r` block at `vᵢ` via G4d-i — the cycle generalization of d=3 M₃
+      `case_III_bottom_relabel`, NOT a `bottomTag_foldr`) → **2c-ii-arm** `chainData_relabel_arm`
+      (closer; d=3 M₃ = `i=2` instance) → **2c-iii** `chainData_dispatch`. Live status: *Current state*
+      tracker; full detail: design §(o‴) (the live verdict; §(o″) preserved as the invalidated record).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -166,53 +180,55 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). T-W9a + T-W9b
-single-step/fold core LANDED. The W9b MEMBERSHIP is BLOCKED on a fold-invariant reshape (KT §6.4.2's
-telescoping ±r-chain — see *Current state*).**
+**Route B LOCKED; no motive/IH/spine-carry change (C.3/C.6 unmoved). Telescoping DESIGN-PASS DONE
+(§(o‴), 2026-06-19) — VERDICT FLAG-DON'T-FORCE: the W9b membership is a bottom-family-transport RESHAPE,
+NOT a per-body fold, gated on one OPEN structural fact (below).**
 
-**NEXT STEP — USER-ADJUDICATED (2026-06-19): a comprehensive telescoping-structure DESIGN-PASS first,
-then resume builds only if its verdict is coordinator-verifiable.** Dispatch a docs-only design-pass
-(opus) whose deliverable is the **GLOBAL** fold-invariant for KT §6.4.2's ±r-chain — the accumulating
-block-row *sum* (or span-membership) `Tag` for the *whole* `shiftBodyList i` fold — **NOT** another
-local per-step leaf signature (a local pin is exactly what the piecemeal loop mis-pinned **4×**: iters
-3/7/9/11; each was mechanically plausible but globally wrong, caught only when a build read the fold's
-arithmetic end-to-end). The design-pass must: (a) be source-verified against a **close read of KT
-§6.4.2** (pp. 696–698, the eqs. (6.62)–(6.67) ±r-chain; REFS.md for the PDF page offset); (b) carry the
-two mandatory design-pass clauses — *verify every load-bearing claim against the landed Lean bodies*,
-and *flag-don't-force* (if the right invariant needs a motive/IH/carried-hypothesis change or
-genuinely-new math, SAY SO and stop for adjudication rather than pin a 5th wrong structure); (c) pin the
-exact `Tag`/invariant shape, how each `hstep` discharges, and how the accumulated residual telescopes
-to `0` (or into a genuine `F 0`-row) at the chain bottom. **Coordinator: scrutinize the verdict HARD
-before dispatching any build** — read the proposed fold's arithmetic end-to-end (the 4× mis-pin history
-is precisely that a plausible local pin keeps being globally wrong); a boundary-pair / second
-independent design read is warranted here.
-⚠ **The iteration-11 frozen signature + its §(o″) *DESIGN-PASS* (A)–(D) detail are INVALIDATED** (row
-272: the single-pinned `Tag` does not chain — the carry leaves a generically-nonzero residual
-`hingeRow vₛ₊₂ vₛ₊₃ ρ`) — preserved in §(o″) + git as the source-verified record of what the *terminal*
-single-step / the G4d-i panel-match / the d=3 M₃ structure provide (still-usable inputs, below).
+**NEXT STEP — a focused recon of the §(o‴) OPEN FACT before any build** (do NOT build the arm until it
+closes — it is exactly the "mechanically plausible" shape the 4× mis-pins were). The §(o‴) design-pass
+(design `notes/Phase23-design.md` §(o‴), source-verified KT pp.696–698 + landed bodies + 2
+machine-verified single-steps) ruled out every per-body fold-invariant (pinned-`Tag` residual /
+pure-span block-disjunct miss / accumulating-sum no-telescope) and pinned the honest GLOBAL transport:
+KT (6.62)'s **whole-relabel row correspondence** — transport the shared `w` by ONE
+`funLeft (shiftPerm i)`, reading `hwmem` off the graph-iso `splitOff_isLink_shiftRelabel_iff` (genuine
+arm) + the single `±r` block at `vᵢ` via G4d-i (one (6.44)) — the cycle generalization of the d=3 M₃
+`case_III_bottom_relabel` genuine-row arm, NOT a `bottomTag_foldr`.
 
-(The superseded iteration-11 spec — the block-carrying single-step's exact `(a,v)`→`(c,v)` arm, the
-G4d-i `hcol`-supply correction, and the single-pinned `Tag` membership fold — is preserved in §(o″)
-*DESIGN-PASS* (A)–(D) + git as the source-verified record. **Still-usable inputs to the reshape:** the
-G4d-i panel-match (`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, the d=3 M₃ route at
-`Relabel.lean:1532`) + the W6b `ρ ⊥ C(q(ab))` gate (`Realization.lean:799`) for the per-step panel
-annihilations, and the **abstract-`Tag`** fold core `bottomTag_foldr_mem_rigidityRows` (the `Tag` shape
-is its parameter — the reshape supplies an accumulating-sum/span-membership `Tag`, not a single
-functional). **Confirm-and-delete** at the reshape: the orphan bridge `redundancy_panel_carry` +
-`candidateRow_ac_eq_neg` (zero live callers).)
-**`d=3` zero-regression CONFIRMED:** `shiftBodyList i` has length `i−1` (`length_shiftBodyList`); the M₃
-arm is `i=2` → length-1 list → single *terminal* step, zero interior carries (the carry fires only for
-`s+1 < i`, `i ≥ 3`). The landed M₃ + `case_III_bottom_relabel` + d=3 dispatch are untouched. **Per-leaf
-tracker** (checklist CHAIN-2): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ →
-redundancy_panel_carry ✓ (orphan-in-waiting) → **block-carrying single-step [next, frozen]** → W9b
-membership fold → 2c-ii-arm → 2c-iii → CHAIN-5.
+**THE OPEN FACT to recon (§(o‴)(E)):** does the genuine `M₀`-row → genuine candidate-`i`-row
+correspondence close against the whole `shiftPerm i` + the candidate seed `qᵢ = q₁∘ρᵢ` (6.56), via the
+landed graph iso + `hingeRow_funLeft_dualMap`? It is the SAME shape as the d=3 M₃
+`case_III_bottom_relabel` genuine-row arm (`Relabel.lean:1109–1144`, the single-swap case via
+`hrecGv`/`hends₃_off`/the off-`{e_a,e_b,e_c}` extensor coincidence) generalized to the whole cycle + a
+seed change — its difficulty is unknown until the seed/selector bookkeeping is written. IF it closes:
+the single leaf is `chainData_relabel_arm` with `hwmem` filled by a NEW whole-cycle transport
+`chainData_relabel_hwmem` (no `bottomTag` infra). IF NOT: the obstruction is at the bottom-family
+PRODUCTION level (how `w`'s block disjunct is generated) — a `ChainData`/W6b-producer question for the
+coordinator, NOT a CHAIN-2c-ii leaf.
 
-**Three orphaned lemmas to confirm-and-delete at the carry/2c-ii-arm/cleanup commit** (all zero live
-callers; full detail §(o″)): (1) `redundancy_panel_carry` (the eq.-6.44 bridge, replaced by G4d-i — this
-pass); (2) `ofNormals_relabel_perm` (2c-ii-β, REJECTED route A); (3)
-`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary composition, superseded by the `wstep`
-fold). The graph-iso `splitOff_isLink_shiftRelabel_iff` is **NOT** orphaned — consumed at the **arm**
-(`chainData_relabel_arm`'s `hiso`), NOT by T-W9a (which uses `shiftBodyGraph_isLink_of_off_body`).
+**Confirm-and-delete at the reshape** (orphans, zero live callers; now EXTENDED by §(o‴)): the
+per-body W9b chain becomes dead — `bottomTag_foldr_mem_rigidityRows` + the §(o″) single-step
+`funLeft_dualMap_bottomTag_mem_rigidityRows` + the bridge `redundancy_panel_carry` +
+`candidateRow_ac_eq_neg` (the whole-relabel transport replaces them). **Still-usable / STAYS:** the
+T-W9a span fold `shiftBodyList_foldr_mem_span_rigidityRows` (transports the candidate row `hρGv`
+correctly — machine-verified, the candidate-row half is DONE), the graph iso
+`splitOff_isLink_shiftRelabel_iff` (the whole-relabel correspondence's genuine arm), G4d-i
+`acolumn_mem_hingeRowBlock_of_span_rigidityRows` (the `±r` block arm), the W6b `ρ ⊥ C(q(ab))` gate.
+**`d=3` zero-regression CONFIRMED:** `shiftPerm 2 = (v₁v₂)` is a single swap = the landed
+`case_III_bottom_relabel` (the bottom step, where `b` IS off-chain and the termination is correct); the
+reshape fires only for `i≥3`. The d=3 M₃ / `case_III_arm_realization_M3` / dispatch are untouched.
+**Per-leaf tracker** (checklist CHAIN-2): T-W9a ✓ (stays) → per-body W9b chain ✗ (wrong granularity) →
+**bottom-family whole-relabel transport [next — gated on §(o‴) OPEN FACT recon]** → 2c-ii-arm → 2c-iii
+→ CHAIN-5.
+
+**Orphaned lemmas to confirm-and-delete at the 2c-ii-arm/cleanup commit** (all zero live callers; full
+detail §(o‴)/§(o″)): (1) the per-body W9b chain — `funLeft_dualMap_bottomTag_mem_rigidityRows` +
+`bottomTag_foldr_mem_rigidityRows` + `redundancy_panel_carry` + `candidateRow_ac_eq_neg` (wrong
+granularity, replaced by the §(o‴) whole-relabel transport); (2) `ofNormals_relabel_perm` (2c-ii-β,
+REJECTED route A); (3) `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary composition,
+superseded by the `wstep` fold). The graph-iso `splitOff_isLink_shiftRelabel_iff` is **NOT** orphaned —
+it is the §(o‴) whole-relabel transport's genuine arm, consumed at the **arm** `chainData_relabel_arm`.
+The T-W9a span fold `shiftBodyList_foldr_mem_span_rigidityRows` is **NOT** orphaned — it transports the
+candidate row `hρGv` (the candidate-row half, machine-verified DONE).
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o′)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
@@ -341,27 +357,20 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   chain absorbed (no separate 2b lemma).** Single base `(G₁,q₁)` / one `ρ₀` / one discriminator /
   `fin_cases u`; reuse 2a-ii only at `M₀`. Route β LOCKED (user-adjudicated, row 242). Detail
   `notes/Phase23-design.md` §(n).
-- **CHAIN-2c-ii design-pass (§(o)/§(o′)/§(o″)) — VERDICT: a genuinely-new relabel arm (NOT a numeral
-  pass), route B.** Leaf chain: 2c-ii-α (`shiftPerm`) → 2c-ii-β (`ofNormals_relabel_perm`) → graphiso →
-  transport (T-W9a-chain → T-W9a → T-W9b) → arm; M₀-arm (2a-ii) reused at `i=1` only. **§(o″) adjudicated
-  the §(o′)(B) fork → route B** (shared-`ρ₀` row-span); **route A REJECTED** (its eq.-6.66 identity
-  equates two `Classical.choice` existentials — unprovable; KT p.698 carries ONE `r` + the ±r chain,
-  the landed d=3 M₃ is route B). No motive/IH/spine-carry change. Detail §"CHAIN"(o)/(o′)/(o″).
-- **W9b-MEMBERSHIP sharpened recon 2026-06-19 — VERDICT: a NEW block-carrying single-step is the
-  irreducible next leaf, NOT a fold over the landed single-step.** Source-verified: the terminal step
-  `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean:1181`) *terminates* the block into a
-  genuine `e_b`-row (`:1246–1252`), structurally impossible interior (`e_b = edge(s+1)` cut by
-  `removeVertex vₛ₊₁`). The carry needs `(a,v)`-block→`(c,v)`-block re-pinned to the single `ρ`. The
-  landed step is the *d=3 terminal* form (M₃/`i=2`, zero-regression). Detail §(o″) *DESIGN-PASS*.
-- **CARRYING-STEP DESIGN-PASS 2026-06-19 (docs-only, row 270 BLOCKED → frozen; §(o″) *DESIGN-PASS*) —
-  VERDICT: signature frozen, panel-match supply CORRECTED to G4d-i (NOT the eq.-6.44 bridge).** The
-  carrying step `funLeft_dualMap_pinnedBlock_carry` (sig §(o″)(A)) is buildable, one commit; its `hρ_ac`
-  comes from **G4d-i** (`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, landed + already in d=3 M₃ use
-  at `Relabel.lean:1532`) off the W6b `hρGv`, NOT `redundancy_panel_carry` — whose `hcol`/`hrest`
-  (ab/ac/grest decomposition) is un-suppliable (`_acolumn_zero` gives only the trivial zero-functional
-  vanishing; the data is out of W6b scope). So `redundancy_panel_carry` + `candidateRow_ac_eq_neg` join
-  the orphan list (zero live callers, grep-confirmed). NOT new math (G4d-i landed); no motive/IH/spine
-  change; d=3 vacuous (carry fires `s+1<i`, `i≥3`). Detail §(o″) *DESIGN-PASS* (A)–(D).
+- **CHAIN-2c-ii design-pass (§(o)/§(o′)/§(o″)) — route B (shared-`ρ₀` row-span); route A REJECTED**
+  (its eq.-6.66 identity equates two `Classical.choice` existentials). Superseded on the W9b-transport
+  granularity by §(o‴) (the whole-relabel verdict, entry below). Detail §"CHAIN"(o)/(o′)/(o″).
+- **TELESCOPING DESIGN-PASS 2026-06-19 (§(o‴), docs-only, supersedes the iter-3/7/9/11 per-body pins
+  incl. §(o″)) — VERDICT: FLAG-DON'T-FORCE STOP. The W9b membership is a bottom-family-transport reshape,
+  NOT a per-body fold.** Machine-verified (2 single-step compiles): the §(o″) pinned-`Tag` leaves the
+  residual `hingeRow v b ρ ≠ hingeRow c v ρ`; a pure-span `Tag` carries the genuine-row arm (= landed
+  T-W9a) but misses the `(ab)`-block (∉ `span (G−vᵢ)`, `Candidate.lean:448`); an accumulating sum
+  doesn't telescope. Root cause: KT (6.62)/(6.52)/(6.66) carries the redundancy GLOBALLY (whole relabel
+  `ρᵢ`, zero on `V∖{vᵢ}` + one (6.44) at `vᵢ`) — the per-body `shiftBodyList` fold is right for the
+  *relabel* (T-W9a stays) but wrong for the *bottom family*. Honest transport = whole-relabel graph-iso
+  (cycle gen of d=3 M₃ `case_III_bottom_relabel`), GATED on one OPEN FACT (§(o‴)(E)). No motive/IH/spine
+  change. The per-body W9b chain (`bottomTag_foldr`/§(o″) single-step/`redundancy_panel_carry`) joins the
+  confirm-and-delete orphans. Detail §(o‴).
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
@@ -370,14 +379,12 @@ geometry accessors; `Fin d`-index idiom in FRICTION). **CHAIN-2c-i** `exists_cha
 region). **2c-ii-α** `ChainData.shiftPerm` (KT eq. 6.54) + recursion handle
 `shiftCycle_eq_cons`/`shiftPerm_eq_swap_mul`. **2c-ii-graphiso** `splitOff_isLink_shiftRelabel_iff` +
 `shiftEdgePerm` (the `hiso` supplier, consumed at the **arm**). **2c-ii-transport-W9a** (route B, the
-genuinely-new crux) `shiftBodyList_foldr_mem_span_rigidityRows` (fold core +
-`shiftBodyFramework`/`_htrans` removeVertex chain; span-only, endpoints removeVertex NOT splits).
-**2c-ii-transport-W9b** the single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (abstract-`Fv`/`Fva`
-restatement of `case_III_bottom_relabel`, the *terminal* d=3 form) + fold core
-`bottomTag_foldr_mem_rigidityRows` (`Tag : ℕ → Dual → Prop` threaded through the pure-relabel fold).
-**2c-ii-β** `ofNormals_relabel_perm` + **`redundancy_panel_carry`** (eq.-6.44 bridge) — both **⚠ orphans**
-(route A REJECTED / eq.-6.44 route superseded by G4d-i per the carrying-step design-pass;
-confirm-and-delete at the carry/2c-ii-arm build, *Hand-off* orphan flag). **OD-7 `hcontract_k`** = 5 leaves (mostly numeral passes; the
+genuinely-new crux — STAYS, transports the candidate row `hρGv`) `shiftBodyList_foldr_mem_span_rigidityRows`
+(fold core + `shiftBodyFramework`/`_htrans` removeVertex chain; span-only, endpoints removeVertex NOT
+splits). **⚠ Orphans (confirm-and-delete at the arm build — wrong-granularity per §(o‴); *Hand-off* flag):
+the per-body W9b chain** `funLeft_dualMap_bottomTag_mem_rigidityRows` + `bottomTag_foldr_mem_rigidityRows`
++ `redundancy_panel_carry` (+ the route-A `ofNormals_relabel_perm`) — the §(o‴) whole-relabel transport
+replaces them. **OD-7 `hcontract_k`** = 5 leaves (mostly numeral passes; the
 one genuinely-new piece LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple`).
 
 **Landed CHAIN-1/3/4/OD-7 bricks (all CLOSED 2026-06-18, axiom-clean; canonical homes = git +

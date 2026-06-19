@@ -2934,14 +2934,19 @@ not a `Tag` choice over the landed one.** Two structural facts, each verified ag
 
 #### (o″) DESIGN-PASS — frozen carrying-step signature + the `hcol`-supply correction (2026-06-19)
 
-> ⚠ **INVALIDATED (row 272, 2026-06-19) — retained as the source-verified record, NOT the live plan.**
+> ⚠ **INVALIDATED (row 272, 2026-06-19) — retained as the source-verified record, NOT the live plan.
+> Live successor: §(o‴) below (the telescoping design-pass).**
 > This pass froze a *single-pinned-`Tag`* carrying-step signature; a build then verified it is
-> **unprovable** — KT eq. (6.66)'s ±r-chain **telescopes**, so the fold-invariant must *accumulate*
-> the per-step residuals (a block-row sum / span-membership `Tag`), not pin a single functional. The
-> live next step is a **comprehensive telescoping-structure design-pass** (the GLOBAL invariant) —
-> see `notes/Phase23b.md` *Current state* / *Hand-off*. **Still-usable** content below: the G4d-i
-> panel-match supply, the W6b `ρ`-gate, the abstract-`Tag` fold core, the d=3 M₃ structure, and the
-> orphan-bridge confirm-and-delete flag. The single-pinned-`Tag` carrying-step shape itself is dead.
+> **unprovable** — the carry leaves a generically-nonzero residual `hingeRow vₛ₊₂ b ρ`. The telescoping
+> design-pass **§(o‴)** then established (machine-verified) that NO per-body fold — pinned-`Tag`,
+> pure-span, or accumulating-sum — carries the bottom-family `(ab)`-block disjunct, because that block
+> row is not a `(G−vᵢ)`-span member and its residual has no interior `e_b`-row home; the honest GLOBAL
+> transport is KT's (6.62) **whole-relabel** row correspondence (the cycle generalization of d=3 M₃
+> `case_III_bottom_relabel`'s genuine-row arm), NOT a `bottomTag_foldr`. §(o‴) returns **FLAG-DON'T-FORCE**
+> on one open structural fact. **Still-usable** content below: the G4d-i panel-match supply, the W6b
+> `ρ`-gate, the abstract-`Tag` fold core, the d=3 M₃ structure, and the orphan confirm-and-delete flag
+> (now extended in §(o‴) to the `bottomTag_foldr` chain). The single-pinned-`Tag` carrying-step shape
+> itself is dead.
 
 **Status:** the row-270-BLOCKED design pass, docs-only, source-verified against the landed bodies
 (file:line per claim) + KT §6.4.2 eqs. (6.24)/(6.43)/(6.44)/(6.62)/(6.66). **VERDICT: the carrying
@@ -3082,6 +3087,266 @@ chain length ≥ 2 / `i ≥ 3`, vacuous at `i=2`; the landed `case_III_arm_reali
 commit (the new block-input arm + the genuine-row arm reusing the landed terminal step's first case),
 THEN the W9b membership fold (C) + the relabel-bridge instantiation a second commit. No motive/IH (C.6)
 or spine-carry (C.3) change; route B holds; d=3 zero-regression preserved.
+
+#### (o‴) THE TELESCOPING DESIGN-PASS — the GLOBAL fold invariant for the W9b-membership crux (2026-06-19)
+
+> **This is the live successor to the INVALIDATED §(o″) *DESIGN-PASS*** (the single-pinned-`Tag`
+> carrying step). The §(o″) blocks above are preserved as the source-verified record of the
+> still-usable inputs (G4d-i panel-match, the W6b `ρ`-gate, the abstract-`Tag` fold core, the d=3 M₃
+> structure, the orphan confirm-and-delete list); the single-pinned-`Tag` carrying-step *shape* is
+> dead. This §(o‴) settles the GLOBAL-invariant question: **no per-body fold-invariant works** — the
+> honest transport is KT's whole-relabel row correspondence, a bottom-family-transport reshape — and
+> returns FLAG-DON'T-FORCE on one open structural fact.
+
+**Status:** user-adjudicated comprehensive telescoping design-pass, docs-only, 2026-06-19. Clause-(i):
+every load-bearing Lean claim verified against the **landed bodies** (file:line per claim), and the two
+decisive arithmetic single-steps **machine-checked** (a scratch `lake env lean` compile, no `sorry`).
+Clause-(ii) source: a close end-to-end read of **KT 2011 §6.4.2 pp. 696–698** (pdf pp. 49–51, offset
+`printed = pdf + 647`), eqs. (6.60)–(6.67), with (6.44)/(6.50)–(6.59) read for the setup.
+**VERDICT: FLAG-DON'T-FORCE STOP — see (E). The fold-invariant question has a clean answer for the
+genuine-row part of the bottom family, but the `(ab)`-block disjunct of the bottom family `w` has NO
+landed span-membership property at the chain interior and CANNOT be carried by either the §(o″)
+pinned-`Tag` (residual, invalidated) OR a pure-span `Tag` (the block row is not a `(G−vᵢ)`-span
+member). The honest GLOBAL invariant requires re-deriving the bottom-family transport at the
+candidate-framework level (KT's (6.62) row correspondence applied whole, NOT a per-body chain) — a
+real reshape of how `w` is produced/transported, NOT a leaf below the dispatch.** Detail below; the
+arithmetic walk (b) is the heart.
+
+---
+
+**(a) What KT actually does — source-verified, decisive, and DIFFERENT from a per-body chain.**
+
+KT does **not** carry the redundancy step-by-step across the `i−1` cycle bodies. The whole index-shift
+`ρᵢ` (6.54) is applied **at once** as a graph isomorphism `G₁ ≅ Gᵢ` (on `V∖{vᵢ}`→`V∖{v₁}`), and the
+redundancy reduces in **two single shots**:
+
+- **(6.61)→(6.64) via (6.62) + (6.52).** KT performs column ops + substitutes (6.59) to bring `R(G,pᵢ)`
+  to the form (6.61) `[ r(Lᵢ) , 0 ; r(q₁(vᵢvᵢ₊₁)) , R(G₁,q₁) ]`, using the **row correspondence (6.62)**:
+  the rows of `R(G,pᵢ; E∖{vᵢvᵢ₊₁}, V∖{vᵢ})` are in bijection with the rows of `R(G₁,q₁)`, the bijection
+  being exactly `ρᵢ` (the relabel) — verbatim p.696 "`(v₀v₁) ⇔ (v₀v₂)`, `(vⱼ₋₁vⱼ) ⇔ (vⱼvⱼ₊₁)` for
+  `2≤j≤i`, `(vⱼ'vⱼ'₊₁) ⇔ (vⱼ'vⱼ'₊₁)` for `i+1≤j'≤d−1`, `e ⇔ e` else". The single `G₁`-redundancy (6.52)
+  `∑_{e,j} λ_{ej} R(G₁,q₁;eⱼ) = 0` (`λ_{(v₀v₂)i*}=1`) is then pushed forward by this correspondence and
+  added to the `(v₀v₁)i*` row of (6.61). By **(6.52), the new row restricted to `V∖{vᵢ}` is identically
+  zero** (one application: the transported dependency is zero). The ONLY surviving part is the single
+  block at body `vᵢ`, which the column ops left as `∑ⱼ λ_{(vᵢvᵢ₊₁)j} rⱼ(pᵢ(vᵢ₋₁vᵢ)) = ∑ⱼ λ_{(vᵢvᵢ₊₁)j}
+  rⱼ(q₁(vᵢvᵢ₊₁))` (since `pᵢ(vᵢ₋₁vᵢ) = q₁(vᵢvᵢ₊₁)` by (6.59)). Result (6.64): `Mᵢ = [ r(Lᵢ) ;
+  ∑ⱼ λ_{(vᵢvᵢ₊₁)j} rⱼ(q₁(vᵢvᵢ₊₁)) ]`, top-left `D×D`, atop `R(G₁∖(v₀v₂)i*, q₁)`.
+
+- **(6.66): ONE degree-2 reduction at the SINGLE body `vᵢ`.** Verbatim p.698: "due to the fact that
+  `vᵢ` is a vertex of degree two in `G₁` for all `2≤i≤d−1`, we can easily show … (cf. (6.44)):
+  `∑ⱼ λ_{(vᵢvᵢ₊₁)j} rⱼ(q(vᵢvᵢ₊₁)) = ±r`" where `r := ∑ⱼ λ_{(v₀v₂)j} rⱼ(q(v₀v₂))` is defined ONCE. This
+  is **eq. (6.44) applied once at `vᵢ`** (the degree-2 body of `G₁`), exactly as the d=3 Lemma-6.10
+  proof applies (6.44) once at the degree-2 body `a`.
+
+**The conceptual telescoping is therefore (6.52): a single GLOBAL dependency of `R(G₁,q₁)` whose
+pushforward under the whole relabel `ρᵢ` is zero on `V∖{vᵢ}`.** The `i−1` adjacent bodies are NOT
+visited one at a time; they are subsumed by the row correspondence (6.62) = the relabel. The "`±r`
+chain" of (6.66) is a *family* of `d−1` independent single-body facts (one per candidate `i`), each a
+one-shot (6.44), **not** a composition along a chain.
+
+---
+
+**(b) The end-to-end arithmetic walk — general `i`, then `i=3`, `i=4` — and where the Lean fold breaks.**
+
+The Lean route B decomposes the single relabel `funLeft (shiftPerm i)` into a **product of `i−1`
+transpositions** (`shiftPerm_eq_prod_map_swap_shiftBodyList`, landed) and transports row-membership
+**one transposition at a time** over the `shiftBodyList i = [(v₂,v₁,v₀),…,(vᵢ,v_{i−1},v_{i−2})]`
+(length `i−1`). This is a faithful re-expression of the *relabel* (the W9a span half proves it), but it
+forces the redundancy to be carried per-body — which is where the structure that KT subsumes globally
+must be reconstructed step-by-step. Two transports run in parallel along the chain:
+
+- **The `hρGv` candidate-row (the redundant `±r` row) — a SPAN-membership transport, telescopes
+  cleanly. MACHINE-VERIFIED.** The candidate row enters as `hingeRow a b ρ ∈ span (G−vᵢ).rigidityRows`
+  (`hρGv`, W6b output, a genuine span member). Each transposition step is W9a:
+  `(funLeft (swap a v)).dualMap φ − hingeRow v c (φ∘single a) ∈ span (lower).rigidityRows`. For the
+  block row `φ = hingeRow a b ρ` (a-column `= ρ`): the W9a single step lands
+  `(funLeft swap).dualMap φ − hingeRow v c (φ∘single a) ∈ span (lower)`, i.e.
+  `hingeRow v b ρ − hingeRow v c ρ ∈ span (lower)`. **The span-membership invariant
+  `ψ ∈ span (shiftBodyFramework s).rigidityRows` is the GLOBAL invariant for THIS transport** — it is
+  exactly the LANDED **T-W9a** `shiftBodyList_foldr_mem_span_rigidityRows`, axiom-clean, and it is
+  **interior-safe at every step with NO `e_b`-row needed**: the residual `hingeRow v c (φ∘single a)`
+  is handled inside the W9a `span_induction` (it cancels on the degree-2 generator at `a`, is zero
+  off-`a`, and the survivor is a genuine lower-framework row via `htrans`). So the candidate row's
+  span membership transports cleanly down the whole chain. The ONE place an `e_b`-row enters is the
+  d=3 M₃ arm's *bare-row extraction* (`hρGv` slot, `Relabel.lean:1583`–1652): to turn the span member
+  back into the literal row `hingeRow c v (−ρ)` it does `sub_mem` against the genuine `e_b`-row
+  `hingeRow v b ρ` (present because `ρ ⊥ C(ab)` AND, at d=3, `b` is the OFF-CHAIN neighbour so `e_b`
+  survives). *Machine-verified*: the abstract single-step (premises `hingeRow a b ρ ∈ span Fv`,
+  `ρ ⊥ Fva.supportExtensor e_b`, the W9a degree-2 hyps; conclusion `hingeRow c v (−ρ) ∈ span Fva`)
+  compiles `sorry`-free. **The span transport is clean; the bare-row extraction is a separate, d=3-only
+  repackaging that the cycle arm performs ONCE at the chain bottom (not per interior step).** No
+  per-step pinned functional, no §(o″) residual on the candidate-row half.
+
+- **The bottom family `w`'s `(ab)`-block disjunct — the OBSTRUCTION. NOT a span member; the residual
+  has nothing to absorb it.** The bottom family enters tagged `w j ∈ (G−vᵢ).rigidityRows ∨ ∃ρ', ρ'⊥C(ab)
+  ∧ w j = hingeRow a b ρ'` (W7's `hwmem`, `Arms.lean:96`; the block disjunct is the redundant candidate
+  rows `r '' {j≠i*}`, which live in the **`ab`-edge block `Eb = span(range r) ⊄ span (G−vᵢ).rows`**, NOT
+  the source split's row span — `exists_candidateRow_bottomRows_of_rigidOn`, `Candidate.lean:411`/`448`–
+  `474`). So the block disjunct CANNOT ride the span-membership invariant: `hingeRow a b ρ' ∉ span
+  (G−vᵢ).rows`, so the W9a step has no premise to feed. The §(o″) single-step
+  (`funLeft_dualMap_bottomTag_mem_rigidityRows`, `Relabel.lean:1181`) instead carries the block as a
+  *free-existential `Tag`* and **terminates** it into a genuine `e_b`-row at the bottom step
+  (`:1246–1252`). At the chain INTERIOR this termination is **structurally impossible**:
+  `e_b = edge(s+1)` links `vₛ₊₁,vₛ₊₂` in `G`, so it is incident to the removed vertex `vₛ₊₁` and does
+  NOT survive `Fva = G−vₛ₊₁` (verified: `shiftBodyGraph_off_succ`/`_deg_two`). So the carried block must
+  become a `(cv)`-block at the predecessor — and the iter-11 single-pinned-`Tag` tried exactly that and
+  **left the residual** `(funLeft swap).dualMap (hingeRow a b ρ) = hingeRow v b ρ ≠ hingeRow c v ρ` (the
+  desired `(cv)`-output). *Machine-verified: `hingeRow v b ρ − hingeRow c b ρ = hingeRow v c ρ`
+  (`hingeRow_sub_hingeRow_eq`, shared 2nd endpoint `b`) but `hingeRow v b ρ` and `hingeRow c v ρ` share
+  NO endpoint and do not collapse* — exactly the §(o″) invalidation (row 272). There is no third object
+  to absorb `hingeRow v b ρ` (no surviving `e_b`-row interior, and `hingeRow a b ρ'` is not a span
+  member), so neither the pinned-`Tag` (residual) NOR the pure-span `Tag` (no premise) carries the block
+  disjunct. **This is the irreducible gap.**
+
+*Instantiation at `i = 3`* (`shiftBodyList 3 = [(v₂,v₁,v₀),(v₃,v₂,v₁)]`, length 2, the smallest chaining
+case): the cycle `funLeft (shiftPerm 3) = (v₁v₂)(v₂v₃)` is the fold of step `s=0` (move `v₁`, swap
+`v₁v₂`) after step `s=1` (move `v₂`, swap `v₂v₃`). **Candidate row** `hingeRow a b ρ ∈ span (G−v₃)`:
+T-W9a transports the SPAN membership `span (G−v₃) → span (G−v₂) → span (G−v₁)`, interior-safe, no `e_b`
+(verified, landed) — fine at both steps. **Bottom family `w`'s `(ab)`-block disjunct** `w j = hingeRow
+a b ρ'`, `ρ'⊥C(ab)`: this is NOT a span member of `(G−v₃).rows` (it lives in the `ab`-edge block `Eb`),
+so it cannot ride T-W9a. The §(o″) per-body relabel sends it `hingeRow a b ρ' ↦ hingeRow v b ρ'` (swap
+`a↦v`, `b` fixed) — a `(v,b)`-block at the SUCCESSOR, while the next step's input needs a `(c,v)`-block
+at the predecessor. To terminate it into a genuine row needs the `e_b = edge(s+1)`-row, but `edge(s+1)`
+links the moved body `vₛ₊₁` to `vₛ₊₂` and is **cut** by `removeVertex vₛ₊₁` (interior) — so there is no
+genuine row to terminate into, and the §(o″) residual `hingeRow v b ρ' − hingeRow c v ρ'` (no shared
+endpoint, no collapse) is unconstrained. **The block disjunct has no per-body transport.** Note the
+d=3 M₃ (`i=2`) closes only because its single step IS the bottom step: there `b` is the OFF-CHAIN
+neighbour (`hG_eb : G.IsLink e_b v b`, `b ∉ {v,a,c}`), so `e_b` survives `G−a` and the block terminates
+into the genuine `e_b`-row. The chain interior has no off-chain `b`, so this termination has no analogue.
+
+*Instantiation at `i = 4`* (`shiftBodyList 4 = [(v₂,v₁,v₀),(v₃,v₂,v₁),(v₄,v₃,v₂)]`, length 3): candidate
+row transports by T-W9a through `span (G−v₄) → (G−v₃) → (G−v₂) → (G−v₁)` (fine); the bottom-family block
+disjunct hits the identical no-per-body-home obstruction at the two interior steps `s=1,2`, confirming it
+is not an `i=3` artifact. **The arithmetic walk thus localizes the gap precisely: the candidate-row
+half is clean (T-W9a, done); the bottom-family `(ab)`-block disjunct is the sole obstruction, and it is
+not a fold-invariant problem at all — it is that this block row is transported, in KT, by the whole
+relabel `ρᵢ` as the single redundant `(v₀v₂)i*`-row pushforward, not by any per-body chain.**
+
+**Walking the arithmetic end-to-end thus shows the gap is NOT a missing carry leaf: it is that the Lean
+per-body decomposition reconstructs, step-by-step, a redundancy structure KT only ever needs GLOBALLY
+(one (6.52) pushforward + one (6.44) at `vᵢ`), and the per-body residuals have no per-body home.**
+
+---
+
+**(c) Why neither candidate GLOBAL invariant works as a fold over the landed single-steps.**
+
+| Invariant shape | Genuine-row disjunct | `(ab)`-block disjunct | Verdict |
+|---|---|---|---|
+| §(o″) pinned-`Tag` `ψ = hingeRow … ρ` (block pinned to `±r`) | n/a | residual `hingeRow v b ρ ≠ hingeRow c v ρ`, unconstrained | **INVALIDATED** (row 272) |
+| pure-span `Tag` `ψ ∈ span (shiftBodyFramework s).rows` | ✓ (= landed T-W9a) | block row ∉ `span (G−vᵢ).rows` — no premise | **fails** on block disjunct |
+| accumulating-sum `Tag` (running `∑` of block rows) | ✓ | the sum's per-step residual `hingeRow v b ρ` still needs an `e_b`-row home, absent interior | **fails** — same residual, now inside a sum |
+
+The "accumulating sum" the prompt hypothesized would only help if the per-step residuals **cancelled
+pairwise** along the chain (telescoped to `0`). They do not: each step's residual `hingeRow vₛ₊₂ b ρ`
+sits at a *different* body pair and there is no later step that produces its negative (the W9b transport
+is a pure relabel + this one termination, with no second occurrence of `(vₛ₊₂,b)`). The W9a a-column
+subtractions DO telescope (verified, T-W9a) **because they are span members that the span absorbs** —
+but the bottom-family block disjunct is not a span member, so its analogue has no span to fall into.
+
+---
+
+**(d) The honest GLOBAL invariant — and why it is a reshape, not a leaf (FLAG).**
+
+KT's transport of the *whole bottom family* (not just the candidate row) is eq. (6.62)'s **row
+correspondence applied to ALL of `R(G₁,q₁)` at once**: under the relabel `ρᵢ`, every row of `R(G₁,q₁)`
+(the source split `M₀`'s rows, both the genuine `(G−v₁)`-rows AND the redundant `(v₀v₂)`-block rows)
+maps to a row of `R(G,pᵢ; E∖{vᵢvᵢ₊₁})` (the candidate split). The correct invariant is therefore at the
+**candidate-framework / matrix level**, NOT a per-step row tag:
+
+> **Carry the whole row-space identity `span (R(G,pᵢ; E∖{vᵢvᵢ₊₁})-rows) = (funLeft ρᵢ).dualMap ''
+> span (R(G₁,q₁)-rows)` (KT (6.62)), and read the rank lower bound off it directly** — i.e., the
+> candidate split's bottom block `R(G₁∖(v₀v₂)i*, q₁)` has the SAME rank as `M₀`'s bottom block because
+> it IS `M₀`'s bottom block relabelled, and the redundancy (6.52) transports verbatim as a *single*
+> dependency (not `i−1` carries).
+
+This is what the d=3 dispatch does implicitly by reusing ONE W6b package `(ρ,w)` across all three arms
+(`Realization.lean:404`, fed unchanged to `M₁/M₂/M₃`): the bottom family `w` is the SAME `w` at every
+arm, transported by ONE relabel per arm (`M₃`'s `(funLeft (swap a v)).dualMap ∘ w`). The chain
+generalization must do the same — transport the WHOLE shared `w` by ONE `funLeft (shiftPerm i)`, reading
+the membership off the relabel's image of the source rows — rather than fold a per-row tag across `i−1`
+bodies. Concretely the membership obligation `hwmem` at candidate `i` is:
+`(funLeft (shiftPerm i)).dualMap (w j) ∈ (candidate-split).rigidityRows ∨ (the relabelled ±r block)`,
+and the disjunction's genuine-row arm is the relabel-image of `w j`'s `(G−v₁)`-row (a genuine
+candidate-split row, by the graph iso `splitOff_isLink_shiftRelabel_iff`, LANDED), while the block arm
+is the SINGLE redundant `±r` row at `vᵢ` (one (6.44), G4d-i-suppliable). **The per-body `shiftBodyList`
+fold is the wrong granularity for the bottom family** — it is right for the *relabel itself* (T-W9a,
+landed) but the bottom-family membership should be read off the *whole* relabel's graph-iso row
+correspondence, exactly as the genuine-row half already is.
+
+**Why this is a reshape and a FLAG, not a buildable leaf below the dispatch.** The landed W9b fold core
+(`bottomTag_foldr_mem_rigidityRows`) and the §(o″) single-step are built for the per-body tag chain — the
+wrong granularity per the above. Replacing them with the whole-relabel transport means: (1) the bottom
+family `w`'s membership is established via the graph-iso `splitOff_isLink_shiftRelabel_iff` (the
+candidate↔base intertwiner, LANDED, consumed at the arm) applied to the *genuine-row* disjunct, and (2)
+the *block* disjunct is the relabel-image of `M₀`'s single redundant `(v₀v₂)i*`-row, re-expressed as the
+`±r` row at `vᵢ` by (6.44)/G4d-i. This is **not** a fold over the landed single-steps; it is a different
+arm-closer shape (`chainData_relabel_arm`'s `hwmem` slot filled by a graph-iso relabel of the shared `w`,
+not a `bottomTag_foldr`). It does NOT touch the motive/IH (C.6) or spine-carry (C.3) — the bottom family
+is still the shared W6b `w`, the base is still the same `M₀` — but it **abandons the `bottomTag_foldr` /
+pinned-/span-`Tag` chain entirely** and re-routes the bottom-family membership through the whole-cycle
+graph iso. The T-W9a span fold STAYS (it correctly transports the *candidate row* `hρGv`); only the
+*bottom-family `hwmem`* transport changes.
+
+---
+
+**(E) FLAG-DON'T-FORCE — the precise obstruction and what unblocks it.**
+
+I am **not pinning a 5th `Tag`/carry signature.** The end-to-end walk (b) shows the per-body fold is the
+wrong granularity for the bottom-family block disjunct, and (d) names the right shape (whole-relabel
+graph-iso transport of the shared `w`) — but that shape is **not yet build-verified end-to-end**, and it
+turns on one open structural fact I could not settle from the landed bodies alone:
+
+**OPEN FACT (needs adjudication / a focused recon before any build).** Does the genuine-row arm of the
+bottom-family membership at candidate `i` close via `splitOff_isLink_shiftRelabel_iff` *for the WHOLE
+shared `w`* — i.e., is `(funLeft (shiftPerm i)).dualMap (w j)` a genuine row of the candidate split
+whenever `w j` is a genuine `(G−v₁)`-row of `M₀`? The graph iso is landed (`Operations.lean:2122`), and
+the relabel-of-a-rigidity-row identity is `hingeRow_funLeft_dualMap` (landed) — so this *should* be a
+clean assembly. BUT: the candidate split `M₀ = (G₁,q₁)`'s rows and the candidate-`i` split's rows live
+over DIFFERENT graphs (`G₁ = splitOff v₁` vs `Gᵢ = splitOff vᵢ`-relabelled), and the W7 `hwmem` slot
+wants membership in the candidate-`i` split's rows at the candidate-`i` SEED `qᵢ = q₁∘ρᵢ` (6.56). Whether
+the relabel `funLeft (shiftPerm i)` + the seed change `qᵢ = q₁∘ρᵢ` line up so that genuine `M₀`-rows map
+to genuine candidate-`i`-rows (the (6.62) genuine-row correspondence) is the load-bearing fact — and it
+is the SAME shape as the d=3 M₃ `case_III_bottom_relabel` genuine-row arm (`Relabel.lean:1109–1144`,
+which closes it for the SINGLE swap via `hrecGv`/`hends₃_off`/the off-`{e_a,e_b,e_c}` extensor
+coincidence). The cycle generalization of THAT arm (over the whole `shiftPerm i`, not a per-body fold) is
+the genuinely-new piece, and its difficulty is unknown until someone writes the seed/selector
+bookkeeping for the whole relabel.
+
+**What I established (so the next session does not re-walk it):** (1) the §(o″) pinned-`Tag` is
+dead (residual, machine-confirmed); (2) the pure-span `Tag` fails on the block disjunct (not a span
+member, source-confirmed `Candidate.lean:448`); (3) an accumulating-sum `Tag` fails identically (the
+residuals do not telescope — no pairwise cancellation); (4) the candidate-row `hρGv` transport IS clean
+and IS the landed T-W9a span fold (machine-verified single-step) — **that half is done and correct**;
+(5) the honest GLOBAL transport for the bottom family is the **whole-relabel graph-iso correspondence**
+(KT (6.62)), the cycle generalization of the d=3 M₃ `case_III_bottom_relabel` genuine-row arm, NOT a
+`bottomTag_foldr`; (6) this is a **bottom-family-transport reshape** (the `chainData_relabel_arm`
+`hwmem` slot), no motive/IH/spine change.
+
+**What unblocks the build:** a focused recon that writes out the cycle generalization of
+`case_III_bottom_relabel`'s genuine-row arm against the whole `shiftPerm i` + seed `qᵢ = q₁∘ρᵢ` (6.56),
+confirming the genuine `M₀`-row → genuine candidate-`i`-row correspondence (6.62) closes via the landed
+graph iso `splitOff_isLink_shiftRelabel_iff` + `hingeRow_funLeft_dualMap`, and that the block disjunct
+reduces to the single `±r` row at `vᵢ` via G4d-i (one (6.44), as d=3 M₃ does). If that recon closes,
+the leaf is `chainData_relabel_arm` directly (the bottom-family `hwmem` filled by the whole-relabel
+transport), with NO new `bottomTag` infrastructure — and the landed `bottomTag_foldr_mem_rigidityRows`
++ §(o″) single-step + `redundancy_panel_carry` become orphans (confirm-and-delete, joining the existing
+list). If it does NOT close cleanly, the obstruction is genuinely at the bottom-family production level
+(how `w`'s block disjunct is generated) and is a `ChainData`/W6b-producer question for the coordinator —
+NOT a CHAIN-2c-ii leaf.
+
+**Leaf decomposition (named ONLY conditionally on the OPEN FACT above closing — per the prompt's
+clause, secondary to the invariant).** IF the recon confirms (d): the single remaining leaf is the arm
+closer `chainData_relabel_arm` (signature unchanged, §(o″) addendum at row ~2556), with its `hwmem` slot
+filled by a NEW whole-cycle bottom-family transport `chainData_relabel_hwmem` (working name): for the
+shared `w` and candidate `i`, `(funLeft (shiftPerm i)).dualMap (w j) ∈ (candidate-i split).rigidityRows
+∨ (the ±r block at vᵢ)`, proved by the graph-iso correspondence (genuine arm) + G4d-i (block arm).
+**Do NOT build this until the OPEN FACT is reconned** — it is exactly the kind of "mechanically
+plausible" shape the 4× mis-pins were.
+
+**`d=3` zero-regression — preserved.** `shiftBodyList i` length `i−1`, so the M₃ arm is `i=2` → the
+whole `shiftPerm 2 = (v₁v₂)` is a single swap = the landed `case_III_bottom_relabel` (the bottom step,
+where `b` IS off-chain and the termination is correct). The reshape fires only for `i≥3`; the d=3 M₃ /
+`case_III_arm_realization_M3` / dispatch are untouched.
 
 ---
 
