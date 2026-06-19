@@ -21,12 +21,13 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Route B LOCKED (§(o″)); the cycle-W9a `List`-fold transport core LANDED (axiom-clean,
-`BodyHingeFramework.wstep` + `wstep_foldr_mem_span_rigidityRows`, `Relabel.lean`); next =
-the `shiftPerm`-specific T-W9a instantiation (`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`,
-plugging the cycle's `[(vtxₛ₊₁, vtxₛ, vtxₛ₋₁), …]` bodies + the per-`i` interior split frameworks
-into the fold via the `shiftPerm_eq_swap_mul` head-peel + the `splitOff_isLink_shiftRelabel_iff`
-graphiso) → T-W9b → arm.** Route-B verdict + decomposition + the route-A rejection: design §(o″).
+**Route B LOCKED (§(o″)); the cycle-W9a `List`-fold transport core LANDED, and its `ChainData`
+moved-body list `shiftBodyList` (+ `length_`/`getElem_`/`getElem_…_zero`/`shiftBodyList_eq_cons`)
+LANDED (axiom-clean, `Operations.lean`); next = the `shiftPerm`-specific T-W9a instantiation
+(`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_…`, feeding `shiftBodyList i` + the per-`i`
+interior split framework chain into `wstep_foldr_mem_span_rigidityRows` via the
+`shiftPerm_eq_swap_mul` head-peel + the `splitOff_isLink_shiftRelabel_iff` graphiso) → T-W9b →
+arm.** Route-B verdict + decomposition + the route-A rejection: design §(o″).
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
 uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** route β. The
@@ -105,8 +106,12 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` [in progress — the
       abstract `List`-fold core **LANDED** (`wstep` + `wstep_foldr_mem_span_rigidityRows`, axiom-clean):
       `List.foldr` of the single-step W9a transport `wstep` over a `(v,a,c)`-body list + framework chain
-      `F : ℕ → BodyHingeFramework`; next = the `shiftPerm`-specific instantiation via `shiftPerm_eq_swap_mul`
-      + `splitOff_isLink_shiftRelabel_iff`] → **(T-W9b)** the cycle bottom-tag transport (mirror
+      `F : ℕ → BodyHingeFramework`; the cycle's moved-body list **LANDED** (`ChainData.shiftBodyList` +
+      `length_`/`getElem_`/`getElem_…_zero`/`shiftBodyList_eq_cons`, `Operations.lean`, axiom-clean —
+      `[(vtx 2,vtx 1,vtx 0), …, (vtx i,vtx (i−1),vtx (i−2))]`, length `i−1`); next = the `shiftPerm`-specific
+      instantiation feeding `shiftBodyList i` + the per-`i` split framework chain into
+      `wstep_foldr_mem_span_rigidityRows` via `shiftPerm_eq_swap_mul` + `splitOff_isLink_shiftRelabel_iff`]
+      → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
       the relabelled roles with `−ρ₀`; d=3 M₃ is the `i=2` instance) → **CHAIN-2c-iii**
@@ -197,12 +202,18 @@ transport is the cycle-generalization of W9a (`funLeft_dualMap_sub_acolumn_mem_s
 transport as a `Dual →ₗ Dual`, and `wstep_foldr_mem_span_rigidityRows` iterates it over a `(v,a,c)`-body
 list + a framework chain `F : ℕ → BodyHingeFramework` (source-at-top `F len` → target `F 0`, head
 applied last) by clean `List` induction — the §(o″) "telescoping may not compose cleanly" concern is
-fully settled (the per-step a-column subtractions accumulate cleanly through the `foldr`). **What
-remains in T-W9a is the `shiftPerm`-specific instantiation**: read the cycle's moved-body list
-`[(vtxₛ₊₁, vtxₛ, vtxₛ₋₁), …]` and the per-`i` interior-split framework chain off the `ChainData`
-accessors, discharge the per-step `hstep` hypotheses via `splitOff_isLink_shiftRelabel_iff` (+ the
-`deg_two_split` / `shiftPerm_eq_swap_mul` machinery), and identify the resulting `foldr` with the named
-`shiftPerm` relabel. Leaves: **(T-W9a)** the `shiftPerm` instantiation [fold core landed; wiring next] →
+fully settled (the per-step a-column subtractions accumulate cleanly through the `foldr`). The
+cycle's moved-body list is now landed as `ChainData.shiftBodyList i = [(vtx 2, vtx 1, vtx 0),
+(vtx 3, vtx 2, vtx 1), …, (vtx i, vtx (i−1), vtx (i−2))]` (length `i−1`, the `(v,a,c)` triple per
+moved degree-2 body — body `vtx (s+1)` moving to `vtx (s+2)` past predecessor `vtx s`; head
+`[0] = (v₂,v₁,v₀)` = the `shiftPerm_eq_swap_mul` leading transposition's body) with `length_`,
+`getElem_`, `getElem_…_zero`, and `shiftBodyList_eq_cons` (head-peel, mirrors `shiftCycle_eq_cons`),
+all axiom-clean in `Operations.lean`. **What remains in T-W9a is the `shiftPerm`-specific
+instantiation**: feed `shiftBodyList i` + the per-`i` interior-split framework chain into
+`wstep_foldr_mem_span_rigidityRows`, discharge the per-step `hstep` hypotheses via
+`splitOff_isLink_shiftRelabel_iff` (+ the `deg_two_split` / `shiftPerm_eq_swap_mul` machinery), and
+identify the resulting `foldr` with the named `shiftPerm` relabel. Leaves: **(T-W9a)** the `shiftPerm`
+instantiation [fold core + body list landed; wiring next] →
 **(T-W9b)** cycle bottom-tag transport → **2c-ii-arm** `chainData_relabel_arm` (`−ρ₀`, roles
 `(vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)`) → **CHAIN-2c-iii** (`chainData_dispatch`,
 `fin_cases u`: `i=1` arm = 2a-ii, interior = `chainData_relabel_arm`; d=3 a zero-regression wrapper) →
@@ -360,13 +371,19 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   + the recursion handle `shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`
   (`shiftPerm i = swap (vtx 1)(vtx 2) * (tail formPerm)`, the single-transposition peel T-W9a iterates).
   `formPerm ∘ ofFn` + `ofFn = cons` (§61 motive trap, `List.ext_getElem`) idioms in FRICTION. Git + §(o).
-- **CHAIN-2c-ii-transport-W9a fold core LANDED 2026-06-19** — `BodyHingeFramework.wstep` (the
-  single-step W9a transport `φ ↦ funLeft(av).dualMap φ − hingeRow v c (φ∘single a)` as a `Dual →ₗ Dual`)
-  + `wstep_foldr_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, axiom-clean): `List.foldr` of `wstep`
-  over a `(v,a,c)`-body list + framework chain `F : ℕ → BodyHingeFramework`, by clean `List` induction
-  shifting `F` to `F(·+1)`. **Orientation forced by `foldr` head-applied-last: source-at-top `F len`
-  → target `F 0`, each step `F(s+1)→F s` matches W9a's `Fv`(src)→`Fva`(tgt).** Subsumes the prior
-  binary composition step. Next T-W9a: the `shiftPerm`-specific instantiation. No FRICTION (clean idioms).
+- **CHAIN-2c-ii-transport-W9a infra LANDED 2026-06-19** (axiom-clean) — the fold core
+  `BodyHingeFramework.wstep` (single-step W9a transport `φ ↦ funLeft(av).dualMap φ − hingeRow v c
+  (φ∘single a)` as a `Dual →ₗ Dual`) + `wstep_foldr_mem_span_rigidityRows` (`CaseIII/Relabel.lean`):
+  `List.foldr` of `wstep` over a `(v,a,c)`-body list + framework chain `F : ℕ → BodyHingeFramework`,
+  clean `List` induction shifting `F` to `F(·+1)`; **orientation forced by `foldr` head-applied-last:
+  source-at-top `F len` → target `F 0`, each step `F(s+1)→F s` = W9a's `Fv`(src)→`Fva`(tgt)** (subsumes
+  the prior binary composition step). Plus its moved-body list `ChainData.shiftBodyList`
+  (`Induction/Operations.lean`): `[(vtx 2,vtx 1,vtx 0), …, (vtx i,vtx (i−1),vtx (i−2))]` (length `i−1`,
+  body `vtx (s+1)` moving to `vtx (s+2)` past predecessor `vtx s`) + `length_`/`getElem_`/`…_zero`/
+  `shiftBodyList_eq_cons` (head-peel mirrors `shiftCycle_eq_cons`, the foldr recursion) — a verbatim
+  `List.ofFn` mirror of `shiftCycle`, `omit [DecidableEq α]` (pure `vtx` indexing). Next: feed
+  `shiftBodyList i` + the per-`i` split framework chain into the fold for the `shiftPerm` instantiation.
+  No FRICTION (clean idioms; `ofFn = cons` head-peel already in §61).
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
   + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`

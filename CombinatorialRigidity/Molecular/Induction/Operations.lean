@@ -1524,6 +1524,71 @@ lemma shiftPerm_eq_swap_mul (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 �
     | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
   rw [shiftPerm, cd.shiftCycle_eq_cons i (by omega), htail, List.formPerm_cons_cons, ← htail]
 
+/-! ### The cycle-W9a moved-body list `shiftBodyList` (CHAIN-2c-ii-transport-W9a)
+
+The cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent degree-2 bodies
+`v₁, …, v_{i−1}` one step each. The cycle-W9a transport (the genuinely-new piece of route B,
+`notes/Phase23-design.md` §(o″)) iterates the single-step W9a transport `BodyHingeFramework.wstep`
+over these bodies via `wstep_foldr_mem_span_rigidityRows`, which reads its body triples off a
+`List (α × α × α)`. This is that body list: in the `(v, a, c)` shape of one W9a step (swap `(a v)`,
+the degree-2 body `a` moving to `v`, its surviving neighbour `c`), the `s`-th cycle step moves
+`vₛ₊₁` to `vₛ₊₂` (`shiftPerm` sends `vⱼ ↦ vⱼ₊₁`), so its body triple is
+`(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)` — the body `vₛ₊₁`, its post-swap position `vₛ₊₂`, and its chain
+predecessor `vₛ` (the only surviving neighbour of the degree-2 body once its successor edge is
+cut). The `foldr` applies the head body last, matching the head-peel
+`shiftPerm i = (vtx 1 vtx 2) * (tail)` (`shiftPerm_eq_swap_mul`): the head body `[0] = (v₂, v₁, v₀)`
+is the leading transposition `(v₁ v₂)`'s degree-2 body `v₁`. Graph-free over the chain vertices
+(pure `vtx` indexing), mirroring `shiftCycle`/`shiftEdgeCycle`. -/
+
+-- The moved-body list is pure `vtx` indexing on `α`, never the `shiftPerm`-block `DecidableEq α`
+-- (re-introduced after the `shiftEdgePerm` block for the graphiso brick).
+omit [DecidableEq α]
+
+/-- The moved-body list `[(v₂, v₁, v₀), (v₃, v₂, v₁), …, (vᵢ, v_{i−1}, v_{i−2})]` of the cycle
+`shiftPerm i` (length `i − 1`, one `(v, a, c)` triple per moved degree-2 body), for a top index
+`i : Fin (cd.d + 1)`. The `s`-th triple `(vtx (s+2), vtx (s+1), vtx s)` is the W9a step that moves
+the degree-2 body `vtx (s+1)` to `vtx (s+2)` past its surviving predecessor `vtx s`. -/
+def shiftBodyList (cd : G.ChainData n) (i : Fin (cd.d + 1)) : List (α × α × α) :=
+  List.ofFn fun s : Fin ((i : ℕ) - 1) =>
+    (cd.vtx ⟨(s : ℕ) + 2, by omega⟩, cd.vtx ⟨(s : ℕ) + 1, by omega⟩, cd.vtx ⟨(s : ℕ), by omega⟩)
+
+@[simp] lemma length_shiftBodyList (cd : G.ChainData n) (i : Fin (cd.d + 1)) :
+    (cd.shiftBodyList i).length = (i : ℕ) - 1 := by simp [shiftBodyList]
+
+lemma getElem_shiftBodyList (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
+    (hs : s < (cd.shiftBodyList i).length) :
+    (cd.shiftBodyList i)[s] =
+      (cd.vtx ⟨s + 2, by simp only [length_shiftBodyList] at hs; omega⟩,
+        cd.vtx ⟨s + 1, by simp only [length_shiftBodyList] at hs; omega⟩,
+        cd.vtx ⟨s, by simp only [length_shiftBodyList] at hs; omega⟩) := by
+  simp only [shiftBodyList, List.getElem_ofFn]
+
+/-- The head body of the moved-body list, available once the cycle is nondegenerate (`2 ≤ i`, so
+the list is nonempty): `[0] = (vtx 2, vtx 1, vtx 0)`, the degree-2 body `vtx 1` of the leading
+transposition `(vtx 1 vtx 2)` (`shiftPerm_eq_swap_mul`). -/
+lemma getElem_shiftBodyList_zero (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ))
+    (h0 : 0 < (cd.shiftBodyList i).length) :
+    (cd.shiftBodyList i)[0] =
+      (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩) := by
+  rw [cd.getElem_shiftBodyList i 0 h0]
+
+/-- The moved-body list head-peels into `(vtx 2, vtx 1, vtx 0) :: (the tail body list)`, where the
+tail `[(vtx 3, vtx 2, vtx 1), …]` is the `s ↦ (vtx (s+3), vtx (s+2), vtx (s+1))` `List.ofFn` — the
+`cons` form mirroring `shiftCycle_eq_cons`, available once the cycle is nondegenerate (`2 ≤ i`).
+The tail is itself the moved-body list of the index-shifted chain (each triple shifted up by one),
+the recursion the cycle-W9a `List.foldr` over `shiftBodyList` follows. -/
+lemma shiftBodyList_eq_cons (cd : G.ChainData n) (i : Fin (cd.d + 1)) (hi : 2 ≤ (i : ℕ)) :
+    cd.shiftBodyList i
+      = (cd.vtx ⟨2, by omega⟩, cd.vtx ⟨1, by omega⟩, cd.vtx ⟨0, by omega⟩)
+        :: List.ofFn fun s : Fin ((i : ℕ) - 2) =>
+            (cd.vtx ⟨(s : ℕ) + 3, by omega⟩, cd.vtx ⟨(s : ℕ) + 2, by omega⟩,
+              cd.vtx ⟨(s : ℕ) + 1, by omega⟩) := by
+  refine List.ext_getElem (by simp [shiftBodyList]; omega) fun m h₁ h₂ => ?_
+  rw [getElem_shiftBodyList]
+  match m with
+  | 0 => simp
+  | m + 1 => rw [List.getElem_cons_succ, List.getElem_ofFn]
+
 /-! ### The index-shift edge permutation `shiftEdgePerm` (the edge side of KT eq. 6.54)
 
 The vertex cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) carries the candidate-`i` interior split
