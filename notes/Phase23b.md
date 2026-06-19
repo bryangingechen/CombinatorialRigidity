@@ -29,22 +29,13 @@ non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 **Tracker (CHAIN-2c-ii-transport):** LANDED 2026-06-19 (all axiom-clean): 2c-ii-inv + the H.10 de-risk
 gate + the **abstract base→candidate fold core** `wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`;
 seed-advancing `List.foldl` analogue of the orphaned `wstep_foldr`, source-at-bottom up to target-at-top
-by `reverseRec`; end-agnostic — needs a single-step W9a per step from any source). **TOP-STEP DE-RISKED +
-RESOLVED 2026-06-19** (next entry). → **NEXT: the concrete `ChainData` seed-advancing instance** feeding
-the core (now every step covered by the one gate) → 2c-ii-arm `chainData_relabel_arm` (d=3 M₃ = `i=2`) →
-2c-iii → CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds + the per-body W9b chain,
-§(o‴)(H.10).)
-
-**TOP-STEP RESOLVED — the de-risk gate now covers ALL steps (single bound `s + 2 < d`).** The H.10
-de-risk gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`Relabel.lean`) was
-generalized from the cycle-coupled `(hs : s+2 < i)(hi : i < d+1)` to a single `(hbound : s + 2 < cd.d)`.
-**Finding (the de-risk outcome):** the worried "top step `s=i−2` moves the candidate vertex `vᵢ` — different
-geometry" *dissolved* — the interior candidates run `2 ≤ i ≤ d−1`, so the candidate `vᵢ` is **itself an
-interior degree-2 chain vertex** (`vtx i`, `i < d`), and the top step closes with the **identical** proof
-off the same `deg_two`/`isLink_edge`/`vtx_ne` accessors. Both interior (`s+2 < i`) and top (`s=i−2`,
-`s+2 = i < d`) steps satisfy `s + 2 < d`, so ONE gate covers the whole fold (`s = 0 … i−2`). `i` was a
-phantom signature parameter (only `omega`-bound use); dropping it for `hbound` is strictly cleaner. (No
-top-step special-case lemma needed — the §(o‴)-class concern was real to check, vacuous in outcome.)
+by `reverseRec`; end-agnostic — needs a single-step W9a per step from any source). **TOP-STEP RESOLVED
+2026-06-19** — the worried candidate-vertex top step *dissolved*: interior candidates run `2≤i≤d−1`, so
+`vᵢ` is itself an interior degree-2 vertex (`vtx i`, `i<d`) closing with the **identical** proof; the gate
+was generalized to a single bound `s+2 < d` covering ALL fold steps `s=0…i−2` (no special-case lemma —
+§(o‴)-class concern, vacuous in outcome). → **NEXT: the concrete `ChainData` seed-advancing instance**
+(every step covered by the one gate) → 2c-ii-arm `chainData_relabel_arm` (d=3 M₃ = `i=2`) → 2c-iii →
+CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds + the per-body W9b chain, §(o‴)(H.10).)
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -355,22 +346,6 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   base→candidate single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, re-fold opposite order,
   seed advancing) — the landed candidate→base T-W9a/W9b folds are orphaned-for-the-arm (`wstep`
   non-invertible). No motive/IH/spine change; route β + d=3 preserved. Detail §(o‴)(H)/(H.10) + git.
-- **DE-RISK GATE + FOLD CORE LANDED 2026-06-19 (both axiom-clean).** The H.10 gate
-  `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (the base→candidate single step, reuses
-  the landed single-step W9a at chain roles `(vtx(s+1),vtx(s+2),vtx(s+3))`, seed advancing, `htrans` =
-  chain-indexed d=3 M₃ extensor-coincidence) + the abstract fold core
-  `wstep_foldl_mem_span_rigidityRows` (the seed-advancing `List.foldl` over a free chain `F`, source-
-  at-bottom `span (F 0)` up to target-at-top `span (F length)`, by `reverseRec`; the base→candidate
-  analogue of the orphaned `wstep_foldr`). Recursor-matching lesson promoted (TACTICS-GOLF § 20 /
-  FRICTION).
-- **TOP-STEP DE-RISKED + RESOLVED 2026-06-19 — the gate covers ALL fold steps (no separate top-step
-  lemma).** Generalized the de-risk gate from `(hs : s+2 < i)(hi : i < d+1)` to a single
-  `(hbound : s + 2 < cd.d)`, dropping the phantom `i` (it appeared only in `omega`-bound proofs). The
-  worried candidate-vertex top step (`s = i−2`, `a = vtx i`) closes with the **identical** proof: the
-  interior candidates run `2 ≤ i ≤ d−1`, so `vᵢ` is itself an interior degree-2 chain vertex (`vtx i`,
-  `i < d`), reading the same `deg_two`/`isLink_edge`/`vtx_ne` accessors. Both interior (`s+2 < i`) and top
-  (`s+2 = i < d`) steps satisfy `s + 2 < d`, so the concrete fold instance closes every step `s = 0 … i−2`
-  through the one gate. §(o‴)-class concern: real to check, vacuous in outcome.
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
