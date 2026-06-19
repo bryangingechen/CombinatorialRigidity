@@ -1660,10 +1660,15 @@ lemma shiftBody_ne_succ (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : 
 /-! ### The partially-shifted intermediate-graph chain (CHAIN-2c-ii-transport-W9a, graph layer)
 
 The cycle-W9a `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of
-*intermediate frameworks* `F : ℕ → BodyHingeFramework` (`F (i−1)` = the candidate-`i` split, `F 0` =
-the `v₁`-base split, one body moved per step), each `F s` an `ofNormals` framework over an
-intermediate *graph*. This block builds that graph chain and its per-step `G`-level geometry, the
-substrate the framework chain `F = ofNormals ∘ shiftBodyGraph` sits on.
+*intermediate frameworks* `F : ℕ → BodyHingeFramework` (one body moved per step), each `F s` an
+`ofNormals` framework over an intermediate *graph* `shiftBodyGraph s`. Mirroring the d=3 `M₃` arm's
+single-step W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, whose endpoints `Fv`/`Fva` are
+the `ofNormals (G − v)` / `ofNormals (G − a)` removeVertex frameworks), the chain endpoints are the
+removeVertex frameworks `F (i−1) = ofNormals (G − vᵢ)`, `F 0 = ofNormals (G − v₁)` — **not** the
+candidate-`i` / `v₁`-base splits (those enter only at the arm closer
+`chainData_relabel_arm`, via the W6b/W9b/seed composition, as in d=3 `M₃`). This block builds that
+graph chain and its per-step `G`-level geometry, the substrate the framework chain
+`F = ofNormals ∘ shiftBodyGraph` sits on.
 
 The intermediate graph at chain step `s` is `shiftBodyGraph s := G − vₛ₊₁` — the parent `G` with the
 chain vertex `vtx (s+1)` deleted. The step `s` of the cycle-W9a fold moves the degree-2 body

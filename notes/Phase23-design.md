@@ -2597,17 +2597,20 @@ the telescoping caveat (2558-2565): the a-column telescoping IS clean (settled b
 unresolved risk is the **graph correspondence**, not the algebra.
 
 Corrected decomposition (route B unchanged, no motive/IH/contract change): **(T-W9a-chain)** [NEW, the
-missing prerequisite] the partially-shifted intermediate-framework family `F` (`F (i−1)` = candidate-`i`
-split, `F 0` = base split, each step moving one body) + its per-step un-relabelled link correspondence
-+ the per-step degree-2/`cₛ`-link/off-`vₛ` conjuncts (these from `deg_two_split` once `F s` is pinned)
-— ~190-line difficulty class (the same as `splitOff_isLink_shiftRelabel_forward`/`backward`, an
-induction on cycle length over the partial-shift family; may want its own accessor block mirroring
-`shiftCycle`/`shiftBodyList`); likely re-uses the `removeVertex`-agreement reasoning + the graphiso at
-shifted sub-indices → **(T-W9a)** the membership half proper [clean once the chain lands: feed
-`shiftBodyList i` + `F` into the fold core, rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm
-bridge]. **Estimate ≥2 build commits for the membership half (several sessions).** `splitOff_isLink_shiftRelabel_iff`
-is **not** orphaned (T-W9a-chain reaches for it at shifted sub-indices) but is **not** the direct
-per-step supplier either.
+missing prerequisite] the intermediate-framework chain `F = ofNormals ∘ shiftBodyGraph` with
+`shiftBodyGraph s := G − vₛ₊₁` + its per-step un-relabelled link correspondence + the per-step
+degree-2/`cₛ`-link/off-`vₛ` conjuncts (from `deg_two`/`removeVertex` once `F s` is pinned) — ~190-line
+difficulty class (an induction on cycle length over the removeVertex chain); re-uses the d=3 `M₃`
+`removeVertex`-agreement reasoning → **(T-W9a)** the membership half proper [feed `shiftBodyList i` +
+`F` into the fold core, rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm bridge].
+**Endpoint correction (2026-06-19, at the graph-layer build):** the chain/membership endpoints are the
+**removeVertex frameworks** `F (i−1) = ofNormals (G − vᵢ)`, `F 0 = ofNormals (G − v₁)`, mirroring the
+single-step W9a's `Fv`/`Fva` (`Relabel.lean:546-561`, "the `G − a` framework"); the recon's "endpoints
+= candidate-`i`/base splits" framing above was imprecise — **the splits enter only at the arm closer
+`chainData_relabel_arm`** (via the W6b/W9b/seed composition, as in d=3 `M₃`), NOT as the W9a chain's
+endpoints. So T-W9a transports `span (ofNormals (G − vᵢ) rows) → span (ofNormals (G − v₁) rows)`.
+**Estimate ≥2 build commits for the membership half (several sessions).** `splitOff_isLink_shiftRelabel_iff`
+(the whole-cycle graphiso) is consumed at the **arm**, not the per-step chain.
 
 **T-W9a-chain `G`-substrate LANDED 2026-06-19** (`Operations.lean`, axiom-clean). The first leaf of
 (T-W9a-chain) — the per-moved-body `G`-level geometry the chain's `hstep` reads — is built: the
