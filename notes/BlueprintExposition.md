@@ -9,7 +9,7 @@ terse research exposition; it is not a verdict on KT's clarity. (Where
 formalizing did surface a genuine gap or slip, the relevant entry records that
 factually — routine in formalization work, not a knock on the paper.) The
 blueprint stays terse-by-default (carleson style, 1–3 sentence proofs —
-`blueprint/CLAUDE.md` *Proof verbosity*), but **crux nodes earn full, followable
+`blueprint/AUTHORING.md` *Proof verbosity*), but **crux nodes earn full, followable
 exposition**. This file is the cross-phase *ledger* of which nodes have earned
 that treatment and whether the exposition has landed.
 
@@ -51,7 +51,7 @@ draft just hadn't encoded coplanarity.)
 side is now codified**: this ledger is referenced from the standing process docs
 — `notes/CLAUDE.md` (the directory file list), top-level `CLAUDE.md` *When this
 commit closes a phase* (the blueprint re-read step now also writes ledgered
-nodes), `blueprint/CLAUDE.md` *Proof verbosity* (the crux-node carve-out), and
+nodes), `blueprint/AUTHORING.md` *Proof verbosity* (the crux-node carve-out), and
 `notes/MolecularConjecture.md`. The format, the sharpened inclusion criterion
 (KT-math, not project-side setup), and the `(a)/(b)/(c)` flavors are stable.
 **The write stage has now begun:** the first expositions landed at 22b-close (the

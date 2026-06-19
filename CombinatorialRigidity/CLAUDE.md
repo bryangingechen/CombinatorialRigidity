@@ -77,7 +77,7 @@ decidability, etc. — the authoritative list is in
   to anchor a blueprint corollary's `\lean{...}` pin (the warning
   discourages new callsites). Authoring rule + canonical example
   (`SimpleGraph.IsLaman.exists_rowIndependent_placement`):
-  `../blueprint/CLAUDE.md` *Narrative-bridge corollaries*. The non-date
+  `../blueprint/AUTHORING.md` *Narrative-bridge corollaries*. The non-date
   `"narrative-bridge"` sentinel is deliberate: any present `since`
   silences the `deprecatedNoSince` linter (Lean checks only presence,
   sanctioning "date *or library version*"), and a non-date string

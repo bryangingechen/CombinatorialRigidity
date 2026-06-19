@@ -147,7 +147,7 @@ of* the per-commit checklists above:
   catches them while the chapter is fresh, rather than a cleanup
   round later (this is the step that would have caught the Phase-18
   §2.2–2.4 narration A2 cleaned up). The anti-pattern and the
-  one-clause-max rule are in `blueprint/CLAUDE.md` *Proof verbosity*.
+  one-clause-max rule are in `blueprint/AUTHORING.md` *Proof verbosity*.
   **This pass is also where the blueprint *exposition ledger*
   (`notes/BlueprintExposition.md`) gets written down:** terse-by-default
   is the rule, but the phase's *crux* nodes — the ones flagged there
