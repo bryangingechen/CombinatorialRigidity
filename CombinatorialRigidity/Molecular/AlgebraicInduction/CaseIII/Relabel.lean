@@ -781,6 +781,43 @@ theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
     -- difference.
     simpa [List.foldr_cons, BodyHingeFramework.wstep_apply] using hhead
 
+/-- **The relabel side of the cycle-W9a fold is `funLeft` of the swap product** (the linear-map
+companion of the permutation-level `shiftPerm_eq_prod_map_swap_shiftBodyList`,
+CHAIN-2c-ii-transport-W9a route B, `notes/Phase23-design.md` §(o″)). The cycle-W9a `List.foldr`
+composes its single-step relabels `(funLeft (swap aₛ vₛ)).dualMap` — the leading (non-`a`-column)
+part of each `wstep` — over the moved-body list; this lemma identifies that *relabel-only* fold with
+the single named relabel `(funLeft (⇑((bodies.map (swap b.2.1 b.1)).prod))).dualMap` of the swap
+product. Composed with the permutation bridge `ChainData.shiftPerm_eq_prod_map_swap_shiftBodyList`
+(`shiftPerm i = ∏ (swap b.2.1 b.1)` over `shiftBodyList i`), it rewrites the fold's relabel
+component to `(funLeft (shiftPerm i)).dualMap` — the form the membership half of T-W9a needs.
+
+The proof is a clean `List` induction. The empty fold is `LinearMap.id`, matching
+`funLeft (⇑(1 : Equiv.Perm α)).dualMap = funLeft _root_.id |>.dualMap = id` (`Equiv.Perm.coe_one`,
+`funLeft_id`, `dualMap_id`). The `cons` step uses the FRICTION composition idiom: the head swap's
+`(funLeft (swap a₀ v₀)).dualMap` composed (outermost) with the tail relabel
+`(funLeft (⇑P)).dualMap` (the IH, `P` the tail's swap product) straightens via
+`dualMap_comp_dualMap` + `funLeft_comp` to `(funLeft (swap a₀ v₀ ∘ ⇑P)).dualMap`, and the swap
+product head-peels as `((swap a₀ v₀) * P)` whose coercion is `(swap a₀ v₀) ∘ ⇑P`
+(`Equiv.Perm.coe_mul`) — the two contravariances cancel, no order bookkeeping. Graph-free over the
+carrier. -/
+theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : List (α × α × α)) :
+    (bodies.foldr
+        (fun b T => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        LinearMap.id)
+      = (LinearMap.funLeft ℝ (ScrewSpace k)
+          (⇑((bodies.map (fun b => Equiv.swap b.2.1 b.1)).prod))).dualMap := by
+  induction bodies with
+  | nil =>
+    -- empty fold = `id`; the empty product is `1 : Equiv.Perm α`, and `funLeft id = id` (defeq),
+    -- so its dual map is `id` (`dualMap_id`).
+    simp only [List.foldr_nil, List.map_nil, List.prod_nil, Equiv.Perm.coe_one]
+    rw [show (LinearMap.funLeft ℝ (ScrewSpace k) (_root_.id : α → α)) = LinearMap.id from rfl,
+      LinearMap.dualMap_id]
+  | cons b rest ih =>
+    -- head-first fold + head-peel of the swap product, then the contravariance cancellation.
+    rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, Equiv.Perm.coe_mul,
+      LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row
