@@ -23,33 +23,22 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 via lean-lsp). VERDICT: corrected Fix A (invert the relabel to `(shiftPerm i)⁻¹`, keep the shared `ρ₀`).
 Fix B is INFEASIBLE; the "reuse `chainData_split_realization` per-`i`" simplification does NOT hold.**
 
-**Why Fix B / the per-`i` simplification fail (mathematical, in KT's structure — not a punt).** KT's
-full-rank existence (6.65–6.67) rests on **ONE** functional `r = ρ₀`, tested against ALL `d` panels (a
-single `r≠0` can't annihilate the `D`-dim span, Lemma 2.1). A per-`i` W6b produces an independent `ρᵢ`
-(`Classical.choice`, no provable bridge to `ρ₀`), so the shared-`ρ₀` discriminator's panel pick can't
-discharge candidate `i`'s `htrans` (quantified over `ρᵢ`) — and running the discriminator per-`i` loses
-KT's single-`r` disjunction. This is exactly §(o′) route A, already REJECTED (§(o″)(1)). Landed-body
-checks: the producer supplies ONLY the `v₁`-split realization (`Arms.lean:854`), the d=3 dispatch shares
-ONE `ρ₀` across all arms (`Realization.lean:404/439/495`), `chainData_split_realization` (the per-`i` arm)
-has ZERO live callers.
+**Why (mathematical, in KT's structure; full verdict + KT deciding lines = design §(o‴)(H)/(H.10)).** KT's
+full-rank existence (6.65–6.67) rests on **ONE** functional `r=ρ₀` against ALL `d` panels (Lemma 2.1). A
+per-`i` W6b gives an independent `ρᵢ` (`Classical.choice`, no bridge to `ρ₀`), so it can't feed the
+shared-`ρ₀` discriminator and loses KT's single-`r` disjunction — = §(o′) route A, REJECTED. Corrected Fix
+A keeps `ρ₀`/`w` and transports memberships by the **inverse cycle** `(shiftPerm i)⁻¹`: the inversion
+cancels the seed (`C(q(ρ·ρ⁻¹x))=C(qx)`), matching KT (6.62)'s one-step-down `vⱼ₋₁⇐⇒vⱼ` (the forward
+`shiftPerm i` over-shifted to `ρ²`, masked at d=3 by the `shiftPerm 2 = swap` involution).
 
-**Why corrected Fix A works.** Keep the shared `ρ₀`/`w`; transport row-memberships into candidate `i`'s
-role by the **inverse cycle** `(shiftPerm i)⁻¹`. The inversion cancels the seed: base row `hingeRow x y r`
-↦ `hingeRow (ρ⁻¹x)(ρ⁻¹y) r`, candidate extensor at `qᵢ=q∘ρᵢ` reads `C(q(ρ·ρ⁻¹x),…) = C(qx,qy)` — the seed
-`ρ` and relabel `ρ⁻¹` cancel, so the annihilation transports. This matches KT (6.62)'s one-step-DOWN
-correspondence `vⱼ₋₁ ⇐⇒ vⱼ` exactly (the forward `funLeft (shiftPerm i)` over-shifted to `ρ²`; `shiftPerm
-i` not an involution for `i≥3`, masked at d=3 by `shiftPerm 2 = swap`). The full verdict — KT deciding
-lines, the tear-up/keep lists, the buildable leaves, route-β + d=3 dispositions — is `notes/Phase23-design.md`
-§(o‴)(H).
-
-**Adversarial verification §(o‴)(H.10) (read-only recon, opus): Fix-B rejection + the corrected-Fix-A
-seed-cancellation algebra CONFIRMED, but H.5/H.7's "reuse the landed T-W9a *through its inverse*"
-REFUTED — a structural blocker, not a residual.** The landed T-W9a/W9b folds are candidate→base /
-seed-FIXED; the arm needs base→candidate / seed-jumping `q→qρ`; `wstep` is non-invertible (rank-degrading
-a-column subtraction), so the fold cannot be inverted. **Correction:** re-author the transport
-base→candidate directly (reuse the base→candidate single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
-re-fold in opposite order, seed advancing); the **landed candidate→base T-W9a/W9b are orphaned *for the
-arm***. **De-risk gate: write the base→candidate single-step seed-advance lemma at `i=3` first.**
+**Adversarial verification §(o‴)(H.10) (read-only, opus):** the Fix-B rejection + the corrected-Fix-A
+seed-cancellation algebra are CONFIRMED (lean-verified), but H.5/H.7's "reuse the landed T-W9a *through its
+inverse*" is **REFUTED** — the landed T-W9a/W9b folds are candidate→base/seed-FIXED, the arm needs
+base→candidate/seed-jumping, and `wstep` is non-invertible (rank-degrading a-column subtraction), so the
+fold can't be inverted. **Correction:** re-author the transport base→candidate directly (reuse the
+base→candidate single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, re-fold opposite order,
+seed advancing); the landed candidate→base T-W9a/W9b are **orphaned-for-the-arm**. **De-risk gate: the
+`i=3` base→candidate single-step seed-advance lemma first.**
 
 **Tracker (CHAIN-2c-ii-transport):** inverse-cycle action block (2c-ii-inv) **LANDED 2026-06-19**
 (11 axiom-clean `shiftPerm_inv_*`/`shiftEdgePerm_inv_*` lemmas, `Operations.lean`; one-liner
