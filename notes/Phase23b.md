@@ -209,12 +209,13 @@ accessors, discharge the per-step `hstep` hypotheses via `splitOff_isLink_shiftR
 **CHAIN-5**. **No motive/IH or spine-carry change (C.6/C.3 unmoved); route β LOCKED.** Full signatures +
 decomposition: design §(o″).
 
-**Route-A rejection orphans 2c-ii-β `ofNormals_relabel_perm` — confirm-and-delete at the 2c-ii-arm
-build.** Route B is M₃-style (uses no `ofNormals_relabel`), so the whole-frame transport
-`ofNormals_relabel_perm` (built for route A, zero callers) is very likely unused: at 2c-ii-arm confirm
-`chainData_relabel_arm` doesn't use it, then delete + reword its 2 Operations.lean docstring refs (or
-keep+re-pin if the arm wants its GP/algindep conjuncts). The graph-iso `splitOff_isLink_shiftRelabel_iff`
-is **NOT** orphaned — T-W9a is stated against it. Canonical: design §(o″) coordinator addendum.
+**Two orphaned lemmas to confirm-and-delete at the 2c-ii-arm/cleanup commit** (both zero callers).
+(1) **`ofNormals_relabel_perm`** (2c-ii-β) — built for the REJECTED route A; route B is M₃-style (no
+`ofNormals_relabel`), so confirm `chainData_relabel_arm` doesn't use it then delete + reword its 2
+`Operations.lean` docstring refs (or keep+re-pin if the arm wants its GP/algindep conjuncts).
+(2) **`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows`** (the binary composition step) —
+superseded by the `wstep` fold (its length-2 case); delete + reword the §(o″) reference. The graph-iso
+`splitOff_isLink_shiftRelabel_iff` is **NOT** orphaned — T-W9a is stated against it. Canonical: §(o″).
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o′)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
