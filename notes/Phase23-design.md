@@ -2934,6 +2934,15 @@ not a `Tag` choice over the landed one.** Two structural facts, each verified ag
 
 #### (o″) DESIGN-PASS — frozen carrying-step signature + the `hcol`-supply correction (2026-06-19)
 
+> ⚠ **INVALIDATED (row 272, 2026-06-19) — retained as the source-verified record, NOT the live plan.**
+> This pass froze a *single-pinned-`Tag`* carrying-step signature; a build then verified it is
+> **unprovable** — KT eq. (6.66)'s ±r-chain **telescopes**, so the fold-invariant must *accumulate*
+> the per-step residuals (a block-row sum / span-membership `Tag`), not pin a single functional. The
+> live next step is a **comprehensive telescoping-structure design-pass** (the GLOBAL invariant) —
+> see `notes/Phase23b.md` *Current state* / *Hand-off*. **Still-usable** content below: the G4d-i
+> panel-match supply, the W6b `ρ`-gate, the abstract-`Tag` fold core, the d=3 M₃ structure, and the
+> orphan-bridge confirm-and-delete flag. The single-pinned-`Tag` carrying-step shape itself is dead.
+
 **Status:** the row-270-BLOCKED design pass, docs-only, source-verified against the landed bodies
 (file:line per claim) + KT §6.4.2 eqs. (6.24)/(6.43)/(6.44)/(6.62)/(6.66). **VERDICT: the carrying
 step is buildable AND its panel-match has a CLEANER supply than `redundancy_panel_carry` — the d=3 M₃
