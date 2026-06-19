@@ -1813,6 +1813,15 @@ glue are **CHAIN-2c**, not 2a. This matches §(l)'s 2a/2b/2c split; the design-p
 `{k}`-general, `CaseIII/Candidate.lean` (or `CaseIII/Chain.lean` if 2a+2b+2c
 together exceed ~1500 LoC). The `n` is the phantom `ChainData` index.
 
+> **Build refinement (2026-06-18, Phase23b).** The W6b *half* of the gate-producer
+> landed as `chainData_split_w6b_gates` (`CaseIII/Realization.lean`, flat-tuple, axiom-clean):
+> steps 3+4 (lines 376–434, the redundancy + GAP-6 producer), emitting the chain-order
+> `hρe₀`/`hρGv`/`hw`/`hwmem` bundle. The **discriminator half (step 5, lines 435–442) is NOT
+> single-`i`** — `…homogeneousIncidence_gen` picks an *arbitrary* panel `u`; the gate is about
+> `n u`, not candidate-`i`'s normal `na`, and matching `u`↔`i` is the family disjunction. So the
+> discriminator half folds into **CHAIN-2c** (the discriminator-picks-`i` glue below), not a 2a-i
+> sub-leaf. The "two producer calls" are thus W6b (single-`i`, landed) + discriminator (family-level).
+
 - **CHAIN-2a-i — `chainData_split_arm_gates` (the gate-producer at index `i`; the
   one genuinely-load-bearing 2a sub-leaf).** Re-package the d=3 dispatch's
   gate-production (Realization.lean steps 3+5, lines 376–442) as a per-`i`

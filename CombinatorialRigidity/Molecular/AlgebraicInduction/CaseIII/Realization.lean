@@ -734,6 +734,189 @@ theorem PanelHingeFramework.case_III_nested_rank_lower [DecidableEq β] [Finite 
   PanelHingeFramework.case_III_nested_rank_lower_all_k (k := 2) (by norm_num) hn G v a b eₐ e_b e₀
     hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
 
+/-! ## The per-`i` gate-producer (CHAIN-2a-i, the W6b half)
+
+The general-`d` Case-III chain dispatch (CHAIN-5) realizes each chain candidate `i` via the
+already-general arm closer `case_III_arm_realization`, which carries the per-`i` gate family as
+hypotheses (`hLn`/`hρgate`/`hρe₀`/`hρGv`/`hwcard`/`hw`/`hwmem`). The dispatch supplies that family
+**from above** via two general-`k` producers: the W6b packaging
+`exists_candidateRow_bottomRows_of_rigidOn` (the redundant-row + bottom-rows half:
+`hρe₀`/`hρGv`/`hwcard`/`hw`/`hwmem`) and the Claim-6.12 discriminator
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (the transversal half:
+`hLn`/`hρgate`). This section packages the **first** of those two calls as a reusable single-split
+producer, lifting the `d = 3` dispatch's W6b region (`case_III_candidate_dispatch` steps 3–4) to a
+`{k}`-general flat-tuple lemma. The discriminator half — which picks the discriminating panel and so
+needs the `Fin (k+1)` chain-panel-normal family — is the family-level glue (CHAIN-2c); the
+`ChainData`-bound assembly that feeds the accessor-derived split tuple is CHAIN-2a-ii. -/
+
+/-- **CHAIN-2a-i — the per-split W6b gate bundle** (`lem:case-III-claim-6-11` infra; Katoh–Tanigawa
+2011 §6.4.1 eqs. (6.23), (6.27)–(6.30), Phase 23b). From an interior chain split `(v, a, b)` of a
+simple `0`-dof-graph `G` — the degree-2 split body `v` with its two chain edges `e_a : v—a`,
+`e_b : v—b` and no others, a fresh short-circuit `e₀`, and the IH-generic base realization
+`hsplitGP` on `Gab = G.splitOff v a b e₀` — produce the candidate functional `ρ` and the
+`screwDim k · (|V(Gab)| − 1)` independent bottom rows `w` that `case_III_arm_realization` consumes:
+the redundant-row gate `hρe₀` (`ρ(C(ab)) = 0`), the span gate `hρGv`
+(`hingeRow a b ρ ∈ span R(Gᵥ, q)`), and the bottom family `w` (independent, each a `Gᵥ`-row or a
+candidate `ρ'`-hinge). The outputs are stated in **chain order `(a, b)`** — the `(a,b)`-vs-`(b,a)`
+sign normalization of the dispatch's W8 pattern (`panelSupportExtensor_swap` / `hingeRow_swap`) is
+absorbed here.
+
+This is the **W6b half** of the per-`i` gate-producer: one call to
+`exists_candidateRow_bottomRows_of_rigidOn` (already general-`k`), fed the eq.-(6.22) nested-IH
+rank bound `h622lb` (supplied by the caller from `case_III_nested_rank_lower_all_k`) and the
+unpacked IH base. The transversal gates `hLn`/`hρgate` come from the Claim-6.12 discriminator and
+are *not* produced here — the discriminator's panel pick is the `Fin d` family glue (CHAIN-2c). No
+`d = 3` content (graph-free over `ScrewSpace k`; the `Fin 4`/`⋀²ℝ⁴` discriminator is absent); no
+motive/IH change. The `d = 3` dispatch `case_III_candidate_dispatch` consumes this at `k = 2`. -/
+theorem PanelHingeFramework.chainData_split_w6b_gates
+    [Finite α] [Finite β]
+    (hk1 : 1 ≤ k) (G : Graph α β) (v a b : α) (e₀ : β)
+    (hav : a ≠ v) (hbv : b ≠ v) (hba : b ≠ a)
+    (haG : a ∈ V(G)) (hbG : b ∈ V(G))
+    (he₀ : e₀ ∉ E(G))
+    -- The eq.-(6.22) nested-IH rank bound at `Gᵥ = G − v`, in the `∀ ends q` carry shape (GAP 6);
+    -- the caller supplies it from `case_III_nested_rank_lower_all_k`.
+    (h622lb : ∀ (ends : β → α × α) (q : α × Fin (k + 2) → ℝ),
+      (∀ e u w, (G.splitOff v a b e₀).IsLink e u w → ends e = (u, w) ∨ ends e = (w, u)) →
+      (∀ x y : α, x ≠ y → LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)]) →
+      AlgebraicIndependent ℚ q →
+      screwDim k * (V(G.splitOff v a b e₀).ncard - 1) - (screwDim k - 2)
+        ≤ Module.finrank ℝ (Submodule.span ℝ
+            (PanelHingeFramework.ofNormals (G.removeVertex v) ends
+              q).toBodyHinge.rigidityRows))
+    {n : ℕ} (hdef_Gab : (G.splitOff v a b e₀).deficiency n = 0)
+    (hsplitGP : PanelHingeFramework.HasGenericFullRankRealization k n (G.splitOff v a b e₀)) :
+    ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
+      (ρ : Module.Dual ℝ (ScrewSpace k))
+      (w : Fin (screwDim k * (V(G.splitOff v a b e₀).ncard - 1)) →
+        Module.Dual ℝ (α → ScrewSpace k)),
+      -- the base framework `(Gab, ends, q)` and its IH-genericity, for the consumer's other gates
+      (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends q).IsGeneralPosition ∧
+      (∀ e u w, (G.removeVertex v).IsLink e u w →
+        (G.removeVertex v).IsLink e (ends e).1 (ends e).2) ∧
+      -- the chain-order-normalized W6b gate bundle (`na = q(a,·)`, `nb = q(b,·)`)
+      ρ ≠ 0 ∧
+      ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+      BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∧
+      LinearIndependent ℝ w ∧
+      (∀ j, w j ∈
+          (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∨
+        ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+          ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+          w j = BodyHingeFramework.hingeRow a b ρ') := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set Gab := G.splitOff v a b e₀ with hGab
+  set Gv := G.removeVertex v with hGv
+  -- 1. Unpack the generic `v`-split realization; re-express `Q` as `ofNormals Gab Q.ends q`.
+  obtain ⟨Q, hQg, hQgp, hQrank, hQrec, hQalg⟩ := hsplitGP
+  set q : α × Fin (k + 2) → ℝ := fun p => Q.normal p.1 p.2 with hq
+  have hQeq : PanelHingeFramework.ofNormals Gab Q.ends q = Q := by rw [hq, ← hQg]; rfl
+  have hgp' : (PanelHingeFramework.ofNormals Gab Q.ends q).IsGeneralPosition := by
+    rw [hQeq]; exact hQgp
+  have hne' : V(Gab).Nonempty := ⟨a, by rw [hGab, Graph.vertexSet_splitOff]; exact ⟨haG, by
+    simp [hav]⟩⟩
+  have hne_Q : Q.toBodyHinge.graph.vertexSet.Nonempty := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]; exact hne'
+  rw [hdef_Gab, sub_zero] at hQrank
+  have hVeq_Gab : V(Gab) = Q.toBodyHinge.graph.vertexSet := by
+    rw [PanelHingeFramework.toBodyHinge_graph, hQg]
+  have h1_Gab : 1 ≤ V(Gab).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne'
+  have hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(Gab) := by
+    rw [hVeq_Gab,
+      BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_iff_finrank_span_rigidityRows
+        Q.toBodyHinge hne_Q, ← hVeq_Gab]
+    zify [h1_Gab] at hQrank ⊢; exact_mod_cast hQrank
+  have hrig' : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.IsInfinitesimallyRigidOn
+      V(Gab) := by rw [hQeq]; exact hQrig
+  have hrec' : ∀ e u w, Gab.IsLink e u w → Q.ends e = (u, w) ∨ Q.ends e = (w, u) := by
+    intro e u w he
+    rcases hQrec e u w he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact Or.inl (Prod.ext h1 h2)
+    · exact Or.inr (Prod.ext h1 h2)
+  -- 2. Inline graph facts.
+  have he₀ab : Gab.IsLink e₀ a b := by
+    rw [hGab, Graph.splitOff_isLink]
+    exact Or.inr ⟨rfl, hav, hbv, haG, hbG, Or.inl ⟨rfl, rfl⟩⟩
+  have hle : ∀ e u w, Gv.IsLink e u w → Gab.IsLink e u w := by
+    intro e u w hlink
+    rw [hGv, Graph.removeVertex_isLink] at hlink
+    obtain ⟨hGlink, hunev, hwnev⟩ := hlink
+    have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ hGlink.edge_mem)
+    rw [hGab, Graph.splitOff_isLink]
+    exact Or.inl ⟨hee₀, hGlink, hunev, hwnev⟩
+  have hsplit : ∀ e u w, Gab.IsLink e u w → Gv.IsLink e u w ∨ e = e₀ := by
+    intro e u w hlink
+    rw [hGab, Graph.splitOff_isLink] at hlink
+    rcases hlink with ⟨hee₀, hGlink, hunev, hwnev⟩ | ⟨he, _⟩
+    · exact Or.inl (by rw [hGv, Graph.removeVertex_isLink]; exact ⟨hGlink, hunev, hwnev⟩)
+    · exact Or.inr he
+  have hgp_seed : ∀ x y : α, x ≠ y →
+      LinearIndependent ℝ ![fun i => q (x, i), fun i => q (y, i)] := by
+    intro x y hxy
+    have := hgp' x y hxy
+    rw [PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal] at this
+    exact this
+  -- `hends'`: `Q.ends` records the links of `Gv` (`Gv`-links are `Gab`-links via `hle`).
+  have hends' : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (Q.ends e).1 (Q.ends e).2 := by
+    intro e u w hlink
+    rcases hrec' e u w (hle e u w hlink) with he | he
+    · rw [he]; exact hlink
+    · rw [he]; exact hlink.symm
+  -- 3. W6b: one invocation extracting the candidate / bottom data (the redundancy + GAP-6 half).
+  have hD : (2 : ℕ) ≤ screwDim k := two_le_screwDim hk1
+  have huv : (Q.ends e₀).1 ≠ (Q.ends e₀).2 := by
+    rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
+    · exact hba.symm
+    · exact hba
+  have hne₀ : (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e₀ ≠ 0 := by
+    apply PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition _ hgp'
+    rw [PanelHingeFramework.ofNormals_ends]; exact huv
+  have he₀' : Gab.IsLink e₀ (Q.ends e₀).1 (Q.ends e₀).2 := by
+    rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
+    · exact he₀ab
+    · exact he₀ab.symm
+  obtain ⟨ρ, w, hρne, hρe₀', hρGv', hw, hwmem'⟩ :=
+    BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
+      (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
+      (h622lb Q.ends q hrec' hgp_seed hQalg)
+  -- 4. Normalize the W6b outputs to chain order `(a, b)` (the W8 sign-swap pattern).
+  set na := (fun i => q (a, i)) with hna
+  set nb := (fun i => q (b, i)) with hnb
+  -- The `supportExtensor e₀`-form annihilation in `panelSupportExtensor` form.
+  have hsupp_e₀ : ∀ (r : Module.Dual ℝ (ScrewSpace k)),
+      r ((PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.supportExtensor e₀) =
+        r (panelSupportExtensor (fun i => q ((Q.ends e₀).1, i))
+          (fun i => q ((Q.ends e₀).2, i))) := by
+    intro r
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal]
+  refine ⟨q, Q.ends, ?_⟩
+  rcases hrec' e₀ a b he₀ab with he | he
+  · -- recorded `(a, b)`: take `ρ` as is.
+    refine ⟨ρ, w, hgp', hends', hρne, ?_, ?_, hw, ?_⟩
+    · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
+    · rw [he] at hρGv'; exact hρGv'
+    · intro j
+      rcases hwmem' j with hgen | ⟨ρ', hρ'e₀, hwj⟩
+      · exact Or.inl hgen
+      · refine Or.inr ⟨ρ', ?_, by rw [hwj, he]⟩
+        rw [hsupp_e₀, he] at hρ'e₀; exact hρ'e₀
+  · -- recorded `(b, a)`: take `-ρ` (`hingeRow b a (-ρ) = hingeRow a b ρ`).
+    refine ⟨-ρ, w, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_⟩
+    · rw [hsupp_e₀, he] at hρe₀'
+      rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
+    · rw [he] at hρGv'
+      rwa [← BodyHingeFramework.hingeRow_swap]
+    · intro j
+      rcases hwmem' j with hgen | ⟨ρ', hρ'e₀, hwj⟩
+      · exact Or.inl hgen
+      · refine Or.inr ⟨-ρ', ?_, ?_⟩
+        · rw [hsupp_e₀, he] at hρ'e₀
+          rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ'e₀, neg_zero, neg_zero]
+        · rw [hwj, he, ← BodyHingeFramework.hingeRow_swap]
+
 /-- **The Case-III realization — all-`k` form** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.10; Phase 22k L7b base, Phase 23a Leaf 4 general-`k` lift). The
 `hsplitGP`-shaped producer for `theorem_55_all_k` (the all-`k` spine), at general grade `k`.
