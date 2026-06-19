@@ -93,6 +93,20 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   availability override (OPUS-ONLY + cap-lift + fixups) expires session-end**; a fresh coordinator
   re-runs the availability check and reverts to the S/P/B map as rungs return. Findings: the 4×-mis-pin
   lesson → below.
+- **Session #12 close (2026-06-19; rows 273–284, all opus / OPUS-ONLY, all gate-verified; user stopped
+  the loop at the W9b single-step for handoff).** **The crux is UNSTUCK.** The user-adjudicated
+  comprehensive telescoping design-pass (§(o‴), row 273) + an adversarial-pair regime (rows 274–278:
+  2nd-read confirm → OPEN-FACT pair → settle-the-fork → adversarial-verify) **resolved the 4×-mis-pinned
+  KT §6.4.2 crux**: the per-body fold is dead; the forward whole-relabel was wrong-direction; **Fix B =
+  the already-rejected route A**; verdict = **corrected Fix A** (keep shared `ρ₀`, transport
+  base→candidate via `(shiftPerm i)⁻¹`, the seed cancels), doubly-confirmed. It then **BUILT cleanly**
+  through 6 leaves (rows 279–284): inverse-cycle action block → H.10 de-risk gate (interior + top, single
+  bound `s+2<d`) → abstract `foldl` fold core → concrete seed-advancing instance → W9b single-step. The
+  base→candidate cycle transport for the arm's W9a/W9b genuine-row slots is COMPLETE; remaining = the
+  cycle-W9b genuine-row fold + the block via G4d-i + the arm + 2c-iii + CHAIN-5. **⚠ Critical open flag:**
+  the row-284 hand-off re-proposed the §(o‴)-rejected per-body block carry; coordinator corrected it and
+  flagged a mandatory block-disjunct recon (`notes/Phase23b.md` *Hand-off*). The OPUS-ONLY/cap/fixups
+  override expires session-end; a fresh coordinator re-runs the availability check. Findings below.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -208,11 +222,42 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 281 | CHAIN-2c-ii base→candidate seed-advancing fold core `wstep_foldl_mem_span_rigidityRows`, 96c3702 | 2/2/1 | opus | normal | clean | ✓✓✓—✗✓ | 231k tok / 84 tools / 19.1min | Build leaf (OPUS-ONLY; 2/2/1→opus). Landed the abstract seed-advancing fold core (P realized 2). **Valuable flag-don't-force-in-a-build:** surfaced a NEW top-step finding — the H.10 de-risk gate is interior-only (`s+2<i`); the fold's top step (the candidate vertex `vᵢ`, different geometry) is uncovered, needs a separate de-risk (§(o‴)-class index/scope subtlety). Gates clean (warning-clean re-run + lint + sorry-grep + full diff). Stripped `Claude-Session` trailer → 96c3702 (rescue §1). Notes ✗: 518>tripwire → compressed →500. GOLF §20 promoted. Wall ~19min build-dominated. |
 | 282 | CHAIN-2c-ii top-step de-risk — generalize the seed-advance gate to single bound `s+2<d`, 9061eff | 2/3/1 | opus | normal | clean | ✓✓✓—✗✓ | 171k tok / 49 tools / 10.2min | Build leaf (OPUS-ONLY; 2/3/1→opus). **Worry DISSOLVED — P realized 1:** the candidate-vertex top step is NOT new geometry — interior candidates run `2≤i≤d−1`, so `vᵢ` is itself an interior degree-2 vertex (identical proof); generalized the gate to one bound `s+2<d` covering all fold steps. §(o‴)-class concern, vacuous in outcome. Gates clean (warning-clean re-run + lint + sorry-grep + full diff). No `Claude-Session` trailer this time (agent followed convention). Notes ✗: 512>tripwire → coordinator structural-deduped →487. Fast ~10min. |
 | 283 | CHAIN-2c-ii concrete seed-advancing `ChainData` fold instance `shiftBodyListAsc_foldl_mem_span_rigidityRows`, c083fa0 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 271k tok / 103 tools / 47.0min | Build leaf (OPUS-ONLY; 2/2/1→opus). Landed the concrete base→candidate seed-advancing fold + the ascending-chain infra — **the Fix-A base→candidate cycle transport is COMPLETE**. No T-W9a-class bridge mismatch: gate↔fold-core reconciled by factoring a reusable `hstep` bundle (avoided ~90-line dup; gate signature unchanged → no caller breakage). **47min/103-tool wall outlier scrutinized → genuine** (ascending-chain infra + build-dominated; no overrides, axiom-clean), NOT bloat. Gates clean (re-run both modules + lint + sorry-grep + full diff). Notes ✓ (agent kept 493). |
+| 284 | CHAIN-2c-ii W9b base→candidate single-step seed-advance `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows`, caae6ab | 2/3/1 | opus | normal | clean | ✓✓✓—✗✓ | 223k tok / 72 tools / 20.1min | Build leaf (OPUS-ONLY; a-priori 2/3/1→opus for the arm; self-shrank to the W9b genuine-row single-step, P≈2 — clean W9a analogue). **Notes ✗ — the hand-off RE-PROPOSED the §(o‴)-rejected per-body block carry** (`redundancy_panel_carry` for the block disjunct = the 4×-mis-pin trap); coordinator corrected the route (block → G4d-i at `vᵢ`, NOT per-body) + flagged a mandatory recon. Recurring "build hand-off route contradicts the design doc" pattern → Findings. Lean clean (gate-clean + lint + sorry-grep + full diff), no trailer. **Loop STOPPED here (user).** |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Session #12 close-out (2026-06-19; rows 273–284) — the design-pass + adversarial-pair regime unstuck the 4×-mis-pinned crux
+
+12 commits, all opus (OPUS-ONLY): 6 design/recon (rows 273–278) then 6 clean builds (279–284). The
+KT §6.4.2 W9b crux that the *piecemeal recon→build* loop mis-pinned 4× (sessions #10–11) was resolved by
+a different regime and then built straight through. Durable lessons:
+
+- **For a global-accumulation / orientation crux, a comprehensive design-pass + an adversarial-pair
+  regime is what unsticks it — and EVERY committed design verdict on such a crux needs an adversarial
+  follow-up before building.** The arc: §(o‴) comprehensive telescoping design (flag-don't-force,
+  re-routed away from the per-body fold) → 2nd-read confirm → OPEN-FACT pair (caught the *forward
+  direction* wrong, which §(o‴) + the confirm both missed) → settle-the-fork design-pass (Fix B = the
+  rejected route A; verdict corrected Fix A) → adversarial-verify (caught "reuse the landed fold via its
+  inverse" is impossible — `wstep` non-invertible — which the settle verdict under-rated). **Two of the
+  committed verdicts (§(o‴) forward-dir, §(o‴)(H) "invert the fold") were materially corrected by the
+  next adversarial read.** The reads each read the *arithmetic end-to-end* + the landed bodies + KT
+  verbatim, not just the cited lemma — that is what caught what prose-level review missed. Once corrected
+  Fix A was doubly-confirmed, 6 build leaves landed clean, no further mis-pin.
+- **Build-agent hand-off route-extrapolation (row 284) — a recurring pattern; diff the hand-off's route
+  against the design doc before the next dispatch.** Having landed the W9b genuine-row single-step, the
+  build agent extrapolated a NEXT-step route into the hand-off that *contradicted the authoritative
+  §(o‴)(H) verdict* — re-proposing the per-body `redundancy_panel_carry` block carry that §(o‴) rejected
+  (the 4×-mis-pin trap). Caught by the coordinate-phase step-4 "a build's hand-off route claim is a recon
+  verdict in disguise — verify it vs the design doc" rule (also bit 22h rows 38–39). Strengthened that
+  clause with this calibration.
+- **Per-commit taxes that persisted: note-bloat + the `Claude-Session` trailer.** Every build tipped
+  `Phase23b.md` past ~500 (the coordinator compressed each; a structural dedup of triplicated landed-leaf
+  recaps bought real headroom). And 3 of 6 build/design agent commits added a non-conventional
+  `Claude-Session:` trailer the project omits — coordinator amended HEAD each (the 2 buried ones
+  98d4345/3a35074 remain, cleanable at push). Added the trailer to rescue §1's mechanical-fixups list.
 
 ### Session #8 close-out (2026-06-18; rows 238–246)
 
