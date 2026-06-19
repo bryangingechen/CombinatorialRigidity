@@ -535,6 +535,25 @@ to be re-derived by re-reading entries later.
   *rewrites* the goal rather than closing it.)
 - **Status:** resolved (tactic choice + `dite`-packaging design; no mathlib gap).
 
+### [idiom] A `List.foldl` whose induction base case lives at index `0` (an accumulating, ascending-chain fold) inducts with `List.reverseRec` and does *not* generalize the chain family
+- **Where it bit:** `BodyHingeFramework.wstep_foldl_mem_span_rigidityRows` (CHAIN-2c-ii-arm, the
+  base→candidate seed-advancing fold, `CaseIII/Relabel.lean`). Its `foldr` sibling
+  `wstep_foldr_mem_span_rigidityRows` runs candidate→base (head body = the *final* drop `F 1 → F 0`),
+  so its base case is the chain *bottom* `F 0` and the `cons` step recurses over the **shifted** chain
+  `F (· + 1)` — that proof inducts with `cons` and `generalizing F ec`. The `foldl` version is the
+  exact opposite: the head body is the *first* rise `F 0 → F 1`, the base case is `φ ∈ span (F 0)`
+  itself (index 0 stays fixed), and the *last* body indexes `F rest.length`.
+- **Fix:** induct with `induction bodies using List.reverseRec` (cases `nil` / `append_singleton rest
+  b ih`) — peel the **last** element, not the head — and do **not** generalize `F`/`ec` (the chain is
+  pinned, only the suffix grows). The `append_singleton` step: `rw [List.foldl_append]` splits off the
+  last `wstep b`; the inner `foldl rest` lands in `span (F rest.length)` by `ih` (re-indexing the inner
+  steps off `rest ++ [b]` via `List.getElem_append_left hs`); the last element resolves with bare
+  `simp` (`(rest ++ [b])[rest.length] = b`). General rule: a `foldl`/accumulating fold with the
+  invariant anchored at index 0 wants the right-peeling `reverseRec`; a `foldr` with the invariant at
+  the tail wants `cons` + `generalizing`. Match the recursor to which end the base case sits on.
+- **Lifted to:** TACTICS-GOLF § 20 (the cross-cutting recursor-matching rule).
+- **Status:** resolved (recursor choice; no mathlib gap).
+
 ### [idiom] A `⋀ⁿ` coordinate in a `Pi.basisFun` exterior-power basis is `basis_repr_apply` + `ιMultiDual_apply_ιMulti` + a `Matrix.det` — close the residual `coord`→application with `rfl`, not `Pi.basisFun_repr`
 - **Where it bit:** B0 keystone bilinearity `normalsJoin_basis_repr` (Phase 21b): the `s`-coordinate
   of `normalsJoin n₁ n₂ ∈ ⋀² ℝ^(k+2)` in the standard exterior-power basis. The clean chain is

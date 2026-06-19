@@ -19,29 +19,33 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**FIX-FORK SETTLED + DE-RISKED — corrected Fix A is buildable** (verdict §(o‴)(H), adversarially verified
-§(o‴)(H.10), now confirmed by the landed H.10 de-risk gate). VERDICT: keep the shared `ρ₀`, transport row
-memberships **base→candidate** (relabel `(shiftPerm i)⁻¹`, seed advancing); re-author the transport
-base→candidate directly (the landed candidate→base T-W9a/W9b folds are **orphaned-for-the-arm** — wrong
-orientation, `wstep` non-invertible). Fix B (per-`i` re-seed) INFEASIBLE — breaks KT's single-`r`
-existence (6.65–6.67). KT deciding lines + full reasoning = design §(o‴)(H)/(H.10).
+**FIX-FORK SETTLED + DE-RISKED — corrected Fix A buildable** (§(o‴)(H), adversarially verified (H.10),
+confirmed by the landed de-risk gate): keep the shared `ρ₀`, transport memberships **base→candidate**
+(relabel `(shiftPerm i)⁻¹`, seed advancing). Fix B (per-`i` re-seed) INFEASIBLE (breaks KT's single-`r`
+existence). The landed candidate→base T-W9a/W9b folds are **orphaned-for-the-arm** (`wstep`
+non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 
-**Tracker (CHAIN-2c-ii-transport):** 2c-ii-inv + the **H.10 de-risk gate**
-`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (base→candidate single-step seed-advance,
-axiom-clean) **LANDED 2026-06-19** — reuses the landed single-step W9a at chain roles, the seed-advancing
-`htrans` discharged by the extensor-coincidence (`hrec`/`hends'_off`); **corrected Fix A is validated at
-the atomic step** (4×-mis-pin risk on it discharged). → **NEXT: the base→candidate cycle fold** (re-fold
-the single step opposite chain order, seed advancing — the seed-threading analogue of the orphaned
-candidate→base `shiftBodyList_foldr_mem_span_rigidityRows`) → 2c-ii-arm `chainData_relabel_arm` (d=3 M₃ =
-`i=2` involution instance) → 2c-iii `chainData_dispatch` → CHAIN-5.
+**Tracker (CHAIN-2c-ii-transport):** LANDED 2026-06-19 (all axiom-clean): 2c-ii-inv + the H.10 de-risk
+gate (interior single-step seed-advance) + the **abstract base→candidate fold core**
+`wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`; seed-advancing `List.foldl` analogue of the orphaned
+`wstep_foldr`, source-at-bottom up to target-at-top by `reverseRec`; end-agnostic — needs a single-step
+W9a per step from any source). → **NEXT: the concrete `ChainData` seed-advancing instance** feeding the
+core — **gated on the ⚠ TOP-STEP below** → 2c-ii-arm `chainData_relabel_arm` (d=3 M₃ = `i=2`) → 2c-iii →
+CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds + the per-body W9b chain, §(o‴)(H.10).)
+
+**⚠ TOP-STEP FINDING (surfaced building the fold core).** The H.10 de-risk gate covers only **interior**
+steps (`s+2 < i`). The full fold (`G−v₁` up to `G−vᵢ`, steps `s=0…i−2`) has a **top step `s=i−2`** moving
+the cycle *top* body `vtx i` (the candidate vertex `vᵢ` itself, not a passing degree-2 body — different
+geometry), NOT covered by the gate. The abstract core is end-agnostic (absorbs any per-step proof); the
+concrete instance must supply the top step **separately**. De-risk it before pinning the concrete chain —
+the same index/scope-subtlety class the §(o‴) saga hit.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
 
-**Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` + 7 accessors; CHAIN-2a
-CLOSED; 2c-i + 2c-ii-α/graphiso + 2c-ii-inv + the H.10 de-risk gate LANDED. The landed candidate→base
-T-W9a/W9b folds + the per-body W9b chain are **orphaned-for-the-arm** (§(o‴)(H.10)). Remaining: cycle fold
-→ 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY's extractor reshape.
+**Context (closed/landed):** CHAIN-1/3/4 + OD-7 + CHAIN-2a CLOSED; `ChainData` + 7 accessors; 2c-i +
+2c-ii-α/graphiso + 2c-ii-inv + the de-risk gate + the `foldl` core LANDED. Remaining: the concrete
+seed-advancing instance (incl. the top step, ⚠) → 2c-ii-arm → 2c-iii → CHAIN-5 + ENTRY's extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
@@ -55,11 +59,12 @@ extractor / producer `…hcand` / CHAIN-5 `hdispatch`), no motive/IH change (C.6
 
 The buildable-leaf sequence (exact signatures + dependency order in
 `notes/Phase23-design.md` §"CHAIN"(c)/(l)/(m)/(n)/(o)/(o′)/(o″)). **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 +
-CHAIN-2a CLOSED; CHAIN-2c-i + 2c-ii-α/β + 2c-ii-graphiso + 2c-ii-inv + the H.10 de-risk gate
-COMPLETE.** Remaining in **CHAIN-2c-ii**: **the base→candidate cycle fold** (re-fold the de-risk single
-step opposite chain order, seed advancing, corrected Fix A §(o‴)(H.10)) → **2c-ii-arm** (the closer) — then
-**CHAIN-2c-iii** (assembly), and **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on
-the rest of CHAIN-2 + ENTRY's extractor reshape).
+CHAIN-2a CLOSED; CHAIN-2c-i + 2c-ii-α/β + 2c-ii-graphiso + 2c-ii-inv + the H.10 de-risk gate + the
+abstract `foldl` fold core `wstep_foldl_mem_span_rigidityRows` COMPLETE.** Remaining in
+**CHAIN-2c-ii**: **the concrete `ChainData` seed-advancing instance** that feeds the fold core (incl.
+the top-step the de-risk gate does not cover — ⚠ *Current state* top-step finding) → **2c-ii-arm** (the
+closer) — then **CHAIN-2c-iii** (assembly), and **CHAIN-5** (signature frozen by the CHAIN↔ENTRY
+contract; gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + Hodge panel-meet membership**
       (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (route = `⋀^{d−1}W`-is-a-line, NOT the
@@ -163,23 +168,22 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**LANDED 2026-06-19 (corrected Fix A's first two leaves, both axiom-clean + gate-verified):**
-**CHAIN-2c-ii-inv** (11 `shiftPerm_inv_*`/`shiftEdgePerm_inv_*` action lemmas, `Operations.lean`,
-one-liner `inv_eq_iff_eq` rewrites of the forward cycle) + **the H.10 de-risk gate**
-`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`) — the
-base→candidate single-step seed-advance, reusing the landed single-step W9a at chain roles `(v,a,c) =
-(vtx (s+1), vtx (s+2), vtx (s+3))` with the seed-advancing `htrans` (the chain-indexed d=3 M₃
-extensor-coincidence, via `hrec`/`hends'_off`). **This validates corrected Fix A at the atomic step**
-(the 4×-mis-pin risk on the single step discharged).
+**LANDED 2026-06-19** (axiom-clean, gate-verified): the abstract base→candidate seed-advancing fold core
+`wstep_foldl_mem_span_rigidityRows` (`Relabel.lean`), preceded by **CHAIN-2c-ii-inv** + the **H.10 de-risk
+gate** — detail in *Current state* tracker. **⚠ The top-step finding (⚠ *Current state*) gates the concrete
+instance:** the de-risk gate covers only interior steps; the fold's top step (moving the candidate vertex
+`vᵢ`) needs separate handling — de-risk it first.
 
-**NEXT STEP — the base→candidate cycle fold.** Re-fold the de-risk single step in **opposite chain order**
-(base `F 0 = G−v₁` up to candidate `F(i−1) = G−vᵢ`), the seed advancing one swap per step (`q → q∘shiftPerm i`
-accumulated step-by-step). This is the seed-threading analogue of the orphaned candidate→base
-`shiftBodyList_foldr_mem_span_rigidityRows` — a `foldl`/accumulating-seed fold rather than the seed-fixed
-`foldr`. The per-step framework chain is **seed-advancing** (NOT the seed-fixed `shiftBodyFramework`; that
-chain is orphaned-for-the-arm), so it needs a new seed-advancing intermediate-framework chain whose `htrans`
-is the de-risk gate's seed-coincidence (NOT `le_refl`). The de-risk gate is the single fold step; the fold
-is the iteration + the `funLeft (shiftPerm i)`/seed bridge.
+**NEXT STEP — the concrete `ChainData` seed-advancing instance** that feeds the fold core. Build the
+chain `F s = (ofNormals (G − vtx(s+1)) ends qₛ).toBodyHinge` with the seed `qₛ` accumulating one swap per
+step (so `q_{i−1} = q ∘ shiftPerm i`, matching `shiftPerm_eq_prod_map_swap_shiftBodyList`), discharge the
+fold core's per-step `hstep` from the de-risk gate's structure (`hrec`/`hends'_off` via the
+`shiftBodyGraph` accessors) at the **interior** steps, and supply the **top step separately** (de-risk it
+first — its moved body is the candidate vertex itself, ⚠ above). Conclude membership in `span (G − vᵢ on
+q∘shiftPerm i).rigidityRows`. (Keeping `ends` *fixed* across the chain — only the seed advancing — makes
+`hends'_off` trivial; the de-risk gate already parametrizes `ends'`, so a fixed `ends` is the `ends' =
+ends` instance.) Then the `funLeft (shiftPerm i)`/seed bridge (reuse `wstep_foldl_funLeft_eq`-style
+`wstep_foldr_funLeft_eq` analogue + `shiftPerm_eq_prod_map_swap_shiftBodyList`).
 
 **Then:** **2c-ii-arm** `chainData_relabel_arm` (signature in §(o‴)(H.6); instantiate
 `case_III_arm_realization` at the relabelled roles with seed `qρ = q∘shiftPerm i`, shared `±ρ₀`, the three
@@ -339,31 +343,23 @@ contract". The forward detail (route to close the open leaves) is in *Current st
 - **The bottom-family-transport recon trail** (route B per-body W9b fold → telescoping pass ruled it dead
   → pair recon refuted the forward whole-relabel → §(o‴)(H) corrected Fix A) lives in design
   §(o)–(o‴)(H.10) + git; the live verdict is the next entry, not the trail.
-- **FIX-FORK ADJUDICATION 2026-06-19 (§(o‴)(H), docs-only, KT §6.4.2 verbatim + landed bodies via
-  lean-lsp) — VERDICT: corrected Fix A; Fix B INFEASIBLE.** The §(o‴)(G) pair recon refuted the forward
-  `funLeft (shiftPerm i)` (over-shifts the seed to `ρ²`; `shiftPerm i` not an involution for `i≥3`, masked
-  at d=3 by `shiftPerm 2 = swap`; KT (6.62) is one-step-down `ρ⁻¹`). Fix B / the "reuse
-  `chainData_split_realization` per-`i`" simplification fail **fundamentally**: a per-`i` W6b gives an
-  independent `ρᵢ` with no bridge to the shared `ρ₀`, breaking KT's single-`r`-against-all-panels
-  existence (6.65–6.67) — = §(o′) route A, already rejected. Fix A keeps `ρ₀` + inverts to `(shiftPerm
-  i)⁻¹` (cancels the seed `ρ`, matches KT (6.62)); route β + d=3 preserved. First buildable =
-  `shiftPerm_inv_*` action block. Detail §(o‴)(H).
-- **ADVERSARIAL VERIFICATION of §(o‴)(H) 2026-06-19 (read-only recon, opus → §(o‴)(H.10)): Fix-B
-  rejection + corrected-Fix-A algebra CONFIRMED; H.5/H.7 "reuse T-W9a through its inverse" REFUTED.** The
-  landed T-W9a/W9b folds are candidate→base/seed-fixed; the arm needs base→candidate/seed-jumping; `wstep`
-  is non-invertible (rank-degrading a-column subtraction), so the fold can't be inverted. **Correction:**
-  re-author the transport base→candidate directly (reuse the base→candidate single-step
-  `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, re-fold opposite order, seed advancing); the landed
-  candidate→base T-W9a/W9b are orphaned-for-the-arm. First leaf (inverse-action block) survives; de-risk
-  at the `i=3` base→candidate single-step. No motive/IH/spine change. Detail §(o‴)(H.10).
-- **H.10 DE-RISK GATE CLOSED 2026-06-19 — corrected Fix A is buildable.** The base→candidate single-step
-  seed-advance `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`,
-  axiom-clean) lands: at chain step `s` (`s+2 < i`) it reuses the landed single-step W9a
-  `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (already base→candidate) at the chain roles
-  `(v,a,c) = (vtx (s+1), vtx (s+2), vtx (s+3))`, with seed advancing `q → q∘swap (vtx(s+2))(vtx(s+1))`.
-  Only genuinely-new piece: the seed-advancing `htrans` (the d=3 M₃ `hρGv` extensor-coincidence, chain-
-  indexed); carries an `hrec` (source-selector-records-links) + `hends'_off` the arm caller supplies as
-  in d=3. The orientation/seed-jump close confirmed; the 4×-mis-pin risk on the single step is discharged.
+- **FIX-FORK SETTLED 2026-06-19 (§(o‴)(H)/(H.10) — adjudication + adversarial verification, both
+  docs-only) — VERDICT: corrected Fix A; Fix B INFEASIBLE.** Keep the shared `ρ₀`, invert to `(shiftPerm
+  i)⁻¹` (cancels the seed, matches KT (6.62)); Fix B (per-`i` re-seed) breaks KT's single-`r` existence.
+  Correction the verification forced: re-author the transport **base→candidate directly** (reuse the
+  base→candidate single-step `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, re-fold opposite order,
+  seed advancing) — the landed candidate→base T-W9a/W9b folds are orphaned-for-the-arm (`wstep`
+  non-invertible). No motive/IH/spine change; route β + d=3 preserved. Detail §(o‴)(H)/(H.10) + git.
+- **DE-RISK GATE + FOLD CORE LANDED 2026-06-19 (both axiom-clean) + TOP-STEP FINDING.** The H.10 gate
+  `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (the base→candidate single step, reuses
+  the landed single-step W9a at chain roles `(vtx(s+1),vtx(s+2),vtx(s+3))`, seed advancing, `htrans` =
+  chain-indexed d=3 M₃ extensor-coincidence) + the abstract fold core
+  `wstep_foldl_mem_span_rigidityRows` (the seed-advancing `List.foldl` over a free chain `F`, source-
+  at-bottom `span (F 0)` up to target-at-top `span (F length)`, by `reverseRec`; the base→candidate
+  analogue of the orphaned `wstep_foldr`). **Finding:** the de-risk gate covers only **interior** steps
+  (`s + 2 < i`) — the full fold's *top* step (moving the candidate vertex `vtx i` itself) is uncovered,
+  so the concrete instance supplies it separately (the abstract core is end-agnostic). Recursor-matching
+  lesson promoted (TACTICS-GOLF § 20 / FRICTION).
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
@@ -376,8 +372,11 @@ block, LANDED 2026-06-19) the 4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*` acti
 one-liner `rw [Equiv.Perm.inv_eq_iff_eq, <forward>]`; the base→candidate relabel `(shiftPerm i)⁻¹` the
 re-authored arm transport carries (FRICTION, under the `formPerm`-cycle entry). **2c-ii-arm de-risk gate
 (H.10)** `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, the live
-base→candidate single fold step the cycle fold iterates — reuses the single-step W9a at the chain roles,
-seed advancing, seed-advancing `htrans` from the d=3 M₃ `hρGv` coincidence). **⚠ Orphans-for-the-arm
+base→candidate single fold step — reuses the single-step W9a at the chain roles, seed advancing,
+seed-advancing `htrans` from the d=3 M₃ `hρGv` coincidence; covers **interior** steps only). **2c-ii fold
+core** `wstep_foldl_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, the seed-advancing `List.foldl`
+iteration of `wstep` over a free chain, by `reverseRec`; the concrete instance + the uncovered top step
+feed/extend it). **⚠ Orphans-for-the-arm
 (confirm-and-delete at the arm build per §(o‴)(H.5); *Hand-off* flag): the candidate→base T-W9a fold**
 `shiftBodyList_foldr_mem_span_rigidityRows` + its seed-fixed `shiftBodyFramework`/`_htrans` chain (wrong
 orientation — converse implication, H.10); **the per-body W9b chain** `funLeft_dualMap_bottomTag_mem_rigidityRows` +
@@ -402,6 +401,10 @@ M4-forget reach-in routes solely through CHAIN-3 (h-4) + `extensor_update_smul`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *Match the list recursor to which end the fold's base case sits on: a `foldl`/accumulating fold
+  anchored at index 0 inducts with `List.reverseRec` (peel the last element, don't generalize the
+  chain); a `foldr` anchored at the tail wants `cons` + `generalizing`* → TACTICS-GOLF § 20 / FRICTION
+  [idiom] *A `List.foldl` whose induction base case lives at index `0`…*.
 - *Referencing a `CombinatorialRigidity.Molecular`-namespace lemma from inside a `_root_.Graph.ChainData`
   decl needs its full path including the inner `BodyHingeFramework` namespace (the ambient `namespace` is
   out of scope under `_root_.`; bare and `…Molecular.` both fail "Unknown identifier")* → FRICTION [idiom]

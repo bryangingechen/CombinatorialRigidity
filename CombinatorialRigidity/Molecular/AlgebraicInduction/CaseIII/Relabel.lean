@@ -930,6 +930,77 @@ theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows
     -- difference.
     simpa [List.foldr_cons, BodyHingeFramework.wstep_apply] using hhead
 
+/-- **W9a iterates the other way — the cycle-W9a `List.foldl` base→candidate transport** (the
+seed-advancing fold core, CHAIN-2c-ii-arm; `notes/Phase23-design.md` §(o‴)(H.10)). The
+seed-*advancing* analogue of `wstep_foldr_mem_span_rigidityRows`: the single-step W9a transport
+`wstep` composes over a list of degree-2 bodies along an **ascending** chain of intermediate
+frameworks (the seed advancing one swap per step), running source-at-bottom `F 0` *up to*
+target-at-top `F bodies.length` — the **base→candidate** orientation the relabel arm's
+`hρGv`/`hwmem` slots need (the landed `wstep_foldr` runs candidate→base / seed-fixed, the converse
+implication, so it is orphaned for the arm; §(o‴)(H.10)).
+
+Given a framework chain `F : ℕ → BodyHingeFramework k α β` and a list `bodies : List (α × α × α)`
+of `(v, a, c)` body triples, if every step `s` is a valid single-swap W9a transport from `F s` *up
+to* `F (s+1)` (the per-step `htrans` / degree-2 / off-`v` hypotheses, the `s`-th body
+`bodies[s] = (vₛ, aₛ, cₛ)` moved over the framework rise `F s → F (s+1)`), then the iterated
+transport of any `φ ∈ span (F 0).rigidityRows` (the source, bottom of the chain) lands in
+`span (F bodies.length).rigidityRows` (the target, top).
+
+The `foldl` applies the list *head* first (innermost), so the head body `bodies[0]` is the first
+framework rise `F 0 → F 1` and the chain runs source-at-bottom `F 0` up to target-at-top
+`F (length)` — matching `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`'s `Fv` (source) → `Fva`
+(target) orientation per step. The chain `F` is free to carry a *different seed* at each index `s`
+(unlike the seed-fixed `shiftBodyFramework` of the candidate→base fold), which is what makes this
+the seed-advancing core: a concrete instantiation supplies `F s = ofNormals (G − vₛ₊₁) ends qₛ`
+with the seed `qₛ` accumulating one swap per step (KT 2011 §6.4.2 eq.~(6.62)). The proof is a `List`
+right-induction (`reverseRec`): the empty fold is `φ ∈ span (F 0)` itself; the `append_singleton`
+step transports `φ` through the inner fold over `rest` (landing in `span (F rest.length)` by the
+inductive hypothesis), then applies the last step's single W9a transport `F rest.length →
+F (rest.length + 1)`. Graph-free over the carrier, inheriting W9a's §38-clean discipline. -/
+theorem BodyHingeFramework.wstep_foldl_mem_span_rigidityRows
+    [DecidableEq α] (F : ℕ → BodyHingeFramework k α β)
+    (ec : ℕ → β) (bodies : List (α × α × α))
+    (hstep : ∀ s, (hs : s < bodies.length) →
+      (bodies[s].2.2 ≠ bodies[s].2.1 ∧ bodies[s].2.2 ≠ bodies[s].1) ∧
+      (F s).graph.IsLink (ec s) bodies[s].2.1 bodies[s].2.2 ∧
+      (∀ f x, (F s).graph.IsLink f bodies[s].2.1 x → f = ec s) ∧
+      (∀ f x, (F s).graph.IsLink f x bodies[s].2.1 → f = ec s) ∧
+      (∀ f x y, (F s).graph.IsLink f x y → x ≠ bodies[s].1 ∧ y ≠ bodies[s].1) ∧
+      (∀ f x y, (F s).graph.IsLink f x y → x ≠ bodies[s].2.1 → y ≠ bodies[s].2.1 →
+        (F (s + 1)).graph.IsLink f x y ∧ (F s).hingeRowBlock f ≤ (F (s + 1)).hingeRowBlock f))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ (F 0).rigidityRows) :
+    (bodies.foldl (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T)
+        LinearMap.id) φ
+      ∈ Submodule.span ℝ (F bodies.length).rigidityRows := by
+  induction bodies using List.reverseRec with
+  | nil => simpa using hφ
+  | append_singleton rest b ih =>
+    -- Head-first fold: `foldl (rest ++ [b]) = (wstep b) ∘ (foldl rest)`, last body `b` applied last
+    -- (outermost). The inner fold transports `φ` (bottom of the chain, `span (F 0)`) up through
+    -- `rest` to land in `span (F rest.length)`, then the last step rises `F rest.length → F (·+1)`.
+    rw [List.foldl_append]
+    simp only [List.foldl_cons, List.foldl_nil, LinearMap.comp_apply]
+    have hb : (rest ++ [b])[rest.length]'(by simp) = b := by simp
+    have hinner : (rest.foldl
+        (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T)
+        LinearMap.id) φ ∈ Submodule.span ℝ (F rest.length).rigidityRows := by
+      refine ih (fun s hs => ?_)
+      -- the inner steps re-index off `rest ++ [b]` via `getElem_append_left`.
+      have hs' : s < (rest ++ [b]).length := by simp; omega
+      have hidx : (rest ++ [b])[s]'hs' = rest[s] := by rw [List.getElem_append_left hs]
+      have := hstep s hs'
+      rwa [hidx] at this
+    -- the last step's single-swap W9a transport `F rest.length → F (rest.length + 1)`.
+    obtain ⟨⟨hca, hcv⟩, hlink_ec, hdeg2, hdeg2r, hnov, htrans⟩ := hstep rest.length (by simp)
+    rw [hb] at hca hcv hlink_ec hdeg2 hdeg2r hnov htrans
+    have hlast := BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+      (Fv := F rest.length) (Fva := F (rest.length + 1))
+      (v := b.1) (a := b.2.1) (c := b.2.2) (e_c := ec rest.length)
+      hca hcv hlink_ec hdeg2 hdeg2r hnov htrans hinner
+    rw [show (rest ++ [b]).length = rest.length + 1 by simp]
+    simpa [BodyHingeFramework.wstep_apply] using hlast
+
 /-- **The relabel side of the cycle-W9a fold is `funLeft` of the swap product** (the linear-map
 companion of the permutation-level `shiftPerm_eq_prod_map_swap_shiftBodyList`,
 CHAIN-2c-ii-transport-W9a route B, `notes/Phase23-design.md` §(o″)). The cycle-W9a `List.foldr`

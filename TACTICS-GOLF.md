@@ -82,6 +82,15 @@ symptom-indexed and lighter.
     equation-level `inv_smul_eq_iff₀ hcne` on the goal, not `rw [← hc, smul_smul, …]`;
     the nested-`•` `rw` chain fails to find its pattern on `⋀`-subtype elements (and
     `module` mis-atomizes the term).
+20. **Match the list recursor to which end the fold's base case sits on** — a
+    `List.foldr` whose invariant is anchored at the *tail* inducts with `cons` +
+    `generalizing` (the IH recurses over the shifted chain `F (· + 1)`); a `List.foldl`
+    (accumulating, ascending) whose invariant is anchored at *index 0* inducts with
+    `List.reverseRec` (cases `nil` / `append_singleton rest b ih`, peeling the **last**
+    element) and does **not** generalize the chain family — `index 0` stays pinned, only
+    the suffix grows. Re-index the inner steps off `rest ++ [b]` with
+    `List.getElem_append_left`; the peeled last element resolves with bare `simp`.
+    (FRICTION *A `List.foldl` whose induction base case lives at index `0`…*.)
 
 ---
 
