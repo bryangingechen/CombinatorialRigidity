@@ -198,7 +198,12 @@ Loop:
      just the *named* APIs did not). A **route claim a build agent records
      in the hand-off** ("the next step must …") is a recon verdict in
      disguise — verify it against what the design doc *actually proposed*
-     before dispatching a build on it (22h rows 38–39). When the design
+     before dispatching a build on it (22h rows 38–39; 23b row 284, where a
+     build that landed a clean leaf wrote a NEXT-step route into its hand-off
+     that *re-proposed a design-rejected route* — the per-body block carry
+     §(o‴) had killed as the 4×-mis-pin trap — and a fresh coordinator who
+     trusted the hand-off would have re-walked it: diff the build's hand-off
+     route against the authoritative design verdict, not just the prior pin). When the design
      doc itself defers a shape ("pin at the X moment"), that moment IS the
      next dispatch — a design-settle pass, not a build. **This holds even
      when the design pass says "resolve at the build, soft-rec X":** if the
