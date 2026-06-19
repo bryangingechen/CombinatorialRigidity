@@ -371,24 +371,13 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   is its OWN cycle induction on `shiftBodyList i`, re-tagging `(ab)`→`(cv)` once per moved body (KT
   eq. 6.62/6.66 ±r carry, source-verified p.696–698). `chainData_relabel_arm` shape unchanged. The
   dead `funLeft_shiftPerm_dualMap_sub_acolumns_…` pin (never built) is removed. Detail §(o″).
-- **T-W9b single-step framework form LANDED 2026-06-19** (`Relabel.lean`, axiom-clean) —
-  `BodyHingeFramework.funLeft_dualMap_bottomTag_mem_rigidityRows`, the framework-level restatement of
-  `case_III_bottom_relabel`: abstract `Fv`/`Fva`, the carrier facts (degree-2 closure, off-`v`, off-`a`
-  `htrans`, the `e_c`/`e_b` support-extensor relations `Fv.supportExtensor e_c = Cca`,
-  `Fva.supportExtensor e_b = Cab`) as hypotheses. The W9b analogue of W9a's
-  `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`; the per-step the (next) W9b fold core iterates.
-  Genuine-row disjunct: three-way split (`x=a`/`y=a`/off, the degree-2 case landing the `(cv)`-tag);
-  `(ab)`-tag → genuine `e_b`-row of `Fva`. No `eq_and_eq_or_eq_and_eq` disjunct-order friction beyond
-  the known idiom.
-- **T-W9b fold core LANDED 2026-06-19** (`Relabel.lean`, axiom-clean) —
-  `BodyHingeFramework.bottomTag_foldr_mem_rigidityRows`: the `List`-induction iterating the single-step
-  W9b over a framework chain, threading a per-step `Tag : ℕ → Dual → Prop` so the `(ab)`/`(cv)`
-  block-tag chaining is automatic (each `hstep` = "single-step maps `Tag (s+1)` to `Tag s`"). The fold
-  is the pure-relabel `bodies.foldr (fun b T => (funLeft (swap b.2.1 b.1)).dualMap.comp T) id` (same
-  swap product as `wstep`'s leading term, `wstep_foldr_funLeft_eq`-identifiable with `funLeft (shiftPerm
-  i)`; no a-column, unlike W9a). Proof = the same head-first-fold + shifted-chain `List` induction as
-  `wstep_foldr_mem_span_rigidityRows`, generalized over `Tag` instead of carrying `F`; `simpa` handles
-  all fold/index bookkeeping (no new friction).
+- **T-W9b step + fold core LANDED 2026-06-19** (`Relabel.lean`, axiom-clean) — the single-step framework
+  form `funLeft_dualMap_bottomTag_mem_rigidityRows` (abstract-`Fv`/`Fva` restatement of
+  `case_III_bottom_relabel`, carrier facts incl. `e_c`/`e_b` support-extensor relations as hyps; the W9b
+  analogue of W9a's `funLeft_dualMap_sub_acolumn_…`) + the fold core `bottomTag_foldr_mem_rigidityRows`
+  (the `List`-induction iterating it, threading a per-step `Tag : ℕ → Dual → Prop` so the `(ab)`/`(cv)`
+  block-tag chaining is automatic; pure-relabel fold — no a-column — `funLeft (shiftPerm i)`-identifiable
+  via `wstep_foldr_funLeft_eq`). Next: W9b membership.
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
