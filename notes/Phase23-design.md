@@ -2764,7 +2764,7 @@ that no contract (C.3/C.6) moves.
 **Status:** the W9b-membership build (HEAD 86a60be, row 266) hit a genuine gap and BLOCKED rather
 than force a wrong proof — a win. This sub-section pins the gap, decomposes it into a buildable leaf
 with the correct signature, and re-points. **Clause-(i): every load-bearing claim source-verified
-against the landed bodies** (file:line) **and KT 2011 §6.4.2** (pdf pp. 49–51 = paper pp. 696–698,
+against the landed bodies** (file:line) **and KT 2011 §6.4.2** (pdf pp. 50–52 = paper pp. 696–698,
 eqs. 6.60–6.67, read end-to-end). **Clause-(ii): no motive/IH (C.6) or spine-carry (C.3) change; the
 bridge is a degree-2 row-identity leaf, NOT genuinely-new math** (it generalizes a LANDED d=3 lemma)
 — so the W9b/2c-ii-arm approach is structurally sound and stands.
@@ -3101,8 +3101,8 @@ or spine-carry (C.3) change; route B holds; d=3 zero-regression preserved.
 **Status:** user-adjudicated comprehensive telescoping design-pass, docs-only, 2026-06-19. Clause-(i):
 every load-bearing Lean claim verified against the **landed bodies** (file:line per claim), and the two
 decisive arithmetic single-steps **machine-checked** (a scratch `lake env lean` compile, no `sorry`).
-Clause-(ii) source: a close end-to-end read of **KT 2011 §6.4.2 pp. 696–698** (pdf pp. 49–51, offset
-`printed = pdf + 647`), eqs. (6.60)–(6.67), with (6.44)/(6.50)–(6.59) read for the setup.
+Clause-(ii) source: a close end-to-end read of **KT 2011 §6.4.2 pp. 696–698** (pdf pp. 50–52, offset
+`printed = pdf + 646`), eqs. (6.60)–(6.67), with (6.44)/(6.50)–(6.59) read for the setup.
 **VERDICT: FLAG-DON'T-FORCE STOP — see (E). The fold-invariant question has a clean answer for the
 genuine-row part of the bottom family, but the `(ab)`-block disjunct of the bottom family `w` has NO
 landed span-membership property at the chain interior and CANNOT be carried by either the §(o″)
@@ -3314,7 +3314,9 @@ bookkeeping for the whole relabel.
 
 **What I established (so the next session does not re-walk it):** (1) the §(o″) pinned-`Tag` is
 dead (residual, machine-confirmed); (2) the pure-span `Tag` fails on the block disjunct (not a span
-member, source-confirmed `Candidate.lean:448`); (3) an accumulating-sum `Tag` fails identically (the
+member — proved by the W5 rank arithmetic `Candidate.lean:339–355`: `finrank(span Fab)=D(m−1)` but
+`finrank(span Fv)=D(m−1)−k'`, `k'=dof(Gv)≥1`, so `span Fv ⊊ span Fab` forces `Eb ⊄ span Fv`; the `:448`
+cited earlier is just a `set`, not the proof); (3) an accumulating-sum `Tag` fails identically (the
 residuals do not telescope — no pairwise cancellation); (4) the candidate-row `hρGv` transport IS clean
 and IS the landed T-W9a span fold (machine-verified single-step) — **that half is done and correct**;
 (5) the honest GLOBAL transport for the bottom family is the **whole-relabel graph-iso correspondence**
@@ -3347,6 +3349,32 @@ plausible" shape the 4× mis-pins were.
 whole `shiftPerm 2 = (v₁v₂)` is a single swap = the landed `case_III_bottom_relabel` (the bottom step,
 where `b` IS off-chain and the termination is correct). The reshape fires only for `i≥3`; the d=3 M₃ /
 `case_III_arm_realization_M3` / dispatch are untouched.
+
+**(F) ADVERSARIAL SECOND READ — RE-ROUTE CONFIRMED (read-only recon, opus, 2026-06-19).** An
+independent reader (told to *refute* this verdict against KT verbatim + the landed bodies, not to trust
+the prose — warranted because this is the 4×-mis-pinned crux and a re-route) failed all three attacks:
+(A) the block disjunct is genuinely not a `(G−vᵢ)`-span member (the rank argument above) and has no
+per-body home (interior `e_b = edge(s+1)` is graph-structurally cut by `removeVertex vₛ₊₂` — confirmed
+vs `shiftBodyGraph_deg_two`, `Operations.lean:1710`; a paired/companion object only relocates the
+homelessness); (B) KT §6.4.2 read line-by-line confirms (6.66)'s ±r is a *family of `d−1` independent
+single-body facts* transported by the ONE whole-relabel row correspondence (6.62) — verbatim (6.52)
+"this dependency will play a key role", (6.63)→(6.64) adds it ONCE, (6.66) is one (6.44) per candidate
+at the single degree-2 body `vᵢ` — there is **no per-body chain in KT**; (C) the abandoned machinery
+(`bottomTag_foldr`, the §(o″) single-step, `redundancy_panel_carry`) has **zero live consumers** and
+`chainData_relabel_arm`/the T-W9a fold are unbuilt scaffolding, so abandoning the per-body chain orphans
+no live obligation (no sorries in CaseIII).
+- **OPEN FACT sharpened (the second read's (D)).** The genuine-row arm is a buildable leaf *conditional
+  on* one concretely-named new obligation, NOT a trivial reuse of the two landed lemmas: the
+  **`shiftPerm`-fixed-point / seed-extensor-coincidence identity for non-chain edges** — that
+  `shiftPerm i` fixes every non-chain edge's endpoints so the shifted seed `qᵢ = q₁∘ρᵢ` reproduces
+  `q₁`'s extensors there (KT (6.55)/(6.56)), the *whole-cycle* analogue of d=3 M₃'s single-swap
+  `hends₃_off` off-`{e_a,e_b,e_c}` extensor coincidence. The T-W9a chain deliberately keeps `ends`/`q`
+  FIXED (`shiftBodyFramework_htrans` closes by `le_refl`), so it does **not** supply this seed-change
+  reasoning — it is the genuinely-new piece the OPEN-FACT recon must write before any build.
+- **Nuance (safe direction).** `candidateRow_ac_eq_neg` (`Claim612.lean`, its own home) is used term-level
+  ONLY inside `redundancy_panel_carry` — but the re-route's block arm still needs eq. (6.44)/G4d-i, so it
+  will most likely be **re-consumed** by the new arm; re-check at the arm build rather than delete it
+  blindly (fewer deletions than the orphan list claims — never an orphaned obligation).
 
 ---
 
