@@ -21,16 +21,12 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Route B LOCKED (§(o″)); the cycle-W9a *two-step composition* brick LANDED; next = the full
-cycle-W9a `List`-fold `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
-(2c-ii-transport-W9a, iterating the just-landed composition step along the head-peel).** The §(o′)
-route-A/B fork is resolved to **route B** (route A REJECTED unprovable) — canonical verdict +
-rejection argument + route-B leaf decomposition in *Hand-off* + design §(o″). LANDED, axiom-clean:
-the graph-iso brick (A); the head-peel `shiftPerm_eq_swap_mul`; and the **two-step composition**
-`BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` — two single-swap W9a
-transports compose across `σ₂ ∘ σ₁`, subtracting two a-columns (the per-step a-column subtractions
-*do* telescope cleanly; settles the §(o″) telescoping concern). The remaining T-W9a is the
-`List`/cycle iteration of this step over the `i−1` moved bodies (`Decisions` + git).
+**Route B LOCKED (§(o″)); the cycle-W9a two-step composition LANDED (telescoping de-risked); next =
+the full cycle-W9a `List`-fold `ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows`
+(2c-ii-transport-W9a, iterating the composition step over the `i−1` bodies along the head-peel).**
+LANDED axiom-clean: graph-iso (A), head-peel `shiftPerm_eq_swap_mul`, two-step
+`funLeft_dualMap_sub_acolumn_comp…` (per-step a-column subtractions DO telescope). **Full route-B
+verdict + decomposition + the rejection of route A: *Hand-off* (canonical) + design §(o″).**
 
 **Route β — LOCKED** (user-adjudicated 2026-06-18, KT-source-verified row 242): ONE `v₁`-base, the
 uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** route β. The
@@ -44,19 +40,14 @@ uniform `Fin (k+1)` relabel arm; the §(o″) route-B verdict is **within** rout
 decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a → T-W9b) →
 **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
 
-**Architectural constraint (standing, CHAIN-3-era).** Metric-using Hodge leaves live in
-`MeetHodge.lean`, never the metric-free `Meet.lean` (the `PiL2` import regresses
-`complementIso_smul_eq_extensor_join` to a `whnf` timeout) — TACTICS-QUIRKS § 59.
-
-**CHAIN orientation (standing).** The arm-realization engine is already general-`k`; the only
-genuinely-`d=3` surface was the dispatch (`case_III_candidate_dispatch`) + its `⋀²ℝ⁴` discriminator —
-CHAIN replaces it with the `d`-candidate chain dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality finish (LANDED).
-Full source-verified orientation: design §"CHAIN".
-
-**The load-bearing flag (recon (b)) — SETTLED 2026-06-17.** The CHAIN↔ENTRY chain-data contract is
-**frozen** (design §"CHAIN↔ENTRY contract"): `G.ChainData n` is the shared shape, reshaped via three
-lockstep decls (ENTRY extractor / producer `…hcand` / CHAIN-5 `hdispatch`); no motive/IH change (C.6);
-CHAIN-5's signature authorable, the `d=3` line a zero-regression wrapper (C.4).
+**Standing context (settled; full detail in the design doc).** (1) *Architectural (CHAIN-3-era):*
+metric-using Hodge leaves live in `MeetHodge.lean`, never the metric-free `Meet.lean` (a `PiL2` import
+regresses `complementIso_smul_eq_extensor_join` to a `whnf` timeout) — TACTICS-QUIRKS § 59. (2)
+*Orientation:* the arm-engine is already general-`k`; CHAIN replaced only the d=3 dispatch + its `⋀²ℝ⁴`
+discriminator with the `d`-candidate chain + `⋀^{d−1}` duality finish (design §"CHAIN"). (3) *Contract
+(SETTLED):* the CHAIN↔ENTRY `G.ChainData n` shape is frozen — three lockstep decls (ENTRY extractor /
+producer `…hcand` / CHAIN-5 `hdispatch`), no motive/IH change (C.6), `d=3` a zero-regression wrapper
+(design §"CHAIN↔ENTRY contract").
 
 ## CHAIN leaf checklist
 
@@ -376,13 +367,10 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `formPerm ∘ ofFn` + `ofFn = cons` (§61 motive trap, `List.ext_getElem`) idioms in FRICTION. Git + §(o).
 - **CHAIN-2c-ii-transport-W9a composition step LANDED 2026-06-19** —
   `BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (`CaseIII/Relabel.lean`,
-  axiom-clean): two single-swap W9a transports compose into one across the composite relabel
-  `σ₂ ∘ σ₁`, subtracting two a-columns (one per moved degree-2 body). Pure linearity over the two
-  single-step memberships (feed `T₁ φ ∈ span F₁` to the second W9a, straighten the nested `dualMap`s
-  via `dualMap_comp_dualMap` + `funLeft_comp`). **Settles the §(o″) telescoping concern** — the
-  per-step a-column subtractions accumulate cleanly. Next in T-W9a: the `List`/cycle iteration over
-  the head-peel (`shiftPerm_eq_swap_mul`), one swap per moved body. FRICTION idiom on the
-  `dualMap`/`funLeft` contravariance composition.
+  axiom-clean): two single-swap W9a transports compose across `σ₂ ∘ σ₁`, subtracting two a-columns;
+  pure linearity (feed `T₁φ ∈ span F₁` to the 2nd W9a, straighten nested `dualMap`s). **Settles §(o″)'s
+  telescoping concern** (per-step subtractions accumulate cleanly). Next T-W9a: the `List`/cycle
+  iteration over the head-peel. `dualMap`/`funLeft` idiom → FRICTION.
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
   + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
