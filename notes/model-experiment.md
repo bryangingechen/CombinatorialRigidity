@@ -42,11 +42,11 @@ file).
   S/P/B is still **rated and logged** per dispatch (experiment data), but the
   rung is **opus regardless of the map**; probes off; boundary pairs run
   opus-vs-opus or are skipped. Re-confirm (or lift) at session start.
-- **Per-session run modifications** (re-confirm at session start; sessions #6–#7
+- **Per-session run modifications** (re-confirm at session start; sessions #6–#8
   set them): the 10-run check-in cap **lifted** (loop runs to phase close or a
   surfaced concern); step-4 mechanical fixups (wrong branch / author /
-  trailer) **pre-authorized**. Session-#7 availability (2026-06-18, expires
-  session-end): opus confirmed (the coordinator runs on it); under the
+  trailer) **pre-authorized**. Session-#8 availability (2026-06-18, re-confirmed;
+  expires session-end): opus confirmed (the coordinator runs on it); under the
   OPUS-ONLY override the other rungs are not probed (boundary pairs
   opus-vs-opus or skipped) — a fresh coordinator under the S/P/B map re-probes.
 - **Session #7 hand-off (2026-06-18; paused by user at a milestone after row 237).**
@@ -319,6 +319,7 @@ quality / blueprint sync / notes discipline / commit message
 | 235 | RECON (read-only): CHAIN-2 decomposition + §(c) framing correction, 988c454 (docs) | 3/3/1 | opus | recon | clean | —✓———— | not reported (Plan agent) | Recon overturned §(c)'s CHAIN-2 framing: it claimed CHAIN-2 generalizes a `q:α×Fin 4` chain, but the named trio is **already general-`k`** (verified: grade-2 pins live only in `Realization.lean` = CHAIN-5). Real residual = the `Fin d` reduction *layer* (2a/2b/2c) on the reused chain + closed CHAIN-1. Flagged: the `ChainData` record is unauthored in Lean (frozen in prose C.1) + CHAIN-2's indexing is ENTRY-coupled. Design-error catch. Opus by override (design-settle→fable); read-only Plan, notes/commit coordinator-supplied. |
 | 236 | CHAIN-2 zeroth leaf — author the `G.ChainData n` `structure` (settling `deg_two`), 9058b34 | 2/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 147k tok / 68 tools / 25.6min | CHAIN-2 zeroth-leaf prereq: authored the `G.ChainData n` structure, settling the design-flagged `deg_two` Fin-arithmetic via a `0<(i:ℕ)` guard (avoids `[NeZero d]`; new FRICTION idiom). Faithful to contract C.1 + §(l); d=3 C.4 map verified by rfl/decide; sound placement (Operations.lean, importable by ENTRY + CHAIN-2/5). Gates clean, note healthy (480). **Wall-time outlier 25.6min (~2× norm)** at normal token/tool counts — fiddly Fin-index settle, NOT bloat (small clean additive deliverable). |
 | 237 | CHAIN-2 zeroth leaf pt2 — 5 `ChainData` interior-split accessors (CHAIN-2a prereq glue), d86f6d2 | 2/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 143k tok / 57 tools / 26.4min | Sanctioned scope-shrink: directed at CHAIN-2a's core but sized it too big, landed instead 5 `ChainData` interior-split accessors (the per-`i` `(v,a,b,e_a,e_b)` tuple `case_III_rank_certification` consumes) — legit prereq glue, trivial restatements of `deg_two`/`link`. Gates clean, note healthy (476). **2nd consecutive ~26min wall-time outlier (~2× norm)** at normal token/tool — ChainData/Fin-index infra is wall-heavy. **2nd consecutive infra commit feeding the unbuilt CHAIN-2a core** → coordinator assessing recon-vs-build for the core (rows 27-29). |
+| 238 | CHAIN-2a design-pass §(m) — verdict (re-index) + 2a sub-leaf decomposition, ea18696 (docs) | 3/3/1 | opus | normal | clean | —✓——✗✓ | 16 tools (R6/B5/E5); tok+wall not surfaced (async dispatch) | Design-pass (OPUS-ONLY; mapped 3/3/1). Verdict: CHAIN-2a RE-INDEXES the general-`k` `case_III_arm_realization` — the per-`i` ρ/w gates thread from two already-general-`k` producers (W6b + CHAIN-4d discriminator), NOT a from-scratch per-`i` construction. Coordinator re-verified vs landed bodies (both producers genuinely general-`k`) — route holds, orphans nothing, refines §(l). Pinned 2a-i/2a-ii + one clause-(ii) build-wiring flag (no motive change). Notes ✗: tipped Phase23b.md to 518 (>500) w/o rebalancing CLOSED recaps (4th consecutive under-compression) — coordinator absorbed (43732d2 →477). |
 
 ## Findings
 
