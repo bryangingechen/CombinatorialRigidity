@@ -17,17 +17,15 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 ## Current state
 
 **Route B LOCKED (§(o″)). T-W9a (membership half) LANDED — next commit = (T-W9b)** the cycle
-bottom-tag transport (mirror the d=3 `case_III_bottom_relabel`). The **(T-W9a) membership half is
-COMPLETE**: `Graph.ChainData.shiftBodyList_foldr_mem_span_rigidityRows` (axiom-clean) feeds the fold
-core `wstep_foldr_mem_span_rigidityRows` the six per-step `hstep` conjuncts off the landed
-graph/framework accessors, transporting `span (G − vᵢ)`-rows (top, `shiftBodyFramework (i−1)`) → `span
-(G − v₁)`-rows (bottom, `shiftBodyFramework 0`) for `2 ≤ i`. The total `F : ℕ → BodyHingeFramework` is
-the new `shiftBodyFrameworkTotal` (`dite`, out-of-range tail = the always-valid `s=0` member) +
-`shiftBodyFrameworkTotal_eq`. The relabel side (`funLeft (shiftPerm i)` via `wstep_foldr_funLeft_eq` +
-`shiftPerm_eq_prod_map_swap_shiftBodyList`) stays a **separate** bridge for the arm closer — the
-membership half is span-only. Endpoints are **removeVertex** frameworks (NOT splits — splits enter at
-the arm; §(o″)). After T-W9b: **2c-ii-arm** → **2c-iii** → **CHAIN-5** remain. Full decomposition:
-design §(o″).
+bottom-tag transport (per-`i` generalization of the d=3 `case_III_bottom_relabel`). The (T-W9a)
+membership half `shiftBodyList_foldr_mem_span_rigidityRows` (axiom-clean) transports `span (G − vᵢ)`-rows
+→ `span (G − v₁)`-rows for `2 ≤ i` via the fold core `wstep_foldr_mem_span_rigidityRows` + the
+removeVertex framework chain `shiftBodyFramework`; **span-only** — the `funLeft (shiftPerm i)` relabel
+bridge stays separate for the arm. Endpoints are **removeVertex** frameworks, NOT splits (splits enter
+at the arm). **T-W9b is decomposed (§(o″)): its OWN cycle induction on `shiftBodyList i`, NOT a `wstep`
+fold reuse** (W9b is a pure relabel of a *tagged* member, re-tagging `(ab)`→`(cv)` per moved body;
+~1–2 commits) — full route in *Hand-off* below. After T-W9b: **2c-ii-arm** → **2c-iii** → **CHAIN-5**
+remain. Full decomposition: design §(o″).
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -111,8 +109,11 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       (+ `_eq`), axiom-clean): the fold core gets the six per-step `hstep` conjuncts off the landed
       accessors, transporting `span (G − vᵢ)`-rows → `span (G − v₁)`-rows for `2 ≤ i` (span-only; the
       `funLeft (shiftPerm i)` relabel bridge stays separate for the arm closer)
-      → next **(T-W9b)** the cycle bottom-tag transport (mirror
-      `case_III_bottom_relabel`) →
+      → next **(T-W9b)** the cycle bottom-tag transport (per-`i` generalization of
+      `case_III_bottom_relabel`; decomposed design §(o″): a pure-relabel `(funLeft (shiftPerm
+      i)).dualMap` of a *tagged* member, its OWN cycle induction on `shiftBodyList i` — NOT a `wstep`
+      fold reuse — re-tagging `(ab)`→`(cv)` per moved body; ~1–2 commits, genuinely-new not a numeral
+      pass) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
       the relabelled roles with `−ρ₀`; d=3 M₃ is the `i=2` instance) → **CHAIN-2c-iii**
       (`chainData_dispatch` assembly, d=3 a zero-regression wrapper). Full signatures + decomposition:
@@ -178,25 +179,29 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). T-W9a (membership
-half) LANDED. next commit = (T-W9b)** the cycle bottom-tag transport — the mirror of the d=3
-`case_III_bottom_relabel` (`CaseIII/Relabel.lean:915`): per-member relabel of one W6b bottom-family
-member through `funLeft (shiftPerm i)`, the per-`i`-cycle generalization of M₃'s single `(av)`-swap
-bottom-tag map. It feeds `case_III_arm_realization`'s `hwmem` slot at the relabelled roles (the arm
-closer 2c-ii-arm wires T-W9a's membership half + T-W9b's bottom tags into
-`chainData_relabel_arm`). The relabel bridge `wstep_foldr_funLeft_eq` +
-`shiftPerm_eq_prod_map_swap_shiftBodyList` (rewriting the W9a fold's leading `funLeft`-of-swap-product
-to `funLeft (shiftPerm i)`) is applied at the arm, not T-W9a. See *Current state* for detail,
-**checklist CHAIN-2** for the single per-leaf status tracker
-(T-W9a-chain ✓ → T-W9a ✓ → T-W9b → 2c-ii-arm → 2c-iii → CHAIN-5), and design §(o″) for the full
-decomposition. The graphiso iff `splitOff_isLink_shiftRelabel_iff` is the
-`(shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner (candidate-`i` ↔ `v₁`-base split, interior
-`1 < i`).
+half) LANDED. next commit = (T-W9b)** the cycle bottom-tag transport — the per-`i`-cycle generalization
+of the d=3 `case_III_bottom_relabel` (`CaseIII/Relabel.lean:1019`). **T-W9b decomposition done
+(design §(o″) *T-W9b decomposition*, source-verified against the landed W9b/M₃ bodies + KT
+p.696–698): genuinely-new cycle construction, ~1–2 commits, NOT a numeral pass and does NOT reuse the
+T-W9a `wstep` fold core** — W9b is a *pure relabel* `(funLeft (shiftPerm i)).dualMap φ` (NO a-column
+subtraction) of a **tagged** bottom-family member (genuine `Gv`-row ∨ `(ab)`-block redundancy
+disjunct), so it cannot be a `wstep` fold; it is its OWN cycle treatment — an induction on
+`shiftBodyList i` reusing the landed single-step `case_III_bottom_relabel` at each head-peel, with the
+tag re-classifying `(ab)`→`(cv)` **once per moved body** (KT eq. 6.62 row correspondence + the ±r
+carry eq. 6.66 — verified: the shared `r` is carried `±r` "because `vᵢ` is degree two", cf. 6.44).
+Likely stated against the same `shiftBodyFramework` removeVertex chain so the genuine-row disjunct
+reuses T-W9a's span result. It feeds `case_III_arm_realization`'s `hwmem` slot at the relabelled roles;
+the arm closer 2c-ii-arm wires T-W9a's span half + its deferred relabel bridge (`wstep_foldr_funLeft_eq`
++ `shiftPerm_eq_prod_map_swap_shiftBodyList`, exposing `funLeft (shiftPerm i)`) + T-W9b's bottom tags
+into `chainData_relabel_arm`. **Per-leaf tracker** (checklist CHAIN-2):
+T-W9a-chain ✓ → T-W9a ✓ → T-W9b → 2c-ii-arm → 2c-iii → CHAIN-5. Full decomposition: design §(o″).
 
 **Two orphaned lemmas to confirm-and-delete at the 2c-ii-arm/cleanup commit** (both zero callers; full
 detail §(o″)): (1) `ofNormals_relabel_perm` (2c-ii-β, built for the REJECTED route A — route B is
 M₃-style); (2) `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (the binary composition step,
-superseded by the `wstep` fold). The graph-iso `splitOff_isLink_shiftRelabel_iff` is **NOT** orphaned
-(T-W9a-chain reaches for it at shifted sub-indices).
+superseded by the `wstep` fold). The graph-iso `splitOff_isLink_shiftRelabel_iff` is **NOT** orphaned —
+it is consumed at the **arm** (`chainData_relabel_arm`'s `hiso`), NOT by T-W9a (which uses the
+un-relabelled `shiftBodyGraph_isLink_of_off_body`, not the whole-cycle iff).
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o′)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
@@ -326,33 +331,36 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `fin_cases u`; reuse 2a-ii only at `M₀`. Route β LOCKED (user-adjudicated, row 242). Detail
   `notes/Phase23-design.md` §(n).
 - **CHAIN-2c-ii design-pass (§(o)/§(o′)/§(o″)) — VERDICT: a genuinely-new relabel arm (NOT a numeral
-  pass), route B for the transport.** §(o)/§(o′) decomposed 2c-ii-α (`shiftPerm`, LANDED) → 2c-ii-β
-  (`ofNormals_relabel_perm`, LANDED) → graphiso (LANDED) → transport → arm; M₀-arm (2a-ii) reused at
-  `i=1` only. **§(o″) (2026-06-19) adjudicated the §(o′)(B) route-A/B fork → route B** (shared-`ρ₀`
-  row-span, the cycle-W9a/W9b transport); **route A REJECTED** (its eq.-6.66 identity equates two
-  `Classical.choice` existentials — unprovable; KT p. 698 carries ONE `r` + the ±r chain, the landed
-  d=3 M₃ is route B). No motive/IH/spine-carry change. Detail §"CHAIN"(o)/(o′)/(o″) + *Hand-off* lead.
+  pass), route B.** Leaf chain: 2c-ii-α (`shiftPerm`) → 2c-ii-β (`ofNormals_relabel_perm`) → graphiso →
+  transport (T-W9a-chain → T-W9a → T-W9b) → arm; M₀-arm (2a-ii) reused at `i=1` only. **§(o″) adjudicated
+  the §(o′)(B) fork → route B** (shared-`ρ₀` row-span); **route A REJECTED** (its eq.-6.66 identity
+  equates two `Classical.choice` existentials — unprovable; KT p.698 carries ONE `r` + the ±r chain,
+  the landed d=3 M₃ is route B). No motive/IH/spine-carry change. Detail §"CHAIN"(o)/(o′)/(o″).
+- **T-W9b decomposed 2026-06-19 (docs-only, §(o″) *T-W9b decomposition*; the stale §(o″)
+  pinned-signatures block corrected to the LANDED T-W9a shape).** VERDICT: T-W9b is a genuinely-new
+  cycle construction (~1–2 commits, NOT a numeral pass) that does **NOT** reuse the T-W9a `wstep` fold
+  core — W9b is a *pure relabel* of a *tagged* bottom member (genuine `Gv`-row ∨ `(ab)`-block), so it
+  is its OWN cycle induction on `shiftBodyList i`, re-tagging `(ab)`→`(cv)` once per moved body (KT
+  eq. 6.62/6.66 ±r carry, source-verified p.696–698). `chainData_relabel_arm` shape unchanged. The
+  dead `funLeft_shiftPerm_dualMap_sub_acolumns_…` pin (never built) is removed. Detail §(o″).
 - **CHAIN-2c-i LANDED 2026-06-18 — the single-discriminator pick (steps 1–3, route β):**
   `exists_chainData_discriminator_pick` (`CaseIII/Realization.lean`, axiom-clean) — the `Fin (k+1)`-panel
   LI feeds the one CHAIN-4d discriminator call → `(u, n')`; verbatim generalization of the green d=3
   discriminator region (`case_III_candidate_dispatch` 435–442), `u` arbitrary. Detail in git + §(o).
-- **CHAIN-2c-ii-α + head-peel factorization LANDED 2026-06-18/19** (`Induction/Operations.lean`,
-  axiom-clean) — `ChainData.shiftPerm` (KT eq. 6.54, the vertex `i`-cycle) + the recursion handle
-  `shiftCycle_eq_cons` / `shiftPerm_eq_swap_mul`. Idioms in FRICTION. Git + §(o).
-- **CHAIN-2c-ii-transport-W9a (route B) LANDED 2026-06-19** (`CaseIII/Relabel.lean` + `Operations.lean`,
-  axiom-clean; the genuinely-new crux of route B) — the iterated W9a row-span transport over the cycle
-  moved-body list: linear-algebra infra (fold core `wstep_foldr_mem_span_rigidityRows`, `shiftBodyList`,
-  perm bridge, fold identity `wstep_foldr_funLeft_eq`) + the removeVertex framework chain
-  `shiftBodyFramework = ofNormals ∘ shiftBodyGraph` + per-step `htrans` (`le_refl`, `ends`/`q` fixed) +
-  the membership half `shiftBodyList_foldr_mem_span_rigidityRows` (six `hstep` conjuncts off the landed
-  accessors, total `F` via `shiftBodyFrameworkTotal`; span-only — the `funLeft (shiftPerm i)` relabel
-  bridge stays separate, for the arm). Endpoints removeVertex, NOT splits (§(o″)). Detail: git + §(o″).
-- **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
-  `hiso` supplier `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`
-  intertwiner) + `ChainData.shiftEdgePerm` + action lemmas. Detail FRICTION + git.
+- **CHAIN-2c-ii-α + head-peel LANDED 2026-06-18/19** (`Operations.lean`, axiom-clean) —
+  `ChainData.shiftPerm` (KT eq. 6.54) + recursion handle `shiftCycle_eq_cons`/`shiftPerm_eq_swap_mul`.
+  Idioms in FRICTION; git + §(o).
+- **CHAIN-2c-ii-transport-W9a (route B) LANDED 2026-06-19** (`Relabel.lean`+`Operations.lean`,
+  axiom-clean; the genuinely-new crux of route B) — the iterated cycle W9a row-span transport
+  `shiftBodyList_foldr_mem_span_rigidityRows` (fold core `wstep_foldr_mem_span_rigidityRows` + the
+  removeVertex framework chain `shiftBodyFramework`/`_htrans`; span-only, relabel deferred to the arm;
+  endpoints removeVertex NOT splits). Landed shape + decomposition: design §(o″) + git.
+- **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Operations.lean`, axiom-clean) — the `hiso` supplier
+  `splitOff_isLink_shiftRelabel_iff` + `shiftEdgePerm` + action lemmas; consumed at the **arm**, not
+  T-W9a. FRICTION + git.
 - **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`** (general-`Equiv.Perm`
-  framework-transport, `CaseIII/Relabel.lean`, axiom-clean). **⚠ Likely orphaned (route A REJECTED);
-  confirm-and-delete at the 2c-ii-arm build** (*Hand-off* orphan flag). Idiom in FRICTION.
+  framework-transport, axiom-clean). **⚠ Orphaned (route A REJECTED); confirm-and-delete at the
+  2c-ii-arm build** (*Hand-off* orphan flag). Idiom in FRICTION.
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` (`Induction/Operations.lean`, the `splitOff` home) + accessors `pred_edge_ne`/
   `isLink_edge`. `deg_two` interior vertices guarded by `0 < (i:ℕ)` (no `OfNat (Fin d)` literal),
@@ -402,14 +410,6 @@ blueprint pins unmoved): the eq.-6.62 row-correspondence swap `linearIndependent
   package via `dite` + a `dif_pos` `_eq` lemma, then `simp only` (not `rw`) the per-step resolutions
   (`rw` chokes on the proof-irrelevant `getElem` bound + the un-beta-reduced `dite` redex)* → FRICTION
   [idiom] *Feeding a partial proof-bearing-index family into a `ℕ → _` total-function-consuming fold…*.
-- *`LinearMap.funLeft R M id = LinearMap.id` has no unapplied mathlib lemma (only the applied
-  `funLeft_id`) — `rw [show … = LinearMap.id from rfl, dualMap_id]`; the `funLeft`-relabel `List`-fold
-  identity-base-case (`wstep_foldr_funLeft_eq`'s `nil`)* → FRICTION [idiom] *…funLeft R M id…*.
-- *`List.formPerm` as the product of adjacent-element transpositions (`zipWith Equiv.swap l l.tail`):
-  the iterated `formPerm_cons_cons`, mirrored as `List.formPerm_eq_prod_zipWith_swap_tail`; at the
-  `shiftPerm`/`shiftBodyList` bridge the per-element `simp only [getElem_*]` closes by defeq (the
-  window `Fin.mk` bound proofs are defeq, no `Fin.mk.injEq`+`omega`)* → FRICTION [mirrored]
-  *`List.formPerm_eq_prod_zipWith_swap_tail`…*.
 - *Composing two `(funLeft σ).dualMap` relabel transports: both `funLeft` and `dualMap` are
   contravariant, so the rewrite chain is `← comp_apply` → `dualMap_comp_dualMap` → `← funLeft_comp`
   (the two contravariances cancel to `funLeft (σ₂ ∘ σ₁)`); group the corrections with `sub_sub` on

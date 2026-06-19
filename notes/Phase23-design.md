@@ -2522,19 +2522,36 @@ no spine carried-hypothesis change (C.3)** — route B is infrastructure below t
 M₃ is at d=3; the shared `ρ₀` is `chainData_split_w6b_gates`'s output reused, the same data flow as
 the landed dispatch (one W6b, three arms).
 
-**Pinned leaf signatures (route B, the first buildable is the cycle-W9a).** The transport lemma:
+**Pinned leaf signatures — CORRECTED 2026-06-19 to the LANDED T-W9a shape (the prior pin was STALE).**
+The original pin here named T-W9a as a single lemma
+`ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows` ("mirror W9a's
+Fv/Fva/htrans/hdeg2 shape, one body per cycle index"). **That lemma was never built and does not
+exist** — T-W9a landed (commits c0421c6, c6d8087) through a different, more granular route. The dead
+pin is removed. The LANDED T-W9a shape (all axiom-clean, in `Relabel.lean` + `Operations.lean`):
 ```
--- 2c-ii-transport-W9a (the cycle a-column transport): for φ ∈ span (base-split G₁-rows),
--- (funLeft (shiftPerm i)).dualMap φ  −  Σ_{1≤s<i} (a-column subtraction at the s-th moved body)
---   ∈ span (candidate-i split Gt-rows).
--- Stated against the landed graphiso intertwiner; the per-step subtraction is the W9a
--- `hingeRow v_{s+1} v_s (φ ∘ single v_s)` summed over the cycle's moved bodies.
-theorem ChainData.funLeft_shiftPerm_dualMap_sub_acolumns_mem_span_rigidityRows … (signature
-  build-discovered: mirror W9a's Fv/Fva/htrans/hdeg2 shape, one body per cycle index)
--- 2c-ii-transport-W9b (the cycle bottom-tag transport): the per-member analogue, mirror
--- `case_III_bottom_relabel` over the cycle.
+-- The abstract wstep fold core (graph-free over BodyHingeFramework, Relabel.lean:750):
+theorem BodyHingeFramework.wstep_foldr_mem_span_rigidityRows (F : ℕ → BodyHingeFramework k α β)
+    (ec : ℕ → β) (bodies : List (α × α × α)) (hstep : ∀ s, (hs : s < bodies.length) → … six
+      per-step conjuncts: (c≠a ∧ c≠v) ∧ link e_c a c ∧ hdeg2 ∧ hdeg2r ∧ hnov ∧ htrans, all at F(s+1))
+    {φ} (hφ : φ ∈ span (F bodies.length).rigidityRows) :
+    (bodies.foldr (fun b T => (wstep b.1 b.2.1 b.2.2).comp T) id) φ ∈ span (F 0).rigidityRows
+-- where wstep v a c := (funLeft (swap a v)).dualMap − (screwDiff v c).dualMap ∘ (single a).dualMap
+--   (the single-step W9a transport: relabel MINUS the a-column subtraction).
+-- The removeVertex framework chain (Relabel.lean:833, NOT splits — endpoints are removeVertex):
+def ChainData.shiftBodyFramework (cd) {s} (hs : s+1 < cd.d+1) ends q : BodyHingeFramework k α β :=
+  (ofNormals (cd.shiftBodyGraph hs) ends q).toBodyHinge          -- shiftBodyGraph s := G − vₛ₊₁
+theorem ChainData.shiftBodyFramework_htrans … -- the per-step hstep conjunct (le_refl block-agree)
+-- The SPAN-ONLY membership half (Relabel.lean:940, the genuinely-new crux):
+theorem ChainData.shiftBodyList_foldr_mem_span_rigidityRows (cd) (i : Fin (cd.d+1)) (hi : 2 ≤ ↑i)
+    ends q {φ} (hφ : φ ∈ span (cd.shiftBodyFramework (s := ↑i − 1) _ ends q).rigidityRows) :
+    ((cd.shiftBodyList i).foldr (fun b T => (wstep b.1 b.2.1 b.2.2).comp T) id) φ
+      ∈ span (cd.shiftBodyFramework (s := 0) _ ends q).rigidityRows
+-- Transports span (G − vᵢ)-rows → span (G − v₁)-rows for 2 ≤ i. SPAN-ONLY: the funLeft-relabel
+-- rewrite (wstep_foldr_funLeft_eq + shiftPerm_eq_prod_map_swap_shiftBodyList, both LANDED) is
+-- DEFERRED — applied at the arm closer, not here.
 ```
-The arm closer (2c-ii-arm), unchanged in shape from §(o′):
+The next leaf is **T-W9b** (the cycle bottom-tag transport), decomposed below. The arm closer
+(2c-ii-arm), unchanged in shape from §(o′):
 ```
 theorem PanelHingeFramework.chainData_relabel_arm
     [DecidableEq β] [Finite α] [Finite β]
@@ -2547,22 +2564,26 @@ theorem PanelHingeFramework.chainData_relabel_arm
     PanelHingeFramework.HasGenericFullRankRealization k n G
 -- d=3 M₃ (case_III_arm_realization_M3, Relabel.lean:923) is the i=2 instance (cycle = swap a v).
 ```
-**Decomposition of 2c-ii-transport + 2c-ii-arm into buildable leaves:** (T-W9a) the cycle a-column
-span transport [first buildable; the genuinely-new piece] → (T-W9b) the cycle bottom-tag transport →
-(2c-ii-arm) `chainData_relabel_arm` instantiating `case_III_arm_realization` at the relabelled roles
+**Decomposition of 2c-ii-transport + 2c-ii-arm into buildable leaves (status 2026-06-19):**
+**(T-W9a) the cycle a-column span transport — LANDED** (the genuinely-new piece; span-only, see the
+LANDED-shape pin above + the addenda below) → **(T-W9b) the cycle bottom-tag transport — NEXT
+BUILDABLE** (decomposed in the *T-W9b decomposition* addendum below) → (2c-ii-arm)
+`chainData_relabel_arm` instantiating `case_III_arm_realization` at the relabelled roles
 `(v,a,b) := (vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)` with `−ρ₀`, the cycle-transported
-`hρGv`/`hwmem`, feeding 2c-i's `htrans`. Then 2c-iii (`chainData_dispatch`) `fin_cases u`-es over the
-discriminator's panel, `i=1`/`M₀` arm = 2a-ii (landed `chainData_split_realization`), interior
-`2≤i≤d−1` arm = `chainData_relabel_arm`.
+`hρGv` (T-W9a span + its deferred relabel bridge) / `hwmem` (T-W9b), feeding 2c-i's `htrans`. Then
+2c-iii (`chainData_dispatch`) `fin_cases u`-es over the discriminator's panel, `i=1`/`M₀` arm = 2a-ii
+(landed `chainData_split_realization`), interior `2≤i≤d−1` arm = `chainData_relabel_arm`.
 
-**Caveat (the one honest unknown, flagged not forced).** The cycle-W9a induction is **estimated**
-~2–4 commits but not yet *built*; if the per-step a-column subtraction does not compose cleanly along
-the cycle (e.g. an intermediate body's stripped column re-enters a later step's row span, breaking the
-clean telescoping), the cycle-W9a is a larger construction than the d=3 single transposition and may
-itself need to split further. This is the genuine research-shaped risk §(o′) flagged for route B; the
-verdict stands (route A is *impossible*, so route B is forced regardless of its cost), but the
-commit-count is an estimate to revisit at the build of (T-W9a). **It is NOT a motive/IH or
-spine-carry change** — that boundary (C.3/C.6) is unmoved on route B.
+**Caveat — RESOLVED.** The §(o′)-flagged telescoping risk (whether the per-step a-column subtractions
+compose cleanly along the cycle) is **settled**: the cycle-W9a a-column telescoping *is* clean, proved
+in the fold core `wstep_foldr_mem_span_rigidityRows` (the binary
+`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` confirms the two-body compose; the `List`
+induction lifts it). What actually cost the extra leaf was the *graph correspondence* — the fold core's
+`hstep` needs an **un-relabelled** per-step link inclusion between consecutive *intermediate*
+frameworks, supplied by the NEW (T-W9a-chain) `shiftBodyFramework` removeVertex chain, not by the
+whole-cycle endpoint graphiso. That chain is built; T-W9a is COMPLETE. **Route B remains NOT a
+motive/IH or spine-carry change** (C.3/C.6 unmoved). The remaining honest unknown is now T-W9b's
+commit-count (~1–2, per the *T-W9b decomposition* addendum below).
 
 **Coordinator addendum (2026-06-19) — the route-A rejection orphans `ofNormals_relabel_perm`
 (2c-ii-β, row 246).** The §(o″) decomposition (T-W9a → T-W9b → `chainData_relabel_arm`) is M₃-style
@@ -2665,6 +2686,78 @@ un-beta-reduced `dite` redex — FRICTION idiom). The relabel side (`funLeft`-of
 stays a *separate* bridge applied by the arm closer — the membership half is span-only. **Next: (T-W9b)**
 the cycle bottom-tag transport (mirror `case_III_bottom_relabel`), then **2c-ii-arm**
 `chainData_relabel_arm`.
+
+**T-W9b decomposition — the cycle bottom-tag transport (design-pass 2026-06-19, source-verified
+against the landed `case_III_bottom_relabel`/`case_III_arm_realization_M3` bodies + KT p.696–698
+eqs. 6.60–6.66; clause (i)/(ii)). VERDICT: T-W9b is a genuinely-new cycle construction, NOT a numeral
+pass over d=3 W9b, but it does NOT reuse the T-W9a fold core (different transport shape). It is its OWN
+cycle treatment — ~1–2 build commits. No motive/IH (C.6) / spine-carry (C.3) change.**
+
+*Why W9b does not ride the landed T-W9a machinery.* T-W9a's `wstep v a c := (funLeft (swap a
+v)).dualMap − (a-column subtraction)` transports a **span member** of `(G−vᵢ)`-rows down to a span
+member of `(G−v₁)`-rows. W9b (`case_III_bottom_relabel`, `Relabel.lean:1019`) is a structurally
+**different** object: it transports one **tagged** bottom-family member `φ` — a *disjunction*
+`φ ∈ (ofNormals Gv ends₀ q).rigidityRows ∨ ∃ ρ', ρ' ⊥ C(q(ab)) ∧ φ = hingeRow a b ρ'` — across the
+**pure relabel** `(funLeft (swap a v)).dualMap φ` (verified: line 1036/1041, **no a-column
+subtraction**), to a tagged member in the candidate shape (`(G−a)`-row ∨ `(cv)`-block disjunct). The
+genuine-`Gv`-row disjunct *could* in principle route through the span machinery, but the `(ab)`-block
+redundancy-tag disjunct is **not a span member** of the `Gv`-rows — it is the redundant `r̂`-row KT
+carries separately (eq. 6.52). So W9b cannot be expressed as a `wstep` fold; it needs a per-step **tag
+re-classification**, the cycle generalization of `case_III_bottom_relabel`'s three-way case split
+(`x=a` / `y=a` / off-`a`) plus the `(ab)`-tag arm.
+
+*How the tag transports per cycle step — KT eq. 6.62/6.66 (the ±r carry), source-verified.* The tag
+shifts **once per moved body** (per cycle step), NOT once total. KT's row correspondence (6.62) reads
+edge-by-edge along the chain: `(v₀v₂)i*` in `R(G₁,q₁)` ↔ `(v₀v₁)i*` in `R(G,pᵢ)`, `(vⱼvⱼ₊₁)` ↔
+`(vⱼ₋₁vⱼ)` for `2≤j≤i`, etc.; and the single redundancy `r := ∑ⱼ λ_{(v₀v₂)j} rⱼ(q(v₀v₂))` is carried
+`= ±r` to candidate `i` (eq. 6.66), "due to the fact that `vᵢ` is a vertex of degree two in `G₁`"
+(verbatim p.698 — exactly cf. eq. 6.44, the same degree-2/a-column mechanism W9a uses). So each of the
+`i−1` moved degree-2 bodies re-tags one block: a `(ab)`-block row at body `vₛ₊₁` becomes a `(cv)`-block
+row at the predecessor `vₛ`, exactly as the single-step W9b maps `(ab)` → `(cv)` (`Relabel.lean:1077`,
+the `x=a`/`y=a` arms tag a `(cv)`-block row; `hends₃_eb` maps the genuine `(ab)`-block to the `e_b`-row
+`(v,b)`). **The d=3 M₃ is the `i=2` instance: a single moved body `a = vtx 1`, one tag shift.** The
+cleanest cycle shape is an **induction on the moved-body list** (same `shiftBodyList i` / head-peel
+`shiftPerm_eq_swap_mul` the T-W9a fold uses): each step applies the landed single-step
+`case_III_bottom_relabel` to the running tagged member, the genuine-row disjunct staying genuine
+(transported through the un-relabelled `shiftBodyFramework` chain step), the block-tag disjunct
+re-classifying `(vₛ₊₁vₛ₊₂)` → `(vₛvₛ₊₁)` per step.
+
+*Pinned T-W9b signature (build-discovered; mirror the landed cycle-W9a membership shape — over
+`shiftBodyFramework`, NOT splits).* The likely shape — stated against the same `shiftBodyFramework`
+chain T-W9a transports over, so the genuine-row disjunct reuses T-W9a's span result and only the
+`(ab)`-tag arm is new:
+```
+-- ChainData.shiftBodyList_foldr_bottomTag_relabel (working name): per-member cycle bottom-tag.
+theorem ChainData.<…> (cd) (i : Fin (cd.d+1)) (hi : 2 ≤ ↑i) ends q {φ}
+    (hφ : φ ∈ (cd.shiftBodyFramework (s := ↑i − 1) _ ends q).rigidityRows ∨
+      ∃ ρ', ρ' (panelSupportExtensor (q(vtx i, ·)) (q(vtx ?, ·))) = 0 ∧ φ = hingeRow (vtx i) ? ρ') :
+    (funLeft (cd.shiftPerm i)).dualMap φ ∈
+      (cd.shiftBodyFramework (s := 0) _ ends q).rigidityRows ∨
+      ∃ ρ', ρ' (panelSupportExtensor (q(vtx 1, ·)) (q(vtx 0, ·))) = 0 ∧
+        (funLeft (cd.shiftPerm i)).dualMap φ = hingeRow (vtx 1) (vtx 0) ρ'
+-- (the (ab)/(cv) block endpoints are the chain's top/bottom interior bodies; the exact role tuple
+--  is build-discovered from the arm's hwmem slot — see the arm signature below.)
+```
+The relabel side uses the **already-LANDED** `wstep_foldr_funLeft_eq` +
+`shiftPerm_eq_prod_map_swap_shiftBodyList` to expose `(funLeft (shiftPerm i)).dualMap` (the W9b
+transport is *pure* relabel, so unlike W9a there is no a-column residue to carry — the relabel bridge
+is the whole transport on the genuine-row disjunct). **Next concrete buildable leaf: T-W9b**, as the
+per-member cycle bottom-tag analogue of `case_III_bottom_relabel`, proved by induction on
+`shiftBodyList i` reusing the landed single-step W9b at each head-peel.
+
+*The downstream `chainData_relabel_arm` shape (§(o″) check, clause-(deliverable-5)) — STILL CORRECT
+given the span-only + deferred-relabel split.* The arm signature pinned above is unchanged. The
+membership-half/relabel-bridge split is internal to how the arm *fills* `case_III_arm_realization`'s
+`hρGv` slot (span transport via T-W9a + relabel rewrite) and `hwmem` slot (T-W9b) — it does not change
+the arm's premises. Verified against the d=3 `case_III_arm_realization_M3` (`Relabel.lean:1289`): the
+`hρGv` slot is filled at line 1451 by the single-step W9a (`funLeft_dualMap_sub_acolumn_…`) + the
+`hingeRow v b ρ` genuine-row `sub_mem` (1464–1476), and the `hwmem` slot at line 1488 by single-step
+W9b (`case_III_bottom_relabel`) — the cycle arm replaces each with its cycle analogue (T-W9a span +
+its deferred relabel bridge; T-W9b), feeding the **shared** `ρ₀`/`w` exactly as M₃ does
+(`Realization.lean:592` passes the base `w`/`hw0mem` unchanged to M₃'s `hwmem`). So `hwmem`'s
+disjunction shape (genuine-`Gv`-row ∨ `(ab)`-block) is what T-W9b must produce at the relabelled roles
+`(v,a,b) := (vtx i.succ, vtx (i−1).castSucc, vtx i.castSucc)` — confirming the arm's frozen shape and
+that no contract (C.3/C.6) moves.
 
 ---
 
