@@ -2,9 +2,10 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
-**Remaining: CHAIN-2 (the `Fin d` reduction layer — 2c-ii-transport next) + CHAIN-5 (the dispatch
-assembly, gated by the ENTRY-contract reshape).** The integer Phase 23 stays **in progress** — ENTRY /
-ASSEMBLY remain (coordinator owns the sub-phase boundary; codes-until-open).
+**Remaining: CHAIN-2 (the `Fin d` reduction layer — 2c-ii-transport-W9a *membership half* next, its
+framework-chain layer now LANDED) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract
+reshape).** The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the
+sub-phase boundary; codes-until-open).
 
 **Orientation.** The **23b (CHAIN layer)** rolling state + hand-off. Cross-phase plan/guidance + the
 detailed leaf-level recon live in `notes/Phase23-design.md` (§"CHAIN": (a) per-file reach-ins, (c)
@@ -15,22 +16,28 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). next commit = the framework chain `F = ofNormals ∘ shiftBodyGraph` + its
-per-step `hingeRowBlock`-agreement `htrans` half** — the (T-W9a-chain) framework layer (its `G`-level
-substrate + intermediate-graph layer are LANDED; sub-leaf status lives in **checklist CHAIN-2**, the
-single tracker). Endpoints are **removeVertex** frameworks `F (i−1) = ofNormals (G − vᵢ)` /
+**Route B LOCKED (§(o″)). next commit = the (T-W9a) membership half proper** — assemble the total
+`F : ℕ → BodyHingeFramework` (out-of-range tail filled arbitrarily) from the now-LANDED per-step
+`shiftBodyFramework`, feed `shiftBodyList i` + `F` into the fold core
+`wstep_foldr_mem_span_rigidityRows` (its `hstep` `htrans` conjunct = the now-LANDED
+`shiftBodyFramework_htrans`), then rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm bridge
+`shiftPerm_eq_prod_map_swap_shiftBodyList`. The **(T-W9a-chain) framework layer is COMPLETE** (`G`-level
+substrate + intermediate-graph layer + the framework chain `shiftBodyFramework` + per-step `htrans`
+`shiftBodyFramework_htrans` all LANDED; sub-leaf status lives in **checklist CHAIN-2**, the single
+tracker). Endpoints are **removeVertex** frameworks `F (i−1) = ofNormals (G − vᵢ)` /
 `F 0 = ofNormals (G − v₁)` (mirroring the single-step W9a's `Fv`/`Fva`, **NOT** splits — splits enter at
-the arm; endpoint correction §(o″)). After T-W9a-chain: **(T-W9a)** membership half → **T-W9b** →
-**2c-ii-arm** → **2c-iii** → **CHAIN-5** remain. Full decomposition: design §(o″).
+the arm; endpoint correction §(o″)). After T-W9a: **T-W9b** → **2c-ii-arm** → **2c-iii** → **CHAIN-5**
+remain. Full decomposition: design §(o″).
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors;
 **CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α/β** + **2c-ii-graphiso COMPLETE**
-(`splitOff_isLink_shiftRelabel_iff`) + head-peel + fold core + `shiftBodyList` landed. Remaining in
-CHAIN-2c (full decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a →
-T-W9b) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
+(`splitOff_isLink_shiftRelabel_iff`) + head-peel + fold core + `shiftBodyList` landed;
+**2c-ii-transport-W9a-chain COMPLETE** (`shiftBodyFramework` + `shiftBodyFramework_htrans`). Remaining in
+CHAIN-2c (full decomposition in the checklist + *Hand-off*): **2c-ii-transport** (route B: T-W9a
+*membership half* → T-W9b) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
@@ -96,9 +103,12 @@ the rest of CHAIN-2 + ENTRY's extractor reshape).
       *linear-algebra* layer (fold core, `shiftBodyList`, perm bridge, `wstep_foldr_funLeft_eq`) is
       LANDED; **(T-W9a-chain)** [NEW] — the removeVertex intermediate-framework chain
       `F = ofNormals ∘ shiftBodyGraph` (`shiftBodyGraph s := G − vₛ₊₁`) + its per-step un-relabelled
-      link correspondence (the fold core's `hstep` shape) — has its `G`-level substrate + intermediate-
-      graph layer LANDED; the framework chain `F` + its `hingeRowBlock`-agreement half is next, then
-      **(T-W9a)** the membership half (clean once the chain lands)
+      link correspondence (the fold core's `hstep` shape) — is **COMPLETE** (`G`-level substrate +
+      intermediate-graph layer + the framework chain `shiftBodyFramework` + the per-step `htrans`
+      `shiftBodyFramework_htrans`, all LANDED, axiom-clean); next is
+      **(T-W9a)** the membership half (assemble the total `F` from `shiftBodyFramework`, feed
+      `shiftBodyList i` + the `shiftBodyFramework_htrans` `hstep` into `wstep_foldr_mem_span_rigidityRows`,
+      rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm bridge)
       → **(T-W9b)** the cycle bottom-tag transport (mirror
       `case_III_bottom_relabel`) →
       **2c-ii-arm** `chainData_relabel_arm` (the closer, instantiating `case_III_arm_realization` at
@@ -166,11 +176,15 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). next commit = the
-framework chain `F = ofNormals ∘ shiftBodyGraph` + its per-step `hingeRowBlock`-agreement `htrans` half**
-— see *Current state* for the next-step detail + the removeVertex-endpoint correction, **checklist
-CHAIN-2** for the single per-leaf status tracker (T-W9a-chain → T-W9a → T-W9b → 2c-ii-arm → 2c-iii →
-CHAIN-5), and design §(o″) for the full decomposition. The graphiso iff `splitOff_isLink_shiftRelabel_iff`
-is the `(shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner (candidate-`i` ↔ `v₁`-base split, interior
+(T-W9a) membership half** — assemble the total `F : ℕ → BodyHingeFramework` from the LANDED per-step
+`shiftBodyFramework` (out-of-range tail arbitrary), feed `shiftBodyList i` + `F` into the fold core
+`wstep_foldr_mem_span_rigidityRows` (its `hstep` `htrans` conjunct = the LANDED
+`shiftBodyFramework_htrans`), rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm bridge
+`shiftPerm_eq_prod_map_swap_shiftBodyList`. See *Current state* for the next-step detail +
+the removeVertex-endpoint correction, **checklist CHAIN-2** for the single per-leaf status tracker
+(T-W9a-chain ✓ → T-W9a → T-W9b → 2c-ii-arm → 2c-iii → CHAIN-5), and design §(o″) for the full
+decomposition. The graphiso iff `splitOff_isLink_shiftRelabel_iff` is the
+`(shiftPerm i.castSucc, shiftEdgePerm i)` intertwiner (candidate-`i` ↔ `v₁`-base split, interior
 `1 < i`).
 
 **Two orphaned lemmas to confirm-and-delete at the 2c-ii-arm/cleanup commit** (both zero callers; full
@@ -325,14 +339,17 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `CaseIII/Relabel.lean` + `Operations.lean`) — fold core `wstep` + `wstep_foldr_mem_span_rigidityRows`,
   `shiftBodyList` (+ `_eq_cons`), perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyList`, fold identity
   `wstep_foldr_funLeft_eq`. Detail git + §(o″).
-- **CHAIN-2c-ii-transport-W9a-chain graph layers LANDED 2026-06-19** (`Operations.lean`, axiom-clean) —
-  the (T-W9a-chain) `G`-level layers under the removeVertex framework chain `F = ofNormals ∘ shiftBodyGraph`:
-  (a) the per-moved-body substrate `shiftBody_*` accessors (`(v,a,c) = (vₛ₊₂, vₛ₊₁, vₛ)` shape) + `vtx_ne`;
-  (b) the intermediate graph `shiftBodyGraph s := G − vₛ₊₁` (indexed by `s+1 < d+1`, decoupled from top `i`
-  — FRICTION) + the per-step link correspondence `shiftBodyGraph_{isLink_pred_edge, deg_two(+_right),
-  off_succ, isLink_of_off_body}` (surviving-c-edge / degree-2 / off-`v` / off-body inclusion — the
-  un-relabelled `htrans` shape of `wstep_foldr`'s `hstep`, off `removeVertex_isLink` + `IsLink.right_unique`).
-  **Endpoints removeVertex, NOT splits** (§(o″) endpoint correction). Next: `F` + `hingeRowBlock`-agreement.
+- **CHAIN-2c-ii-transport-W9a-chain COMPLETE 2026-06-19** (`Operations.lean` graph layers +
+  `CaseIII/Relabel.lean` framework layer, axiom-clean). The removeVertex chain `F = ofNormals ∘
+  shiftBodyGraph`: graph layers = the `shiftBody_*` per-moved-body substrate + `shiftBodyGraph s :=
+  G − vₛ₊₁` + per-step link correspondence (`shiftBodyGraph_{isLink_pred_edge, deg_two(+_right),
+  off_succ, isLink_of_off_body}`, off `removeVertex_isLink` + `IsLink.right_unique`); framework layer =
+  `ChainData.shiftBodyFramework hs ends q := (ofNormals (shiftBodyGraph hs) ends q).toBodyHinge` + its
+  per-step `htrans` `shiftBodyFramework_htrans` (the fold core's `hstep` second conjunct). Selector
+  `ends`/seed `q` fixed across the chain (only the graph shrinks), so the `hingeRowBlock`-agreement half
+  is `le_refl` (extensors coincide, `s`-independent — *simpler* than d=3 `M₃`'s seed/selector change).
+  **Endpoints removeVertex, NOT splits** (§(o″) correction). `_root_.Graph.ChainData.` decl prefix
+  (TACTICS-QUIRKS §56). Next: (T-W9a) membership half.
 - **CHAIN-2c-ii-graphiso COMPLETE 2026-06-19** (`Induction/Operations.lean`, axiom-clean) — the §(o′)(A)
   `hiso` supplier: `ChainData.shiftEdgePerm` + 6 action lemmas + `mem_shiftCycle` + forward/backward legs
   + the packaged iff `splitOff_isLink_shiftRelabel_iff` (the `(shiftPerm i.castSucc, shiftEdgePerm i)`

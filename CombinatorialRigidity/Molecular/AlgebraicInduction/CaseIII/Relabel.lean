@@ -818,6 +818,83 @@ theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : Lis
     rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, Equiv.Perm.coe_mul,
       LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
 
+/-- **The cycle-W9a intermediate-framework chain `F = ofNormals ∘ shiftBodyGraph`**
+(CHAIN-2c-ii-transport-W9a, the framework layer; `notes/Phase23-design.md` §(o″)). The
+`List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of *intermediate
+frameworks* `F : ℕ → BodyHingeFramework`, one degree-2 body moved per cycle step. This is that
+chain: the panel framework `ofNormals (cd.shiftBodyGraph s _) ends q` (turned into a
+`BodyHingeFramework` via `toBodyHinge`) over the intermediate graph `shiftBodyGraph s = G − vₛ₊₁`,
+with the panel selector `ends` and seed `q` **fixed across the chain** — only the graph shrinks,
+mirroring the d=3 `M₃` arm's `Fv/Fva = ofNormals (G − v)/(G − a)` at the *single* removeVertex step
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`). The bound `s + 1 < cd.d + 1` is the minimal
+chain-vertex validity of `shiftBodyGraph` (decoupled from the cycle top `i`); the total `F : ℕ →
+BodyHingeFramework` the fold core consumes is assembled (with the out-of-range tail filled by an
+arbitrary value) at the membership half (T-W9a). -/
+noncomputable def _root_.Graph.ChainData.shiftBodyFramework {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) :
+    BodyHingeFramework k α β :=
+  (PanelHingeFramework.ofNormals (cd.shiftBodyGraph hs) ends q).toBodyHinge
+
+/-- The graph of the cycle-W9a intermediate framework `shiftBodyFramework s` is the intermediate
+graph `shiftBodyGraph s = G − vₛ₊₁`. -/
+@[simp]
+theorem _root_.Graph.ChainData.shiftBodyFramework_graph {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) :
+    (cd.shiftBodyFramework hs ends q).graph = cd.shiftBodyGraph hs := rfl
+
+/-- The supporting extensor of the cycle-W9a intermediate framework `shiftBodyFramework s` at an
+edge `f` reads only the fixed selector `ends` and seed `q` (the panels at `ends f`'s endpoints) —
+independent of the chain step `s` / the intermediate graph. This is why the per-step hinge-row
+blocks agree (`shiftBodyFramework_htrans`'s second conjunct is `le_refl`). -/
+theorem _root_.Graph.ChainData.shiftBodyFramework_supportExtensor {G : Graph α β}
+    {n : ℕ} (cd : G.ChainData n) {s : ℕ} (hs : s + 1 < cd.d + 1) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) (f : β) :
+    (cd.shiftBodyFramework hs ends q).supportExtensor f =
+      panelSupportExtensor (fun i => q ((ends f).1, i)) (fun i => q ((ends f).2, i)) := rfl
+
+/-- **The per-step `htrans` of the cycle-W9a framework chain** (CHAIN-2c-ii-transport-W9a, the
+framework layer's deliverable; `notes/Phase23-design.md` §(o″)). The second-conjunct hypothesis the
+fold core `wstep_foldr_mem_span_rigidityRows`'s `hstep` demands at each cycle step `s` (`s + 1 < i`,
+the moved body `a = vₛ₊₁` interior): a link of the upper framework `F (s+1) = ofNormals
+(G − vₛ₊₂)` *off the moved body* `a` transports to a genuine link of the lower framework `F s =
+ofNormals (G − vₛ₊₁)`, with the hinge-row blocks agreeing.
+
+This is the cycle generalization of the d=3 `M₃` arm's `htrans` (`case_III_arm_realization_M3`,
+`hρGv` case): there the seed/selector *change* (`q → qρ`, `ends → ends₃`), forcing an
+off-`{e_a,e_b,e_c}` extensor-coincidence argument; here the seed `q` and selector `ends` are
+**fixed across the chain** (only the graph shrinks under `removeVertex`), so the supporting
+extensors `panelSupportExtensor (q((ends f).1)) (q((ends f).2))` of `F (s+1)` and `F s` coincide
+*definitionally* and the block agreement is `le_refl`. The graph inclusion is the landed
+`shiftBodyGraph_isLink_of_off_body` lifted through `toBodyHinge_graph`/`ofNormals_graph`.
+
+Graph-free over the carrier (`graph`/`hingeRowBlock` read only `graph`/`supportExtensor`), so the
+`ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem _root_.Graph.ChainData.shiftBodyFramework_htrans {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) {i s : ℕ} (hs : s + 1 < i) (hi : i < cd.d + 1) (ends : β → α × α)
+    (q : α × Fin (k + 2) → ℝ) :
+    ∀ f x y, (cd.shiftBodyFramework (s := s + 1) (by omega) ends q).graph.IsLink f x y →
+      x ≠ cd.vtx ⟨s + 1, by omega⟩ → y ≠ cd.vtx ⟨s + 1, by omega⟩ →
+      (cd.shiftBodyFramework (s := s) (by omega) ends q).graph.IsLink f x y ∧
+        (cd.shiftBodyFramework (s := s + 1) (by omega) ends q).hingeRowBlock f ≤
+          (cd.shiftBodyFramework (s := s) (by omega) ends q).hingeRowBlock f := by
+  intro f x y hlink hxa hya
+  -- The graph half: a link of `shiftBodyGraph (s+1) = G − vₛ₊₂` off the moved body `vₛ₊₁` is a link
+  -- of `shiftBodyGraph s = G − vₛ₊₁` (the landed un-relabelled inclusion), read through the
+  -- `shiftBodyFramework_graph` simp lemma.
+  rw [cd.shiftBodyFramework_graph] at hlink
+  refine ⟨?_, ?_⟩
+  · rw [cd.shiftBodyFramework_graph]
+    exact cd.shiftBodyGraph_isLink_of_off_body hs hi f x y hlink hxa hya
+  · -- The hinge-row block half: the seed `q` and selector `ends` are fixed across the chain, so the
+    -- supporting extensors of the two frameworks at `f` coincide
+    -- (`shiftBodyFramework_supportExtensor`, independent of `s`) — the blocks are equal, hence `≤`
+    -- by `le_refl` (no off-`{e_a,e_b,e_c}` extensor argument, unlike d=3 `M₃`'s seed/selector
+    -- change).
+    rw [BodyHingeFramework.hingeRowBlock, BodyHingeFramework.hingeRowBlock,
+      cd.shiftBodyFramework_supportExtensor, cd.shiftBodyFramework_supportExtensor]
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row

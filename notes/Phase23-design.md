@@ -2633,10 +2633,24 @@ via `IsLink.right_unique`), `shiftBodyGraph_off_succ` (every link of `G − v` a
 un-relabelled inclusion `shiftBodyGraph_isLink_of_off_body` (a link of `G − v` off the body `a` is a
 link of `G − a` — the `htrans` graph shape `wstep_foldr_mem_span_rigidityRows`'s `hstep` consumes).
 This mirrors the d=3 `M₃` arm's single step `Fv/Fva = ofNormals (G − v)/(G − a)`
-(`case_III_arm_realization_M3`'s `htrans`, off `removeVertex_isLink`) at the cycle level. Next concrete
-commit: the framework chain `F = ofNormals ∘ shiftBodyGraph : ℕ → BodyHingeFramework` itself + its
-per-step un-relabelled link correspondence (lifting this graph layer through `ofNormals`, adding the
-`hingeRowBlock`-agreement second conjunct of W9a's `htrans`).
+(`case_III_arm_realization_M3`'s `htrans`, off `removeVertex_isLink`) at the cycle level.
+
+**T-W9a-chain framework layer LANDED 2026-06-19** (`CaseIII/Relabel.lean`, axiom-clean; T-W9a-chain
+COMPLETE). The chain `Graph.ChainData.shiftBodyFramework hs ends q := (ofNormals (shiftBodyGraph hs)
+ends q).toBodyHinge` lifts the graph layer through `ofNormals`/`toBodyHinge` with the selector `ends`
+and seed `q` *fixed across the chain* (only the graph shrinks). Its per-step `htrans`
+`shiftBodyFramework_htrans` is the fold core's `hstep` second conjunct: the graph half is the landed
+`shiftBodyGraph_isLink_of_off_body` (read through the `shiftBodyFramework_graph` simp lemma), and the
+`hingeRowBlock`-agreement half is `le_refl` — the two frameworks' supporting extensors
+`panelSupportExtensor (q((ends f).1)) (q((ends f).2))` coincide (`shiftBodyFramework_supportExtensor`,
+`s`-independent), so the blocks are *equal*. This is **simpler** than the d=3 `M₃` `htrans`, which
+changes the seed/selector (`q→qρ`, `ends→ends₃`) and so needs an off-`{e_a,e_b,e_c}` extensor-coincidence
+argument; here no edge-exclusion is needed. Declared with the `_root_.Graph.ChainData.` prefix (the
+in-`CombinatorialRigidity.Molecular`-namespace declaration trap, TACTICS-QUIRKS §56). **Next concrete
+commit:** the (T-W9a) membership half — assemble the total `F : ℕ → BodyHingeFramework` (out-of-range
+tail arbitrary), feed `shiftBodyList i` + `F` into `wstep_foldr_mem_span_rigidityRows` (its `hstep`
+`htrans` = `shiftBodyFramework_htrans`), and rewrite the relabel via `wstep_foldr_funLeft_eq` + the perm
+bridge `shiftPerm_eq_prod_map_swap_shiftBodyList`.
 
 ---
 
