@@ -30,12 +30,9 @@ surviving `e_b`). So the interior carry needs a **new block-carrying single-step
 input maps to a `(cv)`-block OUTPUT re-pinned to `±r` (consuming the LANDED bridge for the panel-match),
 genuine-row arm reusing the landed step. The landed single-step is the *d=3 terminal* form (M₃/`i=2`,
 chain length 1, block already at the bottom — correct there, zero-regression). Detail: design §(o″)
-*Sharpened recon*. The bridge (LANDED) is the chain-step instance of the graph-free
-`candidateRow_ac_eq_neg` (`Claim612.lean`, eq. 6.44): at the interior degree-2 body `a = vtx⟨s+1⟩` with
-chain neighbors `b = vtx⟨s+2⟩` (successor) / `c = vtx⟨s⟩` (predecessor), the eq.-(6.44) `a`-column
-vanishing gives the `±r` vector identity `∑ⱼ λac_j • rac_j = −∑ⱼ λab_j • rab_j` — so the single carried
-redundancy `r` tests both adjacent panels (up to sign). **NOT new math** — abstract row identity reused
-verbatim; no motive/IH/spine-carry change, d=3 zero-regression.
+*Sharpened recon*. The bridge (LANDED, the `candidateRow_ac_eq_neg` chain-step instance giving the
+eq.-6.44 `±r` identity at the interior degree-2 body `a = vtx⟨s+1⟩`) is reused; **NOT new math**, no
+motive/IH/spine-carry change, d=3 zero-regression.
 Tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ →
 **redundancy_panel_carry ✓** → **block-carrying single-step [next]** → W9b membership fold → 2c-ii-arm
 → 2c-iii → CHAIN-5. Full detail: §(o″) + *Hand-off*.
@@ -44,14 +41,11 @@ Tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ 
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
 
 **Context (closed/landed):** CHAIN-1/3/4 + OD-7 CLOSED; `G.ChainData n` record + 7 accessors;
-**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α/β** + **2c-ii-graphiso COMPLETE**
-(`splitOff_isLink_shiftRelabel_iff`) + head-peel + fold core + `shiftBodyList` landed;
-**2c-ii-transport-W9a-chain COMPLETE** (`shiftBodyFramework` + `shiftBodyFramework_htrans`);
-**T-W9a membership half COMPLETE** (`shiftBodyList_foldr_mem_span_rigidityRows`); **T-W9b single-step
-framework form + fold core COMPLETE** (`funLeft_dualMap_bottomTag_mem_rigidityRows` +
-`bottomTag_foldr_mem_rigidityRows`). Remaining in CHAIN-2c (full decomposition in the checklist +
-*Hand-off*): **2c-ii-transport** (route B: the degree-2 redundancy bridge `redundancy_panel_carry` →
-T-W9b membership) → **2c-ii-arm** → **2c-iii** → **CHAIN-5** + the ENTRY extractor reshape.
+**CHAIN-2a CLOSED**; **CHAIN-2c-i** + **2c-ii-α/β/graphiso** + **T-W9a-chain / T-W9a** + **T-W9b
+single-step / fold core** + **the degree-2 bridge `redundancy_panel_carry`** all COMPLETE/LANDED
+(lemma names in the *Current state* tracker + *Decisions made*). Remaining (the tracker):
+block-carrying single-step → W9b membership → 2c-ii-arm → 2c-iii → CHAIN-5 + the ENTRY extractor
+reshape.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
