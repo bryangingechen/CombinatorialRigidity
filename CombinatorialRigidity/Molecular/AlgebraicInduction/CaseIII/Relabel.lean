@@ -700,6 +700,155 @@ theorem BodyHingeFramework.funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRow
   rw [sub_sub] at h₂
   exact h₂
 
+/-- **The base→candidate single-step seed-advance W9a transport** (CHAIN-2c-ii-arm de-risk gate,
+`notes/Phase23-design.md` §(o‴)(H.10)). One step of the interior-candidate relabel arm's
+**base→candidate** row transport (KT 2011 §6.4.2 eq.~(6.62), the one-step-up correspondence
+`vⱼ ⇒ vⱼ₊₁`): at chain step `s` (`s + 2 < i ≤ d`, so the moving body's surviving neighbour
+`vtx (s+3)` is a valid chain vertex), a row of the source framework `Fv = ofNormals (G − vtx (s+1))`
+on seed `q` transports — across the swap `(a v) = (vtx (s+2) vtx (s+1))` with the seed *advancing*
+to `q' = q ∘ swap (vtx (s+2)) (vtx (s+1))` — into the target framework `Fva = ofNormals (G −
+vtx (s+2))` on `q'`, after the moved body `a = vtx (s+2)`'s `a`-column hinge row is subtracted.
+
+This is the chain-indexed, **seed-advancing** instance of `case_III_arm_realization_M3`'s `hρGv`
+slot (`CaseIII/Relabel.lean`, the d=3 M₃ arm): there the single step goes `Fv = ofNormals (G − v)
+ends q` → `Fva = ofNormals (G − a) ends₃ qρ` with `qρ = q ∘ swap a v`; here the same single step is
+indexed by the chain step `s`, with the W9a roles `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))`
+read off the chain (the body `a = vtx (s+2)` is present at degree two in `G − vtx (s+1)`, moving
+into the freed slot `v = vtx (s+1)` past its surviving chain-successor `c = vtx (s+3)`, its
+predecessor edge to `vtx (s+1)` being cut by the removal). It is the **base→candidate** orientation
+the arm needs (source `G − vtx (s+1)` lower-index / base side, target `G − vtx (s+2)` higher-index /
+candidate side) — the *opposite* of the landed candidate→base fold
+`shiftBodyList_foldr_mem_span_rigidityRows`, and the building block the corrected-Fix-A cycle fold
+(re-folded in opposite chain order, seed advancing one swap per step) iterates.
+
+The seed-advancing `htrans` (the genuinely-new piece beyond the seed-fixed
+`shiftBodyFramework_htrans`'s `le_refl`) is the extensor-coincidence argument the d=3 M₃ `hρGv`
+slot runs: an off-`a` link survives `removeVertex (vtx (s+2))`, and its supporting extensor at the
+two seeds coincides because the swap `(a v)` fixes the recorded endpoints (`ends' f = ends f` off
+the moved edges, and the swap fixes the link's `≠ {a, v}` endpoints, so `q' = q` there). The
+de-risk gate (verify the single step closes before pinning the cycle fold / arm signature, H.10);
+graph-free over the carrier (`rigidityRows`/`hingeRowBlock` read only `graph`/`hingeRowBlock`), so
+the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not bite. -/
+theorem _root_.Graph.ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows
+    [DecidableEq α] {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i s : ℕ}
+    (hs : s + 2 < i) (hi : i < cd.d + 1) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (hends'_off : ∀ f, f ≠ cd.edge ⟨s + 1, by omega⟩ → f ≠ cd.edge ⟨s + 2, by omega⟩ →
+      ends' f = ends f)
+    (hrec : ∀ f x y, (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)).IsLink f x y →
+      ends f = (x, y) ∨ ends f = (y, x))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 1, by omega⟩)) ends
+          q).toBodyHinge.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k)
+          (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩))).dualMap φ
+        - BodyHingeFramework.hingeRow (k := k) (α := α)
+            (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 3, by omega⟩)
+            (φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+              (cd.vtx ⟨s + 2, by omega⟩)))
+      ∈ Submodule.span ℝ
+          (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨s + 2, by omega⟩)) ends'
+            (fun p => q (Equiv.swap (cd.vtx ⟨s + 2, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) p.1,
+              p.2))).toBodyHinge.rigidityRows := by
+  classical
+  -- The W9a roles: `v` the freed slot (removed in the source), `a` the moving body, `c` its
+  -- surviving chain-successor; `e_c = edge (s+2)` the surviving `a—c` edge.
+  set v := cd.vtx ⟨s + 1, by omega⟩ with hv
+  set a := cd.vtx ⟨s + 2, by omega⟩ with ha
+  set c := cd.vtx ⟨s + 3, by omega⟩ with hc
+  set e_c := cd.edge ⟨s + 2, by omega⟩ with he_c
+  set Fv := (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge with hFv
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q (Equiv.swap a v p.1, p.2) with hqρ
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex a) ends' qρ).toBodyHinge with hFva
+  -- The three chain-vertex distinctness facts among `v, a, c`.
+  have hca : c ≠ a := cd.vtx_ne (by omega) (by omega) (by omega)
+  have hcv : c ≠ v := cd.vtx_ne (by omega) (by omega) (by omega)
+  have hav : a ≠ v := cd.vtx_ne (by omega) (by omega) (by omega)
+  -- `e_c = edge (s+2) = ac` survives `removeVertex v` (endpoints `a, c ≠ v`).
+  have hG_ec : G.IsLink e_c a c := by
+    have h := cd.isLink_edge ⟨s + 2, by omega⟩
+    simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  have hFv_link_ec : Fv.graph.IsLink e_c a c := by
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hG_ec, hav, hcv⟩
+  -- Degree-2 closure at `a` in `G − v`: the body `a = vtx (s+2)`'s `G`-edges are its predecessor
+  -- `edge (s+1)` (to `v`, cut by the removal) and its successor `e_c = edge (s+2)` (to `c`); a
+  -- `(G − v)`-link out of `a` cannot be the `edge (s+1)`-link (it would touch the removed `v`), so
+  -- it is `e_c`.
+  have hG_pred : G.IsLink (cd.edge ⟨s + 1, by omega⟩) a v := by
+    have h := cd.isLink_edge ⟨s + 1, by omega⟩
+    simpa only [Fin.castSucc_mk, Fin.succ_mk] using h.symm
+  have hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c := by
+    intro f x hlink
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    obtain ⟨hGlink, _, hxv⟩ := Graph.removeVertex_isLink.mp hlink
+    -- `a = vtx (s+2)` is an interior chain vertex; `deg_two` (at index `s+2`) names its two edges:
+    -- the predecessor `edge ((s+2)−1) = edge (s+1)` (the `(s+2)−1` reduces to `s+1` by `rfl`) and
+    -- the successor `edge (s+2) = e_c`.
+    have hd : f = cd.edge ⟨s + 1, by omega⟩ ∨ f = e_c :=
+      cd.deg_two ⟨s + 2, by omega⟩ (by simp) f x
+        (by simpa only [Fin.castSucc_mk, ← ha] using hGlink)
+    rcases hd with hpred | hsucc
+    · -- `f = edge (s+1)` would link `a` to `v` (the removed vertex), so `x = v`, contradiction.
+      rw [hpred] at hGlink
+      exact absurd (hG_pred.right_unique hGlink) (Ne.symm hxv)
+    · exact hsucc
+  have hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c :=
+    fun f x hlink => hdeg2 f x hlink.symm
+  -- No `(G − v)`-link touches `v` at either endpoint.
+  have hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v := by
+    intro f x y hlink
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    exact ⟨(Graph.removeVertex_isLink.mp hlink).2.1, (Graph.removeVertex_isLink.mp hlink).2.2⟩
+  -- The seed-advancing `htrans`: an off-`a` link of `G − v` survives `removeVertex a`, and its
+  -- supporting extensor coincides at the two seeds (the swap fixes the recorded endpoints
+  -- `∉ {a, v}`, and `ends'` agrees with `ends` off the moved edges).
+  have htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
+      Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f := by
+    intro f x y hlink hxa hya
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    obtain ⟨hGflink, hxv, hyv⟩ := Graph.removeVertex_isLink.mp hlink
+    -- `f` avoids both moved edges (its endpoints avoid `a` and `v`).
+    have hfne_pred : f ≠ cd.edge ⟨s + 1, by omega⟩ := by
+      rintro rfl
+      rcases hG_pred.eq_and_eq_or_eq_and_eq hGflink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hxa hh.symm
+      · exact hya hh.symm
+    have hfne_ec : f ≠ e_c := by
+      rintro rfl
+      rcases hG_ec.eq_and_eq_or_eq_and_eq hGflink with ⟨hh, _⟩ | ⟨hh, _⟩
+      · exact hxa hh.symm
+      · exact hya hh.symm
+    refine ⟨?_, ?_⟩
+    · rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+        Graph.removeVertex_isLink]
+      exact ⟨hGflink, hxa, hya⟩
+    · -- block agreement: the `f`-extensors at `Fva` and `Fv` coincide (`ends' f = ends f` off the
+      -- moved edges, and the swap fixes the recorded endpoints `∉ {a, v}`, so `qρ = q` there).
+      intro r hr
+      rw [Fva.mem_hingeRowBlock_iff]
+      rw [Fv.mem_hingeRowBlock_iff] at hr
+      rw [hFva, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_ends, hends'_off f hfne_pred hfne_ec]
+      rw [hFv, PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_ends] at hr
+      -- `ends f`'s two recorded endpoints are the link endpoints `x, y` up to order (`hrec`),
+      -- which avoid `a` (`hxa`/`hya`) and `v` (`hxv`/`hyv`). The swap `(a v)` then fixes them, so
+      -- `qρ = q` at those slots and the `Fva`-extensor matches the `Fv`-extensor `r` kills (`hr`).
+      rcases hrec f x y hlink with he | he <;> rw [he] at hr ⊢ <;>
+        simp only [hqρ, Equiv.swap_apply_of_ne_of_ne hxa hxv,
+          Equiv.swap_apply_of_ne_of_ne hya hyv] <;> exact hr
+  -- Conclude via the landed single-step W9a transport (already the base→candidate orientation).
+  have hlink_le : ∀ f x y, Fv.graph.IsLink f x y → (G.removeVertex v).IsLink f x y := by
+    intro f x y hlink
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    exact hlink
+  exact BodyHingeFramework.funLeft_dualMap_sub_acolumn_mem_span_rigidityRows
+    (Fv := Fv) (Fva := Fva) (v := v) (a := a) (c := c) (e_c := e_c)
+    hca hcv hFv_link_ec hdeg2 hdeg2r hnov htrans hφ
+
 /-- **The single-step W9a transport map** (the cycle-W9a building block, CHAIN-2c-ii route B,
 `notes/Phase23-design.md` §(o″)). The W9a relabel transport `φ ↦ (funLeft (a v)).dualMap φ −
 hingeRow v c (φ ∘ single a)` packaged as a single linear map `Dual ℝ (α → ScrewSpace k) →ₗ Dual`

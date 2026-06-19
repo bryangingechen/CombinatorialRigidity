@@ -1616,7 +1616,10 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Where it bit:** `ChainData.splitOff_isLink_shiftRelabel_forward` (`Induction/Operations.lean`, Phase
   23b CHAIN-2c-ii-graphiso) — the `shiftPerm`/`shiftEdgePerm`-relabel `splitOff_isLink` brick, a cycle
   generalization of the d=3 single-swap `splitOff_isLink_relabel`. The on-cycle endpoint is `vtx ⟨m,_⟩`
-  with `1 ≤ m ≤ i`; the predecessor chain edge is `edge ⟨m-1,_⟩`.
+  with `1 ≤ m ≤ i`; the predecessor chain edge is `edge ⟨m-1,_⟩`. **Recurs (same fix)** at
+  `ChainData.funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`CaseIII/Relabel.lean`, Phase
+  23b CHAIN-2c-ii-arm de-risk gate): `deg_two ⟨s+2,_⟩` returns the disjunction
+  `f = edge ⟨↑⟨s+2,_⟩ - 1, _⟩ ∨ f = edge ⟨s+2,_⟩`, whose predecessor index `rw`-fails the §61 motive trap.
 - **Friction (two recurring snags):** (1) `edge ⟨m-1,_⟩` / `vtx ⟨m-1,_⟩` arithmetic forces repeated
   `m-1+1 = m` index rewrites *inside* `edge`/`vtx ⟨…⟩`, which trip the §61 "motive not type correct"
   trap. (2) The cycle perm is `shiftPerm i.castSucc` (lifting `i : Fin d` to `Fin (d+1)`); its action
@@ -1628,6 +1631,9 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   defeq, or via a local `have … := by rw [actionLemma]; congr 1; ext; omega`). (2) bridge the coercion
   with `by simp only [Fin.val_castSucc]; omega` (or `simpa only [Fin.val_castSucc] using h`); `Fin.ext`
   for an off-cycle/contradiction vertex equality (`fun heq => habs (congrArg vtx (by ext; exact heq))`).
+  At the de-risk-gate recurrence the fix is the type-ascription variant: state the `deg_two` result with
+  the reduced index via `have hd : f = cd.edge ⟨s+1,_⟩ ∨ f = e_c := cd.deg_two …` (the `↑⟨s+2,_⟩ - 1`
+  reduces to `s+1` by `rfl`), so no in-place index `rw` is needed.
 - **Status:** idiom.
 
 ### [idiom] Index a `Fin`-parametrized `def` by its *minimal* validity bound, not the looser consumer bound
