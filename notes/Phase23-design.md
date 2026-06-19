@@ -1710,6 +1710,204 @@ grade-2-only reach-in blocks CHAIN-2.
 
 ---
 
+### (m) CHAIN-2a design-pass — VERDICT: re-index, gates threaded from above; the per-`i` reduction IS a `case_III_arm_realization` instance
+
+**Status:** CHAIN-2a detailed design-pass, docs-only, 2026-06-18, source-verified
+against the **landed** bodies (every load-bearing claim re-checked against the
+actual `def`/`theorem`, not a prior pin — clause (i)): `case_III_rank_certification`
+(`CaseIII/Candidate.lean:1403`, full body), `case_III_arm_realization` (`Arms.lean:72`),
+`case_III_arm_realization_M2` (`Arms.lean:318`), `case_III_arm_realization_M3`
+(`Relabel.lean:811`), the `d=3` dispatch `case_III_candidate_dispatch`
+(`Realization.lean:268`, the gate-production trace, lines 388–520), the W6b
+packaging `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`), the
+nested-rank producer `case_III_nested_rank_lower_all_k` (`Realization.lean:616`),
+the discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
+(`Claim612.lean:1462`, CHAIN-4d, LANDED), and the bridge
+`panelSupportExtensor_eq_complementIso_extensor` (`PanelLayer.lean:331`). The
+coordinator's findings (1)/(2)/(3) all **CONFIRMED** below; finding (1) is
+refined (the gate-producer is two general-`k` layers, named).
+
+**THE VERDICT (the heart of this pass): RE-INDEX, not construct-from-scratch.**
+CHAIN-2a's per-`i` candidate reduction is a **re-instantiation of the already-
+general arm closer `case_III_arm_realization`** at the interior split index `i`,
+consuming the per-`i` gate family threaded from above — it does **not** construct
+the `ρ`/`w`-family + gates per-`i` from scratch. Three source facts force this:
+
+1. **`case_III_arm_realization` is the per-candidate engine, already general-`k`,
+   and discharges all the way to `HasGenericFullRankRealization k n G`.** Its body
+   (Arms.lean:101–) calls `case_III_rank_certification` verbatim at lines 114–115
+   (passing `hLn hρgate hρe₀ hρGv hwcard hw hwmem` through), then re-extracts a
+   literal `F₀.panelRow` family from the certified rank (W6e,
+   `exists_independent_panelRow_subfamily_of_le_finrank`) and transfers it to a
+   good shear `t* ≠ 0` (W6f) to land the generic realization. So the certification
+   (the `Mᵢ ⊕ R(G₁∖(v₀v₂)_{i*}, q₁)` rank bound, KT eq. 6.29/6.64) is **already
+   wrapped inside** the arm closer — CHAIN-2a does not re-derive it. The thing
+   `case_III_arm_realization` is, structurally, *is* KT's per-candidate
+   "`(G,pᵢ)` realizes at full rank if `Mᵢ` is full rank" step (eqs. 6.60/6.65).
+
+2. **Neither the certification nor the arm closer discharges the gate family —
+   both carry it as their own hypotheses, and the d=3 CALLER supplies them from
+   two general-`k` producers** (coordinator finding (1), refined). The gate family
+   `hLn`/`hρgate`/`hρe₀`/`hρGv`/`hwcard`/`hw`/`hwmem` is identical across
+   `case_III_rank_certification`, `case_III_arm_realization`, `_M2`, `_M3` (the
+   `_M2`/`_M3` arms are themselves `case_III_arm_realization` re-instantiations at
+   swapped/relabelled roles — Arms.lean:331 `_M2 := …arm_realization … (ρ := -ρ)`;
+   Relabel.lean:898 `_M3 := …arm_realization (v:=a)(a:=c)(b:=v)(q:=qρ)`). In the
+   `d=3` dispatch the gates arrive **from above**, produced by:
+   - **The W6b packaging `exists_candidateRow_bottomRows_of_rigidOn`** (Candidate.lean:390,
+     **already general-`k`** — under `variable {k}`, all `screwDim k`/`ScrewSpace k`):
+     called once at Realization.lean:388–391, it produces `ρ`, the bottom family
+     `w`, and the gates `hρe₀` (`ρ(C(e₀))=0`), `hρGv` (`hingeRow a b ρ ∈ span Gᵥ`),
+     `hwmem`, `hw` (LI), `hwcard` (card `= D·(|Vᵥ|−1)`) — the redundant-row + GAP-6
+     half. Its only substantive inputs are the IH-base infinitesimal rigidity
+     `hrig` on `Gₐᵦ` and the eq.-(6.22) nested rank bound `h622lb`.
+   - **`h622lb` is produced by `case_III_nested_rank_lower_all_k`** (Realization.lean:616,
+     **already general-`k`**, Phase 23a Leaf 4) — the footnote-6 nested-IH rank
+     transfer, the `AlgebraicIndependent ℚ q`-consuming site (a) (OD-4 §(i)).
+   - **The discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`**
+     (CHAIN-4d, **LANDED general-`k`**, Claim612.lean:1462): called at
+     Realization.lean:439–441, it produces the discriminating index `u` + transversal
+     `n'` with `hpair` (`= hLn`, the `![nᵤ, n'] ` LI) and the `complementIso`-form gate,
+     which `panelSupportExtensor_eq_complementIso_extensor` (general, PanelLayer:331)
+     rewrites into `hρgate` (`ρ(panelSupportExtensor nᵤ n') ≠ 0`).
+
+3. **`case_III_arm_realization`'s grade is `(k : ℕ)` / `ScrewSpace k` / `Fin (k+2)`
+   already** (Arms.lean:72, authored general from Phase 22h, confirmed §(a)). So
+   the arm closer needs **zero lift** — CHAIN-2a *re-indexes* it: bind `cd :
+   G.ChainData n`, pick an interior index `i` (`0 < (i:ℕ) < d`), read the per-`i`
+   split tuple `(v,a,b,e_a,e_b)` off the landed interior-split accessors (rows
+   236/237: split body `vtx i.castSucc`, edges `edge i`/`edge ⟨(i:ℕ)−1,_⟩` oriented
+   out of it, distinct neighbours, re-oriented degree-2 closure), produce the per-`i`
+   gate family from the two general producers above, and call `case_III_arm_realization`.
+
+**Consequence — the "large per-`i` gate construction" fear was MISPLACED.** The
+session-#7 note "discharging the ~20 ρ/w/gate hyps at the per-`i` index is
+substantial" is correct that the hyps must be *supplied*, but **the supply is two
+already-general producer calls** (W6b + discriminator), not bespoke per-`i` linear
+algebra. CHAIN-2a is a *wiring* leaf (the standing "dispatch is a deliverable, not
+just wiring" caveat applies — it gets its own checklist leaf), not a hard-core
+construction. The heaviness session #7 sensed is **real but lives elsewhere**: it
+is the `Fin d`-indexed *plumbing* of the per-`i` split through the accessors and
+the per-candidate `Φᵢ` heterogeneity (CHAIN-2c), and the ±r chain (CHAIN-2b) — the
+genuinely-new `Fin d` infrastructure — **not** the per-`i` certification.
+
+**One flag the dispatch trace surfaces (clause (ii); NOT a blocker, but a
+re-scoping the build must honor).** The `d=3` dispatch produces **one** `ρ` (one
+W6b call, one redundancy, one GAP-6 consumption) and **one** discriminator pick
+`(u, n')`, then `fin_cases u` over the 3 *panels* picks which *arm* (`a`/`b`/`c`-side
+line) closes. The general-`d` Lemma 6.13 is structurally **one layer up**: it builds
+`d` candidate frameworks `(G,pᵢ)`, reduces each via its **own** `Φᵢ` (eq. 6.59), and
+the discriminator picks a full-rank `Mᵢ` among the `d` candidates (eqs. 6.65–6.67).
+So the d=3 `fin_cases u`-over-panels and the general-`d` pick-a-candidate-`i` are
+**not the same dispatch** — the d=3 three-panel split is the `d=3` collapse of the
+`d`-candidate disjunction (at `d=3` the chain `b—v—a—c` has the three candidate
+lines through `v`/`a`, masking the candidate≠panel distinction). **CHAIN-2a's
+deliverable is the SINGLE-`i` reduction** (the reusable core: "candidate `i`'s `Mᵢ`
+full-rank ⟹ `R(G,pᵢ) = D(|V|−1)`, hence `HasGenericFullRankRealization` for that
+`i`"), which is exactly one `case_III_arm_realization` re-index at the `cd`-derived
+split tuple for `i`. The *family* disjunction over `i` and the discriminator-picks-`i`
+glue are **CHAIN-2c**, not 2a. This matches §(l)'s 2a/2b/2c split; the design-pass
+**confirms** it and pins 2a's exact deliverable below.
+
+**CHAIN-2a buildable sub-leaves (exact signatures, dependency-ordered).** All
+`{k}`-general, `CaseIII/Candidate.lean` (or `CaseIII/Chain.lean` if 2a+2b+2c
+together exceed ~1500 LoC). The `n` is the phantom `ChainData` index.
+
+- **CHAIN-2a-i — `chainData_split_arm_gates` (the gate-producer at index `i`; the
+  one genuinely-load-bearing 2a sub-leaf).** Re-package the d=3 dispatch's
+  gate-production (Realization.lean steps 3+5, lines 376–442) as a per-`i`
+  producer, calling the two general producers. Target shape (sketch — the build
+  pins the exact `cd`-accessor wiring):
+  ```
+  theorem PanelHingeFramework.chainData_split_arm_gates {k : ℕ}
+      [Finite α] [Finite β] [DecidableEq β]
+      {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ))
+      (hsimple : G.Simple) (hk1 : 1 ≤ k) (hn : Graph.bodyBarDim n = screwDim k)
+      (hG : G.IsMinimalKDof n 0)
+      (hIH : <the all-k IH conjunction at smaller graphs, the dispatch's hIH shape>)
+      (hsplitGP : HasGenericFullRankRealization k n
+          (G.splitOff (cd.vtx i.castSucc) <pred-nbr> <succ-nbr> cd.e₀)) :
+      ∃ (ends : β → α × α) (q : α × Fin (k+2) → ℝ) (n' : Fin (k+2) → ℝ)
+        (ρ : Module.Dual ℝ (ScrewSpace k)) (ιb : Type) (_ : Finite ιb)
+        (w : ιb → Module.Dual ℝ (α → ScrewSpace k)),
+        <the full gate bundle: hLn ∧ hgab ∧ hρgate ∧ hρe₀ ∧ hρGv ∧ hwcard ∧ hw ∧ hwmem
+         stated against the cd-derived (v,a,b,e_a,e_b) split tuple>
+  ```
+  Mechanism: verbatim the dispatch steps — unpack `hsplitGP` (the IH-generic base
+  on the `vᵢ`-split `G₁`), call `exists_candidateRow_bottomRows_of_rigidOn` (W6b)
+  with `h622lb` from `case_III_nested_rank_lower_all_k`, normalize to chain order
+  (the `(a,b)`-vs-`(b,a)` `ρ0`-sign-swap, Realization.lean:404–434), call
+  `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (CHAIN-4d) for the
+  discriminator pick, `rw` through `panelSupportExtensor_eq_complementIso_extensor`.
+  **This is where the ~20 hyps get discharged — by the two producer calls, not by
+  hand.** The `linearIndependent_normals_of_algebraicIndependent` (the `![nᵤ,…]`
+  LI feeding the discriminator's `hn`) is the `_triple`/`_gen` form (already lifted,
+  OD-7 LEAF-0 / Realization.lean:163) — at the `d`-chain it is the `d` chain-panel
+  normals' LI, the discriminator's `hn : LinearIndependent ℝ n` over `Fin (k+1)`.
+
+- **CHAIN-2a-ii — `chainData_split_realization` (the per-`i` reduction core =
+  the `case_III_arm_realization` re-index).** Consumes 2a-i + the interior-split
+  accessors; the one-line-ish closer. Target shape:
+  ```
+  theorem PanelHingeFramework.chainData_split_realization {k : ℕ}
+      [Finite α] [Finite β] [DecidableEq β] [DecidableEq α]
+      {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i : ℕ))
+      <the same induction context as 2a-i>
+      (hdef : G.deficiency n = 0) :
+      PanelHingeFramework.HasGenericFullRankRealization k n G
+  ```
+  Mechanism: obtain the gate bundle from `chainData_split_arm_gates` (2a-i),
+  read the `(v,a,b,e_a,e_b)` split tuple + the `hvVc`/`haVc`/`hbVc`/`hleG`/
+  `hsplitG`/`hends_Gv`/`hne_Gv`/`hVone`/`hVcard` graph facts off the
+  interior-split accessors (`isLink_succ_edge`/`isLink_pred_edge`/
+  `succ_ne_pred_castSucc`/`deg_two_split` + the `splitOff`/`removeVertex` API the
+  dispatch builds at Realization.lean:455–474), and **call
+  `case_III_arm_realization` (or `_M3` if the relabel orientation is needed for
+  the interior split — the build picks)**. The arm closer does the rest.
+
+**What CHAIN-2a does NOT do** (pushed to 2b/2c, confirming §(l)): the ±r chain
+6.66 (CHAIN-2b — relating the `r` across chain indices so "some `Mᵢ` full-rank ⟺
+¬∀i r⊥C(Lᵢ)"), and the `Fin d`-family assembly + per-candidate `Φᵢ` heterogeneity
++ the discriminator-picks-`i` glue (CHAIN-2c — consuming the closed CHAIN-1
+`ιc`-block augment). CHAIN-2a is **one** candidate's reduction; CHAIN-2c is the
+disjunction over the `d` candidates that *chooses* which `i` 2a fires at.
+
+**Clause (i) corrections to the prior pins** (the coordinator findings, verified):
+- Finding (1) **confirmed and refined**: both decls carry the gates; the d=3
+  caller supplies them — and the supplier is precisely the W6b packaging + the
+  CHAIN-4d discriminator + `case_III_nested_rank_lower_all_k`, all three
+  **already general-`k`**. "The per-`i` caller must still supply those gates" is
+  true; "supply" = two producer calls, the `chainData_split_arm_gates` leaf.
+- Finding (2) **confirmed**: the gates arrive from above in d=3 (W6b's
+  `hpair`/`hgate`/`hρ0e₀`/`hρ0Gv`/`hw0mem`/`hw`/`hcard` are exactly the dispatch's
+  `obtain`s at Realization.lean:388/404/439). The phrasing "themselves produced
+  upstream by the CHAIN-4 discriminator + the candidate machinery" is exact.
+- Finding (3) **confirmed**: the `ChainData` accessors supply the graph-side
+  `(v,a,b,e_a,e_b)` per-`i` tuple; the open work was the per-`i` *linear-algebra*
+  gates — which this pass resolves as the `chainData_split_arm_gates` producer-call
+  leaf, NOT a from-scratch construction.
+
+**Clause (ii) — no motive/IH change forced; no genuinely-new linear algebra in 2a.**
+The per-`i` gates come from existing general-`k` producers; the arm closer is
+general-`k`; the `ChainData` accessors are landed. The one honest open item is a
+**build-time wiring question, not a math one**: whether the interior-split
+realization at index `i` uses `case_III_arm_realization` directly (split body
+`vᵢ`, neighbours `vᵢ₋₁`/`vᵢ₊₁`) or its `_M3` relabel form (if the chain
+orientation forces the `a↔v` swap), and the exact `h622lb` instantiation at the
+`cd`-derived split — both settled by the d=3 dispatch template at build, neither a
+carried-hypothesis or motive change. **If 2a-i's producer-call wiring surfaces a
+genuine gap** (e.g. the all-`k` IH conjunction `hIH` the dispatch threads does not
+restrict to the `vᵢ`-split at the right dof), *that* would be a contract-level item
+for the coordinator — flagged, not pre-committed away; expected clean (the IH
+shape is the existing 0-dof `case_III_realization_all_k.hdispatch` shape, C.3).
+
+**First buildable = CHAIN-2a-i** (`chainData_split_arm_gates`). **Count: CHAIN-2a
+is 2 commits** (2a-i producer + 2a-ii re-index), then CHAIN-2b (1) + CHAIN-2c (1) —
+so the §(l) "3–5 commits" for all of CHAIN-2 holds (record landed + 2a-i + 2a-ii +
+2b + 2c ≈ 4 build commits remaining).
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified

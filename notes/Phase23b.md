@@ -32,18 +32,26 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = a DESIGN-PASS to decompose CHAIN-2a's core, NOT a direct build** (coordinator finding
-2026-06-18, session #7 close): CHAIN-2a re-indexes `case_III_rank_certification`, which carries **~20
-hypotheses** (the `ρ` dual-functional gates `hρgate`/`hρe₀`/`hρGv` + the rank-certifying `w`-family
-`hwcard`/`hw`/`hwmem`). The landed `ChainData` + interior-split accessors (rows 236/237) supply the
-*graph-side* `(v,a,b,e_a,e_b)` tuple, but discharging those *linear-algebra* hyps at the per-`i` index
-is substantial — an opus build already **self-shrank** from it to the accessors (the 2nd consecutive
-infra commit feeding the unbuilt core). So the next step is the rows 27–29 move: a design-pass pinning
-CHAIN-2a's sub-leaves — **key open question:** does the d=3 path's already-general arm closer
-`case_III_arm_realization` discharge the certification hyps (so CHAIN-2a *re-indexes* it, clean), or
-must `ρ`/`w`/the gates be constructed per-`i` from scratch (large)? Then **CHAIN-2a's core** (the
-re-index of `case_III_rank_certification`; design §(l)); or **CHAIN-5/ENTRY** (CHAIN-5 gated on CHAIN-2
-+ ENTRY's extractor reshape). **The `G.ChainData n` `structure` + its
+**Next = CHAIN-2a-i `chainData_split_arm_gates`, the per-`i` gate-producer leaf** (the CHAIN-2a
+design-pass landed 2026-06-18 — `notes/Phase23-design.md` §(m), the new lettered sub-section).
+**VERDICT (settled against the landed bodies): CHAIN-2a RE-INDEXES the already-general arm closer
+`case_III_arm_realization`; it does NOT construct the `ρ`/`w`/gate family per-`i` from scratch.** The
+gate family (`hLn`/`hρgate`/`hρe₀`/`hρGv`/`hwcard`/`hw`/`hwmem`) is carried as hypotheses by BOTH
+`case_III_rank_certification` (`Candidate.lean:1403`) and the arm closer (`Arms.lean:72`) — neither
+discharges it; the d=3 dispatch (`Realization.lean:268`) supplies it **from above** via two
+already-general-`k` producers: the W6b packaging `exists_candidateRow_bottomRows_of_rigidOn`
+(`Candidate.lean:390`, fed by the nested-rank `case_III_nested_rank_lower_all_k` for `hρe₀`/`hρGv`/
+`hwmem`/`hw`/`hwcard`) + the discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
+(CHAIN-4d, LANDED, for `hLn`/`hρgate` via `panelSupportExtensor_eq_complementIso_extensor`). So the
+"~20 hyps are substantial to discharge per-`i`" fear was misplaced — the supply is **two producer
+calls**, packaged as the `chainData_split_arm_gates` leaf (CHAIN-2a-i); the per-`i` reduction core
+`chainData_split_realization` (CHAIN-2a-ii) is then a `case_III_arm_realization` re-index off the
+landed interior-split accessors. The genuinely-new `Fin d` *infrastructure* (±r chain, the
+`d`-candidate family + per-candidate `Φᵢ` heterogeneity + discriminator-picks-`i` glue) lives in
+CHAIN-2b/2c, not 2a. One clause-(ii) flag (build-time wiring, not a blocker): which arm form
+(`_realization` vs `_M3` relabel) the interior split uses + the `h622lb`/`hIH` instantiation at the
+`vᵢ`-split — settled by the d=3 template at build (§(m)). Then CHAIN-2b/2c; or **CHAIN-5/ENTRY**
+(CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's extractor reshape). **The `G.ChainData n` `structure` + its
 interior-split accessors LANDED 2026-06-18** (`Induction/Operations.lean`, the zeroth CHAIN-2 leaf —
 the length-`d` chain record `vtx`/`edge`/`e₀` + `vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`;
 `deg_two` settled via `0 < (i:ℕ)` interior guard + the predecessor edge `edge ⟨(i:ℕ)-1, _⟩`, d=3-map
@@ -188,8 +196,14 @@ by the (b) flag (its signature is the CHAIN↔ENTRY contract).
       LANDED 2026-06-18** (`Induction/Operations.lean`; contract C.1 record, d=3-map verified, +
       `ChainData.{pred_edge_ne, isLink_edge, pred_succ_eq_castSucc, isLink_pred_edge, isLink_succ_edge,
       succ_ne_pred_castSucc, deg_two_split}` — the last five expose the per-`i` `(v,a,b,e_a,e_b)` split
-      tuple `case_III_rank_certification` consumes). The indexing + geometry prereq is now discharged;
-      2a/2b/2c remain. 3–4 commits.
+      tuple `case_III_rank_certification` consumes). The indexing + geometry prereq is discharged.
+      **CHAIN-2a design-pass LANDED 2026-06-18 (design §(m)): VERDICT = re-index, not construct.**
+      CHAIN-2a = a `case_III_arm_realization` (general-`k`) re-index off the accessors, with the per-`i`
+      gates threaded from two general-`k` producers (W6b `exists_candidateRow_bottomRows_of_rigidOn` +
+      CHAIN-4d discriminator). Sub-leaves: **CHAIN-2a-i `chainData_split_arm_gates`** (the per-`i`
+      gate-producer = two producer calls; the first buildable, signature §(m)) → **CHAIN-2a-ii
+      `chainData_split_realization`** (the per-`i` reduction core, the arm-closer re-index). Then
+      CHAIN-2b/2c. ~4 build commits remaining.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
@@ -262,23 +276,30 @@ CLOSED** — all four 23a-carried producers + both M4 halves are general-`k` (se
 *Decisions made* → *Landed OD-7 bricks*). The last OD-7 leaf, `case_I_dispatch_gen` + the
 `hcontract_k` wire-up, landed 2026-06-18.
 
-**Next = a DESIGN-PASS to decompose CHAIN-2a's core** (NOT a direct build — see *Current state*: an
-opus build self-shrank from it; `case_III_rank_certification`'s ~20 `ρ`/`w`/gate hyps must be
-discharged per-`i`; the rows 27–29 precedent). The `ChainData` record + interior-split accessors
-(rows 236/237) are landed, so the graph-side tuple is in hand; the design-pass settles whether
-CHAIN-2a *re-indexes* the already-general arm closer `case_III_arm_realization` or constructs the
-gates from scratch, and pins the sub-leaves. Then CHAIN-2a's core; or **CHAIN-5/ENTRY** (CHAIN-5 gated
-on the rest of CHAIN-2 + ENTRY's extractor reshape).
+**Next = CHAIN-2a-i `chainData_split_arm_gates`, the per-`i` gate-producer leaf** (the CHAIN-2a
+design-pass LANDED 2026-06-18 — `notes/Phase23-design.md` §(m); verdict + sub-leaf signatures there).
+**Verdict: CHAIN-2a RE-INDEXES `case_III_arm_realization` (general-`k`); it does NOT construct the
+gates per-`i` from scratch** — the gate family is supplied from above by two already-general-`k`
+producers (W6b `exists_candidateRow_bottomRows_of_rigidOn` + the CHAIN-4d discriminator, fed by the
+general-`k` `case_III_nested_rank_lower_all_k`). CHAIN-2a-i packages those two producer calls as the
+per-`i` gate-producer (exact signature §(m)); CHAIN-2a-ii (`chainData_split_realization`) is then the
+arm-closer re-index off the landed interior-split accessors. The `ChainData` record + accessors (rows
+236/237) are landed, so 2a-i can bind `cd : G.ChainData n` and reach the split tuple directly. Then
+CHAIN-2a-ii → CHAIN-2b/2c; or **CHAIN-5/ENTRY** (CHAIN-5 gated on the rest of CHAIN-2 + ENTRY's
+extractor reshape). The one clause-(ii) flag (§(m)) is build-time wiring (which arm form + the
+`h622lb`/`hIH` instantiation at the `vᵢ`-split), not a motive/carried-hypothesis change.
 
 - **CHAIN-2 — the `Fin d`-indexed candidate-reduction layer (eqs. 6.59–6.64)** (`CaseIII/`),
   **decomposed at recon (design §(l)), which corrected the §(c) framing:** the `caseIIICandidate` /
   `case_III_old_new_blocks` / `case_III_rank_certification` chain is **already general-`k`** (the only
   `d=3`-pin in `CaseIII/` is the `Realization.lean` dispatch shell = CHAIN-5). CHAIN-2 builds the
   `Fin d`-indexed reduction LAYER *on top of* that (reused-verbatim) chain + the closed CHAIN-1
-  `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction, the reusable core — re-index of
-  `case_III_rank_certification`; heaviest single leaf) → **CHAIN-2b** (the ±r chain, eq. 6.66;
-  genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly; consumes CHAIN-1). 3–4 commits
-  (the zeroth `ChainData` leaf + the interior-split accessors are now done). **Zeroth-leaf
+  `ιc`-block augment: **CHAIN-2a** (per-candidate single-`i` reduction — design-pass §(m) verdict: a
+  `case_III_arm_realization` re-index, gates threaded from two general-`k` producers; sub-leaves
+  CHAIN-2a-i `chainData_split_arm_gates` then CHAIN-2a-ii `chainData_split_realization`) → **CHAIN-2b**
+  (the ±r chain, eq. 6.66; genuinely-new structure) → **CHAIN-2c** (the `Fin d` family assembly; consumes
+  CHAIN-1). ~4 build commits (the zeroth `ChainData` leaf + the interior-split accessors are done; the
+  2a design-pass is done). **Zeroth-leaf
   prerequisite DISCHARGED:** the `G.ChainData n` `structure` (contract C.1, `Induction/Operations.lean`)
   LANDED 2026-06-18 — the ~15-field length-`d` chain record with `deg_two` settled (`0 < (i:ℕ)` interior
   guard; predecessor edge `edge ⟨(i:ℕ)-1, _⟩`; d=3-map verified per C.4); the **interior-split geometry
@@ -372,9 +393,17 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   §(c)'s framing.** The named `caseIIICandidate`/`case_III_old_new_blocks`/`case_III_rank_certification`
   chain is **already general-`k`** (the only `d=3`-pin in `CaseIII/` is `Realization.lean`'s dispatch =
   CHAIN-5); §(c)'s "(now `q : α × Fin 4`-shaped)" was false. CHAIN-2 = the `Fin d`-indexed reduction
-  *layer* (2a per-`i` / 2b ±r-chain / 2c family) on top of that chain + closed CHAIN-1. The
-  zeroth-leaf prereq (the `ChainData` record) is now discharged (next entry); CHAIN-2a is the next
-  build → §"CHAIN"(l).
+  *layer* (2a per-`i` / 2b ±r-chain / 2c family) on top of that chain + closed CHAIN-1 →
+  §"CHAIN"(l).
+- **CHAIN-2a design-pass (2026-06-18) — VERDICT: re-index, gates threaded from above** (settles the
+  session-#7 open question against the landed bodies). CHAIN-2a's per-`i` reduction is a
+  `case_III_arm_realization` (general-`k`) re-index, NOT a from-scratch gate construction: the gate
+  family is carried as hypotheses by both the certification (`Candidate.lean:1403`) and the arm closer
+  (`Arms.lean:72`), and supplied from above by two general-`k` producers (W6b
+  `exists_candidateRow_bottomRows_of_rigidOn` + CHAIN-4d discriminator, fed by
+  `case_III_nested_rank_lower_all_k`). Sub-leaves: CHAIN-2a-i `chainData_split_arm_gates` (the two
+  producer calls) → CHAIN-2a-ii `chainData_split_realization` (the arm-closer re-index). One
+  build-time wiring flag (arm form + `h622lb`/`hIH` instantiation), no motive change → §"CHAIN"(m).
 - **`G.ChainData n` record LANDED 2026-06-18 (CHAIN-2 zeroth leaf)** — the contract-C.1 length-`d`
   chain `structure` in `Induction/Operations.lean` (the `splitOff` home): fields `d`/`hd`/`vtx :
   Fin (d+1)→α`/`edge : Fin d→β`/`e₀` + `vtx_mem`/`vtx_inj`/`link`/`edge_inj`/`deg_two`/`e₀_fresh`,
