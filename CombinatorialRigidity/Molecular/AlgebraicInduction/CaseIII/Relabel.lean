@@ -1159,6 +1159,98 @@ theorem PanelHingeFramework.case_III_bottom_relabel
       simp only [hqρ, Equiv.swap_apply_right, Equiv.swap_apply_of_ne_of_ne hba hbv]
       exact hρ'e₀
 
+/-- **W9b framework form — the single-step bottom-tag transport between two frameworks** (the
+cycle-W9b building block, CHAIN-2c-ii-transport route B, `notes/Phase23-design.md` §(o″)). The
+framework-level restatement of `case_III_bottom_relabel`, abstracting away the `ofNormals`/`Gv`/`G`
+carriers (the W9b analogue of how `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` is the
+framework form of the `M₃` `M₃`-arm W9a step): one tagged bottom-family member `φ` of the source
+framework `Fv` — either a genuine `Fv`-row or an `(ab)`-block row `hingeRow a b ρ'`
+(`ρ' ⊥ Cab`) — relabels under the pure swap `(funLeft (a v)).dualMap` to a member tagged in the
+target framework `Fva`'s shape: either a genuine `Fva`-row or a `(c, v)`-block row `hingeRow c v ρ'`
+(`ρ' ⊥ Cca`). This is KT's eq.~(6.39) row correspondence read row-wise (Katoh–Tanigawa 2011 §6.4.1).
+
+The carrier-specific facts of `case_III_bottom_relabel` enter as explicit hypotheses on the two
+frameworks: the degree-2 closure at the moved body `a` (`hdeg2`/`hdeg2r`, `e_c` the only `Fv`-link
+at `a`), every `Fv`-link off `v` (`hnov`), the off-`a` link/block transport (`htrans`, the W9a-style
+agreement), the `e_c`-support extensor relation `Fv.supportExtensor e_c = Cca` (so the degree-2 case
+lands the `(cv)`-tag), and the `e_b`-genuine-row data of `Fva` (`hlink_eb`/`heb_block`, the
+`(ab)`-tag's image). Graph-free over the carrier (`rigidityRows`/`hingeRowBlock`/`supportExtensor`
+read only `graph`/`supportExtensor`), so the `ofNormals` defeq trap (TACTICS-QUIRKS §38) does not
+bite — the per-step chain instantiation supplies the hypotheses off the `shiftBodyFramework`
+accessors. -/
+theorem BodyHingeFramework.funLeft_dualMap_bottomTag_mem_rigidityRows
+    [DecidableEq α] {Fv Fva : BodyHingeFramework k α β}
+    {v a b c : α} {e_b e_c : β}
+    {Cab Cca : ScrewSpace k}
+    (hab : a ≠ b) (hvb : v ≠ b) (hca : c ≠ a) (hcv : c ≠ v)
+    (hlink_ec : Fv.graph.IsLink e_c a c)
+    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c)
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c)
+    (hnov : ∀ f x y, Fv.graph.IsLink f x y → x ≠ v ∧ y ≠ v)
+    (htrans : ∀ f x y, Fv.graph.IsLink f x y → x ≠ a → y ≠ a →
+      Fva.graph.IsLink f x y ∧ Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f)
+    (hec_support : Fv.supportExtensor e_c = Cca)
+    (hlink_eb : Fva.graph.IsLink e_b v b)
+    (heb_support : Fva.supportExtensor e_b = Cab)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Fv.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k), ρ' Cab = 0 ∧
+        φ = BodyHingeFramework.hingeRow a b ρ') :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ ∈ Fva.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k), ρ' Cca = 0 ∧
+        (LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap a v)).dualMap φ
+          = BodyHingeFramework.hingeRow c v ρ' := by
+  classical
+  rcases hφ with hgen | ⟨ρ', hρ'e₀, rfl⟩
+  · -- The genuine `Fv`-row tag: destructure the generator and case on `a ∈ {x, y}`.
+    obtain ⟨f, x, y, hlink, r, hr, rfl⟩ := hgen
+    rw [BodyHingeFramework.hingeRow_funLeft_dualMap]
+    obtain ⟨hxv, hyv⟩ := hnov f x y hlink
+    -- `r`'s annihilation at `Fv`'s `f`-extensor.
+    have hr' : r (Fv.supportExtensor f) = 0 := (Fv.mem_hingeRowBlock_iff f r).1 hr
+    by_cases hxa : x = a
+    · -- x = a: `hdeg2` forces `f = e_c`, then `y = c`.
+      subst x
+      have hfe : f = e_c := hdeg2 f y hlink
+      have hcy : c = y := by
+        rw [hfe] at hlink
+        rcases hlink_ec.eq_and_eq_or_eq_and_eq hlink with ⟨_, h2⟩ | ⟨_, h2⟩
+        · exact h2
+        · exact absurd h2 hca
+      subst hcy
+      -- relabel `hingeRow a c r → hingeRow v c r = hingeRow c v (-r)`; tag RIGHT with `ρ' := -r`.
+      refine Or.inr ⟨-r, ?_, ?_⟩
+      · -- annihilation: `r ⊥ Fv.supportExtensor e_c = Cca`.
+        rw [hfe, hec_support] at hr'
+        rw [LinearMap.neg_apply, neg_eq_zero]; exact hr'
+      · rw [Equiv.swap_apply_left, Equiv.swap_apply_of_ne_of_ne hca hcv]
+        exact BodyHingeFramework.hingeRow_swap v c r
+    · by_cases hya : y = a
+      · -- y = a, x ≠ a: `hdeg2r` forces `f = e_c`, then `x = c`.
+        subst y
+        have hfe : f = e_c := hdeg2r f x hlink
+        have hcx : c = x := by
+          rw [hfe] at hlink
+          rcases hlink_ec.eq_and_eq_or_eq_and_eq hlink with ⟨_, h2⟩ | ⟨_, h2⟩
+          · exact absurd h2 hca
+          · exact h2
+        subst hcx
+        -- relabel `hingeRow c a r → hingeRow c v r`; tag RIGHT with `ρ' := r`.
+        refine Or.inr ⟨r, ?_, ?_⟩
+        · rw [hfe, hec_support] at hr'; exact hr'
+        · rw [Equiv.swap_apply_of_ne_of_ne hca hcv, Equiv.swap_apply_left]
+      · -- x ≠ a, y ≠ a: the swap fixes both endpoints; the image is a genuine `Fva`-row.
+        rw [Equiv.swap_apply_of_ne_of_ne hxa hxv, Equiv.swap_apply_of_ne_of_ne hya hyv]
+        obtain ⟨hlink', hble⟩ := htrans f x y hlink hxa hya
+        exact Or.inl ⟨f, x, y, hlink', r, hble hr, rfl⟩
+  · -- The `(ab)`-block tag `φ = hingeRow a b ρ'`: relabel to the genuine `e_b`-row of `Fva`.
+    have hba : b ≠ a := Ne.symm hab
+    have hbv : b ≠ v := Ne.symm hvb
+    rw [BodyHingeFramework.hingeRow_funLeft_dualMap, Equiv.swap_apply_left,
+      Equiv.swap_apply_of_ne_of_ne hba hbv]
+    refine Or.inl ⟨e_b, v, b, hlink_eb, ρ', ?_, rfl⟩
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff, heb_support]; exact hρ'e₀
+
 /-- **G4d-i — the `a`-column restriction of a `G_v`-row-span vector lies in `hingeRowBlock e_c`**
 (`lem:case-III-claim612-eq644`, §1.49(4), Phase 22h). Given `wGv` in the span of a framework
 `Fv`'s rigidity rows and the degree-2-at-`a` constraint that `e_c` is the *only* edge of `Fv`
