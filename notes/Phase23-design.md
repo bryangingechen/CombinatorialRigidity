@@ -3523,9 +3523,12 @@ preserved); only the *row-membership transport into candidate `i`'s role* invert
 **(H.5) TEAR-UP list (orphaned by the verdict — confirm-and-delete; `git grep` to confirm zero live
 callers at the deleting commit).**
 - The per-body W9b chain (already orphaned per §(o‴), wrong granularity): `bottomTag_foldr_mem_rigidityRows`,
-  the §(o″) single-step `funLeft_dualMap_bottomTag_mem_rigidityRows`, `redundancy_panel_carry`
-  (`Relabel.lean`), and `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary, superseded by
-  `wstep`). `ofNormals_relabel_perm` (2c-ii-β, route A) — orphaned (Fix A is row-span, M₃-style, not
+  the §(o″) single-step `funLeft_dualMap_bottomTag_mem_rigidityRows` (+ the seed-advance single-step
+  `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` + the `foldl` core
+  `bottomTag_foldl_mem_rigidityRows`), `redundancy_panel_carry` (`Relabel.lean`) — **DELETED 2026-06-19**
+  (build/lint-verified, §(I.1) confirm-and-delete). Still pending (docstring back-references / re-check
+  coupling): `funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary, superseded by `wstep`) and
+  `ofNormals_relabel_perm` (2c-ii-β, route A) — orphaned (Fix A is row-span, M₃-style, not
   framework-transport).
 - **`chainData_split_realization` + `chainData_split_w6b_gates`** (CHAIN-2a-ii / the per-`i` W6b half):
   zero live callers (H.2.3). They are the per-`i`-W6b architecture Fix B would have used; under Fix A the
@@ -3704,8 +3707,10 @@ flagged); it joins the §(H.5) tear-up list with `bottomTag_foldr_mem_rigidityRo
 converse-orientation sibling, also zero live callers), the two W9b single-steps
 (`funLeft_dualMap_bottomTag_mem_rigidityRows` `:1632`, used only by
 `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` `:1739`, which is itself zero-consumer), and
-`redundancy_panel_carry` (`:1922`, zero callers). **Confirm-and-delete at the arm-build commit** (the
-existing §(H.5) discipline: `git grep` zero callers, delete in the same commit that lands the arm).
+`redundancy_panel_carry` (`:1922`, zero callers). **DELETED 2026-06-19** (the full 5-decl cluster
+`funLeft_dualMap_bottomTag{,_seedAdvance}_mem_rigidityRows` + `bottomTag_{foldr,foldl}_mem_rigidityRows`
++ `redundancy_panel_carry`; build/lint-verified, ahead of the arm build per the §(H.5) discipline —
+`git grep` zero callers, removed).
 Caveat unchanged from §(H.5): `candidateRow_ac_eq_neg` (the eq.-(6.44) primitive, `Claim612.lean`, its
 own home) is **kept** — Leaf B re-consumes it via G4d-i.
 
