@@ -2,10 +2,10 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
-**Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a/T-W9b/bridge LANDED; the block-carrying
-single-step `funLeft_dualMap_pinnedBlock_carry` is **next, SIGNATURE FROZEN** — see §(o″) *DESIGN-PASS*,
-panel-match via G4d-i not the eq.-6.44 bridge), then the W9b membership fold) + CHAIN-5 (the
-dispatch assembly, gated by the ENTRY-contract reshape).**
+**Remaining: CHAIN-2 (the `Fin d` reduction layer — T-W9a/T-W9b transport machinery LANDED; the W9b
+MEMBERSHIP is BLOCKED on a fold-invariant reshape, the KT §6.4.2 telescoping crux — next is a
+comprehensive telescoping-structure design, approach pending coordinator/user adjudication, see
+*Current state* + *Hand-off*) + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
 
@@ -18,28 +18,29 @@ a later split costs no renumber-churn): `CARRIER`(=23a, closed), `CHAIN`(=23b), 
 
 ## Current state
 
-**Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core + the degree-2 bridge
-`redundancy_panel_carry` LANDED (axiom-clean, `Relabel.lean`); next commit = the NEW block-carrying
-single-step `funLeft_dualMap_pinnedBlock_carry`, SIGNATURE FROZEN (design §(o″) *DESIGN-PASS*), THEN
-the W9b membership fold.** The row-270-BLOCKED design pass (2026-06-19, source-verified) froze the
-carrying step + corrected its panel-match supply. The step is the chain-INTERIOR analogue of the landed
-*terminal* `funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean:1181`): same `Fv`/`Fva` shape +
-genuine-row arm, but the `(a,v)`-block input maps to a `(c,v)`-block OUTPUT re-pinned to the **single
-`ρ`** (NOT terminated into an `e_b`-row — that's structurally impossible interior: `e_b = edge(s+1)`
-is cut by `removeVertex vₛ₊₁`). **`hcol`-supply CORRECTION (flag, not a blocker):** the BLOCKED agent's
-`redundancy_panel_carry`/`candidateRow_ac_eq_neg` (eq.-6.44) route is NOT cleanly suppliable — its
-`hcol`/`hrest` need the ab/ac/grest panel decomposition, which `_acolumn_zero` (`Candidate.lean:522`)
-does NOT give (its conjunct is the *trivial zero-functional* vanishing of the opaque `wGv+wOther−r i`)
-and which is out of scope at the chain step (`chainData_split_w6b_gates` outputs only `ρ`/`w`). The
-carry's panel-match instead comes from **G4d-i** (`acolumn_mem_hingeRowBlock_of_span_rigidityRows`,
-`Relabel.lean:1355`) — the route the d=3 M₃ arm ALREADY uses (`:1532`): `ρ ⊥ C(q(ac))` from the
-candidate's `hingeRow a b ρ ∈ span(G−v)-rows` (in scope) + degree-2 geometry. So
-`redundancy_panel_carry` is an **orphan-in-waiting** (confirm-and-delete at the carry build). **NOT new
-math** (G4d-i landed, in d=3 use); no motive/IH/spine-carry change; d=3 zero-regression. Detail: design
-§(o″) *DESIGN-PASS* (A)–(D).
-Tracker (CHAIN-2c-ii-transport): T-W9a-chain ✓ → T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ →
-redundancy_panel_carry ✓ (now orphan-in-waiting) → **block-carrying single-step [next, frozen]** → W9b
-membership fold → 2c-ii-arm → 2c-iii → CHAIN-5. Full detail: §(o″) *DESIGN-PASS* + *Hand-off*.
+**Route B LOCKED (§(o″)). T-W9a + T-W9b single-step/fold core LANDED; the W9b MEMBERSHIP is BLOCKED on
+a fold-invariant reshape — the conjecture's hardest crux (KT §6.4.2, the "12-page proof"). Next = a
+comprehensive telescoping-structure design (approach pending coordinator/user adjudication — see
+*Hand-off*).**
+
+The row-272 build found the iteration-11 *frozen* `Tag`-signature (design §(o″) *DESIGN-PASS*) is
+**UNPROVABLE — INVALIDATED**: with a single-pinned block tag `Tag s ψ := … ∨ ψ = hingeRow vₛ₊₁ vₛ₊₂ ρ`,
+the carry `(funLeft (swap vₛ₊₁ vₛ₊₂)).dualMap` sends `Tag(s+1)`'s block `hingeRow vₛ₊₂ vₛ₊₃ ρ ↦
+hingeRow vₛ₊₁ vₛ₊₃ ρ` (`hingeRow_funLeft_dualMap`, coordinator-verified), but the target tag is
+`hingeRow vₛ₊₁ vₛ₊₂ ρ` — they differ by a generically-nonzero residual `hingeRow vₛ₊₂ vₛ₊₃ ρ` no
+hypothesis constrains. So a single carried block row does **not** chain: **KT eq. (6.66)'s ±r-chain
+*telescopes*** — the residuals must accumulate in the fold-invariant (an accumulating *sum* of block
+rows, or a span-membership tag), NOT a single pinned functional. This reshape is design-decomposition
+work, not a one-sitting build.
+
+**The piecemeal recon→build loop has mis-pinned this crux 4× (iter 3/7/9/11 design-passes): the bridge
+`redundancy_panel_carry` is an orphan, the landed single-step is terminal-only, the `Tag` is
+non-telescoping.** Landed + still-usable: the transport machinery (T-W9a span-transport, the *terminal*
+single-step, the fold core `bottomTag_foldr_mem_rigidityRows` over an **abstract** `Tag` — reusable, the
+`Tag` shape is its parameter, G4d-i panel-match). To confirm-and-delete once the reshape lands: the
+orphan bridge `redundancy_panel_carry` + `candidateRow_ac_eq_neg` (both zero live callers).
+Tracker (CHAIN-2c-ii-transport): T-W9a ✓ → W9b-step ✓ → W9b fold core ✓ (abstract `Tag`, reusable) →
+**telescoping fold-invariant reshape [next — design]** → W9b membership → 2c-ii-arm → 2c-iii → CHAIN-5.
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -166,48 +167,27 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **Route B LOCKED (design §(o″)); no motive/IH/spine-carry change (C.3/C.6 unmoved). T-W9a + T-W9b
-single-step/fold core + the bridge `redundancy_panel_carry` LANDED. NEXT = the block-carrying
-single-step `funLeft_dualMap_pinnedBlock_carry`, SIGNATURE FROZEN (design §(o″) *DESIGN-PASS* (A)),
-THEN the W9b membership fold.** The row-270-BLOCKED design pass (2026-06-19, source-verified vs the
-landed bodies + KT eqs. 6.24/6.43/6.44/6.62/6.66) froze the carrying step + corrected its panel-match
-supply. The step is the chain-INTERIOR analogue of the landed *terminal*
-`funLeft_dualMap_bottomTag_mem_rigidityRows` (`Relabel.lean:1181`): same abstract `Fv`/`Fva` shape +
-genuine-row arm (verbatim the terminal step's first case, `:1204–1245`), but the `(a,v)`-block input
-maps to a `(c,v)`-block OUTPUT re-pinned to the **single `ρ`** — NOT terminated into an `e_b`-row (the
-terminal step's `Or.inl` at `:1246–1252` is structurally impossible interior: `e_b = edge(s+1)` is cut
-by `removeVertex vₛ₊₁`). The block-input arm (the new case) is the **irreducible new content** (the
-identity chain converting `funLeft-swap (hingeRow a b ρ) = hingeRow v b ρ` into `hingeRow c v ρ` using
-the two pinned annihilations — build-discovered, likely `hingeRow_sub_hingeRow_eq`/`hingeRow_swap`).
+single-step/fold core LANDED. The W9b MEMBERSHIP is BLOCKED on a fold-invariant reshape (KT §6.4.2's
+telescoping ±r-chain — see *Current state*). NEXT = a comprehensive design of the telescoping
+fold-invariant (an accumulating block-row *sum* / span-membership `Tag`, NOT the invalidated
+single-pinned functional), against a close read of KT §6.4.2 — APPROACH PENDING coordinator/user
+adjudication: the piecemeal recon→build loop has mis-pinned this crux 4×, so a more global decomposition
+(or a user-pinned structure) is warranted.** ⚠ **The iteration-11 frozen signature + its §(o″)
+*DESIGN-PASS* (A)–(D) detail below are INVALIDATED** (row 272: the single-pinned `Tag` does not chain —
+the carry leaves a generically-nonzero residual `hingeRow vₛ₊₂ vₛ₊₃ ρ`) — retained only as the
+source-verified record of what the *terminal* single-step / the G4d-i panel-match / the d=3 M₃
+structure provide (still usable inputs to the reshape). The original (now-superseded) frozen-signature
+spec follows.
 
-**`hcol`-SUPPLY CORRECTION (verified; flag-don't-force, NOT a blocker).** The BLOCKED agent's plan
-routed the panel-match through `redundancy_panel_carry` (`Relabel.lean:1318`, the eq.-6.44 instance of
-`candidateRow_ac_eq_neg`). **That route is NOT cleanly suppliable** — three source-verified facts:
-(1) its `hcol`/`hrest` need the per-edge `(ab-sum + ac-sum + grest)` decomposition; the only candidate
-supplier `exists_redundant_panelRow_ab_decomposition_acolumn_zero` (`Candidate.lean:522`) gives instead
-the **trivial zero-functional** column-vanishing of the *opaque* `wGv+wOther−r i` (proof `sub_self`,
-`:557`) — the wrong shape, and **no landed lemma re-groups it by edge**. (2) `candidateRow_ac_eq_neg` +
-`_acolumn_zero` have **zero live call sites** (grep); the redundancy data `lam/rab/rac/grest` is
-existentially consumed inside `exists_candidateRow_bottomRows_of_rigidOn` (`:880`) and is **out of
-scope** — `chainData_split_w6b_gates` outputs only `ρ`/`w` (`Realization.lean:799–807`). (3) The d=3 M₃
-arm ALREADY supplies the panel-match by the RIGHT route — **G4d-i**
-(`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, `Relabel.lean:1355`) at `:1532`: `ρ ⊥ C(q(ac))` from
-the candidate's `hingeRow a b ρ ∈ span(G−v)-rows` (W6b output, in scope) + the degree-2-at-`a` geometry.
-**So the carry's `hρ_ac` = G4d-i (landed, d=3-used), `hρ_ab` = the W6b `ρ ⊥ C(q(ab))` gate
-(`:799`).** `redundancy_panel_carry` (eq.-6.44) is thus an **orphan-in-waiting** — built row-268 for the
-route this pass replaces; confirm-and-delete at the carry build (do not pre-empt; 1% the fold's `Tag`
-wants the abstract `±r` identity). **NOT new math** (G4d-i is landed and already in d=3 use); the carry
-wires the *known* d=3 supply into the interior-step shape. (The eq.-6.44 `±r` story stays real KT math
-+ the blueprint point (3) anchor; the *provable Lean* carry at the chain body is G4d-i.)
-
-**W9b membership fold (design §(o″) *DESIGN-PASS* (C), after the carrying step):** define
-`Tag s ψ := ψ ∈ span(shiftBodyFramework s)-rows ∨ ψ = hingeRow (vtx⟨s+1⟩) (vtx⟨s+2⟩) ρ` (block-disjunct
-pinned to the single W6b `ρ`), feed `bottomTag_foldr_mem_rigidityRows` (`:1273`, landed) with
-`F := shiftBodyFrameworkTotal`, `bodies := shiftBodyList i`; each `hstep` = the carrying step at
-`bodies[s] = (vₛ₊₂,vₛ₊₁,vₛ)` (genuine arm via `shiftBodyFramework_htrans` + graph accessors, block arm
-via the carry); the `funLeft (shiftPerm i)` rewrite via the LANDED `wstep_foldr_funLeft_eq` +
-`shiftPerm_eq_prod_map_swap_shiftBodyList`. Output feeds `case_III_arm_realization`'s `hwmem` slot
-(`:1495`, the `Gv-row ∨ ∃ρ', ρ'⊥C(ab) ∧ =hingeRow a b ρ'` disjunction with `ρ' := ρ`). Then 2c-ii-arm
-(`chainData_relabel_arm`) wires T-W9a span + relabel bridge (`hρGv`) + this membership (`hwmem`).
+(The superseded iteration-11 spec — the block-carrying single-step's exact `(a,v)`→`(c,v)` arm, the
+G4d-i `hcol`-supply correction, and the single-pinned `Tag` membership fold — is preserved in §(o″)
+*DESIGN-PASS* (A)–(D) + git as the source-verified record. **Still-usable inputs to the reshape:** the
+G4d-i panel-match (`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, the d=3 M₃ route at
+`Relabel.lean:1532`) + the W6b `ρ ⊥ C(q(ab))` gate (`Realization.lean:799`) for the per-step panel
+annihilations, and the **abstract-`Tag`** fold core `bottomTag_foldr_mem_rigidityRows` (the `Tag` shape
+is its parameter — the reshape supplies an accumulating-sum/span-membership `Tag`, not a single
+functional). **Confirm-and-delete** at the reshape: the orphan bridge `redundancy_panel_carry` +
+`candidateRow_ac_eq_neg` (zero live callers).)
 **`d=3` zero-regression CONFIRMED:** `shiftBodyList i` has length `i−1` (`length_shiftBodyList`); the M₃
 arm is `i=2` → length-1 list → single *terminal* step, zero interior carries (the carry fires only for
 `s+1 < i`, `i ≥ 3`). The landed M₃ + `case_III_bottom_relabel` + d=3 dispatch are untouched. **Per-leaf
