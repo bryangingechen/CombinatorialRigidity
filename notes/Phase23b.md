@@ -32,20 +32,14 @@ CHAIN; ENTRY/ASSEMBLY stay code-only until their turn.
 
 ## Current state
 
-**Next = CHAIN-2c-ii-graphiso *backward* direction, then package the iff.** The graph-iso brick's
-**forward** half **LANDED 2026-06-19** (`ChainData.splitOff_isLink_shiftRelabel_forward`,
-`Induction/Operations.lean`, axiom-clean): a candidate-`i` interior-split link, read through `(ρ, σ) =
-(shiftPerm i.castSucc, shiftEdgePerm i)`, is a `v₁`-base-split link. The remaining work is the
-**backward** direction (base-link ⇒ candidate-link) + bundling both into the `hiso` iff
-`Gt.IsLink e x y ↔ Gs.IsLink (σ e)(ρ x)(ρ y)`. Both directions share the same edge/vertex case
-machinery (the full `σ`/`ρ` action API is now landed — see below); backward additionally pulls a base
-survivor back through `σ`/`ρ`. Route-independent (prerequisite for both §(o′)(B) arm-closer routes).
-
-**Finding (2026-06-19): the design's "closure action values unneeded" was forward-only.** A complete
-iff needs `σ(edge i) = edge 1` and `σ(edge (i−1)) = edge 0` for the *backward* leg (a base survivor on
-those edges pulls back to a candidate link). Both **LANDED** this commit
-(`shiftEdgePerm_apply_edge_{top,pred}`, axiom-clean) alongside `mem_shiftCycle` (general-`x` cycle
-membership). So `σ`'s action API is now total on the cycle support; `ρ`'s already was.
+**Next = CHAIN-2c-ii-graphiso *backward* direction, then package the iff.** The **forward** half
+**LANDED 2026-06-19** (`ChainData.splitOff_isLink_shiftRelabel_forward`, axiom-clean): a candidate-`i`
+split link, read through `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`, is a `v₁`-base-split link.
+Remaining: the **backward** direction (base-link ⇒ candidate-link, via `σ`/`ρ` pullback) + bundling both
+into the `hiso` iff `Gt.IsLink e x y ↔ Gs.IsLink (σ e)(ρ x)(ρ y)`. Same case machinery; the full `σ`/`ρ`
+action API is now landed (the backward leg needs `σ(edge i)=edge 1` / `σ(edge (i−1))=edge 0`, landed as
+`shiftEdgePerm_apply_edge_{top,pred}` — refining §(o′)(A)'s forward-only "closure values unneeded").
+Route-independent (prerequisite for both §(o′)(B) arm-closer routes).
 
 **§(o′) FLAGS a genuine route-A/B fork in the arm-closer transport** (NOT settled by 2c-ii-β; §(o)'s
 "M₃'s body" framing was wrong — the landed M₃ uses W9a/W9b/G4d-i row-span transport, not
@@ -382,17 +376,13 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `vtx 1 → ⋯ → vtx i → vtx 1` + action lemmas (`Induction/Operations.lean`, axiom-clean; `formPerm ∘
   ofFn` idiom in FRICTION). Git + §(o).
 - **CHAIN-2c-ii-graphiso edge cycle + forward direction LANDED 2026-06-19** (`Induction/Operations.lean`,
-  all axiom-clean). `ChainData.shiftEdgePerm` (the `σ`) = edge-side `i`-cycle `edge 0 → e₀ → edge i →
-  edge 1 → ⋯ → edge (i−1) → edge 0` (`List.formPerm` on a `head :: head :: head :: ofFn` list,
-  `[DecidableEq β]`-only). **6 action lemmas:** the 4 interior/fresh (`apply_edge_zero`/`apply_e₀`/
-  `apply_edge_interior`/`apply_edge_off`) + the 2 **closure** (`apply_edge_top` `edge i → edge 1`,
-  `apply_edge_pred` `edge (i−1) → edge 0`). **Finding — the closure values are NOT "unneeded":** they
-  were forward-only-unneeded (those edges are at the deleted `vᵢ`, so never *candidate* links), but the
-  iff's *backward* leg pulls a base survivor on `edge 1`/`edge 0` back, needing `σ⁻¹` there — so the
-  full support API is required. **Forward direction** `splitOff_isLink_shiftRelabel_forward` (candidate
-  link → base link) + `mem_shiftCycle` (general-`x` cycle membership) landed; proof = expand
-  `splitOff_isLink`, split survivor on cycle-membership (on-cycle ⇒ chain edge via `deg_two`; off ⇒ `σ`/`ρ`
-  fix) + fresh-edge case. Backward + iff packaging are next.
+  axiom-clean). `ChainData.shiftEdgePerm` (the `σ`, edge-side `i`-cycle, `formPerm` on a
+  `head::head::head::ofFn` list) + 6 action lemmas (4 interior/fresh + 2 **closure**
+  `apply_edge_{top,pred}`); `splitOff_isLink_shiftRelabel_forward` (candidate link → base link, the
+  cycle analogue of d=3 `splitOff_isLink_relabel`) + `mem_shiftCycle`. **Finding:** the 2 closure
+  values are forward-only-unneeded but the iff's *backward* leg needs them (`σ⁻¹` pullback on
+  `edge 1`/`edge 0`) — refining §(o′)(A). Proof internals + the `Fin d`-index relabel idiom → git +
+  FRICTION. Backward + iff packaging next.
 - **CHAIN-2c-ii-β LANDED 2026-06-18 — `ofNormals_relabel_perm`**, the involution-free general-`Equiv.Perm`
   framework-transport (`CaseIII/Relabel.lean`, axiom-clean): graph layer abstracted to
   `hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)` + `hρst` (the forced `ρ.symm`/`σ.symm`
