@@ -1300,6 +1300,61 @@ a *sibling object in the same construction* gets the analogous property from a
 narrower condition (a rank-poly non-root) than you are demanding (all of GP) — an
 unjustified asymmetry. Cross-ref: `notes/Phase22-realization-design.md` §1.16.
 
+## A degenerate headline case is a target, not a template
+
+**The pattern (the molecular general-`d` lift, Phase 23; surfaced sharply when the
+owner asked "are we grounding the routes on what KT did?", 2026-06-20).** The
+project formalized Katoh–Tanigawa at `d=3` first (Phase 22h) — the right call, since
+`d=3` is the headline result — and then lifted to general `d` (Phase 23). The
+single step that has cost the most churn (the Case-III candidate-transport / `hρGv`
+slot, mis-pinned across sessions #10–#16: the `ρ²` over-shift, the "invert the fold"
+refutation, the residue-link error, a clean-relabel temptation) is exactly the step
+where **`d=3` is degenerate in the dimensions that matter**:
+- the relabel cycle `shiftPerm 2 = (v₁v₂)` is a **single swap = involution**, so
+  `(shiftPerm)⁻¹ = shiftPerm` and the entire base↔candidate *orientation* question is
+  invisible;
+- the redundancy transport is a **single** degree-2 `a`-column step (one residue), so
+  the general `i−1`-step **telescope** is invisible;
+- there is no multi-step over-shift to get wrong.
+
+So the `d=3` engine (`case_III_arm_realization_M3`) is a faithful **target** but a
+treacherous **template**: generalizing *its proof* rather than *KT's general
+argument* repeatedly produced pins that are correct at `i=2` and wrong at `i≥3`.
+
+**The compounding miss.** The transport was designed **bottom-up at the
+Lean-scaffolding level** (the `shiftBodyFrameworkAsc` chain, `wstep`, the W9a/W9b
+folds, the Fix-A/Fix-B fork) while the **KT row-operation anchor was deferred**. The
+blueprint-clarity obligation explicitly flagged that KT's index-shift isos (6.54–6.56)
+and ±r chain (6.66) must be materialized — but scheduled it for *phase-close*. So each
+recon reconciled a *moving* scaffolding (the W9b chain was built then deleted; the
+candidate→base folds built then orphaned) against **no fixed source referent**, and
+the special-case intuitions filled the vacuum. The KT-faithfulness recon that finally
+stabilized it (2026-06-20) found the redundancy transports by KT's degree-2 `a`-column
+cancellation (eq. 6.44) iterated `i−1` times to `±r` (eq. 6.66) — which *is* the
+`wstep` residue, so the fold was right all along, but that grounding arrived late,
+after the churn.
+
+**The rule.** When lifting a formalized special case to the general statement:
+1. **Anchor the general design on the *source's* general argument, written down up
+   front** — not on the special case's *proof*. A degenerate headline case supplies
+   false intuitions precisely at the steps its degeneracy hides; the source's general
+   argument (here KT's 6.44/6.66 row operations) is the only stable referent. If the
+   blueprint/design defers that grounding, *pull it forward* — a fixed source anchor
+   costs ~1 commit and saves the re-pinning churn (a crux step can otherwise eat parts
+   of many sessions).
+2. **De-risk every general transport leaf at the first *non-degenerate* case**, never
+   the headline one — `i=3` (2 residues, a genuine cycle), not `i=2` (1 residue, an
+   involution). Prescribing this is not enough; *execute* it before pinning the general
+   signature (a Phase-23b build prescribed the `i=3` de-risk twice, then skipped it and
+   bailed into a wrong-direction tangent).
+3. **Don't let bottom-up Lean scaffolding lead the design of a crux.** Reconciling
+   accreting scaffolding against itself, with the source anchor deferred, is how the
+   same crux gets mis-pinned repeatedly. The sibling rule *Match the source's argument
+   structure …* (above) is the same lesson at the *composition-lemma* grain; this one
+   is at the *special-case-to-general* grain. Cross-ref: `notes/Phase23b.md`
+   §(o‴)(I.7.7); `notes/BlueprintExposition.md` (`lem:case-III` general-`d`);
+   `notes/model-experiment.md` rows 305–307.
+
 ## Phase Case-naming must match KT's k-bookkeeping
 
 **The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex

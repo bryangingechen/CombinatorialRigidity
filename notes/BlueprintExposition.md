@@ -519,6 +519,24 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   relabel isos `ρᵢ`, the single redundancy `r` carried ±-ly across the `d` panels, and the (6.67)
   discriminator. **Owner-flagged 2026-06-18: this exposition must be absolutely clear** (the Lean
   economizes; the prose must not). Sharpens the [pending] (c) write-target above — write at phase-close.
+  **KT-transport-spine CAPTURE sharpened (2026-06-20; KT-faithfulness recon, model-exp row 307,
+  owner-prompted "are we grounding on KT?").** The pinned anchor the remaining `hρGv`/arm/dispatch Lean
+  builds against — *the stable insight, now source-verified against KT §6.4.1 verbatim*: KT does **not**
+  transport the redundancy `r` by the clean index-shift relabel alone. `ρᵢ` (6.54) acts on the
+  columns/panels; the **redundancy transport across panels (6.63–6.66) is fundamental row operations** —
+  the **degree-2-vertex `a`-column cancellation** (eq. 6.44/6.43, "since only `ab` and `ac` are incident
+  to `a`": `r = −Σⱼ λ_{(ac)j} rⱼ(q(ac))`), **iterated `i−1` times** along the cycle to give `±r` (6.66,
+  "in a manner similar to (6.44)"). In the Lean this `a`-column cancellation **is** the `wstep` residue
+  (`wstep v a c = (funLeft (swap a v)).dualMap − (screwDiff v c).dualMap ∘ (single a).dualMap`), so the
+  W9a residue fold faithfully models KT (not a Lean detour). **Why the `hwmem` slot is a clean relabel but
+  `hρGv` is not:** different panel level / generator set — the bottom-row family (`hwmem`) never contains a
+  degree-2-`a`-row that strips to a non-edge, so it transports by a bare relabel; the redundancy (`hρGv`)
+  is the *one* object riding the `a`-column dependence (KT 6.52→6.66), so it needs the residue extraction
+  (the `d=3` M₃ template `case_III_arm_realization_M3`: feed the base redundancy through W9a, identify the
+  genuine relabel-image `e_b`-row, `sub_mem` — generalized to `i−1` steps). This capture is the *anchor*,
+  not the phase-close write; the full `.tex` prose still lands at phase-close once the arm is `sorry`-free.
+  Pointer: `notes/Phase23b.md` §(o‴)(I.7.7); `DESIGN.md` *A degenerate headline case is a target, not a
+  template*.
 
 ## Retroactive coverage
 
