@@ -4244,6 +4244,187 @@ read-only recon against KT §6.4.2 (eqs 6.46–6.66) + the landed bodies tested 
   via the landed `hwmem`/`chainData_bottom_relabel` machinery — then `sub_mem` peels the fresh-edge slot.
   NEXT = wire LEAF-ρ1 + LEAF-ρ3 into `chainData_relabel_arm`.
 
+#### (o‴)(I.8) ARM-WIRING DECOMPOSITION — `chainData_relabel_arm` slot→brick map + TWO genuinely-new prerequisites the algebraic-core lemmas defer (recon-before-build, 2026-06-20)
+
+> **Design-pass, docs-only, 2026-06-20 (opus).** Decomposes the general-`i` arm wiring
+> `chainData_relabel_arm` into a buildable sub-step sequence, having re-verified against the **landed
+> `def`/`theorem` bodies** (file:line below) which engine slot each landed brick fills and at what graph
+> level. Clause (i): the engine-slot ↔ brick map below is source-verified. Clause (ii): the wiring is
+> **NOT** the "purely graph-level, one instantiation" the prior pins (*Current state*, *Hand-off*,
+> (I.7.10) tail) asserted — two genuinely-new prerequisites surface, both Lean-confirmed below, neither a
+> motive/IH/signature change but neither a clean instantiation either. **The arm is NOT yet a mechanical
+> assembly; it needs these two leaves FIRST.** The owner-chosen route (option (b), engine slot
+> KT-faithful) is UNCHANGED — these are missing rungs *inside* it, not a re-decision.
+>
+> **PRIOR-PIN CORRECTION.** "`The hρGv algebraic core is COMPLETE`; the remaining work is **purely
+> graph-level** … instantiate `wstep_foldl_freshEdge_slot_mem` at `S := span (G−vᵢ).rigidityRows`,
+> supply `hW` + the `m` `hsurv` memberships" (Phase23b *Hand-off* rows 312–375, design (I.7.10) tail) is
+> **OVERSTATED**: the algebraic *closed form* is done, but (P1) the corollary's `w : ℕ → α` /
+> `Function.Injective w` interface is **un-instantiable over the finite vertex type** the arm runs on, and
+> (P2) the `m` `hsurv` summand memberships were **deferred as abstract-`S` hypotheses** (in both the
+> general corollary and the `i=3` gate) and are *themselves* a genuinely-new perpendicularity obligation,
+> not a landed-brick instantiation. Both are buildable; the arm is gated on them.
+
+**(I.8.0) What the arm must produce (source-verified, file:line).** `chainData_relabel_arm` discharges
+the per-`i` candidate (interior `2 ≤ i ≤ d−1`) by `refine PanelHingeFramework.case_III_arm_realization …`
+at the candidate roles — exactly the d=3 `M₃` shape (`case_III_arm_realization_M3`, `Relabel.lean:2352`,
+which `refine`s the same engine at `Relabel.lean:2439`). The engine (`Arms.lean:72`) binds `Gv ends q`
++ `(v,a,b)` + the slots. Reading the **landed `chainData_bottom_relabel` output type** (`Relabel.lean:1960–1972`)
+pins the *exact* framework the arm's `Gv ends q` must be, because that leaf is what fills `hwmem` and the
+engine consumes `hwmem`/`hρGv` against ONE framework:
+- **`Gv = G.removeVertex (cd.vtx i.castSucc) = G − vᵢ`** (`shiftBodyGraph (i−1) = G − vᵢ`, `Operations.lean:1800`).
+- **`ends = ` the relabelled selector** `fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1, …)`.
+- **`q = qρ := fun p => q₀ (cd.shiftPerm i.castSucc p.1, p.2)`** (the inverse-cycle relabelled base seed).
+- **`(a,b) = (cd.vtx i.succ, cd.vtx ⟨i−1,_⟩.castSucc) = (vᵢ₊₁, vᵢ₋₁)`** — the candidate fresh pair, in the
+  order `chainData_bottom_relabel`'s block tag emits (`Relabel.lean:1971`) and KT eq. (6.57)/(6.64) force
+  (engine-`a` = free `vᵢ₊₁`, engine-`b` = reproduced `vᵢ₋₁`; (I.7.10) bullet 1, coordinator-verified vs
+  `Arms.lean:77`). [Coordinator-verified the four bindings against `Relabel.lean:1960–1972` + `Arms.lean:74–99`.]
+
+**(I.8.1) Engine-slot → landed-brick map (source-verified; the slots that ARE clean).** With the four
+bindings of (I.8.0) fixed, the engine's non-`hρGv` slots are mechanical (d=3 `M₃` shows each, generalized
+by the inverse cycle replacing the single swap):
+- **`hwmem` (`Arms.lean:96`) ← `chainData_bottom_relabel` (`Relabel.lean:1939`, LANDED axiom-clean).**
+  Each base bottom-row member (`hwmem` at the `v₁`-base, supplied by the W6b gate) maps through the
+  per-member `(shiftPerm i.castSucc)⁻¹` transport to a candidate `G − vᵢ` row OR the `(a,b)`-block tag —
+  exactly the engine's `hwmem` disjunction at the (I.8.0) framework. The arm supplies the two recording
+  hyps `hrec`/`he₀rec` (`Relabel.lean:1943/1946`). Clean. (d=3: `case_III_arm_realization_M3`'s `case hwmem`
+  → `case_III_bottom_relabel`, `Relabel.lean:2551`.)
+- **`hρe₀` (`Arms.lean:90`) ← G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`.** The candidate
+  functional's annihilation `ρ ⊥ C(qρ(ab))` is read off the base `hρGv` via the `a`-column-in-block lemma,
+  exactly as `M₃`'s `hρ_ac` (`Relabel.lean:2419–2430`) does it at `vᵢ` (ONE application, not a per-body
+  carry; `candidateRow_ac_eq_neg` STAYS for this). Clean.
+- **`htrans`/`hLn`/`hgab`/`hρgate`/`hsplitG`/`hleG`/`hVone`/`hVcard`/`hw`/`hwcard`** — the same
+  removeVertex-bookkeeping + discriminator (2c-i `exists_chainData_discriminator_pick`) the `M₃` template
+  fills (`Relabel.lean:2446–2546`), generalized to the cycle. Clean, ~1 commit of §38 explicit-seed slot
+  bookkeeping (pin `qρ` + the panel endpoints `a,b` explicitly to dodge the `whnf` blowup, TACTICS-QUIRKS §38).
+- **`hρGv` (`Arms.lean:91`) ← `wstep_foldl_freshEdge_slot_mem` (`Relabel.lean:2792`) — the slot the wiring
+  does NOT yet reach cleanly; see (I.8.2)/(I.8.3).** Target: `hingeRow vᵢ₊₁ vᵢ₋₁ ρ ∈ span (G−vᵢ ends qρ)`.
+
+**(I.8.2) PREREQUISITE P1 (Lean-confirmed BLOCKER) — the algebraic-core corollary's `w : ℕ → α` /
+`Function.Injective w` interface is un-instantiable over the finite vertex type.** `wstep_foldl_freshEdge_slot_mem`
+(`Relabel.lean:2792`) and its closed-form base `wstep_foldl_hingeRow_telescope` (`:2739`) are stated over
+`(w : ℕ → α) (hw : Function.Injective w)`. To supply `hρGv` the arm must instantiate `w` so that
+`w m = vᵢ₋₁`, `w (m+2) = vᵢ₊₁`, and the `hW`/`hsurv` rows match `cd.vtx` — i.e. `w` must AGREE WITH
+`cd.vtx` on indices `0 … i+1`. But the engine (`Arms.lean:73`) and the whole arm run under **`[Finite α]`**,
+and `Function.Injective (w : ℕ → α)` is **contradictory for finite `α`** (`ℕ` is infinite). Lean-verified
+this session: `example {α} [Finite α] (w : ℕ → α) (hw : Function.Injective w) : False` closes via
+`Finite.of_injective w hw` + `not_finite ℕ`. So **the `hw` slot can NEVER be filled in the arm** — the
+corollary as stated is dead-on-arrival for the finite-`α` arm, even though it is a true theorem (it holds
+vacuously-only for infinite `α`). The fold list / hypotheses / conclusion of the *instantiated* statement
+touch only indices `0 … i+1 ≤ cd.d` (verified: `shiftBodyListAsc i` entries reach `vtx ⟨i+1,_⟩`,
+`Operations.lean:1694–1697`; `hsurv`/conclusion reach `w(i−1)`/`w(i+1)`), so **only finite-range
+distinctness is actually USED** — but the *hypothesis* demands global injectivity. **THE FIX (a
+genuinely-new leaf, ~1 commit):** RESTATE `wstep_foldl_hingeRow_telescope` + `wstep_foldl_freshEdge_slot_mem`
+with a finite-range injectivity hypothesis instead of `Function.Injective w` — either `(w : ℕ → α)` with
+`Set.InjOn w (Set.Iic (m+2))` (or `(↑(Finset.range (m+3)))`), or (cleaner) re-index over
+`(w : Fin (m+3) → α)` with `Function.Injective w`, or thread the per-step `≠` facts the proof actually uses
+(the `hoff`/`wstep_hingeRow_{off,frontier}` calls at `:2759–2772` apply `hw` only to index pairs `≤ m+3`).
+The proof body changes minimally (replace each `fun h => by have := hw h; omega` with the range-scoped
+analogue). Then the arm instantiates with `w := cd.vtx ∘ (Fin.castLE/⟨·,_⟩)` and discharges the
+finite-range injectivity from `cd.vtx_inj` (`ChainData`, the chain vertices are distinct). **This is the
+make-or-break for the whole `hρGv` route: until the algebraic core is re-stated finite-range, there is no
+way to call it from the arm.** [Lean-confirmed `False` from the hypothesis; NOT a motive/contract change —
+the *content* is unchanged, only the injectivity interface.]
+
+**(I.8.3) PREREQUISITE P2 (genuinely-new, deferred-as-`hsurv`-hyp by both the corollary and the `i=3`
+gate) — the `m` surviving summands' membership is a real perpendicularity obligation, not an
+instantiation.** `wstep_foldl_freshEdge_slot_mem` takes `hsurv : ∀ s < m, hingeRow (w s)(w (s+1)) ρ₀ ∈ S`
+as a HYPOTHESIS (and `i3_freshEdge_slot_mem_deRisk` takes `h01`/`h12` likewise — both are abstract over
+`S`, so the `i=3` gate "PASSED" verdict NEVER checked these at the concrete `span (G−v₃)` level; it checked
+only the `sub_mem` algebra). At the arm, `S := span (G−vᵢ ends qρ).rigidityRows` and a summand
+`hingeRow (vtx s)(vtx (s+1)) ρ₀` is in `rigidityRows` (`Basic.lean:603`) iff (a) `vtx s — vtx (s+1)` is a
+genuine `G − vᵢ` link — TRUE (it is `cd.edge s`, `cd.link`; both endpoints `s, s+1 ≤ i−1 < i` survive
+`removeVertex vᵢ`); AND (b) **`ρ₀ ∈ hingeRowBlock (edge s)`, i.e. `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))`** —
+NOT automatic. `ρ₀` is the base redundancy `r` (KT eq. 6.52), built to annihilate the **base spliced panel**
+`C(q(v₀v₂))` only; that it also annihilates each *intermediate chain-edge* panel is precisely what KT eq.
+(6.62)+(6.66) ASSERTS (the transported-redundancy form is a genuine row at each surviving edge), but it is
+**unbuilt in Lean** and is the one substantive math step the telescope's exact-closed-form (I.7.10 LANDED)
+*does not by itself supply* — the closed form says `W φ = (∑ hingeRow … ρ₀) + slot` as linear maps; it does
+**not** say each `∑`-summand is a span member. **THE FIX (a genuinely-new leaf, ~1–2 commits, the real
+math):** a per-summand membership lemma `hingeRow (vtx s)(vtx (s+1)) ρ₀ ∈ span (G−vᵢ ends qρ).rigidityRows`
+for `s < i−1`, whose crux is `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))`. Two candidate routes, **choose at build**:
+(a) derive the perp from the base `hρe₀`/`hρGv` via the **same G4d-i `a`-column-in-block argument** the
+`hρe₀` slot uses (KT's degree-2 cancellation makes each chain-edge panel a scalar multiple of the base
+panel along the cycle — likely, KT-grounded, but UNVERIFIED here); or (b) read the summand membership off
+the **landed `chainData_bottom_relabel`** genuine-row branch directly (the surviving chain edges ARE the
+`rigidityRow_relabel_to_genuine` images — but that brick transports a *base bottom-row member*, so this
+needs the summand to first BE a base member, circular unless ρ₀'s base-perp transports). **Until P2 is
+built, `hsurv` cannot be supplied, so `wstep_foldl_freshEdge_slot_mem` cannot conclude.** [Source-verified
+the `rigidityRows` membership predicate `Basic.lean:603–604`; the perp is genuinely-new.] **De-risk:** do
+P2 at `i=3` FOR REAL at the *concrete* `span (G−v₃)` level (the gate did it only abstractly) — supply
+`h01`/`h12` from actual `G−v₃` rows; if `ρ₀ ⊥ panel(q(v₀v₁))` / `ρ₀ ⊥ panel(q(v₁v₂))` does NOT follow from
+the base `hρe₀`, that is the genuinely-new obstruction and the build STOPS + reports (mirrors the H.11 gate).
+
+**(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
+instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
+1. **`wstep_foldl_freshEdge_slot_mem_finite` (P1 restatement, ~1 commit, the unblocker).** Re-state the two
+   algebraic-core lemmas with a finite-range injectivity interface (recommended: `(w : Fin (m + 3) → α)`
+   `(hw : Function.Injective w)`, or `(w : ℕ → α)` `(hinj : Set.InjOn w ↑(Finset.range (m+3)))`). Signature
+   (the corollary form the arm calls):
+   ```
+   theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem_finite [DecidableEq α]
+       (w : Fin (m + 3) → α) (hw : Function.Injective w)
+       {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+       (hW  : (the wstep foldl of `hingeRow (w 0)(w 2) ρ₀` over the length-`m` body list) ∈ S)
+       (hsurv : ∀ s : Fin m, hingeRow (w s.castSucc…)(w …) ρ₀ ∈ S) :
+       hingeRow (w ⟨m,_⟩)(w ⟨m+2,_⟩) ρ₀ ∈ S
+   ```
+   Proof = the landed body with each `hw h; omega` re-scoped to the `Fin (m+3)` indices. (The closed-form
+   telescope `wstep_foldl_hingeRow_telescope` gets the same treatment first; the corollary `rw`s it.)
+2. **`chainData_freshEdge_surviving_row_mem` (P2, ~1–2 commits, the real math).** For `s < (i:ℕ)−1`:
+   ```
+   theorem … (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ) (hs : s + 1 < (i:ℕ)) (ends₀ q …) :
+       BodyHingeFramework.hingeRow (cd.vtx ⟨s,_⟩) (cd.vtx ⟨s+1,_⟩) ρ₀
+         ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+             (relabelled ends) qρ).toBodyHinge.rigidityRows
+   ```
+   crux: `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))` (route (a) G4d-i degree-2 chain, or (b) via
+   `chainData_bottom_relabel`); link via `cd.link` + survival `s, s+1 < i`.
+3. **`hW`-supplier (clean instantiation, folded into step 4).** `hW := shiftBodyListAsc_foldl_mem_span_rigidityRows`
+   (`Relabel.lean:1785`, LANDED) at the candidate `i`, the relabelled `ends`, seed `q`, base `hφ` = the
+   W6b-gate base redundancy `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G−v₁ ends q)`. **GAP-to-watch (P3, see
+   I.8.5):** the fold's output lands in `span (shiftBodyFrameworkAsc (i−1)) = span (ofNormals (G−vᵢ) ends
+   (shiftSeedAdv q (i−1)))`, whose seed is `shiftSeedAdv q (i−1)`, but the engine framework's seed is
+   `qρ = q ∘ shiftPerm i.castSucc` — these must be the SAME function for `hW`'s `S` to be the engine's `S`.
+4. **`chainData_relabel_arm` (the assembly, ~1 commit).** `refine case_III_arm_realization …` at the (I.8.0)
+   bindings; `hwmem ← chainData_bottom_relabel`; `hρGv`: `rw [hingeRow_swap]` to flip the engine's
+   `hingeRow vᵢ₊₁ vᵢ₋₁ ρ` to the telescope's `hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀` orientation (the corollary emits
+   `hingeRow (w m)(w (m+2)) = hingeRow vᵢ₋₁ vᵢ₊₁`, the OPPOSITE order to the engine slot — a `hingeRow_swap`
+   + the shared `−ρ₀` sign, exactly as `M₃`'s `case hρGv` opens with `rw [hingeRow_swap c v (-ρ), neg_neg]`,
+   `Relabel.lean:2475`), then `wstep_foldl_freshEdge_slot_mem_finite` (P1) with `hW` (step 3) + `hsurv`
+   (step 2); remaining slots per (I.8.1). d=3 (`i=2`) = the landed `M₃` verbatim (the cycle is the single
+   swap, `m=1` 1-summand, zero regression).
+
+**(I.8.5) PREREQUISITE P3 (flagged, likely-clean-but-UNVERIFIED) — the fold seed `shiftSeedAdv q (i−1)`
+vs the engine seed `qρ = q ∘ shiftPerm i.castSucc` must coincide.** The W9a fold's output span (step 3)
+carries seed `shiftSeedAdv q (i−1)` (recursive: `shiftSeedAdv q (s+1) = fun p => shiftSeedAdv q s
+(shiftSeedSwap s p.1, p.2)`, `shiftSeedSwap s = swap (vtx⟨s+2⟩)(vtx⟨s+1⟩)`, `Relabel.lean:1695–1714`); the
+engine/`chainData_bottom_relabel` framework carries `qρ = fun p => q (shiftPerm i.castSucc p.1, p.2)`. For
+`hρGv` (in the fold's span) and `hwmem` (in the `qρ` span) to live in the **same** engine `S`, need
+`shiftSeedAdv q (i−1) = qρ` as functions. There is **NO landed lemma** for this (searched; the seed half
+`seedShift_inv_cancel`/`seedShift_off_cycle`, `Operations.lean:1595/1605`, and the perm-level G1 bridge
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`, `Operations.lean:1905`, are the ingredients but not the
+composed seed identity). The design's (I.7.0) claim "the seed identity is the H.10-confirmed
+`qρ(ρ⁻¹x)=q(x)`" conflates the *single-step* cancellation with the *composed* `shiftSeedAdv = q ∘
+shiftPerm`. **Likely a clean ~½-commit `simp`-over-the-recursion bridge** (`shiftSeedAdv` unfolds to the
+swap product that `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` identifies with `shiftPerm`), but it is a
+NAMED un-landed lemma `shiftSeedAdv_eq_funLeft_shiftPerm`, not an instantiation. Build it alongside step 3.
+[Source-verified the two seed defs diverge syntactically; the equality is unbuilt.]
+
+**(I.8.6) VERDICT (clause ii).** The arm wiring is **NOT mechanical**. The slot→brick map (I.8.1) is clean
+and source-verified for every slot EXCEPT `hρGv`, and the engine bindings (I.8.0) are KT-faithful and
+confirmed against the landed `chainData_bottom_relabel` output. But three prerequisites stand between the
+landed algebraic core and a callable arm: **P1 (BLOCKER, Lean-confirmed)** — the `Function.Injective (ℕ→α)`
+interface is un-instantiable over finite `α`; restate finite-range (the unblocker, ~1 commit). **P2 (real
+math)** — the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediate chain-edge panels, deferred as
+abstract-`S` hyps by both the corollary AND the `i=3` gate, never checked concretely (~1–2 commits, de-risk
+at `i=3` for real). **P3 (flagged, likely clean)** — the fold seed `shiftSeedAdv q (i−1)` = engine seed
+`qρ` is unbuilt (~½ commit). None is a motive/IH/signature change; option (b) stands; d=3 zero-regression
+stands. **Total to the closed arm: ~4–5 commits** (P1 → P2 → P3 → assembly), the **smallest next commit =
+P1** (`wstep_foldl_{hingeRow_telescope,freshEdge_slot_mem}_finite`, the finite-range restatement — without
+it nothing else can call the core). The "purely graph-level, one instantiation" framing in *Hand-off* /
+(I.7.10) tail is corrected by this pass.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

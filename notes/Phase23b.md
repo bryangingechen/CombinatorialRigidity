@@ -16,11 +16,18 @@ engine/motive/IH/signature change**), and its **re-targeted `i=3` de-risk GATE h
 generalization of the `i=3` gate). **The `hρGv` ALGEBRAIC CORE is now COMPLETE 2026-06-20** — the
 general-`m` membership corollary `wstep_foldl_freshEdge_slot_mem` (`Relabel.lean`, axiom-clean: the
 `m=i−1` generalization of `i3_freshEdge_slot_mem_deRisk`) peels the slot row from `W φ ∈ S` minus the
-`m` surviving rows over an abstract carrier `S`. **NEXT = wire LEAF-ρ3 into the arm
-`chainData_relabel_arm`** (instantiate `wstep_foldl_freshEdge_slot_mem` at `S := span (G−vᵢ).rigidityRows`,
-supply the graph-level row memberships the telescope's `hingeRow` endpoints abstract — both end-vertices
-`< i` so they are genuine surviving `G−vᵢ` rows), then **2c-iii** `chainData_dispatch`; **CHAIN-5 → moved to 23c**
-(ENTRY-gated). Full rolling state = *Current state* + *Hand-off*; the settled route history (the
+`m` surviving rows over an abstract carrier `S`. **NEXT = the arm wiring `chainData_relabel_arm`, but the
+ARM-WIRING DESIGN-PASS (§(o‴)(I.8), 2026-06-20) CORRECTS the "purely graph-level / one instantiation" pin**:
+the slot→brick map is clean for every engine slot except `hρGv`, but THREE genuinely-new prerequisites gate
+the arm — **P1 (BLOCKER, Lean-confirmed):** the algebraic-core corollary `wstep_foldl_freshEdge_slot_mem`
+is stated over `(w : ℕ → α) (Function.Injective w)`, **un-instantiable over the finite vertex type** the arm
+runs on (`Function.Injective (ℕ→α)` is `False` for `[Finite α]`) → restate finite-range (the unblocker,
+smallest next commit); **P2 (real math):** the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediate
+chain-edge panels (deferred as abstract-`S` hyps by both the corollary AND the `i=3` gate, never checked
+concretely); **P3 (flagged, likely clean):** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is
+unbuilt. None is a motive/signature change (option (b) stands, d=3 zero-regression stands); ~4–5 commits
+(P1→P2→P3→assembly), then **2c-iii** `chainData_dispatch`; **CHAIN-5 → moved to 23c** (ENTRY-gated). Full
+rolling state = *Current state* + *Hand-off* + design §(o‴)(I.8); the settled route history (the
 clean-relabel refutation, the FIX-FORK, the engine-slot adjudication) is in `notes/Phase23-design.md`
 §(o‴) + git, **not** re-narrated here.
 
@@ -86,19 +93,37 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   generalization of the `i=3` gate `i3_wstep_foldl_base_redundancy_deRisk` (`m=2` recovers it
   verbatim) and realizes KT eq. (6.66). **Span level CONFIRMED matching** (both fold endpoints =
   removeVertex frameworks at `G − v₁`/`G − vᵢ` = the engine's `Gv`; no mismatch leaf).
-  **The `hρGv` algebraic core is now COMPLETE** — the closed-form telescope PLUS its general-`m`
+  **The `hρGv` algebraic CLOSED FORM is COMPLETE** — the closed-form telescope PLUS its general-`m`
   membership corollary `wstep_foldl_freshEdge_slot_mem` (LANDED 2026-06-20, axiom-clean: the
   `m=i−1`-step generalization of `i3_freshEdge_slot_mem_deRisk`, peeling the slot row from `W φ ∈ S`
   minus the `m` surviving rows over an abstract carrier `S`).
-  **← NEXT: wire LEAF-ρ3 into `chainData_relabel_arm`** — the algebraic bridge is fully done; the
-  remaining work is **purely graph-level**: instantiate `wstep_foldl_freshEdge_slot_mem` at
-  `S := span (G−vᵢ).rigidityRows`, supplying `hW` from `shiftBodyListAsc_foldl_mem_span_rigidityRows`
-  and the `hsurv` surviving-row memberships by identifying the `m` leading telescope summands
-  `hingeRow (w s)(w (s+1)) ρ₀` AS genuine surviving `G−vᵢ` rows (both endpoints `< i`, so they survive
-  `removeVertex vᵢ`; the landed `hwmem`/`chainData_bottom_relabel` machinery) — yielding exactly the
-  engine `hρGv` slot. The re-targeted `i=3` de-risk GATE PASSED is the `m=2` instance of this peel
-  (`i3_freshEdge_slot_mem_deRisk`; the prior I.7.9 "wrong link" reading was about `D φ`, a red herring —
-  `i3_residue_collapse_deRisk` kept as the correct-but-irrelevant record).
+  **← NEXT: `chainData_relabel_arm`, gated on THREE genuinely-new prerequisites (ARM-WIRING DESIGN-PASS
+  §(o‴)(I.8), 2026-06-20 — corrects the "purely graph-level / one instantiation" pin).** The slot→brick
+  map is clean and source-verified for every engine slot except `hρGv` (`hwmem ← chainData_bottom_relabel`,
+  `hρe₀ ← G4d-i`, etc.), and the engine bindings `Gv = G−vᵢ` / `ends = relabelled` / `q = qρ` /
+  `(a,b) = (vᵢ₊₁,vᵢ₋₁)` are KT-faithful (confirmed vs `chainData_bottom_relabel`'s landed output type,
+  `Relabel.lean:1960–1972`). But `hρGv` cannot yet be supplied:
+  - **P1 (BLOCKER, Lean-confirmed; the smallest next commit).** `wstep_foldl_freshEdge_slot_mem` +
+    `wstep_foldl_hingeRow_telescope` are stated over `(w : ℕ → α) (hw : Function.Injective w)` — but the
+    arm runs under `[Finite α]`, where `Function.Injective (w : ℕ → α)` is **`False`** (verified this
+    session: `Finite.of_injective` + `not_finite ℕ`). The `hw` slot can NEVER be filled in the arm. **FIX:**
+    restate both finite-range (`(w : Fin (m+3) → α)` or `Set.InjOn w ↑(range (m+3))`); the instantiated
+    statement touches only indices `0…i+1 ≤ cd.d`, so injectivity comes from `cd.vtx_inj`. Proof body
+    changes minimally. Until this lands NOTHING can call the core.
+  - **P2 (real math).** The `m` `hsurv` summands `hingeRow (vtx s)(vtx (s+1)) ρ₀` are span members only if
+    `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))` — NOT automatic (ρ₀ = base redundancy, built ⊥ the base spliced
+    panel only; KT (6.62)/(6.66) asserts the transported form is genuine at each chain edge, unbuilt in
+    Lean). Both the corollary AND the `i=3` gate **deferred this as an abstract-`S` hyp** — the gate
+    "PASSED" verdict checked only the `sub_mem` algebra, never these memberships concretely. ~1–2 commits;
+    de-risk at `i=3` FOR REAL (concrete `span (G−v₃)`).
+  - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
+    vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
+    lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
+    `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
+
+  None is a motive/IH/signature change; option (b) + d=3 zero-regression stand. The re-targeted `i=3`
+  de-risk GATE PASSED is the `m=2` instance of the `sub_mem` peel only (abstract `S`); P2 is what it
+  deferred (`i3_residue_collapse_deRisk` kept as the correct-but-irrelevant `D φ` record).
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -143,10 +168,12 @@ closed form of the W9a `wstep` foldl = `(∑_{s<m} hingeRow wₛ wₛ₊₁) + h
 the `i=3` gate's `m=2` generalization, KT eq. (6.66)), and the **`hρGv` general-`m` membership corollary**
 `wstep_foldl_freshEdge_slot_mem` is now **LANDED 2026-06-20** (`Relabel.lean`, axiom-clean — the
 `m=i−1` generalization of `i3_freshEdge_slot_mem_deRisk`, peeling the slot row from `W φ ∈ S` minus the
-`m` surviving rows over an abstract `S`; the `hρGv` algebraic core is COMPLETE). So → **wire LEAF-ρ3 into the arm**
-(purely graph-level: instantiate `wstep_foldl_freshEdge_slot_mem` at `S := span (G−vᵢ).rigidityRows`; the
-`m` summands are genuine surviving `G−vᵢ` rows), i.e. the
-**arm wiring** `chainData_relabel_arm` + **CHAIN-2c-iii** (the assembly `chainData_dispatch`), then
+`m` surviving rows over an abstract `S`; the `hρGv` algebraic CLOSED FORM is COMPLETE). So → the
+**arm wiring** `chainData_relabel_arm`, **gated on P1/P2/P3** (ARM-WIRING DESIGN-PASS §(o‴)(I.8) — NOT
+"purely graph-level / one instantiation": **P1** the corollary's `(w:ℕ→α)`-injective interface is dead over
+finite `α` (Lean-confirmed `False`) → restate finite-range; **P2** the `m` `hsurv` summands need
+`ρ₀ ⊥ chain-edge panel` (deferred as abstract-`S` hyps, unbuilt); **P3** the fold-vs-engine seed bridge) +
+**CHAIN-2c-iii** (the assembly `chainData_dispatch`), then
 **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
 extractor reshape).
 
@@ -309,17 +336,23 @@ arm closer resolves the two relabelled endpoints to the candidate roles via the 
 action lemmas. Correct + load-bearing, but does NOT discharge the slot alone (the residue telescope
 LEAF-ρ1 is the remaining crux).
 
-**NEXT STEP — wire LEAF-ρ3 into the arm `chainData_relabel_arm`** (the `hρGv` discharge, generalizing
-d=3 M₃ `case hρGv`). **The `hρGv` algebraic core is COMPLETE 2026-06-20**: the closed-form telescope
-`wstep_foldl_hingeRow_telescope` (the general-`i` form of the W9a `wstep` foldl =
-`(∑_{s<m} hingeRow wₛ wₛ₊₁ ρ₀) + hingeRow w_m w_{m+2} ρ₀`, `m=i−1`, axiom-clean; helpers
-`wstep_hingeRow_off`/`wstep_hingeRow_frontier`) PLUS the general-`m` membership corollary
-`wstep_foldl_freshEdge_slot_mem` (axiom-clean; the `m=i−1` lift of `i3_freshEdge_slot_mem_deRisk`,
-peeling the slot row from `W φ ∈ S` minus the `m` surviving rows over an abstract `S`). The remaining
-`hρGv` work is **purely graph-level**: instantiate `wstep_foldl_freshEdge_slot_mem` at
-`S := span (G−vᵢ).rigidityRows`, supply `hW` from `shiftBodyListAsc_foldl_mem_span_rigidityRows`, and
-identify the telescope's `m` leading summands as genuine surviving `G−vᵢ` rows (both endpoints `< i`).
-**`i=3` de-risk DONE
+**NEXT STEP — the arm wiring `chainData_relabel_arm`, gated on THREE genuinely-new prerequisites
+(ARM-WIRING DESIGN-PASS §(o‴)(I.8), 2026-06-20).** The `hρGv` algebraic CLOSED FORM is complete
+(`wstep_foldl_hingeRow_telescope` + the membership corollary `wstep_foldl_freshEdge_slot_mem`, both
+axiom-clean), and the slot→brick map + engine bindings are source-verified clean for every slot except
+`hρGv` (`Gv = G−vᵢ` / `ends = relabelled` / `q = qρ` / `(a,b) = (vᵢ₊₁,vᵢ₋₁)`, confirmed vs the landed
+`chainData_bottom_relabel` output type `Relabel.lean:1960–1972`; `hwmem ← chainData_bottom_relabel`,
+`hρe₀ ← G4d-i`, rest per `M₃`). **But the design-pass CORRECTS the "purely graph-level / one
+instantiation" pin** — `hρGv` cannot yet be supplied: **(P1, BLOCKER, Lean-confirmed, smallest next
+commit)** the algebraic-core lemmas are stated over `(w : ℕ → α) (Function.Injective w)`, but the arm runs
+under `[Finite α]` where `Function.Injective (ℕ→α)` is **`False`** — the `hw` slot can NEVER be filled →
+restate finite-range (`Fin (m+3) → α` or `Set.InjOn`); injectivity then from `cd.vtx_inj`. **(P2, real
+math)** the `m` `hsurv` summands need `ρ₀ ⊥ panel(qρ(chain edge))`, deferred as abstract-`S` hyps by both
+the corollary AND the `i=3` gate (the "PASSED" verdict checked only the `sub_mem` algebra) — unbuilt;
+de-risk at `i=3` concretely. **(P3, flagged, likely clean)** the fold seed `shiftSeedAdv q (i−1)` = engine
+seed `qρ` is an unbuilt bridge (`shiftSeedAdv_eq_funLeft_shiftPerm`). None is a motive/signature change;
+option (b) + d=3 zero-regression stand; ~4–5 commits (P1→P2→P3→assembly). Sub-step sequence + exact
+signatures in design §(o‴)(I.8.4). **`i=3` de-risk DONE
 (Lean-verified `i3_*_deRisk` lemmas) + KT-SOURCE RE-DERIVATION RESOLVED the path (§(o‴)(I.7.10),
 owner-chosen recon).** The de-risk computed `W φ = hingeRow v₀v₁ + v₁v₂ + v₂v₄ ρ₀` / `R φ
 = hingeRow v₀v₁ ρ₀` / `D φ = hingeRow v₁v₄ (−ρ₀)` — the three links `v₀—v₁` / `v₁—v₄` / slot `v₂—v₄`
@@ -362,27 +395,28 @@ The leaves:
   exact, no residue bookkeeping). The general-`m` **membership corollary** `wstep_foldl_freshEdge_slot_mem`
   (LANDED 2026-06-20, axiom-clean — the `m=i−1` generalization of `i3_freshEdge_slot_mem_deRisk`) peels the
   slot row from `W φ ∈ S` minus the `m` surviving rows over an abstract carrier `S`, completing the `hρGv`
-  algebraic bridge. **The remaining `hρGv` work is purely graph-level** (the LEAF-ρ3 arm wiring):
-  instantiate the corollary at `S := span (G−vᵢ).rigidityRows`, supply `hW` from
-  `shiftBodyListAsc_foldl_mem_span_rigidityRows` and the `hsurv` surviving-row memberships by identifying
-  the `m` leading summands `hingeRow (w s)(w (s+1)) ρ₀` as genuine surviving `G−vᵢ` rows (both endpoints
-  `< i`; via the landed `hwmem`/`chainData_bottom_relabel` machinery) — yielding exactly the engine `hρGv`
-  slot. **The re-targeted `i=3` de-risk GATE is PASSED** (`i3_freshEdge_slot_mem_deRisk`, the `m=2`
-  instance of this peel; the corollary is its general-`m` lift). (Design §(o‴)(I.7.10) RESIDUAL, discharged
-  for the algebra.)
-- **LEAF-ρ3 — the `hρGv` assembly inline in the arm** (P≈2; now *purely* the graph-level instantiation of
-  the landed `wstep_foldl_freshEdge_slot_mem` — supply `hW` + the `m` `hsurv` surviving-row memberships at
-  `S := span (G−vᵢ).rigidityRows`; the `sub_mem` algebra is already absorbed into the corollary).
+  algebraic bridge. **The remaining `hρGv` work is the arm wiring, gated on P1/P2/P3** (§(o‴)(I.8), NOT
+  "purely graph-level"): P1 restate the corollary finite-range (the `(w:ℕ→α)`-injective interface is dead
+  over finite `α`); then instantiate at `S := span (G−vᵢ).rigidityRows`, supply `hW` from
+  `shiftBodyListAsc_foldl_mem_span_rigidityRows` (P3 seed-bridge), and the `hsurv` summand memberships (P2,
+  the `ρ₀ ⊥ chain-edge panel` perp — the deferred real-math step). **The re-targeted `i=3` de-risk GATE is
+  PASSED for the `sub_mem` ALGEBRA ONLY** (`i3_freshEdge_slot_mem_deRisk`, abstract `S`); P2 is what it
+  deferred (it took `h01`/`h12` as hyps, never checked them at concrete `span (G−v₃)`). (Design §(o‴)(I.8)
+  RESIDUAL; the algebra is discharged, the graph-level memberships are not.)
+- **LEAF-ρ3 — the `hρGv` assembly inline in the arm** (now decomposed into P1+P2+P3+assembly, §(o‴)(I.8.4);
+  NOT a single instantiation — P1 is a Lean-confirmed BLOCKER, P2 is genuinely-new math).
 - **LEAF-ρ2 — LANDED 2026-06-20** the literal-row identification `shiftBodyListAsc_relabel_foldl_hingeRow`
   (the landed G1 bridges + `hingeRow_funLeft_dualMap`; this is the genuine relabel-image row — correct +
   load-bearing, but does NOT discharge the slot alone).
-NOT a motive/IH/contract change. Then the **arm wiring `chainData_relabel_arm`**:
-instantiate `case_III_arm_realization` at the per-`i` roles (cycle generalization of d=3
+NOT a motive/IH/contract change. Then the **arm wiring `chainData_relabel_arm`** (§(o‴)(I.8.4) sub-steps):
+`refine case_III_arm_realization` at the per-`i` roles (cycle generalization of d=3
 `case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm i.castSucc`, shared `−ρ₀`; `hwmem` → landed
-`chainData_bottom_relabel`; `hρGv` → LEAF-ρ3; block → `blockRow_relabel_perm`; `hρe₀`/`htrans` → G4d-i +
+`chainData_bottom_relabel`; `hρGv` → P1/P2/P3 (flip orientation via `hingeRow_swap` — the corollary emits
+`hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀`, the OPPOSITE order to the engine's `hingeRow vᵢ₊₁ vᵢ₋₁ ρ`, as `M₃`'s
+`case hρGv` opens `Relabel.lean:2475`); block → `blockRow_relabel_perm`; `hρe₀`/`htrans` → G4d-i +
 2c-i's discriminator (~1 commit of §38 explicit-seed slot bookkeeping). → **2c-iii** `chainData_dispatch`
-(replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Close-boundary timeline: **~3–4 commits
-to the closed arm** then 2c-iii. d=3 M₃ = `i=2` involution (zero-regression). Orphan-for-the-arm at the
+(replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Close-boundary timeline: **~4–5 commits
+to the closed arm** (P1→P2→P3→assembly) then 2c-iii. d=3 M₃ = `i=2` involution (zero-regression). Orphan-for-the-arm at the
 arm-build commit (zero callers, confirm-and-delete): `rigidityRow_chainData_relabel` /
 `rigidityRow_relabel_perm` (split-level) + the now-unused `rigidityRow_relabel_{off_cycle,to_block,to_block_swap}`
 (the assembly inlined / used only `…_to_genuine`); the candidate→base `_foldr` fold (orphaned-for-the-arm,
@@ -554,16 +588,19 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   (off-body rows are `wstep`-fixed; the single frontier row `hingeRow x a ρ` advances to
   `hingeRow x v ρ + hingeRow v c ρ`) make the induction-on-`m` (`ofFn_succ'` peel) collapse cleanly,
   with `Finset.sum_range_succ` + `abel` closing each step. `m=2` recovers `i3_wstep_foldl_base_redundancy_deRisk`
-  verbatim. Realizes KT eq. (6.66). The remaining `hρGv` work is now purely graph-level (LEAF-ρ3 arm
-  wiring): the `m` summands are genuine surviving `G−vᵢ` rows → `sub_mem` peels the slot.
+  verbatim. Realizes KT eq. (6.66). **Caveat (§(o‴)(I.8)):** stated over `(w:ℕ→α) (Function.Injective w)`,
+  which is un-instantiable over the arm's finite `α` (P1) — must be restated finite-range before the arm
+  can call it.
 - **`hρGv` general-`m` fresh-edge slot membership LANDED 2026-06-20 (`wstep_foldl_freshEdge_slot_mem`,
   `Relabel.lean`, axiom-clean).** The `m=i−1` lift of the de-risk gate `i3_freshEdge_slot_mem_deRisk`
   (`m=2`), abstract over the span carrier `S`: from the landed `wstep` foldl output `∈ S` + the `m`
   surviving chain-edge rows `hingeRow (w s)(w (s+1)) ρ₀ ∈ S` (`s<m`), the slot row `hingeRow (w m)(w (m+2))
   ρ₀ ∈ S` — `rw` the telescope, `Submodule.sub_mem` of `Submodule.sum_mem`, `add_sub_cancel_left` (cleaner
   than the gate's `abel`-rearrange since the telescope's `(∑)+slot` shape is exact). Completes the
-  LEAF-ρ1→LEAF-ρ3 algebraic bridge; the *only* remaining `hρGv` work is the graph-level arm wiring
-  (`chainData_relabel_arm` supplies `S`, the `hsurv` memberships, `hW`). No FRICTION.
+  `sub_mem` ALGEBRA; the arm wiring (`chainData_relabel_arm`) is NOT a clean call of it — §(o‴)(I.8) names
+  **P1** (this lemma's `(w:ℕ→α)`-injective interface is dead over finite `α`, Lean-confirmed → restate
+  finite-range), **P2** (the `hsurv` summand memberships are a real `ρ₀ ⊥ chain-edge panel` obligation,
+  deferred here as an abstract-`S` hyp, unbuilt), **P3** (the fold-vs-engine seed bridge). No FRICTION.
 - **`hρGv` re-targeted `i=3` de-risk GATE PASSED 2026-06-20 (`i3_freshEdge_slot_mem_deRisk`,
   `Relabel.lean` tail, axiom-clean).** The H.11-discipline gate the KT-source re-derivation pinned
   (§(o‴)(I.7.10) RESIDUAL) before committing the general arm signature: confirm the KT-(6.66) telescope
