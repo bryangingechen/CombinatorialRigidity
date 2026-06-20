@@ -462,11 +462,20 @@ candidate-`i` framework's `supportExtensor (edge s)` (any `i : Fin cd.d`, surviv
 `s + 1 < (i : ℕ)`) — a one-step `rw [panelCorrespondence_supportExtensor]; exact hperp`. This is option (a′)'s
 load-bearing step in the shape the producer threads its per-row perps across: base-side perp (from A-1's base
 witness at `G₁`) → candidate-side `hperp_ab`/`hperp_ac` (the `freshEdge_surviving_row_mem_of_witness` (A-3)
-interface). Self-contained, zero blast radius. **← NEXT SMALLEST COMMIT = Route W's producer
-`exists_interior_redundancy_witness` (option (a′)):** re-derive A-1's eq-(6.52) two-edge witness at the base
-split `G₁` (where `h618`/`h622lb` are available — reuse A-1's instantiation), then transport the per-row perps
-to `Fva = G−vtx i` across `candidate_supportExtensor_perp_of_base` (now SUPPLIED) + the flagged P3
-seed bridge; feed `freshEdge_surviving_row_mem_of_witness` + A-2 at each interior vertex.
+interface). Self-contained, zero blast radius. **← PRODUCER-CORE RECON (row 334, design §(o‴)(I.8.9))
+QUALIFIES the optimistic "a′ buildable": the transport/perp half is solved (landed bridges), but the producer's
+WITNESS-DATA half is the unsolved 5×-mis-pinned crux.** The consumer's `hcol`/`hrest` are FRAMEWORK-FREE
+(`hingeRow` reads only endpoints + screw functional, NOT the graph) so they do NOT transport — they must be
+PRODUCED; and A-1 gives single-edge data at `e₀` only while the eq-6.24 decomposition (keyed to `e₀`, global
+`g=0` conclusion) does NOT run at interior vertices. The open crux = regroup the GLOBAL base redundancy `g` at
+each interior degree-2 vertex into `(ab)+(ac)+grest` (KT eq-6.66 / iterated eq-6.44, unproduced by any landed
+lemma). **THE FORK (⚠ user-adjudication, §(o‴)(I.8.9)):** (a′-i) expose `g` edge-grouped — an A-1 SIGNATURE
+CHANGE with live d=3 callers to re-plumb — + a new base regroup-at-interior-vertex lemma (~3–5 commits; the
+"carry `g` out of W6b" the I.8.3.v-SETTLED verdict named); vs (a′-ii) bypass `_of_witness`/A-2 for the bare
+`hperp` (~3–4 commits, orphans A-2/`_of_witness`, still needs the same base regrouping). **NEXT = the BASE-`G₁`
+interior-regrouping de-risk at `i=3`/`vtx⟨1⟩`** (can `g` regroup at the base-interior degree-2 vertex? — decides
+(a′-i) buildability before the A-1 change). NO motive/IH/contract change either way; (a′-i) forces an A-1
+signature change (live d=3 callers).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT

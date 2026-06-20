@@ -4843,6 +4843,41 @@ thread its per-row perps through this bridge at the interior vertex `vtx (s+1)`'
 flagged P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`). No motive/IH/contract change; d=3 (`i = 2`)
 zero-regression.
 
+**(I.8.9) PRODUCER-CORE RECON — the witness-DATA regrouping is the unsolved crux; (a′) was under-specified
+(2026-06-20, opus read-only Plan, coordinator-scrutinized; row 334). QUALIFIES (I.8.8)/(I.8.8-RESULT): "a′
+buildable" validated only the TRANSPORT/perp half.** The producer-core recon (source-verified the decomposition
+body + the `hingeRow` def) localized the genuinely-hard remaining piece:
+- **The consumer's witness has 3 parts; only the perp transports.** (a) the perps `hperp_ab`/`hperp_ac` —
+  transport FREE via the landed `candidate_supportExtensor_perp_of_base`. (b) `hcol`/`hrest` — **FRAMEWORK-FREE**
+  (`hingeRow u v r = r ∘ screwDiff u v`, `Basic.lean:490` — depends only on endpoints + screw functional, NOT
+  the framework/graph), so once produced they hold at the candidate VERBATIM; NOT a transport problem, and no
+  `hingeRow`/`hcol` transport analogue is needed or exists. (c) the DATA `lamAB`/`rab`/`lamAC`/`rac`/`grest` +
+  the PROOF that `hcol`/`hrest` hold — **the genuinely-open piece.**
+- **A-1 does NOT supply it; the eq-6.24 decomposition does NOT run at interior vertices.** A-1 gives SINGLE-edge
+  data at `e₀` only; the eq-6.24 decomposition (`exists_redundant_panelRow_ab_decomposition_acolumn_zero`,
+  Candidate.lean:571) is keyed to the single split edge `e₀` (`hsplit : Gab = Gv + {e₀}`) and its `acolumn`
+  conclusion is `g = 0` GLOBALLY (`sub_self`, `:606`), NOT the regrouped two-edge `hcol` form. The regrouping
+  (collect `g`'s terms incident to the interior degree-2 vertex `vtx(s+1)`, leaving `grest`) needs `wGv` exposed
+  as an explicit EDGE-INDEXED `hingeRow` combination — it currently arrives as an opaque `span` member (`:213`).
+  **This regrouping of the global redundancy `g` at each interior vertex IS the recurring 5×-mis-pinned crux**
+  (the global-vs-per-vertex error, I.8.3.v-REFUTED); KT eq-6.66 (iterated eq-6.44) proves it true, but no landed
+  lemma produces it.
+- **THE FORK (flagged for adjudication):** **(a′-i)** expose `g` edge-grouped — an **A-1 SIGNATURE CHANGE with
+  live d=3 callers** (`chainData_split_w6b_gates`/`case_III_candidate_dispatch`/`chainData_split_realization`)
+  to re-plumb — + a NEW base-side "regroup-at-interior-degree-2-vertex" lemma (the eq-6.43 two-edge analogue);
+  ~3–5 commits; below-dispatch (no motive/IH change) but NOT the clean instantiation (I.8.8) implied — it is
+  exactly the "carry the redundancy witness `g` out of W6b" the I.8.3.v-SETTLED verdict named but never executed.
+  **(a′-ii)** bypass `_of_witness`/A-2, supply `freshEdge_surviving_row_mem`'s bare `hperp` directly — but the
+  base interior perp is itself the iterated eq-6.66 carry (row-321 showed it's unprovable as an isolated
+  `ρ₀`-implication; needs the specific `g`-derived `ρ₀`), so it needs the SAME base regrouping content; ~3–4
+  commits, orphans A-2/`_of_witness`.
+- **SMALLEST NEXT COMMIT = the BASE-`G₁` interior-regrouping de-risk** at `i=3`/`vtx⟨1⟩` (before pinning the
+  producer): can the base redundancy `g` (eq-6.24, at the `v₁`-split where h618/h622lb hold) be regrouped at the
+  base-interior degree-2 vertex `vtx⟨1⟩` into `(ab) + (ac) + grest` with `grest` vanishing on `vtx⟨1⟩`'s column —
+  i.e. is `wGv` accessible edge-grouped, and is `vtx⟨1⟩` degree-2 in `G−v₁`? SUCCESS → (a′-i) buildable;
+  FAILURE → the A-1 signature change is forced regardless. **NO motive/IH/contract change either way; but (a′-i)
+  forces an A-1 LANDED-SIGNATURE change (live d=3 callers) — surfaced for user adjudication.**
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
