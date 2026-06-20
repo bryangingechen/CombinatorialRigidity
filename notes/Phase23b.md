@@ -391,13 +391,24 @@ discharge `freshEdge_surviving_row_mem`'s `hperp` for REAL: the new composition 
 `freshEdge_surviving_row_mem_of_witness` (`Relabel.lean`) takes the eq-(6.52) `λ`-grouped two-edge witness at
 the surviving edge's interior degree-2 vertex `vtx (s+1)` (with `ρ₀ = ∑ⱼ lamAB j • rab j`, `hsd : s+1 < cd.d`
 so `edge (s+1)` is a chain edge), applies A-2 to get `ρ₀ ⊥ Fva.supportExtensor (edge s)`, and threads it to the
-`link`-half builder. ZERO blast radius (no live caller). **(NEXT) A-3 all-`i` lift:** propagate the witness
-across the chain off the W6b `hρe₀` base (the iterated KT eq.-(6.66) carry — supply each interior vertex's
-col-vanishing witness, which W6b gives only at the base; the genuinely-hard remaining piece), then the arm
-assembly `chainData_relabel_arm`. WITHDRAW the refuted leaves `freshEdge_surviving_row_mem` (the abstract-`hperp`
-builder, now superseded by `_of_witness`; keep until the arm consumes the latter) + `wstep_foldl_freshEdge_slot_mem`'s
-`hsurv` form (zero live callers); the telescope (`:2938`) + the `_sup_` crux + A-1/A-2 + `_of_witness` STAND.
-NO motive/IH change.
+`link`-half builder. ZERO blast radius (no live caller). **(NEXT) A-3 all-`i` lift — ROUTE FORK, recon-settled
+to a de-risk-first (design §(o‴)(I.8.7), recon row 328, opus read-only Plan + coordinator scrutiny).** The
+all-`i` lift must SUPPLY each interior vertex's witness (the `hsurv` summands, `m=i−1`), which A-1 gives only at
+the base `e₀`. Recon verdict: the **witness-propagation route (Route W)** has NO landed supply (a genuinely-new
+~3–5-commit producer if forced); the **RECOMMENDED route (G4d-i-PROJECTED)** — the d=3 M₃ mechanism, deriving
+the interior perp from `hρe₀` + `hW`/the fold output + the LANDED two-edge sup form (`acolumn_..._sup_...`), NOT
+`hcol`/`hrest` — hinges on ONE genuinely-new sup-projection lemma the recon could not confirm landed (flagged,
+not pinned). **SMALLEST NEXT COMMIT = the i=3 DE-RISK**: confirm the interior perp at `i=3` (interior vertex v₁,
+edges `edge 0=v₀v₁`/`edge 1=v₁v₂`) is derivable from `hρe₀` + `hW` + the two-edge degree-2 geometry WITHOUT the
+per-vertex `hcol`/`hrest`. It DECIDES the fork before any leaf signature. **SUCCESS** → Route G4d-i-PROJECTED
+(then `interior_perp_carry` + the `s↦s+1` induction `chainData_freshEdge_surviving_row_mem` + the arm;
+`_of_witness`/A-2 orphaned, confirm-and-delete at the arm). **FAILURE** → Route W forced — **FLAG for user
+adjudication** (genuinely-new math). **Orphan status FORK-DEPENDENT** — do NOT delete `_of_witness` / A-2
+`candidate_perp_two_incident_*` until the de-risk decides (they STAND under Route W). `freshEdge_surviving_row_mem`
+(the perp-half BUILDER — LIVE under BOTH routes; only the per-edge-perp slot-peel *framing* was withdrawn) + the
+telescope (`:2938`/`:3006`) + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3
+zero-regression. Then the arm `chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v)
+`ρ₀_perp_interior_chain_edge` route is superseded by (I.8.7).)
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression

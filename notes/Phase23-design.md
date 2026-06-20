@@ -4600,7 +4600,10 @@ instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
    warning-clean, full project green. The arm supplies `hinj` from `cd.vtx_inj` (`Fin (d+1) → α` injective)
    via `Set.InjOn.mono`. Lesson → FRICTION [idiom] *A `(w : ℕ → α)`-indexed lemma whose carrier will be
    `[Finite α]`…*.
-2. **`chainData_freshEdge_surviving_row_mem` (P2, ~1–2 commits, the real math).** For `s < (i:ℕ)−1`:
+2. **[⚠ SUPERSEDED by (I.8.7) — the `ρ₀_perp_interior_chain_edge` route named here is the row-321-REFUTED
+   isolated implication; the live all-`i` route fork (Route W vs the recommended G4d-i-PROJECTED) + the i=3
+   de-risk are (I.8.7). The single-vertex A-3 composition landed via Route A; only the all-`i` lift remains.]**
+   `chainData_freshEdge_surviving_row_mem` (P2, ~1–2 commits, the real math). For `s < (i:ℕ)−1`:
    ```
    theorem … (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ) (hs : s + 1 < (i:ℕ)) (ends₀ q …) :
        BodyHingeFramework.hingeRow (cd.vtx ⟨s,_⟩) (cd.vtx ⟨s+1,_⟩) ρ₀
@@ -4666,7 +4669,7 @@ P3 → assembly), the **smallest next commit = P2** (the `hsurv` summand perp-me
 concretely). The "purely graph-level, one instantiation" framing in *Hand-off* / (I.7.10) tail was corrected
 by this pass; P1 (the unblocker) is now discharged.
 
-**(I.8.6.v) PERP-ROUTE settled into the P2 estimate (2026-06-20, opus).** I.8.3.v settles which of the two
+**(I.8.6.v) [⚠ SUPERSEDED by (I.8.7) — pins the row-321-REFUTED `ρ₀_perp_interior_chain_edge`; live route fork in (I.8.7).] PERP-ROUTE settled into the P2 estimate (2026-06-20, opus).** I.8.3.v settles which of the two
 flagged routes discharges the P2 perp: **route (a)** (the iterated KT eq.-(6.44) degree-2 carry — true,
 KT-faithful), **gated on ONE genuinely-new sub-lemma** `ρ₀_perp_interior_chain_edge` (the two-edge degree-2
 `hingeRowBlock`-to-`hingeRowBlock` cancellation at an interior chain vertex — the honest analogue of G4d-i,
@@ -4680,6 +4683,51 @@ build" understated route (a)'s need for the new two-edge lemma — neither route
 brick). Honesty flag (clause ii): naming the missing leaf `ρ₀_perp_interior_chain_edge` is the safe pin; a
 "route (a) plugs in `candidateRow_ac_eq_neg`" pin would have been confident-wrong (the one-edge brick does not
 fit the two-edge interior vertex).
+
+**(I.8.7) ALL-`i` LIFT ROUTE FORK — RECON VERDICT (2026-06-20, opus read-only Plan, coordinator-scrutinized;
+row 328). SUPERSEDES (I.8.4) step 2 + (I.8.6.v).** A-3's single-vertex composition
+`freshEdge_surviving_row_mem_of_witness` (LANDED, row 327) discharges the interior perp at ONE vertex but takes
+the eq.-(6.52)/(6.43) witness (`lamAB`/`rab`/`lamAC`/`rac`/`grest` + `hperp_ab`/`hperp_ac` + `hcol`/`hrest`) AS
+HYPS; the all-`i` lift must SUPPLY that witness at each interior `s < i−1` (the `hsurv` summands of
+`wstep_foldl_freshEdge_slot_mem`, `m=i−1`), and A-1's W6b producer supplies it only at the base `e₀`. The recon
+(verifying the landed bodies, axiom-clean line refs below) found a FORK:
+- **Route W (witness propagation — NOT recommended).** Build a producer re-deriving KT eq.-(6.24)'s redundancy
+  decomposition of the SHARED `ρ₀` at each interior vertex in the candidate framework `G−vᵢ` — i.e. KT eq.-(6.66)
+  as an explicit per-vertex `λ`-witness. No landed supply (grep-confirmed); a genuinely-new ~3–5-commit producer
+  `exists_interior_redundancy_witness` generalizing `exists_redundant_panelRow_ab_decomposition_acolumn_zero`
+  (`Candidate.lean:571`). Consumes A-3's `_of_witness` + A-2.
+- **Route G4d-i-PROJECTED (RECOMMENDED — the d=3 mechanism).** The d=3 M₃ engine
+  (`case_III_arm_realization_M3`, `Relabel.lean:2515`; `hρ_ac`:2582) discharges its interior perp from `hρGv`
+  (the candidate's own column membership) via the ONE-edge G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`
+  (`:2242`) — NOT via `hcol`/`hrest`. At an interior vertex (genuinely degree-2, `ChainData.deg_two`
+  `Operations.lean:1306`; both `edge s`/`edge (s+1)` survive) the one-edge form fails; the LANDED two-edge sup
+  form `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (`:2342`) gives only `block e_c ⊔ block e_d` (the
+  vacuous `=⊤` that refuted the row-318 isolated implication). The route = a per-`s` chain INDUCTION carrying
+  `ρ₀ ∘ single (vtx (s+1)) ∈ block (edge s)`, SEEDED at the base by `hρe₀` and propagated by the eq.-(6.44)
+  two-edge identity (a SUP-PROJECTION picking the correct summand) — using the genuinely-available `hρe₀` + `hW`
+  fold output (`W φ ∈ span`) + the telescope, NOT a circular `hρGv`. **Hinges on ONE genuinely-new sup-projection
+  lemma the recon could NOT find landed — FLAGGED, not pinned.**
+
+**SMALLEST NEXT COMMIT = the i=3 DE-RISK (mandatory; decides the fork before ANY leaf signature is pinned —
+the row-321 failure mode is a confident pin ahead of the de-risk).** At `i=3` (`m=2`, the first honest
+two-residue case; vertices v₀…v₄, interior vertex v₁, edges `edge 0=v₀v₁`/`edge 1=v₁v₂`), confirm the interior
+perp `ρ₀ ⊥ Fva.supportExtensor (edge 0)` is derivable from `hρe₀` + `hW`/the fold output + the two-edge degree-2
+geometry WITHOUT the per-vertex `hcol`/`hrest`. **SUCCESS → Route G4d-i-PROJECTED** (then the `interior_perp_carry`
+leaf + the `s↦s+1` induction `chainData_freshEdge_surviving_row_mem` + the arm; `_of_witness`/A-2 orphaned,
+confirm-and-delete at the arm). **FAILURE** (the sup is not projectable without the full `λ`-witness) **→ Route W
+forced** (`_of_witness`/A-2 STAND) — **FLAG-AND-STOP for user adjudication** (the genuinely-new-math fork).
+
+**Orphan status is FORK-DEPENDENT** — do NOT confirm-and-delete `freshEdge_surviving_row_mem_of_witness` /
+`candidate_perp_two_incident_*` until the de-risk decides (they STAND under Route W). `freshEdge_surviving_row_mem`
+(the perp-half consumer — its BUILDER is LIVE under BOTH routes; only the per-edge-perp slot-peel *framing* was
+withdrawn, not the lemma) + the telescope `wstep_foldl_hingeRow_telescope` + `wstep_foldl_freshEdge_slot_mem` +
+`acolumn_..._sup_...` STAND under both. **NO motive/IH/contract change under either route** (`ChainData` frozen,
+the `hρGv` slot KT-faithful, both routes operate BELOW the dispatch; d=3 zero-regression preserved — M₃ is the
+`m=1` single-summand case, exercising neither interior leaf). P3 (`shiftSeedAdv q (i−1) = qρ` seed bridge, I.8.5)
+remains orthogonal. **§(o‴)(B)'s G4d-i seed STANDS** as the recommended route's basis. The route-β "±r chain
+absorbed, no lemma" framing (lines ~2008/1976) is CORRECTED: the ±r chain is absorbed at the DISPATCH/discriminator
+level, but the per-candidate `hρGv` span-membership needs the iterated per-vertex degree-2 column carry (the
+recommended `interior_perp_carry`), NOT a free absorption.
 
 ---
 
