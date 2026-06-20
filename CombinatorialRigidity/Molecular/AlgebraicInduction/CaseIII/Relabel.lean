@@ -2774,4 +2774,37 @@ theorem BodyHingeFramework.wstep_foldl_hingeRow_telescope [DecidableEq α]
     rw [Finset.sum_range_succ]
     abel
 
+/-- **The general-`i` `hρGv` fresh-edge slot membership — the KT-(6.66) peel-off** (CHAIN-2c-ii-arm,
+LEAF-ρ1 → LEAF-ρ3 bridge; `notes/Phase23-design.md` §(o‴)(I.7.3)/(I.7.10)). The `i − 1`-step
+(`m = i − 1`) generalization of the de-risk gate `i3_freshEdge_slot_mem_deRisk` (the `m = 2`
+instance): from the landed W9a `wstep` `foldl` output `∈ S` (the closed-form telescope
+`wstep_foldl_hingeRow_telescope`) and the `m` genuine surviving chain-edge rows
+`hingeRow (w s) (w (s+1)) ρ₀ ∈ S` (`s < m`, both endpoints `< i` so surviving `removeVertex vᵢ`),
+the fresh-edge slot row `hingeRow (w m) (w (m+2)) ρ₀` (KT's `Mᵢ` row, the engine `hρGv` slot at
+candidate `i = m + 1`: `vᵢ₋₁ = w_m`, `vᵢ₊₁ = w_{m+2}`) reaches `S` by `Submodule.sub_mem`: the slot
+row is `W φ − (∑ surviving rows)`.
+
+Stated abstractly over the span carrier `S` (the surviving-row memberships are what the arm closer
+`chainData_relabel_arm` supplies from the genuine surviving chain-edge rows of `G − vᵢ`, and `hW`
+from the landed `shiftBodyListAsc_foldl_mem_span_rigidityRows`). This is the algebraic skeleton of
+the `hρGv` discharge, decoupled from the graph-level `rigidityRows` plumbing the arm wires in — the
+general-`d` analogue of the d=3 `M₃` `case hρGv` `sub_mem` peel (`case_III_arm_realization_M3`). -/
+theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem [DecidableEq α]
+    (w : ℕ → α) (hw : Function.Injective w) (m : ℕ)
+    (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+    {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (hW : ((List.ofFn fun s : Fin m => (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3))).foldl
+        (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
+      (BodyHingeFramework.hingeRow (w 0) (w 2) ρ₀) ∈ S)
+    (hsurv : ∀ s ∈ Finset.range m, BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀ ∈ S) :
+    BodyHingeFramework.hingeRow (w m) (w (m + 2)) ρ₀ ∈ S := by
+  -- the landed closed-form telescope rewrites `hW` to `(∑ surviving) + slot ∈ S`.
+  rw [BodyHingeFramework.wstep_foldl_hingeRow_telescope w hw m ρ₀] at hW
+  -- the `m` genuine surviving rows sum to a span member.
+  have hsum : (∑ s ∈ Finset.range m, BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀) ∈ S :=
+    Submodule.sum_mem _ hsurv
+  -- subtract: `((∑ surviving) + slot) − (∑ surviving) = slot ∈ S`.
+  have := Submodule.sub_mem _ hW hsum
+  rwa [add_sub_cancel_left] at this
+
 end CombinatorialRigidity.Molecular
