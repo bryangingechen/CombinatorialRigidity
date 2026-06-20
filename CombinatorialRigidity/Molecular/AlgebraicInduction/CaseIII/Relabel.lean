@@ -383,6 +383,41 @@ theorem PanelHingeFramework.rigidityRow_relabel_to_block
   · rw [hsupp]; exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
   · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
 
+/-- **The swapped-orientation moved-endpoint genuine-row → `(a,b)`-block transport (CHAIN-2c-ii-arm,
+the genuine-row disjunct's wrap-edge branch, `(b,a)`-order): the `(b,a)`-order sibling of
+`rigidityRow_relabel_to_block`** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) wrap-edge
+correspondence; Phase 23b). Same statement as `rigidityRow_relabel_to_block` except the relabel
+`ρ` sends the recorded source endpoints to the candidate fresh-edge endpoints in the **reversed**
+order (`hu : ρ.symm u = b`, `hw : ρ.symm w = a`) — the orientation `ends₀ (edge i)` records the top
+edge `vᵢvᵢ₊₁` in when the assembly's per-row dispatch hits the wrap edge in the opposite recorded
+sense.
+
+The two block bricks together let the assembly's wrap case dispatch BOTH `ends₀ (edge i)`
+orientations. It models the d=3 `M₃` arm's ±r handling of the candidate block branch
+(`case_III_bottom_relabel`, `:1790–1821`, the `x = a` / `y = a` sub-cases tagging RIGHT with
+`ρ' := ±r` depending on which recorded endpoint the swap moves). With `ρ' := -r` the transported
+row `hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow b a r = hingeRow a b (-r)`
+(`hingeRow_funLeft_dualMap` + `hu`/`hw` + `hingeRow_swap`) is the `(a,b)`-block tag; the negated
+functional `-r` still annihilates the candidate `(a,b)`-panel extensor (`hsupp` + `hr`, via
+`LinearMap.neg_apply` + `neg_eq_zero`). At the d=3 `M₃` involution case (`i = 2`, `ρ.symm = ρ`)
+this is the `case_III_bottom_relabel` `Or.inr ⟨-r, …⟩` block sub-case. -/
+theorem PanelHingeFramework.rigidityRow_relabel_to_block_swap
+    (ρ : Equiv.Perm α) {qρ : α × Fin (k + 2) → ℝ}
+    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    {f : β} {u w a b : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
+    (hu : ρ.symm u = b) (hw : ρ.symm w = a)
+    (hsupp : panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))
+      = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
+    ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ρ' (panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))) = 0 ∧
+      (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+          (BodyHingeFramework.hingeRow u w r) = BodyHingeFramework.hingeRow a b ρ' := by
+  refine ⟨-r, ?_, ?_⟩
+  · rw [LinearMap.neg_apply, neg_eq_zero, hsupp]
+    exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
+  · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw, BodyHingeFramework.hingeRow_swap]
+
 /-- **The `ChainData` genuine-row `hwmem` disjunct (CHAIN-2c-ii-arm wiring): the interior-candidate
 genuine-row transport, instantiating `rigidityRow_relabel_perm` at the index-shift relabel
 `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`** (`lem:case-III` general-`d`, KT 2011 §6.4.2

@@ -60,13 +60,14 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   `qρ`/`shiftPerm` form are **unbuilt** (grep: zero def-sites).
 - **Orphaned-for-the-arm (split-level, wrong slot):** `rigidityRow_chainData_relabel` /
   `rigidityRow_relabel_perm` (rows 288/291), the candidate→base T-W9a fold, the deleted W9b chain.
-→ **NEXT (decomposed after a sizing-BLOCKED, 2026-06-20): (1) the swapped-orientation block brick
-`rigidityRow_relabel_to_block_swap`** (the `(b,a)`-order sibling of `rigidityRow_relabel_to_block`,
-`ρ':=-r`), **then (2) the per-member assembly `chainData_bottom_relabel`** — dispatches the base
-`(G−v₁)`-row disjunction to the genuine-row branches + the two block-orientation bricks under
-`(shiftPerm i)⁻¹`, via the off-cycle / interior-chain / wrap-edge case-split (§(o‴)(I.6); the wrap
-orientation/sign was the BLOCKED draft's only gap, which brick (1) closes). Then
-`hρGv`'s G1 bridges + the arm wiring `chainData_relabel_arm` → 2c-iii `chainData_dispatch`. d=3 M₃
+→ **NEXT (after brick (1) LANDED 2026-06-20): the per-member assembly `chainData_bottom_relabel`** —
+dispatches the base `(G−v₁)`-row disjunction to the genuine-row branches + the two block-orientation
+bricks under `(shiftPerm i)⁻¹`, via the off-cycle / interior-chain / wrap-edge case-split
+(§(o‴)(I.6)). **Both block-orientation bricks now LANDED:** `rigidityRow_relabel_to_block`
+(`ρ.symm u = a`, `ρ.symm w = b`, `ρ':=r`) + the `(b,a)`-order sibling `rigidityRow_relabel_to_block_swap`
+(`ρ.symm u = b`, `ρ.symm w = a`, `ρ':=-r` via `hingeRow_swap`; LANDED 2026-06-20, axiom-clean) — so the
+assembly's wrap case can dispatch BOTH `ends₀ (edge i)` orientations (the BLOCKED draft's only gap).
+Then `hρGv`'s G1 bridges + the arm wiring `chainData_relabel_arm` → 2c-iii `chainData_dispatch`. d=3 M₃
 `i=2` cycle is the single-swap involution (zero-regression).
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
@@ -151,7 +152,9 @@ extractor reshape).
       `rigidityRow_chainData_relabel`, rows 288/291, are orphaned-for-the-arm). Its **all 3 abstract branches
       LANDED** (`rigidityRow_relabel_{off_cycle,to_block,to_genuine}`, `Relabel.lean`, axiom-clean — off-cycle,
       wrap-edge→block, interior-chain-edge; the interior brick is the general moving form, off-cycle delegates
-      to it). The **block disjunct** `blockRow_relabel_perm` (Leaf B) is also slotted. → **NEXT: the per-member
+      to it) + **both block-orientation siblings** (`rigidityRow_relabel_to_block` `(a,b)`-order `ρ':=r` +
+      `rigidityRow_relabel_to_block_swap` `(b,a)`-order `ρ':=-r`, LANDED 2026-06-20). The **block disjunct**
+      `blockRow_relabel_perm` (Leaf B) is also slotted. → **NEXT: the per-member
       assembly `chainData_bottom_relabel`** (dispatch the base disjunction through the 3 branches under
       `(shiftPerm i)⁻¹`), then the G1 (`hρGv` bridges, unbuilt) + the arm wiring. d=3 M₃ = `i=2`
       involution → **2c-iii** `chainData_dispatch`. Full detail: *Current state* Tracker + *Hand-off* +
@@ -215,18 +218,18 @@ bricks" + the Lean docstrings): *off-cycle* (both endpoints fixed → genuine ta
 `rigidityRow_relabel_to_genuine` (`edge s ↦ edge (s−1)`, both endpoints move one step but survive
 `removeVertex vᵢ` → genuine `(G−vᵢ)` row at the shifted link). The interior brick is the general moving
 form; the off-cycle sibling delegates to it (`(u',w',f')=(u,w,f)`).
-**NEXT STEP (decomposed after a sizing-BLOCKED, 2026-06-20 — the assembly is >1 sitting; full detail +
-the two builder traps in design §(o‴)(I.6)): (1) the swapped-orientation block brick
-`rigidityRow_relabel_to_block_swap`** (`Relabel.lean`) — the `(b,a)`-order sibling of the landed
-`rigidityRow_relabel_to_block` (`ρ.symm u = b`, `ρ.symm w = a`, `ρ':=-r` via `hingeRow_swap`), modelling
-the d=3 block branch's ±r handling (`case_III_bottom_relabel`, `Relabel.lean:1790–1821`), so the assembly's
-wrap case can dispatch BOTH `ends₀ (edge i)` orientations. P≈2, ~1 commit. **(2) the per-member assembly
-`chainData_bottom_relabel`**: dispatch the base disjunction (`φ ∈ rows ∨ ∃ρ', (a,b)-block`) through the
+**NEXT STEP (after both block-orientation bricks LANDED — the assembly is >1 sitting; full detail +
+the two builder traps in design §(o‴)(I.6)): the per-member assembly `chainData_bottom_relabel`**
+(`Relabel.lean`): dispatch the base disjunction (`φ ∈ rows ∨ ∃ρ', (a,b)-block`) through the
 genuine-row branches (off-cycle / interior via `rigidityRow_relabel_{off_cycle,to_genuine}`) + the two
 block-orientation bricks under `(shiftPerm i)⁻¹`, via the off-cycle / interior-chain / wrap case-split
 (skeleton §(o‴)(I.6); per-row `deg_two`). The BLOCKED draft de-risked it: off-cycle + interior + a unified
-`hsupp_of` helper build clean; the wrap orientation/sign was the only gap (brick (1) closes it). P≈2–3,
-~1–2 commits. Then **`hρGv`'s G1 seed/relabel bridges** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`,
+`hsupp_of` helper build clean; the wrap orientation/sign was the only gap, and **both
+`rigidityRow_relabel_to_block` (`(a,b)`-order, `ρ':=r`) and `rigidityRow_relabel_to_block_swap`
+(`(b,a)`-order, `ρ':=-r`; LANDED 2026-06-20) close it** (the assembly's wrap case picks the brick
+matching the recorded `ends₀ (edge i)` orientation, modelling the d=3 ±r block branch
+`case_III_bottom_relabel`, `Relabel.lean:1790–1821`). P≈2–3, ~1–2 commits. Then **`hρGv`'s G1
+seed/relabel bridges** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`,
 `wstep_foldl_funLeft_eq`, unbuilt) + the **arm wiring** `chainData_relabel_arm` (instantiate
 `case_III_arm_realization` at the per-`i` roles: genuine-row `hwmem` → the new assembly leaf, block →
 landed `blockRow_relabel_perm`, `hρGv` → the W9a fold + G1) → **2c-iii** `chainData_dispatch` (replaces
@@ -390,6 +393,13 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   edge→block, and the genuinely-new interior-chain-edge `rigidityRow_relabel_to_genuine` (the general
   moving form — free `f'`/`u'`/`w'`, strictly subsuming off-cycle, which now delegates to it). No FRICTION
   (clean reuse, shared 5-line proof). NEXT = the assembly `chainData_bottom_relabel` (*Hand-off*).
+- **The swapped-orientation block brick `rigidityRow_relabel_to_block_swap` LANDED 2026-06-20
+  (axiom-clean).** The `(b,a)`-order sibling of `rigidityRow_relabel_to_block` (`ρ.symm u = b`,
+  `ρ.symm w = a`, `ρ':=-r`): `funLeft(ρ.symm).dualMap (hingeRow u w r) = hingeRow b a r = hingeRow a b (-r)`
+  via `hingeRow_funLeft_dualMap`+`hu`/`hw`+`hingeRow_swap`, the negated functional annihilating via
+  `LinearMap.neg_apply`+`neg_eq_zero`. Models the d=3 ±r block branch (`case_III_bottom_relabel:1790–1821`),
+  so the assembly's wrap case dispatches BOTH `ends₀ (edge i)` orientations (the BLOCKED draft's only gap).
+  No FRICTION (clean 3-line sibling of the landed brick, first-draft compile).
 **Landed CHAIN-2 leaves (all axiom-clean; one-line verdicts — settled, nothing downstream leans on the
 internals; detail = git + design §(o)/(o′)/(o″)/(o‴) + FRICTION).** `G.ChainData n` record + accessors
 (`Operations.lean`, contract-C.1 chain + interior-split geometry); **2c-i** `exists_chainData_discriminator_pick`
@@ -405,7 +415,9 @@ G1 seed/relabel bridges to the engine's `qρ`/`shiftPerm` form are still unbuilt
 **removeVertex** level — a per-row case-split, NOT a split graph-iso, NOT a W9b fold; §(o‴)(I.5)/(I.6)):
 - **`blockRow_relabel_perm`** (Leaf B, the W6b `(ab)`-block-tag→genuine disjunct) +
   **`rigidityRow_relabel_off_cycle`** (genuine off-cycle branch, delegates to `…to_genuine`) +
-  **`rigidityRow_relabel_to_block`** (genuine wrap-edge→`(a,b)`-block branch) +
+  **`rigidityRow_relabel_to_block`** (genuine wrap-edge→`(a,b)`-block branch, `(a,b)`-order, `ρ':=r`) +
+  **`rigidityRow_relabel_to_block_swap`** (the `(b,a)`-order sibling, `ρ':=-r` via `hingeRow_swap`;
+  LANDED 2026-06-20 — together the two block bricks dispatch BOTH `ends₀ (edge i)` orientations) +
   **`rigidityRow_relabel_to_genuine`** (genuine interior-chain-edge moving branch, the general form) —
   all LANDED, axiom-clean, correctly slotted (removeVertex / arm-level; design §(o‴)(I.6) + Lean
   docstrings). The per-member assembly `chainData_bottom_relabel` remains (*Hand-off* / *Current state*).
