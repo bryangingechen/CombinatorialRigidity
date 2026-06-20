@@ -62,7 +62,7 @@ failing pattern and the working fix.
 - *"… does not contain field `Exists.foo`"* on `h.foo`, where `h`'s *type* is a `def : Prop` unfolding to `∃ …` (a motive like `HasGenericFullRankRealization`) → § 35 (variant — call the pkg lemma by qualified name, `∃`-hyp positional)
 - *"motive is not type correct"* / *"`Subsingleton ?m` stuck"* matching an `ιMulti_family`/index at a derived cardinality (`m+n`, `disjUnion`) against a literal one → § 36
 - *"Did not find … `Nonempty (Function.Embedding.{?u+1,?u+1} …)`"* on `rw [← Cardinal.le_def]` when `α`/`β` are in different universes → § 37
-- `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper)
+- `(deterministic) timeout at whnf`/`isDefEq` unfolding a basis/dual-coordinate iso `φ` *in place* over a heavy `Module.Dual …`/exterior-power type → § 38 (extract a generic helper); also when a lemma application leaves a *heavy-carrier implicit* (arg / row-family / seed-function `qρ` / panel-endpoint `a b` of a relabel brick) to be inferred against a heavy `ofNormals …` goal → § 38 (pin it explicit)
 - `(deterministic) timeout at whnf` in a *pre-existing, untouched* exterior-algebra proof right after adding an `InnerProductSpace`/`EuclideanSpace` import → § 59 (the metric `PiLp` instances poison `⋀`-elaboration; keep the bridge in a mirror / a downstream file)
 - *"failed to synthesize `Module.IsTorsionFree`/`NoZeroSMulDivisors`"* on `LinearIndependent.of_subsingleton` (or any "obvious" algebraic instance a full-mathlib scratch finds) in a narrow-import / mirror file → § 40 (add the instance's defining import)
 - `rw [eq]` rewriting a *function*-valued term (`rw [← f.sum_repr y]`) over-rewrites the *other* side of the goal (hits `y`'s partial applications `y i`) → § 41 (`conv_lhs`/`nth_rewrite`)
@@ -1633,6 +1633,25 @@ plain "rigid on `V(G)` at the seed" fact (itself obtained from the combined row 
 lesson: an existence-motive producer should bottom out on a *consumer* lemma that takes the witness
 data positionally, never on a bare `⟨…⟩` against the unfolded `def`. Worked case:
 `PanelHingeFramework.case_I_realization_h65` (Phase 22k L8c-2, `Molecular/AlgebraicInduction/Theorem55.lean`).
+
+**Relabel-brick implicit-seed/endpoint variant (Phase 23b).** When `refine`-ing a panel-hinge
+relabel brick (`rigidityRow_relabel_to_block`, `…_to_genuine`, …) into a *disjunction* goal whose
+target framework is a heavy `ofNormals (G.removeVertex …) endsσρ qρ` with `qρ := fun p => q (ρ p.1,
+p.2)`, leaving the brick's **seed `{qρ}` and panel-endpoint `{a b}` implicit** makes the elaborator
+solve them by higher-order unification of the brick conclusion's `panelSupportExtensor (qρ a) (qρ b)`
+against the goal's concrete `C(q (ρ vₐ)) (q (ρ v_b))` — a *"(deterministic) timeout at `whnf`"* at
+the `refine`'s lemma-name position (200k). Fix: **pass `(qρ := fun p => q (ρ p.1, p.2)) (a := …)
+(b := …)` explicitly** so the match is syntactic; the timeout vanishes. Same medicine as the
+call-site / row-family variants above (pin the heavy implicit), now for the seed-function + endpoint
+slots. **Second lesson, brick rigidity:** the two-orientation block bricks (`…_to_block` `ρ':=r` /
+`…_to_block_swap` `ρ':=−r`) demand a *literal* `hsupp : C(qρ a)(qρ b) = base.supportExtensor f`, which
+cannot absorb a sign — and the recorded `ends₀ f` orientation is *independent* of the endpoint
+classification order, so 2 of the 4 combinations have a `C(q x)(q y)` vs `C(q y)(q x) = −C(q x)(q y)`
+mismatch the literal `hsupp` can't express. When the orientation axes are independent, **inline the
+`±r` block construction** (`refine Or.inr ⟨±r, ?_, ?_⟩` + a single hoisted `hperp : r (C(q x)(q y)) =
+0` from `mem_hingeRowBlock_iff` + `hrec` + `panelSupportExtensor_swap`/`map_neg`) rather than routing
+through the rigid bricks. Worked case: `PanelHingeFramework.chainData_bottom_relabel` (CHAIN-2c-ii-arm
+genuine-row `hwmem`, `Molecular/AlgebraicInduction/CaseIII/Relabel.lean`). No `maxHeartbeats` bump.
 
 ## 39. Rank-nullity on a linear map into/out of a `Submodule`/`Submodule.Quotient` over a heavy carrier `whnf`-times-out — run it on the *plain `Pi`* (un-restricted) map
 

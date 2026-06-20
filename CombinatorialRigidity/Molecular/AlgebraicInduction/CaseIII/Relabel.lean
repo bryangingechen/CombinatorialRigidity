@@ -1827,6 +1827,165 @@ lemma _root_.Graph.ChainData.removeVertex_genuine_shiftRelabel
   · exact Or.inl (Graph.removeVertex_isLink.mpr ⟨hGcand, hxv, hyv⟩)
   · exact Or.inr hxy
 
+/-- **The per-member `(shiftPerm i)⁻¹` cycle transport of the `v₁`-base bottom-row disjunction
+(CHAIN-2c-ii-arm, the genuine-row `hwmem` leaf `chainData_bottom_relabel`)** (`lem:case-III`
+general-`d`, KT 2011 §6.4.2 eqs.~(6.54)/(6.62) the one-step-down row correspondence; Phase 23b).
+The cycle generalization of the d=3 `M₃` arm's `case_III_bottom_relabel` from the single swap
+`Equiv.swap a v` to the whole `(i−1)`-cycle relabel `(shiftPerm i.castSucc)⁻¹`: it takes the
+`v₁`-base `removeVertex (vtx 1)` bottom-row disjunction — a member is either a genuine rigidity row
+of the base framework `ofNormals (G.removeVertex (vtx 1)) ends₀ q`, or a `(vtx 2, vtx 0)`-block tag
+`hingeRow (vtx 2) (vtx 0) ρ'` (the base split's fresh-edge candidate pair) — to the candidate-`i`
+arm's `hwmem` disjunction, under `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap`: a member of the
+candidate framework's rigidity rows
+`ofNormals (G.removeVertex (vtx i.castSucc)) endsσρ qρ` (with `qρ = q ∘ shiftPerm i.castSucc` the
+candidate seed and `endsσρ` the `(shiftPerm i.castSucc)⁻¹`-shifted selector), or a
+`(vtx (i+1), vtx (i−1))`-block tag (the candidate split's fresh-edge pair).
+
+This is the genuine-row `hwmem` slot the relabel arm `chainData_relabel_arm` (2c-ii) feeds the
+engine `case_III_arm_realization` at the per-`i` roles, exactly as `case_III_arm_realization_M3`'s
+`hwmem` case feeds `case_III_bottom_relabel` at `d = 3`. The dispatch (design §(o‴)(I.6)):
+* **genuine base row** `hingeRow x y r` at link `f x y` (a `removeVertex (vtx 1)` survivor) — the
+  make-or-break crux `removeVertex_genuine_shiftRelabel` classifies the relabelled link as
+  **either** a genuine `removeVertex (vtx i.castSucc)` link (off-cycle / interior-chain-edge images,
+  both endpoints surviving — `rigidityRow_relabel_to_genuine`) **or** the candidate fresh pair
+  `{vtx (i+1), vtx (i−1)}` in one of the two orders (the wrap edge `edge i`, sent to the candidate's
+  fresh short-circuit, dispatched to the inline `±r` block tag by the recorded orientation);
+* **base `(vtx 2, vtx 0)`-block tag** `hingeRow (vtx 2) (vtx 0) ρ'` — the relabel carries the base
+  fresh pair to a *surviving* candidate link, a genuine target row (`blockRow_relabel_perm`),
+  exactly as the d=3 `(ab)`-block tag maps to the genuine `e_b`-row.
+
+The per-branch `hsupp`/`hlinkGt` ingredients are supplied by
+`ofNormals_supportExtensor_relabel_perm`
+(support extensors are graph-independent, so the relabel coincidence holds at the candidate split's
+`removeVertex` graph) and the inverse-cycle action lemmas (`seedShift_*`, `shiftPerm_inv_*`,
+`shiftEdgePerm_inv_*`). At the d=3 `M₃` instance `i = 2` the cycle `shiftPerm 2 = (v₁ v₂)` is the
+single swap and this is exactly `case_III_bottom_relabel`. -/
+theorem PanelHingeFramework.chainData_bottom_relabel
+    [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    (hrec : ∀ e x y, (G.removeVertex
+          (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)).IsLink e x y →
+      ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (he₀rec : ends₀ cd.e₀ =
+      (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc,
+        cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals
+        (G.removeVertex (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+        ends₀ q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor
+            (fun j => q (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))
+            (fun j => q (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 ∧
+        φ = BodyHingeFramework.hingeRow
+            (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+            (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ') :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor
+            (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j))
+            (fun j => q (cd.shiftPerm i.castSucc
+              (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j))) = 0 ∧
+        (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ =
+          BodyHingeFramework.hingeRow (cd.vtx i.succ)
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ' := by
+  classical
+  have hid : (i : ℕ) < cd.d := i.isLt
+  -- `ρ.symm = ρ⁻¹` for an `Equiv.Perm` (the crux states its classification in `⁻¹` form).
+  have hsymm : (cd.shiftPerm i.castSucc).symm = (cd.shiftPerm i.castSucc)⁻¹ := rfl
+  rcases hφ with hgen | ⟨ρ', hρ'e₀, rfl⟩
+  · -- Genuine base row `hingeRow x y r` at a `removeVertex (vtx 1)` survivor link `f x y`.
+    obtain ⟨f, x, y, hlink, r, hr, rfl⟩ := hgen
+    rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+      Graph.removeVertex_isLink] at hlink
+    obtain ⟨hG, hx1, hy1⟩ := hlink
+    -- `r` annihilates the `(x, y)`-panel extensor (the base `f`-extensor up to the recorded
+    -- orientation, so this absorbs the wrap-edge ±-orientation in one fact).
+    have hperp : r (panelSupportExtensor (fun j => q (x, j)) (fun j => q (y, j))) = 0 := by
+      have hr' := (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
+      rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hr'
+      rcases hrec f x y (Graph.removeVertex_isLink.mpr ⟨hG, hx1, hy1⟩) with he | he
+      · rw [he] at hr'; exact hr'
+      · rw [he, panelSupportExtensor_swap, map_neg, neg_eq_zero] at hr'; exact hr'
+    -- The make-or-break classification of the relabelled link `(σ⁻¹ f, ρ⁻¹ x, ρ⁻¹ y)`.
+    rcases cd.removeVertex_genuine_shiftRelabel i hi hG hx1 hy1 with
+      hgenuine | (⟨hxa, hyb⟩ | ⟨hxb, hya⟩)
+    · -- Genuine `removeVertex (vtx i.castSucc)` image (off-cycle / interior-chain-edge): the moving
+      -- genuine-row brick at `(u', w', f') = (ρ⁻¹ x, ρ⁻¹ y, σ⁻¹ f)`.
+      refine Or.inl ?_
+      refine PanelHingeFramework.rigidityRow_relabel_to_genuine (cd.shiftPerm i.castSucc)
+        (Gt := G.removeVertex (cd.vtx i.castSucc)) hr rfl rfl hgenuine ?_
+      -- `hsupp`: `Q'.supportExtensor (σ⁻¹ f) = Q.supportExtensor f` (graph-independent; the relabel
+      -- coincidence cancels `ρ (ρ.symm ·) = ·` and `σ (σ⁻¹ f) = f`).
+      simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends,
+        Equiv.apply_symm_apply, Equiv.Perm.coe_inv]
+    · -- Wrap edge `edge i`: relabelled endpoints land on the candidate fresh pair `(vᵢ₊₁, vᵢ₋₁)`
+      -- in the recorded order → `(a,b)`-block, tag `ρ' := r`. `qρ (vtx (i+1)) = q (ρ (vtx (i+1)))`
+      -- `= q x` (`hxa`), `qρ (vtx (i−1)) = q y` (`hyb`), so the candidate panel is `C(q x, q y)`,
+      -- which `r` annihilates (`hperp`). The relabelled row is `hingeRow (vtx (i+1)) (vtx (i−1))`
+      -- `r`, the candidate block tag.
+      refine Or.inr ⟨r, ?_, ?_⟩
+      · have hax : cd.shiftPerm i.castSucc (cd.vtx i.succ) = x := by
+          rw [← hxa]; exact Equiv.apply_symm_apply _ _
+        have hby : cd.shiftPerm i.castSucc
+            (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) = y := by
+          rw [← hyb]; exact Equiv.apply_symm_apply _ _
+        simp only [hax, hby]; exact hperp
+      · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hsymm, hxa, hyb]
+    · -- Wrap edge, swapped recorded order → `(a,b)`-block, tag `ρ' := -r`. Here `ρ` sends the
+      -- candidate fresh pair the other way (`qρ (vtx (i+1)) = q y`, `qρ (vtx (i−1)) = q x`), so the
+      -- candidate panel is `C(q y, q x) = -C(q x, q y)`, annihilated by `r` (`hperp`); the
+      -- relabelled row `hingeRow (vtx (i−1)) (vtx (i+1)) r` is `hingeRow (vtx (i+1)) (vtx (i−1))`
+      -- `(-r)` (by `hingeRow_swap`).
+      refine Or.inr ⟨-r, ?_, ?_⟩
+      · have hbx : cd.shiftPerm i.castSucc (cd.vtx i.succ) = y := by
+          rw [← hya]; exact Equiv.apply_symm_apply _ _
+        have hay : cd.shiftPerm i.castSucc
+            (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) = x := by
+          rw [← hxb]; exact Equiv.apply_symm_apply _ _
+        rw [hbx, hay, LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, neg_neg]
+        exact hperp
+      · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hsymm, hxb, hya,
+          BodyHingeFramework.hingeRow_swap]
+  · -- Base `(vtx 2, vtx 0)`-block tag: relabel carries the base fresh pair to the surviving
+    -- candidate link `edge 0` (link `vtx 1 — vtx 0`), a genuine target row (via
+    -- `blockRow_relabel_perm`).
+    refine Or.inl ?_
+    refine PanelHingeFramework.blockRow_relabel_perm (cd.shiftPerm i.castSucc)
+      (Gt := G.removeVertex (cd.vtx i.castSucc)) (q₀ := q)
+      (e_t := cd.edge ⟨0, Nat.lt_of_le_of_lt (Nat.zero_le _) hid⟩) ?_ ?_ hρ'e₀
+    · -- `edge 0 = vtx 0 — vtx 1`, surviving `removeVertex (vtx i.castSucc)`, at
+      -- `(ρ⁻¹ (vtx 2), ρ⁻¹ (vtx 0)) = (vtx 1, vtx 0)`.
+      have hpos2 : (cd.shiftPerm i.castSucc).symm
+            (cd.vtx (⟨2, by omega⟩ : Fin cd.d).castSucc)
+          = cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc := by
+        rw [hsymm]
+        exact cd.shiftPerm_inv_apply_interior i.castSucc (j := 1) le_rfl
+          (by simp only [Fin.val_castSucc]; omega)
+      have hpos0 : (cd.shiftPerm i.castSucc).symm
+            (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc)
+          = cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc := by
+        rw [hsymm]
+        exact cd.shiftPerm_inv_apply_vtx_off i.castSucc (by omega) (Or.inl rfl)
+      rw [hpos2, hpos0, Graph.removeVertex_isLink]
+      refine ⟨(cd.isLink_edge ⟨0, by omega⟩).symm, ?_, ?_⟩
+      · exact cd.vtx_ne (m := 1) (m' := (i : ℕ)) (by omega) (by omega) (by omega)
+      · exact cd.vtx_ne (m := 0) (m' := (i : ℕ)) (by omega) (by omega) (by omega)
+    · -- `hsupp`: `Q'.supportExtensor (edge 0) = base extensor at σ (edge 0) = e₀`, recorded by
+      -- `he₀rec` at the base candidate pair `(vtx 2, vtx 0)`.
+      rw [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm
+        (cd.shiftPerm i.castSucc) (cd.shiftEdgePerm i),
+        cd.shiftEdgePerm_apply_edge_zero i (by omega),
+        PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+        PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, he₀rec]
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row

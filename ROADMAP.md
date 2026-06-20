@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/CARRIER closed; 23b/CHAIN open (CHAIN-1/3/4 + OD-7 + CHAIN-2a closed, CHAIN-2c-i/2c-ii foundation + the H.10 de-risk gate + the 3 genuine-row `hwmem` transport branches landed; CHAIN-2c-ii arm-assembly + `hρGv` G1 bridges + 2c-iii + CHAIN-5 remain); ENTRY/ASSEMBLY remain (see `notes/Phase23b.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/CARRIER closed; 23b/CHAIN open (CHAIN-1/3/4 + OD-7 + CHAIN-2a closed, CHAIN-2c-i/2c-ii foundation + the H.10 de-risk gate + the genuine-row `hwmem` leaf `chainData_bottom_relabel` landed; `hρGv` G1 bridges + the arm wiring `chainData_relabel_arm` + 2c-iii + CHAIN-5 remain); ENTRY/ASSEMBLY remain (see `notes/Phase23b.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus

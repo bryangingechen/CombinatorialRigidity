@@ -3892,6 +3892,22 @@ type-ascription inside a `rw […]` bracket parse-cascades to a truncated file +
 `⊢ ℕ`/`introN failed` that masquerades as an elaboration pathology — use a named `have he : … := by omega`
 then `rw [he]`, and the §61 `m = m₂+2` destructure for the `Fin (i−1)`/`i−2` index arithmetic.
 
+**LANDED 2026-06-20 — `chainData_bottom_relabel` (`Relabel.lean`, axiom-clean).** The assembly fit one
+sitting after the de-risk. Two findings refining the BLOCKED decomposition: (1) the swapped-orientation
+block brick `rigidityRow_relabel_to_block_swap` (peeled as planned) ultimately was **not** used — the
+two pre-built block bricks demand a *literal* `hsupp : C(qρ a)(qρ b) = base.supportExtensor f`, but the
+recorded `ends₀ f` orientation is **independent** of the endpoint-classification order from
+`removeVertex_genuine_shiftRelabel`, so 2 of the 4 combinations have a `C(q x,q y)` vs
+`C(q y,q x) = −C(q x,q y)` sign mismatch the literal `hsupp` cannot express. The fix: **inline the `±r`
+wrap-block** (`refine Or.inr ⟨±r, ?_, ?_⟩` + one hoisted `hperp : r (C(q x,q y)) = 0` absorbing the
+recorded orientation via `panelSupportExtensor_swap`/`map_neg`), exactly the d=3 `case_III_bottom_relabel`
+`±r` body. (2) A **new `whnf` trap**: `refine`-ing a relabel brick with implicit seed `qρ`/endpoints
+`a,b` into the heavy `ofNormals (removeVertex …)` disjunction goal triggers a higher-order-unif `whnf`
+timeout — pin them explicit (→ TACTICS-QUIRKS §38). The wrap-block was discharged by inlining, not by
+the swap brick. Two arm-supplied recording hyps surfaced: `hrec` + `he₀rec` (the latter records the base
+fresh edge `ends₀ e₀ = (vtx 2, vtx 0)`, needed for the base-block→`edge 0` `blockRow_relabel_perm` arm).
+NEXT = `hρGv` G1 bridges + the arm wiring (`notes/Phase23b.md` *Hand-off*).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

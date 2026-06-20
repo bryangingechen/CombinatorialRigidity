@@ -3,17 +3,19 @@
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
 **Remaining: CHAIN-2** (the `Fin d` reduction layer) — corrected Fix A SETTLED (§(o‴)(H)). The
-**genuine-row `hwmem` leaf `chainData_bottom_relabel` has all 3 abstract branches + the block disjunct +
-the genuine-link transport crux LANDED** (`rigidityRow_relabel_{off_cycle,to_block,to_genuine}` +
-`blockRow_relabel_perm` + the make-or-break `removeVertex_genuine_shiftRelabel`, `Relabel.lean`, all
-axiom-clean; the interior brick `…to_genuine` is the general moving form, off-cycle delegates to it).
-**NEXT = the per-member assembly `chainData_bottom_relabel`** — dispatch the base `(G−v₁)`-row disjunction
-through `removeVertex_genuine_shiftRelabel` (genuine vs. wrap classification) + the genuine/block branches
-under `(shiftPerm i)⁻¹` (the `deg_two` make-or-break is discharged *inside* the reused split-level
-intertwiner `splitOff_isLink_shiftRelabel_iff`, not re-run at removeVertex level; §(o‴)(I.6)). Then
-`hρGv`'s **G1 seed/relabel bridges** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_foldl_funLeft_eq`,
-unbuilt) + the **arm wiring** `chainData_relabel_arm` → **2c-iii** `chainData_dispatch` (closes 23b
-green-modulo `hdispatch`). detail = *Current state* + *Hand-off* + §(o‴)(I.6).
+**genuine-row `hwmem` leaf `chainData_bottom_relabel` is now LANDED** (`Relabel.lean`, axiom-clean,
+2026-06-20): the per-member `(shiftPerm i.castSucc)⁻¹` cycle transport of the `v₁`-base `removeVertex`
+bottom-row disjunction to the candidate-`i` arm disjunction, dispatching the base genuine/block split
+through the make-or-break `removeVertex_genuine_shiftRelabel` + the genuine-row branches
+(`rigidityRow_relabel_to_genuine`) + an inline `±r` wrap-block + `blockRow_relabel_perm` (base block →
+genuine `edge 0` row). Two new recording hyps the arm supplies: `hrec` (`removeVertex (vtx 1)` link
+recording) + `he₀rec` (`ends₀ e₀ = (vtx 2, vtx 0)`).
+**NEXT = `hρGv`'s G1 seed/relabel bridges** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` /
+`wstep_foldl_funLeft_eq`, unbuilt — bridge the landed W9a `foldl` fold to the engine's `qρ`/`shiftPerm`
+form) + the **arm wiring** `chainData_relabel_arm` (instantiate `case_III_arm_realization` at the per-`i`
+roles: `hwmem` → the new `chainData_bottom_relabel`, block → `blockRow_relabel_perm`, `hρGv` → W9a +
+G1) → **2c-iii** `chainData_dispatch` (closes 23b green-modulo `hdispatch`). detail = *Current state* +
+*Hand-off*.
 **Settled context (full detail in Tracker + Hand-off):** the arm engine binds `hwmem`/`hρGv` at
 **removeVertex** level (`ofNormals Gv ends q`, `Gv ≤ G`), so the split-level rows-288/291 bricks
 `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` are **orphaned-for-the-arm** (the resolved
@@ -40,46 +42,29 @@ confirmed by the landed de-risk gate): keep the shared `ρ₀`, transport member
 existence). The landed candidate→base T-W9a/W9b folds are **orphaned-for-the-arm** (`wstep`
 non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 
-**Tracker (CHAIN-2c-ii-transport) — CORRECTED 2026-06-19 (recon-1 + a build BLOCKED, source-verified;
-overturns the §(o‴)(I.3) "split-level graph-iso fills the `hwmem` slot" claim).** The arm engine
+**Tracker (CHAIN-2c-ii-transport) — the `hwmem` slot is now CLOSED; `hρGv` remains.** The arm engine
 `case_III_arm_realization` (`Arms.lean:72`) binds BOTH `hwmem` (`:96`) and `hρGv` (`:91`) at the
 **removeVertex-level** `ofNormals Gv ends q` (`Gv ≤ G`, `v ∉ V(Gv)`; `splitOff ⋬ G` so `Gv` can't be a
 split). The d=3 wiring (`case_III_arm_realization_M3:1957/2065`) instantiates `Gv := G.removeVertex a` and
 transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **not** a graph-iso. Slot status:
-- **Block disjunct** (`blockRow_relabel_perm`, Leaf B) — correctly slotted (abstract over any `Gt`; ✓).
-- **Genuine-row `hwmem` disjunct — all 3 branches LANDED** (`Relabel.lean`, all axiom-clean; full
-  per-branch detail in *Hand-off* + Lean docstrings): *off-cycle* `rigidityRow_relabel_off_cycle`
-  (both link endpoints fixed by the relabel → genuine target row) + *wrap-edge→block*
-  `rigidityRow_relabel_to_block` (the top edge `edge i`, endpoints relabelled to the candidate
-  fresh-edge pair `(a,b)`, NOT a `G`-edge → the candidate `(a,b)` BLOCK disjunct, `ρ':=r`) +
-  *interior-chain-edge* `rigidityRow_relabel_to_genuine` (the new one: `edge s ↦ edge (s−1)`,
-  `2≤s≤i−1`, both endpoints move one step but survive `removeVertex vᵢ` → genuine `(G−vᵢ)` row at the
-  shifted link). The interior brick is the general moving form, so the off-cycle sibling now
-  **delegates** to it (`(u',w',f')=(u,w,f)`).
+- **Genuine-row `hwmem` leaf `chainData_bottom_relabel` — LANDED 2026-06-20** (`Relabel.lean`,
+  axiom-clean): the per-member `(shiftPerm i.castSucc)⁻¹` cycle transport (the general-`d` analogue of
+  d=3 `case_III_bottom_relabel`). Dispatch: genuine base row → `removeVertex_genuine_shiftRelabel` then
+  `rigidityRow_relabel_to_genuine` (genuine image) or an **inline `±r` block** (wrap edge → candidate
+  fresh pair, sign by recorded orientation via one hoisted `hperp`); base `(vtx 2,vtx 0)`-block tag →
+  `blockRow_relabel_perm` at `e_t = edge 0` (link `vtx 1—vtx 0`, surviving). The two pre-built block
+  bricks (`rigidityRow_relabel_to_block{,_swap}`) were too rigid for the wrap case (literal `hsupp`
+  can't absorb the orientation sign, independent of endpoint order) → inlined; they stay
+  orphaned-for-the-arm. Two arm-supplied recording hyps: `hrec` + `he₀rec`.
 - **`hρGv` (candidate-row, W9a span fold) — NOT closed.** The fold core + concrete instance
   `shiftBodyListAsc_foldl_mem_span_rigidityRows` landed, but its G1 seed/relabel bridges
   (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`, `wstep_foldl_funLeft_eq`) to the engine's
-  `qρ`/`shiftPerm` form are **unbuilt** (grep: zero def-sites).
-- **Orphaned-for-the-arm (split-level, wrong slot):** `rigidityRow_chainData_relabel` /
-  `rigidityRow_relabel_perm` (rows 288/291), the candidate→base T-W9a fold, the deleted W9b chain.
-→ **NEXT: the per-member assembly `chainData_bottom_relabel`** — dispatches the base `(G−v₁)`-row
-disjunction to the genuine-row branches + the two block-orientation bricks under `(shiftPerm i)⁻¹`,
-via the off-cycle / interior-chain / wrap-edge case-split (§(o‴)(I.6)). **The genuine-link transport
-crux `removeVertex_genuine_shiftRelabel` (the make-or-break) is now LANDED 2026-06-20**
-(`Relabel.lean`, axiom-clean): a genuine `G`-link surviving `removeVertex (vtx 1)` transports under
-the inverse index-shift to EITHER a genuine `removeVertex (vtx i.castSucc)` link OR the candidate fresh
-pair `{vtx (i+1), vtx (i−1)}` (in some order) — proved by **lifting** the genuine base row to a
-`v₁`-base `splitOff` survivor (`f ∈ E(G)`, `e₀ ∉ E(G)`) and reusing the landed split-level intertwiner
-`splitOff_isLink_shiftRelabel_iff` (`.mpr`), rather than re-running the `deg_two` case analysis at
-removeVertex level (the `deg_two` work already lives inside the split-level lemma). So the assembly's
-`hlinkGt` (genuine) + wrap-classification are now supplied by this brick; what remains is the dispatch
-wiring + each branch's `hsupp` (genuine: automatic via `ofNormals_supportExtensor_relabel_perm` +
-supportExtensor graph-independence; wrap: the base-selector `ends₀ (edge i)` recording,
-orientation-dispatched to `rigidityRow_relabel_to_block{,_swap}`). **Both block-orientation bricks
-LANDED:** `rigidityRow_relabel_to_block` (`ρ.symm u = a`, `ρ.symm w = b`, `ρ':=r`) +
-`rigidityRow_relabel_to_block_swap` (`ρ.symm u = b`, `ρ.symm w = a`, `ρ':=-r`). Then `hρGv`'s G1
-bridges + the arm wiring `chainData_relabel_arm` → 2c-iii `chainData_dispatch`. d=3 M₃ `i=2` cycle is
-the single-swap involution (zero-regression).
+  `qρ`/`shiftPerm` form are **unbuilt** (grep: zero def-sites). **← NEXT.**
+- **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
+  `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
+  T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
+  assembly inlined the wrap-block construction instead).
+d=3 M₃ `i=2` cycle is the single-swap involution (zero-regression).
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -106,18 +91,12 @@ abstract `foldl` core `bottomTag_foldl_mem_rigidityRows`) DELETED 2026-06-19** �
 §(o‴)(I.1) refuted the per-body block transport it encoded; **confirm-and-delete done** (zero callers),
 never prerequisites (Q1). Remaining in **CHAIN-2c-ii** (§(o‴)(I)/(I.5)): CHAIN-2c-ii-inv (the inverse-cycle
 action lemmas) is already LANDED (`Operations.lean:1550–2110`), and the genuine-row `hwmem` leaf
-`chainData_bottom_relabel`'s **all 3 abstract branches LANDED** (`rigidityRow_relabel_off_cycle`
-+ `rigidityRow_relabel_to_block` + `rigidityRow_relabel_to_genuine`) — so → **the per-member assembly
-`chainData_bottom_relabel`** (dispatch the base disjunction through the 3 branches; see *Current state*
-Tracker + *Hand-off* + §(o‴)(I.6)).
-**The genuine-row `hwmem` disjunct is NOT the split-level graph-iso** (`rigidityRow_*relabel*` are
-orphaned-for-the-arm, wrong graph level); it is a **per-row case analysis** generalizing
-`case_III_bottom_relabel` (the d=3 bespoke degree-2 argument) — **de-risk-CONFIRMED tractable**
-(§(o‴)(I.6), the `deg_two` make-or-break holds). The **block disjunct = a single G4d-i at `vᵢ`** (Leaf B,
-`blockRow_relabel_perm`, Q2, ✓-slotted). `hρGv` (the W9a span fold) carries the *candidate row* and is also
-not yet closed (its G1 bridges unbuilt). — then **CHAIN-2c-iii** (assembly), and
-**CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
-extractor reshape).
+`chainData_bottom_relabel` is now **LANDED 2026-06-20** (`Relabel.lean`, axiom-clean — the per-member
+`(shiftPerm i.castSucc)⁻¹` cycle transport; *Current state* Tracker + *Hand-off* + §(o‴)(I.6)). So → the
+**`hρGv` G1 bridges** (the W9a span fold carries the *candidate row*, not yet closed — its G1 bridges
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_foldl_funLeft_eq` unbuilt) + **CHAIN-2c-iii** (the
+arm wiring `chainData_relabel_arm` + the assembly `chainData_dispatch`), then **CHAIN-5** (signature
+frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's extractor reshape).
 
 - [x] **CHAIN-3 — the `⋀^{d−1}(ℝ^{d+1})` duality bricks + Hodge panel-meet membership**
       (`Meet.lean` + `MeetHodge.lean`). **CLOSED 2026-06-17** (route = `⋀^{d−1}W`-is-a-line, NOT the
@@ -166,14 +145,13 @@ extractor reshape).
       to it) + **both block-orientation siblings** (`rigidityRow_relabel_to_block` `(a,b)`-order `ρ':=r` +
       `rigidityRow_relabel_to_block_swap` `(b,a)`-order `ρ':=-r`, LANDED 2026-06-20). The **block disjunct**
       `blockRow_relabel_perm` (Leaf B) is also slotted. The **genuine-link transport crux**
-      `removeVertex_genuine_shiftRelabel` (the make-or-break, supplying the genuine branch's `hlinkGt` +
-      the wrap classification) **LANDED 2026-06-20** (`Relabel.lean`, axiom-clean — lift the base row to a
-      `v₁`-base `splitOff` survivor and reuse `splitOff_isLink_shiftRelabel_iff`, no removeVertex-level
-      `deg_two` re-run). → **NEXT: the per-member assembly `chainData_bottom_relabel`** (dispatch the base
-      disjunction through `removeVertex_genuine_shiftRelabel` + the genuine/block branches under
-      `(shiftPerm i)⁻¹`), then the G1 (`hρGv` bridges, unbuilt) + the arm wiring. d=3 M₃ = `i=2`
-      involution → **2c-iii** `chainData_dispatch`. Full detail: *Current state* Tracker + *Hand-off* +
-      design §(o‴)(I.6).
+      `removeVertex_genuine_shiftRelabel` (the make-or-break) **LANDED 2026-06-20**, and the **per-member
+      assembly `chainData_bottom_relabel`** (the genuine-row `hwmem` leaf) is now **LANDED 2026-06-20**
+      (`Relabel.lean`, axiom-clean — the `(shiftPerm i.castSucc)⁻¹` dispatch of the base disjunction
+      through the crux + `rigidityRow_relabel_to_genuine` + an inline `±r` wrap-block + `blockRow_relabel_perm`).
+      → **NEXT: the `hρGv` G1 bridges (unbuilt) + the arm wiring `chainData_relabel_arm`** → **2c-iii**
+      `chainData_dispatch`. d=3 M₃ = `i=2` involution (zero-regression). Full detail: *Current state*
+      Tracker + *Hand-off* + design §(o‴)(I.6).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c**
       (boundary LOCKED 2026-06-19; gated on ENTRY's extractor reshape, so it lands at the front of
       23c=ENTRY alongside the extractor that feeds it — 23b closes green-modulo `hdispatch`).
@@ -241,33 +219,32 @@ the `hsupp` ingredient the genuine-row bricks (`rigidityRow_relabel_{off_cycle,t
 instantiated at `(shiftPerm i.castSucc, shiftEdgePerm i)` it supplies their per-branch support-extensor
 coincidence at the candidate-`i` split.
 
-**NEXT STEP — the per-member assembly `chainData_bottom_relabel`** (`Relabel.lean`): now an
-attempt-ready bounded brick-assembly — **all its bricks are standalone and landed**, and the
-genuine-link transport crux (the make-or-break) is among them: **`removeVertex_genuine_shiftRelabel`
-LANDED 2026-06-20** (`Relabel.lean`, axiom-clean), supplying the genuine branch's `hlinkGt` + the
-wrap classification as a clean disjunction (genuine `removeVertex (vtx i.castSucc)` link vs. the
-candidate fresh pair `{vtx (i+1), vtx (i−1)}`). It is proved by **lifting** the genuine base row to a
-`v₁`-base `splitOff` survivor and reusing the landed split-level intertwiner
-`splitOff_isLink_shiftRelabel_iff` (`.mpr`) — the `deg_two` make-or-break is discharged *inside* that
-split-level lemma, so the removeVertex transport needs no re-run of the degree-2 case analysis. The
-other bricks: 3 genuine-row branches (`rigidityRow_relabel_{off_cycle,to_genuine}`) + 2
-block-orientation bricks + the `hsupp_of` producer (`ofNormals_supportExtensor_relabel_perm`) + the
-landed cycle-action `shiftEdgePerm_inv_*` / `seedShift_*` + `ChainData.deg_two`. So **attempt the
-assembly directly, don't pre-emptively shrink.** It is: dispatch the base disjunction
-(`φ ∈ rows ∨ ∃ρ', (a,b)-block`) through `removeVertex_genuine_shiftRelabel` (genuine vs. wrap), then
-the genuine-row branches + the two block-orientation bricks under `(shiftPerm i)⁻¹`. The branch
-`hsupp` discharges: genuine via `ofNormals_supportExtensor_relabel_perm` (+ supportExtensor
-graph-independence); wrap via the base-selector `ends₀ (edge i)` recording, picking
-`rigidityRow_relabel_to_block` (`(a,b)`-order, `ρ':=r`) or `rigidityRow_relabel_to_block_swap`
-(`(b,a)`-order, `ρ':=-r`) by the recorded orientation (modelling the d=3 ±r block branch
-`case_III_bottom_relabel`, `Relabel.lean:1790–1821`). P≈2–3, ~1–2 commits. Then **`hρGv`'s G1
-seed/relabel bridges** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`,
-`wstep_foldl_funLeft_eq`, unbuilt) + the **arm wiring** `chainData_relabel_arm` (instantiate
-`case_III_arm_realization` at the per-`i` roles: genuine-row `hwmem` → the new assembly leaf, block →
-landed `blockRow_relabel_perm`, `hρGv` → the W9a fold + G1) → **2c-iii** `chainData_dispatch` (replaces
-`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Close-boundary timeline on track (~3–5 commits to
+**Genuine-row `hwmem` leaf `chainData_bottom_relabel` — LANDED 2026-06-20** (`Relabel.lean`,
+axiom-clean): the per-member `(shiftPerm i.castSucc)⁻¹` cycle transport of the `v₁`-base
+`removeVertex (vtx 1)` bottom-row disjunction to the candidate-`i` arm disjunction (general-`d` analogue
+of d=3 `case_III_bottom_relabel`). Dispatch: a genuine base row `hingeRow x y r` → the make-or-break
+`removeVertex_genuine_shiftRelabel` classifies the relabelled link, then `rigidityRow_relabel_to_genuine`
+(genuine image) or an **inline `±r` wrap-block** (candidate fresh pair, sign from the recorded `ends₀ f`
+orientation via one hoisted `hperp : r (C(q x)(q y)) = 0`); a base `(vtx 2,vtx 0)`-block tag →
+`blockRow_relabel_perm` at `e_t = edge 0` (link `vtx 1—vtx 0`, surviving). Two arm-supplied recording
+hyps: `hrec` (`removeVertex (vtx 1)` link recording) + `he₀rec` (`ends₀ e₀ = (vtx 2, vtx 0)`). Two
+lessons (→ TACTICS-QUIRKS §38, *Decisions made*): (1) pin the relabel bricks' implicit seed `qρ`/panel
+endpoints `a,b` explicitly to avoid a higher-order-unification `whnf` blowup; (2) the pre-built block
+bricks `rigidityRow_relabel_to_block{,_swap}` were too rigid (literal `hsupp` can't absorb the
+orientation sign, which is independent of the endpoint-classification order) → inlined the wrap-block,
+leaving those two bricks orphaned-for-the-arm.
+
+**NEXT STEP — `hρGv`'s G1 seed/relabel bridges** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`,
+`wstep_foldl_funLeft_eq`, both unbuilt — grep zero def-sites): bridge the landed base→candidate W9a
+`foldl` fold (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to the engine's `qρ`/`shiftPerm` form, so
+`hingeRow a b ρ ∈ span (candidate-`i` rigidityRows)`. Then the **arm wiring** `chainData_relabel_arm`
+(instantiate `case_III_arm_realization` at the per-`i` roles: `hwmem` → `chainData_bottom_relabel`, block
+→ landed `blockRow_relabel_perm`, `hρGv` → W9a fold + G1) → **2c-iii** `chainData_dispatch` (replaces
+`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Close-boundary timeline on track (~2–4 commits to
 2c-iii). d=3 M₃ = `i=2` involution (zero-regression). Orphan-for-the-arm at the arm-build commit (zero
-callers, confirm-and-delete): `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (split-level).
+callers, confirm-and-delete): `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (split-level)
++ the now-unused `rigidityRow_relabel_{off_cycle,to_block,to_block_swap}` (the assembly inlined / used
+only `…_to_genuine`).
 
 **Confirm-and-delete / STAYS** (full list §(o‴)(H.5); `git grep` zero callers at the delete commit).
 **DELETED 2026-06-19** (Q1): the 5-decl W9b per-body chain. **Orphaned-for-the-arm (delete at the arm
@@ -443,6 +420,17 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   level (it already lives inside `splitOff_isLink_shiftRelabel_forward`). No FRICTION (5-line
   lift-and-reuse; `simpa` closes the `σ(σ⁻¹f)=f` apply-inv identity). NEXT = the assembly
   `chainData_bottom_relabel`, which dispatches the base disjunction through this brick (*Hand-off*).
+- **Genuine-row `hwmem` leaf `chainData_bottom_relabel` LANDED 2026-06-20 (axiom-clean — the
+  per-member cycle transport).** The general-`d` analogue of `case_III_bottom_relabel`: transports the
+  `v₁`-base `removeVertex (vtx 1)` bottom-row disjunction to the candidate-`i` arm disjunction under
+  `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap`. Genuine base row → `removeVertex_genuine_shiftRelabel`,
+  then `rigidityRow_relabel_to_genuine` or an inline `±r` wrap-block; base `(vtx 2,vtx 0)`-block →
+  `blockRow_relabel_perm` at `edge 0`. Arm-supplied recording hyps `hrec` + `he₀rec`. Two lessons
+  (→ TACTICS-QUIRKS §38): pin the relabel bricks' implicit seed `qρ`/endpoints `a,b` explicit (else a
+  higher-order-unif `whnf` blowup at the `refine`); and **inline the wrap `±r` block** because the
+  pre-built `rigidityRow_relabel_to_block{,_swap}` demand a literal `hsupp` that can't carry the recorded
+  orientation sign (independent of endpoint order) — so `…to_block{,_swap}` + `…off_cycle` join the
+  orphans, the arm uses only `…to_genuine`. ~1 commit, P≈2.
 **Landed CHAIN-2 leaves (all axiom-clean; one-line verdicts — settled, nothing downstream leans on the
 internals; detail = git + design §(o)/(o′)/(o″)/(o‴) + FRICTION).** `G.ChainData n` record + accessors
 (`Operations.lean`, contract-C.1 chain + interior-split geometry); **2c-i** `exists_chainData_discriminator_pick`
