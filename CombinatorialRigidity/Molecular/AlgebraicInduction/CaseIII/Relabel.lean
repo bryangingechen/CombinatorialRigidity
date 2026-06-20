@@ -251,6 +251,51 @@ theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
   · rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; exact hlink
   · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]; exact hρ'
 
+/-- **The off-cycle (fixed-endpoint) genuine-row transport (CHAIN-2c-ii-arm, the genuine-row
+disjunct's off-cycle branch): a base genuine rigidity row whose link endpoints are BOTH fixed by the
+relabel `ρ` transports under `(funLeft ρ.symm).dualMap` to a genuine rigidity row of the relabelled
+target framework, given a target link at the (unmoved) endpoints whose target support extensor
+agrees with the source's** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) row correspondence
+at a non-cycle body; Phase 23b).
+
+This is the **off-cycle / surviving-link branch** of the genuine-row disjunct of the all-`d`
+candidate-reduction arm's `hwmem` slot (`chainData_bottom_relabel`, 2c-ii) — the
+**removeVertex-level** transport the arm engine `case_III_arm_realization` actually needs (the
+engine binds `hwmem` at `ofNormals (G.removeVertex …) …`, **not** at a split, so the split-level
+`rigidityRow_relabel_perm` is orphaned-for-the-arm; design §(o‴)(I.5)/(I.6)). It is the cycle
+generalization of the d=3 `M₃` arm's genuine-row branch (`case_III_bottom_relabel`, the final
+`Or.inl` case where the swap fixes both recorded endpoints, `:1690–1725`), lifted from the single
+swap `Equiv.swap a v` to the whole `(i−1)`-cycle relabel `(shiftPerm i)⁻¹`.
+
+The graph layer is abstracted into the two facts the caller supplies for this branch: the relabel
+`ρ` fixes both endpoints (`hu : ρ.symm u = u`, `hw : ρ.symm w = w` — `u`, `w` lie off the
+`(i−1)`-cycle, where `shiftPerm` is the identity, via `shiftPerm_inv_apply_off`), and the source
+link `f u w` survives into the target graph `Gt` (`hlinkGt`, here `Gt = G.removeVertex (vtxᵢ)`:
+both endpoints avoid the removed vertex because they avoid the whole cycle). The seed/selector
+coincidence collapses to the support-extensor equality `hsupp : Q'.supportExtensor f =
+Q.supportExtensor f` (the caller discharges it from `seedShift_off_cycle`, the off-cycle seed
+coincidence `qρ = q₀` at the fixed endpoints — the cycle generalization of the d=3 `M₃` arm's
+`qρ = q` step at endpoints `∉ {a, v}`). The transported row
+`hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow u w r` (`hu`/`hw`) is then a genuine target row at the
+same link `f` (whose target support extensor `r` annihilates by `hr` + `hsupp`). -/
+theorem PanelHingeFramework.rigidityRow_relabel_off_cycle {Gt : Graph α β}
+    (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    {f : β} {u w : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
+    (hu : ρ.symm u = u) (hw : ρ.symm w = w)
+    (hlinkGt : Gt.IsLink f u w)
+    (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor f
+      = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+        (BodyHingeFramework.hingeRow u w r) ∈
+      (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.rigidityRows := by
+  rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
+  refine ⟨f, u, w, ?_, r, ?_, rfl⟩
+  · rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; exact hlinkGt
+  · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]
+    exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
+
 /-- **The `ChainData` genuine-row `hwmem` disjunct (CHAIN-2c-ii-arm wiring): the interior-candidate
 genuine-row transport, instantiating `rigidityRow_relabel_perm` at the index-shift relabel
 `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`** (`lem:case-III` general-`d`, KT 2011 §6.4.2
