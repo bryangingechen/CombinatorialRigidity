@@ -4229,12 +4229,20 @@ read-only recon against KT §6.4.2 (eqs 6.46–6.66) + the landed bodies tested 
   `G−v₃`), `Submodule.sub_mem` leaves the fresh-edge slot row `hingeRow v₂v₄ ρ₀ ∈ span` — exactly the
   engine `hρGv` slot. So the telescope route **converges at `i=3`**: option (b) is buildable, the slot
   is reached as `W φ − (surviving rows)` (NOT via `D φ`, the red herring — `i3_residue_collapse_deRisk`
-  is kept as the correct-but-irrelevant fold-output record). **What the gate does NOT yet do** (the
-  remaining LEAF-ρ1 build): identify the two leading summands AS genuine `G−vᵢ` rows from the chain
-  geometry, and generalize the 2-residue peel to the `i−1`-step `reverseRec` telescope — the gate
-  proves the *algebra* closes; the arm wiring supplies the graph-level row memberships (`hwmem` /
-  `chainData_bottom_relabel` machinery). NEXT = build LEAF-ρ1/ρ3 inline in `chainData_relabel_arm`,
-  the `i−1`-step generalization (the gate is the H.11-discipline confirmation before pinning).
+  is kept as the correct-but-irrelevant fold-output record).
+- **LEAF-ρ1 ALGEBRAIC CORE LANDED 2026-06-20 (`wstep_foldl_hingeRow_telescope` + helpers
+  `wstep_hingeRow_off`/`wstep_hingeRow_frontier`, `Relabel.lean`, all axiom-clean).** The `i−1`-step
+  `reverseRec` generalization of the `i=3` gate is now built: over an injective vertex `w` and the
+  ascending body list (length `m=i−1`), the W9a `wstep` foldl of the base redundancy `hingeRow (w 0)(w 2)
+  ρ₀` is the EXACT closed-form sum `(∑_{s<m} hingeRow (w s)(w (s+1)) ρ₀) + hingeRow (w m)(w (m+2)) ρ₀`.
+  **Finding: the telescope is an exact sum, NOT the per-step `sub_mem` residue telescope this section
+  sketched** — the two per-step helpers (off-body rows `wstep`-fixed; the frontier row `hingeRow x a ρ`
+  advances to `hingeRow x v ρ + hingeRow v c ρ`) make the induction-on-`m` collapse via
+  `Finset.sum_range_succ` + `abel`, with no residue-membership bookkeeping. `m=2` recovers
+  `i3_wstep_foldl_base_redundancy_deRisk` verbatim; realizes KT eq. (6.66). **What remains** (the LEAF-ρ3
+  arm wiring): the `m` leading summands are genuine surviving `G−vᵢ` rows (both endpoints `< i`) — supply
+  via the landed `hwmem`/`chainData_bottom_relabel` machinery — then `sub_mem` peels the fresh-edge slot.
+  NEXT = wire LEAF-ρ1 + LEAF-ρ3 into `chainData_relabel_arm`.
 
 ---
 

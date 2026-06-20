@@ -98,6 +98,11 @@ to be re-derived by re-reading entries later.
 
 ## Open
 
+### [idiom] `hingeRow u v 0 = 0` is not a `map_zero` form — `hingeRow u v` takes its functional `r` as a plain argument, so close with `rw [hingeRow, LinearMap.zero_comp]`
+- **Where it bit:** `BodyHingeFramework.wstep_hingeRow_off` (`CaseIII/Relabel.lean`, the general-`i` `hρGv` telescope's surviving-row helper): after `hingeRow_comp_single_off` zeroes the `a`-column restriction, the residual is `hingeRow v c 0`, which must vanish for `sub_zero` to leave the bare relabel image.
+- **Friction:** `hingeRow u v r = r ∘ₗ screwDiff u v` is linear in `r`, but `hingeRow u v` is *not* a bundled `LinearMap` applied to `0` — `r` is a plain explicit argument — so `simp [map_zero]` / `rw [map_zero]` does not fire on `hingeRow v c 0` (no `map_zero` pattern to match).
+- **Resolution:** `rw [show hingeRow v c 0 = 0 from by rw [hingeRow, LinearMap.zero_comp]]` (unfold the def to `0 ∘ₗ screwDiff` then `LinearMap.zero_comp`). A one-off; not worth a named lemma.
+
 ### [idiom] Referencing a `CombinatorialRigidity.Molecular`-namespace lemma from inside a `_root_.Graph.ChainData` decl needs its *full* path, including the inner `BodyHingeFramework` namespace
 - **Where it bit:** `Graph.ChainData.redundancy_panel_carry` (`CaseIII/Relabel.lean`, CHAIN-2c-ii-transport degree-2 bridge): a `_root_.Graph.ChainData.…`-declared lemma whose body applies `candidateRow_ac_eq_neg`.
 - **Friction:** inside a `_root_.`-prefixed declaration the ambient `namespace CombinatorialRigidity.Molecular` is *not* in scope for name resolution, so both the bare `candidateRow_ac_eq_neg` **and** `CombinatorialRigidity.Molecular.candidateRow_ac_eq_neg` fail with "Unknown identifier" — the lemma actually lives one namespace deeper, inside the `namespace BodyHingeFramework` block of `Claim612.lean`.

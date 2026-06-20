@@ -9,9 +9,14 @@ fold + its G1 bridges + LEAF-ρ2) + the genuine-row `hwmem` leaf `chainData_bott
 is KT-faithful, the missing piece is the buildable KT-eq.-(6.66) fresh-edge telescope, **no
 engine/motive/IH/signature change**), and its **re-targeted `i=3` de-risk GATE has PASSED**
 (`i3_freshEdge_slot_mem_deRisk`, axiom-clean — the telescope's membership algebra converges:
-`slot = W φ − (surviving rows)`). **NEXT = build LEAF-ρ1/ρ3 inline in the arm
-`chainData_relabel_arm`** (the `i−1`-step generalization, supplying the graph-level row memberships
-the gate took as hypotheses), then **2c-iii** `chainData_dispatch`; **CHAIN-5 → moved to 23c**
+`slot = W φ − (surviving rows)`). **The LEAF-ρ1 ALGEBRAIC CORE is now LANDED 2026-06-20**
+(`wstep_foldl_hingeRow_telescope` + the two per-step helpers `wstep_hingeRow_off`/`_frontier`,
+`Relabel.lean`, all axiom-clean): the general-`i` closed form of the `wstep` foldl =
+`(∑_{s<m} hingeRow wₛ wₛ₊₁ ρ₀) + hingeRow w_m w_{m+2} ρ₀` (the `m=i−1`-step `reverseRec`
+generalization of the `i=3` gate). **NEXT = wire LEAF-ρ1 + LEAF-ρ3 into the arm
+`chainData_relabel_arm`** (supply the graph-level row memberships the telescope's `hingeRow`
+endpoints abstract — both end-vertices `< i` so they are genuine surviving `G−vᵢ` rows — then
+`sub_mem` peels the fresh-edge slot row), then **2c-iii** `chainData_dispatch`; **CHAIN-5 → moved to 23c**
 (ENTRY-gated). Full rolling state = *Current state* + *Hand-off*; the settled route history (the
 clean-relabel refutation, the FIX-FORK, the engine-slot adjudication) is in `notes/Phase23-design.md`
 §(o‴) + git, **not** re-narrated here.
@@ -68,22 +73,24 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   `hingeRow ((shiftPerm i.castSucc)⁻¹ x) ((shiftPerm i.castSucc)⁻¹ y) ρ₀` — a 3-rewrite chain over the
   two G1 bridges + `hingeRow_funLeft_dualMap` (the d=3 M₃ step-2/3 generalization; correct + load-bearing,
   does NOT discharge the slot alone). The bare-row extraction is decomposed into **3 leaves**
-  (LEAF-ρ1/ρ2/ρ3, §(o‴)(I.7.3)): the crux is the W9a `_foldl` output is `(relabel-only foldl) φ −
-  Σ(i−1 residues)` but `hρGv` wants the literal `(relabel-only foldl) φ`, extracted via the d=3 M₃
-  template (`Relabel.lean:2437–2506`) generalized to `i−1` steps. **Span level CONFIRMED matching** (both
-  fold endpoints = removeVertex frameworks at `G − v₁`/`G − vᵢ` = the engine's `Gv`; no mismatch leaf).
-  **← NEXT: build LEAF-ρ1/ρ3 inline in `chainData_relabel_arm` (the `i−1`-step generalization of the
-  d=3 M₃ `case hρGv` extraction). The re-targeted `i=3` de-risk GATE is PASSED** (Lean-verified
-  `i3_freshEdge_slot_mem_deRisk`, `Relabel.lean` tail, axiom-clean): the KT-(6.66) telescope's
-  membership algebra **converges at `i=3`** — the slot row `hingeRow v₂v₄ ρ₀` = `W φ` (landed `∈ span`
-  via `shiftBodyListAsc_foldl_mem_span_rigidityRows`) minus the two genuine surviving chain-edge rows
-  `hingeRow v₀v₁ ρ₀`/`hingeRow v₁v₂ ρ₀`, by `sub_mem`. So the convergence risk the design flagged is
-  **retired** (the residues peel to the slot's fresh-edge link, no flag-to-owner; the prior I.7.9
-  "wrong link" reading was about `D φ`, a red herring — `i3_residue_collapse_deRisk` is kept as the
-  correct-but-irrelevant fold-output record). The remaining LEAF-ρ1 work is **graph-level, not
-  algebraic**: identify the two leading `W φ` summands AS genuine `G−vᵢ` rows from the chain geometry
-  (the landed `hwmem`/`chainData_bottom_relabel` machinery) and generalize the 2-residue peel to the
-  `i−1`-step `reverseRec` telescope, then LEAF-ρ3 + the arm wiring `chainData_relabel_arm`.
+  (LEAF-ρ1/ρ2/ρ3, §(o‴)(I.7.3)). **LEAF-ρ1 ALGEBRAIC CORE LANDED 2026-06-20**
+  (`wstep_foldl_hingeRow_telescope` + helpers `wstep_hingeRow_off`/`wstep_hingeRow_frontier`,
+  `Relabel.lean`, all axiom-clean): the general-`i` closed form of the W9a `wstep` foldl over the
+  ascending body list, applied to the base redundancy `hingeRow (w 0)(w 2) ρ₀`, is the explicit sum
+  `(∑_{s<m} hingeRow (w s)(w (s+1)) ρ₀) + hingeRow (w m)(w (m+2)) ρ₀` (`m = i−1`), proved by a clean
+  induction-on-`m` (`ofFn_succ'` peel + the two per-step helpers: surviving rows fixed by `wstep`,
+  the frontier row advances) over an injective vertex function `w`. This is the `i−1`-step
+  generalization of the `i=3` gate `i3_wstep_foldl_base_redundancy_deRisk` (`m=2` recovers it
+  verbatim) and realizes KT eq. (6.66). **Span level CONFIRMED matching** (both fold endpoints =
+  removeVertex frameworks at `G − v₁`/`G − vᵢ` = the engine's `Gv`; no mismatch leaf).
+  **← NEXT: wire LEAF-ρ1 + LEAF-ρ3 into `chainData_relabel_arm`** — the algebraic core is done; the
+  remaining work is **graph-level, not algebraic**: identify the `m` leading telescope summands
+  `hingeRow (w s)(w (s+1)) ρ₀` AS genuine surviving `G−vᵢ` rows (both endpoints `< i`, so they survive
+  `removeVertex vᵢ`; the landed `hwmem`/`chainData_bottom_relabel` machinery), then `sub_mem` peels the
+  fresh-edge slot row `hingeRow (w m)(w (m+2)) ρ₀ ∈ span` — exactly the engine `hρGv` slot — together
+  with LEAF-ρ3's combine. The re-targeted `i=3` de-risk GATE PASSED is the `m=2` instance of this peel
+  (`i3_freshEdge_slot_mem_deRisk`; the prior I.7.9 "wrong link" reading was about `D φ`, a red herring —
+  `i3_residue_collapse_deRisk` kept as the correct-but-irrelevant record).
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -121,9 +128,13 @@ action lemmas) is already LANDED (`Operations.lean:1550–2110`), and the genuin
 **LANDED 2026-06-20** (both axiom-clean — the W9a `foldl` fold's `qρ`/`shiftPerm`-form bridge; the
 `foldl` order lands on the *inverse* product, exactly `(funLeft (shiftPerm i.castSucc)⁻¹)`), and the
 **`hρGv` LEAF-ρ2** `shiftBodyListAsc_relabel_foldl_hingeRow` is now **LANDED 2026-06-20** (`Relabel.lean`,
-axiom-clean — the relabel-only ascending `foldl` = inverse-cycle relabelled hinge row). So → the
-**`hρGv` LEAF-ρ1** (the residue telescope, the genuine risk) + LEAF-ρ3, then the **arm wiring**
-`chainData_relabel_arm` + **CHAIN-2c-iii** (the assembly `chainData_dispatch`), then
+axiom-clean — the relabel-only ascending `foldl` = inverse-cycle relabelled hinge row), and the
+**`hρGv` LEAF-ρ1 algebraic core** `wstep_foldl_hingeRow_telescope` (+ helpers `wstep_hingeRow_off`/
+`wstep_hingeRow_frontier`) is now **LANDED 2026-06-20** (`Relabel.lean`, axiom-clean — the general-`i`
+closed form of the W9a `wstep` foldl = `(∑_{s<m} hingeRow wₛ wₛ₊₁) + hingeRow w_m w_{m+2}`, `m=i−1`,
+the `i=3` gate's `m=2` generalization, KT eq. (6.66)). So → **wire LEAF-ρ1 + LEAF-ρ3 into the arm**
+(graph-level: the `m` summands are genuine surviving `G−vᵢ` rows → `sub_mem` peels the slot), i.e. the
+**arm wiring** `chainData_relabel_arm` + **CHAIN-2c-iii** (the assembly `chainData_dispatch`), then
 **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
 extractor reshape).
 
@@ -286,10 +297,15 @@ arm closer resolves the two relabelled endpoints to the candidate roles via the 
 action lemmas. Correct + load-bearing, but does NOT discharge the slot alone (the residue telescope
 LEAF-ρ1 is the remaining crux).
 
-**NEXT STEP — build the `hρGv` discharge inline in the arm `chainData_relabel_arm`** (the d=3 M₃
-`case hρGv` extraction generalized over the `i−1` cycle + the KT-eq.-(6.66) fresh-edge telescope). **`i=3`
-de-risk DONE (Lean-verified `i3_*_deRisk` lemmas) + KT-SOURCE RE-DERIVATION RESOLVED the path
-(§(o‴)(I.7.10), owner-chosen recon).** The de-risk computed `W φ = hingeRow v₀v₁ + v₁v₂ + v₂v₄ ρ₀` / `R φ
+**NEXT STEP — wire the landed LEAF-ρ1 algebraic core into the arm `chainData_relabel_arm`** (the
+`hρGv` discharge, generalizing d=3 M₃ `case hρGv`). **LEAF-ρ1 algebraic core LANDED 2026-06-20**
+(`wstep_foldl_hingeRow_telescope`, the general-`i` closed form of the W9a `wstep` foldl =
+`(∑_{s<m} hingeRow wₛ wₛ₊₁ ρ₀) + hingeRow w_m w_{m+2} ρ₀`, `m=i−1`, axiom-clean; the two per-step
+helpers `wstep_hingeRow_off`/`wstep_hingeRow_frontier` also landed). The remaining `hρGv` work is
+**graph-level, not algebraic**: feed the telescope's `m` leading summands as genuine surviving `G−vᵢ`
+rows (both endpoints `< i`) and `sub_mem`-peel the fresh-edge slot row. **`i=3` de-risk DONE
+(Lean-verified `i3_*_deRisk` lemmas) + KT-SOURCE RE-DERIVATION RESOLVED the path (§(o‴)(I.7.10),
+owner-chosen recon).** The de-risk computed `W φ = hingeRow v₀v₁ + v₁v₂ + v₂v₄ ρ₀` / `R φ
 = hingeRow v₀v₁ ρ₀` / `D φ = hingeRow v₁v₄ (−ρ₀)` — the three links `v₀—v₁` / `v₁—v₄` / slot `v₂—v₄`
 diverge for `i≥3` (coincide at d=3, `vᵢ₋₁=v₁`). The KT recon **refuted the "slot wrong" reading**: the
 engine slot `hingeRow vᵢ₊₁ vᵢ₋₁ ρ` is **KT-faithful** (forced by `case_III_arm_realization`'s `hG_ea/hG_eb`
@@ -319,22 +335,25 @@ base redundancy through the W9a fold, identify the genuine relabel-image `e_b`-r
 `sub_mem` + `sub_sub_cancel` extracts the engine's `hρGv` slot (= the residue). **Span level matches**
 (§(o‴)(I.7.0)): both fold endpoints are removeVertex frameworks at `G − v₁` / `G − vᵢ` = the engine's `Gv`.
 The leaves:
-- **LEAF-ρ1+ρ3 — DONE INLINE IN THE ARM** (P≈3, the genuinely-new piece; NOT a standalone leaf, per the
-  L5b resolution above) — the `i−1`-step generalization of the d=3 M₃ `case hρGv` extraction (W9a fold +
-  genuine-row identification + `sub_mem`), inside `chainData_relabel_arm` with the role binding concrete.
-  **The re-targeted `i=3` de-risk GATE is PASSED** (Lean-verified `i3_freshEdge_slot_mem_deRisk`,
-  `Relabel.lean` tail, axiom-clean): the KT-(6.66) telescope's membership algebra **converges at `i=3`**
-  — the slot row `hingeRow v₂v₄ ρ₀` = `W φ` (landed `∈ span`) minus the two genuine surviving chain-edge
-  rows `hingeRow v₀v₁ ρ₀`/`hingeRow v₁v₂ ρ₀`, via `sub_mem`. So the (B)(i)-vs-(B)(ii) convergence fork is
-  **settled** (the residues peel to the slot's fresh-edge link; no flag-to-owner). The remaining work is
-  graph-level: identify the two leading `W φ` summands AS genuine `G−vᵢ` rows from the chain geometry (the
-  landed `hwmem`/`chainData_bottom_relabel` machinery + `acolumn_mem_hingeRowBlock_of_span_rigidityRows`)
-  and lift the 2-residue peel to the `i−1`-step `reverseRec` telescope. (Design §(o‴)(I.7.10) RESIDUAL,
-  now passed.)
+- **LEAF-ρ1 algebraic core — LANDED 2026-06-20** (`wstep_foldl_hingeRow_telescope` + helpers
+  `wstep_hingeRow_off`/`wstep_hingeRow_frontier`, `Relabel.lean`, all axiom-clean). The general-`i`
+  closed form: the W9a `wstep` foldl over the ascending body list, applied to the base redundancy
+  `hingeRow (w 0)(w 2) ρ₀`, telescopes to `(∑_{s<m} hingeRow (w s)(w (s+1)) ρ₀) + hingeRow (w m)(w (m+2))
+  ρ₀` (`m=i−1`), over an injective vertex `w`. Proof = induction on `m` (`ofFn_succ'` peel; the `m`
+  surviving rows are `wstep`-fixed, the frontier row advances), the `i−1`-step generalization of the
+  `i=3` gate `i3_wstep_foldl_base_redundancy_deRisk` (`m=2` recovers it). This realizes KT eq. (6.66) as
+  a clean closed form (NOT the per-step `sub_mem` telescope the design sketched — the telescope sum is
+  exact, no residue bookkeeping). **The remaining `hρGv` work is graph-level** (the LEAF-ρ3 arm wiring):
+  the `m` leading summands `hingeRow (w s)(w (s+1)) ρ₀` are genuine surviving `G−vᵢ` rows (both endpoints
+  `< i`; via the landed `hwmem`/`chainData_bottom_relabel` machinery), so `sub_mem` peels the fresh-edge
+  slot row `hingeRow (w m)(w (m+2)) ρ₀ ∈ span` — exactly the engine `hρGv` slot. **The re-targeted `i=3`
+  de-risk GATE is PASSED** (`i3_freshEdge_slot_mem_deRisk`, the `m=2` instance of this peel). (Design
+  §(o‴)(I.7.10) RESIDUAL, now discharged for the algebra.)
+- **LEAF-ρ3 — the `hρGv` assembly inline in the arm** (P≈2, the `sub_mem` combine of LEAF-ρ1's exact sum
+  + the graph-level genuine-row identifications).
 - **LEAF-ρ2 — LANDED 2026-06-20** the literal-row identification `shiftBodyListAsc_relabel_foldl_hingeRow`
   (the landed G1 bridges + `hingeRow_funLeft_dualMap`; this is the genuine relabel-image row — correct +
   load-bearing, but does NOT discharge the slot alone).
-- **LEAF-ρ3** the `hρGv` assembly inline in the arm (P≈2, the `sub_mem` combine).
 NOT a motive/IH/contract change. Then the **arm wiring `chainData_relabel_arm`**:
 instantiate `case_III_arm_realization` at the per-`i` roles (cycle generalization of d=3
 `case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm i.castSucc`, shared `−ρ₀`; `hwmem` → landed
@@ -504,6 +523,17 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `chainData_bottom_relabel`, the `hρGv` G1 bridges, and LEAF-ρ2. Proof lessons → TACTICS-QUIRKS §38
   (explicit-seed `whnf`) / GOLF §20 (`reverseRec`, the `foldl`→inverse recurrence) / the FRICTION [idiom]
   entries; per-brick mechanics = git + design §(o‴) + the Lean docstrings.
+- **`hρGv` LEAF-ρ1 ALGEBRAIC CORE LANDED 2026-06-20 (`wstep_foldl_hingeRow_telescope` + helpers
+  `wstep_hingeRow_off`/`wstep_hingeRow_frontier`, `Relabel.lean`, all axiom-clean).** The general-`i`
+  closed form of the seed-advancing W9a `wstep` foldl: over an injective vertex `w` and the ascending
+  body list (length `m=i−1`), `foldl wstep (hingeRow (w 0)(w 2) ρ₀) = (∑_{s<m} hingeRow (w s)(w (s+1)) ρ₀)
+  + hingeRow (w m)(w (m+2)) ρ₀`. **Key finding: the telescope is an EXACT closed-form sum, not the
+  per-step `sub_mem` residue telescope the design (§(o‴)(I.7.3)) sketched** — the two per-step helpers
+  (off-body rows are `wstep`-fixed; the single frontier row `hingeRow x a ρ` advances to
+  `hingeRow x v ρ + hingeRow v c ρ`) make the induction-on-`m` (`ofFn_succ'` peel) collapse cleanly,
+  with `Finset.sum_range_succ` + `abel` closing each step. `m=2` recovers `i3_wstep_foldl_base_redundancy_deRisk`
+  verbatim. Realizes KT eq. (6.66). The remaining `hρGv` work is now purely graph-level (LEAF-ρ3 arm
+  wiring): the `m` summands are genuine surviving `G−vᵢ` rows → `sub_mem` peels the slot.
 - **`hρGv` re-targeted `i=3` de-risk GATE PASSED 2026-06-20 (`i3_freshEdge_slot_mem_deRisk`,
   `Relabel.lean` tail, axiom-clean).** The H.11-discipline gate the KT-source re-derivation pinned
   (§(o‴)(I.7.10) RESIDUAL) before committing the general arm signature: confirm the KT-(6.66) telescope

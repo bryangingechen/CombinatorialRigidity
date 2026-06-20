@@ -2667,4 +2667,111 @@ theorem _root_.Graph.ChainData.i3_freshEdge_slot_mem_deRisk
       = BodyHingeFramework.hingeRow v2 v4 ρ₀ := by abel
   rwa [heq] at h
 
+/-! ### The general-`i` `hρGv` fresh-edge telescope (CHAIN-2c-ii-arm, LEAF-ρ1 algebraic core)
+
+The genuinely-new algebraic core of the `hρGv` discharge: the closed-form value of the
+seed-advancing W9a `wstep` `foldl` (the relabel arm's redundancy transport) at general candidate
+`i`, generalizing the `i = 3` 2-residue gate `i3_wstep_foldl_base_redundancy_deRisk` to the
+`i − 1`-step `reverseRec` telescope. Over an injective vertex function `w : ℕ → α` and the ascending
+moved-body list `[(w₁,w₂,w₃), …, (w_{m},w_{m+1},w_{m+2})]` (length `m`, the `shiftBodyListAsc i`
+shape with `m = i − 1`), the `wstep` foldl of the base redundancy `hingeRow (w 0) (w 2) ρ₀` is
+
+  `(∑ s ∈ range m, hingeRow (w s) (w (s+1)) ρ₀) + hingeRow (w m) (w (m+2)) ρ₀`
+
+— the `m` genuine surviving chain-edge rows `wₛ—wₛ₊₁` (KT eq. (6.62)'s transported `(v₀v₁)ᵢ∗` form,
+iterated) plus the single fresh-edge slot row `w_m—w_{m+2}` (KT's `Mᵢ` row, the engine `hρGv` slot
+at candidate `i = m + 1`: `vᵢ₋₁ = w_m`, `vᵢ₊₁ = w_{m+2}`). This is KT eq. (6.66) — the iterated
+degree-2 `±r` `a`-column cancellation — realized as the `wstep` telescope's closed form.
+
+The membership corollary (subtract the `m` genuine surviving rows from `W φ ∈ span`, both endpoints
+`< i` so surviving `removeVertex vᵢ`) is the general-`i` analogue of the de-risk gate
+`i3_freshEdge_slot_mem_deRisk`: the fresh-edge slot row reaches `span (G − vᵢ).rigidityRows`. -/
+
+/-- **`wstep` fixes a hinge row off both moved bodies.** When neither endpoint `x`, `y` of
+`hingeRow x y ρ` is the swapped body `a` or the freed slot `v`, the W9a step `wstep v a c` leaves
+the row unchanged: the relabel `swap a v` fixes both endpoints (`hingeRow_funLeft_dualMap`), and the
+`a`-column subtraction vanishes because body `a` is incident to neither endpoint
+(`hingeRow_comp_single_off`). These are the *surviving chain-edge rows* of the telescope — KT eq.
+(6.62)'s transported redundancy form, untouched by the later degree-2 cancellations. -/
+theorem BodyHingeFramework.wstep_hingeRow_off [DecidableEq α] {v a c x y : α}
+    (hxa : x ≠ a) (hxv : x ≠ v) (hya : y ≠ a) (hyv : y ≠ v)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    BodyHingeFramework.wstep (k := k) v a c (BodyHingeFramework.hingeRow x y ρ)
+      = BodyHingeFramework.hingeRow x y ρ := by
+  rw [BodyHingeFramework.wstep_apply, BodyHingeFramework.hingeRow_funLeft_dualMap,
+    Equiv.swap_apply_of_ne_of_ne hxa hxv, Equiv.swap_apply_of_ne_of_ne hya hyv,
+    BodyHingeFramework.hingeRow_comp_single_off (Ne.symm hxa) (Ne.symm hya)]
+  rw [show BodyHingeFramework.hingeRow (k := k) v c 0 = 0 from by
+    rw [BodyHingeFramework.hingeRow, LinearMap.zero_comp], sub_zero]
+
+/-- **`wstep` on the fresh-edge frontier row produces the next surviving edge plus the next frontier
+row** (the inductive heart of the telescope, the per-step KT eq. (6.66) `±r` cancellation). The
+step's body triple is `(v, a, c)`; applied to the frontier row `hingeRow x a ρ` (whose tail endpoint
+is the moved body `a`, with `x ≠ a`, `x ≠ v`), the relabel sends `a ↦ v` giving the genuine
+successor edge `hingeRow x v ρ`, and the `a`-column subtraction contributes the new frontier
+row `hingeRow v c ρ`. So `wstep v a c (hingeRow x a ρ) = hingeRow x v ρ + hingeRow v c ρ`. At chain
+step `s` this is `(x, a, v, c) = (wₛ, wₛ₊₂, wₛ₊₁, wₛ₊₃)`: the frontier `wₛ—wₛ₊₂` advances to the
+surviving edge `wₛ—wₛ₊₁` plus the new frontier `wₛ₊₁—wₛ₊₃`. -/
+theorem BodyHingeFramework.wstep_hingeRow_frontier [DecidableEq α] {v a c x : α}
+    (hxa : x ≠ a) (hxv : x ≠ v)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    BodyHingeFramework.wstep (k := k) v a c (BodyHingeFramework.hingeRow x a ρ)
+      = BodyHingeFramework.hingeRow x v ρ + BodyHingeFramework.hingeRow v c ρ := by
+  rw [BodyHingeFramework.wstep_apply, BodyHingeFramework.hingeRow_funLeft_dualMap,
+    Equiv.swap_apply_of_ne_of_ne hxa hxv, Equiv.swap_apply_left,
+    BodyHingeFramework.hingeRow_swap x a ρ,
+    BodyHingeFramework.hingeRow_comp_single_tail (Ne.symm hxa)]
+  ext S
+  simp only [LinearMap.sub_apply, LinearMap.add_apply, BodyHingeFramework.hingeRow_apply,
+    LinearMap.neg_apply, map_sub]
+  ring
+
+/-- **The general-`i` `hρGv` fresh-edge telescope — closed form** (CHAIN-2c-ii-arm, LEAF-ρ1
+algebraic core; `notes/Phase23-design.md` §(o‴)(I.7.3)/(I.7.10)). The seed-advancing W9a `wstep`
+`foldl` over the ascending moved-body list `[(w₁,w₂,w₃), …, (w_m,w_{m+1},w_{m+2})]` (length `m`,
+the `shiftBodyListAsc i` shape with `m = i − 1`), applied to the base `(v₀v₂)`-block redundancy
+`hingeRow (w 0) (w 2) ρ₀` (KT eq. (6.52)), telescopes to the `m` genuine surviving chain-edge rows
+plus the single fresh-edge slot row. This is the `i − 1`-step `reverseRec` generalization of the
+`i = 3` 2-residue gate `i3_wstep_foldl_base_redundancy_deRisk` (`m = 2`), and realizes KT eq. (6.66)
+(the iterated degree-2 `a`-column cancellation) as the `wstep` telescope's closed form. The vertex
+function `w` is injective (the chain vertices are distinct), so each step's swap and `a`-column
+restriction act cleanly. -/
+theorem BodyHingeFramework.wstep_foldl_hingeRow_telescope [DecidableEq α]
+    (w : ℕ → α) (hw : Function.Injective w) (m : ℕ)
+    (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    ((List.ofFn fun s : Fin m => (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3))).foldl
+        (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
+      (BodyHingeFramework.hingeRow (w 0) (w 2) ρ₀)
+      = (∑ s ∈ Finset.range m, BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀)
+        + BodyHingeFramework.hingeRow (w m) (w (m + 2)) ρ₀ := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    -- Peel the last body `(w_{m+1}, w_{m+2}, w_{m+3})` off the `ofFn` list (`ofFn_succ'`); the
+    -- inner fold over the first `m` bodies is the IH; the last `wstep` then advances the frontier.
+    rw [List.ofFn_succ', List.concat_eq_append, List.foldl_append]
+    simp only [List.foldl_cons, List.foldl_nil, LinearMap.comp_apply, Fin.val_last,
+      Fin.val_castSucc]
+    rw [ih]
+    -- `wstep` is linear: distribute over the IH sum + frontier term.
+    rw [map_add, map_sum]
+    -- the `m` surviving rows `wₛ—wₛ₊₁` (`s < m+1 < m+2 < m+3`) are fixed by the last `wstep`.
+    have hoff : ∀ s ∈ Finset.range m,
+        BodyHingeFramework.wstep (k := k) (w (m + 1)) (w (m + 2)) (w (m + 3))
+            (BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀)
+          = BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀ := by
+      intro s hs
+      rw [Finset.mem_range] at hs
+      exact BodyHingeFramework.wstep_hingeRow_off
+        (fun h => by have := hw h; omega) (fun h => by have := hw h; omega)
+        (fun h => by have := hw h; omega) (fun h => by have := hw h; omega) ρ₀
+    rw [Finset.sum_congr rfl hoff]
+    -- the frontier row `w_m—w_{m+2}` advances to the new surviving edge `w_m—w_{m+1}` + the new
+    -- frontier `w_{m+1}—w_{m+3}` (`wstep_hingeRow_frontier`, the per-step KT (6.66) cancellation).
+    rw [BodyHingeFramework.wstep_hingeRow_frontier (fun h => by have := hw h; omega)
+      (fun h => by have := hw h; omega) ρ₀]
+    -- regroup: `(∑_{s<m} + frontier-advance) = (∑_{s<m+1}) + new-frontier`.
+    rw [Finset.sum_range_succ]
+    abel
+
 end CombinatorialRigidity.Molecular
