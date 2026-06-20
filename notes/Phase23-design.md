@@ -3731,10 +3731,14 @@ block branch touches only the two bodies `a = vtx i` and its neighbours (the swa
 near `vᵢ`), it does NOT chain over the `i−1` cycle bodies. **Signature:** Leaf B is not minted as a
 standalone decl; it is the `Or.inr` arm of `chainData_relabel_arm`'s `hwmem` case-split, ~the size of
 `case_III_bottom_relabel:1596–1611` plus the inverse-swap evaluation bookkeeping (`shiftPerm_inv_*`
-action lemmas, the §(H.6) leaf-1 block — which **stays needed**, H.10). If a recon later prefers a named
-lemma, its shape is: `(cd : ChainData n)(i : Fin cd.d)(hi : 1 < i)(hρ'e₀ : ρ' (candidate-i ±r panel) =
-0) ⊢ (funLeft (shiftPerm i)⁻¹).dualMap (hingeRow a b ρ') ∈ (candidate-i split).rigidityRows` — but the
-default is inline.
+action lemmas, the §(H.6) leaf-1 block — which **stays needed**, H.10). **UPDATE 2026-06-19: Leaf B
+LANDED as a named abstract `(ρ,σ)` brick** `PanelHingeFramework.blockRow_relabel_perm` (`Relabel.lean`,
+axiom-clean) — the recon-preferred named form, abstracted exactly like `rigidityRow_relabel_perm`: from
+`hingeRow a b ρ'` (`ρ' ⊥ panelSupportExtensor (q₀ a)(q₀ b)`) plus a target edge `e_t` with
+`Gt.IsLink e_t (ρ.symm a)(ρ.symm b)` and target support extensor `= panelSupportExtensor (q₀ a)(q₀ b)`,
+conclude `(funLeft ρ.symm).dualMap (hingeRow a b ρ') ∈ (ofNormals Gt endsσρ qρ).rigidityRows`. A 4-line
+proof. The arm consumes it (supplying `hlink`/`hsupp` from the `ChainData` accessors); the `(ab)`-edge
+survival + the single eq.-(6.44) at `vᵢ` are how the caller discharges `e_t`/`hsupp`.
 
 **(I.3) Q3 — the `hwmem` assembly: per-member `case_III_bottom_relabel`-shape, cycle-generalized; the
 genuine-row arm via the inverse-relabel graph-iso, the block arm via Leaf-B's single G4d-i.** The slot
@@ -3789,11 +3793,14 @@ its difficulty is unknown until the seed/selector bookkeeping for the whole inve
 does **not** build it and does **not** pin it past "it is the cycle generalization of the landed d=3
 single-swap genuine arm" — that is exactly the kind of mechanically-plausible shape the 4× mis-pins were,
 and the honest status is FLAG. **The §(H.6) leaf-1 CHAIN-2c-ii-inv (the inverse-cycle action lemmas) is
-already LANDED** (`Operations.lean:1550–2110`, the 4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*`), so the
-next build step is **`chainData_relabel_arm` itself** (§(H.6) leaf-2) — gated by writing the genuine-arm
-seed-coincidence bookkeeping (the flagged piece above) before pinning the arm signature. No
-motive/IH/spine-carry change (C.3/C.6); route β + d=3 zero-regression preserved (the d=3 M₃ `i=2` cycle is
-the single-swap involution, `(shiftPerm 2)⁻¹ = shiftPerm 2`).
+already LANDED** (`Operations.lean:1550–2110`, the 4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*`), and as
+of 2026-06-19 BOTH `hwmem` transports are landed as named abstract `(ρ,σ)` bricks: the genuine-row
+`rigidityRow_relabel_perm` AND the block-disjunct `blockRow_relabel_perm` (this `(I.2)` Leaf B). So the
+next build step is **`chainData_relabel_arm` itself** (§(H.6) leaf-2) — gated now only by the
+arm-instantiation bookkeeping (wiring the two `hwmem` bricks + the W9a fold into the engine's slots at the
+per-`i` roles), the genuinely-new transport math all landed. No motive/IH/spine-carry change (C.3/C.6);
+route β + d=3 zero-regression preserved (the d=3 M₃ `i=2` cycle is the single-swap involution,
+`(shiftPerm 2)⁻¹ = shiftPerm 2`).
 
 ---
 

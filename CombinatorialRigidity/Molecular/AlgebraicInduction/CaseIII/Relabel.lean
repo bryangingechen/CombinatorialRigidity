@@ -216,6 +216,41 @@ theorem PanelHingeFramework.rigidityRow_relabel_perm {Gs Gt : Graph α β}
     rw [hQ_def] at hr ⊢
     exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
 
+/-- **The block-disjunct transport (CHAIN-2c-ii-arm, Leaf B): an arbitrary relabel `(ρ, σ)`
+intertwining two graphs carries a source `(ab)`-block candidate row `hingeRow a b ρ'` to a genuine
+rigidity row of the relabelled target framework, at any target edge `e_t` whose target support
+extensor equals the source `(ab)`-panel extensor** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the
+(6.39)/(6.62) `(ab)`-row correspondence; Phase 23b). This is the **block-disjunct** half of the
+all-`d` candidate-reduction arm's `hwmem` slot — the cycle generalization of the d=3 `M₃` arm's
+`(ab)`-block branch (`case_III_bottom_relabel`, the final `Or.inl` case mapping `hingeRow a b ρ'` to
+the genuine `e_b`-row `hingeRow v b ρ'`), lifted from the single swap `Equiv.swap a v` to the whole
+`(i−1)`-cycle relabel `(shiftPerm i)⁻¹`.
+
+The source row is the candidate `(ab)`-block tag `hingeRow a b ρ'` with `ρ'` annihilating the source
+`(ab)`-panel extensor `panelSupportExtensor (q₀ a) (q₀ b)` (the W6b bottom-family `(ab)`-block
+shape). Under `(funLeft ρ.symm).dualMap` it becomes `hingeRow (ρ.symm a) (ρ.symm b) ρ'`
+(`hingeRow_funLeft_dualMap`). The two graph-side facts the caller supplies place this as a genuine
+target row: `e_t` is a target link at `(ρ.symm a, ρ.symm b)` (the relabelled `(ab)`-edge survives in
+the candidate split — in d=3 `M₃`, `e_t = e_b` with `(ρ.symm a, ρ.symm b) = (v, b)`), and the target
+support extensor at `e_t` is exactly the source `(ab)`-panel extensor (`hsupp`, in d=3 from
+`ends₃ e_b = (v, b)` and `qρ(v,·) = q₀(a,·)`). At the d=3 `M₃` swap (`ρ.symm = ρ`) this is the
+`case_III_bottom_relabel` `(ab)`-block branch (`:1655–1670`). -/
+theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
+    (ρ : Equiv.Perm α) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {a b : α} {q₀ : α × Fin (k + 2) → ℝ} {e_t : β}
+    (hlink : Gt.IsLink e_t (ρ.symm a) (ρ.symm b))
+    (hsupp : (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.supportExtensor e_t
+      = panelSupportExtensor (fun i => q₀ (a, i)) (fun i => q₀ (b, i)))
+    {ρ' : Module.Dual ℝ (ScrewSpace k)}
+    (hρ' : ρ' (panelSupportExtensor (fun i => q₀ (a, i)) (fun i => q₀ (b, i))) = 0) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+        (BodyHingeFramework.hingeRow a b ρ') ∈
+      (PanelHingeFramework.ofNormals Gt endsσρ qρ).toBodyHinge.rigidityRows := by
+  rw [BodyHingeFramework.hingeRow_funLeft_dualMap]
+  refine ⟨e_t, ρ.symm a, ρ.symm b, ?_, ρ', ?_, rfl⟩
+  · rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; exact hlink
+  · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]; exact hρ'
+
 /-- **G4c-ii (fixed-seed form): the `ρ = (av)` relabel transports the concrete v-split `ofNormals`
 data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
 (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31) framework side, Phase 22h).
