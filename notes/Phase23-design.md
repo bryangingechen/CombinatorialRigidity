@@ -3874,6 +3874,24 @@ per-member assembly `chainData_bottom_relabel` itself (the `(shiftPerm i)⁻¹`-
 base disjunction through these branches, with the per-row `deg_two`/chain-edge case-split supplying the
 `hsupp`/`hlinkGt`/`hu`/`hw` ingredients each branch consumes), then `hρGv`'s G1 bridges + the arm wiring.
 
+**Sizing-BLOCKED findings (2026-06-20, the first assembly attempt; reverted clean).** The assembly was
+drafted in full and elaborates, but is >1 sitting. **Builds clean:** the off-cycle + interior-chain
+dispatch (through `rigidityRow_relabel_{off_cycle,to_genuine}`) and a unified `hsupp_of` support-extensor
+coincidence helper (off-cycle `σf=f` and interior-moving `σf'=f` via `seedShift`/`apply_symm_apply`).
+**The one genuine gap is the wrap case's orientation/sign.** The landed `rigidityRow_relabel_to_block`
+demands a *strict* `hsupp : panelSupportExtensor (qρ a)(qρ b) = Q.supportExtensor f` and emits `ρ':=r`;
+but `ends₀ (edge i)` records the wrap link `vᵢvᵢ₊₁` in either order, so for the swapped order the relabel
+sends the base endpoints to `(b,a)` not `(a,b)`, needing `hingeRow b a r = hingeRow a b (-r)`
+(`hingeRow_swap`) and `ρ':=-r`. This is exactly the d=3 `case_III_bottom_relabel` block branch's two
+sub-cases (`Relabel.lean:1790–1821`: `ρ':=-r` vs `r`, annihilation via
+`panelSupportExtensor_swap`+`map_neg`+`neg_zero`). **Decomposition (coordinator, 2026-06-20):** peel a
+swapped-orientation sibling `rigidityRow_relabel_to_block_swap` (`(b,a)`-order, `ρ':=-r`) as its own
+commit; then the assembly's wrap case is a 2-way `rcases` on the recorded orientation → apply one of the
+two block bricks (mechanical). **Trap (cost the bulk of the BLOCKED session):** an inline `(by omega : T)`
+type-ascription inside a `rw […]` bracket parse-cascades to a truncated file + a spurious
+`⊢ ℕ`/`introN failed` that masquerades as an elaboration pathology — use a named `have he : … := by omega`
+then `rw [he]`, and the §61 `m = m₂+2` destructure for the `Fin (i−1)`/`i−2` index arithmetic.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
