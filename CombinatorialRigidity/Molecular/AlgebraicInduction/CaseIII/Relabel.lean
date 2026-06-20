@@ -2325,6 +2325,75 @@ theorem BodyHingeFramework.hingeRow_acolumn_mem_span_rigidityRows
   rw [hblock]
   exact acolumn_mem_hingeRowBlock_of_span_rigidityRows hac hlink_ec hblock hdeg2 hdeg2r hwGv
 
+/-- **G4d-i for a degree-2 vertex with *two* surviving edges — the `a`-column lands in the sum of
+the two incident blocks** (`lem:case-III-claim612-eq644` two-edge form; Katoh–Tanigawa 2011 §6.4.2,
+eq.~(6.44) iterated, the genuinely-new `hρGv` P2 leaf, CHAIN-2c-ii-arm). The honest analogue of the
+one-edge `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (which forces the column into a *single*
+block when `a`'s sole surviving edge is `e_c = ac`) for an **interior chain vertex** `a`, which
+after the relabel surgery has **two** surviving links `e_c = ac` and `e_d = ad` (`c ≠ d`). For a
+span member `wGv ∈ span Fv.rigidityRows`, its `a`-column restriction `wGv ∘ single a` lands in the
+**sum** `Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d`: a generator `hingeRow u w ρ` (with
+`ρ ∈ Fv.hingeRowBlock f`) touching `a` is, by the two-edge degree-2 field, an `e_c = ac`- or
+`e_d = ad`-row, contributing `ρ` (via `hingeRow_comp_single_tail`/`hingeRow_swap`) to the respective
+block; a row off `a` contributes `0` (`hingeRow_comp_single_off`). This is KT's eq.~(6.44) two-block
+cancellation `∑λ(vₛvₛ₊₁)·r + ∑λ(vₛ₊₁vₛ₊₂)·r = 0` at an interior chain vertex `vₛ₊₁` of degree two —
+the carry the `acolumn` one-edge form cannot supply (its `hdeg2` single-edge premise is *false* at a
+two-edge vertex). -/
+theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
+    [DecidableEq α] {Fab Fv : BodyHingeFramework k α β}
+    {a c d : α} {e_c e_d : β}
+    (hac : a ≠ c) (had : a ≠ d)
+    (hlink_ec : Fv.graph.IsLink e_c a c)
+    (hlink_ed : Fv.graph.IsLink e_d a d)
+    (hblock_c : Fv.hingeRowBlock e_c = Fab.hingeRowBlock e_c)
+    (hblock_d : Fv.hingeRowBlock e_d = Fab.hingeRowBlock e_d)
+    -- `a` is degree-2 in `Fv`: its only links are `e_c = ac` and `e_d = ad`.
+    (hdeg2 : ∀ f x, Fv.graph.IsLink f a x → f = e_c ∨ f = e_d)
+    (hdeg2r : ∀ f x, Fv.graph.IsLink f x a → f = e_c ∨ f = e_d)
+    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    (hwGv : wGv ∈ Submodule.span ℝ Fv.rigidityRows) :
+    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+      ∈ Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d := by
+  apply Submodule.span_induction (p := fun ψ _ =>
+    ψ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+      ∈ Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d) _ _ _ _ hwGv
+  · -- generator case: `hingeRow u w ρ ∈ Fv.rigidityRows`, so `ρ ∈ Fv.hingeRowBlock f`.
+    rintro ψ ⟨f, u, w, hlink, ρ, hρ, rfl⟩
+    by_cases hau : u = a
+    · -- `u = a`: `hdeg2` forces `f ∈ {e_c, e_d}`; `IsLink.right_unique` pins `w` accordingly.
+      rw [hau] at hlink
+      rcases hdeg2 f w hlink with hfc | hfd
+      · rw [hfc] at hlink hρ
+        have hwc : w = c := hlink.right_unique hlink_ec
+        rw [hau, hwc, hingeRow_comp_single_tail hac]
+        exact Submodule.mem_sup_left (hblock_c ▸ hρ)
+      · rw [hfd] at hlink hρ
+        have hwd : w = d := hlink.right_unique hlink_ed
+        rw [hau, hwd, hingeRow_comp_single_tail had]
+        exact Submodule.mem_sup_right (hblock_d ▸ hρ)
+    · by_cases hwa : w = a
+      · -- `w = a`, `u ≠ a`: `hdeg2r` forces `f ∈ {e_c, e_d}`; pin `u` via `IsLink.right_unique`.
+        rw [hwa] at hlink
+        rcases hdeg2r f u hlink with hfc | hfd
+        · rw [hfc] at hlink hρ
+          have huc : u = c := hlink.symm.right_unique hlink_ec
+          rw [hwa, hingeRow_swap u a ρ, huc, hingeRow_comp_single_tail hac]
+          exact Submodule.mem_sup_left ((Fab.hingeRowBlock e_c).neg_mem (hblock_c ▸ hρ))
+        · rw [hfd] at hlink hρ
+          have hud : u = d := hlink.symm.right_unique hlink_ed
+          rw [hwa, hingeRow_swap u a ρ, hud, hingeRow_comp_single_tail had]
+          exact Submodule.mem_sup_right ((Fab.hingeRowBlock e_d).neg_mem (hblock_d ▸ hρ))
+      · -- `u ≠ a`, `w ≠ a`: off-column, restricts to `0`.
+        rw [hingeRow_comp_single_off (Ne.symm hau) (Ne.symm hwa)]
+        exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).zero_mem
+  · simp [(Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).zero_mem]
+  · intro x y _ _ hx hy
+    rw [LinearMap.add_comp]
+    exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).add_mem hx hy
+  · intro r x _ hx
+    rw [LinearMap.smul_comp]
+    exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).smul_mem r hx
+
 /-- **W9c — the `M₃` arm closer: the third candidate (the line `L'' ⊂ Π(c)`) realizes the `d = 3`
 framework at full rank** (`lem:case-II-realization` / `lem:case-III`, the third of the three
 `hcand`-discharge arms; Katoh–Tanigawa 2011 §6.4.1, eqs.~(6.31)–(6.44), the `M₃ = (r̂; r(L''))`

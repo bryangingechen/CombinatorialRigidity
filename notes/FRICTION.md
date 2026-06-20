@@ -149,6 +149,11 @@ to be re-derived by re-reading entries later.
 - **Resolution:** `rcases hmem with heq | heq | heq | ⟨j, heq⟩` (name the equalities), then `rw [heq] at hGσe` (or `rw [← heq] at hGσe` for the `mem_ofFn` form `edge ⟨j+1⟩ = σ e`) to put the concrete chain edge into the link before matching. General: only `subst`/`rfl`-destructure an equation when one side is a free local.
 - **Status:** idiom.
 
+### [idiom] `rcases … with rfl` on `f = e_c` (both sides free, but `e_c` is an implicit/section binder used in later hyps) substitutes the *binder* away → "Unknown identifier `e_c`"
+- **Where it bit:** the generator case of `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (the two-edge G4d-i, `Relabel.lean`): `rcases hdeg2 f w hlink with rfl | rfl` on `f = e_c ∨ f = e_d` (`f` a local from the `span_induction` generator, `e_c`/`e_d` the theorem's implicit `{e_c e_d : β}` binders). The `rfl` pattern is free to substitute either side; it eliminated the *binder* `e_c`, so the later `hblock_c ▸ hρ` / `hlink_ec` referencing `e_c` fail with "Unknown identifier".
+- **Resolution:** name the disjunct (`with hfc | hfd`) and `rw [hfc] at hlink hρ` — rewriting the local `f` to the binder, never the reverse. Same root cause as the entry above (only `subst`/`rfl` when the side you want eliminated is the free local), but here *both* sides are free and the trap is picking the wrong one.
+- **Status:** idiom.
+
 ### [process] "Brick" is a project mnemonic, not KT's term — a terminology-faithfulness sweep is open
 - **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
   sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.

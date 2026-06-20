@@ -4452,7 +4452,14 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
   gate (`Relabel.lean:2700`) took these as `hperp0`/`hperp1` hyps precisely because the carry was unbuilt.
   **What would resolve it:** land `ρ₀_perp_interior_chain_edge` (the two-edge cancellation), de-risked at
   `i = 3` by discharging `hperp0`/`hperp1` of `i3_freshEdge_surviving_rows_mem_deRisk` for real from the
-  W6b `hρe₀`-gate + the `deg_two` field at `i = 1`/`i = 2`. **Clause (ii) honesty flag:** the prior
+  W6b `hρe₀`-gate + the `deg_two` field at `i = 1`/`i = 2`. **The two-edge column brick is now LANDED
+  2026-06-20** (`acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`, `Relabel.lean`, axiom-clean): the
+  honest two-block analogue of G4d-i — for `wGv ∈ span Fv.rigidityRows` with `a` degree-2 over its two
+  surviving links `e_c = ac`/`e_d = ad`, the `a`-column lands in `hingeRowBlock e_c ⊔ hingeRowBlock e_d`
+  (`span_induction` + `IsLink.right_unique`, the generator's `u=a`/`w=a` cases case-split on which edge).
+  This is the route-(a) crux KT eq.(6.44) two-block step; what remains is the **iteration**
+  `ρ₀_perp_interior_chain_edge` (chain it from `hρe₀` along interior vertices) + the de-risk discharge.
+  **Clause (ii) honesty flag:** the prior
   (I.8.3) "two candidate routes, choose at build" framing **understated** route (a): it is not "likely,
   KT-grounded but UNVERIFIED" plug-in of `candidateRow_ac_eq_neg` — `candidateRow_ac_eq_neg`/G4d-i are the
   **one-edge** form and do **not** instantiate at an interior vertex; route (a) needs the *new* two-edge
