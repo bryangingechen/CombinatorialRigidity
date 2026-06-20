@@ -218,13 +218,22 @@ bricks" + the Lean docstrings): *off-cycle* (both endpoints fixed → genuine ta
 `rigidityRow_relabel_to_genuine` (`edge s ↦ edge (s−1)`, both endpoints move one step but survive
 `removeVertex vᵢ` → genuine `(G−vᵢ)` row at the shifted link). The interior brick is the general moving
 form; the off-cycle sibling delegates to it (`(u',w',f')=(u,w,f)`).
-**NEXT STEP (after both block-orientation bricks LANDED — the assembly is >1 sitting; full detail +
-the two builder traps in design §(o‴)(I.6)): the per-member assembly `chainData_bottom_relabel`**
-(`Relabel.lean`): dispatch the base disjunction (`φ ∈ rows ∨ ∃ρ', (a,b)-block`) through the
-genuine-row branches (off-cycle / interior via `rigidityRow_relabel_{off_cycle,to_genuine}`) + the two
-block-orientation bricks under `(shiftPerm i)⁻¹`, via the off-cycle / interior-chain / wrap case-split
-(skeleton §(o‴)(I.6); per-row `deg_two`). The BLOCKED draft de-risked it: off-cycle + interior + a unified
-`hsupp_of` helper build clean; the wrap orientation/sign was the only gap, and **both
+**`hsupp_of` FOUNDATION LANDED 2026-06-20** (`ofNormals_supportExtensor_relabel_perm`, `Relabel.lean`,
+axiom-clean): the abstract support-extensor coincidence under any relabel `(ρ, σ)` —
+`(ofNormals Gt endsσρ qρ).supportExtensor f = (ofNormals Gt ends₀ q₀).supportExtensor (σ f)` — extracted
+from `ofNormals_relabel_perm`'s local `h_supp` step (which now delegates to it, no duplication). This is
+the `hsupp` ingredient the genuine-row bricks (`rigidityRow_relabel_{off_cycle,to_genuine}`) consume;
+instantiated at `(shiftPerm i.castSucc, shiftEdgePerm i)` it supplies their per-branch support-extensor
+coincidence at the candidate-`i` split.
+
+**NEXT STEP (the `hsupp_of` foundation is now a standalone brick; the assembly itself was >1 sitting in the
+BLOCKED draft — full detail + the two builder traps in design §(o‴)(I.6)): the per-member assembly
+`chainData_bottom_relabel`** (`Relabel.lean`): dispatch the base disjunction
+(`φ ∈ rows ∨ ∃ρ', (a,b)-block`) through the genuine-row branches (off-cycle / interior via
+`rigidityRow_relabel_{off_cycle,to_genuine}`) + the two block-orientation bricks under `(shiftPerm i)⁻¹`,
+via the off-cycle / interior-chain / wrap case-split (skeleton §(o‴)(I.6); per-row `deg_two`). The BLOCKED
+draft de-risked it: off-cycle + interior + a unified `hsupp_of` helper build clean (the abstract foundation
+of which is now landed); the wrap orientation/sign was the only gap, and **both
 `rigidityRow_relabel_to_block` (`(a,b)`-order, `ρ':=r`) and `rigidityRow_relabel_to_block_swap`
 (`(b,a)`-order, `ρ':=-r`; LANDED 2026-06-20) close it** (the assembly's wrap case picks the brick
 matching the recorded `ends₀ (edge i)` orientation, modelling the d=3 ±r block branch
@@ -418,9 +427,14 @@ G1 seed/relabel bridges to the engine's `qρ`/`shiftPerm` form are still unbuilt
   **`rigidityRow_relabel_to_block`** (genuine wrap-edge→`(a,b)`-block branch, `(a,b)`-order, `ρ':=r`) +
   **`rigidityRow_relabel_to_block_swap`** (the `(b,a)`-order sibling, `ρ':=-r` via `hingeRow_swap`;
   LANDED 2026-06-20 — together the two block bricks dispatch BOTH `ends₀ (edge i)` orientations) +
-  **`rigidityRow_relabel_to_genuine`** (genuine interior-chain-edge moving branch, the general form) —
-  all LANDED, axiom-clean, correctly slotted (removeVertex / arm-level; design §(o‴)(I.6) + Lean
-  docstrings). The per-member assembly `chainData_bottom_relabel` remains (*Hand-off* / *Current state*).
+  **`rigidityRow_relabel_to_genuine`** (genuine interior-chain-edge moving branch, the general form) +
+  **`ofNormals_supportExtensor_relabel_perm`** (the abstract `hsupp_of` foundation, LANDED 2026-06-20:
+  `(ofNormals Gt endsσρ qρ).supportExtensor f = (ofNormals Gt ends₀ q₀).supportExtensor (σ f)` for any
+  relabel `(ρ, σ)`, extracted from `ofNormals_relabel_perm`'s local `h_supp` — now delegates to it; the
+  `hsupp` ingredient the off-cycle / interior genuine-row bricks consume; supportExtensor ignores the
+  graph, so the `Gs`/`Gt` slot is defeq-free) — all LANDED, axiom-clean, correctly slotted (removeVertex /
+  arm-level; design §(o‴)(I.6) + Lean docstrings). The per-member assembly `chainData_bottom_relabel`
+  remains (*Hand-off* / *Current state*).
 - **Orphaned-for-the-arm (confirm-and-delete at the arm build, `git grep` zero callers):** the split→split
   `rigidityRow_relabel_perm` / `rigidityRow_chainData_relabel` (wrong graph level, (I.5)); the candidate→base
   T-W9a fold `shiftBodyList_foldr_…` (wrong orientation, H.10); `ofNormals_relabel_perm` + the binary

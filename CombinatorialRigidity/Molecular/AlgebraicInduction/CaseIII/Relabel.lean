@@ -45,6 +45,31 @@ private theorem hσσ_relabel {β : Type*} [DecidableEq β] {e_b e_c e₀ e₁ :
   simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
   split_ifs <;> simp_all
 
+/-- **The support-extensor coincidence under a general `Equiv.Perm` relabel (CHAIN-2c-ii-arm, the
+`hsupp_of` foundation): the relabelled `ofNormals` framework's supporting extensor at an edge `f`
+equals the base framework's at the edge `σ f`** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the
+index-shift seed/selector coincidence eqs.~(6.54)–(6.56); Phase 23b). The relabelled framework
+reads the base seed `q₀` at the `ρ`-shifted body (`qρ p := q₀ (ρ p.1, p.2)`) and the base endpoints
+`ρ.symm`-shifted (`endsσρ e := (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)`); the matching
+`.symm`/forward choices make the forward `ρ` in `qρ` cancel the `ρ.symm` in `endsσρ`, so the hinge
+at `f` reads exactly the original hinge at `σ f` — **no involution needed**.
+
+This is the support-extensor half of `ofNormals_relabel_perm` (the local `h_supp` step), extracted
+as a standalone lemma: it is the `hsupp` ingredient the genuine-row transport bricks
+(`rigidityRow_relabel_off_cycle`, `rigidityRow_relabel_to_genuine`) consume in the all-`d`
+candidate-reduction arm's per-row dispatch (`chainData_bottom_relabel`, 2c-ii). Instantiated at
+`(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)` it supplies the per-branch support-extensor
+coincidence at the candidate-`i` split. -/
+theorem PanelHingeFramework.ofNormals_supportExtensor_relabel_perm {Gt : Graph α β}
+    (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
+    {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ} (f : β) :
+    (PanelHingeFramework.ofNormals Gt
+        (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
+        (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.supportExtensor f =
+      (PanelHingeFramework.ofNormals Gt ends₀ q₀).toBodyHinge.supportExtensor (σ f) := by
+  simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+    PanelHingeFramework.ofNormals_normal, Equiv.apply_symm_apply]
+
 /-- **The general-`Equiv.Perm` framework-transport (CHAIN-2c-ii-β): an arbitrary vertex relabel
 `ρ : Equiv.Perm α` (with edge relabel `σ : Equiv.Perm β`) intertwining two graphs transports the
 `ofNormals` generic-realization data from one to the other** (`lem:case-III` general-`d`, KT 2011
@@ -102,11 +127,8 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
   -- q₀ at the ρ-shifted endpoints (the forward ρ in qρ cancelling the ρ.symm in endsσρ), i.e. the
   -- original hinge at (σ f). No involution needed.
   have h_supp : ∀ f : β,
-      Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := by
-    intro f
-    simp only [hQ_def, hQ'_def, PanelHingeFramework.toBodyHinge_supportExtensor,
-      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hendsσρ, hqρ,
-      Equiv.apply_symm_apply]
+      Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := fun f =>
+    PanelHingeFramework.ofNormals_supportExtensor_relabel_perm ρ σ f
   refine ⟨?_, ?_, ?_, ?_⟩
   -- (1) General position: Q'.normal x = q₀ (ρ x, ·), reindexed by injective ρ.
   · intro x y hxy
