@@ -1769,6 +1769,64 @@ theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows
   exact cd.seedAdvance_wstep_hstep hsd ends ends (cd.shiftSeedAdv q s) (fun _ _ _ => rfl)
     (fun f x y hl => hrec f x y ((Graph.removeVertex_isLink.mp hl).1))
 
+/-- **The removeVertex-level genuine-link transport classification (CHAIN-2c-ii-arm, the genuine-row
+`hwmem` make-or-break)** (`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) one-step-down row
+correspondence; Phase 23b). A genuine `G`-link `f x y` whose endpoints survive
+`removeVertex (vtx 1)` (the `v₁`-base split body, `x ≠ vtx 1`, `y ≠ vtx 1`) transports, under the
+inverse index-shift `((shiftPerm i.castSucc)⁻¹, (shiftEdgePerm i)⁻¹)`, to **either** a genuine link
+of the candidate-`i` split's `removeVertex (vtx i.castSucc)` graph (the off-cycle /
+interior-chain-edge images, both endpoints surviving `removeVertex vᵢ`), **or** the candidate
+fresh-edge endpoint pair `{vtx (i+1), vtx (i−1)}` in one of the two orders (the wrap edge `edge i`,
+whose endpoints relabel to the candidate's fresh `e₀ = (vtx (i+1)) (vtx (i−1))` short-circuit, so
+the image is **not** a `removeVertex vᵢ` link but the candidate `(a,b)`-block).
+
+This is the make-or-break the genuine-row `hwmem` disjunct bottoms out on (design §(o‴)(I.6)): the
+**degree-2 closure** `deg_two` (interior chain vertices carry only their two chain edges) rules out
+a "homeless interior block" — every genuine `G`-link at a cycle vertex is a chain edge, so it maps
+to another chain edge (genuine) or the wrap (the candidate fresh pair), never a stray block. Rather
+than re-run the degree-2 case analysis at the removeVertex level, the proof **lifts** the genuine
+base row to a link of the `v₁`-base `splitOff` (a survivor, since `f ∈ E(G)` and `e₀ ∉ E(G)`),
+applies the landed split-level intertwiner `splitOff_isLink_shiftRelabel_iff` (`.mpr`,
+base→candidate via the inverse shift), and reads the resulting candidate-split link back: a
+candidate survivor is a genuine `removeVertex vᵢ` link (the fresh-edge label `e₀` cannot be the
+survivor edge), while the candidate fresh edge `e₀` records exactly the `{vtx (i+1), vtx (i−1)}`
+pair. At the d=3 `M₃` instance `i = 2` the cycle `shiftPerm 2 = (v₁ v₂)` is the single swap and this
+is the
+`case_III_bottom_relabel` genuine-row branch's three sub-cases. -/
+lemma _root_.Graph.ChainData.removeVertex_genuine_shiftRelabel
+    [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    {f : β} {x y : α} (hG : G.IsLink f x y)
+    (hx1 : x ≠ cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+    (hy1 : y ≠ cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) :
+    (G.removeVertex (cd.vtx i.castSucc)).IsLink ((cd.shiftEdgePerm i)⁻¹ f)
+        ((cd.shiftPerm i.castSucc)⁻¹ x) ((cd.shiftPerm i.castSucc)⁻¹ y) ∨
+      (((cd.shiftPerm i.castSucc)⁻¹ x = cd.vtx i.succ ∧
+          (cd.shiftPerm i.castSucc)⁻¹ y
+            = cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ∨
+        ((cd.shiftPerm i.castSucc)⁻¹ x
+            = cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc ∧
+          (cd.shiftPerm i.castSucc)⁻¹ y = cd.vtx i.succ)) := by
+  classical
+  have hid : (i : ℕ) < cd.d := i.isLt
+  -- The fresh `e₀` is not a `G`-edge, so the genuine link `f x y` is a base-split survivor.
+  have hfe₀ : f ≠ cd.e₀ := fun he => cd.e₀_fresh (he ▸ hG.edge_mem)
+  -- Lift `f x y` to a link of the v₁-base split, then push base→candidate via the inverse shift.
+  have hbase : (G.splitOff (cd.vtx (⟨1, by omega⟩ : Fin cd.d).castSucc)
+      (cd.vtx (⟨1, by omega⟩ : Fin cd.d).succ) (cd.vtx (⟨0, by omega⟩ : Fin cd.d).castSucc)
+      cd.e₀).IsLink f x y :=
+    Graph.splitOff_isLink.mpr (Or.inl ⟨hfe₀, hG, hx1, hy1⟩)
+  -- The intertwiner `.mpr` at the inverse-shifted candidate data: σ((σ)⁻¹f) = f etc.
+  have hcand := (cd.splitOff_isLink_shiftRelabel_iff i hi
+      (e := (cd.shiftEdgePerm i)⁻¹ f) (x := (cd.shiftPerm i.castSucc)⁻¹ x)
+      (y := (cd.shiftPerm i.castSucc)⁻¹ y)).mpr (by
+    simpa using hbase)
+  -- `hcand` is a candidate-split link. Read it back: survivor ⇒ removeVertex link; fresh ⇒ wrap.
+  rw [Graph.splitOff_isLink] at hcand
+  rcases hcand with ⟨hne₀, hGcand, hxv, hyv⟩ | ⟨_, _, _, _, _, hxy⟩
+  · exact Or.inl (Graph.removeVertex_isLink.mpr ⟨hGcand, hxv, hyv⟩)
+  · exact Or.inr hxy
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row
