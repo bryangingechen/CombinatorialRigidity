@@ -4465,6 +4465,36 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
   **one-edge** form and do **not** instantiate at an interior vertex; route (a) needs the *new* two-edge
   lemma. Naming that missing leaf (not asserting "route (a) plugs in") is the safe pin.
 
+  **(I.8.3.v-REFUTED — 2026-06-20, row-321 adversarial build, coordinator-verified vs the landed defs.)**
+  The (I.8.3.v) verdict's *closed-form signature* for `ρ₀_perp_interior_chain_edge` — the **isolated
+  implication** `(hbase : ρ₀ ∈ hingeRowBlock (edge s)) → ρ₀ ∈ hingeRowBlock (edge (s+1))` over an
+  arbitrary `ρ₀` — is **WRONG / unprovable as stated**. A build dispatched to land it returned BLOCKED with
+  the finding (coordinator-confirmed against `hingeRowBlock e = (span {supportExtensor e})^⊥`,
+  `Basic.lean:433`; the landed `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` conclusion; `hρe₀`,
+  `Realization.lean:799`): the lemma as written is **false**. Three problems:
+  (1) the landed two-edge crux gives only **sup** membership `wGv ∘ single a ∈ block e_c ⊔ block e_d`, which
+  decomposes as `x+y` (x⊥C_c, y⊥C_d) and does NOT yield whole-`ρ₀ ⊥ C_d`;
+  (2) consecutive chain-edge panels `qρ(vₛvₛ₊₁)` vs `qρ(vₛ₊₁vₛ₊₂)` are panels of *different* vertex pairs —
+  independent subspaces, so the generic per-edge perp-transport is false;
+  (3) KT eq.(6.44)/(6.66) is a property of the **specific vanishing combination** `r = ∑ⱼ λ(v₀v₂)ⱼ rⱼ(q(v₀v₂))`
+  (its `a`-column at the degree-2 vertex vanishes, giving `r ∈ block e_c ⟺ r ∈ block e_d` for **this** `r`),
+  NOT an isolated implication valid for arbitrary `ρ₀`. The landed telescope `wstep_foldl_hingeRow_telescope`
+  gives `W φ = (∑ surviving) + slot` as *linear maps* and the W9a fold gives the telescope *sum* ∈ span —
+  neither exposes the individual surviving summands as span members to peel out.
+  So Q1's "iterated `r ∈ block(s) ⟹ r ∈ block(s+1)`" is correct **for the specific `r`**, but the *Lean
+  signature* encoding it as a generic `ρ₀`-implication with only `hbase` is unprovable. **This is the 5th
+  mis-pin of this exact crux** (4× rows 263–272 + this), all the same global-accumulation-vs-isolated-per-step
+  error. **The route is RE-OPENED; two candidate re-derivations** (the BLOCK's, to settle at a fresh
+  global-structure-first design-pass): **(a)** a forward construction exposing each intermediate fold value
+  `(foldl over the first s bodies)(hingeRow v₀v₂ ρ₀)` as a `span (F s)`-member, peeling surviving rows by
+  induction **with the next frontier carried as the recursion variable** (via the landed
+  `wstep_hingeRow_frontier`: `frontier = surviving + next-frontier`); **(b)** routing through the genuine
+  vanishing-combination `a`-column argument (`candidateRow_ac_eq_neg`-style), which needs the explicit
+  `λ`-combination data the telescope **abstracted away** (MAY force a landed-telescope signature change).
+  Pick (a)/(b)/a third at the design-pass; flag-don't-force if it touches the motive/IH or the landed
+  telescope. The infra bricks (`acolumn_..._sup_...`, `freshEdge_surviving_row_mem`) STAND as necessary
+  scaffolding; only the isolated-implication *signature* `ρ₀_perp_interior_chain_edge` is withdrawn.
+
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
 1. **P1 restatement — LANDED 2026-06-20 (the unblocker).** Both algebraic-core lemmas

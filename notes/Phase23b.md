@@ -27,10 +27,13 @@ AND the general-`i` surviving-row builder `Graph.ChainData.freshEdge_surviving_r
 axiom-clean):** the interior-vertex two-block degree-2 column membership (honest analogue of the one-edge
 G4d-i) + the lift of the i=3 de-risk's `hrow` to general candidate `i` (perp carried as the gate hyp `hperp`,
 link half fully discharged); the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediate chain-edge
-panels, so the SINGLE remaining P2 half = the iterated perp `ρ₀_perp_interior_chain_edge` from the crux,
-discharging the builder's `hperp` + the `i=3` gate's `hperp0`/`hperp1`; **P3 (flagged, likely clean):** the fold
-seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. Neither is a motive/signature change (option (b)
-stands, d=3 zero-regression stands); ~3–4 commits (P2→P3→assembly), then **2c-iii** `chainData_dispatch`;
+panels. **The perp ROUTE is RE-OPENED (§(o‴)(I.8.3.v-REFUTED), row-321 adversarial build):** the row-318
+pin of `ρ₀_perp_interior_chain_edge` as an *isolated* implication is FALSE for arbitrary `ρ₀` (sup ≠ single
+block; consecutive panels independent; KT 6.44/6.66 is a vanishing-combination property — the rows-263–272
+trap, 5th time); the two infra bricks STAND, the signature is withdrawn. SINGLE remaining P2 half = a
+**global-structure-first DESIGN-PASS** re-deriving the perp route + signature (USER-FLAGGED); **P3 (flagged):**
+the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands (whether the
+P2 re-route touches the landed telescope is the design-pass's flag-don't-force call); then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
 §(o‴)(I.8); the settled route history (the clean-relabel refutation, the FIX-FORK, the engine-slot
 adjudication) is in `notes/Phase23-design.md` §(o‴) + git, **not** re-narrated here.
@@ -127,30 +130,31 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     spliced panel `C(q(v₀v₂))` (`hρe₀`), not the intermediate chain-edge panels; that it ⊥ each is KT
     eq.(6.62)/(6.66)'s degree-2 `±r` carry, unbuilt in Lean (the closed-form telescope gives `W φ = (∑
     surviving) + slot` as *linear maps*, NOT each summand a span member). So P2 is unblocked on the
-    link/membership plumbing; the remaining work is the **perp**, and the **route is now SETTLED
-    (§(o‴)(I.8.3.v), 2026-06-20):** **route (a)** (KT eq.-(6.66) iterated degree-2 carry — true,
-    KT-faithful) via the *two-edge* degree-2 column membership at an interior chain vertex (G4d-i /
-    `candidateRow_ac_eq_neg` are the *one-edge* form and are **provably non-instantiable** at an interior
-    vertex). **Route (b) `chainData_bottom_relabel` is CIRCULAR** for P2 (transports a base perp). Its two
-    route-(a) bricks are **LANDED axiom-clean** (full detail in *Decisions made* + the Lean docstrings):
-    the two-edge column crux `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (the `a`-column ∈
-    `hingeRowBlock e_c ⊔ e_d` at a degree-2 interior vertex, the honest two-block analogue of one-edge
-    G4d-i) + the surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` (the `i=3` de-risk's
-    `hrow` lifted to general `i`/edge `s`, link half discharged, perp carried as the gate hyp `hperp`;
-    = the `hsurv` summand `wstep_foldl_freshEdge_slot_mem` defers). **NEXT P2 step (the only un-landed
-    half):** the iterated perp `ρ₀_perp_interior_chain_edge` (chain the sup-brick from the W6b `hρe₀` base
-    along interior vertices) → discharges `freshEdge_surviving_row_mem`'s `hperp` AND
-    `i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1`. ~1–2 commits, real math.
+    link/membership plumbing; the remaining work is the **perp**. **The perp ROUTE is RE-OPENED
+    (§(o‴)(I.8.3.v-REFUTED), 2026-06-20, row-321 adversarial build):** the row-318 pin of
+    `ρ₀_perp_interior_chain_edge` as an *isolated* implication `ρ₀ ∈ hingeRowBlock(edge s) →
+    hingeRowBlock(edge s+1)` (only `hbase`) is **FALSE for arbitrary `ρ₀`** — the `_sup_` brick gives only
+    *sup* membership (`x+y`, not whole-`ρ₀` in a single block), consecutive chain panels are independent
+    subspaces, and KT eq.(6.44)/(6.66) is a property of the *specific vanishing-combination* `r`, not an
+    isolated per-step implication (the rows-263–272 global-accumulation trap, 5th time). The two infra
+    bricks **STAND** (`acolumn_..._sup_...` + `freshEdge_surviving_row_mem`, perp carried as `hperp`); only
+    the isolated-implication *signature* is withdrawn. **NEXT P2 step = a global-structure-first
+    DESIGN-PASS** re-deriving the correct surviving-row-perp route + Lean signature — candidates **(a)** a
+    forward fold-value-as-span-member induction carrying the next frontier (via `wstep_hingeRow_frontier`),
+    **(b)** the vanishing-combination `λ`-`a`-column argument (may touch the landed telescope) — discharging
+    `freshEdge_surviving_row_mem`'s `hperp` + the i3 gate's `hperp0`/`hperp1`. USER-FLAGGED (5th mis-pin).
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
     `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
 
-  None is a motive/IH/signature change; option (b) + d=3 zero-regression stand. Two `i=3` gates landed
-  (`i3_freshEdge_slot_mem_deRisk` abstract `sub_mem` peel `m=2`; `i3_freshEdge_surviving_rows_mem_deRisk`
-  concrete surviving-row membership) PLUS the general-`i` lift `freshEdge_surviving_row_mem` (perp carried
-  as `hperp`). The single remaining P2 obligation = the **perp `ρ₀_perp_interior_chain_edge`** (the
-  two-edge degree-2 carry, iterated from `hρe₀`); then P3, assembly.
+  Two `i=3` gates landed (`i3_freshEdge_slot_mem_deRisk` abstract `sub_mem` peel `m=2`;
+  `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership) PLUS the general-`i` lift
+  `freshEdge_surviving_row_mem` (perp carried as `hperp`). The single remaining P2 obligation = the
+  **surviving-row perp**, whose Lean formulation is **RE-OPENED** (the isolated-implication
+  `ρ₀_perp_interior_chain_edge` pin refuted, row 321) — a global-structure-first design-pass settles
+  route + signature; then P3, assembly. (Option (b) + d=3 zero-regression stand; whether the re-route
+  touches the landed telescope is the design-pass's flag-don't-force call.)
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -335,19 +339,24 @@ finite-range-callable (`wstep_foldl_hingeRow_telescope` + the membership corolla
 source-verified clean for every slot except `hρGv` (`Gv = G−vᵢ` / `ends = relabelled` / `q = qρ` /
 `(a,b) = (vᵢ₊₁,vᵢ₋₁)`, confirmed vs the landed `chainData_bottom_relabel` output type
 `Relabel.lean:1960–1972`; `hwmem ← chainData_bottom_relabel`, `hρe₀ ← G4d-i`, rest per `M₃`). Two
-genuinely-new prerequisites remain before `hρGv` can be supplied: **(P2, real math).** The `m` `hsurv`
-summands need `ρ₀ ⊥ panel(qρ(chain edge))`; route SETTLED = **route (a)** (KT eq.-(6.44)/(6.66) iterated
-degree-2 carry; route (b) `chainData_bottom_relabel` CIRCULAR — §(o‴)(I.8.3.v)). Its two bricks are **LANDED
-axiom-clean** (full detail in *Decisions made* + the Lean docstrings + §I.8.3.v): the two-edge column crux
-`acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (the `a`-column ∈ `hingeRowBlock e_c ⊔ e_d` at a
-degree-2 interior vertex — the honest two-block analogue of the one-edge G4d-i, provably non-instantiable
-there) + the surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` (the `i=3` de-risk's `hrow`
-lifted to general `i`/edge `s`, perp carried as the gate hyp `hperp`; the exact `hsurv` summand
-`wstep_foldl_freshEdge_slot_mem` defers). **NEXT P2 step = the SINGLE remaining un-landed half: the iterated
-perp `ρ₀_perp_interior_chain_edge`** (chain the two-edge sup-brick from the W6b `hρe₀` base along interior
-vertices; closed-form signature in §I.8.3.v) → discharges both `freshEdge_surviving_row_mem`'s `hperp` AND
-`i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` (the `sub_mem`/`link`/builder halves are all
-clean).
+genuinely-new prerequisites remain before `hρGv` can be supplied: **(P2, real math — PERP ROUTE RE-OPENED
+2026-06-20 by the row-321 adversarial build; §(o‴)(I.8.3.v-REFUTED)).** The `m` `hsurv` summands need
+`ρ₀ ⊥ panel(qρ(chain edge))`. The two infra bricks `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`
+(sup-membership of a span member's `a`-column) + `freshEdge_surviving_row_mem` (the `hrow` builder, perp
+carried as `hperp`) STAND, **BUT the row-318 pin of `ρ₀_perp_interior_chain_edge` as the isolated
+implication `ρ₀ ∈ hingeRowBlock(edge s) → ρ₀ ∈ hingeRowBlock(edge s+1)` (only `hbase`) is REFUTED — it is
+FALSE for arbitrary `ρ₀`:** the `_sup_` brick gives only *sup* membership (`x+y`, x⊥C_c, y⊥C_d — NOT
+whole-`ρ₀` in either block; verified vs `hingeRowBlock = (span{supportExtensor})^⊥`, `Basic.lean:433`),
+consecutive chain panels are independent subspaces, and KT eq.(6.44)/(6.66) is a property of the *specific
+vanishing-combination* redundancy `r`, **not** an isolated per-step implication (the same global-accumulation
+trap as rows 263–272). **NEXT P2 step = a global-structure-first DESIGN-PASS** re-deriving the correct
+surviving-row-perp route + Lean signature (it discharges `freshEdge_surviving_row_mem`'s `hperp` + the i=3
+gate's `hperp0`/`hperp1`); two candidates the BLOCK names: **(a)** a forward fold-value-as-span-member
+induction (carry the next frontier as the recursion variable, peel surviving rows via the landed
+`wstep_hingeRow_frontier` `frontier = surviving + next-frontier` step); **(b)** the genuine
+vanishing-combination `λ`-`a`-column argument (`candidateRow_ac_eq_neg`-style — needs the explicit `λ`-data
+the telescope abstracted, **may force a landed-telescope signature change**). USER-FLAGGED (the 5th mis-pin
+of this exact crux).
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
