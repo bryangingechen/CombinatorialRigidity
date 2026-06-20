@@ -4573,8 +4573,15 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
     3 live callers re-plumbed (`case_III_candidate_dispatch` + `chainData_split_realization` `_`-ignore until
     the arm); full project green + lint clean, d=3 zero-regression. **The blast-radius step (B=2), landed as
     scoped.**
-  - **(A-3):** generalize the de-risk to all `i`, then the arm assembly `chainData_relabel_arm`.
-  The refuted-signature leaves `freshEdge_surviving_row_mem` (`:2833`) + the `hsurv` form of
+  - **(A-3 single-vertex composition — DONE 2026-06-20, axiom-clean, zero blast radius):**
+    `freshEdge_surviving_row_mem_of_witness` (`Relabel.lean`) — at a surviving edge's interior degree-2
+    vertex `vtx (s+1)` (`hsd : s+1 < cd.d`), feed the A-1 eq-(6.52) `λ`-grouped two-edge witness through A-2
+    (`candidate_perp_two_incident_supportExtensors`) to discharge `freshEdge_surviving_row_mem`'s abstract
+    `hperp` FOR REAL (`ρ₀ ⊥ Fva.supportExtensor (edge s)` = A-2's first conjunct), then thread to the
+    `link`-half builder. **REMAINING (A-3):** the all-`i` lift (propagate the witness across the chain off
+    the W6b `hρe₀` base — the iterated KT eq-(6.66) carry; each interior vertex needs its own col-vanishing
+    witness, which W6b gives only at the base, the genuinely-hard piece), then the arm `chainData_relabel_arm`.
+  The refuted-signature leaves `freshEdge_surviving_row_mem` (`:2833`, now superseded by `_of_witness`) + the `hsurv` form of
   `wstep_foldl_freshEdge_slot_mem` (`:3006`) are WITHDRAWN at the arm build (zero live callers); the
   closed-form telescope `wstep_foldl_hingeRow_telescope` (`:2938`) + the infra bricks + **A-2's two new
   perp-carrier lemmas STAND**. **NO motive/IH change.** Confidence HIGH on Route A + the B/C refutation.

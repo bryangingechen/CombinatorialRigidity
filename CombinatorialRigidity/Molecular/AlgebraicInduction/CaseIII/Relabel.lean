@@ -2958,6 +2958,69 @@ theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem
     exact hlinkGv
   · exact (Fva.mem_hingeRowBlock_iff _ ρ₀).2 hperp
 
+/-- **The general-`i` surviving chain-edge row-membership builder, perp discharged from the
+eq.~(6.52) two-edge witness** (CHAIN-2c-ii-arm, the `hρGv` P2 A-3 composition step;
+`notes/Phase23-design.md` §(o‴)(I.8.3.v-SETTLED) Route A, §(o‴)(I.8.4); Phase 23b). The Route-A
+closure of `freshEdge_surviving_row_mem`: instead of carrying the per-edge perp `ρ₀ ⊥
+Fva.supportExtensor (edge s)` as an abstract hypothesis, it is **discharged for real** from the
+eq.~(6.52) `λ`-grouped two-edge witness at the surviving edge's interior chain vertex
+`vtx (s+1)` — exactly the witness the W6b producer
+`exists_candidateRow_bottomRows_of_rigidOn` now supplies (A-1).
+
+The interior vertex `a := vtx (s+1)` is degree-2 with the two incident chain edges `e_c := edge s`
+(linking `a` to its predecessor `b := vtx s`) and `e_d := edge (s+1)` (linking `a` to its successor
+`c := vtx (s+2)`); the candidate functional is the common redundancy vector `ρ₀ = ∑_j λ_{(ab)j}
+(rab j)` of KT eq.~(6.42). Feeding the witness (the per-edge perps `hperp_ab`/`hperp_ac` and the
+eq.~(6.43) column vanishing `hcol`/`hrest`) through `candidate_perp_two_incident_supportExtensors`
+(A-2, KT eq.~(6.44)) yields `ρ₀ ⊥ Fva.supportExtensor e_c = Fva.supportExtensor (edge s)`, which is
+precisely the `hperp` hypothesis `freshEdge_surviving_row_mem` deferred. The `link`/membership half
+is then concrete (delegated to `freshEdge_surviving_row_mem`).
+
+This is the single-vertex step of the iterated KT eq.~(6.66) carry; the all-`i` lift (propagating
+the witness across the chain off the W6b `hρe₀` base) and the arm assembly `chainData_relabel_arm`
+remain. Self-contained over the explicit witness, **zero blast radius** (no live caller). -/
+theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem_of_witness [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
+    (hs : s + 1 < (i : ℕ)) (hsd : s + 1 < cd.d)
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
+    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    -- the per-edge perps of the witness rows, in the candidate framework `Fva = ofNormals (G−vᵢ)`:
+    (hperp_ab : ∀ j, rab j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
+      |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0)
+    (hperp_ac : ∀ j, rac j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
+      |>.toBodyHinge.supportExtensor (cd.edge ⟨s + 1, by omega⟩)) = 0)
+    -- the eq.~(6.43) column vanishing at the degree-2 interior vertex `a = vtx (s+1)`:
+    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α)
+          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) (rab j))
+        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α)
+          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) (rac j)) + grest).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
+    (hrest : grest.comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
+    BodyHingeFramework.hingeRow (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+        (∑ j, lamAB j • rab j) ∈
+      Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx i)) ends qρ).toBodyHinge.rigidityRows := by
+  classical
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+    with hFva
+  -- The interior vertex `a = vtx (s+1)` differs from its two chain neighbours `b = vtx s`,
+  -- `c = vtx (s+2)` (distinct chain indices, `vtx_inj`).
+  have hab : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s, by omega⟩ :=
+    fun he => by have : s + 1 = s := congrArg Fin.val (cd.vtx_inj he); omega
+  have hac : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
+    fun he => by have : s + 1 = s + 2 := congrArg Fin.val (cd.vtx_inj he); omega
+  -- A-2 (KT eq.~(6.44)): the common candidate `ρ₀ = ∑_j λ_{(ab)j} (rab j)` is ⊥ the panel at
+  -- the surviving edge `e_c = edge s` (the first of the two incident-panel perps).
+  have hperp : (∑ j, lamAB j • rab j) (Fva.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 :=
+    (Fva.candidate_perp_two_incident_supportExtensors hab hac lamAB rab lamAC rac grest
+      hperp_ab hperp_ac hcol hrest).1
+  -- thread the discharged perp into the `link`-half builder.
+  exact cd.freshEdge_surviving_row_mem i s hs (∑ j, lamAB j • rab j) hperp
+
 /-! ### The general-`i` `hρGv` fresh-edge telescope (CHAIN-2c-ii-arm, LEAF-ρ1 algebraic core)
 
 The genuinely-new algebraic core of the `hρGv` discharge: the closed-form value of the

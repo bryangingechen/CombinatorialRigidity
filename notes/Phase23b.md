@@ -44,9 +44,15 @@ LANDED 2026-06-20** (`Candidate.lean` + `Realization.lean`, axiom-clean): the W6
 re-threaded via the per-row `Eb = map (hingeRow …).dualMap block` decomposition + `hingeRow` injectivity),
 and `chainData_split_w6b_gates` threads it to its output in chain order (the `(b,a)` branch negates
 `rab → −rab`, W8 sign-swap). 3 live callers re-plumbed; d=3 zero-regression (full project green + lint).
-**NEXT = A-3** generalize the de-risk to all `i` (discharge `freshEdge_surviving_row_mem`'s `hperp` from
-the A-1 witness via A-2) + the arm `chainData_relabel_arm`; **P3 (flagged):**
-the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands; then **2c-iii** `chainData_dispatch`;
+**A-3 SINGLE-VERTEX COMPOSITION LANDED 2026-06-20** (`freshEdge_surviving_row_mem_of_witness`,
+`Relabel.lean`, axiom-clean, ZERO blast radius): the Route-A closure of `freshEdge_surviving_row_mem`'s
+abstract `hperp` — at a surviving edge's interior degree-2 chain vertex `vtx (s+1)`, feed the eq.-(6.52)
+`λ`-grouped two-edge witness (the A-1 producer's `lamAB`/`rab`/`lamAC`/`rac`/`grest` + perps + col-vanishing)
+through A-2 (`candidate_perp_two_incident_supportExtensors`) to discharge `ρ₀ ⊥ Fva.supportExtensor (edge s)`
+FOR REAL, then thread to the `link`-half builder. **REMAINING A-3:** the all-`i` lift (propagate the
+witness across the chain off the W6b `hρe₀` base — the iterated KT eq.-(6.66) carry; each interior vertex
+needs its own col-vanishing witness, which W6b gives only at the base) + the arm `chainData_relabel_arm`;
+**P3 (flagged):** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands; then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
 §(o‴)(I.8); the settled route history (the clean-relabel refutation, the FIX-FORK, the engine-slot
 adjudication) is in `notes/Phase23-design.md` §(o‴) + git, **not** re-narrated here.
@@ -379,12 +385,19 @@ eq-(6.52) `λ`-grouped `(ab)`-witness `lamAB`/`rab` (`∀ j, rab j ∈ hingeRowB
 `hingeRow` injectivity at distinct endpoints), and `chainData_split_w6b_gates` (`Realization.lean`) threads it
 to its output in chain order (`(b,a)` branch negates `rab → −rab`, W8 sign-swap). The 3 live callers re-plumbed
 (d=3 dispatch + `chainData_split_realization` `_`-ignore until the arm); full project green + lint clean, d=3
-zero-regression. **(NEXT) A-3** feed the A-1 witness through A-2 (`candidate_perp_two_incident_supportExtensors`,
-the `hperp_ab`/`hperp_ac` + `hcol`/`hrest` interface) to discharge `freshEdge_surviving_row_mem`'s `hperp` (and
-the `i3_*` `hperp0`/`hperp1`) for REAL, generalize to all `i`, then the arm assembly `chainData_relabel_arm`.
-WITHDRAW the refuted leaves `freshEdge_surviving_row_mem` (the isolated-`hperp` builder, once A-2 supplies it)
-+ `wstep_foldl_freshEdge_slot_mem`'s `hsurv` form (zero live callers); the telescope (`:2938`) + the `_sup_`
-crux + A-1/A-2's lemmas STAND. NO motive/IH change.
+zero-regression. **(A-3 single-vertex composition — DONE 2026-06-20, axiom-clean)** fed the A-1 witness through
+A-2 (`candidate_perp_two_incident_supportExtensors`, the `hperp_ab`/`hperp_ac` + `hcol`/`hrest` interface) to
+discharge `freshEdge_surviving_row_mem`'s `hperp` for REAL: the new composition lemma
+`freshEdge_surviving_row_mem_of_witness` (`Relabel.lean`) takes the eq-(6.52) `λ`-grouped two-edge witness at
+the surviving edge's interior degree-2 vertex `vtx (s+1)` (with `ρ₀ = ∑ⱼ lamAB j • rab j`, `hsd : s+1 < cd.d`
+so `edge (s+1)` is a chain edge), applies A-2 to get `ρ₀ ⊥ Fva.supportExtensor (edge s)`, and threads it to the
+`link`-half builder. ZERO blast radius (no live caller). **(NEXT) A-3 all-`i` lift:** propagate the witness
+across the chain off the W6b `hρe₀` base (the iterated KT eq.-(6.66) carry — supply each interior vertex's
+col-vanishing witness, which W6b gives only at the base; the genuinely-hard remaining piece), then the arm
+assembly `chainData_relabel_arm`. WITHDRAW the refuted leaves `freshEdge_surviving_row_mem` (the abstract-`hperp`
+builder, now superseded by `_of_witness`; keep until the arm consumes the latter) + `wstep_foldl_freshEdge_slot_mem`'s
+`hsurv` form (zero live callers); the telescope (`:2938`) + the `_sup_` crux + A-1/A-2 + `_of_witness` STAND.
+NO motive/IH change.
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
@@ -677,6 +690,17 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     NEXT = A-3 (feed it through A-2 to discharge the `hperp` gates for real, all-`i` lift, arm). FRICTION
     [idiom] *`hingeRow u v` (a `def`) isn't seen as a bundled map by `map_sum`/injectivity — `rw
     [hingeRow_eq_dualMap]` first*.
+  - **P2 A-3 single-vertex composition — LANDED 2026-06-20, axiom-clean, ZERO blast radius:**
+    `freshEdge_surviving_row_mem_of_witness` (`Relabel.lean`). The Route-A closure of
+    `freshEdge_surviving_row_mem`'s abstract `hperp`: at a surviving edge's interior degree-2 chain vertex
+    `vtx (s+1)` (`hsd : s+1 < cd.d`, so `edge (s+1)` is a chain edge; the two incident chain edges are
+    `e_c = edge s`/`e_d = edge (s+1)`), feed the eq-(6.52) `λ`-grouped two-edge witness (the A-1 producer's
+    `lamAB`/`rab`/`lamAC`/`rac`/`grest` + the per-edge perps + col-vanishing) through A-2
+    (`candidate_perp_two_incident_supportExtensors`) to get `ρ₀ = ∑ⱼ lamAB j • rab j ⊥ Fva.supportExtensor
+    (edge s)` FOR REAL (A-2's first conjunct), then `exact cd.freshEdge_surviving_row_mem … hperp`. The `≠`
+    side-conditions `hab`/`hac` reuse the logged `congrArg Fin.val ∘ vtx_inj` idiom; the proof is a 2-`have` +
+    `exact` composition (no friction, built first try). NEXT = A-3 all-`i` lift (the iterated KT eq-(6.66)
+    carry — supply each interior vertex's col-vanishing witness, the genuinely-hard remaining piece) + the arm.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)
