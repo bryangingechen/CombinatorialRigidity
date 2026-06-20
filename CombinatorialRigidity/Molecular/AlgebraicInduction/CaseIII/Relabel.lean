@@ -2902,6 +2902,98 @@ theorem _root_.Graph.ChainData.i3_freshEdge_surviving_rows_mem_deRisk
     · exact (Fva.mem_hingeRowBlock_iff _ ρ₀).2 hp
   exact ⟨hrow 0 (by omega) hperp0, hrow 1 (by omega) hperp1⟩
 
+/-- **The `i = 3` all-`i`-lift ROUTE-FORK de-risk gate — the interior `v₁`-column of the W9a fold
+output lands ONLY in the *sup* of its two incident chain panels, NOT a single block**
+(CHAIN-2c-ii-arm, the A-3 all-`i` lift route fork; `notes/Phase23-design.md` §(o‴)(I.8.7), the
+"SMALLEST NEXT COMMIT = the i=3 DE-RISK"; Phase 23b). The de-risk that decides the A-3 all-`i` lift
+fork (Route W vs Route G4d-i-PROJECTED) **before** any leaf signature is pinned — the row-321
+failure mode was a confident pin ahead of the de-risk.
+
+**The fork.** The single-vertex A-3 composition `freshEdge_surviving_row_mem_of_witness` (landed)
+discharges each interior perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` from the eq.~(6.52) `λ`-witness
+(`hcol`/`hrest`) AS HYPS; the all-`i` lift must SUPPLY that witness at each interior `s < i − 1`,
+and the W6b producer supplies it only at the base `e₀`. **Route G4d-i-PROJECTED** (recommended in
+the recon) hoped to derive the interior perp the way the d=3 `M₃` engine does — projecting a span
+member's interior column into a *single* incident block via the one-edge G4d-i form
+(`acolumn_mem_hingeRowBlock_of_span_rigidityRows`, `case_III_arm_realization_M3`'s `hρ_ac`) — so
+that the witness `hcol`/`hrest` is not needed. **Route W** (not recommended) builds a genuinely-new
+per-vertex redundancy-witness producer.
+
+**What this gate establishes — the de-risk VERDICT, ground-truth in Lean (not paper reasoning).**
+At candidate `i = 3` the candidate framework removes `vtx 3`, so the interior vertex `a = vtx 1` is
+**genuinely degree-2** in `Fva = ofNormals (G − vtx 3) ends qρ`: BOTH incident chain edges
+`edge 0 = v₀v₁` and `edge 1 = v₁v₂` survive (endpoints `v₀, v₁, v₂` all `≠ v₃`, `vtx_inj`). The
+strongest column projection available from the fold output `hW : W φ ∈ span Fva.rigidityRows` is
+therefore the **two-edge sup** `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`: the `v₁`-column
+`W φ ∘ single (vtx 1)` lands in `block (edge 0) ⊔ block (edge 1)`, **NOT** in either block alone.
+The d=3 `M₃` mechanism does not project here: there the interior vertex is degree-**one** in the
+candidate split (the second incident edge links the *removed* vertex, so it dies in `removeVertex`),
+which is exactly what forces the one-edge form's single-block landing. At an honest interior chain
+vertex (`d ≥ 4`, `i = 3`) both edges survive, the sup is the ceiling, and `ρ₀ ⊥ C(edge 0)` (a
+*single*-block perp) is **not separable** from the sup without extra structure — the "vacuous `=⊤`"
+obstruction §(o‴)(I.8.3.v-REFUTED) named, now Lean-confirmed.
+
+**Verdict: the de-risk FAILS — Route G4d-i-PROJECTED's hoped single-block projection does not
+exist; Route W (the per-vertex `λ`-witness, via `freshEdge_surviving_row_mem_of_witness` + A-2) is
+FORCED.** This is a FLAG-AND-STOP for user adjudication (the genuinely-new-math fork): the all-`i`
+lift needs the per-vertex eq.~(6.52) witness supplied at each interior vertex (KT eq.~(6.66)'s
+per-vertex redundancy decomposition), which has no landed producer. The single-vertex consumers
+`freshEdge_surviving_row_mem_of_witness` + the A-2 carrier `candidate_perp_two_incident_*` STAND
+(they are Route W's building blocks). No motive/IH/contract change under either route. -/
+theorem _root_.Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    -- the landed W9a fold output `W φ ∈ span (G − v₃) rows`:
+    (hW : φ ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.rigidityRows) :
+    -- the strongest projection: the interior `v₁`-column lands in the *sup* of the two incident
+    -- chain panels — NOT a single block (the route-fork de-risk verdict).
+    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨1, by omega⟩)) ∈
+      ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge
+          |>.hingeRowBlock (cd.edge ⟨0, by omega⟩))
+      ⊔ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge
+          |>.hingeRowBlock (cd.edge ⟨1, by omega⟩)) := by
+  classical
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩))
+    ends qρ).toBodyHinge with hFva
+  -- The interior vertex `a = vtx 1` differs from its two surviving neighbours `vtx 0`/`vtx 2`.
+  have h10 : cd.vtx ⟨1, by omega⟩ ≠ cd.vtx ⟨0, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  have h12 : cd.vtx ⟨1, by omega⟩ ≠ cd.vtx ⟨2, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  -- The two incident chain edges survive `removeVertex (vtx 3)`, oriented FROM interior `vtx 1`.
+  -- `edge 0` links `vtx 0 — vtx 1` in `G` (`link` at `⟨0,_⟩`); take `.symm` to orient from `vtx 1`.
+  have hG0 : G.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) := by
+    have h := cd.link ⟨0, by omega⟩; simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  have hG1 : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) := by
+    have h := cd.link ⟨1, by omega⟩; simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  have hne03 : cd.vtx ⟨0, by omega⟩ ≠ cd.vtx ⟨3, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  have hne13 : cd.vtx ⟨1, by omega⟩ ≠ cd.vtx ⟨3, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  have hne23 : cd.vtx ⟨2, by omega⟩ ≠ cd.vtx ⟨3, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  have hlink_ec : Fva.graph.IsLink (cd.edge ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩)
+      (cd.vtx ⟨0, by omega⟩) := by
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hG0.symm, hne13, hne03⟩
+  have hlink_ed : Fva.graph.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩)
+      (cd.vtx ⟨2, by omega⟩) := by
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hG1, hne13, hne23⟩
+  -- The interior degree-2 closure at `vtx 1` (`deg_two ⟨1,_⟩`): every `G`-link of `vtx 1` is
+  -- `edge 0` or `edge 1`; an `Fva.graph`-link is a `G`-link, so the closure transports.
+  have hdeg2 : ∀ f x, Fva.graph.IsLink f (cd.vtx ⟨1, by omega⟩) x →
+      f = cd.edge ⟨0, by omega⟩ ∨ f = cd.edge ⟨1, by omega⟩ := by
+    intro f x hlink
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    have hGlink := (Graph.removeVertex_isLink.mp hlink).1
+    -- `deg_two ⟨1,_⟩` at `(vtx ⟨1,_⟩).castSucc = vtx 1` gives `f = edge ⟨0,_⟩ ∨ f = edge ⟨1,_⟩`.
+    have hd := cd.deg_two ⟨1, by omega⟩ (by simp) f x
+    simp only [Fin.castSucc_mk] at hd
+    exact hd hGlink
+  have hdeg2r : ∀ f x, Fva.graph.IsLink f x (cd.vtx ⟨1, by omega⟩) →
+      f = cd.edge ⟨0, by omega⟩ ∨ f = cd.edge ⟨1, by omega⟩ :=
+    fun f x hlink => hdeg2 f x hlink.symm
+  exact BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
+    (Fab := Fva) (Fv := Fva) h10 h12 hlink_ec hlink_ed rfl rfl hdeg2 hdeg2r hW
+
 /-- **The general-`i` surviving chain-edge row-membership builder — the `hsurv` summand the
 `hρGv` telescope defers** (CHAIN-2c-ii-arm, P2 of the ARM-WIRING DESIGN-PASS,
 `notes/Phase23-design.md` §(o‴)(I.8.4) step 2; Phase 23b). The general candidate-`i` lift of the

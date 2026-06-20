@@ -4729,6 +4729,26 @@ absorbed, no lemma" framing (lines ~2008/1976) is CORRECTED: the ±r chain is ab
 level, but the per-candidate `hρGv` span-membership needs the iterated per-vertex degree-2 column carry (the
 recommended `interior_perp_carry`), NOT a free absorption.
 
+**(I.8.7-RESULT) i=3 DE-RISK RAN — VERDICT: FAILURE → Route W FORCED → FLAG-AND-STOP (2026-06-20,
+Lean-verified, axiom-clean).** The de-risk landed as `Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk`
+(`Relabel.lean`): from `hW : φ ∈ span Fva.rigidityRows` (the W9a fold output at candidate `i=3`,
+`Fva = ofNormals (G−vtx 3) ends qρ`), the interior `vtx 1`-column `φ ∘ single (vtx 1)` lands in the **sup**
+`block(edge 0) ⊔ block(edge 1)` — NOT a single block — via the landed two-edge `acolumn_..._sup_...`. This is
+the strongest column projection available from `hW` alone, because at honest `i=3` the interior vertex `vtx 1`
+is **genuinely degree-2** in `Fva` (both incident chain edges `edge 0=v₀v₁`/`edge 1=v₁v₂` survive `removeVertex
+(vtx 3)`, endpoints `< 3`). Route G4d-i-PROJECTED's hoped single-block projection (the d=3 M₃ `hρ_ac`
+one-edge mechanism) **does not exist here** — at d=3 the interior vertex is degree-**one** in the candidate
+split (its 2nd incident edge links the *removed* vertex `v`, dying in `removeVertex v`, the `hdeg2` single-edge
+premise of the one-edge form), which is exactly what produced the single-block landing there. So `ρ₀ ⊥ C(edge
+0)` (a single-block perp) is **not separable** from the sup without the per-vertex eq.-(6.52) `λ`-witness — the
+"vacuous `=⊤`" obstruction (I.8.3.v-REFUTED) now Lean-confirmed. **Route W is FORCED**: the all-`i` lift needs
+the per-vertex redundancy witness (KT eq.~(6.66)) SUPPLIED at each interior vertex, via a genuinely-new producer
+`exists_interior_redundancy_witness` (no landed supply, grep-confirmed) feeding
+`freshEdge_surviving_row_mem_of_witness` + A-2. **This is genuinely-new math the design pinned for user
+adjudication** — the coordinator/dispatch cannot authorize it as a smallest-next-commit; the next session is a
+FLAG-AND-STOP awaiting the user's go-ahead on Route W's producer. Orphan status RESOLVED: `_of_witness` / A-2
+`candidate_perp_two_incident_*` STAND (Route W's building blocks).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

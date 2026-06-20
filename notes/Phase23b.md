@@ -162,23 +162,28 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     endpoints). `chainData_split_w6b_gates` threads it to its output in chain order (`(b,a)` branch negates
     `rab → −rab`, W8 sign-swap). 3 callers re-plumbed (`case_III_candidate_dispatch` `_`-ignores per d=3;
     `chainData_split_realization` `_`-ignores until the arm). Full project green + lint clean, d=3
-    zero-regression. **WITHDRAW** (at the arm build, zero live callers) the refuted
-    `freshEdge_surviving_row_mem` (the isolated-`hperp`-carrying builder) + `wstep_foldl_freshEdge_slot_mem`'s
-    `hsurv` form; the closed-form telescope + `acolumn_..._sup_...` STAND. **NEXT = A-3**: feed the A-1
-    witness through A-2 (`candidate_perp_two_incident_supportExtensors`) to discharge the
-    `freshEdge_surviving_row_mem`/`i3_*` `hperp`/`hperp0`/`hperp1` hyps for real, generalize to all `i`, then
-    the arm assembly `chainData_relabel_arm`. NO motive/IH change.
+    zero-regression. The closed-form telescope + `acolumn_..._sup_...` STAND. **A-3 single-vertex composition
+    DONE** (`freshEdge_surviving_row_mem_of_witness`), then **A-3 all-`i`-lift i=3 DE-RISK RAN → Route W
+    FORCED → ⚠ FLAG-AND-STOP** (next bullet).
+  - **A-3 all-`i`-lift i=3 DE-RISK — RAN 2026-06-20, axiom-clean → ⚠ FLAG-AND-STOP** (Decisions entry
+    *P2 A-3 all-`i`-lift i=3 DE-RISK*; design §(o‴)(I.8.7-RESULT); lemma
+    `Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk`). VERDICT = Route W FORCED. At honest `i=3`
+    the interior `vtx 1` is GENUINELY degree-2 in `Fva = G−vtx 3` (both `edge 0`/`edge 1` survive), so the
+    strongest column projection of the fold output `hW` is the **sup** `block(edge 0) ⊔ block(edge 1)`, NOT a
+    single block — the d=3 M₃ single-block route (degree-one interior in the split) does NOT generalize. So
+    the per-vertex eq.-(6.52) witness can't be derived from `hW`/`hρe₀` alone; **Route W's new producer
+    `exists_interior_redundancy_witness` (KT eq.~(6.66), no landed supply) is genuinely-new math the next
+    session must flag for user adjudication.** `_of_witness` + A-2 `candidate_perp_two_incident_*` STAND.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
     `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
 
-  The A-2 de-risk CORE (the perp from the eq.~(6.52) witness) is now LANDED (Route A,
-  `candidate_perp_two_incident_panels`/`_supportExtensors`); the remaining P2 work is purely A-1
-  (re-thread the witness through the W6b producer to the de-risk's `hperp` hyps, B=2) → A-3 (all-`i`
-  lift + arm). The `i=3` gates (`i3_freshEdge_slot_mem_deRisk` abstract `m=2` `sub_mem` peel;
-  `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership, perp as `hperp0/1`) STAND
-  as the de-risk shells the witness now feeds; their `hperp` hyps are what A-2's core discharges.
+  The P2 A-2/A-1/A-3-single-vertex steps are LANDED (Route A); the **A-3 all-`i` lift is BLOCKED on
+  Route W** (the i=3 de-risk refuted the witness-free Route G4d-i-PROJECTED). The `i=3` gates
+  (`i3_freshEdge_slot_mem_deRisk` abstract `m=2` `sub_mem` peel; `i3_freshEdge_surviving_rows_mem_deRisk`
+  concrete surviving-row membership, perp as `hperp0/1`; `i3_freshEdge_interior_acolumn_sup_deRisk` the
+  route-fork de-risk) STAND. The arm `chainData_relabel_arm` is gated on Route W's new producer (+ P3).
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -391,22 +396,28 @@ discharge `freshEdge_surviving_row_mem`'s `hperp` for REAL: the new composition 
 `freshEdge_surviving_row_mem_of_witness` (`Relabel.lean`) takes the eq-(6.52) `λ`-grouped two-edge witness at
 the surviving edge's interior degree-2 vertex `vtx (s+1)` (with `ρ₀ = ∑ⱼ lamAB j • rab j`, `hsd : s+1 < cd.d`
 so `edge (s+1)` is a chain edge), applies A-2 to get `ρ₀ ⊥ Fva.supportExtensor (edge s)`, and threads it to the
-`link`-half builder. ZERO blast radius (no live caller). **(NEXT) A-3 all-`i` lift — ROUTE FORK, recon-settled
-to a de-risk-first (design §(o‴)(I.8.7), recon row 328, opus read-only Plan + coordinator scrutiny).** The
-all-`i` lift must SUPPLY each interior vertex's witness (the `hsurv` summands, `m=i−1`), which A-1 gives only at
-the base `e₀`. Recon verdict: the **witness-propagation route (Route W)** has NO landed supply (a genuinely-new
-~3–5-commit producer if forced); the **RECOMMENDED route (G4d-i-PROJECTED)** — the d=3 M₃ mechanism, deriving
-the interior perp from `hρe₀` + `hW`/the fold output + the LANDED two-edge sup form (`acolumn_..._sup_...`), NOT
-`hcol`/`hrest` — hinges on ONE genuinely-new sup-projection lemma the recon could not confirm landed (flagged,
-not pinned). **SMALLEST NEXT COMMIT = the i=3 DE-RISK**: confirm the interior perp at `i=3` (interior vertex v₁,
-edges `edge 0=v₀v₁`/`edge 1=v₁v₂`) is derivable from `hρe₀` + `hW` + the two-edge degree-2 geometry WITHOUT the
-per-vertex `hcol`/`hrest`. It DECIDES the fork before any leaf signature. **SUCCESS** → Route G4d-i-PROJECTED
-(then `interior_perp_carry` + the `s↦s+1` induction `chainData_freshEdge_surviving_row_mem` + the arm;
-`_of_witness`/A-2 orphaned, confirm-and-delete at the arm). **FAILURE** → Route W forced — **FLAG for user
-adjudication** (genuinely-new math). **Orphan status FORK-DEPENDENT** — do NOT delete `_of_witness` / A-2
-`candidate_perp_two_incident_*` until the de-risk decides (they STAND under Route W). `freshEdge_surviving_row_mem`
-(the perp-half BUILDER — LIVE under BOTH routes; only the per-edge-perp slot-peel *framing* was withdrawn) + the
-telescope (`:2938`/`:3006`) + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3
+`link`-half builder. ZERO blast radius (no live caller). **(NEXT) A-3 all-`i` lift — the i=3 DE-RISK RAN
+2026-06-20 (`i3_freshEdge_interior_acolumn_sup_deRisk`, `Relabel.lean`, axiom-clean) and the recommended
+Route G4d-i-PROJECTED FAILS → Route W is FORCED → ⚠ FLAG-AND-STOP for user adjudication (genuinely-new math).**
+The recon-settled de-risk (design §(o‴)(I.8.7), row 328) asked: at `i=3` (interior vertex v₁, edges
+`edge 0=v₀v₁`/`edge 1=v₁v₂`), is the interior perp `ρ₀ ⊥ Fva.supportExtensor (edge 0)` derivable from `hρe₀` +
+`hW`/the fold output + the two-edge degree-2 geometry WITHOUT the per-vertex eq.-(6.52) `λ`-witness
+(`hcol`/`hrest`)? **Lean-verified VERDICT = NO.** At `i=3` the candidate removes `vtx 3`, so v₁ is GENUINELY
+degree-2 in `Fva = G−vtx 3` (BOTH `edge 0`/`edge 1` survive, endpoints v₀/v₁/v₂ ≠ v₃). The strongest column
+projection from `hW : φ ∈ span Fva.rigidityRows` is the **two-edge sup** `acolumn_..._sup_...`: the v₁-column
+lands in `block(edge 0) ⊔ block(edge 1)`, NOT a single block — the "vacuous `=⊤`" obstruction
+(§(o‴)(I.8.3.v-REFUTED)) now Lean-confirmed. The d=3 M₃ mechanism (`hρ_ac`, one-edge G4d-i) does NOT project
+here: at d=3 the interior vertex is degree-**one** in the candidate split (its 2nd edge links the *removed*
+vertex), which is what forced the single-block landing. So the hoped single-block projection does not exist;
+**Route W (the per-vertex eq.-(6.52) witness via `freshEdge_surviving_row_mem_of_witness` + A-2) is FORCED** —
+the all-`i` lift needs that witness SUPPLIED at each interior vertex (KT eq.~(6.66)'s per-vertex redundancy
+decomposition), which has NO landed producer (a genuinely-new ~3–5-commit producer
+`exists_interior_redundancy_witness` generalizing `exists_redundant_panelRow_ab_decomposition_acolumn_zero`,
+`Candidate.lean:571`). **This is the FLAG-AND-STOP point: the next step (Route W's new producer) is
+genuinely-new math the design pinned for user adjudication, not the smallest-next-commit a dispatch can
+authorize.** **Orphan status RESOLVED by the failed de-risk:** `_of_witness` / A-2 `candidate_perp_two_incident_*`
+STAND (Route W's building blocks, NOT confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER)
++ the telescope (`:2938`/`:3006`) + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3
 zero-regression. Then the arm `chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v)
 `ρ₀_perp_interior_chain_edge` route is superseded by (I.8.7).)
 **(P3, flagged, likely
@@ -710,8 +721,22 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     (`candidate_perp_two_incident_supportExtensors`) to get `ρ₀ = ∑ⱼ lamAB j • rab j ⊥ Fva.supportExtensor
     (edge s)` FOR REAL (A-2's first conjunct), then `exact cd.freshEdge_surviving_row_mem … hperp`. The `≠`
     side-conditions `hab`/`hac` reuse the logged `congrArg Fin.val ∘ vtx_inj` idiom; the proof is a 2-`have` +
-    `exact` composition (no friction, built first try). NEXT = A-3 all-`i` lift (the iterated KT eq-(6.66)
-    carry — supply each interior vertex's col-vanishing witness, the genuinely-hard remaining piece) + the arm.
+    `exact` composition (no friction, built first try).
+  - **P2 A-3 all-`i`-lift i=3 DE-RISK — RAN 2026-06-20, axiom-clean → VERDICT: Route W FORCED → ⚠
+    FLAG-AND-STOP** (`Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk`, `Relabel.lean`; design
+    §(o‴)(I.8.7-RESULT)). The recon (row 328) settled the all-`i` lift to a de-risk-first fork: SUCCESS →
+    Route G4d-i-PROJECTED (derive each interior perp the d=3 M₃ way, no per-vertex `λ`-witness); FAILURE →
+    Route W (a genuinely-new per-vertex witness producer) → FLAG for the user. The gate proves: from
+    `hW : φ ∈ span Fva.rigidityRows` (the W9a fold output, `Fva = G−vtx 3`) the interior `vtx 1`-column lands
+    ONLY in the **sup** `block(edge 0) ⊔ block(edge 1)` (the landed two-edge `acolumn_..._sup_...`), NOT a
+    single block — because at honest `i=3` the interior `vtx 1` is GENUINELY degree-2 (both edges survive).
+    The d=3 single-block projection does NOT generalize: at d=3 the interior vertex is degree-one in the
+    split (2nd edge dies in `removeVertex v`). So `ρ₀ ⊥ C(edge 0)` is NOT separable from the sup without the
+    witness — Route G4d-i-PROJECTED FAILS, **Route W is forced**. Route W's producer
+    (`exists_interior_redundancy_witness`, KT eq.~(6.66) per-vertex redundancy, no landed supply) is
+    genuinely-new math: **the next session must FLAG-AND-STOP for user adjudication.** Orphan status RESOLVED:
+    `_of_witness` + A-2 `candidate_perp_two_incident_*` STAND (Route W building blocks). NO motive/IH change;
+    d=3 zero-regression (M₃ is the `m=1` single-summand case, exercising no interior leaf).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)
