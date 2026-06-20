@@ -1459,6 +1459,39 @@ theorem BodyHingeFramework.wstep_foldl_funLeft_eq [DecidableEq α] (bodies : Lis
       List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one, mul_inv_rev,
       Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
 
+/-- **LEAF-ρ2 — the relabel-only ascending fold sends a hinge row to its inverse-cycle-relabelled
+row** (CHAIN-2c-ii-arm, the `hρGv` literal-row identification; `notes/Phase23-design.md` §(o‴)(I.7),
+LEAF-ρ2). The *relabel-only* component of the seed-advancing cycle-W9a `foldl` — the bare
+`(funLeft (swap aₛ vₛ)).dualMap` fold over the ascending moved-body list `shiftBodyListAsc i`,
+without the per-step `a`-column residue subtractions — sends an arbitrary hinge row
+`hingeRow x y ρ₀` to the literal candidate row
+`hingeRow ((shiftPerm i.castSucc)⁻¹ x) ((shiftPerm i.castSucc)⁻¹ y) ρ₀`
+under the **base→candidate** inverse-cycle relabel.
+
+This is the d=3 `M₃` step-2/3 generalization (`case_III_arm_realization_M3`, `Relabel.lean:2490`):
+there the single relabel `(funLeft (a v)).dualMap (hingeRow a b ρ) = hingeRow v b ρ` identifies the
+W9a image's relabel component as the genuine `e_b`-row; here the `i − 1`-step fold's relabel
+component is the single named inverse-cycle relabel of the literal base redundancy. The proof is a
+pure rewrite over the two landed G1 bridges: `wstep_foldl_funLeft_eq` rewrites the relabel-only
+`foldl` to `(funLeft ⇑((bodies.map swap).prod)⁻¹).dualMap`, then
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` identifies the swap product with
+`shiftPerm i.castSucc` (so its inverse is `(shiftPerm i.castSucc)⁻¹`), and
+`hingeRow_funLeft_dualMap` evaluates the dual
+relabel on the literal row. The arm closer (`chainData_relabel_arm`, LEAF-ρ3) then resolves the two
+relabelled endpoints `(shiftPerm i.castSucc)⁻¹ x` / `…⁻¹ y` to the candidate roles via the landed
+`shiftPerm_inv_*` action lemmas (`Operations.lean:1550–1572`). Graph-free over the carrier. -/
+theorem _root_.Graph.ChainData.shiftBodyListAsc_relabel_foldl_hingeRow [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (x y : α)
+    (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    ((cd.shiftBodyListAsc i).foldl
+        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        LinearMap.id) (BodyHingeFramework.hingeRow (k := k) (α := α) x y ρ₀)
+      = BodyHingeFramework.hingeRow (k := k) (α := α)
+          ((cd.shiftPerm i.castSucc)⁻¹ x) ((cd.shiftPerm i.castSucc)⁻¹ y) ρ₀ := by
+  rw [BodyHingeFramework.wstep_foldl_funLeft_eq,
+    ← cd.shiftPerm_eq_prod_map_swap_shiftBodyListAsc i,
+    BodyHingeFramework.hingeRow_funLeft_dualMap]
+
 /-- **The cycle-W9a intermediate-framework chain `F = ofNormals ∘ shiftBodyGraph`**
 (CHAIN-2c-ii-transport-W9a, the framework layer; `notes/Phase23-design.md` §(o″)). The
 `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of *intermediate

@@ -4048,10 +4048,11 @@ de-risk gate at `i=3`, the first 2-residue case, is the cheap check, mirroring t
 
 **(I.7.5) Leaf count + P-ratings (for sequencing).** Three leaves: **LEAF-ρ1** residue-membership
 invariant (P≈3, the genuinely-new multi-residue telescope, ~1–2 commits; gate at `i=3` first) →
-**LEAF-ρ2** literal-row identification via the landed G1 bridges + `shiftPerm_inv_*` (P≈2, a rewrite
-chain, ~½ commit, can fold into ρ3) → **LEAF-ρ3** the `hρGv` assembly inline in the arm (P≈2, the
-`sub_mem`/`add_mem` combine). Total for `hρGv`: **~2–3 commits**, the LEAF-ρ1 telescope the only real
-risk. The arm wiring `chainData_relabel_arm` then consumes `hwmem` (landed `chainData_bottom_relabel`),
+**LEAF-ρ2 — LANDED 2026-06-20** literal-row identification `shiftBodyListAsc_relabel_foldl_hingeRow`
+via the landed G1 bridges + `hingeRow_funLeft_dualMap` (the `shiftPerm_inv_*` endpoint resolution
+moves to the arm closer; the lemma is stated generically over `x y ρ₀`) → **LEAF-ρ3** the `hρGv`
+assembly inline in the arm (P≈2, the `sub_mem`/`add_mem` combine). Total for `hρGv`: **~2–3 commits**,
+the LEAF-ρ1 telescope the only real risk. The arm wiring `chainData_relabel_arm` then consumes `hwmem` (landed `chainData_bottom_relabel`),
 `hρGv` (LEAF-ρ3), block (`blockRow_relabel_perm`), `hρe₀`/`htrans` (G4d-i + 2c-i) — a further ~1 commit
 of slot-instantiation bookkeeping (the §38 explicit-seed pins, the `−ρ₀` shared functional). So the
 hand-off's "multi-commit effort with real convergence risk" is confirmed: **~3–4 commits to the closed
