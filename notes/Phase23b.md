@@ -15,10 +15,12 @@ The **`hρGv` G1 bridges are now LANDED** (`shiftPerm_eq_prod_map_swap_shiftBody
 bridging the landed W9a `foldl` fold (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to the engine's
 `qρ`/`shiftPerm` form — the `foldl` order lands on the *inverse* product `(funLeft (shiftPerm
 i.castSucc)⁻¹)`, exactly the base→candidate inverse-cycle relabel the arm wants.
-**NEXT = the arm wiring** `chainData_relabel_arm` (instantiate `case_III_arm_realization` at the
-per-`i` roles: `hwmem` → the landed `chainData_bottom_relabel`, block → `blockRow_relabel_perm`,
-`hρGv` → the landed W9a fold + G1 bridges) → **2c-iii** `chainData_dispatch` (closes 23b green-modulo
-`hdispatch`). detail = *Current state* + *Hand-off*.
+**NEXT = the arm wiring** `chainData_relabel_arm` — **⚠ RECON-BEFORE-BUILD** (a build agent judged it +
+its `hρGv` slot multi-commit/convergence-risk; the crux is the `hρGv` fold-vs-literal-row reconciliation,
+*Hand-off*): instantiate `case_III_arm_realization` at the per-`i` roles (`hwmem` → the landed
+`chainData_bottom_relabel`, block → `blockRow_relabel_perm`, `hρGv` → the landed W9a fold + G1 bridges)
+→ **2c-iii** `chainData_dispatch` (closes 23b green-modulo `hdispatch`). detail = *Current state* +
+*Hand-off*.
 **Settled context (full detail in Tracker + Hand-off):** the arm engine binds `hwmem`/`hρGv` at
 **removeVertex** level (`ofNormals Gv ends q`, `Gv ≤ G`), so the split-level rows-288/291 bricks
 `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` are **orphaned-for-the-arm** (the resolved
@@ -261,8 +263,18 @@ reverses the product to the **inverse**, which composed with the perm bridge is 
 (shiftPerm i.castSucc)⁻¹).dualMap`, the base→candidate inverse-cycle relabel the arm wants (the same
 `.symm`/`⁻¹` form the `hwmem` leaf `chainData_bottom_relabel` already uses).
 
-**NEXT STEP — the arm wiring `chainData_relabel_arm`** (instantiate `case_III_arm_realization` at the
-per-`i` roles, the cycle generalization of d=3 `case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm
+**NEXT STEP — the arm wiring `chainData_relabel_arm` — ⚠ RECON-BEFORE-BUILD.** A build agent that
+mapped every piece (2026-06-20, after the `hwmem` leaf + G1 bridges landed) judged the full arm + its
+`hρGv` slot a genuine **multi-commit effort with real convergence risk**, and a sibling attempt
+sideways-shrank to a cleanup rather than risk a BLOCKED revert. **The crux is the `hρGv`
+fold-vs-literal-row reconciliation:** the landed W9a `foldl` carries `hingeRow a b ρ ∈ span (candidate-`i`
+rigidityRows)` with accumulated a-column subtractions, but the engine's `hρGv` slot wants the *literal*
+relabelled row — repackaging the span member back to the literal bottom row (the "d=3-style bare-row
+extraction" below) is the unbuilt hard step. **Per the `coordinate-phase` step-1 trigger (a build agent
+flags the next piece as genuinely-hard), the next move is a design-pass that decomposes `hρGv` into
+buildable leaves with exact signatures — NOT a direct build attempt.** The wiring shape (to feed that
+recon): instantiate `case_III_arm_realization` at the per-`i` roles (the cycle generalization of d=3
+`case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm
 i.castSucc`, shared `−ρ₀`; `hwmem` → the landed `chainData_bottom_relabel`; `hρGv` → the landed W9a fold
 + G1 bridges (the `wstep` `foldl` carries `hingeRow a b ρ ∈ span (candidate-`i` rigidityRows)`, with the
 G1 bridges rewriting its relabel component to `funLeft (shiftPerm i.castSucc)⁻¹` and the d=3-style
