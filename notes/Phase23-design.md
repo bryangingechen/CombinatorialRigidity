@@ -4825,6 +4825,24 @@ subsumes it). This SUPPLIES the transport identity option (a′)'s producer thre
 `exists_interior_redundancy_witness` build now consumes a landed `panelCorrespondence_supportExtensor` rather
 than re-deriving the transport. No motive/IH/contract change.
 
+**(I.8.8-BRIDGE) THE PER-EDGE PERP-TRANSPORT BRIDGE — LANDED 2026-06-20, axiom-clean.** Landed as
+`Graph.ChainData.candidate_supportExtensor_perp_of_base` (`Relabel.lean`), the producer-facing wrapper of
+`panelCorrespondence_supportExtensor`: for any `i : Fin cd.d` and any surviving interior chain edge `edge s`
+(`s + 1 < (i : ℕ)`), a screw-level functional `ρ'` perp to the `v₁`-base framework's
+`supportExtensor (shiftEdgePerm i (edge s))` is perp to the candidate-`i` framework's `supportExtensor
+(edge s)`. The proof is two lines — `rw [panelCorrespondence_supportExtensor i s hsi]; exact hperp` (the
+transport identity is an *equality* of support extensors, so the perp `rw`s straight across). This is the
+shape the producer `exists_interior_redundancy_witness` threads its witness's per-row perps across: A-1's base
+witness at `G₁` supplies `rab j ⊥ v₁-base.supportExtensor (shiftEdgePerm i (edge s))`, and this bridge yields
+the candidate-side `hperp_ab : rab j ⊥ candidate-i.supportExtensor (edge s)` that
+`freshEdge_surviving_row_mem_of_witness` (A-3) consumes. Self-contained over the landed transport identity,
+zero blast radius. **NEXT (after this commit): the producer body `exists_interior_redundancy_witness`** —
+re-derive A-1's eq-(6.52) two-edge witness at the base split `G₁` (where `h618`/`h622lb` are available),
+thread its per-row perps through this bridge at the interior vertex `vtx (s+1)`'s two surviving incident edges
+`edge s`/`edge (s+1)`, and feed `freshEdge_surviving_row_mem_of_witness` + A-2 per interior vertex (+ the
+flagged P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`). No motive/IH/contract change; d=3 (`i = 2`)
+zero-regression.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

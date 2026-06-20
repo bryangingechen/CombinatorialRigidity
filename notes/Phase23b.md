@@ -185,9 +185,17 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     `i3_panelCorrespondence_supportExtensor_deRisk` is now a thin two-conjunct corollary** (re-pointed, same
     statement, d=3 zero-regression). **VERDICT = SUCCESS → option (a′) is buildable** (the perp transports
     across this coincidence; no metric/Plücker step); the transport is now SUPPLIED for the producer.
-    **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (option (a′): witness = A-1's base
-    producer ∘ `panelCorrespondence_supportExtensor`; feed `_of_witness` + A-2 per interior vertex), then the
-    arm.
+  - **PER-EDGE PERP-TRANSPORT BRIDGE — LANDED 2026-06-20, axiom-clean** (lemma
+    `Graph.ChainData.candidate_supportExtensor_perp_of_base`, `Relabel.lean`; design §(o‴)(I.8.8) option
+    (a′)). The producer-facing wrapper of `panelCorrespondence_supportExtensor`: a screw-level functional
+    `ρ'` perp to the `v₁`-base framework's `supportExtensor (shiftEdgePerm i (edge s))` is perp to the
+    candidate-`i` framework's `supportExtensor (edge s)` (any `i : Fin cd.d`, surviving interior `edge s`,
+    `s + 1 < (i : ℕ)`) — `rw [panelCorrespondence_supportExtensor]; exact hperp`. This turns a base-side
+    perp (A-1's base witness at `G₁`) into the candidate-side `hperp_ab`/`hperp_ac`
+    (`freshEdge_surviving_row_mem_of_witness` (A-3) interface). Self-contained, zero blast radius.
+    **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (option (a′): re-derive A-1's
+    base witness at `G₁`, thread per-row perps through `candidate_supportExtensor_perp_of_base`, feed
+    `_of_witness` + A-2 per interior vertex; + the flagged P3 seed bridge), then the arm.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
@@ -447,12 +455,20 @@ KT-corresponding edge `shiftEdgePerm i (edge s)`, VERBATIM — a direct applicat
 ofNormals_normal]`). The corresponding base edge resolves via `shiftEdgePerm_apply_edge_{zero,interior}`
 (`edge 0 ↦ e₀` at `s=0`, `edge s ↦ edge (s+1)` for `s≥1`). **The earlier `i=3` de-risk gate
 `i3_panelCorrespondence_supportExtensor_deRisk` is now a thin two-conjunct corollary of this general lemma**
-(re-pointed, same statement, axiom-clean, d=3 zero-regression). **← NEXT SMALLEST COMMIT = Route W's producer
+(re-pointed, same statement, axiom-clean, d=3 zero-regression). **THE PER-EDGE PERP-TRANSPORT BRIDGE is now
+LANDED 2026-06-20** (`candidate_supportExtensor_perp_of_base`, `Relabel.lean`, axiom-clean): a screw-level
+functional `ρ'` perp to the `v₁`-base framework's `supportExtensor (shiftEdgePerm i (edge s))` is perp to the
+candidate-`i` framework's `supportExtensor (edge s)` (any `i : Fin cd.d`, surviving interior `edge s`,
+`s + 1 < (i : ℕ)`) — a one-step `rw [panelCorrespondence_supportExtensor]; exact hperp`. This is option (a′)'s
+load-bearing step in the shape the producer threads its per-row perps across: base-side perp (from A-1's base
+witness at `G₁`) → candidate-side `hperp_ab`/`hperp_ac` (the `freshEdge_surviving_row_mem_of_witness` (A-3)
+interface). Self-contained, zero blast radius. **← NEXT SMALLEST COMMIT = Route W's producer
 `exists_interior_redundancy_witness` (option (a′)):** re-derive A-1's eq-(6.52) two-edge witness at the base
-split `G₁` (where `h618`/`h622lb` are available — reuse A-1's instantiation), then transport the perp conclusion
-to `Fva = G−vtx i` across `panelCorrespondence_supportExtensor` (now SUPPLIED, general-`i`) + the flagged P3
+split `G₁` (where `h618`/`h622lb` are available — reuse A-1's instantiation), then transport the per-row perps
+to `Fva = G−vtx i` across `candidate_supportExtensor_perp_of_base` (now SUPPLIED) + the flagged P3
 seed bridge; feed `freshEdge_surviving_row_mem_of_witness` + A-2 at each interior vertex.
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
+/ `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
 confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER) + the telescope (`:2938`/`:3006`)
 + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3 zero-regression. Then the arm
@@ -805,6 +821,16 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     (subsumed by `hsi : s+1 < i`). This is the transport identity option (a′)'s producer threads its perp
     across. **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (re-derive A-1's base witness
     at `G₁`, transport across this identity per interior vertex, + the flagged P3 seed bridge).
+  - **P2 A-3 Route W per-edge PERP-TRANSPORT BRIDGE — LANDED 2026-06-20, axiom-clean**
+    (`Graph.ChainData.candidate_supportExtensor_perp_of_base`, `Relabel.lean`; design §(o‴)(I.8.8) option
+    (a′)). The producer-facing wrapper of `panelCorrespondence_supportExtensor`: a base-side perp `ρ' ⊥
+    v₁-base.supportExtensor (shiftEdgePerm i (edge s))` becomes the candidate-side perp `ρ' ⊥
+    candidate-i.supportExtensor (edge s)` (any `i : Fin cd.d`, surviving interior `edge s`, `s + 1 < i`) —
+    two lines, `rw [panelCorrespondence_supportExtensor]; exact hperp`. Turns A-1's base witness perps into
+    the candidate-side `hperp_ab`/`hperp_ac` `freshEdge_surviving_row_mem_of_witness` (A-3) consumes. Built
+    first try, no friction; self-contained, zero blast radius. **← NEXT: the producer body
+    `exists_interior_redundancy_witness`** (re-derive A-1's base witness at `G₁` + thread its per-row perps
+    through this bridge + feed `_of_witness`/A-2 per interior vertex, + the flagged P3 seed bridge).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

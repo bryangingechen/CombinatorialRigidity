@@ -3369,4 +3369,43 @@ theorem _root_.Graph.ChainData.i3_panelCorrespondence_supportExtensor_deRisk
   · rw [cd.panelCorrespondence_supportExtensor ⟨3, by omega⟩ 1 (by norm_num),
       cd.shiftEdgePerm_apply_edge_interior ⟨3, by omega⟩ (by norm_num) (by norm_num)]
 
+/-- **Route W's per-edge perp transport: a base-split perp becomes a candidate-split perp**
+(CHAIN-2c-ii-arm, the structural bridge `exists_interior_redundancy_witness` threads its witness's
+per-row perps across; `notes/Phase23-design.md` §(o‴)(I.8.8) option (a′); KT 2011 §6.4.2 eqs.
+(6.59)/(6.62) the index-shift panel correspondence; Phase 23b).
+
+A screw-level functional `ρ'` perpendicular to the `v₁`-base framework's supporting extensor at the
+KT-corresponding edge `shiftEdgePerm i (edge s)` is perpendicular to the candidate-`i` framework's
+supporting extensor at the surviving interior chain edge `edge s` — for any candidate `i : Fin cd.d`
+and surviving interior edge `edge s` (`s + 1 < (i : ℕ)`, so both endpoints `vtx s`, `vtx (s+1)`
+survive `removeVertex (vtx i)`). This is a one-step `rw` of the landed general-`i` transport
+identity `panelCorrespondence_supportExtensor` (the two frameworks' supporting extensors at the
+corresponding edges are *equal*).
+
+This is the load-bearing step of option (a′): Route W re-derives A-1's eq.~(6.52) two-edge witness
+at the **base split `G₁`** (where the eq.~(6.24) decomposition's rigidity premises `h618`/`h622lb`
+are available), obtaining the per-row perps `rab j ⊥ G₁-base.supportExtensor (shiftEdgePerm i
+(edge s))`, then this lemma transports them to the candidate framework's `hperp_ab`/`hperp_ac`
+shape that `freshEdge_surviving_row_mem_of_witness` (A-3) consumes. The candidate framework is the
+relabelled
+`ofNormals (G − vtx i) endsσρ qρ` shape `chainData_bottom_relabel` produces for the `hwmem` slot.
+Self-contained over the landed transport identity, **zero blast radius** (no live caller; consumed
+by the producer + the arm). d=3 (`i = 2`) is the landed `M₃` swap involution. -/
+theorem _root_.Graph.ChainData.candidate_supportExtensor_perp_of_base
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ)
+    (hsi : s + 1 < (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ} (ρ' : Module.Dual ℝ (ScrewSpace k))
+    (hperp : ρ' ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+        ends₀ q).toBodyHinge.supportExtensor
+          (cd.shiftEdgePerm i (cd.edge ⟨s, by have := i.isLt; omega⟩))) = 0) :
+    ρ' ((PanelHingeFramework.ofNormals
+        (G.removeVertex (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1,
+          p.2))).toBodyHinge.supportExtensor (cd.edge ⟨s, by have := i.isLt; omega⟩)) = 0 := by
+  rw [cd.panelCorrespondence_supportExtensor i s hsi]
+  exact hperp
+
 end CombinatorialRigidity.Molecular
