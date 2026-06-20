@@ -3802,6 +3802,35 @@ per-`i` roles), the genuinely-new transport math all landed. No motive/IH/spine-
 route β + d=3 zero-regression preserved (the d=3 M₃ `i=2` cycle is the single-swap involution,
 `(shiftPerm 2)⁻¹ = shiftPerm 2`).
 
+**(I.5) CORRECTION — the (I.3)/(I.4) "genuine-row `hwmem` via the split-level graph-iso" reading is WRONG;
+the genuine-row `hwmem` disjunct is the OPEN §6.4.2 crux (2026-06-19, a build BLOCKED + read-only recon-1,
+source-verified; user-adjudicated → de-risk recon).** (I.3) said the genuine-row disjunct rides
+`splitOff_isLink_shiftRelabel_iff` (split→split) and (I.4) closed "the next build step is the arm, gated
+only by bookkeeping, the transport math all landed." **Both are wrong about the genuine-row `hwmem`
+slot.** Source check of the three deciding signatures:
+- The arm **engine** `case_III_arm_realization` (`Arms.lean:72`) binds BOTH `hwmem` (`:96`) and `hρGv`
+  (`:91`) at `ofNormals Gv ends q` with `hleG : Gv ≤ G` (`:79`) and `v ∉ V(Gv)` (`:76`). Since
+  `splitOff … e₀ ⋬ G` (the fresh `e₀`), `Gv` is **removeVertex-level**, never a split.
+- The d=3 wiring `case_III_arm_realization_M3` (`:1870`) instantiates the engine with `Gv := G.removeVertex
+  a` (`:1957`) and discharges `case hwmem` (`:2065`) by `case_III_bottom_relabel (hwmem j)` — i.e. the
+  transport is `(G−v) → (G−a)`, **removeVertex→removeVertex**, by the **bespoke degree-2 argument**
+  `case_III_bottom_relabel` (`:1600`, NOT a graph-iso, NOT `splitOff_isLink_shiftRelabel_iff`).
+- `rigidityRow_chainData_relabel` (`:270`) / `rigidityRow_relabel_perm` (`:180`) transport split→split (both
+  sides `ofNormals (G.splitOff … cd.e₀) …`). Wrong graph level for `hwmem`/`hρGv` ⇒ **orphaned-for-the-arm**
+  (add to the H.5 confirm-and-delete list).
+
+So the genuine-row `hwmem` disjunct = the **literal per-member removeVertex** cycle transport generalizing
+`case_III_bottom_relabel:1499–1595` from a single swap to `(shiftPerm i)⁻¹` — exactly the §(I.4)/(F)(D)
+"open fact, difficulty unknown", now the **live blocker**, NOT discharged. The removeVertex cycle
+intertwiner is *false* (the bijection closes through `e₀`), and `hwmem` needs *literal* rows (not the W9a
+span). The obstruction to settle (the de-risk recon's question): a pure relabel sends a
+genuine-row-at-a-moving-body to a block (`:1672`); does a single inverse-cycle relabel keep the rest genuine
+or spawn a homeless interior block (the (I.1) obstruction that killed the W9b fold)? Also corrected:
+`hρGv` is **not closed** — its G1 seed/relabel bridges (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`,
+`wstep_foldl_funLeft_eq`) are unbuilt (grep: zero def-sites); only the W9a fold core + concrete instance
+landed. **Correctly slotted:** only the block disjunct `blockRow_relabel_perm` (I.2). Live verdict: the
+de-risk recon settles tractability before any build leaf.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

@@ -2,17 +2,27 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
-**Remaining: CHAIN-2** (the `Fin d` reduction layer) — corrected Fix A SETTLED (§(o‴)(H)). The
-candidate-row (`hρGv`) W9a fold, **both `hwmem` disjunct transports** (named `(ρ,σ)` bricks: genuine-row
-`rigidityRow_relabel_perm` + block `blockRow_relabel_perm`, axiom-clean), and the seed lemmas all LANDED;
-the **W9b per-body chain DELETED** (§(o‴)(I.1), dead infra). The genuinely-new transport math is DONE — the
-arm `chainData_relabel_arm` narrows to **arm-instantiation bookkeeping** (wire the bricks + W9a fold +
-Leaf-B G4d-i into its slots). NEXT = 2c-ii-arm `chainData_relabel_arm` → 2c-iii; detail = *Current state* +
-*Hand-off*)
+**Remaining: CHAIN-2** (the `Fin d` reduction layer) — corrected Fix A SETTLED (§(o‴)(H)). **⚠ 2c-ii-arm
+is NOT pure instantiation (recon-1 + a build BLOCKED, 2026-06-19, source-verified — corrects the
+optimistic rows-288/291 framing).** The arm's THREE `hwmem`/`hρGv` ingredient-slots are at **removeVertex**
+level (the engine `case_III_arm_realization` binds `hwmem`/`hρGv` at `ofNormals Gv ends q`, `Gv ≤ G`,
+`splitOff ⋬ G`), and only the **block disjunct** (`blockRow_relabel_perm`) is correctly slotted. The
+genuine-row `hwmem` disjunct is the **open §6.4.2 crux**: a *literal per-member removeVertex* cycle
+transport generalizing the d=3 `case_III_bottom_relabel` (a bespoke degree-2 argument) from a single swap
+to `(shiftPerm i)⁻¹` — NOT the split-level graph-iso. So `rigidityRow_chainData_relabel` /
+`rigidityRow_relabel_perm` (rows 288/291, split→split via `splitOff_isLink_shiftRelabel_iff`) are
+**orphaned-for-the-arm** (wrong graph level). `hρGv` is also **not closed** (its G1 seed/relabel bridges
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_foldl_funLeft_eq` are unbuilt; only the W9a fold
+core + concrete instance landed). The **W9b per-body chain DELETED** (§(o‴)(I.1), dead infra).
+**NEXT = a de-risk RECON on the genuine-row `hwmem` cycle-transport tractability** (user-adjudicated
+2026-06-19): is the `case_III_bottom_relabel` cycle generalization tractable at removeVertex level, or does
+the interior-block obstruction (§(o‴)(I.1)) bite for a single inverse-cycle relabel? detail = *Current
+state* + *Hand-off* + §(o‴)(I.5).
 + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape — **moved to 23c**).**
-The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain. **23b CLOSE BOUNDARY LOCKED
-(2026-06-19, coordinator): close 23b when `chainData_dispatch` (2c-iii) lands; CHAIN-5 (spine wiring,
-gated on ENTRY's extractor) → front of 23c=ENTRY, so 23b closes green-modulo `hdispatch`.** (codes-until-open).
+The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain. **23b CLOSE BOUNDARY (2026-06-19):
+close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 → front of 23c=ENTRY, 23b closes green-modulo
+`hdispatch`. ⚠ This boundary's TIMELINE is now contingent on the genuine-row `hwmem` crux being tractable
+(the de-risk recon settles it); the *shape* of the boundary stands.** (codes-until-open).
 
 **Orientation.** The **23b (CHAIN layer)** rolling state + hand-off. Cross-phase plan/guidance + the
 detailed leaf-level recon live in `notes/Phase23-design.md` (§"CHAIN": (a) per-file reach-ins, (c)
@@ -29,30 +39,27 @@ confirmed by the landed de-risk gate): keep the shared `ρ₀`, transport member
 existence). The landed candidate→base T-W9a/W9b folds are **orphaned-for-the-arm** (`wstep`
 non-invertible). Full reasoning + KT deciding lines = design §(o‴)(H)/(H.10).
 
-**Tracker (CHAIN-2c-ii-transport) — re-pinned by the §(o‴)(I) build-path consolidation (2026-06-19).**
-The arm's **candidate-row (`hρGv`) W9a slot is COMPLETE** (the `foldl` fold core + the concrete
-seed-advancing chain instance `shiftBodyListAsc_foldl_mem_span_rigidityRows`, through the H.10 de-risk
-gate / `seedAdvance_wstep_hstep` bundle — it transports the *span* membership of the redundant `±r` row,
-§(o‴)(b) bullet 1). **The W9b per-body chain is DELETED (Q1, §(o‴)(I.1), 2026-06-19)** — DEAD INFRA, the
-chain cannot terminate at the interior (detail in *Decisions made*).
-**Q2/Q3 SETTLED (§(o‴)(I.2)/(I.3)):** `chainData_relabel_arm`'s `hwmem` slot is the **per-member
-`case_III_bottom_relabel` map (NO fold)** cycle-generalized to `(shiftPerm i)⁻¹`. **BOTH `hwmem` disjunct
-transports LANDED 2026-06-19 as named abstract `(ρ,σ)` bricks** (`Relabel.lean`, axiom-clean): genuine-row
-= `rigidityRow_relabel_perm` (a *literal-row* membership via the graph-iso correspondence — one uniform
-`σ.symm f` pull, NOT the W9a span fold), block-disjunct = `blockRow_relabel_perm` (Leaf B — the `(ab)`-block
-row → a genuine target row at the matching-support-extensor edge; one G4d-i / eq.-(6.44) at `vᵢ`). The W9a
-span fold carries the *candidate row* `hρGv` (a span member) — a THIRD, distinct mechanism. So all three of
-the arm's `hwmem`/`hρGv` ingredients are landed; both `hwmem` disjuncts are now instantiations, not new
-case-splits.
-→ **NEXT: 2c-ii-arm** `chainData_relabel_arm` (all ingredients LANDED — §(H.6) leaf-1 inverse-cycle action
-lemmas `Operations.lean:1550–2110`, the W9a `hρGv` fold, the genuine-row/block bricks, AND now the
-**`ChainData`-specialized genuine-row `hwmem`-disjunct wiring** `rigidityRow_chainData_relabel`
-(`Relabel.lean`, LANDED 2026-06-19): `rigidityRow_relabel_perm` instantiated at the `ChainData` graph-iso
-`(shiftPerm i.castSucc, shiftEdgePerm i)`, naming the base/candidate splits — removes the graph-iso wiring
-from the arm; the arm = this genuine-row disjunct + block disjunct (`blockRow_relabel_perm`) + the `hρGv`
-W9a fold; **gated only by the remaining arm-instantiation bookkeeping**; d=3 M₃ = `i=2` involution)
-→ 2c-iii → CHAIN-5. (Orphaned-for-the-arm: the candidate→base T-W9a/W9b folds **and** the entire W9b
-per-body chain, §(o‴)(H.10)/(I.1).)
+**Tracker (CHAIN-2c-ii-transport) — CORRECTED 2026-06-19 (recon-1 + a build BLOCKED, source-verified;
+overturns the §(o‴)(I.3) "split-level graph-iso fills the `hwmem` slot" claim).** The arm engine
+`case_III_arm_realization` (`Arms.lean:72`) binds BOTH `hwmem` (`:96`) and `hρGv` (`:91`) at the
+**removeVertex-level** `ofNormals Gv ends q` (`Gv ≤ G`, `v ∉ V(Gv)`; `splitOff ⋬ G` so `Gv` can't be a
+split). The d=3 wiring (`case_III_arm_realization_M3:1957/2065`) instantiates `Gv := G.removeVertex a` and
+transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **not** a graph-iso. Slot status:
+- **Block disjunct** (`blockRow_relabel_perm`, Leaf B) — correctly slotted (abstract over any `Gt`; ✓).
+- **Genuine-row `hwmem` disjunct — OPEN (the §6.4.2 crux).** Needs a *literal per-member removeVertex*
+  cycle transport generalizing `case_III_bottom_relabel:1499–1595` from a single swap to `(shiftPerm i)⁻¹`
+  (the §(o‴)(I.4)/(F)(D) "open fact, difficulty unknown" — NOT discharged). A pure relabel sends a
+  genuine-row-at-the-moving-body to a block (`:1672`); whether a single inverse-cycle relabel keeps the
+  rest genuine without spawning a homeless interior block (the §(o‴)(I.1) obstruction that killed the W9b
+  fold) is the open tractability question.
+- **`hρGv` (candidate-row, W9a span fold) — NOT closed.** The fold core + concrete instance
+  `shiftBodyListAsc_foldl_mem_span_rigidityRows` landed, but its G1 seed/relabel bridges
+  (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`, `wstep_foldl_funLeft_eq`) to the engine's
+  `qρ`/`shiftPerm` form are **unbuilt** (grep: zero def-sites).
+- **Orphaned-for-the-arm (split-level, wrong slot):** `rigidityRow_chainData_relabel` /
+  `rigidityRow_relabel_perm` (rows 288/291), the candidate→base T-W9a fold, the deleted W9b chain.
+→ **NEXT: de-risk RECON on the genuine-row `hwmem` tractability** (user-adjudicated 2026-06-19), then
+re-assess. d=3 M₃ `i=2` cycle is the single-swap involution (zero-regression).
 
 **Route β — LOCKED** (user-adjudicated, row 242): ONE `v₁`-base + the uniform `Fin (k+1)` relabel arm;
 route B is **within** β. (Blueprint-clarity obligation: *Hand-off* CHAIN-2c bullet + §(o″).)
@@ -77,14 +84,15 @@ data `shiftBodyListAsc`/`shiftSeedSwap`/`shiftSeedAdv`/`shiftBodyFrameworkAsc`(`
 W9b per-body chain (the single-step `funLeft_dualMap_bottomTag_seedAdvance_mem_rigidityRows` + the
 abstract `foldl` core `bottomTag_foldl_mem_rigidityRows`) DELETED 2026-06-19** —
 §(o‴)(I.1) refuted the per-body block transport it encoded; **confirm-and-delete done** (zero callers),
-never prerequisites (Q1). Remaining in **CHAIN-2c-ii** (§(o‴)(I)): CHAIN-2c-ii-inv (the inverse-cycle action
-lemmas) is already LANDED (`Operations.lean:1550–2110`), so → **2c-ii-arm** `chainData_relabel_arm` whose
-`hwmem` slot is the **per-member `case_III_bottom_relabel` map (NO fold)** cycle-generalized to
-`(shiftPerm i)⁻¹` — genuine-row
-disjunct via the inverse-relabel **graph-iso** correspondence, **block disjunct = a single G4d-i at `vᵢ`**
-(Leaf B, inline, Q2). **⚠ The bottom-family genuine-row disjunct does NOT ride the W9a span fold** — that
-fold carries the *candidate row* `hρGv` (a span member); the genuine-row disjunct is a literal-row
-membership via the graph-iso (Q3 correction, §(o‴)(I.3)) — then **CHAIN-2c-iii** (assembly), and
+never prerequisites (Q1). Remaining in **CHAIN-2c-ii** (§(o‴)(I)/(I.5)): CHAIN-2c-ii-inv (the inverse-cycle
+action lemmas) is already LANDED (`Operations.lean:1550–2110`), so → a **de-risk RECON on `2c-ii-arm`**'s
+genuine-row `hwmem` transport (user-adjudicated 2026-06-19; see *Current state* Tracker + *Hand-off*).
+**⚠ CORRECTED 2026-06-19:** the genuine-row `hwmem` disjunct is NOT the split-level graph-iso
+(`rigidityRow_*relabel*` are orphaned-for-the-arm, wrong graph level); it is the **open §6.4.2 crux** — a
+literal per-member *removeVertex* cycle transport generalizing `case_III_bottom_relabel` (the d=3 bespoke
+degree-2 argument), tractability unsettled. The **block disjunct = a single G4d-i at `vᵢ`** (Leaf B,
+`blockRow_relabel_perm`, Q2, ✓-slotted). `hρGv` (the W9a span fold) carries the *candidate row* and is also
+not yet closed (its G1 bridges unbuilt). — then **CHAIN-2c-iii** (assembly), and
 **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
 extractor reshape).
 
@@ -127,18 +135,16 @@ extractor reshape).
       **LANDED 2026-06-19** (the W9b per-body chain — single-step + `foldl` core
       `bottomTag_foldl_mem_rigidityRows` — was landed then **DELETED 2026-06-19**, §(o‴)(I.1) dead infra).
       The flagged genuine-arm bookkeeping's **seed half** LANDED 2026-06-19 (`seedShift_inv_cancel` +
-      `seedShift_off_cycle`, `Operations.lean`, axiom-clean). BOTH `hwmem` transports LANDED 2026-06-19 as
-      named abstract `(ρ,σ)` bricks (`Relabel.lean`, axiom-clean): **graph-iso genuine-row**
-      `rigidityRow_relabel_perm` + **block-disjunct** `blockRow_relabel_perm` (Leaf B — source `(ab)`-block
-      row → genuine target row at the matching-support-extensor edge), **and** the `ChainData`-specialized
-      genuine-row wiring `rigidityRow_chainData_relabel` (LANDED 2026-06-19, `rigidityRow_relabel_perm` at
-      the `ChainData` graph-iso `(shiftPerm i.castSucc, shiftEdgePerm i)`, splits named). → **NEXT:
-      2c-ii-arm** `chainData_relabel_arm`, now gated only by the **arm-instantiation half** (wiring
-      `rigidityRow_chainData_relabel` + `blockRow_relabel_perm` + the W9a fold into the arm engine's
-      `hwmem`/`hρGv` slots at the per-`i` roles). The genuine-row disjunct uses `rigidityRow_chainData_relabel`,
-      the block disjunct uses `blockRow_relabel_perm`, NEITHER the W9a span fold — that carries the candidate
-      row `hρGv` (§(o‴)(I.3)); d=3 M₃ = `i=2` involution) → **2c-iii** `chainData_dispatch`.
-      Full detail: design §(o‴)(H)/(H.10).
+      `seedShift_off_cycle`, `Operations.lean`, axiom-clean). **⚠ CORRECTED 2026-06-19 (recon-1 + a build
+      BLOCKED): the genuine-row `hwmem` transport is NOT landed.** `rigidityRow_relabel_perm` /
+      `rigidityRow_chainData_relabel` (rows 288/291, split→split via `splitOff_isLink_shiftRelabel_iff`) are
+      **orphaned-for-the-arm** — the engine's `hwmem` slot is at *removeVertex* level (`Gv ≤ G`), so the
+      genuine-row disjunct needs the literal per-member removeVertex cycle transport (the open §6.4.2 crux,
+      §(o‴)(I.4)/(I.5)), NOT a graph-iso. Only the **block disjunct** `blockRow_relabel_perm` (Leaf B) is
+      correctly slotted. → **NEXT: a de-risk RECON on the genuine-row `hwmem` tractability** (user-adjudicated
+      2026-06-19), then re-assess the G1 (`hρGv` bridges, unbuilt) + block build leaves. d=3 M₃ = `i=2`
+      involution → **2c-iii** `chainData_dispatch`. Full detail: *Current state* Tracker + *Hand-off* +
+      design §(o‴)(I.5).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c**
       (boundary LOCKED 2026-06-19; gated on ENTRY's extractor reshape, so it lands at the front of
       23c=ENTRY alongside the extractor that feeds it — 23b closes green-modulo `hdispatch`).
@@ -177,38 +183,31 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**BUILD-PATH CONSOLIDATED — §(o‴)(I); the flagged genuine-arm bookkeeping is now fully LANDED**
-(seed lemmas `seedShift_inv_cancel`/`_off_cycle`) and **BOTH `hwmem` transports are now LANDED as named
-abstract `(ρ,σ)` bricks** (axiom-clean): genuine-row `rigidityRow_relabel_perm` + block-disjunct
-`blockRow_relabel_perm` (Leaf B). Q1/Q2/Q3 + the landed-transport detail live in *Current state* Tracker +
-design §(o‴)(I); in brief: the W9b per-body chain is DELETED (dead), `hwmem` is the per-member
-`case_III_bottom_relabel` map (genuine-row → `rigidityRow_relabel_perm`, block → `blockRow_relabel_perm`'s
-single genuine-target-row at `vᵢ` — do NOT build a per-body block carry), and `hρGv` rides the W9a fold. The
-`shiftPerm i.castSucc` instantiation makes `ρ.symm = (shiftPerm i)⁻¹` (the base→candidate relabel).
+**⚠ 2c-ii-arm is NOT pure instantiation — CORRECTED 2026-06-19 (recon-1 + a build BLOCKED, source-verified;
+overturns the §(o‴)(I.3) "split-level graph-iso fills the `hwmem` slot" reading + the rows-288/291
+"instantiation/bookkeeping" framing).** The arm engine binds `hwmem`/`hρGv` at **removeVertex** level
+(`ofNormals Gv ends q`, `Gv ≤ G`), so:
+- The **genuine-row `hwmem` disjunct is the open §6.4.2 crux** (the §(o‴)(I.4)/(F)(D) "open fact, difficulty
+  unknown" — promoted here to the live blocker): a *literal per-member removeVertex* cycle transport
+  generalizing `case_III_bottom_relabel:1499–1595` from a single swap to `(shiftPerm i)⁻¹`. NOT a graph-iso
+  (the removeVertex cycle intertwiner is false — the bijection closes through the split's `e₀`), NOT the
+  W9a span fold (`hwmem` needs *literal* rows, the d=3 M₃ `:2065` feeds literal `case_III_bottom_relabel`
+  images). The obstruction to settle: a pure relabel sends a genuine-row-at-the-moving-body to a block
+  (`:1672`) — does a single inverse-cycle relabel keep the rest genuine, or spawn a homeless interior block
+  (the §(o‴)(I.1) obstruction that killed the W9b fold)?
+- `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291, split→split) are
+  **orphaned-for-the-arm** (wrong graph level — they do NOT fill the genuine-row `hwmem` slot).
+- `hρGv` is **not closed**: its G1 bridges `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` /
+  `wstep_foldl_funLeft_eq` are unbuilt (only the W9a fold core + instance landed).
+- The **block disjunct** (`blockRow_relabel_perm`, Leaf B) — correctly slotted (✓, the one of three in place).
 
-**STILL FLAGGED (narrowed to the arm-INSTANTIATION half, §(o‴)(I.4)/(F)(D)):** wiring the three transport
-ingredients into `chainData_relabel_arm`'s `hwmem`/`hρGv` slots at the per-`i` roles. The **genuine-row
-disjunct is now a single named `ChainData` lemma** `rigidityRow_chainData_relabel` (LANDED 2026-06-19,
-`Relabel.lean`, axiom-clean — `rigidityRow_relabel_perm` at the graph-iso `(shiftPerm i.castSucc,
-shiftEdgePerm i)`, base/candidate splits named, `qρ = q∘shiftPerm i.castSucc`): the arm just applies it,
-no graph-iso wiring left there. The **block disjunct** still needs `blockRow_relabel_perm`'s `hlink`/`hsupp`
-at the candidate-`i` `(ab)`-edge supplied from the `ChainData` accessors (the candidate-split version of
-M₃'s `e_t = e_b`, `(ρ.symm a, ρ.symm b) = (v,b)`); the **`hρGv` slot** is the W9a fold +
-`wstep_foldl_funLeft_eq`/`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` relabel bridge. ALL the
-genuinely-new *transport math* is LANDED; the residual is instantiation/bookkeeping (no new case-split or
-new abstract brick).
-
-**NEXT STEP — `chainData_relabel_arm` (§(o‴)(H.6) leaf-2).** All transport ingredients now LANDED: the seed
-lemmas, the §(H.6) leaf-1 inverse-cycle action lemmas (`Operations.lean:1550–2110`, 4 `shiftPerm_inv_*` + 7
-`shiftEdgePerm_inv_*`), the graphiso `splitOff_isLink_shiftRelabel_iff`, the W9a candidate-row fold
-`shiftBodyListAsc_foldl_…`, the genuine-row graph-iso transport `rigidityRow_relabel_perm` (and its
-`ChainData`-specialized wiring `rigidityRow_chainData_relabel`, LANDED 2026-06-19), **and** the
-block-disjunct transport `blockRow_relabel_perm`. Build the arm: instantiate `case_III_arm_realization` at
-the relabelled roles, seed `qρ = q∘shiftPerm i.castSucc`, shared `±ρ₀`; slots = the `hρGv` W9a fold + the
-per-member `hwmem` map (genuine-row disjunct = `rigidityRow_chainData_relabel`, block disjunct =
-`blockRow_relabel_perm` with `hlink`/`hsupp` from the `ChainData` accessors) + G4d-i (`hρe₀`). Est. ~2–4
-commits; d=3 M₃ = `i=2` involution. → **2c-iii** `chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm,
-interior = relabel arm; replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
+**NEXT STEP — a de-risk RECON on the genuine-row `hwmem` cycle-transport tractability** (user-adjudicated
+2026-06-19, before any build): read `case_III_bottom_relabel`'s full genuine-row branch (`:1499–1595`) + the
+`(shiftPerm i)⁻¹` cycle degree structure + KT §6.4.2, and settle whether the literal per-member removeVertex
+transport is tractable (and the §(F)(D) seed-extensor-coincidence identity for non-chain edges), or flag a
+deeper blocker / motive concern. Then re-assess the close-boundary + the G1/block build leaves. The
+downstream chain is unchanged: 2c-ii-arm `chainData_relabel_arm` → **2c-iii** `chainData_dispatch` (replaces
+`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). d=3 M₃ = `i=2` involution (zero-regression).
 
 **Confirm-and-delete / STAYS** (full list §(o‴)(H.5); `git grep` zero callers at the delete commit).
 **DELETED 2026-06-19** (Q1): the 5-decl W9b per-body chain. **Orphaned-for-the-arm (delete at the arm
@@ -358,6 +357,15 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `candidateRow_ac_eq_neg` (Leaf B re-consumes it). The other §(H.5) orphans (`ofNormals_relabel_perm`, the
   binary `…comp…`, the candidate→base T-W9a fold, the per-`i` W6b architecture) stay flagged for the
   arm-build commit (docstring back-references / re-check coupling, §(o‴)(H.5)).
+- **2c-ii-arm is NOT pure instantiation — CORRECTED 2026-06-19 (a build BLOCKED + read-only recon-1, both
+  source-verified; user-adjudicated → de-risk recon NEXT).** Overturns the optimistic rows-288/291 framing
+  and the §(o‴)(I.3) "split-level graph-iso fills the `hwmem` slot" claim (§(o‴)(I.4) had honestly flagged
+  the residual; the hand-off dropped that flag). The engine binds `hwmem`/`hρGv` at *removeVertex* level
+  (`Gv ≤ G`, `splitOff ⋬ G`); the d=3 M₃ transports `(G−v)→(G−a)` via the bespoke `case_III_bottom_relabel`,
+  not a graph-iso. So `rigidityRow_chainData_relabel`/`rigidityRow_relabel_perm` (split→split) are
+  orphaned-for-the-arm; the genuine-row `hwmem` disjunct is the **open §6.4.2 crux** (literal per-member
+  removeVertex cycle transport); `hρGv`'s G1 bridges are unbuilt; only `blockRow_relabel_perm` is correctly
+  slotted. Detail = *Current state* Tracker + *Hand-off* + §(o‴)(I.5). NEXT = de-risk recon on tractability.
 **Landed CHAIN-2 leaves (all axiom-clean; detail = git + design §(o)/(o′)/(o″) + FRICTION).** One-line
 verdicts (settled; nothing downstream leans on the internals): **`G.ChainData n` record + accessors**
 (`Induction/Operations.lean`, the contract-C.1 length-`d` chain + the interior-split `(v,a,b,e_a,e_b)`
