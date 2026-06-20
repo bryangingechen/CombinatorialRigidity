@@ -3831,6 +3831,40 @@ or spawn a homeless interior block (the (I.1) obstruction that killed the W9b fo
 landed. **Correctly slotted:** only the block disjunct `blockRow_relabel_perm` (I.2). Live verdict: the
 de-risk recon settles tractability before any build leaf.
 
+**(I.6) DE-RISK VERDICT — the genuine-row `hwmem` cycle transport is TRACTABLE via a per-row case analysis
+(NOT a graph-iso); make-or-break confirmed favorable by `deg_two` (2026-06-19, recon-2 + coordinator
+correction + source check).** A read-only de-risk recon (recon-2) returned TRACTABLE; coordinator scrutiny
+**corrected its mechanism** and **confirmed its conclusion** against the landed bodies + KT pp.696–698:
+- **No clean removeVertex graph-iso** (recon-2's proposed `removeVertex_isLink_shiftRelabel_iff` is
+  mis-framed — recon-0/recon-1 were right). `splitOff_isLink` (`:620`): `G.splitOff v a b e₀ = (G−v) +
+  {fresh e₀ : a—b}`. The split iso `splitOff_isLink_shiftRelabel_iff` (`:2576`) MIXES the fresh and genuine
+  edges — `shiftEdgePerm` sends candidate `e₀ ↦ base edge i` (`:2028`) and candidate `edge 0 ↦ base e₀`
+  (`:2018`) — so it does NOT restrict to a links-bijection of the removeVertex graphs.
+- **The transport is a per-row case analysis** (the cycle generalization of `case_III_bottom_relabel:1600`,
+  NOT an iso): a base `(G−v₁)`-row `hingeRow x y r` maps under `(shiftPerm i)⁻¹` by `hingeRow_funLeft_dualMap`
+  to `hingeRow (ρ⁻¹x)(ρ⁻¹y) r`, and the case-split is:
+  - **off-cycle endpoints** → fixed (`shiftPerm_inv_apply_off` + `seedShift_off_cycle`), genuine `(G−vᵢ)`-row;
+  - **interior chain edge** `edge s` (`2≤s≤i−1`, link `vₛvₛ₊₁`) → `edge(s−1)` (link `vₛ₋₁vₛ`), a genuine
+    `(G−vᵢ)` chain-edge row (KT (6.62) `vⱼ₋₁vⱼ ⇐⇒ vⱼvⱼ₊₁`; both endpoints `<i` survive `removeVertex vᵢ`);
+  - **the wrap edge** `edge i` (link `vᵢvᵢ₊₁`) → `hingeRow vᵢ₋₁ vᵢ₊₁ r`, NOT a `G`-edge ⇒ the candidate
+    `(a,b)=(vᵢ₊₁,vᵢ₋₁)` BLOCK disjunct (`vᵢ₊₁vᵢ₋₁` is the candidate's fresh `e₀`), discharged like
+    `case_III_bottom_relabel`'s `x=a` block branch via the single (6.44) at `vᵢ`.
+- **Make-or-break (no homeless interior block) — CONFIRMED.** A homeless row could only come from a
+  *non-chain* edge at an interior cycle vertex `vₛ` (`2≤s≤i−1`); `deg_two` (`Operations.lean:1303–1308`,
+  KT 6.46 `d_G(vₛ)=2`) says interior chain vertices carry ONLY their two chain edges, so no such edge
+  exists. The §(o‴)(I.1) homeless-block obstruction was specific to the *step-by-step W9b fold* (which
+  passed through intermediate `removeVertex vₛ₊₂` cuts); the single whole-cycle relabel has no steps.
+- **d=3 zero-regression:** `i=2`, `shiftPerm 2 = (v₁v₂)` involution, the wrap edge `edge 2 (v₂v₃) ↦
+  (v₁v₃)` = candidate `(a,b)=(v₃,v₁)` block — exactly the landed `case_III_bottom_relabel` M₃ behaviour.
+
+**The leaf (corrected, replacing recon-2's graph-iso framing):** a per-member transport `chainData_bottom_relabel`
+(working name, `Relabel.lean`) — the cycle generalization of `case_III_bottom_relabel`: takes the base
+`(G−v₁)`-disjunction (`φ ∈ rows ∨ ∃ρ', (a,b)-block`) to the candidate `(G−vᵢ)`-disjunction under
+`(funLeft (shiftPerm i)⁻¹).dualMap`, via the off-cycle/interior-chain/wrap case-split above. P≈2–3 (faithful
+generalization of a landed lemma; the new bookkeeping is the cycle endpoint case-split + `deg_two`
+discharge). Est. ~2 commits for the genuine-row disjunct; then `hρGv`'s G1 bridges + the arm wiring → 2c-iii.
+No motive/IH/spine-carry change; route β + d=3 zero-regression preserved.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
