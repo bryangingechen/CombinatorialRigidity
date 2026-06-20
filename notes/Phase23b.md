@@ -25,12 +25,15 @@ clean-relabel collapse and CONFIRMED the W9a fold is KT-faithful** (KT 6.63–6.
 `a`-column cancellation = the `wstep` residue). Two pin corrections locked (§(o‴)(I.7.7)): I.7.4(a)'s
 "residue at surviving edge" is WRONG (residue link `v–c` is a non-edge), and the correct LEAF-ρ1 = the
 **d=3 M₃ template** (`Relabel.lean:2437–2506`) generalized to `i−1` steps (W9a fold + genuine-row id +
-`sub_mem`). **NEXT = LEAF-ρ1** (the `i−1`-step M₃ generalization, `i=3` 2-residue de-risk FOR REAL
-first), then the **arm wiring**
-`chainData_relabel_arm`: instantiate `case_III_arm_realization` at the per-`i` roles (`hwmem` → landed
-`chainData_bottom_relabel`, block → `blockRow_relabel_perm`, `hρGv` → LEAF-ρ3 over the landed W9a fold +
-G1 bridges) → **2c-iii** `chainData_dispatch` (closes 23b green-modulo `hdispatch`). detail = *Current
-state* + *Hand-off*.
+`sub_mem`). **⚠ `hρGv` BLOCKED 2026-06-20 — `i=3` de-risk DONE FOR REAL (Lean-verified de-risk lemmas
+`Graph.ChainData.i3_{wstep_foldl_base_redundancy,residue_collapse}_deRisk`, `Relabel.lean` tail,
+axiom-clean):** the W9a-fold residues DO collapse to a single `hingeRow` but at the WRONG link — `D φ =
+hingeRow v1 v4 (−ρ₀)` (non-edge `v₁—v₄`) while the engine slot wants the fresh-edge pair
+`vᵢ₋₁—vᵢ₊₁ = v₂—v₄`; `R φ = hingeRow v0 v1 ρ₀` is at the surviving `v₀—v₁`. `i=2`/M₃ hides it (`vᵢ₋₁ =
+v₁`). **Flag-to-owner: the single-`hingeRow a b ρ` engine `hρGv` slot is wrong for `i ≥ 3`** (NOT a free
+motive change). Verdict + owner-decision options = design §(o‴)(I.7.9); G1 bridges + LEAF-ρ2 +
+`chainData_bottom_relabel` all STAND. **NEXT = OWNER decides the slot reshape** (see I.7.9 options
+(a)/(b)/(c)); the arm cannot be built until then. detail = *Current state* + *Hand-off*.
 **Settled context (full detail in Tracker + Hand-off):** the arm engine binds `hwmem`/`hρGv` at
 **removeVertex** level (`ofNormals Gv ends q`, `Gv ≤ G`), so the split-level rows-288/291 bricks
 `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` are **orphaned-for-the-arm** (the resolved
@@ -71,8 +74,15 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   bricks (`rigidityRow_relabel_to_block{,_swap}`) were too rigid for the wrap case (literal `hsupp`
   can't absorb the orientation sign, independent of endpoint order) → inlined; they stay
   orphaned-for-the-arm. Two arm-supplied recording hyps: `hrec` + `he₀rec`.
-- **`hρGv` (candidate-row, W9a span fold) — G1 BRIDGES + LEAF-ρ2 LANDED; DESIGN-PASS DONE 2026-06-20**
-  (design §(o‴)(I.7)). The G1 bridges `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (`Operations.lean`)
+- **`hρGv` (candidate-row, W9a span fold) — ⚠ BLOCKED 2026-06-20 (`i=3` de-risk done FOR REAL,
+  Lean-verified): the W9a-fold route delivers a row at the WRONG link for the engine slot at `i ≥ 3`.**
+  De-risk lemmas `Graph.ChainData.i3_{wstep_foldl_base_redundancy,residue_collapse}_deRisk` compute:
+  `R φ = hingeRow v0 v1 ρ₀` (surviving `edge 0`), residue `D φ` collapses to single `hingeRow v1 v4 (−ρ₀)`
+  (non-edge `v₁—v₄`); engine slot wants `hingeRow a b ρ` at fresh-edge pair `vᵢ₋₁—vᵢ₊₁ = v₂—v₄` ≠ both.
+  `i=2`/M₃ hides it (`vᵢ₋₁ = v₁` makes links coincide). Flag-to-owner; full verdict + options =
+  design §(o‴)(I.7.9). The G1 bridges + LEAF-ρ2 + `chainData_bottom_relabel` all STAND. (Below: the
+  pre-BLOCKED design-pass record, superseded by I.7.9.) The G1 bridges
+  `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (`Operations.lean`)
   + `wstep_foldl_funLeft_eq` (`Relabel.lean`, the relabel-only `foldl` = `funLeft ⇑(∏ swap)⁻¹`, the
   `foldl`-order inverse = the base→candidate relabel) are LANDED. **LEAF-ρ2 LANDED 2026-06-20**
   (`shiftBodyListAsc_relabel_foldl_hingeRow`, `Relabel.lean`, axiom-clean): the relabel-only ascending
@@ -295,7 +305,27 @@ arm closer resolves the two relabelled endpoints to the candidate roles via the 
 action lemmas. Correct + load-bearing, but does NOT discharge the slot alone (the residue telescope
 LEAF-ρ1 is the remaining crux).
 
-**NEXT STEP — build the arm `chainData_relabel_arm` with the `hρGv` extraction done INLINE** (LEAF-ρ2
+**⚠ BLOCKED — `i=3` de-risk DONE FOR REAL (Lean-verified, 2026-06-20): the W9a-fold `hρGv` route does
+NOT close at general `i ≥ 3`; engine slot link mismatch.** The two axiom-clean de-risk lemmas
+`Graph.ChainData.i3_{wstep_foldl_base_redundancy,residue_collapse}_deRisk` (`Relabel.lean` tail, gate-
+verified) compute the `i=3` case: `W φ = hingeRow v0 v1 ρ₀ + hingeRow v1 v2 ρ₀ + hingeRow v2 v4 ρ₀`
+(landed `wstep` foldl of base redundancy `φ = hingeRow v0 v2 ρ₀`); `R φ = hingeRow v0 v1 ρ₀` (LEAF-ρ2,
+`edge 0` row at surviving `v₀—v₁`); `D φ = R φ − W φ = hingeRow v1 v2 (−ρ₀) + hingeRow v2 v4 (−ρ₀)`
+**collapses (shared `v₂` telescopes) to the SINGLE row `hingeRow v1 v4 (−ρ₀)` at link `v₁—v₄`**. So the
+residues DO collapse to one `hingeRow` (the (B)(i) branch) — **but at the WRONG link.** The engine slot
+`case_III_arm_realization.hρGv` is `hingeRow a b ρ` at candidate `i`'s fresh-edge pair `(a,b) =
+(vᵢ₋₁,vᵢ₊₁)` (`splitOff vᵢ vᵢ₋₁ vᵢ₊₁ e₀`, link `v₂—v₄` at `i=3`); the fold delivers neither it nor a
+genuine candidate row (`R φ` is at the surviving `v₀—v₁`, `D φ` at the non-edge `v₁—v₄` ≠ `v₂—v₄`).
+**`i=2` (d=3 M₃) hides this** because `vᵢ₋₁ = v₁` there, so all three links coincide; for `i ≥ 3`,
+`vᵢ₋₁ = v₂ ≠ v₁`. **This is flag-to-owner** (NOT a free motive change): the W9a-fold route + LEAF-ρ2 +
+the landed `chainData_bottom_relabel` all stand, but `case_III_arm_realization`'s single-`hingeRow a b ρ`
+slot at the fresh-edge pair is not the row the fold produces for interior candidates. Owner decision
+needed (full options in design §(o‴)(I.7.9)): (a) re-check whether the candidate split's fresh edge
+connects `v₁`–`vᵢ₊₁` rather than `vᵢ₋₁`–`vᵢ₊₁` (KT eq. (6.46)/(6.55) vs. the formalized `splitOff`); (b)
+a KT-(6.66)-style further reduction from `v₁—v_{i+1}` to the fresh pair; or (c) a different engine slot
+contract. **The arm cannot be built until this is resolved.** Detail = design §(o‴)(I.7.9).
+
+**NEXT STEP (SUPERSEDED by the BLOCKED above) — build the arm `chainData_relabel_arm` with the `hρGv` extraction done INLINE** (LEAF-ρ2
 landed). **L5b resolution (row-308 build flag):** LEAF-ρ1's residue-vs-sum form depends on the arm's role
 binding (the engine's `hρGv = hingeRow a b ρ` at the candidate roles), so it CANNOT be pinned as a
 standalone leaf — the row-308 build correctly shrank to LEAF-ρ2 rather than guess. Per the L5b lesson

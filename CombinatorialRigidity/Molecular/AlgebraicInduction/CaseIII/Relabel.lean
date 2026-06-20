@@ -2554,4 +2554,76 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
         (Graph.removeVertex_isLink.mp hlink).2.2⟩)
       (fun e x y hlink => hrecGv e x y hlink) hends₃_eb hends₃_off (hwmem j)
 
+/-! ### The `i = 3` 2-residue de-risk computation (CHAIN-2c-ii-arm `hρGv`, the BLOCKED finding)
+
+These two lemmas carry out, *for real*, the `i = 3` 2-residue case of the `hρGv` extraction (the
+de-risk gate of `notes/Phase23-design.md` §(o‴)(I.7.6)/(I.7.8)). They are the concrete computation
+that the W9a-fold route to the arm's `hρGv` slot **does not converge at general `d`** — the
+`v₁ v₂ v₃` cycle (`i = 2`, the d=3 `M₃` engine) is the 1-residue involution that *masks* the
+divergence; `i = 3` is the first honest 2-residue case.
+
+The chain vertices are `v0 … v4` (`vⱼ = vtx j`); the ascending moved-body list for candidate `i = 3`
+is `[(v1,v2,v3), (v2,v3,v4)]`; the base redundancy is `φ = hingeRow v0 v2 ρ₀` (KT eq. (6.52), the
+`v₀v₂`-block redundancy of the `v₁`-base split). The two computations below show:
+
+* **`W φ`** — the landed seed-advancing W9a `wstep` foldl
+  (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) sends the base redundancy to
+  `hingeRow v0 v1 ρ₀ + hingeRow v1 v2 ρ₀ + hingeRow v2 v4 ρ₀`.
+* **`D φ = R φ − W φ`** — the relabel-only foldl `R φ = hingeRow v0 v1 ρ₀` (LEAF-ρ2, the literal
+  `edge 0` slot row at the surviving link `v₀—v₁`) minus `W φ` is the residue sum
+  `hingeRow v1 v2 (−ρ₀) + hingeRow v2 v4 (−ρ₀)`, which telescopes (shared endpoint `v₂`) to the
+  **single** row `hingeRow v1 v4 (−ρ₀)` at the link `v₁—v₄`.
+
+**The obstruction this exposes.** The engine slot `case_III_arm_realization.hρGv` is the single row
+`hingeRow a b ρ` at candidate `i`'s fresh-edge pair `(a,b) = (vᵢ₋₁, vᵢ₊₁)` (`splitOff vᵢ vᵢ₋₁ vᵢ₊₁
+e₀`, link `vᵢ₋₁—vᵢ₊₁`). At `i = 3` that link is `v₂—v₄`. But the W9a fold produces neither a genuine
+candidate row (`R φ` is at `v₀—v₁`, a *surviving* edge but **not** the fresh-edge slot) nor a
+slot-shaped residue: the residue sum `D φ` collapses to a single row at `v₁—v₄`, which is **a
+non-edge AND a different link from the slot's `v₂—v₄`**. At `i = 2` all three links coincide
+(`vᵢ₋₁ = v₁`, so the candidate fresh pair is `v₁—v₃` = the residue link `v₁—v₃`), which is why the
+d=3 `M₃` arm closes; the coincidence breaks for `i ≥ 3` (`vᵢ₋₁ = v₂ ≠ v₁`). So the W9a-fold route
+does not produce the engine `hρGv` slot at general `d`, and the engine slot shape (a single
+`hingeRow a b ρ`) is not what the residue machinery delivers for interior candidates — the
+flag-to-owner finding (Phase 23b BLOCKED). -/
+theorem _root_.Graph.ChainData.i3_wstep_foldl_base_redundancy_deRisk
+    [DecidableEq α] {v0 v1 v2 v3 v4 : α}
+    (h01 : v0 ≠ v1) (h02 : v0 ≠ v2) (h03 : v0 ≠ v3)
+    (h12 : v1 ≠ v2) (h13 : v1 ≠ v3)
+    (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    ([(v1, v2, v3), (v2, v3, v4)].foldl
+        (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
+      (BodyHingeFramework.hingeRow v0 v2 ρ₀)
+      = BodyHingeFramework.hingeRow v0 v1 ρ₀ + BodyHingeFramework.hingeRow v1 v2 ρ₀
+        + BodyHingeFramework.hingeRow v2 v4 ρ₀ := by
+  simp only [List.foldl_cons, List.foldl_nil, LinearMap.comp_apply, LinearMap.id_coe, id_eq,
+    BodyHingeFramework.wstep_apply, BodyHingeFramework.hingeRow_funLeft_dualMap]
+  ext S
+  have e1 : (Equiv.swap v2 v1) v0 = v0 := Equiv.swap_apply_of_ne_of_ne h02 h01
+  have e2 : (Equiv.swap v2 v1) v2 = v1 := Equiv.swap_apply_left _ _
+  have e3 : (Equiv.swap v3 v2) v0 = v0 := Equiv.swap_apply_of_ne_of_ne h03 h02
+  have e4 : (Equiv.swap v3 v2) v1 = v1 := Equiv.swap_apply_of_ne_of_ne h13 h12
+  have e5 : (Equiv.swap v3 v2) v3 = v2 := Equiv.swap_apply_left _ _
+  simp only [LinearMap.sub_apply, LinearMap.funLeft_apply, LinearMap.dualMap_apply,
+    LinearMap.comp_apply, BodyHingeFramework.hingeRow_apply, LinearMap.single_apply,
+    LinearMap.add_apply, e1, e2, e3, e4, e5, Pi.single_eq_same,
+    Pi.single_eq_of_ne h02, Pi.single_eq_of_ne h03,
+    Pi.single_eq_of_ne h13, map_sub, map_zero]
+  ring
+
+/-- The `i = 3` residue collapse: `D φ = R φ − W φ` (relabel-only foldl minus the `wstep` foldl) is
+the single row `hingeRow v1 v4 (−ρ₀)` at the **non-edge** link `v₁—v₄` — *not* the engine slot's
+candidate fresh-edge link `v₂—v₄`. See the section docstring for the BLOCKED finding. -/
+theorem _root_.Graph.ChainData.i3_residue_collapse_deRisk
+    (v0 v1 v2 v4 : α) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    -- `R φ − W φ` (relabel-only foldl minus the `wstep` foldl):
+    (BodyHingeFramework.hingeRow v0 v1 ρ₀ : Module.Dual ℝ (α → ScrewSpace k))
+      - (BodyHingeFramework.hingeRow v0 v1 ρ₀ + BodyHingeFramework.hingeRow v1 v2 ρ₀
+          + BodyHingeFramework.hingeRow v2 v4 ρ₀)
+      -- collapses to the single non-edge row `D φ` at the link `v₁—v₄`:
+      = BodyHingeFramework.hingeRow v1 v4 (-ρ₀) := by
+  ext S
+  simp only [LinearMap.sub_apply, LinearMap.add_apply, BodyHingeFramework.hingeRow_apply,
+    LinearMap.neg_apply, map_sub]
+  ring
+
 end CombinatorialRigidity.Molecular

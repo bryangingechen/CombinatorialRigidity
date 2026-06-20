@@ -4140,6 +4140,49 @@ choice changes the proof shape):
   whether they collapse to a single `hingeRow` at the slot's `(a,b)` link — if they do NOT, the engine slot
   shape may need re-examination (NOT a free motive change — flag to owner) before the arm can be built.
 
+**(I.7.9) THE `i=3` DE-RISK DONE FOR REAL — VERDICT: NEITHER; engine `hρGv` slot wrong for `i ≥ 3`
+(BLOCKED, flag-to-owner; Lean-verified, opus session #17, 2026-06-20).** The computation the prior
+sessions circled is now done in Lean (two axiom-clean lemmas
+`Graph.ChainData.i3_{wstep_foldl_base_redundancy,residue_collapse}_deRisk`, `Relabel.lean` tail; chain
+`v0…v4`, base redundancy `φ = hingeRow v0 v2 ρ₀`, ascending bodies `[(v1,v2,v3),(v2,v3,v4)]`):
+- **`W φ` (landed `wstep` foldl) `= hingeRow v0 v1 ρ₀ + hingeRow v1 v2 ρ₀ + hingeRow v2 v4 ρ₀`** —
+  verified by `ext S; ring` against the `wstep_apply`/`hingeRow_funLeft_dualMap` unfold.
+- **`R φ` (relabel-only foldl, LEAF-ρ2) `= hingeRow v0 v1 ρ₀`** — the literal `edge 0` row at the
+  surviving link `v₀—v₁`.
+- **`D φ = R φ − W φ = hingeRow v1 v2 (−ρ₀) + hingeRow v2 v4 (−ρ₀)` collapses (shared `v₂` telescopes) to
+  the SINGLE row `hingeRow v1 v4 (−ρ₀)`** at link `v₁—v₄`.
+
+So the residues **DO collapse to a single `hingeRow`** (the (B)(i)-vs-(B)(ii) fork's collapse question:
+YES, internal to the fold — the (i) branch). **But at the WRONG link.** The engine slot
+`case_III_arm_realization.hρGv` is the single row `hingeRow a b ρ` at candidate `i`'s fresh-edge pair
+`(a,b) = (vᵢ₋₁, vᵢ₊₁)` (`splitOff vᵢ vᵢ₋₁ vᵢ₊₁ e₀`, link `vᵢ₋₁—vᵢ₊₁`; verified against `splitOff`
+`Operations.lean:580`). At `i=3` the slot link is `v₂—v₄`, but the fold delivers neither it nor a genuine
+candidate row:
+- `R φ` (= `hingeRow v0 v1 ρ₀`) is at the surviving edge `v₀—v₁` — **not** the fresh-edge slot pair;
+- `D φ` (the residue) collapses to `hingeRow v1 v4 (−ρ₀)` at **`v₁—v₄`** — a *non-edge*, and a
+  *different* link from the slot's `v₂—v₄`.
+- **`v₁—v₄ ≠ v₂—v₄`** (they differ in the first endpoint) — so the W9a-fold route produces a row the
+  engine cannot consume at its `hρGv` slot.
+
+**Why `i=2` (the d=3 `M₃` engine) hides this:** at `i=2`, `vᵢ₋₁ = v₁`, so the slot pair `vᵢ₋₁—vᵢ₊₁ =
+v₁—v₃` *equals* the residue link `v₁—v₃` (single residue, the involution); all three links coincide. For
+`i ≥ 3`, `vᵢ₋₁ = v₂ ≠ v₁`, and the residue's leading endpoint stays `v₁` (it is the cycle head, the base
+removed vertex) while the slot's leading endpoint is `vᵢ₋₁` — they diverge. Exactly the §(o‴)(I.7.6)
+warning ("the `i=2` involution masks multi-residue behaviour") realized.
+
+**Verdict (flag-to-owner).** The engine `case_III_arm_realization`'s single-`hingeRow a b ρ` `hρGv` slot
+is **not the right shape** for interior candidates `i ≥ 3` under the corrected-Fix-A W9a-fold route: the
+fold delivers `hingeRow v1 v_{i+1} (−ρ₀)` (residue, link `v₁—v_{i+1}`, a non-edge) plus the separate
+genuine row `R φ = hingeRow v0 v1 ρ₀`, neither matching the slot's fresh-edge pair `vᵢ₋₁—vᵢ₊₁`. This is
+NOT a free motive change — it needs an owner decision on one of: (a) re-derive the engine slot's `(a,b)`
+roles so the candidate slot link is `v₁—v_{i+1}` (does the candidate split's fresh edge actually connect
+`v₁` and `vᵢ₊₁` rather than `vᵢ₋₁` and `vᵢ₊₁`? — re-check KT eq. (6.46)/(6.55) candidate-split endpoints
+vs. the formalized `splitOff vᵢ vᵢ₋₁ vᵢ₊₁`), or (b) feed the engine the residue at `v₁—v_{i+1}` plus a
+KT-(6.66)-style further reduction transporting it to the fresh-edge pair, or (c) a different engine slot
+contract. The fold route + LEAF-ρ2 + the landed `chainData_bottom_relabel` all stand; the break is
+purely the **slot-link mismatch** between what the fold produces and what `case_III_arm_realization.hρGv`
+demands.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
