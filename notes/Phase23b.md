@@ -180,25 +180,13 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**BUILD-PATH CONSOLIDATED — §(o‴)(I) (2026-06-19; full detail = *Current state* Tracker + design §(o‴)(I)).**
-The three questions are settled vs the landed bodies. **Q1** — the W9b per-body chain is **DELETED** (the
-5-decl `bottomTag_{foldl,foldr}`/`funLeft_dualMap_bottomTag_{,_seedAdvance}`/`redundancy_panel_carry`
-cluster encoded the per-body block transport §(o‴)(b)/(c)/(d) machine-refuted; zero callers;
-`candidateRow_ac_eq_neg` kept). **Q2** — Leaf B = a single G4d-i at `vᵢ` (one eq.-(6.44), the inline
-`Or.inr` arm of `chainData_relabel_arm`'s `hwmem`; NOT a standalone decl; do NOT build a per-body block
-carry — the 4×-mis-pin). **Q3** — `hwmem` is the per-member `case_III_bottom_relabel` map (NO fold)
-cycle-generalized to `(shiftPerm i)⁻¹`: genuine-row → the inverse-relabel **graph-iso**
-(`splitOff_isLink_shiftRelabel_iff` + `hingeRow_funLeft_dualMap`), block → Leaf B. **KEPT:** the
-candidate-row (`hρGv`) W9a slot (`shiftBodyListAsc_foldl_…` + the de-risk gate) — it transports the
-redundant `±r` row's *span* membership, a DIFFERENT mechanism from the genuine-row graph-iso (the prior
-'genuine rides W9a' framing was WRONG, §(o‴)(I.3)).
-
-**The flagged genuine-arm bookkeeping is now fully LANDED 2026-06-19** (both halves, axiom-clean): the
-**seed half** (`seedShift_inv_cancel`/`seedShift_off_cycle`, `Operations.lean` — `qᵢ(ρ⁻¹x)=q x` + off-cycle
-`qᵢ x=q x`) and the **graph-iso half** (`rigidityRow_relabel_perm`, `Relabel.lean` — the abstract
-genuine-row transport over the `ofNormals_relabel_perm` `(ρ,σ,endsσρ,qρ)` shape; reuses its `h_supp`; ONE
-uniform `σ.symm f`/`ρ.symm`-pull, NO endpoint case-split). Detail = *Decisions made* + git. The
-`shiftPerm i.castSucc` instantiation makes `ρ.symm = (shiftPerm i)⁻¹` (the base→candidate relabel).
+**BUILD-PATH CONSOLIDATED — §(o‴)(I); the flagged genuine-arm bookkeeping is now fully LANDED**
+(both halves, axiom-clean: the seed lemmas `seedShift_inv_cancel`/`_off_cycle` + the graph-iso transport
+`rigidityRow_relabel_perm`). Q1/Q2/Q3 + the landed-transport detail live in *Current state* Tracker +
+design §(o‴)(I); in brief: the W9b per-body chain is DELETED (dead), `hwmem` is the per-member
+`case_III_bottom_relabel` map (genuine-row → graph-iso `rigidityRow_relabel_perm`, block → single G4d-i at
+`vᵢ` — do NOT build a per-body block carry), and `hρGv` rides the W9a fold. The `shiftPerm i.castSucc`
+instantiation makes `ρ.symm = (shiftPerm i)⁻¹` (the base→candidate relabel).
 
 **STILL FLAGGED (narrowed to the arm-INSTANTIATION half, §(o‴)(I.4)/(F)(D)):** wiring
 `rigidityRow_relabel_perm` + W9a fold + Leaf-B G4d-i into `chainData_relabel_arm`'s `hwmem`/`hρGv` slots at
