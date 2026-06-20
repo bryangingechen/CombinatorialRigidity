@@ -1887,6 +1887,32 @@ lemma shiftPerm_eq_prod_map_swap_shiftBodyList [DecidableEq α] (cd : G.ChainDat
   simp only [List.getElem_zipWith, List.getElem_map, getElem_shiftBodyList,
     List.getElem_tail, getElem_shiftCycle]
 
+/-- **`shiftPerm` is the product of the *ascending* moved-body swaps** (the ascending companion of
+`shiftPerm_eq_prod_map_swap_shiftBodyList`, the permutation-level G1 bridge of the seed-advancing
+relabel arm, CHAIN-2c-ii-arm route B, `notes/Phase23-design.md` §(o‴)(H.10)). The index-shift cycle
+`shiftPerm i.castSucc` (for the candidate index `i : Fin cd.d`) factors as the product of the
+per-moved-body transpositions read off the *ascending* moved-body list `shiftBodyListAsc i`: the
+`s`-th body triple `(v, a, c) = (vtx (s+1), vtx (s+2), vtx (s+3))` contributes the swap
+`Equiv.swap a v = Equiv.swap (vtx (s+2)) (vtx (s+1))`, the swap the single-step W9a transport
+`BodyHingeFramework.wstep v a c` applies on the `funLeft` side in the seed-advancing `foldl` fold.
+
+The ascending list `shiftBodyListAsc i` and the descending list `shiftBodyList i.castSucc` carry the
+**same per-body swap** at every index (`shiftBodyListAsc`'s `s`-th swap is `swap (vtx (s+2)) (vtx
+(s+1))`, `shiftBodyList`'s is `swap (vtx (s+1)) (vtx (s+2))` — equal by `Equiv.swap_comm`), and have
+the same length `(i : ℕ) − 1`, so the two swap-product lists coincide element-for-element. The lemma
+therefore reduces to the landed descending bridge `shiftPerm_eq_prod_map_swap_shiftBodyList` at
+`i.castSucc`. -/
+lemma shiftPerm_eq_prod_map_swap_shiftBodyListAsc [DecidableEq α] (cd : G.ChainData n)
+    (i : Fin cd.d) :
+    cd.shiftPerm i.castSucc
+      = ((cd.shiftBodyListAsc i).map (fun b => Equiv.swap b.2.1 b.1)).prod := by
+  rw [cd.shiftPerm_eq_prod_map_swap_shiftBodyList i.castSucc]
+  congr 1
+  refine List.ext_getElem (by simp only [List.length_map, length_shiftBodyList,
+    length_shiftBodyListAsc, Fin.val_castSucc]) fun m h₁ h₂ => ?_
+  simp only [List.getElem_map, getElem_shiftBodyList, getElem_shiftBodyListAsc]
+  exact Equiv.swap_comm _ _
+
 /-! ### The index-shift edge permutation `shiftEdgePerm` (the edge side of KT eq. 6.54)
 
 The vertex cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) carries the candidate-`i` interior split

@@ -1416,6 +1416,49 @@ theorem BodyHingeFramework.wstep_foldr_funLeft_eq [DecidableEq α] (bodies : Lis
     rw [List.foldr_cons, ih, List.map_cons, List.prod_cons, Equiv.Perm.coe_mul,
       LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
 
+/-- **The relabel side of the *ascending* (seed-advancing) cycle-W9a fold is `funLeft` of the
+inverse swap product** (the `foldl` companion of `wstep_foldr_funLeft_eq`, the linear-map half of
+the G1 bridge of the seed-advancing relabel arm, CHAIN-2c-ii-arm route B,
+`notes/Phase23-design.md` §(o‴)(H.10)). The seed-advancing W9a `List.foldl` composes its single-step
+relabels `(funLeft (swap aₛ vₛ)).dualMap` — the leading (non-`a`-column) part of each `wstep` — over
+the *ascending* moved-body list `shiftBodyListAsc i`; this lemma identifies that *relabel-only*
+`foldl` with the single named relabel `(funLeft ⇑((bodies.map (swap b.2.1 b.1)).prod)⁻¹).dualMap` of
+the **inverse** swap product.
+
+The inverse is forced by the `foldl` accumulation order: `foldl` applies the *last* body outermost,
+so the relabel composite runs in the **opposite** order to the swap product `(bodies.map swap).prod`
+(which the perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` identifies with
+`shiftPerm i.castSucc`). Because the swaps are involutions, the reversed product is exactly the
+group inverse `((bodies.map swap).prod)⁻¹` — and composed with the perm bridge this rewrites the
+`foldl`'s relabel component to `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap = (funLeft (shiftPerm
+i.castSucc).symm).dualMap`, the **base→candidate** inverse-cycle relabel the arm's `hρGv` slot needs
+(matching the `hwmem` leaf `chainData_bottom_relabel`'s `(funLeft (shiftPerm i.castSucc).symm)`
+transport, design §(o‴)(I.6)).
+
+The proof is a `List` right-induction (`reverseRec`, matching the `foldl` base case at index 0). The
+empty fold is `LinearMap.id`, matching `funLeft ⇑(1 : Equiv.Perm α)⁻¹ = id` (`inv_one`,
+`Equiv.Perm.coe_one`, `funLeft_id`, `dualMap_id`). The `append_singleton` step peels the *last* swap
+`(funLeft (swap a v)).dualMap` (applied outermost) over the inner fold's `(funLeft ⇑P⁻¹).dualMap`
+(the IH, `P` the inner swap product); the inverse product head-peels as `(P * (swap a v))⁻¹ =
+(swap a v)⁻¹ * P⁻¹` (`mul_inv_rev`), the swap self-inverse drops `(swap a v)⁻¹ = swap a v`
+(`Equiv.swap_inv`), and the two contravariances of `funLeft_comp` + `dualMap_comp_dualMap` cancel.
+Graph-free over the carrier. -/
+theorem BodyHingeFramework.wstep_foldl_funLeft_eq [DecidableEq α] (bodies : List (α × α × α)) :
+    (bodies.foldl
+        (fun T b => ((LinearMap.funLeft ℝ (ScrewSpace k) (Equiv.swap b.2.1 b.1)).dualMap).comp T)
+        LinearMap.id)
+      = (LinearMap.funLeft ℝ (ScrewSpace k)
+          (⇑((bodies.map (fun b => Equiv.swap b.2.1 b.1)).prod)⁻¹)).dualMap := by
+  induction bodies using List.reverseRec with
+  | nil =>
+    simp only [List.foldl_nil, List.map_nil, List.prod_nil, inv_one, Equiv.Perm.coe_one]
+    rw [show (LinearMap.funLeft ℝ (ScrewSpace k) (_root_.id : α → α)) = LinearMap.id from rfl,
+      LinearMap.dualMap_id]
+  | append_singleton rest b ih =>
+    rw [List.foldl_append, List.foldl_cons, List.foldl_nil, ih, List.map_append, List.map_cons,
+      List.map_nil, List.prod_append, List.prod_cons, List.prod_nil, mul_one, mul_inv_rev,
+      Equiv.swap_inv, Equiv.Perm.coe_mul, LinearMap.funLeft_comp, LinearMap.dualMap_comp_dualMap]
+
 /-- **The cycle-W9a intermediate-framework chain `F = ofNormals ∘ shiftBodyGraph`**
 (CHAIN-2c-ii-transport-W9a, the framework layer; `notes/Phase23-design.md` §(o″)). The
 `List.foldr` transport `wstep_foldr_mem_span_rigidityRows` runs over a chain of *intermediate
