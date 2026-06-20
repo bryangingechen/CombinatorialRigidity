@@ -43,3 +43,4 @@ propagate (a companion lives in `.claude/commands/coordinate-phase.md` or
 - 2026-06-17 — write-each-row-to-the-discipline-not-its-neighbors → *Per-dispatch record* (Notes discipline)
 - 2026-06-18 — `resume`-Mode widening: user-interrupted agents + agentId-from-logs recovery (companion rescue §3 is repo-local) → *Per-dispatch record* (Mode)
 - 2026-06-18 — Notes length **gate + reframe**: commit msg = recap, Notes = experiment-meta delta; ~600-char cap now *enforced* (repo-local `notes/check-log-rows.py`, wired into coordinate-phase per-commit step) → *Per-dispatch record* (Notes discipline)
+- 2026-06-20 — P-axis "instantiation-into-a-consumer's-slot" level-match calibration: "wire landed brick B into slot C" is P=1 only if B's conclusion is at C's slot's same object/framework level (B *existing* ≠ level-match); a level mismatch is a hidden P=3 leaf (companion step-1 trigger is repo-local) → *Task rating* (P)

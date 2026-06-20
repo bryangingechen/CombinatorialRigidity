@@ -246,7 +246,13 @@ portable layer:
   re-running it in a loop, never `&`-background a build inside a
   Bash call (it gets orphaned), and never `pkill` lake (it orphans
   the `lean` worker processes). If a build is slow, run it once
-  with a generous timeout and wait. A full mathlib rebuild is
+  with a generous timeout and wait. **If you do background a build
+  (the harness `run_in_background`, not `&`), wait for its completion
+  notification — do not re-read its output file repeatedly while it
+  runs.** Polling a backgrounded build's output is a real, recurring
+  cost drain (one dispatch logged ~175 redundant re-reads of a
+  backgrounded build's output file — half its tool budget — turning a
+  ~12-min leaf into a ~42-min one). A full mathlib rebuild is
   **never** expected here — if `lake build` starts compiling
   thousands of mathlib files, stop immediately and report; do not
   wait it out or retry.

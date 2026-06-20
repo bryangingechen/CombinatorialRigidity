@@ -49,6 +49,19 @@ Loop:
    design verdict named a route between two mismatched conclusion shapes
    and a build would have faithfully implemented the wrong one — a
    mismatch is a design error to settle by recon, not a build),
+   OR the hand-off calls an arm/assembly **"pure instantiation / bookkeeping —
+   wire landed brick(s) B into consumer C's slots"** and you have not confirmed
+   each B's *conclusion* sits at the **same graph / framework level** as the
+   slot it fills (not merely the same Lean type, and not merely that B *exists*):
+   a brick at the *wrong level* — e.g. a `splitOff`-level transport for a
+   `removeVertex`-level `hwmem` slot — does **not** fill the slot, and the
+   "instantiation" framing hides a genuinely-new leaf. Grep-and-read the
+   **consumer's actual slot binding** *and* each brick's landed conclusion
+   before rating it P=1 (23b: rows 288/291 landed split-level bricks pinned as
+   the genuine-row `hwmem` disjunct, but the engine binds `hwmem` at removeVertex
+   level — a build BLOCKED, recon confirmed, a de-risk re-derived the real leaf as
+   a per-row case analysis; the prior coordinator grep-confirmed the bricks
+   *existed* but not their *level*, which is what let the mis-pin through),
    OR a **build agent's own hand-off flags the *next* piece as genuinely-new**
    ("the real new lemma", "not a verbatim lift", "the genuine open design
    call") — that flag IS the recon trigger: recon the **route** before

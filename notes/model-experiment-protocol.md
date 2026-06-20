@@ -52,6 +52,16 @@ design docs it cites) and scores, *before* dispatching:
   decompose-recon). Calibration: a "buildable GP variant" flag rated
   P≈2 BLOCKED at the build, and the follow-up design pass re-rated the
   leaf P≈3.
+  *Likewise, an "instantiation / bookkeeping — wire landed brick B into
+  consumer C's slot" flag is P = 1 only when B's **conclusion** sits at
+  C's slot's **same object / framework level**, not merely the same type
+  and not merely that B exists:* a brick at the wrong level (e.g. a
+  `splitOff`-level transport for a `removeVertex`-level slot) does **not**
+  fill the slot, so the "instantiation" hides a genuinely-new leaf (P=3).
+  Read the consumer's slot binding *and* B's landed conclusion before
+  rating. Calibration: an arm flagged "pure instantiation, all transport
+  math landed" was rated P≈2; the build BLOCKED on a graph-level mismatch,
+  a recon confirmed it, and a de-risk re-rated the real leaf P≈3.
 - **B — blast radius.** Integration breadth.
   1 = one file, additive (nothing existing breaks);
   2 = few files, bounded caller repair through known bridges;
