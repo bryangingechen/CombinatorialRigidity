@@ -9,9 +9,10 @@ the **W9b per-body chain DELETED** (§(o‴)(I.1), dead infra). The genuinely-ne
 arm `chainData_relabel_arm` narrows to **arm-instantiation bookkeeping** (wire the bricks + W9a fold +
 Leaf-B G4d-i into its slots). NEXT = 2c-ii-arm `chainData_relabel_arm` → 2c-iii; detail = *Current state* +
 *Hand-off*)
-+ CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
-The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
-boundary; codes-until-open).
++ CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape — **moved to 23c**).**
+The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain. **23b CLOSE BOUNDARY LOCKED
+(2026-06-19, coordinator): close 23b when `chainData_dispatch` (2c-iii) lands; CHAIN-5 (spine wiring,
+gated on ENTRY's extractor) → front of 23c=ENTRY, so 23b closes green-modulo `hdispatch`.** (codes-until-open).
 
 **Orientation.** The **23b (CHAIN layer)** rolling state + hand-off. Cross-phase plan/guidance + the
 detailed leaf-level recon live in `notes/Phase23-design.md` (§"CHAIN": (a) per-file reach-ins, (c)
@@ -138,7 +139,9 @@ extractor reshape).
       the block disjunct uses `blockRow_relabel_perm`, NEITHER the W9a span fold — that carries the candidate
       row `hρGv` (§(o‴)(I.3)); d=3 M₃ = `i=2` involution) → **2c-iii** `chainData_dispatch`.
       Full detail: design §(o‴)(H)/(H.10).
-- [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
+- [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c**
+      (boundary LOCKED 2026-06-19; gated on ENTRY's extractor reshape, so it lands at the front of
+      23c=ENTRY alongside the extractor that feeds it — 23b closes green-modulo `hdispatch`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
       **Signature now FROZEN** by the CHAIN↔ENTRY contract (`notes/Phase23-design.md`
       §"CHAIN↔ENTRY contract" C.3): `hdispatch` consumes a `G.ChainData n` record
@@ -267,8 +270,10 @@ extractor's only consumer** (it calls the extractor inline at the `|V|≥4` arm,
 Arms.lean:828–857) — its `hcand` slot is the third lockstep decl (C.0).
 
 **Green-modulo boundary CHAIN hands downstream** (`notes/Phase23-design.md`
-§"CHAIN"(d)): CHAIN discharges the general-`k` `hdispatch` (now against the frozen
-`ChainData` contract) and lifts the four producers (OD-7). **ASSEMBLY** composes
+§"CHAIN"(d)): CHAIN constructs the general-`k` `chainData_dispatch` (against the frozen
+`ChainData` contract) and lifts the four producers (OD-7); **CHAIN-5 wires it into the spine to
+discharge `hdispatch` in 23c** (gated on ENTRY's extractor), so 23b hands `hdispatch` downstream
+green-modulo. **ASSEMBLY** composes
 the honest general-`d` Theorem 5.5, re-greens `prop:rigidity-matrix-prop11` +
 `hub`, derives Thm 5.6, states Conjecture 1.2.
 
