@@ -290,9 +290,15 @@ arm closer resolves the two relabelled endpoints to the candidate roles via the 
 action lemmas. Correct + load-bearing, but does NOT discharge the slot alone (the residue telescope
 LEAF-ρ1 is the remaining crux).
 
-**NEXT STEP — build `hρGv` LEAF-ρ1 via the d=3 M₃ template (LEAF-ρ2 now landed), then LEAF-ρ3, then the
-arm wiring `chainData_relabel_arm`.** **KT-FAITHFULNESS RECON DONE + ROUTE LOCKED (§(o‴)(I.7.7),
-2026-06-20):** an
+**NEXT STEP — build the arm `chainData_relabel_arm` with the `hρGv` extraction done INLINE** (LEAF-ρ2
+landed). **L5b resolution (row-308 build flag):** LEAF-ρ1's residue-vs-sum form depends on the arm's role
+binding (the engine's `hρGv = hingeRow a b ρ` at the candidate roles), so it CANNOT be pinned as a
+standalone leaf — the row-308 build correctly shrank to LEAF-ρ2 rather than guess. Per the L5b lesson
+(settle a consumer-dependent route AT the consumer's build), the `hρGv` extraction is done **inline in
+`chainData_relabel_arm`**, generalizing the concrete d=3 M₃ `case hρGv` (`Relabel.lean:2437–2506`) where
+the role binding is concrete: genuine relabel-image row (LEAF-ρ2 + `hρe₀`) `−` the W9a fold output, via
+`sub_mem`. Do the `i=3` 2-residue de-risk FOR REAL inside this build (§(o‴)(I.7.6)). **KT-FAITHFULNESS
+RECON DONE + ROUTE LOCKED (§(o‴)(I.7.7), 2026-06-20):** an
 adversarial read-only recon (prompted by the owner's "are we grounding on KT?") REFUTED the
 clean-relabel-collapse hypothesis and CONFIRMED the W9a residue machinery is **KT-faithful** — KT's
 redundancy transport (6.63–6.66) is the degree-2 `a`-column cancellation (eq 6.44, iterated `i−1` to `±r`),
@@ -307,11 +313,11 @@ base redundancy through the W9a fold, identify the genuine relabel-image `e_b`-r
 `sub_mem` + `sub_sub_cancel` extracts the engine's `hρGv` slot (= the residue). **Span level matches**
 (§(o‴)(I.7.0)): both fold endpoints are removeVertex frameworks at `G − v₁` / `G − vᵢ` = the engine's `Gv`.
 The leaves:
-- **LEAF-ρ1** (P≈3, the genuinely-new piece) — the `i−1`-step generalization of the d=3 M₃ `case hρGv`
-  extraction (W9a fold + genuine-row identification + `sub_mem`). **Do the `i=3` 2-residue de-risk FOR REAL
-  first** (§(o‴)(I.7.6); the row-306 build bailed into the now-closed clean-relabel tangent before
-  finishing it) — confirm the residues resolve via the `a`-column / G4d-i
-  `acolumn_mem_hingeRowBlock_of_span_rigidityRows`, NOT via "surviving edge."
+- **LEAF-ρ1+ρ3 — DONE INLINE IN THE ARM** (P≈3, the genuinely-new piece; NOT a standalone leaf, per the
+  L5b resolution above) — the `i−1`-step generalization of the d=3 M₃ `case hρGv` extraction (W9a fold +
+  genuine-row identification + `sub_mem`), inside `chainData_relabel_arm` with the role binding concrete.
+  Confirm the residues resolve via the `a`-column / G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`
+  (NOT via "surviving edge" — §(o‴)(I.7.4)(a) superseded), `i=3` de-risk first.
 - **LEAF-ρ2 — LANDED 2026-06-20** the literal-row identification `shiftBodyListAsc_relabel_foldl_hingeRow`
   (the landed G1 bridges + `hingeRow_funLeft_dualMap`; this is the genuine relabel-image row — correct +
   load-bearing, but does NOT discharge the slot alone).
