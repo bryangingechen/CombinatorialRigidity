@@ -483,24 +483,28 @@ SINGLE block `block (edge 2)` via the landed one-edge `acolumn_..._of_...` (NOT 
 so the §(I.8.9) two-edge regrouping crux **still stands for them — narrowed, not cleared.**
 **FORK RESOLVED (2026-06-20, user-adjudicated): de-risk-first → (a′-i).** The base de-risk (above) was the
 de-risk-first step; the route is **(a′-i)** (expose `g` edge-grouped; NOT the a′-ii bare-hperp bypass).
-**(a′-i) A-1 SIGNATURE CHANGE — DONE 2026-06-20 (axiom-clean, salvaged WIP):** the W6b producer
-`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean`) now also outputs the candidate row `hρGv`
-(`hingeRow (ab) ρ ∈ span R(Gv)`) in **EDGE-GROUPED** form — `∃ nGv cGv evGv uvGv vvGv rvGv, (∀ j, Gv.IsLink
-(evGv j)(uvGv j)(vvGv j)) ∧ (∀ j, rvGv j ∈ hingeRowBlock (evGv j)) ∧ hingeRow (ab) ρ = ∑ⱼ cGv j • hingeRow
-(uvGv j)(vvGv j)(rvGv j)` — via the new general `BodyHingeFramework.exists_edgeIndexed_combination_of_mem_span_rigidityRows`
-(`RigidityMatrix/Basic.lean`, the `mem_span_set'` + `choose` unpacking of a `span rigidityRows` member into its
-carrying links + block rows). The 2 live d=3 callers (`case_III_candidate_dispatch`, `chainData_split_w6b_gates`,
-`Realization.lean`) `_`-ignore the new `_hedgeGv` output; full project green + lint, d=3 zero-regression.
-**← NEXT CONCRETE COMMIT = the base regroup-at-interior-degree-2-vertex lemma:** consume the edge-grouped
-`hρGv` (now SUPPLIED) at a degree-2 interior chain vertex `vtx(s+1)` to produce the eq-6.43 `(ab)+(ac)+grest`
-witness (`hcol`/`hrest`). **Coordinator clarification (the crux-resolver):** `g = 0` GLOBALLY (eq-6.24,
-`sub_self`), so the regroup is ~mechanical (`hcol` = `g`'s column = 0 trivially; `hrest` holds since at a
-degree-2 vertex only the two incident edges touch it) — the A-1 exposure (now landed) was the resolver of the
-5×-mis-pinned crux (the prior mis-pins all worked AROUND the opaque `g`). The base chain HEAD `vtx 2` is
-degree-1 (single-edge, even easier — `i3_base_interior_acolumn_single_deRisk`). After the regroup lemma: the
-producer `exists_interior_redundancy_witness` (perps via the landed `candidate_supportExtensor_perp_of_base`;
-`hcol`/`hrest` framework-free) → the P3 seed bridge → the all-`i` lift → the arm `chainData_relabel_arm`.
-NO motive/IH/contract change.
+**(a′-i) A-1 SIGNATURE CHANGE — DONE 2026-06-20** (axiom-clean): `exists_candidateRow_bottomRows_of_rigidOn`
+(`Candidate.lean`) now also outputs the candidate row `hρGv` in **EDGE-GROUPED** form `hingeRow (ab) ρ =
+∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)` (via the new `exists_edgeIndexed_combination_of_mem_span_rigidityRows`,
+`RigidityMatrix/Basic.lean` — `mem_span_set'` + `choose` unpacking); 2 d=3 callers `_`-ignore the output, d=3
+zero-regression. Full detail → design §(I.8.9-A1).
+**(a′-i) REGROUP COLUMN FOUNDATION — LANDED 2026-06-20** (axiom-clean, full project green + lint): the
+mechanical `hrest`/`grest`-vanishing core, `BodyHingeFramework.edgeIndexedCombination_comp_single_off`
+(`Relabel.lean` tail) — for an edge-indexed `hingeRow` combination whose summands all avoid body `a`, the
+`a`-column `(…).comp (single a) = 0` (per-summand `hingeRow_comp_single_off` + additivity). KT eq.~(6.43)/(6.66)'s
+"every edge off `a` contributes 0 to `a`'s column", framework-free, zero blast radius — the `grest`-remainder/
+`hrest` the A-2 carrier `candidate_perp_two_incident_supportExtensors` / A-3 `freshEdge_surviving_row_mem_of_witness`
+consume.
+**← NEXT CONCRETE COMMIT = the base regroup-at-interior-degree-2-vertex lemma proper:** partition the
+edge-grouped `hρGv` (now SUPPLIED) summands at a degree-2 interior chain vertex `vtx(s+1)` into the two
+incident-edge groups (`(ab)`/`(ac)`) + the off-`a` rest (its `a`-column now killed by
+`edgeIndexedCombination_comp_single_off`), then derive `hcol` from the global `g = 0`
+(`exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s `sub_self` — `hcol`'s provenance is `g`, NOT
+`hρGv`). Open piece = the index partition tying each `hρGv` summand to one of the two incident edges (degree-2
+graph fact); base chain HEAD `vtx 2` is degree-1 (`i3_base_interior_acolumn_single_deRisk`), deeper vertices
+keep both chain edges. Then: producer `exists_interior_redundancy_witness` (perps via the landed
+`candidate_supportExtensor_perp_of_base`) → P3 seed bridge → all-`i` lift → arm `chainData_relabel_arm`. NO
+motive/IH/contract change.
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT

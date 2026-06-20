@@ -3501,4 +3501,40 @@ theorem _root_.Graph.ChainData.i3_base_interior_acolumn_single_deRisk [Decidable
   exact BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
     (Fab := Fv) (Fv := Fv) h23 hlink_ec rfl hdeg1 hdeg1r hwGv
 
+/-! ### The base regroup-at-interior-degree-2-vertex column foundation (CHAIN-2c-ii-arm, A-3)
+
+The mechanical column-restriction core the (a′-i) base regroup-at-interior-degree-2-vertex producer
+threads through (`notes/Phase23-design.md` §(o‴)(I.8.9); Phase 23b). The A-1 producer
+`exists_candidateRow_bottomRows_of_rigidOn` now exposes the candidate row `hρGv` in the
+**edge-grouped** form `hingeRow (ab) ρ = ∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)` (via
+`exists_edgeIndexed_combination_of_mem_span_rigidityRows`); the regroup at a degree-2 interior chain
+vertex `a` collects the summands incident to `a` into its two incident-edge groups and discards the
+rest. The genuinely-mechanical heart of that regrouping is this lemma: the `a`-column of the sum
+over the *non-incident* summands (both endpoints `≠ a`) vanishes — KT eq.~(6.43)/(6.66)'s "every
+edge off `a` contributes `0` to the `a`-column", the `grest` half of the eq.~(6.43) witness
+`candidate_perp_two_incident_supportExtensors` (A-2) consumes. Framework-free (`hingeRow` reads only
+endpoints + screw functional, not the graph), zero blast radius. -/
+
+/-- **The `a`-column of an edge-indexed `hingeRow` combination over summands off `a` vanishes**
+(CHAIN-2c-ii-arm, the base regroup column foundation; KT 2011 §6.4.1 eq.~(6.43)/(6.66), Phase 23b).
+For a finite ℝ-combination `∑ⱼ cⱼ • hingeRow (uv j)(vv j)(rv j)` in which **every** summand's two
+endpoints avoid body `a` (`a ≠ uv j` and `a ≠ vv j`), precomposing with `a`'s screw-column injection
+`single a` is `0`: each summand vanishes on the `a`-column by `hingeRow_comp_single_off`, and the
+column restriction is additive. This is the `grest`-half (the off-`a` rest vanishes on `a`'s column)
+of the eq.~(6.43) regrouping of an edge-grouped redundancy `hρGv` at a degree-2 interior chain
+vertex — the `hrest` obligation `candidate_perp_two_incident_supportExtensors` (A-2) /
+`freshEdge_surviving_row_mem_of_witness` (A-3) consume. -/
+theorem BodyHingeFramework.edgeIndexedCombination_comp_single_off [DecidableEq α]
+    (a : α) {n : ℕ} (c : Fin n → ℝ) (uv vv : Fin n → α)
+    (rv : Fin n → Module.Dual ℝ (ScrewSpace k))
+    (hoff : ∀ j, a ≠ uv j ∧ a ≠ vv j) :
+    (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+  refine LinearMap.ext fun x => ?_
+  simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply, LinearMap.zero_apply]
+  refine Finset.sum_eq_zero fun j _ => ?_
+  rw [LinearMap.smul_apply, ← LinearMap.comp_apply,
+    BodyHingeFramework.hingeRow_comp_single_off (hoff j).1 (hoff j).2, LinearMap.zero_apply,
+    smul_zero]
+
 end CombinatorialRigidity.Molecular

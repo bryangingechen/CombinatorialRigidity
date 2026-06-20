@@ -4916,6 +4916,19 @@ background build; the coordinator verified all gates green + faithful and commit
 produce the eq-6.43 `(ab)+(ac)+grest` witness (`hcol`/`hrest`; `g=0` makes `hcol` trivial). NO motive/IH/contract
 change.
 
+**(I.8.9-COL) THE REGROUP COLUMN FOUNDATION — LANDED 2026-06-20 (axiom-clean, full project green+lint).** The
+mechanical `hrest`/`grest`-vanishing core of the base regroup lemma: `BodyHingeFramework.edgeIndexedCombination_comp_single_off`
+(`Relabel.lean` tail). For an edge-indexed `hingeRow` combination `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` whose summands
+all avoid body `a` (`a ≠ uvⱼ ∧ a ≠ vvⱼ`), the `a`-column `(…).comp (single a) = 0` (proof =
+`LinearMap.ext` → per-summand `hingeRow_comp_single_off` + additivity, via `LinearMap.coe_sum`/`Finset.sum_eq_zero`).
+This is KT eq.~(6.43)/(6.66)'s "every edge off `a` contributes 0 to `a`'s column", framework-free, zero blast
+radius — the `grest`-remainder/`hrest` obligation the A-2 carrier `candidate_perp_two_incident_supportExtensors`
+/ A-3 `freshEdge_surviving_row_mem_of_witness` consume. **STILL NEXT = the regroup lemma proper:** partition the
+edge-grouped `hρGv` summands by incidence to the degree-2 vertex `a` into `(ab)`/`(ac)`/off-`a`-rest (the rest's
+`a`-column now killed by this lemma), then derive `hcol` from the global `g = 0` (NOT `hρGv` — `hcol`'s provenance
+is `exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s `sub_self`). The open piece is the index partition
+tying each `hρGv` summand to one of the two incident edges (a degree-2 graph fact). NO motive/IH/contract change.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
