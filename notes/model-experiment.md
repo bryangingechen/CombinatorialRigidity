@@ -57,7 +57,7 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#18 (latest: **#18**, 2026-06-20,
+  would re-probe. Set/re-confirmed sessions #6–#19 (latest: **#19**, 2026-06-20,
   fresh coordinator, user re-confirmed the triple at session start; opus
   reachable via the Agent `model` param, no substitution needed).
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
