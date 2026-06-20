@@ -2,23 +2,13 @@
 
 **Status:** open. **CHAIN-1 + CHAIN-3 + CHAIN-4 + OD-7 (the four-producer tail) CLOSED** (per-leaf
 detail in the checklist + *Decisions made* + git; all four 23a producers + both M4 halves general-`k`).
-**Remaining: CHAIN-2 (the `Fin d` reduction layer — corrected Fix A SETTLED §(o‴)(H); the candidate-row
-(`hρGv`) W9a-slot fold COMPLETE (inverse-cycle action block + H.10 de-risk gate + `foldl` fold core + the
-concrete `shiftBodyListAsc_foldl_mem_span_rigidityRows`). **W9b per-body chain DELETED 2026-06-19**
-(§(o‴)(I.1) confirm-and-delete; the 5-decl cluster encoded the per-body block transport machine-refuted,
-NOT a prerequisite — Q1, detail in *Decisions made*). The
-arm's `hwmem` slot is the per-member
-`case_III_bottom_relabel` map (NO fold) cycle-generalized to `(shiftPerm i)⁻¹`: genuine-row → graph-iso,
-block → a single G4d-i at `vᵢ`. **BOTH `hwmem` disjunct transports now LANDED as named abstract `(ρ,σ)`
-bricks** — genuine-row = `rigidityRow_relabel_perm` (graph-iso, LANDED 2026-06-19), block =
-`blockRow_relabel_perm` (Leaf B, LANDED 2026-06-19, `Relabel.lean`, axiom-clean — the source `(ab)`-block
-row maps to a genuine target row at any target edge whose support extensor matches the source `(ab)`-panel
-extensor; the cycle generalization of `case_III_bottom_relabel`'s final `Or.inl` `(ab)`-branch). The
-flagged genuine-arm bookkeeping's seed half also LANDED 2026-06-19 (`seedShift_inv_cancel` +
-`seedShift_off_cycle`). The genuine-arm flag now narrows to the **arm-instantiation half** (wiring the two
-`hwmem` bricks + W9a fold + Leaf-B G4d-i into `chainData_relabel_arm`'s slots). NEXT = 2c-ii-arm
-`chainData_relabel_arm` (ALL transport leaves now landed: inverse-cycle action lemmas, seed lemmas, W9a
-fold, `rigidityRow_relabel_perm`, `blockRow_relabel_perm`), then 2c-iii; see *Hand-off*)
+**Remaining: CHAIN-2** (the `Fin d` reduction layer) — corrected Fix A SETTLED (§(o‴)(H)). The
+candidate-row (`hρGv`) W9a fold, **both `hwmem` disjunct transports** (named `(ρ,σ)` bricks: genuine-row
+`rigidityRow_relabel_perm` + block `blockRow_relabel_perm`, axiom-clean), and the seed lemmas all LANDED;
+the **W9b per-body chain DELETED** (§(o‴)(I.1), dead infra). The genuinely-new transport math is DONE — the
+arm `chainData_relabel_arm` narrows to **arm-instantiation bookkeeping** (wire the bricks + W9a fold +
+Leaf-B G4d-i into its slots). NEXT = 2c-ii-arm `chainData_relabel_arm` → 2c-iii; detail = *Current state* +
+*Hand-off*)
 + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
