@@ -472,10 +472,18 @@ each interior degree-2 vertex into `(ab)+(ac)+grest` (KT eq-6.66 / iterated eq-6
 lemma). **THE FORK (⚠ user-adjudication, §(o‴)(I.8.9)):** (a′-i) expose `g` edge-grouped — an A-1 SIGNATURE
 CHANGE with live d=3 callers to re-plumb — + a new base regroup-at-interior-vertex lemma (~3–5 commits; the
 "carry `g` out of W6b" the I.8.3.v-SETTLED verdict named); vs (a′-ii) bypass `_of_witness`/A-2 for the bare
-`hperp` (~3–4 commits, orphans A-2/`_of_witness`, still needs the same base regrouping). **NEXT = the BASE-`G₁`
-interior-regrouping de-risk at `i=3`/`vtx⟨1⟩`** (can `g` regroup at the base-interior degree-2 vertex? — decides
-(a′-i) buildability before the A-1 change). NO motive/IH/contract change either way; (a′-i) forces an A-1
-signature change (live d=3 callers).
+`hperp` (~3–4 commits, orphans A-2/`_of_witness`, still needs the same base regrouping). **THE BASE-`G₁` DEGREE
+de-risk RAN 2026-06-20 (`i3_base_interior_acolumn_single_deRisk`, `Relabel.lean`, axiom-clean; §(o‴)(I.8.9-RESULT)):
+the §(I.8.9) "is `vtx⟨1⟩` degree-2 in `G−v₁`?" sub-question is void as written (`vtx 1` is the REMOVED apex of
+`G − vtx 1`); the de-risk-able fact is the degree of the first surviving interior neighbour `vtx 2`, and the
+`v₁`-removal kills its predecessor `edge 1 = v₁v₂`, leaving `vtx 2` DEGREE-ONE — so its column lands in the
+SINGLE block `block (edge 2)` via the landed one-edge `acolumn_..._of_...` (NOT the obstructed two-edge sup).**
+**VERDICT = SUCCESS for the chain HEAD** (first interior vertex is the tractable single-block d=3-`M₃` case);
+**CAVEAT:** deeper interior vertices `vtx 3, …` survive with BOTH chain edges (genuinely degree-two at the base),
+so the §(I.8.9) two-edge regrouping crux + the FORK (a′-i A-1 signature change vs a′-ii) **still stand for them
+— NOT resolved, only narrowed.** NEXT = user-adjudicate the FORK (the deeper-vertex regrouping is genuinely-new
+math: expose `g` edge-grouped + the eq-6.43 two-edge `hcol`/`hrest` proof). NO motive/IH/contract change either
+way; (a′-i) forces an A-1 signature change (live d=3 callers).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
@@ -840,6 +848,22 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     first try, no friction; self-contained, zero blast radius. **← NEXT: the producer body
     `exists_interior_redundancy_witness`** (re-derive A-1's base witness at `G₁` + thread its per-row perps
     through this bridge + feed `_of_witness`/A-2 per interior vertex, + the flagged P3 seed bridge).
+  - **P2 A-3 Route W producer-core BASE-`G₁` DEGREE de-risk — RAN 2026-06-20, axiom-clean → SUCCESS at the
+    chain HEAD, deeper-vertex crux NARROWED-not-cleared** (`Graph.ChainData.i3_base_interior_acolumn_single_deRisk`,
+    `Relabel.lean`; design §(o‴)(I.8.9-RESULT)). The §(I.8.9) producer-core recon flagged the witness-DATA
+    regrouping (expose `g` edge-grouped + the eq-6.43 two-edge `hcol`/`hrest`) as the unsolved crux behind the
+    a′-i-vs-a′-ii FORK; this de-risk asked the prior structural sub-question. **Finding (Lean-verified):** the
+    §(I.8.9) "is `vtx⟨1⟩` degree-2 in `G−v₁`?" wording is void — `vtx 1` is the REMOVED apex of `G − vtx 1`.
+    The de-risk-able vertex is the first surviving interior neighbour `vtx 2`, and the `v₁`-removal kills its
+    predecessor `edge 1 = v₁v₂`, leaving `vtx 2` DEGREE-ONE — its column lands in the SINGLE block `block (edge
+    2)` via the landed one-edge `acolumn_..._of_span_rigidityRows` (NOT the obstructed two-edge sup; the
+    base-side mirror of the candidate-side `i3_freshEdge_interior_acolumn_sup_deRisk`, where the same `vtx 2`
+    keeps both edges and is genuinely degree-two). So the chain HEAD is the tractable single-block d=3-`M₃` case.
+    **CAVEAT:** deeper interior vertices `vtx 3, …` survive `removeVertex (vtx 1)` with BOTH chain edges, stay
+    genuinely degree-two at the base, so the two-edge regrouping crux + the FORK persist for them — NOT resolved,
+    only narrowed (the head trivializes). NO motive/IH/contract change; the FORK stays user-adjudication-flagged.
+    Built with two build-cycle fixups (the `|>.field` after `∈` precedence + a `2−1≠sub_self` slip), both logged
+    → FRICTION [idiom] *A leading `|>.proj` …* (sibling note).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

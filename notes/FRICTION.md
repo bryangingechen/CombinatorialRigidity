@@ -431,6 +431,12 @@ to be re-derived by re-reading entries later.
   limit than the `(…).toBodyHinge).IsInfinitesimallyRigidOn` alternative). Reach for the prefix form
   whenever a `|>.`/`.field` must lead a wrapped continuation line.
 - **Status:** resolved (prefix-application rewrite).
+- **Sibling (Phase 23b, the base-interior de-risk):** the same `(expr).toBodyHinge |>.field` shape on
+  the **right of `∈`** parses but resolves the *wrong* `∈` — `x ∈ (expr).toBodyHinge |>.hingeRowBlock e`
+  failed with `failed to synthesize Membership _ (BodyHingeFramework …)` because `|>.hingeRowBlock`
+  binds looser than `∈`, so the membership saw the bare framework, not the submodule. **Fix:** wrap
+  the whole RHS in parens — `x ∈ ((expr).toBodyHinge |>.hingeRowBlock e)`. (Prefix-application
+  `BodyHingeFramework.hingeRowBlock (expr).toBodyHinge e` also works.)
 
 ### [idiom] A standalone `⨅ i ∈ s, ker (proj i)` term needs an explicit `Submodule …` type ascription — `InfSet (Type _)` synth failure otherwise
 - **Where it bit:** G3c-i (`finrank_iInf_ker_proj_eq` / `pinnedMotionsOn_le_iInf_ker_proj`, Phase 22a).

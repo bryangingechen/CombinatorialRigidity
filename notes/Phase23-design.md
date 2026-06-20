@@ -4878,6 +4878,28 @@ body + the `hingeRow` def) localized the genuinely-hard remaining piece:
   FAILURE → the A-1 signature change is forced regardless. **NO motive/IH/contract change either way; but (a′-i)
   forces an A-1 LANDED-SIGNATURE change (live d=3 callers) — surfaced for user adjudication.**
 
+**(I.8.9-RESULT) BASE-`G₁` DEGREE de-risk RAN — VERDICT: the base immediate-successor interior vertex is
+degree-ONE (single-block, tractable); the "degree-2 at `G−v₁`" half of the §(I.8.9) sub-question is a
+mis-statement of WHICH vertex (2026-06-20, Lean-verified, axiom-clean).** Landed as
+`Graph.ChainData.i3_base_interior_acolumn_single_deRisk` (`Relabel.lean` tail, the base-side mirror of the
+candidate-side `i3_freshEdge_interior_acolumn_sup_deRisk`). The §(I.8.9) sub-question "is `vtx⟨1⟩` degree-2 in
+`G−v₁`?" is structurally void as literally written — `vtx 1` is the *removed split apex* of `G − vtx 1`, not a
+vertex of it. The de-risk-able fact is the degree of the **first surviving interior chain neighbour `vtx 2`**:
+the `v₁`-removal kills `vtx 2`'s *predecessor* chain edge `edge 1 = v₁v₂` (it has the removed apex as an
+endpoint), so `vtx 2` retains only its *successor* `edge 2 = v₂v₃` and is **degree-ONE** in `G − vtx 1`. The
+Lean lemma proves: a span member `wGv ∈ span (G − vtx 1) rigidityRows` has its `vtx 2`-column landing in the
+**single** block `block (edge 2)` (via the landed one-edge `acolumn_mem_hingeRowBlock_of_span_rigidityRows`),
+NOT the obstructed two-edge sup that blocked the *candidate*-side lift (where `vtx 2` keeps both edges and is
+genuinely degree-two). **VERDICT = SUCCESS for the column-projection brick at the FIRST interior vertex** — the
+base behaves like the d=3 `M₃` degree-one interior, so the base regrouping at `vtx 2` threads the one-edge form
+with landed infrastructure, no new two-block carry. **CAVEAT (the residual the de-risk DOES NOT clear):** this
+covers only the first interior neighbour `vtx 2`; *deeper* interior vertices (`vtx 3, …`) survive `removeVertex
+(vtx 1)` with BOTH chain edges, so they remain genuinely degree-two at the base, and the §(I.8.9) two-edge
+regrouping crux (exposing `wGv` edge-grouped + the eq-6.43 two-edge `hcol`/`hrest` proof) still stands for them
+— the FORK (a′-i vs a′-ii, the A-1 signature change) is NOT resolved by this de-risk, only narrowed (the head of
+the chain is the tractable single-block case). **NO motive/IH/contract change; the A-1 signature question
+remains user-adjudication-flagged** for the deeper-vertex regrouping.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

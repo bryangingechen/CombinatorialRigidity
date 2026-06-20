@@ -3408,4 +3408,97 @@ theorem _root_.Graph.ChainData.candidate_supportExtensor_perp_of_base
   rw [cd.panelCorrespondence_supportExtensor i s hsi]
   exact hperp
 
+/-- **The BASE-`G₁` interior-regrouping de-risk — at the `v₁`-split the immediate-successor interior
+chain vertex `vtx 2` is degree-ONE, so its column projection is a *single* block, NOT the obstructed
+two-edge sup** (CHAIN-2c-ii-arm, the Route-W producer-core fork de-risk; `notes/Phase23-design.md`
+§(o‴)(I.8.9), the "SMALLEST NEXT COMMIT = the BASE-`G₁` interior-regrouping de-risk"; Phase 23b).
+The §(I.8.9) producer-core recon flagged a fork for the genuinely-new Route-W witness producer
+`exists_interior_redundancy_witness`: the consumer's witness `hcol`/`hrest` (the eq.~(6.43) column
+vanishing) must be *produced* at each interior vertex, and the eq.~(6.24) base decomposition
+(`exists_redundant_panelRow_ab_decomposition_acolumn_zero`) supplies only the *single-edge* `e₀`
+data with a *global* `g = 0` conclusion — so the open question is whether the base redundancy can be
+*regrouped* at an interior degree-2 vertex into `(ab) + (ac) + grest`. The de-risk asks the prior
+structural question (before pinning the producer's signature, the row-321 discipline): **at the base
+`v₁`-split `G − vtx 1` — where the eq.~(6.24) decomposition's premises `h618`/`h622lb` hold — is the
+immediate-successor interior chain vertex `vtx 2` degree-two (forcing the obstructed two-edge sup),
+or is it degree-ONE?**
+
+**Verdict (ground-truth in Lean): the base `v₁`-split kills the interior vertex `vtx 2`'s
+*predecessor* chain edge `edge 1 = v₁v₂` — that edge has the removed apex `v₁` as an endpoint — so
+`vtx 2` retains only its *successor* chain edge `edge 2 = v₂v₃` and is degree-ONE in `G − vtx 1`.**
+Hence a span member `wGv ∈ span (G − vtx 1) rigidityRows` has its `vtx 2`-column landing in the
+*single* block `block (edge 2)` via the one-edge `acolumn_mem_hingeRowBlock_of_span_rigidityRows` —
+**NOT** the two-edge sup `acolumn_..._sup_...` that obstructed the *candidate*-side lift
+(`i3_freshEdge_interior_acolumn_sup_deRisk`, which is the same situation read at the candidate split
+`G − vtx i` where `vtx 2` keeps both edges and is genuinely degree-two). This is the structural fact
+the §(I.8.9) "is `vtx 2` degree-2 in `G − v₁`?" sub-question resolves to **degree-ONE = SUCCESS**:
+at the base the immediate-successor interior vertex behaves like the d=3 `M₃` degree-one interior
+(single-block, the landed one-edge mechanism applies), so the base-side regrouping at this vertex is
+tractable with no new two-block carry — exactly the d=3 `M₃` situation, generalized.
+
+This **de-risks the producer signature without pinning it** (it does not build
+`exists_interior_redundancy_witness`): it isolates *which* column-projection brick the base producer
+threads through at the first interior vertex (the one-edge form, not the obstructed sup), confirming
+the (a′-i) route's base-regrouping half is buildable at this vertex with landed infrastructure. The
+asymmetry — base `vtx 2` is degree-one, candidate `vtx 1` is degree-two — is the precise mirror
+image of the candidate-side de-risk verdict, and it is *why* the base is the right place to
+re-derive the witness (option (a′)): the removed apex shears off one incident edge of its neighbour.
+d=3 (`d = 3`, `i = 2`) is the landed `M₃` swap involution; the general lift re-indexes this. -/
+theorem _root_.Graph.ChainData.i3_base_interior_acolumn_single_deRisk [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
+    {ends : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {wGv : Module.Dual ℝ (α → ScrewSpace k)}
+    -- a span member of the base `v₁`-split's rigidity rows (the eq.-(6.24) redundancy `wGv` lives
+    -- here):
+    (hwGv : wGv ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx ⟨1, by omega⟩)) ends q).toBodyHinge.rigidityRows) :
+    -- its `vtx 2`-column lands in the *single* block `block (edge 2)` — the immediate-successor
+    -- interior vertex is degree-ONE at the base (predecessor edge killed by the `v₁`-removal).
+    wGv.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩)) ∈
+      ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends q).toBodyHinge
+        |>.hingeRowBlock (cd.edge ⟨2, by omega⟩)) := by
+  classical
+  set Fv := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+    ends q).toBodyHinge with hFv
+  -- The successor edge `edge 2 = v₂v₃` survives `removeVertex (vtx 1)`: endpoints `v₂, v₃ ≠ v₁`.
+  have h23 : cd.vtx ⟨2, by omega⟩ ≠ cd.vtx ⟨3, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  have h21 : cd.vtx ⟨2, by omega⟩ ≠ cd.vtx ⟨1, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  have h31 : cd.vtx ⟨3, by omega⟩ ≠ cd.vtx ⟨1, by omega⟩ := cd.vtx_ne _ _ (by omega)
+  -- `edge 2` links `vtx 2 — vtx 3` in `G` (`link ⟨2,_⟩`).
+  have hG2 : G.IsLink (cd.edge ⟨2, by omega⟩) (cd.vtx ⟨2, by omega⟩) (cd.vtx ⟨3, by omega⟩) := by
+    have h := cd.link ⟨2, by omega⟩; simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  have hlink_ec : Fv.graph.IsLink (cd.edge ⟨2, by omega⟩) (cd.vtx ⟨2, by omega⟩)
+      (cd.vtx ⟨3, by omega⟩) := by
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hG2, h21, h31⟩
+  -- **Degree-ONE at `vtx 2` in `G − vtx 1`.** Every `(G − vtx 1)`-link `f` at `vtx 2` is a `G`-link
+  -- at `vtx 2` (`removeVertex_isLink`); by `deg_two ⟨2,_⟩` it is `edge 1` or `edge 2`. But `edge 1`
+  -- links the removed apex `vtx 1` (it is `v₁v₂`), so a surviving link cannot be `edge 1` — leaving
+  -- `f = edge 2` as the sole option.
+  have hdeg1 : ∀ f x, Fv.graph.IsLink f (cd.vtx ⟨2, by omega⟩) x → f = cd.edge ⟨2, by omega⟩ := by
+    intro f x hlink
+    rw [hFv, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    have hGlink := (Graph.removeVertex_isLink.mp hlink).1
+    -- `deg_two ⟨2,_⟩` at `(⟨2,_⟩ : Fin cd.d).castSucc = vtx 2`: `f = edge 1` or `f = edge 2`.
+    have hd := cd.deg_two ⟨2, by omega⟩ (by simp) f x
+    simp only [Fin.castSucc_mk] at hd
+    rcases hd hGlink with he1 | he2
+    · -- `f = edge 1`; but `edge 1 = v₁v₂` links the removed apex `v₁`, so the `(G − v₁)`-link `f`
+      -- would have `v₁` as an endpoint — contradicting `removeVertex_isLink` (`x ≠ v₁`, `y ≠ v₁`).
+      exfalso
+      -- `edge 1 = v₁v₂` as a `G`-link (`link ⟨1,_⟩`); `⟨2 - 1, _⟩` is defeq `⟨1, _⟩`.
+      have hG1 : G.IsLink (cd.edge ⟨(2 : ℕ) - 1, by omega⟩) (cd.vtx ⟨2, by omega⟩)
+          (cd.vtx ⟨1, by omega⟩) := by
+        have h := cd.link ⟨1, by omega⟩; simpa only [Fin.castSucc_mk, Fin.succ_mk] using h.symm
+      -- `f = edge 1` and `hGlink : G.IsLink f (vtx 2) x`, so `x = vtx 1` by `IsLink.right_unique`.
+      rw [he1] at hGlink
+      have hx1 : x = cd.vtx ⟨1, by omega⟩ := hGlink.right_unique hG1
+      -- but `hlink : (G − v₁).IsLink f (vtx 2) x` forces `x ≠ vtx 1` (`removeVertex_isLink`).
+      exact (Graph.removeVertex_isLink.mp hlink).2.2 hx1
+    · exact he2
+  have hdeg1r : ∀ f x, Fv.graph.IsLink f x (cd.vtx ⟨2, by omega⟩) → f = cd.edge ⟨2, by omega⟩ :=
+    fun f x hlink => hdeg1 f x hlink.symm
+  exact BodyHingeFramework.acolumn_mem_hingeRowBlock_of_span_rigidityRows
+    (Fab := Fv) (Fv := Fv) h23 hlink_ec rfl hdeg1 hdeg1r hwGv
+
 end CombinatorialRigidity.Molecular
