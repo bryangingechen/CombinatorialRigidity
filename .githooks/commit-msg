@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# commit-msg hook — strip the harness-injected `Claude-Session:` trailer.
+#
+# Claude Code injects a commit-message instruction to append a
+# `Claude-Session: https://claude.ai/code/session_…` trailer; this project's
+# convention omits it (every commit carries only `Co-Authored-By:`). Subagent
+# build dispatches leak the trailer on ~half their commits, which a coordinator
+# otherwise strips by hand (notes/coordinate-phase-rescue.md §1). This hook
+# strips it pre-commit — no amend, no SHA churn, no author change — for every
+# commit in the repo (main session and subagent dispatches alike).
+#
+# Activation (one-time, repo-local): git config core.hooksPath .githooks
+msgfile="$1"
+if grep -q '^Claude-Session:' "$msgfile" 2>/dev/null; then
+  grep -v '^Claude-Session:' "$msgfile" > "$msgfile.tmp" && mv "$msgfile.tmp" "$msgfile"
+fi
+exit 0

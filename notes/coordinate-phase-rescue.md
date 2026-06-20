@@ -38,13 +38,19 @@ Pre-authorizable at session start. Apply, then log the sha.
   `Claude-Session: https://claude.ai/code/session_…` line the project
   convention omits (every prior commit has *only* `Co-Authored-By:`; the
   harness's default-commit-trailer instruction leaks through, recurred 3×
-  in session #12). Strip it: `git log -1 --format='%B' HEAD | grep -v
-  '^Claude-Session:' | git -c user.name='Bryan Gin-ge Chen' -c
-  user.email=bryangingechen@gmail.com commit --amend -F - --author='Bryan
-  Gin-ge Chen <bryangingechen@gmail.com>'` before logging the sha
-  (fold any same-commit note-trim into the same amend). Buried earlier
-  commits with the trailer are cleanable in one filter at push, not worth
-  a mid-loop rebase — flag them.
+  in session #12 and ~half the build dispatches in session #13). **Now
+  auto-stripped pre-commit by the `.githooks/commit-msg` hook** (added
+  2026-06-19; fires for main-session *and* subagent commits, no amend / no
+  SHA churn). Activate once per clone: `git config core.hooksPath .githooks`
+  (repo-local config, not committed — a fresh clone must re-set it; the hook
+  script itself is version-controlled). **Manual-strip fallback** (when the
+  hook isn't active — fresh clone before setup): `git log -1 --format='%B'
+  HEAD | grep -v '^Claude-Session:' | git -c user.name='Bryan Gin-ge Chen'
+  -c user.email=bryangingechen@gmail.com commit --amend -F - --author='Bryan
+  Gin-ge Chen <bryangingechen@gmail.com>'` before logging the sha (fold any
+  same-commit note-trim into the same amend). Buried earlier commits with
+  the trailer are cleanable in one filter at push, not worth a mid-loop
+  rebase — flag them.
 
 ## §2 — Return shows neither LANDED nor BLOCKED
 
