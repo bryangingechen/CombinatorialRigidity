@@ -290,54 +290,13 @@ chain-edge rows (KT 6.62), the wrap `edge i` → the candidate `(a,b)` block, of
 bridges `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_foldl_funLeft_eq` are now **LANDED**
 (see *Current state* Tracker), so the candidate-row span transport is bridgeable at the arm.
 
-**Genuine-row `hwmem` leaf `chainData_bottom_relabel` — all 3 abstract branches LANDED**
-(`rigidityRow_relabel_off_cycle` + `rigidityRow_relabel_to_block` + `rigidityRow_relabel_to_genuine`,
-`Relabel.lean`, all axiom-clean; per-branch construction in *Decisions made* → "Genuine-row hwmem transport
-bricks" + the Lean docstrings): *off-cycle* (both endpoints fixed → genuine target row), *wrap-edge→block*
-(top edge `edge i` → candidate `(a,b)` BLOCK disjunct), and the new *interior-chain-edge*
-`rigidityRow_relabel_to_genuine` (`edge s ↦ edge (s−1)`, both endpoints move one step but survive
-`removeVertex vᵢ` → genuine `(G−vᵢ)` row at the shifted link). The interior brick is the general moving
-form; the off-cycle sibling delegates to it (`(u',w',f')=(u,w,f)`).
-**`hsupp_of` FOUNDATION LANDED 2026-06-20** (`ofNormals_supportExtensor_relabel_perm`, `Relabel.lean`,
-axiom-clean): the abstract support-extensor coincidence under any relabel `(ρ, σ)` —
-`(ofNormals Gt endsσρ qρ).supportExtensor f = (ofNormals Gt ends₀ q₀).supportExtensor (σ f)` — extracted
-from `ofNormals_relabel_perm`'s local `h_supp` step (which now delegates to it, no duplication). This is
-the `hsupp` ingredient the genuine-row bricks (`rigidityRow_relabel_{off_cycle,to_genuine}`) consume;
-instantiated at `(shiftPerm i.castSucc, shiftEdgePerm i)` it supplies their per-branch support-extensor
-coincidence at the candidate-`i` split.
-
-**Genuine-row `hwmem` leaf `chainData_bottom_relabel` — LANDED 2026-06-20** (`Relabel.lean`,
-axiom-clean): the per-member `(shiftPerm i.castSucc)⁻¹` cycle transport of the `v₁`-base
-`removeVertex (vtx 1)` bottom-row disjunction to the candidate-`i` arm disjunction (general-`d` analogue
-of d=3 `case_III_bottom_relabel`). Dispatch: a genuine base row `hingeRow x y r` → the make-or-break
-`removeVertex_genuine_shiftRelabel` classifies the relabelled link, then `rigidityRow_relabel_to_genuine`
-(genuine image) or an **inline `±r` wrap-block** (candidate fresh pair, sign from the recorded `ends₀ f`
-orientation via one hoisted `hperp : r (C(q x)(q y)) = 0`); a base `(vtx 2,vtx 0)`-block tag →
-`blockRow_relabel_perm` at `e_t = edge 0` (link `vtx 1—vtx 0`, surviving). Two arm-supplied recording
-hyps: `hrec` (`removeVertex (vtx 1)` link recording) + `he₀rec` (`ends₀ e₀ = (vtx 2, vtx 0)`). Two
-lessons (→ TACTICS-QUIRKS §38, *Decisions made*): (1) pin the relabel bricks' implicit seed `qρ`/panel
-endpoints `a,b` explicitly to avoid a higher-order-unification `whnf` blowup; (2) the pre-built block
-bricks `rigidityRow_relabel_to_block{,_swap}` were too rigid (literal `hsupp` can't absorb the
-orientation sign, which is independent of the endpoint-classification order) → inlined the wrap-block,
-leaving those two bricks orphaned-for-the-arm.
-
-**`hρGv` G1 bridges — LANDED 2026-06-20** (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`,
-`wstep_foldl_funLeft_eq`, both axiom-clean): together they bridge the landed base→candidate W9a `foldl`
-fold (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to the engine's `qρ`/`shiftPerm` form. The perm
-bridge identifies `shiftPerm i.castSucc` with the (forward) swap product over `shiftBodyListAsc i`
-(`Equiv.swap_comm` reduction to the landed descending bridge); the linear-map bridge identifies the
-relabel-only `foldl` of `(funLeft swap).dualMap` with `funLeft ⇑(∏ swap)⁻¹` — the `foldl` order
-reverses the product to the **inverse**, which composed with the perm bridge is *precisely* `(funLeft
-(shiftPerm i.castSucc)⁻¹).dualMap`, the base→candidate inverse-cycle relabel the arm wants (the same
-`.symm`/`⁻¹` form the `hwmem` leaf `chainData_bottom_relabel` already uses).
-
-**LEAF-ρ2 LANDED 2026-06-20** (`shiftBodyListAsc_relabel_foldl_hingeRow`, `Relabel.lean`, axiom-clean):
-the relabel-only ascending `foldl` sends `hingeRow x y ρ₀` to `hingeRow ((shiftPerm i.castSucc)⁻¹ x)
-((shiftPerm i.castSucc)⁻¹ y) ρ₀` — a 3-rewrite chain over the two landed G1 bridges +
-`hingeRow_funLeft_dualMap` (the d=3 M₃ step-2/3 generalization). Stated generically over `x y ρ₀`; the
-arm closer resolves the two relabelled endpoints to the candidate roles via the landed `shiftPerm_inv_*`
-action lemmas. Correct + load-bearing, but does NOT discharge the slot alone (the residue telescope
-LEAF-ρ1 is the remaining crux).
+**Landed leaves toward the arm (settled; full per-leaf detail in *Decisions made* + §(o‴)(I.6)/(I.8)
++ the Lean docstrings + git):** the genuine-row `hwmem` leaf `chainData_bottom_relabel` (+ its 3 branch
+bricks `rigidityRow_relabel_{off_cycle,to_block,to_genuine}`, the `hsupp_of` foundation
+`ofNormals_supportExtensor_relabel_perm`, and the make-or-break crux `removeVertex_genuine_shiftRelabel`),
+the `hρGv` G1 bridges (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_foldl_funLeft_eq`) + LEAF-ρ2
+(`shiftBodyListAsc_relabel_foldl_hingeRow`), and the LEAF-ρ1 algebraic core (`wstep_foldl_hingeRow_telescope`
++ the membership corollary `wstep_foldl_freshEdge_slot_mem`, finite-range per P1) — all LANDED axiom-clean.
 
 **P1 LANDED 2026-06-20 — the algebraic core is now finite-range-callable.**
 `wstep_foldl_{hingeRow_telescope,freshEdge_slot_mem}` restated over `Set.InjOn w (Set.Iic (m+2))` (axiom-clean,
