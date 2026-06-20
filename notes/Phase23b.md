@@ -226,9 +226,13 @@ the `hsupp` ingredient the genuine-row bricks (`rigidityRow_relabel_{off_cycle,t
 instantiated at `(shiftPerm i.castSucc, shiftEdgePerm i)` it supplies their per-branch support-extensor
 coincidence at the candidate-`i` split.
 
-**NEXT STEP (the `hsupp_of` foundation is now a standalone brick; the assembly itself was >1 sitting in the
-BLOCKED draft — full detail + the two builder traps in design §(o‴)(I.6)): the per-member assembly
-`chainData_bottom_relabel`** (`Relabel.lean`): dispatch the base disjunction
+**NEXT STEP — the per-member assembly `chainData_bottom_relabel`** (`Relabel.lean`): now an
+attempt-ready bounded brick-assembly — **all its bricks are standalone and landed** (3 genuine-row
+branches + 2 block-orientation bricks + the `hsupp_of` producer + the landed cycle-action
+`shiftEdgePerm_inv_*` / `seedShift_*` + `ChainData.deg_two`). The first BLOCKED draft's ">1 sitting" was
+its state *then* (inlined branches + an undiscovered wrap sign gap + a parse-cascade trap), all three now
+resolved (bricks extracted, sign gap closed by `…to_block{,_swap}`, trap recorded §(o‴)(I.6)) — so
+**attempt the assembly directly, don't pre-emptively shrink.** It is: dispatch the base disjunction
 (`φ ∈ rows ∨ ∃ρ', (a,b)-block`) through the genuine-row branches (off-cycle / interior via
 `rigidityRow_relabel_{off_cycle,to_genuine}`) + the two block-orientation bricks under `(shiftPerm i)⁻¹`,
 via the off-cycle / interior-chain / wrap case-split (skeleton §(o‴)(I.6); per-row `deg_two`). The BLOCKED
