@@ -173,17 +173,21 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     Route G4d-i-PROJECTED is dead; **Route W** (the per-vertex eq.-(6.52) witness, KT eq.~(6.66)) is forced.
     User-adjudicated → recon (row 330) → **option (a′): re-derive the witness at the base `G₁` + transport
     the perp to `Fva = G−vtx i` across the panel correspondence**.
-  - **i=3 PANEL-CORRESPONDENCE DE-RISK — PASSED 2026-06-20, axiom-clean** (lemma
-    `Graph.ChainData.i3_panelCorrespondence_supportExtensor_deRisk`, `Relabel.lean`; design §(o‴)(I.8.8)).
-    The candidate-`i=3` framework's `supportExtensor` at `vtx 1`'s two surviving incident chain edges
-    (`edge 0`/`edge 1`) equals the `v₁`-base framework's at the `shiftEdgePerm 3`-corresponding edge
-    (`edge 0 ↦ e₀`, `edge 1 ↦ edge 2`), VERBATIM — a direct application of the landed
+  - **PANEL-CORRESPONDENCE TRANSPORT IDENTITY — GENERAL-`i` + LANDED 2026-06-20, axiom-clean** (lemma
+    `Graph.ChainData.panelCorrespondence_supportExtensor`, `Relabel.lean`; design §(o‴)(I.8.8)). For ANY
+    candidate `i` and ANY surviving interior chain edge `edge s` with `s + 1 < (i : ℕ)`, the candidate-`i`
+    framework's `supportExtensor (edge s)` equals the `v₁`-base framework's at the `shiftEdgePerm i`-image
+    `shiftEdgePerm i (edge s)`, VERBATIM — a direct application of the landed
     `ofNormals_supportExtensor_relabel_perm` (support extensors are graph-independent; base-graph mismatch
-    `G−vtx 1` vs `G−vtx 3` closed by `simp only [toBodyHinge_supportExtensor, ofNormals_ends,
-    ofNormals_normal]`). **VERDICT = SUCCESS → option (a′) is buildable** (the perp transports across this
-    coincidence; no metric/Plücker step). `_of_witness` + A-2 `candidate_perp_two_incident_*` STAND.
+    `G−vtx 1` vs `G−vtx i` closed by `simp only [toBodyHinge_supportExtensor, ofNormals_ends,
+    ofNormals_normal]`). The base edge resolves via `shiftEdgePerm_apply_edge_{zero,interior}` (`edge 0 ↦ e₀`
+    at `s=0`, `edge s ↦ edge (s+1)` for `s≥1`). **The earlier `i=3` de-risk gate
+    `i3_panelCorrespondence_supportExtensor_deRisk` is now a thin two-conjunct corollary** (re-pointed, same
+    statement, d=3 zero-regression). **VERDICT = SUCCESS → option (a′) is buildable** (the perp transports
+    across this coincidence; no metric/Plücker step); the transport is now SUPPLIED for the producer.
     **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (option (a′): witness = A-1's base
-    producer ∘ the transport; feed `_of_witness` + A-2 per interior vertex), then the arm.
+    producer ∘ `panelCorrespondence_supportExtensor`; feed `_of_witness` + A-2 per interior vertex), then the
+    arm.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
@@ -194,8 +198,9 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   de-risk PASSED, so (a′) is buildable). The `i=3` gates (`i3_freshEdge_slot_mem_deRisk` abstract `m=2`
   `sub_mem` peel; `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership, perp as
   `hperp0/1`; `i3_freshEdge_interior_acolumn_sup_deRisk` the route-fork de-risk;
-  `i3_panelCorrespondence_supportExtensor_deRisk` the option-(a′) de-risk) STAND. The arm
-  `chainData_relabel_arm` is gated on Route W's producer `exists_interior_redundancy_witness` (+ P3).
+  `i3_panelCorrespondence_supportExtensor_deRisk` the option-(a′) de-risk, now a corollary of the general
+  `panelCorrespondence_supportExtensor`) STAND. The arm `chainData_relabel_arm` is gated on Route W's
+  producer `exists_interior_redundancy_witness` (+ P3); its panel-correspondence transport is now LANDED.
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -432,19 +437,23 @@ the base carries only the `e₀` perp, the fork de-risk's vacuous `=⊤`; option
 that framework is the *deleted* graph, not a rigid split, so the decomposition's premises are absent.) (a′)
 forces a NEW panel-correspondence transport identity (eqs. 6.59/6.62 at `supportExtensor` level) + the flagged
 P3 seed bridge, ~3–4 commits, **NO contract change**; (a″) per-vertex rigidity premise NOT recommended (contract
-change, off route β). **The i=3 PANEL-CORRESPONDENCE DE-RISK is now PASSED 2026-06-20**
-(`i3_panelCorrespondence_supportExtensor_deRisk`, `Relabel.lean`, axiom-clean): the candidate-`i=3`
-framework's `supportExtensor` at `vtx 1`'s two surviving incident chain edges (`edge 0`/`edge 1`) equals
-the `v₁`-base framework's at the KT-corresponding edge (`shiftEdgePerm 3 (edge 0) = e₀`, `shiftEdgePerm 3
-(edge 1) = edge 2`), VERBATIM — a direct application of the landed `ofNormals_supportExtensor_relabel_perm`
-(support extensors are graph-independent, so the base graph `G−vtx 1` vs the relabel lemma's `G−vtx 3` is
-discharged by `simp only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]`). **VERDICT =
-SUCCESS → option (a′) is buildable** (no metric/Plücker step; the perp transports across this `supportExtensor`
-coincidence). **← NEXT SMALLEST COMMIT = Route W's producer `exists_interior_redundancy_witness` (option (a′)):**
-re-derive A-1's eq-(6.52) two-edge witness at the base split `G₁` (where `h618`/`h622lb` are available — reuse
-A-1's instantiation), then transport the perp conclusion to `Fva = G−vtx i` across this panel correspondence +
-the flagged P3 seed bridge; feed `freshEdge_surviving_row_mem_of_witness` + A-2 at each interior vertex.
-**Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` STAND (Route W's building blocks, NOT
+change, off route β). **The PANEL-CORRESPONDENCE TRANSPORT IDENTITY is now GENERAL-`i` + LANDED 2026-06-20**
+(`panelCorrespondence_supportExtensor`, `Relabel.lean`, axiom-clean): for ANY candidate `i` and ANY surviving
+interior chain edge `edge s` with `s + 1 < (i : ℕ)` (both endpoints `vtx s`/`vtx (s+1)` survive `removeVertex
+(vtx i)`), the candidate-`i` framework's `supportExtensor (edge s)` equals the `v₁`-base framework's at the
+KT-corresponding edge `shiftEdgePerm i (edge s)`, VERBATIM — a direct application of the landed
+`ofNormals_supportExtensor_relabel_perm` (support extensors are graph-independent, so the candidate base graph
+`G−vtx i` vs the `v₁`-base `G−vtx 1` is discharged by `simp only [toBodyHinge_supportExtensor, ofNormals_ends,
+ofNormals_normal]`). The corresponding base edge resolves via `shiftEdgePerm_apply_edge_{zero,interior}`
+(`edge 0 ↦ e₀` at `s=0`, `edge s ↦ edge (s+1)` for `s≥1`). **The earlier `i=3` de-risk gate
+`i3_panelCorrespondence_supportExtensor_deRisk` is now a thin two-conjunct corollary of this general lemma**
+(re-pointed, same statement, axiom-clean, d=3 zero-regression). **← NEXT SMALLEST COMMIT = Route W's producer
+`exists_interior_redundancy_witness` (option (a′)):** re-derive A-1's eq-(6.52) two-edge witness at the base
+split `G₁` (where `h618`/`h622lb` are available — reuse A-1's instantiation), then transport the perp conclusion
+to `Fva = G−vtx i` across `panelCorrespondence_supportExtensor` (now SUPPLIED, general-`i`) + the flagged P3
+seed bridge; feed `freshEdge_surviving_row_mem_of_witness` + A-2 at each interior vertex.
+**Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
+STAND (Route W's building blocks, NOT
 confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER) + the telescope (`:2938`/`:3006`)
 + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3 zero-regression. Then the arm
 `chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v) `ρ₀_perp_interior_chain_edge` route is
@@ -781,6 +790,21 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     be re-derived at the base `G₁` (A-1's instantiation) and transported to `Fva = G−vtx i` across this
     coincidence + the flagged P3 seed bridge — no metric/Plücker step. **← NEXT: Route W's producer
     `exists_interior_redundancy_witness`** (the witness re-derivation + transport, then the arm).
+  - **P2 A-3 Route W panel-correspondence GENERALIZED to all-`i` — LANDED 2026-06-20, axiom-clean**
+    (`Graph.ChainData.panelCorrespondence_supportExtensor`, `Relabel.lean`; design §(o‴)(I.8.8)). The
+    general-candidate-`i` form the producer consumes: for ANY `i` and ANY surviving interior chain edge
+    `edge s` with `s + 1 < (i : ℕ)`, the candidate-`i` framework's `supportExtensor (edge s)` =
+    `v₁`-base.`supportExtensor (shiftEdgePerm i (edge s))` — same one-`rw`-(of `ofNormals_supportExtensor_relabel_perm`)-
+    plus-`simp only` proof as the i=3 gate, just over a general `i : Fin cd.d` / `s` (the index obligation
+    `s+1 < i` carries the survival of both endpoints). The base-edge image resolves via
+    `shiftEdgePerm_apply_edge_{zero,interior}` (`edge 0 ↦ e₀`, `edge s ↦ edge (s+1)`). **The i=3 de-risk gate
+    `i3_panelCorrespondence_supportExtensor_deRisk` is now re-pointed as a thin two-conjunct corollary**
+    (`s := 0`/`s := 1` at `i := ⟨3,_⟩`; same statement, axiom-clean, d=3 zero-regression). Built first try,
+    no friction (the `Fin (d+1)`-vertex-index `cd.vtx ⟨i,_⟩` needs `i < d+1` not `i.isLt`'s `i < d` — the
+    standard `by have := i.isLt; omega` already pervasive in this file). The flagged `hi : 2 ≤ i` was dropped
+    (subsumed by `hsi : s+1 < i`). This is the transport identity option (a′)'s producer threads its perp
+    across. **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (re-derive A-1's base witness
+    at `G₁`, transport across this identity per interior vertex, + the flagged P3 seed bridge).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

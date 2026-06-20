@@ -4811,6 +4811,20 @@ Generalizing the de-risk from `i = 3`/`vtx 1` to general candidate `i`/edge `s +
 two `shiftEdgePerm_apply_*` rewrites (the head `edge 0 ↦ e₀` only at `s = 0`; interior `edge s ↦ edge (s+1)`).
 No motive/IH/contract change; d=3 (`i = 2`) zero-regression.
 
+**(I.8.8-GENERAL) PANEL-CORRESPONDENCE GENERALIZED TO ALL-`i` — LANDED 2026-06-20, axiom-clean.** Landed as
+`Graph.ChainData.panelCorrespondence_supportExtensor` (`Relabel.lean`), the general-candidate-`i` form the
+producer consumes: for ANY `i : Fin cd.d` and ANY surviving interior chain edge `edge s` with
+`s + 1 < (i : ℕ)`, `candidate-i.supportExtensor (edge s) = v₁-base.supportExtensor (shiftEdgePerm i (edge s))`.
+The proof is the i=3 de-risk's verbatim — one `rw [ofNormals_supportExtensor_relabel_perm (shiftPerm i.castSucc)
+(shiftEdgePerm i)]` + the closing `simp only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]`
+(the candidate base graph `G − vtx i` vs the `v₁`-base `G − vtx 1` is irrelevant — `supportExtensor` reads only
+`ends₀`/`normal`). The base-edge image resolves via `shiftEdgePerm_apply_edge_{zero,interior}`. **The i=3 gate
+`i3_panelCorrespondence_supportExtensor_deRisk` is now a thin two-conjunct corollary** (`s := 0`/`s := 1` at
+`i := ⟨3,_⟩`; same statement, d=3 zero-regression). The flagged `hi : 2 ≤ i` was dropped (`hsi : s+1 < i`
+subsumes it). This SUPPLIES the transport identity option (a′)'s producer threads its perp across — so the
+`exists_interior_redundancy_witness` build now consumes a landed `panelCorrespondence_supportExtensor` rather
+than re-deriving the transport. No motive/IH/contract change.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
