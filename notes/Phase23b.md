@@ -480,10 +480,22 @@ the §(I.8.9) "is `vtx⟨1⟩` degree-2 in `G−v₁`?" sub-question is void as 
 SINGLE block `block (edge 2)` via the landed one-edge `acolumn_..._of_...` (NOT the obstructed two-edge sup).**
 **VERDICT = SUCCESS for the chain HEAD** (first interior vertex is the tractable single-block d=3-`M₃` case);
 **CAVEAT:** deeper interior vertices `vtx 3, …` survive with BOTH chain edges (genuinely degree-two at the base),
-so the §(I.8.9) two-edge regrouping crux + the FORK (a′-i A-1 signature change vs a′-ii) **still stand for them
-— NOT resolved, only narrowed.** NEXT = user-adjudicate the FORK (the deeper-vertex regrouping is genuinely-new
-math: expose `g` edge-grouped + the eq-6.43 two-edge `hcol`/`hrest` proof). NO motive/IH/contract change either
-way; (a′-i) forces an A-1 signature change (live d=3 callers).
+so the §(I.8.9) two-edge regrouping crux **still stands for them — narrowed, not cleared.**
+**FORK RESOLVED (2026-06-20, user-adjudicated): de-risk-first → (a′-i).** The base de-risk (above) was the
+de-risk-first step; the route is **(a′-i)** (expose `g` edge-grouped; NOT the a′-ii bare-hperp bypass).
+**← NEXT CONCRETE COMMIT = the (a′-i) A-1 SIGNATURE CHANGE: expose the eq-6.24 redundancy `g`/`wGv` in
+EDGE-GROUPED form** through `exists_candidateRow_bottomRows_of_rigidOn` / the
+`exists_redundant_panelRow_ab_decomposition_acolumn_zero` chain (Candidate.lean), re-plumbing the 3 live d=3
+callers (`chainData_split_w6b_gates`/`case_III_candidate_dispatch`/`chainData_split_realization`, `_`-ignore the
+new output) + verifying d=3 zero-regression. **Coordinator clarification (the crux-resolver):** `g = 0`
+GLOBALLY (eq-6.24, `sub_self`), so once `g` is exposed edge-grouped the regroup at a degree-2 interior vertex is
+~mechanical (`hcol` = `g`'s column = 0 trivially; `hrest` holds since at a degree-2 vertex only the two incident
+edges touch it) — so the A-1 signature change is itself the resolver of the 5×-mis-pinned crux (the prior
+mis-pins all worked AROUND the opaque `g` instead of exposing it). The base chain HEAD `vtx 2` is degree-1
+(single-edge, even easier). After the A-1 change: the base regroup-at-interior-degree-2-vertex lemma → the
+producer `exists_interior_redundancy_witness` (perps via the landed `candidate_supportExtensor_perp_of_base`;
+`hcol`/`hrest` framework-free) → the P3 seed bridge → the all-`i` lift → the arm `chainData_relabel_arm`.
+NO motive/IH/contract change; (a′-i) forces the A-1 signature change (live d=3 callers, B≈2).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
