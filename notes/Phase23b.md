@@ -150,46 +150,18 @@ extractor reshape).
 
 The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
-- **OD-8 — RESOLVED 2026-06-17.** The panel-meet range-membership
-  `complementIso(j:=2)⟨n_u∧n',_⟩ ∈ range(⋀^k W ↪)` for `W = {n_u,n'}^⊥` is CLOSED via route α
-  (the entire leaf chain h-0…h-3 LANDED): `complementIso` IS the Hodge `⋆`, O(n)-natural; the
-  target transports the standard-frame membership along an orthogonal change of frame. Route β
-  stays **rejected** (the annihilation→membership upgrade is the withdrawn `dim Φ̃` count
-  `= C(d−1,2) > 1` for `d≥4`). Full text `notes/Phase23-design.md` §"CHAIN"(h); landed leaf in
-  *Decisions made* below.
-- **OD-6 — DECIDED: five leaves within ONE sub-phase 23b** (no separate duality
-  letter). The arm-realization engine they feed is already general-`k`, so
-  neither hard core stands alone as a deliverable. Split at contact only if
-  CHAIN-2's index bookkeeping proves larger than estimated.
-- **OD-7 — DECIDED: the four 23a-carried producers fold into CHAIN's tail**
-  (after CHAIN-3), not a dedicated successor — the M4-forget reach-in *is*
-  CHAIN-3's duality, and the conditioned-pair producers route through M4.
-  Caveat: confirm at build that the duality is their *only* `d=3` reach-in.
-- **OD-4 — RESOLVED 2026-06-18 (design-pass): existence/homogeneous route,
-  alg-independence NOT forced.** Verdict + reasoning: Decisions-made below +
-  `notes/Phase23-design.md` §(i). KT eq. (6.67) phrases the `d+1`-points step via
-  alg-independence (p. 698 verbatim, confirmed against the `.refs/` PDF), but the
-  landed d=3 formalization sidesteps it: the D-span runs off the already-general
-  `span_omitTwoExtensor_eq_top` (only hyp `LinearIndependent ℝ pbar`, via Lemma
-  2.1), driven by **linear** independence of `d+1` **homogeneous** vectors, not
-  KT's affine points / `(d−j)`-flat fact. The row #106 cross-product construction
-  is **dead (zero live call sites)**. CHAIN-4 lifts as a numeral generalization of
-  green bricks; one build-time residual (per-join panel-membership, CHAIN-4b).
-- **(b) producer-shape mismatch — SETTLED 2026-06-17** (the docs-only
-  contract-settle pass). The CHAIN↔ENTRY interface is frozen in
-  `notes/Phase23-design.md` §"CHAIN↔ENTRY contract": a `G.ChainData n` `structure`
-  (length-`d` chain `vtx : Fin (d+1) → α`, `edge : Fin d → β`, `e₀`, the deg-2
-  closures) is the shared shape. **No motive/IH change forced** (C.6): the chain
-  data is purely combinatorial, the base `(G₁,q₁)` is the existing general-`k`
-  `HasGenericFullRankRealization` premise pulled from the same 0-dof IH conjunct,
-  the `d` candidate splits are smaller 0-dof graphs (no higher-dof `G_v` GAP-6).
-  The reshape is **three decls in lockstep** (extractor / producer-`hcand` /
-  dispatch-`hdispatch`); the `d=3` line is a zero-regression wrapper (C.4 map:
-  chain `v₀v₁v₂v₃ = b—v—a—c`). CHAIN-5's signature is now authorable.
-- **OD-1 (re-confirmed for CHAIN/ENTRY).** KT Lemma 5.4 short-cycle base is a
-  real branch of the general-`d` chain entry (unlike `d=3`'s inline triangle
-  floor); whether CHAIN's dispatch assumes the chain branch (ENTRY discharging
-  the cycle branch) is an ENTRY-contract question.
+- **OD-8 — RESOLVED 2026-06-17** (route α, `complementIso` = the O(n)-natural Hodge `⋆`; β rejected — the
+  withdrawn `dim Φ̃` count). §"CHAIN"(h).
+- **OD-6 — DECIDED:** five leaves within ONE sub-phase 23b (the arm engine is already general-`k`).
+- **OD-7 — DECIDED + CLOSED:** the four 23a producers folded into CHAIN's tail (after CHAIN-3); all general-`k`.
+- **OD-4 — RESOLVED 2026-06-18:** existence/homogeneous route, alg-independence NOT forced — the eq.-(6.67)
+  D-span runs off `span_omitTwoExtensor_eq_top` (linear independence of `d+1` homogeneous vectors, via Lemma
+  2.1, not KT's affine points). §(i).
+- **(b) producer-shape — SETTLED 2026-06-17:** the `G.ChainData n` interface frozen, no motive/IH change
+  (C.6), `d=3` zero-regression wrapper (C.4: chain `v₀v₁v₂v₃ = b—v—a—c`). §"CHAIN↔ENTRY contract".
+- **OD-1 (still open — ENTRY's to resolve at build, C.5).** KT Lemma 5.4 short-cycle base is a real branch
+  of the general-`d` chain entry (unlike `d=3`'s inline triangle floor); whether the dispatch assumes the
+  chain branch (ENTRY discharging the cycle branch) is invariant for CHAIN-5's signature.
 
 ## Hand-off / next phase
 
@@ -197,50 +169,22 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 route β preserved; `d=3` zero-regression preserved. The full verdict (KT deciding lines, leaf signatures,
 tear-up/keep lists) is `notes/Phase23-design.md` §(o‴)(H); the rationale is *Current state* above.
 
-**BUILD-PATH CONSOLIDATED — §(o‴)(I) (2026-06-19, design-settle pass; the three questions settled vs the
-landed bodies).** **Q1 — the W9b per-body chain was DELETED 2026-06-19 (confirm-and-delete done).** The
-abstract pure-relabel `reverseRec` foldl core `bottomTag_foldl_mem_rigidityRows` was a per-body
-block-disjunct chain — but that chain is the route §(o‴)(b)/(c)/(d)/(H) machine-refuted (the per-step
-block residual has no home at the interior; the W9b single-step's block output `hingeRow c v ρ'` cannot
-terminate without the `e_b`-row that `removeVertex` cuts). Confirmed `git grep` zero live callers and
-**removed the 5-decl cluster** (the §(H.5) tear-up list):
-`bottomTag_foldl_mem_rigidityRows`, `bottomTag_foldr_mem_rigidityRows`, the two W9b single-steps
-(`funLeft_dualMap_bottomTag_mem_rigidityRows`, `…_seedAdvance_…`), and `redundancy_panel_carry` — DEAD
-INFRA, never a prerequisite. **Kept** `candidateRow_ac_eq_neg` (Leaf B
-re-consumes it). **STILL LANDED + KEPT:** the candidate-row (`hρGv`) W9a slot — the `wstep_foldl` core +
-the concrete `shiftBodyListAsc_foldl_mem_span_rigidityRows` (it transports the *span* membership of the
-redundant `±r` row), through the de-risk gate / `seedAdvance_wstep_hstep` bundle.
+**BUILD-PATH CONSOLIDATED — §(o‴)(I) (2026-06-19; full detail = *Current state* Tracker + design §(o‴)(I)).**
+The three questions are settled vs the landed bodies. **Q1** — the W9b per-body chain is **DELETED** (the
+5-decl `bottomTag_{foldl,foldr}`/`funLeft_dualMap_bottomTag_{,_seedAdvance}`/`redundancy_panel_carry`
+cluster encoded the per-body block transport §(o‴)(b)/(c)/(d) machine-refuted; zero callers;
+`candidateRow_ac_eq_neg` kept). **Q2** — Leaf B = a single G4d-i at `vᵢ` (one eq.-(6.44), the inline
+`Or.inr` arm of `chainData_relabel_arm`'s `hwmem`; NOT a standalone decl; do NOT build a per-body block
+carry — the 4×-mis-pin). **Q3** — `hwmem` is the per-member `case_III_bottom_relabel` map (NO fold)
+cycle-generalized to `(shiftPerm i)⁻¹`: genuine-row → the inverse-relabel **graph-iso**
+(`splitOff_isLink_shiftRelabel_iff` + `hingeRow_funLeft_dualMap`), block → Leaf B. **KEPT:** the
+candidate-row (`hρGv`) W9a slot (`shiftBodyListAsc_foldl_…` + the de-risk gate) — it transports the
+redundant `±r` row's *span* membership, a DIFFERENT mechanism from the genuine-row graph-iso (the prior
+'genuine rides W9a' framing was WRONG, §(o‴)(I.3)).
 
-**Q2 — Leaf B = a SINGLE direct G4d-i at `vᵢ`, NOT a `bottomTag_foldl` instantiation (§(o‴)(I.2)).** The
-block disjunct is the whole-relabel image of `M₀`'s single redundant row → the `±r` row at `vᵢ` by ONE
-eq.-(6.44) at the single degree-2 body `vᵢ` (G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows` +
-`candidateRow_ac_eq_neg`). It is **not minted as a standalone fold-bearing decl** — it is the `Or.inr`
-arm inside `chainData_relabel_arm`'s `hwmem` proof (the inverse-cycle generalization of the d=3 single-swap
-block branch `case_III_bottom_relabel:1596–1611`; the swap acts non-trivially only near `vᵢ`, so it does
-NOT chain over the `i−1` cycle bodies). Do **not** build a per-body block carry (the §(o‴)-rejected route,
-mis-pinned 4× at iters 3/7/9/11).
-
-**Q3 — the `hwmem` assembly: per-member `case_III_bottom_relabel` map (NO fold), cycle-generalized to
-`(shiftPerm i)⁻¹` (§(o‴)(I.3)).** The engine slot (`case_III_arm_realization`, `Arms.lean:96–99`) wants,
-per member `j`: `w j ∈ (genuine Gv-rows) ∨ (∃ρ', ρ'⊥C(q a,q b) ∧ w j = hingeRow a b ρ')`. The arm's proof
-is `intro j; <transport the disjunction of (hwmem₀ j)>` — the cycle generalization of the d=3 M₃ discharge
-(`Relabel.lean:2264–2272`, a per-member map over `w`, no fold). The two disjuncts transport by DIFFERENT
-non-fold mechanisms: (a) **genuine-row disjunct** → the inverse-relabel **graph-iso** row correspondence
-(`splitOff_isLink_shiftRelabel_iff` + `hingeRow_funLeft_dualMap`, seed cancellation `qρ(ρ⁻¹x)=q x`), the
-cycle generalization of `case_III_bottom_relabel:1499–1595`; (b) **block disjunct** → Leaf B's single
-G4d-i. **⚠ Correction to the prior Leaf-A framing:** the bottom-family *genuine-row* disjunct does NOT
-ride the W9a span fold — that fold carries the *candidate row* `hρGv` (a span member). The genuine-row
-disjunct is a *literal-row* membership; a pure relabel sends a genuine-row-at-the-moving-body to a
-`(c,v)`-block (`case_III_bottom_relabel:1672`), so it needs the graph-iso, not a span fold. The W9a span
-fold and the genuine-row graph-iso are different mechanisms on different objects.
-
-**SEED HALF of the flagged genuine-arm bookkeeping LANDED 2026-06-19** (the two `ChainData`
-seed-coincidence lemmas, `Operations.lean`, axiom-clean): `seedShift_inv_cancel` (candidate seed
-`qᵢ=q∘shiftPerm i` read at the inverse-relabelled body `(shiftPerm i)⁻¹ x` componentwise equals `q x`
-— the genuine-row arm's annihilation transport; KT (6.59); d=3 M₃'s `hqρc`/`hqρv` lifted) +
-`seedShift_off_cycle` (`qᵢ x = q x` off the cycle — the non-moving recorded-endpoint read, d=3's
-`simp only [hqρ, swap_apply_of_ne_of_ne]` step lifted). `Equiv.Perm.apply_inv_self` has no named
-constant, so the cancel is `funext; rw [← mul_apply, mul_inv_cancel, one_apply]` (FRICTION, under the
+**SEED HALF of the flagged genuine-arm bookkeeping LANDED 2026-06-19** (`seedShift_inv_cancel` +
+`seedShift_off_cycle`, `Operations.lean`, axiom-clean): the seed cancellation `qᵢ(ρ⁻¹x)=q x` (KT (6.59))
++ the off-cycle fix `qᵢ x = q x`, the d=3 M₃ `hqρc`/`hqρv` + off-edge steps lifted to the cycle (FRICTION,
 `formPerm`-cycle entry).
 
 **STILL FLAGGED (un-discharged here, §(o‴)(I.4)/(E)/(F)(D)) — narrowed to the SELECTOR/GRAPH-ISO half:**
@@ -260,26 +204,16 @@ G4d-i) + G4d-i (`hρe₀`); also needs the `funLeft (shiftPerm i)⁻¹` relabel 
 = `i=2` involution. → **2c-iii** `chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm, interior =
 relabel arm; replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
 
-**Confirm-and-delete / STAYS at the reshape** (full list §(o‴)(H.5); `git grep` zero callers at the
-delete commit). **DELETED 2026-06-19** (the W9b per-body chain, Q1 §(o‴)(I.1)): the 5-decl cluster
-`funLeft_dualMap_bottomTag{,_seedAdvance}_mem_rigidityRows` + `bottomTag_{foldr,foldl}_mem_rigidityRows`
-+ `redundancy_panel_carry`. **Still orphaned-for-the-arm (delete at the arm build):** the candidate→base
-W9a fold `shiftBodyList_foldr_mem_span_rigidityRows` (wrong orientation, H.10);
-`funLeft_dualMap_sub_acolumn_comp_mem_span_rigidityRows` (binary, superseded — but its name is still
-docstring-referenced at the kept `seedAdvance_wstep_hstep` decl, sync on delete);
-`ofNormals_relabel_perm` (route A — but its name is still docstring-referenced at the kept
-`Operations.lean` graph-iso decls, sync on delete); the per-`i` W6b architecture
-`chainData_split_realization`/`_w6b_gates` (re-check at 2c-iii — does the dispatch reuse the `v₁`-split
-W6b or inline it). **STAYS:** the
-base→candidate W9a single-step (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` + the H.10 W9a gate
-`seedAdvance_wstep_hstep`), the W9a fold + concrete instance, the
-graph iso + `shiftEdgePerm`, the inverse-cycle action block, G4d-i, the W6b gate, 2c-i, `ChainData` +
-accessors. **⚠ `candidateRow_ac_eq_neg`** (eq.-(6.44)): likely used ONCE at `vᵢ` for the block via G4d-i
-— NOT a per-body `redundancy_panel_carry` carry (§(o‴)(H); re-check at the block build).
-**`d=3` zero-regression:** at `i=2` the cycle is `shiftPerm 2 = (v₁v₂)`, an involution where
-`(shiftPerm 2)⁻¹ = shiftPerm 2`, so Fix A's inversion is a no-op and the arm reduces to the landed M₃
-engine verbatim; the current `case_III_candidate_dispatch` stays green untouched until CHAIN-5/ENTRY wrap
-it (C.4).
+**Confirm-and-delete / STAYS** (full list §(o‴)(H.5); `git grep` zero callers at the delete commit).
+**DELETED 2026-06-19** (Q1): the 5-decl W9b per-body chain. **Orphaned-for-the-arm (delete at the arm
+build, sync the docstring refs):** the candidate→base W9a fold `shiftBodyList_foldr_mem_span_rigidityRows`
+(wrong orientation, H.10), `funLeft_dualMap_sub_acolumn_comp_…` (binary, superseded), `ofNormals_relabel_perm`
+(route A); the per-`i` W6b architecture `chainData_split_realization`/`_w6b_gates` (re-check at 2c-iii).
+**STAYS:** the base→candidate W9a single-step + the H.10 gate `seedAdvance_wstep_hstep` + fold + instance,
+the graph iso + `shiftEdgePerm`, the inverse-cycle block, the seed lemmas, G4d-i, `candidateRow_ac_eq_neg`
+(used ONCE at `vᵢ` via G4d-i, NOT a per-body carry), the W6b gate, 2c-i, `ChainData` + accessors.
+**`d=3` zero-regression:** `i=2` cycle `(v₁v₂)` is an involution → Fix A's inversion is a no-op, the arm
+reduces to the landed M₃ engine; `case_III_candidate_dispatch` stays green until CHAIN-5/ENTRY wrap it (C.4).
 
 - **CHAIN-2c — the single-base `Fin (k+1)` family dispatch (design §(n)/§(o)/§(o‴)(H)).** Route β LOCKED
   (user-adjudicated 2026-06-18, KT-source-verified): ONE base `(G₁,q₁)` (the `v₁`-split = `M₀`), ONE
@@ -305,24 +239,14 @@ it (C.4).
   `lem:case-III` general-`d` entry, extending the d=3 `lem:case-III-claim612-eq644`); written as
   2c-ii/CHAIN-5 land + at phase-close.
 
-Re-pointing the d=3 discriminator `exists_complementIso_ne_zero_of_homogeneousIncidence` at CHAIN-4d's
-`k:=2` instance (h-5) is now an available but **not-forced** simplification — the d=3 body + its
-`complementIso_smul_eq_extensor_join` wrapper stay green meanwhile; defer to ASSEMBLY/cleanup. **The
-OD-8 route β stays rejected** (the annihilation→membership upgrade is the withdrawn `dim Φ̃` count —
-distinct from the CHAIN-2c "route β" just locked above; this is the CHAIN-3/OD-8 duality route). The CHAIN-3-finish
-geometry (the `⋀^{d−1}W`-is-a-line route, NOT the withdrawn d=3-only `Φ̃` route) lives canonically in
-`notes/Phase23-design.md` §"CHAIN"(f)/(h); the join=meet duality KT leaves implicit is captured in the
-BlueprintExposition ledger (the CHAIN-3 entry).
+The d=3 discriminator re-point at CHAIN-4d's `k:=2` (h-5) is an available-but-**not-forced** simplification
+(defer to ASSEMBLY/cleanup; the d=3 body stays green). The CHAIN-3-finish geometry (`⋀^{d−1}W`-is-a-line,
+NOT the withdrawn d=3-only `Φ̃`) + the OD-8 route-β rejection live in design §"CHAIN"(f)/(h) + the
+BlueprintExposition CHAIN-3 entry.
 
-**The CHAIN↔ENTRY contract is now settled** (`notes/Phase23-design.md`
-§"CHAIN↔ENTRY contract", 2026-06-17) — the (b) build-recon gate is discharged:
-CHAIN-5's `hdispatch`/`hcand` signature is frozen against the `G.ChainData n`
-record (C.1/C.3), so it is now authorable. **CHAIN-2's *linear algebra* is independent
-of the contract, but its *indexing* is contract-coupled** (recon §(l) overturned the
-old "CHAIN-2 fully independent" claim): the `ChainData` record it indexes **is now authored
-in Lean** (`Induction/Operations.lean`, 2026-06-18, the zeroth leaf — `deg_two` settled), so
-the indexing prereq is discharged. CHAIN-5 is unblocked once the rest of CHAIN-2 lands
-**and** ENTRY's extractor is reshaped.
+**CHAIN↔ENTRY contract SETTLED** (`notes/Phase23-design.md` §"CHAIN↔ENTRY contract"): CHAIN-5's
+`hdispatch`/`hcand` signature is frozen against the `G.ChainData n` record (C.1/C.3, landed in
+`Operations.lean`); CHAIN-5 is unblocked once the rest of CHAIN-2 lands + ENTRY's extractor is reshaped.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn
 comes).** ENTRY reshapes `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`)
