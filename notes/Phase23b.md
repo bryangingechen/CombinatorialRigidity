@@ -123,9 +123,13 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     spliced panel `C(q(v₀v₂))` (`hρe₀`), not the intermediate chain-edge panels; that it ⊥ each is KT
     eq.(6.62)/(6.66)'s degree-2 `±r` carry, unbuilt in Lean (the closed-form telescope gives `W φ = (∑
     surviving) + slot` as *linear maps*, NOT each summand a span member). So P2 is unblocked on the
-    link/membership plumbing; the remaining work is the **perp** (route (a) degree-2 carry off
-    `candidateRow_ac_eq_neg`; route (b) off the landed `chainData_bottom_relabel` genuine branch). ~1–2
-    commits.
+    link/membership plumbing; the remaining work is the **perp**, and the **route is now SETTLED
+    (§(o‴)(I.8.3.v), 2026-06-20):** **route (a)** (KT eq.-(6.66) iterated degree-2 carry — true,
+    KT-faithful) **gated on ONE genuinely-new sub-lemma `ρ₀_perp_interior_chain_edge`** (the *two-edge*
+    degree-2 `hingeRowBlock → hingeRowBlock` cancellation at an interior chain vertex; G4d-i /
+    `candidateRow_ac_eq_neg` are the *one-edge* form and are **provably non-instantiable** at an interior
+    vertex, Lean-confirmed), iterated from the W6b `hρe₀` base. **Route (b) `chainData_bottom_relabel` is
+    CIRCULAR** for P2 (it transports a base perp, cannot establish it). ~1–2 commits, real math.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
@@ -320,12 +324,19 @@ source-verified clean for every slot except `hρGv` (`Gv = G−vᵢ` / `ends = r
 `(a,b) = (vᵢ₊₁,vᵢ₋₁)`, confirmed vs the landed `chainData_bottom_relabel` output type
 `Relabel.lean:1960–1972`; `hwmem ← chainData_bottom_relabel`, `hρe₀ ← G4d-i`, rest per `M₃`). Two
 genuinely-new prerequisites remain before `hρGv` can be supplied: **(P2, real math, the smallest next
-commit)** the `m` `hsurv` summands need `ρ₀ ⊥ panel(qρ(chain edge))`, deferred as abstract-`S` hyps by both
-the corollary AND the `i=3` gate (the "PASSED" verdict checked only the `sub_mem` algebra) — unbuilt;
-de-risk at `i=3` concretely. **(P3, flagged, likely clean)** the fold seed `shiftSeedAdv q (i−1)` = engine
-seed `qρ` is an unbuilt bridge (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change;
-option (b) + d=3 zero-regression stand; ~3–4 commits (P2→P3→assembly). Sub-step sequence + exact
-signatures in design §(o‴)(I.8.4). **`i=3` de-risk DONE
+commit) — PERP ROUTE NOW SETTLED (§(o‴)(I.8.3.v), 2026-06-20).** The `m` `hsurv` summands need
+`ρ₀ ⊥ panel(qρ(chain edge))`; the verified route is **route (a)** (KT eq.-(6.66) iterated degree-2 carry,
+true + KT-faithful), **gated on ONE genuinely-new sub-lemma `ρ₀_perp_interior_chain_edge`** (the *two-edge*
+degree-2 `hingeRowBlock → hingeRowBlock` cancellation at an interior chain vertex — the honest analogue of
+G4d-i, which is the *one-edge* form and is **provably non-instantiable** at an interior vertex, Lean-confirmed
+this session), iterated from the W6b `hρe₀` base. **Route (b) `chainData_bottom_relabel` is CIRCULAR for P2**
+(it transports a base perp, cannot establish it — it is the landed `hwmem` slot, a different obligation). So
+P2 = land the two-edge carry + discharge `i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` from it
+for real (the de-risk took them as hyps; the `sub_mem`/`link` halves are clean). **(P3, flagged, likely
+clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
+(`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
+stand; ~3–4 commits (P2→P3→assembly). Sub-step sequence + exact signatures in design §(o‴)(I.8.4); the perp
+verdict (Q1–Q4 vs KT 6.50–6.66 + the landed bricks) in §(o‴)(I.8.3.v)/(I.8.6.v). **`i=3` de-risk DONE
 (Lean-verified `i3_*_deRisk` lemmas) + KT-SOURCE RE-DERIVATION RESOLVED the path (§(o‴)(I.7.10),
 owner-chosen recon).** The de-risk computed `W φ = hingeRow v₀v₁ + v₁v₂ + v₂v₄ ρ₀` / `R φ
 = hingeRow v₀v₁ ρ₀` / `D φ = hingeRow v₁v₄ (−ρ₀)` — the three links `v₀—v₁` / `v₁—v₄` / slot `v₂—v₄`

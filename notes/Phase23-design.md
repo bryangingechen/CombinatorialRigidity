@@ -4361,6 +4361,103 @@ genuinely-new obstruction the gate ISOLATES** (it does NOT follow from `hρe₀`
 carry off `candidateRow_ac_eq_neg`, or route (b) off `chainData_bottom_relabel`) rather than failing —
 the build proceeds (no STOP), with the remaining P2 step = the perp derivation, now the only un-landed half.
 
+**(I.8.3.v) PERP-ROUTE VERDICT — the P2 perpendicularity obligation IS derivable (route (a)), but needs
+ONE genuinely-new sub-lemma; route (b) is circular (recon-before-build, 2026-06-20, opus).** Settles the
+two candidate routes (I.8.3) flagged, verified against **KT 2011 §6.4.2 eqs. (6.50)–(6.66)** (read
+end-to-end, p. 692–697) AND the **landed `def`/`theorem` bodies** (file:line). The obligation, restated
+exactly: for each surviving interior chain edge `s < (i:ℕ)−1`, prove
+`ρ₀ ((ofNormals (G−vᵢ) ends qρ).toBodyHinge.supportExtensor (cd.edge s)) = 0`
+(`= ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))`, equivalently `ρ₀ ∈ hingeRowBlock (edge s)` by
+`mem_hingeRowBlock_iff`, `Claim612.lean:823`). It is **NOT** discharged by `hρe₀` — confirmed against the
+engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **candidate fresh pair**
+`(a,b) = (vᵢ₊₁, vᵢ₋₁)`, NOT the intermediate chain panels.
+
+  *(Q1 — what KT 6.62/6.66 actually asserts about the redundancy `r`'s perpendicularity, deciding lines.)*
+  KT does **NOT** prove "`r ⊥` each intermediate chain panel" as a standalone perp. KT's mechanism (the
+  deciding lines, p. 695–697): eq. (6.61) converts `R(G,pᵢ)` so its **bottom block is literally
+  `R(G₁,q₁)`** via the row-correspondence eq. (6.62) ("the rows associated with `v₀v₂` in `R(G₁,q₁)`
+  correspond to those associated with `v₀v₁` in `R(G,pᵢ)`", + the `vⱼvⱼ₊₁ ↔ vⱼ₋₁vⱼ` shifts); KT then
+  applies the **same `λ` redundancy weights of eq. (6.52)** (`∑_{e,j} λₑⱼ R(G₁,q₁;eⱼ) = 0`) and, **by
+  (6.52), "all the entries of the part of the new row vector (6.63) associated with `V∖{vᵢ}` become
+  zero"** (p. 696). The surviving `R(G₁,q₁)` rows are genuine rigidity rows; the redundancy `r =
+  ∑_j λ(v₀v₂)j r_j(q₁(v₀v₂))` is a fixed combination living in the `(v₀v₂)`-block. **Eq. (6.66)** —
+  "*due to the fact that `vᵢ` is a vertex of degree two in `G₁` … in a manner similar to the previous
+  lemma (cf. (6.44))*: `∑_j λ(vᵢvᵢ₊₁)j r_j(q(vᵢvᵢ₊₁)) = ± r`" — establishes `r` lies in the
+  `(vᵢvᵢ₊₁)`-block too, hence (eq. 6.66 sentence following) "`Mᵢ` does not have full rank iff `r` is in
+  the orthogonal complement of `C(Lᵢ)`". So KT's perp is a **consequence of the degree-2 two-edge
+  cancellation** (eq. (6.43)→(6.44): the `vᵢ`-column of (6.52) has only the two incident blocks
+  `(vᵢ₋₁vᵢ)`/`(vᵢvᵢ₊₁)`, forcing `∑λ(vᵢ₋₁vᵢ)·r + ∑λ(vᵢvᵢ₊₁)·r = 0`), **iterated along the chain**:
+  `r ∈ (v₀v₂)-block ⟹ r ∈ (v₂v₃)-block ⟹ … ⟹ r ∈ (vₛvₛ₊₁)-block` for every chain edge, so `r ⊥
+  C(q₁(vₛvₛ₊₁))` at every chain edge. **The perp IS true and KT-grounded** — it is exactly the iterated
+  eq.-(6.44) carry. KT never names it separately because the *whole* (6.63) row-operation discharges it
+  in one matrix manipulation; the Lean telescope (`wstep_foldl_hingeRow_telescope`) splits the same
+  operation into named summands `hingeRow (w s)(w (s+1)) ρ₀`, which re-surfaces the per-summand perp as
+  an explicit obligation. [KT p. 695–697 quoted; the 6.44 mechanism cross-checked vs the d=3 Lemma 6.10,
+  p. 689–690, where eq. (6.44) `r = −∑_j λ(ac)j r_j(q(ac))` is the *single-step* version.]
+
+  *(Q2 — does route (a) hold in the LANDED Lean? — YES, but composition is a NEW sub-lemma.)* The Lean
+  carrier of eq. (6.44) is **G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`** (`Relabel.lean:2242`,
+  hover-verified): from `wGv ∈ span Fv.rigidityRows` + **`a` degree-2 in `Fv` with its SOLE edge
+  `e_c = ac`** (`hdeg2`/`hdeg2r`: `∀ f x, Fv.IsLink f a x → f = e_c`), it gives `wGv ∘ single a ∈
+  Fab.hingeRowBlock e_c`. This is the **one-edge** specialization (the `vᵢ` endpoint, whose only
+  *surviving* `G−vᵢ` edge after the fresh-pair surgery is `e_c`) — it is exactly how the d=3 `M₃` `hρ_ac`
+  reads the candidate perp (`Relabel.lean:2419–2430`, ONE application at `vᵢ`; `candidateRow_ac_eq_neg`
+  `Claim612.lean:1194` is the column-equation eq.-(6.44) form). **It does NOT directly apply to an
+  *interior* chain vertex `vₛ₊₁`**, which has **TWO** surviving `G−vᵢ` edges (`edge s = vₛvₛ₊₁` and
+  `edge (s+1) = vₛ₊₁vₛ₊₂`), so the `hdeg2`/`hdeg2r` single-edge hypotheses are FALSE there. KT's eq. (6.66)
+  cancellation is the genuine **two-edge** degree-2 relation: it relates the two incident blocks, giving a
+  block-to-block transport, not a single-block membership. So route (a) is **mathematically true and
+  KT-faithful but requires a NEW Lean sub-lemma** — the two-edge / iterated form (the analogue of G4d-i for
+  an interior, degree-2-with-two-edges vertex): from `r ∈ hingeRowBlock (edge s)` (a known block membership)
+  and `vₛ₊₁` degree-2 in `G−vᵢ` with edges `{edge s, edge (s+1)}`, derive `r ∈ hingeRowBlock (edge (s+1))`
+  (up to ±), then induct `s = 0 … i−2` from the base `r ∈ hingeRowBlock (e₀-spliced v₀v₂)` (the W6b
+  `hρe₀`-gate). **Lean-confirmed this session (`lean_run_code`): G4d-i's single-edge premise is provably
+  FALSE at an interior vertex** — `¬ (∀ f x, G.IsLink f (cd.vtx ⟨s+1⟩) x → f = cd.edge ⟨s⟩)` closes from
+  `cd.link ⟨s+1⟩ : IsLink (edge (s+1)) vₛ₊₁ vₛ₊₂` + `cd.edge_inj` (the second incident chain edge witnesses
+  the refutation), so `acolumn_mem_hingeRowBlock_of_span_rigidityRows`'s `hdeg2`/`hdeg2r` cannot be supplied
+  at `vₛ₊₁`; the new two-edge lemma is required, not a re-instantiation. **Closed form of
+  the new sub-lemma** (the smallest honest P2 unit): a `hingeRowBlock`-to-`hingeRowBlock` carry
+  ```
+  theorem ρ₀_perp_interior_chain_edge (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ) (hs : s + 1 < (i:ℕ)−1)
+      (ρ₀ …) (hbase : ρ₀ ∈ (…G−vᵢ… qρ).hingeRowBlock (cd.edge ⟨s,_⟩)) :
+      ρ₀ ∈ (…G−vᵢ… qρ).hingeRowBlock (cd.edge ⟨s+1,_⟩)
+  ```
+  via the two-edge degree-2 cancellation at `vₛ₊₁` (KT eq. (6.44) two-block form, `deg_two` field at
+  `i = s+1`), iterated to give `ρ₀ ∈ hingeRowBlock (edge s)` for all `s < i−1` from the base. Then P2's
+  `hperp_s` = `(mem_hingeRowBlock_iff).1` of that. ~1–2 commits, the real-math content (I.8.3 P2 estimate
+  stands). [The two-edge degree-2 cancellation is NOT yet a landed lemma; G4d-i is its one-edge cousin.]
+
+  *(Q3 — is route (b) circular? — YES, refuted as a P2 discharge.)* `chainData_bottom_relabel`
+  (`Relabel.lean:1939`, the landed genuine-row `hwmem` leaf) takes `hφ : φ ∈ rigidityRows(G−v₁) ∨
+  ∃ρ', (ρ' ⊥ panel(v₂v₀)) ∧ φ = hingeRow v₂ v₀ ρ'` and transports the disjunction across `(shiftPerm i)⁻¹`
+  (verified the input/output types, `:1949–1972`). To use it for the P2 summand `hingeRow (vtx s)(vtx s+1)
+  ρ₀`, that summand must FIRST inhabit the LEFT disjunct `∈ rigidityRows(G−v₁)` — i.e. `ρ₀ ⊥
+  panel(q(vₛvₛ₊₁))` at the **base** framework — which is the SAME perp obligation moved to the base, or
+  the RIGHT disjunct (a `(v₂v₀)`-block row, which the interior edge is not). So route (b) **transports a
+  perp it cannot establish**: circular for P2, confirmed. (It IS the right tool for the genuine-row
+  `hwmem` transport it was built for — where the base membership is supplied by the W6b gate — just not
+  for manufacturing the interior-edge perp.)
+
+  *(Q4 — VERDICT.)* **Route (a) discharges P2** (KT-faithful, the iterated eq.-(6.44) carry), **gated on
+  ONE genuinely-new sub-lemma** — the **two-edge degree-2 `hingeRowBlock`-to-`hingeRowBlock` cancellation
+  at an interior chain vertex** (`ρ₀_perp_interior_chain_edge` above), the honest analogue of G4d-i for a
+  two-edge vertex, iterated from the W6b `hρe₀` base. **Route (b) is circular** and is NOT a P2 discharge
+  (it is the landed `hwmem` transport, a different slot). This is **NOT a motive/IH/signature change and
+  NOT an obstruction** — it is a buildable missing leaf *inside* option (b); the d=3 `M₃` arm never needed
+  it because at `i = 2` (`m = i−1 = 1`) the single surviving row is the *reproduced* `e_b`-row whose perp
+  IS `hρe₀` (so zero interior chain edges; `case_III_arm_realization_M3` `case hρGv`,
+  `Relabel.lean:2527–2537`, uses `hρe₀` directly). The first honest interior-perp case is `i = 3`
+  (`m = 2`): summand `hingeRow v₀v₁ ρ₀` (`edge 0`, interior vertex `v₁` deg-2) needs the new carry; summand
+  `hingeRow v₁v₂ ρ₀` (`edge 1`, interior vertex `v₂` deg-2) likewise — the `i3_freshEdge_surviving_rows_mem_deRisk`
+  gate (`Relabel.lean:2700`) took these as `hperp0`/`hperp1` hyps precisely because the carry was unbuilt.
+  **What would resolve it:** land `ρ₀_perp_interior_chain_edge` (the two-edge cancellation), de-risked at
+  `i = 3` by discharging `hperp0`/`hperp1` of `i3_freshEdge_surviving_rows_mem_deRisk` for real from the
+  W6b `hρe₀`-gate + the `deg_two` field at `i = 1`/`i = 2`. **Clause (ii) honesty flag:** the prior
+  (I.8.3) "two candidate routes, choose at build" framing **understated** route (a): it is not "likely,
+  KT-grounded but UNVERIFIED" plug-in of `candidateRow_ac_eq_neg` — `candidateRow_ac_eq_neg`/G4d-i are the
+  **one-edge** form and do **not** instantiate at an interior vertex; route (a) needs the *new* two-edge
+  lemma. Naming that missing leaf (not asserting "route (a) plugs in") is the safe pin.
+
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
 1. **P1 restatement — LANDED 2026-06-20 (the unblocker).** Both algebraic-core lemmas
@@ -4380,11 +4477,19 @@ instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
          ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
              (relabelled ends) qρ).toBodyHinge.rigidityRows
    ```
-   crux: `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))` (route (a) G4d-i degree-2 chain, or (b) via
-   `chainData_bottom_relabel`); link via `cd.link` + survival `s, s+1 < i`. **i=3 de-risk LANDED
-   2026-06-20** (`i3_freshEdge_surviving_rows_mem_deRisk`): the link/membership half is concrete-clean,
-   so the general lemma's only un-landed half is the per-edge **perp** (`ρ₀ ⊥ Fva.supportExtensor (edge
-   s)`); the rest of the body = the de-risk gate's `hrow` builder, generalized from `i=3` to `s < i−1`.
+   crux: `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))` — **PERP-ROUTE SETTLED (I.8.3.v): route (a)** (the iterated
+   eq.-(6.44) degree-2 carry), **NOT a `candidateRow_ac_eq_neg`/G4d-i re-instantiation** (those are the
+   one-edge form, provably non-instantiable at an interior vertex; Lean-confirmed I.8.3.v), but a NEW
+   two-edge sub-lemma `ρ₀_perp_interior_chain_edge` (`hingeRowBlock (edge s) → hingeRowBlock (edge (s+1))`
+   via the two-edge degree-2 relation at `vₛ₊₁`, iterated from the W6b `hρe₀` base). **Route (b)
+   `chainData_bottom_relabel` is CIRCULAR for P2** (it transports a base perp, cannot establish it).
+   Link via `cd.link` + survival `s, s+1 < i`. **i=3 de-risk LANDED 2026-06-20**
+   (`i3_freshEdge_surviving_rows_mem_deRisk`): the link/membership half is concrete-clean, so the general
+   lemma's only un-landed half is the per-edge **perp** (`ρ₀ ⊥ Fva.supportExtensor (edge s)`), now routed
+   through the new two-edge carry; the rest of the body = the de-risk gate's `hrow` builder, generalized
+   from `i=3` to `s < i−1`. The smallest P2 step = **land `ρ₀_perp_interior_chain_edge` (the two-edge
+   cancellation) + discharge `i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` from it for
+   real** (the de-risk's `hp` slots, currently hyps).
 3. **`hW`-supplier (clean instantiation, folded into step 4).** `hW := shiftBodyListAsc_foldl_mem_span_rigidityRows`
    (`Relabel.lean:1785`, LANDED) at the candidate `i`, the relabelled `ends`, seed `q`, base `hφ` = the
    W6b-gate base redundancy `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G−v₁ ends q)`. **GAP-to-watch (P3, see
@@ -4430,6 +4535,21 @@ in place, `Set.InjOn w (Set.Iic (m+2))`, axiom-clean). **Remaining to the closed
 P3 → assembly), the **smallest next commit = P2** (the `hsurv` summand perp-membership, de-risked at `i=3`
 concretely). The "purely graph-level, one instantiation" framing in *Hand-off* / (I.7.10) tail was corrected
 by this pass; P1 (the unblocker) is now discharged.
+
+**(I.8.6.v) PERP-ROUTE settled into the P2 estimate (2026-06-20, opus).** I.8.3.v settles which of the two
+flagged routes discharges the P2 perp: **route (a)** (the iterated KT eq.-(6.44) degree-2 carry — true,
+KT-faithful), **gated on ONE genuinely-new sub-lemma** `ρ₀_perp_interior_chain_edge` (the two-edge degree-2
+`hingeRowBlock`-to-`hingeRowBlock` cancellation at an interior chain vertex — the honest analogue of G4d-i,
+which is the one-edge form and is **provably non-instantiable** at an interior vertex, Lean-confirmed). **Route
+(b) `chainData_bottom_relabel` is CIRCULAR** for P2 (it transports a base perp, cannot establish it; it is the
+landed `hwmem` slot, a different obligation). So P2 = land the two-edge carry + iterate from the W6b `hρe₀`
+base + de-risk by discharging `i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` from it. This
+**confirms** the (I.8.6) P2 estimate (~1–2 commits, real math) and the "no motive/IH/signature change, option
+(b) + d=3 zero-regression stand" verdict; it **refines** the route choice (the prior "two routes, choose at
+build" understated route (a)'s need for the new two-edge lemma — neither route is a plug-in of an existing
+brick). Honesty flag (clause ii): naming the missing leaf `ρ₀_perp_interior_chain_edge` is the safe pin; a
+"route (a) plugs in `candidateRow_ac_eq_neg`" pin would have been confident-wrong (the one-edge brick does not
+fit the two-edge interior vertex).
 
 ---
 
