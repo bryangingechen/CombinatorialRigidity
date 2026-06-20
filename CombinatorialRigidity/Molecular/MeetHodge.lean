@@ -115,6 +115,82 @@ theorem exists_orthonormalBasis_span_pair_eq {k : ℕ}
   rw [himg, InnerProductSpace.span_gramSchmidtNormed, InnerProductSpace.span_gramSchmidt_Iic,
     hrange]
 
+/-- **The `toDual`-perp of two independent normals in `ℝ^{k+2}` has dimension `k`**
+(CHAIN-3, OD-8, the shared `finrank` step of the (h-3)/(h-4) leaves). For a linearly independent
+pair `n : Fin 2 → ℝ^{k+2}`, the submodule `⨅ j, ker (toDual.flip (n j))` (the standard-pairing
+orthogonal complement of `{n 0, n 1}`, expressed kernel-of-`flip`-wise) has dimension `k`.
+
+Proved by transporting the bare-carrier perp `Q` to the metric orthogonal complement
+`(span{ne 0, ne 1})ᗮ` of the `EuclideanSpace`-side normals `ne j = equiv.symm (n j)` (via
+`EuclideanSpace.inner_eq_basisFun_toDual` + the `toDual`-symmetry `inner_comm`), then
+`finrank_add_finrank_orthogonal` against `finrank (EuclideanSpace _) = k + 2` and
+`finrank (span{ne 0, ne 1}) = 2` (the pair is independent). Factored out of the two CHAIN-3
+range-membership leaves (`complementIso_extensor_mem_range_map_subtype` and
+`extensor_join_proportional_complementIso_meet`), which carried byte-identical copies of this
+~55-line transport before. -/
+theorem finrank_toDualPerp_pair_eq {k : ℕ} {n : Fin 2 → Fin (k + 2) → ℝ}
+    (hn : LinearIndependent ℝ n) :
+    Module.finrank ℝ
+        (⨅ j : Fin 2, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j))
+          : Submodule ℝ (Fin (k + 2) → ℝ)) = k := by
+  classical
+  set Q : Submodule ℝ (Fin (k + 2) → ℝ) :=
+    ⨅ j, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j)) with hQ
+  -- Transport `Q` to the metric orthogonal complement `(span{ne 0, ne 1})ᗮ`.
+  set ne : Fin 2 → EuclideanSpace ℝ (Fin (k + 2)) :=
+    fun i => (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm (n i) with hne
+  set P' : Submodule ℝ (EuclideanSpace ℝ (Fin (k + 2))) := Submodule.span ℝ {ne 0, ne 1} with hP'
+  have hsymm : ∀ w v : Fin (k + 2) → ℝ,
+      (Pi.basisFun ℝ (Fin (k + 2))).toDual w v = (Pi.basisFun ℝ (Fin (k + 2))).toDual v w := by
+    intro w v
+    set ε := EuclideanSpace.equiv (Fin (k + 2)) ℝ
+    have h1 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm w) (ε.symm v)
+    have h2 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm v) (ε.symm w)
+    simp only [ε, ContinuousLinearEquiv.apply_symm_apply] at h1 h2
+    rw [← h1, ← h2, real_inner_comm]
+  have hinner : ∀ (x : EuclideanSpace ℝ (Fin (k + 2))) (j : Fin 2),
+      (inner ℝ (ne j) x : ℝ)
+        = (Pi.basisFun ℝ (Fin (k + 2))).toDual
+            ((EuclideanSpace.equiv (Fin (k + 2)) ℝ) x) (n j) := by
+    intro x j
+    rw [EuclideanSpace.inner_eq_basisFun_toDual,
+      show (EuclideanSpace.equiv (Fin (k + 2)) ℝ) (ne j) = n j from rfl, hsymm]
+  have hQmap : Submodule.map
+      (↑(EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearEquiv :
+        (Fin (k + 2) → ℝ) →ₗ[ℝ] EuclideanSpace ℝ (Fin (k + 2))) Q
+      = Submodule.orthogonal P' := by
+    ext x
+    rw [Submodule.mem_map_equiv, Submodule.mem_orthogonal]
+    simp only [hQ, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
+    constructor
+    · intro hx u hu
+      induction hu using Submodule.span_induction with
+      | mem y hy =>
+          rcases hy with rfl | rfl
+          · rw [hinner]; exact hx 0
+          · rw [hinner]; exact hx 1
+      | zero => simp
+      | add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]
+      | smul c a _ ha => rw [inner_smul_left, ha, mul_zero]
+    · intro hx j
+      have := hx (ne j) (Submodule.subset_span (by fin_cases j <;> simp))
+      rw [hinner] at this
+      exact this
+  have hni : LinearIndependent ℝ ne :=
+    hn.map' (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearMap
+      (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.ker
+  have hP'dim : Module.finrank ℝ P' = 2 := by
+    have hrange : (Set.range ne) = {ne 0, ne 1} := by
+      ext y; constructor
+      · rintro ⟨i, rfl⟩; fin_cases i <;> simp
+      · rintro (rfl | rfl); exacts [⟨0, rfl⟩, ⟨1, rfl⟩]
+    rw [hP', ← hrange, finrank_span_eq_card hni, Fintype.card_fin]
+  have h1 : Module.finrank ℝ Q = Module.finrank ℝ (Submodule.orthogonal P') := by
+    rw [← hQmap, LinearEquiv.finrank_map_eq]
+  have h2 := Submodule.finrank_add_finrank_orthogonal P'
+  rw [hP'dim, finrank_euclideanSpace_fin] at h2
+  rw [h1]; omega
+
 /-- **The `complementIso` of an arbitrary grade-2 decomposable `extensor n` lands in `⋀^k W` for
 `W` the `toDual`-orthogonal complement of `{n 0, n 1}`** (`def:meet-complement-iso`, CHAIN-3, OD-8
 (h-3), the panel-meet range-membership leaf). For two line-normals `n : Fin 2 → ℝ^{k+2}` and a
@@ -154,6 +230,10 @@ theorem complementIso_extensor_mem_range_map_subtype {k : ℕ}
     exact Submodule.zero_mem _
   set ne : Fin 2 → EuclideanSpace ℝ (Fin (k + 2)) :=
     fun i => (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm (n i) with hne
+  -- `ne` is linearly independent (transport `hn` across the carrier equiv).
+  have hni : LinearIndependent ℝ ne :=
+    hn.map' (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearMap
+      (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.ker
   -- The `toDual`-perp `Q` of `{n 0, n 1}` in the bare carrier.
   set Q : Submodule ℝ (Fin (k + 2) → ℝ) :=
     ⨅ j, LinearMap.ker ((Pi.basisFun ℝ (Fin (k + 2))).toDual.flip (n j)) with hQ
@@ -161,61 +241,8 @@ theorem complementIso_extensor_mem_range_map_subtype {k : ℕ}
     intro w hw
     simp only [hQ, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
     exact hWperp w hw
-  -- `finrank Q = k`: transport `Q` to the metric orthogonal complement `(span{ne 0, ne 1})ᗮ`.
-  set P' : Submodule ℝ (EuclideanSpace ℝ (Fin (k + 2))) := Submodule.span ℝ {ne 0, ne 1} with hP'
-  have hsymm : ∀ w v : Fin (k + 2) → ℝ,
-      (Pi.basisFun ℝ (Fin (k + 2))).toDual w v = (Pi.basisFun ℝ (Fin (k + 2))).toDual v w := by
-    intro w v
-    set ε := EuclideanSpace.equiv (Fin (k + 2)) ℝ
-    have h1 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm w) (ε.symm v)
-    have h2 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm v) (ε.symm w)
-    simp only [ε, ContinuousLinearEquiv.apply_symm_apply] at h1 h2
-    rw [← h1, ← h2, real_inner_comm]
-  -- `inner (ne j) x = toDual (equiv x) (n j)`.
-  have hinner : ∀ (x : EuclideanSpace ℝ (Fin (k + 2))) (j : Fin 2),
-      (inner ℝ (ne j) x : ℝ)
-        = (Pi.basisFun ℝ (Fin (k + 2))).toDual
-            ((EuclideanSpace.equiv (Fin (k + 2)) ℝ) x) (n j) := by
-    intro x j
-    rw [EuclideanSpace.inner_eq_basisFun_toDual,
-      show (EuclideanSpace.equiv (Fin (k + 2)) ℝ) (ne j) = n j from rfl, hsymm]
-  have hQmap : Submodule.map
-      (↑(EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearEquiv :
-        (Fin (k + 2) → ℝ) →ₗ[ℝ] EuclideanSpace ℝ (Fin (k + 2))) Q
-      = Submodule.orthogonal P' := by
-    ext x
-    rw [Submodule.mem_map_equiv, Submodule.mem_orthogonal]
-    simp only [hQ, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
-    constructor
-    · intro hx u hu
-      induction hu using Submodule.span_induction with
-      | mem y hy =>
-          rcases hy with rfl | rfl
-          · rw [hinner]; exact hx 0
-          · rw [hinner]; exact hx 1
-      | zero => simp
-      | add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]
-      | smul c a _ ha => rw [inner_smul_left, ha, mul_zero]
-    · intro hx j
-      have := hx (ne j) (Submodule.subset_span (by fin_cases j <;> simp))
-      rw [hinner] at this
-      exact this
-  -- `ne` is linearly independent (transport `hn` across the carrier equiv).
-  have hni : LinearIndependent ℝ ne :=
-    hn.map' (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearMap
-      (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.ker
-  have hP'dim : Module.finrank ℝ P' = 2 := by
-    have hrange : (Set.range ne) = {ne 0, ne 1} := by
-      ext y; constructor
-      · rintro ⟨i, rfl⟩; fin_cases i <;> simp
-      · rintro (rfl | rfl); exacts [⟨0, rfl⟩, ⟨1, rfl⟩]
-    rw [hP', ← hrange, finrank_span_eq_card hni, Fintype.card_fin]
-  have hQdim : Module.finrank ℝ Q = k := by
-    have h1 : Module.finrank ℝ Q = Module.finrank ℝ (Submodule.orthogonal P') := by
-      rw [← hQmap, LinearEquiv.finrank_map_eq]
-    have h2 := Submodule.finrank_add_finrank_orthogonal P'
-    rw [hP'dim, finrank_euclideanSpace_fin] at h2
-    rw [h1]; omega
+  -- `finrank Q = k`: the shared `toDual`-perp dimension count.
+  have hQdim : Module.finrank ℝ Q = k := finrank_toDualPerp_pair_eq hn
   -- `W = Q` (both `k`-dim, `W ≤ Q`).
   have hWQeq : W = Q := Submodule.eq_of_le_of_finrank_eq hWQ (by rw [hWdim, hQdim])
   -- The orthonormal frame `b` aligning `span{n 0, n 1}` to the coordinate `2`-plane.
@@ -429,61 +456,8 @@ theorem extensor_join_proportional_complementIso_meet {k : ℕ}
   -- `hWperp` for the (h-3) leaf is the membership characterization.
   have hWperp : ∀ w ∈ W, ∀ j, (Pi.basisFun ℝ (Fin (k + 2))).toDual w (n j) = 0 :=
     fun w hw => (hWmem w).1 hw
-  -- `finrank W = k`: transport `W` to the metric orthogonal complement `(span{ne 0, ne 1})ᗮ`.
-  set ne : Fin 2 → EuclideanSpace ℝ (Fin (k + 2)) :=
-    fun i => (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm (n i) with hne
-  set P' : Submodule ℝ (EuclideanSpace ℝ (Fin (k + 2))) := Submodule.span ℝ {ne 0, ne 1} with hP'
-  have hsymm : ∀ w v : Fin (k + 2) → ℝ,
-      (Pi.basisFun ℝ (Fin (k + 2))).toDual w v = (Pi.basisFun ℝ (Fin (k + 2))).toDual v w := by
-    intro w v
-    set ε := EuclideanSpace.equiv (Fin (k + 2)) ℝ
-    have h1 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm w) (ε.symm v)
-    have h2 := EuclideanSpace.inner_eq_basisFun_toDual (ε.symm v) (ε.symm w)
-    simp only [ε, ContinuousLinearEquiv.apply_symm_apply] at h1 h2
-    rw [← h1, ← h2, real_inner_comm]
-  have hinner : ∀ (x : EuclideanSpace ℝ (Fin (k + 2))) (j : Fin 2),
-      (inner ℝ (ne j) x : ℝ)
-        = (Pi.basisFun ℝ (Fin (k + 2))).toDual
-            ((EuclideanSpace.equiv (Fin (k + 2)) ℝ) x) (n j) := by
-    intro x j
-    rw [EuclideanSpace.inner_eq_basisFun_toDual,
-      show (EuclideanSpace.equiv (Fin (k + 2)) ℝ) (ne j) = n j from rfl, hsymm]
-  have hWmapEq : Submodule.map
-      (↑(EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearEquiv :
-        (Fin (k + 2) → ℝ) →ₗ[ℝ] EuclideanSpace ℝ (Fin (k + 2))) W
-      = Submodule.orthogonal P' := by
-    ext x
-    rw [Submodule.mem_map_equiv, Submodule.mem_orthogonal]
-    simp only [hW, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]
-    constructor
-    · intro hx u hu
-      induction hu using Submodule.span_induction with
-      | mem y hy =>
-          rcases hy with rfl | rfl
-          · rw [hinner]; exact hx 0
-          · rw [hinner]; exact hx 1
-      | zero => simp
-      | add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]
-      | smul c a _ ha => rw [inner_smul_left, ha, mul_zero]
-    · intro hx j
-      have := hx (ne j) (Submodule.subset_span (by fin_cases j <;> simp))
-      rw [hinner] at this
-      exact this
-  have hni : LinearIndependent ℝ ne :=
-    hpair.map' (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.toLinearMap
-      (EuclideanSpace.equiv (Fin (k + 2)) ℝ).symm.ker
-  have hP'dim : Module.finrank ℝ P' = 2 := by
-    have hrange : (Set.range ne) = {ne 0, ne 1} := by
-      ext y; constructor
-      · rintro ⟨i, rfl⟩; fin_cases i <;> simp
-      · rintro (rfl | rfl); exacts [⟨0, rfl⟩, ⟨1, rfl⟩]
-    rw [hP', ← hrange, finrank_span_eq_card hni, Fintype.card_fin]
-  have hWdim : Module.finrank ℝ W = k := by
-    have h1 : Module.finrank ℝ W = Module.finrank ℝ (Submodule.orthogonal P') := by
-      rw [← hWmapEq, LinearEquiv.finrank_map_eq]
-    have h2 := Submodule.finrank_add_finrank_orthogonal P'
-    rw [hP'dim, finrank_euclideanSpace_fin] at h2
-    rw [h1]; omega
+  -- `finrank W = k`: the shared `toDual`-perp dimension count.
+  have hWdim : Module.finrank ℝ W = k := finrank_toDualPerp_pair_eq hpair
   -- Panel-meet membership (the (h-3) leaf).
   have hmeet : complementIso (k := k) (j := 2) (by omega)
       ⟨extensor n, extensor_mem_exteriorPower n⟩

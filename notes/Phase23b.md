@@ -119,8 +119,10 @@ extractor reshape).
         block + `inf_range_wedgeFixedLeft` (ambient `{d}`) served the `Φ̃` route the CHAIN-3-finish
         recon **withdrew** (`finrank_sup_range_wedgeFixedLeft` / `extensor_toDual_extensor_eq_zero_of_perp`
         do NOT generalize — `dim Ω = C(d−1,2) = 1` only at `d=3`; the d=3 lemmas stay GREEN, **do NOT
-        touch**) — revert the lifted infra to `Fin 4`. (2) The `finrank {n}^⊥ = k` metric transport is
-        duplicated between (h-3) and (h-4) — factor a shared `finrank_toDualPerp_pair_eq` helper.
+        touch**) — revert the lifted infra to `Fin 4`. (2) **DONE 2026-06-20** — the `finrank {n}^⊥ = k`
+        metric transport (duplicated between (h-3)/(h-4)) is factored into the shared
+        `finrank_toDualPerp_pair_eq` helper (`MeetHodge.lean`, axiom-clean; the byte-identical ~55-line
+        `Q`/`W` blocks now both call it).
 - [x] **CHAIN-1 — the `d`-fold candidate machinery** (`RigidityMatrix/Basic.lean`). **CLOSED
       2026-06-18.** Graph-free over `ScrewSpace k`, no `d=3` content: the eq.-6.62 row-correspondence
       swap + the `ιc`-block candidate augment (the per-candidate column-op heterogeneity is CHAIN-2's
@@ -470,6 +472,14 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   relabel the `hwmem` leaf already uses. `reverseRec` induction (FRICTION [idiom] *A `List.foldl` whose
   induction base case…* / TACTICS-GOLF §20). No build-iteration friction; the `foldl`→inverse recurrence
   is the reusable note (→ FRICTION [idiom] *Composing two `(funLeft σ).dualMap` relabel transports…*).
+- **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
+  axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
+  the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)
+  `extensor_join_proportional_complementIso_meet` (its `W`) is extracted into one shared helper (over the
+  bare-carrier `iInf`-of-`toDual.flip`-kernels, the form both `set` their perp to); each consumer now calls
+  it in one line, dropping ~110 lines of duplication. One known-idiom recurrence (the bare `⨅` in the
+  *return type* needs `(j : Fin 2)` + `: Submodule …` ascription, else `InfSet Type` synth failure) —
+  already FRICTION [idiom] *A standalone `⨅ i ∈ s, ker (proj i)` term needs an explicit `Submodule …`…*.
 **Landed CHAIN-2 leaves (all axiom-clean; one-line verdicts — settled, nothing downstream leans on the
 internals; detail = git + design §(o)/(o′)/(o″)/(o‴) + FRICTION).** `G.ChainData n` record + accessors
 (`Operations.lean`, contract-C.1 chain + interior-split geometry); **2c-i** `exists_chainData_discriminator_pick`
