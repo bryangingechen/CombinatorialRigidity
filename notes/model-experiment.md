@@ -58,7 +58,7 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   the same availability (opus confirmed — the coordinator runs on it, reachable
   via the Agent `model` param; other rungs not probed under OPUS-ONLY, so a
   fresh coordinator reverting to the S/P/B map would re-probe): so set sessions
-  #11, #12, and **#13** (2026-06-19, fresh coordinator, user re-confirmed at
+  #11, #12, #13, and **#14** (2026-06-19, fresh coordinator, user re-confirmed at
   session start).
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
   chain (2c-i/2c-ii-α/2c-ii-β); Route β LOCKED. Detail subsumed by session-#9 progress below + git.
