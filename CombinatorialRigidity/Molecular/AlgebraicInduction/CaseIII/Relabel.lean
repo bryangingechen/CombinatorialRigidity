@@ -157,6 +157,65 @@ theorem PanelHingeFramework.ofNormals_relabel_perm {Gs Gt : Graph α β}
         (fun p q h => Prod.ext (ρ.injective (Prod.ext_iff.mp h).1) (Prod.ext_iff.mp h).2)
     simpa only [Function.comp] using this
 
+/-- **The graph-iso genuine-row correspondence (CHAIN-2c-ii-arm, the genuine-row arm): an arbitrary
+relabel `(ρ, σ)` intertwining two graphs carries a genuine rigidity row of the source framework to a
+genuine rigidity row of the relabelled target framework** (`lem:case-III` general-`d`, KT 2011
+§6.4.2 the (6.62) row correspondence; Phase 23b). This is the row-membership half the all-`d`
+candidate-reduction arm (`chainData_relabel_arm`, 2c-ii) needs for the *genuine-row disjunct* of its
+`hwmem` slot — the cycle generalization of the d=3 `M₃` arm's genuine-row branch
+(`case_III_bottom_relabel`, the `Or.inl` cases where the swap fixes / moves a recorded endpoint),
+lifted from the single swap `Equiv.swap a v` to the whole `(i−1)`-cycle relabel `(shiftPerm i)⁻¹`.
+
+The geometry is abstracted exactly as in `ofNormals_relabel_perm`: the two graphs `Gs` (source, KT's
+`v₁`-base split) and `Gt` (target, the candidate-`i` split) are `(ρ, σ)`-related by
+`hiso : Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y)`, the target framework reads the source seed
+`q₀` at the `ρ`-shifted body (`qρ p := q₀ (ρ p.1, p.2)`) and the source endpoints `ρ.symm`-shifted
+(`endsσρ e := (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)`); the matching `.symm`/forward
+choices make the support extensors agree across the relabel (`Q'.supportExtensor f =
+Q.supportExtensor (σ f)`, no involution needed). A genuine source row `hingeRow u w r` at the link
+`f` (with `r` in the `f`-hinge-row block) maps under `(funLeft ρ.symm).dualMap` to the genuine
+target row `hingeRow (ρ.symm u) (ρ.symm w) r` at the link `σ.symm f` (whose target support extensor
+equals the source one `r` annihilates). At the d=3 `M₃` swap (`ρ.symm = ρ`, `σ.symm = σ`) this is
+the `case_III_bottom_relabel` genuine-row branch. -/
+theorem PanelHingeFramework.rigidityRow_relabel_perm {Gs Gt : Graph α β}
+    (ρ : Equiv.Perm α) (σ : Equiv.Perm β)
+    (hiso : ∀ e x y, Gt.IsLink e x y ↔ Gs.IsLink (σ e) (ρ x) (ρ y))
+    {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap φ ∈
+      (PanelHingeFramework.ofNormals Gt
+        (fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2))
+        (fun p => q₀ (ρ p.1, p.2))).toBodyHinge.rigidityRows := by
+  set endsσρ : β → α × α := fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)
+    with hendsσρ
+  set qρ : α × Fin (k + 2) → ℝ := fun p => q₀ (ρ p.1, p.2) with hqρ
+  set Q := PanelHingeFramework.ofNormals Gs ends₀ q₀ with hQ_def
+  set Q' := PanelHingeFramework.ofNormals Gt endsσρ qρ with hQ'_def
+  -- The relabelled support extensor at `f` reads the original at `σ f` (forward `ρ` in `qρ` cancels
+  -- the `ρ.symm` in `endsσρ`); no involution needed (the `ofNormals_relabel_perm` `h_supp` step).
+  have h_supp : ∀ f : β,
+      Q'.toBodyHinge.supportExtensor f = Q.toBodyHinge.supportExtensor (σ f) := by
+    intro f
+    simp only [hQ_def, hQ'_def, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal, hendsσρ, hqρ,
+      Equiv.apply_symm_apply]
+  -- Destructure the source generator: link `f u w`, block membership `r ⊥ Q.supportExtensor f`.
+  obtain ⟨f, u, w, hlink, r, hr, rfl⟩ := hφ
+  rw [hQ_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+  rw [BodyHingeFramework.hingeRow_funLeft_dualMap]
+  -- The transported row `hingeRow (ρ.symm u) (ρ.symm w) r` is genuine in `Q'` at link `σ.symm f`.
+  refine ⟨σ.symm f, ρ.symm u, ρ.symm w, ?_, r, ?_, rfl⟩
+  · -- the source link `f u w` is a target link at `(ρ.symm u, ρ.symm w)` via `hiso` at `σ.symm f`.
+    rw [hQ'_def, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    refine (hiso (σ.symm f) (ρ.symm u) (ρ.symm w)).mpr ?_
+    rw [Equiv.apply_symm_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
+    exact hlink
+  · -- block: `Q'.supportExtensor (σ.symm f) = Q.supportExtensor f`, which `r` annihilates (`hr`).
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff, h_supp (σ.symm f), Equiv.apply_symm_apply]
+    rw [hQ_def] at hr ⊢
+    exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
+
 /-- **G4c-ii (fixed-seed form): the `ρ = (av)` relabel transports the concrete v-split `ofNormals`
 data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
 (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31) framework side, Phase 22h).
