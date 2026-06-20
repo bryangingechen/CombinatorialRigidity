@@ -386,7 +386,17 @@ index `i^*` appear in (6.29) and (6.30)), produce the two ingredients the certif
 **GAP 6 — adjudicated carry (user, 2026-06-10; §1.50(b) option (ii)).** This becomes W5's sole
 caller, so KT's nested-IH lower bound `h622lb` (eq. (6.22) at the `k'`-dof `G_v`, unreachable from
 the `0`-dof-only realization motive) enters the Lean *here*. It exits at the Leaf-4/5 wiring; 22h
-closes green-modulo this one inequality (Phase 22h *Blockers*). -/
+closes green-modulo this one inequality (Phase 22h *Blockers*).
+
+**The `λ`-grouped `(ab)`-edge witness (A-1, Phase 23b — eq. (6.52)).** The output additionally
+exposes the per-`(ab)`-row data already computed in scope but previously discarded: the coefficients
+`lamAB := λ_{(ab)j}` (= W5's `lam`) and the screw-level functionals `rab j ∈ r(p(e₀))` with the
+candidate `ρ = Σ_j λ_{(ab)j} (rab j)`. Each `r j` (a *row* on `α → ScrewSpace k`) lies in
+`E_b = map (hingeRow …).dualMap (r(p(e₀)))`, so it factors as `hingeRow … (rab j)` for a screw-level
+`rab j` in the hinge-row block; the candidate identity follows by injectivity of `hingeRow … ` at
+the distinct endpoints (both sides map to `r̂ = Σ_j λ_j r_j`). This is the per-edge witness shape
+the CHAIN-2c-ii-arm `hρGv` perp carrier `candidate_perp_two_incident_panels` (KT eq. (6.44))
+consumes. -/
 theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
     [Finite α] {Gab Gv : Graph α β} {ends : β → α × α} {q : α × Fin (k + 2) → ℝ} {e₀ : β}
     (hD : 2 ≤ screwDim k)
@@ -402,7 +412,9 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
       ≤ Module.finrank ℝ (Submodule.span ℝ
           (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)) :
     ∃ (ρ : Module.Dual ℝ (ScrewSpace k))
-      (w : Fin (screwDim k * (Gab.vertexSet.ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k)),
+      (w : Fin (screwDim k * (Gab.vertexSet.ncard - 1)) → Module.Dual ℝ (α → ScrewSpace k))
+      (lamAB : Fin (screwDim k - 1) → ℝ)
+      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace k)),
       ρ ≠ 0 ∧
       ρ ((PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀) = 0 ∧
       BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ ∈ Submodule.span ℝ
@@ -411,7 +423,13 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
       (∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
         ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
           ρ' ((PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀) = 0 ∧
-          w j = BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ') := by
+          w j = BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ') ∧
+      -- the eq.-(6.52) `λ`-grouped `(ab)`-edge witness (KT eq. (6.29)/(6.52)): the candidate `ρ`
+      -- is the `λ`-combination of the per-`(ab)`-row screw-level functionals `rab j`, each in the
+      -- `e₀`-hinge-row block. This is the per-edge witness `candidate_perp_two_incident_panels`
+      -- (eq. (6.44)) consumes — the A-1 re-thread of the in-scope `r`/`lam` data (Phase 23b).
+      (∀ j, rab j ∈ (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.hingeRowBlock e₀) ∧
+      ρ = ∑ j, lamAB j • rab j := by
   classical
   set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
   set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
@@ -443,6 +461,37 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
   -- The candidate-row span membership: `hingeRow … ρ = r̂ ∈ span (R(G_v)-rows)`.
   have hρGv : BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ
       ∈ Submodule.span ℝ Fv.rigidityRows := hρ.symm ▸ hrhat_mem
+  -- The eq.-(6.52) `λ`-grouped `(ab)`-edge witness: each row `r j ∈ E_b = map (hingeRow …).dualMap
+  -- (r(p(e₀)))`, so it is `hingeRow … (rab j)` for a screw-level `rab j ∈ r(p(e₀))`. The candidate
+  -- `ρ` is then the `λ`-combination `∑_j λ_j (rab j)` (by injectivity of `hingeRow … ` at the
+  -- distinct endpoints `huv`: both sides map to `r̂ = ∑_j λ_j r_j`). This is the per-edge witness
+  -- `candidate_perp_two_incident_panels` (eq. (6.44)) consumes — the A-1 re-thread of `r`/`lam`.
+  have hrab_ex : ∀ j, ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ρ' ∈ Fab.hingeRowBlock e₀ ∧
+      BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ' = r j := by
+    intro j
+    have hrj_Eb : r j ∈ Eb := Submodule.subset_span ⟨j, rfl⟩
+    rw [hEb', Submodule.mem_map] at hrj_Eb
+    obtain ⟨ρ', hρ'_blk, hρ'⟩ := hrj_Eb
+    rw [← BodyHingeFramework.hingeRow_eq_dualMap] at hρ'
+    exact ⟨ρ', hρ'_blk, hρ'⟩
+  set rab := fun j => (hrab_ex j).choose with hrab
+  have hrab_blk : ∀ j, rab j ∈ Fab.hingeRowBlock e₀ := fun j => (hrab_ex j).choose_spec.1
+  have hrab_row : ∀ j, BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 (rab j) = r j :=
+    fun j => (hrab_ex j).choose_spec.2
+  have hρ_lam : ρ = ∑ j, lam j • rab j := by
+    have hinj : Function.Injective (BodyHingeFramework.hingeRow (k := k) (α := α)
+        (ends e₀).1 (ends e₀).2) := by
+      have := LinearMap.dualMap_injective_of_surjective
+        (BodyHingeFramework.screwDiff_surjective (k := k) (α := α) huv)
+      simpa only [← BodyHingeFramework.hingeRow_eq_dualMap] using this
+    apply hinj
+    have hrhs : BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 (∑ j, lam j • rab j)
+        = ∑ j, lam j • r j := by
+      rw [BodyHingeFramework.hingeRow_eq_dualMap, map_sum]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      rw [map_smul, ← BodyHingeFramework.hingeRow_eq_dualMap, hrab_row j]
+    rw [hρ, hrhat, hrhs]
   -- The bottom-row generating set: `R(G_v, q)-rows ∪ r '' {j ≠ i^*}`, whose span is the full
   -- `R(G_{ab}, q)`-row span (`r i^* = r̂ − ∑_{j≠i^*} λ_j r_j`, both addends in the union's span).
   set S := Fv.rigidityRows ∪ r '' {j | j ≠ i} with hS
@@ -482,8 +531,8 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
   -- Extract `D(m − 1)` independent members of `S`; per-tag each as a `G_v`-row or an `r j'`-row.
   obtain ⟨w₀, hw₀mem, _, hw₀indep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ S
   -- Re-index from `Fin (finrank …)` to `Fin (D(m−1))` along `hfin`.
-  refine ⟨ρ, fun j => w₀ (Fin.cast hfin.symm j), hρne, hρe₀, hρGv,
-    hw₀indep.comp _ (Fin.cast_injective _), fun j => ?_⟩
+  refine ⟨ρ, fun j => w₀ (Fin.cast hfin.symm j), lam, rab, hρne, hρe₀, hρGv,
+    hw₀indep.comp _ (Fin.cast_injective _), fun j => ?_, hrab_blk, hρ_lam⟩
   rcases hw₀mem (Fin.cast hfin.symm j) with hv | ⟨j', _, hj'⟩
   · exact Or.inl hv
   · -- An `r j'`-tagged member: `r j' ∈ span (range r) = E_b`, the `hingeRow`-image of `r(p(e₀))`.

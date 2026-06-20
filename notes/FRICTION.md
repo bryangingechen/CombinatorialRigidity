@@ -3310,6 +3310,23 @@ limitations. Worth a once-over so future agents don't re-litigate.
   → `Fin 4` wrapper (cf. `omitTwoExtensor_eq_extensor_kept`, `exists_independent_perp_pair`).
 - **Status:** idiom (project-internal).
 
+### [idiom] `hingeRow u v` (a `def` = `r ∘ₗ screwDiff u v`) isn't seen as a bundled map by `map_sum`/injectivity goals — `rw [hingeRow_eq_dualMap]` first
+- **Where it bit:** the A-1 candidate-witness re-thread in `exists_candidateRow_bottomRows_of_rigidOn`
+  (`CaseIII/Candidate.lean`, Phase 23b). Two steps on the candidate identity `ρ = ∑_j λ_j (rab j)`,
+  proved by applying `hingeRow (ends e₀).1 (ends e₀).2` (injective at distinct endpoints) to both sides.
+- **Friction:** (a) `rw [map_sum]` does **not** fire on `hingeRow … (∑ j, λ j • rab j)` — `hingeRow u v`
+  is a plain `def` (`r ↦ r ∘ₗ screwDiff u v`), not syntactically a bundled `LinearMap`/`AddMonoidHom`
+  application, so `map_sum`/`map_smul` can't match the head. (b) The function-level injectivity goal
+  `Function.Injective (hingeRow u v)` won't take `rw [hingeRow_eq_dualMap]` — that lemma is *point-applied*
+  (`hingeRow u v r = (screwDiff u v).dualMap r`), so it doesn't rewrite the bare function `hingeRow u v`.
+- **Resolution:** (a) `rw [hingeRow_eq_dualMap, map_sum]` (then per-term `map_smul`,
+  `← hingeRow_eq_dualMap`) — exposing the genuine `dualMap` LinearMap lets `map_sum`/`map_smul` fire.
+  (b) build the injectivity from `dualMap_injective_of_surjective (screwDiff_surjective huv)` and
+  `simpa only [← hingeRow_eq_dualMap] using this` (`simp`'s congruence reaches under the function head
+  where `rw` cannot). Same root cause as the `linearIndependent_hingeRow` `simpa only [hingeRow_eq_dualMap]`
+  idiom (`RigidityMatrix/Basic.lean`).
+- **Status:** idiom (project-internal).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

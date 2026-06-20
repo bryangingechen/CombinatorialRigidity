@@ -37,9 +37,15 @@ interior rows GENUINELY INDEPENDENT — §(o‴)(I.8.3.v-SETTLED)): the perp com
 (`candidate_perp_two_incident_panels` + the `supportExtensor`-perp form
 `candidate_perp_two_incident_supportExtensors`, `Relabel.lean`, both axiom-clean): the interior-vertex
 eq.~(6.44) `r̂ = −rAC` perp carry (witness-as-hyps, the direct `hperp0`/`hperp1`/`hperp` shape, ZERO blast
-radius — the `d=3` `candidateRow_ac_eq_neg` applies verbatim at an interior chain vertex). **NEXT = A-1**
-strengthen the W6b producer to SUPPLY the per-edge `λ`/`r` witness (touches 3 d=3 callers, B=2) → A-3
-generalize + the arm; **P3 (flagged):**
+radius — the `d=3` `candidateRow_ac_eq_neg` applies verbatim at an interior chain vertex). **A-1 is now
+LANDED 2026-06-20** (`Candidate.lean` + `Realization.lean`, axiom-clean): the W6b producer
+`exists_candidateRow_bottomRows_of_rigidOn` SUPPLIES the eq-(6.52) `λ`-grouped `(ab)`-edge witness
+(`lamAB`/`rab`, `∀ j, rab j ∈ hingeRowBlock e₀`, `ρ = ∑ⱼ lamAB j • rab j` — the in-scope `r`/`lam`
+re-threaded via the per-row `Eb = map (hingeRow …).dualMap block` decomposition + `hingeRow` injectivity),
+and `chainData_split_w6b_gates` threads it to its output in chain order (the `(b,a)` branch negates
+`rab → −rab`, W8 sign-swap). 3 live callers re-plumbed; d=3 zero-regression (full project green + lint).
+**NEXT = A-3** generalize the de-risk to all `i` (discharge `freshEdge_surviving_row_mem`'s `hperp` from
+the A-1 witness via A-2) + the arm `chainData_relabel_arm`; **P3 (flagged):**
 the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands; then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
 §(o‴)(I.8); the settled route history (the clean-relabel refutation, the FIX-FORK, the engine-slot
@@ -142,15 +148,20 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     refuted form was the *generic-`ρ₀` isolated implication* `ρ₀ ∈ block(edge s) → block(edge s+1)` (FALSE
     — the `_sup_` crux gives only *sup* membership, vacuous `=⊤` for independent consecutive panels); the
     landed form routes through the **specific** redundancy `r̂` (whose interior `a`-columns are non-trivial)
-    via the per-edge `λ`/`r` witness — exactly §(o‴)(I.8.3.v-SETTLED) Route A. **NEXT = A-1: strengthen the
-    W6b producer** `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`; the `r`/`lam`/`∑λr`
-    are computed in-scope `:421–457` then DISCARDED at the `refine` `:485` — re-threading, NOT new math)
-    + `chainData_split_w6b_gates` (`Realization.lean:771`) to SUPPLY the per-edge `λ`/`r` witness; re-plumb
-    the 3 LIVE callers (`:389`/`:881`/`:1006`) + re-verify d=3 zero-regression (blast-radius step, B=2).
-    **WITHDRAW** the refuted `freshEdge_surviving_row_mem` (`:2833`, the isolated-`hperp`-carrying builder)
-    + the `hsurv` form of `wstep_foldl_freshEdge_slot_mem` at the arm build (zero live callers); the
-    closed-form telescope (`:2938`) + `acolumn_..._sup_...` STAND. **Then A-3** generalize to all `i` + the
-    arm assembly `chainData_relabel_arm`. NO motive/IH change.
+    via the per-edge `λ`/`r` witness — exactly §(o‴)(I.8.3.v-SETTLED) Route A. **A-1 LANDED 2026-06-20**
+    (`Candidate.lean` + `Realization.lean`, axiom-clean, B=2 as scoped): the W6b producer
+    `exists_candidateRow_bottomRows_of_rigidOn` now outputs `lamAB`/`rab` with `∀ j, rab j ∈ hingeRowBlock e₀`
+    + `ρ = ∑ⱼ lamAB j • rab j` — the in-scope `r`/`lam` re-threaded (each `r j ∈ Eb = map (hingeRow …).dualMap
+    block` factors as `hingeRow … (rab j)`; the candidate identity by `hingeRow` injectivity at distinct
+    endpoints). `chainData_split_w6b_gates` threads it to its output in chain order (`(b,a)` branch negates
+    `rab → −rab`, W8 sign-swap). 3 callers re-plumbed (`case_III_candidate_dispatch` `_`-ignores per d=3;
+    `chainData_split_realization` `_`-ignores until the arm). Full project green + lint clean, d=3
+    zero-regression. **WITHDRAW** (at the arm build, zero live callers) the refuted
+    `freshEdge_surviving_row_mem` (the isolated-`hperp`-carrying builder) + `wstep_foldl_freshEdge_slot_mem`'s
+    `hsurv` form; the closed-form telescope + `acolumn_..._sup_...` STAND. **NEXT = A-3**: feed the A-1
+    witness through A-2 (`candidate_perp_two_incident_supportExtensors`) to discharge the
+    `freshEdge_surviving_row_mem`/`i3_*` `hperp`/`hperp0`/`hperp1` hyps for real, generalize to all `i`, then
+    the arm assembly `chainData_relabel_arm`. NO motive/IH change.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
@@ -361,14 +372,19 @@ EXPLICIT hyps, the common candidate `r̂ := ∑λab•rab` is ⊥ both incident 
 closed under the combination), ⊥ `C_d` via eq.~(6.44) `candidateRow_ac_eq_neg` (`rAC = −r̂`). This is the
 direct `hperp0`/`hperp1`/`hperp` shape the de-risk gate / general builder carry as hyps; ZERO blast
 radius. (The `d=3` single-degree-2-vertex `candidateRow_ac_eq_neg` applies VERBATIM at an interior chain
-vertex — the structural fix the refuted isolated implication missed.) **(NEXT) A-1** strengthen the
-producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`) + `chainData_split_w6b_gates`
-(`Realization.lean:771`) to SUPPLY the per-edge `λ`/`r` witness — re-plumb the 3 LIVE callers
-(`:389`/`:881`/`:1006`) + re-verify d=3 zero-regression (the blast-radius step, B=2). **(then) A-3**
-generalize to all `i` + the arm assembly `chainData_relabel_arm`. WITHDRAW the refuted leaves
-`freshEdge_surviving_row_mem` (the isolated-`hperp` builder) + `wstep_foldl_freshEdge_slot_mem`'s `hsurv`
-form (zero live callers); the telescope (`:2938`) + the `_sup_` crux + A-2's two new lemmas STAND. NO
-motive/IH change.
+vertex — the structural fix the refuted isolated implication missed.) **(A-1 — DONE 2026-06-20,
+axiom-clean)** the producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean`) now SUPPLIES the
+eq-(6.52) `λ`-grouped `(ab)`-witness `lamAB`/`rab` (`∀ j, rab j ∈ hingeRowBlock e₀`, `ρ = ∑ⱼ lamAB j • rab j`
+— the in-scope `r`/`lam` re-threaded via the per-row `Eb = map (hingeRow …).dualMap block` decomposition +
+`hingeRow` injectivity at distinct endpoints), and `chainData_split_w6b_gates` (`Realization.lean`) threads it
+to its output in chain order (`(b,a)` branch negates `rab → −rab`, W8 sign-swap). The 3 live callers re-plumbed
+(d=3 dispatch + `chainData_split_realization` `_`-ignore until the arm); full project green + lint clean, d=3
+zero-regression. **(NEXT) A-3** feed the A-1 witness through A-2 (`candidate_perp_two_incident_supportExtensors`,
+the `hperp_ab`/`hperp_ac` + `hcol`/`hrest` interface) to discharge `freshEdge_surviving_row_mem`'s `hperp` (and
+the `i3_*` `hperp0`/`hperp1`) for REAL, generalize to all `i`, then the arm assembly `chainData_relabel_arm`.
+WITHDRAW the refuted leaves `freshEdge_surviving_row_mem` (the isolated-`hperp` builder, once A-2 supplies it)
++ `wstep_foldl_freshEdge_slot_mem`'s `hsurv` form (zero live callers); the telescope (`:2938`) + the `_sup_`
+crux + A-1/A-2's lemmas STAND. NO motive/IH change.
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
@@ -645,10 +661,22 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     — the structural fix the refuted *generic-`ρ₀` isolated implication* `ρ₀_perp_interior_chain_edge`
     missed (the `_sup_` crux is vacuous `=⊤` for independent consecutive panels; the perp lives in the
     *specific* `r̂`, not arbitrary `ρ₀`). Self-contained over the explicit witness, ZERO blast radius —
-    discharges the de-risk gate's `hperp0`/`hperp1` + the builder's `hperp` from the witness. NEXT = A-1
-    (re-thread the witness through the W6b producer, B=2), then A-3 + arm. The isolated-implication
-    `freshEdge_surviving_row_mem` / the `hsurv` form of `wstep_foldl_freshEdge_slot_mem` are WITHDRAWN at
-    the arm build (zero live callers).
+    discharges the de-risk gate's `hperp0`/`hperp1` + the builder's `hperp` from the witness. The
+    isolated-implication `freshEdge_surviving_row_mem` / the `hsurv` form of
+    `wstep_foldl_freshEdge_slot_mem` are WITHDRAWN at the arm build (zero live callers).
+  - **P2 A-1 — LANDED 2026-06-20 (the W6b witness re-thread; the blast-radius step, B=2 as scoped):**
+    `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean`) + `chainData_split_w6b_gates`
+    (`Realization.lean`), both axiom-clean. The producer now outputs the eq-(6.52) `λ`-grouped `(ab)`-edge
+    witness `lamAB`/`rab` (`∀ j, rab j ∈ hingeRowBlock e₀`, `ρ = ∑ⱼ lamAB j • rab j`) — the in-scope `r`/`lam`
+    re-threaded: each row `r j ∈ Eb = map (hingeRow …).dualMap block` factors as `hingeRow … (rab j)` (per-`j`
+    choice), and the candidate identity follows by `hingeRow` injectivity at distinct endpoints (both sides map
+    to `r̂`). The wrapper threads it to its output in chain order; the `(b,a)` normalization branch negates
+    `rab → −rab` (block `neg_mem`, `−ρ = ∑ⱼ lamAB j • (−rab j)`), matching the W8 sign-swap on `ρ`. 3 live
+    callers re-plumbed (d=3 dispatch + `chainData_split_realization` `_`-ignore the new data until the arm).
+    Full project green + lint clean, d=3 zero-regression. This is the per-edge witness shape A-2 consumes;
+    NEXT = A-3 (feed it through A-2 to discharge the `hperp` gates for real, all-`i` lift, arm). FRICTION
+    [idiom] *`hingeRow u v` (a `def`) isn't seen as a bundled map by `map_sum`/injectivity — `rw
+    [hingeRow_eq_dualMap]` first*.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

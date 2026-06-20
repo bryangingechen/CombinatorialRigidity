@@ -385,7 +385,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
     · exact he₀ab
     · exact he₀ab.symm
-  obtain ⟨ρ, w, hρne, hρe₀', hρGv', hw, hwmem'⟩ :=
+  obtain ⟨ρ, w, _lamAB, _rab, hρne, hρe₀', hρGv', hw, hwmem', _hrab_blk, _hρ_lam⟩ :=
     BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
       (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
       (h622lb Q.ends q hrec' hgp_seed hQalg)
@@ -789,7 +789,9 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     ∃ (q : α × Fin (k + 2) → ℝ) (ends : β → α × α)
       (ρ : Module.Dual ℝ (ScrewSpace k))
       (w : Fin (screwDim k * (V(G.splitOff v a b e₀).ncard - 1)) →
-        Module.Dual ℝ (α → ScrewSpace k)),
+        Module.Dual ℝ (α → ScrewSpace k))
+      (lamAB : Fin (screwDim k - 1) → ℝ)
+      (rab : Fin (screwDim k - 1) → Module.Dual ℝ (ScrewSpace k)),
       -- the base framework `(Gab, ends, q)` and its IH-genericity, for the consumer's other gates
       (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends q).IsGeneralPosition ∧
       (∀ e u w, (G.removeVertex v).IsLink e u w →
@@ -804,7 +806,13 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
           (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows ∨
         ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
           ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
-          w j = BodyHingeFramework.hingeRow a b ρ') := by
+          w j = BodyHingeFramework.hingeRow a b ρ') ∧
+      -- the chain-order-normalized eq.-(6.52) `λ`-grouped `(ab)`-edge witness (A-1, Phase 23b):
+      -- each `rab j` in the `e₀`-hinge-row block, `ρ = Σ_j λ_{(ab)j} (rab j)` (the per-edge witness
+      -- the CHAIN-2c-ii-arm `hρGv` perp carrier `candidate_perp_two_incident_panels` consumes).
+      (∀ j, rab j ∈ BodyHingeFramework.hingeRowBlock
+        (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends q).toBodyHinge e₀) ∧
+      ρ = ∑ j, lamAB j • rab j := by
   classical
   haveI : Fintype α := Fintype.ofFinite α
   set Gab := G.splitOff v a b e₀ with hGab
@@ -877,7 +885,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
     · exact he₀ab
     · exact he₀ab.symm
-  obtain ⟨ρ, w, hρne, hρe₀', hρGv', hw, hwmem'⟩ :=
+  obtain ⟨ρ, w, lamAB, rab, hρne, hρe₀', hρGv', hw, hwmem', hrab_blk, hρ_lam⟩ :=
     BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
       (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
       (h622lb Q.ends q hrec' hgp_seed hQalg)
@@ -895,7 +903,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
-    refine ⟨ρ, w, hgp', hends', hρne, ?_, ?_, hw, ?_⟩
+    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam⟩
     · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
     · rw [he] at hρGv'; exact hρGv'
     · intro j
@@ -903,8 +911,11 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
       · exact Or.inl hgen
       · refine Or.inr ⟨ρ', ?_, by rw [hwj, he]⟩
         rw [hsupp_e₀, he] at hρ'e₀; exact hρ'e₀
-  · -- recorded `(b, a)`: take `-ρ` (`hingeRow b a (-ρ) = hingeRow a b ρ`).
-    refine ⟨-ρ, w, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_⟩
+  · -- recorded `(b, a)`: take `-ρ` (`hingeRow b a (-ρ) = hingeRow a b ρ`); negate the witness
+    -- `rab → -rab` (the block is a subspace, `-ρ = Σ_j λ_j (-rab j)`).
+    refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
+      fun j => (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.hingeRowBlock e₀ |>.neg_mem
+        (hrab_blk j), ?_⟩
     · rw [hsupp_e₀, he] at hρe₀'
       rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
     · rw [he] at hρGv'
@@ -916,6 +927,8 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
         · rw [hsupp_e₀, he] at hρ'e₀
           rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρ'e₀, neg_zero, neg_zero]
         · rw [hwj, he, ← BodyHingeFramework.hingeRow_swap]
+    · rw [hρ_lam, ← Finset.sum_neg_distrib]
+      exact Finset.sum_congr rfl fun j _ => (smul_neg _ _).symm
 
 /-- **CHAIN-2a-ii — the per-`i` chain-candidate reduction core** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.13 the per-candidate arm; Phase 23b). For an interior chain index `i`
@@ -1002,7 +1015,8 @@ theorem PanelHingeFramework.chainData_split_realization
   have h622lb := PanelHingeFramework.case_III_nested_rank_lower_all_k hk1 hn G v a b e_a e_b cd.e₀
     hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
   -- W6b half: the candidate functional `ρ`, the bottom rows `w`, and the W6b gate bundle.
-  obtain ⟨q, ends, ρ, w, hgp_split, hends', hρne, hρe₀, hρGv', hw, hwmem'⟩ :=
+  obtain ⟨q, ends, ρ, w, _lamAB, _rab, hgp_split, hends', hρne, hρe₀, hρGv', hw, hwmem',
+      _hrab_blk, _hρ_lam⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
       h622lb hdef_Gab hsplitGP
   set na := (fun j => q (a, j)) with hna

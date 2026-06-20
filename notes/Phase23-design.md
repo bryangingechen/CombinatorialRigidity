@@ -4564,12 +4564,15 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
     already takes exactly the `λ`-grouped form and **applies verbatim at an interior chain vertex** (`a :=
     vₛ₊₁`, `b := vₛ`, `c := vₛ₊₂`, degree-2), so A-2 is a thin wrap of it, NOT a new column-cancellation
     proof. The pinned witness shape is therefore `candidateRow_ac_eq_neg`'s; A-1 supplies it.
-  - **(A-1 — NEXT):** strengthen the W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
-    (`Candidate.lean:390`; the `r`/`lam`/`istar`/`∑λr` are computed in-scope at `:421–457` and DISCARDED at the
-    `refine` `:485` — re-threading, NOT new math) + `chainData_split_w6b_gates` (`Realization.lean:771`) to
-    supply the **`candidateRow_ac_eq_neg`-shaped per-edge witness** (the pinned shape, per A-2); re-plumb the
-    3 LIVE callers (`Realization.lean:389`/`:881`/`:1006`) + re-verify d=3 zero-regression. **This is the
-    blast-radius step (B=2).**
+  - **(A-1 — DONE 2026-06-20, axiom-clean):** strengthened the W6b producer
+    `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean`) + `chainData_split_w6b_gates`
+    (`Realization.lean`) to supply the **`candidateRow_ac_eq_neg`-shaped per-edge witness** `lamAB`/`rab`
+    (`∀ j, rab j ∈ hingeRowBlock e₀`, `ρ = ∑ⱼ lamAB j • rab j`): the in-scope `r`/`lam` re-threaded via the
+    per-row `Eb = map (hingeRow …).dualMap block` decomposition + `hingeRow` injectivity at distinct endpoints.
+    The wrapper threads it to its output in chain order (`(b,a)` branch negates `rab → −rab`, W8 sign-swap).
+    3 live callers re-plumbed (`case_III_candidate_dispatch` + `chainData_split_realization` `_`-ignore until
+    the arm); full project green + lint clean, d=3 zero-regression. **The blast-radius step (B=2), landed as
+    scoped.**
   - **(A-3):** generalize the de-risk to all `i`, then the arm assembly `chainData_relabel_arm`.
   The refuted-signature leaves `freshEdge_surviving_row_mem` (`:2833`) + the `hsurv` form of
   `wstep_foldl_freshEdge_slot_mem` (`:3006`) are WITHDRAWN at the arm build (zero live callers); the
