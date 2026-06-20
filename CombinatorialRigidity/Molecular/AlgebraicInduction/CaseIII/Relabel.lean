@@ -2734,10 +2734,12 @@ the `shiftBodyListAsc i` shape with `m = i − 1`), applied to the base `(v₀v�
 plus the single fresh-edge slot row. This is the `i − 1`-step `reverseRec` generalization of the
 `i = 3` 2-residue gate `i3_wstep_foldl_base_redundancy_deRisk` (`m = 2`), and realizes KT eq. (6.66)
 (the iterated degree-2 `a`-column cancellation) as the `wstep` telescope's closed form. The vertex
-function `w` is injective (the chain vertices are distinct), so each step's swap and `a`-column
-restriction act cleanly. -/
+function `w` is injective on the finite index range `0 … m+2` the statement touches (the chain
+vertices are distinct, `cd.vtx_inj` — the arm supplies this from `Set.InjOn.mono` of `vtx_inj`;
+**not** the global `Function.Injective (ℕ → α)`, which is `False` over the arm's `[Finite α]` vertex
+type, §(o‴)(I.8) P1), so each step's swap and `a`-column restriction act cleanly. -/
 theorem BodyHingeFramework.wstep_foldl_hingeRow_telescope [DecidableEq α]
-    (w : ℕ → α) (hw : Function.Injective w) (m : ℕ)
+    (w : ℕ → α) (m : ℕ) (hinj : Set.InjOn w (Set.Iic (m + 2)))
     (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
     ((List.ofFn fun s : Fin m => (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3))).foldl
         (fun T b => (BodyHingeFramework.wstep (k := k) b.1 b.2.1 b.2.2).comp T) LinearMap.id)
@@ -2747,15 +2749,22 @@ theorem BodyHingeFramework.wstep_foldl_hingeRow_telescope [DecidableEq α]
   induction m with
   | zero => simp
   | succ m ih =>
+    -- The IH needs injectivity on the smaller range `0 … m+2`, by monotonicity of `Set.InjOn`.
+    have ihm := ih (hinj.mono (Set.Iic_subset_Iic.mpr (by omega)))
+    -- A range-scoped distinctness helper: `w i ≠ w j` whenever `i, j ≤ m+2` and `i ≠ j`. The arm
+    -- runs on the finite vertex type, where global injectivity is unavailable; `hinj` is the
+    -- finite-range form (`Set.InjOn` on `Set.Iic (m+1+2)`, here used at indices `≤ m+2`).
+    have hne : ∀ i j : ℕ, i ≤ m + 2 → j ≤ m + 2 → i ≠ j → w i ≠ w j := fun i j hi hj hij h =>
+      hij (hinj (Set.mem_Iic.mpr (by omega)) (Set.mem_Iic.mpr (by omega)) h)
     -- Peel the last body `(w_{m+1}, w_{m+2}, w_{m+3})` off the `ofFn` list (`ofFn_succ'`); the
     -- inner fold over the first `m` bodies is the IH; the last `wstep` then advances the frontier.
     rw [List.ofFn_succ', List.concat_eq_append, List.foldl_append]
     simp only [List.foldl_cons, List.foldl_nil, LinearMap.comp_apply, Fin.val_last,
       Fin.val_castSucc]
-    rw [ih]
+    rw [ihm]
     -- `wstep` is linear: distribute over the IH sum + frontier term.
     rw [map_add, map_sum]
-    -- the `m` surviving rows `wₛ—wₛ₊₁` (`s < m+1 < m+2 < m+3`) are fixed by the last `wstep`.
+    -- the `m` surviving rows (`s < m+1 < m+2`, all `≤ m+2`) are fixed by the last `wstep`.
     have hoff : ∀ s ∈ Finset.range m,
         BodyHingeFramework.wstep (k := k) (w (m + 1)) (w (m + 2)) (w (m + 3))
             (BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀)
@@ -2763,13 +2772,16 @@ theorem BodyHingeFramework.wstep_foldl_hingeRow_telescope [DecidableEq α]
       intro s hs
       rw [Finset.mem_range] at hs
       exact BodyHingeFramework.wstep_hingeRow_off
-        (fun h => by have := hw h; omega) (fun h => by have := hw h; omega)
-        (fun h => by have := hw h; omega) (fun h => by have := hw h; omega) ρ₀
+        (hne s (m + 2) (by omega) (by omega) (by omega))
+        (hne s (m + 1) (by omega) (by omega) (by omega))
+        (hne (s + 1) (m + 2) (by omega) (by omega) (by omega))
+        (hne (s + 1) (m + 1) (by omega) (by omega) (by omega)) ρ₀
     rw [Finset.sum_congr rfl hoff]
     -- the frontier row `w_m—w_{m+2}` advances to the new surviving edge `w_m—w_{m+1}` + the new
     -- frontier `w_{m+1}—w_{m+3}` (`wstep_hingeRow_frontier`, the per-step KT (6.66) cancellation).
-    rw [BodyHingeFramework.wstep_hingeRow_frontier (fun h => by have := hw h; omega)
-      (fun h => by have := hw h; omega) ρ₀]
+    rw [BodyHingeFramework.wstep_hingeRow_frontier
+      (hne m (m + 2) (by omega) (by omega) (by omega))
+      (hne m (m + 1) (by omega) (by omega) (by omega)) ρ₀]
     -- regroup: `(∑_{s<m} + frontier-advance) = (∑_{s<m+1}) + new-frontier`.
     rw [Finset.sum_range_succ]
     abel
@@ -2788,9 +2800,14 @@ Stated abstractly over the span carrier `S` (the surviving-row memberships are w
 `chainData_relabel_arm` supplies from the genuine surviving chain-edge rows of `G − vᵢ`, and `hW`
 from the landed `shiftBodyListAsc_foldl_mem_span_rigidityRows`). This is the algebraic skeleton of
 the `hρGv` discharge, decoupled from the graph-level `rigidityRows` plumbing the arm wires in — the
-general-`d` analogue of the d=3 `M₃` `case hρGv` `sub_mem` peel (`case_III_arm_realization_M3`). -/
+general-`d` analogue of the d=3 `M₃` `case hρGv` `sub_mem` peel (`case_III_arm_realization_M3`).
+
+The injectivity hypothesis is the finite-range `Set.InjOn w (Set.Iic (m + 2))` (the index range the
+statement touches), **not** the global `Function.Injective (ℕ → α)`: the arm runs on the finite
+vertex type `[Finite α]` where global `ℕ → α` injectivity is `False`, so the arm supplies this from
+`cd.vtx_inj` via `Set.InjOn.mono` (§(o‴)(I.8) P1). -/
 theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem [DecidableEq α]
-    (w : ℕ → α) (hw : Function.Injective w) (m : ℕ)
+    (w : ℕ → α) (m : ℕ) (hinj : Set.InjOn w (Set.Iic (m + 2)))
     (ρ₀ : Module.Dual ℝ (ScrewSpace k))
     {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
     (hW : ((List.ofFn fun s : Fin m => (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3))).foldl
@@ -2799,7 +2816,7 @@ theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem [DecidableEq α]
     (hsurv : ∀ s ∈ Finset.range m, BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀ ∈ S) :
     BodyHingeFramework.hingeRow (w m) (w (m + 2)) ρ₀ ∈ S := by
   -- the landed closed-form telescope rewrites `hW` to `(∑ surviving) + slot ∈ S`.
-  rw [BodyHingeFramework.wstep_foldl_hingeRow_telescope w hw m ρ₀] at hW
+  rw [BodyHingeFramework.wstep_foldl_hingeRow_telescope w m hinj ρ₀] at hW
   -- the `m` genuine surviving rows sum to a span member.
   have hsum : (∑ s ∈ Finset.range m, BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀) ∈ S :=
     Submodule.sum_mem _ hsurv

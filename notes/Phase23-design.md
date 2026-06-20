@@ -4357,20 +4357,16 @@ the base `hρe₀`, that is the genuinely-new obstruction and the build STOPS + 
 
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
-1. **`wstep_foldl_freshEdge_slot_mem_finite` (P1 restatement, ~1 commit, the unblocker).** Re-state the two
-   algebraic-core lemmas with a finite-range injectivity interface (recommended: `(w : Fin (m + 3) → α)`
-   `(hw : Function.Injective w)`, or `(w : ℕ → α)` `(hinj : Set.InjOn w ↑(Finset.range (m+3)))`). Signature
-   (the corollary form the arm calls):
-   ```
-   theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem_finite [DecidableEq α]
-       (w : Fin (m + 3) → α) (hw : Function.Injective w)
-       {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
-       (hW  : (the wstep foldl of `hingeRow (w 0)(w 2) ρ₀` over the length-`m` body list) ∈ S)
-       (hsurv : ∀ s : Fin m, hingeRow (w s.castSucc…)(w …) ρ₀ ∈ S) :
-       hingeRow (w ⟨m,_⟩)(w ⟨m+2,_⟩) ρ₀ ∈ S
-   ```
-   Proof = the landed body with each `hw h; omega` re-scoped to the `Fin (m+3)` indices. (The closed-form
-   telescope `wstep_foldl_hingeRow_telescope` gets the same treatment first; the corollary `rw`s it.)
+1. **P1 restatement — LANDED 2026-06-20 (the unblocker).** Both algebraic-core lemmas
+   (`wstep_foldl_hingeRow_telescope` + `wstep_foldl_freshEdge_slot_mem`) restated **in place** (same names,
+   zero callers existed) over `(hinj : Set.InjOn w (Set.Iic (m + 2)))` instead of the dead
+   `Function.Injective (w : ℕ → α)`. Chosen over the `Fin (m+3) → α` re-index: `Set.InjOn` over `w : ℕ → α`
+   keeps the `induction m` clean (the `Fin`-index type would change between `m` and `m+1`). Proof = the
+   landed body with the IH fed `hinj.mono (Set.Iic_subset_Iic.mpr (by omega))` and each
+   `fun h => hw h; omega` replaced by a local `hne i j (≤N) (≤N) (≠)` distinctness helper. Axiom-clean,
+   warning-clean, full project green. The arm supplies `hinj` from `cd.vtx_inj` (`Fin (d+1) → α` injective)
+   via `Set.InjOn.mono`. Lesson → FRICTION [idiom] *A `(w : ℕ → α)`-indexed lemma whose carrier will be
+   `[Finite α]`…*.
 2. **`chainData_freshEdge_surviving_row_mem` (P2, ~1–2 commits, the real math).** For `s < (i:ℕ)−1`:
    ```
    theorem … (cd : G.ChainData n) (i : Fin cd.d) (s : ℕ) (hs : s + 1 < (i:ℕ)) (ends₀ q …) :
@@ -4420,10 +4416,11 @@ math)** — the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediat
 abstract-`S` hyps by both the corollary AND the `i=3` gate, never checked concretely (~1–2 commits, de-risk
 at `i=3` for real). **P3 (flagged, likely clean)** — the fold seed `shiftSeedAdv q (i−1)` = engine seed
 `qρ` is unbuilt (~½ commit). None is a motive/IH/signature change; option (b) stands; d=3 zero-regression
-stands. **Total to the closed arm: ~4–5 commits** (P1 → P2 → P3 → assembly), the **smallest next commit =
-P1** (`wstep_foldl_{hingeRow_telescope,freshEdge_slot_mem}_finite`, the finite-range restatement — without
-it nothing else can call the core). The "purely graph-level, one instantiation" framing in *Hand-off* /
-(I.7.10) tail is corrected by this pass.
+stands. **P1 LANDED 2026-06-20** (`wstep_foldl_{hingeRow_telescope,freshEdge_slot_mem}` restated finite-range
+in place, `Set.InjOn w (Set.Iic (m+2))`, axiom-clean). **Remaining to the closed arm: ~3–4 commits** (P2 →
+P3 → assembly), the **smallest next commit = P2** (the `hsurv` summand perp-membership, de-risked at `i=3`
+concretely). The "purely graph-level, one instantiation" framing in *Hand-off* / (I.7.10) tail was corrected
+by this pass; P1 (the unblocker) is now discharged.
 
 ---
 
