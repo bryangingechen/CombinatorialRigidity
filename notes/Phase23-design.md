@@ -4941,6 +4941,43 @@ incident chain edges (a degree-2 GRAPH fact) + reshaping its endpoints to the ca
 `hingeRow a c` form, then `hcol` from the global `g = 0` (NOT `hρGv` — `hcol`'s provenance is
 `exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s `sub_self`). NO motive/IH/contract change.
 
+**(I.8.9-RECON) REGROUP-PROPER CONSUMER-INTERFACE RECON — VERDICT: NEEDS-ADJUDICATION; the regroup proper does
+NOT close the consumer, the genuine open piece is the KT eq-(6.66) ±r screw-level identity (2026-06-20, opus
+read-only Plan, coordinator source-verified; row 339). Caught the would-be 6th mis-pin.** After three leaves
+(I.8.9-A1/-COL/-COL2) the "regroup is ~mechanical" pin was tested against the actual consumer signatures and
+FAILS on the screw-level identity — the same global-vs-per-vertex face that broke the 5 prior pins.
+- **The consumer needs a SHARED `ρ₀`; the regroup supplies a PER-VERTEX group.** A-3
+  `freshEdge_surviving_row_mem_of_witness` (`Relabel.lean:3074-3098`) concludes
+  `hingeRow (vtx⟨s⟩)(vtx⟨s+1⟩) (∑ⱼ lamAB j • rab j) ∈ span Fva.rigidityRows` — built on the **per-vertex**
+  `(ab)`-group `∑ⱼ lamAB j • rab j` (`:3095-3096`). The all-`i` lift `wstep_foldl_freshEdge_slot_mem`
+  (`Relabel.lean:3255-3263`) requires `hsurv : ∀ s ∈ range m, hingeRow (w s)(w s+1) ρ₀ ∈ S` and the slot row
+  over the **single shared** `ρ₀` (forced by settled Fix A §(o‴)(H): per-`i` re-seed = Fix B INFEASIBLE,
+  breaks KT's single-`r` existence). So the regroup must additionally prove `∑ⱼ lamAB_s j • rab_s j = ±r̂`
+  (= the shared `ρ₀`) at every interior vertex — KT eq-(6.66)'s ±r carry. **No landed lemma produces this**
+  (grep-confirmed; the LANDED telescope `wstep_foldl_hingeRow_telescope` is over the shared `ρ₀` and only
+  expresses the slot in terms of surviving rows — it does NOT establish their membership, which still needs
+  `shared ρ₀ ⊥ supportExtensor(edge s)`, the row-321-refuted isolated perp, recoverable only from the `g`
+  structure via this identity).
+- **What DOES match (mechanical, framework-free):** the perp half (A-2
+  `candidate_perp_two_incident_supportExtensors :2472-2489` + `candidate_supportExtensor_perp_of_base :3394`)
+  and the `hcol`/`hrest` half (the two landed column cores + `deg_two Operations.lean:1306` + `hingeRow_swap
+  Basic.lean:535`). The interface-match check passes on these, fails ONLY on the screw-level identity —
+  consistent with (I.8.8-RESULT) "only the transport/perp half validated".
+- **Buildable-leaf decomposition (dependency order):** **leaf 1** `regroup_acolumn_incident_split` (the base
+  regroup at a genuinely-degree-2 vertex producing `lamAB/rab`@`edge s` + `lamAC/rac`@`edge s+1` + `grest` +
+  `hcol`/`hrest`) — MECHANICAL, buildable as-is from the two column cores + `deg_two` + `hingeRow_swap`; *this
+  is the lemma the prompt scoped, and it IS buildable — but alone it does NOT satisfy the consumer*. **leaf 2**
+  `∑ lamAB_s • rab_s = ±r̂` — GENUINELY-NEW, no producer, the crux (KT eq-6.66). **leaf 3** sign reconciliation
+  on `_of_witness`/`_slot_mem` — likely `Submodule.neg_mem`-absorbable at the membership level (hingeRow linear
+  in `r`, span closed under negation), to confirm; possibly a no-op, NOT necessarily an interface change.
+- **DECISION PENDING (user-adjudicated): how to attack leaf 2 (the genuine crux).** (A) a KT eq-(6.66)
+  source-verification recon first — read the PDF pp.696-698, adversarially pin EXACTLY how KT establishes the
+  per-vertex-group = ±r̂ identity in the rigidity-matrix terms the formalization uses, before building (the
+  rows-322/323 precedent for a repeatedly-mis-pinned crux); (B) build leaf 1 then attempt leaf 2 directly,
+  accepting leaf 2 is the hard crux; (C) bank leaf 1 standalone now (additive, on-path) then decide leaf 2.
+  NO motive/IH/contract change in any branch. Coordinator source-verified A-3's conclusion shape
+  (`:3095-3098`) against this verdict.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
