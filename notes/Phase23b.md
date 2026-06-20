@@ -345,30 +345,15 @@ finite-range-callable (`wstep_foldl_hingeRow_telescope` + the membership corolla
 `wstep_foldl_freshEdge_slot_mem`, both axiom-clean, P1 done), and the slot→brick map + engine bindings are
 source-verified clean for every slot except `hρGv` (`Gv = G−vᵢ` / `ends = relabelled` / `q = qρ` /
 `(a,b) = (vᵢ₊₁,vᵢ₋₁)`, confirmed vs the landed `chainData_bottom_relabel` output type
-`Relabel.lean:1960–1972`; `hwmem ← chainData_bottom_relabel`, `hρe₀ ← G4d-i`, rest per `M₃`). Two
-genuinely-new prerequisites remain before `hρGv` can be supplied: **(P2, real math — PERP ROUTE RE-OPENED
-2026-06-20 by the row-321 adversarial build; §(o‴)(I.8.3.v-REFUTED)).** The `m` `hsurv` summands need
-`ρ₀ ⊥ panel(qρ(chain edge))`. The two infra bricks `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`
-(sup-membership of a span member's `a`-column) + `freshEdge_surviving_row_mem` (the `hrow` builder, perp
-carried as `hperp`) STAND, **BUT the row-318 pin of `ρ₀_perp_interior_chain_edge` as the isolated
-implication `ρ₀ ∈ hingeRowBlock(edge s) → ρ₀ ∈ hingeRowBlock(edge s+1)` (only `hbase`) is REFUTED — it is
-FALSE for arbitrary `ρ₀`:** the `_sup_` brick gives only *sup* membership (`x+y`, x⊥C_c, y⊥C_d — NOT
-whole-`ρ₀` in either block; verified vs `hingeRowBlock = (span{supportExtensor})^⊥`, `Basic.lean:433`),
-consecutive chain panels are independent subspaces, and KT eq.(6.44)/(6.66) is a property of the *specific
-vanishing-combination* redundancy `r`, **not** an isolated per-step implication (the same global-accumulation
-trap as rows 263–272). **NEXT P2 step — ROUTE SETTLED = Route A** (adversarial pair rows 322/323 +
-user-authorized tie-breaker recon row 324; §(o‴)(I.8.3.v-PAIR)/(I.8.3.v-SETTLED)). Confirmed: route (a)
-DEAD (intermediate fold values have a zero column at the frontier vertex → two-edge crux gives `0`,
-vacuous); the per-edge `hperp`/`hsurv` encodes a claim KT never proves (eq 6.66 is a vector *equality* used
-in the eq-6.67 *counting* argument; d=3 `M₃` has ZERO interior perp obligations); and **route B/C is the
-route-(b) circularity in disguise** (`htrans`'s block conjunct is forward-only `≤`, and for interior edges
-the base/candidate panels coincide `le_refl` `Relabel.lean:1564–1570`, so transport = the identical base
-perp). The interior surviving rows are **GENUINELY INDEPENDENT** (d=3 discharges its single row by `hρe₀`
-**directly** — the reproduced `e_b`-pair via `subset_span`+`exact hρe₀` `Relabel.lean:2596–2606`, NOT
-`htrans`; the first honest interior case is `i=3`, `m=2`). **Route A:** the membership comes from the
-SPECIFIC redundancy `r`/`g` (interior `a`-columns non-trivial), carried OUT of the W6b producer (the
-`r`/`lam`/`∑λr` data is computed in-scope `Candidate.lean:421–457` but DISCARDED at the `refine` `:485` —
-re-threading, not new math). **Build sequence (de-risk-first):** **(A-2 de-risk — DONE 2026-06-20)** the
+`Relabel.lean:1960–1972`; `hwmem ← chainData_bottom_relabel`, `hρe₀ ← G4d-i`, rest per `M₃`). Remaining: **(P2, real math) — PERP ROUTE SETTLED = Route A** (adversarial pair rows 322/323 +
+user-authorized tie-breaker recon row 324; full verdict + grounding in §(o‴)(I.8.3.v-REFUTED)/(I.8.3.v-PAIR)/
+(I.8.3.v-SETTLED)). The row-318 isolated-implication pin `ρ₀_perp_interior_chain_edge` is REFUTED (FALSE for
+arbitrary `ρ₀` — the per-edge perp is a claim KT never proves, eq 6.66 is a vector *equality* in the eq-6.67
+counting argument); route B/C is the route-(b) circularity (`htrans` forward-only `≤`, interior panels
+`le_refl`-coincide); the interior surviving rows are GENUINELY INDEPENDENT, so the perp comes from the
+SPECIFIC redundancy `r`/`g` (interior `a`-columns non-trivial) carried OUT of the W6b producer (the
+`r`/`lam`/`∑λr` witness is computed in-scope `Candidate.lean:421–457` but DISCARDED at `:485` — re-threading,
+not new math). **Build sequence (de-risk-first):** **(A-2 de-risk — DONE 2026-06-20)** the
 self-contained perp carrier `candidate_perp_two_incident_panels` + the `supportExtensor`-perp form
 `candidate_perp_two_incident_supportExtensors` (`Relabel.lean`, both axiom-clean): given the eq-(6.52)
 witness (the per-edge-grouped `λ`/`r` data + the combination's `a`-column vanishing `hcol`/`hrest`) as
@@ -388,7 +373,19 @@ motive/IH change.
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
 stand; ~3–4 commits (P2→P3→assembly). Sub-step sequence + exact signatures in design §(o‴)(I.8.4); the perp
-verdict (Q1–Q4 vs KT 6.50–6.66 + the landed bricks) in §(o‴)(I.8.3.v)/(I.8.6.v). **`i=3` de-risk DONE
+verdict (Q1–Q4 vs KT 6.50–6.66 + the landed bricks) in §(o‴)(I.8.3.v)/(I.8.6.v).
+
+> **⚠ SUPERSEDED OLD-ROUTE HISTORY — skip to the arm-wiring paragraph below.** Everything from here down
+> to "**arm wiring `chainData_relabel_arm`**" (the `i=3`-de-risk / KT-source-re-derivation / LEAF-ρ1–ρ3 /
+> "arm gated on P1/P2/P3-via-perp" narrative) is PRE-REFUTATION history, superseded by the Route-A
+> settlement above (§(o‴)(I.8.3.v-SETTLED)): the per-edge-perp slot-peel framing is DEAD. The landed
+> closed-form telescope `wstep_foldl_hingeRow_telescope` + its corollary `wstep_foldl_freshEdge_slot_mem`
+> STAND as true linear-map infra, but their `hsurv` slot-peel framing is WITHDRAWN (Route A supplies the
+> perp from the producer witness via the A-2 carrier `candidate_perp_two_incident_*` instead). Kept
+> transiently for the arm-assembly structure + the orphan/confirm-and-delete lists; **a dedicated
+> compression pass is DUE.** Audit trail: §(o‴)(I.7.x)/(I.8) + git.
+
+**`i=3` de-risk DONE
 (Lean-verified `i3_*_deRisk` lemmas) + KT-SOURCE RE-DERIVATION RESOLVED the path (§(o‴)(I.7.10),
 owner-chosen recon).** The de-risk computed `W φ = hingeRow v₀v₁ + v₁v₂ + v₂v₄ ρ₀` / `R φ
 = hingeRow v₀v₁ ρ₀` / `D φ = hingeRow v₁v₄ (−ρ₀)` — the three links `v₀—v₁` / `v₁—v₄` / slot `v₂—v₄`
