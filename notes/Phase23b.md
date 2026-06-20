@@ -9,9 +9,11 @@ concrete `shiftBodyListAsc_foldl_mem_span_rigidityRows`). **W9b per-body chain D
 NOT a prerequisite — Q1, detail in *Decisions made*). The
 arm's `hwmem` slot is the per-member
 `case_III_bottom_relabel` map (NO fold) cycle-generalized to `(shiftPerm i)⁻¹`: genuine-row → graph-iso,
-block → a single G4d-i at `vᵢ` (Leaf B, inline; Q2/Q3). NEXT = 2c-ii-arm `chainData_relabel_arm`
-(inverse-cycle action lemmas already landed; gated by the flagged genuine-arm seed-coincidence bookkeeping),
-then 2c-iii; see *Hand-off*)
+block → a single G4d-i at `vᵢ` (Leaf B, inline; Q2/Q3). The flagged genuine-arm bookkeeping's **seed half
+LANDED 2026-06-19** (`seedShift_inv_cancel` + `seedShift_off_cycle`, `Operations.lean`, axiom-clean); the
+genuine-arm flag now narrows to the **selector/graph-iso half** (the endpoint case-split). NEXT = the
+genuine-row graph-iso wiring, then 2c-ii-arm `chainData_relabel_arm` (inverse-cycle action lemmas + seed
+lemmas already landed), then 2c-iii; see *Hand-off*)
 + CHAIN-5 (the dispatch assembly, gated by the ENTRY-contract reshape).**
 The integer Phase 23 stays **in progress** — ENTRY / ASSEMBLY remain (coordinator owns the sub-phase
 boundary; codes-until-open).
@@ -123,11 +125,13 @@ extractor reshape).
       now split into the reusable `hstep` bundle `seedAdvance_wstep_hstep` + wrapper) + the abstract W9a
       `foldl` fold core + **the concrete base→candidate W9a cycle fold** `shiftBodyListAsc_foldl_mem_span_rigidityRows`
       **LANDED 2026-06-19** (the W9b per-body chain — single-step + `foldl` core
-      `bottomTag_foldl_mem_rigidityRows` — was landed then **DELETED 2026-06-19**, §(o‴)(I.1) dead infra)
-      → **NEXT: 2c-ii-arm** `chainData_relabel_arm` (gated by the flagged genuine-arm seed-coincidence
-      cycle gen; genuine-row disjunct via the inverse-cycle **graph-iso**, NOT the W9a span fold — that
-      carries the candidate row `hρGv` (§(o‴)(I.3)); block = inline Leaf B's single G4d-i; d=3 M₃ = `i=2`
-      involution) → **2c-iii** `chainData_dispatch`.
+      `bottomTag_foldl_mem_rigidityRows` — was landed then **DELETED 2026-06-19**, §(o‴)(I.1) dead infra).
+      The flagged genuine-arm bookkeeping's **seed half** LANDED 2026-06-19 (`seedShift_inv_cancel` +
+      `seedShift_off_cycle`, `Operations.lean`, axiom-clean) → **NEXT: 2c-ii-arm** `chainData_relabel_arm`,
+      now gated only by the **selector/graph-iso half** (the genuine-row endpoint case-split over
+      `(shiftPerm i)⁻¹`; genuine-row disjunct via the inverse-cycle **graph-iso**, NOT the W9a span fold —
+      that carries the candidate row `hρGv` (§(o‴)(I.3)); block = inline Leaf B's single G4d-i; d=3 M₃ =
+      `i=2` involution) → **2c-iii** `chainData_dispatch`.
       Full detail: design §(o‴)(H)/(H.10).
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`).
       Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -230,19 +234,31 @@ disjunct is a *literal-row* membership; a pure relabel sends a genuine-row-at-th
 `(c,v)`-block (`case_III_bottom_relabel:1672`), so it needs the graph-iso, not a span fold. The W9a span
 fold and the genuine-row graph-iso are different mechanisms on different objects.
 
-**STILL FLAGGED (un-discharged here, §(o‴)(I.4)/(E)/(F)(D)):** the genuine-row arm's *cycle generalization*
-of `case_III_bottom_relabel:1499–1595` over `(shiftPerm i)⁻¹` + seed `qρ` is the genuinely-new piece (the
-`shiftPerm`-fixed-point / seed-extensor-coincidence identity for non-chain edges); its difficulty is
-unknown until that bookkeeping is written. This pass does NOT build it — honest status is FLAG, not pin.
+**SEED HALF of the flagged genuine-arm bookkeeping LANDED 2026-06-19** (the two `ChainData`
+seed-coincidence lemmas, `Operations.lean`, axiom-clean): `seedShift_inv_cancel` (candidate seed
+`qᵢ=q∘shiftPerm i` read at the inverse-relabelled body `(shiftPerm i)⁻¹ x` componentwise equals `q x`
+— the genuine-row arm's annihilation transport; KT (6.59); d=3 M₃'s `hqρc`/`hqρv` lifted) +
+`seedShift_off_cycle` (`qᵢ x = q x` off the cycle — the non-moving recorded-endpoint read, d=3's
+`simp only [hqρ, swap_apply_of_ne_of_ne]` step lifted). `Equiv.Perm.apply_inv_self` has no named
+constant, so the cancel is `funext; rw [← mul_apply, mul_inv_cancel, one_apply]` (FRICTION, under the
+`formPerm`-cycle entry).
 
-**NEXT STEP — `chainData_relabel_arm` (§(o‴)(H.6) leaf-2).** The §(H.6) leaf-1 CHAIN-2c-ii-inv inverse-cycle
-action lemmas are **already LANDED** (`Operations.lean:1550–2110`, the 4 `shiftPerm_inv_*` + 7
-`shiftEdgePerm_inv_*`), so the arm itself is next: instantiate `case_III_arm_realization` at the relabelled
-roles, seed `qρ = q∘shiftPerm i`, shared `±ρ₀`; slots = the `hρGv` W9a fold + the per-member `hwmem` map
-(genuine-row graph-iso arm + Leaf-B single G4d-i) + G4d-i (`hρe₀`); also needs the `funLeft (shiftPerm i)⁻¹`
-relabel bridge. **Gated by writing the flagged genuine-arm seed-coincidence bookkeeping first**; est. ~3–5
-commits; d=3 M₃ = `i=2` involution. → **2c-iii** `chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm,
-interior = relabel arm; replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
+**STILL FLAGGED (un-discharged here, §(o‴)(I.4)/(E)/(F)(D)) — narrowed to the SELECTOR/GRAPH-ISO half:**
+the genuine-row arm's *cycle generalization* of `case_III_bottom_relabel:1499–1595` over `(shiftPerm i)⁻¹`
+still needs the **row-relabel graph-iso correspondence** wired through the endpoint case-split (which base
+endpoints land on `vᵢ`/the moving bodies vs. survive as genuine candidate rows), now that the seed half is
+discharged. Its difficulty (the `shiftPerm`-fixed-point endpoint bookkeeping) is unknown until that
+selector wiring is written. This pass landed the seed half only — honest status of the rest is FLAG, not pin.
+
+**NEXT STEP — the genuine-row graph-iso correspondence wiring, then `chainData_relabel_arm` (§(o‴)(H.6)
+leaf-2).** With the seed lemmas + the §(H.6) leaf-1 inverse-cycle action lemmas (`Operations.lean:1550–2110`,
+4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*`) + the graphiso `splitOff_isLink_shiftRelabel_iff` all
+LANDED, the remaining genuinely-new ingredient is the endpoint case-split of the genuine-row transport. Then
+the arm: instantiate `case_III_arm_realization` at the relabelled roles, seed `qρ = q∘shiftPerm i`, shared
+`±ρ₀`; slots = the `hρGv` W9a fold + the per-member `hwmem` map (genuine-row graph-iso arm + Leaf-B single
+G4d-i) + G4d-i (`hρe₀`); also needs the `funLeft (shiftPerm i)⁻¹` relabel bridge. Est. ~3–5 commits; d=3 M₃
+= `i=2` involution. → **2c-iii** `chainData_dispatch` (`Fin (k+1)`-case, `M₀` = direct arm, interior =
+relabel arm; replaces `case_III_candidate_dispatch`) → **CHAIN-5**.
 
 **Confirm-and-delete / STAYS at the reshape** (full list §(o‴)(H.5); `git grep` zero callers at the
 delete commit). **DELETED 2026-06-19** (the W9b per-body chain, Q1 §(o‴)(I.1)): the 5-decl cluster
@@ -420,7 +436,12 @@ region). **2c-ii-α** `ChainData.shiftPerm` (KT eq. 6.54) + recursion handle
 `shiftEdgePerm` (the `hiso` supplier, consumed at the **arm**). **2c-ii-inv** (the inverse-cycle action
 block, LANDED 2026-06-19) the 4 `shiftPerm_inv_*` + 7 `shiftEdgePerm_inv_*` action lemmas — each a
 one-liner `rw [Equiv.Perm.inv_eq_iff_eq, <forward>]`; the base→candidate relabel `(shiftPerm i)⁻¹` the
-re-authored arm transport carries (FRICTION, under the `formPerm`-cycle entry). **The W9a-slot
+re-authored arm transport carries (FRICTION, under the `formPerm`-cycle entry). **2c-ii-arm seed half**
+(LANDED 2026-06-19, `Operations.lean`, axiom-clean): `seedShift_inv_cancel` (`qᵢ((shiftPerm i)⁻¹ x) = q x`,
+the genuine-row annihilation transport; `funext; rw [← mul_apply, mul_inv_cancel, one_apply]` since
+`Equiv.Perm.apply_inv_self` has no constant — FRICTION) + `seedShift_off_cycle` (`qᵢ x = q x` off the
+cycle) — the seed half of the flagged genuine-arm bookkeeping; the selector/graph-iso half stays open.
+**The W9a-slot
 base→candidate fold (COMPLETE)** = the de-risk-gate `hstep` bundle `seedAdvance_wstep_hstep` (six
 per-step conjuncts incl. the seed-advancing `htrans`; single bound `s+2 < cd.d` covers interior AND the
 candidate top step) + its wrapper `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`, the

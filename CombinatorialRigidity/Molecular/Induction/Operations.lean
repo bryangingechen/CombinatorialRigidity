@@ -1571,6 +1571,42 @@ lemma shiftPerm_inv_apply_vtx_off (cd : G.ChainData n) (i : Fin (cd.d + 1)) {m :
     (cd.shiftPerm i)⁻¹ (cd.vtx ⟨m, hm⟩) = cd.vtx ⟨m, hm⟩ := by
   rw [Equiv.Perm.inv_eq_iff_eq, cd.shiftPerm_apply_vtx_off i hm hoff]
 
+/-! ### Candidate-seed coincidence under the inverse-cycle relabel (CHAIN-2c-ii-arm)
+
+The interior-candidate relabel arm `chainData_relabel_arm` (CHAIN-2c-ii, `notes/Phase23-design.md`
+§(o‴)(H)/(I.3)) transports the `v₁`-base rigidity rows into candidate `i`'s split by the **inverse**
+cycle relabel `(shiftPerm i)⁻¹` paired with the seed `qᵢ = q ∘ shiftPerm i` (KT eqs. (6.56)/(6.62),
+the one-step-DOWN row correspondence). The genuine-row arm reads candidate `i`'s seed `qᵢ` at the
+**relabelled** body `(shiftPerm i)⁻¹ x`; these two lemmas package the two seed identities that this
+read makes — the cycle generalizations of the d=3 `M₃` arm's single-swap `qρ`-coincidence facts
+(`AlgebraicInduction/CaseIII/Relabel.lean`, `case_III_arm_realization_M3`'s `hqρc`/`hqρv` and the
+off-edge `simp only [hqρ, swap_apply_of_ne_of_ne …]` step). At the `d = 3` `M₃` instance `i = 2`
+the cycle `shiftPerm 2 = (v₁ v₂)` is the single swap and these reduce to those facts. Graph-free
+over the chain vertices (pure `Equiv.Perm`/`vtx` algebra), beside the inverse-cycle action
+lemmas above. -/
+
+/-- **Seed cancellation: candidate `i`'s seed `qᵢ = q ∘ shiftPerm i` read at the inverse-relabelled
+body `(shiftPerm i)⁻¹ x` coincides componentwise with the base seed `q` at `x`** (CHAIN-2c-ii-arm).
+This is the identity the genuine-row arm of `chainData_relabel_arm` uses to transport an
+annihilation: the relabel `(shiftPerm i)⁻¹` cancels the `shiftPerm i` in the candidate seed, so a
+base extensor at `x` reappears as candidate `i`'s extensor at `(shiftPerm i)⁻¹ x` (KT eq. (6.59)
+substitution). The `d = 3` `M₃` involution case is its degenerate instance
+(`(shiftPerm 2)⁻¹ = shiftPerm 2`). -/
+theorem seedShift_inv_cancel (cd : G.ChainData n) (i : Fin (cd.d + 1))
+    {K : Type*} (q : α × K → ℝ) (x : α) :
+    (fun j => q (cd.shiftPerm i ((cd.shiftPerm i)⁻¹ x), j)) = (fun j => q (x, j)) := by
+  funext j; rw [← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]
+
+/-- **Off-cycle seed coincidence: candidate `i`'s seed `qᵢ = q ∘ shiftPerm i` equals the base seed
+`q` at every body off the cycle `[vtx 1, …, vtx i]`** (CHAIN-2c-ii-arm). At a body the relabel
+fixes, `qᵢ` reads the *unrelabelled* `q`, so a genuine base row at an off-cycle (non-moving)
+recorded endpoint stays genuine in candidate `i`'s framework — the cycle generalization of the d=3
+`M₃` arm's `qρ = q` step at endpoints `∉ {a, v}`. -/
+theorem seedShift_off_cycle (cd : G.ChainData n) (i : Fin (cd.d + 1))
+    {K : Type*} (q : α × K → ℝ) {x : α} (hx : x ∉ cd.shiftCycle i) :
+    (fun j => q (cd.shiftPerm i x, j)) = (fun j => q (x, j)) := by
+  rw [cd.shiftPerm_apply_off i hx]
+
 /-! ### The cycle-W9a moved-body list `shiftBodyList` (CHAIN-2c-ii-transport-W9a)
 
 The cycle `shiftPerm i` (`v₁ → ⋯ → vᵢ → v₁`) moves the chain of `i − 1` adjacent degree-2 bodies

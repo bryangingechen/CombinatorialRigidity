@@ -1718,6 +1718,14 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `p⁻¹ x = y` into `p y = x`, which the matching forward lemma closes by `rfl`. So once the forward
   cycle action is landed, its inverse is free — do not re-derive the wrap/interior/off-support cases
   from `formPerm`.
+- **Reuse (CHAIN-2c-ii-arm, `ChainData.seedShift_inv_cancel`, same file):** the candidate-seed read
+  `qᵢ ((shiftPerm i)⁻¹ x) = q x` (`qᵢ = q ∘ shiftPerm i`, the genuine-row arm's annihilation
+  transport) is just `σ (σ⁻¹ x) = x` — but **there is no `Equiv.Perm.apply_inv_self` constant** (it
+  exists for `MulAut`/`≃ᵢ`/`≃r`, not bare `Equiv.Perm`), and `(σ).apply_symm_apply`'s `.symm` will
+  **not `rw`-unify** with the group inverse `σ⁻¹` (the seed sits inside a `fun j => q (…, j)` lambda,
+  so the `Equiv.symm`-vs-`⁻¹` mismatch blocks the rewrite). Close it group-theoretically:
+  `funext j; rw [← Equiv.Perm.mul_apply, mul_inv_cancel, Equiv.Perm.one_apply]`. The off-support
+  companion `qᵢ x = q x` for `x ∉ shiftCycle i` is the direct `shiftPerm_apply_off` rewrite.
 - **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 61 (the `getElem`-index motive trap).
 
 ### [idiom] `open Classical in` must precede the docstring, not follow it
