@@ -2667,6 +2667,78 @@ theorem _root_.Graph.ChainData.i3_freshEdge_slot_mem_deRisk
       = BodyHingeFramework.hingeRow v2 v4 ρ₀ := by abel
   rwa [heq] at h
 
+/-- **The concrete `i = 3` P2 de-risk gate — the two surviving chain-edge rows reach the concrete
+`span (G − v₃).rigidityRows`, each via its own per-edge perp obligation** (CHAIN-2c-ii-arm, P2 of
+the ARM-WIRING DESIGN-PASS, `notes/Phase23-design.md` §(o‴)(I.8.3); Phase 23b). The H.11-discipline
+gate the design pins as "do P2 at `i = 3` FOR REAL at the *concrete* `span (G − v₃)` level (the
+`i3_freshEdge_slot_mem_deRisk` gate did it only abstractly over `S`)": confirm that the two genuine
+surviving chain-edge rows `hingeRow v₀ v₁ ρ₀` (`edge 0`) and `hingeRow v₁ v₂ ρ₀` (`edge 1`) — the
+`hsurv` hypotheses `wstep_foldl_freshEdge_slot_mem` defers — actually reach the concrete candidate
+framework's rigidity-row span at candidate `i = 3` (the `removeVertex (vtx 3)` framework).
+
+**What this gate establishes (the `link` half — clean).** Each surviving chain edge `edge s`
+(`s ∈ {0, 1}`) links `vtx s` to `vtx (s+1)` in `G` (`cd.link`); both endpoints have index `< 3`, so
+neither equals the removed `vtx 3` (`cd.vtx_inj`), and the edge survives `removeVertex (vtx 3)`
+(`removeVertex_isLink`). So the genuine-link membership certificate `hingeRow_mem_rigidityRows`
+applies once the per-edge block membership `ρ₀ ∈ hingeRowBlock (edge s)` is supplied.
+
+**What this gate ISOLATES as the genuinely-new P2 obligation (the `perp` half — NOT automatic).**
+The block membership `ρ₀ ∈ Fva.hingeRowBlock (edge s)` is, by `mem_hingeRowBlock_iff`, exactly
+`ρ₀ (Fva.supportExtensor (edge s)) = 0` — i.e. `ρ₀ ⊥` the candidate framework's panel at `edge s`.
+This is the per-edge **perp obligation** `hperp0`/`hperp1`, taken here as hypotheses. It is **not
+automatic**: the base redundancy `ρ₀` (the W6b-gate functional, `chainData_split_w6b_gates`) is
+built to annihilate only the base spliced panel `C(q(v₀v₂))` (its `hρe₀` gate), **not** the
+intermediate chain-edge panels `C(qρ(vₛvₛ₊₁))`. That `ρ₀` also annihilates each surviving panel is
+precisely KT eq.~(6.62)/(6.66)'s transported-redundancy assertion (the degree-2 `±r` carry,
+`candidateRow_ac_eq_neg`), which is **unbuilt in Lean** — the closed-form telescope
+(`wstep_foldl_hingeRow_telescope`) gives `W φ = (∑ surviving) + slot` as *linear maps* but does NOT
+say each `∑`-summand is a span member. So this gate confirms the de-risk verdict: the `link` half
+goes through concretely; the **perp half is the genuinely-new math** the arm wiring must still
+discharge (route (a): the degree-2 chain carry off `candidateRow_ac_eq_neg`; route (b): off the
+landed `chainData_bottom_relabel` genuine-row branch). Mirrors the H.11 gate — the de-risk
+*localizes* the obstruction rather than papering over it. -/
+theorem _root_.Graph.ChainData.i3_freshEdge_surviving_rows_mem_deRisk
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ} (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+    -- the per-edge perp obligations (the genuinely-new P2 content the arm must still discharge):
+    (hperp0 : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.supportExtensor (cd.edge ⟨0, by omega⟩)) = 0)
+    (hperp1 : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.supportExtensor (cd.edge ⟨1, by omega⟩)) = 0) :
+    BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨1, by omega⟩) ρ₀ ∈
+        Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+          (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.rigidityRows ∧
+      BodyHingeFramework.hingeRow (cd.vtx ⟨1, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
+        Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+          (cd.vtx ⟨3, by omega⟩)) ends qρ).toBodyHinge.rigidityRows := by
+  classical
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩))
+    ends qρ).toBodyHinge with hFva
+  -- A reusable membership builder: a surviving chain edge `edge s` (`s + 1 < 3`) gives a span
+  -- member once `ρ₀ ⊥ Fva.supportExtensor (edge s)` (`hp`); the `link` half is concrete.
+  have hrow : ∀ s : ℕ, (hs : s + 1 < 3) → ρ₀ (Fva.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 →
+      BodyHingeFramework.hingeRow (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) ρ₀ ∈
+        Submodule.span ℝ Fva.rigidityRows := by
+    intro s hs hp
+    apply Submodule.subset_span
+    -- the chain edge `edge s` links `vtx s — vtx (s+1)` in `G` (the `link` field at `⟨s,_⟩`).
+    have hlinkG : G.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s, by omega⟩)
+        (cd.vtx ⟨s + 1, by omega⟩) := by
+      have h := cd.link ⟨s, by omega⟩
+      simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+    -- both endpoints survive `removeVertex (vtx 3)` (`s, s+1 < 3`, distinct from `3` by `vtx_inj`).
+    have hs3 : cd.vtx ⟨s, by omega⟩ ≠ cd.vtx ⟨3, by omega⟩ := cd.vtx_ne _ _ (by omega)
+    have hs13 : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨3, by omega⟩ := cd.vtx_ne _ _ (by omega)
+    have hlinkGv : (G.removeVertex (cd.vtx ⟨3, by omega⟩)).IsLink (cd.edge ⟨s, by omega⟩)
+        (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) :=
+      Graph.removeVertex_isLink.mpr ⟨hlinkG, hs3, hs13⟩
+    -- the genuine-link membership certificate: link in `Fva.graph` + `ρ₀ ∈ hingeRowBlock (edge s)`.
+    refine BodyHingeFramework.hingeRow_mem_rigidityRows Fva (e := cd.edge ⟨s, by omega⟩) ?_ ?_
+    · rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+      exact hlinkGv
+    · exact (Fva.mem_hingeRowBlock_iff _ ρ₀).2 hp
+  exact ⟨hrow 0 (by omega) hperp0, hrow 1 (by omega) hperp1⟩
+
 /-! ### The general-`i` `hρGv` fresh-edge telescope (CHAIN-2c-ii-arm, LEAF-ρ1 algebraic core)
 
 The genuinely-new algebraic core of the `hρGv` discharge: the closed-form value of the

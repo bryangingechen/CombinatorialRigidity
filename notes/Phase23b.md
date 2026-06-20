@@ -112,20 +112,29 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     via `Set.InjOn.mono`. Zero callers existed (only each other), so the restatement was self-contained;
     no d=3 regression. Lesson → FRICTION [idiom] *A `(w : ℕ → α)`-indexed lemma whose carrier will be
     `[Finite α]`…*.
-  - **P2 (real math).** The `m` `hsurv` summands `hingeRow (vtx s)(vtx (s+1)) ρ₀` are span members only if
-    `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))` — NOT automatic (ρ₀ = base redundancy, built ⊥ the base spliced
-    panel only; KT (6.62)/(6.66) asserts the transported form is genuine at each chain edge, unbuilt in
-    Lean). Both the corollary AND the `i=3` gate **deferred this as an abstract-`S` hyp** — the gate
-    "PASSED" verdict checked only the `sub_mem` algebra, never these memberships concretely. ~1–2 commits;
-    de-risk at `i=3` FOR REAL (concrete `span (G−v₃)`).
+  - **P2 (real math) — i=3 DE-RISK LANDED 2026-06-20; finding: link half CLEAN, perp half is the
+    isolated obligation.** `i3_freshEdge_surviving_rows_mem_deRisk` (`Relabel.lean`, axiom-clean) does
+    the concrete `span (G−v₃)` gate the prior abstract-`S` gate deferred: the two surviving rows
+    `hingeRow v₀v₁ ρ₀` (`edge 0`) / `hingeRow v₁v₂ ρ₀` (`edge 1`) reach the **concrete** candidate
+    framework's `rigidityRows` span, each via its own per-edge perp `hperp0`/`hperp1`. **The `link` half
+    discharges concretely** (`cd.link` + `vtx_inj` survival of `removeVertex (vtx 3)` +
+    `hingeRow_mem_rigidityRows`); **the `perp` half `ρ₀ ⊥ Fva.supportExtensor (edge s)` is the
+    genuinely-new P2 obligation, NOT automatic** — `ρ₀` (W6b functional) is built ⊥ only the base
+    spliced panel `C(q(v₀v₂))` (`hρe₀`), not the intermediate chain-edge panels; that it ⊥ each is KT
+    eq.(6.62)/(6.66)'s degree-2 `±r` carry, unbuilt in Lean (the closed-form telescope gives `W φ = (∑
+    surviving) + slot` as *linear maps*, NOT each summand a span member). So P2 is unblocked on the
+    link/membership plumbing; the remaining work is the **perp** (route (a) degree-2 carry off
+    `candidateRow_ac_eq_neg`; route (b) off the landed `chainData_bottom_relabel` genuine branch). ~1–2
+    commits.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
     `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
 
-  None is a motive/IH/signature change; option (b) + d=3 zero-regression stand. The re-targeted `i=3`
-  de-risk GATE PASSED is the `m=2` instance of the `sub_mem` peel only (abstract `S`); P2 is what it
-  deferred (`i3_residue_collapse_deRisk` kept as the correct-but-irrelevant `D φ` record).
+  None is a motive/IH/signature change; option (b) + d=3 zero-regression stand. Two `i=3` gates now
+  landed: the abstract `sub_mem` peel (`i3_freshEdge_slot_mem_deRisk`, `m=2`) AND the concrete
+  surviving-row membership (`i3_freshEdge_surviving_rows_mem_deRisk`, the P2 de-risk: link half clean,
+  perp half isolated). The smallest remaining P2 step = the **perp** (degree-2 carry); then P3, assembly.
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the

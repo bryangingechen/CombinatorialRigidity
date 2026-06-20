@@ -4350,10 +4350,16 @@ the **landed `chainData_bottom_relabel`** genuine-row branch directly (the survi
 `rigidityRow_relabel_to_genuine` images — but that brick transports a *base bottom-row member*, so this
 needs the summand to first BE a base member, circular unless ρ₀'s base-perp transports). **Until P2 is
 built, `hsurv` cannot be supplied, so `wstep_foldl_freshEdge_slot_mem` cannot conclude.** [Source-verified
-the `rigidityRows` membership predicate `Basic.lean:603–604`; the perp is genuinely-new.] **De-risk:** do
-P2 at `i=3` FOR REAL at the *concrete* `span (G−v₃)` level (the gate did it only abstractly) — supply
-`h01`/`h12` from actual `G−v₃` rows; if `ρ₀ ⊥ panel(q(v₀v₁))` / `ρ₀ ⊥ panel(q(v₁v₂))` does NOT follow from
-the base `hρe₀`, that is the genuinely-new obstruction and the build STOPS + reports (mirrors the H.11 gate).
+the `rigidityRows` membership predicate `Basic.lean:603–604`; the perp is genuinely-new.] **De-risk —
+DONE 2026-06-20** (`i3_freshEdge_surviving_rows_mem_deRisk`, `Relabel.lean`, axiom-clean): the concrete
+`span (G−v₃)` gate the abstract `i3_freshEdge_slot_mem_deRisk` deferred. **Finding: the `link`/membership
+half discharges CLEANLY at the concrete level** (`cd.link` + `vtx_inj` survival of `removeVertex (vtx 3)`
++ `hingeRow_mem_rigidityRows` + `mem_hingeRowBlock_iff`), so the two surviving rows reach the concrete
+candidate span **conditional on** their per-edge perps `hperp0`/`hperp1`. **The perp half remains the
+genuinely-new obstruction the gate ISOLATES** (it does NOT follow from `hρe₀`, which only gives
+`ρ₀ ⊥ C(q(v₀v₂))`): so the H.11 gate localizes the obstruction to the per-edge perp (route (a) degree-2
+carry off `candidateRow_ac_eq_neg`, or route (b) off `chainData_bottom_relabel`) rather than failing —
+the build proceeds (no STOP), with the remaining P2 step = the perp derivation, now the only un-landed half.
 
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
@@ -4375,7 +4381,10 @@ instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
              (relabelled ends) qρ).toBodyHinge.rigidityRows
    ```
    crux: `ρ₀ ⊥ panel(qρ(vtx s, vtx (s+1)))` (route (a) G4d-i degree-2 chain, or (b) via
-   `chainData_bottom_relabel`); link via `cd.link` + survival `s, s+1 < i`.
+   `chainData_bottom_relabel`); link via `cd.link` + survival `s, s+1 < i`. **i=3 de-risk LANDED
+   2026-06-20** (`i3_freshEdge_surviving_rows_mem_deRisk`): the link/membership half is concrete-clean,
+   so the general lemma's only un-landed half is the per-edge **perp** (`ρ₀ ⊥ Fva.supportExtensor (edge
+   s)`); the rest of the body = the de-risk gate's `hrow` builder, generalized from `i=3` to `s < i−1`.
 3. **`hW`-supplier (clean instantiation, folded into step 4).** `hW := shiftBodyListAsc_foldl_mem_span_rigidityRows`
    (`Relabel.lean:1785`, LANDED) at the candidate `i`, the relabelled `ends`, seed `q`, base `hφ` = the
    W6b-gate base redundancy `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G−v₁ ends q)`. **GAP-to-watch (P3, see
