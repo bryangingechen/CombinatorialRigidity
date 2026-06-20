@@ -4536,6 +4536,38 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
     froze it, and recon B recommends a focused tie-breaker recon on collapse-vs-independent (grounded in the
     d=3 `case hρGv` structure) BEFORE any signature is frozen. **Surfaced to the user.**
 
+  **(I.8.3.v-SETTLED — 2026-06-20, user-authorized tie-breaker recon (row 324), coordinator-scrutinized.)
+  VERDICT: Route A (carry the redundancy witness out of W6b); route B/C REFUTED as circular.** The recon
+  settled the linchpin: the interior surviving rows are **GENUINELY INDEPENDENT** (not a d=3-style collapse).
+  Decisive grounding (Lean-/source-verified): (1) the d=3 `case hρGv` (`Relabel.lean:2596–2606`) discharges
+  its single surviving row by `hρe₀` **directly** (a genuine `e_b`-row via `subset_span`, `exact hρe₀` for the
+  block membership) — NOT via `htrans`; its row is the off-chain *reproduced* `(a,b)`-pair which `hρe₀`
+  annihilates, structurally different from an interior chain edge. (2) d=3 (`m=1`) has only `s=0` (the
+  reproduced edge) → silent on `s≥1`; the first honest interior case is `i=3` (`m=2`), where surviving rows
+  `hingeRow v₀v₁ ρ₀`/`hingeRow v₁v₂ ρ₀` are NEITHER the `v₀v₂` panel `hρe₀` annihilates. (3) **Route B/C is the
+  route-(b) circularity in disguise:** `htrans`'s block conjunct is forward-only `≤`, and for interior edges
+  the base/candidate panels coincide (`shiftBodyFramework_htrans`'s block is `le_refl`, `Relabel.lean:1564–1570`),
+  so "transport via `htrans`" reduces to the identical per-edge perp at the base — circular. So the membership
+  must come from the SPECIFIC redundancy `r`/`g`, whose interior `a`-columns are non-trivial (the two-edge crux
+  has content there, unlike the bare hingeRows).
+  **Route A build sequence (de-risk-first, coordinator-refined ordering vs the recon's producer-first):**
+  - **(A-2 de-risk — NEXT, zero blast radius):** a self-contained lemma taking the eq-(6.52) witness
+    (`r`/`lam`/`∑λr`, or `g`) as EXPLICIT hypotheses, discharging `i3_freshEdge_surviving_rows_mem_deRisk`'s
+    `hperp0`/`hperp1` (the `i=3` interior memberships) FOR REAL via the two-edge crux on `g` + its
+    column-vanishing. This PINS the exact witness shape AND resolves the opaque-combination sub-risk (the
+    landed `…_acolumn_zero`, `Candidate.lean:522`, has an opaque combination — the de-risk tests whether `g`
+    alone suffices or the λ-grouped form is needed) BEFORE touching any live caller.
+  - **(A-1 — then):** strengthen the W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
+    (`Candidate.lean:390`; the `r`/`lam`/`istar`/`∑λr` are computed in-scope at `:421–457` and DISCARDED at the
+    `refine` `:485` — re-threading, NOT new math) + `chainData_split_w6b_gates` (`Realization.lean:771`) to
+    supply the pinned witness; re-plumb the 3 LIVE callers (`Realization.lean:389`/`:881`/`:1006`) + re-verify
+    d=3 zero-regression. **This is the blast-radius step (B=2).**
+  - **(A-3):** generalize the de-risk to all `i`, then the arm assembly `chainData_relabel_arm`.
+  The refuted-signature leaves `freshEdge_surviving_row_mem` (`:2833`) + the `hsurv` form of
+  `wstep_foldl_freshEdge_slot_mem` (`:3006`) are WITHDRAWN (zero live callers); the closed-form telescope
+  `wstep_foldl_hingeRow_telescope` (`:2938`) + the infra bricks STAND. **NO motive/IH change.** Confidence HIGH
+  on Route A + the B/C refutation; the A-2 exact closed form is build-discovered (the `i=3` de-risk is its gate).
+
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
 1. **P1 restatement — LANDED 2026-06-20 (the unblocker).** Both algebraic-core lemmas

@@ -30,11 +30,12 @@ link half fully discharged); the `m` `hsurv` summand memberships need `ρ₀ ⊥
 panels. **The perp ROUTE is RE-OPENED (§(o‴)(I.8.3.v-REFUTED), row-321 adversarial build):** the row-318
 pin of `ρ₀_perp_interior_chain_edge` as an *isolated* implication is FALSE for arbitrary `ρ₀` (sup ≠ single
 block; consecutive panels independent; KT 6.44/6.66 is a vanishing-combination property — the rows-263–272
-trap, 5th time); the two infra bricks STAND, the signature is withdrawn. **The adversarial design-pass PAIR
-is DONE (rows 322/323): route (a) DEAD (Lean-witnessed ×2), the per-edge `hperp`/`hsurv` encodes a claim KT
-never proves — AWAITING USER route decision** (Route A: strengthen the W6b producer existential to carry the
-eq-6.52 vanishing-combination witness; Route B/C: redesign the slot-peel as an `htrans` chain induction —
-§(o‴)(I.8.3.v-PAIR), gated on the collapse-vs-independent structural question); **P3 (flagged):**
+trap, 5th time); the two infra bricks STAND, the signature is withdrawn. **ROUTE SETTLED = Route A**
+(adversarial pair rows 322/323 + tie-breaker recon row 324; route B/C refuted as the route-(b) circularity,
+interior rows GENUINELY INDEPENDENT — §(o‴)(I.8.3.v-SETTLED)): the perp comes from the SPECIFIC redundancy
+`r`/`g` carried OUT of the W6b producer. **NEXT = the `i=3` A-2 de-risk** (witness-as-hyps, discharges the
+i3 gate's `hperp0`/`hperp1` for real, pins the witness shape, ZERO blast radius) → A-1 strengthen the
+producer (touches 3 d=3 callers, B=2) → A-3 generalize + the arm; **P3 (flagged):**
 the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands (whether the
 P2 re-route touches the landed telescope is the design-pass's flag-don't-force call); then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
@@ -352,23 +353,29 @@ FALSE for arbitrary `ρ₀`:** the `_sup_` brick gives only *sup* membership (`x
 whole-`ρ₀` in either block; verified vs `hingeRowBlock = (span{supportExtensor})^⊥`, `Basic.lean:433`),
 consecutive chain panels are independent subspaces, and KT eq.(6.44)/(6.66) is a property of the *specific
 vanishing-combination* redundancy `r`, **not** an isolated per-step implication (the same global-accumulation
-trap as rows 263–272). **NEXT P2 step — the adversarial design-pass PAIR is DONE (rows 322/323,
-opus-vs-opus); the perp re-route is now a motive/IH-or-landed-signature decision, AWAITING USER
-ADJUDICATION (§(o‴)(I.8.3.v-PAIR)).** The pair CONFIRMED (Lean-witnessed ×2): route (a) is DEAD (the
-intermediate fold values have a *zero column* at the frontier vertex → the two-edge crux gives `0`,
-vacuous), and the per-edge `hperp`/`hsurv` **encodes a claim KT never proves** (eq 6.66 is a vector
-*equality* used in the eq-6.67 *counting* argument to show ≥1 `Mᵢ` is full-rank — the perp is NOT
-simultaneously true for all edges; the d=3 `M₃` arm has ZERO interior perp obligations,
-`Relabel.lean:2539–2608`). The landed closed-form telescope STANDS; only the membership corollary's
-per-edge decomposition is wrong. The fix touches a landed signature/IH — two candidates: **Route A**
-strengthen the W6b producer existential (`exists_candidateRow_bottomRows_of_rigidOn` `Candidate.lean:404` /
-`chainData_split_w6b_gates` `Realization.lean:771`) to carry the eq-(6.52) vanishing-combination witness `g`
-out (touches d=3 callers, re-verify zero-regression); **Route B/C** redesign
-`wstep_foldl_freshEdge_slot_mem`'s slot-peel as an `htrans` block-inclusion chain induction (drop
-`hperp`/`hsurv`). **Gated on the OPEN structural question:** at general `i≥3` do the interior surviving
-rows collapse into the base-redundancy `htrans` transport (→ B/C, as d=3) or are they independent (→ A,
-needing `g`)? Both recons stop short of a frozen signature. **AWAITING USER ROUTE DECISION** (or a focused
-tie-breaker recon on collapse-vs-independent first).
+trap as rows 263–272). **NEXT P2 step — ROUTE SETTLED = Route A** (adversarial pair rows 322/323 +
+user-authorized tie-breaker recon row 324; §(o‴)(I.8.3.v-PAIR)/(I.8.3.v-SETTLED)). Confirmed: route (a)
+DEAD (intermediate fold values have a zero column at the frontier vertex → two-edge crux gives `0`,
+vacuous); the per-edge `hperp`/`hsurv` encodes a claim KT never proves (eq 6.66 is a vector *equality* used
+in the eq-6.67 *counting* argument; d=3 `M₃` has ZERO interior perp obligations); and **route B/C is the
+route-(b) circularity in disguise** (`htrans`'s block conjunct is forward-only `≤`, and for interior edges
+the base/candidate panels coincide `le_refl` `Relabel.lean:1564–1570`, so transport = the identical base
+perp). The interior surviving rows are **GENUINELY INDEPENDENT** (d=3 discharges its single row by `hρe₀`
+**directly** — the reproduced `e_b`-pair via `subset_span`+`exact hρe₀` `Relabel.lean:2596–2606`, NOT
+`htrans`; the first honest interior case is `i=3`, `m=2`). **Route A:** the membership comes from the
+SPECIFIC redundancy `r`/`g` (interior `a`-columns non-trivial), carried OUT of the W6b producer (the
+`r`/`lam`/`∑λr` data is computed in-scope `Candidate.lean:421–457` but DISCARDED at the `refine` `:485` —
+re-threading, not new math). **Build sequence (de-risk-first):** **(NEXT) the `i=3` A-2 de-risk** — a
+self-contained lemma taking the eq-(6.52) witness (`r`/`lam`/`∑λr` or `g`) as EXPLICIT hyps, discharging
+`i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` FOR REAL via the two-edge crux on `g` + its
+column-vanishing; PINS the witness shape + resolves the opaque-combination sub-risk (`…_acolumn_zero`
+`Candidate.lean:522`), ZERO blast radius. **(then) A-1** strengthen the producer
+`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`) + `chainData_split_w6b_gates`
+(`Realization.lean:771`) to supply the pinned witness — re-plumb the 3 LIVE callers (`:389`/`:881`/`:1006`)
++ re-verify d=3 zero-regression (the blast-radius step, B=2). **(then) A-3** generalize to all `i` + the arm
+assembly `chainData_relabel_arm`. WITHDRAW the refuted leaves `freshEdge_surviving_row_mem` (`:2833`) +
+`wstep_foldl_freshEdge_slot_mem`'s `hsurv` form (`:3006`, zero live callers); the telescope (`:2938`) +
+infra bricks STAND. NO motive/IH change.
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
