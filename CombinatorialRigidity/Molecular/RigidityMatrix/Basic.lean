@@ -603,6 +603,39 @@ view the Phase-21b genericity device parametrizes by the panel coordinates. -/
 def rigidityRows (F : BodyHingeFramework k α β) : Set (Module.Dual ℝ (α → ScrewSpace k)) :=
   {φ | ∃ e u v, F.graph.IsLink e u v ∧ ∃ r ∈ F.hingeRowBlock e, φ = hingeRow u v r}
 
+/-- **An element of the rigidity-row span unpacks as an explicit edge-indexed `hingeRow`
+combination** (`def:rigidity-matrix`, the edge-grouped reading of `span R(G,p)`-rows; the
+Phase-23b CHAIN-2c-ii-arm `hρGv` regroup-at-interior-vertex prerequisite, KT eq.~(6.66)). A
+functional `φ ∈ span(F.rigidityRows)` is, by `Submodule.mem_span_set'`, a finite ℝ-combination
+of generators of `F.rigidityRows`; unfolding each generator's `rigidityRows`-membership exposes,
+per summand, the carrying link `eᵢ = uᵢ vᵢ` (`F.graph.IsLink (ev j) (uv j) (vv j)`) and the
+hinge-row-block row `rᵢ ∈ r(p(eᵢ))` (`rv j ∈ F.hingeRowBlock (ev j)`), so that
+`φ = ∑ⱼ cⱼ • hingeRow (uv j) (vv j) (rv j)`.
+
+This is the **edge-grouped** form of a `G_v`-row span member: where `hρGv` of the Case-III
+candidate producer (`exists_candidateRow_bottomRows_of_rigidOn`) records the candidate row
+`r̂ = hingeRow (ab) ρ ∈ span R(G_v)-rows` only as an opaque span membership, this lemma turns it
+into the explicit per-edge combination KT eq.~(6.66)'s regrouping of the global redundancy at a
+degree-2 interior chain vertex consumes (collecting the summands incident to that vertex; the
+others vanish on its column). It is the `mem_span_set'` analogue specialized to `rigidityRows`,
+keeping the link / block data the regroup needs rather than a bare `Finsupp`. -/
+theorem exists_edgeIndexed_combination_of_mem_span_rigidityRows
+    (F : BodyHingeFramework k α β) {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ Submodule.span ℝ F.rigidityRows) :
+    ∃ (n : ℕ) (c : Fin n → ℝ) (ev : Fin n → β) (uv vv : Fin n → α)
+      (rv : Fin n → Module.Dual ℝ (ScrewSpace k)),
+      (∀ j, F.graph.IsLink (ev j) (uv j) (vv j)) ∧
+      (∀ j, rv j ∈ F.hingeRowBlock (ev j)) ∧
+      φ = ∑ j, c j • hingeRow (uv j) (vv j) (rv j) := by
+  classical
+  rw [Submodule.mem_span_set'] at hφ
+  obtain ⟨n, f, g, hsum⟩ := hφ
+  -- Each generator `g j : F.rigidityRows` unpacks as a link `eⱼ = uⱼ vⱼ` carrying a block row `rⱼ`.
+  choose ev uv vv hlink rv hrv hgrow using fun j => (g j).2
+  refine ⟨n, f, ev, uv, vv, rv, hlink, hrv, ?_⟩
+  rw [← hsum]
+  exact Finset.sum_congr rfl fun j _ => by rw [hgrow j]
+
 /-! ## Infinitesimal motions and the null space `Z(G,p)`
 
 The motion submodule as the common kernel of the rows (dual coannihilator), the span ↔ annihilator

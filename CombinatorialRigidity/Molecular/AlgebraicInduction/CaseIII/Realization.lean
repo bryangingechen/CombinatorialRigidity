@@ -385,7 +385,7 @@ theorem PanelHingeFramework.case_III_candidate_dispatch
     rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
     · exact he₀ab
     · exact he₀ab.symm
-  obtain ⟨ρ, w, _lamAB, _rab, hρne, hρe₀', hρGv', hw, hwmem', _hrab_blk, _hρ_lam⟩ :=
+  obtain ⟨ρ, w, _lamAB, _rab, hρne, hρe₀', hρGv', hw, hwmem', _hrab_blk, _hρ_lam, _hedgeGv⟩ :=
     BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
       (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
       (h622lb Q.ends q hrec' hgp_seed hQalg)
@@ -885,7 +885,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
     · exact he₀ab
     · exact he₀ab.symm
-  obtain ⟨ρ, w, lamAB, rab, hρne, hρe₀', hρGv', hw, hwmem', hrab_blk, hρ_lam⟩ :=
+  obtain ⟨ρ, w, lamAB, rab, hρne, hρe₀', hρGv', hw, hwmem', hrab_blk, hρ_lam, _hedgeGv⟩ :=
     BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
       (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
       (h622lb Q.ends q hrec' hgp_seed hQalg)

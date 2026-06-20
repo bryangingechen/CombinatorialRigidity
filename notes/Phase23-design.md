@@ -4900,6 +4900,22 @@ regrouping crux (exposing `wGv` edge-grouped + the eq-6.43 two-edge `hcol`/`hres
 the chain is the tractable single-block case). **NO motive/IH/contract change; the A-1 signature question
 remains user-adjudication-flagged** for the deeper-vertex regrouping.
 
+**(I.8.9-A1) THE (a′-i) A-1 SIGNATURE CHANGE — LANDED 2026-06-20 (axiom-clean, full project green+lint,
+salvaged WIP). User-adjudicated (a′-i).** The W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
+(`Candidate.lean`) now also outputs the candidate row `hρGv` in **EDGE-GROUPED** form: `∃ nGv cGv evGv uvGv
+vvGv rvGv, (∀ j, Gv.IsLink (evGv j)(uvGv j)(vvGv j)) ∧ (∀ j, rvGv j ∈ hingeRowBlock (evGv j)) ∧ hingeRow (ab) ρ
+= ∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)`. Powered by the new general
+`BodyHingeFramework.exists_edgeIndexed_combination_of_mem_span_rigidityRows` (`RigidityMatrix/Basic.lean`) —
+the `Submodule.mem_span_set'` + `choose` unpacking of a `span rigidityRows` member into its carrying links +
+block rows. The 2 live d=3 callers (`case_III_candidate_dispatch`/`chainData_split_w6b_gates`) `_`-ignore the
+new `_hedgeGv` output; d=3 zero-regression. This is the "carry `g` out of W6b" the I.8.3.v-SETTLED verdict
+named: it exposes the opaque `g`/`hρGv` so the regroup is consumable. (Coordinator-salvaged: the dispatch
+produced this complete Lean WIP but returned neither LANDED nor BLOCKED — it ended its turn awaiting its own
+background build; the coordinator verified all gates green + faithful and committed it, adding the notes. Row
+336.) **NEXT = the base regroup-at-interior-degree-2-vertex lemma** consuming the edge-grouped `hρGv` to
+produce the eq-6.43 `(ab)+(ac)+grest` witness (`hcol`/`hrest`; `g=0` makes `hcol` trivial). NO motive/IH/contract
+change.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

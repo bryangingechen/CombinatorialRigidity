@@ -429,7 +429,20 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
       -- `e₀`-hinge-row block. This is the per-edge witness `candidate_perp_two_incident_panels`
       -- (eq. (6.44)) consumes — the A-1 re-thread of the in-scope `r`/`lam` data (Phase 23b).
       (∀ j, rab j ∈ (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.hingeRowBlock e₀) ∧
-      ρ = ∑ j, lamAB j • rab j := by
+      ρ = ∑ j, lamAB j • rab j ∧
+      -- the **edge-grouped** `G_v`-row form of the candidate (A-1-i, Phase 23b — KT eq. (6.66)):
+      -- the candidate row `r̂ = hingeRow (ab) ρ ∈ span R(G_v)-rows` (`hρGv`) exposed as an explicit
+      -- per-edge `hingeRow` combination over `G_v`'s links, carrying each summand's link
+      -- `eⱼ = uⱼvⱼ` (`Gv.IsLink (ev j) (uv j) (vv j)`) and block row `rv j ∈ r(p(eⱼ))`. This is
+      -- the form the CHAIN-2c-ii-arm regroup-at-interior-degree-2-vertex lemma consumes (collect
+      -- the summands incident to the interior chain vertex; the others vanish on its column).
+      ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+        (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+        (∀ j, Gv.IsLink (evGv j) (uvGv j) (vvGv j)) ∧
+        (∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.hingeRowBlock
+          (evGv j)) ∧
+        BodyHingeFramework.hingeRow (ends e₀).1 (ends e₀).2 ρ
+          = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j) := by
   classical
   set Fab := (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge with hFab
   set Fv := (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge with hFv
@@ -528,11 +541,18 @@ theorem BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn
     rw [hSspan]
     have := Fab.finrank_span_rigidityRows_of_rigidOn (hgraph ▸ hnev) (hgraph ▸ hrig)
     rwa [hgraph] at this
+  -- The **edge-grouped** `G_v`-row form of the candidate (A-1-i, KT eq. (6.66)): unpack the opaque
+  -- candidate-row membership `hρGv` into an explicit per-edge `hingeRow` combination over `G_v`'s
+  -- links (`Fv.graph = Gv` and `Fv.hingeRowBlock` are definitional, so the conjunct's `Gv`-shape
+  -- matches verbatim). This is the regroup-at-interior-vertex form the CHAIN-2c-ii arm consumes.
+  obtain ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, hcombGv⟩ :=
+    Fv.exists_edgeIndexed_combination_of_mem_span_rigidityRows hρGv
   -- Extract `D(m − 1)` independent members of `S`; per-tag each as a `G_v`-row or an `r j'`-row.
   obtain ⟨w₀, hw₀mem, _, hw₀indep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ S
   -- Re-index from `Fin (finrank …)` to `Fin (D(m−1))` along `hfin`.
   refine ⟨ρ, fun j => w₀ (Fin.cast hfin.symm j), lam, rab, hρne, hρe₀, hρGv,
-    hw₀indep.comp _ (Fin.cast_injective _), fun j => ?_, hrab_blk, hρ_lam⟩
+    hw₀indep.comp _ (Fin.cast_injective _), fun j => ?_, hrab_blk, hρ_lam,
+    ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, hcombGv⟩⟩
   rcases hw₀mem (Fin.cast hfin.symm j) with hv | ⟨j', _, hj'⟩
   · exact Or.inl hv
   · -- An `r j'`-tagged member: `r j' ∈ span (range r) = E_b`, the `hingeRow`-image of `r(p(e₀))`.
