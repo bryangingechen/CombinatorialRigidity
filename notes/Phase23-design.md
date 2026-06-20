@@ -3865,6 +3865,15 @@ generalization of a landed lemma; the new bookkeeping is the cycle endpoint case
 discharge). Est. ~2 commits for the genuine-row disjunct; then `hρGv`'s G1 bridges + the arm wiring → 2c-iii.
 No motive/IH/spine-carry change; route β + d=3 zero-regression preserved.
 
+**Status update 2026-06-20.** All three abstract genuine-row branches are LANDED (`Relabel.lean`,
+axiom-clean): off-cycle `rigidityRow_relabel_off_cycle`, wrap-edge→block `rigidityRow_relabel_to_block`,
+and the interior-chain-edge moving branch `rigidityRow_relabel_to_genuine`. The interior brick is the
+general moving form (free `f'`/`u'`/`w'`), so the off-cycle sibling now delegates to it at
+`(u',w',f')=(u,w,f)` (a strict subsumption — same 5-line proof). The remaining build leaf is the
+per-member assembly `chainData_bottom_relabel` itself (the `(shiftPerm i)⁻¹`-relabel dispatch of the
+base disjunction through these branches, with the per-row `deg_two`/chain-edge case-split supplying the
+`hsupp`/`hlinkGt`/`hu`/`hw` ingredients each branch consumes), then `hρGv`'s G1 bridges + the arm wiring.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
