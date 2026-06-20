@@ -5012,6 +5012,33 @@ crux).** Both independent reads returned NOT-PROVABLE-AS-PINNED / NEEDS-NEW-PRER
   the `hcol` sub-question) then build, vs build the chain directly. Coordinator-scrutinized: convergence =
   high-confidence refutation; the divergence is buildable-detail, not a route fork.
 
+**(I.8.9-SETTLE) CHAIN-INDUCTION DESIGN-SETTLE — PINNED + BUILDABLE (2026-06-20, opus read-only Plan, row 342;
+user-adjudicated option α; coordinator-verified the linchpin).** Route sound; signature + anchor + `hcol` pinned;
+5-leaf decomposition (~7-9 commits); NO motive/IH/contract change. Resolves the §(I.8.9-PAIR) open details:
+- **ANCHOR = `v₂` (the first surviving interior vertex).** Its two `G₁`-incident edges are the spliced
+  `e₀ = v₀v₂` (whose group IS `ρ₀`, coeff 1 — the redundant row) and the surviving `edge 2 = v₂v₃`. The
+  `v₂`-column of the base dependency gives `group(edge 2) = −ρ₀` DIRECTLY — one application of
+  `candidateRow_ac_eq_neg` (eq-6.44) at `(a,b,c)=(v₂,v₀,v₃)`. KT p.690-691/698.
+- **`hcol` VERDICT (corrects the §PAIR divergence): suppliable at EVERY interior vertex.** Deeper `a∉{v₀,v₂}`:
+  recon-A mechanical (`r̂ = hingeRow(v₀v₂)ρ₀` has 0 `a`-column). Anchor `a=v₂`: recon-A FAILS (`r̂`'s `v₂`-column
+  `= ρ₀ ≠ 0`), but `hcol` comes from the global base dependency `acolumn_zero` (`∀ a`, LANDED `Candidate.lean:618`,
+  `sub_self` :626 — **coordinator-verified the `∀ a` quantifier**). The two provenances are the same fact (KT
+  eq-6.43 = the per-vertex column of eq-6.24) two ways; neither fails.
+- **SIGNATURE:** `interior_group_eq_baseRedundancy` — motive `P(i)`: "the `(vᵢvᵢ₊₁)`-edge group `= ±ρ₀`"
+  (`2≤i≤d−1`); base `P(2)` = anchor; step `P(i)→P(i+1)` = `group(edge i+1) = −group(edge i)` from the
+  `vᵢ₊₁`-column (degree-2-in-`G₁`, `deg_two_split`) + IH. CONSUMER-MATCH CONFIRMED: feeds
+  `wstep_foldl_freshEdge_slot_mem`'s shared-`ρ₀` `hsurv` (via A-3 once `group = ±ρ₀`; the `±` by `neg_mem`),
+  verified vs the d=3 M₃ arm (`hρGv` case over the shared `ρ`).
+- **5-LEAF DECOMPOSITION (dependency order):** (1) `interiorGroup_acolumn_adjacency` — step kernel
+  `group(edge i) = −group(edge i−1)` at a deeper degree-2 vertex (MECHANICAL: the 2 column cores +
+  `candidateRow_ac_eq_neg` + `deg_two_split` + an `incidentGroup` index-partition; ~1-2c). (2)
+  `anchor_group_eq_neg_baseRedundancy` — `group(edge 2) = −ρ₀` (genuinely-new-but-small: `v₂`'s 2nd edge is the
+  spliced `e₀`, so the `(ab)`-group is `hρGv`'s LHS `ρ₀`; ~1-2c). (3) `interior_group_eq_baseRedundancy` —
+  `Nat.le_induction` base=leaf2 step=leaf1 (MECHANICAL ~1c). (4) `interior_sharedρ₀_perp` — `group = ±ρ₀` →
+  `ρ₀ ⊥ supportExtensor(edge s)` via A-2 + `neg_mem`, then `freshEdge_surviving_row_mem` (MECHANICAL ~1c).
+  (5) arm wiring `chainData_relabel_arm` `hsurv` slot + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`
+  (~2-3c). **Genuinely-new content = leaves 1+2; the rest is assembly over landed infra. NEXT = leaf 1.**
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

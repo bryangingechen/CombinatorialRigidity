@@ -518,10 +518,19 @@ the candidate via the LANDED `candidate_supportExtensor_perp_of_base` — WITHIN
 motive/IH/contract change. Residual buildable-details (settle at pin/build): the `hcol` (recon-A mechanical:
 `r̂ = hingeRow(v₀v₂)ρ₀` misses a deeper interior `a∉{v₀,v₂}` so its `a`-column is `0` free; recon-B pessimistic)
 + the anchor base case (first edge-group ↔ `ρ₀`, `e₀` being the removed split edge). Leaf 3 (sign) MINOR
-(`neg_mem`). The §(I.8.9-RECON) leaf-1/2/3 decomposition is SUPERSEDED. **← NEXT (user-adjudication surfaced):
-pin the eq-(6.44) chain-induction lemma's exact signature (anchor base case + the `hcol` sub-question) via a
-focused design-settle, then build — vs build the chain directly.** Full verdict + file:lines + eq-numbers →
-design §(I.8.9-PAIR).
+(`neg_mem`). The §(I.8.9-RECON) leaf-1/2/3 decomposition is SUPERSEDED.
+**CHAIN-INDUCTION DESIGN-SETTLE DONE (row 342, option α; design §(I.8.9-SETTLE)) — PINNED + BUILDABLE,
+5-leaf plan (~7-9c), NO motive/IH/contract change.** Anchor = `v₂` (its 2nd `G₁`-edge is the spliced `e₀=v₀v₂`,
+group `= ρ₀`; `group(edge 2) = −ρ₀` by `candidateRow_ac_eq_neg` at `(v₂,v₀,v₃)`). `hcol` suppliable everywhere
+(deeper: `r̂` misses `a`; anchor: the global `acolumn_zero`, `∀ a`, LANDED `Candidate.lean:618` — coordinator-verified).
+Signature `interior_group_eq_baseRedundancy` (motive: `(vᵢvᵢ₊₁)`-group `= ±ρ₀`, `2≤i≤d−1`; base=anchor,
+step=`group(edge i+1)=−group(edge i)`); consumer-match confirmed (feeds `wstep_foldl_freshEdge_slot_mem`'s
+shared-`ρ₀` `hsurv` via A-3 + `neg_mem`).
+**← NEXT = LEAF 1 `interiorGroup_acolumn_adjacency`** (the step kernel: at a deeper degree-2 interior vertex,
+`group(edge i) = −group(edge i−1)`, via the 2 landed column cores + `candidateRow_ac_eq_neg` + `deg_two_split`
++ an `incidentGroup` index-partition; MECHANICAL). Then leaf 2 (anchor) → leaf 3 (induction) → leaf 4
+(consumer adapter) → leaf 5 (arm + P3 seed bridge). Full plan + file:lines + eq-numbers → design
+§(I.8.9-SETTLE)/(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
