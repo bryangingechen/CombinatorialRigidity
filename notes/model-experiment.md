@@ -266,6 +266,7 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 312 | hρGv re-targeted i=3 de-risk gate `i3_freshEdge_slot_mem_deRisk` (KT-(6.66) telescope converges at i=3), caa00ed | 2/3/1 | opus | normal | clean (self-shrink) | ✓✓✓—✗✓ | 167k tok / 59 tools / 10.6min | Build (OPUS-ONLY; 2/3/1→opus). Dispatched for the arm build; self-shrank to the prescribed re-targeted i=3 de-risk GATE (axiom-clean) — ON-route (hand-off named it the build's first internal step; NOT an off-pointer shrink like 304/309). Signal: the gate ABSTRACTS over the span carrier, DEFERRING the genuinely-new graph-level row-memberships + general-i `reverseRec` telescope as hyps (abstraction-defers-crux → rate next by THAT). Coordinator verified faithful vs §(o‴)(I.7.10) (full diff+warning-clean+sorry-grep+shape-check). Notes ✗: 770≫500→coordinator-compressed 680 (af90f4a). |
 | 313 | hρGv LEAF-ρ1 algebraic core `wstep_foldl_hingeRow_telescope` (general-i wstep closed-form telescope, KT eq. 6.66), dd8ee50 | 2/3/1 | opus | normal | clean (self-shrink) | ✓✓✓—✓✓ | 211k tok / 83 tools / 15.7min | Build (OPUS-ONLY; 2/3/1→opus). Dispatched for the arm build; self-shrank to the named LEAF-ρ1 algebraic core (axiom-clean) — the genuinely-new global-accumulation crux flagged row 312, BUILT. KEY FINDING: the telescope is an EXACT closed-form sum (clean induction-on-m, 2 per-step helpers), NOT the per-step residue telescope §(o‴)(I.7.3) sketched → route simplified, remaining hρGv work PURELY graph-level (LEAF-ρ3 wiring). m=2 recovers the i=3 gate. Coordinator: induction sound + warning-clean re-run + sorry-grep. On-route self-shrink. |
 | 314 | hρGv general-m fresh-edge slot membership `wstep_foldl_freshEdge_slot_mem` (LEAF-ρ1→ρ3 bridge, completes the hρGv algebraic core), 0a5bbe2 | 2/2/1 | opus | normal | clean (self-shrink) | ✓✓✓—✗✓ | 152k tok / 45 tools / 9.2min | Build (OPUS-ONLY; 2/2/1→opus). Dispatched for the arm wiring; self-shrank to the general-m membership corollary (abstract over S) — completes the hρGv ALGEBRAIC core. 3rd consecutive abstract-over-S leaf, the graph-level arm instantiation deferred AGAIN (abstraction-defers-crux) → coordinator firing the recon-early trigger (3 leaves feeding the unbuilt arm core; arm BLOCKED here historically, rows 292–302). Coordinator: warning-clean re-run + sorry-grep + sound. Notes ✗: 740, multi-home creep over 3 leaves → coordinator compresses next. |
+| 315 | RECON/design-pass: arm-wiring `chainData_relabel_arm` decomposition §(o‴)(I.8) — slot→brick map clean, but P1 (Lean-confirmed blocker) + P2 (genuinely-new) + P3 gate hρGv, c098518 | —/—/— | opus | recon | clean | —✓——✓✓ | 195k tok / 45 tools / 10.8min | Design-pass recon (OPUS-ONLY; rescue §6; coordinator-fired recon-early after 3 abstract-over-S leaves deferred the arm). HIGH-VALUE flag-don't-force: the "algebraic core COMPLETE/purely graph-level" pins (312-314) were OVERSTATED — arm gated on (P1) the telescope's `Injective (ℕ→α)` interface un-instantiable under [Finite α] (Lean-confirmed False; restatement make-or-break) + (P2) m surviving-row memberships = genuinely-new perp obligation (KT 6.62/6.66; de-risk gate checked only abstract `sub_mem`, never concrete) + (P3) seed bridge. Coordinator verified P1 + slot→brick refs. → Findings. |
 
 ## Findings
 
@@ -384,3 +385,24 @@ end-to-end, not just the cited APIs** (the coordinator's repeated mistake was ve
 the pin cited, while the *global chaining* was where each pin broke). Cost: ~2 dead leaves (the orphan
 bridge; the terminal-only framing) + 4 design-passes. The user stopped the loop here to commission a
 single comprehensive telescoping design (the global invariant) rather than a 5th local attempt.
+
+### Abstract-over-`S` de-risk gates check the *algebra*, not the concrete memberships — and verify a leaf's hypotheses are *satisfiable in the consumer* (2026-06-20; rows 312–315)
+
+Session #17 built the hρGv algebraic core in 3 self-shrink leaves (de-risk gate `i3_freshEdge_slot_mem_deRisk`
+→ telescope closed form → general-`m` membership corollary), each **abstracting over the span carrier `S`**
+and the vertex function `w`, deferring the graph-level facts as hypotheses. The coordinator verified each
+leaf's *proof* sound and accepted the de-risk gate's "convergence risk retired" — but a recon-early
+design-pass (row 315, fired at the 3-leaf trigger) caught **two things the per-leaf verification missed**,
+both because they live in the gap between a leaf-as-lemma and its fitness for the not-yet-built consumer:
+(1) **the de-risk gate's "PASSED" only checked the `sub_mem` *algebra*** (`(A+B+C)∈S, A,B∈S ⊢ C∈S`),
+never that the surviving-row memberships `A,B∈S` hold at the concrete `span (G−vᵢ)` level — that membership
+is a genuinely-new perpendicularity obligation (KT 6.62/6.66, P2); an abstract-`S` gate cannot retire a
+concrete-membership risk. (2) **the telescope's `(w : ℕ → α)` + `Function.Injective w` hypothesis is
+un-instantiable under the arm's `[Finite α]`** (Lean-confirmed `False`) — the leaf is a true theorem but
+dead-on-arrival for the consumer (P1). **Lessons (sharpen the "settle the route against the consumer" /
+"abstraction defers the crux" rules):** when a leaf abstracts the crux behind a hypothesis, the next
+verification must check the hypothesis is *both* (a) discharged where the design says and (b) *satisfiable
+in the consumer's typeclass/finiteness context* — proof-soundness of the abstract lemma is necessary, not
+sufficient. And a "de-risk gate PASSED" verdict is only as strong as what the gate *concretely* tests:
+an abstract-carrier gate de-risks the algebra, the concrete instantiation is a separate (often the real)
+risk. Recon-early at the 3-leaf mark caught both before a 4th blind build hit the P1 wall.
