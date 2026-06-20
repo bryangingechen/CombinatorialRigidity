@@ -15,12 +15,14 @@ The **`hρGv` G1 bridges are now LANDED** (`shiftPerm_eq_prod_map_swap_shiftBody
 bridging the landed W9a `foldl` fold (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to the engine's
 `qρ`/`shiftPerm` form — the `foldl` order lands on the *inverse* product `(funLeft (shiftPerm
 i.castSucc)⁻¹)`, exactly the base→candidate inverse-cycle relabel the arm wants.
-**NEXT = the arm wiring** `chainData_relabel_arm` — **⚠ RECON-BEFORE-BUILD** (a build agent judged it +
-its `hρGv` slot multi-commit/convergence-risk; the crux is the `hρGv` fold-vs-literal-row reconciliation,
-*Hand-off*): instantiate `case_III_arm_realization` at the per-`i` roles (`hwmem` → the landed
-`chainData_bottom_relabel`, block → `blockRow_relabel_perm`, `hρGv` → the landed W9a fold + G1 bridges)
-→ **2c-iii** `chainData_dispatch` (closes 23b green-modulo `hdispatch`). detail = *Current state* +
-*Hand-off*.
+**`hρGv` DESIGN-PASS DONE 2026-06-20** (design §(o‴)(I.7); the RECON-BEFORE-BUILD this banner flagged):
+the bare-row extraction decomposes into **3 leaves** (LEAF-ρ1 residue telescope P≈3 / ρ2 literal-row id /
+ρ3 assembly); span level confirmed matching; one open decision pinned (residue-lands-in-top-span,
+de-risk `i=3` first). **NEXT = LEAF-ρ1** (the residue-membership invariant), then the **arm wiring**
+`chainData_relabel_arm`: instantiate `case_III_arm_realization` at the per-`i` roles (`hwmem` → landed
+`chainData_bottom_relabel`, block → `blockRow_relabel_perm`, `hρGv` → LEAF-ρ3 over the landed W9a fold +
+G1 bridges) → **2c-iii** `chainData_dispatch` (closes 23b green-modulo `hdispatch`). detail = *Current
+state* + *Hand-off*.
 **Settled context (full detail in Tracker + Hand-off):** the arm engine binds `hwmem`/`hρGv` at
 **removeVertex** level (`ofNormals Gv ends q`, `Gv ≤ G`), so the split-level rows-288/291 bricks
 `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` are **orphaned-for-the-arm** (the resolved
@@ -61,17 +63,17 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   bricks (`rigidityRow_relabel_to_block{,_swap}`) were too rigid for the wrap case (literal `hsupp`
   can't absorb the orientation sign, independent of endpoint order) → inlined; they stay
   orphaned-for-the-arm. Two arm-supplied recording hyps: `hrec` + `he₀rec`.
-- **`hρGv` (candidate-row, W9a span fold) — G1 BRIDGES LANDED 2026-06-20** (both axiom-clean): the
-  perm bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (`Operations.lean`,
-  `shiftPerm i.castSucc = ∏ swap` over `shiftBodyListAsc i`, by `Equiv.swap_comm` reduction to the
-  landed descending bridge) + the linear-map bridge `wstep_foldl_funLeft_eq` (`Relabel.lean`, the
-  relabel-only `foldl` = `funLeft ⇑(∏ swap)⁻¹`; the `foldl` order reverses the product to the
-  **inverse**, which composed with the perm bridge is exactly `(funLeft (shiftPerm i.castSucc)⁻¹)` =
-  the base→candidate inverse-cycle relabel the arm wants — matching the `hwmem` leaf's
-  `(funLeft (shiftPerm i.castSucc).symm)`). With the landed fold core + concrete instance
-  `shiftBodyListAsc_foldl_mem_span_rigidityRows`, the `hρGv` candidate-row span transport is now
-  bridgeable to the engine's `qρ`/`shiftPerm` form. **← the remaining stitch is the arm wiring
-  `chainData_relabel_arm` (NEXT).**
+- **`hρGv` (candidate-row, W9a span fold) — G1 BRIDGES LANDED 2026-06-20; DESIGN-PASS DONE 2026-06-20**
+  (design §(o‴)(I.7)). The G1 bridges `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (`Operations.lean`)
+  + `wstep_foldl_funLeft_eq` (`Relabel.lean`, the relabel-only `foldl` = `funLeft ⇑(∏ swap)⁻¹`, the
+  `foldl`-order inverse = the base→candidate relabel) are LANDED. The bare-row extraction is now
+  decomposed into **3 leaves** (LEAF-ρ1/ρ2/ρ3, §(o‴)(I.7.3)): the crux is that the W9a `_foldl` output is
+  `(relabel-only foldl) φ − Σ(i−1 residues)` but `hρGv` wants the literal `(relabel-only foldl) φ`, so the
+  extraction adds the `i−1` a-column residues back (the `i−1`-residue generalization of the d=3 M₃ single
+  `sub_mem`). **Span level CONFIRMED matching** (both fold endpoints = removeVertex frameworks at
+  `G − v₁`/`G − vᵢ` = the engine's `Gv`; no mismatch leaf). One open decision pinned (residue-lands-in-top
+  -span, §(I.7.4); de-risk `i=3` first). **← NEXT: LEAF-ρ1 (the residue telescope, P≈3), then the arm
+  wiring `chainData_relabel_arm`.**
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -263,28 +265,36 @@ reverses the product to the **inverse**, which composed with the perm bridge is 
 (shiftPerm i.castSucc)⁻¹).dualMap`, the base→candidate inverse-cycle relabel the arm wants (the same
 `.symm`/`⁻¹` form the `hwmem` leaf `chainData_bottom_relabel` already uses).
 
-**NEXT STEP — the arm wiring `chainData_relabel_arm` — ⚠ RECON-BEFORE-BUILD.** A build agent that
-mapped every piece (2026-06-20, after the `hwmem` leaf + G1 bridges landed) judged the full arm + its
-`hρGv` slot a genuine **multi-commit effort with real convergence risk**, and a sibling attempt
-sideways-shrank to a cleanup rather than risk a BLOCKED revert. **The crux is the `hρGv`
-fold-vs-literal-row reconciliation:** the landed W9a `foldl` carries `hingeRow a b ρ ∈ span (candidate-`i`
-rigidityRows)` with accumulated a-column subtractions, but the engine's `hρGv` slot wants the *literal*
-relabelled row — repackaging the span member back to the literal bottom row (the "d=3-style bare-row
-extraction" below) is the unbuilt hard step. **Per the `coordinate-phase` step-1 trigger (a build agent
-flags the next piece as genuinely-hard), the next move is a design-pass that decomposes `hρGv` into
-buildable leaves with exact signatures — NOT a direct build attempt.** The wiring shape (to feed that
-recon): instantiate `case_III_arm_realization` at the per-`i` roles (the cycle generalization of d=3
-`case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm
-i.castSucc`, shared `−ρ₀`; `hwmem` → the landed `chainData_bottom_relabel`; `hρGv` → the landed W9a fold
-+ G1 bridges (the `wstep` `foldl` carries `hingeRow a b ρ ∈ span (candidate-`i` rigidityRows)`, with the
-G1 bridges rewriting its relabel component to `funLeft (shiftPerm i.castSucc)⁻¹` and the d=3-style
-bare-row extraction repackaging the span member back to the literal row at the chain bottom); `hρe₀`/
-`htrans` → G4d-i + 2c-i's discriminator. → **2c-iii** `chainData_dispatch` (replaces
-`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Close-boundary timeline on track (~2–4 commits to
-2c-iii). d=3 M₃ = `i=2` involution (zero-regression). Orphan-for-the-arm at the arm-build commit (zero
-callers, confirm-and-delete): `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (split-level)
-+ the now-unused `rigidityRow_relabel_{off_cycle,to_block,to_block_swap}` (the assembly inlined / used
-only `…_to_genuine`).
+**NEXT STEP — `hρGv` bare-row extraction (LEAF-ρ1/ρ2/ρ3), then the arm wiring `chainData_relabel_arm`.**
+The `hρGv` design-pass is DONE (design §(o‴)(I.7), 2026-06-20): the slot decomposes into **three
+buildable leaves** with exact signatures. **The crux confirmed REAL** (the hand-off's framing stands):
+the landed W9a `_foldl` fold output is `(relabel-only foldl) φ − Σ(i−1 a-column residues)`, but the
+engine's `hρGv` wants the *literal* candidate row = `(relabel-only foldl) φ` — so the extraction must add
+the `i−1` residues back via `sub_mem`/`add_mem`, the exact `i−1`-residue generalization of the d=3 M₃
+`hρGv` block's single `sub_mem` (`Relabel.lean:2481–2506`). **One span-level worry RESOLVED favorably**
+(§(o‴)(I.7.0)): both fold endpoints are removeVertex frameworks at the SAME graphs (`G − v₁` / `G − vᵢ`)
+as the engine's `Gv`, so no span-equality mismatch leaf is needed. The leaves (design §(o‴)(I.7.3),
+P-ratings §(I.7.5)):
+- **LEAF-ρ1** the residue-membership invariant (P≈3, the genuinely-new multi-residue telescope, ~1–2
+  commits) — a `reverseRec` fold lemma: `(relabel-only foldl) φ − (wstep foldl) φ ∈ span (G − vᵢ) rows`,
+  each step's a-column residue landing via G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`.
+- **LEAF-ρ2** the literal-row identification (P≈2, a rewrite chain via the landed G1 bridges +
+  `shiftPerm_inv_*`; can fold into ρ3).
+- **LEAF-ρ3** the `hρGv` assembly inline in the arm (P≈2, the `sub_mem`/`add_mem` combine).
+**ONE honest open decision** (clause-(ii), §(o‴)(I.7.4)): whether each intermediate residue lands in the
+TOP span directly (the favorable (a), likely by `deg_two`/`shiftBodyGraph_isLink_pred_edge`) or rides the
+forward chain inclusion (b) — NOT a motive/IH/contract change; **de-risk gate the 2-residue `i=3` case
+BEFORE pinning LEAF-ρ1's signature** (§(o‴)(I.7.6)). Then the **arm wiring `chainData_relabel_arm`**:
+instantiate `case_III_arm_realization` at the per-`i` roles (cycle generalization of d=3
+`case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm i.castSucc`, shared `−ρ₀`; `hwmem` → landed
+`chainData_bottom_relabel`; `hρGv` → LEAF-ρ3; block → `blockRow_relabel_perm`; `hρe₀`/`htrans` → G4d-i +
+2c-i's discriminator (~1 commit of §38 explicit-seed slot bookkeeping). → **2c-iii** `chainData_dispatch`
+(replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Close-boundary timeline: **~3–4 commits
+to the closed arm** then 2c-iii. d=3 M₃ = `i=2` involution (zero-regression). Orphan-for-the-arm at the
+arm-build commit (zero callers, confirm-and-delete): `rigidityRow_chainData_relabel` /
+`rigidityRow_relabel_perm` (split-level) + the now-unused `rigidityRow_relabel_{off_cycle,to_block,to_block_swap}`
+(the assembly inlined / used only `…_to_genuine`); the candidate→base `_foldr` fold (orphaned-for-the-arm,
+H.10). **STAYS (the `hρGv` consumers):** the base→candidate `_foldl` fold + both G1 bridges (§(o‴)(I.7.0)).
 
 **Confirm-and-delete / STAYS** (full list §(o‴)(H.5); `git grep` zero callers at the delete commit).
 **DELETED 2026-06-19** (Q1): the 5-decl W9b per-body chain. **Orphaned-for-the-arm (delete at the arm
@@ -484,6 +494,18 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   relabel the `hwmem` leaf already uses. `reverseRec` induction (FRICTION [idiom] *A `List.foldl` whose
   induction base case…* / TACTICS-GOLF §20). No build-iteration friction; the `foldl`→inverse recurrence
   is the reusable note (→ FRICTION [idiom] *Composing two `(funLeft σ).dualMap` relabel transports…*).
+- **`hρGv` bare-row extraction DESIGN-PASS DONE 2026-06-20 (docs-only, design §(o‴)(I.7)).** Decomposed
+  the `hρGv` slot into **3 leaves**, every load-bearing claim source-verified. (1) **Span level confirmed
+  matching** (the hand-off's worry (2) resolved favorably): the W9a `_foldl` fold's endpoints are
+  removeVertex frameworks at `G − v₁`/`G − vᵢ` (= the engine's `Gv`), seed-advancing — read off
+  `shiftBodyFrameworkAsc`'s `def`, not name similarity. (2) **The fold-vs-literal-row gap is real** (the
+  hand-off's framing stands): W9a output = `(relabel-only foldl) φ − Σ(i−1 a-column residues)`, but `hρGv`
+  wants the literal `(relabel-only foldl) φ` — so add the `i−1` residues back, the `i−1`-residue
+  generalization of the d=3 M₃ single `sub_mem` (`Relabel.lean:2481–2506`). Leaves: **LEAF-ρ1** the
+  residue-membership invariant (P≈3, genuinely-new `reverseRec` telescope via G4d-i) → **LEAF-ρ2**
+  literal-row id (P≈2, landed G1 bridges + `shiftPerm_inv_*`) → **LEAF-ρ3** the assembly (P≈2). One
+  clause-(ii) open decision pinned: residue-lands-in-top-span (§(I.7.4)); de-risk `i=3` first (§(I.7.6)).
+  No motive/IH/contract change. ~3–4 commits to the closed arm.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

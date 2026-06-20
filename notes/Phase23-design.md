@@ -3543,10 +3543,13 @@ callers at the deleting commit).**
 + `shiftEdgePerm` (the `hiso` supplier — but its INVERSE companions are the new block, H.6); G4d-i
 `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (the `±r` block arm); the W6b `ρ⊥C(q(ab))` gate; 2c-i
 `exists_chainData_discriminator_pick` (the shared-`ρ₀` discriminator, route β); the `ChainData` record +
-accessors. **The landed T-W9a span fold `shiftBodyList_foldr_mem_span_rigidityRows`** STAYS in shape, but
-**its orientation must be reconciled** (Recon A's gating caveat, H.7): it transports SPAN membership
-`span(G−vᵢ) → span(G−v₁)` (candidate→base); the `hρGv` slot needs base→candidate, so T-W9a will likely be
-applied via its inverse (the same `(shiftPerm i)⁻¹` inversion). Resolve this BEFORE the arm build.
+accessors. **The base→candidate W9a `_foldl` fold `shiftBodyListAsc_foldl_mem_span_rigidityRows`** +
+**both G1 bridges `wstep_foldl_funLeft_eq` / `shiftPerm_eq_prod_map_swap_shiftBodyListAsc`** STAY — they
+are the `hρGv` consumers (the (I.7) bare-row extraction is built ON them, not around them). **Orientation
+reconciled by H.10:** the candidate→base `_foldr` fold `shiftBodyList_foldr_mem_span_rigidityRows` is
+**orphaned-for-the-arm** (wrong direction, `wstep` non-invertible); the base→candidate `_foldl` fold is
+the keeper. The bare-row extraction route (the H.7 "applied via its inverse" caveat, now resolved) is the
+(I.7) residue-telescope decomposition — see §(o‴)(I.7).
 
 **(H.6) Buildable-leaf decomposition (dependency order; exact intended signatures).**
 1. **CHAIN-2c-ii-inv — the inverse-cycle action-lemma block** (`Operations.lean`, beside `shiftPerm`):
@@ -3907,6 +3910,160 @@ timeout — pin them explicit (→ TACTICS-QUIRKS §38). The wrap-block was disc
 the swap brick. Two arm-supplied recording hyps surfaced: `hrec` + `he₀rec` (the latter records the base
 fresh edge `ends₀ e₀ = (vtx 2, vtx 0)`, needed for the base-block→`edge 0` `blockRow_relabel_perm` arm).
 NEXT = `hρGv` G1 bridges + the arm wiring (`notes/Phase23b.md` *Hand-off*).
+
+#### (o‴)(I.7) `hρGv` DESIGN-PASS — the bare-row extraction decomposition (recon-before-build, 2026-06-20)
+
+> **Design-pass, docs-only, 2026-06-20.** Decomposes the arm wiring's `hρGv` slot — the "bare-row
+> extraction" repackaging the landed W9a span fold back into the engine's *literal* `hingeRow a b ρ`
+> slot — into buildable leaves with exact signatures. Clause-(i): every load-bearing claim re-verified
+> against the **landed `def`/`theorem` bodies** (file:line below). Clause-(ii): one honest open decision
+> is named (the residue identification's selector/`hsupp` bookkeeping), pinned to a buildable leaf, not
+> forced.
+
+**(I.7.0) What the two sides actually are (source-verified, file:line).** The engine's slot
+(`case_III_arm_realization`, `Arms.lean:91`) is the **literal row** `hingeRow a b ρ ∈ span (ofNormals Gv
+ends q).rigidityRows` at `Gv = G − vᵢ`, the arm's seed `qρ`, the candidate-`i` roles `(a,b,ρ)`. The
+landed W9a fold (`shiftBodyListAsc_foldl_mem_span_rigidityRows`, `Relabel.lean:1752`) concludes
+`(shiftBodyListAsc i).foldl (wstep) φ ∈ span (shiftBodyFrameworkAsc (i−1) ends q).rigidityRows`
+**given** `φ ∈ span (shiftBodyFrameworkAsc 0 ends q).rigidityRows`. Reading the two endpoints:
+- `shiftBodyFrameworkAsc 0 ends q = ofNormals (G − v₁) ends q` (`shiftBodyGraph 0 = G − v₁`, seed
+  `shiftSeedAdv q 0 = q`; `Relabel.lean:1699`/`1683`) — the **base** removeVertex framework.
+- `shiftBodyFrameworkAsc (i−1) ends q = ofNormals (G − vᵢ) ends (shiftSeedAdv q (i−1))`
+  (`shiftBodyGraph (i−1) = G − vᵢ`, advanced seed) — the **candidate-`i`** removeVertex framework, the
+  same graph level as the engine's `Gv`, with the seed-advance `Q (i−1) = q ∘ (the i−1 cycle swaps)`
+  matching the arm's `qρ = q ∘ shiftPerm i.castSucc`.
+**So the span level MATCHES** (clause-(i) confirmed by reading both `def` bodies, not name similarity):
+both endpoints are removeVertex frameworks at the SAME graphs (`G − v₁` / `G − vᵢ`); the seed identity
+`shiftSeedAdv q (i−1) = q ∘ shiftPerm i.castSucc` on the relevant slots is the seed-cancellation the
+H.10 lean-verification already confirmed (`qρ(ρ⁻¹x) = q(x)`) and the bottom-relabel leaf already uses.
+The hand-off's flagged worry "(2) confirm the spans are the same" is therefore **RESOLVED in the
+favorable direction**: no span-equality mismatch leaf is needed.
+
+**(I.7.1) The fold-vs-literal-row gap is REAL (the genuine crux, NOT spurious).** The W9a fold output
+`(shiftBodyListAsc i).foldl wstep φ` is NOT the literal candidate row. Feed it the **base literal row**
+`φ := hingeRow (vtx 0) (vtx 2) ρ₀` (the base `(v₀v₂)`-block redundancy `r` of KT (6.52), supplied by the
+W6b gate as `hingeRow a b ρ₀ ∈ span (G − v₁) rows` — this is the engine's `hρGv` AT THE BASE, the d=3 M₃
+input `hρGv`, `Relabel.lean:2344`). The fold output is, by the `wstep` def (`Relabel.lean:1237`,
+`wstep v a c = (funLeft (swap a v)).dualMap − (screwDiff v c).dualMap ∘ (single a).dualMap`):
+```
+(relabel-only foldl) φ  −  Σ (a-column residues)   ∈ span (G − vᵢ) rows
+```
+where the **relabel-only foldl** is the bare `(funLeft swap).dualMap` foldl — exactly the LHS of the G1
+bridge `wstep_foldl_funLeft_eq` (`Relabel.lean:1446`), which rewrites it to `(funLeft (shiftPerm
+i.castSucc)⁻¹).dualMap φ = hingeRow (ρ⁻¹(vtx 0))(ρ⁻¹(vtx 2)) ρ₀` (via `hingeRow_funLeft_dualMap`,
+`Basic.lean:549`) = the **literal candidate row** at the candidate roles; and the `Σ residues` is the
+`i−1` accumulated a-column subtractions `hingeRow vₛ vₛ₊₂ (…)`, one per moved degree-2 body. So
+`hρGv` = (literal candidate row) is the fold output **PLUS** the residue sum:
+`literal = fold-output + Σ residues`, and the extraction needs `Σ residues ∈ span (G − vᵢ) rows` to add
+back via `Submodule.add_mem` (or `sub_mem`).
+
+**(I.7.2) This is EXACTLY the d=3 M₃ mechanism, with `i−1` residues instead of one (source-verified).**
+The d=3 M₃ `hρGv` discharge (`case_III_arm_realization_M3`, `Relabel.lean:2437–2506`) is the `i=2`
+instance — ONE residue. Reading it verbatim:
+1. `hw9a := funLeft_dualMap_sub_acolumn_mem_span_rigidityRows … (φ := hingeRow a b ρ) hρGv` (`:2481`) —
+   the **single-step** W9a at the base literal row, giving `(funLeft (a v)).dualMap (hingeRow a b ρ) −
+   hingeRow v c (· ∘ single a) ∈ span Fva.rigidityRows`.
+2. `rw [hingeRow_funLeft_dualMap, swap_apply_left, …, hingeRow_comp_single_tail hab]` (`:2490`) collapses
+   it to `hingeRow v b ρ − hingeRow v c ρ ∈ span` — i.e. (relabelled literal row) − (the one residue).
+3. `hvb_row : hingeRow v b ρ ∈ span Fva.rigidityRows` (`:2494–2504`) — the relabelled literal row IS a
+   genuine `e_b`-row of `Fva` (built by `subset_span ⟨e_b, v, b, hlink, ρ, hperp, rfl⟩`, the `hperp`
+   coming from the engine's `hρe₀` = `ρ ⊥ C(q(ab))`).
+4. `Submodule.sub_mem _ hvb_row hw9a` then `sub_sub_cancel` (`:2505–2506`) extracts the residue
+   `hingeRow v c ρ ∈ span`, which (after `hingeRow_swap`, `:2442`) is the engine's `hρGv` slot
+   `hingeRow c v (−ρ)`.
+**The general-`d` extraction is the `i−1`-residue generalization of steps 1–4:** the fold (I.7.1) is the
+`i−1`-fold compose of step-1's single W9a; the bare-row extraction is the `i−1`-residue generalization of
+steps 2–4. The hand-off's framing ("repackaging the span member back to the literal bottom row is the
+unbuilt hard step") is CORRECT — and it is precisely a multi-residue `sub_mem`/`add_mem` telescope.
+
+**(I.7.3) The decomposition — buildable leaves with signatures.** The cleanest route mirrors d=3 but
+threads the residues through a fold-with-residue invariant. Two viable shapes; the recon recommends
+**Route R (residue-tracking fold)** over **Route S (rewrite-then-extract)** because the landed W9a fold's
+conclusion bundles relabel+residue inside `wstep`, so a post-hoc rewrite (Route S) would have to peel the
+`wstep` foldl apart anyway.
+
+- **LEAF-ρ1 — the residue-membership invariant** (`Relabel.lean`, the genuinely-new piece, P≈3). A fold
+  lemma stating that the W9a `foldl` output **differs from the relabel-only `foldl` output by a span
+  member**, i.e. for `φ ∈ span (shiftBodyFrameworkAsc 0)` the difference
+  `(relabel-only foldl) φ − (wstep foldl) φ ∈ span (shiftBodyFrameworkAsc (i−1)).rigidityRows`.
+  Equivalently (the form the arm wants): `(wstep foldl) φ + [Σ residues] = (relabel-only foldl) φ` with
+  `Σ residues ∈ span (candidate rows)`. **Signature sketch** (working name
+  `ChainData.shiftBodyListAsc_foldl_residue_mem` or fold it into a strengthened
+  `…_foldl_mem_span_rigidityRows` conclusion):
+  ```
+  theorem _root_.Graph.ChainData.shiftBodyListAsc_foldl_relabel_sub_mem
+      [DecidableEq α] {G} {n} (cd : G.ChainData n) (i : Fin cd.d)
+      (ends) (q) (hrec : ∀ f x y, G.IsLink f x y → ends f = (x,y) ∨ ends f = (y,x))
+      {φ} (hφ : φ ∈ span (cd.shiftBodyFrameworkAsc (s:=0) _ ends q).rigidityRows) :
+      ((cd.shiftBodyListAsc i).foldl (fun T b => ((funLeft (swap b.2.1 b.1)).dualMap).comp T) id) φ
+        - ((cd.shiftBodyListAsc i).foldl (fun T b => (wstep b.1 b.2.1 b.2.2).comp T) id) φ
+      ∈ span (cd.shiftBodyFrameworkAsc (s := (i:ℕ)-1) _ ends q).rigidityRows
+  ```
+  **Proof shape:** the SAME `reverseRec` induction the two landed folds use
+  (`wstep_foldl_mem_span_rigidityRows` / `wstep_foldl_funLeft_eq`), run jointly: at each
+  `append_singleton` step the head residue is the single a-column term `hingeRow vₛ₊₁ vₛ₊₃ ((inner
+  fold φ) ∘ single vₛ₊₂)`, which is a **genuine `(G − vₛ₊₂)`-chain row at the SURVIVING successor edge
+  `edge (s+2)`** (link `vₛ₊₂—vₛ₊₃`, both `< i` so surviving `removeVertex vᵢ`; the `c`-vertex `vₛ₊₃` of
+  the gate) with functional `(inner fold φ) ∘ single vₛ₊₂` lying in the hinge-row block by **G4d-i**
+  `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (`Relabel.lean:2209`) applied to the inner fold's span
+  membership. The inductive residues compose by `Submodule.add_mem` over the chain (each lands in the
+  top span `span (G − vᵢ)` by the landed forward chain inclusions). This is the multi-residue telescope;
+  it is genuinely-new but every primitive it needs is landed (the two fold cores, G4d-i, the chain graph
+  accessors `shiftBodyGraph_isLink_pred_edge`/`_deg_two`).
+- **LEAF-ρ2 — the literal-row identification** (`Relabel.lean`, P≈2, the d=3 step-2/3 generalization).
+  The relabel-only foldl output IS the literal candidate row: via the G1 bridges
+  `wstep_foldl_funLeft_eq` + `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (both LANDED) the relabel-only
+  foldl is `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, and `hingeRow_funLeft_dualMap` evaluates it on
+  `hingeRow (vtx 0)(vtx 2) ρ₀` to `hingeRow ((shiftPerm i)⁻¹ (vtx 0)) ((shiftPerm i)⁻¹ (vtx 2)) ρ₀` =
+  `hingeRow (candidate a)(candidate b) ρ₀` (the arm's roles, via the `shiftPerm_inv_*` action lemmas,
+  LANDED `Operations.lean:1550–2110`). This is a rewrite chain, no new induction.
+- **LEAF-ρ3 — the `hρGv` assembly** (inline in `chainData_relabel_arm`, P≈2). Combine: by LEAF-ρ1,
+  `(relabel-only foldl) φ − (wstep foldl) φ ∈ span`; by the landed W9a fold, `(wstep foldl) φ ∈ span`;
+  so by `Submodule.sub_mem`/`add_mem` the relabel-only foldl output ∈ span; by LEAF-ρ2 that output is the
+  literal candidate row `hingeRow a b ρ₀` — which is exactly the engine's `hρGv` slot. (The d=3 M₃
+  collapses ρ1+ρ2+ρ3 into the ~25-line `case hρGv` block; the general-`d` arm spends them as the three
+  leaves above because the residue count is `i−1`, not 1.)
+
+**(I.7.4) Clause-(ii) — the ONE honest open decision, pinned to a leaf (not forced).** LEAF-ρ1's residue
+identification needs, at each step `s`, that the a-column residue `hingeRow vₛ₊₁ vₛ₊₃ (ψ ∘ single
+vₛ₊₂)` (for `ψ` = the inner fold output, a span member of `span (G − vₛ₊₂) rows`) lands in
+`span (G − vᵢ) rows` — i.e. it is a genuine row of the FINAL candidate framework, not merely of the
+intermediate `G − vₛ₊₂`. The d=3 case has one residue at the final framework, so the question is vacuous;
+at general `d` the intermediate residues must be transported UP the chain to the top span. **Two ways
+this closes, the choice deferred to the LEAF-ρ1 build:** (a) the residue at step `s` is genuinely a
+`(G − vᵢ) rows` member directly (the surviving successor edge `edge (s+2)` and both its endpoints
+`vₛ₊₂, vₛ₊₃` survive `removeVertex vᵢ` for `s + 2 < i`, so the residue's underlying link is a genuine
+`G − vᵢ` link and the residue is a genuine row of the TOP framework on the advanced seed — the favorable
+case, likely, by the same `deg_two`/`shiftBodyGraph_isLink_pred_edge` reasoning that makes the (I.6)
+genuine-row `hwmem` branches work); or (b) if the seed/selector at the intermediate vs. top framework do
+not coincide on the residue's edge, the residue rides the **already-landed forward chain inclusion**
+(`shiftBodyFramework_htrans` analogue) up to the top. **This is the genuine unknown** (the difficulty of
+LEAF-ρ1's per-step `hsupp`/seed bookkeeping, the same flavor as the (F)(D) "open fact" the genuine-row
+`hwmem` leaf ultimately resolved favorably). It is NOT a motive/IH/contract change (the residues are span
+members of the existing candidate rows; no new carried hypothesis), NOT a span-level mismatch (I.7.0
+resolved that), and NOT new math beyond the multi-residue telescope. **If LEAF-ρ1's build finds the
+residue does NOT land in the top span by either (a) or (b)** — e.g. an intermediate residue at a
+non-surviving edge — that would be a genuinely-new obstruction and the build should STOP and report (a
+de-risk gate at `i=3`, the first 2-residue case, is the cheap check, mirroring the H.11 de-risk gate).
+
+**(I.7.5) Leaf count + P-ratings (for sequencing).** Three leaves: **LEAF-ρ1** residue-membership
+invariant (P≈3, the genuinely-new multi-residue telescope, ~1–2 commits; gate at `i=3` first) →
+**LEAF-ρ2** literal-row identification via the landed G1 bridges + `shiftPerm_inv_*` (P≈2, a rewrite
+chain, ~½ commit, can fold into ρ3) → **LEAF-ρ3** the `hρGv` assembly inline in the arm (P≈2, the
+`sub_mem`/`add_mem` combine). Total for `hρGv`: **~2–3 commits**, the LEAF-ρ1 telescope the only real
+risk. The arm wiring `chainData_relabel_arm` then consumes `hwmem` (landed `chainData_bottom_relabel`),
+`hρGv` (LEAF-ρ3), block (`blockRow_relabel_perm`), `hρe₀`/`htrans` (G4d-i + 2c-i) — a further ~1 commit
+of slot-instantiation bookkeeping (the §38 explicit-seed pins, the `−ρ₀` shared functional). So the
+hand-off's "multi-commit effort with real convergence risk" is confirmed: **~3–4 commits to the closed
+arm**, the LEAF-ρ1 residue telescope being where to gate before committing the arm signature.
+
+**(I.7.6) De-risk gate (do BEFORE pinning LEAF-ρ1's signature).** Write the 2-residue case `i = 3`
+(cycle length 2, the first non-involution case — the d=3 `i=2` is the 1-residue involution that masks
+multi-residue behaviour) and confirm `(relabel-only foldl) φ − (wstep foldl) φ ∈ span (G − v₃) rows`
+closes with the two residues `hingeRow v₁ v₃ (…)` + `hingeRow v₂ v₄ (…)` both landing in the top span by
+(I.7.4)(a). If it closes, pin LEAF-ρ1 at general `i` (the `reverseRec` lifts the 2-residue case the same
+way W9a's fold core lifted its single step). This is the H.11-discipline de-risk: confirm the new piece
+at the first honest case before committing the general signature.
 
 ---
 
