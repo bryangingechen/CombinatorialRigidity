@@ -273,6 +273,8 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 319 | CHAIN-2c-ii-arm P2 two-edge column crux `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows` (KT 6.44 two-block degree-2 cancellation), 8a3027a | 2/3/1 | opus | normal | clean (self-shrink) | ✓✓✓—✓✓ | 197k tok / 62 tools / 11.0min | Build (OPUS-ONLY; 2/3/1→opus). The genuinely-new P2 crux BUILT — the two-block degree-2 column cancellation (KT 6.44 two-block form, the recon-named leaf; `span_induction` mirroring one-edge G4d-i, `hdeg2`/`hdeg2r` = the two-edge condition the one-edge brick couldn't express). Concrete, NOT abstract-S. Self-shrank from the full carry to this crux brick; remaining P2 = carry+iterate from `hρe₀` + discharge the i=3 perps. Route-verified-then-build (user's recon-first) worked — no BLOCK. Coordinator: read lemma (sound 2-block cancellation) + warning-clean re-run + sorry-grep. |
 | 320 | CHAIN-2c-ii-arm P2 general-`i` surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` (lift the i=3 de-risk `hrow` to general candidate `i`/edge `s`; perp carried as gate hyp), c736795 | 2/2/1 | opus | normal | clean (self-shrink) | ✓✓✓—✓✓ | 200k tok / 67 tools / 12.5min | Build (OPUS-ONLY; 2/2/1→opus). On-route scope-shrink: the §I.8.4-step-2 `hrow`-builder half — link/membership concrete-clean, perp carried as the gate hyp `hperp`. 5th consecutive crux-isolation (abstraction-defers-crux): the iterated perp `ρ₀_perp_interior_chain_edge` deferred AGAIN — but route SETTLED (row-318 §I.8.3.v, signature written), so NOT a recon trigger → next = the perp, rate P=3. Coordinator: shape-check vs §I.8.4-step-2 + warning-clean re-run + sorry-grep(0). Agent's 'brick on Wφ→0' = wrong-object try; route (a) on `r` stands. |
 | 321 | CHAIN-2c-ii-arm P2 iterated perp `ρ₀_perp_interior_chain_edge` — **BLOCKED** (design-error catch: the row-318 isolated-implication pin refuted) | 2/3/1 | opus | normal | BLOCKED | —————— | 184k tok / 31 tools / 5.7min | Build (OPUS-ONLY; 2/3/1→opus) dispatched for the iterated perp; returned **BLOCKED with a high-value design-error diagnosis**: the row-318 §I.8.3.v pin of `ρ₀_perp_interior_chain_edge` as an isolated implication (only `hbase`) is FALSE for arbitrary ρ₀ — coordinator-verified vs landed defs (sup-membership ≠ single block; consecutive panels independent; KT 6.44/6.66 is a vanishing-combination property, not isolated per-step). 5th mis-pin of this crux (rows-263–272 global-accumulation). NOT a model failure (refused a false lemma). Salvaged → §I.8.3.v-REFUTED; route RE-OPENED → user-surfaced. |
+| 322 | RECON (adversarial pair, member A): hρGv perp re-route design-pass | —/—/— | opus | recon | clean | —————— | not surfaced (parallel Plan pair) | Adversarial design-pass PAIR member A (user-authorized for the 5×-mis-pinned crux; opus×opus per OPUS-ONLY; read-only Plan, parallel). Verdict: route (a) DEAD (Lean-witnessed — intermediate fold values have a zero column at the frontier vertex → two-edge crux gives 0, vacuous); per-edge perp unsuppliable → strengthen the W6b producer existential to carry the eq-6.52 vanishing-combination witness `g` out (touches d=3 callers, MEDIUM-confidence sig). Flag-don't-force, no frozen signature. → Findings 2026-06-20 (rows 318–323). |
+| 323 | RECON (adversarial pair, member B): hρGv perp re-route design-pass | —/—/— | opus | recon | clean | —————— | not surfaced (parallel Plan pair) | Adversarial design-pass PAIR member B (read-only Plan, parallel, opus). Verdict: route (a) DEAD (same Lean witness) PLUS the deeper finding — KT eq 6.66 is a vector *equality* used in the eq-6.67 *counting* argument, so KT NEVER proves the per-edge perp (d=3 M₃ arm has zero interior perp obligations). Fix: abandon per-edge `hsurv`, redesign the slot-peel as an `htrans` chain induction, gated on the collapse-vs-independent structural question. Flag-don't-force. → Findings 2026-06-20 (rows 318–323). |
 
 ## Findings
 
@@ -412,3 +414,34 @@ in the consumer's typeclass/finiteness context* — proof-soundness of the abstr
 sufficient. And a "de-risk gate PASSED" verdict is only as strong as what the gate *concretely* tests:
 an abstract-carrier gate de-risks the algebra, the concrete instantiation is a separate (often the real)
 risk. Recon-early at the 3-leaf mark caught both before a 4th blind build hit the P1 wall.
+
+### hρGv perp crux — an adversarial design-pass PAIR refutes route (a) AND the per-edge perp *target* (2026-06-20; rows 318–323)
+
+The hρGv surviving-row perp (the arm's last real-math piece) was mis-pinned a **5th time**. Row-318 (opus
+design-pass, source-verified) pinned `ρ₀_perp_interior_chain_edge` as an *isolated* implication
+`ρ₀∈block(s)→block(s+1)`; row-319 landed its named crux brick; row-320 landed the surrounding `hrow`-builder
+(perp carried as a hyp); then **row-321** (build dispatched to land the perp) returned **BLOCKED** — the
+isolated implication is FALSE for arbitrary ρ₀ (sup-membership ≠ single block; consecutive panels
+independent). Coordinator verified the BLOCK vs the landed defs and, given the 5×-mis-pin history, the user
+authorized an **adversarial design-pass PAIR** (rows 322/323, opus×opus per OPUS-ONLY). The pair CONVERGED
+(both Lean-witnessed) that route (a) is dead (intermediate fold values have a zero column at the frontier
+vertex → the two-edge crux gives `0`, vacuous) and the per-edge `hperp` is unsuppliable — recon B's KT read
+(pp.695–698) found eq 6.66 is a vector *equality* used in the eq-6.67 *counting* argument, so **KT never
+proves the per-edge perp** (the d=3 M₃ arm has zero interior perp obligations). They DIVERGED on the fix
+(A: strengthen the W6b producer existential to carry the eq-6.52 vanishing-combination witness `g`; B/C:
+redesign the slot-peel as an `htrans` block-inclusion chain induction), both flag-don't-force, both stop
+short of a frozen signature → user-adjudicated. Detail: §(o‴)(I.8.3.v-REFUTED)/(I.8.3.v-PAIR).
+
+- **The pair delivered exactly the protocol's predicted value for a repeatedly-mis-pinned crux.** Two
+  independent reads BOTH Lean-witnessing the refutation gave HIGH confidence route (a) is dead — far stronger
+  than a single design-pass (which had failed 5×, incl. the row-318 pin one session prior). A BLOCKED build
+  (row 321) + a pair (322/323) settled in ~3 dispatches a crux that piecemeal recon→build had churned on for
+  ~10. This is the strongest case yet for the boundary-pair-as-adversarial-audit on a crux whose pins keep
+  passing single scrutiny then failing at build.
+- **The 'global-accumulation, not isolated-per-step' lesson (rows 263–272) recurred in a NEW disguise** —
+  even after the BLOCK refuted the isolated implication, candidate route (a) was *another* isolated-per-step
+  form, refuted only by reading the fold arithmetic end-to-end + a Lean witness (NOT by the cited-API check).
+- **The deepest verification is against what the SOURCE proves, not whether a Lean step closes.** Recon B
+  caught what 5 prior passes + recon A missed: the per-edge perp is not merely hard, it's a claim KT *never
+  makes* (it's the negation KT's counting argument establishes). A pin can be internally consistent, cite real
+  APIs, AND target a statement the source never asserts.
