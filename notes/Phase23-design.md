@@ -4495,6 +4495,47 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
   telescope. The infra bricks (`acolumn_..._sup_...`, `freshEdge_surviving_row_mem`) STAND as necessary
   scaffolding; only the isolated-implication *signature* `ρ₀_perp_interior_chain_edge` is withdrawn.
 
+  **(I.8.3.v-PAIR — 2026-06-20, adversarial design-pass PAIR (rows 322/323, opus-vs-opus per OPUS-ONLY,
+  user-authorized for this 5×-mis-pinned crux); CONVERGED on the refutation, DIVERGED on the fix; both
+  flag-don't-force, both stop short of a frozen signature → USER-ADJUDICATED.)** The pair settles two things
+  with HIGH confidence and surfaces one open structural question:
+  - **Route (a) is DEAD — Lean-witnessed by BOTH.** The forward fold-value-as-span-member induction cannot
+    supply the perp: every telescope term is a `hingeRow` sharing the single `ρ₀`, and the intermediate fold
+    value `Pₛ` has a **zero column at the next frontier vertex `vₛ₊₁`** (`(hingeRow vₛvₛ₊₂ ρ₀).comp (single
+    vₛ₊₁) = 0`, `hingeRow_comp_single_off`, witnessed). Feeding `Pₛ` to the two-edge crux at the degree-2
+    interior `vₛ₊₁` yields `0 ∈ block e_c ⊔ block e_d` — vacuous, no constraint on `ρ₀`. The forward
+    construction relocates the gap; it does not close it (route (a) = the 6th form of the mis-pin).
+  - **The per-edge perp is NOT a fact KT establishes (recon B's deepest finding, KT pp.695–698 end-to-end).**
+    KT eq. (6.66) is the vector **equality** `∑ⱼ λ(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁)) = ±r`, used ONLY to convert
+    "`Mᵢ` not full rank ⟺ `r ⊥ C(Lᵢ)`" and then run the eq.-(6.67) **counting** argument (the `d+1` joins
+    span dimension `D`, Lemma 2.1) to conclude **at least one `Mᵢ` IS full rank** — i.e. the per-edge perp
+    is a *hypothetical in a contradiction*, NOT simultaneously true for all edges, and false in general.
+    So the `hperp`/`hperp0`/`hperp1`/`hsurv` hyps **encode a claim KT never makes**; "filling" them is the
+    6th pin. The d=3 `M₃` arm `case hρGv` (`Relabel.lean:2539–2608`) has **ZERO interior perp obligations**:
+    at `i=2` (`m=1`) the sole surviving row is the *reproduced `e_b`-row* `hingeRow v b ρ` whose membership
+    is `hρe₀` **directly** (`:2606`), and the slot is `Submodule.sub_mem`-peeled against it. The landed
+    closed-form telescope `wstep_foldl_hingeRow_telescope` STANDS (true linear-map identity); only the
+    membership *corollary* `wstep_foldl_freshEdge_slot_mem`'s per-edge `hsurv` decomposition is wrong.
+  - **Two candidate fixes — BOTH touch a LANDED signature / IH, BOTH flagged (not frozen):**
+    - **Route A (recon A): carry the eq.-(6.52) vanishing-combination witness `g` out of the W6b producer.**
+      Strengthen `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:404`, drops the λ-data at the
+      `obtain ⟨ρ,…⟩`) / `chainData_split_w6b_gates` (`Realization.lean:771`) so `ρ₀` arrives with its `g`
+      (the redundancy `r`, whose **interior columns are non-trivial**, unlike the bare `hingeRow`s); then the
+      perp via the two-edge crux on `g`. **Touches live d=3 callers** (re-plumb `M₃`, re-verify
+      zero-regression). Leaf-A signature MEDIUM-confidence (not pinned — recon A explicitly refused to freeze).
+    - **Route B/C (recon B): abandon the per-edge `hsurv` decomposition; replicate the d=3
+      `sub_mem`-of-whole-fold structure via the `htrans` block-inclusion chain induction** (IH-level redesign
+      of `wstep_foldl_freshEdge_slot_mem`; drop `hperp`/`hsurv`). The surviving rows are reproduced as genuine
+      candidate rows via `Fv.hingeRowBlock f ≤ Fva.hingeRowBlock f` transport, NOT a per-edge `ρ₀` perp.
+  - **THE OPEN STRUCTURAL QUESTION (the linchpin between A and B/C):** at general `i ≥ 3` (`m ≥ 2`), are the
+    interior surviving rows `hingeRow vₛvₛ₊₁ ρ₀` (`s = 1 … m−1`) genuinely **independent** memberships
+    (→ they need the λ-witness `g`, route A) or do they **collapse** into the base-redundancy `htrans`
+    transport as the d=3 `M₃` arm does (→ route B/C)? d=3 (`m=1`, only `s=0` = the base edge, perp = `hρe₀`)
+    does NOT discriminate. **Coordinator note:** the interior rows `s ≥ 1` are NOT backed by `hρe₀` (which is
+    perp ONLY the base spliced panel), which *leans toward genuine independence → route A* — but neither recon
+    froze it, and recon B recommends a focused tie-breaker recon on collapse-vs-independent (grounded in the
+    d=3 `case hρGv` structure) BEFORE any signature is frozen. **Surfaced to the user.**
+
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:
 1. **P1 restatement — LANDED 2026-06-20 (the unblocker).** Both algebraic-core lemmas
