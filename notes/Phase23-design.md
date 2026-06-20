@@ -4183,6 +4183,44 @@ contract. The fold route + LEAF-ρ2 + the landed `chainData_bottom_relabel` all 
 purely the **slot-link mismatch** between what the fold produces and what `case_III_arm_realization.hρGv`
 demands.
 
+> **⚠ INTERPRETATION CORRECTED by §(I.7.10) (KT-source re-derivation, 2026-06-20).** The "engine slot
+> wrong for `i ≥ 3` / flag-to-owner motive decision" verdict ABOVE **overstates**. The slot is RIGHT
+> (KT-faithful); what is missing is the buildable KT-eq.-(6.66) fresh-edge telescope, NOT an engine/motive
+> change. The `i=3` computation (the three links) is correct, but `D φ` at `v₁—v₄` was never the slot. Read
+> §(I.7.10) before acting on the verdict above.
+
+**(I.7.10) KT-SOURCE RE-DERIVATION VERDICT — option (b); engine slot KT-faithful, missing leaf is the
+KT-(6.66) fresh-edge telescope (read-only recon, opus, 2026-06-20; coordinator-locked).** An adversarial
+read-only recon against KT §6.4.2 (eqs 6.46–6.66) + the landed bodies tested the hypothesis "slot link is
+`v₁—vᵢ₊₁` (option a)" and REFUTED it:
+- **The `(a,b)=(vᵢ₊₁,vᵢ₋₁)` binding is KT-faithful, structurally forced — NOT a d=3 extrapolation.**
+  `case_III_arm_realization` takes `hG_ea : G.IsLink e_a v a` / `hG_eb : G.IsLink e_b v b` (`Arms.lean:77`),
+  so `a,b` ARE the split vertex `v`'s two genuine neighbors; for candidate `i` (split at `vᵢ`) they are
+  `vᵢ₋₁, vᵢ₊₁`. KT eq. (6.57) places the free panel at `vᵢvᵢ₊₁`, the reproduced panel at `vᵢ₋₁vᵢ`,
+  forcing engine-`a = vᵢ₊₁` (free) / engine-`b = vᵢ₋₁` (reproduced). The slot link `vᵢ₋₁—vᵢ₊₁` IS KT's
+  `Mᵢ` redundant row `Σⱼ λ(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁))` (eq. 6.64), via the fresh edge `vᵢ₋₁vᵢ₊₁` carrying
+  seed `q(vᵢvᵢ₊₁)` (eq. 6.56). So the slot is correct (option (c) rejected) and the binding is correct
+  (option (a) rejected). [Coordinator-verified the `hG_ea/hG_eb` forcing against `Arms.lean:77`.]
+- **The fold is KT-faithful only up to eqs. (6.62)+(6.63).** `R φ = hingeRow v₀ v₁ ρ₀` is exactly where
+  KT (6.62) puts the transported redundancy (the `(v₀v₁)ᵢ∗` row) BEFORE the row operations; the `wstep`
+  residues are KT (6.63)'s `a`-column subtractions; `W φ ∈ span` is landed. **What is genuinely missing is
+  KT eq. (6.66)** — the iterated degree-2 `±r` identification carrying the `(v₀v₁)`-row form to the
+  fresh-edge `Mᵢ` slot row `hingeRow vᵢ₊₁ vᵢ₋₁ ρ₀`. This is the "±r chain the design kept noting d=3
+  collapses"; it is NOT absorbed into the fold.
+- **VERDICT: option (b), buildable from landed pieces, NO engine/motive/IH/signature change.** The fix is
+  inside the arm's `hρGv` discharge (LEAF-ρ1/ρ3): the M₃ three-step extraction (W9a image → identify the
+  genuine reproduced-edge row at `vᵢ₋₁vᵢ` → `sub_mem`/`sub_sub_cancel` to peel the fresh-edge slot row),
+  generalized over the `i−1` cycle bodies, with KT (6.66) realized as the iterated degree-2 telescope via
+  `acolumn_mem_hingeRowBlock_of_span_rigidityRows` + `hingeRow_sub_hingeRow_eq` + `shiftPerm_inv_*` +
+  `case_III_bottom_relabel` + the landed `W φ ∈ span`. ~3–5 commits; d=3 (`i=2`) = the landed M₃ verbatim
+  (zero regression). The `i3_*_deRisk` lemmas (06f11bf) stay as the correct fold-output record (their
+  "wrong link" is by design, not a defect).
+- **RESIDUAL (honestly flagged, not certified):** the recon did not mechanize the `i−1`-step telescope;
+  the residue-to-genuine-row identification (the degree-2 closure the M₃ `hρ_ac` step does, `Relabel.lean`
+  ~`:2419–2430`) is asserted-buildable but unbuilt. **Re-targeted `i=3` de-risk:** confirm the fresh-edge
+  row `hingeRow v₂ v₄ ρ₀` reaches `span(G−v₃)` via the iterated telescope (NOT "does `D φ` = slot" — it
+  provably does not, by design). High confidence, KT-verbatim-grounded.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
