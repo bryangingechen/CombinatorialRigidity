@@ -4978,6 +4978,40 @@ FAILS on the screw-level identity — the same global-vs-per-vertex face that br
   NO motive/IH/contract change in any branch. Coordinator source-verified A-3's conclusion shape
   (`:3095-3098`) against this verdict.
 
+**(I.8.9-PAIR) ADVERSARIAL RECON PAIR (opus×opus, rows 340/341) — CONVERGED: leaf 2 as pinned is the 6th
+global-vs-per-vertex mis-pin; the genuine KT-6.66 mechanism is an eq-(6.44) CHAIN INDUCTION off the single base
+redundancy (2026-06-20, both reads source-verified vs KT 2011 §6.4.1/§6.4.2 + the 2009 arXiv (7.44/7.66),
+coordinator-scrutinized; user-adjudicated "recon first", the rows-322/323 precedent for this 5×-mis-pinned
+crux).** Both independent reads returned NOT-PROVABLE-AS-PINNED / NEEDS-NEW-PREREQUISITE:
+- **The pinned identity `∑ lamAB_s • rab_s = ±ρ₀` (per-vertex group = the shared head redundancy DIRECTLY) is
+  the wrong target.** KT eq-(6.66)'s `±r` is NOT a per-vertex fact: it is carried by a CHAIN of `d−2` degree-2
+  column cancellations (eq-(6.44) = `candidateRow_ac_eq_neg Claim612.lean:1194-1219`) off the SINGLE global
+  dependency (KT eq-(6.52), = the base redundancy `r̂`), anchored at the head edge `v₀v₂` and propagated along
+  the interior chain via the (6.62) row correspondence. `candidateRow_ac_eq_neg` gives only the per-vertex
+  ADJACENCY relation `(ac)-group = −(ab)-group` at one vertex — NOT `= ±ρ₀`. KT p.698 ("vᵢ degree-2 in G₁ … in
+  a manner similar to (6.44)") compresses exactly this telescope.
+- **The genuinely-new piece = the CHAIN INDUCTION** (recon A's PREREQ-B): an induction over the interior chain,
+  anchored at the base redundancy, propagating `ρ₀` (with the `±` sign) to each interior edge-group via
+  eq-(6.44) at each degree-2 vertex. No landed lemma does it (the LANDED `wstep_foldl_hingeRow_telescope` is a
+  DIFFERENT mechanism — telescopes a fixed-`ρ₀` row through `wstep`, never establishing group-equals-`ρ₀`).
+- **Both AGREE the regroup runs at the BASE `G₁`** (where `r̂`/`hρGv` + the rigidity premises `h618`/`h622`
+  live; the candidate `G − vtx i` is the *deleted* graph, no eq-(6.24) dependency there — Phase23b:444-445),
+  with the resulting per-edge perp transported to the candidate via the LANDED
+  `candidate_supportExtensor_perp_of_base`/`panelCorrespondence_supportExtensor` — i.e. WITHIN Route W (a′),
+  NO motive/IH/contract change.
+- **DIVERGENCE (residual buildable-detail to settle at the pin/build):** (1) the `hcol` at an interior vertex —
+  recon A: MECHANICAL (`r̂ = hingeRow(e₀=v₀v₂)ρ₀` has `a`-column `0` for a deeper interior `a ∉ {v₀,v₂}` by
+  `hingeRow_comp_single_off`, so `hcol` is free); recon B: pessimistic (the global `g` is `sub_self`-zero,
+  carries no per-vertex content). Coordinator reading sides with recon A for DEEPER vertices (r̂ is a single
+  e₀-row missing them); (2) the ANCHOR — how the first edge-group ties to `ρ₀` given `e₀=v₀v₂` is the removed
+  split edge — is UNPINNED and is the chain induction's base case.
+- **Leaf 3 (sign) confirmed MINOR** (both: `Submodule.neg_mem`, span closed under negation; not an interface
+  change). The Fix-A single-shared-`ρ₀` requirement re-confirmed load-bearing (KT eq-(6.67), §(o‴)(H.1-3)).
+- **SUPERSEDES the §(I.8.9-RECON) leaf-1/leaf-2/leaf-3 decomposition** (leaf 2 was the wrong object). **NEXT
+  (user-adjudication surfaced):** pin the eq-(6.44) chain-induction lemma's exact signature (anchor base case +
+  the `hcol` sub-question) then build, vs build the chain directly. Coordinator-scrutinized: convergence =
+  high-confidence refutation; the divergence is buildable-detail, not a route fork.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

@@ -504,22 +504,24 @@ complement of the off-`a` foundation, `BodyHingeFramework.edgeIndexedCombination
 the off-foundation. KT eq.~(6.43)'s "only the edges meeting `a` contribute to `a`'s column", framework-free,
 zero blast radius — the column-algebra core the regroup proper threads before the degree-2 graph fact splits
 the incident summands into the `(ab)`/`(ac)` groups.
-**← RECON 2026-06-20 (row 339, read-only Plan, coordinator source-verified) → NEEDS-ADJUDICATION (caught the
-would-be 6th mis-pin).** The regroup-at-degree-2-vertex lemma the two column cores support (leaf 1) is
-mechanically buildable, BUT it does NOT close the consumer: A-3 `freshEdge_surviving_row_mem_of_witness`
-(`Relabel.lean:3095-3098`) concludes membership for the **per-vertex** `(ab)`-group `∑ⱼ lamAB j • rab j`, while
-the all-`i` lift (settled Fix A, single shared `ρ₀`; `wstep_foldl_freshEdge_slot_mem :3255-3263`) needs it over
-the **shared** `ρ₀`. So the genuine open piece is `∑ⱼ lamAB_s j • rab_s j = ±r̂` (= the shared `ρ₀`) **at every
-interior vertex** = KT eq-(6.66)'s ±r carry — GENUINELY-NEW, no landed producer (grep-confirmed), the
-conjecture's hardest single argument (the sessions-10–14 wall). The perp / `hcol` / `hrest` halves DO match
-(mechanical, framework-free); only the screw-level identity fails — exactly where the 5× prior pins broke
-(global-vs-per-vertex). Buildable-leaf decomposition: **leaf 1** `regroup_acolumn_incident_split` (MECHANICAL;
-the two column cores + `deg_two Operations.lean:1306` + `hingeRow_swap`), **leaf 2** the ±r screw-level identity
-`∑ lamAB_s • rab_s = ±r̂` (GENUINELY-NEW, the crux), **leaf 3** sign reconciliation (likely
-`Submodule.neg_mem`-absorbable at the membership level, to confirm). **DECISION PENDING (user-adjudicated): how
-to attack leaf 2** — (A) KT eq-(6.66) source-verification recon first (de-risk vs KT pp.696-698 before building;
-the rows-322/323 precedent), (B) build leaf 1 then attempt leaf 2 directly, (C) bank leaf 1 standalone then
-decide. NO motive/IH/contract change. Full verdict + file:lines → design §(I.8.9-RECON).
+**← RECON PAIR 2026-06-20 (rows 339/340/341; the row-339 Plan recon + the opus×opus adversarial pair on the
+user-adjudicated "recon first") → the leaf-2 pin is REFUTED (the 6th global-vs-per-vertex mis-pin); the genuine
+KT-6.66 mechanism is an eq-(6.44) CHAIN INDUCTION off the single base redundancy.** Both pair reads converged
+(source-verified vs KT 2011 §6.4.1/6.4.2 + the 2009 arXiv): the per-vertex group `= ±ρ₀` DIRECTLY is the wrong
+target — `candidateRow_ac_eq_neg` (eq-(6.44), `Claim612.lean:1194-1219`) gives only the per-vertex ADJACENCY
+`(ac)-group = −(ab)-group`; KT's `±r` is carried by a CHAIN of `d−2` such cancellations anchored at the head
+edge `v₀v₂` and propagated along the interior chain. The genuinely-new piece = that **chain induction** (no
+landed producer; the landed `wstep_foldl_hingeRow_telescope` is a different mechanism — telescopes a fixed-`ρ₀`
+row, never establishes group-=-`ρ₀`). Both AGREE: run the regroup at the BASE `G₁` (where `r̂`/`hρGv` + the
+rigidity premises `h618`/`h622` live — NOT the deleted candidate `G − vtx i`), transport the per-edge perp to
+the candidate via the LANDED `candidate_supportExtensor_perp_of_base` — WITHIN Route W (a′), NO
+motive/IH/contract change. Residual buildable-details (settle at pin/build): the `hcol` (recon-A mechanical:
+`r̂ = hingeRow(v₀v₂)ρ₀` misses a deeper interior `a∉{v₀,v₂}` so its `a`-column is `0` free; recon-B pessimistic)
++ the anchor base case (first edge-group ↔ `ρ₀`, `e₀` being the removed split edge). Leaf 3 (sign) MINOR
+(`neg_mem`). The §(I.8.9-RECON) leaf-1/2/3 decomposition is SUPERSEDED. **← NEXT (user-adjudication surfaced):
+pin the eq-(6.44) chain-induction lemma's exact signature (anchor base case + the `hcol` sub-question) via a
+focused design-settle, then build — vs build the chain directly.** Full verdict + file:lines + eq-numbers →
+design §(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
