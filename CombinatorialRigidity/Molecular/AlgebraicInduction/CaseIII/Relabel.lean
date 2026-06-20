@@ -251,6 +251,42 @@ theorem PanelHingeFramework.blockRow_relabel_perm {Gt : Graph α β}
   · rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]; exact hlink
   · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]; exact hρ'
 
+/-- **The `ChainData` genuine-row `hwmem` disjunct (CHAIN-2c-ii-arm wiring): the interior-candidate
+genuine-row transport, instantiating `rigidityRow_relabel_perm` at the index-shift relabel
+`(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`** (`lem:case-III` general-`d`, KT 2011 §6.4.2
+eqs.~(6.54)/(6.62) the one-step-down row correspondence; Phase 23b). For an interior candidate index
+`2 ≤ i ≤ d−1` (`1 < i`, the nondegenerate cycle), a genuine rigidity row `φ` of the `v₁`-base split
+framework `ofNormals (G.splitOff v₁ v₀ v₂ e₀) ends₀ q` maps under
+`(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` to a genuine rigidity row of the candidate-`i` split
+framework `ofNormals (G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀) endsσρ qρ` — where `qρ = q ∘ shiftPerm i.castSucc`
+(KT (6.56), the candidate seed `qᵢ = q₁ ∘ ρᵢ`) and `endsσρ` the `(shiftPerm i.castSucc)⁻¹`-shifted
+selector. This is the genuine-row disjunct the relabel arm's `hwmem` slot feeds the engine
+`case_III_arm_realization` at the per-`i` roles: the abstract brick `rigidityRow_relabel_perm`
+(graph-iso `(ρ, σ)`) instantiated at the `ChainData` graph-iso
+`splitOff_isLink_shiftRelabel_iff` (the candidate split and the base split intertwined by
+`(shiftPerm i.castSucc, shiftEdgePerm i)`). At the `d = 3` `M₃` instance `i = 2` the cycle
+`shiftPerm 2 = (v₁ v₂)` is the single swap and this is the `case_III_bottom_relabel` genuine-row
+branch. -/
+theorem PanelHingeFramework.rigidityRow_chainData_relabel
+    [DecidableEq α] [DecidableEq β] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals
+        (G.splitOff (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)
+          (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).succ)
+          (cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀)
+        ends₀ q).toBodyHinge.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
+      (PanelHingeFramework.ofNormals
+        (G.splitOff (cd.vtx i.castSucc) (cd.vtx i.succ)
+          (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) cd.e₀)
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.rigidityRows :=
+  PanelHingeFramework.rigidityRow_relabel_perm (cd.shiftPerm i.castSucc) (cd.shiftEdgePerm i)
+    (fun _ _ _ => cd.splitOff_isLink_shiftRelabel_iff i hi) hφ
+
 /-- **G4c-ii (fixed-seed form): the `ρ = (av)` relabel transports the concrete v-split `ofNormals`
 data to the concrete a-split `ofNormals` data at the SAME seed `q₀ ∘ ρ`**
 (`lem:splitOff-ofNormals-relabel`, KT 2011 eq. (6.31) framework side, Phase 22h).
