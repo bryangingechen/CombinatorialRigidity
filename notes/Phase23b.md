@@ -85,9 +85,14 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   template (`Relabel.lean:2437–2506`) generalized to `i−1` steps. **Span level CONFIRMED matching** (both
   fold endpoints = removeVertex frameworks at `G − v₁`/`G − vᵢ` = the engine's `Gv`; no mismatch leaf).
   **← NEXT: LEAF-ρ1 (the residue telescope, P≈3, the genuine risk; do the `i=3` 2-residue de-risk FOR
-  REAL first per §(o‴)(I.7.6) — row 306 bailed before finishing it, and the residue link `v–c` is a
-  non-edge so the residue is NOT a standalone span member, extracted as a difference per the M₃
-  template), then LEAF-ρ3 + the arm wiring `chainData_relabel_arm`.**
+  REAL first per §(o‴)(I.7.6)/(I.7.8) — row 306 bailed before finishing it, and the residue link `v–c` is
+  a non-edge so the residue is NOT a standalone span member, extracted as a difference per the M₃
+  template), then LEAF-ρ3 + the arm wiring `chainData_relabel_arm`. The de-risk question is now pinned
+  crisply (design §(o‴)(I.7.8), opus session #16, docs-only): the `hρGv` slot reduces to `Σ residues ∈
+  span (G−vᵢ)`, and the `i=3` case must decide whether KT's eq.-(6.66) `i−1`-residue collapse to a single
+  `±r` is internal to the `wstep` fold or a separate post-hoc identity (the (B)(i)-vs-(B)(ii) fork = the
+  genuine convergence risk; settle it FOR REAL before pinning the arm — flag to owner if the residues do
+  not collapse to a single `hingeRow` at the slot's link, since the engine `hρGv` slot is a single row).**
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -317,7 +322,12 @@ The leaves:
   L5b resolution above) — the `i−1`-step generalization of the d=3 M₃ `case hρGv` extraction (W9a fold +
   genuine-row identification + `sub_mem`), inside `chainData_relabel_arm` with the role binding concrete.
   Confirm the residues resolve via the `a`-column / G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`
-  (NOT via "surviving edge" — §(o‴)(I.7.4)(a) superseded), `i=3` de-risk first.
+  (NOT via "surviving edge" — §(o‴)(I.7.4)(a) superseded), `i=3` de-risk first. **The de-risk question is
+  now pinned crisply in design §(o‴)(I.7.8) (the I.7.8 SHARPENING, opus session #16):** the whole `hρGv`
+  slot reduces (via LEAF-ρ2 + the landed W9a fold) to `Σ residues ∈ span (G−vᵢ)`, and the `i=3` 2-residue
+  case must decide the (B)(i)-vs-(B)(ii) fork — whether KT's eq.-(6.66) collapse of the `i−1` residues to a
+  single `±r` is internal to the `wstep` fold or a separate post-hoc identity. **This fork is the genuine
+  convergence risk; settle it FOR REAL before pinning the arm.**
 - **LEAF-ρ2 — LANDED 2026-06-20** the literal-row identification `shiftBodyListAsc_relabel_foldl_hingeRow`
   (the landed G1 bridges + `hingeRow_funLeft_dualMap`; this is the genuine relabel-image row — correct +
   load-bearing, but does NOT discharge the slot alone).

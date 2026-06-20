@@ -4108,6 +4108,38 @@ de-risk *for real* (the row-306 build bailed into the clean-relabel tangent befo
 clean-relabel route is CLOSED (refuted-against-KT); `T` still appears as LEAF-ρ2 (the literal-row
 identification), which is correct and load-bearing, but does not discharge the slot alone.
 
+**(I.7.8) De-risk SHARPENING (read-only analysis, opus session #16, 2026-06-20).** A read-only
+re-derivation against the landed bodies pins the precise open question the `i=3` de-risk must answer —
+this is the question rows 306/308 circled but never stated crisply, and what the next build must settle
+FIRST. Reduce the slot: the engine `hρGv` is `hingeRow a b ρ ∈ span (ofNormals Gv ends qρ)` at the
+**advanced-seed** candidate framework `Gv = G − vᵢ`, `qρ = Q(i−1)`; by LEAF-ρ2 the relabel-only fold of
+the base redundancy `hingeRow (vtx 2)(vtx 0) ρ₀` IS that literal slot row `hingeRow ((shiftPerm)⁻¹(vtx 2))
+((shiftPerm)⁻¹(vtx 0)) ρ₀ = hingeRow (vtx 1)(vtx 0) ρ₀` (`vtx 0` off-cycle/fixed, `vtx 2 ↦ vtx 1` under
+the inverse cycle, link = the surviving `edge 0`). Since `(relabel-only fold) = (wstep fold) + Σ residues`
+and `wstep fold (base redundancy) ∈ span Gv` is the **landed** `shiftBodyListAsc_foldl_mem_span_rigidityRows`,
+**the entire `hρGv` slot reduces to: `Σ residues ∈ span (ofNormals (G−vᵢ) ends Q(i−1)).rigidityRows`,
+equivalently `hingeRow (vtx 1)(vtx 0) ρ₀ ∈ span` (the literal slot row, the `edge 0` link).** TWO
+exhaustive ways it closes, and the `i=3` de-risk must determine WHICH (they are mutually exclusive and the
+choice changes the proof shape):
+- **(A) genuine-row route (would make the residue machinery unnecessary for `hρGv`, contradicting the
+  I.7.7 recon — so EXPECT this to FAIL):** `hingeRow (vtx 1)(vtx 0) ρ₀` is directly a genuine `edge 0` row
+  of `F(i−1)`, i.e. `ρ₀ ⊥ C(Q(i−1)(vtx 1), Q(i−1)(vtx 0))`. The d=3 M₃ slot is the *residue* `hingeRow v c ρ`
+  at the NON-edge `v–c`, NOT the genuine `e_b` row, so (A) is almost certainly false at the **advanced**
+  seed (the seed-advance breaks the base `hρe₀` perpendicularity at `edge 0`); confirming it false at `i=3`
+  is the cheap first check.
+- **(B) difference route (the M₃ generalization, EXPECTED):** `Σ residues = (genuine row) − (wstep fold)`
+  where the *genuine* row is the `e_b`-analogue (NOT the slot). **The unbuilt crux this exposes:** at `i=2`
+  `Σ residues` is the SINGLE residue = the slot; at general `i` it is a SUM of `i−1` residues, but the
+  engine slot `hingeRow a b ρ` is a SINGLE hinge row. So route (B) needs KT's eq. (6.66) collapse (the
+  iterated degree-2 `a`-column cancellation folding the `i−1` residues to `±r`) realized in Lean — and it is
+  NOT yet clear whether (i) the `wstep` fold already performs that collapse internally (so `wstep fold
+  output` is itself congruent to a single row mod span and the difference is one residue), or (ii) the
+  collapse is a separate post-hoc identity on `Σ residues`. **This (i)-vs-(ii) fork is the genuine
+  convergence risk; the `i=3` 2-residue case decides it.** Do `i=3` FOR REAL: compute both residues
+  explicitly (`hingeRow v₁ v₃ (…)` + `hingeRow v₂ v₄ (…)`, the latter relabelled by step 1's swap) and see
+  whether they collapse to a single `hingeRow` at the slot's `(a,b)` link — if they do NOT, the engine slot
+  shape may need re-examination (NOT a free motive change — flag to owner) before the arm can be built.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
