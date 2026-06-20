@@ -2394,6 +2394,100 @@ theorem BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
     rw [LinearMap.smul_comp]
     exact (Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d).smul_mem r hx
 
+/-! ### The interior-vertex eq.~(6.44) two-edge perp carry (CHAIN-2c-ii-arm, the `hρGv` P2 A-2
+de-risk core)
+
+The genuinely-new, self-contained carrier of the `hρGv` arm's per-edge perpendicularity obligation
+(`i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1`, `freshEdge_surviving_row_mem`'s
+`hperp`), discharged FOR REAL from the eq.~(6.52) redundancy witness rather than the *refuted*
+generic-`ρ₀` isolated implication (`notes/Phase23-design.md` §(o‴)(I.8.3.v-REFUTED): the bare
+`ρ₀ ∈ hingeRowBlock (edge s) → ρ₀ ∈ hingeRowBlock (edge (s+1))` over an arbitrary `ρ₀` is FALSE —
+the two-edge crux gives only *sup* membership, and for independent consecutive panels
+`block e_c ⊔ block e_d = ⊤`, vacuous). The SETTLED route (§(o‴)(I.8.3.v-SETTLED), Route A) routes
+the perp through the **specific** redundancy combination `r̂ := ∑_j λ_{(ab)j} r_j`, whose interior
+`a`-columns are non-trivial.
+
+This is the interior-chain-vertex instance of KT's eq.~(6.44) `r̂ = −rAC`
+(`candidateRow_ac_eq_neg`, the landed `d = 3` single-degree-2-vertex column equation, KT §6.4.1
+eq.~(6.44)) — that lemma already takes the per-edge-grouped witness and **applies verbatim at an
+interior chain vertex** `a = vₛ₊₁` (degree-2, incident edges `ab = vₛ₊₁vₛ` and `ac = vₛ₊₁vₛ₊₂`),
+which is the structural fix the refuted isolated-implication missed. -/
+
+/-- **The interior-vertex eq.~(6.44) two-edge perp carry** (`lem:case-III-claim612-eq644` interior
+form; Katoh–Tanigawa 2011 §6.4.1, eq.~(6.44) at an interior chain vertex, the `hρGv` P2 A-2 de-risk
+core, CHAIN-2c-ii-arm, `notes/Phase23-design.md` §(o‴)(I.8.3.v-SETTLED) Route A; Phase 23b). At a
+**degree-2** body `a` with the two incident edges' hinges read into the distinct bodies `b` and `c`,
+the common candidate vector `r̂ := ∑_j λ_{(ab)j} (rab j)` of KT's eq.~(6.42) is perpendicular to
+**both** incident panels `C_c = F.supportExtensor e_c` and `C_d = F.supportExtensor e_d`:
+
+* `r̂ ∈ F.hingeRowBlock e_c` is **direct** — each `rab j ∈ F.hingeRowBlock e_c` (the `ab`-rows are
+  block functionals of the `e_c = ab`-hinge), and the block is a submodule closed under the
+  `λ`-combination.
+* `r̂ ∈ F.hingeRowBlock e_d` is **via eq.~(6.44)** — `candidateRow_ac_eq_neg` reads the column
+  vanishing `hcol` of the redundancy combination at body `a` (its degree-2 column has only the
+  `ab`/`ac` blocks, `hingeRow_comp_single_tail`/`_off`) as `rAC = −r̂` with
+  `rAC := ∑_j λ_{(ac)j} (rac j)`; since each `rac j ∈ F.hingeRowBlock e_d`, so is `rAC`, hence so is
+  `r̂ = −rAC` (the block's `neg_mem`).
+
+So `r̂` lies in `hingeRowBlock e_c ⊓ hingeRowBlock e_d` — perpendicular to both incident chain-edge
+panels at once. This is the iterated-carry's per-vertex step (KT carries the single redundancy `r̂`
+`±`-ly across the `d` panels, eq.~(6.66)); chaining it from the W6b `hρe₀` base discharges the
+surviving-row perp at every interior chain edge (`freshEdge_surviving_row_mem`'s `hperp`,
+`i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1`). Self-contained over the explicit
+eq.~(6.52) per-edge witness (the `λ`/`r` data + the combination's `a`-column vanishing): **zero
+blast radius**, no live caller touched — the W6b producer strengthening that *supplies* this (A-1)
+is the next step. The `supportExtensor`-perp form `..._perp` below is the direct `hperp` shape. -/
+theorem BodyHingeFramework.candidate_perp_two_incident_panels [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    {a b c : α} {e_c e_d : β} (hab : a ≠ b) (hac : a ≠ c)
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
+    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (hrab : ∀ j, rab j ∈ F.hingeRowBlock e_c)
+    (hrac : ∀ j, rac j ∈ F.hingeRowBlock e_d)
+    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α) a b (rab j))
+        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
+    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0) :
+    (∑ j, lamAB j • rab j) ∈ F.hingeRowBlock e_c ∧
+      (∑ j, lamAB j • rab j) ∈ F.hingeRowBlock e_d := by
+  -- eq.~(6.44): `rAC = −r̂` (the redundancy combination's `a`-column vanishing, regrouped by edge).
+  have heq : ∑ j, lamAC j • rac j = -∑ j, lamAB j • rab j :=
+    candidateRow_ac_eq_neg hab hac lamAB rab lamAC rac grest hcol hrest
+  refine ⟨Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hrab j), ?_⟩
+  -- `r̂ = −rAC`, and `rAC ∈ block e_d` (the `λ`-combination of the `ac`-block rows).
+  rw [← neg_neg (∑ j, lamAB j • rab j), ← heq]
+  exact (F.hingeRowBlock e_d).neg_mem
+    (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hrac j))
+
+/-- **The interior-vertex eq.~(6.44) two-edge perp carry, `supportExtensor`-perp form** — the direct
+`hperp` shape of `i3_freshEdge_surviving_rows_mem_deRisk` / `freshEdge_surviving_row_mem`
+(`lem:case-III-claim612-eq644` interior form; Katoh–Tanigawa 2011 §6.4.1, eq.~(6.44), the
+CHAIN-2c-ii-arm `hρGv` P2 A-2 de-risk, Phase 23b). The `mem_hingeRowBlock_iff` restatement of
+`candidate_perp_two_incident_panels`: the common candidate vector `r̂ := ∑_j λ_{(ab)j} (rab j)`
+annihilates **both** incident panels `F.supportExtensor e_c` and `F.supportExtensor e_d`, given the
+per-edge perps in `supportExtensor` form (`hperp_ab`/`hperp_ac`) and the eq.~(6.43) column vanishing
+(`hcol`/`hrest`). This is exactly the perp obligation the de-risk gate carries as `hperp0`/`hperp1`
+hypotheses — discharged here from the eq.~(6.52) witness, **zero blast radius**. -/
+theorem BodyHingeFramework.candidate_perp_two_incident_supportExtensors [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    {a b c : α} {e_c e_d : β} (hab : a ≠ b) (hac : a ≠ c)
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
+    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    (hperp_ab : ∀ j, rab j (F.supportExtensor e_c) = 0)
+    (hperp_ac : ∀ j, rac j (F.supportExtensor e_d) = 0)
+    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α) a b (rab j))
+        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α) a c (rac j)) + grest).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
+    (hrest : grest.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0) :
+    (∑ j, lamAB j • rab j) (F.supportExtensor e_c) = 0 ∧
+      (∑ j, lamAB j • rab j) (F.supportExtensor e_d) = 0 := by
+  obtain ⟨hc, hd⟩ := F.candidate_perp_two_incident_panels hab hac lamAB rab lamAC rac grest
+    (fun j => (F.mem_hingeRowBlock_iff _ _).2 (hperp_ab j))
+    (fun j => (F.mem_hingeRowBlock_iff _ _).2 (hperp_ac j)) hcol hrest
+  exact ⟨(F.mem_hingeRowBlock_iff _ _).1 hc, (F.mem_hingeRowBlock_iff _ _).1 hd⟩
+
 /-- **W9c — the `M₃` arm closer: the third candidate (the line `L'' ⊂ Π(c)`) realizes the `d = 3`
 framework at full rank** (`lem:case-II-realization` / `lem:case-III`, the third of the three
 `hcand`-discharge arms; Katoh–Tanigawa 2011 §6.4.1, eqs.~(6.31)–(6.44), the `M₃ = (r̂; r(L''))`

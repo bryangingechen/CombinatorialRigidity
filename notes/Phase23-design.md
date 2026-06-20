@@ -4551,22 +4551,32 @@ engine: `hρe₀` (`Arms.lean:90`) is `ρ ⊥ panel(q(a,·), q(b,·))` at the **
   must come from the SPECIFIC redundancy `r`/`g`, whose interior `a`-columns are non-trivial (the two-edge crux
   has content there, unlike the bare hingeRows).
   **Route A build sequence (de-risk-first, coordinator-refined ordering vs the recon's producer-first):**
-  - **(A-2 de-risk — NEXT, zero blast radius):** a self-contained lemma taking the eq-(6.52) witness
-    (`r`/`lam`/`∑λr`, or `g`) as EXPLICIT hypotheses, discharging `i3_freshEdge_surviving_rows_mem_deRisk`'s
-    `hperp0`/`hperp1` (the `i=3` interior memberships) FOR REAL via the two-edge crux on `g` + its
-    column-vanishing. This PINS the exact witness shape AND resolves the opaque-combination sub-risk (the
-    landed `…_acolumn_zero`, `Candidate.lean:522`, has an opaque combination — the de-risk tests whether `g`
-    alone suffices or the λ-grouped form is needed) BEFORE touching any live caller.
-  - **(A-1 — then):** strengthen the W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
+  - **(A-2 de-risk — DONE 2026-06-20, zero blast radius):** the self-contained perp carrier
+    `candidate_perp_two_incident_panels` + the `supportExtensor`-perp form
+    `candidate_perp_two_incident_supportExtensors` (`Relabel.lean`, both axiom-clean). Takes the eq-(6.52)
+    witness in the **`λ`-grouped per-edge form** (the `candidateRow_ac_eq_neg` interface: `lamAB`/`rab`,
+    `lamAC`/`rac`, `grest`, + the column-vanishing `hcol`/`hrest`) as EXPLICIT hyps, and discharges the
+    de-risk gate's `hperp0`/`hperp1` (and the general `freshEdge_surviving_row_mem`'s `hperp`) FOR REAL:
+    the common candidate `r̂ := ∑λab•rab` is ⊥ both incident panels — ⊥ `C_c` direct (block closed under the
+    combination), ⊥ `C_d` via eq.~(6.44) `candidateRow_ac_eq_neg` (`rAC = −r̂`). **Finding (resolves the
+    opaque-combination sub-risk):** the `λ`-grouped form IS needed — the bare `_acolumn_zero` zero-functional
+    (`Candidate.lean:557`) is too opaque, but the landed `d=3` `candidateRow_ac_eq_neg` (`Claim612.lean:1194`)
+    already takes exactly the `λ`-grouped form and **applies verbatim at an interior chain vertex** (`a :=
+    vₛ₊₁`, `b := vₛ`, `c := vₛ₊₂`, degree-2), so A-2 is a thin wrap of it, NOT a new column-cancellation
+    proof. The pinned witness shape is therefore `candidateRow_ac_eq_neg`'s; A-1 supplies it.
+  - **(A-1 — NEXT):** strengthen the W6b producer `exists_candidateRow_bottomRows_of_rigidOn`
     (`Candidate.lean:390`; the `r`/`lam`/`istar`/`∑λr` are computed in-scope at `:421–457` and DISCARDED at the
     `refine` `:485` — re-threading, NOT new math) + `chainData_split_w6b_gates` (`Realization.lean:771`) to
-    supply the pinned witness; re-plumb the 3 LIVE callers (`Realization.lean:389`/`:881`/`:1006`) + re-verify
-    d=3 zero-regression. **This is the blast-radius step (B=2).**
+    supply the **`candidateRow_ac_eq_neg`-shaped per-edge witness** (the pinned shape, per A-2); re-plumb the
+    3 LIVE callers (`Realization.lean:389`/`:881`/`:1006`) + re-verify d=3 zero-regression. **This is the
+    blast-radius step (B=2).**
   - **(A-3):** generalize the de-risk to all `i`, then the arm assembly `chainData_relabel_arm`.
   The refuted-signature leaves `freshEdge_surviving_row_mem` (`:2833`) + the `hsurv` form of
-  `wstep_foldl_freshEdge_slot_mem` (`:3006`) are WITHDRAWN (zero live callers); the closed-form telescope
-  `wstep_foldl_hingeRow_telescope` (`:2938`) + the infra bricks STAND. **NO motive/IH change.** Confidence HIGH
-  on Route A + the B/C refutation; the A-2 exact closed form is build-discovered (the `i=3` de-risk is its gate).
+  `wstep_foldl_freshEdge_slot_mem` (`:3006`) are WITHDRAWN at the arm build (zero live callers); the
+  closed-form telescope `wstep_foldl_hingeRow_telescope` (`:2938`) + the infra bricks + **A-2's two new
+  perp-carrier lemmas STAND**. **NO motive/IH change.** Confidence HIGH on Route A + the B/C refutation.
+  **A-2 de-risk DONE 2026-06-20** — the pinned witness shape is `candidateRow_ac_eq_neg`'s `λ`-grouped form
+  (the `d=3` lemma applies verbatim at an interior vertex; A-2 is a thin wrap, not a new cancellation proof).
 
 **(I.8.4) The buildable sub-step sequence (ordered; exact signatures).** The arm is NOT one
 instantiation; it is **P1 → P2 → the assembly**, each sized to one sitting:

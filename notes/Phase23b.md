@@ -20,24 +20,27 @@ general-`m` membership corollary `wstep_foldl_freshEdge_slot_mem` (`Relabel.lean
 (`wstep_foldl_{hingeRow_telescope,freshEdge_slot_mem}` restated finite-range, `Relabel.lean`, axiom-clean):
 both algebraic-core lemmas now take `Set.InjOn w (Set.Iic (m+2))` instead of the dead
 `Function.Injective (w : ℕ → α)` (which is `False` over the arm's `[Finite α]`) — instantiable from
-`cd.vtx_inj` via `Set.InjOn.mono`. **NEXT = the arm wiring `chainData_relabel_arm`, gated on the TWO
-remaining prerequisites (ARM-WIRING DESIGN-PASS §(o‴)(I.8)):** the slot→brick map is clean for every engine
-slot except `hρGv`, and **P2 (real math — the route-(a) two-edge column crux `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`
-AND the general-`i` surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` now LANDED 2026-06-20,
-axiom-clean):** the interior-vertex two-block degree-2 column membership (honest analogue of the one-edge
-G4d-i) + the lift of the i=3 de-risk's `hrow` to general candidate `i` (perp carried as the gate hyp `hperp`,
-link half fully discharged); the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediate chain-edge
-panels. **The perp ROUTE is RE-OPENED (§(o‴)(I.8.3.v-REFUTED), row-321 adversarial build):** the row-318
-pin of `ρ₀_perp_interior_chain_edge` as an *isolated* implication is FALSE for arbitrary `ρ₀` (sup ≠ single
-block; consecutive panels independent; KT 6.44/6.66 is a vanishing-combination property — the rows-263–272
-trap, 5th time); the two infra bricks STAND, the signature is withdrawn. **ROUTE SETTLED = Route A**
+`cd.vtx_inj` via `Set.InjOn.mono`. **The `hρGv` P2 A-2 de-risk CORE is now LANDED 2026-06-20**
+(`candidate_perp_two_incident_panels` + the `supportExtensor`-perp form
+`candidate_perp_two_incident_supportExtensors`, `Relabel.lean`, both axiom-clean): the interior-vertex
+eq.~(6.44) perp carry — the common candidate `r̂ := ∑λab•rab` is ⊥ both incident chain-edge panels (⊥ `C_c`
+direct, ⊥ `C_d` via `candidateRow_ac_eq_neg`'s `rAC = −r̂`), self-contained over the explicit eq-(6.52)
+witness (the `d=3` `candidateRow_ac_eq_neg` applies VERBATIM at an interior vertex), the direct
+`hperp0`/`hperp1`/`hperp` shape, ZERO blast radius. (The earlier *generic-`ρ₀` isolated-implication* pin
+`ρ₀_perp_interior_chain_edge` was REFUTED §(o‴)(I.8.3.v-REFUTED) — the `_sup_` crux is vacuous `=⊤` for
+independent consecutive panels; the perp lives in the *specific* `r̂`, not arbitrary `ρ₀`; the
+`acolumn_..._sup_...` crux STANDS as scaffolding, the isolated-implication signature is withdrawn.)
+**ROUTE SETTLED = Route A**
 (adversarial pair rows 322/323 + tie-breaker recon row 324; route B/C refuted as the route-(b) circularity,
 interior rows GENUINELY INDEPENDENT — §(o‴)(I.8.3.v-SETTLED)): the perp comes from the SPECIFIC redundancy
-`r`/`g` carried OUT of the W6b producer. **NEXT = the `i=3` A-2 de-risk** (witness-as-hyps, discharges the
-i3 gate's `hperp0`/`hperp1` for real, pins the witness shape, ZERO blast radius) → A-1 strengthen the
-producer (touches 3 d=3 callers, B=2) → A-3 generalize + the arm; **P3 (flagged):**
-the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands (whether the
-P2 re-route touches the landed telescope is the design-pass's flag-don't-force call); then **2c-iii** `chainData_dispatch`;
+`r`/`g` carried OUT of the W6b producer. **The A-2 de-risk CORE is now LANDED 2026-06-20**
+(`candidate_perp_two_incident_panels` + the `supportExtensor`-perp form
+`candidate_perp_two_incident_supportExtensors`, `Relabel.lean`, both axiom-clean): the interior-vertex
+eq.~(6.44) `r̂ = −rAC` perp carry (witness-as-hyps, the direct `hperp0`/`hperp1`/`hperp` shape, ZERO blast
+radius — the `d=3` `candidateRow_ac_eq_neg` applies verbatim at an interior chain vertex). **NEXT = A-1**
+strengthen the W6b producer to SUPPLY the per-edge `λ`/`r` witness (touches 3 d=3 callers, B=2) → A-3
+generalize + the arm; **P3 (flagged):**
+the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands; then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
 §(o‴)(I.8); the settled route history (the clean-relabel refutation, the FIX-FORK, the engine-slot
 adjudication) is in `notes/Phase23-design.md` §(o‴) + git, **not** re-narrated here.
@@ -123,42 +126,42 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     via `Set.InjOn.mono`. Zero callers existed (only each other), so the restatement was self-contained;
     no d=3 regression. Lesson → FRICTION [idiom] *A `(w : ℕ → α)`-indexed lemma whose carrier will be
     `[Finite α]`…*.
-  - **P2 (real math) — i=3 DE-RISK LANDED 2026-06-20; finding: link half CLEAN, perp half is the
-    isolated obligation.** `i3_freshEdge_surviving_rows_mem_deRisk` (`Relabel.lean`, axiom-clean) does
-    the concrete `span (G−v₃)` gate the prior abstract-`S` gate deferred: the two surviving rows
-    `hingeRow v₀v₁ ρ₀` (`edge 0`) / `hingeRow v₁v₂ ρ₀` (`edge 1`) reach the **concrete** candidate
-    framework's `rigidityRows` span, each via its own per-edge perp `hperp0`/`hperp1`. **The `link` half
-    discharges concretely** (`cd.link` + `vtx_inj` survival of `removeVertex (vtx 3)` +
-    `hingeRow_mem_rigidityRows`); **the `perp` half `ρ₀ ⊥ Fva.supportExtensor (edge s)` is the
-    genuinely-new P2 obligation, NOT automatic** — `ρ₀` (W6b functional) is built ⊥ only the base
-    spliced panel `C(q(v₀v₂))` (`hρe₀`), not the intermediate chain-edge panels; that it ⊥ each is KT
-    eq.(6.62)/(6.66)'s degree-2 `±r` carry, unbuilt in Lean (the closed-form telescope gives `W φ = (∑
-    surviving) + slot` as *linear maps*, NOT each summand a span member). So P2 is unblocked on the
-    link/membership plumbing; the remaining work is the **perp**. **The perp ROUTE is RE-OPENED
-    (§(o‴)(I.8.3.v-REFUTED), 2026-06-20, row-321 adversarial build):** the row-318 pin of
-    `ρ₀_perp_interior_chain_edge` as an *isolated* implication `ρ₀ ∈ hingeRowBlock(edge s) →
-    hingeRowBlock(edge s+1)` (only `hbase`) is **FALSE for arbitrary `ρ₀`** — the `_sup_` brick gives only
-    *sup* membership (`x+y`, not whole-`ρ₀` in a single block), consecutive chain panels are independent
-    subspaces, and KT eq.(6.44)/(6.66) is a property of the *specific vanishing-combination* `r`, not an
-    isolated per-step implication (the rows-263–272 global-accumulation trap, 5th time). The two infra
-    bricks **STAND** (`acolumn_..._sup_...` + `freshEdge_surviving_row_mem`, perp carried as `hperp`); only
-    the isolated-implication *signature* is withdrawn. **NEXT P2 step = a global-structure-first
-    DESIGN-PASS** re-deriving the correct surviving-row-perp route + Lean signature — candidates **(a)** a
-    forward fold-value-as-span-member induction carrying the next frontier (via `wstep_hingeRow_frontier`),
-    **(b)** the vanishing-combination `λ`-`a`-column argument (may touch the landed telescope) — discharging
-    `freshEdge_surviving_row_mem`'s `hperp` + the i3 gate's `hperp0`/`hperp1`. USER-FLAGGED (5th mis-pin).
+  - **P2 (real math) — A-2 DE-RISK CORE LANDED 2026-06-20 (Route A).** The genuinely-new, KT-faithful
+    perp carrier `candidate_perp_two_incident_panels` (+ its `supportExtensor`-perp form
+    `candidate_perp_two_incident_supportExtensors`, the direct `hperp` shape) is now LANDED
+    (`Relabel.lean`, both axiom-clean): at an interior degree-2 chain vertex `a = vₛ₊₁` (incident edges
+    `ab = vₛ₊₁vₛ`, `ac = vₛ₊₁vₛ₊₂`), the common candidate vector `r̂ := ∑ⱼ λab • rab` is ⊥ **both**
+    incident panels — `⊥ C_c` direct (each `rab j ∈ block e_c`, block closed under the combination),
+    `⊥ C_d` via **eq.~(6.44)** `candidateRow_ac_eq_neg` (`rAC = −r̂`, each `rac j ∈ block e_d`, so `r̂ =
+    −rAC ∈ block e_d`). This is the interior-vertex instance of KT eq.~(6.44) — the landed `d=3`
+    single-degree-2-vertex column equation applies **verbatim** at an interior chain vertex (the
+    structural fix the refuted isolated implication missed). **Self-contained over the explicit eq.~(6.52)
+    witness, ZERO blast radius** (no live caller; the de-risk gate `i3_freshEdge_surviving_rows_mem_deRisk`
+    + the general `freshEdge_surviving_row_mem` carry their perp as `hperp0`/`hperp1`/`hperp` hyps, which
+    this discharges from the witness). Why this is correct where the row-318/321 pin was refuted: the
+    refuted form was the *generic-`ρ₀` isolated implication* `ρ₀ ∈ block(edge s) → block(edge s+1)` (FALSE
+    — the `_sup_` crux gives only *sup* membership, vacuous `=⊤` for independent consecutive panels); the
+    landed form routes through the **specific** redundancy `r̂` (whose interior `a`-columns are non-trivial)
+    via the per-edge `λ`/`r` witness — exactly §(o‴)(I.8.3.v-SETTLED) Route A. **NEXT = A-1: strengthen the
+    W6b producer** `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`; the `r`/`lam`/`∑λr`
+    are computed in-scope `:421–457` then DISCARDED at the `refine` `:485` — re-threading, NOT new math)
+    + `chainData_split_w6b_gates` (`Realization.lean:771`) to SUPPLY the per-edge `λ`/`r` witness; re-plumb
+    the 3 LIVE callers (`:389`/`:881`/`:1006`) + re-verify d=3 zero-regression (blast-radius step, B=2).
+    **WITHDRAW** the refuted `freshEdge_surviving_row_mem` (`:2833`, the isolated-`hperp`-carrying builder)
+    + the `hsurv` form of `wstep_foldl_freshEdge_slot_mem` at the arm build (zero live callers); the
+    closed-form telescope (`:2938`) + `acolumn_..._sup_...` STAND. **Then A-3** generalize to all `i` + the
+    arm assembly `chainData_relabel_arm`. NO motive/IH change.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
     `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
 
-  Two `i=3` gates landed (`i3_freshEdge_slot_mem_deRisk` abstract `sub_mem` peel `m=2`;
-  `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership) PLUS the general-`i` lift
-  `freshEdge_surviving_row_mem` (perp carried as `hperp`). The single remaining P2 obligation = the
-  **surviving-row perp**, whose Lean formulation is **RE-OPENED** (the isolated-implication
-  `ρ₀_perp_interior_chain_edge` pin refuted, row 321) — a global-structure-first design-pass settles
-  route + signature; then P3, assembly. (Option (b) + d=3 zero-regression stand; whether the re-route
-  touches the landed telescope is the design-pass's flag-don't-force call.)
+  The A-2 de-risk CORE (the perp from the eq.~(6.52) witness) is now LANDED (Route A,
+  `candidate_perp_two_incident_panels`/`_supportExtensors`); the remaining P2 work is purely A-1
+  (re-thread the witness through the W6b producer to the de-risk's `hperp` hyps, B=2) → A-3 (all-`i`
+  lift + arm). The `i=3` gates (`i3_freshEdge_slot_mem_deRisk` abstract `m=2` `sub_mem` peel;
+  `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership, perp as `hperp0/1`) STAND
+  as the de-risk shells the witness now feeds; their `hperp` hyps are what A-2's core discharges.
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -365,17 +368,22 @@ perp). The interior surviving rows are **GENUINELY INDEPENDENT** (d=3 discharges
 `htrans`; the first honest interior case is `i=3`, `m=2`). **Route A:** the membership comes from the
 SPECIFIC redundancy `r`/`g` (interior `a`-columns non-trivial), carried OUT of the W6b producer (the
 `r`/`lam`/`∑λr` data is computed in-scope `Candidate.lean:421–457` but DISCARDED at the `refine` `:485` —
-re-threading, not new math). **Build sequence (de-risk-first):** **(NEXT) the `i=3` A-2 de-risk** — a
-self-contained lemma taking the eq-(6.52) witness (`r`/`lam`/`∑λr` or `g`) as EXPLICIT hyps, discharging
-`i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` FOR REAL via the two-edge crux on `g` + its
-column-vanishing; PINS the witness shape + resolves the opaque-combination sub-risk (`…_acolumn_zero`
-`Candidate.lean:522`), ZERO blast radius. **(then) A-1** strengthen the producer
-`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`) + `chainData_split_w6b_gates`
-(`Realization.lean:771`) to supply the pinned witness — re-plumb the 3 LIVE callers (`:389`/`:881`/`:1006`)
-+ re-verify d=3 zero-regression (the blast-radius step, B=2). **(then) A-3** generalize to all `i` + the arm
-assembly `chainData_relabel_arm`. WITHDRAW the refuted leaves `freshEdge_surviving_row_mem` (`:2833`) +
-`wstep_foldl_freshEdge_slot_mem`'s `hsurv` form (`:3006`, zero live callers); the telescope (`:2938`) +
-infra bricks STAND. NO motive/IH change.
+re-threading, not new math). **Build sequence (de-risk-first):** **(A-2 de-risk — DONE 2026-06-20)** the
+self-contained perp carrier `candidate_perp_two_incident_panels` + the `supportExtensor`-perp form
+`candidate_perp_two_incident_supportExtensors` (`Relabel.lean`, both axiom-clean): given the eq-(6.52)
+witness (the per-edge-grouped `λ`/`r` data + the combination's `a`-column vanishing `hcol`/`hrest`) as
+EXPLICIT hyps, the common candidate `r̂ := ∑λab•rab` is ⊥ both incident panels — ⊥ `C_c` direct (block
+closed under the combination), ⊥ `C_d` via eq.~(6.44) `candidateRow_ac_eq_neg` (`rAC = −r̂`). This is the
+direct `hperp0`/`hperp1`/`hperp` shape the de-risk gate / general builder carry as hyps; ZERO blast
+radius. (The `d=3` single-degree-2-vertex `candidateRow_ac_eq_neg` applies VERBATIM at an interior chain
+vertex — the structural fix the refuted isolated implication missed.) **(NEXT) A-1** strengthen the
+producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:390`) + `chainData_split_w6b_gates`
+(`Realization.lean:771`) to SUPPLY the per-edge `λ`/`r` witness — re-plumb the 3 LIVE callers
+(`:389`/`:881`/`:1006`) + re-verify d=3 zero-regression (the blast-radius step, B=2). **(then) A-3**
+generalize to all `i` + the arm assembly `chainData_relabel_arm`. WITHDRAW the refuted leaves
+`freshEdge_surviving_row_mem` (the isolated-`hperp` builder) + `wstep_foldl_freshEdge_slot_mem`'s `hsurv`
+form (zero live callers); the telescope (`:2938`) + the `_sup_` crux + A-2's two new lemmas STAND. NO
+motive/IH change.
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
@@ -630,9 +638,20 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     + `mem_hingeRowBlock_iff`); the perp is the explicit gate hyp (standing crux idiom). This is exactly the
     `hsurv` summand `wstep_foldl_freshEdge_slot_mem` defers, packaged per-edge for the arm. FRICTION [idiom]
     *`ChainData.vtx_ne` against a `Fin (d+1)` variable index — prove `≠` via `congrArg Fin.val (vtx_inj ·)`…*.
-  - Remaining P2 (the *forward* part — *Hand-off*): the SINGLE un-landed half = the iterated perp
-    `ρ₀_perp_interior_chain_edge` from the two-edge crux, which discharges both the builder's `hperp` AND the
-    i3 gate's `hperp0`/`hperp1`; then P3 (seed bridge) + the arm assembly.
+  - **P2 A-2 de-risk CORE — LANDED 2026-06-20 (Route A; the perp from the eq-6.52 witness):**
+    `candidate_perp_two_incident_panels` (+ the `supportExtensor`-perp form
+    `candidate_perp_two_incident_supportExtensors`, the direct `hperp` shape), `Relabel.lean`, both
+    axiom-clean. At an interior degree-2 chain vertex, the common candidate `r̂ := ∑λab•rab` is ⊥ both
+    incident panels: ⊥ `C_c` direct (`Submodule.sum_mem`/`smul_mem`), ⊥ `C_d` via eq.~(6.44)
+    `candidateRow_ac_eq_neg` (`rAC = −r̂`, block `neg_mem`). The `d=3` single-degree-2-vertex
+    `candidateRow_ac_eq_neg` applies VERBATIM at an interior vertex (`a := vₛ₊₁`, `b := vₛ`, `c := vₛ₊₂`)
+    — the structural fix the refuted *generic-`ρ₀` isolated implication* `ρ₀_perp_interior_chain_edge`
+    missed (the `_sup_` crux is vacuous `=⊤` for independent consecutive panels; the perp lives in the
+    *specific* `r̂`, not arbitrary `ρ₀`). Self-contained over the explicit witness, ZERO blast radius —
+    discharges the de-risk gate's `hperp0`/`hperp1` + the builder's `hperp` from the witness. NEXT = A-1
+    (re-thread the witness through the W6b producer, B=2), then A-3 + arm. The isolated-implication
+    `freshEdge_surviving_row_mem` / the `hsurv` form of `wstep_foldl_freshEdge_slot_mem` are WITHDRAWN at
+    the arm build (zero live callers).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)
