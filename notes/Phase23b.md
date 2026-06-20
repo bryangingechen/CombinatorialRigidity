@@ -165,25 +165,37 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     zero-regression. The closed-form telescope + `acolumn_..._sup_...` STAND. **A-3 single-vertex composition
     DONE** (`freshEdge_surviving_row_mem_of_witness`), then **A-3 all-`i`-lift i=3 DE-RISK RAN → Route W
     FORCED → ⚠ FLAG-AND-STOP** (next bullet).
-  - **A-3 all-`i`-lift i=3 DE-RISK — RAN 2026-06-20, axiom-clean → ⚠ FLAG-AND-STOP** (Decisions entry
-    *P2 A-3 all-`i`-lift i=3 DE-RISK*; design §(o‴)(I.8.7-RESULT); lemma
-    `Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk`). VERDICT = Route W FORCED. At honest `i=3`
+  - **A-3 all-`i`-lift i=3 DE-RISK — RAN 2026-06-20, axiom-clean → Route W FORCED** (lemma
+    `Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk`; design §(o‴)(I.8.7-RESULT)). At honest `i=3`
     the interior `vtx 1` is GENUINELY degree-2 in `Fva = G−vtx 3` (both `edge 0`/`edge 1` survive), so the
-    strongest column projection of the fold output `hW` is the **sup** `block(edge 0) ⊔ block(edge 1)`, NOT a
-    single block — the d=3 M₃ single-block route (degree-one interior in the split) does NOT generalize. So
-    the per-vertex eq.-(6.52) witness can't be derived from `hW`/`hρe₀` alone; **Route W's new producer
-    `exists_interior_redundancy_witness` (KT eq.~(6.66), no landed supply) is genuinely-new math the next
-    session must flag for user adjudication.** `_of_witness` + A-2 `candidate_perp_two_incident_*` STAND.
+    strongest column projection of `hW` is the **sup** `block(edge 0) ⊔ block(edge 1)`, NOT a single block —
+    the d=3 M₃ single-block route (degree-one interior in the split) does NOT generalize. So the witness-free
+    Route G4d-i-PROJECTED is dead; **Route W** (the per-vertex eq.-(6.52) witness, KT eq.~(6.66)) is forced.
+    User-adjudicated → recon (row 330) → **option (a′): re-derive the witness at the base `G₁` + transport
+    the perp to `Fva = G−vtx i` across the panel correspondence**.
+  - **i=3 PANEL-CORRESPONDENCE DE-RISK — PASSED 2026-06-20, axiom-clean** (lemma
+    `Graph.ChainData.i3_panelCorrespondence_supportExtensor_deRisk`, `Relabel.lean`; design §(o‴)(I.8.8)).
+    The candidate-`i=3` framework's `supportExtensor` at `vtx 1`'s two surviving incident chain edges
+    (`edge 0`/`edge 1`) equals the `v₁`-base framework's at the `shiftEdgePerm 3`-corresponding edge
+    (`edge 0 ↦ e₀`, `edge 1 ↦ edge 2`), VERBATIM — a direct application of the landed
+    `ofNormals_supportExtensor_relabel_perm` (support extensors are graph-independent; base-graph mismatch
+    `G−vtx 1` vs `G−vtx 3` closed by `simp only [toBodyHinge_supportExtensor, ofNormals_ends,
+    ofNormals_normal]`). **VERDICT = SUCCESS → option (a′) is buildable** (the perp transports across this
+    coincidence; no metric/Plücker step). `_of_witness` + A-2 `candidate_perp_two_incident_*` STAND.
+    **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (option (a′): witness = A-1's base
+    producer ∘ the transport; feed `_of_witness` + A-2 per interior vertex), then the arm.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
     `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
 
-  The P2 A-2/A-1/A-3-single-vertex steps are LANDED (Route A); the **A-3 all-`i` lift is BLOCKED on
-  Route W** (the i=3 de-risk refuted the witness-free Route G4d-i-PROJECTED). The `i=3` gates
-  (`i3_freshEdge_slot_mem_deRisk` abstract `m=2` `sub_mem` peel; `i3_freshEdge_surviving_rows_mem_deRisk`
-  concrete surviving-row membership, perp as `hperp0/1`; `i3_freshEdge_interior_acolumn_sup_deRisk` the
-  route-fork de-risk) STAND. The arm `chainData_relabel_arm` is gated on Route W's new producer (+ P3).
+  The P2 A-2/A-1/A-3-single-vertex steps are LANDED (Route A); the **A-3 all-`i` lift goes via Route W
+  option (a′)** (the i=3 de-risk refuted the witness-free Route G4d-i-PROJECTED; the panel-correspondence
+  de-risk PASSED, so (a′) is buildable). The `i=3` gates (`i3_freshEdge_slot_mem_deRisk` abstract `m=2`
+  `sub_mem` peel; `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership, perp as
+  `hperp0/1`; `i3_freshEdge_interior_acolumn_sup_deRisk` the route-fork de-risk;
+  `i3_panelCorrespondence_supportExtensor_deRisk` the option-(a′) de-risk) STAND. The arm
+  `chainData_relabel_arm` is gated on Route W's producer `exists_interior_redundancy_witness` (+ P3).
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -420,15 +432,23 @@ the base carries only the `e₀` perp, the fork de-risk's vacuous `=⊤`; option
 that framework is the *deleted* graph, not a rigid split, so the decomposition's premises are absent.) (a′)
 forces a NEW panel-correspondence transport identity (eqs. 6.59/6.62 at `supportExtensor` level) + the flagged
 P3 seed bridge, ~3–4 commits, **NO contract change**; (a″) per-vertex rigidity premise NOT recommended (contract
-change, off route β). **SMALLEST NEXT COMMIT = the i=3 PANEL-CORRESPONDENCE DE-RISK** (before pinning the
-producer signature, row-321 discipline): prove `Fva.supportExtensor (edge s)` = the `(shiftPerm)⁻¹`-relabel-image
-of `G₁`'s panel at the KT-corresponding edge, for `vtx 1` at `i=3`. SUCCESS → (a′) buildable (witness = A-1's
-base producer ∘ transport); FAILURE / needs-P3-first → localizes the blocker. **Orphan status RESOLVED by the
-failed fork de-risk:** `_of_witness` / A-2 `candidate_perp_two_incident_*`
-STAND (Route W's building blocks, NOT confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER)
-+ the telescope (`:2938`/`:3006`) + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3
-zero-regression. Then the arm `chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v)
-`ρ₀_perp_interior_chain_edge` route is superseded by (I.8.7).)
+change, off route β). **The i=3 PANEL-CORRESPONDENCE DE-RISK is now PASSED 2026-06-20**
+(`i3_panelCorrespondence_supportExtensor_deRisk`, `Relabel.lean`, axiom-clean): the candidate-`i=3`
+framework's `supportExtensor` at `vtx 1`'s two surviving incident chain edges (`edge 0`/`edge 1`) equals
+the `v₁`-base framework's at the KT-corresponding edge (`shiftEdgePerm 3 (edge 0) = e₀`, `shiftEdgePerm 3
+(edge 1) = edge 2`), VERBATIM — a direct application of the landed `ofNormals_supportExtensor_relabel_perm`
+(support extensors are graph-independent, so the base graph `G−vtx 1` vs the relabel lemma's `G−vtx 3` is
+discharged by `simp only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]`). **VERDICT =
+SUCCESS → option (a′) is buildable** (no metric/Plücker step; the perp transports across this `supportExtensor`
+coincidence). **← NEXT SMALLEST COMMIT = Route W's producer `exists_interior_redundancy_witness` (option (a′)):**
+re-derive A-1's eq-(6.52) two-edge witness at the base split `G₁` (where `h618`/`h622lb` are available — reuse
+A-1's instantiation), then transport the perp conclusion to `Fva = G−vtx i` across this panel correspondence +
+the flagged P3 seed bridge; feed `freshEdge_surviving_row_mem_of_witness` + A-2 at each interior vertex.
+**Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` STAND (Route W's building blocks, NOT
+confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER) + the telescope (`:2938`/`:3006`)
++ the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3 zero-regression. Then the arm
+`chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v) `ρ₀_perp_interior_chain_edge` route is
+superseded by (I.8.7).)
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
@@ -746,6 +766,21 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     genuinely-new math: **the next session must FLAG-AND-STOP for user adjudication.** Orphan status RESOLVED:
     `_of_witness` + A-2 `candidate_perp_two_incident_*` STAND (Route W building blocks). NO motive/IH change;
     d=3 zero-regression (M₃ is the `m=1` single-summand case, exercising no interior leaf).
+  - **P2 A-3 Route W option-(a′) i=3 PANEL-CORRESPONDENCE DE-RISK — PASSED 2026-06-20, axiom-clean**
+    (`Graph.ChainData.i3_panelCorrespondence_supportExtensor_deRisk`, `Relabel.lean`; design §(o‴)(I.8.8),
+    user-adjudicated row 330). The smallest-next-commit before pinning Route W's producer signature
+    (row-321 discipline): the candidate-`i=3` framework's `supportExtensor` at `vtx 1`'s two surviving
+    incident chain edges (`edge 0`/`edge 1`) equals the `v₁`-base framework's at the `shiftEdgePerm 3`-image
+    (`edge 0 ↦ e₀` via `shiftEdgePerm_apply_edge_zero`; `edge 1 ↦ edge 2` via
+    `shiftEdgePerm_apply_edge_interior`), VERBATIM. **A direct application of the landed
+    `ofNormals_supportExtensor_relabel_perm`** (support extensors are graph-independent, so the base-graph
+    mismatch `G−vtx 1` vs the relabel lemma's `G−vtx 3` is closed by `simp only [toBodyHinge_supportExtensor,
+    ofNormals_ends, ofNormals_normal]`; the candidate framework IS the relabel-perm `endsσρ`/`qρ` shape, so
+    `ρ := shiftPerm 3.castSucc`, `σ := shiftEdgePerm 3` plug in). Built first try, no friction (no new
+    FRICTION entry). **VERDICT = SUCCESS → option (a′) is buildable**: Route W's per-interior-vertex perp can
+    be re-derived at the base `G₁` (A-1's instantiation) and transported to `Fva = G−vtx i` across this
+    coincidence + the flagged P3 seed bridge — no metric/Plücker step. **← NEXT: Route W's producer
+    `exists_interior_redundancy_witness`** (the witness re-derivation + transport, then the arm).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

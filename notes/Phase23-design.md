@@ -4784,6 +4784,33 @@ is dead — that route is refuted by the fork de-risk). Stands: `_of_witness`/A-
 telescope/the de-risk gates. Consumes (a′): the eq.-6.24 decomposition at base + the transport machinery
 (`chainData_bottom_relabel`/`shiftPerm`/`shiftSeedAdv`).
 
+**(I.8.8-RESULT) i=3 PANEL-CORRESPONDENCE DE-RISK RAN — VERDICT: SUCCESS → option (a′) BUILDABLE
+(2026-06-20, Lean-verified, axiom-clean).** Landed as
+`Graph.ChainData.i3_panelCorrespondence_supportExtensor_deRisk` (`Relabel.lean`): for the interior vertex
+`vtx 1` at `i = 3`, the candidate framework's supporting extensor at each of the two surviving incident chain
+edges equals the `v₁`-base framework's at the KT-corresponding edge —
+`Fva.supportExtensor (edge 0) = G₁-base.supportExtensor e₀` and
+`Fva.supportExtensor (edge 1) = G₁-base.supportExtensor (edge 2)`, where the KT correspondence is the
+`shiftEdgePerm 3`-image (`edge 0 ↦ e₀` via `shiftEdgePerm_apply_edge_zero`, `edge 1 ↦ edge 2` via
+`shiftEdgePerm_apply_edge_interior`). The candidate framework `Fva = ofNormals (G − vtx 3) endsσρ qρ` IS the
+relabel-perm `endsσρ`/`qρ` shape (`ρ = shiftPerm 3.castSucc`, `σ = shiftEdgePerm 3`) that the landed `hwmem`
+slot `chainData_bottom_relabel` produces, so the correspondence is a **direct application of the already-landed
+`ofNormals_supportExtensor_relabel_perm`** (`Q'.supportExtensor f = Q.supportExtensor (σ f)`). The one residual
+— the relabel lemma's base graph is `G − vtx 3`, the de-risk's base is `G − vtx 1` — is discharged by the
+closing `simp only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]`: `supportExtensor` reads
+only `ends₀`/`normal`, never the graph, so the two base frameworks have equal support extensors. **No
+metric / Plücker step, no new transport identity needed at the `supportExtensor` level** — the eqs.~(6.59)/(6.62)
+panel correspondence is `ofNormals_supportExtensor_relabel_perm` itself. So **option (a′) is buildable**: Route
+W's per-interior-vertex perp transports across this `supportExtensor` coincidence (a `rw` of the de-risk identity
+turns the candidate-side perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` into the base-side perp at the corresponding
+edge, which A-1's base witness supplies). **NEXT (after this commit): Route W's producer
+`exists_interior_redundancy_witness`** — re-derive A-1's eq-(6.52) two-edge witness at the base `G₁` (where
+`h618`/`h622lb` are available), then thread its perp through the panel correspondence + the flagged P3 seed
+bridge to `Fva = G − vtx i`, feeding `freshEdge_surviving_row_mem_of_witness` + A-2 per interior vertex.
+Generalizing the de-risk from `i = 3`/`vtx 1` to general candidate `i`/edge `s + 1 < (i : ℕ)` re-indexes the
+two `shiftEdgePerm_apply_*` rewrites (the head `edge 0 ↦ e₀` only at `s = 0`; interior `edge s ↦ edge (s+1)`).
+No motive/IH/contract change; d=3 (`i = 2`) zero-regression.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

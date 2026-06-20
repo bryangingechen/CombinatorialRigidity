@@ -3270,4 +3270,68 @@ theorem BodyHingeFramework.wstep_foldl_freshEdge_slot_mem [DecidableEq α]
   have := Submodule.sub_mem _ hW hsum
   rwa [add_sub_cancel_left] at this
 
+/-- **The `i = 3` panel-correspondence de-risk for Route W's witness producer (the smallest next
+commit toward `chainData_relabel_arm`'s `hρGv` slot)** (`notes/Phase23-design.md` §(o‴)(I.8.8)
+option (a′); KT 2011 §6.4.2 eqs.~(6.59)/(6.62) the index-shift panel correspondence; Phase 23b).
+Before
+pinning the genuinely-new Route-W producer `exists_interior_redundancy_witness`'s signature
+(row-321 discipline), this checks the load-bearing structural fact option (a′) rests on: the
+candidate-`i = 3` framework's supporting extensor at each of the interior vertex `vtx 1`'s two
+surviving incident chain edges (`edge 0`, `edge 1`) equals — VERBATIM, no metric / Plücker step —
+the `v₁`-base framework's supporting extensor at the KT-corresponding edge.
+
+The candidate framework is `ofNormals (G − vtx 3) endsσρ qρ` with the
+`(shiftPerm 3.castSucc, shiftEdgePerm 3)`-relabelled selector `endsσρ`/seed `qρ` — exactly the shape
+`chainData_bottom_relabel` produces for the `hwmem` slot. The KT-corresponding base edge is the
+`shiftEdgePerm 3`-image: `edge 0 ↦ e₀` (`shiftEdgePerm_apply_edge_zero`) and `edge 1 ↦ edge 2`
+(`shiftEdgePerm_apply_edge_interior`). The coincidence is the already-landed
+`ofNormals_supportExtensor_relabel_perm` (support extensors are graph-independent — they read only
+`ends₀`/`normal` — so the base graph `G − vtx 1` vs the relabel lemma's `G − vtx 3` is irrelevant,
+discharged by the closing `simp only`).
+
+**VERDICT = SUCCESS** (§(o‴)(I.8.8)): the panel correspondence holds at the `supportExtensor` level,
+so option (a′) is buildable — Route W's per-interior-vertex witness can be obtained by re-deriving
+A-1's base witness at the `v₁`-split `G₁` (where the eq.-(6.24) decomposition's rigidity premises
+`h618`/`h622lb` are available) and transporting the *conclusion* (the perp) to `Fva = G − vtx 3`
+across this correspondence + the flagged P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`. This
+de-risks the producer signature without pinning it; the producer + the all-`i` lift +
+`chainData_relabel_arm` follow. d=3 (`i = 2`) is the landed `M₃` swap involution; the general lift
+re-indexes this over each interior chain edge `s + 1 < (i : ℕ)`. -/
+theorem _root_.Graph.ChainData.i3_panelCorrespondence_supportExtensor_deRisk
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h4 : 4 ≤ cd.d)
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ} :
+    (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩))
+        (fun e => ((cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc).symm
+            (ends₀ (cd.shiftEdgePerm ⟨3, by omega⟩ e)).1,
+          (cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc).symm
+            (ends₀ (cd.shiftEdgePerm ⟨3, by omega⟩ e)).2))
+        (fun p => q (cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc p.1,
+          p.2))).toBodyHinge.supportExtensor (cd.edge ⟨0, by omega⟩) =
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+        ends₀ q).toBodyHinge.supportExtensor cd.e₀ ∧
+    (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨3, by omega⟩))
+        (fun e => ((cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc).symm
+            (ends₀ (cd.shiftEdgePerm ⟨3, by omega⟩ e)).1,
+          (cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc).symm
+            (ends₀ (cd.shiftEdgePerm ⟨3, by omega⟩ e)).2))
+        (fun p => q (cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc p.1,
+          p.2))).toBodyHinge.supportExtensor (cd.edge ⟨1, by omega⟩) =
+      (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+        ends₀ q).toBodyHinge.supportExtensor (cd.edge ⟨2, by omega⟩) := by
+  refine ⟨?_, ?_⟩
+  · rw [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm
+      (cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc) (cd.shiftEdgePerm ⟨3, by omega⟩),
+      cd.shiftEdgePerm_apply_edge_zero ⟨3, by omega⟩ (by norm_num)]
+    -- the two base frameworks differ only in their (irrelevant) graph; `supportExtensor` reads
+    -- only `ends₀`/`q`, so both sides reduce to the same `panelSupportExtensor`.
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal]
+  · rw [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm
+      (cd.shiftPerm (⟨3, by omega⟩ : Fin cd.d).castSucc) (cd.shiftEdgePerm ⟨3, by omega⟩),
+      cd.shiftEdgePerm_apply_edge_interior ⟨3, by omega⟩ (by norm_num) (by norm_num)]
+    -- graph-independence of `supportExtensor` + index normalization `edge ⟨1+1,_⟩ = edge ⟨2,_⟩`.
+    simp only [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_ends,
+      PanelHingeFramework.ofNormals_normal]
+
 end CombinatorialRigidity.Molecular
