@@ -4065,6 +4065,48 @@ closes with the two residues `hingeRow v₁ v₃ (…)` + `hingeRow v₂ v₄ (�
 way W9a's fold core lifted its single step). This is the H.11-discipline de-risk: confirm the new piece
 at the first honest case before committing the general signature.
 
+**(I.7.7) KT-FAITHFULNESS RECON VERDICT + LEAF-ρ1 statement correction (read-only source-verification
+recon, opus, 2026-06-20; coordinator-locked).** Prompted by the owner asking "are we grounding the routes
+on what KT did?", an adversarial read-only recon tested the hypothesis *"`hρGv` = a single clean
+`(shiftPerm i).symm` relabel (the span-level `chainData_bottom_relabel`), W9a fold orphan-able."*
+**VERDICT: hypothesis REFUTED — the W9a residue machinery is KT-faithful and load-bearing for `hρGv`.**
+- **KT grounding (PDF §6.4.1, verbatim):** KT does NOT transport `r` by a clean relabel. `ρᵢ` (6.54) acts
+  on the columns/panels; the redundancy transport (6.63)–(6.66) is **fundamental row operations** — the
+  degree-2-vertex `a`-column cancellation (eq 6.44/6.43, p.690–691: `r = −Σ λ_{(ac)j} rⱼ(q(ac))` from the
+  degree-2-at-`a` dependence, "since only `ab` and `ac` are incident to `a`"), iterated `i−1` times along
+  the cycle to `±r` (6.66, "in a manner similar to … (6.44)"). **That `a`-column cancellation IS the W9a
+  `wstep` residue** (`wstep v a c = (funLeft (swap a v)).dualMap − (screwDiff v c).dualMap ∘ (single
+  a).dualMap`). So the fold faithfully models KT; it is not a Lean detour.
+- **Lean obstruction to the clean relabel (why `T` is not span-to-span):** the moving-body generator
+  `hingeRow a c r` (the `e_c = ac` row, degree-2 at `a`) maps under the *bare* relabel to `hingeRow v c r`,
+  which is NOT a genuine `(G − vᵢ)` row (in `G − a` the only `v–c` link is the candidate fresh edge `e₀`
+  with support `C(q(vᵢ₋₁ vᵢ₊₁))`, which `r` need not annihilate). Only the `a`-column subtraction cancels
+  it (read off the landed `span_induction` in `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`,
+  `Relabel.lean:911–945`). No circularity; the deeper reason is that a bare `dualMap` is span-functorial
+  only if it carries every generator into the target span, and it does not.
+- **Why `hwmem` CAN be a clean relabel but `hρGv` cannot:** different panel level / generator set —
+  `chainData_bottom_relabel` transports the bottom-row *family* (moving body `vᵢ` still present at degree 2
+  in `G − v₁`, classified genuine-or-block, no orphan); the `hρGv` redundancy is the one object riding the
+  `a`-column dependence.
+- **I.7.4(a) SUPERSEDED.** Its "the residue is a `(G − vᵢ)` row at the surviving successor edge
+  `edge(s+2)`" is WRONG: the `wstep` residue link is `v–c = vtx(s+1)–vtx(s+3)` (the freed slot `v` to `c`),
+  a NON-edge, NOT `a–c = edge(s+2)`. The residue is not a standalone span member; it is extracted by the
+  **d=3 M₃ template** (`case_III_arm_realization_M3`, `Relabel.lean:2437–2506`): feed the base redundancy
+  through W9a (`hingeRow v b ρ − hingeRow v c ρ ∈ span`), identify `hingeRow v b ρ` as the genuine `e_b`-row
+  (via `hρe₀`), then `sub_mem` + `sub_sub_cancel` extracts the engine's `hρGv` slot (= the residue
+  `hingeRow v c ρ`). LEAF-ρ1 at general `d` is the `i−1`-step generalization of THIS, not an "add residues
+  at surviving edges" telescope.
+- **The row-306 build's "LEAF-ρ1 is false for general φ" was FLAWED reasoning** ("relabel-only foldl not a
+  span member ⟹ the difference not a span member" is a non-sequitur — the difference can be a span member
+  while neither term is). It correctly caught the I.7.4(a) link error and correctly refuted the
+  clean-relabel collapse, but its conclusion that LEAF-ρ1 must be dropped does not follow. The route is the
+  fold + the d=3 M₃ extraction structure.
+
+**Next (hand-off):** build LEAF-ρ1 via the d=3 M₃ template generalized to `i−1` steps, doing the `i=3`
+de-risk *for real* (the row-306 build bailed into the clean-relabel tangent before finishing it). The
+clean-relabel route is CLOSED (refuted-against-KT); `T` still appears as LEAF-ρ2 (the literal-row
+identification), which is correct and load-bearing, but does not discharge the slot alone.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

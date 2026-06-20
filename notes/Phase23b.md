@@ -15,10 +15,14 @@ The **`hρGv` G1 bridges are now LANDED** (`shiftPerm_eq_prod_map_swap_shiftBody
 bridging the landed W9a `foldl` fold (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) to the engine's
 `qρ`/`shiftPerm` form — the `foldl` order lands on the *inverse* product `(funLeft (shiftPerm
 i.castSucc)⁻¹)`, exactly the base→candidate inverse-cycle relabel the arm wants.
-**`hρGv` DESIGN-PASS DONE 2026-06-20** (design §(o‴)(I.7); the RECON-BEFORE-BUILD this banner flagged):
-the bare-row extraction decomposes into **3 leaves** (LEAF-ρ1 residue telescope P≈3 / ρ2 literal-row id /
-ρ3 assembly); span level confirmed matching; one open decision pinned (residue-lands-in-top-span,
-de-risk `i=3` first). **NEXT = LEAF-ρ1** (the residue-membership invariant), then the **arm wiring**
+**`hρGv` DESIGN-PASS DONE + KT-FAITHFULNESS RECON DONE + ROUTE LOCKED 2026-06-20** (design §(o‴)(I.7)/
+(I.7.7)): the bare-row extraction decomposes into **3 leaves** (LEAF-ρ1 / ρ2 literal-row id / ρ3 assembly);
+span level confirmed matching. An adversarial KT recon (owner-prompted) **REFUTED the clean-relabel
+collapse and CONFIRMED the W9a fold is KT-faithful** (KT 6.63–6.66 = the degree-2 `a`-column cancellation =
+the `wstep` residue). Two pin corrections locked (§(o‴)(I.7.7)): I.7.4(a)'s "residue at surviving edge" is
+WRONG (residue link `v–c` is a non-edge), and the correct LEAF-ρ1 = the **d=3 M₃ template**
+(`Relabel.lean:2437–2506`) generalized to `i−1` steps (W9a fold + genuine-row id + `sub_mem`). **NEXT =
+LEAF-ρ1** (the `i−1`-step M₃ generalization, `i=3` 2-residue de-risk FOR REAL first), then the **arm wiring**
 `chainData_relabel_arm`: instantiate `case_III_arm_realization` at the per-`i` roles (`hwmem` → landed
 `chainData_bottom_relabel`, block → `blockRow_relabel_perm`, `hρGv` → LEAF-ρ3 over the landed W9a fold +
 G1 bridges) → **2c-iii** `chainData_dispatch` (closes 23b green-modulo `hdispatch`). detail = *Current
@@ -265,26 +269,31 @@ reverses the product to the **inverse**, which composed with the perm bridge is 
 (shiftPerm i.castSucc)⁻¹).dualMap`, the base→candidate inverse-cycle relabel the arm wants (the same
 `.symm`/`⁻¹` form the `hwmem` leaf `chainData_bottom_relabel` already uses).
 
-**NEXT STEP — `hρGv` bare-row extraction (LEAF-ρ1/ρ2/ρ3), then the arm wiring `chainData_relabel_arm`.**
-The `hρGv` design-pass is DONE (design §(o‴)(I.7), 2026-06-20): the slot decomposes into **three
-buildable leaves** with exact signatures. **The crux confirmed REAL** (the hand-off's framing stands):
-the landed W9a `_foldl` fold output is `(relabel-only foldl) φ − Σ(i−1 a-column residues)`, but the
-engine's `hρGv` wants the *literal* candidate row = `(relabel-only foldl) φ` — so the extraction must add
-the `i−1` residues back via `sub_mem`/`add_mem`, the exact `i−1`-residue generalization of the d=3 M₃
-`hρGv` block's single `sub_mem` (`Relabel.lean:2481–2506`). **One span-level worry RESOLVED favorably**
-(§(o‴)(I.7.0)): both fold endpoints are removeVertex frameworks at the SAME graphs (`G − v₁` / `G − vᵢ`)
-as the engine's `Gv`, so no span-equality mismatch leaf is needed. The leaves (design §(o‴)(I.7.3),
-P-ratings §(I.7.5)):
-- **LEAF-ρ1** the residue-membership invariant (P≈3, the genuinely-new multi-residue telescope, ~1–2
-  commits) — a `reverseRec` fold lemma: `(relabel-only foldl) φ − (wstep foldl) φ ∈ span (G − vᵢ) rows`,
-  each step's a-column residue landing via G4d-i `acolumn_mem_hingeRowBlock_of_span_rigidityRows`.
-- **LEAF-ρ2** the literal-row identification (P≈2, a rewrite chain via the landed G1 bridges +
-  `shiftPerm_inv_*`; can fold into ρ3).
-- **LEAF-ρ3** the `hρGv` assembly inline in the arm (P≈2, the `sub_mem`/`add_mem` combine).
-**ONE honest open decision** (clause-(ii), §(o‴)(I.7.4)): whether each intermediate residue lands in the
-TOP span directly (the favorable (a), likely by `deg_two`/`shiftBodyGraph_isLink_pred_edge`) or rides the
-forward chain inclusion (b) — NOT a motive/IH/contract change; **de-risk gate the 2-residue `i=3` case
-BEFORE pinning LEAF-ρ1's signature** (§(o‴)(I.7.6)). Then the **arm wiring `chainData_relabel_arm`**:
+**NEXT STEP — build `hρGv` LEAF-ρ1 via the d=3 M₃ template, then LEAF-ρ2/ρ3, then the arm wiring
+`chainData_relabel_arm`.** **KT-FAITHFULNESS RECON DONE + ROUTE LOCKED (§(o‴)(I.7.7), 2026-06-20):** an
+adversarial read-only recon (prompted by the owner's "are we grounding on KT?") REFUTED the
+clean-relabel-collapse hypothesis and CONFIRMED the W9a residue machinery is **KT-faithful** — KT's
+redundancy transport (6.63–6.66) is the degree-2 `a`-column cancellation (eq 6.44, iterated `i−1` to `±r`),
+which IS the `wstep` residue. The **fold route stands** (not a wrong turn); the clean relabel is closed
+(`T` is not span-to-span: the moving-body `e_c=ac` row strips to a non-edge `v–c` row only the `a`-column
+cancels). **Two prior-pin corrections locked by the recon:** (1) §(o‴)(I.7.4)(a) is **SUPERSEDED** — the
+residue link is `v–c = vtx(s+1)–vtx(s+3)` (a NON-edge), NOT the surviving `a–c = edge(s+2)`; the residue is
+NOT a standalone span member; (2) the row-306 build's "LEAF-ρ1 is false" was flawed reasoning (the
+difference can be a span member while neither term is). **The correct LEAF-ρ1 structure = the d=3 M₃
+template** (`case_III_arm_realization_M3`, `Relabel.lean:2437–2506`) generalized to `i−1` steps: feed the
+base redundancy through the W9a fold, identify the genuine relabel-image `e_b`-row (via `hρe₀`), then
+`sub_mem` + `sub_sub_cancel` extracts the engine's `hρGv` slot (= the residue). **Span level matches**
+(§(o‴)(I.7.0)): both fold endpoints are removeVertex frameworks at `G − v₁` / `G − vᵢ` = the engine's `Gv`.
+The leaves:
+- **LEAF-ρ1** (P≈3, the genuinely-new piece) — the `i−1`-step generalization of the d=3 M₃ `case hρGv`
+  extraction (W9a fold + genuine-row identification + `sub_mem`). **Do the `i=3` 2-residue de-risk FOR REAL
+  first** (§(o‴)(I.7.6); the row-306 build bailed into the now-closed clean-relabel tangent before
+  finishing it) — confirm the residues resolve via the `a`-column / G4d-i
+  `acolumn_mem_hingeRowBlock_of_span_rigidityRows`, NOT via "surviving edge."
+- **LEAF-ρ2** the literal-row identification (P≈2, the landed G1 bridges + `shiftPerm_inv_*`; this is the
+  genuine relabel-image row — correct + load-bearing, but does NOT discharge the slot alone).
+- **LEAF-ρ3** the `hρGv` assembly inline in the arm (P≈2, the `sub_mem` combine).
+NOT a motive/IH/contract change. Then the **arm wiring `chainData_relabel_arm`**:
 instantiate `case_III_arm_realization` at the per-`i` roles (cycle generalization of d=3
 `case_III_arm_realization_M3`): seed `qρ = q ∘ shiftPerm i.castSucc`, shared `−ρ₀`; `hwmem` → landed
 `chainData_bottom_relabel`; `hρGv` → LEAF-ρ3; block → `blockRow_relabel_perm`; `hρe₀`/`htrans` → G4d-i +
