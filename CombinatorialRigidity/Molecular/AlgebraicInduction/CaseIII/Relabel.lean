@@ -296,6 +296,46 @@ theorem PanelHingeFramework.rigidityRow_relabel_off_cycle {Gt : Graph α β}
   · rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]
     exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
 
+/-- **The moved-endpoint genuine-row → `(a,b)`-block transport (CHAIN-2c-ii-arm, the genuine-row
+disjunct's wrap-edge branch): a base genuine rigidity row whose link endpoints the relabel `ρ` sends
+to the candidate's fresh-edge endpoints `(a, b)` transports under `(funLeft ρ.symm).dualMap` to the
+candidate `(a,b)`-BLOCK disjunct of the all-`d` candidate-reduction arm's `hwmem` slot**
+(`lem:case-III` general-`d`, KT 2011 §6.4.2 the (6.62) wrap-edge correspondence
+`vᵢvᵢ₊₁ ↦ vᵢ₋₁vᵢ₊₁`; Phase 23b).
+
+This is the **moving / wrap-edge branch** of the genuine-row disjunct of `chainData_bottom_relabel`
+(2c-ii): the base genuine row sits at the chain's top (wrap) edge `edge i` (link `vᵢvᵢ₊₁`), and the
+inverse-cycle relabel `(shiftPerm i)⁻¹` carries it to the candidate-`i` split's fresh short-circuit
+pair `(a, b) = (vᵢ₊₁, vᵢ₋₁)` — which is **not** a `G`-edge (it is the candidate's `e₀`), so the
+image lands in the candidate `(a,b)`-block disjunct rather than a genuine target row. It is the
+cycle generalization of the d=3 `M₃` arm's `x = a` / `y = a` genuine-row branches
+(`case_III_bottom_relabel`, `:1685–1734`, the degree-2 body's only edge mapping to the candidate
+block), lifted from the single swap `Equiv.swap a v` to the whole `(i−1)`-cycle relabel.
+
+The graph layer is abstracted into the two facts the caller supplies for this branch: the relabel
+`ρ` sends the recorded source endpoints to the candidate fresh-edge endpoints (`hu : ρ.symm u = a`,
+`hw : ρ.symm w = b`), and the candidate `(a,b)`-panel extensor (read at the relabelled seed `qρ`)
+coincides with the source `f`-extensor `r` annihilates (`hsupp`, the cycle generalization of the d=3
+`M₃` arm's `qρ(v,·) = q₀(a,·)` seed-coincidence step). With `ρ' := r` the transported row
+`hingeRow (ρ.symm u) (ρ.symm w) r = hingeRow a b r` (`hu`/`hw`) is then the `(a,b)`-block tag whose
+functional annihilates the candidate `(a,b)`-panel extensor (`hsupp` + `hr`). At the d=3 `M₃`
+involution case (`i = 2`, `ρ.symm = ρ`) this is the `case_III_bottom_relabel` block branch. -/
+theorem PanelHingeFramework.rigidityRow_relabel_to_block
+    (ρ : Equiv.Perm α) {qρ : α × Fin (k + 2) → ℝ}
+    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    {f : β} {u w a b : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
+    (hu : ρ.symm u = a) (hw : ρ.symm w = b)
+    (hsupp : panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))
+      = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
+    ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+      ρ' (panelSupportExtensor (fun i => qρ (a, i)) (fun i => qρ (b, i))) = 0 ∧
+      (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+          (BodyHingeFramework.hingeRow u w r) = BodyHingeFramework.hingeRow a b ρ' := by
+  refine ⟨r, ?_, ?_⟩
+  · rw [hsupp]; exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
+  · rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
+
 /-- **The `ChainData` genuine-row `hwmem` disjunct (CHAIN-2c-ii-arm wiring): the interior-candidate
 genuine-row transport, instantiating `rigidityRow_relabel_perm` at the index-shift relabel
 `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`** (`lem:case-III` general-`d`, KT 2011 §6.4.2
