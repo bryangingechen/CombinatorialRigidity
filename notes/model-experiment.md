@@ -104,6 +104,23 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   the row-284 hand-off re-proposed the §(o‴)-rejected per-body block carry; coordinator corrected it and
   flagged a mandatory block-disjunct recon (`notes/Phase23b.md` *Hand-off*). The OPUS-ONLY/cap/fixups
   override expires session-end; a fresh coordinator re-runs the availability check. Findings below.
+- **Session #14 close (2026-06-19/20; rows 292–297, all opus / OPUS-ONLY, gate-verified; user stopped after
+  the interior-chain-edge branch for handoff).** Opened by **catching session-#13's rows-288/291 mis-pin**:
+  the hand-off's "2c-ii-arm is pure instantiation, all transport math landed" was wrong — a build
+  **BLOCKED** (292) + recon-1 (293) source-confirmed the rows-288/291 bricks (`rigidityRow_*relabel*`) are
+  **split-level** while the engine binds `hwmem`/`hρGv` at **removeVertex** level (orphaned-for-the-arm,
+  wrong slot; the design doc's own §(o‴)(I.4) flag had been dropped optimistically). User-adjudicated →
+  **de-risk recon** (294): returned TRACTABLE but via a **false graph-iso** mechanism; coordinator
+  source-verified and **corrected it to a per-row case analysis** (generalizing `case_III_bottom_relabel`;
+  `deg_two` make-or-break, §(o‴)(I.6)). Then built the **3 genuine-row `hwmem` branches** clean (295–297:
+  off-cycle, wrap-edge→block, interior-chain-edge; the last is the general moving form, off-cycle delegates).
+  NEXT = the per-member assembly `chainData_bottom_relabel`. **Durable lessons (drove this session's
+  instruction edits):** (1) an "instantiation: wire landed brick B into consumer C's slot" hand-off is P=1
+  only if B's *conclusion* sits at C's slot's **graph/framework level** — grep-confirming B *exists* ≠
+  level-match → `coordinate-phase` step-1 trigger; (2) a de-risk recon can be **right-verdict-wrong-mechanism**
+  (scrutinize the *proposed leaf*, not just the "tractable" bottom-line); (3) the **build-output polling
+  drain** (row 296, ~175 redundant re-reads) → `CombinatorialRigidity/CLAUDE.md` build-discipline.
+  OPUS-ONLY/cap/fixups expire session-end; a fresh coordinator re-runs the availability check.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
