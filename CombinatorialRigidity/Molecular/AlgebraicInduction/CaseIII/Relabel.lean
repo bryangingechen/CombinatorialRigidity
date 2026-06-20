@@ -2554,37 +2554,39 @@ theorem PanelHingeFramework.case_III_arm_realization_M3
         (Graph.removeVertex_isLink.mp hlink).2.2⟩)
       (fun e x y hlink => hrecGv e x y hlink) hends₃_eb hends₃_off (hwmem j)
 
-/-! ### The `i = 3` 2-residue de-risk computation (CHAIN-2c-ii-arm `hρGv`, the BLOCKED finding)
+/-! ### The `i = 3` 2-residue de-risk for the `hρGv` fresh-edge telescope (CHAIN-2c-ii-arm)
 
-These two lemmas carry out, *for real*, the `i = 3` 2-residue case of the `hρGv` extraction (the
-de-risk gate of `notes/Phase23-design.md` §(o‴)(I.7.6)/(I.7.8)). They are the concrete computation
-that the W9a-fold route to the arm's `hρGv` slot **does not converge at general `d`** — the
-`v₁ v₂ v₃` cycle (`i = 2`, the d=3 `M₃` engine) is the 1-residue involution that *masks* the
-divergence; `i = 3` is the first honest 2-residue case.
+These lemmas carry out, *for real*, the `i = 3` 2-residue case of the `hρGv` extraction (the de-risk
+gate of `notes/Phase23-design.md` §(o‴)(I.7.10)'s RESIDUAL). `i = 3` is the first honest 2-residue
+case — the `v₁ v₂ v₃` cycle (`i = 2`, the d=3 `M₃` engine) is the 1-residue involution that *masks*
+the multi-step telescope.
 
 The chain vertices are `v0 … v4` (`vⱼ = vtx j`); the ascending moved-body list for candidate `i = 3`
 is `[(v1,v2,v3), (v2,v3,v4)]`; the base redundancy is `φ = hingeRow v0 v2 ρ₀` (KT eq. (6.52), the
-`v₀v₂`-block redundancy of the `v₁`-base split). The two computations below show:
+`v₀v₂`-block redundancy of the `v₁`-base split). The KT-source re-derivation
+(§(o‴)(I.7.10), option (b)) settled that the engine slot
+`case_III_arm_realization.hρGv = hingeRow vᵢ₊₁ vᵢ₋₁ ρ` is **KT-faithful** (the `Mᵢ` fresh-edge row,
+KT eqs. 6.56/6.64), and that the genuinely-missing piece is **KT eq. (6.66)** — the iterated
+degree-2 `±r` telescope carrying the W9a fold's `(v₀v₁)`-row form to the fresh-edge slot row. These
+lemmas confirm that telescope **converges** at `i = 3`:
 
-* **`W φ`** — the landed seed-advancing W9a `wstep` foldl
-  (`shiftBodyListAsc_foldl_mem_span_rigidityRows`) sends the base redundancy to
-  `hingeRow v0 v1 ρ₀ + hingeRow v1 v2 ρ₀ + hingeRow v2 v4 ρ₀`.
-* **`D φ = R φ − W φ`** — the relabel-only foldl `R φ = hingeRow v0 v1 ρ₀` (LEAF-ρ2, the literal
-  `edge 0` slot row at the surviving link `v₀—v₁`) minus `W φ` is the residue sum
-  `hingeRow v1 v2 (−ρ₀) + hingeRow v2 v4 (−ρ₀)`, which telescopes (shared endpoint `v₂`) to the
-  **single** row `hingeRow v1 v4 (−ρ₀)` at the link `v₁—v₄`.
+* **`i3_wstep_foldl_base_redundancy_deRisk`** — the landed seed-advancing W9a `wstep` foldl
+  (`shiftBodyListAsc_foldl_mem_span_rigidityRows`, which gives `W φ ∈ span (G − v₃) rows`) sends the
+  base redundancy to `W φ = hingeRow v0 v1 ρ₀ + hingeRow v1 v2 ρ₀ + hingeRow v2 v4 ρ₀`.
+* **`i3_freshEdge_slot_mem_deRisk`** — the re-targeted de-risk: from `W φ ∈ span` (landed) and the
+  two **genuine surviving** chain-edge rows `hingeRow v0 v1 ρ₀` (edge `v₀v₁`, both endpoints survive
+  `G − v₃`) and `hingeRow v1 v2 ρ₀` (edge `v₁v₂`, ditto) in `span`, the fresh-edge slot row
+  `hingeRow v2 v4 ρ₀` is `∈ span` by `sub_mem` (`W φ` minus the two surviving rows). This is exactly
+  the KT-(6.66) peel-off realized as membership algebra: the slot row IS `W φ − (surviving rows)`,
+  so the telescope route to `case_III_arm_realization.hρGv` **closes at `i = 3`**. Confirming this
+  before pinning the general arm signature is the H.11-discipline gate (option (b) buildable, no
+  engine/motive change).
 
-**The obstruction this exposes.** The engine slot `case_III_arm_realization.hρGv` is the single row
-`hingeRow a b ρ` at candidate `i`'s fresh-edge pair `(a,b) = (vᵢ₋₁, vᵢ₊₁)` (`splitOff vᵢ vᵢ₋₁ vᵢ₊₁
-e₀`, link `vᵢ₋₁—vᵢ₊₁`). At `i = 3` that link is `v₂—v₄`. But the W9a fold produces neither a genuine
-candidate row (`R φ` is at `v₀—v₁`, a *surviving* edge but **not** the fresh-edge slot) nor a
-slot-shaped residue: the residue sum `D φ` collapses to a single row at `v₁—v₄`, which is **a
-non-edge AND a different link from the slot's `v₂—v₄`**. At `i = 2` all three links coincide
-(`vᵢ₋₁ = v₁`, so the candidate fresh pair is `v₁—v₃` = the residue link `v₁—v₃`), which is why the
-d=3 `M₃` arm closes; the coincidence breaks for `i ≥ 3` (`vᵢ₋₁ = v₂ ≠ v₁`). So the W9a-fold route
-does not produce the engine `hρGv` slot at general `d`, and the engine slot shape (a single
-`hingeRow a b ρ`) is not what the residue machinery delivers for interior candidates — the
-flag-to-owner finding (Phase 23b BLOCKED). -/
+**On the prior `i3_residue_collapse_deRisk` (`D φ = R φ − W φ` at link `v₁—v₄`).** That lemma
+records the relabel-only foldl minus `W φ`; its collapse to `hingeRow v1 v4 (−ρ₀)` is correct but a
+**red herring** for the slot (§(o‴)(I.7.10)): `D φ` was never the slot row. The slot is via `W φ`
+minus the surviving genuine rows (`i3_freshEdge_slot_mem_deRisk`), not via `D φ`. It is kept as the
+correct fold-output record. -/
 theorem _root_.Graph.ChainData.i3_wstep_foldl_base_redundancy_deRisk
     [DecidableEq α] {v0 v1 v2 v3 v4 : α}
     (h01 : v0 ≠ v1) (h02 : v0 ≠ v2) (h03 : v0 ≠ v3)
@@ -2611,8 +2613,9 @@ theorem _root_.Graph.ChainData.i3_wstep_foldl_base_redundancy_deRisk
   ring
 
 /-- The `i = 3` residue collapse: `D φ = R φ − W φ` (relabel-only foldl minus the `wstep` foldl) is
-the single row `hingeRow v1 v4 (−ρ₀)` at the **non-edge** link `v₁—v₄` — *not* the engine slot's
-candidate fresh-edge link `v₂—v₄`. See the section docstring for the BLOCKED finding. -/
+the single row `hingeRow v1 v4 (−ρ₀)` at the link `v₁—v₄`. This is a correct fold-output record but
+a **red herring** for the slot (§(o‴)(I.7.10)): the slot is reached via `W φ` minus the surviving
+genuine rows (`i3_freshEdge_slot_mem_deRisk`), not via `D φ`. -/
 theorem _root_.Graph.ChainData.i3_residue_collapse_deRisk
     (v0 v1 v2 v4 : α) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
     -- `R φ − W φ` (relabel-only foldl minus the `wstep` foldl):
@@ -2625,5 +2628,43 @@ theorem _root_.Graph.ChainData.i3_residue_collapse_deRisk
   simp only [LinearMap.sub_apply, LinearMap.add_apply, BodyHingeFramework.hingeRow_apply,
     LinearMap.neg_apply, map_sub]
   ring
+
+/-- **The re-targeted `i = 3` de-risk gate — the fresh-edge slot row reaches `span` via the
+KT-(6.66) telescope** (CHAIN-2c-ii-arm, `notes/Phase23-design.md` §(o‴)(I.7.10) RESIDUAL). This is
+the gate the design pins as the check to do *before* committing the general arm signature: confirm
+that the engine slot row `hingeRow v2 v4 ρ₀` (candidate `i = 3`'s fresh-edge pair `vᵢ₋₁—vᵢ₊₁ =
+v₂—v₄`) is reachable in `span (G − v₃).rigidityRows` from the landed W9a fold output.
+
+The membership algebra is the KT-(6.66) peel-off made concrete. The landed `wstep` foldl gives
+`W φ = hingeRow v0 v1 ρ₀ + hingeRow v1 v2 ρ₀ + hingeRow v2 v4 ρ₀ ∈ span`
+(`i3_wstep_foldl_base_redundancy_deRisk` + `shiftBodyListAsc_foldl_mem_span_rigidityRows`). The two
+leading summands are **genuine surviving chain-edge rows** of `G − v₃`: `hingeRow v0 v1 ρ₀` is the
+`v₀v₁ = edge 0` row and `hingeRow v1 v2 ρ₀` the `v₁v₂ = edge 1` row, both with neither endpoint
+equal to the removed `v₃`, so both `∈ span`. Subtracting them from `W φ` (`Submodule.sub_mem`)
+leaves the fresh-edge slot row `hingeRow v2 v4 ρ₀ ∈ span` — exactly the engine `hρGv` slot. So the
+telescope route **converges at `i = 3`** (option (b) buildable; the general arm is the `i − 1`-step
+generalization of this peel-off, the d=3 `M₃` `case hρGv` being the `i = 2` 1-step special case).
+
+Stated abstractly over the span carrier `S` (the membership hypotheses are what the arm closer
+supplies from the genuine surviving chain-edge rows; this lemma is the algebraic skeleton, decoupled
+from the graph-level `rigidityRows` plumbing the arm wires in). -/
+theorem _root_.Graph.ChainData.i3_freshEdge_slot_mem_deRisk
+    {v0 v1 v2 v4 : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    {S : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    -- the landed W9a fold output `W φ ∈ span (G − v₃) rows`:
+    (hW : BodyHingeFramework.hingeRow v0 v1 ρ₀ + BodyHingeFramework.hingeRow v1 v2 ρ₀
+          + BodyHingeFramework.hingeRow v2 v4 ρ₀ ∈ S)
+    -- the two genuine surviving chain-edge rows:
+    (h01 : BodyHingeFramework.hingeRow v0 v1 ρ₀ ∈ S)
+    (h12 : BodyHingeFramework.hingeRow v1 v2 ρ₀ ∈ S) :
+    -- the fresh-edge slot row `hingeRow v2 v4 ρ₀ = hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀` reaches `span`:
+    BodyHingeFramework.hingeRow v2 v4 ρ₀ ∈ S := by
+  have h := Submodule.sub_mem _ (Submodule.sub_mem _ hW h01) h12
+  -- `(W φ − hingeRow v0 v1 ρ₀) − hingeRow v1 v2 ρ₀ = hingeRow v2 v4 ρ₀`.
+  have heq : BodyHingeFramework.hingeRow v0 v1 ρ₀ + BodyHingeFramework.hingeRow v1 v2 ρ₀
+        + BodyHingeFramework.hingeRow v2 v4 ρ₀ - BodyHingeFramework.hingeRow v0 v1 ρ₀
+        - BodyHingeFramework.hingeRow v1 v2 ρ₀
+      = BodyHingeFramework.hingeRow v2 v4 ρ₀ := by abel
+  rwa [heq] at h
 
 end CombinatorialRigidity.Molecular

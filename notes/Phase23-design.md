@@ -4220,6 +4220,21 @@ read-only recon against KT §6.4.2 (eqs 6.46–6.66) + the landed bodies tested 
   ~`:2419–2430`) is asserted-buildable but unbuilt. **Re-targeted `i=3` de-risk:** confirm the fresh-edge
   row `hingeRow v₂ v₄ ρ₀` reaches `span(G−v₃)` via the iterated telescope (NOT "does `D φ` = slot" — it
   provably does not, by design). High confidence, KT-verbatim-grounded.
+- **RE-TARGETED `i=3` DE-RISK GATE — PASSED 2026-06-20 (Lean-verified, axiom-clean,
+  `i3_freshEdge_slot_mem_deRisk`, `Relabel.lean` tail).** The membership-algebra skeleton of the
+  KT-(6.66) peel-off is now mechanized: from the landed `W φ = hingeRow v₀v₁ + hingeRow v₁v₂ +
+  hingeRow v₂v₄ ρ₀ ∈ span` (`i3_wstep_foldl_base_redundancy_deRisk` value, `∈ span` by
+  `shiftBodyListAsc_foldl_mem_span_rigidityRows`) and the two **genuine surviving** chain-edge rows
+  `hingeRow v₀v₁ ρ₀` (`edge 0`) + `hingeRow v₁v₂ ρ₀` (`edge 1`) in `span` (both endpoints survive
+  `G−v₃`), `Submodule.sub_mem` leaves the fresh-edge slot row `hingeRow v₂v₄ ρ₀ ∈ span` — exactly the
+  engine `hρGv` slot. So the telescope route **converges at `i=3`**: option (b) is buildable, the slot
+  is reached as `W φ − (surviving rows)` (NOT via `D φ`, the red herring — `i3_residue_collapse_deRisk`
+  is kept as the correct-but-irrelevant fold-output record). **What the gate does NOT yet do** (the
+  remaining LEAF-ρ1 build): identify the two leading summands AS genuine `G−vᵢ` rows from the chain
+  geometry, and generalize the 2-residue peel to the `i−1`-step `reverseRec` telescope — the gate
+  proves the *algebra* closes; the arm wiring supplies the graph-level row memberships (`hwmem` /
+  `chainData_bottom_relabel` machinery). NEXT = build LEAF-ρ1/ρ3 inline in `chainData_relabel_arm`,
+  the `i−1`-step generalization (the gate is the H.11-discipline confirmation before pinning).
 
 ---
 
