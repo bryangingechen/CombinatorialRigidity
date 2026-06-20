@@ -22,12 +22,13 @@ both algebraic-core lemmas now take `Set.InjOn w (Set.Iic (m+2))` instead of the
 `Function.Injective (w : ℕ → α)` (which is `False` over the arm's `[Finite α]`) — instantiable from
 `cd.vtx_inj` via `Set.InjOn.mono`. **NEXT = the arm wiring `chainData_relabel_arm`, gated on the TWO
 remaining prerequisites (ARM-WIRING DESIGN-PASS §(o‴)(I.8)):** the slot→brick map is clean for every engine
-slot except `hρGv`, and **P2 (real math — the route-(a) two-edge column crux now LANDED 2026-06-20,
-`acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`, axiom-clean):** the interior-vertex two-block
-degree-2 column membership (the honest analogue of the one-edge G4d-i, `span_induction` +
-`IsLink.right_unique`); the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediate chain-edge panels,
-NEXT step = the iterated perp `ρ₀_perp_interior_chain_edge` from this brick + discharge the `i=3` gate's
-`hperp0`/`hperp1`; **P3 (flagged, likely clean):** the fold
+slot except `hρGv`, and **P2 (real math — the route-(a) two-edge column crux `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`
+AND the general-`i` surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` now LANDED 2026-06-20,
+axiom-clean):** the interior-vertex two-block degree-2 column membership (honest analogue of the one-edge
+G4d-i) + the lift of the i=3 de-risk's `hrow` to general candidate `i` (perp carried as the gate hyp `hperp`,
+link half fully discharged); the `m` `hsurv` summand memberships need `ρ₀ ⊥` the intermediate chain-edge
+panels, so the SINGLE remaining P2 half = the iterated perp `ρ₀_perp_interior_chain_edge` from the crux,
+discharging the builder's `hperp` + the `i=3` gate's `hperp0`/`hperp1`; **P3 (flagged, likely clean):** the fold
 seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. Neither is a motive/signature change (option (b)
 stands, d=3 zero-regression stands); ~3–4 commits (P2→P3→assembly), then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
@@ -135,19 +136,28 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     (`Relabel.lean`, axiom-clean — the route-(a) crux): for `wGv ∈ span Fv.rigidityRows` with `a` degree-2
     in `Fv` over its TWO surviving links `e_c = ac`/`e_d = ad`, the `a`-column `wGv ∘ single a` lands in
     `Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d` (the honest two-block analogue of the one-edge
-    `acolumn_mem_hingeRowBlock_of_span_rigidityRows`, `span_induction` + `IsLink.right_unique`). **NEXT P2
-    step:** the iterated perp `ρ₀_perp_interior_chain_edge` (use the new sup-brick at each interior vertex,
-    iterate from the W6b `hρe₀` base) + discharge `i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1`
-    from it. ~1–2 commits, real math.
+    `acolumn_mem_hingeRowBlock_of_span_rigidityRows`, `span_induction` + `IsLink.right_unique`).
+    **The general-`i` surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` is now LANDED
+    2026-06-20** (`Relabel.lean`, axiom-clean): the lift of the `i=3` de-risk gate's `hrow` to general
+    candidate `i : Fin (cd.d+1)` and edge index `s` (`s+1 < (i:ℕ)`), `hingeRow (vtx s)(vtx s+1) ρ₀ ∈
+    span (G−vtx i) rigidityRows` once the per-edge perp `hperp` is supplied. The `link` half is fully
+    discharged (`cd.link` + `vtx_inj` survival + `hingeRow_mem_rigidityRows` + `mem_hingeRowBlock_iff`);
+    the **perp half is carried as the explicit gate hyp `hperp`** (the standing idiom for an undischarged
+    crux). This is the exact `hsurv` summand `wstep_foldl_freshEdge_slot_mem` defers, now packaged for the
+    arm. **NEXT P2 step (the only un-landed half):** the iterated perp `ρ₀_perp_interior_chain_edge` (use
+    the new sup-brick at each interior vertex, iterate from the W6b `hρe₀` base) → discharges
+    `freshEdge_surviving_row_mem`'s `hperp` AND `i3_freshEdge_surviving_rows_mem_deRisk`'s
+    `hperp0`/`hperp1`. ~1–2 commits, real math.
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
     `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
 
-  None is a motive/IH/signature change; option (b) + d=3 zero-regression stand. Two `i=3` gates now
-  landed: the abstract `sub_mem` peel (`i3_freshEdge_slot_mem_deRisk`, `m=2`) AND the concrete
-  surviving-row membership (`i3_freshEdge_surviving_rows_mem_deRisk`, the P2 de-risk: link half clean,
-  perp half isolated). The smallest remaining P2 step = the **perp** (degree-2 carry); then P3, assembly.
+  None is a motive/IH/signature change; option (b) + d=3 zero-regression stand. Two `i=3` gates landed
+  (`i3_freshEdge_slot_mem_deRisk` abstract `sub_mem` peel `m=2`; `i3_freshEdge_surviving_rows_mem_deRisk`
+  concrete surviving-row membership) PLUS the general-`i` lift `freshEdge_surviving_row_mem` (perp carried
+  as `hperp`). The single remaining P2 obligation = the **perp `ρ₀_perp_interior_chain_edge`** (the
+  two-edge degree-2 carry, iterated from `hρe₀`); then P3, assembly.
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -342,9 +352,16 @@ LANDED 2026-06-20** (`Relabel.lean`, axiom-clean): for `wGv ∈ span Fv.rigidity
 over its TWO surviving links `e_c=ac`/`e_d=ad`, the `a`-column `wGv ∘ single a` lands in `Fab.hingeRowBlock
 e_c ⊔ Fab.hingeRowBlock e_d` (the honest two-block analogue of the one-edge `acolumn_mem_hingeRowBlock_of_span
 _rigidityRows`; `span_induction` + `IsLink.right_unique`, the route-(a) crux KT eq.(6.44) two-block step).
-**NEXT P2 step = the iterated perp `ρ₀_perp_interior_chain_edge`** (apply the new sup-brick at each interior
-chain vertex, iterate from the W6b `hρe₀` base) + discharge `i3_freshEdge_surviving_rows_mem_deRisk`'s
-`hperp0`/`hperp1` from it for real (the de-risk took them as hyps; the `sub_mem`/`link` halves are clean).
+**The general-`i` surviving-row builder `Graph.ChainData.freshEdge_surviving_row_mem` is now LANDED
+2026-06-20** (`Relabel.lean`, axiom-clean): the lift of the `i=3` de-risk's `hrow` to general candidate
+`i : Fin (cd.d+1)` + edge index `s` (`s+1 < (i:ℕ)`) — `hingeRow (vtx s)(vtx s+1) ρ₀ ∈ span (G−vtx i)
+rigidityRows` once the per-edge perp `hperp` is supplied. The `link` half is fully discharged; the perp
+is carried as the explicit gate hyp (standing crux idiom). This is the exact `hsurv` summand
+`wstep_foldl_freshEdge_slot_mem` defers, packaged for the arm. **NEXT P2 step = the SINGLE remaining
+un-landed half: the iterated perp `ρ₀_perp_interior_chain_edge`** (apply the new sup-brick at each interior
+chain vertex, iterate from the W6b `hρe₀` base) → discharges both `freshEdge_surviving_row_mem`'s `hperp`
+AND `i3_freshEdge_surviving_rows_mem_deRisk`'s `hperp0`/`hperp1` (the de-risk took them as hyps; the
+`sub_mem`/`link`/builder halves are now all clean).
 **(P3, flagged, likely
 clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
 (`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
@@ -592,8 +609,16 @@ contract". The forward detail (route to close the open leaves) is in *Current st
     degree-2 vertex `a` (two surviving links `e_c`/`e_d`), the `a`-column ∈ `hingeRowBlock e_c ⊔ e_d` (KT
     eq. 6.44 two-block; the honest analogue of the one-edge G4d-i, provably non-instantiable there). Also
     the P2 i=3 concrete-link gate `i3_freshEdge_surviving_rows_mem_deRisk` (link half clean, perp isolated).
-  - Remaining P2 (the *forward* part — *Hand-off*): the iterated perp `ρ₀_perp_interior_chain_edge` from
-    this crux + discharge the i=3 gate's `hperp0`/`hperp1`; then P3 (seed bridge) + the arm assembly.
+  - **P2 general-`i` surviving-row builder** `Graph.ChainData.freshEdge_surviving_row_mem`: the lift of the
+    i=3 de-risk gate's `hrow` to general candidate `i : Fin (cd.d+1)` + edge index `s` (`s+1 < (i:ℕ)`) —
+    `hingeRow (vtx s)(vtx s+1) ρ₀ ∈ span (G−vtx i) rigidityRows` once the per-edge perp `hperp` is supplied.
+    The `link`/membership half is fully discharged (`cd.link` + `vtx_inj` survival + `hingeRow_mem_rigidityRows`
+    + `mem_hingeRowBlock_iff`); the perp is the explicit gate hyp (standing crux idiom). This is exactly the
+    `hsurv` summand `wstep_foldl_freshEdge_slot_mem` defers, packaged per-edge for the arm. FRICTION [idiom]
+    *`ChainData.vtx_ne` against a `Fin (d+1)` variable index — prove `≠` via `congrArg Fin.val (vtx_inj ·)`…*.
+  - Remaining P2 (the *forward* part — *Hand-off*): the SINGLE un-landed half = the iterated perp
+    `ρ₀_perp_interior_chain_edge` from the two-edge crux, which discharges both the builder's `hperp` AND the
+    i3 gate's `hperp0`/`hperp1`; then P3 (seed bridge) + the arm assembly.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)

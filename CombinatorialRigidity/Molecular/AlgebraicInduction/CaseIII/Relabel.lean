@@ -2808,6 +2808,62 @@ theorem _root_.Graph.ChainData.i3_freshEdge_surviving_rows_mem_deRisk
     · exact (Fva.mem_hingeRowBlock_iff _ ρ₀).2 hp
   exact ⟨hrow 0 (by omega) hperp0, hrow 1 (by omega) hperp1⟩
 
+/-- **The general-`i` surviving chain-edge row-membership builder — the `hsurv` summand the
+`hρGv` telescope defers** (CHAIN-2c-ii-arm, P2 of the ARM-WIRING DESIGN-PASS,
+`notes/Phase23-design.md` §(o‴)(I.8.4) step 2; Phase 23b). The general candidate-`i` lift of the
+`i = 3` de-risk gate `i3_freshEdge_surviving_rows_mem_deRisk`'s reusable `hrow` builder: at the
+relabel-arm framework `Fva = ofNormals (G − vtx i) ends qρ` (the candidate that removes the chain
+vertex `vtx i`, `i : Fin (cd.d + 1)`), a surviving interior chain edge `edge s` (`s + 1 < (i : ℕ)`,
+so both endpoints `vtx s`, `vtx (s+1)` have index `< i` and survive `removeVertex (vtx i)`) gives a
+rigidity-row-span member `hingeRow (vtx s) (vtx (s+1)) ρ₀ ∈ span Fva.rigidityRows`, **once** the
+per-edge perpendicularity `ρ₀ ⊥ Fva.supportExtensor (edge s)` (`hp`) is supplied.
+
+This is exactly the family of `hsurv` summand memberships that `wstep_foldl_freshEdge_slot_mem`
+takes as the abstract hypothesis `hsurv : ∀ s ∈ range m, hingeRow (w s) (w (s+1)) ρ₀ ∈ S` (at
+`S := span Fva.rigidityRows`, `w := cd.vtx ∘ Fin.mk`): subtracting the `m` surviving rows from the
+landed W9a fold output `W φ ∈ span` peels off the fresh-edge slot row (the engine `hρGv` slot). The
+**`link` half is concrete-clean** (`cd.link` gives the genuine `G`-link, `vtx_ne` the survival of
+`removeVertex (vtx i)`, `hingeRow_mem_rigidityRows` + `mem_hingeRowBlock_iff` the membership
+certificate); the **`perp` half `hp` is the genuinely-new P2 obligation** carried here as the
+explicit gate hypothesis (the standing project idiom for an undischarged crux), to be discharged by
+the iterated KT eq.~(6.66) degree-2 carry `ρ₀_perp_interior_chain_edge` (§(o‴)(I.8.3.v) route (a))
+from the W6b `hρe₀` base. Generalizes the `i = 3` gate's `hrow` (the `removeVertex (vtx ⟨3,_⟩)`
+special case) to general `i` and general edge index `s` (`s + 1 < (i : ℕ)`), so the arm closer
+`chainData_relabel_arm` consumes one instance per surviving chain edge of candidate `i`. -/
+theorem _root_.Graph.ChainData.freshEdge_surviving_row_mem
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
+    (hs : s + 1 < (i : ℕ))
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ} (ρ₀ : Module.Dual ℝ (ScrewSpace k))
+    -- the per-edge perp obligation (the genuinely-new P2 content the arm must still discharge):
+    (hperp : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx i)) ends qρ).toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0) :
+    BodyHingeFramework.hingeRow (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) ρ₀ ∈
+      Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx i)) ends qρ).toBodyHinge.rigidityRows := by
+  classical
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+    with hFva
+  apply Submodule.subset_span
+  -- the chain edge `edge s` links `vtx s — vtx (s+1)` in `G` (the `link` field at `⟨s,_⟩`).
+  have hlinkG : G.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s, by omega⟩)
+      (cd.vtx ⟨s + 1, by omega⟩) := by
+    have h := cd.link ⟨s, by omega⟩
+    simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  -- both endpoints survive `removeVertex (vtx i)`: indices `s, s+1 < i`, distinct from `i`
+  -- (`vtx_inj`, comparing `Fin.val`s).
+  have hsi : cd.vtx ⟨s, by omega⟩ ≠ cd.vtx i :=
+    fun he => by have : s = (i : ℕ) := congrArg Fin.val (cd.vtx_inj he); omega
+  have hs1i : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx i :=
+    fun he => by have : s + 1 = (i : ℕ) := congrArg Fin.val (cd.vtx_inj he); omega
+  have hlinkGv : (G.removeVertex (cd.vtx i)).IsLink (cd.edge ⟨s, by omega⟩)
+      (cd.vtx ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩) :=
+    Graph.removeVertex_isLink.mpr ⟨hlinkG, hsi, hs1i⟩
+  -- the genuine-link membership certificate: link in `Fva.graph` + `ρ₀ ∈ hingeRowBlock (edge s)`.
+  refine BodyHingeFramework.hingeRow_mem_rigidityRows Fva (e := cd.edge ⟨s, by omega⟩) ?_ ?_
+  · rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact hlinkGv
+  · exact (Fva.mem_hingeRowBlock_iff _ ρ₀).2 hperp
+
 /-! ### The general-`i` `hρGv` fresh-edge telescope (CHAIN-2c-ii-arm, LEAF-ρ1 algebraic core)
 
 The genuinely-new algebraic core of the `hρGv` discharge: the closed-form value of the
