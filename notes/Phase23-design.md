@@ -4749,6 +4749,41 @@ adjudication** — the coordinator/dispatch cannot authorize it as a smallest-ne
 FLAG-AND-STOP awaiting the user's go-ahead on Route W's producer. Orphan status RESOLVED: `_of_witness` / A-2
 `candidate_perp_two_incident_*` STAND (Route W's building blocks).
 
+**(I.8.8) ROUTE W PRODUCER — RECON VERDICT (2026-06-20, opus read-only Plan, coordinator-scrutinized; row
+330). User-adjudicated: recon Route W first. Verdict = option (a′), gated on an i=3 panel-correspondence
+de-risk.** Scoping `exists_interior_redundancy_witness` (the per-vertex eq.-(6.52) witness
+`freshEdge_surviving_row_mem_of_witness` consumes). The recon (source-verified the decomposition's hypotheses)
+refuted the two cheap hopes and identified the one viable route:
+- **Option (b) — transport the witness from A-1's base witness via the relabel — REFUTED** (consistent with the
+  i=3 fork de-risk): the base supplies only the `e₀` perp; the interior perp is not extractable from `hW` + a
+  base perp (the sup is vacuous `=⊤`). A relabel transports genuine *rows* (the `hwmem` slot), NOT the witness's
+  `hcol`/perps.
+- **Option (a-literal) — re-run the landed decomposition `exists_redundant_panelRow_ab_decomposition_acolumn_zero`
+  (`Candidate.lean:571`) at the interior framework `G−vtx i` — INFEASIBLE:** that decomposition requires `h618`
+  (`Gab` rigid at full rank `D(m−1)`) + `h622` (the nested-IH lower bound), BOTH keyed to the **`v₁`-split** `G₁`;
+  the candidate framework `G−vtx i` is the *deleted* graph, not a rigid split, and carries neither premise. There
+  is no per-interior-vertex rigid split (route β does NOT split `d` times — the candidates are role-relabels).
+- **Option (a′) — RECOMMENDED (KT's actual mechanism, eqs. 6.59–6.64):** re-derive the witness at the **BASE
+  split `G₁`** (where `h618`/`h622lb` ARE available — reuse A-1's exact instantiation), obtaining the
+  interior-vertex witness *as it sits in `G₁`*, then transport the *conclusion* (the perp) to `Fva = G−vtx i` via
+  the relabel `(shiftPerm i)⁻¹` / the `qᵢ = q∘ρᵢ` seed identity (KT 6.56). The A-2 carrier
+  `candidate_perp_two_incident_supportExtensors` + `candidateRow_ac_eq_neg` are graph-free and apply verbatim, so
+  the math content is entirely the witness's `hcol` + the transport. **Forces a NEW transport identity** (the
+  eq.-(6.59)/(6.62) panel-correspondence at the `supportExtensor` level) + the already-flagged P3 seed bridge
+  `shiftSeedAdv_eq_funLeft_shiftPerm` (I.8.5); ~3–4 commits; **NO motive/IH/contract change.**
+- **Option (a″) — per-interior-vertex rigidity premise on the chain — NOT recommended:** forces a `ChainData`
+  contract change + diverges from locked route β.
+
+**SMALLEST NEXT COMMIT = the i=3 PANEL-CORRESPONDENCE DE-RISK** (before pinning any producer signature — the
+row-321 discipline): prove `Fva.supportExtensor (edge s)` = the `(shiftPerm)⁻¹`-relabel-image of `G₁`'s panel at
+the KT-corresponding edge (eqs. 6.59/6.62 at the `supportExtensor` level), for the single interior vertex `vtx 1`
+at `i=3`. **SUCCESS** → option (a′) is buildable (the witness comes from A-1's base producer composed with the
+transport); the producer + the all-`i` lift + the arm follow. **FAILURE / needs P3 first** → localizes the true
+blocker before any producer signature is pinned. Orphans: none new (Route-G4d-i-PROJECTED's `interior_perp_carry`
+is dead — that route is refuted by the fork de-risk). Stands: `_of_witness`/A-2/`candidateRow_ac_eq_neg`/the
+telescope/the de-risk gates. Consumes (a′): the eq.-6.24 decomposition at base + the transport machinery
+(`chainData_bottom_relabel`/`shiftPerm`/`shiftSeedAdv`).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

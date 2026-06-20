@@ -411,11 +411,20 @@ here: at d=3 the interior vertex is degree-**one** in the candidate split (its 2
 vertex), which is what forced the single-block landing. So the hoped single-block projection does not exist;
 **Route W (the per-vertex eq.-(6.52) witness via `freshEdge_surviving_row_mem_of_witness` + A-2) is FORCED** —
 the all-`i` lift needs that witness SUPPLIED at each interior vertex (KT eq.~(6.66)'s per-vertex redundancy
-decomposition), which has NO landed producer (a genuinely-new ~3–5-commit producer
-`exists_interior_redundancy_witness` generalizing `exists_redundant_panelRow_ab_decomposition_acolumn_zero`,
-`Candidate.lean:571`). **This is the FLAG-AND-STOP point: the next step (Route W's new producer) is
-genuinely-new math the design pinned for user adjudication, not the smallest-next-commit a dispatch can
-authorize.** **Orphan status RESOLVED by the failed de-risk:** `_of_witness` / A-2 `candidate_perp_two_incident_*`
+decomposition), which has NO landed producer. **FLAG-AND-STOP RESOLVED (2026-06-20, user-adjudicated: recon
+Route W first → recon DONE, row 330, design §(o‴)(I.8.8)).** Route W's only viable form = **option (a′)** (KT's
+eqs. 6.59–6.64 mechanism): re-derive the witness at the BASE split `G₁` (where the eq-6.24 decomposition's
+rigidity premises `h618`/`h622lb` ARE available — reuse A-1's instantiation), then transport the *conclusion*
+(the perp) to `Fva = G−vtx i` via the `(shiftPerm i)⁻¹` relabel. (REFUTED: option (b) transport-the-witness —
+the base carries only the `e₀` perp, the fork de-risk's vacuous `=⊤`; option (a-literal) re-run at `G−vtx i` —
+that framework is the *deleted* graph, not a rigid split, so the decomposition's premises are absent.) (a′)
+forces a NEW panel-correspondence transport identity (eqs. 6.59/6.62 at `supportExtensor` level) + the flagged
+P3 seed bridge, ~3–4 commits, **NO contract change**; (a″) per-vertex rigidity premise NOT recommended (contract
+change, off route β). **SMALLEST NEXT COMMIT = the i=3 PANEL-CORRESPONDENCE DE-RISK** (before pinning the
+producer signature, row-321 discipline): prove `Fva.supportExtensor (edge s)` = the `(shiftPerm)⁻¹`-relabel-image
+of `G₁`'s panel at the KT-corresponding edge, for `vtx 1` at `i=3`. SUCCESS → (a′) buildable (witness = A-1's
+base producer ∘ transport); FAILURE / needs-P3-first → localizes the blocker. **Orphan status RESOLVED by the
+failed fork de-risk:** `_of_witness` / A-2 `candidate_perp_two_incident_*`
 STAND (Route W's building blocks, NOT confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER)
 + the telescope (`:2938`/`:3006`) + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3
 zero-regression. Then the arm `chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v)
