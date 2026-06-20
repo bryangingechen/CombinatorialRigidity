@@ -576,64 +576,24 @@ contract". The forward detail (route to close the open leaves) is in *Current st
   `chainData_bottom_relabel`, the `hρGv` G1 bridges, and LEAF-ρ2. Proof lessons → TACTICS-QUIRKS §38
   (explicit-seed `whnf`) / GOLF §20 (`reverseRec`, the `foldl`→inverse recurrence) / the FRICTION [idiom]
   entries; per-brick mechanics = git + design §(o‴) + the Lean docstrings.
-- **`hρGv` LEAF-ρ1 ALGEBRAIC CORE LANDED 2026-06-20 (`wstep_foldl_hingeRow_telescope` + helpers
-  `wstep_hingeRow_off`/`wstep_hingeRow_frontier`, `Relabel.lean`, all axiom-clean).** The general-`i`
-  closed form of the seed-advancing W9a `wstep` foldl: over an injective vertex `w` and the ascending
-  body list (length `m=i−1`), `foldl wstep (hingeRow (w 0)(w 2) ρ₀) = (∑_{s<m} hingeRow (w s)(w (s+1)) ρ₀)
-  + hingeRow (w m)(w (m+2)) ρ₀`. **Key finding: the telescope is an EXACT closed-form sum, not the
-  per-step `sub_mem` residue telescope the design (§(o‴)(I.7.3)) sketched** — the two per-step helpers
-  (off-body rows are `wstep`-fixed; the single frontier row `hingeRow x a ρ` advances to
-  `hingeRow x v ρ + hingeRow v c ρ`) make the induction-on-`m` (`ofFn_succ'` peel) collapse cleanly,
-  with `Finset.sum_range_succ` + `abel` closing each step. `m=2` recovers `i3_wstep_foldl_base_redundancy_deRisk`
-  verbatim. Realizes KT eq. (6.66). **P1 RESOLVED 2026-06-20:** restated over
-  `Set.InjOn w (Set.Iic (m+2))` (the dead `Function.Injective (ℕ→α)` interface — un-instantiable over the
-  arm's finite `α` — replaced); see the P1 verdict entry below.
-- **`hρGv` general-`m` fresh-edge slot membership LANDED 2026-06-20 (`wstep_foldl_freshEdge_slot_mem`,
-  `Relabel.lean`, axiom-clean).** The `m=i−1` lift of the de-risk gate `i3_freshEdge_slot_mem_deRisk`
-  (`m=2`), abstract over the span carrier `S`: from the landed `wstep` foldl output `∈ S` + the `m`
-  surviving chain-edge rows `hingeRow (w s)(w (s+1)) ρ₀ ∈ S` (`s<m`), the slot row `hingeRow (w m)(w (m+2))
-  ρ₀ ∈ S` — `rw` the telescope, `Submodule.sub_mem` of `Submodule.sum_mem`, `add_sub_cancel_left` (cleaner
-  than the gate's `abel`-rearrange since the telescope's `(∑)+slot` shape is exact). Completes the
-  `sub_mem` ALGEBRA; the arm wiring (`chainData_relabel_arm`) is NOT a clean call of it — §(o‴)(I.8) names
-  **P1** (this lemma's `(w:ℕ→α)`-injective interface is dead over finite `α`, Lean-confirmed → restate
-  finite-range), **P2** (the `hsurv` summand memberships are a real `ρ₀ ⊥ chain-edge panel` obligation,
-  deferred here as an abstract-`S` hyp, unbuilt), **P3** (the fold-vs-engine seed bridge). No FRICTION.
-- **`hρGv` P1 — the finite-range restatement of the algebraic core LANDED 2026-06-20 (`Relabel.lean`,
-  axiom-clean).** Both `wstep_foldl_hingeRow_telescope` + `wstep_foldl_freshEdge_slot_mem` restated **in
-  place** (same names, zero callers existed) over `(hinj : Set.InjOn w (Set.Iic (m+2)))` — the dead
-  `Function.Injective (w : ℕ → α)` interface (`False` over the arm's `[Finite α]`:
-  `Finite.of_injective`+`not_finite ℕ`) cannot be filled by any finite-carrier consumer. Chose `Set.InjOn`
-  over `w : ℕ → α` rather than the design-floated `Fin (m+3) → α` re-index: the `Fin`-index type changes
-  between `m` and `m+1`, fouling the `induction m`; with `Set.InjOn`, the IH takes
-  `hinj.mono (Set.Iic_subset_Iic.mpr …)` and each `fun h => hw h; omega` becomes one local
-  `hne i j (≤N) (≤N) (≠)`. The arm supplies `hinj` from `cd.vtx_inj` via `Set.InjOn.mono`. d=3
-  zero-regression (still no callers). Lesson → FRICTION [idiom] *A `(w : ℕ → α)`-indexed lemma whose
-  carrier will be `[Finite α]`…*.
-- **`hρGv` P2 two-edge column crux LANDED 2026-06-20 (`acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`,
-  `Relabel.lean`, axiom-clean) — the route-(a) crux, the honest two-block analogue of the one-edge G4d-i.**
-  For `wGv ∈ span Fv.rigidityRows` with `a` degree-2 in `Fv` over its TWO surviving links `e_c=ac`/`e_d=ad`
-  (`hdeg2`/`hdeg2r` give `f ∈ {e_c, e_d}`, not the one-edge `f = e_c`), the `a`-column `wGv ∘ single a`
-  lands in `Fab.hingeRowBlock e_c ⊔ Fab.hingeRowBlock e_d`. Proof = `span_induction` (verbatim shape of the
-  one-edge `acolumn_mem_hingeRowBlock_of_span_rigidityRows`) with the generator's `u=a`/`w=a` cases now
-  case-split on which of the two edges, pinning the other endpoint via `IsLink.right_unique` and landing in
-  the corresponding `mem_sup_left`/`mem_sup_right` summand. This realizes KT eq.(6.44)'s two-block step at
-  an interior chain vertex; the one-edge G4d-i / `candidateRow_ac_eq_neg` are provably non-instantiable
-  there (their single-edge `hdeg2` premise is false). NEXT P2 step = the iterated perp
-  `ρ₀_perp_interior_chain_edge` from this brick + discharge the `i=3` gate's `hperp0`/`hperp1`. Friction
-  (binder-substituting `rcases … with rfl`) → FRICTION [idiom] *`rcases … with rfl` on `f = e_c` (…`e_c` an
-  implicit binder)…*.
-- **`hρGv` re-targeted `i=3` de-risk GATE PASSED 2026-06-20 (`i3_freshEdge_slot_mem_deRisk`,
-  `Relabel.lean` tail, axiom-clean).** The H.11-discipline gate the KT-source re-derivation pinned
-  (§(o‴)(I.7.10) RESIDUAL) before committing the general arm signature: confirm the KT-(6.66) telescope
-  converges. The lemma mechanizes the peel-off as membership algebra — from `W φ ∈ span` (landed
-  `shiftBodyListAsc_foldl_mem_span_rigidityRows`, value `hingeRow v₀v₁ + v₁v₂ + v₂v₄ ρ₀` per
-  `i3_wstep_foldl_base_redundancy_deRisk`) and the two genuine surviving chain-edge rows
-  `hingeRow v₀v₁ ρ₀`/`hingeRow v₁v₂ ρ₀` in span, `Submodule.sub_mem` peels the fresh-edge slot row
-  `hingeRow v₂v₄ ρ₀ ∈ span`. So convergence is **confirmed** (the slot is `W φ` minus surviving rows,
-  NOT `D φ` — the latter is a red herring at `v₁—v₄`); the flag-to-owner risk is retired, option (b)
-  buildable. Stated abstractly over the span carrier (membership hyps = what the arm supplies); the
-  remaining LEAF-ρ1 work is the graph-level row-identification + `reverseRec` lift. Proof closes with
-  `abel`-rearrange + `sub_mem` (the `((a+b)+c)−a−b` nesting isn't a direct cancel-lemma pattern).
+- **`hρGv` algebraic core + P2 crux — LANDED 2026-06-20, all axiom-clean (one-line verdicts; full detail
+  = §(o‴)(I.7.10)/(I.8) + git + the Lean docstrings + the promoted FRICTION idioms):**
+  - **LEAF-ρ1 closed-form telescope** `wstep_foldl_hingeRow_telescope` (+ helpers `wstep_hingeRow_off`/
+    `_frontier`): the general-`i` `wstep` foldl of `hingeRow (w 0)(w 2) ρ₀` = `(∑_{s<m} hingeRow wₛ wₛ₊₁ ρ₀)
+    + hingeRow w_m w_{m+2} ρ₀` (`m=i−1`). **An EXACT closed-form sum, NOT the per-step residue telescope
+    §(o‴)(I.7.3) sketched** (KT eq. 6.66; `m=2` recovers the i=3 gate).
+  - **general-`m` slot membership** `wstep_foldl_freshEdge_slot_mem` + the **i=3 gate**
+    `i3_freshEdge_slot_mem_deRisk`: the slot row = `W φ − (∑ surviving rows) ∈ S` (`sub_mem`/`sum_mem`,
+    abstract over the span carrier `S` — the `sub_mem` ALGEBRA only, NOT the concrete memberships).
+  - **P1** the finite-range restatement: both telescope lemmas restated in place over
+    `Set.InjOn w (Set.Iic (m+2))` (the dead `Function.Injective (ℕ→α)` is `False` over `[Finite α]`); the
+    arm supplies `hinj` from `cd.vtx_inj` via `Set.InjOn.mono`.
+  - **P2 two-edge column crux** `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`: at an interior
+    degree-2 vertex `a` (two surviving links `e_c`/`e_d`), the `a`-column ∈ `hingeRowBlock e_c ⊔ e_d` (KT
+    eq. 6.44 two-block; the honest analogue of the one-edge G4d-i, provably non-instantiable there). Also
+    the P2 i=3 concrete-link gate `i3_freshEdge_surviving_rows_mem_deRisk` (link half clean, perp isolated).
+  - Remaining P2 (the *forward* part — *Hand-off*): the iterated perp `ρ₀_perp_interior_chain_edge` from
+    this crux + discharge the i=3 gate's `hperp0`/`hperp1`; then P3 (seed bridge) + the arm assembly.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored (`MeetHodge.lean`,
   axiom-clean).** The byte-identical ~55-line `finrank {n 0, n 1}^⊥ = k` metric transport carried by both
   the (h-3) `complementIso_extensor_mem_range_map_subtype` (its `Q`) and the (h-4)
