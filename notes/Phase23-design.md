@@ -4923,11 +4923,23 @@ all avoid body `a` (`a ≠ uvⱼ ∧ a ≠ vvⱼ`), the `a`-column `(…).comp (
 `LinearMap.ext` → per-summand `hingeRow_comp_single_off` + additivity, via `LinearMap.coe_sum`/`Finset.sum_eq_zero`).
 This is KT eq.~(6.43)/(6.66)'s "every edge off `a` contributes 0 to `a`'s column", framework-free, zero blast
 radius — the `grest`-remainder/`hrest` obligation the A-2 carrier `candidate_perp_two_incident_supportExtensors`
-/ A-3 `freshEdge_surviving_row_mem_of_witness` consume. **STILL NEXT = the regroup lemma proper:** partition the
-edge-grouped `hρGv` summands by incidence to the degree-2 vertex `a` into `(ab)`/`(ac)`/off-`a`-rest (the rest's
-`a`-column now killed by this lemma), then derive `hcol` from the global `g = 0` (NOT `hρGv` — `hcol`'s provenance
-is `exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s `sub_self`). The open piece is the index partition
-tying each `hρGv` summand to one of the two incident edges (a degree-2 graph fact). NO motive/IH/contract change.
+/ A-3 `freshEdge_surviving_row_mem_of_witness` consume.
+
+**(I.8.9-COL2) THE REGROUP COLUMN-ISOLATION CORE — LANDED 2026-06-20 (axiom-clean, full project green+lint).**
+The complement of (I.8.9-COL): `BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident`
+(`Relabel.lean` tail). For an edge-indexed `hingeRow` combination `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)`, its
+`a`-column `(…).comp (single a)` EQUALS the `a`-column of the restriction to the `a`-**incident** summands
+`Finset.univ.filter (fun j => a = uvⱼ ∨ a = vvⱼ)`. Proof = split the index set by incidence at `a`
+(`Finset.sum_filter_add_sum_filter_not` + `LinearMap.add_comp`); the off-`a` part's `a`-column is `0` by the
+off-foundation (`hingeRow_comp_single_off` per summand, the negated disjunction destructured by `not_or.mp`),
+so `add_zero`. KT eq.~(6.43)'s "only the edges meeting `a` contribute to `a`'s column"; framework-free, zero
+blast radius. Together (I.8.9-COL)/(I.8.9-COL2) are the column-algebra core of the regroup: `_eq_incident`
+isolates the `a`-column to the incident summands, then the regroup proper splits those by the degree-2 graph
+fact. **STILL NEXT = the regroup lemma proper:** with the `a`-column now isolated to the incident summands,
+the remaining open piece is the **index partition** tying each incident `hρGv` summand to one of the two
+incident chain edges (a degree-2 GRAPH fact) + reshaping its endpoints to the canonical `hingeRow a b` /
+`hingeRow a c` form, then `hcol` from the global `g = 0` (NOT `hρGv` — `hcol`'s provenance is
+`exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s `sub_self`). NO motive/IH/contract change.
 
 ---
 

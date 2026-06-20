@@ -3537,4 +3537,39 @@ theorem BodyHingeFramework.edgeIndexedCombination_comp_single_off [DecidableEq �
     BodyHingeFramework.hingeRow_comp_single_off (hoff j).1 (hoff j).2, LinearMap.zero_apply,
     smul_zero]
 
+/-- **The `a`-column of an edge-indexed `hingeRow` combination is its `a`-incident sub-combination's
+column** (CHAIN-2c-ii-arm, the base regroup column-isolation core; KT 2011 §6.4.1 eq.~(6.43)/(6.66),
+Phase 23b). For a finite ℝ-combination `∑ⱼ cⱼ • hingeRow (uv j)(vv j)(rv j)`, precomposing with body
+`a`'s screw-column injection `single a` equals doing so for the restriction to the summands
+**incident** to `a` (those with `a = uv j ∨ a = vv j`): split the index set by incidence at `a`, and
+the off-`a` part's `a`-column vanishes by `edgeIndexedCombination_comp_single_off`
+(`hingeRow_comp_single_off` per summand). This is the column-algebra core of the eq.~(6.43)
+regrouping of an edge-grouped redundancy `hρGv` at a degree-2 interior chain vertex `a`: the regroup
+proper then uses the degree-2 graph fact (only the two incident chain edges meet `a`) to partition
+the incident summands into the `(ab)`/`(ac)` groups `candidate_perp_two_incident_supportExtensors`
+(A-2) / `freshEdge_surviving_row_mem_of_witness` (A-3) consume. Framework-free, zero blast
+radius. -/
+theorem BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident [DecidableEq α]
+    (a : α) {n : ℕ} (c : Fin n → ℝ) (uv vv : Fin n → α)
+    (rv : Fin n → Module.Dual ℝ (ScrewSpace k)) :
+    (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+      = (∑ j ∈ Finset.univ.filter (fun j => a = uv j ∨ a = vv j),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) := by
+  -- Split the full sum into the `a`-incident part and the off-`a` part.
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun j => a = uv j ∨ a = vv j),
+    LinearMap.add_comp]
+  -- The off-`a` part's `a`-column vanishes: each summand has `a ≠ uv j` and `a ≠ vv j`.
+  have hoff : (∑ j ∈ Finset.univ.filter (fun j => ¬ (a = uv j ∨ a = vv j)),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+    refine LinearMap.ext fun x => ?_
+    simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply, LinearMap.zero_apply]
+    refine Finset.sum_eq_zero fun j hj => ?_
+    obtain ⟨hau, hav⟩ := not_or.mp (Finset.mem_filter.mp hj).2
+    rw [LinearMap.smul_apply, ← LinearMap.comp_apply,
+      BodyHingeFramework.hingeRow_comp_single_off hau hav, LinearMap.zero_apply, smul_zero]
+  rw [hoff, add_zero]
+
 end CombinatorialRigidity.Molecular

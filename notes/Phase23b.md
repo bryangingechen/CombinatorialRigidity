@@ -495,16 +495,27 @@ mechanical `hrest`/`grest`-vanishing core, `BodyHingeFramework.edgeIndexedCombin
 "every edge off `a` contributes 0 to `a`'s column", framework-free, zero blast radius — the `grest`-remainder/
 `hrest` the A-2 carrier `candidate_perp_two_incident_supportExtensors` / A-3 `freshEdge_surviving_row_mem_of_witness`
 consume.
+**(a′-i) REGROUP COLUMN-ISOLATION CORE — LANDED 2026-06-20** (axiom-clean, full project green + lint): the
+complement of the off-`a` foundation, `BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident`
+(`Relabel.lean` tail) — for an edge-indexed `hingeRow` combination `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)`, the
+`a`-column `(…).comp (single a)` EQUALS that of the restriction to the `a`-**incident** summands
+(`Finset.univ.filter (fun j => a = uvⱼ ∨ a = vvⱼ)`): split the index set by incidence at `a` (via
+`Finset.sum_filter_add_sum_filter_not` + `LinearMap.add_comp`), and the off-`a` part's `a`-column vanishes by
+the off-foundation. KT eq.~(6.43)'s "only the edges meeting `a` contribute to `a`'s column", framework-free,
+zero blast radius — the column-algebra core the regroup proper threads before the degree-2 graph fact splits
+the incident summands into the `(ab)`/`(ac)` groups.
 **← NEXT CONCRETE COMMIT = the base regroup-at-interior-degree-2-vertex lemma proper:** partition the
 edge-grouped `hρGv` (now SUPPLIED) summands at a degree-2 interior chain vertex `vtx(s+1)` into the two
 incident-edge groups (`(ab)`/`(ac)`) + the off-`a` rest (its `a`-column now killed by
 `edgeIndexedCombination_comp_single_off`), then derive `hcol` from the global `g = 0`
 (`exists_redundant_panelRow_ab_decomposition_acolumn_zero`'s `sub_self` — `hcol`'s provenance is `g`, NOT
-`hρGv`). Open piece = the index partition tying each `hρGv` summand to one of the two incident edges (degree-2
-graph fact); base chain HEAD `vtx 2` is degree-1 (`i3_base_interior_acolumn_single_deRisk`), deeper vertices
-keep both chain edges. Then: producer `exists_interior_redundancy_witness` (perps via the landed
-`candidate_supportExtensor_perp_of_base`) → P3 seed bridge → all-`i` lift → arm `chainData_relabel_arm`. NO
-motive/IH/contract change.
+`hρGv`). The two column-algebra cores are now LANDED (`edgeIndexedCombination_comp_single_{off,eq_incident}`):
+`_eq_incident` isolates the `a`-column to the incident summands, then the remaining open piece is the **index
+partition** tying each incident `hρGv` summand to one of the two incident chain edges (a degree-2 GRAPH fact)
++ reshaping its endpoints to canonical `hingeRow a b`/`hingeRow a c` form; base chain HEAD `vtx 2` is degree-1
+(`i3_base_interior_acolumn_single_deRisk`), deeper vertices keep both chain edges. Then: producer
+`exists_interior_redundancy_witness` (perps via the landed `candidate_supportExtensor_perp_of_base`) → P3 seed
+bridge → all-`i` lift → arm `chainData_relabel_arm`. NO motive/IH/contract change.
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
