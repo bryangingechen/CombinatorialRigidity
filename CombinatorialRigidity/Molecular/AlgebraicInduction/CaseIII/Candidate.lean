@@ -1669,4 +1669,69 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner [Finite α]
   haveI : Fintype α := Fintype.ofFinite α
   exact Submodule.finrank_add_card_le_of_linearIndependent_mkQ hWS hg hLI
 
+/-! ## The forked general-`d` Case-III rank certification (Phase 23c, option (A))
+
+The general-`d` Case-III rank certification, FORKED off the landed `case_III_rank_certification`
+(the `d = 3` `hρGv`-collapse engine, kept byte-identical for zero-regression). KT 2011 §6.4.2 eqs.
+(6.64)–(6.66): at the candidate framework `F₀ = caseIIICandidate G ends q e_a e_b n_a n' n_b 0`,
+KT's block decomposition `rank R(G,pᵢ) ≥ rank Mᵢ + rank(R(G₁ ∖ row, q₁))` (6.64–6.65) certifies
+the full target rank `D(|V(G)|−1)` as `finrank W + D`, where:
+
+* `W` is the **relabel-image base block** `R(G₁ ∖ row, q₁)` (KT eq. (6.62), the one-step-down row
+  correspondence; member-MOVING, no member held fixed) packaged as a subspace
+  `W ≤ span F₀.rigidityRows` of `finrank W = D·(m_v − 1)` (`m_v = |V(Gv)|`), via the de-risk leaf
+  `Submodule.exists_le_finrank_eq_card_of_injective_map` instantiated at the injective
+  `(funLeft (shiftPerm)⁻¹).dualMap`; and
+* `g` is the **`Mᵢ` corner block**: a finite family of `D` candidate rows in `span F₀.rigidityRows`
+  whose images modulo `W` are linearly independent (KT's `Mᵢ` full-rank `⟺ r ∉ rowspace r(Lᵢ)`,
+  6.65). The `±r` row of `g` is sourced as KT's GENUINE candidate-edge `(vᵢvᵢ₊₁)ᵢ∗` row (eq. (6.66),
+  the abstract redundancy `r` carried as a fixed `ρ₀` while the member MOVES) — **not** as the
+  collapsed `hingeRow v a ρ` of the landed cert, which needed the fixed-member `hρGv` (the
+  member-mapping wall; design §(o‴)(I.8.20)/(I.8.24), `notes/Phase23c.md`).
+
+Unlike the landed engine (which builds its LI family inline through
+`case_III_full_family_restriction` and concludes via `finrank_mono` over the span-containment), this
+cert is the *block-rank-additivity* shape: it consumes the corner data `(W, g, hWS, hg, hLI)` —
+produced by the relabel-image transport + the `±r` identity + the discriminator in the chain ARM
+(`case_III_arm_realization_chain`, the next sub-step; the engine slot the wall lived in is gone, NO
+`hρGv`) — and wires it to the target rank via `finrank_span_rigidityRows_ge_of_corner`, with the
+count `finrank W + D = D·(m_v − 1) + D = D·m_v = D·(|V(G)| − 1)` (`hVcard`, `hVone`). The
+candidate-construction parameters `(e_a, e_b, n', n_b)` only fix the framework whose rigidity-row
+span is bounded; the certification reads off the corner data. -/
+theorem PanelHingeFramework.case_III_rank_certification_chain
+    [DecidableEq β] [Finite α]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {a : α} {e_a e_b : β}
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' n_b : Fin (k + 2) → ℝ}
+    {W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (hWS : W ≤ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).rigidityRows)
+    (hWcard : Module.finrank ℝ W = screwDim k * (V(Gv).ncard - 1))
+    {ι : Type*} [Fintype ι] (hιcard : Fintype.card ι = screwDim k)
+    {g : ι → Module.Dual ℝ (α → ScrewSpace k)}
+    (hg : ∀ j, g j ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' n_b 0).rigidityRows)
+    (hLI : LinearIndependent ℝ (W.mkQ ∘ g)) :
+    screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+          (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+            (fun i => q (a, i)) n' n_b 0).rigidityRows) := by
+  classical
+  set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+    (fun i => q (a, i)) n' n_b 0 with hF₀
+  -- KT's block-rank-additivity (6.64–6.65): `finrank W + |ι| ≤ finrank (span F₀.rigidityRows)`.
+  have hbound := F₀.finrank_span_rigidityRows_ge_of_corner (ι := ι) hWS hg hLI
+  -- The count `finrank W + D = D·(m_v − 1) + D = D·m_v = D·(|V(G)| − 1)` (`m_v = |V(Gv)| ≥ 1`,
+  -- forced by `hVcard`; `D = screwDim k ≥ 1`).
+  rw [hWcard, hιcard] at hbound
+  refine le_trans (le_of_eq ?_) hbound
+  -- `D·(|V(G)|−1) = D·(m_v − 1) + D`: write `|V(G)| = |V(Gv)| + 1` (`hVcard`) and
+  -- `|V(Gv)| = m' + 1` (`m_v ≥ 1`, `hVone`), then `D·(m'+1) = D·m' + D` (`Nat.mul_succ`).
+  have hD : 1 ≤ screwDim k := Nat.choose_pos (by omega)
+  obtain ⟨m', hm'⟩ : ∃ m', V(Gv).ncard = m' + 1 := ⟨V(Gv).ncard - 1, by omega⟩
+  rw [hVcard, hm', Nat.add_sub_cancel, Nat.add_sub_cancel, Nat.mul_succ]
+
 end CombinatorialRigidity.Molecular

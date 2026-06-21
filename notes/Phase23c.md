@@ -12,19 +12,16 @@ into a hard core: the **member-mapping wall**, now decisively characterized as *
 (design §(o‴)(I.8.21), 2026-06-21): (A) escapes the wall but requires a rank-certification re-architecture
 (below the contract/motive). The user adjudicated the fork → **OPEN OPTION (A), de-risk-first**.
 
-**`hWS` base-block-as-subspace packaging leaf LANDED (2026-06-21, the FIRST-build sub-risk §I.8.24(3)).**
-The one piece the cert-re-shape design-pass flagged as "not yet in tree as a packaged subspace" — packaging the
-relabel-image base block as a SUBSPACE `W ≤ span F₀.rigidityRows` with `finrank W = D(m_v−1)` — is now a
-self-contained, axiom-clean abstract-LA mirror leaf
-`Submodule.exists_le_finrank_eq_card_of_injective_map`
-(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`, after `finrank_add_card_le_of_linearIndependent_mkQ`):
-for `f` LI, `L` injective, `∀ i, L (f i) ∈ S`, there is a `W' ≤ S` with `finrank W' = |ι|` (image span; LI via
-`LinearIndependent.map'` along injective `L` — the M₃-arm `w` pattern `Relabel.lean:2729` — + `finrank_span_eq_card`
-+ `span_le`). So `case_III_rank_certification_chain`'s `hWS` + its `finrank W = D(m_v−1)` are now a *consume-landed-
-brick* step (instantiate at `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f` = the base LI family `w` of card `D(m_v−1)`,
-`S = span candidate.rigidityRows`, `hS` = the span-level `chainData_bottom_relabel`), NOT a wall and no longer a
-sub-risk. **The first build's only remaining genuinely-new content is the cert's `hLI`** (the `±r` row's class-mod-`W`
-reduction to the discriminator at the fixed `ρ₀` via `interior_group_acolumn_eq_neg_baseRedundancy`).
+**FIRST build LANDED — `case_III_rank_certification_chain` (2026-06-21, §I.8.24(3)).** The forked general-`d`
+Case-III rank cert is in tree (`Candidate.lean`, after `finrank_span_rigidityRows_ge_of_corner`), axiom-clean,
+build/lint clean. It consumes the corner data `(W, hWS, hWcard, ι/hιcard, g, hg, hLI)` and wires the de-risk leaf
+`finrank_span_rigidityRows_ge_of_corner` to the target rank `D(|V(G)|−1)` via the count `finrank W + D =
+D(m_v−1) + D = D·m_v = D(|V(G)|−1)` (`hVone`/`hVcard` + `Nat.mul_succ`). **NO `hρGv` slot** — the wall is gone:
+the cert is selector-agnostic and reads off the corner block, so KT's `±r` row (eq. (6.66)) enters as a member of
+`g` (a genuine candidate-edge row), never as the collapsed fixed-member `hingeRow v a ρ`. This is the make-or-break
+§I.8.24(1) step proved in Lean: the `W`/`g`/`hLI` shapes type-check against the actual de-risk-leaf signature, (A)
+escapes the wall. The cert carries the corner data `(hWS, hWcard, hg, hLI)` as hypotheses (the project's
+explicit-`h…`-hypothesis idiom); the chain ARM produces them — that is the next sub-step.
 
 **De-risk spike landed (2026-06-21, the §I.8.21(2b)(α) hardest leaf).** The genuinely-new + cost-unknown
 hardest leaf — the **basis-free block-rank-additivity lower bound** — is **DONE and axiom-clean**, with a
@@ -40,13 +37,14 @@ the STOP-and-escalate-to-an-explicit-`Matrix`-model branch is NOT triggered: the
 carrier *does* admit KT's `rank Mᵢ + rank(base∖row)` block lower bound (6.64–6.65), with the corner block `Mᵢ`
 entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-off*.
 
-> **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the FIRST build commit =
-> `case_III_rank_certification_chain`; the cert-re-shape design-pass is DONE, the tension RESOLVED FAVORABLY) in
-> full, then the design doc §(o‴)(I.8.21)–(I.8.24) (the (A) go/no-go + the two de-risk verdicts + the cert-re-shape
-> pin) and the `BlueprintExposition.md` `lem:case-III general-d` "source-side sharpening" entry (the KT-faithful
-> shape). Do **not** re-attempt any of the four dead route families (below) — they are exhausted and adversarially
-> verified. The standing decision is the user-adjudicated fork in *Hand-off*; the next move is a BUILD (the
-> general-`d` cert), no longer an architectural decision.
+> **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the FIRST build commit
+> `case_III_rank_certification_chain` is LANDED; the next build is `case_III_arm_realization_chain`, which produces
+> the cert's corner-data hypotheses) in full, then the design doc §(o‴)(I.8.24) (the cert-re-shape pin, with (3)
+> the buildable-leaf decomposition) — the `M₃` arm `case_III_arm_realization_M3` (`Relabel.lean:2537`) is the
+> closest template for the arm (it produces the analogous corner data at the single-swap `d=3` instance). Do
+> **not** re-attempt any of the four dead route families (below) — they are exhausted and adversarially verified.
+> The standing decision is the user-adjudicated fork in *Hand-off*; the next moves are BUILDS, no longer
+> architectural decisions.
 
 ## Current state — the architectural decision 23c must make first
 
@@ -122,9 +120,10 @@ member-free `±r` value (for the `Mᵢ` row), or does some `hWS`/`hg`/`hLI` smug
 was settled per-hypothesis against the landed de-risk-leaf signature + §I.8.20(e): **each of `hWS`/`hg`/`hLI` is
 the buildable kind.** The wall lived ONLY in the landed cert's COLLAPSED `Unit` row (`hingeRow v a ρ`, needing
 `hρGv`); the re-shape sources the `±r` row as KT's GENUINE candidate-edge `(vᵢvᵢ₊₁)ᵢ∗` row, killing the `hρGv`
-slot. The cert is FORKED (d=3 keeps the landed `hρGv`-collapse engine verbatim; general-`d` gets the new
-`±r`-cert). The next concrete commit is now a **BUILD**: `case_III_rank_certification_chain` (§I.8.24(3) FIRST
-build). See *Hand-off*.
+slot. The cert is FORKED (d=3 keeps the landed `hρGv`-collapse engine verbatim; general-`d` got the new
+`±r`-cert). **The FIRST build `case_III_rank_certification_chain` is LANDED** (2026-06-21, axiom-clean; *Current
+state*); the next concrete commit is `case_III_arm_realization_chain` (produce + consume the cert's corner-data
+hypotheses). See *Hand-off*.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -154,9 +153,10 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
 
 ## Remaining work in Phase 23 (after the arm settles)
 
-1. **The forked general-`d` chain cert + arm** (`case_III_rank_certification_chain` →
-   `case_III_arm_realization_chain`, §I.8.24) → the `±r`-based engine, NO `hρGv` (replaces the dead `hρGv` chain
-   arm). d=3 keeps the landed engine.
+1. **The forked general-`d` chain cert + arm** (§I.8.24) → the `±r`-based engine, NO `hρGv` (replaces the dead
+   `hρGv` chain arm). d=3 keeps the landed engine. **Cert `case_III_rank_certification_chain` ✓ LANDED**
+   (2026-06-21); the arm `case_III_arm_realization_chain` (discharges the cert's corner-data hypotheses) is the
+   next build (*Hand-off*).
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -183,53 +183,48 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**The (A) de-risk spike is LANDED with a clean POSITIVE verdict (2026-06-21).** The hardest leaf — the
-basis-free block-rank-additivity lower bound — is axiom-clean (both decls; see *Current state* + the
-*Decisions made* entry), and it instantiates on the *actual* `Module.Dual ℝ (α → ScrewSpace k)` rigidity-row
-carrier with **no `ScrewSpace ≃ₗ`/§38-defeq friction** (the carrier is never unfolded; only the ambient
-finite-dimensionality is consumed, by `inferInstance`). **The STOP-and-escalate-to-an-explicit-`Matrix`-model
-branch is NOT triggered: the basis-free `finrank (span …)` API carries KT's `rank Mᵢ + rank(base∖row)`
-decomposition.** The two new decls:
-- `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` (mirror,
-  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`) — the abstract LA block-rank-additivity lemma.
-- `BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`, after
-  `case_III_rank_certification`) — the carrier instantiation; the option-(A) rank-cert's intended `finrank
-  W + |ι| ≤ finrank (span F.rigidityRows)` shape, fit for the `Mᵢ`-corner certification.
+**FIRST build LANDED: `case_III_rank_certification_chain` (2026-06-21, axiom-clean, build/lint clean).** The
+forked general-`d` Case-III rank cert is in tree (`Candidate.lean`, after
+`finrank_span_rigidityRows_ge_of_corner`), proving §I.8.24(1) type-checks in Lean: it consumes the corner data
+`(W, hWS, hWcard, ι/hιcard, g, hg, hLI)`, applies `finrank_span_rigidityRows_ge_of_corner` (`finrank W + |ι| ≤
+finrank (span candidate.rigidityRows)`), and closes the count `finrank W + D = D(m_v−1) + D = D·m_v =
+D(|V(G)|−1)` (`hVone`/`hVcard` + `Nat.mul_succ`). **NO `hρGv`** — the wall is gone. The supporting de-risk decls
+already in tree: `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` + `…exists_le_finrank_eq_card_of_
+injective_map` (mirror, `Mathlib/LinearAlgebra/Dimension/Constructions.lean`),
+`BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`), the `±r` identity
+`interior_group_acolumn_eq_neg_baseRedundancy = −ρ₀` (`Relabel.lean:4039`).
 
-**Next concrete commit — LAND `case_III_rank_certification_chain` (the FORKED general-`d` cert; cert-re-shape
-design-pass DONE, the tension RESOLVES FAVORABLY — §(I.8.24), 2026-06-21).** The design-pass settled the
-§I.8.22-vs-§I.8.23 tension per-hypothesis against the landed de-risk-leaf signature + §I.8.20(e): **(A) escapes
-the wall.** The de-risk leaf's `hWS`/`hg` are the **buildable relabel-IMAGE** inclusion (§I.8.20(e), member-MOVING,
-no member held fixed) + genuine candidate rows, NOT the dead fixed-member inclusion; the wall lived ONLY in the
-landed cert's COLLAPSED `Unit` row (`hingeRow v a ρ` via eq. (6.27), needing `hρGv` `:1606–1611`), which the
-re-shape REPLACES with KT's GENUINE candidate-edge `(vᵢvᵢ₊₁)ᵢ∗` row. Read §(I.8.24) in full before building. The
-pin:
-- **FORK the cert (the engine is SHARED, M₃ instantiates it `Relabel.lean:2624`).** d=3 keeps the landed
-  `hρGv`-collapse engine (`case_III_rank_certification`/`case_III_arm_realization`/`_M3`) byte-identical
-  (zero-regression). General-`d` gets NEW `case_III_rank_certification_chain` + `case_III_arm_realization_chain`.
-- **The new cert's three de-risk-leaf inputs (all buildable):** `hWS : W ≤ span candidate.rigidityRows` = the
-  relabel-image base block (`chainData_bottom_relabel` at span level, §I.8.20(e)); `hg : g j ∈ span` for `g` = the
-  `D−1` candidate panel rows `r(Lᵢ)` ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group (NOT the
-  collapsed `hingeRow v a ρ`); `hLI : LinearIndependent (W.mkQ ∘ g)` = the discriminator `hρgate` at the FIXED
-  `ρ₀` + the landed `±r` value `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`, `Relabel.lean:4039`). NO
-  `hρGv` slot.
-- **The FIRST build commit = `case_III_rank_certification_chain`** (`Candidate.lean`, after the de-risk leaf): the
-  make-or-break Lean step that proves §(I.8.24)(1) type-checks. The de-risk leaf + the `±r` identity are landed,
-  so it is a *re-statement consuming landed bricks*, not a new leaf. **The `hWS` sub-risk is now CLOSED:** the
-  base-block-as-subspace packaging leaf `Submodule.exists_le_finrank_eq_card_of_injective_map` landed 2026-06-21
-  (axiom-clean, in the mirror) — instantiate it at `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f = the base LI family
-  `w` of card `D(m_v−1)`, `S = span candidate.rigidityRows`, `hS` = the span-level `chainData_bottom_relabel` — to
-  get `W ≤ span candidate.rigidityRows` with `finrank W = D(m_v−1)` directly. **The cert's only genuinely-new
-  content is now `hLI`** (the `±r` row's class-mod-`W` reduced to the discriminator `hρgate` at the FIXED `ρ₀`
-  via `interior_group_acolumn_eq_neg_baseRedundancy = −ρ₀`).
-- **Then:** `case_III_arm_realization_chain` (the shared W6a–W6f tail lifts verbatim) → the 2c-iii
-  `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on the landed engine)
-  → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the telescope's *membership*
-  content, §I.8.20/§I.8.21(3); the `±r` chain induction LEAF 1–4 STAYS). **Cost band: ~5–9 commits.** Audit
-  trail: design §(o‴)(I.8.21)–(I.8.24), the `lem:case-III general-d` ledger.
+**Next concrete commit — `case_III_arm_realization_chain` (`Arms.lean`, beside the engine; §I.8.24(3)).** It
+consumes `case_III_rank_certification_chain` and DISCHARGES its corner-data hypotheses from the in-scope chain
+data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest template) produces the engine's
+`hρGv` at the single-swap `d=3` instance. The four obligations:
+- **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — instantiate
+  `Submodule.exists_le_finrank_eq_card_of_injective_map` at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the
+  M₃ arm's `hw` route `Relabel.lean:2729`), `f = the base LI family` of card `D(m_v−1)`, `hS` = the span-level
+  `chainData_bottom_relabel` (genuine→genuine, member-MOVING; §I.8.20(e)). Gives `W` with the right `finrank`.
+- **`g` (the `D` corner rows) + `hg`** — `g` = the `D−1` candidate panel rows `r(Lᵢ)` (`panelRow_mem_rigidityRows`,
+  free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
+  `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
+- **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base. The `±r` row's class mod `W`
+  reads at `vᵢ`'s column as `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`), so LI-mod-`W` reduces to
+  `ρ₀ ⊥ C(Lᵢ)` on the discriminator `hρgate` at the FIXED `ρ₀` (= KT's abstract `r`). The shared W6a–W6f arm tail
+  then lifts verbatim (it operates on the rank bound, agnostic to how certified).
+- **Then:** the 2c-iii `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on
+  the landed engine) → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the
+  telescope's *membership* content, §I.8.20/§I.8.21(3); the `±r` chain induction LEAF 1–4 STAYS). **Cost band:
+  ~4–8 commits remaining.** Audit trail: design §(o‴)(I.8.24), the `lem:case-III general-d` ledger.
 
 ## Decisions made during this phase
 
+- **FIRST build `case_III_rank_certification_chain` LANDED (2026-06-21), §I.8.24(1) type-checks in Lean.**
+  The forked general-`d` Case-III rank cert (`Candidate.lean`, after `finrank_span_rigidityRows_ge_of_corner`),
+  axiom-clean, build/lint clean. It is a *re-statement consuming landed bricks*: takes the corner data
+  `(W, hWS, hWcard : finrank W = D(m_v−1), ι/hιcard : |ι| = D, g, hg, hLI)` as hypotheses (the project's
+  explicit-`h…`-hypothesis idiom — the chain ARM discharges them next), applies
+  `finrank_span_rigidityRows_ge_of_corner`, and closes the count `finrank W + D = D·m_v = D(|V(G)|−1)` via
+  `Nat.mul_succ` (needs `hVone : 1 ≤ |V(Gv)|` + `hVcard`). **NO `hρGv` slot** — the cert is selector-agnostic and
+  reads off the corner block, so KT's `±r` row enters as a member of `g`, never the collapsed fixed-member row.
+  Confirms (A) escapes the wall in Lean, not just on paper.
 - **`hWS` base-block-as-subspace packaging leaf landed (2026-06-21), closing the FIRST-build sub-risk
   §I.8.24(3).** `Submodule.exists_le_finrank_eq_card_of_injective_map` (mirror,
   `Mathlib/LinearAlgebra/Dimension/Constructions.lean`): `f` LI + `L` injective + `∀ i, L (f i) ∈ S` ⟹ a
