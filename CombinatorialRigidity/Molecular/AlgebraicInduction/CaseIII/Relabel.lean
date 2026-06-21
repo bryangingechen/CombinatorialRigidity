@@ -3572,6 +3572,75 @@ theorem BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident [Decid
       BodyHingeFramework.hingeRow_comp_single_off hau hav, LinearMap.zero_apply, smul_zero]
   rw [hoff, add_zero]
 
+/-- **A single chain-edge group's screw column lands in that edge's hinge-row block**
+(CHAIN-2c-ii-arm, the base regroup block-membership core; KT 2011 §6.4.1 eq.~(6.43)/(6.66),
+Phase 23b). For an edge-indexed `hingeRow` combination whose every summand `j` carries a
+hinge-row-block row `rvⱼ ∈ Fva.hingeRowBlock (evⱼ)`, the screw column at a body `p`
+of the **`e`-group** sub-combination (the summands with `evⱼ = e`)
+lies in `Fva.hingeRowBlock e`:
+
+`(∑_{evⱼ = e} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single p) ∈ Fva.hingeRowBlock e`.
+
+Each summand `j` carried by `e` links `{u, v}` (the link uniqueness pins its endpoints to `e`'s),
+so its column at `p` is `±rvⱼ` (`hingeRow_comp_single_tail`/`_swap` at the matching endpoint, or `0`
+off both endpoints by `hingeRow_comp_single_off`) — in every case a `block`-member (`rvⱼ ∈ block e`,
+closed under scaling and negation). Summing over the group keeps the membership (the block is a
+submodule). This is the block-membership half of the eq.~(6.43)/(6.66) regrouping: the `e`-group's
+column, read at any body `p`, is `⊥ C(p(e))` — exactly the per-edge perp
+`chainData_freshEdge_slot_mem` consumes once the chain induction (LEAF 4) identifies the column with
+`−ρ₀`. Framework-bound (the block depends on `Fva`), zero blast radius. -/
+theorem BodyHingeFramework.edgeGroup_acolumn_mem_block [DecidableEq α] [DecidableEq β]
+    {Fva : BodyHingeFramework k α β} {e : β} {p : α}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j)) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p) ∈ Fva.hingeRowBlock e := by
+  classical
+  -- Distribute the column restriction over the filtered sum, then close by the block's submodule
+  -- closure (`sum_mem`/`smul_mem`).
+  rw [show (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p)
+      = ∑ j ∈ Finset.univ.filter (fun j => ev j = e),
+          (c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p)
+      from LinearMap.ext fun x => by
+        simp only [LinearMap.comp_apply, LinearMap.coe_sum, Finset.sum_apply]]
+  refine Submodule.sum_mem _ fun j hj => ?_
+  have hje : ev j = e := (Finset.mem_filter.mp hj).2
+  -- the summand's row `rv j ∈ block e` (after `ev j = e`).
+  have hrvj : rv j ∈ Fva.hingeRowBlock e := hje ▸ hrv j
+  -- distribute the column over the scalar.
+  rw [LinearMap.smul_comp]
+  refine Submodule.smul_mem _ _ ?_
+  -- read the column as `±rv j` (tail / swapped tail) or `0` (off both endpoints), each a block
+  -- member (the block is a submodule, neg-/zero-closed). Loop-safe: `p = uv j = vv j` gives a zero
+  -- hinge row (`hingeRow x x ρ = 0`).
+  by_cases hpu : p = uv j
+  · by_cases hpv : p = vv j
+    · -- `p = uv j = vv j`: `hingeRow (uv j) (vv j) (rv j) = hingeRow p p (rv j)`, a zero row.
+      have hzero : BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)
+          = (0 : Module.Dual ℝ (α → ScrewSpace k)) := by
+        rw [← hpu, ← hpv]
+        exact LinearMap.ext fun x => by rw [BodyHingeFramework.hingeRow_apply, sub_self, map_zero,
+          LinearMap.zero_apply]
+      rw [hzero, LinearMap.zero_comp]
+      exact (Fva.hingeRowBlock e).zero_mem
+    · -- `p = uv j ≠ vv j`: tail column is `rv j`.
+      rw [hpu, BodyHingeFramework.hingeRow_comp_single_tail (hpu ▸ hpv)]
+      exact hrvj
+  · by_cases hpv : p = vv j
+    · -- `p = vv j ≠ uv j`: swap to `hingeRow (vv j) (uv j) (−rv j)`, tail column is `−rv j`.
+      have hvu : vv j ≠ uv j := fun he => hpu (hpv.trans he)
+      rw [hpv, BodyHingeFramework.hingeRow_swap (uv j) (vv j) (rv j),
+        BodyHingeFramework.hingeRow_comp_single_tail hvu]
+      exact (Fva.hingeRowBlock e).neg_mem hrvj
+    · -- `p` off both endpoints: zero column.
+      rw [BodyHingeFramework.hingeRow_comp_single_off hpu hpv]
+      exact (Fva.hingeRowBlock e).zero_mem
+
 /-! ### The eq.~(6.44) chain-induction step kernel (CHAIN-2c-ii-arm, LEAF 1)
 
 The step kernel of the KT eq.~(6.66) `±r` chain induction
@@ -4214,5 +4283,63 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_witness [DecidableEq 
   have hperp := (Fva.candidate_perp_two_incident_supportExtensors hab hac lamAB rab lamAC rac grest
     hperp_ab hperp_ac hcol hrest).1
   rwa [hρ₀] at hperp
+
+/-- **The per-edge perp discharged from the single candidate-framework base redundancy**
+(CHAIN-2c-ii-arm, the `hρGv` P2 Route-W all-`i` lift; `notes/Phase23-design.md`
+§(o‴)(I.8.9-SETTLE); Phase 23b). The witness-free closure of the per-edge perpendicularity that
+`chainData_freshEdge_slot_mem` consumes: instead of supplying the eq.~(6.52) two-edge witness
+vertex-by-vertex (`chainData_freshEdge_perp_of_witness`), it is discharged for **every** deeper
+interior surviving chain edge `edge s` (`2 ≤ s`, `s < cd.d`) from the *one* candidate-framework base
+redundancy, exposed edge-grouped (A-1's `hcomb`,
+`exists_edgeIndexed_combination_of_mem_span_rigidityRows`).
+
+The mechanism is KT eq.~(6.66)'s iterated degree-2 `±r` carry, now closed in two landed halves:
+- the **chain induction LEAF 4** (`interior_group_acolumn_eq_neg_baseRedundancy`) — the `edge
+  s`-group's screw column at its tail vertex `vtx s` is `−ρ₀`, the single redundancy `r` carried
+  with a constant column value along the chain (eq.~(6.44) iterated, anchored at the spliced
+  `e₀ = v₀v₂`);
+- the **column-in-block core** (`edgeGroup_acolumn_mem_block`) — that same `edge s`-group column
+  lies in `Fva.hingeRowBlock (edge s)` (each summand carried by `edge s` reads
+  `±rv j ∈ block (edge s)` on the column, the block closed under negation and zero).
+
+Combining, `−ρ₀ ∈ Fva.hingeRowBlock (edge s)`, so `ρ₀ ∈ Fva.hingeRowBlock (edge s)`
+(negation-closed), which is exactly `ρ₀ ⊥ Fva.supportExtensor (edge s)` (`mem_hingeRowBlock_iff`).
+No per-vertex witness production, no eq.~(6.52) `λ`-data threading — the arm `chainData_relabel_arm`
+supplies the slot core's `hperp` for all deeper surviving edges from this one base redundancy. The
+first surviving edge (the degree-1 anchor `edge 2`) is the `s = 2` instance (LEAF 4's base `P(2)`).
+Framework-bound, zero blast radius. -/
+theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    (i : Fin (cd.d + 1)) (s : ℕ) (h2s : 2 ≤ s) (hsd : s < cd.d)
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the candidate-framework `Fva = ofNormals (G − vᵢ)` edge-grouped base redundancy (A-1 `hcomb`)
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends
+      qρ).toBodyHinge.hingeRowBlock (ev j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
+    -- the degree-1-at-anchor closure (the first surviving interior vertex `vtx 2`):
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩) :
+    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends
+      qρ).toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 := by
+  classical
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+    with hFva
+  -- The `edge s`-group's `vtx s`-column is `−ρ₀` (chain induction LEAF 4), and lands in
+  -- `Fva.hingeRowBlock (edge s)` (the column-in-block core). So `−ρ₀ ∈ block (edge s)`.
+  have hcolval := cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb
+    rfl rfl hdeg1 s h2s hsd
+  have hmem := Fva.edgeGroup_acolumn_mem_block (e := cd.edge ⟨s, by omega⟩)
+    (p := cd.vtx ⟨s, by omega⟩) c ev uv vv rv hrv
+  rw [hcolval] at hmem
+  -- `−ρ₀ ∈ block (edge s) ⟹ ρ₀ ∈ block ⟹ ρ₀ ⊥ supportExtensor (edge s)`.
+  have hρ₀mem : ρ₀ ∈ Fva.hingeRowBlock (cd.edge ⟨s, by omega⟩) := by
+    have := (Fva.hingeRowBlock (cd.edge ⟨s, by omega⟩)).neg_mem hmem
+    rwa [neg_neg] at this
+  exact (Fva.mem_hingeRowBlock_iff (cd.edge ⟨s, by omega⟩) ρ₀).1 hρ₀mem
 
 end CombinatorialRigidity.Molecular

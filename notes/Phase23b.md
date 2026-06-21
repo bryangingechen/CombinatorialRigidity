@@ -403,15 +403,30 @@ the `hρGv` G1 bridges (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_f
 zero callers existed so self-contained, d=3 zero-regression). The `Function.Injective (w : ℕ → α)` interface
 was dead over the arm's `[Finite α]`; the arm now supplies `hinj` from `cd.vtx_inj` via `Set.InjOn.mono`.
 
+**PER-EDGE PERP FROM THE BASE REDUNDANCY — LANDED 2026-06-20** (`chainData_freshEdge_perp_of_baseRedundancy`
++ its column-in-block core `BodyHingeFramework.edgeGroup_acolumn_mem_block`, `Relabel.lean` tail, both
+axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The **witness-free** closure of
+the slot core's per-edge `hperp`: for EVERY deeper interior surviving chain edge `edge s` (`2 ≤ s < d`), the
+perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` is discharged from the *single* candidate-framework edge-grouped
+base redundancy (A-1's `hcomb` at the candidate `Fva = ofNormals (G − vᵢ)`) — NO per-vertex eq-(6.52)
+`λ`-witness production. Mechanism: LEAF 4 (`interior_group_acolumn_eq_neg_baseRedundancy`) gives the `edge
+s`-group's tail column `= −ρ₀`; the new `edgeGroup_acolumn_mem_block` puts that same column in
+`Fva.hingeRowBlock (edge s)` (each `edge s`-carried summand reads `±rv j ∈ block (edge s)` on the column, the
+block neg-/zero-closed); so `−ρ₀ ∈ block ⟹ ρ₀ ∈ block ⟹ ρ₀ ⊥ supportExtensor` (`mem_hingeRowBlock_iff`).
+This is KT eq-(6.66)'s `±r` carry closed end-to-end, and it SUPERSEDES the per-vertex
+`chainData_freshEdge_perp_of_witness` route for the arm (that lemma STANDS but the arm no longer needs to
+produce a witness at each interior vertex — it threads this one base-redundancy lemma).
+
 **NEXT STEP — the arm wiring `chainData_relabel_arm` (LEAF 5 assembly).** Every arm-wiring
 prerequisite is now LANDED — the eq-(6.44) chain-induction LEAVES 1–4 (the per-edge `group = −ρ₀`),
 the seed bridge P3 (`shiftSeedAdv_eq_funLeft_shiftPerm`), the LEAF 5 `hρGv`-slot core
-`chainData_freshEdge_slot_mem` (takes an abstract per-edge `hperp`), AND the per-edge perp discharge
-`chainData_freshEdge_perp_of_witness` (2026-06-20, the rung between A-2 and the slot core: discharges
-`ρ₀ ⊥ Fva.supportExtensor (edge s)` from the eq-(6.52) witness + the LEAF 4 regroup identity `hρ₀`).
-What remains is the LEAF 5 *assembly* itself: a `refine case_III_arm_realization` at the per-`i` roles,
+`chainData_freshEdge_slot_mem` (takes an abstract per-edge `hperp`), AND **the witness-free per-edge perp
+`chainData_freshEdge_perp_of_baseRedundancy`** (which supplies the slot core's `hperp` for ALL deeper
+surviving edges from the single base redundancy — no per-vertex witness). What remains is the LEAF 5
+*assembly* itself: a `refine case_III_arm_realization` at the per-`i` roles,
 filling `hwmem ← chainData_bottom_relabel`, `hρGv ← chainData_freshEdge_slot_mem` (its `hperp` per
-surviving edge from `chainData_freshEdge_perp_of_witness`, witness from A-1 + the LEAF 4 regroup), and the
+surviving edge from `chainData_freshEdge_perp_of_baseRedundancy`, the edge-grouped redundancy from A-1's
+`hcomb` output at the candidate framework), and the
 mechanical removeVertex/discriminator slots per the d=3 `M₃` template (design §(o‴)(I.8.4)/(I.8.1)). The `hρGv` algebraic CLOSED FORM is complete + now
 finite-range-callable (`wstep_foldl_hingeRow_telescope` + the membership corollary
 `wstep_foldl_freshEdge_slot_mem`, both axiom-clean, P1 done), and the slot→brick map + engine bindings are
