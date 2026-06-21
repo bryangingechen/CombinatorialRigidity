@@ -194,7 +194,9 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     perp (A-1's base witness at `G₁`) into the candidate-side `hperp_ab`/`hperp_ac`
     (`freshEdge_surviving_row_mem_of_witness` (A-3) interface). Self-contained, zero blast radius.
     **← NEXT (authoritative, post-row-342 chain-induction settle): the 5-leaf chain induction — LEAF 1
-    `interiorGroup_acolumn_adjacency` LANDED 2026-06-20, NEXT = LEAF 2 `anchor_group_eq_neg_baseRedundancy`.**
+    `interiorGroup_acolumn_adjacency` + LEAF 2 `anchor_group_acolumn_eq_baseRedundancy` both LANDED
+    2026-06-20 (the genuinely-new content), NEXT = LEAF 3 `interior_group_eq_baseRedundancy` (the
+    `Nat.le_induction` + the two-endpoint-column orientation bookkeeping; MECHANICAL).**
     See the *Hand-off* §(I.8.9-SETTLE) 5-leaf plan paragraph below + design §(I.8.9-SETTLE). (This supersedes
     the pre-settle producer `exists_interior_redundancy_witness` — the regroup is now the eq-(6.44) chain
     induction off the single base redundancy, not a per-vertex witness; §(I.8.9-PAIR).)
@@ -538,11 +540,23 @@ degree-2 closure `deg_two_split` partitions the incident summands disjointly int
 (`IsLink.eq_and_eq_or_eq_and_eq` + `edge_inj` for the disjointness), then `eq_neg_of_add_eq_zero_left`. The
 "group" is the orientation-agnostic `a`-column restriction `(·).comp (single a)` — a screw functional, no
 re-orientation needed (`candidateRow_ac_eq_neg` is subsumed by the cleaner column-restriction reading).
-**← NEXT = LEAF 2 `anchor_group_eq_neg_baseRedundancy`** (`group(edge 2) = −ρ₀`: `v₂`'s 2nd `G₁`-edge is the
-spliced `e₀ = v₀v₂` so its `(ab)`-group is `hρGv`'s LHS `ρ₀`; the global `acolumn_zero` `∀ a` supplies the
-anchor `hcol`; genuinely-new-but-small, ~1-2c). Then leaf 3 (`Nat.le_induction` base=leaf2 step=leaf1) → leaf 4
-(consumer adapter → A-2 + `neg_mem` + `freshEdge_surviving_row_mem`) → leaf 5 (arm + P3 seed bridge). Full plan
-+ file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
+**LEAF 2 `Graph.ChainData.anchor_group_acolumn_eq_baseRedundancy` — LANDED 2026-06-20** (`Relabel.lean`
+tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The chain induction's
+base case `P(2)`, landed in the same `v₂`-column form as LEAF 1 (built cleaner than the pinned `= −ρ₀`:
+the orientation-agnostic column-isolation form, the `±` sign deferred to LEAF 4). At the first surviving
+interior chain vertex `vtx 2` — degree-ONE in `G_v = G − vtx 1` (the de-risked `hdeg1`, supplied by the
+arm; `i3_base_interior_acolumn_single_deRisk`) — the edge-grouped candidate identity
+`∑ⱼ cⱼ • hingeRow … = hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`) forces `(edge 2-group).comp (single v₂) =
+(hingeRow ab₁ ab₂ ρ₀).comp (single v₂)`: `edgeIndexedCombination_comp_single_eq_incident` reduces the
+`v₂`-column to the `v₂`-incident summands, then `hdeg1` (incident ⟹ `edge 2`) + `hinc_e2` (`edge 2` ⟹
+incident, `IsLink` uniqueness at `edge 2 = v₂v₃`) collapse it to the `edge 2`-group; `hcomb` reads the
+candidate identity on the column. The `±ρ₀` identification (the `e₀ = v₀v₂`-group contributing `ρ₀`) is
+the trivial LEAF-4 reading via `hingeRow_comp_single_tail`/`_off`. Self-contained over `hcomb`/`hdeg1`,
+framework-free, zero blast radius.
+**← NEXT = LEAF 3 `interior_group_eq_baseRedundancy`** (the `Nat.le_induction`, base=LEAF 2 step=LEAF 1,
+plus the per-edge two-endpoint-column orientation bookkeeping the coordinator shape-check note relocated
+here; MECHANICAL ~1c). Then leaf 4 (consumer adapter → A-2 + `neg_mem` + `freshEdge_surviving_row_mem`)
+→ leaf 5 (arm + P3 seed bridge). Full plan + file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
@@ -989,7 +1003,14 @@ M4-forget reach-in routes solely through CHAIN-3 (h-4) + `extensor_update_smul`.
   Built from the 2 landed column-isolation cores (`edgeIndexedCombination_comp_single_{off,eq_incident}`)
   + `deg_two_split` + `IsLink.eq_and_eq_or_eq_and_eq`/`edge_inj` for the disjoint incident partition. The
   "group" = the orientation-agnostic `a`-column restriction `(·).comp (single a)` (subsumes
-  `candidateRow_ac_eq_neg`'s re-orientation). NEXT = LEAF 2 anchor.
+  `candidateRow_ac_eq_neg`'s re-orientation).
+- **CHAIN-2c-ii-arm chain-induction LEAF 2 `anchor_group_acolumn_eq_baseRedundancy` LANDED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean). The base case `P(2)`: at the first surviving interior vertex
+  `vtx 2` (degree-ONE in `G_v = G − vtx 1`, arm-supplied `hdeg1`), the edge-grouped candidate identity
+  `∑ⱼ cⱼ • hingeRow … = hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`) forces `(edge 2-group).comp(single v₂) =
+  (hingeRow ab₁ ab₂ ρ₀).comp(single v₂)` via `_eq_incident` + the degree-1 collapse (`hdeg1` + `hinc_e2`,
+  `IsLink` uniq at `edge 2 = v₂v₃`). Same `v₂`-column form as LEAF 1; the `= ±ρ₀` reading deferred to LEAF 4
+  (`hingeRow_comp_single_tail`). NEXT = LEAF 3 (`Nat.le_induction` + two-endpoint-column bookkeeping).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

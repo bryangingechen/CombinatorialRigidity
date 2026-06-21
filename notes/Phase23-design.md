@@ -5044,7 +5044,20 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   conclusion is `(edge i-group).comp (single a) = −(edge (i−1)-group).comp (single a)` and
   `candidateRow_ac_eq_neg`'s re-orientation is subsumed by the column restriction; the partition is via
   `edgeIndexedCombination_comp_single_eq_incident` (only `a`-incident summands) + `deg_two_split` +
-  `IsLink.eq_and_eq_or_eq_and_eq`/`edge_inj` (disjoint incident split). **NEXT = leaf 2.**
+  `IsLink.eq_and_eq_or_eq_and_eq`/`edge_inj` (disjoint incident split).
+  **LEAF 2 `Graph.ChainData.anchor_group_acolumn_eq_baseRedundancy` LANDED 2026-06-20** (`CaseIII/Relabel.lean`
+  tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The base case `P(2)`, in
+  the same `v₂`-column form as LEAF 1 per the shape-check note (i) — built in the orientation-agnostic
+  column-isolation form `(edge 2-group).comp(single v₂) = (hingeRow ab₁ ab₂ ρ₀).comp(single v₂)`, the `= ±ρ₀`
+  reading deferred to LEAF 4 (cleaner than the pinned `= −ρ₀`; sidesteps committing to `e₀`'s orientation). At
+  the first surviving interior vertex `vtx 2` — degree-ONE in `G_v = G − vtx 1` (the de-risked `hdeg1`, arm-
+  supplied; `i3_base_interior_acolumn_single_deRisk`) — the edge-grouped candidate identity `hcomb`
+  (`∑ⱼ cⱼ • hingeRow … = hingeRow ab₁ ab₂ ρ₀`, A-1's output) forces it: `_eq_incident` reduces the `v₂`-column
+  to the `v₂`-incident summands, `hdeg1` (incident ⟹ edge 2) + `hinc_e2` (edge 2 ⟹ incident, `IsLink` uniq at
+  `edge 2 = v₂v₃`) collapse it to the `edge 2`-group, `hcomb` reads the candidate identity on the column. The
+  `e₀ = v₀v₂`-group contributing `ρ₀` (shape-check note (i)) is then the trivial `hingeRow_comp_single_tail`
+  reading of the RHS at LEAF 4. **NEXT = leaf 3** (`Nat.le_induction` base=leaf2 step=leaf1 + the (ii)
+  two-endpoint-column orientation bookkeeping).
   **Coordinator shape-check note (leaf-2/3 consistency, 2026-06-20).** Leaf 1 landed in `a`-column form
   `(group i).comp(single vᵢ) = −(group i−1).comp(single vᵢ)` — both groups' columns at the SHARED vertex
   `vᵢ = vtx i.castSucc` — which is (±) the screw functional, so it is equivalent to the pinned screw-functional

@@ -3668,4 +3668,81 @@ theorem _root_.Graph.ChainData.interiorGroup_acolumn_adjacency [DecidableEq α] 
   rw [he_ei, he_ep] at hcol
   exact eq_neg_of_add_eq_zero_left hcol
 
+/-! ### The eq.~(6.44) chain-induction anchor (CHAIN-2c-ii-arm, LEAF 2)
+
+The base case of the KT eq.~(6.66) `±r` chain induction
+(`notes/Phase23-design.md` §(o‴)(I.8.9-SETTLE), LEAF 2; Phase 23b). The chain induction is anchored
+at the **first surviving interior chain vertex** `v₂ = cd.vtx 2`. At the base `v₁`-split
+`G_v = G − vtx 1`, the `v₁`-removal kills `v₂`'s *predecessor* chain edge `edge 1 = v₁v₂` (which has
+the removed apex as an endpoint), so `v₂` is **degree-ONE** in `G_v` — its only surviving incident
+edge is the *successor* chain edge `edge 2 = v₂v₃` (the base-side de-risk verdict
+`i3_base_interior_acolumn_single_deRisk`, §(o‴)(I.8.9-RESULT)). The candidate row `hρGv`, exposed
+edge-grouped over `G_v`-links as `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ) = hingeRow (ab) ρ₀` (the A-1
+producer's eq.~(6.66) output), therefore has its `v₂`-column governed entirely by the single
+`edge 2`-group: reading the candidate identity through the column-isolation core
+`edgeIndexedCombination_comp_single_eq_incident` (only `v₂`-incident summands contribute) and the
+degree-1 closure (every `v₂`-incident summand is `edge 2`) gives KT's anchor — the `edge 2`-group's
+`v₂`-column equals the candidate row's `v₂`-column, which `hingeRow_comp_single_tail`/`_off` reads
+as `±ρ₀` (the `e₀ = v₀v₂`-group of KT's eq.~(6.43) contributing `ρ₀`, the surviving sign absorbed by
+the consumer's `neg_mem`). The `v₂`-column restriction `(·).comp (single v₂)` is the
+orientation-agnostic screw functional the chain induction propagates as `±ρ₀`. -/
+
+/-- **The eq.~(6.44) chain-induction anchor: the first interior chain-edge group's `v₂`-column is
+the candidate row's `v₂`-column** (CHAIN-2c-ii-arm, the `hρGv` regroup chain induction LEAF 2;
+Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66) base / §6.4.1 eq.~(6.43), `notes/Phase23-design.md`
+§(o‴)(I.8.9-SETTLE); Phase 23b). Let `g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` be the candidate row
+`hρGv` exposed edge-grouped over `G_v`-links (each summand `j` a genuine `G`-link `evⱼ` from `uvⱼ`
+to `vvⱼ`), so `g` equals the candidate row `hingeRow ab₁ ab₂ ρ₀` (the A-1 producer's `hcomb`). At
+the **first surviving interior chain vertex** `cd.vtx ⟨2, _⟩` — degree-ONE in `G_v = G − vtx 1`, its
+only incident summand-edge the successor chain edge `edge ⟨2, _⟩` (the de-risked `hdeg1`) — the
+candidate identity forces the `edge 2`-group's `v₂`-column to equal the candidate row's `v₂`-column:
+
+`(∑_{evⱼ = edge 2} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single v₂)
+  = (hingeRow ab₁ ab₂ ρ₀).comp (single v₂)`.
+
+This is the chain induction's base case `P(2)` in the same `v₂`-column form as the step kernel
+LEAF 1 (`interiorGroup_acolumn_adjacency`): the right-hand side is `±ρ₀` once the consumer reads it
+through `hingeRow_comp_single_tail`/`_off` (LEAF 4), and the `e₀ = v₀v₂`-group of KT's eq.~(6.43)
+contributing `ρ₀` is exactly this candidate row's tail-column. The proof: the column-isolation core
+`edgeIndexedCombination_comp_single_eq_incident` reduces the `v₂`-column of `g` to its `v₂`-incident
+summands; the degree-1 closure `hdeg1` (every `v₂`-incident summand is `edge 2`, since the
+predecessor edge is shorn off at the base) together with "every `edge 2`-summand is `v₂`-incident"
+(`hlink` + `IsLink` uniqueness at `edge 2 = v₂v₃`) collapses that to the `edge 2`-group; reading the
+candidate identity `hcomb` on the `v₂`-column closes it. Framework-free, zero blast radius. -/
+theorem _root_.Graph.ChainData.anchor_group_acolumn_eq_baseRedundancy [DecidableEq α]
+    [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨2, by omega⟩),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩))
+    = (BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩)) := by
+  classical
+  set a := cd.vtx ⟨2, by omega⟩ with ha
+  set e2 := cd.edge ⟨2, by omega⟩ with he2
+  -- `edge 2` links `vtx 2 — vtx 3` in `G` (`link ⟨2,_⟩`): a `G`-link incident to `a = vtx 2`.
+  have hlink_e2 : G.IsLink e2 a (cd.vtx ⟨3, by omega⟩) := by
+    have h := cd.link ⟨2, by omega⟩
+    simpa only [he2, ha, Fin.castSucc_mk, Fin.succ_mk] using h
+  -- A summand carried by `edge 2` is incident to `a` (its endpoints are `a`'s, by `IsLink` uniq).
+  have hinc_e2 : ∀ j, ev j = e2 → a = uv j ∨ a = vv j := fun j hj =>
+    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_e2)).imp (·.1.symm) (·.2.symm)).symm
+  -- The `a`-incident index set equals the `edge 2`-index set: `⊆` by the degree-1 closure `hdeg1`,
+  -- `⊇` by `hinc_e2`.
+  have hset : Finset.univ.filter (fun j => a = uv j ∨ a = vv j)
+      = Finset.univ.filter (fun j => ev j = e2) := by
+    refine Finset.filter_congr fun j _ => ?_
+    exact ⟨fun h => hdeg1 j h, fun h => hinc_e2 j h⟩
+  -- The `a`-column of `g = hingeRow ab₁ ab₂ ρ₀` is that of its `a`-incident sub-combination
+  -- (`_eq_incident`); `hset` rewrites the incident set to the `edge 2`-set.
+  rw [← hcomb, BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident a c uv vv rv, hset]
+
 end CombinatorialRigidity.Molecular
