@@ -4441,4 +4441,46 @@ theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_bloc
           ((cd.shiftEdgePerm i).symm (evGv j)) :=
   fun j => cd.i3_candidateBlock_transport_deRisk i (evGv j) (hrv j)
 
+/-- **T-2 — the candidate-level edge-grouped transport, combination half** (CHAIN-2c-ii-arm, the
+`hcomb`-relabel half of the row-352 GAP transport leaf
+`chainData_candidateRow_edgeGrouped_transport`; `notes/Phase23-design.md` §(o‴)(I.8.10) sub-leaf
+T-2; KT 2011 §6.4.2 eqs.~(6.62)/(6.66) the index-shift row correspondence; Phase 23b).
+
+Carries A-1's base combination identity
+`hingeRow x y ρ = ∑ⱼ c j • hingeRow (uv j) (vv j) (rv j)`
+(`exists_candidateRow_bottomRows_of_rigidOn`'s edge-grouped tail, `Candidate.lean`, over the base
+endpoints `x y` of the fresh pair) across the relabel `(funLeft σ.symm).dualMap` (`σ = shiftPerm
+i.castSucc`) to the candidate orientation
+`hingeRow (σ.symm x) (σ.symm y) ρ = ∑ⱼ c j • hingeRow (σ.symm (uv j)) (σ.symm (vv j)) (rv j)`.
+
+The relabel is a single linear map, so it distributes over the finite sum (`map_sum`) and the
+scalar multiples (`map_smul`); each `hingeRow` summand transports endpoint-wise by
+`hingeRow_funLeft_dualMap` (`(funLeft ρ).dualMap (hingeRow u v r) = hingeRow (ρ u) (ρ v) r`, no
+involution on `ρ` needed). This is **exactly** the linearity step `chainData_bottom_relabel`
+(`:1939`) performs on a single genuine row, lifted across the `∑ⱼ c j • ·`. The endpoint relabel
+`uv' j := σ.symm (uv j)` makes the candidate combination's RHS match the `(shiftEdgePerm i)⁻¹`-re-
+indexed links T-3 supplies. TRANSPORT, no new math: no motive/IH/contract change. d=3 (`i = 2`) is
+the landed `M₃` single-swap involution. -/
+theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_comb
+    [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    {m : ℕ} (c : Fin m → ℝ) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {x y : α} {ρ : Module.Dual ℝ (ScrewSpace k)}
+    -- A-1's base combination identity (`exists_candidateRow_bottomRows_of_rigidOn`):
+    (hcomb : BodyHingeFramework.hingeRow x y ρ
+      = ∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) :
+    -- the `(funLeft σ.symm).dualMap`-relabelled candidate-orientation combination:
+    BodyHingeFramework.hingeRow ((cd.shiftPerm i.castSucc).symm x)
+        ((cd.shiftPerm i.castSucc).symm y) ρ
+      = ∑ j, c j • BodyHingeFramework.hingeRow ((cd.shiftPerm i.castSucc).symm (uv j))
+          ((cd.shiftPerm i.castSucc).symm (vv j)) (rv j) := by
+  -- Apply the linear relabel `(funLeft σ.symm).dualMap` to both sides of A-1's identity, then
+  -- read each `hingeRow` summand endpoint-wise by `hingeRow_funLeft_dualMap`.
+  have hmap := congrArg
+    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap hcomb
+  rw [BodyHingeFramework.hingeRow_funLeft_dualMap, map_sum] at hmap
+  simp only [map_smul, BodyHingeFramework.hingeRow_funLeft_dualMap] at hmap
+  exact hmap
+
 end CombinatorialRigidity.Molecular
