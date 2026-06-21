@@ -28,13 +28,15 @@ every-dispatch read stays small. When a phase closes, move its rows + its
 - **Testbed:** the molecular program — **Phase 23** (Case III general `d`:
   KT Lemma 6.13 → Thm 5.5 → Thm 5.6 → Conjecture 1.2; sub-lettered,
   codes-until-open). 22k/22l + the post-22l perf round closed 2026-06-16;
-  23a/CARRIER Lean closed 2026-06-16 (row 190); the open sub-phase is **23b**
-  (`notes/Phase23b.md` — the CHAIN / OD-tail work). Continues into successor
+  23a/CARRIER Lean closed 2026-06-16 (row 190); 23b/CHAIN closed 2026-06-21
+  (CHAIN bricks landed, the `hρGv`-seam characterized as a hard core); the open
+  sub-phase is **23c** (`notes/Phase23c.md` — the redundancy-carry
+  re-architecture decision + chain-dispatch completion). Continues into successor
   phases until concluded.
 - **Rungs:** haiku → sonnet → opus → fable (the Agent tool's `model` param).
 - **Coordinator hook:** `.claude/commands/coordinate-phase.md` model-tier
   step, conditional on this file's Status.
-- **Phase-side pointer:** `notes/Phase23b.md` *Hand-off* + the recon
+- **Phase-side pointer:** `notes/Phase23c.md` *Hand-off* + the recon
   `notes/Phase23-design.md`; the general-`d` reuse map is §1.33(C) of
   `notes/Phase22-realization-design.md`.
 - **Attribution:** top-level `CLAUDE.md` *Working* → *Commit attribution*

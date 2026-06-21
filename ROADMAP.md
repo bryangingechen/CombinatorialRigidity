@@ -131,7 +131,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22k. completing the honest all-`k` Theorem 5.5 (Case III, spine) + Thm 5.6 `d=3` | `Molecular/` | ✓ Complete (see `notes/Phase22k.md`) |
 | 22l. ScrewSpace carrier opacity — d=3 API + migration | `Molecular/{RigidityMatrix, AlgebraicInduction/}` | ✓ Complete — build-time refactor, d=3 scope (see `notes/Phase22l.md`) |
 | ⋮ Perf pass (post-Phase-22l) | molecular file splits — `RigidityMatrix/` (3 files) + `CaseIII/` (4 files) + `ForestSurgery/` (2 files) subdirectories | ✓ Complete (see `notes/Phase22l-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/CARRIER closed; 23b/CHAIN open (CHAIN-1/3/4 + OD-7 + CHAIN-2a closed; the `hρGv` arm prerequisites all landed — `hwmem` leaf, algebraic telescope, P1, P2 chain-induction, P3 seed bridge — so the LEAF 5 arm assembly `chainData_relabel_arm` + 2c-iii + CHAIN-5 remain); ENTRY/ASSEMBLY remain (see `notes/Phase23b.md`) |
+| 23. Case III general `d` (Lemma 6.13) → Thm 5.5/5.6 → Conjecture 1.2 | `Molecular/` (sub-lettered; codes-until-open) | ◐ In progress — 23a/CARRIER + 23b/CHAIN closed (CHAIN bricks landed; the `hρGv`-seam characterized as a hard core — the member-mapping wall, intrinsic to KT); 23c open on the redundancy-carry re-architecture decision + chain-dispatch completion; ENTRY/ASSEMBLY code-only (see `notes/Phase23c.md`) |
 | 24–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -735,9 +735,22 @@ realization producers are **also** `d=3`-pinned — they bottom out in the
 `⋀²ℝ⁴` duality `exists_extensor_eq_panelSupportExtensor` (CHAIN-grade), not
 liftable by the numeral pass — so the spine carries them as four further
 explicit hypotheses; `CHAIN`'s `⋀^{d−1}` duality finish is the prerequisite to
-lift them. Next concrete commit: the **`CHAIN`** design recon (re-scoped for
-the expanded boundary); see `notes/Phase23a.md` *Hand-off* and
-`notes/Phase23-design.md` §"CHAIN".
+lift them. **`CHAIN`/23b is now closed** (2026-06-21): it landed the CHAIN
+bricks (CHAIN-1/3/4, OD-7, CHAIN-2a, the CHAIN-2c foundation + the full `hρGv`
+algebraic machinery, all axiom-clean) but did **not** reach the chain dispatch —
+the `hρGv` arm slot ran into a **hard core**, the *member-mapping wall*, now
+source-verified as **intrinsic to KT's argument** (KT eq. 6.62 carries a
+*moving* redundant row; the four candidate route families — seed-advancing
+fold, base→candidate transport, re-firing the existential `A-1`, and the
+column-op/whole-matrix submatrix-containment — are all dead, adversarially
+verified; design §(o‴)(I.8.15)–(I.8.20)). The unfinished CHAIN tail (the
+`hρGv` chain arm + the chain dispatch + CHAIN-5) **+ the redundancy-carry
+re-architecture decision it requires** are carried to **23c**
+(`notes/Phase23c.md`); 23c's first commit is a feasibility recon on the
+KT-faithful matrix / abstract-`r` shape vs. an ENTRY-carry. `ENTRY`/`ASSEMBLY`
+remain later sub-phases (code-only); the `d=3` line stays fully green
+(zero-regression). Next concrete commit: the **23c architectural-decision
+recon** (see `notes/Phase23c.md` *Hand-off*).
 
 ## Engineering conventions
 

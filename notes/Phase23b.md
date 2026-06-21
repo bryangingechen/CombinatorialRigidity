@@ -1,36 +1,31 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (four-producer tail, general-`k`) + CHAIN-2a + the CHAIN-2c-ii
-foundation. The `hρGv` algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3) + slot core + per-edge
-perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition `chainData_freshEdge_slot_perp` +
-the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LANDED axiom-clean.
-**`chainData_relabel_arm_hρGv` is a CORRECT lemma** (producing `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals
-(G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp) — its `hφ`@`endsσρ` slot is the
-member-mapping wall (the `hφ` seam). ALL LOCAL `hφ`-seam routes EXHAUSTED (ROUTE α §(o‴)(I.8.15);
-`hφ`-at-source B1 §(o‴)(I.8.16/17); both local fold re-shapes §(o‴)(I.8.18)); the artifact `(endsσρ, q)` is a
-Lean-MODELLING choice of the seed-advancing fold (KT eqs. 6.60→6.64 use a whole-matrix column-op reframe).
-**The whole-matrix re-architecture (the §(o‴)(I.8.18) unblock) was decomposed (§(o‴)(I.8.19)), its LEAF C
-("re-fire A-1 at the candidate") REFUTED (§(o‴)(I.8.19)-ADDENDUM), and the residual DESIGN QUESTION it left —
-can KT's column-op submatrix-containment (6.60→6.64) carry the FIXED shared `ρ0` membership where the fold
-could not? — is now ADJUDICATED: ROUTE DIES, IT IS THE WALL (§(o‴)(I.8.20), 2026-06-21, KT pp. 696–698 read
-directly).** KT's (6.61) submatrix-containment is relabel-MEDIATED on both axes ((6.62): "column correspondence
-follows from the isomorphism `ρᵢ`"; verbatim "row `(v₀v₂)ᵢ∗` ⇔ row `(v₀v₁)ᵢ∗`" — the redundant row MOVES), so
-the only available transport is the member-MOVING relabel-image map (= the landed `chainData_bottom_relabel`);
-the FIXED-member inclusion is FALSE/unbuilt and is NOT KT's shape; the (6.66) `±r` carry IS the seed-advancing
-telescope (delivers the moved member, no member-fixing second transport). The column-op did NOT escape the
-§(o‴)(I.8.15)/(I.8.18) wall. **NEXT = USER ADJUDICATION OF A FORK, NOT a build (see *Hand-off*):** (B) carry
-`ρ0`/`hφ@endsσρ` to ENTRY (LIKELY-DEAD — the wall relocates, no new transport appears at ENTRY unless ENTRY
-re-derives the redundancy NATIVELY against `endsσρ`), or a more fundamental Lean-architecture rethink of the
-general-`d` arm (re-scoped: §I.8.18's option (A) had LEAF C, now known unsound). **NO C.0–C.6 / motive change**
-(machinery below dispatch C.3 + record C.1). **NO decl orphaned** — the seed-advancing `hφ`-spine + perp/
-telescope subtree stay confirm-and-delete CANDIDATEs (dead-for-this-route, but route B may reuse the telescope
-at ENTRY; the route-SETTLE commit is the user's fork choice). Once the fork settles → arm shell →
-**CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
+**Status: ✓ CLOSED 2026-06-21** (user-adjudicated clean-break close; the CHAIN target — `chainData_dispatch`
+(2c-iii) — was NOT reached). **This note is the ARCHIVE of what CHAIN delivered + the route-history verdicts;
+the live forward state is `notes/Phase23c.md`.**
 
-**23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
-front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
-ASSEMBLY remain). (Sub-phase codes-until-open: `CARRIER`=23a closed, `CHAIN`=23b, `ENTRY`/`ASSEMBLY`
-code-only.)
+**23b delivered** (all axiom-clean): CHAIN-1/3/4, OD-7 (four producers + M4, general-`k`), CHAIN-2a, the
+CHAIN-2c-i/ii foundation, and the full `hρGv` machinery — algebraic core + chain-induction (LEAVES 1–4, the
+KT-(6.66) telescope) + seed bridge (P3) + slot core + per-edge perp + STEP-2 transport + the composition
+`chainData_freshEdge_slot_perp` + the pre-assembled engine slot `chainData_relabel_arm_hρGv`.
+
+**…and a decisive characterization of the `hρGv`-seam as a HARD CORE.** `chainData_relabel_arm_hρGv` is a
+CORRECT carried-hypothesis lemma whose `hφ`@`endsσρ` slot is the **member-mapping wall**, now source-verified
+as **intrinsic to KT's argument** (NOT a Lean artifact): KT (6.62) carries a *moving* redundant row (verbatim
+"row `(v₀v₂)ᵢ∗` ⇔ row `(v₀v₁)ᵢ∗`"; "column correspondence follows from the isomorphism `ρᵢ`"), so producing
+the FIXED shared `ρ0`-member at the relabelled candidate is structurally impossible. All four route families
+are dead, adversarially verified: seed-advancing fold (§(o‴)(I.8.15)), base→candidate transport (§(o‴)(I.8.12)),
+re-fire the existential A-1 (§(o‴)(I.8.19)-ADDENDUM, re-introduces the rejected Fix B), column-op/whole-matrix
+submatrix-containment (§(o‴)(I.8.20), KT's own (6.62) only gives the member-moving relabel-image inclusion).
+The `d=3` line stays **fully green** (M₃ `i=2` is the degenerate single-swap — no fold, no `hφ` slot).
+
+**The unfinished CHAIN tail** (the `hρGv` Case-III chain arm + `chainData_dispatch` (CHAIN-2c-iii) + CHAIN-5)
+**+ the redundancy-carry RE-ARCHITECTURE DECISION it requires** are carried to **23c** (`notes/Phase23c.md`,
+which loads the full architectural-decision context: the wall, why `d=3` worked, the gate, the four dead
+routes, and the (A) KT-faithful-rethink vs (B) ENTRY-carry fork). **NO C.0–C.6 / motive change** was forced
+(the wall is machinery below dispatch C.3 + record C.1). The integer **Phase 23 stays in progress**
+(ENTRY/ASSEMBLY remain). Sub-phase codes: `CARRIER`=23a closed, `CHAIN`=23b closed, 23c = the redundancy-carry
+re-architecture + chain-dispatch completion (open), `ENTRY`/`ASSEMBLY` code-only.
 
 **Orientation.** The **23b (CHAIN layer)** rolling state + hand-off. Cross-phase plan + the detailed
 leaf-level recon arcs live in `notes/Phase23-design.md` (§"CHAIN"; the live `hρGv` arc is §(o‴)(I.6)/(I.8));
@@ -39,6 +34,10 @@ the engine-slot adjudication, the pre-GAP-FOUND "arm converges" framing) is in d
 re-narrated here.
 
 ## Current state
+
+> **[CLOSED 2026-06-21 — the live forward state is `notes/Phase23c.md`.](#)** The text below is the **archive**
+> of the CHAIN arc's final verdict (the hard core); 23c carries the architectural decision + the unfinished
+> CHAIN tail. Canonical detailed home: design §(o‴)(I.8.18)–(I.8.20).
 
 **WHOLE-MATRIX RE-ARCHITECTURE — ROUTE DIES, IT IS THE WALL. The I.8.19-ADDENDUM(C) open question (can KT's
 column-op submatrix-containment carry the FIXED `ρ0` where the fold could not?) is ADJUDICATED AGAINST the
@@ -315,61 +314,21 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is a USER ADJUDICATION OF A FORK, NOT a build. §(o‴)(I.8.20) ADJUDICATED
-the last open question (can KT's column-op submatrix-containment carry the FIXED shared `ρ0`?) AGAINST the
-route: ROUTE DIES, IT IS THE WALL.** KT's (6.61) containment is relabel-MEDIATED on both axes ((6.62): "column
-correspondence follows from `ρᵢ`"; verbatim p. 696 "row `(v₀v₂)ᵢ∗` ⇔ row `(v₀v₁)ᵢ∗`" — the redundant row
-MOVES), so the column-op inclusion is the member-MOVING relabel-image map (= `chainData_bottom_relabel` at the
-span level), the FIXED-member inclusion is FALSE/unbuilt-and-not-KT's, and the (6.66) `±r` carry is the
-seed-advancing telescope (delivers the moved member, no member-fixing second transport). Every
-structurally-distinct mechanism now reduces to the same wall. **THE FORK (pre-judged neither arm — present to
-the user):**
-- **(B) carry `ρ0`/`hφ@endsσρ` to ENTRY** (the landed `chainData_relabel_arm_hρGv` shape, `:4671`), confront
-  the wall where the chain base realization is in scope. FLAGGED LIKELY-DEAD (I.8.12 ROUTE β / I.8.15 B3 /
-  I.8.18(B) / I.8.20): the wall is a property of the relabel-image map, not of what is in scope, so it merely
-  RELOCATES — UNLESS ENTRY can re-derive the redundancy NATIVELY against `endsσρ` (a base split whose selector
-  IS `endsσρ`), which is a different graph-CONSTRUCTION question, not a transport, and is UNEXPLORED. Cheap to
-  state; bounds the obstruction at ENTRY.
-- **(rethink) a more fundamental Lean-architecture rethink of the general-`d` arm** — abandon the
-  materialized-fold modelling of KT (6.62) entirely; carry the abstract `r ∈ ℝ^D` of (6.66) + the `Mᵢ`-block
-  FORM rather than a transported fixed dual-vector (closer to KT's matrix bookkeeping). Genuinely-new
-  realization architecture, cost UNKNOWN. This is §I.8.18's recommendation (A) RE-SCOPED — note (A)'s LEAF-C
-  assembly is now KNOWN UNSOUND (the ADDENDUM), so (A) itself needs fresh scoping.
-**Do NOT build any leaf as "the next step"** — the route's feasibility is settled (dead), and LEAF A
-(member-free rigid-on transport) does NOT rescue it (the crux is the FIXED-member `hρGv`, not rigidity).
-**NO decl is declared orphaned by §I.8.20** — the `hφ`-spine + perp/telescope stay confirm-and-delete
-CANDIDATEs (dead-for-this-route, but route B may reuse the telescope at ENTRY; the route-SETTLE commit IS the
-user's fork choice). STAYS regardless: W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`); the
-engine/rank-cert (parametric in `(Gv,ends,q)`); `chainData_bottom_relabel`; CHAIN-1 LI machinery; d=3 M₃
-(`i=2`) zero-regression. **NO contract/motive change** (machinery below dispatch C.3 + record C.1). Once the
-fork settles → arm shell + **2c-iii** `chainData_dispatch` → **CHAIN-5** (in 23c). Audit trail: design
-§(o‴)(I.8.20) (the "route dies / it's the wall" adjudication + the fork + the full Lean+KT verification),
-§(o‴)(I.8.19)-ADDENDUM (LEAF-C refutation), §(o‴)(I.8.19) (the recon trail; F1/F2 survive, headline RETRACTED),
-§(o‴)(I.8.18) (the fold-form transport ruled dead + KT whole-matrix cross-check), (I.8.17/I.8.15/I.8.12) (the
-dead local routes + the member-mapping wall).
-
-**ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
-`Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
-`G.ChainData n` producer `exists_chainData_of_noRigid` (contract C.2 — KT Lemma 4.6 chain + Lemma 4.8
-split-off minimality at general `d`), and lifts the `6 ≤ bodyBarDim n` floor to the general chain-length
-floor. The chain/cycle dichotomy (OD-1, KT Lemma 4.6 / Lemma 5.4) is **ENTRY's to resolve at build** (C.5).
-**The producer `case_III_hsplit_producer_all_k` (`Arms.lean:777`) is the chain extractor's only consumer**
-(Arms.lean:828–857) — its `hcand` slot is the third lockstep decl (C.0).
-
-**Green-modulo boundary CHAIN hands downstream** (design §"CHAIN"(d)): CHAIN constructs the general-`k`
-`chainData_dispatch` (against the frozen `ChainData` contract) and lifts the four producers (OD-7); **CHAIN-5
-wires it into the spine to discharge `hdispatch` in 23c** (gated on ENTRY's extractor), so 23b hands
-`hdispatch` downstream green-modulo. **ASSEMBLY** composes the honest general-`d` Theorem 5.5, re-greens
-`prop:rigidity-matrix-prop11` + `hub`, derives Thm 5.6, states Conjecture 1.2.
-
-**Blueprint-clarity obligation (owner-flagged 2026-06-18 — "absolutely clear").** Route β **absorbs** KT's
-explicit index-shift isos (6.54–6.56) + ±r chain (6.66) into the Lean `shiftPerm` relabel arm — so the
-`lem:case-III` general-`d` node's prose MUST materialize them explicitly (§(o)/§(o′) pin the four ordered
-points): (1) single-`v₁`-base construction; (2) the index-shift iso `ρᵢ` (the `(i−1)`-cycle) + "exactly the
-same framework" via it; (3) the single redundancy `r` (eq. 6.52) carried ±-ly across the `d` panels (eq.
-6.66); (4) the (6.67) discriminator (Lemma 2.1 on the `d+1` points). The Lean economizes; the exposition must
-not. Tracked in BlueprintExposition (`lem:case-III` general-`d`, extending the d=3 `lem:case-III-claim612-eq644`);
-written as the arm/CHAIN-5 land + at phase-close.
+**23b is CLOSED — the live hand-off is `notes/Phase23c.md`.** The CHAIN target (`chainData_dispatch`) was not
+reached: the `hρGv`-seam is a hard core (the member-mapping wall, **intrinsic to KT** — §(o‴)(I.8.18)–(I.8.20),
+all four route families dead and adversarially verified). Carried to 23c: the unfinished CHAIN tail (the
+`hρGv` Case-III chain arm + `chainData_dispatch` (2c-iii) + CHAIN-5), the **redundancy-carry architectural
+decision** that gates the arm (the (A) KT-faithful matrix/abstract-`r` rethink vs (B) ENTRY-carry fork — 23c's
+first deliverable, a feasibility recon), the **ENTRY** obligation (reshape `Graph.exists_chain_data_of_noRigid`,
+`Reduction.lean:383`, to the `G.ChainData n` producer `exists_chainData_of_noRigid`; KT Lemma 4.6 chain +
+Lemma 4.8 split-off at general `d`; lift the `6 ≤ bodyBarDim n` floor; OD-1 chain/cycle dichotomy is C.5,
+ENTRY's to resolve; the only consumer is `case_III_hsplit_producer_all_k`, `Arms.lean:777`), and **ASSEMBLY**
+(Theorem 5.5 → re-green `prop:rigidity-matrix-prop11` + `hub` → Thm 5.6 → Conjecture 1.2). The CHAIN↔ENTRY
+`G.ChainData n` contract stays **FROZEN** (design §"CHAIN↔ENTRY contract", C.0–C.6; no motive/IH change). The
+blueprint-clarity obligation (the `lem:case-III` general-`d` node must materialize KT's isos 6.54–6.56 + the
+±r chain 6.66 + — per the `BlueprintExposition.md` sharpening — the abstract-`r`/moving-member shape, flagging
+the fixed-functional-transport trap) is carried in `notes/Phase23c.md`, written at phase-close. Audit trail of
+the dead routes: design §(o‴)(I.8.12)/(I.8.15)–(I.8.20).
 
 ## Decisions made during this phase
 
