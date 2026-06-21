@@ -537,6 +537,25 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   not the phase-close write; the full `.tex` prose still lands at phase-close once the arm is `sorry`-free.
   Pointer: `notes/Phase23b.md` §(o‴)(I.7.7); `DESIGN.md` *A degenerate headline case is a target, not a
   template*.
+  **Source-side SHARPENING (2026-06-21; the `hφ`-seam re-architecture arc, model-exp rows 369–372) — the
+  redundancy-carry is THE compressed step, and what KT's terseness leaves open is a *structural choice*.**
+  Source-verified against KT (6.60)–(6.66) this session: **KT carries the single redundancy `r` as an
+  ABSTRACT vector by IN-MATRIX row/column operations on the ONE matrix `R(G,pᵢ)`** — column ops (6.60→6.61)
+  expose `R(G₁,q₁)` as a submatrix, and the redundant row is carried by row ops, with the **member MOVING**
+  across the row correspondence: KT writes (6.62, p. 696) that the row `(v₀v₂)ᵢ∗` of `R(G₁,q₁)` *corresponds
+  to* the row `(v₀v₁)ᵢ∗` of `R(G,pᵢ)` — the redundant row sits on the **moved** `(v₀v₁)` pair, never a fixed
+  `(v₀v₂)`. So the faithful exposition must present the carry as **whole-matrix bookkeeping with `r` abstract
+  and the member moving**, and must flag that the natural-looking alternative — transporting a *fixed*
+  redundancy functional `hingeRow v₀v₂ r` across distinct framework objects — is **structurally impossible**
+  (KT's own (6.62) moves the member; no fixed-member transport exists). This is the genuinely-hard
+  formalization choice KT's compression hides: the matrix-bookkeeping / abstract-`r` shape is KT-faithful;
+  the fixed-functional-transport shape is a trap. *(The project's multi-session detour into the
+  fixed-functional-transport model — the seed-advancing fold and its transport/source-production/whole-matrix
+  successors — is a **project-side process lesson, excluded from this ledger per the inclusion criterion**;
+  its home is `DESIGN.md` *Match the source's argument structure …* + the model-exp Findings 2026-06-21 ("when
+  a seam resists, read the source's own construction"). The live forward fork — re-architect to KT's
+  whole-matrix/abstract-`r` shape vs. carry the obstruction to ENTRY — is `notes/Phase23b.md` *Hand-off* +
+  §(o‴)(I.8.18)–(I.8.20).)* Pointer: KT pp. 696–698, eqs. (6.60)–(6.67).
 
 ## Retroactive coverage
 
