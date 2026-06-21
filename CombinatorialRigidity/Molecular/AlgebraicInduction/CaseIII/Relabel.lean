@@ -1721,6 +1721,28 @@ theorem _root_.Graph.ChainData.shiftSeedAdv_succ [DecidableEq α] {G : Graph α 
     cd.shiftSeedAdv q (s + 1)
       = fun p => cd.shiftSeedAdv q s (cd.shiftSeedSwap s p.1, p.2) := rfl
 
+/-- **The ascending (base→candidate) selector accumulator** (CHAIN-2c-ii-arm, ROUTE α leaf 1;
+KT 2011 §6.4.2 eq.~(6.62), the selector cousin of `shiftSeedAdv`). The edge-endpoint selector at
+chain step `s`: the base selector `ends₀` with each endpoint pair relabelled by the first `s`
+per-step cycle swaps `(v₂ v₁), …, (v_{s+1} vₛ)`, advancing one swap per step — the SAME per-step
+swap `shiftSeedSwap s` the seed accumulator uses, so selector and seed advance in lockstep.
+`E 0 = ends₀`; `E (s+1) e = (shiftSeedSwap s (E s e).1, shiftSeedSwap s (E s e).2)` (KT's iso `ρᵢ`
+applied step-by-step on the panel selector, never pre-applied to the base redundancy). -/
+noncomputable def _root_.Graph.ChainData.shiftEndsAdv [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (ends₀ : β → α × α) : ℕ → β → α × α
+  | 0 => ends₀
+  | s + 1 => fun e => let p := cd.shiftEndsAdv ends₀ s e
+                      ((cd.shiftSeedSwap s) p.1, (cd.shiftSeedSwap s) p.2)
+
+@[simp] theorem _root_.Graph.ChainData.shiftEndsAdv_zero [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (ends₀ : β → α × α) : cd.shiftEndsAdv ends₀ 0 = ends₀ := rfl
+
+theorem _root_.Graph.ChainData.shiftEndsAdv_succ [DecidableEq α] {G : Graph α β} {n : ℕ}
+    (cd : G.ChainData n) (ends₀ : β → α × α) (s : ℕ) :
+    cd.shiftEndsAdv ends₀ (s + 1)
+      = fun e => ((cd.shiftSeedSwap s) (cd.shiftEndsAdv ends₀ s e).1,
+                  (cd.shiftSeedSwap s) (cd.shiftEndsAdv ends₀ s e).2) := rfl
+
 /-- **The ascending (base→candidate) seed-advancing chain** (CHAIN-2c-ii-arm, the framework layer;
 `notes/Phase23-design.md` §(o‴)(H.10)). The seed-advancing analogue of `shiftBodyFramework`: the
 panel framework `ofNormals (G − vₛ₊₁) ends (Q s)` (turned into a `BodyHingeFramework` via

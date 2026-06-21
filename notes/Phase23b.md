@@ -8,12 +8,13 @@ the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LAND
 (G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp. The `hφ` seam (the slot core's
 selector-fixed fold wants the base redundancy at the *relabelled* `endsσρ`, A-1 gives it at the
 *un-relabelled* `ends₀`; 3rd touch of the member-mapping wall) is **DESIGN-SETTLED via ROUTE α**
-(USER-CONFIRMED 2026-06-21; design §(o‴)(I.8.13), Lean-verified). The central telescope-survival question is
-ANSWERED: the telescope is selector-free, so it survives trivially; the selector lives only at the membership
-layer, and the foldl core + single-step gate are already selector-advancing-ready. **NEXT = ROUTE-α leaf 1
-`shiftEndsAdv`** (the selector accumulator mirroring `shiftSeedAdv`), then 4 more buildable leaves (exact
-signatures: §(o‴)(I.8.13)(d)/(f)) re-architecting the slot core to consume `hφ`@`ends₀` and advance the
-selector in lockstep with the seed — KT 6.62-faithful. **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM**
+(USER-CONFIRMED 2026-06-21; design §(o‴)(I.8.13), Lean-verified) — a 5-leaf re-architecture re-threading the
+slot core to consume `hφ`@`ends₀` and advance the selector in lockstep with the seed (KT 6.62-faithful).
+**ROUTE-α leaf 1 `shiftEndsAdv` is LANDED axiom-clean (2026-06-21)** — the selector accumulator + its
+`_zero`/`_succ` `rfl` lemmas (`Relabel.lean`, beside `shiftSeedAdv`). **NEXT = ROUTE-α leaf 2
+`shiftEndsAdv_eq_relabel`** (the bulk identity `shiftEndsAdv ends₀ (i−1) = endsσρ`; **THE RISK LEAF** —
+edge/vertex coupling, recon-or-spike before committing to leaf 1's def shape, §(o‴)(I.8.13)(g)), then leaves
+3–5 (exact signatures: §(o‴)(I.8.13)(d)/(f)). **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM**
 (confirm-and-delete at the arm-build commit). Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b
 green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
@@ -33,8 +34,8 @@ re-narrated here.
 **ROUTE α USER-CONFIRMED (2026-06-21) and DESIGN-SETTLED** (design §(o‴)(I.8.13), Lean-verified via 4
 `lean_run_code` probes against the landed bodies). The α/β pick is closed (α over β); the central
 telescope-survival question is **ANSWERED** and the route decomposes into 5 buildable leaves with exact
-signatures (design §(o‴)(I.8.13)(d)/(f)). **The just-landed `chainData_relabel_arm_hρGv` is confirmed
-correct — nothing to revert; leaf 5 re-threads it.**
+signatures (design §(o‴)(I.8.13)(d)/(f)). **Leaf 1 `shiftEndsAdv` LANDED axiom-clean (2026-06-21).** The
+just-landed `chainData_relabel_arm_hρGv` is confirmed correct — nothing to revert; leaf 5 re-threads it.
 
 **THE TELESCOPE SURVIVES TRIVIALLY (the open question, answered):** `wstep_foldl_hingeRow_telescope`
 (`Relabel.lean:3187`) is a **pure linear-map identity over `(w : ℕ → α)`** — it mentions no `ends`, no
@@ -46,17 +47,14 @@ currently FIXES the selector (a CHOICE of that wrapper) — but the foldl core
 `wstep_foldl_mem_span_rigidityRows` (`:1338`, arbitrary per-step `F : ℕ → BodyHingeFramework`) and the
 single-step gate (`:1201`, two distinct `ends ends'`) are ALREADY selector-advancing-ready.
 
-**NEXT STEP — open ROUTE-α leaf 1 (the smallest concrete next commit): `shiftEndsAdv`**, the selector
-accumulator mirroring `shiftSeedAdv` (`Operations.lean:1711`), advancing `ends₀ → endsσρ` one swap per step
-(swap = `shiftSeedSwap s`, the SAME swap the seed uses, so selector + seed advance in lockstep):
-```
-noncomputable def Graph.ChainData.shiftEndsAdv [DecidableEq α] [DecidableEq β]
-    (cd : G.ChainData n) (ends₀ : β → α × α) : ℕ → β → α × α
-  | 0       => ends₀
-  | (s + 1) => fun e => let p := cd.shiftEndsAdv ends₀ s e
-                        ((cd.shiftSeedSwap s) p.1, (cd.shiftSeedSwap s) p.2)
-```
-plus the `_zero`/`_succ` `rfl` lemmas. (Exact signatures for all 5 leaves: design §(o‴)(I.8.13)(d)/(f).)
+**NEXT STEP — open ROUTE-α leaf 2 (the smallest concrete next commit): `shiftEndsAdv_eq_relabel`** in
+`Relabel.lean`, the bulk identity `shiftEndsAdv ends₀ (i−1) = endsσρ` (the P3 selector cousin of
+`shiftSeedAdv_eq_funLeft_shiftPerm`). **THIS IS THE RISK LEAF** (§(o‴)(I.8.13)(g)): it couples an *edge*
+relabel (`shiftEdgePerm` on the input) with a *vertex* relabel (`shiftPerm` on the output endpoints) — more
+than the vertex-only seed cousin. **Recon-or-spike the edge/vertex coupling BEFORE committing to leaf 1's
+`shiftEndsAdv` def shape** (the fallback is to fold the edge relabel into the def itself). Leaf 1
+`shiftEndsAdv` is LANDED axiom-clean (`Relabel.lean`, beside `shiftSeedAdv`; def + `_zero`/`_succ` `rfl`).
+(Exact signatures for all 5 leaves: design §(o‴)(I.8.13)(d)/(f).)
 
 The fix restates the slot core to consume A-1's `hφ` at the **un-relabelled `ends₀`** (= A-1's genuine
 output, eliminating the hybrid wall) and advance the selector `ends₀ → endsσρ` IN the per-step fold, in
@@ -70,8 +68,10 @@ redundancy). The slot's CONCLUSION framework (`G−vᵢ, endsσρ, qρ`) and the
 than the P3 seed cousin `shiftSeedAdv_eq_funLeft_shiftPerm` (`:4097`, vertex-only, no edge argument). Plausible
 (the cycle couples edge/vertex indices by construction, `shiftEdgePerm_apply_edge_interior`) but UNVERIFIED;
 the fallback is to fold the edge relabel into the `shiftEndsAdv` def itself. A selector-algebra identity only
-— no new geometry/span/rank fact, no motive/IH/contract change. **Open leaf 1 (mechanical), then recon-or-spike
-leaf 2 before committing to the `shiftEndsAdv` def shape.**
+— no new geometry/span/rank fact, no motive/IH/contract change. **Leaf 1 is LANDED with the (d)-signature
+def shape (endpoint-only swap, edge argument untouched); recon-or-spike leaf 2's edge/vertex coupling against
+THAT shape — if it does not telescope, leaf 1's `shiftEndsAdv` def is the thing to revisit (fold the
+`shiftEdgePerm`-step into the def).**
 
 The d=3 `M₃` arm does NOT exercise this (`i=2`, single surviving edge, no general fold, no `hφ` slot — its
 `hρGv` runs W9a on the single candidate row directly), so the seam is a strict general-`d` obligation;
@@ -237,10 +237,11 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       perp slot was ROUTE-SETTLED (STEP-1-at-base + STEP-2 scalar transport, both LANDED; T-1/T-2 ORPHANED).
       **The `hρGv` slot `chainData_relabel_arm_hρGv` LANDED but exposed the `hφ` SEAM** — its slot core wants
       the base redundancy at the relabelled `endsσρ`, A-1 gives it at `ends₀`; **DESIGN-SETTLED via ROUTE α**
-      (USER-CONFIRMED 2026-06-21; the telescope is selector-free → survives, design §(o‴)(I.8.13)). **NEXT =
-      ROUTE-α leaf 1 `shiftEndsAdv`** (selector accumulator), then leaves 2–5 (§(o‴)(I.8.13)(f)) → the arm
-      shell + **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot, no general fold) — zero-regression
-      unaffected.
+      (USER-CONFIRMED 2026-06-21; the telescope is selector-free → survives, design §(o‴)(I.8.13)). **Leaf 1
+      `shiftEndsAdv` LANDED axiom-clean 2026-06-21. NEXT = ROUTE-α leaf 2 `shiftEndsAdv_eq_relabel`** (the
+      bulk identity, THE RISK LEAF — recon-or-spike the edge/vertex coupling, §(o‴)(I.8.13)(g)), then leaves
+      3–5 (§(o‴)(I.8.13)(f)) → the arm shell + **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot,
+      no general fold) — zero-regression unaffected.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -269,14 +270,17 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above: open ROUTE-α leaf 1 — the selector
-accumulator `Graph.ChainData.shiftEndsAdv`** (`Operations.lean`, beside `shiftSeedAdv`; def + `_zero`/`_succ`
-`rfl` lemmas), mirroring `shiftSeedAdv` and advancing `ends₀ → endsσρ` one swap per step (swap = the SAME
-`shiftSeedSwap s` the seed uses). ROUTE α is USER-CONFIRMED and DESIGN-SETTLED (design §(o‴)(I.8.13)); the
+**The single authoritative next-step is in *Current state* above: open ROUTE-α leaf 2 —
+`Graph.ChainData.shiftEndsAdv_eq_relabel`** (`Relabel.lean`, the bulk identity `shiftEndsAdv ends₀ (i−1) =
+endsσρ`, the P3 selector cousin of `shiftSeedAdv_eq_funLeft_shiftPerm`). **THE RISK LEAF** (§(o‴)(I.8.13)(g)):
+recon-or-spike the edge-relabel (`shiftEdgePerm` on the input) / vertex-relabel (`shiftPerm` on the output
+endpoints) coupling against leaf 1's landed def shape before committing — fallback is to fold the edge
+relabel into the `shiftEndsAdv` def. ROUTE α is USER-CONFIRMED and DESIGN-SETTLED (design §(o‴)(I.8.13)); the
 telescope-survival question is answered (it is selector-free → survives trivially). The 5-leaf plan with exact
-signatures is design §(o‴)(I.8.13)(d)/(f): (1) `shiftEndsAdv` def; (2) `shiftEndsAdv_eq_relabel` bulk identity
-(**THE RISK LEAF** — edge/vertex coupling, recon-or-spike before pinning the def shape, §(o‴)(I.8.13)(g));
-(3) `shiftBodyListAsc_foldl_mem_span_rigidityRows_selAdv` selector-advancing fold; (4)
+signatures is design §(o‴)(I.8.13)(d)/(f): (1) `shiftEndsAdv` def — **LANDED axiom-clean 2026-06-21**
+(`Relabel.lean`, beside `shiftSeedAdv`; def + `_zero`/`_succ` `rfl`); (2) `shiftEndsAdv_eq_relabel` bulk
+identity (**THE RISK LEAF** — edge/vertex coupling, recon-or-spike before pinning the def shape,
+§(o‴)(I.8.13)(g)); (3) `shiftBodyListAsc_foldl_mem_span_rigidityRows_selAdv` selector-advancing fold; (4)
 `chainData_freshEdge_slot_mem_selAdv` restated slot core; (5) `chainData_relabel_arm_hρGv` re-thread
 (`hφ@ends₀` + per-step `hrec`). After leaf 5 the arm shell is the mechanical `refine case_III_arm_realization`
 at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, `hρe₀` via
@@ -404,6 +408,11 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   RISK LEAF, edge/vertex coupling, (g)) → selector-advancing fold → restated slot core → arm re-thread to
   `hφ`@`ends₀`. No motive/IH/contract change; d=3 M₃ unaffected; the landed `chainData_relabel_arm_hρGv` stays
   correct until leaf 5 re-threads it.
+- **ROUTE-α leaf 1 `shiftEndsAdv` LANDED 2026-06-21 (axiom-clean).** The selector accumulator (`Relabel.lean`,
+  beside `shiftSeedAdv`) + `_zero`/`_succ` `rfl` lemmas, advancing `ends₀ → endsσρ` one swap per step (swap =
+  `shiftSeedSwap s`, the SAME swap the seed uses). Mechanical mirror of `shiftSeedAdv` per the (d)-signature
+  (endpoint-only swap, edge argument untouched); no `[DecidableEq β]` (the design's was unused). NEXT = leaf 2
+  `shiftEndsAdv_eq_relabel` (THE RISK LEAF). No friction.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
