@@ -5045,6 +5045,18 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   `candidateRow_ac_eq_neg`'s re-orientation is subsumed by the column restriction; the partition is via
   `edgeIndexedCombination_comp_single_eq_incident` (only `a`-incident summands) + `deg_two_split` +
   `IsLink.eq_and_eq_or_eq_and_eq`/`edge_inj` (disjoint incident split). **NEXT = leaf 2.**
+  **Coordinator shape-check note (leaf-2/3 consistency, 2026-06-20).** Leaf 1 landed in `a`-column form
+  `(group i).comp(single vᵢ) = −(group i−1).comp(single vᵢ)` — both groups' columns at the SHARED vertex
+  `vᵢ = vtx i.castSucc` — which is (±) the screw functional, so it is equivalent to the pinned screw-functional
+  kernel (benign reformulation, gate+axiom-clean, NOT a deviation). Consequence for the downstream leaves:
+  (i) **leaf 2 (anchor) lands naturally in the SAME `a`-column form** `(group(edge 2)).comp(single v₂) = −ρ₀`
+  (the `v₂`-column of `g=0`: `ρ₀ + (edge2-group).comp(single v₂) = 0`, the `e₀`-group contributing `ρ₀`); keep
+  it `a`-column for chainability. (ii) **leaf 3 (induction) must additionally relate each edge-group's TWO
+  endpoint-columns** (`(group i).comp(single vᵢ)` ↔ `(group i).comp(single vᵢ₊₁)`, a per-edge sign from
+  `hingeRow`'s head-vs-tail column) to chain leaf-1@`i` with leaf-1@`i+1` — the orientation bookkeeping leaf 1
+  deferred (mechanical, but real; the "leaf 3 MECHANICAL ~1c" estimate now includes it). (iii) the
+  screw-functional `group(edge s) = ±ρ₀` the consumer wants is recovered at **leaf 4** (the `±`/`neg_mem`
+  there absorbs the column-sign). Net: same plan, the orientation sign relocated leaf-1→leaf-3/4.
 
 ---
 
