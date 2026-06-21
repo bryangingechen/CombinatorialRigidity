@@ -4483,4 +4483,61 @@ theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_comb
   simp only [map_smul, BodyHingeFramework.hingeRow_funLeft_dualMap] at hmap
   exact hmap
 
+/-- **STEP 2 — the single-scalar per-edge perp transport, base → candidate** (CHAIN-2c-ii-arm, the
+last un-landed piece of the `hρGv` perp slot; `notes/Phase23-design.md` §(o‴)(I.8.11) STEP 2/STEP
+2′; KT 2011 §6.4.2 eqs.~(6.62)/(6.66) the index-shift panel correspondence; Phase 23b).
+
+The route-settling recon (§(o‴)(I.8.11)) replaced the mis-targeted row-354 *family* transport
+(`chainData_candidateRow_edgeGrouped_transport_{blocks,comb}`, now orphaned) with this single-scalar
+transport: KT works entirely at the base `(G₁,q₁) = G − v₁`, and the only thing crossing to the
+candidate-`i` framework is the *scalar* perpendicularity. The base perp at the `shiftEdgePerm`-image
+of the candidate chain edge transports to the candidate framework's perp at that edge:
+
+- `(candidate).supportExtensor (edge s) = (base).supportExtensor (shiftEdgePerm i (edge s))`
+  (`ofNormals_supportExtensor_relabel_perm` — support extensors coincide under the `(ρ, σ)` relabel
+  for *every* edge, with `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`);
+- `shiftEdgePerm i (edge s) = edge (s + 1)` for an interior step (`1 ≤ s`, `s + 1 < i`,
+  `shiftEdgePerm_apply_edge_interior`) and `= e₀` for the head step `s = 0`
+  (`shiftEdgePerm_apply_edge_zero`, the STEP 2′ branch — the splice-panel annihilation `hρe₀` A-1
+  already supplies). The two branches merge under `if s = 0 then e₀ else edge (s + 1)`;
+- `supportExtensor` reads only `ends`/`normal` (`ofNormals_ends`/`ofNormals_normal`), so the base
+  perp's graph is irrelevant — it is taken at an arbitrary `Gb` and bridged to the candidate split
+  graph `G − vᵢ` for free.
+
+The candidate `ends`/`q` are the relabelled forms `(endsσρ, qρ)` of A-1's base `ends₀`/`q` (the same
+forms `ofNormals_relabel_perm` / `chainData_bottom_relabel` produce); in the arm the base perp comes
+from STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy` at base index `⟨1⟩`, no transport) or
+`hρe₀`, and this lemma feeds `chainData_freshEdge_slot_mem`'s `hperp s`. TRANSPORT, no new math: no
+motive/IH/contract change, no new-math fork. d=3 (`i = 2`) is the landed `M₃` involution. -/
+theorem _root_.Graph.ChainData.chainData_freshEdge_perp_transport_base_to_candidate
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 ≤ (i : ℕ))
+    (s : ℕ) (hs1i : s + 1 < (i : ℕ))
+    {Gb : Graph α β} {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the base perp at the `shiftEdgePerm`-image of the candidate chain edge (STEP 1 / `hρe₀`):
+    (hbase : ρ₀ ((PanelHingeFramework.ofNormals Gb ends₀ q).toBodyHinge.supportExtensor
+        (if s = 0 then cd.e₀ else cd.edge ⟨s + 1, by have := i.isLt; omega⟩)) = 0) :
+    -- transports to the candidate framework's perp at `edge s`:
+    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor
+          (cd.edge ⟨s, by have := i.isLt; omega⟩)) = 0 := by
+  classical
+  -- The candidate-framework support extensor at `edge s` equals the base framework's at
+  -- `σ (edge s) = shiftEdgePerm i (edge s)` (graph-independent; the relabel coincidence lemma).
+  rw [PanelHingeFramework.ofNormals_supportExtensor_relabel_perm (cd.shiftPerm i.castSucc)
+    (cd.shiftEdgePerm i) (cd.edge ⟨s, by have := i.isLt; omega⟩)]
+  -- Resolve `σ (edge s)`: `e₀` at the head (`s = 0`), `edge (s+1)` interior (`1 ≤ s`, `s+1 < i`).
+  rcases Nat.eq_zero_or_pos s with hs0 | hs0
+  · subst hs0
+    rw [cd.shiftEdgePerm_apply_edge_zero i hi]
+    -- Bridge the base graph `G − vᵢ` to `Gb`: `supportExtensor` reads only `ends₀`/`q`.
+    simpa only [if_pos rfl, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
+  · rw [cd.shiftEdgePerm_apply_edge_interior i hs0 hs1i]
+    simpa only [if_neg (by omega : ¬ s = 0), PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
+
 end CombinatorialRigidity.Molecular

@@ -5272,8 +5272,13 @@ the 1st). Verified against the **landed `def`/`theorem` bodies** (`Relabel.lean`
     the slot consumes `hperp s` for `s+1 < i` (`hsurv`, `:4211`), and `s+1 < i ≤ d−1` gives `2 ≤ s+1 < d` ✓ for the
     base leaf; `s ∈ {0,1,…}` all covered (s=0 via STEP 2′, s≥1 via STEP 2).
 
-  **SIGNATURE of the one new lemma (STEP 2, the only un-landed piece; merges the `s=0`/`s≥1` branches by a
-  `match s` on the edge action):**
+  **STEP 2 LANDED 2026-06-21** as `chainData_freshEdge_perp_transport_base_to_candidate` (`Relabel.lean`,
+  axiom-clean). The shipped form takes the base perp at an arbitrary graph `Gb` (supportExtensor is
+  graph-independent, so STEP 1's `G−v₁` perp feeds directly), and merges the `s=0`/`s≥1` branches by an
+  `if s = 0 then e₀ else edge (s+1)` on the hypothesis edge (`rcases Nat.eq_zero_or_pos s` in the proof).
+
+  **SIGNATURE (as landed; the original recon sketch below merged the branches by `match s` — the `if` form
+  shipped instead):**
   ```
   theorem ChainData.chainData_freshEdge_perp_transport_base_to_candidate
       [DecidableEq α] [DecidableEq β] (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 ≤ (i:ℕ))

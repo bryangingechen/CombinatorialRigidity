@@ -3,16 +3,15 @@
 **Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (the four-producer tail, all general-`k`) + CHAIN-2a + the
 CHAIN-2c-ii foundation. The `hρGv` route is **LOCKED = Route W (option a′)**, the `hwmem` slot is LANDED
 (`chainData_bottom_relabel`), and the arm's algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3)
-+ slot core + per-edge perp leaf are all LANDED axiom-clean. **ROUTE-SETTLING RECON (row 358, design
-§(o‴)(I.8.11)) → the row-354 T-1/T-2/T-3 family-transport decomposition is MIS-TARGETED** (2nd level/shape
-mismatch — the consumer pins `hcomb`'s base-vertex RHS and `hrv`'s candidate framework at incompatible
-levels). **CORRECTED ROUTE (all 4 steps Lean-probe-verified buildable):** the LANDED per-edge perp leaf
-`chainData_freshEdge_perp_of_baseRedundancy`, called at base index `i := ⟨1⟩` (NO transport — A-1's output
-fed direct), gives the BASE perp; ONE new ~10-line lemma transports the SINGLE scalar perp base@`edge(s+1)`
-→ candidate@`edge s` (via the LANDED `ofNormals_supportExtensor_relabel_perm` + `shiftEdgePerm` edge action).
-**T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM** (confirm-and-delete; the family is never transported). ~2–3
-commits left to the arm (STEP-2 transport lemma → arm assembly); then **CHAIN-2c-iii** `chainData_dispatch`
-closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
++ slot core + per-edge perp leaf + **STEP-2 scalar perp transport** are all LANDED axiom-clean. The corrected
+route (design §(o‴)(I.8.11)) runs the edge-grouping at the BASE: the LANDED per-edge perp leaf
+`chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩` (NO transport) gives the BASE perp;
+**STEP 2 `chainData_freshEdge_perp_transport_base_to_candidate` (LANDED 2026-06-21)** carries the SINGLE
+scalar perp base@`edge(s+1)` (or `e₀` for `s=0`) → candidate@`edge s`. **T-1/T-2 (LANDED) ARE
+ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit; the family is never transported).
+**NEXT = the arm assembly `chainData_relabel_arm` (STEP 3, ~1–2c):** `refine case_III_arm_realization`,
+feed `chainData_freshEdge_slot_mem`'s `hperp s` from STEP 1 ∘ STEP 2; other slots per the M₃ template.
+Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -27,27 +26,28 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — build the STEP-2 scalar perp transport lemma, then the arm.** The
-route-settling recon (design §(o‴)(I.8.11), row 358) REFUTED the row-354 T-1/T-2/T-3 family-transport plan
-and re-derived the correct route, all 4 steps Lean-probe-verified buildable. **The corrected route does NOT
-transport the redundancy family** — the edge-grouping runs at the BASE, only a single scalar perp transports:
-- **STEP 1 (NO new lemma):** the LANDED `chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`
+**NEXT STEP (single authoritative) — wire the arm `chainData_relabel_arm` (STEP 3).** STEP 1 + STEP 2 are
+both LANDED; the corrected route (design §(o‴)(I.8.11)) is now down to its assembly. The route runs the
+edge-grouping at the BASE; only a single scalar perp transports:
+- **STEP 1 (LANDED, NO new lemma):** `chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`
   (so its `Fva = ofNormals (G−v₁) ends q` = the base) takes A-1's output DIRECTLY (`hlinkGv`/`hrvGv`/`hcombGv`/
   `hdeg1`, no transport) → BASE perp `ρ₀ ⊥ base.supportExtensor (edge t)` for `2 ≤ t < d`. The consumer's
   "candidate" framing was a RED HERRING; its free `ends`/`qρ` make it a base-level leaf.
-- **STEP 2 (the SMALLEST NEXT COMMIT, ~1c): ONE new ~10-line transport lemma** carrying the SINGLE scalar perp
-  base@`edge(s+1)` → candidate@`edge s` (= `freshEdge_surviving_row_mem`'s `hperp`), via
-  `ofNormals_supportExtensor_relabel_perm` (LANDED) + `shiftEdgePerm_apply_edge_interior` (`s≥1`) /
-  `shiftEdgePerm_apply_edge_zero` (`s=0`, lands on `e₀` ← A-1's `hρe₀`) + supportExtensor graph-independence.
-  Exact signature: design §(o‴)(I.8.11) STEP 2.
-- **STEP 3 (arm assembly, ~1–2c):** per surviving edge `s` (`s+1 < i`): STEP 1 at `t := s+1` (or `hρe₀` at
-  `s=0`) → STEP 2 → feed `chainData_freshEdge_slot_mem`'s `hperp s`; the other engine slots per the d=3 M₃
-  template (`hwmem ← chainData_bottom_relabel`, seed ← P3, `hρe₀`/discriminator/removeVertex bookkeeping).
+- **STEP 2 (LANDED 2026-06-21):** `chainData_freshEdge_perp_transport_base_to_candidate` (`Relabel.lean:4512`)
+  carries the SINGLE scalar perp base@`(if s=0 then e₀ else edge(s+1))` → candidate@`edge s` (= the
+  slot core / `freshEdge_surviving_row_mem`'s `hperp`), via `ofNormals_supportExtensor_relabel_perm` (LANDED)
+  + `shiftEdgePerm_apply_edge_interior` (`s≥1`) / `shiftEdgePerm_apply_edge_zero` (`s=0`) + supportExtensor
+  graph-independence (the base perp's graph `Gb` is free). Merges the `s=0`/`s≥1` branches via the `if`.
+- **STEP 3 (arm assembly, the NEXT COMMIT, ~1–2c):** per surviving edge `s` (`s+1 < i`): STEP 1 at base index
+  `⟨1⟩`, `t := s+1` (or A-1's `hρe₀` at `s=0`) → STEP 2 → feed `chainData_freshEdge_slot_mem`'s `hperp s`; the
+  other engine slots per the d=3 M₃ template (`hwmem ← chainData_bottom_relabel`, seed ← P3, `hρe₀`/
+  discriminator/removeVertex bookkeeping). The candidate framework's `ends`/`qρ` are the relabelled
+  `endsσρ`/`qρ` STEP 2's conclusion already states (matched to the slot's `shiftSeedAdv q (i−1)` via P3).
 
-~2–3 commits left to the arm; then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`.
+~1–2 commits left to the arm; then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`.
 **No motive/IH/contract change** (the consumer is UNMODIFIED — its hardcoded `(vtx 0, vtx 2)` RHS is KT's
-base redundancy `r`, correct; only the WIRING call site changes from candidate to base). **No genuinely-new
-math** (STEP 2 is bookkeeping over the landed relabel identity).
+base redundancy `r`, correct; only the WIRING call site is the base index). **No genuinely-new math** (STEP 2
+was bookkeeping over the landed relabel identity).
 
 **Why the row-354 T-1/T-2/T-3 plan was MIS-TARGETED (the 2nd level/shape mismatch; design §(o‴)(I.8.11)).**
 The consumer `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`) pins THREE hyps at
@@ -92,10 +92,16 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   `Fva = ofNormals (G−vᵢ) ends qρ` (free `ends`/`qρ`). Mechanism = LEAF 4's `group = −ρ₀` +
   `edgeGroup_acolumn_mem_block` + `mem_hingeRowBlock_iff`. **CORRECT call site (design §(o‴)(I.8.11)) = base
   index `i := ⟨1⟩`** (then `Fva` = base `G−v₁`, A-1's output feeds it DIRECTLY — STEP 1 of the corrected route).
+- **`chainData_freshEdge_perp_transport_base_to_candidate`** (`Relabel.lean:4512`, STEP 2, LANDED 2026-06-21,
+  axiom-clean) — the single-scalar per-edge perp transport: a base perp at `(if s=0 then e₀ else edge(s+1))`
+  (arbitrary graph `Gb`) → the candidate framework's perp at `edge s` (the relabelled `endsσρ`/`qρ` forms).
+  `ofNormals_supportExtensor_relabel_perm` (the support-extensor coincidence) + the `shiftEdgePerm` edge action
+  (interior `s≥1` / head `s=0`) + supportExtensor graph-independence. The exact `hperp s` shape the slot core
+  consumes. The arm calls it once per surviving `s`.
 - **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean:4383`) + **`ofNormals_supportExtensor_relabel_perm`**
   (`Relabel.lean:63`) — STAND: the support-extensor relabel identity `candidate.supp f = base.supp (shiftEdgePerm
-  i f)`. The corrected route's STEP-2 scalar transport reuses this identity ONCE (applied to a single perp), so
-  it stays load-bearing; only its all-`i`/`∀ j` *family*-lift (T-1) is orphaned.
+  i f)`. STEP 2 reuses this identity ONCE (applied to a single perp), so it stays load-bearing; only its
+  all-`i`/`∀ j` *family*-lift (T-1) is orphaned.
 - **`chainData_freshEdge_perp_of_witness`** (`Relabel.lean`) — per-vertex form (STANDS; the arm threads the
   base-redundancy lemma above, not this).
 - **Chain-induction LEAVES 1–4** (`Relabel.lean`, the eq-(6.44) regroup off the single base redundancy):
@@ -188,11 +194,13 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       (the genuinely-new relabel arm — KT's `ρᵢ` is a `(i−1)`-cycle): foundation LANDED; FIX-FORK SETTLED
       (corrected Fix A). The arm `chainData_relabel_arm`'s every algebraic prerequisite is LANDED. The perp
       slot's level mismatch (rows 352/353) is **ROUTE-SETTLED (row 358, design §(o‴)(I.8.11))**: the row-354
-      T-1/T-2/T-3 family-transport plan was MIS-TARGETED; the **corrected route** (4 steps Lean-probe-verified)
-      runs the edge-grouping at the BASE — the LANDED perp leaf `chainData_freshEdge_perp_of_baseRedundancy` at
-      base index `i := ⟨1⟩` (NO transport) + ONE new ~10-line scalar perp transport (STEP 2) base@`edge(s+1)` →
-      candidate@`edge s`. **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM.** → **NEXT** = STEP-2 transport lemma per
-      *Current state*; then the arm; then **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` involution.
+      T-1/T-2/T-3 family-transport plan was MIS-TARGETED; the **corrected route** runs the edge-grouping at the
+      BASE — the LANDED perp leaf `chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩` (NO
+      transport, STEP 1) + the LANDED STEP-2 scalar perp transport
+      `chainData_freshEdge_perp_transport_base_to_candidate` base@`(if s=0 then e₀ else edge(s+1))` →
+      candidate@`edge s`. **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM.** → **NEXT** = the arm assembly STEP 3
+      (`chainData_relabel_arm`) per *Current state*; then **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2`
+      involution.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -221,19 +229,18 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above:** build the **STEP-2 scalar perp transport
-lemma** `chainData_freshEdge_perp_transport_base_to_candidate` (the SMALLEST NEXT COMMIT, ~1c; signature in
-design §(o‴)(I.8.11) STEP 2) — carries the SINGLE scalar perp base@`edge(s+1)` (or `e₀` for `s=0`) →
-candidate@`edge s` via the LANDED `ofNormals_supportExtensor_relabel_perm` + `shiftEdgePerm` edge action +
-graph-independence. Then wire the arm `chainData_relabel_arm` (`refine case_III_arm_realization`, M₃ template
-re-indexed): per surviving edge `s`, feed `chainData_freshEdge_slot_mem`'s `hperp s` from STEP 1 (the LANDED
-perp leaf at base index `i := ⟨1⟩`, A-1's output direct) ∘ STEP 2; other slots per the M₃ template (`hwmem ←
-chainData_bottom_relabel`, seed ← P3, `hρe₀`/discriminator/removeVertex). Then **2c-iii** `chainData_dispatch`
-(replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Net ~2–3 commits left to the arm. **No
-motive/IH/contract change** (the perp leaf is UNMODIFIED — only its call site moves to the base index); **no
-genuinely-new-math fork** (STEP 2 is bookkeeping over the landed relabel identity). **T-1/T-2 (LANDED) are
+**The single authoritative next-step is in *Current state* above:** wire the arm `chainData_relabel_arm`
+(STEP 3, ~1–2c; `refine case_III_arm_realization`, M₃ template re-indexed). STEP 1 + STEP 2 are both LANDED:
+per surviving edge `s` (`s+1 < i`), feed `chainData_freshEdge_slot_mem`'s `hperp s` from STEP 1
+(`chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`, A-1's output direct, `t := s+1`; or
+A-1's `hρe₀` at `s=0`) composed with STEP 2 (`chainData_freshEdge_perp_transport_base_to_candidate`,
+`Relabel.lean:4512`); other slots per the M₃ template (`hwmem ← chainData_bottom_relabel`, seed ← P3,
+`hρe₀`/discriminator/removeVertex). The candidate framework's `ends`/`qρ` are the relabelled `endsσρ`/`qρ`
+forms STEP 2's conclusion states (matched to the slot's `shiftSeedAdv q (i−1)` via P3). Then **2c-iii**
+`chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **No motive/IH/contract
+change**; **no genuinely-new-math fork** (STEP 3 is pure assembly over LANDED leaves). **T-1/T-2 (LANDED) are
 ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit). d=3 M₃ = `i=2` involution
-(zero-regression). Exact signatures in design §(o‴)(I.8.11).
+(zero-regression). Exact wiring in design §(o‴)(I.8.11) STEP 3.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -342,10 +349,16 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   `chainData_freshEdge_perp_of_baseRedundancy` pins `hcomb`'s hardcoded base-vertex RHS `hingeRow (vtx 0)(vtx
   2) ρ₀` and `hrv`'s candidate framework at INCOMPATIBLE levels (re-indexed family breaks `hcomb`: `σ.symm v₂ =
   v₁ ≠ v₂`; un-relabelled breaks `hrv`: candidate-block at same edge = base-block at `σ_e f`). KT-source check
-  (eqs. 6.62/6.66/6.67): KT works entirely at the base `(G₁,q₁) = G−v₁`. CORRECT route (4 steps
-  Lean-probe-verified, then reverted — docs-only): the LANDED perp leaf at base index `i := ⟨1⟩` (no transport)
-  + ONE new ~10-line scalar perp transport (STEP 2) base@`edge(s+1)` → candidate@`edge s`. T-1/T-2 orphaned;
-  consumer UNMODIFIED. No motive/IH/contract change, no new-math fork. ~2–3c to the arm.
+  (eqs. 6.62/6.66/6.67): KT works entirely at the base `(G₁,q₁) = G−v₁`. CORRECT route: the LANDED perp leaf
+  at base index `i := ⟨1⟩` (STEP 1, no transport) + ONE scalar perp transport (STEP 2) base@`edge(s+1)` →
+  candidate@`edge s`. T-1/T-2 orphaned; consumer UNMODIFIED.
+- **STEP 2 LANDED 2026-06-21 (axiom-clean) — `chainData_freshEdge_perp_transport_base_to_candidate`
+  (`Relabel.lean`).** The single un-landed piece of the corrected route: a base perp at `(if s=0 then e₀ else
+  edge(s+1))` over an arbitrary graph `Gb` → the candidate-`i` framework's perp at `edge s` (relabelled
+  `endsσρ`/`qρ`). Proof = `ofNormals_supportExtensor_relabel_perm` (support-extensor coincidence) + the
+  `shiftEdgePerm` edge action (`_apply_edge_zero` head / `_apply_edge_interior`) + supportExtensor
+  graph-independence (the `simpa only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]` bridge,
+  reused verbatim from `i3_candidateBlock_transport_deRisk`). No new friction. NEXT = STEP 3 arm assembly.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
