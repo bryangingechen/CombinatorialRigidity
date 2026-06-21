@@ -6,14 +6,15 @@ perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition `chai
 the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LANDED axiom-clean.
 **`chainData_relabel_arm_hρGv` is a CORRECT lemma** (producing `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals
 (G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp) — its `hφ`@`endsσρ` slot is the
-member-mapping wall (the `hφ` seam). **ROUTE α (the per-step selector fold) is INFEASIBLE (design §(o‴)(I.8.15));
-its REPLACEMENT — producing `hφ` AT THE SOURCE — is now SCOPED + CONVERGED (design §(o‴)(I.8.16)): FEASIBLE but
-CONTRACT-TOUCHING; READY FOR USER SIGN-OFF.** See *Current state* below for the verdict, mechanism (re-thread
-the W6b producer to output `hφ@endsσρ`, shape 3b), exact contract delta (C.0 third lockstep decl + A-1 output
-type; C.1/C.3/C.4/C.6 invariant), and cost (~3–5c gated on a B1 span-re-derivation spike). Once `hφ@endsσρ`
-lands + the arm shell → **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 →
-front of 23c**). **T-1/T-2 + the orphaned ROUTE-α leaf 1 `shiftEndsAdv`/`_zero`/`_succ` ARE
-ORPHANED-FOR-THE-ARM** (confirm-and-delete at the route-settle commit).
+member-mapping wall (the `hφ` seam). **ROUTE α (per-step selector fold) is INFEASIBLE (§(o‴)(I.8.15)); its
+source-production REPLACEMENT was SCOPED (§(o‴)(I.8.16)) and the user-approved B1 spike RAN + BLOCKED
+(§(o‴)(I.8.17)) — ALL LOCAL `hφ`-seam routes are now EXHAUSTED.** The slot core demands `hφ` at the artifact
+framework `(endsσρ, q)` (relabelled selector + un-advanced base seed, `Relabel.lean:4671`) for which no KT
+geometry / rigidity fact exists; the remaining route is a DEEPER slot-core/ASSEMBLY re-architecture of KT eq.
+(6.62)'s seed-advancing fold → **PENDING USER ADJUDICATION** (see *Current state*). Once the seam settles +
+the arm shell → **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 → front
+of 23c**). **T-1/T-2 + the orphaned ROUTE-α leaf 1 `shiftEndsAdv`/`_zero`/`_succ` ARE ORPHANED** (confirm-and-
+delete at the re-architecture-settle commit).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -28,59 +29,33 @@ re-narrated here.
 
 ## Current state
 
-**`hφ`-AT-SOURCE SCOPE COMPLETE — VERDICT: FEASIBLE but CONTRACT-TOUCHING; READY FOR USER SIGN-OFF (design
-§(o‴)(I.8.16), 2026-06-21 — Lean-grounded by 3 `lean_multi_attempt` `have`-block probes against the landed
-bodies; docs-only, tree byte-clean throughout).** ROUTE α stays INFEASIBLE (I.8.15, below); this scopes its
-REPLACEMENT — producing `hφ : hingeRow v₀ v₂ ρ₀ ∈ span (ofNormals (G−v₁) endsσρ q)` AT THE SOURCE.
+**`hρGv` `hφ`-SEAM — ALL LOCAL ROUTES EXHAUSTED; a DEEPER slot-core/ASSEMBLY re-architecture is needed →
+PENDING USER ADJUDICATION (design §(o‴)(I.8.17), 2026-06-21).** The user-approved B1 spike (build 3b,
+B1-first) RAN and **BLOCKED**: the B1 span re-derivation `hingeRow v₀ v₂ ρ₀ ∈ span (ofNormals (G−v₁) endsσρ
+q).rigidityRows` (from A-1's `hφ@ends₀`) does NOT close — tree byte-clean, **nothing committed** (the de-risk
+worked: no contract/producer edit). **ROOT CAUSE (coordinator-confirmed, `Relabel.lean:4671`):** the slot
+core / arm consumes `hφ` at `ofNormals (G−v₁) endsσρ q` — the **relabelled selector `endsσρ` + the
+UN-advanced BASE seed `q`** — a Lean-artifact of the fold (selector held fixed at `endsσρ` while the seed
+advances `q → qρ`), NEITHER the base `(ends₀,q)` (A-1's output) NOR the engine `(endsσρ,qρ)` (the
+conclusion), so NO KT geometry / rigidity fact exists for it. Both B1 sources are dead: (i) `(endsσρ,q)`'s
+own rigidity is unavailable (`ofNormals_relabel_perm` needs the seed co-relabelled to `qρ` + `(ρ,σ)`-iso
+graphs); (ii) A-1's edge-grouped data does not re-group at `endsσρ` (block constraints `rⱼ∈block_ends₀(eⱼ)`
+don't transfer — support extensors read `q` at shifted vertices; the `d=3` `rigidityRows_ofNormals_relabel`
+only relates seed-`qρ`-relabelled frameworks, image map → the WRONG member `hingeRow v₀ v₁ ρ₀`, the
+member-mapping wall's 4th touch).
 
-**THE FEASIBILITY (design §(o‴)(I.8.16)(1)/(2)).** A-1 `exists_candidateRow_bottomRows_of_rigidOn`
-(`Candidate.lean:400`) IS fully parametric over `{ends}` (`:401`), so the coordinator's crux — "instantiate
-A-1 at `endsσρ`" — type-checks. BUT it produces the **WRONG member**: A-1's `hρGv` output is `hingeRow (ends
-e₀).1 (ends e₀).2 ρ` (`:420`), and **PROBE A (typechecked)** `endsσρ e₀ = ((shiftPerm).symm (ends₀ (edge i))…)`
-(since `shiftEdgePerm i e₀ = edge i`), so A-1@`endsσρ` lands `hingeRow (σ⁻¹ vᵢ)(σ⁻¹ vᵢ₊₁) ρ` (the candidate's
-OWN splice member, R-2(i)/(ii)), NOT the base `hingeRow v₀ v₂ ρ₀`. The member endpoints are TIED to `(ends
-e₀)` and MOVE with the selector. And the `congr_ends` shortcut fails: `rigidityRows_ofNormals_congr_ends`
-(`Realization.lean:49`) gives free span-equality only if `endsσρ` agrees with `ends₀` on every link of
-`G−v₁`, but **PROBE B (typechecked)** `edge 2 = v₂v₃` is a SURVIVING link of `G−v₁` and lies in
-`shiftEdgePerm i`'s support (`edge 2…edge i` avoid `v₁`), so `endsσρ` genuinely relabels `G−v₁`'s links. (On
-the SEAM framework `G−v₁` the load-bearing discrepancy rides on `edge 2…edge i`, NOT I.8.15's `edge 0` — which
-is DELETED here, incident to `v₁`; same conclusion via a different link.)
-
-**THE MECHANISM (design §(o‴)(I.8.16)(3), RECOMMENDED shape 3b).** Source-production = re-thread the W6b
-producer `chainData_split_w6b_gates` (`Realization.lean:771`) to ALSO output `hingeRow a b ρ ∈ span (ofNormals
-(G−v) (relabel Q.ends) q).rows` (the arm's `endsσρ` shape) beside the existing base `hφ@ends₀`, via a DIRECT
-span re-derivation at `endsσρ` (B1 done INSIDE the producer, where the IH-generic `Q`/`Q.ends`/`hrig'`/A-1's
-edge-grouped output are in scope, `:821–891`). Shape 3a (an A-1 output-type augment) is more surgical but bakes
-the relabel into A-1's layer — a smell; 3b keeps the relabel in the producer.
-
-**THE CONTRACT DELTA (design §(o‴)(I.8.16)(4)).** CONTRACT-TOUCHING — the **first the CHAIN arm forces**. It
-changes the producer's `hφ`/redundancy output conjunct = **C.0's third lockstep decl** (+ A-1's output type if
-3a). **C.1 (`ChainData` record), C.3 (`hdispatch` consume-shape), C.4 (`d=3` zero-regression), C.6 (no
-motive/IH change) are ALL UNCHANGED** — the relabel is derived from the combinatorial chain, the re-derivation
-runs at the SAME 0-dof IH realization the `d=3` producer already pulls, and the producer-internal `hφ`
-re-thread is BELOW the dispatch interface (the dispatch never sees `hφ@endsσρ`, exactly as the perp half is
-below it). `d=3` M₃ = `i=2` (no `hφ` slot) — the new conjunct is dead there.
-
-**THE COST + RESIDUAL RISK (design §(o‴)(I.8.16)(5)).** **~3–5 commits IF the B1 span re-derivation at
-`endsσρ` closes** (producer conjunct + B1 lemma + slot-core/arm re-thread to consume `hφ@endsσρ` from the
-producer + arm shell + 2c-iii). The make-or-break is the B1 member-mapping wall (4th touch): `σ⁻¹ v₀ = v₀`,
-`σ⁻¹ v₂ = v₁` for `i ≥ 2` make any *apparatus* transport land on the WRONG member `hingeRow v₀ v₁ ρ₀`; B1
-needs a genuinely-new DIRECT re-derivation at `endsσρ`'s OWN rigidity, NOT a transport of A-1's `ends₀`
-combination. **The recon CANNOT certify B1 closes without a build spike — and that spike IS the contract-
-touching change, hence the user gate.** If B1 does NOT close, the fallback is the deeper slot-core/ASSEMBLY-
-level re-architecture of KT 6.62's seed-advancing fold (design §(o‴)(I.8.16)(5)).
-
-**BOTTOM LINE: READY FOR USER SIGN-OFF — the build is CONTRACT-TOUCHING (C.0 third lockstep decl + A-1 output
-type; C.1/C.3/C.4/C.6 invariant); ~3–5 commits gated on the B1 spike.** The single decision for the user:
-approve the contract-touching producer re-thread (3b) + a B1 build spike as its first step, OR direct the
-deeper slot-core/ASSEMBLY re-architecture if the producer re-thread is judged the wrong layer.
-
-**No motive/IH/contract change is made HERE (the verdict is docs-only).** d=3 M₃ unaffected (`i=2`, no `hφ`
-slot, no general fold); `chainData_relabel_arm_hρGv` stays a CORRECT carried-hypothesis lemma until the route
-settles — nothing reverts. Once `hφ@endsσρ` is produced + the arm shell lands (`refine case_III_arm_realization`
-at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, the
-M₃-template discriminator/removeVertex slots) → **CHAIN-2c-iii** `chainData_dispatch`. The ROUTE-α leaf 1
-`shiftEndsAdv` + `_zero`/`_succ` (landed `Relabel.lean:1731`) are ORPHANED — confirm-and-delete with T-1/T-2.
+**THE REMAINING ROUTE — re-architect KT eq. (6.62)'s seed-advancing fold so it never demands `hφ` at the
+artifact `(endsσρ,q)`** (consume `hφ` at a KT-real geometry instead). Two directions, both UNCERTAIN (design
+§(o‴)(I.8.17)(c)): (1) advance selector AND seed in lockstep to a genuine `(ends₀,q)` start — but that is
+ROUTE α's intent, which the gate's `edge(s+1)/(s+2)`-only per-step move blocks (I.8.15), so it needs a
+NON-gate fold mechanism; (2) re-shape the fold so its consumed `hφ` sits at `(endsσρ,qρ)` / `(ends₀,q)`
+directly. **A fundamental re-architecture, NOT a next-leaf.** Every prior route is dead: ROUTE α infeasible
+(I.8.15), transport T-1/T-2/B1 = the member-mapping wall, source-production A-1 re-thread = B1 does not close
+(I.8.17). `chainData_relabel_arm_hρGv` stays a CORRECT carried-hypothesis lemma; the ROUTE-α leaf 1
+`shiftEndsAdv` + `_zero`/`_succ` (`Relabel.lean:1731`) + T-1/T-2 are ORPHANED (confirm-and-delete at the
+re-architecture-settle commit); `d=3` M₃ unaffected (`i=2`, no `hφ` slot). Once the seam settles + the arm
+shell lands (`refine case_III_arm_realization` at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`;
+`hwmem ← chainData_bottom_relabel`) → **CHAIN-2c-iii** `chainData_dispatch`.
 
 **ROUTE α STAYS INFEASIBLE (design §(o‴)(I.8.15), 2026-06-21 — OPTION B, Lean-grounded; the per-step selector
 fold is the wrong tool).** The membership fold's per-step gate (`Relabel.lean:1201`, `hends'_off`) permits each
@@ -288,31 +263,27 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above: USER SIGN-OFF on the CONTRACT-TOUCHING
-`hφ`-at-source build** — the `hφ`-at-source scope is COMPLETE and CONVERGED (design §(o‴)(I.8.16),
-Lean-grounded by 3 `lean_multi_attempt` probes). VERDICT: source-production (the ROUTE-α replacement) is
-FEASIBLE — A-1 is parametric over `ends` but A-1@`endsσρ` produces the WRONG member (PROBE A: its `e₀`-splice
-member moves with the selector), so the mechanism is to re-thread the W6b producer
-`chainData_split_w6b_gates` to ALSO output `hφ` at the relabelled selector (shape 3b), beside the landed
-`hφ@ends₀`, via a DIRECT B1 span re-derivation at `endsσρ`. **The build is CONTRACT-TOUCHING — the FIRST the
-CHAIN arm forces**: it changes the producer's `hφ`/redundancy output conjunct = **C.0's third lockstep decl**
-(+ A-1's output type); **C.1 (`ChainData` record), C.3 (`hdispatch`), C.4 (`d=3`), C.6 (no motive/IH) are
-ALL UNCHANGED**. **Cost: ~3–5 commits IF the B1 span re-derivation at `endsσρ` closes** (the member-mapping
-wall, 4th touch; `σ⁻¹ v₀ = v₀`, `σ⁻¹ v₂ = v₁` for `i ≥ 2` block any apparatus transport — B1 needs a DIRECT
-re-derivation, NOT a transport, and the recon cannot certify it without a build spike = the contract-touching
-change itself). **The single user decision:** approve the producer re-thread (3b) + a B1 build spike as its
-first step, OR direct a deeper slot-core/ASSEMBLY re-architecture of KT 6.62's seed-advancing fold if the
-producer re-thread is judged the wrong layer. Once `hφ@endsσρ` is produced + the arm shell lands (mechanical
-`refine case_III_arm_realization` at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ←
-chainData_bottom_relabel`, `hρe₀` via the G4d-i `a`-column read (M₃'s `hρ_ac`), discriminator
-`htrans`/`hLn`/`hρgate`/`hgab` (2c-i) + removeVertex bookkeeping per the M₃/`chainData_split_realization`
-templates) → **2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c).
-**No motive/IH/contract change is made by the verdict itself** (the build would touch C.0 + A-1's output type
-— flagged for sign-off). **T-1/T-2 + the orphaned ROUTE-α leaf 1 `shiftEndsAdv`/`_zero`/`_succ` (LANDED) are
-ORPHANED-FOR-THE-ARM** (confirm-and-delete at the route-settle commit). d=3 M₃ = `i=2` (no `hφ` slot —
-zero-regression). Wiring detail: design §(o‴)(I.8.16) (the verdict + mechanism + contract delta + cost) +
-(I.8.15) (ROUTE-α infeasibility) + (I.8.12) (the member-mapping wall) + (I.8.11) STEP 3 (the perp half,
-settled, UNCHANGED).
+**The single authoritative next-step is in *Current state* above: the `hφ`-seam needs a DEEPER
+slot-core/ASSEMBLY re-architecture → PENDING USER ADJUDICATION (design §(o‴)(I.8.17)).** The user-approved B1
+spike (build 3b, B1-first) RAN and **BLOCKED** (tree byte-clean, nothing committed — the de-risk worked): the
+slot core / arm demands `hφ` at the **artifact framework `(endsσρ, q)`** (relabelled selector + un-advanced
+BASE seed, `Relabel.lean:4671`), for which no KT geometry / rigidity fact exists, and both B1 sources are
+dead (the framework's own rigidity needs the seed co-relabelled to `qρ`; A-1's edge-grouped data doesn't
+re-group at `endsσρ` — the member-mapping wall's 4th touch). EVERY local route is now exhausted (ROUTE α
+infeasible §(o‴)(I.8.15); transport T-1/T-2/B1 = the wall; A-1 re-thread B1 = does not close §(o‴)(I.8.17)).
+**The remaining route is a re-architecture of KT eq. (6.62)'s seed-advancing fold so it never consumes `hφ`
+at `(endsσρ, q)`** — i.e. at a KT-real geometry instead. Two UNCERTAIN directions (§(o‴)(I.8.17)(c)): (1)
+advance selector AND seed in lockstep to a genuine `(ends₀, q)` start (ROUTE α's intent, gate-blocked → needs
+a NON-gate fold mechanism); (2) re-shape the fold so its consumed `hφ` sits at `(endsσρ, qρ)` / `(ends₀, q)`
+directly. **A fundamental design decision, NOT a next-leaf — for USER ADJUDICATION (open a re-architecture
+recon, or pause).** `chainData_relabel_arm_hρGv` stays a CORRECT carried-hypothesis lemma; the ROUTE-α leaf 1
+`shiftEndsAdv`/`_zero`/`_succ` (`Relabel.lean:1731`) + T-1/T-2 are ORPHANED (confirm-and-delete at the
+re-architecture-settle commit); d=3 M₃ unaffected (`i=2`, no `hφ` slot). Once the seam settles + the arm
+shell lands (`refine case_III_arm_realization` at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`;
+`hwmem ← chainData_bottom_relabel`, the M₃-template discriminator/removeVertex slots) → **2c-iii**
+`chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Audit trail: design
+§(o‴)(I.8.17) (B1 BLOCKED + artifact root cause + re-arch directions), (I.8.15)/(I.8.16) (ROUTE α + A-1-scope,
+both dead), (I.8.12) (the member-mapping wall).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the

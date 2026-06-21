@@ -5881,6 +5881,50 @@ the W6b producer `chainData_split_w6b_gates` (`Realization.lean:771`, its A-1 ca
   member-mapping wall) as not-pre-dischargeable-in-docs rather than asserting it closes. No Lean landed (probes
   were `lean_multi_attempt`, in-memory; tree byte-clean).
 
+**(I.8.17) B1 SPIKE — BLOCKED (the de-risk worked): the B1 span re-derivation at `endsσρ` does NOT close, and
+the root cause is an ARTIFACT framework the slot core demands. Every LOCAL `hφ`-seam route is now exhausted;
+the unblock is a DEEPER slot-core/ASSEMBLY re-architecture — PENDING USER ADJUDICATION (2026-06-21, opus
+build spike, user-sanctioned B1-spike-first; tree byte-clean, NOTHING committed — the probe lemma was added
+then removed verbatim).** Per the user-approved plan (build 3b, B1 spike first as a standalone lemma; no
+contract change unless B1 closes), the spike stated B1 standalone (`hingeRow v₀ v₂ ρ₀ ∈ span (ofNormals
+(G−v₁) endsσρ q).rigidityRows` from A-1's `hφ@ends₀`) and LSP-probed it: the statement type-checks, `exact
+hφ0` fails (base/relabelled frameworks not defeq), and the only free route `rigidityRows_ofNormals_congr_ends`
+needs `endsσρ = ends₀` on every link of `G−v₁`, which is FALSE.
+
+  *(a) THE ARTIFACT ROOT CAUSE (coordinator-confirmed, `Relabel.lean:4671`).* The slot core / arm consumes `hφ`
+  at `ofNormals (G−v₁) endsσρ q` — the **relabelled selector `endsσρ` with the UN-advanced BASE seed `q`**.
+  This is a Lean-artifact of the fold (the slot core holds the selector fixed at `endsσρ` while the fold
+  advances the seed `q → qρ`): it is NEITHER the base `(ends₀, q)` (A-1's genuine output) NOR the engine
+  `(endsσρ, qρ)` (the conclusion). No KT geometry corresponds to `(endsσρ, q)`, which is precisely why no
+  rigidity / redundancy fact exists for it.
+
+  *(b) BOTH SANCTIONED B1 SOURCES ARE DEAD.* (i) "The relabelled framework's OWN rigidity" is unavailable — no
+  theorem establishes `ofNormals (G−v₁) endsσρ q` rigid, and `ofNormals_relabel_perm` transports rigidity only
+  when the seed is co-relabelled to `qρ` AND the graphs are `(ρ,σ)`-iso, neither of which holds for `(endsσρ,
+  q)` on `G−v₁`. (ii) "A-1's edge-grouped data re-grouped at `endsσρ`" is dead — each summand's block
+  constraint `rⱼ ∈ block_ends₀(eⱼ)` does not transfer to `block_endsσρ(eⱼ)` (the support extensors read `q` at
+  shifted vertices), and re-grouping only rearranges summands, not their fixed block constraints. The `d=3`
+  precedent `rigidityRows_ofNormals_relabel` only relates frameworks where the seed is ALSO relabelled (`qρ`),
+  and its image map `(funLeft ρ).dualMap` permutes the member to `hingeRow v₀ v₁ ρ₀` (since `σ⁻¹ v₂ = v₁`) —
+  the WRONG member, exactly the wall (4th touch).
+
+  *(c) VERDICT — every LOCAL route exhausted; the unblock is a DEEPER re-architecture.* ROUTE α (per-step
+  fold) infeasible (I.8.15); transport (T-1/T-2, B1) = the member-mapping wall; source-production (A-1
+  re-thread) = B1 does not close (this entry). The remaining route is a **slot-core / ASSEMBLY-level
+  re-architecture of KT eq. (6.62)'s seed-advancing fold** so it never demands `hφ` at the artifact `(endsσρ,
+  q)` — i.e. make the fold consume `hφ` at a KT-real geometry. The two directions (both UNCERTAIN, neither
+  pre-dischargeable): (1) advance selector AND seed in lockstep so the start framework is the genuine base
+  `(ends₀, q)` and the relabel is absorbed step-by-step — but this is ROUTE α's intent, which the gate's
+  `edge(s+1)/(s+2)`-only per-step move blocks (I.8.15), so it needs a NON-gate fold mechanism; (2) re-shape
+  the fold so the `hφ` it consumes sits at the engine `(endsσρ, qρ)` or base `(ends₀, q)` directly. **This is
+  a fundamental re-architecture decision, not a next-leaf — PENDING USER ADJUDICATION.**
+
+  **CLAUSE (ii) HONESTY.** A clean BLOCKED with a Lean-grounded diagnosis (coordinator independently confirmed
+  the arm's `hφ` framework is `(endsσρ, q)` at `Relabel.lean:4671`); the de-risk did its job — NO contract /
+  producer edit was made, tree byte-clean. `chainData_relabel_arm_hρGv` stays a CORRECT carried-hypothesis
+  lemma; the orphaned ROUTE-α leaf 1 `shiftEndsAdv` + `_zero`/`_succ` (+ T-1/T-2) await confirm-and-delete at
+  the re-architecture-settle commit; `d=3` M₃ unaffected (`i=2`, no `hφ` slot).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
