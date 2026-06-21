@@ -406,6 +406,38 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+### Session #23 (paused; rows 373–380) — the (A) re-architecture: a recon-chain to feasibility, then the cert compiles (the wall is gone)
+
+The user opened 23c on the redundancy-carry fork and chose **(A)** (re-shape the rank-cert to KT's
+`±r`/`Mᵢ`-block form, escaping the member-mapping wall). A recon/spike chain (§I.8.21–I.8.24) established (A)
+feasible and the forked general-`d` cert `case_III_rank_certification_chain` LANDED compiling + axiom-clean
+with **no `hρGv`** — the wall that blocked all of 23b is structurally gone (the `d=3` path byte-identical,
+zero-regression). Durable lessons:
+
+- **A POSITIVE de-risk of leaf X does NOT retire the phase's risk unless X is confirmed BINDING.** The (2b)(α)
+  block-rank-additivity spike (row 375) landed clean + POSITIVE, but the follow-up (2b)(β) recon (row 374,
+  §I.8.22) found the leaf is *not* on (A)'s critical path — the landed cert already does the `Mᵢ`-block
+  decomposition inline, and the de-risk leaf *consumes* the dead relabel-image inclusion as its `hWS`/`hg`
+  inputs. The real binding leaf was elsewhere ((2b)(γ), then found already-built in 23b). Verify which leaf is
+  actually binding before reporting a de-risk as risk-retiring; the coordinator re-surfaced the corrected
+  picture to the user mid-loop.
+- **Recon-early + coordinator-verify-against-source converged a 4-shift architecture decision with ZERO wasted
+  build commits.** Four design-passes (§I.8.21–I.8.24) each refined/overturned the prior pin
+  (block-rank-additivity → not binding → (2b)(γ) → already-built → the cert is selector-agnostic, so the wall is
+  only the collapsed-row `hρGv` sourcing). Every shift was caught in docs, before a build. The coordinator
+  independently re-verified each pin's load-bearing source claims (the rank-cert `fam` assembly :1596–1599;
+  `hFvle` :1551 the direct `Gv≤G` map; the `±r` identity conclusion `= −ρ₀`), which is what made trusting the
+  convergence safe — a single-pass design pin in this zone was wrong ~half the time.
+- **Crux-deferral across a re-architecture build-out — track the deferred crux; don't let it shrink
+  indefinitely.** The cert (row 379, P2 plumbing) took `hLI` as a hypothesis; the next build (row 380)
+  self-shrank again (the shared-tail refactor). Both shrinks were legitimate scope-to-fit, but the
+  genuinely-new `hLI` `Mᵢ`-corner LI-mod-`W` crux is now twice-deferred — the coordinator flagged the next
+  dispatch to tackle it directly (or as a standalone lemma), not shrink a 3rd time.
+- **Process: piping `check-log-rows.py` through `tail` masks its exit code** (the pipeline returns `tail`'s 0),
+  so a `… | tail && git commit` chain proceeds even on FAIL — an over-cap row 379 rode into a commit before
+  being caught + amended. Gate by grepping the output for `^OK` (or check `${PIPESTATUS[0]}`), not the pipeline
+  exit.
+
 ### Session #22 (in progress; rows 369–371) — an adversarial self-check refuted a re-route's leaf before any build
 
 After the user authorized the assembly-level recon, a design-pass (row 370) decomposed the whole-matrix
