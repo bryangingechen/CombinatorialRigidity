@@ -6095,6 +6095,218 @@ to `(ends e₀)`, blocks@`block_ends(eⱼ)` `:420/431/442`), the genuine-row `hw
 
 ---
 
+## WHOLE-MATRIX RE-ARCHITECTURE — buildable leaf decomposition (§(o‴)(I.8.19))
+
+**(I.8.19) WHOLE-MATRIX RE-ARCHITECTURE DESIGN-PASS — VERDICT: BUILDABLE leaf decomposition, with the
+genuinely-new crux (LEAF B, the column-op submatrix-containment span identity) flagged P=3-route-but-
+de-risk-first. The unblock §(I.8.18) named (re-shape the eq.-(6.60→6.64) realization to KT's whole-matrix
+form so `hφ` is consumed at the BASE `(ends₀,q)` directly) decomposes into a concrete ordered leaf sequence
+with exact signatures + a reuse/orphan map + a named FIRST leaf + a commit-count estimate (2026-06-21, opus
+design-pass; every load-bearing claim re-derived from the landed `def`/`theorem` bodies — A-1
+`Candidate.lean:400`, the engine/rank-cert `Arms.lean:72`/`Candidate.lean:1472`, the d=3 M₃ arm
+`Relabel.lean:2537`, CHAIN-1 `RigidityMatrix/Basic.lean:872–1446`, the slot-core/fold/gate spine, KT §6.4.2
+eqs. (6.59)–(6.67) pp. 694–698 read directly — NOT inherited from the prior pins; docs-only, no Lean, tree
+byte-clean).**
+
+  *(0) THE FOUR SOURCE-VERIFIED FACTS THIS DECOMPOSITION RESTS ON (each Lean-read this pass, line-cited):*
+
+  - **F1 — A-1 is fully parametric in `(Gab, Gv, ends, q)`, NOT pinned to the base graph.**
+    `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:400`) takes generic `{Gab Gv}`, a split
+    relation (`hle`/`hsplit`/`he₀`), the rigid-on hyp `hrig` at `ofNormals Gab ends q`, and the eq.-(6.22)
+    lower bound, and produces the candidate redundancy `ρ`, the bottom rows `w`, AND the edge-grouped form
+    `hingeRow (ends e₀).1 (ends e₀).2 ρ = ∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)` at `ofNormals Gv
+    ends q` (`:420/444`). The member `hingeRow (ends e₀).1 (ends e₀).2 ρ` is TIED to `(ends e₀)` — it moves
+    with the selector. **Consequence:** A-1 can be invoked at the CANDIDATE data `(Gab := G.splitOff at vᵢ,
+    Gv := G−vᵢ, ends := endsσρ, q := qρ)` directly — IF its hypotheses (rigid-on at the candidate, the
+    eq.-(6.22) lower bound at the candidate) can be discharged there. This is the whole-matrix route's spine:
+    produce the candidate `hρGv`/`hwmem` at the candidate framework directly, never transporting a base
+    span membership through a fold.
+  - **F2 — the engine + rank-cert bind ALL slots at ONE `(Gv, ends, q)`, and `hρGv`/`hwmem` are exactly
+    A-1's outputs.** `case_III_arm_realization` (`Arms.lean:72`) / `case_III_rank_certification`
+    (`Candidate.lean:1472`) take `(G Gv ends q v a b e_a e_b)` and consume `hρGv : hingeRow a b ρ ∈ span
+    (ofNormals Gv ends q).rigidityRows` (`:91`/`:1486`) + `hwmem` (the `D(|Gv|−1)` bottom rows, `:96`/`:1491`).
+    These are BYTE-MATCHED to A-1's outputs (`ρ ≠ 0`, `ρ(C(e₀)) = 0`, `hingeRow … ρ ∈ span Gv-rows`, `w`
+    independent + per-tagged). So if A-1 fires at the candidate `(G−vᵢ, endsσρ, qρ)`, its outputs feed the
+    engine at the candidate with NO transport. **The engine/rank-cert are already general-`k` and already
+    parametric in `(Gv, ends, q)` — they need NO change for the whole-matrix route.**
+  - **F3 — at d=3 the M₃ arm produces the candidate `hρGv` by a SINGLE-STEP W9a transport, and the member
+    MOVES — there is no `hφ@endsσρ` artifact at d=3.** `case_III_arm_realization_M3` (`Relabel.lean:2537`)
+    takes `hρGv` at the BASE `ofNormals (G−v) ends₀ q` (`:2562`), and produces the engine's candidate-side
+    `hρGv` (at `G−a, ends₃, qρ`) via `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (the carrier-level
+    single-step W9a, `Relabel.lean:865`) applied to `φ := hingeRow a b ρ` (`:2699–2706`): the image is
+    `hingeRow v b ρ` (member MOVED by the swap `a↔v`), and the arm recombines with the genuine `e_b`-row by
+    `Submodule.sub_mem`. **The single swap moves the member and the arm absorbs the moved part into a genuine
+    row — exactly KT's row-correspondence (6.62) at d=3.** The general-`d` slot core's artifact is that it
+    pre-applies the relabel to the selector and runs a SEED-ADVANCING fold whose start framework is
+    `(endsσρ, q)`; the d=3 arm never does this (the single step uses base `ends₀` at the start and the W9a
+    `funLeft` carries the relabel as it moves the member).
+  - **F4 — CHAIN-1 supplies the LI-side column-op machinery, NOT a span-membership submatrix identity.**
+    `RigidityMatrix/Basic.lean` gives: `columnOp hva` (the `≃ₗ` `col_a += col_v`, eqs. 6.14–6.16, `:884`),
+    `hingeRow_comp_columnOp_apply` (the candidate row → pure `v`-column under `Φ`, `:956`),
+    `linearIndependent_sumElim_candidateBlock_swap` (the eq.-(6.62) row-correspondence as LINEAR
+    INDEPENDENCE preservation: correcting candidate rows by old/new-block-span elements preserves LI,
+    `:1328`), and `linearIndependent_sum_augment_candidateRow_block` (the column-operated block-triangular
+    `+|ιc|` augment, `:1371`). **What CHAIN-1 does NOT supply:** a lemma exhibiting `span (R(G₁,q₁))-rows ⊆
+    span (R(G,pᵢ))-rows` (the (6.60→6.61) submatrix containment AS A SPAN INCLUSION), nor the transport of
+    the redundancy MEMBERSHIP `hingeRow v₀v₂ ρ₀ ∈ span(base)` into a membership `hingeRow v₀v₁ ρ₀ ∈
+    span(candidate)` via the column op. CHAIN-1's lemmas are about INDEPENDENCE (the rank-lift `+1`/`+|ιc|`),
+    used by `case_III_rank_certification` INTERNALLY; they are NOT the span-membership identity the
+    whole-matrix `hρGv` route needs. **This is the prompt's clause-(i) warning, confirmed: do not assume
+    CHAIN-1 supplies the column-op span identity — it supplies the LI half, not the span-membership half.**
+
+  *(a) THE RE-ARCHITECTURE SHAPE — produce `hρGv` AT THE CANDIDATE, not transport from base.* By F1/F2, the
+  cleanest KT-faithful Lean shape is: **drop the seed-advancing fold spine entirely and re-derive the
+  candidate redundancy + bottom rows at the candidate framework `(G−vᵢ, endsσρ, qρ)` by invoking A-1 there.**
+  A-1's outputs ARE the engine's `hρGv`/`hwmem` slots (F2), so the arm becomes a direct
+  `case_III_arm_realization` application with A-1@candidate filling the slots — no member-mapping transport,
+  so the `hφ@endsσρ` seam never arises (it was an artifact of the transport-from-base fold, §I.8.18). The
+  ONLY new obligations are A-1's hypotheses AT THE CANDIDATE: (i) the candidate framework is rigid-on its
+  vertex set (`hrig`), and (ii) the eq.-(6.22) nested-IH rank lower bound holds at the candidate
+  (`h622lb`). Both are KT's, and both are already discharged at the BASE by the dispatch (the d=3 dispatch's
+  `hrig'`/`h622lb` at `Realization.lean:390–391`). **The whole-matrix re-write = transport the RIGIDITY +
+  the RANK-BOUND (graph/seed facts, member-free) base→candidate, then fire A-1 at the candidate.** This is
+  the asymmetry §I.8.18(b) named: the perp half escaped because it transports a member-free SCALAR; rigidity
+  and the rank bound are likewise member-free (a `finrank`/`IsInfinitesimallyRigidOn` fact), so they
+  transport cleanly across the relabel — UNLIKE the fixed-member span membership the dead fold tried to move.
+
+  *(b) THE LEAF SEQUENCE (dependency-ordered; exact signatures; REUSE / NEW / ADAPT tagged). All under
+  `CaseIII/Relabel.lean` unless noted; all `[Finite α] [Finite β] [DecidableEq α/β]` per the arm idiom; `cd
+  : G.ChainData n`, `i : Fin cd.d`, `h2i : 2 ≤ (i:ℕ)`, the relabelled `endsσρ`/`qρ` as in
+  `chainData_relabel_arm_hρGv` `:4688–4691`.*
+
+  - **LEAF A — candidate rigid-on transport (the rigidity half; ADAPT of the d=3 GP-seed pattern).**
+    `chainData_candidate_rigidOn`: from the BASE framework's rigid-on / general-position fact (the dispatch's
+    `hrig'`, the IH-generic base realization) produce the candidate framework's rigid-on:
+    ```
+    (hrigBase : (ofNormals (G.splitOff (vtx 1)(vtx 0)(vtx 2) e₀) ends₀ q).toBodyHinge.IsInfinitesimallyRigidOn …)
+      → (ofNormals (G.splitOff (vtx i.succ)(vtx (i−1))(vtx (i+1)) e₀') endsσρ qρ).toBodyHinge.IsInfinitesimallyRigidOn …
+    ```
+    Mechanism: `IsInfinitesimallyRigidOn` is a `finrank (span rigidityRows) ≥ D(|V|−1)` fact (member-free);
+    the candidate framework is the base RELABELLED by `(shiftPerm i.castSucc)`, and the relabel is a `≃ₗ` on
+    the screw assignments, so the row-span finrank is invariant. REUSES the landed
+    `ofNormals_supportExtensor_relabel_perm` + `removeVertex_genuine_shiftRelabel` (the genuine-link
+    transport, already landed for `chainData_bottom_relabel`) + the rank-invariance-under-relabel
+    (`funLeft … ≃ₗ`). **P=2** (the transport machinery is the same already-landed relabel-image kit; this is
+    its rank/rigidity restatement, member-free). This is the rigidity analogue of the d=3 dispatch's
+    `hGPva`/`hrig'` (`Realization.lean:577`).
+  - **LEAF B — candidate eq.-(6.22) rank lower bound transport (the rank-bound half; the GENUINELY-NEW
+    crux — see (c)).** `chainData_candidate_h622lb`: from the base eq.-(6.22) nested-IH lower bound
+    (`case_III_nested_rank_lower_all_k`, landed, `Realization.lean:616`) at `(G−v₁, ends₀, q)`, produce the
+    same bound at the candidate `(G−vᵢ, endsσρ, qρ)`:
+    ```
+    (hlbBase : D(|V(G₁)|−1) − (D−2) ≤ finrank (span (ofNormals (G−v₁) ends₀ q).rigidityRows))
+      → D(|V(Gᵢ)|−1) − (D−2) ≤ finrank (span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows)
+    ```
+    Mechanism: again a member-free `finrank` fact transported across the `(shiftPerm i.castSucc)` relabel
+    (`|V(G−vᵢ)| = |V(G−v₁)|`, vertex counts preserved by the cycle). **The crux** is whether the
+    relabel-image row-span at the candidate has the SAME finrank as the base — i.e. whether the relabel
+    `≃ₗ` carries `(ofNormals (G−v₁) ends₀ q).rigidityRows` to a SPANNING set of `(ofNormals (G−vᵢ) endsσρ
+    qρ).rigidityRows` (so the spans are isomorphic). This is the (6.60→6.61) submatrix-containment expressed
+    as a SPAN EQUALITY-UP-TO-RELABEL — the column-op identity in span form. **P=3** (no landed lemma; the
+    de-risk question in (c)).
+  - **LEAF C — the candidate-framework A-1 invocation (the assembly; NEW but mechanical given A/B).**
+    `chainData_relabel_arm_hρGv_wholeMatrix` (REPLACES `chainData_relabel_arm_hρGv`): fire A-1
+    (`exists_candidateRow_bottomRows_of_rigidOn`) at `(Gab := G.splitOff at vᵢ, Gv := G−vᵢ, ends := endsσρ,
+    q := qρ, e₀ := the candidate fresh edge)` with LEAF A's `hrig` + LEAF B's `h622lb`, and read off `hρGv`
+    (the candidate-side `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows` — the
+    M₃-sign `−ρ₀`, after the `hingeRow_swap`/sign normalization the d=3 dispatch does at
+    `Realization.lean:412–427`). Same conclusion type as the current `chainData_relabel_arm_hρGv` `:4680`,
+    so the dispatch wiring (2c-iii) is unchanged. **P=2** (mechanical: A-1's signature is the consumer's,
+    F1/F2; the splice-edge/recorded-orientation bookkeeping mirrors the d=3 `hsupp_e₀`/`hrec'` dance,
+    `Realization.lean:397–427`).
+  - **LEAF D (STAYS, reused as-is) — the genuine-row `hwmem` half.** `chainData_bottom_relabel`
+    (`:1961`, landed). Either it is kept (the bottom rows transported base→candidate), OR — cleaner — A-1 at
+    the candidate (LEAF C) ALSO outputs the candidate bottom rows `w` directly (A-1's `w`/`hwmem` outputs,
+    F1), making `chainData_bottom_relabel` itself orphanable. **DECISION FLAG (c′):** keep
+    `chainData_bottom_relabel` for the first build (it is landed, axiom-clean, and the bottom-row transport
+    is genuinely member-moving-but-fine because the engine's `hwmem` ALLOWS the moved `(ab)`-block tag); fold
+    it into LEAF C only if the candidate-A-1 `w` proves cleaner. **P=2 either way (no new math).**
+
+  *(c) THE HARDEST LEAF = LEAF B, and its de-risk-first plan (FLAG-DON'T-FORCE).* LEAF B asks: does the
+  relabel `(shiftPerm i.castSucc)`-image of `(ofNormals (G−v₁) ends₀ q).rigidityRows` SPAN the same subspace
+  (up to the `funLeft` `≃ₗ`) as `(ofNormals (G−vᵢ) endsσρ qρ).rigidityRows`? KT's (6.60→6.61) says YES in
+  matrix terms (the column op + (6.59) substitution makes `R(G₁,q₁)` literally a submatrix of `R(G,pᵢ)`,
+  and the row correspondence (6.62) is a bijection of the surviving rows). The Lean question is whether this
+  is a clean `≃ₗ`-image span equality or whether it hides the SAME member-mapping difficulty. **The de-risk
+  signal (POSITIVE):** LEAF A already transports rigid-on (a `finrank ≥` fact) across the SAME relabel, and
+  `chainData_bottom_relabel` (landed) already transports the WHOLE row-disjunction (genuine rows +
+  `(ab)`-block tag) across this relabel per-member — so the relabel-image of the base rows IS the candidate
+  rows (genuine ↦ genuine, fresh-pair ↦ fresh-pair), which is exactly the span equality LEAF B needs, at the
+  SPAN level rather than per-member-with-fixed-member. **Why LEAF B is NOT the dead `hφ` seam:** the `hφ`
+  seam was DEAD because it needed a FIXED member (`hingeRow v₀v₂ ρ₀`) held still across the relabel; LEAF B
+  needs only that the relabel-image of the base ROW SET spans the candidate ROW SET — a member-FREE span
+  equality (the members are allowed to move, as `chainData_bottom_relabel` already shows they do). **So LEAF
+  B inherits the asymmetry §I.8.18(b) identified as the escape hatch.** Still flagged **P=3** because no
+  landed lemma states the span equality and the `finrank`-transport-across-`≃ₗ` over the relabelled
+  `ofNormals` carrier may hit the §38 defeq trap; **DE-RISK FIRST** (build a single `i=3` instance of the
+  span-equality before pinning LEAF B's general-`i` signature — the row-321 discipline, the same gate that
+  caught ROUTE α). **If the de-risk spike shows the span equality re-hides the member-mapping wall** (e.g.
+  the relabel-image span is provably a PROPER subspace because the candidate has interior links the base
+  lacks at the relabelled selector), LEAF B is the genuine obstruction — STOP and escalate at the
+  §I.8.15/I.8.18 standard; the whole-matrix route then also fails and the residue is route B (carry to
+  ENTRY, likely-dead). **This is the honest P=3 flag the clause-(ii) bar requires: LEAF B has a
+  de-risk-able route (the relabel-image span equality, supported by the landed per-member transport) but NOT
+  a guaranteed close.**
+
+  *(d) REUSE / ORPHAN MAP.*
+  - **REUSE AS-IS (member-free transport + the carrier kit + A-1/engine):** A-1
+    `exists_candidateRow_bottomRows_of_rigidOn` (fired at the candidate, F1); the engine
+    `case_III_arm_realization` + `case_III_rank_certification` (parametric in `(Gv,ends,q)`, F2); the
+    single-step carrier W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (`:865`, the d=3 building
+    block); `ofNormals_supportExtensor_relabel_perm` (`:63`); `removeVertex_genuine_shiftRelabel`;
+    `chainData_bottom_relabel` (LEAF D); `case_III_nested_rank_lower_all_k` (the base h622lb,
+    `Realization.lean:616`); the perp leaves (`chainData_freshEdge_perp_of_baseRedundancy`,
+    `_transport_base_to_candidate`, `_slot_perp`) IF the perp half is still needed by the candidate-A-1
+    route — **re-check at LEAF C build:** if A-1@candidate produces `hρGv` directly as a span membership
+    (not via the slot-core peel), the per-edge perp obligations evaporate (they were the slot core's
+    `hperp` slot), and the whole perp sub-tree (`_slot_perp`, `_perp_of_baseRedundancy`, the LEAF-1–4 chain
+    induction, the telescope `wstep_foldl_hingeRow_telescope`) becomes orphanable TOO. **FLAG:** the perp
+    sub-tree's fate is decided at LEAF C — list it as a confirm-and-delete CANDIDATE, not a confirmed
+    orphan, until LEAF C's A-1@candidate shape is built.
+  - **CONFIRMED ORPHAN (confirm-and-delete at the re-architecture-land commit, `git grep` zero callers):**
+    the seed-advancing `hφ`-spine subtree, whose ONLY caller is the to-be-replaced arm: (1) the slot core
+    `chainData_freshEdge_slot_mem` (`:4158`, sole caller = `chainData_relabel_arm_hρGv` `:4709`); (2) the
+    fold spine `shiftBodyListAsc_foldl_mem_span_rigidityRows` (`:1807`, sole caller = the slot core
+    `:4213`); (3) the seed-advancing gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`
+    (`:1201`, sole caller = the fold spine `:1226`) + its `seedAdvance_wstep_hstep` bundle + the
+    `shiftBodyFrameworkAscTotal`/`_eq`/`shiftBodyListAsc`/`shiftBodyFrameworkAsc`/`shiftSeedAdv` fold
+    scaffolding (callers within the orphaned subtree only — verify with `git grep` at the delete commit);
+    (4) `chainData_relabel_arm_hρGv` itself (`:4647`, replaced by LEAF C); (5) the ALREADY-ORPHANED ROUTE-α
+    leaf 1 `shiftEndsAdv`/`_zero`/`_succ` (`:1731`) + T-1/T-2 (`:4427`/`:4464`). **The perp sub-tree (above)
+    is a SEPARATE confirm-and-delete decision at LEAF C.**
+  - **STAYS (untouched):** everything the d=3 M₃ arm uses (`case_III_arm_realization_M3`,
+    `case_III_bottom_relabel`, the single-step W9a, the dispatch `case_III_candidate_dispatch`); the CHAIN-1
+    LI machinery (`columnOp` + the augment lemmas — used by `case_III_rank_certification` internally, NOT by
+    the `hρGv` route); CHAIN-3/4 (the discriminator). **`d=3` M₃ (`i=2`) MUST stay zero-regression** — it
+    has no `hφ` slot, no fold, no seam (F3); the re-architecture touches ONLY the general-`d` chain arm
+    (`i ≥ 2` with `cd.d ≥ 3`), and the `d=3`/`k=2` wrapper instantiates the unchanged M₃ arm.
+
+  *(e) FIRST CONCRETE LEAF + COMMIT ESTIMATE.* **FIRST = LEAF A** (`chainData_candidate_rigidOn`, the
+  member-free rigid-on transport, P=2) — it is the leaf-most (depends only on the landed relabel kit), it
+  de-risks the "member-free facts transport cleanly across the relabel" premise the whole route rests on,
+  and it is the rigidity analogue of an already-landed d=3 pattern. **COMMIT ESTIMATE: 5–8 commits** for the
+  whole sub-effort — LEAF A (1, P=2), LEAF B de-risk spike (1) + LEAF B general-`i` (1–2, P=3), LEAF C
+  (1, P=2), the perp-subtree orphan decision + confirm-and-delete (1), the arm-shell + dispatch wire-up
+  (1) — **PLUS** the contingency that LEAF B's de-risk spike fails (then STOP, escalate, ~1 commit to
+  document the obstruction). **NO contract/motive change** (C.0–C.6 untouched, §I.8.18 confirmed: this is
+  machinery below the dispatch C.3 + record C.1). The arm-shell + 2c-iii dispatch close stays as the
+  §I.8.18 *Hand-off* names (`refine case_III_arm_realization` at `Gv=G−vᵢ`, `endsσρ`, `qρ`, the M₃-sign
+  `ρ:=−ρ₀`, `hwmem ← chainData_bottom_relabel` OR candidate-A-1 `w`).
+
+  **CLAUSE (i) HONESTY.** Every load-bearing claim was re-derived from the landed bodies this pass: F1 from
+  A-1's actual `∃`-conclusion (`Candidate.lean:414–445`), F2 from the engine/rank-cert slot types
+  (`Arms.lean:91/96`, `Candidate.lean:1486/1491`), F3 from the d=3 M₃ arm's actual `hρGv` derivation
+  (`Relabel.lean:2562/2699–2710`), F4 from CHAIN-1's actual lemma statements (`Basic.lean:1328/1371` — LI,
+  not span membership), and KT's mechanism from pp. 694–698 read directly. **CLAUSE (ii) HONESTY.** The
+  hardest leaf (LEAF B) is flagged P=3 with a de-risk-first plan and an explicit STOP-and-escalate branch if
+  the de-risk fails; it is NOT given a manufactured buildable-looking signature — its signature is stated as
+  a TARGET with the open question (the span-equality-up-to-relabel) named, and the positive de-risk signal
+  (the landed per-member transport already does the member-moving version) is distinguished from a
+  guaranteed close. The route is BUILDABLE-MODULO-LEAF-B-de-risk; if LEAF B's spike refutes the span
+  equality, the whole-matrix route fails and ENTRY-carry (route B) is the residue.
+
+---
+
 ## CHAIN↔ENTRY chain-data contract
 
 **Status:** settled 2026-06-17 (docs-only design-settle pass, source-verified
