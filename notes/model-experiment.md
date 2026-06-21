@@ -161,6 +161,27 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   step in a repeatedly-bitten area is a recon trigger, not a build-on; (c) the async-mailbox dispatches returned
   via idle-notification with no structured LANDED/BLOCKED (verify via git + SendMessage query). OPUS-ONLY/cap/
   fixups expire session-end; a fresh coordinator re-runs the availability check.
+- **Session #21 close (2026-06-21; rows 363–368, all opus / OPUS-ONLY, gate-verified; user PAUSED on the
+  `hφ`-seam re-architecture decision).** Opened with ROUTE α USER-CONFIRMED (resolving the row-362 deferral).
+  The session was the ROUTE-α arc + its collapse: the design-settle (363) decomposed ROUTE α into 5 leaves and
+  DISSOLVED the central flagged risk (the telescope is selector-free); leaf 1 `shiftEndsAdv` LANDED (364,
+  mechanical mirror); the leaf-2 spike (365) resolved the flagged RISK LEAF NEGATIVE (leaf 1's def shape WRONG);
+  the leaf-1-def re-design recon (366) rigorously REFUTED ROUTE α as a CATEGORY ERROR (the per-step gate can't
+  reach the edge cycle `shiftEdgePerm i`); the A-1-source scope (367) OVERTURNED the coordinator's
+  parametric-reuse optimism (A-1's member moves with the selector); and the user-approved B1 spike (368)
+  BLOCKED with the ROOT CAUSE — the slot core demands `hφ` at the ARTIFACT framework `(endsσρ, q)`, a Lean-
+  artifact of the fold with no KT geometry. **ALL LOCAL `hφ`-seam routes are now EXHAUSTED (the member-mapping
+  wall's 4th touch); the hard core is precisely delineated (design §(o‴)(I.8.13–I.8.17)).** Next = a fundamental
+  slot-core/ASSEMBLY re-architecture (KT works ENTIRELY at the base; the relabel-arm's `endsσρ` is what creates
+  the wall) — likely re-opening the locked Route β — PENDING USER ADJUDICATION; user chose pause for fresh
+  context. **Process note:** the flag-don't-force + verify-against-source clauses caught TWO coordinator
+  hypotheses (the telescope risk; the A-1 parametric-reuse) and prevented building leaves 2–5 / a contract
+  change on dead routes — honest 'negative' progress that converged on the hard core, not frontier advance.
+  All opus (OPUS-ONLY) → no model-comparison data; no pairs/escalations this session. OPUS-ONLY/cap/fixups
+  expire session-end; a fresh coordinator re-runs the availability check + re-confirms the triple. **DEBT:**
+  `notes/Phase23b.md` at 504 lines (marginally over the ~500 tripwire) — compress the orphaned
+  ROUTE-α/leaf-machinery *Decisions made* entries at the re-architecture-settle commit (when the orphans
+  `shiftEndsAdv`/T-1/T-2 confirm-and-delete).
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
