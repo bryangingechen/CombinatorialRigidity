@@ -661,12 +661,26 @@ LEAF 4 `group = ±ρ₀` reading), it discharges `ρ₀ ⊥ Fva.supportExtensor 
 `chainData_freshEdge_slot_mem` consumes. Proof = A-2 `candidate_perp_two_incident_supportExtensors`'s `.1`
 rewritten by `hρ₀`; self-contained, zero blast radius. So the arm now supplies the slot core's `hperp` per
 surviving edge from the witnesses (no abstract perp left to defer).
-**← NEXT = LEAF 5 ASSEMBLY** (arm wiring `chainData_relabel_arm`: `refine
-case_III_arm_realization` at the per-`i` roles; `hwmem ← chainData_bottom_relabel`; `hρGv ←`
-**`chainData_freshEdge_slot_mem`** with its `hperp` supplied by `chainData_freshEdge_perp_of_witness` (the
-witness from A-1 + the LEAF 4 regroup `interior_group_acolumn_eq_neg_baseRedundancy`), after rewriting the
-fold seed to `qρ` via P3 `shiftSeedAdv_eq_funLeft_shiftPerm` + flipping orientation via `hingeRow_swap`).
-Full plan + file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR), §(o‴)(I.8.4).
+**← ARM CONVERGENCE RECON 2026-06-20 (row 352, read-only Plan, coordinator-confirmed) → GAP-FOUND: the arm
+does NOT converge from landed pieces** (supersedes the prior LEAF-5-ASSEMBLY pointer; the 5 deferring leaf-5
+slices hid a level mismatch). The `hρGv` perp sub-slot (`chainData_freshEdge_perp_of_baseRedundancy`) needs
+`hcomb`+`hrv` at the **CANDIDATE** framework `ofNormals (G−vᵢ) ends qρ`, but A-1
+`exists_candidateRow_bottomRows_of_rigidOn` produces the edge-grouped redundancy ONLY at the **BASE** `G−v₁`
+(Candidate.lean:439-445); NO landed lemma transports it (grep-confirmed: candidate-level `hrv` is only ever a
+hypothesis). The **rows-288/291 LEVEL-MISMATCH redux**; the earlier prose "A-1's hcomb at the candidate"
+OVERSTATED A-1. All OTHER engine slots DO converge from landed pieces (per-slot table in the row-352 recon:
+`hwmem ← chainData_bottom_relabel`, seed ← P3, `hρe₀`/discriminator/removeVertex bookkeeping per the d=3 M₃
+template). **THE GENUINELY-NEW LEAF = a candidate-level edge-grouped TRANSPORT**
+`chainData_candidateRow_edgeGrouped_transport` (transport A-1's base edge-grouped redundancy + per-summand
+block memberships to `G−vᵢ` via `candidate_supportExtensor_perp_of_base` per summand + `mem_hingeRowBlock_iff`
++ `shiftEdgePerm`) — classified TRANSPORT, **NO motive/IH/contract change**. **⚠ FLAGGED SUBTLETY (de-risk-first,
+row-321 discipline): A-1's base summand edges `evGv j` are ARBITRARY `G−v₁`-links, NOT necessarily
+`shiftEdgePerm`-images of candidate edges** — non-aligned summands (whose columns don't vanish) would need a
+re-grouping into the `shiftEdgePerm`-image basis first (harder than a one-step rw). **← NEXT = de-risk the i=3
+edge-alignment** (do A-1's base summands align with `shiftEdgePerm`-images, or do their non-aligned columns
+vanish?), THEN the transport leaf, THEN the arm (`refine case_III_arm_realization`, M₃ template re-indexed,
+~1-2c). **Net: arm ~3-5 commits from closing, gated on the transport leaf.** Per-slot table + file:lines =
+the row-352 recon return.
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
