@@ -3572,4 +3572,100 @@ theorem BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident [Decid
       BodyHingeFramework.hingeRow_comp_single_off hau hav, LinearMap.zero_apply, smul_zero]
   rw [hoff, add_zero]
 
+/-! ### The eq.~(6.44) chain-induction step kernel (CHAIN-2c-ii-arm, LEAF 1)
+
+The step kernel of the KT eq.~(6.66) `±r` chain induction
+(`notes/Phase23-design.md` §(o‴)(I.8.9-SETTLE), LEAF 1; Phase 23b). At a **deeper** interior
+degree-2 chain vertex `a = vtx i.castSucc`
+(`2 ≤ i ≤ d−1`) the global base redundancy `g`, exposed edge-grouped as
+`∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each summand a `G`-link `evⱼ = uvⱼvvⱼ`), has its `a`-column
+governed entirely by the two incident chain edges `edge i` and `edge (i−1)` (the interior degree-2
+closure `deg_two_split`: no other `G`-edge meets `a`). Reading the global column-vanishing
+`g.comp (single a) = 0` (KT eq.~(6.43)) through the column-isolation core
+`edgeIndexedCombination_comp_single_eq_incident` (only `a`-incident summands contribute to the
+`a`-column) and partitioning the incident summands by which of the two chain edges carries them
+gives KT's eq.~(6.44) at `a`: the successor-edge group's `a`-column is *minus* the predecessor-edge
+group's. The two "groups" are the `a`-column restrictions of the per-edge sub-combinations — screw
+functionals (`Module.Dual ℝ (ScrewSpace k)`) the chain induction propagates as `±ρ₀`. -/
+
+/-- **The eq.~(6.44) chain-induction step kernel: the two incident chain-edge groups' `a`-columns
+cancel** (CHAIN-2c-ii-arm, the `hρGv` regroup chain induction LEAF 1; Katoh–Tanigawa 2011 §6.4.1
+eq.~(6.44)/§6.4.2 eq.~(6.66), `notes/Phase23-design.md` §(o‴)(I.8.9-SETTLE); Phase 23b). Let
+`g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` be an edge-indexed `hingeRow` combination in which each
+summand `j` is a genuine `G`-link `evⱼ` from `uvⱼ` to `vvⱼ`. At an **interior** chain vertex
+`a = cd.vtx i.castSucc` (`0 < i`, so `1 ≤ i ≤ d−1`) — degree-2 in `G` by `cd.deg_two`, its only
+incident edges the successor `edge i` and predecessor `edge (i−1)` — the global `a`-column vanishing
+`g.comp (single a) = 0` forces the `a`-columns of the two incident-edge sub-combinations to cancel:
+
+`(∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single a)
+  = −(∑_{evⱼ = edge (i−1)} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single a)`.
+
+The `a`-column restriction `(·).comp (single a)` is orientation-agnostic (it reads `±rvⱼ` per
+summand by `hingeRow_comp_single_tail`/`_off`), so the conclusion is exactly the adjacency relation
+`group(edge i) = −group(edge (i−1))` the chain induction's step uses, no re-orientation needed.
+The proof: the column-isolation core `edgeIndexedCombination_comp_single_eq_incident` reduces the
+`a`-column to the `a`-incident summands; the interior degree-2 closure `cd.deg_two_split` partitions
+those (disjointly, `edge_inj`) into the `edge i`- and `edge (i−1)`-groups (each chain edge meets `a`
+by `cd.isLink_succ_edge`/`cd.isLink_pred_edge`, and every incident summand is one of the two by
+`deg_two_split`). Framework-free, zero blast radius. -/
+theorem _root_.Graph.ChainData.interiorGroup_acolumn_adjacency [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hcol : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)) = 0) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+    = -(∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨(i : ℕ) - 1, by omega⟩),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)) := by
+  classical
+  set a := cd.vtx i.castSucc with ha
+  set ei := cd.edge i with hei
+  set ep := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with hep
+  -- The two chain edges are distinct (`edge_inj`); each is a `G`-link incident to `a`.
+  have hep_ne_ei : ep ≠ ei := (cd.pred_edge_ne hi)
+  have hlink_ei : G.IsLink ei a (cd.vtx i.succ) := cd.isLink_succ_edge i
+  have hlink_ep : G.IsLink ep a (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) :=
+    cd.isLink_pred_edge hi
+  -- A summand carried by `edge i` (resp. `edge (i−1)`) is incident to `a` (same-edge endpoints).
+  have hinc_ei : ∀ j, ev j = ei → a = uv j ∨ a = vv j := fun j hj =>
+    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_ei)).imp (·.1.symm) (·.2.symm)).symm
+  have hinc_ep : ∀ j, ev j = ep → a = uv j ∨ a = vv j := fun j hj =>
+    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_ep)).imp (·.1.symm) (·.2.symm)).symm
+  -- Every `a`-incident summand is carried by `edge i` or `edge (i−1)` (interior degree-2 closure).
+  have hdeg : ∀ j, (a = uv j ∨ a = vv j) → ev j = ei ∨ ev j = ep := by
+    intro j hj
+    rcases hj with h | h
+    · refine cd.deg_two_split hi (ev j) (vv j) ?_
+      rw [← ha, h]; exact hlink j
+    · refine cd.deg_two_split hi (ev j) (uv j) ?_
+      rw [← ha, h]; exact (hlink j).symm
+  -- The `a`-column of `g` is that of its `a`-incident sub-combination (`_eq_incident`); rewrite the
+  -- vanishing `hcol` accordingly.
+  rw [BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident a c uv vv rv] at hcol
+  -- Partition the incident index set by `ev = edge i`: the `edge i`-part is the `edge i`-group, the
+  -- complement (within incident) is the `edge (i−1)`-group (deg-2 closure + `edge_inj` disjoint).
+  rw [← Finset.sum_filter_add_sum_filter_not
+      (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)) (fun j => ev j = ei),
+    LinearMap.add_comp] at hcol
+  have he_ei : (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = ei)
+      = Finset.univ.filter (fun j => ev j = ei) := by
+    rw [Finset.filter_filter]
+    refine Finset.filter_congr fun j _ => ?_
+    exact ⟨fun h => h.2, fun h => ⟨hinc_ei j h, h⟩⟩
+  have he_ep : (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ¬ ev j = ei)
+      = Finset.univ.filter (fun j => ev j = ep) := by
+    rw [Finset.filter_filter]
+    refine Finset.filter_congr fun j _ => ?_
+    constructor
+    · rintro ⟨hinc, hni⟩
+      exact (hdeg j hinc).resolve_left hni
+    · rintro hj
+      exact ⟨hinc_ep j hj, fun h => hep_ne_ei (hj ▸ h)⟩
+  rw [he_ei, he_ep] at hcol
+  exact eq_neg_of_add_eq_zero_left hcol
+
 end CombinatorialRigidity.Molecular

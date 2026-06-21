@@ -5037,7 +5037,14 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   `Nat.le_induction` base=leaf2 step=leaf1 (MECHANICAL ~1c). (4) `interior_sharedρ₀_perp` — `group = ±ρ₀` →
   `ρ₀ ⊥ supportExtensor(edge s)` via A-2 + `neg_mem`, then `freshEdge_surviving_row_mem` (MECHANICAL ~1c).
   (5) arm wiring `chainData_relabel_arm` `hsurv` slot + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`
-  (~2-3c). **Genuinely-new content = leaves 1+2; the rest is assembly over landed infra. NEXT = leaf 1.**
+  (~2-3c). **Genuinely-new content = leaves 1+2; the rest is assembly over landed infra.**
+  **LEAF 1 `Graph.ChainData.interiorGroup_acolumn_adjacency` LANDED 2026-06-20** (`CaseIII/Relabel.lean` tail,
+  axiom-clean; full project green + lint, d=3 zero-regression, zero callers). Built cleaner than pinned: the
+  "group" = the orientation-agnostic `a`-column restriction `(·).comp (single a)` (a screw functional), so the
+  conclusion is `(edge i-group).comp (single a) = −(edge (i−1)-group).comp (single a)` and
+  `candidateRow_ac_eq_neg`'s re-orientation is subsumed by the column restriction; the partition is via
+  `edgeIndexedCombination_comp_single_eq_incident` (only `a`-incident summands) + `deg_two_split` +
+  `IsLink.eq_and_eq_or_eq_and_eq`/`edge_inj` (disjoint incident split). **NEXT = leaf 2.**
 
 ---
 

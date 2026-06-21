@@ -193,9 +193,11 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     `s + 1 < (i : ℕ)`) — `rw [panelCorrespondence_supportExtensor]; exact hperp`. This turns a base-side
     perp (A-1's base witness at `G₁`) into the candidate-side `hperp_ab`/`hperp_ac`
     (`freshEdge_surviving_row_mem_of_witness` (A-3) interface). Self-contained, zero blast radius.
-    **← NEXT: Route W's producer `exists_interior_redundancy_witness`** (option (a′): re-derive A-1's
-    base witness at `G₁`, thread per-row perps through `candidate_supportExtensor_perp_of_base`, feed
-    `_of_witness` + A-2 per interior vertex; + the flagged P3 seed bridge), then the arm.
+    **← NEXT (authoritative, post-row-342 chain-induction settle): the 5-leaf chain induction — LEAF 1
+    `interiorGroup_acolumn_adjacency` LANDED 2026-06-20, NEXT = LEAF 2 `anchor_group_eq_neg_baseRedundancy`.**
+    See the *Hand-off* §(I.8.9-SETTLE) 5-leaf plan paragraph below + design §(I.8.9-SETTLE). (This supersedes
+    the pre-settle producer `exists_interior_redundancy_witness` — the regroup is now the eq-(6.44) chain
+    induction off the single base redundancy, not a per-vertex witness; §(I.8.9-PAIR).)
   - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
     vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
     lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
@@ -526,11 +528,21 @@ group `= ρ₀`; `group(edge 2) = −ρ₀` by `candidateRow_ac_eq_neg` at `(v�
 Signature `interior_group_eq_baseRedundancy` (motive: `(vᵢvᵢ₊₁)`-group `= ±ρ₀`, `2≤i≤d−1`; base=anchor,
 step=`group(edge i+1)=−group(edge i)`); consumer-match confirmed (feeds `wstep_foldl_freshEdge_slot_mem`'s
 shared-`ρ₀` `hsurv` via A-3 + `neg_mem`).
-**← NEXT = LEAF 1 `interiorGroup_acolumn_adjacency`** (the step kernel: at a deeper degree-2 interior vertex,
-`group(edge i) = −group(edge i−1)`, via the 2 landed column cores + `candidateRow_ac_eq_neg` + `deg_two_split`
-+ an `incidentGroup` index-partition; MECHANICAL). Then leaf 2 (anchor) → leaf 3 (induction) → leaf 4
-(consumer adapter) → leaf 5 (arm + P3 seed bridge). Full plan + file:lines + eq-numbers → design
-§(I.8.9-SETTLE)/(I.8.9-PAIR).
+**LEAF 1 `Graph.ChainData.interiorGroup_acolumn_adjacency` — LANDED 2026-06-20** (`Relabel.lean` tail,
+axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The step kernel: at a deeper
+interior degree-2 chain vertex `a = vtx i.castSucc` (`0 < i`), for an edge-indexed `hingeRow` combination
+`g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each summand a `G`-link `evⱼ`) with the global `a`-column vanishing
+`g.comp (single a) = 0`, the `a`-column of the `edge i`-group `= −` the `a`-column of the `edge (i−1)`-group.
+Proof: `edgeIndexedCombination_comp_single_eq_incident` (column = `a`-incident sub-combination) + the interior
+degree-2 closure `deg_two_split` partitions the incident summands disjointly into the two chain-edge groups
+(`IsLink.eq_and_eq_or_eq_and_eq` + `edge_inj` for the disjointness), then `eq_neg_of_add_eq_zero_left`. The
+"group" is the orientation-agnostic `a`-column restriction `(·).comp (single a)` — a screw functional, no
+re-orientation needed (`candidateRow_ac_eq_neg` is subsumed by the cleaner column-restriction reading).
+**← NEXT = LEAF 2 `anchor_group_eq_neg_baseRedundancy`** (`group(edge 2) = −ρ₀`: `v₂`'s 2nd `G₁`-edge is the
+spliced `e₀ = v₀v₂` so its `(ab)`-group is `hρGv`'s LHS `ρ₀`; the global `acolumn_zero` `∀ a` supplies the
+anchor `hcol`; genuinely-new-but-small, ~1-2c). Then leaf 3 (`Nat.le_induction` base=leaf2 step=leaf1) → leaf 4
+(consumer adapter → A-2 + `neg_mem` + `freshEdge_surviving_row_mem`) → leaf 5 (arm + P3 seed bridge). Full plan
++ file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
@@ -971,6 +983,14 @@ proofs; 4b stays its own green body — off-one-panel hyp + `LI ℝ p` via `hpba
 LEAF-0 `linearIndependent_normals_of_algebraicIndependent_triple` (fixed-3-row LI, genuinely-new); the
 M4-forget reach-in routes solely through CHAIN-3 (h-4) + `extensor_update_smul`.
 
+- **CHAIN-2c-ii-arm chain-induction LEAF 1 `interiorGroup_acolumn_adjacency` LANDED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean). The eq-(6.44) step kernel: at a deeper interior degree-2
+  chain vertex the two incident chain-edge groups' `a`-columns cancel (`group(edge i) = −group(edge i−1)`).
+  Built from the 2 landed column-isolation cores (`edgeIndexedCombination_comp_single_{off,eq_incident}`)
+  + `deg_two_split` + `IsLink.eq_and_eq_or_eq_and_eq`/`edge_inj` for the disjoint incident partition. The
+  "group" = the orientation-agnostic `a`-column restriction `(·).comp (single a)` (subsumes
+  `candidateRow_ac_eq_neg`'s re-orientation). NEXT = LEAF 2 anchor.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *Match the list recursor to which end the fold's base case sits on: a `foldl`/accumulating fold
@@ -1052,6 +1072,10 @@ M4-forget reach-in routes solely through CHAIN-3 (h-4) + `extensor_update_smul`.
   whose LHS pattern mentions `e` silently fails (`simp only` reports args "unused") —
   the goal-side / library-lemma variant of the `set` fold; drop the `set`* →
   TACTICS-QUIRKS § 43 (goal-side / library-lemma variant).
+- *A `h ▸ t` cast to specialize a `Graph.IsLink` at a `set`-bound vertex fails — the goal shows the
+  unfolded abbreviation while `h` mentions the folded one, so `▸` can't bridge; fold the goal first
+  with `rw [← hX, h]`* → TACTICS-QUIRKS § 43 (`▸`-cast corollary) / FRICTION [idiom] *`h ▸` to
+  specialize a `Graph.IsLink` at a `set`-bound vertex…*.
 - *A new `InnerProductSpace`/`EuclideanSpace` import poisons a pre-existing exterior-algebra proof
   in the same file to a `whnf` timeout (the `PiLp 2` instances become defeq-visible to `⋀`-term
   elaboration) — keep the bridge in a `Mathlib/` mirror, house metric-using leaves in a downstream

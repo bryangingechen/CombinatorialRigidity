@@ -1794,6 +1794,11 @@ erroring. (Phase 23b CHAIN-3 OD-8: `set b := Pi.basisFun ℝ (Fin (d+1))` folded
 - **Decouple a derived form:** introduce `hX' : X = <other form> := by rw [h, …]` right after the
   `set`, then use `hX'`. This pins the post-fold identity once instead of re-deriving it in each
   consumer.
+- **`▸`-cast corollary:** a term `h ▸ t` (`h : X = rhs`) to specialize `t`'s type fails when the
+  goal/expected type displays the *unfolded* `e` (not `X`) — `▸` can't pattern-match across the
+  fold and errors "the equality does not contain the expected result type on either side". Fold the
+  goal first: `refine …; rw [← hX, h]; exact t` (`← hX` rewrites the goal's `e` back to `X`, then
+  `h` rewrites). (Phase 23b LEAF 1 `interiorGroup_acolumn_adjacency`, the `cd.deg_two_split` link.)
 
 The general rule: after a `set`/`subst`/`simp only [eqn] at *` that touches the context, re-read
 what your *old* hypotheses now say before threading them into a later `rw`. The atom you named is

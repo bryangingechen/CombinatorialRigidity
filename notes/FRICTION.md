@@ -158,6 +158,11 @@ to be re-derived by re-reading entries later.
 - **Resolution:** name the disjunct (`with hfc | hfd`) and `rw [hfc] at hlink hρ` — rewriting the local `f` to the binder, never the reverse. Same root cause as the entry above (only `subst`/`rfl` when the side you want eliminated is the free local), but here *both* sides are free and the trap is picking the wrong one.
 - **Status:** idiom.
 
+### [idiom] `h ▸` to specialize a `Graph.IsLink` at a `set`-bound vertex fails — the goal shows the *unfolded* abbreviation while `h` mentions the *folded* one; `rw [← ha, h]` (fold-then-rewrite) instead
+- **Where it bit:** the `hdeg` of `Graph.ChainData.interiorGroup_acolumn_adjacency` (`CaseIII/Relabel.lean`, LEAF 1): after `set a := cd.vtx i.castSucc with ha`, from `h : a = uv j` I wanted `G.IsLink (ev j) a (vv j)` for `cd.deg_two_split`. Both `h ▸ hlink j` and `h.symm ▸ hlink j` errored with "the equality does not contain the expected result type on either side" — the `deg_two_split` goal displays `cd.vtx i.castSucc` (the def `a` unfolds to) while `h` is stated in terms of `a`, so `▸` can't pattern-match across the fold.
+- **Resolution:** `refine cd.deg_two_split hi (ev j) (vv j) ?_; rw [← ha, h]; exact hlink j` — `← ha` folds the goal's `cd.vtx i.castSucc` back to `a`, then `h : a = uv j` rewrites it to `uv j`, which `hlink j` closes. Same root as TACTICS-QUIRKS § 43 (`set` folds the abbreviation in some places but not the goal); whenever a `▸`/`rfl`-cast straddles a `set`-bound name, fold the goal with `← ha` first.
+- **Status:** idiom. **Lifted to:** TACTICS-QUIRKS § 43 (the `set`-fold family).
+
 ### [process] "Brick" is a project mnemonic, not KT's term — a terminology-faithfulness sweep is open
 - **Where it bit:** the post-Phase-22 RigidityMatrix split carved the three rank-addition
   sections into `Molecular/RigidityMatrix/Bricks.lean`; the file name surfaced the question.
