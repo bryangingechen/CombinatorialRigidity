@@ -5041,10 +5041,12 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   `candidateRow_ac_eq_neg` + `deg_two_split` + an `incidentGroup` index-partition; ~1-2c). (2)
   `anchor_group_eq_neg_baseRedundancy` — `group(edge 2) = −ρ₀` (genuinely-new-but-small: `v₂`'s 2nd edge is the
   spliced `e₀`, so the `(ab)`-group is `hρGv`'s LHS `ρ₀`; ~1-2c). (3) `interior_group_eq_baseRedundancy` —
-  `Nat.le_induction` base=leaf2 step=leaf1 (MECHANICAL ~1c). (4) `interior_sharedρ₀_perp` — `group = ±ρ₀` →
-  `ρ₀ ⊥ supportExtensor(edge s)` via A-2 + `neg_mem`, then `freshEdge_surviving_row_mem` (MECHANICAL ~1c).
-  (5) arm wiring `chainData_relabel_arm` `hsurv` slot + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`
-  (~2-3c). **Genuinely-new content = leaves 1+2; the rest is assembly over landed infra.**
+  `Nat.le_induction` base=leaf2 step=leaf1 (MECHANICAL ~1c). (4) `interior_group_acolumn_eq_neg_baseRedundancy`
+  — read the LEAF-3 constant value as `−ρ₀` (`hingeRow_swap` + `hingeRow_comp_single_tail` on the redundant
+  base row's head body `vtx 2`); the consumer threads it through `neg_mem` + the A-2 carrier +
+  `freshEdge_surviving_row_mem` at LEAF 5 (MECHANICAL ~1c). (5) arm wiring `chainData_relabel_arm` `hsurv`
+  slot + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm` (~2-3c). **Genuinely-new content = leaves
+  1+2; the rest is assembly over landed infra.**
   **LEAF 1 `Graph.ChainData.interiorGroup_acolumn_adjacency` LANDED 2026-06-20** (`CaseIII/Relabel.lean` tail,
   axiom-clean; full project green + lint, d=3 zero-regression, zero callers). Built cleaner than pinned: the
   "group" = the orientation-agnostic `a`-column restriction `(·).comp (single a)` (a screw functional), so the
@@ -5081,9 +5083,16 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   step vertex `vtx (i+1)` INTERNALLY from `hcomb` + `hingeRow_comp_single_off` (off both `v₀`/`v₂`, `r̂`'s
   column is `0`). Same name, same conclusion; LEAF 1/2 + the two flip primitives unchanged. Instantiability
   re-confirmed in tree (caller supplies `hab₁`/`hab₂` by `rfl rfl` after re-orienting `e₀`). `Nat.le_induction`
-  auto-generalized the `i < cd.d` bound into the IH. **NEXT = leaf 4** (consumer adapter: the common
-  tail-column → `±ρ₀` via `hingeRow_comp_single_tail`/`_off`, then A-2 + `neg_mem` +
-  `freshEdge_surviving_row_mem`) → leaf 5 (arm + P3 seed bridge).
+  auto-generalized the `i < cd.d` bound into the IH.
+  **LEAF 4 `Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy` LANDED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers).
+  The consumer reading: every interior chain edge-group's tail column `= −ρ₀` (`2 ≤ i ≤ d−1`). Proof =
+  `rw [interior_group_eq_baseRedundancy]` (LEAF 3's constant value) then read the redundant base row
+  `hingeRow ab₁ ab₂ ρ₀` on its head body `ab₂ = vtx 2` — `hingeRow_swap` rewrites to `hingeRow ab₂ ab₁ (−ρ₀)`,
+  tail column at `ab₂` is `−ρ₀` (`hingeRow_comp_single_tail`, `ab₂ ≠ ab₁` by `vtx_inj`). Two-line, no
+  friction. **NEXT = leaf 5** (arm `chainData_relabel_arm`: thread LEAF 4's `group = −ρ₀` through `neg_mem`
+  + the A-2 carrier `candidate_perp_two_incident_supportExtensors` + `freshEdge_surviving_row_mem` to
+  discharge `hρGv`'s per-edge perp + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`).
   **Coordinator shape-check note (leaf-2/3 consistency, 2026-06-20).** Leaf 1 landed in `a`-column form
   `(group i).comp(single vᵢ) = −(group i−1).comp(single vᵢ)` — both groups' columns at the SHARED vertex
   `vᵢ = vtx i.castSucc` — which is (±) the screw functional, so it is equivalent to the pinned screw-functional

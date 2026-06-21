@@ -193,12 +193,16 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     `s + 1 < (i : ℕ)`) — `rw [panelCorrespondence_supportExtensor]; exact hperp`. This turns a base-side
     perp (A-1's base witness at `G₁`) into the candidate-side `hperp_ab`/`hperp_ac`
     (`freshEdge_surviving_row_mem_of_witness` (A-3) interface). Self-contained, zero blast radius.
-    **← NEXT (authoritative, post-row-342 chain-induction settle): the 5-leaf chain induction — LEAF 1
+    **← The 5-leaf chain induction LEAVES 1–4 are now LANDED 2026-06-20: LEAF 1
     `interiorGroup_acolumn_adjacency` + LEAF 2 `anchor_group_acolumn_eq_baseRedundancy` + LEAF 3
     `interior_group_eq_baseRedundancy` (the `Nat.le_induction` + its two endpoint-column primitives
-    `hingeRow_comp_single_endpoint_flip` / `edgeGroup_comp_single_endpoint_flip`) all LANDED 2026-06-20
-    (the genuinely-new content), NEXT = LEAF 4 (consumer adapter: the common interior tail-column → `±ρ₀`
-    via `hingeRow_comp_single_tail`/`_off`, feed A-2 + `neg_mem` + `freshEdge_surviving_row_mem`).**
+    `hingeRow_comp_single_endpoint_flip` / `edgeGroup_comp_single_endpoint_flip`) — the genuinely-new
+    content — and LEAF 4 `interior_group_acolumn_eq_neg_baseRedundancy` (the consumer reading: every
+    interior chain edge-group's tail column `= −ρ₀`, `2≤i≤d−1`, via LEAF 3 + the head-column reading
+    `hingeRow_swap` + `hingeRow_comp_single_tail`; mechanical, axiom-clean, zero blast radius). NEXT =
+    LEAF 5 (arm wiring `chainData_relabel_arm`: thread LEAF 4's `group = −ρ₀` through `neg_mem` + the
+    A-2 carrier + `freshEdge_surviving_row_mem` to discharge `hρGv`'s per-edge perp; + the P3 seed
+    bridge `shiftSeedAdv_eq_funLeft_shiftPerm`).**
     See the *Hand-off* §(I.8.9-SETTLE) 5-leaf plan paragraph below + design §(I.8.9-SETTLE). (This supersedes
     the pre-settle producer `exists_interior_redundancy_witness` — the regroup is now the eq-(6.44) chain
     induction off the single base redundancy, not a per-vertex witness; §(I.8.9-PAIR).)
@@ -586,10 +590,17 @@ step now DERIVES the per-vertex column-vanishing it needs at the deeper step ver
 0`). LEAF 1/2 + the two flip primitives UNCHANGED (correct as-is). Instantiability re-confirmed in
 tree (the caller supplies `hab₁`/`hab₂` by `rfl rfl` after re-orienting `e₀` to `(vtx 0, vtx 2)` via
 `hingeRow_swap`, `±ρ₀`). The `Nat.le_induction` auto-generalized the `i < cd.d` bound into the IH.
-**← NEXT = LEAF 4** (consumer adapter: read the common tail-column value as `±ρ₀` via
-`hingeRow_comp_single_tail`/`_off`, feed A-2 + `neg_mem`, then `freshEdge_surviving_row_mem`)
-→ leaf 5 (arm `chainData_relabel_arm` + P3 seed bridge). Full plan + file:lines + eq-numbers →
-design §(I.8.9-SETTLE)/(I.8.9-PAIR).
+**LEAF 4 `Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy` — LANDED 2026-06-20**
+(`Relabel.lean` tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The
+consumer reading: every interior chain edge-group's tail column `= −ρ₀` (`2 ≤ i ≤ d−1`). Proof =
+`rw [interior_group_eq_baseRedundancy]` (LEAF 3's constant value) then read the redundant base row
+`hingeRow ab₁ ab₂ ρ₀` on its head body `ab₂ = vtx 2`: `hingeRow_swap` rewrites it to
+`hingeRow ab₂ ab₁ (−ρ₀)`, whose tail column at `ab₂` is `−ρ₀` (`hingeRow_comp_single_tail`,
+`ab₂ ≠ ab₁` by `vtx_inj`). Two-line proof, no friction. **← NEXT = LEAF 5** (arm wiring
+`chainData_relabel_arm`: thread LEAF 4's `group = −ρ₀` through `neg_mem` + the A-2 carrier
+(`candidate_perp_two_incident_supportExtensors`) + `freshEdge_surviving_row_mem` to discharge `hρGv`'s
+per-edge perp + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`). Full plan + file:lines +
+eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
@@ -1043,7 +1054,21 @@ M4-forget reach-in routes solely through CHAIN-3 (h-4) + `extensor_update_smul`.
   `∑ⱼ cⱼ • hingeRow … = hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`) forces `(edge 2-group).comp(single v₂) =
   (hingeRow ab₁ ab₂ ρ₀).comp(single v₂)` via `_eq_incident` + the degree-1 collapse (`hdeg1` + `hinc_e2`,
   `IsLink` uniq at `edge 2 = v₂v₃`). Same `v₂`-column form as LEAF 1; the `= ±ρ₀` reading deferred to LEAF 4
-  (`hingeRow_comp_single_tail`). NEXT = LEAF 3 (`Nat.le_induction` + two-endpoint-column bookkeeping).
+  (`hingeRow_comp_single_tail`).
+- **CHAIN-2c-ii-arm chain-induction LEAF 3 `interior_group_eq_baseRedundancy` LANDED + CORRECTED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean). The `Nat.le_induction` (base=LEAF 2, step=LEAF 1) chaining
+  every interior edge-group's TAIL column to the constant anchor value `(hingeRow ab₁ ab₂ ρ₀).comp(single v₂)`
+  (`2≤i≤d−1`), with two new framework-free endpoint-column primitives (`hingeRow_comp_single_endpoint_flip`
+  + its edge-group form `edgeGroup_comp_single_endpoint_flip`) flipping the step's head column back to the
+  tail so the LEAF-1 sign and the flip's sign cancel. Corrective: `hcol ∀a` (jointly contradictory with
+  `hcomb` for `r̂ ≠ 0`) REPLACED by the endpoint identification `hab₁ : ab₁ = vtx 0`/`hab₂ : ab₂ = vtx 2`;
+  the step DERIVES the deeper-vertex column-vanishing internally via `hcomb` + `hingeRow_comp_single_off`.
+- **CHAIN-2c-ii-arm chain-induction LEAF 4 `interior_group_acolumn_eq_neg_baseRedundancy` LANDED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean). The consumer reading: every interior edge-group's tail column
+  `= −ρ₀` (`2≤i≤d−1`). Two-line proof — `rw [interior_group_eq_baseRedundancy]` (LEAF 3) then read the
+  redundant base row `hingeRow ab₁ ab₂ ρ₀` on its head body `ab₂ = vtx 2`: `hingeRow_swap` → tail column at
+  `ab₂` is `−ρ₀` (`hingeRow_comp_single_tail`, `ab₂ ≠ ab₁` by `vtx_inj`). No friction. NEXT = LEAF 5 (arm
+  `chainData_relabel_arm`: `neg_mem` + A-2 carrier + `freshEdge_surviving_row_mem` + the P3 seed bridge).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

@@ -3928,4 +3928,51 @@ theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α]
     rw [hadj, hflip, neg_neg]
     exact ih hid'
 
+/-! ### The chain-induction consumer reading: every interior edge-group's tail column is `−ρ₀`
+(CHAIN-2c-ii-arm, LEAF 4)
+
+The consumer adapter that turns LEAF 3's *constant common tail column* into the concrete value the
+`hρGv` arm consumes: the redundant base row `hingeRow ab₁ ab₂ ρ₀` (`ab₁ = vtx 0`, `ab₂ = vtx 2`, the
+eq.~(6.52) spliced edge `e₀ = v₀v₂`) read on its head body `ab₂ = vtx 2`'s screw column is `−ρ₀`
+(`hingeRow_swap` + `hingeRow_comp_single_tail`), so LEAF 3's constant value
+`(hingeRow ab₁ ab₂ ρ₀).comp (single (vtx 2)) = −ρ₀`. Composed with LEAF 3, every interior chain
+edge-group's screw column at its tail body `vᵢ` equals `−ρ₀` (`2 ≤ i ≤ d−1`):
+
+`(∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single vᵢ) = −ρ₀`.
+
+This is KT eq.~(6.66)'s `±r` — the single redundancy `r` carried with the constant screw-column
+value `−ρ₀` along the whole interior chain (the `±` is absorbed into the orientation-agnostic
+tail-column reading, see LEAF 3). The `hρGv` arm wiring consumes it: the `neg_mem` flips it to the
+engine slot's `ρ₀`, and `freshEdge_surviving_row_mem` (via the A-2 carrier) reads it as the per-edge
+perp discharge. Framework-free, zero blast radius. -/
+theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [DecidableEq α]
+    [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
+    (hab₁ : ab₁ = cd.vtx ⟨0, by omega⟩) (hab₂ : ab₂ = cd.vtx ⟨2, by omega⟩)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩)
+    (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨i, by omega⟩))
+    = -ρ₀ := by
+  classical
+  -- LEAF 3: the `edge i`-group's tail column is the constant base value
+  -- `(hingeRow ab₁ ab₂ ρ₀).comp (single (vtx 2))`.
+  rw [cd.interior_group_eq_baseRedundancy h3 c ev uv vv rv hlink hcomb hab₁ hab₂ hdeg1 i h2i hid]
+  -- The redundant base row read on its head body `ab₂ = vtx 2`: `hingeRow ab₁ ab₂ ρ₀ =
+  -- hingeRow ab₂ ab₁ (−ρ₀)` (`hingeRow_swap`), whose tail column at `ab₂` is `−ρ₀`
+  -- (`hingeRow_comp_single_tail`). `ab₁ ≠ ab₂` (distinct chain vertices `vtx 0`/`vtx 2`).
+  have hne : ab₂ ≠ ab₁ := by
+    rw [hab₁, hab₂]
+    exact fun he => by have : (2 : ℕ) = 0 := congrArg Fin.val (cd.vtx_inj he); omega
+  rw [← hab₂, BodyHingeFramework.hingeRow_swap ab₁ ab₂ ρ₀,
+    BodyHingeFramework.hingeRow_comp_single_tail hne]
+
 end CombinatorialRigidity.Molecular
