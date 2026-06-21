@@ -121,6 +121,27 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   (scrutinize the *proposed leaf*, not just the "tractable" bottom-line); (3) the **build-output polling
   drain** (row 296, ~175 redundant re-reads) → `CombinatorialRigidity/CLAUDE.md` build-discipline.
   OPUS-ONLY/cap/fixups expire session-end; a fresh coordinator re-runs the availability check.
+- **Session #19 close (2026-06-20; rows 337–352, all opus / OPUS-ONLY, gate-verified; user PAUSED at the
+  chain-induction-crux milestone).** **The conjecture's hardest single argument is formalized.** Built the
+  `hρGv` P2 chain induction end-to-end — KT eq-(6.66)'s ±r carry, the 6×-mis-pinned wall of sessions 10–14:
+  the two column-algebra cores (337/338), then leaves 1–4 (343/344/346/347 — the eq-(6.44) step kernel, the
+  `v₂` anchor, the `Nat.le_induction`, the `= −ρ₀` reading), P3 seed bridge (348), and the slot/perp rungs
+  (349–351). **Three high-value coordinator catches:** (a) the **adversarial recon pair** (340/341, opus×opus)
+  REFUTED the leaf-2 `= ±ρ₀`-direct pin (the would-be 6th mis-pin) and re-routed to the chain induction
+  (KT-faithful), then the design-settle (342) pinned it + corrected the pair's `hcol` divergence
+  (`acolumn_zero ∀ a`, coordinator-verified); (b) **leaf 3 landed gate-clean but LOGICALLY VACUOUS** (`hcomb`
+  ∧ `hcol ∀a` ⟹ `r̂ = 0`, un-instantiable) — caught by the coordinator shape/LOGIC-check, corrective (346)
+  re-stated it caller-satisfiable + Lean-confirmed the defect; (c) after 5 deferring leaf-5 slices, the
+  **arm-convergence recon** (352) caught the **rows-288/291 level-mismatch redux** — the arm's `hρGv` perp
+  sub-slot needs the edge-grouped redundancy at the CANDIDATE framework but A-1 supplies it only at the BASE,
+  no landed transport. **NEXT (fresh session):** de-risk the i=3 edge-alignment → the genuinely-new
+  candidate-level edge-grouped TRANSPORT leaf `chainData_candidateRow_edgeGrouped_transport` (no
+  motive/contract change) → the arm `chainData_relabel_arm` (M₃ re-indexed) → 2c-iii → 23b closes
+  green-modulo `hdispatch`. ~3–5 commits. **DEBT:** `notes/Phase23b.md` ~1190 lines (2.4× tripwire, 3
+  superseded route-layers + stale NEXT-pointers) — a compression pass is DUE before the de-risk recon (the
+  user chose pause over compress-first). **Findings:** the gate-clean-but-vacuous lemma + the
+  deferral-pattern→recon-the-convergence lessons below. OPUS-ONLY/cap/fixups expire session-end; a fresh
+  coordinator re-runs the availability check.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -475,3 +496,22 @@ short of a frozen signature → user-adjudicated. Detail: §(o‴)(I.8.3.v-REFUT
   caught what 5 prior passes + recon A missed: the per-edge perp is not merely hard, it's a claim KT *never
   makes* (it's the negation KT's counting argument establishes). A pin can be internally consistent, cite real
   APIs, AND target a statement the source never asserts.
+- **A gate-clean commit can carry a LOGICALLY VACUOUS lemma — gates don't catch un-instantiable hypotheses
+  (session #19, leaf 3, rows 345/346).** `interior_group_eq_baseRedundancy` landed axiom-clean + warning-clean
+  + lint-clean, but took `hcomb : ∑ = hingeRow ab₁ ab₂ ρ₀` AND `hcol : ∀ a, (∑).comp (single a) = 0` — jointly
+  forcing `r̂ = 0` (a functional zero on all coordinate-injections is zero), so no caller with the real non-zero
+  redundancy can instantiate it. The build/lint/axiom/sorry gates ALL pass on a vacuous lemma; only the
+  coordinator's **shape/LOGIC-check** (does the conjunction of hypotheses admit the real caller's data?) caught
+  it. Lesson: for a lemma whose hypotheses constrain the SAME object two ways, check joint satisfiability
+  against the actual caller, not just per-hypothesis plausibility. The corrective re-derived the column-vanishing
+  internally from `hcomb` + chain-vertex distinctness. (Agent logged FRICTION [process].)
+- **A tower of deferring slices can HIDE a level-mismatch gap; recon the ultimate-consumer convergence, don't
+  dispatch a 6th slice (session #19, the leaf-5 arm, rows 343–352).** Five consecutive leaf-5 builds each took
+  the next-lower hypothesis as an argument (slot ← perp ← witness ← …), every one gate+axiom-clean, but the
+  *bottom* hypothesis (`hcomb`/`hrv` at the candidate framework) was deferred each time — and a convergence
+  recon found NO landed lemma supplies it (A-1 is base-only; the rows-288/291 level mismatch, redux). The
+  per-slice cleanliness masked that the assembly could never close. Lesson: when N≥2 consecutive slices defer a
+  hypothesis toward the same unbuilt consumer, STOP and recon whether the *ultimate consumer* converges from
+  landed pieces (grep the deferred hypothesis: if it appears only as a hypothesis, never as a conclusion, the
+  supplier is missing) — the `coordinate-phase` step-1 2-leaf-floor applied to a deferred-hypothesis chain, not
+  just to leaf commits.
