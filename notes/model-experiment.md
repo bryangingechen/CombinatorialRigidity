@@ -59,13 +59,12 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#23 (latest: **#23**, 2026-06-21,
-  fresh coordinator continuing #22's chosen re-architecture recon; user
-  re-confirmed the triple + chose the (A)-feasibility recon at session start;
-  opus reachable via the Agent `model` param, no substitution needed). The
-  (A)-recon LANDED as row 373 (§(o‴)(I.8.21), 50fb322); standing state = the
-  USER GO/NO-GO on opening the (A) sub-phase (de-risk block-rank-additivity
-  first) vs. a deliberate hold — see `notes/Phase23c.md` *Hand-off*.
+  would re-probe. Set/re-confirmed sessions #6–#24 (latest: **#24**, 2026-06-21,
+  fresh `/coordinate-phase` continuing #23 same-day; user re-confirmed the
+  triple at session start; opus reachable via the Agent `model` param, no
+  substitution needed). (A) is OPEN and building — the FIRST cert + shared tail
+  + the hLI abstract core landed (rows 379–381); next = the arm build
+  `case_III_arm_realization_chain` — see `notes/Phase23c.md` *Hand-off*.
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
   chain (2c-i/2c-ii-α/2c-ii-β); Route β LOCKED. Detail subsumed by session-#9 progress below + git.
 - **Session #9 close (2026-06-19; paused by user after row 254, clean handoff; loop stopped).**
@@ -400,6 +399,7 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 378 | W-packaging leaf `exists_le_finrank_eq_card_of_injective_map` (closes the §I.8.24(3) FIRST-build sub-risk); bca0f62 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 135222 tok / 35 tools / ~4.5 min | Routine build (dispatched for the FIRST build case_III_rank_certification_chain; S2/P2 → map=sonnet, ran opus under OPUS-ONLY). Agent self-shrank CORRECTLY (scope-to-fit): landed the flagged §I.8.24(3) sub-risk leaf first — `exists_le_finrank_eq_card_of_injective_map` (W-packaging via LinearIndependent.map' on the injective dualMap) — de-risking the cert. Coordinator verified warning-clean build + axiom-clean; clean 3-line term proof. Next = the cert itself (only remaining genuinely-new content = the hLI discriminator-mod-W reduction). → Findings 2026-06-21. |
 | 379 | case_III_rank_certification_chain — forked general-d cert (§I.8.24(1) FIRST build, NO hρGv); 604a2f4 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 166353 tok / 55 tools / ~12.1 min | Routine build (S2/P2 → map=sonnet, ran opus OPUS-ONLY). Landed the forked general-d cert in §I.8.24(1) block-rank shape: wires the de-risk leaf + count, NO hρGv — the wall is structurally GONE. Coordinator verified shape vs §I.8.24(1), warning-clean build, axiom-clean, old cert UNTOUCHED (d=3 fork zero-regression). CRUX-DEFERRAL: the cert TAKES hLI/hWS/hg as HYPOTHESES, deferring the genuinely-new hLI (Mᵢ-corner LI-mod-W via discriminator@fixed-ρ₀ + ±r value) to the ARM. Rate the NEXT dispatch by that deferred crux (P3), not this plumbing. → Findings 2026-06-21. |
 | 380 | shared W6a-W6f tail factored into case_III_realization_of_rank (§I.8.24(3) REUSE brick); 08d3d57 | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 171292 tok / 59 tools / ~9.9 min | Routine build (dispatched for case_III_arm_realization_chain, rated by the deferred hLI crux P3). Agent self-shrank AGAIN (2nd consecutive): instead of the hLI crux, factored the shared W6a-W6f tail into case_III_realization_of_rank (§I.8.24(3) reuse brick) — faithful refactor, d=3 engine delegates, zero-regression. Coordinator verified warning-clean build + axiom-clean. Legit de-risk BUT the hLI crux is now TWICE-deferred — flag the NEXT dispatch to tackle hLI directly (or as a standalone lemma), not shrink a 3rd time. → Findings 2026-06-21. |
+| 381 | linearIndependent_mkQ_sumElim_unit_of_notMem_span — chain arm hLI abstract core (mirror, §I.8.24(3)); 0067269 | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 165554 tok / 56 tools / ~9.2 min | Routine build (for case_III_arm_realization_chain, P3 by hLI crux). 3rd consecutive self-shrink — landed hLI's abstract append-one LI-mod-W criterion (reusable mirror); concrete (a)+(b) arm wiring still deferred. Per the session-#19 lesson (3 slices now defer the crux), coordinator ran the convergence recon: read the d=3 dispatch — the arm RECEIVES (b)'s non-annihilation `hgate` as a HYPOTHESIS (discriminator supplies it via the dispatch's fin_cases u; u↔i match is 2c-iii's job, NOT the arm). Convergence CONFIRMED → arm buildable, next = the arm build. → Findings 2026-06-21. |
 
 ## Findings
 
