@@ -86,6 +86,7 @@ failing pattern and the working fix.
 - `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
+- `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 
 ## Sections
 
@@ -2286,3 +2287,28 @@ index, never rewriting the bound: `refine List.ext_getElem (by simp [defn]; omeg
 List.getElem_ofFn]`. The `m+1` arm closes by **defeq** (`vtx ⟨m+1+1,_⟩ ≡ vtx ⟨(m)+2,_⟩` as the
 `Nat` index reduces), so no `congr 1; omega` tail is needed. Hit in Phase 23b
 `ChainData.shiftCycle_eq_cons` (the `shiftPerm` head-peel factorization brick).
+
+## 63. `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` even with `hid : (i : ℕ) < …` in scope — it atomizes `Fin.val (Fin.mk …)` *distinctly* from `(i : ℕ)`; force the defeq with `show … from hid`
+
+**Symptom.** Applying a `Fin (m+1)`-indexed lemma at an anonymous-constructor index
+`⟨(i : ℕ), _⟩` (with `i : Fin m`) — e.g. `cd.chainData_freshEdge_slot_mem ⟨(i : ℕ), _⟩ (by omega) (by
+omega) …` — the `(by omega)` for the lemma's `(i : ℕ) < cd.d` side-goal *fails*, even though
+`hid : (i : ℕ) < cd.d` is in context. The reported counterexample names the atom `↑↑i` and is
+**self-contradictory** as a refutation (the listed constraints actually *satisfy* the goal), the tell
+that omega is reasoning about the *wrong variable*. Hit in Phase 23b `chainData_relabel_arm_hρGv`.
+
+**Cause.** The lemma's side-goal, after instantiating its index parameter to `⟨(i : ℕ), _⟩ : Fin
+(m+1)`, reads `((⟨(i : ℕ), _⟩ : Fin (m+1)) : ℕ) < cd.d`. The `Fin.val (Fin.mk (i:ℕ) _)` head is
+*definitionally* `(i : ℕ)`, but `omega` atomizes it **syntactically** as a fresh variable (`↑↑i`,
+distinct from the `↑i` in `hid`) and never reduces it, so it can't connect the hypothesis. (Same
+family as § 58's "two elaborations of one term mis-atomized".)
+
+**Fix.** Force the defeq before handing the term to omega — `show`/`from` is the cheapest:
+```lean
+refine cd.lemma ⟨(i : ℕ), by omega⟩
+  (show 1 ≤ (i : ℕ) by omega) (show (i : ℕ) < cd.d from hid) …
+```
+`show (i : ℕ) < cd.d from hid` (or `(show … by omega)`) restates the side-goal at the *reduced* form,
+which Lean accepts by defeq, so omega/`hid` sees the right atom. (`simp only [Fin.val_mk]` also
+reduces it but the `simpNF` linter then flags `Fin.val_mk` as an *unused* simp arg — the reduction
+fires via `dsimp`, not the lemma — so prefer `show`.) **Lifted to:** this entry; FRICTION pointer.

@@ -3,18 +3,16 @@
 **Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (the four-producer tail, all general-`k`) + CHAIN-2a + the
 CHAIN-2c-ii foundation. The `hρGv` route is **LOCKED = Route W (option a′)**, the `hwmem` slot is LANDED
 (`chainData_bottom_relabel`), and the arm's algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3)
-+ slot core + per-edge perp leaf + **STEP-2 scalar perp transport** + **the STEP 1∘STEP 2 composition
-`chainData_freshEdge_slot_perp`** are all LANDED axiom-clean. The corrected route (design §(o‴)(I.8.11)) runs
-the edge-grouping at the BASE: STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`,
-NO transport) gives the BASE perp; **STEP 2 `chainData_freshEdge_perp_transport_base_to_candidate`** carries
-the SINGLE scalar perp base@`edge(s+1)` (or `e₀` for `s=0`) → candidate@`edge s`. **`chainData_freshEdge_slot_perp`
-(LANDED 2026-06-21)** composes both: from A-1's base data (`hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀`) it directly
-produces the candidate `hperp s` shape `chainData_freshEdge_slot_mem` consumes, per surviving edge `s+1 < i`.
++ slot core + per-edge perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition
+`chainData_freshEdge_slot_perp` + **the pre-assembled engine `hρGv` slot
+`chainData_relabel_arm_hρGv` (LANDED 2026-06-21)** are all LANDED axiom-clean. So the **hardest engine slot is
+done**: `chainData_relabel_arm_hρGv` produces the exact `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ)
+endsσρ qρ)` slot from A-1's base data (composing `hingeRow_swap` → slot core → P3 → the perp composition).
 **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit; the family is never
-transported). **NEXT = the arm assembly `chainData_relabel_arm` (STEP 3, ~1–2c):** `refine
-case_III_arm_realization`, feed `chainData_freshEdge_slot_mem`'s `hperp s` from `chainData_freshEdge_slot_perp`
-(the single composed call); other slots per the M₃ template. Then **CHAIN-2c-iii** `chainData_dispatch` closes
-23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
+transported). **NEXT = the arm shell `chainData_relabel_arm` (STEP 3 remainder):** `refine
+case_III_arm_realization`, feed `hρGv ← chainData_relabel_arm_hρGv`, `hwmem ← chainData_bottom_relabel`, the
+rest per the M₃ template. Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch`
+(**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -29,28 +27,27 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — wire the arm `chainData_relabel_arm` (STEP 3).** The whole perp slot
-is now ONE composed call. The corrected route (design §(o‴)(I.8.11)) runs the edge-grouping at the BASE; only
-a single scalar perp transports, and STEP 1∘STEP 2 are pre-composed:
-- **`chainData_freshEdge_slot_perp` (LANDED 2026-06-21, `Relabel.lean`):** the composition the arm's `hperp`
-  slot calls once per surviving edge `s` (`s+1 < i`). Takes A-1's base data — `hlink`/`hrv` (block memberships
-  at the BASE `ofNormals (G−v₁) ends₀ q`), `hcomb` (RHS hardcoded `hingeRow (vtx 0)(vtx 2) ρ₀`), `hdeg1`,
-  `hρe₀` (the splice-panel annihilation, the `s=0` base perp) — and produces the candidate-`i` perp
-  `ρ₀ ⊥ Fva.supportExtensor (edge s)` at `Fva = ofNormals (G−vᵢ) endsσρ qρ`, exactly
-  `chainData_freshEdge_slot_mem`'s `hperp s` shape. Internally: STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy`
-  at base index `⟨1⟩`, edge `t := s+1`, interior `s≥1`) or `hρe₀` (`s=0`) → STEP 2
-  (`chainData_freshEdge_perp_transport_base_to_candidate`, `Gb := G−v₁`), merging the branches via STEP 2's
-  `if s=0 then e₀ else edge(s+1)`.
-- **STEP 3 (arm assembly, the NEXT COMMIT, ~1–2c):** `refine case_III_arm_realization`; feed
-  `chainData_freshEdge_slot_mem`'s `hperp s` from `chainData_freshEdge_slot_perp` (one call, all surviving
-  edges); the other engine slots per the d=3 M₃ template (`hwmem ← chainData_bottom_relabel`, seed ← P3,
-  discriminator/removeVertex bookkeeping). The candidate framework's `ends`/`qρ` are the relabelled
-  `endsσρ`/`qρ` the slot core states (matched to its `shiftSeedAdv q (i−1)` via P3).
+**NEXT STEP (single authoritative) — finish the arm shell `chainData_relabel_arm` (STEP 3 remainder).** The
+hardest engine slot — `hρGv` — is now LANDED as a single pre-assembled lemma; what remains is the
+`refine case_III_arm_realization` shell + the mechanical removeVertex/discriminator slots (the d=3 `M₃`
+template, generalized to the cycle).
+- **`chainData_relabel_arm_hρGv` (LANDED 2026-06-21, `Relabel.lean`):** the exact engine `hρGv` slot at
+  candidate `i` — `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows`. From A-1's
+  base data it composes (`hingeRow_swap` → slot core `chainData_freshEdge_slot_mem` → P3 seed bridge → the
+  perp composition `chainData_freshEdge_slot_perp` per surviving `s+1<i`). **The selector seam it pins
+  (load-bearing for the shell):** the slot core's fold uses ONE selector throughout, so its `hφ` (the base
+  redundancy span membership) lives at the **relabelled** `endsσρ` base framework `ofNormals (G−v₁) endsσρ q`,
+  while the perp composition's `hrv`/`hρe₀` are at the **un-relabelled** `ends₀` base. So the lemma takes
+  `hφ`@`endsσρ` and the perp data@`ends₀` as separate hyps — the shell must supply A-1's base redundancy in
+  BOTH forms (the `endsσρ` one is a selector transport of A-1's `ends₀` one — the one not-yet-built step the
+  shell still needs, see *Hand-off*).
+- **STEP 3 remainder (arm shell, NEXT COMMIT):** `refine case_III_arm_realization` at `Gv = G−vᵢ`,
+  `ends := endsσρ`, `q := qρ`, `(a,b) = (vᵢ₊₁, vᵢ₋₁)`, `ρ := −ρ₀`; feed `hρGv ← chainData_relabel_arm_hρGv`,
+  `hwmem ← chainData_bottom_relabel`, `hρe₀` via the G4d-i `a`-column read (M₃'s `hρ_ac`), the discriminator
+  `htrans`/`hLn`/`hρgate`/`hgab` + the removeVertex bookkeeping per the M₃/`chainData_split_realization`
+  templates. d=3 M₃ (`i=2`) is the zero-regression instance.
 
-~1–2 commits left to the arm; then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`.
-**No motive/IH/contract change** (the consumer is UNMODIFIED — its hardcoded `(vtx 0, vtx 2)` RHS is KT's
-base redundancy `r`, correct; only the WIRING call site is the base index). **No genuinely-new math** (the
-composition is pure assembly over the two landed transport leaves).
+Then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`. **No motive/IH/contract change.**
 
 **Why the row-354 T-1/T-2/T-3 plan was MIS-TARGETED (the 2nd level/shape mismatch; design §(o‴)(I.8.11)).**
 The consumer `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`) pins THREE hyps at
@@ -104,8 +101,15 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   axiom-clean) — the exact `hperp s` shape `chainData_freshEdge_slot_mem` consumes. From A-1's base data
   (`hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀`, all at the BASE `G−v₁`) it produces the candidate-`i` perp
   `ρ₀ ⊥ Fva.supportExtensor (edge s)` for any surviving `s+1<i`: STEP 1 at base index `⟨1⟩` (interior `s≥1`)
-  or `hρe₀` (head `s=0`) → STEP 2. The single call the arm `chainData_relabel_arm` makes for the whole perp
-  slot.
+  or `hρe₀` (head `s=0`) → STEP 2. The single call the arm's `hρGv` slot makes for the whole perp obligation.
+- **`chainData_relabel_arm_hρGv`** (`Relabel.lean`, STEP 3 `hρGv` slot, LANDED 2026-06-21, axiom-clean) —
+  the pre-assembled engine `hρGv` slot at candidate `i`: `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ)
+  endsσρ qρ)`, exactly `case_III_arm_realization`'s `hρGv` (M₃ sign `−ρ₀`). Composes `hingeRow_swap`
+  (flip to `hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀`) → slot core `chainData_freshEdge_slot_mem` → P3 seed bridge
+  (`shiftSeedAdv q (i−1) = qρ`) → `chainData_freshEdge_slot_perp` per surviving edge. **SELECTOR SEAM:** takes
+  the base redundancy span membership `hφ` at the RELABELLED `endsσρ` base (the fold's one-selector framing)
+  and the perp data `hrv`/`hρe₀` at the UN-relabelled `ends₀` base — the shell supplies A-1's base redundancy
+  in both forms (the `endsσρ` one = a selector transport of A-1's `ends₀` one).
 - **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean:4383`) + **`ofNormals_supportExtensor_relabel_perm`**
   (`Relabel.lean:63`) — STAND: the support-extensor relabel identity `candidate.supp f = base.supp (shiftEdgePerm
   i f)`. STEP 2 reuses this identity ONCE (applied to a single perp), so it stays load-bearing; only its
@@ -237,17 +241,19 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above:** wire the arm `chainData_relabel_arm`
-(STEP 3, ~1–2c; `refine case_III_arm_realization`, M₃ template re-indexed). The whole perp slot is now ONE
-composed call: feed `chainData_freshEdge_slot_mem`'s `hperp s` from `chainData_freshEdge_slot_perp` (the
-LANDED STEP 1∘STEP 2 composition — takes A-1's base data `hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀` and produces
-the candidate perp for every surviving `s+1<i`); other slots per the M₃ template (`hwmem ←
-chainData_bottom_relabel`, seed ← P3, discriminator/removeVertex). The candidate framework's `ends`/`qρ` are
-the relabelled `endsσρ`/`qρ` the slot core states (matched to its `shiftSeedAdv q (i−1)` via P3). Then
-**2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **No
-motive/IH/contract change**; **no genuinely-new-math fork** (STEP 3 is pure assembly over LANDED leaves).
-**T-1/T-2 (LANDED) are ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit). d=3 M₃ = `i=2`
-cycle (zero-regression). Exact wiring in design §(o‴)(I.8.11) STEP 3.
+**The single authoritative next-step is in *Current state* above:** finish the arm shell
+`chainData_relabel_arm` (`refine case_III_arm_realization` at `Gv = G−vᵢ`, `endsσρ`, `qρ`,
+`(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`). The hardest slot `hρGv` is **DONE** — feed it straight from the LANDED
+`chainData_relabel_arm_hρGv`. Remaining slots per the M₃ / `chainData_split_realization` templates:
+`hwmem ← chainData_bottom_relabel`, `hρe₀` via the G4d-i `a`-column read (M₃'s `hρ_ac`), the discriminator
+`htrans`/`hLn`/`hρgate`/`hgab` (2c-i `exists_chainData_discriminator_pick`) + the removeVertex bookkeeping
+(`hvVc`/`haVc`/`hbVc`/`hleG`/`hsplitG`/`hVone`/`hVcard`/`hw`/`hwcard`). **The one not-yet-built step the
+shell needs:** A-1's base redundancy in the RELABELLED-selector form `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span
+(ofNormals (G−v₁) endsσρ q)` — a selector transport of A-1's `ends₀`-form `hρGv'` (the perp data stays at
+`ends₀`). This is `chainData_relabel_arm_hρGv`'s `hφ` slot; everything else it needs is A-1's verbatim
+output. Then **2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c).
+**No motive/IH/contract change.** **T-1/T-2 (LANDED) are ORPHANED-FOR-THE-ARM** (confirm-and-delete at the
+arm-build commit). d=3 M₃ = `i=2` cycle (zero-regression). Exact wiring in design §(o‴)(I.8.11) STEP 3.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -374,6 +380,18 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   `rcases` over the two landed leaves — no new friction (the only wrinkle is the graph-independent `Gb`/`ends₀`/
   `q` must be named explicitly on STEP 2 since its conclusion omits them; standard implicit-not-in-goal idiom).
   NEXT = STEP 3 arm assembly: one `hperp` call per the M₃ template.
+- **STEP 3 `hρGv` slot LANDED 2026-06-21 (axiom-clean) — `chainData_relabel_arm_hρGv` (`Relabel.lean`).**
+  The hardest engine slot pre-assembled: `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ) endsσρ qρ)` from
+  A-1's base data (`hingeRow_swap` → slot core `chainData_freshEdge_slot_mem` → P3 → `chainData_freshEdge_slot_perp`
+  per surviving edge). **Self-shrank from the full arm** — the planned STEP 3 was the whole arm shell; the
+  `hρGv` slot is the one genuinely-new composition (the rest is M₃-template bookkeeping), so it shipped as a
+  standalone lemma. **Finding (the selector seam, now pinned in *Current state*):** the slot core's fold uses
+  ONE selector throughout (`shiftBodyFrameworkAsc` fixes `ends`), so `hφ` (base redundancy span membership)
+  lives at the RELABELLED `endsσρ` base while the perp composition's `hrv`/`hρe₀` stay at the UN-relabelled
+  `ends₀` — the lemma takes them at their respective selectors; the shell must transport A-1's `ends₀`
+  redundancy to `endsσρ` for `hφ` (the one un-built shell step). Friction: omega couldn't use
+  `hid : (i:ℕ)<cd.d` on a `↑(⟨(i:ℕ),_⟩ : Fin (cd.d+1))` side-goal (`Fin.val (Fin.mk …)` atomized distinctly)
+  → `show … from hid` (TACTICS-QUIRKS § 63).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
@@ -416,6 +434,9 @@ solely through CHAIN-3 (h-4) + `extensor_update_smul`.
   [idiom] *Dropping the involution from a `ρ = Equiv.swap`-relabel transport…*.
 - *`rw [hidx]` on a `getElem` index `l[k]`/`l[k]'h` trips "motive is not type correct" — re-apply the indexing
   lemma at the new index, don't rewrite the index in place* → TACTICS-QUIRKS § 61 (+ variant).
+- *`omega` can't use `hid : (i:ℕ)<m` on a side-goal over `↑(⟨(i:ℕ),_⟩ : Fin (m+1))` — it atomizes
+  `Fin.val (Fin.mk …)` distinctly from `(i:ℕ)`; force the defeq with `show … from hid`* → TACTICS-QUIRKS § 63
+  / FRICTION [idiom] *`omega` can't use `hid : (i:ℕ) < m` to close a side-goal over `↑(⟨(i:ℕ),_⟩…)`…*.
 - *A `Fin d`-index relabel proof: destructure `m = m'+1` early so `m-1` reduces to `m'` by `rfl`, and bridge
   `(i.castSucc:ℕ)` to `(i:ℕ)` in `omega` args with `simp only [Fin.val_castSucc]`* → FRICTION [idiom] *A `Fin d`-index
   relabel proof over general `d`…*.
