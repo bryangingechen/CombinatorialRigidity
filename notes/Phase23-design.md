@@ -5019,11 +5019,18 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   `e₀ = v₀v₂` (whose group IS `ρ₀`, coeff 1 — the redundant row) and the surviving `edge 2 = v₂v₃`. The
   `v₂`-column of the base dependency gives `group(edge 2) = −ρ₀` DIRECTLY — one application of
   `candidateRow_ac_eq_neg` (eq-6.44) at `(a,b,c)=(v₂,v₀,v₃)`. KT p.690-691/698.
-- **`hcol` VERDICT (corrects the §PAIR divergence): suppliable at EVERY interior vertex.** Deeper `a∉{v₀,v₂}`:
-  recon-A mechanical (`r̂ = hingeRow(v₀v₂)ρ₀` has 0 `a`-column). Anchor `a=v₂`: recon-A FAILS (`r̂`'s `v₂`-column
-  `= ρ₀ ≠ 0`), but `hcol` comes from the global base dependency `acolumn_zero` (`∀ a`, LANDED `Candidate.lean:618`,
-  `sub_self` :626 — **coordinator-verified the `∀ a` quantifier**). The two provenances are the same fact (KT
-  eq-6.43 = the per-vertex column of eq-6.24) two ways; neither fails.
+- **`hcol` VERDICT (corrected 2026-06-20 — the design-settle's `∀ a` claim was the coordinator-diagnosed
+  defect; do NOT re-introduce it).** The original settle claimed `hcol` "suppliable at EVERY interior vertex"
+  via the global `acolumn_zero` (`∀ a`). **That is jointly contradictory with `hcomb`:** a screw functional
+  on `α → ScrewSpace k` vanishing on every `single a` is `0` (`LinearMap.pi_ext`, `[Finite α]`), so
+  `hcomb ∧ (∀ a, g.comp (single a) = 0) ⟹ hingeRow ab₁ ab₂ ρ₀ = 0` — the lemma would be vacuous (usable only
+  at `r̂ = 0`), and the real `hρGv` caller (whose `r̂ = hingeRow(v₀v₂)ρ₀` has `v₂`-column `ρ₀ ≠ 0`) cannot
+  supply `∀ a`. The conflation: KT eq-6.43 is the column-vanishing of the *global* base dependency `g`, but
+  the lemma binds `g` *exposed edge-grouped as the candidate row* `hingeRow ab₁ ab₂ ρ₀` (NOT column-vanishing
+  `∀ a`). **Corrected:** the lemma takes the endpoint identification `hab₁ : ab₁ = v₀` / `hab₂ : ab₂ = v₂`
+  (the eq-6.52 `(v₀v₂)`-redundant-edge endpoints) and DERIVES the column-vanishing it needs only at the deeper
+  step vertices `vtx (i+1)` (`i+1 ≥ 3`, off both `v₀`/`v₂` so `r̂`'s column is `0`, via
+  `hingeRow_comp_single_off`); the anchor `v₂` (column `= ρ₀ ≠ 0`) is LEAF 2, which uses NO `hcol`.
 - **SIGNATURE:** `interior_group_eq_baseRedundancy` — motive `P(i)`: "the `(vᵢvᵢ₊₁)`-edge group `= ±ρ₀`"
   (`2≤i≤d−1`); base `P(2)` = anchor; step `P(i)→P(i+1)` = `group(edge i+1) = −group(edge i)` from the
   `vᵢ₊₁`-column (degree-2-in-`G₁`, `deg_two_split`) + IH. CONSUMER-MATCH CONFIRMED: feeds
@@ -5066,8 +5073,14 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   chain edge, summed over the group). **Built cleaner than the pinned `= ±ρ₀`:** the motive is "every
   interior edge-group's TAIL column is the SAME constant `(hingeRow ab₁ ab₂ ρ₀).comp(single v₂)`"
   (`2≤i≤d−1`) — the step's LEAF-1 sign and the head→tail flip's sign cancel (`rw [hadj, hflip, neg_neg]`),
-  so the column value is constant along the chain; the `±ρ₀` reading is deferred to LEAF 4. The step uses
-  the global `hcol : ∀ a, g.comp(single a) = 0` (`acolumn_zero`, `Candidate.lean:618`); `Nat.le_induction`
+  so the column value is constant along the chain; the `±ρ₀` reading is deferred to LEAF 4.
+  **CORRECTED 2026-06-20 (coordinator-diagnosed defect):** the as-landed signature took the global
+  `hcol : ∀ a, g.comp(single a) = 0` ALONGSIDE `hcomb` — jointly contradictory (forces `r̂ = 0`; see the
+  `hcol` VERDICT bullet above), so the lemma was vacuous + un-instantiable by the real caller. `hcol ∀a`
+  REPLACED by `hab₁ : ab₁ = v₀` / `hab₂ : ab₂ = v₂`; the step now DERIVES the column-vanishing at the deeper
+  step vertex `vtx (i+1)` INTERNALLY from `hcomb` + `hingeRow_comp_single_off` (off both `v₀`/`v₂`, `r̂`'s
+  column is `0`). Same name, same conclusion; LEAF 1/2 + the two flip primitives unchanged. Instantiability
+  re-confirmed in tree (caller supplies `hab₁`/`hab₂` by `rfl rfl` after re-orienting `e₀`). `Nat.le_induction`
   auto-generalized the `i < cd.d` bound into the IH. **NEXT = leaf 4** (consumer adapter: the common
   tail-column → `±ρ₀` via `hingeRow_comp_single_tail`/`_off`, then A-2 + `neg_mem` +
   `freshEdge_surviving_row_mem`) → leaf 5 (arm + P3 seed bridge).

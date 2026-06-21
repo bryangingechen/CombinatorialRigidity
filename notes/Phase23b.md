@@ -527,8 +527,11 @@ motive/IH/contract change. Residual buildable-details (settle at pin/build): the
 (`neg_mem`). The §(I.8.9-RECON) leaf-1/2/3 decomposition is SUPERSEDED.
 **CHAIN-INDUCTION DESIGN-SETTLE DONE (row 342, option α; design §(I.8.9-SETTLE)) — PINNED + BUILDABLE,
 5-leaf plan (~7-9c), NO motive/IH/contract change.** Anchor = `v₂` (its 2nd `G₁`-edge is the spliced `e₀=v₀v₂`,
-group `= ρ₀`; `group(edge 2) = −ρ₀` by `candidateRow_ac_eq_neg` at `(v₂,v₀,v₃)`). `hcol` suppliable everywhere
-(deeper: `r̂` misses `a`; anchor: the global `acolumn_zero`, `∀ a`, LANDED `Candidate.lean:618` — coordinator-verified).
+group `= ρ₀`; `group(edge 2) = −ρ₀` by `candidateRow_ac_eq_neg` at `(v₂,v₀,v₃)`). **`hcol` is NOT
+`∀ a` (that design-settle claim was the coordinator-diagnosed defect — `∀ a` + `hcomb` forces
+`r̂ = 0`, the lemma is vacuous; see LEAF 3 below):** the deeper step vertices' column-vanishing is
+DERIVED internally from `hcomb` + endpoint-distinctness (`r̂ = hingeRow(v₀v₂)ρ₀` misses `vtx (i+1)`);
+the anchor `v₂` (whose `r̂`-column is `ρ₀ ≠ 0`) is handled by LEAF 2 with NO `hcol` at all.
 Signature `interior_group_eq_baseRedundancy` (motive: `(vᵢvᵢ₊₁)`-group `= ±ρ₀`, `2≤i≤d−1`; base=anchor,
 step=`group(edge i+1)=−group(edge i)`); consumer-match confirmed (feeds `wstep_foldl_freshEdge_slot_mem`'s
 shared-`ρ₀` `hsurv` via A-3 + `neg_mem`).
@@ -555,23 +558,34 @@ incident, `IsLink` uniqueness at `edge 2 = v₂v₃`) collapse it to the `edge 2
 candidate identity on the column. The `±ρ₀` identification (the `e₀ = v₀v₂`-group contributing `ρ₀`) is
 the trivial LEAF-4 reading via `hingeRow_comp_single_tail`/`_off`. Self-contained over `hcomb`/`hdeg1`,
 framework-free, zero blast radius.
-**LEAF 3 `Graph.ChainData.interior_group_eq_baseRedundancy` — LANDED 2026-06-20** (`Relabel.lean`
-tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The `Nat.le_induction`
-(base=LEAF 2, step=LEAF 1) + the per-edge two-endpoint-column orientation bookkeeping of the
-shape-check note (ii), now done as two supporting primitives. **Output (cleaner than the pinned
-`= ±ρ₀`): every interior chain edge-group's TAIL column is the SAME, equal to the anchor's** —
-`(edge i-group).comp (single vᵢ) = (hingeRow ab₁ ab₂ ρ₀).comp (single v₂)` for all `2 ≤ i ≤ d−1`. The
-`±` of KT's prose is a per-edge orientation artifact absorbed by the tail-column reading: the step
-`P(i)→P(i+1)` applies LEAF 1 at `vtx (i+1)` (`group(edge i+1) = −group(edge i)` columns) then flips
-`group(edge i)`'s column from its head `vtx (i+1)` back to its tail `vtx i` (the new
-`edgeGroup_comp_single_endpoint_flip`, whose `−` cancels LEAF 1's), leaving the value unchanged. Two
-genuinely-new framework-free primitives landed alongside (both `Relabel.lean`, axiom-clean,
-zero blast radius): `hingeRow_comp_single_endpoint_flip` (a single hinge's two endpoint-columns are
-negatives, `±ρ` via `hingeRow_comp_single_tail`/`hingeRow_swap`) + its edge-group form
+**LEAF 3 `Graph.ChainData.interior_group_eq_baseRedundancy` — LANDED 2026-06-20, CORRECTED
+2026-06-20** (`Relabel.lean` tail, axiom-clean; full project green + lint, d=3 zero-regression, zero
+callers). The `Nat.le_induction` (base=LEAF 2, step=LEAF 1) + the per-edge two-endpoint-column
+orientation bookkeeping of the shape-check note (ii), now done as two supporting primitives.
+**Output (cleaner than the pinned `= ±ρ₀`): every interior chain edge-group's TAIL column is the
+SAME, equal to the anchor's** — `(edge i-group).comp (single vᵢ) = (hingeRow ab₁ ab₂ ρ₀).comp
+(single v₂)` for all `2 ≤ i ≤ d−1`. The `±` of KT's prose is a per-edge orientation artifact
+absorbed by the tail-column reading: the step `P(i)→P(i+1)` applies LEAF 1 at `vtx (i+1)`
+(`group(edge i+1) = −group(edge i)` columns) then flips `group(edge i)`'s column from its head
+`vtx (i+1)` back to its tail `vtx i` (the new `edgeGroup_comp_single_endpoint_flip`, whose `−`
+cancels LEAF 1's), leaving the value unchanged. Two genuinely-new framework-free primitives landed
+alongside (both `Relabel.lean`, axiom-clean, zero blast radius):
+`hingeRow_comp_single_endpoint_flip` (a single hinge's two endpoint-columns are negatives, `±ρ` via
+`hingeRow_comp_single_tail`/`hingeRow_swap`) + its edge-group form
 `edgeGroup_comp_single_endpoint_flip` (per-summand flip via `IsLink` uniqueness at the chain edge,
-summed). Step uses the global `hcol : ∀ a, g.comp (single a) = 0` (KT eq.~(6.43) at every body,
-`Candidate.lean:618` `acolumn_zero`); the `Nat.le_induction` auto-generalized the `i < cd.d` bound
-into the IH.
+summed). **CORRECTIVE (coordinator-diagnosed defect): the as-landed signature took `hcol : ∀ a,
+g.comp (single a) = 0` (the global `acolumn_zero`) ALONGSIDE `hcomb` — jointly CONTRADICTORY for a
+non-zero `r̂`** (a screw functional on `α → ScrewSpace k` vanishing on every `single a` is `0` by
+`LinearMap.pi_ext` over `[Finite α]`, so `hcomb ∧ hcol ∀a ⟹ hingeRow ab₁ ab₂ ρ₀ = 0`), making the
+lemma vacuous (only usable at `r̂ = 0`) and un-instantiable by the real `hρGv` caller (whose
+`r̂ = hingeRow (vtx 0)(vtx 2) ρ₀` has `vtx 2`-column `ρ₀ ≠ 0`). **FIX (same name + same conclusion):**
+`hcol ∀a` REPLACED by the endpoint identification `hab₁ : ab₁ = vtx 0` / `hab₂ : ab₂ = vtx 2`; the
+step now DERIVES the per-vertex column-vanishing it needs at the deeper step vertex `vtx (i+1)`
+(`i+1 ≥ 3`, off **both** redundant-edge endpoints by `vtx_ne`) INTERNALLY via `hcomb` +
+`hingeRow_comp_single_off` (`g.comp (single (vtx (i+1))) = hingeRow ab₁ ab₂ ρ₀ |>.comp (single …) =
+0`). LEAF 1/2 + the two flip primitives UNCHANGED (correct as-is). Instantiability re-confirmed in
+tree (the caller supplies `hab₁`/`hab₂` by `rfl rfl` after re-orienting `e₀` to `(vtx 0, vtx 2)` via
+`hingeRow_swap`, `±ρ₀`). The `Nat.le_induction` auto-generalized the `i < cd.d` bound into the IH.
 **← NEXT = LEAF 4** (consumer adapter: read the common tail-column value as `±ρ₀` via
 `hingeRow_comp_single_tail`/`_off`, feed A-2 + `neg_mem`, then `freshEdge_surviving_row_mem`)
 → leaf 5 (arm `chainData_relabel_arm` + P3 seed bridge). Full plan + file:lines + eq-numbers →

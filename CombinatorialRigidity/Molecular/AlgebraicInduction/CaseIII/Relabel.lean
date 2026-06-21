@@ -3833,11 +3833,12 @@ theorem BodyHingeFramework.edgeGroup_comp_single_endpoint_flip [DecidableEq α] 
 /-- **The eq.~(6.44) chain induction: every interior chain edge-group's tail-column equals the
 anchor's** (CHAIN-2c-ii-arm, the `hρGv` regroup chain induction LEAF 3; Katoh–Tanigawa 2011 §6.4.1
 eq.~(6.44)/§6.4.2 eq.~(6.66), `notes/Phase23-design.md` §(o‴)(I.8.9-SETTLE); Phase 23b). For the
-global base redundancy `g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each summand a `G`-link `evⱼ`,
-column-vanishing at **every** body, KT eq.~(6.43)) exposed edge-grouped as the candidate row
-`hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`), the `edge i`-group's screw column at its **tail** vertex
-`vtx i` is the **same** for every interior chain edge `2 ≤ i ≤ d−1`, equal to the anchor (`edge 2`)
-column:
+**single base redundancy** `g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each summand a `G`-link `evⱼ`)
+exposed edge-grouped as the candidate row `hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`), whose two endpoints
+are the **redundant edge's** chain endpoints `ab₁ = vtx 0`, `ab₂ = vtx 2` (KT eq.~(6.52)'s
+`(v₀v₂)`-block redundancy `r`; `hab₁`/`hab₂`), the `edge i`-group's screw column at its **tail**
+vertex `vtx i` is the **same** for every interior chain edge `2 ≤ i ≤ d−1`, equal to the anchor
+(`edge 2`) column:
 
 `(∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single (vtx i))
   = (hingeRow ab₁ ab₂ ρ₀).comp (single (vtx 2))`.
@@ -3850,7 +3851,19 @@ tail-column reading (`hingeRow_comp_single_endpoint_flip`): the step `P(i) → P
 `vtx i` (`edgeGroup_comp_single_endpoint_flip`, the `−` cancelling LEAF 1's), leaving the value
 unchanged; the base `P(2)` is LEAF 2 (`anchor_group_acolumn_eq_baseRedundancy`). The consumer reads
 the common value as `±ρ₀` (LEAF 4, `hingeRow_comp_single_tail`/`_off`). Framework-free, zero blast
-radius. -/
+radius.
+
+**Caller-satisfiability (the corrective, 2026-06-20).** LEAF 1's per-vertex column-vanishing `hcol`
+is **not** assumed `∀ a` here — that would be jointly contradictory with `hcomb` for a non-zero
+`r̂`: a screw functional on `α → ScrewSpace k` vanishing on every coordinate injection `single a` is
+itself `0` (for `[Finite α]`, `LinearMap.pi_ext`), so `hcomb ∧ (∀a, g.comp (single a) = 0)` forces
+`hingeRow ab₁ ab₂ ρ₀ = 0`, and the real `hρGv` caller (whose `r̂ = hingeRow (vtx 0)(vtx 2) ρ₀` has
+`vtx 2`-column `ρ₀ ≠ 0`) cannot supply it. Instead the step **derives** the column-vanishing it
+needs at the deeper step vertex `vtx (i+1)` (`i+1 ≥ 3`, off **both** redundant-edge endpoints
+`vtx 0`, `vtx 2` by `vtx_ne`) **internally** from `hcomb` + `hingeRow_comp_single_off`: there
+`g.comp (single (vtx (i+1))) = (hingeRow ab₁ ab₂ ρ₀).comp (single (vtx (i+1))) = 0`. This is the
+honest content — the anchor `vtx 2` column of `r̂` is `ρ₀ ≠ 0` (LEAF 2 handles it separately, no
+`hcol`), and only the deeper step vertices are off `r̂`'s support. -/
 theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α] [DecidableEq β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
     {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
@@ -3859,8 +3872,7 @@ theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α]
     (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
     (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
       = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
-    (hcol : ∀ a : α, (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
-      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
+    (hab₁ : ab₁ = cd.vtx ⟨0, by omega⟩) (hab₂ : ab₂ = cd.vtx ⟨2, by omega⟩)
     (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
       ev j = cd.edge ⟨2, by omega⟩)
     (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
@@ -3876,10 +3888,25 @@ theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α]
   | succ i h2i ih =>
     -- `i + 1 < cd.d` (the current bound); the predecessor `i` is in range for the IH.
     have hid' : i < cd.d := by omega
+    -- The deeper step vertex `vtx (i+1)` (`i+1 ≥ 3`) is off **both** redundant-edge endpoints
+    -- `ab₁ = vtx 0`, `ab₂ = vtx 2` (distinct chain indices, `vtx_ne`).
+    have hne₁ : cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc ≠ ab₁ := by
+      rw [hab₁, Fin.castSucc_mk]
+      exact cd.vtx_ne (m := i + 1) (m' := 0) (by omega) (by omega) (by omega)
+    have hne₂ : cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc ≠ ab₂ := by
+      rw [hab₂, Fin.castSucc_mk]
+      exact cd.vtx_ne (m := i + 1) (m' := 2) (by omega) (by omega) (by omega)
+    -- Derive LEAF 1's per-vertex column-vanishing at `vtx (i+1)` INTERNALLY from `hcomb`: the
+    -- candidate row `hingeRow ab₁ ab₂ ρ₀` has a zero `vtx (i+1)`-column (off both endpoints,
+    -- `hingeRow_comp_single_off`). This is the corrective — `hcol` is NOT assumed `∀ a`.
+    have hcol_loc : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+          (cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc)) = 0 := by
+      rw [hcomb, BodyHingeFramework.hingeRow_comp_single_off hne₁ hne₂]
     -- LEAF 1 at the deeper interior vertex `vtx (i+1)` (index `⟨i+1, _⟩ : Fin cd.d`, `0 < i+1`):
     -- the `edge (i+1)`-group's `vtx (i+1)`-column is `−` the `edge i`-group's `vtx (i+1)`-column.
     have hadj := cd.interiorGroup_acolumn_adjacency (i := ⟨i + 1, by omega⟩) (by simp)
-      c ev uv vv rv hlink (by simpa using hcol (cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc))
+      c ev uv vv rv hlink (by simpa using hcol_loc)
     -- Index arithmetic: `⟨i+1,_⟩.castSucc = ⟨i+1,_⟩`, `⟨(i+1)−1,_⟩ = ⟨i,_⟩`.
     have hcs : (⟨i + 1, by omega⟩ : Fin cd.d).castSucc = (⟨i + 1, by omega⟩ : Fin (cd.d + 1)) :=
       Fin.ext rfl
