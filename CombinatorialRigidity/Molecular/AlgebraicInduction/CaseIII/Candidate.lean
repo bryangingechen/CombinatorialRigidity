@@ -1669,6 +1669,34 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner [Finite α]
   haveI : Fintype α := Fintype.ofFinite α
   exact Submodule.finrank_add_card_le_of_linearIndependent_mkQ hWS hg hLI
 
+/-- **The relabel-image base block, packaged as a subspace of the candidate rigidity-row span**
+(`lem:case-III general-d`, the option-(A) `hWS`/`hWcard` corner-data leaf; Katoh–Tanigawa 2011 eq.
+(6.62) the one-step-down row correspondence). The chain cert `case_III_rank_certification_chain`
+consumes its base block `W := R(G₁ ∖ row, q₁)` as a subspace `W ≤ span F.rigidityRows` of known
+`finrank W = |ιb|`. This leaf produces that `W` from an LI base family `f : ιb → Module.Dual ℝ
+(α → ScrewSpace k)` whose images under the **injective** relabel map `L` lie in
+`span F.rigidityRows`
+— exactly the genuine→genuine, member-MOVING transport `chainData_bottom_relabel` realizes at the
+span level (§I.8.20(e), `notes/Phase23-design.md`), with `L = (funLeft (shiftPerm)⁻¹).dualMap` the
+injective dual map. The base family stays LI of the same cardinality along `L`
+(`LinearIndependent.map'`), so the image span `W = span (range (L ∘ f))` has `finrank W = |ιb|`.
+
+A direct carrier instantiation of `Submodule.exists_le_finrank_eq_card_of_injective_map` (the mirror
+in `Mathlib/LinearAlgebra/Dimension/Constructions`) on `Module.Dual ℝ (α → ScrewSpace k)`; the
+`ScrewSpace` carrier is never unfolded. This is the one piece the §I.8.24(3) cert-re-shape pass
+flagged as not-yet-in-tree-as-a-packaged-subspace — the chain arm `case_III_arm_realization_chain`
+discharges the `hWS`/`hWcard` pair of `case_III_rank_certification_chain` through it, the way the
+`d = 3` `M₃` arm packages its bottom family `w` along the same injective `funLeft`-dualMap
+(`case_III_arm_realization_M3`, `Relabel.lean`). -/
+theorem BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map
+    (F : BodyHingeFramework k α β) {ιb : Type*} [Fintype ιb]
+    {f : ιb → Module.Dual ℝ (α → ScrewSpace k)} (hf : LinearIndependent ℝ f)
+    {L : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k)}
+    (hL : Function.Injective L) (hS : ∀ j, L (f j) ∈ Submodule.span ℝ F.rigidityRows) :
+    ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
+      W ≤ Submodule.span ℝ F.rigidityRows ∧ Module.finrank ℝ W = Fintype.card ιb :=
+  Submodule.exists_le_finrank_eq_card_of_injective_map hf hL hS
+
 /-! ## The forked general-`d` Case-III rank certification (Phase 23c, option (A))
 
 The general-`d` Case-III rank certification, FORKED off the landed `case_III_rank_certification`

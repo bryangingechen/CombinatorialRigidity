@@ -156,8 +156,10 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
 1. **The forked general-`d` chain cert + arm** (§I.8.24) → the `±r`-based engine, NO `hρGv` (replaces the dead
    `hρGv` chain arm). d=3 keeps the landed engine. **Cert `case_III_rank_certification_chain` ✓ LANDED**
    (2026-06-21); **the SHARED W6a–W6f tail `case_III_realization_of_rank` ✓ FACTORED OUT** (2026-06-21,
-   zero-regression — the d=3 engine now delegates to it); the arm `case_III_arm_realization_chain` (produces
-   the cert's corner data, gets `hrank`, calls the shared tail) is the next build (*Hand-off*).
+   zero-regression — the d=3 engine now delegates to it); **the `hWS`/`hWcard` carrier packaging leaf
+   `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` ✓ LANDED** (2026-06-21 — the last not-yet-in-tree
+   corner-data infrastructure piece); the arm `case_III_arm_realization_chain` (produces the cert's corner data via
+   the now-complete infrastructure, gets `hrank`, calls the shared tail) is the next build (*Hand-off*).
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -210,10 +212,13 @@ produces the chain cert's corner data, applies `case_III_rank_certification_chai
 `exact case_III_realization_of_rank …` (the now-shared tail). The corner data is discharged from the in-scope
 chain data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest template) produces the
 engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
-- **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — instantiate
-  `Submodule.exists_le_finrank_eq_card_of_injective_map` at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the
-  M₃ arm's `hw` route `Relabel.lean:2729`), `f = the base LI family` of card `D(m_v−1)`, `hS` = the span-level
-  `chainData_bottom_relabel` (genuine→genuine, member-MOVING; §I.8.20(e)). Gives `W` with the right `finrank`.
+- **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — apply the now-landed
+  carrier leaf `BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (`Candidate.lean`,
+  after `finrank_span_rigidityRows_ge_of_corner`) at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the M₃ arm's
+  `hw` route `Relabel.lean:2729`), `f = the base LI family` of card `D(m_v−1)`, `hS` = the span-level
+  `chainData_bottom_relabel` (genuine→genuine, member-MOVING; §I.8.20(e)). Gives `W` with the right `finrank` — the
+  arm still has to supply `f`/`hf`/`hS` against the concrete chain data (`f` = the engine's bottom family `w`, the
+  ARM wiring), but the subspace-packaging step is no longer a wall.
 - **`g` (the `D` corner rows) + `hg`** — `g` = the `D−1` candidate panel rows `r(Lᵢ)` (`panelRow_mem_rigidityRows`,
   free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
   `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
@@ -232,6 +237,18 @@ engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
 
 ## Decisions made during this phase
 
+- **Carrier `hWS`/`hWcard` packaging leaf `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` landed
+  (2026-06-21), closing the §I.8.24(3) "one residual not-yet-in-tree piece" (the relabel-image base block as a
+  PACKAGED SUBSPACE).** `BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`
+  (`Candidate.lean`, after `finrank_span_rigidityRows_ge_of_corner`): an LI base family `f : ιb → Module.Dual ℝ
+  (α → ScrewSpace k)` + an injective `L` + `∀ j, L (f j) ∈ span F.rigidityRows` ⟹ `∃ W ≤ span F.rigidityRows,
+  finrank W = |ιb|`. A direct `exact` of the mirror `Submodule.exists_le_finrank_eq_card_of_injective_map` on the
+  rigidity-row carrier (`ScrewSpace` never unfolded). So the chain arm's `hWS`/`hWcard` corner obligation is now a
+  consume-landed-brick step (apply at `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f` = the bottom family `w`, `hS` =
+  `chainData_bottom_relabel`'s span-level transport); the genuinely-new part left is supplying `f`/`hf`/`hS` against
+  the concrete chain data. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), build/lint clean; no friction
+  (one-line wrapper). With this, ALL of the chain cert's corner-data infrastructure leaves are in tree — the arm is
+  pure carrier wiring (no remaining abstract-LA or carrier-friction sub-risk).
 - **`hLI` corner-LI abstract step `linearIndependent_mkQ_sumElim_unit_of_notMem_span` mirrored (2026-06-21),
   closing the arm's abstract-LA sub-risk.** The append-one LI-MOD-`W` criterion (mirror,
   `Mathlib/LinearAlgebra/Dimension/Constructions.lean`, beside the block-rank-additivity lemma it feeds): a family
