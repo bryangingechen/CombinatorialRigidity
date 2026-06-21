@@ -8,14 +8,16 @@ detailed route history live in `notes/Phase23-design.md`, program map `notes/Mol
 algebraic core + chain-induction + perp + slot machinery — all axiom-clean) but **could not reach** the
 `hρGv` Case-III chain arm + `chainData_dispatch` (CHAIN-2c-iii) + CHAIN-5, because the arm's `hρGv` slot ran
 into a hard core: the **member-mapping wall**, now decisively characterized as **intrinsic to KT's argument**
-(not a Lean artifact — design §(o‴)(I.8.18)–(I.8.20), 2026-06-21). So 23c's **first deliverable is an
-architectural decision**, not a build: settle *how* to carry the redundancy before building the arm.
+(not a Lean artifact — design §(o‴)(I.8.18)–(I.8.20), 2026-06-21). The **(A)-feasibility recon is now DONE**
+(design §(o‴)(I.8.21), 2026-06-21): (A) escapes the wall but requires a rank-certification re-architecture
+(below the contract/motive) with a genuinely-new + cost-unknown hardest leaf — so 23c's standing state is a
+**USER GO/NO-GO** (open the (A) sub-phase de-risk-first, or hold), see *Hand-off*.
 
-> **Orientation for the next agent.** Read this *Current state* + *The architectural decision* below in
-> full, then the design doc §(o‴)(I.8.18)–(I.8.20) (the three verdicts that close out the dead routes) and
-> the `BlueprintExposition.md` `lem:case-III general-d` "source-side sharpening" entry (the KT-faithful
-> shape). Do **not** re-attempt any of the four dead route families (below) — they are exhausted and
-> adversarially verified. The decision is genuinely open and is the user-adjudicated fork below.
+> **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the (A)-recon verdict) in
+> full, then the design doc §(o‴)(I.8.18)–(I.8.21) (the dead-route verdicts + the (A) go/no-go) and the
+> `BlueprintExposition.md` `lem:case-III general-d` "source-side sharpening" entry (the KT-faithful shape).
+> Do **not** re-attempt any of the four dead route families (below) — they are exhausted and adversarially
+> verified. The standing decision is the user-adjudicated fork in *Hand-off*.
 
 ## Current state — the architectural decision 23c must make first
 
@@ -57,36 +59,32 @@ infeasible (§I.8.15); (2) base→candidate transport — the member-mapping wal
 design-rejected Fix B (§I.8.19-ADDENDUM); (4) column-op / whole-matrix submatrix-containment — the wall is
 KT's own (6.62), it offers only the member-*moving* relabel-image inclusion (§I.8.20).
 
-## The architectural fork (user-adjudication, with this session's read)
+## The architectural fork (user-adjudication; the (A)-recon verdict is in — §I.8.21)
 
-**(A) Re-architect KT-faithfully — RECOMMENDED as the only root-attacking route.** Carry the redundancy the
-way KT's matrix bookkeeping does: an **abstract `r ∈ ℝ^D`** (eq. 6.66) + the **`Mᵢ`-block FORM**, on the
-**single matrix** `R(G,pᵢ)` with in-matrix column/row ops (6.60→6.66), so a fixed dual-functional is never
-anchored to a framework and never transported across the relabel. This is the one shape that structurally
-avoids the wall (it *lets the member move*, as KT and as `d=3` do). **Open question (a 23c-first feasibility
-recon must settle), two sub-routes:**
-  - *Non-gate composition.* Keep the (correct) telescope but re-anchor it at the genuine base via a
-    composition mechanism that is **not** the per-step `hends'_off` gate (which can't reach the cycle). Can a
-    whole-cycle selector move be transported in one shot, or via a different per-step invariant?
-  - *Matrix / abstract-`r` representation.* KT's column/row ops live most naturally on an **explicit matrix**;
-    the project models rigidity **basis-free** (`rigidityRows` = a *set of dual functionals*, rigidity = a
-    `span`). The `columnOp` `≃ₗ` (CHAIN-1) bridges this for the *independence* half but not for span-membership
-    transport. (A) may therefore need a **more matrix-explicit representation** than the project has used —
-    the genuinely-new, cost-unknown part. The feasibility recon decides whether KT's bookkeeping fits the
-    existing basis-free API or forces new representation infra.
+**(A) Re-architect KT-faithfully — the only root-attacking route; feasibility RECON DONE (§I.8.21).** Carry
+the redundancy as KT does: the abstract `r ∈ ℝ^D` of (6.66) — which §I.8.21 found **IS already the project's
+`ρ₀`** (A-1's `ρ₀ = ∑ⱼ lamAB j • rab j`, `Candidate.lean:432`) — and the **`Mᵢ`-block / `±r` decomposition**
+`rank R(G,pᵢ) ≥ rank Mᵢ + rank(R(G₁∖row,q₁))` (6.64–6.65), where the redundancy is a `±r` ℝ^D-EQUALITY (6.66),
+never a fixed dual-functional transported across the relabel. **VERDICT (§I.8.21): (A) escapes the wall, but
+does NOT feed the existing engine** — the engine's `hρGv` slot IS the wall (the rank-cert consumes it once as
+a fixed-member candidate membership, `Candidate.lean:1606–1611`), so (A) requires **re-shaping
+`case_III_rank_certification` + `case_III_arm_realization`** (below contract C.0–C.6 + motive; `d=3` M₃
+zero-regression preserved by forking the rank-cert). Sub-route *non-gate composition* is DEAD (collapses to
+the wall); sub-route *matrix/abstract-`r`* is the live route and **forces a more matrix-explicit
+representation**: the genuinely-new infra is a basis-free **block-rank-additivity** lemma + `Mᵢ`-corner
+quotient-independence + the (6.66) `±r` abstract-vector identity. **Cost band: a recon-first sub-phase ~8–14c**,
+hardest leaf (block-rank-additivity) cost-unknown with a STOP-and-escalate-to-explicit-`Matrix`-model branch.
 
-**(B) Carry `ρ0`/`hφ@endsσρ` to ENTRY — LEAST KT-faithful, likely-dead.** Add `hφ@endsσρ` as a hypothesis on
-the arm/dispatch (the landed `chainData_relabel_arm_hρGv` shape), land the arm shell + 2c-iii in ~2–3c so the
-Case-III dispatch closes green-modulo the carried hyp, and confront the wall at ENTRY. Flagged likely-dead
-(the wall is a property of the relabel-image map, not of what is in scope; the only non-circular escape is
-ENTRY re-deriving the redundancy *natively* against `endsσρ` — a graph-construction question, unexplored).
-Buys a green-modulo close, risks relocating a dead-end.
+**(B) Carry `ρ0`/`hφ@endsσρ` to ENTRY — LEAST KT-faithful, likely-dead, does NOT attack the root.** Add
+`hφ@endsσρ` as a hypothesis on the arm/dispatch (the landed `chainData_relabel_arm_hρGv` shape) and confront
+the wall at ENTRY. Flagged likely-dead (§I.8.20: the wall is a property of the relabel-image map, not of what
+is in scope; the only non-circular escape is ENTRY re-deriving the redundancy *natively* against `endsσρ` — a
+graph-construction question, unexplored). Only the residue if (A) is held / its de-risk fails.
 
-**Recommendation.** Don't spend on (B) as a solution. The real choice is **(A)-feasibility-recon vs. a
-deliberate hold** — (A) is a *different kind* of question (representation-level, not more churn on the dead
-paradigm), so a focused feasibility recon is well-motivated, but the matrix-explicit investment is
-substantial and worth a deliberate go/no-go. **23c's first concrete commit = the (A)-feasibility recon**
-(scoped to the two sub-routes above), unless the user/next coordinator first re-decides the fork.
+**Recommendation.** The real choice is **(A)-sub-phase (de-risk the basis-free block-rank-additivity lemma
+FIRST) vs. a deliberate hold** — (A) is well-motivated (root-attacking, KT-faithful, reuses the hard
+discriminator + (6.44) cancellation machinery) but the rank-cert re-architecture is a substantial investment
+worth a deliberate go/no-go. See *Hand-off* for the FIRST concrete commit under each branch.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -128,8 +126,9 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    derive Thm 5.6, state Conjecture 1.2.
 
 **Contract/motive note.** The wall is machinery *below* the contract — no C.0–C.6/motive change is forced by
-it. But option (A)'s matrix-explicit representation, *if* needed, would be a representation-infra change to
-weigh at the feasibility recon (it does not touch the dispatch signature or `ChainData` record).
+it. §I.8.21 confirmed: option (A)'s rank-cert re-architecture re-shapes `case_III_rank_certification` +
+`case_III_arm_realization` only — it does **not** touch the dispatch's `hdispatch` consume-shape (C.3), the
+`ChainData` record (C.1), or the 0-dof motive/IH (the dispatch threads one `ρ₀` either way).
 
 ## Blueprint-clarity obligation (carried from 23b — owner-flagged)
 
@@ -141,15 +140,35 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**Next concrete commit = the (A)-feasibility recon** (a read-only design pass): can KT's redundancy-carry
-(abstract `r` + `Mᵢ`-block, in-matrix ops) be re-anchored at the genuine base **either** via a non-gate
-composition of the existing telescope **or** within the basis-free `span` API — **or** does it force a
-more matrix-explicit representation? Deliverable: a design-doc verdict (new design § under `notes/Phase23-design.md`)
-that either decomposes (A) into buildable leaves with signatures (route lives → build the arm) or names the
-representation-infra cost honestly (go/no-go for the user). Carry the two mandatory design-pass clauses
-(verify every claim against landed source; flag-don't-force). Audit trail: design §(o‴)(I.8.18)–(I.8.20),
-the `lem:case-III general-d` ledger sharpening, and the model-exp Findings 2026-06-21 (read-the-source-early;
-fresh-agent-for-route-deciding).
+**The (A)-feasibility recon is DONE (design §(o‴)(I.8.21), 2026-06-21). VERDICT: (A) escapes the wall but does
+NOT feed the existing engine — it is a genuinely-new rank-certification re-architecture (below the
+contract/motive), with a genuinely-new + cost-unknown hardest leaf. So the next concrete step is a USER/
+coordinator GO/NO-GO, not a build.** What §I.8.21 settled (source-grounded against the landed engine + KT pp.
+697–698):
+- **The abstract `r` of KT (6.66) IS already the project's `ρ₀`** — A-1 builds `ρ₀ = ∑ⱼ lamAB j • rab j`
+  (`Candidate.lean:432`), literally KT's `r = ∑ λ_(v₀v₂)ⱼ rⱼ(q(v₀v₂))`, and `ScrewSpace k` has `finrank = D`.
+  (A) is therefore NOT "add an abstract `r`"; it is "re-shape the *consumer*".
+- **The engine's `hρGv` slot IS the wall.** `case_III_rank_certification` uses `hρGv` once
+  (`Candidate.lean:1606–1611`) as the fixed-member candidate membership `hingeRow a b ρ₀ ∈ span(candidate)` —
+  exactly what §I.8.18/I.8.20 ruled has no source for `i ≥ 2`. So (A) cannot escape by feeding the existing
+  engine. (d=3 is no counterexample: the M₃ arm satisfies the slot by a length-1 MOVE, `Relabel.lean:2562/2699`.)
+- **(A)'s escape is KT's `rank Mᵢ + rank(base∖row)` block decomposition (6.64–6.65)**, where the redundancy is a
+  `±r` ℝ^D-EQUALITY (6.66), never a fixed dual-functional transported across the relabel. This requires re-shaping
+  `case_III_rank_certification` + `case_III_arm_realization` (below contract C.0–C.6 + motive; `d=3` M₃
+  zero-regression preserved by forking the rank-cert).
+- **Sub-route (2a) "non-gate composition" is DEAD** (collapses to the wall). **Sub-route (2b) "matrix/abstract-`r`"
+  is the live route** and forces a more matrix-explicit representation: the genuinely-new infra is a basis-free
+  **block-rank-additivity** lemma + the `Mᵢ`-corner quotient-independence + the (6.66) `±r` abstract-vector
+  identity. **Honest cost band: a recon-first sub-phase, ~8–14 commits**, hardest leaf (block-rank-additivity)
+  cost-unknown with an explicit STOP-and-escalate-to-an-explicit-`Matrix`-model branch.
+
+**THE FORK FOR THE USER:** **(A)-sub-phase (de-risk the basis-free block-rank-additivity lemma FIRST) vs. a
+deliberate hold.** Route B (carry `ρ₀`/`hφ@endsσρ` to ENTRY) does not attack the root (flagged LIKELY-DEAD,
+§I.8.20) and is only the residue if (A) is held or its de-risk fails. **If the user picks (A): the FIRST concrete
+commit is the block-rank-additivity de-risk spike** (does the basis-free `finrank (span …)` carrier admit a clean
+quotient/block lower bound `rank(span A) ≥ dim(quotient corner) + rank(span B)` for `B ⊆ A`, or does the
+`ScrewSpace` `≃ₗ`/§38-defeq friction bite?) — NOT a leaf signature yet. Audit trail: design §(o‴)(I.8.18)–(I.8.21),
+the `lem:case-III general-d` ledger sharpening.
 
 ## Decisions made during this phase
 
