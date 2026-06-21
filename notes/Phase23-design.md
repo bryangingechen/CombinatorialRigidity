@@ -5134,7 +5134,12 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
 
 **(I.8.10) i=3 EDGE-ALIGNMENT DE-RISK — RAN, VERDICT: Q2-with-a-twist; the per-summand transport is a
 clean BIJECTIVE re-index (NOT a re-grouping); the candidate-level edge-grouped transport leaf decomposes
-into three buildable sub-leaves (2026-06-21, opus; anchor lemma `i3_candidateBlock_transport_deRisk`
+into three buildable sub-leaves.** **⚠ T-1/T-2/T-3 DECOMPOSITION SUPERSEDED by §(I.8.11):** the de-risk
+anchor `i3_candidateBlock_transport_deRisk` is correct, but the T-1/T-2/T-3 *family transport* it spawned
+is MIS-TARGETED against the landed consumer (the `hcomb` RHS / `hrv` framework pin incompatible levels).
+The correct route does NOT transport the family — see §(I.8.11) for the verdict + corrected route + T-1/T-2's
+orphaned-for-the-arm fate. (Retained below for the anchor's still-valid block-correspondence verdict.)
+(2026-06-21, opus; anchor lemma `i3_candidateBlock_transport_deRisk`
 LANDED axiom-clean + warning-clean + lint-clean; full project green).** Settles the row-352 GAP-FOUND gap
 and the flagged subtlety (A-1's base summand edges `ev j` are arbitrary `G−v₁`-links, not
 `shiftEdgePerm`-images). Verified against the **landed bodies** (file:line below), NOT the prior prose.
@@ -5211,6 +5216,95 @@ and the flagged subtlety (A-1's base summand edges `ev j` are arbitrary `G−v�
   The only residual flag is **P3** (`shiftSeedAdv_eq_funLeft_shiftPerm`, the fold-seed = engine-seed bridge,
   §(I.8.5)) — LANDED 2026-06-20 (`Phase23b` landed-inventory), so it is NOT an open obstruction. The arm is
   now mechanical-given-T-1/T-2/T-3.
+
+**(I.8.11) ROUTE-SETTLING RECON — VERDICT: the (I.8.10) T-1/T-2/T-3 decomposition is MIS-TARGETED against
+the LANDED consumer; the CORRECT route is base-level edge-grouping + a single scalar perp transport; T-1/T-2
+ARE ORPHANED-FOR-THE-ARM (2026-06-21, opus; CONFIRMS the coordinator's row-357-triage finding; all claims
+Lean-verified against the landed bodies via 4 throwaway probes that each compiled axiom-clean + warning-clean,
+then reverted — docs-only, no Lean landed).** This is the 2nd level/shape mismatch on this arm (row-352 was
+the 1st). Verified against the **landed `def`/`theorem` bodies** (`Relabel.lean` consumer `:4311`; A-1
+`Candidate.lean:400`; `shiftPerm`/`shiftEdgePerm` `Induction/Operations.lean:1468`/`:2018`; d=3 dispatch
+`Realization.lean:268`; M₃ arm `Relabel.lean:2515`; slot `:4136`; `freshEdge_surviving_row_mem` `:3019`) and
+**KT 2011 §6.4.2 eqs. (6.60)–(6.67) read end-to-end** (p. 696–698, pdf p. 50–52), NOT the prior prose.
+
+  *(Q-A — CONFIRMED, the mismatch is real.)* The consumer `chainData_freshEdge_perp_of_baseRedundancy`
+  (`Relabel.lean:4311`) consumes its family through THREE hyps simultaneously pinned at INCOMPATIBLE levels:
+  `hcomb` is **framework-free** with RHS HARDCODED `hingeRow (vtx 0)(vtx 2) ρ₀` (the BASE-vertex spliced row;
+  `:4322`, fed verbatim to LEAF-4 `interior_group_acolumn_eq_neg_baseRedundancy` `:4334` whose `ab₁/ab₂ = vtx
+  0/vtx 2` is rigid), while `hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j)` is at the **CANDIDATE** `Fva = ofNormals
+  (G−vᵢ) ends qρ`. Feeding the **re-indexed family** (T-1/T-2): T-1 gives `hrv` at candidate-block of the
+  re-indexed edge `(shiftEdgePerm i).symm (evGv j)` ✓, but T-2's `hcomb` LHS becomes `hingeRow (σ.symm v₀)(σ.symm
+  v₂) ρ₀` with `σ = shiftPerm i.castSucc` — and **Lean-verified** `σ.symm v₀ = v₀` (`shiftPerm_inv_apply_vtx_off`
+  m=0) but `σ.symm v₂ = v₁` (`shiftPerm_inv_apply_interior` j=1, holds ∀ `i ≥ 2`) → T-2 LHS = `hingeRow v₀ v₁ ρ₀`
+  ≠ consumer's `hingeRow v₀ v₂ ρ₀`. Feeding A-1 **un-relabelled**: `hcomb`/`hlink` match directly, but `hrv` then
+  demands candidate-block at the SAME un-re-indexed edge `evGv j` — and the only landed correspondence
+  (`ofNormals_supportExtensor_relabel_perm` `:63`) is `candidate.supp f = base.supp (σ_e f)` (a DIFFERENT edge),
+  so candidate-block(`evGv j`) = base-block(`σ_e(evGv j)`) ≠ A-1's base-block(`evGv j`). So neither feeds the
+  consumer; T-1/T-2 (the row-354 decomposition) ARE mis-targeted. **Refutations actively checked + dissolved:**
+  (b) the consumer is genuinely applied at deep candidate `i` (`2 ≤ i ≤ d−1`) where σ moves v₂ — NOT only where
+  σ fixes v₂; (c) the splice `e₀` is NOT relabel-invariant — `shiftEdgePerm`'s edge cycle is `[edge 0, e₀, edge
+  i, edge 1, …]`, so `e₀` MOVES (`shiftEdgePerm i e₀ = edge i`); (d) the W9a-fold route does NOT bypass the perp
+  leaf — at general `d` the fold's `hsurv` needs the per-edge perp at EACH surviving edge (the genuinely-new P2,
+  §(I.8.3)), unlike d=3 M₃'s single `e_b` row off `hρe₀` — so the perp leaf is load-bearing.
+
+  *(Q-B — the CORRECT route, ALL FOUR STEPS Lean-verified buildable.)* **KT works entirely at the BASE `(G₁,q₁)
+  = ofNormals (G−v₁) ends q`** (the recon's key source finding): eqs. (6.62)/(6.66)/(6.67) express the redundancy
+  `r`, the carry `∑ λ rⱼ(q(vᵢvᵢ₊₁)) = ±r` (6.66), and ALL panels `Πᵢ = Π_{G₁,q₁}(vᵢ₊₁)` (6.67) in the SINGLE base
+  framework; the candidate `pᵢ` enters ONLY through the row-correspondence iso `ρᵢ` (6.62), never as a separate
+  `ofNormals (G−vᵢ)` framework. So the Lean architecture's choice to state the per-edge perp at a separately-
+  relabelled candidate `Fva` is what creates the level-mix. The correct route:
+  - **STEP 1 — base perp (NO new lemma): the EXISTING consumer instantiated at base index `i := ⟨1⟩`.** With `i =
+    ⟨1⟩`, `Fva = ofNormals (G−v₁) ends q` = the base, so `hrv` is A-1's `hrvGv` DIRECTLY, `hcomb`/`hlink`/`hdeg1`
+    are A-1's outputs DIRECTLY — NO transport. Produces `ρ₀ ⊥ (base).supportExtensor (edge t)` for any `2 ≤ t <
+    d`. **[Probe-verified: `chainData_freshEdge_perp_of_baseRedundancy h3 ⟨1,_⟩ t … hlinkGv hrvGv hcombGv hdeg1`
+    type-checks axiom-clean.]** The consumer's "candidate-vs-base" framing was a RED HERRING — its free
+    `ends`/`qρ` make it a base-level leaf; the candidate instantiation was the wrong call site.
+  - **STEP 2 — scalar perp transport (ONE new ~10-line lemma): base perp@`edge(s+1)` → candidate perp@`edge s`.**
+    `candidate.supp(edge s) = base.supp(shiftEdgePerm i (edge s))` (`ofNormals_supportExtensor_relabel_perm`),
+    `shiftEdgePerm i (edge s) = edge(s+1)` (interior step `shiftEdgePerm_apply_edge_interior`, `1 ≤ s, s+1 < i`),
+    + supportExtensor graph-independence (G−vᵢ ≡ G−v₁ on `ends`/`q`). **[Probe-verified axiom-clean.]**
+  - **STEP 2′ — the `s = 0` branch: candidate perp@`edge 0` ⟸ base perp@`e₀` = A-1's `hρe₀`.** `shiftEdgePerm i
+    (edge 0) = e₀` (`shiftEdgePerm_apply_edge_zero`), so the splice-panel annihilation A-1 already supplies (`hρe₀`,
+    `Candidate.lean:419`) IS the `s=0` base perp. **[Probe-verified axiom-clean.]** (`s=1` routes through STEP 2 at
+    `t=2`.)
+  - **STEP 3 — compose per surviving edge `s` (`s+1 < i`): STEP 1 at `t := s+1` (or STEP 2′ at `s=0`) → STEP 2 →
+    candidate perp@`edge s` → feeds `chainData_freshEdge_slot_mem`'s `hperp s` (`:4148`).** The index range matches:
+    the slot consumes `hperp s` for `s+1 < i` (`hsurv`, `:4211`), and `s+1 < i ≤ d−1` gives `2 ≤ s+1 < d` ✓ for the
+    base leaf; `s ∈ {0,1,…}` all covered (s=0 via STEP 2′, s≥1 via STEP 2).
+
+  **SIGNATURE of the one new lemma (STEP 2, the only un-landed piece; merges the `s=0`/`s≥1` branches by a
+  `match s` on the edge action):**
+  ```
+  theorem ChainData.chainData_freshEdge_perp_transport_base_to_candidate
+      [DecidableEq α] [DecidableEq β] (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 ≤ (i:ℕ))
+      (s : ℕ) (hs1i : s + 1 < (i:ℕ)) {ends₀ : β → α × α} {q : α × Fin (k+2) → ℝ}
+      {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+      (hbase : ρ₀ ((ofNormals (G−vtx i.castSucc) ends₀ q).toBodyHinge.supportExtensor
+                 (if s = 0 then cd.e₀ else cd.edge ⟨s+1,_⟩)) = 0) :
+      ρ₀ ((ofNormals (G−vtx i.castSucc) [σρ-relabelled ends₀] [σ-relabelled q]).toBodyHinge.supportExtensor
+            (cd.edge ⟨s,_⟩)) = 0
+  ```
+  (in the arm, the `if`-branch's base perp comes from STEP 1 / `hρe₀`; the candidate-framework `ends`/`qρ` are the
+  arm's `endsσρ`/`qρ` — coincide via P3 `shiftSeedAdv_eq_funLeft_shiftPerm` with the slot's `shiftSeedAdv q (i−1)`).
+
+  *(Q-C — T-1/T-2's fate: ORPHANED-FOR-THE-ARM, confirm-and-delete.)* `chainData_candidateRow_edgeGrouped_transport_blocks`
+  (T-1, `Relabel.lean:4427`) and `chainData_candidateRow_edgeGrouped_transport_comb` (T-2, `:4464`) implement a
+  PER-SUMMAND family transport (whole `(c, ev, uv, vv, rv)` re-indexed/relabelled). The correct route never
+  transports the family — the edge-grouping runs at the base (STEP 1), and only the SINGLE scalar perp transports
+  (STEP 2). So T-1/T-2 feed nothing in the correct route. Their underlying ANCHOR
+  `i3_candidateBlock_transport_deRisk` (`:4383`) and `ofNormals_supportExtensor_relabel_perm` (`:63`) STAND
+  (STEP 2 reuses the SAME relabel identity, applied once to a scalar). **Disposition: confirm-and-delete T-1/T-2
+  at the arm-build commit** (`git grep` zero non-test callers expected once the arm lands STEP 2); the anchor +
+  relabel identity are NOT deleted. T-3 (`…_transport_links`, never built) is **mooted** — the correct route's
+  `G`-links are the base leaf's (A-1's `hlinkGv`), no re-indexed candidate links needed.
+
+  **CLAUSE (ii) HONESTY.** NO motive/IH/contract change: STEP 1 reuses the LANDED consumer unchanged (different
+  call site only); STEP 2 is one new transport lemma (~10 lines, two probe-verified branches); the slot/arm
+  signatures are untouched. The consumer `chainData_freshEdge_perp_of_baseRedundancy` is **NOT modified** — its
+  hardcoded `(vtx 0, vtx 2)` RHS is CORRECT (it is exactly KT's base redundancy `r = ∑ λ rⱼ(q(v₀v₂))`); the bug
+  was the WIRING decision to call it at the candidate index. NO genuinely-new-math fork (STEP 2 is bookkeeping over
+  the landed relabel identity). **NET to the arm: ~1c (STEP 2 lemma) + the arm assembly (~1–2c) = ~2–3c**, down
+  from (I.8.10)'s "3 sub-leaves + assembly", because the family transport (T-1/T-2/T-3) is eliminated, not built.
 
 ---
 

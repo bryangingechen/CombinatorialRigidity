@@ -3,13 +3,16 @@
 **Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (the four-producer tail, all general-`k`) + CHAIN-2a + the
 CHAIN-2c-ii foundation. The `hρGv` route is **LOCKED = Route W (option a′)**, the `hwmem` slot is LANDED
 (`chainData_bottom_relabel`), and the arm's algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3)
-+ slot core + per-edge perp are all LANDED axiom-clean. The arm's perp slot needed the edge-grouped
-redundancy at the CANDIDATE framework, which A-1 supplies only at the BASE (row-352 gap); the i=3
-edge-alignment **DE-RISK RAN (row 353, `i3_candidateBlock_transport_deRisk`)** → the genuinely-new
-candidate-level edge-grouped transport decomposes into 3 buildable TRANSPORT sub-leaves T-1/T-2/T-3 (clean
-bijective re-index, NO re-grouping, NO new math); **T-1 `…_transport_blocks` + T-2 `…_transport_comb`
-LANDED axiom-clean**. ~1–3 commits left to the arm (T-3 then arm assembly); then **CHAIN-2c-iii**
-`chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
++ slot core + per-edge perp leaf are all LANDED axiom-clean. **ROUTE-SETTLING RECON (row 358, design
+§(o‴)(I.8.11)) → the row-354 T-1/T-2/T-3 family-transport decomposition is MIS-TARGETED** (2nd level/shape
+mismatch — the consumer pins `hcomb`'s base-vertex RHS and `hrv`'s candidate framework at incompatible
+levels). **CORRECTED ROUTE (all 4 steps Lean-probe-verified buildable):** the LANDED per-edge perp leaf
+`chainData_freshEdge_perp_of_baseRedundancy`, called at base index `i := ⟨1⟩` (NO transport — A-1's output
+fed direct), gives the BASE perp; ONE new ~10-line lemma transports the SINGLE scalar perp base@`edge(s+1)`
+→ candidate@`edge s` (via the LANDED `ofNormals_supportExtensor_relabel_perm` + `shiftEdgePerm` edge action).
+**T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM** (confirm-and-delete; the family is never transported). ~2–3
+commits left to the arm (STEP-2 transport lemma → arm assembly); then **CHAIN-2c-iii** `chainData_dispatch`
+closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -24,52 +27,39 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — build the last transport sub-leaf (T-3), then the arm.** The
-transport leaf `chainData_candidateRow_edgeGrouped_transport` decomposes into 3 buildable sub-leaves
-T-1/T-2/T-3 (signatures in design §(o‴)(I.8.10)). **T-1 + T-2 LANDED** (axiom-clean): the de-risked block
-half + the `hcomb`-relabel half. Remaining: T-3 (the candidate `G`-links) → the arm
-`chainData_relabel_arm` (M₃ template re-indexed, ~1–2c) → CHAIN-2c-iii `chainData_dispatch` → 23b closes
-green-modulo `hdispatch`. ~1–3 commits left, no motive/IH/contract change.
+**NEXT STEP (single authoritative) — build the STEP-2 scalar perp transport lemma, then the arm.** The
+route-settling recon (design §(o‴)(I.8.11), row 358) REFUTED the row-354 T-1/T-2/T-3 family-transport plan
+and re-derived the correct route, all 4 steps Lean-probe-verified buildable. **The corrected route does NOT
+transport the redundancy family** — the edge-grouping runs at the BASE, only a single scalar perp transports:
+- **STEP 1 (NO new lemma):** the LANDED `chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`
+  (so its `Fva = ofNormals (G−v₁) ends q` = the base) takes A-1's output DIRECTLY (`hlinkGv`/`hrvGv`/`hcombGv`/
+  `hdeg1`, no transport) → BASE perp `ρ₀ ⊥ base.supportExtensor (edge t)` for `2 ≤ t < d`. The consumer's
+  "candidate" framing was a RED HERRING; its free `ends`/`qρ` make it a base-level leaf.
+- **STEP 2 (the SMALLEST NEXT COMMIT, ~1c): ONE new ~10-line transport lemma** carrying the SINGLE scalar perp
+  base@`edge(s+1)` → candidate@`edge s` (= `freshEdge_surviving_row_mem`'s `hperp`), via
+  `ofNormals_supportExtensor_relabel_perm` (LANDED) + `shiftEdgePerm_apply_edge_interior` (`s≥1`) /
+  `shiftEdgePerm_apply_edge_zero` (`s=0`, lands on `e₀` ← A-1's `hρe₀`) + supportExtensor graph-independence.
+  Exact signature: design §(o‴)(I.8.11) STEP 2.
+- **STEP 3 (arm assembly, ~1–2c):** per surviving edge `s` (`s+1 < i`): STEP 1 at `t := s+1` (or `hρe₀` at
+  `s=0`) → STEP 2 → feed `chainData_freshEdge_slot_mem`'s `hperp s`; the other engine slots per the d=3 M₃
+  template (`hwmem ← chainData_bottom_relabel`, seed ← P3, `hρe₀`/discriminator/removeVertex bookkeeping).
 
-**SMALLEST NEXT COMMIT = T-3 `chainData_candidateRow_edgeGrouped_transport_links`** (the `G`-links, ~½c):
-the candidate-side summand links are `G`-links of the re-indexed/relabelled endpoints. A-1 supplies
-`Gv.IsLink (evGv j)(uvGv j)(vvGv j)` (`Gv = G−vᵢ`); the perp leaf's h1 is just `G.IsLink (ev' j)(uv' j)
-(vv' j)`. Lift each base `Gv`-link to a `G`-link (`removeVertex_isLink.mp .1`) at the relabelled endpoints
-`uv' j := (shiftPerm i.castSucc).symm (uvGv j)` / edge `ev' j := (shiftEdgePerm i).symm (evGv j)`, via the
-`splitOff_isLink_shiftRelabel_iff` graph-iso (LANDED). Bookkeeping/TRANSPORT. Exact signature: design
-§(o‴)(I.8.10) T-3.
+~2–3 commits left to the arm; then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`.
+**No motive/IH/contract change** (the consumer is UNMODIFIED — its hardcoded `(vtx 0, vtx 2)` RHS is KT's
+base redundancy `r`, correct; only the WIRING call site changes from candidate to base). **No genuinely-new
+math** (STEP 2 is bookkeeping over the landed relabel identity).
 
-**T-1 + T-2 LANDED (axiom-clean).** **T-1** `chainData_candidateRow_edgeGrouped_transport_blocks`
-(`Relabel.lean:4427`): the de-risked block half — `fun j => cd.i3_candidateBlock_transport_deRisk i (evGv
-j) (hrv j)`, a pure per-summand replay of the anchor; carries each A-1 base block membership `rvGv j ∈
-(base).hingeRowBlock (evGv j)` to the candidate `Fva = ofNormals (G−vᵢ) endsσρ qρ` at the bijective
-re-index `(shiftEdgePerm i).symm (evGv j)`. **T-2** `chainData_candidateRow_edgeGrouped_transport_comb`
-(`Relabel.lean`, tail): the `hcomb`-relabel half — applies `(funLeft (shiftPerm i.castSucc).symm).dualMap`
-to A-1's base combination identity `hingeRow x y ρ = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)`, distributing over
-`∑`/`•` (`map_sum`/`map_smul`) with `hingeRow_funLeft_dualMap` per summand, to the candidate orientation
-`hingeRow (σ.symm x)(σ.symm y) ρ = ∑ⱼ cⱼ • hingeRow (σ.symm uvⱼ)(σ.symm vvⱼ)(rvⱼ)`. NO new math (the same
-linearity step `chainData_bottom_relabel` does on a single row, lifted across the `∑`).
-
-**ROW-352→353 GAP RESOLVED (the gap, why the arm did not converge from landed pieces, and the de-risk that
-unblocked it).** The `hρGv` perp sub-slot `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`)
-consumes its edge-grouped data through THREE hyps: `hlink`/`hcomb` (framework-free) + `hrv : ∀ j, rv j ∈
-Fva.hingeRowBlock (ev j)` at the **CANDIDATE** framework — the ONLY framework-bound one. A-1
-`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:439–445`) supplies the edge-grouped redundancy
-ONLY at the **BASE** `ofNormals Gv ends q` (Gv = G−v₁); NO landed lemma transported the per-summand block
-memberships (grep-confirmed: candidate-level `hrv` was only ever a hypothesis). This was the rows-288/291
-LEVEL-MISMATCH redux. **De-risk verdict (row 353):** the candidate block at ANY edge `f` equals the base
-block at `shiftEdgePerm i f` (`ofNormals_supportExtensor_relabel_perm` for arbitrary `f`; `supportExtensor`
-graph-independent), so A-1's base `hrv` at `evGv j` is exactly the candidate `hrv` at
-`(shiftEdgePerm i).symm (evGv j)` — a bijective re-index of the SAME summands. The chain induction LEAVES
-1–4 are framework-free and group by FILTERING `ev j = cd.edge ⟨i⟩` (non-chain summands vanish via the
-degree-2 closure), so A-1's arbitrary `evGv j` are harmless. All OTHER engine slots DO converge from landed
-pieces (`hwmem ← chainData_bottom_relabel`; seed ← P3 LANDED; `hρe₀` / discriminator / removeVertex
-bookkeeping per the d=3 M₃ template).
-
-**FLAGGED SUBTLETY — RESOLVED (Q2-with-a-twist, design §(o‴)(I.8.10)).** "A-1's base summand edges `evGv j`
-are ARBITRARY `G−v₁`-links, NOT `shiftEdgePerm`-images" — the de-risk found this is a **NON-ISSUE**: the
-block correspondence holds for arbitrary edges, so the bijective re-index suffices; no re-grouping into a
-`shiftEdgePerm`-image basis is needed. Q3 (the feared genuinely-new re-grouping argument) does NOT arise.
+**Why the row-354 T-1/T-2/T-3 plan was MIS-TARGETED (the 2nd level/shape mismatch; design §(o‴)(I.8.11)).**
+The consumer `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`) pins THREE hyps at
+INCOMPATIBLE levels: `hcomb` framework-free with RHS HARDCODED `hingeRow (vtx 0)(vtx 2) ρ₀` (BASE vertices,
+feeding LEAF-4 whose `ab₁/ab₂ = vtx 0/vtx 2` is rigid) AND `hrv` at the CANDIDATE framework. Feeding the
+re-indexed family (T-1/T-2): T-1's `hrv` matches, but T-2's `hcomb` LHS becomes `hingeRow (σ.symm v₀)(σ.symm
+v₂) ρ₀ = hingeRow v₀ v₁ ρ₀` (Lean-verified `σ.symm v₀ = v₀`, `σ.symm v₂ = v₁` ∀ `i ≥ 2`) ≠ the consumer's
+`hingeRow v₀ v₂ ρ₀`. Feeding un-relabelled: `hcomb`/`hlink` match but `hrv` wants candidate-block at the SAME
+edge, which `ofNormals_supportExtensor_relabel_perm` relates only to base-block at the DIFFERENT edge `σ_e f`.
+So neither feeds the consumer. KT-source check (eqs. 6.62/6.66/6.67, p.696–698): KT works ENTIRELY at the base
+`(G₁,q₁) = G−v₁`; the candidate enters only via the row-correspondence iso `ρᵢ`, never as a separate
+`ofNormals (G−vᵢ)` framework — vindicating STEP 1's base-index call.
 
 **Standing context (settled; full detail in the design doc).** (1) *Architectural:* metric-using Hodge
 leaves live in `MeetHodge.lean`, never metric-free `Meet.lean` (a `PiL2` import → `whnf` timeout) —
@@ -96,27 +86,16 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
 - **`chainData_freshEdge_slot_mem`** (`Relabel.lean`) — LEAF 5 `hρGv`-slot core; lifts the `i=3` gate to the
   concrete fold framework, peeling the slot row `hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀` off the fold output minus the
   surviving rows. Takes an abstract per-edge `hperp`.
-- **`chainData_freshEdge_perp_of_baseRedundancy`** (`Relabel.lean`) — witness-free per-edge perp: for every
-  deeper interior surviving edge (`2 ≤ s < d`), `ρ₀ ⊥ Fva.supportExtensor (edge s)` from the *candidate*-framework
-  edge-grouped base redundancy. Consumes the redundancy (`hlink`/`hcomb`/`hrv`) at the CANDIDATE framework — the
-  level the transport leaf T-1/T-2/T-3 supplies from A-1's BASE output. Mechanism = LEAF 4's `group = −ρ₀` +
-  `edgeGroup_acolumn_mem_block` + `mem_hingeRowBlock_iff`.
-- **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean`, row 353) — the edge-alignment de-risk anchor: the
-  candidate framework's `hingeRowBlock` at an ARBITRARY edge `f` = the base framework's block at
-  `shiftEdgePerm i f`, so a base block membership transports to the candidate block at `(shiftEdgePerm i).symm
-  f`. The load-bearing fact T-1 is the all-`i` lift of. Confirms Q2-with-a-twist (clean bijective re-index, no
-  re-grouping).
-- **`chainData_candidateRow_edgeGrouped_transport_blocks`** (`Relabel.lean`, T-1, row 355) — the de-risked
-  block half of the transport leaf: the all-`i`/`∀ j` lift of the anchor. Carries A-1's per-summand base
-  block memberships `rvGv j ∈ (base).hingeRowBlock (evGv j)` to the candidate `Fva = ofNormals (G−vᵢ) endsσρ
-  qρ` at the bijective re-index `(shiftEdgePerm i).symm (evGv j)`. Proof = `fun j => cd.i3_candidateBlock_
-  transport_deRisk i (evGv j) (hrv j)` (pure per-summand replay; no new math).
-- **`chainData_candidateRow_edgeGrouped_transport_comb`** (`Relabel.lean`, T-2) — the `hcomb`-relabel half:
-  applies `(funLeft (shiftPerm i.castSucc).symm).dualMap` to A-1's base combination identity `hingeRow x y ρ
-  = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)`, distributing over `∑`/`•` (`map_sum`/`map_smul`) with
-  `hingeRow_funLeft_dualMap` per summand, to the candidate orientation `hingeRow (σ.symm x)(σ.symm y) ρ = ∑ⱼ
-  cⱼ • hingeRow (σ.symm uvⱼ)(σ.symm vvⱼ)(rvⱼ)`. The same linearity step `chainData_bottom_relabel` does on a
-  single row, lifted across the `∑`; no new math.
+- **`chainData_freshEdge_perp_of_baseRedundancy`** (`Relabel.lean:4311`) — witness-free per-edge perp: for any
+  surviving edge (`2 ≤ s < d`), `ρ₀ ⊥ Fva.supportExtensor (edge s)` from the edge-grouped base redundancy.
+  Consumes `hlink`/`hcomb` (framework-free, RHS hardcoded `hingeRow (vtx 0)(vtx 2) ρ₀`) + `hrv` at the framework
+  `Fva = ofNormals (G−vᵢ) ends qρ` (free `ends`/`qρ`). Mechanism = LEAF 4's `group = −ρ₀` +
+  `edgeGroup_acolumn_mem_block` + `mem_hingeRowBlock_iff`. **CORRECT call site (design §(o‴)(I.8.11)) = base
+  index `i := ⟨1⟩`** (then `Fva` = base `G−v₁`, A-1's output feeds it DIRECTLY — STEP 1 of the corrected route).
+- **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean:4383`) + **`ofNormals_supportExtensor_relabel_perm`**
+  (`Relabel.lean:63`) — STAND: the support-extensor relabel identity `candidate.supp f = base.supp (shiftEdgePerm
+  i f)`. The corrected route's STEP-2 scalar transport reuses this identity ONCE (applied to a single perp), so
+  it stays load-bearing; only its all-`i`/`∀ j` *family*-lift (T-1) is orphaned.
 - **`chainData_freshEdge_perp_of_witness`** (`Relabel.lean`) — per-vertex form (STANDS; the arm threads the
   base-redundancy lemma above, not this).
 - **Chain-induction LEAVES 1–4** (`Relabel.lean`, the eq-(6.44) regroup off the single base redundancy):
@@ -166,12 +145,17 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   `freshEdge_surviving_row_mem` (the perp-half builder); the telescope
   (`wstep_foldl_hingeRow_telescope` / `_freshEdge_slot_mem`); the `acolumn_..._sup_...` crux; A-1/A-2/`_of_witness`;
   `candidateRow_ac_eq_neg` (Leaf B re-consumes it).
-- **Orphaned-for-the-arm (confirm-and-delete at the arm-build commit):** the split→split
-  `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291, wrong graph level, §(o‴)(I.5));
-  the candidate→base T-W9a fold `shiftBodyList_foldr_…` (wrong orientation, H.10); the two block bricks
-  `rigidityRow_relabel_to_block{,_swap}` (the assembly inlined the wrap-block); `ofNormals_relabel_perm` + the
-  binary `…comp…` (docstring-referenced — sync on delete); the per-`i`-W6b `chainData_split_realization`/`_w6b_gates`
-  (Fix B; re-check at 2c-iii). **DELETED 2026-06-19:** the 5-decl W9b per-body chain (§(o‴)(I.1), machine-refuted).
+- **Orphaned-for-the-arm (confirm-and-delete at the arm-build commit):** **T-1/T-2**
+  `chainData_candidateRow_edgeGrouped_transport_{blocks,comb}` (`Relabel.lean:4427`/`:4464`) — the row-354
+  family-transport plan, MIS-TARGETED vs the consumer (design §(o‴)(I.8.11); the corrected route transports a
+  single scalar perp, never the family). T-3 (`…_transport_links`) was never built → MOOTED. (The anchor
+  `i3_candidateBlock_transport_deRisk` + `ofNormals_supportExtensor_relabel_perm` STAND — STEP 2 reuses them.)
+  The split→split `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291, wrong graph level,
+  §(o‴)(I.5)); the candidate→base T-W9a fold `shiftBodyList_foldr_…` (wrong orientation, H.10); the two block
+  bricks `rigidityRow_relabel_to_block{,_swap}` (the assembly inlined the wrap-block); `ofNormals_relabel_perm`
+  + the binary `…comp…` (docstring-referenced — sync on delete); the per-`i`-W6b
+  `chainData_split_realization`/`_w6b_gates` (Fix B; re-check at 2c-iii). **DELETED 2026-06-19:** the 5-decl W9b
+  per-body chain (§(o‴)(I.1), machine-refuted).
 
 **FIX-FORK SETTLED (§(o‴)(H), 2026-06-19, adversarially verified (H.10)) — corrected Fix A buildable:** keep
 the shared `ρ₀`, transport memberships **base→candidate** (relabel `(shiftPerm i)⁻¹`, seed advancing). Fix B
@@ -202,13 +186,13 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       **LANDED/CLOSED 2026-06-18.** Remaining: **CHAIN-2c — the single-base `Fin (k+1)` family dispatch** (route
       β): ONE base, ONE `ρ₀`, ONE discriminator → `fin_cases u`; eq. (6.66) absorbed. **2c-i** LANDED. **2c-ii**
       (the genuinely-new relabel arm — KT's `ρᵢ` is a `(i−1)`-cycle): foundation LANDED; FIX-FORK SETTLED
-      (corrected Fix A). The arm `chainData_relabel_arm`'s every algebraic prerequisite is LANDED; the
-      **row-352 GAP** (candidate-vs-base level mismatch for the perp slot's `hrv`) is **DE-RISKED (row 353,
-      `i3_candidateBlock_transport_deRisk`)**: the genuinely-new candidate-level edge-grouped transport
-      `chainData_candidateRow_edgeGrouped_transport` decomposes into 3 buildable TRANSPORT sub-leaves
-      T-1/T-2/T-3 (no re-grouping, no new math). **T-1 + T-2 LANDED** (`…_transport_blocks` /
-      `…_transport_comb`, axiom-clean). → **NEXT** = T-3 per *Current state*; then the arm; then **2c-iii**
-      `chainData_dispatch`. d=3 M₃ = `i=2` involution.
+      (corrected Fix A). The arm `chainData_relabel_arm`'s every algebraic prerequisite is LANDED. The perp
+      slot's level mismatch (rows 352/353) is **ROUTE-SETTLED (row 358, design §(o‴)(I.8.11))**: the row-354
+      T-1/T-2/T-3 family-transport plan was MIS-TARGETED; the **corrected route** (4 steps Lean-probe-verified)
+      runs the edge-grouping at the BASE — the LANDED perp leaf `chainData_freshEdge_perp_of_baseRedundancy` at
+      base index `i := ⟨1⟩` (NO transport) + ONE new ~10-line scalar perp transport (STEP 2) base@`edge(s+1)` →
+      candidate@`edge s`. **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM.** → **NEXT** = STEP-2 transport lemma per
+      *Current state*; then the arm; then **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` involution.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -237,16 +221,19 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above:** finish the candidate-level
-edge-grouped transport leaf `chainData_candidateRow_edgeGrouped_transport`'s last sub-leaf —
-**T-1** `…_transport_blocks` + **T-2** `…_transport_comb` LANDED (the de-risked block half + the
-`hcomb`-relabel half); **T-3** `…_transport_links` (the SMALLEST NEXT COMMIT; the candidate `G`-links by
-`removeVertex_isLink` + the `splitOff_isLink_shiftRelabel_iff` graph-iso) → wire the arm
-`chainData_relabel_arm` (`refine case_III_arm_realization`, M₃ template re-indexed, ~1–2c) → **2c-iii**
-`chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Net ~1–3 commits left
-to the arm. **No motive/IH/contract change** anywhere in this chain; **no genuinely-new-math fork** (the i=3
-de-risk verdict). d=3 M₃ = `i=2` involution (zero-regression). Exact sub-leaf signatures in design
-§(o‴)(I.8.10).
+**The single authoritative next-step is in *Current state* above:** build the **STEP-2 scalar perp transport
+lemma** `chainData_freshEdge_perp_transport_base_to_candidate` (the SMALLEST NEXT COMMIT, ~1c; signature in
+design §(o‴)(I.8.11) STEP 2) — carries the SINGLE scalar perp base@`edge(s+1)` (or `e₀` for `s=0`) →
+candidate@`edge s` via the LANDED `ofNormals_supportExtensor_relabel_perm` + `shiftEdgePerm` edge action +
+graph-independence. Then wire the arm `chainData_relabel_arm` (`refine case_III_arm_realization`, M₃ template
+re-indexed): per surviving edge `s`, feed `chainData_freshEdge_slot_mem`'s `hperp s` from STEP 1 (the LANDED
+perp leaf at base index `i := ⟨1⟩`, A-1's output direct) ∘ STEP 2; other slots per the M₃ template (`hwmem ←
+chainData_bottom_relabel`, seed ← P3, `hρe₀`/discriminator/removeVertex). Then **2c-iii** `chainData_dispatch`
+(replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Net ~2–3 commits left to the arm. **No
+motive/IH/contract change** (the perp leaf is UNMODIFIED — only its call site moves to the base index); **no
+genuinely-new-math fork** (STEP 2 is bookkeeping over the landed relabel identity). **T-1/T-2 (LANDED) are
+ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit). d=3 M₃ = `i=2` involution
+(zero-regression). Exact signatures in design §(o‴)(I.8.11).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -343,31 +330,22 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   plan (anchor `v₂`); LEAVES 1–4 + the witness-free `chainData_freshEdge_perp_of_baseRedundancy` landed.
   Corrective: `hcol ∀a` is jointly contradictory with `hcomb` for `r̂≠0` → replaced by endpoint id; the deeper
   step derives column-vanishing internally. §(o‴)(I.8.9-SETTLE).
-- **ARM CONVERGENCE RECON 2026-06-20 (row 352) → GAP-FOUND.** The 5 deferring leaf-5 slices hid a level
-  mismatch: the perp sub-slot needs the edge-grouped redundancy at the CANDIDATE framework, but A-1 supplies it
-  only at the BASE — no landed transport. Verdict: the arm does NOT converge from landed pieces; the
-  genuinely-new leaf is `chainData_candidateRow_edgeGrouped_transport` (TRANSPORT, no contract change), gated
-  on the flagged i=3 edge-alignment de-risk. Detail → design §(o‴)(I.8).
-- **i=3 EDGE-ALIGNMENT DE-RISK 2026-06-21 (row 353) → Q2-with-a-twist; transport leaf decomposed
-  (`i3_candidateBlock_transport_deRisk`, axiom-clean).** The candidate block at ANY edge `f` = the base block
-  at `shiftEdgePerm i f` (`ofNormals_supportExtensor_relabel_perm` for arbitrary `f`; `supportExtensor`
-  graph-independent), so A-1's base `hrv` at `evGv j` transports to the candidate `hrv` at
-  `(shiftEdgePerm i).symm (evGv j)` — a clean BIJECTIVE re-index, NOT a re-grouping. The flagged
-  non-alignment is a NON-ISSUE (chain induction filters by `ev j = edge ⟨i⟩`; non-chain summands vanish via
-  `deg_two_split`). NO genuinely-new-math fork (Q3 does not arise). Transport leaf → 3 buildable TRANSPORT
-  sub-leaves T-1/T-2/T-3 (signatures design §(o‴)(I.8.10)); ~3–5c to the arm. NO motive/IH/contract change.
-- **T-1 LANDED 2026-06-21 (`chainData_candidateRow_edgeGrouped_transport_blocks`, axiom-clean).** The
-  de-risked block half of the transport leaf: a pure `∀ j`/all-`i` lift of `i3_candidateBlock_transport_deRisk`
-  (`fun j => cd.i3_candidateBlock_transport_deRisk i (evGv j) (hrv j)`). No new math — the anchor was already
-  general-`i`/general-edge, so T-1 is the `∀ j`-quantified instantiation against the candidate framework
-  `Fva`. No friction logged (one-line application).
-- **T-2 LANDED 2026-06-21 (`chainData_candidateRow_edgeGrouped_transport_comb`, axiom-clean).** The
-  `hcomb`-relabel half: `congrArg (funLeft (shiftPerm i.castSucc).symm).dualMap` on A-1's base combination
-  identity, then `rw [hingeRow_funLeft_dualMap, map_sum]` (RHS row + sum) + `simp only [map_smul,
-  hingeRow_funLeft_dualMap]` (each summand endpoint-wise). The same `dualMap`-over-`∑`/`•` linearity
-  `chainData_bottom_relabel` does on a single row, lifted across the sum (the already-promoted FRICTION idiom
-  *Composing two `(funLeft σ).dualMap` relabel transports…*); needed `[DecidableEq α]` for `shiftPerm`. No new
-  FRICTION (second clean instantiation of the landed bricks). NEXT = T-3 (the candidate `G`-links).
+- **PERP-SLOT LEVEL MISMATCH (rows 352/353) + T-1/T-2 LANDED (row 354–356) — SUPERSEDED for the arm by the
+  route-settling recon below.** The arm-convergence recon found the perp slot needs the redundancy at a
+  framework A-1 supplies only at the base; the i=3 de-risk (`i3_candidateBlock_transport_deRisk`, axiom-clean,
+  STANDS) + T-1/T-2 (`chainData_candidateRow_edgeGrouped_transport_{blocks,comb}`, LANDED) implemented a
+  *family* transport. The route-settling recon (next entry) showed that family transport is mis-targeted; the
+  anchor + `ofNormals_supportExtensor_relabel_perm` stay (STEP 2 reuses them), T-1/T-2 are orphaned. Detail (the
+  block correspondence verdict, kept for the anchor) → design §(o‴)(I.8.10).
+- **ROUTE-SETTLING RECON 2026-06-21 (row 358) → row-354 T-1/T-2/T-3 plan REFUTED; corrected route pinned
+  (design §(o‴)(I.8.11)).** 2nd level/shape mismatch on this arm: the consumer
+  `chainData_freshEdge_perp_of_baseRedundancy` pins `hcomb`'s hardcoded base-vertex RHS `hingeRow (vtx 0)(vtx
+  2) ρ₀` and `hrv`'s candidate framework at INCOMPATIBLE levels (re-indexed family breaks `hcomb`: `σ.symm v₂ =
+  v₁ ≠ v₂`; un-relabelled breaks `hrv`: candidate-block at same edge = base-block at `σ_e f`). KT-source check
+  (eqs. 6.62/6.66/6.67): KT works entirely at the base `(G₁,q₁) = G−v₁`. CORRECT route (4 steps
+  Lean-probe-verified, then reverted — docs-only): the LANDED perp leaf at base index `i := ⟨1⟩` (no transport)
+  + ONE new ~10-line scalar perp transport (STEP 2) base@`edge(s+1)` → candidate@`edge s`. T-1/T-2 orphaned;
+  consumer UNMODIFIED. No motive/IH/contract change, no new-math fork. ~2–3c to the arm.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
