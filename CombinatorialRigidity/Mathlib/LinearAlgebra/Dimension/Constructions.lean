@@ -82,6 +82,20 @@ Upstream-eligible mirrors:
   full-rank `⟺ r ∉ rowspace r(Lᵢ)`). A push through `W.mkQ` + the `Sum`-append independence
   (`LinearIndependent.sum_type` with `disjoint_span_singleton'`). When promoted upstream this lives
   beside the `LinearIndependent` `Sum`/`Option` API; the namespace stays `Submodule`.
+
+* `Submodule.linearIndependent_mkQ_of_comp` — independence modulo `W` from independence after a
+  linear map that *kills* `W`: if a family `f : ι → V` becomes linearly independent after applying
+  a linear map `T : V →ₗ[K] W'` (`LinearIndependent K (T ∘ f)`) and `W ≤ ker T`, then `f` is
+  already linearly independent modulo `W` (`LinearIndependent K (W.mkQ ∘ f)`). The other half of
+  the corner-block `hLI` (paired with the append-one criterion above): when the corner's panel-row
+  block must be shown independent *modulo* the base block `W`, and the panel rows are independent
+  after the block-triangular column projection `T` (e.g. precomposition with a pin-a-body
+  `single v`, which the base block annihilates — KT 2011 (6.16)'s column split), this strips the
+  `W`-quotient down to the already-known post-`T` independence. The factor map is the quotient
+  lift `W.liftQ T hW`, which satisfies `(W.liftQ T hW) ∘ W.mkQ = T` (`liftQ_mkQ`), so
+  `LinearIndependent.of_comp` applied to it turns the post-`T` independence into the modulo-`W`
+  independence. When promoted upstream this lives beside the `LinearIndependent`/quotient API; the
+  namespace stays `Submodule`.
 -/
 
 @[expose] public section
@@ -265,5 +279,33 @@ theorem linearIndependent_mkQ_sumElim_unit_of_notMem_span {K V : Type*} [Field K
   refine hf.sum_type (LinearIndependent.of_subsingleton (i := ()) hne) ?_
   rw [Set.range_const]
   exact (Submodule.disjoint_span_singleton' hne).mpr hx
+
+/-- **Linear independence modulo `W` from independence after a `W`-killing map.** If a family
+`f : ι → V` is linearly independent after applying a linear map `T : V →ₗ[K] W'` that kills `W`
+(`W ≤ ker T` and `LinearIndependent K (T ∘ f)`), then `f` is linearly independent *modulo* `W`
+(`LinearIndependent K (W.mkQ ∘ f)`).
+
+This is the other half of the corner-block `hLI` (paired with
+`linearIndependent_mkQ_sumElim_unit_of_notMem_span`): the panel-row block of KT's `Mᵢ` corner
+must be shown independent *modulo* the base block `W`, and the panel rows are independent after
+the block-triangular column projection `T` (precomposition with a pin-a-body `single v`, which
+the base block annihilates — KT 2011 (6.16)'s column split). The proof factors `T` through the
+quotient: the lift `W.liftQ T hW : V ⧸ W →ₗ[K] W'` satisfies `(W.liftQ T hW) ∘ W.mkQ = T`
+(`liftQ_mkQ`), so `(W.liftQ T hW) ∘ (W.mkQ ∘ f) = T ∘ f`, and
+`LinearIndependent.of_comp (W.liftQ T hW)` recovers the independence of `W.mkQ ∘ f` from that of
+`T ∘ f`. -/
+theorem linearIndependent_mkQ_of_comp {K V W' : Type*} [Field K]
+    [AddCommGroup V] [Module K V] [AddCommGroup W'] [Module K W']
+    (W : Submodule K V) {ι : Type*} {f : ι → V}
+    {T : V →ₗ[K] W'} (hW : W ≤ LinearMap.ker T)
+    (hf : LinearIndependent K (T ∘ f)) :
+    LinearIndependent K (W.mkQ ∘ f) := by
+  refine LinearIndependent.of_comp (W.liftQ T hW) ?_
+  have hcomp : (W.liftQ T hW) ∘ (W.mkQ ∘ f) = T ∘ f := by
+    funext i
+    simp only [Function.comp_apply]
+    rw [← LinearMap.comp_apply, Submodule.liftQ_mkQ]
+  rw [hcomp]
+  exact hf
 
 end Submodule

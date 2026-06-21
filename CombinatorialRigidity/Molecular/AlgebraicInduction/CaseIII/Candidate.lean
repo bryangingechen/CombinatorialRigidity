@@ -1697,6 +1697,47 @@ theorem BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_inject
       W ≤ Submodule.span ℝ F.rigidityRows ∧ Module.finrank ℝ W = Fintype.card ιb :=
   Submodule.exists_le_finrank_eq_card_of_injective_map hf hL hS
 
+/-- **The candidate fresh-edge's panel rows are independent modulo the base block `W`**
+(`lem:case-III general-d`, the option-(A) `hLI` corner obligation (a); Katoh–Tanigawa 2011 eq.
+(6.65), the `Mᵢ`-block panel rows independent of the base `R(G₁ ∖ row, q₁)`). The chain cert
+`case_III_rank_certification_chain` consumes its `hLI` corner-LI for the `Sum.elim (panel rows)
+(±r row)` block; this leaf supplies the panel-rows half — the `D − 1` panel rows of the
+candidate's fresh hinge `e` (all using `e`, first endpoint `(ends e).1 = v` the re-inserted body),
+shown linearly independent *modulo* the base subspace `W`.
+
+The independence source is the block-triangular column split (KT eq. (6.16)): each base-block row
+of `W` is annihilated by precomposition with the re-inserted body's screw column `single v`
+(`hW : ∀ φ ∈ W, φ ∘ₗ single v = 0`, i.e. `W ≤ ker (single v).dualMap`), while the panel rows stay
+independent through that same column (`linearIndependent_panelRow_comp_single_of_edge`, the
+pin-at-`v` identity). So the abstract `linearIndependent_mkQ_of_comp` (independence mod `W` from
+independence after a `W`-killing map, the mirror in
+`Mathlib/LinearAlgebra/Dimension/Constructions`) strips the
+`W`-quotient down to the post-`single v` independence at `T = (single v).dualMap`. The arm
+`case_III_arm_realization_chain` discharges `hW` from the relabel-image base block's off-`v`
+vanishing (the base rows involve only old bodies) and `hindep` from the candidate fresh hinge's
+extensor nonvanishing, then appends the `±r` row via
+`Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span`. -/
+theorem BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ends : β → α × α} {e : β} {v : α}
+    (hv : (ends e).1 = v) (hev : (ends e).2 ≠ (ends e).1)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, (i : β × _ × _).1 = e)
+    (hindep : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)))
+    {W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (hW : ∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0) :
+    LinearIndependent ℝ (W.mkQ ∘ (fun i : s => F.panelRow ends (i : β × _ × _))) := by
+  set T : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (ScrewSpace k) :=
+    (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v).dualMap with hT
+  have hWker : W ≤ LinearMap.ker T := fun φ hφ => by
+    rw [LinearMap.mem_ker, hT, LinearMap.dualMap_apply']; exact hW φ hφ
+  refine Submodule.linearIndependent_mkQ_of_comp W hWker ?_
+  have hcomp : (T ∘ fun i : s => F.panelRow ends (i : β × _ × _))
+      = fun i : s => (F.panelRow ends (i : β × _ × _)).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e).1) := by
+    funext i; rw [hT]; simp only [Function.comp_apply, LinearMap.dualMap_apply', hv]
+  rw [hcomp]
+  exact F.linearIndependent_panelRow_comp_single_of_edge (hv ▸ hev) hs hindep
+
 /-! ## The forked general-`d` Case-III rank certification (Phase 23c, option (A))
 
 The general-`d` Case-III rank certification, FORKED off the landed `case_III_rank_certification`

@@ -2294,6 +2294,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean` (alongside
   `finrank_add_card_le_of_linearIndependent_mkQ`, which it feeds).
 
+### [mirrored] `Submodule.linearIndependent_mkQ_of_comp` — mod-`W` LI from independence after a `W`-killing map (the other `hLI` corner ingredient)
+- **Where it bit:** Phase 23c option-(A) chain cert. The `hLI` corner-LI for the chain arm's
+  `Sum.elim (D−1 panel rows) (±r row)` block has two halves: the append-one criterion above (the
+  `±r` row), and showing the panel-row block independent *modulo* the base `W`. The panel rows are
+  known independent only after the pin-a-body column projection `single v`
+  (`linearIndependent_panelRow_comp_single_of_edge`, KT 2011 (6.16)'s block-triangular column
+  split), not directly in the `W`-quotient.
+- **Friction:** no direct mathlib lemma turns "LI after a linear map `T`" into "LI modulo `W`" when
+  `W ≤ ker T`; the natural factor map is the quotient lift `W.liftQ T hW`, but wiring it through
+  `LinearIndependent.of_comp` needs the `(W.liftQ T hW) ∘ (W.mkQ ∘ f) = T ∘ f` identity
+  (`liftQ_mkQ` + a `funext`/`comp_apply` reassociation).
+- **Resolution:** mirrored `linearIndependent_mkQ_of_comp` — `LinearIndependent.of_comp
+  (W.liftQ T hW)` reduces `W.mkQ ∘ f` LI to `T ∘ f` LI via `Submodule.liftQ_mkQ`. The carrier
+  instantiation `BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge` (`CaseIII/Candidate`)
+  takes `T = (single v).dualMap` (so `hW` is the base block's off-`v` vanishing,
+  `W ≤ ker (single v).dualMap`) and reuses `linearIndependent_panelRow_comp_single_of_edge` for
+  `T ∘ f`. Pairs with the append-one mirror for the full `hLI`.
+- **Status:** mirrored, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Pure LA, no
+  geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean` (beside the append-one
+  criterion); carrier instantiation in `CaseIII/Candidate.lean`.
+
 ### [mirrored] `List.formPerm_eq_prod_zipWith_swap_tail` — `formPerm` is the product of adjacent-element transpositions
 - **Where it bit:** Phase 23b CHAIN-2c-ii-transport-W9a (identifying the cycle-W9a `List.foldr`
   with the named `shiftPerm` relabel, route B, design §(o″)). The cycle `shiftPerm i = formPerm

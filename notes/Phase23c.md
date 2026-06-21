@@ -157,9 +157,12 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    `hρGv` chain arm). d=3 keeps the landed engine. **Cert `case_III_rank_certification_chain` ✓ LANDED**
    (2026-06-21); **the SHARED W6a–W6f tail `case_III_realization_of_rank` ✓ FACTORED OUT** (2026-06-21,
    zero-regression — the d=3 engine now delegates to it); **the `hWS`/`hWcard` carrier packaging leaf
-   `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` ✓ LANDED** (2026-06-21 — the last not-yet-in-tree
-   corner-data infrastructure piece); the arm `case_III_arm_realization_chain` (produces the cert's corner data via
-   the now-complete infrastructure, gets `hrank`, calls the shared tail) is the next build (*Hand-off*).
+   `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` ✓ LANDED** (2026-06-21); **the `hLI` corner
+   obligation (a) — panel-rows-LI-mod-`W` — `BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge` ✓ LANDED**
+   (2026-06-21, with its abstract core `Submodule.linearIndependent_mkQ_of_comp`). With this, BOTH `hLI` halves
+   ((a) panel rows mod `W`, (b) the append-one `±r` row) are in tree as consume-leaves. The arm
+   `case_III_arm_realization_chain` (produces the cert's corner data via the now-complete infrastructure, gets
+   `hrank`, calls the shared tail) is the next build (*Hand-off*).
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -222,14 +225,18 @@ engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
 - **`g` (the `D` corner rows) + `hg`** — `g` = the `D−1` candidate panel rows `r(Lᵢ)` (`panelRow_mem_rigidityRows`,
   free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
   `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
-- **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base. The abstract LA step is now
-  in tree: `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` (mirror,
-  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`) reduces `hLI` for the `Sum.elim (panel rows) (±r row)`
-  corner to (a) the `D−1` panel rows LI mod `W` ⊕ (b) the `±r` row's class mod `W` ∉ their span. The `±r` row's
-  class mod `W` reads at `vᵢ`'s column as `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`), so (b) reduces to
-  `ρ₀ ⊥ C(Lᵢ)` on the discriminator `hρgate` at the FIXED `ρ₀` (= KT's abstract `r`). The arm still has to discharge
-  (a)+(b) against the concrete `g` (the genuinely-new arm wiring); the abstract append-one step is no longer part of
-  that. The shared W6a–W6f arm tail then lifts verbatim (it operates on the rank bound, agnostic to how certified).
+- **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base, for `g = Sum.elim (D−1 panel
+  rows) (±r row)`. BOTH abstract halves are now in tree as consume-leaves: (a) the `D−1` panel rows LI mod `W` via
+  `BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge` (`Candidate.lean`; consumes the candidate fresh hinge's
+  pinned-LI + the base block's off-`v` vanishing `hW : ∀ φ ∈ W, φ ∘ₗ single v = 0`, abstract core
+  `Submodule.linearIndependent_mkQ_of_comp`); (b) the append-one `±r` row via
+  `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span`. The `±r` row's class mod `W` reads at `vᵢ`'s column
+  as `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`), so (b)'s `notMem_span` reduces to `ρ₀ ⊥ C(Lᵢ)` on the
+  discriminator `hρgate` at the FIXED `ρ₀` (= KT's abstract `r`). The arm now only has to supply (a)'s `hW` (off-`v`
+  vanishing of the relabel-image base block — its rows involve only old bodies) + `hindep` (the fresh hinge's
+  extensor nonvanishing) and (b)'s `notMem_span` against the concrete `g` (the genuinely-new arm wiring); both
+  abstract reductions are landed. The shared W6a–W6f arm tail then lifts verbatim (it operates on the rank bound,
+  agnostic to how certified).
 - **Then:** the 2c-iii `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on
   the landed engine) → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the
   telescope's *membership* content, §I.8.20/§I.8.21(3); the `±r` chain induction LEAF 1–4 STAYS). **Cost band:
@@ -237,6 +244,18 @@ engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
 
 ## Decisions made during this phase
 
+- **`hLI` corner obligation (a) — panel-rows-LI-mod-`W` — landed (2026-06-21), closing the last
+  abstract-LA piece of the chain arm's `hLI`.** Two decls: the abstract mirror
+  `Submodule.linearIndependent_mkQ_of_comp` (`Mathlib/LinearAlgebra/Dimension/Constructions.lean`, beside the
+  append-one criterion) — `W ≤ ker T` + `LinearIndependent (T ∘ f)` ⟹ `LinearIndependent (W.mkQ ∘ f)`, via
+  `LinearIndependent.of_comp (W.liftQ T hW)` + `liftQ_mkQ` (~6 lines); and its carrier instantiation
+  `BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge` (`Candidate.lean`, after the `hWS` packaging leaf) at
+  `T = (single v).dualMap` — the candidate fresh hinge `e`'s `D−1` panel rows (pinned-LI via
+  `linearIndependent_panelRow_comp_single_of_edge`) are LI mod a base `W` whose rows vanish off `v`'s screw column
+  (`hW : ∀ φ ∈ W, φ ∘ₗ single v = 0`, KT 2011 (6.16)'s block-triangular column split). With (b)'s append-one mirror
+  already landed, BOTH `hLI` abstract halves are now consume-leaves; the arm supplies only the concrete `hW`/`hindep`
+  + the (b) `notMem_span` discriminator. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), build/lint clean.
+  FRICTION `[mirrored]` entry; the dual to the append-one criterion.
 - **Carrier `hWS`/`hWcard` packaging leaf `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` landed
   (2026-06-21), closing the §I.8.24(3) "one residual not-yet-in-tree piece" (the relabel-image base block as a
   PACKAGED SUBSPACE).** `BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`
