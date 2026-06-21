@@ -3745,4 +3745,160 @@ theorem _root_.Graph.ChainData.anchor_group_acolumn_eq_baseRedundancy [Decidable
   -- (`_eq_incident`); `hset` rewrites the incident set to the `edge 2`-set.
   rw [← hcomb, BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident a c uv vv rv, hset]
 
+/-! ### The eq.~(6.44) chain-induction endpoint-column flip + the induction itself
+(CHAIN-2c-ii-arm, LEAF 3)
+
+The `Nat.le_induction` chaining LEAF 2 (base) and LEAF 1 (step) into the closed form
+`(edge i-group).comp (single vᵢ) = ±ρ₀` for every interior chain edge (`2 ≤ i ≤ d−1`); the `±`
+sign alternates `(−1)^i` along the chain
+(`notes/Phase23-design.md` §(o‴)(I.8.9-SETTLE), LEAF 3; Phase 23b). LEAF 1 relates the two incident
+chain edges' columns *at their shared vertex* `vᵢ` (`group(edge i) @ vᵢ = −group(edge (i−1)) @ vᵢ`);
+to chain that with the previous step's `P(i−1)` (about `group(edge (i−1)) @ v_{i−1}`, its *tail*
+column) the step must flip `group(edge (i−1))`'s column from its head endpoint `vᵢ` back to its tail
+`v_{i−1}` — the "two-endpoint-column orientation bookkeeping" of the shape-check note (ii). The flip
+is the per-summand `hingeRow` antisymmetry: a hinge row's two endpoint-columns are negatives of each
+other (`hingeRow_comp_single_endpoint_flip`), summed over an edge-group whose summands all link the
+same pair `{vᵢ, vᵢ₋₁}` (`G`-link uniqueness at `edge (i−1)`). -/
+
+/-- **A hinge row's two endpoint-columns are negatives of each other** (the per-summand orientation
+bookkeeping of the eq.~(6.44) chain induction LEAF 3; Katoh–Tanigawa 2011 §6.4.1 eq.~(6.44),
+Phase 23b). For a hinge `hingeRow x y ρ` between distinct bodies `x ≠ y`, the screw column at the
+head `y` is *minus* the column at the tail `x`: `(hingeRow x y ρ).comp (single y) =
+−(hingeRow x y ρ).comp (single x)`. Both columns are `±ρ` (`hingeRow_comp_single_tail` at `x` gives
+`ρ`; the swap `hingeRow x y ρ = hingeRow y x (−ρ)` + tail at `y` gives `−ρ`), so they negate. This
+is the antisymmetry the chain induction uses to flip an edge-group's column between its two
+endpoints. -/
+theorem BodyHingeFramework.hingeRow_comp_single_endpoint_flip [DecidableEq α] {x y : α}
+    (hxy : x ≠ y) (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (BodyHingeFramework.hingeRow (k := k) (α := α) x y ρ).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) y)
+      = -(BodyHingeFramework.hingeRow (k := k) (α := α) x y ρ).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) x) := by
+  rw [BodyHingeFramework.hingeRow_comp_single_tail hxy,
+    BodyHingeFramework.hingeRow_swap x y ρ,
+    BodyHingeFramework.hingeRow_comp_single_tail (Ne.symm hxy)]
+
+/-- **An edge-group's two endpoint-columns are negatives of each other** (the edge-group form of
+`hingeRow_comp_single_endpoint_flip`, the eq.~(6.44) chain induction LEAF 3; Katoh–Tanigawa 2011
+§6.4.1 eq.~(6.44), Phase 23b). Let `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` be an edge-indexed `hingeRow`
+combination (each summand `j` a `G`-link `evⱼ`), and let `p ≠ q` be the two endpoints of a chain
+edge `e`. Then the `e`-group's screw column at `q` is *minus* its column at `p`:
+
+`(∑_{evⱼ = e} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single q)
+  = −(∑_{evⱼ = e} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single p)`.
+
+Each summand carried by `e` links `{p, q}` (`IsLink` uniqueness, `hpq`), so its two endpoint-columns
+negate by `hingeRow_comp_single_endpoint_flip` regardless of its internal orientation (one of two
+mirror `hingeRow_swap` cases). Summing the per-summand flip over the group gives the group flip.
+This is the "two-endpoint-column orientation bookkeeping" the chain induction's step uses to move an
+edge-group's column from its head endpoint to its tail. Framework-free, zero blast radius. -/
+theorem BodyHingeFramework.edgeGroup_comp_single_endpoint_flip [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {e : β} {p q : α} (hpq : p ≠ q) (hpq_link : G.IsLink e p q)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j)) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) q)
+    = -(∑ j ∈ Finset.univ.filter (fun j => ev j = e),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p) := by
+  classical
+  -- Reduce the `LinearMap` equality to scalar equality at each `x`, distribute the column
+  -- restriction over the filtered sum on both sides, and compare per summand.
+  refine LinearMap.ext fun x => ?_
+  simp only [LinearMap.comp_apply, LinearMap.neg_apply, LinearMap.coe_sum, Finset.sum_apply]
+  rw [← Finset.sum_neg_distrib]
+  refine Finset.sum_congr rfl fun j hj => ?_
+  -- The summand `j` is carried by `e`, so it links `{p, q}` (`IsLink` uniqueness).
+  have hje : ev j = e := (Finset.mem_filter.mp hj).2
+  have hjlink : G.IsLink e (uv j) (vv j) := hje ▸ hlink j
+  -- Its endpoints are `{p, q}` in one of the two orders; the per-summand endpoint-column flip
+  -- (`hingeRow_comp_single_endpoint_flip`) gives the per-summand negation either way.
+  have hflip : (BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) q)
+      = -(BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) p) := by
+    rcases (hpq_link.eq_and_eq_or_eq_and_eq hjlink) with ⟨hp, hq⟩ | ⟨hp, hq⟩
+    · -- `p = uv j`, `q = vv j`: the flip `col@q = −col@p` at endpoints `(uv j, vv j)`.
+      subst hp hq
+      exact BodyHingeFramework.hingeRow_comp_single_endpoint_flip hpq (rv j)
+    · -- `p = vv j`, `q = uv j`: the flip at `(uv j, vv j)` gives `col@(vv j) = −col@(uv j)`; the
+      -- goal `col@(uv j) = −col@(vv j)` is its `neg`-flipped form.
+      subst hp hq
+      rw [BodyHingeFramework.hingeRow_comp_single_endpoint_flip (Ne.symm hpq) (rv j), neg_neg]
+  rw [LinearMap.smul_apply, LinearMap.smul_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply,
+    hflip, LinearMap.neg_apply, smul_neg]
+
+/-- **The eq.~(6.44) chain induction: every interior chain edge-group's tail-column equals the
+anchor's** (CHAIN-2c-ii-arm, the `hρGv` regroup chain induction LEAF 3; Katoh–Tanigawa 2011 §6.4.1
+eq.~(6.44)/§6.4.2 eq.~(6.66), `notes/Phase23-design.md` §(o‴)(I.8.9-SETTLE); Phase 23b). For the
+global base redundancy `g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each summand a `G`-link `evⱼ`,
+column-vanishing at **every** body, KT eq.~(6.43)) exposed edge-grouped as the candidate row
+`hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`), the `edge i`-group's screw column at its **tail** vertex
+`vtx i` is the **same** for every interior chain edge `2 ≤ i ≤ d−1`, equal to the anchor (`edge 2`)
+column:
+
+`(∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single (vtx i))
+  = (hingeRow ab₁ ab₂ ρ₀).comp (single (vtx 2))`.
+
+This is KT eq.~(6.66) — the single redundancy `r` carried with a *consistent* tail-column value
+across the chain. The `±` of KT's prose is a per-edge orientation artifact absorbed by the
+tail-column reading (`hingeRow_comp_single_endpoint_flip`): the step `P(i) → P(i+1)` applies LEAF 1
+(`interiorGroup_acolumn_adjacency` at `i+1`, the `vtx (i+1)`-column adjacency `group(edge (i+1)) =
+−group(edge i)`) then flips `group(edge i)`'s column from its head `vtx (i+1)` back to its tail
+`vtx i` (`edgeGroup_comp_single_endpoint_flip`, the `−` cancelling LEAF 1's), leaving the value
+unchanged; the base `P(2)` is LEAF 2 (`anchor_group_acolumn_eq_baseRedundancy`). The consumer reads
+the common value as `±ρ₀` (LEAF 4, `hingeRow_comp_single_tail`/`_off`). Framework-free, zero blast
+radius. -/
+theorem _root_.Graph.ChainData.interior_group_eq_baseRedundancy [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
+    (hcol : ∀ a : α, (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩)
+    (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨i, by omega⟩))
+    = (BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨2, by omega⟩)) := by
+  classical
+  induction i, h2i using Nat.le_induction with
+  | base =>
+    exact cd.anchor_group_acolumn_eq_baseRedundancy h3 c ev uv vv rv hlink hcomb hdeg1
+  | succ i h2i ih =>
+    -- `i + 1 < cd.d` (the current bound); the predecessor `i` is in range for the IH.
+    have hid' : i < cd.d := by omega
+    -- LEAF 1 at the deeper interior vertex `vtx (i+1)` (index `⟨i+1, _⟩ : Fin cd.d`, `0 < i+1`):
+    -- the `edge (i+1)`-group's `vtx (i+1)`-column is `−` the `edge i`-group's `vtx (i+1)`-column.
+    have hadj := cd.interiorGroup_acolumn_adjacency (i := ⟨i + 1, by omega⟩) (by simp)
+      c ev uv vv rv hlink (by simpa using hcol (cd.vtx (⟨i + 1, by omega⟩ : Fin cd.d).castSucc))
+    -- Index arithmetic: `⟨i+1,_⟩.castSucc = ⟨i+1,_⟩`, `⟨(i+1)−1,_⟩ = ⟨i,_⟩`.
+    have hcs : (⟨i + 1, by omega⟩ : Fin cd.d).castSucc = (⟨i + 1, by omega⟩ : Fin (cd.d + 1)) :=
+      Fin.ext rfl
+    have hpred : (⟨(i + 1 : ℕ) - 1, by omega⟩ : Fin cd.d) = (⟨i, by omega⟩ : Fin cd.d) :=
+      Fin.ext (by simp)
+    rw [hcs, hpred] at hadj
+    -- `edge i` links `vtx i — vtx (i+1)` (`cd.link ⟨i,_⟩`), with the two endpoints distinct.
+    have hlink_i : G.IsLink (cd.edge ⟨i, by omega⟩) (cd.vtx ⟨i, by omega⟩)
+        (cd.vtx ⟨i + 1, by omega⟩) := by
+      have h := cd.link (⟨i, by omega⟩ : Fin cd.d)
+      simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+    have hpq : (cd.vtx ⟨i, by omega⟩ : α) ≠ cd.vtx ⟨i + 1, by omega⟩ :=
+      cd.vtx_ne (by omega) (by omega) (by omega)
+    -- Flip the `edge i`-group's column from its head `vtx (i+1)` to its tail `vtx i`: the head
+    -- column is `−` the tail column, cancelling LEAF 1's sign.
+    have hflip := BodyHingeFramework.edgeGroup_comp_single_endpoint_flip
+      (e := cd.edge ⟨i, by omega⟩) hpq hlink_i c ev uv vv rv hlink
+    -- `colTail (i+1) = −(edge i-group @ vtx (i+1)) = −(−(edge i-group @ vtx i)) = colTail i = RHS`.
+    rw [hadj, hflip, neg_neg]
+    exact ih hid'
+
 end CombinatorialRigidity.Molecular

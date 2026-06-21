@@ -194,9 +194,11 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     perp (A-1's base witness at `G₁`) into the candidate-side `hperp_ab`/`hperp_ac`
     (`freshEdge_surviving_row_mem_of_witness` (A-3) interface). Self-contained, zero blast radius.
     **← NEXT (authoritative, post-row-342 chain-induction settle): the 5-leaf chain induction — LEAF 1
-    `interiorGroup_acolumn_adjacency` + LEAF 2 `anchor_group_acolumn_eq_baseRedundancy` both LANDED
-    2026-06-20 (the genuinely-new content), NEXT = LEAF 3 `interior_group_eq_baseRedundancy` (the
-    `Nat.le_induction` + the two-endpoint-column orientation bookkeeping; MECHANICAL).**
+    `interiorGroup_acolumn_adjacency` + LEAF 2 `anchor_group_acolumn_eq_baseRedundancy` + LEAF 3
+    `interior_group_eq_baseRedundancy` (the `Nat.le_induction` + its two endpoint-column primitives
+    `hingeRow_comp_single_endpoint_flip` / `edgeGroup_comp_single_endpoint_flip`) all LANDED 2026-06-20
+    (the genuinely-new content), NEXT = LEAF 4 (consumer adapter: the common interior tail-column → `±ρ₀`
+    via `hingeRow_comp_single_tail`/`_off`, feed A-2 + `neg_mem` + `freshEdge_surviving_row_mem`).**
     See the *Hand-off* §(I.8.9-SETTLE) 5-leaf plan paragraph below + design §(I.8.9-SETTLE). (This supersedes
     the pre-settle producer `exists_interior_redundancy_witness` — the regroup is now the eq-(6.44) chain
     induction off the single base redundancy, not a per-vertex witness; §(I.8.9-PAIR).)
@@ -553,10 +555,27 @@ incident, `IsLink` uniqueness at `edge 2 = v₂v₃`) collapse it to the `edge 2
 candidate identity on the column. The `±ρ₀` identification (the `e₀ = v₀v₂`-group contributing `ρ₀`) is
 the trivial LEAF-4 reading via `hingeRow_comp_single_tail`/`_off`. Self-contained over `hcomb`/`hdeg1`,
 framework-free, zero blast radius.
-**← NEXT = LEAF 3 `interior_group_eq_baseRedundancy`** (the `Nat.le_induction`, base=LEAF 2 step=LEAF 1,
-plus the per-edge two-endpoint-column orientation bookkeeping the coordinator shape-check note relocated
-here; MECHANICAL ~1c). Then leaf 4 (consumer adapter → A-2 + `neg_mem` + `freshEdge_surviving_row_mem`)
-→ leaf 5 (arm + P3 seed bridge). Full plan + file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
+**LEAF 3 `Graph.ChainData.interior_group_eq_baseRedundancy` — LANDED 2026-06-20** (`Relabel.lean`
+tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The `Nat.le_induction`
+(base=LEAF 2, step=LEAF 1) + the per-edge two-endpoint-column orientation bookkeeping of the
+shape-check note (ii), now done as two supporting primitives. **Output (cleaner than the pinned
+`= ±ρ₀`): every interior chain edge-group's TAIL column is the SAME, equal to the anchor's** —
+`(edge i-group).comp (single vᵢ) = (hingeRow ab₁ ab₂ ρ₀).comp (single v₂)` for all `2 ≤ i ≤ d−1`. The
+`±` of KT's prose is a per-edge orientation artifact absorbed by the tail-column reading: the step
+`P(i)→P(i+1)` applies LEAF 1 at `vtx (i+1)` (`group(edge i+1) = −group(edge i)` columns) then flips
+`group(edge i)`'s column from its head `vtx (i+1)` back to its tail `vtx i` (the new
+`edgeGroup_comp_single_endpoint_flip`, whose `−` cancels LEAF 1's), leaving the value unchanged. Two
+genuinely-new framework-free primitives landed alongside (both `Relabel.lean`, axiom-clean,
+zero blast radius): `hingeRow_comp_single_endpoint_flip` (a single hinge's two endpoint-columns are
+negatives, `±ρ` via `hingeRow_comp_single_tail`/`hingeRow_swap`) + its edge-group form
+`edgeGroup_comp_single_endpoint_flip` (per-summand flip via `IsLink` uniqueness at the chain edge,
+summed). Step uses the global `hcol : ∀ a, g.comp (single a) = 0` (KT eq.~(6.43) at every body,
+`Candidate.lean:618` `acolumn_zero`); the `Nat.le_induction` auto-generalized the `i < cd.d` bound
+into the IH.
+**← NEXT = LEAF 4** (consumer adapter: read the common tail-column value as `±ρ₀` via
+`hingeRow_comp_single_tail`/`_off`, feed A-2 + `neg_mem`, then `freshEdge_surviving_row_mem`)
+→ leaf 5 (arm `chainData_relabel_arm` + P3 seed bridge). Full plan + file:lines + eq-numbers →
+design §(I.8.9-SETTLE)/(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT

@@ -5056,8 +5056,21 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   to the `v₂`-incident summands, `hdeg1` (incident ⟹ edge 2) + `hinc_e2` (edge 2 ⟹ incident, `IsLink` uniq at
   `edge 2 = v₂v₃`) collapse it to the `edge 2`-group, `hcomb` reads the candidate identity on the column. The
   `e₀ = v₀v₂`-group contributing `ρ₀` (shape-check note (i)) is then the trivial `hingeRow_comp_single_tail`
-  reading of the RHS at LEAF 4. **NEXT = leaf 3** (`Nat.le_induction` base=leaf2 step=leaf1 + the (ii)
-  two-endpoint-column orientation bookkeeping).
+  reading of the RHS at LEAF 4.
+  **LEAF 3 `Graph.ChainData.interior_group_eq_baseRedundancy` LANDED 2026-06-20** (`CaseIII/Relabel.lean`
+  tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The `Nat.le_induction`
+  (base=leaf2 step=leaf1) + the note-(ii) endpoint-column bookkeeping, done as two new framework-free
+  primitives: `BodyHingeFramework.hingeRow_comp_single_endpoint_flip` (a single hinge's two
+  endpoint-columns negate: `col@y = −col@x`, via `hingeRow_comp_single_tail` + `hingeRow_swap`) and its
+  edge-group form `edgeGroup_comp_single_endpoint_flip` (per-summand flip via `IsLink` uniqueness at the
+  chain edge, summed over the group). **Built cleaner than the pinned `= ±ρ₀`:** the motive is "every
+  interior edge-group's TAIL column is the SAME constant `(hingeRow ab₁ ab₂ ρ₀).comp(single v₂)`"
+  (`2≤i≤d−1`) — the step's LEAF-1 sign and the head→tail flip's sign cancel (`rw [hadj, hflip, neg_neg]`),
+  so the column value is constant along the chain; the `±ρ₀` reading is deferred to LEAF 4. The step uses
+  the global `hcol : ∀ a, g.comp(single a) = 0` (`acolumn_zero`, `Candidate.lean:618`); `Nat.le_induction`
+  auto-generalized the `i < cd.d` bound into the IH. **NEXT = leaf 4** (consumer adapter: the common
+  tail-column → `±ρ₀` via `hingeRow_comp_single_tail`/`_off`, then A-2 + `neg_mem` +
+  `freshEdge_surviving_row_mem`) → leaf 5 (arm + P3 seed bridge).
   **Coordinator shape-check note (leaf-2/3 consistency, 2026-06-20).** Leaf 1 landed in `a`-column form
   `(group i).comp(single vᵢ) = −(group i−1).comp(single vᵢ)` — both groups' columns at the SHARED vertex
   `vᵢ = vtx i.castSucc` — which is (±) the screw functional, so it is equivalent to the pinned screw-functional
