@@ -4540,4 +4540,65 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_transport_base_to_candid
     simpa only [if_neg (by omega : ¬ s = 0), PanelHingeFramework.toBodyHinge_supportExtensor,
       PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
 
+/-- **STEP 1 ∘ STEP 2 — the per-edge perp the slot core consumes, from A-1's base data**
+(CHAIN-2c-ii-arm, the `chainData_relabel_arm` `hperp` feed; `notes/Phase23-design.md`
+§(o‴)(I.8.11) STEP 3; KT 2011 §6.4.2 eqs.~(6.62)/(6.66); Phase 23b). The composition the arm
+assembly invokes once per surviving chain edge `s` (`s + 1 < i`): it produces the candidate-`i`
+framework's perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` — exactly `chainData_freshEdge_slot_mem`'s
+`hperp s` shape — directly from the W6b base outputs (A-1,
+`exists_candidateRow_bottomRows_of_rigidOn` at the base `(G₁, q₁) = G − v₁`), with no
+candidate-framework redundancy hypothesis.
+
+The two halves are the LANDED STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy`, the
+witness-free per-edge perp at the BASE) and STEP 2
+(`chainData_freshEdge_perp_transport_base_to_candidate`, the single-scalar base → candidate
+transport):
+* for an **interior** surviving edge (`1 ≤ s`), STEP 1 at base index `⟨1⟩` (so its framework is the
+  base `ofNormals (G − v₁) ends₀ q`) and edge index `t := s + 1` (`2 ≤ s + 1 < cd.d`) gives the BASE
+  perp `ρ₀ ⊥ (base).supportExtensor (edge (s+1))`; STEP 2 (`Gb := G − v₁`) carries it to the
+  candidate perp at `edge s`;
+* for the **head** edge `s = 0`, the base perp at `e₀` is the splice-panel annihilation `hρe₀` A-1
+  already supplies (`ρ₀ ⊥ (base).supportExtensor e₀`), and STEP 2′ carries it to `edge 0`.
+
+The `if s = 0 then e₀ else edge (s+1)` of STEP 2's `hbase` slot merges the two branches. The base
+edge-grouped redundancy (`hlink`/`hrv`/`hcomb`/`hdeg1`) is A-1's at the base framework
+`ofNormals (G − v₁) ends₀ q` (NOT the candidate `endsσρ`/`qρ` — STEP 1 runs at the base, the
+row-352/354 level mismatch's fix, §(o‴)(I.8.11)); the produced perp is at the candidate framework
+`endsσρ`/`qρ`, exactly the slot core's `Fva`. TRANSPORT + the landed base leaf, no new math: no
+motive/IH/contract change, no genuinely-new-math fork. d=3 (`i = 2`) is the landed `M₃` cycle. -/
+theorem _root_.Graph.ChainData.chainData_freshEdge_slot_perp
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    (i : Fin cd.d) (hi : 1 ≤ (i : ℕ)) (s : ℕ) (hs1i : s + 1 < (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- A-1's base edge-grouped redundancy, at the BASE framework `ofNormals (G − v₁) ends₀ q`:
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+      ends₀ q).toBodyHinge.hingeRowBlock (ev j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩)
+    -- A-1's splice-panel annihilation `hρe₀` (the `s = 0` base perp at `e₀`):
+    (hρe₀ : ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+      ends₀ q).toBodyHinge.supportExtensor cd.e₀) = 0) :
+    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.supportExtensor
+          (cd.edge ⟨s, by have := i.isLt; omega⟩)) = 0 := by
+  -- STEP 2 carries the base perp at `if s = 0 then e₀ else edge (s+1)` to the candidate.
+  refine cd.chainData_freshEdge_perp_transport_base_to_candidate i hi s hs1i
+    (Gb := G.removeVertex (cd.vtx ⟨1, by omega⟩)) (ends₀ := ends₀) (q := q) ?_
+  -- STEP 1 supplies the base perp: `e₀` at the head (`hρe₀`), `edge (s+1)` interior (`s ≥ 1`).
+  rcases Nat.eq_zero_or_pos s with hs0 | hs0
+  · subst hs0; rw [if_pos rfl]; exact hρe₀
+  · rw [if_neg (by omega : ¬ s = 0)]
+    -- STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy`) at base index `⟨1⟩`, edge index `s+1`.
+    exact cd.chainData_freshEdge_perp_of_baseRedundancy h3 ⟨1, by omega⟩ (s + 1) (by omega)
+      (by have := i.isLt; omega) c ev uv vv rv hlink hrv hcomb hdeg1
+
 end CombinatorialRigidity.Molecular

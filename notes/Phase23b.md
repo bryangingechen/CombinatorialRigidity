@@ -3,15 +3,18 @@
 **Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (the four-producer tail, all general-`k`) + CHAIN-2a + the
 CHAIN-2c-ii foundation. The `hρGv` route is **LOCKED = Route W (option a′)**, the `hwmem` slot is LANDED
 (`chainData_bottom_relabel`), and the arm's algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3)
-+ slot core + per-edge perp leaf + **STEP-2 scalar perp transport** are all LANDED axiom-clean. The corrected
-route (design §(o‴)(I.8.11)) runs the edge-grouping at the BASE: the LANDED per-edge perp leaf
-`chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩` (NO transport) gives the BASE perp;
-**STEP 2 `chainData_freshEdge_perp_transport_base_to_candidate` (LANDED 2026-06-21)** carries the SINGLE
-scalar perp base@`edge(s+1)` (or `e₀` for `s=0`) → candidate@`edge s`. **T-1/T-2 (LANDED) ARE
-ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit; the family is never transported).
-**NEXT = the arm assembly `chainData_relabel_arm` (STEP 3, ~1–2c):** `refine case_III_arm_realization`,
-feed `chainData_freshEdge_slot_mem`'s `hperp s` from STEP 1 ∘ STEP 2; other slots per the M₃ template.
-Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
++ slot core + per-edge perp leaf + **STEP-2 scalar perp transport** + **the STEP 1∘STEP 2 composition
+`chainData_freshEdge_slot_perp`** are all LANDED axiom-clean. The corrected route (design §(o‴)(I.8.11)) runs
+the edge-grouping at the BASE: STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`,
+NO transport) gives the BASE perp; **STEP 2 `chainData_freshEdge_perp_transport_base_to_candidate`** carries
+the SINGLE scalar perp base@`edge(s+1)` (or `e₀` for `s=0`) → candidate@`edge s`. **`chainData_freshEdge_slot_perp`
+(LANDED 2026-06-21)** composes both: from A-1's base data (`hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀`) it directly
+produces the candidate `hperp s` shape `chainData_freshEdge_slot_mem` consumes, per surviving edge `s+1 < i`.
+**T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit; the family is never
+transported). **NEXT = the arm assembly `chainData_relabel_arm` (STEP 3, ~1–2c):** `refine
+case_III_arm_realization`, feed `chainData_freshEdge_slot_mem`'s `hperp s` from `chainData_freshEdge_slot_perp`
+(the single composed call); other slots per the M₃ template. Then **CHAIN-2c-iii** `chainData_dispatch` closes
+23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -26,28 +29,28 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — wire the arm `chainData_relabel_arm` (STEP 3).** STEP 1 + STEP 2 are
-both LANDED; the corrected route (design §(o‴)(I.8.11)) is now down to its assembly. The route runs the
-edge-grouping at the BASE; only a single scalar perp transports:
-- **STEP 1 (LANDED, NO new lemma):** `chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`
-  (so its `Fva = ofNormals (G−v₁) ends q` = the base) takes A-1's output DIRECTLY (`hlinkGv`/`hrvGv`/`hcombGv`/
-  `hdeg1`, no transport) → BASE perp `ρ₀ ⊥ base.supportExtensor (edge t)` for `2 ≤ t < d`. The consumer's
-  "candidate" framing was a RED HERRING; its free `ends`/`qρ` make it a base-level leaf.
-- **STEP 2 (LANDED 2026-06-21):** `chainData_freshEdge_perp_transport_base_to_candidate` (`Relabel.lean:4512`)
-  carries the SINGLE scalar perp base@`(if s=0 then e₀ else edge(s+1))` → candidate@`edge s` (= the
-  slot core / `freshEdge_surviving_row_mem`'s `hperp`), via `ofNormals_supportExtensor_relabel_perm` (LANDED)
-  + `shiftEdgePerm_apply_edge_interior` (`s≥1`) / `shiftEdgePerm_apply_edge_zero` (`s=0`) + supportExtensor
-  graph-independence (the base perp's graph `Gb` is free). Merges the `s=0`/`s≥1` branches via the `if`.
-- **STEP 3 (arm assembly, the NEXT COMMIT, ~1–2c):** per surviving edge `s` (`s+1 < i`): STEP 1 at base index
-  `⟨1⟩`, `t := s+1` (or A-1's `hρe₀` at `s=0`) → STEP 2 → feed `chainData_freshEdge_slot_mem`'s `hperp s`; the
-  other engine slots per the d=3 M₃ template (`hwmem ← chainData_bottom_relabel`, seed ← P3, `hρe₀`/
+**NEXT STEP (single authoritative) — wire the arm `chainData_relabel_arm` (STEP 3).** The whole perp slot
+is now ONE composed call. The corrected route (design §(o‴)(I.8.11)) runs the edge-grouping at the BASE; only
+a single scalar perp transports, and STEP 1∘STEP 2 are pre-composed:
+- **`chainData_freshEdge_slot_perp` (LANDED 2026-06-21, `Relabel.lean`):** the composition the arm's `hperp`
+  slot calls once per surviving edge `s` (`s+1 < i`). Takes A-1's base data — `hlink`/`hrv` (block memberships
+  at the BASE `ofNormals (G−v₁) ends₀ q`), `hcomb` (RHS hardcoded `hingeRow (vtx 0)(vtx 2) ρ₀`), `hdeg1`,
+  `hρe₀` (the splice-panel annihilation, the `s=0` base perp) — and produces the candidate-`i` perp
+  `ρ₀ ⊥ Fva.supportExtensor (edge s)` at `Fva = ofNormals (G−vᵢ) endsσρ qρ`, exactly
+  `chainData_freshEdge_slot_mem`'s `hperp s` shape. Internally: STEP 1 (`chainData_freshEdge_perp_of_baseRedundancy`
+  at base index `⟨1⟩`, edge `t := s+1`, interior `s≥1`) or `hρe₀` (`s=0`) → STEP 2
+  (`chainData_freshEdge_perp_transport_base_to_candidate`, `Gb := G−v₁`), merging the branches via STEP 2's
+  `if s=0 then e₀ else edge(s+1)`.
+- **STEP 3 (arm assembly, the NEXT COMMIT, ~1–2c):** `refine case_III_arm_realization`; feed
+  `chainData_freshEdge_slot_mem`'s `hperp s` from `chainData_freshEdge_slot_perp` (one call, all surviving
+  edges); the other engine slots per the d=3 M₃ template (`hwmem ← chainData_bottom_relabel`, seed ← P3,
   discriminator/removeVertex bookkeeping). The candidate framework's `ends`/`qρ` are the relabelled
-  `endsσρ`/`qρ` STEP 2's conclusion already states (matched to the slot's `shiftSeedAdv q (i−1)` via P3).
+  `endsσρ`/`qρ` the slot core states (matched to its `shiftSeedAdv q (i−1)` via P3).
 
 ~1–2 commits left to the arm; then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`.
 **No motive/IH/contract change** (the consumer is UNMODIFIED — its hardcoded `(vtx 0, vtx 2)` RHS is KT's
-base redundancy `r`, correct; only the WIRING call site is the base index). **No genuinely-new math** (STEP 2
-was bookkeeping over the landed relabel identity).
+base redundancy `r`, correct; only the WIRING call site is the base index). **No genuinely-new math** (the
+composition is pure assembly over the two landed transport leaves).
 
 **Why the row-354 T-1/T-2/T-3 plan was MIS-TARGETED (the 2nd level/shape mismatch; design §(o‴)(I.8.11)).**
 The consumer `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`) pins THREE hyps at
@@ -92,12 +95,17 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   `Fva = ofNormals (G−vᵢ) ends qρ` (free `ends`/`qρ`). Mechanism = LEAF 4's `group = −ρ₀` +
   `edgeGroup_acolumn_mem_block` + `mem_hingeRowBlock_iff`. **CORRECT call site (design §(o‴)(I.8.11)) = base
   index `i := ⟨1⟩`** (then `Fva` = base `G−v₁`, A-1's output feeds it DIRECTLY — STEP 1 of the corrected route).
-- **`chainData_freshEdge_perp_transport_base_to_candidate`** (`Relabel.lean:4512`, STEP 2, LANDED 2026-06-21,
+- **`chainData_freshEdge_perp_transport_base_to_candidate`** (`Relabel.lean`, STEP 2, LANDED 2026-06-21,
   axiom-clean) — the single-scalar per-edge perp transport: a base perp at `(if s=0 then e₀ else edge(s+1))`
   (arbitrary graph `Gb`) → the candidate framework's perp at `edge s` (the relabelled `endsσρ`/`qρ` forms).
   `ofNormals_supportExtensor_relabel_perm` (the support-extensor coincidence) + the `shiftEdgePerm` edge action
-  (interior `s≥1` / head `s=0`) + supportExtensor graph-independence. The exact `hperp s` shape the slot core
-  consumes. The arm calls it once per surviving `s`.
+  (interior `s≥1` / head `s=0`) + supportExtensor graph-independence.
+- **`chainData_freshEdge_slot_perp`** (`Relabel.lean`, STEP 1∘STEP 2 composition, LANDED 2026-06-21,
+  axiom-clean) — the exact `hperp s` shape `chainData_freshEdge_slot_mem` consumes. From A-1's base data
+  (`hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀`, all at the BASE `G−v₁`) it produces the candidate-`i` perp
+  `ρ₀ ⊥ Fva.supportExtensor (edge s)` for any surviving `s+1<i`: STEP 1 at base index `⟨1⟩` (interior `s≥1`)
+  or `hρe₀` (head `s=0`) → STEP 2. The single call the arm `chainData_relabel_arm` makes for the whole perp
+  slot.
 - **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean:4383`) + **`ofNormals_supportExtensor_relabel_perm`**
   (`Relabel.lean:63`) — STAND: the support-extensor relabel identity `candidate.supp f = base.supp (shiftEdgePerm
   i f)`. STEP 2 reuses this identity ONCE (applied to a single perp), so it stays load-bearing; only its
@@ -230,17 +238,16 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 ## Hand-off / next phase
 
 **The single authoritative next-step is in *Current state* above:** wire the arm `chainData_relabel_arm`
-(STEP 3, ~1–2c; `refine case_III_arm_realization`, M₃ template re-indexed). STEP 1 + STEP 2 are both LANDED:
-per surviving edge `s` (`s+1 < i`), feed `chainData_freshEdge_slot_mem`'s `hperp s` from STEP 1
-(`chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩`, A-1's output direct, `t := s+1`; or
-A-1's `hρe₀` at `s=0`) composed with STEP 2 (`chainData_freshEdge_perp_transport_base_to_candidate`,
-`Relabel.lean:4512`); other slots per the M₃ template (`hwmem ← chainData_bottom_relabel`, seed ← P3,
-`hρe₀`/discriminator/removeVertex). The candidate framework's `ends`/`qρ` are the relabelled `endsσρ`/`qρ`
-forms STEP 2's conclusion states (matched to the slot's `shiftSeedAdv q (i−1)` via P3). Then **2c-iii**
-`chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **No motive/IH/contract
-change**; **no genuinely-new-math fork** (STEP 3 is pure assembly over LANDED leaves). **T-1/T-2 (LANDED) are
-ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit). d=3 M₃ = `i=2` involution
-(zero-regression). Exact wiring in design §(o‴)(I.8.11) STEP 3.
+(STEP 3, ~1–2c; `refine case_III_arm_realization`, M₃ template re-indexed). The whole perp slot is now ONE
+composed call: feed `chainData_freshEdge_slot_mem`'s `hperp s` from `chainData_freshEdge_slot_perp` (the
+LANDED STEP 1∘STEP 2 composition — takes A-1's base data `hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀` and produces
+the candidate perp for every surviving `s+1<i`); other slots per the M₃ template (`hwmem ←
+chainData_bottom_relabel`, seed ← P3, discriminator/removeVertex). The candidate framework's `ends`/`qρ` are
+the relabelled `endsσρ`/`qρ` the slot core states (matched to its `shiftSeedAdv q (i−1)` via P3). Then
+**2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **No
+motive/IH/contract change**; **no genuinely-new-math fork** (STEP 3 is pure assembly over LANDED leaves).
+**T-1/T-2 (LANDED) are ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit). d=3 M₃ = `i=2`
+cycle (zero-regression). Exact wiring in design §(o‴)(I.8.11) STEP 3.
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -358,7 +365,15 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   `endsσρ`/`qρ`). Proof = `ofNormals_supportExtensor_relabel_perm` (support-extensor coincidence) + the
   `shiftEdgePerm` edge action (`_apply_edge_zero` head / `_apply_edge_interior`) + supportExtensor
   graph-independence (the `simpa only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]` bridge,
-  reused verbatim from `i3_candidateBlock_transport_deRisk`). No new friction. NEXT = STEP 3 arm assembly.
+  reused verbatim from `i3_candidateBlock_transport_deRisk`). No new friction.
+- **STEP 1∘STEP 2 composition LANDED 2026-06-21 (axiom-clean) — `chainData_freshEdge_slot_perp`
+  (`Relabel.lean`).** Pre-composes the corrected route's two transport leaves into the exact `hperp s` shape
+  `chainData_freshEdge_slot_mem` consumes: from A-1's BASE edge-grouped redundancy + `hρe₀`, produces the
+  candidate-`i` perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` for every surviving `s+1<i` (STEP 1 at base index
+  `⟨1⟩`, edge `s+1`, interior `s≥1`; `hρe₀` at head `s=0`; STEP 2 carries with `Gb := G−v₁`). 2-branch
+  `rcases` over the two landed leaves — no new friction (the only wrinkle is the graph-independent `Gb`/`ends₀`/
+  `q` must be named explicitly on STEP 2 since its conclusion omits them; standard implicit-not-in-goal idiom).
+  NEXT = STEP 3 arm assembly: one `hperp` call per the M₃ template.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
