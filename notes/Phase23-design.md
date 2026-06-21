@@ -5104,9 +5104,20 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   each from `freshEdge_surviving_row_mem`. Glue: telescope vertex fn `w s = vtx (min s d)` (= `vtx` on the
   touched range `s ≤ i+1 ≤ d`), `hinj` from `vtx_inj`, `hbodies` matching `shiftBodyListAsc` to the
   telescope `List.ofFn` shape, `hFvaEq`/`hFvaStart` framework identifications. KT eq.~(6.66) concrete; `i=2`
-  is the `M₃` `case hρGv`. **NEXT = leaf-5 ASSEMBLY** (arm `chainData_relabel_arm`: `refine
-  case_III_arm_realization` per-`i`; `hwmem ← chainData_bottom_relabel`; `hρGv ← chainData_freshEdge_slot_mem`
-  with `hperp` from LEAF 4 (`neg_mem` → `interior_group_acolumn_eq_neg_baseRedundancy`) + A-2, seed via P3
+  is the `M₃` `case hρGv`.
+  **PER-EDGE PERP DISCHARGE `Graph.ChainData.chainData_freshEdge_perp_of_witness` LANDED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers).
+  The rung between the A-2 carrier and the LEAF 5 core's abstract `hperp`: for a single surviving chain edge
+  `s` (`s+1 < cd.d`), from the eq.~(6.52) `λ`-grouped two-edge witness at the interior degree-2 vertex
+  `vtx (s+1)` (the same `lamAB`/`rab`/`lamAC`/`rac`/`grest` + `hperp_ab`/`hperp_ac` + `hcol`/`hrest` interface
+  as `freshEdge_surviving_row_mem_of_witness`, A-3) PLUS the regroup identity `hρ₀` (`∑ⱼ lamAB j • rab j = ρ₀`,
+  the LEAF 4 `group = ±ρ₀` reading), it discharges `ρ₀ ⊥ Fva.supportExtensor (edge s)` — the EXACT `hperp s`
+  shape `chainData_freshEdge_slot_mem` consumes. Proof = A-2 `candidate_perp_two_incident_supportExtensors`'s
+  `.1` rewritten by `hρ₀`. So the arm `chainData_relabel_arm` supplies the slot core's `hperp` per surviving
+  edge from the witnesses (no abstract perp left). **NEXT = leaf-5 ASSEMBLY** (arm `chainData_relabel_arm`:
+  `refine case_III_arm_realization` per-`i`; `hwmem ← chainData_bottom_relabel`; `hρGv ←
+  chainData_freshEdge_slot_mem` with its `hperp` from `chainData_freshEdge_perp_of_witness` (the witness from
+  A-1 + the LEAF 4 regroup `interior_group_acolumn_eq_neg_baseRedundancy`), seed via P3
   `shiftSeedAdv_eq_funLeft_shiftPerm`, orientation via `hingeRow_swap`).
   **Coordinator shape-check note (leaf-2/3 consistency, 2026-06-20).** Leaf 1 landed in `a`-column form
   `(group i).comp(single vᵢ) = −(group i−1).comp(single vᵢ)` — both groups' columns at the SHARED vertex

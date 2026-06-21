@@ -403,13 +403,16 @@ the `hρGv` G1 bridges (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_f
 zero callers existed so self-contained, d=3 zero-regression). The `Function.Injective (w : ℕ → α)` interface
 was dead over the arm's `[Finite α]`; the arm now supplies `hinj` from `cd.vtx_inj` via `Set.InjOn.mono`.
 
-**NEXT STEP — the arm wiring `chainData_relabel_arm` (LEAF 5 assembly).** Both arm-wiring
-prerequisites that were genuinely-new are now LANDED — the eq-(6.44) chain-induction LEAVES 1–4 (the
-per-edge `group = −ρ₀` for the `hρGv` perp) and the seed bridge P3
-(`shiftSeedAdv_eq_funLeft_shiftPerm`, 2026-06-20, the fold seed = engine seed `qρ`). What remains is
-the LEAF 5 *assembly*: thread LEAF 4 (`neg_mem` → engine `ρ₀`) + the A-2 carrier +
-`freshEdge_surviving_row_mem` into a `refine case_III_arm_realization` at the per-`i` roles (design
-§(o‴)(I.8.4)). The `hρGv` algebraic CLOSED FORM is complete + now
+**NEXT STEP — the arm wiring `chainData_relabel_arm` (LEAF 5 assembly).** Every arm-wiring
+prerequisite is now LANDED — the eq-(6.44) chain-induction LEAVES 1–4 (the per-edge `group = −ρ₀`),
+the seed bridge P3 (`shiftSeedAdv_eq_funLeft_shiftPerm`), the LEAF 5 `hρGv`-slot core
+`chainData_freshEdge_slot_mem` (takes an abstract per-edge `hperp`), AND the per-edge perp discharge
+`chainData_freshEdge_perp_of_witness` (2026-06-20, the rung between A-2 and the slot core: discharges
+`ρ₀ ⊥ Fva.supportExtensor (edge s)` from the eq-(6.52) witness + the LEAF 4 regroup identity `hρ₀`).
+What remains is the LEAF 5 *assembly* itself: a `refine case_III_arm_realization` at the per-`i` roles,
+filling `hwmem ← chainData_bottom_relabel`, `hρGv ← chainData_freshEdge_slot_mem` (its `hperp` per
+surviving edge from `chainData_freshEdge_perp_of_witness`, witness from A-1 + the LEAF 4 regroup), and the
+mechanical removeVertex/discriminator slots per the d=3 `M₃` template (design §(o‴)(I.8.4)/(I.8.1)). The `hρGv` algebraic CLOSED FORM is complete + now
 finite-range-callable (`wstep_foldl_hingeRow_telescope` + the membership corollary
 `wstep_foldl_freshEdge_slot_mem`, both axiom-clean, P1 done), and the slot→brick map + engine bindings are
 source-verified clean for every slot except `hρGv` (`Gv = G−vᵢ` / `ends = relabelled` / `q = qρ` /
@@ -632,13 +635,23 @@ closed-form telescope `wstep_foldl_freshEdge_slot_mem` peels the slot row off th
 KT eq.~(6.66) realized concretely; the `d=3` `M₃` `case hρGv` is the `i=2` (`m=1`) special case.
 Glue: the telescope's `ℕ → α` vertex fn `w s = vtx (min s d)` (matches `vtx` on the touched range
 `s ≤ i+1 ≤ d`), `hinj` from `vtx_inj`, `hbodies` matching `shiftBodyListAsc` to the telescope's
-`List.ofFn` shape. **← NEXT = LEAF 5 ASSEMBLY** (arm wiring `chainData_relabel_arm`: `refine
+`List.ofFn` shape.
+**PER-EDGE PERP DISCHARGE `Graph.ChainData.chainData_freshEdge_perp_of_witness` — LANDED 2026-06-20**
+(`Relabel.lean` tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers). The rung
+between the A-2 carrier and the LEAF 5 core's abstract `hperp`: for one surviving chain edge `s`
+(`s+1 < cd.d`), from the eq.~(6.52) `λ`-grouped two-edge witness at the interior degree-2 vertex `vtx (s+1)`
+(the `lamAB`/`rab`/`lamAC`/`rac`/`grest` + `hperp_ab`/`hperp_ac` + `hcol`/`hrest` interface of A-3
+`freshEdge_surviving_row_mem_of_witness`) PLUS the regroup identity `hρ₀` (`∑ⱼ lamAB j • rab j = ρ₀`, the
+LEAF 4 `group = ±ρ₀` reading), it discharges `ρ₀ ⊥ Fva.supportExtensor (edge s)` — the EXACT `hperp s` shape
+`chainData_freshEdge_slot_mem` consumes. Proof = A-2 `candidate_perp_two_incident_supportExtensors`'s `.1`
+rewritten by `hρ₀`; self-contained, zero blast radius. So the arm now supplies the slot core's `hperp` per
+surviving edge from the witnesses (no abstract perp left to defer).
+**← NEXT = LEAF 5 ASSEMBLY** (arm wiring `chainData_relabel_arm`: `refine
 case_III_arm_realization` at the per-`i` roles; `hwmem ← chainData_bottom_relabel`; `hρGv ←`
-**`chainData_freshEdge_slot_mem`** with its `hperp` discharged from LEAF 4 (`neg_mem` →
-`interior_group_acolumn_eq_neg_baseRedundancy`) + the A-2 carrier
-`candidate_perp_two_incident_supportExtensors`, after rewriting the fold seed to `qρ` via P3
-`shiftSeedAdv_eq_funLeft_shiftPerm` + flipping orientation via `hingeRow_swap`). Full plan + file:lines
-+ eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR), §(o‴)(I.8.4).
+**`chainData_freshEdge_slot_mem`** with its `hperp` supplied by `chainData_freshEdge_perp_of_witness` (the
+witness from A-1 + the LEAF 4 regroup `interior_group_acolumn_eq_neg_baseRedundancy`), after rewriting the
+fold seed to `qρ` via P3 `shiftSeedAdv_eq_funLeft_shiftPerm` + flipping orientation via `hingeRow_swap`).
+Full plan + file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR), §(o‴)(I.8.4).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT

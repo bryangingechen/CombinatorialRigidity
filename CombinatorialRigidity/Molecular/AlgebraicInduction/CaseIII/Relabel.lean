@@ -4157,4 +4157,62 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
   convert hslot using 4
   omega
 
+/-- **The per-edge perp discharge from the eq.~(6.52) two-edge witness** (CHAIN-2c-ii-arm, the
+`hρGv` P2 A-2 composition step; `notes/Phase23-design.md` §(o‴)(I.8.3.v-SETTLED) Route A,
+§(o‴)(I.8.9-SETTLE); Phase 23b). The single-edge form of the per-edge perp that
+`chainData_freshEdge_slot_mem`'s `hperp` slot consumes: from the eq.~(6.52) `λ`-grouped two-edge
+witness at the surviving edge's interior degree-2 chain vertex `vtx (s+1)` (the same witness the W6b
+producer `exists_candidateRow_bottomRows_of_rigidOn` supplies, A-1), the common candidate redundancy
+`ρ₀ = ∑_j λ_{(ab)j} (rab j)` is ⊥ the candidate framework's `supportExtensor (edge s)`.
+
+The interior vertex `a := vtx (s+1)` is degree-2 with the two incident chain edges `e_c := edge s`
+(to its predecessor `b := vtx s`) and `e_d := edge (s+1)` (to its successor `c := vtx (s+2)`).
+Feeding the witness perps `hperp_ab`/`hperp_ac` and the eq.~(6.43) column vanishing `hcol`/`hrest`
+through `candidate_perp_two_incident_supportExtensors` (A-2, KT eq.~(6.44)) yields the perp at
+`e_c = edge s`; the supplied regroup identity `hρ₀` (`∑_j λ_{(ab)j} (rab j) = ρ₀`, the chain
+induction LEAF 4's `group = ±ρ₀` reading) rewrites it onto the shared `ρ₀` of the slot core. This
+is the exact `hperp s` shape `chainData_freshEdge_slot_mem` takes per surviving chain edge; the arm
+`chainData_relabel_arm` calls it once per `s + 1 < i` to supply that slot's `hperp` from the
+witnesses. Self-contained over the explicit witness, zero blast radius. -/
+theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_witness [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
+    (hsd : s + 1 < cd.d)
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {ιab ιac : Type*} [Fintype ιab] [Fintype ιac]
+    (lamAB : ιab → ℝ) (rab : ιab → Module.Dual ℝ (ScrewSpace k))
+    (lamAC : ιac → ℝ) (rac : ιac → Module.Dual ℝ (ScrewSpace k))
+    (grest : Module.Dual ℝ (α → ScrewSpace k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the regroup identity: the `(ab)`-group is the shared slot redundancy `ρ₀` (LEAF 4):
+    (hρ₀ : (∑ j, lamAB j • rab j) = ρ₀)
+    -- the per-edge witness-row perps, in the candidate framework `Fva = ofNormals (G−vᵢ)`:
+    (hperp_ab : ∀ j, rab j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
+      |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0)
+    (hperp_ac : ∀ j, rac j ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
+      |>.toBodyHinge.supportExtensor (cd.edge ⟨s + 1, by omega⟩)) = 0)
+    -- the eq.~(6.43) column vanishing at the degree-2 interior vertex `a = vtx (s+1)`:
+    (hcol : ((∑ j, lamAB j • BodyHingeFramework.hingeRow (k := k) (α := α)
+          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s, by omega⟩) (rab j))
+        + (∑ j, lamAC j • BodyHingeFramework.hingeRow (k := k) (α := α)
+          (cd.vtx ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 2, by omega⟩) (rac j)) + grest).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0)
+    (hrest : grest.comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨s + 1, by omega⟩)) = 0) :
+    ρ₀ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ)
+      |>.toBodyHinge.supportExtensor (cd.edge ⟨s, by omega⟩)) = 0 := by
+  classical
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+    with hFva
+  -- The interior vertex `a = vtx (s+1)` differs from its two chain neighbours `b = vtx s`,
+  -- `c = vtx (s+2)` (distinct chain indices, `vtx_inj`).
+  have hab : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s, by omega⟩ :=
+    fun he => by have : s + 1 = s := congrArg Fin.val (cd.vtx_inj he); omega
+  have hac : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ :=
+    fun he => by have : s + 1 = s + 2 := congrArg Fin.val (cd.vtx_inj he); omega
+  -- A-2 (KT eq.~(6.44)): the common candidate `∑_j λ_{(ab)j} (rab j)` is ⊥ the panel at the
+  -- surviving edge `e_c = edge s`; rewrite onto the shared `ρ₀` via the regroup identity.
+  have hperp := (Fva.candidate_perp_two_incident_supportExtensors hab hac lamAB rab lamAC rac grest
+    hperp_ab hperp_ac hcol hrest).1
+  rwa [hρ₀] at hperp
+
 end CombinatorialRigidity.Molecular
