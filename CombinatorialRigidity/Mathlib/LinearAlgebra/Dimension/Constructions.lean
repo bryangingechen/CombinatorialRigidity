@@ -72,6 +72,16 @@ Upstream-eligible mirrors:
   `L`, the pattern the `d=3` `M₃` arm uses for its `w`), so `finrank_span_eq_card` reads off the
   finrank and `span_le` gives `W' ≤ S`. When promoted upstream this lives beside the
   `LinearIndependent`/finrank-span API; the namespace stays `Submodule`.
+
+* `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` — append-one linear independence
+  modulo `W`: extend a family `f : ι → V` independent mod `W` by one extra vector `x` whose class
+  mod `W` is *not* in the span of the others' classes, and the augmented `ι ⊕ Unit`-family
+  `Sum.elim f (fun _ : Unit => x)` is still independent mod `W`. The corner-block independence
+  criterion the block-rank-additivity lower bound consumes as its `hLI` when the corner is a
+  panel-row family augmented by a single redundancy / `±r` row (KT 2011 (6.65): the `Mᵢ` block is
+  full-rank `⟺ r ∉ rowspace r(Lᵢ)`). A push through `W.mkQ` + the `Sum`-append independence
+  (`LinearIndependent.sum_type` with `disjoint_span_singleton'`). When promoted upstream this lives
+  beside the `LinearIndependent` `Sum`/`Option` API; the namespace stays `Submodule`.
 -/
 
 @[expose] public section
@@ -227,5 +237,33 @@ theorem exists_le_finrank_eq_card_of_injective_map {K V W : Type*} [Field K]
   ⟨Submodule.span K (Set.range (L ∘ f)),
     Submodule.span_le.mpr (Set.range_subset_iff.mpr fun i => by simpa using hS i),
     finrank_span_eq_card (hf.map' L (LinearMap.ker_eq_bot.2 hL))⟩
+
+/-- **Append-one linear independence modulo `W`.** Extend a family `f : ι → V` whose images mod
+`W` are linearly independent by a single extra vector `x` whose class mod `W` lies *outside* the
+span of the others' classes: the augmented `ι ⊕ Unit`-family
+`Sum.elim f (fun _ : Unit => x)` is still linearly independent modulo `W`.
+
+This is the corner-block independence criterion the block-rank-additivity lower bound
+(`finrank_add_card_le_of_linearIndependent_mkQ`) consumes as its `hLI` when the corner block is a
+panel-row family `f` (independent mod the base `W`) augmented by KT's single redundancy / `±r` row
+`x`: the augment stays independent precisely because the `±r` row's class mod `W` is not in the
+panel rows' span (KT 2011 (6.65): the `Mᵢ` block has full rank `⟺ r ∉ rowspace r(Lᵢ)`). The push
+through `W.mkQ` turns `Sum.elim f (·)` into `Sum.elim (W.mkQ ∘ f) (·)`, then
+`LinearIndependent.sum_type` reduces to the single-vector independence
+(`x`'s class nonzero, from the `notMem_span` hypothesis) and the span-disjointness
+(`disjoint_span_singleton'`, again from `notMem_span`). -/
+theorem linearIndependent_mkQ_sumElim_unit_of_notMem_span {K V : Type*} [Field K]
+    [AddCommGroup V] [Module K V] (W : Submodule K V) {ι : Type*} {f : ι → V}
+    (hf : LinearIndependent K (W.mkQ ∘ f)) {x : V}
+    (hx : W.mkQ x ∉ Submodule.span K (Set.range (W.mkQ ∘ f))) :
+    LinearIndependent K (W.mkQ ∘ Sum.elim f (fun _ : Unit => x)) := by
+  have hcomp : W.mkQ ∘ Sum.elim f (fun _ : Unit => x)
+      = Sum.elim (W.mkQ ∘ f) (fun _ : Unit => W.mkQ x) := by
+    funext j; cases j <;> rfl
+  rw [hcomp]
+  have hne : W.mkQ x ≠ 0 := fun h => hx (h ▸ Submodule.zero_mem _)
+  refine hf.sum_type (LinearIndependent.of_subsingleton (i := ()) hne) ?_
+  rw [Set.range_const]
+  exact (Submodule.disjoint_span_singleton' hne).mpr hx
 
 end Submodule

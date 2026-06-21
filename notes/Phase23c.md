@@ -217,10 +217,14 @@ engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
 - **`g` (the `D` corner rows) + `hg`** — `g` = the `D−1` candidate panel rows `r(Lᵢ)` (`panelRow_mem_rigidityRows`,
   free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
   `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
-- **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base. The `±r` row's class mod `W`
-  reads at `vᵢ`'s column as `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`), so LI-mod-`W` reduces to
-  `ρ₀ ⊥ C(Lᵢ)` on the discriminator `hρgate` at the FIXED `ρ₀` (= KT's abstract `r`). The shared W6a–W6f arm tail
-  then lifts verbatim (it operates on the rank bound, agnostic to how certified).
+- **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base. The abstract LA step is now
+  in tree: `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` (mirror,
+  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`) reduces `hLI` for the `Sum.elim (panel rows) (±r row)`
+  corner to (a) the `D−1` panel rows LI mod `W` ⊕ (b) the `±r` row's class mod `W` ∉ their span. The `±r` row's
+  class mod `W` reads at `vᵢ`'s column as `−ρ₀` (`interior_group_acolumn_eq_neg_baseRedundancy`), so (b) reduces to
+  `ρ₀ ⊥ C(Lᵢ)` on the discriminator `hρgate` at the FIXED `ρ₀` (= KT's abstract `r`). The arm still has to discharge
+  (a)+(b) against the concrete `g` (the genuinely-new arm wiring); the abstract append-one step is no longer part of
+  that. The shared W6a–W6f arm tail then lifts verbatim (it operates on the rank bound, agnostic to how certified).
 - **Then:** the 2c-iii `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on
   the landed engine) → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the
   telescope's *membership* content, §I.8.20/§I.8.21(3); the `±r` chain induction LEAF 1–4 STAYS). **Cost band:
@@ -228,6 +232,17 @@ engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
 
 ## Decisions made during this phase
 
+- **`hLI` corner-LI abstract step `linearIndependent_mkQ_sumElim_unit_of_notMem_span` mirrored (2026-06-21),
+  closing the arm's abstract-LA sub-risk.** The append-one LI-MOD-`W` criterion (mirror,
+  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`, beside the block-rank-additivity lemma it feeds): a family
+  `f` LI mod `W` augmented by one extra `x` with `W.mkQ x ∉ span (range (W.mkQ ∘ f))` keeps `W.mkQ ∘ Sum.elim f
+  (fun _ : Unit => x)` LI. This is the abstract core of `case_III_arm_realization_chain`'s `hLI` obligation for the
+  `Sum.elim (D−1 panel rows) (±r row)` corner (KT 2011 (6.65): `Mᵢ` full-rank mod base `⟺ r ∉ rowspace r(Lᵢ)`).
+  Push `W.mkQ` through `Sum.elim` (funext+`cases`) → `LinearIndependent.sum_type` + `of_subsingleton` (the singleton
+  block) + `disjoint_span_singleton'` (disjointness). Axiom-clean, build/lint clean. So the arm now only has to
+  discharge (a) panel rows LI mod `W` + (b) `±r` class ∉ their span against the CONCRETE `g` (the genuinely-new
+  wiring) — the abstract append-one step is landed. FRICTION `[mirrored]` entry; sibling of the non-quotient
+  `linearIndependent_sumElim_unit_iff`.
 - **SHARED W6a–W6f tail `case_III_realization_of_rank` FACTORED OUT (2026-06-21), zero-regression.** Extracted
   the rank-to-realization tail of `case_III_arm_realization` (`Arms.lean`) — the part depending only on the
   candidate rank bound `hrank` + split/seed data, not on the certification route (W6e re-extract → W6f good-`t`

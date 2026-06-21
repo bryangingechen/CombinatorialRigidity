@@ -2272,6 +2272,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
   upstream home of `linearIndependent_sum`). N4 proper (`mem_hingeRowBlock_iff` +
   `linearIndependent_sumElim_candidateRow_iff`) is project-internal, in `RigidityMatrix.lean`.
 
+### [mirrored] `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` — the mod-`W` append-one LI criterion (the `hLI` corner ingredient)
+- **Where it bit:** Phase 23c option-(A) chain cert. The block-rank-additivity lower bound
+  `finrank_add_card_le_of_linearIndependent_mkQ` consumes `hLI : LinearIndependent K (W.mkQ ∘ g)`
+  for the corner family `g = Sum.elim (D−1 panel rows) (fun _ : Unit => ±r row)` — KT 2011 (6.65):
+  the `Mᵢ` corner block is full-rank mod the base `W` `⟺ r ∉ rowspace r(Lᵢ)`. The `case_III_arm_
+  realization_chain` arm (next build) needs this in the `W.mkQ ∘ Sum.elim …` (quotient) shape.
+- **Friction:** the sibling `linearIndependent_sumElim_unit_iff` is the *non-quotient* append-one
+  iff; the `mod-W` form `W.mkQ ∘ Sum.elim f (fun _ : Unit => x)` has no direct mathlib lemma, and
+  the `W.mkQ ∘ Sum.elim` ≠ `Sum.elim (W.mkQ ∘ ·) (W.mkQ ∘ ·)` defeq needs a `funext`/`cases`.
+- **Resolution:** mirrored `linearIndependent_mkQ_sumElim_unit_of_notMem_span` — push `W.mkQ`
+  through `Sum.elim` (funext + `cases`), then `LinearIndependent.sum_type` with
+  `LinearIndependent.of_subsingleton (i := ())` for the singleton block and
+  `Submodule.disjoint_span_singleton'` (via `Set.range_const`) for disjointness — the same
+  `Sum.elim`-of-`Unit` shape as the non-quotient sibling, one level up in `V ⧸ W`.
+- **Gotcha:** `linearIndependent_unique` is deprecated → `LinearIndependent.of_subsingleton (i)
+  (hi : v i ≠ 0)` (same `[IsDomain]`/`[Module.IsTorsionFree]` instance need as the sibling's
+  gotcha above; TACTICS-QUIRKS § 40).
+- **Status:** mirrored, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). Pure LA, no
+  geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean` (alongside
+  `finrank_add_card_le_of_linearIndependent_mkQ`, which it feeds).
+
 ### [mirrored] `List.formPerm_eq_prod_zipWith_swap_tail` — `formPerm` is the product of adjacent-element transpositions
 - **Where it bit:** Phase 23b CHAIN-2c-ii-transport-W9a (identifying the cycle-W9a `List.foldr`
   with the named `shiftPerm` relabel, route B, design §(o″)). The cycle `shiftPerm i = formPerm
