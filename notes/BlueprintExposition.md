@@ -575,6 +575,16 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   on (the block-triangular rank-addition) is folded into the corrected
   `lem:case-I-realization` realization-mechanism entry above, and the now-wrong
   common-seed framing in the prior N5 entry was corrected in the same pass.
-- **Non-molecular phases (1–16): not yet scanned.** TODO (unscheduled): the
-  Phase 5 blocker argument is a likely candidate; run as a cleanup-style round,
-  candidate list producible on demand from `notes/PhaseN.md` + `git log`.
+- **Scheduled retroactive scan (set 2026-06-21).** A dedicated retroactive-coverage
+  round is scheduled (run as a cleanup-style pass; candidate list producible on
+  demand from `notes/PhaseN.md` + `git log`), covering two gaps found this session:
+  - **Molecular phases 22b–23a** — captured incrementally at phase-close, but the
+    scan turned up two un-ledgered candidates: **22i — the all-`k` genuine-hinge
+    motive** (KT's coincident-panel Lemmas 5.3/6.2 are inexpressible with a derived
+    hinge-as-meet, forcing the free-hinge `BodyHingeFramework` carrier — a *source-side*
+    insight, likely flavor (a)/(c), no entry yet), and **23a/CARRIER LEAF-0**
+    (`linearIndependent_normals_of_algebraicIndependent_triple`, "the one
+    genuinely-new piece" of the OD-7 producer lift — assess (c) vs. routine-LA
+    exclude). 22j/22l confirmed correctly absent (build-time refactors, project-side).
+  - **Non-molecular phases 1–16 — never scanned.** The Phase 5 blocker argument is
+    the noted likely candidate.
