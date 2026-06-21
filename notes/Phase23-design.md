@@ -5766,6 +5766,121 @@ answered DEFINITIVELY NO.
   per-step-selector-fold route is abandoned) — confirm-and-delete at the `hρGv`-route-settle commit, alongside
   T-1/T-2.
 
+**(I.8.16) `hφ`-AT-SOURCE SCOPING RECON — VERDICT: the source-production replacement for the infeasible ROUTE
+α is FEASIBLE but CONTRACT-TOUCHING. A-1 is fully parametric over `ends`, but instantiating it at `endsσρ`
+produces the WRONG member (Lean-verified): A-1's output member is `hingeRow (ends e₀).1 (ends e₀).2 ρ`, and
+`endsσρ e₀` reads `ends₀` at `edge i` (NOT `e₀`), so A-1@`endsσρ` gives `hingeRow (σ⁻¹(ends₀(edge i))…) ρ`,
+not `hingeRow v₀ v₂ ρ₀`. The ONLY way to land `hingeRow v₀ v₂ ρ₀ ∈ span (ofNormals (G−v₁) endsσρ q)` at the
+source is to re-thread A-1 / the W6b producer so the candidate-row output is stated at the relabelled selector
+— which CHANGES the third lockstep CHAIN↔ENTRY decl's premise bundle (the `hφ` shape the producer feeds the
+arm) and A-1's output type. So: feasible mechanism exists, but it is the FIRST contract-touching change the
+CHAIN arm forces — READY FOR USER SIGN-OFF (2026-06-21, opus; docs-only, no Lean landed; the 3 load-bearing
+claims Lean-verified by `lean_multi_attempt` `have`-blocks in the live `chainData_relabel_arm_hρGv` context
+— each typechecked, tree byte-clean throughout).** Verified against A-1
+`exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:400`, its FULL input bundle + output, `:414–445`),
+the W6b producer `chainData_split_w6b_gates` (`Realization.lean:771`, its A-1 call `:888–891`), the arm slot
+`chainData_relabel_arm_hρGv` (`Relabel.lean:4647`, the `hφ` slot `:4671–4675`), the slot core
+`chainData_freshEdge_slot_mem` (`:4158`, its `hφ` at one `ends`, `:4165–4168`), `rigidityRows_ofNormals_congr_ends`
+(`Realization.lean:49`), `removeVertex_isLink` (`Operations.lean:546`), the shift-action lemmas
+(`shiftEdgePerm_apply_e₀`/`_edge_zero`/`_edge_interior`, `Operations.lean:2044/2054/2064`).
+
+  *(1) FEASIBILITY — A-1 IS parametric over `ends`, but A-1@`endsσρ` is the WRONG member (the coordinator's
+  optimistic hypothesis is FALSE; Lean-grounded).* A-1 (`Candidate.lean:401`) takes `{ends : β → α × α}` freely,
+  and its `hρGv` conclusion (`:420`) is `hingeRow (ends e₀).1 (ends e₀).2 ρ ∈ span (ofNormals Gv ends q).rows`.
+  So A-1@`endsσρ` would land `hingeRow (endsσρ e₀).1 (endsσρ e₀).2 ρ`. **PROBE A (typechecked):** `endsσρ e₀ =
+  ((shiftPerm i.castSucc).symm (ends₀ (edge i)).1, …)` (since `shiftEdgePerm i e₀ = edge i`, `shiftEdgePerm_apply_e₀`)
+  — i.e. A-1@`endsσρ`'s member reads `ends₀` at `edge i`, NOT at `e₀`, giving `hingeRow (σ⁻¹ v_i)(σ⁻¹ v_{i+1}) ρ`,
+  the candidate's OWN splice member (= R-2(i)/(ii) of I.8.12), NOT the base `hingeRow v₀ v₂ ρ₀` the slot core
+  wants. **The member endpoints are TIED to A-1's `(ends e₀)` slot and MOVE with the selector** — re-instantiating
+  A-1 at a different selector cannot hold the member fixed. ∴ A-1@`endsσρ` ≠ the needed `hφ`.
+
+  *(2) Why the `congr_ends` shortcut fails on the SEAM framework `G−v₁` (NOT just `G−vᵢ`).* The landed
+  `rigidityRows_ofNormals_congr_ends` (`Realization.lean:49`) gives `span (ofNormals G ends q).rows = span
+  (ofNormals G ends' q).rows` WHEN `ends`/`ends'` agree on every LINK of `G`. So `hφ@endsσρ = hφ@ends₀` for FREE
+  iff `endsσρ` agrees with `ends₀` on every link of `G−v₁`. It does NOT: the support of `shiftEdgePerm i`
+  contains `edge 2,…,edge i` (the interior + top chain edges), and these AVOID `v₁` so they ARE surviving links
+  of `G−v₁`. **PROBE B (typechecked):** `(G−v₁).IsLink (edge 2)(vtx 2)(vtx 3)` (from `cd.link` + `vtx_inj`) — a
+  moved base-graph link; **PROBE C (typechecked):** `shiftEdgePerm i (edge 0) = e₀` (the cycle is genuinely
+  non-trivial on the support). So `endsσρ` is a GENUINE relabel of `G−v₁`'s links, not a `congr_ends`-equal
+  selector. [N.B. I.8.15's PROBE C/D located the load-bearing discrepancy at `edge 0` on `G−vᵢ`; on the SEAM
+  framework `G−v₁` `edge 0 = v₀v₁` is DELETED (`removeVertex_isLink` forbids the `v₁` endpoint — PROBE1, typechecked),
+  so the seam-framework discrepancy rides on `edge 2…edge i` instead — same conclusion, via a different link.]
+  ∴ no member-free transport: B1 of I.8.15 is genuinely the member-mapping wall (4th touch).
+
+  *(3) THE CLEANEST MECHANISM — `hφ`-at-source = re-thread A-1's candidate-row output to the relabelled
+  selector (the I.8.15 fallback, now scoped at signatures).* A-1@`endsσρ` is the wrong member because its
+  `e₀`-splice member moves with the selector. To land `hingeRow v₀ v₂ ρ₀` at `endsσρ`, A-1's candidate-row
+  output must be stated against the relabelled selector while pinning the member endpoints to the BASE chain
+  vertices. Two concrete shapes (the second is cleaner and is the recommendation):
+  - **(3a) An A-1 output-type augment** — give A-1 a SECOND `hρGv`-form conclusion at a *supplied* relabelled
+    selector `ends'` with a *supplied* member-endpoint pair `(x,y)`, under a hypothesis pinning the
+    transport (`ends'` agrees with `ends` off the cycle support / the edge-grouped `hcomb` transports). This
+    is the most surgical, but it BAKES the relabel into A-1 (the candidate-reduction layer's concern) — a
+    layering smell, and it still needs the member-bridge argument B1 names (the edge-grouped `hcomb`'s `rⱼ ∈
+    block(σ_e eⱼ)` mismatch, I.8.12 R-2(iii)).
+  - **(3b) RECOMMENDED — produce `hφ@endsσρ` in the W6b producer, beside the existing `hφ@ends₀`, via a
+    DIRECT span re-derivation at `endsσρ` (B1 done inside the producer where the rigidity data lives).** The
+    producer `chainData_split_w6b_gates` (`Realization.lean:771`) already has, in scope, the IH-generic base
+    realization `Q` (`:821`), its selector `Q.ends` (= the arm's `ends₀`), the rigidity-on `hrig'` (`:839`),
+    and A-1's edge-grouped output (`hρGv'`/`_hedgeGv`, `:888`). Add ONE new output conjunct: `hingeRow a b ρ ∈
+    span (ofNormals (G−v) (relabel Q.ends) q).rows` for the arm's `endsσρ` relabel. The re-derivation is the
+    B1 span-transport: A-1's edge-grouped `hcomb` (`∑ⱼ cⱼ hingeRow uⱼvⱼ rⱼ = hingeRow a b ρ`, `rⱼ ∈ (base).block(eⱼ)`)
+    transported across `ofNormals_supportExtensor_relabel_perm` (`Relabel.lean:63`) — which relates `(endsσρ).block(eⱼ)
+    = (ends₀).block(σ_e eⱼ)` — needs each `rⱼ ∈ (endsσρ).block(eⱼ)`, i.e. `rⱼ ∈ (ends₀).block(σ_e eⱼ)`, the
+    WRONG edge (B1's hard core). **This is the make-or-break the recon CANNOT pre-discharge** — see (5).
+
+  *(4) THE EXACT CHAIN↔ENTRY CONTRACT DELTA.* Either mechanism CHANGES the producer's `hφ`-shape output, which
+  is the third lockstep decl of the contract (C.0). **The delta touches the `hφ`/redundancy slot of the
+  producer→arm bundle, NOT the `ChainData` record (C.1) and NOT the dispatch's `hdispatch` consume-shape (C.3).**
+  Concretely:
+  - **C.0 third lockstep decl** (`chainData_split_w6b_gates` output `:789–815`, and any per-`i` re-thread of it):
+    gains a relabelled-selector `hφ` conjunct (or A-1's output type gains it, propagating up). This is the FIRST
+    contract-touching change the CHAIN arm forces — the prior `hφ@endsσρ`-as-carried-hypothesis shape (the
+    landed arm) is replaced by a producer-supplied one.
+  - **The `ChainData` record (C.1) is UNCHANGED** — the chain data is purely combinatorial; the relabel is
+    derived from it (`shiftPerm`/`shiftEdgePerm`), not a new field.
+  - **The CHAIN-5 dispatch signature (C.3) is UNCHANGED** — `hdispatch` consumes a `ChainData` + the
+    deficiency-0 fact + the IH-generic base realization; the producer-internal `hφ` re-thread is BELOW the
+    dispatch interface (exactly as the perp half STEP 1∘STEP 2 is). The dispatch never sees `hφ@endsσρ`.
+  - **C.6 (no motive/IH change) IS PRESERVED** — the re-derivation runs at the SAME 0-dof IH realization `Q`
+    the `d=3` producer already pulls (`Realization.lean:821`); no higher-dof seed, no conditioned-pair data, no
+    new IH conjunct. The relabelled-selector `hφ` is a fact ABOUT the existing `Q`, not a stronger IH demand.
+  - **`d=3` zero-regression (C.4) holds** — M₃ is `i=2`, no `hφ` slot, no general fold (the M₃ `hρGv` goes
+    through W9a on the single candidate row); the producer's new conjunct is consumed only by the general-`i`
+    arm, dead at `d=3`.
+
+  *(5) THE COST + THE RESIDUAL RISK (the honest unknown).* The MECHANISM is scoped, but its make-or-break — the
+  B1 span re-derivation at `endsσρ` (the member-mapping wall, 4th touch) — is NOT pre-dischargeable in a
+  docs-only recon. `σ⁻¹ v₀ = v₀`, `σ⁻¹ v₂ = v₁` for `i ≥ 2` (Lean-verified across I.8.10–I.8.15) mean any
+  *apparatus* transport of `hcomb` lands on the WRONG member `hingeRow v₀ v₁ ρ₀`; B1 needs a genuinely-new DIRECT
+  argument (re-derive the redundancy at `endsσρ` from the relabelled framework's OWN rigidity, NOT by transporting
+  A-1's `ends₀` combination). **If B1 closes: ~3–5 commits** (the producer conjunct + the B1 re-derivation lemma +
+  the slot-core/arm re-thread to consume `hφ@endsσρ` from the producer instead of as a carried hyp + the arm
+  shell + 2c-iii). **If B1 does NOT close** (the member-mapping wall is genuinely impassable at `endsσρ`), the
+  `hρGv` slot at general `d` has NO source — and the honest fallback is to RESHAPE the slot core itself so it
+  never demands `hφ@endsσρ` (B2(ii)/I.8.15, which collapses back to B1) OR to re-architect KT eq. 6.62's
+  realization at general `d` away from the seed-advancing fold (a deeper, ASSEMBLY-level change). **The recon
+  CANNOT certify B1 closes without a build spike** — that spike IS the contract-touching change, hence the
+  user gate.
+
+  **BOTTOM LINE — READY FOR USER SIGN-OFF: the build is CONTRACT-TOUCHING (the first the CHAIN arm forces — it
+  changes the producer's `hφ`/redundancy output conjunct = C.0's third lockstep decl + A-1's output type; the
+  `ChainData` record C.1, the `hdispatch` consume-shape C.3, the motive/IH C.6, and `d=3` C.4 are ALL
+  unchanged); ~3–5 commits IF the B1 span re-derivation at `endsσρ` closes, which is the residual member-mapping
+  risk (4th touch) the recon cannot pre-discharge.** The recommended shape is (3b): a producer-internal B1
+  re-derivation supplying `hφ@endsσρ` beside the landed `hφ@ends₀`. **The single decision for the user:** approve
+  the contract-touching producer/A-1 output re-thread (3b) + a B1 build spike as its first step, OR direct the
+  deeper slot-core/ASSEMBLY re-architecture if the producer re-thread is judged the wrong layer. Until then,
+  `chainData_relabel_arm_hρGv` stays a CORRECT carried-hypothesis lemma; nothing reverts; `d=3` is unaffected.
+
+  **CLAUSE (ii) HONESTY.** This CONVERGES on a grounded verdict (feasible-with-contract-delta-X, ~3–5c, gated on
+  the B1 spike) rather than deferring with another open recon: it names the exact contract delta (C.0 third
+  lockstep decl + A-1 output type; C.1/C.3/C.4/C.6 invariant), Lean-grounds the infeasibility of the
+  re-instantiation shortcut (PROBE A: A-1@`endsσρ` is the wrong member) and the `congr_ends` shortcut (PROBE B/C:
+  `endsσρ` genuinely relabels `G−v₁`'s surviving links), and honestly flags the ONE residual risk (the B1
+  member-mapping wall) as not-pre-dischargeable-in-docs rather than asserting it closes. No Lean landed (probes
+  were `lean_multi_attempt`, in-memory; tree byte-clean).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
