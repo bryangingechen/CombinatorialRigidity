@@ -5409,6 +5409,195 @@ lemmas (`Operations.lean:1468`/`:2018`).
   precise cross-grain. **NET: the arm shell is NOT a mechanical assembly; it is gated on the ROUTE-α slot-core
   decision (a recon-first ~2–4c), not the ~1–2c "M₃-template bookkeeping" the prior *Hand-off* assumed.**
 
+**(I.8.13) ROUTE-α DESIGN-SETTLE — the central telescope-survival question is ANSWERED (it survives:
+the telescope is selector-free); ROUTE α decomposes into buildable leaves with exact signatures; the
+make-or-break is one genuinely-new `shiftEndsAdv` selector-advancing fold, NOT the telescope (2026-06-21,
+opus; ROUTE α USER-CONFIRMED over β this session; every load-bearing claim Lean-verified against the
+landed bodies via 4 `lean_run_code` probes — PROBE 1/2/3 each compiled `success:true` warning-clean apart
+from a cosmetic long-line, PROBE 4 the target signature type-checked under `sorry`; docs-only, no Lean
+landed).** Verified against the landed `def`/`theorem` bodies: telescope `wstep_foldl_hingeRow_telescope`
+(`Relabel.lean:3187`), slot-mem corollary `wstep_foldl_freshEdge_slot_mem` (`:3255`), foldl core
+`wstep_foldl_mem_span_rigidityRows` (`:1338`), the seed-fixed fold `shiftBodyListAsc_foldl_mem_span_rigidityRows`
+(`:1785`), the single-step gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`:1201`),
+the slot core `chainData_freshEdge_slot_mem` (`:4136`), surviving-row builder `freshEdge_surviving_row_mem`
+(`:3019`), the seed accumulator `shiftSeedAdv` (`:1711`) + its bulk identity `shiftSeedAdv_eq_funLeft_shiftPerm`
+(`:4097`), the arm slot `chainData_relabel_arm_hρGv` (`:4625`).
+
+  *(a) THE CENTRAL QUESTION — does the LEAF-1–4 closed-form telescope survive a non-fixed-selector fold?
+  ANSWER: YES, TRIVIALLY — the telescope is selector-free / framework-free / graph-free.* The genuinely-new
+  worry (I.8.12 left open) DISSOLVES on reading the landed statement. `wstep_foldl_hingeRow_telescope`
+  (`:3187–3194`) is a **pure linear-map identity over `(w : ℕ → α)`**: `(foldl wstep) (hingeRow (w 0)(w 2) ρ₀)
+  = (∑_{s<m} hingeRow (w s)(w (s+1)) ρ₀) + hingeRow (w m)(w (m+2)) ρ₀`. It mentions **no `ends`, no framework,
+  no `ofNormals`, no graph** — only `BodyHingeFramework.wstep`/`hingeRow` linear maps and the finite-range
+  injectivity `Set.InjOn w (Set.Iic (m+2))` (the P1 fix is ALREADY landed — the dead `Function.Injective (ℕ→α)`
+  is gone; I.8.2's blocker is resolved in tree). **[PROBE 1: the telescope applies verbatim to the bare
+  `w`-fold — `success:true`.]** A selector is NOT part of the telescope; therefore changing the fold's selector
+  per-step cannot disturb it. The selector enters EXCLUSIVELY at the *membership* layer — `hφ@(F 0)`,
+  `hsurv@(F s)`, conclusion`@(F m)` in `wstep_foldl_freshEdge_slot_mem` (`:3255`, abstract over `S`) — never
+  in the telescope algebra. So I.8.12's RISK ("the per-step member-mapping must be re-tracked; the telescope
+  assumes the fixed-selector fold") is FALSE as stated: the telescope makes NO selector assumption. **The
+  real make-or-break is one level up: the *membership* fold `shiftBodyListAsc_foldl_mem_span_rigidityRows`,
+  which currently FIXES the selector — restating it to advance the selector is ROUTE α's genuinely-new leaf.**
+
+  *(b) WHY the membership fold currently fixes the selector, and why the foldl core does NOT force it.* The
+  seed-fixed fold `shiftBodyListAsc_foldl_mem_span_rigidityRows` (`:1785`) takes a **single `ends`** (`:1787`)
+  used at BOTH the `hφ` start framework `shiftBodyFrameworkAsc (s:=0) ends q` (`:1790`) and the conclusion
+  `shiftBodyFrameworkAsc (s:=(i−1)) ends q` (`:1794`); its docstring says outright "the selector `ends` is
+  **fixed** (so the gate's `hends'_off` is `rfl`)" (`:1779–1780`). This is a CHOICE of that lemma, NOT a
+  constraint of the machinery: the foldl core `wstep_foldl_mem_span_rigidityRows` (`:1338`) takes an
+  **arbitrary per-step framework family `F : ℕ → BodyHingeFramework k α β`** — `hφ@(F 0)`, conclusion`@(F
+  bodies.length)`, and the per-step `hstep` constrains only graph-links / degree-2 closures / `hingeRowBlock`
+  monotonicity, NEVER that `F s` and `F (s+1)` share a selector. **[PROBE 2: `#check` confirms `F : ℕ →
+  BodyHingeFramework` is the only framework input — no fixed-selector hypothesis.]** And the single-step gate
+  `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`:1201`) takes **two distinct selectors
+  `ends ends'`** (`:1203`), input membership at `ends` (`:1209`), output at `ends'` (`:1219`), agreeing only
+  off the two moved edges `edge(s+1)`/`edge(s+2)` (`hends'_off`, `:1204`). **[PROBE 3: the gate type-checks fed
+  two genuinely-different selectors — confirms `ends ≠ ends'` permitted, clause-(i) mandate satisfied.]** So
+  the per-step apparatus is ALREADY selector-advancing-ready; only the two convenience wrappers
+  (`shiftBodyListAsc_foldl_mem…` and `shiftBodyFrameworkAscTotal`) collapse it to one selector.
+
+  *(c) THE ROUTE-α FIX — fold the selector relabel INTO the per-step advance, mirroring `shiftSeedAdv`.* The
+  seed already advances per-step: `shiftSeedAdv q : ℕ → (seed)` (`:1711`, `Q 0 = q`, `Q(s+1) = Q s ∘ swap`)
+  with the bulk identity `shiftSeedAdv q (i−1) = q ∘ shiftPerm i` (`shiftSeedAdv_eq_funLeft_shiftPerm`, `:4097`,
+  = P3). ROUTE α adds the **exact selector analogue**: a selector accumulator `shiftEndsAdv` advancing
+  `ends₀ → endsσρ` one swap per step, with `shiftEndsAdv ends₀ 0 = ends₀` (so A-1's `hφ@ends₀` matches the
+  start) and `shiftEndsAdv ends₀ (i−1) = endsσρ` (so the conclusion is the engine's relabelled selector,
+  UNCHANGED from the landed arm). The per-step selector swap is the gate's `ends'`-vs-`ends` move; the bulk
+  identity is the selector cousin of P3. The base redundancy `hφ` then stays at the **un-relabelled `ends₀`**
+  (= A-1's genuine output, eliminating the hybrid wall R-2 identified), while only the *transported* fold output
+  picks up the relabel — KT-6.62-faithful (the iso `ρᵢ` applied step-by-step, never pre-applied to the base
+  redundancy). **[PROBE 4: the proposed selector-advancing fold signature — `selAdv : ℕ → β → α × α`, input
+  `@selAdv 0`, output `@selAdv (i−1)` — type-checks under `sorry`.]** Crucially, the slot core's CONCLUSION
+  framework (`G−vᵢ, endsσρ, qρ`) and the surviving-row perp framework are **UNCHANGED**: the perp half
+  (STEP 1∘STEP 2 = `chainData_freshEdge_slot_perp`, LANDED) is at the final selector `endsσρ` already, so it is
+  untouched. ONLY the `hφ` input selector moves `endsσρ → ends₀`.
+
+  *(d) EXACT RESTATED SIGNATURES.*
+
+  **Leaf A (genuinely-new) — the selector accumulator** (`Operations.lean`, beside `shiftSeedAdv`):
+  ```
+  noncomputable def Graph.ChainData.shiftEndsAdv [DecidableEq α] [DecidableEq β]
+      (cd : G.ChainData n) (ends₀ : β → α × α) : ℕ → β → α × α
+    | 0       => ends₀
+    | (s + 1) => fun e => let p := cd.shiftEndsAdv ends₀ s e
+                          ((cd.shiftSeedSwap s) p.1, (cd.shiftSeedSwap s) p.2)   -- relabel endpoints by the per-step swap
+  ```
+  (the per-step swap is `shiftSeedSwap s = swap (vtx(s+2)) (vtx(s+1))`, `:1695`, the SAME swap the seed uses —
+  so selector and seed advance in lockstep). **Leaf A-bulk — the P3 selector cousin** (`Relabel.lean`):
+  ```
+  theorem Graph.ChainData.shiftEndsAdv_eq_relabel [DecidableEq α] [DecidableEq β]
+      (cd : G.ChainData n) (ends₀ : β → α × α) (i : Fin cd.d) (hi : 1 ≤ (i:ℕ)) :
+      cd.shiftEndsAdv ends₀ ((i:ℕ) - 1)
+        = fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+                    (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)
+  ```
+  (RHS = the arm's `endsσρ` verbatim, `Relabel.lean:4666–4668`; proof = the `shiftSeedAdv_eq_funLeft_shiftPerm`
+  template at `:4102–4113`, the `(i−1)`-fold swap product = `shiftPerm i.castSucc` via
+  `shiftPerm_eq_prod_map_swap_shiftBodyListAsc`, but acting on the selector's endpoint pair through
+  `shiftEdgePerm` on the edge argument — RISK noted in (e)). **N.B.** the selector relabel composes the per-step
+  vertex swaps on the *output endpoints* AND advances the *edge argument* via `shiftEdgePerm`; (e) flags this
+  edge-vs-vertex coupling as the one unverified algebraic step.
+
+  **Leaf B (restate, genuinely-new proof) — the selector-advancing membership fold** (`Relabel.lean`, replaces
+  the seed-fixed `shiftBodyListAsc_foldl_mem_span_rigidityRows` OR a sibling beside it):
+  ```
+  theorem Graph.ChainData.shiftBodyListAsc_foldl_mem_span_rigidityRows_selAdv [DecidableEq α]
+      (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α) (q : α × Fin (k+2) → ℝ)
+      (hrec : ∀ s f x y, G.IsLink f x y →                          -- recording at EACH advanced selector
+        cd.shiftEndsAdv ends₀ s f = (x, y) ∨ cd.shiftEndsAdv ends₀ s f = (y, x))
+      {φ : Module.Dual ℝ (α → ScrewSpace k)}
+      (hφ : φ ∈ Submodule.span ℝ
+        (cd.shiftBodyFrameworkAsc (s := 0) _ (cd.shiftEndsAdv ends₀ 0) q).rigidityRows) :  -- = ends₀ at s=0
+      ((cd.shiftBodyListAsc i).foldl (fun T b => (BodyHingeFramework.wstep b.1 b.2.1 b.2.2).comp T)
+          LinearMap.id) φ
+        ∈ Submodule.span ℝ
+            (cd.shiftBodyFrameworkAsc (s := (i:ℕ)-1) _ (cd.shiftEndsAdv ends₀ ((i:ℕ)-1)) q).rigidityRows
+  ```
+  Proof = the landed `:1797–1811` template, but feeding the foldl core a framework family
+  `F s = ofNormals (G−vₛ₊₁) (shiftEndsAdv ends₀ s) (shiftSeedAdv q s)` (selector AND seed both advancing), and
+  discharging each step's gate with `ends := shiftEndsAdv ends₀ s`, `ends' := shiftEndsAdv ends₀ (s+1)` — the
+  per-step `hends'_off` is `shiftEndsAdv_succ` restricted off the two moved edges (NOT `rfl` anymore; the
+  genuinely-new proof obligation). **[PROBE 4 confirms the signature is well-formed.]**
+
+  **Leaf C (restate) — the slot core** (`chainData_freshEdge_slot_mem`, `:4136`): change the `hφ`/`hrec`/`hperp`
+  signature so `hφ` is consumed at `shiftEndsAdv ends₀ 0 = ends₀` (NOT a single `ends`), and the conclusion +
+  the per-edge `hperp` are at `shiftEndsAdv ends₀ ((i:ℕ)-1) = endsσρ`:
+  ```
+  theorem Graph.ChainData.chainData_freshEdge_slot_mem_selAdv [DecidableEq α]
+      (cd : G.ChainData n) (i : Fin (cd.d+1)) (hi : 1 ≤ (i:ℕ)) (hid : (i:ℕ) < cd.d)
+      (ends₀ : β → α × α) (q : α × Fin (k+2) → ℝ)
+      (hrec : ∀ s f x y, G.IsLink f x y →                          -- per-step recording (Leaf B's hrec)
+        cd.shiftEndsAdv ends₀ s f = (x, y) ∨ cd.shiftEndsAdv ends₀ s f = (y, x))
+      {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+      (hφ : BodyHingeFramework.hingeRow (cd.vtx ⟨0,_⟩) (cd.vtx ⟨2,_⟩) ρ₀ ∈
+        Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1,_⟩))
+          ends₀ q).toBodyHinge.rigidityRows)                       -- ← AT ends₀ NOW (A-1's genuine output)
+      (hperp : ∀ s, (hs : s + 1 < (i:ℕ)) → ρ₀ ((PanelHingeFramework.ofNormals
+          (G.removeVertex (cd.vtx ⟨(i:ℕ),_⟩)) (cd.shiftEndsAdv ends₀ ((i:ℕ)-1))   -- ← endsσρ, unchanged
+            (cd.shiftSeedAdv q ((i:ℕ)-1))).toBodyHinge.supportExtensor (cd.edge ⟨s,_⟩)) = 0) :
+      BodyHingeFramework.hingeRow (cd.vtx ⟨(i:ℕ)-1,_⟩) (cd.vtx ⟨(i:ℕ)+1,_⟩) ρ₀
+        ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨(i:ℕ),_⟩))
+            (cd.shiftEndsAdv ends₀ ((i:ℕ)-1)) (cd.shiftSeedAdv q ((i:ℕ)-1))).toBodyHinge.rigidityRows
+  ```
+  Proof = the landed `:4156–4227` body, with `hfold := …shiftBodyListAsc_foldl_mem_span_rigidityRows_selAdv`
+  (Leaf B) instead of the seed-fixed fold, and the `hFvaStart` reduction `shiftEndsAdv ends₀ 0 = ends₀` via
+  `shiftEndsAdv` `rfl`. The telescope (`wstep_foldl_freshEdge_slot_mem`) and the surviving-row builder
+  (`freshEdge_surviving_row_mem`, at the final `endsσρ`) are CALLED UNCHANGED.
+
+  *(e) HOW `chainData_relabel_arm_hρGv` RE-THREADS (`:4625`).* The arm's `hφ` hypothesis (`:4649–4653`) drops
+  its relabelled-selector wrapper and becomes `hφ@ends₀` — i.e. the arm takes A-1's genuine output
+  `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G−v₁) ends₀ q)` DIRECTLY (no transport, no member-mapping
+  wall). The `refine cd.chainData_freshEdge_slot_mem_selAdv …` call (replacing `:4687`) passes `ends₀` (NOT
+  `endsσρ`); the `case hφ` becomes `exact hφ` after `shiftEndsAdv ends₀ 0` `rfl`-reduces to `ends₀` (the
+  landed `:4690–4693` `shiftSeedAdv_zero`-style reduction); the `case hperp` is UNCHANGED (the perp is already
+  at `endsσρ = shiftEndsAdv ends₀ (i−1)` via Leaf A-bulk `shiftEndsAdv_eq_relabel`, so
+  `chainData_freshEdge_slot_perp` feeds it verbatim, `:4694–4699`). The conclusion framework is identical
+  (the engine's `endsσρ`/`qρ`), so the arm shell + the engine `case_III_arm_realization` call are unchanged.
+  Net arm-signature change: ONE hypothesis selector (`endsσρ → ends₀` on `hφ`); the `hrec` slot upgrades to
+  the per-step form (Leaf B's `hrec`, satisfiable because `shiftEndsAdv ends₀ s` records `G`'s links at every
+  step — the conjugate-selector recording R-3 confirmed `endsσρ` satisfies, now needed at each intermediate `s`).
+
+  *(f) BUILDABLE LEAVES IN DEPENDENCY ORDER (each one line; the next build dispatch is mechanical).*
+  1. **`shiftEndsAdv`** (`Operations.lean`, def + `_zero`/`_succ` `rfl` lemmas) — the selector accumulator
+     (Leaf A); ~1 commit, mirrors `shiftSeedAdv` (`:1711–1722`).
+  2. **`shiftEndsAdv_eq_relabel`** (`Relabel.lean`) — the bulk identity `shiftEndsAdv ends₀ (i−1) = endsσρ`
+     (Leaf A-bulk); ~1 commit, mirrors `shiftSeedAdv_eq_funLeft_shiftPerm` (`:4097`). **THE RISK LEAF** (see (g)).
+  3. **`shiftBodyListAsc_foldl_mem_span_rigidityRows_selAdv`** (`Relabel.lean`) — the selector-advancing
+     membership fold (Leaf B); ~1–2 commits, the per-step `hends'_off` is the new obligation.
+  4. **`chainData_freshEdge_slot_mem_selAdv`** (`Relabel.lean`) — the restated slot core (Leaf C); ~1 commit,
+     a near-mechanical re-thread of `:4156–4227` onto Leaf B.
+  5. **`chainData_relabel_arm_hρGv` re-thread** (`Relabel.lean:4625`) — `hφ@ends₀` + `hrec` per-step + call
+     Leaf C (per (e)); ~1 commit. THEN the arm shell (`refine case_III_arm_realization`) + **2c-iii**
+     `chainData_dispatch`.
+
+  *(g) THE ONE HONEST RISK — FLAGGED, NOT FORCED.* Leaf A-bulk (`shiftEndsAdv_eq_relabel`, leaf 2) is the
+  single un-verified algebraic step: `shiftEndsAdv` advances by composing per-step *vertex* swaps on the
+  selector's *output endpoints*, whereas the target `endsσρ` is `σ⁻¹ ∘ ends₀ ∘ shiftEdgePerm` — a vertex
+  relabel on the output AND an *edge* relabel on the input. These must coincide. The seed analogue
+  (`shiftSeedAdv_eq_funLeft_shiftPerm`) only needed the vertex side (the seed has no edge argument), so this
+  is genuinely MORE than the P3 template — the edge-side `shiftEdgePerm`-vs-vertex-`shiftPerm` coupling (the
+  KT-6.54 `vⱼ ↦ vⱼ₊₁` / edge `eⱼ ↦ eⱼ₊₁` lockstep, `shiftEdgePerm_apply_edge_interior`,
+  `Operations.lean:2064`) must be shown to make the per-step output-endpoint swap equal the bulk
+  input-edge-relabel-plus-output-vertex-relabel. This is plausible (the cycle couples edge and vertex
+  indices by construction) and NOT a motive/IH/contract change, but it is the recon's residual unknown:
+  **if leaf 2 does NOT close (the edge/vertex coupling does not telescope), the `shiftEndsAdv` accumulator
+  must instead be DEFINED to relabel the edge argument too** (`shiftEndsAdv ends₀ (s+1) e := (swap…)·(shiftEndsAdv
+  ends₀ s ((shiftEdgePerm-step) e))`), shifting the work into leaf 1's `def` and re-checking leaf 2 against it.
+  Either way the leaf count + signatures (d)/(f) hold; only leaf 2's proof shape is at risk, and it is a
+  selector-algebra identity (no new geometry, no new span/rank fact). **The build should open at leaf 1
+  (mechanical) and resolve leaf 2's edge/vertex coupling with a recon-or-spike before committing to the
+  `shiftEndsAdv` def shape.** No telescope re-proof, no new invariant, no motive change — the genuinely-new
+  math (the perp, P2, the chain induction) is all LANDED; ROUTE α is a selector-bookkeeping re-architecture
+  with one algebraic identity (leaf 2) as its only honest unknown.
+
+  **CLAUSE (ii) HONESTY.** This pins a buildable decomposition with exact signatures grounded in the landed
+  bodies (4 probes), and NAMES the one residual algebraic risk (leaf 2) rather than asserting it closes. It is
+  NOT a confident transport-leaf pin (the I.8.12 trap): the telescope-survival question is answered with
+  Lean evidence (it is selector-free), the foldl core + gate are confirmed selector-advancing-ready, and the
+  one unknown is honestly flagged with a fallback. No motive/IH/contract change; `d=3` M₃ unaffected (`i=2`,
+  no `hφ` slot, no general fold). The landed `chainData_relabel_arm_hρGv` stays a correct lemma until leaf 5
+  re-threads it; nothing reverts.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
