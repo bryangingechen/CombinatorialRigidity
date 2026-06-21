@@ -336,6 +336,19 @@ to be re-derived by re-reading entries later.
   pinned the `card` goal closes by `rw [Fintype.card_fin]` alone. One build cycle. Below the bar for a
   TACTICS lift (a one-off of the pervasive "name the implicit the elaborator can't infer" idiom).
 
+### [idiom] Annotating a `panelRow`-subtype element `(↑i : β × _ × _).2.1` re-opens the stuck `powersetCard` metavar — destructure the subtype membership instead (`⟨⟨i, hi⟩, rfl⟩`)
+- **Where it bit:** `BodyHingeFramework.notMem_span_mkQ_pmR_row_of_gate` (`Candidate.lean`, the chain
+  arm's `hLI` corner obligation (b)), after `rw [Submodule.map_span, Submodule.span_le]; rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩`
+  over a `i : ↑s` (with `s : Set (β × ↑(powersetCard …) × ↑(powersetCard …))`).
+- **Friction:** writing `(↑i : β × _ × _).2.1` to read off the `⋀ᵏ`-pair components left the two `_` as
+  fresh metavars (`?m.480`), so `hs (↑i) i.2 : (↑i).1 = e` did *not* unify with the goal's `(↑i).1`
+  (same `powersetCard`-metavar family as the `Set.powersetCard.compl` entry above). Two build cycles.
+- **Resolution:** `rintro _ ⟨_, ⟨⟨i, hi⟩, rfl⟩, rfl⟩` so `i` carries the *bare* product type and `i.2.1`/
+  `i.2.2`/`hs i hi` all elaborate without annotation — the same shape `span_panelRow_comp_single_of_edge`
+  uses (`Pinning.lean:569`). Covered by the existing metavar entry; a one-line reminder, no TACTICS lift.
+  (Also: dropping the `↑(span …)` coercion before `Submodule.mem_dualAnnihilator` needs an explicit
+  `rw [SetLike.mem_coe]` — the recurring coercion-drop idiom, FRICTION line ~666.)
+
 ### [process] A red-node re-classification: re-verify against the source — but classify by what the *formalization* must prove, which can be weaker than the source's *stated* mechanism
 - **Where it bit:** Phase 22e N3a (`lem:case-III-claim612-points-affineIndep`, KT eq. (6.45) point
   choice), over three passes. (1) The 2026-06-06 N3-design-pass *weakened* N3a from genericity to
