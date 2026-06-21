@@ -5,16 +5,19 @@ foundation. The `hρGv` algebraic core + chain-induction (LEAVES 1–4) + seed b
 perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition `chainData_freshEdge_slot_perp` +
 the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LANDED axiom-clean.
 **`chainData_relabel_arm_hρGv` is a CORRECT lemma** producing `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals
-(G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp. The `hφ` seam (the slot core's
-selector-fixed fold wants the base redundancy at the *relabelled* `endsσρ`, A-1 gives it at the
-*un-relabelled* `ends₀`; 3rd touch of the member-mapping wall) is **DESIGN-SETTLED via ROUTE α**
-(USER-CONFIRMED 2026-06-21; design §(o‴)(I.8.13), Lean-verified) — a 5-leaf re-architecture re-threading the
+(G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp. The `hφ` seam is being dissolved by
+**ROUTE α** (USER-CONFIRMED 2026-06-21; design §(o‴)(I.8.13)) — a 5-leaf re-architecture re-threading the
 slot core to consume `hφ`@`ends₀` and advance the selector in lockstep with the seed (KT 6.62-faithful).
-**ROUTE-α leaf 1 `shiftEndsAdv` is LANDED axiom-clean (2026-06-21)** — the selector accumulator + its
-`_zero`/`_succ` `rfl` lemmas (`Relabel.lean`, beside `shiftSeedAdv`). **NEXT = ROUTE-α leaf 2
-`shiftEndsAdv_eq_relabel`** (the bulk identity `shiftEndsAdv ends₀ (i−1) = endsσρ`; **THE RISK LEAF** —
-edge/vertex coupling, recon-or-spike before committing to leaf 1's def shape, §(o‴)(I.8.13)(g)), then leaves
-3–5 (exact signatures: §(o‴)(I.8.13)(d)/(f)). **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM**
+**ROUTE-α leaf 1 `shiftEndsAdv` LANDED 2026-06-21 — BUT THE RECON-OR-SPIKE ON LEAF 2 (design §(o‴)(I.8.14),
+2026-06-21) FOUND ITS DEF SHAPE WRONG.** A throwaway Lean probe computed the landed `shiftEndsAdv ends₀
+(i−1)` closed form = `fun e => ((shiftPerm i.castSucc).symm (ends₀ e).1, …)` — endpoint half ALREADY
+correct (`.symm`), but the **edge argument is UNTOUCHED** whereas `endsσρ` reads `ends₀ (shiftEdgePerm i e)`.
+So **leaf 2 as stated (`= endsσρ`) is FALSE against the landed def**, and (g)'s fallback (fold `shiftEdgePerm`
+into leaf 1's `def`) is REQUIRED. **NEXT = the leaf-1-def RE-DESIGN recon** (NOT "build leaf 2"): pin a
+per-step edge advance that is BOTH gate-compatible (leaf 3's `hends'_off` touches only `edge(s+1)`/`edge(s+2)`,
+`Relabel.lean:1201`) AND accumulates to the `e₀`-threaded cycle `shiftEdgePerm i` — the genuine multi-leaf
+difficulty, likely needing a `shiftEdgePerm` step-factorization first (no `shiftEdgePerm_eq_swap_mul` exists).
+Detail + the verified closed form: design §(o‴)(I.8.14). **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM**
 (confirm-and-delete at the arm-build commit). Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b
 green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
@@ -31,47 +34,40 @@ re-narrated here.
 
 ## Current state
 
-**ROUTE α USER-CONFIRMED (2026-06-21) and DESIGN-SETTLED** (design §(o‴)(I.8.13), Lean-verified via 4
-`lean_run_code` probes against the landed bodies). The α/β pick is closed (α over β); the central
-telescope-survival question is **ANSWERED** and the route decomposes into 5 buildable leaves with exact
-signatures (design §(o‴)(I.8.13)(d)/(f)). **Leaf 1 `shiftEndsAdv` LANDED axiom-clean (2026-06-21).** The
-just-landed `chainData_relabel_arm_hρGv` is confirmed correct — nothing to revert; leaf 5 re-threads it.
+**ROUTE α USER-CONFIRMED (2026-06-21)**; the α/β pick is closed (α over β) and the telescope-survival
+question is ANSWERED (selector-free → survives trivially, design §(o‴)(I.8.13)). **But the recon-or-spike
+(g) mandated on leaf 2 RAN (design §(o‴)(I.8.14), 2026-06-21) and resolved the risk NEGATIVE: leaf 1's
+landed `def` is the WRONG shape, so leaf 2 as stated cannot hold and (g)'s fallback is REQUIRED.** A
+throwaway Lean probe (compiled `success:true`, then deleted — tree byte-clean) computed the landed
+`shiftEndsAdv ends₀ (i−1)` closed form and compared it to the arm's `endsσρ` (`Relabel.lean:4688`).
 
-**THE TELESCOPE SURVIVES TRIVIALLY (the open question, answered):** `wstep_foldl_hingeRow_telescope`
-(`Relabel.lean:3187`) is a **pure linear-map identity over `(w : ℕ → α)`** — it mentions no `ends`, no
-framework, no graph (only `wstep`/`hingeRow` + the finite-range `Set.InjOn w (Set.Iic (m+2))`; the P1
-`Function.Injective` blocker is ALREADY landed-resolved). A selector is not part of its statement, so a
-non-fixed-selector fold cannot disturb it. The selector lives EXCLUSIVELY at the membership layer. The real
-make-or-break is one level up: the membership fold `shiftBodyListAsc_foldl_mem_span_rigidityRows` (`:1785`)
-currently FIXES the selector (a CHOICE of that wrapper) — but the foldl core
-`wstep_foldl_mem_span_rigidityRows` (`:1338`, arbitrary per-step `F : ℕ → BodyHingeFramework`) and the
-single-step gate (`:1201`, two distinct `ends ends'`) are ALREADY selector-advancing-ready.
+**THE VERIFIED CLOSED FORM (design §(o‴)(I.8.14)(a)):** `shiftEndsAdv ends₀ (i−1) = fun e =>
+((shiftPerm i.castSucc).symm (ends₀ e).1, (shiftPerm i.castSucc).symm (ends₀ e).2)` — the recursion wraps
+each new swap OUTERMOST, so the accumulated swaps read off the **reverse** product = `(prod)⁻¹ =
+(shiftPerm i.castSucc).symm` (involutions; `prod = shiftPerm i.castSucc` is `shiftSeedAdv_eq_funLeft_shiftPerm`'s
+internal step). So the **endpoint half is ALREADY correct** (the `.symm`/inverse direction `endsσρ` wants —
+(g)'s vertex-direction worry was a non-issue). The **sole discrepancy is the EDGE argument**: landed reads
+`ends₀ e`; `endsσρ` reads `ends₀ (shiftEdgePerm i e)`. Hence **leaf 2 `= endsσρ` is FALSE for arbitrary
+`ends₀`**, and (g)'s fallback (fold `shiftEdgePerm i` into leaf 1's `def`) is REQUIRED and MINIMAL.
 
-**NEXT STEP — open ROUTE-α leaf 2 (the smallest concrete next commit): `shiftEndsAdv_eq_relabel`** in
-`Relabel.lean`, the bulk identity `shiftEndsAdv ends₀ (i−1) = endsσρ` (the P3 selector cousin of
-`shiftSeedAdv_eq_funLeft_shiftPerm`). **THIS IS THE RISK LEAF** (§(o‴)(I.8.13)(g)): it couples an *edge*
-relabel (`shiftEdgePerm` on the input) with a *vertex* relabel (`shiftPerm` on the output endpoints) — more
-than the vertex-only seed cousin. **Recon-or-spike the edge/vertex coupling BEFORE committing to leaf 1's
-`shiftEndsAdv` def shape** (the fallback is to fold the edge relabel into the def itself). Leaf 1
-`shiftEndsAdv` is LANDED axiom-clean (`Relabel.lean`, beside `shiftSeedAdv`; def + `_zero`/`_succ` `rfl`).
-(Exact signatures for all 5 leaves: design §(o‴)(I.8.13)(d)/(f).)
+**THE GENUINE DIFFICULTY NOW PINNED (design §(o‴)(I.8.14)(c)):** leaf 1's `def` is DOUBLY constrained and
+the constraints collide — leaf 2 needs the WHOLE edge cycle `shiftEdgePerm i` at the top step, but leaf 3's
+per-step gate (`Relabel.lean:1201`, `hends'_off` touches only `edge(s+1)`/`edge(s+2)`) needs a per-step edge
+advance. `shiftEdgePerm i = formPerm [edge 0, e₀, edge i, edge 1, …]` is the `e₀`-threaded edge cycle — it
+does NOT decompose into ascending adjacent swaps like `shiftPerm` (no `shiftEdgePerm_eq_swap_mul`).
+Reconciling the two is the real make-or-break (likely a per-step edge-swap accumulator + a `shiftEdgePerm`
+step-factorization theory), not a mechanical mirror of the seed.
 
-The fix restates the slot core to consume A-1's `hφ` at the **un-relabelled `ends₀`** (= A-1's genuine
-output, eliminating the hybrid wall) and advance the selector `ends₀ → endsσρ` IN the per-step fold, in
-lockstep with the seed — KT-6.62-faithful (the iso `ρᵢ` applied step-by-step, never pre-applied to the base
-redundancy). The slot's CONCLUSION framework (`G−vᵢ, endsσρ, qρ`) and the per-edge perp (STEP 1∘STEP 2 =
-`chainData_freshEdge_slot_perp`, LANDED) are UNCHANGED — only the `hφ` input selector moves `endsσρ → ends₀`.
-
-**THE ONE HONEST RISK (flagged, not forced; design §(o‴)(I.8.13)(g)):** leaf 2
-(`shiftEndsAdv_eq_relabel`, the bulk identity `shiftEndsAdv ends₀ (i−1) = endsσρ`) couples an *edge* relabel
-(`shiftEdgePerm` on the input) with a *vertex* relabel (`shiftPerm` on the output endpoints) — genuinely MORE
-than the P3 seed cousin `shiftSeedAdv_eq_funLeft_shiftPerm` (`:4097`, vertex-only, no edge argument). Plausible
-(the cycle couples edge/vertex indices by construction, `shiftEdgePerm_apply_edge_interior`) but UNVERIFIED;
-the fallback is to fold the edge relabel into the `shiftEndsAdv` def itself. A selector-algebra identity only
-— no new geometry/span/rank fact, no motive/IH/contract change. **Leaf 1 is LANDED with the (d)-signature
-def shape (endpoint-only swap, edge argument untouched); recon-or-spike leaf 2's edge/vertex coupling against
-THAT shape — if it does not telescope, leaf 1's `shiftEndsAdv` def is the thing to revisit (fold the
-`shiftEdgePerm`-step into the def).**
+**NEXT STEP — the leaf-1-def RE-DESIGN recon (NOT "build leaf 2"; design §(o‴)(I.8.14)(d)).** Leaf 1's
+landed `shiftEndsAdv` (`Relabel.lean:1731`) must be re-designed: fold a gate-compatible per-step EDGE
+advance into it, reconciling §(o‴)(I.8.14)(c)(i)/(ii). The smallest concrete next commit is that recon —
+pin the per-step edge swap (the move at step `s` touching only `edge(s+1)`/`edge(s+2)` that accumulates to
+`shiftEdgePerm i`), probably preceded by a `shiftEdgePerm` step-factorization. Until that def settles, leaves
+2–5's signatures (which name `shiftEndsAdv`) are provisional; the endpoint-half closed form (a) is verified
+and reusable. The slot core's CONCLUSION framework (`G−vᵢ, endsσρ, qρ`) and the per-edge perp (STEP 1∘STEP 2
+= `chainData_freshEdge_slot_perp`, LANDED) are UNCHANGED — ROUTE α moves only the `hφ` INPUT selector
+`endsσρ → ends₀`. No motive/IH/contract change; d=3 M₃ unaffected (`i=2`, no `hφ` slot, no general fold);
+`chainData_relabel_arm_hρGv` stays a correct lemma until leaf 5 re-threads it — nothing reverts.
 
 The d=3 `M₃` arm does NOT exercise this (`i=2`, single surviving edge, no general fold, no `hφ` slot — its
 `hρGv` runs W9a on the single candidate row directly), so the seam is a strict general-`d` obligation;
@@ -236,12 +232,14 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       (the genuinely-new relabel arm — KT's `ρᵢ` is a `(i−1)`-cycle): foundation LANDED; FIX-FORK SETTLED. The
       perp slot was ROUTE-SETTLED (STEP-1-at-base + STEP-2 scalar transport, both LANDED; T-1/T-2 ORPHANED).
       **The `hρGv` slot `chainData_relabel_arm_hρGv` LANDED but exposed the `hφ` SEAM** — its slot core wants
-      the base redundancy at the relabelled `endsσρ`, A-1 gives it at `ends₀`; **DESIGN-SETTLED via ROUTE α**
-      (USER-CONFIRMED 2026-06-21; the telescope is selector-free → survives, design §(o‴)(I.8.13)). **Leaf 1
-      `shiftEndsAdv` LANDED axiom-clean 2026-06-21. NEXT = ROUTE-α leaf 2 `shiftEndsAdv_eq_relabel`** (the
-      bulk identity, THE RISK LEAF — recon-or-spike the edge/vertex coupling, §(o‴)(I.8.13)(g)), then leaves
-      3–5 (§(o‴)(I.8.13)(f)) → the arm shell + **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot,
-      no general fold) — zero-regression unaffected.
+      the base redundancy at the relabelled `endsσρ`, A-1 gives it at `ends₀`; being dissolved via **ROUTE α**
+      (USER-CONFIRMED 2026-06-21; telescope selector-free → survives, design §(o‴)(I.8.13)). **Leaf 1
+      `shiftEndsAdv` LANDED 2026-06-21, but the leaf-2 recon-or-spike (§(o‴)(I.8.14)) found its def shape
+      WRONG: the landed `shiftEndsAdv (i−1)` leaves the EDGE arg untouched (endpoint half already correct),
+      so leaf 2 `= endsσρ` is FALSE — (g)'s fallback (fold `shiftEdgePerm` into leaf 1's def) is REQUIRED.
+      NEXT = the leaf-1-def RE-DESIGN recon** (gate-compatible per-step edge advance accumulating to
+      `shiftEdgePerm i`; §(o‴)(I.8.14)(c)/(d)), then leaves 2–5 → arm shell + **2c-iii** `chainData_dispatch`.
+      d=3 M₃ = `i=2` (no `hφ` slot, no general fold) — zero-regression unaffected.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -270,19 +268,20 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above: open ROUTE-α leaf 2 —
-`Graph.ChainData.shiftEndsAdv_eq_relabel`** (`Relabel.lean`, the bulk identity `shiftEndsAdv ends₀ (i−1) =
-endsσρ`, the P3 selector cousin of `shiftSeedAdv_eq_funLeft_shiftPerm`). **THE RISK LEAF** (§(o‴)(I.8.13)(g)):
-recon-or-spike the edge-relabel (`shiftEdgePerm` on the input) / vertex-relabel (`shiftPerm` on the output
-endpoints) coupling against leaf 1's landed def shape before committing — fallback is to fold the edge
-relabel into the `shiftEndsAdv` def. ROUTE α is USER-CONFIRMED and DESIGN-SETTLED (design §(o‴)(I.8.13)); the
-telescope-survival question is answered (it is selector-free → survives trivially). The 5-leaf plan with exact
-signatures is design §(o‴)(I.8.13)(d)/(f): (1) `shiftEndsAdv` def — **LANDED axiom-clean 2026-06-21**
-(`Relabel.lean`, beside `shiftSeedAdv`; def + `_zero`/`_succ` `rfl`); (2) `shiftEndsAdv_eq_relabel` bulk
-identity (**THE RISK LEAF** — edge/vertex coupling, recon-or-spike before pinning the def shape,
-§(o‴)(I.8.13)(g)); (3) `shiftBodyListAsc_foldl_mem_span_rigidityRows_selAdv` selector-advancing fold; (4)
-`chainData_freshEdge_slot_mem_selAdv` restated slot core; (5) `chainData_relabel_arm_hρGv` re-thread
-(`hφ@ends₀` + per-step `hrec`). After leaf 5 the arm shell is the mechanical `refine case_III_arm_realization`
+**The single authoritative next-step is in *Current state* above: the leaf-1-def RE-DESIGN recon** (NOT
+"build leaf 2" — the leaf-2 recon-or-spike ran and found leaf 1's landed def shape WRONG, design
+§(o‴)(I.8.14)). The landed `shiftEndsAdv ends₀ (i−1)` closed form leaves the EDGE argument UNTOUCHED
+(endpoint half = `(shiftPerm i.castSucc).symm`, already correct), whereas `endsσρ` reads `ends₀ (shiftEdgePerm
+i e)` — so leaf 2 `= endsσρ` is FALSE for arbitrary `ends₀`, and (g)'s fallback (fold `shiftEdgePerm i` into
+leaf 1's `def`) is REQUIRED. The smallest concrete next commit is that re-design recon: pin a per-step edge
+advance that is BOTH gate-compatible (leaf 3's `hends'_off` touches only `edge(s+1)`/`edge(s+2)`,
+`Relabel.lean:1201`) AND accumulates to the `e₀`-threaded cycle `shiftEdgePerm i` — likely preceded by a
+`shiftEdgePerm` step-factorization (no `shiftEdgePerm_eq_swap_mul` exists). Detail + the verified closed form +
+the leaf-1/leaf-3 constraint collision: design §(o‴)(I.8.14)(a)/(c)/(d). The 5-leaf plan's signatures
+(§(o‴)(I.8.13)(d)/(f)) are now PROVISIONAL on the corrected leaf-1 def: (1) `shiftEndsAdv` def — landed
+2026-06-21 but **must be RE-DESIGNED** (edge-untouched, wrong shape); (2) `shiftEndsAdv_eq_relabel` (false as
+stated against the landed def); (3) `…_selAdv` fold; (4) `chainData_freshEdge_slot_mem_selAdv` slot core;
+(5) `chainData_relabel_arm_hρGv` re-thread. After leaf 5 the arm shell is the mechanical `refine case_III_arm_realization`
 at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, `hρe₀` via
 the G4d-i `a`-column read (M₃'s `hρ_ac`), discriminator `htrans`/`hLn`/`hρgate`/`hgab` (2c-i) + removeVertex
 bookkeeping per the M₃/`chainData_split_realization` templates. Then **2c-iii** `chainData_dispatch` (replaces
@@ -411,8 +410,15 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
 - **ROUTE-α leaf 1 `shiftEndsAdv` LANDED 2026-06-21 (axiom-clean).** The selector accumulator (`Relabel.lean`,
   beside `shiftSeedAdv`) + `_zero`/`_succ` `rfl` lemmas, advancing `ends₀ → endsσρ` one swap per step (swap =
   `shiftSeedSwap s`, the SAME swap the seed uses). Mechanical mirror of `shiftSeedAdv` per the (d)-signature
-  (endpoint-only swap, edge argument untouched); no `[DecidableEq β]` (the design's was unused). NEXT = leaf 2
-  `shiftEndsAdv_eq_relabel` (THE RISK LEAF). No friction.
+  (endpoint-only swap, edge argument untouched); no `[DecidableEq β]` (the design's was unused).
+- **LEAF-2 RECON-OR-SPIKE 2026-06-21 (docs-only; resolves (g)'s mandated check NEGATIVE; design §(o‴)(I.8.14)).**
+  A throwaway Lean probe (compiled clean, then deleted — tree byte-clean) computed the landed `shiftEndsAdv ends₀
+  (i−1) = fun e => ((shiftPerm i.castSucc).symm (ends₀ e).1, …)` — endpoint half already correct (`.symm`, via
+  the reverse-product-of-involutions = `prod⁻¹`), but the EDGE arg is UNTOUCHED, while `endsσρ` reads `ends₀
+  (shiftEdgePerm i e)`. So **leaf 2 `= endsσρ` is FALSE** against the landed def; (g)'s fallback (fold
+  `shiftEdgePerm` into leaf 1) is REQUIRED — and it collides with leaf 3's per-step gate (`hends'_off` touches
+  only `edge(s+1)`/`edge(s+2)`, but `shiftEdgePerm i` is the `e₀`-threaded cycle, no `_eq_swap_mul`). NEXT = the
+  leaf-1-def re-design recon (NOT "build leaf 2").
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).

@@ -5596,7 +5596,69 @@ the slot core `chainData_freshEdge_slot_mem` (`:4136`), surviving-row builder `f
   Lean evidence (it is selector-free), the foldl core + gate are confirmed selector-advancing-ready, and the
   one unknown is honestly flagged with a fallback. No motive/IH/contract change; `d=3` M₃ unaffected (`i=2`,
   no `hφ` slot, no general fold). The landed `chainData_relabel_arm_hρGv` stays a correct lemma until leaf 5
-  re-threads it; nothing reverts.
+  re-threads it; nothing reverts. **N.B. — leaf 2 (g)'s risk is RESOLVED NEGATIVE; see (I.8.14): leaf 2 as
+  stated in (d)/(f) is FALSE against the landed leaf-1 def, and (g)'s fallback (fold `shiftEdgePerm` into
+  leaf 1's `def`) is REQUIRED. Read (I.8.14) before building.**
+
+**(I.8.14) LEAF-2 RISK RESOLVED — NEGATIVE: the recon-or-spike (g) mandated ran; leaf 2 as stated is FALSE
+against the landed leaf-1 `def`; (g)'s fallback (fold `shiftEdgePerm` into leaf 1) is REQUIRED, and it
+collides with leaf 3's per-step gate — the genuine multi-leaf difficulty, now pinned (2026-06-21, opus;
+docs-only, no Lean landed; the finding was Lean-verified by a throwaway probe `theorem … = fun e => …`
+that compiled `success:true` warning-clean apart from a cosmetic `[DecidableEq β]` unused-arg, then deleted —
+tree byte-clean).** Per (g)'s explicit instruction ("resolve leaf 2's edge/vertex coupling with a
+recon-or-spike before committing to the `shiftEndsAdv` def shape"), the spike computed the landed leaf-1
+`shiftEndsAdv`'s closed form and compared it to the arm's `endsσρ` (`Relabel.lean:4688–4690`).
+
+  *(a) THE LANDED `shiftEndsAdv (i−1)` CLOSED FORM (Lean-verified):*
+  `cd.shiftEndsAdv ends₀ ((i:ℕ)−1) = fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ e).1,
+  (cd.shiftPerm i.castSucc).symm (ends₀ e).2)`. The proof chain (all from landed lemmas):
+  (i) `shiftEndsAdv ends₀ s e = (P_s.reverse.prod (ends₀ e).1, P_s.reverse.prod (ends₀ e).2)` with
+  `P_s = List.ofFn (fun t : Fin s => shiftSeedSwap t)` — by induction, the `_succ` recursion wraps the NEW
+  swap OUTERMOST, so the accumulated swaps read off the **reverse** product (vs `shiftSeedAdv`'s `.prod`,
+  whose `_succ` applies the new swap to the argument, innermost); (ii) `P_{i−1}.reverse.prod =
+  (P_{i−1}.prod)⁻¹` because every `shiftSeedSwap t` is an involution (`Equiv.swap_inv`/`inv_one`, via
+  `List.prod_inv_reverse`); (iii) `P_{i−1}.prod = shiftPerm i.castSucc` (the internal step of
+  `shiftSeedAdv_eq_funLeft_shiftPerm`, `hlist` + `shiftPerm_eq_prod_map_swap_shiftBodyListAsc`); so
+  `P_{i−1}.reverse.prod = (shiftPerm i.castSucc)⁻¹ = (shiftPerm i.castSucc).symm`.
+
+  *(b) THE VERDICT — the endpoint half is ALREADY CORRECT; the EDGE argument is the sole discrepancy.* The
+  landed `shiftEndsAdv (i−1)` already applies `(shiftPerm i.castSucc).symm` to the endpoints (the `.symm`/
+  inverse direction `endsσρ` wants — so (g)'s "per-step *vertex* swaps vs `σ⁻¹`" worry is a NON-issue: the
+  order-reversal in the recursion silently produces the inverse, matching `endsσρ`). The ONE genuine
+  discrepancy is the EDGE argument: landed reads `ends₀ e`; `endsσρ` reads `ends₀ (shiftEdgePerm i e)`. So
+  **leaf 2 `shiftEndsAdv ends₀ (i−1) = endsσρ` is FALSE for arbitrary `ends₀`** (the two sides read `ends₀`
+  at distinct edges `e` vs `shiftEdgePerm i e`). (g)'s fallback is therefore REQUIRED, and is also MINIMAL:
+  leaf 1's `def` must fold the `shiftEdgePerm i` edge relabel into the edge argument; nothing else changes.
+
+  *(c) THE GENUINE MULTI-LEAF DIFFICULTY NOW PINNED — leaf 1's def is DOUBLY CONSTRAINED, and the two
+  constraints collide.* (i) Leaf 2 needs leaf 1 to advance the edge by the WHOLE `shiftEdgePerm i` cycle at
+  the top step. (ii) Leaf 3's per-step gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows`
+  (`Relabel.lean:1201`) takes `hends'_off : ∀ f, f ≠ edge(s+1) → f ≠ edge(s+2) → ends' f = ends f` — the
+  per-step selector advance may move ONLY edges `edge(s+1)`/`edge(s+2)`. So leaf 1 must advance the edge
+  ONE gate-compatible swap per step AND telescope to the full `shiftEdgePerm i`. But `shiftEdgePerm i =
+  formPerm [edge 0, e₀, edge i, edge 1, …, edge(i−1)]` is the edge cycle through the fresh `e₀`/top `edge i`
+  reorderings — it does NOT decompose into the same ascending adjacent swaps as `shiftPerm` (there is NO
+  `shiftEdgePerm_eq_swap_mul` analogue of `shiftPerm_eq_swap_mul`, `Operations.lean:1522`). Reconciling the
+  gate's `{edge(s+1), edge(s+2)}`-only per-step move with the `e₀`-threaded edge cycle is the real
+  make-or-break — NOT a mechanical mirror of the seed. This is genuine new structure (likely a per-step edge
+  swap accumulator + a `shiftEdgePerm` factorization theory), not a one-commit leaf; the recon-or-spike (g)
+  asked for was right to gate it.
+
+  *(d) NEXT STEP (corrected; supersedes (f)'s "open at leaf 1, mechanical").* Leaf 1's landed
+  `shiftEndsAdv` (`Relabel.lean:1731`) is the WRONG def shape and must be RE-DESIGNED (not merely consumed):
+  fold a gate-compatible per-step EDGE advance into it, reconciling constraints (c)(i)/(c)(ii). The
+  smallest concrete next commit is the **leaf-1-def re-design recon** — pin the per-step edge swap (what
+  edge move at step `s` is BOTH gate-compatible — touches only `edge(s+1)`/`edge(s+2)` — AND accumulates to
+  `shiftEdgePerm i`), likely needing a `shiftEdgePerm` step-factorization first. Until that def is settled,
+  leaves 2–5's signatures (which name `shiftEndsAdv`) are provisional. The endpoint-half closed form (a) is
+  verified and reusable. NO motive/IH/contract change; `d=3` M₃ still unaffected (`i=2`, no `hφ` slot, no
+  general fold); `chainData_relabel_arm_hρGv` stays a correct lemma (its `hφ@endsσρ` slot is the wall ROUTE α
+  dissolves) until leaf 5 re-threads it — nothing reverts.
+
+  **CLAUSE (ii) HONESTY.** This is a NEGATIVE finding pinned with Lean evidence (the probe compiled the
+  closed form), not a confident pin: it overturns (f)'s "leaf 1 mechanical, open there" by showing leaf 1's
+  landed def is wrong-shaped, and it names the leaf-1/leaf-3 constraint collision as the genuine difficulty
+  rather than asserting a fix. No Lean landed (the probe was deleted; tree byte-clean).
 
 ---
 
