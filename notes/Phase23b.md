@@ -52,7 +52,7 @@ through A-2 (`candidate_perp_two_incident_supportExtensors`) to discharge `ρ₀
 FOR REAL, then thread to the `link`-half builder. **REMAINING A-3:** the all-`i` lift (propagate the
 witness across the chain off the W6b `hρe₀` base — the iterated KT eq.-(6.66) carry; each interior vertex
 needs its own col-vanishing witness, which W6b gives only at the base) + the arm `chainData_relabel_arm`;
-**P3 (flagged):** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is unbuilt. d=3 zero-regression stands; then **2c-iii** `chainData_dispatch`;
+**P3 (seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`) LANDED 2026-06-20** (the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ`); the eq-(6.44) chain-induction LEAVES 1–4 are LANDED, so the arm `chainData_relabel_arm` (LEAF 5 assembly) is the remaining `hρGv` step. d=3 zero-regression stands; then **2c-iii** `chainData_dispatch`;
 **CHAIN-5 → moved to 23c** (ENTRY-gated). Full rolling state = *Current state* + *Hand-off* + design
 §(o‴)(I.8); the settled route history (the clean-relabel refutation, the FIX-FORK, the engine-slot
 adjudication) is in `notes/Phase23-design.md` §(o‴) + git, **not** re-narrated here.
@@ -206,10 +206,15 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
     See the *Hand-off* §(I.8.9-SETTLE) 5-leaf plan paragraph below + design §(I.8.9-SETTLE). (This supersedes
     the pre-settle producer `exists_interior_redundancy_witness` — the regroup is now the eq-(6.44) chain
     induction off the single base redundancy, not a per-vertex witness; §(I.8.9-PAIR).)
-  - **P3 (flagged, likely clean ~½-commit).** The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's seed)
-    vs the engine/`chainData_bottom_relabel` seed `qρ = q ∘ shiftPerm i.castSucc` must coincide — NO landed
-    lemma (searched); the (I.7.0) "H.10-confirmed" claim conflated the single-step cancel with the composed
-    `shiftSeedAdv = q ∘ shiftPerm`. Named un-landed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`.
+  - **P3 (seed bridge) — LANDED 2026-06-20** (`shiftSeedAdv_eq_funLeft_shiftPerm` + the closed-form
+    helper `shiftSeedAdv_eq_prod_shiftSeedSwap`, `Relabel.lean` tail, both axiom-clean; full project green
+    + lint, d=3 zero-regression, zero callers). The fold seed `shiftSeedAdv q (i−1)` (the `hW` span's
+    seed) equals the engine seed `qρ = fun p => q (shiftPerm i.castSucc p.1, p.2)` (KT eq. 6.56), for a
+    nondegenerate interior candidate (`1 ≤ i`). Proof: read `shiftSeedAdv q s` as the swap product
+    `(List.ofFn (shiftSeedSwap ·)).prod` (induction on `s`, `ofFn_succ'` + `List.prod_concat` matching the
+    `Q (s+1) = Q s ∘ swap` recursion), then identify the `i−1`-fold product with `shiftPerm i.castSucc`
+    via the G1 bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (`shiftSeedSwap s = swap (vₛ₊₂) (vₛ₊₁)`
+    matches the per-body swap of `shiftBodyListAsc` element-for-element). Self-contained, zero blast radius.
 
   The P2 A-2/A-1/A-3-single-vertex steps are LANDED (Route A); the **A-3 all-`i` lift goes via Route W
   option (a′)** (the i=3 de-risk refuted the witness-free Route G4d-i-PROJECTED; the panel-correspondence
@@ -217,8 +222,9 @@ transports `(G−v) → (G−a)` via the bespoke `case_III_bottom_relabel`, **no
   `sub_mem` peel; `i3_freshEdge_surviving_rows_mem_deRisk` concrete surviving-row membership, perp as
   `hperp0/1`; `i3_freshEdge_interior_acolumn_sup_deRisk` the route-fork de-risk;
   `i3_panelCorrespondence_supportExtensor_deRisk` the option-(a′) de-risk, now a corollary of the general
-  `panelCorrespondence_supportExtensor`) STAND. The arm `chainData_relabel_arm` is gated on Route W's
-  producer `exists_interior_redundancy_witness` (+ P3); its panel-correspondence transport is now LANDED.
+  `panelCorrespondence_supportExtensor`) STAND. The arm `chainData_relabel_arm` (LEAF 5) is gated only on
+  threading the landed chain-induction (LEAF 4) + A-2 carrier + the seed bridge P3 (done) — its
+  panel-correspondence transport AND seed bridge are now both LANDED.
 - **Orphaned-for-the-arm (split-level / now-unused, delete at the arm-build commit):**
   `rigidityRow_chainData_relabel` / `rigidityRow_relabel_perm` (rows 288/291); the candidate→base
   T-W9a fold; **and now the two pre-built block bricks `rigidityRow_relabel_to_block{,_swap}`** (the
@@ -266,9 +272,10 @@ the `i=3` gate's `m=2` generalization, KT eq. (6.66)), and the **`hρGv` general
 `m` surviving rows over an abstract `S`; the `hρGv` algebraic CLOSED FORM is COMPLETE), and **P1 (the
 finite-range restatement of both, `Set.InjOn w (Set.Iic (m+2))`) is now LANDED 2026-06-20** (axiom-clean,
 the `Function.Injective (ℕ→α)` interface was dead over finite `α`). So → the **arm wiring**
-`chainData_relabel_arm`, **gated on P2/P3** (ARM-WIRING DESIGN-PASS §(o‴)(I.8) — NOT
-"purely graph-level / one instantiation": **P2** (next) the `m` `hsurv` summands need
-`ρ₀ ⊥ chain-edge panel` (deferred as abstract-`S` hyps, unbuilt); **P3** the fold-vs-engine seed bridge) +
+`chainData_relabel_arm`, whose two genuinely-new prerequisites are now both LANDED — **P2** (the
+`ρ₀ ⊥ chain-edge panel` perp, via the eq-(6.44) chain-induction LEAVES 1–4 + the A-2 carrier) and
+**P3** (the fold-vs-engine seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`) — leaving only the LEAF 5
+*assembly* (the `refine case_III_arm_realization` wire-up, §(o‴)(I.8)) +
 **CHAIN-2c-iii** (the assembly `chainData_dispatch`), then
 **CHAIN-5** (signature frozen by the CHAIN↔ENTRY contract; gated on the rest of CHAIN-2 + ENTRY's
 extractor reshape).
@@ -396,8 +403,13 @@ the `hρGv` G1 bridges (`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` / `wstep_f
 zero callers existed so self-contained, d=3 zero-regression). The `Function.Injective (w : ℕ → α)` interface
 was dead over the arm's `[Finite α]`; the arm now supplies `hinj` from `cd.vtx_inj` via `Set.InjOn.mono`.
 
-**NEXT STEP — the arm wiring `chainData_relabel_arm`, gated on the TWO remaining prerequisites
-(ARM-WIRING DESIGN-PASS §(o‴)(I.8), 2026-06-20).** The `hρGv` algebraic CLOSED FORM is complete + now
+**NEXT STEP — the arm wiring `chainData_relabel_arm` (LEAF 5 assembly).** Both arm-wiring
+prerequisites that were genuinely-new are now LANDED — the eq-(6.44) chain-induction LEAVES 1–4 (the
+per-edge `group = −ρ₀` for the `hρGv` perp) and the seed bridge P3
+(`shiftSeedAdv_eq_funLeft_shiftPerm`, 2026-06-20, the fold seed = engine seed `qρ`). What remains is
+the LEAF 5 *assembly*: thread LEAF 4 (`neg_mem` → engine `ρ₀`) + the A-2 carrier +
+`freshEdge_surviving_row_mem` into a `refine case_III_arm_realization` at the per-`i` roles (design
+§(o‴)(I.8.4)). The `hρGv` algebraic CLOSED FORM is complete + now
 finite-range-callable (`wstep_foldl_hingeRow_telescope` + the membership corollary
 `wstep_foldl_freshEdge_slot_mem`, both axiom-clean, P1 done), and the slot→brick map + engine bindings are
 source-verified clean for every slot except `hρGv` (`Gv = G−vᵢ` / `ends = relabelled` / `q = qρ` /
@@ -596,11 +608,18 @@ consumer reading: every interior chain edge-group's tail column `= −ρ₀` (`2
 `rw [interior_group_eq_baseRedundancy]` (LEAF 3's constant value) then read the redundant base row
 `hingeRow ab₁ ab₂ ρ₀` on its head body `ab₂ = vtx 2`: `hingeRow_swap` rewrites it to
 `hingeRow ab₂ ab₁ (−ρ₀)`, whose tail column at `ab₂` is `−ρ₀` (`hingeRow_comp_single_tail`,
-`ab₂ ≠ ab₁` by `vtx_inj`). Two-line proof, no friction. **← NEXT = LEAF 5** (arm wiring
-`chainData_relabel_arm`: thread LEAF 4's `group = −ρ₀` through `neg_mem` + the A-2 carrier
-(`candidate_perp_two_incident_supportExtensors`) + `freshEdge_surviving_row_mem` to discharge `hρGv`'s
-per-edge perp + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`). Full plan + file:lines +
-eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
+`ab₂ ≠ ab₁` by `vtx_inj`). Two-line proof, no friction.
+**LEAF 5 SEED BRIDGE (P3) `shiftSeedAdv_eq_funLeft_shiftPerm` — LANDED 2026-06-20** (`Relabel.lean`
+tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers; + the closed-form
+helper `shiftSeedAdv_eq_prod_shiftSeedSwap`). The fold seed `shiftSeedAdv q (i−1)` = the engine seed
+`qρ = fun p => q (shiftPerm i.castSucc p.1, p.2)` (KT eq. 6.56), `1 ≤ i`: read `shiftSeedAdv q s` as the
+swap product `(List.ofFn (shiftSeedSwap ·)).prod` (induction, `ofFn_succ'` + `prod_concat`, matching
+`Q (s+1) = Q s ∘ swap`), then identify the `i−1`-fold product with `shiftPerm i.castSucc` via the G1
+bridge `shiftPerm_eq_prod_map_swap_shiftBodyListAsc`. Self-contained, zero blast radius.
+**← NEXT = LEAF 5 ASSEMBLY** (arm wiring `chainData_relabel_arm`: thread LEAF 4's `group = −ρ₀` through
+`neg_mem` + the A-2 carrier (`candidate_perp_two_incident_supportExtensors`) +
+`freshEdge_surviving_row_mem` to discharge `hρGv`'s per-edge perp; the P3 seed bridge it consumes is now
+landed). Full plan + file:lines + eq-numbers → design §(I.8.9-SETTLE)/(I.8.9-PAIR).
 **Orphan status:** `_of_witness` / A-2 `candidate_perp_two_incident_*` / `panelCorrespondence_supportExtensor`
 / `candidate_supportExtensor_perp_of_base`
 STAND (Route W's building blocks, NOT
@@ -608,11 +627,11 @@ confirm-and-delete). `freshEdge_surviving_row_mem` (the perp-half BUILDER) + the
 + the `_sup_` crux + A-1/A-2/`_of_witness` STAND. NO motive/IH change; d=3 zero-regression. Then the arm
 `chainData_relabel_arm`. (The refuted §(o‴)(I.8.4) step 2 / (I.8.6.v) `ρ₀_perp_interior_chain_edge` route is
 superseded by (I.8.7).)
-**(P3, flagged, likely
-clean)** the fold seed `shiftSeedAdv q (i−1)` = engine seed `qρ` is an unbuilt bridge
-(`shiftSeedAdv_eq_funLeft_shiftPerm`). Neither is a motive/signature change; option (b) + d=3 zero-regression
-stand; ~3–4 commits (P2→P3→assembly). Sub-step sequence + exact signatures in design §(o‴)(I.8.4); the perp
-verdict (Q1–Q4 vs KT 6.50–6.66 + the landed bricks) in §(o‴)(I.8.3.v)/(I.8.6.v).
+**(P3, the seed bridge) — LANDED** (`shiftSeedAdv_eq_funLeft_shiftPerm`, 2026-06-20): the fold seed
+`shiftSeedAdv q (i−1)` = the engine seed `qρ`. NO motive/signature change; option (b) + d=3
+zero-regression stand. Remaining to the closed arm: LEAF 5 assembly (P2 perp via LEAF 4 + A-2 →
+`hρGv`). Sub-step sequence + exact signatures in design §(o‴)(I.8.4); the perp verdict (Q1–Q4 vs KT
+6.50–6.66 + the landed bricks) in §(o‴)(I.8.3.v)/(I.8.6.v).
 
 > **⚠ SUPERSEDED OLD-ROUTE HISTORY — skip to the arm-wiring paragraph below.** Everything from here down
 > to "**arm wiring `chainData_relabel_arm`**" (the `i=3`-de-risk / KT-source-re-derivation / LEAF-ρ1–ρ3 /

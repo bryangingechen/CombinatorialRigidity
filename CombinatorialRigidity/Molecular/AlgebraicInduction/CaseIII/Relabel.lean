@@ -3975,4 +3975,72 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
   rw [← hab₂, BodyHingeFramework.hingeRow_swap ab₁ ab₂ ρ₀,
     BodyHingeFramework.hingeRow_comp_single_tail hne]
 
+/-! ### P3 — the seed bridge `shiftSeedAdv = q ∘ shiftPerm` (CHAIN-2c-ii-arm)
+
+The seed-advancing fold `shiftBodyListAsc_foldl_mem_span_rigidityRows` proves the `hρGv` span
+membership at the *fold* seed `shiftSeedAdv q (i − 1)` — the base seed `q` post-composed (on the
+vertex slot) with the first `i − 1` cycle swaps `(v₂ v₁), …, (vᵢ vᵢ₋₁)`, applied one per step.
+The arm engine `case_III_arm_realization`, by contrast, binds its candidate seed as `qρ = q ∘
+shiftPerm i.castSucc` (KT eq. (6.56), the candidate seed `qᵢ = q₁ ∘ ρᵢ`). These two must coincide
+for the fold's span output to feed the engine's `hρGv` slot. They do: the `i − 1` ascending cycle
+swaps composed left-to-right ARE `shiftPerm i.castSucc` (the permutation-level G1 bridge
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc`).
+
+The bridge (flagged P3, §(o‴)(I.8.4)/(I.8) — "the fold seed = the engine seed"). At the `d = 3`
+`M₃` instance `i = 2` the cycle `shiftPerm 2 = (v₁ v₂)` is the single swap, and `shiftSeedAdv q 1 =
+q ∘ swap` is the engine's `qρ` verbatim (zero-regression). -/
+
+/-- **The seed accumulator as a swap-product reindex of `q`** (the P3 closed form). The
+seed-advancing accumulator `shiftSeedAdv q s` post-composes the base seed `q` on its vertex slot
+with the product of the first `s` per-step cycle swaps `[shiftSeedSwap 0, …, shiftSeedSwap (s−1)]`
+(read left-to-right, head outermost). Proved by induction on `s`: the base is `prod [] = 1`, and the
+step peels the last swap off `List.ofFn (· + 1)` via `ofFn_succ'` + `List.prod_concat`
+(so `(P * swap) x = P (swap x)`), matching `shiftSeedAdv`'s recursion `Q (s+1) = Q s ∘ swap`.
+Graph-free over the carrier. -/
+theorem _root_.Graph.ChainData.shiftSeedAdv_eq_prod_shiftSeedSwap [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (q : α × Fin (k + 2) → ℝ) (s : ℕ) :
+    cd.shiftSeedAdv q s
+      = fun p => q ((List.ofFn fun t : Fin s => cd.shiftSeedSwap t).prod p.1, p.2) := by
+  induction s with
+  | zero => simp only [Graph.ChainData.shiftSeedAdv_zero, List.ofFn_zero, List.prod_nil,
+      Equiv.Perm.coe_one, _root_.id, Prod.mk.eta]
+  | succ s ih =>
+    rw [Graph.ChainData.shiftSeedAdv_succ, ih]
+    funext p
+    -- `ofFn` (over `Fin (s+1)`) peels the last swap off the right (`ofFn_succ'`), and the product
+    -- of a `concat` head-applies the trailing swap (`(P * swap) x = P (swap x)`), matching
+    -- `shiftSeedAdv`'s recursion `Q (s+1) p = Q s (swap p.1, p.2)`.
+    rw [List.ofFn_succ', List.prod_concat]
+    simp only [Fin.val_last, Equiv.Perm.coe_mul, Function.comp_apply, Fin.val_castSucc]
+
+/-- **P3 — the fold seed equals the engine seed `q ∘ shiftPerm i.castSucc`** (CHAIN-2c-ii-arm;
+the flagged seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`, design §(o‴)(I.8.4)).
+The seed-advancing fold's accumulator at the top step `shiftSeedAdv q (i − 1)` (the seed feeding
+`shiftBodyListAsc_foldl_mem_span_rigidityRows`'s span output) coincides with the relabel arm
+engine's candidate seed `qρ = fun p => q (shiftPerm i.castSucc p.1, p.2)` (KT eq. (6.56)) — for a
+nondegenerate interior candidate `i` (`1 ≤ i`). The proof reads `shiftSeedAdv q (i − 1)` as the
+product of the `i − 1` per-step swaps (`shiftSeedAdv_eq_prod_shiftSeedSwap`), then identifies that
+product with `shiftPerm i.castSucc` via the permutation-level G1 bridge
+`shiftPerm_eq_prod_map_swap_shiftBodyListAsc` (whose `s`-th swap `swap (vtx (s+2)) (vtx (s+1))` is
+exactly `shiftSeedSwap s` over the in-range cycle, by `getElem_shiftBodyListAsc` +
+`shiftSeedSwap_eq`). Graph-free over the carrier; the `d = 3` `i = 2` instance is the single-swap
+`M₃` seed (zero-regression). -/
+theorem _root_.Graph.ChainData.shiftSeedAdv_eq_funLeft_shiftPerm [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (q : α × Fin (k + 2) → ℝ) (i : Fin cd.d)
+    (hi : 1 ≤ (i : ℕ)) :
+    cd.shiftSeedAdv q ((i : ℕ) - 1)
+      = fun p => q (cd.shiftPerm i.castSucc p.1, p.2) := by
+  rw [cd.shiftSeedAdv_eq_prod_shiftSeedSwap q ((i : ℕ) - 1)]
+  -- The `i − 1`-fold swap product is `shiftPerm i.castSucc` (the ascending G1 bridge), after
+  -- matching the per-step swaps element-for-element (`shiftSeedSwap s = swap (vₛ₊₂) (vₛ₊₁)`).
+  have hlist : (List.ofFn fun t : Fin ((i : ℕ) - 1) => cd.shiftSeedSwap t)
+      = (cd.shiftBodyListAsc i).map (fun b => Equiv.swap b.2.1 b.1) := by
+    refine List.ext_getElem (by simp only [List.length_ofFn, List.length_map,
+      cd.length_shiftBodyListAsc]) fun s h₁ h₂ => ?_
+    simp only [List.getElem_ofFn, List.getElem_map, cd.getElem_shiftBodyListAsc]
+    have hs : s + 2 < cd.d + 1 := by
+      simp only [List.length_ofFn] at h₁; have := i.2; omega
+    rw [cd.shiftSeedSwap_eq hs]
+  rw [hlist, ← cd.shiftPerm_eq_prod_map_swap_shiftBodyListAsc i]
+
 end CombinatorialRigidity.Molecular
