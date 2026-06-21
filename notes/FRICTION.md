@@ -1173,6 +1173,15 @@ to be re-derived by re-reading entries later.
   `isSpanningTreePacking_of_isTight` inherit it. Phases 14–15 mentioning
   the same union object in a signature will need it too. (Confirmed:
   Phase 14's `kFrameMatroid_eq_unionPow_cycleMatroid` needed it.)
+- **Same pattern, different object (Phase 23c):** `PanelHingeFramework.caseIIICandidate`
+  carries `[DecidableEq β]`, so factoring the W6a–W6f arm tail into
+  `case_III_realization_of_rank` (`CaseIII/Arms.lean`) — whose `hrank`
+  hypothesis *mentions* `caseIIICandidate` in its type — forced
+  `[DecidableEq β]` onto the new lemma's binder list, even though the
+  original engine got it free from `classical` (there `caseIIICandidate`
+  appeared only in the body). General rule: moving an object from a proof
+  body into a *signature* (a hypothesis type) re-exposes the instance
+  requirements `classical` was silently covering.
 
 ### [idiom] `[matroid]` `Matroid.Union`'s ground set is `univ`, not the common ground of its factors
 - **Where it bit:** `Graph.kFrameMatroid_eq_unionPow_cycleMatroid`

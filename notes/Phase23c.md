@@ -155,8 +155,9 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
 
 1. **The forked general-`d` chain cert + arm** (§I.8.24) → the `±r`-based engine, NO `hρGv` (replaces the dead
    `hρGv` chain arm). d=3 keeps the landed engine. **Cert `case_III_rank_certification_chain` ✓ LANDED**
-   (2026-06-21); the arm `case_III_arm_realization_chain` (discharges the cert's corner-data hypotheses) is the
-   next build (*Hand-off*).
+   (2026-06-21); **the SHARED W6a–W6f tail `case_III_realization_of_rank` ✓ FACTORED OUT** (2026-06-21,
+   zero-regression — the d=3 engine now delegates to it); the arm `case_III_arm_realization_chain` (produces
+   the cert's corner data, gets `hrank`, calls the shared tail) is the next build (*Hand-off*).
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -194,10 +195,21 @@ injective_map` (mirror, `Mathlib/LinearAlgebra/Dimension/Constructions.lean`),
 `BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`), the `±r` identity
 `interior_group_acolumn_eq_neg_baseRedundancy = −ρ₀` (`Relabel.lean:4039`).
 
+**SHARED W6a–W6f tail FACTORED OUT (2026-06-21) — `case_III_realization_of_rank` (`Arms.lean`, before the
+engine; §I.8.24(3) REUSE list).** The rank-to-realization tail of `case_III_arm_realization` — everything that
+depends only on the candidate rank bound `hrank` and the split/seed data, *not* on how the rank was certified
+(W6e re-extract → W6f good-`t` shear → GAP-3 LI-transfer → GAP-2 generic upgrade) — is now a standalone lemma
+taking `hrank` as a hypothesis. The `d=3` engine `case_III_arm_realization` is re-expressed as: derive `hrank`
+via the landed `hρGv`-collapse cert `case_III_rank_certification`, then `exact case_III_realization_of_rank …`
+(byte-zero-regression; M₂/M₃ + dispatch untouched, build/lint/axiom-clean). So the chain arm no longer needs
+to copy ~180 lines of W6a–W6f: it produces `hrank` via `case_III_rank_certification_chain` and calls the SAME
+shared tail. This was the §I.8.24(3) "SHARED arm-realization tail … lifts verbatim" brick, now genuinely shared.
+
 **Next concrete commit — `case_III_arm_realization_chain` (`Arms.lean`, beside the engine; §I.8.24(3)).** It
-consumes `case_III_rank_certification_chain` and DISCHARGES its corner-data hypotheses from the in-scope chain
-data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest template) produces the engine's
-`hρGv` at the single-swap `d=3` instance. The four obligations:
+produces the chain cert's corner data, applies `case_III_rank_certification_chain` to get `hrank`, then
+`exact case_III_realization_of_rank …` (the now-shared tail). The corner data is discharged from the in-scope
+chain data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest template) produces the
+engine's `hρGv` at the single-swap `d=3` instance. The four obligations:
 - **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — instantiate
   `Submodule.exists_le_finrank_eq_card_of_injective_map` at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the
   M₃ arm's `hw` route `Relabel.lean:2729`), `f = the base LI family` of card `D(m_v−1)`, `hS` = the span-level
@@ -216,6 +228,16 @@ data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest te
 
 ## Decisions made during this phase
 
+- **SHARED W6a–W6f tail `case_III_realization_of_rank` FACTORED OUT (2026-06-21), zero-regression.** Extracted
+  the rank-to-realization tail of `case_III_arm_realization` (`Arms.lean`) — the part depending only on the
+  candidate rank bound `hrank` + split/seed data, not on the certification route (W6e re-extract → W6f good-`t`
+  shear → GAP-3 → GAP-2) — into a standalone lemma taking `hrank` as a hypothesis. The d=3 engine now derives
+  `hrank` via `case_III_rank_certification` and delegates (`exact case_III_realization_of_rank …`); M₂/M₃ +
+  dispatch untouched. Build/lint/axiom-clean (`propext`/`Classical.choice`/`Quot.sound`). This realizes the
+  §I.8.24(3) "SHARED arm-realization tail … lifts verbatim" REUSE brick, so `case_III_arm_realization_chain`
+  produces only the corner data + `hrank` and reuses the tail (no ~180-line W6a–W6f copy). Friction: factoring
+  `caseIIICandidate` into the `hrank` *signature* re-exposed its `[DecidableEq β]` requirement that `classical`
+  was covering in the engine body (FRICTION `[idiom]` `Matroid.Union`-`DecidableEq`-in-signature entry).
 - **FIRST build `case_III_rank_certification_chain` LANDED (2026-06-21), §I.8.24(1) type-checks in Lean.**
   The forked general-`d` Case-III rank cert (`Candidate.lean`, after `finrank_span_rigidityRows_ge_of_corner`),
   axiom-clean, build/lint clean. It is a *re-statement consuming landed bricks*: takes the corner data

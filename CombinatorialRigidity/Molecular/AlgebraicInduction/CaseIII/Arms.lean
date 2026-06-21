@@ -35,42 +35,33 @@ The certify-then-rebase arm closers (W7 = M₁, W8 = M₂), the `Sum.elim` index
 per-line realization, the `|V| = 3` triangle base (`lem:triangle-realization`), and the
 triangle-vs-chain producer dichotomy. -/
 
-/-- **W7 — the M₁ arm closer: certify-then-rebase realizes the `d = 3` candidate at full rank**
-(`lem:case-II-realization` / `lem:case-III`, the role-parametric arm of the `hcand` discharge;
-Katoh–Tanigawa 2011 §6.4.1, eqs. (6.29)/(6.30), the certify-then-rebase route of design
-§1.51(a)/(h),
-Phase 22h). Given the unpacked split context — fresh body `v ∉ V(Gᵥ)` joined to `a, b ∈ V(Gᵥ)` by
-the two re-inserted hinges `e_a = va`, `e_b = vb`, the IH-rigid old subgraph `Gᵥ`, the witness
-second normal `n'` of `Π(a)` with its transversality data (`hLn`, `hgab`), and W6b's candidate /
-bottom-row package (`ρ`, `w`) — produces `HasGenericFullRankRealization k G`.
+/-- **The shared rank-to-realization tail of the Case-III arm** (`lem:case-III`, the W6e–W6f +
+GAP-2/GAP-3 stratum of the certify-then-rebase route; Katoh–Tanigawa 2011 §6.4.1, eq. (6.29)→(6.30),
+design §1.51(a)/(h), Phase 22h/23c). This is the part of `case_III_arm_realization` that depends
+**only** on the candidate rank bound `hrank` (KT's (6.29) full-rank certification of the `t = 0`
+candidate framework `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`) and the
+split/seed data — *not* on how that rank was certified. Factored out so the two certifications share
+it verbatim: the landed `d = 3` engine `case_III_arm_realization` (which produces `hrank` via the
+`hρGv`-collapse cert `case_III_rank_certification`) and the forked general-`d` chain arm
+`case_III_arm_realization_chain` (which produces `hrank` via the `±r` block-rank-additivity cert
+`case_III_rank_certification_chain`, NO `hρGv`; design §(o‴)(I.8.24)(3), the SHARED W6a–W6f tail).
 
-The route is KT's own reading of eq. (6.29) ("if the top-left `6×6` block is full rank then
-`rank R(G,p₁) = 6(|V|−1)`", p. 684), a statement about the *rank* of `R(G,p₁)`, not a distinguished
-row family. (i) W6d certifies the (6.29) count at the hinge-level framework
-`F₀ := caseIIICandidate G ends q e_a e_b n_a n' n_b 0` as the rank bound
-`D(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. (ii) W6e re-extracts from that rank a *literal*
-`F₀.panelRow` family of exactly `D(|V(G)|−1)` linking edges — each slot an
-`annihRow`-of-the-edge-extensor row, polynomial in the shear. (iii) W6f transfers that family along
-the one-parameter `t`-family `F(t)` to a good `t^* ≠ 0` outside the GAP-3 bad set
-(`setOf_not_shear_linearIndependent_subsingleton`), keeping it linearly independent and forcing
-`![n_a + t^*·n', n_b]` independent (the reproduced `vb`-hinge stays transversal). (iv) Each
-`F(t^*)`-slot lies in `span (ofNormals G ends q₀).rigidityRows`, where `q₀` shears `v` along
-`n_a + t^*·n'`: the `e_b`-slot and the `Gᵥ`-slots have extensors *equal* to the sheared seed's (the
-`e_b`-normals are `(n_a + t^*·n', n_b)` exactly; the `Gᵥ`-endpoints avoid `v`), so they are genuine
-rows, while the candidate `e_a`-slot is `(-1/t^*) •` the genuine `e_a`-row
-(`panelSupportExtensor_add_smul_left` makes the sheared `e_a`-extensor `(-t^*) • C(L)`, `annihRow`
-linear in the extensor scales the row, and `t^* ≠ 0` inverts). (v)
-`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` gives rigidity on `V(G)` at
-`ofNormals G ends q₀`, and GAP-2 `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades
-to the generic motive.
+The route, from `hrank`: (ii) W6e re-extracts from the rank a *literal* `F₀.panelRow` family of
+exactly `D(|V(G)|−1)` linking edges (each an `annihRow`-of-the-edge-extensor row, polynomial in the
+shear). (iii) W6f transfers that family along the one-parameter `t`-family `F(t)` to a good
+`t^* ≠ 0` outside the GAP-3 bad set, keeping it linearly independent and forcing
+`![n_a + t^*·n', n_b]` independent. (iv) Each `F(t^*)`-slot lies in
+`span (ofNormals G ends q₀).rigidityRows` (`q₀` shears `v` along `n_a + t^*·n'`; the candidate
+`e_a`-slot is `(-1/t^*) •` the genuine `e_a`-row). (v)
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` gives rigidity on `V(G)`, and GAP-2
+upgrades it to the generic motive.
 
-Role-parametric over `(v, a, b, e_a, e_b, n')` so that W8 (the M₂ arm) is the instantiation at the
-swapped roles `a ↔ b` with `ρ' := -ρ`. **§38:** the only concrete carrier reached is
-`ofNormals G ends q₀` in (iv)–(v); every extensor evaluation goes through the W6a simp lemmas plus
-`toBodyHinge_supportExtensor`/`ofNormals_normal` and the funext-`if_neg` `q₀`-override pattern, and
-every membership is an explicit link witness (the `hrow_mem` idiom, never `whnf` on the carrier). -/
-theorem PanelHingeFramework.case_III_arm_realization
-    [Finite α] [Finite β]
+**§38:** the only concrete carrier reached is `ofNormals G ends q₀` in (iv)–(v); every extensor
+evaluation goes through the W6a simp lemmas plus `toBodyHinge_supportExtensor`/`ofNormals_normal`
+and the funext-`if_neg` `q₀`-override pattern, and every membership is an explicit link witness (the
+`hrow_mem` idiom, never `whnf` on the carrier). -/
+theorem PanelHingeFramework.case_III_realization_of_rank
+    [Finite α] [Finite β] [DecidableEq β]
     (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
     {v a b : α} {e_a e_b : β}
     (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
@@ -81,22 +72,13 @@ theorem PanelHingeFramework.case_III_arm_realization
     (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
     (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
       (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
-    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
     {n' : Fin (k + 2) → ℝ}
     (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
     (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
-    {ρ : Module.Dual ℝ (ScrewSpace k)}
-    (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
-    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
-    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
-      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
-    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
-    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
-    (hw : LinearIndependent ℝ w)
-    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
-      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
-        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
-        w j = BodyHingeFramework.hingeRow a b ρ')
+    (hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows))
     {n : ℕ} (hdef : G.deficiency n = 0) :
     PanelHingeFramework.HasGenericFullRankRealization k n G := by
   classical
@@ -106,13 +88,8 @@ theorem PanelHingeFramework.case_III_arm_realization
   have hva : v ≠ a := fun h => hvVc (h ▸ haVc)
   have hvb : v ≠ b := fun h => hvVc (h ▸ hbVc)
   have hnev : V(G).Nonempty := ⟨v, hG_ea.left_mem⟩
-  -- (i) W6d: the (6.29) rank lower bound at the `t = 0` candidate framework `F₀`.
+  -- (i) The (6.29) rank lower bound at the `t = 0` candidate framework `F₀` (supplied as `hrank`).
   set F₀ := PanelHingeFramework.caseIIICandidate G ends q e_a e_b na n' nb 0 with hF₀
-  have hVoneG : 1 ≤ V(Gv).ncard := hVone
-  have hrank : screwDim k * (V(G).ncard - 1)
-      ≤ Module.finrank ℝ (Submodule.span ℝ F₀.rigidityRows) :=
-    PanelHingeFramework.case_III_rank_certification G Gv ends hvVc haVc hbVc hG_ea hG_eb
-      hends_ea hends_eb heab hleG hVone hVcard hLn hρgate hρe₀ hρGv hwcard hw hwmem
   -- The candidate / reproduced extensors at `F₀` (W6a simp lemmas), and their nonvanishing.
   have hsuppea : F₀.supportExtensor e_a = panelSupportExtensor na n' :=
     PanelHingeFramework.caseIIICandidate_supportExtensor_candidate G ends q na n' nb 0 heab
@@ -295,6 +272,85 @@ theorem PanelHingeFramework.case_III_arm_realization
   rw [hG] at hrig
   exact PanelHingeFramework.hasGenericFullRankRealization_of_rigidOn_ofNormals G ends hends_q₀
     hne_q₀ hnev hrig n hdef
+
+/-- **W7 — the M₁ arm closer: certify-then-rebase realizes the `d = 3` candidate at full rank**
+(`lem:case-II-realization` / `lem:case-III`, the role-parametric arm of the `hcand` discharge;
+Katoh–Tanigawa 2011 §6.4.1, eqs. (6.29)/(6.30), the certify-then-rebase route of design
+§1.51(a)/(h),
+Phase 22h). Given the unpacked split context — fresh body `v ∉ V(Gᵥ)` joined to `a, b ∈ V(Gᵥ)` by
+the two re-inserted hinges `e_a = va`, `e_b = vb`, the IH-rigid old subgraph `Gᵥ`, the witness
+second normal `n'` of `Π(a)` with its transversality data (`hLn`, `hgab`), and W6b's candidate /
+bottom-row package (`ρ`, `w`) — produces `HasGenericFullRankRealization k G`.
+
+The route is KT's own reading of eq. (6.29) ("if the top-left `6×6` block is full rank then
+`rank R(G,p₁) = 6(|V|−1)`", p. 684), a statement about the *rank* of `R(G,p₁)`, not a distinguished
+row family. (i) W6d certifies the (6.29) count at the hinge-level framework
+`F₀ := caseIIICandidate G ends q e_a e_b n_a n' n_b 0` as the rank bound
+`D(|V(G)|−1) ≤ finrank (span F₀.rigidityRows)`. (ii) W6e re-extracts from that rank a *literal*
+`F₀.panelRow` family of exactly `D(|V(G)|−1)` linking edges — each slot an
+`annihRow`-of-the-edge-extensor row, polynomial in the shear. (iii) W6f transfers that family along
+the one-parameter `t`-family `F(t)` to a good `t^* ≠ 0` outside the GAP-3 bad set
+(`setOf_not_shear_linearIndependent_subsingleton`), keeping it linearly independent and forcing
+`![n_a + t^*·n', n_b]` independent (the reproduced `vb`-hinge stays transversal). (iv) Each
+`F(t^*)`-slot lies in `span (ofNormals G ends q₀).rigidityRows`, where `q₀` shears `v` along
+`n_a + t^*·n'`: the `e_b`-slot and the `Gᵥ`-slots have extensors *equal* to the sheared seed's (the
+`e_b`-normals are `(n_a + t^*·n', n_b)` exactly; the `Gᵥ`-endpoints avoid `v`), so they are genuine
+rows, while the candidate `e_a`-slot is `(-1/t^*) •` the genuine `e_a`-row
+(`panelSupportExtensor_add_smul_left` makes the sheared `e_a`-extensor `(-t^*) • C(L)`, `annihRow`
+linear in the extensor scales the row, and `t^* ≠ 0` inverts). (v)
+`isInfinitesimallyRigidOn_vertexSet_of_span_le_rigidityRows` gives rigidity on `V(G)` at
+`ofNormals G ends q₀`, and GAP-2 `hasGenericFullRankRealization_of_rigidOn_ofNormals` upgrades
+to the generic motive.
+
+Role-parametric over `(v, a, b, e_a, e_b, n')` so that W8 (the M₂ arm) is the instantiation at the
+swapped roles `a ↔ b` with `ρ' := -ρ`. **§38:** the only concrete carrier reached is
+`ofNormals G ends q₀` in (iv)–(v); every extensor evaluation goes through the W6a simp lemmas plus
+`toBodyHinge_supportExtensor`/`ofNormals_normal` and the funext-`if_neg` `q₀`-override pattern, and
+every membership is an explicit link witness (the `hrow_mem` idiom, never `whnf` on the carrier). -/
+theorem PanelHingeFramework.case_III_arm_realization
+    [Finite α] [Finite β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hρgate : ρ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
+    (hρe₀ : ρ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    (hρGv : BodyHingeFramework.hingeRow a b ρ ∈ Submodule.span ℝ
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+    {ιb : Type*} [Finite ιb] {w : ιb → Module.Dual ℝ (α → ScrewSpace k)}
+    (hwcard : Nat.card ιb = screwDim k * (V(Gv).ncard - 1))
+    (hw : LinearIndependent ℝ w)
+    (hwmem : ∀ j, w j ∈ (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0 ∧
+        w j = BodyHingeFramework.hingeRow a b ρ')
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  classical
+  -- (i) W6d: the (6.29) rank lower bound at the `t = 0` candidate framework `F₀` via the
+  -- `hρGv`-collapse certification `case_III_rank_certification`. Then the SHARED
+  -- rank-to-realization tail (`case_III_realization_of_rank`, W6e–W6f + GAP-2/GAP-3) closes — it is
+  -- agnostic to how the rank was certified, so the forked general-`d` arm reuses it verbatim
+  -- (design §(o‴)(I.8.24)(3)).
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) :=
+    PanelHingeFramework.case_III_rank_certification G Gv ends hvVc haVc hbVc hG_ea hG_eb
+      hends_ea hends_eb heab hleG hVone hVcard hLn hρgate hρe₀ hρGv hwcard hw hwmem
+  exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
+    hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
 /-- **W8 — the M₂ arm closer: the candidate at `e_b` realizes the `d = 3` framework at full rank**
 (`lem:case-II-realization` / `lem:case-III`, the second of the three `hcand`-discharge arms;
