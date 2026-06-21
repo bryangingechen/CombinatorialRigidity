@@ -9,19 +9,23 @@ the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LAND
 member-mapping wall (the `hφ` seam). ALL LOCAL `hφ`-seam routes EXHAUSTED (ROUTE α §(o‴)(I.8.15);
 `hφ`-at-source B1 §(o‴)(I.8.16/17); both local fold re-shapes §(o‴)(I.8.18)); the artifact `(endsσρ, q)` is a
 Lean-MODELLING choice of the seed-advancing fold (KT eqs. 6.60→6.64 use a whole-matrix column-op reframe).
-**The whole-matrix re-architecture (the §(o‴)(I.8.18) unblock) was decomposed (§(o‴)(I.8.19)) but its LEAF C
-("re-fire A-1 at the candidate") is REFUTED (§(o‴)(I.8.19)-ADDENDUM, 2026-06-21, coordinator-verified): A-1 is
-existential in `ρ`, the landed dispatch requires a SINGLE shared `ρ0` (KT eq. 6.66) — re-firing A-1 =
-rejected Fix B, and tying the fresh `ρ_cand` to `ρ0` needs the dead member-mapping wall or the (6.66)
-carry.** **NEXT = a DESIGN QUESTION, NOT a build (PENDING coordinator/user adjudication):** can KT's
-column-op submatrix-containment (6.60→6.64) carry the FIXED `ρ0` membership `hingeRow v₀v₂ ρ0 ∈ span
-(R(G,pᵢ).rigidityRows)` — a NEW span-inclusion lemma CHAIN-1 does NOT supply (F4) — where the §I.8.18 fold
-form (DEAD) could not, or does it share the wall (→ route B, carry to ENTRY)? Pre-judged NEITHER way. **NO
-C.0–C.6 / motive change** (machinery below dispatch C.3 + record C.1). **NO decl orphaned** — the
-seed-advancing `hφ`-spine subtree (slot core / fold spine / seed-advancing gate / `chainData_relabel_arm_hρGv`)
-is a confirm-and-delete CANDIDATE pending the resolution (REUSED if the crux reduces to the (6.66) carry).
-Once settled → arm shell → **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch`
-(**CHAIN-5 → front of 23c**).
+**The whole-matrix re-architecture (the §(o‴)(I.8.18) unblock) was decomposed (§(o‴)(I.8.19)), its LEAF C
+("re-fire A-1 at the candidate") REFUTED (§(o‴)(I.8.19)-ADDENDUM), and the residual DESIGN QUESTION it left —
+can KT's column-op submatrix-containment (6.60→6.64) carry the FIXED shared `ρ0` membership where the fold
+could not? — is now ADJUDICATED: ROUTE DIES, IT IS THE WALL (§(o‴)(I.8.20), 2026-06-21, KT pp. 696–698 read
+directly).** KT's (6.61) submatrix-containment is relabel-MEDIATED on both axes ((6.62): "column correspondence
+follows from the isomorphism `ρᵢ`"; verbatim "row `(v₀v₂)ᵢ∗` ⇔ row `(v₀v₁)ᵢ∗`" — the redundant row MOVES), so
+the only available transport is the member-MOVING relabel-image map (= the landed `chainData_bottom_relabel`);
+the FIXED-member inclusion is FALSE/unbuilt and is NOT KT's shape; the (6.66) `±r` carry IS the seed-advancing
+telescope (delivers the moved member, no member-fixing second transport). The column-op did NOT escape the
+§(o‴)(I.8.15)/(I.8.18) wall. **NEXT = USER ADJUDICATION OF A FORK, NOT a build (see *Hand-off*):** (B) carry
+`ρ0`/`hφ@endsσρ` to ENTRY (LIKELY-DEAD — the wall relocates, no new transport appears at ENTRY unless ENTRY
+re-derives the redundancy NATIVELY against `endsσρ`), or a more fundamental Lean-architecture rethink of the
+general-`d` arm (re-scoped: §I.8.18's option (A) had LEAF C, now known unsound). **NO C.0–C.6 / motive change**
+(machinery below dispatch C.3 + record C.1). **NO decl orphaned** — the seed-advancing `hφ`-spine + perp/
+telescope subtree stay confirm-and-delete CANDIDATEs (dead-for-this-route, but route B may reuse the telescope
+at ENTRY; the route-SETTLE commit is the user's fork choice). Once the fork settles → arm shell →
+**CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -36,42 +40,54 @@ re-narrated here.
 
 ## Current state
 
-**WHOLE-MATRIX RE-ARCHITECTURE — the I.8.19 leaf decomposition's LEAF C is REFUTED; NEXT is a DESIGN
-QUESTION pending coordinator/user adjudication, NOT a build (§(o‴)(I.8.19)-ADDENDUM, 2026-06-21,
-coordinator-verified verbatim).** The I.8.19 pass proposed producing the candidate redundancy `hρGv` at the
-candidate framework `(G−vᵢ, endsσρ, qρ)` by re-firing A-1 there (LEAF C). An adversarial self-check REFUTED
-it: A-1 is EXISTENTIAL in `ρ` (`Candidate.lean:414`), but the landed dispatch `case_III_candidate_dispatch`
-fires A-1 ONCE at the base, normalizes to a SINGLE shared `ρ0` (`Realization.lean:388–411`), runs the
-discriminator ONCE on `ρ0` (`:439–441`), and threads that SAME `ρ0` into every arm across `fin_cases u`
-(`:502/:514/:592`). The discriminator capstone (`exists_complementIso_…_gen`, `Claim612.lean:1462`) takes ONE
-`r` — KT eq. (6.66) `±r` carry, single-`r` REQUIRED (matches the FIX-FORK Fix-B-infeasible ruling §(o‴)(H) +
-F3, the d=3 M₃ arm at `u=2` TRANSPORTS the shared `ρ0`, never re-fires A-1). So LEAF C's fresh `ρ_cand_i`
-re-introduces the rejected Fix B (per-`i` re-seed); tying it to the discriminator-selected `ρ0` needs either
-the dead member-mapping wall (`hingeRow v₀v₂ ρ0 ∈ span candidate`) or the KT-(6.66) carry — **LEAF C
-RELOCATES the seam, does not dissolve it.** RETRACTED: §I.8.19(a)'s "no member-mapping transport, so the seam
-never arises" (the single-`r` coupling FORCES exactly that transport / the (6.66) carry).
+**WHOLE-MATRIX RE-ARCHITECTURE — ROUTE DIES, IT IS THE WALL. The I.8.19-ADDENDUM(C) open question (can KT's
+column-op submatrix-containment carry the FIXED `ρ0` where the fold could not?) is ADJUDICATED AGAINST the
+route (§(o‴)(I.8.20), 2026-06-21, KT pp. 696–698 read directly from the PDF; every load-bearing claim
+re-derived from the landed bodies).** Trail: the I.8.19 pass proposed producing the candidate `hρGv` by
+re-firing A-1 at the candidate (LEAF C); the ADDENDUM REFUTED LEAF C (A-1 is EXISTENTIAL in `ρ`,
+`Candidate.lean:414`, but the dispatch establishes a SINGLE shared `ρ0` once at the base —
+`Realization.lean:404–411` — runs the discriminator ONCE on `ρ0` — `:439–441` — and threads it into every arm
+— `:502/:514/:592`; the capstone `Claim612.lean:1462` takes ONE `r`, single-`r` REQUIRED, KT (6.66)), leaving
+the residual question of whether the column-op (a structurally-different mechanism — no seed-advance through
+`d−1` frameworks) could carry the FIXED member. **§(o‴)(I.8.20) settles it: NO.** KT's (6.61) submatrix-
+containment is relabel-MEDIATED on BOTH axes — (6.62) "the column correspondence follows from the isomorphism
+`ρᵢ`", and verbatim p. 696 "the row associated with `(v₀v₂)ᵢ∗` in `R(G₁,q₁)` corresponds to the row associated
+with `(v₀v₁)ᵢ∗` in `R(G,pᵢ)`" (the redundant row MOVES). So the column-op inclusion is the relabel-IMAGE
+inclusion `span ((funLeft ρᵢ).dualMap '' base-rows) ⊆ span (candidate-rows)` (= `chainData_bottom_relabel` at
+the span level), which moves `hingeRow v₀v₂ ρ0 ↦ hingeRow v₀v₁ ρ0` — NOT the fixed member. The FIXED-member
+inclusion `span(base) ⊆ span(candidate)` (no relabel on members) WOULD carry it but is FALSE/unbuilt and is
+NOT KT's shape (the load-bearing link `edge 0 = v₀v₁` is recorded at `endsσρ`, not `ends₀`). The (6.66) `±r`
+carry is the seed-advancing telescope (the orphan-candidate subtree encoding (6.44)); its OUTPUT is the MOVED
+member `hingeRow (vtx i−1)(vtx i+1) ρ0` (`Relabel.lean:4174`), its INPUT is the fixed member at `(endsσρ,q)`
+(`:4165`) — it is NOT a member-fixing second transport. **The column-op SHARES the §(o‴)(I.8.15)/(I.8.18)
+member-mapping wall.** This is the honest "it's the wall" verdict — no buildable-looking span-inclusion that
+quietly relies on the member moving was manufactured (the refuted LEAF-C trap).
 
-**THE CORRECTED CRUX + THE LIVE OPEN QUESTION (§(o‴)(I.8.19)-ADDENDUM(C)).** The genuinely-new obligation is
-producing `hingeRow v₀v₂ ρ0 ∈ span (R(G,pᵢ).rigidityRows)` for the FIXED shared `ρ0` via KT's column-op /
-row-correspondence (6.60→6.64) — a NEW span-inclusion lemma `span(R(G₁,q₁)-rows) ⊆ span(R(G,pᵢ)-rows)` that
-CHAIN-1 does NOT supply (F4: CHAIN-1's `columnOp` / `linearIndependent_sumElim_candidateBlock_swap` / the
-`+|ιc|` augment are LINEAR INDEPENDENCE, used by `case_III_rank_certification` internally — not span
-membership). **This is the SAME fixed-member transport §(o‴)(I.8.18) ruled dead in the FOLD form.** OPEN
-QUESTION (pre-judged NEITHER way): *can the column-op / whole-matrix shape carry the FIXED `ρ0` membership
-where the seed-advancing fold could not (the (6.61) submatrix-containment is a genuinely different shape — no
-seed advance through `d−1` frameworks, so it MIGHT carry the fixed member), or does it too reduce to moving a
-fixed member across the relabel, so the whole-matrix route SHARES the wall and route B (carry `ρ0`/`hφ@endsσρ`
-to ENTRY) is the residue?* — a DESIGN question, NOT a buildable leaf.
+**THE RESIDUE — A USER-ADJUDICATION FORK (§(o‴)(I.8.20) VERDICT).** Every structurally-distinct mechanism
+(seed-advancing fold, base→candidate transport, re-fire A-1, column-op submatrix-containment) now reduces to
+the FIXED-`ρ0`-member-at-`(endsσρ,qρ)` wall — there is no fixed-member transport in tree and KT's own
+construction moves the member. The residue is a FORK for the user (NOT a buildable leaf, pre-judged neither
+between the two arms): **(B)** carry `ρ0`/`hφ@endsσρ` as a hypothesis to ENTRY (the landed
+`chainData_relabel_arm_hρGv` shape, `:4671`) — FLAGGED LIKELY-DEAD (I.8.12 ROUTE β / I.8.15 B3 / I.8.18(B)):
+the wall RELOCATES to ENTRY, no new transport appears there unless ENTRY re-derives the redundancy NATIVELY
+against `endsσρ` (a different graph-construction question, unexplored); or **(rethink)** a more fundamental
+Lean-architecture rethink of the general-`d` arm — abandon the materialized-fold modelling of KT (6.62), carry
+the abstract `r ∈ ℝ^D` of (6.66) + the `Mᵢ`-block FORM rather than a transported fixed dual-vector
+(genuinely-new realization architecture, cost UNKNOWN — this is §I.8.18's recommendation (A) RE-SCOPED, since
+(A)'s LEAF-C assembly is now known unsound).
 
 **WHAT SURVIVES.** F1 (A-1 parametric in `(Gab,Gv,ends,q)`) / F2 (A-1's outputs match the engine's
-`hρGv`/`hwmem` slot types) TRUE but NECESSARY-NOT-SUFFICIENT — they missed the discriminator's single-`r`
-coupling. LEAF A `chainData_candidate_rigidOn` (member-free rigid-on transport, P=2) independently fine but
-does NOT rescue LEAF C. **The I.8.19 "confirmed orphan" claim is DOWNGRADED to confirm-and-delete CANDIDATE,
-pending the corrected-crux resolution:** the seed-advancing `hφ`-spine (slot core / fold spine / seed-advancing
-gate / `chainData_relabel_arm_hρGv`) CANNOT be declared orphaned while the route is unsettled — if the crux
-reduces to the (6.66) carry, the perp/telescope machinery that encodes (6.44) is REUSED, not deleted. The
-single-step carrier W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`) STAYS regardless; `d=3`
-M₃ (`i=2`) zero-regression unaffected.
+`hρGv`/`hwmem` slot types) TRUE but NECESSARY-NOT-SUFFICIENT (they missed the single-`r` coupling). F4
+RE-CONFIRMED against the actual conclusions (`Basic.lean:1328/1371` conclude `LinearIndependent`, `span` only
+in `hdiff` — CHAIN-1 is LI-preservation, the whole-matrix span-inclusion is UNBUILT). LEAF A
+`chainData_candidate_rigidOn` (member-free rigid-on transport, P=2) independently fine but does NOT rescue the
+route (the crux is the FIXED-member `hρGv`, not rigidity). **The seed-advancing `hφ`-spine (slot core / fold
+spine / seed-advancing gate / `chainData_relabel_arm_hρGv`) + the perp/telescope subtree stay confirm-and-delete
+CANDIDATEs** — under the §I.8.20 "route dies" verdict they are dead-for-this-route, but route B may reuse the
+telescope at ENTRY (it encodes (6.44)/(6.66)), so confirm-and-delete fires only at the route-SETTLE commit =
+the user's fork choice, NOT here. STAYS regardless: the single-step carrier W9a
+(`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`); the engine/rank-cert (parametric in
+`(Gv,ends,q)`); `chainData_bottom_relabel`; CHAIN-1 LI machinery; `d=3` M₃ (`i=2`) zero-regression unaffected.
 
 **ROUTE α STAYS INFEASIBLE (design §(o‴)(I.8.15), 2026-06-21 — OPTION B, Lean-grounded; the per-step selector
 fold is the wrong tool).** The membership fold's per-step gate (`Relabel.lean:1201`, `hends'_off`) permits each
@@ -255,17 +271,22 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       the base redundancy at the artifact `(endsσρ, q)`, A-1 gives it at the base `(ends₀, q)`. ALL LOCAL
       ROUTES DEAD (ROUTE α §(o‴)(I.8.15), `hφ`-at-source B1 §(o‴)(I.8.16/17), both fold re-shapes
       §(o‴)(I.8.18)); the artifact is a Lean-MODELLING choice of the seed-advancing fold. **The whole-matrix
-      re-architecture (§(o‴)(I.8.18)'s unblock) was decomposed (§(o‴)(I.8.19)) but its LEAF C ("re-fire A-1 at
-      the candidate") is REFUTED (§(o‴)(I.8.19)-ADDENDUM, coordinator-verified): A-1 is existential in `ρ`, the
-      landed dispatch requires a SINGLE shared `ρ0` (KT eq. 6.66) — re-firing A-1 = the rejected Fix B; tying
-      the fresh `ρ_cand` to `ρ0` needs the dead member-mapping wall or the (6.66) carry.** **NEXT = a DESIGN
-      QUESTION, NOT a build** (see *Hand-off*): can KT's column-op submatrix-containment (6.60→6.64) carry the
-      FIXED `ρ0` membership `hingeRow v₀v₂ ρ0 ∈ span (R(G,pᵢ).rigidityRows)` — a NEW span-inclusion lemma
-      CHAIN-1 does NOT supply (F4) — where the §I.8.18 fold form (DEAD) could not, or does it share the wall
-      (→ route B, carry to ENTRY)? PENDING coordinator/user adjudication; pre-judged neither way. **NO C.0–C.6
-      / motive change** (machinery below dispatch C.3 + record C.1). **NO decl orphaned** (the `hφ`-spine is a
-      confirm-and-delete CANDIDATE pending the resolution). Once settled → arm shell + **2c-iii**
-      `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot, no fold) — zero-regression unaffected.
+      re-architecture (§(o‴)(I.8.18)'s unblock) was decomposed (§(o‴)(I.8.19)), its LEAF C ("re-fire A-1 at the
+      candidate") REFUTED (§(o‴)(I.8.19)-ADDENDUM: A-1 existential in `ρ`, the dispatch needs a SINGLE shared
+      `ρ0`), and the residual question (can the column-op carry the FIXED `ρ0`?) ADJUDICATED AGAINST the route:
+      ROUTE DIES, IT IS THE WALL (§(o‴)(I.8.20), KT pp. 696–698 read directly).** KT's (6.61) containment is
+      relabel-MEDIATED on both axes ((6.62) "column correspondence follows from `ρᵢ`"; the redundant row MOVES
+      `(v₀v₂)ᵢ∗ ⇔ (v₀v₁)ᵢ∗`), so the column-op offers ONLY the member-MOVING relabel-image transport (=
+      `chainData_bottom_relabel`); the FIXED-member inclusion is FALSE/unbuilt-and-not-KT's; the (6.66) carry is
+      the seed-advancing telescope (moved member). F4 RE-CONFIRMED (CHAIN-1 = LI, span only in `hdiff`). **NEXT
+      = USER ADJUDICATION OF A FORK, NOT a build** (see *Hand-off*): (B) carry `ρ0`/`hφ@endsσρ` to ENTRY
+      (LIKELY-DEAD, the wall relocates unless ENTRY re-derives the redundancy NATIVELY against `endsσρ`), or a
+      re-scoped Lean-architecture rethink (carry abstract `r ∈ ℝ^D` + the `Mᵢ`-block FORM, not a transported
+      fixed dual-vector). **NO C.0–C.6 / motive change** (machinery below dispatch C.3 + record C.1). **NO decl
+      orphaned by §I.8.20** (the `hφ`-spine + perp/telescope are confirm-and-delete CANDIDATEs; route B may
+      reuse the telescope at ENTRY; confirm-and-delete at the route-SETTLE = user's fork choice). Once the fork
+      settles → arm shell + **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot, no fold) —
+      zero-regression unaffected.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -294,30 +315,38 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above: a DESIGN QUESTION, NOT a build — resolve
-whether KT's column-op submatrix-containment (6.60→6.64) can carry the FIXED shared `ρ0` membership
-`hingeRow v₀v₂ ρ0 ∈ span (R(G,pᵢ).rigidityRows)`, or whether it shares the dead member-mapping wall (in which
-case route B — carry `ρ0`/`hφ@endsσρ` to ENTRY — is the residue). PENDING coordinator/user adjudication.** The
-I.8.19 leaf decomposition's LEAF C ("re-fire A-1 fresh at the candidate") was REFUTED (§(o‴)(I.8.19)-ADDENDUM,
-coordinator-verified verbatim): A-1 is existential in `ρ` (`Candidate.lean:414`), the landed dispatch
-establishes a SINGLE shared `ρ0` once at the base and the discriminator REQUIRES single-`r` (KT eq. 6.66) —
-so re-firing A-1 gives a fresh `ρ_cand_i` = the rejected Fix B, and tying it to `ρ0` needs the wall or the
-(6.66) carry. **Do NOT build LEAF A as "the next step":** LEAF A (member-free rigid-on transport, P=2) is
-independently sound but does NOT rescue the route — the route's feasibility hinges entirely on the corrected
-crux (the fixed-`ρ0` span-inclusion `span(R(G₁,q₁)-rows) ⊆ span(R(G,pᵢ)-rows)`, a NEW lemma CHAIN-1 does NOT
-supply — F4), which is the OPEN DESIGN QUESTION. The §I.8.18 fold form of this transport is DEAD; whether the
-column-op/whole-matrix form escapes is UNSETTLED (pre-judged neither way). **NO decl is declared orphaned** —
-the I.8.19 "confirmed orphans" claim is DOWNGRADED to confirm-and-delete CANDIDATE pending the resolution (the
-`hφ`-spine perp/telescope is REUSED if the crux reduces to the (6.66) carry). STAYS regardless: the
-single-step carrier W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`); the engine/rank-cert
-(parametric in `(Gv,ends,q)`); `chainData_bottom_relabel`; d=3 M₃ (`i=2`) zero-regression. **NO
-contract/motive change** (machinery below dispatch C.3 + record C.1, §I.8.18). Once the design question
-settles (column-op carries the fixed `ρ0` → a corrected leaf sequence; or it shares the wall → route B), then
-the arm shell + **2c-iii** `chainData_dispatch` → **CHAIN-5** (in 23c). Audit trail: design
-§(o‴)(I.8.19)-ADDENDUM (LEAF-C refutation + corrected crux + the open question), §(o‴)(I.8.19) (the recon
-trail that produced the refutation; F1/F2 survive, headline RETRACTED), §(o‴)(I.8.18) (the fold-form
-fixed-member transport ruled dead + KT whole-matrix cross-check), (I.8.17/I.8.15/I.8.12) (the dead local
-routes + the member-mapping wall).
+**The single authoritative next-step is a USER ADJUDICATION OF A FORK, NOT a build. §(o‴)(I.8.20) ADJUDICATED
+the last open question (can KT's column-op submatrix-containment carry the FIXED shared `ρ0`?) AGAINST the
+route: ROUTE DIES, IT IS THE WALL.** KT's (6.61) containment is relabel-MEDIATED on both axes ((6.62): "column
+correspondence follows from `ρᵢ`"; verbatim p. 696 "row `(v₀v₂)ᵢ∗` ⇔ row `(v₀v₁)ᵢ∗`" — the redundant row
+MOVES), so the column-op inclusion is the member-MOVING relabel-image map (= `chainData_bottom_relabel` at the
+span level), the FIXED-member inclusion is FALSE/unbuilt-and-not-KT's, and the (6.66) `±r` carry is the
+seed-advancing telescope (delivers the moved member, no member-fixing second transport). Every
+structurally-distinct mechanism now reduces to the same wall. **THE FORK (pre-judged neither arm — present to
+the user):**
+- **(B) carry `ρ0`/`hφ@endsσρ` to ENTRY** (the landed `chainData_relabel_arm_hρGv` shape, `:4671`), confront
+  the wall where the chain base realization is in scope. FLAGGED LIKELY-DEAD (I.8.12 ROUTE β / I.8.15 B3 /
+  I.8.18(B) / I.8.20): the wall is a property of the relabel-image map, not of what is in scope, so it merely
+  RELOCATES — UNLESS ENTRY can re-derive the redundancy NATIVELY against `endsσρ` (a base split whose selector
+  IS `endsσρ`), which is a different graph-CONSTRUCTION question, not a transport, and is UNEXPLORED. Cheap to
+  state; bounds the obstruction at ENTRY.
+- **(rethink) a more fundamental Lean-architecture rethink of the general-`d` arm** — abandon the
+  materialized-fold modelling of KT (6.62) entirely; carry the abstract `r ∈ ℝ^D` of (6.66) + the `Mᵢ`-block
+  FORM rather than a transported fixed dual-vector (closer to KT's matrix bookkeeping). Genuinely-new
+  realization architecture, cost UNKNOWN. This is §I.8.18's recommendation (A) RE-SCOPED — note (A)'s LEAF-C
+  assembly is now KNOWN UNSOUND (the ADDENDUM), so (A) itself needs fresh scoping.
+**Do NOT build any leaf as "the next step"** — the route's feasibility is settled (dead), and LEAF A
+(member-free rigid-on transport) does NOT rescue it (the crux is the FIXED-member `hρGv`, not rigidity).
+**NO decl is declared orphaned by §I.8.20** — the `hφ`-spine + perp/telescope stay confirm-and-delete
+CANDIDATEs (dead-for-this-route, but route B may reuse the telescope at ENTRY; the route-SETTLE commit IS the
+user's fork choice). STAYS regardless: W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`); the
+engine/rank-cert (parametric in `(Gv,ends,q)`); `chainData_bottom_relabel`; CHAIN-1 LI machinery; d=3 M₃
+(`i=2`) zero-regression. **NO contract/motive change** (machinery below dispatch C.3 + record C.1). Once the
+fork settles → arm shell + **2c-iii** `chainData_dispatch` → **CHAIN-5** (in 23c). Audit trail: design
+§(o‴)(I.8.20) (the "route dies / it's the wall" adjudication + the fork + the full Lean+KT verification),
+§(o‴)(I.8.19)-ADDENDUM (LEAF-C refutation), §(o‴)(I.8.19) (the recon trail; F1/F2 survive, headline RETRACTED),
+§(o‴)(I.8.18) (the fold-form transport ruled dead + KT whole-matrix cross-check), (I.8.17/I.8.15/I.8.12) (the
+dead local routes + the member-mapping wall).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the

@@ -6382,6 +6382,165 @@ Grounded in the verbatim dispatch `case_III_candidate_dispatch` (`CaseIII/Realiz
   that design question (coordinator/user adjudication). No Lean landed; no decl declared orphaned; `d=3`
   unaffected.
 
+**(I.8.20) THE COLUMN-OP / WHOLE-MATRIX SPAN-INCLUSION QUESTION — ADJUDICATED: ROUTE DIES, IT IS THE WALL.
+The (I.8.19)-ADDENDUM(C) open question is SETTLED AGAINST the route: KT's column-op submatrix-containment
+(6.60→6.64) is NOT a fixed-`ρ₀` span-inclusion — it is the relabel-IMAGE inclusion, and KT's own (6.62) says
+so verbatim. So the genuinely-new obligation (`hingeRow v₀v₂ ρ₀ ∈ span (R(G,pᵢ).rigidityRows)` for the FIXED
+shared `ρ₀`) is unreachable by the column-op; the whole-matrix route SHARES the member-mapping wall. The
+residue is route B (carry `ρ₀`/`hφ@endsσρ` to ENTRY, flagged LIKELY-DEAD) or a more fundamental rethink —
+re-pointed to that fork for USER adjudication (2026-06-21, opus design-pass; every load-bearing claim
+re-derived from the landed `def`/`theorem` bodies AND KT pp. 696–698 read directly from the PDF, NOT inherited
+from the prior pins; docs-only, no Lean landed, tree byte-clean).** Verified against CHAIN-1
+(`RigidityMatrix/Basic.lean`: `columnOp` `:884`, `hingeRow_comp_columnOp_apply` `:956`,
+`linearIndependent_sumElim_candidateBlock_swap` `:1328`, `linearIndependent_sum_augment_candidateRow_block`
+`:1371`), `chainData_bottom_relabel` (`Relabel.lean:1961`), the slot core `chainData_freshEdge_slot_mem`
+(`:4158`), the arm `chainData_relabel_arm_hρGv` (`:4647`), the d=3 M₃ arm's `hρGv` derivation (`:2699–2724`),
+the dispatch's single-`ρ0` block (`Realization.lean:404–441`), the discriminator capstone
+`exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean:1462`), and KT 2011 §6.4.2 eqs.
+(6.60)–(6.67) pp. 696–698 (`.refs/katoh-tanigawa-2011-molecular-conjecture.pdf`, pdf pp. 50–52, read directly
+this pass).
+
+  *(0) THE QUESTION, RESTATED PRECISELY.* The arm's engine `hρGv` slot is required at the candidate framework
+  `(G−vᵢ, endsσρ, qρ)` (F2; `Arms.lean:91`, FORCED by the `hwmem` leaf `chainData_bottom_relabel` whose output
+  lands there, `:1982–1986`). The dispatch establishes a SINGLE shared `ρ₀` and threads its membership into
+  every arm (re-confirmed: `Realization.lean:404–411` normalizes A-1's single existential `ρ` to one `ρ0`;
+  `:439–441` runs the discriminator ONCE on `ρ0`; the capstone `Claim612.lean:1462–1470` takes ONE
+  `{r} (hr : r ≠ 0)` and returns the discriminating panel `u` *for that one `r`* — single-`r` is structural).
+  So the genuinely-new obligation is `hingeRow v₀v₂ ρ₀ ∈ span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows` for the
+  FIXED `ρ₀` (M₃ sign aside). The question: does KT's column-op submatrix-containment (6.61) deliver this as a
+  span-inclusion `span (base rows) ⊆ span (candidate rows)` carrying the FIXED `ρ₀`-member — or, made concrete
+  against the relabelled `ofNormals` carrier, does the only available transport remain the relabel-IMAGE map
+  (which moves the member off `hingeRow v₀v₂ ρ₀`)?
+
+  *(a) F4 RE-CONFIRMED (CHAIN-1 = LI-preservation, NOT span-membership) — overturn FAILED, the claim STANDS.*
+  Read against the actual conclusions: `linearIndependent_sumElim_candidateBlock_swap` (`:1328`) concludes
+  `LinearIndependent ℝ (Sum.elim (Sum.elim rn cand') ro)` — its `Submodule.span` appears ONLY in the hypothesis
+  `hdiff : ∀ i, cand' i - cand i ∈ span (range (Sum.elim rn ro))` (the correction lies in a span), never in the
+  conclusion. `linearIndependent_sum_augment_candidateRow_block` (`:1371`) likewise concludes
+  `LinearIndependent ℝ (…)`. `columnOp` (`:884`) is the `≃ₗ` change-of-variables; `hingeRow_comp_columnOp_apply`
+  (`:956`) is the vanishing/pure-`v`-column fact `hingeRow v a ρ (columnOp hva S) = ρ (S v)`. NONE states a
+  span-inclusion `span A ⊆ span B`, NONE states a fixed-member span membership. F4(b) holds: the whole-matrix
+  span-inclusion lemma the route needs is genuinely UNBUILT by CHAIN-1 — CHAIN-1 supplies the rank/LI half (the
+  `+1`/`+|ιc|` augment `case_III_rank_certification` consumes internally), not the `hρGv` span half.
+
+  *(b) `chainData_bottom_relabel` RE-CONFIRMED to MOVE the member — and it is the ONLY landed base→candidate
+  span transport.* Read against the actual statement (`Relabel.lean:1982–1994`): its conclusion applies
+  `(LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap` to `φ`. In the fresh-pair
+  branch the input member `hingeRow (vtx 2)(vtx 0) ρ'` lands as `hingeRow (vtx i.succ)(vtx (i−1)) ρ'` — the
+  vertices are MOVED by `shiftPerm`; in the genuine branch the link `(f,x,y)` lands at the relabelled
+  `(σ⁻¹f, ρ⁻¹x, ρ⁻¹y)`. This is the relabel-IMAGE map by construction; it transforms the member. There is no
+  fixed-member transport in tree. (The d=3 M₃ arm `:2699–2724` is the SAME mechanism at length 1: the
+  single-step W9a sends `hingeRow a b ρ ↦ hingeRow v b ρ` (member moved `a↦v`, `:2708`) and absorbs the moved
+  part into the *genuine* candidate `e_b`-row `hingeRow v b ρ` via `sub_mem` — KT's (6.62) at d=3, member-moving
+  and fine because the moved member is a surviving candidate row there.)
+
+  *(c) THE KT SOURCE SETTLES IT — KT's column-op IS the relabel-image inclusion, and KT says the member MOVES,
+  verbatim (the deciding lines, read directly pp. 696–697).* KT (6.60) starts at the CANDIDATE matrix
+  `R(G,pᵢ)`, performs the column operations (add col_vᵢ to col_vᵢ₊₁ for each `1≤j≤D`), substitutes (6.59), and
+  (6.61) "contains `R(G₁,q₁)` as its submatrix." But the containment is **relabel-mediated on BOTH axes**: KT
+  states the **row correspondence (6.62)** between `R(G,pᵢ;E∖{vᵢvᵢ₊₁},V∖{vᵢ})` and `R(G₁,q₁)` — `e⇔e`,
+  `vⱼ₋₁vⱼ ⇔ vⱼvⱼ₊₁` (`2≤j≤i`), `vⱼ'vⱼ'₊₁ ⇔ vⱼ'vⱼ'₊₁` — and adds parenthetically: *"the column correspondence
+  follows from the isomorphism `ρᵢ` defined in (6.54)."* So the `R(G₁,q₁)`-submatrix sits inside `R(G,pᵢ)`
+  ONLY after rows AND columns are identified by the relabel `ρᵢ` — i.e. the inclusion is exactly
+  `span ((funLeft ρᵢ).dualMap '' R(G₁,q₁)-rows) ⊆ span (R(G,pᵢ)-rows)`, the relabel-IMAGE inclusion, which is
+  `chainData_bottom_relabel`'s map at the span level. And the redundant-row member moves, in KT's own words:
+  *"the row associated with `(v₀v₂)ᵢ∗` in `R(G₁,q₁)` corresponds to the row associated with `(v₀v₁)ᵢ∗` in
+  `R(G,pᵢ)`"* (p. 696, last sentence before the recall). The redundant functional carried into the candidate
+  sits on the `(v₀v₁)ᵢ∗` row — the relabel-image of the base `(v₀v₂)ᵢ∗` row, NOT the fixed `v₀v₂` row. **This
+  is the member-mapping wall stated in KT's notation.** It is precisely the difficulty §I.8.18(b) named: a
+  fixed-functional span membership has no member-free transport; the only transport KT offers (and the only one
+  in tree) carries the relabel and moves the member.
+
+  *(d) THE (6.66) `±r` CARRY IS NOT AN ESCAPE — it is the seed-advancing telescope (the orphan-candidate
+  subtree), which DELIVERS the MOVED member, not the fixed one.* KT (6.63)→(6.64): following the row
+  correspondence (6.62), apply the base redundant-row operations (weights `λ`, `λ_(v₀v₂)i∗ = 1`) to the
+  `(v₀v₁)ᵢ∗` row of `R(G,pᵢ)`; by (6.52) the `V∖{vᵢ}` part is identically zero and the survivor is the `Mᵢ`
+  bottom-block entry `∑ⱼ λ_(vᵢvᵢ₊₁)ⱼ rⱼ(q₁(vᵢvᵢ₊₁))`. KT (6.66) then proves this entry equals `±r` (the ONE
+  `r := ∑ⱼ λ_(v₀v₂)ⱼ rⱼ(q(v₀v₂))`) "due to the fact that `vᵢ` is a vertex of degree two in `G₁` … (cf.
+  (6.44))." This (6.44)-via-degree-2 cancellation is EXACTLY what the landed perp/telescope subtree encodes
+  (`wstep_foldl_hingeRow_telescope` = the eq.-(6.66) closed form; chain-induction LEAVES 1–4 = the eq.-(6.44)
+  regroup; the slot core `chainData_freshEdge_slot_mem` peels the result). And its OUTPUT is the MOVED member:
+  the slot core concludes `hingeRow (vtx i−1)(vtx i+1) ρ₀ ∈ span (candidate)` (`Relabel.lean:4174`) — the
+  candidate-edge endpoints, with the same `ρ₀`. What the telescope needs as INPUT is the FIXED member
+  `hingeRow v₀v₂ ρ₀` at `(endsσρ, q)` (`:4165`) — and the seed-advancing fold holds that member's IDENTITY
+  fixed only because it starts at the artifact framework `(endsσρ, q)` and advances the seed, never moving the
+  member across the selector relabel. The `(6.66)` carry is the seed-advancing fold; it is not a second,
+  member-fixing transport. So both candidate "ties" of the ADDENDUM(C) — (a) the fixed-member identity and (b)
+  the `(6.66)` carry — collapse to the same object: a transport that either holds the member fixed (no source:
+  the wall) or moves it with the relabel (the landed `chainData_bottom_relabel` / W9a, lands the wrong member).
+
+  *(e) THE CONCRETE OBSTRUCTION, AT THE §I.8.15/I.8.18 STANDARD.* Made concrete against the relabelled
+  `ofNormals` carrier, a column-op span-inclusion lemma must be one of two shapes, and BOTH fail:
+  - **Relabel-image inclusion** `span ((funLeft (shiftPerm i.castSucc)⁻¹).dualMap '' (ofNormals (G−v₁) ends₀
+    q).rigidityRows) ⊆ span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows`. THIS is buildable (it is the span-level
+    statement of `chainData_bottom_relabel`, the genuine rows ↦ genuine, fresh-pair ↦ fresh-pair). But feeding
+    the base member `hingeRow v₀v₂ ρ₀ ∈ span(base)` through it yields `(funLeft …).dualMap (hingeRow v₀v₂ ρ₀) =
+    hingeRow v₀v₁ ρ₀ ∈ span(candidate)` (since `(shiftPerm i.castSucc)⁻¹ v₂ = v₁` for `i ≥ 2`, the Lean-verified
+    relabel action) — the MOVED member, NOT the FIXED `hingeRow v₀v₂ ρ₀` the engine slot/dispatch require. This
+    is the LEAF-C mistake refuted at §I.8.19-ADDENDUM, and the §I.8.18(b) "(2-engine)" target, re-confirmed.
+  - **Fixed-member inclusion** `span ((ofNormals (G−v₁) ends₀ q).rigidityRows) ⊆ span (ofNormals (G−vᵢ) endsσρ
+    qρ).rigidityRows` with NO relabel on the members. This WOULD carry the fixed `hingeRow v₀v₂ ρ₀`. But it is
+    FALSE in general and unbuilt: the two carriers live over the SAME body type `α` but record DIFFERENT graphs
+    (`G−v₁` vs `G−vᵢ`) and different selectors/seeds; a base rigidity row `hingeRow x y r` (for `x,y` a `G−v₁`
+    link at the base selector) is NOT a `(G−vᵢ, endsσρ, qρ)` rigidity row unless `x,y` is ALSO a `G−vᵢ` link
+    recorded by `endsσρ` — and the load-bearing surviving link `edge 0 = v₀v₁` is recorded at the relabelled
+    selector `endsσρ`, not at `ends₀` (I.8.15 PROBE C/D, I.8.18(a): the discrepancy `endsσρ ≠ ends₀` on
+    `{edge 0, e₀}` is load-bearing on the span over `G−vᵢ`). KT's containment is NOT this fixed-member shape —
+    KT's is the relabel-mediated (6.62) shape (c). No landed lemma states the fixed-member inclusion, and the
+    KT source shows it is the wrong shape (KT's submatrix sits via `ρᵢ` on both axes). So the fixed-member
+    inclusion is neither KT's nor buildable — exactly the §I.8.18(b) "(2-base)" wall.
+
+  **VERDICT — ROUTE DIES; IT IS THE WALL.** The column-op / whole-matrix submatrix-containment, made concrete
+  against the relabelled `ofNormals` carrier, offers ONLY the member-MOVING relabel-image transport — there is
+  no fixed-member inclusion (KT's own (6.62) is relabel-mediated on both axes and moves the redundant row from
+  `(v₀v₂)` to `(v₀v₁)`; the only landed transport `chainData_bottom_relabel` is that relabel-image map; the
+  fixed-member shape is FALSE/unbuilt and is NOT KT's shape). The (6.66) `±r` carry is the seed-advancing
+  telescope, which delivers the moved member, not a member-fixing second transport. So the whole-matrix route
+  SHARES the member-mapping wall §(o‴)(I.8.15)/(I.8.18) ruled dead in the FOLD form — the column-op did NOT
+  escape it. **This is the honest "it's the wall" verdict the clause-(ii) bar calls high-value: no
+  buildable-looking span-inclusion signature is manufactured that quietly relies on the member moving (the
+  LEAF-C mistake). The single structurally-different mechanism (KT's column-op) has now been probed and reduces
+  to the same wall.** RESIDUE / NEXT FORK (USER adjudication):
+  - **Route B — carry `ρ₀`/`hφ@endsσρ` as a hypothesis to ENTRY** (the landed `chainData_relabel_arm_hρGv`
+    shape, `:4671`), confronting the wall where the chain's base realization is in scope. FLAGGED LIKELY-DEAD
+    (I.8.12 ROUTE β, I.8.15 B3, I.8.18(B)): at ENTRY the hybrid must still bridge `ρ₀`'s membership from
+    `(ends₀,q)` to `(endsσρ,q)` for the FIXED member — the same wall, just relocated to where more context is
+    in scope; no new transport mechanism appears at ENTRY that is not already in tree (the wall is a property of
+    the relabel-image map, not of what is in scope). It is NOT obviously circular only if ENTRY can re-derive
+    the redundancy *natively* against `endsσρ` (e.g. a base split whose selector IS `endsσρ`) — but that is a
+    different graph-construction question, not a transport, and it is unexplored.
+  - **A more fundamental rethink of the general-`d` Case-III arm's Lean architecture** — abandon the
+    seed-advancing materialized-fold modelling of KT (6.62) entirely and find a Lean shape where the redundancy
+    is NEVER a fixed dual-vector transported across the relabel (e.g. carry the abstract `r ∈ ℝ^D` of (6.66)
+    and the `Mᵢ`-block FORM rather than the row-membership; this is closer to KT's matrix bookkeeping but is a
+    genuinely-new realization architecture, cost UNKNOWN, and was the §I.8.18 recommendation (A) before LEAF C
+    was refuted — note (A)'s LEAF-C assembly is now known unsound, so (A) itself needs re-scoping).
+  The recommendation is for the USER to choose between (B) (cheap to state, likely-dead, but bounds the
+  obstruction at ENTRY) and a re-scoped architecture rethink; this pass does NOT pre-decide between them.
+
+  **CONTRACT/MOTIVE/ORPHAN STATUS (unchanged by this pass).** NO C.0–C.6 / motive / IH change (the wall is
+  machinery below the dispatch C.3 + record C.1, §I.8.18 confirmed). NO decl is declared orphaned by THIS pass:
+  the seed-advancing `hφ`-spine + the perp/telescope subtree stay confirm-and-delete CANDIDATEs — under the
+  "route dies" verdict they are dead-for-this-route, but the route-SETTLE commit is the user's fork decision
+  above (route B may reuse the telescope at ENTRY; an architecture rethink decides their fate freshly), so
+  confirm-and-delete fires only at THAT commit, not here. STAYS regardless: the single-step carrier W9a
+  (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`); the engine/rank-cert (parametric in
+  `(Gv,ends,q)`); `chainData_bottom_relabel`; CHAIN-1's LI machinery; CHAIN-3/4; `d=3` M₃ (`i=2`)
+  zero-regression (no `hφ` slot, no fold, no seam — F3).
+
+  **CLAUSE (i) HONESTY.** Every load-bearing claim re-derived this pass from the landed bodies AND the KT PDF,
+  not inherited: F4 from CHAIN-1's actual conclusions (`Basic.lean:1328/1371` conclude `LinearIndependent`, span
+  only in `hdiff`); the member-move from `chainData_bottom_relabel`'s actual conclusion (`:1982–1994`, the
+  `(funLeft …).dualMap` image) and the d=3 M₃ arm (`:2708`); the single-`ρ0` coupling from the dispatch
+  (`Realization.lean:404–441`) and the capstone (`Claim612.lean:1462–1470`, one `r`); and KT's relabel-mediated
+  (6.62)/(6.61) + the verbatim "row `(v₀v₂)ᵢ∗` ⇔ row `(v₀v₁)ᵢ∗`" + the column correspondence "follows from the
+  isomorphism `ρᵢ`" from pp. 696–697 read directly. **CLAUSE (ii) HONESTY.** This is a FLAG-DON'T-FORCE "it's
+  the wall" close, NOT a manufactured route: the one shape that would carry the fixed member (the fixed-member
+  inclusion) is named as FALSE/unbuilt-and-not-KT's, not as a buildable leaf; the relabel-image inclusion is
+  named as buildable BUT member-moving (the LEAF-C trap, explicitly NOT re-proposed). The residue is the
+  user-adjudication fork (route B likely-dead / architecture rethink), pre-judged neither way between them. No
+  Lean landed; tree byte-clean; `chainData_relabel_arm_hρGv` stays a CORRECT carried-hypothesis lemma.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
