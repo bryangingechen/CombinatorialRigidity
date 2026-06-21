@@ -30,7 +30,16 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — open the ROUTE-α slot-core re-architecture with a recon-before-build
+**⚠ Session-pause (2026-06-21): the ROUTE α/β decision is USER-DEFERRED.** The holistic arm-architecture
+recon (§(o‴)(I.8.12)) RECOMMENDS ROUTE α, but the user paused ON the α-vs-β pick rather than confirming it.
+A fresh coordinator **re-confirms ROUTE α vs ROUTE β at session start** before opening the chosen route —
+estimates: **α** = slot-core re-architecture (restate `chainData_freshEdge_slot_mem` to consume `hφ@ends₀`,
+folding the relabel into the per-step transport), recon-first on whether the LEAF-1–4 telescope survives a
+non-fixed-selector fold, ~2–4c; **β** = defer `hφ@endsσρ` to ENTRY, recon-judged likely dead (~1c to defer).
+The recommended-α next-step is below. (The just-landed `chainData_relabel_arm_hρGv` is confirmed correct —
+nothing to revert; the arm's `hρGv` chain is otherwise landed, gated only on this `hφ` decision.)
+
+**NEXT STEP (if ROUTE α confirmed) — open the ROUTE-α slot-core re-architecture with a recon-before-build
 pass** (design §(o‴)(I.8.12); the `hφ`-seam verdict). The arm's `hρGv` chain is otherwise LANDED; the ONE
 gate is that the slot core `chainData_freshEdge_slot_mem` (`Relabel.lean:4136`) consumes the base redundancy
 `hφ` at the **relabelled** `endsσρ` framework `ofNormals (G−v₁) endsσρ q`, while A-1
