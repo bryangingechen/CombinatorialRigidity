@@ -5660,6 +5660,112 @@ recon-or-spike before committing to the `shiftEndsAdv` def shape"), the spike co
   landed def is wrong-shaped, and it names the leaf-1/leaf-3 constraint collision as the genuine difficulty
   rather than asserting a fix. No Lean landed (the probe was deleted; tree byte-clean).
 
+**(I.8.15) LEAF-1-DEF RE-DESIGN — VERDICT: OPTION B. The gate-compatible per-step edge accumulator does NOT
+exist; no product of `{edge(s+1),edge(s+2)}`-supported per-step edge swaps can accumulate to `shiftEdgePerm
+i`. ROUTE α (the per-step selector fold reaching `endsσρ`) is INFEASIBLE; the obstruction is structural, not
+a proof-shape gap. The correct alternative is a TRANSPORT-based `hρGv` slot mirroring the landed `hwmem` brick
+`chainData_bottom_relabel`, NOT a per-step fold (2026-06-21, opus; docs-only, no Lean landed; every
+load-bearing claim Lean-verified against the landed bodies via 5 `lean_multi_attempt` probes — each `have`
+type-checked in the live `chainData_relabel_arm_hρGv` context; tree byte-clean throughout, no file written).**
+Per (I.8.14)(d)'s mandated leaf-1-def re-design recon, the question (I.8.14)(c) posed — "is there a per-step
+edge move (touching only `edge(s+1)`/`edge(s+2)`) whose accumulated product = `shiftEdgePerm i`?" — is now
+answered DEFINITIVELY NO.
+
+  *(a) THE PROOF OF INFEASIBILITY (Lean-grounded).* The membership fold runs `i−1` steps `s = 0,…,i−2`. At
+  step `s` the gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`Relabel.lean:1201`)
+  permits the per-step selector advance `ends → ends'` ONLY via `hends'_off : ∀ f, f ≠ edge(s+1) → f ≠
+  edge(s+2) → ends' f = ends f` (`:1204`) — i.e. the per-step move may touch ONLY `edge(s+1)` and `edge(s+2)`.
+  So across the whole fold, the accumulated per-step moves can differ from `ends₀` ONLY on the union
+  `⋃_{s=0}^{i−2} {edge(s+1), edge(s+2)} = {edge 1, …, edge i}`. But the target `endsσρ = σ⁻¹ ∘ ends₀ ∘
+  shiftEdgePerm i` (the landed arm's candidate selector, `:4688–4690`) differs from `ends₀` on the support of
+  `shiftEdgePerm i`, which **includes `edge 0` and `e₀`** — both OUTSIDE `{edge 1,…,edge i}`. Lean-verified:
+  **PROBE A** `shiftEdgePerm i e₀ = edge i` (`shiftEdgePerm_apply_e₀`) with `e₀ ≠ edge i` (`e₀_ne_edge`) — so
+  `shiftEdgePerm i` moves `e₀`; **PROBE B** `shiftEdgePerm i (edge 0) = e₀` (`shiftEdgePerm_apply_edge_zero`) —
+  so it moves `edge 0`; **PROBE E** `edge 0 ∉ {edge 1,…,edge i}` and `e₀ ∉ {edge 0,…,edge(d−1)}` (`edge_inj` /
+  `e₀_ne_edge`), so EVERY gate-compatible per-step swap fixes both `edge 0` and `e₀`. Hence the accumulated
+  selector at `edge 0` is ALWAYS `ends₀ (edge 0)`, whereas `endsσρ (edge 0)` reads `ends₀` at `shiftEdgePerm i
+  (edge 0) = e₀` — a DIFFERENT edge. For arbitrary `ends₀ : β → α × α` (the leaf is universally quantified)
+  these disagree. ∴ no gate-compatible per-step accumulator equals `endsσρ`.
+
+  *(b) WHY THE DISCREPANCY IS LOAD-BEARING (it is NOT a free-on-non-links coincidence).* One might hope the
+  selector mismatch at `edge 0`/`e₀` is invisible because `rigidityRows` (`Basic.lean:603`) ranges only over
+  graph-LINKS and `toBodyHinge.supportExtensor e` (`PanelHinge.lean:89`) reads `ends` only AT `e`. That rescues
+  `e₀` (Lean-verified `e₀ ∉ E(G)`, never a link → span insensitive there) — but NOT `edge 0`: **PROBE C/D**
+  confirm `edge 0 = v₀v₁` IS a surviving link of `G − vᵢ` for `i ≥ 2` (`G.IsLink (edge 0)(vtx 0)(vtx 1)` from
+  `cd.link`, and `vtx 0`, `vtx 1` both `≠ vtx i` by `vtx_inj`). So the conclusion framework `ofNormals (G−vᵢ)
+  endsσρ qρ`'s rigidity-row span genuinely DEPENDS on the selector at `edge 0`, and the accumulated-selector
+  framework would have a DIFFERENT `edge 0` panel — a different span. Even a relaxed Leaf C (conclude at the
+  accumulated selector + a span-equality bridge) cannot close: the bridge needs agreement on EVERY link of
+  `G − vᵢ`, which fails at `edge 0`.
+
+  *(c) THE ROOT CAUSE — a per-step fold is the WRONG mechanism for a CYCLE edge relabel.* `endsσρ`'s edge
+  relabel is the full cycle `shiftEdgePerm i = formPerm [edge 0, e₀, edge i, edge 1, …, edge(i−1)]` (an
+  `(i+2)`-cycle threading the fresh `e₀` and the top `edge i`), which — as (I.8.14)(c) flagged and this
+  confirms — does NOT decompose into ascending adjacent edge swaps `(edge(s+1) edge(s+2))` (no
+  `shiftEdgePerm_eq_swap_mul` analogue of the vertex `shiftPerm_eq_swap_mul`, `Operations.lean:1522`). The
+  vertex side telescopes (P3 `shiftSeedAdv_eq_funLeft_shiftPerm`) precisely because `shiftPerm i.castSucc` is
+  the consecutive-vertex cycle `vtx 1 → … → vtx i`, a product of adjacent swaps; the edge cycle is NOT. ROUTE α
+  was a category error: it tried to reach a non-adjacent-transposition cycle as a product of adjacent
+  transpositions.
+
+  *(d) WHY THE LANDED `hwmem` BRICK ESCAPES — and what the corrected `hρGv` route IS.* The landed `chainData_
+  bottom_relabel` (`:1961`, the `hwmem` slot) ALSO lands its rows at the edge-relabelled `endsσρ` (`:1984`,
+  `shiftEdgePerm i e` in its output selector) — and succeeds — because it reaches `endsσρ` by **inverse-cycle
+  TRANSPORT** (`ofNormals_supportExtensor_relabel_perm` + the `shiftPerm_inv_*`/`shiftEdgePerm_inv_*` action
+  lemmas), applying the WHOLE relabel at once, NOT by a per-step fold. The corrected `hρGv` slot must do the
+  same: reach `span (ofNormals (G−vᵢ) endsσρ qρ)` by transporting A-1's base redundancy across the whole
+  `(shiftPerm i.castSucc)`/`shiftEdgePerm i` relabel — NOT by a selector-advancing fold. **The
+  per-step-selector-advance idea (ROUTE α leaves 1–5) is abandoned in full** (no leaf-1 def is gate-compatible;
+  the foldl-core / single-step-gate machinery is the wrong tool for `hφ`).
+
+  *(e) WHAT THE OPTIONS NOW ARE (for coordinator/user adjudication).* The (I.8.12) VERDICT stands re-confirmed
+  with the ROUTE-α arm removed: `hφ@endsσρ` is genuinely required by the slot core and is NOT reachable by any
+  per-step fold. Three honest routes remain; none is a one-commit instantiation:
+  - **B1 — whole-relabel `hφ` transport (the analogue of `chainData_bottom_relabel`, recon-first).** Build a
+    transport lemma `hingeRow v₀ v₂ ρ₀ ∈ span (ofNormals (G−v₁) ends₀ q) → hingeRow v₀ v₂ ρ₀ ∈ span
+    (ofNormals (G−v₁) endsσρ q)` (the seam framework, fixed graph/seed, ONLY the selector moves `ends₀ →
+    endsσρ`). This is the `hφ`-specific instance of the R-2(iii) wall (I.8.12): the edge-grouped `hcomb`
+    transports across `ofNormals_supportExtensor_relabel_perm` only with each `rⱼ ∈ block(σ_e eⱼ)` (the WRONG
+    edge), and `σ⁻¹ v₀ = v₀`, `σ⁻¹ v₂ = v₁` for `i ≥ 2` make any apparatus transport land on the WRONG member
+    `hingeRow v₀ v₁ ρ₀`. R-2(iii) flagged this as un-clean; B1 would need a genuinely-new argument (e.g. a
+    DIRECT span re-derivation at `endsσρ`, not an A-1 transport), risk-HIGH, recon-mandatory. **NOT obviously
+    feasible — the member-mapping wall (4th touch) is the same one that killed T-1/T-2 and now ROUTE α.**
+  - **B2 — restate the slot core to NOT fix the start selector at the relabelled framework (the eliminate-the-
+    hybrid fix, done RIGHT this time).** ROUTE α's INTENT was sound (keep `hφ` at `ends₀`), only its MECHANISM
+    (per-step fold) was wrong. The slot core `chainData_freshEdge_slot_mem` currently runs the seed-advancing
+    fold which forces ONE selector. A correct restate would: (i) prove the slot row at the `ends₀`-selector
+    candidate framework `ofNormals (G−vᵢ) ends₀ (shiftSeedAdv q (i−1))` via the fold (selector genuinely fixed
+    at `ends₀`, gate's `hends'_off` is `rfl` — but then the fold's intermediate-graph `hrec`/`htrans` need
+    `ends₀` to record `G−vᵢ`'s interior links, which it does NOT — it records `G−v₁`'s — so this is R-2(iv)'s
+    candidate-TOP failure, ALSO dead); OR (ii) re-architect the fold to record links at the per-step graph's
+    OWN selector while keeping the conclusion at `endsσρ` by transport. (ii) collapses to B1. **B2 is either
+    dead (the `ends₀`-records-`G−vᵢ` ill-formedness) or = B1.**
+  - **B3 — carry `hφ@endsσρ` as a hypothesis to the dispatch/ENTRY (ROUTE β of I.8.12, the defer).** Keep
+    `chainData_relabel_arm_hρGv` AS LANDED (it is a CORRECT lemma taking `hφ@endsσρ` honestly) and discharge
+    the hybrid at the dispatch where the chain's base realization is in scope. R-2/I.8.12 flagged this LIKELY
+    DEAD (the rigidity of the hybrid `ofNormals (G−v₁) endsσρ q` re-derives via A-1 but at the WRONG member,
+    needing a member-bridge = B1, likely circular). **Defers the wall, does not dissolve it.**
+  **RECOMMENDATION: a focused recon on B1** (the whole-relabel `hφ` transport) is the only route that attacks
+  the wall head-on; if B1's member-mapping cannot be beaten by a direct re-derivation at `endsσρ`, the honest
+  conclusion is that the `hρGv` slot needs `hφ` produced at `endsσρ` DIRECTLY (re-thread A-1 / the W6b producer
+  `exists_candidateRow_bottomRows_of_rigidOn` to output its base redundancy at the relabelled selector) —
+  which IS a contract-touching change (A-1's output type), the first the CHAIN arm would force, and must go to
+  user adjudication before any build. **This is NOT a leaf-1 re-design; it is an `hφ`-production re-architecture
+  one level up, and the make-or-break is the member-mapping wall, not a `shiftEndsAdv` def shape.**
+
+  **CLAUSE (ii) HONESTY.** This is OPTION B: an honest infeasibility verdict on ROUTE α's per-step edge
+  accumulator (Lean-grounded by 5 probes against the landed bodies), naming precisely what fails (no
+  gate-compatible per-step swap product reaches `shiftEdgePerm i`; `edge 0` is the load-bearing surviving-link
+  discrepancy) and what the options then are (B1/B2/B3, with B1 the only head-on attack and an `hφ`-production
+  re-architecture as the fallback — contract-touching, user-adjudication-gated). It does NOT pin a confident
+  corrected def. No motive/IH/contract change is made HERE (B1/B2 would not change the contract; the fallback
+  would touch A-1's output type and is explicitly flagged for user adjudication). `d=3` M₃ remains unaffected
+  (`i=2`, no `hφ` slot, no general fold); `chainData_relabel_arm_hρGv` stays a CORRECT lemma (its `hφ@endsσρ`
+  slot is the wall) until the `hρGv` route is settled — nothing reverts. The landed ROUTE-α leaf 1
+  `shiftEndsAdv` (`Relabel.lean:1731`) + `shiftEndsAdv_zero`/`_succ` are now ORPHANED (no consumer; the
+  per-step-selector-fold route is abandoned) — confirm-and-delete at the `hρGv`-route-settle commit, alongside
+  T-1/T-2.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

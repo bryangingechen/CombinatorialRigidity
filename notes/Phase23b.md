@@ -5,21 +5,28 @@ foundation. The `hρGv` algebraic core + chain-induction (LEAVES 1–4) + seed b
 perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition `chainData_freshEdge_slot_perp` +
 the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LANDED axiom-clean.
 **`chainData_relabel_arm_hρGv` is a CORRECT lemma** producing `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals
-(G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp. The `hφ` seam is being dissolved by
-**ROUTE α** (USER-CONFIRMED 2026-06-21; design §(o‴)(I.8.13)) — a 5-leaf re-architecture re-threading the
-slot core to consume `hφ`@`ends₀` and advance the selector in lockstep with the seed (KT 6.62-faithful).
-**ROUTE-α leaf 1 `shiftEndsAdv` LANDED 2026-06-21 — BUT THE RECON-OR-SPIKE ON LEAF 2 (design §(o‴)(I.8.14),
-2026-06-21) FOUND ITS DEF SHAPE WRONG.** A throwaway Lean probe computed the landed `shiftEndsAdv ends₀
-(i−1)` closed form = `fun e => ((shiftPerm i.castSucc).symm (ends₀ e).1, …)` — endpoint half ALREADY
-correct (`.symm`), but the **edge argument is UNTOUCHED** whereas `endsσρ` reads `ends₀ (shiftEdgePerm i e)`.
-So **leaf 2 as stated (`= endsσρ`) is FALSE against the landed def**, and (g)'s fallback (fold `shiftEdgePerm`
-into leaf 1's `def`) is REQUIRED. **NEXT = the leaf-1-def RE-DESIGN recon** (NOT "build leaf 2"): pin a
-per-step edge advance that is BOTH gate-compatible (leaf 3's `hends'_off` touches only `edge(s+1)`/`edge(s+2)`,
-`Relabel.lean:1201`) AND accumulates to the `e₀`-threaded cycle `shiftEdgePerm i` — the genuine multi-leaf
-difficulty, likely needing a `shiftEdgePerm` step-factorization first (no `shiftEdgePerm_eq_swap_mul` exists).
-Detail + the verified closed form: design §(o‴)(I.8.14). **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM**
-(confirm-and-delete at the arm-build commit). Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b
-green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
+(G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp. The `hφ` seam (its slot core wants the
+base redundancy at the relabelled `endsσρ`, A-1 gives `ends₀`) was attacked by **ROUTE α** (a 5-leaf
+selector-advancing-fold re-architecture). **ROUTE α IS INFEASIBLE** (the per-step fold can't reach the cycle
+edge relabel; see below + design §(o‴)(I.8.15)); the route is now under user/coordinator adjudication.
+**ROUTE α IS INFEASIBLE — the leaf-1-def re-design recon RAN (design §(o‴)(I.8.15), 2026-06-21) and returned
+OPTION B (honest infeasibility).** The gate-compatible per-step edge accumulator does NOT exist: the per-step
+gate (`Relabel.lean:1201`, `hends'_off`) lets each step touch ONLY `edge(s+1)`/`edge(s+2)`, so the fold's
+accumulated selector can differ from `ends₀` ONLY on `{edge 1,…,edge i}` — but `endsσρ`'s edge relabel
+`shiftEdgePerm i` MOVES `edge 0` and `e₀` (both outside that set; Lean-verified PROBES A/B/E), and `edge 0` is
+a SURVIVING LINK of `G−vᵢ` (PROBES C/D), so the discrepancy is load-bearing in the rigidity-row span. No
+product of `{edge(s+1),edge(s+2)}`-supported swaps equals the `e₀`-threaded cycle `shiftEdgePerm i` (it has no
+adjacent-swap factorization). **ROUTE α was a category error** (reaching a cycle by adjacent transpositions);
+all 5 ROUTE-α leaves are abandoned (leaf 1 `shiftEndsAdv` now orphaned). **NEXT = USER/COORDINATOR ADJUDICATION
+of the `hρGv`-slot route** — the correct mechanism is whole-relabel TRANSPORT (the analogue of the landed
+`hwmem` brick `chainData_bottom_relabel`), NOT a per-step fold; but that hits the SAME member-mapping wall
+(I.8.12 R-2(iii)) — the only head-on attack (B1: a direct span re-derivation at `endsσρ`) is risk-HIGH, and
+the honest fallback is an `hφ`-production re-architecture one level up (re-thread A-1 / the W6b producer to
+output its base redundancy at the relabelled selector — a contract-touching change to A-1's output type, the
+first the CHAIN arm forces). See design §(o‴)(I.8.15)(e) for B1/B2/B3 + the recommendation. **T-1/T-2 + the
+orphaned ROUTE-α leaf 1 `shiftEndsAdv`/`_zero`/`_succ` ARE ORPHANED-FOR-THE-ARM** (confirm-and-delete at the
+hρGv-route-settle commit). Once `hρGv` settles + the arm shell lands, **CHAIN-2c-iii** `chainData_dispatch`
+closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -34,46 +41,52 @@ re-narrated here.
 
 ## Current state
 
-**ROUTE α USER-CONFIRMED (2026-06-21)**; the α/β pick is closed (α over β) and the telescope-survival
-question is ANSWERED (selector-free → survives trivially, design §(o‴)(I.8.13)). **But the recon-or-spike
-(g) mandated on leaf 2 RAN (design §(o‴)(I.8.14), 2026-06-21) and resolved the risk NEGATIVE: leaf 1's
-landed `def` is the WRONG shape, so leaf 2 as stated cannot hold and (g)'s fallback is REQUIRED.** A
-throwaway Lean probe (compiled `success:true`, then deleted — tree byte-clean) computed the landed
-`shiftEndsAdv ends₀ (i−1)` closed form and compared it to the arm's `endsσρ` (`Relabel.lean:4688`).
+**ROUTE α IS INFEASIBLE (design §(o‴)(I.8.15), 2026-06-21 — OPTION B honest verdict, Lean-grounded by 5
+`lean_multi_attempt` probes against the landed bodies; docs-only, tree byte-clean throughout).** The
+leaf-1-def re-design recon (I.8.14)(d) mandated RAN and returned NEGATIVE: there is NO gate-compatible
+per-step edge accumulator that accumulates to `shiftEdgePerm i`.
 
-**THE VERIFIED CLOSED FORM (design §(o‴)(I.8.14)(a)):** `shiftEndsAdv ends₀ (i−1) = fun e =>
-((shiftPerm i.castSucc).symm (ends₀ e).1, (shiftPerm i.castSucc).symm (ends₀ e).2)` — the recursion wraps
-each new swap OUTERMOST, so the accumulated swaps read off the **reverse** product = `(prod)⁻¹ =
-(shiftPerm i.castSucc).symm` (involutions; `prod = shiftPerm i.castSucc` is `shiftSeedAdv_eq_funLeft_shiftPerm`'s
-internal step). So the **endpoint half is ALREADY correct** (the `.symm`/inverse direction `endsσρ` wants —
-(g)'s vertex-direction worry was a non-issue). The **sole discrepancy is the EDGE argument**: landed reads
-`ends₀ e`; `endsσρ` reads `ends₀ (shiftEdgePerm i e)`. Hence **leaf 2 `= endsσρ` is FALSE for arbitrary
-`ends₀`**, and (g)'s fallback (fold `shiftEdgePerm i` into leaf 1's `def`) is REQUIRED and MINIMAL.
+**THE INFEASIBILITY (design §(o‴)(I.8.15)(a)/(b)).** The membership fold runs `i−1` steps `s=0,…,i−2`; the
+per-step gate (`Relabel.lean:1201`, `hends'_off`) permits each step to move the selector ONLY at `edge(s+1)`
+and `edge(s+2)`, so the accumulated selector can differ from `ends₀` ONLY on `{edge 1,…,edge i}`. But
+`endsσρ = σ⁻¹ ∘ ends₀ ∘ shiftEdgePerm i`, and `shiftEdgePerm i` MOVES `edge 0` (→ `e₀`) and `e₀` (→ `edge i`)
+— BOTH outside `{edge 1,…,edge i}` (Lean-verified: PROBE A `shiftEdgePerm i e₀ = edge i ≠ e₀`; PROBE B
+`shiftEdgePerm i (edge 0) = e₀`; PROBE E `edge 0`/`e₀ ∉ {edge 1,…,edge i}` via `edge_inj`/`e₀_ne_edge`). And
+the discrepancy is LOAD-BEARING: `edge 0 = v₀v₁` is a SURVIVING LINK of `G−vᵢ` for `i ≥ 2` (PROBE C/D), and
+`rigidityRows`/`supportExtensor` read the selector at every link — so `ofNormals (G−vᵢ) endsσρ qρ`'s
+rigidity-row span genuinely depends on `endsσρ (edge 0) = σ⁻¹(ends₀ e₀)`, which the per-step fold (fixing
+`edge 0` at `ends₀ (edge 0)`) can never produce. ∴ no per-step accumulator equals `endsσρ`.
 
-**THE GENUINE DIFFICULTY NOW PINNED (design §(o‴)(I.8.14)(c)):** leaf 1's `def` is DOUBLY constrained and
-the constraints collide — leaf 2 needs the WHOLE edge cycle `shiftEdgePerm i` at the top step, but leaf 3's
-per-step gate (`Relabel.lean:1201`, `hends'_off` touches only `edge(s+1)`/`edge(s+2)`) needs a per-step edge
-advance. `shiftEdgePerm i = formPerm [edge 0, e₀, edge i, edge 1, …]` is the `e₀`-threaded edge cycle — it
-does NOT decompose into ascending adjacent swaps like `shiftPerm` (no `shiftEdgePerm_eq_swap_mul`).
-Reconciling the two is the real make-or-break (likely a per-step edge-swap accumulator + a `shiftEdgePerm`
-step-factorization theory), not a mechanical mirror of the seed.
+**ROOT CAUSE (design §(o‴)(I.8.15)(c)).** `endsσρ`'s edge relabel is the `(i+2)`-CYCLE `shiftEdgePerm i =
+formPerm [edge 0, e₀, edge i, edge 1, …, edge(i−1)]`, which has NO adjacent-swap factorization (no
+`shiftEdgePerm_eq_swap_mul` analogue of the vertex `shiftPerm_eq_swap_mul`). A per-step fold composes ADJACENT
+edge swaps; reaching a non-adjacent-transposition cycle that way is impossible. ROUTE α was a category error.
 
-**NEXT STEP — the leaf-1-def RE-DESIGN recon (NOT "build leaf 2"; design §(o‴)(I.8.14)(d)).** Leaf 1's
-landed `shiftEndsAdv` (`Relabel.lean:1731`) must be re-designed: fold a gate-compatible per-step EDGE
-advance into it, reconciling §(o‴)(I.8.14)(c)(i)/(ii). The smallest concrete next commit is that recon —
-pin the per-step edge swap (the move at step `s` touching only `edge(s+1)`/`edge(s+2)` that accumulates to
-`shiftEdgePerm i`), probably preceded by a `shiftEdgePerm` step-factorization. Until that def settles, leaves
-2–5's signatures (which name `shiftEndsAdv`) are provisional; the endpoint-half closed form (a) is verified
-and reusable. The slot core's CONCLUSION framework (`G−vᵢ, endsσρ, qρ`) and the per-edge perp (STEP 1∘STEP 2
-= `chainData_freshEdge_slot_perp`, LANDED) are UNCHANGED — ROUTE α moves only the `hφ` INPUT selector
-`endsσρ → ends₀`. No motive/IH/contract change; d=3 M₃ unaffected (`i=2`, no `hφ` slot, no general fold);
-`chainData_relabel_arm_hρGv` stays a correct lemma until leaf 5 re-threads it — nothing reverts.
+**NEXT STEP — USER/COORDINATOR ADJUDICATION of the `hρGv`-slot route (design §(o‴)(I.8.15)(d)/(e)).** The
+per-step-selector-fold idea (all 5 ROUTE-α leaves) is abandoned. The correct mechanism is whole-relabel
+TRANSPORT — exactly how the landed `hwmem` brick `chainData_bottom_relabel` (`Relabel.lean:1961`) reaches
+`endsσρ` (it transports the WHOLE inverse cycle at once via `ofNormals_supportExtensor_relabel_perm` + the
+`shiftPerm_inv_*`/`shiftEdgePerm_inv_*` action lemmas, NOT a fold). But the `hρGv` slot's `hφ` is a row-SPAN
+membership (not a scalar perp), so it hits the SAME member-mapping wall the refuted T-1/T-2 family transport
+and ROUTE α both hit (I.8.12 R-2(iii); `σ⁻¹ v₀ = v₀`, `σ⁻¹ v₂ = v₁` for `i ≥ 2` land any apparatus transport
+on the WRONG member `hingeRow v₀ v₁ ρ₀`). The three options (design §(o‴)(I.8.15)(e)):
+- **B1** — a whole-relabel `hφ` transport via a DIRECT span re-derivation at `endsσρ` (not an A-1 transport);
+  the only head-on attack on the wall, risk-HIGH, recon-mandatory.
+- **B2** — restate the slot core to keep `hφ@ends₀` (ROUTE α's sound INTENT, correct mechanism): either dead
+  (`ends₀` doesn't record `G−vᵢ`'s links) or collapses to B1.
+- **B3** — carry `hφ@endsσρ` as a hypothesis to the dispatch/ENTRY (defer); LIKELY DEAD (needs a member-bridge
+  = B1, likely circular).
+- **Fallback (if B1's member-mapping can't be beaten):** re-thread A-1 / the W6b producer
+  `exists_candidateRow_bottomRows_of_rigidOn` to output its base redundancy at the RELABELLED selector
+  directly — a CONTRACT-TOUCHING change (A-1's output type), the FIRST the CHAIN arm forces. **Must go to user
+  adjudication before any build.**
 
-The d=3 `M₃` arm does NOT exercise this (`i=2`, single surviving edge, no general fold, no `hφ` slot — its
-`hρGv` runs W9a on the single candidate row directly), so the seam is a strict general-`d` obligation;
-zero-regression holds. After leaf 5 re-threads the arm, the arm shell (`refine case_III_arm_realization` at
+**No motive/IH/contract change is made HERE.** d=3 M₃ unaffected (`i=2`, no `hφ` slot, no general fold);
+`chainData_relabel_arm_hρGv` stays a CORRECT lemma (its `hφ@endsσρ` slot is the wall) until the route settles
+— nothing reverts. Once `hρGv` settles + the arm shell lands (`refine case_III_arm_realization` at
 `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, the M₃-template
-discriminator/removeVertex slots) → **CHAIN-2c-iii** `chainData_dispatch`. **No motive/IH/contract change.**
+discriminator/removeVertex slots) → **CHAIN-2c-iii** `chainData_dispatch`. The ROUTE-α leaf 1 `shiftEndsAdv`
++ `_zero`/`_succ` (landed `Relabel.lean:1731`) are now ORPHANED — confirm-and-delete with T-1/T-2.
 
 **Why the row-354 T-1/T-2/T-3 plan was MIS-TARGETED (the 2nd level/shape mismatch; design §(o‴)(I.8.11)).**
 The consumer `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`) pins THREE hyps at
@@ -134,8 +147,9 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   core `chainData_freshEdge_slot_mem` → P3 seed bridge → `chainData_freshEdge_slot_perp` per surviving edge.
   **GATES ON THE `hφ` SEAM:** takes the base redundancy `hφ` at the RELABELLED `endsσρ` base (the slot core's
   one-selector framing) + the perp data at the UN-relabelled `ends₀`. A correct lemma, NOT vacuous — but its
-  `hφ`@`endsσρ` slot is the member-mapping wall (design §(o‴)(I.8.12); ROUTE α re-architects the slot core to
-  take `hφ`@`ends₀` instead). The shell does NOT supply `hφ`@`endsσρ` by transport — there is no clean leaf.
+  `hφ`@`endsσρ` slot is the member-mapping wall (design §(o‴)(I.8.12)). The shell does NOT supply `hφ`@`endsσρ`
+  by transport — there is no clean leaf, and **ROUTE α (the per-step fold to re-architect the slot core onto
+  `hφ`@`ends₀`) is INFEASIBLE** (§(o‴)(I.8.15)); the route is under user/coordinator adjudication.
 - **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean:4383`) + **`ofNormals_supportExtensor_relabel_perm`**
   (`Relabel.lean:63`) — STAND: the support-extensor relabel identity `candidate.supp f = base.supp (shiftEdgePerm
   i f)`. STEP 2 reuses this identity ONCE (applied to a single perp), so it stays load-bearing; only its
@@ -189,7 +203,10 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   `freshEdge_surviving_row_mem` (the perp-half builder); the telescope
   (`wstep_foldl_hingeRow_telescope` / `_freshEdge_slot_mem`); the `acolumn_..._sup_...` crux; A-1/A-2/`_of_witness`;
   `candidateRow_ac_eq_neg` (Leaf B re-consumes it).
-- **Orphaned-for-the-arm (confirm-and-delete at the arm-build commit):** **T-1/T-2**
+- **Orphaned-for-the-arm (confirm-and-delete at the arm-build commit):** **the ROUTE-α leaf 1**
+  `Graph.ChainData.shiftEndsAdv` + `shiftEndsAdv_zero`/`shiftEndsAdv_succ` (`Relabel.lean:1731`) — the
+  abandoned per-step selector accumulator (ROUTE α INFEASIBLE, §(o‴)(I.8.15); the per-step fold can't reach the
+  cycle edge relabel, so this def has no consumer). **T-1/T-2**
   `chainData_candidateRow_edgeGrouped_transport_{blocks,comb}` (`Relabel.lean:4427`/`:4464`) — the row-354
   family-transport plan, MIS-TARGETED vs the consumer (design §(o‴)(I.8.11); the corrected route transports a
   single scalar perp, never the family). T-3 (`…_transport_links`) was never built → MOOTED. (The anchor
@@ -232,13 +249,13 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       (the genuinely-new relabel arm — KT's `ρᵢ` is a `(i−1)`-cycle): foundation LANDED; FIX-FORK SETTLED. The
       perp slot was ROUTE-SETTLED (STEP-1-at-base + STEP-2 scalar transport, both LANDED; T-1/T-2 ORPHANED).
       **The `hρGv` slot `chainData_relabel_arm_hρGv` LANDED but exposed the `hφ` SEAM** — its slot core wants
-      the base redundancy at the relabelled `endsσρ`, A-1 gives it at `ends₀`; being dissolved via **ROUTE α**
-      (USER-CONFIRMED 2026-06-21; telescope selector-free → survives, design §(o‴)(I.8.13)). **Leaf 1
-      `shiftEndsAdv` LANDED 2026-06-21, but the leaf-2 recon-or-spike (§(o‴)(I.8.14)) found its def shape
-      WRONG: the landed `shiftEndsAdv (i−1)` leaves the EDGE arg untouched (endpoint half already correct),
-      so leaf 2 `= endsσρ` is FALSE — (g)'s fallback (fold `shiftEdgePerm` into leaf 1's def) is REQUIRED.
-      NEXT = the leaf-1-def RE-DESIGN recon** (gate-compatible per-step edge advance accumulating to
-      `shiftEdgePerm i`; §(o‴)(I.8.14)(c)/(d)), then leaves 2–5 → arm shell + **2c-iii** `chainData_dispatch`.
+      the base redundancy at the relabelled `endsσρ`, A-1 gives it at `ends₀`. **ROUTE α (the per-step selector
+      fold) is INFEASIBLE (§(o‴)(I.8.15), OPTION B, Lean-grounded): no gate-compatible per-step edge
+      accumulator reaches the `e₀`-threaded cycle `shiftEdgePerm i` (the gate fixes `edge 0`/`e₀`; `edge 0` is
+      a surviving link of `G−vᵢ` → load-bearing).** All 5 ROUTE-α leaves abandoned. **NEXT = USER/COORDINATOR
+      ADJUDICATION of the `hρGv` route** — whole-relabel TRANSPORT (the `chainData_bottom_relabel` analogue),
+      but `hφ` is a row-span membership → the I.8.12 member-mapping wall; decision among B1/B2/B3 + the
+      A-1-output-type fallback (§(o‴)(I.8.15)(e)). Then arm shell + **2c-iii** `chainData_dispatch`.
       d=3 M₃ = `i=2` (no `hφ` slot, no general fold) — zero-regression unaffected.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
@@ -268,27 +285,29 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above: the leaf-1-def RE-DESIGN recon** (NOT
-"build leaf 2" — the leaf-2 recon-or-spike ran and found leaf 1's landed def shape WRONG, design
-§(o‴)(I.8.14)). The landed `shiftEndsAdv ends₀ (i−1)` closed form leaves the EDGE argument UNTOUCHED
-(endpoint half = `(shiftPerm i.castSucc).symm`, already correct), whereas `endsσρ` reads `ends₀ (shiftEdgePerm
-i e)` — so leaf 2 `= endsσρ` is FALSE for arbitrary `ends₀`, and (g)'s fallback (fold `shiftEdgePerm i` into
-leaf 1's `def`) is REQUIRED. The smallest concrete next commit is that re-design recon: pin a per-step edge
-advance that is BOTH gate-compatible (leaf 3's `hends'_off` touches only `edge(s+1)`/`edge(s+2)`,
-`Relabel.lean:1201`) AND accumulates to the `e₀`-threaded cycle `shiftEdgePerm i` — likely preceded by a
-`shiftEdgePerm` step-factorization (no `shiftEdgePerm_eq_swap_mul` exists). Detail + the verified closed form +
-the leaf-1/leaf-3 constraint collision: design §(o‴)(I.8.14)(a)/(c)/(d). The 5-leaf plan's signatures
-(§(o‴)(I.8.13)(d)/(f)) are now PROVISIONAL on the corrected leaf-1 def: (1) `shiftEndsAdv` def — landed
-2026-06-21 but **must be RE-DESIGNED** (edge-untouched, wrong shape); (2) `shiftEndsAdv_eq_relabel` (false as
-stated against the landed def); (3) `…_selAdv` fold; (4) `chainData_freshEdge_slot_mem_selAdv` slot core;
-(5) `chainData_relabel_arm_hρGv` re-thread. After leaf 5 the arm shell is the mechanical `refine case_III_arm_realization`
-at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, `hρe₀` via
-the G4d-i `a`-column read (M₃'s `hρ_ac`), discriminator `htrans`/`hLn`/`hρgate`/`hgab` (2c-i) + removeVertex
-bookkeeping per the M₃/`chainData_split_realization` templates. Then **2c-iii** `chainData_dispatch` (replaces
-`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **No motive/IH/contract change.** **T-1/T-2 (LANDED)
-are ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit). d=3 M₃ = `i=2` (no `hφ` slot —
-zero-regression). Wiring detail: design §(o‴)(I.8.13) (ROUTE-α decomposition) + (I.8.11) STEP 3 (the perp
-half, settled).
+**The single authoritative next-step is in *Current state* above: USER/COORDINATOR ADJUDICATION of the
+`hρGv`-slot route** — ROUTE α is INFEASIBLE (design §(o‴)(I.8.15), OPTION B, Lean-grounded). The leaf-1-def
+re-design recon ran and proved no gate-compatible per-step edge accumulator reaches `shiftEdgePerm i` (the
+per-step gate fixes `edge 0`/`e₀`, which `shiftEdgePerm i` moves; `edge 0` is a surviving link of `G−vᵢ` so
+the discrepancy is load-bearing — 5 probes). The per-step-fold mechanism is the wrong tool for a CYCLE edge
+relabel; all 5 ROUTE-α leaves are abandoned. There is **no smallest concrete build commit** until the route is
+adjudicated: the correct mechanism is whole-relabel TRANSPORT (the `chainData_bottom_relabel` analogue), but
+`hφ` is a row-SPAN membership and hits the I.8.12 R-2(iii) member-mapping wall (4th touch). The decision
+(design §(o‴)(I.8.15)(e)) is among **B1** (direct span re-derivation at `endsσρ`; head-on, risk-HIGH,
+recon-mandatory), **B2** (restate slot core to keep `hφ@ends₀`; dead or = B1), **B3** (carry `hφ@endsσρ` to
+ENTRY; likely-dead defer), or the **fallback** (re-thread A-1 / the W6b producer
+`exists_candidateRow_bottomRows_of_rigidOn` to output the base redundancy at the relabelled selector — a
+CONTRACT-TOUCHING change to A-1's output type, the first the CHAIN arm forces, user-adjudication-gated before
+any build). RECOMMENDATION: a focused B1 recon first; if its member-mapping can't be beaten, the fallback.
+Once the route settles, the arm shell is the mechanical `refine case_III_arm_realization` at `Gv=G−vᵢ`,
+`endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, `hρe₀` via the G4d-i
+`a`-column read (M₃'s `hρ_ac`), discriminator `htrans`/`hLn`/`hρgate`/`hgab` (2c-i) + removeVertex bookkeeping
+per the M₃/`chainData_split_realization` templates. Then **2c-iii** `chainData_dispatch` (replaces
+`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **No motive/IH/contract change is made by the verdict
+itself** (the fallback would touch A-1's output type — flagged for adjudication). **T-1/T-2 + the orphaned
+ROUTE-α leaf 1 `shiftEndsAdv`/`_zero`/`_succ` (LANDED) are ORPHANED-FOR-THE-ARM** (confirm-and-delete at the
+hρGv-route-settle commit). d=3 M₃ = `i=2` (no `hφ` slot — zero-regression). Wiring detail: design §(o‴)(I.8.15)
+(the verdict + B1/B2/B3) + (I.8.12) (the wall) + (I.8.11) STEP 3 (the perp half, settled, UNCHANGED).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -396,29 +415,17 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   `ofNormals_supportExtensor_relabel_perm` STAND. The `hρGv` slot `chainData_relabel_arm_hρGv` then assembled
   (`hingeRow_swap` → slot core → P3 → the perp composition). Friction: `show … from hid` for an omega side-goal
   over `↑(⟨(i:ℕ),_⟩ : Fin (cd.d+1))` (TACTICS-QUIRKS § 63).
-- **`hφ` SEAM VERDICT + ROUTE-α DESIGN-SETTLE 2026-06-21 (rows 362–363, design §(o‴)(I.8.12)/(I.8.13);
-  Lean-verified, docs-only; ROUTE α USER-CONFIRMED over β).** The `hφ` seam (3rd touch of the member-mapping
-  wall: the slot core's selector-fixed fold wants `hφ`@`endsσρ`, A-1 gives `hφ`@`ends₀`, no clean transport
-  leaf) is settled by ROUTE α. The central telescope-survival question is ANSWERED:
-  `wstep_foldl_hingeRow_telescope` is selector-free → survives a non-fixed-selector fold trivially; the
-  selector lives only at the membership layer; the foldl core + single-step gate are already
-  selector-advancing-ready (4 `lean_run_code` probes). ROUTE α = 5 buildable leaves with exact signatures
-  (§(o‴)(I.8.13)(d)/(f)): `shiftEndsAdv` selector accumulator (mirrors `shiftSeedAdv`) → bulk identity (THE
-  RISK LEAF, edge/vertex coupling, (g)) → selector-advancing fold → restated slot core → arm re-thread to
-  `hφ`@`ends₀`. No motive/IH/contract change; d=3 M₃ unaffected; the landed `chainData_relabel_arm_hρGv` stays
-  correct until leaf 5 re-threads it.
-- **ROUTE-α leaf 1 `shiftEndsAdv` LANDED 2026-06-21 (axiom-clean).** The selector accumulator (`Relabel.lean`,
-  beside `shiftSeedAdv`) + `_zero`/`_succ` `rfl` lemmas, advancing `ends₀ → endsσρ` one swap per step (swap =
-  `shiftSeedSwap s`, the SAME swap the seed uses). Mechanical mirror of `shiftSeedAdv` per the (d)-signature
-  (endpoint-only swap, edge argument untouched); no `[DecidableEq β]` (the design's was unused).
-- **LEAF-2 RECON-OR-SPIKE 2026-06-21 (docs-only; resolves (g)'s mandated check NEGATIVE; design §(o‴)(I.8.14)).**
-  A throwaway Lean probe (compiled clean, then deleted — tree byte-clean) computed the landed `shiftEndsAdv ends₀
-  (i−1) = fun e => ((shiftPerm i.castSucc).symm (ends₀ e).1, …)` — endpoint half already correct (`.symm`, via
-  the reverse-product-of-involutions = `prod⁻¹`), but the EDGE arg is UNTOUCHED, while `endsσρ` reads `ends₀
-  (shiftEdgePerm i e)`. So **leaf 2 `= endsσρ` is FALSE** against the landed def; (g)'s fallback (fold
-  `shiftEdgePerm` into leaf 1) is REQUIRED — and it collides with leaf 3's per-step gate (`hends'_off` touches
-  only `edge(s+1)`/`edge(s+2)`, but `shiftEdgePerm i` is the `e₀`-threaded cycle, no `_eq_swap_mul`). NEXT = the
-  leaf-1-def re-design recon (NOT "build leaf 2").
+- **`hφ` SEAM + ROUTE-α INFEASIBILITY 2026-06-21 (rows 362–365, design §(o‴)(I.8.12)/(I.8.15); Lean-grounded,
+  docs-only).** The `hφ` seam (slot core's selector-fixed fold wants `hφ`@`endsσρ`, A-1 gives `hφ`@`ends₀`, no
+  clean transport leaf; 3rd touch of the member-mapping wall, I.8.12 R-2(iii)) was attacked by ROUTE α (a
+  per-step selector fold reaching `endsσρ`). **ROUTE α is INFEASIBLE (OPTION B, §(o‴)(I.8.15), 5 probes):** the
+  per-step gate (`Relabel.lean:1201`) fixes `edge 0`/`e₀`, but `endsσρ`'s edge relabel `shiftEdgePerm i` MOVES
+  both, and `edge 0` is a surviving link of `G−vᵢ` → the discrepancy is load-bearing in the rigidity-row span.
+  A per-step fold can't reach a non-adjacent-transposition CYCLE (no `shiftEdgePerm_eq_swap_mul`). All 5
+  ROUTE-α leaves abandoned; leaf 1 `shiftEndsAdv` (+`_zero`/`_succ`, landed `Relabel.lean:1731`) now ORPHANED.
+  NEXT = user/coordinator adjudication of the `hρGv` route (whole-relabel transport vs the I.8.12 wall;
+  B1/B2/B3 + A-1-output-type fallback, §(o‴)(I.8.15)(e)). No motive/IH/contract change; d=3 M₃ unaffected;
+  `chainData_relabel_arm_hρGv` stays correct until the route settles.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
