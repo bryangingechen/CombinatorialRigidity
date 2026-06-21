@@ -384,11 +384,31 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 367 | hφ-at-source scope recon → feasible-but-contract-touching; only route = B1 re-derivation at endsσρ in the producer (3b), 1799d06 | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 220198 tok / 42 tools / ~10.8 min | Design-settle scoping recon (S=3→opus, OPUS-ONLY). OVERTURNED the coordinator's optimism (verify-against-source working): A-1's member is (ends e₀)-based, so instantiating at endsσρ gives the WRONG member (endsσρ e₀ reads ends₀@edge i) — not the cheap parametric reuse I hypothesized; coordinator confirmed @Candidate:420. Converged: only route = B1 direct span re-derivation at endsσρ in the producer (3b), contract-touching (C.0+A-1 output; C.1/3/4/6 invariant), ~3-5c, uncertifiable w/o a build spike (member-mapping wall 4th touch). → USER SIGN-OFF (contract-touching build vs deeper re-arch). |
 | 368 | B1 span re-derivation spike → BLOCKED (artifact framework (endsσρ,q), wall 4th touch); salvage 9c6089b | 2/3/1 | opus | normal | BLOCKED | ✓✓——✓— | 181492 tok / 36 tools / ~6.5 min | BUILD spike (a-priori S2/P3/B1→opus; P=3 novel proof, wall's 4th touch). Clean BLOCKED, CORRECT Lean-grounded diagnosis (de-risk worked — tree byte-clean, no contract edit, per the user-sanctioned B1-first plan). Found ROOT CAUSE: the slot core demands hφ at the ARTIFACT framework (endsσρ,q) — relabelled selector + un-advanced base seed — no rigidity fact exists; both B1 sources dead. Coordinator confirmed @Relabel:4671 + salvaged it (§I.8.17, commit 9c6089b). All local hφ-routes exhausted → re-arch pending user adjudication. |
 | 369 | slot-core/ASSEMBLY re-arch adjudication — both local fold re-shapes DEAD, unblock = KT-faithful whole-matrix re-write below the contract; §(o‴)(I.8.18), 58cb891 | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 195958 tok / 36 tools / ~8.2 min | Design-settle re-arch adjudication (S3→fable→opus, OPUS-ONLY). Verify-against-source clause working: re-derived the load-bearing artifact premise from LANDED source (line refs), not inherited from the prior pins. Flag-don't-force honored: both local directions pinned DEAD w/ named Lean obstructions; the only artifact-dissolving route (assembly-level whole-matrix re-write) named as genuinely-new arch, leaves NOT scoped. Verdict escalates to a user SCOPE call (A recon sub-phase / B ENTRY-carry), not a failed pass; cost-relevant: 23b no longer the prior ~3–5c from close. |
+| 370 | whole-matrix re-arch DECOMPOSED into a leaf sequence (LEAF A–D); §(o‴)(I.8.19), 2c1b6af | 3/2/1 | opus | normal | clean | ✓✓✗—✓✓ | 237838 tok / 60 tools / ~10.9 min | Whole-matrix decomposition (S3→fable→opus, OPUS-ONLY); gate-passing docs, honest about LEAF B (P=3 de-risk-first) and overturned the prompt's CHAIN-1 premise (F4). BUT bit-3 fail: LEAF C ("re-fire the EXISTENTIAL A-1 at the candidate") was UNSOUND — missed the landed dispatch's single-`r` coupling (A-1 ∃ρ vs one shared ρ0), re-introducing the design-rejected Fix B. NOT caught by first-pass scrutiny; caught by a coordinator-requested adversarial self-check (row 371). Single-pass design fallibility on a re-route's downstream-consumer coupling. → Findings 2026-06-21. |
+| 371 | adversarial self-check REFUTED LEAF C (single-`r`) + correction commit; §(o‴)(I.8.19)-ADDENDUM, 69647e5 | 3/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 542389 tok / 28 tools / ~7.0 min | Coordinator-initiated adversarial self-check (SendMessage continuation of row-370 agent, context intact; rate as original 3/2/1, opus). HIGH-VALUE: re-prompted with the coordinator's grounded single-`r` concern + flag-don't-force, the SAME agent REFUTED its own LEAF C with verbatim dispatch evidence (Realization.lean:388–411) and landed the correction (retract verdict + re-point hand-off to the open design question). Adversarial re-prompting works as a design-error audit even same-agent. → Findings 2026-06-21. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Session #22 (in progress; rows 369–371) — an adversarial self-check refuted a re-route's leaf before any build
+
+After the user authorized the assembly-level recon, a design-pass (row 370) decomposed the whole-matrix
+re-architecture into a clean, gate-passing leaf sequence — but its key leaf (LEAF C, "re-fire the existential
+A-1 at the candidate") was **unsound**: it missed the landed dispatch's single-`r` coupling (one shared `ρ0`
+established at the base, KT eq. 6.66), re-introducing the design-rejected Fix B. Durable lessons:
+
+- **A docs design-pass that *decomposes a re-route into leaves* must settle each leaf against its
+  downstream CONSUMER, not just the source.** LEAF C's signature matched A-1's outputs (F1/F2, true) but
+  not the discriminator's single-`r` requirement (the consumer). The miss is the L5b pattern (settle a
+  route against the consumer) in design-pass clothing — a re-route's leaf is sound only if the not-yet-built
+  consumer's obligations are read. First-pass coordinator scrutiny + the agent's own pass both missed it.
+- **A coordinator-requested adversarial self-check (SendMessage continuation, flag-don't-force mandate) is
+  a cheap, high-value design-error audit — even same-agent.** Re-prompted to *refute* its own LEAF C against
+  the landed consumer, the row-370 agent did so with verbatim evidence rather than rationalizing. The
+  grounding-in-source + the refute-don't-defend framing, not a fresh agent, is what made it work — but the
+  coordinator must independently verify the cited evidence (done here vs Realization.lean:388–441).
 
 ### Session #12 close-out (2026-06-19; rows 273–284) — the design-pass + adversarial-pair regime unstuck the 4×-mis-pinned crux
 
