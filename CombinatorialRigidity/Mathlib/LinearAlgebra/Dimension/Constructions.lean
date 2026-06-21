@@ -60,6 +60,18 @@ Upstream-eligible mirrors:
   via `finrank_map_mkQ` + `finrank_span_eq_card`, and monotones up to `S`. When promoted upstream
   this lives beside the quotient finrank API in
   `Mathlib/LinearAlgebra/Dimension/RankNullity.lean`; the namespace stays `Submodule`.
+
+* `Submodule.exists_le_finrank_eq_card_of_injective_map` — package the image of a linearly
+  independent family under an injective linear map `L : V →ₗ[K] W` (landing in a target submodule
+  `S`) as a *subspace* `W' ≤ S` of known finrank `|ι|`: given `LinearIndependent K f`, `L`
+  injective, and `∀ i, L (f i) ∈ S`, there is a `W' ≤ S` with `finrank W' = |ι|`. The base block
+  the block-rank-additivity lower bound (`finrank_add_card_le_of_linearIndependent_mkQ`) consumes
+  as its `W` when the corner sits *over* a relabel-image base: `L = (funLeft σ⁻¹).dualMap` carries
+  a base rigidity-row family to candidate rows, and the image span is the `W` of finrank
+  `D(m−1)`. The image family is LI of the same card (`LinearIndependent.map'` along the injective
+  `L`, the pattern the `d=3` `M₃` arm uses for its `w`), so `finrank_span_eq_card` reads off the
+  finrank and `span_le` gives `W' ≤ S`. When promoted upstream this lives beside the
+  `LinearIndependent`/finrank-span API; the namespace stays `Submodule`.
 -/
 
 @[expose] public section
@@ -195,5 +207,25 @@ theorem finrank_add_card_le_of_linearIndependent_mkQ {K V : Type*} [Field K] [Ad
     Submodule.finrank_mono le_sup_left
   have hmono := Submodule.finrank_mono hsub
   omega
+
+/-- Package the image of a linearly independent family under an injective linear map as a subspace
+of known finrank inside a target submodule. For `f : ι → V` linearly independent, `L : V →ₗ[K] W`
+injective, and `S : Submodule K W` containing every image `L (f i)`, there is a subspace `W' ≤ S`
+with `finrank W' = |ι|` — namely `W' = span (range (L ∘ f))`.
+
+This is the base-block packaging the block-rank-additivity lower bound
+(`finrank_add_card_le_of_linearIndependent_mkQ`) consumes as its `W` when the corner block sits
+over a relabel-image base: `L` carries an LI base family to candidate rows, and the resulting `W'`
+is the relabel-image base block with the matching finrank. The image family is linearly
+independent of the same cardinality (`LinearIndependent.map'` along the injective `L`), so
+`finrank_span_eq_card` reads off `finrank W' = |ι|`, and `span_le` gives `W' ≤ S`. -/
+theorem exists_le_finrank_eq_card_of_injective_map {K V W : Type*} [Field K]
+    [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W] {ι : Type*} [Fintype ι]
+    {f : ι → V} (hf : LinearIndependent K f) {L : V →ₗ[K] W} (hL : Function.Injective L)
+    {S : Submodule K W} (hS : ∀ i, L (f i) ∈ S) :
+    ∃ W' : Submodule K W, W' ≤ S ∧ Module.finrank K W' = Fintype.card ι :=
+  ⟨Submodule.span K (Set.range (L ∘ f)),
+    Submodule.span_le.mpr (Set.range_subset_iff.mpr fun i => by simpa using hS i),
+    finrank_span_eq_card (hf.map' L (LinearMap.ker_eq_bot.2 hL))⟩
 
 end Submodule

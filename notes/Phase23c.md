@@ -12,6 +12,20 @@ into a hard core: the **member-mapping wall**, now decisively characterized as *
 (design §(o‴)(I.8.21), 2026-06-21): (A) escapes the wall but requires a rank-certification re-architecture
 (below the contract/motive). The user adjudicated the fork → **OPEN OPTION (A), de-risk-first**.
 
+**`hWS` base-block-as-subspace packaging leaf LANDED (2026-06-21, the FIRST-build sub-risk §I.8.24(3)).**
+The one piece the cert-re-shape design-pass flagged as "not yet in tree as a packaged subspace" — packaging the
+relabel-image base block as a SUBSPACE `W ≤ span F₀.rigidityRows` with `finrank W = D(m_v−1)` — is now a
+self-contained, axiom-clean abstract-LA mirror leaf
+`Submodule.exists_le_finrank_eq_card_of_injective_map`
+(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`, after `finrank_add_card_le_of_linearIndependent_mkQ`):
+for `f` LI, `L` injective, `∀ i, L (f i) ∈ S`, there is a `W' ≤ S` with `finrank W' = |ι|` (image span; LI via
+`LinearIndependent.map'` along injective `L` — the M₃-arm `w` pattern `Relabel.lean:2729` — + `finrank_span_eq_card`
++ `span_le`). So `case_III_rank_certification_chain`'s `hWS` + its `finrank W = D(m_v−1)` are now a *consume-landed-
+brick* step (instantiate at `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f` = the base LI family `w` of card `D(m_v−1)`,
+`S = span candidate.rigidityRows`, `hS` = the span-level `chainData_bottom_relabel`), NOT a wall and no longer a
+sub-risk. **The first build's only remaining genuinely-new content is the cert's `hLI`** (the `±r` row's class-mod-`W`
+reduction to the discriminator at the fixed `ρ₀` via `interior_group_acolumn_eq_neg_baseRedundancy`).
+
 **De-risk spike landed (2026-06-21, the §I.8.21(2b)(α) hardest leaf).** The genuinely-new + cost-unknown
 hardest leaf — the **basis-free block-rank-additivity lower bound** — is **DONE and axiom-clean**, with a
 **clean POSITIVE de-risk verdict: the `ScrewSpace ≃ₗ`/§38-defeq friction did NOT bite.** Two decls:
@@ -201,10 +215,13 @@ pin:
   `hρGv` slot.
 - **The FIRST build commit = `case_III_rank_certification_chain`** (`Candidate.lean`, after the de-risk leaf): the
   make-or-break Lean step that proves §(I.8.24)(1) type-checks. The de-risk leaf + the `±r` identity are landed,
-  so it is a *re-statement consuming landed bricks*, not a new leaf. **One sub-risk to surface:** packaging the
-  relabel-image base block as a SUBSPACE `W` with `finrank W = D(m_v−1)` may take 1–2 supporting leaves (the
-  injective `(funLeft σ⁻¹).dualMap` preserves LI + card — `LinearIndependent.map'`, the pattern the M₃ arm uses
-  for `w` at `Relabel.lean:2629`); plausibly mechanical, NOT a wall, but not yet in tree as a packaged subspace.
+  so it is a *re-statement consuming landed bricks*, not a new leaf. **The `hWS` sub-risk is now CLOSED:** the
+  base-block-as-subspace packaging leaf `Submodule.exists_le_finrank_eq_card_of_injective_map` landed 2026-06-21
+  (axiom-clean, in the mirror) — instantiate it at `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f = the base LI family
+  `w` of card `D(m_v−1)`, `S = span candidate.rigidityRows`, `hS` = the span-level `chainData_bottom_relabel` — to
+  get `W ≤ span candidate.rigidityRows` with `finrank W = D(m_v−1)` directly. **The cert's only genuinely-new
+  content is now `hLI`** (the `±r` row's class-mod-`W` reduced to the discriminator `hρgate` at the FIXED `ρ₀`
+  via `interior_group_acolumn_eq_neg_baseRedundancy = −ρ₀`).
 - **Then:** `case_III_arm_realization_chain` (the shared W6a–W6f tail lifts verbatim) → the 2c-iii
   `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on the landed engine)
   → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the telescope's *membership*
@@ -213,6 +230,14 @@ pin:
 
 ## Decisions made during this phase
 
+- **`hWS` base-block-as-subspace packaging leaf landed (2026-06-21), closing the FIRST-build sub-risk
+  §I.8.24(3).** `Submodule.exists_le_finrank_eq_card_of_injective_map` (mirror,
+  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`): `f` LI + `L` injective + `∀ i, L (f i) ∈ S` ⟹ a
+  `W' ≤ S` with `finrank W' = |ι|` (image span; `LinearIndependent.map'` along injective `L` +
+  `finrank_span_eq_card` + `span_le`, a 3-line term proof). Axiom-clean, build/lint clean. Instantiated at
+  `L = (funLeft (shiftPerm)⁻¹).dualMap` it packages the relabel-image base block as the chain cert's `W` with
+  `finrank W = D(m_v−1)` — so the cert's `hWS` is now a consume-landed-brick step, not a wall. Next: the cert
+  itself, whose only genuinely-new content is the `hLI` discriminator-mod-`W` reduction.
 - **Opened at a user-adjudicated clean-break close of 23b (2026-06-21).** 23b's CHAIN target (the chain
   dispatch) was not reached — the `hρGv`-seam is a hard core (the member-mapping wall, intrinsic to KT). 23b
   closes on its delivered bricks + the decisive hard-core characterization; the arm/dispatch re-architecture
