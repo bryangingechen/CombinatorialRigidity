@@ -4406,4 +4406,39 @@ theorem _root_.Graph.ChainData.i3_candidateBlock_transport_deRisk
   simpa only [BodyHingeFramework.hingeRowBlock, PanelHingeFramework.toBodyHinge_supportExtensor,
     PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
 
+/-- **T-1 — the candidate-level edge-grouped transport, block half** (CHAIN-2c-ii-arm, the de-risked
+half of the row-352 GAP transport leaf `chainData_candidateRow_edgeGrouped_transport`;
+`notes/Phase23-design.md` §(o‴)(I.8.10) sub-leaf T-1; KT 2011 §6.4.2 eqs. (6.59)/(6.62) the
+index-shift panel correspondence; Phase 23b).
+
+The all-`i`/`∀ j` lift of the single-edge de-risk anchor `i3_candidateBlock_transport_deRisk`: A-1's
+edge-grouped base output (`exists_candidateRow_bottomRows_of_rigidOn`, `Candidate.lean`) carries a
+family of per-summand block memberships `rvGv j ∈ (base).hingeRowBlock (evGv j)` over **arbitrary**
+base links `evGv j`, but `chainData_freshEdge_perp_of_baseRedundancy`'s `hrv` (h3) wants them at the
+**candidate** framework `Fva = ofNormals (G − vᵢ) endsσρ qρ`. This lemma transports each summand's
+membership to the candidate block at the `(shiftEdgePerm i)⁻¹`-image of its base edge — a clean
+BIJECTIVE re-index of the family (no summand dropped, split, or merged), per the de-risk verdict
+(Q2-with-a-twist). The candidate-side edge family the perp leaf then consumes is
+`evGv' j := (shiftEdgePerm i).symm (evGv j)`.
+
+Each `j` is the anchor at `f := evGv j`; the proof is a per-summand replay. TRANSPORT, no new math:
+no motive/IH/contract change, no genuinely-new-math fork. d=3 (`i = 2`) is the landed `M₃` swap
+involution. -/
+theorem _root_.Graph.ChainData.chainData_candidateRow_edgeGrouped_transport_blocks
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {m : ℕ} (evGv : Fin m → β) (rvGv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    -- A-1's edge-grouped base block memberships at arbitrary base links `evGv j` (the W6b
+    -- producer's `hrv`, at the base framework `ofNormals (G − vᵢ) ends₀ q`):
+    (hrv : ∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        ends₀ q).toBodyHinge.hingeRowBlock (evGv j)) :
+    -- transport to the candidate framework's block at the `(shiftEdgePerm i)⁻¹`-re-indexed edges:
+    ∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.hingeRowBlock
+          ((cd.shiftEdgePerm i).symm (evGv j)) :=
+  fun j => cd.i3_candidateBlock_transport_deRisk i (evGv j) (hrv j)
+
 end CombinatorialRigidity.Molecular

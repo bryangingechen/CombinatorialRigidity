@@ -6,8 +6,9 @@ CHAIN-2c-ii foundation. The `hρGv` route is **LOCKED = Route W (option a′)**,
 + slot core + per-edge perp are all LANDED axiom-clean. The arm's perp slot needed the edge-grouped
 redundancy at the CANDIDATE framework, which A-1 supplies only at the BASE (row-352 gap); the i=3
 edge-alignment **DE-RISK RAN (row 353, `i3_candidateBlock_transport_deRisk`)** → the genuinely-new
-candidate-level edge-grouped transport decomposes into 3 buildable TRANSPORT sub-leaves (clean bijective
-re-index, NO re-grouping, NO new math). ~3–5 commits to the arm; then **CHAIN-2c-iii** `chainData_dispatch`
+candidate-level edge-grouped transport decomposes into 3 buildable TRANSPORT sub-leaves T-1/T-2/T-3 (clean
+bijective re-index, NO re-grouping, NO new math); **T-1 `…_transport_blocks` LANDED axiom-clean**.
+~2–4 commits left to the arm (T-2/T-3 then arm assembly); then **CHAIN-2c-iii** `chainData_dispatch`
 closes 23b green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
@@ -23,22 +24,27 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — build the candidate-level edge-grouped transport leaf (3 buildable
-TRANSPORT sub-leaves), then the arm.** The i=3 edge-alignment de-risk RAN (row 353, anchor lemma
-`i3_candidateBlock_transport_deRisk` LANDED axiom-clean): VERDICT = the per-summand transport is a CLEAN
-BIJECTIVE re-index, NOT a re-grouping; the flagged non-alignment is a NON-ISSUE; NO genuinely-new-math
-fork. So the genuinely-new transport leaf `chainData_candidateRow_edgeGrouped_transport` decomposes into 3
-buildable sub-leaves T-1/T-2/T-3 (signatures in design §(o‴)(I.8.10)) → the arm `chainData_relabel_arm`
-(M₃ template re-indexed, ~1–2c) → CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`.
-~3–5 commits total, no motive/IH/contract change.
+**NEXT STEP (single authoritative) — build the remaining 2 transport sub-leaves (T-2/T-3), then the
+arm.** The transport leaf `chainData_candidateRow_edgeGrouped_transport` decomposes into 3 buildable
+sub-leaves T-1/T-2/T-3 (signatures in design §(o‴)(I.8.10)). **T-1 LANDED** (axiom-clean): the de-risked
+block half — the all-`i`/`∀ j` lift of the anchor `i3_candidateBlock_transport_deRisk`. Remaining: T-2
+(relabel `hcomb`) + T-3 (the `G`-links) → the arm `chainData_relabel_arm` (M₃ template re-indexed,
+~1–2c) → CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`. ~2–4 commits left, no
+motive/IH/contract change.
 
-**SMALLEST NEXT COMMIT = T-1 `chainData_candidateRow_edgeGrouped_transport_blocks`** (the de-risked half):
-the all-`i` lift of `i3_candidateBlock_transport_deRisk` — carry A-1's per-summand base block memberships
-`rvGv j ∈ (ofNormals Gv ends q).hingeRowBlock (evGv j)` to the candidate `Fva = ofNormals (G−vᵢ) endsσρ qρ`
-at the `(shiftEdgePerm i).symm`-re-indexed edge, via `ofNormals_supportExtensor_relabel_perm` per summand.
-Then T-2 (relabel `hcomb` across the `(funLeft (shiftPerm i.castSucc).symm).dualMap`, as
-`chainData_bottom_relabel` carries genuine rows) + T-3 (the candidate `G`-links by `removeVertex_isLink` +
-the graph-iso). Exact signatures: design §(o‴)(I.8.10).
+**SMALLEST NEXT COMMIT = T-2 `chainData_candidateRow_edgeGrouped_transport_comb`** (relabel of `hcomb`):
+carry A-1's base combination identity `hingeRow (ab) ρ = ∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)`
+across the `(funLeft (shiftPerm i.castSucc).symm).dualMap` relabel to the candidate orientation
+`hingeRow (vᵢ₋₁)(vᵢ₊₁) ρ₀ = ∑ⱼ cGv j • hingeRow (relabelled endpoints)(rvGv j)`, EXACTLY as
+`chainData_bottom_relabel` (`Relabel.lean:1939`) carries genuine rows (the `dualMap` is linear,
+distributes over `∑` + `•`). Then T-3 (the candidate `G`-links by `removeVertex_isLink` + the graph-iso).
+Exact signatures: design §(o‴)(I.8.10).
+
+**T-1 LANDED (`chainData_candidateRow_edgeGrouped_transport_blocks`, `Relabel.lean:4422`, axiom-clean).**
+The de-risked block half — `fun j => cd.i3_candidateBlock_transport_deRisk i (evGv j) (hrv j)`, a pure
+per-summand replay of the anchor. Carries each A-1 base block membership `rvGv j ∈ (base).hingeRowBlock
+(evGv j)` to the candidate `Fva = ofNormals (G−vᵢ) endsσρ qρ` at the bijective re-index `(shiftEdgePerm
+i).symm (evGv j)`. NO new math (the anchor already general-`i`/general-edge).
 
 **ROW-352→353 GAP RESOLVED (the gap, why the arm did not converge from landed pieces, and the de-risk that
 unblocked it).** The `hρGv` perp sub-slot `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`)
@@ -96,6 +102,11 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   `shiftEdgePerm i f`, so a base block membership transports to the candidate block at `(shiftEdgePerm i).symm
   f`. The load-bearing fact T-1 is the all-`i` lift of. Confirms Q2-with-a-twist (clean bijective re-index, no
   re-grouping).
+- **`chainData_candidateRow_edgeGrouped_transport_blocks`** (`Relabel.lean`, T-1, row 355) — the de-risked
+  block half of the transport leaf: the all-`i`/`∀ j` lift of the anchor. Carries A-1's per-summand base
+  block memberships `rvGv j ∈ (base).hingeRowBlock (evGv j)` to the candidate `Fva = ofNormals (G−vᵢ) endsσρ
+  qρ` at the bijective re-index `(shiftEdgePerm i).symm (evGv j)`. Proof = `fun j => cd.i3_candidateBlock_
+  transport_deRisk i (evGv j) (hrv j)` (pure per-summand replay; no new math).
 - **`chainData_freshEdge_perp_of_witness`** (`Relabel.lean`) — per-vertex form (STANDS; the arm threads the
   base-redundancy lemma above, not this).
 - **Chain-induction LEAVES 1–4** (`Relabel.lean`, the eq-(6.44) regroup off the single base redundancy):
@@ -185,8 +196,9 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       **row-352 GAP** (candidate-vs-base level mismatch for the perp slot's `hrv`) is **DE-RISKED (row 353,
       `i3_candidateBlock_transport_deRisk`)**: the genuinely-new candidate-level edge-grouped transport
       `chainData_candidateRow_edgeGrouped_transport` decomposes into 3 buildable TRANSPORT sub-leaves
-      T-1/T-2/T-3 (no re-grouping, no new math). → **NEXT** = T-1 per *Current state*; then the arm; then
-      **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` involution.
+      T-1/T-2/T-3 (no re-grouping, no new math). **T-1 LANDED** (`…_transport_blocks`, axiom-clean). →
+      **NEXT** = T-2 per *Current state*; then T-3; then the arm; then **2c-iii** `chainData_dispatch`. d=3
+      M₃ = `i=2` involution.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -215,15 +227,15 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above:** build the candidate-level edge-grouped
-transport leaf `chainData_candidateRow_edgeGrouped_transport` as 3 buildable TRANSPORT sub-leaves —
-**T-1** `…_transport_blocks` (the SMALLEST NEXT COMMIT; the de-risked all-`i` lift of the LANDED
-`i3_candidateBlock_transport_deRisk`), **T-2** `…_transport_comb` (relabel `hcomb`), **T-3**
-`…_transport_links` (the `G`-links) → wire the arm `chainData_relabel_arm` (`refine
-case_III_arm_realization`, M₃ template re-indexed, ~1–2c) → **2c-iii** `chainData_dispatch` (replaces
-`case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). Net ~3–5 commits to the arm. **No motive/IH/contract
-change** anywhere in this chain; **no genuinely-new-math fork** (the i=3 de-risk verdict). d=3 M₃ = `i=2`
-involution (zero-regression). Exact sub-leaf signatures in design §(o‴)(I.8.10).
+**The single authoritative next-step is in *Current state* above:** finish the candidate-level
+edge-grouped transport leaf `chainData_candidateRow_edgeGrouped_transport`'s remaining 2 sub-leaves —
+**T-1** `…_transport_blocks` LANDED (the de-risked all-`i` lift of `i3_candidateBlock_transport_deRisk`);
+**T-2** `…_transport_comb` (the SMALLEST NEXT COMMIT; relabel `hcomb`), **T-3** `…_transport_links` (the
+`G`-links) → wire the arm `chainData_relabel_arm` (`refine case_III_arm_realization`, M₃ template
+re-indexed, ~1–2c) → **2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) →
+**CHAIN-5** (in 23c). Net ~2–4 commits left to the arm. **No motive/IH/contract change** anywhere in this
+chain; **no genuinely-new-math fork** (the i=3 de-risk verdict). d=3 M₃ = `i=2` involution
+(zero-regression). Exact sub-leaf signatures in design §(o‴)(I.8.10).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -333,6 +345,11 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   non-alignment is a NON-ISSUE (chain induction filters by `ev j = edge ⟨i⟩`; non-chain summands vanish via
   `deg_two_split`). NO genuinely-new-math fork (Q3 does not arise). Transport leaf → 3 buildable TRANSPORT
   sub-leaves T-1/T-2/T-3 (signatures design §(o‴)(I.8.10)); ~3–5c to the arm. NO motive/IH/contract change.
+- **T-1 LANDED 2026-06-21 (`chainData_candidateRow_edgeGrouped_transport_blocks`, axiom-clean).** The
+  de-risked block half of the transport leaf: a pure `∀ j`/all-`i` lift of `i3_candidateBlock_transport_deRisk`
+  (`fun j => cd.i3_candidateBlock_transport_deRisk i (evGv j) (hrv j)`). No new math — the anchor was already
+  general-`i`/general-edge, so T-1 is the `∀ j`-quantified instantiation against the candidate framework
+  `Fva`. NEXT = T-2 (relabel `hcomb`). No friction logged (one-line application).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
