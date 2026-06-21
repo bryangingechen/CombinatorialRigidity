@@ -5090,9 +5090,24 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   `rw [interior_group_eq_baseRedundancy]` (LEAF 3's constant value) then read the redundant base row
   `hingeRow ab₁ ab₂ ρ₀` on its head body `ab₂ = vtx 2` — `hingeRow_swap` rewrites to `hingeRow ab₂ ab₁ (−ρ₀)`,
   tail column at `ab₂` is `−ρ₀` (`hingeRow_comp_single_tail`, `ab₂ ≠ ab₁` by `vtx_inj`). Two-line, no
-  friction. **NEXT = leaf 5** (arm `chainData_relabel_arm`: thread LEAF 4's `group = −ρ₀` through `neg_mem`
-  + the A-2 carrier `candidate_perp_two_incident_supportExtensors` + `freshEdge_surviving_row_mem` to
-  discharge `hρGv`'s per-edge perp + the P3 seed bridge `shiftSeedAdv_eq_funLeft_shiftPerm`).
+  friction.
+  **LEAF 5 `hρGv`-SLOT CORE `Graph.ChainData.chainData_freshEdge_slot_mem` LANDED 2026-06-20**
+  (`CaseIII/Relabel.lean` tail, axiom-clean; full project green + lint, d=3 zero-regression, zero callers).
+  The general-`i` lift of the abstract `i=3` gate `i3_freshEdge_slot_mem_deRisk` to the *concrete* fold
+  framework — LEAF 5's hard, isolatable core, decoupled from the `refine case_III_arm_realization` slot
+  bookkeeping. For interior `i : Fin (cd.d+1)` (`1 ≤ i`, `i < cd.d`), from the W6b base redundancy `hφ`
+  (`hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G − v₁) rows`) + the per-edge perps `hperp` (`ρ₀ ⊥
+  Fva.supportExtensor (edge s)`, `s+1 < i` — the P2 LEAF 4 + A-2 supply), the slot row `hingeRow vᵢ₋₁
+  vᵢ₊₁ ρ₀` reaches `span (ofNormals (G − vᵢ) ends (shiftSeedAdv q (i−1))).rigidityRows`. Assembly: the
+  seed-advancing fold `shiftBodyListAsc_foldl_mem_span_rigidityRows` gives `W φ ∈ span`; the closed-form
+  telescope `wstep_foldl_freshEdge_slot_mem` peels the slot off `W φ` minus the `m = i−1` surviving rows,
+  each from `freshEdge_surviving_row_mem`. Glue: telescope vertex fn `w s = vtx (min s d)` (= `vtx` on the
+  touched range `s ≤ i+1 ≤ d`), `hinj` from `vtx_inj`, `hbodies` matching `shiftBodyListAsc` to the
+  telescope `List.ofFn` shape, `hFvaEq`/`hFvaStart` framework identifications. KT eq.~(6.66) concrete; `i=2`
+  is the `M₃` `case hρGv`. **NEXT = leaf-5 ASSEMBLY** (arm `chainData_relabel_arm`: `refine
+  case_III_arm_realization` per-`i`; `hwmem ← chainData_bottom_relabel`; `hρGv ← chainData_freshEdge_slot_mem`
+  with `hperp` from LEAF 4 (`neg_mem` → `interior_group_acolumn_eq_neg_baseRedundancy`) + A-2, seed via P3
+  `shiftSeedAdv_eq_funLeft_shiftPerm`, orientation via `hingeRow_swap`).
   **Coordinator shape-check note (leaf-2/3 consistency, 2026-06-20).** Leaf 1 landed in `a`-column form
   `(group i).comp(single vᵢ) = −(group i−1).comp(single vᵢ)` — both groups' columns at the SHARED vertex
   `vᵢ = vtx i.castSucc` — which is (±) the screw functional, so it is equivalent to the pinned screw-functional

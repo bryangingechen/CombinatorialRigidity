@@ -85,6 +85,7 @@ failing pattern and the working fix.
 - *"Application type mismatch: … has type `S.addCommMonoid` but expected `AddCommGroup.toAddCommMonoid`"* on `domRestrict`/`quotKerEquivRange`/`finrank_quotient_add_finrank` for `S : Submodule`, even after `haveI : AddCommGroup ↥S` → § 54 (`letI`, not `haveI`, to shadow the global `Submodule.addCommMonoid`)
 - `linter.style.longLine` flags far more / fewer lines than `awk 'length>100'` reports on a UTF-8-heavy file → § 55 (the linter counts Unicode codepoints, not bytes; count with Python `len(s)`)
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
+- *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 
 ## Sections
 
@@ -2251,6 +2252,29 @@ simp only [hmod]          -- now the index lives in a non-dependent `Fin.mk`, so
 Equivalently, `conv` into the index, or use a `getElem`-congruence lemma. The general rule: a
 `getElem` index is load-bearing for its own bounds proof — change it by *recomputing the element*,
 not by rewriting the index in the existing term.
+
+## 62. *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` — a type-ascription `(e : T)` followed by an arithmetic operator inside a function/constructor argument needs the whole arithmetic expression re-parenthesized
+
+**Symptom.** A subterm like `Set.Iic ((i : ℕ) - 1 + 2)`, `(⟨(i : ℕ) - 1 + 1, h⟩ : Fin n)`, or
+`hws ((i : ℕ) - 1 + 2)` fails to parse with *"unexpected token '+'; expected ')', ',' or ':'"* — and
+the elaborated term (in a goal display) shows the expression **truncated at the operator** (e.g.
+`Set.Iic (↑i - 1)`, dropping the `+ 2`). Hit repeatedly in Phase 23b `chainData_freshEdge_slot_mem`.
+
+**Cause.** A type ascription `(e : T)` is greedy: after `(i : ℕ)` the parser is still inside the
+ascription's term grammar and accepts `- 1`, but the *next* binary operator (`+`) is where the
+enclosing `(…)` / `⟨…⟩` argument parser expects its closing delimiter. The mixed
+ascription-then-arithmetic `( (i : ℕ) - 1 + 2 )` is parsed as `( ((i:ℕ) - 1) ` ⟶ close, leaving `+ 2)`
+dangling. (It only bites when an *ascription* is the left operand — a plain `i.val - 1 + 2` is fine.)
+
+**Fix.** Wrap the full arithmetic expression in its own parentheses so the ascription is fully
+enclosed before any operator the outer parser cares about:
+```lean
+Set.Iic (((i : ℕ) - 1) + 2)        -- not  Set.Iic ((i : ℕ) - 1 + 2)
+(⟨((i : ℕ) - 1) + 1, h⟩ : Fin n)   -- not  ⟨(i : ℕ) - 1 + 1, h⟩
+```
+Cheapest tell: if a goal *display* shows your `… + k` silently missing, suspect this before doubting
+the math. (Sibling of § 15's "bare literal needs ascription" — there the ascription is *missing*;
+here it is *present but under-parenthesized*.)
 
 **Variant — proving `List.ofFn f = x :: …` (a `cons`/head-peel identity).** When the goal is a
 *whole-list* equality whose RHS re-indexes the `ofFn` body (`List.ofFn (fun j : Fin (i:ℕ) => vtx

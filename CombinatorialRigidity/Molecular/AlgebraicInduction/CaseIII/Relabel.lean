@@ -4043,4 +4043,118 @@ theorem _root_.Graph.ChainData.shiftSeedAdv_eq_funLeft_shiftPerm [DecidableEq α
     rw [cd.shiftSeedSwap_eq hs]
   rw [hlist, ← cd.shiftPerm_eq_prod_map_swap_shiftBodyListAsc i]
 
+/-! ### The general-`i` `hρGv` fresh-edge slot membership (CHAIN-2c-ii-arm, LEAF 5 core)
+
+The general-candidate-`i` lift of the `i = 3` de-risk gate `i3_freshEdge_slot_mem_deRisk` from the
+abstract span carrier `S` to the *concrete* fold framework, threading the genuinely-new infra of
+LEAF-ρ1/the chain induction into the engine `hρGv` slot. Given the W6b base redundancy
+`hingeRow (vtx 0) (vtx 2) ρ₀ ∈ span (G − v₁) rows` and, for each surviving interior chain edge
+`edge s` (`s + 1 < (i : ℕ)`), the per-edge perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` (the P2 content
+the chain induction LEAF 4 + the A-2 carrier supply), the fresh-edge slot row
+`hingeRow (vtx (i−1)) (vtx (i+1)) ρ₀` — the engine `case_III_arm_realization.hρGv` slot
+`hingeRow vᵢ₋₁ vᵢ₊₁ ρ` at candidate `i` — reaches the candidate framework's rigidity-row span.
+
+The assembly: feed the base redundancy through the landed seed-advancing W9a fold
+(`shiftBodyListAsc_foldl_mem_span_rigidityRows`, output span at `shiftBodyFrameworkAsc (i−1) =
+ofNormals (G − vᵢ) ends (shiftSeedAdv q (i−1))`), giving `W φ ∈ span`; the landed closed-form
+telescope `wstep_foldl_freshEdge_slot_mem` then peels the slot row off `W φ` minus the `m = i − 1`
+genuine surviving chain-edge rows, each supplied by `freshEdge_surviving_row_mem` from its per-edge
+perp. KT eq. (6.66) realized concretely. The `d = 3` `M₃` `case hρGv` is the `i = 2` (`m = 1`,
+single-summand) special case (zero-regression). This isolates LEAF 5's hard core; the arm wiring
+`chainData_relabel_arm` rewrites the fold seed `shiftSeedAdv q (i−1)` to the engine seed `qρ`
+(P3 `shiftSeedAdv_eq_funLeft_shiftPerm`), flips the orientation (`hingeRow_swap`), and discharges
+the per-edge perps from LEAF 4 + A-2. -/
+theorem _root_.Graph.ChainData.chainData_freshEdge_slot_mem [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1))
+    (hi : 1 ≤ (i : ℕ)) (hid : (i : ℕ) < cd.d)
+    (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (hrec : ∀ f x y, G.IsLink f x y → ends f = (x, y) ∨ ends f = (y, x))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the W6b base redundancy `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (G − v₁) rows`:
+    (hφ : BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀ ∈
+      Submodule.span ℝ
+        (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends
+          (cd.shiftSeedAdv q 0)).toBodyHinge.rigidityRows)
+    -- the per-edge perp obligations (P2: each surviving chain-edge panel is ⊥ ρ₀):
+    (hperp : ∀ s : ℕ, (hs : s + 1 < (i : ℕ)) → ρ₀ ((PanelHingeFramework.ofNormals
+        (G.removeVertex (cd.vtx ⟨(i : ℕ), by omega⟩)) ends
+          (cd.shiftSeedAdv q ((i : ℕ) - 1))).toBodyHinge.supportExtensor
+          (cd.edge ⟨s, by omega⟩)) = 0) :
+    BodyHingeFramework.hingeRow (cd.vtx ⟨(i : ℕ) - 1, by omega⟩) (cd.vtx ⟨(i : ℕ) + 1, by omega⟩) ρ₀
+      ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals
+        (G.removeVertex (cd.vtx ⟨(i : ℕ), by omega⟩)) ends
+          (cd.shiftSeedAdv q ((i : ℕ) - 1))).toBodyHinge.rigidityRows := by
+  classical
+  -- the `Fin cd.d` version of the candidate index (for the fold lemma + the seed bridge).
+  let i' : Fin cd.d := ⟨(i : ℕ), hid⟩
+  have hi'v : (i' : ℕ) = (i : ℕ) := rfl
+  -- the candidate framework `Fva = ofNormals (G − vᵢ) ends (shiftSeedAdv q (i−1))`.
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨(i : ℕ), by omega⟩)) ends
+    (cd.shiftSeedAdv q ((i : ℕ) - 1))).toBodyHinge with hFva
+  -- the `ℕ → α` vertex function for the telescope: `w s = vtx (min s d)` (agrees with `vtx s` on
+  -- the range `[0, i+1] ⊆ [0, d]` the fold touches).
+  let w : ℕ → α := fun s => cd.vtx ⟨min s cd.d, Nat.lt_succ_of_le (min_le_right s cd.d)⟩
+  have hws : ∀ s : ℕ, (h : s < cd.d + 1) → s ≤ cd.d → w s = cd.vtx ⟨s, h⟩ := by
+    intro s h hs; exact congrArg cd.vtx (Fin.ext (min_eq_left hs))
+  -- `w` is injective on `[0, (i−1)+2] = [0, i+1] ⊆ [0, d]` (`vtx_inj` + `min` collapse).
+  have hinj : Set.InjOn w (Set.Iic (((i : ℕ) - 1) + 2)) := by
+    intro x hx y hy hxy
+    rw [Set.mem_Iic] at hx hy
+    rw [hws x (by omega) (by omega), hws y (by omega) (by omega)] at hxy
+    have := congrArg Fin.val (cd.vtx_inj hxy); omega
+  -- `shiftBodyFrameworkAsc (i'−1) = Fva` (seed `shiftSeedAdv q (i−1)`, graph
+  -- `G − v_{(i−1)+1} = G − vᵢ`).
+  have hidx : (⟨((i' : ℕ) - 1) + 1, by have := i'.2; omega⟩ : Fin (cd.d + 1))
+      = ⟨(i : ℕ), by omega⟩ := Fin.ext (by simp only [hi'v]; omega)
+  have hFvaEq : cd.shiftBodyFrameworkAsc (s := (i' : ℕ) - 1) (by have := i'.2; omega) ends q
+      = Fva := by
+    rw [Graph.ChainData.shiftBodyFrameworkAsc, hFva]
+    congr 2
+    rw [Graph.ChainData.shiftBodyGraph]
+    exact congrArg (fun x => G.removeVertex (cd.vtx x)) hidx
+  -- fold start framework `shiftBodyFrameworkAsc 0 = ofNormals (G − v₁) ends (shiftSeedAdv q 0)`.
+  have hFvaStart : cd.shiftBodyFrameworkAsc (s := 0) (by have := i'.2; omega) ends q
+      = (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩)) ends
+          (cd.shiftSeedAdv q 0)).toBodyHinge := by
+    rw [Graph.ChainData.shiftBodyFrameworkAsc, Graph.ChainData.shiftBodyGraph]
+  -- `hW`: the seed-advancing fold lands `W φ ∈ span Fva.rigidityRows` (`shiftBodyFrameworkAsc
+  -- (i−1) = Fva`, after feeding the base redundancy `hφ` matched to the start framework).
+  have hfold := cd.shiftBodyListAsc_foldl_mem_span_rigidityRows i' ends q hrec
+    (φ := BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
+    (hFvaStart ▸ hφ)
+  rw [hFvaEq] at hfold
+  -- The body list `shiftBodyListAsc i'` is the telescope's `List.ofFn (· ↦ (w (s+1), w (s+2),
+  -- w (s+3)))` shape (`w s = vtx s` on the touched range `s ≤ i+1 ≤ d`); and `vtx 0/2 = w 0/2`.
+  have hbodies : cd.shiftBodyListAsc i'
+      = List.ofFn fun s : Fin ((i' : ℕ) - 1) =>
+          (w ((s : ℕ) + 1), w ((s : ℕ) + 2), w ((s : ℕ) + 3)) := by
+    rw [Graph.ChainData.shiftBodyListAsc]
+    congr 1
+    funext s
+    rw [hws ((s : ℕ) + 1) (by omega) (by omega), hws ((s : ℕ) + 2) (by omega) (by omega),
+      hws ((s : ℕ) + 3) (by omega) (by omega)]
+  have hw02 : BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀
+      = BodyHingeFramework.hingeRow (w 0) (w 2) ρ₀ := by
+    rw [hws 0 (by omega) (by omega), hws 2 (by omega) (by omega)]
+  rw [hbodies, hw02] at hfold
+  -- the `hsurv` summands: each surviving chain-edge row `hingeRow (w s) (w (s+1)) ρ₀ ∈ span`
+  -- via `freshEdge_surviving_row_mem` from its per-edge perp `hperp s`.
+  have hsurv : ∀ s ∈ Finset.range ((i' : ℕ) - 1),
+      BodyHingeFramework.hingeRow (w s) (w (s + 1)) ρ₀ ∈ Submodule.span ℝ Fva.rigidityRows := by
+    intro s hs
+    rw [Finset.mem_range] at hs
+    rw [hws s (by omega) (by omega), hws (s + 1) (by omega) (by omega)]
+    -- `freshEdge_surviving_row_mem`'s framework `ofNormals (G − vᵢ) ends (shiftSeedAdv q (i−1))`
+    -- is exactly `Fva` (up to the `set` abbreviation).
+    exact cd.freshEdge_surviving_row_mem i s (by omega) ρ₀ (hperp s (by omega))
+  -- Apply the telescope (`m = i' − 1 = i − 1`): peel the slot row `hingeRow (w m) (w (m+2)) ρ₀`
+  -- off the fold output minus the `m` genuine surviving rows.
+  have hslot := BodyHingeFramework.wstep_foldl_freshEdge_slot_mem w ((i' : ℕ) - 1) hinj ρ₀ hfold
+    hsurv
+  -- the slot row is the conclusion after `w m = vtx (i−1)`, `w (m+2) = vtx (i+1)`.
+  rw [hws ((i' : ℕ) - 1) (by omega) (by omega),
+    hws (((i' : ℕ) - 1) + 2) (by omega) (by omega)] at hslot
+  convert hslot using 4
+  omega
+
 end CombinatorialRigidity.Molecular
