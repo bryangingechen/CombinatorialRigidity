@@ -6095,9 +6095,18 @@ to `(ends e₀)`, blocks@`block_ends(eⱼ)` `:420/431/442`), the genuine-row `hw
 
 ---
 
-## WHOLE-MATRIX RE-ARCHITECTURE — buildable leaf decomposition (§(o‴)(I.8.19))
+## WHOLE-MATRIX RE-ARCHITECTURE — leaf-decomposition attempt + LEAF-C REFUTATION (§(o‴)(I.8.19))
 
-**(I.8.19) WHOLE-MATRIX RE-ARCHITECTURE DESIGN-PASS — VERDICT: BUILDABLE leaf decomposition, with the
+> **⚠ SUPERSEDED HEADLINE — read the §(I.8.19)-ADDENDUM (end of this sub-section) FIRST.** The "BUILDABLE"
+> verdict below is RETRACTED: LEAF C ("re-fire A-1 at the candidate") is UNSOUND — it re-introduces the
+> design-rejected Fix B (per-`i` re-seed), because A-1 is EXISTENTIAL in `ρ` and the landed dispatch requires
+> a SINGLE shared `ρ₀` (KT eq. 6.66). The §I.8.19(a) "no member-mapping transport, so the seam never arises"
+> claim is RETRACTED. The corrected crux + the live open question are in the ADDENDUM. The (0)–(e) body below
+> is kept as the recon trail that PRODUCED the refutation (F1/F2 survive as necessary-not-sufficient; LEAF A
+> survives; the "confirmed orphans" claim is downgraded to "candidate" by the ADDENDUM).
+
+**(I.8.19) WHOLE-MATRIX RE-ARCHITECTURE DESIGN-PASS — original (RETRACTED) VERDICT: BUILDABLE leaf
+decomposition, with the
 genuinely-new crux (LEAF B, the column-op submatrix-containment span identity) flagged P=3-route-but-
 de-risk-first. The unblock §(I.8.18) named (re-shape the eq.-(6.60→6.64) realization to KT's whole-matrix
 form so `hφ` is consumed at the BASE `(ends₀,q)` directly) decomposes into a concrete ordered leaf sequence
@@ -6304,6 +6313,74 @@ byte-clean).**
   (the landed per-member transport already does the member-moving version) is distinguished from a
   guaranteed close. The route is BUILDABLE-MODULO-LEAF-B-de-risk; if LEAF B's spike refutes the span
   equality, the whole-matrix route fails and ENTRY-carry (route B) is the residue.
+
+**(I.8.19)-ADDENDUM — LEAF C REFUTED: the decomposition re-introduces the design-rejected Fix B; the
+"BUILDABLE" verdict + the §I.8.19(a) "no member-mapping transport" claim are RETRACTED (2026-06-21, opus
+adversarial self-check, coordinator-verified verbatim against the landed dispatch).** An adversarial soundness
+pass on LEAF C — try to REFUTE "fire A-1 fresh at the candidate" against the LANDED consumer — succeeded.
+Grounded in the verbatim dispatch `case_III_candidate_dispatch` (`CaseIII/Realization.lean`):
+
+  *(A) THE LANDED DISPATCH ESTABLISHES A SINGLE SHARED `ρ₀`, ONCE, AT THE BASE — verbatim.* A-1 fires ONCE
+  (`:388–391`, `obtain ⟨ρ, w, …⟩ := exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab)(Gv := Gv)(ends :=
+  Q.ends)(q := q) …`); its single existential `ρ` is normalized ONCE to `ρ0` (`:404–411`, the `obtain ⟨ρ0,
+  hρ0ne, hρ0e₀, hρ0Gv, hw0mem⟩` block — `ρ0 := ρ` or `−ρ` by the recorded `e₀`-orientation); the discriminator
+  runs ONCE on that `ρ0` (`:439–441`, `exists_complementIso_ne_zero_of_homogeneousIncidence hρ0ne hp hn …`,
+  returning `⟨u, n', hpair, hgate⟩`); and the SAME `ρ0` is threaded into EVERY arm across `fin_cases u`
+  (`:502` `u=0` `exact hρ0Gv`, `:514` `u=1` identical, `:592` `u=2`/M₃ `hgate hρ0e₀ hρ0Gv`). The discriminator
+  capstone `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` (`Claim612.lean:1462`) takes ONE
+  `{r : Module.Dual ℝ (ScrewSpace k)} (hr : r ≠ 0)` and returns `∃ u, … r (complementIso …) ≠ 0` — KT (6.65)/
+  (6.67): one redundancy tested against all `d` panels. **Single-`r` is REQUIRED** (KT eq. (6.66) `±r` carry;
+  matches the FIX-FORK Fix-B-infeasible ruling §(o‴)(H) and F3 — the d=3 M₃ arm at `u=2` does NOT re-fire A-1,
+  it TRANSPORTS the shared `ρ0` via the single-step W9a, `Relabel.lean:2562/2699–2710`).
+
+  *(B) THEREFORE LEAF C IS UNSOUND.* A-1's conclusion is `∃ ρ, …` (`Candidate.lean:414`); firing it at
+  candidate `i` yields a FRESH `ρ_cand_i` satisfying candidate `i`'s conditions but NOT pinned to the
+  discriminator-selected `ρ₀`. The chain dispatch must establish ONE `ρ₀`, run the discriminator on `ρ₀` to
+  pick `i`, then build candidate `i`'s realization WITH `ρ₀`'s row `hingeRow v₀v₂ ρ₀ ∈ span (candidate i)` —
+  the discriminator's full-rank guarantee is about `ρ₀(C(Lᵢ)) ≠ 0`, not `ρ_cand_i(C(Lᵢ)) ≠ 0`. Tying
+  `ρ_cand_i` to `ρ₀` needs either (a) the fixed-member identity `hingeRow v₀v₂ ρ₀ ∈ span (candidate i)` = the
+  dead member-mapping wall (the only landed transport `chainData_bottom_relabel` MOVES the member), or (b) a
+  `ρ_cand_i = ±ρ₀` uniqueness/carry = KT's (6.66), the eq.-(6.44) chain-cancellation the now-orphan-candidate
+  `hφ`-spine perp/telescope was built to encode. **LEAF C does not dissolve the seam — it RELOCATES it** (from
+  the slot core's `hφ@endsσρ` to "tie `ρ_cand_i` to `ρ₀`"), and both ties are the wall or the (6.66) carry.
+  This is structurally the rejected Fix B (per-`i` re-seed). **RETRACTED:** §I.8.19(a)'s "no member-mapping
+  transport, so the seam never arises" — the single-`r` coupling FORCES exactly that transport (or the (6.66)
+  carry); F1/F2 are necessary, not sufficient, and missed the discriminator's single-`r` coupling.
+
+  *(C) THE CORRECTED CRUX (honest, not oversold) — and the LIVE OPEN QUESTION (do NOT pre-judge).* The
+  genuinely-new obligation is producing `hingeRow v₀v₂ ρ₀ ∈ span (R(G,pᵢ).rigidityRows)` for the FIXED shared
+  `ρ₀` via KT's column-op / row-correspondence (6.60→6.64) — a NEW span-inclusion lemma `span
+  (R(G₁,q₁)-rows) ⊆ span (R(G,pᵢ)-rows)` that CHAIN-1 does NOT supply (F4: CHAIN-1's `columnOp` +
+  `…candidateBlock_swap` + the `+|ιc|` augment are LINEAR-INDEPENDENCE preservation, used by the rank-cert
+  internally — not span membership). **This is the SAME fixed-member transport §(o‴)(I.8.18) ruled dead in the
+  FOLD form.** THE OPEN QUESTION: *can the column-op / whole-matrix shape carry the FIXED `ρ₀` membership where
+  the seed-advancing fold could not — or does it too reduce to moving a fixed member across the relabel, in
+  which case the whole-matrix route SHARES the wall and route B (carry `hφ@endsσρ`/`ρ₀` to ENTRY) is the
+  residue?* This is a DESIGN question pending coordinator/user adjudication, stated NEITHER as buildable NOR as
+  dead — the column-op submatrix-containment (6.61: `R(G,pᵢ)` literally CONTAINS `R(G₁,q₁)`) is a genuinely
+  different shape from the fold (it does not advance a seed through `d−1` intermediate frameworks), so it MIGHT
+  carry the fixed member; but it has not been shown to, and the F4 gap (CHAIN-1 gives LI, not span inclusion)
+  means the span-inclusion lemma is unbuilt and its feasibility unknown.
+
+  *(D) WHAT SURVIVES.* F1 (A-1 parametric in `(Gab,Gv,ends,q)`) and F2 (A-1's outputs match the engine's
+  `hρGv`/`hwmem` slot types) are TRUE but NECESSARY-NOT-SUFFICIENT — they do not establish the single-`r`
+  coupling. **LEAF A** (`chainData_candidate_rigidOn`, the member-free rigid-on transport) is independently
+  fine and needed by any candidate-side route, but does NOT rescue LEAF C. **The reuse/orphan map's "CONFIRMED
+  ORPHAN" claim (§I.8.19(d)) is now PREMATURE and DOWNGRADED to "confirm-and-delete CANDIDATE, pending the
+  corrected-crux resolution":** the seed-advancing `hφ`-spine (slot core / fold spine / seed-advancing gate /
+  `chainData_relabel_arm_hρGv`) CANNOT be declared orphaned while the route is unsettled — if the corrected
+  crux reduces to the (6.66) carry, the telescope/perp machinery that encodes (6.44) is REUSED, not deleted.
+  Confirm-and-delete only at a route-SETTLE commit, not before. The single-step carrier W9a
+  (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`) STAYS regardless (d=3 building block); d=3 M₃
+  (`i=2`) zero-regression unaffected.
+
+  **CLAUSE (ii) HONESTY (the refutation is the high-value finding).** This ADDENDUM is a FLAG-DON'T-FORCE
+  RETRACTION of a route the SAME design-pass proposed — the adversarial self-check caught that LEAF C
+  re-introduces the design-rejected Fix B before any build was dispatched on it. The corrected crux is stated
+  as an OPEN DESIGN QUESTION (column-op carries the fixed `ρ₀` vs. shares the wall), pre-judged NEITHER way;
+  no buildable-looking signature is manufactured for it. The NEXT step is NOT "build LEAF A" — it is resolving
+  that design question (coordinator/user adjudication). No Lean landed; no decl declared orphaned; `d=3`
+  unaffected.
 
 ---
 

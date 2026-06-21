@@ -9,15 +9,19 @@ the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LAND
 member-mapping wall (the `hφ` seam). ALL LOCAL `hφ`-seam routes EXHAUSTED (ROUTE α §(o‴)(I.8.15);
 `hφ`-at-source B1 §(o‴)(I.8.16/17); both local fold re-shapes §(o‴)(I.8.18)); the artifact `(endsσρ, q)` is a
 Lean-MODELLING choice of the seed-advancing fold (KT eqs. 6.60→6.64 use a whole-matrix column-op reframe).
-**The whole-matrix re-architecture (the §(o‴)(I.8.18) unblock) is now DECOMPOSED into a buildable leaf
-sequence (§(o‴)(I.8.19), 2026-06-21): LEAF A → LEAF B (the P=3 crux, de-risk first) → LEAF C (replaces
-`chainData_relabel_arm_hρGv`) → LEAF D, producing `hρGv`/`hwmem` AT the candidate framework via A-1 directly
-(parametric, F1/F2) so the seam dissolves; NO C.0–C.6 / motive change forced.** **NEXT = build LEAF A
-`chainData_candidate_rigidOn`** (member-free rigid-on transport, P=2, FIRST/leaf-most). Then LEAF B de-risk /
-B / C, perp-subtree orphan decision, arm shell → **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo
-`hdispatch` (**CHAIN-5 → front of 23c**). **CONFIRMED ORPHANS at the re-architecture-land commit:** the
-seed-advancing `hφ`-spine subtree (slot core / fold spine / seed-advancing gate + scaffolding /
-`chainData_relabel_arm_hρGv`) + T-1/T-2 + the ROUTE-α leaf 1 `shiftEndsAdv`/`_zero`/`_succ`.
+**The whole-matrix re-architecture (the §(o‴)(I.8.18) unblock) was decomposed (§(o‴)(I.8.19)) but its LEAF C
+("re-fire A-1 at the candidate") is REFUTED (§(o‴)(I.8.19)-ADDENDUM, 2026-06-21, coordinator-verified): A-1 is
+existential in `ρ`, the landed dispatch requires a SINGLE shared `ρ0` (KT eq. 6.66) — re-firing A-1 =
+rejected Fix B, and tying the fresh `ρ_cand` to `ρ0` needs the dead member-mapping wall or the (6.66)
+carry.** **NEXT = a DESIGN QUESTION, NOT a build (PENDING coordinator/user adjudication):** can KT's
+column-op submatrix-containment (6.60→6.64) carry the FIXED `ρ0` membership `hingeRow v₀v₂ ρ0 ∈ span
+(R(G,pᵢ).rigidityRows)` — a NEW span-inclusion lemma CHAIN-1 does NOT supply (F4) — where the §I.8.18 fold
+form (DEAD) could not, or does it share the wall (→ route B, carry to ENTRY)? Pre-judged NEITHER way. **NO
+C.0–C.6 / motive change** (machinery below dispatch C.3 + record C.1). **NO decl orphaned** — the
+seed-advancing `hφ`-spine subtree (slot core / fold spine / seed-advancing gate / `chainData_relabel_arm_hρGv`)
+is a confirm-and-delete CANDIDATE pending the resolution (REUSED if the crux reduces to the (6.66) carry).
+Once settled → arm shell → **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch`
+(**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -32,39 +36,42 @@ re-narrated here.
 
 ## Current state
 
-**WHOLE-MATRIX RE-ARCHITECTURE — DECOMPOSED into a buildable leaf sequence; FIRST LEAF = LEAF A
-`chainData_candidate_rigidOn` (design §(o‴)(I.8.19), 2026-06-21).** The §(I.8.18) re-architecture (the only
-route that dissolves the `hφ` seam) now has an ordered, source-verified leaf decomposition with exact
-signatures + a reuse/orphan map + a commit estimate. **The shape:** drop the seed-advancing `hφ`-fold spine
-and produce the candidate redundancy `hρGv` + bottom rows `hwmem` AT THE CANDIDATE framework `(G−vᵢ, endsσρ,
-qρ)` directly by invoking A-1 (`exists_candidateRow_bottomRows_of_rigidOn`) there — A-1 is fully parametric in
-`(Gab, Gv, ends, q)` (F1) and its outputs ARE the engine's `hρGv`/`hwmem` slots (F2), so NO fixed-member span
-transport is needed and the `hφ@endsσρ` artifact never arises. The only new obligations are A-1's hypotheses
-at the candidate — rigidity (LEAF A) + the eq.-(6.22) rank lower bound (LEAF B) — both member-free `finrank`
-facts that transport cleanly across the relabel (the §I.8.18(b) escape: member-free facts move, fixed members
-don't).
+**WHOLE-MATRIX RE-ARCHITECTURE — the I.8.19 leaf decomposition's LEAF C is REFUTED; NEXT is a DESIGN
+QUESTION pending coordinator/user adjudication, NOT a build (§(o‴)(I.8.19)-ADDENDUM, 2026-06-21,
+coordinator-verified verbatim).** The I.8.19 pass proposed producing the candidate redundancy `hρGv` at the
+candidate framework `(G−vᵢ, endsσρ, qρ)` by re-firing A-1 there (LEAF C). An adversarial self-check REFUTED
+it: A-1 is EXISTENTIAL in `ρ` (`Candidate.lean:414`), but the landed dispatch `case_III_candidate_dispatch`
+fires A-1 ONCE at the base, normalizes to a SINGLE shared `ρ0` (`Realization.lean:388–411`), runs the
+discriminator ONCE on `ρ0` (`:439–441`), and threads that SAME `ρ0` into every arm across `fin_cases u`
+(`:502/:514/:592`). The discriminator capstone (`exists_complementIso_…_gen`, `Claim612.lean:1462`) takes ONE
+`r` — KT eq. (6.66) `±r` carry, single-`r` REQUIRED (matches the FIX-FORK Fix-B-infeasible ruling §(o‴)(H) +
+F3, the d=3 M₃ arm at `u=2` TRANSPORTS the shared `ρ0`, never re-fires A-1). So LEAF C's fresh `ρ_cand_i`
+re-introduces the rejected Fix B (per-`i` re-seed); tying it to the discriminator-selected `ρ0` needs either
+the dead member-mapping wall (`hingeRow v₀v₂ ρ0 ∈ span candidate`) or the KT-(6.66) carry — **LEAF C
+RELOCATES the seam, does not dissolve it.** RETRACTED: §I.8.19(a)'s "no member-mapping transport, so the seam
+never arises" (the single-`r` coupling FORCES exactly that transport / the (6.66) carry).
 
-**THE LEAVES (signatures + dep-order in §(o‴)(I.8.19)(b)):** **LEAF A** `chainData_candidate_rigidOn` (the
-rigid-on transport base→candidate, member-free `finrank`, **P=2**, the rigidity analogue of the d=3 dispatch's
-`hGPva`); **LEAF B** `chainData_candidate_h622lb` (the eq.-(6.22) rank-bound transport — the GENUINELY-NEW
-crux = the (6.60→6.61) column-op submatrix-containment as a relabel-image SPAN EQUALITY, **P=3, DE-RISK
-FIRST** at `i=3` before pinning the general-`i` signature, STOP-and-escalate if the spike refutes the span
-equality); **LEAF C** `chainData_relabel_arm_hρGv_wholeMatrix` (fire A-1 at the candidate, read off `hρGv`;
-REPLACES `chainData_relabel_arm_hρGv`, same conclusion type, **P=2**); **LEAF D** the `hwmem` half
-(`chainData_bottom_relabel` reused, OR folded into LEAF C's candidate-A-1 `w` — decided at LEAF C). **NO
-contract/motive change** (machinery below dispatch C.3 + record C.1, §I.8.18 confirmed). **CLAUSE-(i) check
-overturned a prompt premise:** CHAIN-1 supplies the LINEAR-INDEPENDENCE column-op machinery (`columnOp`,
-`linearIndependent_sumElim_candidateBlock_swap`, the `+|ιc|` augment — used by `case_III_rank_certification`
-internally), NOT the span-membership submatrix identity LEAF B needs (F4) — do not assume it provides the
-`hρGv`-route column-op identity.
+**THE CORRECTED CRUX + THE LIVE OPEN QUESTION (§(o‴)(I.8.19)-ADDENDUM(C)).** The genuinely-new obligation is
+producing `hingeRow v₀v₂ ρ0 ∈ span (R(G,pᵢ).rigidityRows)` for the FIXED shared `ρ0` via KT's column-op /
+row-correspondence (6.60→6.64) — a NEW span-inclusion lemma `span(R(G₁,q₁)-rows) ⊆ span(R(G,pᵢ)-rows)` that
+CHAIN-1 does NOT supply (F4: CHAIN-1's `columnOp` / `linearIndependent_sumElim_candidateBlock_swap` / the
+`+|ιc|` augment are LINEAR INDEPENDENCE, used by `case_III_rank_certification` internally — not span
+membership). **This is the SAME fixed-member transport §(o‴)(I.8.18) ruled dead in the FOLD form.** OPEN
+QUESTION (pre-judged NEITHER way): *can the column-op / whole-matrix shape carry the FIXED `ρ0` membership
+where the seed-advancing fold could not (the (6.61) submatrix-containment is a genuinely different shape — no
+seed advance through `d−1` frameworks, so it MIGHT carry the fixed member), or does it too reduce to moving a
+fixed member across the relabel, so the whole-matrix route SHARES the wall and route B (carry `ρ0`/`hφ@endsσρ`
+to ENTRY) is the residue?* — a DESIGN question, NOT a buildable leaf.
 
-**Why LEAF B is the crux but NOT the dead `hφ` seam:** the seam needed a FIXED member held still across the
-relabel; LEAF B needs only that the relabel-image of the base ROW SET spans the candidate ROW SET — member-FREE
-(`chainData_bottom_relabel`, landed, already transports the whole row-disjunction per-member with the members
-MOVING). So LEAF B inherits §I.8.18(b)'s escape; still P=3 because no landed lemma states the span equality and
-the `≃ₗ`-finrank transport over the relabelled `ofNormals` carrier may hit the §38 defeq trap → de-risk first.
-**COMMIT ESTIMATE: 5–8c** (LEAF A 1c; LEAF B de-risk 1c + general-`i` 1–2c; LEAF C 1c; perp-subtree orphan
-decision + confirm-and-delete 1c; arm-shell + 2c-iii 1c), + 1c contingency if the LEAF B spike fails.
+**WHAT SURVIVES.** F1 (A-1 parametric in `(Gab,Gv,ends,q)`) / F2 (A-1's outputs match the engine's
+`hρGv`/`hwmem` slot types) TRUE but NECESSARY-NOT-SUFFICIENT — they missed the discriminator's single-`r`
+coupling. LEAF A `chainData_candidate_rigidOn` (member-free rigid-on transport, P=2) independently fine but
+does NOT rescue LEAF C. **The I.8.19 "confirmed orphan" claim is DOWNGRADED to confirm-and-delete CANDIDATE,
+pending the corrected-crux resolution:** the seed-advancing `hφ`-spine (slot core / fold spine / seed-advancing
+gate / `chainData_relabel_arm_hρGv`) CANNOT be declared orphaned while the route is unsettled — if the crux
+reduces to the (6.66) carry, the perp/telescope machinery that encodes (6.44) is REUSED, not deleted. The
+single-step carrier W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`) STAYS regardless; `d=3`
+M₃ (`i=2`) zero-regression unaffected.
 
 **ROUTE α STAYS INFEASIBLE (design §(o‴)(I.8.15), 2026-06-21 — OPTION B, Lean-grounded; the per-step selector
 fold is the wrong tool).** The membership fold's per-step gate (`Relabel.lean:1201`, `hends'_off`) permits each
@@ -189,16 +196,17 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   `freshEdge_surviving_row_mem` (the perp-half builder); the telescope
   (`wstep_foldl_hingeRow_telescope` / `_freshEdge_slot_mem`); the `acolumn_..._sup_...` crux; A-1/A-2/`_of_witness`;
   `candidateRow_ac_eq_neg` (Leaf B re-consumes it).
-- **Orphaned-for-the-arm (confirm-and-delete at the arm-build commit):** **NEW (the whole-matrix
-  re-architecture, §(o‴)(I.8.19)(d)):** the seed-advancing `hφ`-spine subtree — the slot core
-  `chainData_freshEdge_slot_mem`, the fold spine `shiftBodyListAsc_foldl_mem_span_rigidityRows`, the
-  seed-advancing gate `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` + its
-  `shiftBodyFrameworkAsc*`/`shiftSeedAdv` scaffolding, and `chainData_relabel_arm_hρGv` itself (LEAF C
-  replaces it) — sole-caller chain into the to-be-replaced arm (`git grep`-verified zero external callers).
-  **The perp sub-tree (`_slot_perp` / `_perp_of_baseRedundancy` / LEAF-1–4 chain induction / the telescope)
-  is a confirm-and-delete CANDIDATE, decided at LEAF C** (orphaned iff A-1@candidate yields `hρGv` without
-  the slot-core peel). The single-step carrier W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`
-  (`:865`) STAYS (d=3 building block). **The ROUTE-α leaf 1**
+- **Orphaned-for-the-arm (confirm-and-delete at the arm-build commit):** **DOWNGRADED — confirm-and-delete
+  CANDIDATE, NOT confirmed orphan, pending the corrected-crux resolution (§(o‴)(I.8.19)-ADDENDUM(D); LEAF C
+  REFUTED):** the seed-advancing `hφ`-spine subtree — the slot core `chainData_freshEdge_slot_mem`, the fold
+  spine `shiftBodyListAsc_foldl_mem_span_rigidityRows`, the seed-advancing gate
+  `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` + its `shiftBodyFrameworkAsc*`/`shiftSeedAdv`
+  scaffolding, and `chainData_relabel_arm_hρGv`. It is sole-caller-chained into the to-be-replaced arm, but
+  CANNOT be declared orphaned while the whole-matrix route is unsettled — if the corrected crux reduces to the
+  KT-(6.66) carry, the perp sub-tree (`_slot_perp` / `_perp_of_baseRedundancy` / LEAF-1–4 chain induction /
+  the telescope) that encodes eq.~(6.44) is REUSED, not deleted. Confirm-and-delete only at a route-SETTLE
+  commit. The single-step carrier W9a `funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`
+  (`:865`) STAYS regardless (d=3 building block). **The ROUTE-α leaf 1**
   `Graph.ChainData.shiftEndsAdv` + `shiftEndsAdv_zero`/`shiftEndsAdv_succ` (`Relabel.lean:1731`) — the
   abandoned per-step selector accumulator (ROUTE α INFEASIBLE, §(o‴)(I.8.15); the per-step fold can't reach the
   cycle edge relabel, so this def has no consumer). **T-1/T-2**
@@ -247,15 +255,17 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       the base redundancy at the artifact `(endsσρ, q)`, A-1 gives it at the base `(ends₀, q)`. ALL LOCAL
       ROUTES DEAD (ROUTE α §(o‴)(I.8.15), `hφ`-at-source B1 §(o‴)(I.8.16/17), both fold re-shapes
       §(o‴)(I.8.18)); the artifact is a Lean-MODELLING choice of the seed-advancing fold. **The whole-matrix
-      re-architecture (§(o‴)(I.8.18)'s unblock) is now DECOMPOSED into a buildable leaf sequence
-      (§(o‴)(I.8.19)): LEAF A `chainData_candidate_rigidOn` (FIRST, P=2) → LEAF B `chainData_candidate_h622lb`
-      (the P=3 crux, DE-RISK FIRST) → LEAF C `chainData_relabel_arm_hρGv_wholeMatrix` (fire A-1 at the
-      candidate, REPLACES `chainData_relabel_arm_hρGv`) → LEAF D (`hwmem`).** Shape: produce `hρGv`/`hwmem` AT
-      the candidate `(G−vᵢ, endsσρ, qρ)` by invoking A-1 there (parametric, F1/F2) — no fixed-member transport,
-      seam dissolves. **NO C.0–C.6 / motive change forced** (machinery below dispatch C.3 + record C.1).
-      **NEXT = build LEAF A** (see *Hand-off*). Then LEAF B de-risk / B / C, perp-subtree orphan decision, arm
-      shell + **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot, no fold) — zero-regression
-      unaffected.
+      re-architecture (§(o‴)(I.8.18)'s unblock) was decomposed (§(o‴)(I.8.19)) but its LEAF C ("re-fire A-1 at
+      the candidate") is REFUTED (§(o‴)(I.8.19)-ADDENDUM, coordinator-verified): A-1 is existential in `ρ`, the
+      landed dispatch requires a SINGLE shared `ρ0` (KT eq. 6.66) — re-firing A-1 = the rejected Fix B; tying
+      the fresh `ρ_cand` to `ρ0` needs the dead member-mapping wall or the (6.66) carry.** **NEXT = a DESIGN
+      QUESTION, NOT a build** (see *Hand-off*): can KT's column-op submatrix-containment (6.60→6.64) carry the
+      FIXED `ρ0` membership `hingeRow v₀v₂ ρ0 ∈ span (R(G,pᵢ).rigidityRows)` — a NEW span-inclusion lemma
+      CHAIN-1 does NOT supply (F4) — where the §I.8.18 fold form (DEAD) could not, or does it share the wall
+      (→ route B, carry to ENTRY)? PENDING coordinator/user adjudication; pre-judged neither way. **NO C.0–C.6
+      / motive change** (machinery below dispatch C.3 + record C.1). **NO decl orphaned** (the `hφ`-spine is a
+      confirm-and-delete CANDIDATE pending the resolution). Once settled → arm shell + **2c-iii**
+      `chainData_dispatch`. d=3 M₃ = `i=2` (no `hφ` slot, no fold) — zero-regression unaffected.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -284,35 +294,30 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above: BUILD LEAF A `chainData_candidate_rigidOn`
-— the member-free rigid-on transport base→candidate (design §(o‴)(I.8.19)(b)/(e); P=2, the leaf-most node and
-the de-risk for "member-free facts transport across the relabel").** The whole-matrix re-architecture
-(§I.8.18's unblock) is now DECOMPOSED into LEAF A→B→C(+D) with exact signatures (§(o‴)(I.8.19)(b)). LEAF A is
-the rigidity analogue of the d=3 dispatch's already-landed `hGPva`/`hrig'` (`Realization.lean:577`), reusing
-the landed relabel kit (`ofNormals_supportExtensor_relabel_perm`, `removeVertex_genuine_shiftRelabel`) + rank
-invariance under the `(shiftPerm i.castSucc)` `≃ₗ`. **After LEAF A: LEAF B's DE-RISK SPIKE** — a single `i=3`
-instance of the eq.-(6.22) rank-bound transport (the (6.60→6.61) column-op submatrix-containment as a
-relabel-image SPAN EQUALITY) BEFORE pinning LEAF B's general-`i` signature; if the spike refutes the span
-equality (e.g. the relabel-image span is a PROPER subspace), STOP and escalate at the §I.8.15/I.8.18 standard
-(the whole-matrix route then fails; residue = route B, carry to ENTRY, likely-dead). **Then LEAF C** (fire A-1
-at the candidate — `exists_candidateRow_bottomRows_of_rigidOn` with LEAF A's `hrig` + LEAF B's `h622lb`,
-read off `hρGv`; REPLACES `chainData_relabel_arm_hρGv`, same conclusion type), **the perp-subtree orphan
-decision** (the whole `_slot_perp`/`_perp_of_baseRedundancy`/LEAF-1–4/telescope sub-tree is a confirm-and-
-delete CANDIDATE once A-1@candidate produces `hρGv` without the slot-core peel), **then the arm shell** +
-**2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c). **NO
-contract/motive change forced** (§I.8.18 confirmed: machinery below dispatch C.3 + record C.1). **CONFIRMED
-ORPHANS** at the re-architecture-land commit (`git grep` zero callers, the seed-advancing `hφ`-spine subtree
-whose sole caller is the to-be-replaced arm): the slot core `chainData_freshEdge_slot_mem`, the fold spine
-`shiftBodyListAsc_foldl_mem_span_rigidityRows`, the seed-advancing gate
-`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` + its `shiftBodyFrameworkAsc*`/`shiftSeedAdv`
-scaffolding, `chainData_relabel_arm_hρGv` itself, and the already-orphaned ROUTE-α leaf 1
-`shiftEndsAdv`/`_zero`/`_succ` (`Relabel.lean:1731`) + T-1/T-2. **STAYS:** the single-step carrier W9a
-`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows` (`:865`, the d=3 building block), the engine/rank-cert
-(parametric in `(Gv,ends,q)`), `chainData_bottom_relabel`; d=3 M₃ (`i=2`) **zero-regression** (no `hφ` slot,
-no fold, no seam — F3). **COMMIT ESTIMATE 5–8c + 1c LEAF-B-fail contingency** (§(o‴)(I.8.19)(e)). Audit trail:
-design §(o‴)(I.8.19) (the decomposition — F1–F4 + LEAVES A–D + reuse/orphan map + de-risk plan), §(o‴)(I.8.18)
-(both local fold re-shapes DEAD + the whole-matrix unblock + KT cross-check), (I.8.17/I.8.15/I.8.12) (the dead
-local routes + the member-mapping wall).
+**The single authoritative next-step is in *Current state* above: a DESIGN QUESTION, NOT a build — resolve
+whether KT's column-op submatrix-containment (6.60→6.64) can carry the FIXED shared `ρ0` membership
+`hingeRow v₀v₂ ρ0 ∈ span (R(G,pᵢ).rigidityRows)`, or whether it shares the dead member-mapping wall (in which
+case route B — carry `ρ0`/`hφ@endsσρ` to ENTRY — is the residue). PENDING coordinator/user adjudication.** The
+I.8.19 leaf decomposition's LEAF C ("re-fire A-1 fresh at the candidate") was REFUTED (§(o‴)(I.8.19)-ADDENDUM,
+coordinator-verified verbatim): A-1 is existential in `ρ` (`Candidate.lean:414`), the landed dispatch
+establishes a SINGLE shared `ρ0` once at the base and the discriminator REQUIRES single-`r` (KT eq. 6.66) —
+so re-firing A-1 gives a fresh `ρ_cand_i` = the rejected Fix B, and tying it to `ρ0` needs the wall or the
+(6.66) carry. **Do NOT build LEAF A as "the next step":** LEAF A (member-free rigid-on transport, P=2) is
+independently sound but does NOT rescue the route — the route's feasibility hinges entirely on the corrected
+crux (the fixed-`ρ0` span-inclusion `span(R(G₁,q₁)-rows) ⊆ span(R(G,pᵢ)-rows)`, a NEW lemma CHAIN-1 does NOT
+supply — F4), which is the OPEN DESIGN QUESTION. The §I.8.18 fold form of this transport is DEAD; whether the
+column-op/whole-matrix form escapes is UNSETTLED (pre-judged neither way). **NO decl is declared orphaned** —
+the I.8.19 "confirmed orphans" claim is DOWNGRADED to confirm-and-delete CANDIDATE pending the resolution (the
+`hφ`-spine perp/telescope is REUSED if the crux reduces to the (6.66) carry). STAYS regardless: the
+single-step carrier W9a (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`, `:865`); the engine/rank-cert
+(parametric in `(Gv,ends,q)`); `chainData_bottom_relabel`; d=3 M₃ (`i=2`) zero-regression. **NO
+contract/motive change** (machinery below dispatch C.3 + record C.1, §I.8.18). Once the design question
+settles (column-op carries the fixed `ρ0` → a corrected leaf sequence; or it shares the wall → route B), then
+the arm shell + **2c-iii** `chainData_dispatch` → **CHAIN-5** (in 23c). Audit trail: design
+§(o‴)(I.8.19)-ADDENDUM (LEAF-C refutation + corrected crux + the open question), §(o‴)(I.8.19) (the recon
+trail that produced the refutation; F1/F2 survive, headline RETRACTED), §(o‴)(I.8.18) (the fold-form
+fixed-member transport ruled dead + KT whole-matrix cross-check), (I.8.17/I.8.15/I.8.12) (the dead local
+routes + the member-mapping wall).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -436,16 +441,15 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   whole-matrix column-op reframe (TWO frameworks, never the hybrid); the artifact is the Lean's seed-advancing
   materialized fold. The re-architecture forces NO C.0–C.6 / motive change (infra below dispatch C.3 + record
   C.1; the I.8.16 C.0 delta evaporates).
-- **WHOLE-MATRIX RE-ARCHITECTURE DECOMPOSED 2026-06-21 (design §(o‴)(I.8.19); Lean-grounded, docs-only) —
-  VERDICT: BUILDABLE leaf sequence, crux LEAF B flagged P=3-de-risk-first.** The §I.8.18 unblock decomposes
-  into LEAF A `chainData_candidate_rigidOn` (FIRST, P=2), LEAF B `chainData_candidate_h622lb` (the P=3 crux =
-  the (6.60→6.61) column-op submatrix-containment as a relabel-image SPAN EQUALITY; de-risk at `i=3` first,
-  STOP if refuted), LEAF C `chainData_relabel_arm_hρGv_wholeMatrix` (fire A-1 at the candidate, REPLACES the
-  arm), LEAF D (`hwmem`). Shape: A-1 is parametric in `(Gab,Gv,ends,q)` (F1) and its outputs ARE the engine's
-  `hρGv`/`hwmem` (F2), so produce them AT the candidate directly — no fixed-member transport, seam dissolves.
-  Clause-(i) overturn: CHAIN-1 supplies the LI column-op machinery (used by the rank-cert), NOT the
-  span-membership submatrix identity LEAF B needs (F4). Orphans the seed-advancing fold spine; 5–8c estimate;
-  no contract/motive change.
+- **WHOLE-MATRIX RE-ARCHITECTURE — LEAF C REFUTED 2026-06-21 (design §(o‴)(I.8.19)-ADDENDUM; coordinator-
+  verified verbatim; docs-only). VERDICT: the I.8.19 "buildable" decomposition is RETRACTED; NEXT is a DESIGN
+  QUESTION, not a build.** LEAF C ("re-fire A-1 at the candidate") re-introduces the rejected Fix B: A-1 is
+  existential in `ρ` (`Candidate.lean:414`), but the dispatch fires it ONCE at the base → SINGLE shared `ρ0`
+  (`Realization.lean:388–411`), discriminator ONCE on `ρ0` (`:439–441`, single-`r`, KT eq. 6.66). Tying the
+  fresh `ρ_cand` to `ρ0` = the dead member-mapping wall or the (6.66) carry → LEAF C relocates the seam.
+  Corrected crux = a NEW fixed-`ρ0` span-inclusion `span(R(G₁,q₁)-rows) ⊆ span(R(G,pᵢ)-rows)` via column-op
+  (6.60→6.64), which CHAIN-1 does NOT supply (F4 — LI, not span); OPEN whether it escapes the §I.8.18 fold-form
+  wall. F1/F2 survive (necessary-not-sufficient); LEAF A independently fine; no decl orphaned.
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
