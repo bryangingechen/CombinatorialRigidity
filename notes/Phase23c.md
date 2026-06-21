@@ -26,8 +26,9 @@ the STOP-and-escalate-to-an-explicit-`Matrix`-model branch is NOT triggered: the
 carrier *does* admit KT's `rank Mᵢ + rank(base∖row)` block lower bound (6.64–6.65), with the corner block `Mᵢ`
 entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-off*.
 
-> **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the (A)-recon verdict) in
-> full, then the design doc §(o‴)(I.8.18)–(I.8.21) (the dead-route verdicts + the (A) go/no-go) and the
+> **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the cert-re-shape next step,
+> both de-risk spikes closed) in full, then the design doc §(o‴)(I.8.18)–(I.8.23) (the dead-route verdicts +
+> the (A) go/no-go + the two de-risk verdicts, the (2b)(γ) `±r` identity now closed in §I.8.23) and the
 > `BlueprintExposition.md` `lem:case-III general-d` "source-side sharpening" entry (the KT-faithful shape).
 > Do **not** re-attempt any of the four dead route families (below) — they are exhausted and adversarially
 > verified. The standing decision is the user-adjudicated fork in *Hand-off*.
@@ -83,12 +84,13 @@ does NOT feed the existing engine** — the engine's `hρGv` slot IS the wall (t
 a fixed-member candidate membership, `Candidate.lean:1606–1611`), so (A) requires **re-shaping
 `case_III_rank_certification` + `case_III_arm_realization`** (below contract C.0–C.6 + motive; `d=3` M₃
 zero-regression preserved by forking the rank-cert). Sub-route *non-gate composition* is DEAD (collapses to
-the wall); sub-route *matrix/abstract-`r`* is the live route. **The genuinely-new infra was RE-IDENTIFIED by
-the §I.8.22 (2b)(β) pin recon** (the de-risk block-rank lemma LANDED but is NOT the (A) consumer the prior pin
-expected; the `Mᵢ` corner is already inline in the landed cert): the genuinely-new, root-attacking leaf is
-**(2b)(γ) the (6.66) `±r` ℝ^D-vector identity** (the wall-escape: redundancy carried as a fixed abstract `r`
-while the member moves), NOT (2b)(β). **Remaining cost band: ~6–11c**, FIRST genuinely-new commit = (2b)(γ)
-(see *Current state* / *Hand-off* / design §I.8.22).
+the wall); sub-route *matrix/abstract-`r`* is the live route. **Both de-risk spikes are CLOSED POSITIVE:**
+(2b)(α) block-rank-additivity LANDED (axiom-clean, no carrier friction); **(2b)(γ) the (6.66) `±r` ℝ^D-vector
+identity** (the wall-escape: redundancy carried as a fixed abstract `r` while the member moves) was found
+**already built** in tree (the 23b chain induction `candidateRow_ac_eq_neg` + `interior_group_acolumn_eq_neg_
+baseRedundancy`, both axiom-clean; §I.8.23) — the column read-off localizes cleanly, KT proves (6.66) "in a
+manner similar to (6.44)". **Remaining cost band: ~5–9c**, all of it the cert/arm re-shape consuming the landed
+`±r` (NO `hρGv`) + wire-up + cleanup (see *Current state* / *Hand-off* / design §I.8.21–§I.8.23).
 
 **(B) Carry `ρ0`/`hφ@endsσρ` to ENTRY — LEAST KT-faithful, likely-dead, does NOT attack the root.** Add
 `hφ@endsσρ` as a hypothesis on the arm/dispatch (the landed `chainData_relabel_arm_hρGv` shape) and confront
@@ -96,13 +98,17 @@ the wall at ENTRY. Flagged likely-dead (§I.8.20: the wall is a property of the 
 is in scope; the only non-circular escape is ENTRY re-deriving the redundancy *natively* against `endsσρ` — a
 graph-construction question, unexplored). Only the residue if (A) is held / its de-risk fails.
 
-**Status: (A) is OPEN, de-risk-first (user-adjudicated). The de-risk spike is LANDED POSITIVE**, but the
-(2b)(β) PIN RECON (§I.8.22, 2026-06-21) RE-POINTED the next leaf: (2b)(β) is **mis-targeted** (the landed cert
-already IS KT's `Mᵢ + base` decomposition inline, and the de-risk leaf consumes the dead relabel-image
-inclusion, not produces it), the single-panel discriminator is **correct** (not a mismatch), and the genuinely-
-new root-attacking leaf is **(2b)(γ) the (6.66) `±r` ℝ^D-vector identity** — NOT a telescope re-statement (the
-landed telescope is `hingeRow`-carrier, (6.66) is `ScrewSpace`-vector-carrier). The next concrete commit is the
-(2b)(γ) recon-or-spike. See *Hand-off*.
+**Status: (A) is OPEN, de-risk-first (user-adjudicated). Both de-risk spikes LANDED POSITIVE.** (2b)(α)
+block-rank-additivity is axiom-clean (no carrier friction). **(2b)(γ) the (6.66) `±r` ℝ^D-vector identity:
+DE-RISK VERDICT POSITIVE — and it is ALREADY BUILT** (§I.8.23, 2026-06-21, docs-only source-read spike). The
+degree-2 column-vanishing **does** localize cleanly into a `Module.Dual ℝ (ScrewSpace k)` `±r` equality (via
+`hingeRow_comp_single_tail`/`_off`), and the (6.66) identity is realized — axiom-clean — by the 23b
+chain-induction subtree (LEAF 1–4: `candidateRow_ac_eq_neg`, `interior_group_acolumn_eq_neg_baseRedundancy`),
+NOT the telescope. §I.8.22's "different carrier" framing correctly ruled out the telescope but mis-located the
+actual realization (the separate chain induction). KT proves (6.66) "in a manner similar to (6.44)" (p. 698),
+which the project formalized as `candidateRow_ac_eq_neg` and iterated in 23b. **No new Lean leaf** (a wrapper
+would be vacuous). The next concrete commit is now the **cert re-shape** (consume the landed `±r`, no `hρGv`).
+See *Hand-off*.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -171,35 +177,36 @@ decomposition.** The two new decls:
   `case_III_rank_certification`) — the carrier instantiation; the option-(A) rank-cert's intended `finrank
   W + |ι| ≤ finrank (span F.rigidityRows)` shape, fit for the `Mᵢ`-corner certification.
 
-**Next concrete commit — RE-POINTED by the (2b)(β) pin recon §(I.8.22) (2026-06-21): (2b)(γ), NOT (2b)(β).**
-The §(I.8.22) recon (read it in full before building) found the prior pin's (2b)(β) **mis-targeted**: the
-landed `case_III_rank_certification` (`Candidate.lean:1472`) **already IS** KT's `Mᵢ + base` decomposition —
-its combined LI family `(sn ⊕ Unit) ⊕ ιb` (`:1596–1599`) has `sn` = the `D−1` panel rows `r(Lᵢ)`, the `Unit`
-row = the `±r` redundancy row, `ιb` = the base block `R(G₁∖row, q₁)` — and the `Mᵢ`-corner-LI-mod-base content
-is discharged INLINE on `hρgate` (the single discriminating panel). So (2b)(β) is not genuinely-new, and the
-de-risk leaf `finrank_span_rigidityRows_ge_of_corner` *consumes* (does not produce) the dead relabel-image
-inclusion `span(base∖row) ≤ span(candidate.rigidityRows)` (§I.8.20). Two more §(I.8.22) verdicts: the
-single-panel discriminator is **correct, not a conclusion-shape mismatch** (KT (6.65)/(6.67) need ONE
-full-rank `Mᵤ`, which the `fin_cases u` dispatch selects — the other `Mᵢ` are never built); and the wall is
-the cert's `hρGv` slot (`:1606–1611`), unchanged by the de-risk leaf.
-- **The genuinely-new, root-attacking next leaf is (2b)(γ) — the (6.66) `±r` ℝ^D-vector identity**
-  `∑ⱼ λ_(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁)) = ±r`, the step that lets KT carry the redundancy as a fixed *abstract
-  vector* `r` while the *member moves* (so the `Mᵢ` second row is `±r` WITHOUT a fixed-member candidate
-  membership). **It is NOT a telescope re-statement** (§I.8.21's guess refuted): the landed telescope
-  `wstep_foldl_hingeRow_telescope` (`Relabel.lean:3209`) is a `hingeRow`-level identity in `Module.Dual ℝ (α →
-  ScrewSpace k)`; (6.66) is a `ℝ^D`/`ScrewSpace`-vector identity in `Module.Dual ℝ (ScrewSpace k)` (one
-  `Mᵢ`-row entry). The bridge — reading the `vᵢ`-column entry off the telescoped row via the degree-2
-  column-vanishing (eq. (6.52)) — is genuinely-new + cost-unknown.
-- **(2b)(γ) is a recon-or-spike**: does the hingeRow telescope's `vᵢ`-column read off as a clean ℝ^D `±r`
-  equality, or does the degree-2 column-vanishing not localize at the abstract-vector level? Only after (2b)(γ)
-  lands is the cert-re-shape signature (consume `±r` as the `Mᵢ` second row, NO `hρGv`) derivable — do **not**
-  pin it before (2b)(γ) (a pre-(2b)(γ) cert signature would re-introduce the dead inclusion, §(I.8.22) clause
-  (ii)).
-Then the cert re-shape (forked so general-`d` uses the `±r`-cert and `d=3` M₃ keeps its single-step-move cert
-— zero-regression) + the arm re-shape + the 2c-iii dispatch wire-up + the orphan confirm-and-delete. **The
-smallest genuinely-advancing next commit is (2b)(γ)**: the recon-or-spike on whether the telescoped hingeRow's
-`vᵢ`-column yields KT's `±r` ℝ^D equality. Audit trail: design §(o‴)(I.8.18)–(I.8.22), the `lem:case-III
-general-d` ledger sharpening.
+**Next concrete commit — the CERT RE-SHAPE (the (2b)(γ) de-risk closed POSITIVE; §(I.8.23), 2026-06-21).** The
+(2b)(γ) spike found the (6.66) `±r` ℝ^D-vector identity **already built + axiom-clean** in tree (read §(I.8.23)
+in full before building):
+- **The `±r` identity, pinned, two landed layers.** (a) Abstract two-edge core `candidateRow_ac_eq_neg`
+  (`Claim612.lean:1194`): `∑ⱼ lamAC j • rac j = −∑ⱼ lamAB j • rab j` in `Module.Dual ℝ (ScrewSpace k)` (KT
+  (6.44) / the d=3 `M₃` candidate functional `= −r̂`). (b) The general-`d` `Mᵢ`-row form
+  `interior_group_acolumn_eq_neg_baseRedundancy` (`Relabel.lean:4039`): the candidate `Mᵢ` second-row
+  functional, read at `vᵢ`'s screw column, `= −ρ₀` (the fixed abstract `r`, member-free), for `2 ≤ i < cd.d`,
+  consuming A-1's edge-grouped exposure `hcombGv` (`Candidate.lean:444–445`). Both axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`).
+- **Why no new leaf:** KT proves (6.66) "in a manner similar to (6.44)" (p. 698); the project formalized (6.44)
+  as `candidateRow_ac_eq_neg` and iterated it along the chain in 23b (LEAF 1–4). The column read-off
+  `f ↦ f.comp (single x)` localizes cleanly (`hingeRow_comp_single_tail`/`_off`/`_endpoint_flip`, no §38/`≃ₗ`
+  friction). §I.8.22's telescope-framing was right to rule out the telescope (its `vᵢ`-column is `0` — the
+  moved redundancy is supported off `vᵢ`, KT (6.64)'s (6.52)-vanishing) but mis-located the `±r` realization
+  (it is the separate chain induction, not the telescope). A wrapper re-exporting (b) with `ρ₀` substituted
+  would be vacuous (spike clause (ii) forbids it).
+- **The cert-re-shape signature is now derivable** (the gate "only after (2b)(γ) lands"): re-shape
+  `case_III_rank_certification` (`Candidate.lean:1472`) so the `Mᵢ` second row is placed via the de-risk leaf
+  `finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean:1661`) with the `Mᵢ`-corner LI-mod-`W` discharged
+  on `hρgate(ρ₀)` (the discriminator at the FIXED `ρ₀`, using `interior_group_acolumn_eq_neg_baseRedundancy`'s
+  `−ρ₀` value), **dropping the `hρGv` slot** (`:1606–1611`, the wall). Fork the cert so general-`d` uses the
+  `±r`-cert and d=3 `M₃` keeps its single-step-move cert (zero-regression). Then the arm re-shape
+  (`case_III_arm_realization`, `Arms.lean:72`) + the 2c-iii dispatch wire-up + the orphan confirm-and-delete
+  (the seed-advancing `hφ`-spine, §I.8.20/§I.8.21(3)).
+- **The smallest genuinely-advancing next commit:** the cert re-shape's first sub-step — re-state
+  `case_III_rank_certification` to consume the `±r` `Mᵢ`-row value + the de-risk leaf in place of `hρGv` (start
+  general-`d`-forked, d=3 untouched). Revised cost band: **~5–9 commits** (the (2b)(γ) leaf is closed by
+  source-read; what remains is cert/arm re-shape + wire-up + cleanup). Audit trail: design
+  §(o‴)(I.8.18)–(I.8.23), the `lem:case-III general-d` ledger.
 
 **Reference (the §I.8.21 verdict, source-grounded against the landed engine + KT pp. 697–698):** the abstract
 `r` of KT (6.66) IS already the project's `ρ₀` (A-1, `Candidate.lean:432`); the engine's `hρGv` slot IS the
@@ -209,7 +216,8 @@ rank(base∖row)` block decomposition (6.64–6.65), where the redundancy is a `
 fixed dual-functional transported across the relabel. Sub-route (2a) "non-gate composition" is DEAD (collapses
 to the wall); (2b) "matrix/abstract-`r`" is the live route. Route B (carry `ρ₀`/`hφ@endsσρ` to ENTRY) does not
 attack the root (LIKELY-DEAD, §I.8.20) and is the residue only if (A) is held. **Honest remaining cost band:
-~6–11 more commits** (the de-risk spike, the hardest + cost-unknown part, is now closed POSITIVE).
+~5–9 more commits** (BOTH de-risk spikes — (2b)(α) block-rank-additivity and (2b)(γ) the `±r` identity, the
+hardest + cost-unknown parts — are now closed POSITIVE; (2b)(γ) was found already-built, §I.8.23).
 
 ## Decisions made during this phase
 
@@ -227,12 +235,20 @@ attack the root (LIKELY-DEAD, §I.8.20) and is the residue only if (A) is held. 
   instantiates it on `Module.Dual ℝ (α → ScrewSpace k)` by `inferInstance`, never unfolding the carrier. So
   the basis-free API carries KT's `rank Mᵢ + rank(base∖row)` (6.64–6.65); the STOP-and-escalate-to-`Matrix`
   branch is closed. Next: re-pointed to (2b)(γ) by the §I.8.22 pin recon (below).
-- **(2b)(β) pin recon → RE-POINT to (2b)(γ) (§I.8.22, 2026-06-21, docs-only).** A design-pass to pin (2b)(β)'s
-  `g/ι/W/hLI` signature instead found it **mis-targeted** (clause (ii) flag-don't-force): the landed
+- **(2b)(β) pin recon → mis-targeted (§I.8.22, 2026-06-21, docs-only).** The landed
   `case_III_rank_certification` (`Candidate.lean:1472`) already realizes KT's `Mᵢ + base` decomposition inline
-  (the `(sn ⊕ Unit) ⊕ ιb` family = `r(Lᵢ)` rows + `±r` row + base block), the `Mᵢ`-corner LI-mod-base is
-  discharged on `hρgate`, and `finrank_span_rigidityRows_ge_of_corner` *consumes* (not produces) the dead
-  relabel-image inclusion (§I.8.20). The single-panel discriminator is correct (KT needs ONE full-rank `Mᵤ`,
-  selected by `fin_cases u`). The genuinely-new leaf is **(2b)(γ) the (6.66) `±r` ℝ^D-identity** — refuted as a
-  telescope re-statement (telescope = `hingeRow`-carrier `Module.Dual ℝ (α→ScrewSpace k)`; (6.66) = screw-vector
-  `Module.Dual ℝ (ScrewSpace k)`). No cert signature pinned pre-(2b)(γ). See *Hand-off* + design §(o‴)(I.8.22).
+  (the `(sn ⊕ Unit) ⊕ ιb` family), the `Mᵢ`-corner LI-mod-base is discharged on `hρgate`, and the de-risk leaf
+  `finrank_span_rigidityRows_ge_of_corner` *consumes* (not produces) the dead relabel-image inclusion. The
+  single-panel discriminator is correct (KT needs ONE full-rank `Mᵤ`, `fin_cases u`-selected). The wall is the
+  cert's `hρGv` slot. Re-pointed the next leaf to (2b)(γ). Detail: design §(o‴)(I.8.22).
+- **(2b)(γ) the (6.66) `±r` ℝ^D-identity → DE-RISK POSITIVE, already built (§I.8.23, 2026-06-21, docs-only).**
+  The make-or-break ("does the degree-2 column-vanishing localize at the abstract-vector level?") is YES: the
+  column read-off `f ↦ f.comp (single x)` localizes cleanly (`hingeRow_comp_single_tail`/`_off`/`_endpoint_flip`,
+  no §38/`≃ₗ` friction), and the (6.66) `±r` identity is realized axiom-clean by the 23b chain-induction subtree
+  — `candidateRow_ac_eq_neg` (`Claim612.lean:1194`, KT (6.44)/d=3 `M₃`) + `interior_group_acolumn_eq_neg_
+  baseRedundancy` (`Relabel.lean:4039`, the general-`d` `Mᵢ`-row `= −ρ₀`, member-free). KT proves (6.66) "in a
+  manner similar to (6.44)" (p. 698); the project formalized (6.44) + iterated it in 23b. §I.8.22's
+  telescope-framing rightly ruled out the telescope (its `vᵢ`-column is `0`, the moved-redundancy vanishing)
+  but mis-located the realization (the chain induction, not the telescope). **No new Lean leaf** (a `ρ₀`-substituted
+  wrapper would be vacuous). The cert-re-shape signature is now derivable (consume `−ρ₀` as the `Mᵢ` row +
+  `finrank_span_rigidityRows_ge_of_corner` on `hρgate(ρ₀)`, drop `hρGv`). Detail: design §(o‴)(I.8.23).
