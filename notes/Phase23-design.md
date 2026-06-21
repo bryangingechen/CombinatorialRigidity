@@ -5311,6 +5311,104 @@ the 1st). Verified against the **landed `def`/`theorem` bodies** (`Relabel.lean`
   the landed relabel identity). **NET to the arm: ~1c (STEP 2 lemma) + the arm assembly (~1–2c) = ~2–3c**, down
   from (I.8.10)'s "3 sub-leaves + assembly", because the family transport (T-1/T-2/T-3) is eliminated, not built.
 
+**(I.8.12) HOLISTIC ARM-ARCHITECTURE RECON — VERDICT: the `hφ` seam is REAL (3rd touch of the v₂-relabel /
+member-mapping wall); the engine slots ALL cohere on selector; the reconciliation needs a SLOT-CORE
+DECISION — FLAG-DON'T-FORCE (2026-06-21, opus; every load-bearing claim Lean-verified against the landed
+bodies via 6 throwaway probes, each compiled, reverted — docs-only, no Lean landed).** Triggered by the
+`hφ` seam `chainData_relabel_arm_hρGv` exposed (the 3rd selector/relabel mismatch after rows 352/358). The
+coordinator's Lean-grounded triage is **CONFIRMED, not refuted**. Verified against `chainData_relabel_arm_hρGv`
+(`Relabel.lean:4625`), the slot core `chainData_freshEdge_slot_mem` (`:4136`) + its fold
+`shiftBodyListAsc_foldl_mem_span_rigidityRows` (`:1785`) + single-step gate
+`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`:1201`), A-1 (`Candidate.lean:400`), the
+engine `case_III_arm_realization` (`Arms.lean:72`), `chainData_bottom_relabel` (`:1939`),
+`ofNormals_supportExtensor_relabel_perm` (`:63`), `rigidityRows_ofNormals_relabel` (`:647`), the shift-action
+lemmas (`Operations.lean:1468`/`:2018`).
+
+  *(R-1 — the slot core's selector-fixing is INTRINSIC to KT 6.62 as implemented, NOT a session-#19 artifact.)*
+  The fold `shiftBodyListAsc_foldl_mem_span_rigidityRows` uses ONE selector throughout: `hφ`'s start framework
+  `shiftBodyFrameworkAsc 0 ends q = ofNormals (G−v₁) ends q` and the conclusion
+  `shiftBodyFrameworkAsc (i−1) ends q = ofNormals (G−vᵢ) ends qρ` share `ends`; the SEED advances `q → qρ`
+  (KT 6.62 = seed-advance + the leading `funLeft (shiftPerm i)` of the `wstep` product, NOT a per-step selector
+  relabel). [Lean-verified: the fold's docstring "selector `ends` is fixed (so the gate's `hends'_off` is
+  `rfl`)" matches the body.] The single-step gate ALLOWS `ends ≠ ends'` (off the two moved edges) but the fold
+  fixes it. Could the fold start at `ends₀` and arrive at `endsσρ`? NO — the member would transform through
+  `(funLeft (shiftPerm i))^{i−1}` (the inverse cycle), landing the start member at `hingeRow (σ⁻¹ v₀)(σ⁻¹ v₂)
+  ρ₀`, AND the foldl's `htrans`/`hrec` over the intermediate graphs `G−vₛ₊₁` need the FIXED selector to record
+  them. So `hφ@endsσρ` is genuinely forced by the architecture.
+
+  *(R-2 — `hingeRow v₀ v₂ ρ₀ ∈ span (ofNormals (G−v₁) endsσρ q)` is the WALL; none of (i)–(iv) is a clean
+  build.)* The seam framework is the BOTTOM graph `G−v₁`, RELABELLED selector `endsσρ`, BASE seed `q` — a
+  HYBRID that appears NOWHERE else (it is purely the fold's start slot; `git grep` confirms no landed lemma
+  *concludes* a membership in it). A-1 supplies the same literal member `hingeRow v₀ v₂ ρ₀` at `ends₀` (same
+  graph, same seed, DIFFERENT selector). Why each route fails:
+  - **(i) call A-1 at `endsσρ`:** A-1's row is `hingeRow (endsσρ e₀).1 (endsσρ e₀).2 ρ`, and `endsσρ e₀ =
+    (vtx(i−1), vtx(i+1))` [Lean-verified: `shiftEdgePerm i e₀ = edge i`, `ends₀(edge i) = (vtx i, vtx(i+1))`,
+    `σ⁻¹ vtx i = vtx(i−1)`, `σ⁻¹ vtx(i+1) = vtx(i+1)`] — NOT `hingeRow v₀ v₂ ρ₀`. Wrong member.
+  - **(ii) the candidate's own redundancy:** same as (i) — the splice in the relabelled framework is at
+    `(vtx(i−1), vtx(i+1))`, not `(v₀, v₂)`.
+  - **(iii) a span-membership transport of the FIXED member `v₀v₂`:** `ofNormals_supportExtensor_relabel_perm`
+    gives `(hybrid).supp f = (base).supp (σ_e f)` [Lean-verified] — so the hybrid's blocks are a `σ_e`-permutation
+    of A-1's. But transporting the edge-grouped `hcomb` (A-1's `hingeRow v₀ v₂ ρ₀ = ∑ⱼ cⱼ hingeRow uⱼ vⱼ rⱼ`,
+    `rⱼ ∈ (base).block(eⱼ)`) needs each `rⱼ ∈ (hybrid).block(eⱼ) = (base).block(σ_e eⱼ)` — the WRONG edge
+    (A-1 gives `block(eⱼ)`, not `block(σ_e eⱼ)`). This is the SAME member/edge wall the refuted T-1/T-2
+    family transport (I.8.10) hit, and the same `funLeft σ⁻¹`-maps-the-member wall the d=3 `mem_span_…_relabel`
+    (`:822`) was *superseded* for (W9a strips the relabel-image post hoc, but only for the single candidate row,
+    not a fixed base member). [Lean-verified `σ⁻¹ v₀ = v₀`, `σ⁻¹ v₂ = v₁` for `i ≥ 2` → any apparatus transport
+    lands on `hingeRow v₀ v₁ ρ₀`, the WRONG member.] Unlike the PERP (a single support-extensor scalar `= 0`,
+    graph-independent → STEP-2 transports cleanly), `hφ` is a row-SPAN membership and does NOT transport member-free.
+  - **(iv) change the slot core to start at `ends₀`, transport selector internally:** = R-1's NO (the fold's
+    member would mis-map at the start, and the intermediate-graph recording needs the fixed selector). The
+    candidate-TOP variant (fold at `ends₀` → `ofNormals (G−vᵢ) ends₀ qρ`, then bridge `ends₀ → endsσρ`) ALSO
+    fails: `ends₀` does NOT record `G−vᵢ`'s interior links (it records `G−v₁`'s), so the `G−vᵢ` fold is ill-formed.
+
+  *(R-3 — the engine slots ALL cohere on `(endsσρ, qρ)`; the mismatch is NOT among slots, it is engine-vs-A-1.)*
+  `case_III_arm_realization` (`Arms.lean:74,91,96`) binds `hρGv` AND `hwmem` at the SAME `ofNormals Gv ends q`,
+  with `hends_ea`/`hends_eb` (`:78`) + `hLn`/`hgab`/`hρgate`/`hρe₀` (`:86–90`) all reading the same `ends`/`q`.
+  The arm's `(ends, q) = (endsσρ, qρ)` is FORCED by the `hwmem` leaf `chainData_bottom_relabel`, whose conclusion
+  (`:1960–1972`) is at `ofNormals (G−vᵢ) endsσρ qρ` (the genuine-row transport lands there). So every engine slot
+  reading `ofNormals Gv ends q` coheres on `(endsσρ, qρ)` by construction — NO incoherence among slots. The
+  `hrec`-over-`G` for `endsσρ` IS satisfiable (the conjugate selector `endsσρ = σ⁻¹∘ends₀∘σ_e` records `G`'s
+  chain links via the coupled edge/vertex cycle — [Lean-verified: `endsσρ(edge 1) = (v₁, v₂)` records
+  `edge 1 = v₁v₂` correctly]; an early "second seam" worry on this DISSOLVED). The 3rd recurrence is NOT a
+  systematic slot incoherence — it is the ONE structural fact that the SLOT-CORE FOLD wants the base redundancy
+  at the relabelled-selector framework `endsσρ` (its conclusion's selector), while A-1 (KT's argument) produces
+  it at the un-relabelled `ends₀` (KT works ENTIRELY at the base `(G₁,q₁)`, candidate enters only via the
+  row-iso `ρᵢ` — §(I.8.11) Q-B). The slot core's selector-fixed fold is what re-introduces the candidate selector
+  into the BASE redundancy — exactly the level-mix the perp's STEP-1-at-base eliminated, here un-eliminable
+  because `hφ` is a span membership, not a scalar perp.
+
+  **VERDICT — FLAG-DON'T-FORCE (the decision for user adjudication).** `hφ@endsσρ` is genuinely required by the
+  current slot core and is NOT obtainable from A-1's `hφ@ends₀` by any landed-apparatus transport (the
+  member-mapping wall; 3rd touch). There is NO clean buildable transport leaf — a confident "STEP-2-analogue for
+  `hφ`" pin would be the 4th mismatch. **Two honest routes, neither a clean instantiation; the user picks:**
+  - **ROUTE α (slot-core re-architecture, the KT-faithful fix; est. ~2–4c, recon-first).** Restate the slot core
+    `chainData_freshEdge_slot_mem` to consume A-1's `hφ@ends₀` (the base redundancy at the un-relabelled base
+    selector) and run the fold so the BASE redundancy stays at `ends₀` while only the *transported* rows pick up
+    the relabel — i.e. fold the selector relabel INTO the per-step transport (the single-step gate already permits
+    `ends ≠ ends'`), threading `ends₀ → endsσρ` across the `i−1` steps in lockstep with the seed advance. This
+    matches KT 6.62 honestly (the relabel `ρᵢ` is applied step-by-step, NOT pre-applied to the base redundancy)
+    and eliminates the hybrid framework. RISK: the per-step member-mapping must be re-tracked (the telescope
+    LEAF-1–4 closed form assumes the fixed-selector fold); needs a recon-before-build on whether the closed-form
+    telescope survives a relabelling fold. This is the genuinely-new piece, NOT bookkeeping.
+  - **ROUTE β (accept the hybrid as a hypothesis; est. ~1c to defer, pushes the decision to ENTRY/dispatch).**
+    Keep `chainData_relabel_arm_hρGv`'s `hφ@endsσρ` as a carried hypothesis (as landed), and discharge it at the
+    dispatch/ENTRY where the chain's base realization is in scope — IF the hybrid `ofNormals (G−v₁) endsσρ q` can
+    be shown rigid there (then A-1 re-derives, but at the wrong member per R-2(i), so this ALSO needs a
+    member-bridge — likely circular). LIKELY DEAD; recorded for completeness.
+  **RECOMMENDATION: ROUTE α**, opened with a recon-before-build pass on the telescope-under-relabelling-fold
+  (whether LEAF-1–4's closed form `wstep_foldl_hingeRow_telescope` survives a non-fixed selector). The d=3 M₃
+  arm does NOT exercise this (`i=2`, single surviving edge, no general fold, no `hφ` slot — the M₃ `hρGv` goes
+  through W9a on the single candidate row directly), so it is a strict general-`d` obligation; zero-regression
+  holds.
+
+  **CLAUSE (ii) HONESTY.** This NAMES an open slot-core decision; it does NOT pin a transport leaf. `chainData_relabel_arm_hρGv`
+  AS LANDED is a CORRECT lemma (it takes `hφ@endsσρ` + `hrec@endsσρ` as honest hypotheses, both satisfiable in
+  principle) — it is NOT vacuous and NOT wrong; the open question is purely how the SHELL discharges its `hφ`
+  slot. No motive/IH/contract change either way. The slot core's `hφ@endsσρ` hardcodes the BASE-vertex member
+  `hingeRow (vtx 0)(vtx 2) ρ₀` at the candidate-selector framework — base-member-at-candidate-selector is the
+  precise cross-grain. **NET: the arm shell is NOT a mechanical assembly; it is gated on the ROUTE-α slot-core
+  decision (a recon-first ~2–4c), not the ~1–2c "M₃-template bookkeeping" the prior *Hand-off* assumed.**
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

@@ -1,18 +1,21 @@
 # Phase 23b — general-`d` Case-III chain dispatch + `⋀^{d−1}` duality [CHAIN] (work log)
 
-**Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (the four-producer tail, all general-`k`) + CHAIN-2a + the
-CHAIN-2c-ii foundation. The `hρGv` route is **LOCKED = Route W (option a′)**, the `hwmem` slot is LANDED
-(`chainData_bottom_relabel`), and the arm's algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3)
-+ slot core + per-edge perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition
-`chainData_freshEdge_slot_perp` + **the pre-assembled engine `hρGv` slot
-`chainData_relabel_arm_hρGv` (LANDED 2026-06-21)** are all LANDED axiom-clean. So the **hardest engine slot is
-done**: `chainData_relabel_arm_hρGv` produces the exact `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ)
-endsσρ qρ)` slot from A-1's base data (composing `hingeRow_swap` → slot core → P3 → the perp composition).
-**T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM** (confirm-and-delete at the arm-build commit; the family is never
-transported). **NEXT = the arm shell `chainData_relabel_arm` (STEP 3 remainder):** `refine
-case_III_arm_realization`, feed `hρGv ← chainData_relabel_arm_hρGv`, `hwmem ← chainData_bottom_relabel`, the
-rest per the M₃ template. Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b green-modulo `hdispatch`
-(**CHAIN-5 → front of 23c**).
+**Status:** open. CLOSED: CHAIN-1/3/4 + OD-7 (four-producer tail, general-`k`) + CHAIN-2a + the CHAIN-2c-ii
+foundation. The `hρGv` algebraic core + chain-induction (LEAVES 1–4) + seed bridge (P3) + slot core + per-edge
+perp leaf + STEP-2 scalar perp transport + the STEP 1∘STEP 2 composition `chainData_freshEdge_slot_perp` +
+the pre-assembled engine `hρGv` slot `chainData_relabel_arm_hρGv` are all LANDED axiom-clean.
+**`chainData_relabel_arm_hρGv` is a CORRECT lemma** producing `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals
+(G−vᵢ) endsσρ qρ)` from A-1's base data + a carried `hφ`@`endsσρ` hyp. **BUT the arm shell is NOT a mechanical
+assembly — it is GATED on a SLOT-CORE DECISION (the `hφ` seam).** The holistic arm-architecture recon (row
+362, design §(o‴)(I.8.12), Lean-verified) settled: the slot core's selector-fixed fold REQUIRES the base
+redundancy `hφ` at the *relabelled* `endsσρ` framework, but A-1 (KT works entirely at the base) produces it at
+the *un-relabelled* `ends₀`; the `ends₀ → endsσρ` step hits the **member-mapping wall** (`σ⁻¹ v₂ = v₁ ≠ v₂`,
+3rd touch after rows 352/358) — NOT a clean transport leaf. **NEXT = ROUTE-α slot-core re-architecture
+(recon-first, ~2–4c):** restate `chainData_freshEdge_slot_mem` to consume `hφ`@`ends₀` and fold the selector
+relabel into the per-step transport (the single-step gate already permits `ends ≠ ends'`), so the base
+redundancy stays un-relabelled — KT 6.62-faithful. **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM**
+(confirm-and-delete at the arm-build commit). Then **CHAIN-2c-iii** `chainData_dispatch` closes 23b
+green-modulo `hdispatch` (**CHAIN-5 → front of 23c**).
 
 **23b CLOSE BOUNDARY (LOCKED 2026-06-19):** close 23b when `chainData_dispatch` (2c-iii) lands — CHAIN-5 →
 front of 23c=ENTRY, 23b closes green-modulo `hdispatch`. The integer Phase 23 stays **in progress** (ENTRY /
@@ -27,27 +30,35 @@ re-narrated here.
 
 ## Current state
 
-**NEXT STEP (single authoritative) — finish the arm shell `chainData_relabel_arm` (STEP 3 remainder).** The
-hardest engine slot — `hρGv` — is now LANDED as a single pre-assembled lemma; what remains is the
-`refine case_III_arm_realization` shell + the mechanical removeVertex/discriminator slots (the d=3 `M₃`
-template, generalized to the cycle).
-- **`chainData_relabel_arm_hρGv` (LANDED 2026-06-21, `Relabel.lean`):** the exact engine `hρGv` slot at
-  candidate `i` — `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows`. From A-1's
-  base data it composes (`hingeRow_swap` → slot core `chainData_freshEdge_slot_mem` → P3 seed bridge → the
-  perp composition `chainData_freshEdge_slot_perp` per surviving `s+1<i`). **The selector seam it pins
-  (load-bearing for the shell):** the slot core's fold uses ONE selector throughout, so its `hφ` (the base
-  redundancy span membership) lives at the **relabelled** `endsσρ` base framework `ofNormals (G−v₁) endsσρ q`,
-  while the perp composition's `hrv`/`hρe₀` are at the **un-relabelled** `ends₀` base. So the lemma takes
-  `hφ`@`endsσρ` and the perp data@`ends₀` as separate hyps — the shell must supply A-1's base redundancy in
-  BOTH forms (the `endsσρ` one is a selector transport of A-1's `ends₀` one — the one not-yet-built step the
-  shell still needs, see *Hand-off*).
-- **STEP 3 remainder (arm shell, NEXT COMMIT):** `refine case_III_arm_realization` at `Gv = G−vᵢ`,
-  `ends := endsσρ`, `q := qρ`, `(a,b) = (vᵢ₊₁, vᵢ₋₁)`, `ρ := −ρ₀`; feed `hρGv ← chainData_relabel_arm_hρGv`,
-  `hwmem ← chainData_bottom_relabel`, `hρe₀` via the G4d-i `a`-column read (M₃'s `hρ_ac`), the discriminator
-  `htrans`/`hLn`/`hρgate`/`hgab` + the removeVertex bookkeeping per the M₃/`chainData_split_realization`
-  templates. d=3 M₃ (`i=2`) is the zero-regression instance.
+**NEXT STEP (single authoritative) — open the ROUTE-α slot-core re-architecture with a recon-before-build
+pass** (design §(o‴)(I.8.12); the `hφ`-seam verdict). The arm's `hρGv` chain is otherwise LANDED; the ONE
+gate is that the slot core `chainData_freshEdge_slot_mem` (`Relabel.lean:4136`) consumes the base redundancy
+`hφ` at the **relabelled** `endsσρ` framework `ofNormals (G−v₁) endsσρ q`, while A-1
+(`exists_candidateRow_bottomRows_of_rigidOn`, `Candidate.lean:400`) produces it only at the **un-relabelled**
+`ends₀`. The `ends₀ → endsσρ` step is the **member-mapping wall** (3rd touch of the v₂-relabel issue): any
+landed-apparatus transport maps `hingeRow v₀ v₂ ρ₀ → hingeRow (σ⁻¹ v₀)(σ⁻¹ v₂) ρ₀ = hingeRow v₀ v₁ ρ₀`
+(Lean-verified `σ⁻¹ v₂ = v₁`, `σ⁻¹ v₀ = v₀` ∀ `i ≥ 2`) — the WRONG member; and A-1 re-run at `endsσρ` gives
+`hingeRow (vtx(i−1))(vtx(i+1)) ρ` (the relabelled splice), also wrong. Unlike the PERP (a graph-independent
+support-extensor scalar `= 0` — STEP-2 transported it cleanly), `hφ` is a row-SPAN membership and does NOT
+transport member-free. So there is NO clean `hφ`-transport leaf; forcing one is the 4th mismatch.
 
-Then CHAIN-2c-iii `chainData_dispatch` → 23b closes green-modulo `hdispatch`. **No motive/IH/contract change.**
+- **ROUTE α (RECOMMENDED; recon-first, ~2–4c).** Restate the slot core to consume A-1's `hφ`@`ends₀` and
+  fold the selector relabel INTO the per-step transport — the single-step gate
+  `funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`:1201`) ALREADY permits `ends ≠ ends'`
+  (off the two moved edges), so the base redundancy stays at `ends₀` while only the transported rows pick up
+  the relabel, in lockstep with the seed advance. This is KT 6.62-faithful (the iso `ρᵢ` is applied
+  step-by-step, NOT pre-applied to the base redundancy) and eliminates the hybrid `endsσρ`-at-`G−v₁` framework
+  that appears nowhere else. **OPEN (the recon's first question):** whether the LEAF-1–4 closed-form telescope
+  `wstep_foldl_hingeRow_telescope` survives a *non-fixed-selector* fold (it currently assumes the fixed
+  selector). This is the genuinely-new piece — NOT bookkeeping.
+- **`chainData_relabel_arm_hρGv` AS LANDED stays** — a correct lemma taking `hφ`@`endsσρ` + `hrec`@`endsσρ`
+  (both honest, satisfiable hyps; NOT vacuous). ROUTE α changes the slot core it calls, then re-threads it.
+
+The d=3 `M₃` arm does NOT exercise this (`i=2`, single surviving edge, no general fold, no `hφ` slot — its
+`hρGv` runs W9a on the single candidate row directly), so the seam is a strict general-`d` obligation;
+zero-regression holds. Then the arm shell (`refine case_III_arm_realization` at `Gv=G−vᵢ`, `endsσρ`, `qρ`,
+`(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`; `hwmem ← chainData_bottom_relabel`, the M₃-template discriminator/removeVertex
+slots) → **CHAIN-2c-iii** `chainData_dispatch`. **No motive/IH/contract change either way.**
 
 **Why the row-354 T-1/T-2/T-3 plan was MIS-TARGETED (the 2nd level/shape mismatch; design §(o‴)(I.8.11)).**
 The consumer `chainData_freshEdge_perp_of_baseRedundancy` (`Relabel.lean:4311`) pins THREE hyps at
@@ -104,12 +115,12 @@ One-line LANDED verdicts (file, axiom-clean; detail = git + Lean docstrings + de
   or `hρe₀` (head `s=0`) → STEP 2. The single call the arm's `hρGv` slot makes for the whole perp obligation.
 - **`chainData_relabel_arm_hρGv`** (`Relabel.lean`, STEP 3 `hρGv` slot, LANDED 2026-06-21, axiom-clean) —
   the pre-assembled engine `hρGv` slot at candidate `i`: `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ)
-  endsσρ qρ)`, exactly `case_III_arm_realization`'s `hρGv` (M₃ sign `−ρ₀`). Composes `hingeRow_swap`
-  (flip to `hingeRow vᵢ₋₁ vᵢ₊₁ ρ₀`) → slot core `chainData_freshEdge_slot_mem` → P3 seed bridge
-  (`shiftSeedAdv q (i−1) = qρ`) → `chainData_freshEdge_slot_perp` per surviving edge. **SELECTOR SEAM:** takes
-  the base redundancy span membership `hφ` at the RELABELLED `endsσρ` base (the fold's one-selector framing)
-  and the perp data `hrv`/`hρe₀` at the UN-relabelled `ends₀` base — the shell supplies A-1's base redundancy
-  in both forms (the `endsσρ` one = a selector transport of A-1's `ends₀` one).
+  endsσρ qρ)`, exactly `case_III_arm_realization`'s `hρGv` (M₃ sign `−ρ₀`). Composes `hingeRow_swap` → slot
+  core `chainData_freshEdge_slot_mem` → P3 seed bridge → `chainData_freshEdge_slot_perp` per surviving edge.
+  **GATES ON THE `hφ` SEAM:** takes the base redundancy `hφ` at the RELABELLED `endsσρ` base (the slot core's
+  one-selector framing) + the perp data at the UN-relabelled `ends₀`. A correct lemma, NOT vacuous — but its
+  `hφ`@`endsσρ` slot is the member-mapping wall (design §(o‴)(I.8.12); ROUTE α re-architects the slot core to
+  take `hφ`@`ends₀` instead). The shell does NOT supply `hφ`@`endsσρ` by transport — there is no clean leaf.
 - **`i3_candidateBlock_transport_deRisk`** (`Relabel.lean:4383`) + **`ofNormals_supportExtensor_relabel_perm`**
   (`Relabel.lean:63`) — STAND: the support-extensor relabel identity `candidate.supp f = base.supp (shiftEdgePerm
   i f)`. STEP 2 reuses this identity ONCE (applied to a single perp), so it stays load-bearing; only its
@@ -203,16 +214,13 @@ Exact signatures + dependency order in `notes/Phase23-design.md` §"CHAIN"(c)/(l
       (`G.ChainData n` record + accessors) + **CHAIN-2a** (`chainData_split_w6b_gates` + `chainData_split_realization`)
       **LANDED/CLOSED 2026-06-18.** Remaining: **CHAIN-2c — the single-base `Fin (k+1)` family dispatch** (route
       β): ONE base, ONE `ρ₀`, ONE discriminator → `fin_cases u`; eq. (6.66) absorbed. **2c-i** LANDED. **2c-ii**
-      (the genuinely-new relabel arm — KT's `ρᵢ` is a `(i−1)`-cycle): foundation LANDED; FIX-FORK SETTLED
-      (corrected Fix A). The arm `chainData_relabel_arm`'s every algebraic prerequisite is LANDED. The perp
-      slot's level mismatch (rows 352/353) is **ROUTE-SETTLED (row 358, design §(o‴)(I.8.11))**: the row-354
-      T-1/T-2/T-3 family-transport plan was MIS-TARGETED; the **corrected route** runs the edge-grouping at the
-      BASE — the LANDED perp leaf `chainData_freshEdge_perp_of_baseRedundancy` at base index `i := ⟨1⟩` (NO
-      transport, STEP 1) + the LANDED STEP-2 scalar perp transport
-      `chainData_freshEdge_perp_transport_base_to_candidate` base@`(if s=0 then e₀ else edge(s+1))` →
-      candidate@`edge s`. **T-1/T-2 (LANDED) ARE ORPHANED-FOR-THE-ARM.** → **NEXT** = the arm assembly STEP 3
-      (`chainData_relabel_arm`) per *Current state*; then **2c-iii** `chainData_dispatch`. d=3 M₃ = `i=2`
-      involution.
+      (the genuinely-new relabel arm — KT's `ρᵢ` is a `(i−1)`-cycle): foundation LANDED; FIX-FORK SETTLED. The
+      perp slot was ROUTE-SETTLED (STEP-1-at-base + STEP-2 scalar transport, both LANDED; T-1/T-2 ORPHANED).
+      **The `hρGv` slot `chainData_relabel_arm_hρGv` LANDED but exposed the `hφ` SEAM** — its slot core wants
+      the base redundancy at the relabelled `endsσρ`, A-1 gives it at `ends₀`; member-mapping wall, 3rd touch
+      (design §(o‴)(I.8.12)). **NEXT = ROUTE-α slot-core re-architecture** (recon-first: does the LEAF-1–4
+      telescope survive a non-fixed-selector fold?), then the arm shell + **2c-iii** `chainData_dispatch`. d=3
+      M₃ = `i=2` (no `hφ` slot, no general fold) — zero-regression unaffected.
 - [ ] **CHAIN-5 — the `d`-chain dispatch assembly** (`CaseIII/Realization.lean`). **→ MOVED TO 23c** (boundary
       LOCKED 2026-06-19; gated on ENTRY's extractor reshape, lands at the front of 23c=ENTRY — 23b closes
       green-modulo `hdispatch`). Replace `case_III_candidate_dispatch`; feed the (general-`k`) arm closers.
@@ -241,19 +249,21 @@ The OD resolutions (full text in `notes/Phase23-design.md` §"CHAIN"(e)/(g)):
 
 ## Hand-off / next phase
 
-**The single authoritative next-step is in *Current state* above:** finish the arm shell
-`chainData_relabel_arm` (`refine case_III_arm_realization` at `Gv = G−vᵢ`, `endsσρ`, `qρ`,
-`(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`). The hardest slot `hρGv` is **DONE** — feed it straight from the LANDED
-`chainData_relabel_arm_hρGv`. Remaining slots per the M₃ / `chainData_split_realization` templates:
-`hwmem ← chainData_bottom_relabel`, `hρe₀` via the G4d-i `a`-column read (M₃'s `hρ_ac`), the discriminator
-`htrans`/`hLn`/`hρgate`/`hgab` (2c-i `exists_chainData_discriminator_pick`) + the removeVertex bookkeeping
-(`hvVc`/`haVc`/`hbVc`/`hleG`/`hsplitG`/`hVone`/`hVcard`/`hw`/`hwcard`). **The one not-yet-built step the
-shell needs:** A-1's base redundancy in the RELABELLED-selector form `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span
-(ofNormals (G−v₁) endsσρ q)` — a selector transport of A-1's `ends₀`-form `hρGv'` (the perp data stays at
-`ends₀`). This is `chainData_relabel_arm_hρGv`'s `hφ` slot; everything else it needs is A-1's verbatim
-output. Then **2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in 23c).
-**No motive/IH/contract change.** **T-1/T-2 (LANDED) are ORPHANED-FOR-THE-ARM** (confirm-and-delete at the
-arm-build commit). d=3 M₃ = `i=2` cycle (zero-regression). Exact wiring in design §(o‴)(I.8.11) STEP 3.
+**The single authoritative next-step is in *Current state* above: open the ROUTE-α slot-core
+re-architecture with a recon-before-build pass** (design §(o‴)(I.8.12)). The `hφ` seam is NOT a clean
+transport leaf (member-mapping wall, 3rd touch); the FLAG-DON'T-FORCE verdict is ROUTE α — restate
+`chainData_freshEdge_slot_mem` to consume A-1's `hφ`@`ends₀` and fold the selector relabel into the per-step
+transport (the single-step gate already permits `ends ≠ ends'`). **The recon's first question (do NOT skip):**
+does the LEAF-1–4 closed-form telescope `wstep_foldl_hingeRow_telescope` survive a non-fixed-selector fold? —
+it currently assumes the fixed selector; this is the genuinely-new piece. After the slot core is re-architected
+(then `chainData_relabel_arm_hρGv` re-threaded to take `hφ`@`ends₀`), the arm shell is the mechanical
+`refine case_III_arm_realization` at `Gv=G−vᵢ`, `endsσρ`, `qρ`, `(a,b)=(vᵢ₊₁,vᵢ₋₁)`, `ρ:=−ρ₀`;
+`hwmem ← chainData_bottom_relabel`, `hρe₀` via the G4d-i `a`-column read (M₃'s `hρ_ac`), discriminator
+`htrans`/`hLn`/`hρgate`/`hgab` (2c-i) + removeVertex bookkeeping per the M₃/`chainData_split_realization`
+templates. Then **2c-iii** `chainData_dispatch` (replaces `case_III_candidate_dispatch`) → **CHAIN-5** (in
+23c). **No motive/IH/contract change.** **T-1/T-2 (LANDED) are ORPHANED-FOR-THE-ARM** (confirm-and-delete at
+the arm-build commit). d=3 M₃ = `i=2` (no `hφ` slot — zero-regression). Wiring detail: design §(o‴)(I.8.12)
+(verdict + ROUTE α) + (I.8.11) STEP 3 (the perp half, settled).
 
 **ENTRY obligation — PINNED (signature frozen; minted/built when its turn comes).** ENTRY reshapes
 `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) from the fixed `v,a,b,c` 4-tuple to the
@@ -350,48 +360,30 @@ leaves — is in *Current state* / *Hand-off* above. The opening recon's decisio
   plan (anchor `v₂`); LEAVES 1–4 + the witness-free `chainData_freshEdge_perp_of_baseRedundancy` landed.
   Corrective: `hcol ∀a` is jointly contradictory with `hcomb` for `r̂≠0` → replaced by endpoint id; the deeper
   step derives column-vanishing internally. §(o‴)(I.8.9-SETTLE).
-- **PERP-SLOT LEVEL MISMATCH (rows 352/353) + T-1/T-2 LANDED (row 354–356) — SUPERSEDED for the arm by the
-  route-settling recon below.** The arm-convergence recon found the perp slot needs the redundancy at a
-  framework A-1 supplies only at the base; the i=3 de-risk (`i3_candidateBlock_transport_deRisk`, axiom-clean,
-  STANDS) + T-1/T-2 (`chainData_candidateRow_edgeGrouped_transport_{blocks,comb}`, LANDED) implemented a
-  *family* transport. The route-settling recon (next entry) showed that family transport is mis-targeted; the
-  anchor + `ofNormals_supportExtensor_relabel_perm` stay (STEP 2 reuses them), T-1/T-2 are orphaned. Detail (the
-  block correspondence verdict, kept for the anchor) → design §(o‴)(I.8.10).
-- **ROUTE-SETTLING RECON 2026-06-21 (row 358) → row-354 T-1/T-2/T-3 plan REFUTED; corrected route pinned
-  (design §(o‴)(I.8.11)).** 2nd level/shape mismatch on this arm: the consumer
-  `chainData_freshEdge_perp_of_baseRedundancy` pins `hcomb`'s hardcoded base-vertex RHS `hingeRow (vtx 0)(vtx
-  2) ρ₀` and `hrv`'s candidate framework at INCOMPATIBLE levels (re-indexed family breaks `hcomb`: `σ.symm v₂ =
-  v₁ ≠ v₂`; un-relabelled breaks `hrv`: candidate-block at same edge = base-block at `σ_e f`). KT-source check
-  (eqs. 6.62/6.66/6.67): KT works entirely at the base `(G₁,q₁) = G−v₁`. CORRECT route: the LANDED perp leaf
-  at base index `i := ⟨1⟩` (STEP 1, no transport) + ONE scalar perp transport (STEP 2) base@`edge(s+1)` →
-  candidate@`edge s`. T-1/T-2 orphaned; consumer UNMODIFIED.
-- **STEP 2 LANDED 2026-06-21 (axiom-clean) — `chainData_freshEdge_perp_transport_base_to_candidate`
-  (`Relabel.lean`).** The single un-landed piece of the corrected route: a base perp at `(if s=0 then e₀ else
-  edge(s+1))` over an arbitrary graph `Gb` → the candidate-`i` framework's perp at `edge s` (relabelled
-  `endsσρ`/`qρ`). Proof = `ofNormals_supportExtensor_relabel_perm` (support-extensor coincidence) + the
-  `shiftEdgePerm` edge action (`_apply_edge_zero` head / `_apply_edge_interior`) + supportExtensor
-  graph-independence (the `simpa only [toBodyHinge_supportExtensor, ofNormals_ends, ofNormals_normal]` bridge,
-  reused verbatim from `i3_candidateBlock_transport_deRisk`). No new friction.
-- **STEP 1∘STEP 2 composition LANDED 2026-06-21 (axiom-clean) — `chainData_freshEdge_slot_perp`
-  (`Relabel.lean`).** Pre-composes the corrected route's two transport leaves into the exact `hperp s` shape
-  `chainData_freshEdge_slot_mem` consumes: from A-1's BASE edge-grouped redundancy + `hρe₀`, produces the
-  candidate-`i` perp `ρ₀ ⊥ Fva.supportExtensor (edge s)` for every surviving `s+1<i` (STEP 1 at base index
-  `⟨1⟩`, edge `s+1`, interior `s≥1`; `hρe₀` at head `s=0`; STEP 2 carries with `Gb := G−v₁`). 2-branch
-  `rcases` over the two landed leaves — no new friction (the only wrinkle is the graph-independent `Gb`/`ends₀`/
-  `q` must be named explicitly on STEP 2 since its conclusion omits them; standard implicit-not-in-goal idiom).
-  NEXT = STEP 3 arm assembly: one `hperp` call per the M₃ template.
-- **STEP 3 `hρGv` slot LANDED 2026-06-21 (axiom-clean) — `chainData_relabel_arm_hρGv` (`Relabel.lean`).**
-  The hardest engine slot pre-assembled: `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀) ∈ span (ofNormals (G−vᵢ) endsσρ qρ)` from
-  A-1's base data (`hingeRow_swap` → slot core `chainData_freshEdge_slot_mem` → P3 → `chainData_freshEdge_slot_perp`
-  per surviving edge). **Self-shrank from the full arm** — the planned STEP 3 was the whole arm shell; the
-  `hρGv` slot is the one genuinely-new composition (the rest is M₃-template bookkeeping), so it shipped as a
-  standalone lemma. **Finding (the selector seam, now pinned in *Current state*):** the slot core's fold uses
-  ONE selector throughout (`shiftBodyFrameworkAsc` fixes `ends`), so `hφ` (base redundancy span membership)
-  lives at the RELABELLED `endsσρ` base while the perp composition's `hrv`/`hρe₀` stay at the UN-relabelled
-  `ends₀` — the lemma takes them at their respective selectors; the shell must transport A-1's `ends₀`
-  redundancy to `endsσρ` for `hφ` (the one un-built shell step). Friction: omega couldn't use
-  `hid : (i:ℕ)<cd.d` on a `↑(⟨(i:ℕ),_⟩ : Fin (cd.d+1))` side-goal (`Fin.val (Fin.mk …)` atomized distinctly)
-  → `show … from hid` (TACTICS-QUIRKS § 63).
+- **PERP-SLOT route SETTLED + LANDED 2026-06-21 (axiom-clean; rows 352–360, design §(o‴)(I.8.10)/(I.8.11)).**
+  The 2nd level/shape mismatch (the perp slot wanted the redundancy at a framework A-1 gives only at the base):
+  the row-354 T-1/T-2/T-3 *family* transport was MIS-TARGETED (re-indexed breaks `hcomb`: `σ.symm v₂ = v₁ ≠ v₂`;
+  un-relabelled breaks `hrv`). CORRECT route (KT works entirely at the base): the LANDED perp leaf
+  `chainData_freshEdge_perp_of_baseRedundancy` at base index `⟨1⟩` (STEP 1, no transport) + ONE scalar perp
+  transport `chainData_freshEdge_perp_transport_base_to_candidate` (STEP 2, base@`edge(s+1)` → candidate@`edge s`,
+  via `ofNormals_supportExtensor_relabel_perm` — support extensors are graph-independent) composed as
+  `chainData_freshEdge_slot_perp`. T-1/T-2 ORPHANED; the anchor `i3_candidateBlock_transport_deRisk` +
+  `ofNormals_supportExtensor_relabel_perm` STAND. The `hρGv` slot `chainData_relabel_arm_hρGv` then assembled
+  (`hingeRow_swap` → slot core → P3 → the perp composition). Friction: `show … from hid` for an omega side-goal
+  over `↑(⟨(i:ℕ),_⟩ : Fin (cd.d+1))` (TACTICS-QUIRKS § 63).
+- **HOLISTIC ARM-ARCHITECTURE RECON 2026-06-21 (row 362, design §(o‴)(I.8.12)) — the `hφ` seam VERDICT:
+  FLAG-DON'T-FORCE, ROUTE α (Lean-verified, docs-only).** 3rd touch of the v₂-relabel / member-mapping wall.
+  The slot core's selector-fixed fold REQUIRES `hφ`@`endsσρ` (its conclusion selector, forced by `hwmem` via
+  `chainData_bottom_relabel`), but A-1 produces it at `ends₀`; the `ends₀ → endsσρ` step has NO clean transport
+  leaf — any apparatus maps `hingeRow v₀ v₂ ρ₀ → hingeRow v₀ v₁ ρ₀` (`σ⁻¹ v₂ = v₁`), and A-1 re-run at `endsσρ`
+  gives the relabelled splice `vtx(i−1)vtx(i+1)` — both WRONG members (unlike the perp, a graph-independent
+  scalar). The ENGINE SLOTS ALL COHERE on `(endsσρ, qρ)` — NO inter-slot incoherence; the mismatch is the
+  slot-core fold re-introducing the candidate selector into the BASE redundancy. **VERDICT: ROUTE α** (restate
+  the slot core to consume `hφ`@`ends₀`, fold the relabel into the per-step transport — the gate already
+  permits `ends ≠ ends'`; KT 6.62-faithful) over ROUTE β (carry the hyp; likely dead). **OPEN sub-question for
+  the recon:** does the LEAF-1–4 telescope survive a non-fixed-selector fold? `chainData_relabel_arm_hρGv` AS
+  LANDED is correct, NOT vacuous; the decision is purely how the shell discharges `hφ`. No motive/IH/contract
+  change. d=3 M₃ unaffected (no `hφ` slot).
 - **CHAIN-3 cleanup item (2) DONE 2026-06-20 — `finrank_toDualPerp_pair_eq` factored** (`MeetHodge.lean`,
   axiom-clean): the byte-identical ~55-line `finrank {n}^⊥ = k` metric transport (duplicated between (h-3)/(h-4))
   dropped to one shared helper (~110 lines of duplication removed).
