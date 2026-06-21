@@ -386,6 +386,7 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 369 | slot-core/ASSEMBLY re-arch adjudication — both local fold re-shapes DEAD, unblock = KT-faithful whole-matrix re-write below the contract; §(o‴)(I.8.18), 58cb891 | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 195958 tok / 36 tools / ~8.2 min | Design-settle re-arch adjudication (S3→fable→opus, OPUS-ONLY). Verify-against-source clause working: re-derived the load-bearing artifact premise from LANDED source (line refs), not inherited from the prior pins. Flag-don't-force honored: both local directions pinned DEAD w/ named Lean obstructions; the only artifact-dissolving route (assembly-level whole-matrix re-write) named as genuinely-new arch, leaves NOT scoped. Verdict escalates to a user SCOPE call (A recon sub-phase / B ENTRY-carry), not a failed pass; cost-relevant: 23b no longer the prior ~3–5c from close. |
 | 370 | whole-matrix re-arch DECOMPOSED into a leaf sequence (LEAF A–D); §(o‴)(I.8.19), 2c1b6af | 3/2/1 | opus | normal | clean | ✓✓✗—✓✓ | 237838 tok / 60 tools / ~10.9 min | Whole-matrix decomposition (S3→fable→opus, OPUS-ONLY); gate-passing docs, honest about LEAF B (P=3 de-risk-first) and overturned the prompt's CHAIN-1 premise (F4). BUT bit-3 fail: LEAF C ("re-fire the EXISTENTIAL A-1 at the candidate") was UNSOUND — missed the landed dispatch's single-`r` coupling (A-1 ∃ρ vs one shared ρ0), re-introducing the design-rejected Fix B. NOT caught by first-pass scrutiny; caught by a coordinator-requested adversarial self-check (row 371). Single-pass design fallibility on a re-route's downstream-consumer coupling. → Findings 2026-06-21. |
 | 371 | adversarial self-check REFUTED LEAF C (single-`r`) + correction commit; §(o‴)(I.8.19)-ADDENDUM, 69647e5 | 3/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 542389 tok / 28 tools / ~7.0 min | Coordinator-initiated adversarial self-check (SendMessage continuation of row-370 agent, context intact; rate as original 3/2/1, opus). HIGH-VALUE: re-prompted with the coordinator's grounded single-`r` concern + flag-don't-force, the SAME agent REFUTED its own LEAF C with verbatim dispatch evidence (Realization.lean:388–411) and landed the correction (retract verdict + re-point hand-off to the open design question). Adversarial re-prompting works as a design-error audit even same-agent. → Findings 2026-06-21. |
+| 372 | column-op span-inclusion question ADJUDICATED — ROUTE DIES, the wall is INTRINSIC to KT; §(o‴)(I.8.20), 591cf30 | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 185453 tok / 51 tools / ~8.6 min | Route-deciding design pass (S3→fable→opus, OPUS-ONLY); dispatched FRESH (not the row-370/371 agent) for adversarial independence. Verdict: ROUTE DIES — the member-mapping wall is INTRINSIC to KT (read 6.62 directly: KT's row correspondence MOVES the redundant row), not a Lean artifact. Both clauses honored: F4 re-confirmed, member-move re-confirmed; flag-don't-force named the fixed-member shape FALSE/unbuilt, no manufactured leaf (no LEAF-C repeat). → user fork (route B likely-dead / architecture rethink). → Findings 2026-06-21. |
 
 ## Findings
 
@@ -409,6 +410,16 @@ established at the base, KT eq. 6.66), re-introducing the design-rejected Fix B.
   the landed consumer, the row-370 agent did so with verbatim evidence rather than rationalizing. The
   grounding-in-source + the refute-don't-defend framing, not a fresh agent, is what made it work — but the
   coordinator must independently verify the cited evidence (done here vs Realization.lean:388–441).
+- **For the route-DECIDING verdict ("does the route the prior pass proposed actually live?"), dispatch a
+  FRESH agent, not the route's author.** Row 372 (fresh) killed the column-op route by reading KT (6.62)
+  directly and finding the member-mapping wall is INTRINSIC to KT's argument (the row correspondence MOVES
+  the redundant row v₀v₂→v₀v₁), not a Lean artifact — settling a seam that had resisted ~6 sessions. Same-agent
+  sufficed for the row-371 *refutation* (refuting is easier than constructively re-deciding); for the
+  constructive "is my route alive?" call, fresh-agent independence + source-grounding is the right tool.
+- **When a seam resists, the terminal move is to read the SOURCE's own construction, not just the Lean.**
+  Three sessions chased Lean transports for the hφ seam; reading KT (6.62) directly showed KT itself carries a
+  MOVING member — the wall is the paper's structure, so no fixed-member Lean route could ever have existed. A
+  source-read this decisive belonged earlier in the arc.
 
 ### Session #12 close-out (2026-06-19; rows 273–284) — the design-pass + adversarial-pair regime unstuck the 4×-mis-pinned crux
 
