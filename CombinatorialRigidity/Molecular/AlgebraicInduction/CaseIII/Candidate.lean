@@ -1630,4 +1630,43 @@ theorem PanelHingeFramework.case_III_rank_certification
   rw [← hcard, Nat.card_eq_fintype_card, ← finrank_span_eq_card hfam]
   exact Submodule.finrank_mono hsub
 
+/-! ## Block-rank-additivity on the rigidity-row carrier (Phase 23c, option (A) de-risk)
+
+The basis-free block-rank-additivity lower bound (`finrank_add_card_le_of_linearIndependent_mkQ`,
+the mirror in `Mathlib/LinearAlgebra/Dimension/Constructions`) instantiated on the *actual*
+rigidity-row carrier `Module.Dual ℝ (α → ScrewSpace k)`. This is the Phase-23c option-(A) de-risk
+probe (`notes/Phase23c.md`, design §(o‴)(I.8.21)(2b)(α)): it confirms the abstract quotient/block
+lower bound carries to the `span (rigidityRows)` carrier with **no `ScrewSpace ≃ₗ`/§38-defeq
+friction** —
+the only carrier fact consumed is the ambient finite-dimensionality, which is `inferInstance` (the
+`Subspace.instModuleDualFiniteDimensional` route the Phase-18 spanning/rank lemmas already use, cf.
+`exists_finite_spanning_rigidityRows`), and the `ScrewSpace` carrier is never unfolded. -/
+
+/-- **Block-rank-additivity on the rigidity-row carrier** (`lem:case-III general-d`, the option-(A)
+rank-certification shape; Katoh–Tanigawa 2011 eqs. (6.64)–(6.65)). For a body-hinge framework `F`
+on a finite body set, a base subspace `W ≤ span F.rigidityRows` (KT's `R(G₁ ∖ row, q₁)` block), and
+a finite family `g : ι → Module.Dual ℝ (α → ScrewSpace k)` of *corner rows* lying in
+`span F.rigidityRows` (KT's `Mᵢ` block) whose images modulo `W` are linearly independent, the
+rigidity-row span has finrank at least `finrank W + |ι|`:
+`finrank W + |ι| ≤ finrank (span F.rigidityRows)`.
+
+This is KT's `rank R(G,pᵢ) ≥ rank Mᵢ + rank(R(G₁ ∖ row, q₁))` block decomposition (6.64–6.65) in the
+project's basis-free `finrank (span …)` form: the corner block `Mᵢ` enters as the `|ι|` members of
+`g` independent modulo the base `W`, and the redundancy carry of (6.66) lives in *how* `g`'s images
+are shown independent modulo `W` (the discriminator's `r ⊥ C(Lᵢ)` fact, re-aimed at the `Mᵢ`
+corner) — **not** as a fixed-member candidate membership of `hingeRow a b ρ₀` (the wall). A direct
+instantiation of `Submodule.finrank_add_card_le_of_linearIndependent_mkQ`; the only carrier input is
+the ambient finite-dimensionality of `Module.Dual ℝ (α → ScrewSpace k)` (`inferInstance` under
+`[Finite α]`). -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner [Finite α]
+    (F : BodyHingeFramework k α β) {ι : Type*} [Fintype ι]
+    {W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (hWS : W ≤ Submodule.span ℝ F.rigidityRows)
+    {g : ι → Module.Dual ℝ (α → ScrewSpace k)} (hg : ∀ i, g i ∈ Submodule.span ℝ F.rigidityRows)
+    (hLI : LinearIndependent ℝ (W.mkQ ∘ g)) :
+    Module.finrank ℝ W + Fintype.card ι
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  exact Submodule.finrank_add_card_le_of_linearIndependent_mkQ hWS hg hLI
+
 end CombinatorialRigidity.Molecular

@@ -48,6 +48,18 @@ Upstream-eligible mirrors:
   `finrank (span (range (W.mkQ ∘ g))) = |ι|` and hence
   `finrank (W ⊔ span (range g)) = finrank W + |ι|` (via `finrank_map_mkQ`). When promoted
   upstream this lives beside the finrank/span API; the namespace stays `Submodule`.
+
+* `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` — a basis-free **block-rank-additivity
+  lower bound**: for a subspace `W ≤ S` of a finite-dimensional space and a finite family
+  `g : ι → V` lying in `S` (`∀ i, g i ∈ S`) whose images mod `W` are linearly independent
+  (`LinearIndependent K (W.mkQ ∘ g)`), the rank of `S` is at least the rank of the corner block
+  `W` plus the size of the independent-modulo-`W` family: `finrank W + |ι| ≤ finrank S`. This is
+  the rank-decomposition shape `rank S ≥ rank(corner W) + dim(quotient block)` (with the quotient
+  block exhibited by the `|ι|` members of `g` independent modulo `W`). The proof exhibits the
+  intermediate `W ⊔ span (range g) ≤ S`, computes `finrank (W ⊔ span (range g)) = finrank W + |ι|`
+  via `finrank_map_mkQ` + `finrank_span_eq_card`, and monotones up to `S`. When promoted upstream
+  this lives beside the quotient finrank API in
+  `Mathlib/LinearAlgebra/Dimension/RankNullity.lean`; the namespace stays `Submodule`.
 -/
 
 @[expose] public section
@@ -149,6 +161,39 @@ theorem exists_mem_sup_span_image_compl_of_finrank_lt {K V : Type*} [Field K] [A
   have hle : Module.finrank K W
       ≤ Module.finrank K (W ⊔ Submodule.span K (Set.range g) : Submodule K V) :=
     Submodule.finrank_mono le_sup_left
+  omega
+
+/-- A basis-free block-rank-additivity lower bound. For a subspace `W ≤ S` of a
+finite-dimensional space and a finite family `g : ι → V` lying in `S` whose images mod `W` are
+linearly independent, the rank of `S` is at least `finrank W + |ι|` — KT's
+`rank R(G,pᵢ) ≥ rank Mᵢ + rank(base ∖ row)` block decomposition (6.64–6.65) in span/`finrank`
+form, with `W` the base-minus-redundant-row block and the `|ι|` images of `g` the corner block
+independent modulo `W`.
+
+The intermediate `W ⊔ span (range g)` has finrank exactly `finrank W + |ι|`: its quotient image
+`(span (range g)).map W.mkQ` equals `span (range (W.mkQ ∘ g))` of finrank `|ι|`
+(`finrank_span_eq_card` on the hypothesis), and `finrank_map_mkQ` reads that off as
+`finrank (W ⊔ span (range g)) − finrank W`. Since `W ⊔ span (range g) ≤ S`, `finrank_mono`
+finishes. -/
+theorem finrank_add_card_le_of_linearIndependent_mkQ {K V : Type*} [Field K] [AddCommGroup V]
+    [Module K V] [Module.Finite K V] {ι : Type*} [Fintype ι] {W S : Submodule K V} (hWS : W ≤ S)
+    {g : ι → V} (hg : ∀ i, g i ∈ S) (hLI : LinearIndependent K (W.mkQ ∘ g)) :
+    Module.finrank K W + Fintype.card ι ≤ Module.finrank K S := by
+  -- The intermediate `W ⊔ span (range g)` sits inside `S`.
+  have hsub : (W ⊔ Submodule.span K (Set.range g) : Submodule K V) ≤ S :=
+    sup_le hWS (Submodule.span_le.mpr (Set.range_subset_iff.mpr hg))
+  -- Its quotient image has finrank `|ι|` (the independent family's span), so by `finrank_map_mkQ`
+  -- the intermediate finrank is `finrank W + |ι|`.
+  have hcard : Module.finrank K (Submodule.span K (Set.range (W.mkQ ∘ g))) = Fintype.card ι :=
+    finrank_span_eq_card hLI
+  have hspaneq : Submodule.span K (Set.range (W.mkQ ∘ g))
+      = (Submodule.span K (Set.range g)).map W.mkQ := by
+    rw [Set.range_comp, Submodule.map_span]
+  rw [hspaneq, finrank_map_mkQ] at hcard
+  have hle : Module.finrank K W
+      ≤ Module.finrank K (W ⊔ Submodule.span K (Set.range g) : Submodule K V) :=
+    Submodule.finrank_mono le_sup_left
+  have hmono := Submodule.finrank_mono hsub
   omega
 
 end Submodule

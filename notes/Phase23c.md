@@ -8,10 +8,23 @@ detailed route history live in `notes/Phase23-design.md`, program map `notes/Mol
 algebraic core + chain-induction + perp + slot machinery — all axiom-clean) but **could not reach** the
 `hρGv` Case-III chain arm + `chainData_dispatch` (CHAIN-2c-iii) + CHAIN-5, because the arm's `hρGv` slot ran
 into a hard core: the **member-mapping wall**, now decisively characterized as **intrinsic to KT's argument**
-(not a Lean artifact — design §(o‴)(I.8.18)–(I.8.20), 2026-06-21). The **(A)-feasibility recon is now DONE**
+(not a Lean artifact — design §(o‴)(I.8.18)–(I.8.20), 2026-06-21). The **(A)-feasibility recon is DONE**
 (design §(o‴)(I.8.21), 2026-06-21): (A) escapes the wall but requires a rank-certification re-architecture
-(below the contract/motive) with a genuinely-new + cost-unknown hardest leaf — so 23c's standing state is a
-**USER GO/NO-GO** (open the (A) sub-phase de-risk-first, or hold), see *Hand-off*.
+(below the contract/motive). The user adjudicated the fork → **OPEN OPTION (A), de-risk-first**.
+
+**De-risk spike landed (2026-06-21, the §I.8.21(2b)(α) hardest leaf).** The genuinely-new + cost-unknown
+hardest leaf — the **basis-free block-rank-additivity lower bound** — is **DONE and axiom-clean**, with a
+**clean POSITIVE de-risk verdict: the `ScrewSpace ≃ₗ`/§38-defeq friction did NOT bite.** Two decls:
+(α) the abstract LA lemma `Submodule.finrank_add_card_le_of_linearIndependent_mkQ`
+(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`, the mirror) — `W ≤ S`, a family `g` in `S` with
+`W.mkQ ∘ g` linearly independent ⟹ `finrank W + |ι| ≤ finrank S` — proved in ~10 lines off the *existing*
+`finrank_map_mkQ` + `finrank_span_eq_card`; and (β) the carrier instantiation
+`BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`, right after
+`case_III_rank_certification`) on the *actual* `Module.Dual ℝ (α → ScrewSpace k)` carrier, which goes through
+by `inferInstance` on the ambient finite-dimensionality — **the `ScrewSpace` carrier is never unfolded**. So
+the STOP-and-escalate-to-an-explicit-`Matrix`-model branch is NOT triggered: the basis-free `finrank (span …)`
+carrier *does* admit KT's `rank Mᵢ + rank(base∖row)` block lower bound (6.64–6.65), with the corner block `Mᵢ`
+entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-off*.
 
 > **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the (A)-recon verdict) in
 > full, then the design doc §(o‴)(I.8.18)–(I.8.21) (the dead-route verdicts + the (A) go/no-go) and the
@@ -71,9 +84,10 @@ a fixed-member candidate membership, `Candidate.lean:1606–1611`), so (A) requi
 `case_III_rank_certification` + `case_III_arm_realization`** (below contract C.0–C.6 + motive; `d=3` M₃
 zero-regression preserved by forking the rank-cert). Sub-route *non-gate composition* is DEAD (collapses to
 the wall); sub-route *matrix/abstract-`r`* is the live route and **forces a more matrix-explicit
-representation**: the genuinely-new infra is a basis-free **block-rank-additivity** lemma + `Mᵢ`-corner
-quotient-independence + the (6.66) `±r` abstract-vector identity. **Cost band: a recon-first sub-phase ~8–14c**,
-hardest leaf (block-rank-additivity) cost-unknown with a STOP-and-escalate-to-explicit-`Matrix`-model branch.
+representation**: the genuinely-new infra is a basis-free **block-rank-additivity** lemma (**LANDED POSITIVE
+2026-06-21**, see *Current state* / *Hand-off*) + `Mᵢ`-corner quotient-independence + the (6.66) `±r`
+abstract-vector identity. **Remaining cost band: ~6–11c** (the de-risk spike — the hardest + cost-unknown
+part, the STOP-and-escalate-to-explicit-`Matrix`-model branch — is now closed POSITIVE).
 
 **(B) Carry `ρ0`/`hφ@endsσρ` to ENTRY — LEAST KT-faithful, likely-dead, does NOT attack the root.** Add
 `hφ@endsσρ` as a hypothesis on the arm/dispatch (the landed `chainData_relabel_arm_hρGv` shape) and confront
@@ -81,10 +95,10 @@ the wall at ENTRY. Flagged likely-dead (§I.8.20: the wall is a property of the 
 is in scope; the only non-circular escape is ENTRY re-deriving the redundancy *natively* against `endsσρ` — a
 graph-construction question, unexplored). Only the residue if (A) is held / its de-risk fails.
 
-**Recommendation.** The real choice is **(A)-sub-phase (de-risk the basis-free block-rank-additivity lemma
-FIRST) vs. a deliberate hold** — (A) is well-motivated (root-attacking, KT-faithful, reuses the hard
-discriminator + (6.44) cancellation machinery) but the rank-cert re-architecture is a substantial investment
-worth a deliberate go/no-go. See *Hand-off* for the FIRST concrete commit under each branch.
+**Status: (A) is OPEN, de-risk-first (user-adjudicated). The de-risk spike is LANDED POSITIVE** — the
+basis-free block-rank-additivity lemma (the genuinely-new + cost-unknown hardest leaf) closed cleanly with no
+`ScrewSpace`/§38-defeq friction. The rank-cert re-architecture continues with the cost-unknown risk now
+retired; the next concrete commit is the `Mᵢ`-corner quotient-independence (2b)(β). See *Hand-off*.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -140,35 +154,45 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**The (A)-feasibility recon is DONE (design §(o‴)(I.8.21), 2026-06-21). VERDICT: (A) escapes the wall but does
-NOT feed the existing engine — it is a genuinely-new rank-certification re-architecture (below the
-contract/motive), with a genuinely-new + cost-unknown hardest leaf. So the next concrete step is a USER/
-coordinator GO/NO-GO, not a build.** What §I.8.21 settled (source-grounded against the landed engine + KT pp.
-697–698):
-- **The abstract `r` of KT (6.66) IS already the project's `ρ₀`** — A-1 builds `ρ₀ = ∑ⱼ lamAB j • rab j`
-  (`Candidate.lean:432`), literally KT's `r = ∑ λ_(v₀v₂)ⱼ rⱼ(q(v₀v₂))`, and `ScrewSpace k` has `finrank = D`.
-  (A) is therefore NOT "add an abstract `r`"; it is "re-shape the *consumer*".
-- **The engine's `hρGv` slot IS the wall.** `case_III_rank_certification` uses `hρGv` once
-  (`Candidate.lean:1606–1611`) as the fixed-member candidate membership `hingeRow a b ρ₀ ∈ span(candidate)` —
-  exactly what §I.8.18/I.8.20 ruled has no source for `i ≥ 2`. So (A) cannot escape by feeding the existing
-  engine. (d=3 is no counterexample: the M₃ arm satisfies the slot by a length-1 MOVE, `Relabel.lean:2562/2699`.)
-- **(A)'s escape is KT's `rank Mᵢ + rank(base∖row)` block decomposition (6.64–6.65)**, where the redundancy is a
-  `±r` ℝ^D-EQUALITY (6.66), never a fixed dual-functional transported across the relabel. This requires re-shaping
-  `case_III_rank_certification` + `case_III_arm_realization` (below contract C.0–C.6 + motive; `d=3` M₃
-  zero-regression preserved by forking the rank-cert).
-- **Sub-route (2a) "non-gate composition" is DEAD** (collapses to the wall). **Sub-route (2b) "matrix/abstract-`r`"
-  is the live route** and forces a more matrix-explicit representation: the genuinely-new infra is a basis-free
-  **block-rank-additivity** lemma + the `Mᵢ`-corner quotient-independence + the (6.66) `±r` abstract-vector
-  identity. **Honest cost band: a recon-first sub-phase, ~8–14 commits**, hardest leaf (block-rank-additivity)
-  cost-unknown with an explicit STOP-and-escalate-to-an-explicit-`Matrix`-model branch.
+**The (A) de-risk spike is LANDED with a clean POSITIVE verdict (2026-06-21).** The hardest leaf — the
+basis-free block-rank-additivity lower bound — is axiom-clean (both decls; see *Current state* + the
+*Decisions made* entry), and it instantiates on the *actual* `Module.Dual ℝ (α → ScrewSpace k)` rigidity-row
+carrier with **no `ScrewSpace ≃ₗ`/§38-defeq friction** (the carrier is never unfolded; only the ambient
+finite-dimensionality is consumed, by `inferInstance`). **The STOP-and-escalate-to-an-explicit-`Matrix`-model
+branch is NOT triggered: the basis-free `finrank (span …)` API carries KT's `rank Mᵢ + rank(base∖row)`
+decomposition.** The two new decls:
+- `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` (mirror,
+  `Mathlib/LinearAlgebra/Dimension/Constructions.lean`) — the abstract LA block-rank-additivity lemma.
+- `BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`, after
+  `case_III_rank_certification`) — the carrier instantiation; the option-(A) rank-cert's intended `finrank
+  W + |ι| ≤ finrank (span F.rigidityRows)` shape, fit for the `Mᵢ`-corner certification.
 
-**THE FORK FOR THE USER:** **(A)-sub-phase (de-risk the basis-free block-rank-additivity lemma FIRST) vs. a
-deliberate hold.** Route B (carry `ρ₀`/`hφ@endsσρ` to ENTRY) does not attack the root (flagged LIKELY-DEAD,
-§I.8.20) and is only the residue if (A) is held or its de-risk fails. **If the user picks (A): the FIRST concrete
-commit is the block-rank-additivity de-risk spike** (does the basis-free `finrank (span …)` carrier admit a clean
-quotient/block lower bound `rank(span A) ≥ dim(quotient corner) + rank(span B)` for `B ⊆ A`, or does the
-`ScrewSpace` `≃ₗ`/§38-defeq friction bite?) — NOT a leaf signature yet. Audit trail: design §(o‴)(I.8.18)–(I.8.21),
-the `lem:case-III general-d` ledger sharpening.
+**Next concrete commit (the (A) rank-cert re-architecture continues, §I.8.21(2b)).** With (2b)(α) the
+block-rank-additivity lower bound now landed, the remaining genuinely-new infra of option (A) is:
+- **(2b)(β) the `Mᵢ`-corner quotient-independence** — exhibit the `Mᵢ` block as `D` rows of `R(G,pᵢ)`
+  (the `r(Lᵢ)` rows + the `±r` row) and prove their images modulo the base `W = span(base∖row)` are
+  linearly independent (`W.mkQ ∘ g` LI), feeding `finrank_span_rigidityRows_ge_of_corner`. This re-aims the
+  *already-landed* discriminator (CHAIN-3/4, `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`,
+  `Claim612.lean:1462`) and its `r ⊥ C(Lᵢ)` fact at the `Mᵢ` corner rather than the candidate-row membership.
+- **(2b)(γ) the (6.66) `±r` ℝ^D-equality** — `∑ⱼ λ_(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁)) = ±r` as a `ScrewSpace`-vector
+  identity (the (6.44) degree-2 cancellation the landed telescope already proves at the *membership* level,
+  re-expressed at the *abstract-vector* level; likely a re-statement, not a rebuild).
+Then the rank-cert re-shape (`case_III_rank_certification` forked so the general-`d` arm uses the `Mᵢ`-block
+cert while `d=3` M₃ keeps its current single-step-move cert — zero-regression) + the arm re-shape + the
+2c-iii dispatch wire-up + the orphan confirm-and-delete. **The smallest next commit is (2b)(β)**: state and
+prove the `Mᵢ`-corner LI-modulo-base lemma (re-aim the discriminator), since it is the input
+`finrank_span_rigidityRows_ge_of_corner` consumes. Audit trail: design §(o‴)(I.8.18)–(I.8.21), the
+`lem:case-III general-d` ledger sharpening.
+
+**Reference (the §I.8.21 verdict, source-grounded against the landed engine + KT pp. 697–698):** the abstract
+`r` of KT (6.66) IS already the project's `ρ₀` (A-1, `Candidate.lean:432`); the engine's `hρGv` slot IS the
+wall (`case_III_rank_certification` uses it once, `Candidate.lean:1606–1611`, as the fixed-member candidate
+membership), so (A) cannot feed the existing engine — it re-shapes the rank-cert to KT's `rank Mᵢ +
+rank(base∖row)` block decomposition (6.64–6.65), where the redundancy is a `±r` ℝ^D-EQUALITY (6.66), never a
+fixed dual-functional transported across the relabel. Sub-route (2a) "non-gate composition" is DEAD (collapses
+to the wall); (2b) "matrix/abstract-`r`" is the live route. Route B (carry `ρ₀`/`hφ@endsσρ` to ENTRY) does not
+attack the root (LIKELY-DEAD, §I.8.20) and is the residue only if (A) is held. **Honest remaining cost band:
+~6–11 more commits** (the de-risk spike, the hardest + cost-unknown part, is now closed POSITIVE).
 
 ## Decisions made during this phase
 
@@ -178,3 +202,11 @@ the `lem:case-III general-d` ledger sharpening.
   carries to 23c, whose first move is an architectural decision, not a build. Rationale: design
   §(o‴)(I.8.18)–(I.8.20); the d=3-is-degenerate / read-the-source-early lessons (`DESIGN.md`, model-exp
   Findings 2026-06-21).
+- **Option (A) de-risk spike landed POSITIVE (2026-06-21).** The §I.8.21(2b)(α) hardest + cost-unknown leaf —
+  basis-free block-rank-additivity — is axiom-clean and the `ScrewSpace`/§38-defeq friction did NOT bite.
+  `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` (mirror) proves `W ≤ S` + `g`-in-`S` +
+  `W.mkQ ∘ g` LI ⟹ `finrank W + |ι| ≤ finrank S` in ~10 lines off the *existing* `finrank_map_mkQ` +
+  `finrank_span_eq_card` (no new LA machinery); `finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`)
+  instantiates it on `Module.Dual ℝ (α → ScrewSpace k)` by `inferInstance`, never unfolding the carrier. So
+  the basis-free API carries KT's `rank Mᵢ + rank(base∖row)` (6.64–6.65); the STOP-and-escalate-to-`Matrix`
+  branch is closed. Next: (2b)(β) `Mᵢ`-corner LI-modulo-base (re-aim the discriminator). See *Hand-off*.
