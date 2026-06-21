@@ -59,10 +59,13 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#22 (latest: **#22**, 2026-06-21,
-  fresh coordinator, user re-confirmed the triple + chose the re-architecture
-  recon at session start; opus reachable via the Agent `model` param, no
-  substitution needed).
+  would re-probe. Set/re-confirmed sessions #6–#23 (latest: **#23**, 2026-06-21,
+  fresh coordinator continuing #22's chosen re-architecture recon; user
+  re-confirmed the triple + chose the (A)-feasibility recon at session start;
+  opus reachable via the Agent `model` param, no substitution needed). The
+  (A)-recon LANDED as row 373 (§(o‴)(I.8.21), 50fb322); standing state = the
+  USER GO/NO-GO on opening the (A) sub-phase (de-risk block-rank-additivity
+  first) vs. a deliberate hold — see `notes/Phase23c.md` *Hand-off*.
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
   chain (2c-i/2c-ii-α/2c-ii-β); Route β LOCKED. Detail subsumed by session-#9 progress below + git.
 - **Session #9 close (2026-06-19; paused by user after row 254, clean handoff; loop stopped).**
@@ -389,6 +392,7 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 370 | whole-matrix re-arch DECOMPOSED into a leaf sequence (LEAF A–D); §(o‴)(I.8.19), 2c1b6af | 3/2/1 | opus | normal | clean | ✓✓✗—✓✓ | 237838 tok / 60 tools / ~10.9 min | Whole-matrix decomposition (S3→fable→opus, OPUS-ONLY); gate-passing docs, honest about LEAF B (P=3 de-risk-first) and overturned the prompt's CHAIN-1 premise (F4). BUT bit-3 fail: LEAF C ("re-fire the EXISTENTIAL A-1 at the candidate") was UNSOUND — missed the landed dispatch's single-`r` coupling (A-1 ∃ρ vs one shared ρ0), re-introducing the design-rejected Fix B. NOT caught by first-pass scrutiny; caught by a coordinator-requested adversarial self-check (row 371). Single-pass design fallibility on a re-route's downstream-consumer coupling. → Findings 2026-06-21. |
 | 371 | adversarial self-check REFUTED LEAF C (single-`r`) + correction commit; §(o‴)(I.8.19)-ADDENDUM, 69647e5 | 3/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 542389 tok / 28 tools / ~7.0 min | Coordinator-initiated adversarial self-check (SendMessage continuation of row-370 agent, context intact; rate as original 3/2/1, opus). HIGH-VALUE: re-prompted with the coordinator's grounded single-`r` concern + flag-don't-force, the SAME agent REFUTED its own LEAF C with verbatim dispatch evidence (Realization.lean:388–411) and landed the correction (retract verdict + re-point hand-off to the open design question). Adversarial re-prompting works as a design-error audit even same-agent. → Findings 2026-06-21. |
 | 372 | column-op span-inclusion question ADJUDICATED — ROUTE DIES, the wall is INTRINSIC to KT; §(o‴)(I.8.20), 591cf30 | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 185453 tok / 51 tools / ~8.6 min | Route-deciding design pass (S3→fable→opus, OPUS-ONLY); dispatched FRESH (not the row-370/371 agent) for adversarial independence. Verdict: ROUTE DIES — the member-mapping wall is INTRINSIC to KT (read 6.62 directly: KT's row correspondence MOVES the redundant row), not a Lean artifact. Both clauses honored: F4 re-confirmed, member-move re-confirmed; flag-don't-force named the fixed-member shape FALSE/unbuilt, no manufactured leaf (no LEAF-C repeat). → user fork (route B likely-dead / architecture rethink). → Findings 2026-06-21. |
+| 373 | (A)-feasibility recon — (A) escapes the wall but is a rank-cert re-arch, NOT engine-feedable; §(o‴)(I.8.21), 50fb322 | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 191642 tok / 44 tools / ~7.4 min | (A)-feasibility recon (S3 design-settle→fable→opus, OPUS-ONLY); dispatched FRESH (independent of rows 370–372). Both clauses honored; coordinator spot-checked the two load-bearing source facts (ρ₀=∑lamAB•rab, Candidate.lean:432; the single hρGv use, :1606–1611) — both confirmed. Flag-don't-force GO/NO-GO: (A) named NEITHER buildable (hardest leaf = basis-free block-rank-additivity, genuinely-new + cost-unknown, STOP-and-escalate branch) NOR dead (escapes the wall via KT's Mᵢ-block/±r ℝ^D-equality). No manufactured leaf. → Findings 2026-06-21. |
 
 ## Findings
 
