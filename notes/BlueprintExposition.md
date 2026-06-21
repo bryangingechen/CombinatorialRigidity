@@ -537,6 +537,17 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   not the phase-close write; the full `.tex` prose still lands at phase-close once the arm is `sorry`-free.
   Pointer: `notes/Phase23b.md` §(o‴)(I.7.7); `DESIGN.md` *A degenerate headline case is a target, not a
   template*.
+  **`Mᵢ`-block-is-inline + `±r`-carrier CAPTURE (2026-06-21; option-(A) (2b)(β) pin recon, design §I.8.22).**
+  Two KT-math exposition details the recon surfaced. (1) The project's basis-free cert realizes KT's `rank Mᵢ +
+  rank(base∖row)` (6.64–6.65) **inline as one LI family** `(sn ⊕ Unit) ⊕ ιb` — `sn` = the `D−1` panel rows
+  `r(Lᵢ)`, the `Unit` row = the `±r` redundancy row, `ιb` = `R(G₁∖row, q₁)` — not via a separate block-rank
+  lemma; the exposition should present (6.64) as "these three row groups are jointly independent", since that
+  is what the formalization proves. (2) KT's `±r` (6.66) is a `ℝ^D` (screw-functional) equality of the `Mᵢ`
+  *second row entry* to the abstract `r`, a DIFFERENT object from the per-step `a`-column cancellation realized
+  as the `wstep` hingeRow telescope (which lives in the full hinge-row dual `Module.Dual ℝ (α → ScrewSpace k)`);
+  the prose must not conflate the two carriers — the `±r` step is "read the `vᵢ`-column entry of the telescoped
+  row, using degree-2 column-vanishing (6.52)", the move that lets the *member move* while `r` stays fixed (the
+  wall-escape). Pointer: `notes/Phase23-design.md` §(o‴)(I.8.22).
   **Source-side SHARPENING (2026-06-21; the `hφ`-seam re-architecture arc, model-exp rows 369–372) — the
   redundancy-carry is THE compressed step, and what KT's terseness leaves open is a *structural choice*.**
   Source-verified against KT (6.60)–(6.66) this session: **KT carries the single redundancy `r` as an
