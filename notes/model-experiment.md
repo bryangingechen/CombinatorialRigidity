@@ -57,7 +57,7 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#19 (latest: **#19**, 2026-06-20,
+  would re-probe. Set/re-confirmed sessions #6–#20 (latest: **#20**, 2026-06-21,
   fresh coordinator, user re-confirmed the triple at session start; opus
   reachable via the Agent `model` param, no substitution needed).
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
@@ -142,6 +142,25 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   user chose pause over compress-first). **Findings:** the gate-clean-but-vacuous lemma + the
   deferral-pattern→recon-the-convergence lessons below. OPUS-ONLY/cap/fixups expire session-end; a fresh
   coordinator re-runs the availability check.
+- **Session #20 close (2026-06-21; rows 353–362, all opus / OPUS-ONLY, gate-verified; user PAUSED on the
+  ROUTE α/β slot-core decision).** Opened with the DUE note compression (353, 1258→401, dropping 3 superseded
+  route-layers). Then the arm-convergence work hit **two more selector/relabel mismatches** beyond row 352's:
+  (1) the **i=3 de-risk** (354) decomposed the transport leaf into T-1/T-2/T-3, but a **coordinator triage +
+  user-steered recon** (357 BLOCKED + 358 recon) found that decomposition MIS-TARGETED (shiftPerm moves v₂,
+  breaking the consumer's hardcoded (v₀,v₂) hcomb RHS) and re-derived the **simpler corrected route** (base
+  perp at consumer index ⟨1⟩ + the scalar STEP-2 transport; T-1/T-2 orphaned) — which built clean (359 STEP 2,
+  360 perp composition, 361 hρGv slot, all self-shrinking sensibly); (2) the hρGv slot exposed a **3rd**
+  mismatch (the hφ selector seam), which the **holistic arm-arch recon** (362, FLAG-DON'T-FORCE) confirmed is a
+  genuine member-mapping wall and resolved to a **slot-core re-architecture decision** (ROUTE α recon-first
+  ~2–4c, RECOMMENDED, vs β defer likely-dead) — **user-deferred at the pause** (`notes/Phase23b.md` *Current
+  state* flags it; a fresh coordinator re-confirms α/β at session start). **The arm is NOT a mechanical
+  assembly** — it is gated on the ROUTE-α decision, further out than the prior ~2–3c estimate; the engine slots
+  all cohere, `chainData_relabel_arm_hρGv` is confirmed correct (nothing to revert). **Durable lessons (full
+  *Findings* at 23b close):** (a) a 2nd/3rd recurrence of the same shape mismatch on one assembly is the signal
+  to recon the ARCHITECTURE holistically, not patch seams; (b) a build that self-shrinks + flags a not-yet-built
+  step in a repeatedly-bitten area is a recon trigger, not a build-on; (c) the async-mailbox dispatches returned
+  via idle-notification with no structured LANDED/BLOCKED (verify via git + SendMessage query). OPUS-ONLY/cap/
+  fixups expire session-end; a fresh coordinator re-runs the availability check.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
