@@ -4342,4 +4342,68 @@ theorem _root_.Graph.ChainData.chainData_freshEdge_perp_of_baseRedundancy
     rwa [neg_neg] at this
   exact (Fva.mem_hingeRowBlock_iff (cd.edge ⟨s, by omega⟩) ρ₀).1 hρ₀mem
 
+/-! ### The i=3 candidate-level edge-grouped transport de-risk (CHAIN-2c-ii-arm)
+
+The row-352 GAP-FOUND recon (`notes/Phase23-design.md` §(o‴)(I.8); Phase 23b) located the single
+remaining gap between the landed `hρGv` pieces and the arm `chainData_relabel_arm`: the per-edge
+perp leaf `chainData_freshEdge_perp_of_baseRedundancy` consumes the edge-grouped base redundancy
+`hcomb` together with the per-summand block memberships `hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j)`
+**at the CANDIDATE framework** `Fva = ofNormals (G − vᵢ) endsσρ qρ`, but the W6b producer A-1
+(`exists_candidateRow_bottomRows_of_rigidOn`) supplies the edge-grouped redundancy only at the
+**BASE** framework `ofNormals (G − v₁) ends q` (`Candidate.lean`). No landed lemma transports the
+edge-grouped block memberships from base to candidate (candidate-level `hrv` appears only as a
+hypothesis, never a conclusion).
+
+The flagged subtlety (de-risk-first, row-321 discipline): A-1's base summand edges `ev j` are
+ARBITRARY `(G − v₁)`-links — they need NOT be `shiftEdgePerm`-images of candidate chain edges. The
+de-risk question is whether the per-summand block transport is nonetheless clean: does
+`rv j ∈ (base).hingeRowBlock (ev j)` transport to a candidate block membership without re-grouping?
+
+**Verdict (this lemma, ground-truth in Lean): YES — the per-summand transport is a clean bijective
+re-index, NOT a re-grouping.** The candidate framework's `hingeRowBlock` at an ARBITRARY edge `f`
+equals the base framework's `hingeRowBlock` at `(shiftEdgePerm i) f` (the support extensors coincide
+under the relabel, `ofNormals_supportExtensor_relabel_perm`, for *every* edge — the base graph is
+irrelevant since `supportExtensor` reads only `ends`/`normal`). So A-1's base membership
+`rv j ∈ (base).hingeRowBlock (ev j)` is exactly the candidate membership
+`rv j ∈ Fva.hingeRowBlock ((shiftEdgePerm i).symm (ev j))` — i.e. the candidate-side summand edges
+are the `(shiftEdgePerm i)⁻¹`-images of A-1's base edges, a BIJECTIVE re-labelling of the existing
+summands (no summand is dropped, split, or merged). This resolves Q1/Q2/Q3 of the de-risk: the
+non-alignment of `ev j` with chain edges is a **non-issue**, because the block correspondence holds
+for arbitrary edges and the downstream chain induction (LEAVES 1–4) groups summands by *filtering*
+`ev j = cd.edge ⟨i⟩` and discards non-incident contributions via the degree-2 closure — it never
+requires the summand edges to be aligned. The transport leaf
+`chainData_candidateRow_edgeGrouped_transport` therefore decomposes into: (1) carry `hrv` via this
+block correspondence under the `(shiftEdgePerm i).symm`-re-index of the edge family; (2) carry the
+combination `hcomb` across the `(funLeft (shiftPerm i.castSucc).symm).dualMap` relabel (as
+`chainData_bottom_relabel` carries genuine rows); (3) the chain `G`-links carry by `cd.link`
+combinatorics. NO motive/IH/contract change.
+
+This `i = 3`/single-edge de-risk anchors the verdict at the first honest case before any transport
+leaf signature is pinned (the row-321 failure mode is a confident pin ahead of the de-risk). -/
+theorem _root_.Graph.ChainData.i3_candidateBlock_transport_deRisk
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    (f : β) {r : Module.Dual ℝ (ScrewSpace k)}
+    -- A-1's base block membership at an ARBITRARY base edge `f` (the W6b producer's `hrv j`):
+    (hbase : r ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        ends₀ q).toBodyHinge.hingeRowBlock f) :
+    -- transports to the candidate framework's block at the `(shiftEdgePerm i)⁻¹`-image of `f`:
+    r ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+          (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+        (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))).toBodyHinge.hingeRowBlock
+          ((cd.shiftEdgePerm i).symm f) := by
+  classical
+  -- The candidate block at `g := σ⁻¹ f` equals the base block at `σ (σ⁻¹ f) = f` (support extensors
+  -- coincide for ANY edge under the relabel; graph-independent).
+  rw [BodyHingeFramework.hingeRowBlock,
+    PanelHingeFramework.ofNormals_supportExtensor_relabel_perm (cd.shiftPerm i.castSucc)
+      (cd.shiftEdgePerm i) ((cd.shiftEdgePerm i).symm f),
+    Equiv.apply_symm_apply]
+  -- Now the candidate block at `σ⁻¹ f` is literally the base block at `f` (the two base frameworks
+  -- differ only in their irrelevant graph; `supportExtensor` reads only `ends₀`/`q`).
+  simpa only [BodyHingeFramework.hingeRowBlock, PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal] using hbase
+
 end CombinatorialRigidity.Molecular

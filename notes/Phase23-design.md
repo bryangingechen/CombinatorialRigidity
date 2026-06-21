@@ -5132,6 +5132,86 @@ user-adjudicated option α; coordinator-verified the linchpin).** Route sound; s
   screw-functional `group(edge s) = ±ρ₀` the consumer wants is recovered at **leaf 4** (the `±`/`neg_mem`
   there absorbs the column-sign). Net: same plan, the orientation sign relocated leaf-1→leaf-3/4.
 
+**(I.8.10) i=3 EDGE-ALIGNMENT DE-RISK — RAN, VERDICT: Q2-with-a-twist; the per-summand transport is a
+clean BIJECTIVE re-index (NOT a re-grouping); the candidate-level edge-grouped transport leaf decomposes
+into three buildable sub-leaves (2026-06-21, opus; anchor lemma `i3_candidateBlock_transport_deRisk`
+LANDED axiom-clean + warning-clean + lint-clean; full project green).** Settles the row-352 GAP-FOUND gap
+and the flagged subtlety (A-1's base summand edges `ev j` are arbitrary `G−v₁`-links, not
+`shiftEdgePerm`-images). Verified against the **landed bodies** (file:line below), NOT the prior prose.
+
+  *(The gap, re-confirmed against the landed source.)* `chainData_freshEdge_perp_of_baseRedundancy`
+  (`Relabel.lean:4311–4343`, LANDED) consumes its edge-grouped data through exactly THREE hypotheses:
+  **(h1)** `hlink : ∀ j, G.IsLink (ev j)(uv j)(vv j)` — `G`-links, framework-free; **(h2)** `hcomb :
+  (∑ⱼ c j • hingeRow (uv j)(vv j)(rv j)) = hingeRow (vtx 0)(vtx 2) ρ₀` — an equation of
+  `Module.Dual ℝ (α → ScrewSpace k)` functionals, **framework-free**; **(h3)** `hrv : ∀ j, rv j ∈
+  Fva.hingeRowBlock (ev j)` at the **CANDIDATE** `Fva = ofNormals (G−vᵢ) ends qρ` — **the ONLY
+  framework-bound hypothesis**. A-1 `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:400–445`)
+  supplies the edge-grouped form (its lines 439–445) at the **BASE** `ofNormals Gv ends q` (Gv = G−v₁): a
+  family `(nGv, cGv, evGv, uvGv, vvGv, rvGv)` with `∀ j, Gv.IsLink (evGv j)(uvGv j)(vvGv j)`, `∀ j, rvGv j ∈
+  (ofNormals Gv ends q).hingeRowBlock (evGv j)`, and `hingeRow (ab) ρ = ∑ⱼ cGv j • hingeRow …`. So h2/h1
+  are base-level; h3 is the level mismatch. The `evGv j` come from `mem_span_set' + choose`
+  (`Basic.lean:622–637`) — they are **arbitrary `Gv`-links**, NOT `shiftEdgePerm`-images. [Source-verified
+  A-1's `∃`-tail + `exists_edgeIndexed_combination_of_mem_span_rigidityRows`'s `choose` provenance.]
+
+  *(Q1/Q2/Q3 VERDICT = Q2-with-a-twist — the non-alignment is a NON-ISSUE.)* The block correspondence holds
+  for **EVERY** edge: `ofNormals_supportExtensor_relabel_perm` (`Relabel.lean:63–71`) gives
+  `Fva.supportExtensor f = (base).supportExtensor (shiftEdgePerm i f)` for arbitrary `f` (the base graph is
+  irrelevant — `supportExtensor` reads only `ends`/`normal`, never the graph), and `hingeRowBlock F e =
+  (span {F.supportExtensor e})ᗮ` (`Basic.lean:431–433`). Hence (LANDED de-risk
+  `i3_candidateBlock_transport_deRisk`, `Relabel.lean` tail): `r ∈ (base).hingeRowBlock f ⟹ r ∈
+  Fva.hingeRowBlock ((shiftEdgePerm i).symm f)` — a 3-line `rw` + `simpa`. So A-1's h3 at the base edge
+  `evGv j` is **exactly** the candidate h3 at `(shiftEdgePerm i).symm (evGv j)`: a **BIJECTIVE re-labelling
+  of the SAME summands** (none dropped/split/merged), NOT the re-grouping the row-321 family feared.
+  **Why the arbitrary `evGv j` are harmless downstream:** the chain induction LEAVES 1–4
+  (`interiorGroup_acolumn_adjacency:3680`, `anchor_group_acolumn_eq_baseRedundancy:3781`,
+  `interior_group_eq_baseRedundancy:3936`, `interior_group_acolumn_eq_neg_baseRedundancy:4017`) are
+  **framework-free** and group summands by **FILTERING** `ev j = cd.edge ⟨i⟩` — non-chain-edge summands
+  contribute `0` to the relevant `a`-column via the degree-2 closure `deg_two_split` + `_eq_incident`. The
+  ONLY framework-bound consumer, `edgeGroup_acolumn_mem_block` (`:3592`), needs h3 at the candidate, which
+  the bijective re-index supplies. So the "do the base summand edges align with chain-edge `shiftEdgePerm`
+  images?" question is answered: **they need NOT align — the transport is clean per-summand regardless.**
+  [Lean-verified: `i3_candidateBlock_transport_deRisk` axiom-clean (`propext`/`Classical.choice`/`Quot.sound`
+  only), warning-clean, lint-clean, full project green.]
+
+  *(THE NEXT BUILDABLE COMMIT + the transport-leaf decomposition.)* The genuinely-new leaf
+  `chainData_candidateRow_edgeGrouped_transport` is **buildable as 3 sub-leaves** (none a motive/IH/contract
+  change; the chain `G`-links + the relabel are landed-brick instantiations, the block transport is the
+  de-risked anchor). It must produce the candidate-level `(c, ev, uv, vv, rv, hlink, hrv, hcomb)` that
+  `chainData_freshEdge_perp_of_baseRedundancy` (h1/h2/h3) consumes, from A-1's base output:
+  - **T-1 `…_edgeGrouped_transport_blocks`** (the de-risked half, ~1c). Re-index A-1's edge family by
+    `evGv' j := (cd.shiftPerm i.castSucc) ... ` — actually the CANDIDATE-side `ev` stays the summand-carrying
+    `G−vᵢ`-links and the BLOCK transports per-summand: `hrv_cand j : rvGv j ∈ Fva.hingeRowBlock (evGv' j)`
+    via `i3_candidateBlock_transport_deRisk` (general-`i` form), where `evGv' j = (shiftEdgePerm i).symm
+    (evGv j)`. SIGNATURE: `(cd) (i) (the A-1 base family + `hrv_base`) → ∀ j, rvGv j ∈ Fva.hingeRowBlock
+    ((shiftEdgePerm i).symm (evGv j))`. **De-risked: it is the all-`i` lift of `i3_candidateBlock_transport_deRisk`**
+    (drop the `i := 3`/single-`f` specialization to general `i`/`∀ j`). TRANSPORT, no new math.
+  - **T-2 `…_edgeGrouped_transport_comb`** (relabel of `hcomb`, ~1c). Carry A-1's base combination identity
+    `hingeRow (ab) ρ = ∑ⱼ cGv j • hingeRow (uvGv j)(vvGv j)(rvGv j)` across the
+    `(funLeft (shiftPerm i.castSucc).symm).dualMap` relabel to the candidate orientation `hingeRow (vᵢ₋₁)(vᵢ₊₁)
+    ρ₀ = ∑ⱼ cGv j • hingeRow (relabelled endpoints) (rvGv j)`, EXACTLY as `chainData_bottom_relabel`
+    (`:1939–1972`) carries genuine rows (the `dualMap` is linear, distributes over `∑` + `•`). The endpoint
+    relabel `uvGv' j := (shiftPerm i.castSucc).symm (uvGv j)` makes the candidate `hcomb`'s RHS match the
+    re-indexed `hlink_cand`. The `G`-links T-3 supplies. SIGNATURE: the `dualMap`-image of A-1's `hcomb`
+    equals the candidate edge-grouped form. TRANSPORT (landed-brick instantiation of the `dualMap`-over-sum
+    distribution).
+  - **T-3 `…_edgeGrouped_transport_links`** (the `G`-links, ~½c). The candidate-side summand links are
+    `G`-links of the re-indexed/relabelled endpoints; `Gv.IsLink (evGv j)(uvGv j)(vvGv j)` (A-1) ⟹ via
+    `removeVertex_isLink` + the `shiftBodyGraph`/`splitOff_isLink_shiftRelabel_iff` graph-iso (LANDED) the
+    `G.IsLink (evGv' j)(uvGv' j)(vvGv' j)` that h1 wants. (Or, since h1 is just `G.IsLink`, lift each base
+    `Gv`-link to a `G`-link by `removeVertex_isLink.mp .1` — the simplest form if the re-indexed endpoints
+    coincide on `G`-links.) TRANSPORT/bookkeeping.
+  Then the arm `chainData_relabel_arm` feeds T-1/T-2/T-3's outputs to
+  `chainData_freshEdge_perp_of_baseRedundancy` per surviving edge, supplying its `hperp` to
+  `chainData_freshEdge_slot_mem`'s `hperp` slot, with `hwmem ← chainData_bottom_relabel`, seed via P3
+  `shiftSeedAdv_eq_funLeft_shiftPerm`, orientation via `hingeRow_swap` (the d=3 M₃ `case hρGv` shape,
+  re-indexed). **NET: the transport leaf is 3 buildable TRANSPORT sub-leaves (~2–3c) + the arm assembly
+  (~1–2c); ~3–5c total to the arm, then CHAIN-2c-iii `chainData_dispatch`.** NO motive/IH/contract change
+  anywhere. **CLAUSE (ii) HONESTY:** the de-risk found NO genuinely-new-math fork — Q3's feared re-grouping
+  does NOT arise (the block correspondence holds for arbitrary edges, so the bijective re-index suffices).
+  The only residual flag is **P3** (`shiftSeedAdv_eq_funLeft_shiftPerm`, the fold-seed = engine-seed bridge,
+  §(I.8.5)) — LANDED 2026-06-20 (`Phase23b` landed-inventory), so it is NOT an open obstruction. The arm is
+  now mechanical-given-T-1/T-2/T-3.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
