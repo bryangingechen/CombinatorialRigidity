@@ -4874,4 +4874,74 @@ theorem _root_.Graph.ChainData.chainData_relabel_arm_hρGv
     exact cd.chainData_freshEdge_slot_perp h3 i (by omega) s hs c ev uv vv rv
       hlink hrv hcomb hdeg1 hρe₀
 
+/-! ## The forked general-`d` Case-III arm realization (Phase 23c, option (A))
+
+The chain-arm closer `case_III_arm_realization_chain`: the general-`d` analogue of the `d = 3` M₃
+engine `case_III_arm_realization` (`CaseIII/Arms`), forked off the `±r` block-rank-additivity cert
+`case_III_rank_certification_chain` (NO `hρGv`; design §(o‴)(I.8.24)). It is **pure wiring** of two
+landed bricks — the cert (for the candidate rank lower bound `hrank`) and the route-agnostic
+SHARED rank-to-realization tail `case_III_realization_of_rank` (`CaseIII/Arms`, the W6e–W6f + GAP-2/
+GAP-3 part depending only on `hrank`) — over one candidate framework
+`F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`.
+
+The corner data `(W, hWS, hWcard, ι, hιcard, g, hg, hLI)` of the `±r` block decomposition (KT 2011
+§6.4.2 eqs.~(6.64)–(6.66): `W` the relabel-image base block `R(G₁ ∖ row, q₁)`, `g` the `Mᵢ` corner
+block with the `±r` row sourced as KT's GENUINE candidate-edge row — design §(o‴)(I.8.24)(4.9)) and
+the count facts `(hVone, hVcard)` enter as explicit hypotheses, in the project's standing
+"carry the still-undischarged crux as an `h…` hypothesis, never a `sorry`" idiom: the chain dispatch
+(CHAIN-2c-iii `chainData_dispatch`, the next sub-step) discharges them from the `ChainData` interior
+split — `hWS`/`hWcard` via the carrier leaf
+`exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` over the chain bottom family
+(`chainData_bottom_relabel`), `hg` via the `±r` GROUP leaf
+`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + the genuine reproduced-slot row's membership
+`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`, and `hLI` via
+`linearIndependent_mkQ_corner_of_gate` with `hrCol` from `reproducedSlot_pmR_acolumn_eq`.
+
+So the arm itself carries no new math — the cert is selector-agnostic (NO `hρGv` slot, the
+member-mapping wall is out of it), the `±r` row enters as a member of the corner block `g`, and this
+leaf composes the cert with the tail at one framework. At the `d = 3` floor (`i = 2`) the dispatch
+stays on the landed `case_III_arm_realization` engine; this chain arm covers the interior
+`2 ≤ i < d` of the general-`d` regime. -/
+theorem PanelHingeFramework.case_III_arm_realization_chain
+    [Finite α] [Finite β] [DecidableEq β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    -- The `±r` block decomposition's corner data (the chain dispatch discharges these next):
+    {W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (hWS : W ≤ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+    (hWcard : Module.finrank ℝ W = screwDim k * (V(Gv).ncard - 1))
+    {ι : Type*} [Fintype ι] (hιcard : Fintype.card ι = screwDim k)
+    {g : ι → Module.Dual ℝ (α → ScrewSpace k)}
+    (hg : ∀ j, g j ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+    (hLI : LinearIndependent ℝ (W.mkQ ∘ g))
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  -- (i) The candidate rank lower bound `hrank` via the `±r` block-rank-additivity cert (NO `hρGv`),
+  -- reading off the corner data `(W, g)`.
+  have hrank : screwDim k * (V(G).ncard - 1)
+      ≤ Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows) :=
+    PanelHingeFramework.case_III_rank_certification_chain G Gv ends hVone hVcard
+      hWS hWcard hιcard hg hLI
+  -- (ii) The route-agnostic SHARED rank-to-realization tail closes (W6e–W6f + GAP-2/GAP-3).
+  exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
+    hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
+
 end CombinatorialRigidity.Molecular

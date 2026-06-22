@@ -37,45 +37,56 @@ NEVER `hρGv` — the M₃ `hvb_row` mechanism), and the `single vᵢ` column re
 `hingeRow_comp_single_tail` = `−ρ₀`, the discriminator's `hrCol`). The (4.8) two-object mismatch is gone — the
 prior relabel-image / filtered-group attempts landed on the candidate fresh pair (which OMITS `vᵢ`) and read `0`.
 
-> **Orientation for the next agent.** The `±r`-row seam is CLOSED. **Do NOT** re-attempt the four dead route
-> families (§I.8.18–(I.8.20)), re-litigate the fork, or revive the relabel-image `±r` route. The next concrete
-> commit is the arm assembly `case_III_arm_realization_chain` (now genuine wiring, not blocked): construct the
-> candidate over full `G`, assemble `(W,hWS,hWcard,g,hg,hLI)` with the `±r` corner row = these two leaves, apply
-> `case_III_rank_certification_chain` for `hrank`, `exact case_III_realization_of_rank`. See *Hand-off*.
+> **Orientation for the next agent.** The arm `case_III_arm_realization_chain` is LANDED (wiring only); the
+> `±r`-row seam stays CLOSED. **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate
+> the fork, or revive the relabel-image `±r` route. The next concrete commit is **CHAIN-2c-iii
+> `chainData_dispatch`** — which discharges the arm's corner-data hypotheses `(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` +
+> count facts `(hVone,hVcard)` from the `ChainData` interior split, routing `2 ≤ i < d` through the chain arm
+> and the `d=3` floor (`i=2`) on the landed `case_III_arm_realization` engine. See *Hand-off*.
 
 ## Current state
 
-**The `±r`-row sourcing is CLOSED (§I.8.24(4.9)); next is the arm assembly `case_III_arm_realization_chain`.**
-The corrected leaves landed in `Candidate.lean` (after `linearIndependent_mkQ_corner_of_gate`): the genuine
-reproduced-slot row's `hg` membership (`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`) + its `hrCol`
-column-at-`vᵢ` value (`reproducedSlot_pmR_acolumn_eq`). Both abstract over the `caseIIICandidate` params + the
-genuine `e_b`-link + the `hρe₀` perp; the SAME object `hingeRow u vᵢ ρ₀` grounds the cert's `hg`, the
-discriminator's `rRow`, and the `−ρ₀`-at-`vᵢ` column — the (4.8) two-object mismatch is resolved by the
-decoupling. The mis-targeted reproduced-slot GROUP leaf (`b675317`) is DELETED (its `hcollapse` was
-unsatisfiable + it was stated over `G.removeVertex vᵢ`, the wrong graph). The high-level (A) architecture stays
-sound (cert is selector-agnostic, NO `hρGv` slot; the member-mapping wall is out of the cert). The four dead
-route families (§I.8.18–(I.8.20)) stay exhausted; **do not re-attempt.** Full audit: design §(o‴)(I.8.24)(4.9).
+**The arm `case_III_arm_realization_chain` is LANDED (`Relabel.lean`, axiom-clean, build/lint warning-clean);
+next is CHAIN-2c-iii `chainData_dispatch`.** The arm is **pure wiring** of two landed bricks at one candidate
+framework `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`: the `±r` block-rank-additivity cert
+`case_III_rank_certification_chain` (for the candidate rank lower bound `hrank`, NO `hρGv`) → the route-agnostic
+SHARED tail `case_III_realization_of_rank` (W6e–W6f + GAP-2/GAP-3). It carries the `±r` block decomposition's
+corner data `(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` + count facts `(hVone,hVcard)` as **explicit hypotheses** (the
+project's standing "carry the undischarged crux as `h…`, never a `sorry`" idiom) — the dispatch discharges them
+next. So the arm itself is new-math-free: the cert is selector-agnostic (NO `hρGv` slot, the member-mapping wall
+is out of it), the `±r` row enters as a member of the corner block `g`. The four dead route families
+(§I.8.18–(I.8.20)) stay exhausted; **do not re-attempt.**
 
-**Landed (all axiom-clean), the `±r` corner now closed:** the cert `case_III_rank_certification_chain` (NO
-`hρGv`); carrier W-packaging `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`; both `hLI` halves
+The `±r`-row sourcing leaves stay landed in `Candidate.lean`: the genuine reproduced-slot row's `hg` membership
+(`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`) + its `hrCol` column-at-`vᵢ` value
+(`reproducedSlot_pmR_acolumn_eq`); the dispatch feeds these into the arm's `hg`/`hLI` corner. The high-level (A)
+architecture is fully realized at the arm level. Full audit: design §(o‴)(I.8.24)(4.9).
+
+**Relabel.lean is 4947 lines (past the ~1500 tripwire).** The arm landed cleanly without a split, but the file
+is now well over the soft cap — a `Relabel/` split is overdue and should be done before (or alongside) the
+dispatch build, which will add more chain-arm-consuming machinery. Flag carried to *Hand-off*.
+
+**Landed (all axiom-clean), the arm now closed:** the arm `case_III_arm_realization_chain` (`Relabel.lean`,
+the cert→tail composition over `F₀`, corner data + count facts as explicit hypotheses); the cert
+`case_III_rank_certification_chain` (NO `hρGv`); carrier W-packaging
+`exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`; both `hLI` halves
 (`linearIndependent_mkQ_panelRow_of_edge`, `notMem_span_mkQ_pmR_row_of_gate`) + assembly
 `linearIndependent_mkQ_corner_of_gate`; the (α) column bridge `funLeft_dualMap_comp_single`; the off-slot row
 bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`; the per-member genuine transport
 `chainData_bottom_relabel`; the SHARED tail `case_III_realization_of_rank`; the off-slot GROUP leaf
-`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (serves the genuine off-slot `hWS` bottom family). **NEW
-(the `±r` corner sourcing, §I.8.24(4.9)):** `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hg`, the
-genuine reproduced-slot row in the candidate span via `hρe₀`) + `reproducedSlot_pmR_acolumn_eq` (`hrCol`, the
-`−ρ₀`-at-`vᵢ` column). **DELETED:** the mis-targeted `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_
-reproduced` (unsatisfiable `hcollapse`, wrong graph). **NOT the `±r` sourcing (superseded, revive only if a
-later arm step needs them):** the base-side `hrCol` leaf `funLeft_dualMap_interior_group_acolumn_eq_neg_
-baseRedundancy` (reads `vtx(i-1)`); T-2 `chainData_candidateRow_edgeGrouped_transport_comb`.
+`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (serves the genuine off-slot `hWS` bottom family); the
+`±r` corner sourcing `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hg`) +
+`reproducedSlot_pmR_acolumn_eq` (`hrCol`). **NOT the `±r` sourcing (superseded, revive only if a later dispatch
+step needs them):** the base-side `hrCol` leaf `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`
+(reads `vtx(i-1)`); T-2 `chainData_candidateRow_edgeGrouped_transport_comb`.
 
-**Next: the arm assembly `case_III_arm_realization_chain`.** Construct the candidate `caseIIICandidate G ends q
-e_a e_b (q(a,·)) n' n_b 0` over the FULL `G`; assemble the cert's corner data — `hWS`/`hWcard` ← carrier leaf;
-`hg` off-slot family ← GROUP leaf, `±r` row ← the new membership leaf; `hLI` ← `linearIndependent_mkQ_corner_of_
-gate` with `hrCol` from the new column leaf — apply `case_III_rank_certification_chain` for `hrank`, then `exact
-case_III_realization_of_rank`. Relabel.lean (~4880 lines, past the ~1500 tripwire) likely forces a `Relabel/`
-split when the arm builds — flag at that build.
+**Next: CHAIN-2c-iii `chainData_dispatch`.** Discharge the arm's corner-data hypotheses
+`(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` + count facts `(hVone,hVcard)` from the `ChainData` interior split: at an
+interior `2 ≤ i < d`, build the relabel-image base block `W` (carrier leaf over the chain bottom family
+`chainData_bottom_relabel`), the corner `g = Sum.elim (D−1 fresh panel rows) (±r row)` with `hg` (GROUP leaf +
+the genuine reproduced-slot membership) and `hLI` (`linearIndependent_mkQ_corner_of_gate`, `hrCol` from
+`reproducedSlot_pmR_acolumn_eq`), then call `case_III_arm_realization_chain`; the `d=3` floor (`i=2`) routes to
+the landed `case_III_arm_realization` engine. Relabel.lean (4947 lines) — split overdue (see *Current state*).
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -107,9 +118,9 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
 
 1. **The forked general-`d` chain cert + arm** (§I.8.24) → the `±r`-based engine, NO `hρGv`. d=3 keeps the
    landed engine. **Cert + tail + carrier + both `hLI` halves + assembly + (α) bridge + off-slot row
-   bridge + `chainData_bottom_relabel` + the `±r` corner sourcing (`hg` + `hrCol`) ✓ ALL LANDED**
-   (2026-06-22, axiom-clean; names in *Current state*). The next leaf is the **arm assembly**
-   `case_III_arm_realization_chain` — now genuine wiring, no longer blocked: *Hand-off*.
+   bridge + `chainData_bottom_relabel` + the `±r` corner sourcing (`hg` + `hrCol`) + the ARM
+   `case_III_arm_realization_chain` ✓ ALL LANDED** (2026-06-22, axiom-clean; names in *Current state*). The
+   chain arm is pure cert→tail wiring with corner data carried as explicit hypotheses.
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -136,30 +147,45 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**The `±r`-row seam is CLOSED (§I.8.24(4.9)); the next concrete commit is `case_III_arm_realization_chain`,
-the arm assembly — genuine wiring, no remaining blocker.** The `±r` corner row is the direct genuine
-reproduced-slot `e_b`-row `hingeRow u vᵢ ρ₀` (oriented with the re-inserted body `vᵢ` as head): its `hg`
-membership + `hrCol` column are the two new leaves in `Candidate.lean`, both via `hρe₀` only (no `hρGv`).
+**The arm `case_III_arm_realization_chain` is LANDED; the next concrete commit is CHAIN-2c-iii
+`chainData_dispatch` — discharging the arm's corner-data + count hypotheses from the `ChainData` interior
+split.** The arm carries `(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` + `(hVone,hVcard)` as explicit hypotheses (the
+project idiom); the dispatch supplies them per interior `2 ≤ i < d` and routes the `d=3` floor (`i=2`) to the
+landed `case_III_arm_realization` engine. All the corner-data leaves are in tree (names below).
 
 **Build order:**
-1. **`case_III_arm_realization_chain`** (`Relabel.lean`, NOT `Arms.lean` — import DAG `Arms ⊂ Relabel ⊂
-   Realization`; M₃ `:2691` is the construct-candidate + corner-data template). Construct the candidate
-   `caseIIICandidate (G−vᵢ) endsσρ qρ e_a e_b …` over the candidate-`i` split, assemble `(W,hWS,hWcard,g,hg,hLI)`:
+1. **CHAIN-2c-iii `chainData_dispatch`** (`Relabel.lean` or a fresh `Relabel/` file post-split — see below;
+   `case_III_candidate_dispatch` at `Realization.lean:268` is the d=3 template; `case_III_arm_realization_M3`
+   `:2638` is the per-`i` construct-candidate + corner-data template). At an interior `2 ≤ i < d` of a
+   `cd : G.ChainData n`, assemble the arm's corner data over the candidate-`i` split and call
+   `case_III_arm_realization_chain`:
    - **`hWS`/`hWcard`** ← carrier leaf `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (at
-     `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f` = the bottom family, `hS` = `chainData_bottom_relabel`).
-   - **`g`** = `Sum.elim (D−1 fresh-hinge panel rows) (±r row)`; **`hg`** off-slot family ← GROUP leaf, `±r`
-     row = `hingeRow u vᵢ ρ₀` ← `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hlink` = `e_b`'s genuine
-     `G`-link oriented with `vᵢ` head, `hperp` = the dispatch's `hρe₀` at the reproduced slot, `t=0`).
-   - **`hLI`** ← `linearIndependent_mkQ_corner_of_gate` with `hrCol` from `reproducedSlot_pmR_acolumn_eq` (the
-     SAME `±r` object's `−ρ₀`-at-`vᵢ` column), `hsupp`/`hgate` the candidate hinge's support + the dispatch's gate.
-   - then `case_III_rank_certification_chain` for `hrank` + `exact case_III_realization_of_rank …`.
-   **Flag at this build:** `Relabel.lean` (~4880 lines, past the ~1500 tripwire) likely forces a `Relabel/` split.
-2. **2c-iii `chainData_dispatch`** (interior `2 ≤ i < d`, d=3 floor on the engine) → CHAIN-5 wire-up →
-   orphan confirm-and-delete (the `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~3–5 commits.** Audit: design
-   §(o‴)(I.8.24)(4)/(4.9).
+     `L = (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `f` = the chain bottom family, `hS` =
+     `chainData_bottom_relabel`).
+   - **`g`** = `Sum.elim (D−1 fresh-hinge panel rows) (±r row)`; **`hg`** off-slot family ← GROUP leaf
+     `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`, `±r` row = `hingeRow u vᵢ ρ₀` ←
+     `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hlink` = `e_r`'s genuine `G`-link with `vᵢ` head,
+     `hperp` = the dispatch's `hρe₀` at the reproduced slot, `t=0`).
+   - **`hLI`** ← `linearIndependent_mkQ_corner_of_gate`, `hrCol` from `reproducedSlot_pmR_acolumn_eq` (the SAME
+     `±r` object's `−ρ₀`-at-`vᵢ` column), `hsupp`/`hgate` the candidate hinge's support + the dispatch's gate.
+   - The split-tuple facts (`hvVc,…,hgab,hdef`) + `(hVone,hVcard)` ← the `ChainData` interior accessors.
+   **Flag:** `Relabel.lean` is **4947 lines** (past the ~1500 tripwire) — a `Relabel/` split is overdue and
+   should land before/alongside this dispatch build.
+2. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch` → orphan confirm-and-delete (the
+   `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~3–5 commits.** Audit: design §(o‴)(I.8.24)(4)/(4.9).
 
 ## Decisions made during this phase
 
+- **Chain arm `case_III_arm_realization_chain` LANDED (2026-06-22, opus) — pure cert→tail wiring, corner data
+  as explicit hypotheses (the dispatch's job to discharge).** `Relabel.lean` (before the final `end`): composes
+  the `±r` block-rank cert `case_III_rank_certification_chain` (→ `hrank`, NO `hρGv`) with the route-agnostic
+  SHARED tail `case_III_realization_of_rank` over one framework `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·))
+  n' (q(b,·)) 0`. The `±r` block decomposition's corner data `(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` + count facts
+  `(hVone,hVcard)` enter as `h…` hypotheses (CHAIN-2c-iii `chainData_dispatch` discharges them from the
+  `ChainData` interior split). So the arm carries no new math: the cert is selector-agnostic (NO `hρGv`, the
+  member-mapping wall is out of it), the `±r` row is a member of corner block `g`. 2-step term proof, zero
+  friction. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), build/lint warning-clean. This realizes the
+  §I.8.24(4) "arm assembly" leaf, leaving the dispatch (which builds the corner data per `i`) as the next step.
 - **`±r`-row sourcing RESOLVED + LANDED — the DIRECT genuine reproduced-slot `e_b`-row; the
   graph-endpoints-vs-overridden-support DECOUPLING grounds BOTH `hg` and `hrCol`, no `hρGv` (2026-06-22, opus;
   adjudicated by an adversarial recon pair + source verification, then BUILT clean).** The `±r` corner row is
