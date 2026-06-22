@@ -987,6 +987,42 @@ theorem PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne [DecidableEq 
   change Function.update (Function.update _ e_c _) e_r _ e = _
   rw [Function.update_of_ne h2, Function.update_of_ne h1]
 
+/-- **A seed rigidity row at an off-slot edge is a candidate rigidity row** (`lem:case-III
+general-d`, the option-(A) chain-arm row-routing bridge specialized to `caseIIICandidate`, Phase 23c
+§I.8.24(4.6); Katoh–Tanigawa 2011 §6.4.2). The `caseIIICandidate` `t`-family overrides the support
+extensor only at its two slots `{e_c, e_r}`, agreeing with the seed framework
+`ofNormals G ends q` everywhere else (`caseIIICandidate_supportExtensor_of_ne`). So a genuine seed
+row `hingeRow u v r` carried by a `G`-link `e` distinct from both slots — i.e. an `e`-link with a
+block row `r ∈ (ofNormals G ends q).hingeRowBlock e` — is, verbatim, a member of the candidate's
+rigidity rows. The framework-general primitive is
+`BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq` (the hinge-row block depends
+only on the support extensor); this is its arm-consumable `caseIIICandidate`-vs-`ofNormals`
+instantiation.
+
+The general-`d` chain arm `case_III_arm_realization_chain` routes its chain-leaf row memberships
+through this: `chainData_bottom_relabel` produces genuine rows of the *seed* framework
+`ofNormals (G − vᵢ) endsσρ qρ` (the candidate-`i` split's seed), but the rank certification
+`case_III_rank_certification_chain` is stated over `caseIIICandidate (G − vᵢ) endsσρ qρ e_a e_b …` —
+this carries each off-slot seed row into the candidate's rigidity rows (and hence into the cert's
+`hg`/`hWS` span via `Submodule.subset_span`). At the `d = 3` `M₃` instance the routing is done
+inline by the shared tail's `hFG₀_eq_panelRow` at the `panelRow` level; this is its `hingeRow`-level
+sibling for the cycle relabel. -/
+theorem PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link
+    [DecidableEq β] (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) {e : β} {u v : α}
+    (h1 : e ≠ e_c) (h2 : e ≠ e_r) (hlink : G.IsLink e u v)
+    {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : r ∈ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.hingeRowBlock e) :
+    BodyHingeFramework.hingeRow u v r ∈
+      (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).rigidityRows :=
+  BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge
+    (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t)
+    (e := e) (u := u) (v := v)
+    (by rw [PanelHingeFramework.caseIIICandidate_graph]; exact hlink) hr
+    (PanelHingeFramework.caseIIICandidate_supportExtensor_of_ne G ends q e_c e_r n_u n' n_r t
+      h1 h2).symm
+
 /-- **The candidate's panel rows are affine in the shear `t`** (the W6f one-variable transfer input;
 Katoh–Tanigawa 2011 §6.4.1, eqs. (6.26)–(6.28), Phase 22h). Every panel row of the `t`-family
 decomposes as its `t = 0` value plus a `t`-multiple of a fixed row, supported only on the reproduced

@@ -40,19 +40,22 @@ entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-of
 > **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the chain CERT
 > `case_III_rank_certification_chain` + ALL its corner-data infrastructure leaves — BOTH `hLI` halves
 > (a) `linearIndependent_mkQ_panelRow_of_edge` and (b) `notMem_span_mkQ_pmR_row_of_gate`, the (α) `±r`
-> column-naturality bridge `funLeft_dualMap_comp_single`, AND the (α) candidate-transported `hrCol` leaf
-> `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` — are LANDED; the next build is the chain ARM
-> itself, whose only remaining genuinely-new content is (β) the chain bottom family) in full, then the design doc
+> column-naturality bridge `funLeft_dualMap_comp_single`, the (α) candidate-transported `hrCol` leaf
+> `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`, AND the `ofNormals → caseIIICandidate` row
+> bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` — are LANDED; the next build is the chain
+> ARM itself, whose only remaining content is (α) the candidate `±r`-row `hg` membership wiring + (β) the chain
+> bottom family) in full, then the design doc
 > §(o‴)(I.8.24)(4)+(4.6) (the chain-arm leaf decomposition + the pre-build corrections) — the **next concrete
-> commit is the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership** (in
-> `Relabel.lean`; the §I.8.24(4.6) pre-build split), THEN `case_III_arm_realization_chain` itself (also
-> `Relabel.lean`, NOT `Arms.lean` — the import DAG forces it downstream of the chain-relabel leaves): it
+> commit is `case_III_arm_realization_chain` itself** (in `Relabel.lean`,
+> NOT `Arms.lean` — the import DAG forces it downstream of the chain-relabel leaves): it
 > CONSTRUCTS its candidate as a `caseIIICandidate (G−vᵢ) endsσρ qρ …`, produces the corner data
-> `(W,hWS,hWcard,g,hg,hLI)` from the in-scope chain data, applies `case_III_rank_certification_chain` to get
+> `(W,hWS,hWcard,g,hg,hLI)` from the in-scope chain data (routing the chain-leaf `ofNormals` memberships into the
+> candidate via the now-landed row bridge), applies `case_III_rank_certification_chain` to get
 > `hrank`, then `exact case_III_realization_of_rank …` (the shared tail). The `M₃` arm
 > `case_III_arm_realization_M3` (`Relabel.lean:2537`) is the closest template (it builds the analogous candidate +
-> corner data at the single-swap `d=3` instance). NOTE: the arm is NOT a thin instantiation (no
-> `caseIIICandidate ↔ ofNormals` bridge in tree; §I.8.24(4.6)) — it is a real ~200-line arm body. Do
+> corner data at the single-swap `d=3` instance). NOTE: the arm is NOT a thin instantiation (the
+> `caseIIICandidate ↔ ofNormals` bridge is now the row-level `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`;
+> §I.8.24(4.6)) — it is a real ~200-line arm body. Do
 > **not** re-attempt any of the four dead route families (below) — they are exhausted and adversarially verified.
 > The standing decision is the user-adjudicated fork in *Hand-off*; the next moves are BUILDS, no longer
 > architectural decisions.
@@ -177,15 +180,24 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    φ.comp (single (σ.symm w))`, the first of the two NOT-yet-isolated arm-internal steps); **the `hLI` corner
    ASSEMBLY leaf `linearIndependent_mkQ_corner_of_gate` ✓ LANDED** (2026-06-21, `Candidate.lean`, axiom-clean —
    collapses (a)+(b)+append-one into the single `LinearIndependent ℝ (W.mkQ ∘ Sum.elim (panel rows) (±r row))`
-   the cert wants, so the arm's `hLI` is a one-line application). With these, ALL the chain arm's consume-leaves
-   (carrier `hWS`/`hWcard`, the assembled `hLI` corner leaf, the (α) `±r` column bridge + `hrCol` leaf) are in
-   tree. The next build is the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership,
-   THEN `case_III_arm_realization_chain` itself — both in **`Relabel.lean`** (NOT `Arms.lean`; the import DAG forces
-   it downstream of the chain-relabel leaves, §I.8.24(4.6)). The arm CONSTRUCTS its candidate as a
-   `caseIIICandidate (G−vᵢ) endsσρ qρ …` (no `caseIIICandidate ↔ ofNormals` bridge in tree — it is a real
-   ~200-line arm body, the `M₃` template, NOT a thin instantiation; §I.8.24(4.6)), produces the corner data, gets
-   `hrank`, calls the shared tail `case_III_realization_of_rank`. See *Hand-off* for the obligation map + the
-   remaining arm-internal steps (β) the chain bottom family `f`/`hf` (a HYPOTHESIS the arm takes).
+   the cert wants, so the arm's `hLI` is a one-line application); **the `ofNormals → caseIIICandidate` row-routing
+   bridge ✓ LANDED** (2026-06-21, axiom-clean — the framework-general `BodyHingeFramework.hingeRow_mem_rigidityRows_
+   of_supportExtensor_eq` (`RigidityMatrix/Basic.lean`) + its arm-consumable instantiation
+   `PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`Candidate.lean`), which
+   carry a genuine *seed* `ofNormals (G−vᵢ) endsσρ qρ` row at any off-`{e_a,e_b}` edge into the *candidate*
+   `caseIIICandidate` rigidity rows; this is the previously-missing `caseIIICandidate ↔ ofNormals` row bridge the
+   §I.8.24(4.6) Hand-off named — the chain-leaf memberships (`chainData_bottom_relabel`, over `ofNormals`) and the
+   cert (over `caseIIICandidate`) now share a bridge). With these, ALL the chain arm's consume-leaves
+   (carrier `hWS`/`hWcard`, the assembled `hLI` corner leaf, the (α) `±r` column bridge + `hrCol` leaf, the row
+   bridge) are in tree. The next build is `case_III_arm_realization_chain` itself, in **`Relabel.lean`** (NOT
+   `Arms.lean`; the import DAG forces it downstream of the chain-relabel leaves, §I.8.24(4.6)). The arm CONSTRUCTS
+   its candidate as a `caseIIICandidate (G−vᵢ) endsσρ qρ …`, routes the chain-leaf `ofNormals` memberships into it
+   via the now-landed row bridge — it is a real ~200-line arm body, the `M₃` template, NOT a thin instantiation
+   (§I.8.24(4.6)) — produces the corner data `(W,hWS,hWcard,g,hg,hLI)`, gets `hrank`, calls the shared tail
+   `case_III_realization_of_rank`. See *Hand-off* for the obligation map + the remaining arm-internal steps:
+   (α) the candidate `±r`-row `hg` membership (the relabel-image group ∈ `span caseIIICandidate.rigidityRows`,
+   now a wire of `chainData_bottom_relabel`'s genuine branch + the row bridge) and (β) the chain bottom family
+   `f`/`hf` (a HYPOTHESIS the arm takes).
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -259,28 +271,28 @@ build/lint clean).** The chain arm's (α) arm-internal step is now a standalone 
 EXACTLY the `hrCol` hypothesis `notMem_span_mkQ_pmR_row_of_gate` wants; the member MOVES while `ρ₀` stays fixed
 (KT (6.66)). So the arm's `hrCol` is now a consume-landed-brick step, not an arm-internal derivation.
 
-**Next concrete commit — the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership
-(`Relabel.lean`; design §I.8.24(4.6), the pre-build split).** A docs-verified pre-build pass (2026-06-21,
-§I.8.24(4.6)) found two errors in the §I.8.24(4.0)–(4.5) "pure assembly" framing that must be respected before the
-arm: **(1) the arm lives in `Relabel.lean`, NOT `Arms.lean`** — the import DAG is `Arms ⊂ Relabel ⊂ Realization`,
+**Next concrete commit — `case_III_arm_realization_chain` itself (`Relabel.lean`; design §I.8.24(4.6)).** The
+row-routing bridge half of the §I.8.24(4.6) pre-build split is now LANDED (the `ofNormals → caseIIICandidate`
+row bridge, *Decisions made* below); the next build is the arm body. Two pre-build pins still hold:
+**(1) the arm lives in `Relabel.lean`, NOT `Arms.lean`** — the import DAG is `Arms ⊂ Relabel ⊂ Realization`,
 and the arm consumes the chain-relabel leaves `chainData_bottom_relabel`/`funLeft_dualMap_interior_group_acolumn_
 eq_neg_baseRedundancy` (both downstream of `Arms.lean`), so it cannot compile in `Arms.lean`; **(2) the arm is NOT
 a thin instantiation** — the cert is stated over `caseIIICandidate (G−vᵢ) endsσρ qρ …` (`Candidate.lean:1886`),
-there is no `caseIIICandidate ↔ ofNormals` bridge in tree, and the chain leaves produce membership in
-`ofNormals (G−vᵢ) endsσρ qρ`, so the arm must CONSTRUCT its candidate as a `caseIIICandidate` and route the
-chain-leaf memberships into it via the off-the-two-slots seed-coincidence (`caseIIICandidate_supportExtensor_of_ne`),
-exactly as the engine + the SHARED tail already do for d=3. That is genuine arm-internal wiring, a real ~200-line
-arm body (the `M₃` template `Relabel.lean:2537` is the closest precedent), NOT "wire brick B into slot C".
+and the chain leaves produce membership in `ofNormals (G−vᵢ) endsσρ qρ`, so the arm must CONSTRUCT its candidate
+as a `caseIIICandidate` and route the chain-leaf memberships into it via the now-landed row bridge
+`hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (the off-`{e_a,e_b}` seed-coincidence packaged as a
+row transfer), exactly the kind the engine + the SHARED tail already do for d=3. That is genuine arm-internal
+wiring, a real ~200-line arm body (the `M₃` template `Relabel.lean:2537` is the closest precedent), NOT "wire
+brick B into slot C".
 
-Under scope-to-fit, split the build: **first** land the (α) `hrCol`-at-`caseIIICandidate` sub-leaf (state the
-`−ρ₀` column value for the SPECIFIC `±r` `rRow` the arm puts in `g` = the relabel-image of A-1's edge-`i` group at
-the candidate `caseIIICandidate`, bridging the landed `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`
-`ofNormals`-column value to the `caseIIICandidate` row's column) **+** the candidate `±r`-row `hg` membership (that
-same group ∈ `span caseIIICandidate.rigidityRows`, via `chainData_bottom_relabel`'s genuine branch +
-`caseIIICandidate_supportExtensor_of_ne`); **then** `case_III_arm_realization_chain` itself (in `Relabel.lean`),
-assembling `(W,hWS,hWcard,g,hg,hLI)` from those + the landed carrier/corner-of-gate leaves + the (β)/`hgate`/`hsupp`
+Build `case_III_arm_realization_chain` in `Relabel.lean`,
+assembling `(W,hWS,hWcard,g,hg,hLI)` from the landed leaves + the (β)/`hgate`/`hsupp`
 hypotheses, applying `case_III_rank_certification_chain` for `hrank`, then `exact case_III_realization_of_rank …`
-(the SHARED tail). The (β) bottom family stays a HYPOTHESIS the arm takes (mirroring the engine
+(the SHARED tail). The arm-internal steps remaining: (α) the candidate `±r`-row `hg` membership (the relabel-image
+group ∈ `span caseIIICandidate.rigidityRows` — `chainData_bottom_relabel`'s genuine branch into `ofNormals` then
+the row bridge into `caseIIICandidate`; its `hrCol = −ρ₀` is the LANDED framework-free
+`funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`); and (β) the bottom family. The (β) bottom family
+stays a HYPOTHESIS the arm takes (mirroring the engine
 `case_III_arm_realization`'s `w`/`hwcard`/`hw`/`hwmem`, `Arms.lean:310`); the **2c-iii dispatch PRODUCES it**
 (landed OD-7 reduction producers + relabel). Relabel.lean is at 4776 lines (past the ~1500-LoC tripwire) — the arm
 likely forces a `Relabel/` split at this build; flag it. The full leaf map → design §I.8.24(4.3)–(4.6):
@@ -293,7 +305,10 @@ likely forces a `Relabel/` split at this build; flag it. The full leaf map → d
   it. So the packaging is a one-line wire of the landed carrier leaf, not arm-internal production.
 - **`g` (the `D` corner rows) + `hg`** — `g` = the `D−1` candidate panel rows `r(Lᵢ)` (`panelRow_mem_rigidityRows`,
   free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
-  `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
+  `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`. Its `hg`
+  membership routes through the LANDED row bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`
+  (the `chainData_bottom_relabel` genuine branch lands the relabel image in `span ofNormals (G−vᵢ) …`; the bridge
+  carries each off-`{e_a,e_b}` summand into `caseIIICandidate.rigidityRows`).
 - **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base, for `g = Sum.elim (D−1 panel
   rows) (±r row)`. **The three abstract pieces are now COLLAPSED INTO ONE consume-leaf
   `BodyHingeFramework.linearIndependent_mkQ_corner_of_gate` (LANDED 2026-06-21, `Candidate.lean`, after
@@ -315,6 +330,21 @@ likely forces a `Relabel/` split at this build; flag it. The full leaf map → d
 
 ## Decisions made during this phase
 
+- **`ofNormals → caseIIICandidate` row-routing bridge LANDED (2026-06-21) — the previously-missing
+  `caseIIICandidate ↔ ofNormals` row bridge the §I.8.24(4.6) Hand-off named; the chain arm's `hg`/`hWS` row
+  routing is now a wire, not a re-derivation.** Two decls: the framework-general primitive
+  `BodyHingeFramework.hingeRow_mem_rigidityRows_of_supportExtensor_eq` (`RigidityMatrix/Basic.lean`) —
+  `F₂.graph.IsLink e u v` + `r ∈ F₁.hingeRowBlock e` + `F₁.supportExtensor e = F₂.supportExtensor e ⟹
+  hingeRow u v r ∈ F₂.rigidityRows` (the hinge-row block depends only on the support extensor, so the same `r`
+  is a block row of `F₂`); and its arm-consumable instantiation
+  `PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (`Candidate.lean`, after
+  `caseIIICandidate_supportExtensor_of_ne`) — a genuine *seed* `ofNormals G ends q` row at any off-`{e_c,e_r}`
+  edge is a *candidate* `caseIIICandidate` rigidity row. This is the bridge the chain arm routes its chain-leaf
+  memberships through (`chainData_bottom_relabel` produces `ofNormals (G−vᵢ)` rows; the cert is over
+  `caseIIICandidate`). The `d=3` `M₃` arm did this inline at the `panelRow` level (`hFG₀_eq_panelRow`); this is
+  its `hingeRow`-level, framework-general sibling for the cycle relabel. Both axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`), build/lint clean; one-line term proofs. Resolves the recurrence of
+  FRICTION `[idiom] Equal supportExtensor ⟹ equal hingeRowBlock` — the fused row-level form now exists.
 - **Pre-arm-build corrections pass (2026-06-21, docs-only; §I.8.24(4.6)) — TWO errors in the "pure assembly"
   framing fixed before the arm build.** Verified against the import DAG + the landed cert/leaf/template bodies:
   (1) **the chain arm goes in `Relabel.lean`, NOT `Arms.lean`** — `Arms ⊂ Relabel ⊂ Realization`, and the arm

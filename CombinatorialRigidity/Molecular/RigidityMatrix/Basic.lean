@@ -671,6 +671,31 @@ theorem exists_edgeIndexed_combination_of_mem_span_rigidityRows
   rw [← hsum]
   exact Finset.sum_congr rfl fun j _ => by rw [hgrow j]
 
+/-- **A hinge row transfers between two frameworks sharing the carrying edge's support extensor**
+(`def:hinge-row-block`; the option-(A) chain-arm row-routing bridge, Phase 23c §I.8.24(4.6)).
+Because the hinge-row block `r(p(e)) = (span C(p(e)))^⊥` depends only on the supporting extensor
+`F.supportExtensor e` (`hingeRowBlock`), two frameworks `F₁`, `F₂` that agree on the extensor of an
+edge `e` agree on its block. So a hinge row `hingeRow u v r` carried by an `e`-link of `F₂` with a
+block row `r ∈ F₁.hingeRowBlock e` is, verbatim, a generator of `F₂.rigidityRows`: the same `r` lies
+in `F₂.hingeRowBlock e` (`hsupp`), and `F₂.graph.IsLink e u v` (`hlink`) supplies the link.
+
+This is the framework-general primitive the general-`d` chain arm `case_III_arm_realization_chain`
+routes its chain-leaf row memberships through: the chain leaves (`chainData_bottom_relabel`) produce
+genuine rows of the *seed* framework `ofNormals (G − vᵢ) endsσρ qρ`, but the rank certification
+`case_III_rank_certification_chain` is stated over the *candidate* framework
+`caseIIICandidate (G − vᵢ) endsσρ qρ e_a e_b …`. The two share the graph `G − vᵢ` and, off the two
+overridden hinge slots `{e_a, e_b}` (`caseIIICandidate_supportExtensor_of_ne`), the support extensor
+of every edge — so this lemma carries a seed row at any off-slot edge into the candidate's rigidity
+rows. (At the `d = 3` `M₃` instance the seed-row routing is done inline by the shared tail's
+`hFG₀_eq_panelRow` at the `panelRow` level; this is its `hingeRow`-level, framework-general sibling
+for the cycle relabel.) -/
+theorem hingeRow_mem_rigidityRows_of_supportExtensor_eq
+    (F₁ F₂ : BodyHingeFramework k α β) {e : β} {u v : α}
+    (hlink : F₂.graph.IsLink e u v) {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : r ∈ F₁.hingeRowBlock e) (hsupp : F₁.supportExtensor e = F₂.supportExtensor e) :
+    hingeRow u v r ∈ F₂.rigidityRows :=
+  ⟨e, u, v, hlink, r, by rwa [hingeRowBlock, ← hsupp, ← hingeRowBlock], rfl⟩
+
 /-! ## Infinitesimal motions and the null space `Z(G,p)`
 
 The motion submodule as the common kernel of the rows (dual coannihilator), the span ↔ annihilator
