@@ -147,6 +147,21 @@ Published function of the profile, so assignment is reproducible:
   (→ re-route + a dead leaf). When a leaf's route hinges on an unbuilt
   consumer, settle the route against the consumer first — a pair does not
   substitute for that.
+  **Variant — a diverse-lens RECON pair for a recurring-mis-pin DESIGN seam
+  (read-only, no worktree).** When a *design/architecture* seam has resisted
+  several builds + single-pass recons (single reads are wrong ~half the time in
+  a fragile zone), run two read-only recons concurrently with **distinct lenses**
+  — one *constructive* (settle the route + leaf plan), one *adversarial-refute*
+  (try to break it / find the wall / hunt the unsatisfiable hypothesis). The
+  refute member often **adjudicates what the constructive member flags as
+  "open"**: the two may disagree on the verdict *label* yet converge on the
+  substance, and the disagreement narrows exactly the one fact the coordinator
+  must source-verify. No commit / no worktree (both read the shared tree; the
+  coordinator source-verifies the pivotal claim, then authors or dispatches the
+  resolution). Precedent: the 23c `±r`-seam — A (constructive) returned
+  NEEDS-REVIEW, B (refute) returned LIKELY-SOUND by distinguishing two rows; the
+  coordinator's source check confirmed B and resolved a seam that had survived 4
+  builds + 2 single-pass recons.
   *Worktree build caveat (Lean repos):* a fresh worktree has no
   `.lake/` — a bare `lake build` there recompiles mathlib from
   source (expensive; on shared machines a known OOM risk). **The

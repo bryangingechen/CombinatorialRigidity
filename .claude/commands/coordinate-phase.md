@@ -95,7 +95,11 @@ Loop:
    both members run the same task. A pair also audits the pin the primary
    builds against — a duplicate's BLOCKED-with-diagnosis is a win, not a
    failed pair (protocol *Boundary pairs*).
-3. Dispatch Agent (subagent_type: general-purpose) with exactly the
+3. Dispatch Agent (subagent_type: general-purpose) **un-named** (do not pass
+   the Agent tool's `name` — a named dispatch routes to the async mailbox and
+   then surfaces only an idle notification, with no synchronous LANDED/BLOCKED
+   return or cost figures; reserve names for boundary-pair duplicates / an
+   addressable resume, rescue §2) with exactly the
    prompt below. Two exceptions adapt it: a **recon / design-pass** step
    names that deliverable in the first line (and carries the design-pass
    clauses — see end); a **phase-open / phase-close** step gets a short
@@ -253,6 +257,18 @@ Loop:
      The tell: a fact the design doc called "genuinely-new" appearing as a
      `h…` argument of a landed lemma — grep it, confirm where it is
      discharged.
+     **Sharper still — a deferred-hypothesis leaf can LAND clean, correct, and
+     axiom-clean yet be mis-targeted: its hypothesis UNSATISFIABLE for the
+     actual consumer's object** (23c rows 392/394: two `±r`-row leaves whose
+     `htransport`/`hcollapse` were *true* conditionals but undischargeable for
+     the arm's real row — one a relabel-image off-slot, one a filtered-group
+     collapse). Signature-match + gate-green + decl-existence ALL pass; only a
+     **satisfiability trace against the consumer's actual object** catches it.
+     So before accepting a deferred-hypothesis leaf as progress (or building on
+     it), confirm its hypothesis is *dischargeable for the consumer*, not merely
+     that the lemma type-checks — and prefer reconning that satisfiability
+     *before* landing the leaf, not at the consumer's build. (DESIGN.md
+     *Constructibility recon …*, the satisfiability corollary; rows 392–401.)
    - **A large cost/size outlier is an early degradation signal.** A dispatch
      whose wall-time / tool-uses / diff-size runs far past the norm (L6b:
      10.8 h / 1884 tools / a ~1010-line proof for a P=2 producer, row 118) has

@@ -188,6 +188,22 @@ underlying corner-data leaves are in tree (names below).
 
 ## Decisions made during this phase
 
+### Promoted to DESIGN / ledger / Findings (cross-cutting lessons from this phase)
+- *A conditional leaf is progress only if its hypothesis is dischargeable for the **actual consumer** — a
+  satisfiability check, not just signature/decl-existence (the project-side root cause of the two
+  mis-targeted `±r`-row leaves)* → `DESIGN.md` *Constructibility recon …* (the satisfiability corollary).
+- *Where KT's "member moves" (6.62) lands: the redundant `±r` row on the candidate's reproduced hinge slot,
+  the graph-endpoints-vs-overridden-support decoupling* → `notes/BlueprintExposition.md` (`lem:case-III general-d`).
+- *A diverse-lens recon PAIR (constructive + adversarial-refute) resolves a recurring-mis-pin design seam
+  where single reads fail* → model-exp *Findings* 2026-06-22.
+
+> **Phase-close compression DUE.** The per-leaf landing entries below are settled history (full audit in git +
+> design §(o‴)(I.8.18)–(I.8.24)); the *Decisions made* tail has outgrown the forward sections and should
+> collapse to one-line verdicts at phase-close (per `notes/CLAUDE.md` *Forward-weighted note*). The load-bearing
+> NON-compressible items — the architecture-settled option (A) / no-`hρGv`, the four dead route families
+> (do-NOT-re-attempt), and the `±r`-seam resolution — are also surfaced in *Current state* + the *Orientation*
+> block at the top, so a fresh coordinator does not need this tail for the next task.
+
 - **Corner-data ASSEMBLY producer `case_III_arm_corner_assembly` LANDED (2026-06-22, opus) — the
   seam-resolution end-to-end integration; CONFIRMS the corrected `±r` leaf feeds `hg` and `hrCol` feeds `hLI`.**
   `Relabel.lean` (after the arm spine): at `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` it
