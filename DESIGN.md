@@ -1229,6 +1229,31 @@ every producer), not a leaf commit. Cross-ref: `notes/Phase22-realization-design
 §1.23 (corrects §1.20's "alignment RESOLVED in principle"); `notes/Phase22b.md`
 *Discharge plan* U3a + *Blockers*.
 
+**Corollary — when a hard core is sliced as "conditional leaf + hypothesis the
+consumer discharges", verify the hypothesis is SATISFIABLE for the actual
+consumer object before landing the leaf (Phase 23c, 2026-06-22).** A hard
+membership/rank step is often packaged as a *true conditional lemma*
+`(hyp) → goal` whose `hyp` the consumer supplies later — a legitimate slice, but
+only if `hyp` is dischargeable for the consumer's *actual* object. Phase 23c
+landed **two** correct-but-mis-targeted `±r`-row leaves this way: the off-slot
+GROUP leaf's `htransport` (a surviving genuine off-`{e_c,e_r}` link at the
+relabelled endpoints) and the reproduced-slot leaf's `hcollapse` (a full-row
+collapse of the *filtered* edge-group) are each **unsatisfiable** for the arm's
+real `±r` row — the chain-edge endpoints relabel to the candidate's *reproduced
+slot* (not an off-slot link), and the filtered group has *column-only* machinery
+(no single-row collapse; only A-1's *full* combination collapses). Both leaves
+type-check, pass gates, and match the pinned signature — the gap is purely that
+`hyp` cannot be produced for the real consumer. **The check** is the L5b
+consumer-grounding rule (settle a route against its consumer) applied at the
+*hypothesis* level: before pinning/landing such a leaf, name the consumer's
+actual object and confirm `hyp` holds *for it* — a satisfiability trace, not a
+signature/decl-existence check (both `±r` leaves passed the latter). The tell: a
+leaf whose hypothesis silently re-encodes the hard content the slice was meant to
+make progress on (here, the KT eq-(6.66) redundancy-membership) — the
+"abstraction defers the crux" anti-pattern, surfaced only when the consumer (the
+arm) is finally built. Cross-ref: `notes/Phase23-design.md` §(o‴)(I.8.24)(4.7)–(4.8);
+model-exp *Findings* 2026-06-22.
+
 ## Match the source's argument structure, not just its conclusion
 
 **The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I

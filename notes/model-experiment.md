@@ -421,6 +421,33 @@ Rows 1–189 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+### Session #25 (rows 392–396) — the chain-arm `±r`-row `hg` resolves into the open KT eq-(6.66) step (not wiring); two correct-but-mis-targeted leaves landed first
+
+The arm's `±r`-row `hg` was framed as "wire a landed leaf"; two leaves (off-slot GROUP `44d7b73`,
+reproduced-slot `b675317`) landed clean but were each found mis-targeted, and a design-settle (`7273c0f`)
+established the arm bottoms out on the genuinely-new KT eq-(6.66) redundancy-membership with a body-mismatch
+(the "arm = pure wiring" framing was overstated a 4th time). Durable lessons:
+
+- **A conditional leaf is real progress only if its hypothesis is SATISFIABLE for the actual consumer — check
+  before landing, not at the consumer's build.** Both `±r` leaves are true `(hyp) → goal` lemmas, but
+  `htransport`/`hcollapse` are unsatisfiable for the arm's real `±r` row (relabel lands on the reproduced slot,
+  not off-slot; the filtered group is column-only, no single-row collapse). Signature-match + gate-green +
+  decl-existence ALL passed; only a satisfiability trace catches it — the "abstraction defers the crux"
+  anti-pattern at the hypothesis level. → DESIGN.md *Constructibility recon …* (the satisfiability corollary).
+- **Recon-then-build validated leaf SIGNATURES, not hypothesis satisfiability — so a second mis-targeted leaf
+  landed after the first was caught.** The iter-2 recon caught the off-slot mis-target but re-pinned the
+  reproduced-slot leaf with an unsatisfiable `hcollapse`; the coordinator verified the pinned signature + decls
+  (matched) but not `hcollapse`'s satisfiability for the filtered group (and had even flagged the analogous
+  iter-1 `htransport` risk, then deferred it). Fold the satisfiability trace into recon scrutiny.
+- **Recon-early paid off (again): the design-settle, not a 5th build, surfaced the real obstacle** — neither
+  `±r`-sourcing route closes both `hg` and `hrCol` (body-mismatch: the discriminator reads `single (vtx i)`, the
+  landed `hrCol` gives `−ρ₀` at `vtx(i-1)`; the full combination reads `0` at `vtx i`). Triggering the
+  design-settle instead of dispatching the arm build converted a likely 5th BLOCK into a precise decomposition +
+  a user-surfaced decision on the open KT eq-(6.66) step.
+- **Process: named/async Agent dispatch routes to the mailbox and idles without a synchronous return** (rescue
+  §2) — the iter-1 named agent emitted only `idle_notification`s (no `LANDED`/cost), forcing an un-named
+  re-dispatch; the named-agent cost is unavailable/wasted. Dispatch un-named for a synchronous return.
+
 ### Session #23 (paused; rows 373–380) — the (A) re-architecture: a recon-chain to feasibility, then the cert compiles (the wall is gone)
 
 The user opened 23c on the redundancy-carry fork and chose **(A)** (re-shape the rank-cert to KT's

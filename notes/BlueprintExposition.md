@@ -567,6 +567,16 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   a seam resists, read the source's own construction"). The live forward fork — re-architect to KT's
   whole-matrix/abstract-`r` shape vs. carry the obstruction to ENTRY — is `notes/Phase23b.md` *Hand-off* +
   §(o‴)(I.8.18)–(I.8.20).)* Pointer: KT pp. 696–698, eqs. (6.60)–(6.67).
+  **Reproduced-slot landing SHARPENING (2026-06-22; the arm-`hg` design-settle, §I.8.24(4.7)–(4.8)).** Where the
+  moved member lands, made concrete: KT's "member moves" (6.62) carries the redundant `±r` row onto the
+  candidate's **reproduced hinge slot `e_r`** — the `±r`-group sits on the chain link `edge i`, whose
+  index-shift-relabelled endpoints ARE the candidate's reproduced fresh pair — and its candidate-span membership
+  is exactly "`ρ₀` annihilates the reproduced slot's support extensor `panelSupportExtensor (n_u + t·n') n_r`".
+  So the general-`d` redundancy-membership is the **cycle-generalization of the `d=3` `M₃` `(a,b)`-block →
+  genuine-`e_b`-row mechanism** (ledgered for `d=3` at the `lem:case-II-realization` eq.-(6.12) and
+  `lem:case-III-claim612` entries) — the same mechanism at length `d`, not a new one. *(Open at capture, NOT yet
+  stable: reconciling this membership's body with the discriminator's re-inserted-body `vtx i` column read — the
+  body-mismatch the design-settle BLOCKED on, §I.8.24(4.8).)* Pointer: `notes/Phase23-design.md` §(o‴)(I.8.24)(4.7)–(4.8).
 
 ## Retroactive coverage
 
