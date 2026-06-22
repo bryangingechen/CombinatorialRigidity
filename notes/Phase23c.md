@@ -214,9 +214,20 @@ build/lint clean).** The chain arm's (α) arm-internal step is now a standalone 
 EXACTLY the `hrCol` hypothesis `notMem_span_mkQ_pmR_row_of_gate` wants; the member MOVES while `ρ₀` stays fixed
 (KT (6.66)). So the arm's `hrCol` is now a consume-landed-brick step, not an arm-internal derivation.
 
-**Next concrete commit — `case_III_arm_realization_chain` itself (`Relabel.lean`; design §I.8.24(4.6)).** The
-row-routing bridge half of the §I.8.24(4.6) pre-build split is now LANDED (the `ofNormals → caseIIICandidate`
-row bridge, *Decisions made* below); the next build is the arm body. Two pre-build pins still hold:
+**Next concrete commit — the ±r-row candidate-span `hg` GROUP leaf (`Relabel.lean`; the arm-build BLOCKED's
+verified unblock, 2026-06-21).** A build at the full arm (HEAD 17aa75d) BLOCKED with a coordinator-VERIFIED
+diagnosis: the arm's `±r`-row `hg` membership in **genuine candidate-edge GROUP form** is genuinely-new and NOT in
+tree. The landed row bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` handles ONE `hingeRow`,
+but the ±r row is a *sum* `∑_{ev j = edge i} cⱼ • hingeRow…`; the collapsed-`hingeRow` form CANNOT substitute (it
+would force `ρ₀ ⊥ panelSupportExtensor`, contradicting `hgate` — that is exactly why it is the independent D-th
+row), and its only landed membership lemma `chainData_relabel_arm_hρGv` (`:4700`) is the dead orphan. **Decompose
+it FIRST as its own de-risked leaf** (the de-risk-before-pin discipline, row 321): a `ChainData` lemma taking A-1's
+frozen edge-grouped shape (`hlink`/`hrv`/`hcomb`/`hdeg1`, cf. `chainData_freshEdge_perp_of_baseRedundancy`
+`Relabel.lean:4386`) concluding `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap (∑_{filter edge i} cⱼ•hingeRow…) ∈
+span (caseIIICandidate …).rigidityRows`, via `map_sum`/`map_smul` + per-summand `chainData_bottom_relabel`
+(`:1961`) + the row bridge (`Candidate.lean:1010`). Frozen input shape, no unbuilt-consumer dependency —
+separable, unlike the full arm. **THEN** `case_III_arm_realization_chain` becomes the mechanical assembly the
+§I.8.24(4.6) pins below envision. Two pre-build pins on the arm still hold:
 **(1) the arm lives in `Relabel.lean`, NOT `Arms.lean`** — the import DAG is `Arms ⊂ Relabel ⊂ Realization`,
 and the arm consumes the chain-relabel leaves `chainData_bottom_relabel`/`funLeft_dualMap_interior_group_acolumn_
 eq_neg_baseRedundancy` (both downstream of `Arms.lean`), so it cannot compile in `Arms.lean`; **(2) the arm is NOT
