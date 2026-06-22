@@ -60,84 +60,27 @@ entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-of
 > The standing decision is the user-adjudicated fork in *Hand-off*; the next moves are BUILDS, no longer
 > architectural decisions.
 
-## Current state — the architectural decision 23c must make first
+## Current state
 
-The Case-III chain arm `case_III_arm_realization` needs its `hρGv` slot filled at the **candidate** framework
-`(G−vᵢ, endsσρ, qρ)`: `hingeRow vᵢ₊₁ vᵢ₋₁ ρ0 ∈ span (ofNormals (G−vᵢ) endsσρ qρ).rigidityRows`, for the
-**single shared** `ρ0` the dispatch establishes once at the base and feeds the discriminator
-(`case_III_candidate_dispatch`, `Realization.lean:388–441`: A-1 fired once → one `ρ0` → discriminator once
-on `ρ0`, threaded into every arm; the capstone `Claim612.lean:1462` takes ONE `r`). **Producing that fixed
-`ρ0`-member at the relabelled candidate is the wall.** Every route to it is dead, and the reason is now
-source-verified: **KT itself carries a *moving* redundant row** — KT (6.62, p. 696) maps the redundant row
-`(v₀v₂)ᵢ∗ ⇔ (v₀v₁)ᵢ∗`, so in KT the candidate-side redundancy sits on the *moved* `(v₀v₁)` pair, never a
-fixed `(v₀v₂)`. **No fixed-member transport could ever have existed.** (Full verdict: design §(o‴)(I.8.20).)
+**(A) is OPEN and building; the architectural decision is long settled.** The member-mapping wall — KT carries a
+*moving* redundant row (eq. (6.62): `(v₀v₂)ᵢ∗ ⇔ (v₀v₁)ᵢ∗`), so no fixed-member transport to a relabelled
+candidate could ever exist — is escaped by option (A): the forked general-`d` rank cert carries the redundancy as
+KT's abstract `±r` value (`= ρ₀`), the `±r` row entering `g` as a genuine candidate-edge member, never a collapsed
+fixed member — so the cert has **NO `hρGv` slot**. `d=3` keeps the landed `hρGv`-collapse engine verbatim (forked,
+zero-regression). The four dead route families — (1) seed-advancing fold (§I.8.15), (2) base→candidate transport
+(§I.8.12), (3) re-fire A-1 at the candidate (§I.8.19), (4) column-op/submatrix-containment (§I.8.20) — are
+exhausted and adversarially verified; **do not re-attempt.** Full audit trail: design §(o‴)(I.8.18)–(I.8.24).
 
-**Why `d=3` succeeded and is NOT a template.** At `d=3` the relabel `ρᵢ` is a **single swap** (M₃, `i=2`).
-`case_III_arm_realization_M3` (`Relabel.lean:2562`) consumes the base redundancy at the **genuine** base
-`(ends₀, q)`, applies **one** W9a step (`funLeft_dualMap_sub_acolumn_mem_span_rigidityRows`) that moves the
-member once (`a↦v`, scalar `ρ0` kept), and the moved member `hingeRow v b ρ0` *is a genuine candidate row* —
-closed by `sub_mem`. There is **no fold, no intermediate framework, no fixed-member demand**: the wall is an
-*emergent obstruction of the multi-step composition*, absent at length 1. `d=3` is the degenerate case
-(`DESIGN.md` *A degenerate headline case is a target, not a template*); its single-step move-and-recombine is
-not a template for the general cycle.
-
-**The gate.** At general `d`, `ρᵢ` is an `(i−1)`-**cycle**. Composing the moves needs the (6.66) ±r chain —
-which 23b *built correctly* (the telescope `wstep_foldl_hingeRow_telescope` + LEAVES 1–4). The defect is the
-*anchoring*: the seed-advancing fold pre-applies the whole relabel to the **selector** (`endsσρ`) and advances
-only the **seed**, manufacturing the artifact framework `(endsσρ, q)` (relabelled selector + un-advanced base
-seed — `Relabel.lean:4671`) that KT never forms and that demands the fixed base member. The per-step move that
-*could* keep the fold anchored at the genuine base — the "gate" lemma
-`funLeft_dualMap_sub_acolumn_seedAdvance_mem_span_rigidityRows` (`Relabel.lean:1201`) — carries a hypothesis
-`hends'_off` (`:1204`) permitting the selector to change only on the two edges `{edge(s+1), edge(s+2)}` local
-to that step's swap (the support-extensor coincidence needs it). So `(i−1)` gated steps can move the selector
-only on `⋃ₛ {edge(s+1),edge(s+2)} = {edge 1,…,edge i}`, but the cycle `shiftEdgePerm i` moves `edge 0`/`e₀`
-(*outside* that window) — **an `(i−1)`-cycle has no adjacent-transposition factorization** (design §I.8.15).
-At `d=3` one swap *is* trivially adjacent, so the gate handles it; only the *cycle accumulation* defeats it.
-
-**The four dead route families (do not re-attempt; adversarially verified):** (1) seed-advancing fold —
-infeasible (§I.8.15); (2) base→candidate transport — the member-mapping wall (§I.8.12); (3) source-production
-/ re-fire the existential A-1 at the candidate — refuted, yields a fresh `ρ_cand ≠ ρ0`, re-introduces the
-design-rejected Fix B (§I.8.19-ADDENDUM); (4) column-op / whole-matrix submatrix-containment — the wall is
-KT's own (6.62), it offers only the member-*moving* relabel-image inclusion (§I.8.20).
-
-## The architectural fork (user-adjudication; the (A)-recon verdict is in — §I.8.21)
-
-**(A) Re-architect KT-faithfully — the only root-attacking route; feasibility RECON DONE (§I.8.21).** Carry
-the redundancy as KT does: the abstract `r ∈ ℝ^D` of (6.66) — which §I.8.21 found **IS already the project's
-`ρ₀`** (A-1's `ρ₀ = ∑ⱼ lamAB j • rab j`, `Candidate.lean:432`) — and the **`Mᵢ`-block / `±r` decomposition**
-`rank R(G,pᵢ) ≥ rank Mᵢ + rank(R(G₁∖row,q₁))` (6.64–6.65), where the redundancy is a `±r` ℝ^D-EQUALITY (6.66),
-never a fixed dual-functional transported across the relabel. **VERDICT (§I.8.21): (A) escapes the wall, but
-does NOT feed the existing engine** — the engine's `hρGv` slot IS the wall (the rank-cert consumes it once as
-a fixed-member candidate membership, `Candidate.lean:1606–1611`), so (A) requires **re-shaping
-`case_III_rank_certification` + `case_III_arm_realization`** (below contract C.0–C.6 + motive; `d=3` M₃
-zero-regression preserved by forking the rank-cert). Sub-route *non-gate composition* is DEAD (collapses to
-the wall); sub-route *matrix/abstract-`r`* is the live route. **Both de-risk spikes are CLOSED POSITIVE:**
-(2b)(α) block-rank-additivity LANDED (axiom-clean, no carrier friction); **(2b)(γ) the (6.66) `±r` ℝ^D-vector
-identity** (the wall-escape: redundancy carried as a fixed abstract `r` while the member moves) was found
-**already built** in tree (the 23b chain induction `candidateRow_ac_eq_neg` + `interior_group_acolumn_eq_neg_
-baseRedundancy`, both axiom-clean; §I.8.23) — the column read-off localizes cleanly, KT proves (6.66) "in a
-manner similar to (6.44)". **Remaining cost band: ~5–9c**, all of it the cert/arm re-shape consuming the landed
-`±r` (NO `hρGv`) + wire-up + cleanup (see *Current state* / *Hand-off* / design §I.8.21–§I.8.23).
-
-**(B) Carry `ρ0`/`hφ@endsσρ` to ENTRY — LEAST KT-faithful, likely-dead, does NOT attack the root.** Add
-`hφ@endsσρ` as a hypothesis on the arm/dispatch (the landed `chainData_relabel_arm_hρGv` shape) and confront
-the wall at ENTRY. Flagged likely-dead (§I.8.20: the wall is a property of the relabel-image map, not of what
-is in scope; the only non-circular escape is ENTRY re-deriving the redundancy *natively* against `endsσρ` — a
-graph-construction question, unexplored). Only the residue if (A) is held / its de-risk fails.
-
-**Status: (A) is OPEN, de-risk-first (user-adjudicated). Both de-risk spikes LANDED POSITIVE; the cert-re-shape
-design-pass is DONE.** (2b)(α) block-rank-additivity is axiom-clean (no carrier friction); (2b)(γ) the (6.66)
-`±r` ℝ^D-vector identity is POSITIVE + already built (LEAF 1–4, axiom-clean; §I.8.23). **The §(I.8.24)
-cert-re-shape design-pass (2026-06-21) RESOLVED the §I.8.22-vs-§I.8.23 tension: (A) escapes the wall.** The
-make-or-break — does the re-shaped cert use only the buildable relabel-image inclusion (for `W` + base) + the
-member-free `±r` value (for the `Mᵢ` row), or does some `hWS`/`hg`/`hLI` smuggle in a fixed-member dependency? —
-was settled per-hypothesis against the landed de-risk-leaf signature + §I.8.20(e): **each of `hWS`/`hg`/`hLI` is
-the buildable kind.** The wall lived ONLY in the landed cert's COLLAPSED `Unit` row (`hingeRow v a ρ`, needing
-`hρGv`); the re-shape sources the `±r` row as KT's GENUINE candidate-edge `(vᵢvᵢ₊₁)ᵢ∗` row, killing the `hρGv`
-slot. The cert is FORKED (d=3 keeps the landed `hρGv`-collapse engine verbatim; general-`d` got the new
-`±r`-cert). **The FIRST build `case_III_rank_certification_chain` is LANDED** (2026-06-21, axiom-clean; *Current
-state*); the next concrete commit is `case_III_arm_realization_chain` (produce + consume the cert's corner-data
-hypotheses). See *Hand-off*.
+**All chain-arm pieces are now landed** (all axiom-clean, build/lint clean): the forked cert
+`case_III_rank_certification_chain` + its corner-data leaves — the carrier W-packaging
+`exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`, both `hLI` halves ((a)
+`linearIndependent_mkQ_panelRow_of_edge`, (b) `notMem_span_mkQ_pmR_row_of_gate`), the hLI corner-assembly
+`linearIndependent_mkQ_corner_of_gate`, the (α) `±r` column bridge `funLeft_dualMap_comp_single` + candidate
+`hrCol` `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`, and the caseIIICandidate↔ofNormals row
+bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` — plus the SHARED rank-to-realization tail
+`case_III_realization_of_rank` and the `±r` identity. **The ONLY remaining piece is the arm body**
+`case_III_arm_realization_chain` itself (the ~200-line construct-the-`caseIIICandidate` + wire-the-corner-data
+integration, in `Relabel.lean`; M₃ `case_III_arm_realization_M3` is the template). See *Hand-off*.
 
 ## What 23b delivered (the foundation 23c builds on)
 
