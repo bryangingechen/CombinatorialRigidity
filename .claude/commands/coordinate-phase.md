@@ -11,8 +11,13 @@ shapes, hours-long elaboration-wall wedge). Consult it when a trigger
 below points there (`→ rescue §N`); this body carries the every-iteration
 core.
 
-Setup: follow CLAUDE.md reading order (CLAUDE.md, ROADMAP.md,
-notes/Phase$ARGUMENTS.md). Confirm `git status` is clean and the
+Setup: follow CLAUDE.md reading order, but read **only ROADMAP.md's
+*Status* table** (to confirm the active phase) — NOT the full file: its
+§1–N *Mathematical roadmap* prose is closed-phase archival detail the
+coordinator never needs pre-dispatch (the active phase's working detail
+is in notes/Phase$ARGUMENTS.md + the blueprint dep-graph; ~600 of
+ROADMAP's ~860 lines are closed phases). Then read
+notes/Phase$ARGUMENTS.md. Confirm `git status` is clean and the
 leftmost active phase file builds green (per *Starting a Lean-touching
 session* in CombinatorialRigidity/CLAUDE.md). While the model-experiment
 is running, also run the protocol's **session-start availability check**
