@@ -2185,6 +2185,59 @@ theorem PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate
   exact PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate ρ
     (hrv j) hu hw h1 h2 hlinkGt hsupp
 
+/-- **The reproduced-slot `±r`-row candidate-span `hg` membership** (`lem:case-III general-d`, the
+option-(A) chain arm's `hg` membership for the `±r` corner row, Phase 23c §I.8.24(4.7);
+Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66), the abstract redundancy `r` landing on the candidate's
+**reproduced** hinge slot `e_r`, member-MOVING). This is the leaf the verified arm-build diagnosis
+(§I.8.24(4.7)) pins as the genuinely-new `hg` for the `±r` corner row, replacing the mis-targeted
+off-slot GROUP leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`: A-1's edge-`i` base group
+sits on the chain link `vᵢ — vᵢ₊₁`, whose `(shiftPerm i.castSucc)⁻¹`-image endpoints are the
+candidate fresh pair `{vᵢ₋₁, vᵢ₊₁}` — the candidate's **reproduced slot `e_r`** (the wrap-edge
+`Or.inr` branch of `chainData_bottom_relabel`), NOT an off-slot survivor. So the off-slot route's
+`htransport` (a surviving genuine `(G − vᵢ)` link off `{e_c, e_r}`) is unsatisfiable for the
+`±r`-group; the row enters the candidate span through the *reproduced* slot instead.
+
+The mechanism is the cycle generalization of the d=3 `M₃` arm's length-1 instance
+(`case_III_bottom_relabel`'s `(a,b)`-block tag → genuine `e_r`-row, where `ρ₀ ⊥ C(q(ab))` = the
+candidate's reproduced extensor at `t = 0`). The proof rewrites by `hcollapse` (the relabel image of
+A-1's group collapses to the reproduced-edge tag `hingeRow (endsσρ e_r).1 (endsσρ e_r).2 ρ₀` at the
+candidate fresh pair — supplied by the arm from A-1's `±r` identity), then exhibits that tag as a
+generator of the candidate's rigidity rows at the reproduced slot `e_r`: the candidate graph
+`G − vᵢ` links `e_r` at the recorded fresh pair (`hlink`), and `ρ₀` lies in the reproduced slot's
+hinge-row block because that slot's support extensor is `panelSupportExtensor (n_u + t • n') n_r`
+(`caseIIICandidate_supportExtensor_reproduced`), which `ρ₀` annihilates (`hperp`, the dispatch's
+`hρe₀` at the reproduced slot). **CLAUSE (ii) HONESTY:** this IS one more genuinely-new (but
+member-MOVING, no-wall) leaf — the `±r` row is a *reproduced-slot* member, not an off-slot one. NO
+motive/IH/contract change. -/
+theorem PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_reproduced
+    [DecidableEq β] {G : Graph α β} (ρ : Equiv.Perm α)
+    {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ} {vᵢ : α}
+    {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → ℝ} {t : ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k)) (e_i : β)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the candidate graph links the reproduced slot `e_r` at the recorded fresh pair:
+    (hlink : (G.removeVertex vᵢ).IsLink e_r (endsσρ e_r).1 (endsσρ e_r).2)
+    -- the group collapses to the reproduced-edge tag at the candidate fresh pair (A-1 + relabel):
+    (hcollapse : (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+        (∑ j ∈ Finset.univ.filter (fun j => ev j = e_i),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow (endsσρ e_r).1 (endsσρ e_r).2 ρ₀)
+    -- the dispatch's `hρe₀` at the reproduced slot:
+    (hperp : ρ₀ (panelSupportExtensor (n_u + t • n') n_r) = 0) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+        (∑ j ∈ Finset.univ.filter (fun j => ev j = e_i),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) ∈
+      Submodule.span ℝ (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
+        e_c e_r n_u n' n_r t).rigidityRows := by
+  rw [hcollapse]
+  -- The collapsed tag is the genuine `e_r`-row of the candidate at the reproduced slot.
+  refine Submodule.subset_span ⟨e_r, (endsσρ e_r).1, (endsσρ e_r).2, ?_, ρ₀, ?_, rfl⟩
+  · rwa [PanelHingeFramework.caseIIICandidate_graph]
+  · rw [BodyHingeFramework.mem_hingeRowBlock_iff,
+      PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced]
+    exact hperp
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row
