@@ -1818,6 +1818,42 @@ theorem BodyHingeFramework.notMem_span_mkQ_pmR_row_of_gate [DecidableEq α]
   rw [LinearMap.neg_apply, neg_eq_zero, hsupp] at this
   exact this
 
+/-- **The `Mᵢ` corner block is independent modulo the base block `W`** (`lem:case-III general-d`,
+the option-(A) `hLI` corner obligation, fully assembled; Katoh–Tanigawa 2011 eq. (6.65), the
+`Mᵢ`-block full rank `⟺ r ∉ rowspace r(Lᵢ)`). The chain cert `case_III_rank_certification_chain`
+consumes its `hLI` corner-LI for the `Sum.elim (panel rows) (±r row)` block `g` over `s ⊕ Unit`;
+this leaf produces exactly that `LinearIndependent ℝ (W.mkQ ∘ g)` from the two concrete halves the
+chain arm `case_III_arm_realization_chain` supplies, collapsing the three landed abstract leaves
+into one consume-leaf (design §(o‴)(I.8.24)(4.3)).
+
+It composes: obligation (a) `linearIndependent_mkQ_panelRow_of_edge` (the `D − 1` candidate panel
+rows of the fresh hinge `e`, independent modulo `W` — from the fresh hinge's panel-row independence
+`hindep` and the base block's off-`vᵢ` vanishing `hW`); obligation (b)
+`notMem_span_mkQ_pmR_row_of_gate` (the `±r` row's class modulo `W` outside that panel-row
+span — from the column value `hrCol = −ρ₀` and the discriminator `hgate` at the fixed `ρ₀`); and the
+abstract append-one criterion `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` (the
+augmented `Sum.elim`-family stays independent modulo `W`). All `whnf`-free over the carrier (the
+column read-off localizes at `vᵢ`; `ScrewSpace` is never unfolded), no `d = 3` content, no
+motive/IH change. -/
+theorem BodyHingeFramework.linearIndependent_mkQ_corner_of_gate [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ends : β → α × α} {e : β} {vᵢ : α}
+    (hv : (ends e).1 = vᵢ) (hev : (ends e).2 ≠ (ends e).1)
+    {n_u n' : Fin (k + 2) → ℝ} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hsupp : F.supportExtensor e = panelSupportExtensor n_u n')
+    (hgate : ρ₀ (panelSupportExtensor n_u n') ≠ 0)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, (i : β × _ × _).1 = e)
+    (hindep : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)))
+    {W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k))}
+    (hW : ∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) vᵢ) = 0)
+    {rRow : Module.Dual ℝ (α → ScrewSpace k)}
+    (hrCol : rRow.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) vᵢ) = -ρ₀) :
+    LinearIndependent ℝ (W.mkQ ∘ Sum.elim
+      (fun i : s => F.panelRow ends (i : β × _ × _)) (fun _ : Unit => rRow)) :=
+  Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span W
+    (F.linearIndependent_mkQ_panelRow_of_edge hv hev hs hindep hW)
+    (F.notMem_span_mkQ_pmR_row_of_gate hv hev hsupp hgate hs hW hrCol)
+
 /-! ## The forked general-`d` Case-III rank certification (Phase 23c, option (A))
 
 The general-`d` Case-III rank certification, FORKED off the landed `case_III_rank_certification`

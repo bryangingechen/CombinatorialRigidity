@@ -170,11 +170,14 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    (b) — `notMem_span_mkQ_pmR_row_of_gate`, the ONE genuinely-new leaf (KT (6.65) `r ∉ rowspace r(Lᵢ)`) ✓ LANDED**
    (2026-06-21, axiom-clean); **the (α) column-naturality bridge `BodyHingeFramework.funLeft_dualMap_comp_single`
    ✓ LANDED** (2026-06-21, `RigidityMatrix/Basic.lean`, axiom-clean — `((funLeft σ).dualMap φ).comp (single w) =
-   φ.comp (single (σ.symm w))`, the first of the two NOT-yet-isolated arm-internal steps). With these, ALL the chain
-   arm's consume-leaves (carrier `hWS`/`hWcard`, both `hLI` halves (a)/(b), the append-one criterion, the (α) `±r`
-   column bridge) are in tree. The next build is `case_III_arm_realization_chain` itself (produces the corner data
-   from the chain data, gets `hrank`, calls the shared tail `case_III_realization_of_rank`). See *Hand-off* for the
-   obligation map + the ONE remaining NOT-yet-isolated arm-internal step (β), the chain bottom family `f`/`hf`.
+   φ.comp (single (σ.symm w))`, the first of the two NOT-yet-isolated arm-internal steps); **the `hLI` corner
+   ASSEMBLY leaf `linearIndependent_mkQ_corner_of_gate` ✓ LANDED** (2026-06-21, `Candidate.lean`, axiom-clean —
+   collapses (a)+(b)+append-one into the single `LinearIndependent ℝ (W.mkQ ∘ Sum.elim (panel rows) (±r row))`
+   the cert wants, so the arm's `hLI` is a one-line application). With these, ALL the chain arm's consume-leaves
+   (carrier `hWS`/`hWcard`, the assembled `hLI` corner leaf, the (α) `±r` column bridge + `hrCol` leaf) are in
+   tree. The next build is `case_III_arm_realization_chain` itself (produces the corner data from the chain data,
+   gets `hrank`, calls the shared tail `case_III_realization_of_rank`). See *Hand-off* for the obligation map +
+   the ONE remaining NOT-yet-isolated arm-internal step (β), the chain bottom family `f`/`hf`.
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -269,19 +272,18 @@ The obligations (full leaf map → design §I.8.24(4.3)–(4.5)):
   free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
   `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
 - **`hLI : LinearIndependent (W.mkQ ∘ g)`** — the `Mᵢ`-corner full rank mod the base, for `g = Sum.elim (D−1 panel
-  rows) (±r row)`. ALL THREE abstract pieces are now in tree as consume-leaves: (a) the `D−1` panel rows LI mod `W`
-  via `BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge` (consumes the candidate fresh hinge's pinned-LI +
-  the base block's off-`v` vanishing `hW`, abstract core `Submodule.linearIndependent_mkQ_of_comp`); (b) the
-  `notMem_span` discriminator `BodyHingeFramework.notMem_span_mkQ_pmR_row_of_gate` (**LANDED 2026-06-21**, the `±r`
-  row's class mod `W` ∉ the panel rows' span, reduced via the `−ρ₀` column value to `ρ₀ ⊥ C(e)` on `hgate`); fed
-  into the append-one criterion `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span`. The arm now only has
-  to supply (a)/(b)'s shared concrete pieces — `hW` (off-`v` vanishing of the relabel-image base block — its rows
-  involve only old bodies), `hindep` (the fresh hinge's extensor nonvanishing). `hrCol` (the candidate-transported
-  `±r` column = `−ρ₀`, arm-internal step (α)) is **now a consume-leaf**:
-  `Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` (**LANDED 2026-06-21**, =
-  `funLeft_dualMap_comp_single` ∘ `interior_group_acolumn_eq_neg_baseRedundancy`). With `hsupp`/`hgate` from the
-  dispatch's discriminator, the arm assembles `g`/`hg`/`hLI`. The shared W6a–W6f arm tail then lifts verbatim (it
-  operates on the rank bound, agnostic to how certified).
+  rows) (±r row)`. **The three abstract pieces are now COLLAPSED INTO ONE consume-leaf
+  `BodyHingeFramework.linearIndependent_mkQ_corner_of_gate` (LANDED 2026-06-21, `Candidate.lean`, after
+  `notMem_span_mkQ_pmR_row_of_gate`)** — it composes (a) `linearIndependent_mkQ_panelRow_of_edge` + (b)
+  `notMem_span_mkQ_pmR_row_of_gate` + the append-one criterion into the exact `LinearIndependent ℝ (W.mkQ ∘
+  Sum.elim (panel rows) (fun _ : Unit => rRow))` shape the cert wants. So the arm's `hLI` is now a **one-line
+  application** of `linearIndependent_mkQ_corner_of_gate`, supplying its concrete inputs: `hv`/`hev`/`hs` (the
+  candidate fresh hinge `e`'s endpoints + the `s`-block edge labels), `hindep` (the fresh hinge's panel-row LI from
+  the extensor nonvanishing), `hW` (off-`v` vanishing of the relabel-image base block — its rows involve only old
+  bodies), `hsupp`/`hgate` (the dispatch's discriminator at the fixed `ρ₀`), and `hrCol` (the candidate-transported
+  `±r` column = `−ρ₀`, a consume-leaf:
+  `Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`, LANDED 2026-06-21). The shared
+  W6a–W6f arm tail then lifts verbatim (it operates on the rank bound, agnostic to how certified).
 - **Then:** the 2c-iii `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on
   the landed engine) → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the
   telescope's *membership* content, §I.8.20/§I.8.21(3); the `±r` chain induction LEAF 1–4 STAYS). **Cost band:
@@ -290,6 +292,17 @@ The obligations (full leaf map → design §I.8.24(4.3)–(4.5)):
 
 ## Decisions made during this phase
 
+- **`hLI` corner assembly COLLAPSED into one consume-leaf `linearIndependent_mkQ_corner_of_gate`
+  (2026-06-21) — the chain arm's `hLI` obligation is now a one-line application (§I.8.24(4.3)).**
+  `BodyHingeFramework.linearIndependent_mkQ_corner_of_gate` (`Candidate.lean`, after
+  `notMem_span_mkQ_pmR_row_of_gate`): a 3-line term composition of the three landed abstract leaves —
+  (a) `linearIndependent_mkQ_panelRow_of_edge` ⊕ (b) `notMem_span_mkQ_pmR_row_of_gate` fed into the
+  append-one criterion `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span` — producing the
+  exact `LinearIndependent ℝ (W.mkQ ∘ Sum.elim (panel rows) (fun _ : Unit => rRow))` shape
+  `case_III_rank_certification_chain` consumes for its `g = Sum.elim … ` corner block over `s ⊕ Unit`.
+  Abstract over the candidate framework `F` (no relabel transport, no `ChainData`); the arm supplies
+  the concrete `hindep`/`hW`/`hsupp`/`hgate`/`hrCol`. Axiom-clean (`propext`/`Classical.choice`/
+  `Quot.sound`), build/lint clean; no proof friction (term-mode composition, zero build iterations).
 - **(α) candidate-transported `hrCol` leaf `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`
   LANDED (2026-06-21) — the chain arm's (α) NOT-yet-isolated step is now a standalone consume-leaf
   (§I.8.24(4.5)(α)).** `Graph.ChainData.…` (`CaseIII/Relabel.lean`, after
