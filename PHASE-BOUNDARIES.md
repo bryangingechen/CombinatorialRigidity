@@ -158,6 +158,20 @@ of* the per-commit checklists above:
   their ledger status to `done` as the prose lands. (A node still
   green-*modulo* a deferred sub-phase waits for that sub-phase's close —
   the clean account isn't final until the `sorry`/`h…` is discharged.)
+- **If the model-tier experiment is running and this phase is its testbed,
+  archive the closed (sub-)phase's log.** Move that (sub-)phase's dispatch
+  rows + its *Findings* close-out + its session-close config bullet(s) from
+  `notes/model-experiment.md` into `notes/model-experiment-archive.md`, in the
+  same close-out cleanup, so the coordinator's every-dispatch read of the live
+  file stays small. The live file then keeps only the config, the *active*
+  (sub-)phase's rows, and active *Findings*; the archive is the frozen audit
+  trail. (The canonical statement of this policy is `model-experiment.md`'s own
+  *Archive* header — this checklist item is the trigger that fires it: 23b
+  closed 2026-06-21 *without* archiving and ~180 stale rows accumulated in the
+  every-dispatch read until the 2026-06-22 cleanup. Run `check-log-rows.py
+  --all` afterward to confirm the trimmed live table still parses.) Skip when
+  the experiment's *Status* is `concluded`, or when the closing phase is not
+  the experiment's testbed.
 - **Review project organization.** Re-skim ROADMAP.md,
   `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md`, and `notes/FRICTION.md`
   (status sections). Have decisions in `notes/PhaseN.md` accumulated

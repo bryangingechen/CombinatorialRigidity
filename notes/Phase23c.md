@@ -186,6 +186,17 @@ underlying corner-data leaves are in tree (names below).
 2. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch` → orphan confirm-and-delete (the
    `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~3–5 commits.** Audit: design §(o‴)(I.8.24)(4)/(4.9).
 
+**Phase boundary — close 23c at CHAIN-5, open 23d = ENTRY.** Discharging `hdispatch` completes the CHAIN
+layer end-to-end for general `d`, which is exactly 23c's titled scope (the redundancy-carry re-architecture
++ chain-dispatch completion). On that commit run the phase-close checklist (`PHASE-BOUNDARIES.md` *When this
+commit closes a phase*) — including archiving 23c's `model-experiment.md` rows + *Findings* to the archive —
+and **mint 23d = ENTRY** (the next stable code; `notes/Phase23d.md`, no umbrella note): reshape
+`Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) into the `G.ChainData n` producer
+`exists_chainData_of_noRigid` (KT Lemma 4.6 chain + 4.8 split-off, general `d`; lift the `6 ≤ bodyBarDim n`
+floor; resolve the OD-1 chain/cycle dichotomy) — item 4 of *Remaining work in Phase 23* above. The
+CHAIN↔ENTRY `ChainData` contract (C.0–C.6) is **frozen**, so 23d opens against a settled interface; ASSEMBLY
+follows as 23e. Do **not** fold ENTRY into 23c — it is a distinct layer (KT §4) with its own recon.
+
 ## Decisions made during this phase
 
 ### Promoted to DESIGN / ledger / Findings (cross-cutting lessons from this phase)
