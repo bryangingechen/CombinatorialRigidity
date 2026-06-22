@@ -2084,6 +2084,107 @@ theorem PanelHingeFramework.chainData_bottom_relabel
         PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
         PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, he₀rec]
 
+/-- **A relabel-image genuine row lands in the candidate's rigidity-row span** (`lem:case-III
+general-d`, the option-(A) chain arm's per-summand `±r`-row routing brick, Phase 23c §I.8.24(4.6);
+Katoh–Tanigawa 2011 §6.4.2 the (6.62) one-step-down row correspondence carried into the candidate
+framework). The atomic per-summand step of the chain arm's `±r`-row `hg` membership: a base genuine
+rigidity row `hingeRow u w r` (`r ∈ (ofNormals Gs ends₀ q₀).hingeRowBlock f`) whose relabel `ρ`
+sends its endpoints to a surviving candidate-`(G − vᵢ)` link `f'` **off the two candidate-overridden
+slots `{e_c, e_r}`** transports under `(funLeft ρ.symm).dualMap` into the span of the candidate
+framework `caseIIICandidate (G − vᵢ) endsσρ qρ e_c e_r n_u n' n_r t`'s rigidity rows.
+
+This composes the two landed bricks the §I.8.24(4.6) Hand-off names: the relabel image is a genuine
+row of the *seed* framework `ofNormals (G − vᵢ) endsσρ qρ` (member-MOVING, KT (6.62)) carried into
+the candidate's rigidity rows by the off-slot seed-coincidence row bridge
+`hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`
+(`caseIIICandidate_supportExtensor_of_ne`), then `Submodule.subset_span`. The full `±r`-row `hg`
+GROUP leaf (`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` below) `map_sum`s over this brick:
+A-1's edge-`i` group is `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)`, so its relabel image is the
+`cⱼ`-combination of these per-summand candidate-span members, hence in the span (closed under
+`+`/`•`). The candidate-link survival + off-slot conditions are discharged by the caller from the
+chain edge-correspondence (the arm). NO motive/IH/contract change; member-MOVING, no wall (the `±r`
+row enters as a genuine candidate-edge member, never the collapsed fixed member). -/
+theorem PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate
+    [DecidableEq β] {G : Graph α β} (ρ : Equiv.Perm α)
+    {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ} {vᵢ : α}
+    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → ℝ} {t : ℝ}
+    {f f' : β} {u w u' w' : α} {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : r ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock f)
+    (hu : ρ.symm u = u') (hw : ρ.symm w = w')
+    (h1 : f' ≠ e_c) (h2 : f' ≠ e_r)
+    (hlinkGt : (G.removeVertex vᵢ).IsLink f' u' w')
+    (hsupp : (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ
+          qρ).toBodyHinge.supportExtensor f'
+        = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor f) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap (BodyHingeFramework.hingeRow u w r) ∈
+      Submodule.span ℝ (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
+        e_c e_r n_u n' n_r t).rigidityRows := by
+  -- The relabel image is `hingeRow u' w' r` (member-MOVING, `hu`/`hw`).
+  rw [BodyHingeFramework.hingeRow_funLeft_dualMap, hu, hw]
+  -- The seed-side block membership at the candidate-`(G − vᵢ)` edge `f'`: `r` annihilates the seed
+  -- framework's `f'`-extensor, which `hsupp` identifies with the base `f`-extensor (`hr`).
+  have hr' : r ∈ (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ
+      qρ).toBodyHinge.hingeRowBlock f' := by
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff, hsupp]
+    exact (BodyHingeFramework.mem_hingeRowBlock_iff _ f r).1 hr
+  -- The off-slot row bridge carries the genuine seed row into the candidate's rigidity rows.
+  exact Submodule.subset_span
+    (PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link
+      (G.removeVertex vᵢ) endsσρ qρ e_c e_r n_u n' n_r t h1 h2 hlinkGt hr')
+
+/-- **The `±r`-row candidate-span `hg` GROUP membership** (`lem:case-III general-d`, the option-(A)
+chain arm's `hg` membership for the `±r` corner row, Phase 23c §I.8.24(4.6); Katoh–Tanigawa 2011
+§6.4.2 eq. (6.66), the abstract redundancy `r` carried as a GENUINE candidate-edge group, member-
+MOVING). The `±r` row of the chain cert's corner block `g` is the relabel image
+`(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` of A-1's edge-`i` base group
+`∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` — KT's GENUINE candidate-edge `(vᵢvᵢ₊₁)ᵢ∗` row, NOT
+the collapsed `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀)` of the dead `chainData_relabel_arm_hρGv` (the
+member-mapping wall; the collapsed form would force `ρ₀ ⊥ panelSupportExtensor`, contradicting the
+discriminator `hgate`, which is exactly why it is the independent `D`-th row). This GROUP leaf is
+what the chain arm puts in the cert's `g`-corner as `rRow`, and the cert
+`case_III_rank_certification_chain`'s `hg` is its direct consequence (`Submodule.span`-membership).
+
+The proof is the `map_sum`/`map_smul` push of the relabel-image linear map over the filtered group,
+landing each summand in the candidate span by the per-summand brick
+`funLeft_dualMap_genuineRow_mem_span_caseIIICandidate` (the relabel image of one genuine base hinge
+row at an off-slot surviving candidate link is a candidate-span member), then closing the
+`cⱼ`-combination by the span's `+`/`•`-closure (`Submodule.sum_mem`/`smul_mem`). The per-summand
+transport data — the relabel image endpoints, the candidate-link survival, the off-slot edge —
+enters as a bundled hypothesis `htransport` the arm discharges from the chain edge-correspondence
+(KT (6.62) the one-step-down link map, plus the off-`{e_c, e_r}` slot condition). NO motive/IH/
+contract change; the `±r` row enters as a genuine candidate-edge member, no wall. -/
+theorem PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate
+    [DecidableEq β] {G : Graph α β} (ρ : Equiv.Perm α)
+    {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ} {vᵢ : α}
+    {Gs : Graph α β} {ends₀ : β → α × α} {q₀ : α × Fin (k + 2) → ℝ}
+    {e_c e_r : β} {n_u n' n_r : Fin (k + 2) → ℝ} {t : ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k)) (e_i : β)
+    -- A-1's per-summand base block memberships (the `hrv` of the edge-grouped redundancy):
+    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.hingeRowBlock (ev j))
+    -- the per-summand relabel transport data the arm discharges from the chain edge-correspondence:
+    (htransport : ∀ j ∈ Finset.univ.filter (fun j => ev j = e_i),
+      ∃ f' u' w', ρ.symm (uv j) = u' ∧ ρ.symm (vv j) = w' ∧ f' ≠ e_c ∧ f' ≠ e_r ∧
+        (G.removeVertex vᵢ).IsLink f' u' w' ∧
+        (PanelHingeFramework.ofNormals (G.removeVertex vᵢ) endsσρ qρ).toBodyHinge.supportExtensor f'
+          = (PanelHingeFramework.ofNormals Gs ends₀ q₀).toBodyHinge.supportExtensor (ev j)) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) ρ.symm).dualMap
+        (∑ j ∈ Finset.univ.filter (fun j => ev j = e_i),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)) ∈
+      Submodule.span ℝ (PanelHingeFramework.caseIIICandidate (G.removeVertex vᵢ) endsσρ qρ
+        e_c e_r n_u n' n_r t).rigidityRows := by
+  classical
+  -- Push the relabel-image map through the `cⱼ`-combination (`map_sum`/`map_smul`).
+  rw [map_sum]
+  refine Submodule.sum_mem _ fun j hj => ?_
+  rw [map_smul]
+  refine Submodule.smul_mem _ _ ?_
+  -- Each summand's relabel image lands in the candidate span by the per-summand brick.
+  obtain ⟨f', u', w', hu, hw, h1, h2, hlinkGt, hsupp⟩ := htransport j hj
+  exact PanelHingeFramework.funLeft_dualMap_genuineRow_mem_span_caseIIICandidate ρ
+    (hrv j) hu hw h1 h2 hlinkGt hsupp
+
 /-- **W9b — the `M₃` bottom-row tag transport** (the per-member relabel of one W6b bottom-family
 member, design §1.52(c); Katoh–Tanigawa 2011 §6.4.1 eqs.~(6.39)/(6.41), Phase 22h). One bottom row
 `φ` of the v-split W6b package — tagged either a genuine `R(G_v, q)`-row or an `(ab)`-block row
