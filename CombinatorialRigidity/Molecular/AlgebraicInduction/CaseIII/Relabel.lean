@@ -4066,6 +4066,59 @@ theorem _root_.Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy [Dec
   rw [← hab₂, BodyHingeFramework.hingeRow_swap ab₁ ab₂ ρ₀,
     BodyHingeFramework.hingeRow_comp_single_tail hne]
 
+/-- **The candidate-transported `±r` column value is `−ρ₀`** (`lem:case-III general-d`, the
+option-(A) chain arm's `hrCol` bridge, Phase 23c §I.8.24(4.5)(α); Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.62)/(6.66), the `±r` redundancy carried with constant screw-column value `−ρ₀` across the cycle
+relabel). The `notMem_span_mkQ_pmR_row_of_gate` discriminator leaf (`Candidate.lean`) consumes the
+`±r` row's column value at the re-inserted candidate body `vᵢ`; this leaf supplies it. The
+candidate-`i` `±r` row is the relabel image `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` of the base
+interior edge-`i`-group `φ = ∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (KT (6.56): the
+candidate seed `qᵢ = q₁ ∘ ρᵢ` pairs with the **inverse** cycle relabel `(shiftPerm i.castSucc)⁻¹` on
+the rows). Reading that candidate row at the candidate base body `vᵢ₋₁ = vtx (i−1)`'s screw column
+`single (vtx (i−1))` equals, by the column-naturality bridge `funLeft_dualMap_comp_single`, reading
+the base group `φ` at body `((shiftPerm i.castSucc)⁻¹).symm (vtx (i−1)) = shiftPerm i.castSucc
+(vtx (i−1)) = vtx i`'s column — which is the base `−ρ₀` of
+`interior_group_acolumn_eq_neg_baseRedundancy` (the column read at `vtx i`, `2 ≤ i ≤ d−1`). So the
+member MOVES (the row is the relabel image) while the abstract redundancy `ρ₀` stays fixed (the
+column value is the constant `−ρ₀`) — the wall-escape, KT's (6.66). At the `d = 3` `M₃` instance
+`i = 2` the cycle `shiftPerm 2 = (v₁ v₂)` is the single swap and this is the M₃ arm's
+`hingeRow_funLeft_dualMap` + `hingeRow_comp_single_tail` step at length 1. -/
+theorem _root_.Graph.ChainData.funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
+    (hab₁ : ab₁ = cd.vtx ⟨0, by omega⟩) (hab₂ : ab₂ = cd.vtx ⟨2, by omega⟩)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩)
+    (i : ℕ) (h2i : 2 ≤ i) (hid : i < cd.d) :
+    ((LinearMap.funLeft ℝ (ScrewSpace k)
+          (cd.shiftPerm (⟨i, by omega⟩ : Fin (cd.d + 1))).symm).dualMap
+        (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨i, by omega⟩),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx ⟨i - 1, by omega⟩))
+    = -ρ₀ := by
+  -- The cycle `shiftPerm ⟨i,_⟩` reads at index `i` (the cycle of `[vtx 1, …, vtx i]`).
+  -- Column-naturality (`funLeft_dualMap_comp_single`) at `σ = (shiftPerm ⟨i,_⟩).symm`,
+  -- `w = vtx (i−1)`: the candidate column at `vtx (i−1)` is the base group's column at
+  -- `σ.symm (vtx (i−1)) = shiftPerm ⟨i,_⟩ (vtx (i−1)) = vtx i`.
+  rw [BodyHingeFramework.funLeft_dualMap_comp_single, Equiv.symm_symm]
+  -- `shiftPerm ⟨i,_⟩` sends the interior `vtx (i−1)` to `vtx i` (`shiftPerm_apply_interior`,
+  -- `1 ≤ i−1 < i`); rewrite the column index `vtx (i−1) ↦ vtx i`.
+  have hkey := cd.shiftPerm_apply_interior (⟨i, by omega⟩ : Fin (cd.d + 1))
+    (j := i - 1) (by omega) (by simp only; omega)
+  have hidx : (⟨(i - 1) + 1, by omega⟩ : Fin (cd.d + 1)) = (⟨i, by omega⟩ : Fin (cd.d + 1)) := by
+    simp only [Fin.mk.injEq]; omega
+  rw [hidx] at hkey
+  rw [hkey]
+  -- The base group's column at `vtx i` is `−ρ₀` (eq. (6.66)).
+  exact cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb hab₁ hab₂
+    hdeg1 i h2i hid
+
 /-! ### P3 — the seed bridge `shiftSeedAdv = q ∘ shiftPerm` (CHAIN-2c-ii-arm)
 
 The seed-advancing fold `shiftBodyListAsc_foldl_mem_span_rigidityRows` proves the `hρGv` span
