@@ -458,7 +458,7 @@ not settle from the source)
 
 ---
 
-## 23a — detailed leaf-level recon
+## 23a — recon verdicts (closed; full leaf-level detail in git)
 
 **Status: CLOSED (sub-phase 23a CARRIER landed).** Full blow-by-blow in git +
 `notes/Phase23a.md`; this is the verdict residue. The detailed per-file
@@ -523,7 +523,7 @@ general-`d` can likewise dodge it stays open for ENTRY.
 
 ---
 
-## CHAIN — detailed leaf-level recon
+## CHAIN — recon verdicts (closed; full leaf-level detail in git)
 
 **Status:** detailed-recon done (docs only, 2026-06-17, source-verified +
 KT §6.4.2 read end-to-end against the landed tree; the minted letter is
@@ -1036,7 +1036,7 @@ Findings; the FRICTION traps (vacuous lemmas passing the gates, member-mapping) 
 
 ---
 
-## WHOLE-MATRIX RE-ARCHITECTURE — leaf-decomposition attempt + LEAF-C REFUTATION (§(o‴)(I.8.19)–(I.8.20))
+## WHOLE-MATRIX RE-ARCHITECTURE — refuted (§(o‴)(I.8.19)–(I.8.20)); the LIVE (A) route follows (§(I.8.21)–(I.8.24))
 
 **Status: DEAD ARC (refuted; the live wall-escape is (A), `(I.8.21)` onward).** This was the
 post-23b attempt to escape the `hρGv` member-mapping wall by re-shaping the eq.-(6.60→6.64)
