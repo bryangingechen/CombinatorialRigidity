@@ -553,6 +553,41 @@ theorem hingeRow_funLeft_dualMap (u v : α) (r : Module.Dual ℝ (ScrewSpace k))
     rw [LinearMap.dualMap_apply, hingeRow_apply, hingeRow_apply, LinearMap.funLeft_apply,
       LinearMap.funLeft_apply]
 
+/-- **The body-relabel transpose commutes a screw column with its permuted body**
+(`lem:case-III general-d`, the chain arm's `±r` column-naturality bridge, Phase 23c §I.8.24(4.5)(α);
+Katoh–Tanigawa 2011 §6.4.1, the eq. (6.31)/(6.62) relabel applied at the column level). For a body
+permutation `σ : Equiv.Perm α`, the relabel transpose `(funLeft σ).dualMap` precomposed with body
+`w`'s screw column `single w` equals the original functional precomposed with body `σ⁻¹ w`'s column:
+`((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ⁻¹ w))`. Pointwise,
+`funLeft σ (single w x) = (single w x) ∘ σ = single (σ⁻¹ w) x` (since `(single w x)(σ a) = x` iff
+`σ a = w` iff `a = σ⁻¹ w`, using `σ`'s bijectivity), so reading the relabelled functional at body
+`w`'s column is reading the original at body `σ⁻¹ w`'s.
+
+This is the column-level naturality the general-`d` Case-III chain arm
+(`case_III_arm_realization_chain`) needs to bridge the LANDED *base-side* `±r` identity
+`Graph.ChainData.interior_group_acolumn_eq_neg_baseRedundancy` (the redundant `r`-group's screw
+column at the base body `vᵢ` is `−ρ₀`, eq. (6.66)) to the *candidate-side* `hrCol` hypothesis the
+discriminator leaf `notMem_span_mkQ_pmR_row_of_gate` consumes: the candidate `±r` row is the
+relabel image `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` of the base group, so its column at the
+re-inserted candidate body is the base group's column at the cycle-permuted body — the same `−ρ₀`.
+Unlike `hingeRow_funLeft_dualMap` (which moves a single hinge row's *endpoints*), this reads any
+functional through a single screw column and needs `σ` bijective (the column index moves by `σ⁻¹`),
+making it the `±r`-*group* analogue (`φ` is the whole degree-2 edge group, not one `hingeRow`). -/
+theorem funLeft_dualMap_comp_single [DecidableEq α]
+    (φ : Module.Dual ℝ (α → ScrewSpace k)) (σ : Equiv.Perm α) (w : α) :
+    ((LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap φ).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) w)
+      = φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm w)) := by
+  refine LinearMap.ext fun x => ?_
+  rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.dualMap_apply]
+  congr 1
+  funext a
+  rw [LinearMap.funLeft_apply, LinearMap.single_apply, LinearMap.single_apply]
+  rcases eq_or_ne (σ a) w with h | h
+  · rw [h, Pi.single_eq_same, ← h, Equiv.symm_apply_apply, Pi.single_eq_same]
+  · rw [Pi.single_eq_of_ne h,
+      Pi.single_eq_of_ne (fun he => h (by rw [he, Equiv.apply_symm_apply]))]
+
 /-- **The hinge-difference collapse: two rows sharing an endpoint subtract to a third hinge row**
 (`def:rigidity-matrix`, the candidate-completion's eq.~(6.27) collapse algebra; Katoh–Tanigawa 2011
 §6.4.1, Phase 22e). For a fixed hinge-row-block functional `r` and a common endpoint `w`,

@@ -38,9 +38,11 @@ carrier *does* admit KT's `rank Mᵢ + rank(base∖row)` block lower bound (6.64
 entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-off*.
 
 > **Orientation for the next agent.** Read this *Current state* + the *Hand-off* (the chain CERT
-> `case_III_rank_certification_chain` + ALL its corner-data infrastructure leaves — including BOTH `hLI` halves
-> (a) `linearIndependent_mkQ_panelRow_of_edge` and (b) `notMem_span_mkQ_pmR_row_of_gate` — are LANDED; the next
-> build is the chain ARM itself) in full, then the design doc §(o‴)(I.8.24)(4) (the chain-arm leaf decomposition
+> `case_III_rank_certification_chain` + ALL its corner-data infrastructure leaves — BOTH `hLI` halves
+> (a) `linearIndependent_mkQ_panelRow_of_edge` and (b) `notMem_span_mkQ_pmR_row_of_gate`, AND the (α) `±r`
+> column-naturality bridge `funLeft_dualMap_comp_single` — are LANDED; the next build is the chain ARM itself,
+> whose only remaining genuinely-new content is (β) the chain bottom family) in full, then the design doc
+> §(o‴)(I.8.24)(4) (the chain-arm leaf decomposition
 > with exact signatures + build order) — the **next concrete commit is `case_III_arm_realization_chain`**
 > (`Arms.lean`, beside the engine): it produces the corner data `(W,hWS,hWcard,g,hg,hLI)` from the in-scope chain
 > data, applies `case_III_rank_certification_chain` to get `hrank`, then `exact case_III_realization_of_rank …`
@@ -165,10 +167,13 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    obligation (a) — panel-rows-LI-mod-`W` — `BodyHingeFramework.linearIndependent_mkQ_panelRow_of_edge` ✓ LANDED**
    (2026-06-21, with its abstract core `Submodule.linearIndependent_mkQ_of_comp`); **the `hLI` corner obligation
    (b) — `notMem_span_mkQ_pmR_row_of_gate`, the ONE genuinely-new leaf (KT (6.65) `r ∉ rowspace r(Lᵢ)`) ✓ LANDED**
-   (2026-06-21, axiom-clean). With this, ALL the chain arm's consume-leaves (carrier `hWS`/`hWcard`, both `hLI`
-   halves (a)/(b), the append-one criterion) are in tree. The next build is `case_III_arm_realization_chain` itself
-   (produces the corner data from the chain data, gets `hrank`, calls the shared tail `case_III_realization_of_rank`).
-   See *Hand-off* for the obligation map + the two NOT-yet-isolated arm-internal steps (α)/(β).
+   (2026-06-21, axiom-clean); **the (α) column-naturality bridge `BodyHingeFramework.funLeft_dualMap_comp_single`
+   ✓ LANDED** (2026-06-21, `RigidityMatrix/Basic.lean`, axiom-clean — `((funLeft σ).dualMap φ).comp (single w) =
+   φ.comp (single (σ.symm w))`, the first of the two NOT-yet-isolated arm-internal steps). With these, ALL the chain
+   arm's consume-leaves (carrier `hWS`/`hWcard`, both `hLI` halves (a)/(b), the append-one criterion, the (α) `±r`
+   column bridge) are in tree. The next build is `case_III_arm_realization_chain` itself (produces the corner data
+   from the chain data, gets `hrank`, calls the shared tail `case_III_realization_of_rank`). See *Hand-off* for the
+   obligation map + the ONE remaining NOT-yet-isolated arm-internal step (β), the chain bottom family `f`/`hf`.
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -227,12 +232,29 @@ reused as an equality); so `−ρ₀ ∈ (span C(e))^⊥`, hence `ρ₀(C(e)) = 
 panelSupportExtensor n_u n'` to contradict `hgate`. With BOTH `hLI` halves ((a) `linearIndependent_mkQ_panelRow_of_edge`,
 (b) this) + the abstract append-one criterion now landed as consume-leaves, the chain arm's `hLI` is pure wiring.
 
+**(α) bridge LANDED — `BodyHingeFramework.funLeft_dualMap_comp_single` (2026-06-21, `RigidityMatrix/Basic.lean`,
+after `hingeRow_funLeft_dualMap`; axiom-clean, build/lint clean).** The §I.8.24(4.5)(α) column-naturality bridge
+— the first of the two NOT-yet-isolated arm-internal steps, now a standalone consume-leaf. For a body permutation
+`σ : Equiv.Perm α`, `((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ.symm w))`: reading the relabel
+image of any functional at body `w`'s screw column equals reading the original at body `σ⁻¹ w`'s column. This is
+exactly what bridges the LANDED base-side `±r` identity `interior_group_acolumn_eq_neg_baseRedundancy` (the
+redundant group's column at the base body is `−ρ₀`, eq. (6.66)) to the candidate-side `hrCol` the (b) discriminator
+leaf `notMem_span_mkQ_pmR_row_of_gate` consumes: the candidate `±r` row is the relabel image
+`(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` of the base group, so its column at the re-inserted candidate body is
+the base group's column at the cycle-permuted body — the same `−ρ₀`. Unlike `hingeRow_funLeft_dualMap` (single hinge
+row's endpoints, forward `ρ`, no bijectivity) this reads a *general* `φ` (the whole degree-2 edge group) through one
+screw column, moving the column index by `σ⁻¹`, so it needs `σ` bijective. FRICTION `[idiom]` (the `Pi.single_eq_of_ne`
+side-goal needs the `Equiv.apply_symm_apply` round-trip, not `assumption`).
+
 **Next concrete commit — `case_III_arm_realization_chain` (`Arms.lean`, beside the engine; §I.8.24(4.0)/(4.5)).** It produces
 the chain cert's corner data, applies `case_III_rank_certification_chain` to get `hrank`, then
 `exact case_III_realization_of_rank …` (the now-shared tail). The corner data is discharged from the in-scope
 chain data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest template) produces the
-engine's `hρGv` at the single-swap `d=3` instance. The four obligations (full leaf map + the two arm-internal
-steps NOT-yet-isolated (α/β) → design §I.8.24(4.3)–(4.5)):
+engine's `hρGv` at the single-swap `d=3` instance. With BOTH `hLI` halves ((a)/(b)) AND the (α) column-naturality
+bridge now landed as consume-leaves, the arm's only remaining genuinely-new content is (β) — the chain bottom family
+`f`/`hf` for §(4.4) (partly the 2c-iii dispatch's job) — plus the concrete wiring assembling
+`g`/`hg`/`hLI`/`hW`/`hindep`/`hrCol` against the chain data. The four obligations (full leaf map + the (β)
+arm-internal step still NOT-yet-isolated → design §I.8.24(4.3)–(4.5)):
 - **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — apply the now-landed
   carrier leaf `BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (`Candidate.lean`,
   after `finrank_span_rigidityRows_ge_of_corner`) at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the M₃ arm's
@@ -252,17 +274,29 @@ steps NOT-yet-isolated (α/β) → design §I.8.24(4.3)–(4.5)):
   into the append-one criterion `Submodule.linearIndependent_mkQ_sumElim_unit_of_notMem_span`. The arm now only has
   to supply (a)/(b)'s shared concrete pieces — `hW` (off-`v` vanishing of the relabel-image base block — its rows
   involve only old bodies), `hindep` (the fresh hinge's extensor nonvanishing), and `hrCol` (the candidate-transported
-  `±r` column = `−ρ₀`, arm-internal step (α), design §I.8.24(4.5)) + `hsupp`/`hgate` (the dispatch's discriminator) —
-  then assemble `g`/`hg`/`hLI`. The shared W6a–W6f arm tail then lifts verbatim (it operates on the rank bound,
-  agnostic to how certified).
+  `±r` column = `−ρ₀`, arm-internal step (α) — now reduced to the landed `funLeft_dualMap_comp_single` ∘
+  `interior_group_acolumn_eq_neg_baseRedundancy`, design §I.8.24(4.5)) + `hsupp`/`hgate` (the dispatch's
+  discriminator) — then assemble `g`/`hg`/`hLI`. The shared W6a–W6f arm tail then lifts verbatim (it operates on the
+  rank bound, agnostic to how certified).
 - **Then:** the 2c-iii `chainData_dispatch` routing interior `2 ≤ i < d` through the chain arm (d=3 floor stays on
   the landed engine) → CHAIN-5 wire-up → orphan confirm-and-delete (the seed-advancing `hφ`-spine + the
   telescope's *membership* content, §I.8.20/§I.8.21(3); the `±r` chain induction LEAF 1–4 STAYS). **Cost band:
-  ~3–7 commits remaining** (the arm is the next; arm-internal steps (α)/(β) may each become a sub-leaf at build).
+  ~3–7 commits remaining** (the arm is the next; the remaining arm-internal step (β) may become a sub-leaf at build).
   Audit trail: design §(o‴)(I.8.24)(4), the `lem:case-III general-d` ledger.
 
 ## Decisions made during this phase
 
+- **(α) column-naturality bridge `funLeft_dualMap_comp_single` LANDED (2026-06-21) — the first of the chain arm's
+  two NOT-yet-isolated arm-internal steps, now a standalone consume-leaf (§I.8.24(4.5)(α)).** For
+  `σ : Equiv.Perm α`, `((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ.symm w))`: reading the relabel
+  image of any functional at body `w`'s screw column = reading the original at body `σ⁻¹ w`'s column. Bridges the
+  LANDED base-side `±r` identity `interior_group_acolumn_eq_neg_baseRedundancy` (`−ρ₀` at the base body) to the
+  candidate-side `hrCol` the (b) leaf `notMem_span_mkQ_pmR_row_of_gate` wants (the candidate `±r` row is the relabel
+  image `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap` of the base group). The general-`φ` (whole degree-2 group, not
+  one `hingeRow`) + `σ⁻¹`-on-the-column form distinguishes it from `hingeRow_funLeft_dualMap` (endpoints, forward
+  `ρ`, no bijectivity). `RigidityMatrix/Basic.lean`, after `hingeRow_funLeft_dualMap`; axiom-clean, build/lint clean.
+  FRICTION `[idiom]` (the `Pi.single_eq_of_ne` side-goal needs the `Equiv.apply_symm_apply` round-trip, not
+  `assumption`); sibling of the `funLeft`/`dualMap` relabel-transport cluster.
 - **(b) crux `notMem_span_mkQ_pmR_row_of_gate` LANDED (2026-06-21) — the chain arm's ONE genuinely-new leaf, exactly
   at the §I.8.24(4.1) pinned signature.** KT 2011 (6.65): the `±r` row's class mod the base block `W` ∉ the
   candidate panel rows' span. Proof: contradiction; `in span ⟹ rRow − y ∈ W` (`Set.range_comp`+`← Submodule.map_span`
