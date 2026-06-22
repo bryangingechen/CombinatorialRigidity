@@ -59,12 +59,27 @@ every-dispatch read stays small. When a phase closes, move its rows + its
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#24 (latest: **#24**, 2026-06-21,
-  fresh `/coordinate-phase` continuing #23 same-day; user re-confirmed the
-  triple at session start; opus reachable via the Agent `model` param, no
-  substitution needed). (A) is OPEN and building — the FIRST cert + shared tail
-  + the hLI abstract core landed (rows 379–381); next = the arm build
-  `case_III_arm_realization_chain` — see `notes/Phase23c.md` *Hand-off*.
+  would re-probe. Set/re-confirmed sessions #6–#25 (latest: **#25**, 2026-06-22,
+  fresh `/coordinate-phase`; user re-confirmed the triple at session start; opus
+  reachable via the Agent `model` param, no substitution needed). **The
+  override expires session-end — a fresh coordinator re-runs the
+  session-start availability check + re-confirms the triple.** (A) is OPEN; the
+  `±r`-row seam is RESOLVED + build-confirmed end-to-end (no `hρGv`); the arm
+  spine + corner-data assembly landed (rows 399–401); next = CHAIN-2c-iii
+  `chainData_dispatch` — see `notes/Phase23c.md` *Hand-off*.
+- **Session #25 close (2026-06-22; rows 392–401, all opus / OPUS-ONLY, gate-verified; user stopped the
+  loop after the corner-data assembly + a handoff-housekeeping pass).** **The `±r`-row seam — the
+  conjecture-crux remnant blocking 23c across 4 prior arm attempts + 2 recons — is RESOLVED + build-proven
+  end-to-end** (option (A) escapes the member-mapping wall *at the arm*, `hρe₀` only, no `hρGv`). Landed: the
+  off-slot GROUP leaf (392, kept for the bottom family), the reproduced-slot leaf (394, later DELETED as
+  mis-targeted), the corrected `±r` sourcing (399), the arm spine (400, over-shrunk → kept as cert→tail
+  spine), the corner-data assembly integration (401). The resolution came from a **diverse-lens recon pair**
+  (397/398: constructive NEEDS-REVIEW vs adversarial-refute LIKELY-SOUND; the refute member's two-rows
+  distinction adjudicated, coordinator source-confirmed) — the graph-endpoints-vs-overridden-support
+  decoupling. **Durable lessons** (this session's instruction edits): the satisfiability-check on
+  deferred-hypothesis leaves (a LANDED+axiom-clean leaf can be mis-targeted), the un-named-dispatch default
+  (a `name` routes to the async mailbox), and the diverse-lens recon pair for a recurring-mis-pin design
+  seam → *Findings* + the 2026-06-22 sync pointers. OPUS-ONLY/cap/fixups expire session-end.
 - **Session #8 close (2026-06-18; rows 238–246).** Closed CHAIN-2a + landed the CHAIN-2c single-base
   chain (2c-i/2c-ii-α/2c-ii-β); Route β LOCKED. Detail subsumed by session-#9 progress below + git.
 - **Session #9 close (2026-06-19; paused by user after row 254, clean handoff; loop stopped).**
