@@ -147,11 +147,20 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**The arm `case_III_arm_realization_chain` is LANDED; the next concrete commit is CHAIN-2c-iii
-`chainData_dispatch` — discharging the arm's corner-data + count hypotheses from the `ChainData` interior
-split.** The arm carries `(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` + `(hVone,hVcard)` as explicit hypotheses (the
-project idiom); the dispatch supplies them per interior `2 ≤ i < d` and routes the `d=3` floor (`i=2`) to the
-landed `case_III_arm_realization` engine. All the corner-data leaves are in tree (names below).
+**The arm cert→tail SPINE `case_III_arm_realization_chain` is LANDED (it carries the WHOLE corner data
+`(W,hWS,hWcard,ι,hιcard,g,hg,hLI)` + `(hVone,hVcard)` as explicit hypotheses — a thin cert→tail composition,
+NOT the corner-data assembly).** The next concrete commit is the **corner-data ASSEMBLY producer — the
+seam-resolution end-to-end integration test** (coordinator re-pointed 2026-06-22; the arm over-shrank past the
+assembly): construct the candidate `caseIIICandidate G …`, ASSEMBLE `(g,hg,hLI)` from the landed leaves —
+`hg`'s `±r` row via `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`, `hLI` via
+`linearIndependent_mkQ_corner_of_gate` with `hrCol` from `reproducedSlot_pmR_acolumn_eq` — taking the dispatch's
+RAW outputs (`hρe₀`/`hgate`/`hsupp`/`hindep`/`hW` + the bottom family `f`/`hf`/`hS` for `W`/`hWS`) as hypotheses,
+and call the spine. **This is the integration that CONFIRMS the corrected `±r` leaf actually feeds the cert's
+`hg` and the corrected `hrCol` feeds `hLI`** (all parametric over `caseIIICandidate G`; low-risk but the one
+end-to-end check the seam's 4× mis-pin history warrants isolating *before* the dispatch's production complexity).
+THEN CHAIN-2c-iii `chainData_dispatch` produces the raw outputs (A-1 at the interior split → `hρe₀`/`hgate`; the
+bottom family) + routes interior `2 ≤ i < d`, `d=3` floor (`i=2`) → the landed `case_III_arm_realization` engine.
+All the corner-data leaves are in tree (names below).
 
 **Build order:**
 1. **CHAIN-2c-iii `chainData_dispatch`** (`Relabel.lean` or a fresh `Relabel/` file post-split — see below;
