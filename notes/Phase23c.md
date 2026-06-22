@@ -43,12 +43,16 @@ entering as the `|ι|` rows of `g` independent modulo the base `W`. See *Hand-of
 > column-naturality bridge `funLeft_dualMap_comp_single`, AND the (α) candidate-transported `hrCol` leaf
 > `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` — are LANDED; the next build is the chain ARM
 > itself, whose only remaining genuinely-new content is (β) the chain bottom family) in full, then the design doc
-> §(o‴)(I.8.24)(4) (the chain-arm leaf decomposition
-> with exact signatures + build order) — the **next concrete commit is `case_III_arm_realization_chain`**
-> (`Arms.lean`, beside the engine): it produces the corner data `(W,hWS,hWcard,g,hg,hLI)` from the in-scope chain
-> data, applies `case_III_rank_certification_chain` to get `hrank`, then `exact case_III_realization_of_rank …`
-> (the shared tail). The `M₃` arm `case_III_arm_realization_M3` (`Relabel.lean:2537`) is the
-> closest template for the arm (it produces the analogous corner data at the single-swap `d=3` instance). Do
+> §(o‴)(I.8.24)(4)+(4.6) (the chain-arm leaf decomposition + the pre-build corrections) — the **next concrete
+> commit is the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership** (in
+> `Relabel.lean`; the §I.8.24(4.6) pre-build split), THEN `case_III_arm_realization_chain` itself (also
+> `Relabel.lean`, NOT `Arms.lean` — the import DAG forces it downstream of the chain-relabel leaves): it
+> CONSTRUCTS its candidate as a `caseIIICandidate (G−vᵢ) endsσρ qρ …`, produces the corner data
+> `(W,hWS,hWcard,g,hg,hLI)` from the in-scope chain data, applies `case_III_rank_certification_chain` to get
+> `hrank`, then `exact case_III_realization_of_rank …` (the shared tail). The `M₃` arm
+> `case_III_arm_realization_M3` (`Relabel.lean:2537`) is the closest template (it builds the analogous candidate +
+> corner data at the single-swap `d=3` instance). NOTE: the arm is NOT a thin instantiation (no
+> `caseIIICandidate ↔ ofNormals` bridge in tree; §I.8.24(4.6)) — it is a real ~200-line arm body. Do
 > **not** re-attempt any of the four dead route families (below) — they are exhausted and adversarially verified.
 > The standing decision is the user-adjudicated fork in *Hand-off*; the next moves are BUILDS, no longer
 > architectural decisions.
@@ -175,9 +179,13 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    collapses (a)+(b)+append-one into the single `LinearIndependent ℝ (W.mkQ ∘ Sum.elim (panel rows) (±r row))`
    the cert wants, so the arm's `hLI` is a one-line application). With these, ALL the chain arm's consume-leaves
    (carrier `hWS`/`hWcard`, the assembled `hLI` corner leaf, the (α) `±r` column bridge + `hrCol` leaf) are in
-   tree. The next build is `case_III_arm_realization_chain` itself (produces the corner data from the chain data,
-   gets `hrank`, calls the shared tail `case_III_realization_of_rank`). See *Hand-off* for the obligation map +
-   the ONE remaining NOT-yet-isolated arm-internal step (β), the chain bottom family `f`/`hf`.
+   tree. The next build is the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership,
+   THEN `case_III_arm_realization_chain` itself — both in **`Relabel.lean`** (NOT `Arms.lean`; the import DAG forces
+   it downstream of the chain-relabel leaves, §I.8.24(4.6)). The arm CONSTRUCTS its candidate as a
+   `caseIIICandidate (G−vᵢ) endsσρ qρ …` (no `caseIIICandidate ↔ ofNormals` bridge in tree — it is a real
+   ~200-line arm body, the `M₃` template, NOT a thin instantiation; §I.8.24(4.6)), produces the corner data, gets
+   `hrank`, calls the shared tail `case_III_realization_of_rank`. See *Hand-off* for the obligation map + the
+   remaining arm-internal steps (β) the chain bottom family `f`/`hf` (a HYPOTHESIS the arm takes).
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -251,16 +259,31 @@ build/lint clean).** The chain arm's (α) arm-internal step is now a standalone 
 EXACTLY the `hrCol` hypothesis `notMem_span_mkQ_pmR_row_of_gate` wants; the member MOVES while `ρ₀` stays fixed
 (KT (6.66)). So the arm's `hrCol` is now a consume-landed-brick step, not an arm-internal derivation.
 
-**Next concrete commit — `case_III_arm_realization_chain` (`Arms.lean`, beside the engine; §I.8.24(4.0)/(4.5)).**
-**(β) INTERFACE SETTLED (coordinator, 2026-06-21): the arm is buildable STANDALONE and is pure ASSEMBLY — no
-genuinely-new math is left ((b) + both (α) pieces are landed).** It TAKES the (β) bottom family as HYPOTHESES,
-mirroring the engine `case_III_arm_realization`'s `w`/`hwcard`/`hw`/`hwmem` argument list (`Arms.lean:310`,
-verified — the engine forwards them straight to `case_III_rank_certification`); the **2c-iii dispatch PRODUCES
-them** (landed OD-7 reduction producers + relabel, the way the d=3 dispatch does via A-1). The arm does NOT
-produce (β). So the arm body, on the M₃ template (`case_III_arm_realization_M3`, `Relabel.lean:2537`): assemble
-`(W,hWS,hWcard,g,hg,hLI)` from the landed leaves + the (β)/`hgate`/`hsupp` hypotheses, apply
-`case_III_rank_certification_chain` to get `hrank`, then `exact case_III_realization_of_rank …` (the shared tail).
-The obligations (full leaf map → design §I.8.24(4.3)–(4.5)):
+**Next concrete commit — the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership
+(`Relabel.lean`; design §I.8.24(4.6), the pre-build split).** A docs-verified pre-build pass (2026-06-21,
+§I.8.24(4.6)) found two errors in the §I.8.24(4.0)–(4.5) "pure assembly" framing that must be respected before the
+arm: **(1) the arm lives in `Relabel.lean`, NOT `Arms.lean`** — the import DAG is `Arms ⊂ Relabel ⊂ Realization`,
+and the arm consumes the chain-relabel leaves `chainData_bottom_relabel`/`funLeft_dualMap_interior_group_acolumn_
+eq_neg_baseRedundancy` (both downstream of `Arms.lean`), so it cannot compile in `Arms.lean`; **(2) the arm is NOT
+a thin instantiation** — the cert is stated over `caseIIICandidate (G−vᵢ) endsσρ qρ …` (`Candidate.lean:1886`),
+there is no `caseIIICandidate ↔ ofNormals` bridge in tree, and the chain leaves produce membership in
+`ofNormals (G−vᵢ) endsσρ qρ`, so the arm must CONSTRUCT its candidate as a `caseIIICandidate` and route the
+chain-leaf memberships into it via the off-the-two-slots seed-coincidence (`caseIIICandidate_supportExtensor_of_ne`),
+exactly as the engine + the SHARED tail already do for d=3. That is genuine arm-internal wiring, a real ~200-line
+arm body (the `M₃` template `Relabel.lean:2537` is the closest precedent), NOT "wire brick B into slot C".
+
+Under scope-to-fit, split the build: **first** land the (α) `hrCol`-at-`caseIIICandidate` sub-leaf (state the
+`−ρ₀` column value for the SPECIFIC `±r` `rRow` the arm puts in `g` = the relabel-image of A-1's edge-`i` group at
+the candidate `caseIIICandidate`, bridging the landed `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`
+`ofNormals`-column value to the `caseIIICandidate` row's column) **+** the candidate `±r`-row `hg` membership (that
+same group ∈ `span caseIIICandidate.rigidityRows`, via `chainData_bottom_relabel`'s genuine branch +
+`caseIIICandidate_supportExtensor_of_ne`); **then** `case_III_arm_realization_chain` itself (in `Relabel.lean`),
+assembling `(W,hWS,hWcard,g,hg,hLI)` from those + the landed carrier/corner-of-gate leaves + the (β)/`hgate`/`hsupp`
+hypotheses, applying `case_III_rank_certification_chain` for `hrank`, then `exact case_III_realization_of_rank …`
+(the SHARED tail). The (β) bottom family stays a HYPOTHESIS the arm takes (mirroring the engine
+`case_III_arm_realization`'s `w`/`hwcard`/`hw`/`hwmem`, `Arms.lean:310`); the **2c-iii dispatch PRODUCES it**
+(landed OD-7 reduction producers + relabel). Relabel.lean is at 4776 lines (past the ~1500-LoC tripwire) — the arm
+likely forces a `Relabel/` split at this build; flag it. The full leaf map → design §I.8.24(4.3)–(4.6):
 - **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — apply the now-landed
   carrier leaf `BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (`Candidate.lean`,
   after `finrank_span_rigidityRows_ge_of_corner`) at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the M₃ arm's
@@ -292,6 +315,19 @@ The obligations (full leaf map → design §I.8.24(4.3)–(4.5)):
 
 ## Decisions made during this phase
 
+- **Pre-arm-build corrections pass (2026-06-21, docs-only; §I.8.24(4.6)) — TWO errors in the "pure assembly"
+  framing fixed before the arm build.** Verified against the import DAG + the landed cert/leaf/template bodies:
+  (1) **the chain arm goes in `Relabel.lean`, NOT `Arms.lean`** — `Arms ⊂ Relabel ⊂ Realization`, and the arm
+  consumes the chain-relabel leaves `chainData_bottom_relabel`/`funLeft_dualMap_interior_group_acolumn_eq_neg_
+  baseRedundancy` (downstream of `Arms.lean`), so it cannot compile there; (2) **the arm is NOT a thin
+  instantiation** — the cert is over `caseIIICandidate`, there is no `caseIIICandidate ↔ ofNormals` bridge in
+  tree, and the chain leaves produce `ofNormals` membership, so the arm must CONSTRUCT its candidate as a
+  `caseIIICandidate` and route the chain-leaf memberships in via the off-the-two-slots seed-coincidence
+  (`caseIIICandidate_supportExtensor_of_ne`) — genuine ~200-line arm-internal wiring (the `M₃` arm is the
+  template), the same kind the engine + SHARED tail already do. Re-pointed the *Hand-off* + *Orientation* to a
+  scope-to-fit split (the (α) `hrCol`-at-`caseIIICandidate` sub-leaf + the candidate `±r`-row `hg` membership
+  first, then the arm). No motive/IH/contract change; wall stays gone. Relabel.lean (4776 lines) likely forces a
+  `Relabel/` split at the arm build — flagged.
 - **`hLI` corner assembly COLLAPSED into one consume-leaf `linearIndependent_mkQ_corner_of_gate`
   (2026-06-21) — the chain arm's `hLI` obligation is now a one-line application (§I.8.24(4.3)).**
   `BodyHingeFramework.linearIndependent_mkQ_corner_of_gate` (`Candidate.lean`, after
