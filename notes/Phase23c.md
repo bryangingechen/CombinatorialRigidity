@@ -201,26 +201,18 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**FIRST build LANDED: `case_III_rank_certification_chain` (2026-06-21, axiom-clean, build/lint clean).** The
-forked general-`d` Case-III rank cert is in tree (`Candidate.lean`, after
-`finrank_span_rigidityRows_ge_of_corner`), proving §I.8.24(1) type-checks in Lean: it consumes the corner data
-`(W, hWS, hWcard, ι/hιcard, g, hg, hLI)`, applies `finrank_span_rigidityRows_ge_of_corner` (`finrank W + |ι| ≤
-finrank (span candidate.rigidityRows)`), and closes the count `finrank W + D = D(m_v−1) + D = D·m_v =
-D(|V(G)|−1)` (`hVone`/`hVcard` + `Nat.mul_succ`). **NO `hρGv`** — the wall is gone. The supporting de-risk decls
-already in tree: `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` + `…exists_le_finrank_eq_card_of_
-injective_map` (mirror, `Mathlib/LinearAlgebra/Dimension/Constructions.lean`),
-`BodyHingeFramework.finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`), the `±r` identity
+**Landed chain-cert foundation (2026-06-21, all axiom-clean, build/lint clean).** The forked general-`d` rank cert
+`case_III_rank_certification_chain` (`Candidate.lean`) is in tree — consumes the corner data
+`(W,hWS,hWcard,ι,g,hg,hLI)`, applies `finrank_span_rigidityRows_ge_of_corner`, closes the count `finrank W + D =
+D·m_v = D(|V(G)|−1)`, **NO `hρGv`** (the wall is gone). Supporting decls in tree:
+`Submodule.{finrank_add_card_le_of_linearIndependent_mkQ, exists_le_finrank_eq_card_of_injective_map}` (mirror),
+`finrank_span_rigidityRows_ge_of_corner` (`Candidate.lean`), the `±r` identity
 `interior_group_acolumn_eq_neg_baseRedundancy = −ρ₀` (`Relabel.lean:4039`).
 
-**SHARED W6a–W6f tail FACTORED OUT (2026-06-21) — `case_III_realization_of_rank` (`Arms.lean`, before the
-engine; §I.8.24(3) REUSE list).** The rank-to-realization tail of `case_III_arm_realization` — everything that
-depends only on the candidate rank bound `hrank` and the split/seed data, *not* on how the rank was certified
-(W6e re-extract → W6f good-`t` shear → GAP-3 LI-transfer → GAP-2 generic upgrade) — is now a standalone lemma
-taking `hrank` as a hypothesis. The `d=3` engine `case_III_arm_realization` is re-expressed as: derive `hrank`
-via the landed `hρGv`-collapse cert `case_III_rank_certification`, then `exact case_III_realization_of_rank …`
-(byte-zero-regression; M₂/M₃ + dispatch untouched, build/lint/axiom-clean). So the chain arm no longer needs
-to copy ~180 lines of W6a–W6f: it produces `hrank` via `case_III_rank_certification_chain` and calls the SAME
-shared tail. This was the §I.8.24(3) "SHARED arm-realization tail … lifts verbatim" brick, now genuinely shared.
+**SHARED W6a–W6f tail `case_III_realization_of_rank` (`Arms.lean`, 2026-06-21).** The rank-to-realization tail
+(W6e→W6f good-`t` shear→GAP-3→GAP-2) is a standalone lemma taking `hrank` as a hypothesis; both the d=3 engine and
+the chain arm derive `hrank` via their respective cert, then `exact case_III_realization_of_rank …`. d=3
+byte-zero-regression. (§I.8.24(3) "tail lifts verbatim" brick, now genuinely shared — the chain arm copies no W6a–W6f.)
 
 **(b) crux LANDED — `BodyHingeFramework.notMem_span_mkQ_pmR_row_of_gate` (2026-06-21, `Candidate.lean`, after
 `linearIndependent_mkQ_panelRow_of_edge`; axiom-clean, build/lint clean).** The ONE genuinely-new leaf of the
@@ -256,22 +248,23 @@ build/lint clean).** The chain arm's (α) arm-internal step is now a standalone 
 EXACTLY the `hrCol` hypothesis `notMem_span_mkQ_pmR_row_of_gate` wants; the member MOVES while `ρ₀` stays fixed
 (KT (6.66)). So the arm's `hrCol` is now a consume-landed-brick step, not an arm-internal derivation.
 
-**Next concrete commit — `case_III_arm_realization_chain` (`Arms.lean`, beside the engine; §I.8.24(4.0)/(4.5)).** It produces
-the chain cert's corner data, applies `case_III_rank_certification_chain` to get `hrank`, then
-`exact case_III_realization_of_rank …` (the now-shared tail). The corner data is discharged from the in-scope
-chain data, the way `case_III_arm_realization_M3` (`Relabel.lean:2537`, the closest template) produces the
-engine's `hρGv` at the single-swap `d=3` instance. With BOTH `hLI` halves ((a)/(b)), the (α) column-naturality
-bridge, AND the (α) `hrCol` leaf now landed as consume-leaves, the arm's only remaining genuinely-new content is
-(β) — the chain bottom family `f`/`hf` for §(4.4) (partly the 2c-iii dispatch's job) — plus the concrete wiring
-assembling `g`/`hg`/`hLI`/`hW`/`hindep` against the chain data (`hrCol` now reads off the landed (α) leaf). The
-four obligations (full leaf map + the (β) arm-internal step still NOT-yet-isolated → design §I.8.24(4.3)–(4.5)):
+**Next concrete commit — `case_III_arm_realization_chain` (`Arms.lean`, beside the engine; §I.8.24(4.0)/(4.5)).**
+**(β) INTERFACE SETTLED (coordinator, 2026-06-21): the arm is buildable STANDALONE and is pure ASSEMBLY — no
+genuinely-new math is left ((b) + both (α) pieces are landed).** It TAKES the (β) bottom family as HYPOTHESES,
+mirroring the engine `case_III_arm_realization`'s `w`/`hwcard`/`hw`/`hwmem` argument list (`Arms.lean:310`,
+verified — the engine forwards them straight to `case_III_rank_certification`); the **2c-iii dispatch PRODUCES
+them** (landed OD-7 reduction producers + relabel, the way the d=3 dispatch does via A-1). The arm does NOT
+produce (β). So the arm body, on the M₃ template (`case_III_arm_realization_M3`, `Relabel.lean:2537`): assemble
+`(W,hWS,hWcard,g,hg,hLI)` from the landed leaves + the (β)/`hgate`/`hsupp` hypotheses, apply
+`case_III_rank_certification_chain` to get `hrank`, then `exact case_III_realization_of_rank …` (the shared tail).
+The obligations (full leaf map → design §I.8.24(4.3)–(4.5)):
 - **`hWS : W ≤ span candidate.rigidityRows` + `hWcard : finrank W = D(m_v−1)`** — apply the now-landed
   carrier leaf `BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (`Candidate.lean`,
   after `finrank_span_rigidityRows_ge_of_corner`) at `L = (funLeft (shiftPerm)⁻¹).dualMap` (injective; the M₃ arm's
   `hw` route `Relabel.lean:2729`), `f = the base LI family` of card `D(m_v−1)`, `hS` = the span-level
-  `chainData_bottom_relabel` (genuine→genuine, member-MOVING; §I.8.20(e)). Gives `W` with the right `finrank` — the
-  arm still has to supply `f`/`hf`/`hS` against the concrete chain data (`f` = the engine's bottom family `w`, the
-  ARM wiring), but the subspace-packaging step is no longer a wall.
+  `chainData_bottom_relabel` (genuine→genuine, member-MOVING; §I.8.20(e)). Gives `W` with the right `finrank`. The
+  bottom family `f`/`hf` is a **hypothesis** the arm takes (≡ the engine's `w`/`hwcard`/`hw`); the dispatch supplies
+  it. So the packaging is a one-line wire of the landed carrier leaf, not arm-internal production.
 - **`g` (the `D` corner rows) + `hg`** — `g` = the `D−1` candidate panel rows `r(Lᵢ)` (`panelRow_mem_rigidityRows`,
   free) ⊕ the `±r` row sourced as A-1's genuine candidate-EDGE group `∑_{ev j = edge i} c j • hingeRow …` of
   `hcombGv` (`Candidate.lean:441`), transported to candidate rows by the same relabel-image map as `hWS`.
