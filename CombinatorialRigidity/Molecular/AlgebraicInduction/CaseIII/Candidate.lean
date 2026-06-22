@@ -1890,6 +1890,72 @@ theorem BodyHingeFramework.linearIndependent_mkQ_corner_of_gate [DecidableEq α]
     (F.linearIndependent_mkQ_panelRow_of_edge hv hev hs hindep hW)
     (F.notMem_span_mkQ_pmR_row_of_gate hv hev hsupp hgate hs hW hrCol)
 
+/-! ### The `±r` corner row: the GENUINE reproduced-slot `e_r`-row (Phase 23c §I.8.24(4.8) fix)
+
+KT 2011 §6.4.2 eq. (6.66)'s `±r` corner row is the candidate framework's **genuine reproduced-slot
+`e_r`-row** — a single `hingeRow` carried by `e_r`'s actual `G`-link, oriented through the
+re-inserted body `vᵢ` (one of `e_r`'s graph endpoints). Its two readings are **decoupled**: its
+membership in the candidate rigidity rows reads `e_r`'s *overridden support panel* (the candidate
+omits `vᵢ` from `e_r`'s panel, so the perp test is `hρe₀`, NOT `hρGv`), while its screw column at
+`single vᵢ` reads `e_r`'s *graph endpoints* (which include `vᵢ`, giving the discriminator's `−ρ₀`).
+This decoupling is exactly what the four prior `±r`-sourcing attempts missed: a relabel-image /
+support-panel-endpoint row lands on the fresh pair (omitting `vᵢ`) and reads `0` at `single vᵢ`, the
+wrong object. The two leaves below source `hg` and `hrCol` for this one genuine row. -/
+
+/-- **The genuine reproduced-slot `e_r`-row is a candidate rigidity row** (`lem:case-III general-d`,
+the option-(A) chain arm's `hg` membership for the `±r` corner row, Phase 23c §I.8.24(4.8);
+Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). The corrected `±r`-row sourcing, replacing the mis-targeted
+relabel-image GROUP route (`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_reproduced`, whose
+`hcollapse` is unsatisfiable — a many-row filtered sum does not equal a single `hingeRow`).
+
+The `±r` row is the candidate's **reproduced hinge `e_r`** carried by its genuine `G`-link
+`e_r = u w` (`caseIIICandidate.graph = G`): `hingeRow u w ρ₀` lies in the candidate's rigidity rows
+because `ρ₀` annihilates `e_r`'s overridden support extensor
+`panelSupportExtensor (n_u + t • n') n_r`
+(`caseIIICandidate_supportExtensor_reproduced`), i.e. `ρ₀ ∈ r(p(e_r))` of the candidate
+(`mem_hingeRowBlock_iff`). The crux is the **decoupling**: `e_r`'s graph link `u w` is *not* the
+fresh pair of its overridden support panel — the link still passes through the re-inserted body `vᵢ`
+(it is one of `u, w`), so this row's screw column at `vᵢ` is nonzero (the discriminator's `hrCol`,
+`reproducedSlot_pmR_acolumn_eq`), while its panel — and hence its membership perp test — omits `vᵢ`,
+giving the membership perp `hperp` from the dispatch's `hρe₀` (NEVER `hρGv`). This is the cycle
+generalization of the `d = 3` `M₃` arm's own `e_b`-row build (`case_III_arm_realization_M3`'s
+`hvb_row`, `Relabel.lean`): the same `Submodule.subset_span ⟨e_r, u, w, hlink, ρ₀, hblock, rfl⟩`
+shape, with `hblock` reduced through the reproduced slot's support. -/
+theorem PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_reproduced
+    [DecidableEq β] (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (e_c e_r : β) (n_u n' n_r : Fin (k + 2) → ℝ) (t : ℝ) {u w : α}
+    (hlink : G.IsLink e_r u w)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hperp : ρ₀ (panelSupportExtensor (n_u + t • n') n_r) = 0) :
+    BodyHingeFramework.hingeRow u w ρ₀ ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G ends q e_c e_r n_u n' n_r t).rigidityRows := by
+  refine Submodule.subset_span ⟨e_r, u, w, ?_, ρ₀, ?_, rfl⟩
+  · rwa [PanelHingeFramework.caseIIICandidate_graph]
+  · rw [BodyHingeFramework.mem_hingeRowBlock_iff,
+      PanelHingeFramework.caseIIICandidate_supportExtensor_reproduced]
+    exact hperp
+
+/-- **The genuine reproduced-slot `e_r`-row's screw column at the re-inserted body `vᵢ` is `−ρ₀`**
+(`lem:case-III general-d`, the option-(A) chain arm's `hrCol` for the `±r` corner row, Phase 23c
+§I.8.24(4.8); Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). The discriminator
+`notMem_span_mkQ_pmR_row_of_gate` consumes `hrCol : rRow.comp (single vᵢ) = −ρ₀`; this supplies it
+for the genuine reproduced-slot row `rRow = hingeRow u vᵢ ρ₀` oriented with the re-inserted body
+`vᵢ` as its **head** (one of `e_r`'s graph endpoints).
+
+Reading a hinge row at its *head* body's screw column negates the block functional: by
+`hingeRow_swap`, `hingeRow u vᵢ ρ₀ = hingeRow vᵢ u (−ρ₀)`, whose tail is now `vᵢ`, so
+`hingeRow_comp_single_tail` reads `−ρ₀` at `single vᵢ`. This is the `−ρ₀` the discriminator pins —
+read off `e_r`'s graph link (which *includes* `vᵢ`), the value the four prior relabel-image /
+fresh-pair attempts could not produce (those rows omit `vᵢ` and read `0`). The companion membership
+leaf `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` puts the *same* row in `span`; together
+they ground both `hg` and `hrCol` for the one genuine `±r` object. -/
+theorem PanelHingeFramework.reproducedSlot_pmR_acolumn_eq [DecidableEq α] {u vᵢ : α}
+    (huv : u ≠ vᵢ) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) :
+    (BodyHingeFramework.hingeRow u vᵢ ρ₀).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) vᵢ) = -ρ₀ := by
+  rw [BodyHingeFramework.hingeRow_swap u vᵢ ρ₀,
+    BodyHingeFramework.hingeRow_comp_single_tail huv.symm]
+
 /-! ## The forked general-`d` Case-III rank certification (Phase 23c, option (A))
 
 The general-`d` Case-III rank certification, FORKED off the landed `case_III_rank_certification`

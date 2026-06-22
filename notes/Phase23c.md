@@ -27,63 +27,55 @@ column bridge `funLeft_dualMap_comp_single` + the base-side `−ρ₀` column fa
 `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` are all in tree (axiom-clean). Detail:
 design §(o‴)(I.8.18)–(I.8.24)(4.8); the *Decisions made* below.
 
-**BLOCKED (2026-06-21): the `±r`-row sourcing seam does NOT close from the landed leaves — a VERIFIED
-column-index/object mismatch between the `hg` route and the `hrCol` route (design §I.8.24(4.8)).** Assembling
-the arm exposes that **no single `±r`-row object grounds BOTH the cert's `hg` AND the discriminator's `hrCol`**
-from what is in tree. The re-inserted body is `vᵢ = vtx i` (the candidate hinge `e_a` links `vtx i — vtx(i+1)`,
-so the discriminator reads `hrCol` at `single (vtx i)`), but the landed `hrCol` leaf
-`funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` reads `−ρ₀` at `single (vtx(i-1))` — the WRONG
-body — for the FILTERED edge-`i` group, which (a) does NOT collapse to a single row (so the reproduced-slot
-leaf's `hcollapse` is unsatisfiable) and (b) relabels its endpoints to the candidate fresh pair (so the off-slot
-GROUP leaf's `htransport` is unsatisfiable). The full-combination single row (via T-2) IS a clean genuine row
-`hingeRow (vtx 0)(vtx 1) ρ` with a valid `hg`, but reads `0` at `single (vtx i)`, not `−ρ₀`. **This is the
-clause-(ii) FLAG-DON'T-FORCE stop** (a 4th pin on this seam would be a confident-wrong one). Full diagnosis +
-the corrected leaf signature + the named open decision: design §(o‴)(I.8.24)(4.8).
+**RESOLVED (2026-06-22): the `±r`-row sourcing closes via the DIRECT genuine reproduced-slot `e_b`-row — the
+graph-endpoints-vs-overridden-support DECOUPLING grounds BOTH `hg` and `hrCol` with no `hρGv` (design
+§I.8.24(4.9)).** The corrected leaves LANDED (axiom-clean, build/lint warning-clean): the `±r` row is the
+candidate's reproduced hinge `e_b` read off its own GENUINE `G`-link `hingeRow u vᵢ ρ₀` (oriented with the
+re-inserted body `vᵢ` as head). Because `caseIIICandidate.graph = G` keeps `e_b`'s genuine link while overriding
+only its support panel, ONE object grounds both: membership reads the overridden panel (`ρ₀ ⊥` it = `hρe₀`,
+NEVER `hρGv` — the M₃ `hvb_row` mechanism), and the `single vᵢ` column reads the graph link (`hingeRow_swap` +
+`hingeRow_comp_single_tail` = `−ρ₀`, the discriminator's `hrCol`). The (4.8) two-object mismatch is gone — the
+prior relabel-image / filtered-group attempts landed on the candidate fresh pair (which OMITS `vᵢ`) and read `0`.
 
-> **Orientation for the next agent.** The high-level architecture is still sound (the cert is selector-agnostic,
-> NO `hρGv` slot; cert + carrier + abstract-LA + both `hLI` halves all landed). **Do NOT** re-attempt the four
-> dead route families (§(o‴)(I.8.18)–(I.8.20)) or re-litigate the fork. But the `±r`-row `hg`/`hrCol` sourcing
-> is **not yet closed** (§I.8.24(4.8)) — the (4.7) "both `hg` leaves landed, arm is pure wiring" claim was
-> OVERSTATED: the reproduced-slot leaf's `hcollapse` input is unbuilt. The next concrete commit is **the
-> corrected `±r`-row sourcing**: a `vtx i`-column `hrCol` leaf (reading the re-inserted body, not `vtx(i-1)`) +
-> a single-reproduced-row `hg` for `hingeRow (vtx i)(vtx(i-1)) ρ₀` (incident to `vᵢ`, the M₃ `hvb_row` `:2866`
-> route generalized to the cycle), gated on the OPEN DECISION `hingeRow (vtx i)(vtx(i-1)) ρ₀ ∈ span (candidate
-> rows)` — the substantive KT-(6.66) step the current leaves miss (the same math the dead `hρGv`-spine attacked,
-> §I.8.0–I.8.3). Signature + fate-of-leaves: §I.8.24(4.8) + *Hand-off*.
+> **Orientation for the next agent.** The `±r`-row seam is CLOSED. **Do NOT** re-attempt the four dead route
+> families (§I.8.18–(I.8.20)), re-litigate the fork, or revive the relabel-image `±r` route. The next concrete
+> commit is the arm assembly `case_III_arm_realization_chain` (now genuine wiring, not blocked): construct the
+> candidate over full `G`, assemble `(W,hWS,hWcard,g,hg,hLI)` with the `±r` corner row = these two leaves, apply
+> `case_III_rank_certification_chain` for `hrank`, `exact case_III_realization_of_rank`. See *Hand-off*.
 
 ## Current state
 
-**BLOCKED on the `±r`-row sourcing (§I.8.24(4.8)) — the cert's `g`-corner `±r` row cannot satisfy BOTH `hg`
-AND `hrCol` from the landed leaves; the next leaf is the CORRECTED `±r` sourcing, gated on an open decision.**
-The high-level (A) architecture is sound (cert is selector-agnostic, NO `hρGv` slot; the member-mapping wall is
-out of the cert). The four dead route families (§I.8.18–(I.8.20)) stay exhausted; **do not re-attempt.** What
-the arm-build exposed: the re-inserted body is `vᵢ = vtx i`; the discriminator
-`notMem_span_mkQ_pmR_row_of_gate` reads `hrCol` at `single (vtx i)`; but the landed `hrCol` leaf
-`funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` reads `−ρ₀` at `single (vtx(i-1))` (wrong body)
-for the FILTERED edge-`i` group — whose `hg` is unsatisfiable (no collapse to a single row; relabelled endpoints
-= the fresh pair). The full-combination single row (T-2) has a clean `hg` but reads `0` at `vtx i`. Full audit:
-design §(o‴)(I.8.18)–(I.8.24)(4.8).
+**The `±r`-row sourcing is CLOSED (§I.8.24(4.9)); next is the arm assembly `case_III_arm_realization_chain`.**
+The corrected leaves landed in `Candidate.lean` (after `linearIndependent_mkQ_corner_of_gate`): the genuine
+reproduced-slot row's `hg` membership (`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`) + its `hrCol`
+column-at-`vᵢ` value (`reproducedSlot_pmR_acolumn_eq`). Both abstract over the `caseIIICandidate` params + the
+genuine `e_b`-link + the `hρe₀` perp; the SAME object `hingeRow u vᵢ ρ₀` grounds the cert's `hg`, the
+discriminator's `rRow`, and the `−ρ₀`-at-`vᵢ` column — the (4.8) two-object mismatch is resolved by the
+decoupling. The mis-targeted reproduced-slot GROUP leaf (`b675317`) is DELETED (its `hcollapse` was
+unsatisfiable + it was stated over `G.removeVertex vᵢ`, the wrong graph). The high-level (A) architecture stays
+sound (cert is selector-agnostic, NO `hρGv` slot; the member-mapping wall is out of the cert). The four dead
+route families (§I.8.18–(I.8.20)) stay exhausted; **do not re-attempt.** Full audit: design §(o‴)(I.8.24)(4.9).
 
-**Landed (all axiom-clean), still usable:** the cert `case_III_rank_certification_chain` (NO `hρGv`); carrier
-W-packaging `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`; both `hLI` halves
+**Landed (all axiom-clean), the `±r` corner now closed:** the cert `case_III_rank_certification_chain` (NO
+`hρGv`); carrier W-packaging `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`; both `hLI` halves
 (`linearIndependent_mkQ_panelRow_of_edge`, `notMem_span_mkQ_pmR_row_of_gate`) + assembly
 `linearIndependent_mkQ_corner_of_gate`; the (α) column bridge `funLeft_dualMap_comp_single`; the off-slot row
 bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`; the per-member genuine transport
 `chainData_bottom_relabel`; the SHARED tail `case_III_realization_of_rank`; the off-slot GROUP leaf
-`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (serves the genuine off-slot `hWS` bottom family — its
-correct use). **Landed but mis-aimed for the `±r` corner:** the `hrCol` leaf
-`funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy` (reads `vtx(i-1)`, not the re-inserted `vtx i`);
-the reproduced-slot `±r`-row leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_reproduced` (its
-`hcollapse` input is unbuilt for the filtered group). **Orphaned:** T-2
-`chainData_candidateRow_edgeGrouped_transport_comb` (the full-combination single-row transport — revive only if
-the corrected sourcing routes through it).
+`funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (serves the genuine off-slot `hWS` bottom family). **NEW
+(the `±r` corner sourcing, §I.8.24(4.9)):** `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hg`, the
+genuine reproduced-slot row in the candidate span via `hρe₀`) + `reproducedSlot_pmR_acolumn_eq` (`hrCol`, the
+`−ρ₀`-at-`vᵢ` column). **DELETED:** the mis-targeted `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_
+reproduced` (unsatisfiable `hcollapse`, wrong graph). **NOT the `±r` sourcing (superseded, revive only if a
+later arm step needs them):** the base-side `hrCol` leaf `funLeft_dualMap_interior_group_acolumn_eq_neg_
+baseRedundancy` (reads `vtx(i-1)`); T-2 `chainData_candidateRow_edgeGrouped_transport_comb`.
 
-**Next: the corrected `±r`-row sourcing (NOT the arm yet).** A `vtx i`-column `hrCol` leaf (reading the
-re-inserted body) + a single-reproduced-row `hg` for `hingeRow (vtx i)(vtx(i-1)) ρ₀` (incident to `vᵢ`,
-generalizing the M₃ `hvb_row` `:2866` reproduced-row route), gated on the OPEN DECISION
-`hingeRow (vtx i)(vtx(i-1)) ρ₀ ∈ span (candidate rows)` — the substantive KT-(6.66) step (the same math the dead
-`hρGv`-spine §I.8.0–I.8.3 attacked). Signature in *Hand-off* + design §I.8.24(4.8). Relabel.lean (~4830 lines,
-past the ~1500 tripwire) likely forces a `Relabel/` split when the arm finally builds — flag at that build.
+**Next: the arm assembly `case_III_arm_realization_chain`.** Construct the candidate `caseIIICandidate G ends q
+e_a e_b (q(a,·)) n' n_b 0` over the FULL `G`; assemble the cert's corner data — `hWS`/`hWcard` ← carrier leaf;
+`hg` off-slot family ← GROUP leaf, `±r` row ← the new membership leaf; `hLI` ← `linearIndependent_mkQ_corner_of_
+gate` with `hrCol` from the new column leaf — apply `case_III_rank_certification_chain` for `hrank`, then `exact
+case_III_realization_of_rank`. Relabel.lean (~4880 lines, past the ~1500 tripwire) likely forces a `Relabel/`
+split when the arm builds — flag at that build.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -115,10 +107,9 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
 
 1. **The forked general-`d` chain cert + arm** (§I.8.24) → the `±r`-based engine, NO `hρGv`. d=3 keeps the
    landed engine. **Cert + tail + carrier + both `hLI` halves + assembly + (α) bridge + off-slot row
-   bridge + `chainData_bottom_relabel` ✓ ALL LANDED** (2026-06-21, axiom-clean; names in *Current state*).
-   **BLOCKED:** the `±r`-row sourcing — no single object grounds BOTH `hg` AND `hrCol`-at-`vᵢ` from the
-   landed leaves (§I.8.24(4.8), VERIFIED). The corrected `vtx i`-column `hrCol` + single-reproduced-row `hg`
-   (gated on the open decision) is the next leaf. Then the arm: *Hand-off*.
+   bridge + `chainData_bottom_relabel` + the `±r` corner sourcing (`hg` + `hrCol`) ✓ ALL LANDED**
+   (2026-06-22, axiom-clean; names in *Current state*). The next leaf is the **arm assembly**
+   `case_III_arm_realization_chain` — now genuine wiring, no longer blocked: *Hand-off*.
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
    routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
@@ -145,71 +136,50 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**BLOCKED (§I.8.24(4.8)); the next concrete commit is the CORRECTED `±r`-row sourcing, gated on an open
-decision — NOT `case_III_arm_realization_chain` yet.** The (4.7) "both `hg` leaves landed, arm is pure wiring"
-claim was overstated; the reproduced-slot leaf's `hcollapse` is unsatisfiable for the filtered group, and the
-landed `hrCol` leaf reads the wrong body (`vtx(i-1)` not the re-inserted `vtx i`). Full diagnosis: design
-§I.8.24(4.8).
+**The `±r`-row seam is CLOSED (§I.8.24(4.9)); the next concrete commit is `case_III_arm_realization_chain`,
+the arm assembly — genuine wiring, no remaining blocker.** The `±r` corner row is the direct genuine
+reproduced-slot `e_b`-row `hingeRow u vᵢ ρ₀` (oriented with the re-inserted body `vᵢ` as head): its `hg`
+membership + `hrCol` column are the two new leaves in `Candidate.lean`, both via `hρe₀` only (no `hρGv`).
 
-**Build order (revised):**
-1. **The CORRECTED `±r`-row sourcing** (`Relabel.lean`). Two coupled leaves:
-   - a `vtx i`-column `hrCol` leaf — reading the `±r` row's column at the re-inserted body `single (vtx i)`
-     (the candidate-hinge tail the discriminator pins), NOT the landed `vtx(i-1)` of
-     `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`. Candidate shape:
-     `(hingeRow (vtx i)(vtx(i-1)) ρ₀).comp (single (vtx i)) = ρ₀` (sign reconciled vs the discriminator's `−ρ₀`).
-   - a single-reproduced-row `hg`: `hingeRow (vtx i)(vtx(i-1)) ρ₀ ∈ span (caseIIICandidate … e_a e_b …)`
-     rigidityRows, via `caseIIICandidate_supportExtensor_reproduced` + `hperp` (the reproduced slot `e_b` links
-     `{vtx i, vtx(i-1)}`, incident to `vᵢ`). This generalizes the M₃ engine's own `hvb_row` reproduced-row build
-     (`Relabel.lean:2866`) to the cycle.
-   - **OPEN DECISION (gates both):** `hingeRow (vtx i)(vtx(i-1)) ρ₀ ∈ span (candidate rows)` — does the
-     transported redundancy land on the `{vtx i, vtx(i-1)}` edge (the reproduced slot, incident to `vᵢ`), NOT the
-     `{vtx(i-1), vtx(i+1)}` fresh pair the filtered-group relabel produces? This is the substantive KT-(6.66)
-     step the current leaves miss (the same math the dead `hρGv`-spine §I.8.0–I.8.3 attacked: `hingeRow vᵢ₋₁
-     vᵢ₊₁ ρ₀ ∈ span (G−vᵢ)`). Resolve before committing the leaf.
-   - **Fate of leaves:** GROUP leaf RETAINED (genuine off-slot `hWS` family); reproduced-slot leaf (`b675317`)
-     RETAINED but re-aim its `hcollapse` to the single reproduced row or supersede; `hrCol` leaf RETAINED as the
-     base-side `vtx(i-1)` fact (not the discriminator's `hrCol`); T-2 REVIVE only if the corrected sourcing
-     routes through it (route (a) shows the full row reads `0` at `vtx i`).
-2. **Then `case_III_arm_realization_chain`** (`Relabel.lean`, NOT `Arms.lean` — import DAG `Arms ⊂ Relabel ⊂
-   Realization`; M₃ `:2691` is the construct-candidate + corner-data template). Builds `caseIIICandidate (G−vᵢ)
-   endsσρ qρ e_a e_b …`, assembles `(W,hWS,hWcard,g,hg,hLI)` — **`hWS`/`hWcard`** ← carrier leaf
-   `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`; **`hg`** off-slot family ← GROUP leaf, `±r`
-   row ← the corrected single-reproduced-row `hg`; **`hLI`** ← `linearIndependent_mkQ_corner_of_gate` with
-   `hrCol` from the corrected `vtx i`-column leaf — then `case_III_rank_certification_chain` for `hrank` +
-   `exact case_III_realization_of_rank …`.
-3. **Then:** 2c-iii `chainData_dispatch` (interior `2 ≤ i < d`, d=3 floor on the engine) → CHAIN-5 wire-up →
-   orphan confirm-and-delete (the `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~4–7 commits** (the corrected
-   sourcing + open-decision resolution adds ~1–2). Audit: design §(o‴)(I.8.24)(4)/(4.7)/(4.8).
+**Build order:**
+1. **`case_III_arm_realization_chain`** (`Relabel.lean`, NOT `Arms.lean` — import DAG `Arms ⊂ Relabel ⊂
+   Realization`; M₃ `:2691` is the construct-candidate + corner-data template). Construct the candidate
+   `caseIIICandidate (G−vᵢ) endsσρ qρ e_a e_b …` over the candidate-`i` split, assemble `(W,hWS,hWcard,g,hg,hLI)`:
+   - **`hWS`/`hWcard`** ← carrier leaf `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (at
+     `L = (funLeft (shiftPerm)⁻¹).dualMap`, `f` = the bottom family, `hS` = `chainData_bottom_relabel`).
+   - **`g`** = `Sum.elim (D−1 fresh-hinge panel rows) (±r row)`; **`hg`** off-slot family ← GROUP leaf, `±r`
+     row = `hingeRow u vᵢ ρ₀` ← `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hlink` = `e_b`'s genuine
+     `G`-link oriented with `vᵢ` head, `hperp` = the dispatch's `hρe₀` at the reproduced slot, `t=0`).
+   - **`hLI`** ← `linearIndependent_mkQ_corner_of_gate` with `hrCol` from `reproducedSlot_pmR_acolumn_eq` (the
+     SAME `±r` object's `−ρ₀`-at-`vᵢ` column), `hsupp`/`hgate` the candidate hinge's support + the dispatch's gate.
+   - then `case_III_rank_certification_chain` for `hrank` + `exact case_III_realization_of_rank …`.
+   **Flag at this build:** `Relabel.lean` (~4880 lines, past the ~1500 tripwire) likely forces a `Relabel/` split.
+2. **2c-iii `chainData_dispatch`** (interior `2 ≤ i < d`, d=3 floor on the engine) → CHAIN-5 wire-up →
+   orphan confirm-and-delete (the `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~3–5 commits.** Audit: design
+   §(o‴)(I.8.24)(4)/(4.9).
 
 ## Decisions made during this phase
 
-- **BLOCKED — the `±r`-row sourcing does NOT close from the landed leaves; column-index/object mismatch
-  between `hg` and `hrCol` (2026-06-21, opus docs-only design-settle; VERIFIED against the landed bodies).**
-  Assembling `case_III_arm_realization_chain` exposed that no single `±r`-row object grounds BOTH the cert's
-  `hg` AND the discriminator's `hrCol`. Re-inserted body `vᵢ = vtx i` (candidate hinge `e_a` links
-  `vtx i—vtx(i+1)`, discriminator reads `hrCol` at `single (vtx i)`); but the landed `hrCol` leaf reads `−ρ₀`
-  at `single (vtx(i-1))` (wrong body) for the FILTERED edge-`i` group — whose `hg` is unsatisfiable (no
-  collapse to a single row → reproduced-slot `hcollapse` dead; relabelled endpoints = the fresh pair → off-slot
-  `htransport` dead). The full-combination single row (T-2) `hingeRow (vtx 0)(vtx 1) ρ` has a clean `hg` but
-  reads `0` at `vtx i`. **FLAG-DON'T-FORCE stop** (a 4th pin would be confident-wrong). FIX = a CORRECTED `vtx
-  i`-column `hrCol` leaf + a single-reproduced-row `hg` for `hingeRow (vtx i)(vtx(i-1)) ρ₀` (incident to `vᵢ`,
-  the M₃ `hvb_row :2866` route), gated on the OPEN DECISION `hingeRow (vtx i)(vtx(i-1)) ρ₀ ∈ span (candidate
-  rows)` (the KT-(6.66) step the current leaves miss). Full diagnosis + signatures + leaf-fates: design
-  §(o‴)(I.8.24)(4.8). Supersedes the (4.7) "arm is pure wiring" framing.
-- **Reproduced-slot `±r`-row `hg` leaf LANDED (2026-06-21) — pinned by §I.8.24(4.7), but its `hcollapse` input
-  is UNBUILT (see BLOCKED above); the "all corner-data leaves in tree" claim was overstated.**
-  `PanelHingeFramework.funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_reproduced` (`Relabel.lean:2212`):
-  takes `hcollapse` (relabel image = the reproduced-edge tag `hingeRow (endsσρ e_r).1 (endsσρ e_r).2 ρ₀`) +
-  `hperp` + `hlink` as hypotheses, proves the tag is a candidate rigidity row at the reproduced slot `e_r` via
-  `mem_hingeRowBlock_iff` + `caseIIICandidate_supportExtensor_reproduced`. Axiom-clean, build/lint clean. BUT
-  §I.8.24(4.8) shows the filtered edge-`i` group does NOT collapse to a single row, so `hcollapse` is
-  unsatisfiable for it — the leaf must be re-aimed at a single reproduced row or superseded by the corrected
-  sourcing.
-- **The off-slot GROUP leaf is mis-targeted for the `±r` row (VERIFIED 2026-06-21; commit 2b22d59).** A-1's
-  `±r`-group's `(shiftPerm i.castSucc)⁻¹`-image endpoints are the candidate fresh pair `{vᵢ₋₁, vᵢ₊₁}`, so the
-  GROUP leaf's off-slot `htransport` is unsatisfiable for it. GROUP leaf KEPT for the off-slot `hWS` bottom
-  family. (The (4.7) follow-on "→ reproduced-slot leaf is the correct `hg`" is SUPERSEDED — the reproduced
-  leaf's `hcollapse` is itself unsatisfiable for the filtered group; see the BLOCKED entry + §I.8.24(4.8).)
+- **`±r`-row sourcing RESOLVED + LANDED — the DIRECT genuine reproduced-slot `e_b`-row; the
+  graph-endpoints-vs-overridden-support DECOUPLING grounds BOTH `hg` and `hrCol`, no `hρGv` (2026-06-22, opus;
+  adjudicated by an adversarial recon pair + source verification, then BUILT clean).** The `±r` corner row is
+  NOT a relabel-image / filtered-group object (those land on the candidate fresh pair, which OMITS `vᵢ`, and
+  read `0` at `single vᵢ` — the (4.8) defect). It is the candidate's reproduced hinge `e_b` read off its own
+  GENUINE `G`-link `hingeRow u vᵢ ρ₀` (`vᵢ` the head). `caseIIICandidate.graph = G` keeps the genuine link
+  while overriding only the support panel, so ONE object grounds both: `hg` reads the overridden panel
+  (`ρ₀ ⊥` it = `hρe₀`, the M₃ `hvb_row :2866` mechanism, NEVER `hρGv`), `hrCol` reads the graph link at
+  `single vᵢ` (`hingeRow_swap` + `hingeRow_comp_single_tail` = `−ρ₀`). Two leaves in `Candidate.lean` (after
+  `linearIndependent_mkQ_corner_of_gate`): `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`hg`) +
+  `reproducedSlot_pmR_acolumn_eq` (`hrCol`); both axiom-clean (`propext`/`Classical.choice`/`Quot.sound`),
+  build/lint warning-clean. Satisfiability gate passes (the same object is the cert's `g`-corner member, the
+  discriminator's `rRow`, and the `−ρ₀` column). Full audit: design §(o‴)(I.8.24)(4.9).
+- **Mis-targeted reproduced-slot GROUP leaf DELETED (2026-06-22).**
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate_reproduced` (`b675317`): its `hcollapse` (filtered group
+  = single row) is unsatisfiable, AND it was stated over `G.removeVertex vᵢ` (the cert is over the full `G`).
+  Grep-confirmed consumed nowhere before deleting. The off-slot GROUP leaf
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` is KEPT (it correctly serves the genuine off-slot `hWS`
+  bottom family). The base-side `hrCol` leaf `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`
+  (reads `vtx(i-1)`) and T-2 are NOT the `±r` sourcing — the genuine `e_b`-row route supersedes them.
 - **`ofNormals → caseIIICandidate` row-routing bridge LANDED (2026-06-21) — the previously-missing
   `caseIIICandidate ↔ ofNormals` row bridge the §I.8.24(4.6) Hand-off named; the chain arm's `hg`/`hWS` row
   routing is now a wire, not a re-derivation.** Two decls: the framework-general primitive
