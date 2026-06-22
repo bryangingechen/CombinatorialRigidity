@@ -172,6 +172,22 @@ of* the per-commit checklists above:
   --all` afterward to confirm the trimmed live table still parses.) Skip when
   the experiment's *Status* is `concluded`, or when the closing phase is not
   the experiment's testbed.
+- **Compress the just-closed (sub-)phase's working-doc tails — in place, at the
+  close.** Two in-place shrinks that pair with the model-experiment archive
+  above (all three keep the every-session reads small, and all three were
+  skipped before the 2026-06-22 cleanup): **(a)** the phase's *design doc*
+  (`notes/PhaseN-design.md`) — collapse the just-closed (sub-)phase's recon arcs
+  to cited verdicts, *preserving* the still-live arcs, the frozen contract, and
+  every source citation (the blow-by-blow stays in git); discipline +
+  size-tripwire in `notes/CLAUDE.md` *One canonical home* (design-support docs).
+  **(b)** the closing phase note's settled *Decisions made* tail → one-line
+  verdicts, per `notes/CLAUDE.md` *Forward-weighted note* — the backstop for the
+  per-commit compress-in-commit rule when it slipped during the phase. Verify
+  the live content survives (preserved sections byte-identical; cross-referenced
+  decl names / §-labels / citations still resolve) before trusting the cut.
+  Calibration: skipping (a) let `notes/Phase23-design.md` reach 7,627 lines /
+  ~167k tokens; skipping (b) let `Phase23c.md`'s tail outgrow its forward
+  sections (it had self-flagged "compression DUE").
 - **Review project organization.** Re-skim ROADMAP.md,
   `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md`, and `notes/FRICTION.md`
   (status sections). Have decisions in `notes/PhaseN.md` accumulated

@@ -84,7 +84,10 @@ phase can otherwise appear in five places at once.
 A design-support doc (e.g. `notes/Phase22-realization-design.md`) is
 append-only *during* a recon, but its closed arcs compress to verdicts
 once the phase they served closes — they are not a second copy of the
-phase note's *Decisions made*.
+phase note's *Decisions made*. **Tripwire: a `*-design.md` past ~1500 lines
+almost always has closed arcs overdue for this** (`Phase23-design.md` reached
+7,627 lines / ~167k tokens before the 2026-06-22 cleanup); the firing trigger
+is `PHASE-BOUNDARIES.md` *When this commit closes a phase*.
 
 ## Phase notes
 
