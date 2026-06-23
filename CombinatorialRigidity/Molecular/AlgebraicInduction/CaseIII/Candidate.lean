@@ -1733,6 +1733,57 @@ theorem BodyHingeFramework.exists_le_finrank_span_rigidityRows_eq_card_of_inject
       W ≤ Submodule.span ℝ F.rigidityRows ∧ Module.finrank ℝ W = Fintype.card ιb :=
   Submodule.exists_le_finrank_eq_card_of_injective_map hf hL hS
 
+/-- **The relabel-image base block, packaged as a CONCRETE subspace with off-`v` column vanishing**
+(`lem:case-III general-d`, the option-(A) dispatch's `W`/`hW` corner-data leaf; Katoh–Tanigawa 2011
+eq. (6.62) the one-step-down row correspondence + eq. (6.16) the block-triangular column split).
+The concrete-`W` variant of `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`: where
+that leaf returns an *existential* (opaque) `W` whose `hW` off-`v` vanishing is unprovable, this one
+fixes the relabel map to `L = (funLeft σ).dualMap` and returns `W = span (range (L ∘ f))` together
+with the third corner datum — `∀ φ ∈ W, φ ∘ₗ single v = 0` (the base block's rows all annihilate
+the re-inserted body `v`'s screw column, KT eq. (6.16)). The corner-data assembly
+`case_III_arm_corner_assembly` consumes `hW` to strip the panel/`±r` corner block's `W`-quotient
+(`linearIndependent_mkQ_corner_of_gate`); the chain dispatch `chainData_dispatch` builds the
+relabel-image base block at `σ = shiftPerm i.castSucc` and feeds it here.
+
+`hWS`/`hWcard` reuse the existential leaf's content (`span_le` + `finrank_span_eq_card` of the
+image family, LI along the injective dual map of the surjective `funLeft σ`). The new content is
+`hW`, a `Submodule.span_induction` on `φ ∈ span (range (L ∘ f))`: on a generator
+`φ = (funLeft σ).dualMap (f j)`, the column-naturality bridge `funLeft_dualMap_comp_single`
+rewrites `φ ∘ₗ single v` to `(f j) ∘ₗ single (σ.symm v)`, which `hvanish j` sends to `0`; the
+`zero`/`add`/`smul` cases distribute `· ∘ₗ single v` over the span's linear structure
+(`LinearMap.add_comp`/`smul_comp`). The `hvanish`-at-`σ.symm v` direction is FORCED by that bridge —
+the base family vanishes on the body that `σ` maps to the re-inserted `v` (the (4.8)-class
+column-index trap, pinned exactly; design §(o‴)(I.8.24)(4.10)). The `ScrewSpace` carrier is never
+unfolded (the column read-off localizes at one body). -/
+theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ιb : Type*} [Fintype ιb] {v : α}
+    {f : ιb → Module.Dual ℝ (α → ScrewSpace k)} (hf : LinearIndependent ℝ f)
+    {σ : Equiv.Perm α}
+    (hS : ∀ j, (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap (f j)
+      ∈ Submodule.span ℝ F.rigidityRows)
+    (hvanish : ∀ j, (f j).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm v)) = 0) :
+    ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
+      W ≤ Submodule.span ℝ F.rigidityRows ∧
+      Module.finrank ℝ W = Fintype.card ιb ∧
+      (∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0) := by
+  set L : Module.Dual ℝ (α → ScrewSpace k) →ₗ[ℝ] Module.Dual ℝ (α → ScrewSpace k) :=
+    (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap with hL
+  have hLinj : Function.Injective L :=
+    LinearMap.dualMap_injective_of_surjective
+      (LinearMap.funLeft_surjective_of_injective _ _ σ (Equiv.injective _))
+  refine ⟨Submodule.span ℝ (Set.range (L ∘ f)),
+    Submodule.span_le.mpr (Set.range_subset_iff.mpr fun j => by simpa [hL] using hS j),
+    finrank_span_eq_card (hf.map' L (LinearMap.ker_eq_bot.2 hLinj)), ?_⟩
+  intro φ hφ
+  induction hφ using Submodule.span_induction with
+  | mem φ hφ =>
+    obtain ⟨j, rfl⟩ := hφ
+    rw [Function.comp_apply, hL, funLeft_dualMap_comp_single]
+    exact hvanish j
+  | zero => simp
+  | add x y _ _ hx hy => rw [LinearMap.add_comp, hx, hy, add_zero]
+  | smul a x _ hx => rw [LinearMap.smul_comp, hx, smul_zero]
+
 /-- **The candidate fresh-edge's panel rows are independent modulo the base block `W`**
 (`lem:case-III general-d`, the option-(A) `hLI` corner obligation (a); Katoh–Tanigawa 2011 eq.
 (6.65), the `Mᵢ`-block panel rows independent of the base `R(G₁ ∖ row, q₁)`). The chain cert

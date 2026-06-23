@@ -113,14 +113,18 @@ step needs them):** the base-side `hrCol` leaf `funLeft_dualMap_interior_group_a
 §(o‴)(I.8.24)(4.10), 2026-06-23). The dispatch is a **discriminator-pick + Fin-case ROUTER** over two
 ALREADY-LANDED arm routes — `chainData_split_realization` (the OLD engine, for base `i=1` + d=3 floor,
 zero-regression) and `case_III_arm_corner_assembly` (for interior `2 ≤ i < d`) — plus the production of the
-corner-assembly's RAW inputs (the HARD CORE = LEAF-4). **The FIRST commit is LEAF-2**, a genuinely-new
-concrete-`W` carrier variant (`BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish`,
-`Candidate.lean`) forced by the `W`/`hW` threading decision: the assembly needs `hW` on a *specific* `W`, but
-the landed carrier leaf returns an *existential* `W` (opaque), so the dispatch must build `W := span (range (L
-∘ f))` concretely. Full leaf list + signatures + ranking + the two flagged gaps (the `W`/`hW` shape; the `hS`
-disjunction) in *Hand-off / next phase* below + design §(o‴)(I.8.24)(4.10). Home: a fresh
-`Relabel/Dispatch.lean` importing `Relabel/ForkedArm` (LEAF-2 in `Candidate.lean`); the `Relabel/` split is
-DONE so the dispatch lands without re-tripping the cap.
+corner-assembly's RAW inputs (the HARD CORE = LEAF-4). **LEAF-2 is LANDED** (2026-06-23, axiom-clean,
+build/lint warning-clean): the concrete-`W` carrier variant
+`BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish` (`Candidate.lean`, beside the
+existential leaf) — `W := span (range ((funLeft σ).dualMap ∘ f))` concretely, with the third corner datum
+`hW : ∀ φ ∈ W, φ ∘ₗ single v = 0` (the new content, a `span_induction` routing each generator through the (α)
+bridge `funLeft_dualMap_comp_single` + `hvanish` at `σ.symm v`); `hWS`/`hWcard` reuse the existential leaf's
+content. **The next commit is LEAF-1** (EASIEST — the interior-split candidate framework `def`s + the
+`case_III_arm_corner_assembly` graph/seed hyps not already on the `ChainData` accessors). Full leaf list +
+signatures + ranking + the two flagged gaps (the `W`/`hW` shape [RESOLVED by LEAF-2]; the `hS` disjunction) in
+*Hand-off / next phase* below + design §(o‴)(I.8.24)(4.10). Home: a fresh `Relabel/Dispatch.lean` importing
+`Relabel/ForkedArm` (LEAF-2 landed in `Candidate.lean`); the `Relabel/` split is DONE so the dispatch lands
+without re-tripping the cap.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -190,40 +194,32 @@ PLUS the production of the corner-assembly's RAW inputs for the interior route. 
 (the interior base-block `W`/`hWS`/`hWcard`/`hW` production + the `hS` disjunction routing) — a build MUST NOT
 peel the easy leaves and defer it.
 
-**One design decision RESOLVED (below the contract/motive — does NOT need coordinator/user).** The
+**One design decision RESOLVED + LANDED (below the contract/motive — did NOT need coordinator/user).** The
 `W`/`hW` threading: `case_III_arm_corner_assembly` takes `hW` on a *specific* `W`, but the landed carrier leaf
 `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` returns an **existential** `W` (opaque — `hW`
 unprovable on it). Resolution: the dispatch sets `W := span (range (L ∘ f))` CONCRETELY via a new concrete-`W`
-carrier leaf (LEAF-2 = the FIRST commit). This is a return-shape mismatch, not a motive change.
+carrier leaf (LEAF-2). This is a return-shape mismatch, not a motive change. **LEAF-2 is LANDED** (2026-06-23,
+axiom-clean, build/lint warning-clean): `BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish`
+(`Candidate.lean`, immediately after the existential leaf). The signature matched the recon exactly;
+`hWS`/`hWcard` reused the existential leaf's body (`span_le` + `finrank_span_eq_card` of the image family along
+the injective dual map of the surjective `funLeft σ` via `dualMap_injective_of_surjective` +
+`funLeft_surjective_of_injective`), and `hW` is a `Submodule.span_induction` whose `mem` case rewrites each
+generator `(funLeft σ).dualMap (f j)` through the (α) bridge `funLeft_dualMap_comp_single` then closes with
+`hvanish j`, the `zero`/`add`/`smul` cases distributing `· ∘ₗ single v` over the linear structure. The
+`hvanish`-at-`σ.symm v` direction was FORCED by the bridge exactly as recon'd (the (4.8)-class column-index
+trap). The concrete `σ` is the consumer's free choice (build-time latitude: instantiate at `σ = shiftPerm
+i.castSucc` so `σ.symm` matches `chainData_bottom_relabel`'s relabel — a `.symm`-placement detail at LEAF-4,
+not a wall).
 
-**The FIRST commit-sized leaf is LEAF-2** (the genuinely-new small piece the threading decision forces; it
-unblocks LEAF-4's `hW`, the rows-384/389 "land the new small piece first" pattern). Home: `Candidate.lean`,
-beside the existential leaf. EXACT signature:
-```
-theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish
-    [DecidableEq α] (F : BodyHingeFramework k α β) {ιb : Type*} [Fintype ιb] {v : α}
-    {f : ιb → Module.Dual ℝ (α → ScrewSpace k)} (hf : LinearIndependent ℝ f)
-    {σ : Equiv.Perm α}
-    (hS : ∀ j, (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap (f j)
-      ∈ Submodule.span ℝ F.rigidityRows)
-    (hvanish : ∀ j, (f j).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm v)) = 0) :
-    ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
-      W ≤ Submodule.span ℝ F.rigidityRows ∧
-      Module.finrank ℝ W = Fintype.card ιb ∧
-      (∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0)
-```
-`W := span (range ((funLeft σ).dualMap ∘ f))`; `hWS`/`hWcard` reuse the existential leaf's body, `hW` is the
-new content via `Submodule.span_induction` + the (α) bridge `funLeft_dualMap_comp_single` (`Basic.lean:576`,
-`((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ.symm w))`). The `hvanish`-at-`σ.symm v` direction
-is FORCED by that bridge (NOT a free choice — the (4.8)-class column-index trap, pinned exactly). BUILD-TIME
-LATITUDE: which concrete `σ` (instantiate at `σ = shiftPerm i.castSucc`, so `σ.symm = (shiftPerm i.castSucc)⁻¹`
-matches `chainData_bottom_relabel`'s relabel; a `.symm`-placement detail, not a wall).
+**The NEXT commit-sized leaf is LEAF-1** (EASIEST; see build order below). LEAF-2's landing unblocked LEAF-4's
+`hW` (the rows-384/389 "land the new small piece first" pattern — done).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
-   `Realization.lean`). The leaves split across `Candidate.lean` (LEAF-2) + `Relabel/Dispatch.lean` (rest).
-1. **LEAF-2 (EASY-MODERATE, the FIRST commit, signature above)** — the concrete-`W` carrier variant.
-2. **LEAF-1 (EASIEST)** — the interior-split `endsσρ`/`qρ` candidate framework (`def`s mirroring
+   `Realization.lean`). The leaves split across `Candidate.lean` (LEAF-2 ✓) + `Relabel/Dispatch.lean` (rest).
+1. ~~**LEAF-2 (EASY-MODERATE)** — the concrete-`W` carrier variant.~~ ✓ **LANDED** 2026-06-23
+   (`Candidate.lean`, `BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish`, axiom-clean).
+2. **LEAF-1 (EASIEST, the NEXT commit)** — the interior-split `endsσρ`/`qρ` candidate framework (`def`s mirroring
    `chainData_bottom_relabel`'s target) + the `case_III_arm_corner_assembly` graph/seed hyps not already on
    the `ChainData` accessors (`hends_ea/eb`, `hends_Gv`, `hne_Gv`, `hVone/hVcard`, `hLn/hgab`).
 3. **LEAF-3 (MODERATE)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick`
@@ -341,3 +337,12 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   a `Gv`-link, off `deg_two_split`, the d=3 dispatch's `hsplitG` generalized). The split-tuple half of
   CHAIN-2c-iii's inputs; the dispatch's remaining work is the discriminator + base-block construction
   + arm routing.
+- **Dispatch LEAF-2: the concrete-`W` carrier (2026-06-23).**
+  `BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish` (`Candidate.lean`, after the
+  existential leaf, axiom-clean). The concrete-`W` variant of
+  `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`: fixes `L = (funLeft σ).dualMap`, returns
+  `W = span (range (L ∘ f))` with the third corner datum `hW : ∀ φ ∈ W, φ ∘ₗ single v = 0`. `hWS`/`hWcard`
+  reuse the existential body; `hW` is the new content — a `span_induction` routing each generator through
+  the (α) bridge `funLeft_dualMap_comp_single` + `hvanish` at `σ.symm v` (the column-index direction FORCED
+  by the bridge, (4.8)-class trap). Resolves the `W`/`hW` threading decision (return-shape mismatch, not a
+  motive change); unblocks LEAF-4's `hW`. Next: LEAF-1.
