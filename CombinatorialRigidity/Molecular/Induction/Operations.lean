@@ -1579,8 +1579,8 @@ cycle relabel `(shiftPerm i)⁻¹` paired with the seed `qᵢ = q ∘ shiftPerm 
 the one-step-DOWN row correspondence). The genuine-row arm reads candidate `i`'s seed `qᵢ` at the
 **relabelled** body `(shiftPerm i)⁻¹ x`; these two lemmas package the two seed identities that this
 read makes — the cycle generalizations of the d=3 `M₃` arm's single-swap `qρ`-coincidence facts
-(`AlgebraicInduction/CaseIII/Relabel.lean`, `case_III_arm_realization_M3`'s `hqρc`/`hqρv` and the
-off-edge `simp only [hqρ, swap_apply_of_ne_of_ne …]` step). At the `d = 3` `M₃` instance `i = 2`
+(`AlgebraicInduction/CaseIII/Relabel/Arm.lean`, `case_III_arm_realization_M3`'s `hqρc`/`hqρv` and
+the off-edge `simp only [hqρ, swap_apply_of_ne_of_ne …]` step). At the `d = 3` `M₃` instance `i = 2`
 the cycle `shiftPerm 2 = (v₁ v₂)` is the single swap and these reduce to those facts. Graph-free
 over the chain vertices (pure `Equiv.Perm`/`vtx` algebra), beside the inverse-cycle action
 lemmas above. -/
@@ -1785,11 +1785,11 @@ chain vertex `vtx (s+1)` deleted. The step `s` of the cycle-W9a fold moves the d
 (`shiftBodyList`'s `s`-th triple `(v, a, c) = (vₛ₊₂, vₛ₊₁, vₛ)`); the W9a step is the framework drop
 `F (s+1) → F s`, i.e. the graph drop `(G − vₛ₊₂) → (G − vₛ₊₁)`. This mirrors the d=3 `M₃` arm's
 single step `Fv/Fva = ofNormals (G − v)/(G − a)` (`case_III_arm_realization_M3`,
-`CaseIII/Relabel.lean`): `F (s+1) = G − v` keeps the body `a` at degree 2 (its successor edge
+`CaseIII/Relabel/Arm.lean`): `F (s+1) = G − v` keeps the body `a` at degree 2 (its successor edge
 `edge (s+1)` to `v` is cut by the removal), and `F s = G − a` is the smaller graph the off-`a` links
 transport into. These accessors are graph-free of the rigidity layer (pure
 `ChainData`/`removeVertex` reads); the framework chain `F` + its `hingeRowBlock`-agreement half (the
-`htrans` block of W9a) build on top in `CaseIII/Relabel.lean`. -/
+`htrans` block of W9a) build on top in `CaseIII/Relabel/Basic.lean`. -/
 
 /-- The intermediate graph at chain step `s` of the cycle-W9a transport: `G` with the chain vertex
 `vtx (s+1)` deleted (`G − vₛ₊₁`). Indexed only by the chain-vertex validity `s + 1 < cd.d + 1` (it
