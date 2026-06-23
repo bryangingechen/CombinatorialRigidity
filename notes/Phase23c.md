@@ -49,8 +49,20 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 
 ## Current state
 
-**The corner-data ASSEMBLY producer `case_III_arm_corner_assembly` is LANDED (`Relabel/ForkedArm.lean`,
-axiom-clean, build/lint warning-clean); next is CHAIN-2c-iii `chainData_dispatch`.** This is the seam-resolution end-to-end
+**The dispatch's interior-split-tuple `ChainData` accessors are LANDED (`Induction/Operations.lean`,
+axiom-clean, build/lint warning-clean); next is the rest of CHAIN-2c-iii `chainData_dispatch` (the
+discriminator + base-block construction + arm routing).** At an interior chain index `i` (`0 < i`)
+the dispatch reads the arm split tuple `(v, a, b, e_a, e_b) = (vtx i.castSucc, vtx i.succ,
+vtx (i−1).castSucc, edge i, edge (i−1))` over `Gv = G.removeVertex v`; the combinatorial split facts
+the arms (`case_III_arm_corner_assembly` / the d=3 `case_III_arm_realization`) require are now direct
+`ChainData` accessors: the two link facts (`isLink_succ_edge`/`isLink_pred_edge`, pre-existing), the
+`heab` distinctness (`pred_edge_ne`, pre-existing), the `(v,a)`/`(v,b)` distinctnesses
+(`castSucc_ne_succ`/`castSucc_ne_pred_castSucc`, NEW), the three `Gv`-membership facts
+(`notMem_/succ_mem_/pred_castSucc_mem_vertexSet_removeVertex_castSucc`, NEW = the arm's
+`hvVc`/`haVc`/`hbVc`), and the edge partition `isLink_eq_succ_or_pred_or_removeVertex` (NEW = the
+arm's `hsplitG`). The corner-data ASSEMBLY producer `case_III_arm_corner_assembly`
+(`Relabel/ForkedArm.lean`, axiom-clean) + the arm spine `case_III_arm_realization_chain` stay landed.
+That assembly is the seam-resolution end-to-end
 integration test the hand-off named: at the candidate `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n'
 (q(b,·)) 0` it *constructs* the `±r` corner block `g = Sum.elim (D−1 fresh-hinge `e_a` panel rows) (±r row)`
 over `ι = ↥s ⊕ Unit` (`Fintype.card = (D−1)+1 = D`) and feeds it to the arm spine
@@ -189,7 +201,12 @@ underlying corner-data leaves are in tree (names below).
      bodies (the block-triangular column split, KT eq. (6.16)). NB: the assembly takes `W`/`hWS`/`hWcard`/`hW`
      as its *own* hypotheses — to call the carrier leaf the dispatch must thread the concrete `W = span (range
      (L ∘ f))` (not the existential wrapper) so `hW` is provable on it (or expose the wrapper's `W`).
-   - The split-tuple facts (`hvVc,…,hgab,hva,hvb,hdef`) + `(hVone,hVcard)` ← the `ChainData` interior accessors.
+   - The split-tuple facts (`hvVc/haVc/hbVc`, `hG_ea/hG_eb`, `heab`, `hva/hvb`, `hsplitG`) ← the
+     `ChainData` interior accessors (`notMem_/succ_mem_/pred_castSucc_mem_vertexSet_removeVertex_castSucc`,
+     `isLink_succ_edge`/`isLink_pred_edge`, `pred_edge_ne`, `castSucc_ne_succ`/`castSucc_ne_pred_castSucc`,
+     `isLink_eq_succ_or_pred_or_removeVertex`) — **LANDED 2026-06-23**. The `(hVone,hVcard)` ncard facts
+     ← `Graph.vertexSet_removeVertex` + `Set.ncard_diff_singleton_of_mem`; `hleG`/`hends_Gv`/`hne_Gv`/
+     `hLn`/`hgab`/`hdef` ← the relabel/seed/genericity context (the `endsσρ`/`qρ` candidate framework).
    - NB: the panel rows + `±r` corner are now ASSEMBLED inside `case_III_arm_corner_assembly` — the dispatch no
      longer builds `g`/`hg`/`hLI` (the GROUP leaf / reproduced-slot membership / `linearIndependent_mkQ_corner_
      of_gate` are consumed inside the assembly; revive the GROUP leaf only if the off-slot `hWS` family needs it).
@@ -279,3 +296,13 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   axiom-clean. The sole importer `CaseIII/Realization` switched `import …CaseIII.Relabel` → `…Relabel.ForkedArm`;
   three stale `Relabel.lean` file-path doc pointers in `Induction/Operations.lean` repointed. Done
   before the dispatch build so it can grow chain-arm machinery without re-tripping the cap.
+- **Dispatch interior-split accessors (2026-06-23).** Six new `ChainData` accessors in
+  `Induction/Operations.lean` packaging the interior split tuple `(v,a,b,e_a,e_b) = (vtx i.castSucc,
+  vtx i.succ, vtx (i−1).castSucc, edge i, edge (i−1))` over `Gv = G − v` in the arm shape: the two
+  distinctnesses `castSucc_ne_succ`/`castSucc_ne_pred_castSucc` (`v≠a`/`v≠b`, off `vtx_ne`), the three
+  `Gv`-membership facts `{notMem_,succ_mem_,pred_castSucc_mem_}vertexSet_removeVertex_castSucc`
+  (`hvVc`/`haVc`/`hbVc`, off `vtx_mem` + `Graph.vertexSet_removeVertex`), and the edge partition
+  `isLink_eq_succ_or_pred_or_removeVertex` (`hsplitG` = every `G`-edge is `edge i` / `edge (i−1)` /
+  a `Gv`-link, off `deg_two_split`, the d=3 dispatch's `hsplitG` generalized). The split-tuple half of
+  CHAIN-2c-iii's inputs; the dispatch's remaining work is the discriminator + base-block construction
+  + arm routing.

@@ -1387,6 +1387,80 @@ lemma vtx_ne {m m' : ℕ} (cd : G.ChainData n) (hm : m < cd.d + 1) (hm' : m' < c
     (hne : m ≠ m') : cd.vtx ⟨m, hm⟩ ≠ cd.vtx ⟨m', hm'⟩ :=
   fun he => hne (by have := congrArg Fin.val (cd.vtx_inj he); simpa using this)
 
+/-- The interior split body `vtx i.castSucc` (`0 < i`) is distinct from its successor neighbor
+`vtx i.succ` (the `(v, a)` distinctness `v ≠ a` of the arm split tuple; indices `i` vs `i+1`). -/
+lemma castSucc_ne_succ (cd : G.ChainData n) (i : Fin cd.d) :
+    cd.vtx i.castSucc ≠ cd.vtx i.succ := by
+  rw [show i.castSucc = (⟨(i : ℕ), by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp),
+    show i.succ = (⟨(i : ℕ) + 1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp)]
+  exact cd.vtx_ne _ _ (by omega)
+
+/-- The interior split body `vtx i.castSucc` (`0 < i`) is distinct from its predecessor neighbor
+`vtx (i−1).castSucc` (the `(v, b)` distinctness `v ≠ b` of the arm split tuple; indices `i` vs
+`i−1`). -/
+lemma castSucc_ne_pred_castSucc (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    cd.vtx i.castSucc ≠ cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc := by
+  rw [show i.castSucc = (⟨(i : ℕ), by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp),
+    show (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc
+        = (⟨(i : ℕ) - 1, by omega⟩ : Fin (cd.d + 1)) from Fin.ext (by simp)]
+  exact cd.vtx_ne _ _ (by omega)
+
+/-! ### The interior-vertex `removeVertex` split (the arm `Gv = G − v` membership tuple)
+
+For an interior chain index `i` (`0 < i`), the general-`d` Case-III dispatch (CHAIN-2c-iii
+`chainData_dispatch`) feeds the chain-arm spine `case_III_arm_realization_chain` / engine
+`case_III_arm_realization` the split tuple `(v, a, b, e_a, e_b) = (vtx i.castSucc, vtx i.succ,
+vtx (i−1).castSucc, edge i, edge (i−1))` over the vertex-removal `Gv = G.removeVertex v`. These
+accessors expose the three `Gv`-membership facts (`v ∉ V(Gv)`, `a ∈ V(Gv)`, `b ∈ V(Gv)`) that
+those arms require, alongside the `isLink_succ_edge` / `isLink_pred_edge` link facts and the
+`castSucc_ne_*` distinctnesses above. (The link-out-of-`Gv`, degree-2-closure, and ncard facts the
+dispatch also threads are the existing `isLink_*` / `deg_two_split` accessors plus the standard
+`removeVertex` ncard rewrites; these three are the missing membership pieces.) -/
+
+/-- The interior split body `v = vtx i.castSucc` (`0 < i`) is removed from `Gv = G − v`:
+`v ∉ V(G.removeVertex (vtx i.castSucc))` (the arm's `hvVc`). -/
+lemma notMem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) (i : Fin cd.d) :
+    cd.vtx i.castSucc ∉ V(G.removeVertex (cd.vtx i.castSucc)) := by
+  rw [Graph.vertexSet_removeVertex]; exact fun h => h.2 rfl
+
+/-- The successor neighbor `a = vtx i.succ` (`0 < i`) survives the removal of the split body
+`v = vtx i.castSucc`: `a ∈ V(G.removeVertex v)` (the arm's `haVc`; `a ∈ V(G)` by `vtx_mem`, and
+`a ≠ v` by `castSucc_ne_succ`). -/
+lemma succ_mem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) (i : Fin cd.d) :
+    cd.vtx i.succ ∈ V(G.removeVertex (cd.vtx i.castSucc)) := by
+  rw [Graph.vertexSet_removeVertex]
+  exact ⟨cd.vtx_mem _, (cd.castSucc_ne_succ i).symm⟩
+
+/-- The predecessor neighbor `b = vtx (i−1).castSucc` (`0 < i`) survives the removal of the split
+body `v = vtx i.castSucc`: `b ∈ V(G.removeVertex v)` (the arm's `hbVc`; `b ∈ V(G)` by `vtx_mem`,
+and `b ≠ v` by `castSucc_ne_pred_castSucc`). -/
+lemma pred_castSucc_mem_vertexSet_removeVertex_castSucc (cd : G.ChainData n) {i : Fin cd.d}
+    (hi : 0 < (i : ℕ)) :
+    cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc ∈
+      V(G.removeVertex (cd.vtx i.castSucc)) := by
+  rw [Graph.vertexSet_removeVertex]
+  exact ⟨cd.vtx_mem _, fun h => cd.castSucc_ne_pred_castSucc hi h.symm⟩
+
+/-- **The interior-split edge partition** (`0 < i`, the arm's `hsplitG`): every `G`-edge `e u w`
+is one of the two chain edges at the split body `v = vtx i.castSucc` — the successor `edge i` or
+the predecessor `edge (i−1)` — or a link of the vertex-removal `Gv = G − v`. (The `d=3` dispatch's
+`hsplitG`, generalized: case on whether an endpoint is the split body `v`; if so, the degree-2
+closure `deg_two_split` names the edge; otherwise both endpoints survive and the link is a
+`Gv`-link.) -/
+lemma isLink_eq_succ_or_pred_or_removeVertex (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
+    {e : β} {u w : α} (hlink : G.IsLink e u w) :
+    e = cd.edge i ∨ e = cd.edge ⟨(i : ℕ) - 1, by omega⟩ ∨
+      (G.removeVertex (cd.vtx i.castSucc)).IsLink e u w := by
+  by_cases hu : u = cd.vtx i.castSucc
+  · subst hu; rcases cd.deg_two_split hi e w hlink with h | h
+    · exact Or.inl h
+    · exact Or.inr (Or.inl h)
+  · by_cases hw : w = cd.vtx i.castSucc
+    · subst hw; rcases cd.deg_two_split hi e u hlink.symm with h | h
+      · exact Or.inl h
+      · exact Or.inr (Or.inl h)
+    · exact Or.inr (Or.inr (Graph.removeVertex_isLink.mpr ⟨hlink, hu, hw⟩))
+
 /-! ### The index-shift cycle `shiftPerm` (KT eq. 6.54)
 
 For an interior candidate, the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2, eq. 6.54)
