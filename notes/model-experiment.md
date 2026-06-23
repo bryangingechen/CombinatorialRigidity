@@ -137,11 +137,37 @@ Rows 1–372 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 401 | corner-data assembly producer case_III_arm_corner_assembly — the seam integration test (§I.8.24(4.9)); 4ef07cd | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 192790 tok / 75 tools / ~13.2 min | The seam-resolution END-TO-END INTEGRATION — LANDED clean, confirming the corrected ±r leaf feeds the cert's hg + the hrCol feeds hLI. CONSTRUCTS g/hg/hLI from the landed leaves (panels + the genuine reproduced-slot ±r row via hρe₀, NEVER hρGv; hLI via the corner assembly), taking only the dispatch's raw outputs (ρ₀/hgate/hρe₀/W) as hypotheses — proper layering, NOT an over-shrink (contrast 400). Option (A) escapes the wall, build-confirmed end-to-end. Flagged for the dispatch: thread concrete W=span(range(L∘f)) so hW is provable. → Findings. |
 | 402 | `Relabel/` 5-file split (scope-to-fit from the named `chainData_dispatch`); 9961b19 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 168861 tok / 95 tools / ~32.6 min | Rated for the named CHAIN-2c-iii `chainData_dispatch` (2/2/1); agent scope-to-fit to the hand-off's flagged overdue `Relabel/` split prerequisite (dispatch is ~3–5 commits; split flagged "before/alongside") — a legit shrink-the-deliverable-not-completeness call. Mechanical semantics-preserving cut of the 5066-line monolith into 5 files. Coordinator verified: decl-name set preserved (95==95), importer build warning-clean, lint clean, no sorry, imports + 3 doc pointers repointed, pins unaffected (no rename). |
 | 403 | CHAIN-2c-iii interior-split-tuple ChainData accessors (combinatorial half of `chainData_dispatch` inputs); bfcd891 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 161274 tok / 42 tools / ~22.5 min | 2nd consecutive scope-to-fit shrink away from `chainData_dispatch`'s hard core (402 split → 403 the easy combinatorial accessors hvVc/haVc/hbVc/hsplitG + v≠a/v≠b distinctnesses); analytic core (discriminator hgate/hρe₀, base block W/hWS/hW threading, routing) still untouched — the 3–5-commit-chunk deferral the user flagged (cf. the 378–388 self-shrink run). Coordinator pivoting to a decomposition recon per user directive. Commit clean: additive, coordinator-verified build/lint/sorry, decls idiomatic. |
+| 404 | decomposition design-pass — `chainData_dispatch` → 5 ranked leaves, LEAF-4 = hard core (§I.8.24(4.10)); f2d024c | 3/2/1 | opus | normal | clean | ✓✓——✓✓ | 226644 tok / 46 tools / ~9.2 min | Coordinator-escalated per user directive after 2 scope-to-fit shrinks (402/403) away from the dispatch's hard core. Ranked 5 leaves easiest→hardest, NAMED LEAF-4 the hard core so a build can't peel-and-defer; re-pointed to LEAF-2 (concrete-W carrier, the genuinely-new small piece). Both design-pass clauses honored: self-caught a σ.symm column-index trap (4.8-class), coordinator source-verified it + the existential-W + assembly-slot + bridge-direction claims against landed bodies. → Findings 2026-06-23. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Session #26 (rows 402–404) — a 3–5-commit chunk invites the hard part being deferred; decompose EARLY, on the 2nd shrink (user-originated)
+
+The hand-off named a single ~3–5-commit deliverable (`chainData_dispatch`). Two consecutive opus
+dispatches both scope-to-fit AWAY from its hard analytic core — first to the (legitimate, flagged)
+`Relabel/` file split, then to the easy combinatorial `ChainData` accessors — each a defensible
+"shrink the deliverable, not the completeness" call, yet together leaving the discriminator /
+base-block / routing untouched. The user named the mechanism: **leaving a big unstructured chunk lets
+agents continually defer the hard parts as "too big."** Durable lessons:
+
+- **Trigger the decomposition design-pass EARLY — the 2nd consecutive shrink away from a multi-commit
+  chunk's core is the floor, not the 4th–5th.** This is the same self-shrink dynamic as the 378–388
+  run (8 shrinks before the rows-384/389 decomposition broke it); the cheaper move is to decompose as
+  soon as the pattern shows, before the easy leaves are exhausted. The decompose-on-repeated-shrink
+  rule already exists for *infra* peeling (rows 382–383); this extends it to a coarse hand-off chunk.
+- **A decomposition must NAME the hard-core leaf explicitly + rank EASIEST→HARDEST with exact
+  signatures**, so a subsequent build has an un-shrinkable target and cannot peel an easy leaf while
+  deferring the hard one (the §(4.4)(β) composer → the named LEAF-4). Ranking without naming the core
+  still lets the deferral continue.
+- **The design-pass's two clauses caught a real trap at the top rung.** The verify-against-source
+  mandate made the agent re-read the landed bridge `funLeft_dualMap_comp_single` and self-correct its
+  own pin's column-index direction (`σ v` → `σ.symm v`, a 4.8-class error); the coordinator then
+  source-verified the existential-`W` carrier, the assembly's explicit `W`/`hW` slots, and the bridge
+  direction before trusting the pin. Single-pass design output is fallible even at opus; the grounding
+  is what made it sound.
 
 ### Session #25 (rows 392–396) — the chain-arm `±r`-row `hg` resolves into the open KT eq-(6.66) step (not wiring); two correct-but-mis-targeted leaves landed first
 
