@@ -2685,6 +2685,49 @@ lemma splitOff_isLink_shiftRelabel_iff (cd : G.ChainData n) (i : Fin cd.d) (hi :
   ⟨cd.splitOff_isLink_shiftRelabel_forward i hi,
     cd.splitOff_isLink_shiftRelabel_backward i hi⟩
 
+/-! ### The interior-candidate relabel-image selector/seed (CHAIN-2c-iii, LEAF-1)
+
+For an interior candidate index `i`, the general-`d` Case-III dispatch (CHAIN-2c-iii
+`chainData_dispatch`) realizes the candidate framework `(Gᵢ, qᵢ)` as the `v₁`-base framework
+`(G₁, q₁)` read through the index-shift isomorphism `(ρ, σ) = (shiftPerm i.castSucc,
+shiftEdgePerm i)` (Katoh–Tanigawa 2011 §6.4.2 eqs. 6.54–6.56). These two accessors package the
+relabelled `ends`/seed the dispatch feeds the corner-data ASSEMBLY producer
+`case_III_arm_corner_assembly`, in exactly the shape the per-member genuine-row transport
+`chainData_bottom_relabel` (`Relabel/Chain.lean`) lands its image rows in: the `ends` selector
+post-composes `(ρ.symm)` on each recorded endpoint and pre-composes the edge cycle `σ`, and the
+seed pre-composes `ρ` on the body coordinate. The dispatch then OVERRIDES the `ends` selector at
+the two re-inserted hinges `e_a`, `e_b` (the `Function.update` pattern of the d=3 dispatch). -/
+
+/-- The **interior-candidate relabel-image `ends` selector** (`endsσρ`, CHAIN-2c-iii eq. 6.54): the
+base recorded-endpoint selector `ends₀` read through the index-shift isomorphism `(ρ, σ) =
+(shiftPerm i.castSucc, shiftEdgePerm i)` — `ends₀` pre-composed with the edge cycle `σ` and each
+endpoint post-composed with `ρ.symm`. This is exactly the target `ends` of
+`chainData_bottom_relabel` (`Relabel/Chain.lean`), so the dispatch's corner-data assembly inherits
+its image-row membership. -/
+def candidateEnds (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α) : β → α × α :=
+  fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+    (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2)
+
+@[simp] lemma candidateEnds_apply (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α) (e : β) :
+    cd.candidateEnds i ends₀ e =
+      ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+        (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2) :=
+  rfl
+
+/-- The **interior-candidate relabel-image seed** (`qρ`, CHAIN-2c-iii eq. 6.54): the base seed `q`
+pre-composed with the index-shift permutation `ρ = shiftPerm i.castSucc` on the body coordinate
+(the homogeneous fibre coordinate is untouched). This is the target seed of
+`chainData_bottom_relabel` (`Relabel/Chain.lean`); the dispatch feeds it to
+`case_III_arm_corner_assembly`. Generic in the fibre type `γ` (the consumer instantiates
+`γ = Fin (k+2)`). -/
+def candidateSeed {γ : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → ℝ) : α × γ → ℝ :=
+  fun p => q (cd.shiftPerm i.castSucc p.1, p.2)
+
+omit [DecidableEq β] in
+@[simp] lemma candidateSeed_apply {γ : Type*} (cd : G.ChainData n) (i : Fin cd.d) (q : α × γ → ℝ)
+    (p : α × γ) : cd.candidateSeed i q p = q (cd.shiftPerm i.castSucc p.1, p.2) :=
+  rfl
+
 end ChainData
 
 end Graph

@@ -119,12 +119,17 @@ build/lint warning-clean): the concrete-`W` carrier variant
 existential leaf) — `W := span (range ((funLeft σ).dualMap ∘ f))` concretely, with the third corner datum
 `hW : ∀ φ ∈ W, φ ∘ₗ single v = 0` (the new content, a `span_induction` routing each generator through the (α)
 bridge `funLeft_dualMap_comp_single` + `hvanish` at `σ.symm v`); `hWS`/`hWcard` reuse the existential leaf's
-content. **The next commit is LEAF-1** (EASIEST — the interior-split candidate framework `def`s + the
-`case_III_arm_corner_assembly` graph/seed hyps not already on the `ChainData` accessors). Full leaf list +
-signatures + ranking + the two flagged gaps (the `W`/`hW` shape [RESOLVED by LEAF-2]; the `hS` disjunction) in
-*Hand-off / next phase* below + design §(o‴)(I.8.24)(4.10). Home: a fresh `Relabel/Dispatch.lean` importing
-`Relabel/ForkedArm` (LEAF-2 landed in `Candidate.lean`); the `Relabel/` split is DONE so the dispatch lands
-without re-tripping the cap.
+content. **LEAF-1 is LANDED** (2026-06-23, axiom-clean, build/lint warning-clean): the interior-candidate
+relabel-image selector/seed `ChainData.candidateEnds` / `candidateSeed` (`Induction/Operations.lean`, beside
+the sibling interior-split accessors) — the two `def`s the dispatch feeds `case_III_arm_corner_assembly`,
+matching `chainData_bottom_relabel`'s target framework verbatim (`endsσρ = ρ.symm ∘ ends₀ ∘ σ`, `qρ = q ∘ ρ`
+on the body coordinate), each with its `rfl` `@[simp]` computation lemma; `candidateSeed` is generic in the
+fibre type `γ` so it carries no `ScrewSpace`/`k` dependency. **The next commit is LEAF-3** (MODERATE — the
+discriminator→candidate plumbing: fire `chainData_split_w6b_gates` + `exists_chainData_discriminator_pick`
+once off the shared base, expose `hgate`/`hρe₀` at the matched interior candidate `i`). Full leaf list +
+signatures + ranking + the one remaining flagged gap (the `hS` disjunction at LEAF-4) in *Hand-off / next
+phase* below + design §(o‴)(I.8.24)(4.10). Home for the rest: a fresh `Relabel/Dispatch.lean` importing
+`Relabel/ForkedArm`; the `Relabel/` split is DONE so the dispatch lands without re-tripping the cap.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -211,18 +216,30 @@ trap). The concrete `σ` is the consumer's free choice (build-time latitude: ins
 i.castSucc` so `σ.symm` matches `chainData_bottom_relabel`'s relabel — a `.symm`-placement detail at LEAF-4,
 not a wall).
 
-**The NEXT commit-sized leaf is LEAF-1** (EASIEST; see build order below). LEAF-2's landing unblocked LEAF-4's
-`hW` (the rows-384/389 "land the new small piece first" pattern — done).
+**The NEXT commit-sized leaf is LEAF-3** (MODERATE; see build order below). LEAF-1 + LEAF-2 are done;
+the remaining route is LEAF-3 (discriminator plumbing) → LEAF-4 (hard core) → LEAF-5 (router) → CHAIN-5.
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
-   `Realization.lean`). The leaves split across `Candidate.lean` (LEAF-2 ✓) + `Relabel/Dispatch.lean` (rest).
+   `Realization.lean`). The leaves split across `Candidate.lean` (LEAF-2 ✓), `Induction/Operations.lean`
+   (LEAF-1 ✓), + `Relabel/Dispatch.lean` (rest).
 1. ~~**LEAF-2 (EASY-MODERATE)** — the concrete-`W` carrier variant.~~ ✓ **LANDED** 2026-06-23
    (`Candidate.lean`, `BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish`, axiom-clean).
-2. **LEAF-1 (EASIEST, the NEXT commit)** — the interior-split `endsσρ`/`qρ` candidate framework (`def`s mirroring
-   `chainData_bottom_relabel`'s target) + the `case_III_arm_corner_assembly` graph/seed hyps not already on
-   the `ChainData` accessors (`hends_ea/eb`, `hends_Gv`, `hne_Gv`, `hVone/hVcard`, `hLn/hgab`).
-3. **LEAF-3 (MODERATE)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick`
+2. ~~**LEAF-1 (EASIEST)** — the interior-split `endsσρ`/`qρ` candidate framework `def`s.~~ ✓ **LANDED**
+   2026-06-23 (`Induction/Operations.lean`, `ChainData.candidateEnds` / `candidateSeed` + their `rfl` `@[simp]`
+   `_apply` lemmas, axiom-clean). The two `def`s mirror `chainData_bottom_relabel`'s target framework
+   verbatim (`candidateEnds i ends₀ = ρ.symm ∘ ends₀ ∘ σ`, `candidateSeed i q = q ∘ ρ` on the body
+   coordinate, `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`), so LEAF-4 can chain them; `candidateSeed`
+   is generic in the fibre type `γ`, carrying no `ScrewSpace`/`k` dependency. **NOT in LEAF-1** (these depend
+   on the discriminator's `n'` / the split-realization general-position context, so they are LEAF-3/LEAF-4
+   plumbing, built inline at the dispatch like the d=3 `case_III_candidate_dispatch` /
+   `chainData_split_realization` do): the override-selector facts `hends_ea/eb` (`Function.update` of
+   `candidateEnds` at the two re-inserted hinges, `Realization.lean:444`/`1067` pattern), `hends_Gv`/`hne_Gv`
+   (off-slot link-recording + general-position support nonvanishing, verbatim from
+   `chainData_split_realization:1079–1092`), `hVone`/`hVcard` (the `removeVertex` ncard rewrites), `hLn`/`hgab`
+   (the seed pairwise-LI + transversal-LI from the split realization's `IsGeneralPosition`).
+3. **LEAF-3 (MODERATE, the NEXT commit)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
+   `exists_chainData_discriminator_pick`
    ONCE off the shared base; expose `hgate`/`hρe₀` at the matched interior candidate `i`. Latitude: the
    panel-`u`↔candidate-`i` match (the `cand` injective selector, C.3 `Fin` arithmetic).
 4. **LEAF-4 (THE HARD CORE)** — the interior base-block `W` production: `f := w`, `L := (funLeft (shiftPerm
@@ -345,4 +362,13 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   reuse the existential body; `hW` is the new content — a `span_induction` routing each generator through
   the (α) bridge `funLeft_dualMap_comp_single` + `hvanish` at `σ.symm v` (the column-index direction FORCED
   by the bridge, (4.8)-class trap). Resolves the `W`/`hW` threading decision (return-shape mismatch, not a
-  motive change); unblocks LEAF-4's `hW`. Next: LEAF-1.
+  motive change); unblocks LEAF-4's `hW`.
+- **Dispatch LEAF-1: the interior-candidate relabel-image selector/seed (2026-06-23).** Two `ChainData`
+  accessors in `Induction/Operations.lean` (beside the sibling interior-split accessors): `candidateEnds i
+  ends₀ = fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)` and `candidateSeed i q = fun p => q (ρ
+  p.1, p.2)`, `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`, each with a `rfl` `@[simp]` `_apply` lemma.
+  They are `chainData_bottom_relabel`'s target framework named as `def`s, so LEAF-4's `hS` case-split routes
+  its image rows into them by `rfl`. `candidateSeed` is generic in the fibre type `γ` (no `ScrewSpace`/`k`
+  dep, so it lives upstream in `Induction/`); the unused `[DecidableEq β]` on its `_apply` lemma is dropped
+  with `omit … in`. Pure bookkeeping, no new math; the override (`hends_ea/eb`) + general-position
+  (`hLn`/`hgab`/`hne_Gv`) facts depend on LEAF-3's `n'`/split-realization context and are built inline there.
