@@ -1943,6 +1943,203 @@ decomposition of the SECOND build it teed up.**
   construct candidate over full `G`, assemble `(W,hWS,hWcard,g,hg,hLI)` with `±r` = these leaves, apply
   the cert, `exact case_III_realization_of_rank`).
 
+  *(4.10) CHAIN-2c-iii `chainData_dispatch` — DECOMPOSITION INTO COMMIT-SIZED LEAVES, RANKED, with the
+  HARD CORE named (2026-06-23, opus docs-only design-pass; every load-bearing claim re-derived from the
+  LANDED `def`/`theorem` bodies after the `Relabel/` split — the assembly `case_III_arm_corner_assembly`
+  + spine `case_III_arm_realization_chain` `Relabel/ForkedArm.lean:136/59`, the chain cert
+  `case_III_rank_certification_chain` `Candidate.lean:1988`, the carrier leaf
+  `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` `Candidate.lean:1727` + its mirror
+  `Submodule.exists_le_finrank_eq_card_of_injective_map` `Mathlib/.../Constructions.lean:246`, the (α)
+  bridge `funLeft_dualMap_comp_single` `Basic.lean:576`, `chainData_bottom_relabel` `Relabel/Chain.lean:316`,
+  the W6b gate producer `chainData_split_w6b_gates` `Realization.lean:771`, the LANDED per-`i` reduction
+  `chainData_split_realization` `Realization.lean:954`, the discriminator-pick
+  `exists_chainData_discriminator_pick` `Realization.lean:1144` + capstone `…_gen` `Claim612.lean:1462`,
+  the d=3 dispatch `case_III_candidate_dispatch` `Realization.lean:268`, the per-`i` candidate template
+  `case_III_arm_realization_M3` `Relabel/Arm.lean:54`, the `ChainData` interior accessors
+  `Operations.lean:1392–1462`, the C.3 dispatch contract — NOT inherited from the prior pins' prose.)*
+
+  **THE ARCHITECTURAL FACT THAT SETS THE CUT (re-confirmed, route β §(l)/(m)/(n)).** The dispatch fires
+  the redundancy producer + discriminator **ONCE** off the single shared base (the `v₁`-split), getting one
+  `ρ₀` (= KT's abstract `r`) and one discriminating panel `u`; it then routes `u`'s matched candidate `i`
+  to an arm. There are TWO arm routes, already both landed:
+  - the **base candidate `i=1`** (the `v₁`-split's own genuine framework — `hρGv` IS a genuine base
+    membership, no relabel) and the **d=3 floor**: the LANDED OLD engine `case_III_arm_realization`, reached
+    via the LANDED per-`i` reduction `chainData_split_realization` (which already fires
+    `chainData_split_w6b_gates` once + feeds the old engine, taking the discriminator slot as `htrans`);
+  - the **interior candidates `2 ≤ i < d`** (the relabel-image candidates, KT 6.54–6.56): the option-(A)
+    `case_III_arm_corner_assembly` (NO `hρGv`, the `±r` block decomposition).
+
+  So the dispatch is NOT a from-scratch composer — it is a **discriminator-pick + Fin-case router** over two
+  already-landed arm routes, PLUS the production of the corner-assembly's RAW inputs for the interior route.
+  The HARD CORE is exactly that production: `hgate`/`hρe₀` (the discriminator outputs threaded to the matched
+  `i`), and `W`/`hWS`/`hWcard`/`hW` (the relabel-image base block as a CONCRETE subspace).
+
+  **THE ONE GENUINE DESIGN DECISION — the `W`/`hW` threading (clause (ii), FLAGGED).** This is the prompt's
+  flagged wrinkle, and it is a REAL (small) decision, not mechanical threading: `case_III_arm_corner_assembly`
+  takes `hW : ∀ φ ∈ W, φ.comp (single v) = 0` on a *specific* `W`, but the LANDED carrier leaf
+  `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` returns an **EXISTENTIAL** `W` (its body is
+  `⟨span (range (L ∘ f)), …⟩` but the `∃` hides it — `Mathlib/.../Constructions.lean:251`). You CANNOT prove
+  `hW` on a `Classical.choice`-obtained opaque `W`. **VERDICT (does NOT need the coordinator/user — it is below
+  the contract/motive, a leaf-shape choice):** the dispatch must NOT consume the existential leaf; it sets
+  `W := Submodule.span ℝ (Set.range (L ∘ f))` **concretely** and proves the three facts on it directly. This
+  is one genuinely-new small leaf (LEAF-2 below), a concrete-`W` carrier variant exposing the body the
+  existential leaf hides. `hWcard = finrank_span_eq_card (hf.map' L …)`; `hWS = span_le.mpr …`; `hW` by
+  `Submodule.span_induction` over `range (L ∘ f)` + the (α) bridge `funLeft_dualMap_comp_single`
+  (`Basic.lean:576`): `(funLeft σ⁻¹).dualMap (f j) ).comp (single v) = (f j).comp (single (σ v))`, and the base
+  rows `f j` (genuine `(G−vᵢ)`-rows over old bodies) vanish at `single (σ v)` since `σ v ∉ {their endpoints}`.
+  **This is NOT a motive/IH/contract change** (re-confirmed: the cert/arm are below C.0–C.6); it is a
+  return-shape mismatch between a landed leaf and its actual consumer, fixed by one new leaf.
+
+  **THE OTHER FLAGGED GAP — the bottom-family `hS` disjunction (clause (ii), the §(4.4)(β) flag, RE-CONFIRMED
+  as real arm-internal wiring, not a wall).** The carrier leaf's `hS : ∀ j, L (f j) ∈ span F₀.rigidityRows`
+  is supplied by `chainData_bottom_relabel` — but that lemma's CONCLUSION is itself a DISJUNCTION (genuine
+  candidate row OR a `(vᵢ₊₁,vᵢ₋₁)`-block tag), and the input `hwmem` (from `chainData_split_w6b_gates`) is
+  ALSO a disjunction (genuine `Gv`-row OR `(ab)`-block tag). So `hS` is NOT a single application: it is a
+  per-member case-split routing the genuine images via the off-slot GROUP leaf
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (`Relabel/Chain.lean:512`, KEPT for exactly this) +
+  the row-routing bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, and the block-tag
+  images via the reproduced-slot membership. **This is member-MOVING relabel transport (§I.8.20(e)
+  buildable), no wall, no motive change — but it is genuine wiring with a non-trivial case-split, NOT a
+  one-liner.** It is the bulk of LEAF-4 below.
+
+  **THE LEAVES (commit-sized, ranked EASY→HARD; the hard core flagged so a build cannot peel an easy one and
+  defer the hard).** Home: a fresh `Relabel/Dispatch.lean` importing `Relabel/ForkedArm` (the `Relabel/` split
+  is DONE; do NOT grow `Realization.lean`). All signatures below are over `{k} {α β} [Finite α] [Finite β]
+  [DecidableEq α] [DecidableEq β]`, `{G : Graph α β} {n : ℕ} (cd : G.ChainData n)`.
+
+  - **LEAF-1 (EASIEST — pure combinatorial setup, ~½ commit). The interior-split `endsσρ`/`qρ` candidate
+    framework + the four `case_III_arm_corner_assembly` graph/seed hyps NOT already on the accessors.** At an
+    interior `i` (`0 < i`), the accessors (`Operations.lean:1392–1462`) already give `hvVc`/`haVc`/`hbVc`
+    (the three `removeVertex` memberships), `hG_ea`/`hG_eb` (`isLink_succ_edge`/`isLink_pred_edge`), `heab`
+    (`pred_edge_ne`), `hva`/`hvb` (`castSucc_ne_succ`/`castSucc_ne_pred_castSucc`), `hsplitG`
+    (`isLink_eq_succ_or_pred_or_removeVertex`), and `hleG` is `removeVertex_isLink.mp ·.1`. LEAF-1 supplies
+    the per-candidate selector `endsσρ`/seed `qρ` (the `(shiftPerm i.castSucc)⁻¹`-shifted ones, exactly
+    `chainData_bottom_relabel`'s target framework `Relabel/Chain.lean:337–341`) and the remaining hyps
+    `hends_ea`/`hends_eb` (the override selector at the two re-inserted hinges, the `Function.update` pattern
+    of `case_III_candidate_dispatch:444`), `hends_Gv`/`hne_Gv` (the off-slot link-recording + general-position
+    support nonvanishing, verbatim from `chainData_split_realization:1079–1092`), `hVone`/`hVcard`
+    (`Graph.vertexSet_removeVertex` + `Set.ncard_diff_singleton_of_mem (cd.vtx_mem _)`), `hLn`/`hgab` (the seed
+    pairwise-LI from the split realization's `IsGeneralPosition`). Signature (a `def` producing the framework +
+    a bundling `lemma`, or inline in LEAF-4):
+    ```
+    -- the candidate-i selector/seed (no new theorem; a def, mirrors chainData_bottom_relabel's target):
+    def ChainData.candidateEnds (cd : G.ChainData n) (i : Fin cd.d) (ends₀ : β → α × α) : β → α × α
+    def ChainData.candidateSeed (cd : G.ChainData n) (i : Fin cd.d) (q : α × Fin (k+2) → ℝ) :
+      α × Fin (k+2) → ℝ := fun p => q (cd.shiftPerm i.castSucc p.1, p.2)
+    ```
+    No new math. **Risk: none.** It is bookkeeping; its only subtlety is matching `chainData_bottom_relabel`'s
+    exact `endsσρ`/`qρ` shape so LEAF-4 can chain them.
+
+  - **LEAF-2 (EASY-MODERATE — the concrete-`W` carrier variant, ~½–1 commit). The genuinely-new leaf the
+    `W`/`hW` threading decision forces** (see the design decision above). A concrete-`W` companion to
+    `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map`, exposing the `span (range (L ∘ f))` body
+    plus the off-`v` column-vanishing `hW`. Home: `Candidate.lean`, beside the existential leaf. EXACT
+    signature:
+    ```
+    theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish
+        [DecidableEq α] (F : BodyHingeFramework k α β) {ιb : Type*} [Fintype ιb] {v : α}
+        {f : ιb → Module.Dual ℝ (α → ScrewSpace k)} (hf : LinearIndependent ℝ f)
+        {σ : Equiv.Perm α}
+        (hS : ∀ j, (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap (f j)
+          ∈ Submodule.span ℝ F.rigidityRows)
+        (hvanish : ∀ j, (f j).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm v)) = 0) :
+        ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
+          W ≤ Submodule.span ℝ F.rigidityRows ∧
+          Module.finrank ℝ W = Fintype.card ιb ∧
+          (∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0)
+    ```
+    with `W := span (range ((funLeft σ).dualMap ∘ f))`. `hWS`/`hWcard` reuse the existential leaf's body
+    (`span_le` + `finrank_span_eq_card (hf.map' …)`); `hW` is the new content — `span_induction` over the
+    range, base case the LANDED `funLeft_dualMap_comp_single` (`Basic.lean:576`, signature re-verified):
+    `((funLeft σ).dualMap (f j)).comp (single v) = (f j).comp (single (σ.symm v))`, which `hvanish` kills.
+    **(The `hvanish`-at-`σ.symm v` direction is FORCED by that bridge's `σ.symm w` conclusion, not a free
+    choice — the (4.8)-class column-index trap; pinned exactly to avoid a confident-wrong signature.)**
+    BUILD-TIME LATITUDE (flag, not a wall): which concrete `σ` (`shiftPerm i.castSucc` itself, whose `.symm` is
+    `chainData_bottom_relabel`'s `(shiftPerm i.castSucc)⁻¹`) is passed — i.e. whether the leaf is instantiated
+    at `σ = shiftPerm i.castSucc` (then `σ.symm = (shiftPerm i.castSucc)⁻¹` matches the relabel's
+    `(funLeft (shiftPerm i.castSucc).symm).dualMap` — so the `f j` images live in the candidate span via
+    `chainData_bottom_relabel`, and `hvanish` reads `(shiftPerm i.castSucc) v`). `hvanish` is then discharged
+    in LEAF-4 from "base rows over old bodies don't touch `(shiftPerm i.castSucc) v`". **Risk: low** —
+    `span_induction` + one landed bridge; the only friction is the perm-direction bookkeeping (a TACTICS-QUIRKS
+    `.symm`-placement candidate).
+
+  - **LEAF-3 (MODERATE — the discriminator→candidate plumbing, ~1 commit). Fire the single redundancy +
+    discriminator off the shared base and EXPOSE `ρ₀`/`hgate`/`hρe₀` at the matched interior candidate `i`.**
+    This is the `Fin (k+1)` family glue CHAIN-2c-i (`exists_chainData_discriminator_pick`, LANDED) wrapped to
+    return, for the candidate `i` the discriminator's panel `u` matches, the assembly's discriminator slots:
+    `hgate : ρ₀ (panelSupportExtensor (q(a,·)) n') ≠ 0` and `hρe₀ : ρ₀ (panelSupportExtensor (q(a,·)) (q(b,·)))
+    = 0`, where `ρ₀` is the W6b functional from `chainData_split_w6b_gates` (fired ONCE) and `n'` is the
+    transversal. The d=3 template is `case_III_candidate_dispatch:435–441` (the discriminator region) + `:501`
+    (`hgate`/`hρ0e₀` passed to the arm); `chainData_split_realization` already does exactly this for the OLD
+    engine via its `htrans` slot, so LEAF-3 is the SAME wiring re-aimed at the assembly's `hgate`/`hρe₀` shape.
+    Sketch signature (a producer the dispatch consumes; `i` ranges over interior candidates, `u`↔`i` matching
+    is the OD-arithmetic the candidate selector `cand : Fin (k+1) → α` fixes):
+    ```
+    theorem ChainData.exists_shared_redundancy_and_discriminator …
+        (the base seed + IH context) :
+        ∃ (q : … ) (ends : …) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) (i : Fin cd.d) (hi : 0 < (i:ℕ)) (n' : …),
+          ρ₀ ≠ 0 ∧
+          ρ₀ (panelSupportExtensor (q(cd.vtx i.succ,·)) n') ≠ 0 ∧                     -- hgate
+          ρ₀ (panelSupportExtensor (q(cd.vtx i.succ,·)) (q(cd.vtx ⟨i-1⟩.castSucc,·))) = 0 ∧  -- hρe₀
+          (the W6b ρ₀/w bundle at the base, for LEAF-4's bottom family)
+    ```
+    **BUILD-TIME LATITUDE (flag):** the panel-index `u : Fin (k+1)` ↔ chain-candidate `i : Fin cd.d` match (the
+    `cand` injective selector of `exists_chainData_discriminator_pick`) is the `Fin` arithmetic C.3 leaves to
+    build-time. **Risk: moderate** — no new linear algebra (the discriminator is LANDED general-`k`), but the
+    candidate-selector arithmetic and threading the W6b base bundle through to LEAF-4 is real plumbing.
+
+  - **LEAF-4 (THE HARD CORE — ~1–2 commits; this is where a build MUST NOT scope-to-fit away). The interior
+    base-block `W`/`hWS`/`hWcard`/`hW` production over the chain bottom family + the `hS` disjunction
+    routing.** Given the matched interior `i`, `ρ₀`, the W6b base bottom family `w`/`hw`/`hwmem` (LEAF-3's
+    bundle), produce the four corner inputs `case_III_arm_corner_assembly` consumes and CALL it. The body:
+    (a) the LI base family `f := w` (card `D·(m_v−1)`, `hf := hw`); (b) `L := (funLeft (cd.shiftPerm
+    i.castSucc)⁻¹).dualMap`, injective (M₃ `hw` route, `dualMap` of surjective `funLeft`); (c) `hS` — the
+    per-member case-split over `hwmem`: genuine images via `chainData_bottom_relabel`'s `Or.inl` →
+    off-slot GROUP leaf / row-routing bridge into `caseIIICandidate.rigidityRows`; block-tag images via
+    `Or.inr` → reproduced-slot membership; (d) `hvanish` — base rows over old bodies vanish at `single (σ v)`;
+    (e) apply LEAF-2 to get `W`/`hWS`/`hWcard`/`hW`; (f) `exact case_III_arm_corner_assembly … hgate hρe₀ hWS
+    hWcard hW hdef`. **WHY THIS IS THE HARD CORE:** (c) is the §(4.4)(β) flag — `chainData_bottom_relabel` and
+    `hwmem` are BOTH disjunctions, so `hS` is a real per-member router (genuine vs block-tag, each into the
+    candidate span), NOT a single rewrite; and it must align the framework `chainData_bottom_relabel` produces
+    (`ofNormals (G−vᵢ) endsσρ qρ`) with the assembly's `caseIIICandidate (G) endsσρ qρ e_a e_b …` over full
+    `G` (the row-routing bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, the
+    off-the-two-slots seed coincidence). This is the substantive composer the last two dispatches scoped AWAY
+    from. **Risk: the highest of the four**, but bounded — every ingredient is landed (`chainData_bottom_relabel`,
+    the GROUP leaf, the reproduced-slot membership, the row-routing bridge, LEAF-2); it is assembly + a
+    case-split, no new linear algebra and NO wall (member-MOVING throughout, the cert is `hρGv`-free).
+    Sketch:
+    ```
+    theorem ChainData.case_III_chain_arm_at_interior (cd : G.ChainData n) (i : Fin cd.d) (hi : 0 < (i:ℕ)) …
+        (the LEAF-3 ρ₀/hgate/hρe₀ + W6b w/hw/hwmem bundle, the LEAF-1 framework hyps) :
+        PanelHingeFramework.HasGenericFullRankRealization k n G
+      := …; exact PanelHingeFramework.case_III_arm_corner_assembly G (G.removeVertex (cd.vtx i.castSucc))
+            endsσρ … hgate hρe₀ hWS hWcard hW hdef
+    ```
+
+  - **LEAF-5 (MODERATE — the router + d=3 floor, ~1 commit). `ChainData.chainData_dispatch` proper.** The
+    top-level dispatch: from `cd`/base-seed/IH context, fire LEAF-3 to get the matched `i`/`ρ₀`/gates; CASE on
+    the candidate: `i=1` (base) and the **d=3 floor** route to the LANDED `chainData_split_realization` (the
+    OLD engine, zero-regression — its `htrans` slot filled from the SAME discriminator); interior `2 ≤ i < d`
+    route to LEAF-4. Produces `HasGenericFullRankRealization k n G` from the C.3 inputs. **BUILD-TIME LATITUDE
+    (flag):** the precise routing predicate (`i=1` vs `d=3∧i=2` vs general interior) and the `d=3`
+    zero-regression check (the C.4 adapter must keep `case_III_candidate_dispatch` byte-reachable) is settled
+    at build; the prompt's "`d=3` floor (`i=2`) → landed engine" is the zero-regression invariant. **Risk:
+    moderate** — the routing/`Fin`-arithmetic is the work; both arm routes are landed. CHAIN-5 (wiring
+    `chainData_dispatch` into `case_III_realization_all_k`'s `hdispatch` via the C.4 4-tuple adapter) is the
+    NEXT sub-step after, plus the orphan confirm-and-delete (the `hφ`-spine; LEAF 1–4 STAYS).
+
+  **RANKING + HARD-CORE FLAG (the anti-scope-to-fit gate).** EASIEST→HARDEST: LEAF-1 (combinatorial setup) <
+  LEAF-2 (concrete-`W` carrier, one `span_induction`) < LEAF-3 (discriminator plumbing) < LEAF-5 (router) <
+  **LEAF-4 (the base-block `W` production + `hS` disjunction routing) — THE HARD CORE.** A build that lands
+  LEAF-1/2/3 but defers LEAF-4 as "too big" has peeled the easy shell and left the actual composer
+  undone — LEAF-4 is the §(4.4)(β) flag made concrete, the piece the last two dispatches scoped away from.
+  The **FIRST commit-sized leaf to land is LEAF-2** (the concrete-`W` carrier variant: it is the genuinely-new
+  leaf the `W`/`hW` threading decision forces, it unblocks LEAF-4's `hW`, and it is small + self-contained —
+  the rows-384/389 "land the genuinely-new small piece first" pattern). **CLAUSE (ii):** no motive/IH/contract
+  change is forced; the one design decision (concrete vs existential `W`) is below the contract and is RESOLVED
+  here (concrete `W`, new LEAF-2 — does NOT need coordinator/user); the two flagged gaps (the `W`/`hW` shape,
+  the `hS` disjunction) are named as real wiring, not hand-waved; `d=3` stays a zero-regression wrapper.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

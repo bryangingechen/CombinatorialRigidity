@@ -109,14 +109,18 @@ bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`; the per-m
 step needs them):** the base-side `hrCol` leaf `funLeft_dualMap_interior_group_acolumn_eq_neg_baseRedundancy`
 (reads `vtx(i-1)`); T-2 `chainData_candidateRow_edgeGrouped_transport_comb`.
 
-**Next: CHAIN-2c-iii `chainData_dispatch`.** PRODUCE `case_III_arm_corner_assembly`'s raw inputs from the
-`ChainData` interior split (at `2 ≤ i < d`): the discriminator `hgate`/`hρe₀` (A-1 at the interior split), the
-base block `W`/`hWS`/`hWcard` (carrier leaf `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` over
-the chain bottom family `chainData_bottom_relabel`), and the off-`v` vanishing `hW` (the relabel-image base rows
-involve only old bodies), plus the split-tuple/count facts; then call `case_III_arm_corner_assembly` (the panel
-rows + `±r` corner are now ASSEMBLED inside it). The `d=3` floor (`i=2`) routes to the landed
-`case_III_arm_realization` engine. (The `Relabel/` split is DONE — see *Current state*; put the
-dispatch in a fresh `Relabel/Dispatch.lean` importing `Relabel/ForkedArm`, or in `CaseIII/Realization`.)
+**Next: CHAIN-2c-iii `chainData_dispatch` — DECOMPOSED into 5 ranked commit-sized leaves** (design
+§(o‴)(I.8.24)(4.10), 2026-06-23). The dispatch is a **discriminator-pick + Fin-case ROUTER** over two
+ALREADY-LANDED arm routes — `chainData_split_realization` (the OLD engine, for base `i=1` + d=3 floor,
+zero-regression) and `case_III_arm_corner_assembly` (for interior `2 ≤ i < d`) — plus the production of the
+corner-assembly's RAW inputs (the HARD CORE = LEAF-4). **The FIRST commit is LEAF-2**, a genuinely-new
+concrete-`W` carrier variant (`BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish`,
+`Candidate.lean`) forced by the `W`/`hW` threading decision: the assembly needs `hW` on a *specific* `W`, but
+the landed carrier leaf returns an *existential* `W` (opaque), so the dispatch must build `W := span (range (L
+∘ f))` concretely. Full leaf list + signatures + ranking + the two flagged gaps (the `W`/`hW` shape; the `hS`
+disjunction) in *Hand-off / next phase* below + design §(o‴)(I.8.24)(4.10). Home: a fresh
+`Relabel/Dispatch.lean` importing `Relabel/ForkedArm` (LEAF-2 in `Candidate.lean`); the `Relabel/` split is
+DONE so the dispatch lands without re-tripping the cap.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -177,43 +181,74 @@ moving**, flagging the fixed-functional-transport shape as the trap. Written at 
 
 ## Hand-off / next phase
 
-**The arm cert→tail SPINE `case_III_arm_realization_chain` AND the corner-data ASSEMBLY producer
-`case_III_arm_corner_assembly` are BOTH LANDED.** The assembly *constructs* the `±r` corner block
-`(g,hg,hLI,hιcard)` at `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` and calls the spine,
-taking the dispatch's RAW outputs (`hgate`/`hρe₀` discriminator; `W`/`hWS`/`hWcard`/`hW` base-block) as explicit
-hypotheses — it CONFIRMED the corrected `±r` leaf feeds the cert's `hg` and the corrected `hrCol` feeds `hLI`
-(the seam closes end-to-end in Lean). The next concrete commit is **CHAIN-2c-iii `chainData_dispatch`** —
-PRODUCE the assembly's raw inputs from the `ChainData` interior split, route `2 ≤ i < d` through
-`case_III_arm_corner_assembly`, `d=3` floor (`i=2`) → the landed `case_III_arm_realization` engine. All the
-underlying corner-data leaves are in tree (names below).
+**CHAIN-2c-iii `chainData_dispatch` is DECOMPOSED into 5 commit-sized leaves (design §(o‴)(I.8.24)(4.10),
+source-verified 2026-06-23 against the LANDED bodies after the `Relabel/` split).** The dispatch is NOT a
+from-scratch composer: it is a **discriminator-pick + Fin-case ROUTER** over two ALREADY-LANDED arm routes —
+the OLD engine via `chainData_split_realization` (`Realization.lean:954`, for the base candidate `i=1` + the
+d=3 floor, zero-regression) and the option-(A) `case_III_arm_corner_assembly` (for interior `2 ≤ i < d`) —
+PLUS the production of the corner-assembly's RAW inputs for the interior route. **The HARD CORE is LEAF-4**
+(the interior base-block `W`/`hWS`/`hWcard`/`hW` production + the `hS` disjunction routing) — a build MUST NOT
+peel the easy leaves and defer it.
 
-**Build order:**
-1. **CHAIN-2c-iii `chainData_dispatch`** (in a fresh `Relabel/Dispatch.lean` importing
-   `Relabel/ForkedArm`, or in `CaseIII/Realization`; `case_III_candidate_dispatch` at
-   `Realization.lean:268` is the d=3 template; `case_III_arm_realization_M3` in `Relabel/Arm.lean`
-   is the per-`i` construct-candidate template). At an interior `2 ≤ i < d` of a `cd : G.ChainData n`,
-   PRODUCE the raw inputs of `case_III_arm_corner_assembly` over the candidate-`i` split and call it:
-   - **`hgate`/`hρe₀`** ← A-1 at the interior split (the discriminator at the FIXED `ρ₀`, the candidate hinge's
-     support gate + the reproduced slot's perp).
-   - **`W`/`hWS`/`hWcard`** ← carrier leaf `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (at
-     `L = (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `f` = the chain bottom family, `hS` =
-     `chainData_bottom_relabel`); **`hW`** (off-`v` vanishing) ← the relabel-image base rows involve only old
-     bodies (the block-triangular column split, KT eq. (6.16)). NB: the assembly takes `W`/`hWS`/`hWcard`/`hW`
-     as its *own* hypotheses — to call the carrier leaf the dispatch must thread the concrete `W = span (range
-     (L ∘ f))` (not the existential wrapper) so `hW` is provable on it (or expose the wrapper's `W`).
-   - The split-tuple facts (`hvVc/haVc/hbVc`, `hG_ea/hG_eb`, `heab`, `hva/hvb`, `hsplitG`) ← the
-     `ChainData` interior accessors (`notMem_/succ_mem_/pred_castSucc_mem_vertexSet_removeVertex_castSucc`,
-     `isLink_succ_edge`/`isLink_pred_edge`, `pred_edge_ne`, `castSucc_ne_succ`/`castSucc_ne_pred_castSucc`,
-     `isLink_eq_succ_or_pred_or_removeVertex`) — **LANDED 2026-06-23**. The `(hVone,hVcard)` ncard facts
-     ← `Graph.vertexSet_removeVertex` + `Set.ncard_diff_singleton_of_mem`; `hleG`/`hends_Gv`/`hne_Gv`/
-     `hLn`/`hgab`/`hdef` ← the relabel/seed/genericity context (the `endsσρ`/`qρ` candidate framework).
-   - NB: the panel rows + `±r` corner are now ASSEMBLED inside `case_III_arm_corner_assembly` — the dispatch no
-     longer builds `g`/`hg`/`hLI` (the GROUP leaf / reproduced-slot membership / `linearIndependent_mkQ_corner_
-     of_gate` are consumed inside the assembly; revive the GROUP leaf only if the off-slot `hWS` family needs it).
-   The `Relabel/` split is DONE (the over-cap monolith is now the 5-file `Relabel/` chain), so the
-   dispatch can land in `Relabel/Dispatch.lean` without re-tripping the cap.
-2. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch` → orphan confirm-and-delete (the
-   `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~3–5 commits.** Audit: design §(o‴)(I.8.24)(4)/(4.9).
+**One design decision RESOLVED (below the contract/motive — does NOT need coordinator/user).** The
+`W`/`hW` threading: `case_III_arm_corner_assembly` takes `hW` on a *specific* `W`, but the landed carrier leaf
+`exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` returns an **existential** `W` (opaque — `hW`
+unprovable on it). Resolution: the dispatch sets `W := span (range (L ∘ f))` CONCRETELY via a new concrete-`W`
+carrier leaf (LEAF-2 = the FIRST commit). This is a return-shape mismatch, not a motive change.
+
+**The FIRST commit-sized leaf is LEAF-2** (the genuinely-new small piece the threading decision forces; it
+unblocks LEAF-4's `hW`, the rows-384/389 "land the new small piece first" pattern). Home: `Candidate.lean`,
+beside the existential leaf. EXACT signature:
+```
+theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish
+    [DecidableEq α] (F : BodyHingeFramework k α β) {ιb : Type*} [Fintype ιb] {v : α}
+    {f : ιb → Module.Dual ℝ (α → ScrewSpace k)} (hf : LinearIndependent ℝ f)
+    {σ : Equiv.Perm α}
+    (hS : ∀ j, (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap (f j)
+      ∈ Submodule.span ℝ F.rigidityRows)
+    (hvanish : ∀ j, (f j).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm v)) = 0) :
+    ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
+      W ≤ Submodule.span ℝ F.rigidityRows ∧
+      Module.finrank ℝ W = Fintype.card ιb ∧
+      (∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0)
+```
+`W := span (range ((funLeft σ).dualMap ∘ f))`; `hWS`/`hWcard` reuse the existential leaf's body, `hW` is the
+new content via `Submodule.span_induction` + the (α) bridge `funLeft_dualMap_comp_single` (`Basic.lean:576`,
+`((funLeft σ).dualMap φ).comp (single w) = φ.comp (single (σ.symm w))`). The `hvanish`-at-`σ.symm v` direction
+is FORCED by that bridge (NOT a free choice — the (4.8)-class column-index trap, pinned exactly). BUILD-TIME
+LATITUDE: which concrete `σ` (instantiate at `σ = shiftPerm i.castSucc`, so `σ.symm = (shiftPerm i.castSucc)⁻¹`
+matches `chainData_bottom_relabel`'s relabel; a `.symm`-placement detail, not a wall).
+
+**Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
+0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
+   `Realization.lean`). The leaves split across `Candidate.lean` (LEAF-2) + `Relabel/Dispatch.lean` (rest).
+1. **LEAF-2 (EASY-MODERATE, the FIRST commit, signature above)** — the concrete-`W` carrier variant.
+2. **LEAF-1 (EASIEST)** — the interior-split `endsσρ`/`qρ` candidate framework (`def`s mirroring
+   `chainData_bottom_relabel`'s target) + the `case_III_arm_corner_assembly` graph/seed hyps not already on
+   the `ChainData` accessors (`hends_ea/eb`, `hends_Gv`, `hne_Gv`, `hVone/hVcard`, `hLn/hgab`).
+3. **LEAF-3 (MODERATE)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick`
+   ONCE off the shared base; expose `hgate`/`hρe₀` at the matched interior candidate `i`. Latitude: the
+   panel-`u`↔candidate-`i` match (the `cand` injective selector, C.3 `Fin` arithmetic).
+4. **LEAF-4 (THE HARD CORE)** — the interior base-block `W` production: `f := w`, `L := (funLeft (shiftPerm
+   i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem` (genuine → off-slot GROUP leaf
+   `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge; block-tag → reproduced-slot
+   membership) routing `chainData_bottom_relabel`'s images into `caseIIICandidate.rigidityRows`, `hvanish` =
+   base-rows-over-old-bodies; apply LEAF-2; `exact case_III_arm_corner_assembly …`. THE §(4.4)(β) flag made
+   concrete; the composer the last two dispatches scoped AWAY from.
+5. **LEAF-5 (MODERATE)** — `chainData_dispatch` proper: the router. CASE on candidate `i`: base `i=1` + d=3
+   floor → `chainData_split_realization` (zero-regression); interior `2 ≤ i < d` → LEAF-4. Latitude: the
+   routing predicate + the C.4 `d=3` zero-regression adapter.
+6. **CHAIN-5** — wire `chainData_dispatch` into `case_III_realization_all_k`'s `hdispatch` via the C.4 4-tuple
+   adapter → orphan confirm-and-delete (the `hφ`-spine; LEAF 1–4 STAYS). **Cost band ~5–7 commits** (the
+   decomposition refined the prior ~3–5 by isolating the threading leaf + the hard-core composer). Audit:
+   design §(o‴)(I.8.24)(4)/(4.9)/(4.10).
+
+**`d=3` floor / interior routing.** The dispatch's two arm routes are both landed; interior `2 ≤ i < d` →
+`case_III_arm_corner_assembly` (NO `hρGv`); the d=3 floor (`i=2`) + base candidate `i=1` → the landed engine
+via `chainData_split_realization` (zero-regression, C.4). The split-tuple/count facts are the LANDED
+`ChainData` accessors (`Operations.lean:1392–1462`: the `removeVertex` memberships + `castSucc_ne_*` +
+`isLink_*` + `isLink_eq_succ_or_pred_or_removeVertex`). The panel rows + `±r` corner are ASSEMBLED inside
+`case_III_arm_corner_assembly` (the dispatch no longer builds `g`/`hg`/`hLI`).
 
 **Phase boundary — close 23c at CHAIN-5, open 23d = ENTRY.** Discharging `hdispatch` completes the CHAIN
 layer end-to-end for general `d`, which is exactly 23c's titled scope (the redundancy-carry re-architecture
