@@ -533,6 +533,95 @@ theorem _root_.Graph.ChainData.i3_freshEdge_interior_acolumn_sup_deRisk [Decidab
   exact BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
     (Fab := Fva) (Fv := Fva) h10 h12 hlink_ec hlink_ed rfl rfl hdeg2 hdeg2r hW
 
+/-- **The general-`i` interior degree-2 column-sup projection** (CHAIN-2c-ii-arm, the LEAF-4
+interior-`hρe₀` regrouping component; `notes/Phase23-design.md` §I.8.24(4.13); Katoh–Tanigawa 2011
+§6.4.2, eq.~(6.44) iterated). The candidate-`i`-general lift of the d=3 de-risk gate
+`i3_freshEdge_interior_acolumn_sup_deRisk` (its `i = 3`, `s = 0`, interior vertex `vtx 1` instance):
+at a candidate `i : Fin (cd.d + 1)` and a *surviving* interior chain vertex `vtx (s+1)` (with
+`s + 2 < (i : ℕ)`, so both incident chain edges `edge s = vₛvₛ₊₁` and `edge (s+1) = vₛ₊₁vₛ₊₂` have
+all of `vtx s, vtx (s+1), vtx (s+2)` distinct from `vtx i` and survive `removeVertex (vtx i)`), the
+interior vertex is **genuinely degree-2** in `Fva = ofNormals (G − vtx i) ends qρ`, so the strongest
+projection of a span member `φ ∈ span Fva.rigidityRows` at the `vtx (s+1)`-column is the **two-edge
+sup** `block (edge s) ⊔ block (edge (s+1))`, not a single block (the route-fork verdict at the d=3
+gate). This is the column-projection brick the interior-`hρe₀` leaf's eq.~(6.52) regrouping at the
+degree-2 vertex `vᵢ` threads through, generalizing the hardcoded `⟨0/1/2/3, _⟩` indices of the d=3
+gate to general `i` and surviving-edge index `s`. Direct application of the framework-level
+primitive `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`, with the degree-2 closure supplied
+by the chain helper `shiftBody_deg_two`. The strict `s + 2 < (i : ℕ)` boundary is load-bearing: at
+`i = s + 2` the successor neighbour `vtx (s+2) = vtx i` is *removed*, so `edge (s+1)` dies and
+`vtx (s+1)` becomes degree-ONE (the d=3-base / `M₃` single-block situation, handled by the one-edge
+`acolumn_mem_hingeRowBlock_of_span_rigidityRows`); the two-edge sup is the right form exactly when
+both neighbours survive. Self-contained over the chain data, **zero blast radius** (no live
+caller); consumed by the all-`i` interior carry. -/
+theorem _root_.Graph.ChainData.freshEdge_interior_acolumn_sup [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin (cd.d + 1)) (s : ℕ)
+    (hsi : s + 2 < (i : ℕ))
+    {ends : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    -- a span member of the candidate-`i` split's rigidity rows (the eq.-(6.52) redundancy lives
+    -- here):
+    (hφ : φ ∈ Submodule.span ℝ (PanelHingeFramework.ofNormals (G.removeVertex
+        (cd.vtx i)) ends qρ).toBodyHinge.rigidityRows) :
+    -- the strongest projection: the surviving interior `vtx (s+1)`-column lands in the *sup* of the
+    -- two incident chain panels — NOT a single block (the genuine degree-2 interior vertex).
+    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k)
+        (cd.vtx ⟨s + 1, by have := i.isLt; omega⟩))
+      ∈ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+          |>.hingeRowBlock (cd.edge ⟨s, by have := i.isLt; omega⟩))
+      ⊔ ((PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+          |>.hingeRowBlock (cd.edge ⟨s + 1, by have := i.isLt; omega⟩)) := by
+  classical
+  have hid : (i : ℕ) < cd.d + 1 := i.isLt
+  set Fva := (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i)) ends qρ).toBodyHinge
+    with hFva
+  -- The interior vertex `a = vtx (s+1)` differs from its surviving neighbours `vtx s`, `vtx (s+2)`.
+  have h_pred : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s, by omega⟩ := cd.vtx_ne (by omega) (by omega)
+    (by omega)
+  have h_succ : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx ⟨s + 2, by omega⟩ := cd.vtx_ne (by omega)
+    (by omega) (by omega)
+  -- The two incident chain edges in `G`, oriented FROM the interior vertex `vtx (s+1)`.
+  -- `edge s` links `vtx s — vtx (s+1)` (`link` at `⟨s,_⟩`); `.symm` orients from `vtx (s+1)`.
+  have hGs : G.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s, by omega⟩)
+      (cd.vtx ⟨s + 1, by omega⟩) := by
+    have h := cd.link ⟨s, by omega⟩; simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  have hGs1 : G.IsLink (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+      (cd.vtx ⟨s + 2, by omega⟩) := by
+    have h := cd.link ⟨s + 1, by omega⟩; simpa only [Fin.castSucc_mk, Fin.succ_mk] using h
+  -- All three survive `removeVertex (vtx i)`: indices `s, s+1, s+2 < i`, distinct from `i`.
+  have hnesi : cd.vtx ⟨s, by omega⟩ ≠ cd.vtx i := by
+    have := cd.vtx_ne (m := s) (m' := (i : ℕ)) (by omega) hid (by omega)
+    simpa using this
+  have hnes1i : cd.vtx ⟨s + 1, by omega⟩ ≠ cd.vtx i := by
+    have := cd.vtx_ne (m := s + 1) (m' := (i : ℕ)) (by omega) hid (by omega)
+    simpa using this
+  have hnes2i : cd.vtx ⟨s + 2, by omega⟩ ≠ cd.vtx i := by
+    have := cd.vtx_ne (m := s + 2) (m' := (i : ℕ)) (by omega) hid (by omega)
+    simpa using this
+  -- The two incident chain edges as `Fva.graph`-links from `vtx (s+1)`.
+  have hlink_ec : Fva.graph.IsLink (cd.edge ⟨s, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+      (cd.vtx ⟨s, by omega⟩) := by
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hGs.symm, hnes1i, hnesi⟩
+  have hlink_ed : Fva.graph.IsLink (cd.edge ⟨s + 1, by omega⟩) (cd.vtx ⟨s + 1, by omega⟩)
+      (cd.vtx ⟨s + 2, by omega⟩) := by
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+    exact Graph.removeVertex_isLink.mpr ⟨hGs1, hnes1i, hnes2i⟩
+  -- The interior degree-2 closure at `vtx (s+1)` (`shiftBody_deg_two`): every `G`-link is `edge s`
+  -- or `edge (s+1)`; an `Fva.graph`-link is a `G`-link, so the closure transports.
+  have hdeg2 : ∀ f x, Fva.graph.IsLink f (cd.vtx ⟨s + 1, by omega⟩) x →
+      f = cd.edge ⟨s, by omega⟩ ∨ f = cd.edge ⟨s + 1, by omega⟩ := by
+    intro f x hlink
+    rw [hFva, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    have hGlink := (Graph.removeVertex_isLink.mp hlink).1
+    rcases cd.shiftBody_deg_two (by omega : s + 1 < (i : ℕ)) hid f x hGlink with hf1 | hf0
+    · exact Or.inr hf1
+    · exact Or.inl hf0
+  have hdeg2r : ∀ f x, Fva.graph.IsLink f x (cd.vtx ⟨s + 1, by omega⟩) →
+      f = cd.edge ⟨s, by omega⟩ ∨ f = cd.edge ⟨s + 1, by omega⟩ :=
+    fun f x hlink => hdeg2 f x hlink.symm
+  exact BodyHingeFramework.acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows
+    (Fab := Fva) (Fv := Fva) h_pred h_succ hlink_ec hlink_ed rfl rfl hdeg2 hdeg2r hφ
+
 /-- **The general-`i` surviving chain-edge row-membership builder — the `hsurv` summand the
 `hρGv` telescope defers** (CHAIN-2c-ii-arm, P2 of the ARM-WIRING DESIGN-PASS,
 `notes/Phase23-design.md` §(o‴)(I.8.4) step 2; Phase 23b). The general candidate-`i` lift of the

@@ -121,6 +121,21 @@ branch via `hingeRow_swap a b (-ρ)` + `neg_neg`). Purely additive (no motive/IH
 consumers `chainData_split_realization` + `exists_shared_redundancy_and_matched_candidate` took a `_` binder.
 This is the all-edge eq-6.52/6.66 data the interior-`hρe₀` leaf regroups at the degree-2 vertex.
 
+**LEAF-4 step (i) column-projection component — the GENERAL-`i` INTERIOR DEGREE-2 COLUMN-SUP
+PROJECTION `Graph.ChainData.freshEdge_interior_acolumn_sup` — is LANDED (2026-06-24, axiom-clean,
+build/lint/warning-clean).** `Relabel/Arm.lean`, right after the d=3 de-risk gate
+`i3_freshEdge_interior_acolumn_sup_deRisk` it generalizes. At a candidate `i : Fin (cd.d+1)` and a
+*genuinely-surviving* interior chain vertex `vtx (s+1)` (the strict boundary `s + 2 < (i:ℕ)`, so
+BOTH neighbours `vtx s`, `vtx (s+2)` survive `removeVertex (vtx i)`), a span member
+`φ ∈ span Fva.rigidityRows` has its `vtx (s+1)`-column landing in the **two-edge sup**
+`block (edge s) ⊔ block (edge (s+1))`. A direct application of the framework-level primitive
+`acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`, degree-2 closure from the chain helper
+`shiftBody_deg_two`, distinctnesses from `vtx_ne`. **The `s + 2 < i` boundary is load-bearing** (NOT
+`s + 1 < i`): at `i = s + 2` the successor neighbour is removed and `vtx (s+1)` is degree-ONE (the
+d=3-base / `M₃` single-block situation). This is the column-projection brick the interior-`hρe₀`
+leaf's eq-6.52 regrouping at the degree-2 vertex `vᵢ` threads through. Zero blast radius (no live
+caller yet).
+
 **NEXT: LEAF-4 step (i) (THE HARD CORE) — the GENUINELY-NEW interior-`hρe₀` leaf
 `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the conjecture-crux redundancy-carry seam) +
 (ii) the base block `W` + `exact case_III_arm_corner_assembly`. The dedicated route recon HAS FIRED
@@ -132,10 +147,13 @@ needs). **The corrected route:** the live `BodyHingeFramework.candidate_perp_two
 `_supportExtensors` (`Relabel/Chain.lean:918/950`, the eq-6.44 two-edge perp carry, annihilation-level via
 `mem_hingeRowBlock_iff`) at the degree-2 split body, + the `panelCorrespondence_supportExtensor`
 (`Arm.lean:834`) / `caseIIICandidate_supportExtensor_reproduced` (`Candidate.lean:971`) seed-relabel
-transport to the reproduced-slot panel. **Remaining build order:** the eq-6.52 widening (i′) is DONE;
-**(i) build the leaf** via the live core + the panel transport — its `hcol`/`grest`/`hrab`/`hrac` inputs are
-now produced from the LANDED edge-grouped form (collect the summands incident to `vᵢ`; the rest form
-`grest`). (ii) **build the base block `W`** via `chainData_bottom_relabel` + LEAF-2 concrete-`W` carrier.
+transport to the reproduced-slot panel. **Remaining build order:** the eq-6.52 widening (i′) is DONE; the
+column-sup projection `freshEdge_interior_acolumn_sup` is DONE (the `vᵢ`-column → two-block sup step
+of the regrouping); **(i) build the leaf** via the live core + the panel transport — its
+`hcol`/`grest`/`hrab`/`hrac` inputs are now produced from the LANDED edge-grouped form (collect the summands
+incident to `vᵢ`; the rest form `grest`; the `vᵢ`-column lands in the two-edge sup via the landed
+`freshEdge_interior_acolumn_sup`). (ii) **build the base block `W`** via `chainData_bottom_relabel` +
+LEAF-2 concrete-`W` carrier.
 **Build-time de-risk (members split):** confirm the incident-panel perp
 (at the panels *through* `vᵢ`) transports to the reproduced-slot *shortcut* panel `(vtx i.succ, vtx
 (i−1).castSucc)` via the seed-relabel — nail `caseIIICandidate_supportExtensor_reproduced`'s body + KT
@@ -375,12 +393,19 @@ claim). Additive support: `chainData_split_w6b_gates` re-exposes `AlgebraicIndep
 axiom-clean): `chainData_split_w6b_gates` now also emits the **edge-grouped `G_v`-row form** (KT eq-6.66,
 the existential `(nGv,cGv,evGv,uvGv,vvGv,rvGv)` + per-summand `(G−v)`-link/block membership +
 `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow …`), re-exposing the W6b producer's internally-computed form
-(`Candidate.lean:439–445`, previously discarded as `_hedgeGv`); both consumers took a `_` binder. **NEXT
-COMMIT: LEAF-4 step (i) (THE HARD CORE).** Produce the
-GENUINELY-NEW interior `hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66: the shared
-base `ρ₀` ⊥ the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel) from LEAF-3's base
-`ρ₀`/`λ`-witness bundle + the LANDED edge-grouped form (regroup `hcol`/`grest`/`hrab`/`hrac` at the
-degree-2 vertex `vᵢ`) + `cd.deg_two`, then (ii) build `W` (the base-block relabel image via
+(`Candidate.lean:439–445`, previously discarded as `_hedgeGv`); both consumers took a `_` binder.
+**LEAF-4 step (i) column-sup projection is LANDED** (2026-06-24, axiom-clean):
+`Graph.ChainData.freshEdge_interior_acolumn_sup` (`Relabel/Arm.lean`) — the `vᵢ`-column → two-block-sup
+step of the regrouping (`φ ∘ single (vtx (s+1)) ∈ block (edge s) ⊔ block (edge (s+1))` at a
+genuinely-surviving interior vertex, strict `s + 2 < (i:ℕ)`), the general-`i` lift of the d=3 gate
+`i3_freshEdge_interior_acolumn_sup_deRisk`. **NEXT COMMIT: the rest of LEAF-4 step (i) (THE HARD CORE).**
+Produce the GENUINELY-NEW interior `hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66:
+the shared base `ρ₀` ⊥ the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel) from LEAF-3's
+base `ρ₀`/`λ`-witness bundle + the LANDED edge-grouped form (regroup `hcol`/`grest`/`hrab`/`hrac` at the
+degree-2 vertex `vᵢ`, using the LANDED `freshEdge_interior_acolumn_sup` for the two-block-sup column
+projection) + the LANDED `candidate_perp_two_incident_supportExtensors` core + the
+`panelCorrespondence_supportExtensor`/`caseIIICandidate_supportExtensor_reproduced` shortcut-panel transport,
+then (ii) build `W` (the base-block relabel image via
 `chainData_bottom_relabel` + LEAF-2 concrete-`W` carrier), and `exact case_III_arm_corner_assembly` →
 LEAF-5 (router) → CHAIN-5. **Gate-side caveat at LEAF-4:** the discriminator ran against the BASE seed
 `q`; the consumer `case_III_arm_corner_assembly` uses `candidateSeed i q` — a `shiftPerm`-image seed
@@ -473,11 +498,15 @@ ALL-edge data (a below-contract LEAF-3 widening). The deleted-orphan `redundancy
    supportExtensors` (`Relabel/Chain.lean:950`, the eq-6.44 two-edge perp carry at the degree-2 split body,
    annihilation-level via `mem_hingeRowBlock_iff`) + the `panelCorrespondence_supportExtensor` (`Arm.lean:834`)
    / `caseIIICandidate_supportExtensor_reproduced` (`Candidate.lean:971`) seed-relabel transport to the
-   reproduced-slot SHORTCUT panel `(vtx i.succ, vtx (i−1).castSucc)`. Do **NOT** route through the
-   `interior_group_*` column subtree (WRONG-SHAPE — a column value, not a panel annihilation), do **NOT** fire
-   W6b per-interior-split (`hsplitGP` unavailable). Build-time de-risk: confirm the incident-panel perp
-   transports to the shortcut panel (members split; nail `caseIIICandidate_supportExtensor_reproduced` + KT
-   eq-6.56). (ii) **the base block `W`**: `f := w`,
+   reproduced-slot SHORTCUT panel `(vtx i.succ, vtx (i−1).castSucc)`. **The `vᵢ`-column → two-block sup step
+   of the regrouping is LANDED** (2026-06-24): `Graph.ChainData.freshEdge_interior_acolumn_sup`
+   (`Relabel/Arm.lean`, axiom-clean) — the general-`i` lift of the d=3 gate
+   `i3_freshEdge_interior_acolumn_sup_deRisk`, projecting the span member's `vtx (s+1)`-column into
+   `block (edge s) ⊔ block (edge (s+1))` at a genuinely-surviving interior vertex (strict `s + 2 < i`). Do
+   **NOT** route through the `interior_group_*` column subtree (WRONG-SHAPE — a column value, not a panel
+   annihilation), do **NOT** fire W6b per-interior-split (`hsplitGP` unavailable). Build-time de-risk: confirm
+   the incident-panel perp transports to the shortcut panel (members split; nail
+   `caseIIICandidate_supportExtensor_reproduced` + KT eq-6.56). (ii) **the base block `W`**: `f := w`,
    `L := (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem`
    (genuine → off-slot GROUP leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge;
    block-tag → reproduced-slot membership) routing `chainData_bottom_relabel`'s images into
@@ -654,3 +683,14 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   `hingeRow_swap a b (-ρ)` + `neg_neg`). Purely additive — both consumers (`chainData_split_realization`,
   `exists_shared_redundancy_and_matched_candidate`) took a `_` binder; no motive/IH/contract change. The
   all-edge eq-6.52/6.66 data step (i) regroups at the interior degree-2 vertex.
+- **LEAF-4 step (i) column-sup projection (2026-06-24, axiom-clean, build/lint/warning-clean).**
+  `Graph.ChainData.freshEdge_interior_acolumn_sup` (`Relabel/Arm.lean`, after the d=3 gate
+  `i3_freshEdge_interior_acolumn_sup_deRisk` it generalizes): at a candidate `i : Fin (cd.d+1)` and a
+  genuinely-surviving interior chain vertex `vtx (s+1)` (strict `s + 2 < (i:ℕ)`, so both neighbours
+  `vtx s`/`vtx (s+2)` survive `removeVertex (vtx i)`), a span member `φ ∈ span Fva.rigidityRows` has its
+  `vtx (s+1)`-column in the **two-edge sup** `block (edge s) ⊔ block (edge (s+1))`. Direct application of
+  `acolumn_mem_hingeRowBlock_sup_of_span_rigidityRows`; degree-2 closure off `shiftBody_deg_two`,
+  distinctnesses off `vtx_ne`. The `s + 2 < i` boundary is load-bearing (at `i = s+2` the successor is
+  removed → degree-ONE, the d3-base/`M₃` one-edge case). The `vᵢ`-column → two-block-sup step of the
+  interior-`hρe₀` regrouping; zero blast radius (no live caller). Build note: `s + 1 < i` is WRONG — it
+  permits `i = s+2` where `vtx (s+2) = vtx i` is removed (caught by an `omega`-fail on `s + 2 ≠ (i:ℕ)`).
