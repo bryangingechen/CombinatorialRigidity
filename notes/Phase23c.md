@@ -181,50 +181,47 @@ type-mismatch). It is correct + axiom-clean but **OFF the carry's critical path*
 `candidate_perp_two_incident_supportExtensors` (a genuine `ρ₀`-perp); see the FLAGGED route decision below. Zero
 blast radius (no live caller yet).
 
-**NEXT (FLAGGED — a build needs a coordinator/user decision first): the carry `baseRedundancy_perp_chain_edge`
-build is BLOCKED on an (A)-vs-(B) route adjudication. A DECOMPOSE+SETTLE pass (design §I.8.24(4.16),
-source-verified + Lean-checked, 2026-06-24) found two things the §(4.15) route pin got wrong:**
-1. **The landed per-step `baseRedundancy_group_acolumn_perp` (b23e50e) is the WRONG SHAPE to drive the carry
-   value-free** — Lean-confirmed type-mismatch: its conclusion annihilates the panel with the `edge i`-GROUP's
-   `vᵢ`-COLUMN, NOT with `ρ₀`. The only bridge `group column → ρ₀` is `= −ρ₀` = the forbidden value read
-   `interior_group_acolumn_eq_neg_baseRedundancy`. So b23e50e, though correct + axiom-clean, is **OFF the carry's
-   critical path** (a group-column annihilation, not the redundancy-carry step). The §(4.15)/§(4.16) note above
-   that says it "IS the per-step `candidate_perp_two_incident_supportExtensors` conclusion" is wrong on the tie —
-   it is the `⊓`-block conclusion of the GROUP column, which only feeds `candidate_perp_*` via the value read.
-2. **The right value-free per-step is the 23b `candidate_perp_two_incident_supportExtensors`** (it gives
-   `(∑ⱼ lamABⱼ•rabⱼ) ⊥ panel = ρ₀ ⊥ panel` via the eq-6.52 rewrite — PROBE B compiled clean) — **BUT it consumes
-   per-WITNESS-ROW perps `hperp_ab`/`hperp_ac` that the carry's ρ₀-perp IH does NOT supply**, and the W6b
-   producer guarantees the witness rows perp only to the BASE spliced panel `e₀`. Supplying the per-vertex
-   eq-6.52 witness at each interior vertex is **Route W**, the 23b FLAG-AND-STOP
-   (`i3_freshEdge_interior_acolumn_sup_deRisk:479–481`) with **no landed producer**.
+**THE RELABEL BRIDGE IS LANDED + THE ROUTE-A-vs-B FORK IS DISSOLVED (2026-06-24, spike-salvage,
+axiom-clean, build/lint/warning-clean).** A compiler-checked spike (design §I.8.24(4.13)) mapped the
+interior-`hρe₀` seam at the kernel level and isolated the genuinely-new crux. THREE bridge lemmas landed in
+`Relabel/ForkedArm.lean` (right after `case_III_arm_realization_chain`):
+1. **`Graph.ChainData.reproduced_panel_eq_splice_panel`** — the consumer's reproduced panel
+   `panelSupportExtensor (qρ(vtx i.succ,·)) (qρ(vtx (i−1).castSucc,·))` at candidate `i`'s relabelled seed
+   `qρ = q ∘ shiftPerm i.castSucc` (`2 ≤ i`) EQUALS the BASE-seed panel of the spliced chain edge `edge i`,
+   `panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))`. Pure `shiftPerm`/`vtx` algebra (off-cycle fix +
+   interior successor), the cycle generalization of the d=3 `M₃` `hqρv`/`hqρc`.
+2. **`Graph.ChainData.interior_hρe₀_of_splice_perp`** — the consumer's `hρe₀` produced from the SINGLE crux
+   hypothesis `hsplice : ρ₀ ⊥ (base-seed `edge i` splice panel)` via (1) (a one-`rw` wrapper). This is the
+   interior-`hρe₀` leaf reduced to the crux, in the project's no-`sorry` carry-the-crux-as-`h…` idiom.
+3. **`PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends`** — the projection bridge
+   `Fva.supportExtensor f = panelSupportExtensor (qρ(x,·)) (qρ(y,·))` when `endsσρ f = (x,y)`, so Route A's
+   surviving-edge perp outputs (`ρ₀ ⊥ Fva.supportExtensor (edge s)`) read in the `panelSupportExtensor` form
+   the crux speaks.
 
-**THE OPEN DECISION (FLAG, design §I.8.24(4.16)): does the redundancy-carry seam read the interior edge-group
-column as `−ρ₀`?** Route (A) = YES — the LANDED `chainData_freshEdge_perp_of_baseRedundancy`
-(`Relabel/ChainColumn.lean:1076`) ALREADY produces the per-edge `ρ₀ ⊥ panel(edge s)` the carry wants, via the
-`interior_group_*` value read; it is the shortest path but REVERSES the thrice-affirmed §(4.12)/(4.13)/(4.15)
-`interior_group_*`-free scope-out (needs adjudication — it does NOT touch the cert's `hρGv`-freedom or the
-contract; the value read is internal to the carry leaf). Route (B) = NO — build the genuinely-new per-vertex
-eq-6.52 witness producer (the conjecture-crux content proper, KT eq-6.66, no landed producer). Route (C) =
-Meet.lean fallback (not scoped at the per-step level). **Do NOT build the carry over
-`baseRedundancy_group_acolumn_perp` (wrong shape) regardless.** d=3 floor needs NONE of this (`i = 2` = base
-split, `hρe₀` = LEAF-3's base annihilation directly, zero-regression).
+**THE FORK IS DISSOLVED: BOTH routes reduce to the SAME splice-perp crux.** The genuinely-new content is now
+the SINGLE isolated obligation `baseRedundancy_perp_interior_reproduced_panel`:
+`ρ₀ ⊥ panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))` (the base-seed `edge i` splice panel, KT eq-6.66's
+redundancy carry ACROSS the spliced body `vᵢ`). The spike confirmed at the kernel level (a) the bridge closes
+`hρe₀` GIVEN `hsplice`; (b) the splice panel is the `vᵢ`-INCIDENT spliced `edge i`, never a surviving chain
+edge, so it is NOT directly a Route-A output and NOT reachable by the M₃ G4d-i acolumn step off the candidate
+row (that lands `edge (i±1)`, the wrong panel); (c) **Route A
+(`chainData_freshEdge_perp_of_baseRedundancy`, `Relabel/ChainColumn.lean:1076`) supplies the SURVIVING-edge
+perps (`2 ≤ s`, `s+1 < i`) as INPUTS to the eq-6.66 carry** that produces `hsplice` — they feed the carry, they
+are not `hsplice`. d=3 floor needs none of this (`i = 2` = base split, `hρe₀` = LEAF-3's base annihilation,
+zero-regression).
 
-**If (A) (the recommended shortest path, pending adjudication):** (i) wrap
-`chainData_freshEdge_perp_of_baseRedundancy` into `baseRedundancy_perp_chain_edge` (it already produces the
-per-edge ρ₀-perp; the "carry" is a thin assembly + the final step at body `b` via
-`candidate_perp_two_incident_supportExtensors` fed the chain-edge perps as `hperp`), (ii) the base block `W` via
-`chainData_bottom_relabel` + LEAF-2, then `exact case_III_arm_corner_assembly`. **If (B):** build the per-vertex
-witness producer first, then the carry over it. The FINAL step at body `b` (Lean-checked at the KT-math level)
-lands `ρ₀ ⊥ e_b`'s overridden support = the shortcut `panelSupportExtensor (q(a,·)) (q(b,·))` = `hρe₀`
-(`b`'s incident edges = `e_b` shortcut + `edge (i−2)` off-slot). Do **NOT** pin to a degree-1 neighbour-column
-(shortcut isn't a graph edge — Route A of §(4.14) is KILLED), to `candidate_perp_two_incident` at `v` (incident
-panels only), or to `panelCorrespondence_supportExtensor`; and do **NOT** fire W6b per-interior-split (`hsplitGP`
-unavailable; only the base `v₁`-split's IH is in scope, `Arms.lean:910–913`). **Gate-side caveat (also LEAF-4):**
-the discriminator runs against the BASE seed `q`; the consumer uses `candidateSeed i q`, so a `shiftPerm`-image
-seed reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`shiftPerm` simp set). Both
-`candidatePanel` and `d_eq_kAdd` stay declared `_root_.Graph.ChainData.…` (TACTICS-QUIRKS § 56 trap — a bare
-`Graph.`-prefixed decl inside `namespace …Molecular` would create a `…Molecular.Graph` sub-namespace that breaks
-downstream `V(·)`/`E(·)` parsing).
+**ORPHAN-CANDIDATE (decide at the crux build, do NOT delete now): `baseRedundancy_group_acolumn_perp`
+(b23e50e)** — its conclusion annihilates the panel with the `edge i`-GROUP's `vᵢ`-COLUMN, not `ρ₀` (the only
+bridge to `ρ₀` is the forbidden `= −ρ₀` value read). Now that the crux is the single base-seed `edge i` splice
+perp (fed by Route A's surviving-edge perps), b23e50e may be off the critical path entirely; the crux build
+will settle whether it (or any of the per-step column lemmas) is reachable, so leave it in tree pending that.
+
+**Gate-side caveat (also LEAF-4):** the discriminator runs against the BASE seed `q`; the consumer uses the
+relabelled `qρ = q ∘ shiftPerm i.castSucc`. The relabel bridge (1) handles exactly this seed reconciliation on
+the `hρe₀` slot — the dispatch's remaining `shiftPerm`-image bookkeeping is the LANDED `candidateSeed`/
+`shiftPerm` simp set. Both `candidatePanel` and `d_eq_kAdd` stay declared `_root_.Graph.ChainData.…`
+(TACTICS-QUIRKS § 56 trap — a bare `Graph.`-prefixed decl inside `namespace …Molecular` would create a
+`…Molecular.Graph` sub-namespace that breaks downstream `V(·)`/`E(·)` parsing).
 
 **The dispatch's interior-split-tuple `ChainData` accessors are LANDED (`Induction/Operations.lean`,
 axiom-clean, build/lint warning-clean); next is the rest of CHAIN-2c-iii `chainData_dispatch` (the
@@ -383,8 +380,16 @@ from-scratch composer: it is a **discriminator-pick + Fin-case ROUTER** over two
 the OLD engine via `chainData_split_realization` (`Realization.lean:954`, for the base candidate `i=1` + the
 d=3 floor, zero-regression) and the option-(A) `case_III_arm_corner_assembly` (for interior `2 ≤ i < d`) —
 PLUS the production of the corner-assembly's RAW inputs for the interior route. **The HARD CORE is LEAF-4**
-(the interior base-block `W`/`hWS`/`hWcard`/`hW` production + the `hS` disjunction routing) — a build MUST NOT
+(the interior base-block `W`/`hWS`/`hWcard`/`hW` production + the interior `hρe₀`) — a build MUST NOT
 peel the easy leaves and defer it.
+
+**LEAF-4's interior `hρe₀` is now REDUCED to a single isolated crux (2026-06-24, relabel bridge LANDED).** The
+next focused commit is the genuinely-new `baseRedundancy_perp_interior_reproduced_panel`:
+`ρ₀ ⊥ panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))` (the base-seed `edge i` splice panel, KT eq-6.66's
+redundancy carry across the spliced body `vᵢ`). Once it lands, `Graph.ChainData.interior_hρe₀_of_splice_perp`
+(LANDED) wraps it into the consumer's `hρe₀` by one `rw`. The carry's INPUTS are Route A's surviving-edge perps
+(`chainData_freshEdge_perp_of_baseRedundancy`, `2 ≤ s`, `s+1 < i`, LANDED) regrouped at the degree-2 split
+vertex `vᵢ` (KT eq-6.66); the FORK is dissolved (see *Current state*). d=3 floor needs none of it.
 
 **One design decision RESOLVED + LANDED (below the contract/motive — did NOT need coordinator/user).** The
 `W`/`hW` threading: `case_III_arm_corner_assembly` takes `hW` on a *specific* `W`, but the landed carrier leaf
@@ -803,8 +808,9 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   `supportExtensor`-perp pair). `hcol` is DERIVED internally (`a ∉ {ab₁,ab₂}` ⟹ column `= 0`,
   `hingeRow_comp_single_off`) → LEAF 1 `interiorGroup_acolumn_adjacency` + `edgeGroup_acolumn_mem_block`. This
   IS `candidate_perp_two_incident_supportExtensors`'s conclusion (`grest = 0`) from the flat widening; **NO
-  column-value read** (distinct from the forbidden `interior_group_*` value subtree). Zero blast radius. The
-  `ρ₀`-tie + the carry chaining stay for the carry body `baseRedundancy_perp_chain_edge` (NEXT).
+  column-value read** (distinct from the forbidden `interior_group_*` value subtree). Zero blast radius.
+  (SUPERSEDED by the relabel-bridge salvage below: now likely an ORPHAN-CANDIDATE off the critical path —
+  group-column annihilation, not the `ρ₀`-perp the crux needs; leave in tree, decide at the crux build.)
 - **LEAF-4 interior-`hρe₀` DECOMPOSE+SETTLE + diverse-lens recon PAIR (2026-06-24, docs-only; design
   §I.8.24(4.15), CONVERGED, coordinator-adjudicated).** Sub-step (1) eq-6.52 REGROUPING = **SATISFIABLE** (the
   LANDED widening's flat all-edge form, partitioned at the degree-2 vertex by `deg_two`, per-step `hcol` =
@@ -813,11 +819,27 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   neighbour `b = vtx (i−1).castSucc` is itself an interior chain vertex, degree-2 in `G` (`deg_two`;
   `caseIIICandidate.graph = G`), so its column → two-block SUP; the shortcut `(a,b)` isn't a graph edge (it is
   `e_b`'s OVERRIDDEN support in `F₀`, verified `ForkedArm.lean:200–202` → `Candidate.lean:1975`). **CORRECTED
-  ROUTE:** the genuinely-new inductive carry `ChainData.baseRedundancy_perp_chain_edge` (base `(ab)` annihilation
-  → off-slot edge `(vtx (i−2), vtx (i−1))`, induction on `s`, each step
-  `candidate_perp_two_incident_supportExtensors` + per-step SUP `hcol`) + a **Lean-checked** FINAL step
-  (`candidate_perp_two_incident_supportExtensors` at body `b` in `F₀` → `e_b`'s overridden support = shortcut =
-  `hρe₀`). Route B (`Meet.lean` meet identity) = FALLBACK. Below the contract (cert `hρGv`-free + `ρ₀`-agnostic).
+  ROUTE (now REFINED by the relabel-bridge salvage below):** the shortcut `(a,b)` panel is, under the cycle
+  relabel, the base-seed `edge i` splice panel — so the carry's FINAL step is the LANDED relabel bridge
+  `interior_hρe₀_of_splice_perp`, and the genuinely-new content collapses to the single splice perp
+  `baseRedundancy_perp_interior_reproduced_panel` (`ρ₀ ⊥ base-seed `edge i` panel`, KT eq-6.66), fed Route A's
+  surviving-edge perps as inputs. Route B (`Meet.lean` meet identity) = FALLBACK. Below the contract.
   The pair fired because the seam had been mis-pinned 3× (§(4.12) column-shape, §(4.13)/(4.14)-A wrong-panel);
   the diverse-lens convergence + coordinator source-verification (the consumer's `hρe₀` panel) is what made the
   re-route sound.
+- **LEAF-4 relabel bridge LANDED + fork DISSOLVED (2026-06-24, spike-salvage, axiom-clean,
+  build/lint/warning-clean; design §I.8.24(4.13)).** A kernel-level spike mapped the interior-`hρe₀` seam and
+  landed three bridge lemmas in `Relabel/ForkedArm.lean`: `Graph.ChainData.reproduced_panel_eq_splice_panel`
+  (the consumer's reproduced `(a,b)` panel at `qρ = q ∘ shiftPerm i.castSucc` = the base-seed `edge i` splice
+  panel `panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))`, pure `shiftPerm`/`vtx` algebra, the cycle
+  generalization of M₃'s `hqρv`/`hqρc`); `Graph.ChainData.interior_hρe₀_of_splice_perp` (the consumer's `hρe₀`
+  from the single crux `hsplice : ρ₀ ⊥ (base-seed `edge i` splice panel)`, one `rw`); and
+  `PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends` (Route A's `supportExtensor`-output ↔
+  `panelSupportExtensor` projection bridge). **The Route-A-vs-B fork is dissolved — both reduce to the SAME
+  splice-perp crux** `baseRedundancy_perp_interior_reproduced_panel = ρ₀ ⊥ (base-seed `edge i` splice panel)`
+  (KT eq-6.66, the carry across the spliced body `vᵢ`), the NEXT focused commit. Kernel-confirmed: the splice
+  panel is `vᵢ`-incident, never a surviving edge, so it is NOT directly a Route-A output nor reachable by the
+  M₃ G4d-i acolumn step off the candidate row (lands `edge (i±1)`); Route A
+  (`chainData_freshEdge_perp_of_baseRedundancy`) supplies the SURVIVING-edge perps (`2 ≤ s`, `s+1 < i`) as
+  INPUTS to the carry, not as `hsplice`. ORPHAN-CANDIDATE: `baseRedundancy_group_acolumn_perp` (b23e50e) is
+  likely off the critical path now (group-column, not `ρ₀`-perp); leave in tree, decide at the crux build.

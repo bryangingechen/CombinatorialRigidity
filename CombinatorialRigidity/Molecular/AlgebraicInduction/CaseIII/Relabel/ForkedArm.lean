@@ -98,6 +98,128 @@ theorem PanelHingeFramework.case_III_arm_realization_chain
   exact PanelHingeFramework.case_III_realization_of_rank G Gv ends hvVc haVc hbVc hG_ea hG_eb
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hLn hgab hrank hdef
 
+/-! ### The interior-`hρe₀` relabel bridge (Phase 23c §I.8.24(4.13); KT 2011 eq.~(6.66))
+
+The chain arm's corner-assembly `case_III_arm_corner_assembly` carries, at an interior matched
+candidate `i` (`2 ≤ i`), the *reproduced-slot* annihilation
+`hρe₀ : ρ₀ ⊥ panelSupportExtensor (qρ(a,·)) (qρ(b,·))` with `a = vtx i.succ`,
+`b = vtx (i−1).castSucc` the two chain neighbours of the degree-2 split body `v = vtx i.castSucc`,
+in candidate `i`'s relabelled seed `qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)). These lemmas
+DISSOLVE the prior Route-A-vs-Route-B routing question into a single splice-perp crux: the
+`(a,b)` reproduced panel is, *under the cycle relabel*, the base-seed chain panel of the spliced
+edge `edge i` (`vᵢ`-incident, the KT eq.~(6.66) splice). So the leaf reduces to the one
+genuinely-new obligation `ρ₀ ⊥ (base-seed `edge i` splice panel)` (the un-landed
+`baseRedundancy_perp_interior_reproduced_panel`, KT eq.~(6.66)'s redundancy carry across the
+spliced body), and everything else is this pure-`shiftPerm`-algebra rewrite.
+
+The seam was mis-pinned 3–4× by design prose; these lemmas are the compiler-checked replacement for
+that adjudication (the original spike, Phase 23c §I.8.24(4.13)). -/
+
+/-- **The reproduced-slot panel is the base-seed splice-edge panel, under the cycle relabel**
+(Phase 23c §I.8.24(4.13); Katoh–Tanigawa 2011 §6.4.2 eq.~(6.56) the candidate seed `qᵢ = q ∘ ρᵢ`,
+eq.~(6.66) the spliced panel). At an interior candidate `i` (`2 ≤ i`) the consumer's reproduced
+panel `panelSupportExtensor (qρ(vtx i.succ,·)) (qρ(vtx (i−1).castSucc,·))`, read at candidate `i`'s
+relabelled seed `qρ = q ∘ shiftPerm i.castSucc`, equals the BASE-seed panel of the spliced chain
+edge `edge i` — namely `panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))`. The two seed reads
+cancel the cycle shift:
+
+* `a = vtx i.succ` has index `i+1 > i`, *off* the cycle `[vtx 1, …, vtx i]`, so
+  `shiftPerm i.castSucc` fixes it (`shiftPerm_apply_vtx_off`): `qρ(a,·) = q(vtx (i+1),·)`;
+* `b = vtx (i−1).castSucc` has index `1 ≤ i−1 < i`, *interior* to the cycle, so
+  `shiftPerm i.castSucc` sends it to its chain-successor `vtx i` (`shiftPerm_apply_interior`):
+  `qρ(b,·) = q(vtx i,·)`.
+
+This is the cycle generalization of the `d = 3` `M₃` arm's single-swap seed-coincidence
+(`Relabel/Arm.lean`, `case_III_arm_realization_M3`'s `hqρv`/`hqρc`). Pure `shiftPerm`/`vtx`
+algebra. -/
+theorem _root_.Graph.ChainData.reproduced_panel_eq_splice_panel
+    [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ} :
+    panelSupportExtensor
+        (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+        (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+          (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))
+      = panelSupportExtensor (fun j => q (cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩, j))
+          (fun j => q (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩, j)) := by
+  have hicast : (i.castSucc : Fin (cd.d + 1)) = ⟨(i : ℕ), by have := i.isLt; omega⟩ :=
+    Fin.ext (by simp only [Fin.val_castSucc])
+  -- `qρ(a,·) = q(vtx (i+1),·)`: `a = vtx i.succ`, index `i+1 > i`, OFF the cycle.
+  have ha : (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j))
+      = fun j => q (cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩, j) := by
+    have hsucc : cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩ :=
+      congrArg cd.vtx (Fin.ext (by simp only [Fin.val_succ]))
+    rw [hsucc, hicast, cd.shiftPerm_apply_vtx_off ⟨(i : ℕ), by have := i.isLt; omega⟩
+      (by have := i.isLt; omega) (Or.inr (by simp only; omega))]
+  -- `qρ(b,·) = q(vtx i,·)`: `b = vtx (i−1)`, index `1 ≤ i−1 < i`, INTERIOR → successor `vtx i`.
+  have hb : (fun j => q (cd.shiftPerm i.castSucc
+        (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j))
+      = fun j => q (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩, j) := by
+    have hcs : (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc
+        = (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin (cd.d + 1)) :=
+      Fin.ext (by simp only [Fin.val_castSucc])
+    have hb1 : 1 ≤ (i : ℕ) - 1 := by omega
+    have hb2 : (i : ℕ) - 1 < (i : ℕ) := by omega
+    rw [hcs, hicast, cd.shiftPerm_apply_interior ⟨(i : ℕ), by have := i.isLt; omega⟩
+      (j := (i : ℕ) - 1) hb1 hb2]
+    have hval : ((i : ℕ) - 1) + 1 = (i : ℕ) := by omega
+    have : (⟨((i : ℕ) - 1) + 1, by have := i.isLt; omega⟩ : Fin (cd.d + 1))
+        = ⟨(i : ℕ), by have := i.isLt; omega⟩ := Fin.ext hval
+    rw [this]
+  rw [show (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+        = (fun j => q (cd.shiftPerm i.castSucc (cd.vtx i.succ), j)) from rfl, ha,
+     show (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+          (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))
+        = (fun j => q (cd.shiftPerm i.castSucc
+          (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j)) from rfl, hb]
+
+/-- **The interior `hρe₀` leaf, reduced to the splice-perp crux** (Phase 23c §I.8.24(4.13);
+Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The exact `hρe₀` slot `case_III_arm_corner_assembly`
+consumes at an interior matched candidate `i` (`2 ≤ i`), produced from the SINGLE crux hypothesis
+`hsplice : ρ₀ ⊥ (base-seed `edge i` splice panel)` by the cycle-relabel bridge
+`reproduced_panel_eq_splice_panel`. Carrying `hsplice` as an explicit hypothesis is the project's
+standing no-`sorry` idiom: this leaf is *otherwise complete*, so the whole interior-`hρe₀` leaf
+reduces to discharging `hsplice` — the genuinely-new `baseRedundancy_perp_interior_reproduced_panel`
+(the KT eq.~(6.66) redundancy carry across the spliced body `vᵢ`, the next focused commit).
+
+This DISSOLVES the prior Route-A-vs-Route-B fork: BOTH routes reduce to `hsplice`. Route A
+(`chainData_freshEdge_perp_of_baseRedundancy`) supplies the *surviving*-edge perps (`2 ≤ s`,
+`s+1 < i`) that feed the eq.~(6.66) carry as INPUTS — they are not themselves `hsplice` (the spliced
+`edge i` is `vᵢ`-incident, never a surviving edge). -/
+theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
+    [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ}
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    -- the splice-perp crux: ρ₀ ⊥ the base-seed panel of the spliced chain edge `edge i`
+    -- (`vᵢ`-incident); the genuinely-new `baseRedundancy_perp_interior_reproduced_panel`:
+    (hsplice : ρ₀ (panelSupportExtensor
+        (fun j => q (cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩, j))
+        (fun j => q (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩, j))) = 0) :
+    -- the consumer's `hρe₀` at candidate `i`'s relabelled seed `qρ = q ∘ shiftPerm i.castSucc`:
+    ρ₀ (panelSupportExtensor
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 := by
+  rw [cd.reproduced_panel_eq_splice_panel i h2i]
+  exact hsplice
+
+/-- **The base-seed panel is the `ofNormals` framework's support extensor at a recording edge**
+(Phase 23c §I.8.24(4.13)). The projection bridge between Route A's literal output shape
+`ρ₀ ⊥ Fva.supportExtensor f` and the base-seed `panelSupportExtensor` shape the splice-perp crux
+`hsplice` is stated in: at the seed framework `Fva = ofNormals (G − vᵢ) endsσρ qρ`, an edge `f`
+recording `endsσρ f = (x, y)` has `Fva.supportExtensor f = panelSupportExtensor (qρ(x,·)) (qρ(y,·))`
+— a pure unfold of `toBodyHinge_supportExtensor` / `ofNormals_{normal,ends}`. Lets the eq.~(6.66)
+carry's surviving-edge perp inputs (Route A) be read in the `panelSupportExtensor` form the bridge
+and the crux speak. -/
+theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
+    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
+    (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
+      = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
+  rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hf]
+
 /-- **The chain arm's corner-data ASSEMBLY producer** (`lem:case-III general-d`, the option-(A)
 seam-resolution integration: assemble the `±r` block decomposition's `Mᵢ` corner block `g` from the
 landed sourcing leaves and feed it to the chain-arm spine `case_III_arm_realization_chain`, Phase
