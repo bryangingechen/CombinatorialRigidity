@@ -2648,6 +2648,98 @@ decomposition of the SECOND build it teed up.**
   (reaches incident panels only), to `panelCorrespondence_supportExtensor` (chain-edge transport only), or to the
   M₃ `hρ_ac` (`hρGv`-based).
 
+  *(4.16) THE CARRY DECOMPOSE+SETTLE PASS — VERDICT: the landed per-step `baseRedundancy_group_acolumn_perp`
+  (b23e50e) is the WRONG SHAPE to drive the carry value-free, AND the ρ₀-tie via it FORCES the forbidden
+  column-value read. The right per-step is the 23b `candidate_perp_two_incident_supportExtensors`, but it
+  re-opens the 23b FLAG-AND-STOP (the per-vertex eq-6.52 witness has no landed producer). A clause-(ii) FLAG,
+  not a confident re-pin (docs-only, opus, source-verified + Lean-checked against the LANDED bodies, 2026-06-24).*
+
+  **What this pass verified (clause (i), against the actual `theorem` bodies + a Lean probe).** The carry's
+  two open questions, settled by reading the landed signatures and a `lean_multi_attempt`/diagnostic probe at
+  the candidate framework `Fva = ofNormals (G − vtx i) endsσρ qρ`:
+
+  - **THE ρ₀-TIE (Q1) — the landed per-step does NOT tie to ρ₀ value-free.** `baseRedundancy_group_acolumn_perp`
+    (`Relabel/ChainColumn.lean:429`, b23e50e) concludes a perp of the **GROUP COLUMN**
+    `((∑_{evⱼ=edge i} cⱼ•hingeRow uvⱼ vvⱼ rvⱼ).comp (single vᵢ)) (Fva.supportExtensor (edge i)) = 0` — the object
+    annihilating the panel is the `vᵢ`-column of the `edge i`-group (a `Dual ℝ (ScrewSpace k)`), **NOT** `ρ₀`.
+    Lean-confirmed: feeding `hstep.1` where `ρ₀ (Fva.supportExtensor (edge i)) = 0` is expected gives a
+    type-mismatch (the LHS functional is the group column, not `ρ₀`). The ONLY bridge `group column → ρ₀` in the
+    project is `group column = −ρ₀` — i.e. the **forbidden value read** `interior_group_acolumn_eq_neg_baseRedundancy`
+    (the `interior_group_*` subtree §(4.12)/(4.13) the cert was built to avoid). So `baseRedundancy_group_acolumn_perp`
+    cannot deliver the carry's `ρ₀ ⊥ panel` without reviving the value read. **The landed b23e50e per-step is correct
+    but OFF the carry's critical path** (the high-value (4.10) clause-(ii) outcome — it is a group-column annihilation,
+    not the redundancy-carry step).
+
+  - **THE VALUE-FREE TIE EXISTS — via a DIFFERENT, already-landed per-step.**
+    `candidate_perp_two_incident_supportExtensors` (`Relabel/Chain.lean:950`, 23b) concludes
+    `(∑ⱼ lamABⱼ•rabⱼ) (F.supportExtensor e_c) = 0`, which IS `ρ₀ ⊥ panel` after the eq-6.52 rewrite
+    `ρ₀ = ∑ⱼ lamABⱼ•rabⱼ` — a **value-free** tie (`ρ₀` is the witness sum, NOT a column value). Lean-probe
+    PROBE B compiled clean: `rwa [hρ] at (…).1`. So the §(4.15) route's per-step pin should be
+    `candidate_perp_two_incident_supportExtensors`, **not** `baseRedundancy_group_acolumn_perp`.
+
+  - **THE INDUCTION (Q2) — the value-free per-step re-opens the 23b FLAG-AND-STOP.**
+    `candidate_perp_two_incident_supportExtensors` CONSUMES `hperp_ab : ∀ j, rab j (F.supportExtensor e_c) = 0`,
+    `hperp_ac : ∀ j, rac j (F.supportExtensor e_d) = 0` (the **per-WITNESS-ROW** perps of the two incident-edge
+    groups) plus the eq-6.43 column vanishing `hcol`/`hrest`. The carry's IH gives a **ρ₀-perp** (a SUM perp
+    `ρ₀ ⊥ panel(prev)`), which does NOT yield the per-row `rab j`/`rac j` perps — and the W6b producer
+    (`exists_candidateRow_bottomRows_of_rigidOn` / `chainData_split_w6b_gates`) guarantees the witness rows
+    `rab j ∈ hingeRowBlock e₀` ONLY at the **base spliced panel** `e₀`, not the chain-edge panels. Supplying the
+    per-vertex eq-6.52 witness `(lamAB, rab, lamAC, rac, grest)` AT EACH INTERIOR VERTEX is exactly **Route W**,
+    which the 23b de-risk `i3_freshEdge_interior_acolumn_sup_deRisk` (`Relabel/Arm.lean:479–481`) already
+    FLAGGED-AND-STOPPED as having **no landed producer** (the single-vertex consumers
+    `freshEdge_surviving_row_mem_of_witness` + `candidate_perp_two_incident_*` STAND as Route W's building blocks,
+    but the per-vertex witness producer does not exist).
+
+  **The genuine open decision (FLAG, clause (ii)).** The §(4.15) carry needs ONE of:
+  (A) the **value read** — discharge the per-edge `ρ₀ ⊥ panel(edge s)` from the candidate-framework edge-grouped
+      base redundancy via the LANDED `chainData_freshEdge_perp_of_baseRedundancy` (`ChainColumn.lean:1076`,
+      which uses `interior_group_acolumn_eq_neg_baseRedundancy` = the `interior_group_*` value read §(4.12)).
+      This route IS landed and produces the per-edge ρ₀-perp the carry wants — but the cert/route was scoped
+      `interior_group_*`-FREE, so reviving it for the redundancy-carry seam **reverses the §(4.12)–(4.13)
+      scope-out decision** and needs coordinator/user adjudication (it does NOT touch the cert's `hρGv`-freedom;
+      it is below the contract — but it is the exact subtree the last three reroutes ruled out); OR
+  (B) a **genuinely-new per-vertex eq-6.52 witness producer** (Route W) — supply
+      `(lamAB, rab, lamAC, rac, grest)` with the per-row perps at each interior vertex from the candidate
+      rigidity-row span. This is the 23b FLAG-AND-STOP's unbuilt producer — a genuinely-new, non-trivial leaf
+      (KT eq-6.66's per-vertex redundancy decomposition), the conjecture-crux content proper; OR
+  (C) the **Meet.lean Grassmann–Cayley fallback** (§(4.15) Route B) — if a value-free per-step `hcol` route
+      through the projective duality exists. Not yet scoped at the per-step level.
+
+  **Recommendation (FLAG-DON'T-FORCE): route (A) is the shortest path and is LANDED, but it reverses a
+  thrice-affirmed scope-out — surface it for adjudication before building.** The decision is: *is the
+  redundancy-carry seam allowed to read the interior edge-group column as `−ρ₀`?* The §(4.12)/(4.13)/(4.15)
+  reroutes all said NO for the cert + the column-projection bricks; but `chainData_freshEdge_perp_of_baseRedundancy`
+  shows the value read is the only LANDED way to get the per-edge `ρ₀`-perp the carry's per-step needs (the
+  value-free `candidate_perp_two_incident_supportExtensors` needs a witness with no producer = route (B)). The
+  cert stays `hρGv`-free either way (no motive/IH/C.0–C.6 change); the value read is a property of the
+  redundancy-carry leaf's INTERNALS, not the contract.
+
+  **What this pass RULED OUT.** (1) Driving the carry from the landed b23e50e per-step value-free — Lean
+  type-mismatch, the conclusion is a group-column perp. (2) Deriving the per-row witness perps `hperp_ab`/`hperp_ac`
+  from the carry's ρ₀-perp IH — a sum vanishing on a panel does not make each `rab j` vanish on it; the witness
+  rows are perp only to `e₀` (base), per the W6b producer. (3) The §(4.15) claim that the carry is "the
+  conjecture-crux inductive sub-lemma, rate a build by IT" stands at the KT-math level, but its Lean realization
+  is NOT "chain `baseRedundancy_group_acolumn_perp`" — that per-step is the wrong shape; the carry is route (A)'s
+  value-read closure OR route (B)'s unbuilt witness producer.
+
+  **Structural invariants traced (clause (iii)).** `vtx : Fin (cd.d+1) → α` (`v₀…v_d`),
+  `edge : Fin cd.d → β`, `cd.d = n` (`d_eq`); `cd.deg_two` holds ONLY at interior `vtx i.castSucc` for `0 < i`
+  (i.e. `v₁…v_{d−1}`); the endpoints `v₀`, `v_d` are not degree-2. The candidate `i : Fin cd.d` removes `vtx i`;
+  surviving chain edges are those of index `< i` (both endpoints `< i`, so `≠ vtx i` by `vtx_inj`). The FINAL
+  step's target panel is `e_b`'s OVERRIDDEN support `panelSupportExtensor (q(a,·)) (q(b,·))` (the shortcut, NOT a
+  graph edge; `caseIIICandidate_supportExtensor_reproduced` at `t=0`), reached via the per-step at body `b`
+  (incident edges `e_b` = shortcut + `edge (i−2)` = genuine off-slot). The d=3 floor (`i = 2` = base split)
+  needs NONE of the carry — matched `i` = base, base `(a,b)` = consumer `(a,b)`, `hρe₀` = LEAF-3's base
+  annihilation directly (zero-regression).
+
+  **Build order (REVISED, pending the (A)-vs-(B) adjudication).** If (A): (i) wrap
+  `chainData_freshEdge_perp_of_baseRedundancy` into the carry `baseRedundancy_perp_chain_edge` (it already
+  produces the per-edge ρ₀-perp; the "carry" is then a thin assembly + the final step at body `b` via
+  `candidate_perp_two_incident_supportExtensors` fed the chain-edge perps as `hperp`), (ii) the base block `W`
+  + `exact case_III_arm_corner_assembly`. If (B): build the per-vertex witness producer first (the genuinely-new
+  leaf), then the carry over it. **Do NOT** build the carry over `baseRedundancy_group_acolumn_perp` (wrong shape,
+  Q1) regardless.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
