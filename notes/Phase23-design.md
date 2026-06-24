@@ -2140,6 +2140,87 @@ decomposition of the SECOND build it teed up.**
   here (concrete `W`, new LEAF-2 — does NOT need coordinator/user); the two flagged gaps (the `W`/`hW` shape,
   the `hS` disjunction) are named as real wiring, not hand-waved; `d=3` stays a zero-regression wrapper.
 
+  *(4.11) LEAF-3 DISCRIMINATOR-INDEX GAP — VERIFIED, FROZEN-CONTRACT DECISION REQUIRED (BLOCKED; 2026-06-23,
+  opus docs-only design-pass, both halves of clause (i) verified: the LANDED `def`/`theorem` bodies AND KT
+  §6.4.2 read end-to-end from `.refs/katoh-tanigawa-2011-molecular-conjecture.pdf` pp. 692–698, eqs. 6.46–6.67.)*
+
+  **A build BLOCKED on LEAF-3.** The (4.10) pin treated "the panel-`u`↔candidate-`i` match" as build-time `Fin`
+  arithmetic (line ~2086). It is NOT: it is a frozen-contract decision. The gap is an INDEX-SET mismatch between
+  two LANDED objects, and KT's argument forces the equation that closes it.
+
+  **The two LANDED objects (source-verified).**
+  - `exists_chainData_discriminator_pick` (`Realization.lean:1144`) takes `cand : Fin (k+1) → α` (injective) and
+    returns a PANEL index `u : Fin (k+1)`. Its capstone `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`
+    (`Claim612.lean:1462`) is likewise `Fin (k+1)`-indexed (`n : Fin (k+1) → …`, returns `u : Fin (k+1)`). BOTH
+    discriminators in the tree are `Fin (k+1)`-indexed; neither is `Fin cd.d`-indexed.
+  - `case_III_arm_corner_assembly`'s `hgate`/`hρe₀` (`Relabel/ForkedArm.lean:155–156`) are stated at a SINGLE
+    matched interior `i : Fin cd.d` (normals `q(cd.vtx i.succ,·)`, `q(cd.vtx ⟨i−1⟩.castSucc,·)`). The arm + spine
+    are `cd.d`-agnostic — they take one already-chosen `i`. So the ENTIRE index gap is concentrated in LEAF-3:
+    to route `u : Fin (k+1)` to a chain candidate `i : Fin cd.d`, AND to even FORM `cand : Fin (k+1) → α` over the
+    chain's candidate vertices, the dispatch needs `cd.d = k+1`.
+  - `ChainData.d` (`Operations.lean:1286`) is a FREE `ℕ` field with only `hd : 1 ≤ d`. The frozen CHAIN↔ENTRY
+    dispatch contract C.3 (below) takes `cd : G.ChainData n` with NO `cd.d = k+1` hypothesis. C.1/C.4 NOTE
+    `d = k+1` only in record-field COMMENTS (`d : ℕ -- = body-bar dim index (d = k+1)`; C.4 table `d=3 (= k+1 at
+    k=2)`) — not as a hypothesis anywhere on the frozen interface.
+
+  **KT §6.4.2 — `d = k+1` is STRUCTURAL, candidate-`i` IS selected by the panel discriminator, and `d`/`k` are
+  NOT independent (the answer to the prompt's question 1, primary-source-verified).** KT's `d` is the **ambient
+  Euclidean dimension** ("a nonparallel panel-hinge realization `(G,p)` in `Rᵈ`", p. 692). The chain `v₀v₁…v_d`
+  has length `d`. KT builds **`d` candidate frameworks** `M₀,M₁,…,M_{d−1}` (p. 692 "consider d distinct
+  frameworks"; eq. 6.65 lists exactly `M₀..M_{d−1}`) and **`d` panels** `Π₀,…,Π_{d−1}` (eq. 6.67: `Π₀=Π(v₀)`,
+  `Πᵢ=Π(v_{i+1})` for `1≤i≤d−1`). **The candidate index and the panel index are the SAME set of size `d`**: `Mᵢ`
+  fails full rank ⟺ `r ⊥ C(Lᵢ)` for `Lᵢ⊂Πᵢ` (eq. 6.66 + the line below 6.67). The winning candidate IS selected
+  by the panel discriminator — there is NO separate `⋀^{d−1}`-duality / `ρ₀`-redundancy selector (KT's redundancy
+  `r` is the SAME `±r` for every panel, eq. 6.66, so it cannot discriminate; the ONLY selection is eq. 6.67). And
+  the dimension count is forced: `dim span(6.67) = (d+1 choose d−1) = (d+1 choose 2) = D` by Lemma 2.1 (p. 698).
+  Since the project's `D = screwDim k = (k+2 choose 2)`, `(d+1 choose 2) = (k+2 choose 2)` ⟹ `d+1 = k+2` ⟹
+  **`d = k+1`**. Equivalently via the standing `hn : bodyBarDim n = screwDim k` (`n(n+1)/2 = (k+2)(k+1)/2` ⟹
+  `n = k+1`) and KT's "chain of length `d` = ambient dim `n`" (Lemma 4.6): `d = n = k+1`. So `d = k+1` is a
+  structural identity of the argument; option (c) "candidate-`i` selected by mechanism X, no contract change" is
+  **NOT available** — KT offers no `cd.d`-free selector.
+
+  **`cd.d = k+1` is NOT derivable below the contract.** `hn` pins `n = k+1`, not `cd.d`. `cd.d` is whatever ENTRY's
+  extractor produced; KT Lemma 4.6 guarantees the chain has length = ambient dim, but THAT guarantee is a property
+  of the produced chain — it must be CARRIED on `cd` (a record field) or asserted on the dispatch (a hypothesis).
+  Both are on the frozen interface (C.1 record, C.3 signature). **This is a frozen-contract change → FLAG-DON'T-FORCE
+  fires; STOP.**
+
+  **The seed-reconciliation sub-question (prompt question 3) is NOT the blocker — it is ROUTINE (verified).** The
+  assembly is fed `candidateSeed i q = q∘(shiftPerm i.castSucc on body coord)` (`Operations.lean:2723`), i.e. the
+  base seed `q₁` read through the index-shift iso `ρᵢ`. By KT eq. 6.55 `(Gᵢ,qᵢ)` is "exactly the same framework as
+  `(G₁,q₁)`" via `ρᵢ`, so `candidateSeed`'s candidate-`i` normals ARE the base normals at the `ρ`-image vertices —
+  `panelSupportExtensor(candidateSeed(a,·), n')` is a base-`q₁` extensor under a known reindexing, with `ρ₀` the
+  FIXED abstract redundancy. This is functional-on-a-FIXED-extensor (the member fixed, the extensor relabelled) =
+  the eq.-6.66 `±r` shape on the LANDED `candidateEnds`/`candidateSeed` = `chainData_bottom_relabel`-target
+  machinery — it is NOT the `hρGv` member-mapping wall (§I.8.18–8.20, which transported a fixed *functional*
+  `φ@endsσρ` and is `hρGv`-only; the (A) cert is `hρGv`-free). The block flagged it "wall-adjacent"; it is on the
+  buildable side. It is downstream of the index gap (no matched `i` exists until the index gap closes).
+
+  **THE OPTIONS (for coordinator/user adjudication; (a) recommended).**
+  - **(a) Add `d_eq : cd.d = k + 1` to the `ChainData` record (C.1) — or, equivalently, to the CHAIN-5 dispatch
+    signature (C.3).** *Consequence:* one new field/hypothesis on the frozen interface; the dispatch forms
+    `cand : Fin (k+1) → α` by transporting `cd.vtx` across `d_eq`, and matches `u : Fin (k+1)` to `i : Fin cd.d`
+    by `d_eq`. d=3 zero-regression holds (`3 = 2+1`, the C.4 wrapper sets it by `rfl`/`decide`). ENTRY later
+    discharges `cd.d = k+1` from KT Lemma 4.6 (chain length = ambient dim = `n = k+1` via `hn`) — that proof is
+    ENTRY's, not 23c's. This is the structurally-faithful, minimal change. *Rough estimate:* the contract edit +
+    re-thread of the C.0 lockstep trio (record/producer/consumer) + d=3 wrapper ≈ **1 commit**; it then UNBLOCKS
+    LEAF-3/4/5 to proceed on the prior ~5–7 band.
+  - **(b) Re-express both discriminators over `Fin cd.d` instead of `Fin (k+1)`.** *Consequence:* re-states the
+    two LANDED axiom-clean capstones (`exists_chainData_discriminator_pick`, `…_homogeneousIncidence_gen`, +
+    CHAIN-4c/4b `case_III_claim612_gen`/`exists_line_data_…_gen`) over `Fin cd.d`. But the capstone's `D`-span
+    finish (eq. 6.67, Lemma 2.1) needs the panel count `cd.d` to span `D = (cd.d+1 choose 2)`, which equals
+    `screwDim k` ONLY when `cd.d = k+1` — so re-indexing does NOT avoid the equation, it merely relocates it into
+    the CHAIN-4 count and re-opens green capstones. Strictly worse than (a). *Rough estimate:* **~3–5 commits**,
+    re-opens landed axiom-clean CHAIN-4, higher regression risk; STILL needs `cd.d = k+1`.
+  - **(c) Candidate-`i` selected by a separate mechanism, no contract change.** **NOT AVAILABLE** — KT's only
+    selector is the `(k+1)`-panel discriminator (eq. 6.67); the redundancy `±r` is shared across panels and cannot
+    select. Recorded for completeness; ruled out by the primary source.
+
+  **What would unblock:** a coordinator/user decision on (a) vs (b) (recommendation: (a)). On (a), the 23c plan is
+  otherwise intact — LEAF-1/LEAF-2 stay LANDED; LEAF-3 gains the `d_eq`-backed `cand`/`u↔i` match; LEAF-4/LEAF-5
+  proceed as pinned. The CHAIN↔ENTRY contract gains exactly one field/hypothesis (C.1 or C.3); C.0/C.2/C.4–C.6 and
+  the 0-dof motive/IH are untouched (the rank-cert/arm are `cd.d`-agnostic below the dispatch).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
