@@ -142,6 +142,8 @@ Rows 1–372 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 406 | dispatch LEAF-1 — interior-candidate framework defs `candidateEnds`/`candidateSeed` (§I.8.24(4.10)); fab855b | 1/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 163253 tok / 51 tools / ~10.1 min | Landed only the 2 framework defs + simp _apply lemmas; RE-SCOPED the graph/seed hyps (hends_ea/eb, hLn/hgab/hne_Gv, hVone/hVcard) out of LEAF-1 → tracked under LEAF-3/4 with source pointers. Sound refinement: those hyps depend on the discriminator n'/GP context or are dispatch-inline per the d=3 template, i.e. preceded their own deps in the decomposition's LEAF-1 bundling — NOT the deferral anti-pattern (hard core LEAF-4 untouched, now 2 commits out). Coordinator-verified: build/lint warning-clean, no sorry, deferred items tracked not stranded. |
 | 407 | LEAF-3 (discriminator firing + candidate match) — BLOCKED; no commit | 2/2/1 | opus | normal | BLOCKED | — (no commit) | 164746 tok / 29 tools / ~4.1 min | High-value verified BLOCK: the decomposition's "panel u:Fin(k+1) ↔ candidate i:Fin cd.d match" latitude is a real gap — they align only if cd.d=k+1, which the FROZEN ChainData/C.3 contract asserts nowhere (d a free ℕ; design only flags d=3=k+1). 2nd gap: hgate/hρe₀ stated vs candidateSeed but produced vs base seed q₁ (wall-adjacent). Refused to guess a frozen-contract change. Coordinator confirmed BOTH discriminators return Fin(k+1). Next: design-pass to settle below-contract re-pin vs contract change. → Findings 2026-06-23. |
 | 408 | design-pass: settle LEAF-3 discriminator-index gap → frozen-contract change needed (§I.8.24(4.11)); 2871679 | 3/2/1 | opus | normal | BLOCKED | ✓✓——✓✓ | 198578 tok / 50 tools / ~7.5 min | Verified the row-407 BLOCK vs KT §6.4.2 + landed source: d=k+1 is STRUCTURAL (d candidates = k+1 panels, same index; no separate selector; D=(d+1 choose 2)=screwDim k=(k+2 choose 2)), but the FROZEN ChainData/C.3 leaves cd.d free → contract change forced. Flag-don't-force honored: committed docs-only options (a: add d_eq=k+1, ~1 commit, rec; b: re-index over Fin cd.d, ~3-5, higher risk; c: ruled out), returned BLOCKED for user adjudication. Coordinator verified screwDim=C(k+2,2) + assembly cd.d-agnostic. → Findings 2026-06-23. |
+| 409 | diverse-lens recon PAIR member A (constructive) — the LEAF-3 d=k+1 contract gap | 3/3/1 | opus | recon | clean | — (read-only) | 148660 tok / 37 tools / ~5.1 min | Constructive lens (read KT §4+§6.4.2). Verdict: d=k+1 STRUCTURAL + ENTRY-dischargeable, HIGH conf — KT-verified (Prop 1.1: D=C(d+1,2); Lemma 4.6: chain length=d; §6.4.2: d candidates over d panels, ±r shared, count=D). Full route closes under option (a); LEAF-1/2 landed. Rec (a). Flagged downstream-only: the ENTRY KT-4.6 extraction leaf + the eq-6.66 ±r-chain generalization. → Findings 2026-06-23. |
+| 410 | diverse-lens recon PAIR member B (adversarial-refute) — the LEAF-3 d=k+1 contract gap | 3/3/1 | opus | recon | clean | — (read-only) | 122861 tok / 32 tools / ~5.2 min | Refute lens (read KT §4+§6.4.2). ALL 4 attacks COULD-NOT-REFUTE → SOUND. Lemma 4.6 pins chain length=ambient dim (truncates to exactly d, NOT a free graph path); D=(d+1 choose 2) is KT's; route hρGv-free. KEY: d_eq dischargeable BY CONSTRUCTION (ENTRY builds the chain to k+1; KT-4.6 truncation IS the constructor) → avoids the 392/394 trap. Refinement: d_eq on the ChainData RECORD, not a dispatch hyp. Watch: eq-6.66 ±r across all interiors. → Findings 2026-06-23. |
 
 ## Findings
 
@@ -172,6 +174,20 @@ agents continually defer the hard parts as "too big."** Durable lessons:
   source-verified the existential-`W` carrier, the assembly's explicit `W`/`hW` slots, and the bridge
   direction before trusting the pin. Single-pass design output is fallible even at opus; the grounding
   is what made it sound.
+- **Recon-early caught a frozen-contract gap before three leaves were built on it; a diverse-lens pair +
+  coordinator PDF-verification settled it (rows 407–410).** The LEAF-3 build refused to guess a frozen-contract
+  change (the discriminator's `u : Fin(k+1)` ↔ chain candidate `i : Fin cd.d` match needs `d=k+1`, which the
+  frozen `ChainData`/C.3 contract carries nowhere) → a design-pass flagged it + named options → a diverse-lens
+  recon pair (constructive + adversarial-refute, opus×opus, read-only) CONVERGED: `d=k+1` is STRUCTURAL
+  (KT 2011 Prop 1.1 `D=C(d+1,2)` + Lemma 4.6 "chain of length d"; the coordinator PDF-verified both verbatim).
+  Durable points: (i) the satisfiability trap (rows 392/394) is AVOIDED here because `d_eq : cd.d=k+1` is
+  *dischargeable by construction* — the ENTRY extractor BUILDS the chain to length `k+1` (KT-4.6's truncation IS
+  the constructor), not a property proved after the fact; the refute member's "put it on the ChainData RECORD,
+  not a free dispatch hypothesis" makes that manifest. (ii) A diverse-lens pair that CONVERGES (vs the ±r-seam
+  pair that split on the label) plus an independent coordinator primary-source check is a strong trust signal
+  for a phase-crux contract decision. (iii) Two downstream risks both members independently flagged: the ENTRY
+  KT-4.6 chain-extraction leaf (genuinely-new, but constructive) and KT eq-6.66's `±r`-shared-across-all-interiors
+  step (KT's most compressed: "easily show… cf. 6.44", no derivation) — both downstream of the contract decision.
 
 ### Session #25 (rows 392–396) — the chain-arm `±r`-row `hg` resolves into the open KT eq-(6.66) step (not wiring); two correct-but-mis-targeted leaves landed first
 
