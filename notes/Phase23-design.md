@@ -2796,6 +2796,60 @@ decomposition of the SECOND build it teed up.**
   `vᵢ`. `caseIIICandidate.graph = G` (no graph splice). d=3 floor (`i=2`=base) needs none of this
   (zero-regression).
 
+  *(4.18) THE OPTION-(A) FEASIBILITY PASS — VERDICT: INFEASIBLE. Re-shaping the forked chain cert's base
+  block `W` to the d=3 operated frame does NOT exist as posed: the block-additivity `W` must satisfy
+  `hWS` (⊆ candidate span) ∧ `hWcard` (full rank `D·(m_v−1)`) ∧ `hW` (off-`vᵢ`-vanishing) simultaneously,
+  and the redundancy carry is inherently a row THROUGH `vᵢ`, so no such `W` exists. The `hρGv`
+  member-mapping wall was RELOCATED to the interior-arm `W`-production, not escaped. Compiler-checked SPIKE,
+  read-only, opus / OPUS-ONLY, 2026-06-24, agentId `a6adfeb0dff230bc1` (resumable). User-adjudicated
+  2026-06-24 → investigate option (B′) next.*
+
+  **The impossibility (kernel-checked).** The corner `hLI` mechanism `notMem_span_mkQ_pmR_row_of_gate`
+  (`Candidate.lean:1849`, KT eq. 6.16 block-triangular split) FUNDAMENTALLY requires
+  `hW : ∀ φ ∈ W, φ ∘ₗ single vᵢ = 0` — it precomposes with `single vᵢ`, the `W`-side dies (`hW`), and the
+  `±r` row gives `−ρ₀ ≠ 0` (gate). But `hWcard` forces `W` to contain the redundancy member's direction (the
+  relabelled bottom family is LI, the wrap-edge member among it), and that member's ONLY candidate-span
+  representative is the operated transport `hingeRow vᵢ B ρ₀` — a row THROUGH `vᵢ`, whose `single vᵢ`-column
+  is `±ρ₀ ≠ 0` (kernel-checked: any `W` containing it AND satisfying `hW` forces `ρ₀ = 0`, contradicting the
+  gate `hgate`). The off-`vᵢ`-vanishing alternative (the bare wrap-tag, endpoints OMIT `vᵢ`) satisfies `hW`
+  but is not a candidate row (breaks `hWS` — the §(4.17) block). So `hWS ∧ hWcard ∧ hW` are jointly
+  unsatisfiable on the redundancy member.
+
+  **Why the d=3 engine works without this (clause i, read end-to-end).** `case_III_rank_certification`
+  (`Candidate.lean:1508`) builds ONE flat LI family `fam` over `(sn ⊕ Unit) ⊕ ιb` and bounds the candidate
+  span via `finrank_span_eq_card` + `finrank_mono` — there is **no submodule `W`**. The base rows `wtil` are
+  OPERATED transports: each `wtil j ∈ span F₀.rigidityRows`, and `((wtil j) ∘ Φ) ∘ Pv = w j` (`Φ = columnOp`,
+  `Pv =` off-`v` projection); LI is established only in the operated `Φ∘Pv` frame (`case_III_full_family_
+  restriction`). The redundancy enters as `wtil j = hingeRow v b ρ'` (through `v`, a genuine candidate
+  `e_b`-row, `t=0`, no `hρGv`). The WALL is the `Unit` corner row `hingeRow v a ρ` collapse (eq. 6.27,
+  `:1642–1647`): the `hingeRow a b ρ` summand needs `hρGv : hingeRow a b ρ ∈ span (ofNormals Gv …).rigidityRows`
+  (`hFvle hρGv` at `:1646`) — the member-mapping wall. So the basis-free analogue of KT's "column-op THEN
+  block-triangular" (6.61→6.65) is the FLAT OPERATED FAMILY, not a static submodule `W ≤ span F₀.rigidityRows`.
+
+  **What survives (not the problem).** The corner cert — `hg`/`hLI`/`hrCol`, the `±r` reading via the genuine
+  reproduced-`e_b` row (`hperp = hρe₀`, never `hρGv`) — is sound and `W`-INDEPENDENT. The block-additivity
+  cert `case_III_rank_certification_chain` (`Candidate.lean:2039` → `finrank_add_card_le_of_linearIndependent_mkQ`)
+  is correct; the obstruction is solely the joint existence of a `W` with `hWS ∧ hWcard ∧ hW`.
+
+  **The two genuinely-new options (both below contract/motive — no C.0–C.6/IH change; d=3 zero-regression;
+  NEITHER a re-shape of the three landed leaves cert/carrier/LEAF-2).**
+  - **(A′)** re-derive the chain cert in the d=3 flat operated frame, producing the `hρGv` slot at the
+    relabelled candidate base via a general-`d` analogue of the M₃ length-1 W9a move — the genuinely-new
+    conjecture-crux rank-certification content KT's argument requires (the eq. 6.66 `±r` ℝ^D-vector identity,
+    §I.8.24(2)(2b)(γ)); the LANDED crux `baseRedundancy_perp_interior_reproduced_panel` is plausibly a building
+    block. This IS the wall, confronted generically.
+  - **(B′) [CHOSEN to investigate next]** a column-op-aware block-rank lemma `finrank S ≥ finrank W + D` where
+    `W` holds the OPERATED transports (through `vᵢ`) and the `hW`-analogue tests the OPERATED composite
+    `(φ ∘ Φ ∘ Pv) ∘ single vᵢ = 0` (AFTER the column op, where `Pv` kills `single vᵢ`). Because the corner is
+    the `±r` block (sources via `hρe₀`, no `hρGv`), B′ may combine option-(A)'s `±r` wall-escape WITH the d=3
+    operated frame — potentially sidestepping BOTH the `hWS∧hW` impossibility and the wall. Genuinely-new
+    abstract LA (block-rank relative to a column operation); needs its own feasibility check (the next spike).
+
+  **Decision (user-adjudicated 2026-06-24).** (A) is infeasible. Investigate (B′) via a compiler-checked
+  feasibility spike (does the operated-frame block-rank lemma compose with the `±r` corner?) before building;
+  fall back to (A′) if B′ does not compose. The router 2878600 and LEAF-2/cert/carrier stay landed but their
+  `hWS`/`hW`/`W`-block role is now under re-design.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

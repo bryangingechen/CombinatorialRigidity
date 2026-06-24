@@ -85,25 +85,27 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > `baseRedundancy_group_acolumn_perp` (b23e50e) + the per-step column subtree are OFF the path — the crux
 > never touches them; confirm-and-delete at LEAF-5/CHAIN-5 cleanup.**
 >
-> **Next commit = the (A)-FEASIBILITY PASS — LEAF-4 step (ii)'s `hWS` is BLOCKED AS SHAPED (design
-> §I.8.24(4.17), spike-confirmed 2026-06-24).** The interior `hρe₀` half is closed (crux + bridge). But the
-> `hWS` base-block half cannot close as the cert/LEAF-2 `W`-shape stands. The just-landed per-member `hS`
-> router `bottomRelabel_image_mem_span_caseIIICandidate` (2878600) has a MIS-TARGETED reproduced branch:
-> the `chainData_bottom_relabel` wrap-edge tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` (endpoints
-> OMIT `vᵢ`) is NOT a single candidate row, so routing it through the reproduced slot forces
-> `hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)`, which CONTRADICTS the consumer's required
-> `hG_eb : G.IsLink e_b v b` (`vtx i.castSucc ≠ vtx i.succ`) — kernel-confirmed unsatisfiable. The only
-> route (telescope through `vᵢ`) needs an extra perp `ρ' ⊥ panelSupportExtensor (qρ a) n'` that is
-> unavailable + geometrically false (`n'` = the free transversal the discriminator gates `ρ` NON-perp to).
-> **Root cause:** the forked cert consumes `W` as a bare relabel-image span (each image DIRECTLY in the
-> candidate span), unlike the d=3 engine's column-op / off-`v`-restriction OPERATED frame where the tag is
-> only an image. **Fix = option (A): re-shape the cert's `W` to the operated frame** (re-opens the LANDED
-> cert + carrier + LEAF-2); option (B) (a new W6b perp) is geometrically dead. **User-adjudicated 2026-06-24
-> → (A), FEASIBILITY-PASS FIRST** (does the operated frame compose with the forked `±r`-block cert?). The
-> router's GENUINE branch is sound + reusable; its REPRODUCED branch is dead — replace when `hWS` is
-> re-shaped, do NOT patch in place. **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)),
-> re-litigate the fork, revive the relabel-image `±r` route, or fire W6b at the interior split (unsatisfiable
-> `hsplitGP`). See *Current state* + *Hand-off* + design §I.8.24(4.17).
+> **Next commit = the (B′) FEASIBILITY SPIKE. OPTION (A) IS INFEASIBLE — the `hρGv` member-mapping wall was
+> RELOCATED to the interior-arm `W`-production, not escaped (design §I.8.24(4.18), spike-confirmed
+> 2026-06-24).** The interior `hρe₀` half of LEAF-4 step (ii) is closed (crux + bridge); the `hWS` base-block
+> half is BLOCKED. The (A) feasibility spike found: the block-additivity `W` must satisfy `hWS` (⊆ candidate
+> span) ∧ `hWcard` (full rank `D·(m_v−1)`) ∧ `hW` (off-`vᵢ`-vanishing, REQUIRED by the corner `hLI` mechanism
+> `notMem_span_mkQ_pmR_row_of_gate`) simultaneously — impossible, because the redundancy carry is inherently
+> a row THROUGH `vᵢ` (its candidate-span representative `hingeRow vᵢ B ρ₀` reads `±ρ₀ ≠ 0` at `single vᵢ`,
+> breaking `hW`; the off-`vᵢ` bare wrap-tag breaks `hWS`). The only `W`-free route is the d=3 flat operated
+> family, whose eq.-6.27 collapse re-incurs `hρGv`. KT's decomposition is "column-op THEN block-triangular,"
+> which the static-submodule `W` shape (LEAF-2) cannot represent at general `d`. **The corner cert
+> (`±r` reading, `hg`/`hLI`/`hrCol`, via `hρe₀`) is sound + `W`-independent — NOT the problem.** Two
+> genuinely-new options (both below contract/motive, NEITHER a re-shape): (A′) confront the wall (general-`d`
+> W9a-analogue producing `hρGv` generically); **(B′) [CHOSEN] a column-op-aware block-rank lemma**
+> `finrank S ≥ finrank W + D` with `W` holding the OPERATED transports and the `hW`-analogue testing the
+> OPERATED composite `(φ∘Φ∘Pv)∘single vᵢ = 0` — may combine the `±r` wall-escape with the operated frame,
+> sidestepping BOTH the impossibility and the wall. **User-adjudicated 2026-06-24 → investigate (B′) via a
+> compiler-checked feasibility spike** (does the operated-frame block-rank lemma compose with the `±r`
+> corner?), fall back to (A′) if it doesn't. The router 2878600 + LEAF-2/cert/carrier stay landed but their
+> `W`-block role is under re-design. **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)),
+> re-litigate the fork, re-attempt option (A) (the static-`W` re-shape — infeasible), or fire W6b at the
+> interior split. See *Current state* + *Hand-off* + design §I.8.24(4.18).
 
 ## Current state
 
@@ -126,11 +128,13 @@ wrap-edge tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` (endpoints OMIT
 `hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)` — UNSATISFIABLE, it contradicts the consumer's
 required `hG_eb : G.IsLink e_b v b` (`v = vtx i.castSucc ≠ vtx i.succ`; `IsLink.right_unique` + `vtx_inj`).
 The leaf type-checks only because `hG_eb_cand` is a carried hypothesis; it cannot be wired. **So LEAF-4 step
-(ii)'s `hWS` is BLOCKED AS SHAPED** — the wrap-edge tag is NOT a single candidate row, and the cert/LEAF-2
-`W = bare relabel-image span` demands it directly in the span. **Next = the (A)-feasibility pass** (re-shape
-`W` to the d=3 operated frame; user-adjudicated). See the top-of-note *Next commit* block + *Hand-off* +
-design §I.8.24(4.17). The reproduced branch is dead (replace when `hWS` is re-shaped, do NOT patch in place);
-the genuine branch survives.
+(ii)'s `hWS` is BLOCKED AS SHAPED.** The (A)-feasibility pass then found **option (A) INFEASIBLE** (design
+§I.8.24(4.18), spike-confirmed 2026-06-24): no `W` satisfies `hWS ∧ hWcard ∧ hW` simultaneously (the
+redundancy carry is a row THROUGH `vᵢ`), so the `hρGv` wall was RELOCATED to the interior-arm `W`-production,
+not escaped. **Next = the (B′) feasibility spike** (a column-op-aware block-rank lemma testing the OPERATED
+composite, which may sidestep both the impossibility and the wall; user-adjudicated). See the top-of-note
+*Next commit* block + *Hand-off* + design §I.8.24(4.18). The reproduced branch is dead (do NOT patch in
+place); the genuine branch survives; the corner cert (`±r` via `hρe₀`) is sound + `W`-independent.
 
 **The discriminator-index plumbing is COMPLETE end-to-end (2026-06-23).** The last piece — the
 composed `Fin (k+1)` panel selector `Graph.ChainData.candidatePanel` + `candidatePanel_injective` +
@@ -438,25 +442,30 @@ inductive chain / per-vertex witness / meet — it is the LANDED framework-free 
 in the GRAPH-irrelevant base framework's block) fired one index deeper than the surviving-edge leaf; the FORK
 was a non-problem (see *Current state*). d=3 floor needs none of it.
 
-**LEAF-4 step (ii)'s `hWS` half is BLOCKED AS SHAPED — the next commit is the (A)-FEASIBILITY PASS (design
-§I.8.24(4.17), spike-confirmed 2026-06-24).** The per-member `hS` router
-`bottomRelabel_image_mem_span_caseIIICandidate` (2878600) LANDED gate-clean, but the coordinator's shape
-check + a read-only spike found its REPRODUCED branch mis-targeted: the `chainData_bottom_relabel` wrap-edge
-tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` (endpoints OMIT `vᵢ`) is NOT a single candidate row, so
-routing it through the reproduced slot forces the UNSATISFIABLE `hG_eb_cand : G.IsLink e_b (vtx i.succ)
-(vtx (i−1).castSucc)` (contradicts the consumer's `hG_eb : G.IsLink e_b v b`). The only route (telescope
-through `vᵢ`) needs `ρ' ⊥ panelSupportExtensor (qρ a) n'` — unavailable + geometrically false. **Root cause:**
-the forked cert consumes `W` as a bare relabel-image span (each image DIRECTLY in the candidate span), unlike
-the d=3 engine's column-op / off-`v`-restriction OPERATED frame (`case_III_full_family_restriction` +
-`hingeRow_comp_columnOp_comp_offProj`) where the tag is only an image. **Fix = option (A): re-shape the cert's
-`W` to the operated frame** (re-opens the LANDED cert `case_III_rank_certification_chain` + carrier
-`exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` + LEAF-2
-`span_relabelImage_le_and_finrank_and_acolumn_vanish`); option (B) (a per-Or.inr-member W6b perp) is
-geometrically dead. **User-adjudicated 2026-06-24 → (A), FEASIBILITY PASS FIRST**: a read-only design/spike
-settling whether the d=3 operated-frame `W`-certification composes with the forked `±r`-block cert, naming
-exactly which landed leaves change, BEFORE re-opening settled machinery. **Router 2878600 salvage:** its
-GENUINE branch (off-slot survivors) is sound + reusable; its REPRODUCED branch is dead — replace when `hWS` is
-re-shaped, do NOT patch in place. (The interior `hρe₀` half is closed; see above.)
+**LEAF-4 step (ii)'s `hWS` half is BLOCKED AS SHAPED, AND OPTION (A) IS INFEASIBLE — the next commit is the
+(B′) FEASIBILITY SPIKE (design §I.8.24(4.17)+(4.18), spike-confirmed 2026-06-24).** The per-member `hS` router
+`bottomRelabel_image_mem_span_caseIIICandidate` (2878600) LANDED gate-clean, but its REPRODUCED branch is
+mis-targeted: the `chainData_bottom_relabel` wrap-edge tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'`
+(endpoints OMIT `vᵢ`) is NOT a single candidate row, so the reproduced-slot route forces the UNSATISFIABLE
+`hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)` (contradicts the consumer's `hG_eb : G.IsLink
+e_b v b`). **The (A)-feasibility spike then found option (A) INFEASIBLE (§I.8.24(4.18)):** no `W` satisfies
+`hWS` (⊆ candidate span) ∧ `hWcard` (full rank) ∧ `hW` (off-`vᵢ`-vanishing, REQUIRED by the corner `hLI`
+mechanism `notMem_span_mkQ_pmR_row_of_gate`) simultaneously — the redundancy carry is a row THROUGH `vᵢ`, so
+its candidate-span representative `hingeRow vᵢ B ρ₀` reads `±ρ₀ ≠ 0` at `single vᵢ` (breaks `hW`) and the
+off-`vᵢ` bare wrap-tag breaks `hWS`. **The `hρGv` member-mapping wall was RELOCATED to the interior-arm
+`W`-production, not escaped** — KT's "column-op THEN block-triangular" decomposition's basis-free analogue is
+the FLAT OPERATED FAMILY (the d=3 engine, whose eq.-6.27 collapse needs `hρGv`), not a static submodule `W`.
+**The corner cert (`±r` reading, `hg`/`hLI`/`hrCol`, via `hρe₀`) is sound + `W`-INDEPENDENT — NOT the
+problem.** Two genuinely-new options (below contract/motive, neither a re-shape): (A′) confront the wall
+(general-`d` W9a-analogue producing `hρGv` generically; the landed crux may be a building block); **(B′)
+[CHOSEN] a column-op-aware block-rank lemma** `finrank S ≥ finrank W + D` with `W` holding the OPERATED
+transports and the `hW`-analogue testing the OPERATED composite `(φ∘Φ∘Pv)∘single vᵢ = 0` — may combine the
+`±r` wall-escape with the operated frame, sidestepping BOTH the impossibility and the wall. **User-adjudicated
+2026-06-24 → investigate (B′) via a compiler-checked feasibility spike** (does the operated-frame block-rank
+lemma compose with the `±r` corner?), fall back to (A′) if it doesn't. **Router 2878600 salvage:** its GENUINE
+branch (off-slot survivors) is sound + reusable; its REPRODUCED branch is dead — do NOT patch in place. The
+LANDED cert/carrier/LEAF-2 stay in tree but their `W`-block role is under re-design. (The interior `hρe₀` half
+is closed; see above.)
 
 **One design decision RESOLVED + LANDED (below the contract/motive — did NOT need coordinator/user).** The
 `W`/`hW` threading: `case_III_arm_corner_assembly` takes `hW` on a *specific* `W`, but the landed carrier leaf
@@ -544,13 +553,16 @@ column lemmas `baseRedundancy_group_acolumn_mem_inf`/`_perp`, `freshEdge_interio
 one index deeper). **LEAF-4 (c)'s per-member `hS` router LANDED but its REPRODUCED branch is
 MIS-TARGETED** (`bottomRelabel_image_mem_span_caseIIICandidate`, 2026-06-24; the GENUINE branch is reusable,
 the reproduced branch carries the unsatisfiable `hG_eb_cand`; see *Current state* + design §I.8.24(4.17)).
-**NEXT COMMIT: the (A)-FEASIBILITY PASS** — LEAF-4 step (ii)'s `hWS` is BLOCKED AS SHAPED (the wrap-edge tag is
-not a single candidate row; the cert's `W = bare relabel-image span` cannot route it). A read-only design/spike
-settles whether the d=3 operated-frame `W`-certification (`case_III_full_family_restriction` + column-op)
-composes with the forked `±r`-block cert (option A), naming which landed leaves (cert / carrier / LEAF-2)
-change, before re-opening settled machinery. **Do NOT** re-attempt the four dead route families
-(§I.8.18–(I.8.20)), revive the `interior_group_*` column subtree, fire W6b per-interior-split (`hsplitGP`
-unavailable), or patch the router's reproduced branch in place. **Downstream risk to watch** (design §I.8.24):
+**NEXT COMMIT: the (B′) FEASIBILITY SPIKE** — option (A) (re-shape `W` to the operated frame) is INFEASIBLE
+(§I.8.24(4.18): no `W` satisfies `hWS ∧ hWcard ∧ hW`; the redundancy carry is a row through `vᵢ`; the `hρGv`
+wall was relocated to the interior-arm `W`-production). (B′) = a column-op-aware block-rank lemma
+`finrank S ≥ finrank W + D` with `W` holding the OPERATED transports and the `hW`-analogue testing the
+OPERATED composite `(φ∘Φ∘Pv)∘single vᵢ = 0`; because the corner is the `±r` block (`hρe₀`, no `hρGv`), B′ may
+sidestep BOTH the impossibility and the wall. A read-only compiler-checked spike settles whether it composes
+with the `±r` corner cert; fall back to (A′) (confront the wall via a general-`d` W9a-analogue) if it doesn't.
+**Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), revive the `interior_group_*` column
+subtree, fire W6b per-interior-split (`hsplitGP` unavailable), re-attempt option (A) (the static-`W` re-shape
+— infeasible), or patch the router's reproduced branch in place. **Downstream risk to watch** (design §I.8.24):
 the ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
@@ -659,18 +671,22 @@ follows as 23e. Do **not** fold ENTRY into 23c — it is a distinct layer (KT §
 - *A conditional leaf is progress only if its hypothesis is dischargeable for the **actual consumer** — a
   satisfiability check, not just signature/decl-existence (the project-side root cause of the two
   mis-targeted `±r`-row leaves)* → `DESIGN.md` *Constructibility recon …* (the satisfiability corollary).
-- **LEAF-4 step (ii)'s `hWS` is BLOCKED AS SHAPED — the `W`-shape divergence (design §I.8.24(4.17),
-  spike-confirmed 2026-06-24).** The per-member `hS` router `bottomRelabel_image_mem_span_caseIIICandidate`
-  (2878600) has a mis-targeted REPRODUCED branch: the wrap-edge tag (endpoints OMIT `vᵢ`) is not a single
-  candidate row, so the reproduced-slot route forces the UNSATISFIABLE `hG_eb_cand` (contradicts the
-  consumer's `hG_eb`; kernel-confirmed via `IsLink.right_unique` + `vtx_inj`). Root cause: the forked cert
-  consumes `W` as a bare relabel-image span (each image directly in the candidate span), unlike the d=3
-  engine's column-op / off-`v`-restriction OPERATED frame (tag is only an image). Fix = option (A) (re-shape
-  `W` to the operated frame, re-opens cert + carrier + LEAF-2); (B) (new W6b perp) geometrically dead.
-  User-adjudicated → (A), feasibility-pass first. The router's GENUINE branch is reusable; the reproduced
-  branch is dead. *Cross-cutting lesson (→ DESIGN.md at phase-close):* a satisfiability mis-target can hide
-  in the **carrier's `hWS`/`W` shape**, not just a single leaf's hypothesis — the d=3 engine avoided it via
-  the operated frame, and copying its `W`-as-direct-span shape to the chain arm re-introduced it.
+- **LEAF-4 step (ii)'s `hWS` is BLOCKED, AND option (A) is INFEASIBLE — the `hρGv` wall was RELOCATED to the
+  interior-arm `W`-production (design §I.8.24(4.17)+(4.18), two read-only spikes, 2026-06-24).** §(4.17): the
+  router's reproduced branch is mis-targeted (the wrap-edge tag, endpoints OMIT `vᵢ`, is not a single
+  candidate row → unsatisfiable `hG_eb_cand`). §(4.18): re-shaping `W` to the d=3 operated frame is INFEASIBLE
+  — no `W` satisfies `hWS` (⊆ candidate span) ∧ `hWcard` (full rank) ∧ `hW` (off-`vᵢ`-vanishing, REQUIRED by
+  the corner `hLI`) simultaneously, because the redundancy carry is a row THROUGH `vᵢ`. KT's "column-op THEN
+  block-triangular" decomposition's basis-free analogue is the FLAT OPERATED FAMILY (the d=3 engine, whose
+  eq.-6.27 collapse needs `hρGv`), not a static submodule `W`. So the (A) "escapes the wall" premise held only
+  at the corner/arm level; the interior-arm `W`-production (deferred as bookkeeping) re-incurs the wall. The
+  corner cert (`±r` via `hρe₀`) is sound + `W`-independent. **Decision:** investigate (B′) — a column-op-aware
+  block-rank lemma testing the OPERATED composite, which may combine the `±r` escape with the operated frame
+  to sidestep both — via a feasibility spike; fall back to (A′) (confront the wall generically). *Cross-cutting
+  lesson (→ DESIGN.md at phase-close):* a satisfiability mis-target can hide in the **carrier's `hWS`/`W`
+  shape**, and an architecture's wall-escape claim can hold at one layer (the corner) while the wall reappears
+  in a deferred-as-bookkeeping layer (the base-block production) — re-audit the DEFERRED obligations of a
+  "wall escaped" architecture before declaring the wall gone.
 - *Where KT's "member moves" (6.62) lands: the redundant `±r` row on the candidate's reproduced hinge slot,
   the graph-endpoints-vs-overridden-support decoupling* → `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 - *A diverse-lens recon PAIR (constructive + adversarial-refute) resolves a recurring-mis-pin design seam
