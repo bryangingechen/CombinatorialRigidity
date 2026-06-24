@@ -63,7 +63,7 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#28 (latest: **#28**, 2026-06-24,
+  would re-probe. Set/re-confirmed sessions #6–#29 (latest: **#29**, 2026-06-24,
   fresh `/coordinate-phase`; user re-confirmed the triple at session start; opus
   reachable via the Agent `model` param, no substitution needed). **The
   override expires session-end — a fresh coordinator re-runs the
