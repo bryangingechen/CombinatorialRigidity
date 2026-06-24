@@ -2221,6 +2221,23 @@ decomposition of the SECOND build it teed up.**
   proceed as pinned. The CHAIN↔ENTRY contract gains exactly one field/hypothesis (C.1 or C.3); C.0/C.2/C.4–C.6 and
   the 0-dof motive/IH are untouched (the rank-cert/arm are `cd.d`-agnostic below the dispatch).
 
+  **RESOLVED → (a) (2026-06-23, user-approved).** Adjudication grounded by a diverse-lens recon PAIR
+  (constructive + adversarial-refute, opus×opus, read-only) that CONVERGED on "`d=k+1` structural +
+  ENTRY-dischargeable", with the coordinator independently PDF-verifying the two load-bearing KT statements
+  (Prop 1.1 `D = C(d+1,2)`, p.648/p.5; Lemma 4.6 "chain … of length `d`", p.18; §6.4.2 "`d` distinct
+  frameworks", p.46). **Refinement adopted: state the field as `d_eq : d = n` on the `ChainData` RECORD**
+  (the chain length = the dof-regime index `n`), not `cd.d = k+1` — `n` is a record parameter and `k` is not,
+  so `d = n` keeps the field record-local; `d = k+1` then follows at use sites from `hn : bodyBarDim n =
+  screwDim k` (⟹ `n = k+1`). It is a **constructive record field** (set when ENTRY builds the chain to length
+  `k+1`, KT-4.6's truncation = the constructor), *not* a dispatch hypothesis — which is what keeps it off the
+  satisfiability trap (a hypothesis asserted but not dischargeable, rows 392/394). Two downstream risks both
+  recon members flagged (non-blocking for this decision): the ENTRY KT-4.6 chain-extraction leaf (23d,
+  genuinely-new combinatorial) and the eq-6.66 `±r`-shared-across-all-interiors step (KT's most compressed:
+  "easily show … cf. 6.44"; lands in LEAF-4/CHAIN bookkeeping). The contract-encoding lesson this episode
+  yields (a known parameter identity left unencoded = a latent gap surfacing at the first consumer) is lifted
+  to `DESIGN.md` *Frozen contracts must encode the invariants relating their parameters* + the
+  `coordinate-phase` step-1 trigger / design-pass clause (iii); model-exp rows 407–410.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

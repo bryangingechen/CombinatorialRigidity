@@ -220,8 +220,9 @@ trap). The concrete `σ` is the consumer's free choice (build-time latitude: ins
 i.castSucc` so `σ.symm` matches `chainData_bottom_relabel`'s relabel — a `.symm`-placement detail at LEAF-4,
 not a wall).
 
-**LEAF-3 is BLOCKED on a FROZEN-CONTRACT decision (2026-06-23, design §I.8.24(4.11)).** A build BLOCKED here:
-the discriminator-index gap is NOT build-time `Fin` arithmetic — it is a frozen-contract change. Both LANDED
+**The LEAF-3 frozen-contract decision is RESOLVED → option (a) (2026-06-23, user-approved; a diverse-lens recon
+pair + coordinator KT-PDF-verification confirmed `d=k+1` is structural; design §I.8.24(4.11)).** A build BLOCKED
+here originally: the discriminator-index gap is NOT build-time `Fin` arithmetic — it is a frozen-contract change. Both LANDED
 discriminators (`exists_chainData_discriminator_pick` `Realization.lean:1144`, capstone
 `exists_complementIso_ne_zero_of_homogeneousIncidence_gen` `Claim612.lean:1462`) are `Fin (k+1)`-indexed
 (panel `u : Fin (k+1)` off `cand : Fin (k+1) → α`); the chain candidate the assembly's `hgate` lands at is
@@ -234,9 +235,20 @@ or the dispatch (C.3)** (~1 commit, structurally faithful, d=3 zero-regression b
 `d=k+1` from Lemma 4.6); options (b) re-index discriminators over `Fin cd.d` (~3–5 commits, re-opens green
 CHAIN-4, still needs `d=k+1`) and (c) separate selector (NOT available — ruled out by KT) in §I.8.24(4.11).
 **Seed-reconciliation is NOT the blocker** — `candidateSeed` transport is the LANDED relabel-image machinery
-(routine, no wall), downstream of the index gap. **NEXT: coordinator/user adjudicates (a) vs (b).** Once
-decided, LEAF-1/LEAF-2 stay LANDED; LEAF-3 gains the `d_eq`-backed `cand`/`u↔i` match; LEAF-4 (hard core) →
-LEAF-5 (router) → CHAIN-5 proceed as pinned.
+(routine, no wall), downstream of the index gap.
+
+**NEXT COMMIT (option a, the contract field): add `d_eq : d = n` to the `ChainData` RECORD** (`Operations.lean`,
+the chain length = the dof-regime index `n`). Stated `d = n`, **not** `d = k+1`, because `n` is a record
+parameter and `k` is not — `d = k+1` then follows at use sites from the ambient `hn : bodyBarDim n = screwDim k`
+(⟹ `n = k+1`, a `Nat.choose`-injectivity step; mirror/derive as needed). It is a **constructive RECORD field**
+(set at construction), NOT a dispatch hypothesis — the recon's refinement (the ENTRY extractor BUILDS the chain
+to length `k+1`, so `d_eq` is *set, not proved-after-the-fact*; sidesteps the 392/394 satisfiability trap). Fix
+every `ChainData` construction site (grep; the d=3 extractor `Graph.exists_chain_data_of_noRigid`,
+`Reduction.lean:383`, supplies `3 = n` — zero-regression at the d=3/k=2 regime where `n=3`); build green.
+**THEN** LEAF-1/LEAF-2 stay LANDED; LEAF-3 unblocks (`u : Fin (k+1)` ↔ `i : Fin cd.d` by transport across
+`d_eq`+`hn`); LEAF-4 (hard core) → LEAF-5 (router) → CHAIN-5 proceed as pinned. **Watch the two downstream
+risks** (design §I.8.24(4.11)): the ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new) and the eq-6.66
+`±r`-across-all-interiors step (lands in LEAF-4/CHAIN bookkeeping).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
