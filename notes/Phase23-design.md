@@ -2240,6 +2240,172 @@ decomposition of the SECOND build it teed up.**
   to `DESIGN.md` *Frozen contracts must encode the invariants relating their parameters* + the
   `coordinate-phase` step-1 trigger / design-pass clause (iii); model-exp rows 407–410.
 
+  *(4.12) WHERE THE MATCHED-INTERIOR `hρe₀` + `hgate` COME FROM — RESOLVED; THE INTERIOR `hρe₀` IS A
+  GENUINELY-NEW eq-6.66 `±r`-ANNIHILATION LEAF (NOT a transport, NOT a per-candidate W6b firing); IT
+  is MACHINERY BELOW THE CONTRACT, so NOT BLOCKED — but it is the conjecture-crux leaf the next two
+  build steps must NOT scope away from. (2026-06-23, opus docs-only design-pass; clause (i): every
+  load-bearing claim re-derived from the LANDED `def`/`theorem` bodies — `case_III_arm_corner_assembly`
+  `ForkedArm.lean:136`, `chainData_split_w6b_gates` `Realization.lean:771`,
+  `exists_chainData_discriminator_pick` `Realization.lean:1173`, `chainData_split_realization`
+  `Realization.lean:983`, the d=3 dispatch `case_III_candidate_dispatch` `Realization.lean:268–599`,
+  the `hcand` contract `Arms.lean:853–863`, the cert `case_III_rank_certification_chain`
+  `Candidate.lean:2039`, the corner `hLI` `notMem_span_mkQ_pmR_row_of_gate` `Candidate.lean:1849`,
+  the `±r` sourcing `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` `Candidate.lean:1975` +
+  `reproducedSlot_pmR_acolumn_eq` `Candidate.lean:2003`, and `interior_group_acolumn_eq_neg_baseRedundancy`
+  `Relabel/ChainColumn.lean:546` — AND KT §6.4.2 eqs. (6.64)–(6.67) pp. 697–698 read directly from
+  the PDF. Resolves the recon's questions A/B/C + the internal (4.10)-vs-(4.11) inconsistency.)*
+
+  **THE INTERNAL INCONSISTENCY THIS PASS RESOLVES.** (4.10)'s LEAF-3 sketch (signature at ~2078–2084)
+  returns the interior `hρe₀` as a LEAF-3 conjunct rated "moderate"; (4.11)'s resolution (~2237)
+  defers "the eq-6.66 `±r`-shared-across-all-interiors step" to LEAF-4/CHAIN bookkeeping. **(4.11) is
+  right and (4.10)'s LEAF-3 sketch was wrong** about where (and how) the interior `hρe₀` is produced —
+  the corrected boundary is pinned below.
+
+  **(B) `hgate` IS LANDED, lands at the matched candidate directly (no transport needed for the gate
+  itself).** `exists_chainData_discriminator_pick` (`Realization.lean:1173`, general-`k`) returns, for
+  the matched panel `u`, the gate `ρ₀ (panelSupportExtensor (fun j => q (cand u, j)) n') ≠ 0` — at the
+  candidate VERTEX `cand u` read off the BASE seed `q` (the selector `cand` picks the vertex; `q` is the
+  ambient base normal family). With `cand u = vtx i.succ` via the LANDED `candidateVtx_succ_eq`, this
+  is *verbatim* the consumer's `hgate : ρ₀ (panelSupportExtensor (q(a,·)) n') ≠ 0` at `a = vtx i.succ`
+  (`ForkedArm.lean:155`). So **the discriminator's narrative "transporting `ρ` to that candidate's role
+  is the deferred step 4" (Realization.lean:1147–1156) refers to the seed/`hρe₀` side, NOT the gate** —
+  the gate is already at the candidate vertex's panel in base coordinates. **Caveat (the one transport
+  the gate side DOES need): the consumer framework `F₀` uses the CANDIDATE seed `candidateSeed i q`
+  (`Operations.lean:2733`, `= q ∘ shiftPerm i.castSucc` on the body coord), while the discriminator's
+  gate is stated against the BASE seed `q`.** They are NOT defeq — `candidateSeed i q (a,·) = q(shiftPerm
+  i.castSucc a, ·) ≠ q(a,·)` in general. So the dispatch either (i) feeds the discriminator the seed it
+  will hand the consumer (run the discriminator at `candidateSeed`'s base-image vertices — the `cand`
+  selector already lets you choose which vertices, and `candidateSeed i q (vtx i.succ,·)` vs.
+  `q(shiftPerm(vtx i.succ),·)` is a `shiftPerm`-image bookkeeping the `candidateSeed_apply`/`shiftPerm_*`
+  simp set handles), or (ii) transports the gate across the `shiftPerm` relabel. Either way the gate
+  side is **`shiftPerm`-image bookkeeping on the LANDED selector/seed machinery, not a wall** — it is the
+  (4.11) "functional-on-a-FIXED-extensor, member fixed, extensor relabelled" shape, the buildable side.
+  This is real LEAF-3 plumbing, low-moderate risk.
+
+  **(A) THE MATCHED-INTERIOR `hρe₀` IS A GENUINELY-NEW LEAF — option (b), NOT (a) (a transport) and NOT
+  a per-candidate W6b firing. Here is the decisive source chain.**
+
+  1. *The consumer's `hρe₀` slot (re-confirmed shape).* `case_III_arm_corner_assembly` (`ForkedArm.lean:156`)
+     takes `hρe₀ : ρ₀ (panelSupportExtensor (q(a,·)) (q(b,·))) = 0` at the FIXED `ρ₀`, with `(a,b) =
+     (vtx i.succ, vtx (i−1).castSucc)` the INTERIOR candidate's two chain neighbours. It is consumed ONLY
+     by the `±r` row's membership `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:1975`,
+     `hperp`, `t=0` reducing the reproduced-slot support to `panelSupportExtensor (q(a,·)) (q(b,·))`). It
+     is the KT eq-(6.66) second-`Mᵢ`-row-is-`±r` fact: `ρ₀` (`= r`) annihilates the reproduced edge
+     `(vᵢvᵢ₊₁)`'s support panel.
+
+  2. *Why it is NOT a per-candidate W6b firing (the decisive satisfiability fact, the rows-392/394 trap
+     applied here).* The natural-looking route — fire `chainData_split_w6b_gates` (`Realization.lean:771`)
+     at the INTERIOR split `(v,a,b) = (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc)`, whose conclusion
+     `:801` is `ρ (panelSupportExtensor (q(a,·)) (q(b,·))) = 0` at *exactly* the interior `(a,b)` —
+     **is UNAVAILABLE to the dispatch.** `chainData_split_w6b_gates` requires `hsplitGP :
+     HasGenericFullRankRealization k n (G.splitOff v a b e₀)` for THAT split (`:788`). But the dispatch's
+     contract `hcand`/`hdispatch` (`Arms.lean:853–863`, frozen C.3) is handed an IH-generic realization
+     of ONLY the **base `v₁`-split-off** `G.splitOff v a b e₀` for the spine-chosen base body `v`
+     (`Arms.lean:910–913`) — there is NO interior-candidate split realization in scope, and producing one
+     would need the IH at the interior split (which the dispatch does not call). This is *precisely* the
+     §(o″) Route-A refutation (~931–937) re-confirmed: a per-candidate W6b produces a `Classical.choice`
+     witness `ρᵢ` with NO functional relationship to the base `ρ₀`, whereas the cert needs ONE `ρ₀`
+     (the gate, the membership, and the base block `W`'s relabel-image all read the same `F₀`). So
+     **`chainData_split_realization` (`Realization.lean:983`, which DOES fire W6b at the interior split via
+     its own `hsplitGP` hypothesis) is reusable ONLY at the base candidate `i=1` + the d=3 floor**
+     (where the base split IS the only split, zero-regression) — NOT at general interior `i`. The (4.10)
+     LEAF-3 sketch's "fire `chainData_split_w6b_gates` once off the shared base then expose `hρe₀` at the
+     matched interior `i`" conflated two things: the ONE firing produces `hρe₀` at the BASE `(v₀v₂)`
+     panel, never at the interior `(vᵢvᵢ₊₁)` panel.
+
+  3. *Why it is NOT a transport of the base `hρe₀` (option (a) ruled out), and what landed object is the
+     near-miss.* The base firing gives `ρ₀ (panelSupportExtensor (q(v₀,·)) (q(v₂,·))) = 0`. The interior
+     `hρe₀` is at a DIFFERENT panel `(vᵢvᵢ₊₁)`. KT eq-(6.66) is the equation `∑ⱼ λ_(vᵢvᵢ₊₁)ⱼ rⱼ(q(vᵢvᵢ₊₁))
+     = ±r` (p. 698, "we can easily show … in a manner similar to (6.44)", the degree-2 fact) — i.e. the
+     interior reproduced-slot panel's redundancy combination EQUALS the base `±r`, so `r ⊥ C(Lᵢ)` ⟺ `r ⊥`
+     the interior panel. This is NOT `simp`/`rw` of the base annihilation; it is the iterated eq-(6.44)
+     degree-2 carry along the chain. The LANDED `interior_group_acolumn_eq_neg_baseRedundancy`
+     (`Relabel/ChainColumn.lean:546`) is the CLOSEST landed object but is the **WRONG SHAPE**: it gives a
+     COLUMN value `(∑ edge-i-group).comp (single (vtx i)) = −ρ₀` (a `Module.Dual ℝ (ScrewSpace k)`-valued
+     screw-column read at body `vtx i`), the dual-functional/row-level `±r` carry the dead `hρGv` route's
+     `hrCol` consumed — NOT a panel annihilation `ρ₀ (panelSupportExtensor …) = 0`. The §I.8.3-P2 finding
+     (~978–981), reached independently on the dead `hρGv` route, says exactly this: "each surviving
+     summand needs `ρ₀ ⊥ panel(qρ(vtx s, vtx s+1))` — NOT given by `hρe₀` … This is KT (6.62)+(6.66) …
+     TRUE and KT-grounded but a genuinely-new Lean leaf." **That finding survives the route change
+     verbatim: the option-(A) consumer needs the SAME genuinely-new fact, now as its `hρe₀` slot.**
+
+  4. *Is it BLOCKED (a contract/motive/IH change) or buildable below the contract? — BUILDABLE BELOW THE
+     CONTRACT, NOT BLOCKED.* The cert `case_III_rank_certification_chain` (`Candidate.lean:2039`) is
+     `hρGv`-FREE and selector-agnostic; `notMem_span_mkQ_pmR_row_of_gate` (`Candidate.lean:1849`) shows the
+     corner `hLI` needs ONLY `hgate` + `hW` (W vanishes at `single vᵢ`) + `hrCol = −ρ₀` — it does NOT
+     require `ρ₀` to be the base redundancy by any TYPING constraint. So the interior `hρe₀` is not a
+     frozen-interface field and forces NO motive/IH/C.0–C.6 change (contrast (4.11)'s `d_eq`, which WAS a
+     contract field). It is a NEW LEMMA over the chain machinery, KT-grounded, whose ingredients exist
+     (the iterated eq-6.44 degree-2 carry: `redundancy_panel_carry`/`candidateRow_ac_eq_neg` in
+     `Claim612.lean` is the abstract `±r` vector identity; the `interior_group_eq_baseRedundancy`/
+     `interior_group_acolumn_*` chain-induction subtree in `Relabel/ChainColumn.lean` carries the
+     constant-along-the-chain value). **The genuinely-new content is the bridge from those `hingeRow`-level
+     / column-level facts to the `ρ₀ (panelSupportExtensor (q(vtx i.succ,·)) (q(vtx (i−1).castSucc,·))) = 0`
+     panel-annihilation shape** — the "read the `±r` carry as a panel-meet perp" step the §I.8.22-(3)
+     finding (~1345–1356) named as cost-unknown for the `hρGv` route and which is NOW the live leaf for
+     option (A) (where it is the ONLY remaining `±r` obligation, the `hrCol`/`hρGv` ones being discharged
+     by the genuine reproduced-slot decoupling, (4.9)).
+
+     Named signature (a producer the dispatch/LEAF-4 consumes; the SHARED base `ρ₀`, the interior index
+     `i`):
+     ```
+     theorem ChainData.baseRedundancy_perp_interior_reproduced_panel
+         (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i:ℕ))   -- interior, i ≥ 2 (the ±r-carry range)
+         {ρ₀ : Module.Dual ℝ (ScrewSpace k)} {q : α × Fin (k+2) → ℝ}
+         (hbase : ρ₀ (panelSupportExtensor (q(cd.vtx 2,·)) (q(cd.vtx 0,·))) = 0)  -- the base (v₀v₂)
+           -- annihilation in `chainData_split_w6b_gates`/`chainData_bottom_relabel`'s emit order
+           -- `(vtx 2, vtx 0)`; the `(a,b)`-vs-`(b,a)` order is `panelSupportExtensor_swap`/`map_neg`-free
+           -- for `= 0`
+         (… the eq-6.52 λ-grouped (ab)-edge witness ρ₀ = Σⱼ λ • rab j, from chainData_split_w6b_gates
+            at the BASE split, + the degree-2 closures cd.deg_two at vtx i …) :
+         ρ₀ (panelSupportExtensor (q(cd.vtx i.succ,·)) (q(cd.vtx ⟨i-1⟩.castSucc,·))) = 0
+     ```
+     Ingredients (all KT-faithful, all on the chain machinery, NO `hρGv`, NO relabel-IMAGE/member-mapping
+     wall): the base `ρ₀ = Σⱼ λ_(v₀v₂)ⱼ rⱼ(q(v₀v₂))` witness (the eq-6.52 grouping, an output of
+     `chainData_split_w6b_gates` at the base split, `Realization.lean:813–815`); the iterated degree-2
+     eq-6.44 carry `redundancy_panel_carry` (`Claim612.lean`); the chain-induction value subtree
+     (`interior_group_eq_baseRedundancy` family, `Relabel/ChainColumn.lean`). **This is the conjecture's
+     redundancy-carry seam at the panel-annihilation level — the project's single most-reverted lemma
+     family's heir.** It is the leaf the prior two opus build dispatches scoped AWAY from by shrinking to
+     `candidateVtx`/`candidateVtx_succ_eq` (the selector + the `u↔i` match), which are real but are the
+     INDEX plumbing, not this annihilation.
+
+  **(C) THE CORRECTED LEAF-3-vs-LEAF-4 BOUNDARY.** LEAF-3 does NOT produce the interior `hρe₀`. LEAF-3
+  produces `(matched i, ρ₀, hgate-at-candidate, n', and the base-split W6b ρ₀/w/hw/hwmem bundle)` — i.e.
+  it fires `chainData_split_w6b_gates` + the discriminator at the **BASE split** ONCE, gets the shared
+  `ρ₀` (with the base `(v₀v₂)` annihilation), fires the discriminator over `cand = candidateVtx ∘ Fin.cast
+  d_eq_kAdd.symm` to get the matched panel `u`/candidate `i`/`hgate`/`n'`, and threads the W6b base bottom
+  family for LEAF-4's base block `W`. The interior `hρe₀` is produced **in LEAF-4** (or as the standalone
+  leaf above, called from LEAF-4) via `baseRedundancy_perp_interior_reproduced_panel`, fed the base `ρ₀`
+  bundle from LEAF-3. Corrected LEAF-3 producer signature (replacing the (4.10) ~2078–2084 sketch — drop
+  the interior-`hρe₀` conjunct, keep the base bundle):
+  ```
+  theorem ChainData.exists_shared_redundancy_and_matched_candidate (cd : G.ChainData n) … :
+      ∃ (q : …) (ends : …) (ρ₀ : Module.Dual ℝ (ScrewSpace k)) (i : Fin cd.d) (hi : 1 < (i:ℕ)) (n' : …),
+        ρ₀ ≠ 0 ∧
+        ρ₀ (panelSupportExtensor (q(cd.vtx 0,·)) (q(cd.vtx 2,·))) = 0 ∧                      -- BASE hρe₀
+        ρ₀ (panelSupportExtensor (candidateSeed-image of cd.vtx i.succ) n') ≠ 0 ∧            -- hgate
+        (the W6b ρ₀/w/hw/hwmem base bundle for LEAF-4's W) ∧
+        (the eq-6.52 λ-grouped witness ρ₀ = Σ λ • rab, feeding the (4.12) interior-hρe₀ leaf)
+  ```
+  Then LEAF-4, given the matched `i` + this bundle, calls `baseRedundancy_perp_interior_reproduced_panel`
+  to GET `hρe₀` at the interior `(vtx i.succ, vtx (i−1).castSucc)`, builds the base block `W` from the
+  bottom family via `chainData_bottom_relabel` + LEAF-2, and `exact case_III_arm_corner_assembly … hgate
+  hρe₀ hWS hWcard hW hdef`. (The base `i=1` candidate + the d=3 floor route to `chainData_split_realization`,
+  zero-regression, where the interior `hρe₀` leaf is NOT needed — the base split IS the split.)
+
+  **VERDICT (clause (ii) honesty).** NOT BLOCKED: no contract/motive/IH change (the cert is `hρGv`-free
+  and `ρ₀`-agnostic; the interior `hρe₀` is a leaf below the frozen interface). The route is the
+  genuinely-new leaf `baseRedundancy_perp_interior_reproduced_panel` (named, signature + ingredients
+  pinned, KT eq-6.66-grounded). Clause (iii): the leaf's satisfiability is traced to ground — its
+  hypotheses (base `ρ₀`/`λ`-witness + degree-2 closures) ARE produced by `chainData_split_w6b_gates` at
+  the base split (the dispatch's available realization), so unlike the rows-392/394 trap its premises are
+  dischargeable for the real consumer object; the WRONG route (per-candidate W6b at the interior) is
+  ruled out by the unavailable interior `hsplitGP`. **Anti-scope-to-fit gate: a build that lands LEAF-3
+  (the base bundle + `hgate` + the matched `i`) but defers the interior-`hρe₀` leaf has peeled the index
+  plumbing and left the conjecture-crux undone — the interior `hρe₀` leaf is THE hard core, on par with
+  LEAF-4's `hS` disjunction (it may BE the bulk of LEAF-4).** No Lean landed; tree byte-clean.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

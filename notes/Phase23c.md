@@ -47,14 +47,25 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > discriminator-index gap (KT-structural `d = k+1`; see *Decisions made* + DESIGN.md *Frozen contracts must
 > encode the invariants relating their parameters*); the selector `candidateVtx` + `candidateVtx_injective`;
 > and the panel↔candidate match `candidateVtx_succ_eq` (`candidateVtx i = vtx i.succ` at interior `i`). **So
-> the record-local discriminator-index plumbing is COMPLETE. The next concrete commit is the
-> discriminator-firing producer** — build `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`, fire
-> `chainData_split_w6b_gates` + `exists_chainData_discriminator_pick` ONCE, split on the matched
-> `i := Fin.cast d_eq_kAdd.symm u` (interior via `candidateVtx_succ_eq`; base `i=0` via the floor route), and
-> expose `hgate`/`hρe₀` at the matched candidate `i` (the eq-6.66 `±r`-annihilation is the flagged hard step).
-> Then **LEAF-4 (THE HARD CORE: base-block `W` + the `hS`
-> disjunction)** → LEAF-5 (router) → CHAIN-5. **Do NOT** re-attempt the four dead route families
-> (§I.8.18–(I.8.20)), re-litigate the fork, or revive the relabel-image `±r` route. See *Current state* + *Hand-off*.
+> the record-local discriminator-index plumbing is COMPLETE.**
+>
+> **The `hgate`/`hρe₀` sourcing is RESOLVED (design §I.8.24(4.12), source-verified 2026-06-23) and SPLITS
+> across LEAF-3 and LEAF-4 — the (4.10) sketch that put the interior `hρe₀` inside LEAF-3 was wrong.**
+> `hgate` is LANDED-and-direct (`exists_chainData_discriminator_pick` returns it at `cand u = vtx i.succ` via
+> `candidateVtx_succ_eq`; the only gate-side bookkeeping is the base-vs-`candidateSeed` `shiftPerm`-image
+> reconciliation, buildable). **The matched-INTERIOR `hρe₀` at the SHARED base `ρ₀` is a GENUINELY-NEW leaf**
+> — KT eq-6.66 (the second-`Mᵢ`-row-is-`±r` fact), NOT a transport of the base annihilation and NOT a
+> per-candidate W6b firing (the interior split's IH-generic realization is NOT in the dispatch's scope —
+> only the BASE `v₁`-split's is, `Arms.lean:910–913`; per-interior W6b is the §(o″) Route-A dead end).
+> **It is machinery BELOW the contract (the cert is `hρGv`-free + `ρ₀`-agnostic) → NOT BLOCKED**, but it is
+> THE conjecture-crux leaf (the §I.8.3-P2 heir, the redundancy-carry seam) the next steps must NOT scope
+> away from. **Next commits:** (LEAF-3) fire `chainData_split_w6b_gates` + the discriminator at the **BASE
+> split** ONCE → shared `ρ₀`, base `(v₀v₂)` annihilation, matched `i`/`hgate`/`n'`, W6b base bundle; then
+> (LEAF-4 / standalone) the genuinely-new `baseRedundancy_perp_interior_reproduced_panel` to GET the interior
+> `hρe₀`, build `W`, `exact case_III_arm_corner_assembly`; then LEAF-5 (router) → CHAIN-5. **Do NOT**
+> re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate the fork, revive the relabel-image
+> `±r` route, or source the interior `hρe₀` by firing W6b at the interior split (unsatisfiable `hsplitGP`).
+> See *Current state* + *Hand-off* + design §I.8.24(4.12).
 
 ## Current state
 
@@ -80,12 +91,20 @@ d_eq_kAdd.symm` (injective by `candidateVtx_injective ∘ (Fin.cast …).injecti
 `candidateVtx_succ_eq` (interior) / `candidateVtx_zero` (base) turn the gate at `cand u` into the
 arm's gate at `vtx i.succ`.
 
-**NEXT: the discriminator-firing producer (the rest of LEAF-3 proper)** — fire
-`chainData_split_w6b_gates` (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick` (fed the composed
-`cand`) ONCE off the shared base, then split on the matched `i := Fin.cast d_eq_kAdd.symm u` (interior
-`0 < i` → `candidateVtx_succ_eq`; base `i = 0` → d=3-floor route) and expose `hgate`/`hρe₀` at the
-matched interior candidate `i` (the eq-6.66 `±r`-annihilation `hρe₀` is the flagged downstream risk,
-lands here or in LEAF-4). The `d_eq_kAdd` bridge stays declared `_root_.Graph.ChainData.d_eq_kAdd`
+**NEXT: the discriminator-firing producer (LEAF-3 proper) — but it produces ONLY `(matched i, ρ₀, hgate,
+n', base bundle)`, NOT the interior `hρe₀` (design §I.8.24(4.12)).** Fire `chainData_split_w6b_gates`
+(→ `ρ₀`/`w`/base `(v₀v₂)` annihilation) + `exists_chainData_discriminator_pick` (fed the composed `cand`)
+ONCE at the **BASE split**, split on the matched `i := Fin.cast d_eq_kAdd.symm u` (interior `0 < i` →
+`candidateVtx_succ_eq`; base `i = 0` → d=3-floor route via `chainData_split_realization`, where the
+interior `hρe₀` leaf is NOT needed). **`hgate` lands directly** at `cand u = vtx i.succ` (gate-side
+caveat: the discriminator runs against the BASE seed `q`, the consumer uses `candidateSeed i q`, so a
+`shiftPerm`-image seed reconciliation is needed — buildable bookkeeping on the LANDED `candidateSeed`/
+`shiftPerm` simp set, not a wall). **The matched-INTERIOR `hρe₀` is a GENUINELY-NEW leaf**
+`baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66; the SHARED base `ρ₀` annihilates the interior
+`(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel), produced in **LEAF-4** from LEAF-3's base
+`ρ₀`/`λ`-witness bundle + `cd.deg_two` — NOT here, and NOT by a per-interior W6b firing (`hsplitGP`
+unavailable for interior splits; only the base `v₁`-split's IH realization is in scope, `Arms.lean:910–913`).
+The `d_eq_kAdd` bridge stays declared `_root_.Graph.ChainData.d_eq_kAdd`
 (the TACTICS-QUIRKS § 56 trap — a bare `Graph.`-prefixed decl inside `namespace …Molecular` would
 create a `…Molecular.Graph` sub-namespace that breaks downstream `V(·)`/`E(·)` parsing).
 
@@ -212,7 +231,10 @@ already orphaned (confirm-and-delete at the settle commit). `d=3` M₃ (`i=2`) i
    `case_III_arm_realization_chain` + the corner-data ASSEMBLY producer `case_III_arm_corner_assembly` ✓ ALL
    LANDED** (2026-06-22, axiom-clean; names in *Current state*). The seam is proven to close end-to-end in Lean.
 2. **CHAIN-2c-iii `chainData_dispatch`** (replaces `case_III_candidate_dispatch`; the general-`k` dispatch;
-   routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine).
+   routes interior `2 ≤ i < d` through the chain arm, d=3 floor on the landed engine). **Includes the
+   GENUINELY-NEW interior-`hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the
+   conjecture-crux redundancy-carry seam; LEAF-4, not LEAF-3 — design §I.8.24(4.12)); NOT BLOCKED but the
+   hard core the dispatch build must not scope away from.**
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** — reshape `Graph.exists_chain_data_of_noRigid` (`Reduction.lean:383`) to the `G.ChainData n`
    producer `exists_chainData_of_noRigid` (KT Lemma 4.6 chain + Lemma 4.8 split-off, general `d`); lift the
@@ -296,16 +318,24 @@ the record field `d_eq : d = n` into the `Fin (k+1)`-vs-`Fin cd.d` index identit
 panel→vertex map (`Π₀ = Π(v₀)`, `Πᵢ = Π(v_{i+1})`, eq. 6.67) named record-locally + proved injective,
 the `Function.Injective cand` half of the discriminator's `cand : Fin (k+1) → α` input. So the
 §I.8.24(4.11) discriminator-index gap is now closed end-to-end (field + bridge + the `k`-free selector).
-**NEXT COMMIT: the rest of LEAF-3 proper** — set `cand : Fin (k+1) → α := candidateVtx ∘ Fin.cast
-d_eq_kAdd.symm` (injective by `candidateVtx_injective` ∘ the `Fin.cast` bijection), fire
-`chainData_split_w6b_gates` (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick` ONCE off the shared
-base; expose `hgate`/`hρe₀` at the matched interior candidate `i`, with the panel-`u : Fin (k+1)` ↔
-candidate-`i : Fin cd.d` match via `d_eq_kAdd`. Wiring template: the d=3 `case_III_candidate_dispatch:435–501`
-+ `chainData_split_realization`'s `htrans` slot, re-aimed at the assembly's `hgate`/`hρe₀`. **THEN**
-LEAF-4 (hard core, the `hS` disjunction) → LEAF-5 (router) → CHAIN-5 proceed as pinned. **Watch the two
-downstream risks** (design §I.8.24(4.11)): the ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new)
-and the eq-6.66 `±r`-across-all-interiors step (the `hρe₀` at candidate `i`; lands here or in
-LEAF-4/CHAIN bookkeeping).
+**NEXT COMMIT: LEAF-3 proper, which produces `(matched i, ρ₀, hgate, n', base bundle)` — NOT the interior
+`hρe₀` (design §I.8.24(4.12), source-verified 2026-06-23; the prior "expose `hgate`/`hρe₀` together here"
+was wrong).** Set `cand : Fin (k+1) → α := candidateVtx ∘ Fin.cast d_eq_kAdd.symm` (injective by
+`candidateVtx_injective` ∘ the `Fin.cast` bijection), fire `chainData_split_w6b_gates` (→ shared `ρ₀`/`w` +
+the base `(v₀v₂)` annihilation) + `exists_chainData_discriminator_pick` ONCE at the **BASE split**; get
+`hgate` at the matched candidate `cand u = vtx i.succ` (the panel-`u : Fin (k+1)` ↔ candidate-`i : Fin cd.d`
+match via `d_eq_kAdd` + `candidateVtx_succ_eq`). Wiring template: the d=3 `case_III_candidate_dispatch:435–501`
++ `chainData_split_realization`'s `htrans` slot. **Gate-side caveat:** the discriminator runs against the
+BASE seed `q`; the consumer `case_III_arm_corner_assembly` uses `candidateSeed i q` — a `shiftPerm`-image seed
+reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`shiftPerm` simp set, the
+(4.11) "member-fixed extensor-relabelled" shape, NOT the wall). **THEN** LEAF-4 produces the
+GENUINELY-NEW interior `hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66: the shared
+base `ρ₀` ⊥ the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel) from LEAF-3's base
+`ρ₀`/`λ`-witness bundle + `cd.deg_two`, builds `W`, `exact case_III_arm_corner_assembly` → LEAF-5 (router)
+→ CHAIN-5. **Watch the two downstream risks** (design §I.8.24(4.11)/(4.12)): the ENTRY KT-4.6
+chain-extraction leaf (23d, genuinely-new), and — the conjecture-crux — the interior-`hρe₀` leaf itself
+(the §I.8.3-P2 heir, the redundancy-carry seam; NOT BLOCKED, but THE hard core of LEAF-4, do NOT scope
+away from it, and do NOT try to source it by firing W6b at the interior split — `hsplitGP` unavailable).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
@@ -344,20 +374,30 @@ LEAF-4/CHAIN bookkeeping).
    `candidateVtx_injective`; build/lint/axiom-clean, warning-clean; `candidateVtx_succ` + `Fin.succ_mk`,
    not `@[simp]`). So the **record-local discriminator-index plumbing is now COMPLETE** (field `d_eq` +
    bridge `d_eq_kAdd` + selector `candidateVtx`/`candidateVtx_injective` + match `candidateVtx_succ_eq`).
-   **The discriminator-firing producer (NEXT)** — set `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`
+   **The discriminator-firing producer (NEXT) — produces `(matched i, ρ₀, hgate, n', base bundle)`, NOT
+   the interior `hρe₀` (design §I.8.24(4.12)).** Set `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`
    (injective by `candidateVtx_injective ∘ (Fin.cast …).injective`), fire `chainData_split_w6b_gates`
-   (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick` ONCE off the shared base; split on the matched
+   (→ shared `ρ₀`/`w` + base `(v₀v₂)` annihilation + the eq-6.52 `λ`-grouped `(ab)`-witness) +
+   `exists_chainData_discriminator_pick` ONCE at the **BASE split**; split on the matched
    `i := Fin.cast d_eq_kAdd.symm u` (interior `0 < i` → `candidateVtx_succ_eq` turns the gate at
-   `cand u` into the arm's gate at `vtx i.succ`; base `i=0` → the d=3-floor / base route via
-   `candidateVtx_zero`) and expose `hgate`/`hρe₀` at the matched interior candidate `i`. The wiring is the
-   d=3 template `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s `htrans` slot,
-   re-aimed at the assembly's `hgate`/`hρe₀`.
-4. **LEAF-4 (THE HARD CORE)** — the interior base-block `W` production: `f := w`, `L := (funLeft (shiftPerm
-   i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem` (genuine → off-slot GROUP leaf
-   `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge; block-tag → reproduced-slot
-   membership) routing `chainData_bottom_relabel`'s images into `caseIIICandidate.rigidityRows`, `hvanish` =
-   base-rows-over-old-bodies; apply LEAF-2; `exact case_III_arm_corner_assembly …`. THE §(4.4)(β) flag made
-   concrete; the composer the last two dispatches scoped AWAY from.
+   `cand u` into the gate at `vtx i.succ`; base `i=0` → the d=3-floor / base route via `candidateVtx_zero`
+   + `chainData_split_realization`, where the interior `hρe₀` leaf is NOT needed). Expose `hgate` at the
+   matched candidate `i`; **the gate-side caveat is the base-`q`-vs-`candidateSeed` `shiftPerm`-image
+   reconciliation** (buildable). Wiring template: the d=3 `case_III_candidate_dispatch:435–501` +
+   `chainData_split_realization`'s `htrans` slot, re-aimed at the assembly's `hgate`.
+4. **LEAF-4 (THE HARD CORE)** — TWO genuinely-new pieces, do NOT peel one and defer the other:
+   (i) **the interior-`hρe₀` leaf** `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the
+   conjecture-crux redundancy-carry seam; the §I.8.3-P2 heir): from LEAF-3's base `ρ₀`/`λ`-witness bundle +
+   `cd.deg_two`, prove the shared base `ρ₀` annihilates the interior `(vtx i.succ, vtx (i−1).castSucc)`
+   reproduced-slot panel — the bridge from the LANDED `redundancy_panel_carry`/`interior_group_*` chain-carry
+   to the `ρ₀ (panelSupportExtensor …) = 0` panel-annihilation shape; NOT a transport of base `hρe₀`, NOT a
+   per-interior W6b firing (`hsplitGP` unavailable). (ii) **the base block `W`**: `f := w`,
+   `L := (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem`
+   (genuine → off-slot GROUP leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge;
+   block-tag → reproduced-slot membership) routing `chainData_bottom_relabel`'s images into
+   `caseIIICandidate.rigidityRows`, `hvanish` = base-rows-over-old-bodies; apply LEAF-2. Then `exact
+   case_III_arm_corner_assembly … hgate hρe₀ hWS hWcard hW hdef`. THE §(4.4)(β) flag + the §I.8.24(4.12)
+   crux made concrete; the composer the last two dispatches scoped AWAY from.
 5. **LEAF-5 (MODERATE)** — `chainData_dispatch` proper: the router. CASE on candidate `i`: base `i=1` + d=3
    floor → `chainData_split_realization` (zero-regression); interior `2 ≤ i < d` → LEAF-4. Latitude: the
    routing predicate + the C.4 `d=3` zero-regression adapter.
@@ -498,3 +538,14 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
     dispatch composes them: `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`, `i := Fin.cast …symm u`, gate
     at `cand u` ⟹ gate at `vtx i.succ` (interior) / `vtx 0` (base `i=0`, floor route). NEXT = the
     discriminator-firing producer.
+- **`hgate`/`hρe₀` sourcing RESOLVED — design pass, NOT BLOCKED (2026-06-23, docs-only; design
+  §I.8.24(4.12), source-verified against the LANDED bodies + KT eqs. 6.64–6.67).** `hgate` is LANDED-direct
+  (`exists_chainData_discriminator_pick` at `cand u = vtx i.succ`; only the base-`q`-vs-`candidateSeed`
+  `shiftPerm`-image reconciliation remains, buildable). The matched-INTERIOR `hρe₀` at the SHARED base `ρ₀`
+  is a **GENUINELY-NEW leaf** `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66) — NOT a transport
+  of base `hρe₀`, NOT a per-interior W6b firing (interior `hsplitGP` not in scope; only the base `v₁`-split's
+  is, `Arms.lean:910–913` — the §(o″) Route-A dead end). Machinery below the contract (cert `hρGv`-free +
+  `ρ₀`-agnostic) so no motive/IH/C-change; but it is THE conjecture-crux (the §I.8.3-P2 heir). **Corrected
+  LEAF-3/4 boundary:** LEAF-3 produces `(matched i, ρ₀, hgate, n', base bundle)`; the interior `hρe₀` lands
+  in LEAF-4 — the (4.10) sketch that put it in LEAF-3 was wrong. The landed `interior_group_acolumn_eq_neg_
+  baseRedundancy` is the near-miss but WRONG-SHAPE (a `−ρ₀` column value, not a panel annihilation).
