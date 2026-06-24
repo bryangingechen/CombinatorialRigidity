@@ -1784,6 +1784,64 @@ theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish [
   | add x y _ _ hx hy => rw [LinearMap.add_comp, hx, hy, add_zero]
   | smul a x _ hx => rw [LinearMap.smul_comp, hx, smul_zero]
 
+/-- **The genuine-only base block `W` of the `±r` decomposition, from a genuine basis**
+(`lem:case-III general-d`, the route-B LEAF-B2 genuine-only `W` producer; Katoh–Tanigawa 2011
+§6.4.2 eq.~(6.64), the bottom block `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)`; design §I.8.24(4.25)). This is the
+genuine-row rework of the relabel-image base block carrier
+`span_relabelImage_le_and_finrank_and_acolumn_vanish` (LEAF-2): rather than carrying an arbitrary
+linearly-independent family `f`, it *constructs* `f` from the GENUINE basis of the base framework
+`Fbase`'s rigidity-row span with the redundant member `rhat` excluded
+(`exists_genuine_linearIndependent_basis_of_rigidityRows_diff`, LEAF-B1), so the resulting base
+block `W` is sourced from genuine rows only — exactly what escapes the member-mapping wall (design
+§I.8.24(4.18)/(4.20): the wall arose only when the base family was forced to include the redundant
+row `rhat`, a row *through* the re-inserted body `vᵢ`, breaking the off-`vᵢ` vanishing the corner
+discriminator needs).
+
+The produced `W` lands in the candidate framework `Fcand`'s rigidity-row span (`hWS`), has the full
+base rank `N` (`hWcard`), and annihilates the re-inserted body `v`'s screw column (`hW`). The card
+bookkeeping is the route-B satisfiability fact: LEAF-B1's basis is indexed by
+`finrank (span (Fbase.rigidityRows ∖ {rhat}))`, which deleting the redundant `rhat` (in the span of
+the others, `hrhat` — KT eq.~(6.24)'s `r̂ = Σλⱼrⱼ`) leaves equal to
+`finrank (span Fbase.rigidityRows) = N` (the IH,
+`span_rigidityRows_diff_singleton_eq_of_mem_span`).
+
+The per-genuine-row transport (`hS`) and off-`σ.symm v` vanishing (`hvanish`) enter as facts about
+*every* genuine base row — universally over `Fbase.rigidityRows` — since LEAF-B1's basis members are
+genuine rows (`f i ∈ Fbase.rigidityRows`); the chain dispatch (LEAF-4) discharges them from the
+cycle relabel `σ = (shiftPerm i.castSucc)⁻¹` (then `σ.symm v = shiftPerm i.castSucc vᵢ = vtx 1`, the
+body the base framework `G − vtx 1` removes, so every genuine base row vanishes off it by
+`hingeRow_comp_single_off`) and the genuine-row transport
+`chainData_bottom_relabel`/`rigidityRow_relabel_to_genuine`. NO `hρGv`, no new linear algebra — pure
+composition of LEAF-B1 + the satisfiability fact + LEAF-2. -/
+theorem BodyHingeFramework.exists_genuine_relabelImage_base_block [DecidableEq α] [Finite α]
+    (Fbase Fcand : BodyHingeFramework k α β) {v : α} {σ : Equiv.Perm α}
+    {rhat : Module.Dual ℝ (α → ScrewSpace k)}
+    (hrhat : rhat ∈ Submodule.span ℝ (Fbase.rigidityRows \ {rhat}))
+    {N : ℕ} (hIH : Module.finrank ℝ (Submodule.span ℝ Fbase.rigidityRows) = N)
+    (hS : ∀ φ ∈ Fbase.rigidityRows,
+      (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap φ
+        ∈ Submodule.span ℝ Fcand.rigidityRows)
+    (hvanish : ∀ φ ∈ Fbase.rigidityRows,
+      φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm v)) = 0) :
+    ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
+      W ≤ Submodule.span ℝ Fcand.rigidityRows ∧
+      Module.finrank ℝ W = N ∧
+      (∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0) := by
+  -- LEAF-B1: a genuine LI basis `f` of `span (Fbase.rigidityRows ∖ {rhat})`, all members genuine
+  -- rows of `Fbase` (`hmem`), the redundant `rhat` excluded.
+  obtain ⟨f, hf, hmem, _hne, _hspan⟩ :=
+    Fbase.exists_genuine_linearIndependent_basis_of_rigidityRows_diff rhat
+  -- Feed `f` into LEAF-2 at the candidate framework, discharging `hS`/`hvanish` per member from the
+  -- universal genuine-row facts (`f i ∈ Fbase.rigidityRows`).
+  obtain ⟨W, hWS, hWcard, hW⟩ :=
+    Fcand.span_relabelImage_le_and_finrank_and_acolumn_vanish (v := v) (σ := σ) hf
+      (fun j => hS _ (hmem j)) (fun j => hvanish _ (hmem j))
+  -- The card bookkeeping: deleting the redundant `rhat` preserves the span (`hrhat`), so the
+  -- basis index `Fin (finrank (span (rigidityRows ∖ {rhat})))` has card
+  -- `finrank (span rigidityRows) = N`.
+  refine ⟨W, hWS, ?_, hW⟩
+  rw [hWcard, Fintype.card_fin, Fbase.span_rigidityRows_diff_singleton_eq_of_mem_span hrhat, hIH]
+
 /-- **The candidate fresh-edge's panel rows are independent modulo the base block `W`**
 (`lem:case-III general-d`, the option-(A) `hLI` corner obligation (a); Katoh–Tanigawa 2011 eq.
 (6.65), the `Mᵢ`-block panel rows independent of the base `R(G₁ ∖ row, q₁)`). The chain cert
