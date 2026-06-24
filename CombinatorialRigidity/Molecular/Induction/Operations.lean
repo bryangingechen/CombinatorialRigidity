@@ -2738,6 +2738,52 @@ omit [DecidableEq β] in
     (p : α × γ) : cd.candidateSeed i q p = q (cd.shiftPerm i.castSucc p.1, p.2) :=
   rfl
 
+/-! ### The Case-III panel→vertex selector `candidateVtx` (CHAIN-2c-iii, LEAF-3)
+
+The general-`d` Case-III dispatch (CHAIN-2c-iii `chainData_dispatch`) feeds the Claim-6.12 panel
+discriminator (`exists_chainData_discriminator_pick`) the `d`-tuple of *candidate vertices* whose
+panels `Πᵢ` the discriminator tests (Katoh–Tanigawa 2011 §6.4.2, eq. 6.67): the `d` panels are
+`Π₀ = Π(v₀)` and `Πᵢ = Π(v_{i+1})` for `1 ≤ i ≤ d − 1`, so the panel index `i : Fin d` selects the
+chain vertex `v₀` (at `i = 0`) or `v_{i+1}` (at `i ≥ 1`). `candidateVtx` packages that selector and
+proves it injective (the `Function.Injective cand` hypothesis the discriminator requires) — the `v₀,
+v₂, …, v_d` it hits are pairwise distinct chain vertices (the base body `v₁` is omitted; `vtx_inj`).
+
+This is the record-local (`k`-free) half of the discriminator-index plumbing; the dispatch composes
+it with the `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd` to obtain the `Fin (k + 1) → α`
+selector `exists_chainData_discriminator_pick` consumes (the index transport across `d = k + 1`,
+`notes/Phase23-design.md` §I.8.24(4.11)). -/
+
+/-- The **Case-III panel→vertex selector** (CHAIN-2c-iii, eq. 6.67): the panel index `i : Fin cd.d`
+maps to the chain vertex whose panel `Πᵢ` the Claim-6.12 discriminator tests — `v₀` at `i = 0`
+(panel `Π₀ = Π(v₀)`), `v_{i+1}` at `i ≥ 1` (panel `Πᵢ = Π(v_{i+1})`). The omitted vertex is the
+base body `v₁ = vtx 1`. -/
+def candidateVtx (cd : G.ChainData n) (i : Fin cd.d) : α :=
+  cd.vtx (if (i : ℕ) = 0 then 0 else ⟨(i : ℕ) + 1, by omega⟩)
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- The panel→vertex selector at the head panel `Π₀` is the chain base `v₀ = vtx 0`. -/
+@[simp] lemma candidateVtx_zero (cd : G.ChainData n) (i : Fin cd.d) (hi : (i : ℕ) = 0) :
+    cd.candidateVtx i = cd.vtx 0 := by rw [candidateVtx, if_pos hi]
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- The panel→vertex selector at an interior panel `Πᵢ` (`0 < i`) is the chain vertex `v_{i+1} =
+vtx ⟨i+1, _⟩` (i.e. `vtx i.succ` as a `Fin (cd.d + 1)` index). -/
+@[simp] lemma candidateVtx_succ (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    cd.candidateVtx i = cd.vtx ⟨(i : ℕ) + 1, by omega⟩ := by
+  rw [candidateVtx, if_neg (by omega)]
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- **The panel→vertex selector is injective** (CHAIN-2c-iii): the chain vertices `v₀, v₂, …, v_d`
+the `d` panels select are pairwise distinct (`vtx_inj`, the omitted base body `v₁` keeping the
+`i = 0 ↦ v₀` value clear of every `i ≥ 1 ↦ v_{i+1}`). This is the `Function.Injective cand`
+hypothesis `exists_chainData_discriminator_pick` requires. -/
+lemma candidateVtx_injective (cd : G.ChainData n) : Function.Injective cd.candidateVtx := by
+  intro i i' he
+  rw [candidateVtx, candidateVtx] at he
+  have hval := congrArg Fin.val (cd.vtx_inj he)
+  split_ifs at hval with hi hi' hi' <;> simp only [Fin.val_zero] at hval <;>
+    exact Fin.ext (by omega)
+
 end ChainData
 
 end Graph
