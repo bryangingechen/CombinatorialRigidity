@@ -894,6 +894,60 @@ theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework k α β)
   refine ⟨fun i => hingeRow u v (c i), linearIndependent_hingeRow huv hc, fun i => ?_⟩
   exact ⟨e, u, v, hlink, c i, hmem i, rfl⟩
 
+/-- **A genuine linearly-independent basis of the rigidity-row span, drawn from the row set with a
+redundant member excluded** (`lem:case-III general-d`, the route-B LEAF-B1 genuine-basis extraction;
+Katoh–Tanigawa 2011 §6.4.2 eq. (6.64), the bottom block `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)`; design
+§I.8.24(4.25)). When the body set `α` is finite, the rigidity-row span is finite-dimensional, so a
+finite *spanning subset* of any row set is also a *basis* of its span. Applied to the row set with a
+redundant member `rhat` removed (`F.rigidityRows \ {rhat}`), this produces a linearly independent
+family `f : Fin N → Module.Dual ℝ (α → ScrewSpace k)` (`N = finrank` of that span) with:
+
+* every `f i` a **genuine** rigidity row (`f i ∈ F.rigidityRows`, carrying its link/block data —
+  the data `rigidityRow_relabel_to_genuine` consumes downstream in LEAF-B2), and
+* every `f i ≠ rhat` (the redundant member is **excluded**, never transported), and
+* `span (range f) = span (F.rigidityRows \ {rhat})`.
+
+This is the route-B base block at the source level: KT's bottom block (6.64) is
+`R(G₁ ∖ (v₀v₂)ᵢ*, q₁)` — the base matrix with the *redundant* row deleted — whose rank is the same
+`D(|V|−2)` (the redundant row lies in the span of the others, so deleting it preserves the span —
+`span_rigidityRows_diff_singleton_eq_of_mem_span`). Selecting the base family from genuine rows only
+is exactly what escapes the member-mapping wall (design §I.8.24(4.18)/(4.20): the wall arose only
+because the old base family was forced to include the redundant member, a row *through* `vᵢ`
+breaking the off-`vᵢ` vanishing the corner discriminator needs). The genuine-link data is recovered
+*for free* from set-membership in `F.rigidityRows` — no motive strengthening is needed. The kernel
+is mathlib's `Submodule.exists_fun_fin_finrank_span_eq` (a finite spanning subset of a
+finite-dimensional span is a basis), specialised to the row set `F.rigidityRows \ {rhat}`. -/
+theorem exists_genuine_linearIndependent_basis_of_rigidityRows_diff [Finite α]
+    (F : BodyHingeFramework k α β) (rhat : Module.Dual ℝ (α → ScrewSpace k)) :
+    ∃ (f : Fin (Module.finrank ℝ (Submodule.span ℝ (F.rigidityRows \ {rhat}))) →
+        Module.Dual ℝ (α → ScrewSpace k)),
+      LinearIndependent ℝ f ∧ (∀ i, f i ∈ F.rigidityRows) ∧ (∀ i, f i ≠ rhat) ∧
+        Submodule.span ℝ (Set.range f) = Submodule.span ℝ (F.rigidityRows \ {rhat}) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  obtain ⟨f, hmem, hspan, hLI⟩ :=
+    Submodule.exists_fun_fin_finrank_span_eq ℝ (F.rigidityRows \ {rhat})
+  exact ⟨f, hLI, fun i => (hmem i).1, fun i => (hmem i).2, hspan⟩
+
+/-- **Deleting a redundant rigidity row preserves the span** (`lem:case-III general-d`, the route-B
+LEAF-B1 satisfiability fact; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64); design §I.8.24(4.25)). When the
+redundant member `rhat` lies in the span of the remaining rows `span (F.rigidityRows \ {rhat})` —
+which is exactly the project's redundant-row decomposition `r̂ = Σ λⱼ rⱼ`
+(`exists_redundant_panelRow_ab_decomposition`, KT eq. (6.24)) — removing it from the row set leaves
+the span unchanged: `span (F.rigidityRows \ {rhat}) = span F.rigidityRows`. Hence the GENUINE rows
+(redundant deleted) attain the *full* base rank, so the LEAF-B1 genuine basis above has the same
+cardinality as the base rank `D(|V|−2)`. This is the precise fact design §I.8.24(4.18) flagged as
+the satisfiability question of the genuine-only base block (there found impossible for a base family
+that *includes* the redundant member; here resolved by *excluding* it). General linear algebra; the
+redundancy hypothesis is the only content. -/
+theorem span_rigidityRows_diff_singleton_eq_of_mem_span
+    (F : BodyHingeFramework k α β) {rhat : Module.Dual ℝ (α → ScrewSpace k)}
+    (hrhat : rhat ∈ Submodule.span ℝ (F.rigidityRows \ {rhat})) :
+    Submodule.span ℝ (F.rigidityRows \ {rhat}) = Submodule.span ℝ F.rigidityRows := by
+  refine le_antisymm (Submodule.span_mono Set.diff_subset) (Submodule.span_le.mpr fun x hx => ?_)
+  by_cases hxr : x = rhat
+  · exact hxr ▸ hrhat
+  · exact Submodule.subset_span ⟨hx, hxr⟩
+
 /-! ## Candidate-completion: column operation + pinned-block independence (KT eqs. (6.14)–(6.29))
 
 The column operation `col_a += col_v` (`columnOp`) and the pin-a-body / off-`v` column-split

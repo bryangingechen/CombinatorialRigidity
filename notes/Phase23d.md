@@ -45,23 +45,37 @@ transport, Q2-D genuine satisfies `hW`) are kernel-spiked sorry-free + axiom-cle
 rank-cert REFORMULATION, not a `Matrix` rebuild** — the one rework is LEAF-2 / the `W`-production
 (genuine-only basis instead of the full family).
 
-**Next concrete step = DE-RISK + salvage LEAF-B1 by resuming the recon agent (`ad8dafc55bcaf21e3`).** The
-ONE carried hypothesis (the structural twin of this session's two carried-hypothesis false FEASIBLEs, so it
-gets the discriminating construct-or-concede test): **LEAF-B1 = genuine-basis extraction** — from the IH's
-rank realization (`HasGenericFullRankRealization k n G₁`, rank `D(|V|−2)`), extract an LI family of GENUINE
-`R(G₁,q₁)` rows (redundant member excluded), card `D(|V|−2)`, spanning `span(R(G₁∖redundant))`, carrying the
-per-member genuine-link data `rigidityRow_relabel_to_genuine` consumes (standard basis-from-spanning over the
-edge-indexed genuine rows; if the link data isn't recoverable, may need the IH to deliver a genuine-row basis
-— a small motive-adjacent strengthening BELOW the frozen contract). The resume also salvages the recon's
-genuinely-reusable sorry-free facts (Q1-A the ±r column equality, Q2-B span-preservation, Q2-D `hW`) as real
-gate-clean lemmas, opening 23d's route-B build.
+**LEAF-B1 IS LANDED + DE-RISKED (2026-06-24, route-B build OPEN).** The structural-twin risk (the genuine-link
+data may not survive a bare basis-extraction, possibly needing a motive strengthening) is **RESOLVED — no
+strengthening needed**: the link/block data is recovered **for free** from set-membership in `F.rigidityRows`.
+Landed in `RigidityMatrix/Basic.lean` (axiom-clean, warning/lint-clean), CONSTRUCTED not hypothesized:
+- **`exists_genuine_linearIndependent_basis_of_rigidityRows_diff`** (LEAF-B1) — for any framework `F` and
+  redundant member `rhat`, an LI family `f : Fin (finrank (span (rigidityRows ∖ {rhat}))) → Dual` with each
+  `f i ∈ F.rigidityRows` (genuine, carries link data), each `f i ≠ rhat` (redundant EXCLUDED), and
+  `span (range f) = span (rigidityRows ∖ {rhat})`. Kernel = mathlib `Submodule.exists_fun_fin_finrank_span_eq`.
+- **`span_rigidityRows_diff_singleton_eq_of_mem_span`** (the satisfiability fact §(4.18) flagged, = Q2-B) —
+  deleting the redundant row preserves the span when `rhat ∈ span (rigidityRows ∖ {rhat})` (the
+  `exists_redundant_panelRow_ab_decomposition` content), so the genuine basis has card = the full base rank
+  `D(|V|−2)`. The consumer composes this + the IH `finrank = D(|V|−2)` to fix the family's cardinality.
 
-**Plan (≈3–4 sub-phases to close the rank cert):** LEAF-B1 (crux) → LEAF-B2 (genuine-only `W` producer,
-rework of LEAF-2) → LEAF-B3 (corner producer, mostly landed) → LEAF-B4 (interior-arm rewire, drop the dead
-§(4.17) reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe). **Route
-A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback IF LEAF-B1 proves
-intractable — B's diagnosis tells A how to slot the redundant row, so the fallback is real and informed.
-**(C)** (honest-conditional) is now the fallback-of-the-fallback, not the plan.
+Salvage judged: Q1-A (±r column equality) SKIPPED (thin instantiation of the landed `interior_group_eq_baseRedundancy`);
+Q2-C SKIPPED (thin wrapper of `rigidityRow_relabel_to_genuine`); Q2-D SKIPPED (the chosen LEAF-B2 path via
+`span_relabelImage_le_and_finrank_and_acolumn_vanish` takes per-member `hvanish` = `hingeRow_comp_single_off`,
+NOT a span-form `hW`, so Q2-D's span lemma would be an orphan).
+
+**Next concrete step = LEAF-B2 (genuine-only `W` producer).** Feed LEAF-B1's `f` into the LANDED
+`span_relabelImage_le_and_finrank_and_acolumn_vanish` at `σ = shiftPerm i.castSucc`: `hS` per member from the
+genuine-row transport (`chainData_bottom_relabel` genuine branch / `rigidityRow_relabel_to_genuine`), `hvanish`
+per member from `hingeRow_comp_single_off`, cardinality from `span_rigidityRows_diff_singleton_eq_of_mem_span`
++ the IH. Then it composes with the LANDED `case_III_rank_certification_chain` (the cert is already wall-free —
+takes `W`/`hWS`/`hWcard`/`hg`/`hLI`, no `hρGv`).
+
+**Plan (≈3 sub-phases left to close the rank cert):** ✅ LEAF-B1 (crux, landed) → LEAF-B2 (genuine-only `W`
+producer, the LEAF-2 rework) → LEAF-B3 (corner producer, mostly landed) → LEAF-B4 (interior-arm rewire, drop
+the dead §(4.17) reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
+**Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if
+LEAF-B2+ wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real and
+informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
 
 **Do NOT** re-attempt the dead route families (§I.8.18–I.8.20) / (A)/(B′)/(A′); re-run the A1 / matrix-level
 / geometry-aware feasibility spikes (the *existing-architecture* wall is kernel-confirmed 5× — route B
@@ -77,12 +91,15 @@ carries the live consequence (the (C)/(D)/ENTRY adjudication). Do not re-run the
 
 ## Remaining work in Phase 23
 
-1. **The general-`d` rank certification** (the 23d core) — re-architect `case_III_rank_certification_chain`
-   / `case_III_arm_realization` per the A1 verdict (A2 build, or (C) honest-conditional). The corner cert
-   (`±r` via `hρe₀`), the carrier, both `hLI` halves, the (α) bridge, the off-slot row bridge, the arm
-   spine `case_III_arm_realization_chain`, and the corner-data assembly `case_III_arm_corner_assembly` are
-   ALL LANDED and reusable (`notes/Phase23c.md` ledger). The interior `hρe₀` half of LEAF-4 step (ii) is
-   CLOSED. The OPEN piece is the `hWS`/rank-certification half.
+1. **The general-`d` rank certification — route B (§(4.25)), the 23d core.** The cert
+   `case_III_rank_certification_chain` is already wall-free (block-additivity, no `hρGv`). ✅ **LEAF-B1
+   LANDED** (`exists_genuine_linearIndependent_basis_of_rigidityRows_diff` + `span_rigidityRows_diff_singleton_eq_of_mem_span`,
+   `RigidityMatrix/Basic.lean`) — the genuine-only base block source. OPEN: **LEAF-B2** (genuine-only `W`
+   producer = the LEAF-2 rework, feeds LEAF-B1's `f` into `span_relabelImage_le_and_finrank_and_acolumn_vanish`),
+   **LEAF-B3** (corner producer, mostly landed: the `±r` via `hρe₀`, the panel rows, `linearIndependent_mkQ_corner_of_gate`),
+   **LEAF-B4** (interior-arm rewire `case_III_arm_realization_chain` onto B1/B2/B3, drop the dead §(4.17)
+   reproduced router branch). The carrier, both `hLI` halves, the (α) bridge, the off-slot row bridge, the arm
+   spine, and the corner-data assembly stay LANDED (`notes/Phase23c.md` ledger). The interior `hρe₀` is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` dispatch (a discriminator-pick + Fin-case ROUTER
    over the two landed arm routes: the OLD engine via `chainData_split_realization` for the base candidate
    `i=1` + the d=3 floor; the option-(A) `case_III_arm_corner_assembly` for interior `2 ≤ i < d`). Blocked
