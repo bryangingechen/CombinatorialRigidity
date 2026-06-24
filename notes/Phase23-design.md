@@ -3111,6 +3111,57 @@ decomposition of the SECOND build it teed up.**
   exactly the genuine rows; the redundant row's relocation is intrinsic, not a transport defect). No
   motive/contract change.
 
+  *(4.25) THE ROUTE-B (genuine-basis) ARCHITECTURE PASS — VERDICT: B-WORKS at the two decisive kernel
+  spikes; the UNCONDITIONAL crux is RESOLVABLE via an architectural inversion faithful to KT (6.64),
+  **pending the one carried hypothesis LEAF-B1** (genuine-basis extraction). SUPERSEDES the §(4.20)–(4.24)
+  "(C)-only" recommendation. Read-only architecture design+spike, opus / OPUS-ONLY, 2026-06-24, agentId
+  `ad8dafc55bcaf21e3` (resumable). User-directed (tackle the faithful re-architecture, no skipping a key
+  step).*
+
+  **The architectural inversion (why all 5 prior walls were the WRONG object).** §(4.18)–(4.24) all forced
+  the base REDUNDANT row into the base block `W` (→ through-`vᵢ`, breaks `hW`) or transported it as a covector
+  (→ linearity-moved, §(4.24)). KT (6.64) does NEITHER: the bottom block is `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)` — the base
+  with the redundant row DELETED (still rank `D(|V|−2)`, since it is redundant) — and the redundant row's
+  reproduction sits in the CORNER `Mᵢ`. Route B follows KT: `W` = GENUINE rows ONLY (off-`vᵢ`, where the
+  transport provably WORKS — §(4.24) conceded this; card `D(|V|−2)`); corner = `D−1` fresh panel rows + the
+  `±r` row (`hρe₀`-sourced, NEVER `hρGv`). `W` + corner = `D(|V|−2)+D = D(|V|−1)`. §(4.24)'s linearity
+  impossibility does NOT apply because route B **never transports the redundant row** (it is a direct corner
+  row via `hρe₀`, not a transported covector); the transport acts ONLY on genuine rows. The §(4.19)
+  `htopvanish`/§(4.23) scissors does NOT apply because the chain cert `case_III_rank_certification_chain` (via
+  `finrank_span_rigidityRows_ge_of_corner`) needs the corner only independent-mod-`W`, NOT pure-`vᵢ`.
+
+  **Q1 + Q2 kernel-spiked (sorry-free, `#print axioms`-clean, CONSTRUCTED not hypothesized).** Q1 (reproduction
+  = a provable column EQUALITY, KT 6.66): `q1A_corner_value_equality_constructed` on the LANDED
+  `interior_group_eq_baseRedundancy` — no membership/transport. Q2 (the bound assembles for the GENUINE-only
+  block): Q2-A the cert composes; Q2-B deleting the redundant row preserves the base span (genuine rows attain
+  rank `D(|V|−2)` — the satisfiability §(4.18) called impossible *for the redundant-INCLUDING block*); Q2-C
+  each genuine row transports (`rigidityRow_relabel_to_genuine`); Q2-D the genuine-only `W` satisfies `hW`
+  (genuine rows have both endpoints `≠ vᵢ`).
+
+  **Representation verdict: a LIGHT rank-cert REFORMULATION, not a `Matrix` rebuild.** Bare-dual-vector
+  representation kept verbatim; `Meet`/`MeetHodge`, the ±r identity, the union-dimension, the carrier all
+  untouched. The ONE rework: LEAF-2 / the `W`-production builds `W` from a GENUINE-only basis (card `D(|V|−2)`)
+  instead of the full relabelled bottom family (which forced the redundant member → the wall); the §(4.17)-dead
+  reproduced router branch is dropped.
+
+  **The one carried hypothesis = the crux + top risk: LEAF-B1 (genuine-basis extraction).** From the IH's rank
+  realization (`HasGenericFullRankRealization k n G₁`, rank `D(|V|−2)`), extract an LI family of GENUINE
+  `R(G₁,q₁)` rows (redundant member excluded) of card `D(|V|−2)` spanning `span(R(G₁∖redundant))`, carrying the
+  per-member genuine-link data `rigidityRow_relabel_to_genuine` consumes. Standard basis-from-spanning-set (Q2-B
+  gives the span) over the edge-indexed genuine rows — but must produce a concrete `ιb` of card `D(|V|−2)` +
+  recoverable genuine-link data; if not recoverable, may need the IH to deliver a genuine-row basis directly (a
+  small motive-adjacent strengthening, BELOW the frozen contract). **DE-RISK by constructing it at the kernel
+  before committing the full build** (it is the structural twin of this session's two carried-hypothesis false
+  FEASIBLEs — treat it as the discriminating test).
+
+  **Plan (≈3–4 sub-phases to close the rank cert, then ENTRY/ASSEMBLY):** LEAF-B1 (genuine-basis extraction,
+  the crux) → LEAF-B2 (genuine-only `W` producer, rework of LEAF-2) → LEAF-B3 (corner producer, mostly landed)
+  → LEAF-B4 (interior-arm rewire, drop the dead reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then
+  ENTRY + ASSEMBLY (parallel-safe). Route A (full concrete `Matrix`, KT transfers literally but heavy) is the
+  documented fallback IF LEAF-B1 proves intractable; B's diagnosis tells A exactly how to slot the redundant
+  row. **Verdict: 23d's rank-cert reconsideration is RESOLVABLE (an A2-equivalent build via route B), NOT
+  (C)/(D) — pending the LEAF-B1 de-risk.**
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

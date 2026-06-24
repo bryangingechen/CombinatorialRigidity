@@ -100,6 +100,7 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 436 | A1 spike resume — construct-or-concede (→ §(4.22)) | —/—/— | opus | recon/resume | recon — CONCEDED | — | 194k tok / 9 tools / 3.3 min | SendMessage-resume of 435 (same agentId, context intact) w/ the §(4.17)+§(4.18) confrontation. CONCEDED; built 2 sorry-free `concede_*` kernel re-derivations of the impossibilities for the real dispatch slot; confirmed SPIKE 1/2 carried `hG_eb_cand`/`W`/`hWS` as hyps, never discharged. Resume reused the full read phase (9 tools) — cheap vs a fresh refute agent. → Findings 2026-06-24. |
 | 437 | §I.8.21(α) matrix-level (row-op) rework spike (→ design §(4.23)) | —/—/— | opus | recon | recon — INFEASIBLE (hypothesis disproven) | — | 199k tok / 71 tools / 15.3 min | User-authorized rework swing: does KT's rank-preserving ROW-OPERATION redundancy handling (vs span membership) escape the wall? DISPROVEN at the kernel (SPIKE 3b/4a/4b): the row-op IS the membership — pure-`vᵢ` corner needs `hingeRow a b ρ₀ ∈ span` (=hρGv), confirmed against the project's OWN Phase-22g `r̂=wGv` docs. The scissors: htopvanish-corner needs hρGv; hρe₀-corner not pure-vᵢ. 4th independent wall confirmation; honest INFEASIBLE (flag-don't-force worked) → option (C). → Findings 2026-06-24. |
 | 438 | geometry-aware-transport scoping recon (→ design §(4.24)) | —/—/— | opus | recon | recon — RELOCATES-TO-WALL (scoping) | — | 202k tok / 51 tools / 9.8 min | Scoped the user's "remember the geometry" transport idea. Found the transport is ALREADY geometry-aware (`shiftPerm`=KT ρᵢ, `qρ`=config relation, `rigidityRow_relabel_to_genuine` absorbs reproduction as abstract `hsupp`) — corrects the coordinator's "remembers only σ" framing. Closed by a LINEARITY IMPOSSIBILITY (SPIKE 3): linear `T` forces `T(Σcⱼgⱼ)=Σcⱼ T(gⱼ)`, so the redundant row lands at its ρᵢ-image (moved member), never fixed `hφ`. 5th wall confirmation; transport layer CORRECT (nothing to rework). → Findings 2026-06-24. |
+| 439 | route-B (genuine-basis) architecture pass (→ design §(4.25)) | —/—/— | opus | recon | recon — B-WORKS (pending LEAF-B1) | — | 235k tok / 71 tools / 20.7 min | Architecture pass on the user-directed faithful re-arch. FOUND the escape after 5 wall-confirmations: an inversion faithful to KT (6.64) — redundant row → CORNER (hρe₀), genuine rows → base block W (off-vᵢ, transport works). Q1/Q2 kernel-spiked sorry-free, axiom-clean; CONSTRUCTED Q2-B/C/D (the satisfiability §(4.18) called impossible for the redundant-INCLUDING block). Honestly flagged the ONE carried hypothesis = LEAF-B1 (genuine-basis extraction) as crux/risk — flag-don't-force + construct-discipline worked. Light reformulation, not a Matrix rebuild. → Findings 2026-06-24. |
 
 ## Findings
 
@@ -163,4 +164,23 @@ the protocol)
   is impossible for the whole class of objects we're using" — a one-line linearity argument settled the
   latter where four prior spikes had only refuted specific instances. (3) Read what's already built before
   proposing to build it (clause i): the geometry-aware transport the rework targeted was already in tree.
+
+- **2026-06-24 (row 439) — route B: the re-architecture escape after 5 wall-confirmations (when "intrinsic"
+  is intrinsic only to the CURRENT architecture).** The five prior kernel confirmations all proved the wall
+  for the project's *existing* rank-cert architecture (which builds the base block `W` from the full
+  relabelled bottom family, forcing the redundant row into `W`). A user-directed faithful-re-architecture
+  pass (the user's insistence: "we cannot skip key steps; if KT's proof is valid, that gives us a route")
+  found the escape — and it was KT's own block structure (6.64): delete the redundant row from the bottom
+  block, put its reproduction in the CORNER. B-WORKS was reached WITH the session's hard-won discipline
+  intact: the recon CONSTRUCTED the previously-"impossible" satisfiability facts (Q2-B/C/D, axiom-clean)
+  rather than carrying them, and honestly flagged the ONE remaining carried hypothesis (LEAF-B1) as the
+  crux/risk — explicitly naming it the structural twin of this session's two earlier carried-hypothesis false
+  FEASIBLEs. **Lessons:** (1) "intrinsic to KT, 5× confirmed" can still mean "intrinsic to the current
+  ABSTRACTION" — a faithful re-architecture (follow the paper's actual block structure rather than patch the
+  existing cert) is a distinct move from "find a missed route," worth attempting when the user values
+  faithfulness over a conditional shortcut. (2) A long string of negative recons is not wasted: each
+  sharpened *why* the wall held (redundant→`W`), and that diagnosis is exactly what told the positive recon
+  where to invert. (3) The discipline that caught the two false FEASIBLEs (construct-don't-carry; flag the
+  carried hypothesis) is what makes a *positive* verdict trustworthy — the same test that killed the bad ones
+  validated the good one and isolated its single remaining risk (LEAF-B1).
 

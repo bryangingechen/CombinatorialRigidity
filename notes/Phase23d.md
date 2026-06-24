@@ -27,38 +27,45 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**THE GENERAL-`d` RANK CERT IS A CONFIRMED, INTRINSIC-TO-KT WALL — the unconditional crux is closed to
-all routes in hand.** Two recons settled it (2026-06-24): the A1 §I.8.21(α) feasibility spike (FEASIBLE
-first pass, found UNSOUND, then CONCEDED — design §(4.22)), and the user-authorized **matrix-level
-rework** spike testing whether KT's rank-preserving ROW-OPERATION handling of the redundant row (vs the
-project's span membership) escapes — **it does NOT** (§(4.23)): the row operation IS the span membership
-(KT's `r̂ = Σλ rⱼ` is the `G_v`-row part `wGv ∈ span(R(G_v,q))`, documented in the project's OWN Phase-22g
-`exists_redundant_panelRow_ab_decomposition`). The "scissors": the pure-`vᵢ` corner satisfies `htopvanish`
-but needs `hρGv` to enter the span; the `hρe₀`-sourced corner enters the span but isn't pure-`vᵢ`; they
-differ by exactly the wall row `hingeRow a b ρ₀`. A third recon then scoped the user's "geometry-aware
-transport" idea (§(4.24)): the project's transport is ALREADY geometry-aware (`shiftPerm`=ρᵢ, `qρ`=config
-relation, `rigidityRow_relabel_to_genuine`=the 6.59-faithful per-edge transport — it works for genuine rows),
-and a **LINEARITY IMPOSSIBILITY** closes the whole dual-span class: any linear transport sends the redundant
-row to its `ρᵢ`-image (the moved member), never the member-fixed `hφ`. **FIVE independent kernel
-confirmations** (§(4.18) static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23) row-operation,
-§(4.24) geometry-aware-transport linearity) + the A1 concede. The wall is KT's own "not difficult to see"
-(6.61); KT hides it. **The transport layer is CORRECT — nothing to rework**; the redundant row's relocation
-is intrinsic. The only conceivable escape is a non-linear / explicit-`Matrix` model = the §I.8.21(α) infra
-(no route in hand, §(4.22)/(4.23)).
+**THE UNCONDITIONAL CRUX IS RESOLVABLE — route B works (design §I.8.24(4.25)), pending the one carried
+hypothesis LEAF-B1.** After the rank cert hit the member-mapping wall (kernel-confirmed 5× for the
+*existing* architecture: §(4.18) static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23)
+row-operation, §(4.24) geometry-aware-transport linearity + the A1 concede), a user-directed faithful
+re-architecture pass found the escape: an **architectural inversion faithful to KT (6.64)**. Every prior
+wall forced the base REDUNDANT row into the base block `W` (→ through-`vᵢ`, breaks `hW`) or transported it
+as a covector (→ linearity-moved). KT does NEITHER: the bottom block is `R(G₁∖(v₀v₂)ᵢ*, q₁)` — base with
+the redundant row DELETED (still rank `D(|V|−2)`) — and the redundant row's reproduction sits in the CORNER
+`Mᵢ`. **Route B follows KT:** `W` = GENUINE rows ONLY (off-`vᵢ`, where the transport provably WORKS; card
+`D(|V|−2)`); corner = `D−1` fresh panel rows + the `±r` row (`hρe₀`-sourced, never `hρGv`). The §(4.24)
+linearity impossibility does NOT apply (route B never transports the redundant row — it's a direct corner
+row); the §(4.19)/(4.23) `htopvanish` scissors does NOT apply (the chain cert needs the corner only
+independent-mod-`W`, not pure-`vᵢ`). Q1 (the reproduction is a provable column equality) + Q2 (the bound
+assembles for the genuine-only block: Q2-B span-preserved on deleting the redundant row, Q2-C genuine
+transport, Q2-D genuine satisfies `hW`) are kernel-spiked sorry-free + axiom-clean. It is a **light
+rank-cert REFORMULATION, not a `Matrix` rebuild** — the one rework is LEAF-2 / the `W`-production
+(genuine-only basis instead of the full family).
 
-**Next concrete step = option (C), the honest-conditional general-`d` Theorem 5.5** (recommended; the
-coordinator surfaced this to the user, who authorized the §(4.23) rework swing that closed (D)). The landed
-`case_III_arm_realization_chain` already carries the rank-cert obligation (`W`/`hWS`/`hWcard`/`hLI` + corner
-data) as explicit hypotheses, so (C) is a **wiring + ASSEMBLY** exercise, NOT new rank-cert math: thread the
-obligation as an explicit top-level `h…` hypothesis through the general-`d` Theorem 5.5 / its consumers,
-documenting the wall as the frontier, and re-green the downstream `theorem_55`→Thm 5.6→Conjecture 1.2 chain
-conditionally. **ENTRY** is parallel-safe (rank-cert-independent, frozen contract) — open it for unconditional
-green-node momentum alongside or instead. **(D)** (a genuinely-new §I.8.21(α) infra) needs a NEW mathematical
-idea beyond KT's argument (escaping the scissors); no route in hand — park unless external input arrives.
+**Next concrete step = DE-RISK + salvage LEAF-B1 by resuming the recon agent (`ad8dafc55bcaf21e3`).** The
+ONE carried hypothesis (the structural twin of this session's two carried-hypothesis false FEASIBLEs, so it
+gets the discriminating construct-or-concede test): **LEAF-B1 = genuine-basis extraction** — from the IH's
+rank realization (`HasGenericFullRankRealization k n G₁`, rank `D(|V|−2)`), extract an LI family of GENUINE
+`R(G₁,q₁)` rows (redundant member excluded), card `D(|V|−2)`, spanning `span(R(G₁∖redundant))`, carrying the
+per-member genuine-link data `rigidityRow_relabel_to_genuine` consumes (standard basis-from-spanning over the
+edge-indexed genuine rows; if the link data isn't recoverable, may need the IH to deliver a genuine-row basis
+— a small motive-adjacent strengthening BELOW the frozen contract). The resume also salvages the recon's
+genuinely-reusable sorry-free facts (Q1-A the ±r column equality, Q2-B span-preservation, Q2-D `hW`) as real
+gate-clean lemmas, opening 23d's route-B build.
 
-**Do NOT** re-attempt the dead route families (§I.8.18–I.8.20); re-attempt (A)/(B′)/(A′); re-run the A1 or
-matrix-level feasibility spikes (resolved INFEASIBLE — §(4.22)/(4.23), the wall kernel-confirmed 4×); or
-re-hunt for a "missed KT route" (§(4.21): there is none, primary-source).
+**Plan (≈3–4 sub-phases to close the rank cert):** LEAF-B1 (crux) → LEAF-B2 (genuine-only `W` producer,
+rework of LEAF-2) → LEAF-B3 (corner producer, mostly landed) → LEAF-B4 (interior-arm rewire, drop the dead
+§(4.17) reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe). **Route
+A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback IF LEAF-B1 proves
+intractable — B's diagnosis tells A how to slot the redundant row, so the fallback is real and informed.
+**(C)** (honest-conditional) is now the fallback-of-the-fallback, not the plan.
+
+**Do NOT** re-attempt the dead route families (§I.8.18–I.8.20) / (A)/(B′)/(A′); re-run the A1 / matrix-level
+/ geometry-aware feasibility spikes (the *existing-architecture* wall is kernel-confirmed 5× — route B
+escapes by re-architecture, not by re-attempting those); or re-hunt for a "missed KT route" (§(4.21): none).
 
 ## The A1 §I.8.21(α) feasibility recon — DONE (verdict INFEASIBLE)
 
@@ -111,31 +118,31 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Blockers / open questions
 
-- **The `hρGv` member-mapping wall (intrinsic to KT) blocks the general-`d` interior rank cert — and A1
-  is now RESOLVED INFEASIBLE.** All escape routes (A/B′/A′) are refuted (design §I.8.24(4.17)–(4.20), four
-  kernel spikes); the KT-§6.4.2 source recon (§(4.21)) confirms NO missed KT route; and the A1 §I.8.21(α)
-  feasibility spike (§(4.22), 2026-06-24) confirms — a THIRD kernel time — that no matrix-level
-  block-rank-additivity lemma discharges the rank without the unsatisfiable corner data (the FEASIBLE first
-  pass was an unsound composition-only verdict, withdrawn at the construct-or-concede resume). **So the
-  rank-cert obligation is the documented frontier; the only open decision is the phase DIRECTION** —
-  (C) honest-conditional / (D) reconsider / open ENTRY — pending user adjudication (see *Current state*).
+- **The member-mapping wall (intrinsic to KT for the EXISTING architecture, 5× kernel-confirmed) is
+  ESCAPED by route B's architectural inversion (§(4.25)) — pending LEAF-B1.** The existing static-W /
+  member-mapping / row-op / geometry-aware-transport routes are all kernel-dead (§(4.17)–(4.24)) because they
+  forced the redundant row into the base block `W`. Route B follows KT (6.64): redundant row → CORNER,
+  genuine rows → base block `W`. The remaining open item is **LEAF-B1** (genuine-basis extraction — the one
+  carried hypothesis), being de-risked by construction. If LEAF-B1 constructs, the unconditional crux is
+  resolved (no honest-conditional needed); if it walls, route A (concrete `Matrix`) is the informed fallback.
 
 ## Hand-off / next phase
 
-**The rank cert is a confirmed intrinsic wall (§(4.22)/(4.23), 4× kernel); (D) is closed to all routes in
-hand.** Next concrete commit-equivalent = the **first commit of option (C)**, the honest-conditional path
-(coordinator-recommended; user authorized the §(4.23) rework swing that closed (D), confirmation of (C)-as-
-direction pending):
-- **(C) honest-conditional** *(recommended)* — restate the general-`d` Theorem 5.5 / arm spine carrying the
-  rank-cert obligation as an explicit top-level `h…` hypothesis (the landed `case_III_arm_realization_chain`
-  already takes the corner data — `W`/`hWS`/`hWcard`/`hLI` + `hgate`/`hρe₀` — as hypotheses, so this is a
-  wiring + ASSEMBLY exercise, NOT new rank-cert math); first commit = pin the conditional shape at the
-  spine's consume site + re-green the downstream `theorem_55`→Thm 5.6→Conjecture 1.2 chain conditionally.
-  Estimate: a handful of commits to ASSEMBLY.
-- **ENTRY** (parallel-safe) — mint it as its own sub-phase and build `exists_chainData_of_noRigid` against
-  the frozen contract; rank-cert-independent, unconditional green-node momentum. See *Remaining work* item 4.
-- **(D)** — parked: needs a genuinely-NEW idea beyond KT's argument (escape the §(4.23) scissors); no route
-  in hand, revisit only on external mathematical input.
+**Route B (§(4.25)) resolves the unconditional crux, pending the LEAF-B1 de-risk.** Next concrete commit =
+**DE-RISK LEAF-B1 by resuming the recon agent `ad8dafc55bcaf21e3`** (spike-salvage resume, rescue §6): it has
+the route-B design + its sorry-free spike facts in context. The resume (i) CONSTRUCTS LEAF-B1 (genuine-basis
+extraction — the crux + the structural twin of this session's carried-hypothesis false FEASIBLEs, so it gets
+the construct-or-concede test: land it sorry-free, or return BLOCKED with the precise obstruction), and (ii)
+salvages the genuinely-reusable sorry-free facts (Q1-A ±r column equality, Q2-B span-preservation, Q2-D `hW`)
+as real gate-clean lemmas — opening 23d's route-B build. If LEAF-B1 constructs, the rank cert is resolvable
+unconditionally via the route-B plan below.
+
+Route-B build plan (≈3–4 sub-phases): **LEAF-B1** (genuine-basis extraction, crux) → **LEAF-B2** (genuine-only
+`W` producer, rework of LEAF-2) → **LEAF-B3** (corner producer, mostly landed) → **LEAF-B4** (interior-arm
+rewire, drop the dead §(4.17) reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY
+(parallel-safe). Fallbacks: **route A** (concrete `Matrix`, KT transfers literally but heavy) if LEAF-B1 is
+intractable; **(C)** honest-conditional only if both B and A fail (`case_III_arm_realization_chain` already
+carries the rank-cert obligation as hypotheses, so (C) stays a cheap wiring+ASSEMBLY exercise).
 
 ## Decisions made during this phase
 
@@ -178,3 +185,16 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   its `ρᵢ`-image (moved member), never the fixed `hφ` — the redundant row has no genuine edge to anchor the
   reproduction to. 5th kernel confirmation. The ONLY escape is a non-linear/explicit-`Matrix` model = the
   §I.8.21(α) infra (no route in hand). → option (C) + ENTRY. Lesson → Findings.
+- **Route B WORKS — the unconditional crux is RESOLVABLE via an architectural inversion faithful to KT
+  (6.64) (2026-06-24, design §(4.25)); SUPERSEDES the (C)-only recommendation.** User-directed: tackle the
+  faithful re-architecture, don't skip the step (and the user's epistemic point — KT's validity IS a route).
+  All 5 prior walls forced the redundant row into the base block `W`; KT (6.64) deletes it from the bottom
+  block and puts its reproduction in the CORNER. Route B: `W` = GENUINE rows only (off-`vᵢ`, transport works,
+  rank `D(|V|−2)`); corner = panel rows + the `±r` row (`hρe₀`, never `hρGv`). §(4.24) linearity impossibility
+  doesn't apply (redundant row not transported); §(4.19)/(4.23) `htopvanish` doesn't apply (chain cert needs
+  corner only independent-mod-`W`). Q1/Q2 kernel-spiked sorry-free + axiom-clean (CONSTRUCTED Q2-B/C/D, the
+  satisfiability §(4.18) called impossible *for the redundant-including block*). A LIGHT rank-cert
+  reformulation (rework LEAF-2's `W`-production to a genuine basis), NOT a `Matrix` rebuild. The one carried
+  hypothesis = **LEAF-B1** (genuine-basis extraction), being de-risked by construction. → route-B build (plan
+  in *Hand-off*); route A / (C) are fallbacks. Lesson (the re-architecture escape + scoping a user's idea) →
+  Findings.
