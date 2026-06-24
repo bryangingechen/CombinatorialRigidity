@@ -151,12 +151,28 @@ shape, at `Gw = G − v`, `ends`, `q`, candidate row `hingeRow a b ρ₀`), thre
 `interior_hρe₀_of_widening` consumes (its `hlink`/`hrv`/`hcomb`), so the dispatch's interior arm now
 reads `hρe₀` off LEAF-3's output directly — no re-fire of W6b, no further LEAF-3 surgery.
 
+**THE INTERIOR-`hρe₀` BUNDLE RE-ANCHORING IS LANDED (2026-06-24, axiom-clean,
+build/lint/warning-clean) — THE DISPATCH'S INTERIOR-`hρe₀` IS NOW A ONE-CALL READ-OFF.**
+`Graph.ChainData.interior_hρe₀_of_baseWidening` (`CaseIII/Relabel/ForkedArm.lean`, just after
+`interior_hρe₀_of_widening`): folds LEAF-3's `hedgeGv` bundle — taken in its **native LEAF-3
+existential shape** (`∃ nGv cGv evGv uvGv vvGv rvGv, hlink ∧ hrv ∧ hcomb`, over `Gw = G − vtx 1`,
+`hcomb` anchored at `hingeRow (vtx 0) (vtx 2) ρ₀`) — plus `hends_i` (the `ends`-recording of the
+matched chain edge `edge i`) straight into `interior_hρe₀_of_widening`, producing the consumer's
+`hρe₀` slot. The three re-anchorings the hand-off flagged are discharged internally: the per-summand
+`G − vtx 1`-link is a `G`-link (`removeVertex_isLink.mp`); `hcomb` is the bundle's `.symm`; and
+**`hdeg1`** — a summand incident to the anchor `vtx 2` uses `edge 2` — falls out of `deg_two` at
+`vtx 2` (valid since `3 ≤ d`) ruling in `{edge 1, edge 2}`, then `edge 1` (the `link` field's
+`vtx 1`-incident edge) being excluded by `removeVertex_isLink`'s `≠ vtx 1` endpoint conditions. So
+the dispatch threads LEAF-3's `hedgeGv` + `hends_i` and reads `hρe₀` off in one call — no manual
+re-anchoring at the dispatch. NO `hρGv`, no new LA.
+
 **Plan (the dispatch is the one remaining CHAIN piece to close the rank-cert layer's wiring):** ✅
 LEAF-B1 (crux) → ✅ LEAF-B2 (genuine-only `W` producer) → ✅ LEAF-4 `hvanish` + `hS` router → ✅ the
 `case_III_arm_corner_assembly` call (`case_III_arm_corner_assembly_via_leafB2`) → ✅ the
 interior-`hρe₀` producer (`interior_hρe₀_of_widening`) → ✅ the LEAF-3 widening (the interior-arm
-gap); LEAF-3 + the corner producer are landed. Remaining = CHAIN-2c-iii dispatch / CHAIN-5, then
-ENTRY + ASSEMBLY (parallel-safe).
+gap) → ✅ the interior-`hρe₀` bundle re-anchoring (`interior_hρe₀_of_baseWidening`, the dispatch's
+one-call `hρe₀` read-off); LEAF-3 + the corner producer are landed. Remaining = CHAIN-2c-iii
+dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
 **Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if the
 LEAF-4 `hS`-router wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real
 and informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
@@ -207,9 +223,12 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    LEAF-1/2/3 + the discriminator-index plumbing + the genuine-branch router + the interior-arm producer
    + the interior-`hρe₀` producer are all landed. **The interior-arm gap is now CLOSED: LEAF-3
    (`exists_shared_redundancy_and_matched_candidate`) re-exposes the W6b edge-grouped widening bundle
-   (`hedgeGv`) that `interior_hρe₀_of_widening` consumes (2026-06-24)** — so the dispatch reads `hρe₀`
-   straight off LEAF-3's output. Still owed at the dispatch: the `hends_i`/`hdeg1` re-anchoring of the
-   bundle to `(vtx 0, vtx 2)` from the interior split, and the rest of the `Fin cd.d` router wiring.
+   (`hedgeGv`), and `interior_hρe₀_of_baseWidening` (2026-06-24) folds that bundle + `hends_i`
+   straight into `interior_hρe₀_of_widening` (the `hdeg1`/`G`-link/`.symm` re-anchorings discharged
+   internally)** — so the dispatch reads `hρe₀` off LEAF-3's output in one call, supplying only
+   `hends_i`. Still owed at the dispatch: the rest of the `Fin cd.d` router wiring (the index/
+   relabel-form alignment of the `hS` router's `endsσρ`/`qρ` candidate, the `shiftPerm`/`vtx`/
+   `candidatePanel` algebra; the base/`d=3` arm via `chainData_split_realization` with its `htrans`).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** *(parallel-safe; own sub-phase when minted)* — reshape `Graph.exists_chain_data_of_noRigid`
    (`Reduction.lean:383`) to the `G.ChainData n` producer `exists_chainData_of_noRigid` (KT Lemma 4.6 chain
@@ -252,10 +271,11 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
   slots and no route-A fallback are needed. **LEAF-4 is now COMPLETE** — the
   `case_III_arm_corner_assembly` call landed as `case_III_arm_corner_assembly_via_leafB2`
   (`ForkedArm.lean`), folding the LEAF-B2 `W`-production into the assembly. **The interior-arm leaf
-  gap is also closed** — LEAF-3 now re-exposes the W6b widening bundle (`hedgeGv`) for
-  `interior_hρe₀_of_widening` (2026-06-24). The only remaining open item is the CHAIN-2c-iii dispatch
-  (the general-`k` Fin-case router, now leaf-unblocked — owes only the bundle re-anchoring + the
-  router index/relabel alignment) + CHAIN-5.
+  gap is also closed** — LEAF-3 re-exposes the W6b widening bundle (`hedgeGv`), and
+  `interior_hρe₀_of_baseWidening` folds it + `hends_i` straight into `interior_hρe₀_of_widening`
+  (the bundle re-anchoring discharged internally; 2026-06-24). The only remaining open item is the
+  CHAIN-2c-iii dispatch (the general-`k` Fin-case router, now leaf-unblocked **and re-anchoring-free**
+  — owes only the router index/relabel alignment) + CHAIN-5.
 
 ## Hand-off / next phase
 
@@ -277,8 +297,9 @@ candidate `i` that LEAF-3 picks, routing
   - `hrhat`/`hIH` from the W6b bundle (`exists_redundant_panelRow_ab_decomposition` /
     `chainData_split_w6b_gates`) and the IH;
   - `hgate` from LEAF-3 (`exists_shared_redundancy_and_matched_candidate`);
-  - `hρe₀` from the landed `Graph.ChainData.interior_hρe₀_of_widening` (`ForkedArm.lean`), fed the W6b
-    edge-grouped widening bundle (`hcomb`/`hlink`/`hrv`/`hends_i`/`hdeg1` re-anchored to `(vtx 0, vtx 2)`).
+  - `hρe₀` from the landed `Graph.ChainData.interior_hρe₀_of_baseWidening` (`ForkedArm.lean`), fed
+    LEAF-3's `hedgeGv` bundle (native shape, `a = vtx 0`, `b = vtx 2`) + `hends_i` — the `hdeg1`/
+    `G`-link/`.symm` re-anchorings are discharged inside it, so the dispatch supplies only `hends_i`.
 **The framework-alignment bookkeeping the prior hand-off flagged is now contained inside the dispatch's
 `hS` discharge** — `case_III_arm_corner_assembly_via_leafB2` lands `W` directly in the assembly's own
 candidate `caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, so the dispatch only needs to
@@ -286,21 +307,22 @@ align the `hS` router's `endsσρ`/`qρ` candidate to that form via the `shiftPe
 algebra (`reproduced_panel_eq_splice_panel`, `candidatePanel_apply`), not the whole arm.
 
 **The interior-arm gap is now CLOSED (2026-06-24):** LEAF-3 re-exposes the W6b widening bundle
-(`hedgeGv`) that `interior_hρe₀_of_widening` needs (the `∃ nGv cGv evGv uvGv vvGv rvGv, …` block,
-`chainData_split_w6b_gates` already computes it). So the dispatch reads `hρe₀` straight off LEAF-3's
-output — no re-fire of W6b, no further LEAF-3 surgery. The dispatch still owes only the **bundle
-re-anchoring** — `interior_hρe₀_of_widening`'s `hcomb` is stated at the interior edge's endpoints
-`(vtx 0, vtx 2)` while LEAF-3's bundle is at the base split's `(a, b)`, so the dispatch supplies
-`hends_i`/`hdeg1` and re-anchors the `hcomb` from the interior split — and the rest of the `Fin cd.d`
-router wiring (the index/relabel-form alignment of the `hS` router's `endsσρ`/`qρ` candidate, the
-`shiftPerm`/`vtx`/`candidatePanel` algebra).
+(`hedgeGv`), and `interior_hρe₀_of_baseWidening` folds it + `hends_i` straight into the consumer
+(the bundle re-anchoring — `hcomb` `.symm`, `G`-link lift, `hdeg1` from `deg_two` at `vtx 2` minus
+the `vtx 1`-incident `edge 1` — is done internally). So the dispatch reads `hρe₀` off LEAF-3's
+output in **one call** supplying only `hends_i` (the `ends`-recording of `edge i`). The dispatch
+now owes only the **`Fin cd.d` router wiring** (the index/relabel-form alignment of the `hS`
+router's `endsσρ`/`qρ` candidate, the `shiftPerm`/`vtx`/`candidatePanel` algebra; the base/`d=3`
+arm's `htrans`).
 
 Route-B build plan: ✅ **LEAF-B1** (crux) → ✅ **LEAF-B2** (genuine-only `W` producer) → ✅ **LEAF-4
 `hvanish` + `hS` router** → ✅ **the `case_III_arm_corner_assembly` call** (rank cert CLOSED) → ✅ **the
 interior-`hρe₀` producer** (`interior_hρe₀_of_widening`) → ✅ **the LEAF-3 widening** (the interior-arm
-gap closed); **LEAF-3** + **LEAF-B3** (corner producer) landed. Remaining = CHAIN-2c-iii dispatch
-(NEXT, now leaf-unblocked) / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe). Fallbacks **route A** /
-**(C)** are no longer needed — the rank cert clears the wall via route B end-to-end.
+gap closed) → ✅ **the interior-`hρe₀` bundle re-anchoring** (`interior_hρe₀_of_baseWidening`, the
+dispatch's one-call `hρe₀` read-off); **LEAF-3** + **LEAF-B3** (corner producer) landed. Remaining =
+CHAIN-2c-iii dispatch (NEXT, now leaf-unblocked and re-anchoring-free) / CHAIN-5, then ENTRY +
+ASSEMBLY (parallel-safe). Fallbacks **route A** / **(C)** are no longer needed — the rank cert clears
+the wall via route B end-to-end.
 
 ## Decisions made during this phase
 
@@ -420,3 +442,14 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   value flows straight from the W6b call); caller-safe (LEAF-3 has no callers yet). So the dispatch's
   interior arm now reads `hρe₀` off LEAF-3 directly — owing only the bundle re-anchoring to the
   interior edge's `(vtx 0, vtx 2)` + the `Fin cd.d` router index/relabel alignment.
+- **The interior-`hρe₀` bundle re-anchoring LANDED — the dispatch's `hρe₀` is now a one-call read-off
+  (2026-06-24, axiom-clean, build/lint/warning-clean).** `Graph.ChainData.interior_hρe₀_of_baseWidening`
+  (`CaseIII/Relabel/ForkedArm.lean`, after `interior_hρe₀_of_widening`): takes LEAF-3's `hedgeGv` bundle
+  in its **native existential shape** (over `Gw = G − vtx 1`, `hcomb` at `hingeRow (vtx 0) (vtx 2) ρ₀`)
+  + `hends_i`, folds it straight into `interior_hρe₀_of_widening`. The three re-anchorings the hand-off
+  flagged are internal: `G − vtx 1`-link → `G`-link (`removeVertex_isLink.mp`); `hcomb` is `.symm`;
+  **`hdeg1`** = `deg_two` at `vtx 2` (valid since `3 ≤ d`) gives `{edge 1, edge 2}`, and `edge 1` (the
+  `link`-field `vtx 1`-incident edge) is excluded by `removeVertex_isLink`'s `≠ vtx 1` endpoints, so
+  `edge 2`. The `0 < (↑⟨2,_⟩)` arg to `deg_two` needed the `show 0 < (2:ℕ) by omega` defeq-force
+  (TACTICS-QUIRKS § 63, applied — not new friction). So the dispatch supplies only `hends_i`; no manual
+  re-anchoring. NO `hρGv`, no new LA.

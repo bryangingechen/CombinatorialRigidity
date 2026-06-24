@@ -348,6 +348,87 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
     (cd.baseRedundancy_perp_interior_reproduced_panel h3 i h2i c ev uv vv rv hlink ends hrv
       hends_i hcomb hdeg1)
 
+/-- **The interior `hρe₀` slot, produced directly from LEAF-3's base-`v₁`-split widening bundle**
+(`lem:case-III general-d`, the option-(A) LEAF-4 interior-`hρe₀` call site, the dispatch's bundle
+re-anchoring; Phase 23d; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The chain dispatch (CHAIN-2c-iii)
+fires LEAF-3 (`exists_shared_redundancy_and_matched_candidate`) at the **base `v₁`-split**
+`(v, a, b) = (vtx 1, vtx 0, vtx 2)`, which re-exposes the W6b **edge-grouped `G_v`-row widening**
+of the shared redundancy `hingeRow (vtx 0) (vtx 2) ρ₀` (the `hedgeGv` bundle: an explicit per-edge
+`hingeRow` combination over `Gv = G − vtx 1`'s links). This leaf folds that bundle, in its native
+LEAF-3 shape, straight into `interior_hρe₀_of_widening` — the only re-anchoring it needs is
+
+* the per-summand `G − vtx 1`-link `hlinkGv` is a *`G`*-link (`removeVertex_le` /
+  `removeVertex_isLink`);
+* the bundle's `hcombGv : hingeRow (vtx 0) (vtx 2) ρ₀ = ∑ⱼ cⱼ • hingeRow (uⱼ)(vⱼ)(rⱼ)` is the
+  consumer's `hcomb` flipped (`.symm`); and
+* the degree-1-at-anchor closure `hdeg1` — a summand incident to the anchor `vtx 2` must use the
+  chain edge `edge 2`: the summand is a `G − vtx 1`-link, hence a `G`-edge at `vtx 2`, so by the
+  interior degree-2 closure (`deg_two` at `vtx 2`, valid since `3 ≤ d`) it is `edge 1` or `edge 2` —
+  but `edge 1` is incident to `vtx 1` (the `link` field at index 1), so it is *not* a
+  `G − vtx 1`-link, leaving `edge 2`.
+
+So the dispatch threads LEAF-3's `hedgeGv` bundle and `hends_i` (the `ends`-recording of the matched
+chain edge `edge i`) and reads off the consumer's `hρe₀` directly. NO `hρGv`, no new linear
+algebra — pure re-anchoring of the landed crux (`interior_hρe₀_of_widening`) to the bundle shape. -/
+theorem _root_.Graph.ChainData.interior_hρe₀_of_baseWidening
+    [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ} (ends : β → α × α)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc))
+    -- LEAF-3's W6b edge-grouped `G_v`-row widening bundle at the base `v₁`-split `(a,b) = (v₀,v₂)`:
+    (hedgeGv :
+      ∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+        (∀ j, (G.removeVertex (cd.vtx ⟨1, by omega⟩)).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
+        (∀ j, rvGv j ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx ⟨1, by omega⟩))
+          ends q).toBodyHinge.hingeRowBlock (evGv j)) ∧
+        BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀
+          = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) :
+    ρ₀ (panelSupportExtensor
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 := by
+  obtain ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, hcombGv⟩ := hedgeGv
+  -- `edge 1` links `vtx 1` to `vtx 2` (the `link` field at index 1), so it is incident to `vtx 1`.
+  have hlink_one : G.IsLink (cd.edge ⟨1, by omega⟩) (cd.vtx ⟨1, by omega⟩)
+      (cd.vtx ⟨2, by omega⟩) := by
+    have h := cd.link ⟨1, by omega⟩
+    rwa [show (⟨1, by omega⟩ : Fin cd.d).castSucc = (⟨1, by omega⟩ : Fin (cd.d + 1)) from
+        Fin.ext rfl,
+      show (⟨1, by omega⟩ : Fin cd.d).succ = (⟨2, by omega⟩ : Fin (cd.d + 1)) from Fin.ext rfl] at h
+  refine cd.interior_hρe₀_of_widening h3 i h2i cGv evGv uvGv vvGv rvGv
+    (fun j => ((Graph.removeVertex_isLink.mp (hlinkGv j)).1)) ends hrvGv hends_i hcombGv.symm
+    (fun j hj => ?_)
+  -- The summand `evGv j` is incident to the anchor `vtx 2` in `G − vtx 1`, hence a `G`-edge there.
+  obtain ⟨hGlink, hu1, hv1⟩ := Graph.removeVertex_isLink.mp (hlinkGv j)
+  have hanchor : G.IsLink (evGv j) (cd.vtx ⟨2, by omega⟩) (vvGv j) ∨
+      G.IsLink (evGv j) (uvGv j) (cd.vtx ⟨2, by omega⟩) := by
+    rcases hj with h | h
+    · exact Or.inl (h ▸ hGlink)
+    · exact Or.inr (h ▸ hGlink)
+  -- `deg_two` at the interior vertex `vtx 2` (`0 < 2`, valid since `3 ≤ d`): `edge 1` or `edge 2`.
+  have hdt := cd.deg_two ⟨2, by omega⟩ (show 0 < (2 : ℕ) by omega)
+  have hcl : evGv j = cd.edge ⟨1, by omega⟩ ∨
+      evGv j = cd.edge ⟨2, by omega⟩ := by
+    rcases hanchor with h | h
+    · simpa using hdt (evGv j) (vvGv j)
+        (by rw [show (⟨2, by omega⟩ : Fin cd.d).castSucc = (⟨2, by omega⟩ : Fin (cd.d + 1)) from
+          Fin.ext rfl]; exact h)
+    · simpa using hdt (evGv j) (uvGv j)
+        (by rw [show (⟨2, by omega⟩ : Fin cd.d).castSucc = (⟨2, by omega⟩ : Fin (cd.d + 1)) from
+          Fin.ext rfl]; exact h.symm)
+  -- `evGv j ≠ edge 1`: else the `G − vtx 1`-link uses the `vtx 1`-incident edge `edge 1`,
+  -- but `removeVertex_isLink` forbids `vtx 1` as an endpoint.
+  rcases hcl with h | h
+  · exfalso
+    have := hlink_one.eq_and_eq_or_eq_and_eq (h ▸ hGlink)
+    rcases this with ⟨h1, _⟩ | ⟨h1, _⟩
+    · exact hu1 h1.symm
+    · exact hv1 h1.symm
+  · exact h
+
 /-! ### The base block `W`'s per-member `hS` router (Phase 23c §I.8.24(4.10) LEAF-4 step (ii))
 
 The base block `W` of the `±r` block decomposition (`case_III_arm_corner_assembly`'s
