@@ -2424,6 +2424,60 @@ decomposition of the SECOND build it teed up.**
   This does NOT block the next commit: the LEAF-3 producer (base bundle + matched `i` + `hgate`) does not
   touch the interior-`hρe₀` route.
 
+  *(4.13) THE LEAF-4 ROUTE RECON FIRED — DIVERSE-LENS PAIR (read-only, opus×opus, OPUS-ONLY, 2026-06-24)
+  RE-ROUTED the interior-`hρe₀` leaf: §(4.12)'s structural verdict STANDS, but its INTERNAL route pin
+  (`interior_group_eq_baseRedundancy`) is WRONG-SHAPE; the corrected live core is
+  `candidate_perp_two_incident_panels`, fed the eq-6.52 ALL-edge redundancy (a below-contract LEAF-3
+  widening). NOT a wall / NOT a killed-route re-tread — buildable, but the conjecture crux.*
+
+  **What the pair found (both members + coordinator source-verification of the pivotal lemma bodies).**
+  - **`interior_group_eq_baseRedundancy` / `_acolumn_eq_neg_baseRedundancy` (`Relabel/ChainColumn.lean:465/546`)
+    are WRONG-SHAPE for this leaf** — they conclude a *column value* (`(edge-group).comp (single …) = −ρ₀`,
+    `Module.Dual`-valued, the dead `hρGv` `hrCol` shape), NOT the scalar *panel annihilation*
+    `ρ₀(panelSupportExtensor …) = 0` the consumer's `hρe₀` slot needs. Both members converged on this; it is
+    the §(4.12) ingredient pin's error (beyond the deleted-orphan citation already corrected). Do NOT route
+    the leaf through the `interior_group_*` column subtree.
+  - **The corrected live core is `BodyHingeFramework.candidate_perp_two_incident_panels` /
+    `_supportExtensors` (`Relabel/Chain.lean:918/950`, axiom-clean, the eq-6.44 two-edge perp carry, built
+    as the `hρGv` P2 A-2 de-risk).** Coordinator-source-confirmed: at a **degree-2 body** `a` it proves the
+    candidate vector `r̂ := ∑ⱼ λ_(ab)ⱼ rab j` annihilates **both incident panels** `supportExtensor e_c`
+    (`= ab`) and `supportExtensor e_d` (`= ac`) — directly at the panel-annihilation level (the
+    `mem_hingeRowBlock_iff` bridge, `Claim612.lean:823`, IS the `ρ₀ ⊥ panel ⟺ ρ₀ ∈ hingeRowBlock`
+    correspondence; the §(4.12) "column→panel bridge is genuinely-new" worry dissolves — the live core is
+    already at the annihilation level). It is SOUND (KT eq-6.66) and runs at the BASE, NOT the killed
+    per-body `hρGv` route (member B could not refute; the killed route's cut-successor-edge failure mode
+    does not recur).
+  - **THE NEW REQUIREMENT (source-confirmed by reading `candidate_perp_two_incident_panels`'s hyps).** Its
+    `hcol` is the **FULL redundancy combination's** column-vanishing at body `a`:
+    `((∑ λ_ab • hingeRow a b (rab j)) + (∑ λ_ac • hingeRow a c (rac j)) + grest).comp (single a) = 0` — the
+    eq-6.43/6.52 ALL-edge data (with `grest` the rest beyond the `ab`/`ac` blocks), plus per-edge
+    `hrab`/`hrac` block memberships at BOTH incident edges. **LEAF-3 / `chainData_split_w6b_gates` currently
+    emits only the `(ab)`-block λ-witness `ρ₀ = ∑ λ_ab • rab` — NOT the full eq-6.52 decomposition.** So the
+    leaf needs the W6b/LEAF-3 output bundle **WIDENED** to emit the all-edge eq-6.52 redundancy (member A:
+    the W6b producer computes a `Gv`-edge-grouped form internally, `Candidate.lean:439–445` — extract it, do
+    NOT invent it at LEAF-4). This is a **below-contract internal-API widening** (no motive/IH/C.0–C.6
+    change — both members confirm the cert is `hρGv`-free + `ρ₀`-agnostic).
+  - **THE REMAINING BUILD-TIME DE-RISK (members split here — settle at the build).** The core gives perp to
+    the panels *through* the degree-2 split body `vᵢ` (`(vᵢ,vᵢ₊₁)`, `(vᵢ,vᵢ₋₁)`); the consumer's `hρe₀` is
+    at the **reproduced-slot / neighbour-neighbour "shortcut" panel** `(vtx i.succ, vtx (i−1).castSucc)`.
+    Member A: the seed-relabel correspondence `panelCorrespondence_supportExtensor` (`Relabel/Arm.lean:834`,
+    edge `s` ↔ base `shiftEdgePerm i (edge s)`) + `caseIIICandidate_supportExtensor_reproduced`
+    (`Candidate.lean:971`) transport the incident-panel perp to the reproduced slot (KT eq-6.56). Member B:
+    the core reaches the incident panels, not obviously the shortcut panel — confirm the transport composes.
+    Coordinator: `panelCorrespondence_supportExtensor` is an EDGE-level transport (verified); the
+    reproduced-slot panel identity under `candidateSeed` is the precise claim to nail at the build (read
+    `caseIIICandidate_supportExtensor_reproduced`'s body + KT eq-6.56).
+
+  **REVISED LEAF-4 BUILD ORDER (replacing the §(4.12)/(4.10) LEAF-4 sketch's `interior_group_*` route).**
+  (i) **Widen LEAF-3 / `chainData_split_w6b_gates`** (or a sibling extractor) to emit the eq-6.52 ALL-edge
+  redundancy data (`grest` + per-edge `λ`/`r` witnesses + the full-combination column-vanishing `hcol`) —
+  the data `candidate_perp_two_incident_panels` consumes. (ii) **Build the interior-`hρe₀` leaf** via
+  `candidate_perp_two_incident_supportExtensors` at the degree-2 split body + the
+  `panelCorrespondence_supportExtensor` / `caseIIICandidate_supportExtensor_reproduced` transport to the
+  reproduced-slot panel. (iii) the base block `W` + `exact case_III_arm_corner_assembly` (the §(4.12) (ii)
+  half, unchanged). The seam stays the conjecture crux — a build that closes (i)+(ii) should be rated by the
+  eq-6.52 widening + the panel-match transport, not the `W`-block plumbing.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

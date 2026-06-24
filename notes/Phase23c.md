@@ -106,19 +106,30 @@ prerequisite — the only landed-lemma touch, its one consumer `chainData_split_
 binder).
 
 **NEXT: LEAF-4 (THE HARD CORE) — the GENUINELY-NEW interior-`hρe₀` leaf
-`baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the conjecture-crux redundancy-carry seam;
-the §I.8.3-P2 heir) + the base block `W` + `exact case_III_arm_corner_assembly`.** From LEAF-3's matched
-interior `i` (`0 < i`) + base `ρ₀`/`λ`-witness bundle + `cd.deg_two`, prove the SHARED base `ρ₀`
-annihilates the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel — NOT a transport of
-base `hρe₀`, NOT a per-interior W6b firing (`hsplitGP` unavailable for interior splits; only the base
-`v₁`-split's IH realization is in scope, `Arms.lean:910–913`). **Give the interior-`hρe₀` leaf a DEDICATED
-route recon at the LEAF-4 boundary** (the deleted-orphan `redundancy_panel_carry` flag, design
-§I.8.24(4.12) *COORDINATOR ROUTE-VERIFICATION FLAG*); the landed chain-carry is
-`interior_group_eq_baseRedundancy` (+ d=3 `candidateRow_ac_eq_neg`). **Gate-side caveat (deferred to
-LEAF-4):** the discriminator runs against the BASE seed `q`; the consumer `case_III_arm_corner_assembly`
-uses `candidateSeed i q`, so a `shiftPerm`-image seed reconciliation is needed (buildable bookkeeping on
-the LANDED `candidateSeed`/`shiftPerm` simp set, not a wall). Both `candidatePanel` and `d_eq_kAdd` stay
-declared `_root_.Graph.ChainData.…` (the TACTICS-QUIRKS § 56 trap — a bare `Graph.`-prefixed decl inside
+`baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the conjecture-crux redundancy-carry seam) +
+the base block `W` + `exact case_III_arm_corner_assembly`. The dedicated route recon HAS FIRED (diverse-lens
+pair, 2026-06-24) and RE-ROUTED it — design §I.8.24(4.13).** Net (source-verified): the leaf is SOUND
+(KT eq-6.66), NOT a wall, NOT a killed-route re-tread (the carry runs at the BASE), and below the contract
+(no motive/IH change) — but §(4.12)'s pinned route `interior_group_eq_baseRedundancy` is **WRONG-SHAPE**
+(a column value, the dead `hρGv` `hrCol`, NOT the scalar panel annihilation the `hρe₀` slot needs). **The
+corrected route:** the live `BodyHingeFramework.candidate_perp_two_incident_panels` /
+`_supportExtensors` (`Relabel/Chain.lean:918/950`, the eq-6.44 two-edge perp carry, annihilation-level via
+`mem_hingeRowBlock_iff`) at the degree-2 split body, + the `panelCorrespondence_supportExtensor`
+(`Arm.lean:834`) / `caseIIICandidate_supportExtensor_reproduced` (`Candidate.lean:971`) seed-relabel
+transport to the reproduced-slot panel. **Revised build order (2 commits):** (i) **WIDEN LEAF-3 /
+`chainData_split_w6b_gates`** to emit the eq-6.52 ALL-edge redundancy data (`grest` + per-edge `λ`/`r`
+witnesses + the full-combination column-vanishing `hcol`) — what `candidate_perp_two_incident_panels`
+consumes; the W6b producer computes a `Gv`-edge-grouped form internally (`Candidate.lean:439–445`), extract
+it (a below-contract internal-API widening, NOT a motive/contract change). (ii) **build the leaf** via the
+live core + the panel transport. **Build-time de-risk (members split):** confirm the incident-panel perp
+(at the panels *through* `vᵢ`) transports to the reproduced-slot *shortcut* panel `(vtx i.succ, vtx
+(i−1).castSucc)` via the seed-relabel — nail `caseIIICandidate_supportExtensor_reproduced`'s body + KT
+eq-6.56 at the build. Do **NOT** route through the `interior_group_*` column subtree (wrong shape) and
+do **NOT** fire W6b per-interior-split (`hsplitGP` unavailable; only the base `v₁`-split's IH is in scope,
+`Arms.lean:910–913`). **Gate-side caveat (also LEAF-4):** the discriminator runs against the BASE seed `q`;
+the consumer uses `candidateSeed i q`, so a `shiftPerm`-image seed reconciliation is needed (buildable
+bookkeeping on the LANDED `candidateSeed`/`shiftPerm` simp set). Both `candidatePanel` and `d_eq_kAdd` stay
+declared `_root_.Graph.ChainData.…` (TACTICS-QUIRKS § 56 trap — a bare `Graph.`-prefixed decl inside
 `namespace …Molecular` would create a `…Molecular.Graph` sub-namespace that breaks downstream
 `V(·)`/`E(·)` parsing).
 
@@ -358,14 +369,13 @@ reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`s
 chain-extraction leaf (23d, genuinely-new), and — the conjecture-crux — the interior-`hρe₀` leaf itself
 (the §I.8.3-P2 heir, the redundancy-carry seam; NOT BLOCKED, but THE hard core of LEAF-4, do NOT scope
 away from it, and do NOT try to source it by firing W6b at the interior split — `hsplitGP` unavailable).
-**Route-verification flag (coordinator, 2026-06-23):** the recon's INGREDIENT pin for the interior-`hρe₀`
-leaf cited `redundancy_panel_carry` as "LANDED" — it is NOT (landed row 268, DELETED as an orphan row 271:
-`hcol`/`hrest` unsuppliable at the chain step, the §(o‴)-rejected 4×-mis-pin trap). The landed chain-carry is
-`interior_group_eq_baseRedundancy` (+ the d=3 `candidateRow_ac_eq_neg`). The structural verdict stands
-(source-verified), but the leaf's INTERNAL route is not yet independently verified — give the interior-`hρe₀`
-leaf a DEDICATED route recon (likely a diverse-lens pair, this seam's track record) at the LEAF-4 boundary,
-diffing the route against the §(o‴)/row-271 orphan verdict, BEFORE a build burns on it. Does NOT block the
-LEAF-3 producer (it doesn't touch this route). See design §I.8.24(4.12) *COORDINATOR ROUTE-VERIFICATION FLAG*.
+**Route recon FIRED + RE-ROUTED (coordinator + diverse-lens pair, 2026-06-24; design §I.8.24(4.13)).** The
+route-verification flag's recon fired: §(4.12)'s structural verdict stands, but its pinned route
+`interior_group_eq_baseRedundancy` is **WRONG-SHAPE** (a column value, not the scalar panel annihilation the
+`hρe₀` slot needs). The corrected route is the live `candidate_perp_two_incident_supportExtensors` (eq-6.44
+two-edge perp carry) + the `panelCorrespondence_supportExtensor` seed-relabel transport, fed the eq-6.52
+ALL-edge data (a below-contract LEAF-3 widening). The deleted-orphan `redundancy_panel_carry` flag and the
+`interior_group_*` column subtree are both SUPERSEDED — see the NEXT block above + design §I.8.24(4.13).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
@@ -425,13 +435,23 @@ LEAF-3 producer (it doesn't touch this route). See design §I.8.24(4.12) *COORDI
    `chainData_split_w6b_gates` gained an output conjunct `AlgebraicIndependent ℚ q` (already in scope from
    `hsplitGP`, the discriminator prerequisite; its one consumer `chainData_split_realization` took a `_`
    binder). The gate-side `candidateSeed` `shiftPerm`-image reconciliation is deferred to LEAF-4 (buildable).
-4. **LEAF-4 (THE HARD CORE)** — TWO genuinely-new pieces, do NOT peel one and defer the other:
+4. **LEAF-4 (THE HARD CORE) — route RE-ROUTED by the 2026-06-24 recon pair, design §I.8.24(4.13).** THREE
+   pieces (i′ the LEAF-3 widening, i the interior-`hρe₀` leaf, ii the base block `W`); do NOT peel one and
+   defer the rest:
+   (i′) **WIDEN LEAF-3 / `chainData_split_w6b_gates`** to emit the eq-6.52 ALL-edge redundancy data (`grest`
+   + per-edge `λ`/`r` witnesses + the full-combination column-vanishing `hcol`) — the data
+   `candidate_perp_two_incident_panels` consumes (the W6b producer computes a `Gv`-edge-grouped form
+   internally, `Candidate.lean:439–445`; extract it — below-contract internal-API widening).
    (i) **the interior-`hρe₀` leaf** `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the
-   conjecture-crux redundancy-carry seam; the §I.8.3-P2 heir): from LEAF-3's base `ρ₀`/`λ`-witness bundle +
-   `cd.deg_two`, prove the shared base `ρ₀` annihilates the interior `(vtx i.succ, vtx (i−1).castSucc)`
-   reproduced-slot panel — the bridge from the LANDED `candidateRow_ac_eq_neg`/`interior_group_*` chain-carry
-   to the `ρ₀ (panelSupportExtensor …) = 0` panel-annihilation shape; NOT a transport of base `hρe₀`, NOT a
-   per-interior W6b firing (`hsplitGP` unavailable). (ii) **the base block `W`**: `f := w`,
+   conjecture-crux redundancy-carry seam): via the LIVE core `BodyHingeFramework.candidate_perp_two_incident_
+   supportExtensors` (`Relabel/Chain.lean:950`, the eq-6.44 two-edge perp carry at the degree-2 split body,
+   annihilation-level via `mem_hingeRowBlock_iff`) + the `panelCorrespondence_supportExtensor` (`Arm.lean:834`)
+   / `caseIIICandidate_supportExtensor_reproduced` (`Candidate.lean:971`) seed-relabel transport to the
+   reproduced-slot SHORTCUT panel `(vtx i.succ, vtx (i−1).castSucc)`. Do **NOT** route through the
+   `interior_group_*` column subtree (WRONG-SHAPE — a column value, not a panel annihilation), do **NOT** fire
+   W6b per-interior-split (`hsplitGP` unavailable). Build-time de-risk: confirm the incident-panel perp
+   transports to the shortcut panel (members split; nail `caseIIICandidate_supportExtensor_reproduced` + KT
+   eq-6.56). (ii) **the base block `W`**: `f := w`,
    `L := (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem`
    (genuine → off-slot GROUP leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge;
    block-tag → reproduced-slot membership) routing `chainData_bottom_relabel`'s images into
@@ -591,3 +611,10 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   LEAF-3/4 boundary:** LEAF-3 produces `(matched i, ρ₀, hgate, n', base bundle)`; the interior `hρe₀` lands
   in LEAF-4 — the (4.10) sketch that put it in LEAF-3 was wrong. The landed `interior_group_acolumn_eq_neg_
   baseRedundancy` is the near-miss but WRONG-SHAPE (a `−ρ₀` column value, not a panel annihilation).
+- **LEAF-4 interior-`hρe₀` route RE-ROUTED (2026-06-24, diverse-lens recon pair; design §I.8.24(4.13)).**
+  §(4.12)'s pinned `interior_group_eq_baseRedundancy` route is WRONG-SHAPE (column value). Corrected: the
+  live `candidate_perp_two_incident_supportExtensors` (eq-6.44 two-edge perp carry, annihilation-level) +
+  the `panelCorrespondence_supportExtensor` seed-relabel transport, fed the eq-6.52 ALL-edge redundancy (a
+  below-contract LEAF-3 widening — `candidate_perp_two_incident`'s `hcol` needs the full combination, not
+  the (ab)-block λ-witness). SOUND (KT eq-6.66), not a wall, no motive/IH change; build-time de-risk = the
+  incident-panel→shortcut-panel transport. Full route + revised build order in design §I.8.24(4.13).
