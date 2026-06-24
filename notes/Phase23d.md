@@ -319,14 +319,17 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
   DESIGN.md *Constructibility recon*; the same shape as the §(4.22) false-FEASIBLE). The `Or.inl`-feed
   "residual risk RESOLVED" claim was wrong: it only covers the genuine-branch rows; the wrap-edge rows go
   through `Or.inr` (the block tag).
-- **Resolution routes (design §(4.26), to adjudicate):** (4) re-target the base block `W` to the candidate's
-  SEED framework `ofNormals (G − vᵢ) endsρ qρ` (KT (6.62)'s actual bottom block `R(Gᵢ, qᵢ)`, NOT the
-  corner-overridden `caseIIICandidate`) and re-state the corner cert's `W ≤ span` relation accordingly — a
-  rank-cert re-architecture, not a leaf; OR fall back to option A's LANDED group transport
-  (`case_III_arm_corner_assembly` + the engine `hwmem` slot + `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`),
-  which already lands the wrap edge as the `±r` corner GROUP and never needs an individual-row `hS`. The
-  cheapest exit is likely: interior arm uses `case_III_arm_corner_assembly` (the group transport), NOT
-  `case_III_arm_corner_assembly_via_leafB2`. **This is the coordinator's call.**
+- **Resolution = the SEED-FRAMEWORK re-architecture (route 4); SCOPED 2026-06-24, design §(4.27).** The
+  option-A "cheapest exit" (route the interior arm through the engine `case_III_arm_corner_assembly` + the
+  landed group transport) was investigated and **does NOT escape wall-free**: the engine route takes `hρGv`
+  as a hypothesis, which at general interior `i` for the shared `ρ₀` is the member-mapping wall; and the
+  group transport handles only the `±r` CORNER row, not the bottom-block `W`. The real wall-free route is
+  (4): take `W := span (ofNormals (G − vᵢ) endsρ qρ).rigidityRows` (the candidate's own SEED rows). Its
+  `hWS` (off-slot bridge) and `hW` (off-`vᵢ` vanishing) close mechanically WITH NO `hS`/`hρGv`
+  (kernel-verified, probe `probe3_seed_W`); the entire residual is `hWcard = hseedrank` = the candidate seed
+  rank `D·(|Gv|−1)`, which IS the relabel rank-iso from the base (the `d=3` `rigidityRows_ofNormals_relabel`
+  is `hρGv`-free), NOT `hρGv`. **One new leaf** (general-`d` relabel SET-image equality) de-risks it; see
+  §(4.27) for the full cost estimate (≈ 2 new leaves + dispatch + CHAIN-5).
 - **LANDED + still valid (sound in isolation, reusable under either resolution):** LEAF-B1
   (`exists_genuine_linearIndependent_basis_of_rigidityRows_diff` + the satisfiability fact), LEAF-B2
   (`exists_genuine_relabelImage_base_block` — the producer is sound; only its *universal `hS` premise* is
@@ -340,27 +343,28 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**⚠️ BLOCKED on a phase-direction decision (design §(4.26)) — do NOT build `chainData_dispatch` against
-`case_III_arm_corner_assembly_via_leafB2` as currently architected; its interior `hS` is unsatisfiable.**
-The compiler-checked dispatch recon (2026-06-24) built the `Fin cd.d` router skeleton, fired LEAF-3, and
-verified slot-by-slot that the interior arm's `hgate`/`hρe₀`/`hvanish`/`heab_off`/`hrec`/`hrhat`/`hIH` slots
-are all mechanically dischargeable — but the interior **`hS`** is NOT: the wrap-edge `edge i` base rows
-relabel to the `(a,b)`-block tag `hingeRow (vtx (i+1)) (vtx (i−1)) ρ'`, which is outside the candidate span
-(the routing lemma's `hG_eb_cand` is provably false). See *Blockers* + design §(4.26) for the full kernel
-trace and the resolution routes.
+**⚠️ BLOCKED — route forward SCOPED (design §(4.27)): the SEED-FRAMEWORK re-architecture (route 4) is the
+wall-free path; do NOT build `chainData_dispatch` against `case_III_arm_corner_assembly_via_leafB2` (interior
+`hS` unsatisfiable, §(4.26)) and do NOT expect the option-A engine route to escape (its `hρGv` bottom block
+ALSO walls, §(4.27)).** The dispatch recon (2026-06-24) built the `Fin cd.d` router skeleton, fired LEAF-3,
+and verified the interior arm's `hgate`/`hρe₀`/`hvanish`/`heab_off`/`hrec`/`hrhat`/`hIH` slots are all
+mechanically dischargeable — the SOLE blocker is the interior **`hS`** (wrap-edge `edge i` rows relabel to
+the `(a,b)`-block tag, outside the candidate span). A follow-up scoping recon (probe `probe3_seed_W`) then
+found the wall-free `W`-production.
 
-**The decision the coordinator owes (design §(4.26)):**
-- **(A-fallback, likely cheapest)** Route the interior arm through option A's LANDED group transport —
-  `case_III_arm_corner_assembly` (the engine `hwmem` slot + `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`,
-  which lands the wrap edge as the `±r` corner GROUP, never an individual-row `hS`). The `±r` corner row is
-  the *group sum* `∑_{evⱼ=edge i} cⱼ•hingeRow…rvⱼ`, NOT a base-block member. This abandons LEAF-B2's
-  universal-`hS` design for the interior arm.
-- **(B-repair)** Re-target LEAF-B2's base block `W` from the corner-overridden `caseIIICandidate` to the
-  candidate's SEED framework `ofNormals (G − vᵢ) endsρ qρ` (KT (6.62)'s `R(Gᵢ, qᵢ)`), and re-state the
-  corner cert's `W ≤ span` / independent-mod-`W` relation against the seed span — a rank-cert
-  re-architecture.
+**The route-4 build plan (design §(4.27); the next concrete commits):**
+1. **NEW LEAF 1 — general-`d` `rigidityRows_ofNormals_relabel`** (the de-risk target): the chain
+   generalization of the LANDED `d=3` SET-image equality `R(relabelled seed) = (funLeft σ).dualMap '' R(base
+   seed)` (`Relabel/Basic.lean:648`, `hρGv`-FREE) from the single swap to `shiftPerm i.castSucc` /
+   `shiftEdgePerm i`. Bricks landed (`ofNormals_supportExtensor_relabel_perm`, `blockRow_relabel_perm`,
+   `rigidityRow_relabel_to_genuine`, `chainData_bottom_relabel`); ~150–250 LoC, MEDIUM risk. Gives
+   `hseedrank : finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)` from the base IH rank.
+2. **NEW LEAF 2 — the seed-`W` producer** (replaces `case_III_arm_corner_assembly_via_leafB2`): package
+   `probe3_seed_W` (`W := candidate seed span`; `hWS`/`hW` mechanical, kernel-verified) + `hseedrank` + the
+   corner via the LANDED group transport `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`. ~LOW risk.
+3. **the `chainData_dispatch` `Fin cd.d` router** + the `ends`-orientation override (GAP 2) + **CHAIN-5**.
 
-**Once the route is chosen,** the rest of the dispatch wiring is in place: the `Fin cd.d` case-split fires
+**Once LEAF 1+2 land,** the rest of the dispatch wiring is in place: the `Fin cd.d` case-split fires
 LEAF-3 once at the base `v₁`-split and routes `i < 2` → `chainData_split_realization` (base/`d=3`,
 owes only `htrans`), `2 ≤ i` → the chosen interior producer. The interior `hgate`
 (`shiftPerm_apply_vtx_off` off-cycle + `candidateVtx_succ_eq`), `hρe₀` (`interior_hρe₀_of_baseWidening`

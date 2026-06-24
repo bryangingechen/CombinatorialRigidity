@@ -3233,7 +3233,74 @@ decomposition of the SECOND build it teed up.**
   individual-row `hS` is the regression. The cheapest exit may be to NOT use LEAF-B2's universal `hS` for the
   interior arm at all and instead route the base block through the seed framework + the landed group leaf for
   the `±r` corner — i.e. interior arm uses the option-A `case_III_arm_corner_assembly` (engine `hwmem` slot),
-  not `case_III_arm_corner_assembly_via_leafB2`. That is a coordinator/phase decision.
+  not `case_III_arm_corner_assembly_via_leafB2`. That is a coordinator/phase decision. **[The (4.27)
+  scoping below CORRECTS this "cheapest exit" hope: the option-A engine route's `hwmem`/`hρGv` bottom block
+  ALSO walls at general `d`; the seed-framework re-architecture is the real wall-free route.]**
+
+  *(4.27) OPTION-A `W`-PRODUCTION SCOPING — VERDICT (B): the bottom-block `W` does NOT escape wall-free via
+  the option-A engine route; the SEED-FRAMEWORK re-architecture (route 4) is the wall-free route, and its
+  one new leaf is the general-`d` relabel SET-image equality. Read-only compiler-checked scoping recon,
+  opus, 2026-06-24.*
+
+  **The crux the (4.26) "cheapest exit" missed.** The chain cert `case_III_rank_certification_chain`
+  (`Candidate.lean:2125`, `hρGv`-FREE) needs a bottom block `W` with: `W ≤ span(caseIIICandidate …)`,
+  `finrank W = D·(|Gv|−1)`, `hW : ∀ φ ∈ W, φ ∘ single vᵢ = 0`. The option-A *group* transport
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` handles the `±r` CORNER row only; it does NOT
+  produce `W`. The two ways to produce `W`:
+  - **Engine route** (`case_III_arm_realization` → `case_III_rank_certification`, `Arms.lean:310`): takes
+    `hρGv : hingeRow a b ρ ∈ span R(G − vᵢ)` as a HYPOTHESIS. At a general interior `i` with the SHARED `ρ₀`
+    this is exactly the member-mapping wall — `interior_group_acolumn_eq_neg_baseRedundancy` is the wrong
+    shape (a column value, not a panel/row membership), the fresh-edge telescope (`Arm.lean:259–760`) walls.
+    Even the `d=3` M₃ arm (`case_III_arm_realization_M3`, `Arm.lean:54`) discharges `hρGv` via W9a and stays
+    on the engine route. **Engine route WALLS at general `d`.**
+  - **Per-`i` `chainData_split_realization`** (`Realization.lean:1046`, which DOES fire W6b at the interior
+    split): needs the IH at the interior split `G.splitOff vᵢ …`, NOT in scope (the frozen C.3 contract hands
+    only the BASE `v₁`-split realization), AND a per-`i` W6b gives a `Classical.choice` `ρᵢ` unrelated to the
+    shared `ρ₀` the cert/gate/corner all read (the §(o″)/(2305–2317) Route-A refutation). **WALLS.**
+
+  **The wall-free route — the candidate's OWN seed rows as `W` (kernel-verified).** Probe `probe3_seed_W`
+  (reverted): take `W := span (ofNormals (G − vᵢ) endsρ qρ).rigidityRows` (the candidate's seed framework,
+  un-overridden). Then `hWS` (every seed `Gvᵢ`-row is a candidate rigidity row — the off-slot bridge
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, all `Gvᵢ`-edges are `≠ e_a, e_b`) and `hW`
+  (every seed row is a `G − vᵢ` link, so vanishes off `single vᵢ` — `ofNormals_removeVertex_rigidityRow_comp_
+  single_self`) BOTH close mechanically, NO `hS`, NO `hρGv`. The ENTIRE residual is `hWcard = hseedrank`:
+  `finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)` — the candidate seed framework's rigidity rank.
+
+  **`hseedrank` IS wall-free — it is the relabel rank-iso, NOT `hρGv`.** The relabel `funLeft σ`
+  (`σ = shiftPerm i.castSucc`) is a bijective linear automorphism; its `dualMap` carries
+  `span R(base seed) → span R(candidate seed)` ISOMORPHICALLY, so `finrank` is preserved = base seed rank
+  `D·(|Gv|−1)` (the base IH, in scope). The wrap-edge concern that killed the corner-OVERRIDDEN transport
+  does NOT arise at the bare seed: at `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`,
+  `hρGv`-FREE, 173-line proof) gives the SET equality `R(splitOff-relabelled seed) = (funLeft swap).dualMap ''
+  R(splitOff base seed)` for the SPLITOFF frameworks (the short-circuit edge carries the wrap-edge image as a
+  GENUINE seed row). The wall was an artifact of LEAF-B2 transporting into the corner-overridden candidate;
+  at the seed level the relabel is a clean bijection.
+
+  **VERDICT (B): option A does NOT escape wall-free; route 4 (seed-framework base block) is the real
+  wall-free route.** It is NOT a "fall back to landed option A" — it is the rank-cert re-architecture: replace
+  LEAF-B2's `Fcand`-transport `W` with the candidate's own seed-row span, sourcing its rank from a NEW
+  general-`d` relabel SET-image leaf.
+
+  **COST ESTIMATE (route 4):**
+  - **NEW LEAF 1 (the one genuinely-new piece): general-`d` `rigidityRows_ofNormals_relabel`** — the chain
+    generalization of the `d=3` `Relabel/Basic.lean:648` SET-image equality from `Equiv.swap a v` /
+    `Equiv.swap e_b e₀ * Equiv.swap e₁ e_c` to `shiftPerm i.castSucc` / `shiftEdgePerm i`. Bricks LANDED:
+    `ofNormals_supportExtensor_relabel_perm`, `blockRow_relabel_perm`, `rigidityRow_relabel_to_genuine`,
+    `removeVertex_genuine_shiftRelabel`, and `chainData_bottom_relabel` already prove the per-row
+    correspondence in BOTH directions; the new leaf packages them as a bijective SET equality. Est. ~1 leaf
+    (~150–250 LoC, mirroring the `d=3` proof shape), MEDIUM risk (the cycle `σσ = id` analog of `hσσ` and the
+    splitOff-vs-removeVertex graph bookkeeping need care). **This is the de-risk target before the build.**
+  - **NEW LEAF 2: the seed-`W` producer** — package `probe3_seed_W` (kernel-verified, ~25 LoC, LOW risk) +
+    `hseedrank` from LEAF 1 + the base IH rank. Replaces `case_III_arm_corner_assembly_via_leafB2`.
+  - **Reused (landed):** the corner via `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (the `±r` row),
+    the panel rows, `linearIndependent_mkQ_corner_of_gate`, `interior_hρe₀_of_baseWidening`, the spike's
+    mechanical `hgate`/`hρe₀`/`heab_off` discharges.
+  - **Then:** the `chainData_dispatch` `Fin cd.d` router (base/`d=3` via `chainData_split_realization` + its
+    `htrans`; interior via the new seed-`W` producer) + the `ends`-orientation override (GAP 2) + CHAIN-5.
+  - **Total ≈ 2 new leaves + the dispatch + CHAIN-5** (vs. the prior "dispatch is a build" estimate). The
+    one real risk is NEW LEAF 1; the seed-`W` reduction (probe-verified) de-risks everything downstream.
+  - **Alternative if LEAF 1 walls:** the deeper reconsideration (route A full `Matrix`, or honest-conditional
+    (C)). But LEAF 1 is the chain analog of a LANDED `d=3` `hρGv`-free leaf, so it is plausibly buildable.
 
 ---
 
