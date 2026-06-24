@@ -577,6 +577,18 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `lem:case-III-claim612` entries) — the same mechanism at length `d`, not a new one. *(Open at capture, NOT yet
   stable: reconciling this membership's body with the discriminator's re-inserted-body `vtx i` column read — the
   body-mismatch the design-settle BLOCKED on, §I.8.24(4.8).)* Pointer: `notes/Phase23-design.md` §(o‴)(I.8.24)(4.7)–(4.8).
+  **Splice-perp crux RESOLVED SHARPENING (2026-06-24; the conjecture-crux leaf
+  `baseRedundancy_perp_interior_reproduced_panel` LANDED).** The eq.~(6.66) "single redundancy `r` carried `±`-ly
+  across the `d` panels, *due to `vᵢ` degree-two*" is — at the spliced candidate panel — **the same degree-2
+  column-vanishing value read used for every other panel, applied at the candidate's own edge.** The exposition
+  must NOT present the carry to the spliced panel as a separate/harder step (an inductive chain, a per-vertex
+  witness, or a meet): KT's degree-2 fact gives the `edge i`-group's `vᵢ`-column `= −r` directly, and that column
+  lies in the panel's row block because the block is read off the panel normals (`q`) alone — the deletion `G − vᵢ`
+  (which removes `edge i` as a *graph* edge) is irrelevant to the *panel* `r(p(edge i))`. **Stable insight:** the
+  eq.~(6.66) `±r` carry IS the degree-2 column read; the splice panel is no more special than any chain panel once
+  the panel block is recognized as graph-independent. The 3–4× wall mis-pins came from reading the splice panel
+  through the `G − vᵢ` framework rather than off the seed `q`. Pointer: `Relabel/ForkedArm.lean`
+  `baseRedundancy_perp_interior_reproduced_panel`; KT pp. 696–698, eq.~(6.66).
 
 ## Retroactive coverage
 

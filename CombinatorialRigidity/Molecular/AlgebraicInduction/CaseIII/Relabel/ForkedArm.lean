@@ -173,14 +173,114 @@ theorem _root_.Graph.ChainData.reproduced_panel_eq_splice_panel
         = (fun j => q (cd.shiftPerm i.castSucc
           (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc), j)) from rfl, hb]
 
-/-- **The interior `hρe₀` leaf, reduced to the splice-perp crux** (Phase 23c §I.8.24(4.13);
+/-- **The base-seed panel is the `ofNormals` framework's support extensor at a recording edge**
+(Phase 23c §I.8.24(4.13)). The projection bridge between Route A's literal output shape
+`ρ₀ ⊥ Fva.supportExtensor f` and the base-seed `panelSupportExtensor` shape the splice-perp crux
+`hsplice` is stated in: at the seed framework `Fva = ofNormals (G − vᵢ) endsσρ qρ`, an edge `f`
+recording `endsσρ f = (x, y)` has `Fva.supportExtensor f = panelSupportExtensor (qρ(x,·)) (qρ(y,·))`
+— a pure unfold of `toBodyHinge_supportExtensor` / `ofNormals_{normal,ends}`. Lets the eq.~(6.66)
+carry's surviving-edge perp inputs (Route A) be read in the `panelSupportExtensor` form the bridge
+and the crux speak. -/
+theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
+    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
+    (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
+      = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
+  rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hf]
+
+/-- **The splice-perp crux — the eq.~(6.66) redundancy carry to the spliced candidate edge**
+(Phase 23c §I.8.24(4.13)/(4.16), THE conjecture-crux leaf; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)).
+The genuinely-new content of the interior-`hρe₀` leaf: the shared redundancy `ρ₀` annihilates the
+base-seed panel of the spliced chain edge `edge i` — `panelSupportExtensor (q(vtx (i+1),·))
+(q(vtx i,·))` — at an interior matched candidate `i` (`2 ≤ i < d`). This is exactly the `hsplice`
+hypothesis `interior_hρe₀_of_splice_perp` (below) consumes; the cycle-relabel bridge then turns it
+into the consumer's `hρe₀` slot.
+
+**The carry "across `vᵢ`" needs no new argument — the LANDED value-read does it directly.** The seam
+was mis-pinned 3–4× (the wall-vs-escape conflation) precisely because the spliced `edge i` is
+`vᵢ`-incident, hence *not* an edge of `G − vᵢ`, so the surviving-edge perp leaf
+`chainData_freshEdge_perp_of_baseRedundancy` (which lives in the `G − vᵢ` framework) excludes it.
+But the target panel is read off the *base seed* `q` directly, not off any framework, and its block
+test `hingeRowBlock` depends only on `ends`/`q` — the graph is irrelevant (`hingeRowBlock e =
+(span {supportExtensor e})ᗮ`, and `ofNormals`' `supportExtensor` reads only `ends`/`q`). So the two
+LANDED bricks that produced the surviving-edge perps work verbatim at the spliced edge `edge i`:
+
+* `interior_group_acolumn_eq_neg_baseRedundancy` (the chain-induction LEAF 4, **framework-free**) —
+  the `edge i`-group's screw column at its tail body `vtx i` is the constant `−ρ₀`, carried along
+  the chain from the base redundancy `hcomb` and anchored at `vtx 2`. This holds for *every*
+  `2 ≤ i < d`, the candidate edge included (it never invokes a framework or the deletion `G − vᵢ`).
+* `edgeGroup_acolumn_mem_block` (the column-in-block core) — that same `edge i`-group column lies in
+  `(ofNormals Gw ends q).hingeRowBlock (edge i)` for the base framework `Gw` (here `Gw = G − v₁`,
+  what the LEAF-3 widening supplies; the graph is immaterial to the block).
+
+Combining, `−ρ₀ ∈ block (edge i)`, so `ρ₀ ∈ block` (negation-closed), so `ρ₀ ⊥ supportExtensor
+(edge i) = panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))` (`ofNormals_supportExtensor_eq_panel_
+of_ends`, given the `ends`-recording `hends_i`). No per-vertex eq.~(6.52) witness production, no
+inductive chain over `s`, no Grassmann–Cayley meet: the eq.~(6.66) carry IS the framework-free value
+read, applied one index deeper than the surviving-edge leaf dared.
+
+The carried inputs — the base redundancy `hcomb` (= the LEAF-3 widening's edge-grouped `G_v`-row
+form, KT eq.~(6.66)), the per-summand `G`-links `hlink` + base-framework block memberships `hrv`
+(the widening's `evGv`/`rvGv` data), the `ends`-recording `hends_i` at the spliced edge, and the
+degree-1-at-anchor closure `hdeg1` — are the LEAF-3 base bundle + widening outputs the dispatch
+threads in (LEAF-4 step (ii)); they are *not* a deferred crux. -/
+theorem _root_.Graph.ChainData.baseRedundancy_perp_interior_reproduced_panel
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    -- the base block memberships at the base framework `ofNormals Gw ends q` (graph-irrelevant
+    -- for `hingeRowBlock`, which reads only `ends`/`q`; `Gw = G − v₁` is the LEAF-3 widening's)
+    {Gw : Graph α β} (ends : β → α × α)
+    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
+    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩) :
+    ρ₀ (panelSupportExtensor (fun j => q (cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩, j))
+        (fun j => q (cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩, j))) = 0 := by
+  classical
+  set Fbase := (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge with hFbase
+  -- The `edge i`-group's `vtx i`-column is `−ρ₀` (chain induction LEAF 4, framework-free).
+  have hcolval := cd.interior_group_acolumn_eq_neg_baseRedundancy h3 c ev uv vv rv hlink hcomb
+    rfl rfl hdeg1 (i : ℕ) h2i i.isLt
+  -- The `edge i`-group's `vtx i`-column lands in `Fbase.hingeRowBlock (edge i)`.
+  have hmem := Fbase.edgeGroup_acolumn_mem_block (e := cd.edge ⟨(i : ℕ), by have := i.isLt; omega⟩)
+    (p := cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩) c ev uv vv rv hrv
+  rw [hcolval] at hmem
+  -- `−ρ₀ ∈ block ⟹ ρ₀ ∈ block ⟹ ρ₀ ⊥ Fbase.supportExtensor (edge i)`.
+  have hρ₀mem : ρ₀ ∈ Fbase.hingeRowBlock (cd.edge ⟨(i : ℕ), by have := i.isLt; omega⟩) := by
+    have := (Fbase.hingeRowBlock (cd.edge ⟨(i : ℕ), by have := i.isLt; omega⟩)).neg_mem hmem
+    rwa [neg_neg] at this
+  have hperp := (Fbase.mem_hingeRowBlock_iff (cd.edge ⟨(i : ℕ), by have := i.isLt; omega⟩) ρ₀).1
+    hρ₀mem
+  -- Rewrite `Fbase.supportExtensor (edge i)` to the base-seed panel via the `ends`-recording.
+  have hieq : (⟨(i : ℕ), by have := i.isLt; omega⟩ : Fin cd.d) = i := Fin.ext rfl
+  rw [hieq] at hperp
+  rw [PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends Gw (cd.edge i) hends_i]
+    at hperp
+  -- The two ends `vtx i.succ`, `vtx i.castSucc` are the panel reads `vtx (i+1)`, `vtx i`.
+  have hsucc : cd.vtx i.succ = cd.vtx ⟨(i : ℕ) + 1, by have := i.isLt; omega⟩ :=
+    congrArg cd.vtx (Fin.ext (by simp only [Fin.val_succ]))
+  have hcast : cd.vtx i.castSucc = cd.vtx ⟨(i : ℕ), by have := i.isLt; omega⟩ :=
+    congrArg cd.vtx (Fin.ext (by simp only [Fin.val_castSucc]))
+  rw [hsucc, hcast] at hperp
+  exact hperp
+
+/-- **The interior `hρe₀` leaf, produced from the splice-perp crux** (Phase 23c §I.8.24(4.13);
 Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The exact `hρe₀` slot `case_III_arm_corner_assembly`
 consumes at an interior matched candidate `i` (`2 ≤ i`), produced from the SINGLE crux hypothesis
 `hsplice : ρ₀ ⊥ (base-seed `edge i` splice panel)` by the cycle-relabel bridge
-`reproduced_panel_eq_splice_panel`. Carrying `hsplice` as an explicit hypothesis is the project's
-standing no-`sorry` idiom: this leaf is *otherwise complete*, so the whole interior-`hρe₀` leaf
-reduces to discharging `hsplice` — the genuinely-new `baseRedundancy_perp_interior_reproduced_panel`
-(the KT eq.~(6.66) redundancy carry across the spliced body `vᵢ`, the next focused commit).
+`reproduced_panel_eq_splice_panel`. With the crux `baseRedundancy_perp_interior_reproduced_panel`
+(above) now LANDED, `hsplice` is no longer a deferred obligation — the whole interior-`hρe₀` leaf is
+complete modulo the dispatch threading the crux's carried inputs (LEAF-4 step (ii)). This wrapper is
+kept in the carry-as-`h…` form so the dispatch can either supply `hsplice` from the crux directly or
+re-derive it inline.
 
 This DISSOLVES the prior Route-A-vs-Route-B fork: BOTH routes reduce to `hsplice`. Route A
 (`chainData_freshEdge_perp_of_baseRedundancy`) supplies the *surviving*-edge perps (`2 ≤ s`,
@@ -203,22 +303,6 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
             (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 := by
   rw [cd.reproduced_panel_eq_splice_panel i h2i]
   exact hsplice
-
-/-- **The base-seed panel is the `ofNormals` framework's support extensor at a recording edge**
-(Phase 23c §I.8.24(4.13)). The projection bridge between Route A's literal output shape
-`ρ₀ ⊥ Fva.supportExtensor f` and the base-seed `panelSupportExtensor` shape the splice-perp crux
-`hsplice` is stated in: at the seed framework `Fva = ofNormals (G − vᵢ) endsσρ qρ`, an edge `f`
-recording `endsσρ f = (x, y)` has `Fva.supportExtensor f = panelSupportExtensor (qρ(x,·)) (qρ(y,·))`
-— a pure unfold of `toBodyHinge_supportExtensor` / `ofNormals_{normal,ends}`. Lets the eq.~(6.66)
-carry's surviving-edge perp inputs (Route A) be read in the `panelSupportExtensor` form the bridge
-and the crux speak. -/
-theorem PanelHingeFramework.ofNormals_supportExtensor_eq_panel_of_ends
-    (Gv : Graph α β) {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
-    (f : β) {x y : α} (hf : endsσρ f = (x, y)) :
-    (PanelHingeFramework.ofNormals Gv endsσρ qρ).toBodyHinge.supportExtensor f
-      = panelSupportExtensor (fun j => qρ (x, j)) (fun j => qρ (y, j)) := by
-  rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
-    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends, hf]
 
 /-- **The chain arm's corner-data ASSEMBLY producer** (`lem:case-III general-d`, the option-(A)
 seam-resolution integration: assemble the `±r` block decomposition's `Mᵢ` corner block `g` from the
