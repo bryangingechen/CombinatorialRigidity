@@ -70,12 +70,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   session-start availability check + re-confirms the triple.** (A) is OPEN; the
   `±r`-row seam is RESOLVED end-to-end; `chainData_dispatch` is DECOMPOSED (5
   leaves) with the `Relabel/` split + LEAF-1/2 + the full discriminator-index
-  plumbing + LEAF-3 (the discriminator-firing producer
-  `exists_shared_redundancy_and_matched_candidate`) LANDED; next = LEAF-4 (the
-  interior-`hρe₀` conjecture-crux leaf, route RE-ROUTED by the 2026-06-24 recon
-  pair → design §I.8.24(4.13); first commit = piece (i′), widen
-  `chainData_split_w6b_gates` to emit the eq-6.52 ALL-edge data) — see
-  `notes/Phase23c.md` *Hand-off* / *Orientation*.
+  plumbing + LEAF-3 LANDED; **and (session #28, rows 419–428) the conjecture
+  crux is now CLOSED end-to-end** — the interior-`hρe₀` leaf
+  (`baseRedundancy_perp_interior_reproduced_panel` crux + the relabel bridge,
+  axiom-clean) via the **spike-and-land pivot** (a compiler-checked spike
+  dissolved the 3–4× prose-mis-pinned route fork; the forbidden value read was
+  the answer — DESIGN.md *Compiler-checked spike, not prose recon, …*). next =
+  LEAF-4 step (ii) base block `W` + LEAF-5 router + CHAIN-5 → phase close (the
+  column subtree b23e50e + 2 bricks is ORPHANED, confirm-and-delete at cleanup)
+  — see `notes/Phase23c.md` *Hand-off* / *Orientation*.
 - **Session #25 close (2026-06-22; rows 392–401, all opus / OPUS-ONLY, gate-verified; user stopped the
   loop after the corner-data assembly + a handoff-housekeeping pass).** **The `±r`-row seam — the
   conjecture-crux remnant blocking 23c across 4 prior arm attempts + 2 recons — is RESOLVED + build-proven
