@@ -444,8 +444,20 @@ escapes it (the load-bearing finding; design §(4.29)).
   difficult to see") as one explicit hypothesis to the consumer + document the residual; ~1 leaf + wiring,
   leaves a single named gap in the general-`d` Theorem 5.5.
 
-The next concrete commit awaits the user's choice between A and (C). ENTRY + ASSEMBLY are parallel-safe under
-either.
+**✅ USER CHOSE ROUTE A (2026-06-24) — the honest unconditional theorem via the concrete `Matrix` model.**
+The rank-cert reconsideration (23d's purpose) is RESOLVED: route A is the chosen build. **NEXT CONCRETE
+COMMIT = the A1+A2 `d=3` DE-RISK build** (the recon's recommended starting point): build A1 (the concrete
+`Matrix R(G,p) : Matrix (Σ e, Fin (D−1)) (α × Fin D) ℝ` for the panel-hinge rigidity matrix, + row/column
+accessors + the `(edge,j)`↔`hingeRow` correspondence) and A2 (the `Matrix.rank (R Q) = finrank (span
+Q.rigidityRows)` bridge via the mathlib-landed `Matrix.rank_eq_finrank_span_row` + the `ScrewSpace`-opacity
+coordinate iso) **at `d=3`**, gate-verified, and confirm they COMPOSE without a `maxHeartbeats`/`whnf`
+opacity blow-up (the Phase-22l opacity concern, §(4.30)'s one unsettled residual). Deliverable: the A1+A2
+`d=3` leaves landed sorry-free + an updated leaf-count/cost for A3–A6. **FLAG-DON'T-FORCE:** if the opacity
+composition blows up at `d=3` (the A2 bridge won't reduce), return BLOCKED naming it — that reshapes A2 (or
+forces an opacity-spike detour), a coordinator call. **Once A1+A2 confirm route A on track, the route-A
+build opens as its own sub-phase** (≈9–14 leaves A1–A6; the full phase-open checklist + an A1–A6 layer plan
+from §(4.30)) — a coordinator phase-open step after this de-risk. ENTRY + ASSEMBLY are parallel-safe under
+route A. Route (C) is no longer the plan (it stays the documented fallback only if route A later walls).
 
 **Reusable across either route (LANDED, sound in isolation):** the Q1 relabel rank-iso is a clean ~40-LoC
 result reusing only landed bricks (`rigidityRow_chainData_relabel`, `rigidityRow_relabel_perm`,
@@ -463,6 +475,13 @@ seed it hardcodes) — left as-is, harmless, no caller. ENTRY + ASSEMBLY remain 
 cross-cutting lessons of building option (A) are the settled archive in `notes/Phase23c.md` *Decisions
 made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions land here.)*
 
+- **Route A CHOSEN by the user (2026-06-24), with cost data in hand.** After the genuine-row base-block
+  family closed (4 wall appearances, §(4.18)–(4.29)) and route A was scoped FEASIBLE-but-HEAVY (§(4.30),
+  ~9–14-leaf sub-phase), the user chose route A (the honest unconditional `Matrix`-model Theorem 5.5) over
+  the cheap honest-conditional (C). Execution plan: the A1+A2 `d=3` de-risk first (settle the `ScrewSpace`-
+  opacity composition + sharpen the leaf count), then open the route-A build as its own sub-phase (full
+  phase-open checklist + the A1–A6 layer plan). (C) demoted to documented fallback. Lesson (the 4-wall
+  saga + the verify-first wins) → Findings (model-experiment).
 - **Route A (full `Matrix`) SCOPED — FEASIBLE BUT HEAVY; it is a genuinely-different path, NOT the
   refuted §(4.22)/(4.23) work (2026-06-24, design §(4.30), read-only recon, tree clean).** Resolves the
   doc's A-vs-refuted-matrix tension: §(4.22)/(4.23) refuted option (i) (abstract span-block-rank — landed
