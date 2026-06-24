@@ -88,6 +88,17 @@ call).** At the matched interior `i`, instantiate `exists_genuine_relabelImage_b
 from `hingeRow_comp_single_off` at `vtx 1` (the removed base body); feed the resulting `W`/`hWS`/`hWcard`/`hW`
 + the LEAF-3 `hgate`/`hρe₀` into the LANDED `case_III_arm_corner_assembly`.
 
+> **LEAF-4 residual risk (coordinator-flagged, the one remaining route-B viability question).** LEAF-B2's
+> `hS` is stated **universally over all `Fbase.rigidityRows`**, but its body only uses it at the genuine
+> basis members (`f i ∈ rigidityRows`, `≠ rhat`). The universal form is dischargeable ONLY if every relevant
+> base row transports via the router's **SOUND genuine branch** (`chainData_bottom_relabel` `Or.inl` →
+> `bottomRelabel_image_mem_span_caseIIICandidate` genuine branch). The reproduced/block-tag `Or.inr` branch is
+> §(4.17)-DEAD (needs the unsatisfiable `hG_eb_cand`). So LEAF-4 must confirm the genuine basis rows ALL go
+> through the genuine branch. If a needed row requires the dead branch, that is the wall surfacing — return
+> BLOCKED naming the row (do NOT force it). Likely the right fix is to **narrow LEAF-B2's `hS`/`hvanish` to
+> `Fbase.rigidityRows ∖ {rhat}`** (matching the body's actual use) so the carried hypothesis is exactly the
+> satisfiable one; a LEAF-4 build that discharges `hS` cleanly confirms route B clears the rank cert.
+
 **Plan (≈2 sub-phases left to close the rank cert):** ✅ LEAF-B1 (crux, landed) → ✅ LEAF-B2 (genuine-only `W`
 producer, landed) → LEAF-4 (the per-member `hS`/`hvanish` discharge + `case_III_arm_corner_assembly` call) /
 LEAF-B3 corner producer (mostly landed) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
