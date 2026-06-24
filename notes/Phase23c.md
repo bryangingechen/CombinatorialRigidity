@@ -49,6 +49,22 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 
 ## Current state
 
+**The `cd.d = k + 1` discriminator-index bridge `Graph.ChainData.d_eq_kAdd` is LANDED
+(`CaseIII/Realization.lean`, just before `chainData_split_realization`; build/lint/axiom-clean,
+warning-clean).** The dispatch-side companion of the `d_eq : d = n` record field: from `d_eq` + the
+ambient `hn : bodyBarDim n = screwDim k` it derives `cd.d = k + 1`, the identity that aligns the
+`Fin (k+1)`-indexed Claim-6.12 panel discriminator with the `Fin cd.d` chain candidate index (the
+§I.8.24(4.11) discriminator-index gap, now closed end-to-end: field + bridge). Pure `ℕ`-arithmetic
+(`bodyBarDim n = n(n+1)/2`, `screwDim k = (k+2 choose 2) = (k+2)(k+1)/2` clear to `n(n+1)=(k+2)(k+1)`
+via `Nat.mul_div_cancel'` + evenness, then `nlinarith`); no `d=3` content, zero-regression. **NEXT:
+the rest of LEAF-3 proper** — build `cand : Fin (k+1) → α` over the chain candidate vertices
+(injective; transport `cd.vtx` across `d_eq_kAdd`), fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
+`exists_chainData_discriminator_pick` ONCE off the shared base, and expose `hgate`/`hρe₀` at the
+matched interior candidate `i` (the eq-6.66 `±r`-annihilation `hρe₀` is the flagged downstream
+risk, lands here or in LEAF-4). NOTE: the bridge is declared `_root_.Graph.ChainData.d_eq_kAdd` (the
+TACTICS-QUIRKS § 56 trap — a bare `Graph.`-prefixed decl inside `namespace …Molecular` would create
+a `…Molecular.Graph` sub-namespace that breaks downstream `V(·)`/`E(·)` parsing).
+
 **The dispatch's interior-split-tuple `ChainData` accessors are LANDED (`Induction/Operations.lean`,
 axiom-clean, build/lint warning-clean); next is the rest of CHAIN-2c-iii `chainData_dispatch` (the
 discriminator + base-block construction + arm routing).** At an interior chain index `i` (`0 < i`)
@@ -249,14 +265,19 @@ proved-after-the-fact*; sidesteps the satisfiability trap). Purely additive — 
 constructions yet (`exists_chain_data_of_noRigid` still returns the OLD fixed 4-tuple, a 23d/ENTRY obligation),
 so no construction site needed fixing; full project green.
 
-**NEXT COMMIT: LEAF-3 proper (now unblocked by `d_eq`)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
-`exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at the matched interior
-candidate `i`, with the panel-`u : Fin (k+1)` ↔ candidate-`i : Fin cd.d` match transported across `d_eq` +
-`n = k+1`. Wiring template: the d=3 `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s
+**The `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd` is LANDED** (the `d_eq`-companion that converts
+the record field `d_eq : d = n` into the `Fin (k+1)`-vs-`Fin cd.d` index identity, via `n = k+1` from
+`hn`; `CaseIII/Realization.lean`, axiom-clean). So the §I.8.24(4.11) discriminator-index gap is now
+closed end-to-end (field + usable bridge). **NEXT COMMIT: the rest of LEAF-3 proper** — build the
+candidate selector `cand : Fin (k+1) → α` over the chain candidate vertices (injective, transporting
+`cd.vtx` across `d_eq_kAdd`), fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
+`exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at the matched
+interior candidate `i`, with the panel-`u : Fin (k+1)` ↔ candidate-`i : Fin cd.d` match via `d_eq_kAdd`.
+Wiring template: the d=3 `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s
 `htrans` slot, re-aimed at the assembly's `hgate`/`hρe₀`. **THEN** LEAF-4 (hard core, the `hS` disjunction) →
 LEAF-5 (router) → CHAIN-5 proceed as pinned. **Watch the two downstream risks** (design §I.8.24(4.11)): the
-ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new) and the eq-6.66 `±r`-across-all-interiors step (lands
-in LEAF-4/CHAIN bookkeeping).
+ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new) and the eq-6.66 `±r`-across-all-interiors step (the
+`hρe₀` at candidate `i`; lands here or in LEAF-4/CHAIN bookkeeping).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
@@ -280,10 +301,15 @@ in LEAF-4/CHAIN bookkeeping).
 3. **The contract field `d_eq : d = n`** (option a, the discriminator-index gap fix). ✓ **LANDED** 2026-06-23
    (`Induction/Operations.lean`, the `ChainData` RECORD, right after `hd`; build/lint/axiom-clean). Purely
    additive — no `ChainData` value constructions exist yet, so nothing downstream to fix.
-   **LEAF-3 proper (NEXT)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
+   **The `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd`** (the `d_eq`-companion that makes the field
+   usable: `d_eq : d = n` + `hn : bodyBarDim n = screwDim k` ⟹ `cd.d = k + 1`). ✓ **LANDED** 2026-06-23
+   (`CaseIII/Realization.lean`, before `chainData_split_realization`; build/lint/axiom-clean,
+   warning-clean; declared `_root_.Graph.ChainData.d_eq_kAdd` to dodge the § 56 sub-namespace trap).
+   **The rest of LEAF-3 proper (NEXT)** — build `cand : Fin (k+1) → α` over the chain candidate vertices
+   (injective; transport `cd.vtx` across `d_eq_kAdd`), fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
    `exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at the matched
-   interior candidate `i`. The panel-`u : Fin (k+1)`↔candidate-`i : Fin cd.d` match transports across `d_eq` +
-   `n = k+1` (from `hn : bodyBarDim n = screwDim k`). The wiring is the d=3 template
+   interior candidate `i`. The panel-`u : Fin (k+1)`↔candidate-`i : Fin cd.d` match transports via
+   `d_eq_kAdd`. The wiring is the d=3 template
    `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s `htrans` slot, re-aimed at the
    assembly's `hgate`/`hρe₀`.
 4. **LEAF-4 (THE HARD CORE)** — the interior base-block `W` production: `f := w`, `L := (funLeft (shiftPerm
@@ -424,3 +450,13 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   constructions exist yet (`exists_chain_data_of_noRigid` still returns the OLD fixed 4-tuple, a 23d/ENTRY
   obligation), so no construction site to fix; the ENTRY extractor will *set* `d_eq` (KT Lemma 4.6 builds the
   chain to length `n`). Unblocks LEAF-3 proper.
+- **Dispatch `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd` (2026-06-23).** The `d_eq`-companion
+  closing the §I.8.24(4.11) discriminator-index gap end-to-end: from the record field `d_eq : d = n`
+  and the ambient `hn : bodyBarDim n = screwDim k` it derives `cd.d = k + 1`, the identity matching the
+  `Fin (k+1)` panel discriminator to the `Fin cd.d` chain candidate. `CaseIII/Realization.lean` (before
+  `chainData_split_realization`; axiom-clean, warning-clean). Pure `ℕ`-arithmetic: clear `bodyBarDim`/
+  `screwDim`'s `/2` to `n(n+1) = (k+2)(k+1)` (`Nat.mul_div_cancel'` + `Nat.even_mul_{succ,pred}_self`),
+  then `nlinarith`. **Declared `_root_.Graph.ChainData.d_eq_kAdd`** — a bare `Graph.…` inside
+  `namespace …Molecular` makes a `…Molecular.Graph` sub-namespace that captures downstream
+  `open scoped Graph` and breaks `V(·)`/`E(·)` parsing (TACTICS-QUIRKS § 56, the known trap; bit
+  again here, fix matched the documented `_root_.` remedy). Unblocks the rest of LEAF-3 proper.

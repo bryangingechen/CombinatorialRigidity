@@ -930,6 +930,35 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     · rw [hρ_lam, ← Finset.sum_neg_distrib]
       exact Finset.sum_congr rfl fun j _ => (smul_neg _ _).symm
 
+/-- **The chain length equals `k + 1`** (`lem:case-III` general-`d`, the discriminator-index
+identity; Katoh–Tanigawa 2011 §6.4.2): from the `ChainData` field `d_eq : d = n` and the ambient
+body-bar dimension constraint `hn : bodyBarDim n = screwDim k`, the chain length `cd.d` equals
+`k + 1`. This is the dispatch-side companion of `d_eq` that closes the **discriminator-index gap**
+(Phase 23c §I.8.24(4.11)): the Claim-6.12 panel discriminator
+(`exists_chainData_discriminator_pick`, `exists_complementIso_ne_zero_of_homogeneousIncidence_gen`)
+is `Fin (k+1)`-indexed (one panel per chain candidate), while the chain candidate index ranges over
+`Fin cd.d`; the two index sets align only via `cd.d = k + 1`. KT §6.4.2 forces this structurally —
+the `d` candidate frameworks are the `d` panels (eq. 6.67), and the dimension count
+`D = (d+1 choose 2) = screwDim k = (k+2 choose 2)` gives `d + 1 = k + 2` (eq. 6.46/6.67).
+
+The arithmetic: `cd.d = n` (the `d_eq` field), and `n = k + 1` from `hn` — the body-bar dimension
+`bodyBarDim n = n(n+1)/2` and screw dimension `screwDim k = (k+2 choose 2) = (k+2)(k+1)/2` clear to
+the product equation `n(n+1) = (k+2)(k+1)` (each numerator even, `Nat.mul_div_cancel'`), whose only
+solution in `ℕ` is `n = k + 1` (`nlinarith`). No `d = 3` content; at the `d = 3` regime `n = 3`,
+`k = 2`, so `cd.d = 3 = 2 + 1` is the zero-regression specialization. -/
+theorem _root_.Graph.ChainData.d_eq_kAdd {G : Graph α β} {n : ℕ} (cd : G.ChainData n)
+    (hn : Graph.bodyBarDim n = screwDim k) : cd.d = k + 1 := by
+  have key : ∀ m : ℕ, 2 * Nat.choose m 2 = m * (m - 1) := fun m => by
+    rw [Nat.choose_two_right, Nat.mul_div_cancel' (Nat.even_mul_pred_self m).two_dvd]
+  have hbb : 2 * Graph.bodyBarDim n = n * (n + 1) := by
+    rw [Graph.bodyBarDim, Nat.mul_div_cancel' (Nat.even_mul_succ_self n).two_dvd]
+  have hsd : 2 * screwDim k = (k + 2) * (k + 1) := by
+    rw [show screwDim k = Nat.choose (k + 2) 2 from rfl, key (k + 2),
+      show k + 2 - 1 = k + 1 from rfl]
+  have hprod : n * (n + 1) = (k + 2) * (k + 1) := by omega
+  have hnk : n = k + 1 := by nlinarith [hprod]
+  rw [cd.d_eq, hnk]
+
 /-- **CHAIN-2a-ii — the per-`i` chain-candidate reduction core** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.13 the per-candidate arm; Phase 23b). For an interior chain index `i`
 (`0 < i`, so `vᵢ` is a degree-2 chain vertex with chain edges `edge i : vᵢ—vᵢ₊₁` and the
