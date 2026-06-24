@@ -85,15 +85,42 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > `baseRedundancy_group_acolumn_perp` (b23e50e) + the per-step column subtree are OFF the path — the crux
 > never touches them; confirm-and-delete at LEAF-5/CHAIN-5 cleanup.**
 >
-> **Next commit = LEAF-4 step (ii) + the dispatch (LEAF-5 router).** The crux's carried inputs (`hcomb`
-> = the LEAF-3 widening's edge-grouped `G_v`-row form, `hlink`/`hrv` = the widening's `evGv`/`rvGv`,
-> `hends_i` = the `ends`-recording at `edge i`, `hdeg1` = the degree-1-at-anchor closure) are the LEAF-3
-> base bundle + widening outputs — thread them in, build `W`, `exact case_III_arm_corner_assembly`, then
-> the LEAF-5 router (base/d=3 → `chainData_split_realization`; interior → arm). **Do NOT** re-attempt the
-> four dead route families (§I.8.18–(I.8.20)), re-litigate the fork, revive the relabel-image `±r` route,
-> or fire W6b at the interior split (unsatisfiable `hsplitGP`). See *Current state* + *Hand-off*.
+> **Next commit = the rest of LEAF-4 step (ii)'s base block `W` + `exact case_III_arm_corner_assembly`,
+> then the LEAF-5 router.** The per-member `hS` router — the §(4.4)(β) hard part of LEAF-4 (c), the
+> `chainData_bottom_relabel`-output disjunction routed into the candidate span — IS NOW LANDED
+> (`Graph.ChainData.bottomRelabel_image_mem_span_caseIIICandidate`, `Relabel/ForkedArm.lean`,
+> 2026-06-24, axiom-clean). The remaining `W` producer wraps it: build `f := w` (LEAF-3 base bottom
+> family) relabelled along `L = (funLeft (shiftPerm i.castSucc).symm).dualMap`, run
+> `chainData_bottom_relabel` per-member → this new router's disjunction input, derive `hvanish` (base
+> rows vanish at `single (shiftPerm i.castSucc (vtx i.castSucc))`), apply LEAF-2
+> (`span_relabelImage_le_and_finrank_and_acolumn_vanish`), then derive `hρe₀` from the LANDED crux +
+> bridge and `exact case_III_arm_corner_assembly`. Then the LEAF-5 router (base/d=3 →
+> `chainData_split_realization`; interior → arm). **Do NOT** re-attempt the four dead route families
+> (§I.8.18–(I.8.20)), re-litigate the fork, revive the relabel-image `±r` route, or fire W6b at the
+> interior split (unsatisfiable `hsplitGP`). See *Current state* + *Hand-off*.
 
 ## Current state
+
+**LEAF-4 step (ii)'s per-member `hS` router is LANDED (2026-06-24, axiom-clean, build/lint/warning-clean):
+`Graph.ChainData.bottomRelabel_image_mem_span_caseIIICandidate`** (`Relabel/ForkedArm.lean`, right after
+`interior_hρe₀_of_splice_perp`). This is the §(4.4)(β) hard part of LEAF-4 (c) — the substantive
+per-member case-split feeding LEAF-2's `hS`. It takes one `chainData_bottom_relabel`-output disjunction
+(the relabel image `(funLeft (shiftPerm i.castSucc).symm).dualMap φ` is a genuine rigidity row of the
+seed framework `ofNormals (G − vᵢ) endsσρ qρ`, OR the reproduced-slot block tag
+`hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` with `ρ' ⊥` the candidate fresh pair's panel) and routes
+it into `span (caseIIICandidate G endsσρ qρ e_a e_b (qρ(a,·)) n' (qρ(b,·)) 0).rigidityRows`: the genuine
+branch destructures the rigidity-row membership, takes the surviving link's edge off both `vᵢ`-incident
+candidate slots `{e_a, e_b}` (via the dispatch-supplied `heab_off`), transfers the block membership
+across the graph (`ofNormals` support is graph-independent: `toBodyHinge_supportExtensor` +
+`ofNormals_normal`/`_ends`), and `Submodule.subset_span`'s through
+`hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`; the reproduced branch routes through
+`hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` at `e_b`'s genuine `(a, b)` candidate link
+(`hG_eb_cand`, `t = 0` so `hperp = hρ'`). The `vᵢ`-incidence off-slot conditions + the candidate
+`e_b`-link enter as explicit hypotheses (the dispatch's `W` producer discharges them from the interior
+split tuple). NO `hρGv`, no new linear algebra — pure assembly of landed leaves. The remaining `W`
+producer (the LEAF-2 wrapper: `f := w`, the per-member `chainData_bottom_relabel` → this router, the
+`hvanish` derivation, apply LEAF-2) + the final `exact case_III_arm_corner_assembly` + the LEAF-5 router
+are the next steps (see *Hand-off*).
 
 **The discriminator-index plumbing is COMPLETE end-to-end (2026-06-23).** The last piece — the
 composed `Fin (k+1)` panel selector `Graph.ChainData.candidatePanel` + `candidatePanel_injective` +
@@ -399,10 +426,23 @@ peel the easy leaves and defer it.
 inductive chain / per-vertex witness / meet — it is the LANDED framework-free value-read
 (`interior_group_acolumn_eq_neg_baseRedundancy` = `−ρ₀` at the candidate index `i` + `edgeGroup_acolumn_mem_block`
 in the GRAPH-irrelevant base framework's block) fired one index deeper than the surviving-edge leaf; the FORK
-was a non-problem (see *Current state*). d=3 floor needs none of it. **The next commit is LEAF-4 step (ii) + the
-LEAF-5 router**: thread the crux's carried inputs (`hcomb`/`hlink`/`hrv`/`hends_i`/`hdeg1` = LEAF-3 base bundle +
-widening), build `W` (`chainData_bottom_relabel` + LEAF-2), `exact case_III_arm_corner_assembly`, then case-split
-the router on `(i:ℕ)` (base/d=3 → `chainData_split_realization`; interior → arm).
+was a non-problem (see *Current state*). d=3 floor needs none of it.
+
+**LEAF-4 (c)'s per-member `hS` router is now LANDED too (2026-06-24):
+`Graph.ChainData.bottomRelabel_image_mem_span_caseIIICandidate`** — the §(4.4)(β) hard part (the
+`chainData_bottom_relabel`-output disjunction → candidate span). **The next commit is the rest of the
+base block `W` + `exact case_III_arm_corner_assembly`**: in a `ChainData` producer at interior `1 < i`,
+take the LEAF-3 base bundle (`w`/`hw`/`hwmem`), set `f := w` relabelled along
+`L = (funLeft (cd.shiftPerm i.castSucc).symm).dualMap`, derive the `chainData_bottom_relabel`
+preconditions (`hrec`/`he₀rec`) from the LEAF-3 `ends` recording, run `chainData_bottom_relabel`
+per-member → `bottomRelabel_image_mem_span_caseIIICandidate` (this commit's router) for `hS`, derive
+`hvanish` (base rows vanish at `single (cd.shiftPerm i.castSucc (cd.vtx i.castSucc))` — the cycle-image
+of the re-inserted body), apply LEAF-2 (`span_relabelImage_le_and_finrank_and_acolumn_vanish`) to get
+`W`/`hWS`/`hWcard`/`hW`, derive `hρe₀` from the LANDED crux + bridge, and
+`exact case_III_arm_corner_assembly`. **Then the LEAF-5 router**: case-split on `(i:ℕ)` (base/d=3 →
+`chainData_split_realization`; interior → arm). The remaining build-time risk is the `hvanish` cycle
+arithmetic (`shiftPerm i.castSucc (vtx i.castSucc)` = the cycle image of `vᵢ`) + the `hrec`/`he₀rec`
+derivation — bounded `shiftPerm`/`vtx` algebra, no wall.
 
 **One design decision RESOLVED + LANDED (below the contract/motive — did NOT need coordinator/user).** The
 `W`/`hW` threading: `case_III_arm_corner_assembly` takes `hW` on a *specific* `W`, but the landed carrier leaf
@@ -487,9 +527,12 @@ is LANDED (2026-06-24); see the top-of-note block + *Current state* for the verd
 no chain-carry body — the obsolete `baseRedundancy_perp_chain_edge` inductive route (and the per-step
 column lemmas `baseRedundancy_group_acolumn_mem_inf`/`_perp`, `freshEdge_interior_acolumn_sup`,
 `interiorGroup_acolumn_two_group_decomp`) is ORPHANED (the crux fires the framework-free value read directly,
-one index deeper). **NEXT COMMIT: LEAF-4 step (ii) + LEAF-5 router** — thread the crux's carried inputs (LEAF-3
-base bundle + widening), build `W` (`chainData_bottom_relabel` + LEAF-2), `exact case_III_arm_corner_assembly`,
-then case-split the router on `(i:ℕ)`. **Gate-side caveat at LEAF-4 (ii):** the discriminator ran against the
+one index deeper). **LEAF-4 (c)'s per-member `hS` router is now LANDED**
+(`bottomRelabel_image_mem_span_caseIIICandidate`, 2026-06-24; see *Current state*). **NEXT COMMIT: the rest of
+LEAF-4 step (ii)'s `W` producer (the router + `hvanish` + LEAF-2) + `exact case_III_arm_corner_assembly`, then
+the LEAF-5 router** — build `W` (per-member `chainData_bottom_relabel` → the landed router + LEAF-2), derive
+`hρe₀` from the LANDED crux + bridge, then case-split the router on `(i:ℕ)`. **Gate-side caveat at LEAF-4 (ii):**
+the discriminator ran against the
 BASE seed `q`; the consumer `case_III_arm_corner_assembly` uses `candidateSeed i q` — a `shiftPerm`-image seed
 reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`shiftPerm` simp set, NOT the
 wall). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), revive the `interior_group_*`
@@ -560,13 +603,16 @@ column subtree, or fire W6b per-interior-split (`hsplitGP` unavailable). **Downs
    `baseRedundancy_perp_interior_reproduced_panel` (`Relabel/ForkedArm.lean`, axiom-clean, 2026-06-24) + the
    LANDED bridge `interior_hρe₀_of_splice_perp` — the eq-6.66 carry fired the framework-free value read one
    index deeper (NO chain-carry body; the `baseRedundancy_perp_chain_edge` route + the per-step column lemmas are
-   ORPHANED, see top-of-note); (ii) **the base block `W` (NEXT, the remaining LEAF-4 piece)**: `f := w`,
-   `L := (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem`
-   (genuine → off-slot GROUP leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge;
-   block-tag → reproduced-slot membership) routing `chainData_bottom_relabel`'s images into
-   `caseIIICandidate.rigidityRows`, `hvanish` = base-rows-over-old-bodies; apply LEAF-2. Then thread the crux's
-   carried inputs (LEAF-3 base bundle + widening) to produce `hρe₀`, and `exact case_III_arm_corner_assembly …
-   hgate hρe₀ hWS hWcard hW hdef`.
+   ORPHANED, see top-of-note); (ii) **the base block `W` (the remaining LEAF-4 piece)**: `f := w`,
+   `L := (funLeft (shiftPerm i.castSucc).symm).dualMap`. The `hS` per-member router ✓ LANDED (2026-06-24,
+   `bottomRelabel_image_mem_span_caseIIICandidate`, `Relabel/ForkedArm.lean`): one
+   `chainData_bottom_relabel` image-disjunction (genuine → off-slot row-routing bridge
+   `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`; block-tag → reproduced-slot membership)
+   routed into `caseIIICandidate.rigidityRows` span. **NEXT** = the `W` producer wrapping it (per-member
+   `chainData_bottom_relabel` → this router; `hrec`/`he₀rec` from the LEAF-3 `ends`-recording;
+   `hvanish` = base-rows-over-old-bodies vanish at `single (shiftPerm i.castSucc (vtx i.castSucc))`; apply
+   LEAF-2) → `W`/`hWS`/`hWcard`/`hW`; then derive `hρe₀` from the LANDED crux + bridge, and
+   `exact case_III_arm_corner_assembly … hgate hρe₀ hWS hWcard hW hdef`.
 5. **LEAF-5 (MODERATE)** — `chainData_dispatch` proper: the router. CASE on candidate `i`: base `i=1` + d=3
    floor → `chainData_split_realization` (zero-regression); interior `2 ≤ i < d` → LEAF-4. Latitude: the
    routing predicate + the C.4 `d=3` zero-regression adapter.
@@ -812,3 +858,16 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   (`chainData_freshEdge_perp_of_baseRedundancy`) supplies the SURVIVING-edge perps (`2 ≤ s`, `s+1 < i`) as
   INPUTS to the carry, not as `hsplice`. ORPHAN-CANDIDATE: `baseRedundancy_group_acolumn_perp` (b23e50e) is
   likely off the critical path now (group-column, not `ρ₀`-perp); leave in tree, decide at the crux build.
+- **LEAF-4 (c) per-member `hS` router LANDED (2026-06-24, axiom-clean, build/lint/warning-clean).**
+  `Graph.ChainData.bottomRelabel_image_mem_span_caseIIICandidate` (`Relabel/ForkedArm.lean`, after
+  `interior_hρe₀_of_splice_perp`): the §(4.4)(β) hard part — one `chainData_bottom_relabel`-output disjunction
+  (genuine seed row of `ofNormals (G − vᵢ) endsσρ qρ` OR reproduced-slot block tag
+  `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'`) routed into `span (caseIIICandidate G endsσρ qρ e_a e_b
+  (qρ(a,·)) n' (qρ(b,·)) 0).rigidityRows`. Genuine: destructure the rigidity-row, the surviving link is
+  off-slot (dispatch-supplied `heab_off`), transfer the block across the graph (`ofNormals` support is
+  graph-independent), `Submodule.subset_span` via `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`.
+  Reproduced: `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` at `e_b`'s genuine `(a,b)` link
+  (`hG_eb_cand`, `t = 0` ⟹ `hperp = hρ'`). The off-slot/`e_b`-link conditions are explicit hyps the `W`
+  producer discharges from the interior split tuple. NO `hρGv`, no new LA — pure assembly of landed leaves;
+  the per-member `hS` input LEAF-2's `span_relabelImage_le_and_finrank_and_acolumn_vanish` takes. The
+  remaining LEAF-4 step (ii) = the `W` producer (this router + `hvanish` + LEAF-2) + the assembly call.

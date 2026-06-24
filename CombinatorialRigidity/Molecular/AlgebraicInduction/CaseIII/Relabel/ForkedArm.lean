@@ -304,6 +304,86 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
   rw [cd.reproduced_panel_eq_splice_panel i h2i]
   exact hsplice
 
+/-! ### The base block `W`'s per-member `hS` router (Phase 23c §I.8.24(4.10) LEAF-4 step (ii))
+
+The base block `W` of the `±r` block decomposition (`case_III_arm_corner_assembly`'s
+`hWS`/`hWcard`/`hW`) is built by `BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_
+vanish` (LEAF-2) from the base-split W6b bottom family `w` relabelled along
+`L = (funLeft (shiftPerm i.castSucc)⁻¹).dualMap` — the cycle relabel `chainData_bottom_relabel`
+realizes. LEAF-2's `hS` slot needs each relabel image `L (w j)` IN the candidate's rigidity-row span
+`span (caseIIICandidate (G − vᵢ) (candidateEnds …) (candidateSeed …) e_a e_b …).rigidityRows`.
+
+`chainData_bottom_relabel` produces, for each `w j`, a disjunction over the *seed* framework
+`ofNormals (G − vᵢ) endsσρ qρ`: either a genuine rigidity row of it, or a reproduced-slot block tag
+`hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` with `ρ'` annihilating the candidate fresh pair's
+panel. This leaf is the per-member router carrying *that* disjunction into the candidate span:
+
+* the **genuine seed row** `hingeRow x y r` (`r ∈ (ofNormals (G − vᵢ) endsσρ qρ).hingeRowBlock e`
+  at a surviving link `(G − vᵢ).IsLink e x y`) is an off-slot candidate-edge row — its edge `e`
+  survives `removeVertex vᵢ`, so it is `vᵢ`-incidence-free, hence distinct from the two
+  `vᵢ`-incident candidate slots `e_a`, `e_b` — and routes through the off-slot bridge
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link` (the candidate keeps the seed
+  extensor off `{e_a, e_b}`, `caseIIICandidate_supportExtensor_of_ne`), giving
+  `Submodule.subset_span`;
+* the **reproduced-slot block tag** `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` routes through
+  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` at `e_b`'s genuine candidate link
+  `(vtx i.succ, vtx (i−1).castSucc) = (a, b)` (`hG_eb_cand`), with `hperp = hρ'` at the reproduced
+  slot's support `panelSupportExtensor (q(a,·) + 0 • n') (q(b,·))` (`t = 0`).
+
+The `vᵢ`-incidence of `e_a`, `e_b` and the candidate `e_b`-link are supplied by the dispatch
+(LEAF-5) from the interior split tuple. NO `hρGv`, no new linear algebra — the per-member
+case-split feeding LEAF-2 (`notes/Phase23-design.md` §I.8.24(4.10) LEAF-4 (c)). -/
+theorem _root_.Graph.ChainData.bottomRelabel_image_mem_span_caseIIICandidate
+    [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d)
+    {endsσρ : β → α × α} {qρ : α × Fin (k + 2) → ℝ}
+    {e_a e_b : β} {n' : Fin (k + 2) → ℝ}
+    -- the candidate's reproduced hinge `e_b` carries the genuine `(a, b)` link
+    (hG_eb_cand : G.IsLink e_b (cd.vtx i.succ)
+      (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+    -- the off-slot conditions on the two `vᵢ`-incident candidate slots (dispatch-supplied)
+    (heab_off : ∀ e x y, (G.removeVertex (cd.vtx i.castSucc)).IsLink e x y → e ≠ e_a ∧ e ≠ e_b)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals (G.removeVertex (cd.vtx i.castSucc))
+        endsσρ qρ).toBodyHinge.rigidityRows ∨
+      ∃ ρ' : Module.Dual ℝ (ScrewSpace k),
+        ρ' (panelSupportExtensor
+            (fun j => qρ (cd.vtx i.succ, j))
+            (fun j =>
+              qρ (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j)))
+          = 0 ∧
+        φ = BodyHingeFramework.hingeRow (cd.vtx i.succ)
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc) ρ') :
+    φ ∈ Submodule.span ℝ
+      (PanelHingeFramework.caseIIICandidate G endsσρ qρ e_a e_b
+        (fun j => qρ (cd.vtx i.succ, j)) n'
+        (fun j => qρ (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))
+        0).rigidityRows := by
+  classical
+  set a := cd.vtx i.succ with ha
+  set b := cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc with hb
+  rcases hφ with hgen | ⟨ρ', hρ', rfl⟩
+  · -- Genuine seed row at an off-slot surviving candidate link.
+    obtain ⟨e, x, y, hlink, r, hr, rfl⟩ := hgen
+    rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    obtain ⟨hea, heb⟩ := heab_off e x y hlink
+    refine Submodule.subset_span ?_
+    refine PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link
+      G endsσρ qρ e_a e_b (fun j => qρ (a, j)) n' (fun j => qρ (b, j)) 0 hea heb
+      ((Graph.removeVertex_isLink.mp hlink).1) ?_
+    -- transport the block membership across the graph (`ofNormals` support is graph-independent)
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff,
+      PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
+    have hr' := (BodyHingeFramework.mem_hingeRowBlock_iff _ e r).1 hr
+    rw [PanelHingeFramework.toBodyHinge_supportExtensor, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hr'
+    exact hr'
+  · -- Reproduced-slot block tag at `e_b`'s genuine candidate link `(a, b)`.
+    exact PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_reproduced G endsσρ qρ
+      e_a e_b (fun j => qρ (a, j)) n' (fun j => qρ (b, j)) 0 hG_eb_cand
+      (by rw [zero_smul, add_zero]; exact hρ')
+
 /-- **The chain arm's corner-data ASSEMBLY producer** (`lem:case-III general-d`, the option-(A)
 seam-resolution integration: assemble the `±r` block decomposition's `Mᵢ` corner block `g` from the
 landed sourcing leaves and feed it to the chain-arm spine `case_III_arm_realization_chain`, Phase
