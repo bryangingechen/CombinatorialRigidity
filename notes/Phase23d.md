@@ -137,30 +137,37 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 ## Blockers / open questions
 
 - **The member-mapping wall (intrinsic to KT for the EXISTING architecture, 5× kernel-confirmed) is
-  ESCAPED by route B's architectural inversion (§(4.25)) — pending LEAF-B1.** The existing static-W /
-  member-mapping / row-op / geometry-aware-transport routes are all kernel-dead (§(4.17)–(4.24)) because they
-  forced the redundant row into the base block `W`. Route B follows KT (6.64): redundant row → CORNER,
-  genuine rows → base block `W`. The remaining open item is **LEAF-B1** (genuine-basis extraction — the one
-  carried hypothesis), being de-risked by construction. If LEAF-B1 constructs, the unconditional crux is
-  resolved (no honest-conditional needed); if it walls, route A (concrete `Matrix`) is the informed fallback.
+  ESCAPED by route B's architectural inversion (§(4.25)); the crux LEAF-B1 is LANDED + de-risked (b239c97).**
+  Route B follows KT (6.64): redundant row → CORNER, genuine rows → base block `W`. The remaining open item
+  is the route-B build chain (LEAF-B2 → B3 → B4 → dispatch). **Residual risk = the per-member discharge in
+  LEAF-B2:** every genuine basis member must satisfy `hvanish` (vanish off the `σ.symm v` column) and `hS`
+  (transport into the candidate span); the build surfaces any member that doesn't (BLOCKED-with-diagnosis),
+  at which point the basis selection or route A (concrete `Matrix`) is reconsidered.
 
 ## Hand-off / next phase
 
-**Route B (§(4.25)) resolves the unconditional crux, pending the LEAF-B1 de-risk.** Next concrete commit =
-**DE-RISK LEAF-B1 by resuming the recon agent `ad8dafc55bcaf21e3`** (spike-salvage resume, rescue §6): it has
-the route-B design + its sorry-free spike facts in context. The resume (i) CONSTRUCTS LEAF-B1 (genuine-basis
-extraction — the crux + the structural twin of this session's carried-hypothesis false FEASIBLEs, so it gets
-the construct-or-concede test: land it sorry-free, or return BLOCKED with the precise obstruction), and (ii)
-salvages the genuinely-reusable sorry-free facts (Q1-A ±r column equality, Q2-B span-preservation, Q2-D `hW`)
-as real gate-clean lemmas — opening 23d's route-B build. If LEAF-B1 constructs, the rank cert is resolvable
-unconditionally via the route-B plan below.
+**Route B resolves the unconditional crux; the crux LEAF-B1 is LANDED (b239c97). Next concrete commit =
+LEAF-B2, the genuine-only `W` producer (the LEAF-2 rework).** Feed LEAF-B1's `f`
+(`exists_genuine_linearIndependent_basis_of_rigidityRows_diff`) into the LANDED
+`span_relabelImage_le_and_finrank_and_acolumn_vanish` (`Candidate.lean:1758`) at `σ = shiftPerm i.castSucc`:
+- `hS` per member from the genuine-row transport (`chainData_bottom_relabel` genuine branch /
+  `rigidityRow_relabel_to_genuine`), using the genuine-link data LEAF-B1's `f i ∈ rigidityRows` unpacks to;
+- `hvanish` per member from `hingeRow_comp_single_off` (each genuine row is off the `σ.symm v` column);
+- cardinality `= D(|V|−2)` from `span_rigidityRows_diff_singleton_eq_of_mem_span` (b239c97) + the IH `finrank
+  = D(|V|−2)`.
+Output: `W` with `hWS`/`hWcard`/`hW`, composing with the wall-free `case_III_rank_certification_chain`
+(takes `W`/`hWS`/`hWcard`/`hg`/`hLI`, no `hρGv`). **Watch the per-member discharge** (every basis member must
+both transport (`hS`) and vanish off `σ.symm v` (`hvanish`); a member that does neither is the one residual
+risk — return BLOCKED naming it). Also wire the wrap-edge block-tag rows through the block-tag membership
+(`blockRow_relabel_perm` / `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`), not the genuine
+transport.
 
-Route-B build plan (≈3–4 sub-phases): **LEAF-B1** (genuine-basis extraction, crux) → **LEAF-B2** (genuine-only
-`W` producer, rework of LEAF-2) → **LEAF-B3** (corner producer, mostly landed) → **LEAF-B4** (interior-arm
-rewire, drop the dead §(4.17) reproduced branch) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY
-(parallel-safe). Fallbacks: **route A** (concrete `Matrix`, KT transfers literally but heavy) if LEAF-B1 is
-intractable; **(C)** honest-conditional only if both B and A fail (`case_III_arm_realization_chain` already
-carries the rank-cert obligation as hypotheses, so (C) stays a cheap wiring+ASSEMBLY exercise).
+Route-B build plan: ✅ **LEAF-B1** (crux, landed) → **LEAF-B2** (genuine-only `W` producer, NEXT) → **LEAF-B3**
+(corner producer, mostly landed) → **LEAF-B4** (interior-arm rewire, drop the dead §(4.17) reproduced branch)
+→ CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe). Fallbacks: **route A** (concrete
+`Matrix`, KT transfers literally but heavy) if LEAF-B2+ walls; **(C)** honest-conditional only if both B and A
+fail (`case_III_arm_realization_chain` already carries the rank-cert obligation as hypotheses, so (C) stays a
+cheap wiring+ASSEMBLY exercise).
 
 ## Decisions made during this phase
 
