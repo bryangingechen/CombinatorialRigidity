@@ -27,8 +27,9 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**THE UNCONDITIONAL CRUX IS RESOLVABLE — route B works (design §I.8.24(4.25)), pending the one carried
-hypothesis LEAF-B1.** After the rank cert hit the member-mapping wall (kernel-confirmed 5× for the
+**THE UNCONDITIONAL CRUX IS RESOLVABLE — route B works (design §I.8.24(4.25)), and its one carried
+hypothesis LEAF-B1 is now LANDED + de-risked (below).** After the rank cert hit the member-mapping wall
+(kernel-confirmed 5× for the
 *existing* architecture: §(4.18) static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23)
 row-operation, §(4.24) geometry-aware-transport linearity + the A1 concede), a user-directed faithful
 re-architecture pass found the escape: an **architectural inversion faithful to KT (6.64)**. Every prior
@@ -87,7 +88,7 @@ Resolved 2026-06-24 by a read-only compiler-checked spike + a construct-or-conce
 OPUS-ONLY, agentId `a8d70da3d32f07ca3`). **VERDICT: INFEASIBLE** — the full verdict, the unsound-FEASIBLE
 first pass, the two sorry-free `concede_*` kernel re-derivations, and the no-feasible-route-in-hand
 finding for the §I.8.21(α) matrix-level infra are in **design §I.8.24(4.22)**. The *Current state* above
-carries the live consequence (the (C)/(D)/ENTRY adjudication). Do not re-run the spike.
+carries the live consequence (route B + the LEAF-B2 next step). Do not re-run the spike.
 
 ## Remaining work in Phase 23
 
