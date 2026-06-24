@@ -266,6 +266,100 @@ theorem _root_.Graph.ChainData.interiorGroup_acolumn_adjacency [DecidableEq α] 
   rw [he_ei, he_ep] at hcol
   exact eq_neg_of_add_eq_zero_left hcol
 
+/-- **The eq.~(6.44) interior degree-2 two-group column decomposition** (CHAIN-2c-iii LEAF-4, the
+interior-`hρe₀` carry's per-step regrouping core; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)/§6.4.1
+eq.~(6.43); `notes/Phase23-design.md` §I.8.24(4.15) sub-step (1)). The *unconditional* structural
+sibling of `interiorGroup_acolumn_adjacency`: where that lemma needs the global `vᵢ`-column
+*vanishing* `hcol = 0` to conclude the `= −` adjacency, this one states the underlying decomposition
+with no vanishing hypothesis — the `vᵢ`-column of the full edge-indexed combination
+`g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each summand a genuine `G`-link `evⱼ`) is the *sum* of the
+two incident chain-edge groups' `vᵢ`-columns, at an interior degree-2 chain vertex
+`a = vtx i.castSucc` (`0 < i`, `cd.deg_two`):
+
+`g.comp (single vᵢ) = (group(edge i)).comp (single vᵢ) + (group(edge (i−1))).comp (single vᵢ)`.
+
+This is the column-algebra heart of the LEAF-4 interior-`hρe₀` leaf's eq.~(6.52) regrouping of the
+LANDED widening's flat all-edge candidate-row form (`chainData_split_w6b_gates`'s `G_v`-row
+conjunct, KT eq.~(6.66)) at the degree-2 split vertex `vᵢ`: it isolates exactly the two-group
+structure `candidate_perp_two_incident_supportExtensors` consumes, with the off-`vᵢ` remainder
+`grest` of that consumer supplied as the **zero** functional (every non-incident summand has both
+endpoints `≠ vᵢ`, so its `vᵢ`-column vanishes by `hingeRow_comp_single_off` — the residue carries no
+`vᵢ`-column). The proof: reduce `g`'s `vᵢ`-column to its `vᵢ`-incident sub-combination
+(`_eq_incident`); partition the incident summands by `ev = edge i` (the rest are `edge (i−1)` by the
+degree-2 closure `deg_two_split`, disjoint by `edge_inj`); each filtered-over-`univ` group differs
+from its incident-restricted version only by non-incident summands whose `vᵢ`-column is `0`, so the
+two `univ`-filtered group columns sum to the incident column. Framework-free, zero blast radius. -/
+theorem _root_.Graph.ChainData.interiorGroup_acolumn_two_group_decomp [DecidableEq α]
+    [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j)) :
+    (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+    = (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+      + (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge ⟨(i : ℕ) - 1, by omega⟩),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)) := by
+  classical
+  set a := cd.vtx i.castSucc with ha
+  set ei := cd.edge i with hei
+  set ep := cd.edge ⟨(i : ℕ) - 1, by omega⟩ with hep
+  -- The two chain edges are distinct (`edge_inj`); each is a `G`-link incident to `a`.
+  have hep_ne_ei : ep ≠ ei := (cd.pred_edge_ne hi)
+  have hlink_ei : G.IsLink ei a (cd.vtx i.succ) := cd.isLink_succ_edge i
+  have hlink_ep : G.IsLink ep a (cd.vtx (⟨(i : ℕ) - 1, by omega⟩ : Fin cd.d).castSucc) :=
+    cd.isLink_pred_edge hi
+  -- A summand carried by `edge i` (resp. `edge (i−1)`) is incident to `a` (same-edge endpoints).
+  have hinc_ei : ∀ j, ev j = ei → a = uv j ∨ a = vv j := fun j hj =>
+    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_ei)).imp (·.1.symm) (·.2.symm)).symm
+  have hinc_ep : ∀ j, ev j = ep → a = uv j ∨ a = vv j := fun j hj =>
+    (((hlink j).symm.eq_and_eq_or_eq_and_eq (hj ▸ hlink_ep)).imp (·.1.symm) (·.2.symm)).symm
+  -- Every `a`-incident summand is carried by `edge i` or `edge (i−1)` (interior degree-2 closure).
+  have hdeg : ∀ j, (a = uv j ∨ a = vv j) → ev j = ei ∨ ev j = ep := by
+    intro j hj
+    rcases hj with h | h
+    · refine cd.deg_two_split hi (ev j) (vv j) ?_
+      rw [← ha, h]; exact hlink j
+    · refine cd.deg_two_split hi (ev j) (uv j) ?_
+      rw [← ha, h]; exact (hlink j).symm
+  -- The `a`-column of `g` is that of its `a`-incident sub-combination (`_eq_incident`).
+  rw [BodyHingeFramework.edgeIndexedCombination_comp_single_eq_incident a c uv vv rv]
+  -- Each `univ`-filtered group's `a`-column equals its incident-restricted version: the
+  -- non-incident summands carried by the edge have both endpoints `≠ a`, so their `a`-column
+  -- vanishes (`hingeRow_comp_single_off`). Stated as a reusable per-edge fact.
+  have hgroup : ∀ e : β, (∀ j, ev j = e → a = uv j ∨ a = vv j) →
+      (∑ j ∈ Finset.univ.filter (fun j => ev j = e),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)
+      = (∑ j ∈ (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = e),
+          c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) := by
+    intro e hinc
+    have hset : Finset.univ.filter (fun j => ev j = e)
+        = (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = e) := by
+      rw [Finset.filter_filter]
+      refine Finset.filter_congr fun j _ => ?_
+      exact ⟨fun h => ⟨hinc j h, h⟩, fun h => h.2⟩
+    rw [hset]
+  -- Rewrite both filtered groups to their incident-restricted versions, then split the incident sum
+  -- by `ev = ei` (the complement-within-incident being `ev = ep`, by `hdeg` + disjointness).
+  rw [hgroup ei hinc_ei, hgroup ep hinc_ep,
+    ← Finset.sum_filter_add_sum_filter_not
+      (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)) (fun j => ev j = ei), LinearMap.add_comp]
+  -- The `¬ ev = ei` incident part is exactly the `ev = ep` incident part (deg2 closure + edge_inj).
+  congr 1
+  have hset : (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ¬ ev j = ei)
+      = (Finset.univ.filter (fun j => a = uv j ∨ a = vv j)).filter (fun j => ev j = ep) := by
+    refine Finset.filter_congr fun j hj => ?_
+    have hinc_j : a = uv j ∨ a = vv j := (Finset.mem_filter.mp hj).2
+    constructor
+    · intro hni; exact ((hdeg j hinc_j).resolve_left hni)
+    · intro hj_ep h; exact hep_ne_ei (hj_ep ▸ h)
+  rw [hset]
+
 /-! ### The eq.~(6.44) chain-induction anchor (CHAIN-2c-ii-arm, LEAF 2)
 
 The base case of the KT eq.~(6.66) `±r` chain induction

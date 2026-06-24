@@ -143,8 +143,27 @@ d=3-base / `M₃` single-block situation). This is the column-projection brick t
 leaf's eq-6.52 regrouping at the degree-2 vertex `vᵢ` threads through. Zero blast radius (no live
 caller yet).
 
-**NEXT: LEAF-4 step (i) (THE CONJECTURE CRUX) — build the GENUINELY-NEW inductive sub-lemma
-`ChainData.baseRedundancy_perp_chain_edge`, then assemble the interior-`hρe₀` leaf, then (ii) the base block
+**LEAF-4 step (i) sub-step (1) regrouping column-algebra core — the POSITIVE INTERIOR DEGREE-2
+TWO-GROUP COLUMN DECOMPOSITION `Graph.ChainData.interiorGroup_acolumn_two_group_decomp` — is LANDED
+(2026-06-24, axiom-clean, build/lint/warning-clean).** `Relabel/ChainColumn.lean`, right after the
+conditional `= −` sibling `interiorGroup_acolumn_adjacency` it complements. The *unconditional*
+structural identity: at an interior degree-2 chain vertex `a = vtx i.castSucc` (`0 < i`), the
+`vᵢ`-column of the full edge-indexed combination `g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (each
+summand a genuine `G`-link `evⱼ`) is the *sum* of its two incident chain-edge groups' `vᵢ`-columns —
+NO `hcol = 0` premise (its sibling needs vanishing to conclude `= −`; this one is the raw split). It
+isolates exactly the two-group structure `candidate_perp_two_incident_supportExtensors` consumes,
+with that consumer's `grest` supplied as the **zero** functional (non-incident summands carry no
+`vᵢ`-column, `hingeRow_comp_single_off`). This is the column-algebra heart of §I.8.24(4.15)
+sub-step (1)'s regrouping of the LANDED widening's flat all-edge form (`chainData_split_w6b_gates`'s
+`G_v`-row conjunct, KT eq-6.66) at the degree-2 split vertex `vᵢ`: it lets the carry's per-step
+`candidate_perp_two_incident_supportExtensors` call construct its `hcol`/`hrest` from the flat
+widening rather than assume them. Proof is a clean replay of `interiorGroup_acolumn_adjacency`'s
+index-set manipulation (`_eq_incident` + `deg_two_split` + `edge_inj` filter-congr) without the
+vanishing hypothesis. Zero blast radius (no live caller yet).
+
+**NEXT: LEAF-4 step (i) (THE CONJECTURE CRUX) — assemble the GENUINELY-NEW inductive sub-lemma
+`ChainData.baseRedundancy_perp_chain_edge` over the now-LANDED column-algebra bricks, then assemble
+the interior-`hρe₀` leaf, then (ii) the base block
 `W` + `exact case_III_arm_corner_assembly`. A DECOMPOSE+SETTLE pass + a diverse-lens recon PAIR HAVE RUN
 (source-verified, CONVERGED, coordinator-adjudicated, 2026-06-24) — design §I.8.24(4.15), which SUPERSEDES
 §(4.14)'s Route A.** The pair KILLED §(4.14)'s Route A (degree-1 neighbour-column): the neighbour
@@ -161,8 +180,10 @@ overridden → the shortcut) + `edge (i−2)` (off-slot); the carry's `ρ₀ ⊥
 at `b` ⟹ `ρ₀ ⊥ e_b`'s support = the shortcut = `hρe₀`). Route B (Grassmann–Cayley meet via `Meet.lean`) =
 FALLBACK only if a per-step `hcol` is unsatisfiable (not expected). Full route + per-step shape in design
 §I.8.24(4.15). **Build order:** widening (i′) ✓ DONE; column-SUP `freshEdge_interior_acolumn_sup` ✓ DONE
-(per-step `hcol`, keep); **(i) build `baseRedundancy_perp_chain_edge`** (THE conjecture crux — rate a build by
-IT, not the Lean-checked final step or the `W`-plumbing), then assemble the leaf (carry at `s = i−2` + the final
+(per-step `hcol`, keep); regrouping column-core `interiorGroup_acolumn_two_group_decomp` ✓ DONE (the positive
+two-group split feeding the per-step `candidate_perp_two_incident_supportExtensors`); **(i) build
+`baseRedundancy_perp_chain_edge`** (THE conjecture crux — rate a build by IT, not the Lean-checked final step or
+the `W`-plumbing), then assemble the leaf (carry at `s = i−2` + the final
 application); **(ii)** the base block `W` via `chainData_bottom_relabel` + LEAF-2, then
 `exact case_III_arm_corner_assembly`. Do **NOT** pin to a degree-1 neighbour-column projection (shortcut isn't a
 graph edge), to `candidate_perp_two_incident` at `v` (incident panels only), to
@@ -409,8 +430,16 @@ the existential `(nGv,cGv,evGv,uvGv,vvGv,rvGv)` + per-summand `(G−v)`-link/blo
 `Graph.ChainData.freshEdge_interior_acolumn_sup` (`Relabel/Arm.lean`) — the `vᵢ`-column → two-block-sup
 step of the regrouping (`φ ∘ single (vtx (s+1)) ∈ block (edge s) ⊔ block (edge (s+1))` at a
 genuinely-surviving interior vertex, strict `s + 2 < (i:ℕ)`), the general-`i` lift of the d=3 gate
-`i3_freshEdge_interior_acolumn_sup_deRisk`. **NEXT COMMIT: LEAF-4 step (i) (THE CONJECTURE CRUX) — build the
-genuinely-new inductive sub-lemma `ChainData.baseRedundancy_perp_chain_edge`.** A DECOMPOSE+SETTLE pass + a
+`i3_freshEdge_interior_acolumn_sup_deRisk`. **LEAF-4 step (i) sub-step (1) regrouping column-core is LANDED**
+(2026-06-24, axiom-clean): `Graph.ChainData.interiorGroup_acolumn_two_group_decomp` (`Relabel/ChainColumn.lean`,
+beside `interiorGroup_acolumn_adjacency`) — the POSITIVE two-group column split (`g.comp (single vᵢ) =
+(group(edge i)).comp (single vᵢ) + (group(edge (i−1))).comp (single vᵢ)`, NO `hcol = 0` premise, the
+unconditional sibling of the `= −` adjacency form), the column-algebra that lets the carry's per-step
+`candidate_perp_two_incident_supportExtensors` call build its `hcol`/`hrest` (with `grest = 0`) from the flat
+widening form rather than assume them. **NEXT COMMIT: LEAF-4 step (i) (THE CONJECTURE CRUX) — assemble the
+genuinely-new inductive sub-lemma `ChainData.baseRedundancy_perp_chain_edge`** over the now-LANDED bricks
+(widening i′ + column-SUP `freshEdge_interior_acolumn_sup` + this regrouping column-core). A DECOMPOSE+SETTLE
+pass + a
 diverse-lens recon PAIR ran (CONVERGED, coordinator-adjudicated, 2026-06-24; design §I.8.24(4.15), which
 SUPERSEDES §(4.14)'s Route A). The pair KILLED Route A (degree-1 neighbour-column): the neighbour
 `b = vtx (i−1).castSucc` is itself an interior chain vertex, **degree-2 in `G`** (`deg_two`), so its column
@@ -505,10 +534,14 @@ genuinely-new).
    `hingeRow_swap a b (-ρ)` + `neg_neg`); the two consumers took a `_` binder.
    **(i) the interior-`hρe₀` leaf** — DECOMPOSED+SETTLED by a diverse-lens recon PAIR (CONVERGED,
    coordinator-adjudicated; design §I.8.24(4.15), SUPERSEDES §(4.14) Route A). sub-step (1) the **eq-6.52
-   regrouping is SATISFIABLE** — the LANDED widening's flat all-edge form, partitioned at the degree-2 vertex
-   (via `ChainData.deg_two`), with the per-step `hcol` = `freshEdge_interior_acolumn_sup` (LANDED, the two-block
-   SUP, strict `s+2 < i`), feeds `candidate_perp_two_incident_supportExtensors` (precedent
-   `freshEdge_surviving_row_mem_of_witness`). sub-step (2) Route A (degree-1 neighbour-column) is **KILLED** —
+   regrouping is SATISFIABLE and its column-algebra core is LANDED** — the positive two-group split
+   `interiorGroup_acolumn_two_group_decomp` (2026-06-24, `Relabel/ChainColumn.lean`, axiom-clean) decomposes the
+   LANDED widening's flat all-edge form, partitioned at the degree-2 vertex (via `ChainData.deg_two`), into the
+   two incident chain-edge groups' `vᵢ`-columns (NO `hcol=0` premise, the unconditional sibling of
+   `interiorGroup_acolumn_adjacency`), so the per-step `candidate_perp_two_incident_supportExtensors` (per-step
+   `hcol` = `freshEdge_interior_acolumn_sup`, LANDED, two-block SUP, strict `s+2 < i`; `grest = 0`) can build its
+   inputs (precedent `freshEdge_surviving_row_mem_of_witness`). sub-step (2) Route A (degree-1 neighbour-column)
+   is **KILLED** —
    the neighbour `b = vtx (i−1).castSucc` is itself an interior chain vertex, degree-2 in `G` (`deg_two`;
    `caseIIICandidate.graph = G`), so its column lands in a two-block SUP, never the isolated shortcut block (and
    the shortcut `(a,b)` isn't a graph edge — it is `e_b`'s OVERRIDDEN support in `F₀`). **CORRECTED ROUTE:** build
@@ -709,6 +742,15 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   removed → degree-ONE, the d3-base/`M₃` one-edge case). The `vᵢ`-column → two-block-sup step of the
   interior-`hρe₀` regrouping; zero blast radius (no live caller). Build note: `s + 1 < i` is WRONG — it
   permits `i = s+2` where `vtx (s+2) = vtx i` is removed (caught by an `omega`-fail on `s + 2 ≠ (i:ℕ)`).
+- **LEAF-4 step (i) sub-step (1) regrouping column-core (2026-06-24, axiom-clean, build/lint/warning-clean).**
+  `Graph.ChainData.interiorGroup_acolumn_two_group_decomp` (`Relabel/ChainColumn.lean`, beside the conditional
+  `interiorGroup_acolumn_adjacency`): the POSITIVE two-group column split `g.comp (single vᵢ) =
+  (group(edge i)).comp (single vᵢ) + (group(edge (i−1))).comp (single vᵢ)` at an interior degree-2 vertex
+  (`0 < i`), with NO `hcol = 0` premise (the unconditional sibling of the `= −` adjacency form). The
+  column-algebra that lets the carry's per-step `candidate_perp_two_incident_supportExtensors` build its
+  `hcol`/`hrest` (with `grest = 0`) from the flat widening rather than assume them. Proof = clean replay of the
+  adjacency lemma's `_eq_incident` + `deg_two_split` + `edge_inj` filter-congr, sans the vanishing hypothesis;
+  zero blast radius.
 - **LEAF-4 interior-`hρe₀` DECOMPOSE+SETTLE + diverse-lens recon PAIR (2026-06-24, docs-only; design
   §I.8.24(4.15), CONVERGED, coordinator-adjudicated).** Sub-step (1) eq-6.52 REGROUPING = **SATISFIABLE** (the
   LANDED widening's flat all-edge form, partitioned at the degree-2 vertex by `deg_two`, per-step `hcol` =
