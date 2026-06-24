@@ -117,12 +117,29 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 451 | dispatch recon — scope option-A `W`-production (6800e9b, design §4.27) | —/—/— | opus | recon/resume | recon — VERDICT (B): option A walls; route 4 wall-free | — | 375k tok / 39 tools / 10.3 min | SendMessage-resume of the spike to scope the option-A fallback. VERDICT (B): the option-A engine `W` ALSO walls (takes `hρGv`; per-`i` realization needs out-of-scope IH + unrelated `ρᵢ`), correcting the §(4.26) hope. WALL-FREE = route 4 (seed-framework): `W := span(candidate seed rows)`; `hWS`/`hW` kernel-verified wall-free (`probe3_seed_W`), residual = `hseedrank` = the relabel rank-iso (`hρGv`-free, base IH). COST ≈ 2 leaves + dispatch + CHAIN-5; de-risk = NEW LEAF 1 (general-`d` `rigidityRows_ofNormals_relabel`, chain-generalize the `d=3` lemma, MEDIUM). Committed §(4.27). |
 | 452 | route-4 NEW LEAF 2 — `exists_seed_base_block` (057a86e); seed-`W` producer | 2/2/1 | opus | build/resume | clean (2 rounds; bg-build stall recovery) | ✓✓✓—✓✓ | 76 tools / ≈25 min (2 resume rounds) | Build-resume of the spike, salvaging its verified `probe3_seed_W`. Landed `exists_seed_base_block` (route-4 NEW LEAF 2, wall-free seed-`W` producer): `W := span(candidate seed rows)`; `hWS`/`hW` discharged with NO `hS`/`hρGv`; `hWcard` ⟵ `hseedrank` — the genuinely-true relabel rank-iso, a SATISFIABLE hyp NEW LEAF 1 discharges (NOT route B's unsatisfiable `hG_eb_cand`). Took 2 resume rounds: build-resume STALLED awaiting a background `lake build`; a finish-resume ran the gate foreground + committed. NEXT = NEW LEAF 1 (the involution-fail/splitOff-bridge risk). |
 | 453 | route-4 NEW LEAF 1 build (fresh agent) — BLOCKED: `hseedrank` false for the bare seed (→ §4.28) | —/—/— | opus | build | BLOCKED — route 4-bare walls (caught the §4.27 error) | — | 154k tok / 26 tools / 4.9 min | FRESH agent (spike context degrading). Recon-before-building found `hseedrank` PROVABLY FALSE for the BARE seed: the wrap edge `edge i` relabels (landed `removeVertex_genuine_shiftRelabel` `Or.inr`) to the non-chain pair `(vtx(i−1),vtx(i+1))`, absent from `R(G − vᵢ)`. The landed `d=3` relabel iso is SPLITOFF-only. CONTRADICTS + corrects §(4.27) (asserted `hseedrank` from a bare-seed iso the coordinator accepted without reading the lemma's splitOff form). Wrap-edge wall, 3rd time. → §(4.28); route 4-splitOff is the unverified fix; user decision owed. No commit. |
+| 454 | route-4-splitOff verify-first spike (50af6e0, §4.29) — Q1 wall-free, Q2 WALLS | —/—/— | opus | recon/resume | recon — route 4-splitOff WALLS (4th wrap-edge; base-block family CLOSED) | — | 293k tok / 87 tools / 23.6 min | Verify-first spike. Q1 (splitOff↔splitOff relabel rank-iso, non-involutive cycle) = WALL-FREE, sorry-free (~40 LoC; involution facts NOT load-bearing). Q2 (`hWS`: the splitOff seed's fresh `e₀'` row ∈ candidate span) = WALLS: `e₀' ∉ E(G)` kills the off-slot bridge; the difference-collapse through `vᵢ` needs `ρ' ⊥ C(vᵢ₊₁,n')` (the OVERRIDDEN slot), gate-violated. The wall = the discriminator gate, intrinsic to the `caseIIICandidate` slot-override, INVARIANT under base-block re-targeting (4th: A/B/4-bare/4-splitOff). Base-block family CLOSED → route A vs (C). Q1 bankable. §(4.29). |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-24 (row 454) — the wrap-edge wall is INTRINSIC to the `caseIIICandidate` slot-override
+  (the discriminator gate), invariant under any base-block re-targeting; "Q1-clean-while-Q2-walls" was the
+  precise diagnostic.** Verifying route 4-splitOff (verify-first, user-chosen) split cleanly: Q1 (the
+  splitOff↔splitOff relabel rank-iso at the non-involutive cycle) is WALL-FREE and sorry-free — the relabel/
+  rank machinery generalizes fine (the `d=3` involution facts were artifacts, not load-bearing) — but Q2 (the
+  fresh `e₀'` short-circuit row entering the candidate span) WALLS by the SAME discriminator-gate condition
+  `ρ₀ ⊥̸ C(vᵢ₊₁, n')` that blocked routes A/B/4-bare. That gate is *what makes the `±r` corner the independent
+  `D`-th row*, so it re-surfaces wherever the wrap-edge content tries to enter the candidate span, regardless
+  of how the base block `W` is chosen (4th appearance). **Lessons:** (1) when a wall recurs across structurally
+  different fixes, suspect it is intrinsic to a shared downstream object (here the candidate's slot-override),
+  not to the varied upstream choice — and verify THAT before the next re-targeting (this verify-first spike
+  cost ~1 recon and closed the whole base-block family, vs. building a 3rd dead route). (2) Splitting a verify
+  into independent sub-questions (Q1 rank / Q2 containment / Q3 cert) localizes the wall precisely: Q1 clean +
+  Q2 walls told us the obstacle is one layer above the seed, not the relabel. (3) The genuine-row base-block
+  rank-cert reconsideration is now CLOSED to all routes in hand; the honest unconditional theorem needs route
+  A (concrete `Matrix`, the wrap row a literal row not a span member), else honest-conditional (C).
 - **2026-06-24 (rows 451→453) — a scoping recon's "generalize the landed lemma" can hide a
   FRAMEWORK-FORM mismatch (splitOff vs bare), and a fresh make-or-break build caught what the coordinator's
   acceptance did not.** §(4.27) scoped route 4 as wall-free with `hseedrank` "from the relabel rank-iso,
