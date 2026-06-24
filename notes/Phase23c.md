@@ -45,33 +45,47 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > `span_relabelImage_le_and_finrank_and_acolumn_vanish`); the **option-(a) contract field `d_eq : d = n`** on
 > the `ChainData` record + its `cd.d = k+1` bridge `d_eq_kAdd` — which CLOSES the frozen-contract
 > discriminator-index gap (KT-structural `d = k+1`; see *Decisions made* + DESIGN.md *Frozen contracts must
-> encode the invariants relating their parameters*). **The next concrete commit is the rest of LEAF-3** — build
-> `cand : Fin (k+1) → α` (transport `cd.vtx` across `d_eq_kAdd`), fire `chainData_split_w6b_gates` +
-> `exists_chainData_discriminator_pick` ONCE, expose `hgate`/`hρe₀` at the matched candidate `i` (the eq-6.66
-> `±r`-annihilation is the flagged hard step). Then **LEAF-4 (THE HARD CORE: base-block `W` + the `hS`
+> encode the invariants relating their parameters*); the selector `candidateVtx` + `candidateVtx_injective`;
+> and the panel↔candidate match `candidateVtx_succ_eq` (`candidateVtx i = vtx i.succ` at interior `i`). **So
+> the record-local discriminator-index plumbing is COMPLETE. The next concrete commit is the
+> discriminator-firing producer** — build `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`, fire
+> `chainData_split_w6b_gates` + `exists_chainData_discriminator_pick` ONCE, split on the matched
+> `i := Fin.cast d_eq_kAdd.symm u` (interior via `candidateVtx_succ_eq`; base `i=0` via the floor route), and
+> expose `hgate`/`hρe₀` at the matched candidate `i` (the eq-6.66 `±r`-annihilation is the flagged hard step).
+> Then **LEAF-4 (THE HARD CORE: base-block `W` + the `hS`
 > disjunction)** → LEAF-5 (router) → CHAIN-5. **Do NOT** re-attempt the four dead route families
 > (§I.8.18–(I.8.20)), re-litigate the fork, or revive the relabel-image `±r` route. See *Current state* + *Hand-off*.
 
 ## Current state
 
-**The LEAF-3 panel→vertex selector `Graph.ChainData.candidateVtx` + its injectivity
-`candidateVtx_injective` are LANDED (`Induction/Operations.lean`, after `candidateSeed`;
-build/lint/axiom-clean, warning-clean).** The record-local (`k`-free) half of the discriminator-index
-plumbing: `candidateVtx i = vtx 0` at `i = 0` (panel `Π₀ = Π(v₀)`) else `vtx ⟨i+1,_⟩` (panel
-`Πᵢ = Π(v_{i+1})`, `1 ≤ i ≤ d−1`; KT §6.4.2 eq. 6.67), with the two `@[simp]` computation lemmas
-`candidateVtx_zero`/`_succ` and the injectivity the discriminator's `Function.Injective cand`
-hypothesis requires (the selected `v₀, v₂, …, v_d` are distinct chain vertices; the base body `v₁` is
-omitted — `vtx_inj` + a `split_ifs … <;> omega`). This is the genuinely-new combinatorial piece the
-rest of LEAF-3 builds on; it lives in `Induction/` (no `ScrewSpace`/`k` dependency), beside the LEAF-1
-`candidateEnds`/`candidateSeed` siblings. The dispatch composes it with the already-landed `cd.d = k+1`
-bridge `Graph.ChainData.d_eq_kAdd` to obtain the `Fin (k+1) → α` selector for
-`exists_chainData_discriminator_pick`.
+**The LEAF-3 panel↔chain-candidate match bridge `Graph.ChainData.candidateVtx_succ_eq` is LANDED
+(`Induction/Operations.lean`, after `candidateVtx_injective`; build/lint/axiom-clean, warning-clean).**
+The discriminator-routing identity: at an interior panel index `i` (`0 < (i:ℕ)`) the selector's
+chosen vertex `candidateVtx i = vtx ⟨i+1,_⟩` IS the interior-split arm's successor neighbour
+`vtx i.succ` (the `a := vtx i.succ` of `chainData_split_realization` / `case_III_arm_corner_assembly`)
+— a `rfl`-level `Fin` identity (`candidateVtx_succ` then `Fin.succ_mk`). This is the combinatorial
+bridge the dispatch uses to route the Claim-6.12 panel discriminator's chosen panel `u` to the chain
+arm at the matched candidate `i`: the discriminator's gate at `candidateVtx i` becomes the arm's gate
+at `vtx i.succ`. The base body `v₁ = vtx 1` is the `i = 0 ↦ v₀ = vtx 0` case (`candidateVtx_zero`),
+routed to the d=3-floor / base engine instead. Not `@[simp]` (the simp normal form of `candidateVtx i`
+is already `vtx ⟨i+1,_⟩` via `candidateVtx_succ`; this is the `vtx i.succ`-shaped alias consumed by
+name). Record-local, `k`-free, no `ScrewSpace`/LA — beside the LEAF-1 `candidateEnds`/`candidateSeed` +
+the selector `candidateVtx`/`candidateVtx_injective` siblings.
 
-**NEXT: the rest of LEAF-3 proper** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
-`exists_chainData_discriminator_pick` (fed `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`, injective
-by `candidateVtx_injective` ∘ the cast bijection) ONCE off the shared base, and expose `hgate`/`hρe₀`
-at the matched interior candidate `i` (the eq-6.66 `±r`-annihilation `hρe₀` is the flagged downstream
-risk, lands here or in LEAF-4). The `d_eq_kAdd` bridge stays declared `_root_.Graph.ChainData.d_eq_kAdd`
+**So the discriminator-index plumbing is COMPLETE at the record-local level** (the field `d_eq`, the
+`cd.d = k+1` bridge `d_eq_kAdd`, the selector `candidateVtx` + `candidateVtx_injective`, the `u↔i`
+match `candidateVtx_succ_eq`). The dispatch composes them: `cand := candidateVtx ∘ Fin.cast
+d_eq_kAdd.symm` (injective by `candidateVtx_injective ∘ (Fin.cast …).injective`), the discriminator's
+`u : Fin (k+1)` maps to the chain candidate `i := Fin.cast d_eq_kAdd.symm u : Fin cd.d`, and
+`candidateVtx_succ_eq` (interior) / `candidateVtx_zero` (base) turn the gate at `cand u` into the
+arm's gate at `vtx i.succ`.
+
+**NEXT: the discriminator-firing producer (the rest of LEAF-3 proper)** — fire
+`chainData_split_w6b_gates` (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick` (fed the composed
+`cand`) ONCE off the shared base, then split on the matched `i := Fin.cast d_eq_kAdd.symm u` (interior
+`0 < i` → `candidateVtx_succ_eq`; base `i = 0` → d=3-floor route) and expose `hgate`/`hρe₀` at the
+matched interior candidate `i` (the eq-6.66 `±r`-annihilation `hρe₀` is the flagged downstream risk,
+lands here or in LEAF-4). The `d_eq_kAdd` bridge stays declared `_root_.Graph.ChainData.d_eq_kAdd`
 (the TACTICS-QUIRKS § 56 trap — a bare `Graph.`-prefixed decl inside `namespace …Molecular` would
 create a `…Molecular.Graph` sub-namespace that breaks downstream `V(·)`/`E(·)` parsing).
 
@@ -324,13 +338,20 @@ LEAF-4/CHAIN bookkeeping).
    `Πᵢ=Π(v_{i+1})`, named record-locally + proved injective). ✓ **LANDED** 2026-06-23
    (`Induction/Operations.lean`, after `candidateSeed`; build/lint/axiom-clean, warning-clean). The
    `Fin (k+1)` transport happens at the dispatch via `candidateVtx ∘ Fin.cast d_eq_kAdd.symm`.
-   **The rest of LEAF-3 proper (NEXT)** — set `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm` (injective
-   by `candidateVtx_injective` ∘ the `Fin.cast` bijection), fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
-   `exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at the matched
-   interior candidate `i`. The panel-`u : Fin (k+1)`↔candidate-`i : Fin cd.d` match transports via
-   `d_eq_kAdd`. The wiring is the d=3 template
-   `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s `htrans` slot, re-aimed at the
-   assembly's `hgate`/`hρe₀`.
+   **The LEAF-3 panel↔candidate match `candidateVtx_succ_eq`** (`candidateVtx i = vtx i.succ` at
+   interior `0 < i`, the `rfl`-level `Fin` bridge routing the discriminator's panel `u` to the chain
+   arm's successor neighbour). ✓ **LANDED** 2026-06-23 (`Induction/Operations.lean`, after
+   `candidateVtx_injective`; build/lint/axiom-clean, warning-clean; `candidateVtx_succ` + `Fin.succ_mk`,
+   not `@[simp]`). So the **record-local discriminator-index plumbing is now COMPLETE** (field `d_eq` +
+   bridge `d_eq_kAdd` + selector `candidateVtx`/`candidateVtx_injective` + match `candidateVtx_succ_eq`).
+   **The discriminator-firing producer (NEXT)** — set `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`
+   (injective by `candidateVtx_injective ∘ (Fin.cast …).injective`), fire `chainData_split_w6b_gates`
+   (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick` ONCE off the shared base; split on the matched
+   `i := Fin.cast d_eq_kAdd.symm u` (interior `0 < i` → `candidateVtx_succ_eq` turns the gate at
+   `cand u` into the arm's gate at `vtx i.succ`; base `i=0` → the d=3-floor / base route via
+   `candidateVtx_zero`) and expose `hgate`/`hρe₀` at the matched interior candidate `i`. The wiring is the
+   d=3 template `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s `htrans` slot,
+   re-aimed at the assembly's `hgate`/`hρe₀`.
 4. **LEAF-4 (THE HARD CORE)** — the interior base-block `W` production: `f := w`, `L := (funLeft (shiftPerm
    i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem` (genuine → off-slot GROUP leaf
    `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge; block-tag → reproduced-slot
@@ -453,39 +474,27 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   by the bridge, (4.8)-class trap). Resolves the `W`/`hW` threading decision (return-shape mismatch, not a
   motive change); unblocks LEAF-4's `hW`.
 - **Dispatch LEAF-1: the interior-candidate relabel-image selector/seed (2026-06-23).** Two `ChainData`
-  accessors in `Induction/Operations.lean` (beside the sibling interior-split accessors): `candidateEnds i
-  ends₀ = fun e => (ρ.symm (ends₀ (σ e)).1, ρ.symm (ends₀ (σ e)).2)` and `candidateSeed i q = fun p => q (ρ
-  p.1, p.2)`, `(ρ, σ) = (shiftPerm i.castSucc, shiftEdgePerm i)`, each with a `rfl` `@[simp]` `_apply` lemma.
-  They are `chainData_bottom_relabel`'s target framework named as `def`s, so LEAF-4's `hS` case-split routes
-  its image rows into them by `rfl`. `candidateSeed` is generic in the fibre type `γ` (no `ScrewSpace`/`k`
-  dep, so it lives upstream in `Induction/`); the unused `[DecidableEq β]` on its `_apply` lemma is dropped
-  with `omit … in`. Pure bookkeeping, no new math; the override (`hends_ea/eb`) + general-position
-  (`hLn`/`hgab`/`hne_Gv`) facts depend on LEAF-3's `n'`/split-realization context and are built inline there.
-- **Dispatch contract field `d_eq : d = n` (2026-06-23, option a).** Added to the `ChainData` RECORD
-  (`Induction/Operations.lean`, right after `hd`; build/lint/axiom-clean), resolving the LEAF-3
-  discriminator-index gap (the `Fin (k+1)`-indexed discriminators vs the `i : Fin cd.d` chain candidate align
-  only via `d = k+1`, KT §6.4.2-structural). Stated `d = n` against the record parameter (`k` is not one;
-  `n = k+1` recovered at use sites from `bodyBarDim n = screwDim k`). Purely additive — no `ChainData` value
-  constructions exist yet (`exists_chain_data_of_noRigid` still returns the OLD fixed 4-tuple, a 23d/ENTRY
-  obligation), so no construction site to fix; the ENTRY extractor will *set* `d_eq` (KT Lemma 4.6 builds the
-  chain to length `n`). Unblocks LEAF-3 proper.
-- **Dispatch `cd.d = k + 1` bridge `Graph.ChainData.d_eq_kAdd` (2026-06-23).** The `d_eq`-companion
-  closing the §I.8.24(4.11) discriminator-index gap end-to-end: from the record field `d_eq : d = n`
-  and the ambient `hn : bodyBarDim n = screwDim k` it derives `cd.d = k + 1`, the identity matching the
-  `Fin (k+1)` panel discriminator to the `Fin cd.d` chain candidate. `CaseIII/Realization.lean` (before
-  `chainData_split_realization`; axiom-clean, warning-clean). Pure `ℕ`-arithmetic: clear `bodyBarDim`/
-  `screwDim`'s `/2` to `n(n+1) = (k+2)(k+1)` (`Nat.mul_div_cancel'` + `Nat.even_mul_{succ,pred}_self`),
-  then `nlinarith`. **Declared `_root_.Graph.ChainData.d_eq_kAdd`** — a bare `Graph.…` inside
-  `namespace …Molecular` makes a `…Molecular.Graph` sub-namespace that captures downstream
-  `open scoped Graph` and breaks `V(·)`/`E(·)` parsing (TACTICS-QUIRKS § 56, the known trap; bit
-  again here, fix matched the documented `_root_.` remedy). Unblocks the rest of LEAF-3 proper.
-- **Dispatch LEAF-3 panel→vertex selector `candidateVtx` + `candidateVtx_injective` (2026-06-23).** The
-  `k`-free half of the discriminator's `cand : Fin (k+1) → α` input, named record-locally beside the
-  LEAF-1 `candidateEnds`/`candidateSeed` siblings (`Induction/Operations.lean`, axiom-clean,
-  build/lint warning-clean). `candidateVtx i = vtx 0` at `i = 0` (panel `Π₀ = Π(v₀)`) else `vtx ⟨i+1,_⟩`
-  (panel `Πᵢ = Π(v_{i+1})`, `1 ≤ i ≤ d−1`; KT §6.4.2 eq. 6.67), with the two `@[simp]` `_zero`/`_succ`
-  computation lemmas (each `rw [candidateVtx, if_pos/if_neg]`) and the injectivity (`vtx_inj` after
-  `split_ifs at hval … <;> simp only [Fin.val_zero] … <;> exact Fin.ext (by omega)`; the omitted base
-  body `v₁` keeps `i = 0 ↦ v₀` clear of every `i ≥ 1 ↦ v_{i+1}`). `k`-free, so it lives upstream in
-  `Induction/`; the `Fin (k+1)` transport is the dispatch's `candidateVtx ∘ Fin.cast d_eq_kAdd.symm`.
-  Pure combinatorial setup, no new math; the genuinely-new piece the rest of LEAF-3 builds on.
+  accessors `candidateEnds`/`candidateSeed` (`Induction/Operations.lean`, beside the interior-split
+  accessors) = `chainData_bottom_relabel`'s target framework named as `def`s (`(ρ,σ) = (shiftPerm
+  i.castSucc, shiftEdgePerm i)`), each with a `rfl` `@[simp]` `_apply`; `candidateSeed` generic in the
+  fibre `γ` (no `ScrewSpace`/`k` dep). So LEAF-4's `hS` routes its image rows into them by `rfl`. Pure
+  bookkeeping. The override (`hends_ea/eb`) + general-position (`hLn`/`hgab`/`hne_Gv`) facts depend on
+  LEAF-3's `n'`/split-realization context, built inline there.
+- **Dispatch discriminator-index plumbing — option (a), record-local, COMPLETE (2026-06-23, four
+  axiom-clean adders closing §I.8.24(4.11)).** The `Fin (k+1)`-indexed discriminators vs the `i : Fin
+  cd.d` chain candidate align only via `d = k+1` (KT §6.4.2-structural); these four pieces close it
+  below the dispatch:
+  - **field `d_eq : d = n`** on the `ChainData` RECORD (`Operations.lean`, after `hd`) — stated against
+    the record parameter `n` (`k` not one; `n = k+1` recovered at use from `bodyBarDim n = screwDim k`);
+    purely additive (no value constructions exist; ENTRY *sets* it from KT Lemma 4.6).
+  - **bridge `Graph.ChainData.d_eq_kAdd`** (`CaseIII/Realization.lean`) — `d_eq` + `hn` ⟹ `cd.d = k+1`;
+    pure `ℕ`-arith (clear the `/2` to `n(n+1)=(k+2)(k+1)`, `nlinarith`). Declared `_root_.…` to dodge
+    the §56 sub-namespace trap (a bare `Graph.…` inside `namespace …Molecular` breaks `V(·)`/`E(·)`).
+  - **selector `candidateVtx` + `candidateVtx_injective`** (`Operations.lean`) — the eq-6.67 panel→vertex
+    map (`Π₀=Π(v₀)`, `Πᵢ=Π(v_{i+1})`) + the `Function.Injective cand` half; `k`-free.
+  - **match `candidateVtx_succ_eq`** (`Operations.lean`, after `candidateVtx_injective`) — `candidateVtx i
+    = vtx i.succ` at interior `0 < (i:ℕ)`, the `rfl`-level `Fin` bridge (`candidateVtx_succ`+`Fin.succ_mk`,
+    not `@[simp]`) routing the discriminator's panel `u` to the chain arm's successor neighbour. The
+    dispatch composes them: `cand := candidateVtx ∘ Fin.cast d_eq_kAdd.symm`, `i := Fin.cast …symm u`, gate
+    at `cand u` ⟹ gate at `vtx i.succ` (interior) / `vtx 0` (base `i=0`, floor route). NEXT = the
+    discriminator-firing producer.

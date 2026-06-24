@@ -2784,6 +2784,23 @@ lemma candidateVtx_injective (cd : G.ChainData n) : Function.Injective cd.candid
   split_ifs at hval with hi hi' hi' <;> simp only [Fin.val_zero] at hval <;>
     exact Fin.ext (by omega)
 
+omit [DecidableEq α] [DecidableEq β] in
+/-- **The interior panel↔chain-candidate match** (CHAIN-2c-iii, the LEAF-3 discriminator-routing
+identity; Katoh–Tanigawa 2011 §6.4.2 eq. 6.67). At an interior panel index `i` (`0 < i`) the
+selector's chosen vertex `candidateVtx i = v_{i+1}` is *the same vertex* as the interior-split arm's
+successor neighbour `vtx i.succ` (`= vtx ⟨i+1, _⟩` as a `Fin (cd.d + 1)` index, the
+`a := vtx i.succ` of `chainData_split_realization` / `case_III_arm_corner_assembly`). This is the
+combinatorial bridge the general-`d` dispatch (CHAIN-2c-iii `chainData_dispatch`) uses to route the
+Claim-6.12 panel discriminator's chosen panel `u` to the chain arm at the matched candidate `i`: the
+discriminator's gate at `candidateVtx i` becomes the arm's gate at `vtx i.succ` by this `rfl`-level
+`Fin` identity.
+The omitted base body `v₁ = vtx 1` is the `i = 0 ↦ v₀ = vtx 0` case (`candidateVtx_zero`), routed to
+the d=3-floor / base engine instead. (Not `@[simp]`: `candidateVtx_succ` already carries the simp
+normal form `vtx ⟨i+1, _⟩` for `candidateVtx i`; this is the `vtx i.succ`-shaped alias the arm
+re-index consumes by name.) -/
+lemma candidateVtx_succ_eq (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ)) :
+    cd.candidateVtx i = cd.vtx i.succ := by rw [cd.candidateVtx_succ hi, Fin.succ_mk]
+
 end ChainData
 
 end Graph
