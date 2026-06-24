@@ -27,70 +27,40 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**Next concrete step = the A1 §I.8.21(α) FEASIBILITY RECON — a read-only compiler-checked SPIKE, NOT a
-build** (the dispatch-ready spec is the *A1 dispatch kit* below). The single question: *does a
-matrix-level block-rank-additivity lemma compose with the `±r` corner WITHOUT materialising the
-fixed-member `hφ` membership that forces the wall?* Then:
-- **A1 = FEASIBLE** → build **A2** (the §I.8.21(α) matrix-level block-rank-additivity infra), then wire it
-  into `case_III_rank_certification_chain` / `case_III_arm_realization` and complete `chainData_dispatch`
-  (CHAIN-2c-iii) + CHAIN-5.
-- **A1 = INFEASIBLE** → fall to **(C)** land the general-`d` Theorem 5.5 conditional on the rank-cert
-  obligation as an explicit top-level `h…` hypothesis (documenting the wall as the frontier), or **(D)** a
-  broader reconsideration / external input.
+**A1 IS RESOLVED — VERDICT: INFEASIBLE (2026-06-24, design §I.8.24(4.22)).** The §I.8.21(α) feasibility
+spike's first pass returned FEASIBLE, but coordinator scrutiny found it UNSOUND — a route-COMPOSITION
+verdict (the static-`W` cert `case_III_rank_certification_chain` type-checks with the corner data carried
+as hypotheses) mis-read as a dischargeability one. A construct-or-concede resume **CONCEDED** and built
+two NEW sorry-free kernel re-derivations (`concede_hG_eb_cand_unsatisfiable` = §(4.17);
+`concede_through_v_row_breaks_hW` = §(4.18)) confirming the corner data's `W`/router inputs are
+**kernel-unsatisfiable for the real interior carry**. The §I.8.21(α) matrix-level infra has **no feasible
+route in hand**: a static-`W` cert is dead (§(4.18)); the operated-frame analogue either keeps the `±r`
+corner (refuted by §(4.19) `htopvanish` counterexample) or reintroduces `hρGv` = the wall (§(4.20),
+intrinsic to KT). Full verdict + the three-fold kernel confirmation: design §I.8.24(4.22).
+
+**Next concrete step = USER ADJUDICATION of the phase direction** (a phase-boundary decision the
+coordinator surfaced rather than picking unilaterally):
+- **(C)** land the general-`d` Theorem 5.5 **conditional** on the rank-cert obligation as an explicit
+  top-level `h…` hypothesis (documents the wall as the frontier; concrete + buildable, lets ASSEMBLY
+  proceed). The likely recommendation — it converts the wall into a stated frontier and unblocks the
+  downstream theorem chain.
+- **(D)** broader reconsideration / external input toward a genuinely-new §I.8.21(α) infra escaping BOTH
+  the static-`W` impossibility AND the `±r`/`htopvanish` counterexample (no route in hand; open-ended).
+- **ENTRY** (parallel-safe, available regardless): open it as its own sub-phase for green-node momentum —
+  independent of the blocked rank cert (CHAIN↔ENTRY contract frozen). See *Remaining work* item 4.
 
 **Do NOT** (settled this phase + at the 23c STOP): re-attempt the four dead route families
 (§I.8.18–I.8.20); re-litigate the (A)-vs-ENTRY fork; re-attempt (A)/(B′)/(A′); re-hunt for a "missed KT
-route" (the §(4.21) source recon settled there is none); or blind-build the §I.8.21(α) infra before A1's
-verdict.
+route" (§(4.21) settled there is none); or re-run the A1 feasibility spike (resolved INFEASIBLE — §(4.22);
+the static-`W` cert + the router reproduced branch are kernel-dead a third time over).
 
-**Parallel-safe alternative (NOT the chosen next step, available if you want green-node momentum while the
-rank cert soaks):** open **ENTRY** as its own sub-phase — it is independent of the blocked rank cert (the
-CHAIN↔ENTRY contract is frozen). See *Remaining work* item 4.
+## The A1 §I.8.21(α) feasibility recon — DONE (verdict INFEASIBLE)
 
-## The A1 dispatch kit — the §I.8.21(α) feasibility recon (the first dispatch)
-
-**Shape: a read-only COMPILER-CHECKED SPIKE** (un-named for a synchronous return; opus under OPUS-ONLY) — a
-route-COMPOSITION question in the defeq-fragile cert zone, NOT a faithfulness question (faithfulness is
-settled by §(4.21)), so it goes to the kernel, not a prose design-pass. Dispatch a tailored recon prompt
-(per `coordinate-phase` rescue §6), NOT the routine build prompt.
-
-**The question (the deliverable's core):** *Can a MATRIX-LEVEL block-rank-additivity lemma
-`rank R(G,pᵢ) ≥ rank Mᵢ + rank R(G₁,q₁)` — formalizing KT's "submatrix containment" (6.61) as a
-rank-preserving block embedding induced by the index-shift iso `ρᵢ` + the column op `Φ` — be stated and
-COMPOSED with the `±r` corner cert WITHOUT materialising the fixed-member `hφ` row membership that forces
-the wall?*
-
-**Deliverable:** FEASIBLE-VIA-LEMMA-X (+ the exact lemma statement + the kernel-checked residual of
-composing it with the `±r` corner + confirmation it never forms the `hφ` membership) /
-INFEASIBLE-BECAUSE-Y (+ where it re-incurs the wall).
-
-**Context to hand the spike (all verified during 23c):**
-- **The gap is LOCALIZED.** KT's union-dimension finish (6.67, "at least one `Mᵢ` is full rank") is
-  ALREADY LANDED as **CHAIN-4** (`exists_complementIso_ne_zero_of_homogeneousIncidence_gen`,
-  `Claim612.lean`) + the extensor-independence (KT Lemma 2.1) as **CHAIN-3** (`Meet`/`MeetHodge.lean`). So
-  the ONLY missing piece is the per-`Mᵢ` block-rank-ADDITIVITY (the matrix-level
-  `rank ≥ rank Mᵢ + rank R(G₁,q₁)`).
-- **The precedent + the exact gap.** The §(4.18) de-risk LANDED a GENERIC block-rank lemma
-  `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` (`Matroid/Constructions/…`), but it consumes a
-  SCALAR fixed-member membership (`hWS : W ≤ span F₀.rigidityRows` + `hW`) at the single rank-cert use site
-  (`Candidate.lean:1606–1611`) — that membership is what forces the wall (§(4.18)). The new lemma must
-  instead carry the WHOLE base matrix `R(G₁,q₁)` as a BLOCK (a rank-preserving embedding), never forming a
-  per-row membership. Read these two decls first.
-- **The model.** The d=3 engine `case_III_rank_certification` (`Candidate.lean:1508`) certifies in the
-  OPERATED frame (`Φ = columnOp hva`, `Pv` off-`v` projection, `case_III_full_family_restriction`,
-  `linearIndependent_sum_restriction_block` `RigidityMatrix/Basic.lean:1189`); KT's (6.62) submatrix
-  containment is the relabel `(funLeft (shiftPerm i.castSucc)⁻¹).dualMap`. The matrix-level lemma must turn
-  "the relabel embeds `R(G₁,q₁)` as a sub-block of `R(G,pᵢ)`" into a `finrank`/`rank` additivity.
-- **mathlib survey** for the abstract piece: `Matrix.rank`/block-triangular, `LinearMap.rank` of a block
-  map, rank-additivity over an injective/relabel map, `Submodule.finrank_sup`/`_add` — find or state the
-  right rank-preserving-block-embedding lemma.
-
-**Design-pass clauses (mandatory in the recon prompt):** (i) verify every load-bearing claim against the
-LANDED bodies (the d=3 cert, CHAIN-3/4, the generic block-rank lemma + its use site), not prior prose;
-(ii) FLAG-DON'T-FORCE — an honest "INFEASIBLE because the matrix-level embedding STILL needs a per-member
-membership at step Z" (→ option (C)/(D)) beats a forced feasible plan; (iii) trace the actual objects (the
-column op `Φ`'s action, the relabel embedding's image, the `D·m_v` count, where `±r`'s `ℝ^D` identity
-enters 6.67) to ground.
+Resolved 2026-06-24 by a read-only compiler-checked spike + a construct-or-concede resume (opus /
+OPUS-ONLY, agentId `a8d70da3d32f07ca3`). **VERDICT: INFEASIBLE** — the full verdict, the unsound-FEASIBLE
+first pass, the two sorry-free `concede_*` kernel re-derivations, and the no-feasible-route-in-hand
+finding for the §I.8.21(α) matrix-level infra are in **design §I.8.24(4.22)**. The *Current state* above
+carries the live consequence (the (C)/(D)/ENTRY adjudication). Do not re-run the spike.
 
 ## Remaining work in Phase 23
 
@@ -135,19 +105,30 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Blockers / open questions
 
-- **The `hρGv` member-mapping wall (intrinsic to KT) blocks the general-`d` interior rank cert.** All three
-  escape routes (A/B′/A′) are refuted (design §I.8.24(4.17)–(4.20), four kernel spikes); the KT-§6.4.2
-  source recon (§(4.21), primary-PDF, HIGH confidence) confirms there is NO missed KT route. The open
-  question A1 resolves: can a matrix-level block-rank-additivity lemma (KT's submatrix containment 6.61 as a
-  rank-preserving block embedding) certify the rank WITHOUT the fixed-member `hφ` membership? FEASIBLE → A2;
-  INFEASIBLE → (C)/(D).
+- **The `hρGv` member-mapping wall (intrinsic to KT) blocks the general-`d` interior rank cert — and A1
+  is now RESOLVED INFEASIBLE.** All escape routes (A/B′/A′) are refuted (design §I.8.24(4.17)–(4.20), four
+  kernel spikes); the KT-§6.4.2 source recon (§(4.21)) confirms NO missed KT route; and the A1 §I.8.21(α)
+  feasibility spike (§(4.22), 2026-06-24) confirms — a THIRD kernel time — that no matrix-level
+  block-rank-additivity lemma discharges the rank without the unsatisfiable corner data (the FEASIBLE first
+  pass was an unsound composition-only verdict, withdrawn at the construct-or-concede resume). **So the
+  rank-cert obligation is the documented frontier; the only open decision is the phase DIRECTION** —
+  (C) honest-conditional / (D) reconsider / open ENTRY — pending user adjudication (see *Current state*).
 
 ## Hand-off / next phase
 
-**Next concrete commit-equivalent: dispatch the A1 §I.8.21(α) feasibility recon** (read-only spike; the *A1
-dispatch kit* above is the dispatch-ready spec). It returns FEASIBLE-VIA-LEMMA-X / INFEASIBLE-BECAUSE-Y; its
-verdict selects 23d's build path (A2 / (C) / (D)). The recon is the smallest move that resolves the central
-uncertainty; do not build the §I.8.21(α) infra before its verdict.
+**A1 is resolved INFEASIBLE (§(4.22)); the central uncertainty is settled.** Next concrete
+commit-equivalent = the **user-adjudicated phase direction**, then a first commit on it:
+- **(C) honest-conditional** *(likely rec)* — restate the general-`d` Theorem 5.5 / arm spine carrying the
+  rank-cert obligation as an explicit top-level `h…` hypothesis (the landed `case_III_arm_realization_chain`
+  already takes the corner data as hypotheses, so this is a wiring + ASSEMBLY exercise, not new rank-cert
+  math); first commit = pin the conditional shape at the spine's consume site + re-green the downstream
+  `theorem_55` chain conditionally. Estimate: a handful of commits to ASSEMBLY.
+- **(D) reconsider** — no route in hand; a fresh design pass toward a §I.8.21(α) infra escaping both the
+  static-`W` impossibility and the `±r`/`htopvanish` counterexample. Open-ended.
+- **ENTRY** (parallel-safe) — mint it as its own sub-phase and build `exists_chainData_of_noRigid` against
+  the frozen contract; rank-cert-independent. See *Remaining work* item 4.
+
+Coordinator surfaced (C)/(D)/ENTRY to the user (phase-boundary decision); do not pick unilaterally.
 
 ## Decisions made during this phase
 
@@ -161,3 +142,12 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   the rank-certification reconsideration (A1 recon → A2 build / (C) honest-conditional / (D) reconsider),
   still within the CHAIN layer (CHAIN now spans 23b+23c+23d). ENTRY/ASSEMBLY get later letters. Structural
   precedent: the 23b→23c clean-break close at this same wall.
+- **A1 §I.8.21(α) feasibility = INFEASIBLE (2026-06-24, design §(4.22)).** A read-only compiler-checked
+  spike first returned FEASIBLE; coordinator scrutiny found it unsound — it verified the static-`W` cert
+  `case_III_rank_certification_chain` COMPOSES (corner data carried as hypotheses) and re-confirmed the
+  already-known row-membership escape, but never confronted that those hypotheses are unsatisfiable for the
+  real interior carry (the exact "deferred-hypothesis unsatisfiable for the consumer" trap, DESIGN.md
+  *Constructibility recon*). A construct-or-concede resume CONCEDED, building two sorry-free `concede_*`
+  kernel re-derivations of §(4.17)/(4.18) for the actual dispatch slot. The §I.8.21(α) matrix-level infra
+  has no feasible route in hand (operated-frame variants refuted by §(4.19)/(4.20)). Lesson promoted to
+  Findings (model-experiment) + the satisfiability corollary already in DESIGN.md.

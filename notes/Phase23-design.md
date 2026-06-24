@@ -2984,6 +2984,56 @@ decomposition of the SECOND build it teed up.**
   lets Lean count the rank the way KT counts it on paper." A fresh-session design+build of the §I.8.21(α)
   infra — cost-unknown — is the next concrete direction; ALL LANDED leaves stay in tree (reusable).**
 
+  *(4.22) THE A1 §I.8.21(α) FEASIBILITY SPIKE — VERDICT: INFEASIBLE (the §(4.21) "build the
+  matrix-block-rank infra" direction has NO feasible route in hand; the FEASIBLE first pass was
+  WITHDRAWN). Read-only compiler-checked spike + a construct-or-concede resume, opus / OPUS-ONLY,
+  2026-06-24, agentId `a8d70da3d32f07ca3` (resumable). → option (C)/(D); user adjudication pending.*
+
+  **First pass returned FEASIBLE — and it was UNSOUND (a route-COMPOSITION verdict mis-read as a
+  dischargeability one).** The spike pointed at the LANDED static-`W` cert
+  `case_III_rank_certification_chain` (`Candidate.lean:2039`) + the router's reproduced branch and built
+  two scratch lemmas: SPIKE 1 produced `W`/`hW` "sorry-free", SPIKE 2 closed the full interior arm with
+  "only a `G.deficiency n = 0` residual". But BOTH carried the load-bearing data —
+  `f, hf, hvanish, hG_eb_cand, hdisj` (SPIKE 1) and `W, hWS, hWcard, hW` (SPIKE 2) — as HYPOTHESES,
+  never discharged; the lone residual was the spine-level deficiency, NOT evidence the corner data is
+  satisfiable. So the pass only re-proved that the already-landed `case_III_arm_corner_assembly`
+  TYPE-CHECKS, and confirmed the (already-known, §(4.18)-agreed) ROW/membership escape — it did NOT
+  touch the actual wall (`W`-existence / dischargeability for the real interior carry).
+
+  **The construct-or-concede resume CONCEDED, with two NEW sorry-free kernel re-derivations** (built
+  green, deleted): `concede_hG_eb_cand_unsatisfiable` re-derives §(4.17) for the REAL dispatch slot
+  `e_b = cd.edge ⟨i−1⟩` (its landed link `isLink_pred_edge : G.IsLink e_b (vtx i.castSucc)
+  (vtx (i−1).castSucc)` = `(v,b)` vs. the router's required `(vtx i.succ, vtx (i−1).castSucc)` = `(a,b)`
+  ⟹ `IsLink.left_unique` + `vtx_inj` ⟹ `False`); `concede_through_v_row_breaks_hW` re-derives §(4.18)
+  (the redundancy member's only candidate-span rep is the through-`vᵢ` row `hingeRow B vᵢ ρ₀`, `single
+  vᵢ`-column `−ρ₀` by `reproducedSlot_pmR_acolumn_eq`; in `W` + `hW` ⟹ `ρ₀ = 0` ⊥ `hgate`). **No third
+  route:** the only two landed candidate-span hinge-row membership lemmas are `_of_ofNormals_link`
+  (genuine survivor, both endpoints off `vᵢ` — cannot carry a through-`vᵢ` row) and `_reproduced` (needs
+  the unsatisfiable `hG_eb_cand`). Off-`vᵢ` wrap-tag ⟹ breaks `hWS`; through-`vᵢ` rep ⟹ breaks `hW`. So
+  `hWS ∧ hWcard ∧ hW` are jointly unsatisfiable on the redundancy member — kernel-confirmed a THIRD time.
+
+  **A1's matrix-level-infra question (the §(4.21) "genuinely-new idea"): NO feasible route in hand.** A
+  static-`W` cert is dead (§(4.18), re-confirmed). The flat-OPERATED-frame analogue that DOES certify the
+  rank either (i) keeps the genuine `±r` corner — already kernel-refuted by §(4.19) (B′): the `±r` row is
+  not pure-`vᵢ`-column after `Φ`, a counterexample to `htopvanish`, not a sorry'able gap — or (ii)
+  reintroduces the collapsed corner `hingeRow v a ρ` + `hρGv` = (A′) = the wall, §(4.20) found intrinsic
+  to KT. So the §I.8.21(α) infra would have to escape BOTH the static-`W` impossibility AND the
+  `±r`/`htopvanish` counterexample at once; none is in hand, and every route adjacent to it (A/B′/A′) is
+  kernel-refuted.
+
+  **Decision (verdict; user adjudication pending).** A1 = INFEASIBLE. The rank-cert obligation cannot be
+  discharged for the general-`d` interior carry with current machinery. → option **(C)** (land general-`d`
+  Theorem 5.5 conditional on the rank-cert obligation as an explicit top-level `h…` hypothesis,
+  documenting the wall as the frontier; concrete + buildable, lets ASSEMBLY proceed) or **(D)** (broader
+  reconsideration / external input; no route in hand). The parallel-safe **ENTRY** sub-phase is available
+  for green-node momentum regardless (frozen contract, rank-cert-independent). ALL landed leaves stay in
+  tree (sound, reusable). **Lesson** (Findings 2026-06-24; the satisfiability corollary already in
+  DESIGN.md *Constructibility recon*): a compiler-checked SPIKE answers a route-COMPOSITION question, NOT
+  a dischargeability one — a type-checking composition with the crux carried as hypotheses can report a
+  single residual and still be unsound; the discriminating test is CONSTRUCT-OR-CONCEDE (produce the
+  actual object, or concede), and resuming the SAME spike armed with the prior kernel-impossibilities is
+  the cheapest decisive settle.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

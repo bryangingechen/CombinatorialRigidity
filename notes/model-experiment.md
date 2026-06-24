@@ -64,14 +64,16 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#29 (latest: **#29**, 2026-06-24,
-  fresh `/coordinate-phase`; user re-confirmed the triple at session start; opus
-  reachable via the Agent `model` param, no substitution needed). **The
-  override expires session-end — a fresh coordinator re-runs the
-  session-start availability check + re-confirms the triple.** **23c closed 2026-06-24 at the
-  member-mapping-wall phase STOP; the active sub-phase is now 23d** — next dispatch =
-  the A1 §I.8.21(α) feasibility recon (read-only spike), full kit in
-  `notes/Phase23d.md` *A1 dispatch kit*. ALL landed leaves stay in tree (sound, reusable).
+  would re-probe. Set/re-confirmed sessions #6–#30 (latest: **#30**, 2026-06-24,
+  fresh `/coordinate-phase`; user re-confirmed the triple [Standard triple] at
+  session start; opus reachable via the Agent `model` param, no substitution
+  needed). **The override expires session-end — a fresh coordinator re-runs the
+  session-start availability check + re-confirms the triple.** **The active
+  sub-phase is 23d; the A1 §I.8.21(α) feasibility recon is RESOLVED INFEASIBLE**
+  (session #30, rows 435–436; design §I.8.24(4.22)). **Next dispatch awaits user
+  adjudication of the phase direction — (C) honest-conditional / (D) reconsider /
+  open ENTRY** (`notes/Phase23d.md` *Current state* + *Hand-off*). ALL landed
+  leaves stay in tree (sound, reusable).
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -94,9 +96,31 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 
 | # | Task | S/P/B | Model | Mode | Outcome | Rubric | Cost | Notes |
 |---|---|---|---|---|---|---|---|---|
+| 435 | A1 §I.8.21(α) feasibility spike (→ design §(4.22)) | —/—/— | opus | recon | recon — verdict UNSOUND, caught | — | 171k tok / 36 tools / 8.9 min | First-pass FEASIBLE = a route-COMPOSITION verdict (static-`W` cert type-checks w/ corner data carried as hyps; lone residual = spine deficiency) mis-read as dischargeability; leaned on the §(4.18)-dead cert + §(4.17)-dead router branch, and answered the wrong A1 question (the existing cert, not the new matrix-infra). Mechanically clean, substantively unsound — caught only by the coordinator confronting prior kernel impossibilities. → Findings 2026-06-24. |
+| 436 | A1 spike resume — construct-or-concede (→ §(4.22)) | —/—/— | opus | recon/resume | recon — CONCEDED | — | 194k tok / 9 tools / 3.3 min | SendMessage-resume of 435 (same agentId, context intact) w/ the §(4.17)+§(4.18) confrontation. CONCEDED; built 2 sorry-free `concede_*` kernel re-derivations of the impossibilities for the real dispatch slot; confirmed SPIKE 1/2 carried `hG_eb_cand`/`W`/`hWS` as hyps, never discharged. Resume reused the full read phase (9 tools) — cheap vs a fresh refute agent. → Findings 2026-06-24. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+- **2026-06-24 (rows 435–436) — the A1 §I.8.21(α) dissolution-recon episode (the value of
+  construct-or-concede on a fragile-zone dissolution).** A compiler-checked SPIKE answers a
+  route-COMPOSITION question ("do these objects compose to goal X?"), NOT a dischargeability one. The A1
+  spike built a type-checking composition of the landed static-`W` cert + corner-assembly with the corner
+  data (`W`/`hWS`/`hG_eb_cand`/`hvanish`) carried as HYPOTHESES, reported a single (spine-deficiency)
+  residual, and returned **FEASIBLE** — but it never discharged those hypotheses, which two PRIOR kernel
+  spikes (§(4.17)/(4.18)) had already proved unsatisfiable for the real consumer. Four tells let the
+  coordinator catch it without a build: (a) the verdict DISSOLVED the phase's central wall (the
+  highest-scrutiny trigger); (b) it contradicted a same-day STOP + primary-source recon; (c) it re-pointed
+  at the exact decls those prior spikes killed; (d) it answered the wrong deliverable (the existing
+  static-`W` cert, not the *new* §I.8.21(α) matrix-level infra A1 asked about). The decisive settle was a
+  **construct-or-concede resume of the SAME spike** (SendMessage to its agentId, context + read phase
+  intact, 9 tools / 3.3 min — far cheaper than a fresh refute agent): *produce the actual object at the
+  kernel, or concede*. It conceded, re-deriving §(4.17)/(4.18) as two sorry-free `concede_*` theorems for
+  the real dispatch slot. **Lesson:** for a dissolution verdict in a fragile zone, the cheapest decisive
+  audit is to resume the same spike armed with the prior kernel-impossibilities and force
+  construct-or-concede; a "single residual" from a composition spike is NOT evidence of dischargeability
+  when the crux is carried as a hypothesis. (The satisfiability corollary is already in DESIGN.md
+  *Constructibility recon*; this episode adds the construct-or-concede resume as its audit instrument.)
 
