@@ -11,10 +11,11 @@ completes the analytic half of KT Proposition 1.1 (`rigidityMatrix_prop11`, now 
 diffuse-typeclass cost (molecular `maxHeartbeats` count 3→1) — a pure implementation change that **does
 not move the math frontier**. **Phase 23 is in progress** (Case III general `d`, KT Lemma 6.13 → Thm
 5.5/5.6 → Conjecture 1.2; sub-lettered, codes-until-open, authoritative recon `notes/Phase23-design.md`):
-**`CARRIER`=23a + `CHAIN`=23b closed** (23a lifted the spine to `screwDim k`; 23b landed the CHAIN bricks but
-hit a hard core — the `hρGv` redundancy-carry is the *member-mapping wall*, intrinsic to KT; `notes/Phase23b.md`),
-**23c open** on the redundancy-carry re-architecture decision + chain-dispatch completion (`notes/Phase23c.md`),
-`ENTRY`/`ASSEMBLY` code-only. Phases
+**`CARRIER`=23a + `CHAIN`=23b + 23c closed** (23a lifted the spine to `screwDim k`; 23b/23c built the CHAIN
+bricks + option (A), the `±r`-block rank cert, but hit the *member-mapping wall*, intrinsic to KT — all three
+rank-cert escape routes refuted, a phase STOP; the interior-`hρe₀` crux closed + all leaves in tree),
+**23d open** on the rank-certification reconsideration (`notes/Phase23d.md`; next = the A1 §I.8.21(α)
+feasibility recon), `ENTRY`/`ASSEMBLY` later codes. Phases
 24–26 planned (the 3-D bar-joint matroid, projective invariance + the modelling equivalence, and the
 molecule-application capstone). The per-phase record lives in the phase table and per-phase detail
 blocks below, ROADMAP §17–§22k, and `notes/PhaseN.md` — this Status paragraph is a pointer,
@@ -233,7 +234,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 22j ✓ | **The shared eq.-(6.12) placement abstraction** (closed, `notes/Phase22j.md`; design §1.68). A span-transport "pinned placement" rank brick (`le_finrank_span_rigidityRows_of_pinned_placement` + augment) the Case-II / Lemma-6.8 producers refactor onto — the L6b producer had inlined a ≈1010-line placement because no shared brick fit the split-off. A two-brick family (Brick A span-rank + the existing `case_III_old_new_blocks` device-feed; Case I stays separate). Consolidated the L6b producer onto it, retired the dead L6a, landed the producer cleanup (dead-code + both stopgap suppressions dropped). | §6.3, §6.4.1 | — |
 | 22k ✓ | **Completing the honest all-`k` Theorem 5.5 + Thm 5.6 at `d=3`** (closed 2026-06-16; `notes/Phase22k.md`; layers L7–L10). Discharged the last three 22h carries: Case III rewire (`h622` from the all-`k` IH → `case_III_nested_rank_lower`), the Lemma-6.5 arm (`h65`, via Claim 6.6 + a `def=0` vacuity argument), and the zero-carry spine (`hsplit`; `theorem_55_all_k` / `theorem_55_d3` restated carry-free) — `thm:theorem-55`, `thm:theorem-55-d3-instance` green. Then Theorem 5.6 at `d=3` (`rankHypothesis_of_theorem_55_d3`: spanning-strip + projective-move-free re-add), greening `prop:rigidity-matrix-prop11` (the `def>0` feed) and minting `thm:theorem-55-6-d3`. Consumed 22j's Brick A. | §5.2, §6.1–6.4 | 5 |
 | 22l ✓ | **ScrewSpace carrier opacity — d=3 API + migration** (build-time structural-edit refactor; closed 2026-06-16, `notes/Phase22l.md`). Flipped `ScrewSpace` `abbrev`→opaque `def` with a `mk`/`val`/`≃ₗ` API, after migrating the d=3 tree bottom-up along the import spine, cutting the diffuse-typeclass cost behind the surviving `maxHeartbeats` overrides (molecular count 3→1: two caps to default, one 600000→400000). d=3 scope only; general-`d` API deferred to the Phase-23 boundary (unblocks but does not start the "part 2" migration). Recon canonical in `notes/ScrewSpaceCarrier-design.md`. Does not move the math frontier. | — | — |
-| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a** + `CHAIN`=**23b closed** (23b landed the CHAIN bricks but hit a hard core — the `hρGv` redundancy-carry is the *member-mapping wall*, intrinsic to KT; design §(o‴)(I.8.15)–(I.8.20)); **23c open** on the redundancy-carry re-architecture decision + chain-dispatch completion (`notes/Phase23c.md`); `ENTRY`/`ASSEMBLY` code-only | §6.4.2, §5.2, §7 | 5 |
+| 23 ◐ | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2**. In progress; design recon `notes/Phase23-design.md`, sub-lettered, codes-until-open. `CARRIER`=**23a** + `CHAIN`=**23b + 23c closed** (the CHAIN bricks + option (A) `±r`-block rank cert; hit the *member-mapping wall*, intrinsic to KT — all three escape routes refuted, a phase STOP, design §(o‴)(I.8.15)–(I.8.20) + §I.8.24(4.17)–(4.21)); **23d open** on the rank-certification reconsideration (`notes/Phase23d.md`, next = the A1 §I.8.21(α) feasibility recon); `ENTRY`/`ASSEMBLY` later codes | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
@@ -533,15 +534,20 @@ recons, and open decisions are canonical in `notes/Phase23-design.md`
   route families — fold, transport, re-fire existential `A-1`, column-op
   whole-matrix — are all dead, adversarially verified; design §(o‴)(I.8.15)–(I.8.20)).
   The `d=3` line stays fully green.
-- **23c (◐ open 2026-06-21, `notes/Phase23c.md`):** the redundancy-carry
-  **re-architecture decision** + chain-dispatch completion. First commit = a
-  feasibility recon on the KT-faithful matrix / abstract-`r` shape (carry `r`
-  abstract + the `Mᵢ`-block form, member moving) vs. an ENTRY-carry. Absorbs
-  the unfinished CHAIN tail (the `hρGv` chain arm + `chainData_dispatch`
-  (2c-iii) + CHAIN-5).
-- **`ENTRY` / `ASSEMBLY` (code-only):** chain extraction (Lemma 4.6/4.8 +
+- **23c (✓ closed 2026-06-21→2026-06-24, `notes/Phase23c.md`):** built option (A) —
+  the forked general-`d` `±r`-block rank-cert engine (no `hρGv`) — through the arm +
+  corner assembly, and **closed the interior-`hρe₀` conjecture-crux**. **Stopped at a
+  phase STOP:** the general-`d` interior rank cert is the member-mapping wall; all three
+  escape routes (A/B′/A′) refuted + a KT-§6.4.2 source recon confirming NO missed route
+  (design §I.8.24(4.17)–(4.21)). All landed leaves stay in tree.
+- **23d (◐ open 2026-06-24, `notes/Phase23d.md`):** the **rank-certification
+  reconsideration** (third CHAIN-layer sub-phase; CHAIN split on contact into 23b+23c+23d).
+  First dispatch = the A1 §I.8.21(α) feasibility recon (a matrix-level block-rank-additivity
+  lemma vs the `±r` corner without the fixed-member `hφ` membership); A2 build if FEASIBLE,
+  else (C) honest-conditional / (D) reconsider. CHAIN-5 + the dispatch wait on it.
+- **`ENTRY` / `ASSEMBLY` (later codes):** chain extraction (Lemma 4.6/4.8 +
   the Lemma 5.4 cycle branch) + the `hD` floor; then Thm 5.5 → 5.6 →
-  Conjecture 1.2.
+  Conjecture 1.2. ENTRY is parallel-safe (frozen CHAIN↔ENTRY contract).
 - **Hard core:** the `d`-fold chain bookkeeping (eqs. 6.59–6.64) + the
   `⋀^{d−1}` duality finish (eq. 6.67), both genuinely new (CHAIN); the
   arm-realization layer they feed is reuse.
@@ -734,20 +740,23 @@ tracked by **stable codes** until each opens — **`CARRIER`** (= the minted **2
 lift of the spine to `screwDim k`, folding in the deferred ScrewSpaceCarrier §6 "part 2" migration — the
 FIRST sub-phase), **CHAIN** (the new general-`d` chain
 dispatch + the `⋀^{d−1}(ℝ^{d+1})` duality), **ENTRY** (chain-entry ingredients: Lemmas 4.6/5.4/4.8), **ASSEMBLY**
-(assembly + Thm 5.6 + Conjecture 1.2). The integer phase numbers 24–26 stay stable. **23a + 23b are now
-closed** (23a lifted the spine to `screwDim k`; 23b landed the CHAIN bricks but hit the `hρGv` hard core —
-the member-mapping wall, intrinsic to KT); **23c is open** on the redundancy-carry re-architecture decision
-+ chain-dispatch completion. **Next concrete commit: the 23c architectural-decision feasibility recon** (not
-a build — the (A) KT-faithful matrix/abstract-`r` shape vs (B) ENTRY-carry; `notes/Phase23c.md` *Hand-off*).
+(assembly + Thm 5.6 + Conjecture 1.2). The integer phase numbers 24–26 stay stable. **23a + 23b + 23c are now
+closed** (23a lifted the spine to `screwDim k`; 23b/23c built the CHAIN bricks + option (A) but hit the
+member-mapping wall, intrinsic to KT — all three rank-cert escape routes refuted, a phase STOP); **23d is
+open** on the rank-certification reconsideration. **Next concrete commit: the A1 §I.8.21(α) feasibility
+recon** (a read-only spike — does a matrix-level block-rank-additivity lemma compose with the `±r` corner
+without the fixed-member `hφ` membership?; `notes/Phase23d.md` *Hand-off*).
 
-**Opening 23c.** The first move is an architectural **decision**, not a build: the `hρGv` redundancy-carry
-needs a re-architecture (the four route families — seed-advancing fold, base→candidate transport, re-firing
-the existential `A-1`, and the column-op/whole-matrix submatrix-containment — are all dead; the member-mapping
-wall is **intrinsic to KT's argument**, KT eq. 6.62 carrying a *moving* redundant row). Run a feasibility
-recon on the KT-faithful shape (carry the abstract `r ∈ ℝ^D` + the `Mᵢ`-block form, member moving — either via
-a non-gate composition of the landed (6.66) telescope or a more matrix-explicit representation) vs. the
-likely-dead ENTRY-carry. Full decision context: `notes/Phase23c.md` *The architectural fork* + design
-§(o‴)(I.8.18)–(I.8.20).
+**Opening 23d.** 23c built option (A) (the `±r`-block rank cert, no `hρGv`) end-to-end through the arm +
+corner assembly and closed the interior-`hρe₀` conjecture-crux, but the general-`d` interior rank cert is
+the member-mapping wall (intrinsic to KT): all three escape routes (A static-`W`, B′ operated-frame
+block-rank, A′ re-derive-in-frame) are refuted, and a primary-source KT-§6.4.2 recon confirms NO missed KT
+route (KT's moving-member rank-count is realized in Lean as the relabel-image submatrix containment = the
+wall). 23d's first move is the **A1 §I.8.21(α) feasibility recon** (read-only spike): can a matrix-level
+block-rank-additivity lemma certify the rank as KT does on paper, never materialising a fixed-member row
+membership? FEASIBLE → A2 build; INFEASIBLE → (C) honest-conditional / (D) reconsider. ENTRY (parallel-safe,
+the frozen CHAIN↔ENTRY contract) and ASSEMBLY get later letters. Full context: `notes/Phase23d.md` + design
+§I.8.24(4.17)–(4.21) + §I.8.21(α).
 
 **Pre-Phase-23 doc-hygiene carryover (from the 2026-06-16 cleanup pass).** Status:
 - **Surface-sync the public phase table — DONE (2026-06-17, Phase-23 open).** `home_page/index.md`'s
