@@ -3076,6 +3076,41 @@ decomposition of the SECOND build it teed up.**
   + ASSEMBLY, not new rank-cert math) + ENTRY in parallel. No motive/IH/contract change (the wall is below
   the contract).
 
+  *(4.24) THE GEOMETRY-AWARE-TRANSPORT SCOPING RECON — VERDICT: RELOCATES-TO-WALL; the project's transport
+  is ALREADY geometry-aware (corrects the "remembers only σ" diagnosis), and a LINEARITY IMPOSSIBILITY closes
+  the whole dual-span transport class. The user-proposed "remember the geometry" transport is built (for
+  genuine rows) and provably cannot reach the redundant row. 5th independent kernel confirmation. Read-only
+  design+spike, opus / OPUS-ONLY, 2026-06-24, agentId `ae987b45e0e8d9414` (resumable). → (C).*
+
+  **The transport is already geometry-aware (corrects §(4.20)–(4.23)'s "generic σ" framing).** `shiftPerm i`
+  IS KT's `ρᵢ` (6.54; `Induction/Operations.lean:1552`, doc-confirmed); `qρ = q ∘ shiftPerm i` IS KT's config
+  relation (6.55/6.56/6.59; `Arms.lean:92`, `ChainColumn.lean:1434`); and `rigidityRow_relabel_to_genuine`
+  (`Relabel/Basic.lean:308`, LANDED) absorbs KT's per-edge reproduction (6.59) as the abstract hypothesis
+  `hsupp` — exactly the "absorb 6.61's entrywise grind into an abstract property" the rework bet hoped for.
+  It WORKS for genuine rows. So σ IS ρᵢ and the config relation IS encoded; the transport layer is correct.
+
+  **The redundant row is closed by LINEARITY, not a missing abstraction (the decisive new test).** The bet:
+  decompose the base redundancy `hingeRow v₀v₂ ρ₀ = Σⱼ cⱼ·(genuine rows)` (A-1), transport each genuine
+  summand faithfully, recombine. SPIKE 3 (kernel): for ANY linear `T`, `T(Σcⱼ gⱼ) = Σcⱼ T(gⱼ)` — so the
+  decomposed route lands the redundant row at the SAME image as the un-decomposed row, namely its `ρᵢ`-image
+  `hingeRow (σ⁻¹v₀)(σ⁻¹v₂) ρ₀` = the MOVED member (interior `σ⁻¹v₂ = v₁ ≠ v₂`; KT (6.62) `(v₀v₂)ᵢ∗ ⟷
+  (v₀v₁)ᵢ∗`), ≠ the member-fixed `hφ` (PROBE 3: equal ⟹ `ρ₀=0` ⊥ gate). The redundant row has no genuine
+  `G₁`-edge to anchor `hsupp` to (`(v₀,v₂)` is the redundant COMBINATION, not an edge), so the
+  faithful-transport property cannot apply to it. d=3 closes only because `shiftPerm 2 = (v₁v₂)` is a single
+  swap landing the moved member directly on a genuine `e_b`-row (the masking degeneracy, re-confirmed).
+
+  **The only escape is a non-linear / explicit-`Matrix` object — = the §I.8.21(α) infra, no route in hand.**
+  Any future transport must be non-linear-in-the-carrier or operate on explicit `Matrix` coordinates (6.61 as
+  a rank-preserving block embedding WITHOUT extracting the row's membership) — the §I.8.21(α) re-architecture
+  that §(4.22)/(4.23) kernel-confirmed has no feasible route (must escape the static-`W` impossibility AND the
+  `±r`/htopvanish counterexample at once; a transport `Ψ` would CONSUME, not produce, the containment). A
+  large multi-phase representation investment, not made feasible by any transport. **Verdict: (D) needs a
+  genuinely-new idea beyond KT (and beyond the dual-span entirely); none in hand. → option (C)** (the landed
+  `case_III_arm_realization_chain` carries the rank-cert obligation as hypotheses: wiring + ASSEMBLY, not new
+  rank-cert math) + ENTRY. **Nothing to rework** — the transport layer is CORRECT (it faithfully transports
+  exactly the genuine rows; the redundant row's relocation is intrinsic, not a transport defect). No
+  motive/contract change.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

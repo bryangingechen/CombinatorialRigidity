@@ -35,9 +35,16 @@ project's span membership) escapes — **it does NOT** (§(4.23)): the row opera
 (KT's `r̂ = Σλ rⱼ` is the `G_v`-row part `wGv ∈ span(R(G_v,q))`, documented in the project's OWN Phase-22g
 `exists_redundant_panelRow_ab_decomposition`). The "scissors": the pure-`vᵢ` corner satisfies `htopvanish`
 but needs `hρGv` to enter the span; the `hρe₀`-sourced corner enters the span but isn't pure-`vᵢ`; they
-differ by exactly the wall row `hingeRow a b ρ₀`. **FOUR independent kernel confirmations** (§(4.18) static-W,
-§(4.20) member-mapping, §(4.21) KT primary-source, §(4.23) row-operation) + the A1 concede. The wall is KT's
-own "not difficult to see" (6.61); KT hides it.
+differ by exactly the wall row `hingeRow a b ρ₀`. A third recon then scoped the user's "geometry-aware
+transport" idea (§(4.24)): the project's transport is ALREADY geometry-aware (`shiftPerm`=ρᵢ, `qρ`=config
+relation, `rigidityRow_relabel_to_genuine`=the 6.59-faithful per-edge transport — it works for genuine rows),
+and a **LINEARITY IMPOSSIBILITY** closes the whole dual-span class: any linear transport sends the redundant
+row to its `ρᵢ`-image (the moved member), never the member-fixed `hφ`. **FIVE independent kernel
+confirmations** (§(4.18) static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23) row-operation,
+§(4.24) geometry-aware-transport linearity) + the A1 concede. The wall is KT's own "not difficult to see"
+(6.61); KT hides it. **The transport layer is CORRECT — nothing to rework**; the redundant row's relocation
+is intrinsic. The only conceivable escape is a non-linear / explicit-`Matrix` model = the §I.8.21(α) infra
+(no route in hand, §(4.22)/(4.23)).
 
 **Next concrete step = option (C), the honest-conditional general-`d` Theorem 5.5** (recommended; the
 coordinator surfaced this to the user, who authorized the §(4.23) rework swing that closed (D)). The landed
@@ -161,3 +168,13 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   the `hρe₀`-corner enters the span but isn't pure-`vᵢ`; they differ by exactly `hingeRow a b ρ₀` = the wall.
   Decision: the unconditional crux is closed to all routes in hand → option (C) + ENTRY. (D) needs a
   genuinely-new idea. Lesson → Findings (model-experiment).
+- **Geometry-aware transport = RELOCATES-TO-WALL (2026-06-24, design §(4.24)); the transport layer is
+  confirmed CORRECT, nothing to rework.** User insight (sharp): replace the transport with one that
+  "remembers the geometry" so the base redundancy transports faithfully. A scoping recon found the project's
+  transport ALREADY does this (`shiftPerm`=KT's ρᵢ 6.54, `qρ`=config relation 6.59,
+  `rigidityRow_relabel_to_genuine` absorbs KT's per-edge reproduction as the abstract `hsupp` — the exact
+  abstraction hoped for; it works for genuine rows). The redundant row is closed by a LINEARITY IMPOSSIBILITY
+  (SPIKE 3): any linear `T` sends `Σcⱼ·gⱼ` to `Σcⱼ·T(gⱼ)`, so the decomposed route lands the redundant row at
+  its `ρᵢ`-image (moved member), never the fixed `hφ` — the redundant row has no genuine edge to anchor the
+  reproduction to. 5th kernel confirmation. The ONLY escape is a non-linear/explicit-`Matrix` model = the
+  §I.8.21(α) infra (no route in hand). → option (C) + ENTRY. Lesson → Findings.

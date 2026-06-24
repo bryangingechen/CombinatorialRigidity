@@ -99,6 +99,7 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 435 | A1 §I.8.21(α) feasibility spike (→ design §(4.22)) | —/—/— | opus | recon | recon — verdict UNSOUND, caught | — | 171k tok / 36 tools / 8.9 min | First-pass FEASIBLE = a route-COMPOSITION verdict (static-`W` cert type-checks w/ corner data carried as hyps; lone residual = spine deficiency) mis-read as dischargeability; leaned on the §(4.18)-dead cert + §(4.17)-dead router branch, and answered the wrong A1 question (the existing cert, not the new matrix-infra). Mechanically clean, substantively unsound — caught only by the coordinator confronting prior kernel impossibilities. → Findings 2026-06-24. |
 | 436 | A1 spike resume — construct-or-concede (→ §(4.22)) | —/—/— | opus | recon/resume | recon — CONCEDED | — | 194k tok / 9 tools / 3.3 min | SendMessage-resume of 435 (same agentId, context intact) w/ the §(4.17)+§(4.18) confrontation. CONCEDED; built 2 sorry-free `concede_*` kernel re-derivations of the impossibilities for the real dispatch slot; confirmed SPIKE 1/2 carried `hG_eb_cand`/`W`/`hWS` as hyps, never discharged. Resume reused the full read phase (9 tools) — cheap vs a fresh refute agent. → Findings 2026-06-24. |
 | 437 | §I.8.21(α) matrix-level (row-op) rework spike (→ design §(4.23)) | —/—/— | opus | recon | recon — INFEASIBLE (hypothesis disproven) | — | 199k tok / 71 tools / 15.3 min | User-authorized rework swing: does KT's rank-preserving ROW-OPERATION redundancy handling (vs span membership) escape the wall? DISPROVEN at the kernel (SPIKE 3b/4a/4b): the row-op IS the membership — pure-`vᵢ` corner needs `hingeRow a b ρ₀ ∈ span` (=hρGv), confirmed against the project's OWN Phase-22g `r̂=wGv` docs. The scissors: htopvanish-corner needs hρGv; hρe₀-corner not pure-vᵢ. 4th independent wall confirmation; honest INFEASIBLE (flag-don't-force worked) → option (C). → Findings 2026-06-24. |
+| 438 | geometry-aware-transport scoping recon (→ design §(4.24)) | —/—/— | opus | recon | recon — RELOCATES-TO-WALL (scoping) | — | 202k tok / 51 tools / 9.8 min | Scoped the user's "remember the geometry" transport idea. Found the transport is ALREADY geometry-aware (`shiftPerm`=KT ρᵢ, `qρ`=config relation, `rigidityRow_relabel_to_genuine` absorbs reproduction as abstract `hsupp`) — corrects the coordinator's "remembers only σ" framing. Closed by a LINEARITY IMPOSSIBILITY (SPIKE 3): linear `T` forces `T(Σcⱼgⱼ)=Σcⱼ T(gⱼ)`, so the redundant row lands at its ρᵢ-image (moved member), never fixed `hφ`. 5th wall confirmation; transport layer CORRECT (nothing to rework). → Findings 2026-06-24. |
 
 ## Findings
 
@@ -143,4 +144,23 @@ the protocol)
   cost to a user weighing a rework). (2) But after that, STOP: further swings need a genuinely-NEW
   mathematical idea, not another formalization angle. (3) The codebase's own docstrings can carry the
   decisive primary-source equivalence — read them (clause i) before betting a rework escapes.
+
+- **2026-06-24 (row 438) — the geometry-aware-transport scoping recon (distinguishing "missing abstraction"
+  from "linear-level impossibility", and the value of scoping a user's idea even when it fails).** After the
+  coordinator+user diagnosed the wall as the transport "remembering only the vertex permutation σ, not the
+  geometry," the user proposed a geometry-aware transport and asked to scope the effort. The recon found two
+  things worth more than a yes/no: (1) the diagnosis was imprecise — the project's transport is ALREADY
+  geometry-aware (`shiftPerm` IS KT's `ρᵢ`, `qρ` IS the config relation, and `rigidityRow_relabel_to_genuine`
+  already absorbs KT's per-edge reproduction (6.59) as an abstract `hsupp` hypothesis — the exact "absorb the
+  entrywise grind into an abstraction" the user hoped for; it works for genuine rows). (2) The redundant row
+  is closed not by a missing abstraction but by a LINEARITY IMPOSSIBILITY: for any linear `T`,
+  `T(Σcⱼ·gⱼ) = Σcⱼ·T(gⱼ)`, so decomposing the redundancy into genuine rows and transporting each can't change
+  where `T` lands the redundant row — it goes to its `ρᵢ`-image (the moved member), never the fixed `hφ`.
+  **Lessons:** (1) scoping a user's idea is worth it even when the verdict is negative — the recon converted
+  "the transport is missing geometry" (wrong, would have motivated a doomed rework) into "the transport is
+  correct; the obstruction is a linearity impossibility on the dual span" (right, and identifies the ONLY
+  escape: a non-linear / explicit-`Matrix` object). (2) Distinguish "we need a better abstraction" from "this
+  is impossible for the whole class of objects we're using" — a one-line linearity argument settled the
+  latter where four prior spikes had only refuted specific instances. (3) Read what's already built before
+  proposing to build it (clause i): the geometry-aware transport the rework targeted was already in tree.
 
