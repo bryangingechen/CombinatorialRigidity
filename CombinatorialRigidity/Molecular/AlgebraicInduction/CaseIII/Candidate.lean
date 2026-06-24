@@ -1870,6 +1870,77 @@ theorem BodyHingeFramework.exists_genuine_relabelImage_base_block [DecidableEq �
   refine ⟨W, hWS, ?_, hW⟩
   rw [hWcard, Fintype.card_fin, Fbase.span_rigidityRows_diff_singleton_eq_of_mem_span hrhat, hIH]
 
+/-- **The route-4 seed base block `W`: the candidate's OWN `(G − vᵢ)` seed rows** (`lem:case-III
+general-d`, the route-4 wall-free `W`-producer; Katoh–Tanigawa 2011 §6.4.2 eq.~(6.64), the bottom
+block `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)` read as the candidate's own `R(Gᵢ, qᵢ)`; design §I.8.24(4.27)). This
+is the wall-free replacement for route B's LEAF-B2 (`exists_genuine_relabelImage_base_block`), whose
+universal per-row transport `hS` was unsatisfiable for the interior dispatch (the wrap-edge rows
+relabel to the dead `(a,b)`-block tag, §(4.26)).
+
+Where LEAF-B2 *transported* a genuine base family into the candidate span (the `hS` wall), this leaf
+takes the candidate's **own** seed framework `ofNormals (G − vᵢ) endsρ qρ`'s rigidity-row span as
+the base block `W`. The three corner-data obligations close with NO `hS`, NO `hρGv`:
+
+* `hWS` — every seed `(G − vᵢ)`-row is a candidate rigidity row: it sits at a `(G − vᵢ)`-link,
+  whose edge is `≠ e_a, e_b` (the two `vᵢ`-incident overridden slots are not `(G − vᵢ)`-edges,
+  `heab_off`), so the off-slot bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`
+  carries it in (candidate support extensor agrees with the seed off `{e_a, e_b}`,
+  `caseIIICandidate_supportExtensor_of_ne`);
+* `hW` — every seed row vanishes off `vᵢ`'s screw column: each is a `(G − vᵢ)`-link, both endpoints
+  survive the removal, so `vᵢ` is off both (`ofNormals_removeVertex_rigidityRow_comp_single_self`);
+* `hWcard` — the rank is the candidate seed's rigidity rank, supplied as `hseedrank`. This is the
+  genuinely-true relabel rank-iso `finrank (span R(Gᵢ, qᵢ)) = D·(|Gv|−1)` from the base IH (KT
+  6.62, the index-shift iso `funLeft σ` is a linear automorphism preserving finrank) — the route-4
+  NEW LEAF 1 (`rigidityRows_ofNormals_relabel` general-`d` SET-image) discharges it. NOT an
+  unsatisfiable hypothesis like route B's `hG_eb_cand`: the candidate seed genuinely has this. -/
+theorem PanelHingeFramework.exists_seed_base_block [DecidableEq α] [DecidableEq β] [Finite α]
+    [Finite β]
+    (G Gvi : Graph α β) (endsρ : β → α × α) (qρ : α × Fin (k + 2) → ℝ)
+    {vi ai bi : α} {e_a e_b : β} (n' : Fin (k + 2) → ℝ)
+    (hGvi : Gvi = G.removeVertex vi)
+    (heab_off : ∀ e x y, Gvi.IsLink e x y → e ≠ e_a ∧ e ≠ e_b)
+    (hseedrank : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gvi endsρ qρ).toBodyHinge.rigidityRows)
+      = screwDim k * (V(Gvi).ncard - 1)) :
+    ∃ W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)),
+      W ≤ Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G endsρ qρ e_a e_b
+          (fun i => qρ (ai, i)) n' (fun i => qρ (bi, i)) 0).rigidityRows ∧
+      Module.finrank ℝ W = screwDim k * (V(Gvi).ncard - 1) ∧
+      (∀ φ ∈ W, φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) vi) = 0) := by
+  classical
+  set Fseed := (PanelHingeFramework.ofNormals Gvi endsρ qρ).toBodyHinge with hFseed
+  refine ⟨Submodule.span ℝ Fseed.rigidityRows, ?hWS, ?hWcard, ?hW⟩
+  case hWS =>
+    rw [Submodule.span_le]
+    rintro φ ⟨e, x, y, hlink, r, hr, rfl⟩
+    rw [hFseed, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph] at hlink
+    obtain ⟨hea, heb⟩ := heab_off e x y hlink
+    have hGlink : G.IsLink e x y := (Graph.removeVertex_isLink.mp (hGvi ▸ hlink)).1
+    refine Submodule.subset_span
+      (PanelHingeFramework.hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link G endsρ qρ
+        e_a e_b (fun i => qρ (ai, i)) n' (fun i => qρ (bi, i)) 0 hea heb hGlink ?_)
+    -- transport the block membership across the graph (`ofNormals` support is graph-independent)
+    have hr' := (BodyHingeFramework.mem_hingeRowBlock_iff _ e r).1 hr
+    rw [hFseed, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends] at hr'
+    rw [BodyHingeFramework.mem_hingeRowBlock_iff, PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_ends]
+    exact hr'
+  case hWcard =>
+    rw [hFseed]; exact hseedrank
+  case hW =>
+    intro φ hφ
+    induction hφ using Submodule.span_induction with
+    | mem φ hφ =>
+      rw [hFseed] at hφ; subst hGvi
+      exact PanelHingeFramework.ofNormals_removeVertex_rigidityRow_comp_single_self G vi endsρ qρ hφ
+    | zero => simp
+    | add x y _ _ hx hy => rw [LinearMap.add_comp, hx, hy, add_zero]
+    | smul a x _ hx => rw [LinearMap.smul_comp, hx, smul_zero]
+
 /-- **The candidate fresh-edge's panel rows are independent modulo the base block `W`**
 (`lem:case-III general-d`, the option-(A) `hLI` corner obligation (a); Katoh–Tanigawa 2011 eq.
 (6.65), the `Mᵢ`-block panel rows independent of the base `R(G₁ ∖ row, q₁)`). The chain cert

@@ -27,9 +27,24 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**⚠️ ROUTE-B IS BLOCKED AT THE INTERIOR `hS` (design §I.8.24(4.26), 2026-06-24) — the rank cert is closed
-only as a CONDITIONAL composition; the interior dispatch's `hS` premise is UNSATISFIABLE as LEAF-B2 is
-architected.** A read-only compiler-checked dispatch recon found that the interior arm's `hS` slot (LEAF-B2's
+**ROUTE-4 BUILD IN PROGRESS (design §I.8.24(4.27); user-confirmed). NEW LEAF 2 LANDED (2026-06-24,
+build/lint/warning-clean): `PanelHingeFramework.exists_seed_base_block` (`CaseIII/Candidate.lean`, after
+LEAF-B2) — the wall-free bottom-block `W`-producer.** It takes `W :=` the candidate's OWN seed framework
+`ofNormals (G − vᵢ) endsρ qρ`'s rigidity-row span, and discharges the three cert obligations with **NO
+`hS`, NO `hρGv`**: `hWS` (off-slot bridge — every seed `(G−vᵢ)`-row is a candidate row, edge `≠ e_a,e_b`),
+`hW` (off-`vᵢ` vanishing — every seed row is a `(G−vᵢ)`-link), and `hWcard` reduced to the single hypothesis
+`hseedrank : finrank (span R(G−vᵢ, q∘σ)) = D·(|Gv|−1)` (the candidate seed's rigidity rank). `hseedrank` is
+the genuinely-true relabel rank-iso (KT 6.62) that **NEW LEAF 1** (`rigidityRows_ofNormals_relabel`
+general-`d`, the make-or-break de-risk) will discharge — it is NOT an unsatisfiable hypothesis like route B's
+`hG_eb_cand`. **NEXT: NEW LEAF 1.** Banking LEAF 2 now (with `hseedrank` as a hypothesis) protects the
+kernel-verified seed-`W` reduction from context loss; LEAF 1 carries the residual risk (the cycle-perm
+`σσ=id` / splitOff-vs-removeVertex bookkeeping — design §(4.27)).
+
+---
+
+**⚠️ HISTORY — ROUTE B WAS BLOCKED AT THE INTERIOR `hS` (design §I.8.24(4.26)); route 4 (above) is the
+wall-free escape.** A read-only compiler-checked dispatch recon found that the interior arm's `hS` slot
+(route-B LEAF-B2's
 *universal* per-genuine-row transport into the `caseIIICandidate` span) cannot be discharged: a base genuine
 row at the **wrap edge `edge i`** maps under the cycle relabel to the reproduced-slot `(a,b)`-block tag
 `hingeRow (vtx (i+1)) (vtx (i−1)) ρ'`, and that tag is **NOT** in the candidate span — the routing lemma
@@ -304,8 +319,20 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Blockers / open questions
 
-- **⚠️ BLOCKED — the interior dispatch's `hS` is UNSATISFIABLE as LEAF-B2 is architected (design §(4.26),
-  2026-06-24); a phase-direction decision is owed.** The route-B leaves all landed and are sound in
+- **NEW LEAF 1 is the make-or-break open item (design §(4.27)).** Route 4's seed-`W` reduction (NEW LEAF 2,
+  LANDED) bottlenecks on `hseedrank : finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)`, discharged by NEW LEAF 1
+  (the general-`d` `rigidityRows_ofNormals_relabel` SET-image equality). KNOWN RISK: the `d=3` proof
+  (`Relabel/Basic.lean:648`) uses involution facts `hσσ`/`hρρ` (`σσ=id`, `ρρ=id`) that FAIL for the cycle
+  `shiftPerm`; and the `d=3` SET-equality is stated for splitOff frameworks (graph iso under the swap),
+  whereas the candidate seed is bare `G − vᵢ` (the cycle is NOT a `G`-automorphism). Bridging likely routes
+  through the splitOff + redundant-`e₀`-row deletion, OR a direct `funLeft σ` linear-iso rank argument
+  (`σ` a perm ⟹ `funLeft σ` a linear automorphism ⟹ `dualMap` preserves finrank). If LEAF 1 walls → BLOCKED,
+  the deeper reconsideration (route A `Matrix` / honest-conditional (C)) is the coordinator's call.
+
+### History (route B blocked; route 4 escapes)
+
+- **⚠️ HISTORY — the interior dispatch's `hS` was UNSATISFIABLE as route-B LEAF-B2 is architected (design
+  §(4.26)); route 4 (above) is the wall-free escape.** The route-B leaves all landed and are sound in
   isolation, but they do NOT compose at the interior arm: LEAF-B2's *universal* `hS` (every genuine base
   rigidity row's relabel image ∈ the `caseIIICandidate` span) is reasserted on the **wrap-edge `edge i`**
   rows, whose relabel image is the reproduced-slot tag `hingeRow (vtx (i+1)) (vtx (i−1)) ρ'` — and that tag
@@ -343,28 +370,30 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**⚠️ BLOCKED — route forward SCOPED (design §(4.27)): the SEED-FRAMEWORK re-architecture (route 4) is the
-wall-free path; do NOT build `chainData_dispatch` against `case_III_arm_corner_assembly_via_leafB2` (interior
-`hS` unsatisfiable, §(4.26)) and do NOT expect the option-A engine route to escape (its `hρGv` bottom block
-ALSO walls, §(4.27)).** The dispatch recon (2026-06-24) built the `Fin cd.d` router skeleton, fired LEAF-3,
-and verified the interior arm's `hgate`/`hρe₀`/`hvanish`/`heab_off`/`hrec`/`hrhat`/`hIH` slots are all
-mechanically dischargeable — the SOLE blocker is the interior **`hS`** (wrap-edge `edge i` rows relabel to
-the `(a,b)`-block tag, outside the candidate span). A follow-up scoping recon (probe `probe3_seed_W`) then
-found the wall-free `W`-production.
+**ROUTE-4 BUILD IN PROGRESS (design §(4.27); user-confirmed). NEXT CONCRETE COMMIT = NEW LEAF 1 (the
+make-or-break de-risk).** NEW LEAF 2 is LANDED (`exists_seed_base_block`, build/lint/warning-clean) with
+`hseedrank` as a hypothesis; NEW LEAF 1 discharges that hypothesis.
 
-**The route-4 build plan (design §(4.27); the next concrete commits):**
-1. **NEW LEAF 1 — general-`d` `rigidityRows_ofNormals_relabel`** (the de-risk target): the chain
+**The route-4 build plan (design §(4.27)):**
+1. **✅ NEW LEAF 2 — the seed-`W` producer (LANDED 2026-06-24):** `PanelHingeFramework.exists_seed_base_block`
+   (`CaseIII/Candidate.lean`, after LEAF-B2). `W := candidate seed span`; `hWS` (off-slot bridge) / `hW`
+   (off-`vᵢ` vanishing) close mechanically, NO `hS`/`hρGv`; `hWcard` ⟵ the hypothesis `hseedrank`. Replaces
+   `case_III_arm_corner_assembly_via_leafB2` for the interior arm.
+2. **NEW LEAF 1 — general-`d` `rigidityRows_ofNormals_relabel`** (NEXT, the de-risk target): the chain
    generalization of the LANDED `d=3` SET-image equality `R(relabelled seed) = (funLeft σ).dualMap '' R(base
    seed)` (`Relabel/Basic.lean:648`, `hρGv`-FREE) from the single swap to `shiftPerm i.castSucc` /
-   `shiftEdgePerm i`. Bricks landed (`ofNormals_supportExtensor_relabel_perm`, `blockRow_relabel_perm`,
-   `rigidityRow_relabel_to_genuine`, `chainData_bottom_relabel`); ~150–250 LoC, MEDIUM risk. Gives
-   `hseedrank : finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)` from the base IH rank.
-2. **NEW LEAF 2 — the seed-`W` producer** (replaces `case_III_arm_corner_assembly_via_leafB2`): package
-   `probe3_seed_W` (`W := candidate seed span`; `hWS`/`hW` mechanical, kernel-verified) + `hseedrank` + the
-   corner via the LANDED group transport `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`. ~LOW risk.
-3. **the `chainData_dispatch` `Fin cd.d` router** + the `ends`-orientation override (GAP 2) + **CHAIN-5**.
+   `shiftEdgePerm i`, giving `hseedrank` from the base IH. Bricks landed
+   (`ofNormals_supportExtensor_relabel_perm`, `blockRow_relabel_perm`, `rigidityRow_relabel_to_genuine`,
+   `chainData_bottom_relabel`); MEDIUM risk — the `d=3` proof uses involution facts `hσσ`/`hρρ` that FAIL
+   for a cycle, and the bare `removeVertex` vs splitOff bookkeeping needs care (the candidate seed is bare
+   `G − vᵢ`, but the `d=3` SET-equality is stated for splitOff frameworks; bridging needs the redundant
+   `e₀`-row deletion). If it walls → BLOCKED, coordinator adjudicates the deeper reconsideration (route A
+   `Matrix` / honest-conditional (C)).
+3. **the `chainData_dispatch` `Fin cd.d` router** (interior arm via LEAF 2 + the LANDED group transport
+   `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` for the `±r` corner) + the `ends`-orientation
+   override (GAP 2) + **CHAIN-5**.
 
-**Once LEAF 1+2 land,** the rest of the dispatch wiring is in place: the `Fin cd.d` case-split fires
+**Once LEAF 1 lands,** the rest of the dispatch wiring is in place: the `Fin cd.d` case-split fires
 LEAF-3 once at the base `v₁`-split and routes `i < 2` → `chainData_split_realization` (base/`d=3`,
 owes only `htrans`), `2 ≤ i` → the chosen interior producer. The interior `hgate`
 (`shiftPerm_apply_vtx_off` off-cycle + `candidateVtx_succ_eq`), `hρe₀` (`interior_hρe₀_of_baseWidening`
@@ -536,3 +565,13 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   the `ends`-orientation pins (`hends_i`/`hends_ea`/`he₀rec`) need a `Function.update` override since LEAF-3's
   `ends = Q.ends` is only orientation-free. Lesson (deferred-hypothesis-unsat composing landed-sound leaves)
   → already in DESIGN.md *Constructibility recon*; the §(4.26) entry is the full kernel trace.
+- **ROUTE-4 NEW LEAF 2 LANDED — the wall-free seed-`W` producer (2026-06-24, build/lint/warning-clean).**
+  `PanelHingeFramework.exists_seed_base_block` (`CaseIII/Candidate.lean`, after LEAF-B2): the bottom-block
+  `W`-producer that escapes the route-B interior-`hS` wall by taking `W := span (ofNormals (G − vᵢ) endsρ
+  qρ).rigidityRows` (the candidate's OWN seed rows) instead of transporting a base family. `hWS` (off-slot
+  bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, edges `≠ e_a,e_b` from `heab_off`)
+  and `hW` (`ofNormals_removeVertex_rigidityRow_comp_single_self` via `span_induction`) close mechanically,
+  NO `hS`/`hρGv`; `hWcard` ⟵ the `hseedrank` hypothesis. `hseedrank` is the genuinely-true candidate-seed
+  rank (KT 6.62), NOT unsatisfiable like route B's `hG_eb_cand` — NEW LEAF 1 will discharge it. The body is
+  the kernel-verified `probe3_seed_W` from the §(4.27) scoping recon, banked as a real lemma. NEXT = NEW
+  LEAF 1 (the relabel rank-iso, make-or-break).
