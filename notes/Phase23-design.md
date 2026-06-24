@@ -2740,6 +2740,62 @@ decomposition of the SECOND build it teed up.**
   leaf), then the carry over it. **Do NOT** build the carry over `baseRedundancy_group_acolumn_perp` (wrong shape,
   Q1) regardless.
 
+  *(4.17) THE `hWS` WRAP-EDGE-TAG MEMBERSHIP — VERDICT: BLOCKED AS SHAPED. The forked cert's `W = bare
+  relabel-image span` cannot route the relabelled wrap-edge tag into the candidate span; re-shape `W` to the
+  d=3 engine's column-op / off-`v`-restriction OPERATED frame (option A; user-adjudicated 2026-06-24,
+  feasibility-pass-first). Compiler-checked SPIKE, read-only, opus / OPUS-ONLY, 2026-06-24, agentId
+  `a6fb2b975b3b7ead2` (resumable). This is the SEPARATE `hWS` half of LEAF-4 step (ii) — the interior `hρe₀`
+  half closed at §(4.16)→rows 426–428.*
+
+  **Trigger.** The LEAF-4 (c) `hS` router `bottomRelabel_image_mem_span_caseIIICandidate` (2878600) LANDED
+  gate-/axiom-clean, but the coordinator's shape check (satisfiability trace, the rows-392/394 corollary)
+  found its REPRODUCED branch mis-targeted; a read-only spike kernel-confirmed it.
+
+  **The contradiction (kernel-checked — a `False`-deriving `example` compiled).** `chainData_bottom_relabel`'s
+  wrap-edge Or.inr tag is `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` — endpoints `(a,b) = (vtx_{i+1},
+  vtx_{i−1})`, which OMIT `vᵢ = vtx_i`. Routing it through `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced`
+  forces the row endpoints to be `e_b`'s genuine link, so the router carries `hG_eb_cand : G.IsLink e_b
+  (vtx i.succ) (vtx (i−1).castSucc)`. That contradicts the consumer's REQUIRED `hG_eb : G.IsLink e_b v b`
+  (`v = vtx i.castSucc`): same `e_b` + shared endpoint `vtx_{i−1}` ⟹ (`IsLink.right_unique` + `vtx_inj`)
+  `vtx_i = vtx_{i+1}`, False. The leaf type-checks only because `hG_eb_cand` is a CARRIED hypothesis — it is
+  unsatisfiable for the dispatch.
+
+  **The only viable route (telescope) + its unprovable residual.** `hingeRow a b ρ' = hingeRow a v ρ' −
+  hingeRow b v ρ'` (through `vᵢ = v`; `hingeRow_sub_hingeRow_eq`). The `b–v` summand LANDS (reproduced `e_b`
+  at the GENUINE `(v,b)` link, perp `ρ' ⊥ panel(qρ a, qρ b)` supplied by the tag). The `a–v` summand lands
+  via the fresh `e_a` slot ONLY GIVEN the extra perp `ρ' ⊥ panelSupportExtensor (qρ a) n'` — kernel-checked:
+  the full membership compiles given BOTH perps, residual = exactly this one. It is NOT in dispatch data and
+  is geometrically FALSE: the bottom-family `ρ'` only annihilates the `(ab)`-panel (`hingeRowBlock e₀`), while
+  `n'` is the FREE transversal the discriminator gates `ρ` NON-perp to (`hgate`). Route (B)
+  `candidate_perp_two_incident` is for the structured shared `ρ̂`, not the arbitrary per-member `ρ'`.
+
+  **Root cause (the real finding — traced to landed decls).** The forked cert
+  `case_III_rank_certification_chain` consumes `hWS : W ≤ span F₀.rigidityRows` as a bare relabel-image span —
+  its carrier `exists_le_finrank_span_rigidityRows_eq_card_of_injective_map` (`Candidate.lean:1727`) demands
+  every image (incl. the Or.inr tags) DIRECTLY in the candidate span. The d=3 engine
+  `case_III_rank_certification` (`Candidate.lean:1614`) NEVER needs this: it certifies `W`'s rank in a
+  column-op / off-`v`-restriction OPERATED frame (`case_III_full_family_restriction` +
+  `hingeRow_comp_columnOp_comp_offProj` `Claim612.lean:881`), where the tag is only an IMAGE. The `W`-shape
+  divergence (the §(4.10) LEAF-2 decision) is the bug; the LEAF-4(c) plan ("block-tag → reproduced-slot
+  membership") is its source.
+
+  **Decision (user-adjudicated 2026-06-24).** LEAF-4 step (ii) `hWS` is blocked as shaped. Fix = option (A):
+  re-shape the chain cert's base block to the operated frame (carry `hingeRow v b ρ'` as the actual span
+  member, eliminating the unprovable perp) — re-opens the LANDED cert + carrier + LEAF-2
+  `span_relabelImage_le_and_finrank_and_acolumn_vanish`. Option (B) (a per-Or.inr-member perp on the W6b
+  producer) is geometrically dead. **Path: an (A)-feasibility pass FIRST** — does the d=3 operated-frame
+  `W`-certification COMPOSE with the forked `±r`-block cert? — before re-opening settled machinery.
+
+  **Salvageability.** The router 2878600's GENUINE branch (off-slot survivors via
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`) is sound + reusable. The REPRODUCED branch
+  is dead — to be replaced when `hWS` is re-shaped (do not patch in place; no buildable leaf closes it with
+  current data).
+
+  **Clause (iii) invariants traced.** `vtx : Fin (cd.d+1) → α` injective; interior split `e_b = edge (i−1)`
+  links `(v,b) = (vtx_i, vtx_{i−1})` (`isLink_pred_edge`); the wrap-edge tag's `(vtx_{i+1}, vtx_{i−1})` omit
+  `vᵢ`. `caseIIICandidate.graph = G` (no graph splice). d=3 floor (`i=2`=base) needs none of this
+  (zero-regression).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
