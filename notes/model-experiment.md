@@ -68,9 +68,10 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   reachable via the Agent `model` param, no substitution needed). **The
   override expires session-end — a fresh coordinator re-runs the
   session-start availability check + re-confirms the triple.** (A) is OPEN; the
-  `±r`-row seam is RESOLVED + build-confirmed end-to-end (no `hρGv`); the arm
-  spine + corner-data assembly landed (rows 399–401); next = CHAIN-2c-iii
-  `chainData_dispatch` — see `notes/Phase23c.md` *Hand-off*.
+  `±r`-row seam is RESOLVED end-to-end; `chainData_dispatch` is DECOMPOSED (5
+  leaves) with the `Relabel/` split + LEAF-1/2 + the option-(a) contract field
+  `d_eq : d = n` + the `cd.d=k+1` bridge LANDED; next = the rest of LEAF-3 — see
+  `notes/Phase23c.md` *Hand-off* / *Orientation*.
 - **Session #25 close (2026-06-22; rows 392–401, all opus / OPUS-ONLY, gate-verified; user stopped the
   loop after the corner-data assembly + a handoff-housekeeping pass).** **The `±r`-row seam — the
   conjecture-crux remnant blocking 23c across 4 prior arm attempts + 2 recons — is RESOLVED + build-proven
@@ -84,6 +85,20 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   deferred-hypothesis leaves (a LANDED+axiom-clean leaf can be mis-targeted), the un-named-dispatch default
   (a `name` routes to the async mailbox), and the diverse-lens recon pair for a recurring-mis-pin design
   seam → *Findings* + the 2026-06-22 sync pointers. OPUS-ONLY/cap/fixups expire session-end.
+- **Session #26 close (2026-06-23; rows 402–412, all opus / OPUS-ONLY, gate-verified; user stopped the loop
+  after the LEAF-3 arithmetic bridge + a handoff-readiness pass).** Decomposed + began CHAIN-2c-iii
+  `chainData_dispatch`: the `Relabel/` 5-file split (402), the easy combinatorial accessors (403), a
+  coordinator-escalated **decomposition design-pass** into 5 ranked leaves naming LEAF-4 the hard core (404,
+  per a user directive after 2 scope-to-fit shrinks), LEAF-2 (405) + LEAF-1 (406), then LEAF-3 BLOCKED (407)
+  on a **frozen-contract gap** — the discriminator's `Fin(k+1)` panels vs the `Fin cd.d` candidates need
+  `d=k+1`, which the frozen `ChainData` contract left unencoded. A design-pass (408) + a **diverse-lens recon
+  pair** (409/410, CONVERGED) + coordinator KT-PDF-verification confirmed `d=k+1` is structural (KT Prop 1.1 +
+  Lemma 4.6); user adjudicated → option (a), the `d_eq : d = n` record field (411) + its `cd.d=k+1` bridge
+  (412). **Durable lessons** (this session's instruction edits): a frozen contract must ENCODE the invariants
+  relating its parameters (a known identity left as a docstring aside surfaces at the first consumer) +
+  decompose a multi-commit chunk EARLY (the 2nd shrink) naming the hard core, + the `| tail` exit-code mask on
+  `check-log-rows.py` → DESIGN.md *Frozen contracts …* + the `coordinate-phase` step-1 trigger / design-pass
+  clause (iii) / step-2 gate note + *Findings*. OPUS-ONLY/cap/fixups expire session-end.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map

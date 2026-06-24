@@ -37,15 +37,20 @@ NEVER `hρGv` — the M₃ `hvb_row` mechanism), and the `single vᵢ` column re
 `hingeRow_comp_single_tail` = `−ρ₀`, the discriminator's `hrCol`). The (4.8) two-object mismatch is gone — the
 prior relabel-image / filtered-group attempts landed on the candidate fresh pair (which OMITS `vᵢ`) and read `0`.
 
-> **Orientation for the next agent.** The arm `case_III_arm_realization_chain` AND the corner-data ASSEMBLY
-> producer `case_III_arm_corner_assembly` (the seam-resolution end-to-end integration) are BOTH LANDED; the
-> `±r`-row seam stays CLOSED — the assembly CONFIRMS the corrected `±r` leaf feeds the cert's `hg` and the
-> corrected `hrCol` feeds `hLI`. **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)),
-> re-litigate the fork, or revive the relabel-image `±r` route. The next concrete commit is **CHAIN-2c-iii
-> `chainData_dispatch`** — which PRODUCES the assembly's raw inputs (`hgate`/`hρe₀` from A-1 at the interior
-> split; `W`/`hWS`/`hWcard`/`hW` from the chain bottom family via the carrier leaf + relabel-image off-`v`
-> vanishing) from the `ChainData` interior split, routing `2 ≤ i < d` through `case_III_arm_corner_assembly`
-> and the `d=3` floor (`i=2`) on the landed `case_III_arm_realization` engine. See *Hand-off*.
+> **Orientation for the next agent.** The (A) architecture is built end-to-end through the arm + corner-data
+> assembly (`case_III_arm_realization_chain` + `case_III_arm_corner_assembly`, both LANDED; the `±r`-row seam
+> stays CLOSED). The general-`d` dispatch **CHAIN-2c-iii `chainData_dispatch` is DECOMPOSED into 5 ranked
+> leaves** (design §I.8.24(4.10)). LANDED so far: the `Relabel/` 5-file split; LEAF-1 (interior-candidate
+> framework defs `candidateEnds`/`candidateSeed`); LEAF-2 (concrete-`W` carrier
+> `span_relabelImage_le_and_finrank_and_acolumn_vanish`); the **option-(a) contract field `d_eq : d = n`** on
+> the `ChainData` record + its `cd.d = k+1` bridge `d_eq_kAdd` — which CLOSES the frozen-contract
+> discriminator-index gap (KT-structural `d = k+1`; see *Decisions made* + DESIGN.md *Frozen contracts must
+> encode the invariants relating their parameters*). **The next concrete commit is the rest of LEAF-3** — build
+> `cand : Fin (k+1) → α` (transport `cd.vtx` across `d_eq_kAdd`), fire `chainData_split_w6b_gates` +
+> `exists_chainData_discriminator_pick` ONCE, expose `hgate`/`hρe₀` at the matched candidate `i` (the eq-6.66
+> `±r`-annihilation is the flagged hard step). Then **LEAF-4 (THE HARD CORE: base-block `W` + the `hS`
+> disjunction)** → LEAF-5 (router) → CHAIN-5. **Do NOT** re-attempt the four dead route families
+> (§I.8.18–(I.8.20)), re-litigate the fork, or revive the relabel-image `±r` route. See *Current state* + *Hand-off*.
 
 ## Current state
 
