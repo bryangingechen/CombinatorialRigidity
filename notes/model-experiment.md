@@ -171,11 +171,44 @@ Rows 1–372 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 416 | LEAF-3 discriminator-firing producer `exists_shared_redundancy_and_matched_candidate` (CHAIN-2c-iii); 0407a69 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 232177 tok / 86 tools / ~14.4 min | The anti-shrink note WORKED — after 3 shrinks + a coordinator hand-off flag (infra-exhausted, producer un-shrinkable), opus built the producer BODY, not a 4th index alias. Matches the §(4.12) signature (W6b + discriminator once at the base split; gate at candidateVtx i against base q, candidateSeed reconciliation deferred to LEAF-4). Realized B=2: minimal landed-lemma touch (re-exposed AlgebraicIndependent q; 1 consumer `_`-binder repaired, full build verified). Gates re-run clean. NEXT = LEAF-4 conjecture-crux (route-flagged). → Findings. |
 | 417 | diverse-lens recon PAIR member A (constructive) — LEAF-4 interior-hρe₀ route | 3/3/1 | opus | recon | clean | — (read-only) | 237249 tok / 49 tools / ~8.8 min | Diverse-lens recon PAIR member A (constructive lens), opus×opus OPUS-ONLY, the LEAF-4 conjecture-crux interior-hρe₀ route (the coordinator's route-verification flag firing). RE-ROUTED: §(4.12)'s pinned `interior_group_eq_baseRedundancy` is WRONG-SHAPE (a column value); corrected core = the live `candidate_perp_two_incident_panels` (annihilation-level via mem_hingeRowBlock_iff) + panelCorrespondence transport. Flagged the feeding-gap: the core's `hcol` needs the eq-6.52 ALL-edge data → a below-contract LEAF-3 widening. Coordinator source-confirmed the core's hyps + the wrong-shape. → Findings. |
 | 418 | diverse-lens recon PAIR member B (adversarial-refute) — LEAF-4 interior-hρe₀ route | 3/3/1 | opus | recon | clean | — (read-only) | 219524 tok / 62 tools / ~10.2 min | Diverse-lens recon PAIR member B (adversarial-refute), opus×opus OPUS-ONLY, same seam. COULD-NOT-REFUTE soundness (KT eq-6.66 holds; carry at the BASE, not the killed per-body route; premises dischargeable) — but sharpened the live risk: the core reaches the panels THROUGH the split body, not the neighbour-neighbour SHORTCUT panel the consumer needs; the column→panel bridge is genuinely-new. CONVERGED with A on the re-route + wrong-shape; split on whether the seed-relabel transport reaches the shortcut panel (the build-time de-risk). → Findings. |
+| 419 | LEAF-4 step (i′) widen `chainData_split_w6b_gates` with the edge-grouped Gv-row form (CHAIN-2c-iii); 80d9164 | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 210285 tok / 82 tools / ~11.0 min | Re-exposes the W6b producer's internally-computed flat edge-grouped Gv-row form (KT eq-6.66; previously discarded `_hedgeGv`) through both chain-order branches ((b,a) via hingeRow_swap+neg_neg). Purely additive — both consumers took a `_` binder, no contract change. Gates re-run by coordinator (build warning-clean + lint + sorry-grep). Diff matches the §(4.13) recon pin; the all-edge data LEAF-4 step (i) regroups at the degree-2 vertex. → Findings. |
+| 420 | LEAF-4 step (i) component: general-i interior degree-2 column-sup `freshEdge_interior_acolumn_sup` (CHAIN-2c-iii); b90f0e0 | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 262150 tok / 82 tools / ~14.6 min | Scope-to-fit shrink #1 on the crux leaf: landed the general-i lift of the d=3 gate i3_freshEdge_interior_acolumn_sup_deRisk (span member's vtx(s+1)-column ∈ two-block SUP block(edge s)⊔block(edge s+1)), NOT the full leaf (judged under-de-risked). GENUINE component (real proof: acolumn_mem_hingeRowBlock_sup + deg_two closure), not deferral-as-hypothesis. Surfaced the load-bearing boundary s+2<i (degree-2 vs degree-1). Gates re-run clean. → Findings. |
+| 421 | LEAF-4 decompose+settle design-pass — interior-hρe₀ leaf; 3a0ed94 | 3/3/1 | opus | recon | clean | — (read-only) | 235170 tok / 63 tools / ~11.8 min | Coordinator-dispatched after the 2-leaf trigger (i′ + column-sup fed the not-yet-built crux core). Settled sub-step (1) eq-6.52 regrouping SATISFIABLE; FLAGGED sub-step (2): found §(4.13)'s candidate_perp_two_incident route is WRONG-PANEL (incident panels through v, not the consumer's shortcut (a,b) panel; verified ForkedArm.lean:200-202). Clause-(ii) honesty — named routes A/B + a discriminator, not a 3rd confident re-pin. Prevented a dead crux build. → Findings. |
+| 422 | diverse-lens recon PAIR member A (constructive) — LEAF-4 incident→shortcut bridge; (read-only) | 3/3/1 | opus | recon | clean | — (read-only) | 212652 tok / 54 tools / ~10.1 min | Settled the discriminator: neighbour b is degree-2 in G → Route A (degree-1 neighbour-column) FAILS for general i. CONSTRUCTED the corrected route: the new inductive carry baseRedundancy_perp_chain_edge (base→off-slot chain edge, induction on s) + a Lean-checked (lean_multi_attempt → no goals) FINAL step (candidate_perp_two_incident_supportExtensors at body b in F₀ → e_b's overridden support = shortcut = hρe₀). freshEdge_interior_acolumn_sup confirmed ON-ROUTE (per-step hcol). → Findings. |
+| 423 | diverse-lens recon PAIR member B (adversarial-refute) — LEAF-4 incident→shortcut bridge; (read-only) | 3/3/1 | opus | recon | clean | — (read-only) | 151753 tok / 27 tools / ~4.2 min | REFUTED Route A's degree-1 premise — CONVERGED with A (neighbour b is an interior chain vertex, degree-2; shortcut (a,b) isn't a graph edge; column → two-block SUP). Flagged M₃'s hρ_ac precedent is hρGv-based (NOT the general model) + rated route B (Meet.lean) the only conclusion-at-shortcut route (adversarial default; A's Lean-checked final step via the OVERRIDDEN e_b slot answers it). Diverse-lens convergence + coordinator source-verify made the re-route sound. → Findings. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Session #28 (rows 419–423) — the 2-leaf trigger + a diverse-lens pair caught a 3×-mis-pinned conjecture-crux route before any build burned on it
+
+CHAIN-2c-iii LEAF-4 (the interior-`hρe₀` conjecture-crux leaf). Threads:
+
+- **The 2-leaf trigger fired correctly, and a docs design-pass + diverse-lens pair (rows 421–423) caught
+  that the §(4.13)/(4.14) route was WRONG-PANEL — the conjecture-crux seam had now been mis-pinned 3×
+  (§(4.12) column-shape, §(4.13) wrong-panel, §(4.14)-A degree-1-premise-false).** After 2 leaf commits
+  (i′ widening + the column-sup brick, rows 419/420) fed the not-yet-built crux core, the coordinator did
+  NOT dispatch a build; the §(4.14) decompose+settle (421) found §(4.13) reaches the panels INCIDENT through
+  the split body, not the consumer's neighbour-neighbour SHORTCUT `(a,b)` panel (`ForkedArm.lean:156`,
+  coordinator-verified). A diverse-lens pair (422/423) then CONVERGED: Route A's degree-1 neighbour-column is
+  false (the neighbour is itself an interior chain vertex, degree-2), so the genuinely-new step is an
+  iterated panel-perp carry `baseRedundancy_perp_chain_edge`, with a Lean-checked final step. **Lesson:
+  recon-early on a recurring-mis-pin crux pays — three single-pass pins were wrong here; the build that a
+  fresh coordinator trusting the §(4.14) hand-off would have dispatched was wrong-panel and would have
+  BLOCKED.**
+- **The constructive member's Lean-checked positive finding overrode the adversarial member's default-refute.**
+  Member B (adversarial) defaulted to "route B (Meet.lean) is the only route to the shortcut" — reasoning about
+  the SEED supports. Member A constructed the route via `F₀`'s OVERRIDDEN `e_b` support (the shortcut) and
+  Lean-checked the final step (`candidate_perp_two_incident_supportExtensors` at body `b`). The coordinator
+  adjudicated A's positive evidence over B's default. Lesson: in a diverse-lens pair, a Lean-checked
+  construction beats an adversarial default when the two reason about different objects (overridden vs seed
+  support); verify which object each used before adjudicating.
+- **Coordinator source-verification of a re-route recon's CENTRAL claim, before adjudicating.** The §(4.14)
+  recon's load-bearing claim (the consumer's `hρe₀` = the shortcut `(a,b)` panel, not incident) was confirmed
+  by the coordinator reading `ForkedArm.lean:156`/`200-202` before trusting the re-route — the "scrutinize
+  hardest a recon that re-routes a gap" rule.
 
 ### Session #27 (rows 413–418) — the anti-shrink note redirected a 3-shrink run; a diverse-lens pair overturned the conjecture-crux LEAF-4 route a single recon + coordinator scrutiny had mis-pinned
 
