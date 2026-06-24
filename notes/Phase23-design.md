@@ -3162,6 +3162,79 @@ decomposition of the SECOND build it teed up.**
   row. **Verdict: 23d's rank-cert reconsideration is RESOLVABLE (an A2-equivalent build via route B), NOT
   (C)/(D) — pending the LEAF-B1 de-risk.**
 
+  *(4.26) ROUTE-B INTERIOR `hS` GAP — the dispatch's interior-arm `hS` is NOT satisfiable as LEAF-B2 is
+  architected. Read-only compiler-checked dispatch recon, opus, 2026-06-24. VERDICT: BLOCKED at the
+  interior `hS`; flagged not forced.*
+
+  **The kernel facts (all against LANDED `def`/`theorem`, not prose).** The dispatch's interior arm calls
+  `case_III_arm_corner_assembly_via_leafB2`, whose `hS` slot demands LEAF-B2's universal transport: **every**
+  base rigidity row `φ ∈ Fbase.rigidityRows` (`Fbase = ofNormals (G − vtx 1) ends q`) has its cycle-relabel
+  image `(funLeft σ.symm).dualMap φ ∈ span (caseIIICandidate G endsρ qρ (edge i) (edge (i−1)) (qρ(a,·)) n'
+  (qρ(b,·)) 0).rigidityRows`, with `a = vtx i.succ`, `b = vtx (i−1).castSucc`. LEAF-B2
+  (`exists_genuine_relabelImage_base_block`, `Candidate.lean:1844`) instantiates `hS` at the members of an
+  **arbitrary** genuine basis `f` of `span(rigidityRows ∖ {rhat})` (LEAF-B1) — so `hS` must hold for *every*
+  genuine base row, including rows at the **wrap edge `edge i`** (a genuine `G − vtx 1` link for `i ≥ 2`).
+
+  **The wrap-edge row's image is the dead `(a,b)`-block tag, NOT a candidate-span member.**
+  `chainData_bottom_relabel` (`Chain.lean:382–409`) classifies a base genuine row at the wrap edge `edge i`
+  into the `Or.inr` branch — the reproduced-slot tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'` (bodies
+  = the PANEL pair `(vtx (i+1), vtx (i−1))`). The `hS` router
+  `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean:544`) routes that tag through
+  `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:2061`), which requires
+  `hG_eb_cand : G.IsLink e_b (vtx i.succ) (vtx (i−1).castSucc)` — i.e. the candidate's reproduced hinge
+  `e_b = edge (i−1)` must genuinely link `vtx (i+1)`–`vtx (i−1)`. **This is provably FALSE** (kernel-checked:
+  `cd.isLink_pred_edge` pins `edge (i−1)` to link `vtx i`–`vtx (i−1)`; `IsLink` functionality + `vtx_inj` +
+  `omega` close `False`). Since `rigidityRows = {hingeRow u v r | G.IsLink e u v, r ∈ block e}`
+  (`Basic.lean:638`) and `caseIIICandidate.graph = G`, the only `G`-edge candidate for the tag's
+  body-support `{vtx (i+1), vtx (i−1)}` is the chain triangle through `w = vtx i` (the unique common
+  neighbour): `hingeRow (vtx(i+1)) (vtx(i−1)) ρ' = hingeRow (vtx(i+1)) (vtx i) ρ' − hingeRow (vtx(i−1)) (vtx
+  i) ρ'` (difference-collapse `hingeRow_sub_hingeRow_eq`), whose first summand needs `ρ' ∈ block(edge i)` =
+  `ρ'(C(qρ(a,·), n')) = 0` — but `ρ'` (= the base row's `r`, or `−r`) only annihilates `C(qρ(a,·),qρ(b,·))`
+  (the reproduced panel), never the candidate panel `C(qρ(a,·), n')`. So the tag is NOT in the candidate
+  span.
+
+  **The project ALREADY documents this as the wall.** `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`
+  (`Chain.lean:491–499`) states verbatim: the collapsed `hingeRow vᵢ₊₁ vᵢ₋₁ (−ρ₀)` form "would force
+  `ρ₀ ⊥ panelSupportExtensor`, contradicting the discriminator `hgate`, which is exactly why it is the
+  independent `D`-th row" — i.e. the wrap-edge content is the **independent `±r` corner row**, NOT a
+  base-block row. Option A escaped by transporting the wrap edge as a GROUP (`∑_{evⱼ=edge i} cⱼ•hingeRow…rvⱼ`)
+  whose *sum* is the corner row; route B's LEAF-B2, by demanding each genuine basis row transport
+  *individually* into the candidate span, re-introduces exactly the member-mapping wall §(4.18)–(4.24)
+  documented. The conditional rank-cert composition (Q1/Q2 of §(4.25)) is sound; the GAP is that its `hS`
+  premise is **unsatisfiable** for the real interior dispatch (the "deferred-hypothesis unsatisfiable for the
+  consumer" trap, DESIGN.md *Constructibility recon* — the same shape as the §(4.22) false-FEASIBLE).
+
+  **Root cause: wrong base-block target framework.** KT (6.62)'s bottom block `R(G₁∖(v₀v₂)ᵢ*, q₁)` maps under
+  ρᵢ to the candidate's *seed* rigidity rows `R(Gᵢ, qᵢ) = ofNormals (G − vᵢ) endsρ qρ` — the UN-overridden
+  framework. `caseIIICandidate` OVERRIDES the support extensor at `e_c = edge i` and `e_r = edge (i−1)` (the
+  corner slots), so a base `edge i` row's image is a genuine *seed* row but lands on the candidate's overridden
+  `e_c` slot, where its block condition is against the wrong (corner) panel. LEAF-B2 hardcodes
+  `Fcand = caseIIICandidate`; the base block `W` should target the seed framework `ofNormals (G − vᵢ) endsρ
+  qρ` (and the rank cert relate that to `caseIIICandidate`'s span only on off-slot rows).
+
+  **Candidate fix routes considered (none is a clean buildable re-route at this layer):**
+  1. *Re-route the tag via the genuine `(b,v)` slot.* Fails: the reproduced slot can only produce
+     `hingeRow (vtx i) (vtx (i−1)) ρ'` (edge (i−1)'s genuine bodies), not the tag's `(vtx(i+1),vtx(i−1))`
+     bodies; they are different rows.
+  2. *Difference-collapse through `w = vtx i`.* Fails: needs `ρ' ∈ block(edge i)`, = the discriminator gate
+     condition that is generically violated (the whole point of `hgate`).
+  3. *Weaken LEAF-B2's `hS` to basis members only.* Fails: LEAF-B1 produces an arbitrary basis; the span of
+     `R(G−vtx1)∖{rhat}` genuinely requires `edge i` rows (each edge contributes independent rows), so no basis
+     avoids them.
+  4. *Re-target the base block to the seed framework `ofNormals (G − vᵢ) endsρ qρ` (the KT-faithful fix).*
+     This is the real fix but is NOT a wiring change: it re-architects LEAF-B2's `Fcand` + the corner cert's
+     `W ≤ span(candidate)` relation (the corner block must be independent-mod-`W` where `W` lives in the seed
+     span, not the overridden candidate span). A genuine rank-cert re-statement — phase-direction work, not a
+     dispatch leaf.
+
+  **Unblock = adjudicate route 4 (seed-framework base block) vs. the option-A GROUP transport (the landed
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`, which already lands the wrap edge as the corner `±r`
+  GROUP, no individual-row `hS`).** The option-A group leaf is LANDED and wall-free; the route-B LEAF-B2
+  individual-row `hS` is the regression. The cheapest exit may be to NOT use LEAF-B2's universal `hS` for the
+  interior arm at all and instead route the base block through the seed framework + the landed group leaf for
+  the `±r` corner — i.e. interior arm uses the option-A `case_III_arm_corner_assembly` (engine `hwmem` slot),
+  not `case_III_arm_corner_assembly_via_leafB2`. That is a coordinator/phase decision.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

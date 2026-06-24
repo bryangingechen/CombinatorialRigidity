@@ -27,8 +27,27 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**THE UNCONDITIONAL CRUX IS RESOLVABLE — route B works (design §I.8.24(4.25)), and its one carried
-hypothesis LEAF-B1 is now LANDED + de-risked (below).** After the rank cert hit the member-mapping wall
+**⚠️ ROUTE-B IS BLOCKED AT THE INTERIOR `hS` (design §I.8.24(4.26), 2026-06-24) — the rank cert is closed
+only as a CONDITIONAL composition; the interior dispatch's `hS` premise is UNSATISFIABLE as LEAF-B2 is
+architected.** A read-only compiler-checked dispatch recon found that the interior arm's `hS` slot (LEAF-B2's
+*universal* per-genuine-row transport into the `caseIIICandidate` span) cannot be discharged: a base genuine
+row at the **wrap edge `edge i`** maps under the cycle relabel to the reproduced-slot `(a,b)`-block tag
+`hingeRow (vtx (i+1)) (vtx (i−1)) ρ'`, and that tag is **NOT** in the candidate span — the routing lemma
+`bottomRelabel_rigidityRows_mem_span_caseIIICandidate` requires `hG_eb_cand : G.IsLink e_b (vtx (i+1)) (vtx
+(i−1))`, which is **provably false** (`edge (i−1)` links `vtx i`–`vtx (i−1)`, not `vtx (i+1)`–`vtx (i−1)`;
+kernel-checked). This is exactly the member-mapping wall §(4.18)–(4.24) re-introduced by LEAF-B2's
+individual-row `hS` (the project's OWN `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` docstring,
+`Chain.lean:491–499`, names the collapsed tag as the wall, NOT a base-block row — it is the independent `±r`
+corner row, transported by option A only as a GROUP). **All the route-B leaves below DID land and are sound
+in isolation; what fails is their COMPOSITION at the interior `hS`.** Resolution = a phase-direction decision
+(design §(4.26): re-target the base block to the seed framework `ofNormals (G − vᵢ) endsρ qρ`, OR fall back
+to option A's landed group transport `case_III_arm_corner_assembly` for the interior arm). The d=3 line stays
+fully green (its `i=2` wrap edge collapses to the genuine `case_III_bottom_relabel` swap, no general-`d` wall).
+
+**Below: the (now-CONDITIONAL) route-B claims as they were landed — accurate as leaf-level facts, but the
+"rank cert CLOSED end-to-end" / "residual risk RESOLVED" framing is SUPERSEDED by §(4.26).** The unconditional
+crux composition (route B, design §I.8.24(4.25)) and its carried hypothesis LEAF-B1 are LANDED (below). After
+the rank cert hit the member-mapping wall
 (kernel-confirmed 5× for the
 *existing* architecture: §(4.18) static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23)
 row-operation, §(4.24) geometry-aware-transport linearity + the A1 concede), a user-directed faithful
@@ -179,18 +198,22 @@ feeds the per-member `hS` router `bottomRelabel_image_mem_span_caseIIICandidate`
 `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (and via the latter, LEAF-B2's universal `hS`).
 NO `hρGv`, no new LA — a 3-step combinatorial setup leaf in the established interior-split idiom.
 
-**Plan (the dispatch is the one remaining CHAIN piece to close the rank-cert layer's wiring):** ✅
+**Plan (⚠️ the route-B leaves all landed but DON'T compose at the interior `hS` — design §(4.26); a
+phase-direction decision is owed before the dispatch):** ✅
 LEAF-B1 (crux) → ✅ LEAF-B2 (genuine-only `W` producer) → ✅ LEAF-4 `hvanish` + `hS` router → ✅ the
 `case_III_arm_corner_assembly` call (`case_III_arm_corner_assembly_via_leafB2`) → ✅ the
 interior-`hρe₀` producer (`interior_hρe₀_of_widening`) → ✅ the LEAF-3 widening (the interior-arm
 gap) → ✅ the interior-`hρe₀` bundle re-anchoring (`interior_hρe₀_of_baseWidening`, the dispatch's
 one-call `hρe₀` read-off) → ✅ the interior-split `heab_off` accessor
-(`removeVertex_isLink_edge_succ_pred_off`, the dispatch's off-slot `hS`-router input); LEAF-3 + the
-corner producer are landed. Remaining = CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY
-(parallel-safe).
-**Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if the
-LEAF-4 `hS`-router wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real
-and informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
+(`removeVertex_isLink_edge_succ_pred_off`); LEAF-3 + the corner producer are landed. ⚠️ **BLOCKED:**
+the dispatch's interior `hS` (LEAF-B2's universal per-genuine-row transport) is UNSATISFIABLE — the
+wrap-edge `edge i` rows relabel to the dead `(a,b)`-block tag, NOT a candidate-span member (§(4.26)).
+Remaining = adjudicate §(4.26) (option-A group transport vs. seed-framework base block), then build the
+interior arm against the chosen route + CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
+**Route A** (full concrete `Matrix`; KT transfers literally but heavy) and **option A's landed group
+transport** (`case_III_arm_corner_assembly` + `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`, which
+already lands the wrap edge as the `±r` corner GROUP) are the live fallbacks now that LEAF-B2's individual-row
+`hS` has walled at the interior arm. **(C)** (honest-conditional) is the fallback-of-the-fallback.
 
 **Do NOT** re-attempt the dead route families (§I.8.18–I.8.20) / (A)/(B′)/(A′); re-run the A1 / matrix-level
 / geometry-aware feasibility spikes (the *existing-architecture* wall is kernel-confirmed 5× — route B
@@ -217,26 +240,29 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    every `ofNormals (G − v)` rigidity row vanishes off `v`'s column, discharging LEAF-B2's universal
    `hvanish`-off-`σ.symm vᵢ = vtx 1` for the whole family. ✅ **LEAF-4 `hS`-router half LANDED**
    (`Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate`,
-   `CaseIII/Relabel/ForkedArm.lean`) — every `Fbase = (ofNormals (G − vtx 1) ends₀ q)` rigidity row
-   transports under the cycle relabel into the candidate span, discharging LEAF-B2's universal `hS`; pure
-   composition of `chainData_bottom_relabel` (`Or.inl`) + `bottomRelabel_image_mem_span_caseIIICandidate`,
-   the residual risk RESOLVED (every genuine base row goes through the cert-sound genuine branch).
+   `CaseIII/Relabel/ForkedArm.lean`) — the lemma is sorry-free + axiom-clean, BUT ⚠️ it consumes an
+   `hG_eb_cand` premise that is **UNSATISFIABLE for the interior dispatch** (design §(4.26)): the wrap-edge
+   `edge i` base rows go through `chainData_bottom_relabel`'s `Or.inr` (the `(a,b)`-block tag), and routing
+   that tag needs `G.IsLink e_b (vtx (i+1)) (vtx (i−1))`, which is false. The "residual risk RESOLVED via
+   `Or.inl`" claim was WRONG (it covers only the genuine-branch rows, not the wrap-edge `Or.inr` rows).
    ✅ **The `case_III_arm_corner_assembly` call LANDED** (`case_III_arm_corner_assembly_via_leafB2`,
    `CaseIII/Relabel/ForkedArm.lean`) — folds the base-block `W`-production (LEAF-B2 at the assembly's own
    candidate `F₀`) into `case_III_arm_corner_assembly`, replacing its opaque `(W, hWS, hWcard, hW)` block
-   with the LEAF-B2 inputs; pure 2-step composition, NO `hρGv`, axiom-clean. **LEAF-4 is now COMPLETE.**
+   with the LEAF-B2 inputs; the producer is sound, but its **interior `hS` premise is unsatisfiable** (above).
    The carrier, both `hLI` halves, the (α) bridge, the off-slot row bridge, the arm spine, the
    corner-data assembly, and **LEAF-B3** (corner producer: the `±r` via `hρe₀`, the panel rows,
    `linearIndependent_mkQ_corner_of_gate`) all stay LANDED (`notes/Phase23c.md` ledger). The interior
-   `hρe₀` is CLOSED. OPEN: only CHAIN-2c-iii dispatch (item 2) + CHAIN-5.
+   `hρe₀` is CLOSED. ⚠️ The rank cert is closed only as a CONDITIONAL composition — the interior `hS`
+   carries the §(4.26) obstruction. OPEN: adjudicate §(4.26), then the dispatch (item 2) + CHAIN-5.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` dispatch (a discriminator-pick + Fin-case ROUTER
    over the two landed arm routes: the OLD engine via `chainData_split_realization` for the base candidate
    `i=1` + the d=3 floor; the option-(A) `case_III_arm_corner_assembly_via_leafB2` for interior `2 ≤ i < d`,
    feeding `Fbase = ofNormals (G − vtx 1) ends₀ q`, `σ = (shiftPerm i.castSucc)⁻¹`, `hS`/`hvanish` from the
    two landed universal lemmas, `hrhat`/`hIH` from the W6b bundle / IH, and `hρe₀` from the landed
-   `interior_hρe₀_of_widening` fed the W6b widening bundle). Item 1's rank cert is now CLOSED;
+   `interior_hρe₀_of_widening` fed the W6b widening bundle). ⚠️ Item 1's rank cert is CONDITIONALLY closed —
+   the interior `hS` is UNSATISFIABLE as architected (§(4.26)); a phase-direction decision is owed.
    LEAF-1/2/3 + the discriminator-index plumbing + the genuine-branch router + the interior-arm producer
-   + the interior-`hρe₀` producer are all landed. **The interior-arm gap is now CLOSED: LEAF-3
+   + the interior-`hρe₀` producer all landed (sound in isolation). **The interior-`hρe₀` sub-gap is CLOSED: LEAF-3
    (`exists_shared_redundancy_and_matched_candidate`) re-exposes the W6b edge-grouped widening bundle
    (`hedgeGv`), and `interior_hρe₀_of_baseWidening` (2026-06-24) folds that bundle + `hends_i`
    straight into `interior_hρe₀_of_widening` (the `hdeg1`/`G`-link/`.symm` re-anchorings discharged
@@ -244,9 +270,10 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    `hends_i`. ✅ **The interior-split off-slot input is now a `ChainData` read-off:**
    `Graph.ChainData.removeVertex_isLink_edge_succ_pred_off` (`Induction/Operations.lean`) supplies the
    `hS` router's `heab_off` (`∀ e x y, Gv.IsLink e x y → e ≠ edge i ∧ e ≠ edge (i−1)`) directly from
-   the chain accessors. Still owed at the dispatch: the rest of the `Fin cd.d` router wiring (the
-   index/relabel-form alignment of the `hS` router's `endsσρ`/`qρ` candidate, the `shiftPerm`/`vtx`/
-   `candidatePanel` algebra; the base/`d=3` arm via `chainData_split_realization` with its `htrans`).
+   the chain accessors. ⚠️ **BLOCKED at the interior `hS`** (design §(4.26)): not a wiring gap — the
+   interior `hS` premise `hG_eb_cand` is provably false for the wrap-edge rows. Owed: adjudicate §(4.26)
+   (option-A group transport vs. seed-framework base block), then the chosen interior arm + the base/`d=3`
+   arm via `chainData_split_realization` (with its `htrans`) + the `ends`-orientation override (GAP 2).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** *(parallel-safe; own sub-phase when minted)* — reshape `Graph.exists_chain_data_of_noRigid`
    (`Reduction.lean:383`) to the `G.ChainData n` producer `exists_chainData_of_noRigid` (KT Lemma 4.6 chain
@@ -277,74 +304,77 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Blockers / open questions
 
-- **The member-mapping wall (intrinsic to KT for the EXISTING architecture, 5× kernel-confirmed) is
-  ESCAPED by route B's architectural inversion (§(4.25)); the crux LEAF-B1 + the genuine-only `W` producer
-  LEAF-B2 are both LANDED.** Route B follows KT (6.64): redundant row → CORNER, genuine rows → base block `W`.
-  Both of LEAF-B2's universal slots are now LANDED: the `hvanish` half
-  (`ofNormals_removeVertex_rigidityRow_comp_single_self`) and the `hS`-router half
-  (`bottomRelabel_rigidityRows_mem_span_caseIIICandidate`, 2026-06-24). **The residual risk is RESOLVED
-  by construction** — the `hS` router is sorry-free + axiom-clean, and its `Or.inl` feed confirms every
-  genuine base row transports through the cert-sound genuine branch (never the §(4.17)-dead block-tag
-  path). So route B clears the rank cert at the `hS` layer; no narrowing of LEAF-B2's `hS`/`hvanish`
-  slots and no route-A fallback are needed. **LEAF-4 is now COMPLETE** — the
-  `case_III_arm_corner_assembly` call landed as `case_III_arm_corner_assembly_via_leafB2`
-  (`ForkedArm.lean`), folding the LEAF-B2 `W`-production into the assembly. **The interior-arm leaf
-  gap is also closed** — LEAF-3 re-exposes the W6b widening bundle (`hedgeGv`), and
-  `interior_hρe₀_of_baseWidening` folds it + `hends_i` straight into `interior_hρe₀_of_widening`
-  (the bundle re-anchoring discharged internally; 2026-06-24), and the off-slot `hS`-router input is a
-  `ChainData` read-off (`removeVertex_isLink_edge_succ_pred_off`, 2026-06-24). The only remaining open
-  item is the CHAIN-2c-iii dispatch (the general-`k` Fin-case router, now leaf-unblocked **and
-  re-anchoring-free** — owes only the router index/relabel alignment) + CHAIN-5.
+- **⚠️ BLOCKED — the interior dispatch's `hS` is UNSATISFIABLE as LEAF-B2 is architected (design §(4.26),
+  2026-06-24); a phase-direction decision is owed.** The route-B leaves all landed and are sound in
+  isolation, but they do NOT compose at the interior arm: LEAF-B2's *universal* `hS` (every genuine base
+  rigidity row's relabel image ∈ the `caseIIICandidate` span) is reasserted on the **wrap-edge `edge i`**
+  rows, whose relabel image is the reproduced-slot tag `hingeRow (vtx (i+1)) (vtx (i−1)) ρ'` — and that tag
+  is NOT in the candidate span (the routing lemma demands `G.IsLink e_b (vtx (i+1)) (vtx (i−1))`, **provably
+  false**; `edge (i−1)` links `vtx i`–`vtx (i−1)`). This is the member-mapping wall §(4.18)–(4.24)
+  re-introduced by demanding *individual*-row transport: the project's own
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` (`Chain.lean:491–499`) already documents the
+  collapsed tag as the wall (the independent `±r` corner row, transported by option A only as a GROUP). The
+  `hS` *router* `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` IS sorry-free/axiom-clean — its bug is
+  the **`hG_eb_cand` premise is unsatisfiable for the interior dispatch** (the deferred-hypothesis-unsat trap,
+  DESIGN.md *Constructibility recon*; the same shape as the §(4.22) false-FEASIBLE). The `Or.inl`-feed
+  "residual risk RESOLVED" claim was wrong: it only covers the genuine-branch rows; the wrap-edge rows go
+  through `Or.inr` (the block tag).
+- **Resolution routes (design §(4.26), to adjudicate):** (4) re-target the base block `W` to the candidate's
+  SEED framework `ofNormals (G − vᵢ) endsρ qρ` (KT (6.62)'s actual bottom block `R(Gᵢ, qᵢ)`, NOT the
+  corner-overridden `caseIIICandidate`) and re-state the corner cert's `W ≤ span` relation accordingly — a
+  rank-cert re-architecture, not a leaf; OR fall back to option A's LANDED group transport
+  (`case_III_arm_corner_assembly` + the engine `hwmem` slot + `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`),
+  which already lands the wrap edge as the `±r` corner GROUP and never needs an individual-row `hS`. The
+  cheapest exit is likely: interior arm uses `case_III_arm_corner_assembly` (the group transport), NOT
+  `case_III_arm_corner_assembly_via_leafB2`. **This is the coordinator's call.**
+- **LANDED + still valid (sound in isolation, reusable under either resolution):** LEAF-B1
+  (`exists_genuine_linearIndependent_basis_of_rigidityRows_diff` + the satisfiability fact), LEAF-B2
+  (`exists_genuine_relabelImage_base_block` — the producer is sound; only its *universal `hS` premise* is
+  unsatisfiable for the interior dispatch), the `hvanish` lemma
+  (`ofNormals_removeVertex_rigidityRow_comp_single_self`), the `hS` router
+  (`bottomRelabel_rigidityRows_mem_span_caseIIICandidate` — sound, but consumes an unsatisfiable
+  `hG_eb_cand`), `case_III_arm_corner_assembly_via_leafB2` (sound producer, unsatisfiable interior `hS`),
+  the interior-`hρe₀` chain (`interior_hρe₀_of_widening` / `_of_baseWidening` — these DO discharge cleanly,
+  verified in the spike), and `removeVertex_isLink_edge_succ_pred_off`. The interior `hgate`/`hρe₀`/`hvanish`
+  slots were all verified mechanically dischargeable in the spike; the SOLE blocker is the interior `hS`.
 
 ## Hand-off / next phase
 
-**Route B resolves the unconditional crux; the rank cert is now CLOSED — LEAF-B1, LEAF-B2, both of
-LEAF-B2's universal slots (`hvanish` + `hS` router), and the `case_III_arm_corner_assembly` call
-(`case_III_arm_corner_assembly_via_leafB2`) are all LANDED. Next concrete commit = CHAIN-2c-iii
-`chainData_dispatch`, the general-`k` interior router.** Build the dispatch in `CaseIII/Realization.lean`
-(after `exists_shared_redundancy_and_matched_candidate`): a `Fin cd.d` case-split over the matched
-candidate `i` that LEAF-3 picks, routing
-- the base candidate `i = 1` + the `d = 3` floor through the OLD engine `chainData_split_realization`
-  (landed), and
-- the interior `2 ≤ i < d` through the new producer
-  `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2` (`ForkedArm.lean`), supplying
-  - `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`, `σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`;
-  - `hS` = `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean`), its
-    `hrec`/`he₀rec`/`hG_eb_cand` from the dispatch's interior-split data and its `heab_off` from the
-    landed `Graph.ChainData.removeVertex_isLink_edge_succ_pred_off` (`Induction/Operations.lean`);
-  - `hvanish` = `ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1`
-    (`σ.symm vᵢ = vtx 1`, the removed base body; `Candidate.lean`);
-  - `hrhat`/`hIH` from the W6b bundle (`exists_redundant_panelRow_ab_decomposition` /
-    `chainData_split_w6b_gates`) and the IH;
-  - `hgate` from LEAF-3 (`exists_shared_redundancy_and_matched_candidate`);
-  - `hρe₀` from the landed `Graph.ChainData.interior_hρe₀_of_baseWidening` (`ForkedArm.lean`), fed
-    LEAF-3's `hedgeGv` bundle (native shape, `a = vtx 0`, `b = vtx 2`) + `hends_i` — the `hdeg1`/
-    `G`-link/`.symm` re-anchorings are discharged inside it, so the dispatch supplies only `hends_i`.
-**The framework-alignment bookkeeping the prior hand-off flagged is now contained inside the dispatch's
-`hS` discharge** — `case_III_arm_corner_assembly_via_leafB2` lands `W` directly in the assembly's own
-candidate `caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, so the dispatch only needs to
-align the `hS` router's `endsσρ`/`qρ` candidate to that form via the `shiftPerm`/`vtx`/`candidatePanel`
-algebra (`reproduced_panel_eq_splice_panel`, `candidatePanel_apply`), not the whole arm.
+**⚠️ BLOCKED on a phase-direction decision (design §(4.26)) — do NOT build `chainData_dispatch` against
+`case_III_arm_corner_assembly_via_leafB2` as currently architected; its interior `hS` is unsatisfiable.**
+The compiler-checked dispatch recon (2026-06-24) built the `Fin cd.d` router skeleton, fired LEAF-3, and
+verified slot-by-slot that the interior arm's `hgate`/`hρe₀`/`hvanish`/`heab_off`/`hrec`/`hrhat`/`hIH` slots
+are all mechanically dischargeable — but the interior **`hS`** is NOT: the wrap-edge `edge i` base rows
+relabel to the `(a,b)`-block tag `hingeRow (vtx (i+1)) (vtx (i−1)) ρ'`, which is outside the candidate span
+(the routing lemma's `hG_eb_cand` is provably false). See *Blockers* + design §(4.26) for the full kernel
+trace and the resolution routes.
 
-**The interior-arm gap is now CLOSED (2026-06-24):** LEAF-3 re-exposes the W6b widening bundle
-(`hedgeGv`), and `interior_hρe₀_of_baseWidening` folds it + `hends_i` straight into the consumer
-(the bundle re-anchoring — `hcomb` `.symm`, `G`-link lift, `hdeg1` from `deg_two` at `vtx 2` minus
-the `vtx 1`-incident `edge 1` — is done internally). So the dispatch reads `hρe₀` off LEAF-3's
-output in **one call** supplying only `hends_i` (the `ends`-recording of `edge i`). The dispatch
-now owes only the **`Fin cd.d` router wiring** (the index/relabel-form alignment of the `hS`
-router's `endsσρ`/`qρ` candidate, the `shiftPerm`/`vtx`/`candidatePanel` algebra; the base/`d=3`
-arm's `htrans`).
+**The decision the coordinator owes (design §(4.26)):**
+- **(A-fallback, likely cheapest)** Route the interior arm through option A's LANDED group transport —
+  `case_III_arm_corner_assembly` (the engine `hwmem` slot + `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate`,
+  which lands the wrap edge as the `±r` corner GROUP, never an individual-row `hS`). The `±r` corner row is
+  the *group sum* `∑_{evⱼ=edge i} cⱼ•hingeRow…rvⱼ`, NOT a base-block member. This abandons LEAF-B2's
+  universal-`hS` design for the interior arm.
+- **(B-repair)** Re-target LEAF-B2's base block `W` from the corner-overridden `caseIIICandidate` to the
+  candidate's SEED framework `ofNormals (G − vᵢ) endsρ qρ` (KT (6.62)'s `R(Gᵢ, qᵢ)`), and re-state the
+  corner cert's `W ≤ span` / independent-mod-`W` relation against the seed span — a rank-cert
+  re-architecture.
 
-Route-B build plan: ✅ **LEAF-B1** (crux) → ✅ **LEAF-B2** (genuine-only `W` producer) → ✅ **LEAF-4
-`hvanish` + `hS` router** → ✅ **the `case_III_arm_corner_assembly` call** (rank cert CLOSED) → ✅ **the
-interior-`hρe₀` producer** (`interior_hρe₀_of_widening`) → ✅ **the LEAF-3 widening** (the interior-arm
-gap closed) → ✅ **the interior-`hρe₀` bundle re-anchoring** (`interior_hρe₀_of_baseWidening`, the
-dispatch's one-call `hρe₀` read-off) → ✅ **the interior-split `heab_off` accessor**
-(`removeVertex_isLink_edge_succ_pred_off`, the dispatch's off-slot `hS`-router input); **LEAF-3** +
-**LEAF-B3** (corner producer) landed. Remaining = CHAIN-2c-iii dispatch (NEXT, now leaf-unblocked and
-re-anchoring-free, with its `hρe₀` and `heab_off` inputs both one-call read-offs) / CHAIN-5, then
-ENTRY + ASSEMBLY (parallel-safe). Fallbacks **route A** / **(C)** are no longer needed — the rank cert
-clears the wall via route B end-to-end.
+**Once the route is chosen,** the rest of the dispatch wiring is in place: the `Fin cd.d` case-split fires
+LEAF-3 once at the base `v₁`-split and routes `i < 2` → `chainData_split_realization` (base/`d=3`,
+owes only `htrans`), `2 ≤ i` → the chosen interior producer. The interior `hgate`
+(`shiftPerm_apply_vtx_off` off-cycle + `candidateVtx_succ_eq`), `hρe₀` (`interior_hρe₀_of_baseWidening`
+fed LEAF-3's `hedgeGv` + `hends_i`), `hvanish` (`shiftPerm_vtx_top` → `ofNormals_removeVertex_…`), and
+`heab_off` (`removeVertex_isLink_edge_succ_pred_off`) discharges are all spike-verified mechanical and
+reusable under either route. NOTE the `hends_i`/`hends_ea`/`hends_eb`/`he₀rec` slots need an `ends`-orientation
+override (LEAF-3's `ends = Q.ends` is only orientation-free `hends'`; cf. `chainData_split_realization`'s
+`ends₁` `Function.update`) — additional wiring, GAP 2 in the spike.
+
+Route-B leaf inventory (all LANDED, sound in isolation, COMPOSITION blocked at interior `hS`): LEAF-B1,
+LEAF-B2, the `hvanish` lemma, the `hS` router, `case_III_arm_corner_assembly_via_leafB2`,
+`interior_hρe₀_of_widening` / `_of_baseWidening`, `removeVertex_isLink_edge_succ_pred_off`, LEAF-3, LEAF-B3.
+Remaining = adjudicate §(4.26), then build the interior arm against the chosen route + CHAIN-5, then
+ENTRY + ASSEMBLY (parallel-safe).
 
 ## Decisions made during this phase
 
@@ -422,20 +452,19 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   `.graph`-unfold idiom (`rw [toBodyHinge_graph, ofNormals_graph, removeVertex_isLink]`) is the established
   pattern of `chainData_bottom_relabel` / `bottomRelabel_image_mem_span_caseIIICandidate` — no new friction.
   The substantive remaining LEAF-4 piece is now the `hS` router only.
-- **LEAF-4 `hS`-router half LANDED — the residual risk is RESOLVED (2026-06-24, axiom-clean,
-  build/lint/warning-clean).** `Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate`
-  (`CaseIII/Relabel/ForkedArm.lean`, before `case_III_arm_corner_assembly`): every rigidity row of
-  `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge` transports under
-  `(funLeft (shiftPerm i.castSucc).symm).dualMap` into the candidate span — LEAF-B2's universal `hS` slot
-  at `σ = (shiftPerm i.castSucc)⁻¹`. Body = pure 2-lemma composition: `φ ∈ Fbase.rigidityRows` fed as
-  `Or.inl hφ` to `chainData_bottom_relabel`, then `bottomRelabel_image_mem_span_caseIIICandidate`. **The
-  coordinator-flagged residual risk is answered:** the genuine base rows ALL route through the cert-SOUND
-  genuine branch — `Or.inl` never forces the §(4.17)-dead block-tag path (it fires only on the candidate's
-  own reproduced slot, via `hG_eb_cand` at the genuine `(a, b)` candidate link, never a base-row image).
-  NO `hρGv`, no new LA, no narrowing of LEAF-B2's slots needed. Namespace gotcha: `chainData_bottom_relabel`
-  is `PanelHingeFramework.`-namespaced (not dot-accessible on `cd`) — minor, no FRICTION entry.
-- **The `case_III_arm_corner_assembly` call LANDED — the rank cert is CLOSED (2026-06-24, axiom-clean,
-  build/lint/warning-clean).** `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2`
+- **LEAF-4 `hS`-router half LANDED — ⚠️ "residual risk RESOLVED" was WRONG (corrected 2026-06-24, design
+  §(4.26)).** `Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate`
+  (`CaseIII/Relabel/ForkedArm.lean`): the lemma is sorry-free/axiom-clean and feeds `φ ∈ Fbase.rigidityRows`
+  as `Or.inl` to `chainData_bottom_relabel`. **The error:** the dispatch recon proved this only covers the
+  genuine-branch (`Or.inl`) rows — the **wrap-edge `edge i`** base rows go through `Or.inr` (the `(a,b)`-block
+  tag), which the router routes via an `hG_eb_cand : G.IsLink e_b (vtx (i+1)) (vtx (i−1))` premise that is
+  **provably false** (`edge (i−1)` links `vtx i`–`vtx (i−1)`). So the universal `hS` is UNSATISFIABLE; the
+  "every genuine base row goes through the sound branch" claim missed that the wrap edge is a genuine base
+  edge whose image is the tag. The lemma stays in tree (sound), but its premise can't be met at the
+  interior dispatch. → BLOCKED, §(4.26).
+- **The `case_III_arm_corner_assembly` call LANDED — ⚠️ "rank cert CLOSED" was OVERSTATED (corrected
+  2026-06-24, design §(4.26)): closed only CONDITIONALLY — the interior `hS` is unsatisfiable (above).**
+  `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2`
   (`CaseIII/Relabel/ForkedArm.lean`, after `case_III_arm_corner_assembly`): the "rest of LEAF-4" producer,
   with the same RAW interface as `case_III_arm_corner_assembly` *minus* its opaque `(W, hWS, hWcard, hW)`
   block, *plus* the LEAF-B2 inputs (`Fbase`, `σ`, `rhat`, `hrhat`, `hIH`, universal `hS`/`hvanish`). Body =
@@ -487,3 +516,19 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (and via the latter, LEAF-B2's universal `hS`).
   A 3-step combinatorial-setup leaf in the established interior-split idiom — NO `hρGv`, no new LA, no
   friction. Homed in `Operations.lean` (the `ChainData` definition's file) per the where-it-lives rule.
+- **⚠️ DISPATCH RECON — route-B interior `hS` is UNSATISFIABLE; BLOCKED on a phase decision (2026-06-24,
+  read-only compiler-checked spike, opus, design §(4.26)).** Built the `chainData_dispatch` `Fin cd.d`
+  router skeleton, fired LEAF-3, and verified slot-by-slot: the interior arm's `hgate`/`hρe₀`/`hvanish`/
+  `heab_off`/`hrec`/`hrhat`/`hIH` are all mechanically dischargeable (the `hρe₀` chain
+  `interior_hρe₀_of_baseWidening` discharges cleanly), BUT the interior **`hS`** is not — the wrap-edge
+  `edge i` base rows relabel (via `chainData_bottom_relabel`'s `Or.inr`) to the `(a,b)`-block tag
+  `hingeRow (vtx (i+1)) (vtx (i−1)) ρ'`, NOT in the candidate span (kernel-checked: the router's
+  `hG_eb_cand : G.IsLink e_b (vtx (i+1)) (vtx (i−1))` contradicts `isLink_pred_edge`). The project's own
+  `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` docstring names this as the wall (the `±r` GROUP, not
+  a base-block row). Root cause: LEAF-B2's *individual*-row universal `hS` re-introduces the member-mapping
+  wall §(4.18)–(4.24); KT (6.62)'s bottom block lives in the SEED framework `ofNormals (G − vᵢ) endsρ qρ`,
+  NOT the corner-overridden `caseIIICandidate`. Resolution (coordinator's call): option-A landed group
+  transport (`case_III_arm_corner_assembly`) vs. seed-framework base block re-architecture. GAP 2 (smaller):
+  the `ends`-orientation pins (`hends_i`/`hends_ea`/`he₀rec`) need a `Function.update` override since LEAF-3's
+  `ends = Q.ends` is only orientation-free. Lesson (deferred-hypothesis-unsat composing landed-sound leaves)
+  → already in DESIGN.md *Constructibility recon*; the §(4.26) entry is the full kernel trace.
