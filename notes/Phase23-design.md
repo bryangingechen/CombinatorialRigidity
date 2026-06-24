@@ -3400,6 +3400,124 @@ decomposition of the SECOND build it teed up.**
   Q1 being clean while Q2 walls is the precise diagnostic — the relabel/rank machinery generalizes fine; the
   block is the candidate's own slot-override meeting the discriminator, one layer above the seed.
 
+  *(4.30) ROUTE-A FEASIBILITY SCOPING — VERDICT: ROUTE A IS A GENUINELY-DIFFERENT, FEASIBLE PATH (NOT
+  the refuted §(4.22)/(4.23) work), but it is a LARGE multi-leaf sub-phase (a from-scratch concrete
+  `Matrix R(G,p)` model + the `Matrix.rank`↔span bridge + a per-`Mᵢ` matrix-block-additivity rebuild),
+  NOT a light reformulation. The decision is A-vs-(C) on COST, not on feasibility: A is buildable and
+  KT-faithful but expensive; (C) is cheap and leaves one named gap. Read-only recon, all probe queries
+  reverted / tree clean, opus, 2026-06-24. Every load-bearing claim re-derived from the LANDED
+  `def`/`theorem` + KT §6.4.2 (6.60–6.67) read directly from the primary PDF.*
+
+  **(1) ROUTE A IS NOT THE REFUTED §(4.22)/(4.23) WORK — the prior refutation was option (i)
+  (dual-space maneuvers), route A is option (ii) (a literal `Matrix`).** The §(4.21)→(4.23) "§I.8.21(α)
+  matrix-level block-rank infra" the spikes refuted was, on its own framing (§I.8.21(2b)(α), lines
+  1196/1239–1240): "a block-rank-additivity / quotient infra" — an ABSTRACT `finrank`/`Submodule` lemma
+  consuming the EXISTING `rigidityRows`/span representation. It LANDED, as
+  `Submodule.finrank_add_card_le_of_linearIndependent_mkQ` (`Mathlib/.../Dimension/Constructions.lean:214`,
+  carrier-agnostic `finrank` over any field `V` — NOT a `Matrix`), and IS the kernel of the chain cert
+  `case_III_rank_certification_chain`. §(4.22) refuted it because it "consumes a SCALAR fixed-member
+  membership (`hWS`/`hW`) at the single use site, which forces the wall"; §(4.23) confirmed "the row
+  operation IS the span membership." **Both refuted the dual-space span model's expression of KT's
+  (6.61) submatrix-containment as a span MEMBERSHIP.** Route A is a *different object*: a genuine
+  mathlib `Matrix R(G,p)` (rows = `(edge, hinge-block-index)`, columns = `(body, screw-coord) = α × Fin D`,
+  entry = the doc-comment's literal "`r` in `u`'s `D` columns, `−r` in `v`'s", `Basic.lean:480–489`),
+  where rank = `Matrix.rank`, KT's (6.61) column op = an explicit right-multiply by a unit-det matrix,
+  and (6.64) block-triangular additivity = a literal block-matrix-rank fact. §(4.24) line 3102 EQUATED
+  "explicit-`Matrix` object" with "= the §I.8.21(α) infra, no route in hand" — that equation is the
+  source of the doc's internal tension and it is **imprecise**: it was written imagining a `Matrix`
+  *transport* `Ψ` that "would CONSUME, not produce, the containment" (line 3106) — i.e. a hybrid still
+  bottoming out in the dual-space cert's membership. A *standalone* `Matrix` cert (the rank computed by
+  matrix operations, never re-entering the span-membership layer) is NOT what §(4.24) refuted. **So
+  route A is option (ii); §(4.22)/(4.23) refuted only option (i). Route A is LIVE.**
+
+  **(2) ROUTE A DOES DISSOLVE THE GATE WALL — confirmed against the wall's exact source.** The wall
+  (§(4.18)–(4.29)) is NOT the gate `ρ₀(C(vᵢ₊₁, n')) ≠ 0`; the gate is KT's (6.65)/(6.66)/(6.67) full-rank-
+  of-`Mᵢ` certification, a value-read the project ALREADY proves cleanly and soundly
+  (`notMem_span_mkQ_pmR_row_of_gate` / `linearIndependent_mkQ_corner_of_gate`, `Candidate.lean:2006/2082`,
+  + the union-dim finish `interior_hρe₀_*` closed by Phase-17 `omitTwoExtensor_linearIndependent`). The
+  wall is the OTHER half of KT's argument: (6.64)'s block additivity needs `R(G,pᵢ)` to CONTAIN
+  `R(G₁,q₁)` as a submatrix (the (6.61) column op + (6.62) ρᵢ-relabel row correspondence), and in the
+  *dual-space span* model that "submatrix containment" is forced to be "every base/seed row ∈
+  `span(caseIIICandidate.rigidityRows)`" — where `caseIIICandidate` genuinely OVERRIDES the `e_c = edge i`
+  hinge's support extensor to the free `va`-line `C(vᵢ₊₁, n')` (`caseIIICandidate` def
+  `Candidate.lean:939–947`; the override is the realized candidate framework `pᵢ`'s actual geometry, not
+  an artifact). The wrap content always reduces to a row through bodies `{vᵢ₊₁, vᵢ}` = the overridden
+  `e_c` slot, so its membership must clear the gate (§(4.29) line 3388–3390) — the membership and the
+  gate collide. **In a literal `Matrix`, KT's (6.61) "submatrix containment" is a structural EQUALITY of
+  matrix entries after an explicit invertible column operation (`Matrix.rank_mul_eq_right_of_isUnit_det`,
+  CONFIRMED in mathlib), NOT a span membership.** The redundant/wrap row is a literal matrix row that the
+  (6.64) row operation transforms IN PLACE; its `±r` value (6.66) is a literal entry computation
+  (`interior_group_eq_baseRedundancy` already gives this as a column equality). No membership is ever
+  formed, so the override-meets-gate collision never arises — the override just IS the top-left block
+  `r(Lᵢ)` of `Mᵢ`, and the gate `r(C(Lᵢ)) ≠ 0` certifies `rank Mᵢ = D` via a `D×D` minor. **Route A
+  genuinely avoids the membership obstruction. CONFIRMED, not hoped.**
+
+  **(3) BUT ROUTE A IS HEAVY — and the bridge to the honest statement, while real, is itself a leaf
+  family.** What must be built (NEW, from scratch — the project has NO `Matrix`-valued rigidity matrix
+  anywhere; `R(G,p)` is exclusively `rigidityRows : Set (Dual ℝ (α → ScrewSpace k))`, kernel-confirmed):
+  - **A1. The concrete `Matrix R(G,p)`** — `Matrix (Σ e, Fin (D−1)) (α × Fin D) ℝ` (plus the
+    trivial-motion rows, or the pinned form), entries from the hinge-row blocks. NEW def + the basic API
+    (row/column accessors, the `(edge,j)` ↔ `hingeRow` correspondence). MEDIUM, ~1 leaf.
+  - **A2. The `Matrix.rank`↔`finrank (span rigidityRows)` bridge** — `Matrix.rank (R Q) = finrank (span
+    Q.rigidityRows)` via the LANDED-in-mathlib `Matrix.rank_eq_finrank_span_row` (CONFIRMED) + the
+    coordinate iso `α → ScrewSpace k ≅ (α × Fin D → ℝ)`. This is the clause-(iii) anchor: it connects
+    `Matrix.rank` to the honest `HasGenericFullRankRealization` target (`PanelHinge.lean:1035`, which is
+    literally `finrank (span rigidityRows) = D·(|V|−1) − def`), NOT a weaker matrix fact. But the
+    coordinate iso must commute with the `ScrewSpace` carrier — `ScrewSpace k` is a `def` of dim `D`
+    over `ℝ`, opaque (Phase 22l), so the iso + its naturality is real work, MEDIUM, ~1–2 leaves.
+  - **A3. The matrix-block-additivity rebuild** — `rank (column-opped R(G,pᵢ)) ≥ rank Mᵢ + rank(bottom)`.
+    mathlib has the two primitives (`Matrix.rank_mul_eq_right_of_isUnit_det` for the column op,
+    `Matrix.det_fromBlocks_zero₂₁` for the block-triangular det) + the project's `Rank.lean` submatrix-det
+    witnesses (`exists_submatrix_det_ne_zero_of_linearIndependent_rows`), but there is NO off-the-shelf
+    `Matrix.rank` block-additivity-as-INEQUALITY lemma — it must be assembled (block-triangular full-rank
+    minor + the IH's bottom-block rank). MEDIUM–HIGH, ~2–3 leaves; this is route A's analog of the
+    landed `finrank_add_card_le_of_linearIndependent_mkQ`, re-done at the `Matrix` level.
+  - **A4. The (6.61) column op + (6.62) ρᵢ-relabel realized on the matrix** — the explicit unit-det
+    column-operation matrix (add `vᵢ`'s columns to `vᵢ₊₁`'s) + the ρᵢ row/column permutation; prove the
+    result equals the block form (6.61) entrywise. This is the "not difficult to see" step KT compresses
+    and the project's own §(4.21) flags as "the WHOLE content"; at the matrix level it is an entrywise
+    computation, tractable but laborious. MEDIUM–HIGH, ~2–3 leaves.
+  - **A5. Re-aim the gate/union-dim cert at the matrix `Mᵢ`** — `rank Mᵢ = D ⟺ r(C(Lᵢ)) ≠ 0` (6.65/6.66)
+    + the (6.67) union-dim finish. The CONTENT is LANDED (the gate value-read, `interior_group_eq_base
+    Redundancy` for `±r`, `omitTwoExtensor_linearIndependent` for Lemma 2.1); A5 re-states it against the
+    `D×D` matrix minor instead of the `mkQ` quotient. LOW–MEDIUM, ~1–2 leaves (mostly re-wrap of landed).
+  - **A6. The dispatch + spine wiring** — the `Fin cd.d` router over the matrix arms + CHAIN-5, then the
+    honest Theorem 5.5 assembly via the A2 bridge. Same shape as the (C)/route-4 dispatch. MEDIUM.
+  - **Reusable verbatim (LANDED, sound):** the entire upstream stack — the carrier `ScrewSpace`, the
+    discriminator/gate value-reads, `interior_group_eq_baseRedundancy` (the `±r` column equality),
+    `interior_hρe₀_of_baseWidening`, Phase-17 Lemma 2.1, the `ChainData` contract (C.0–C.6, frozen, NO
+    motive/IH change — the wall is below the contract, confirmed), the Q1 relabel rank-iso (§(4.29),
+    `rigidityRow_chainData_relabel` + `LinearEquiv.finrank_map_eq`, the matrix analog of (6.62)). The
+    `mkQ`-quotient block cert (`case_III_rank_certification_chain` + `finrank_add_card_le_of_linear
+    Independent_mkQ`) is SUPERSEDED for the interior arm but stays for `d=3`/the base arm.
+  - **NOT reusable:** there is no existing `Matrix` rigidity infra to extend — A1–A4 are from scratch.
+
+  **COST ESTIMATE: a dedicated sub-phase, ≈ 9–14 leaves across A1–A6** (the same order as a full
+  realization-layer phase like 22h/22i, not a 2–3-leaf reformulation). The two genuinely-new high-risk
+  pieces are **A3** (matrix block-additivity-as-inequality) and **A4** (the entrywise (6.61) column-op
+  proof); the others are bridge/re-wrap work. A `d=3` zero-regression discipline must be kept (the matrix
+  arm specializes to the existing `mkQ` arm, or the dispatch routes `d=3` to the LANDED engine).
+
+  **VERDICT (decisive).** Route A is a **GENUINELY-DIFFERENT, FEASIBLE path** — it is option (ii) (a
+  literal `Matrix`), NOT the option-(i) dual-space work §(4.22)/(4.23) refuted, and it DOES dissolve the
+  override-meets-gate membership wall (the wrap row enters as a literal matrix row; (6.61) containment is
+  an entrywise column-op equality, never a span membership). The clause-(iii) bridge (`Matrix.rank` ↔
+  `finrank (span rigidityRows)` ↔ the honest `HasGenericFullRankRealization`) is real and lands on the
+  honest statement, not a weaker fact. **But route A is a HEAVY, multi-leaf sub-phase** (≈9–14 leaves; A3
+  + A4 genuinely-new), NOT the "light reformulation" the route-B/route-4 family hoped to be. So the
+  user's decision is **A-vs-(C) on COST**, with real data: **(A)** unconditional honest general-`d`
+  Theorem 5.5, ~a full realization-phase of work, KT-faithful, no named gap; **(C)** honest-conditional
+  (carry the wrap-redundancy membership as one explicit `h…` hypothesis to the consumer), ~1 leaf +
+  wiring, leaves a single documented gap that is exactly KT's (6.61) "it is not difficult to see"
+  submatrix containment. ENTRY + ASSEMBLY are parallel-safe under either. **Flag-don't-force:** the one
+  residual uncertainty NOT settled in this read-only recon is the *constant factor* on A1/A2 — whether
+  the `ScrewSpace`-opacity coordinate iso (A2) and the entrywise column-op (A4) compose without a
+  `maxHeartbeats`/`whnf` blow-up at general `d` (the Phase-22l opacity concern). A 1–2-day compiler-checked
+  spike building A1 + A2 (the matrix def + the rank bridge at `d=3`, reverted) would settle the constant
+  factor before a full A commitment; it would NOT change the feasibility verdict (the math is KT-literal
+  and the mathlib primitives are confirmed present), only sharpen the leaf count. This spike is the
+  recommended de-risk IF the user leans toward A.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
