@@ -959,6 +959,38 @@ theorem _root_.Graph.ChainData.d_eq_kAdd {G : Graph α β} {n : ℕ} (cd : G.Cha
   have hnk : n = k + 1 := by nlinarith [hprod]
   rw [cd.d_eq, hnk]
 
+/-- **The Case-III panel selector, transported to `Fin (k + 1)`** (`lem:case-III` general-`d`,
+CHAIN-2c-iii LEAF-3; Katoh–Tanigawa 2011 §6.4.2 eq. 6.67). The composition of the record-local
+panel→vertex selector `candidateVtx : Fin cd.d → α` (eq. 6.67, `Π₀ = Π(v₀)`, `Πᵢ = Π(v_{i+1})`) with
+the index transport `Fin.cast (cd.d_eq_kAdd hn).symm : Fin (k + 1) → Fin cd.d` across the
+chain-length identity `cd.d = k + 1` (`d_eq_kAdd`). This is the `cand : Fin (k + 1) → α` selector
+the Claim-6.12 panel discriminator `exists_chainData_discriminator_pick` consumes: it tests one
+panel `Π(cand u)` per discriminator index `u : Fin (k + 1)`, and `cand` must be injective (the
+panels distinct). The
+discriminator-index gap (Phase 23c §I.8.24(4.11)) is exactly this `Fin (k + 1)`-vs-`Fin cd.d`
+reconciliation; `d_eq_kAdd` closes it structurally (KT's `d` candidates = `d` panels = same index
+set). No `d = 3` content; at `d = 3` (`n = 3`, `k = 2`) it is `Fin 3 → α` unchanged. -/
+def _root_.Graph.ChainData.candidatePanel {G : Graph α β} {n : ℕ} (cd : G.ChainData n)
+    (hn : Graph.bodyBarDim n = screwDim k) : Fin (k + 1) → α :=
+  cd.candidateVtx ∘ Fin.cast (cd.d_eq_kAdd hn).symm
+
+/-- The panel selector unfolds to `candidateVtx` at the transported index (CHAIN-2c-iii LEAF-3): the
+named bridge routing the discriminator's panel `u : Fin (k + 1)` to the chain candidate
+`Fin.cast (cd.d_eq_kAdd hn).symm u : Fin cd.d`. Composing with `candidateVtx_succ_eq`
+(`candidateVtx i = vtx i.succ` at interior `i`) turns the discriminator's gate at `cand u` into the
+chain arm's gate at the successor neighbour `vtx (Fin.cast … u).succ`. -/
+lemma _root_.Graph.ChainData.candidatePanel_apply {G : Graph α β} {n : ℕ} (cd : G.ChainData n)
+    (hn : Graph.bodyBarDim n = screwDim k) (u : Fin (k + 1)) :
+    cd.candidatePanel hn u = cd.candidateVtx (Fin.cast (cd.d_eq_kAdd hn).symm u) := rfl
+
+/-- **The transported panel selector is injective** (CHAIN-2c-iii LEAF-3): the
+`Function.Injective cand` half of the discriminator's `cand : Fin (k + 1) → α` input, composing
+`candidateVtx_injective` (the chain vertices `v₀, v₂, …, v_d` distinct) with the bijection
+`Fin.cast (cd.d_eq_kAdd hn).symm`. -/
+lemma _root_.Graph.ChainData.candidatePanel_injective {G : Graph α β} {n : ℕ} (cd : G.ChainData n)
+    (hn : Graph.bodyBarDim n = screwDim k) : Function.Injective (cd.candidatePanel hn) :=
+  cd.candidateVtx_injective.comp (Fin.cast_injective _)
+
 /-- **CHAIN-2a-ii — the per-`i` chain-candidate reduction core** (`lem:case-III`; Katoh–Tanigawa
 2011 §6.4.1, Lemma 6.13 the per-candidate arm; Phase 23b). For an interior chain index `i`
 (`0 < i`, so `vᵢ` is a degree-2 chain vertex with chain edges `edge i : vᵢ—vᵢ₊₁` and the
