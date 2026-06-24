@@ -1564,6 +1564,70 @@ recon before scheduling a producer build* (the satisfiability discipline this
 specializes to the contract level); `notes/Phase23-design.md` §I.8.24(4.11);
 `notes/model-experiment.md` rows 407–410.
 
+## Compiler-checked spike, not prose recon, for "do these objects compose?" questions (the Phase-23c LEAF-4 postmortem)
+
+The recon mechanism (`coordinate-phase` step 1) defaults to a **prose
+design-pass** — an agent that reads the landed `def`/`theorem`s and writes a
+design-doc verdict naming the route. That is the right tool for a *faithfulness*
+or *decomposition* question ("does this match KT?", "what are the buildable
+sub-leaves?"). It is the **wrong** tool for a *route-composition* question — "do
+these specific Lean objects actually compose to produce goal X?" — in the
+defeq-fragile zone, because prose reasons about *types it mischaracterizes*, and
+a wrong prose verdict becomes a hand-off the next build trusts, propagating the
+error.
+
+The Phase-23c interior-`hρe₀` conjecture crux (KT eq-6.66, the redundancy carry
+across the spliced body `vᵢ`) was mis-pinned **3–4 times in a row by prose
+recon**: §I.8.24(4.12) called the column-value read "wrong-shape, the dead
+`hρGv` hrCol" and *forbade* it; (4.13) re-routed to the incident panels (wrong
+panel); (4.15) — a **diverse-lens prose pair** — converged on a value-free chain
+induction needing a per-vertex witness producer with no source (Route W). Every
+verdict was prose; every one mischaracterized the types. The root error was a
+**conflation**: "the column-value read" (an ℝ^D equality `group column = −ρ₀`,
+which *is* KT's wall-escape) was labeled the same as "the member-mapping wall" (a
+span-membership transport `hingeRow ρ₀ ∈ span(candidate)`, genuinely dead). The
+compiler distinguishes them; the prose did not.
+
+A single **compiler-checked spike** — a read-only agent that wrote a scratch
+probe, built it, and read the kernel's verdict per seam — **dissolved the entire
+route fork**: it proved (sorry-free) that the consumer's `hρe₀` reduces by a
+relabel identity to one canonical goal, then *closed that goal in 4 steps* using
+the very value read the prose had forbidden, fired one index deeper
+(framework-free: the block test reads only `ends`/`q`, so the `vᵢ`-incidence that
+"excluded" the spliced edge from `G − vᵢ` is a non-issue when the panel is read
+off the seed, not through a framework). The crux 3–4 prose passes could not
+settle closed in one spike.
+
+Three durable rules:
+
+1. **Match the recon shape to the question.** *Faithfulness / decomposition* →
+   prose design-pass (the compiler can't check faithfulness to a paper).
+   *"Do these Lean objects compose?"* → a **compiler-checked spike**: a read-only
+   probe (scratch file + lean-lsp MCP) that builds the candidate composition,
+   `sorry`s the gaps, and reports the *exact kernel-checked residual goal* — not a
+   prose verdict. In the defeq-fragile zone the compiler is the only reliable
+   adjudicator of composition.
+2. **A prose prohibition born of a conflation steers every successor recon
+   wrong.** "Do NOT route through the value read" (from (4.12)'s conflation)
+   pushed (4.13)/(4.15) away from the landed solution toward the unbuildable
+   Route W. Before enshrining a "do NOT use X" prohibition for a
+   *compiler-decidable* route, **spike X** — one probe is cheaper than the
+   multi-recon churn a wrong prohibition causes (here ~3 build commits were
+   orphaned on the forbidden-route detour).
+3. **Salvage a spike's sorry-free work; don't re-derive it.** A read-only probe
+   reverts its scratch (correct), but its compiler-checked lemmas are valuable —
+   `SendMessage`-resume the *same* agent to re-emit them as real commits rather
+   than spawn a fresh agent (it has the source in context). The resume runs in
+   the background (no synchronous return); the coordinator re-runs all gates
+   after.
+
+Operative triggers live where they fire: the `coordinate-phase` command (step-1
+trigger list + the recon-dispatch-shape section) and `notes/coordinate-phase-rescue.md`
+§6 (the spike + salvage dispatch shapes). Cross-refs: *Constructibility recon
+before scheduling a producer build* (the satisfiability discipline a spike
+empirically discharges); `notes/Phase23-design.md` §I.8.24(4.13)–(4.16);
+`notes/model-experiment.md` rows 426–428 + Session #28 *Findings*.
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually

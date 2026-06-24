@@ -16,7 +16,7 @@ orientation.) Row numbers cite `model-experiment.md`.
 - Dispatch **killed** by a session/usage limit, **or user-interrupted** mid-task → §3
 - Plan-label deviation (destructive→additive, slice re-size) → §4
 - BLOCKED return — which resolutions stay in-workflow → §5
-- Non-build dispatch shapes (cleanup round; coordinator-authored; source-verification recon) → §6
+- Non-build dispatch shapes (cleanup round; coordinator-authored; source-verification recon; compiler-checked spike; spike-salvage resume) → §6
 - Subagent wedged for hours on a proof timeout (elaboration wall) → §7
 
 ## §1 — Mechanical fixups (a fixup, never a stop)
@@ -171,6 +171,29 @@ moved it into the hand-off).
   reading against KT eqs. (6.46)–(6.67) and **refute** the per-`i`-splits alternative
   *before* committing the build — the highest-confidence way to settle a
   "which route is KT-faithful" fork.
+- **Compiler-checked spike** (read-only, no commit) — the dispatch shape for a
+  **route-COMPOSITION** question ("do these specific Lean objects compose to produce
+  goal X?"), as opposed to the faithfulness question the source-verification recon
+  settles. The default *prose* design-pass is the WRONG tool here: in the
+  defeq-fragile zone prose mischaracterizes the types and a wrong verdict propagates
+  through the hand-off (the §I.8.24(4.12)–(4.15) interior-`hρe₀` crux was prose-mis-pinned
+  3–4× — incl. by a diverse-lens *prose* pair — DESIGN.md *Compiler-checked spike, not
+  prose recon, …*). Instead dispatch a read-only agent that writes a SCRATCH probe (a
+  throwaway `.lean` in the project tree importing the relevant modules), BUILDS the
+  candidate composition with `sorry` for each gap, reads the kernel's per-seam verdict,
+  and **reports the EXACT kernel-checked residual goal(s)** — not a prose verdict. Hard
+  constraints: commit NOTHING, delete the scratch, leave `git status` clean (the
+  deliverable is the gap map in the return message). One spike dissolved the route fork
+  3–4 prose recons couldn't + isolated the true crux (rows 426–428).
+- **Spike-salvage resume** (recover a probe's sorry-free work): a read-only spike
+  reverts its scratch (correct), but the sorry-free lemmas it proved are valuable — do
+  NOT spawn a fresh agent to re-derive them. `SendMessage`-resume the SAME spike agent
+  (by its `agentId`) to re-emit them as real, gate-clean commits (it has the exact
+  source in context; reverse the earlier "commit nothing" for this pass). Caveats: the
+  resume runs in the **background** (no synchronous `LANDED`/cost return — you're
+  notified on completion), and the async return is an *attestation* — the coordinator
+  re-runs ALL gates after (mechanics, full diff, build warning-clean, `lake lint`,
+  axiom-check, sorry-grep), exactly as for a below-top-rung dispatch (rows 426–427).
 
 ## §7 — Subagent wedged for hours on a proof timeout (elaboration wall)
 

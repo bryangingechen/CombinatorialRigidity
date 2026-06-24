@@ -93,6 +93,21 @@ Loop:
    — the next commit is a **recon / design-pass**, not a build: dispatch a
    read-only Plan-agent recon, or a docs/blueprint design-pass commit
    that decomposes the core into buildable leaves with exact signatures.
+   **But match the recon shape to the question (DESIGN.md *Compiler-checked
+   spike, not prose recon, …*):** a *prose* design-pass is right for a
+   **faithfulness / decomposition** question ("does this match the source?",
+   "what are the buildable sub-leaves?"), and WRONG for a **route-composition**
+   question — "do these specific Lean objects compose to produce goal X?" — in
+   the defeq-fragile zone, where prose mischaracterizes the types and a wrong
+   prose verdict propagates through the hand-off. For a route-composition
+   question dispatch a **compiler-checked spike** instead (rescue §6): a
+   read-only probe (scratch file + lean-lsp MCP) that BUILDS the candidate
+   composition, `sorry`s the gaps, and reports the *exact kernel-checked
+   residual goal* — not a prose verdict (the §I.8.24(4.12)–(4.15) interior-`hρe₀`
+   crux was prose-mis-pinned 3–4× — incl. by a diverse-lens *prose* pair — then
+   dissolved + closed in ONE spike, rows 426–428; the forbidden route the prose
+   pinned-against was the answer). Salvage a spike's sorry-free work by
+   `SendMessage`-resuming the *same* agent, never re-deriving (rescue §6).
    Recon is this workflow's highest-leverage move; trigger it **early**,
    before the next leaf (22g burned ~4 leaf commits on an undischargeable
    core; the 2-leaf trigger is the floor).
