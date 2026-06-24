@@ -87,7 +87,14 @@ maps to the chain candidate `i := Fin.cast (cd.d_eq_kAdd hn).symm u : Fin cd.d`,
 at `candidatePanel hn u` into the arm's gate at `vtx i.succ`.
 
 **NEXT: the discriminator-firing producer (LEAF-3 proper) — but it produces ONLY `(matched i, ρ₀, hgate,
-n', base bundle)`, NOT the interior `hρe₀` (design §I.8.24(4.12)).** Now that the composed `cand`/`hcand`
+n', base bundle)`, NOT the interior `hρe₀` (design §I.8.24(4.12)).** **(Coordinator anti-shrink note,
+2026-06-23: this producer has been shrunk-away-from 3× — `candidateVtx` / `candidateVtx_succ_eq` /
+`candidatePanel` were each peeled into their own commit. They are ALL landed; the index-plumbing infra is
+EXHAUSTED. The next commit MUST build the producer body — the gate-side seed reconciliation is an INLINE
+`have`/`simp` on the LANDED `candidateSeed`/`shiftPerm` set, NOT a standalone leaf. If it genuinely won't
+fit one sitting, the only legitimate shrink is to split it by HALVES — land the base-split W6b firing
+[`chainData_split_w6b_gates` → `ρ₀`/base annihilation/base bundle] as a complete sub-step, then the
+discriminator-firing half — never another `Fin`-index alias.)** Now that the composed `cand`/`hcand`
 input is landed (`candidatePanel hn` + `candidatePanel_injective hn`), fire `chainData_split_w6b_gates`
 (→ `ρ₀`/`w`/base `(v₀v₂)` annihilation + the eq-6.52 `λ`-grouped `(ab)`-witness) +
 `exists_chainData_discriminator_pick` (fed `candidatePanel hn` for `cand`, `candidatePanel_injective hn`
