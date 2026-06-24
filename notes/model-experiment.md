@@ -98,6 +98,7 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 |---|---|---|---|---|---|---|---|---|
 | 435 | A1 §I.8.21(α) feasibility spike (→ design §(4.22)) | —/—/— | opus | recon | recon — verdict UNSOUND, caught | — | 171k tok / 36 tools / 8.9 min | First-pass FEASIBLE = a route-COMPOSITION verdict (static-`W` cert type-checks w/ corner data carried as hyps; lone residual = spine deficiency) mis-read as dischargeability; leaned on the §(4.18)-dead cert + §(4.17)-dead router branch, and answered the wrong A1 question (the existing cert, not the new matrix-infra). Mechanically clean, substantively unsound — caught only by the coordinator confronting prior kernel impossibilities. → Findings 2026-06-24. |
 | 436 | A1 spike resume — construct-or-concede (→ §(4.22)) | —/—/— | opus | recon/resume | recon — CONCEDED | — | 194k tok / 9 tools / 3.3 min | SendMessage-resume of 435 (same agentId, context intact) w/ the §(4.17)+§(4.18) confrontation. CONCEDED; built 2 sorry-free `concede_*` kernel re-derivations of the impossibilities for the real dispatch slot; confirmed SPIKE 1/2 carried `hG_eb_cand`/`W`/`hWS` as hyps, never discharged. Resume reused the full read phase (9 tools) — cheap vs a fresh refute agent. → Findings 2026-06-24. |
+| 437 | §I.8.21(α) matrix-level (row-op) rework spike (→ design §(4.23)) | —/—/— | opus | recon | recon — INFEASIBLE (hypothesis disproven) | — | 199k tok / 71 tools / 15.3 min | User-authorized rework swing: does KT's rank-preserving ROW-OPERATION redundancy handling (vs span membership) escape the wall? DISPROVEN at the kernel (SPIKE 3b/4a/4b): the row-op IS the membership — pure-`vᵢ` corner needs `hingeRow a b ρ₀ ∈ span` (=hρGv), confirmed against the project's OWN Phase-22g `r̂=wGv` docs. The scissors: htopvanish-corner needs hρGv; hρe₀-corner not pure-vᵢ. 4th independent wall confirmation; honest INFEASIBLE (flag-don't-force worked) → option (C). → Findings 2026-06-24. |
 
 ## Findings
 
@@ -123,4 +124,23 @@ the protocol)
   construct-or-concede; a "single residual" from a composition spike is NOT evidence of dischargeability
   when the crux is carried as a hypothesis. (The satisfiability corollary is already in DESIGN.md
   *Constructibility recon*; this episode adds the construct-or-concede resume as its audit instrument.)
+
+- **2026-06-24 (row 437) — the matrix-level rework recon (when a wall is genuinely intrinsic, and when to
+  STOP reconning it).** After the A1 episode, the coordinator read KT §6.4.2 (eqs. 6.60–6.67) from the
+  primary PDF and hypothesized the wall might be an ARTIFACT of the project's span-membership formalization —
+  since KT certifies the rank by rank-preserving COLUMN+ROW operations, not membership. The user authorized
+  "reworking landed material" to test it. A read-only design+spike DISPROVED the hypothesis at the kernel:
+  KT's row operation `r̂ = Σλ rⱼ` IS the `G_v`-row part `wGv ∈ span(R(G_v,q))` — and the project's OWN
+  Phase-22g code (`exists_redundant_panelRow_ab_decomposition`, the `r̂ = wGv` docstring) already encoded
+  that equivalence. The "scissors": the pure-`vᵢ` corner satisfies the block separator's `htopvanish` but
+  needs `hρGv` to enter the candidate span; the `hρe₀`-sourced corner enters the span but isn't pure-`vᵢ`;
+  the two differ by exactly the wall row. This was the FOURTH independent kernel confirmation of the wall
+  (§(4.18)/(4.20)/(4.21)/(4.23)) + the A1 concede. **Lessons:** (1) when a build-blocking wall has survived
+  2–3 independent kernel refutations, one MORE carefully-aimed *orthogonal* recon (here: "is KT's
+  row-operation framing genuinely different from the span membership?") is still worth it — it converts "we
+  suspect intrinsic" into "kernel-confirmed intrinsic, the rework hypothesis is dead," which is exactly what
+  lets a coordinator commit to the honest-conditional path without nagging doubt (and what justifies the
+  cost to a user weighing a rework). (2) But after that, STOP: further swings need a genuinely-NEW
+  mathematical idea, not another formalization angle. (3) The codebase's own docstrings can carry the
+  decisive primary-source equivalence — read them (clause i) before betting a rework escapes.
 

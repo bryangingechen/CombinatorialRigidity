@@ -3034,6 +3034,48 @@ decomposition of the SECOND build it teed up.**
   actual object, or concede), and resuming the SAME spike armed with the prior kernel-impossibilities is
   the cheapest decisive settle.
 
+  *(4.23) THE §I.8.21(α) MATRIX-LEVEL (ROW-OPERATION) FEASIBILITY SPIKE — VERDICT: INFEASIBLE; the wall
+  is intrinsic to KT's row operation ITSELF, NOT an artifact of the span-membership formalization. Confirms
+  §(4.20)/(4.21)/(4.22) from the orthogonal row-operation angle (the one §(4.20) flagged as not-yet-spiked).
+  Read-only design+spike, opus / OPUS-ONLY, 2026-06-24, agentId `a7e3f98e6ca6914cd` (resumable). → (C).*
+
+  **The question (the coordinator's rework hypothesis, user-authorized).** KT (Lemma 6.13, §6.4.2,
+  eqs. 6.60–6.67, read end-to-end from the primary PDF) certifies the rank by rank-preserving COLUMN + ROW
+  operations, NOT span membership: column-op (6.61) → bottom sub-block = `R(G₁,q₁)` via the relabel (6.62);
+  row-op (6.63–64) ZEROES the redundant `(v₀v₂)ᵢ*` row's `V∖vᵢ` part, moving it into the pure-`vᵢ` corner
+  `Mᵢ`; bottom block becomes `R(G₁∖redundant)` (still rank `D(|V|−2)`). Hypothesis: place the redundant row
+  in the CORNER (row-opped to pure-`vᵢ`), keep the BOTTOM block = genuine base rows only (LANDED transport,
+  no wall) → escape the `hρGv`/`hWS` membership. The coordinator believed the wall might be a span-membership
+  *formalization artifact*.
+
+  **DISPROVEN at the kernel — the row operation IS the span membership (the scissors).** KT's pure-`vᵢ`
+  corner `Σλ rⱼ(q₁(vᵢvᵢ₊₁))` is the Lean object `hingeRow vᵢ a ρ₀`; to enter `span F₀.rigidityRows`
+  (required by the cert's `hg`/`hmem`, `Candidate.lean:1636–1648`/`2052`), the collapse `hingeRow vᵢ a ρ₀ =
+  hingeRow vᵢ b ρ₀ − hingeRow a b ρ₀` (6.27) reduces to the GENUINE `hingeRow vᵢ b ρ₀` (via `hρe₀`, no wall)
+  PLUS the residual `hingeRow a b ρ₀ ∈ span` = `hρGv` = the wall (SPIKE 3b leaves EXACTLY this one `sorry`).
+  The SCISSORS (SPIKE 2b/4a/4b): the pure-`vᵢ` corner (`vᵢ` first) DOES satisfy `htopvanish` (the
+  coordinator's bet was right about this) — but converting the block separator's LI to the SPAN bound
+  `D(|V|−1) ≤ finrank(span)` (`finrank_mono`, `:1666`) needs the corner ⊆ span, forcing `hingeRow a b ρ₀ ∈
+  span` again; the genuine corner (`vᵢ` second) enters via `hρe₀` but is NOT pure-`vᵢ` (§(4.19)). The two
+  corners differ by exactly `hingeRow a b ρ₀` — the wall.
+
+  **Clause-(i) confirmation against the LANDED Phase-22g code.** The project ALREADY documents the
+  equivalence: `exists_redundant_panelRow_ab_decomposition` (`Candidate.lean:191`) gives the redundant row
+  `r i* = wGv + wOther` with `wGv ∈ span(R(G_v,q)-rows)`, and the `r̂ := Σⱼ λ_{(ab)j} rⱼ` doc (`:230`) states
+  `r̂` "IS the `G_v`-row part `wGv`." So KT's row operation `Σλ rⱼ` and the `hρGv` membership are the SAME
+  mathematical fact (§(4.21)'s adversarial finding, now from the row-op angle). Why it cannot dissolve like
+  `hρe₀`: `hρe₀` is an ANNIHILATION (framework-free value-read); `hingeRow a b ρ₀ ∈ span` is a
+  framework-dependent MEMBERSHIP with no value-read form.
+
+  **Verdict.** The member-mapping wall is intrinsic to KT — FOUR independent kernel confirmations (§(4.18)
+  static-W, §(4.20) member-mapping, §(4.21) KT primary-source, §(4.23) row-operation) + the A1 concede + the
+  project's own Phase-22g docs. No re-architecture of the rank cert escapes it; **(D) would need a
+  genuinely-NEW idea beyond KT's argument** (escaping the scissors), none in hand. ALL landed leaves stay in
+  tree (sound, reusable). **→ option (C)** (honest-conditional general-`d` Theorem 5.5; the landed
+  `case_III_arm_realization_chain` already carries the rank-cert obligation as hypotheses, so this is wiring
+  + ASSEMBLY, not new rank-cert math) + ENTRY in parallel. No motive/IH/contract change (the wall is below
+  the contract).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

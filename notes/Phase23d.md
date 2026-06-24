@@ -27,32 +27,31 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**A1 IS RESOLVED — VERDICT: INFEASIBLE (2026-06-24, design §I.8.24(4.22)).** The §I.8.21(α) feasibility
-spike's first pass returned FEASIBLE, but coordinator scrutiny found it UNSOUND — a route-COMPOSITION
-verdict (the static-`W` cert `case_III_rank_certification_chain` type-checks with the corner data carried
-as hypotheses) mis-read as a dischargeability one. A construct-or-concede resume **CONCEDED** and built
-two NEW sorry-free kernel re-derivations (`concede_hG_eb_cand_unsatisfiable` = §(4.17);
-`concede_through_v_row_breaks_hW` = §(4.18)) confirming the corner data's `W`/router inputs are
-**kernel-unsatisfiable for the real interior carry**. The §I.8.21(α) matrix-level infra has **no feasible
-route in hand**: a static-`W` cert is dead (§(4.18)); the operated-frame analogue either keeps the `±r`
-corner (refuted by §(4.19) `htopvanish` counterexample) or reintroduces `hρGv` = the wall (§(4.20),
-intrinsic to KT). Full verdict + the three-fold kernel confirmation: design §I.8.24(4.22).
+**THE GENERAL-`d` RANK CERT IS A CONFIRMED, INTRINSIC-TO-KT WALL — the unconditional crux is closed to
+all routes in hand.** Two recons settled it (2026-06-24): the A1 §I.8.21(α) feasibility spike (FEASIBLE
+first pass, found UNSOUND, then CONCEDED — design §(4.22)), and the user-authorized **matrix-level
+rework** spike testing whether KT's rank-preserving ROW-OPERATION handling of the redundant row (vs the
+project's span membership) escapes — **it does NOT** (§(4.23)): the row operation IS the span membership
+(KT's `r̂ = Σλ rⱼ` is the `G_v`-row part `wGv ∈ span(R(G_v,q))`, documented in the project's OWN Phase-22g
+`exists_redundant_panelRow_ab_decomposition`). The "scissors": the pure-`vᵢ` corner satisfies `htopvanish`
+but needs `hρGv` to enter the span; the `hρe₀`-sourced corner enters the span but isn't pure-`vᵢ`; they
+differ by exactly the wall row `hingeRow a b ρ₀`. **FOUR independent kernel confirmations** (§(4.18) static-W,
+§(4.20) member-mapping, §(4.21) KT primary-source, §(4.23) row-operation) + the A1 concede. The wall is KT's
+own "not difficult to see" (6.61); KT hides it.
 
-**Next concrete step = USER ADJUDICATION of the phase direction** (a phase-boundary decision the
-coordinator surfaced rather than picking unilaterally):
-- **(C)** land the general-`d` Theorem 5.5 **conditional** on the rank-cert obligation as an explicit
-  top-level `h…` hypothesis (documents the wall as the frontier; concrete + buildable, lets ASSEMBLY
-  proceed). The likely recommendation — it converts the wall into a stated frontier and unblocks the
-  downstream theorem chain.
-- **(D)** broader reconsideration / external input toward a genuinely-new §I.8.21(α) infra escaping BOTH
-  the static-`W` impossibility AND the `±r`/`htopvanish` counterexample (no route in hand; open-ended).
-- **ENTRY** (parallel-safe, available regardless): open it as its own sub-phase for green-node momentum —
-  independent of the blocked rank cert (CHAIN↔ENTRY contract frozen). See *Remaining work* item 4.
+**Next concrete step = option (C), the honest-conditional general-`d` Theorem 5.5** (recommended; the
+coordinator surfaced this to the user, who authorized the §(4.23) rework swing that closed (D)). The landed
+`case_III_arm_realization_chain` already carries the rank-cert obligation (`W`/`hWS`/`hWcard`/`hLI` + corner
+data) as explicit hypotheses, so (C) is a **wiring + ASSEMBLY** exercise, NOT new rank-cert math: thread the
+obligation as an explicit top-level `h…` hypothesis through the general-`d` Theorem 5.5 / its consumers,
+documenting the wall as the frontier, and re-green the downstream `theorem_55`→Thm 5.6→Conjecture 1.2 chain
+conditionally. **ENTRY** is parallel-safe (rank-cert-independent, frozen contract) — open it for unconditional
+green-node momentum alongside or instead. **(D)** (a genuinely-new §I.8.21(α) infra) needs a NEW mathematical
+idea beyond KT's argument (escaping the scissors); no route in hand — park unless external input arrives.
 
-**Do NOT** (settled this phase + at the 23c STOP): re-attempt the four dead route families
-(§I.8.18–I.8.20); re-litigate the (A)-vs-ENTRY fork; re-attempt (A)/(B′)/(A′); re-hunt for a "missed KT
-route" (§(4.21) settled there is none); or re-run the A1 feasibility spike (resolved INFEASIBLE — §(4.22);
-the static-`W` cert + the router reproduced branch are kernel-dead a third time over).
+**Do NOT** re-attempt the dead route families (§I.8.18–I.8.20); re-attempt (A)/(B′)/(A′); re-run the A1 or
+matrix-level feasibility spikes (resolved INFEASIBLE — §(4.22)/(4.23), the wall kernel-confirmed 4×); or
+re-hunt for a "missed KT route" (§(4.21): there is none, primary-source).
 
 ## The A1 §I.8.21(α) feasibility recon — DONE (verdict INFEASIBLE)
 
@@ -116,19 +115,20 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**A1 is resolved INFEASIBLE (§(4.22)); the central uncertainty is settled.** Next concrete
-commit-equivalent = the **user-adjudicated phase direction**, then a first commit on it:
-- **(C) honest-conditional** *(likely rec)* — restate the general-`d` Theorem 5.5 / arm spine carrying the
+**The rank cert is a confirmed intrinsic wall (§(4.22)/(4.23), 4× kernel); (D) is closed to all routes in
+hand.** Next concrete commit-equivalent = the **first commit of option (C)**, the honest-conditional path
+(coordinator-recommended; user authorized the §(4.23) rework swing that closed (D), confirmation of (C)-as-
+direction pending):
+- **(C) honest-conditional** *(recommended)* — restate the general-`d` Theorem 5.5 / arm spine carrying the
   rank-cert obligation as an explicit top-level `h…` hypothesis (the landed `case_III_arm_realization_chain`
-  already takes the corner data as hypotheses, so this is a wiring + ASSEMBLY exercise, not new rank-cert
-  math); first commit = pin the conditional shape at the spine's consume site + re-green the downstream
-  `theorem_55` chain conditionally. Estimate: a handful of commits to ASSEMBLY.
-- **(D) reconsider** — no route in hand; a fresh design pass toward a §I.8.21(α) infra escaping both the
-  static-`W` impossibility and the `±r`/`htopvanish` counterexample. Open-ended.
+  already takes the corner data — `W`/`hWS`/`hWcard`/`hLI` + `hgate`/`hρe₀` — as hypotheses, so this is a
+  wiring + ASSEMBLY exercise, NOT new rank-cert math); first commit = pin the conditional shape at the
+  spine's consume site + re-green the downstream `theorem_55`→Thm 5.6→Conjecture 1.2 chain conditionally.
+  Estimate: a handful of commits to ASSEMBLY.
 - **ENTRY** (parallel-safe) — mint it as its own sub-phase and build `exists_chainData_of_noRigid` against
-  the frozen contract; rank-cert-independent. See *Remaining work* item 4.
-
-Coordinator surfaced (C)/(D)/ENTRY to the user (phase-boundary decision); do not pick unilaterally.
+  the frozen contract; rank-cert-independent, unconditional green-node momentum. See *Remaining work* item 4.
+- **(D)** — parked: needs a genuinely-NEW idea beyond KT's argument (escape the §(4.23) scissors); no route
+  in hand, revisit only on external mathematical input.
 
 ## Decisions made during this phase
 
@@ -151,3 +151,13 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   kernel re-derivations of §(4.17)/(4.18) for the actual dispatch slot. The §I.8.21(α) matrix-level infra
   has no feasible route in hand (operated-frame variants refuted by §(4.19)/(4.20)). Lesson promoted to
   Findings (model-experiment) + the satisfiability corollary already in DESIGN.md.
+- **Matrix-level rework = INFEASIBLE; the wall is intrinsic to KT, 4× kernel-confirmed (2026-06-24, design
+  §(4.23)).** User authorized one more swing (the user's "happy to rework landed material"): does KT's
+  rank-preserving ROW-OPERATION handling of the redundant row (vs the project's span membership) escape the
+  wall? A read-only design+spike (after the coordinator read KT §6.4.2 eqs. 6.60–6.67 from the primary PDF)
+  DISPROVED it at the kernel: KT's row operation `r̂ = Σλ rⱼ` IS the `G_v`-row part `wGv ∈ span(R(G_v,q))` —
+  documented in the project's OWN Phase-22g `exists_redundant_panelRow_ab_decomposition` (`Candidate.lean:191`,
+  `:230`). The "scissors": the pure-`vᵢ` corner satisfies `htopvanish` but needs `hρGv` to enter the span;
+  the `hρe₀`-corner enters the span but isn't pure-`vᵢ`; they differ by exactly `hingeRow a b ρ₀` = the wall.
+  Decision: the unconditional crux is closed to all routes in hand → option (C) + ENTRY. (D) needs a
+  genuinely-new idea. Lesson → Findings (model-experiment).
