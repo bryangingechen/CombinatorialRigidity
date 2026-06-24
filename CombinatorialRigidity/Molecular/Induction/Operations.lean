@@ -1471,6 +1471,29 @@ lemma isLink_eq_succ_or_pred_or_removeVertex (cd : G.ChainData n) {i : Fin cd.d}
       · exact Or.inr (Or.inl h)
     · exact Or.inr (Or.inr (Graph.removeVertex_isLink.mpr ⟨hlink, hu, hw⟩))
 
+/-- **The two interior chain edges are off `Gv = G − v`** (`0 < i`, the arm/dispatch's `heab_off`):
+every link of the vertex-removal `Gv = G.removeVertex (vtx i.castSucc)` uses an edge distinct from
+both split-body chain edges `e_a = edge i` and `e_b = edge (i−1)`. Both chain edges are incident to
+the removed split body `v = vtx i.castSucc` (`isLink_succ_edge` / `isLink_pred_edge`), but a
+`Gv`-link has *both* endpoints `≠ v` (`removeVertex_isLink`); the endpoint-matching
+`eq_and_eq_or_eq_and_eq` then forces one of the `Gv`-link's endpoints to be `v`, a contradiction.
+This is the off-slot condition the general-`d` dispatch (CHAIN-2c-iii `chainData_dispatch`) feeds
+the per-member `hS` router `bottomRelabel_image_mem_span_caseIIICandidate` (the `vᵢ`-incident
+candidate slots `e_a`, `e_b` are kept clear of every surviving candidate-edge row). -/
+lemma removeVertex_isLink_edge_succ_pred_off (cd : G.ChainData n) {i : Fin cd.d}
+    (hi : 0 < (i : ℕ)) :
+    ∀ e x y, (G.removeVertex (cd.vtx i.castSucc)).IsLink e x y →
+      e ≠ cd.edge i ∧ e ≠ cd.edge ⟨(i : ℕ) - 1, by omega⟩ := by
+  intro e x y hlink
+  obtain ⟨hGlink, hxv, hyv⟩ := Graph.removeVertex_isLink.mp hlink
+  refine ⟨fun he => ?_, fun he => ?_⟩
+  · rcases (cd.isLink_succ_edge i).eq_and_eq_or_eq_and_eq (he ▸ hGlink) with ⟨hx, _⟩ | ⟨hy, _⟩
+    · exact hxv hx.symm
+    · exact hyv hy.symm
+  · rcases (cd.isLink_pred_edge hi).eq_and_eq_or_eq_and_eq (he ▸ hGlink) with ⟨hx, _⟩ | ⟨hy, _⟩
+    · exact hxv hx.symm
+    · exact hyv hy.symm
+
 /-! ### The index-shift cycle `shiftPerm` (KT eq. 6.54)
 
 For an interior candidate, the general-`d` Case-III argument (Katoh–Tanigawa 2011 §6.4.2, eq. 6.54)

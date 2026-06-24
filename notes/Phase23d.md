@@ -166,13 +166,28 @@ matched chain edge `edge i`) straight into `interior_hρe₀_of_widening`, produ
 the dispatch threads LEAF-3's `hedgeGv` + `hends_i` and reads `hρe₀` off in one call — no manual
 re-anchoring at the dispatch. NO `hρGv`, no new LA.
 
+**THE INTERIOR-SPLIT `heab_off` ACCESSOR IS LANDED (2026-06-24, axiom-clean, build/lint/warning-clean)
+— THE DISPATCH'S OFF-SLOT INPUT IS NOW A ONE-CALL `ChainData` READ-OFF.**
+`Graph.ChainData.removeVertex_isLink_edge_succ_pred_off` (`Induction/Operations.lean`, in the
+interior-vertex split-data section beside `isLink_eq_succ_or_pred_or_removeVertex`): for an interior
+chain index `i` (`0 < i`), EVERY link of `Gv = G.removeVertex (vtx i.castSucc)` uses an edge distinct
+from both split-body chain edges `edge i` (= `e_a`) and `edge (i−1)` (= `e_b`) — both chain edges are
+incident to the removed split body `v = vtx i.castSucc` (`isLink_succ_edge`/`isLink_pred_edge`), but a
+`Gv`-link has both endpoints `≠ v` (`removeVertex_isLink`), so the endpoint-matching
+`eq_and_eq_or_eq_and_eq` forces a contradiction. This is exactly the `heab_off` input the dispatch
+feeds the per-member `hS` router `bottomRelabel_image_mem_span_caseIIICandidate` /
+`bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (and via the latter, LEAF-B2's universal `hS`).
+NO `hρGv`, no new LA — a 3-step combinatorial setup leaf in the established interior-split idiom.
+
 **Plan (the dispatch is the one remaining CHAIN piece to close the rank-cert layer's wiring):** ✅
 LEAF-B1 (crux) → ✅ LEAF-B2 (genuine-only `W` producer) → ✅ LEAF-4 `hvanish` + `hS` router → ✅ the
 `case_III_arm_corner_assembly` call (`case_III_arm_corner_assembly_via_leafB2`) → ✅ the
 interior-`hρe₀` producer (`interior_hρe₀_of_widening`) → ✅ the LEAF-3 widening (the interior-arm
 gap) → ✅ the interior-`hρe₀` bundle re-anchoring (`interior_hρe₀_of_baseWidening`, the dispatch's
-one-call `hρe₀` read-off); LEAF-3 + the corner producer are landed. Remaining = CHAIN-2c-iii
-dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
+one-call `hρe₀` read-off) → ✅ the interior-split `heab_off` accessor
+(`removeVertex_isLink_edge_succ_pred_off`, the dispatch's off-slot `hS`-router input); LEAF-3 + the
+corner producer are landed. Remaining = CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY
+(parallel-safe).
 **Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if the
 LEAF-4 `hS`-router wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real
 and informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
@@ -226,8 +241,11 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    (`hedgeGv`), and `interior_hρe₀_of_baseWidening` (2026-06-24) folds that bundle + `hends_i`
    straight into `interior_hρe₀_of_widening` (the `hdeg1`/`G`-link/`.symm` re-anchorings discharged
    internally)** — so the dispatch reads `hρe₀` off LEAF-3's output in one call, supplying only
-   `hends_i`. Still owed at the dispatch: the rest of the `Fin cd.d` router wiring (the index/
-   relabel-form alignment of the `hS` router's `endsσρ`/`qρ` candidate, the `shiftPerm`/`vtx`/
+   `hends_i`. ✅ **The interior-split off-slot input is now a `ChainData` read-off:**
+   `Graph.ChainData.removeVertex_isLink_edge_succ_pred_off` (`Induction/Operations.lean`) supplies the
+   `hS` router's `heab_off` (`∀ e x y, Gv.IsLink e x y → e ≠ edge i ∧ e ≠ edge (i−1)`) directly from
+   the chain accessors. Still owed at the dispatch: the rest of the `Fin cd.d` router wiring (the
+   index/relabel-form alignment of the `hS` router's `endsσρ`/`qρ` candidate, the `shiftPerm`/`vtx`/
    `candidatePanel` algebra; the base/`d=3` arm via `chainData_split_realization` with its `htrans`).
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** *(parallel-safe; own sub-phase when minted)* — reshape `Graph.exists_chain_data_of_noRigid`
@@ -273,9 +291,10 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
   (`ForkedArm.lean`), folding the LEAF-B2 `W`-production into the assembly. **The interior-arm leaf
   gap is also closed** — LEAF-3 re-exposes the W6b widening bundle (`hedgeGv`), and
   `interior_hρe₀_of_baseWidening` folds it + `hends_i` straight into `interior_hρe₀_of_widening`
-  (the bundle re-anchoring discharged internally; 2026-06-24). The only remaining open item is the
-  CHAIN-2c-iii dispatch (the general-`k` Fin-case router, now leaf-unblocked **and re-anchoring-free**
-  — owes only the router index/relabel alignment) + CHAIN-5.
+  (the bundle re-anchoring discharged internally; 2026-06-24), and the off-slot `hS`-router input is a
+  `ChainData` read-off (`removeVertex_isLink_edge_succ_pred_off`, 2026-06-24). The only remaining open
+  item is the CHAIN-2c-iii dispatch (the general-`k` Fin-case router, now leaf-unblocked **and
+  re-anchoring-free** — owes only the router index/relabel alignment) + CHAIN-5.
 
 ## Hand-off / next phase
 
@@ -291,7 +310,8 @@ candidate `i` that LEAF-3 picks, routing
   `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2` (`ForkedArm.lean`), supplying
   - `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`, `σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`;
   - `hS` = `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean`), its
-    `hrec`/`he₀rec`/`hG_eb_cand`/`heab_off` from the dispatch's interior-split data;
+    `hrec`/`he₀rec`/`hG_eb_cand` from the dispatch's interior-split data and its `heab_off` from the
+    landed `Graph.ChainData.removeVertex_isLink_edge_succ_pred_off` (`Induction/Operations.lean`);
   - `hvanish` = `ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1`
     (`σ.symm vᵢ = vtx 1`, the removed base body; `Candidate.lean`);
   - `hrhat`/`hIH` from the W6b bundle (`exists_redundant_panelRow_ab_decomposition` /
@@ -319,10 +339,12 @@ Route-B build plan: ✅ **LEAF-B1** (crux) → ✅ **LEAF-B2** (genuine-only `W`
 `hvanish` + `hS` router** → ✅ **the `case_III_arm_corner_assembly` call** (rank cert CLOSED) → ✅ **the
 interior-`hρe₀` producer** (`interior_hρe₀_of_widening`) → ✅ **the LEAF-3 widening** (the interior-arm
 gap closed) → ✅ **the interior-`hρe₀` bundle re-anchoring** (`interior_hρe₀_of_baseWidening`, the
-dispatch's one-call `hρe₀` read-off); **LEAF-3** + **LEAF-B3** (corner producer) landed. Remaining =
-CHAIN-2c-iii dispatch (NEXT, now leaf-unblocked and re-anchoring-free) / CHAIN-5, then ENTRY +
-ASSEMBLY (parallel-safe). Fallbacks **route A** / **(C)** are no longer needed — the rank cert clears
-the wall via route B end-to-end.
+dispatch's one-call `hρe₀` read-off) → ✅ **the interior-split `heab_off` accessor**
+(`removeVertex_isLink_edge_succ_pred_off`, the dispatch's off-slot `hS`-router input); **LEAF-3** +
+**LEAF-B3** (corner producer) landed. Remaining = CHAIN-2c-iii dispatch (NEXT, now leaf-unblocked and
+re-anchoring-free, with its `hρe₀` and `heab_off` inputs both one-call read-offs) / CHAIN-5, then
+ENTRY + ASSEMBLY (parallel-safe). Fallbacks **route A** / **(C)** are no longer needed — the rank cert
+clears the wall via route B end-to-end.
 
 ## Decisions made during this phase
 
@@ -453,3 +475,15 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   `edge 2`. The `0 < (↑⟨2,_⟩)` arg to `deg_two` needed the `show 0 < (2:ℕ) by omega` defeq-force
   (TACTICS-QUIRKS § 63, applied — not new friction). So the dispatch supplies only `hends_i`; no manual
   re-anchoring. NO `hρGv`, no new LA.
+- **The interior-split `heab_off` accessor LANDED — the dispatch's off-slot `hS`-router input is now a
+  `ChainData` read-off (2026-06-24, axiom-clean, build/lint/warning-clean).**
+  `Graph.ChainData.removeVertex_isLink_edge_succ_pred_off` (`Induction/Operations.lean`, beside
+  `isLink_eq_succ_or_pred_or_removeVertex` in the interior-vertex split-data section): for interior `i`
+  (`0 < i`), every `Gv = G.removeVertex (vtx i.castSucc)` link uses an edge `≠ edge i` (`= e_a`) and
+  `≠ edge (i−1)` (`= e_b`). Both chain edges are incident to the removed body `v` (`isLink_succ_edge`/
+  `isLink_pred_edge`), but a `Gv`-link has both endpoints `≠ v` (`removeVertex_isLink`), so the
+  endpoint match `eq_and_eq_or_eq_and_eq` forces a contradiction. This is the `heab_off` input the
+  dispatch feeds the per-member `hS` router `bottomRelabel_image_mem_span_caseIIICandidate` /
+  `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (and via the latter, LEAF-B2's universal `hS`).
+  A 3-step combinatorial-setup leaf in the established interior-split idiom — NO `hρGv`, no new LA, no
+  friction. Homed in `Operations.lean` (the `ChainData` definition's file) per the where-it-lives rule.
