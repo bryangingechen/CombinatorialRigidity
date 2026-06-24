@@ -336,6 +336,14 @@ base `ρ₀` ⊥ the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-sl
 chain-extraction leaf (23d, genuinely-new), and — the conjecture-crux — the interior-`hρe₀` leaf itself
 (the §I.8.3-P2 heir, the redundancy-carry seam; NOT BLOCKED, but THE hard core of LEAF-4, do NOT scope
 away from it, and do NOT try to source it by firing W6b at the interior split — `hsplitGP` unavailable).
+**Route-verification flag (coordinator, 2026-06-23):** the recon's INGREDIENT pin for the interior-`hρe₀`
+leaf cited `redundancy_panel_carry` as "LANDED" — it is NOT (landed row 268, DELETED as an orphan row 271:
+`hcol`/`hrest` unsuppliable at the chain step, the §(o‴)-rejected 4×-mis-pin trap). The landed chain-carry is
+`interior_group_eq_baseRedundancy` (+ the d=3 `candidateRow_ac_eq_neg`). The structural verdict stands
+(source-verified), but the leaf's INTERNAL route is not yet independently verified — give the interior-`hρe₀`
+leaf a DEDICATED route recon (likely a diverse-lens pair, this seam's track record) at the LEAF-4 boundary,
+diffing the route against the §(o‴)/row-271 orphan verdict, BEFORE a build burns on it. Does NOT block the
+LEAF-3 producer (it doesn't touch this route). See design §I.8.24(4.12) *COORDINATOR ROUTE-VERIFICATION FLAG*.
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
@@ -389,7 +397,7 @@ away from it, and do NOT try to source it by firing W6b at the interior split �
    (i) **the interior-`hρe₀` leaf** `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the
    conjecture-crux redundancy-carry seam; the §I.8.3-P2 heir): from LEAF-3's base `ρ₀`/`λ`-witness bundle +
    `cd.deg_two`, prove the shared base `ρ₀` annihilates the interior `(vtx i.succ, vtx (i−1).castSucc)`
-   reproduced-slot panel — the bridge from the LANDED `redundancy_panel_carry`/`interior_group_*` chain-carry
+   reproduced-slot panel — the bridge from the LANDED `candidateRow_ac_eq_neg`/`interior_group_*` chain-carry
    to the `ρ₀ (panelSupportExtensor …) = 0` panel-annihilation shape; NOT a transport of base `hρe₀`, NOT a
    per-interior W6b firing (`hsplitGP` unavailable). (ii) **the base block `W`**: `f := w`,
    `L := (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem`

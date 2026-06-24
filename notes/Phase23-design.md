@@ -946,9 +946,12 @@ the arm closer) with its per-step accessors (`shiftBody_{isLink_succ_edge,isLink
 `shiftBodyGraph_{isLink_pred_edge,deg_two(_right),off_succ,isLink_of_off_body}`, `shiftBodyFramework_htrans`)
 and the membership half `shiftBodyList_foldr_mem_span_rigidityRows` (transports `span (G−vᵢ)`-rows →
 `span (G−v₁)`-rows for `2 ≤ i`, span-only; the relabel side `wstep_foldr_funLeft_eq` +
-`shiftPerm_eq_prod_map_swap_shiftBodyList` is a separate bridge applied at the arm). `redundancy_panel_carry`
-LANDED (the abstract eq.-(6.44) `±r` vector identity, a thin chain-step wrapper of `candidateRow_ac_eq_neg`,
-`Claim612.lean`, KT eq. 6.44/6.66).
+`shiftPerm_eq_prod_map_swap_shiftBodyList` is a separate bridge applied at the arm). The abstract eq.-(6.44) `±r` vector identity
+`candidateRow_ac_eq_neg` (`Claim612.lean:1194`) is LANDED; its chain-step carry is the landed
+`interior_group_eq_baseRedundancy` (`Relabel/ChainColumn.lean:465`), KT eq. 6.44/6.66. (No `redundancy_panel_carry`
+decl exists in tree — it was LANDED (model-exp row 268) then DELETED as an ORPHAN (row 271: its `hcol`/`hrest`
+unsuppliable at the chain step; the §(o‴)-rejected per-body block carry, the 4×-mis-pin trap). Coordinator-corrected
+2026-06-23; the landed chain-carry is `interior_group_eq_baseRedundancy`, NOT this deleted bridge.)
 
 **§(o‴) the per-body W9b fold is DEAD (machine-verified).** NO per-body fold — pinned-`Tag`, pure-span, or
 accumulating-sum — carries the bottom-family `(ab)`-block disjunct, because that block row is not a
@@ -2336,7 +2339,7 @@ decomposition of the SECOND build it teed up.**
      require `ρ₀` to be the base redundancy by any TYPING constraint. So the interior `hρe₀` is not a
      frozen-interface field and forces NO motive/IH/C.0–C.6 change (contrast (4.11)'s `d_eq`, which WAS a
      contract field). It is a NEW LEMMA over the chain machinery, KT-grounded, whose ingredients exist
-     (the iterated eq-6.44 degree-2 carry: `redundancy_panel_carry`/`candidateRow_ac_eq_neg` in
+     (the iterated eq-6.44 degree-2 carry: `candidateRow_ac_eq_neg` in
      `Claim612.lean` is the abstract `±r` vector identity; the `interior_group_eq_baseRedundancy`/
      `interior_group_acolumn_*` chain-induction subtree in `Relabel/ChainColumn.lean` carries the
      constant-along-the-chain value). **The genuinely-new content is the bridge from those `hingeRow`-level
@@ -2363,7 +2366,7 @@ decomposition of the SECOND build it teed up.**
      Ingredients (all KT-faithful, all on the chain machinery, NO `hρGv`, NO relabel-IMAGE/member-mapping
      wall): the base `ρ₀ = Σⱼ λ_(v₀v₂)ⱼ rⱼ(q(v₀v₂))` witness (the eq-6.52 grouping, an output of
      `chainData_split_w6b_gates` at the base split, `Realization.lean:813–815`); the iterated degree-2
-     eq-6.44 carry `redundancy_panel_carry` (`Claim612.lean`); the chain-induction value subtree
+     eq-6.44 carry `candidateRow_ac_eq_neg` (`Claim612.lean:1194`, the d=3 abstract identity); the chain-induction value subtree
      (`interior_group_eq_baseRedundancy` family, `Relabel/ChainColumn.lean`). **This is the conjecture's
      redundancy-carry seam at the panel-annihilation level — the project's single most-reverted lemma
      family's heir.** It is the leaf the prior two opus build dispatches scoped AWAY from by shrinking to
@@ -2405,6 +2408,21 @@ decomposition of the SECOND build it teed up.**
   (the base bundle + `hgate` + the matched `i`) but defers the interior-`hρe₀` leaf has peeled the index
   plumbing and left the conjecture-crux undone — the interior `hρe₀` leaf is THE hard core, on par with
   LEAF-4's `hS` disjunction (it may BE the bulk of LEAF-4).** No Lean landed; tree byte-clean.
+
+  **COORDINATOR ROUTE-VERIFICATION FLAG (2026-06-23, added after the recon).** The recon's INGREDIENT pin
+  for this leaf originally cited `redundancy_panel_carry` as a LANDED chain-carry — it is NOT: it was landed
+  (row 268) then DELETED as an ORPHAN (row 271, `hcol`/`hrest` unsuppliable at the chain step; the
+  §(o‴)-rejected per-body block carry, the 4×-mis-pin trap). Corrected above to the genuinely-landed
+  `candidateRow_ac_eq_neg` (d=3 abstract identity) + `interior_group_eq_baseRedundancy` (the chain-carry
+  that REPLACED the orphan). **The structural verdict (interior-`hρe₀` genuinely-new, no contract change,
+  LEAF-4, `hgate`-direct, LEAF-3 produces the base bundle) is coordinator-source-verified and stands — but
+  the leaf's INTERNAL ROUTE (how `interior_group_eq_baseRedundancy` + the base witness bridge to the
+  `panelSupportExtensor`-annihilation shape for option (A), without re-treading the killed degree-2-carry
+  route) is NOT yet independently verified.** Given this seam's history (4× mis-pin + an orphan + §(o‴)
+  rejections), the interior-`hρe₀` leaf should get a DEDICATED route recon (likely a diverse-lens pair) at
+  the LEAF-4 boundary, BEFORE a build burns on it — diff the route against the §(o‴)/row-271 orphan verdict.
+  This does NOT block the next commit: the LEAF-3 producer (base bundle + matched `i` + `hgate`) does not
+  touch the interior-`hρe₀` route.
 
 ---
 
