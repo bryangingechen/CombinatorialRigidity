@@ -97,15 +97,22 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > moved member = the fixed one forces `ρ₀=0`) — it IS the member-mapping wall, no framework-free escape (`hφ`
 > is a span MEMBERSHIP, not the `hρe₀`-style annihilation that dissolved). **The W9a *generalization* is
 > LANDED; the wall is ONLY the `hφ` slot.** The `±r`-corner reformulation escapes `hρGv` at the ROW/membership
-> level (`hg`/`hLI` via `hρe₀`, LANDED, sound) but NOT in the general-`d` RANK CERT. **NEXT = a USER /
-> FUNDAMENTAL-DESIGN DECISION (not a build):** candidate directions (likely needing a fresh KT-§6.4.2
-> rank-argument recon) — (a) a rank-counting cert that never tracks an individual member-fixed row (KT's
-> "whole-matrix bookkeeping with the member moving"); (b) re-read KT's actual rank argument for a route the
-> row-membership decomposition missed; (c) pause the conjecture-crux step and advance ENTRY/ASSEMBLY / other
-> program phases that do not depend on it. **ALL LANDED leaves stay in tree** (sound; reusable under a
-> re-architected rank cert). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate
-> the fork, or re-attempt (A)/(B′)/(A′) (all refuted). See *Current state* + *Hand-off* + design
-> §I.8.24(4.17)–(4.20).
+> level (`hg`/`hLI` via `hρe₀`, LANDED, sound) but NOT in the general-`d` RANK CERT. **The KT-§6.4.2
+> source recon (§(4.21), primary-PDF, HIGH confidence) UPHELD + SHARPENED the STOP:** KT's paper certifies the
+> rank by whole-matrix bookkeeping with the member MOVING (block rank-additivity 6.64–6.65 + union-dimension
+> 6.67; `r` carried `=±r` via 6.66), NOT row-membership — but KT's "member moves" is realized IN LEAN exactly
+> as the relabel-image submatrix containment (6.62), which IS the wall (KT hides it as a one-line "not
+> difficult to see"). So there is **NO missed KT route** — (B′)/(A′) ARE KT's rank-count, kernel-dead. **NEXT =
+> a fresh-session DESIGN+BUILD of the genuinely-new §I.8.21(α) abstract block-rank-additivity-over-a-relabel
+> infra** (cost-unknown): formalize KT's "submatrix containment" (6.61) as a MATRIX-LEVEL rank-preserving block
+> embedding (induced by `ρᵢ` + the column op), reading `±r` (6.66) off as a covector identity in `ℝ^D`, so the
+> rank is counted the way KT counts it on paper — NEVER materialising a fixed-member row membership (the
+> §(4.18) de-risk's generic block-rank lemma consumes a scalar `hWS`/`hW` membership at `Candidate.lean:1606`,
+> which is what forces the wall; the new lemma carries the whole base matrix as a BLOCK). **Alternatively (user
+> decision)** pause the crux step and advance ENTRY (23d) / other phases. **ALL LANDED leaves stay in tree**
+> (sound; reusable). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate the
+> fork, re-attempt (A)/(B′)/(A′), or re-hunt for a "missed KT route" (the recon settled there is none). See
+> *Current state* + *Hand-off* + design §I.8.24(4.17)–(4.21).
 
 ## Current state
 
@@ -137,13 +144,16 @@ generically) is INFEASIBLE — it reduces (kernel PROBE 1) to `chainData_relabel
 member-fixed base redundancy in `span(endsσρ)`, which the only relabel transport provably MOVES off-member
 (it IS the member-mapping wall; no framework-free escape — `hφ` is a span membership, not the `hρe₀`-style
 annihilation). **All four spikes converge: the `±r`-corner reformulation escapes `hρGv` at the ROW/membership
-level but NOT in the general-`d` RANK CERTIFICATION; the member-mapping wall is unavoidable.** **Next = a
-FUNDAMENTAL RECONSIDERATION (a phase STOP, surfaced to the user 2026-06-24) — NOT a build.** Candidate
-directions (the top-of-note block): (a) a rank-counting cert that never tracks a member-fixed row; (b) a fresh
-KT-§6.4.2 rank-argument recon; (c) pause the crux step, advance ENTRY/ASSEMBLY. See the top-of-note *Next
-commit* block + *Hand-off* + design §I.8.24(4.17)–(4.20). The router's reproduced branch is dead (do NOT patch
-in place); the genuine branch survives; the corner cert (`±r` via `hρe₀`) is sound + `W`-independent; ALL
-LANDED leaves stay in tree (reusable under a re-architected rank cert).
+level but NOT in the general-`d` RANK CERTIFICATION; the member-mapping wall is unavoidable.** The KT-§6.4.2
+source recon (§(4.21)) UPHELD + SHARPENED this: KT's paper counts the rank by whole-matrix block-additivity
+with the member MOVING (NOT row-membership), but that "member moves" is realized in Lean as the relabel-image
+submatrix containment = the wall, so there is **NO missed KT route**. **Next = a fresh-session DESIGN+BUILD of
+the genuinely-new §I.8.21(α) abstract block-rank-additivity-over-a-relabel infra** (matrix-level submatrix
+containment 6.61, `±r` as an `ℝ^D` covector identity 6.66 — never a fixed-member row membership; cost-unknown),
+**or** (user decision) pause the crux step and advance ENTRY/ASSEMBLY. See the top-of-note *Next commit* block +
+*Hand-off* + design §I.8.24(4.17)–(4.21). The router's reproduced branch is dead (do NOT patch in place); the
+genuine branch survives; the corner cert (`±r` via `hρe₀`) is sound + `W`-independent; ALL LANDED leaves stay
+in tree (reusable under a re-architected rank cert).
 
 **The discriminator-index plumbing is COMPLETE end-to-end (2026-06-23).** The last piece — the
 composed `Fin (k+1)` panel selector `Graph.ChainData.candidatePanel` + `candidatePanel_injective` +
@@ -469,12 +479,19 @@ wall (§I.8.18–20, intrinsic). **The W9a *generalization* is LANDED** (`chainD
 span MEMBERSHIP, not the `hρe₀`-style annihilation that dissolved (the decisive structural difference). **The
 convergence:** the `±r`-corner reformulation escapes `hρGv` at the ROW/membership level (`hg`/`hLI` via
 `hρe₀`, LANDED, sound, `W`-independent) but NOT in the general-`d` RANK CERTIFICATION; the member-mapping wall
-is unavoidable. **NEXT = a USER / FUNDAMENTAL-DESIGN DECISION (not a build).** Candidate directions (likely
-needing a fresh KT-§6.4.2 rank-argument recon): (a) a rank-counting cert that never tracks an individual
-member-fixed row (KT's "whole-matrix bookkeeping with the member moving"); (b) re-read KT's actual rank
-argument for a route the row-membership decomposition missed; (c) pause the conjecture-crux step and advance
-ENTRY/ASSEMBLY / other program phases that do not depend on it. **All LANDED leaves (cert/carrier/LEAF-2/router,
-the corner cert, the closed interior `hρe₀`) stay in tree** (sound; reusable under a re-architected rank cert);
+is unavoidable. **The KT-§6.4.2 source recon (§(4.21), primary-PDF, HIGH confidence) UPHELD + SHARPENED this:**
+KT's paper counts the rank by whole-matrix block-additivity (6.64–6.65) + union-dimension (6.67) with the
+member MOVING (6.62/6.66) — NOT row-membership — but that "member moves" is realized in Lean as the
+relabel-image submatrix containment, which IS the wall (KT hides it as a one-line "not difficult to see"). So
+(B′)/(A′) ARE KT's rank-count, and there is **NO missed KT route**. **NEXT = a fresh-session DESIGN+BUILD of
+the genuinely-new §I.8.21(α) abstract block-rank-additivity-over-a-relabel infra** (cost-unknown): formalize
+KT's "submatrix containment" (6.61) as a MATRIX-LEVEL rank-preserving block embedding (induced by `ρᵢ` + the
+column op), reading `±r` (6.66) off as an `ℝ^D` covector identity — so the rank is counted as KT counts it on
+paper, NEVER materialising a fixed-member row membership (the §(4.18) de-risk's generic block-rank lemma
+consumes a scalar `hWS`/`hW` at `Candidate.lean:1606`, which forces the wall; the new lemma carries the whole
+base matrix as a BLOCK). **Or** (user decision) pause the crux step and advance ENTRY (23d) / other phases.
+**All LANDED leaves (cert/carrier/LEAF-2/router, the corner cert, the closed interior `hρe₀`) stay in tree**
+(sound; reusable under a re-architected rank cert);
 the rank-certification LAYER is the open re-design.
 
 **One design decision RESOLVED + LANDED (below the contract/motive — did NOT need coordinator/user).** The
@@ -569,10 +586,14 @@ block-rank can't separate the non-pure-`vᵢ` `±r` corner; §(4.20) the general
 member-fixed `hφ` slot that the relabel provably moves — the member-mapping wall, no framework-free escape
 since `hφ` is a span membership). The four spikes converge: the `±r`-corner escapes `hρGv` at the
 ROW/membership level but NOT in the general-`d` RANK CERT; the wall (§I.8.18–20, intrinsic) is unavoidable.
-Candidate directions (the user's call, likely needing a fresh KT-§6.4.2 rank-argument recon): (a) a
-rank-counting cert that never tracks a member-fixed row; (b) re-read KT's actual rank argument; (c) pause the
-crux step, advance ENTRY/ASSEMBLY. See the top-of-note *Next commit* block + *Hand-off* + design
-§I.8.24(4.17)–(4.20). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), revive the
+**The KT-§6.4.2 source recon (§(4.21)) UPHELD + SHARPENED this** — KT's paper counts the rank by whole-matrix
+block-additivity with the member MOVING, but that is realized in Lean as the relabel-image submatrix
+containment = the wall, so there is NO missed KT route. **Next = a fresh-session DESIGN+BUILD of the
+genuinely-new §I.8.21(α) abstract block-rank-additivity-over-a-relabel infra** (matrix-level submatrix
+containment 6.61, `±r` as an `ℝ^D` covector identity 6.66, never a fixed-member row membership; cost-unknown),
+**or** (user decision) pause the crux step + advance ENTRY/ASSEMBLY. See the top-of-note *Next commit* block +
+*Hand-off* + design §I.8.24(4.17)–(4.21). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)),
+re-hunt for a "missed KT route" (the recon settled there is none), revive the
 `interior_group_*` column subtree, fire W6b per-interior-split (`hsplitGP` unavailable), re-attempt
 (A)/(B′)/(A′) (all refuted), or patch the router's reproduced branch in place. **Downstream risk to watch** (design §I.8.24):
 the ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new).
@@ -685,7 +706,7 @@ follows as 23e. Do **not** fold ENTRY into 23c — it is a distinct layer (KT §
   mis-targeted `±r`-row leaves)* → `DESIGN.md` *Constructibility recon …* (the satisfiability corollary).
 - **23c's general-`d` interior-`hρGv` rank cert is EXHAUSTED — ALL THREE routes (A, B′, A′) REFUTED; the
   member-mapping wall (§I.8.18–20, intrinsic to KT) is unavoidable; 23c needs a FUNDAMENTAL RECONSIDERATION
-  (design §I.8.24(4.17)–(4.20), four read-only spikes, 2026-06-24; a phase STOP).** §(4.17): the router's
+  (design §I.8.24(4.17)–(4.21), four spikes + a KT source recon, 2026-06-24; a phase STOP).** §(4.17): the router's
   reproduced branch mis-targeted (wrap-edge tag, endpoints OMIT `vᵢ`, → unsatisfiable `hG_eb_cand`). §(4.18):
   (A) static-`W` re-shape INFEASIBLE (no `W` satisfies `hWS ∧ hWcard ∧ hW`; the carry is a row THROUGH `vᵢ`).
   §(4.19): (B′) operated-frame block-rank INFEASIBLE (the `±r` corner isn't pure-`vᵢ`-column, can't join the
@@ -694,10 +715,15 @@ follows as 23e. Do **not** fold ENTRY into 23c — it is a distinct layer (KT §
   relabel transport provably MOVES off-member; the W9a *generalization* is LANDED, the wall is ONLY the `hφ`
   slot, no framework-free escape (`hφ` is a span MEMBERSHIP, not the `hρe₀`-style annihilation). **The
   convergence:** the `±r`-corner reformulation escapes `hρGv` at the ROW/membership level (`hg`/`hLI` via
-  `hρe₀`, LANDED, sound) but NOT in the general-`d` RANK CERTIFICATION. **Decision (user, surfaced 2026-06-24
-  — a phase STOP, not a build):** fundamental reconsideration — (a) a rank-counting cert that never tracks a
-  member-fixed row; (b) re-read KT's §6.4.2 rank argument; (c) pause the crux step, advance ENTRY/ASSEMBLY.
-  *Cross-cutting lesson (→ DESIGN.md at phase-close):* an architecture's "wall escaped" claim can hold at one
+  `hρe₀`, LANDED, sound) but NOT in the general-`d` RANK CERTIFICATION. §(4.21) the KT-§6.4.2 SOURCE RECON
+  (primary-PDF, HIGH confidence) UPHELD + SHARPENED the STOP: KT's paper counts the rank by whole-matrix
+  block-additivity with the member MOVING (6.62/6.66), NOT row-membership — but that "member moves" is realized
+  in Lean as the relabel-image submatrix containment = the wall, so there is NO missed KT route. **Decision
+  (user, 2026-06-24 — a phase STOP):** the sharpened path is a fresh-session DESIGN+BUILD of the genuinely-new
+  §I.8.21(α) abstract block-rank-additivity-over-a-relabel infra (matrix-level submatrix containment 6.61, `±r`
+  as an `ℝ^D` covector identity 6.66, never a fixed-member membership; cost-unknown), OR pause the crux step +
+  advance ENTRY (23d)/ASSEMBLY. *Cross-cutting lesson (→ DESIGN.md at phase-close):* an architecture's "wall
+  escaped" claim can hold at one
   layer (the corner: `±r` row membership/LI) while the wall reappears unchanged in a deferred-as-bookkeeping
   layer (the rank cert: the member-fixed `hφ` membership) — re-audit the DEFERRED obligations of a "wall
   escaped" architecture before declaring the wall gone; and the spike-and-land that dissolves an *annihilation*

@@ -2938,6 +2938,52 @@ decomposition of the SECOND build it teed up.**
   or pausing the conjecture-crux step and advancing ENTRY/ASSEMBLY / other program phases that do not depend on
   it. ALL LANDED leaves stay in tree (sound; reusable under a re-architected rank cert).
 
+  *(4.21) THE KT-§6.4.2 RANK-ARGUMENT SOURCE RECON — VERDICT: the §(4.20) STOP is UPHELD and SHARPENED. KT's
+  paper certifies the rank by whole-matrix bookkeeping with the member MOVING (NOT row-membership) — so the
+  project's row-membership frame is not KT's literal shape — BUT KT's "member moves" is realized IN LEAN
+  exactly as the relabel-image submatrix containment, which IS the wall. There is NO missed KT route; the
+  fundamental reconsideration is to BUILD the §I.8.21(α) matrix-level block-rank-additivity-over-a-relabel
+  infra. Source-verification recon (read-only, primary KT PDF, opus / OPUS-ONLY, 2026-06-24, agentId
+  `a781cadcbac15592a`). HIGH confidence (grounded in KT eqs. 6.44/6.51/6.62–6.67, Claim 6.11, printed
+  pp. 685/690–691/696–698).*
+
+  **KT's rank mechanism (pinned to the source).** (b) a block RANK-ADDITIVITY count + (c) a union-DIMENSION
+  argument — NOT (a) row-by-row span membership. Per-candidate (6.64–6.65): column+row ops reduce `R(G,pᵢ)` to
+  a `D×D` block `Mᵢ` over `R(G₁∖(v₀v₂)ᵢ∗, q₁)`, then `rank R(G,pᵢ) ≥ rank Mᵢ + rank R(G₁∖…) = D + D(|V|−2)`
+  (block-triangular additivity; the bottom block's rank is the SAME `D(|V|−2)` for every `i` by the IH on the
+  ONE base `v₁`-split, 6.46/6.51, transported by the index-shift isos 6.54–6.56). "At least one `Mᵢ` has full
+  rank" (6.65) is the contrapositive union-dimension count (6.67) closed by Lemma 2.1 (`(d+1 choose d−1)=D`).
+  The redundant covector `r` is carried `=±r` across panels (6.66, the degree-2 two-edge cancellation, `d=3`
+  model 6.44) — `r` re-expressed via a DIFFERENT edge's rows, the member MOVING. Eq. (6.62) (the relabel
+  correspondence) is used to identify which candidate row plays the moved redundant role
+  (`(v₀v₂)ᵢ∗ ⟷ (v₀v₁)ᵢ∗`) and to make `R(G,pᵢ)` CONTAIN `R(G₁,q₁)` as a submatrix (the precondition of the
+  6.64 additivity) — it never pins the FIXED base row into the candidate's span.
+
+  **Why this does NOT supply a missed Lean route (the adversarial half).** KT's moving-member bookkeeping is
+  realized in Lean precisely as the relabel transport `(funLeft (shiftPerm)⁻¹).dualMap` — KT's (6.62)
+  correspondence IS an index relabelling, and §(4.20) PROBE 2 confirmed the transport moves `vtx2 ↦ vtx1`.
+  KT's block rank-count (6.64) is valid ONLY because (6.62) gives the relabelled-submatrix containment; KT's
+  paper hides this as a one-line "it is not difficult to see" (the 6.61 sentence), but in Lean the
+  submatrix-containment-under-relabelling is the WHOLE content. The design's own §(4.18) (B′) operated-frame
+  block-rank IS KT's column-op-then-block-count, and §(4.20) (A′) IS KT's member-moving genuine-row transport —
+  both kernel-confirmed DEAD. So KT's argument hits the SAME step; the wall is genuinely KT's once a
+  Lean-checkable witness is demanded for each "not difficult to see."
+
+  **The genuinely-new idea (the sharpened reconsideration).** Build an ABSTRACT block-rank-additivity lemma
+  that consumes the (6.62) correspondence as a single relabel-ISOMORPHISM of matrices and concludes
+  `rank R(G,pᵢ) ≥ rank Mᵢ + rank R(G₁,q₁)` WITHOUT extracting an individual fixed row's span membership — i.e.
+  formalize KT's "submatrix containment" (6.61) as a MATRIX-LEVEL rank-preserving block embedding (induced by
+  `ρᵢ` + the column op), reading `±r` (6.66) off as a covector identity in `ℝ^D` (§I.8.23 notes this is
+  structural / single-`r`), so the union-dimension finish (6.67) is the only per-`Mᵢ` analysis. This is the
+  design's §I.8.21(α) "block-rank-additivity / quotient" infra (a genuinely-new, cost-unknown abstract-LA
+  piece). Precedent + the gap: the §(4.18) de-risk LANDED a GENERIC block-rank lemma
+  (`Submodule.finrank_add_card_le_of_linearIndependent_mkQ`) but it consumes a SCALAR fixed-member membership
+  (`hWS`/`hW`) at the single rank-cert use site (`Candidate.lean:1606–1611`), which forces the wall; the new
+  lemma must instead carry the whole base matrix as a BLOCK (never forming that membership). **Verdict: the
+  reconsideration is NOT "find KT's missed route" (there is none) but "build the matrix-block-rank infra that
+  lets Lean count the rank the way KT counts it on paper." A fresh-session design+build of the §I.8.21(α)
+  infra — cost-unknown — is the next concrete direction; ALL LANDED leaves stay in tree (reusable).**
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
