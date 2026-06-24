@@ -2850,6 +2850,52 @@ decomposition of the SECOND build it teed up.**
   fall back to (A′) if B′ does not compose. The router 2878600 and LEAF-2/cert/carrier stay landed but their
   `hWS`/`hW`/`W`-block role is now under re-design.
 
+  *(4.19) THE OPTION-(B′) FEASIBILITY PASS — VERDICT: INFEASIBLE. The operated-frame block-rank route does
+  not separate the `±r` corner from the operated base block. With (A) AND (B′) refuted, the three feasibility
+  reconnaissance passes CONVERGE: the `±r`-corner wall-escape — the central bet of the 23c (A) architecture —
+  does NOT extend to the general-`d` RANK CERTIFICATION; the `hρGv` member-mapping wall is unavoidable.
+  Compiler-checked SPIKE, read-only, opus / OPUS-ONLY, 2026-06-24, agentId `a895196401fd4cb15` (resumable).
+  A USER-DECISION POINT: (A′) confront the wall generically, or a broader reconsideration.*
+
+  **Why B′ fails (kernel-checked, PROBES 1–5).** The proposed `hW`-analogue tests the OPERATED composite
+  `(φ∘Φ∘Pv)∘single vᵢ`. (A) `Pv ∘ single vᵢ = 0`, so the test is TRIVIAL for every row including the corner —
+  the `single vᵢ` separation collapses. (B) The discriminator relocates to `single a` and SURVIVES for the
+  corner: `Φ` moves col_v into col_a, so `hingeRow u v ρ₀` reads `−ρ₀ ≠ 0` at the operated `single a`. (C, the
+  make-or-break) but the operated base is NOT controlled at `single a`: each transport satisfies
+  `(wtil∘Φ)∘Pv = w`, so the operated base's `single a`-column = the BARE `w∘single a`, nonzero (an `a`-incident
+  `G_v`-row reads `r'≠0`; the redundancy carry `hingeRow a b ρ'` reads `ρ'≠0`) — both collide with the
+  corner's `−ρ₀` in the same column, so no block-triangular separation. (D) The d=3 separator
+  `linearIndependent_sum_restriction_block` (`RigidityMatrix/Basic.lean:1189`) needs the top block
+  pure-`v`-column (`htopvanish`), but the genuine `±r` corner `hingeRow u v ρ₀` reads `ρ₀(S u − S a) ≠ 0` at
+  `S v = 0` (PROBE 5) — it is NOT pure-`v`, so it CANNOT join the d=3 top block. The d=3 separation is
+  structurally tied to the COLLAPSED corner `hingeRow v a ρ` (pure-`v`), the one that needs `hρGv`. So
+  `htopvanish` for the `±r` corner is REFUTED by a counterexample (not a sorry'able gap).
+
+  **The convergence (the durable finding).** The `±r`-corner reformulation escapes `hρGv` at the ARM/corner
+  level (the corner ROW's membership `hg` via `hρe₀` + its LI `hLI` — all sound, `W`-independent, LANDED). But
+  it does NOT escape the wall in the general-`d` RANK CERTIFICATION: the genuine `±r` row (KT eq. 6.66) is
+  geometrically a row THROUGH `vᵢ` that is not pure-`vᵢ`-column after the column op — incompatible with both
+  the static-`W` block-additivity (A, §(4.18)) and the operated-frame separation (B′). The basis-free analogue
+  of KT's "column-op THEN block-triangular" that DOES certify the rank is the d=3 FLAT OPERATED FAMILY with the
+  COLLAPSED corner + `hρGv` (the wall). So the only remaining route is **(A′): re-derive the chain cert in the
+  d=3 flat operated frame, producing `hρGv` generically via a general-`d` analogue of the M₃ length-1 W9a
+  move** — the genuinely-new conjecture-crux content (the wall §I.8.18–20 called intrinsic to KT, proved for
+  `d=3` only via W9a; the LANDED crux `baseRedundancy_perp_interior_reproduced_panel` may be a building block).
+
+  **Caveat on (A′)'s own feasibility (FLAG).** (A′) requires producing the collapsed-corner `hρGv` at the
+  interior candidate. The design's §(o″) Route-A characterized firing W6b (the base `hρGv`/realization
+  producer) PER-INTERIOR-SPLIT as a dead end (the interior split's general-position precondition `hsplitGP` is
+  unavailable). Whether the M₃ W9a `hρGv` proof GENERALIZES by a route that sidesteps per-interior W6b is OPEN
+  — it may be tractable (the W9a move's structure, not a fresh W6b firing) or it may be blocked like §(o″), in
+  which case 23c's whole approach needs reconsideration. **This is why (A′) warrants a tractability recon
+  before a build commitment.**
+
+  **Decision point (surfaced to the user 2026-06-24).** Both `±r`-corner wall-escape routes (A, B′) are
+  refuted; (A′) confronts the wall and may itself be blocked. Options: (1) recon (A′)'s tractability (does the
+  W9a `hρGv` proof generalize without per-interior W6b?); (2) build (A′) directly; (3) pause / broader
+  reconsideration of the 23c approach. The corner cert + the LANDED leaves stay in tree; the `W`-block /
+  rank-certification layer is the open re-design.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
