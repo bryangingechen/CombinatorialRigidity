@@ -1264,7 +1264,9 @@ base realization `hsplitGP`, this:
 * fires `chainData_split_w6b_gates` ONCE → the candidate functional `ρ₀ ≠ 0` (the eqs.
   (6.23)/(6.52) redundancy of the `(ab)`-row), its base panel annihilation `ρ₀(C(ab)) = 0`, the
   `screwDim k · (|V(Gab)| − 1)` independent bottom rows `w` (each a `Gᵥ`-row or a candidate-hinge),
-  the eq.-(6.52) `λ`-grouped `(ab)`-witness `ρ₀ = Σⱼ λⱼ (rab j)`, and the seed's algebraic
+  the eq.-(6.52) `λ`-grouped `(ab)`-witness `ρ₀ = Σⱼ λⱼ (rab j)`, the **edge-grouped `G_v`-row
+  widening** of `hingeRow a b ρ₀` (KT eq. (6.66); re-exposed — previously discarded — so the
+  interior arm can feed it to `Graph.ChainData.interior_hρe₀_of_widening`), and the seed's algebraic
   independence `AlgebraicIndependent ℚ q` — the **base bundle** LEAF-4 threads into the corner;
 * fires `exists_chainData_discriminator_pick` ONCE off the base seed `q` and that **same** `ρ₀`,
   fed the `Fin (k+1)` panel selector `cd.candidatePanel hn`
@@ -1278,10 +1280,10 @@ The matched candidate `i` is **arbitrary** (the discriminator may pick the base 
 case-splits on `(i : ℕ)` — base/`d=3`-floor via `chainData_split_realization`, interior `0 < i` via
 the chain arm `case_III_arm_corner_assembly`. This LEAF does **not** produce the interior `hρe₀`
 (KT eq. (6.66), the genuinely-new redundancy-carry leaf
-`baseRedundancy_perp_interior_reproduced_panel`): that is LEAF-4, fed this LEAF's base
-`ρ₀`/`λ`-witness bundle (`notes/Phase23-design.md` §I.8.24(4.12)). No `d = 3` content; no motive/IH
-change (the cert is `hρGv`-free and `ρ₀`-agnostic, the matched-candidate machinery sits below the
-frozen contract). -/
+`baseRedundancy_perp_interior_reproduced_panel`): that is LEAF-4 / `interior_hρe₀_of_widening`, fed
+this LEAF's base `ρ₀`/`λ`-witness bundle **and the now-exposed edge-grouped `G_v`-row widening**
+(`notes/Phase23-design.md` §I.8.24(4.12)). No `d = 3` content; no motive/IH change (the cert is
+`hρGv`-free and `ρ₀`-agnostic, the matched-candidate machinery sits below the frozen contract). -/
 theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
     [Finite α] [Finite β]
     {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (hk1 : 1 ≤ k)
@@ -1323,12 +1325,23 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
       (∀ j, rab j ∈ BodyHingeFramework.hingeRowBlock
         (PanelHingeFramework.ofNormals (G.splitOff v a b cd.e₀) ends q).toBodyHinge cd.e₀) ∧
       ρ₀ = ∑ j, lamAB j • rab j ∧
+      -- the **edge-grouped** `G_v`-row widening of the shared redundancy `hingeRow a b ρ₀` (KT
+      -- eq. (6.66); the bundle `chainData_split_w6b_gates` computes but LEAF-3 previously
+      -- discarded), re-exposed for the interior arm's `hρe₀` leaf
+      -- `Graph.ChainData.interior_hρe₀_of_widening`.
+      (∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+        (∀ j, (G.removeVertex v).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
+        (∀ j, rvGv j ∈ ((PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge
+          ).hingeRowBlock (evGv j)) ∧
+        BodyHingeFramework.hingeRow a b ρ₀
+          = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) ∧
       -- the matched-candidate discriminator gate at `candidateVtx i` (panel→candidate via `d=k+1`)
       LinearIndependent ℝ ![fun j => q (cd.candidateVtx i, j), n'] ∧
       ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 := by
   -- W6b once at the base split: the shared `ρ₀`, the bottom family, the `λ`-witness, alg-indep `q`.
   obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, _hρ₀Gv, hw, hwmem,
-      hrab_blk, hρ₀_lam, _hedgeGv, hQalg⟩ :=
+      hrab_blk, hρ₀_lam, hedgeGv, hQalg⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
       h622lb hdef_Gab hsplitGP
   -- The discriminator once off the same base seed `q` and shared `ρ₀`, fed the `Fin (k+1)` panel
@@ -1339,7 +1352,7 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
   -- The matched candidate `i := Fin.cast d_eq_kAdd.symm u`; rewrite `candidatePanel hn u` to
   -- `candidateVtx i` (the `rfl`-level `candidatePanel_apply` bridge).
   refine ⟨q, ends, ρ₀, w, lamAB, rab, Fin.cast (cd.d_eq_kAdd hn).symm u, n', hgp, hends', hQalg,
-    hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, ?_, ?_⟩
+    hρ₀ne, hρ₀e₀, hw, hwmem, hrab_blk, hρ₀_lam, hedgeGv, ?_, ?_⟩
   · rw [← cd.candidatePanel_apply hn u]; exact hLI
   · rw [← cd.candidatePanel_apply hn u]; exact hgate
 

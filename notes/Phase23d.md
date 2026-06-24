@@ -138,11 +138,25 @@ baseRedundancy_perp_interior_reproduced_panel` (the conjecture-crux + the cycle-
 intermediate `hsplice` threading. Both composed leaves were landed-but-unused in 23c; this commit
 gives them their consumer. NO `hρGv`, no new LA — typechecked on the first LSP pass.
 
-**Plan (≈1 sub-phase left to close the rank cert):** ✅ LEAF-B1 (crux) → ✅ LEAF-B2 (genuine-only `W`
-producer) → ✅ LEAF-4 `hvanish` + `hS` router → ✅ the `case_III_arm_corner_assembly` call
-(`case_III_arm_corner_assembly_via_leafB2`) → ✅ the interior-`hρe₀` producer
-(`interior_hρe₀_of_widening`); LEAF-3 + the corner producer are landed. Remaining = CHAIN-2c-iii
-dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
+**THE LEAF-3 WIDENING IS LANDED (2026-06-24, axiom-clean, build/lint/warning-clean) — THE ONE
+UN-LANDED INTERIOR-ARM GAP IS CLOSED.** `exists_shared_redundancy_and_matched_candidate`
+(`CaseIII/Realization.lean`) now re-exposes the **W6b edge-grouped `G_v`-row widening bundle** of
+`hingeRow a b ρ₀` (KT eq. (6.66)) — the `∃ nGv cGv evGv uvGv vvGv rvGv, …` block that
+`chainData_split_w6b_gates` already computes (its second-to-last `∃` conjunct, `Realization.lean`)
+but LEAF-3 previously discarded as `_hedgeGv`. The change is a pure widening of LEAF-3's output
+existential: bind `hedgeGv` instead of `_`, add the bundle conjunct (verbatim from the W6b producer's
+shape, at `Gw = G − v`, `ends`, `q`, candidate row `hingeRow a b ρ₀`), thread it through the
+`refine`. NO proof reasoning — the value flows straight from the W6b call; LEAF-3 had no callers yet
+(the dispatch isn't built), so the type widening is caller-safe. This is exactly the bundle
+`interior_hρe₀_of_widening` consumes (its `hlink`/`hrv`/`hcomb`), so the dispatch's interior arm now
+reads `hρe₀` off LEAF-3's output directly — no re-fire of W6b, no further LEAF-3 surgery.
+
+**Plan (the dispatch is the one remaining CHAIN piece to close the rank-cert layer's wiring):** ✅
+LEAF-B1 (crux) → ✅ LEAF-B2 (genuine-only `W` producer) → ✅ LEAF-4 `hvanish` + `hS` router → ✅ the
+`case_III_arm_corner_assembly` call (`case_III_arm_corner_assembly_via_leafB2`) → ✅ the
+interior-`hρe₀` producer (`interior_hρe₀_of_widening`) → ✅ the LEAF-3 widening (the interior-arm
+gap); LEAF-3 + the corner producer are landed. Remaining = CHAIN-2c-iii dispatch / CHAIN-5, then
+ENTRY + ASSEMBLY (parallel-safe).
 **Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if the
 LEAF-4 `hS`-router wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real
 and informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
@@ -191,13 +205,11 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    two landed universal lemmas, `hrhat`/`hIH` from the W6b bundle / IH, and `hρe₀` from the landed
    `interior_hρe₀_of_widening` fed the W6b widening bundle). Item 1's rank cert is now CLOSED;
    LEAF-1/2/3 + the discriminator-index plumbing + the genuine-branch router + the interior-arm producer
-   + the interior-`hρe₀` producer are all landed. **The one un-landed gap for the interior arm: LEAF-3
-   (`exists_shared_redundancy_and_matched_candidate`) does NOT yet expose the W6b edge-grouped widening
-   bundle (`hedgeGv`) that `interior_hρe₀_of_widening` consumes — the dispatch must either re-fire W6b or
-   widen LEAF-3 to re-expose it; the bundle IS computed inside `chainData_split_w6b_gates` (its last `∃`
-   conjunct, `Realization.lean:825`) and is exposed by `chainData_split_w6b_gates` directly but discarded
-   by LEAF-3.** Plus the `hends_i`/`hdeg1` re-anchoring of the bundle to `(vtx 0, vtx 2)` from the dispatch's
-   interior split.
+   + the interior-`hρe₀` producer are all landed. **The interior-arm gap is now CLOSED: LEAF-3
+   (`exists_shared_redundancy_and_matched_candidate`) re-exposes the W6b edge-grouped widening bundle
+   (`hedgeGv`) that `interior_hρe₀_of_widening` consumes (2026-06-24)** — so the dispatch reads `hρe₀`
+   straight off LEAF-3's output. Still owed at the dispatch: the `hends_i`/`hdeg1` re-anchoring of the
+   bundle to `(vtx 0, vtx 2)` from the interior split, and the rest of the `Fin cd.d` router wiring.
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** *(parallel-safe; own sub-phase when minted)* — reshape `Graph.exists_chain_data_of_noRigid`
    (`Reduction.lean:383`) to the `G.ChainData n` producer `exists_chainData_of_noRigid` (KT Lemma 4.6 chain
@@ -239,8 +251,11 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
   path). So route B clears the rank cert at the `hS` layer; no narrowing of LEAF-B2's `hS`/`hvanish`
   slots and no route-A fallback are needed. **LEAF-4 is now COMPLETE** — the
   `case_III_arm_corner_assembly` call landed as `case_III_arm_corner_assembly_via_leafB2`
-  (`ForkedArm.lean`), folding the LEAF-B2 `W`-production into the assembly. The only remaining open
-  item is the CHAIN-2c-iii dispatch (the general-`k` Fin-case router) + CHAIN-5.
+  (`ForkedArm.lean`), folding the LEAF-B2 `W`-production into the assembly. **The interior-arm leaf
+  gap is also closed** — LEAF-3 now re-exposes the W6b widening bundle (`hedgeGv`) for
+  `interior_hρe₀_of_widening` (2026-06-24). The only remaining open item is the CHAIN-2c-iii dispatch
+  (the general-`k` Fin-case router, now leaf-unblocked — owes only the bundle re-anchoring + the
+  router index/relabel alignment) + CHAIN-5.
 
 ## Hand-off / next phase
 
@@ -270,18 +285,22 @@ candidate `caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, so the d
 align the `hS` router's `endsσρ`/`qρ` candidate to that form via the `shiftPerm`/`vtx`/`candidatePanel`
 algebra (`reproduced_panel_eq_splice_panel`, `candidatePanel_apply`), not the whole arm.
 
-**The one un-landed interior-arm gap (the dispatch must close it):** LEAF-3 discards the W6b widening
-bundle (`hedgeGv`) that `interior_hρe₀_of_widening` needs — `chainData_split_w6b_gates` DOES expose it
-(its last `∃` conjunct, `Realization.lean:825`), so either re-fire `chainData_split_w6b_gates` directly
-in the dispatch (it already runs once in LEAF-3) or widen LEAF-3 to re-expose `hedgeGv`. Then re-anchor
-the bundle's `hcomb` to `(vtx 0, vtx 2)` and supply `hends_i`/`hdeg1` from the dispatch's interior split.
+**The interior-arm gap is now CLOSED (2026-06-24):** LEAF-3 re-exposes the W6b widening bundle
+(`hedgeGv`) that `interior_hρe₀_of_widening` needs (the `∃ nGv cGv evGv uvGv vvGv rvGv, …` block,
+`chainData_split_w6b_gates` already computes it). So the dispatch reads `hρe₀` straight off LEAF-3's
+output — no re-fire of W6b, no further LEAF-3 surgery. The dispatch still owes only the **bundle
+re-anchoring** — `interior_hρe₀_of_widening`'s `hcomb` is stated at the interior edge's endpoints
+`(vtx 0, vtx 2)` while LEAF-3's bundle is at the base split's `(a, b)`, so the dispatch supplies
+`hends_i`/`hdeg1` and re-anchors the `hcomb` from the interior split — and the rest of the `Fin cd.d`
+router wiring (the index/relabel-form alignment of the `hS` router's `endsσρ`/`qρ` candidate, the
+`shiftPerm`/`vtx`/`candidatePanel` algebra).
 
 Route-B build plan: ✅ **LEAF-B1** (crux) → ✅ **LEAF-B2** (genuine-only `W` producer) → ✅ **LEAF-4
 `hvanish` + `hS` router** → ✅ **the `case_III_arm_corner_assembly` call** (rank cert CLOSED) → ✅ **the
-interior-`hρe₀` producer** (`interior_hρe₀_of_widening`); **LEAF-3** + **LEAF-B3** (corner producer)
-landed. Remaining = CHAIN-2c-iii dispatch (NEXT) / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
-Fallbacks **route A** / **(C)** are no longer needed — the rank cert clears the wall via route B
-end-to-end.
+interior-`hρe₀` producer** (`interior_hρe₀_of_widening`) → ✅ **the LEAF-3 widening** (the interior-arm
+gap closed); **LEAF-3** + **LEAF-B3** (corner producer) landed. Remaining = CHAIN-2c-iii dispatch
+(NEXT, now leaf-unblocked) / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe). Fallbacks **route A** /
+**(C)** are no longer needed — the rank cert clears the wall via route B end-to-end.
 
 ## Decisions made during this phase
 
@@ -389,6 +408,15 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   composition `interior_hρe₀_of_splice_perp ∘ baseRedundancy_perp_interior_reproduced_panel` (the
   conjecture-crux + the cycle-relabel bridge), both landed-but-unused in 23c — this commit gives them
   their single consumer, so the dispatch threads the widening bundle once and reads off `hρe₀` directly.
-  NO `hρGv`, no new LA, no friction (typechecked first LSP pass). The one un-landed interior-arm gap left:
-  LEAF-3 discards the widening bundle `hedgeGv` (exposed by `chainData_split_w6b_gates`, discarded by
-  `exists_shared_redundancy_and_matched_candidate`) — the dispatch re-fires W6b or widens LEAF-3.
+  NO `hρGv`, no new LA, no friction (typechecked first LSP pass).
+- **The LEAF-3 widening LANDED — the interior-arm leaf gap is closed (2026-06-24, axiom-clean,
+  build/lint/warning-clean).** `exists_shared_redundancy_and_matched_candidate`
+  (`CaseIII/Realization.lean`) now re-exposes the W6b edge-grouped `G_v`-row widening bundle
+  (`hedgeGv`: `∃ nGv cGv evGv uvGv vvGv rvGv, hlink ∧ hrv ∧ hcomb`, KT eq. (6.66)) that
+  `interior_hρe₀_of_widening` consumes. `chainData_split_w6b_gates` already computes it (its
+  second-to-last `∃` conjunct); LEAF-3 had bound it as `_hedgeGv` and discarded it. The fix is a pure
+  output widening: bind `hedgeGv`, add the conjunct (verbatim from the W6b shape, at `Gw = G − v`,
+  candidate row `hingeRow a b ρ₀`), thread through the `refine`. NO proof reasoning, NO friction (the
+  value flows straight from the W6b call); caller-safe (LEAF-3 has no callers yet). So the dispatch's
+  interior arm now reads `hρe₀` off LEAF-3 directly — owing only the bundle re-anchoring to the
+  interior edge's `(vtx 0, vtx 2)` + the `Fin cd.d` router index/relabel alignment.
