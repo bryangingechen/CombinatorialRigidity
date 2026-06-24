@@ -106,7 +106,11 @@ Loop:
    tail-only edit matching); before committing a log row, run `python3
    notes/check-log-rows.py` — it enforces the ~600-char Notes cap on the
    rows this commit touches; compress to pass (the commit message carries
-   the recap), never commit a row it rejects. If Status says concluded,
+   the recap), never commit a row it rejects. **Gate on its exit code, not a
+   pipe:** `python3 notes/check-log-rows.py; echo "EXIT=$?"` (or grep `^OK`) —
+   do NOT chain `… | tail … && git commit`, because the pipe returns `tail`'s
+   exit 0 and an over-cap row rides into the commit (hit 2026-06-{17,23}; the
+   fix is a follow-up compress, not an over-cap commit). If Status says concluded,
    follow the promoted guideline. **Run boundary pairs when due** — when the log's
    findings name an open pair need and the profile fits, launch one
    without asking (the protocol's worktree procedure neutralizes the
