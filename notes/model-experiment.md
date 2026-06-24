@@ -165,11 +165,46 @@ Rows 1–372 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 414 | design-pass recon: matched-interior hρe₀/hgate sourcing → §I.8.24(4.12) + re-pointed hand-off; fa842aa | 3/2/1 | opus | normal | clean | ✓✓——✗✓ | 279221 tok / 74 tools / ~14.6 min | S=3 design-settle (opus, OPUS-ONLY), triggered by the 2nd consecutive build-shrink away from the discriminator-firing producer (recon-early). RESOLVED: hgate LANDED-direct; interior hρe₀ a genuinely-new LEAF-4 leaf, NO contract change. Core verdict coordinator-source-verified (Arms.lean:910–913 → only the base-split IH in scope, interior W6b unavailable). Bit5✗ (clause-i lapse): cited `redundancy_panel_carry` as LANDED — actually a DELETED orphan (rows 268/271, the §(o‴)-killed degree-2 carry); coordinator corrected + flagged a LEAF-4 route recon (e68b391). → Findings. |
 | 415 | LEAF-3 composed Fin(k+1) panel selector `candidatePanel` (CHAIN-2c-iii); 64b5563 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 171172 tok / 63 tools / ~8.5 min | 3rd consecutive scope-to-fit shrink to an index-plumbing primitive (candidateVtx → candidateVtx_succ_eq → candidatePanel); the LEAF-3 discriminator-firing producer still unbuilt. candidatePanel = the discriminator's cand/hcand input (thin composition of candidateVtx + Fin.cast d_eq_kAdd, legitimately named + injective). Infra now EXHAUSTED (no selector primitive left), so the next build MUST engage the producer body — dispatching once; a 4th unproductive shrink → escalate to a sharper pin. Gates re-run clean (build+lint+sorry-grep). → Findings. |
 | 416 | LEAF-3 discriminator-firing producer `exists_shared_redundancy_and_matched_candidate` (CHAIN-2c-iii); 0407a69 | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 232177 tok / 86 tools / ~14.4 min | The anti-shrink note WORKED — after 3 shrinks + a coordinator hand-off flag (infra-exhausted, producer un-shrinkable), opus built the producer BODY, not a 4th index alias. Matches the §(4.12) signature (W6b + discriminator once at the base split; gate at candidateVtx i against base q, candidateSeed reconciliation deferred to LEAF-4). Realized B=2: minimal landed-lemma touch (re-exposed AlgebraicIndependent q; 1 consumer `_`-binder repaired, full build verified). Gates re-run clean. NEXT = LEAF-4 conjecture-crux (route-flagged). → Findings. |
+| 417 | diverse-lens recon PAIR member A (constructive) — LEAF-4 interior-hρe₀ route | 3/3/1 | opus | recon | clean | — (read-only) | 237249 tok / 49 tools / ~8.8 min | Diverse-lens recon PAIR member A (constructive lens), opus×opus OPUS-ONLY, the LEAF-4 conjecture-crux interior-hρe₀ route (the coordinator's route-verification flag firing). RE-ROUTED: §(4.12)'s pinned `interior_group_eq_baseRedundancy` is WRONG-SHAPE (a column value); corrected core = the live `candidate_perp_two_incident_panels` (annihilation-level via mem_hingeRowBlock_iff) + panelCorrespondence transport. Flagged the feeding-gap: the core's `hcol` needs the eq-6.52 ALL-edge data → a below-contract LEAF-3 widening. Coordinator source-confirmed the core's hyps + the wrong-shape. → Findings. |
+| 418 | diverse-lens recon PAIR member B (adversarial-refute) — LEAF-4 interior-hρe₀ route | 3/3/1 | opus | recon | clean | — (read-only) | 219524 tok / 62 tools / ~10.2 min | Diverse-lens recon PAIR member B (adversarial-refute), opus×opus OPUS-ONLY, same seam. COULD-NOT-REFUTE soundness (KT eq-6.66 holds; carry at the BASE, not the killed per-body route; premises dischargeable) — but sharpened the live risk: the core reaches the panels THROUGH the split body, not the neighbour-neighbour SHORTCUT panel the consumer needs; the column→panel bridge is genuinely-new. CONVERGED with A on the re-route + wrong-shape; split on whether the seed-relabel transport reaches the shortcut panel (the build-time de-risk). → Findings. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
+
+### Session #27 (rows 413–418) — the anti-shrink note redirected a 3-shrink run; a diverse-lens pair overturned the conjecture-crux LEAF-4 route a single recon + coordinator scrutiny had mis-pinned
+
+The LEAF-3 → LEAF-4 stretch of CHAIN-2c-iii. Three durable threads:
+
+- **A coarse "build the producer" hand-off invited 3 consecutive scope-to-fit shrinks to index-plumbing
+  primitives** (candidateVtx → candidateVtx_succ_eq → candidatePanel, rows 413/415 + an in-between),
+  each a small/thin selector, leaving the LEAF-3 *producer* unbuilt — the same self-shrink dynamic as
+  the 378–388 and 402–404 runs. The fix that worked: once the selector infra was EXHAUSTED (no primitive
+  left to peel), a **coordinator anti-shrink note** naming the producer the un-shrinkable target + "the
+  only legitimate shrink is by HALVES, never another Fin-index alias" → row 416 built the producer body
+  cleanly. Lesson: when a multi-piece producer keeps getting peeled, the remedy is *infra-exhaustion +
+  an explicit un-shrinkable-target note*, not another bare re-dispatch.
+
+- **A single design-pass recon's route pin can be column-vs-panel WRONG even after coordinator
+  source-scrutiny; the diverse-lens pair is what caught it.** The §(4.12) recon (row 414) resolved the
+  LEAF-4 *structural* verdict soundly (genuinely-new, no contract change, hgate-direct) — coordinator
+  source-verified the decisive contract-scope claim — but pinned the leaf's INTERNAL route on
+  `interior_group_eq_baseRedundancy`, a COLUMN-value lemma (the dead hρGv hrCol shape), WRONG for the
+  scalar panel-annihilation hρe₀ slot. The coordinator's first-pass scrutiny caught only a *deleted-orphan
+  ingredient citation* (`redundancy_panel_carry`, rows 268/271), not the deeper shape error. The
+  diverse-lens pair (417 constructive + 418 adversarial-refute, opus×opus) CONVERGED on the wrong-shape
+  diagnosis + the corrected live core (`candidate_perp_two_incident_panels`, annihilation-level), and
+  split only on the forward de-risk (does the incident-panel perp transport to the neighbour-neighbour
+  SHORTCUT panel) — narrowing it to one source-verifiable claim. Reinforces the §25 lesson: a fragile
+  redundancy-carry seam needs the pair; single reads (even coordinator-scrutinized) are wrong ~half the time.
+
+- **The coordinator route-verification flag earned its keep.** After catching the deleted-orphan citation,
+  the coordinator FLAGGED (didn't fix-and-proceed) the leaf's internal route as not-independently-verified
+  and pinned "dedicated pair before the build." Firing it at the LEAF-4 boundary — BEFORE a build burned on
+  the hardest leaf — caught the wrong-shape route. The net re-route: §(4.13) installs the live core + a
+  below-contract LEAF-3 widening (the core's `hcol` needs the full eq-6.52 all-edge redundancy, not the
+  (ab)-block λ-witness LEAF-3 emits). No motive/IH/contract change.
 
 ### Session #26 (rows 402–404) — a 3–5-commit chunk invites the hard part being deferred; decompose EARLY, on the 2nd shrink (user-originated)
 
