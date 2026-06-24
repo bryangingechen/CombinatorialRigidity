@@ -124,16 +124,19 @@ relabel-image selector/seed `ChainData.candidateEnds` / `candidateSeed` (`Induct
 the sibling interior-split accessors) — the two `def`s the dispatch feeds `case_III_arm_corner_assembly`,
 matching `chainData_bottom_relabel`'s target framework verbatim (`endsσρ = ρ.symm ∘ ends₀ ∘ σ`, `qρ = q ∘ ρ`
 on the body coordinate), each with its `rfl` `@[simp]` computation lemma; `candidateSeed` is generic in the
-fibre type `γ` so it carries no `ScrewSpace`/`k` dependency. **LEAF-3 is BLOCKED on a FROZEN-CONTRACT
-decision** (the discriminator-index gap, design §I.8.24(4.11), 2026-06-23): the two LANDED discriminators are
-`Fin (k+1)`-indexed but the chain candidate is `i : Fin cd.d`, and these align only if `cd.d = k+1` — which
-KT §6.4.2 makes structural (`d` candidates = `d` panels, `D = (d+1 choose 2) = screwDim k` ⟹ `d = k+1`) but
-which the C.1 record (free `d`, `hd : 1 ≤ d` only) / C.3 dispatch contract do NOT carry. Recommended fix =
-option (a): add `d_eq : cd.d = k+1` to `ChainData`/dispatch (~1 commit, d=3 zero-regression by `3=2+1`);
-awaiting coordinator/user adjudication (a vs b; (c) ruled out by KT). Full options + estimates in §I.8.24(4.11)
-+ *Hand-off* below. Once decided, LEAF-3 (discriminator plumbing) → LEAF-4 (hard core, the `hS` disjunction) →
-LEAF-5 (router) → CHAIN-5 proceed as pinned. Home for the dispatch: a fresh `Relabel/Dispatch.lean` importing
-`Relabel/ForkedArm`; the `Relabel/` split is DONE so it lands without re-tripping the cap.
+fibre type `γ` so it carries no `ScrewSpace`/`k` dependency. **The LEAF-3 frozen-contract field is LANDED**
+(2026-06-23, build/lint/axiom-clean): the `d_eq : d = n` field on the `ChainData` RECORD
+(`Induction/Operations.lean`, right after `hd`) — option (a), the discriminator-index gap resolution. Stated
+`d = n` (the record parameter), **not** `d = k+1` (`k` is not a record parameter); `n = k+1` is recovered at
+use sites from the ambient `bodyBarDim n = screwDim k` (`Nat.choose`-injectivity). Purely additive — there are
+**no** `ChainData` value constructions yet (`exists_chain_data_of_noRigid` still returns the OLD fixed 4-tuple,
+a 23d/ENTRY obligation), so nothing to fix downstream; full project green. The ENTRY extractor will *set*
+`d_eq` at construction (KT Lemma 4.6 builds the chain to length `n` — set, not proved-after-the-fact). **LEAF-3
+proper now unblocks**: fire `chainData_split_w6b_gates` + `exists_chainData_discriminator_pick` off the shared
+base; the panel-`u : Fin (k+1)` ↔ candidate-`i : Fin cd.d` match transports across `d_eq` + `n = k+1`. Then
+LEAF-4 (hard core, the `hS` disjunction) → LEAF-5 (router) → CHAIN-5 proceed as pinned. Home for the dispatch:
+a fresh `Relabel/Dispatch.lean` importing `Relabel/ForkedArm`; the `Relabel/` split is DONE so it lands without
+re-tripping the cap.
 
 ## What 23b delivered (the foundation 23c builds on)
 
@@ -237,18 +240,23 @@ CHAIN-4, still needs `d=k+1`) and (c) separate selector (NOT available — ruled
 **Seed-reconciliation is NOT the blocker** — `candidateSeed` transport is the LANDED relabel-image machinery
 (routine, no wall), downstream of the index gap.
 
-**NEXT COMMIT (option a, the contract field): add `d_eq : d = n` to the `ChainData` RECORD** (`Operations.lean`,
-the chain length = the dof-regime index `n`). Stated `d = n`, **not** `d = k+1`, because `n` is a record
-parameter and `k` is not — `d = k+1` then follows at use sites from the ambient `hn : bodyBarDim n = screwDim k`
-(⟹ `n = k+1`, a `Nat.choose`-injectivity step; mirror/derive as needed). It is a **constructive RECORD field**
-(set at construction), NOT a dispatch hypothesis — the recon's refinement (the ENTRY extractor BUILDS the chain
-to length `k+1`, so `d_eq` is *set, not proved-after-the-fact*; sidesteps the 392/394 satisfiability trap). Fix
-every `ChainData` construction site (grep; the d=3 extractor `Graph.exists_chain_data_of_noRigid`,
-`Reduction.lean:383`, supplies `3 = n` — zero-regression at the d=3/k=2 regime where `n=3`); build green.
-**THEN** LEAF-1/LEAF-2 stay LANDED; LEAF-3 unblocks (`u : Fin (k+1)` ↔ `i : Fin cd.d` by transport across
-`d_eq`+`hn`); LEAF-4 (hard core) → LEAF-5 (router) → CHAIN-5 proceed as pinned. **Watch the two downstream
-risks** (design §I.8.24(4.11)): the ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new) and the eq-6.66
-`±r`-across-all-interiors step (lands in LEAF-4/CHAIN bookkeeping).
+**The contract field `d_eq : d = n` is LANDED** (option a; 2026-06-23, build/lint/axiom-clean; added to the
+`ChainData` RECORD in `Operations.lean`, right after `hd`). Stated `d = n` (the record parameter), **not**
+`d = k+1` (`k` is not a record parameter — `n = k+1` follows at use sites from the ambient
+`hn : bodyBarDim n = screwDim k`, a `Nat.choose`-injectivity step). It is a **constructive RECORD field** (set
+at construction by the ENTRY extractor — KT Lemma 4.6 builds the chain to length `n`, so `d_eq` is *set, not
+proved-after-the-fact*; sidesteps the satisfiability trap). Purely additive — there are **no** `ChainData` value
+constructions yet (`exists_chain_data_of_noRigid` still returns the OLD fixed 4-tuple, a 23d/ENTRY obligation),
+so no construction site needed fixing; full project green.
+
+**NEXT COMMIT: LEAF-3 proper (now unblocked by `d_eq`)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
+`exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at the matched interior
+candidate `i`, with the panel-`u : Fin (k+1)` ↔ candidate-`i : Fin cd.d` match transported across `d_eq` +
+`n = k+1`. Wiring template: the d=3 `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s
+`htrans` slot, re-aimed at the assembly's `hgate`/`hρe₀`. **THEN** LEAF-4 (hard core, the `hS` disjunction) →
+LEAF-5 (router) → CHAIN-5 proceed as pinned. **Watch the two downstream risks** (design §I.8.24(4.11)): the
+ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new) and the eq-6.66 `±r`-across-all-interiors step (lands
+in LEAF-4/CHAIN bookkeeping).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
@@ -269,12 +277,13 @@ risks** (design §I.8.24(4.11)): the ENTRY KT-4.6 chain-extraction leaf (23d, ge
    (off-slot link-recording + general-position support nonvanishing, verbatim from
    `chainData_split_realization:1079–1092`), `hVone`/`hVcard` (the `removeVertex` ncard rewrites), `hLn`/`hgab`
    (the seed pairwise-LI + transversal-LI from the split realization's `IsGeneralPosition`).
-3. **LEAF-3 (BLOCKED — frozen-contract decision, design §I.8.24(4.11))** — fire `chainData_split_w6b_gates`
-   (→ `ρ₀`/`w`) + `exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at
-   the matched interior candidate `i`. The panel-`u : Fin (k+1)`↔candidate-`i : Fin cd.d` match is NOT `Fin`
-   arithmetic — it needs `cd.d = k+1` (KT-structural; the discriminator is `Fin (k+1)`-indexed, `cd.d` is a
-   free `ℕ`). **Coordinator/user must adjudicate the contract change (recommended (a): add `d_eq : cd.d = k+1`
-   to `ChainData`/dispatch) before LEAF-3 can land.** Once decided, the wiring is the d=3 template
+3. **The contract field `d_eq : d = n`** (option a, the discriminator-index gap fix). ✓ **LANDED** 2026-06-23
+   (`Induction/Operations.lean`, the `ChainData` RECORD, right after `hd`; build/lint/axiom-clean). Purely
+   additive — no `ChainData` value constructions exist yet, so nothing downstream to fix.
+   **LEAF-3 proper (NEXT)** — fire `chainData_split_w6b_gates` (→ `ρ₀`/`w`) +
+   `exists_chainData_discriminator_pick` ONCE off the shared base; expose `hgate`/`hρe₀` at the matched
+   interior candidate `i`. The panel-`u : Fin (k+1)`↔candidate-`i : Fin cd.d` match transports across `d_eq` +
+   `n = k+1` (from `hn : bodyBarDim n = screwDim k`). The wiring is the d=3 template
    `case_III_candidate_dispatch:435–501` + `chainData_split_realization`'s `htrans` slot, re-aimed at the
    assembly's `hgate`/`hρe₀`.
 4. **LEAF-4 (THE HARD CORE)** — the interior base-block `W` production: `f := w`, `L := (funLeft (shiftPerm
@@ -407,3 +416,11 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   dep, so it lives upstream in `Induction/`); the unused `[DecidableEq β]` on its `_apply` lemma is dropped
   with `omit … in`. Pure bookkeeping, no new math; the override (`hends_ea/eb`) + general-position
   (`hLn`/`hgab`/`hne_Gv`) facts depend on LEAF-3's `n'`/split-realization context and are built inline there.
+- **Dispatch contract field `d_eq : d = n` (2026-06-23, option a).** Added to the `ChainData` RECORD
+  (`Induction/Operations.lean`, right after `hd`; build/lint/axiom-clean), resolving the LEAF-3
+  discriminator-index gap (the `Fin (k+1)`-indexed discriminators vs the `i : Fin cd.d` chain candidate align
+  only via `d = k+1`, KT §6.4.2-structural). Stated `d = n` against the record parameter (`k` is not one;
+  `n = k+1` recovered at use sites from `bodyBarDim n = screwDim k`). Purely additive — no `ChainData` value
+  constructions exist yet (`exists_chain_data_of_noRigid` still returns the OLD fixed 4-tuple, a 23d/ENTRY
+  obligation), so no construction site to fix; the ENTRY extractor will *set* `d_eq` (KT Lemma 4.6 builds the
+  chain to length `n`). Unblocks LEAF-3 proper.

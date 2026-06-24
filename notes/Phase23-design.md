@@ -2221,7 +2221,9 @@ decomposition of the SECOND build it teed up.**
   proceed as pinned. The CHAIN↔ENTRY contract gains exactly one field/hypothesis (C.1 or C.3); C.0/C.2/C.4–C.6 and
   the 0-dof motive/IH are untouched (the rank-cert/arm are `cd.d`-agnostic below the dispatch).
 
-  **RESOLVED → (a) (2026-06-23, user-approved).** Adjudication grounded by a diverse-lens recon PAIR
+  **RESOLVED → (a) (2026-06-23, user-approved); the `d_eq : d = n` field is LANDED** (2026-06-23,
+  `Induction/Operations.lean` `ChainData` RECORD, after `hd`; build/lint/axiom-clean; purely additive, no
+  `ChainData` value constructions exist yet so nothing downstream to fix). Adjudication grounded by a diverse-lens recon PAIR
   (constructive + adversarial-refute, opus×opus, read-only) that CONVERGED on "`d=k+1` structural +
   ENTRY-dischargeable", with the coordinator independently PDF-verifying the two load-bearing KT statements
   (Prop 1.1 `D = C(d+1,2)`, p.648/p.5; Lemma 4.6 "chain … of length `d`", p.18; §6.4.2 "`d` distinct

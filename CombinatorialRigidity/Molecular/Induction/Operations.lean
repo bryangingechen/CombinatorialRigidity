@@ -1278,14 +1278,24 @@ edges `edge 1 = eₐ` and `edge 2 = e_c`). -/
 /-- **Length-`d` Case-III chain data** (Katoh–Tanigawa 2011 §6.4.2, the chain `v₀v₁…v_d`): a chain
 of `d + 1` distinct vertices `vtx 0, …, vtx d`, the `d` chain edges `edge i = vtx i — vtx (i+1)`, a
 fresh short-circuit label `e₀ ∉ E(G)`, and the degree-2 closure of the interior vertices
-`vtx 1, …, vtx (d−1)`. The phantom index `n` records the `k`-dof regime the chain lives in (the
-ambient `IsMinimalKDof n 0` hypothesis) so the contract signatures can write `G.ChainData n`; no
-field references it. See the section docstring for the `d=3` map. -/
+`vtx 1, …, vtx (d−1)`. The index `n` records the `k`-dof regime the chain lives in (the ambient
+`IsMinimalKDof n 0` hypothesis) so the contract signatures can write `G.ChainData n`; the `d_eq`
+field pins the chain length to it (`d = n`, KT-structural). See the section docstring for the `d=3`
+map. -/
 structure ChainData (G : Graph α β) (n : ℕ) where
   /-- The chain length (= the body-bar dimension index; `d = 3` at the `d=3` regime). -/
   d : ℕ
   /-- The chain is nondegenerate: `d ≥ 1` (so there is at least one chain edge). -/
   hd : 1 ≤ d
+  /-- **The chain length equals the dof-regime index** (Katoh–Tanigawa 2011 §6.4.2): the chain has
+  exactly `n` edges, i.e. `d = n`. This is KT-structural — the `d` Case-III candidates are the `d`
+  panels of the chain, and the panel discriminator that selects candidate `i` is `Fin (k+1)`-
+  indexed, so the chain index `i : Fin d` and the panel index align only via `d = k + 1`; stated
+  here against the record parameter `n` (with `n = k + 1` recovered at use sites from the ambient
+  `bodyBarDim n = screwDim k`, since `k` is not a record parameter). Set at construction by the
+  ENTRY extractor (KT Lemma 4.6 builds the chain to length `n`), not proved after the fact. At the
+  `d=3` regime `n = 3`, so `d_eq : d = 3` is the zero-regression specialization. -/
+  d_eq : d = n
   /-- The chain vertices `v₀, …, v_d` (KT eq. 6.46). -/
   vtx : Fin (d + 1) → α
   /-- The chain edges: `edge i` joins `vtx i` to `vtx (i+1)`. -/
