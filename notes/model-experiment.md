@@ -64,16 +64,18 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#30 (latest: **#30**, 2026-06-24,
+  would re-probe. Set/re-confirmed sessions #6–#31 (latest: **#31**, 2026-06-24,
   fresh `/coordinate-phase`; user re-confirmed the triple [Standard triple] at
   session start; opus reachable via the Agent `model` param, no substitution
   needed). **The override expires session-end — a fresh coordinator re-runs the
   session-start availability check + re-confirms the triple.** **The active
-  sub-phase is 23d; the A1 §I.8.21(α) feasibility recon is RESOLVED INFEASIBLE**
-  (session #30, rows 435–436; design §I.8.24(4.22)). **Next dispatch awaits user
-  adjudication of the phase direction — (C) honest-conditional / (D) reconsider /
-  open ENTRY** (`notes/Phase23d.md` *Current state* + *Hand-off*). ALL landed
-  leaves stay in tree (sound, reusable).
+  sub-phase is 23d; route B RESOLVES the unconditional crux** (design §I.8.24(4.25)):
+  LEAF-B1 + LEAF-B2 (the genuine-only `W` producer) are both LANDED + de-risked.
+  **Next dispatch = LEAF-4** (the per-member `hS`/`hvanish` discharge at the matched
+  interior `i` + the `case_III_arm_corner_assembly` call; `notes/Phase23d.md`
+  *Hand-off*), with the flagged `hS`-universal-form satisfiability as the one residual
+  risk (BLOCKED-with-named-row if it walls; route A is the informed fallback). ALL
+  landed leaves stay in tree (sound, reusable).
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -103,6 +105,7 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 439 | route-B (genuine-basis) architecture pass (→ design §(4.25)) | —/—/— | opus | recon | recon — B-WORKS (pending LEAF-B1) | — | 235k tok / 71 tools / 20.7 min | Architecture pass on the user-directed faithful re-arch. FOUND the escape after 5 wall-confirmations: an inversion faithful to KT (6.64) — redundant row → CORNER (hρe₀), genuine rows → base block W (off-vᵢ, transport works). Q1/Q2 kernel-spiked sorry-free, axiom-clean; CONSTRUCTED Q2-B/C/D (the satisfiability §(4.18) called impossible for the redundant-INCLUDING block). Honestly flagged the ONE carried hypothesis = LEAF-B1 (genuine-basis extraction) as crux/risk — flag-don't-force + construct-discipline worked. Light reformulation, not a Matrix rebuild. → Findings 2026-06-24. |
 | 440 | LEAF-B1 genuine-basis extraction — build resume (b239c97) | 2/3/1 | opus | resume | clean | ✓✓✓✓✓✓ | 309k tok / 82 tools / 18.3 min | Spike-salvage build resume of 439 (rescue §6): CONSTRUCTED the route-B crux LEAF-B1 + Q2-B, sorry-free + axiom-clean. PASSED the construct-or-concede test that caught the 2 false FEASIBLEs — coordinator read the proof: genuinely constructed via mathlib `exists_fun_fin_finrank_span_eq`, NOT carried; the structural-twin risk (motive strengthening) dissolved (link data free from set-membership). Salvage: 3/4 thin wrappers correctly SKIPPED. → Findings 2026-06-24. |
 | 441 | LEAF-B2 genuine-only `W` producer (dd26563) | 2/2/1 | opus | normal | clean (1 carried-hyp flag) | ✓✓✓✓✓✓ | Fresh routine build. Clean 3-lemma composition (LEAF-B1 + LEAF-2 + the card fact) → the route-B base block, sorry-free/axiom-clean/warning-clean. Agent CORRECTED the coordinator's perm-direction slip (σ = (shiftPerm)⁻¹ → σ.symm v = vtx 1, the removed base body, resolving `hvanish` at the signature level). Legitimate slice but CARRIES `hS`/`hvanish` universally over `Fbase.rigidityRows` (discharge deferred to LEAF-4); coordinator flagged the universal `hS` as possibly too strong (the §4.17-dead branch) — the one residual route-B risk, pinned in the hand-off. → Findings 2026-06-24. |
+| 442 | LEAF-4 `hvanish` half — `ofNormals_removeVertex_rigidityRow_comp_single_self` (5d742bd) | 2/2/1 | opus | normal | clean (scoped to hvanish half) | ✓✓✓—✓✓ | 149k tok / 49 tools / 13.3 min | Scope-to-fit shrink of LEAF-4 to its `hvanish` half. Landed `ofNormals_removeVertex_rigidityRow_comp_single_self`: every rigidity row of `ofNormals (G−v)` annihilates `single v`, universal over the WHOLE family (no per-member split) — destructure each `(G−v)`-link row → `x,y≠v` (`removeVertex_isLink`) → `hingeRow_comp_single_off`. Coordinator confirmed the `hvanish` satisfiability vs the consumer's actual object (instantiable at `v=vtx 1`, `σ.symm vᵢ=vtx 1`). The flagged `hS`-universal-form router (genuine vs §4.17-dead branch) is the remaining substantive LEAF-4 piece. |
 
 ## Findings
 
