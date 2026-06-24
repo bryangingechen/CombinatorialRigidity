@@ -1507,6 +1507,63 @@ pure throwaway once the strengthening was decided), proving the leaf
 suite composes end-to-end before the redesign re-types it. Cross-refs:
 `notes/Phase22-realization-design.md` §1.54–§1.55; `notes/Phase22h.md`.
 
+## Frozen contracts must encode the invariants relating their parameters (the Phase-23c LEAF-3 postmortem)
+
+A multi-field contract (here the `ChainData` record + the CHAIN↔ENTRY
+dispatch signature, frozen as C.0–C.6 in 23b) must **formalize the
+structural relations between its parameters**, not just document them in
+prose. The `ChainData` record carried both the chain length `d` (a free
+`ℕ`, `hd : 1 ≤ d`) and the ambient dof-regime index `n` (with
+`bodyBarDim n = screwDim k`, i.e. `n = k+1`), and its field docstrings
+*named* the relationship — `d` is "the body-bar dimension index", `n` "the
+`k`-dof regime … **no field references it**". But the identity KT's Case III
+forces — `d = n` (chain length = ambient dimension; KT 2011 Lemma 4.6
+"chain of length `d`" + Prop 1.1 `D = C(d+1,2)`, so `d = k+1`) — was left
+out of the formal contract to keep the record minimal. The contract thus
+recorded two quantities *known to be equal* **without the equation between
+them**.
+
+The gap stayed invisible until the **first consumer that had to exercise
+it**: the general-`d` dispatch (LEAF-3 of `chainData_dispatch`) must match
+the discriminator's `Fin (k+1)` panels to the `Fin cd.d` chain candidates,
+which is impossible without `d = k+1`. The `d=3` floor had masked it — `d=3
+= k+1` holds by construction there, so nothing ever *invoked* the identity.
+A build correctly BLOCKED (refusing to guess a frozen-contract change,
+per *Constructibility recon …* below); a design-pass + a diverse-lens recon
+pair + a coordinator PDF-check of the KT primary source confirmed `d = k+1`
+is structural and the fix (add `d = n` to the **record**, populated at
+construction). It is a **record field, not a dispatch hypothesis**, because
+the ENTRY extractor *builds* the chain to length `k+1` (KT 4.6's truncation
+*is* the constructor) — so the field is **set, not proved-after-the-fact**,
+which is exactly what keeps it off the satisfiability trap (*Constructibility
+recon …*: a hypothesis dischargeable for the actual consumer).
+
+Three durable rules:
+
+1. **Encode the invariant relating free parameters.** A known identity left
+   as a docstring aside is a latent gap. "No field references `n`" should
+   have triggered the question *which consumer needs the `d`–`n` link, and
+   how do they get it?* — not a decision to drop it.
+2. **A "frozen" contract is settled only relative to the consumers analyzed
+   at freeze time.** C.1 froze `d` free in 23b, before the general-`d`
+   dispatch existed; "23d opens against a settled interface" was true only
+   for the consumers that then existed. A freeze pass should walk the
+   not-yet-built consumers' requirements.
+3. **An index-family match between two *different cardinalities* is a
+   structural requirement, not "`Fin` arithmetic latitude."** The
+   decomposition pass rated the `u : Fin (k+1)` ↔ `i : Fin cd.d` match as
+   build-time latitude; it is a contract fact (`d = k+1`). When a pin says
+   "match `u` to `i`", confirm the index sets share a cardinality by a
+   stated contract fact before rating it latitude.
+
+The operative triggers for rules 1–3 live where they fire (DESIGN.md is
+read-on-demand, not at decomposition/freeze time): the `coordinate-phase`
+command's step-1 trigger list (coordinator-side) and its design-pass clause
+(iii) (the subagent that writes the hand-off). Cross-refs: *Constructibility
+recon before scheduling a producer build* (the satisfiability discipline this
+specializes to the contract level); `notes/Phase23-design.md` §I.8.24(4.11);
+`notes/model-experiment.md` rows 407–410.
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually

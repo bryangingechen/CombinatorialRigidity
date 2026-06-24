@@ -75,7 +75,21 @@ Loop:
    be the wrong route, and those prerequisites may serve a route the recon then
    dissolves (rows 195–198: two leaves lifted dead-`Φ̃`-route machinery before
    the recon re-routed to the `⋀^{d−1}W`-line argument, leaving the dead lemmas
-   as green-`d=3`-wrappers)
+   as green-`d=3`-wrappers),
+   OR a decomposition / hand-off rates an **index-family MATCH** between two
+   index sets as **"latitude" / "`Fin` arithmetic"** ("match `u` to `i`", "the
+   `cand` selector fixes it") while the two families have **different
+   cardinalities** (`Fin (k+1)` vs `Fin cd.d`): a match between differently-sized
+   index families is a **structural / contract requirement**, NOT bookkeeping —
+   confirm the cardinalities coincide **by a stated contract fact** before
+   accepting the rating, because a contract that records two known-linked
+   quantities (`d` and `n`/`k`) **without the linking hypothesis** is a latent
+   gap that surfaces only at the first consumer to exercise it (23c LEAF-3: the
+   `ChainData` record carried `d` and `n` but not `d = n`, so the dispatch could
+   not match the discriminator's `Fin (k+1)` panels to the `Fin cd.d` candidates
+   — a BLOCKED build, then a diverse-lens recon pair source-confirmed `d = k+1`
+   is structural; DESIGN.md *Frozen contracts must encode the invariants relating
+   their parameters*)
    — the next commit is a **recon / design-pass**, not a build: dispatch a
    read-only Plan-agent recon, or a docs/blueprint design-pass commit
    that decomposes the core into buildable leaves with exact signatures.
@@ -332,14 +346,23 @@ evidence it works: rows 18–19 self-shrank to complete sub-lemmas.)
 A **recon / design-pass** dispatch is the exception: give it a tailored
 prompt naming what to recon, the coordinator's verified findings
 motivating it, and the deliverable (a design-doc entry + re-pointed
-hand-off). **Two clauses earn their place in every design-pass prompt**
+hand-off). **Three clauses earn their place in every design-pass prompt**
 (rows 96 vs 99: the same opus rung pinned §1.63 *wrong* unprimed, then
 §1.64 *right* when primed): (i) *verify every load-bearing claim against
 the landed source* — the actual `def`/`theorem`, not the prior pin's
 prose; (ii) an explicit *flag-don't-force* mandate — "if the corrected
 route needs a motive/IH-level change or genuinely-new math, say so and
 stop; a pin that honestly names an open decision beats a confident wrong
-one (that is exactly what cost a revert)." Single-pass design output is
+one (that is exactly what cost a revert)"; (iii) *trace structural
+invariants / index-set cardinalities to ground, not just API existence* —
+confirm the named `def`/`theorem`s not only EXIST but that the objects
+they range over are mutually compatible (when a step matches two index
+families, that a stated contract fact makes their **cardinalities
+coincide**); a contract recording two known-linked quantities without the
+linking hypothesis is a latent gap (the 23c LEAF-3 `d = n` miss — a
+`Fin (k+1)`↔`Fin cd.d` match rated "latitude" that was a frozen-contract
+gap; DESIGN.md *Frozen contracts must encode the invariants relating their
+parameters*). Single-pass design output is
 fallible even at the top rung; the grounding + the honesty mandate, not
 the rung, is what made the re-pin sound.
 
