@@ -2478,6 +2478,128 @@ decomposition of the SECOND build it teed up.**
   half, unchanged). The seam stays the conjecture crux — a build that closes (i)+(ii) should be rated by the
   eq-6.52 widening + the panel-match transport, not the `W`-block plumbing.
 
+  *(4.14) THE LEAF-4 DECOMPOSITION + SETTLE PASS (docs-only, source-verified against the LANDED bodies,
+  2026-06-24). NET: sub-step (1) the eq-6.52 REGROUPING is SETTLED-SATISFIABLE with an exact data flow;
+  sub-step (2) the REPRODUCED-SLOT TRANSPORT is **FLAGGED — the §(4.13) route as pinned does NOT reach the
+  consumer's actual `hρe₀` panel** (a clause-(ii) flag, not a confident re-pin: the §(4.13) verdict "SOUND, runs
+  at the base, buildable" stands at the KT-math level, but its Lean route via `candidate_perp_two_incident` +
+  `panelCorrespondence` lands on the WRONG panel). The leaf is below the contract either way; the open decision
+  is which of two corrected routes carries the shortcut-panel annihilation. This pass pins the buildable parts
+  and names the single remaining genuinely-new step.)*
+
+  **VERIFIED LOAD-BEARING FACTS (clause (i), each read off the LANDED `def`/`theorem` body, not prior prose).**
+  - **The consumer's `hρe₀` is the SHORTCUT `(a,b)`-panel annihilation, NOT an incident `v`-panel.**
+    `case_III_arm_corner_assembly` (`Relabel/ForkedArm.lean:136`, LANDED) takes
+    `hρe₀ : ρ₀ (panelSupportExtensor (q(a,·)) (q(b,·))) = 0` and uses it at exactly one place
+    (`ForkedArm.lean:200–202`): the reproduced-slot membership
+    `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` (`Candidate.lean:1975`), whose `hperp` slot is
+    `ρ₀ (panelSupportExtensor (n_u + t•n') n_r) = 0`, instantiated at `t=0`, `n_u=q(a,·)`, `n_r=q(b,·)`
+    (`zero_smul, add_zero`). At the interior dispatch split (`Operations.lean:1313` `deg_two` +
+    `:1340–1362` accessors) the roles are `v = vtx i.castSucc` (the degree-2 split body, REMOVED), `a = vtx
+    i.succ`, `b = vtx (i−1).castSucc` — the **two NEIGHBOURS of `v`**. So `hρe₀` is `ρ₀ ⊥` the panel-meet of
+    the neighbour-neighbour line `(a,b)`, in the SHARED base seed `q` (NOT a `qρ`-relabel). Confirmed: three
+    distinct lines pass through `{v,a,b}` — `(v,a)`, `(v,b)`, `(a,b)` — and the consumer needs the third.
+  - **`candidate_perp_two_incident_supportExtensors` (`Relabel/Chain.lean:950`, LANDED) reaches the two
+    INCIDENT panels through the degree-2 body, NOT the shortcut.** Its conclusion is `(∑ λab • rab) ⊥
+    F.supportExtensor e_c ∧ ⊥ F.supportExtensor e_d` where (its hyps `hrab`/`hrac`) `e_c`/`e_d` are the body's
+    two incident edges. With the degree-2 body `= v`, those are `(v,a)` and `(v,b)`. Perp-to-`(v,a)` ∧
+    perp-to-`(v,b)` does **not** imply perp-to-`(a,b)` without a Grassmann–Cayley collinearity step.
+  - **`panelCorrespondence_supportExtensor` (`Arm.lean:923`, LANDED) is a GENUINE-CHAIN-EDGE transport, not a
+    shortcut-edge one.** It equates the candidate-`i` framework's `supportExtensor (edge s)` to the base
+    framework's `supportExtensor (shiftEdgePerm i (edge s))` for a surviving chain edge `s+1 < i`. The shortcut
+    `(a,b) = (vtx i.succ, vtx (i−1).castSucc)` is the candidate's REPRODUCED FRESH slot `e_b` — it is **not** a
+    chain `edge s` of `G − vtx i`, so this lemma does not range over it. (Its `i = 3` de-risk
+    `i3_panelCorrespondence_supportExtensor_deRisk` confirms the same: both conjuncts are at `edge 0`/`edge 1`,
+    genuine chain edges.) So §(4.13)'s "transport the incident-panel perp to the reproduced slot via
+    `panelCorrespondence` + `caseIIICandidate_supportExtensor_reproduced`" does not type-check at the panel the
+    consumer needs.
+  - **`caseIIICandidate_supportExtensor_reproduced` (`Candidate.lean:971`, LANDED) is a `Function.update`
+    unfold, not a meet identity.** It states `(caseIIICandidate … e_c e_r n_u n' n_r t).supportExtensor e_r =
+    panelSupportExtensor (n_u + t•n') n_r` — i.e. it *names* the reproduced slot's overridden support as the
+    `(a,b)`-line at `t=0`. It does NOT relate that panel to the incident panels; it is the slot-definition, the
+    very thing telling us the target panel is the shortcut `(a,b)` line.
+  - **The d=3 M₃ floor does NOT exercise this carry — it gets `hρe₀` for free.** In
+    `case_III_arm_realization_M3` (`Relabel/Arm.lean:54`) the consumer's `hρe₀ : ρ ⊥ panelSupportExtensor
+    (q(a,·)) (q(b,·))` is an *input hypothesis*, fed straight from the BASE W6b annihilation
+    (`chainData_split_w6b_gates:801`) because at d=3 the M₃ split body's neighbours ARE the base split's
+    `(a,b)`. The separate `hρ_ac` (`Arm.lean:121`, perp to a THIRD panel `C(q(ac))`) is derived by the
+    **ONE-edge column projection** `acolumn_mem_hingeRowBlock_of_span_rigidityRows` (`Chain.lean`) +
+    `hingeRow_comp_single_tail`, and feeds the CANDIDATE's own `hρe₀` slot inside `case_III_arm_realization`
+    (after the `(a v)` relabel) — NOT the M₃ consumer's `hρe₀`. So there is **no landed precedent** for the
+    general-`d` interior carry of `ρ₀` to a neighbour-neighbour panel ≠ the base one.
+
+  **SUB-STEP (1) — THE eq-6.52 REGROUPING: SETTLED-SATISFIABLE (clause (iii) index check passes).** The
+  consumer `candidate_perp_two_incident_supportExtensors` consumes a TWO-GROUP + remainder bundle
+  (`lamAB`/`rab ∈ block e_c`, `lamAC`/`rac ∈ block e_d`, `grest`, `hcol` the full-combination `v`-column
+  vanishing, `hrest`). The LANDED widening (`chainData_split_w6b_gates`, the `hedgeGv` conjunct
+  `:825–831`, re-exposed from `Candidate.lean:439–445`) supplies the FLAT all-edge form
+  `hingeRow a b ρ = ∑_{j : Fin nGv} cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` over **every `G − base-v`
+  link**, each summand carrying its link (`hlinkGv`) + block row (`hrvGv`). **The flat-sum IS sufficient to
+  reconstruct the two-group + remainder shape** at the interior degree-2 vertex `vᵢ = vtx i.castSucc` (which
+  SURVIVES `G − base-v`, being a distinct vertex): partition `Fin nGv` by the degree-2 closure
+  (`ChainData.deg_two`, `Operations.lean:1316`) — `{j | evGv j = edge i}` → the `e_c = (v,a)` group, `{j | evGv
+  j = edge (i−1)}` → the `e_d = (v,b)` group, the rest → `grest`; `hrab`/`hrac` are the `hrvGv` memberships
+  reindexed onto the two groups; `hcol` is `freshEdge_interior_acolumn_sup` (LANDED, `Relabel/Arm.lean:556`,
+  projecting the `vᵢ`-column of `hingeRow a b ρ ∈ span` into `block (edge i) ⊔ block (edge (i−1))`, strict
+  boundary `s+2 < i` so both neighbours survive). The existing single-vertex precedent
+  `freshEdge_surviving_row_mem_of_witness` (`Arm.lean:702`, LANDED, zero-blast) wires this exact bundle through
+  `candidate_perp_two_incident_supportExtensors` already — confirming the data flow type-checks. **Index
+  cardinalities line up** (clause (iii)): the flat index is `Fin nGv`; the two-group + remainder is a
+  `Finset.filter` partition of `Finset.univ : Finset (Fin nGv)`, not a re-typed `ιab`/`ιac` (the consumer's
+  `ιab`/`ιac` are `Type*` with `Fintype`, so the filtered subtypes `{j // evGv j = edge i}` instantiate them
+  directly). Caveat (the load-bearing one): the widening fires at the **BASE** split (`hedgeGv` is over
+  `G − base-v`), so the regrouping is at an interior vertex of the BASE candidate row — which is exactly what
+  the dispatch needs, since the discriminator picks ONE candidate `i` against the BASE `ρ₀`.
+
+  **SUB-STEP (2) — THE REPRODUCED-SLOT TRANSPORT: FLAGGED (the one genuinely-new step; the §(4.13) route is
+  wrong-panel).** What sub-step (1) delivers is `ρ₀ ⊥ supportExtensor (v,a)` AND `ρ₀ ⊥ supportExtensor (v,b)`
+  (the two INCIDENT panels at the degree-2 split body `v`). What the consumer needs is `ρ₀ ⊥ panelSupportExtensor
+  (q(a,·)) (q(b,·))` (the SHORTCUT `(a,b)` panel). **These are not the same panel, and neither the §(4.13) route
+  nor any LANDED leaf bridges them.** The KT-math IS sound (eq-6.66: the single redundancy `r` is shared `±r`
+  across all `d` panels, and the `(a,b)` shortcut is the reproduced spliced edge — KT's whole device), but the
+  bridge is the genuinely-new content the leaf must supply. **Two candidate routes, FLAG-not-FORCE — the build
+  must pick one (both buildable in principle; neither is a wall; both below the contract):**
+
+  - **Route A (preferred — the M₃ one-edge precedent, made degree-2-aware via the candidate framework).** Do
+    NOT read the column at the REMOVED body `v` (degree-2 → SUP of two blocks → no single-panel pin, the
+    `freshEdge_interior_acolumn_sup` SUP shape, which is exactly why §(4.13)'s incident route stalls). Instead
+    read it at a NEIGHBOUR. KT's mechanism (M₃ precedent, `hρ_ac`): in the candidate framework where the
+    shortcut edge `(a,b)` IS present as the reproduced slot, the body `b` (or `a`) has the shortcut as one of
+    its incident edges; the column of the candidate row at that body lands (one-edge form) in the shortcut's
+    block ⇒ `ρ₀ ⊥` the shortcut panel. The genuinely-new piece: showing the shortcut edge is the relevant body's
+    SOLE surviving edge in the right sub-framework (degree-1 there, as in M₃) — or, if it is degree-2 there too,
+    the eq-6.44 `⊓`-form (`candidate_perp_two_incident_panels` gives `r̂ ∈ block e_c ⊓ block e_d`) pins it.
+    This needs a new leaf `baseRedundancy_perp_interior_reproduced_panel` whose body reads the column at the
+    neighbour, NOT at `v`. **OPEN: which body, and is it degree-1 there?** — answer at the build by reading the
+    candidate framework's link set at `a`/`b`.
+  - **Route B (the Grassmann–Cayley collinearity step — genuinely-new math).** Prove the meet identity: at the
+    degree-2 vertex `v` with neighbours `a,b`, if `ρ₀ ⊥ panelSupportExtensor (q(v,·)) (q(a,·))` and `ρ₀ ⊥
+    panelSupportExtensor (q(v,·)) (q(b,·))`, then `ρ₀ ⊥ panelSupportExtensor (q(a,·)) (q(b,·))`. This is FALSE
+    in general (three independent lines) — it holds only because `ρ₀` is the SHARED redundancy `r` and the
+    three panels meet KT eq-6.66's incidence (the `±r` carry is a *linear* relation among the three panel
+    extensors, not a generic implication). Formalizing it would route through `Meet.lean`/`MeetHodge.lean`'s
+    duality (the N3b / Claim-6.12 line-in-panel-union machinery) and is the harder route.
+
+  **VERDICT + REVISED BUILD ORDER for LEAF-4.** (i′) widening ✓ LANDED. (i-col) `freshEdge_interior_acolumn_sup`
+  ✓ LANDED (it is the SUP-shape `hcol` input for sub-step (1), NOT a single-panel pin — keep it). (i-leaf) the
+  interior-`hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel`: build via **Route A** (read the
+  candidate row's column at a neighbour body, one-edge/`⊓`-form, to land in the shortcut block ⇒ shortcut-panel
+  perp), falling back to Route B only if the neighbour body is degree-2 in every available sub-framework. (ii)
+  the base block `W` + `exact case_III_arm_corner_assembly` — unchanged from §(4.13). **Do NOT** pin the leaf to
+  `candidate_perp_two_incident` alone (it stops at the incident panels), do NOT route the shortcut through
+  `panelCorrespondence_supportExtensor` (chain edges only), and do NOT revive the `interior_group_*` column
+  subtree (column value, §(4.13)). The seam remains THE conjecture crux; rate a build by the
+  incident-panel→shortcut-panel bridge (Route A's neighbour-column lemma), not the regrouping (settled) or the
+  `W`-plumbing.
+
+  **Why this is a flag, not a re-pin (clause (ii) honesty).** The §(4.12) pin was wrong-shape (column value);
+  §(4.13) corrected the level (annihilation) but landed on the wrong PANEL (incident, not shortcut). A third
+  confident single-pass pin here would repeat the ~50%-wrong history of this zone. The buildable facts are
+  pinned (sub-step 1 + the `W`-block); the one undischarged genuinely-new step (incident→shortcut) is named with
+  two concrete routes and the satisfiability check that decides between them at the build (the neighbour body's
+  degree in the candidate framework). No motive/IH/contract change either way (the cert is `hρGv`-free +
+  `ρ₀`-agnostic; this is machinery below the contract, §I.8.21).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
