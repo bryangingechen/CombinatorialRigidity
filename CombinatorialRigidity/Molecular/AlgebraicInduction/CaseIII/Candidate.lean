@@ -1784,6 +1784,34 @@ theorem BodyHingeFramework.span_relabelImage_le_and_finrank_and_acolumn_vanish [
   | add x y _ _ hx hy => rw [LinearMap.add_comp, hx, hy, add_zero]
   | smul a x _ hx => rw [LinearMap.smul_comp, hx, smul_zero]
 
+/-- **Every rigidity row of a `removeVertex v` framework vanishes off body `v`'s screw column**
+(`lem:case-III general-d`, the route-B LEAF-B2 `hvanish`-producer; Katoh–Tanigawa 2011 §6.4.2 the
+eq.~(6.16) block-triangular column split at the re-inserted body). The universal off-`v` vanishing
+LEAF-B2's `W` producer (`exists_genuine_relabelImage_base_block`) consumes: for the base framework
+`Fbase = ofNormals (G − v) ends q`, EVERY rigidity row `φ ∈ Fbase.rigidityRows` annihilates body
+`v`'s screw column `single v`. The reason is purely combinatorial — each rigidity row is a hinge
+row `hingeRow x y r` carried by a `(G − v)`-link `e = xy`, whose endpoints both survive the removal
+(`x ≠ v`, `y ≠ v`, `removeVertex_isLink`), so `v` is incident to neither endpoint and the row
+contributes `0` in `v`'s column (`hingeRow_comp_single_off`).
+
+This is exactly the universal `hvanish`-off-`σ.symm vᵢ` slot of LEAF-B2 at the cycle relabel
+`σ = (shiftPerm i.castSucc)⁻¹` of the chain dispatch (LEAF-4): there `σ.symm vᵢ = shiftPerm
+i.castSucc vᵢ = vtx 1`, the body the base framework `G − vtx 1` removes, so the LEAF-4 wiring
+discharges LEAF-B2's universal `hvanish` by this lemma at `v = vtx 1` — no per-member case-split is
+needed, the off-`v` vanishing is a property of the whole `G − v` rigidity-row family. NO `hρGv`, no
+new linear algebra (the `ScrewSpace` carrier is never unfolded; the read-off localizes at one body).
+-/
+theorem PanelHingeFramework.ofNormals_removeVertex_rigidityRow_comp_single_self [DecidableEq α]
+    (G : Graph α β) (v : α) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge.rigidityRows) :
+    φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = 0 := by
+  obtain ⟨e, x, y, hlink, r, _hr, rfl⟩ := hφ
+  rw [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph,
+    Graph.removeVertex_isLink] at hlink
+  obtain ⟨_hG, hx, hy⟩ := hlink
+  exact BodyHingeFramework.hingeRow_comp_single_off (Ne.symm hx) (Ne.symm hy) r
+
 /-- **The genuine-only base block `W` of the `±r` decomposition, from a genuine basis**
 (`lem:case-III general-d`, the route-B LEAF-B2 genuine-only `W` producer; Katoh–Tanigawa 2011
 §6.4.2 eq.~(6.64), the bottom block `R(G₁ ∖ (v₀v₂)ᵢ*, q₁)`; design §I.8.24(4.25)). This is the
