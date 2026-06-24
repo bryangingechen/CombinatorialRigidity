@@ -106,22 +106,30 @@ by `hG_eb_cand` at the genuine `(a, b)` candidate link, never on a base-row imag
 LA, no narrowing of LEAF-B2's `hS` slot needed. The hypotheses (`hrec`/`he₀rec`, `hG_eb_cand`/`heab_off`)
 are exactly the dispatch's interior-split data.
 
-**Next concrete step = the rest of LEAF-4 wiring: the `case_III_arm_corner_assembly` call.** Both
-halves of LEAF-B2's universal slots are now landed (`hvanish` =
-`ofNormals_removeVertex_rigidityRow_comp_single_self`, `hS` =
-`bottomRelabel_rigidityRows_mem_span_caseIIICandidate`). At the matched interior `i`, instantiate
-`exists_genuine_relabelImage_base_block` (LEAF-B2) at `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`,
-`Fcand = caseIIICandidate G endsσρ qρ e_a e_b …`, `σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`, with `hvanish`
-and `hS` discharged by the two landed universal lemmas, and feed the resulting `W`/`hWS`/`hWcard`/`hW` +
-the LEAF-3 `hgate`/`hρe₀` into the LANDED `case_III_arm_corner_assembly`. (The framework-alignment
-bookkeeping — `Fcand`'s `endsσρ`/`qρ` ⟷ the assembly's `caseIIICandidate G ends q e_a e_b (q(a,·)) n'
-(q(b,·)) 0` — is the remaining wiring; `case_III_arm_corner_assembly` itself is already landed and takes
-`W`/`hWS`/`hWcard`/`hW` as-is.)
+**THE `case_III_arm_corner_assembly` CALL IS LANDED (2026-06-24, axiom-clean, build/lint/warning-clean)
+— LEAF-4 IS COMPLETE.** `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2`
+(`CaseIII/Relabel/ForkedArm.lean`, after `case_III_arm_corner_assembly`): the producer that folds the
+base-block `W`-production into the corner-data assembly. It has the same RAW interface as
+`case_III_arm_corner_assembly` *minus* the opaque `(W, hWS, hWcard, hW)` block, *plus* the route-B
+LEAF-B2 inputs (`Fbase`, `σ`, `rhat`, `hrhat`, `hIH : finrank (span Fbase.rigidityRows) =
+D·(|V(Gv)|−1)`, and the universal `hS`/`hvanish` over `Fbase.rigidityRows`). Body = pure 2-step
+composition: `obtain ⟨W, hWS, hWcard, hW⟩ := Fbase.exists_genuine_relabelImage_base_block F₀ hrhat
+hIH hS hvanish` (LEAF-B2 at `Fcand = F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`,
+the assembly's own candidate, so no relabel-form alignment is needed here), then `exact …
+case_III_arm_corner_assembly … hWS hWcard hW …`. NO `hρGv`, no new LA, no friction — it typechecked on
+the first LSP pass. The framework-alignment bookkeeping the hand-off flagged dissolves at this layer:
+LEAF-B2's `Fcand` is *chosen* to be the assembly's candidate, so the dispatch threads the `endsσρ`/`qρ`
+form only when it discharges the universal `hS` from `bottomRelabel_rigidityRows_mem_span_caseIIICandidate`
+(the router's candidate IS the `endsσρ`/`qρ` form). **The remaining work is CHAIN-2c-iii `chainData_dispatch`**
+(item 2 below): the general-`k` router that reads the `ChainData` interior split, fires LEAF-3
+(`exists_shared_redundancy_and_matched_candidate`) once, and feeds the interior matched `i` into this
+producer with `Fbase = ofNormals (G − vtx 1) ends₀ q`, `σ = (shiftPerm i.castSucc)⁻¹`, `hS`/`hvanish`
+from the two landed universal lemmas, `hrhat`/`hIH` from the W6b bundle / IH.
 
-**Plan (≈2 sub-phases left to close the rank cert):** ✅ LEAF-B1 (crux, landed) → ✅ LEAF-B2 (genuine-only `W`
-producer, landed) → ✅ LEAF-4 `hvanish` + `hS` router both LANDED; remaining = the
-`case_III_arm_corner_assembly` call / LEAF-B3 corner producer (mostly landed) → CHAIN-2c-iii dispatch /
-CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
+**Plan (≈1 sub-phase left to close the rank cert):** ✅ LEAF-B1 (crux) → ✅ LEAF-B2 (genuine-only `W`
+producer) → ✅ LEAF-4 `hvanish` + `hS` router → ✅ the `case_III_arm_corner_assembly` call
+(`case_III_arm_corner_assembly_via_leafB2`); LEAF-3 + the corner producer are landed. Remaining =
+CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
 **Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if the
 LEAF-4 `hS`-router wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real
 and informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
@@ -154,17 +162,22 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    `CaseIII/Relabel/ForkedArm.lean`) — every `Fbase = (ofNormals (G − vtx 1) ends₀ q)` rigidity row
    transports under the cycle relabel into the candidate span, discharging LEAF-B2's universal `hS`; pure
    composition of `chainData_bottom_relabel` (`Or.inl`) + `bottomRelabel_image_mem_span_caseIIICandidate`,
-   the residual risk RESOLVED (every genuine base row goes through the cert-sound genuine branch). OPEN:
-   the rest of **LEAF-4** (the `case_III_arm_corner_assembly` call — instantiate LEAF-B2 with `hvanish`/`hS`
-   discharged by the two landed universal lemmas, then feed `W`/… into the assembly), **LEAF-B3** (corner
-   producer, mostly landed: the `±r` via `hρe₀`, the panel rows, `linearIndependent_mkQ_corner_of_gate`).
-   The carrier, both `hLI` halves, the (α) bridge, the off-slot row bridge, the arm spine, and the
-   corner-data assembly stay LANDED (`notes/Phase23c.md` ledger). The interior `hρe₀` is CLOSED.
+   the residual risk RESOLVED (every genuine base row goes through the cert-sound genuine branch).
+   ✅ **The `case_III_arm_corner_assembly` call LANDED** (`case_III_arm_corner_assembly_via_leafB2`,
+   `CaseIII/Relabel/ForkedArm.lean`) — folds the base-block `W`-production (LEAF-B2 at the assembly's own
+   candidate `F₀`) into `case_III_arm_corner_assembly`, replacing its opaque `(W, hWS, hWcard, hW)` block
+   with the LEAF-B2 inputs; pure 2-step composition, NO `hρGv`, axiom-clean. **LEAF-4 is now COMPLETE.**
+   The carrier, both `hLI` halves, the (α) bridge, the off-slot row bridge, the arm spine, the
+   corner-data assembly, and **LEAF-B3** (corner producer: the `±r` via `hρe₀`, the panel rows,
+   `linearIndependent_mkQ_corner_of_gate`) all stay LANDED (`notes/Phase23c.md` ledger). The interior
+   `hρe₀` is CLOSED. OPEN: only CHAIN-2c-iii dispatch (item 2) + CHAIN-5.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` dispatch (a discriminator-pick + Fin-case ROUTER
    over the two landed arm routes: the OLD engine via `chainData_split_realization` for the base candidate
-   `i=1` + the d=3 floor; the option-(A) `case_III_arm_corner_assembly` for interior `2 ≤ i < d`). Blocked
-   only on item 1's rank cert; LEAF-1/2/3 + the discriminator-index plumbing + the genuine-branch router are
-   landed.
+   `i=1` + the d=3 floor; the option-(A) `case_III_arm_corner_assembly_via_leafB2` for interior `2 ≤ i < d`,
+   feeding `Fbase = ofNormals (G − vtx 1) ends₀ q`, `σ = (shiftPerm i.castSucc)⁻¹`, `hS`/`hvanish` from the
+   two landed universal lemmas, `hrhat`/`hIH` from the W6b bundle / IH). Item 1's rank cert is now CLOSED;
+   LEAF-1/2/3 + the discriminator-index plumbing + the genuine-branch router + the interior-arm producer
+   are all landed.
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** *(parallel-safe; own sub-phase when minted)* — reshape `Graph.exists_chain_data_of_noRigid`
    (`Reduction.lean:383`) to the `G.ChainData n` producer `exists_chainData_of_noRigid` (KT Lemma 4.6 chain
@@ -204,38 +217,42 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
   by construction** — the `hS` router is sorry-free + axiom-clean, and its `Or.inl` feed confirms every
   genuine base row transports through the cert-sound genuine branch (never the §(4.17)-dead block-tag
   path). So route B clears the rank cert at the `hS` layer; no narrowing of LEAF-B2's `hS`/`hvanish`
-  slots and no route-A fallback are needed. The remaining open item is the rest of LEAF-4 (the
-  `case_III_arm_corner_assembly` call: instantiate LEAF-B2 with the two landed universal lemmas, feed
-  the result to the assembly) and the dispatch.
+  slots and no route-A fallback are needed. **LEAF-4 is now COMPLETE** — the
+  `case_III_arm_corner_assembly` call landed as `case_III_arm_corner_assembly_via_leafB2`
+  (`ForkedArm.lean`), folding the LEAF-B2 `W`-production into the assembly. The only remaining open
+  item is the CHAIN-2c-iii dispatch (the general-`k` Fin-case router) + CHAIN-5.
 
 ## Hand-off / next phase
 
-**Route B resolves the unconditional crux; LEAF-B1, LEAF-B2, and BOTH of LEAF-B2's universal slots
-(`hvanish` + `hS` router) are now LANDED — the route-B residual risk is RESOLVED. Next concrete commit =
-the rest of LEAF-4: the `case_III_arm_corner_assembly` call.** Instantiate
-`BodyHingeFramework.exists_genuine_relabelImage_base_block` (LEAF-B2, `Candidate.lean`) at the matched
-interior `i` with `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`,
-`Fcand = caseIIICandidate G endsσρ qρ e_a e_b (qρ(vtx i.succ,·)) n' (qρ(vtx (i−1).castSucc,·)) 0`,
-`σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`, and:
-- `hrhat`: the redundant-member-in-span from the W6b bundle (`exists_redundant_panelRow_ab_decomposition`
-  / `chainData_split_w6b_gates`);
-- `hIH`: the IH `finrank (span (ofNormals (G − vtx 1) ends₀ q).rigidityRows) = D(|V|−2)`;
-- `hS`: **LANDED** = `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean`) — feed its
-  `hrec`/`he₀rec`/`hG_eb_cand`/`heab_off` from the dispatch's interior-split data;
-- `hvanish`: **LANDED** = `ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1`
-  (`σ.symm vᵢ = vtx 1`, the removed base body; `Candidate.lean`).
-Then feed `W`/`hWS`/`hWcard`/`hW` + the LEAF-3 `hgate`/`hρe₀` into the LANDED `case_III_arm_corner_assembly`.
-**The remaining wiring is framework alignment** — LEAF-B2 / the `hS` router output the candidate in the
-`endsσρ`/`qρ` form, the assembly states it as `caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`,
-so the seed/selector identifications (`qρ(vtx i.succ,·) = q(a,·)` etc., from the `shiftPerm`/`vtx` algebra
-already used in `reproduced_panel_eq_splice_panel`) need to be threaded; no further math.
+**Route B resolves the unconditional crux; the rank cert is now CLOSED — LEAF-B1, LEAF-B2, both of
+LEAF-B2's universal slots (`hvanish` + `hS` router), and the `case_III_arm_corner_assembly` call
+(`case_III_arm_corner_assembly_via_leafB2`) are all LANDED. Next concrete commit = CHAIN-2c-iii
+`chainData_dispatch`, the general-`k` interior router.** Build the dispatch in `CaseIII/Realization.lean`
+(after `exists_shared_redundancy_and_matched_candidate`): a `Fin cd.d` case-split over the matched
+candidate `i` that LEAF-3 picks, routing
+- the base candidate `i = 1` + the `d = 3` floor through the OLD engine `chainData_split_realization`
+  (landed), and
+- the interior `2 ≤ i < d` through the new producer
+  `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2` (`ForkedArm.lean`), supplying
+  - `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`, `σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`;
+  - `hS` = `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean`), its
+    `hrec`/`he₀rec`/`hG_eb_cand`/`heab_off` from the dispatch's interior-split data;
+  - `hvanish` = `ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1`
+    (`σ.symm vᵢ = vtx 1`, the removed base body; `Candidate.lean`);
+  - `hrhat`/`hIH` from the W6b bundle (`exists_redundant_panelRow_ab_decomposition` /
+    `chainData_split_w6b_gates`) and the IH;
+  - `hgate`/`hρe₀` from LEAF-3 (`exists_shared_redundancy_and_matched_candidate`).
+**The framework-alignment bookkeeping the prior hand-off flagged is now contained inside the dispatch's
+`hS` discharge** — `case_III_arm_corner_assembly_via_leafB2` lands `W` directly in the assembly's own
+candidate `caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, so the dispatch only needs to
+align the `hS` router's `endsσρ`/`qρ` candidate to that form via the `shiftPerm`/`vtx`/`candidatePanel`
+algebra (`reproduced_panel_eq_splice_panel`, `candidatePanel_apply`), not the whole arm.
 
 Route-B build plan: ✅ **LEAF-B1** (crux) → ✅ **LEAF-B2** (genuine-only `W` producer) → ✅ **LEAF-4
-`hvanish` + `hS` router** (both LANDED); remaining = the `case_III_arm_corner_assembly` call (NEXT) /
-**LEAF-B3** (corner producer, mostly landed) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY
-(parallel-safe). Fallbacks: **route A** (concrete `Matrix`) and **(C)** (honest-conditional) remain the
-documented fallbacks, but the `hS`-router landing removes the wall-surfacing risk they hedged against —
-the rank cert clears at the `hS` layer.
+`hvanish` + `hS` router** → ✅ **the `case_III_arm_corner_assembly` call** (rank cert CLOSED); **LEAF-3**
++ **LEAF-B3** (corner producer) landed. Remaining = CHAIN-2c-iii dispatch (NEXT) / CHAIN-5, then ENTRY
++ ASSEMBLY (parallel-safe). Fallbacks **route A** / **(C)** are no longer needed — the rank cert clears
+the wall via route B end-to-end.
 
 ## Decisions made during this phase
 
@@ -325,3 +342,14 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   own reproduced slot, via `hG_eb_cand` at the genuine `(a, b)` candidate link, never a base-row image).
   NO `hρGv`, no new LA, no narrowing of LEAF-B2's slots needed. Namespace gotcha: `chainData_bottom_relabel`
   is `PanelHingeFramework.`-namespaced (not dot-accessible on `cd`) — minor, no FRICTION entry.
+- **The `case_III_arm_corner_assembly` call LANDED — the rank cert is CLOSED (2026-06-24, axiom-clean,
+  build/lint/warning-clean).** `PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2`
+  (`CaseIII/Relabel/ForkedArm.lean`, after `case_III_arm_corner_assembly`): the "rest of LEAF-4" producer,
+  with the same RAW interface as `case_III_arm_corner_assembly` *minus* its opaque `(W, hWS, hWcard, hW)`
+  block, *plus* the LEAF-B2 inputs (`Fbase`, `σ`, `rhat`, `hrhat`, `hIH`, universal `hS`/`hvanish`). Body =
+  pure 2-step composition: `obtain` from `exists_genuine_relabelImage_base_block` (LEAF-B2) at
+  `Fcand = F₀` (the assembly's *own* candidate), then `exact` into `case_III_arm_corner_assembly`. **The
+  design call that dissolved the flagged framework-alignment work:** choose LEAF-B2's `Fcand` to BE the
+  assembly's candidate — then `hWS` already lands in the right span, and the `endsσρ`/`qρ` alignment is
+  pushed down into the dispatch's `hS` discharge (the only place the relabeled form appears). Typechecked
+  first LSP pass, no friction.

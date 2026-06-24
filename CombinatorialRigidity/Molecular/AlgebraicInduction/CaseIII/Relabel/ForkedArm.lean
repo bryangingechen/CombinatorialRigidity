@@ -566,4 +566,77 @@ theorem PanelHingeFramework.case_III_arm_corner_assembly
     hends_ea hends_eb heab hleG hsplitG hends_Gv hne_Gv hVone hVcard hLn hgab
     hWS hWcard hιcard hg hLI hdef
 
+/-- **The chain arm's corner-data assembly, with the base block `W` produced by LEAF-B2**
+(`lem:case-III general-d`, the route-B LEAF-4 `case_III_arm_corner_assembly` call; Katoh–Tanigawa
+2011 §6.4.2 eq.~(6.64), the genuine-only bottom block `R(G₁ ∖ (v₀v₂)ᵢ∗, q₁)`; design §I.8.24(4.25)).
+This is the producer the hand-off names as "the rest of LEAF-4 wiring": it folds the base-block
+`W`-production into `case_III_arm_corner_assembly`, replacing that theorem's *opaque*
+`(W, hWS, hWcard, hW)` block with the route-B LEAF-B2 inputs and constructing `W` internally.
+
+Where `case_III_arm_corner_assembly` carries `W` as a hypothesis (the dispatch was to supply
+it), this producer builds it via `exists_genuine_relabelImage_base_block` (LEAF-B2) at the GENUINE
+basis of the base framework `Fbase`'s rigidity-row span (the redundant member `rhat` excluded — KT's
+`R(G₁ ∖ (v₀v₂)ᵢ∗, q₁)`, escaping the member-mapping wall), transported into the candidate `F₀`'s
+rigidity-row span. LEAF-B2's universal per-genuine-row transport `hS` and off-`σ.symm v` vanishing
+`hvanish` enter here as hypotheses over **every** base rigidity row; the chain dispatch
+(CHAIN-2c-iii) discharges them from the two landed universal lemmas at the cycle relabel
+`σ = (shiftPerm i.castSucc)⁻¹` — `hS` from
+`Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate` and `hvanish` from
+`PanelHingeFramework.ofNormals_removeVertex_rigidityRow_comp_single_self` at `σ.symm v = vtx 1`. The
+card bookkeeping `finrank W = D·(|V(Gv)| − 1)` is LEAF-B2's: the genuine basis has card the full
+base rank `D·(|V(Gv)| − 1)` (the IH `hIH`), since deleting the redundant `rhat ∈ span (others)`
+(`hrhat`, KT eq.~(6.24)) preserves the span. NO `hρGv`, no new linear algebra — pure composition
+of LEAF-B2 with `case_III_arm_corner_assembly`. The candidate framework LEAF-B2 lands `W` in is
+the *same* `F₀ = caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0` the assembly consumes,
+so no
+relabel-form alignment is needed at this layer (the dispatch threads the `endsσρ`/`qρ` form when it
+discharges `hS`/`hvanish`). -/
+theorem PanelHingeFramework.case_III_arm_corner_assembly_via_leafB2
+    [Finite α] [Finite β] [DecidableEq α] [DecidableEq β]
+    (G Gv : Graph α β) (ends : β → α × α) {q : α × Fin (k + 2) → ℝ}
+    {v a b : α} {e_a e_b : β}
+    (hvVc : v ∉ V(Gv)) (haVc : a ∈ V(Gv)) (hbVc : b ∈ V(Gv))
+    (hG_ea : G.IsLink e_a v a) (hG_eb : G.IsLink e_b v b)
+    (hends_ea : ends e_a = (v, a)) (hends_eb : ends e_b = (v, b)) (heab : e_a ≠ e_b)
+    (hva : v ≠ a) (hvb : v ≠ b)
+    (hleG : ∀ e u w, Gv.IsLink e u w → G.IsLink e u w)
+    (hsplitG : ∀ e u w, G.IsLink e u w → e = e_a ∨ e = e_b ∨ Gv.IsLink e u w)
+    (hends_Gv : ∀ e u w, Gv.IsLink e u w → Gv.IsLink e (ends e).1 (ends e).2)
+    (hne_Gv : ∀ e, Gv.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.supportExtensor e ≠ 0)
+    (hVone : 1 ≤ V(Gv).ncard) (hVcard : V(G).ncard = V(Gv).ncard + 1)
+    {n' : Fin (k + 2) → ℝ}
+    (hLn : LinearIndependent ℝ ![(fun i => q (a, i)), n'])
+    (hgab : LinearIndependent ℝ ![(fun i => q (a, i)), (fun i => q (b, i))])
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hgate : ρ₀ (panelSupportExtensor (fun i => q (a, i)) n') ≠ 0)
+    (hρe₀ : ρ₀ (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) = 0)
+    -- The route-B LEAF-B2 inputs (replacing the opaque `(W, hWS, hWcard, hW)` block): a base
+    -- framework `Fbase` with a redundant row `rhat` in the span of the others (KT eq. (6.24)), the
+    -- IH base rank, the cycle relabel `σ`, and the per-genuine-row transport/vanishing universally.
+    (Fbase : BodyHingeFramework k α β) {σ : Equiv.Perm α}
+    {rhat : Module.Dual ℝ (α → ScrewSpace k)}
+    (hrhat : rhat ∈ Submodule.span ℝ (Fbase.rigidityRows \ {rhat}))
+    (hIH : Module.finrank ℝ (Submodule.span ℝ Fbase.rigidityRows)
+      = screwDim k * (V(Gv).ncard - 1))
+    (hS : ∀ φ ∈ Fbase.rigidityRows,
+      (LinearMap.funLeft ℝ (ScrewSpace k) σ).dualMap φ ∈ Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+          (fun i => q (a, i)) n' (fun i => q (b, i)) 0).rigidityRows)
+    (hvanish : ∀ φ ∈ Fbase.rigidityRows,
+      φ.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (σ.symm v)) = 0)
+    {n : ℕ} (hdef : G.deficiency n = 0) :
+    PanelHingeFramework.HasGenericFullRankRealization k n G := by
+  -- LEAF-B2: the genuine-only base block `W` in the candidate's rigidity-row span, of the full base
+  -- rank `D·(|V(Gv)| − 1)`, annihilating the re-inserted body `v`'s screw column.
+  obtain ⟨W, hWS, hWcard, hW⟩ :=
+    Fbase.exists_genuine_relabelImage_base_block
+      (PanelHingeFramework.caseIIICandidate G ends q e_a e_b
+        (fun i => q (a, i)) n' (fun i => q (b, i)) 0)
+      (v := v) (σ := σ) hrhat hIH hS hvanish
+  -- Feed the LEAF-B2 `W` into the corner-data assembly.
+  exact PanelHingeFramework.case_III_arm_corner_assembly G Gv ends hvVc haVc hbVc hG_ea hG_eb
+    hends_ea hends_eb heab hva hvb hleG hsplitG hends_Gv hne_Gv hVone hVcard hLn hgab
+    hgate hρe₀ hWS hWcard hW hdef
+
 end CombinatorialRigidity.Molecular
