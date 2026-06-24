@@ -304,6 +304,50 @@ theorem _root_.Graph.ChainData.interior_hρe₀_of_splice_perp
   rw [cd.reproduced_panel_eq_splice_panel i h2i]
   exact hsplice
 
+/-- **The interior `hρe₀` slot, produced end-to-end from the W6b edge-grouped widening bundle**
+(`lem:case-III general-d`, the option-(A) LEAF-4 interior-`hρe₀` call site; Phase 23c
+§I.8.24(4.13)/(4.16); Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)). The chain dispatch's (CHAIN-2c-iii)
+interior arm feeds `case_III_arm_corner_assembly_via_leafB2` the `hρe₀` slot
+`ρ₀ ⊥ panelSupportExtensor (qρ(a,·)) (qρ(b,·))` at the matched interior candidate `i` (`2 ≤ i < d`),
+read at candidate `i`'s relabelled seed `qρ = q ∘ shiftPerm i.castSucc` (KT eq.~(6.56)). This leaf
+produces exactly that slot from the **single** input the W6b producer already computes — the
+edge-grouped `G_v`-row form of the shared redundancy `hingeRow (vtx 0) (vtx 2) ρ₀ =
+∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` (KT eq.~(6.52)/(6.66), the `hedgeGv` bundle re-anchored to the
+spliced edge `e₀ = v₀v₂`'s endpoints `(vtx 0, vtx 2)`) — composing the two landed leaves with no
+intermediate `hsplice` threading:
+
+* `baseRedundancy_perp_interior_reproduced_panel` (THE conjecture-crux, framework-free) carries the
+  base redundancy across `vᵢ` to the spliced chain edge `edge i`: `ρ₀ ⊥` the base-seed panel
+  `panelSupportExtensor (q(vtx (i+1),·)) (q(vtx i,·))`;
+* `interior_hρe₀_of_splice_perp` (the cycle-relabel bridge `reproduced_panel_eq_splice_panel`)
+  rewrites that base-seed splice panel into the consumer's relabelled `qρ`-panel.
+
+So the dispatch threads the widening bundle ONCE and gets the assembly's `hρe₀` directly. NO `hρGv`,
+no new linear algebra — pure composition of the crux with the relabel bridge. -/
+theorem _root_.Graph.ChainData.interior_hρe₀_of_widening
+    [DecidableEq α]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (h3 : 3 ≤ cd.d)
+    (i : Fin cd.d) (h2i : 2 ≤ (i : ℕ))
+    {q : α × Fin (k + 2) → ℝ}
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    {Gw : Graph α β} (ends : β → α × α)
+    (hrv : ∀ j, rv j ∈ (PanelHingeFramework.ofNormals Gw ends q).toBodyHinge.hingeRowBlock (ev j))
+    (hends_i : ends (cd.edge i) = (cd.vtx i.succ, cd.vtx i.castSucc))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow (cd.vtx ⟨0, by omega⟩) (cd.vtx ⟨2, by omega⟩) ρ₀)
+    (hdeg1 : ∀ j, (cd.vtx ⟨2, by omega⟩ = uv j ∨ cd.vtx ⟨2, by omega⟩ = vv j) →
+      ev j = cd.edge ⟨2, by omega⟩) :
+    ρ₀ (panelSupportExtensor
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j))
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))) = 0 :=
+  cd.interior_hρe₀_of_splice_perp i h2i
+    (cd.baseRedundancy_perp_interior_reproduced_panel h3 i h2i c ev uv vv rv hlink ends hrv
+      hends_i hcomb hdeg1)
+
 /-! ### The base block `W`'s per-member `hS` router (Phase 23c §I.8.24(4.10) LEAF-4 step (ii))
 
 The base block `W` of the `±r` block decomposition (`case_III_arm_corner_assembly`'s
