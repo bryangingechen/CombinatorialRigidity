@@ -360,6 +360,95 @@ theorem _root_.Graph.ChainData.interiorGroup_acolumn_two_group_decomp [Decidable
     · intro hj_ep h; exact hep_ne_ei (hj_ep ▸ h)
   rw [hset]
 
+/-- **The per-step single-vertex carry: the interior chain-edge group's column is ⊥ both incident
+panels** (CHAIN-2c-iii LEAF-4, the interior-`hρe₀` carry's genuinely-new per-step content;
+Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66)/§6.4.1 eq.~(6.44); `notes/Phase23-design.md` §I.8.24(4.15)
+sub-step (1)). The annihilation-level step of the corrected interior-`hρe₀` route — the carry's
+genuinely-new content, distinct from the **column-value** `interior_group_*` subtree (which reads
+the column AS `−ρ₀`; here we read no value, only the perp). At an **interior degree-2** chain vertex
+`a = vtx i.castSucc` (`0 < i`, `cd.deg_two`) that is **off the candidate row's two endpoints**
+`ab₁`, `ab₂` (`hne₁`/`hne₂`), the candidate row `g = ∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)` exposed as a
+single hinge `hingeRow ab₁ ab₂ ρ₀` (A-1's `hcomb`, the LEAF-4 widening's `G_v`-row form) has its
+`a`-column governed by the two incident chain-edge groups, and that column lies in **both** incident
+panel blocks at once:
+
+`(∑_{evⱼ = edge i} cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ)).comp (single a)`
+` ∈ Fva.hingeRowBlock (edge i) ⊓ Fva.hingeRowBlock (edge (i−1))`,
+
+equivalently `⊥ Fva.supportExtensor (edge i)` and `⊥ Fva.supportExtensor (edge (i−1))`. The
+mechanism is KT eq.~(6.44) at the degree-2 vertex, with the column-vanishing hypothesis *derived
+internally* (not assumed): since `g = hingeRow ab₁ ab₂ ρ₀` and `a ∉ {ab₁, ab₂}`, the `a`-column of
+`g` is `0` (`hingeRow_comp_single_off`), so LEAF 1 (`interiorGroup_acolumn_adjacency`) gives
+`group(edge i)@a = −group(edge (i−1))@a`; the block-membership core
+(`edgeGroup_acolumn_mem_block`) puts `group(edge i)@a ∈ block (edge i)` and the negated
+`group(edge (i−1))@a ∈ block (edge (i−1))`, so the single screw functional `group(edge i)@a` lies in
+both blocks. This is exactly the per-step perp `candidate_perp_two_incident_supportExtensors`
+delivers (`grest = 0`), produced here directly from the flat widening data; the off-slot final step
+applies it at the candidate body. Framework-bound (block depends on `Fva`), zero blast radius. -/
+theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_mem_inf [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
+    (Fva : BodyHingeFramework k α β)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
+    (hne₁ : cd.vtx i.castSucc ≠ ab₁) (hne₂ : cd.vtx i.castSucc ≠ ab₂) :
+    (∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc))
+    ∈ Fva.hingeRowBlock (cd.edge i) ⊓ Fva.hingeRowBlock (cd.edge ⟨(i : ℕ) - 1, by omega⟩) := by
+  classical
+  set a := cd.vtx i.castSucc with ha
+  -- The global `a`-column of `g = hingeRow ab₁ ab₂ ρ₀` vanishes: `a` is off both endpoints.
+  have hcol : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+    rw [hcomb, BodyHingeFramework.hingeRow_comp_single_off hne₁ hne₂]
+  -- LEAF 1: the successor-edge group's `a`-column is minus the predecessor-edge group's.
+  have hadj := cd.interiorGroup_acolumn_adjacency hi c ev uv vv rv hlink hcol
+  -- Block-membership core: each group's column lands in its own panel block.
+  have hmem_ei := Fva.edgeGroup_acolumn_mem_block (e := cd.edge i) (p := a) c ev uv vv rv hrv
+  have hmem_ep := Fva.edgeGroup_acolumn_mem_block (e := cd.edge ⟨(i : ℕ) - 1, by omega⟩) (p := a)
+    c ev uv vv rv hrv
+  refine Submodule.mem_inf.mpr ⟨hmem_ei, ?_⟩
+  -- The `edge i`-group's `a`-column equals `−`(the predecessor group's `a`-column) ∈ block (i−1).
+  rw [hadj]
+  exact (Fva.hingeRowBlock (cd.edge ⟨(i : ℕ) - 1, by omega⟩)).neg_mem hmem_ep
+
+/-- **The per-step single-vertex carry, `supportExtensor`-perp form** (CHAIN-2c-iii LEAF-4;
+Katoh–Tanigawa 2011 §6.4.2 eq.~(6.66); `notes/Phase23-design.md` §I.8.24(4.15) sub-step (1)). The
+`mem_hingeRowBlock_iff` restatement of `baseRedundancy_group_acolumn_mem_inf`: at an interior
+degree-2 chain vertex `a = vtx i.castSucc` (`0 < i`) off the candidate row's endpoints, the
+`edge i`-group's screw column at `a` annihilates **both** incident panels
+`Fva.supportExtensor (edge i)` and `Fva.supportExtensor (edge (i−1))`. This is the direct
+`hperp`-pair shape the interior-`hρe₀` leaf's per-step carry consumes (the
+`candidate_perp_two_incident_supportExtensors` conclusion, produced from the flat widening data with
+the off-`a` remainder `grest = 0`). Framework-bound, zero blast radius. -/
+theorem _root_.Graph.ChainData.baseRedundancy_group_acolumn_perp [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) {i : Fin cd.d} (hi : 0 < (i : ℕ))
+    (Fva : BodyHingeFramework k α β)
+    {m : ℕ} (c : Fin m → ℝ) (ev : Fin m → β) (uv vv : Fin m → α)
+    (rv : Fin m → Module.Dual ℝ (ScrewSpace k))
+    {ab₁ ab₂ : α} {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hlink : ∀ j, G.IsLink (ev j) (uv j) (vv j))
+    (hrv : ∀ j, rv j ∈ Fva.hingeRowBlock (ev j))
+    (hcomb : (∑ j, c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j))
+      = BodyHingeFramework.hingeRow ab₁ ab₂ ρ₀)
+    (hne₁ : cd.vtx i.castSucc ≠ ab₁) (hne₂ : cd.vtx i.castSucc ≠ ab₂) :
+    ((∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)))
+        (Fva.supportExtensor (cd.edge i)) = 0
+    ∧ ((∑ j ∈ Finset.univ.filter (fun j => ev j = cd.edge i),
+        c j • BodyHingeFramework.hingeRow (uv j) (vv j) (rv j)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (cd.vtx i.castSucc)))
+        (Fva.supportExtensor (cd.edge ⟨(i : ℕ) - 1, by omega⟩)) = 0 := by
+  obtain ⟨hei, hep⟩ := Submodule.mem_inf.mp
+    (cd.baseRedundancy_group_acolumn_mem_inf hi Fva c ev uv vv rv hlink hrv hcomb hne₁ hne₂)
+  exact ⟨(Fva.mem_hingeRowBlock_iff _ _).1 hei, (Fva.mem_hingeRowBlock_iff _ _).1 hep⟩
+
 /-! ### The eq.~(6.44) chain-induction anchor (CHAIN-2c-ii-arm, LEAF 2)
 
 The base case of the KT eq.~(6.66) `±r` chain induction

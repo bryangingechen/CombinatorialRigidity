@@ -161,22 +161,32 @@ widening rather than assume them. Proof is a clean replay of `interiorGroup_acol
 index-set manipulation (`_eq_incident` + `deg_two_split` + `edge_inj` filter-congr) without the
 vanishing hypothesis. Zero blast radius (no live caller yet).
 
-**⚠ ANTI-SHRINK (coordinator, 2026-06-24): the column-algebra infra for the carry is now EXHAUSTED.**
-`freshEdge_interior_acolumn_sup` (the SUP) + `interiorGroup_acolumn_two_group_decomp` (the unconditional
-two-group split) are LANDED — the two ingredients the per-step `hcol`/`hrest` needs. Two consecutive
-scope-to-fit shrinks (column-SUP, then the two-group decomp) have peeled all the column-algebra; **there is
-no column-algebra brick left to peel.** The NEXT dispatch builds the carry BODY
-`baseRedundancy_perp_chain_edge` itself. If it genuinely won't fit, the ONLY legitimate shrink is the
-**per-step single-vertex carry lemma** — one degree-2 vertex via `candidate_perp_two_incident_supportExtensors`
-fed by the two LANDED column bricks (`grest = 0`) — which IS the induction's step, the genuinely-new content,
-NOT another column-algebra primitive. Do **NOT** peel a third column lemma.
+**LEAF-4 step (i) the PER-STEP SINGLE-VERTEX CARRY LEMMA is LANDED (2026-06-24, axiom-clean,
+build/lint/warning-clean) — the genuinely-new annihilation-level content the anti-shrink note blessed.**
+`Graph.ChainData.baseRedundancy_group_acolumn_mem_inf` + its `supportExtensor`-perp restatement
+`baseRedundancy_group_acolumn_perp` (`Relabel/ChainColumn.lean`, right after
+`interiorGroup_acolumn_two_group_decomp`). At an interior degree-2 chain vertex `a = vtx i.castSucc`
+(`0 < i`, `deg_two`) **off the candidate row's two endpoints** `ab₁`/`ab₂` (`hne₁`/`hne₂`), given the flat
+widening's `G_v`-row form `∑ⱼ cⱼ • hingeRow (uvⱼ)(vvⱼ)(rvⱼ) = hingeRow ab₁ ab₂ ρ₀` (`hcomb`) with
+per-summand `G`-links + block memberships, the `edge i`-group's `a`-column lies in
+`block (edge i) ⊓ block (edge (i−1))` (equivalently ⊥ BOTH incident panels). This IS the per-step
+`candidate_perp_two_incident_supportExtensors` conclusion (`grest = 0`), produced directly from the flat
+widening: `hcol` is **derived internally** (`a ∉ {ab₁,ab₂}` ⟹ `(hingeRow ab₁ ab₂ ρ₀).col@a = 0`, via
+`hingeRow_comp_single_off`), then LEAF 1 `interiorGroup_acolumn_adjacency` + the block-membership core
+`edgeGroup_acolumn_mem_block` put the column in both blocks. **NO column-value read** — distinct from the
+forbidden `interior_group_*` value subtree (which reads the column AS `−ρ₀`); here only the perp. Zero blast
+radius (no live caller yet).
 
-**NEXT: LEAF-4 step (i) (THE CONJECTURE CRUX) — assemble the GENUINELY-NEW inductive sub-lemma
-`ChainData.baseRedundancy_perp_chain_edge` over the now-LANDED column-algebra bricks, then assemble
-the interior-`hρe₀` leaf, then (ii) the base block
-`W` + `exact case_III_arm_corner_assembly`. A DECOMPOSE+SETTLE pass + a diverse-lens recon PAIR HAVE RUN
-(source-verified, CONVERGED, coordinator-adjudicated, 2026-06-24) — design §I.8.24(4.15), which SUPERSEDES
-§(4.14)'s Route A.** The pair KILLED §(4.14)'s Route A (degree-1 neighbour-column): the neighbour
+**NEXT: LEAF-4 step (i) — assemble the carry BODY `ChainData.baseRedundancy_perp_chain_edge` over the
+now-LANDED per-step lemma (`baseRedundancy_group_acolumn_perp`) + the column bricks, then the
+interior-`hρe₀` leaf, then (ii) the base block `W` + `exact case_III_arm_corner_assembly`. A
+DECOMPOSE+SETTLE pass + a diverse-lens recon PAIR HAVE RUN (source-verified, CONVERGED,
+coordinator-adjudicated, 2026-06-24) — design §I.8.24(4.15), which SUPERSEDES §(4.14)'s Route A.**
+The carry threads the per-step lemma at each degree-2 vertex to connect `ρ₀ ⊥` the base panel to `ρ₀ ⊥` the
+off-slot edge; the per-step lemma reads the `edge i`-group column (the genuinely-new annihilation content),
+and the `ρ₀`-tie still needs the value/`λ`-witness bridge from LEAF-3's eq-6.52 data (the carry body's
+remaining content — do NOT revive the `interior_group_*` value subtree for the FINAL shortcut step). The
+pair KILLED §(4.14)'s Route A (degree-1 neighbour-column): the neighbour
 `b = vtx (i−1).castSucc` is itself an interior chain vertex, **degree-2 in `G`** (`deg_two`;
 `caseIIICandidate.graph = G`), so its column lands in a two-block SUP, never the isolated shortcut block — and
 the shortcut `(a,b)` is **not a graph edge** (it is `e_b`'s OVERRIDDEN support in `F₀`). **The CORRECTED ROUTE
@@ -191,8 +201,10 @@ at `b` ⟹ `ρ₀ ⊥ e_b`'s support = the shortcut = `hρe₀`). Route B (Grass
 FALLBACK only if a per-step `hcol` is unsatisfiable (not expected). Full route + per-step shape in design
 §I.8.24(4.15). **Build order:** widening (i′) ✓ DONE; column-SUP `freshEdge_interior_acolumn_sup` ✓ DONE
 (per-step `hcol`, keep); regrouping column-core `interiorGroup_acolumn_two_group_decomp` ✓ DONE (the positive
-two-group split feeding the per-step `candidate_perp_two_incident_supportExtensors`); **(i) build
-`baseRedundancy_perp_chain_edge`** (THE conjecture crux — rate a build by IT, not the Lean-checked final step or
+two-group split); **per-step single-vertex carry `baseRedundancy_group_acolumn_mem_inf`/`_perp` ✓ DONE**
+(the annihilation step, `block ⊓ block` / dual-perp form); **(i) build the carry body
+`baseRedundancy_perp_chain_edge`** (THE conjecture crux — chain the per-step lemma along the chain to tie
+`ρ₀ ⊥` base panel to `ρ₀ ⊥` off-slot edge; rate a build by IT, not the Lean-checked final step or
 the `W`-plumbing), then assemble the leaf (carry at `s = i−2` + the final
 application); **(ii)** the base block `W` via `chainData_bottom_relabel` + LEAF-2, then
 `exact case_III_arm_corner_assembly`. Do **NOT** pin to a degree-1 neighbour-column projection (shortcut isn't a
@@ -446,9 +458,11 @@ beside `interiorGroup_acolumn_adjacency`) — the POSITIVE two-group column spli
 (group(edge i)).comp (single vᵢ) + (group(edge (i−1))).comp (single vᵢ)`, NO `hcol = 0` premise, the
 unconditional sibling of the `= −` adjacency form), the column-algebra that lets the carry's per-step
 `candidate_perp_two_incident_supportExtensors` call build its `hcol`/`hrest` (with `grest = 0`) from the flat
-widening form rather than assume them. **NEXT COMMIT: LEAF-4 step (i) (THE CONJECTURE CRUX) — assemble the
-genuinely-new inductive sub-lemma `ChainData.baseRedundancy_perp_chain_edge`** over the now-LANDED bricks
-(widening i′ + column-SUP `freshEdge_interior_acolumn_sup` + this regrouping column-core). A DECOMPOSE+SETTLE
+widening form rather than assume them. The **per-step single-vertex carry** `baseRedundancy_group_acolumn_mem_inf`
+/ `_perp` is now LANDED too (2026-06-24): the annihilation step (the `edge i`-group column ∈ `block ⊓ block` /
+⊥ both panels, off the candidate endpoints, `hcol` derived internally). **NEXT COMMIT: LEAF-4 step (i) (THE
+CONJECTURE CRUX) — assemble the carry body `ChainData.baseRedundancy_perp_chain_edge`** chaining the per-step
+lemma along the chain (the `ρ₀`-tie + chaining is the remaining genuinely-new content). A DECOMPOSE+SETTLE
 pass + a
 diverse-lens recon PAIR ran (CONVERGED, coordinator-adjudicated, 2026-06-24; design §I.8.24(4.15), which
 SUPERSEDES §(4.14)'s Route A). The pair KILLED Route A (degree-1 neighbour-column): the neighbour
@@ -550,7 +564,10 @@ genuinely-new).
    two incident chain-edge groups' `vᵢ`-columns (NO `hcol=0` premise, the unconditional sibling of
    `interiorGroup_acolumn_adjacency`), so the per-step `candidate_perp_two_incident_supportExtensors` (per-step
    `hcol` = `freshEdge_interior_acolumn_sup`, LANDED, two-block SUP, strict `s+2 < i`; `grest = 0`) can build its
-   inputs (precedent `freshEdge_surviving_row_mem_of_witness`). sub-step (2) Route A (degree-1 neighbour-column)
+   inputs (precedent `freshEdge_surviving_row_mem_of_witness`). The **per-step single-vertex carry**
+   `baseRedundancy_group_acolumn_mem_inf`/`_perp` (2026-06-24, `Relabel/ChainColumn.lean`, axiom-clean) is now
+   LANDED: the `edge i`-group column ∈ `block ⊓ block` / ⊥ both panels at a degree-2 vertex off the candidate
+   endpoints, `hcol` derived internally (no column-value read). sub-step (2) Route A (degree-1 neighbour-column)
    is **KILLED** —
    the neighbour `b = vtx (i−1).castSucc` is itself an interior chain vertex, degree-2 in `G` (`deg_two`;
    `caseIIICandidate.graph = G`), so its column lands in a two-block SUP, never the isolated shortcut block (and
@@ -761,6 +778,17 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   `hcol`/`hrest` (with `grest = 0`) from the flat widening rather than assume them. Proof = clean replay of the
   adjacency lemma's `_eq_incident` + `deg_two_split` + `edge_inj` filter-congr, sans the vanishing hypothesis;
   zero blast radius.
+- **LEAF-4 step (i) per-step single-vertex carry (2026-06-24, axiom-clean, build/lint/warning-clean).**
+  `Graph.ChainData.baseRedundancy_group_acolumn_mem_inf` + `_perp` (`Relabel/ChainColumn.lean`, after
+  `interiorGroup_acolumn_two_group_decomp`): the genuinely-new ANNIHILATION step of the corrected route
+  (the anti-shrink-blessed shrink). At an interior degree-2 vertex `a = vtx i.castSucc` (`0 < i`) **off** the
+  candidate row's endpoints `ab₁`/`ab₂`, given the flat widening `∑ⱼ cⱼ • hingeRow … = hingeRow ab₁ ab₂ ρ₀`,
+  the `edge i`-group's `a`-column lies in `block (edge i) ⊓ block (edge (i−1))` (`_perp` = the dual
+  `supportExtensor`-perp pair). `hcol` is DERIVED internally (`a ∉ {ab₁,ab₂}` ⟹ column `= 0`,
+  `hingeRow_comp_single_off`) → LEAF 1 `interiorGroup_acolumn_adjacency` + `edgeGroup_acolumn_mem_block`. This
+  IS `candidate_perp_two_incident_supportExtensors`'s conclusion (`grest = 0`) from the flat widening; **NO
+  column-value read** (distinct from the forbidden `interior_group_*` value subtree). Zero blast radius. The
+  `ρ₀`-tie + the carry chaining stay for the carry body `baseRedundancy_perp_chain_edge` (NEXT).
 - **LEAF-4 interior-`hρe₀` DECOMPOSE+SETTLE + diverse-lens recon PAIR (2026-06-24, docs-only; design
   §I.8.24(4.15), CONVERGED, coordinator-adjudicated).** Sub-step (1) eq-6.52 REGROUPING = **SATISFIABLE** (the
   LANDED widening's flat all-edge form, partitioned at the degree-2 vertex by `deg_two`, per-step `hcol` =
