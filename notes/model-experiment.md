@@ -67,18 +67,23 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   fresh `/coordinate-phase`; user re-confirmed the triple at session start; opus
   reachable via the Agent `model` param, no substitution needed). **The
   override expires session-end — a fresh coordinator re-runs the
-  session-start availability check + re-confirms the triple.** (A) is OPEN; the
-  `±r`-row seam is RESOLVED end-to-end; `chainData_dispatch` is DECOMPOSED (5
-  leaves) with the `Relabel/` split + LEAF-1/2 + the full discriminator-index
-  plumbing + LEAF-3 LANDED; **and (session #28, rows 419–428) the conjecture
-  crux is now CLOSED end-to-end** — the interior-`hρe₀` leaf
-  (`baseRedundancy_perp_interior_reproduced_panel` crux + the relabel bridge,
-  axiom-clean) via the **spike-and-land pivot** (a compiler-checked spike
-  dissolved the 3–4× prose-mis-pinned route fork; the forbidden value read was
-  the answer — DESIGN.md *Compiler-checked spike, not prose recon, …*). next =
-  LEAF-4 step (ii) base block `W` + LEAF-5 router + CHAIN-5 → phase close (the
-  column subtree b23e50e + 2 bricks is ORPHANED, confirm-and-delete at cleanup)
-  — see `notes/Phase23c.md` *Hand-off* / *Orientation*.
+  session-start availability check + re-confirms the triple.** **Session #29
+  (rows 429–434) drove 23c to a PHASE STOP:** the LEAF-4 step (ii) `hWS`/rank-cert
+  half is BLOCKED, and ALL THREE escape routes (A static-`W`, B′ operated-frame
+  block-rank, A′ general-`d` W9a) are REFUTED by four kernel spikes + a
+  primary-source KT-§6.4.2 recon — the `±r`-corner reformulation escapes the
+  `hρGv` member-mapping wall at the row/membership level (the interior-`hρe₀`
+  crux + corner cert stay CLOSED/sound) but NOT in the general-`d` RANK
+  CERTIFICATION, and KT's own moving-member rank-count is realized in Lean as the
+  relabel-image submatrix containment = the wall (NO missed KT route; design
+  §I.8.24(4.17)–(4.21)). **next (USER-DECIDED, a fresh session) = the A1
+  §I.8.21(α) FEASIBILITY RECON** — a read-only compiler-checked spike (does a
+  matrix-level block-rank-additivity lemma compose with the `±r` corner without
+  the fixed-member `hφ` membership? — gap localized, CHAIN-3/4 supply KT's 6.67
+  finish), full dispatch kit in `notes/Phase23c.md` *Hand-off* → "A1 dispatch
+  kit"; build the infra (A2) only if A1 = FEASIBLE; ENTRY (23d) is the
+  parallel-safe alternative. ALL landed leaves stay in tree (sound, reusable).
+  — see `notes/Phase23c.md` *Hand-off* / *Orientation* + design §I.8.24(4.17)–(4.21).
 - **Session #25 close (2026-06-22; rows 392–401, all opus / OPUS-ONLY, gate-verified; user stopped the
   loop after the corner-data assembly + a handoff-housekeeping pass).** **The `±r`-row seam — the
   conjecture-crux remnant blocking 23c across 4 prior arm attempts + 2 recons — is RESOLVED + build-proven
