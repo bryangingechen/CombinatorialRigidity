@@ -3342,6 +3342,64 @@ decomposition of the SECOND build it teed up.**
   Fallback if route 4-splitOff walls: route A (full `Matrix`) / honest-conditional (C). **Phase-direction
   decision owed to the user.**
 
+  *(4.29) ROUTE 4-SPLITOFF WALLS at the `e₀'`-row containment (a 4th wrap-edge wall) — Q1 (rank) is wall-free
+  and verified sorry-free, but Q2 (the splitOff seed's fresh short-circuit row ∈ candidate span) FAILS by the
+  same discriminator-gate obstruction. Read-only compiler-checked verify-first spike (all probe edits
+  reverted, tree clean), fresh opus, 2026-06-24.*
+
+  **Q1 (rank `hseedrank_ss`): WALL-FREE, verified end-to-end sorry-free + warning-clean.** The splitOff↔
+  splitOff SET-image equality at the NON-involutive cycle `σ = shiftPerm i.castSucc` / `shiftEdgePerm i`
+  builds cleanly: `R(ofNormals (G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀') endsρ qρ) = (funLeft σ.symm).dualMap '' R(base
+  v₁-split)`. The `d=3` proof's `hσσ`/`hρρ` are NOT load-bearing — they were artifacts of stating the equality
+  with `ρ`/`σ` on BOTH sides (forcing `ρ(ρ·)=·`); the clean statement uses `ρ.symm`/`σ` asymmetrically. Both
+  directions reduce to LANDED involution-free bricks: `⊇` (image ⊆ target) = `rigidityRow_chainData_relabel`
+  (`Relabel/Basic.lean:460`); `⊆` (target ⊆ image) = `rigidityRow_relabel_perm` (`Relabel/Basic.lean:203`)
+  at the INVERSE iso `(splitOff_isLink_shiftRelabel_iff).symm` (+ `apply_symm_apply` cleanup) and the
+  dualMap-composition identity `(funLeft σ.symm).dualMap ((funLeft σ).dualMap φ) = φ`. The finrank corollary
+  is then `Submodule.span_image` + `funLeft σ.symm` a `LinearEquiv` (`LinearEquiv.funCongrLeft`/`.dualMap`) +
+  `LinearEquiv.finrank_map_eq`, giving `finrank (span R(Fss)) = finrank (span R(base split)) = D·(|Gv|−1)`
+  (the base = v₁-split IH). The crux fact: `hingeRow_funLeft_dualMap` (`RigidityMatrix/Basic.lean:549`,
+  docstring "No involution on `ρ` is needed") makes the whole dual-map layer involution-free. (The two probe
+  theorems built green: `PROBE_rigidityRows_chainData_relabel_setimage` + `PROBE_finrank_seed_ss`, ~40 LoC.)
+
+  **Q2 (containment `hWS`): WALLS — the splitOff seed's fresh `e₀'` short-circuit row is NOT a
+  `caseIIICandidate` span member.** The cert `case_III_rank_certification_chain` (`Candidate.lean:2196`)
+  requires `hWS : W ≤ span(caseIIICandidate G endsρ qρ e_a e_b (qρ(vᵢ₊₁,·)) n' (qρ(vᵢ₋₁,·)) 0).rigidityRows`
+  for the FULL `W = span Fss.rigidityRows`. `Fss = ofNormals (G.splitOff vᵢ vᵢ₊₁ vᵢ₋₁ e₀') endsρ qρ` includes
+  a row at the FRESH short-circuit edge `e₀'` (link `vᵢ₊₁`–`vᵢ₋₁`, support `C(qρ(vᵢ₊₁,·), qρ(vᵢ₋₁,·))`,
+  block functional `ρ' ⊥ C(vᵢ₊₁,vᵢ₋₁)`). This row is NON-redundant in the isostatic splitOff (drops `W` below
+  `D·(|Gv|−1)` if removed). The off-slot bridge `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`
+  does NOT carry it: it requires `G.IsLink e₀' u v`, but `e₀' ∉ E(G)` (`caseIIICandidate.graph = G`). The only
+  other route is the difference-collapse through the common neighbour `vᵢ` (`hingeRow_sub_hingeRow_eq`):
+  `hingeRow vᵢ₊₁ vᵢ₋₁ ρ' = hingeRow vᵢ₊₁ vᵢ ρ' − hingeRow vᵢ₋₁ vᵢ ρ'`. The 2nd summand is a candidate
+  `e_b = edge(i−1)` row (its overridden support at `t=0` is `C(qρ(vᵢ₊₁,·), qρ(vᵢ₋₁,·))` =
+  `caseIIICandidate_supportExtensor_reproduced`, which `ρ'` annihilates — ✓). BUT the 1st summand
+  `hingeRow vᵢ₊₁ vᵢ ρ'` is a candidate `e_a = edge i` row ONLY IF `ρ' ⊥ C(qρ(vᵢ₊₁,·), n')`
+  (`caseIIICandidate_supportExtensor_candidate`, the OVERRIDDEN candidate slot) — and the discriminator
+  transversal `n'` is chosen precisely so `ρ₀(C(qρ(vᵢ₊₁,·), n')) ≠ 0` (`hgate`), with the `±r` corner `ρ₀`
+  the `e₀'`-redundancy direction. A generic `e₀'`-row `ρ'` annihilating `C(vᵢ₊₁,vᵢ₋₁)` does NOT annihilate
+  `C(vᵢ₊₁, n')`. So the `e₀'` row is NOT in the candidate span.
+
+  **VERDICT: route 4-splitOff WALLS — a 4th wrap-edge appearance** (option-A `hρGv` §(4.18)–(4.24); route-B
+  `hS` §(4.26); route-4-bare `hseedrank` §(4.28); now route-4-splitOff `hWS`). The wall is invariant under
+  base-block re-targeting: it is the discriminator-gate condition `ρ₀ ⊥̸ C(vᵢ₊₁, n')` (the very thing making
+  the `±r` corner the independent `D`-th row) re-surfacing wherever the wrap-edge content tries to enter the
+  candidate span — `hρGv` (A), `hS` (B), `hseedrank` (4-bare, missing), `hWS` (4-splitOff, present-but-uncontainable).
+  Q1's resolution shows the relabel iso is NOT the obstacle (it's clean splitOff↔splitOff); the obstacle is
+  that `caseIIICandidate` OVERRIDES the `e_a = edge i` slot to `C(vᵢ₊₁, n')`, so ANY row through bodies
+  `{vᵢ₊₁, vᵢ}` (which the wrap content always reduces to) must clear the gate. Q3 is moot: the cert's `hWS`
+  demands the full `W` (incl. `e₀'`) in the candidate span, which Q2 blocks.
+
+  **Consequence: the rank-cert reconsideration via a seed/genuine base-block `W ≤ span(caseIIICandidate)` is
+  closed to all routes in hand** (A-engine, B-individual, 4-bare, 4-splitOff). The decision moves to: **route A**
+  (full concrete `Matrix` model of the `Mᵢ`-block — the wrap row enters as a literal matrix row, not a span
+  member, so the gate never gates a *membership*; KT transfers literally but heavy), or **honest-conditional
+  (C)** (carry the wrap-redundancy as an explicit hypothesis to the consumer, document the residual). The
+  invariant (the gate obstruction is intrinsic to the `caseIIICandidate` override architecture, NOT to any
+  one base-block choice) is the load-bearing finding: no further base-block re-targeting escapes it. Lesson:
+  Q1 being clean while Q2 walls is the precise diagnostic — the relabel/rank machinery generalizes fine; the
+  block is the candidate's own slot-override meeting the discriminator, one layer above the seed.
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
