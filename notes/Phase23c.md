@@ -161,6 +161,16 @@ widening rather than assume them. Proof is a clean replay of `interiorGroup_acol
 index-set manipulation (`_eq_incident` + `deg_two_split` + `edge_inj` filter-congr) without the
 vanishing hypothesis. Zero blast radius (no live caller yet).
 
+**⚠ ANTI-SHRINK (coordinator, 2026-06-24): the column-algebra infra for the carry is now EXHAUSTED.**
+`freshEdge_interior_acolumn_sup` (the SUP) + `interiorGroup_acolumn_two_group_decomp` (the unconditional
+two-group split) are LANDED — the two ingredients the per-step `hcol`/`hrest` needs. Two consecutive
+scope-to-fit shrinks (column-SUP, then the two-group decomp) have peeled all the column-algebra; **there is
+no column-algebra brick left to peel.** The NEXT dispatch builds the carry BODY
+`baseRedundancy_perp_chain_edge` itself. If it genuinely won't fit, the ONLY legitimate shrink is the
+**per-step single-vertex carry lemma** — one degree-2 vertex via `candidate_perp_two_incident_supportExtensors`
+fed by the two LANDED column bricks (`grest = 0`) — which IS the induction's step, the genuinely-new content,
+NOT another column-algebra primitive. Do **NOT** peel a third column lemma.
+
 **NEXT: LEAF-4 step (i) (THE CONJECTURE CRUX) — assemble the GENUINELY-NEW inductive sub-lemma
 `ChainData.baseRedundancy_perp_chain_edge` over the now-LANDED column-algebra bricks, then assemble
 the interior-`hρe₀` leaf, then (ii) the base block
