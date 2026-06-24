@@ -65,12 +65,17 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > `exists_shared_redundancy_and_matched_candidate`, 2026-06-24, axiom-clean) — it fires
 > `chainData_split_w6b_gates` + the discriminator at the **BASE split** ONCE → shared `ρ₀`, base `(ab)`
 > annihilation, matched candidate `i`/`hgate`/`n'`, W6b base bundle (`w`/`hw`/`hwmem`/`λ`-witness).
+> **LEAF-4 step (i′) the WIDENING is now LANDED too** (2026-06-24): `chainData_split_w6b_gates` re-exposes
+> the W6b producer's edge-grouped `G_v`-row form (KT eq-6.66, previously discarded as `_hedgeGv`) — the
+> all-edge data step (i) regroups at the degree-2 vertex.
 > **Next commits:**
-> (LEAF-4 / standalone) the genuinely-new `baseRedundancy_perp_interior_reproduced_panel` to GET the interior
-> `hρe₀`, build `W`, `exact case_III_arm_corner_assembly`; then LEAF-5 (router) → CHAIN-5. **Do NOT**
+> (LEAF-4 step (i)) the genuinely-new `baseRedundancy_perp_interior_reproduced_panel` to GET the interior
+> `hρe₀` (from the LANDED edge-grouped form via `candidate_perp_two_incident_supportExtensors`), then
+> (ii) build `W`, `exact case_III_arm_corner_assembly`; then LEAF-5 (router) → CHAIN-5. **Do NOT**
 > re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate the fork, revive the relabel-image
-> `±r` route, or source the interior `hρe₀` by firing W6b at the interior split (unsatisfiable `hsplitGP`).
-> See *Current state* + *Hand-off* + design §I.8.24(4.12).
+> `±r` route, route through the `interior_group_*` column subtree (wrong shape), or source the interior
+> `hρe₀` by firing W6b at the interior split (unsatisfiable `hsplitGP`).
+> See *Current state* + *Hand-off* + design §I.8.24(4.13).
 
 ## Current state
 
@@ -105,23 +110,33 @@ output conjunct `AlgebraicIndependent ℚ q` (already in scope from `hsplitGP`; 
 prerequisite — the only landed-lemma touch, its one consumer `chainData_split_realization` took a `_`
 binder).
 
-**NEXT: LEAF-4 (THE HARD CORE) — the GENUINELY-NEW interior-`hρe₀` leaf
+**LEAF-4 step (i′) — the WIDENING — is LANDED (2026-06-24, axiom-clean, build/lint/warning-clean).**
+`chainData_split_w6b_gates` now ALSO emits the **edge-grouped `G_v`-row form** of the candidate (KT
+eq-6.66): an existential `(nGv, cGv, evGv, uvGv, vvGv, rvGv)` with each summand a `(G−v)`-link
+(`(G.removeVertex v).IsLink (evGv j) (uvGv j) (vvGv j)`) + a block row (`rvGv j ∈ hingeRowBlock (evGv j)`)
+and `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)`. This was ALREADY computed inside the
+W6b producer `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:439–445`) but discarded by the
+wrapper (`_hedgeGv`); the widening re-exposes it through both chain-order normalization branches (the `(b,a)`
+branch via `hingeRow_swap a b (-ρ)` + `neg_neg`). Purely additive (no motive/IH/contract change); the two
+consumers `chainData_split_realization` + `exists_shared_redundancy_and_matched_candidate` took a `_` binder.
+This is the all-edge eq-6.52/6.66 data the interior-`hρe₀` leaf regroups at the degree-2 vertex.
+
+**NEXT: LEAF-4 step (i) (THE HARD CORE) — the GENUINELY-NEW interior-`hρe₀` leaf
 `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the conjecture-crux redundancy-carry seam) +
-the base block `W` + `exact case_III_arm_corner_assembly`. The dedicated route recon HAS FIRED (diverse-lens
-pair, 2026-06-24) and RE-ROUTED it — design §I.8.24(4.13).** Net (source-verified): the leaf is SOUND
-(KT eq-6.66), NOT a wall, NOT a killed-route re-tread (the carry runs at the BASE), and below the contract
-(no motive/IH change) — but §(4.12)'s pinned route `interior_group_eq_baseRedundancy` is **WRONG-SHAPE**
-(a column value, the dead `hρGv` `hrCol`, NOT the scalar panel annihilation the `hρe₀` slot needs). **The
-corrected route:** the live `BodyHingeFramework.candidate_perp_two_incident_panels` /
+(ii) the base block `W` + `exact case_III_arm_corner_assembly`. The dedicated route recon HAS FIRED
+(diverse-lens pair, 2026-06-24) and RE-ROUTED it — design §I.8.24(4.13).** Net (source-verified): the leaf
+is SOUND (KT eq-6.66), NOT a wall, NOT a killed-route re-tread (the carry runs at the BASE), and below the
+contract (no motive/IH change) — but §(4.12)'s pinned route `interior_group_eq_baseRedundancy` is
+**WRONG-SHAPE** (a column value, the dead `hρGv` `hrCol`, NOT the scalar panel annihilation the `hρe₀` slot
+needs). **The corrected route:** the live `BodyHingeFramework.candidate_perp_two_incident_panels` /
 `_supportExtensors` (`Relabel/Chain.lean:918/950`, the eq-6.44 two-edge perp carry, annihilation-level via
 `mem_hingeRowBlock_iff`) at the degree-2 split body, + the `panelCorrespondence_supportExtensor`
 (`Arm.lean:834`) / `caseIIICandidate_supportExtensor_reproduced` (`Candidate.lean:971`) seed-relabel
-transport to the reproduced-slot panel. **Revised build order (2 commits):** (i) **WIDEN LEAF-3 /
-`chainData_split_w6b_gates`** to emit the eq-6.52 ALL-edge redundancy data (`grest` + per-edge `λ`/`r`
-witnesses + the full-combination column-vanishing `hcol`) — what `candidate_perp_two_incident_panels`
-consumes; the W6b producer computes a `Gv`-edge-grouped form internally (`Candidate.lean:439–445`), extract
-it (a below-contract internal-API widening, NOT a motive/contract change). (ii) **build the leaf** via the
-live core + the panel transport. **Build-time de-risk (members split):** confirm the incident-panel perp
+transport to the reproduced-slot panel. **Remaining build order:** the eq-6.52 widening (i′) is DONE;
+**(i) build the leaf** via the live core + the panel transport — its `hcol`/`grest`/`hrab`/`hrac` inputs are
+now produced from the LANDED edge-grouped form (collect the summands incident to `vᵢ`; the rest form
+`grest`). (ii) **build the base block `W`** via `chainData_bottom_relabel` + LEAF-2 concrete-`W` carrier.
+**Build-time de-risk (members split):** confirm the incident-panel perp
 (at the panels *through* `vᵢ`) transports to the reproduced-slot *shortcut* panel `(vtx i.succ, vtx
 (i−1).castSucc)` via the seed-relabel — nail `caseIIICandidate_supportExtensor_reproduced`'s body + KT
 eq-6.56 at the build. Do **NOT** route through the `interior_group_*` column subtree (wrong shape) and
@@ -356,10 +371,16 @@ interior `hρe₀`. Fed `candidatePanel hn`/`candidatePanel_injective hn`, it fi
 `ρ₀`/`w`/`hw`/`hwmem`/`λ`-witness + base `(ab)` annihilation, and the gate at the matched candidate
 `candidatePanel hn u = candidateVtx i` (`candidatePanel_apply` bridge; `i` arbitrary, no interiority
 claim). Additive support: `chainData_split_w6b_gates` re-exposes `AlgebraicIndependent ℚ q` (one consumer,
-`chainData_split_realization`, took a `_` binder). **NEXT COMMIT: LEAF-4 (THE HARD CORE).** Produce the
+`chainData_split_realization`, took a `_` binder). **LEAF-4 step (i′) the WIDENING is LANDED** (2026-06-24,
+axiom-clean): `chainData_split_w6b_gates` now also emits the **edge-grouped `G_v`-row form** (KT eq-6.66,
+the existential `(nGv,cGv,evGv,uvGv,vvGv,rvGv)` + per-summand `(G−v)`-link/block membership +
+`hingeRow a b ρ = ∑ⱼ cGv j • hingeRow …`), re-exposing the W6b producer's internally-computed form
+(`Candidate.lean:439–445`, previously discarded as `_hedgeGv`); both consumers took a `_` binder. **NEXT
+COMMIT: LEAF-4 step (i) (THE HARD CORE).** Produce the
 GENUINELY-NEW interior `hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66: the shared
 base `ρ₀` ⊥ the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel) from LEAF-3's base
-`ρ₀`/`λ`-witness bundle + `cd.deg_two`, build `W` (the base-block relabel image via
+`ρ₀`/`λ`-witness bundle + the LANDED edge-grouped form (regroup `hcol`/`grest`/`hrab`/`hrac` at the
+degree-2 vertex `vᵢ`) + `cd.deg_two`, then (ii) build `W` (the base-block relabel image via
 `chainData_bottom_relabel` + LEAF-2 concrete-`W` carrier), and `exact case_III_arm_corner_assembly` →
 LEAF-5 (router) → CHAIN-5. **Gate-side caveat at LEAF-4:** the discriminator ran against the BASE seed
 `q`; the consumer `case_III_arm_corner_assembly` uses `candidateSeed i q` — a `shiftPerm`-image seed
@@ -438,10 +459,15 @@ ALL-edge data (a below-contract LEAF-3 widening). The deleted-orphan `redundancy
 4. **LEAF-4 (THE HARD CORE) — route RE-ROUTED by the 2026-06-24 recon pair, design §I.8.24(4.13).** THREE
    pieces (i′ the LEAF-3 widening, i the interior-`hρe₀` leaf, ii the base block `W`); do NOT peel one and
    defer the rest:
-   (i′) **WIDEN LEAF-3 / `chainData_split_w6b_gates`** to emit the eq-6.52 ALL-edge redundancy data (`grest`
-   + per-edge `λ`/`r` witnesses + the full-combination column-vanishing `hcol`) — the data
-   `candidate_perp_two_incident_panels` consumes (the W6b producer computes a `Gv`-edge-grouped form
-   internally, `Candidate.lean:439–445`; extract it — below-contract internal-API widening).
+   (i′) ~~**WIDEN LEAF-3 / `chainData_split_w6b_gates`** to emit the eq-6.52 ALL-edge redundancy data.~~
+   ✓ **LANDED** 2026-06-24 (`CaseIII/Realization.lean`, axiom-clean, build/lint/warning-clean): the wrapper
+   now re-exposes the W6b producer's internally-computed **edge-grouped `G_v`-row form** (KT eq-6.66) — the
+   existential `(nGv, cGv, evGv, uvGv, vvGv, rvGv)` with per-summand `(G−v)`-link + block membership +
+   `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` (`Candidate.lean:439–445`, previously
+   the discarded `_hedgeGv`). Threaded through both chain-order branches (the `(b,a)` branch via
+   `hingeRow_swap a b (-ρ)` + `neg_neg`); the two consumers took a `_` binder. From this edge-grouped form
+   step (i) regroups the eq-6.52 `hcol`/`grest`/`hrab`/`hrac` at the degree-2 vertex (collect the summands
+   incident to `vᵢ`; the rest → `grest`).
    (i) **the interior-`hρe₀` leaf** `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the
    conjecture-crux redundancy-carry seam): via the LIVE core `BodyHingeFramework.candidate_perp_two_incident_
    supportExtensors` (`Relabel/Chain.lean:950`, the eq-6.44 two-edge perp carry at the degree-2 split body,
@@ -618,3 +644,13 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   below-contract LEAF-3 widening — `candidate_perp_two_incident`'s `hcol` needs the full combination, not
   the (ab)-block λ-witness). SOUND (KT eq-6.66), not a wall, no motive/IH change; build-time de-risk = the
   incident-panel→shortcut-panel transport. Full route + revised build order in design §I.8.24(4.13).
+- **LEAF-4 step (i′) the WIDENING (2026-06-24, axiom-clean, build/lint/warning-clean).**
+  `chainData_split_w6b_gates` (`CaseIII/Realization.lean`) gained an output conjunct = the **edge-grouped
+  `G_v`-row form** of the candidate (KT eq-6.66): the existential `(nGv, cGv, evGv, uvGv, vvGv, rvGv)` with
+  per-summand `(G−v)`-link + block membership + `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j)
+  (rvGv j)`. This was ALREADY computed inside the W6b producer
+  `exists_candidateRow_bottomRows_of_rigidOn` (`Candidate.lean:439–445`) but discarded by the wrapper as
+  `_hedgeGv`; the widening re-exposes it through both chain-order branches (the `(b,a)` branch via
+  `hingeRow_swap a b (-ρ)` + `neg_neg`). Purely additive — both consumers (`chainData_split_realization`,
+  `exists_shared_redundancy_and_matched_candidate`) took a `_` binder; no motive/IH/contract change. The
+  all-edge eq-6.52/6.66 data step (i) regroups at the interior degree-2 vertex.

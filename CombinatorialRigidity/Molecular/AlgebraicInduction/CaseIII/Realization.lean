@@ -813,6 +813,22 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
       (∀ j, rab j ∈ BodyHingeFramework.hingeRowBlock
         (PanelHingeFramework.ofNormals (G.splitOff v a b e₀) ends q).toBodyHinge e₀) ∧
       ρ = ∑ j, lamAB j • rab j ∧
+      -- the **edge-grouped** `G_v`-row form of the candidate (CHAIN-2c-iii LEAF-4 widening, A-1-i;
+      -- KT eq. (6.66)): the candidate row `hingeRow a b ρ ∈ span R(G_v)-rows` exposed as an
+      -- explicit per-edge `hingeRow` combination over `G_v = G − v`'s links, each summand carrying
+      -- its link `eⱼ = uⱼvⱼ` and block row `rv j ∈ r(p(eⱼ))`. This is the all-edge eq.-(6.52)/
+      -- (6.66) data the CHAIN-2c-ii-arm regroup-at-interior-degree-2-vertex carrier
+      -- `candidate_perp_two_incident_panels` consumes (collect the summands incident to the
+      -- interior chain vertex; the rest form the column-vanishing remainder). Already computed
+      -- inside the W6b producer; re-exposed here (previously discarded) for the LEAF-4
+      -- interior-`hρe₀` leaf.
+      (∃ (nGv : ℕ) (cGv : Fin nGv → ℝ) (evGv : Fin nGv → β) (uvGv vvGv : Fin nGv → α)
+          (rvGv : Fin nGv → Module.Dual ℝ (ScrewSpace k)),
+        (∀ j, (G.removeVertex v).IsLink (evGv j) (uvGv j) (vvGv j)) ∧
+        (∀ j, rvGv j ∈ ((PanelHingeFramework.ofNormals (G.removeVertex v) ends q).toBodyHinge
+          ).hingeRowBlock (evGv j)) ∧
+        BodyHingeFramework.hingeRow a b ρ
+          = ∑ j, cGv j • BodyHingeFramework.hingeRow (uvGv j) (vvGv j) (rvGv j)) ∧
       -- the seed's algebraic independence (the discriminator-pick prerequisite, CHAIN-2c-iii
       -- LEAF-3): the IH-generic `v`-split realization's `AlgebraicIndependent ℚ` conjunct,
       -- re-exposed so `exists_chainData_discriminator_pick` can fire off this same `q`.
@@ -889,7 +905,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
     rcases hrec' e₀ a b he₀ab with he | he <;> rw [he]
     · exact he₀ab
     · exact he₀ab.symm
-  obtain ⟨ρ, w, lamAB, rab, hρne, hρe₀', hρGv', hw, hwmem', hrab_blk, hρ_lam, _hedgeGv⟩ :=
+  obtain ⟨ρ, w, lamAB, rab, hρne, hρe₀', hρGv', hw, hwmem', hrab_blk, hρ_lam, hedgeGv⟩ :=
     BodyHingeFramework.exists_candidateRow_bottomRows_of_rigidOn (Gab := Gab) (Gv := Gv)
       (ends := Q.ends) (q := q) (e₀ := e₀) hD huv hne₀ he₀' hle hsplit hne' hrig'
       (h622lb Q.ends q hrec' hgp_seed hQalg)
@@ -907,7 +923,7 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
   refine ⟨q, Q.ends, ?_⟩
   rcases hrec' e₀ a b he₀ab with he | he
   · -- recorded `(a, b)`: take `ρ` as is.
-    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, hQalg⟩
+    refine ⟨ρ, w, lamAB, rab, hgp', hends', hρne, ?_, ?_, hw, ?_, hrab_blk, hρ_lam, ?_, hQalg⟩
     · rw [hsupp_e₀, he] at hρe₀'; exact hρe₀'
     · rw [he] at hρGv'; exact hρGv'
     · intro j
@@ -915,11 +931,15 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
       · exact Or.inl hgen
       · refine Or.inr ⟨ρ', ?_, by rw [hwj, he]⟩
         rw [hsupp_e₀, he] at hρ'e₀; exact hρ'e₀
+    · -- the edge-grouped `G_v`-row form (eq. (6.66)): `Q.ends e₀ = (a, b)`, so the candidate row
+      -- `hingeRow a b ρ` is the producer's `hingeRow (Q.ends e₀).1 (Q.ends e₀).2 ρ` verbatim.
+      obtain ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, hcombGv⟩ := hedgeGv
+      exact ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, by rw [he] at hcombGv; exact hcombGv⟩
   · -- recorded `(b, a)`: take `-ρ` (`hingeRow b a (-ρ) = hingeRow a b ρ`); negate the witness
     -- `rab → -rab` (the block is a subspace, `-ρ = Σ_j λ_j (-rab j)`).
     refine ⟨-ρ, w, lamAB, fun j => -rab j, hgp', hends', neg_ne_zero.mpr hρne, ?_, ?_, hw, ?_,
       fun j => (PanelHingeFramework.ofNormals Gab Q.ends q).toBodyHinge.hingeRowBlock e₀ |>.neg_mem
-        (hrab_blk j), ?_, hQalg⟩
+        (hrab_blk j), ?_, ?_, hQalg⟩
     · rw [hsupp_e₀, he] at hρe₀'
       rw [LinearMap.neg_apply, panelSupportExtensor_swap, map_neg, hρe₀', neg_zero, neg_zero]
     · rw [he] at hρGv'
@@ -933,6 +953,13 @@ theorem PanelHingeFramework.chainData_split_w6b_gates
         · rw [hwj, he, ← BodyHingeFramework.hingeRow_swap]
     · rw [hρ_lam, ← Finset.sum_neg_distrib]
       exact Finset.sum_congr rfl fun j _ => (smul_neg _ _).symm
+    · -- the edge-grouped `G_v`-row form (eq. (6.66)): `Q.ends e₀ = (b, a)`, output `ρ` is `-ρ`. The
+      -- candidate row `hingeRow a b (-ρ) = hingeRow b a ρ` (`hingeRow_swap`) is the producer's
+      -- `hingeRow (Q.ends e₀).1 (Q.ends e₀).2 ρ`; the edge-grouped RHS is unchanged.
+      obtain ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, hcombGv⟩ := hedgeGv
+      refine ⟨nGv, cGv, evGv, uvGv, vvGv, rvGv, hlinkGv, hrvGv, ?_⟩
+      rw [he] at hcombGv
+      rw [BodyHingeFramework.hingeRow_swap a b (-ρ), neg_neg]; exact hcombGv
 
 /-- **The chain length equals `k + 1`** (`lem:case-III` general-`d`, the discriminator-index
 identity; Katoh–Tanigawa 2011 §6.4.2): from the `ChainData` field `d_eq : d = n` and the ambient
@@ -1081,7 +1108,7 @@ theorem PanelHingeFramework.chainData_split_realization
     hG hV3 hSimple hba hav hbv heab hlea hleb hclv he₀ hIH
   -- W6b half: the candidate functional `ρ`, the bottom rows `w`, and the W6b gate bundle.
   obtain ⟨q, ends, ρ, w, _lamAB, _rab, hgp_split, hends', hρne, hρe₀, hρGv', hw, hwmem',
-      _hrab_blk, _hρ_lam, _hQalg⟩ :=
+      _hrab_blk, _hρ_lam, _hedgeGv, _hQalg⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
       h622lb hdef_Gab hsplitGP
   set na := (fun j => q (a, j)) with hna
@@ -1301,7 +1328,7 @@ theorem PanelHingeFramework.exists_shared_redundancy_and_matched_candidate
       ρ₀ (panelSupportExtensor (fun j => q (cd.candidateVtx i, j)) n') ≠ 0 := by
   -- W6b once at the base split: the shared `ρ₀`, the bottom family, the `λ`-witness, alg-indep `q`.
   obtain ⟨q, ends, ρ₀, w, lamAB, rab, hgp, hends', hρ₀ne, hρ₀e₀, _hρ₀Gv, hw, hwmem,
-      hrab_blk, hρ₀_lam, hQalg⟩ :=
+      hrab_blk, hρ₀_lam, _hedgeGv, hQalg⟩ :=
     PanelHingeFramework.chainData_split_w6b_gates hk1 G v a b cd.e₀ hav hbv hba haG hbG he₀
       h622lb hdef_Gab hsplitGP
   -- The discriminator once off the same base seed `q` and shared `ρ₀`, fed the `Fin (k+1)` panel
