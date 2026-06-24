@@ -85,28 +85,27 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > `baseRedundancy_group_acolumn_perp` (b23e50e) + the per-step column subtree are OFF the path — the crux
 > never touches them; confirm-and-delete at LEAF-5/CHAIN-5 cleanup.**
 >
-> **Next = a USER-DECISION POINT (surfaced 2026-06-24). BOTH `±r`-corner wall-escape routes (A AND B′) are
-> REFUTED — the three feasibility recon passes CONVERGE: the `±r`-corner reformulation (the 23c (A)
-> architecture's central bet) does NOT extend to the general-`d` RANK CERTIFICATION; the `hρGv` member-mapping
-> wall is unavoidable (design §I.8.24(4.17)+(4.18)+(4.19), spike-confirmed).** The interior `hρe₀` half of
-> LEAF-4 step (ii) is closed (crux + bridge); the `hWS`/rank-certification half is BLOCKED. §(4.18): the
-> static-`W` re-shape (A) is impossible (`hWS ∧ hWcard ∧ hW` can't coexist — the redundancy carry is a row
-> THROUGH `vᵢ`). §(4.19): the operated-frame block-rank route (B′) does not separate the `±r` corner from the
-> operated base block (the corner's surviving discriminator `single a`=`−ρ₀` is uncontrolled in the base; the
-> `±r` corner is NOT pure-`vᵢ`-column so it can't join the d=3 separator `linearIndependent_sum_restriction_
-> block` — kernel-confirmed `ρ₀(S u − S a) ≠ 0`). **The `±r` corner escapes `hρGv` at the ROW/membership level
-> (`hg`/`hLI` via `hρe₀`, LANDED, sound) but NOT in the RANK CERT.** The only basis-free analogue of KT's
-> "column-op THEN block-triangular" that certifies the rank is the d=3 FLAT OPERATED FAMILY with the COLLAPSED
-> corner + `hρGv` (the wall). **So the remaining route is (A′): re-derive the chain cert in the operated frame,
-> producing `hρGv` generically via a general-`d` analogue of the M₃ W9a move** — the genuinely-new
-> conjecture-crux content (the wall §I.8.18–20 called intrinsic). **(A′) MAY ITSELF BE BLOCKED** (the §(o″)
-> Route-A dead end: firing W6b per-interior-split is unavailable — `hsplitGP`); whether W9a generalizes by a
-> route sidestepping per-interior W6b is OPEN. **Options the user is deciding:** (1) recon (A′)'s tractability;
-> (2) build (A′) directly; (3) pause / broader reconsideration of the 23c approach. The corner cert + ALL
-> LANDED leaves (cert/carrier/LEAF-2/router) stay in tree; the `W`-block / rank-cert LAYER is the open
-> re-design. **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate the fork,
-> re-attempt option (A) or (B′) (both infeasible), or fire W6b at the interior split. See *Current state* +
-> *Hand-off* + design §I.8.24(4.17)–(4.19).
+> **PHASE STOP — a FUNDAMENTAL RECONSIDERATION is needed (surfaced to the user 2026-06-24). ALL THREE routes
+> (A, B′, A′) for the general-`d` interior-`hρGv` rank certification are REFUTED; the `hρGv` member-mapping
+> wall (§I.8.18–20, intrinsic to KT) is unavoidable (design §I.8.24(4.17)–(4.20), four spikes,
+> kernel-confirmed).** The interior `hρe₀` half of LEAF-4 step (ii) is CLOSED (crux + bridge). The
+> `hWS`/rank-certification half is BLOCKED: §(4.18) the static-`W` re-shape (A) is impossible (`hWS ∧ hWcard ∧
+> hW` can't coexist — the redundancy carry is a row THROUGH `vᵢ`); §(4.19) the operated-frame block-rank (B′)
+> can't separate the non-pure-`vᵢ` `±r` corner from the base; §(4.20) (A′) re-derive-in-the-operated-frame
+> reduces (kernel PROBE 1) to `chainData_relabel_arm_hρGv`'s `hφ` slot = the member-fixed base redundancy in
+> `span(endsσρ)`, which the only relabel transport provably MOVES off-member (PROBES 2–3: `vtx2↦vtx1`, and the
+> moved member = the fixed one forces `ρ₀=0`) — it IS the member-mapping wall, no framework-free escape (`hφ`
+> is a span MEMBERSHIP, not the `hρe₀`-style annihilation that dissolved). **The W9a *generalization* is
+> LANDED; the wall is ONLY the `hφ` slot.** The `±r`-corner reformulation escapes `hρGv` at the ROW/membership
+> level (`hg`/`hLI` via `hρe₀`, LANDED, sound) but NOT in the general-`d` RANK CERT. **NEXT = a USER /
+> FUNDAMENTAL-DESIGN DECISION (not a build):** candidate directions (likely needing a fresh KT-§6.4.2
+> rank-argument recon) — (a) a rank-counting cert that never tracks an individual member-fixed row (KT's
+> "whole-matrix bookkeeping with the member moving"); (b) re-read KT's actual rank argument for a route the
+> row-membership decomposition missed; (c) pause the conjecture-crux step and advance ENTRY/ASSEMBLY / other
+> program phases that do not depend on it. **ALL LANDED leaves stay in tree** (sound; reusable under a
+> re-architected rank cert). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate
+> the fork, or re-attempt (A)/(B′)/(A′) (all refuted). See *Current state* + *Hand-off* + design
+> §I.8.24(4.17)–(4.20).
 
 ## Current state
 
@@ -133,12 +132,18 @@ The leaf type-checks only because `hG_eb_cand` is a carried hypothesis; it canno
 (static-`W` re-shape) is INFEASIBLE (no `W` satisfies `hWS ∧ hWcard ∧ hW`; the redundancy carry is a row
 THROUGH `vᵢ`); §(4.19) option (B′) (operated-frame block-rank) is INFEASIBLE (the `±r` corner's surviving
 discriminator `single a`=`−ρ₀` is uncontrolled in the base, and the `±r` corner is not pure-`vᵢ`-column so it
-can't join the d=3 separator). **The three recon passes converge: the `±r`-corner reformulation escapes
-`hρGv` at the ROW/membership level but NOT in the general-`d` RANK CERTIFICATION; the wall is unavoidable.**
-**Next = a USER-DECISION POINT** (surfaced 2026-06-24): (A′) confront the wall via a general-`d` W9a-analogue
-(may itself be blocked — §(o″)), build (A′) directly, or a broader reconsideration. See the top-of-note
-*Next commit* block + *Hand-off* + design §I.8.24(4.17)–(4.19). The router's reproduced branch is dead (do NOT
-patch in place); the genuine branch survives; the corner cert (`±r` via `hρe₀`) is sound + `W`-independent.
+can't join the d=3 separator); §(4.20) option (A′) (re-derive in the operated frame, producing `hρGv`
+generically) is INFEASIBLE — it reduces (kernel PROBE 1) to `chainData_relabel_arm_hρGv`'s `hφ` slot = the
+member-fixed base redundancy in `span(endsσρ)`, which the only relabel transport provably MOVES off-member
+(it IS the member-mapping wall; no framework-free escape — `hφ` is a span membership, not the `hρe₀`-style
+annihilation). **All four spikes converge: the `±r`-corner reformulation escapes `hρGv` at the ROW/membership
+level but NOT in the general-`d` RANK CERTIFICATION; the member-mapping wall is unavoidable.** **Next = a
+FUNDAMENTAL RECONSIDERATION (a phase STOP, surfaced to the user 2026-06-24) — NOT a build.** Candidate
+directions (the top-of-note block): (a) a rank-counting cert that never tracks a member-fixed row; (b) a fresh
+KT-§6.4.2 rank-argument recon; (c) pause the crux step, advance ENTRY/ASSEMBLY. See the top-of-note *Next
+commit* block + *Hand-off* + design §I.8.24(4.17)–(4.20). The router's reproduced branch is dead (do NOT patch
+in place); the genuine branch survives; the corner cert (`±r` via `hρe₀`) is sound + `W`-independent; ALL
+LANDED leaves stay in tree (reusable under a re-architected rank cert).
 
 **The discriminator-index plumbing is COMPLETE end-to-end (2026-06-23).** The last piece — the
 composed `Fin (k+1)` panel selector `Graph.ChainData.candidatePanel` + `candidatePanel_injective` +
@@ -446,28 +451,31 @@ inductive chain / per-vertex witness / meet — it is the LANDED framework-free 
 in the GRAPH-irrelevant base framework's block) fired one index deeper than the surviving-edge leaf; the FORK
 was a non-problem (see *Current state*). d=3 floor needs none of it.
 
-**LEAF-4 step (ii)'s `hWS`/rank-cert half is BLOCKED, AND BOTH `±r`-corner wall-escape routes (A AND B′) are
-REFUTED — the next step is a USER-DECISION POINT (design §I.8.24(4.17)+(4.18)+(4.19), three spikes,
-2026-06-24).** §(4.17): the router `bottomRelabel_image_mem_span_caseIIICandidate` (2878600)'s reproduced
-branch is mis-targeted (the wrap-edge tag, endpoints OMIT `vᵢ`, forces the UNSATISFIABLE `hG_eb_cand`).
-§(4.18): option (A) (static-`W` re-shape) is INFEASIBLE — no `W` satisfies `hWS` ∧ `hWcard` ∧ `hW`
-(off-`vᵢ`-vanishing, REQUIRED by the corner `hLI` `notMem_span_mkQ_pmR_row_of_gate`) simultaneously, because
-the redundancy carry is a row THROUGH `vᵢ`. §(4.19): option (B′) (operated-frame block-rank) is INFEASIBLE —
-the `±r` corner's surviving discriminator `single a`=`−ρ₀` is uncontrolled in the operated base (which reads
-nonzero there via `hingeRow a b ρ'` + `a`-incident `G_v`-rows), and the genuine `±r` corner is NOT
-pure-`vᵢ`-column under the column op (`ρ₀(S u − S a) ≠ 0`, kernel-confirmed) so it can't join the d=3 separator
-`linearIndependent_sum_restriction_block`. **The convergence:** the `±r`-corner reformulation escapes `hρGv`
-at the ROW/membership level (`hg`/`hLI` via `hρe₀`, LANDED, sound, `W`-independent) but NOT in the general-`d`
-RANK CERTIFICATION. The only basis-free analogue of KT's "column-op THEN block-triangular" that certifies the
-rank is the d=3 FLAT OPERATED FAMILY with the COLLAPSED corner + `hρGv` (the wall). **So the remaining route is
-(A′): re-derive the chain cert in the operated frame, producing `hρGv` generically via a general-`d` analogue
-of the M₃ W9a move** — the genuinely-new conjecture-crux content (the wall §I.8.18–20 called intrinsic;
-the LANDED crux may be a building block). **(A′) MAY ITSELF BE BLOCKED** (§(o″) Route-A: firing W6b
-per-interior-split is unavailable — `hsplitGP`); whether W9a generalizes without per-interior W6b is OPEN.
-**Options the user is deciding:** (1) recon (A′)'s tractability; (2) build (A′) directly; (3) pause / broader
-reconsideration of the 23c approach. **All LANDED leaves (cert/carrier/LEAF-2/router, the corner cert) stay in
-tree**; the `W`-block / rank-certification LAYER is the open re-design. (The interior `hρe₀` half is closed;
-see above.)
+**LEAF-4 step (ii)'s rank-cert half is BLOCKED, ALL THREE routes (A, B′, A′) are REFUTED, and 23c needs a
+FUNDAMENTAL RECONSIDERATION — a PHASE STOP surfaced to the user 2026-06-24 (design §I.8.24(4.17)–(4.20), four
+spikes, kernel-confirmed).** §(4.17): the router `bottomRelabel_image_mem_span_caseIIICandidate` (2878600)'s
+reproduced branch is mis-targeted (the wrap-edge tag, endpoints OMIT `vᵢ`, forces the UNSATISFIABLE
+`hG_eb_cand`). §(4.18): option (A) (static-`W` re-shape) is INFEASIBLE — no `W` satisfies `hWS` ∧ `hWcard` ∧
+`hW` (REQUIRED by the corner `hLI` `notMem_span_mkQ_pmR_row_of_gate`) simultaneously, the redundancy carry
+being a row THROUGH `vᵢ`. §(4.19): option (B′) (operated-frame block-rank) is INFEASIBLE — the genuine `±r`
+corner is NOT pure-`vᵢ`-column under the column op (`ρ₀(S u − S a) ≠ 0`) so it can't join the d=3 separator
+`linearIndependent_sum_restriction_block`, and its surviving discriminator `single a` is uncontrolled in the
+base. §(4.20): option (A′) (re-derive in the operated frame, `hρGv` generically) is INFEASIBLE — it reduces
+(kernel PROBE 1) to `chainData_relabel_arm_hρGv`'s `hφ` slot = the member-fixed base redundancy `hingeRow v₀v₂
+ρ₀` in `span(endsσρ)`, and the only relabel transport `(funLeft (shiftPerm)⁻¹).dualMap` provably MOVES the
+member (PROBE 2 `vtx2↦vtx1`; PROBE 3 the moved member = the fixed one forces `ρ₀=0`) — it IS the member-mapping
+wall (§I.8.18–20, intrinsic). **The W9a *generalization* is LANDED** (`chainData_freshEdge_slot_mem` +
+`wstep_foldl_freshEdge_slot_mem`); the wall is ONLY the `hφ` slot. **No framework-free escape** — `hφ` is a
+span MEMBERSHIP, not the `hρe₀`-style annihilation that dissolved (the decisive structural difference). **The
+convergence:** the `±r`-corner reformulation escapes `hρGv` at the ROW/membership level (`hg`/`hLI` via
+`hρe₀`, LANDED, sound, `W`-independent) but NOT in the general-`d` RANK CERTIFICATION; the member-mapping wall
+is unavoidable. **NEXT = a USER / FUNDAMENTAL-DESIGN DECISION (not a build).** Candidate directions (likely
+needing a fresh KT-§6.4.2 rank-argument recon): (a) a rank-counting cert that never tracks an individual
+member-fixed row (KT's "whole-matrix bookkeeping with the member moving"); (b) re-read KT's actual rank
+argument for a route the row-membership decomposition missed; (c) pause the conjecture-crux step and advance
+ENTRY/ASSEMBLY / other program phases that do not depend on it. **All LANDED leaves (cert/carrier/LEAF-2/router,
+the corner cert, the closed interior `hρe₀`) stay in tree** (sound; reusable under a re-architected rank cert);
+the rank-certification LAYER is the open re-design.
 
 **One design decision RESOLVED + LANDED (below the contract/motive — did NOT need coordinator/user).** The
 `W`/`hW` threading: `case_III_arm_corner_assembly` takes `hW` on a *specific* `W`, but the landed carrier leaf
@@ -555,18 +563,18 @@ column lemmas `baseRedundancy_group_acolumn_mem_inf`/`_perp`, `freshEdge_interio
 one index deeper). **LEAF-4 (c)'s per-member `hS` router LANDED but its REPRODUCED branch is
 MIS-TARGETED** (`bottomRelabel_image_mem_span_caseIIICandidate`, 2026-06-24; the GENUINE branch is reusable,
 the reproduced branch carries the unsatisfiable `hG_eb_cand`; see *Current state* + design §I.8.24(4.17)).
-**NEXT = a USER-DECISION POINT** — BOTH `±r`-corner wall-escape routes (A AND B′) are REFUTED (§I.8.24(4.18)
-option (A) static-`W` INFEASIBLE; §(4.19) option (B′) operated-frame block-rank INFEASIBLE — the `±r` corner
-isn't pure-`vᵢ`-column so it can't join the d=3 separator, and its surviving discriminator `single a` is
-uncontrolled in the base). The three recon passes converge: the `±r`-corner escapes `hρGv` at the
-ROW/membership level but NOT in the general-`d` RANK CERT; the wall is unavoidable. The remaining route is
-(A′): re-derive the chain cert in the operated frame, producing `hρGv` generically via a general-`d`
-W9a-analogue (the conjecture-crux content; MAY itself be blocked — §(o″) per-interior W6b is unavailable).
-Options the user is deciding: (1) recon (A′)'s tractability; (2) build (A′) directly; (3) pause / broader
-reconsideration. See the top-of-note *Next commit* block + *Hand-off* + design §I.8.24(4.17)–(4.19).
-**Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), revive the `interior_group_*` column
-subtree, fire W6b per-interior-split (`hsplitGP` unavailable), re-attempt option (A) (the static-`W` re-shape
-— infeasible), or patch the router's reproduced branch in place. **Downstream risk to watch** (design §I.8.24):
+**NEXT = a FUNDAMENTAL RECONSIDERATION (a phase STOP, NOT a build)** — ALL THREE routes (A, B′, A′) for the
+general-`d` interior-`hρGv` rank cert are REFUTED (§I.8.24(4.18) static-`W` impossible; §(4.19) operated-frame
+block-rank can't separate the non-pure-`vᵢ` `±r` corner; §(4.20) the general-`d` W9a reduces to the
+member-fixed `hφ` slot that the relabel provably moves — the member-mapping wall, no framework-free escape
+since `hφ` is a span membership). The four spikes converge: the `±r`-corner escapes `hρGv` at the
+ROW/membership level but NOT in the general-`d` RANK CERT; the wall (§I.8.18–20, intrinsic) is unavoidable.
+Candidate directions (the user's call, likely needing a fresh KT-§6.4.2 rank-argument recon): (a) a
+rank-counting cert that never tracks a member-fixed row; (b) re-read KT's actual rank argument; (c) pause the
+crux step, advance ENTRY/ASSEMBLY. See the top-of-note *Next commit* block + *Hand-off* + design
+§I.8.24(4.17)–(4.20). **Do NOT** re-attempt the four dead route families (§I.8.18–(I.8.20)), revive the
+`interior_group_*` column subtree, fire W6b per-interior-split (`hsplitGP` unavailable), re-attempt
+(A)/(B′)/(A′) (all refuted), or patch the router's reproduced branch in place. **Downstream risk to watch** (design §I.8.24):
 the ENTRY KT-4.6 chain-extraction leaf (23d, genuinely-new).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
@@ -675,24 +683,26 @@ follows as 23e. Do **not** fold ENTRY into 23c — it is a distinct layer (KT §
 - *A conditional leaf is progress only if its hypothesis is dischargeable for the **actual consumer** — a
   satisfiability check, not just signature/decl-existence (the project-side root cause of the two
   mis-targeted `±r`-row leaves)* → `DESIGN.md` *Constructibility recon …* (the satisfiability corollary).
-- **LEAF-4 step (ii)'s rank-cert half is BLOCKED, AND BOTH `±r`-corner wall-escape routes (A AND B′) are
-  REFUTED — the `hρGv` wall is unavoidable for the general-`d` rank cert (design §I.8.24(4.17)+(4.18)+(4.19),
-  three read-only spikes, 2026-06-24; a USER-DECISION POINT).** §(4.17): the router's reproduced branch is
-  mis-targeted (wrap-edge tag, endpoints OMIT `vᵢ`, → unsatisfiable `hG_eb_cand`). §(4.18): option (A)
-  (static-`W` re-shape) INFEASIBLE — no `W` satisfies `hWS ∧ hWcard ∧ hW` (the redundancy carry is a row
-  THROUGH `vᵢ`). §(4.19): option (B′) (operated-frame block-rank) INFEASIBLE — the `±r` corner isn't
-  pure-`vᵢ`-column under the column op (so it can't join the d=3 separator `linearIndependent_sum_restriction_
-  block`), and its surviving discriminator `single a`=`−ρ₀` is uncontrolled in the operated base. **The
+- **23c's general-`d` interior-`hρGv` rank cert is EXHAUSTED — ALL THREE routes (A, B′, A′) REFUTED; the
+  member-mapping wall (§I.8.18–20, intrinsic to KT) is unavoidable; 23c needs a FUNDAMENTAL RECONSIDERATION
+  (design §I.8.24(4.17)–(4.20), four read-only spikes, 2026-06-24; a phase STOP).** §(4.17): the router's
+  reproduced branch mis-targeted (wrap-edge tag, endpoints OMIT `vᵢ`, → unsatisfiable `hG_eb_cand`). §(4.18):
+  (A) static-`W` re-shape INFEASIBLE (no `W` satisfies `hWS ∧ hWcard ∧ hW`; the carry is a row THROUGH `vᵢ`).
+  §(4.19): (B′) operated-frame block-rank INFEASIBLE (the `±r` corner isn't pure-`vᵢ`-column, can't join the
+  d=3 separator). §(4.20): (A′) re-derive-in-operated-frame INFEASIBLE — reduces (kernel) to
+  `chainData_relabel_arm_hρGv`'s `hφ` slot (the member-fixed base redundancy in `span(endsσρ)`), which the only
+  relabel transport provably MOVES off-member; the W9a *generalization* is LANDED, the wall is ONLY the `hφ`
+  slot, no framework-free escape (`hφ` is a span MEMBERSHIP, not the `hρe₀`-style annihilation). **The
   convergence:** the `±r`-corner reformulation escapes `hρGv` at the ROW/membership level (`hg`/`hLI` via
-  `hρe₀`, LANDED, sound, `W`-independent) but NOT in the general-`d` RANK CERTIFICATION; the only basis-free
-  analogue of KT's "column-op THEN block-triangular" that certifies the rank is the d=3 FLAT OPERATED FAMILY +
-  COLLAPSED corner + `hρGv` (the wall). The remaining route is (A′): produce `hρGv` generically via a
-  general-`d` W9a-analogue (the conjecture-crux content; may itself be blocked — §(o″) per-interior W6b
-  unavailable). **Decision (user, surfaced 2026-06-24):** (1) recon (A′)'s tractability; (2) build (A′);
-  (3) pause / broader reconsideration. *Cross-cutting lesson (→ DESIGN.md at phase-close):* a satisfiability
-  mis-target can hide in the **carrier's `hWS`/`W` shape**, and an architecture's wall-escape claim can hold at
-  one layer (the corner) while the wall reappears in a deferred-as-bookkeeping layer (the rank cert) — re-audit
-  the DEFERRED obligations of a "wall escaped" architecture before declaring the wall gone.
+  `hρe₀`, LANDED, sound) but NOT in the general-`d` RANK CERTIFICATION. **Decision (user, surfaced 2026-06-24
+  — a phase STOP, not a build):** fundamental reconsideration — (a) a rank-counting cert that never tracks a
+  member-fixed row; (b) re-read KT's §6.4.2 rank argument; (c) pause the crux step, advance ENTRY/ASSEMBLY.
+  *Cross-cutting lesson (→ DESIGN.md at phase-close):* an architecture's "wall escaped" claim can hold at one
+  layer (the corner: `±r` row membership/LI) while the wall reappears unchanged in a deferred-as-bookkeeping
+  layer (the rank cert: the member-fixed `hφ` membership) — re-audit the DEFERRED obligations of a "wall
+  escaped" architecture before declaring the wall gone; and the spike-and-land that dissolves an *annihilation*
+  mis-pin (`hρe₀`) does NOT transfer to a *membership* obligation (`hφ`) — the structural kind of the goal
+  decides whether a framework-free escape can exist.
 - *Where KT's "member moves" (6.62) lands: the redundant `±r` row on the candidate's reproduced hinge slot,
   the graph-endpoints-vs-overridden-support decoupling* → `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 - *A diverse-lens recon PAIR (constructive + adversarial-refute) resolves a recurring-mis-pin design seam

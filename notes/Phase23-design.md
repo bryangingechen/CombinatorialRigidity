@@ -2896,6 +2896,48 @@ decomposition of the SECOND build it teed up.**
   reconsideration of the 23c approach. The corner cert + the LANDED leaves stay in tree; the `W`-block /
   rank-certification layer is the open re-design.
 
+  *(4.20) THE OPTION-(A′) TRACTABILITY PASS — VERDICT: INFEASIBLE, it IS the member-mapping wall (§I.8.18–20),
+  kernel-confirmed. With (A), (B′), AND (A′) all refuted, the general-`d` interior-`hρGv` route is exhausted —
+  23c's rank-certification layer needs a FUNDAMENTAL RECONSIDERATION (the design's surfaced option (3)).
+  Compiler-checked SPIKE, read-only, opus / OPUS-ONLY, 2026-06-24, agentId `a22d7811559060d3b` (resumable).*
+
+  **The reduction (PROBE 1, kernel-clean) — the W9a generalization is LANDED; the wall is ONLY the `hφ` slot.**
+  The interior `hρGv` is exactly the conclusion of the LANDED `chainData_relabel_arm_hρGv`
+  (`Relabel/ChainColumn.lean:1390`). Instantiating it reduces the interior `hρGv` to a SINGLE residual = its
+  `hφ` slot: `hingeRow (vtx 0)(vtx 2) ρ₀ ∈ span (ofNormals (G − vtx 1) endsσρ q).rigidityRows` — the base
+  redundancy `hingeRow v₀v₂ ρ₀` held MEMBER-FIXED, at the base `G − v₁` framework but the RELABELLED selector
+  `endsσρ`. Everything else (`hlink`/`hrv`/`hcomb`/`hdeg1`/`hρe₀` + the general-`d` W9a-fold transport
+  `chainData_freshEdge_slot_mem` + `wstep_foldl_freshEdge_slot_mem`) is LANDED — the W9a *generalization* is
+  NOT the obstruction.
+
+  **Why `hφ` has no source (PROBES 2–3, kernel-clean) — the member-mapping wall.** `hφ` is a span MEMBERSHIP
+  at the relabelled selector. The dispatch's base bundle fires W6b ONCE at the base `v₁`-split (its only
+  `hsplitGP`, `Realization.lean:1300`) → the base `hρGv'` at the UN-relabelled selector. The only mechanism
+  moving a membership into `span(endsσρ)` is the relabel-image transport `(funLeft (shiftPerm i.castSucc)⁻¹).
+  dualMap` — and it is MEMBER-MOVING: PROBE 2 = it sends `hingeRow (vtx0)(vtx2) ρ₀ ↦ hingeRow (vtx0)(vtx1) ρ₀`
+  (`σ⁻¹` fixes `vtx0` off-cycle, sends `vtx2 ↦ vtx1` interior) for `i ≥ 3`; PROBE 3 (False-witness) =
+  `hingeRow (vtx0)(vtx1) ρ₀ = hingeRow (vtx0)(vtx2) ρ₀` forces `ρ₀ = 0` (read both at `single (vtx2)`),
+  contradicting the gate. So the transported member is provably NOT the member-fixed `hφ`. This IS KT's (6.62)
+  relabel correspondence mapping the FIXED dual functional — the §I.8.18–20 member-mapping wall, intrinsic
+  (the four route families dead). At `d=3`/`i=2`, `shiftPerm 2 = (v₁v₂)` is a single swap and M₃ W9a closes —
+  the masking degeneracy that made `d=3` look generalizable.
+
+  **No framework-free escape (the decisive structural difference from the `hρe₀` crux).** The interior `hρe₀`
+  dissolved because it is an ANNIHILATION `ρ₀(panel) = 0`, reading only the seed `q` (framework-free value-read;
+  `baseRedundancy_perp_interior_reproduced_panel` LANDED). `hφ` is a span MEMBERSHIP in `rigidityRows` —
+  intrinsically framework-dependent, with NO value-read form; pushing it per-summand still routes through the
+  member-moving genuine-row transport. So the spike-and-land that beat the `hρe₀` mis-pins does NOT apply.
+
+  **Bottom line.** The `±r`-corner reformulation genuinely escapes `hρGv` at the arm/corner level (`hg`/`hLI`
+  via `hρe₀`, LANDED, sound) but CANNOT certify the general-`d` rank without the member-fixed base-redundancy
+  membership `hφ`, which the cycle relabel provably moves. (A), (B′), (A′) are all refuted; the interior-`hρGv`
+  route is exhausted. **23c needs a fundamental reconsideration — surfaced to the user 2026-06-24 (a phase
+  STOP).** Candidate directions (the user's call, likely needing a fresh KT-§6.4.2 rank-argument recon): a
+  rank-counting cert that never tracks an individual member-fixed row (KT's "whole-matrix bookkeeping with the
+  member moving"); re-reading KT's actual rank argument for a route the row-membership decomposition missed;
+  or pausing the conjecture-crux step and advancing ENTRY/ASSEMBLY / other program phases that do not depend on
+  it. ALL LANDED leaves stay in tree (sound; reusable under a re-architected rank cert).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
