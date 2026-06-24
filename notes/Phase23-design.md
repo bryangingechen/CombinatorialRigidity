@@ -2600,6 +2600,54 @@ decomposition of the SECOND build it teed up.**
   degree in the candidate framework). No motive/IH/contract change either way (the cert is `hρGv`-free +
   `ρ₀`-agnostic; this is machinery below the contract, §I.8.21).
 
+  *(4.15) THE LEAF-4 INTERIOR-hρe₀ BRIDGE — DIVERSE-LENS RECON PAIR, CONVERGED (read-only, opus×opus,
+  OPUS-ONLY, 2026-06-24; coordinator-adjudicated; SUPERSEDES §(4.14)'s Route A).* The §(4.14) flag named route A
+  (degree-1 neighbour-column) vs route B (`Meet.lean`) for the genuinely-new incident→shortcut step, deferring the
+  choice to a build-time discriminator (the neighbour body's degree in the candidate framework). The 2-leaf
+  trigger fired (the i′ widening + the column-sup brick fed the not-yet-built crux core) → a diverse-lens recon
+  PAIR settled the discriminator BEFORE a build. The pair CONVERGED.
+
+  **KILLED — Route A as pinned (degree-1 neighbour-column) fails for general interior `i ≥ 2`.** Both members
+  source-traced the discriminator: the neighbour `b = vtx (i−1).castSucc` is ITSELF an interior chain vertex
+  (`0 < i−1` for `i ≥ 2`), hence **degree-2 in `G`** by `ChainData.deg_two` (genuine incident edges `edge (i−2)`
+  and `e_b = edge (i−1)`). `caseIIICandidate.graph = G` (`rfl`), so reading `b`'s column in the consumer's
+  framework `F₀` lands in the two-block SUP `block (edge (i−2)) ⊔ block e_b`, NEVER isolating the shortcut block.
+  The shortcut `(a,b)` is **not a graph edge at all** — it is `e_b`'s OVERRIDDEN support in `F₀`
+  (`caseIIICandidate_supportExtensor_reproduced` at `t=0` = `panelSupportExtensor (q(a,·)) (q(b,·))`), so no
+  `G`-column-projection can land in it. `deg_two` constrains only split bodies `vtx j.castSucc`, never the
+  neighbours — so the discriminator is degree-2 generically and Route A's degree-1 premise is FALSE. (M₃'s
+  `hρ_ac` precedent is degree-1 only because it derives FROM `hρGv` at the base `v₁`-split, where the removed
+  apex shears off the predecessor edge — `hρGv`-based, the exact slot (A) eliminated, so NOT the general model.)
+
+  **CORRECTED ROUTE (converged) — the iterated degree-2 panel-perp carry (KT eq-6.66; the §I.8.3-P2 heir).** The
+  one genuinely-new sub-lemma is `ChainData.baseRedundancy_perp_chain_edge`: carry `ρ₀`'s panel-perp from the
+  BASE annihilation (LEAF-3 `chainData_split_w6b_gates`'s `(ab)` perp at the base spliced panel) ALONG the chain
+  to the interior off-slot chain edge `(vtx (i−2), vtx (i−1))`, by induction on `s` (depth `O(i)`), each step via
+  `candidate_perp_two_incident_supportExtensors` (`Chain.lean:950`, the eq-6.44 two-edge perp carry, `hρGv`-free)
+  with the per-step `hcol` regrouped from the LEAF-4 widening's flat edge-sum at each interior vertex via the
+  just-landed `freshEdge_interior_acolumn_sup` (the two-block SUP IS the right per-step `hcol` shape — the brick
+  is ON-ROUTE, keep it). **The FINAL step is Lean-checked** (member A, `lean_multi_attempt` → no goals): apply
+  `candidate_perp_two_incident_supportExtensors` at body `b` in `F₀` — `b`'s two incident edges are `e_b` (support
+  overridden → the shortcut) and `edge (i−2)` (off-slot, genuine chain panel); given `ρ₀ ⊥` the off-slot
+  predecessor chain panel (from the carry) + the `rab`-decomposition + `hcol`/`hrest` at `b`, the lemma transfers
+  the perp to `e_b`'s overridden support = the shortcut = the consumer's `hρe₀`. So the leaf = the carry + this
+  final application; NO column-projection at a degree-1 neighbour is needed.
+
+  **Route B (Grassmann–Cayley meet via `Meet.lean`) = FALLBACK** only if a per-step `hcol` proves unsatisfiable
+  (member B's adversarial hedge; not expected — the per-step `hcol` is the landed `freshEdge_interior_acolumn_sup`
+  SUP shape). Below the contract either way (cert `hρGv`-free + `ρ₀`-agnostic; no motive/IH/C.0–C.6 change). d=3
+  floor needs NONE of this (matched `i` = base split, base `(a,b)` = consumer `(a,b)`; the dispatch feeds the
+  same `hρe₀` to all three arms).
+
+  **Build order (NEXT):** build `ChainData.baseRedundancy_perp_chain_edge` (the conjecture-crux inductive
+  sub-lemma — `ρ₀ ⊥ base panel` + the eq-6.52 `λ`-witness + `deg_two` ⟹ `ρ₀ ⊥` every chain edge `≤ i`, by
+  induction on `s`); rate a build by IT, not the final application (Lean-checked) or the `W`-plumbing. Then
+  assemble the interior-`hρe₀` leaf (carry at `s = i−2` + the final application at body `b`); then step (ii) the
+  base block `W` (`chainData_bottom_relabel` + LEAF-2) + `exact case_III_arm_corner_assembly`. **Do NOT** pin to
+  a degree-1 neighbour-column projection (shortcut isn't a graph edge), to `candidate_perp_two_incident` at `v`
+  (reaches incident panels only), to `panelCorrespondence_supportExtensor` (chain-edge transport only), or to the
+  M₃ `hρ_ac` (`hρGv`-based).
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract

@@ -69,17 +69,20 @@ prior relabel-image / filtered-group attempts landed on the candidate fresh pair
 > the W6b producer's edge-grouped `G_v`-row form (KT eq-6.66, previously discarded as `_hedgeGv`) — the
 > all-edge data step (i) regroups at the degree-2 vertex.
 > **Next commits:**
-> (LEAF-4 step (i)) the genuinely-new `baseRedundancy_perp_interior_reproduced_panel` to GET the interior
-> `hρe₀` — DECOMPOSED + SETTLED by the 2026-06-24 pass (design §I.8.24(4.14)): the eq-6.52 regrouping is
-> SATISFIABLE (LANDED widening + `freshEdge_interior_acolumn_sup` → `candidate_perp_two_incident_
-> supportExtensors`), but the incident→SHORTCUT-`(a,b)`-panel bridge is the FLAGGED genuinely-new step
-> (two routes: A neighbour-column one-edge form, the M₃ precedent; B the KT eq-6.66 meet identity). Then
-> (ii) build `W`, `exact case_III_arm_corner_assembly`; then LEAF-5 (router) → CHAIN-5. **Do NOT**
-> re-attempt the four dead route families (§I.8.18–(I.8.20)), re-litigate the fork, revive the relabel-image
-> `±r` route, route through the `interior_group_*` column subtree (wrong shape, §(4.12)), pin the leaf to
-> `candidate_perp_two_incident` alone or `panelCorrespondence_supportExtensor` (wrong panel / chain-edge-only,
-> §(4.13)), or source the interior `hρe₀` by firing W6b at the interior split (unsatisfiable `hsplitGP`).
-> See *Current state* + *Hand-off* + design §I.8.24(4.14).
+> (LEAF-4 step (i)) the interior `hρe₀` — DECOMPOSED + SETTLED by a diverse-lens recon PAIR (CONVERGED,
+> coordinator-adjudicated; design §I.8.24(4.15), SUPERSEDES §(4.14) Route A). The build the NEXT commit makes
+> is the genuinely-new inductive carry `ChainData.baseRedundancy_perp_chain_edge` (carry `ρ₀`'s panel-perp from
+> the base `(ab)` annihilation along the chain to the off-slot edge `(vtx (i−2), vtx (i−1))`, induction on `s`,
+> each step `candidate_perp_two_incident_supportExtensors` + the per-step SUP `hcol` via
+> `freshEdge_interior_acolumn_sup`); the FINAL step (Lean-checked) lands in `e_b`'s overridden support = the
+> shortcut `(a,b)` panel = `hρe₀`. (Route A's degree-1 neighbour-column is KILLED: the neighbour is degree-2;
+> the shortcut isn't a graph edge. Route B = `Meet.lean` FALLBACK.) Then assemble the leaf, (ii) build `W`,
+> `exact case_III_arm_corner_assembly`; then LEAF-5 (router) → CHAIN-5. **Do NOT** re-attempt the four dead
+> route families (§I.8.18–(I.8.20)), re-litigate the fork, revive the relabel-image `±r` route, route through
+> the `interior_group_*` column subtree (wrong shape, §(4.12)), pin to `candidate_perp_two_incident` at `v`,
+> `panelCorrespondence_supportExtensor`, a degree-1 neighbour-column, or the M₃ `hρ_ac` (wrong panel /
+> chain-edge / `hρGv`-based, §(4.13)/(4.14)), or fire W6b at the interior split (unsatisfiable `hsplitGP`).
+> See *Current state* + *Hand-off* + design §I.8.24(4.15).
 
 ## Current state
 
@@ -140,31 +143,32 @@ d=3-base / `M₃` single-block situation). This is the column-projection brick t
 leaf's eq-6.52 regrouping at the degree-2 vertex `vᵢ` threads through. Zero blast radius (no live
 caller yet).
 
-**NEXT: LEAF-4 step (i) (THE HARD CORE) — the GENUINELY-NEW interior-`hρe₀` leaf
-`baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the conjecture-crux redundancy-carry seam) +
-(ii) the base block `W` + `exact case_III_arm_corner_assembly`. The dedicated DECOMPOSE+SETTLE pass HAS RUN
-(source-verified, 2026-06-24) — design §I.8.24(4.14), which SUPERSEDES §(4.13)'s route pin.** Net: sub-step
-(1) the **eq-6.52 regrouping is SETTLED-SATISFIABLE** (the LANDED widening + `freshEdge_interior_acolumn_sup`
-+ degree-2 partition feed `candidate_perp_two_incident_supportExtensors`, exact data flow + index check in
-§(4.14)); sub-step (2) the **reproduced-slot transport is FLAGGED** — §(4.13)'s `candidate_perp_two_incident`
-route reaches the two INCIDENT panels through `vᵢ` (`(v,a)`, `(v,b)`), but the consumer's `hρe₀` is at the
-SHORTCUT `(a,b)` panel (`panelSupportExtensor (q(a,·)) (q(b,·))`, `a = vtx i.succ`, `b = vtx (i−1).castSucc`,
-the two neighbours of `vᵢ` — verified at `ForkedArm.lean:200–202` + `Candidate.lean:1975`), and NO landed
-leaf bridges incident→shortcut. `panelCorrespondence_supportExtensor` is a genuine-CHAIN-EDGE transport
-(not the reproduced fresh-slot), so §(4.13)'s pin does not type-check at the consumer's panel. **The single
-genuinely-new step is the incident→shortcut bridge**; §(4.14) names two routes, FLAG-not-FORCE:
-**Route A (preferred, the M₃ one-edge precedent)** — read the candidate row's column at a NEIGHBOUR body
-(not the degree-2 removed `vᵢ`, whose column lands in a two-block SUP), one-edge/`⊓`-form, landing in the
-shortcut block ⇒ shortcut-panel perp (the new leaf reads the column at `a`/`b`, NOT `vᵢ`); the build's
-satisfiability check = the neighbour body's degree in the candidate framework. **Route B** — the KT eq-6.66
-Grassmann–Cayley collinearity meet identity (the three-panel `±r` linear relation, FALSE generically, holds
-only for the shared `r`), via `Meet.lean` — the harder route. **Build order:** widening (i′) ✓ DONE;
-column-SUP projection `freshEdge_interior_acolumn_sup` ✓ DONE (it is sub-step (1)'s `hcol` input, the SUP
-shape — NOT a single-panel pin; keep it); **(i) build the leaf via Route A** (or B); **(ii)** the base block
-`W` via `chainData_bottom_relabel` + LEAF-2, then `exact case_III_arm_corner_assembly`. Do **NOT** pin the
-leaf to `candidate_perp_two_incident` alone (stops at incident panels), do **NOT** route the shortcut through
-`panelCorrespondence_supportExtensor` (chain edges only), do **NOT** revive the `interior_group_*` column
-subtree (column value, §(4.12)/(4.13)), and do **NOT** fire W6b per-interior-split (`hsplitGP` unavailable;
+**NEXT: LEAF-4 step (i) (THE CONJECTURE CRUX) — build the GENUINELY-NEW inductive sub-lemma
+`ChainData.baseRedundancy_perp_chain_edge`, then assemble the interior-`hρe₀` leaf, then (ii) the base block
+`W` + `exact case_III_arm_corner_assembly`. A DECOMPOSE+SETTLE pass + a diverse-lens recon PAIR HAVE RUN
+(source-verified, CONVERGED, coordinator-adjudicated, 2026-06-24) — design §I.8.24(4.15), which SUPERSEDES
+§(4.14)'s Route A.** The pair KILLED §(4.14)'s Route A (degree-1 neighbour-column): the neighbour
+`b = vtx (i−1).castSucc` is itself an interior chain vertex, **degree-2 in `G`** (`deg_two`;
+`caseIIICandidate.graph = G`), so its column lands in a two-block SUP, never the isolated shortcut block — and
+the shortcut `(a,b)` is **not a graph edge** (it is `e_b`'s OVERRIDDEN support in `F₀`). **The CORRECTED ROUTE
+(converged):** the genuinely-new sub-lemma `ChainData.baseRedundancy_perp_chain_edge` carries `ρ₀`'s panel-perp
+from LEAF-3's base `(ab)` annihilation ALONG the chain to the interior off-slot edge `(vtx (i−2), vtx (i−1))`,
+by induction on `s` (depth `O(i)`), each step via `candidate_perp_two_incident_supportExtensors` (`hρGv`-free) +
+the per-step `hcol` from the widening regrouped at each vertex via `freshEdge_interior_acolumn_sup` (the SUP IS
+the right per-step `hcol` — ON-ROUTE, keep it). The FINAL step is **Lean-checked**: apply
+`candidate_perp_two_incident_supportExtensors` at body `b` in `F₀` (`b`'s incident edges are `e_b` (support
+overridden → the shortcut) + `edge (i−2)` (off-slot); the carry's `ρ₀ ⊥ (vtx (i−2), vtx (i−1))` + `hcol`/`hrest`
+at `b` ⟹ `ρ₀ ⊥ e_b`'s support = the shortcut = `hρe₀`). Route B (Grassmann–Cayley meet via `Meet.lean`) =
+FALLBACK only if a per-step `hcol` is unsatisfiable (not expected). Full route + per-step shape in design
+§I.8.24(4.15). **Build order:** widening (i′) ✓ DONE; column-SUP `freshEdge_interior_acolumn_sup` ✓ DONE
+(per-step `hcol`, keep); **(i) build `baseRedundancy_perp_chain_edge`** (THE conjecture crux — rate a build by
+IT, not the Lean-checked final step or the `W`-plumbing), then assemble the leaf (carry at `s = i−2` + the final
+application); **(ii)** the base block `W` via `chainData_bottom_relabel` + LEAF-2, then
+`exact case_III_arm_corner_assembly`. Do **NOT** pin to a degree-1 neighbour-column projection (shortcut isn't a
+graph edge), to `candidate_perp_two_incident` at `v` (incident panels only), to
+`panelCorrespondence_supportExtensor` (chain-edge transport), to the M₃ `hρ_ac` (`hρGv`-based), or revive the
+`interior_group_*` column subtree (column value, §(4.12)/(4.13)); and do **NOT** fire W6b per-interior-split
+(`hsplitGP` unavailable;
 only the base `v₁`-split's IH is in scope, `Arms.lean:910–913`). **Gate-side caveat (also LEAF-4):** the
 discriminator runs against the BASE seed `q`; the consumer uses `candidateSeed i q`, so a `shiftPerm`-image
 seed reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`shiftPerm` simp set). Both
@@ -405,35 +409,30 @@ the existential `(nGv,cGv,evGv,uvGv,vvGv,rvGv)` + per-summand `(G−v)`-link/blo
 `Graph.ChainData.freshEdge_interior_acolumn_sup` (`Relabel/Arm.lean`) — the `vᵢ`-column → two-block-sup
 step of the regrouping (`φ ∘ single (vtx (s+1)) ∈ block (edge s) ⊔ block (edge (s+1))` at a
 genuinely-surviving interior vertex, strict `s + 2 < (i:ℕ)`), the general-`i` lift of the d=3 gate
-`i3_freshEdge_interior_acolumn_sup_deRisk`. **NEXT COMMIT: the rest of LEAF-4 step (i) (THE HARD CORE).**
-Produce the GENUINELY-NEW interior `hρe₀` leaf `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66:
-the shared base `ρ₀` ⊥ the interior `(vtx i.succ, vtx (i−1).castSucc)` reproduced-slot panel) from LEAF-3's
-base `ρ₀`/`λ`-witness bundle + the LANDED edge-grouped form (regroup `hcol`/`grest`/`hrab`/`hrac` at the
-degree-2 vertex `vᵢ`, using the LANDED `freshEdge_interior_acolumn_sup` for the two-block-sup column
-projection) + the LANDED `candidate_perp_two_incident_supportExtensors` core + the
-`panelCorrespondence_supportExtensor`/`caseIIICandidate_supportExtensor_reproduced` shortcut-panel transport,
-then (ii) build `W` (the base-block relabel image via
-`chainData_bottom_relabel` + LEAF-2 concrete-`W` carrier), and `exact case_III_arm_corner_assembly` →
-LEAF-5 (router) → CHAIN-5. **Gate-side caveat at LEAF-4:** the discriminator ran against the BASE seed
-`q`; the consumer `case_III_arm_corner_assembly` uses `candidateSeed i q` — a `shiftPerm`-image seed
-reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`shiftPerm` simp set, the
-(4.11) "member-fixed extensor-relabelled" shape, NOT the wall). **Watch the two downstream risks** (design
-§I.8.24(4.11)/(4.12)): the ENTRY KT-4.6
-chain-extraction leaf (23d, genuinely-new), and — the conjecture-crux — the interior-`hρe₀` leaf itself
-(the §I.8.3-P2 heir, the redundancy-carry seam; NOT BLOCKED, but THE hard core of LEAF-4, do NOT scope
-away from it, and do NOT try to source it by firing W6b at the interior split — `hsplitGP` unavailable).
-**LEAF-4 DECOMPOSED + SETTLED (docs-only pass, 2026-06-24; design §I.8.24(4.14), which SUPERSEDES §(4.13)'s
-route pin).** §(4.12)/(4.13)'s structural verdict stands (the leaf is SOUND KT-math, below the contract), but
-BOTH prior route pins miss the consumer's actual `hρe₀` panel: §(4.12)'s `interior_group_eq_baseRedundancy` is
-WRONG-SHAPE (column value), and §(4.13)'s `candidate_perp_two_incident` reaches the two INCIDENT panels
-through `vᵢ`, while the consumer needs the SHORTCUT `(a,b)` panel (the two neighbours' line). `panelCorrespondence_
-supportExtensor` is genuine-chain-edge-only (not the reproduced fresh slot), so §(4.13)'s transport does not
-type-check at the target panel. §(4.14) SETTLES sub-step (1) the eq-6.52 regrouping (SATISFIABLE — exact data
-flow + index check) and FLAGS sub-step (2) the incident→shortcut bridge as the one genuinely-new step, with
-two routes (A: neighbour-column one-edge/`⊓`-form, the M₃ precedent; B: KT eq-6.66 Grassmann–Cayley meet
-identity) — FLAG-not-FORCE, the build picks one off the neighbour body's degree. The deleted-orphan
-`redundancy_panel_carry` flag and the `interior_group_*` column subtree are both SUPERSEDED — see the NEXT
-block above + design §I.8.24(4.14).
+`i3_freshEdge_interior_acolumn_sup_deRisk`. **NEXT COMMIT: LEAF-4 step (i) (THE CONJECTURE CRUX) — build the
+genuinely-new inductive sub-lemma `ChainData.baseRedundancy_perp_chain_edge`.** A DECOMPOSE+SETTLE pass + a
+diverse-lens recon PAIR ran (CONVERGED, coordinator-adjudicated, 2026-06-24; design §I.8.24(4.15), which
+SUPERSEDES §(4.14)'s Route A). The pair KILLED Route A (degree-1 neighbour-column): the neighbour
+`b = vtx (i−1).castSucc` is itself an interior chain vertex, **degree-2 in `G`** (`deg_two`), so its column
+lands in a two-block SUP, never the isolated shortcut block; and the shortcut `(a,b)` is **not a graph edge**
+(it is `e_b`'s OVERRIDDEN support in `F₀`). **CORRECTED ROUTE:** `baseRedundancy_perp_chain_edge` carries `ρ₀`'s
+panel-perp from LEAF-3's base `(ab)` annihilation ALONG the chain to the interior off-slot edge
+`(vtx (i−2), vtx (i−1))`, by induction on `s` (each step `candidate_perp_two_incident_supportExtensors`
+(`hρGv`-free) + the per-step `hcol` from the widening regrouped via `freshEdge_interior_acolumn_sup`); the FINAL
+step (**Lean-checked**) applies `candidate_perp_two_incident_supportExtensors` at body `b` in `F₀` to land in
+`e_b`'s overridden support = the shortcut = `hρe₀`. Route B (Grassmann–Cayley meet via `Meet.lean`) = FALLBACK
+if a per-step `hcol` is unsatisfiable (not expected). Then assemble the leaf (carry at `s = i−2` + final step)
+and (ii) build `W` (`chainData_bottom_relabel` + LEAF-2) + `exact case_III_arm_corner_assembly` → LEAF-5 →
+CHAIN-5. Full route + per-step shape in design §I.8.24(4.15). **Gate-side caveat at LEAF-4:** the discriminator
+ran against the BASE seed `q`; the consumer `case_III_arm_corner_assembly` uses `candidateSeed i q` — a
+`shiftPerm`-image seed reconciliation is needed (buildable bookkeeping on the LANDED `candidateSeed`/`shiftPerm`
+simp set, NOT the wall). **Do NOT** scope away from the carry (THE conjecture crux), pin to a degree-1
+neighbour-column (shortcut isn't a graph edge), to `candidate_perp_two_incident` at `v` (incident panels only),
+to `panelCorrespondence_supportExtensor` (chain-edge transport), to the M₃ `hρ_ac` (`hρGv`-based), or revive the
+`interior_group_*` column subtree (column value, §(4.12)/(4.13)); and do **NOT** fire W6b per-interior-split
+(`hsplitGP` unavailable). The deleted-orphan `redundancy_panel_carry` flag + the `interior_group_*` subtree stay
+SUPERSEDED. **Downstream risk to watch** (design §I.8.24): the ENTRY KT-4.6 chain-extraction leaf (23d,
+genuinely-new).
 
 **Build order (ranked EASIEST→HARDEST; full signatures + per-leaf risk in design §(o‴)(I.8.24)(4.10)):**
 0. Open `Relabel/Dispatch.lean` (importing `Relabel/ForkedArm`; the `Relabel/` split is DONE — do NOT grow
@@ -493,9 +492,10 @@ block above + design §I.8.24(4.14).
    `chainData_split_w6b_gates` gained an output conjunct `AlgebraicIndependent ℚ q` (already in scope from
    `hsplitGP`, the discriminator prerequisite; its one consumer `chainData_split_realization` took a `_`
    binder). The gate-side `candidateSeed` `shiftPerm`-image reconciliation is deferred to LEAF-4 (buildable).
-4. **LEAF-4 (THE HARD CORE) — DECOMPOSED + SETTLED by the 2026-06-24 pass, design §I.8.24(4.14)** (which
-   SUPERSEDES §(4.13)'s route pin). THREE pieces (i′ the LEAF-3 widening, i the interior-`hρe₀` leaf, ii the
-   base block `W`); do NOT peel one and defer the rest:
+4. **LEAF-4 (THE CONJECTURE CRUX) — DECOMPOSED + SETTLED by a diverse-lens recon PAIR, design §I.8.24(4.15)**
+   (CONVERGED, coordinator-adjudicated; SUPERSEDES §(4.14)'s Route A). THREE pieces (i′ the LEAF-3 widening ✓,
+   i the interior-`hρe₀` leaf = the new carry `baseRedundancy_perp_chain_edge` + the Lean-checked final step,
+   ii the base block `W`); do NOT peel one and defer the conjecture-crux carry:
    (i′) ~~**WIDEN LEAF-3 / `chainData_split_w6b_gates`** to emit the eq-6.52 ALL-edge redundancy data.~~
    ✓ **LANDED** 2026-06-24 (`CaseIII/Realization.lean`, axiom-clean, build/lint/warning-clean): the wrapper
    now re-exposes the W6b producer's internally-computed **edge-grouped `G_v`-row form** (KT eq-6.66) — the
@@ -503,26 +503,25 @@ block above + design §I.8.24(4.14).
    `hingeRow a b ρ = ∑ⱼ cGv j • hingeRow (uvGv j) (vvGv j) (rvGv j)` (`Candidate.lean:439–445`, previously
    the discarded `_hedgeGv`). Threaded through both chain-order branches (the `(b,a)` branch via
    `hingeRow_swap a b (-ρ)` + `neg_neg`); the two consumers took a `_` binder.
-   **(i) the interior-`hρe₀` leaf** `baseRedundancy_perp_interior_reproduced_panel` (KT eq-6.66, the
-   conjecture-crux redundancy-carry seam). SETTLE verdict (§(4.14), source-verified): sub-step (1) the
-   **eq-6.52 regrouping is SATISFIABLE** — the LANDED widening's flat all-edge form, partitioned at the
-   degree-2 vertex `vᵢ` (via `ChainData.deg_two`) into the `edge i`-group (`e_c=(v,a)`), `edge (i−1)`-group
-   (`e_d=(v,b)`), and `grest`, with `hcol` = `freshEdge_interior_acolumn_sup` (LANDED, the `vᵢ`-column →
-   `block (edge s) ⊔ block (edge (s+1))` SUP, strict `s+2 < i`), feeds `candidate_perp_two_incident_
-   supportExtensors` (the existing precedent `freshEdge_surviving_row_mem_of_witness` does this exact wiring).
-   sub-step (2) the **reproduced-slot transport is FLAGGED** — `candidate_perp_two_incident` reaches the two
-   INCIDENT panels through `vᵢ` (`(v,a)`, `(v,b)`), but the consumer's `hρe₀` is at the SHORTCUT `(a,b)` panel
-   (`panelSupportExtensor (q(a,·)) (q(b,·))`, the two NEIGHBOURS — verified `ForkedArm.lean:200–202` +
-   `Candidate.lean:1975`), and NO landed leaf bridges incident→shortcut (`panelCorrespondence_supportExtensor`
-   is genuine-chain-edge-only, NOT the reproduced fresh slot). **The single genuinely-new step = the
-   incident→shortcut bridge**, with two routes (§(4.14)): **Route A (preferred)** read the candidate row's
-   column at a NEIGHBOUR body (not the degree-2 `vᵢ`), one-edge/`⊓`-form → shortcut-block ⇒ shortcut-panel
-   perp (the M₃ `hρ_ac` precedent generalized); **Route B** the KT eq-6.66 Grassmann–Cayley meet identity (the
-   three-panel `±r` linear relation, via `Meet.lean`, harder). The build's satisfiability check (decides A vs
-   B) = the neighbour body's degree in the candidate framework. Do **NOT** pin to `candidate_perp_two_incident`
-   alone (stops at incident panels), do **NOT** route through `panelCorrespondence_supportExtensor` (chain
-   edges only), do **NOT** revive the `interior_group_*` column subtree (column value), do **NOT** fire W6b
-   per-interior-split (`hsplitGP` unavailable). (ii) **the base block `W`**: `f := w`,
+   **(i) the interior-`hρe₀` leaf** — DECOMPOSED+SETTLED by a diverse-lens recon PAIR (CONVERGED,
+   coordinator-adjudicated; design §I.8.24(4.15), SUPERSEDES §(4.14) Route A). sub-step (1) the **eq-6.52
+   regrouping is SATISFIABLE** — the LANDED widening's flat all-edge form, partitioned at the degree-2 vertex
+   (via `ChainData.deg_two`), with the per-step `hcol` = `freshEdge_interior_acolumn_sup` (LANDED, the two-block
+   SUP, strict `s+2 < i`), feeds `candidate_perp_two_incident_supportExtensors` (precedent
+   `freshEdge_surviving_row_mem_of_witness`). sub-step (2) Route A (degree-1 neighbour-column) is **KILLED** —
+   the neighbour `b = vtx (i−1).castSucc` is itself an interior chain vertex, degree-2 in `G` (`deg_two`;
+   `caseIIICandidate.graph = G`), so its column lands in a two-block SUP, never the isolated shortcut block (and
+   the shortcut `(a,b)` isn't a graph edge — it is `e_b`'s OVERRIDDEN support in `F₀`). **CORRECTED ROUTE:** build
+   the genuinely-new inductive sub-lemma `ChainData.baseRedundancy_perp_chain_edge` — carry `ρ₀`'s panel-perp
+   from LEAF-3's base `(ab)` annihilation along the chain to the off-slot edge `(vtx (i−2), vtx (i−1))`,
+   induction on `s`, each step `candidate_perp_two_incident_supportExtensors` (`hρGv`-free) + the per-step SUP
+   `hcol`; the FINAL step (**Lean-checked**) applies `candidate_perp_two_incident_supportExtensors` at body `b`
+   in `F₀` to land in `e_b`'s overridden support = the shortcut = `hρe₀`. Route B (Grassmann–Cayley meet via
+   `Meet.lean`) = FALLBACK if a per-step `hcol` is unsatisfiable. Do **NOT** pin to a degree-1 neighbour-column
+   (shortcut isn't a graph edge), to `candidate_perp_two_incident` at `v` (incident panels only), to
+   `panelCorrespondence_supportExtensor` (chain edges only), to the M₃ `hρ_ac` (`hρGv`-based), or revive the
+   `interior_group_*` column subtree; do **NOT** fire W6b per-interior-split (`hsplitGP` unavailable).
+   (ii) **the base block `W`**: `f := w`,
    `L := (funLeft (shiftPerm i.castSucc)⁻¹).dualMap`, `hS` = the per-member case-split over `hwmem`
    (genuine → off-slot GROUP leaf `funLeft_dualMap_pmR_group_mem_span_caseIIICandidate` + row-routing bridge;
    block-tag → reproduced-slot membership) routing `chainData_bottom_relabel`'s images into
@@ -710,18 +709,19 @@ needs is in* Current state *above (`Landed (all axiom-clean)…`). All landed le
   removed → degree-ONE, the d3-base/`M₃` one-edge case). The `vᵢ`-column → two-block-sup step of the
   interior-`hρe₀` regrouping; zero blast radius (no live caller). Build note: `s + 1 < i` is WRONG — it
   permits `i = s+2` where `vtx (s+2) = vtx i` is removed (caught by an `omega`-fail on `s + 2 ≠ (i:ℕ)`).
-- **LEAF-4 DECOMPOSE + SETTLE pass (2026-06-24, docs-only; design §I.8.24(4.14), source-verified against the
-  LANDED bodies).** Decomposes the interior-`hρe₀` leaf into sub-step (1) eq-6.52 REGROUPING + (2)
-  REPRODUCED-SLOT TRANSPORT and SETTLES each. (1) **SATISFIABLE** — the LANDED widening's flat all-edge form,
-  partitioned at `vᵢ` by `ChainData.deg_two` into the `e_c=(v,a)`/`e_d=(v,b)` groups + `grest`, with `hcol` =
-  `freshEdge_interior_acolumn_sup`, feeds `candidate_perp_two_incident_supportExtensors` (precedent:
-  `freshEdge_surviving_row_mem_of_witness`); index check passes (`Finset.filter` partition of `Fin nGv`). (2)
-  **FLAGGED** (clause (ii), not a re-pin): the §(4.13) `candidate_perp_two_incident` route reaches the two
-  INCIDENT panels `(v,a)`/`(v,b)`, but the consumer's `hρe₀` is the SHORTCUT `(a,b)` panel (verified
-  `ForkedArm.lean:200–202` → `Candidate.lean:1975` reproduced-slot `hperp`); `panelCorrespondence_supportExtensor`
-  is genuine-chain-edge-only, so §(4.13)'s transport is wrong-panel. The one genuinely-new step = the
-  incident→shortcut bridge, two routes: **A** neighbour-column one-edge/`⊓`-form (the M₃ `hρ_ac` precedent,
-  preferred); **B** the KT eq-6.66 Grassmann–Cayley meet identity (`Meet.lean`, harder). Below the contract
-  (cert `hρGv`-free + `ρ₀`-agnostic); the build picks A vs B off the neighbour body's degree. This zone has
-  been ~50% wrong on single-pass pins (§(4.12) column-shape, §(4.13) wrong-panel), so the genuinely-new step is
-  named with its satisfiability discriminator rather than confidently re-pinned.
+- **LEAF-4 interior-`hρe₀` DECOMPOSE+SETTLE + diverse-lens recon PAIR (2026-06-24, docs-only; design
+  §I.8.24(4.15), CONVERGED, coordinator-adjudicated).** Sub-step (1) eq-6.52 REGROUPING = **SATISFIABLE** (the
+  LANDED widening's flat all-edge form, partitioned at the degree-2 vertex by `deg_two`, per-step `hcol` =
+  `freshEdge_interior_acolumn_sup`, feeds `candidate_perp_two_incident_supportExtensors`; precedent
+  `freshEdge_surviving_row_mem_of_witness`). Sub-step (2): Route A (degree-1 neighbour-column) **KILLED** — the
+  neighbour `b = vtx (i−1).castSucc` is itself an interior chain vertex, degree-2 in `G` (`deg_two`;
+  `caseIIICandidate.graph = G`), so its column → two-block SUP; the shortcut `(a,b)` isn't a graph edge (it is
+  `e_b`'s OVERRIDDEN support in `F₀`, verified `ForkedArm.lean:200–202` → `Candidate.lean:1975`). **CORRECTED
+  ROUTE:** the genuinely-new inductive carry `ChainData.baseRedundancy_perp_chain_edge` (base `(ab)` annihilation
+  → off-slot edge `(vtx (i−2), vtx (i−1))`, induction on `s`, each step
+  `candidate_perp_two_incident_supportExtensors` + per-step SUP `hcol`) + a **Lean-checked** FINAL step
+  (`candidate_perp_two_incident_supportExtensors` at body `b` in `F₀` → `e_b`'s overridden support = shortcut =
+  `hρe₀`). Route B (`Meet.lean` meet identity) = FALLBACK. Below the contract (cert `hρGv`-free + `ρ₀`-agnostic).
+  The pair fired because the seam had been mis-pinned 3× (§(4.12) column-shape, §(4.13)/(4.14)-A wrong-panel);
+  the diverse-lens convergence + coordinator source-verification (the consumer's `hρe₀` panel) is what made the
+  re-route sound.
