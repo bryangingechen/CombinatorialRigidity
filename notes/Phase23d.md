@@ -90,31 +90,38 @@ relabel `σ = (shiftPerm i.castSucc)⁻¹` (where `σ.symm vᵢ = vtx 1`, the re
 the WHOLE `G − vtx 1` family with no per-member case-split. The `hvanish` half of LEAF-4 is now a
 one-lemma call; **the substantive remaining LEAF-4 piece is the `hS` router** (genuine vs block-tag).
 
-**Next concrete step = LEAF-4 wiring (the per-member `hS` discharge + the `case_III_arm_corner_assembly`
-call; the `hvanish` half is now the landed `ofNormals_removeVertex_rigidityRow_comp_single_self`).** At
-the matched interior `i`, instantiate `exists_genuine_relabelImage_base_block` at
-`Fbase = ofNormals (G − vtx 1) ends₀ q`, `Fcand = caseIIICandidate (G − vᵢ) endsσρ qρ …`,
-`σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`: discharge the universal `hvanish` by
-`ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1` (the removed base body) and the
-universal `hS` from `chainData_bottom_relabel` + `bottomRelabel_image_mem_span_caseIIICandidate` (the
-genuine/block-tag router); feed the resulting `W`/`hWS`/`hWcard`/`hW` + the LEAF-3 `hgate`/`hρe₀` into
-the LANDED `case_III_arm_corner_assembly`.
+**THE LEAF-4 `hS`-ROUTER HALF IS LANDED (2026-06-24, axiom-clean, build/lint/warning-clean) — THE
+RESIDUAL RISK IS RESOLVED.** `Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate`
+(`CaseIII/Relabel/ForkedArm.lean`, just before `case_III_arm_corner_assembly`): for the chain
+dispatch's base framework `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`, EVERY rigidity row
+`φ` transports under `(funLeft (shiftPerm i.castSucc).symm).dualMap` into the candidate
+`caseIIICandidate G endsσρ qρ e_a e_b (qρ(vtx i.succ,·)) n' (qρ(vtx (i−1).castSucc,·)) 0`'s
+rigidity-row span — exactly LEAF-B2's universal `hS` slot at `σ = (shiftPerm i.castSucc)⁻¹`. Body =
+pure 2-lemma composition: feed `φ ∈ Fbase.rigidityRows` as `Or.inl hφ` to
+`chainData_bottom_relabel` (→ the candidate-`i` seed disjunction), then
+`bottomRelabel_image_mem_span_caseIIICandidate` (→ candidate span). The residual-risk question is
+answered: the genuine base rows ALL go through the cert-SOUND genuine branch — `Or.inl` never forces
+the §(4.17)-dead block-tag path (that path only fires on the candidate's own reproduced slot, supplied
+by `hG_eb_cand` at the genuine `(a, b)` candidate link, never on a base-row image). NO `hρGv`, no new
+LA, no narrowing of LEAF-B2's `hS` slot needed. The hypotheses (`hrec`/`he₀rec`, `hG_eb_cand`/`heab_off`)
+are exactly the dispatch's interior-split data.
 
-> **LEAF-4 residual risk (coordinator-flagged, the one remaining route-B viability question — now scoped
-> to the `hS` router only; the `hvanish` half is landed).** LEAF-B2's
-> `hS` is stated **universally over all `Fbase.rigidityRows`**, but its body only uses it at the genuine
-> basis members (`f i ∈ rigidityRows`, `≠ rhat`). The universal form is dischargeable ONLY if every relevant
-> base row transports via the router's **SOUND genuine branch** (`chainData_bottom_relabel` `Or.inl` →
-> `bottomRelabel_image_mem_span_caseIIICandidate` genuine branch). The reproduced/block-tag `Or.inr` branch is
-> §(4.17)-DEAD (needs the unsatisfiable `hG_eb_cand`). So LEAF-4 must confirm the genuine basis rows ALL go
-> through the genuine branch. If a needed row requires the dead branch, that is the wall surfacing — return
-> BLOCKED naming the row (do NOT force it). Likely the right fix is to **narrow LEAF-B2's `hS`/`hvanish` to
-> `Fbase.rigidityRows ∖ {rhat}`** (matching the body's actual use) so the carried hypothesis is exactly the
-> satisfiable one; a LEAF-4 build that discharges `hS` cleanly confirms route B clears the rank cert.
+**Next concrete step = the rest of LEAF-4 wiring: the `case_III_arm_corner_assembly` call.** Both
+halves of LEAF-B2's universal slots are now landed (`hvanish` =
+`ofNormals_removeVertex_rigidityRow_comp_single_self`, `hS` =
+`bottomRelabel_rigidityRows_mem_span_caseIIICandidate`). At the matched interior `i`, instantiate
+`exists_genuine_relabelImage_base_block` (LEAF-B2) at `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`,
+`Fcand = caseIIICandidate G endsσρ qρ e_a e_b …`, `σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`, with `hvanish`
+and `hS` discharged by the two landed universal lemmas, and feed the resulting `W`/`hWS`/`hWcard`/`hW` +
+the LEAF-3 `hgate`/`hρe₀` into the LANDED `case_III_arm_corner_assembly`. (The framework-alignment
+bookkeeping — `Fcand`'s `endsσρ`/`qρ` ⟷ the assembly's `caseIIICandidate G ends q e_a e_b (q(a,·)) n'
+(q(b,·)) 0` — is the remaining wiring; `case_III_arm_corner_assembly` itself is already landed and takes
+`W`/`hWS`/`hWcard`/`hW` as-is.)
 
 **Plan (≈2 sub-phases left to close the rank cert):** ✅ LEAF-B1 (crux, landed) → ✅ LEAF-B2 (genuine-only `W`
-producer, landed) → LEAF-4 (the per-member `hS`/`hvanish` discharge + `case_III_arm_corner_assembly` call) /
-LEAF-B3 corner producer (mostly landed) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
+producer, landed) → ✅ LEAF-4 `hvanish` + `hS` router both LANDED; remaining = the
+`case_III_arm_corner_assembly` call / LEAF-B3 corner producer (mostly landed) → CHAIN-2c-iii dispatch /
+CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe).
 **Route A** (full concrete `Matrix`; KT transfers literally but heavy) is the documented fallback only if the
 LEAF-4 `hS`-router wiring walls — B's diagnosis tells A how to slot the redundant row, so the fallback is real
 and informed. **(C)** (honest-conditional) is the fallback-of-the-fallback, not the plan.
@@ -142,13 +149,17 @@ carries the live consequence (route B + the LEAF-B2 next step). Do not re-run th
    universally over `Fbase.rigidityRows`. ✅ **LEAF-4 `hvanish` half LANDED**
    (`PanelHingeFramework.ofNormals_removeVertex_rigidityRow_comp_single_self`, `CaseIII/Candidate.lean`) —
    every `ofNormals (G − v)` rigidity row vanishes off `v`'s column, discharging LEAF-B2's universal
-   `hvanish`-off-`σ.symm vᵢ = vtx 1` for the whole family. OPEN: **LEAF-4** `hS`-router half (the per-member
-   `hS` discharge at the matched interior `i` + the `case_III_arm_corner_assembly` call — the `hS` router is
-   the `chainData_bottom_relabel` + `bottomRelabel_image_mem_span_caseIIICandidate` genuine/block-tag
-   dispatch), **LEAF-B3** (corner producer, mostly
-   landed: the `±r` via `hρe₀`, the panel rows, `linearIndependent_mkQ_corner_of_gate`). The carrier, both
-   `hLI` halves, the (α) bridge, the off-slot row bridge, the arm spine, and the corner-data assembly stay
-   LANDED (`notes/Phase23c.md` ledger). The interior `hρe₀` is CLOSED.
+   `hvanish`-off-`σ.symm vᵢ = vtx 1` for the whole family. ✅ **LEAF-4 `hS`-router half LANDED**
+   (`Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate`,
+   `CaseIII/Relabel/ForkedArm.lean`) — every `Fbase = (ofNormals (G − vtx 1) ends₀ q)` rigidity row
+   transports under the cycle relabel into the candidate span, discharging LEAF-B2's universal `hS`; pure
+   composition of `chainData_bottom_relabel` (`Or.inl`) + `bottomRelabel_image_mem_span_caseIIICandidate`,
+   the residual risk RESOLVED (every genuine base row goes through the cert-sound genuine branch). OPEN:
+   the rest of **LEAF-4** (the `case_III_arm_corner_assembly` call — instantiate LEAF-B2 with `hvanish`/`hS`
+   discharged by the two landed universal lemmas, then feed `W`/… into the assembly), **LEAF-B3** (corner
+   producer, mostly landed: the `±r` via `hρe₀`, the panel rows, `linearIndependent_mkQ_corner_of_gate`).
+   The carrier, both `hLI` halves, the (α) bridge, the off-slot row bridge, the arm spine, and the
+   corner-data assembly stay LANDED (`notes/Phase23c.md` ledger). The interior `hρe₀` is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` dispatch (a discriminator-pick + Fin-case ROUTER
    over the two landed arm routes: the OLD engine via `chainData_split_realization` for the base candidate
    `i=1` + the d=3 floor; the option-(A) `case_III_arm_corner_assembly` for interior `2 ≤ i < d`). Blocked
@@ -187,41 +198,44 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 - **The member-mapping wall (intrinsic to KT for the EXISTING architecture, 5× kernel-confirmed) is
   ESCAPED by route B's architectural inversion (§(4.25)); the crux LEAF-B1 + the genuine-only `W` producer
   LEAF-B2 are both LANDED.** Route B follows KT (6.64): redundant row → CORNER, genuine rows → base block `W`.
-  The remaining open item is LEAF-4 (the per-member `hS`/`hvanish` discharge at the matched interior `i` +
-  the `case_III_arm_corner_assembly` call) and the dispatch. **Residual risk RESOLVED at the LEAF-B2 signature
-  level:** LEAF-B2 takes `hS`/`hvanish` universally over `Fbase.rigidityRows`, and the `hvanish`-off-`σ.symm v`
-  is satisfiable because LEAF-4 instantiates `σ = (shiftPerm i.castSucc)⁻¹` ⟹ `σ.symm vᵢ = shiftPerm i.castSucc
-  vᵢ = vtx 1` (the removed base body) — every genuine `G − vtx 1` row is off `vtx 1` (`hingeRow_comp_single_off`).
-  The LEAF-4 `hS` router (genuine vs block-tag, into the candidate span) is the substantive remaining wiring;
-  if it walls, route A (concrete `Matrix`) is reconsidered.
+  Both of LEAF-B2's universal slots are now LANDED: the `hvanish` half
+  (`ofNormals_removeVertex_rigidityRow_comp_single_self`) and the `hS`-router half
+  (`bottomRelabel_rigidityRows_mem_span_caseIIICandidate`, 2026-06-24). **The residual risk is RESOLVED
+  by construction** — the `hS` router is sorry-free + axiom-clean, and its `Or.inl` feed confirms every
+  genuine base row transports through the cert-sound genuine branch (never the §(4.17)-dead block-tag
+  path). So route B clears the rank cert at the `hS` layer; no narrowing of LEAF-B2's `hS`/`hvanish`
+  slots and no route-A fallback are needed. The remaining open item is the rest of LEAF-4 (the
+  `case_III_arm_corner_assembly` call: instantiate LEAF-B2 with the two landed universal lemmas, feed
+  the result to the assembly) and the dispatch.
 
 ## Hand-off / next phase
 
-**Route B resolves the unconditional crux; the crux LEAF-B1 and the genuine-only `W` producer LEAF-B2 are
-both LANDED. Next concrete commit = LEAF-4, the per-member `hS`/`hvanish` discharge + the
-`case_III_arm_corner_assembly` call.** Instantiate `BodyHingeFramework.exists_genuine_relabelImage_base_block`
-(LEAF-B2, `Candidate.lean`) at the matched interior `i` with `Fbase = ofNormals (G − vtx 1) ends₀ q`,
-`Fcand = caseIIICandidate (G − vᵢ) endsσρ qρ e_a e_b …`, `σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`, and:
+**Route B resolves the unconditional crux; LEAF-B1, LEAF-B2, and BOTH of LEAF-B2's universal slots
+(`hvanish` + `hS` router) are now LANDED — the route-B residual risk is RESOLVED. Next concrete commit =
+the rest of LEAF-4: the `case_III_arm_corner_assembly` call.** Instantiate
+`BodyHingeFramework.exists_genuine_relabelImage_base_block` (LEAF-B2, `Candidate.lean`) at the matched
+interior `i` with `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`,
+`Fcand = caseIIICandidate G endsσρ qρ e_a e_b (qρ(vtx i.succ,·)) n' (qρ(vtx (i−1).castSucc,·)) 0`,
+`σ = (shiftPerm i.castSucc)⁻¹`, `v = vᵢ`, and:
 - `hrhat`: the redundant-member-in-span from the W6b bundle (`exists_redundant_panelRow_ab_decomposition`
   / `chainData_split_w6b_gates`);
 - `hIH`: the IH `finrank (span (ofNormals (G − vtx 1) ends₀ q).rigidityRows) = D(|V|−2)`;
-- `hS : ∀ φ ∈ Fbase.rigidityRows, (funLeft σ).dualMap φ ∈ span Fcand.rigidityRows` — the genuine/block-tag
-  router `chainData_bottom_relabel` (it eats a `rigidityRows ∨ block-tag` disjunct, but here every input is a
-  genuine row, so feed `Or.inl`) followed by `bottomRelabel_image_mem_span_caseIIICandidate` into the candidate
-  span. Watch the framework alignment (`ofNormals (G−vᵢ)` ⟷ `caseIIICandidate (G)`) via the off-slot bridge;
-- `hvanish : ∀ φ ∈ Fbase.rigidityRows, φ.comp (single (σ.symm vᵢ)) = 0` — **LANDED**: `σ.symm vᵢ = vtx 1`
-  (the removed base body), so this is `ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1`
-  (every `G − vtx 1` rigidity row vanishes off `vtx 1`; `CaseIII/Candidate.lean`).
+- `hS`: **LANDED** = `bottomRelabel_rigidityRows_mem_span_caseIIICandidate` (`ForkedArm.lean`) — feed its
+  `hrec`/`he₀rec`/`hG_eb_cand`/`heab_off` from the dispatch's interior-split data;
+- `hvanish`: **LANDED** = `ofNormals_removeVertex_rigidityRow_comp_single_self` at `v = vtx 1`
+  (`σ.symm vᵢ = vtx 1`, the removed base body; `Candidate.lean`).
 Then feed `W`/`hWS`/`hWcard`/`hW` + the LEAF-3 `hgate`/`hρe₀` into the LANDED `case_III_arm_corner_assembly`.
-**The `hS` router is the substantive remaining wiring** (genuine vs block-tag, framework alignment); if it
-walls, return BLOCKED naming the member, and route A (concrete `Matrix`) is reconsidered.
+**The remaining wiring is framework alignment** — LEAF-B2 / the `hS` router output the candidate in the
+`endsσρ`/`qρ` form, the assembly states it as `caseIIICandidate G ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`,
+so the seed/selector identifications (`qρ(vtx i.succ,·) = q(a,·)` etc., from the `shiftPerm`/`vtx` algebra
+already used in `reproduced_panel_eq_splice_panel`) need to be threaded; no further math.
 
-Route-B build plan: ✅ **LEAF-B1** (crux, landed) → ✅ **LEAF-B2** (genuine-only `W` producer, landed) →
-**LEAF-4** (the `hS`/`hvanish` discharge + `case_III_arm_corner_assembly` call, NEXT) / **LEAF-B3** (corner
-producer, mostly landed) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY (parallel-safe). Fallbacks:
-**route A** (concrete `Matrix`, KT transfers literally but heavy) if the LEAF-4 `hS`-router walls; **(C)**
-honest-conditional only if both B and A fail (`case_III_arm_realization_chain` already carries the rank-cert
-obligation as hypotheses, so (C) stays a cheap wiring+ASSEMBLY exercise).
+Route-B build plan: ✅ **LEAF-B1** (crux) → ✅ **LEAF-B2** (genuine-only `W` producer) → ✅ **LEAF-4
+`hvanish` + `hS` router** (both LANDED); remaining = the `case_III_arm_corner_assembly` call (NEXT) /
+**LEAF-B3** (corner producer, mostly landed) → CHAIN-2c-iii dispatch / CHAIN-5, then ENTRY + ASSEMBLY
+(parallel-safe). Fallbacks: **route A** (concrete `Matrix`) and **(C)** (honest-conditional) remain the
+documented fallbacks, but the `hS`-router landing removes the wall-surfacing risk they hedged against —
+the rank cert clears at the `hS` layer.
 
 ## Decisions made during this phase
 
@@ -299,3 +313,15 @@ made* + *Landed-leaf ledger*; 23d does not duplicate them. New 23d decisions lan
   `.graph`-unfold idiom (`rw [toBodyHinge_graph, ofNormals_graph, removeVertex_isLink]`) is the established
   pattern of `chainData_bottom_relabel` / `bottomRelabel_image_mem_span_caseIIICandidate` — no new friction.
   The substantive remaining LEAF-4 piece is now the `hS` router only.
+- **LEAF-4 `hS`-router half LANDED — the residual risk is RESOLVED (2026-06-24, axiom-clean,
+  build/lint/warning-clean).** `Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate`
+  (`CaseIII/Relabel/ForkedArm.lean`, before `case_III_arm_corner_assembly`): every rigidity row of
+  `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge` transports under
+  `(funLeft (shiftPerm i.castSucc).symm).dualMap` into the candidate span — LEAF-B2's universal `hS` slot
+  at `σ = (shiftPerm i.castSucc)⁻¹`. Body = pure 2-lemma composition: `φ ∈ Fbase.rigidityRows` fed as
+  `Or.inl hφ` to `chainData_bottom_relabel`, then `bottomRelabel_image_mem_span_caseIIICandidate`. **The
+  coordinator-flagged residual risk is answered:** the genuine base rows ALL route through the cert-SOUND
+  genuine branch — `Or.inl` never forces the §(4.17)-dead block-tag path (it fires only on the candidate's
+  own reproduced slot, via `hG_eb_cand` at the genuine `(a, b)` candidate link, never a base-row image).
+  NO `hρGv`, no new LA, no narrowing of LEAF-B2's slots needed. Namespace gotcha: `chainData_bottom_relabel`
+  is `PanelHingeFramework.`-namespaced (not dot-accessible on `cd`) — minor, no FRICTION entry.

@@ -384,6 +384,69 @@ theorem _root_.Graph.ChainData.bottomRelabel_image_mem_span_caseIIICandidate
       e_a e_b (fun j => qρ (a, j)) n' (fun j => qρ (b, j)) 0 hG_eb_cand
       (by rw [zero_smul, add_zero]; exact hρ')
 
+/-- **The base block `W`'s universal per-member `hS` router, end-to-end into the candidate span**
+(`lem:case-III general-d`, the option-(A) LEAF-4 step (ii) `hS`-router half; Phase 23c
+§I.8.24(4.10)/(4.25); Katoh–Tanigawa 2011 §6.4.2 eqs.~(6.54)/(6.62)/(6.64)). The route-B
+genuine-only `W` producer `exists_genuine_relabelImage_base_block` (LEAF-B2, `CaseIII/Candidate`)
+takes its per-genuine-row transport `hS` **universally over the base framework's rigidity rows** —
+for the chain dispatch's base framework `Fbase = (ofNormals (G − vtx 1) ends₀ q).toBodyHinge`, every
+rigidity row
+`φ` must transport under the cycle relabel `(funLeft (shiftPerm i.castSucc).symm).dualMap` into the
+candidate's rigidity-row span. This leaf supplies exactly that universal fact, composing the two
+landed routing bricks:
+
+* `chainData_bottom_relabel` (`CaseIII/Relabel/Chain`) sends a genuine base row (the `Or.inl` arm —
+  here the *only* arm, since `φ ∈ Fbase.rigidityRows` is fed as `Or.inl hφ`, never the base
+  `(vtx 2, vtx 0)`-block tag) to the candidate-`i` seed disjunction over
+  `ofNormals (G − vtx i.castSucc) endsσρ qρ` — *either* a genuine seed rigidity row *or* the
+  reproduced-slot block tag `hingeRow (vtx i.succ) (vtx (i−1).castSucc) ρ'`; then
+* `bottomRelabel_image_mem_span_caseIIICandidate` (above) carries that disjunction into the
+  candidate
+  `caseIIICandidate G endsσρ qρ e_a e_b (qρ(vtx i.succ,·)) n' (qρ(vtx (i−1).castSucc,·)) 0`'s
+  rigidity-row span — the genuine seed row via the off-slot bridge
+  `hingeRow_mem_caseIIICandidate_rigidityRows_of_ofNormals_link`, the block tag via the genuine
+  reproduced-slot row `hingeRow_mem_caseIIICandidate_rigidityRows_reproduced` at `e_b`'s candidate
+  link.
+
+**This resolves the route-B LEAF-4 residual risk** (coordinator-flagged): every genuine base row
+transports through the cert-SOUND genuine branch — `chainData_bottom_relabel`'s `Or.inl` input never
+forces the §(4.17)-dead `hG_eb_cand`/block-tag-via-reproduced path to carry a *genuine* base row
+(that path only fires on the candidate's own reproduced slot, supplied by `hG_eb_cand` at the
+genuine `(a, b)` candidate link, not on a base-row image). NO `hρGv`, no new linear algebra — pure
+composition of the two landed bricks over `Or.inl`. The hypotheses (`hrec`/`he₀rec` for the first
+brick, `hG_eb_cand`/`heab_off` for the second) are exactly the dispatch's interior-split data; the
+chain dispatch (CHAIN-2c-iii) threads them in and feeds this universal `hS` to LEAF-B2. -/
+theorem _root_.Graph.ChainData.bottomRelabel_rigidityRows_mem_span_caseIIICandidate
+    [DecidableEq α] [DecidableEq β]
+    {G : Graph α β} {n : ℕ} (cd : G.ChainData n) (i : Fin cd.d) (hi : 1 < (i : ℕ))
+    {ends₀ : β → α × α} {q : α × Fin (k + 2) → ℝ}
+    {e_a e_b : β} {n' : Fin (k + 2) → ℝ}
+    (hrec : ∀ e x y, (G.removeVertex
+          (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc)).IsLink e x y →
+      ends₀ e = (x, y) ∨ ends₀ e = (y, x))
+    (he₀rec : ends₀ cd.e₀ =
+      (cd.vtx (⟨2, by have := i.isLt; omega⟩ : Fin cd.d).castSucc,
+        cd.vtx (⟨0, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+    (hG_eb_cand : G.IsLink e_b (cd.vtx i.succ)
+      (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+    (heab_off : ∀ e x y, (G.removeVertex (cd.vtx i.castSucc)).IsLink e x y → e ≠ e_a ∧ e ≠ e_b)
+    {φ : Module.Dual ℝ (α → ScrewSpace k)}
+    (hφ : φ ∈ (PanelHingeFramework.ofNormals
+        (G.removeVertex (cd.vtx (⟨1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc))
+        ends₀ q).toBodyHinge.rigidityRows) :
+    (LinearMap.funLeft ℝ (ScrewSpace k) (cd.shiftPerm i.castSucc).symm).dualMap φ ∈
+      Submodule.span ℝ
+        (PanelHingeFramework.caseIIICandidate G
+          (fun e => ((cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).1,
+            (cd.shiftPerm i.castSucc).symm (ends₀ (cd.shiftEdgePerm i e)).2))
+          (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) e_a e_b
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2)) (cd.vtx i.succ, j)) n'
+          (fun j => (fun p => q (cd.shiftPerm i.castSucc p.1, p.2))
+            (cd.vtx (⟨(i : ℕ) - 1, by have := i.isLt; omega⟩ : Fin cd.d).castSucc, j))
+          0).rigidityRows :=
+  cd.bottomRelabel_image_mem_span_caseIIICandidate i (e_a := e_a) (n' := n') hG_eb_cand heab_off
+    (PanelHingeFramework.chainData_bottom_relabel cd i hi hrec he₀rec (Or.inl hφ))
+
 /-- **The chain arm's corner-data ASSEMBLY producer** (`lem:case-III general-d`, the option-(A)
 seam-resolution integration: assemble the `±r` block decomposition's `Mᵢ` corner block `g` from the
 landed sourcing leaves and feed it to the chain-arm spine `case_III_arm_realization_chain`, Phase
