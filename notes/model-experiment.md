@@ -63,14 +63,18 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#27 (latest: **#27**, 2026-06-23,
+  would re-probe. Set/re-confirmed sessions #6–#28 (latest: **#28**, 2026-06-24,
   fresh `/coordinate-phase`; user re-confirmed the triple at session start; opus
   reachable via the Agent `model` param, no substitution needed). **The
   override expires session-end — a fresh coordinator re-runs the
   session-start availability check + re-confirms the triple.** (A) is OPEN; the
   `±r`-row seam is RESOLVED end-to-end; `chainData_dispatch` is DECOMPOSED (5
-  leaves) with the `Relabel/` split + LEAF-1/2 + the option-(a) contract field
-  `d_eq : d = n` + the `cd.d=k+1` bridge LANDED; next = the rest of LEAF-3 — see
+  leaves) with the `Relabel/` split + LEAF-1/2 + the full discriminator-index
+  plumbing + LEAF-3 (the discriminator-firing producer
+  `exists_shared_redundancy_and_matched_candidate`) LANDED; next = LEAF-4 (the
+  interior-`hρe₀` conjecture-crux leaf, route RE-ROUTED by the 2026-06-24 recon
+  pair → design §I.8.24(4.13); first commit = piece (i′), widen
+  `chainData_split_w6b_gates` to emit the eq-6.52 ALL-edge data) — see
   `notes/Phase23c.md` *Hand-off* / *Orientation*.
 - **Session #25 close (2026-06-22; rows 392–401, all opus / OPUS-ONLY, gate-verified; user stopped the
   loop after the corner-data assembly + a handoff-housekeeping pass).** **The `±r`-row seam — the
