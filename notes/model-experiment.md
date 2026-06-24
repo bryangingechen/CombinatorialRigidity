@@ -116,12 +116,28 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 450 | spike resume — GAP 1 investigate / fix-or-flag (592a202, docs) | —/—/— | opus | recon/resume | recon — BLOCKED (phase decision) | — | 300k tok / 46 tools / 9.2 min | SendMessage-resume of 449 (read-only LIFTED for salvage). GAP 1's fix is NOT a clean leaf: root cause = LEAF-B2 hardcodes `Fcand = caseIIICandidate` (corner-overridden), but KT (6.62)'s bottom block maps to the candidate's SEED framework `ofNormals (G−vᵢ) endsρ qρ`; the wrap-edge row is the independent `±r` corner row (option A transports it only as a GROUP), so individual-row `hS` re-introduces the wall. Fixes (phase-direction): (4) seed-framework re-arch, or fall back to option-A's LANDED group transport. Committed design §(4.26) + note/ROADMAP corrections. BLOCKED for adjudication. |
 | 451 | dispatch recon — scope option-A `W`-production (6800e9b, design §4.27) | —/—/— | opus | recon/resume | recon — VERDICT (B): option A walls; route 4 wall-free | — | 375k tok / 39 tools / 10.3 min | SendMessage-resume of the spike to scope the option-A fallback. VERDICT (B): the option-A engine `W` ALSO walls (takes `hρGv`; per-`i` realization needs out-of-scope IH + unrelated `ρᵢ`), correcting the §(4.26) hope. WALL-FREE = route 4 (seed-framework): `W := span(candidate seed rows)`; `hWS`/`hW` kernel-verified wall-free (`probe3_seed_W`), residual = `hseedrank` = the relabel rank-iso (`hρGv`-free, base IH). COST ≈ 2 leaves + dispatch + CHAIN-5; de-risk = NEW LEAF 1 (general-`d` `rigidityRows_ofNormals_relabel`, chain-generalize the `d=3` lemma, MEDIUM). Committed §(4.27). |
 | 452 | route-4 NEW LEAF 2 — `exists_seed_base_block` (057a86e); seed-`W` producer | 2/2/1 | opus | build/resume | clean (2 rounds; bg-build stall recovery) | ✓✓✓—✓✓ | 76 tools / ≈25 min (2 resume rounds) | Build-resume of the spike, salvaging its verified `probe3_seed_W`. Landed `exists_seed_base_block` (route-4 NEW LEAF 2, wall-free seed-`W` producer): `W := span(candidate seed rows)`; `hWS`/`hW` discharged with NO `hS`/`hρGv`; `hWcard` ⟵ `hseedrank` — the genuinely-true relabel rank-iso, a SATISFIABLE hyp NEW LEAF 1 discharges (NOT route B's unsatisfiable `hG_eb_cand`). Took 2 resume rounds: build-resume STALLED awaiting a background `lake build`; a finish-resume ran the gate foreground + committed. NEXT = NEW LEAF 1 (the involution-fail/splitOff-bridge risk). |
+| 453 | route-4 NEW LEAF 1 build (fresh agent) — BLOCKED: `hseedrank` false for the bare seed (→ §4.28) | —/—/— | opus | build | BLOCKED — route 4-bare walls (caught the §4.27 error) | — | 154k tok / 26 tools / 4.9 min | FRESH agent (spike context degrading). Recon-before-building found `hseedrank` PROVABLY FALSE for the BARE seed: the wrap edge `edge i` relabels (landed `removeVertex_genuine_shiftRelabel` `Or.inr`) to the non-chain pair `(vtx(i−1),vtx(i+1))`, absent from `R(G − vᵢ)`. The landed `d=3` relabel iso is SPLITOFF-only. CONTRADICTS + corrects §(4.27) (asserted `hseedrank` from a bare-seed iso the coordinator accepted without reading the lemma's splitOff form). Wrap-edge wall, 3rd time. → §(4.28); route 4-splitOff is the unverified fix; user decision owed. No commit. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-24 (rows 451→453) — a scoping recon's "generalize the landed lemma" can hide a
+  FRAMEWORK-FORM mismatch (splitOff vs bare), and a fresh make-or-break build caught what the coordinator's
+  acceptance did not.** §(4.27) scoped route 4 as wall-free with `hseedrank` "from the relabel rank-iso,
+  generalizing the `d=3` `rigidityRows_ofNormals_relabel`". The coordinator scrutinized + accepted it — but
+  did NOT read that landed lemma's ACTUAL form (it is stated for SPLITOFF frameworks, where a fresh
+  short-circuit edge absorbs the wrap-edge image), so the bare-seed `hseedrank` the recon asserted is in fact
+  FALSE. The fresh LEAF-1 build (recon-before-building) caught it kernel-checked, contradicting §(4.27).
+  **Lessons:** (1) when a recon says a residual "follows from a generalization of landed lemma X", READ X's
+  actual statement (framework form + hypotheses) and confirm the residual's object matches — the 3-clause
+  "verify against the landed source" applies to the COORDINATOR's acceptance of a recon verdict, not only to
+  the agent writing it. (2) Conflicting agent verdicts on a kernel-checkable fact are resolved by READING the
+  cited landed lemma, never by trusting the more recent/confident agent (here the LEAF-1 build was right).
+  (3) The wrap-edge wall has now blocked THREE base-block routes (option-A `hρGv`, route-B `hS`,
+  route-4-bare `hseedrank`) — it is fundamentally a CORNER/splitOff object; any route that puts it in the
+  bottom block `W` walls. A strong signal toward the splitOff variant or the honest-conditional (C).
 - **2026-06-24 (rows 449–450) — the deferred-hypothesis-unsat trap recurs at COMPOSITION, and a
   4-leaf + cost-outlier pattern is its tell.** Route B's LEAF-B2 individual-row `hS` re-introduced the
   member-mapping wall §(4.18)–(4.24) it was meant to escape: the wrap-edge `edge i` row is the independent

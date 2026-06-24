@@ -27,9 +27,30 @@ fully green and zero-regression throughout.
 
 ## Current state
 
-**ROUTE-4 BUILD IN PROGRESS (design §I.8.24(4.27); user-confirmed). NEW LEAF 2 LANDED (2026-06-24,
-build/lint/warning-clean): `PanelHingeFramework.exists_seed_base_block` (`CaseIII/Candidate.lean`, after
-LEAF-B2) — the wall-free bottom-block `W`-producer.** It takes `W :=` the candidate's OWN seed framework
+**⚠️ ROUTE 4-BARE BLOCKED (design §I.8.24(4.28), 2026-06-24) — the make-or-break NEW LEAF 1 is PROVABLY
+FALSE for the BARE seed; the §(4.27) scoping verdict erred (bare vs splitOff).** A make-or-break build of
+NEW LEAF 1 (the general-`d` relabel SET-image equality discharging `exists_seed_base_block`'s `hseedrank`)
+found, kernel-confirmed against the landed bricks, that `hseedrank` for the BARE candidate seed
+`ofNormals (G − vᵢ) endsρ qρ` is UNSATISFIABLE: the base wrap edge `edge i` (link `vtx i`–`vtx (i+1)`, a
+genuine `G − vtx 1` row) relabels under `σ = shiftPerm i.castSucc` to the pair `(vtx (i−1), vtx (i+1))` —
+the `Or.inr` WRAP branch of the landed `removeVertex_genuine_shiftRelabel` (`Relabel/Chain.lean:249`), NOT a
+genuine `G − vᵢ` link — and there is **no `G`-edge** on `(vtx (i−1), vtx (i+1))` (the interior `deg_two`
+closure), so `R(G − vᵢ)` is MISSING that row and the relabel is not a row-set bijection; finrank is not
+preserved. The landed `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`) is stated for
+**splitOff** frameworks (`ofNormals (G.splitOff …) …`), where the fresh short-circuit edge `e₀` ABSORBS the
+wrap-edge image — exactly what the bare seed lacks. This is the **wrap-edge member-mapping wall a THIRD time**
+(route B's `hS` §(4.26); now route 4-bare's `hseedrank`); route 4 *moved* the wall from `hS` to `hseedrank`,
+did not escape it. **NEW LEAF 2 `exists_seed_base_block` (LANDED 057a86e) is sound as a lemma but its
+`hseedrank` hypothesis is UNSATISFIABLE for the bare seed it hardcodes** — a dead conditional unless
+re-targeted. **The viable variant is route 4-SPLITOFF** (LEAF-1 unblock-1): re-target `W` to the candidate
+**splitOff** seed `ofNormals (G.splitOff vᵢ … e₀') endsρ qρ` (wrap-absorbing) + re-state the rank cert's
+`W ≤ span(candidate)` (handle the `e₀'` short-circuit row) — a genuine rank-cert re-statement, viability
+UNVERIFIED (the §(4.27) scoping already erred once on bare-vs-splitOff). **PHASE-DIRECTION DECISION PENDING
+(user):** route 4-splitOff (verify-first vs build) vs the deeper fallback (route A full `Matrix` /
+honest-conditional (C)). Below: the (now-DEAD-for-bare) LEAF-2 description, retained as the splitOff
+re-target's starting point.
+
+**[SUPERSEDED — route 4-bare] NEW LEAF 2 (`exists_seed_base_block`, LANDED 057a86e):** It takes `W :=` the candidate's OWN seed framework
 `ofNormals (G − vᵢ) endsρ qρ`'s rigidity-row span, and discharges the three cert obligations with **NO
 `hS`, NO `hρGv`**: `hWS` (off-slot bridge — every seed `(G−vᵢ)`-row is a candidate row, edge `≠ e_a,e_b`),
 `hW` (off-`vᵢ` vanishing — every seed row is a `(G−vᵢ)`-link), and `hWcard` reduced to the single hypothesis
@@ -319,15 +340,23 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Blockers / open questions
 
-- **NEW LEAF 1 is the make-or-break open item (design §(4.27)).** Route 4's seed-`W` reduction (NEW LEAF 2,
-  LANDED) bottlenecks on `hseedrank : finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)`, discharged by NEW LEAF 1
-  (the general-`d` `rigidityRows_ofNormals_relabel` SET-image equality). KNOWN RISK: the `d=3` proof
-  (`Relabel/Basic.lean:648`) uses involution facts `hσσ`/`hρρ` (`σσ=id`, `ρρ=id`) that FAIL for the cycle
-  `shiftPerm`; and the `d=3` SET-equality is stated for splitOff frameworks (graph iso under the swap),
-  whereas the candidate seed is bare `G − vᵢ` (the cycle is NOT a `G`-automorphism). Bridging likely routes
-  through the splitOff + redundant-`e₀`-row deletion, OR a direct `funLeft σ` linear-iso rank argument
-  (`σ` a perm ⟹ `funLeft σ` a linear automorphism ⟹ `dualMap` preserves finrank). If LEAF 1 walls → BLOCKED,
-  the deeper reconsideration (route A `Matrix` / honest-conditional (C)) is the coordinator's call.
+- **⚠️ NEW LEAF 1 BLOCKED — route 4-bare's `hseedrank` is PROVABLY FALSE (design §(4.28), 2026-06-24); a
+  PHASE-DIRECTION DECISION is owed.** The make-or-break build confirmed (kernel-checked vs the landed bricks)
+  that `hseedrank : finrank (span R(G − vᵢ, q∘σ)) = D·(|Gv|−1)` for the BARE seed is unsatisfiable: the base
+  wrap edge `edge i` relabels to the non-chain pair `(vtx (i−1), vtx (i+1))` (the `Or.inr` WRAP branch of the
+  landed `removeVertex_genuine_shiftRelabel`, `Relabel/Chain.lean:249`), which has no `G − vᵢ` row, so the
+  bare seed is MISSING the wrap-edge image and its rank `< D·(|Gv|−1)`. The "`funLeft σ` linear-iso preserves
+  finrank" fallback FAILS for the bare seed: `funLeft σ` preserves the finrank of the *image* span, but the
+  bare-seed span ≠ that image span (the image lands the wrap edge on `(vtx(i−1),vtx(i+1))`, absent from the
+  bare seed). The landed `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`) is for **splitOff**
+  frameworks, where the fresh `e₀` short-circuit edge ABSORBS the wrap-edge image — the bare seed lacks it.
+  **So NEW LEAF 2 `exists_seed_base_block` (LANDED 057a86e) is a sound lemma with an UNSATISFIABLE `hseedrank`
+  for the bare seed it hardcodes** (the satisfiability trap a THIRD time — route B's `hS`, now route 4-bare's
+  `hseedrank`). **Candidate fix = route 4-SPLITOFF:** re-target `W` to the candidate splitOff seed
+  `ofNormals (G.splitOff vᵢ … e₀') endsρ qρ` (wrap-absorbing) + re-state the rank cert's `W ≤ span(candidate)`
+  to handle the `e₀'` short-circuit row — a genuine rank-cert re-statement, **viability UNVERIFIED** (the
+  §(4.27) scoping already erred once on bare-vs-splitOff, so a verify-first spike is prudent). The deeper
+  fallback is route A (full `Matrix`) / honest-conditional (C). **This is a user decision** — surfaced.
 
 ### History (route B blocked; route 4 escapes)
 
@@ -370,11 +399,20 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**ROUTE-4 BUILD IN PROGRESS (design §(4.27); user-confirmed). NEXT CONCRETE COMMIT = NEW LEAF 1 (the
-make-or-break de-risk).** NEW LEAF 2 is LANDED (`exists_seed_base_block`, build/lint/warning-clean) with
-`hseedrank` as a hypothesis; NEW LEAF 1 discharges that hypothesis.
+**⚠️ ROUTE 4-BARE BLOCKED (design §(4.28)) — PHASE-DIRECTION DECISION PENDING (user).** The make-or-break
+NEW LEAF 1 build found route 4-bare's `hseedrank` PROVABLY FALSE for the bare seed (the wrap edge `edge i`
+relabels to a non-chain pair `(vtx(i−1),vtx(i+1))` absent from `R(G − vᵢ)`; the `d=3` relabel iso is
+splitOff-only). NEW LEAF 2 `exists_seed_base_block` (LANDED 057a86e) is sound but its `hseedrank` is
+unsatisfiable for the bare seed it hardcodes. **Do NOT build NEW LEAF 1 against the bare seed** — it cannot
+be proved. The candidate fix is **route 4-SPLITOFF** (re-target `W` to the candidate splitOff seed
+`ofNormals (G.splitOff vᵢ … e₀') endsρ qρ`, wrap-absorbing, + a rank-cert re-statement), **viability
+UNVERIFIED**; the deeper fallback is route A (`Matrix`) / honest-conditional (C). The next concrete step
+awaits the user's direction (route 4-splitOff verify-first vs build vs deeper fallback). See *Blockers* +
+design §(4.28). **The pre-decision route-4 build plan below is SUPERSEDED for the bare seed** (kept as the
+splitOff re-target's starting point — LEAF 2's `hWS`/`hW` shape and the slot discharges carry over; only the
+seed framework + the rank source change).
 
-**The route-4 build plan (design §(4.27)):**
+**[SUPERSEDED for bare seed] The route-4 build plan (design §(4.27)):**
 1. **✅ NEW LEAF 2 — the seed-`W` producer (LANDED 2026-06-24):** `PanelHingeFramework.exists_seed_base_block`
    (`CaseIII/Candidate.lean`, after LEAF-B2). `W := candidate seed span`; `hWS` (off-slot bridge) / `hW`
    (off-`vᵢ` vanishing) close mechanically, NO `hS`/`hρGv`; `hWcard` ⟵ the hypothesis `hseedrank`. Replaces

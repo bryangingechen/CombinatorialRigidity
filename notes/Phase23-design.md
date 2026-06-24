@@ -3302,6 +3302,46 @@ decomposition of the SECOND build it teed up.**
   - **Alternative if LEAF 1 walls:** the deeper reconsideration (route A full `Matrix`, or honest-conditional
     (C)). But LEAF 1 is the chain analog of a LANDED `d=3` `hρGv`-free leaf, so it is plausibly buildable.
 
+  *(4.28) ROUTE 4-BARE WALLS — `hseedrank` is PROVABLY FALSE for the BARE seed; the §(4.27) verdict erred
+  (bare vs splitOff). Make-or-break NEW LEAF 1 build, fresh opus, 2026-06-24, BLOCKED (recon-before-build,
+  nothing written).*
+
+  **The kernel fact (against the landed bricks).** §(4.27) claimed `W := span (ofNormals (G − vᵢ) endsρ
+  qρ).rigidityRows` has rank `D·(|Gv|−1)` via the relabel rank-iso. FALSE for the BARE seed. The base wrap
+  edge `edge i` (link `vtx i`–`vtx (i+1)`, both `≠ vtx 1` so a genuine `G − vtx 1` rigidity row) relabels
+  under `σ = shiftPerm i.castSucc` (`σ⁻¹(vtx i) = vtx (i−1)`, `σ⁻¹(vtx (i+1)) = vtx (i+1)` off-cycle) to a
+  row on the pair `(vtx (i−1), vtx (i+1))` — the `Or.inr` WRAP branch of the LANDED
+  `removeVertex_genuine_shiftRelabel` (`Relabel/Chain.lean:249`), NOT a genuine `G − vᵢ` link. There is **no
+  `G`-edge** on `(vtx (i−1), vtx (i+1))` (interior `deg_two` closure), so `R(G − vᵢ)` is MISSING the
+  wrap-edge image; the relabel is not a row-set bijection and `finrank (span R(G − vᵢ)) < D·(|Gv|−1)`. The
+  "`funLeft σ` is a linear automorphism ⟹ preserves finrank" fallback (§(4.27) Blockers) does NOT rescue it:
+  `funLeft σ` preserves the finrank of the *image* span `(funLeft σ).dualMap '' span R(base)`, but the
+  bare-seed span is a STRICT subspace of that image (missing the `(vtx(i−1),vtx(i+1))` row). KEY: the landed
+  `d=3` `rigidityRows_ofNormals_relabel` (`Relabel/Basic.lean:648`) is stated for **splitOff** frameworks
+  (`ofNormals (G.splitOff a v c e₁) …` ↔ `(funLeft swap).dualMap '' ofNormals (G.splitOff v a b e₀) …`),
+  where the FRESH short-circuit edge `e₀`/`e₁` carries the wrap-edge image as a genuine row — exactly what
+  the bare seed lacks.
+
+  **VERDICT: route 4-bare WALLS — the wrap-edge member-mapping wall, a THIRD appearance** (option-A `hρGv`
+  §(4.18)–(4.24); route-B `hS` §(4.26); now route-4-bare `hseedrank`). Route 4 *moved* the wall from
+  LEAF-B2's `hS` to `exists_seed_base_block`'s `hseedrank`; the BARE seed does not escape it. **NEW LEAF 2
+  `exists_seed_base_block` (LANDED 057a86e) is a sound lemma with an UNSATISFIABLE `hseedrank` for the bare
+  seed it hardcodes** — a dead conditional unless re-targeted. The §(4.27) `probe3_seed_W` verified only
+  `hWS`/`hW` (true for the bare seed); it ASSERTED `hseedrank` from a relabel iso that holds only for
+  splitOff — the gap the coordinator's acceptance of §(4.27) missed (lesson: verify a "generalization of a
+  landed lemma" against the landed lemma's ACTUAL framework form — splitOff vs bare — before accepting).
+
+  **Candidate fix = route 4-SPLITOFF (LEAF-1 unblock-1), viability UNVERIFIED:** re-target `W` to the
+  candidate SPLITOFF seed `ofNormals (G.splitOff vᵢ a b e₀') endsρ qρ` (wrap-absorbing: the relabel iso DOES
+  hold splitOff↔splitOff, generalizing `Relabel/Basic.lean:648` to `shiftPerm`/`shiftEdgePerm`), and re-state
+  the rank cert's `W ≤ span(caseIIICandidate)` to carry the extra `e₀'` short-circuit row (is it a candidate
+  row? — an OPEN obligation) — a genuine rank-cert re-statement, NOT a leaf. Open risks: (a) the splitOff↔
+  splitOff relabel iso at the non-involutive cycle `σ` (the `d=3` proof's `hσσ`/`hρρ` involution facts fail);
+  (b) the `e₀'`-row's candidate-span membership; (c) a 4th wrap-edge surfacing. **Given §(4.27) already erred
+  on bare-vs-splitOff, a verify-first compiler-checked spike on route 4-splitOff is prudent before a build.**
+  Fallback if route 4-splitOff walls: route A (full `Matrix`) / honest-conditional (C). **Phase-direction
+  decision owed to the user.**
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
