@@ -112,12 +112,29 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 446 | LEAF-3 widening — re-expose W6b `hedgeGv` bundle (3771023); interior-arm gap closed | 2/1/1 | opus | normal | clean (gap closed) | ✓✓✓—✓✓ | 151k tok / 43 tools / 10.6 min | Closed the interior-arm gap (prior-row discovered). Widened LEAF-3 `exists_shared_redundancy_and_matched_candidate`'s output ∃ to re-expose the W6b edge-grouped `G_v`-row widening bundle: `_hedgeGv`→`hedgeGv` in the W6b `obtain` + the matching conjunct via `refine`. Pure output widening, value flows from `chainData_split_w6b_gates` — no new proof. Coordinator-verified: LEAF-3 NOT blueprint-pinned (per-slice statement-change gate OK) + no callers (widened ∃ caller-safe). Dispatch now reads `hρe₀` off LEAF-3, owing only the `(a,b)`→`(vtx 0,vtx 2)` re-anchoring + the Fin-case router alignment. |
 | 447 | interior-`hρe₀` re-anchoring — `interior_hρe₀_of_baseWidening` (eaf6cad); dispatch `hρe₀` now one-call | 2/2/1 | opus | normal | clean (re-anchoring-free) | ✓✓✓—✓✓ | 175k tok / 59 tools / 12.7 min | 3rd interior-`hρe₀` commit (re-expose→producer→re-anchor); owed work monotonically shrank, NOT thin-wrapper deferral. Landed `interior_hρe₀_of_baseWidening`: folds LEAF-3's `hedgeGv` bundle (`(a,b)=(vtx0,vtx2)`) + `hends_i` into `interior_hρe₀_of_widening`, discharging the 3 re-anchorings INTERNALLY — `hcomb.symm`, `G−vtx1`→`G` link-lift, and a real `hdeg1` degree-2 argument at `vtx 2` (`deg_two` minus the `vtx 1`-incident `edge 1`). Genuine content. Dispatch now reads interior `hρe₀` in ONE call; owes only the `Fin cd.d` router + the `hS`-candidate `endsσρ`/`qρ` alignment. |
 | 448 | interior-split `heab_off` accessor — `removeVertex_isLink_edge_succ_pred_off` (7d51345) | 2/1/1 | opus | normal | clean (4th leaf; cost outlier) | ✓✓✓—✓✓ | 202k tok / 71 tools / 30.8 min | 4th consecutive dispatch-input leaf (`hρe₀`-prod → LEAF-3-widen → `hρe₀`-reanchor → this). `removeVertex_isLink_edge_succ_pred_off`: every `G−vtx i`-link uses an edge ≠ `edge i`/`edge (i−1)` (both incident to removed `v`, contra `removeVertex_isLink`) — the `hS` router's `heab_off`, now one-call. Sound 3-step, no bloat. COST OUTLIER: 30.8 min for a tiny accessor → the agent explored the `chainData_dispatch` ROUTER, found it hard, retreated. 4 leaves + unbuilt core + outlier (the 22g pattern) → coordinator triggers a compiler-checked spike on the router next, not a 5th leaf. |
+| 449 | dispatch recon — compiler-checked spike of `chainData_dispatch` → GAP 1 | —/—/— | opus | recon | recon — GAP 1 found (route-B interior `hS` unsatisfiable) | — | 220k tok / 67 tools / 16.7 min | Coordinator-triggered after 4 leaves + a cost outlier (22g pattern). Read-only compiler-checked spike of `chainData_dispatch`: built the `Fin cd.d` skeleton + interior arm, sorry'd the gaps, mapped residuals. FOUND GAP 1 (decisive): the interior `hS` is UNSATISFIABLE — the wrap-edge `edge i` row relabels to the reproduced-slot `(a,b)`-block tag, whose routing needs `hG_eb_cand : G.IsLink (edge (i−1)) (vtx(i+1)) (vtx(i−1))`, kernel-PROVED false. Other interior slots (`hgate`/`hρe₀`/`hvanish`/`heab_off`/`hrec`/`hrhat`/`hIH`) spike-verified mechanical. No commit (read-only). |
+| 450 | spike resume — GAP 1 investigate / fix-or-flag (592a202, docs) | —/—/— | opus | recon/resume | recon — BLOCKED (phase decision) | — | 300k tok / 46 tools / 9.2 min | SendMessage-resume of 449 (read-only LIFTED for salvage). GAP 1's fix is NOT a clean leaf: root cause = LEAF-B2 hardcodes `Fcand = caseIIICandidate` (corner-overridden), but KT (6.62)'s bottom block maps to the candidate's SEED framework `ofNormals (G−vᵢ) endsρ qρ`; the wrap-edge row is the independent `±r` corner row (option A transports it only as a GROUP), so individual-row `hS` re-introduces the wall. Fixes (phase-direction): (4) seed-framework re-arch, or fall back to option-A's LANDED group transport. Committed design §(4.26) + note/ROADMAP corrections. BLOCKED for adjudication. |
 
 ## Findings
 
 (accumulate episode bullets here; distill at each phase close per
 the protocol)
 
+- **2026-06-24 (rows 449–450) — the deferred-hypothesis-unsat trap recurs at COMPOSITION, and a
+  4-leaf + cost-outlier pattern is its tell.** Route B's LEAF-B2 individual-row `hS` re-introduced the
+  member-mapping wall §(4.18)–(4.24) it was meant to escape: the wrap-edge `edge i` row is the independent
+  `±r` corner row (option A transports it only as a GROUP), not a base-block row, so demanding each genuine
+  basis row transport *individually* into the candidate span is unsatisfiable. The row-443 "residual risk
+  RESOLVED" was a **coordinator over-claim**: I verified the `hS` router type-checks + that its `hG_eb_cand`
+  is a combinatorial `G.IsLink` (not `hρGv`), but NOT that `hG_eb_cand` is SATISFIABLE for *every* consumer
+  row — the `Or.inl`-feed framing hid that the wrap-edge rows go through `Or.inr` (the block tag), whose
+  premise is provably false. **Lessons:** (1) a deferred-hypothesis leaf's satisfiability must be traced for
+  ALL consumer rows incl. edge cases (the wrap edge), never just the happy path the `Or.inl` framing
+  suggests — exactly DESIGN.md *Constructibility recon*, the satisfiability corollary, recurring a 3rd time
+  this phase (rows 392/394, 435, now 443→449). (2) The 4-consecutive-leaf + cost-outlier signal (a 30.8-min
+  accessor) correctly triggered the recon that caught it BEFORE a forced multi-hour build — the spike cost
+  ~1 recon. The early-recon discipline (trigger at the 2-leaf floor, watch cost outliers) paid off; do not
+  let a string of clean-landing plumbing leaves lull the coordinator past the unbuilt-core trigger.
 - **2026-06-24 (rows 435–436) — the A1 §I.8.21(α) dissolution-recon episode (the value of
   construct-or-concede on a fragile-zone dissolution).** A compiler-checked SPIKE answers a
   route-COMPOSITION question ("do these objects compose to goal X?"), NOT a dischargeability one. The A1
