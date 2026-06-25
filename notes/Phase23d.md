@@ -34,12 +34,21 @@ half of the §(4.30) A4 leaf:
 - `BodyHingeFramework.rigidityMatrix_mul_rank` (`Concrete.lean`): the rigidity specialization —
   `(rigidityMatrix * U).rank = rigidityMatrix.rank` for `IsUnit U.det`.
 
-**Still OPEN within the §(4.30) A4 leaf:** the entrywise *construction* of the specific (6.61) column-op
-matrix `U` + proof that `rigidityMatrix * U` reindexes to `fromBlocks A B 0 D` with `A = Mᵢ` the `D×D`
-corner and `D` the IH bottom-block (the `hblock` hypothesis above) — this needs the chain-data
-realization geometry not yet at the matrix level, so it folds into A5 (`Mᵢ` gate cert) / A6 (arm wiring),
-which supply `hblock`'s blocks. The next concrete commit is **A5 — re-aim the gate/union-dim cert at the
-`D×D` minor** (content LANDED: `interior_group_eq_baseRedundancy`, `omitTwoExtensor_linearIndependent`).
+**Still OPEN (post-A5 spike, 2026-06-24):** the `hblock` construction. The A5 route-composition spike
+(design §I.8.24(4.31), 5 probes all SORRY-FREE) settled the coordinator's kernel concern: the (6.61)
+column op IS expressible over a coordinatized matrix as a unit-det right-multiply (route A's escape
+holds — never a span membership), BUT `hblock`'s `D×D` corner split is **NOT dischargeable on the flat
+`rigidityMatrix`** — its arbitrary `Module.finBasis` columns (`dualCoordEquiv`) do not factor as
+`α × Fin D` (confirmed: `finrank ℝ (Dual ℝ (α → ScrewSpace k)) = card α · screwDim k`, but no column
+subset = "body `vᵢ₊₁`'s `D` columns"). **Fix = one preceding re-coordinatization leaf A4.5: a
+PRODUCT-column rigidity matrix `rigidityMatrixProd : Matrix (β × Fin (D−1)) (α × Fin D) ℝ`**, same
+honest rank (same opacity-clean bridge), columns factor `α × Fin D` so the KT block split is the obvious
+product reindex. The A4 bridge `rank_ge_of_isUnit_mul_reindex_fromBlocks` takes ANY `M`, so it consumes
+the product matrix directly. **The next concrete commit is A4.5a–c** (the `screwBasis` /
+`dualProductCoordEquiv` / `rigidityMatrixProd` defs — mechanical, all spike-verified). NOT a motive/IH
+change, NOT new math beyond the re-coordinatization. Doc-comment fix owed: `Concrete.lean:276` + the
+`rigidityMatrix`/`rigidityMatrix_mul_rank` `α × Fin D` prose is dimension-correct but index-imprecise
+(the flat index is an arbitrary basis); A5-build corrects it.
 
 **What landed (A1 + A2, axiom-clean):**
 - **A1 — `BodyHingeFramework.rigidityMatrix`**: `R(G,p)` as a literal
@@ -70,8 +79,10 @@ MEDIUM).
 1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2 landed (`Concrete.lean`);
    ✅ A3 landed (`Rank.lean`, `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`); ✅ A4 column-op
    bridge landed (`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` + `BodyHingeFramework.rigidityMatrix_mul_rank`).
-   OPEN: **A5** (gate/union-dim at the `D×D` minor + construct the (6.61) `U` and its `fromBlocks` reindexing
-   — the `hblock` input A4's bridge consumes, NEXT) → A6 (dispatch+spine). The route-B/4 dual-space leaves +
+   OPEN (re-decomposed by the A5 spike, design §(4.31)): **A4.5** the re-coordinatization leaf — a
+   PRODUCT-column matrix `rigidityMatrixProd` (the flat `rigidityMatrix` columns don't factor `α × Fin D`,
+   so `hblock`'s `D×D` corner split needs product columns; **NEXT**) → **A5** (gate re-wrap `A5b` +
+   `hblock` entrywise block-fill `A5c`) → **A6** (dispatch+spine). The route-B/4 dual-space leaves +
    the chain cert `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space
    approach the wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
@@ -112,19 +123,26 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A on track; A1+A2 (de-risk) + A3 (block-additivity kernel) + A4 (the (6.61) column-op bridge)
-LANDED. NEXT CONCRETE COMMIT = A5, re-aim the gate/union-dim cert at the `D×D` minor AND construct the
-specific (6.61) column-op matrix `U`.** A4 landed the *rank-invariance* of the (6.61) op
-(`rigidityMatrix_mul_rank`) + the carrier-agnostic A4→A3 *bridge*
-(`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks`: a `hblock : (M * U).reindex em en = fromBlocks A B 0 D`
-+ LI diagonal rows ⟹ `#m₁ + #m₂ ≤ M.rank`). A5 supplies that bridge's `hblock` input: build the explicit
-invertible (unit-det) `U` realizing KT (6.61)'s "add `vᵢ`'s columns to `vᵢ₊₁`'s", prove
-`rigidityMatrix * U` reindexes to `fromBlocks A B 0 D` with `A = Mᵢ` the `D×D` corner block (full-rank,
-gate-certified via `interior_group_eq_baseRedundancy` + `omitTwoExtensor_linearIndependent`) and `D` the
-IH's `R(G₁＼row, q₁)` block, then fire the A4 bridge. This entrywise `U`-construction is the "not difficult
-to see" step KT compresses and §(4.21) flags as the WHOLE content; the rank-invariance plumbing is now
-done, so A5 is purely the entrywise block computation + the landed gate re-wrap. After A5: A6
-(dispatch+spine), then ENTRY + ASSEMBLY (parallel-safe).
+**✅ Route A on track; A1+A2+A3+A4 LANDED. The A5 route-composition SPIKE (2026-06-24, design §(4.31),
+5 probes SORRY-FREE) RE-DECOMPOSED the next work: NEXT CONCRETE COMMIT = A4.5a–c — the re-coordinatization
+leaf (`screwBasis` + `dualProductCoordEquiv` + `rigidityMatrixProd`).** The spike settled the
+coordinator's kernel concern: the flat `rigidityMatrix`'s columns (`Fin (finrank ℝ (Dual …))`, an
+arbitrary `Module.finBasis`) do NOT factor as `α × Fin D`, so the A4-bridge `hblock`'s `D×D` corner
+split is **not dischargeable on the flat matrix**. But (a) the (6.61) column op IS expressible over a
+coordinatized matrix as a unit-det right-multiply (`U = (toMatrix' (coordOpEquiv Φ))ᵀ`, route A's
+"never a span membership" escape holds — SORRY-FREE PROBE 2b/4); (b) a PRODUCT-column matrix
+`rigidityMatrixProd : Matrix (β × Fin (D−1)) (α × Fin D) ℝ` has the SAME honest rank by the same
+opacity-clean bridge (SORRY-FREE PROBE 3) and its columns DO factor `α × Fin D`, so it feeds the same
+A4 bridge `rank_ge_of_isUnit_mul_reindex_fromBlocks` (which takes ANY `M`) with the obvious product
+block split. **A4.5 is the genuinely-new leaf the spike surfaced** (mechanical, all spike-verified —
+exact signatures + bankable SORRY-FREE fragments in design §(4.31)(4)). After A4.5: A5b (gate re-wrap,
+content LANDED) + A5c (the `hblock` entrywise block-fill — the residual MED–HIGH crux, now entrywise
+over `α × Fin D` via `dualProductCoordEquiv φ (body,j) = φ (Pi.single body (screwBasis j))`, NOT a span
+argument), then A6 (dispatch+spine), then ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change, no
+new math beyond the re-coordinatization, no phase-direction decision owed** (within route A; A4.5 is a
+sub-leaf of the §(4.30) A5 scope). Recommend the A4.5d refactor = GENERALIZE `Matrix.rank_of_dualCoord`
+(`Concrete.lean:84`) over an arbitrary coordinatizing equiv so both flat + product rank bridges are
+one-line instances.
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1+A2+A3 confirm route A
 on track; the A4–A6 layer plan is in *Current state* + §(4.30); the new Lean lives in
@@ -145,6 +163,16 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A5 ROUTE-COMPOSITION SPIKE — verdict: A5 needs one preceding re-coordinatization leaf A4.5
+  (2026-06-24, compiler-checked, scratch reverted, tree clean; design §I.8.24(4.31)).** The flat
+  `rigidityMatrix`'s columns are an arbitrary `Module.finBasis` of `Dual ℝ (α → ScrewSpace k)` (via
+  `dualCoordEquiv`) — dimension `card α · screwDim k` but NOT factoring as `α × Fin D`, so the A4-bridge
+  `hblock`'s `D×D` corner split is undischargeable on it (the coordinator's concern, kernel-confirmed).
+  Fix: a product-column matrix `rigidityMatrixProd : Matrix (β × Fin (D−1)) (α × Fin D) ℝ`, same honest
+  rank by the same carrier-agnostic bridge, feeding the same `rank_ge_of_isUnit_mul_reindex_fromBlocks`.
+  The column op IS a unit-det right-multiply over a coordinatized matrix (route A's escape holds — never
+  a span membership). 5 probes SORRY-FREE; only the `hblock` block-fill (A5c) residual. No motive/IH
+  change. Full verdict + exact A4.5/A5/A6 signatures + bankable fragments → design §(4.31).
 - **A4 LANDED — the (6.61) column-op bridge into A3 (2026-06-24, build/lint/warning/axiom-clean).**
   Two composing lemmas: `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` (`Rank.lean`,
   carrier-agnostic — `hblock : (M*U).reindex em en = fromBlocks A B 0 D` + LI diagonal rows ⟹

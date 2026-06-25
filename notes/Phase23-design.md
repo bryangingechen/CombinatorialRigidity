@@ -3518,6 +3518,121 @@ decomposition of the SECOND build it teed up.**
   and the mathlib primitives are confirmed present), only sharpen the leaf count. This spike is the
   recommended de-risk IF the user leans toward A.
 
+  *(4.31) THE A5 ROUTE-COMPOSITION SPIKE — VERDICT: A5 IS DISCHARGEABLE BUT NEEDS ONE PRECEDING
+  RE-COORDINATIZATION LEAF (A4.5 — a PRODUCT-column rigidity matrix). The column op IS expressible
+  over a coordinatized matrix (no abstract span membership — route A's escape holds at the kernel),
+  but `hblock`'s `D×D` corner block split is NOT dischargeable over the existing flat `dualCoordEquiv`
+  matrix — its arbitrary `finBasis` columns do not factor as `α × Fin D`. The fix is a product-column
+  matrix `rigidityMatrixProd`, same rank, columns `α × Fin D`. Compiler-checked spike (5 probes,
+  all SORRY-FREE except the residual `hblock` block-fill); scratch reverted, tree clean; opus,
+  2026-06-24. Every load-bearing claim re-derived from the LANDED `def`/`theorem` (`dualCoordEquiv`
+  `Concrete.lean:72`, `rigidityMatrix` `:130`, `rigidityMatrix_row` `:156`, the A4 bridge
+  `rank_ge_of_isUnit_mul_reindex_fromBlocks` `Rank.lean:376`, `rigidityMatrix_mul_rank` `:282`,
+  `columnOp` `Basic.lean:998`) + KT §6.4.2.*
+
+  **(1) THE COORDINATOR'S CONCERN IS CONFIRMED AT THE KERNEL: the flat `rigidityMatrix` columns
+  (`Fin (finrank ℝ (Dual ℝ (α → ScrewSpace k)))`, an ARBITRARY `Module.finBasis` of the dual,
+  `dualCoordEquiv`) do NOT factor as `α × Fin D`, so `hblock`'s `D×D` corner column split has no
+  natural realization on it.** The dimension is right (PROBE 1, SORRY-FREE: `finrank ℝ (Dual ℝ
+  (α → ScrewSpace k)) = card α · screwDim k`, by `Subspace.dual_finrank_eq` + `Module.finrank_pi_fintype`
+  + `screwSpace_finrank` — `rw [Subspace.dual_finrank_eq, Module.finrank_pi_fintype]; simp
+  [screwSpace_finrank]`), so `N = D·|V|`. But the `D×D` corner `Mᵢ` lives on the `D` columns of body
+  `vᵢ₊₁`, and the arbitrary flat basis mixes all bodies' coordinates — there is **no column subset =
+  "body `vᵢ₊₁`'s `D` columns"**. The `Concrete.lean:276` doc-comment ("an explicit invertible matrix
+  on the `D·|V|` columns") and the `rigidityMatrix`/`rigidityMatrix_mul_rank` `α × Fin D` prose are
+  **dimension-correct but index-imprecise**: the literal column index is the flat arbitrary basis, not
+  the product `α × Fin D`. **A5-build fixes that prose (one leaf-side doc edit).**
+
+  **(2) BUT THE COLUMN OP ITSELF IS EXPRESSIBLE OVER A COORDINATIZED MATRIX — route A's "(6.61) is a
+  column-op, never a span membership" escape holds at the kernel (PROBE 2b, SORRY-FREE).** For ANY
+  primal `Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)` (KT's `columnOp` is exactly such an equiv,
+  `Basic.lean:998`), the matrix `U = (toMatrix' (flatColumnOpEquiv Φ))ᵀ` — where `flatColumnOpEquiv Φ
+  := dualCoordEquiv.symm.trans (Φ.symm.dualMap.trans dualCoordEquiv)` — satisfies
+  `(rigidityMatrix * U).row p = dualCoordEquiv (Φ.symm.dualMap (rigidityRowFun p))`, i.e. the
+  right-multiply realizes "precompose every row functional with `Φ`". Proof (lifts verbatim): row of
+  `M * Uᵀ` = `vecMul (M.row p) Uᵀ` = `U.mulVec (M.row p)` (`Matrix.vecMul_transpose`) = `flatColumnOpEquiv
+  Φ (M.row p)` (`LinearMap.toMatrix'_mulVec`) = `dualCoordEquiv (Φ.symm.dualMap (rigidityRowFun p))`
+  (`rigidityMatrix_row` + `LinearEquiv.symm_apply_apply` through the `.trans`). **`IsUnit U.det` is a
+  4-line fact** (PROBE 2c, SORRY-FREE): `IsUnit.of_mul_eq_one _ ?h; rw [← Matrix.det_mul,
+  ← LinearMap.toMatrix'_comp]; simp` (det of `g · g⁻¹` = det 1 = 1). **No `ScrewSpace` unfolding
+  anywhere** — the op enters as conjugation-by-`coordEquiv` of the abstract `Φ.symm.dualMap`, not a
+  per-coordinate manipulation. So the wall (span membership of the wrap row) genuinely never forms.
+
+  **(3) THE RESOLUTION: A PRODUCT-COLUMN RIGIDITY MATRIX `rigidityMatrixProd` (one new re-coordinatization
+  leaf, A4.5), feeding the SAME A4 bridge.** The A4 bridge `rank_ge_of_isUnit_mul_reindex_fromBlocks`
+  takes ANY `M : Matrix p q K`; instantiate it not with the flat matrix but with
+  `rigidityMatrixProd : Matrix (β × Fin (D−1)) (α × Fin D) ℝ`, whose columns factor as `α × Fin D` so
+  `en : (α × Fin D) ≃ n₁ ⊕ n₂` is the obvious product split (`n₁ = {vᵢ₊₁} × Fin D`, the `D` corner;
+  `n₂` = the rest). Built (PROBE 3, all SORRY-FREE) from a per-vertex screw basis:
+  `dualProductCoordEquiv := (Pi.basis (fun _ => screwBasis k)).dualBasis.equivFun.trans (funCongrLeft …
+  sigmaEquivProd.symm)` (needs `haveI : DecidableEq (Σ _ : α, Fin D) := Classical.decEq _` in the def
+  body). Its rank bridge is the SAME carrier-agnostic argument as `Matrix.rank_of_dualCoord`
+  (`rank_eq_finrank_span_row` + `Submodule.span_image` + `LinearEquiv.finrank_map_eq`), so
+  `rigidityMatrixProd.rank = finrank (span (range rigidityRowFun)) = finrank (span rigidityRows)` (lands
+  on the honest target, **no `ScrewSpace` reach-in**). The column op realizes on it identically
+  (PROBE 4, SORRY-FREE: `prodColumnOpEquiv`, same conjugation proof, now needs `[DecidableEq α]` for the
+  `α × Fin D` `toMatrix'`). The entrywise content (PROBE 5): `dualProductCoordEquiv φ (body, j) =
+  φ (Pi.single body (screwBasis k j))` (pure `Basis.dualBasis`/`Pi.basis` API), so `hingeRow u v r`'s
+  support (only bodies `u, v`) makes the block-zero structure **entrywise-visible** — the residual
+  `hblock` block-fill is a finite support computation, NOT a span argument.
+
+  **(4) THE CORRECTED A5 LEAF DECOMPOSITION (EXACT SIGNATURES; supersedes the §(4.30) A5 sketch).** A5
+  splits into A4.5 (the re-coordinatization, the genuinely-new piece this spike surfaced) + A5-proper
+  (the gate re-wrap + `hblock` block-fill). Signatures (`F : BodyHingeFramework k α β`, `D := screwDim k`,
+  `Dr := finrank ℝ (ScrewSpace k) = D` by `screwSpace_finrank`; all bankable fragments below verified
+  SORRY-FREE in the spike — quote them on build-resume):
+  - **A4.5a — `screwBasis`** (LOW, ~0.3 leaf): `noncomputable def screwBasis (k) : Basis (Fin (finrank ℝ
+    (ScrewSpace k))) ℝ (ScrewSpace k) := Module.finBasis ℝ (ScrewSpace k)`.
+  - **A4.5b — `dualProductCoordEquiv`** (LOW–MED, ~0.5 leaf): `[Fintype α] : Dual ℝ (α → ScrewSpace k)
+    ≃ₗ[ℝ] (α × Fin (finrank ℝ (ScrewSpace k)) → ℝ)` := `haveI : DecidableEq (Σ _ : α, Fin …) :=
+    Classical.decEq _; ((Pi.basis (fun _ : α => screwBasis k)).dualBasis.equivFun).trans (funCongrLeft
+    ℝ ℝ (sigmaEquivProd α (Fin …)).symm)`.
+  - **A4.5c — `rigidityMatrixProd`** (LOW, ~0.3 leaf): `[Fintype α] (F) (ends) (hgp) : Matrix
+    (β × Fin (D−1)) (α × Fin (finrank ℝ (ScrewSpace k))) ℝ := Matrix.of fun p => dualProductCoordEquiv
+    (F.rigidityRowFun ends hgp p)`.
+  - **A4.5d — `rigidityMatrixProd_rank_eq_finrank_span_rigidityRows`** (LOW–MED, ~1 leaf): `[Fintype α]
+    [Finite β] (hends) : (rigidityMatrixProd F ends hgp).rank = finrank (span F.rigidityRows)`. Compose
+    the carrier-agnostic `rank_eq_finrank_span_row`-route (quoted SORRY-FREE in spike PROBE 3) with the
+    LANDED `span_range_rigidityRowFun` (`Concrete.lean:199`). **Best refactor: GENERALIZE
+    `Matrix.rank_of_dualCoord` (`Concrete.lean:84`) to take an arbitrary coordinatizing `coordEquiv :
+    Dual ℝ M ≃ₗ[ℝ] (κ → ℝ)` instead of the hard-wired `dualCoordEquiv`** — then both the flat
+    `rigidityMatrix_rank` and the product `rigidityMatrixProd_rank` are one-line instances, no proof
+    duplication.
+  - **A5a — `prodColumnOpEquiv`** + **the column-op-as-right-multiply** (MED, ~1–1.5 leaf): the unit-det
+    `U := (toMatrix' (prodColumnOpEquiv Φ))ᵀ` (`IsUnit U.det` via the PROBE-2c 4-liner) and the row
+    identity `(rigidityMatrixProd F ends hgp * U).row p = dualProductCoordEquiv (Φ.symm.dualMap
+    (rigidityRowFun p))` (PROBE-4 proof, SORRY-FREE). `[Fintype α] [DecidableEq α]`.
+  - **A5b — the gate re-wrap** (LOW–MED, ~1–2 leaf, content LANDED): `Mᵢ`-full-rank via
+    `interior_group_eq_baseRedundancy` + `omitTwoExtensor_linearIndependent`, re-stated as
+    `LinearIndependent (Mᵢ).row` for the A3/A4 `hA`.
+  - **A5c — the `hblock` block-fill** (MED–HIGH, ~1.5–2.5 leaf, the residual crux): construct `em`/`en`
+    (the `en : (α × Fin D) ≃ ({vᵢ₊₁} × Fin D) ⊕ rest` product split), and prove
+    `(rigidityMatrixProd F endsᵢ hgpᵢ * U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))` ENTRYWISE — each
+    entry is `dualProductCoordEquiv (Φ.symm.dualMap (hingeRow u v r)) (body, j) = (Φ.symm.dualMap …)
+    (Pi.single body (screwBasis j))` (PROBE 5), so the lower-left zero = "wrap rows vanish off the
+    `vᵢ₊₁` columns after the op" is a `Function.update`/`Pi.single`-support computation (KT's `columnOp`
+    moves `vᵢ`'s content to `vᵢ₊₁`; `hingeRow_comp_columnOp_apply` `Basic.lean:1070` is the operated-row
+    value). This is the "not difficult to see" entrywise step KT compresses and §(4.21) flags as the
+    WHOLE content — now genuinely entrywise, NOT a span membership.
+  - **A6 — dispatch + spine** (MED, unchanged from §(4.30)) — fire `rank_ge_of_isUnit_mul_reindex_fromBlocks
+    (rigidityMatrixProd …) U hU em en hblock hA hD`, get `D·|V| ≤ rank`, bridge to the honest target via
+    A4.5d, route the `Fin cd.d` arms.
+
+  **LEAF COUNT (sharpened): A4.5 ≈1.5–2 leaves (the new re-coordinatization) + A5b/A5c ≈3–4 + A6 ≈1–2 =
+  ≈6–8 for A5+A6** (was §(4.30) "A5 ~2–3, A6 ~1–2"; the spike found A5 needs a preceding A4.5 leaf, so
+  the count rises by the re-coordinatization, but A4.5a–d are mostly mechanical and A5c is the only
+  MED–HIGH residual). The §(4.30) total (≈9–14 for the whole route-A sub-phase) is unchanged in order.
+
+  **VERDICT (decisive, kernel-checked).** A5 as the §(4.30) sketch posed it — discharge `hblock` for the
+  flat `rigidityMatrix` — is **NOT directly dischargeable**: the flat arbitrary-basis columns don't
+  factor as `α × Fin D`. **But the route is sound and needs only a re-coordinatization leaf (A4.5), NOT
+  a motive/IH change and NOT genuinely-new math beyond it** — the A4 bridge accepts any `M`, the
+  product matrix has the same honest rank by the same opacity-clean argument, and the column op + block
+  structure are entrywise over `α × Fin D`. **No phase-direction decision is owed** (this is within
+  route A, which the user already chose; A4.5 is a sub-leaf of the §(4.30) A5 scope, not a new route).
+  The only judgment call is the A4.5d refactor (generalize `rank_of_dualCoord` vs duplicate) — a
+  build-time call, recommend generalize. Fall-back (C) is unaffected.*
+
 ---
 
 ## CHAIN↔ENTRY chain-data contract
