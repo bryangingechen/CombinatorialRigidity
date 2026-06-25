@@ -45,6 +45,7 @@ route-A leaf inventory (all 2026-06-24/25, build/lint/warning/axiom-clean — pe
 | A5c core | `finrank_span_rigidityRows_ge_of_edge_fromBlocks` (the A4 + A4.5e composition: block data ⟹ `#m₁+#m₂ ≤ finrank (span rigidityRows)`) | `Concrete.lean` |
 | `en`/`em` splits | `columnSplit`/`columnSplit_corner_card` (corner `=D`) + `edgeRowSplit`/`edgeRowSplit_corner_card` (corner `=D−1`) | `Concrete.lean` |
 | CERT | `case_III_rank_certification_matrix` (abstract block-data drop-in for `_chain`) | `Candidate.lean` |
+| A6-entry | `rigidityMatrixEdge_mul_columnOp_row` / `..._apply` / `..._apply_eq_zero_of_ne` (the (6.61) operated-entry facts on the EDGE-restricted `rigidityMatrixEdge` — the `hblock` block-fill reads) | `Concrete.lean` |
 
 Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route A's escape from the
 §(4.18)–(4.30) span-membership wall: KT's (6.61) is a unit-det right-multiply, never a membership).
@@ -63,30 +64,36 @@ enter as hypotheses (the standing "carry the crux as `h…`" idiom; the geometry
 A6) — exactly paralleling how `_chain` consumed `(W, g, hWS, hWcard, hιcard, hg, hLI)`. New import
 edge `Candidate.lean → RigidityMatrix.Concrete` (acyclic; full build green).
 
-**Still OPEN: the NEXT LEAF is A6 — building the block data from the chain-data geometry + wiring the
-cert into the arm.** Supply `U := (toMatrix' (prodColumnOpEquiv (columnOp hva).symm))ᵀ` (unit-det via
+**Still OPEN: the NEXT LEAF is A6 — assembling `hblock` from the now-in-hand edge-restricted
+operated-entry facts + wiring the cert into the arm.** The (6.61) operated-entry facts now exist on
+the EDGE-restricted matrix `rigidityMatrixEdge` (the row index the cert consumes — the §(4.32) gap is
+closed): `rigidityMatrixEdge_mul_columnOp_apply` (the operated entry formula) +
+`..._apply_eq_zero_of_ne` (the (6.61) lower-left `0` block, `Φ = (columnOp hva).symm`). So A6's
+`hblock` block-fill reads its `0` block directly off `rigidityMatrixEdge_mul_columnOp_apply_eq_zero_
+of_ne` (NO row-index transport from `rigidityMatrixProd` needed). Remaining A6: supply `U :=
+(toMatrix' (prodColumnOpEquiv (columnOp hva).symm))ᵀ` (unit-det via
 `prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), `en := columnSplit a` (`#n₁ = D` via
 `columnSplit_corner_card`), `em` extending `edgeRowSplit ⟨e_a, _⟩`'s `(D−1)` panel rows with the one
-reproduced `e_b` `±r` row (`#m₁ = D`, eq. (6.66)), the IH bottom `m₂` (`#m₂ = D·(|V_Gv|−1)`), and the
-crux **`hblock`** (the `fromBlocks` equality) entrywise — `0` block off
-`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (`Φ = (columnOp hva).symm`; row-index-agnostic
-so it reads on the `{e // e ∈ E(G)}` edge index of `rigidityMatrixEdge`), diagonal blocks off
-`rigidityMatrixProd_mul_columnOp_apply`, corner/bottom row-LI (`hA`/`hD`) via the A5b iff
-`linearIndependent_rigidityMatrixProd_row_iff`. Then swap the `case_III_rank_certification`/`_chain`
-call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
-`ForkedArm.lean:90`); the route-agnostic SHARED tail `case_III_realization_of_rank` is consumed
-verbatim. `hblock` is the MED–HIGH crux — the genuine remaining route-A work. Full corrected
-signatures + bankable fragments: design §I.8.24(4.32).
+reproduced `e_b` `±r` row (`#m₁ = D`, eq. (6.66)), the IH bottom `m₂` (`#m₂ = D·(|V_Gv|−1)`), then the
+crux **`hblock`** (the `fromBlocks` ASSEMBLY — collect the entrywise reads into the block equality)
++ corner/bottom row-LI (`hA`/`hD`) via the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`.
+Then swap the `case_III_rank_certification`/`_chain` call for `case_III_rank_certification_matrix` at
+the arm's `hrank` seam (`Arms.lean:350` / `ForkedArm.lean:90`); the route-agnostic SHARED tail
+`case_III_realization_of_rank` is consumed verbatim. The `hblock` `fromBlocks` ASSEMBLY (no longer
+the entrywise reads — those are landed) is the MED–HIGH crux. Full corrected signatures + bankable
+fragments: design §I.8.24(4.32).
 
-**Remaining leaf count (post-cert, ≈1.5–2):** A6 = the chain-data-geometry block construction
-(`U`/`en`/`em`/`hblock`/`hA`/`hD` from the candidate geometry, the `hblock` `fromBlocks` equality the
-MED–HIGH crux) + the arm re-route (swap the `_chain` call for `_matrix` at `Arms.lean:350` /
-`ForkedArm.lean:90`, route the `Fin cd.d` dispatch). All the cert-side bricks are LANDED — the cert
+**Remaining leaf count (post-cert + edge-operated-entry facts, ≈1–1.5):** A6 = the
+chain-data-geometry block construction (`U`/`en`/`em`/`hblock`/`hA`/`hD` from the candidate geometry,
+the `hblock` `fromBlocks` ASSEMBLY now the MED–HIGH crux — its entrywise reads are landed) + the arm
+re-route (swap the `_chain` call for `_matrix` at `Arms.lean:350` / `ForkedArm.lean:90`, route the
+`Fin cd.d` dispatch). All the cert-side bricks are LANDED — the cert
 `case_III_rank_certification_matrix`, the composition core, the `en` split (`columnSplit`), the `em`
 panel-row half (`edgeRowSplit`), `U`/`hU` (`prodColumnOpEquiv (columnOp hva).symm` +
-`..._transpose_toMatrix'_det_isUnit`), and the operated-entry facts — so A6 is the geometry-supply +
-wiring only, with `hblock` the one genuinely-hard remaining sub-goal. Per-leaf signatures + bankable
-SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
+`..._transpose_toMatrix'_det_isUnit`), and now the EDGE-restricted operated-entry facts
+(`rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)`, the `hblock` block-fill reads on the cert's
+actual row index) — so A6 is the geometry-supply + the `fromBlocks` assembly + wiring only. Per-leaf
+signatures + bankable SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
 
 ## Remaining work in Phase 23
 
@@ -95,10 +102,12 @@ SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
    matrix) + the A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) + the `en`
    column split (`columnSplit`) + the `em` panel-row split (`edgeRowSplit`) + the ROUTE-A CERT
    `case_III_rank_certification_matrix` (`CaseIII/Candidate.lean`, the abstract block-data drop-in for
-   `_chain`) landed. **NEXT = A6** — build the block data (`U`/`en`/`em`/`hblock`/`hA`/`hD`) from the
-   chain-data geometry (the `hblock` `fromBlocks` equality the MED–HIGH crux; `U`/`en`/`edgeRowSplit` +
-   the operated-entry facts in hand) and swap the `_chain` call for `_matrix` at the arm's `hrank` seam
-   (`Arms.lean:350` / `ForkedArm.lean:90`). The route-B/4 dual-space leaves + the chain cert
+   `_chain`) + the EDGE-restricted operated-entry facts (`rigidityMatrixEdge_mul_columnOp_apply(_eq_
+   zero_of_ne)`, the `hblock` block-fill reads on the cert's actual row index) landed. **NEXT = A6** —
+   build the block data (`U`/`en`/`em`/`hblock`/`hA`/`hD`) from the chain-data geometry (the `hblock`
+   `fromBlocks` ASSEMBLY now the MED–HIGH crux; its entrywise reads + `U`/`en`/`edgeRowSplit` all in
+   hand) and swap the `_chain` call for `_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
+   `ForkedArm.lean:90`). The route-B/4 dual-space leaves + the chain cert
    `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space approach the
    wall closed; do not build on them; route A REPLACES `_chain` at the arm's `hrank` seam). The
    interior-`hρe₀` crux is CLOSED.
@@ -140,29 +149,32 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A on track; the ROUTE-A CERT `case_III_rank_certification_matrix` is LANDED**
-(`CaseIII/Candidate.lean`, full-build/lint/warning/axiom-clean), on top of A1–A5c + the composition
-core + `columnSplit`/`edgeRowSplit` + the operated-entry facts. The cert is the abstract block-data
-drop-in for `case_III_rank_certification_chain`: it consumes the candidate framework, its
-edge-restricted `hgp`/`hends`, the (6.61)→(6.64) block data (`U`/`hU`/`em`/`en`/`hblock`/`hA`/`hD`) +
-cardinalities (`#m₁=D`, `#m₂=D·(|V_Gv|−1)`) + count facts, and produces the byte-identical-to-`_chain`
-conclusion `screwDim k · (|V(G)|−1) ≤ finrank (span (caseIIICandidate …).rigidityRows)` by firing the
-composition core + the count arithmetic. **NEXT CONCRETE COMMIT = A6** — build the block data from the
-chain-data geometry and wire the cert into the arm. Supply `U := (toMatrix' (prodColumnOpEquiv
-(columnOp hva).symm))ᵀ` (unit-det, `prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), `en :=
-columnSplit a` (`#n₁=D`, `columnSplit_corner_card`), `em` extending `edgeRowSplit ⟨e_a,_⟩`'s `(D−1)`
-panel rows with the reproduced `e_b` `±r` row (`#m₁=D`, eq. (6.66)), `m₂` the IH bottom
-(`#m₂=D·(|V_Gv|−1)`), and the crux **`hblock`** (the `fromBlocks` equality) entrywise — `0` block off
-`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (`Φ=(columnOp hva).symm`; row-index-agnostic, so
-it reads on the `{e // e ∈ E(G)}` edge index), diagonal blocks off `rigidityMatrixProd_mul_columnOp_
-apply`, row-LI (`hA`/`hD`) via `linearIndependent_rigidityMatrixProd_row_iff`. Then swap the `_chain`
-call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
+**✅ Route A on track; the ROUTE-A CERT `case_III_rank_certification_matrix` + the EDGE-restricted
+(6.61) operated-entry facts are LANDED** (`CaseIII/Candidate.lean` + `RigidityMatrix/Concrete.lean`,
+full-build/lint/warning/axiom-clean), on top of A1–A5c + the composition core +
+`columnSplit`/`edgeRowSplit`. The cert is the abstract block-data drop-in for
+`case_III_rank_certification_chain`: it consumes the candidate framework, its edge-restricted
+`hgp`/`hends`, the (6.61)→(6.64) block data (`U`/`hU`/`em`/`en`/`hblock`/`hA`/`hD`) + cardinalities
+(`#m₁=D`, `#m₂=D·(|V_Gv|−1)`) + count facts, and produces the byte-identical-to-`_chain` conclusion
+`screwDim k · (|V(G)|−1) ≤ finrank (span (caseIIICandidate …).rigidityRows)`. The new operated-entry
+facts `rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)` are the (6.61) entry reads on the
+EDGE-restricted matrix `rigidityMatrixEdge` (the cert's actual row index), so A6's `hblock` block-fill
+reads its `0` block directly (the §(4.32) "carry over verbatim" gap — they were stated on
+`rigidityMatrixProd` with total `hgp` — is closed). **NEXT CONCRETE COMMIT = A6** — assemble `hblock`
+from these reads + supply the geometry, and wire the cert into the arm. Supply `U := (toMatrix'
+(prodColumnOpEquiv (columnOp hva).symm))ᵀ` (unit-det, `prodColumnOpEquiv_transpose_toMatrix'_det_
+isUnit`), `en := columnSplit a` (`#n₁=D`, `columnSplit_corner_card`), `em` extending `edgeRowSplit
+⟨e_a,_⟩`'s `(D−1)` panel rows with the reproduced `e_b` `±r` row (`#m₁=D`, eq. (6.66)), `m₂` the IH
+bottom (`#m₂=D·(|V_Gv|−1)`), then the crux **`hblock`** (the `fromBlocks` ASSEMBLY — collect the
+landed entrywise reads `rigidityMatrixEdge_mul_columnOp_apply(_eq_zero_of_ne)` into the block
+equality), row-LI (`hA`/`hD`) via `linearIndependent_rigidityMatrixProd_row_iff`. Then swap the
+`_chain` call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
 `ForkedArm.lean:90`); the route-agnostic SHARED tail `case_III_realization_of_rank` is consumed
 verbatim, and the `Fin cd.d` dispatch matches the STATED `d_eq_kAdd` (no 23c-style coincidence gap —
-question (d) clean). `hblock` is the MED–HIGH crux, the one genuinely-hard remaining route-A sub-goal;
-everything else is geometry-supply + wiring. After A6: ENTRY + ASSEMBLY (parallel-safe). **No motive/IH
-change, no phase-direction decision owed** (within route A; fall-back (C) unaffected). Bankable
-SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
+question (d) clean). The `hblock` `fromBlocks` ASSEMBLY (no longer the entrywise reads) is the
+MED–HIGH crux; everything else is geometry-supply + wiring. After A6: ENTRY + ASSEMBLY
+(parallel-safe). **No motive/IH change, no phase-direction decision owed** (within route A; fall-back
+(C) unaffected). Bankable SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1–A5c confirm route A
 on track; the A4.5e/A5c/A6 layer plan is in *Current state* + §(4.32), superseding §(4.31)'s A5c/A6;
@@ -184,6 +196,19 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A6 EDGE-restricted operated-entry facts LANDED — `rigidityMatrixEdge_mul_columnOp_row` /
+  `..._apply` / `..._apply_eq_zero_of_ne` (2026-06-25, `Concrete.lean`,
+  full-build/lint/warning/axiom-clean).** The (6.61) operated-entry facts, re-stated on the
+  EDGE-restricted matrix `rigidityMatrixEdge` (the cert's actual row index `{e // e ∈ E(G)} ×
+  Fin (D−1)`) with edge-restricted `hgp`. Verbatim structural mirrors of the all-`β`
+  `rigidityMatrixProd_mul_columnOp_*` facts (both matrices are
+  `Matrix.of (dualProductCoordEquiv ∘ rigidityRowFun·)`; the edge functional has the same body
+  support, so the off-`v` `0` block reads off identically). Closes the §(4.32) "operated-entry facts
+  carry over verbatim" gap: they were stated on `rigidityMatrixProd` (total `hgp`, unsatisfiable on
+  the real arm), so A6's `hblock` block-fill now reads its `0` block directly on the cert's row index.
+  Shrunk to fit one sitting (`hblock`'s `fromBlocks` ASSEMBLY is the MED–HIGH crux; this banks its
+  three entrywise inputs SORRY-FREE). No new friction (the `.row`-align idiom is already filed). NEXT
+  = the `hblock` `fromBlocks` assembly + the arm re-route.
 - **ROUTE-A CERT LANDED — `case_III_rank_certification_matrix` (2026-06-25, `CaseIII/Candidate.lean`,
   full-build/lint/warning/axiom-clean).** The abstract block-data drop-in for
   `case_III_rank_certification_chain`: takes the candidate framework + edge-restricted `hgp`/`hends`

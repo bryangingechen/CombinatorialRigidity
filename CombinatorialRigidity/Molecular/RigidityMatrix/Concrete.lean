@@ -921,4 +921,90 @@ theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne [
     LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFun, hingeRow_comp_columnOp_apply,
     Pi.single_eq_of_ne hbody.symm, map_zero]
 
+/-! ## A6 — the operated-entry facts on the edge-restricted matrix
+
+The A5c composition core consumes a block equality
+`hblock : (rigidityMatrixEdge ends hgp * U).reindex em en = fromBlocks A B 0 D` over the
+**edge-restricted** matrix (the real-arm row index, A4.5e). To construct `hblock`, the realization
+arm (A6) reads off the entries of the column-operated edge matrix `rigidityMatrixEdge * U` — the row
+identity, the entry formula, and the (6.61) lower-left zero block — exactly as the all-`β`-row
+`rigidityMatrixProd` facts above (`rigidityMatrixProd_mul_columnOp_*`) supply them. These are the
+edge-restricted analogues: same structural proofs (both matrices are
+`Matrix.of (dualProductCoordEquiv ∘ rigidityRowFun·)`, and the edge-restricted rigidity-row
+functional `rigidityRowFunEdge ends hgp ⟨e, j⟩ = hingeRow (ends e).1 (ends e).2 (blockBasisOn hgp _
+j)` has the *same body support* as the all-`β` `rigidityRowFun`, so the off-`v` zero block reads off
+identically), re-stated over `{e // e ∈ E(F.graph)} × Fin (D−1)` with the edge-restricted `hgp`.
+They are the direct inputs the A6 `hblock` block-fill reads, with **no `ScrewSpace` unfolding**. -/
+
+/-- **A6 — the (6.61) column op as the right-multiply `· * U`, on the edge-restricted matrix**
+(Phase 23d; the edge-restricted analogue of `rigidityMatrixProd_mul_columnOp_row`; Katoh–Tanigawa
+2011 eq. (6.61)). With `U = (toMatrix' (prodColumnOpEquiv Φ))ᵀ`, the `(⟨e, he⟩, j)`-row of
+`rigidityMatrixEdge ends hgp * U` is the product-coordinate vector (`dualProductCoordEquiv`) of
+`Φ.symm.dualMap (rigidityRowFunEdge ends hgp (⟨e, he⟩, j))` — the right-multiply precomposes every
+edge-restricted rigidity-row functional with the primal column op `Φ`. Identical proof to the
+all-`β` version (the mathlib row-of-`M * Uᵀ` chain `Matrix.vecMul_transpose` ⟹
+`LinearMap.toMatrix'_mulVec` ⟹ the `prodColumnOpEquiv` `.trans` unfolding); the only change is the
+row index. No `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_row [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k))
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ).row p
+      = dualProductCoordEquiv (k := k) (α := α)
+          (Φ.symm.dualMap (F.rigidityRowFunEdge ends hgp p)) := by
+  funext c
+  change Matrix.vecMul ((F.rigidityMatrixEdge ends hgp).row p) _ c = _
+  rw [Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]
+  change (prodColumnOpEquiv (k := k) (α := α) Φ)
+      (dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFunEdge ends hgp p)) c = _
+  simp only [prodColumnOpEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
+
+/-- **A6 — the column-operated edge-restricted matrix entry, at an operated single-body assignment**
+(Phase 23d; the edge-restricted analogue of `rigidityMatrixProd_mul_columnOp_apply`). The
+`(⟨e, he⟩, j)`-row of `rigidityMatrixEdge ends hgp * U` at column `(body, c)` is the edge-restricted
+rigidity-row functional `rigidityRowFunEdge ends hgp (⟨e, he⟩, j)` evaluated at the single-body
+screw assignment `Φ.symm (Pi.single body (finScrewBasis k c))`. Composes the edge-restricted row
+identity
+`rigidityMatrixEdge_mul_columnOp_row` with the keystone `dualProductCoordEquiv_apply` — verbatim the
+all-`β` `rigidityMatrixProd_mul_columnOp_apply` proof on the new row index. No `ScrewSpace`
+unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k))
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ) p (body, c)
+      = F.rigidityRowFunEdge ends hgp p (Φ.symm (Pi.single body (finScrewBasis k c))) := by
+  have h := congrFun (F.rigidityMatrixEdge_mul_columnOp_row ends hgp Φ p) (body, c)
+  rw [Matrix.row] at h
+  rw [h, dualProductCoordEquiv_apply, LinearEquiv.dualMap_apply]
+
+/-- **A6 — the (6.61) lower-left zero block of `rigidityMatrixEdge * U`, entrywise** (Phase 23d, the
+edge-restricted analogue of `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne`; Katoh–Tanigawa
+2011 eqs. (6.14)–(6.16), (6.61)). When the dual column op is `Φ = (columnOp hva).symm` with
+`v = (ends e).1`, `a = (ends e).2` (so the right-multiply precomposes with `Φ.symm = columnOp hva`,
+KT's "add `vᵢ`'s columns to `vᵢ₊₁`'s"), the `(⟨e, he⟩, j)`-row of the *operated* edge-restricted
+matrix `rigidityMatrixEdge ends hgp * U` at column `(body, c)` is `0` whenever `body ≠ v`. After
+the column op the wrap-edge rows are *pure `v`-column* rows (`hingeRow_comp_columnOp_apply`
+collapses the operated row to `r ((Pi.single body s) v)`), so the off-`v` block is literally zero —
+exactly
+the `0` the A6 `hblock` `fromBlocks A B 0 D` reindex reads, now on the edge-restricted row index the
+cert consumes. NO span argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_eq_zero_of_ne [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (hva : (ends p.1.1).1 ≠ (ends p.1.1).2) (body : α)
+    (c : Fin (Module.finrank ℝ (ScrewSpace k))) (hbody : body ≠ (ends p.1.1).1) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c) = 0 := by
+  rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p body c,
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_comp_columnOp_apply,
+    Pi.single_eq_of_ne hbody.symm, map_zero]
+
 end CombinatorialRigidity.Molecular
