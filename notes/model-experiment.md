@@ -61,14 +61,15 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#32 (latest: **#32**, 2026-06-24,
+  would re-probe. Set/re-confirmed sessions #6–#33 (latest: **#33**, 2026-06-25,
   fresh `/coordinate-phase`; user re-confirmed the triple [Standard triple] at
-  session start; opus reachable via the Agent `model` param, no substitution
-  needed). **The override expires session-end — a fresh coordinator re-runs the
-  session-start availability check + re-confirms the triple.** **The user STOPPED the loop
-  at row 473 (2026-06-25, session #32) for handoff** — a fresh coordinator re-runs the
-  availability check, re-confirms the triple, and (per `notes/Phase23d.md` *Hand-off*)
-  adjudicates the one open route-A design decision before the first dispatch. Phase status +
+  session start; **availability**: only opus probed under OPUS-ONLY, reachable via the
+  Agent `model` param, no substitution needed, other rungs un-probed). **The override
+  expires session-end — a fresh coordinator re-runs the session-start availability check +
+  re-confirms the triple.** **Session #33 ADJUDICATED the open route-A design decision
+  (row 473's cert-SHAPE FLAG): the user chose option (4b′)** — reshape the cert kernel
+  (A3/A4 in `Rank.lean`) to a row-SUBMATRIX (injection `em : m₁⊕m₂ ↪ rows`, ignoring the
+  `D−2` surplus `v`-rows); options (4a)/(C) declined, route A stays the plan. Phase status +
   next dispatch live in `notes/Phase23d.md` + the ROADMAP cell, **not here**.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all

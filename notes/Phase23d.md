@@ -65,7 +65,8 @@ enter as hypotheses (the standing "carry the crux as `h…`" idiom; the geometry
 A6) — exactly paralleling how `_chain` consumed `(W, g, hWS, hWcard, hιcard, hg, hLI)`. New import
 edge `Candidate.lean → RigidityMatrix.Concrete` (acyclic; full build green).
 
-**⚠️ A6 `hblock` ASSEMBLY is BLOCKED on a cert-SHAPE obstruction (FLAG — no phase-direction picked).**
+**✅ A6 DIRECTION CHOSEN — option (4b′) (user-adjudicated 2026-06-25, session #33), resolving the
+cert-SHAPE obstruction the §(4.33) spike surfaced (diagnosis retained below).**
 The corrected-`hblock` spike (design §(4.33), 2026-06-25) settled the §(4.32) index map AND surfaced a
 deeper obstruction:
 
@@ -104,10 +105,10 @@ facts, and the landed bricks A6-fix/`columnSplit`/`U`/`hU` feed it directly. The
 cert-kernel-local; no motive/IH/contract change; `d=3` dual cert untouched. Full options + signatures:
 design §I.8.24(4.33)(5).
 
-**OPTIONS (no phase-direction picked — flag-don't-force):** (4b′) row-submatrix reshape (~2–3 leaves,
-RECOMMENDED); (4a) `D := R(G₁,q₁)` relabelled IH matrix (forces the hard `chainData_bottom_relabel`
-matrix analogue NOW, ~3–5 leaves, NOT recommended); (C) documented fallback (carry the rank-cert
-obligation as one hypothesis, ~1 leaf + wiring; gap = KT's own (6.61) "not difficult to see").
+**DIRECTION CHOSEN — (4b′) (user-adjudicated 2026-06-25, session #33):** row-submatrix reshape
+(~2–3 leaves). DECLINED: (4a) `D := R(G₁,q₁)` relabelled IH matrix (~3–5 leaves, hard); (C) documented
+fallback (carry the rank-cert obligation as one hypothesis, ~1 leaf + wiring; abandons the unconditional
+Thm 5.5).
 
 ## Remaining work in Phase 23
 
@@ -123,7 +124,7 @@ obligation as one hypothesis, ~1 leaf + wiring; gap = KT's own (6.61) "not diffi
    bijection `fromBlocks A B 0 D` is UNSATISFIABLE for `D ≥ 3` (design §(4.33)(3); the surplus `v`-rows
    break both `toBlocks₂₁=0` and `hD`). Then build `hblock`/`hA`/`hD` (the corrected bricks + the gate
    facts feed it) and swap the `_chain` call for `_matrix` at the arm's `hrank` seam (`Arms.lean:350` /
-   `ForkedArm.lean:90`). FLAG: options (4b′)/(4a)/(C) in Hand-off; no phase-direction picked. The
+   `ForkedArm.lean:90`). Option (4b′) is CHOSEN (user-adjudicated 2026-06-25; options (4a)/(C) declined). The
    route-B/4 dual-space leaves + the chain cert `case_III_rank_certification_chain` stay in tree (sound
    in isolation — the dual-space approach the wall closed; do not build on them). The interior-`hρe₀`
    crux is CLOSED.
@@ -175,7 +176,8 @@ given the bottom rows avoid `v`). The §(4.32) corner index map was GARBLED — 
 `..._apply_eq_zero_of_ne` (sound, kept in tree) is the wrong vanishing for the `fromBlocks` `0` block.
 On top of A1–A5c + the cert + composition core + `columnSplit`/`edgeRowSplit`/`U`/`hU`.
 
-**⚠️ The `hblock` ASSEMBLY is BLOCKED on a cert-SHAPE obstruction (FLAG — no phase-direction picked).**
+**✅ A6 DIRECTION = option (4b′), user-adjudicated 2026-06-25 (session #33) — the cert-SHAPE obstruction
+the §(4.33) spike surfaced is resolved by the row-submatrix reshape below; obstruction trace retained.**
 The cert `case_III_rank_certification_matrix`'s `fromBlocks A B 0 D` shape — a TOTAL row bijection
 `em : (…) ≃ m₁ ⊕ m₂` with BOTH diagonal blocks full-row-LI — is UNSATISFIABLE on the isostatic arm for
 `D ≥ 3` (all general `d`): the `D−2` surplus `v`-incident rows (forced into `m₂` since the corner `m₁`
@@ -188,8 +190,8 @@ gate facts (this cert is the SINGLE-split `(v,a,b)` form, `Gv = G.removeVertex v
 NOT a chain-relabelled candidate → NO hard `chainData_bottom_relabel` matrix analogue; that relabel is
 UPSTREAM in `chainData_dispatch`, item 2). Full kernel trace + the surplus-row count: design §(4.33)(3)/(4).
 
-**NEXT CONCRETE LEAF = option (4b′): reshape the matrix cert kernel to a row-SUBMATRIX (RECOMMENDED,
-~2–3 leaves).** Add a row-submatrix variant of A3/A4 in `Rank.lean` taking `em : m₁ ⊕ m₂ ↪ rows` (an
+**NEXT CONCRETE LEAF = option (4b′): reshape the matrix cert kernel to a row-SUBMATRIX (CHOSEN —
+user-adjudicated 2026-06-25; ~2–3 leaves).** Add a row-submatrix variant of A3/A4 in `Rank.lean` taking `em : m₁ ⊕ m₂ ↪ rows` (an
 INJECTION, not `≃`) — mirroring A3's EXISTING column-submatrix step (`Rank.lean:344`,
 `N = M.submatrix id c`) and the dual cert's subspace approach. It picks the `D` corner rows + the
 `D·(|V_Gv|−1)` `v`-clean `Gv`-bottom rows and IGNORES the `D−2` surplus. Then
@@ -200,11 +202,11 @@ call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`Arms.l
 `ForkedArm.lean:90`; the SHARED tail `case_III_realization_of_rank` is route-agnostic). Then ENTRY +
 ASSEMBLY (parallel-safe).
 
-**OPTIONS (no phase-direction picked — flag-don't-force):** (4b′) row-submatrix reshape (~2–3 leaves,
-RECOMMENDED); (4a) `D := R(G₁,q₁)` relabelled IH matrix (forces the hard `chainData_bottom_relabel`
-matrix analogue NOW, ~3–5 leaves, NOT recommended); (C) documented fallback (carry the rank-cert
-obligation as one hypothesis, ~1 leaf + wiring; KT's own (6.61) "not difficult to see"). **No motive/IH
-change** (within route A; fall-back (C) unaffected). Full options + signatures: design §I.8.24(4.33)(5).
+**DIRECTION CHOSEN — (4b′) (user-adjudicated 2026-06-25, session #33):** row-submatrix reshape
+(~2–3 leaves). DECLINED: (4a) `D := R(G₁,q₁)` relabelled IH matrix (forces the hard
+`chainData_bottom_relabel` matrix analogue NOW, ~3–5 leaves, hard); (C) documented fallback (carry the
+rank-cert obligation as one hypothesis, ~1 leaf + wiring; abandons the unconditional Thm 5.5). **No
+motive/IH change** (within route A). Full options + signatures: design §I.8.24(4.33)(5).
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1–A5c confirm route A
 on track; the corrected A6 layer plan is in *Current state* + §(4.33), superseding §(4.32)'s garbled
