@@ -18,26 +18,20 @@ All landed leaves stay in tree (sound in isolation; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ NEXT = build the A6 geometry `re`/`hA`/`hD` (the `hblock` *reduction* kernel is now landed too).**
-The **option-(4b′) cert-kernel reshape is FULLY LANDED through the cert**, and the **submatrix-form
-`hblock` reduction kernel** `BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_
-eq_zero` (`Concrete.lean`, 2026-06-25, build/lint/warning/axiom-clean) is now landed — the
-row-*injection* analogue of the reindex-form `…_reindex_toBlocks₂₁_eq_zero`: for any row injection
-`re : m₁ ⊕ m₂ → ({e // e ∈ E(G)} × Fin (D−1))` whose BOTTOM rows (`re ∘ Sum.inr`) avoid `v`, with
-`en := (columnSplit v).symm`, the lower-left block `((… * U).submatrix re en).toBlocks₂₁ = 0` (each
-entry is `…_apply_pin_zero`). So the cert's `hblock : (… * U).submatrix re en = fromBlocks A B 0 D`
-is now a *one-line* `Matrix.fromBlocks_toBlocks` rewrite (`A := toBlocks₁₁`, `B := toBlocks₁₂`,
-`D := toBlocks₂₂`; **verified** in-session: `M.toBlocks₂₁ = 0 ⊢ M = fromBlocks … 0 …` closes by
-`rw [← h, fromBlocks_toBlocks]`). The ROUTE-A CERT `case_III_rank_certification_matrix`
-(`CaseIII/Candidate.lean`) is the row-submatrix-core drop-in (conclusion byte-identical to `_chain`);
-the `D−2`-surplus obstruction (§(4.33)(3)) is structurally dissolved (`re` drops the surplus `v`-rows,
-the SUBSPACE shape KT's (6.64) states). Remaining (4b′) work: build the geometry — `re` picks the
-corner `e_a`-panel + `e_b`-`±r` rows (`m₁`) and the `v`-clean `Gv`-bottom rows (`m₂`); `hblock`
-fires the new submatrix kernel (the `0`-block reduction) + `…_apply_corner` for `A` + the
-`fromBlocks_toBlocks` rewrite; `hA`/`hD` are the ~1-leaf gate facts (corner-panel-LI via the A5b iff
-+ `omitTwoExtensor`; bottom-rows-LI = IH `Gv` full-rank) — then swap `_chain` → `_matrix` at the arm
-seam (`ForkedArm.lean:95` / `Arms.lean:352`; the SHARED tail `case_III_realization_of_rank` is
-route-agnostic).
+**✅ NEXT = the two `hA`/`hD` LI bridges (§(4.34)), then the dispatch wiring (item 2).** The A6 ARM
+SPINE `case_III_arm_realization_matrix` is now LANDED sorry-free (`CaseIII/Relabel/ForkedArm.lean`,
+2026-06-25) — the route-A sibling of `_chain`, carrying the matrix block data `(m₁, m₂, hm₁, hm₂, re,
+hbot, hA, hD)` as hypotheses (the standing carry-the-crux idiom) and CONSTRUCTING `U`/`hU`/`en`/`hblock`
+in-body off the landed bricks: `U := (toMatrix' (prodColumnOpEquiv (columnOp hva).symm))ᵀ`,
+`en := (columnSplit v).symm`, `hblock` a one-line `Matrix.fromBlocks_toBlocks` rewrite via the landed
+0-block kernel `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`. It calls
+`case_III_rank_certification_matrix` for `hrank`, then the route-agnostic tail
+`case_III_realization_of_rank` (unchanged); conclusion byte-identical to `_chain`. **The A6-assembly
+RECON verdict (session #34): the arm composes sorry-free, but `hA`/`hD` are TWO genuinely-new
+dual-space→matrix-row LI bridges — NOT the ~1-leaf gate facts the row-473 prose claimed** (see
+*Decisions made*). `_chain` stays in tree (parallel, sound); the dispatch wires whichever arm later
+(item 2). The `D−2`-surplus obstruction (§(4.33)(3)) is structurally dissolved (`re` drops the surplus
+`v`-rows, the SUBSPACE shape KT's (6.64) states).
 
 **✅ ROUTE A is the plan; the full A1–A5c + cert + (4b′) kernel + A6-fix leaf chain is LANDED +
 gate-verified** — opacity CLEAN throughout (the bridge runs through `Basis`/`LinearEquiv`, never
@@ -112,15 +106,15 @@ deeper obstruction:
   unit-det `U` + reindex (all LI-preserving). `hA` = `omitTwoExtensor`/`interior_group` (PROBE C content).
   Both dischargeable **only in the SUBSPACE/row-SUBSET shape**, NOT the cert's total-bijection shape.
 
-**NEXT CONCRETE LEAF = option (4b′): reshape the matrix cert kernel to a row-SUBMATRIX (RECOMMENDED,
-~2–3 leaves; FLAG for coordinator/user — see options below).** Add a row-submatrix variant of A3/A4
-(`Rank.lean`) taking `em : m₁ ⊕ m₂ ↪ rows` (an INJECTION, not `≃`) — mirroring A3's *existing*
-column-submatrix step (`N = M.submatrix id c`) and the dual cert's subspace approach. Pick the `D`
-corner rows + the `D·(|V_Gv|−1)` `v`-clean `Gv`-bottom rows, IGNORE the `D−2` surplus. Then
-`…_reindex_toBlocks₂₁_eq_zero`'s `hbot` (bottom rows avoid `v`) IS meetable, `hD`/`hA` are the gate
-facts, and the landed bricks A6-fix/`columnSplit`/`U`/`hU` feed it directly. The reshape is
-cert-kernel-local; no motive/IH/contract change; `d=3` dual cert untouched. Full options + signatures:
-design §I.8.24(4.33)(5).
+**✅ The A6 ARM SPINE is LANDED — `case_III_arm_realization_matrix`** (`CaseIII/Relabel/ForkedArm.lean`,
+2026-06-25, full-build/lint/warning/axiom-clean, `[propext, Classical.choice, Quot.sound]` only). The
+route-A sibling of `case_III_arm_realization_chain`: same split-data/`Gv`/count/`q`-normal signature
+(+ `[Fintype α] [DecidableEq α]`) carrying the matrix block data `(m₁, m₂, hm₁, hm₂, re, hbot, hA, hD)`
+as hypotheses (mirroring how `_chain` carries `(W, g, …)`); CONSTRUCTS `U`/`hU`/`en`/`hblock` in-body
+off the landed bricks; calls `case_III_rank_certification_matrix` for `hrank`, then the route-agnostic
+tail `case_III_realization_of_rank`. Conclusion byte-identical to `_chain`. **NEXT = the two carried
+gate facts `hA`/`hD`** (the §(4.34) dual-space→matrix-row LI bridges) then the dispatch wiring (item 2).
+`_chain` stays in tree (parallel, sound); the dispatch wires whichever arm later.
 
 **DIRECTION CHOSEN — (4b′) (user-adjudicated 2026-06-25, session #33):** row-submatrix reshape
 (~2–3 leaves). DECLINED: (4a) `D := R(G₁,q₁)` relabelled IH matrix (~3–5 leaves, hard); (C) documented
@@ -148,10 +142,13 @@ Thm 5.5).
    **The A6 `hblock` 0-block reduction kernel is LANDED** (2026-06-25):
    `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` (`Concrete.lean`) — the
    row-injection analogue of `…_reindex_toBlocks₂₁_eq_zero` in the cert's exact submatrix shape, so
-   the cert's `hblock` is now a one-line `fromBlocks_toBlocks` rewrite. **NEXT = build the geometry
-   `re`/`hA`/`hD` (A6)** (the corrected A6-fix bricks + this 0-block kernel + the gate facts feed
-   them), then swap the `_chain` call for `_matrix` at the arm's `hrank` seam
-   (`ForkedArm.lean:95` / `Arms.lean:352`). Option (4b′) is CHOSEN (user-adjudicated 2026-06-25;
+   the cert's `hblock` is now a one-line `fromBlocks_toBlocks` rewrite. **The A6 ARM SPINE
+   `case_III_arm_realization_matrix` is LANDED** (`ForkedArm.lean`, 2026-06-25, the route-A sibling of
+   `_chain`, constructing `U`/`hU`/`en`/`hblock` in-body and carrying `(m₁, m₂, hm₁, hm₂, re, hbot,
+   hA, hD)`). **NEXT = the two carried gate facts `hA`/`hD`** (the §(4.34) dual-space→matrix-row LI
+   bridges `linearIndependent_toBlocks₂₂_row_of_IH` then `…_toBlocks₁₁_row_of_corner_gate`), then the
+   dispatch (item 2) discharges `(re, hbot, hA, hD)` + wires the arm. `_chain` stays in tree (parallel,
+   sound). Option (4b′) is CHOSEN (user-adjudicated 2026-06-25;
    options (4a)/(C) declined). The route-B/4 dual-space leaves + the chain cert
    `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space approach the
    wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
@@ -240,16 +237,29 @@ row-*injection* analogue of the reindex-form brick, stated in the cert's exact s
 rewrite (`A := toBlocks₁₁`, `B := toBlocks₁₂`, `D := toBlocks₂₂`; the composition was verified
 in-session). The corner content `A` is read off `…_apply_corner`.
 
-**NEXT CONCRETE LEAF = build the A6 geometry `re`/`hA`/`hD`** (the `hblock` *kernel* is now landed
-too; this is the geometry that instantiates the cert's hypotheses). `re` picks the corner `e_a`-panel
-+ `e_b`-`±r` rows (`m₁`, card `D`) and the `v`-clean `Gv`-bottom rows (`m₂`, card `D·(|V_Gv|−1)`),
-with the `re ∘ Sum.inr` bottom-avoids-`v` fact the new submatrix kernel's `hbot` consumes; `hblock`
-fires that kernel for the `0` block + `…_apply_corner` for `A` + the `fromBlocks_toBlocks` rewrite,
-with `en := (columnSplit v).symm` + `U`/`hU`; `hA`/`hD` are the ~1-leaf gate facts (corner-panel-LI
-via the A5b iff + `omitTwoExtensor`; bottom-rows-LI = IH `Gv` full-rank). Finally swap the `_chain`
-call for `case_III_rank_certification_matrix` at the arm's `hrank` seam (`ForkedArm.lean:95` /
-`Arms.lean:352`; the SHARED tail `case_III_realization_of_rank` is route-agnostic). Then ENTRY +
-ASSEMBLY (parallel-safe).
+**✅ The A6 ARM SPINE is LANDED** (`case_III_arm_realization_matrix`, `ForkedArm.lean`, 2026-06-25) —
+the route-A sibling of `_chain` carrying the matrix block data as hypotheses + constructing
+`U`/`hU`/`en`/`hblock` in-body (the spike's sorry-free composition banked). `_chain` stays in tree
+(parallel, sound).
+
+**NEXT CONCRETE LEAF = the two carried gate facts `hA`/`hD`** (the §(4.34) dual-space→matrix-row LI
+bridges; the A6-assembly recon proved these are TWO genuinely-new bridges, not the row-473 ~1-leaf
+facts). Land in order:
+1. **`linearIndependent_toBlocks₂₂_row_of_IH`** (`hD`) — the bottom `Gv`-block: the IH `Gv` full-rank
+   is a span-finrank-`= card` fact; bridge to `toBlocks₂₂.row` LI via `rank_eq_finrank_span_row` +
+   `linearIndependent_rows_iff_rank_eq_card` (`Mathlib/.../Rank.lean`). Inputs: the IH-rank fact
+   (carried, `hWcard`-shaped) + `re ∘ Sum.inr` being genuine `Gv`-rows over `body ≠ v` columns.
+2. **`linearIndependent_toBlocks₁₁_row_of_corner_gate`** (`hA`) — the `D×D` corner: rewrite entries via
+   `rigidityMatrixEdge_mul_columnOp_apply_corner` to `(blockBasisOn)(finScrewBasis c)` (needs the
+   corner `re ∘ Sum.inl` endpoints `(v,a)`/`(v,b)`), then port `linearIndependent_mkQ_corner_of_gate`
+   to matrix-row form. **GUARD the `caseIIICandidate` whnf — §38** (the spike hit a 200000-heartbeat
+   timeout on a naive `linearIndependent_row_of_coordEquiv`; use `apply` with explicit carrier, never
+   `simp`/`whnf` on `F₀`).
+
+Then **the dispatch wiring (item 2)** — `chainData_dispatch` discharges `(re, hbot, hA, hD)` from the
+`ChainData` interior split (the way it discharges `_chain`'s `(W, g)`), and wires whichever arm. Then
+ENTRY + ASSEMBLY (parallel-safe). The exact `hA`/`hD` residual goals + the leaf signatures: design
+§I.8.24(4.34).
 
 **DIRECTION CHOSEN — (4b′) (user-adjudicated 2026-06-25, session #33):** row-submatrix reshape
 (~2–3 leaves). DECLINED: (4a) `D := R(G₁,q₁)` relabelled IH matrix (forces the hard
@@ -277,6 +287,20 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A6 ARM SPINE LANDED + A6-assembly RECON verdict (2026-06-25, `ForkedArm.lean`,
+  build/lint/warning/axiom-clean; `[propext, Classical.choice, Quot.sound]` only).**
+  `case_III_arm_realization_matrix` — the route-A sibling of `_chain`: same split-data/count signature
+  (+ `[Fintype α] [DecidableEq α]`), carrying the matrix block data `(m₁, m₂, hm₁, hm₂, re, hbot, hA, hD)`
+  (carry-the-crux), CONSTRUCTING `U`/`hU`/`en`/`hblock` in-body (the spike's sorry-free composition
+  banked), calling the cert then the shared tail. **RECON (compiler-checked spike): the arm composes
+  sorry-free, but `hA`/`hD` are TWO genuinely-new dual-space→matrix-row LI bridges, NOT the row-473
+  "~1-leaf gate facts".** `hD` needs a "`Gv` span-finrank `= card` ⟹ `toBlocks₂₂.row` LI" bridge
+  (`rank_eq_finrank_span_row` + `linearIndependent_rows_iff_rank_eq_card`, `Mathlib/.../Rank.lean`);
+  `hA` needs a "corner-gate dual-LI ⟹ `toBlocks₁₁.row` LI" bridge porting
+  `linearIndependent_mkQ_corner_of_gate` — GUARD the `caseIIICandidate` whnf (§38; the spike hit a
+  200000-heartbeat timeout on a naive `linearIndependent_row_of_coordEquiv`). Exact residual goals +
+  decomposition: design §I.8.24(4.34). No new friction (the `ᵀ` notation isn't in scope in
+  `ForkedArm.lean` → wrote `Matrix.transpose`; recurrence of the scoped-notation idiom, no new entry).
 - **A6 `hblock` 0-BLOCK REDUCTION KERNEL — LANDED (2026-06-25, `Concrete.lean`,
   build/lint/warning/axiom-clean).** `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero`:
   the row-*injection* analogue of `…_reindex_toBlocks₂₁_eq_zero`, stated in the cert's exact

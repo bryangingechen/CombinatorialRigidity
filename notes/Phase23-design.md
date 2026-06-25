@@ -4136,3 +4136,59 @@ generic base `(G₁,q₁)`, whose `AlgebraicIndependent ℚ` data the 23a-lifted
 two honest unknowns it routes downstream are OD-1 (ENTRY's dichotomy shape, C.5)
 and OD-4 (CHAIN-4's alg-independence route), both build-time, neither a motive
 change.**
+
+### (4.34) THE A6 ARM-ASSEMBLY RECON + ARM-SPINE LANDING — VERDICT: arm composes sorry-free; `hA`/`hD` are TWO genuinely-new dual-space→matrix-row LI bridges (NOT the (4.33)/row-473 ~1-leaf gate facts)
+
+**Compiler-checked spike (session #34), then the deliverable landed.** The recon
+built the route-A `case_III_rank_certification_matrix` application at the arm seam
+in a scratch `.lean`, `sorry`'d each gap, and read the kernel residuals. Verdict:
+**NEEDS-X resolved to ARM-SPINE-FIRST** (coordinator decision, within carry-the-crux;
+no motive/IH/contract change). The arm spine
+`PanelHingeFramework.case_III_arm_realization_matrix` is now **LANDED** sorry-free
+(`CaseIII/Relabel/ForkedArm.lean`, build/lint/warning/axiom-clean, `[propext,
+Classical.choice, Quot.sound]` only) — the route-A sibling of
+`case_III_arm_realization_chain`, same split-data/count/`q`-normal signature
+(+ `[Fintype α] [DecidableEq α]`), carrying `(m₁, m₂, hm₁, hm₂, re, hbot, hA, hD)`
+as hypotheses and CONSTRUCTING `U`/`hU`/`en`/`hblock` in-body off the landed bricks.
+
+**The arm SHAPE is constructible (confirmed sorry-free).** All four block-data
+pieces build in-body with no carry beyond the row selection:
+* `U := Matrix.transpose (toMatrix' (prodColumnOpEquiv (columnOp hva).symm).toLinearMap)`;
+  `hU` via `prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`.
+* `en := (columnSplit v).symm`.
+* `hblock`: `conv_lhs => rw [← fromBlocks_toBlocks M]; rw [hz]` where `hz : M.toBlocks₂₁ = 0`
+  is the landed `rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂₁_eq_zero` (needs `hbot`:
+  `re ∘ Sum.inr` bottom rows avoid `v`). Pins `A := M.toBlocks₁₁`, `D := M.toBlocks₂₂`.
+The carried row-selection `(m₁, m₂, re, hbot)` is the genuine A6 construction (the
+dispatch's burden, item 2), exactly as `_chain` carries `(W, g)`.
+
+**EXACT kernel-read residual goals** (`M := (F₀.rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm`):
+* `hA ⊢ LinearIndependent ℝ M.toBlocks₁₁.row` — unfolds to
+  `LinearIndependent ℝ (of fun i j ↦ (rigidityMatrixEdge*U) (re (Sum.inl i)) ((columnSplit v).symm (Sum.inl j)))`
+  (corner rows × body-`v` columns).
+* `hD ⊢ LinearIndependent ℝ M.toBlocks₂₂.row` (bottom `Gv`-rows × `body ≠ v` columns).
+
+**Why `hA`/`hD` are NOT ~1-leaf (correcting (4.33)/row-473).** All landed LI content
+is **dual-space** (`LinearIndependent ℝ` over `Dual ℝ (α → ScrewSpace k)` functionals:
+`omitTwoExtensor_linearIndependent`, `exists_independent_rigidityRows_of_edge`,
+`linearIndependent_mkQ_corner_of_gate`); the residuals are **matrix-row** LI (vectors
+in `n₁ → ℝ`). The only landed bridge `linearIndependent_rigidityMatrixProd_row_iff`
+(A5b) is for the **full** matrix's `.row`, NOT a column-operated, row-restricted,
+`v`-column-projected `toBlocks`. Grep-confirmed: NO landed `submatrix.toBlocks.row` LI
+lemma. Two NEW bridges needed:
+* **`hD`** (`linearIndependent_toBlocks₂₂_row_of_IH`): the IH `Gv` full-rank is a
+  span-finrank-`= card` fact; bridge to `toBlocks₂₂.row` LI via `rank_eq_finrank_span_row`
+  + `linearIndependent_rows_iff_rank_eq_card` (`Mathlib/.../Rank.lean`). The IH is NOT in
+  the arm signature — traced to `case_III_realization_all_k` (`Realization.lean:1382`),
+  threaded as a realization motive; its rank consequence is carried (`hWcard`-shaped),
+  as `_chain`/leafB2 already carry `hIH : finrank (span Fbase.rigidityRows) = D·(|V_Gv|−1)`.
+* **`hA`** (`linearIndependent_toBlocks₁₁_row_of_corner_gate`): rewrite entries via
+  `rigidityMatrixEdge_mul_columnOp_apply_corner` to `(blockBasisOn)(finScrewBasis c)`
+  (needs corner endpoints `(v,a)`/`(v,b)` — a structural fact on `re` the cert's abstract
+  `re` does NOT carry), then port `linearIndependent_mkQ_corner_of_gate` to matrix-row form.
+  **GUARD the `caseIIICandidate` whnf (§38): the spike hit a 200000-heartbeat timeout on a
+  naive `linearIndependent_row_of_coordEquiv`** — use `apply` with explicit carrier.
+
+**NEXT** = leaf 1 (`hD` bridge), leaf 2 (`hA` bridge), then the dispatch (item 2)
+discharges `(re, hbot, hA, hD)` and wires the arm. No phase-direction or contract
+change; `_chain` stays in tree (parallel, sound).
