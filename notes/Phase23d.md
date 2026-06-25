@@ -18,18 +18,21 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**⛔ NEXT = USER-ADJUDICATION of the bottom-block deficiency wall (design §(4.36)).** The leaf-4
-spike (row 483) found that route A's `hD`/`hIH` — a **pure `Gᵥ`-edge submatrix** (`hbot` excludes
-`v`-incident rows) demanding `m₂ = D(|Vᵥ|−1)` LI rows — is **UNSATISFIABLE for the generic deficient
-interior split**: the IH gives only `m₂ − k'` independent `Gᵥ`-rows (`k' := Gᵥ.deficiency n`, generically
-`> 0`; the arm pins only `G.deficiency n = 0`, NOT `Gᵥ`'s). `_chain` fills the `k'` gap with candidate
-`ρ'`-rows (`hwmem`), which route A's pure-edge-row bottom block has no slot for. The route-A matrix model
-fixed the CORNER wall (`hρGv`); the BOTTOM block — never the original problem — needs a SHAPE decision:
-**(1)** augmented matrix bottom (candidate rows as literal rows; needs a wall-free spike + reshape `hD`/
-arm/cert), or **(2, coordinator-rec)** hybrid = route-A matrix corner + `_chain`'s proven span bottom `W`
-(reuses the deficiency-aware `_chain` machinery; needs a matrix-corner ⊕ span-bottom rank-additivity
-bridge). Full options + estimates: design §(4.36). **The landed corner leaves (1, 2, 3=3a+3b) all stay in
-tree + reusable under either option.**
+**⛔ NEXT = USER-ADJUDICATION: new-structure recon vs fallback (C) (design §(4.37)).** The leaf-4
+spike (row 483) found route A's bottom block `hD`/`hIH` (a pure `Gᵥ`-edge submatrix) UNSATISFIABLE for
+the generic deficient interior split (`Gᵥ` is deficient by `k' > 0`; `_chain` fills the gap with candidate
+`ρ'`-rows). The comparative spike (row 484, user-requested; **coordinator-verified**) then found **BOTH**
+§(4.36) fix-options WALL: (1) augmented matrix — the `k'` candidate rows are NOT `F₀.rigidityMatrixEdge`
+rows, so counting them re-triggers the span-membership wall; (2) hybrid — there is **no landed `_chain`
+W-producer** (the arm CONSUMES `W`; every interior-`W` producer is walled, §4.26–4.28), so it collapses
+to the open interior-`W` crux. **Route A escaped the CORNER wall but NOT the BOTTOM-block deficiency-fill,
+which reduces to the SAME `W ≤ span(caseIIICandidate)` span-membership wall that closed the base-block
+family.** Decision owed (phase-direction): **(C)** honest-conditional Thm 5.5 (carry the rank cert as a
+hypothesis; documented fallback, abandons the unconditional goal) **or** one final **new-structure recon**
+(coordinator-rec: does ANY route-A-compatible literal-matrix block structure supply the `k'` fill — e.g.
+`e_b`'s remaining column-op rows / a 3-block split — before conceding?). Route-4-splitOff is NOT viable
+(closed, row 454). Full verdict + the recon's flagged recommendation-error: design §(4.37). **The landed
+corner leaves (1, 2, 3=3a+3b) stay in tree + sound regardless.**
 
 **Leaves 1, 2, 3 (3a + 3b) are all LANDED.** Leaf 3 (the corner `hLI` producer) is
 `BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean`): 3a
@@ -180,16 +183,20 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT = USER-ADJUDICATION of the bottom-block deficiency wall, then a feasibility spike on the chosen
-option** (design §(4.36)). The leaf-4 spike (row 483) found route A's bottom block `hD`/`hIH` — a pure
-`Gᵥ`-edge submatrix demanding `m₂ = D(|Vᵥ|−1)` LI rows — is UNSATISFIABLE for the generic deficient
-interior split (the IH gives only `m₂ − k'`, `k' = Gᵥ.deficiency n > 0`; `_chain` fills the gap with
-candidate `ρ'`-rows the pure-edge bottom has no slot for). The route-A matrix model fixed the CORNER wall;
-the BOTTOM block needs a SHAPE decision: **(1)** augmented matrix bottom (literal candidate rows; spike +
-reshape `hD`/arm/cert) or **(2, coordinator-rec)** hybrid = route-A matrix corner + `_chain`'s proven span
-bottom `W` (reuses the deficiency-aware machinery; needs a matrix-corner ⊕ span-bottom rank-additivity
-bridge). Full options + estimates: design §(4.36). After the user picks, NEXT = a feasibility spike on
-the chosen option's new piece. The CORNER leaves are done: **Leaf 3 (3a+3b) is LANDED** as
+**NEXT = USER-ADJUDICATION: new-structure recon vs fallback (C)** (design §(4.37)). The leaf-4 spike
+(row 483) found route A's bottom block `hD`/`hIH` (a pure `Gᵥ`-edge submatrix) UNSATISFIABLE for the
+generic deficient interior split (`k' = Gᵥ.deficiency n > 0`). The comparative spike (row 484,
+user-requested; **coordinator-verified**) then found BOTH §(4.36) fix-options WALL — (1) augmented matrix:
+the `k'` candidate rows aren't `F₀.rigidityMatrixEdge` rows, so counting them re-triggers the
+span-membership wall; (2) hybrid: NO landed `_chain` `W`-producer exists (the arm CONSUMES `W`; every
+interior-`W` producer is walled, §4.26–4.28), so it collapses to the open interior-`W` crux. **Route A
+escaped the CORNER wall but NOT the BOTTOM-block deficiency-fill, which reduces to the SAME `W ≤
+span(caseIIICandidate)` wall that closed the base-block family.** Decision owed (phase-direction):
+**(C)** honest-conditional Thm 5.5 (carry the rank cert as a hypothesis; abandons the unconditional goal),
+or one final **new-structure recon** (coordinator-rec: does ANY route-A-compatible literal-matrix block
+structure supply the `k'` fill — `e_b`'s remaining column-op rows / a 3-block split — before conceding?).
+Route-4-splitOff is NOT viable (closed, row 454). Full verdict: design §(4.37). The CORNER leaves are
+done + sound regardless: **Leaf 3 (3a+3b) is LANDED** as
 `exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form, the mkQ-lift
 was a RED HERRING — uniform `blockBasisOn`-family, gate → block-incomparability → fresh `j₀` →
 `linearIndependent_sumElim_candidateRow_iff` + leaf 3a); leaf 5 (the dispatch) consumes the `∃` by

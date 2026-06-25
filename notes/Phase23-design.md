@@ -4358,3 +4358,55 @@ bottom; route A's matrix innovation stays where the wall actually was — the co
 leaves (corner `hA`/`hLI`, leaves 1/2/3) all stay in tree and reusable under either option. NEXT after
 adjudication = a feasibility spike on the chosen option's new piece (option 2: the matrix-corner ⊕
 span-bottom rank additivity; option 1: the augmented-matrix bottom is wall-free).
+
+**[SUPERSEDED by §(4.37): the comparative spike found BOTH options wall — option 2's "landed `_chain`
+W-producer" does not exist (the `_chain` arm CONSUMES `W`; no wall-free interior `W`-producer exists),
+and both reduce to the deficiency-fill `W ≤ span(caseIIICandidate)` span-membership wall. See §(4.37).]**
+
+### (4.37) THE COMPARATIVE SPIKE — VERDICT: BOTH §(4.36) options WALL (reduce to the deficiency-fill span-membership); route A escaped the CORNER but not the BOTTOM; user-adjudication = new-structure recon vs fallback (C)
+
+**Read-only comparative spike (session #34, row 484; user-requested before picking a §(4.36) option).**
+Coordinator-VERIFIED against landed source (the recon's core findings hold; its *recommendation* erred —
+see below).
+
+**Q1 (HYBRID) WALLS.** The additivity backbone `finrank_span_rigidityRows_ge_of_corner`
+(`Candidate.lean`) is landed and its CORNER is wall-free (`linearIndependent_mkQ_corner_of_gate`, via
+`hρe₀`/`hgate`, NOT `hρGv`) — BUT it consumes `hWS : W ≤ span F.rigidityRows` with `finrank W =
+D(|V(Gᵥ)|−1)` (deficiency-filled). §(4.36) option 2 assumed a "landed `_chain` W-producer"; **none
+exists** — `case_III_arm_realization_chain` CONSUMES `(W, hWS, hwcard, hw, hwmem)` as hypotheses
+(`Arms.lean:333`), and every interior-split `W`-producer is recorded WALLED (§4.26–4.28: engine `hρGv`,
+LEAF-B2 `hS`, route-4-bare `hseedrank`, route-4-splitOff `hWS`). So HYBRID collapses to the plain landed
+`_chain` arm and re-incurs the open interior-`W` crux. Coordinator-verified: the arm consumes `W`; the
+additivity backbone needs `W ≤ span`; the "producers" (`exists_seed_base_block`, `..._via_leafB2`) carry
+the walled obligation as a hyp.
+
+**Q2 (AUGMENTED MATRIX) WALLS (harder).** The `k'` deficiency-fill candidate rows `hingeRow a b ρ'` are
+NOT rows of `F₀.rigidityMatrixEdge` (its index is edge-keyed `{e//e∈E(G)}×Fin(D−1)`); they are the
+`Φ∘Pv`-images of `e_b`'s genuine row, and `e_b=(v,b)` is `v`-incident → corner (locked at exactly `D`).
+To count an augmented bottom toward `finrank(span F₀.rigidityRows)` via A3/A4 `fromBlocks`, the extra
+rows must be PROVEN `∈ span(caseIIICandidate)` — the §(4.18)–(4.30) span-membership wall, re-triggered.
+
+**THE VERIFIED PICTURE.** Route A escaped the CORNER wall (the matrix `hA`, kernel-confirmed §(4.35))
+but does NOT escape the BOTTOM-block deficiency-fill: supplying the `k'` reproduced rows in a
+route-A-compatible `fromBlocks(D×D corner, Gᵥ bottom)` shape reduces to the SAME `W ≤
+span(caseIIICandidate)` span-membership wall that closed the whole base-block family (B/4-bare/4-splitOff).
+§(4.30)/§(4.35) missed this (they analyzed the corner / the (6.61) escape, not the bottom deficiency).
+The corner leaves (1,2,3) stay sound + reusable.
+
+**RECON RECOMMENDATION ERROR (coordinator-flagged).** The spike recommended "route-4-splitOff (the one
+base-block target NOT yet refuted)" — this CONTRADICTS the landed verdict (row 454 / Phase23d *Current
+state*: "route 4-splitOff WALLS (4th wrap-edge); base-block family CLOSED"). Route-4-splitOff is closed;
+it is NOT a viable next step. The spike's core Q1/Q2 WALL findings stand (coordinator-verified); only its
+forward recommendation is discarded.
+
+**USER-ADJUDICATION OWED (phase-direction; both §(4.36) options withdrawn):**
+- **(C) Fallback — honest-conditional Theorem 5.5.** Carry the general-`d` rank cert (the deficiency-filled
+  `W` production) as one explicit hypothesis; state Thm 5.5 → 5.6 → Conjecture 1.2 conditionally, document
+  the residual. The documented fallback; abandons the unconditional goal route A was chosen to secure.
+- **One final NEW-STRUCTURE recon** (coordinator-rec before conceding): the corner escape worked because
+  (6.61) makes the wrap-edge a literal matrix row; ask whether ANY route-A-compatible (literal-matrix,
+  no-span-membership) block structure supplies the `k'` deficiency-fill — e.g. `e_b`'s remaining `D−2`
+  column-op rows, a 3-block split, or an enlarged corner column set. Speculative; ~1 recon. If it walls,
+  → (C). Justified by "one more orthogonal recon when the wall is this consequential" (the unconditional
+  goal is a real stake), but NOT a base-block re-target (those are closed).
+- A genuinely-new idea the user directs.

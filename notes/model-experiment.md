@@ -143,6 +143,7 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 481 | leaf-3b cross-hinge spike — mkQ-lift RED HERRING (→ §4.35 corrected) | —/—/— | opus | recon | recon — COMPOSES (existence-form leaf; sorry-free SPIKE 4) | — | 187k tok / 74 tools / 12.1 min | Coordinator-triggered before the leaf-3b build: §(4.35) flagged an unconfirmed quotient→full-LI shape composition (the "re-prove X through landed Y" trigger) → spike not blind build. Model WIN (flag-don't-force, sorry-free SPIKE 4): the mkQ-quotient lift was a RED HERRING — the `hA` leaf's `hLI` is a uniform `blockBasisOn`-family in the full screw dual, so leaf 3b bypasses the quotient via gate→block-incomparability→fresh-`j₀` + `sumElim_candidateRow_iff`. Caught + corrected §(4.35)'s own leaf-3 framing. → Findings 2026-06-25. |
 | 482 | dispatch leaf 3b build — `exists_corner_blockBasisOn_linearIndependent` (693448b) | 2/2/1 | opus | resume | clean | ✓✓✓—✓✓ | 261k tok / 77 tools / 28.2 min (resume cumul. incl. #481) | Spike-salvage resume (rescue §6) of #481: built leaf 3b from the sorry-free SPIKE 4, no re-derivation. Existence-form (∃ j₀) per the verdict; leaf 5 consumes the ∃. Coordinator: full diff — genuine crux DISCHARGE not abstraction (the gate→incomparability→fresh-`j₀` chain proves it), new mirror `span_coe_eq` sound + in `Mathlib/` dir, Claim612 import cycle-safe, warning-build + lint + axiom-clean, §(4.35) correction honest (no pinned-clause drop). → Findings 2026-06-25. |
 | 483 | leaf-4 bottom-row IH spike — bottom-block deficiency WALL (→ §4.36; USER-ADJUDICATION owed) | —/—/— | opus | recon | recon — WALL / NEEDS-DESIGN (pure-edge bottom unsatisfiable for deficient Gᵥ) | — | 187k tok / 61 tools / 9.7 min | Coordinator-triggered before the leaf-4 build (framework-level + finrank-span→row-LI shape unconfirmed). Model WIN (flag-don't-force, source-grounded): caught a STRUCTURAL WALL the §(4.35) dispatch spike MISSED — route A's pure-`Gᵥ`-edge bottom block `hD`/`hIH` is UNSATISFIABLE for the generic deficient interior split (IH gives `m₂ − k'`, `k'=Gᵥ.deficiency n > 0`; `_chain` fills the gap with candidate ρ'-rows the pure-edge bottom lacks). Coordinator-verified the facts (arm pins only G.def=0; `_chain` `hwmem`; IH deficiency-aware). USER-ADJUDICATION owed. → Findings 2026-06-25. |
+| 484 | comparative spike — BOTH §4.36 options WALL (→ §4.37); user-adjudication: new-structure recon vs (C) | —/—/— | opus | recon | recon — both options WALL (verified); recommendation erroneous | — | 262k tok / 35 tools / 7.7 min (resume of #483) | Resume of #483 (leaf-4 agent, context loaded) for the user-requested comparative spike. Coordinator-VERIFIED the core findings (arm CONSUMES `W`; additivity needs `W ≤ span`; no wall-free interior W-producer) → BOTH §4.36 options WALL (reduce to the deficiency-fill span-membership; route A escaped the corner, not the bottom). Model MISS on the FORWARD recommendation: proposed route-4-splitOff, which is CLOSED (row 454) — coordinator caught + discarded it; the core Q1/Q2 verdicts kept. Phase-direction decision owed: new-structure recon vs fallback (C). → Findings 2026-06-25. |
 
 ## Findings
 
@@ -168,7 +169,13 @@ the protocol)
   dead leaf. (3) The fix is an architecture-shape decision (augmented matrix bottom vs hybrid
   matrix-corner + `_chain` span bottom), user-adjudicated like §(4.33)→(4b′); the landed corner leaves
   (1,2,3) stay sound + reusable under either. → DESIGN.md *Constructibility recon* (the architecture-shape
-  corollary).
+  corollary). **(4) [row 484] the comparative spike that priced those two options then found BOTH WALL
+  (no landed wall-free interior `W`-producer; the deficiency-fill reduces to the same span-membership wall
+  that closed the base-block family) — so route A escaped the CORNER wall but not the BOTTOM. Its core
+  kernel findings verified, but its FORWARD recommendation (route-4-splitOff) named a route landed history
+  records as CLOSED (row 454): a recon reliable on its kernel findings can still err on its recommendation
+  — verify a recon's *recommendation* against the landed wall-history, not just its findings. The honest
+  decision is now new-structure recon vs fallback (C), §(4.37).**
 - **2026-06-25 (rows 480–482) — a dispatch-level recon's own shape-flag can itself be a RED HERRING;
   the per-leaf spike reading the *consumer's actual type* (not the recon's prose) is what caught it.**
   The §(4.35) dispatch spike correctly decomposed `chainData_dispatch` into 5 leaves and confirmed the
