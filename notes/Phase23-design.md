@@ -4176,12 +4176,16 @@ in `n₁ → ℝ`). The only landed bridge `linearIndependent_rigidityMatrixProd
 (A5b) is for the **full** matrix's `.row`, NOT a column-operated, row-restricted,
 `v`-column-projected `toBlocks`. Grep-confirmed: NO landed `submatrix.toBlocks.row` LI
 lemma. Two NEW bridges needed:
-* **`hD`** (`linearIndependent_toBlocks₂₂_row_of_IH`): the IH `Gv` full-rank is a
-  span-finrank-`= card` fact; bridge to `toBlocks₂₂.row` LI via `rank_eq_finrank_span_row`
-  + `linearIndependent_rows_iff_rank_eq_card` (`Mathlib/.../Rank.lean`). The IH is NOT in
-  the arm signature — traced to `case_III_realization_all_k` (`Realization.lean:1382`),
-  threaded as a realization motive; its rank consequence is carried (`hWcard`-shaped),
-  as `_chain`/leafB2 already carry `hIH : finrank (span Fbase.rigidityRows) = D·(|V_Gv|−1)`.
+* **`hD`** — ✅ LANDED 2026-06-25 as `linearIndependent_toBlocks₂₂_row_of_off_pin`
+  (`Concrete.lean`). **The design's `rank_eq_finrank_span_row` + `linearIndependent_rows_iff_
+  rank_eq_card` Gram route was NOT needed** — a cleaner op-invariance route: the column op
+  `Φ.symm = columnOp hva` only updates body `v`'s coordinate, invisible to a `Gᵥ`-row whose
+  endpoints avoid `v`, so the operated bottom block `toBlocks₂₂` IS the un-operated `R(Gᵥ,q)`
+  submatrix (`submatrix_columnOp_toBlocks₂₂_eq`, entrywise off `rigidityMatrixEdge_mul_columnOp_
+  apply_off_pin` + `rigidityMatrixEdge_apply`). So `hD` is a pure submatrix-restriction of the
+  IH row-LI: the bridge takes `hIH : LinearIndependent ℝ ((rigidityMatrixEdge).submatrix
+  (re ∘ Sum.inr) ((columnSplit v).symm ∘ Sum.inr)).row` (the IH `R(Gᵥ,q)` full-rank restricted
+  to the matched rows/cols — the dispatch's burden, item 2) and rewrites through the equality.
 * **`hA`** (`linearIndependent_toBlocks₁₁_row_of_corner_gate`): rewrite entries via
   `rigidityMatrixEdge_mul_columnOp_apply_corner` to `(blockBasisOn)(finScrewBasis c)`
   (needs corner endpoints `(v,a)`/`(v,b)` — a structural fact on `re` the cert's abstract
@@ -4189,6 +4193,6 @@ lemma. Two NEW bridges needed:
   **GUARD the `caseIIICandidate` whnf (§38): the spike hit a 200000-heartbeat timeout on a
   naive `linearIndependent_row_of_coordEquiv`** — use `apply` with explicit carrier.
 
-**NEXT** = leaf 1 (`hD` bridge), leaf 2 (`hA` bridge), then the dispatch (item 2)
-discharges `(re, hbot, hA, hD)` and wires the arm. No phase-direction or contract
-change; `_chain` stays in tree (parallel, sound).
+**NEXT** = leaf 1 (`hD` bridge) ✅ LANDED 2026-06-25; leaf 2 (`hA` bridge), then the
+dispatch (item 2) discharges `(re, hbot, hA, hD)` and wires the arm. No phase-direction
+or contract change; `_chain` stays in tree (parallel, sound).

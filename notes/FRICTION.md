@@ -3496,6 +3496,21 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `columnSplit_corner_card` then closes via `Fintype.card_prod` + `Fintype.card_subtype_eq` + `one_mul`.
 - **Status:** idiom (project-internal).
 
+### [idiom] `rw [lemma h]` with an explicitly-applied rewrite hits only the *first* matched occurrence — for a goal with two structurally-identical sub-terms (e.g. `f (S u₁) - f (S u₂)`), use `simp only [lemma, …]` to rewrite both
+- **Where it bit:** Phase 23d A6 (`rigidityMatrixEdge_mul_columnOp_apply_off_pin`,
+  `RigidityMatrix/Concrete.lean`) — the off-pin entry equality `r ((columnOp hva S) u₁ − (columnOp hva
+  S) u₂) = r (S u₁ − S u₂)`, with `columnOp hva S` appearing at both endpoints `u₁ = (ends e).1`,
+  `u₂ = (ends e).2`.
+- **Friction:** `rw [columnOp_apply hva, Function.update_of_ne hv1.symm, Function.update_of_ne hv2.symm]`
+  reduced only the `u₁` occurrence — `Function.update_of_ne hv1.symm` consumed the first `Function.update`
+  and left the `u₂` one as un-reduced `columnOp hva …`, so the chain stalled. Cost one build cycle.
+- **Resolution:** finish the columnOp reduction with `simp only [columnOp_apply, Function.update_of_ne
+  hv1.symm, Function.update_of_ne hv2.symm]` (simp rewrites all occurrences to fixpoint). Also: state the
+  un-operated entry helper (`rigidityMatrixEdge_apply`) to the `rigidityRowFunEdge p (Pi.single body s)`
+  form — over-ascribing `(… : ScrewSpace k)` on a `Pi.single body s u` sub-term triggers a metavar
+  type-mismatch.
+- **Status:** idiom (project-internal).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

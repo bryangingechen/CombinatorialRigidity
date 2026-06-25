@@ -1198,4 +1198,121 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_submatrix_toBlocks₂
   exact F.rigidityMatrixEdge_mul_columnOp_apply_pin_zero ends hgp hva _ c
     (hbot i).1 (hbot i).2
 
+/-! ## A6 — the bottom block `R(Gᵥ, q)` is op-invariant (the `hD` content)
+
+KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has bottom-right block `D = R(G₁, q₁)`, the
+induction-hypothesis matrix on the deleted-vertex graph `G₁ = G ∖ {v}`. In the concrete model that
+block sits at the **bottom rows** (the `G₁`-edge rows, endpoints `≠ v`) and the **non-pin columns**
+(`body ≠ v`). The (6.61) column op `Φ.symm = columnOp hva` only rewrites body `v`'s screw column
+(`columnOp hva S = Function.update S v …`), so for a row whose endpoints both avoid `v` it changes
+*nothing the row reads*: the operated bottom-block entry equals the un-operated one. Hence the `D`
+block is literally the un-operated `R(Gᵥ, q)` submatrix, whose row-LI is the IH full-rank fact
+(the `hD` leaf, §I.8.24(4.34) leaf 1). NO span argument; NO `ScrewSpace` unfolding. -/
+
+/-- **A6 — the un-operated edge-restricted matrix entry** (Phase 23d, the entrywise read of the
+bottom block before the column op; Katoh–Tanigawa 2011 §6.4.2). The `(⟨e, he⟩, j)`-row of
+`rigidityMatrixEdge ends hgp` at column `(body, c)` is the edge-restricted rigidity-row functional
+evaluated at the single-body screw assignment `Pi.single body (finScrewBasis k c)`. Immediate from
+`dualProductCoordEquiv_apply`, the edge-restricted analogue of the `rigidityMatrixProd` entry read.
+NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_apply [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    F.rigidityMatrixEdge ends hgp p (body, c)
+      = F.rigidityRowFunEdge ends hgp p (Pi.single body (finScrewBasis k c)) := by
+  rw [BodyHingeFramework.rigidityMatrixEdge, Matrix.of_apply, dualProductCoordEquiv_apply]
+
+/-- **A6 — the operated edge-matrix entry equals the un-operated one off the FIXED pin `v`, for a
+row avoiding `v`** (Phase 23d, the bottom-block op-invariance; the `hD` content; Katoh–Tanigawa 2011
+§6.4.2 eq. (6.61)). For a column op `Φ = (columnOp hva).symm` keyed on a **fixed** pin `v ≠ a`, the
+`(⟨e, he⟩, j)`-row of `rigidityMatrixEdge ends hgp * U` at a column `(body, c)` with `body ≠ v`
+equals the *un-operated* entry `rigidityMatrixEdge ends hgp (⟨e, he⟩, j) (body, c)` for **any**
+column body whenever the row's endpoints `(ends e).1`, `(ends e).2` both differ from `v`. The column
+op `Φ.symm = columnOp hva` only updates body `v`'s screw coordinate
+(`columnOp hva S = Function.update S v (S v + S a)`), and the row functional `hingeRow (ends e).1
+(ends e).2` reads only its two endpoints' coordinates, both `≠ v`, so the update is invisible:
+`(columnOp hva (Pi.single body s)) (ends e).i = (Pi.single body s) (ends e).i` by
+`Function.update_of_ne`. This makes the (6.64) bottom block `D` literally the un-operated
+`R(Gᵥ, q)` submatrix. NO span argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_off_pin [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k)))
+    (hv1 : v ≠ (ends p.1.1).1) (hv2 : v ≠ (ends p.1.1).2) :
+    (F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c)
+      = F.rigidityMatrixEdge ends hgp p (body, c) := by
+  rw [F.rigidityMatrixEdge_apply ends hgp p body c,
+    F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p body c,
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hingeRow_apply, hingeRow_apply]
+  simp only [columnOp_apply, Function.update_of_ne hv1.symm, Function.update_of_ne hv2.symm]
+
+/-- **A6 — the (6.64) bottom block `toBlocks₂₂` is the un-operated `R(Gᵥ, q)` submatrix** (Phase
+23d, the `hD` matrix-equality crux; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). With the FIXED-pin
+column reindex `en := (columnSplit v).symm` (so the corner is body `v`'s `D` columns and the bottom
+columns are the `body ≠ v` columns) and a row injection `re` whose BOTTOM rows (`re ∘ Sum.inr`)
+avoid the pin `v` (`hbot`), the bottom-right block `toBlocks₂₂` of
+`(rigidityMatrixEdge ends hgp * U).submatrix re en` equals the **un-operated** edge matrix
+restricted to those bottom rows and `body ≠ v` columns. Entrywise this is
+`rigidityMatrixEdge_mul_columnOp_apply_off_pin` (the column op only touches body `v`'s coordinate,
+invisible to a row avoiding `v`); the corner column `(columnSplit v).symm (Sum.inr _)` is a
+`body ≠ v` column by `columnSplit`'s `Sum.inr ↦ body ≠ v` construction. This is the (6.64) bottom
+block `D = R(G₁, q₁)`, whose row-LI is the IH full-rank fact. NO span argument; NO `ScrewSpace`
+unfolding. -/
+theorem BodyHingeFramework.submatrix_columnOp_toBlocks₂₂_eq [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∧
+                      v ≠ (ends (re (Sum.inr i)).1.1).2) :
+    ((F.rigidityMatrixEdge ends hgp
+          * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+              (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₂₂
+      = (F.rigidityMatrixEdge ends hgp).submatrix (re ∘ Sum.inr)
+          ((columnSplit (k := k) v).symm ∘ Sum.inr) := by
+  ext i x
+  obtain ⟨⟨b, hb⟩, c⟩ := x
+  simp only [Matrix.toBlocks₂₂, Matrix.submatrix_apply, Matrix.of_apply, Function.comp_apply]
+  exact F.rigidityMatrixEdge_mul_columnOp_apply_off_pin ends hgp hva _ b c
+    (hbot i).1 (hbot i).2
+
+/-- **A6 — the (6.64) bottom-block row-LI from the un-operated submatrix's** (Phase 23d, the `hD`
+leaf; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given that the **un-operated** edge matrix
+`R(Gᵥ, q)` — restricted to the bottom rows `re ∘ Sum.inr` (a `G ∖ {v}` link block, both endpoints
+`≠ v` by `hbot`) and the `body ≠ v` columns `(columnSplit v).symm ∘ Sum.inr` — has linearly
+independent rows (the induction-hypothesis full-rank fact, the dispatch supplies it as a
+span-finrank `= card` consequence), the bottom-right block `toBlocks₂₂` of the operated reindexed
+matrix
+`(rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm` has linearly independent rows.
+Immediate from `submatrix_columnOp_toBlocks₂₂_eq` (the operated bottom block IS the un-operated
+submatrix, since the column op only touches body `v`'s coordinate). This is the `hD` hypothesis the
+route-A cert `case_III_rank_certification_matrix` consumes; the dispatch (item 2) instantiates the
+IH-rank input. NO span argument; NO `ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_of_off_pin [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hbot : ∀ i : m₂, v ≠ (ends (re (Sum.inr i)).1.1).1 ∧
+                      v ≠ (ends (re (Sum.inr i)).1.1).2)
+    (hIH : LinearIndependent ℝ
+      ((F.rigidityMatrixEdge ends hgp).submatrix (re ∘ Sum.inr)
+          ((columnSplit (k := k) v).symm ∘ Sum.inr)).row) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₂₂).row := by
+  rw [F.submatrix_columnOp_toBlocks₂₂_eq ends hgp hva re hbot]
+  exact hIH
+
 end CombinatorialRigidity.Molecular
