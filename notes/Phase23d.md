@@ -140,15 +140,23 @@ build-config friction: `Concrete.lean` needed an added `public import` of the pr
 `rigidityMatrix_mul_rank` only used the *mathlib* `rank_mul_eq_left_of_isUnit_det`, so the project
 mirror was not transitively imported until now. NO `ScrewSpace` unfolding.
 
-**Still OPEN: the NEXT LEAF is the A5c `hblock` residual** (then `case_III_rank_certification_matrix`).
-The composition core is now landed, so A5c reduces to **supplying its inputs from the chain-data
-geometry**: construct `U := (toMatrix' (prodColumnOpEquiv (columnOp hva).symm))ᵀ`, the `em`/`en`
-body-`a` corner/bottom split (PROBE 3), and prove `hblock : (rigidityMatrixEdge * U).reindex em en =
-fromBlocks A B 0 D` entrywise — `0` block off `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne`
+**✅ The `en` column-split input is now LANDED too** (`columnSplit` + `columnSplit_corner_card`,
+`Concrete.lean`, 2026-06-24, build/lint/warning/axiom-clean) — the body-`a` corner/bottom partition
+of the product column index `α × Fin D` (PROBE 3), with its corner card `= screwDim k`
+(`screwSpace_finrank` + `Fintype.card_subtype_eq`). One of the three named composition-core inputs
+(`U`/`em`/`en`) is now in hand: `U`/`hU` are the already-landed `prodColumnOpEquiv (columnOp hva).symm`
++ `prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`; `en` is now `columnSplit a`.
+
+**Still OPEN: the NEXT LEAF is the `em` row split + the `hblock` residual** (then
+`case_III_rank_certification_matrix`). The composition core + `en` + `U` are landed, so A5c reduces to
+**supplying `em` and `hblock` from the chain-data geometry**: the `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃
+m₁ ⊕ m₂` corner/bottom row partition (corner `m₁` = `e_a` panel rows + reproduced `e_b` row, card `D`;
+bottom `m₂` = IH rows, card `D·(|V|−2)`), and `hblock : (rigidityMatrixEdge * U).reindex em (columnSplit
+a) = fromBlocks A B 0 D` entrywise — `0` block off `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne`
 (`Φ = (columnOp hva).symm`), corner/bottom LI via the A5b iff (`linearIndependent_rigidityMatrixProd
 _row_iff`). NOTE: the operated-entry/LI facts are stated on `rigidityMatrixProd` (all-`β` rows); the
 `hblock` must read them on `rigidityMatrixEdge` (edge rows) — the entrywise facts are index-agnostic
-on rows so they carry, but the `em`/`en` partition + LI re-wrap must target the `{e // e ∈ E} × Fin
+on rows so they carry, but the `em` row partition + LI re-wrap must target the `{e // e ∈ E} × Fin
 (D−1)` row index. Wrap into `case_III_rank_certification_matrix`, then **A6** (re-route the arm's
 `hrank` at `Arms.lean:350` / `ForkedArm.lean:90`). Full verdict + corrected signatures + bankable
 fragments: design §I.8.24(4.32).
@@ -168,21 +176,24 @@ fragments: design §I.8.24(4.32).
   `Module.finBasis`/`Basis.equivFun`/`LinearEquiv.finrank_map_eq` — opaque `ScrewSpace` (Phase 22l) is
   **never unfolded**; `Matrix.rank_eq_finrank_span_row` fires with zero detour.
 
-**Remaining leaf count (post-A5c-composition-core, ≈2–3):** the A5c `hblock` residual
-(`U`/`em`/`en`/`hblock`-entrywise + the corner/bottom LI re-wrap to the edge row index) ~1.5–2.5; the
-`case_III_rank_certification_matrix` wrap (fire the landed composition core on those inputs) folds in;
-A6 (re-route the arm's `hrank` step + the `Fin cd.d` dispatch) ~1. The PROBE-2 A4/edge-restricted-bridge
-composition is now LANDED as `finrank_span_rigidityRows_ge_of_edge_fromBlocks`, so the remaining A5c
-work is the chain-data-geometry inputs only. Per-leaf signatures + bankable SORRY-FREE fragments
-(PROBE 1/2/3/5/6): design §I.8.24(4.32).
+**Remaining leaf count (post-`en`-split, ≈2–2.5):** the `em` row split + the `hblock` residual
+(`em` corner/bottom row partition + `hblock`-entrywise + the corner/bottom LI re-wrap to the edge row
+index) ~1.5–2; the `case_III_rank_certification_matrix` wrap (fire the landed composition core on
+`U`/`em`/`en`/`hblock`/`hA`/`hD`) folds in; A6 (re-route the arm's `hrank` step + the `Fin cd.d`
+dispatch) ~1. The composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`), the `en`
+column split (`columnSplit` + `columnSplit_corner_card`), and `U`/`hU` (`prodColumnOpEquiv (columnOp
+hva).symm` + `..._transpose_toMatrix'_det_isUnit`) are now all LANDED, so the remaining A5c work is
+`em` + `hblock` + LI only. Per-leaf signatures + bankable SORRY-FREE fragments (PROBE 1/2/3/5/6):
+design §I.8.24(4.32).
 
 ## Remaining work in Phase 23
 
 1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅
    A1+A2+A3+A4+A4.5+A5a+A5b + A5c-keystone + A5c operated-entry facts + A4.5e (the edge-restricted
-   matrix) + the A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) landed
-   (`Concrete.lean`). **NEXT = the A5c `hblock` residual** (the chain-data-geometry inputs
-   `U`/`em`/`en`/`hblock`/LI to the landed composition core) → `case_III_rank_certification_matrix`
+   matrix) + the A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) + the `en`
+   column split (`columnSplit` + `columnSplit_corner_card`) landed (`Concrete.lean`). **NEXT = the
+   `em` row split + the `hblock` residual** (the remaining chain-data-geometry inputs `em`/`hblock`/LI
+   to the landed composition core; `U`/`en` are now in hand) → `case_III_rank_certification_matrix`
    wrap → **A6** (re-route the arm's `hrank` step). The route-B/4 dual-space leaves + the chain cert
    `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space approach the
    wall closed; do not build on them; route A REPLACES `_chain` at the arm's `hrank` seam). The
@@ -227,25 +238,27 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 **✅ Route A on track; A1+A2+A3+A4+A4.5+A5a+A5b + the A5c-keystone + the A5c operated-entry facts +
 A4.5e (the edge-restricted matrix) + the A5c COMPOSITION CORE (`finrank_span_rigidityRows_ge_of_edge_
-fromBlocks`) LANDED (`Concrete.lean` + `Rank.lean`). NEXT CONCRETE COMMIT = the A5c `hblock`
-residual** (the chain-data-geometry inputs to the landed composition core). The composition core is
-the PROBE-2 body packaged standalone: given the edge-restricted `hgp`/`hends`, a unit-det column-op
-`U`, and `em`/`en` exhibiting `(rigidityMatrixEdge * U).reindex em en = fromBlocks A B 0 D` with LI
-corner/bottom rows, it gives `#m₁ + #m₂ ≤ finrank (span F.rigidityRows)` (the honest Theorem-5.5
-quantity) in two lines (the A4 bridge + the A4.5e honest-rank bridge). So the remaining A5c work is
-**supplying its inputs from the chain-data geometry**: construct `U := (toMatrix' (prodColumnOpEquiv
-(columnOp hva).symm))ᵀ`, the `em`/`en` body-`a` corner/bottom split (PROBE 3), prove `hblock`
-entrywise (`0` block off `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` with `Φ = (columnOp
-hva).symm`; corner/bottom LI via the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`), re-wrap
-to the edge row index, then fire the composition core → `case_III_rank_certification_matrix`. The
-landed operated-entry/LI facts are stated on `rigidityMatrixProd` (all-`β` rows); they are
-index-agnostic on rows so they carry, but the `hblock`/`em`/`en` must target the `{e // e ∈ E} × Fin
-(D−1)` row index of `rigidityMatrixEdge`. The result replaces the walled `case_III_rank_certification`
-/`_chain` at the arm's `hrank` seam (`Arms.lean:350` / `ForkedArm.lean:90`). Then **A6** = re-route the
-arm + route the `Fin cd.d` dispatch (matched on the STATED `d_eq_kAdd`, no 23c-style coincidence gap —
-question (d) clean). After: ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change, no phase-direction
-decision owed** (within route A; fall-back (C) unaffected). Bankable SORRY-FREE fragments (PROBE
-1/2/3/5/6): design §I.8.24(4.32).
+fromBlocks`) + the `en` COLUMN SPLIT (`columnSplit` + `columnSplit_corner_card`) LANDED (`Concrete.lean`
++ `Rank.lean`). NEXT CONCRETE COMMIT = the `em` row split + the `hblock` residual** (the remaining
+chain-data-geometry inputs to the landed composition core). The composition core is the PROBE-2 body
+packaged standalone: given the edge-restricted `hgp`/`hends`, a unit-det column-op `U`, and `em`/`en`
+exhibiting `(rigidityMatrixEdge * U).reindex em en = fromBlocks A B 0 D` with LI corner/bottom rows, it
+gives `#m₁ + #m₂ ≤ finrank (span F.rigidityRows)` (the honest Theorem-5.5 quantity) in two lines (the
+A4 bridge + the A4.5e honest-rank bridge). Now in hand: `U := (toMatrix' (prodColumnOpEquiv (columnOp
+hva).symm))ᵀ` with `hU` (`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`), and `en := columnSplit a`
+with `Fintype.card m₁ = D` (`columnSplit_corner_card`). So the remaining A5c work is **the `em` row
+split + `hblock` + LI from the chain-data geometry**: the `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃ m₁ ⊕ m₂`
+corner/bottom row partition, prove `hblock` entrywise (`0` block off
+`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` with `Φ = (columnOp hva).symm`; corner/bottom LI
+via the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`), re-wrap to the edge row index, then
+fire the composition core → `case_III_rank_certification_matrix`. The landed operated-entry/LI facts
+are stated on `rigidityMatrixProd` (all-`β` rows); they are index-agnostic on rows so they carry, but
+the `hblock`/`em` must target the `{e // e ∈ E} × Fin (D−1)` row index of `rigidityMatrixEdge`. The
+result replaces the walled `case_III_rank_certification`/`_chain` at the arm's `hrank` seam
+(`Arms.lean:350` / `ForkedArm.lean:90`). Then **A6** = re-route the arm + route the `Fin cd.d` dispatch
+(matched on the STATED `d_eq_kAdd`, no 23c-style coincidence gap — question (d) clean). After: ENTRY +
+ASSEMBLY (parallel-safe). **No motive/IH change, no phase-direction decision owed** (within route A;
+fall-back (C) unaffected). Bankable SORRY-FREE fragments (PROBE 1/2/3/5/6): design §I.8.24(4.32).
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1–A5c confirm route A
 on track; the A4.5e/A5c/A6 layer plan is in *Current state* + §(4.32), superseding §(4.31)'s A5c/A6;
@@ -267,6 +280,18 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **`en` column split LANDED — `columnSplit` + `columnSplit_corner_card` (2026-06-24, `Concrete.lean`,
+  build/lint/warning/axiom-clean).** The body-`a` corner/bottom partition of the product column index
+  `α × Fin D` (PROBE 3): `columnSplit a : α × Fin D ≃ ({body // body = a} × Fin D) ⊕ ({body // body ≠
+  a} × Fin D)` (`Equiv.sumCompl (· = a)` distributed over `Fin D` via `Equiv.prodCongr` +
+  `Equiv.sumProdDistrib`), with the corner card `= screwDim k` (`Fintype.card_prod` +
+  `Fintype.card_subtype_eq` + `screwSpace_finrank`). This is the `en` input the composition core
+  consumes; with the already-landed `U`/`hU` (`prodColumnOpEquiv (columnOp hva).symm` +
+  `..._transpose_toMatrix'_det_isUnit`), two of the three named A5c inputs are now in hand. Shrunk to
+  fit one sitting (per the one-sitting scope rule) — the full `case_III_rank_certification_matrix` is
+  MED–HIGH/2–3 leaves; this banks one complete, reusable, carrier-agnostic input SORRY-FREE. NEXT =
+  the `em` row split + `hblock`. Friction: a computable `Equiv.sumCompl (· = a)`-based def needs a
+  `[DecidableEq α]` *hypothesis*, not an in-body `Classical` (→ FRICTION [idiom]).
 - **A5c composition core LANDED — `finrank_span_rigidityRows_ge_of_edge_fromBlocks` (2026-06-24,
   `Concrete.lean`, build/lint/warning/axiom-clean).** The PROBE-2 body packaged as a standalone
   carrier-agnostic lemma (`[Fintype α] [DecidableEq α] [Finite β]`): edge-restricted `hgp`/`hends` +
@@ -422,6 +447,9 @@ compressed history verdict; the per-leaf landed-route-B descriptions are in git 
 - *`E(G)`/`V(G)` scoped Graph notation is not in scope in `Molecular/RigidityMatrix/` files (no
   `open Graph`) — write the `F.graph.edgeSet` dot form in signatures; `lean_multi_attempt` masks it*
   → TACTICS-QUIRKS § 67 + FRICTION [idiom] (hit authoring A4.5e's edge-restricted binders).
+- *A computable `Equiv` built from `Equiv.sumCompl (· = a)` needs a `[DecidableEq α]` hypothesis on
+  the def, not an in-body `Classical` (else it fails to compile as `noncomputable`)* → FRICTION
+  [idiom] (hit authoring the A5c `columnSplit`).
 - *The deferred-hypothesis-unsat trap recurs at composition; a wall recurring across structurally-different
   fixes is intrinsic to a shared downstream object* → model-experiment Findings (rows 449–455) + DESIGN.md
   *Constructibility recon*. The full per-route kernel traces (§(4.18)–(4.30)) live in `Phase23-design.md`.

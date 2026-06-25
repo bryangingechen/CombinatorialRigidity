@@ -679,6 +679,48 @@ theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_edge_fromBlocks [Fint
     (F.rigidityMatrixEdge ends hgp) U hU em en hblock hA hD
   rwa [F.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows ends hgp hends] at hbound
 
+/-! ## A5c — the column split for the (6.61)→(6.64) corner block
+
+The A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) consumes a column
+reindex `en : (α × Fin D) ≃ n₁ ⊕ n₂` together with a row reindex `em`, a unit-det column op `U`,
+and the block equality `hblock`. KT §6.4.2's column op (6.61) "add `vᵢ`'s columns to `vᵢ₊₁`'s" is
+followed by isolating the `D × D` corner block at `vᵢ₊₁`'s `D` columns (eqs. (6.62)–(6.64)). On the
+product-column index `α × Fin D` that corner is precisely body `vᵢ₊₁`'s `D` columns — the columns
+`{(body, c) // body = vᵢ₊₁}`. This block packages that column partition as the `en` the core needs:
+`α × Fin D ≃ ({body // body = a} × Fin D) ⊕ ({body // body ≠ a} × Fin D)`, with the corner block's
+cardinality `D` (`columnSplit_corner_card`). Carrier-agnostic — a pure product reindex, no
+`ScrewSpace` reach-in. -/
+
+/-- **The body-`a` column split of the product column index** (Phase 23d A5c, the `en` input to the
+composition core; Katoh–Tanigawa 2011 §6.4.2 eqs. (6.62)–(6.64)). The product column index
+`α × Fin D` of `rigidityMatrixEdge`/`rigidityMatrixProd` partitions into the corner block at body
+`a` — its `D` columns `{body // body = a} × Fin D` (KT's `vᵢ₊₁` corner) — and the rest
+`{body // body ≠ a} × Fin D` (the IH bottom-block columns). Built as
+`(Equiv.sumCompl (· = a)).symm` distributing over `Fin D` (`Equiv.prodCongr` + the
+right-distributive `Equiv.sumProdDistrib`). This is the column reindex `en` the A5c `hblock`
+`fromBlocks` equality is stated against; the corner cardinality is `D`
+(`columnSplit_corner_card`). -/
+def columnSplit [DecidableEq α] (a : α) :
+    (α × Fin (Module.finrank ℝ (ScrewSpace k)))
+      ≃ ({body : α // body = a} × Fin (Module.finrank ℝ (ScrewSpace k)))
+        ⊕ ({body : α // body ≠ a} × Fin (Module.finrank ℝ (ScrewSpace k))) :=
+  (Equiv.prodCongr (Equiv.sumCompl (· = a)).symm (Equiv.refl _)).trans
+    (Equiv.sumProdDistrib _ _ _)
+
+/-- **The body-`a` corner column block has cardinality `D`** (Phase 23d A5c; the corner-card fact
+the composition core's `Fintype.card m₁ = D` rewrite reads, via the `en` block partition
+`columnSplit`). The corner block `{body // body = a} × Fin D` has exactly `D = screwDim k` columns
+(one body, `D` screw coordinates) — KT's `vᵢ₊₁`-corner is `D × D`. `Fintype.card_prod` reduces it to
+`(card {body // body = a}) · (card (Fin D))`; the `= a` subtype is a singleton (card `1`) and
+`Fin D` has card `D = finrank ℝ (ScrewSpace k) = screwDim k` (`screwSpace_finrank`). -/
+theorem columnSplit_corner_card [Finite α] (a : α) :
+    Fintype.card ({body : α // body = a} × Fin (Module.finrank ℝ (ScrewSpace k)))
+      = screwDim k := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype {body : α // body = a} := Fintype.ofFinite _
+  rw [Fintype.card_prod, Fintype.card_fin, screwSpace_finrank,
+    Fintype.card_subtype_eq, one_mul]
+
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
 Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column

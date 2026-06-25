@@ -3484,6 +3484,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
   notation *present-but-poisoning* cases).
 - **Status:** idiom (project-internal).
 
+### [idiom] A computable `Equiv` built from `Equiv.sumCompl (· = a)` needs a `[DecidableEq α]` *hypothesis*, not an in-body `Classical` — else `noncomputable`
+- **Where it bit:** Phase 23d A5c (`columnSplit` in `RigidityMatrix/Concrete.lean`) — the body-`a`
+  column split `α × Fin D ≃ ({body // body = a} × Fin D) ⊕ …` built from `Equiv.sumCompl (· = a)`.
+- **Friction:** `Equiv.sumCompl (· = a)` needs `DecidablePred (· = a)`. Supplying it with an in-body
+  `haveI : DecidablePred (· = a) := fun _ => Classical.propDecidable _` makes the `def` *fail to
+  compile* ("consider marking it `noncomputable` because it depends on `Classical.propDecidable`").
+  Cost one build cycle.
+- **Resolution:** add `[DecidableEq α]` to the def signature (the consuming A5c arm carries it anyway)
+  — then `DecidablePred (· = a)` is inferred and the `Equiv` stays computable. The corner-card sibling
+  `columnSplit_corner_card` then closes via `Fintype.card_prod` + `Fintype.card_subtype_eq` + `one_mul`.
+- **Status:** idiom (project-internal).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to
