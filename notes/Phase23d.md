@@ -18,11 +18,19 @@ All landed leaves stay in tree (sound in isolation; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ ROUTE A is the plan; the A1+A2 de-risk is LANDED + gate-verified (2026-06-24,
-`CombinatorialRigidity/Molecular/RigidityMatrix/Concrete.lean`, build/lint/warning/axiom-clean).** The
-next concrete commit is **A3 — the matrix block-additivity-as-inequality lemma**. The de-risk's verdict:
-**the `ScrewSpace`-opacity composition is CLEAN** (no `maxHeartbeats`/`whnf` blow-up; file builds ~6s,
-full project 24s — the §(4.30) one-residual concern is RESOLVED).
+**✅ ROUTE A is the plan; A1+A2 (de-risk) and now A3 (the matrix block-additivity-as-inequality
+kernel) are LANDED + gate-verified.** A1+A2: `Molecular/RigidityMatrix/Concrete.lean` (2026-06-24,
+opacity CLEAN — the §(4.30) one-residual concern is RESOLVED). A3 (2026-06-24,
+`Mathlib/LinearAlgebra/Matrix/Rank.lean`, build/lint/warning/axiom-clean):
+`Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` — KT eq. (6.64)'s block-triangular
+additivity as a *pure-`Matrix`* inequality: for `fromBlocks A B 0 D` (lower-left zero) with `A`'s and
+`D`'s rows each LI, `#m₁ + #m₂ ≤ rank`. This is the matrix analog of the landed dual-space
+`finrank_add_card_le_of_linearIndependent_mkQ`, and — unlike it — **never forms a span membership**
+(the §(4.18)–(4.30) wall): the combined `(m₁⊕m₂)`-square minor of `fromBlocks` is block-triangular, so
+`det = det(A-minor)·det(D-minor) ≠ 0` (`det_fromBlocks_zero₂₁`), giving LI rows and `rank ≤ whole`
+(`rank_submatrix_le`). The LI-rows hypotheses are exactly the realization arm's supply (full-rank `D×D`
+corner `Mᵢ` + full-row-rank IH bottom-block). The next concrete commit is **A4 — the entrywise (6.61)
+column-op** (`Matrix.rank_mul_eq_right_of_isUnit_det`; now the cost outlier).
 
 **What landed (A1 + A2, axiom-clean):**
 - **A1 — `BodyHingeFramework.rigidityMatrix`**: `R(G,p)` as a literal
@@ -39,21 +47,23 @@ full project 24s — the §(4.30) one-residual concern is RESOLVED).
   `Module.finBasis`/`Basis.equivFun`/`LinearEquiv.finrank_map_eq` — opaque `ScrewSpace` (Phase 22l) is
   **never unfolded**; `Matrix.rank_eq_finrank_span_row` fires with zero detour.
 
-**Sharpened A3–A6 leaf count (post-de-risk, ≈7–11, down from §(4.30)'s 9–14):** A1+A2 came in at ~2
-effective leaves (one ~265-line file, no friction). **A3** matrix block-additivity-as-inequality
-(`Matrix.det_fromBlocks_zero₂₁` + the project's `Rank.lean` submatrix-det witnesses; the genuinely-new
-piece, ~2–3 leaves, MEDIUM–HIGH); **A4** the entrywise (6.61) column-op
-(`Matrix.rank_mul_eq_right_of_isUnit_det`; ~2–3, MEDIUM — now the cost outlier); **A5** re-aim the
-gate/union-dim cert at the `D×D` minor (content LANDED: `interior_group_eq_baseRedundancy`,
-`omitTwoExtensor_linearIndependent`; ~1–2, LOW–MEDIUM re-wrap); **A6** dispatch+spine (~1–2, MEDIUM).
+**Sharpened A4–A6 leaf count (post-A3, ≈5–8 remaining):** A1+A2 came in at ~2 effective leaves; **A3**
+came in at ~1 (a single clean ~50-line lemma — `det_fromBlocks_zero₂₁` + the project's
+`exists_submatrix_det_ne_zero_of_linearIndependent_rows` + `rank_submatrix_le` composed directly, no
+row-subset-extraction needed once stated in the LI-rows form the application actually wants). Still
+OPEN: **A4** the entrywise (6.61) column-op (`Matrix.rank_mul_eq_right_of_isUnit_det`; ~2–3, MEDIUM —
+now the cost outlier); **A5** re-aim the gate/union-dim cert at the `D×D` minor (content LANDED:
+`interior_group_eq_baseRedundancy`, `omitTwoExtensor_linearIndependent`; ~1–2, LOW–MEDIUM re-wrap);
+**A6** dispatch+spine (~1–2, MEDIUM).
 
 ## Remaining work in Phase 23
 
-1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2 landed (`Concrete.lean`).
-   OPEN: **A3** (block-additivity, NEXT) → A4 (column-op) → A5 (gate/union-dim at the `D×D` minor) →
-   A6 (dispatch+spine). The route-B/4 dual-space leaves + the chain cert
-   `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space approach the
-   wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
+1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2 landed (`Concrete.lean`);
+   ✅ A3 landed (`Rank.lean`, `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`). OPEN:
+   **A4** (column-op, NEXT) → A5 (gate/union-dim at the `D×D` minor) → A6 (dispatch+spine). The
+   route-B/4 dual-space leaves + the chain cert `case_III_rank_certification_chain` stay in tree (sound
+   in isolation — the dual-space approach the wall closed; do not build on them). The interior-`hρe₀`
+   crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
    `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
@@ -92,22 +102,24 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A chosen; the A1+A2 de-risk is LANDED (opacity CLEAN). NEXT CONCRETE COMMIT = A3, the matrix
-block-additivity-as-inequality lemma.** State + prove `rank (column-opped R(G,pᵢ)) ≥ rank Mᵢ +
-rank (bottom block R(G₁∖row, q₁))` at the `Matrix` level — KT (6.64)'s block-triangular additivity, the
-genuinely-new piece. Build from `Matrix.det_fromBlocks_zero₂₁` (block-triangular det, mathlib-confirmed)
-+ the project's `Rank.lean` submatrix-det witnesses (`exists_submatrix_det_ne_zero_of_linearIndependent_rows`)
-— a full-rank `D×D` corner minor + the IH's bottom-block rank. This is route A's analog of the landed
-dual-space `finrank_add_card_le_of_linearIndependent_mkQ`, re-done over `Matrix.rank`. After A3: A4 (the
-entrywise (6.61) column-op via `Matrix.rank_mul_eq_right_of_isUnit_det` — now the cost outlier), A5
-(re-aim the gate/union-dim cert at the `D×D` minor — content landed), A6 (dispatch+spine), then ENTRY +
-ASSEMBLY (parallel-safe).
+**✅ Route A on track; A1+A2 (de-risk) + A3 (block-additivity kernel) LANDED. NEXT CONCRETE COMMIT = A4,
+the entrywise (6.61) column-op on the concrete matrix.** Realize KT eq. (6.61)'s "add `vᵢ`'s columns to
+`vᵢ₊₁`'s" as an explicit invertible (unit-det) column-operation matrix `U`, and prove
+`(rigidityMatrix … * U).rank = (rigidityMatrix …).rank` via `Matrix.rank_mul_eq_right_of_isUnit_det`
+(mathlib-confirmed). Then exhibit the column-opped matrix in the `fromBlocks A B 0 D` shape A3 consumes
+(top-left `A = Mᵢ` the `D×D` corner block, bottom-right `D` the IH's `R(G₁＼row, q₁)` block, lower-left
+zero after the op), so A3 fires to give the (6.64) additivity. The (6.61) step is the "not difficult to
+see" one KT compresses and §(4.21) flags as the WHOLE content; at the matrix level it is an entrywise
+column computation (laborious but tractable). After A4: A5 (re-aim the gate/union-dim cert at the `D×D`
+minor — content landed, `interior_group_eq_baseRedundancy` + `omitTwoExtensor_linearIndependent`), A6
+(dispatch+spine), then ENTRY + ASSEMBLY (parallel-safe).
 
-**The route-A build should open as its own sub-phase at the next phase-open** (the A1+A2 de-risk confirms
-route A on track; the A3–A6 layer plan is in *Current state* + §(4.30); the new Lean lives in
-`Molecular/RigidityMatrix/Concrete.lean` + further `RigidityMatrix/` files). Route (C) (honest-conditional
-— carry the rank-cert obligation as one explicit hypothesis, ~1 leaf + wiring, gap = KT's own (6.61) "not
-difficult to see") is the documented fallback only if route A later walls.
+**The route-A build should open as its own sub-phase at the next phase-open** (A1+A2+A3 confirm route A
+on track; the A4–A6 layer plan is in *Current state* + §(4.30); the new Lean lives in
+`Molecular/RigidityMatrix/Concrete.lean` + the upstream-eligible `Mathlib/LinearAlgebra/Matrix/Rank.lean`
++ further `RigidityMatrix/` files). Route (C) (honest-conditional — carry the rank-cert obligation as one
+explicit hypothesis, ~1 leaf + wiring, gap = KT's own (6.61) "not difficult to see") is the documented
+fallback only if route A later walls.
 
 **Do NOT re-attempt** the closed genuine-row base-block routes (B, 4-bare, 4-splitOff) or the dual-space
 rank-cert variants — the wall (the discriminator gate intrinsic to the `caseIIICandidate` slot-override)
@@ -121,6 +133,16 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A3 LANDED — the (6.64) block-additivity kernel as a pure-`Matrix` inequality (2026-06-24,
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean`, build/lint/warning/axiom-clean).**
+  `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`: `fromBlocks A B 0 D` with `A`,`D` rows
+  each LI ⟹ `#m₁+#m₂ ≤ rank`. Stated in the LI-rows form the realization arm supplies (full-rank `D×D`
+  corner + full-row-rank IH bottom-block) — so the general-rank → LI-rows row-subset extraction is
+  *unneeded*, and the lemma collapses to: combined `(m₁⊕m₂)`-square minor is block-triangular ⟹
+  `det = det·det ≠ 0` (`det_fromBlocks_zero₂₁`) ⟹ LI rows ⟹ `rank = #m₁+#m₂`, then `rank_submatrix_le`.
+  Came in at ~1 clean leaf (vs §(4.30)'s 2–3 estimate). It is route A's analog of
+  `finrank_add_card_le_of_linearIndependent_mkQ` but forms **no span membership** — why route A
+  dissolves the §(4.18)–(4.30) wall (a literal block-matrix fact, not a dual-space containment).
 - **A1+A2 de-risk LANDED — opacity CLEAN (2026-06-24, `Concrete.lean`, build/lint/warning/axiom-clean).**
   A1 (`rigidityMatrix` + `rigidityMatrix_row`) + A2 (`Matrix.rank_of_dualCoord` carrier-agnostic,
   `rigidityMatrix_rank`, the clause-(iii) capstone `rigidityMatrix_rank_eq_finrank_span_rigidityRows` on
@@ -156,7 +178,10 @@ compressed history verdict; the per-leaf landed-route-B descriptions are in git 
   succeeded — interior `hρe₀` closed). 23d = the rank-cert reconsideration, within the CHAIN layer
   (CHAIN spans 23b+23c+23d). Structural precedent: the 23b→23c clean-break close at this same wall.
 
-### Promoted to Findings (model-experiment.md) / DESIGN.md
+### Promoted to TACTICS-QUIRKS / Findings (model-experiment.md) / DESIGN.md
+- *A lemma whose goal exposes `Matrix.rank`/`mulVec` on a constructed column type (`m⊕n`, Pi, …) needs
+  `[Fintype]` on that type in the signature — `[Finite]` + in-proof `Fintype.ofFinite` is too late (the
+  signature elaborates first)* → TACTICS-QUIRKS § 64 (hit authoring A3).
 - *The deferred-hypothesis-unsat trap recurs at composition; a wall recurring across structurally-different
   fixes is intrinsic to a shared downstream object* → model-experiment Findings (rows 449–455) + DESIGN.md
   *Constructibility recon*. The full per-route kernel traces (§(4.18)–(4.30)) live in `Phase23-design.md`.

@@ -87,6 +87,7 @@ failing pattern and the working fix.
 - downstream `import M` + `namespace Foo` + `open scoped Graph` → `V(G)` *"unexpected token ')'; expected ','"* AND `binop%` flips bare-ℕ `n-1`→ℤ-sub (`exact_mod_cast` fails); `open Foo` is fine → § 56 (a bare `Graph.`-prefixed decl inside `namespace Foo` in `M` made a `Foo.Graph` sub-namespace that captures `open scoped Graph`; pin the decl to `_root_.Graph.`)
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
+- *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
 
 ## Sections
 
@@ -2312,3 +2313,26 @@ refine cd.lemma ⟨(i : ℕ), by omega⟩
 which Lean accepts by defeq, so omega/`hid` sees the right atom. (`simp only [Fin.val_mk]` also
 reduces it but the `simpNF` linter then flags `Fin.val_mk` as an *unused* simp arg — the reduction
 fires via `dsimp`, not the lemma — so prefer `show`.) **Lifted to:** this entry; FRICTION pointer.
+
+## 64. A lemma whose *goal* exposes `Matrix.rank` (or `mulVec`/`mulVecLin`) on a constructed column type needs `[Fintype]` on that type in the signature — `[Finite] + classical`/`Fintype.ofFinite` inside the proof is too late
+
+**Symptom.** *"failed to synthesize instance of type class `Fintype (n₁ ⊕ n₂)`"* reported at the
+**goal-statement** position (the `theorem … : … ≤ (Matrix.fromBlocks A B 0 D).rank` line), not inside
+the proof — even though the proof opens with `haveI : Fintype n₁ := Fintype.ofFinite n₁` etc. Hit
+authoring Phase 23d's A3 `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows` with the column
+blocks typed `[Finite n₁] [Finite n₂]`.
+
+**Cause.** `Matrix.rank A := finrank R (LinearMap.range A.mulVecLin)`, and `mulVecLin`/`mulVec` sum
+over the **column** index, so they carry a `[Fintype <columns>]` instance argument. When the *goal
+type* mentions `(…).rank` on a matrix whose column type is a *constructed* type (`n₁ ⊕ n₂`, a `Pi`,
+a `Fin (f k)` …), that `Fintype` must be available **when the signature elaborates** — which is
+strictly before the proof body runs. A `haveI`/`classical`/`Fintype.ofFinite` inside the `by` block
+cannot satisfy it; the statement never type-checks. (Contrast the project's `Finite`-hypothesis
+lemmas like `exists_submatrix_det_ne_zero_of_linearIndependent_rows`: their *statements* don't expose
+`.rank` on a built type, so they can defer to an in-proof `Fintype.ofFinite`.)
+
+**Fix.** Put `[Fintype n₁] [Fintype n₂]` (the summands) in the signature; `Fintype (n₁ ⊕ n₂)` then
+synthesizes automatically at the goal type. Only revert to `[Finite]` + in-proof `ofFinite` when the
+constructed type appears **solely inside the proof**, never in the stated goal. Rule of thumb: if the
+goal text contains `.rank` / `mulVec` on anything other than a bare hypothesis variable, the column
+type's `Fintype` belongs in the signature.

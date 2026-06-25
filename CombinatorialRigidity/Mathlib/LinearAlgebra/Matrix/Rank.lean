@@ -291,6 +291,62 @@ theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
   rw [← Matrix.det_transpose]
   exact isUnit_iff_ne_zero.mp (Nᵀ.isUnit_iff_isUnit_det.mp this)
 
+/-- **Block-triangular rank additivity, as an inequality** (Katoh–Tanigawa 2011 eq. (6.64);
+Phase 23d route-A piece A3). For a block-triangular matrix `fromBlocks A B 0 D` over a field
+(lower-left block zero), if the rows of the diagonal blocks `A` and `D` are each linearly
+independent, then the rank of the whole matrix is at least the sum of the two diagonal-block
+row counts:
+`#m₁ + #m₂ ≤ (fromBlocks A B 0 D).rank`.
+
+This is the matrix-level analogue of the dual-space block cert
+`Submodule.finrank_add_card_le_of_linearIndependent_mkQ`: where the dual-space version expresses
+KT's (6.61) submatrix-containment as a span *membership* (which walled — see
+`notes/Phase23-design.md` §(4.18)–(4.30)), the matrix version is a structural fact about a literal
+block matrix and never forms a membership. The proof is exactly the (6.64) block-triangular minor
+argument: `A`'s LI rows give a full-rank square minor (column selection `e₁`, nonzero det), `D`'s
+give another (`e₂`); the combined `(m₁ ⊕ m₂)`-square minor of `fromBlocks A B 0 D` over those
+columns is itself block-triangular, so its determinant is the product of the two minor dets
+(`Matrix.det_fromBlocks_zero₂₁`) — nonzero — hence the minor has linearly independent rows, rank
+`#m₁ + #m₂`, and `rank ≤ (fromBlocks A B 0 D).rank` by `rank_submatrix_le`.
+
+In the KT application `A = Mᵢ` is the full-rank `D × D` corner block and `D` is the IH's
+bottom-block `R(G₁ ＼ row, q₁)` (both full row rank), so the LI-rows hypotheses are exactly what
+the realization arm supplies. -/
+theorem rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows
+    {K m₁ m₂ n₁ n₂ : Type*} [Field K] [Fintype m₁] [Fintype m₂]
+    [Fintype n₁] [Fintype n₂] {A : Matrix m₁ n₁ K} (B : Matrix m₁ n₂ K) {D : Matrix m₂ n₂ K}
+    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
+    Fintype.card m₁ + Fintype.card m₂ ≤ (Matrix.fromBlocks A B 0 D).rank := by
+  classical
+  -- Full-rank square minors of the diagonal blocks.
+  obtain ⟨e₁, he₁⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hA
+  obtain ⟨e₂, he₂⟩ := Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows hD
+  -- The combined column selection of `fromBlocks A B 0 D` over rows `m₁ ⊕ m₂`.
+  set c : m₁ ⊕ m₂ → n₁ ⊕ n₂ := Sum.elim (fun i => Sum.inl (e₁ i)) (fun j => Sum.inr (e₂ j)) with hc
+  set M : Matrix (m₁ ⊕ m₂) (n₁ ⊕ n₂) K := Matrix.fromBlocks A B 0 D with hM
+  -- The combined `(m₁ ⊕ m₂)`-square minor is block-triangular.
+  set N : Matrix (m₁ ⊕ m₂) (m₁ ⊕ m₂) K := Matrix.of (fun i j => M i (c j)) with hN
+  have hNblock : N = Matrix.fromBlocks (Matrix.of fun (i j : m₁) => A i (e₁ j))
+      (Matrix.of fun (i : m₁) (j : m₂) => B i (e₂ j)) 0
+      (Matrix.of fun (i j : m₂) => D i (e₂ j)) := by
+    ext i j
+    rcases i with i | i <;> rcases j with j | j <;>
+      simp [hN, hM, hc, Matrix.fromBlocks]
+  -- Its determinant is the product of the two minor dets (`det_fromBlocks_zero₂₁`), nonzero.
+  have hNdet : N.det ≠ 0 := by
+    rw [hNblock, Matrix.det_fromBlocks_zero₂₁]
+    exact mul_ne_zero he₁ he₂
+  -- LI rows of `N`, so `N.rank = #(m₁ ⊕ m₂)`.
+  have hNli : LinearIndependent K N.row := Matrix.linearIndependent_rows_of_det_ne_zero hNdet
+  have hNrank : N.rank = Fintype.card m₁ + Fintype.card m₂ := by
+    rw [hNli.rank_matrix, Fintype.card_sum]
+  -- `N` is the column-submatrix of `M`, so `N.rank ≤ M.rank`.
+  have hNsub : N = M.submatrix id c := rfl
+  calc Fintype.card m₁ + Fintype.card m₂ = N.rank := hNrank.symm
+    _ ≤ M.rank := by
+        rw [hNsub]
+        exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
+
 end Matrix
 
 /-- **Vector-form polynomial-along-line.** For a finite-dim ℝ-vector space `W` and an
