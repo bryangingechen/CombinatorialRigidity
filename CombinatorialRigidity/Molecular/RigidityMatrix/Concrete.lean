@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!
 # The concrete `Matrix` model of `R(G,p)` (Phase 23d route-A de-risk: A1 + A2)
@@ -634,6 +635,49 @@ theorem BodyHingeFramework.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows 
     (F.rigidityMatrixEdge ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
   rw [F.rigidityMatrixEdge_rank ends hgp, F.span_range_rigidityRowFunEdge ends hgp hends]
+
+/-- **A5c composition core — the (6.64) block-additivity certification on the edge-restricted
+matrix** (Phase 23d, the carrier-agnostic A4 + A4.5e composition; Katoh–Tanigawa 2011 §6.4.2 eqs.
+(6.61)→(6.64)). For a body-hinge framework `F` whose edge-restricted general-position hypotheses
+hold (`hgp`/`hends` over `E(F.graph)`), a *unit-determinant* (6.61) column-operation matrix `U`,
+and reindexing equivalences `em`/`en` exhibiting the column-operated edge-restricted rigidity matrix
+`rigidityMatrixEdge * U` in the block-triangular shape `fromBlocks A B 0 D` with the rows of both
+diagonal blocks `A` (KT's full-rank `D × D` corner `Mᵢ`) and `D` (the IH bottom block
+`R(G₁ ∖ row, q₁)`) linearly independent, the honest rigidity-row span has finrank at least the sum
+of the two diagonal-block row counts:
+`#m₁ + #m₂ ≤ finrank (span F.rigidityRows)`.
+
+This is the route-A `Matrix.rank` realization of KT's `rank R(G,pᵢ) ≥ rank Mᵢ + rank(R(G₁ ∖ row,
+q₁))` block decomposition (6.64): the A4 block-additivity bridge
+`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` (a *right-multiply by the unit-det column op*
+followed by a structural `fromBlocks` reindex — never a span membership, so the §(4.18)–(4.30) wall
+never forms) bounds `#m₁ + #m₂ ≤ (rigidityMatrixEdge).rank`, and the A4.5e honest-rank bridge
+`rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows` rewrites that rank to the honest target
+`finrank (span F.rigidityRows)` — the `HasGenericFullRankRealization` quantity Theorem 5.5 needs.
+
+This packages the spike's PROBE-2 composition (`notes/Phase23-design.md` §I.8.24(4.32)(1)) as a
+standalone, carrier-agnostic lemma: the realization arm's `case_III_rank_certification_matrix`
+(A5c) supplies the chain-data geometry (the explicit `U := (toMatrix' (prodColumnOpEquiv (columnOp
+hva).symm))ᵀ`, the `em`/`en` body-`a` corner/bottom partition, and the `hblock`/`hA`/`hD` reads off
+the landed `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` + `linearIndependent_rigidityMatrix
+Prod_row_iff`) and fires this core, with **no `ScrewSpace` unfolding** anywhere in the bridge. -/
+theorem BodyHingeFramework.finrank_span_rigidityRows_ge_of_edge_fromBlocks [Fintype α]
+    [DecidableEq α] [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    (hends : ∀ e ∈ F.graph.edgeSet, F.graph.IsLink e (ends e).1 (ends e).2)
+    {m₁ m₂ n₁ n₂ : Type*} [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
+      (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
+    (em : ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)) ≃ m₁ ⊕ m₂)
+    (en : (α × Fin (Module.finrank ℝ (ScrewSpace k))) ≃ n₁ ⊕ n₂)
+    {A : Matrix m₁ n₁ ℝ} {B : Matrix m₁ n₂ ℝ} {D : Matrix m₂ n₂ ℝ}
+    (hblock : (F.rigidityMatrixEdge ends hgp * U).reindex em en = Matrix.fromBlocks A B 0 D)
+    (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
+    Fintype.card m₁ + Fintype.card m₂
+      ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+  have hbound := Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks
+    (F.rigidityMatrixEdge ends hgp) U hU em en hblock hA hD
+  rwa [F.rigidityMatrixEdge_rank_eq_finrank_span_rigidityRows ends hgp hends] at hbound
 
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
