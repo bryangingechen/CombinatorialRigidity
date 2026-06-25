@@ -69,8 +69,12 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   re-confirms the triple.** **Session #33 ADJUDICATED the open route-A design decision
   (row 473's cert-SHAPE FLAG): the user chose option (4b′)** — reshape the cert kernel
   (A3/A4 in `Rank.lean`) to a row-SUBMATRIX (injection `em : m₁⊕m₂ ↪ rows`, ignoring the
-  `D−2` surplus `v`-rows); options (4a)/(C) declined, route A stays the plan. Phase status +
-  next dispatch live in `notes/Phase23d.md` + the ROADMAP cell, **not here**.
+  `D−2` surplus `v`-rows); options (4a)/(C) declined, route A stays the plan. **The user STOPPED the
+  loop at row 479 (2026-06-25, session #33) for handoff** — a fresh coordinator re-runs the
+  session-start availability check, re-confirms the triple, and picks up the next dispatch (the `hA`
+  corner-LI bridge — §38 whnf-guarded) per `notes/Phase23d.md` *Hand-off*; no open design decision is
+  owed (4b′ is adjudicated, the A6 plan is in §(4.34)). Phase status + next dispatch live in
+  `notes/Phase23d.md` + the ROADMAP cell, **not here**.
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
@@ -137,6 +141,7 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 476 | A6 `hblock` 0-block kernel `_submatrix_toBlocks₂₁_eq_zero` (row-submatrix form) (dbe2097) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 199k tok / 48 tools / 13.6 min | Agent independently found+filled the gap the coordinator flagged: the `.reindex`-form 0-block brick can't supply the cert's `re` injection → built the `.submatrix` analog (verbatim mirror) + verified via lean_multi_attempt that it + `fromBlocks_toBlocks` makes `hblock` a one-liner. 3rd consecutive A6-prerequisite commit → coordinator triggers a satisfiability spike on hA/hD next (recurring-deferral + defeq-fragile route-composition). Gates clean (full diff, warning-build, lint, axiom). |
 | 477 | A6 arm-assembly satisfiability spike — `hA`/`hD` = 2 new bridges (→ §4.34, read-only) | —/—/— | opus | recon | recon — NEEDS-X (arm composes sorry-free; `hA`/`hD` are 2 genuinely-new dual→matrix-row LI bridges) | — | 200k tok / 50 tools / 10.8 min | Coordinator-triggered before the A6 build (deferred-hyp-satisfiability discipline + 3 consecutive prerequisite commits + defeq-fragile route-composition → spike not blind build). CAUGHT that row-473's "~1-leaf gate facts" `hA`/`hD` are actually 2 NEW bridges: the A5b iff is for the FULL rigidity row, not the operated/`v`-restricted `toBlocks`; `omitTwoExtensor` is extensor-space not `toBlocks₁₁.row`. §38 whnf timed out at 200000 heartbeats — a blind build would have walled. Kernel-read residuals + leaf decomp. Model WIN (flag-don't-force, grounded). → Findings 2026-06-25. |
 | 478 | route-A A6 arm spine `case_III_arm_realization_matrix` (8b24b83) | 2/2/1 | opus | build/resume | clean | ✓✓✓—✓✓ | 266k tok / 34 tools / 10.3 min | Spike-salvage build-resume (rescue §6) of row 477: banked the recon's verified `U`/`en`/`hblock` composition as the route-A arm spine, carrying `hA`/`hD` (standing idiom) at their EXACT operated-`toBlocks` shapes — pins the 2 bridges' targets. `_chain` retained (parallel, sound). Coordinator: full diff, shape check (conclusion = `_chain`), warning-build + lint, axiom-clean. NEXT = the 2 bridges. → Findings 2026-06-25. |
+| 479 | route-A A6 `hD` bottom-block LI bridge `linearIndependent_toBlocks₂₂_row_of_off_pin` (4b707e2) | 2/3/1 | opus | normal | clean | ✓✓✓—✓✓ | 212k tok / 94 tools / 15.2 min | hD bridge (leaf 1) came CLEANER than the §(4.34) Gram plan: KT (6.61)'s op only touches `v`'s coordinate, invisible to `Gv`-rows avoiding `v`, so the operated `toBlocks₂₂` IS the un-operated `R(Gv,q)` submatrix → hD is a submatrix-restriction of the IH row-LI, no rank detour. Reduces the arm's carried hD to `hIH` (dischargeable from the IH at the dispatch). Coordinator: conclusion matches the arm's hD exactly; re-route sound; full diff + warning-build + lint + axiom-clean. Tool-heavy (94) not forced-bloat (4 clean decls + 1 FRICTION). NEXT = hA bridge (§38 whnf guard). |
 
 ## Findings
 
