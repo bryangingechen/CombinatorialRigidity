@@ -3418,6 +3418,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
   (beside the `Module.Basis` ambient-coercion API).
 
+### [mirrored] `Module.Basis.span_coe_eq` (coerced submodule basis spans the submodule)
+- **Where it bit:** `BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` in
+  `Molecular/RigidityMatrix/Concrete.lean` (Phase 23d dispatch leaf 3b, the cross-hinge corner
+  `hLI` producer): the consumer `linearIndependent_sumElim_candidateRow_iff` needs
+  `span (range (coerced blockBasisOn hgp ha)) = F.hingeRowBlock e_a` (the `e_a` block basis spans
+  its block, in the ambient screw dual).
+- **Friction:** mathlib has `Module.Basis.span_eq` (spans `⊤` *inside* `W`) but no fused lemma for
+  the **ambient-coerced** range. The inline route was a `show … = W.subtype ∘ b from rfl,
+  Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_subtype_top` 5-rewrite chain (the
+  `show … from rfl` to expose the composition is itself the gap-signal).
+- **Resolution:** mirrored the span companion of `Module.Basis.linearIndependent_coe_subtype`: for
+  `b : Module.Basis ι K W`, `span K (range (fun i => (b i : V))) = W`. The two together say a
+  coerced submodule basis is a basis of `W` *as a subset of the ambient `V`* — the row-space /
+  append-one criterion shape. Stated over the abstract `V` (carrier-safe; the `show … from rfl`
+  coercion-unfold elaborates against the abstract carrier, no `whnf`). The call site collapses to
+  `(F.blockBasisOn hgp ha).span_coe_eq`, and (separately) lets the `r ∈ block_b ⟹ r ∈ block_a` step
+  route cleanly through `LinearMap.applyₗ (C(e_a))`'s kernel via `span_le`.
+- **General lesson:** the LI and span coercions of a submodule basis are a *pair*; when you mirror
+  one (`linearIndependent_coe_subtype`), the consumer that wants a basis-of-`W`-in-`V` will usually
+  also want the other — mirror both together.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
+  (beside `Module.Basis.linearIndependent_coe_subtype`).
+
 ### [mirrored] `Finset.disjoint_iff_eq_compl` (complementary-card disjointness ⟺ complement)
 - **Where it bit:** `wedgePairing_ιMulti_family_eq_zero_of_ne_compl` in
   `Molecular/Meet.lean` (Phase 21a ingredient (c)), restating the

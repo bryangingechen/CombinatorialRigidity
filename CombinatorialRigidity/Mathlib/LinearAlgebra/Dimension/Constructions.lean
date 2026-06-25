@@ -144,6 +144,20 @@ theorem _root_.Module.Basis.linearIndependent_coe_subtype {K V ι : Type*} [Fiel
   have h := b.linearIndependent.map' W.subtype (Submodule.ker_subtype _)
   rwa [Submodule.coe_subtype] at h
 
+/-- The vectors of a basis of a submodule `W ≤ V`, coerced into the ambient space `V`, span exactly
+`W`. This is `Basis.span_eq` (which spans `⊤` *inside* `W`) pushed along the inclusion `W.subtype`
+via `Submodule.span_image` and `Submodule.map_subtype_top`. The span companion of
+`Module.Basis.linearIndependent_coe_subtype`: the two together say a coerced submodule basis is a
+basis of `W` *as a subset of the ambient `V`*, the form a row-space / append-one criterion consumes
+(`span (range (coerced basis)) = W`) without unfolding the ambient carrier (e.g. a `Module.Dual` of
+an exterior power). When promoted upstream this lives beside the `Module.Basis` ambient-coercion
+API; the namespace stays `Module.Basis`. -/
+theorem _root_.Module.Basis.span_coe_eq {K V ι : Type*} [Field K]
+    [AddCommGroup V] [Module K V] {W : Submodule K V} (b : Module.Basis ι K W) :
+    Submodule.span K (Set.range (fun i => (b i : V))) = W := by
+  rw [show (fun i => (b i : V)) = W.subtype ∘ b from rfl, Set.range_comp, Submodule.span_image,
+    b.span_eq, Submodule.map_subtype_top]
+
 /-- The finrank of the image `S.map W.mkQ` of a submodule under the quotient projection
 `W.mkQ : V → V ⧸ W` is `finrank (W ⊔ S) − finrank W`. Rank–nullity on `W.mkQ ∘ S.subtype`,
 whose range is `S.map W.mkQ` and whose kernel is `W ⊓ S`, against the

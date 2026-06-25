@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix.Basic
+public import CombinatorialRigidity.Molecular.RigidityMatrix.Claim612
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!
@@ -530,6 +531,73 @@ theorem BodyHingeFramework.linearIndependent_blockBasisOn_screwDual
     LinearIndependent ℝ (fun j : Fin (screwDim k - 1) =>
       (F.blockBasisOn hgp he j : Module.Dual ℝ (ScrewSpace k))) :=
   (F.blockBasisOn hgp he).linearIndependent_coe_subtype
+
+/-- **The cross-hinge corner block-basis functional family is linearly independent in the full screw
+dual** (Phase 23d, dispatch leaf 3b, the cross-hinge half of the corner `hLI` producer;
+Katoh–Tanigawa 2011 §6.4.2 eqs. (6.64)–(6.66), the full `D × D` corner block `Mᵢ`). Augmenting
+edge `e_a`'s `D − 1` within-block functionals (leaf 3a) with **one** functional from a second edge
+`e_b`'s block gives a `D`-member family that is linearly independent in
+`Module.Dual ℝ (ScrewSpace k)` — KT's full-rank `Mᵢ` block, in the literal-`Matrix` model where
+every corner row (including the reproduced
+`±r` row) reads `blockBasisOn` at the pin (`rigidityMatrixEdge_mul_columnOp_apply_corner`), NOT a
+span/quotient membership.
+
+The cross-hinge content is delivered by the discriminator gate at the **fixed** shared redundancy
+`ρ₀`: the dispatch supplies `hρeb : ρ₀ ∈ F.hingeRowBlock e_b` (`ρ₀` annihilates `e_b`'s support, KT
+eq. (6.66)'s reproduced-slot perp `hρe₀` at `t = 0`) and `hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0`
+(`ρ₀ ⊥̸ e_a`'s support, the candidate-slot gate). Together these make the two hinge-row hyperplanes
+**incomparable** (`¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a`, via `mem_hingeRowBlock_iff`), so
+**some** basis vector `blockBasisOn hgp hb j₀` of `e_b`'s block escapes `e_a`'s block — i.e.
+`(blockBasisOn hgp hb j₀) (F.supportExtensor e_a) ≠ 0` (else every `e_b` basis vector annihilates
+`e_a`'s support and the whole `e_b` block sits inside `e_a`'s, contradicting incomparability). The
+fresh `j₀` plus leaf 3a's full `e_a` block basis (which spans `F.hingeRowBlock e_a` exactly) closes
+the augmented family's independence through the row-space criterion
+`linearIndependent_sumElim_candidateRow_iff`.
+
+The conclusion is **existence-form** in `j₀`: the dispatch (`chainData_dispatch`, leaf 5) obtains
+`j₀` here, then bakes it into the corner row-injection `re` of the route-A arm — so the `hA` leaf
+`linearIndependent_toBlocks₁₁_row_of_corner_gate` consumes the family at the already-chosen `j₀`
+(reindexed `Fin (screwDim k - 1) ⊕ Unit ≃ Fin (screwDim k)` by the corner-index split). The corner
+`hLI` does **not** route through the dual-space `mkQ`-quotient gate
+`linearIndependent_mkQ_corner_of_gate` (the chain arm's shape): the route-A `hA` leaf demands a
+uniform `blockBasisOn`-family in the full screw dual, which this lemma + leaf 3a supply directly. NO
+`ScrewSpace` unfolding (the argument lives at the `hingeRowBlock` submodule +
+`mem_hingeRowBlock_iff` annihilator level). -/
+theorem BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent
+    (F : BodyHingeFramework k α β)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {e_a e_b : β} (ha : e_a ∈ F.graph.edgeSet) (hb : e_b ∈ F.graph.edgeSet)
+    {ρ₀ : Module.Dual ℝ (ScrewSpace k)}
+    (hρeb : ρ₀ ∈ F.hingeRowBlock e_b) (hρe₀ : ρ₀ (F.supportExtensor e_a) ≠ 0) :
+    ∃ j₀ : Fin (screwDim k - 1), LinearIndependent ℝ (Sum.elim
+      (fun j : Fin (screwDim k - 1) =>
+        (F.blockBasisOn hgp ha j : Module.Dual ℝ (ScrewSpace k)))
+      (fun _ : Unit => (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)))) := by
+  -- The gate makes the two hinge-row hyperplanes incomparable.
+  have hblocks : ¬ F.hingeRowBlock e_b ≤ F.hingeRowBlock e_a := fun hle =>
+    hρe₀ ((F.mem_hingeRowBlock_iff e_a ρ₀).1 (hle hρeb))
+  -- Incomparability ⟹ some `e_b` basis vector escapes `e_a`'s block.
+  have hex : ∃ j₀ : Fin (screwDim k - 1),
+      (F.blockBasisOn hgp hb j₀ : Module.Dual ℝ (ScrewSpace k)) (F.supportExtensor e_a) ≠ 0 := by
+    by_contra hcon
+    push Not at hcon
+    refine hblocks fun r hr => ?_
+    rw [F.mem_hingeRowBlock_iff e_a]
+    -- The evaluation `φ ↦ φ (C(e_a))` vanishes on every `e_b` basis vector (`hcon`), hence on the
+    -- span `hingeRowBlock e_b` (= `span_coe_eq`), hence on `r`.
+    have hker : F.hingeRowBlock e_b ≤
+        LinearMap.ker (LinearMap.applyₗ (F.supportExtensor e_a)) := by
+      rw [← (F.blockBasisOn hgp hb).span_coe_eq, Submodule.span_le]
+      rintro _ ⟨j, rfl⟩
+      exact hcon j
+    exact hker hr
+  -- The fresh `j₀` plus leaf 3a's `e_a` block basis closes the augmented family's independence.
+  obtain ⟨j₀, hj₀⟩ := hex
+  refine ⟨j₀, ?_⟩
+  rw [F.linearIndependent_sumElim_candidateRow_iff e_a
+        (F.linearIndependent_blockBasisOn_screwDual hgp ha)
+        (F.blockBasisOn hgp ha).span_coe_eq _]
+  exact hj₀
 
 /-- **The edge-restricted rigidity-row functional family** (A4.5e, the dual-space pre-image of the
 edge-restricted matrix's rows). The `(⟨e, he⟩, j)`-functional is the rigidity row

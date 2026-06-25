@@ -4245,9 +4245,10 @@ motive/contract change.
 * `hc2` — (b) NEEDS-NEW-LEAF: the landed `hA` leaf demands `(ends).2 = a` for ALL corner rows, but the
   `e_b` row has `.2 = b ≠ a`. Corner math is sound (probe-confirmed); only the hypothesis is too
   strict → corrected form `hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v`.
-* `hLI` — (b) NEEDS-NEW-LEAF (the crux): the `D×D` corner full-rank `blockBasisOn`-family LI in the
-  **full screw-dual**. The landed `linearIndependent_mkQ_corner_of_gate` proves the SUM family LI in
-  the **`W`-quotient**, not this. = KT eq. 6.66 + Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
+* `hLI` — (b) ✅ LANDED (leaf 3b, the crux): the `D×D` corner full-rank `blockBasisOn`-family LI in
+  the **full screw-dual**. *The mkQ-quotient lift was a RED HERRING* (corrected below): the `hA`
+  leaf's `hLI` is a **uniform `blockBasisOn`-family in the full screw dual**, NOT a quotient/`±r`/
+  Lemma-2.1 object; leaf 3b bypasses `linearIndependent_mkQ_corner_of_gate` entirely.
 * `hD`-input `hIH` — (b) NEEDS-NEW-LEAF: `LinearIndependent ℝ ((F₀.rigidityMatrixEdge ends₁ hgp).submatrix
   (re∘Sum.inr) ((columnSplit v).symm∘Sum.inr)).row` — a **row-LI submatrix of the un-operated edge
   matrix**, NOT the dual-space `finrank/span` shape `chainData_bottom_relabel` produces for `_chain`.
@@ -4269,11 +4270,23 @@ leaf-1/leaf-2 effort.
    Pi.single_eq_of_ne]` (probe kernel-verified). *P≈1.*
 2. **Generalize** `linearIndependent_toBlocks₁₁_row_of_corner_gate`: drop `hc2 : .2 = a` →
    `hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v`; reuse leaf 1 in the `hmeq` `ext`. *P≈1–2.*
-3. **`dispatch_corner_blockBasis_linearIndependent`** (genuinely-new, the crux): from the
-   discriminator gate `ρ₀(panelSupportExtensor (q(a,·)) n') ≠ 0`, `hρe₀`, and Lemma 2.1, produce
-   `LinearIndependent ℝ (fun i:Fin (screwDim k) => blockBasisOn hgp (re(Sum.inl i)).1.2 (re(Sum.inl i)).2)`
-   for the `re` selecting `e_a`'s `D−1` block rows + the `e_b` `±r` row. *Bridges the landed dual-space
-   gate to the screw-dual `blockBasisOn` family. P≈3.*
+3. ✅ LANDED — **`exists_corner_blockBasisOn_linearIndependent`** (`Concrete.lean`; 3a + 3b; leaf 3
+   was the dispatch's hardest single obligation). 3a `linearIndependent_blockBasisOn_screwDual` (the
+   `e_a` `D−1` within-block half). 3b the cross-hinge half: **EXISTENCE-form**
+   `∃ j₀ : Fin (screwDim k − 1), LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))`
+   from the two FIXED-`ρ₀` gates `hρeb : ρ₀ ∈ hingeRowBlock e_b` (= `hρe₀` at the reproduced support,
+   `t=0`) and `hρe₀ : ρ₀(supportExtensor e_a) ≠ 0` (the candidate-slot gate). **THE CORRECTION (the
+   mkQ-quotient lift was a red herring):** the `hA` leaf's `hLI` is a *uniform `blockBasisOn`-family
+   in the full screw dual* — every corner row (incl. the reproduced `±r`) reads `blockBasisOn` at the
+   pin (`rigidityMatrixEdge_mul_columnOp_apply_corner`), NOT a span/quotient membership. So leaf 3b
+   does **not** route through `linearIndependent_mkQ_corner_of_gate`; it goes gate →
+   *block-incomparability* (`¬ hingeRowBlock e_b ≤ hingeRowBlock e_a`, via `mem_hingeRowBlock_iff`)
+   → *some* fresh `e_b` basis vector escapes `e_a`'s block → append-one via
+   `linearIndependent_sumElim_candidateRow_iff` (Claim612) + 3a. NO Lemma 2.1, NO `omitTwoExtensor`,
+   NO `mkQ`. New mirror `Module.Basis.span_coe_eq` (the coerced-basis-spans-`W` companion of
+   `linearIndependent_coe_subtype`). Carrier-safe at default heartbeats. *Leaf 5 (the dispatch)
+   consumes the `∃` by `obtain`-ing `j₀` BEFORE baking it into `re`'s corner injection, then feeds
+   the reindexed (`Fin (D−1) ⊕ Unit ≃ Fin D`) family as `hLI`.*
 4. **`dispatch_bottom_rowLI_of_IH`** (genuinely-new): from the IH `HasGenericFullRankRealization k n Gᵥ`,
    build the bottom injection `re∘Sum.inr` and prove `hIH` (the row-LI submatrix of the un-operated edge
    matrix). *Matrix-shape analogue of the span-shaped `chainData_bottom_relabel`. P≈3.*
@@ -4284,4 +4297,6 @@ leaf-1/leaf-2 effort.
    `(i:ℕ)`: `i≤1` → `chainData_split_realization` (landed floor); `2≤i` → this arm. *P≈2 once 1–4 land.*
 
 **No phase-direction / motive / IH / contract change.** Route A confirmed end-to-end through the
-dispatch modulo leaves 1–5; the wrap-edge wall is escaped, GAP-2 resolved. NEXT = leaf 1.
+dispatch modulo leaves 1–5; the wrap-edge wall is escaped, GAP-2 resolved. **Leaves 1, 2, 3 (3a+3b)
+LANDED; NEXT = leaf 4** (`dispatch_bottom_rowLI_of_IH`, the genuinely-new bottom-row producer / `hIH`
+from the IH).

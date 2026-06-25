@@ -18,23 +18,28 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ NEXT = leaf 3 of the dispatch decomposition — the CROSS-HINGE step (the corner `hLI` producer
-`dispatch_corner_blockBasis_linearIndependent`).** Leaves 1 + 2 are LANDED, and **leaf 3a (the
-within-block half) is LANDED**: `linearIndependent_blockBasisOn_screwDual` — the per-edge
-block-basis functionals `fun j => (blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` are LI in the
-screw dual (the `e_a` `D−1` panel rows of the corner block `Mᵢ`). Routed through a new
-**carrier-safe generic mirror** `Module.Basis.linearIndependent_coe_subtype`
-(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`): the named-family complement of
-`exists_linearIndependent_fin_of_finrank_eq` — `Basis.linearIndependent.map' W.subtype` factored
-over an abstract `V` so the call site never `whnf`s the heavy carrier (the inline `.map'` blew the
-heartbeat budget; no §38 in-proof medicine helped — TACTICS-QUIRKS § 38 new sub-case). All
-gate/lint/warning/axiom-clean. **Remaining for leaf 3 = the cross-hinge step**: glue leaf 3a's `e_a`
-`D−1` family with the `e_b` `±r` row (KT eq. 6.66 + Lemma 2.1 `omitTwoExtensor_linearIndependent`)
-into the full `D = (D−1)+1` corner family `dispatch_corner_blockBasis_linearIndependent`, consuming
-the discriminator-gate `hρe₀` inputs the dispatch supplies. Leaves 1 + 2 recap: leaf 1 (generalize
-the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner` to `hv2 : .2 ≠ v`) and leaf 2
-(generalize the `hA` leaf `linearIndependent_toBlocks₁₁_row_of_corner_gate`'s `hc2 : .2 = a` to
-`hc2 : .2 ≠ v`).
+**✅ NEXT = leaf 4 of the dispatch decomposition — the bottom-row producer
+`dispatch_bottom_rowLI_of_IH` (the `hIH` row-LI submatrix of the un-operated edge matrix, from the
+IH).** **Leaves 1, 2, 3 (3a + 3b) are all LANDED.** Leaf 3 (the corner `hLI` producer) is
+`BodyHingeFramework.exists_corner_blockBasisOn_linearIndependent` (`Concrete.lean`): 3a
+`linearIndependent_blockBasisOn_screwDual` (the `e_a` `D−1` within-block half, carrier-safe via the
+mirror `Module.Basis.linearIndependent_coe_subtype`) + 3b the cross-hinge half, the **EXISTENCE-form**
+`∃ j₀, LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))`. **THE CORRECTION
+(the mkQ-quotient lift was a RED HERRING):** the `hA` leaf's `hLI` is a *uniform `blockBasisOn`-family
+in the full screw dual* — every corner row (incl. the reproduced `±r`) reads `blockBasisOn` at the pin
+(`rigidityMatrixEdge_mul_columnOp_apply_corner`), NOT a span/quotient/Lemma-2.1 object. So leaf 3b
+does **not** route through `linearIndependent_mkQ_corner_of_gate`: it goes the two FIXED-`ρ₀` gates
+(`hρeb : ρ₀ ∈ hingeRowBlock e_b` = `hρe₀` at the reproduced support `t=0`; `hρe₀ : ρ₀(supportExtensor
+e_a) ≠ 0` the candidate-slot gate) → *block-incomparability* (`¬ hingeRowBlock e_b ≤ hingeRowBlock
+e_a`, `mem_hingeRowBlock_iff`) → *some* fresh `e_b` basis vector escapes `e_a`'s block → append-one via
+`linearIndependent_sumElim_candidateRow_iff` (Claim612) + 3a. NO Lemma 2.1, NO `omitTwoExtensor`, NO
+`mkQ`. New mirror `Module.Basis.span_coe_eq` (coerced-basis-spans-`W`, companion of
+`linearIndependent_coe_subtype`). Carrier-safe at default heartbeats. Leaf 5 (the dispatch) consumes
+the `∃` by `obtain`-ing `j₀` BEFORE baking it into `re`'s corner injection, then feeds the reindexed
+(`Fin (D−1) ⊕ Unit ≃ Fin D`) family as `hLI`. All gate/lint/warning/axiom-clean. Leaves 1 + 2 recap:
+leaf 1 (generalize the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner` to
+`hv2 : .2 ≠ v`) and leaf 2 (generalize the `hA` leaf `linearIndependent_toBlocks₁₁_row_of_corner_gate`'s
+`hc2 : .2 = a` to `hc2 : .2 ≠ v`).
 The dispatch spike (row 480, design §(4.35)) confirmed route A composes end-to-end through `chainData_dispatch`
 modulo a 5-leaf decomposition; **the wrap-edge wall DOES NOT re-surface** (kernel-probed: the `e_b` `±r`
 row enters as a literal member of corner block `A`, reading `blockBasisOn` at the pin, never a span
@@ -52,15 +57,15 @@ arm needs 5 ordered leaves: **(1)** ✅ LANDED — generalized `rigidityMatrixEd
 corner hypothesis `.2 = a` → `.2 ≠ v` (mechanical, the `columnOp hva (Pi.single v s)` reduction reads
 `blockBasisOn` at the pin for ANY second endpoint `≠ v`); **(2)** ✅ LANDED — generalized the `hA` leaf
 `linearIndependent_toBlocks₁₁_row_of_corner_gate` likewise (`hc2 : .2 = a` → `hc2 : .2 ≠ v`, so it
-accepts the `e_b` `±r` corner row); **(3)** the corner `hLI` producer
-`dispatch_corner_blockBasis_linearIndependent` (genuinely-new — KT eq. 6.66 + Lemma 2.1; the landed
-`mkQ`-quotient gate is the WRONG shape) — **leaf 3a (within-block `e_a` half) ✅ LANDED**
-(`linearIndependent_blockBasisOn_screwDual`); the cross-hinge `e_b` `±r` glue remains; **(4)** the
-bottom-row producer
+accepts the `e_b` `±r` corner row); **(3)** ✅ LANDED — the corner `hLI` producer
+`exists_corner_blockBasisOn_linearIndependent` (3a + 3b). The mkQ-quotient gate was a RED HERRING:
+the `hA` leaf's `hLI` is a *uniform `blockBasisOn`-family in the full screw dual*, so 3b is the
+EXISTENCE-form append-one (gate → block-incomparability → fresh `j₀` → `linearIndependent_sumElim_
+candidateRow_iff` + 3a), NOT KT eq. 6.66 / Lemma 2.1 / `mkQ`; **(4)** the bottom-row producer
 `dispatch_bottom_rowLI_of_IH` (genuinely-new — `hIH` row-LI submatrix of the un-operated edge matrix from
 the IH; the landed `chainData_bottom_relabel` is span-shaped, WRONG shape); **(5)** the `chainData_dispatch`
-wiring itself. Leaves 3+4 are genuinely-new (NOT re-uses of landed dual-space bridges); leaf 3 is the
-dispatch's hardest single obligation.
+wiring itself (consumes leaf 3's `∃` by obtaining `j₀` before building `re`). Leaf 4 is genuinely-new
+(NOT a re-use of a landed dual-space bridge); leaf 3 was the dispatch's hardest single obligation.
 
 **A6-assembly RECON verdict (session #33):** the arm composes sorry-free, but `hA`/`hD` are TWO
 genuinely-new dual-space→matrix-row LI bridges — NOT the ~1-leaf gate facts the row-473 prose claimed.
@@ -98,6 +103,7 @@ rationale in git + *Decisions made* + design §(4.31)/(4.32)/(4.34)):
 | A6 `hA` (leaf 2) | `linearIndependent_toBlocks₁₁_row_of_corner_gate` (the `hA` bridge: corner-rows-record-`.1=v` `hc1` + `.2≠v` `hc2` (relaxed from `=a` by dispatch leaf 2, so it covers the `e_b` `±r` corner row too) + dual-space corner block-basis-functional LI `hLI` ⟹ `toBlocks₁₁.row` LI; proof = `ext` the corner block to `Matrix.of (coordEquiv ∘ family)` via `…_apply_corner` + the singleton-`v`-column `coordEquiv := (finScrewBasis k).dualBasis.equivFun` reindexed by `Equiv.uniqueProd`, then `Matrix.linearIndependent_row_of_coordEquiv`; §38 whnf-guard held) | `Concrete.lean` |
 | A6 ARM SPINE | `case_III_arm_realization_matrix` (`ForkedArm.lean`, route-A sibling of `_chain`: carries `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)`, constructs `U`/`hU`/`en`/`hblock` in-body, calls the cert + the route-agnostic tail; conclusion byte-identical to `_chain`) | `ForkedArm.lean` |
 | dispatch leaf 3a | `linearIndependent_blockBasisOn_screwDual` (per-edge block-basis functionals `fun j => (blockBasisOn hgp he j : Dual ℝ (ScrewSpace k))` LI in the screw dual — the `e_a` `D−1` half of the corner `hLI` family) via the new generic mirror `Module.Basis.linearIndependent_coe_subtype` (carrier-safe `Basis.linearIndependent.map' W.subtype` factored over abstract `V`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
+| dispatch leaf 3b | `exists_corner_blockBasisOn_linearIndependent` (the cross-hinge corner `hLI`, EXISTENCE-form `∃ j₀, LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))` from the two FIXED-`ρ₀` gates `hρeb`/`hρe₀`; bypasses the `mkQ` gate: gate → block-incomparability (`mem_hingeRowBlock_iff`) → fresh `e_b` basis vector → append-one via `linearIndependent_sumElim_candidateRow_iff` + leaf 3a; the `r∈block_b ⟹ r∈block_a` step routes through `LinearMap.applyₗ`'s kernel via `span_le`) + new mirror `Module.Basis.span_coe_eq` (coerced-basis-spans-`W`) | `Concrete.lean` / `Mathlib/LinearAlgebra/Dimension/Constructions.lean` |
 
 Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route A's escape from the
 §(4.18)–(4.30) span-membership wall: KT's (6.61) is a unit-det right-multiply, never a membership).
@@ -113,12 +119,12 @@ Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route
    (sound in isolation — the dual-space approach the wall closed; do not build on them). The
    interior-`hρe₀` crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
-   `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). **DISPATCH LEAVES 1 + 2
-   LANDED** (leaf 1: the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner` generalized to
-   `.2 ≠ v`; leaf 2: the `hA` leaf `linearIndependent_toBlocks₁₁_row_of_corner_gate` relaxed likewise);
-   **LEAF 3a LANDED** (`linearIndependent_blockBasisOn_screwDual`, the within-block `e_a` `D−1` half +
-   the carrier-safe mirror `Module.Basis.linearIndependent_coe_subtype`); NEXT = the leaf-3 cross-hinge
-   glue. The `ChainData`
+   `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). **DISPATCH LEAVES 1, 2,
+   3 (3a+3b) LANDED** (leaf 1: the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner`
+   generalized to `.2 ≠ v`; leaf 2: the `hA` leaf `linearIndependent_toBlocks₁₁_row_of_corner_gate`
+   relaxed likewise; leaf 3: `exists_corner_blockBasisOn_linearIndependent`, the corner `hLI` producer
+   3a+3b, the EXISTENCE-form gate→block-incomparability→fresh-`j₀` argument that bypasses the `mkQ`
+   gate); NEXT = leaf 4 (`dispatch_bottom_rowLI_of_IH`, the bottom-row producer). The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
    (`Induction/Operations.lean`, the off-slot input), the interior-`hρe₀` chain
    `interior_hρe₀_of_baseWidening`/`_of_widening` (`CaseIII/Relabel/ForkedArm.lean`, the dispatch reads
@@ -163,18 +169,17 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT CONCRETE COMMIT = the leaf-3 cross-hinge glue** (design §(4.35)) — the genuinely-new corner
-`hLI` producer `dispatch_corner_blockBasis_linearIndependent`: glue **leaf 3a's** `e_a` `D−1`
-within-block family `linearIndependent_blockBasisOn_screwDual` (just LANDED) with the `e_b` `±r` row
-into the full `D = (D−1)+1` corner block-basis functional family
-`i ↦ (blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace k))` (the `hLI` input
-`linearIndependent_toBlocks₁₁_row_of_corner_gate`, relaxed to `hc2 : .2 ≠ v` (leaf 2), consumes),
-from KT eq. (6.66) + Lemma 2.1 (`omitTwoExtensor_linearIndependent`), consuming the discriminator-gate
-`hρe₀` inputs the dispatch supplies. This cross-hinge step is the dispatch's hardest single obligation
-(the landed dual-space `mkQ`-quotient gate does NOT supply this shape). NOTE: leaves 1, 2, and **3a**
-are LANDED — leaf 3a (`linearIndependent_blockBasisOn_screwDual`) is the within-block `e_a` half,
-carrier-safe via the new generic mirror `Module.Basis.linearIndependent_coe_subtype`; the cross-hinge
-`e_b` glue is all that remains of leaf 3.
+**NEXT CONCRETE COMMIT = dispatch leaf 4** (design §(4.35)) — the genuinely-new bottom-row producer
+`dispatch_bottom_rowLI_of_IH`: from the IH `HasGenericFullRankRealization k n Gᵥ`, build the bottom
+injection `re ∘ Sum.inr` and prove `hIH` — the **row-LI submatrix of the un-operated edge matrix**
+`LinearIndependent ℝ ((F₀.rigidityMatrixEdge ends₁ hgp).submatrix (re∘Sum.inr) ((columnSplit v).symm
+∘Sum.inr)).row` — the matrix-shape analogue of the span-shaped `chainData_bottom_relabel` (WRONG
+shape for route A). **Leaf 3 (3a+3b) is LANDED** as
+`exists_corner_blockBasisOn_linearIndependent` (the corner `hLI` producer, EXISTENCE-form): the
+dispatch's `hLI` is a *uniform `blockBasisOn`-family in the full screw dual* (NOT the `mkQ`-quotient
+shape — that lift was a RED HERRING), produced gate → block-incomparability → fresh `j₀` →
+`linearIndependent_sumElim_candidateRow_iff` + leaf 3a. Leaf 5 (the dispatch) consumes the `∃` by
+`obtain`-ing `j₀` before baking it into `re`'s corner injection.
 
 **Then leaves 4→5** (design §(4.35), ordered): (4) the genuinely-new
 bottom producer `dispatch_bottom_rowLI_of_IH` (`hIH` row-LI submatrix from the IH; the landed
@@ -204,6 +209,21 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **DISPATCH LEAF 3b LANDED + THE mkQ RED-HERRING CORRECTION —
+  `exists_corner_blockBasisOn_linearIndependent` + the mirror `Module.Basis.span_coe_eq` (2026-06-25,
+  `Concrete.lean` + `Mathlib/LinearAlgebra/Dimension/Constructions.lean`).** The corner `hLI` producer,
+  EXISTENCE-form `∃ j₀, LinearIndependent ℝ (Sum.elim (e_a block basis) (blockBasisOn hgp hb j₀))`. A
+  read-only spike (verdict accepted by coordinator) caught that **the recon's mkQ-quotient-lift framing
+  was a RED HERRING**: the `hA` leaf's `hLI` is a *uniform `blockBasisOn`-family in the full screw dual*
+  (every corner row, incl. the reproduced `±r`, reads `blockBasisOn` at the pin via
+  `rigidityMatrixEdge_mul_columnOp_apply_corner`), NOT a span/quotient/Lemma-2.1 object. So 3b bypasses
+  `linearIndependent_mkQ_corner_of_gate` entirely: the two FIXED-`ρ₀` gates the dispatch carries
+  (`hρeb : ρ₀ ∈ hingeRowBlock e_b`, `hρe₀ : ρ₀(C(e_a)) ≠ 0`) make the two hinge-row hyperplanes
+  *incomparable* (`mem_hingeRowBlock_iff`), so *some* `e_b` basis vector escapes `e_a`'s block, and
+  append-one (`linearIndependent_sumElim_candidateRow_iff` + leaf 3a) closes it. The `r∈block_b ⟹
+  r∈block_a` step routes through `LinearMap.applyₗ (C(e_a))`'s kernel via `span_le` (the new mirror
+  `span_coe_eq`). Carrier-safe at default heartbeats; leaf 5 consumes the `∃` by `obtain`-ing `j₀`.
+  Friction → FRICTION [mirrored] (`span_coe_eq`). Gate/lint/warning/axiom-clean.
 - **DISPATCH LEAF 3a LANDED — `linearIndependent_blockBasisOn_screwDual` + the carrier-safe generic
   mirror (2026-06-25, `Concrete.lean` + `Mathlib/LinearAlgebra/Dimension/Constructions.lean`).** The
   within-block `e_a` half of the corner `hLI` family: the per-edge block-basis functionals
@@ -214,8 +234,7 @@ the design doc.)*
   intrinsic to `.map'`'s instance unification with the concrete codomain). Fix: factored the `.map'`
   into a **generic-over-`V` mirror** `Module.Basis.linearIndependent_coe_subtype` (the named-family
   complement of `exists_linearIndependent_fin_of_finrank_eq`, beside it in the same mirror file); the
-  call site applies it at the heavy carrier with the unification already discharged. The cross-hinge
-  glue (the `e_b` `±r` row, KT eq. 6.66 + Lemma 2.1) is what remains of leaf 3. Friction + idiom →
+  call site applies it at the heavy carrier with the unification already discharged. Friction + idiom →
   FRICTION [mirrored] + TACTICS-QUIRKS § 38 new sub-case. Gate/lint/warning/axiom-clean.
 - **DISPATCH LEAF 2 LANDED — relaxed `linearIndependent_toBlocks₁₁_row_of_corner_gate`'s `hc2` to
   `.2 ≠ v` (2026-06-25, `Concrete.lean`).** Dropped the corner second-endpoint binder
