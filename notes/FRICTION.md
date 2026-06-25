@@ -3511,6 +3511,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
   type-mismatch.
 - **Status:** idiom (project-internal).
 
+### [idiom] dual-space→matrix-row LI bridge: rewrite the block to `Matrix.of (coordEquiv ∘ family)`, then `(Matrix.linearIndependent_row_of_coordEquiv coordEquiv _).2` — do NOT `simp`/`whnf` the carrier
+- **Where it bit:** Phase 23d A6 leaf 2 (`linearIndependent_toBlocks₁₁_row_of_corner_gate`,
+  `RigidityMatrix/Concrete.lean`) — the `hA` corner-block row-LI, where the block entries read a panel
+  functional on body `v`'s `D` screw columns. The naive `linearIndependent_row_of_coordEquiv` apply on
+  the raw `caseIIICandidate` block hit a 200000-heartbeat `whnf` timeout (the recon's §38 guard).
+- **Friction:** the residual goals of a `submatrix.toBlocks.row` LI are *matrix-row* LI (vectors in
+  `n → ℝ`), but the landed gate content is *dual-space* LI (`LinearIndependent ℝ` over `Dual ℝ M`). No
+  landed `submatrix.toBlocks.row` LI lemma exists; the only row-LI bridge `linearIndependent_..._row_iff`
+  is for the *full* matrix's `.row`, not a column-operated, row-restricted, `v`-column-projected
+  `toBlocks`.
+- **Resolution:** the two-step idiom (now used by both A6 leaves `hD`/`hA`): (1) prove a *matrix
+  equality* `block = Matrix.of (fun i j => coordEquiv (family i) j)` by `ext i j` + the operated-entry
+  read (`…_apply_corner` for `hA`, `…_apply_off_pin` for `hD`), where `coordEquiv : Dual ℝ M ≃ₗ[ℝ]
+  (κ → ℝ)` coordinatizes the *carrier* dual (for `hA`: `(finScrewBasis k).dualBasis.equivFun` reindexed
+  across the singleton corner-column index `{body // body = v} × Fin D ≃ Fin D` via `Equiv.uniqueProd`
+  + `LinearEquiv.funCongrLeft`); (2) `rw [that]; exact (Matrix.linearIndependent_row_of_coordEquiv
+  coordEquiv _).2 hLI`. The `coordEquiv` is a `LinearEquiv` (kernel ⊥), so it never unfolds the carrier
+  — **never `simp`/`whnf` on the candidate framework `F₀` or `ScrewSpace`** (the §38 guard). The
+  singleton-column `(columnSplit v).symm (Sum.inl (⟨v, rfl⟩, c)) = (v, c)` reduces by `rfl` after
+  `subst hbody`.
+- **Status:** idiom (project-internal; used twice → the standing route-A pattern for matrix-row LI
+  from dual-space gate content).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

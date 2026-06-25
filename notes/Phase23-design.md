@@ -4186,13 +4186,23 @@ lemma. Two NEW bridges needed:
   IH row-LI: the bridge takes `hIH : LinearIndependent ℝ ((rigidityMatrixEdge).submatrix
   (re ∘ Sum.inr) ((columnSplit v).symm ∘ Sum.inr)).row` (the IH `R(Gᵥ,q)` full-rank restricted
   to the matched rows/cols — the dispatch's burden, item 2) and rewrites through the equality.
-* **`hA`** (`linearIndependent_toBlocks₁₁_row_of_corner_gate`): rewrite entries via
-  `rigidityMatrixEdge_mul_columnOp_apply_corner` to `(blockBasisOn)(finScrewBasis c)`
-  (needs corner endpoints `(v,a)`/`(v,b)` — a structural fact on `re` the cert's abstract
-  `re` does NOT carry), then port `linearIndependent_mkQ_corner_of_gate` to matrix-row form.
-  **GUARD the `caseIIICandidate` whnf (§38): the spike hit a 200000-heartbeat timeout on a
-  naive `linearIndependent_row_of_coordEquiv`** — use `apply` with explicit carrier.
+* **`hA`** — ✅ LANDED 2026-06-25 as `linearIndependent_toBlocks₁₁_row_of_corner_gate`
+  (`Concrete.lean`). **The design's "port `linearIndependent_mkQ_corner_of_gate`" route was NOT
+  needed** (no `mkQ`/quotient detour): the corner block IS the coordinate matrix of the corner
+  block-basis functional family against the screw dual basis `(finScrewBasis k).dualBasis`, so its
+  row-LI ⟸ the dual-space corner LI by the **dual-space→matrix-row coordinate re-wrap**
+  (`Matrix.linearIndependent_row_of_coordEquiv`, the A5b core). The bridge takes the corner rows'
+  `(v,a)`-endpoint records (`hc1`/`hc2`, supplying `rigidityMatrixEdge_mul_columnOp_apply_corner` to
+  rewrite each entry to `coordEquiv (blockBasisOn …) j`) + the dual-space corner block-basis-functional
+  LI `hLI` (the `D = (D−1)+1` corner independence, the dispatch's burden item 2). `coordEquiv :=
+  (finScrewBasis k).dualBasis.equivFun` reindexed across the singleton `v`-column index
+  `{body//body=v}×Fin D ≃ Fin D` (`Equiv.uniqueProd` + `LinearEquiv.funCongrLeft`); the singleton
+  column reduces `(columnSplit v).symm (Sum.inl (⟨v,rfl⟩,c)) = (v,c)` by `rfl` after `subst`.
+  **The §38 whnf guard HELD** — the `coordEquiv` is a `LinearEquiv` (kernel ⊥), so the carrier never
+  unfolds (no `simp`/`whnf` on `F₀`); cleaner than a `linearIndependent_row_of_coordEquiv` on the raw
+  candidate. Same `[propext, Classical.choice, Quot.sound]` axiom set as the `hD` leaf.
 
-**NEXT** = leaf 1 (`hD` bridge) ✅ LANDED 2026-06-25; leaf 2 (`hA` bridge), then the
-dispatch (item 2) discharges `(re, hbot, hA, hD)` and wires the arm. No phase-direction
-or contract change; `_chain` stays in tree (parallel, sound).
+**NEXT** = leaf 1 (`hD` bridge) ✅ LANDED 2026-06-25; leaf 2 (`hA` bridge) ✅ LANDED 2026-06-25 — BOTH
+arm-carried LI hypotheses now have producing leaves. NEXT = the dispatch (item 2) discharges
+`(re, hbot, hA, hD)` and wires the arm. No phase-direction or contract change; `_chain` stays in tree
+(parallel, sound).

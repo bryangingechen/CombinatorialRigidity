@@ -1315,4 +1315,84 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₂₂_row_of_off_pin [Fint
   rw [F.submatrix_columnOp_toBlocks₂₂_eq ends hgp hva re hbot]
   exact hIH
 
+/-! ## A6 — the `D × D` corner block `Mᵢ` is row-LI (the `hA` content)
+
+KT §6.4.2's (6.64) decomposition `fromBlocks A B 0 D` has top-left block `A = Mᵢ`, the `D × D`
+corner at the re-inserted body `v`'s `D` screw columns. In the (6.61)-operated frame its
+`(i, (⟨v, _⟩, c))` entry reads `(blockBasisOn hgp _ _) (finScrewBasis k c)`
+(`rigidityMatrixEdge_mul_columnOp_apply_corner`, given the corner rows record endpoints `(v, a)`)
+— i.e. each corner row is the *coordinate vector* of the corner functional
+`blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace k)` against the screw dual basis
+`(finScrewBasis k).dualBasis`. So the corner block's rows are linearly independent iff the
+corner-functional family is, by the carrier-agnostic coordinate re-wrap
+`Matrix.linearIndependent_row_of_coordEquiv` (`coordEquiv = (finScrewBasis k).dualBasis.equivFun`
+reindexed across the singleton corner-column index). The corner-functional independence is the
+dual-space gate content (`omitTwoExtensor_linearIndependent` / Lemma 2.1 + the per-edge block-basis
+independence) the dispatch supplies. NO span argument; NO `ScrewSpace` unfolding (the coordinate map
+is a `LinearEquiv` over the carrier). -/
+
+/-- **A6 — the (6.64) corner-block row-LI from the corner-functional family** (Phase 23d, the `hA`
+leaf, §I.8.24(4.34) leaf 2; Katoh–Tanigawa 2011 §6.4.2 eq. (6.64)). Given the structural facts
+that the corner rows `re ∘ Sum.inl` all record endpoints `(v, a)` (`hc1`/`hc2`, so the operated
+corner entry reads the panel functional on `v`'s `D` screw columns) and that the corner block-basis
+functional family `i ↦ (blockBasisOn hgp _ _ : Dual ℝ (ScrewSpace k))` is linearly independent
+(`hLI`, the dual-space gate content), the top-left block `toBlocks₁₁` of the operated reindexed
+matrix `(rigidityMatrixEdge ends hgp * U).submatrix re (columnSplit v).symm` has linearly
+independent rows.
+
+The proof exhibits `toBlocks₁₁` as the coordinate matrix of the corner-functional family against
+the screw dual basis: each corner entry rewrites (via
+`rigidityMatrixEdge_mul_columnOp_apply_corner`, the corner column `(columnSplit v).symm (Sum.inl _)`
+being a body-`v` column) to `coordEquiv (blockBasisOn …) j`, where
+`coordEquiv := (finScrewBasis k).dualBasis.equivFun` reindexed across the singleton corner-column
+index `{body // body = v} × Fin D ≃ Fin D` (`Equiv.uniqueProd`,
+`{body // body = v}` a singleton). Then `Matrix.linearIndependent_row_of_coordEquiv` (the A5b
+carrier-agnostic gate re-wrap) turns the `coordEquiv`-coordinate matrix's row-LI into the
+corner-functional family's LI. This is the `hA` hypothesis the route-A cert
+`case_III_rank_certification_matrix` consumes; the dispatch (item 2) supplies `hc1`/`hc2` (the split
+edges' `ends`-recording) and `hLI` (the `D = (D−1) + 1` corner independence). NO span argument; NO
+`ScrewSpace` unfolding. -/
+theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
+    {v a : α} (hva : v ≠ a)
+    {m₁ m₂ : Type*}
+    (re : m₁ ⊕ m₂ → ({e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1)))
+    (hc1 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).1 = v)
+    (hc2 : ∀ i : m₁, (ends (re (Sum.inl i)).1.1).2 = a)
+    (hLI : LinearIndependent ℝ (fun i : m₁ =>
+      (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
+        : Module.Dual ℝ (ScrewSpace k)))) :
+    LinearIndependent ℝ
+      (((F.rigidityMatrixEdge ends hgp
+            * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+                (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+          (columnSplit (k := k) v).symm).toBlocks₁₁).row := by
+  haveI : Unique {body : α // body = v} := Unique.subtypeEq v
+  set e : ({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k)))
+      ≃ Fin (Module.finrank ℝ (ScrewSpace k)) :=
+    Equiv.uniqueProd (Fin (Module.finrank ℝ (ScrewSpace k))) {body : α // body = v} with he
+  set coordEquiv : Module.Dual ℝ (ScrewSpace k)
+      ≃ₗ[ℝ] (({body : α // body = v} × Fin (Module.finrank ℝ (ScrewSpace k))) → ℝ) :=
+    ((finScrewBasis k).dualBasis.equivFun).trans (LinearEquiv.funCongrLeft ℝ ℝ e) with hcoord
+  -- The corner block is the coordinate matrix of the corner-functional family.
+  have hmeq : ((F.rigidityMatrixEdge ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ).submatrix re
+        (columnSplit (k := k) v).symm).toBlocks₁₁
+      = Matrix.of (fun i j => coordEquiv
+          (F.blockBasisOn hgp (re (Sum.inl i)).1.2 (re (Sum.inl i)).2
+            : Module.Dual ℝ (ScrewSpace k)) j) := by
+    ext i j
+    obtain ⟨⟨body, hbody⟩, c⟩ := j
+    subst hbody
+    rw [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply,
+      show (columnSplit (k := k) body).symm (Sum.inl (⟨body, rfl⟩, c)) = (body, c) from rfl,
+      F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva (re (Sum.inl i)) c
+        (hc1 i) (hc2 i), hcoord]
+    simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+      Basis.dualBasis_equivFun, he, Equiv.uniqueProd_apply, Matrix.of_apply]
+  rw [hmeq]
+  exact (Matrix.linearIndependent_row_of_coordEquiv coordEquiv _).2 hLI
+
 end CombinatorialRigidity.Molecular
