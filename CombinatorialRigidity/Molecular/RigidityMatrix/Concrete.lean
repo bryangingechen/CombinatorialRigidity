@@ -259,4 +259,32 @@ theorem BodyHingeFramework.rigidityMatrix_rank_eq_finrank_span_rigidityRows
       = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
   rw [F.rigidityMatrix_rank ends hgp, F.span_range_rigidityRowFun ends hgp hends]
 
+/-! ## A4 — the (6.61) column operation on the concrete matrix
+
+Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column
+operation (6.61) "add `vᵢ`'s columns to `vᵢ₊₁`'s", which the chain cert's dual-space model was
+forced to read as a span *membership* (and which walled — `notes/Phase23-design.md` §(4.18)–(4.30)).
+At the literal-`Matrix` level the column op is a *right-multiply by an explicit unit-det matrix*,
+which is rank-preserving outright. The general rank lemma is the carrier-agnostic
+`Matrix.rank_mul_eq_left_of_isUnit_det`; the rigidity specialization records it on `R(G,p)` for the
+realization arm, and `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` chains it with the A3
+block-additivity into the `#m₁ + #m₂ ≤ rank` lower bound the arm fires. -/
+
+/-- **A4 — the (6.61) column op is rank-preserving on `R(G,p)`** (Phase 23d, the column-op
+specialization; Katoh–Tanigawa 2011 eq. (6.61)). Right-multiplying the concrete rigidity matrix by
+any *unit-determinant* column-operation matrix `U` (KT (6.61)'s "add `vᵢ`'s columns to `vᵢ₊₁`'s",
+realized as an explicit invertible matrix on the `D·|V|` columns) leaves its `Matrix.rank`
+unchanged. Immediate from the carrier-agnostic `Matrix.rank_mul_eq_left_of_isUnit_det` — the column
+op never forms a span membership (the §(4.18)–(4.30) wall), it is a literal rank-invariant
+right-multiply. The block-triangular reindexing of `rigidityMatrix * U` into the A3 `fromBlocks`
+shape is then `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` (with `A = Mᵢ` the `D × D` corner,
+`D` the IH bottom-block). -/
+theorem BodyHingeFramework.rigidityMatrix_mul_rank (F : BodyHingeFramework k α β)
+    (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) [Finite α] [Finite β]
+    (U : Matrix (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))))
+      (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))) ℝ)
+    (hU : IsUnit U.det) :
+    (F.rigidityMatrix ends hgp * U).rank = (F.rigidityMatrix ends hgp).rank :=
+  Matrix.rank_mul_eq_left_of_isUnit_det U (F.rigidityMatrix ends hgp) hU
+
 end CombinatorialRigidity.Molecular

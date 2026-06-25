@@ -347,6 +347,52 @@ theorem rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows
         rw [hNsub]
         exact Matrix.rank_submatrix_le (n₀ := m₁ ⊕ m₂) M id c
 
+/-- **Block-triangular rank lower bound through a unit-det column operation** (Katoh–Tanigawa 2011
+eqs. (6.61)→(6.64); Phase 23d route-A piece A4, the column-op bridge into A3). For a matrix `M`
+over a field, a *unit-determinant* square matrix `U` (the explicit invertible column operation —
+KT (6.61)'s "add `vᵢ`'s columns to `vᵢ₊₁`'s"), and reindexing equivalences `em`, `en` exhibiting
+`M * U` (after the column op) in the block-triangular shape `fromBlocks A B 0 D` with the rows of
+both diagonal blocks `A`, `D` linearly independent, the rank of the *original* `M` is at least the
+sum of the two diagonal-block row counts:
+`#m₁ + #m₂ ≤ M.rank`.
+
+This is the matrix-level realization of KT's "(6.61) submatrix containment is not difficult to
+see": where the dual-space chain cert was forced to read (6.61) as a *span membership* (which
+walled — `notes/Phase23-design.md` §(4.18)–(4.30)), the literal-`Matrix` model reads it as a
+*right-multiply by a unit-det column-operation matrix* (`Matrix.rank_mul_eq_left_of_isUnit_det`,
+rank-invariant) followed by a *structural reindexing* into `fromBlocks` — never a membership, so
+the override-meets-gate collision never arises. The proof is a single `calc`: A3
+(`rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`) bounds `rank (fromBlocks A B 0 D)` below
+by `#m₁ + #m₂`, then `rank_reindex` (the reindexing is rank-preserving) and
+`rank_mul_eq_left_of_isUnit_det` (the column op is rank-preserving) carry that bound back to
+`M.rank`.
+
+In the KT application `M = R(G,pᵢ)` (the concrete panel-hinge rigidity matrix), `U` is the (6.61)
+column-operation matrix, `A = Mᵢ` is the full-rank `D × D` corner block, and `D` is the IH's
+bottom-block `R(G₁ ＼ row, q₁)` — both with linearly independent rows — so the hypotheses are
+exactly what the realization arm supplies. The rigidity-matrix consumer is
+`BodyHingeFramework.rigidityMatrix_mul_rank` (`Molecular/RigidityMatrix/Concrete.lean`), the
+column-op rank-invariance specialized to `R(G,p)`. -/
+theorem rank_ge_of_isUnit_mul_reindex_fromBlocks
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
+    [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
+    (em : p ≃ m₁ ⊕ m₂) (en : q ≃ n₁ ⊕ n₂)
+    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {D : Matrix m₂ n₂ K}
+    (hblock : (M * U).reindex em en = fromBlocks A B 0 D)
+    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
+    Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
+  classical
+  haveI : Fintype p := Fintype.ofFinite p
+  haveI : Fintype n₁ := Fintype.ofFinite n₁
+  haveI : Fintype n₂ := Fintype.ofFinite n₂
+  calc Fintype.card m₁ + Fintype.card m₂
+      ≤ (fromBlocks A B 0 D).rank :=
+        rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows B hA hD
+    _ = ((M * U).reindex em en).rank := by rw [hblock]
+    _ = (M * U).rank := rank_reindex em en (M * U)
+    _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
+
 end Matrix
 
 /-- **Vector-form polynomial-along-line.** For a finite-dim ℝ-vector space `W` and an
