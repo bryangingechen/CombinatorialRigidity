@@ -721,6 +721,50 @@ theorem columnSplit_corner_card [Finite α] (a : α) :
   rw [Fintype.card_prod, Fintype.card_fin, screwSpace_finrank,
     Fintype.card_subtype_eq, one_mul]
 
+/-! ## A5c — the row split for the (6.61)→(6.64) corner block
+
+The A5c composition core (`finrank_span_rigidityRows_ge_of_edge_fromBlocks`) consumes a *row*
+reindex `em : ({e // e ∈ E(G)} × Fin (D−1)) ≃ m₁ ⊕ m₂` alongside the column reindex `en`
+(`columnSplit`). KT §6.4.2's (6.64) block decomposition isolates the `D`-row corner block `Mᵢ` at
+the candidate edge `(vᵢvᵢ₊₁)` and the `D·(m_v − 1)`-row IH bottom block `R(G₁ ∖ row, q₁)`. The
+corner's `D − 1` panel rows are precisely the `(D−1)` block rows of the corner edge `e_a` — the
+rows `{(⟨e, _⟩, j) // e = e_a}` of the edge-restricted matrix. (The full corner `Mᵢ` is `D = (D−1)
++ 1` rows: these `D − 1` panel rows of `e_a` plus the one reproduced `±r` row of `e_b`, eq. (6.66);
+the `+1` row is supplied at the `hblock` assembly — `edgeRowSplit` packages the panel-row half of
+the partition, the structural row analog of the column `columnSplit`.) This block lands that row
+partition: `({e // e ∈ E(G)} × Fin (D−1)) ≃ ({e // e = e_a} × Fin (D−1)) ⊕ ({e // e ≠ e_a} ×
+Fin (D−1))`, with the `e_a` block's cardinality `D − 1` (`edgeRowSplit_corner_card`).
+Carrier-agnostic — a pure product reindex, no `ScrewSpace` reach-in. -/
+
+/-- **The edge-`ea` row split of the edge-restricted row index** (Phase 23d A5c, the panel-row half
+of the `em` input to the composition core; Katoh–Tanigawa 2011 §6.4.2 eq. (6.66)). The
+edge-restricted row index `{e // e ∈ E(G)} × Fin (D−1)` of `rigidityMatrixEdge` partitions into the
+designated corner edge `ea`'s `D − 1` block rows `{e // e = ea} × Fin (D−1)` (KT's `(vᵢvᵢ₊₁)` panel
+rows) and the rest `{e // e ≠ ea} × Fin (D−1)`. Built — exactly as the column-side `columnSplit` —
+as `(Equiv.sumCompl (· = ea)).symm` distributing over `Fin (D−1)` (`Equiv.prodCongr` + the
+right-distributive `Equiv.sumProdDistrib`). This is the row reindex's panel-row block; the full
+corner `m₁` adds the one reproduced `e_b` row at the `hblock` assembly. The corner cardinality is
+`D − 1` (`edgeRowSplit_corner_card`). -/
+def edgeRowSplit [DecidableEq β] {G : Graph α β} (ea : {e // e ∈ G.edgeSet}) :
+    ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1))
+      ≃ ({e : {e // e ∈ G.edgeSet} // e = ea} × Fin (screwDim k - 1))
+        ⊕ ({e : {e // e ∈ G.edgeSet} // e ≠ ea} × Fin (screwDim k - 1)) :=
+  (Equiv.prodCongr (Equiv.sumCompl (· = ea)).symm (Equiv.refl _)).trans
+    (Equiv.sumProdDistrib _ _ _)
+
+/-- **The edge-`ea` corner row block has cardinality `D − 1`** (Phase 23d A5c; the panel-row count
+the `em` partition contributes, via the row block split `edgeRowSplit`). The corner edge `ea`'s
+block `{e // e = ea} × Fin (D−1)` has exactly `D − 1 = screwDim k − 1` rows (one edge, `D − 1`
+panel rows) — KT's per-edge hinge-row block dimension (`finrank_hingeRowBlock`). `Fintype.card_prod`
+reduces it to `(card {e // e = ea}) · (card (Fin (D−1)))`; the `= ea` subtype is a singleton
+(card `1`) and `Fin (D−1)` has card `D − 1`. -/
+theorem edgeRowSplit_corner_card [Finite β] {G : Graph α β} (ea : {e // e ∈ G.edgeSet}) :
+    Fintype.card ({e : {e // e ∈ G.edgeSet} // e = ea} × Fin (screwDim k - 1))
+      = screwDim k - 1 := by
+  haveI : Fintype {e // e ∈ G.edgeSet} := Fintype.ofFinite _
+  haveI : Fintype {e : {e // e ∈ G.edgeSet} // e = ea} := Fintype.ofFinite _
+  rw [Fintype.card_prod, Fintype.card_fin, Fintype.card_subtype_eq, one_mul]
+
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 
 Katoh–Tanigawa 2011's block-rank certification (§6.4.2, eqs. (6.60)–(6.67)) opens with the column
