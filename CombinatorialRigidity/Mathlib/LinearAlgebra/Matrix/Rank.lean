@@ -393,6 +393,47 @@ theorem rank_ge_of_isUnit_mul_reindex_fromBlocks
     _ = (M * U).rank := rank_reindex em en (M * U)
     _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
 
+/-- **Block-triangular rank lower bound through a unit-det column operation — row-submatrix form**
+(Katoh–Tanigawa 2011 eqs. (6.61)→(6.64); Phase 23d route-A piece A4 in its row-*submatrix* shape,
+option (4b′)). This is the row-injection generalization of
+`rank_ge_of_isUnit_mul_reindex_fromBlocks`: instead of a row *equivalence* `em : p ≃ m₁ ⊕ m₂`
+exhibiting the *whole* column-operated matrix `M * U` as `fromBlocks A B 0 D`, it takes an arbitrary
+row map `re : m₁ ⊕ m₂ → p` (an *injection* in the application — selecting a row subset) and a column
+equivalence `en : (n₁ ⊕ n₂) ≃ q`, exhibiting the *row submatrix* `(M * U).submatrix re en` in the
+block-triangular shape, with the rows of both diagonal blocks `A`, `D` linearly independent. The
+conclusion is the same lower bound `#m₁ + #m₂ ≤ M.rank`.
+
+The motivation for the row-submatrix shape over the total-bijection `reindex` shape is that the
+realization arm is *isostatic* (`(D−1)·|E(G)| = D·(|V(G)|−1)`), so a total row bijection of all edge
+rows would force the *whole* edge matrix to be full row rank at the degenerate `t = 0` shear — which
+is **false**: there are `D − 2` surplus rows incident to the re-inserted body that become dependent
+(the redundancy KT Claim 6.11 exploits). KT's (6.64) block-additivity is a *subspace* statement that
+ignores those surplus rows, so the certificate must select a row subset — the `D` corner rows plus
+the `D·(|V_Gv|−1)` IH-bottom rows — and drop the surplus (`notes/Phase23-design.md` §I.8.24(4.33)).
+This mirrors `rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`'s *column*-submatrix step
+(`N = M.submatrix id c`): both keep only the rows/columns the block-triangular minor needs.
+
+The proof is the same `calc` as the `reindex` form, with `Matrix.rank_submatrix_le` (a row submatrix
+can only drop the rank) in place of the rank-preserving `rank_reindex`. -/
+theorem rank_ge_of_isUnit_mul_submatrix_fromBlocks
+    {K p q m₁ m₂ n₁ n₂ : Type*} [Field K] [Finite p] [Fintype q] [DecidableEq q]
+    [Fintype m₁] [Fintype m₂] [Finite n₁] [Finite n₂]
+    (M : Matrix p q K) (U : Matrix q q K) (hU : IsUnit U.det)
+    (re : m₁ ⊕ m₂ → p) (en : (n₁ ⊕ n₂) ≃ q)
+    {A : Matrix m₁ n₁ K} {B : Matrix m₁ n₂ K} {D : Matrix m₂ n₂ K}
+    (hblock : (M * U).submatrix re en = fromBlocks A B 0 D)
+    (hA : LinearIndependent K A.row) (hD : LinearIndependent K D.row) :
+    Fintype.card m₁ + Fintype.card m₂ ≤ M.rank := by
+  classical
+  haveI : Fintype n₁ := Fintype.ofFinite n₁
+  haveI : Fintype n₂ := Fintype.ofFinite n₂
+  calc Fintype.card m₁ + Fintype.card m₂
+      ≤ (fromBlocks A B 0 D).rank :=
+        rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows B hA hD
+    _ = ((M * U).submatrix re en).rank := by rw [hblock]
+    _ ≤ (M * U).rank := rank_submatrix_le (M * U) re en
+    _ = M.rank := rank_mul_eq_left_of_isUnit_det U M hU
+
 end Matrix
 
 /-- **Vector-form polynomial-along-line.** For a finite-dim ℝ-vector space `W` and an
