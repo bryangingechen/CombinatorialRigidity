@@ -18,8 +18,10 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ NEXT = leaf 1 of the dispatch decomposition (generalize the corner-entry brick to `.2 ≠ v`).** The
-dispatch spike (row 480, design §(4.35)) confirmed route A composes end-to-end through `chainData_dispatch`
+**✅ NEXT = leaf 2 of the dispatch decomposition (generalize the `hA` leaf's `hc2` to `.2 ≠ v`).** Leaf 1
+(generalize the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner` to `hv2 : .2 ≠ v`) is
+LANDED (gate/axiom-clean, the single `hA` callsite adapted in-commit to derive `≠ v` from `= a` + `hva`).
+The dispatch spike (row 480, design §(4.35)) confirmed route A composes end-to-end through `chainData_dispatch`
 modulo a 5-leaf decomposition; **the wrap-edge wall DOES NOT re-surface** (kernel-probed: the `e_b` `±r`
 row enters as a literal member of corner block `A`, reading `blockBasisOn` at the pin, never a span
 membership) and **GAP-2 is resolved** (the `Function.update` `ends₁` override = the landed `d=3` router
@@ -32,10 +34,11 @@ dual-space leaves stay in tree (parallel/sound). The interior-`hρe₀` crux is 
 cert-shape obstruction is structurally dissolved by (4b′).
 
 **Dispatch decomposition (design §(4.35), the dispatch spike verdict).** `chainData_dispatch`'s interior
-arm needs 5 ordered leaves: **(1)** generalize `rigidityMatrixEdge_mul_columnOp_apply_corner`'s corner
-hypothesis `.2 = a` → `.2 ≠ v` (mechanical, probe-verified); **(2)** generalize the `hA` leaf
+arm needs 5 ordered leaves: **(1)** ✅ LANDED — generalized `rigidityMatrixEdge_mul_columnOp_apply_corner`'s
+corner hypothesis `.2 = a` → `.2 ≠ v` (mechanical, the `columnOp hva (Pi.single v s)` reduction reads
+`blockBasisOn` at the pin for ANY second endpoint `≠ v`); **(2)** generalize the `hA` leaf
 `linearIndependent_toBlocks₁₁_row_of_corner_gate` likewise (`hc2 : .2 = a` → `hc2' : .2 ≠ v`, so it
-accepts the `e_b` `±r` corner row); **(3)** the corner `hLI` producer
+accepts the `e_b` `±r` corner row) ← **NEXT**; **(3)** the corner `hLI` producer
 `dispatch_corner_blockBasis_linearIndependent` (genuinely-new MATRIX-SHAPE bridge — KT eq. 6.66 + Lemma
 2.1; the landed `mkQ`-quotient gate is the WRONG shape); **(4)** the bottom-row producer
 `dispatch_bottom_rowLI_of_IH` (genuinely-new — `hIH` row-LI submatrix of the un-operated edge matrix from
@@ -93,7 +96,9 @@ Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route
    (sound in isolation — the dual-space approach the wall closed; do not build on them). The
    interior-`hρe₀` crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
-   `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). The `ChainData`
+   `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). **DISPATCH LEAF 1 LANDED**
+   (the corner-entry brick `rigidityMatrixEdge_mul_columnOp_apply_corner` generalized to `.2 ≠ v`);
+   NEXT = leaf 2. The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
    (`Induction/Operations.lean`, the off-slot input), the interior-`hρe₀` chain
    `interior_hρe₀_of_baseWidening`/`_of_widening` (`CaseIII/Relabel/ForkedArm.lean`, the dispatch reads
@@ -138,21 +143,26 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT CONCRETE COMMIT = leaf 1 of the dispatch decomposition** (design §(4.35)) — generalize the
-landed corner-entry brick `BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_corner`
-(`Concrete.lean`): replace the corner hypothesis `hv2 : (ends p.1.1).2 = a` with `hv2 : (ends p.1.1).2 ≠ v`
-(keep `hv1 : .1 = v`), so the brick covers the `e_b` `±r` reproduced corner row (whose second endpoint is
-`b ≠ a`), not just the `e_a` rows. The dispatch spike kernel-verified the proof generalizes by
-`simp [Function.update_of_ne, Pi.single_eq_of_ne]` (the operated corner entry reads `blockBasisOn` at the
-pin regardless of which corner edge, since `columnOp hva (Pi.single v s)` leaves `b ↦ 0`). This is
-mechanical (P≈1); it unblocks leaf 2 (the parallel generalization of the `hA` leaf
-`linearIndependent_toBlocks₁₁_row_of_corner_gate`).
+**NEXT CONCRETE COMMIT = leaf 2 of the dispatch decomposition** (design §(4.35)) — generalize the `hA`
+leaf `BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate` (`Concrete.lean`): drop the
+corner hypothesis `hc2 : ∀ i, (ends (re (Sum.inl i)).1.1).2 = a` to
+`hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v` (keep `hc1 : .1 = v`), so the leaf accepts the `e_b`
+`±r` corner row (whose second endpoint is `b ≠ a`), not just the `e_a` panel rows. Leaf 1 (the
+generalized `rigidityMatrixEdge_mul_columnOp_apply_corner` taking `hv2 : .2 ≠ v`) is LANDED and is the
+brick the `hmeq` `ext` already calls — leaf 2 just relaxes the wrapping hypothesis and passes
+`hc2' i` straight through (no derivation needed at the callsite once `hc2'` is the binder). Mechanical
+(P≈1–2); it unblocks leaf 3 (the corner `hLI` producer).
 
-**Then leaves 2→3→4→5** (design §(4.35), ordered): (2) generalize the `hA` leaf likewise; (3) the
-genuinely-new corner `hLI` producer `dispatch_corner_blockBasis_linearIndependent` (KT eq. 6.66 + Lemma
-2.1 — the hardest leaf, a MATRIX-SHAPE bridge the landed dual-space `mkQ`-quotient gate does NOT supply);
-(4) the genuinely-new bottom producer `dispatch_bottom_rowLI_of_IH` (`hIH` row-LI submatrix from the IH;
-the landed `chainData_bottom_relabel` is span-shaped, WRONG shape); (5) the `chainData_dispatch` wiring
+NOTE: leaf 1 landed without changing leaf 2's *signature* — the leaf-1 commit adapted the existing `hA`
+callsite to derive `≠ v` from the still-present `= a` binder + `hva` (`(hc2 i).symm ▸ hva.symm`), so the
+`hA` leaf still carries `hc2 : .2 = a`. Leaf 2's job is to relax that binder to `.2 ≠ v` and delete the
+now-unneeded derivation.
+
+**Then leaves 3→4→5** (design §(4.35), ordered): (3) the genuinely-new corner `hLI` producer
+`dispatch_corner_blockBasis_linearIndependent` (KT eq. 6.66 + Lemma 2.1 — the hardest leaf, a
+MATRIX-SHAPE bridge the landed dual-space `mkQ`-quotient gate does NOT supply); (4) the genuinely-new
+bottom producer `dispatch_bottom_rowLI_of_IH` (`hIH` row-LI submatrix from the IH; the landed
+`chainData_bottom_relabel` is span-shaped, WRONG shape); (5) the `chainData_dispatch` wiring
 (case-splits `(i:ℕ)`: `i≤1` → landed `chainData_split_realization`; `2≤i` → the route-A arm). The
 interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2). Then CHAIN-5 (wire into
 the spine), ENTRY + ASSEMBLY (parallel-safe).
@@ -178,6 +188,17 @@ the design doc.)*
 
 ### Forward-relevant (full)
 
+- **DISPATCH LEAF 1 LANDED — generalized `rigidityMatrixEdge_mul_columnOp_apply_corner` to `.2 ≠ v`
+  (2026-06-25, `Concrete.lean`).** Replaced the corner hypothesis `hv2 : (ends p.1.1).2 = a` with
+  `hv2 : (ends p.1.1).2 ≠ v` (kept `hv1 : .1 = v`), so the brick covers the `e_b` `±r` reproduced corner
+  row (`.2 = b ≠ a`) as well as the `e_a` panel rows. Proof: the keyed `hingeRow_comp_columnOp_apply`
+  (which demanded the exact second endpoint `a`) gives way to a direct `hingeRow_apply` + `simp only` of
+  the `columnOp`/`Function.update`/`Pi.single` reads — `columnOp hva (Pi.single v s)` updates `v ↦ s` and
+  leaves every other body (in particular the `≠ v` second endpoint) at `0`, so the read collapses to
+  `r(s − 0) = r s` for ANY second endpoint `≠ v`. The lone callsite (the `hA` leaf) was adapted in-commit
+  to derive `≠ v` from its still-present `= a` binder + `hva` (`(hc2 i).symm ▸ hva.symm`) — so leaf 2 (the
+  `hA`-binder relaxation) stays its own commit. Gate/lint/warning/axiom-clean. Friction: the missing-sibling
+  `unusedSimpArgs` false signal → TACTICS-QUIRKS § 68.
 - **A6 `hA` LEAF (leaf 2) LANDED — `linearIndependent_toBlocks₁₁_row_of_corner_gate` (2026-06-25,
   `Concrete.lean`).** The cert's `hA` from the dual-space corner LI, via the **dual-space→matrix-row
   coordinate re-wrap**: `ext` the corner block `toBlocks₁₁` to `Matrix.of (coordEquiv ∘ corner-func
@@ -237,6 +258,9 @@ the design doc.)*
   slot-override); route A scoped FEASIBLE-but-HEAVY (§(4.30)). Opened at the 23c clean-break close.
 
 ### Promoted to TACTICS-QUIRKS / Findings (model-experiment.md) / DESIGN.md
+- *An `unusedSimpArgs` warning can be a false signal — a missing *sibling* lemma stalled `simp` upstream
+  of the flagged arg; read the post-`simp` goal and *add* the sibling (the dual `Pi.single_eq_of_ne`
+  case), don't drop the named arg* → TACTICS-QUIRKS § 68.
 - *A lemma whose goal exposes `Matrix.rank`/`mulVec` on a constructed column type (`m⊕n`, Pi, …) needs
   `[Fintype]` on that type in the signature — `[Finite]` + in-proof `Fintype.ofFinite` is too late* →
   TACTICS-QUIRKS § 64.

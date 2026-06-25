@@ -91,6 +91,7 @@ failing pattern and the working fix.
 - *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
 - *"synthesized type class instance is not definitionally equal … synthesized `…instDecidableEqSigma…` / inferred `Classical.decEq …`"* on `rw [defName, …apiLemma]` unfolding a def that froze a `Classical.decEq` in its body → § 66 (`rw` matches instance args strictly; use `simp only [defName, …, apiLemma]`, lenient on instances, or `congr 1` then `rw`)
 - `V(G)`/`E(G)`/`↾`/`G - S` *"unexpected token '('; expected ','"* (or `… expected '}'`) in a **def/theorem signature binder** (`∀ e ∈ E(G), …`, `{e // e ∈ E(G)}`) in a `Molecular/RigidityMatrix/` file, while `lean_multi_attempt` accepts the same syntax → § 67 (the scoped `Graph` notation is **not in scope** — these files sit in `namespace CombinatorialRigidity.Molecular` with **no** `open Graph`, unlike the `namespace Graph` files; write the dot form `G.edgeSet`/`G.vertexSet`, matching the file's existing `F.graph.IsLink` style — *not* the same as § 48/§ 56, which are notation *present* but poisoning)
+- *"This simp argument is unused: `L`"* on `simp only [..., L, ...]`, but dropping `L` leaves the goal unsolved (the arg IS needed) → § 68 (a *missing sibling* lemma stalled `simp` before `L` could fire — two parallel sub-terms each need their own `Pi.single_eq_of_ne` instance; read the post-`simp` goal with `lean_goal`, *add* the sibling, don't remove `L` — distinct from § 46/§ 63 where a simproc/`dsimp` did the reduction)
 
 ## Sections
 
@@ -2416,3 +2417,31 @@ the `e ∈ F.graph.edgeSet` proof (the `∈` is plain set membership, no notatio
 *prose* can keep the readable `E(G)` form — it is only the elaborated signature that needs the dot
 form. (If a file genuinely wants the bracket notation, add `open scoped Graph` near the top — but for
 a one-off signature the dot form is lighter and consistent with the surrounding `.graph.IsLink`.)
+
+## 68. An `unusedSimpArgs` warning can be a *false signal* — a missing *sibling* lemma stalled `simp` upstream of the flagged arg
+
+**Symptom.** `simp only [..., L, ...]` reports *"This simp argument is unused: `L`"* (or leaves the
+goal partly reduced), and the obvious read — "drop `L`" — is **wrong**: dropping `L` then leaves a
+sub-term unreduced and the goal unsolved. The arg is genuinely needed; `simp` just never reached the
+point where it fires because a *different*, sibling lemma was missing from the set. Hit landing Phase
+23d's leaf-1 corner-entry generalization (`Concrete.lean`,
+`rigidityMatrixEdge_mul_columnOp_apply_corner` at `(ends p.1.1).2 ≠ v`): reducing
+`columnOp hva (Pi.single v s)` at body `v` (`(Pi.single v s) v + (Pi.single v s) a`, needing
+`Pi.single_eq_of_ne hva.symm` for the `a`-coordinate) **and** at the second endpoint
+(`(Pi.single v s) (ends p.1.1).2`, needing `Pi.single_eq_of_ne hv2`). With only `hva.symm` in the
+set, `hva.symm` was flagged *unused* — because the `v`-coordinate `add` could not collapse
+(`add_zero` blocked) until the second-endpoint term was also `0`, which needed the missing `hv2`.
+
+**Cause.** `simp only` applies its lemmas to a fixpoint; a lemma flagged "unused" simply never
+matched *over the trace it actually ran*. When two parallel sub-terms each need their own instance of
+the same lemma family (here `Pi.single_eq_of_ne` at two different non-pin indices), omitting one
+arrests the rewrite before the other's enabling normal form appears, so the present sibling looks
+inert. This is distinct from § 46 / § 63 (arg flagged unused because a *simproc*/`dsimp` already did
+the reduction) and from § 43 (a `set`-fold hid the pattern): here the arg is correct and the fix is
+to *add*, not remove.
+
+**Fix.** Before deleting a "supposedly unused" simp arg, check whether a *sibling* sub-term of the
+same shape is still unreduced in the post-`simp` goal (read it with `lean_goal`); if so, supply the
+sibling lemma instance for it (`Pi.single_eq_of_ne hv2` alongside `Pi.single_eq_of_ne hva.symm`),
+which both unblocks the reduction and clears the warning. Only after the goal is closed should you
+trust an `unusedSimpArgs` warning enough to drop the named arg.

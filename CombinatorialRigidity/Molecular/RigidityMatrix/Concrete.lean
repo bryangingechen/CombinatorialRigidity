@@ -1108,30 +1108,33 @@ theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_pin_zero [Finty
 
 /-- **A6 — the operated edge-matrix corner entry at the FIXED pin body `v` (the `hA` content)**
 (Phase 23d, the `D × D` corner block; Katoh–Tanigawa 2011 eqs. (6.14)–(6.16)). For a CORNER row `p`
-whose endpoints ARE the split pair `(v, a)` (the split edges `e_a`/`e_b`, `ends e = (v, a)`), the
-`(⟨e, he⟩, j)`-row of `rigidityMatrixEdge ends hgp * U` at the pin column `(v, c)` reads
+whose FIRST endpoint is the pin `v` (`hv1`) and whose SECOND endpoint merely avoids the pin
+(`hv2 : (ends p.1.1).2 ≠ v`, NOT necessarily `= a`), the `(⟨e, he⟩, j)`-row of
+`rigidityMatrixEdge ends hgp * U` at the pin column `(v, c)` reads
 `(blockBasisOn hgp _ j) (finScrewBasis k c)` — the row's panel functional evaluated at the `c`-th
-screw basis vector. The `a`-column contribution cancels in the operated frame
-(`hingeRow_comp_columnOp_apply`: `hingeRow v a r (columnOp hva S) = r (S v)`, at `S = Pi.single v s`
-so `S v = s`), leaving a pure `v`-column read. This is the `D × D` corner `Mᵢ`: its `D − 1` panel
-rows of `e_a` plus the reproduced `e_b` `±r` row, all reading the panel functionals on `v`'s `D`
-screw columns — whose row-LI is the `omitTwoExtensor_linearIndependent` /
-`interior_group_eq_baseRedundancy` gate content (consumed via the A5b iff). NO `ScrewSpace`
-unfolding. -/
+screw basis vector. The second-endpoint column contribution cancels in the operated frame
+(`columnOp hva (Pi.single v s)` updates `v ↦ s` and leaves every other body — in particular the
+second endpoint `≠ v` — at `(Pi.single v s) · = 0`), leaving a pure `v`-column read
+`r (s − 0) = r s`. Generalizing the second endpoint from `= a` to merely `≠ v` is what makes this
+brick cover BOTH split edges' corner rows — the `e_a` panel rows (`.2 = a`) **and** the reproduced
+`e_b` `±r` row (`.2 = b ≠ a`, KT eq. (6.66)) — the full `D × D` corner `Mᵢ`, whose row-LI is the
+`omitTwoExtensor_linearIndependent` / Lemma 2.1 gate content. NO `ScrewSpace` unfolding. -/
 theorem BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_corner [Fintype α]
     [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
     (hgp : ∀ e ∈ F.graph.edgeSet, F.supportExtensor e ≠ 0)
     {v a : α} (hva : v ≠ a)
     (p : {e // e ∈ F.graph.edgeSet} × Fin (screwDim k - 1))
     (c : Fin (Module.finrank ℝ (ScrewSpace k)))
-    (hv1 : (ends p.1.1).1 = v) (hv2 : (ends p.1.1).2 = a) :
+    (hv1 : (ends p.1.1).1 = v) (hv2 : (ends p.1.1).2 ≠ v) :
     (F.rigidityMatrixEdge ends hgp
         * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
             (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (v, c)
       = (F.blockBasisOn hgp p.1.2 p.2 : Module.Dual ℝ (ScrewSpace k)) (finScrewBasis k c) := by
   rw [F.rigidityMatrixEdge_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p v c,
-    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hv1, hv2,
-    hingeRow_comp_columnOp_apply, Pi.single_eq_same]
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFunEdge, hv1, hingeRow_apply]
+  simp only [columnOp_apply, Function.update_self, Function.update_of_ne hv2,
+    Pi.single_eq_same, Pi.single_eq_of_ne hva.symm, Pi.single_eq_of_ne hv2,
+    add_zero, sub_zero]
 
 /-- **A6 — the (4b) lower-left `0` block of the reindexed operated edge matrix** (Phase 23d, the
 `hblock` reduction crux; Katoh–Tanigawa 2011 eq. (6.64) the block decomposition). With the column
@@ -1389,7 +1392,7 @@ theorem BodyHingeFramework.linearIndependent_toBlocks₁₁_row_of_corner_gate [
     rw [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply,
       show (columnSplit (k := k) body).symm (Sum.inl (⟨body, rfl⟩, c)) = (body, c) from rfl,
       F.rigidityMatrixEdge_mul_columnOp_apply_corner ends hgp hva (re (Sum.inl i)) c
-        (hc1 i) (hc2 i), hcoord]
+        (hc1 i) ((hc2 i).symm ▸ hva.symm), hcoord]
     simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
       Basis.dualBasis_equivFun, he, Equiv.uniqueProd_apply, Matrix.of_apply]
   rw [hmeq]
