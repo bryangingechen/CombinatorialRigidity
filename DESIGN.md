@@ -1279,6 +1279,23 @@ isostatic `(D−1)|E| = D(|V|−1)`, corner holds `D` of `2(D−1)` `v`-rows ⟹
 and check the partition closes. Cross-ref: `notes/Phase23-design.md` §(4.33); model-exp
 *Findings* 2026-06-25.
 
+**Corollary — a *prior recon's* "~N-leaf gate fact via landed lemma X" rating is itself a
+satisfiability claim about a BRIDGE; confirm X *produces* the carried fact's exact object before
+accepting it, and re-spike at the consumer rather than trusting the settled prose (Phase 23d,
+2026-06-25).** Route A's arm carries `hA`/`hD` (corner/bottom row-LI of the *operated row-submatrix*)
+as hypotheses; a prior spike (row 473) "settled" them as "~1-leaf gate facts via the A5b LI iff /
+`omitTwoExtensor` / the IH". A fresh compiler-checked spike at the arm assembly found that wrong by a
+*granularity*: the A5b iff is for the FULL `rigidityProd.row`, not the column-operated, row-injected,
+`v`-projected `toBlocks`; `omitTwoExtensor`'s LI lives in extensor space, not `toBlocks₁₁.row` — so each
+needs a genuinely-new dual→matrix-row LI *bridge*, and a naive `whnf` on the carrier timed out
+(200000 heartbeats), i.e. a blind build would have walled mid-proof. **The rule:** when a hand-off rates
+a *carried* gate fact "~N-leaf via landed lemma X", that rating is a satisfiability claim about a bridge
+— open X's *conclusion* and the carried fact's *exact object* and confirm X **produces** it (same row
+family, same restriction/projection), not just that X is landed; if it is a route-composition in the
+defeq-fragile zone, spike-before-build even though a prior recon "settled" it (the settling was at the
+wrong granularity — a sound leaf-count estimate is not a sound bridge-existence proof). Cross-ref:
+`notes/Phase23-design.md` §(4.34); model-exp *Findings* 2026-06-25 (rows 477–478).
+
 ## Match the source's argument structure, not just its conclusion
 
 **The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I
