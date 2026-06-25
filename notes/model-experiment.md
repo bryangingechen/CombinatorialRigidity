@@ -135,6 +135,8 @@ Rows 1–434 are in [`model-experiment-archive.md`](model-experiment-archive.md)
 | 474 | (4b′) row-submatrix cert kernel — `rank_ge_of_isUnit_mul_submatrix_fromBlocks` + edge composition core (615abab) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 150k tok / 47 tools / 16.0 min | First (4b′) leaf (session #33, the user-adjudicated A6 direction). 2 mechanical mirrors of A4/A5c-core, `rank_submatrix_le` (no injectivity) for `rank_reindex` — dissolves the §(4.33)(3) cert-shape obstruction at the kernel by dropping the D−2 surplus rows. Coordinator (below-top-rung): full diff read, warning-build + lint re-run clean, axiom-clean; A3's column-submatrix step confirmed as the mirror source on acceptance. NEXT = cert reshape. |
 | 475 | reshape cert `case_III_rank_certification_matrix` to the row-submatrix core (6ced25b) | 2/1/1 | opus | normal | clean | ✓✓✓—✓✓ | 135k tok / 43 tools / 10.1 min | Mechanical cert reshape: `em ≃`→`re` injection, `en` flipped, `.reindex`→`.submatrix`, body fires `_of_edge_submatrix_fromBlocks`. Conclusion byte-identical to `_chain` (still a `hrank`-seam drop-in); cert NOT blueprint-pinned (per-slice statement-change gate OK). Coordinator: full diff read, warning-build + lint clean, axiom-clean. NEXT = A6 geometry. |
 | 476 | A6 `hblock` 0-block kernel `_submatrix_toBlocks₂₁_eq_zero` (row-submatrix form) (dbe2097) | 2/2/1 | opus | normal | clean | ✓✓✓—✓✓ | 199k tok / 48 tools / 13.6 min | Agent independently found+filled the gap the coordinator flagged: the `.reindex`-form 0-block brick can't supply the cert's `re` injection → built the `.submatrix` analog (verbatim mirror) + verified via lean_multi_attempt that it + `fromBlocks_toBlocks` makes `hblock` a one-liner. 3rd consecutive A6-prerequisite commit → coordinator triggers a satisfiability spike on hA/hD next (recurring-deferral + defeq-fragile route-composition). Gates clean (full diff, warning-build, lint, axiom). |
+| 477 | A6 arm-assembly satisfiability spike — `hA`/`hD` = 2 new bridges (→ §4.34, read-only) | —/—/— | opus | recon | recon — NEEDS-X (arm composes sorry-free; `hA`/`hD` are 2 genuinely-new dual→matrix-row LI bridges) | — | 200k tok / 50 tools / 10.8 min | Coordinator-triggered before the A6 build (deferred-hyp-satisfiability discipline + 3 consecutive prerequisite commits + defeq-fragile route-composition → spike not blind build). CAUGHT that row-473's "~1-leaf gate facts" `hA`/`hD` are actually 2 NEW bridges: the A5b iff is for the FULL rigidity row, not the operated/`v`-restricted `toBlocks`; `omitTwoExtensor` is extensor-space not `toBlocks₁₁.row`. §38 whnf timed out at 200000 heartbeats — a blind build would have walled. Kernel-read residuals + leaf decomp. Model WIN (flag-don't-force, grounded). → Findings 2026-06-25. |
+| 478 | route-A A6 arm spine `case_III_arm_realization_matrix` (8b24b83) | 2/2/1 | opus | build/resume | clean | ✓✓✓—✓✓ | 266k tok / 34 tools / 10.3 min | Spike-salvage build-resume (rescue §6) of row 477: banked the recon's verified `U`/`en`/`hblock` composition as the route-A arm spine, carrying `hA`/`hD` (standing idiom) at their EXACT operated-`toBlocks` shapes — pins the 2 bridges' targets. `_chain` retained (parallel, sound). Coordinator: full diff, shape check (conclusion = `_chain`), warning-build + lint, axiom-clean. NEXT = the 2 bridges. → Findings 2026-06-25. |
 
 ## Findings
 
@@ -277,4 +279,21 @@ the protocol)
   (A5c→cert; corrected-hblock→bricks). (3) The deferred-hypothesis-unsat trap recurs at the cert
   SHAPE/architecture, not just leaf hypotheses → DESIGN.md *Constructibility recon* (the architecture-shape
   satisfiability corollary). Full route history: `notes/Phase23-design.md` §(4.31)–(4.33).
+
+- **2026-06-25 (rows 477–478, session #33) — the A6 arm-assembly satisfiability spike caught a
+  `~1-leaf`→`2-bridge` underestimate before a blind build hit a whnf wall.** Before building the A6
+  geometry, a read-only compiler-checked spike traced `hA`/`hD` against the REAL arm objects and found
+  the row-473 verdict ("`hA`/`hD` are ~1-leaf gate facts via the A5b iff / `omitTwoExtensor` / IH")
+  was OPTIMISTIC: the A5b iff is for the FULL `rigidityProd.row`, not the column-operated, row-injected,
+  `v`-column-projected `toBlocks`; `omitTwoExtensor` LI lives in extensor space, not `toBlocks₁₁.row`.
+  Both need a genuinely-new dual→matrix-row LI bridge; a naive `whnf` on the `caseIIICandidate` carrier
+  timed out at 200000 heartbeats (§38), so a blind build would have walled mid-proof. The spike then
+  salvage-resumed (read-only lifted) to bank its verified `U`/`en`/`hblock` composition as the arm
+  spine, carrying `hA`/`hD`. **Lessons:** (1) the deferred-hyp-satisfiability trap recurs at the
+  ARM-ASSEMBLY consumer, not only leaf hypotheses — a carried gate fact rated "~1-leaf via landed
+  lemma X" must have its *bridge* confirmed to exist (X's conclusion shape vs the carried fact's exact
+  object), not just X landed; rating it from the prior spike's prose was the miss the new spike caught.
+  (2) For a route-composition crux in the defeq-fragile zone, spike-before-build beats build-then-BLOCK
+  even when prior recon "settled" it — the settling was at the wrong granularity. → DESIGN.md
+  *Constructibility recon* (the satisfiability corollary, now also at the consumer-assembly level).
 
