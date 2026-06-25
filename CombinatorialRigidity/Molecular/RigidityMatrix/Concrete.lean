@@ -39,9 +39,15 @@ opacity blow-up.** The coordinatization `dualCoordEquiv` is built from
 `Module.finBasis`/`Basis.equivFun` and the rank bridge runs entirely through the
 `Basis`/`LinearEquiv` boundary API — the opaque `ScrewSpace` carrier (Phase 22l) is
 **never unfolded** (no `ScrewSpace_def`, no `whnf` over `↥(⋀^k …)`). The general bridge
-`Matrix.rank_of_dualCoord` is fully carrier-agnostic; the rigidity specialization adds
-only the `span (range rows) = span rigidityRows` spanning fact, which is pure
-hinge-row-block bookkeeping with no carrier reach-in.
+`Matrix.rank_of_coordEquiv` (generalized for A4.5 over an arbitrary coordinatizing equiv;
+`Matrix.rank_of_dualCoord` is its flat-`finBasis` instance) is fully carrier-agnostic; the
+rigidity specialization adds only the `span (range rows) = span rigidityRows` spanning fact,
+which is pure hinge-row-block bookkeeping with no carrier reach-in.
+
+The **A4.5** block adds the product-column matrix `rigidityMatrixProd` (columns `α × Fin D`,
+not the flat arbitrary basis) and its honest-rank bridge, the re-coordinatization the A5
+route-composition spike found the (6.61) `D × D` corner-block split needs
+(`notes/Phase23-design.md` §I.8.24(4.31)); it reuses `Matrix.rank_of_coordEquiv` verbatim.
 
 `d = 3` instances (`k = 2`) are the immediate use; every lemma is stated symbolic-`k`
 since nothing here depends on `screwDim 2 = 6` numerically.
@@ -74,29 +80,49 @@ noncomputable def dualCoordEquiv (M : Type*) [AddCommGroup M] [Module ℝ M]
     Module.Dual ℝ M ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ M)) → ℝ) :=
   (Module.finBasis ℝ (Module.Dual ℝ M)).equivFun
 
-/-- **The rank bridge, carrier-agnostically** (Phase 23d A2 core). For a finite family
-`w : ι → Module.Dual ℝ M` over a finite-dimensional `M`, the matrix `Matrix.of` of the
-coordinate vectors `dualCoordEquiv M (w i)` has `Matrix.rank` equal to
-`finrank ℝ (span (range w))` — the dual-space rank of the family. The proof is the
-mathlib-landed `Matrix.rank_eq_finrank_span_row` (rank = finrank of the row span)
-composed with the `LinearEquiv`-image span identity (`Submodule.span_image` +
-`LinearEquiv.finrank_map_eq`); it never unfolds `M`. -/
-theorem Matrix.rank_of_dualCoord {M : Type*} [AddCommGroup M] [Module ℝ M]
-    [FiniteDimensional ℝ M] {ι : Type*} [Finite ι] (w : ι → Module.Dual ℝ M) :
-    (Matrix.of (fun i => dualCoordEquiv M (w i))).rank
+/-- **The rank bridge, carrier-agnostically, against ANY coordinatizing equiv** (Phase 23d A2
+core, generalized for A4.5). For a finite family `w : ι → Module.Dual ℝ M` over a
+finite-dimensional `M` and **any** linear equivalence `coordEquiv : Module.Dual ℝ M ≃ₗ[ℝ]
+(κ → ℝ)` coordinatizing the dual space, the matrix `Matrix.of` of the coordinate vectors
+`coordEquiv (w i)` has `Matrix.rank` equal to `finrank ℝ (span (range w))` — the dual-space
+rank of the family. The proof is the mathlib-landed `Matrix.rank_eq_finrank_span_row` (rank =
+finrank of the row span) composed with the `LinearEquiv`-image span identity
+(`Submodule.span_image` + `LinearEquiv.finrank_map_eq`); it never unfolds `M`, and is uniform
+in the choice of `coordEquiv`.
+
+This generalizes the original `Matrix.rank_of_dualCoord` (the `coordEquiv := dualCoordEquiv M`
+instance) so that BOTH the flat-basis rigidity bridge `rigidityMatrix_rank` and the
+product-basis bridge `rigidityMatrixProd_rank` (A4.5) are one-line instances with no proof
+duplication. -/
+theorem Matrix.rank_of_coordEquiv {M : Type*} [AddCommGroup M] [Module ℝ M]
+    [FiniteDimensional ℝ M] {κ : Type*} [Fintype κ]
+    (coordEquiv : Module.Dual ℝ M ≃ₗ[ℝ] (κ → ℝ))
+    {ι : Type*} [Finite ι] (w : ι → Module.Dual ℝ M) :
+    (Matrix.of (fun i => coordEquiv (w i))).rank
       = Module.finrank ℝ (Submodule.span ℝ (Set.range w)) := by
   classical
   haveI : Fintype ι := Fintype.ofFinite ι
   rw [Matrix.rank_eq_finrank_span_row]
-  have hrow : Set.range (Matrix.of (fun i => dualCoordEquiv M (w i))).row
-      = dualCoordEquiv M '' Set.range w := by
+  have hrow : Set.range (Matrix.of (fun i => coordEquiv (w i))).row
+      = coordEquiv '' Set.range w := by
     ext x
     simp only [Set.mem_range, Set.mem_image, Matrix.row]
     constructor
     · rintro ⟨i, rfl⟩; exact ⟨w i, ⟨i, rfl⟩, rfl⟩
     · rintro ⟨_, ⟨i, rfl⟩, rfl⟩; exact ⟨i, rfl⟩
-  rw [hrow, ← LinearEquiv.coe_coe (dualCoordEquiv M), Submodule.span_image,
+  rw [hrow, ← LinearEquiv.coe_coe coordEquiv, Submodule.span_image,
     LinearEquiv.finrank_map_eq]
+
+/-- **The rank bridge for the flat `dualCoordEquiv` coordinatization** (Phase 23d A2 core; the
+`coordEquiv := dualCoordEquiv M` instance of the generalized `Matrix.rank_of_coordEquiv`). For a
+finite family `w : ι → Module.Dual ℝ M` over a finite-dimensional `M`, the matrix of the
+flat-basis coordinate vectors `dualCoordEquiv M (w i)` has `Matrix.rank` equal to
+`finrank ℝ (span (range w))`. Never unfolds `M`. -/
+theorem Matrix.rank_of_dualCoord {M : Type*} [AddCommGroup M] [Module ℝ M]
+    [FiniteDimensional ℝ M] {ι : Type*} [Finite ι] (w : ι → Module.Dual ℝ M) :
+    (Matrix.of (fun i => dualCoordEquiv M (w i))).rank
+      = Module.finrank ℝ (Submodule.span ℝ (Set.range w)) :=
+  Matrix.rank_of_coordEquiv (dualCoordEquiv M) w
 
 /-! ## A1 — the concrete panel-hinge rigidity matrix `R(G,p)`
 
@@ -258,6 +284,96 @@ theorem BodyHingeFramework.rigidityMatrix_rank_eq_finrank_span_rigidityRows
     (F.rigidityMatrix ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
   rw [F.rigidityMatrix_rank ends hgp, F.span_range_rigidityRowFun ends hgp hends]
+
+/-! ## A4.5 — the product-column rigidity matrix (re-coordinatization for the (6.61) block split)
+
+The flat `rigidityMatrix` (above) coordinatizes `R(G,p)`'s columns by an **arbitrary**
+`Module.finBasis ℝ (Dual ℝ (α → ScrewSpace k))` (via `dualCoordEquiv`). The dimension is right
+(`finrank ℝ (Dual ℝ (α → ScrewSpace k)) = #α · screwDim k`, by `Subspace.dual_finrank_eq` +
+`Module.finrank_pi_fintype` + `screwSpace_finrank`), but those columns do **not** factor as
+`α × Fin D`, so KT's (6.61)→(6.64) `D × D` corner-block column split has no natural realization
+on it (the A5 route-composition spike's verdict, `notes/Phase23-design.md` §I.8.24(4.31)).
+
+This block adds the **product-column** form
+`rigidityMatrixProd : Matrix (β × Fin (D−1)) (α × Fin D) ℝ`, whose columns factor as
+`(body, screw-coordinate) = α × Fin D` literally — so the KT block split
+`en : (α × Fin D) ≃ ({vᵢ₊₁} × Fin D) ⊕ rest` is the obvious product reindex. Its rank equals the
+same honest `finrank (span rigidityRows)` (the `rigidityMatrixProd_rank…` bridge), by the **same**
+carrier-agnostic `Matrix.rank_of_coordEquiv` — it is just the `coordEquiv := dualProductCoordEquiv`
+instance, with no `ScrewSpace` unfolding. The A4 bridge
+`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` accepts ANY `M`, so the realization arm (A5)
+feeds it `rigidityMatrixProd` instead of the flat one. -/
+
+/-- **A per-vertex screw basis** (A4.5a; the product coordinatization's atom). The abstract
+`Fin (finrank ℝ (ScrewSpace k)) = Fin D`-indexed basis of the screw-center space `ScrewSpace k`.
+Carrier-opaque (`Module.finBasis`, never unfolding `ScrewSpace`); its `Pi.basis` lift
+coordinatizes `α → ScrewSpace k` by the product `α × Fin D`. (Distinct from the powerset-indexed
+exterior-power `screwBasis` in `AlgebraicInduction/PanelLayer.lean`: there the index is the
+concrete `Set.powersetCard (Fin (k+2)) k`; here it is the abstract `Fin D` the product column
+index `α × Fin D` needs. Different name to avoid the clash.) -/
+noncomputable def finScrewBasis (k : ℕ) :
+    Module.Basis (Fin (Module.finrank ℝ (ScrewSpace k))) ℝ (ScrewSpace k) :=
+  Module.finBasis ℝ (ScrewSpace k)
+
+/-- **The product coordinatization of the dual screw-assignment space** (A4.5b). For finite `α`,
+the per-vertex `finScrewBasis` lifts (via `Pi.basis`) to a basis of `α → ScrewSpace k`; its
+`dualBasis` coordinatizes `Module.Dual ℝ (α → ScrewSpace k)` by the product index
+`α × Fin (finrank ℝ (ScrewSpace k)) = α × Fin D`, reassociated from the `Σ`-index of
+`Pi.basis.dualBasis` via `Equiv.sigmaEquivProd`. Unlike `dualCoordEquiv` (an arbitrary
+`finBasis`), this equiv's columns factor as `(body, screw-coordinate)`, which is what the (6.61)
+`D × D` corner-block column split needs. The `DecidableEq` on the `Σ`-index is supplied
+classically in the def body (the dual-basis construction needs it; the resulting equiv is
+independent of the choice). -/
+noncomputable def dualProductCoordEquiv [Fintype α] :
+    Module.Dual ℝ (α → ScrewSpace k)
+      ≃ₗ[ℝ] (α × Fin (Module.finrank ℝ (ScrewSpace k)) → ℝ) :=
+  haveI : DecidableEq ((_ : α) × Fin (Module.finrank ℝ (ScrewSpace k))) := Classical.decEq _
+  ((Pi.basis (fun _ : α => finScrewBasis k)).dualBasis.equivFun).trans
+    (LinearEquiv.funCongrLeft ℝ ℝ
+      (Equiv.sigmaEquivProd α (Fin (Module.finrank ℝ (ScrewSpace k)))).symm)
+
+/-- **The product-column panel-hinge rigidity matrix `R(G,p)`** (A4.5c; the re-coordinatized form
+for the (6.61) block split). The explicit `Matrix (β × Fin (D−1)) (α × Fin D) ℝ`: the row at
+`(e, j)` is the **product**-coordinate vector (`dualProductCoordEquiv`) of the rigidity-row
+functional `rigidityRowFun ends hgp (e, j) = hingeRow (ends e).1 (ends e).2 (blockBasis hgp e j)`.
+Same rows as the flat `rigidityMatrix`, coordinatized against the product basis `α × Fin D`
+instead of the flat `finBasis` — so its columns factor as `(body, screw-coordinate)` and the KT
+corner-block split is the obvious product reindex. Same `Matrix.rank` as the honest target
+(`rigidityMatrixProd_rank`). -/
+noncomputable def BodyHingeFramework.rigidityMatrixProd [Fintype α] (F : BodyHingeFramework k α β)
+    (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
+    Matrix (β × Fin (screwDim k - 1)) (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ :=
+  Matrix.of fun p => dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFun ends hgp p)
+
+/-- **The product matrix's `Matrix.rank` is the row-functional span rank** (A4.5d, the product
+rank bridge — carrier-agnostic core). Immediate `coordEquiv := dualProductCoordEquiv` instance of
+the generalized `Matrix.rank_of_coordEquiv`: the product matrix IS
+`Matrix.of (dualProductCoordEquiv ∘ rigidityRowFun)` definitionally, so the rank equals
+`finrank (span (range rigidityRowFun))` with **no `ScrewSpace` unfolding** — exactly the flat
+`rigidityMatrix_rank` argument, reused verbatim through the generalized lemma. -/
+theorem BodyHingeFramework.rigidityMatrixProd_rank [Fintype α] [Finite β]
+    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
+    (F.rigidityMatrixProd ends hgp).rank
+      = Module.finrank ℝ (Submodule.span ℝ (Set.range (F.rigidityRowFun ends hgp))) :=
+  Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α))
+    (F.rigidityRowFun ends hgp)
+
+/-- **A4.5d — the product matrix lands on the honest target** (the product analog of the
+clause-(iii) capstone `rigidityMatrix_rank_eq_finrank_span_rigidityRows`). The product-column
+matrix's `Matrix.rank` equals `finrank (span F.rigidityRows)` — the honest
+`HasGenericFullRankRealization` quantity — when `ends` records every edge's link. Composes
+`rigidityMatrixProd_rank` (the product rank bridge) with the **shared** spanning identity
+`span_range_rigidityRowFun` (the same A1→target link the flat capstone uses; `rigidityMatrixProd`
+has the same rows as `rigidityMatrix`, only a different coordinatization, so the spanning identity
+is reused unchanged). This is the A5 arm's entry point: route A's `Matrix.rank` certification on
+the product matrix lands on the honest Theorem 5.5 quantity. -/
+theorem BodyHingeFramework.rigidityMatrixProd_rank_eq_finrank_span_rigidityRows [Fintype α]
+    [Finite β] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2) :
+    (F.rigidityMatrixProd ends hgp).rank
+      = Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+  rw [F.rigidityMatrixProd_rank ends hgp, F.span_range_rigidityRowFun ends hgp hends]
 
 /-! ## A4 — the (6.61) column operation on the concrete matrix
 

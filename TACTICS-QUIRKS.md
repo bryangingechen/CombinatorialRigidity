@@ -88,6 +88,7 @@ failing pattern and the working fix.
 - *"unexpected token '+'; expected ')'"* on `f ((x : ℕ) - 1 + 2)` / `⟨(x : ℕ) - 1 + 1, h⟩` (a type-ascription left operand then `+`/`-`), goal display silently drops the trailing `+ k` → § 62 (re-parenthesize the whole arithmetic: `(((x : ℕ) - 1) + 2)`)
 - `omega` fails on a goal over `↑(⟨(i : ℕ), h⟩ : Fin m)` with `hid : (i : ℕ) < …` in scope, the counterexample naming a `↑↑i` atom that *satisfies* the goal → § 63 (omega atomizes `Fin.val (Fin.mk …)` distinctly from `(i : ℕ)`; force the defeq with `show … from hid`, not `simp only [Fin.val_mk]` which the linter flags unused)
 - *"failed to synthesize Fintype (n₁ ⊕ n₂)"* (or any constructed column type) reported at the **goal-statement** line `… : … ≤ (Matrix.fromBlocks …).rank`, despite an in-proof `haveI : Fintype … := Fintype.ofFinite …` → § 64 (`Matrix.rank`/`mulVec` carries `[Fintype <cols>]`; when the *goal* exposes `.rank` on a built type, put `[Fintype]` on the summands in the signature — the in-proof instance is too late)
+- *"environment already contains 'Ns.foo' from <other module>"* at `lake lint`/`runLinter` (the whole-project import-merge) on a decl `lake build <your module>` accepted → § 65 (a duplicate top-level name in a shared namespace; single-file build never imports the sibling, so name-check the namespace — `grep -rn "def <name>"` / `lean_local_search` — before naming, and run `lake lint` not just `lake build <module>` pre-commit)
 
 ## Sections
 
@@ -2336,3 +2337,24 @@ synthesizes automatically at the goal type. Only revert to `[Finite]` + in-proof
 constructed type appears **solely inside the proof**, never in the stated goal. Rule of thumb: if the
 goal text contains `.rank` / `mulVec` on anything other than a bare hypothesis variable, the column
 type's `Fintype` belongs in the signature.
+
+## 65. A duplicate top-level decl name in a shared namespace builds fine per-file but fails the whole-project lint — name-check before naming, and lint (not just build) before commit
+
+**Symptom.** `lake build <your module>` succeeds, but `lake lint` (`runLinter`, the CI gate) aborts
+with *"uncaught exception: import <YourModule> failed, environment already contains 'Ns.foo' from
+<OtherModule>"*. Hit landing Phase 23d's A4.5: a new `screwBasis` in `RigidityMatrix/Concrete.lean`
+collided with an existing `Molecular.screwBasis` in `AlgebraicInduction/PanelLayer.lean` (a *different*
+type — powerset-indexed vs `Fin`-indexed basis — but the *same* fully-qualified name).
+
+**Cause.** `lake build <module>` elaborates only that module's import-closure; if the clashing sibling
+is not in that closure (the two files don't import each other), the duplicate is invisible. The
+whole-project linter loads **all** default modules into one environment, where two decls with the same
+fully-qualified name collide. So a single-file green build is **not** evidence the name is free — only
+a project-wide load is. (`Molecular` is the busiest shared namespace in the project; the risk is
+highest there.)
+
+**Fix.** Before naming a new top-level decl in a shared namespace, check the name is free:
+`grep -rn "def <name>\b" <subtree>` or `lean_local_search "<name>"`. If taken, pick a distinct name
+(here: `finScrewBasis` for the `Fin`-indexed variant). And **run `lake lint` before commit**, not just
+`lake build <module>` — this class of failure is lint-only. (The build/lint-gate section in
+`CombinatorialRigidity/CLAUDE.md` already mandates both; this is *why* build-alone is insufficient.)
