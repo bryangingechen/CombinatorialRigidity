@@ -580,4 +580,58 @@ theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_row [Fintype α] [Dec
       (dualProductCoordEquiv (k := k) (α := α) (F.rigidityRowFun ends hgp p)) c = _
   simp only [prodColumnOpEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
 
+/-- **The column-operated product matrix entry reads the rigidity row at an operated single-body
+assignment** (Phase 23d A5c, the entrywise formula for `rigidityMatrixProd * U`). Combining the
+landed row identity `rigidityMatrixProd_mul_columnOp_row` (the right-multiply precomposes every
+rigidity-row functional with the primal column op `Φ`) with the keystone
+`dualProductCoordEquiv_apply` (the product coordinate is evaluation at a single-body screw
+assignment), the `(e, j)`-row of the
+operated product matrix `rigidityMatrixProd * U` at column `(body, c)` is the rigidity-row
+functional `rigidityRowFun ends hgp (e, j)` evaluated at `Φ.symm (Pi.single body (finScrewBasis k
+c))` — the single-body screw assignment pulled back through the column op's inverse.
+
+This is the entry formula the A5c `fromBlocks` reindex of `rigidityMatrixProd * U` reads: once the
+column op `Φ = columnOp` is fixed, the lower-left zero block ("operated wrap rows vanish off the
+`vᵢ₊₁` columns") becomes a `Φ.symm`-support computation on the abstract `hingeRow … (S u − S v)`
+(`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` below), with **no `ScrewSpace`
+unfolding**. -/
+theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_apply [Fintype α] [DecidableEq α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0)
+    (Φ : (α → ScrewSpace k) ≃ₗ[ℝ] (α → ScrewSpace k)) (p : β × Fin (screwDim k - 1))
+    (body : α) (c : Fin (Module.finrank ℝ (ScrewSpace k))) :
+    (F.rigidityMatrixProd ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α) Φ).toLinearMap)ᵀ) p (body, c)
+      = F.rigidityRowFun ends hgp p (Φ.symm (Pi.single body (finScrewBasis k c))) := by
+  have h := congrFun (F.rigidityMatrixProd_mul_columnOp_row ends hgp Φ p) (body, c)
+  rw [Matrix.row] at h
+  rw [h, dualProductCoordEquiv_apply, LinearEquiv.dualMap_apply]
+
+/-- **The column-operated product matrix entry vanishes off body `v`** (Phase 23d A5c, the (6.61)
+lower-left zero block of `rigidityMatrixProd * U` made entrywise-visible). When the dual column op
+is `Φ = (columnOp hva).symm` with `v = (ends e).1`, `a = (ends e).2` — so the right-multiply
+precomposes each rigidity-row functional with `Φ.symm = columnOp hva` (KT (6.61)'s "add `vᵢ`'s
+columns to `vᵢ₊₁`'s", moving body `a`'s screw content onto body `v`) — the `(e, j)`-row of the
+*operated* product matrix `rigidityMatrixProd * U` at column `(body, c)` is `0` whenever `body ≠ v`.
+
+The operated row entry is `hingeRow v a r (columnOp hva (Pi.single body s))` for `s = finScrewBasis
+k c` (the entry formula `rigidityMatrixProd_mul_columnOp_apply` with `Φ.symm = columnOp hva` and the
+rigidity row's endpoints `v, a`), which `hingeRow_comp_columnOp_apply` collapses to
+`r ((Pi.single body s) v)` — the `a`-column contribution cancels in the operated frame (KT eqs.
+(6.14)–(6.16)). When `body ≠ v` the single-body read `(Pi.single body s) v` is `0`, so the entry is
+`r 0 = 0`. This is exactly the structural step KT §6.4.2 compresses: after the (6.61) column op the
+wrap-edge rows are *pure `v`-column* rows, so the off-`v` (here off-`{vᵢ₊₁}`) block of the operated
+matrix is literally zero. NO span argument; NO `ScrewSpace` unfolding (the support is read off the
+abstract `hingeRow`/`columnOp` API). -/
+theorem BodyHingeFramework.rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne [Fintype α]
+    [DecidableEq α] (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (hgp : ∀ e, F.supportExtensor e ≠ 0) (p : β × Fin (screwDim k - 1))
+    (hva : (ends p.1).1 ≠ (ends p.1).2) (body : α)
+    (c : Fin (Module.finrank ℝ (ScrewSpace k))) (hbody : body ≠ (ends p.1).1) :
+    (F.rigidityMatrixProd ends hgp
+        * (LinearMap.toMatrix' (prodColumnOpEquiv (k := k) (α := α)
+            (columnOp (k := k) hva).symm).toLinearMap)ᵀ) p (body, c) = 0 := by
+  rw [F.rigidityMatrixProd_mul_columnOp_apply ends hgp (columnOp (k := k) hva).symm p body c,
+    LinearEquiv.symm_symm, BodyHingeFramework.rigidityRowFun, hingeRow_comp_columnOp_apply,
+    Pi.single_eq_of_ne hbody.symm, map_zero]
+
 end CombinatorialRigidity.Molecular

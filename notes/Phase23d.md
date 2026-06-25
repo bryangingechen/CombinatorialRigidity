@@ -19,8 +19,9 @@ All landed leaves stay in tree (sound in isolation; the route-B/4 inventory is r
 ## Current state
 
 **✅ ROUTE A is the plan; A1+A2 (de-risk) + A3 (block-additivity kernel) + A4 (the (6.61) column-op
-bridge) + A4.5 (product-column matrix) + A5a (column-op-as-right-multiply) + now A5b (the gate
-re-wrap) are LANDED + gate-verified.** A1+A2: `Molecular/RigidityMatrix/Concrete.lean` (2026-06-24,
+bridge) + A4.5 (product-column matrix) + A5a (column-op-as-right-multiply) + A5b (the gate re-wrap)
++ the A5c-keystone + now the A5c operated-entry facts are LANDED + gate-verified.** A1+A2:
+`Molecular/RigidityMatrix/Concrete.lean` (2026-06-24,
 opacity CLEAN — the §(4.30) one-residual concern is RESOLVED). A3 (2026-06-24,
 `Mathlib/LinearAlgebra/Matrix/Rank.lean`): `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`
 — KT eq. (6.64)'s block-triangular additivity as a *pure-`Matrix`* inequality, never forming a span
@@ -93,14 +94,32 @@ entrywise facts the `hblock` block-fill reads:
   states the flat column index is an *arbitrary* `finBasis` (dimension `D·|V|`, not the literal
   product `α × Fin D`), pointing at `rigidityMatrixProd` for the form whose columns factor `α × Fin D`.
 
-**Still OPEN:** the **A5c-assembly** — construct the `em`/`en` reindexing (the product split `en :
-(α × Fin D) ≃ ({vᵢ₊₁} × Fin D) ⊕ rest` from the chain geometry) and prove `(rigidityMatrixProd *
-U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))` via the two landed entrywise facts (the `0` block is
-`rigidityMatrixProd_apply_eq_zero_of_ne` post-`U`; the diagonal blocks are read off
-`rigidityMatrixProd_mul_columnOp_row`), wiring the corner/bottom block-row LI through the A5b iff
+**✅ A5c operated-entry facts LANDED (2026-06-24, `Concrete.lean`, build/lint/warning/axiom-clean)** —
+the entrywise facts for the **column-operated** product matrix `rigidityMatrixProd * U`, the form the
+`hblock` block-fill actually reads (the earlier keystone `_apply`/`_apply_eq_zero_of_ne` were for the
+*un-operated* matrix):
+- `rigidityMatrixProd_mul_columnOp_apply` (`[Fintype α] [DecidableEq α]`): the entry formula —
+  `(rigidityMatrixProd * U) p (body, c) = rigidityRowFun p (Φ.symm (Pi.single body (finScrewBasis k
+  c)))` for ANY column op `Φ` (`U = (toMatrix' (prodColumnOpEquiv Φ))ᵀ`). Composes the landed
+  `rigidityMatrixProd_mul_columnOp_row` (A5a) + `dualProductCoordEquiv_apply` (keystone) +
+  `LinearEquiv.dualMap_apply`. The `congrFun … (body,c)` needs one `rw [Matrix.row] at h` to align
+  `.row p (body,c)` with the goal's `p (body,c)` (FRICTION sibling of the A5a `.row` defeq-glue idiom).
+- `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (`Φ = (columnOp hva).symm`, `v = (ends e).1`,
+  `a = (ends e).2`): the (6.61) lower-left **zero block of the operated matrix**, entrywise — the
+  operated entry `hingeRow v a r (columnOp hva (Pi.single body s))` collapses to `r ((Pi.single body
+  s) v)` via `hingeRow_comp_columnOp_apply` (KT eqs. (6.14)–(6.16): the operated wrap row is a *pure
+  `v`-column* row), which is `0` when `body ≠ v`. NO span argument; NO `ScrewSpace` unfold. This is the
+  `0` in `fromBlocks A B 0 D` for the operated matrix, matching the `Φ = columnOp.symm` the A5a row
+  identity precomposes with.
+
+**Still OPEN:** the **A5c-assembly residue** — construct the `em`/`en` reindexing (the product split
+`en : (α × Fin D) ≃ ({vᵢ₊₁} × Fin D) ⊕ rest` from the chain geometry) and prove `(rigidityMatrixProd *
+U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))` — the `0` block now reads directly off
+`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne`, the diagonal blocks off
+`rigidityMatrixProd_mul_columnOp_apply` — wiring the corner/bottom block-row LI through the A5b iff
 `linearIndependent_rigidityMatrixProd_row_iff` into A3/A4's `hA`/`hD`. Then **A6** (dispatch+spine).
-The A5c-assembly is the part needing the chain-data geometry (`Φ = columnOp`, the specific `vᵢ₊₁`
-split), so it naturally folds toward A6.
+The reindex residue is the part needing the chain-data geometry (the specific `vᵢ₊₁` split), so it
+naturally folds toward A6.
 
 **What landed (A1 + A2, axiom-clean):**
 - **A1 — `BodyHingeFramework.rigidityMatrix`**: `R(G,p)` as a literal
@@ -117,9 +136,9 @@ split), so it naturally folds toward A6.
   `Module.finBasis`/`Basis.equivFun`/`LinearEquiv.finrank_map_eq` — opaque `ScrewSpace` (Phase 22l) is
   **never unfolded**; `Matrix.rank_eq_finrank_span_row` fires with zero detour.
 
-**Remaining leaf count (post-A5c-keystone, ≈2–3.5):** A5c-assembly (the `em`/`en` split + the
-`fromBlocks` reindex, now reading the two landed entrywise facts) ~1–1.5; A6 (dispatch+spine) ~1–2.
-Per-leaf signatures + bankable SORRY-FREE fragments: design §I.8.24(4.31)(4).
+**Remaining leaf count (post-A5c-entry-facts, ≈1.5–3):** A5c-assembly residue (the `em`/`en` split +
+the `fromBlocks` reindex, now reading the two landed *operated*-entry facts) ~0.5–1; A6
+(dispatch+spine) ~1–2. Per-leaf signatures + bankable SORRY-FREE fragments: design §I.8.24(4.31)(4).
 
 ## Remaining work in Phase 23
 
@@ -169,20 +188,22 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A on track; A1+A2+A3+A4+A4.5+A5a+A5b + the A5c-keystone LANDED (`Concrete.lean` +
-`Rank.lean`). NEXT CONCRETE COMMIT = A5c-assembly — the `em`/`en` product split + the `fromBlocks`
-reindex** of `(rigidityMatrixProd * U).reindex em en = fromBlocks Mᵢ B 0 (R(G₁,q₁))`, reading the two
-landed entrywise facts (`rigidityMatrixProd_apply_eq_zero_of_ne` for the `0` block post-`U`,
-`rigidityMatrixProd_mul_columnOp_row` for the diagonal blocks), and discharging the corner/bottom
-block-row LI through the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`. This is the part that
-needs the chain-data geometry (`Φ = columnOp`, the specific `vᵢ₊₁` split), so it folds toward A6.
-The A5c-keystone just landed: `dualProductCoordEquiv_apply` (`= φ (Pi.single body (finScrewBasis k
-j))`; PROBE 5) + `rigidityMatrixProd_apply_eq_zero_of_ne` (the (6.61) zero block, entrywise) +
-the owed flat-matrix doc-comment fix (*Current state* has the inventory). After A5c-assembly: A6
-(dispatch+spine — fire `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks (rigidityMatrixProd …) U hU
-em en hblock hA hD`, bridge via `rigidityMatrixProd_rank_eq_finrank_span_rigidityRows`, route the
-`Fin cd.d` arms), then ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change, no phase-direction
-decision owed** (within route A).
+**✅ Route A on track; A1+A2+A3+A4+A4.5+A5a+A5b + the A5c-keystone + the A5c operated-entry facts
+LANDED (`Concrete.lean` + `Rank.lean`). NEXT CONCRETE COMMIT = the A5c-assembly residue — the
+`em`/`en` product split + the `fromBlocks` reindex** of `(rigidityMatrixProd * U).reindex em en =
+fromBlocks Mᵢ B 0 (R(G₁,q₁))`, now reading the two landed *operated*-entry facts
+(`rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` for the `0` block of `M*U` directly, with
+`Φ = (columnOp hva).symm`; `rigidityMatrixProd_mul_columnOp_apply` for the diagonal blocks), and
+discharging the corner/bottom block-row LI through the A5b iff
+`linearIndependent_rigidityMatrixProd_row_iff`. This residue needs the chain-data geometry (the
+specific `vᵢ₊₁` split), so it folds toward A6. The A5c operated-entry facts just landed:
+`rigidityMatrixProd_mul_columnOp_apply` (`= rigidityRowFun p (Φ.symm (Pi.single body …))`, the entry
+formula) + `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (the operated (6.61) zero block,
+entrywise; *Current state* has the inventory). After the assembly residue: A6 (dispatch+spine — fire
+`Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks (rigidityMatrixProd …) U hU em en hblock hA hD`,
+bridge via `rigidityMatrixProd_rank_eq_finrank_span_rigidityRows`, route the `Fin cd.d` arms), then
+ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change, no phase-direction decision owed** (within
+route A).
 
 **The route-A build should open as its own sub-phase at the next phase-open** (A1–A4.5 confirm route A
 on track; the A5–A6 layer plan is in *Current state* + §(4.31); the new Lean lives in
@@ -203,6 +224,18 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A5c operated-entry facts LANDED — the entrywise facts for `rigidityMatrixProd * U` (2026-06-24,
+  `Concrete.lean`, build/lint/warning/axiom-clean).** Two decls: `rigidityMatrixProd_mul_columnOp_apply`
+  (the operated entry formula `(M*U) p (body,c) = rigidityRowFun p (Φ.symm (Pi.single body …))` for ANY
+  `Φ`; composes the A5a `_row` identity + the keystone + `LinearEquiv.dualMap_apply`) and
+  `rigidityMatrixProd_mul_columnOp_apply_eq_zero_of_ne` (the operated (6.61) zero block, `Φ =
+  (columnOp hva).symm` so the precomposition is `columnOp hva` — `hingeRow_comp_columnOp_apply`
+  collapses the operated wrap row to a *pure `v`-column* row, KT (6.14)–(6.16), `0` off `v`). The
+  earlier keystone facts (`dualProductCoordEquiv_apply`, `..._apply_eq_zero_of_ne`) were for the
+  *un-operated* matrix; the `hblock` block-fill reads the *operated* `M*U`, which these supply directly.
+  One small friction: `congrFun … (body,c)` of the `_row` identity needs `rw [Matrix.row] at h` to align
+  `.row p (body,c)` with the goal's bare `p (body,c)` (FRICTION sibling of the A5a `.row` idiom). NEXT =
+  the A5c-assembly residue (the `em`/`en` split + `fromBlocks` reindex), which folds toward A6.
 - **A5c-keystone LANDED — the entrywise facts the `hblock` block-fill reads (2026-06-24,
   `Concrete.lean`, build/lint/warning/axiom-clean).** Two decls + the owed doc-fix:
   `dualProductCoordEquiv_apply` (the PROBE-5 keystone `dualProductCoordEquiv φ (body, j) =
