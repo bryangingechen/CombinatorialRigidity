@@ -124,6 +124,33 @@ theorem Matrix.rank_of_dualCoord {M : Type*} [AddCommGroup M] [Module ℝ M]
       = Module.finrank ℝ (Submodule.span ℝ (Set.range w)) :=
   Matrix.rank_of_coordEquiv (dualCoordEquiv M) w
 
+/-- **The linear-independence re-wrap, carrier-agnostically, against ANY coordinatizing equiv**
+(Phase 23d A5b — the gate re-wrap). For a finite family `w : ι → Module.Dual ℝ M` over a
+finite-dimensional `M` and **any** linear equivalence `coordEquiv : Module.Dual ℝ M ≃ₗ[ℝ] (κ → ℝ)`
+coordinatizing the dual space, the **rows** of the coordinate matrix
+`Matrix.of (fun i => coordEquiv (w i))` are linearly independent iff the dual-space family `w` is.
+The matrix's rows are `⇑coordEquiv ∘ w` definitionally (`Matrix.of` is the identity on the row
+function), and a `LinearEquiv` (trivial kernel, `LinearEquiv.ker`) preserves and reflects linear
+independence (`LinearMap.linearIndependent_iff`); it never unfolds `M`, uniformly in `coordEquiv`.
+
+This is the LI sibling of the rank bridge `Matrix.rank_of_coordEquiv`: where that converts a
+dual-space *span finrank* into the matrix's `Matrix.rank`, this converts a dual-space *linear
+independence* into the matrix's *row* independence — the exact `LinearIndependent K (Mᵢ.row)` form
+the A3/A4 block-additivity bridge `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks` consumes as `hA`
+(the full-rank `D × D` corner block) and `hD` (the IH bottom block). The corner-block full-rank
+*content* is already landed dual-space-side (`exists_independent_rigidityRows_of_edge` for the per-
+edge `D − 1` independent rigidity rows; `omitTwoExtensor_linearIndependent` / Lemma 2.1 for the
+candidate `+1`); A5b is the re-wrap that carries that content into matrix-row form, with **no
+`ScrewSpace` unfolding** (the column op + block split stay at the coordinate level, route A's escape
+from the §(4.18)–(4.30) span-membership wall). -/
+theorem Matrix.linearIndependent_row_of_coordEquiv {M : Type*} [AddCommGroup M] [Module ℝ M]
+    {κ : Type*} (coordEquiv : Module.Dual ℝ M ≃ₗ[ℝ] (κ → ℝ))
+    {ι : Type*} (w : ι → Module.Dual ℝ M) :
+    LinearIndependent ℝ (Matrix.of (fun i => coordEquiv (w i))).row
+      ↔ LinearIndependent ℝ w :=
+  LinearMap.linearIndependent_iff (v := w) (coordEquiv : Module.Dual ℝ M →ₗ[ℝ] (κ → ℝ))
+    coordEquiv.ker
+
 /-! ## A1 — the concrete panel-hinge rigidity matrix `R(G,p)`
 
 The literal `(D-1)|E| × D|V|` matrix: rows indexed by `(edge, hinge-block-index)`, columns
@@ -356,6 +383,27 @@ theorem BodyHingeFramework.rigidityMatrixProd_rank [Fintype α] [Finite β]
     (F.rigidityMatrixProd ends hgp).rank
       = Module.finrank ℝ (Submodule.span ℝ (Set.range (F.rigidityRowFun ends hgp))) :=
   Matrix.rank_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α))
+    (F.rigidityRowFun ends hgp)
+
+/-- **A5b — the product matrix's rows are LI iff the rigidity-row family is** (the rigidity
+specialization of the gate re-wrap `Matrix.linearIndependent_row_of_coordEquiv`). Immediate
+`coordEquiv := dualProductCoordEquiv` instance: the product matrix IS
+`Matrix.of (dualProductCoordEquiv ∘ rigidityRowFun)` definitionally, so its rows being linearly
+independent is exactly the rigidity-row family `rigidityRowFun ends hgp` being linearly independent
+— with **no `ScrewSpace` unfolding** (the coordinatization is a `LinearEquiv`, kernel `⊥`).
+
+This is the form the A3/A4 block-additivity bridge `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks`
+consumes (the `LinearIndependent K (·.row)` premises `hA`/`hD`): the A5c arm reads the corner block
+`Mᵢ`'s rows and the IH bottom block's rows off `rigidityMatrixProd` (or its column-op image), and
+discharges their independence from the landed dual-space facts —
+`exists_independent_rigidityRows_of_edge` (the per-edge `D − 1` independent rigidity rows) and
+`omitTwoExtensor_linearIndependent` / Lemma 2.1 (the candidate `+1`) — re-wrapped to matrix-row form
+through this iff. -/
+theorem BodyHingeFramework.linearIndependent_rigidityMatrixProd_row_iff [Fintype α]
+    (F : BodyHingeFramework k α β) (ends : β → α × α) (hgp : ∀ e, F.supportExtensor e ≠ 0) :
+    LinearIndependent ℝ (F.rigidityMatrixProd ends hgp).row
+      ↔ LinearIndependent ℝ (F.rigidityRowFun ends hgp) :=
+  Matrix.linearIndependent_row_of_coordEquiv (dualProductCoordEquiv (k := k) (α := α))
     (F.rigidityRowFun ends hgp)
 
 /-- **A4.5d — the product matrix lands on the honest target** (the product analog of the

@@ -19,8 +19,8 @@ All landed leaves stay in tree (sound in isolation; the route-B/4 inventory is r
 ## Current state
 
 **✅ ROUTE A is the plan; A1+A2 (de-risk) + A3 (block-additivity kernel) + A4 (the (6.61) column-op
-bridge) + A4.5 (product-column matrix) + now A5a (column-op-as-right-multiply) are LANDED +
-gate-verified.** A1+A2: `Molecular/RigidityMatrix/Concrete.lean` (2026-06-24,
+bridge) + A4.5 (product-column matrix) + A5a (column-op-as-right-multiply) + now A5b (the gate
+re-wrap) are LANDED + gate-verified.** A1+A2: `Molecular/RigidityMatrix/Concrete.lean` (2026-06-24,
 opacity CLEAN — the §(4.30) one-residual concern is RESOLVED). A3 (2026-06-24,
 `Mathlib/LinearAlgebra/Matrix/Rank.lean`): `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`
 — KT eq. (6.64)'s block-triangular additivity as a *pure-`Matrix`* inequality, never forming a span
@@ -65,13 +65,25 @@ column-op-as-right-multiply on the product matrix:
   `.trans`/`symm_apply_apply` unfold (FRICTION: `(M*Uᵀ).row` needs `change`, not `mul_apply'`).
   No `ScrewSpace` unfolding anywhere — the span-membership wall never forms.
 
+**✅ A5b LANDED (2026-06-24, `Concrete.lean`, build/lint/warning/axiom-clean)** — the gate re-wrap,
+the `LinearIndependent (·.row)` form the A3/A4 bridge's `hA`/`hD` consume:
+- `Matrix.linearIndependent_row_of_coordEquiv` (carrier-agnostic): for ANY coordinatizing
+  `coordEquiv : Dual ℝ M ≃ₗ (κ → ℝ)`, `LinearIndependent ℝ (Matrix.of (coordEquiv ∘ w)).row ↔
+  LinearIndependent ℝ w`. One-line: `LinearMap.linearIndependent_iff coordEquiv coordEquiv.ker`
+  (rows are `⇑coordEquiv ∘ w` defeq; a `LinearEquiv`'s kernel is `⊥`). The LI sibling of
+  `Matrix.rank_of_coordEquiv` — no `ScrewSpace` unfolding.
+- `BodyHingeFramework.linearIndependent_rigidityMatrixProd_row_iff` (the rigidity specialization,
+  `coordEquiv := dualProductCoordEquiv` instance): `LinearIndependent ℝ (rigidityMatrixProd ends
+  hgp).row ↔ LinearIndependent ℝ (rigidityRowFun ends hgp)`. So the A5c arm reads the corner/bottom
+  blocks' row-LI off `rigidityMatrixProd` (or its column-op image) and discharges from the landed
+  dual-space facts (`exists_independent_rigidityRows_of_edge` + `omitTwoExtensor_linearIndependent`).
+
 **Still OPEN:** the `hblock` block-fill, now over `rigidityMatrixProd` (columns factor `α × Fin D`).
-Next concrete commit = **A5b** (the gate re-wrap — `Mᵢ`-full-rank via `interior_group_eq_baseRedundancy`
-+ `omitTwoExtensor_linearIndependent`, re-stated as `LinearIndependent Mᵢ.row` for the A3/A4 `hA`;
-content LANDED) + **A5c** (the `hblock` entrywise block-fill, the residual MED–HIGH crux — the
+Next concrete commit = **A5c** (the `hblock` entrywise block-fill, the residual MED–HIGH crux — the
 `em`/`en` product split + the entrywise `fromBlocks` proof via `dualProductCoordEquiv φ (body,j) =
-φ (Pi.single body (finScrewBasis k j))`, NOT a span argument), then **A6** (dispatch+spine).
-Doc-comment fix still owed at A5b/c build: the FLAT `rigidityMatrix`/`rigidityMatrix_mul_rank`
+φ (Pi.single body (finScrewBasis k j))`, NOT a span argument), wiring the corner/bottom block-row LI
+through the A5b iff into the A3/A4 `hA`/`hD`; then **A6** (dispatch+spine).
+Doc-comment fix still owed at A5c build: the FLAT `rigidityMatrix`/`rigidityMatrix_mul_rank`
 `α × Fin D`/`D·|V| columns` prose is dimension-correct but index-imprecise (the flat index is the
 arbitrary basis; the product matrix is where `α × Fin D` is literal).
 
@@ -90,20 +102,19 @@ arbitrary basis; the product matrix is where `α × Fin D` is literal).
   `Module.finBasis`/`Basis.equivFun`/`LinearEquiv.finrank_map_eq` — opaque `ScrewSpace` (Phase 22l) is
   **never unfolded**; `Matrix.rank_eq_finrank_span_row` fires with zero detour.
 
-**Remaining leaf count (post-A5a, ≈3.5–5.5):** A5b (gate re-wrap, content LANDED) ~1–2; A5c (`hblock`
-entrywise block-fill, the residual MED–HIGH crux) ~1.5–2.5; A6 (dispatch+spine) ~1–2. Per-leaf
-signatures + bankable SORRY-FREE fragments: design §I.8.24(4.31)(4).
+**Remaining leaf count (post-A5b, ≈2.5–4.5):** A5c (`hblock` entrywise block-fill, the residual
+MED–HIGH crux) ~1.5–2.5; A6 (dispatch+spine) ~1–2. Per-leaf signatures + bankable SORRY-FREE
+fragments: design §I.8.24(4.31)(4).
 
 ## Remaining work in Phase 23
 
-1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2+A3+A4+A4.5 landed; ✅
-   **A5a** landed (`Concrete.lean`: `prodColumnOpEquiv` + `prodColumnOpEquiv_transpose_toMatrix'_det_isUnit`
-   + `rigidityMatrixProd_mul_columnOp_row` — the (6.61) column-op-as-right-multiply on `rigidityMatrixProd`,
-   unit-det `U` + the row identity, all carrier-agnostic). OPEN: **A5b** (gate re-wrap, content LANDED;
-   **NEXT**) + **A5c** (`hblock` entrywise block-fill, the residual crux) → **A6** (dispatch+spine). The
-   route-B/4 dual-space leaves + the chain cert `case_III_rank_certification_chain` stay in tree (sound in
-   isolation — the dual-space approach the wall closed; do not build on them). The interior-`hρe₀` crux is
-   CLOSED.
+1. **The general-`d` rank certification — route A (concrete `Matrix`).** ✅ A1+A2+A3+A4+A4.5+A5a landed; ✅
+   **A5b** landed (`Concrete.lean`: `Matrix.linearIndependent_row_of_coordEquiv` carrier-agnostic +
+   `BodyHingeFramework.linearIndependent_rigidityMatrixProd_row_iff` rigidity instance — the
+   `LinearIndependent (·.row)` re-wrap the A3/A4 `hA`/`hD` consume). OPEN: **A5c** (`hblock` entrywise
+   block-fill, the residual crux; **NEXT**) → **A6** (dispatch+spine). The route-B/4 dual-space leaves +
+   the chain cert `case_III_rank_certification_chain` stay in tree (sound in isolation — the dual-space
+   approach the wall closed; do not build on them). The interior-`hρe₀` crux is CLOSED.
 2. **CHAIN-2c-iii `chainData_dispatch`** — the general-`k` `Fin cd.d` router (base/`d=3` via
    `chainData_split_realization`; interior `2 ≤ i < d` via the route-A arm). The `ChainData`
    interior-split accessors are landed and reusable: `removeVertex_isLink_edge_succ_pred_off`
@@ -142,15 +153,15 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 
 ## Hand-off / next phase
 
-**✅ Route A on track; A1+A2+A3+A4+A4.5+A5a LANDED (`Concrete.lean` + `Rank.lean`). NEXT CONCRETE COMMIT =
-A5b — the gate re-wrap (`Mᵢ`-full-rank as `LinearIndependent Mᵢ.row` for the A3/A4 `hA`; content LANDED,
-via `interior_group_eq_baseRedundancy` + `omitTwoExtensor_linearIndependent`).** A5a landed the (6.61)
-column-op-as-right-multiply on `rigidityMatrixProd` (`prodColumnOpEquiv`,
-`prodColumnOpEquiv_transpose_toMatrix'_det_isUnit` unit-det, `rigidityMatrixProd_mul_columnOp_row` row
-identity; *Current state* has the inventory). After A5b: A5c (the `hblock` entrywise block-fill — the
-residual MED–HIGH crux, the `em`/`en` product split + entrywise `fromBlocks` over `α × Fin D` via
-`dualProductCoordEquiv φ (body,j) = φ (Pi.single body (finScrewBasis k j))`, NOT a span argument; design
-§(4.31)(4) PROBE 5), then A6 (dispatch+spine — fire `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks
+**✅ Route A on track; A1+A2+A3+A4+A4.5+A5a+A5b LANDED (`Concrete.lean` + `Rank.lean`). NEXT CONCRETE
+COMMIT = A5c — the `hblock` entrywise block-fill** (the residual MED–HIGH crux, the `em`/`en` product
+split + entrywise `fromBlocks` over `α × Fin D` via `dualProductCoordEquiv φ (body,j) =
+φ (Pi.single body (finScrewBasis k j))`, NOT a span argument; design §(4.31)(4) PROBE 5), discharging
+the corner/bottom block-row LI through the A5b iff `linearIndependent_rigidityMatrixProd_row_iff`.
+A5b landed the gate re-wrap: `Matrix.linearIndependent_row_of_coordEquiv` (carrier-agnostic
+`LinearIndependent (Matrix.of (coordEquiv ∘ w)).row ↔ LinearIndependent w`) +
+`linearIndependent_rigidityMatrixProd_row_iff` (the rigidity instance; *Current state* has the
+inventory). After A5c: A6 (dispatch+spine — fire `Matrix.rank_ge_of_isUnit_mul_reindex_fromBlocks
 (rigidityMatrixProd …) U hU em en hblock hA hD`, bridge via `rigidityMatrixProd_rank_eq_finrank_span
 _rigidityRows`, route the `Fin cd.d` arms), then ENTRY + ASSEMBLY (parallel-safe). **No motive/IH change,
 no phase-direction decision owed** (within route A).
@@ -174,6 +185,16 @@ is kernel-confirmed across all of them (§(4.18)–(4.29)); route A escapes via 
 `notes/Phase23-design.md` §I.8.24(4.18)–(4.30). This section keeps the live route-A decisions + one
 compressed history verdict; the per-leaf landed-route-B descriptions are in git + the design doc.)*
 
+- **A5b LANDED — the gate re-wrap (`LinearIndependent (·.row)` for the A3/A4 `hA`/`hD`) (2026-06-24,
+  `Concrete.lean`, build/lint/warning/axiom-clean).** Two decls: `Matrix.linearIndependent_row_of_coordEquiv`
+  (carrier-agnostic: for ANY `coordEquiv : Dual ℝ M ≃ₗ (κ → ℝ)`,
+  `LinearIndependent ℝ (Matrix.of (coordEquiv ∘ w)).row ↔ LinearIndependent ℝ w`; one-liner
+  `LinearMap.linearIndependent_iff coordEquiv coordEquiv.ker`, the LI sibling of
+  `Matrix.rank_of_coordEquiv`) + `BodyHingeFramework.linearIndependent_rigidityMatrixProd_row_iff` (the
+  `coordEquiv := dualProductCoordEquiv` instance). No `ScrewSpace` unfolding (the re-wrap stays at the
+  `LinearEquiv` boundary, kernel `⊥`). Came in well under the ~1–2-leaf estimate — the iff is the whole
+  content; the corner-block full-rank *content* (`exists_independent_rigidityRows_of_edge` +
+  `omitTwoExtensor_linearIndependent`) is consumed *by A5c* via this iff, not re-derived here. NEXT = A5c.
 - **A5a LANDED — the (6.61) column-op-as-right-multiply on the product matrix (2026-06-24,
   `Concrete.lean`, build/lint/warning/axiom-clean).** Three decls: `prodColumnOpEquiv Φ` (the
   coordinatized column-op equiv = `Φ.symm.dualMap` conjugated by `dualProductCoordEquiv`),
