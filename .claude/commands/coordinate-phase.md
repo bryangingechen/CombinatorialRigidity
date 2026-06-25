@@ -110,7 +110,18 @@ Loop:
    `SendMessage`-resuming the *same* agent, never re-deriving (rescue §6).
    Recon is this workflow's highest-leverage move; trigger it **early**,
    before the next leaf (22g burned ~4 leaf commits on an undischargeable
-   core; the 2-leaf trigger is the floor).
+   core; the 2-leaf trigger is the floor). **A distinct early trigger —
+   recurring walls:** when the same obstruction defeats two or more
+   *structurally-different* fix attempts (not two leaves of one route, but
+   distinct architectures/routes), suspect the wall is **intrinsic to a
+   shared DOWNSTREAM object** (a frozen contract, a candidate slot-override,
+   a motive) — NOT to the varied upstream choice — and recon THAT object
+   before authorizing a third re-targeting. (23d's wrap-edge wall defeated
+   route B's `hS`, route-4-bare's `hseedrank`, AND route-4-splitOff's `hWS`
+   before it was recognized as intrinsic to the `caseIIICandidate`
+   slot-override; recognizing it after wall #2 would have saved a built dead
+   route. The tell: each fix changes the *upstream* construction yet hits the
+   *same* named obstruction.)
 2. **Model-tier experiment (only while `notes/model-experiment.md` says
    Status: running):** rate S/P/B and pick the rung per
    `notes/model-experiment-protocol.md` (the single source of truth —
@@ -238,7 +249,17 @@ Loop:
      hypothesis the old route silently supplied — 22g §1.46 orphaned
      `hgab`). A **new gap** is usually cheaply verifiable — check it
      against the primary source (`.refs/` PDFs, REFS.md) and/or a one-line
-     Lean witness (`lean_run_code`) *before* re-planning. **Scrutinize a
+     Lean witness (`lean_run_code`) *before* re-planning. **A verdict resting
+     on "the residual follows from / generalizes landed lemma X" is the
+     COORDINATOR's to verify on ACCEPTANCE, not just the agent's:** open X's
+     *actual* statement (framework form, hypotheses) and confirm the
+     residual's object matches before building on it — the "verify against the
+     landed source" clause binds the coordinator's acceptance of a recon as
+     much as the agent writing it. (§(4.27) asserted `hseedrank` "generalizes
+     the d=3 `rigidityRows_ofNormals_relabel`"; the coordinator accepted it
+     without reading that the landed lemma is **splitOff-only**, so the
+     bare-seed claim was false — caught only by the next build, rows 451→453,
+     after a built dead leaf.) **Scrutinize a
      pin's named OBJECTS, not just its cited API names** — a design-pass
      can name the right *vertex set* but the wrong *construction* (22i
      §1.63 pinned a splice leg as `induce ((V∖V(H))∪{r})` when the

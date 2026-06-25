@@ -194,6 +194,25 @@ moved it into the hand-off).
   notified on completion), and the async return is an *attestation* — the coordinator
   re-runs ALL gates after (mechanics, full diff, build warning-clean, `lake lint`,
   axiom-check, sorry-grep), exactly as for a below-top-rung dispatch (rows 426–427).
+- **Resumed BUILDS run gates in the FOREGROUND — not background-and-stop.** A
+  `SendMessage`-resumed agent told to build will sometimes kick off a `lake build` in
+  the **background** and END ITS TURN awaiting it — returning a non-`LANDED`/`BLOCKED`
+  intermediate state with the work still UNCOMMITTED (23d lost two resume rounds to
+  exactly this: build a leaf → background the gate → stop). In the resume message state
+  explicitly: *run the build/lint/axiom gates in the FOREGROUND (blocking) and commit
+  before ending the turn; do not background a build and stop.* If it still returns
+  mid-gate (the §2 neither-return shape), read-only-check the tree (`git status` + the
+  uncommitted diff), confirm the work is complete + sorry-free **without committing it
+  yourself** (the §3 do-not-commit-the-other-instance's-WIP rule), and resume once more
+  to finalize.
+- **Bank-don't-revert when salvage is anticipated.** The spike's hard "commit NOTHING,
+  revert the scratch" rule is right for a pure feasibility probe, but it is too strict —
+  and costs a revert-then-resume round-trip — when the coordinator EXPECTS the probe to
+  yield committable sorry-free work (a complete leaf, a design entry). Then authorize the
+  spike up front to BANK its complete, gate-clean pieces directly (a design-doc entry +
+  any finished leaf) while still reverting incomplete scratch — fold the salvage into the
+  spike rather than a follow-up resume (the user's standing "read-only is too strict for a
+  spike that builds real work" note, 23d).
 
 ## §7 — Subagent wedged for hours on a proof timeout (elaboration wall)
 
