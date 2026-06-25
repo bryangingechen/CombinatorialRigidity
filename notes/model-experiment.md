@@ -64,18 +64,18 @@ closed 2026-06-21 without it and the rows went stale (cleaned up 2026-06-22).
   **pre-authorized** — plus the **same availability**: opus confirmed (the
   coordinator runs on it, reachable via the Agent `model` param); other rungs
   not probed under OPUS-ONLY, so a fresh coordinator reverting to the S/P/B map
-  would re-probe. Set/re-confirmed sessions #6–#31 (latest: **#31**, 2026-06-24,
+  would re-probe. Set/re-confirmed sessions #6–#32 (latest: **#32**, 2026-06-24,
   fresh `/coordinate-phase`; user re-confirmed the triple [Standard triple] at
   session start; opus reachable via the Agent `model` param, no substitution
   needed). **The override expires session-end — a fresh coordinator re-runs the
   session-start availability check + re-confirms the triple.** **The active
-  sub-phase is 23d; route B RESOLVES the unconditional crux** (design §I.8.24(4.25)):
-  LEAF-B1 + LEAF-B2 (the genuine-only `W` producer) are both LANDED + de-risked.
-  **Next dispatch = LEAF-4** (the per-member `hS`/`hvanish` discharge at the matched
-  interior `i` + the `case_III_arm_corner_assembly` call; `notes/Phase23d.md`
-  *Hand-off*), with the flagged `hS`-universal-form satisfiability as the one residual
-  risk (BLOCKED-with-named-row if it walls; route A is the informed fallback). ALL
-  landed leaves stay in tree (sound, reusable).
+  sub-phase is 23d; the genuine-row base-block family (routes B/4-bare/4-splitOff)
+  is CLOSED at the wrap-edge wall** (4 appearances, §(4.18)–(4.29)); the user chose
+  **route A** (the honest unconditional concrete-`Matrix` Thm 5.5). A1+A2 LANDED + the
+  opacity de-risk PASSED (row 456, `Concrete.lean`). **Next dispatch = A3** (the matrix
+  block-additivity-as-inequality lemma — the genuinely-new piece; `notes/Phase23d.md`
+  *Hand-off*), then A4→A5→A6, then ENTRY + ASSEMBLY. ALL landed leaves (incl. the
+  route-B/4 inventory) stay in tree (sound in isolation, reusable/harmless).
 - **Expired overrides (audit trail in git + *Findings*).** The
   2026-06-{10,12,13,16} session-local rung / availability overrides all
   expired by their own terms; a fresh coordinator reverts to the S/P/B → map
