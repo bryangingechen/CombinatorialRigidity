@@ -328,6 +328,18 @@ Loop:
      that the lemma type-checks — and prefer reconning that satisfiability
      *before* landing the leaf, not at the consumer's build. (DESIGN.md
      *Constructibility recon …*, the satisfiability corollary; rows 392–401.)
+     **Sharper still² — the satisfiability trace must hit a KERNEL/ARCHITECTURE
+     lemma's SHAPE, not only a leaf's hypothesis (23d, rows 457–473).** A *sound*
+     kernel (A3's total-`fromBlocks` partition) was accepted and ~13 leaves built on
+     it before the `hblock` assembly found its SHAPE — a TOTAL row bijection with
+     both diagonal blocks full-row-LI — **unsatisfiable for the real isostatic arm at
+     `D ≥ 3`** (the `D−2` surplus rows break the `0` block + the bottom LI; KT's
+     (6.64) is a *subspace* statement, the matrix cert strictly stronger). When a
+     recon accepts a kernel whose shape the whole sub-phase will instantiate, run the
+     satisfiability trace on the SHAPE against the real object's *dimensions* (does a
+     total partition / full-row-rank / exact count actually hold?) at acceptance — a
+     sound-but-too-strong-shaped kernel costs the whole tower built on it. (DESIGN.md
+     *Constructibility recon …*, the architecture-shape corollary; §(4.33).)
    - **A large cost/size outlier is an early degradation signal.** A dispatch
      whose wall-time / tool-uses / diff-size runs far past the norm (L6b:
      10.8 h / 1884 tools / a ~1010-line proof for a P=2 producer, row 118) has

@@ -205,6 +205,18 @@ moved it into the hand-off).
   uncommitted diff), confirm the work is complete + sorry-free **without committing it
   yourself** (the §3 do-not-commit-the-other-instance's-WIP rule), and resume once more
   to finalize.
+- **Resume-drive an over-sliced layer** (user-endorsed, 23d): when consecutive FRESH build
+  agents repeatedly scope-shrink one layer into micro-pieces — each landing one small lemma
+  while re-paying the full context-read overhead, the genuine assembly perpetually deferred —
+  `SendMessage`-resume the most-recent warm agent scoped explicitly to *the larger chunk*
+  ("land the remaining assembly, NOT one micro-piece; return BLOCKED-with-diagnosis if you hit
+  a real gap"). The warm context skips the re-read and tends to drive through; 23d used it
+  twice (A5c → the cert; the corrected-`hblock` spike → the §(4.33) bricks). Same
+  foreground-gate + coordinator-re-gate + async-return caveats as above. Built-in safety: if
+  the layer was deferring because it hides a genuine gap (not just conservative scoping), the
+  scoped resume *surfaces* it as a BLOCKED-with-diagnosis rather than forcing a wrong build
+  (23d's second resume-drive flagged the cert-SHAPE obstruction this way) — so it is safe to
+  try before escalating to a fresh recon.
 - **Bank-don't-revert when salvage is anticipated.** The spike's hard "commit NOTHING,
   revert the scratch" rule is right for a pure feasibility probe, but it is too strict —
   and costs a revert-then-resume round-trip — when the coordinator EXPECTS the probe to

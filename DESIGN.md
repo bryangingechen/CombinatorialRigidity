@@ -1254,6 +1254,31 @@ make progress on (here, the KT eq-(6.66) redundancy-membership) — the
 arm) is finally built. Cross-ref: `notes/Phase23-design.md` §(o‴)(I.8.24)(4.7)–(4.8);
 model-exp *Findings* 2026-06-22.
 
+**Corollary — the satisfiability trace must hit the cert's SHAPE/architecture, not
+only a leaf's hypothesis; a *sound* kernel lemma can be unsatisfiable for the real
+object and hide for many leaves (Phase 23d, 2026-06-25).** Route A's general-`d` rank
+cert was architected on A3 — `Matrix.rank_fromBlocks_zero₂₁_ge_of_linearIndependent_rows`,
+a *true* lemma (`#m₁+#m₂ ≤ rank` for a block-triangular `fromBlocks A B 0 D` with both
+diagonal blocks full-row-LI). It was accepted as the kernel and **~13 leaves were built
+on it** (the column op, the product/edge matrices, the rank bridges, the cert), each
+gate-clean. Only at the `hblock` assembly did a spike find the cert's `fromBlocks` SHAPE
+— a **total** row bijection `em : rows ≃ m₁ ⊕ m₂` with both blocks full-row-LI — is
+**unsatisfiable for the real isostatic arm at `D ≥ 3`**: the `D−2` surplus `v`-incident
+rows are pure-`v`-column after the op, breaking both the `0` block (`toBlocks₂₁ ≠ 0`) and
+the bottom-block LI (`hD`). KT's (6.64) is a *subspace* statement (surplus rows ignored,
+via `mkQ`); the matrix cert's total-partition `fromBlocks` is a strictly stronger shape
+demanding the WHOLE edge matrix be full-row-rank — false. The fix is a row-SUBMATRIX /
+injection reshape of the kernel (`em : m₁ ⊕ m₂ ↪ rows`, ignoring the surplus; ~2–3
+leaves, cert-kernel-local). **The rule:** when a recon accepts a *kernel/architecture*
+lemma whose shape the whole sub-phase will instantiate, run the satisfiability trace on
+the SHAPE against the real object (does a TOTAL partition / full-row-rank / exact-count
+actually hold for the actual instance?), not just on individual leaf hypotheses — a
+sound-but-too-strong-shaped kernel costs the entire tower built on it. The cheap guard:
+at kernel-acceptance, instantiate the shape on the real object's *dimensions* (here:
+isostatic `(D−1)|E| = D(|V|−1)`, corner holds `D` of `2(D−1)` `v`-rows ⟹ `D−2` surplus)
+and check the partition closes. Cross-ref: `notes/Phase23-design.md` §(4.33); model-exp
+*Findings* 2026-06-25.
+
 ## Match the source's argument structure, not just its conclusion
 
 **The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I
