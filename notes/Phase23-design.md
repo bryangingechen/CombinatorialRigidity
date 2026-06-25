@@ -4206,3 +4206,82 @@ lemma. Two NEW bridges needed:
 arm-carried LI hypotheses now have producing leaves. NEXT = the dispatch (item 2) discharges
 `(re, hbot, hA, hD)` and wires the arm. No phase-direction or contract change; `_chain` stays in tree
 (parallel, sound).
+
+### (4.35) THE ROUTE-A DISPATCH SPIKE — VERDICT: the interior arm composes; the wrap-edge wall DOES NOT re-surface (kernel-probed); GAP-2 resolved; 5-leaf decomposition (2 mechanical generalizations + 2 genuinely-new MATRIX-SHAPE bridges + wiring)
+
+**Read-only compiler-checked spike (session #34, row 480).** Built a `chainData_dispatch`
+interior-arm skeleton calling `case_III_arm_realization_matrix` at an interior matched candidate
+`i` (`2 ≤ i < d`) of `cd : G.ChainData n`, with the split tuple
+`(v,a,b,e_a,e_b) = (vtx i.castSucc, vtx i.succ, vtx (i−1).castSucc, edge i, edge (i−1))` read off
+the landed `ChainData` accessors and the GAP-2 override
+`ends₁ := Function.update (Function.update ends e_a (v,a)) e_b (v,b)`; `sorry`'d each gap and read
+the kernel residuals. **The arm typechecks.** Cardinalities forced/consistent
+(`m₁ = Fin (screwDim k)`, `m₂ = Fin (screwDim k·(|V(Gᵥ)|−1))`). No commit; scratch deleted.
+
+**Make-or-break — the wrap-edge wall DOES NOT re-surface (kernel-probed).** Route A's `hgp` is a
+**general-position** statement (`supportExtensor e ≠ 0` from `hLn`/`hgab`), never a span membership.
+The probe `spike_probe_eb_corner` (compiled clean) confirmed the `e_b` reproduced `±r` row's operated
+corner entry at `(v,c)` reads `(blockBasisOn hgp _ _)(finScrewBasis k c)` — **identical form to the
+`e_a` rows** (because `columnOp hva (Pi.single v s)` updates `v↦s`, leaves `b↦0`). So the `±r`/wrap
+content enters as a **member of the corner block `A`** (a literal matrix row), NOT as a span-membership
+of the corner-overridden candidate. The discriminator gate intrinsic to the dual-space
+`caseIIICandidate` slot-override (§(4.18)–(4.29)) never forms in the literal-`Matrix` model. The one
+genuinely-hard residual is the corner `hLI` (= KT eq. 6.66 `±r` row + Lemma 2.1), KT's real content,
+not the wall.
+
+**GAP-2 RESOLVED.** The `ends`-orientation pins are the `Function.update` override `ends₁` — exactly
+the pattern the landed base/`d=3` router `chainData_split_realization` already uses
+(`Realization.lean:1159`); `hends_ea`/`hends_eb` close by `Function.update_self`/`_of_ne heab`. No
+motive/contract change.
+
+**Per-obligation verdict** (`F₀ := caseIIICandidate G ends₁ q e_a e_b (q(a,·)) n' (q(b,·)) 0`;
+`re : Fin (screwDim k) ⊕ Fin (screwDim k·(m−1)) → {e//e∈E(G)}×Fin (screwDim k−1)`):
+* `re` — (b) NEEDS-NEW-LEAF: corner half (`Sum.inl`, `D` rows) = `e_a`'s `D−1` panel rows **+ 1**
+  `e_b` `±r` row (`e_a` alone has only `D−1` slots); bottom half (`Sum.inr`) = `D·(m−1)` `Gᵥ`-edge
+  rows from the IH.
+* `hbot` — (a): falls out of the `re` builder (`Gᵥ`-links avoid `v` by `removeVertex_isLink` +
+  `cd.removeVertex_isLink_edge_succ_pred_off` + `ends₁`-off rewrite).
+* `hc1` — (a): both corner edges record `v` first (`hends_ea`/`hends_eb`).
+* `hc2` — (b) NEEDS-NEW-LEAF: the landed `hA` leaf demands `(ends).2 = a` for ALL corner rows, but the
+  `e_b` row has `.2 = b ≠ a`. Corner math is sound (probe-confirmed); only the hypothesis is too
+  strict → corrected form `hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v`.
+* `hLI` — (b) NEEDS-NEW-LEAF (the crux): the `D×D` corner full-rank `blockBasisOn`-family LI in the
+  **full screw-dual**. The landed `linearIndependent_mkQ_corner_of_gate` proves the SUM family LI in
+  the **`W`-quotient**, not this. = KT eq. 6.66 + Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
+* `hD`-input `hIH` — (b) NEEDS-NEW-LEAF: `LinearIndependent ℝ ((F₀.rigidityMatrixEdge ends₁ hgp).submatrix
+  (re∘Sum.inr) ((columnSplit v).symm∘Sum.inr)).row` — a **row-LI submatrix of the un-operated edge
+  matrix**, NOT the dual-space `finrank/span` shape `chainData_bottom_relabel` produces for `_chain`.
+* geometric `hgp`/`hends`/`hendsGv`/`hneGv`/`hm₁`/`hm₂` — all (a): `hgp` via the `d=3` engine's
+  `hne_F₀` model (`Arms.lean:126`, `caseIIICandidate_supportExtensor_*` + `panelSupportExtensor_ne_zero_iff`);
+  rest trivial off `ends₁`/`hends_Gv`/`Fintype.card_fin`.
+
+**THE LOAD-BEARING CORRECTION (clause ii).** The hand-off's "`hA`/`hD` inputs come from
+`exists_independent_rigidityRows_of_edge` + Lemma 2.1 / the IH" is true in spirit but **the landed
+bridges produce the WRONG SHAPE**: all are **dual-space `finrank/span/mkQ-quotient`** facts (built for
+`_chain`); route-A `hA`/`hD` need **row-LI of concrete edge-matrix submatrices / `blockBasisOn`
+families** (no quotient, no span). Leaves 3+4 are genuinely-new matrix-shape bridges, NOT re-uses —
+the corner `hLI` (leaf 3) is the dispatch's hardest single obligation, on par with the `hA`/`hD`
+leaf-1/leaf-2 effort.
+
+**Ordered leaf decomposition for `chainData_dispatch`'s interior arm:**
+1. **Generalize** `rigidityMatrixEdge_mul_columnOp_apply_corner`: replace `hv2 : (ends p.1.1).2 = a`
+   with `hv2 : (ends p.1.1).2 ≠ v` (keep `hv1 : .1 = v`). Proof = `simp [Function.update_of_ne,
+   Pi.single_eq_of_ne]` (probe kernel-verified). *P≈1.*
+2. **Generalize** `linearIndependent_toBlocks₁₁_row_of_corner_gate`: drop `hc2 : .2 = a` →
+   `hc2' : ∀ i, (ends (re (Sum.inl i)).1.1).2 ≠ v`; reuse leaf 1 in the `hmeq` `ext`. *P≈1–2.*
+3. **`dispatch_corner_blockBasis_linearIndependent`** (genuinely-new, the crux): from the
+   discriminator gate `ρ₀(panelSupportExtensor (q(a,·)) n') ≠ 0`, `hρe₀`, and Lemma 2.1, produce
+   `LinearIndependent ℝ (fun i:Fin (screwDim k) => blockBasisOn hgp (re(Sum.inl i)).1.2 (re(Sum.inl i)).2)`
+   for the `re` selecting `e_a`'s `D−1` block rows + the `e_b` `±r` row. *Bridges the landed dual-space
+   gate to the screw-dual `blockBasisOn` family. P≈3.*
+4. **`dispatch_bottom_rowLI_of_IH`** (genuinely-new): from the IH `HasGenericFullRankRealization k n Gᵥ`,
+   build the bottom injection `re∘Sum.inr` and prove `hIH` (the row-LI submatrix of the un-operated edge
+   matrix). *Matrix-shape analogue of the span-shaped `chainData_bottom_relabel`. P≈3.*
+5. **`chainData_dispatch`** interior-arm wiring: `obtain` LEAF-3's bundle at the base `v₁`-split, set
+   `ends₁`, build `re` (leaf 4 bottom + the explicit corner injection), read `hρe₀` off
+   `interior_hρe₀_of_baseWidening`, discharge `hgp`/`hends`/etc. via the `d=3` `hne_F₀` pattern, supply
+   `hA`/`hD` via leaves 2/3/4, call `case_III_arm_realization_matrix`. The full router case-splits
+   `(i:ℕ)`: `i≤1` → `chainData_split_realization` (landed floor); `2≤i` → this arm. *P≈2 once 1–4 land.*
+
+**No phase-direction / motive / IH / contract change.** Route A confirmed end-to-end through the
+dispatch modulo leaves 1–5; the wrap-edge wall is escaped, GAP-2 resolved. NEXT = leaf 1.

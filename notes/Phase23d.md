@@ -18,16 +18,30 @@ membership). All landed leaves stay in tree (sound; the route-B/4 inventory is r
 
 ## Current state
 
-**✅ NEXT = the dispatch wiring (item 2).** Route A is fully assembled through the arm: the A1–A5c
-chain + the cert `case_III_rank_certification_matrix` (reshaped to the (4b′) row-submatrix core) + the
-A6 `hblock` 0-block kernel + the arm spine `case_III_arm_realization_matrix` (carrying
-`(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)` as hypotheses, constructing `U`/`hU`/`en`/`hblock` in-body) + **BOTH**
-the `hD` bridge (leaf 1) **and the `hA` bridge (leaf 2)** are now LANDED, gate/axiom-clean, no
-`ScrewSpace` unfold. `_chain` + the route-B/4 dual-space leaves stay in tree (parallel/sound). The
-interior-`hρe₀` crux is CLOSED. The §(4.33) cert-shape obstruction (the total-`em`-bijection `fromBlocks`
-is unsatisfiable for `D ≥ 3` — the `D−2` surplus `v`-rows break both `toBlocks₂₁=0` and `hD`) is
-structurally dissolved by (4b′): the `re` injection drops the surplus, the SUBSPACE shape KT's (6.64)
-states (full trace design §(4.33)).
+**✅ NEXT = leaf 1 of the dispatch decomposition (generalize the corner-entry brick to `.2 ≠ v`).** The
+dispatch spike (row 480, design §(4.35)) confirmed route A composes end-to-end through `chainData_dispatch`
+modulo a 5-leaf decomposition; **the wrap-edge wall DOES NOT re-surface** (kernel-probed: the `e_b` `±r`
+row enters as a literal member of corner block `A`, reading `blockBasisOn` at the pin, never a span
+membership) and **GAP-2 is resolved** (the `Function.update` `ends₁` override = the landed `d=3` router
+pattern). Route A is assembled through the arm: the A1–A5c chain + the cert
+`case_III_rank_certification_matrix` (reshaped to the (4b′) row-submatrix core) + the A6 `hblock` 0-block
+kernel + the arm spine `case_III_arm_realization_matrix` (carrying `(m₁,m₂,hm₁,hm₂,re,hbot,hA,hD)` as
+hypotheses, constructing `U`/`hU`/`en`/`hblock` in-body) + **BOTH** the `hD` bridge (leaf 1) **and the
+`hA` bridge (leaf 2)** are LANDED, gate/axiom-clean, no `ScrewSpace` unfold. `_chain` + the route-B/4
+dual-space leaves stay in tree (parallel/sound). The interior-`hρe₀` crux is CLOSED. The §(4.33)
+cert-shape obstruction is structurally dissolved by (4b′).
+
+**Dispatch decomposition (design §(4.35), the dispatch spike verdict).** `chainData_dispatch`'s interior
+arm needs 5 ordered leaves: **(1)** generalize `rigidityMatrixEdge_mul_columnOp_apply_corner`'s corner
+hypothesis `.2 = a` → `.2 ≠ v` (mechanical, probe-verified); **(2)** generalize the `hA` leaf
+`linearIndependent_toBlocks₁₁_row_of_corner_gate` likewise (`hc2 : .2 = a` → `hc2' : .2 ≠ v`, so it
+accepts the `e_b` `±r` corner row); **(3)** the corner `hLI` producer
+`dispatch_corner_blockBasis_linearIndependent` (genuinely-new MATRIX-SHAPE bridge — KT eq. 6.66 + Lemma
+2.1; the landed `mkQ`-quotient gate is the WRONG shape); **(4)** the bottom-row producer
+`dispatch_bottom_rowLI_of_IH` (genuinely-new — `hIH` row-LI submatrix of the un-operated edge matrix from
+the IH; the landed `chainData_bottom_relabel` is span-shaped, WRONG shape); **(5)** the `chainData_dispatch`
+wiring itself. Leaves 3+4 are genuinely-new (NOT re-uses of landed dual-space bridges); leaf 3 is the
+dispatch's hardest single obligation.
 
 **A6-assembly RECON verdict (session #33):** the arm composes sorry-free, but `hA`/`hD` are TWO
 genuinely-new dual-space→matrix-row LI bridges — NOT the ~1-leaf gate facts the row-473 prose claimed.
@@ -85,8 +99,9 @@ Everything is carrier-agnostic — **no `ScrewSpace` unfolding** anywhere (route
    `interior_hρe₀_of_baseWidening`/`_of_widening` (`CaseIII/Relabel/ForkedArm.lean`, the dispatch reads
    `hρe₀` off LEAF-3's `hedgeGv` in one call), and LEAF-3
    `exists_shared_redundancy_and_matched_candidate` (`CaseIII/Realization.lean`, re-exposes `hedgeGv`).
-   Folds into A6. GAP 2: the `ends`-orientation pins need a `Function.update` override (LEAF-3's
-   `ends = Q.ends` is only orientation-free).
+   Folds into A6. Decomposed into 5 leaves by the dispatch spike (design §(4.35)). GAP 2 RESOLVED:
+   the `ends`-orientation pins use the `Function.update` override `ends₁` (= the landed `d=3` router
+   `chainData_split_realization` pattern, `Realization.lean:1159`); no motive/contract change.
 3. **CHAIN-5** — wire the dispatch into the spine to discharge `hdispatch`.
 4. **ENTRY** *(parallel-safe; own sub-phase when minted)* — reshape `Graph.exists_chain_data_of_noRigid`
    (`Reduction.lean:383`) to the `G.ChainData n` producer `exists_chainData_of_noRigid` (KT Lemma 4.6
@@ -123,20 +138,24 @@ Ledger entry: `notes/BlueprintExposition.md` (`lem:case-III general-d`).
 cert-shape obstruction is structurally dissolved by (4b′). The arm carries `(re, hbot, hA, hD)` as
 hypotheses (the standing carry-the-crux idiom); the dispatch (item 2) discharges them.
 
-**NEXT CONCRETE COMMIT = the dispatch wiring (item 2)** — `chainData_dispatch`, the general-`k`
-`Fin cd.d` router (base/`d=3` via `chainData_split_realization`; interior `2 ≤ i < d` via the route-A
-arm `case_III_arm_realization_matrix`). It must discharge the arm's carried `(re, hbot, hA, hD)` from
-the `ChainData` interior split — for `hA`/`hD` it now has the two producing leaves
-(`linearIndependent_toBlocks₁₁_row_of_corner_gate` / `…₂₂_row_of_off_pin`), so the dispatch supplies
-their inputs: `hA` needs the corner rows' `(v,a)`-endpoint records (`hc1`/`hc2`, the split edges'
-`ends`-recording) + the dual-space corner block-basis-functional LI (`hLI`, the `D = (D−1)+1` corner
-independence = `exists_independent_rigidityRows_of_edge` + Lemma 2.1); `hD` needs the IH-restricted
-un-operated submatrix row-LI (the `R(Gᵥ,q)` full-rank IH). Plus the row selection `(re, hbot)` from the
-interior split (GAP 2: the `ends`-orientation pins need a `Function.update` override — LEAF-3's
-`ends = Q.ends` is only orientation-free). The interior-`hρe₀` chain is landed + reusable (see item 2).
-Smallest first commit: assemble `re`/`hbot`/`hc1`/`hc2` from the interior split tuple for one matched
-candidate, or land a sub-step of the router. Then CHAIN-5 (wire into the spine), ENTRY + ASSEMBLY
-(parallel-safe).
+**NEXT CONCRETE COMMIT = leaf 1 of the dispatch decomposition** (design §(4.35)) — generalize the
+landed corner-entry brick `BodyHingeFramework.rigidityMatrixEdge_mul_columnOp_apply_corner`
+(`Concrete.lean`): replace the corner hypothesis `hv2 : (ends p.1.1).2 = a` with `hv2 : (ends p.1.1).2 ≠ v`
+(keep `hv1 : .1 = v`), so the brick covers the `e_b` `±r` reproduced corner row (whose second endpoint is
+`b ≠ a`), not just the `e_a` rows. The dispatch spike kernel-verified the proof generalizes by
+`simp [Function.update_of_ne, Pi.single_eq_of_ne]` (the operated corner entry reads `blockBasisOn` at the
+pin regardless of which corner edge, since `columnOp hva (Pi.single v s)` leaves `b ↦ 0`). This is
+mechanical (P≈1); it unblocks leaf 2 (the parallel generalization of the `hA` leaf
+`linearIndependent_toBlocks₁₁_row_of_corner_gate`).
+
+**Then leaves 2→3→4→5** (design §(4.35), ordered): (2) generalize the `hA` leaf likewise; (3) the
+genuinely-new corner `hLI` producer `dispatch_corner_blockBasis_linearIndependent` (KT eq. 6.66 + Lemma
+2.1 — the hardest leaf, a MATRIX-SHAPE bridge the landed dual-space `mkQ`-quotient gate does NOT supply);
+(4) the genuinely-new bottom producer `dispatch_bottom_rowLI_of_IH` (`hIH` row-LI submatrix from the IH;
+the landed `chainData_bottom_relabel` is span-shaped, WRONG shape); (5) the `chainData_dispatch` wiring
+(case-splits `(i:ℕ)`: `i≤1` → landed `chainData_split_realization`; `2≤i` → the route-A arm). The
+interior-`hρe₀` chain + the `ChainData` accessors are landed + reusable (item 2). Then CHAIN-5 (wire into
+the spine), ENTRY + ASSEMBLY (parallel-safe).
 
 **DIRECTION (4b′)** (user-adjudicated 2026-06-25, session #33): row-submatrix reshape. DECLINED: (4a)
 `D := R(G₁,q₁)` relabelled-IH matrix (forces the hard `chainData_bottom_relabel` matrix analogue now,
