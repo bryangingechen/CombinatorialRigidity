@@ -2239,26 +2239,37 @@ Route A models `R(G,pᵢ)` as a genuine `Matrix` over the candidate framework `F
 ends q e_a e_b (q(a,·)) n' (q(b,·)) 0`, so KT's (6.61) "add `vᵢ`'s columns to `vᵢ₊₁`'s" is a
 *right-multiply by a unit-det column-op matrix* `U` — rank-invariant, never a membership — and KT's
 (6.64) block decomposition `rank R(G,pᵢ) ≥ rank Mᵢ + rank(R(G₁ ∖ row, q₁))` is a structural
-`fromBlocks A B 0 D` reindex.
+`fromBlocks A B 0 D` *row submatrix* (option (4b′)).
 
 It certifies the full target rank `D·(|V(G)|−1)` (`D = screwDim k`) from the matrix block data
-`(U, hU, em, en, hblock, hA, hD)` — the `Mᵢ` corner block (`A`, the `D`-row full-rank corner:
+`(U, hU, re, en, hblock, hA, hD)` — the `Mᵢ` corner block (`A`, the `D`-row full-rank corner:
 `e_a`'s `D − 1` panel rows + the reproduced `e_b` `±r` row, KT eq.~(6.66)) and the IH bottom block
 (`D`, the `R(G₁ ∖ row, q₁)` block of `D·(|V(Gv)|−1)` rows), with the cardinality facts `(hm₁, hm₂)`
 and the count facts `(hVone, hVcard)` exactly as the dual-space cert consumed `(hWcard, hιcard)`.
-The body fires the **landed A5c composition core**
-`finrank_span_rigidityRows_ge_of_edge_fromBlocks` (the A4 unit-det-right-multiply block-additivity
-bridge + the A4.5e edge-restricted honest-rank bridge, no `ScrewSpace` unfolding) to get
-`#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`, then runs the same count
+The body fires the **landed A5c row-submatrix composition core**
+`finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks` (the row-injection A4 unit-det-right-
+multiply block-additivity bridge + the A4.5e edge-restricted honest-rank bridge, no `ScrewSpace`
+unfolding) to get `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`, then runs the same count
 `D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` arithmetic as `_chain` (`hVcard`, `hVone`).
 
-The matrix block data `(U, em, en, hblock, hA, hD, hgp, hends)` enters as explicit hypotheses — the
+**Why the row-*submatrix* shape, not a total row bijection** (`notes/Phase23-design.md`
+§I.8.24(4.33)(3)): the realization arm is *isostatic* (`(D−1)·|E(G)| = D·(|V(G)|−1)`), so a total
+edge-row equivalence `em : ({e // …} × Fin (D−1)) ≃ m₁ ⊕ m₂` (the earlier
+`finrank_…_of_edge_fromBlocks` shape) would demand the *whole* edge matrix be full row rank at the
+degenerate `t = 0` shear — which is **false**: the `D − 2` surplus rows incident to the re-inserted
+body become dependent (the redundancy KT Claim 6.11 exploits). KT's (6.64) is a *subspace* statement
+ignoring those surplus rows, so the cert takes a row *injection* `re : m₁ ⊕ m₂ → ({e // …} ×
+Fin (D−1))` selecting only the `D` corner rows + the `D·(|V_Gv|−1)` IH-bottom rows and drops the
+surplus.
+
+The matrix block data `(U, re, en, hblock, hA, hD, hgp, hends)` enters as explicit hypotheses — the
 project's standing "carry the still-undischarged crux as an `h…` hypothesis, never a `sorry`" idiom:
 the chain arm (A6, the next sub-step) supplies the chain-data geometry — `U := (toMatrix'
 (prodColumnOpEquiv (columnOp hva).symm))ᵀ` (unit-det by `prodColumnOpEquiv_transpose_toMatrix'_det_
-isUnit`), `en := columnSplit a` (corner card `D` by `columnSplit_corner_card`), `em` extending
-`edgeRowSplit ⟨e_a, _⟩`'s `D − 1` panel rows with the reproduced `e_b` row, `hblock` entrywise off
-`rigidityMatrixProd_mul_columnOp_apply(_eq_zero_of_ne)`, and `hA`/`hD` via the A5b iff
+isUnit`), `en := (columnSplit v).symm` (corner card `D` by `columnSplit_corner_card`), `re`
+selecting the corner `e_a`-panel + `e_b`-`±r` rows (`m₁`) and the `v`-clean `Gv`-bottom rows (`m₂`),
+`hblock` entrywise off the corrected A6-fix bricks
+`rigidityMatrixEdge_mul_columnOp_apply_pin_zero`/`…_apply_corner`, and `hA`/`hD` via the A5b iff
 `linearIndependent_rigidityMatrixProd_row_iff`. This leaf is the cert→count composition; A6 wires it
 to the route-agnostic SHARED rank-to-realization tail at the arm's `hrank` seam
 (`CaseIII/Arms`/`ForkedArm`), replacing the `_chain` call. -/
@@ -2279,11 +2290,11 @@ theorem PanelHingeFramework.case_III_rank_certification_matrix
     (hm₂ : Fintype.card m₂ = screwDim k * (V(Gv).ncard - 1))
     (U : Matrix (α × Fin (Module.finrank ℝ (ScrewSpace k)))
       (α × Fin (Module.finrank ℝ (ScrewSpace k))) ℝ) (hU : IsUnit U.det)
-    (em : ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)) ≃ m₁ ⊕ m₂)
-    (en : (α × Fin (Module.finrank ℝ (ScrewSpace k))) ≃ n₁ ⊕ n₂)
+    (re : m₁ ⊕ m₂ → ({e // e ∈ G.edgeSet} × Fin (screwDim k - 1)))
+    (en : (n₁ ⊕ n₂) ≃ (α × Fin (Module.finrank ℝ (ScrewSpace k))))
     {A : Matrix m₁ n₁ ℝ} {B : Matrix m₁ n₂ ℝ} {D : Matrix m₂ n₂ ℝ}
     (hblock : ((PanelHingeFramework.caseIIICandidate G ends q e_a e_b
-        (fun i => q (a, i)) n' n_b 0).rigidityMatrixEdge ends hgp * U).reindex em en
+        (fun i => q (a, i)) n' n_b 0).rigidityMatrixEdge ends hgp * U).submatrix re en
       = Matrix.fromBlocks A B 0 D)
     (hA : LinearIndependent ℝ A.row) (hD : LinearIndependent ℝ D.row) :
     screwDim k * (V(G).ncard - 1)
@@ -2295,11 +2306,13 @@ theorem PanelHingeFramework.case_III_rank_certification_matrix
   -- The candidate's graph is `G`, so the edge-restricted `hends` records every `F₀`-edge's link.
   have hends' : ∀ e ∈ F₀.graph.edgeSet, F₀.graph.IsLink e (ends e).1 (ends e).2 := by
     rw [hF₀, PanelHingeFramework.caseIIICandidate_graph]; exact hends
-  -- KT's (6.64) block-additivity (the landed A5c composition core, via the A4 unit-det
-  -- right-multiply bridge + the A4.5e edge-restricted honest-rank bridge):
+  -- KT's (6.64) block-additivity (the landed A5c row-submatrix composition core, via the
+  -- row-injection A4 unit-det right-multiply bridge + the A4.5e edge-restricted honest-rank
+  -- bridge; the `re` injection drops the `D − 2` surplus `v`-rows, so the isostatic arm's
+  -- total-bijection obstruction never forms — §I.8.24(4.33)(3)):
   -- `#m₁ + #m₂ ≤ finrank (span F₀.rigidityRows)`.
-  have hbound := F₀.finrank_span_rigidityRows_ge_of_edge_fromBlocks ends hgp hends'
-    U hU em en hblock hA hD
+  have hbound := F₀.finrank_span_rigidityRows_ge_of_edge_submatrix_fromBlocks ends hgp hends'
+    U hU re en hblock hA hD
   -- The count `D + D·(m_v − 1) = D·m_v = D·(|V(G)| − 1)` (`m_v = |V(Gv)| ≥ 1`, `D ≥ 1`).
   rw [hm₁, hm₂] at hbound
   refine le_trans (le_of_eq ?_) hbound
